@@ -16,7 +16,7 @@ abstract class table
   /// Renvoie le nom de la table (par défaut le nom de la classe)
   protected function get_table()
   {
-    return get_class($this);
+    return get_called_class();
   }
 	
 	/// Renvoie l'id de l'élément dans la table
@@ -31,22 +31,29 @@ abstract class table
 	}
 	
 	/**
-	 * Charge un élément de la base de donnée
-	 * @param $id    Id (clé primaire) de l'élément dans la table
+	 * Charge un élément de la base de donnée ou directement à partid d'un tableau
+	 * @param $id    Id (clé primaire) de l'élément dans la table ou tableau contenant les valeurs des données.
 	 */
   protected function charger($id)
   {
 		global $db;
-		$requete = 'SELECT * FROM '.$this->get_table().' WHERE '.$this->get_champ_id().' = "'.$id.'"';
-		$req = $db->query($requete);
-		if( $db->num_rows($req) )
+		if( is_array($id) )
 		{
-		  $this->init_tab( $db->read_assoc($req) );
+      $this->init_tab( $id );
     }
     else
     {
-      $this->__construct();
-      $this->id = $id;
+  		$requete = 'SELECT * FROM '.$this->get_table().' WHERE '.$this->get_champ_id().' = "'.$id.'"';
+  		$req = $db->query($requete);
+  		if( $db->num_rows($req) )
+  		{
+  		  $this->init_tab( $db->read_assoc($req) );
+      }
+      else
+      {
+        $this->__construct();
+        $this->id = $id;
+      }
     }
   }
 	/**
@@ -134,7 +141,7 @@ abstract class table
 	*                                stockage avec sous tableau en fonction du champ $keys
 	* @return array     Liste d'objets
 	*/
-	/*static function create($champs, $valeurs, $ordre = 'id ASC', $keys = false, $where = false)
+	static function create($champs, $valeurs, $ordre = 'id ASC', $keys = false, $where = false)
 	{
 		global $db;
 		$return = array();
@@ -161,11 +168,11 @@ abstract class table
 			}
 		}
 
-		$requete = 'SELECT '.static::get_champ_id().', '.$classe->get_liste_champs().' FROM '.$this->get_table().' WHERE '.$where.' ORDER BY '.$ordre;
+		$requete = 'SELECT '.static::get_champ_id().', '.static::get_liste_champs().' FROM '.static::get_table().' WHERE '.$where.' ORDER BY '.$ordre;
 		$req = $db->query($requete);
 		if($db->num_rows($req) > 0)
 		{
-		  $classe = get_class($this);
+		  $classe = get_called_class();
 			while($row = $db->read_assoc($req))
 			{
 				if(!$keys) $return[] = new $classe($row);
@@ -174,7 +181,7 @@ abstract class table
 		}
 		else $return = array();
 		return $return;
-	}*/
+	}
 
 	/**
 	* Crée un tableau d'objets respectant certains critères pour n'importe qu'elle table
