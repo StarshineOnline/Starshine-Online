@@ -1,0 +1,14 @@
+<?php // -*- php -*-
+
+$cfg["sql"]['host'] = "localhost";
+$cfg["sql"]['user'] = "root";
+$cfg["sql"]['pass'] = "";
+$cfg["sql"]['db'] = "starshine";
+$cfg["sql"]['encoding'] = "utf8";
+
+// Paramètres locaux, à ne pas mettre dans le SVN
+//if (file_exists('connect.local.php')) include_once('connect.local.php');
+
+$db = new db();
+
+?>

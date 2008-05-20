@@ -1,0 +1,165 @@
+<?php
+	if (isset($_GET['javascript']))
+	{
+		include('inc/fp.php');
+		$joueur = recupperso($_SESSION['ID']);
+		$W_case = 1000 * $joueur['y'] + $joueur['x'];
+		$W_requete = 'SELECT * FROM map WHERE ID ='.sSQL($W_case);
+		$W_req = $db->query($W_requete);
+		$W_row = $db->read_array($W_req);
+		$R = get_royaume_info($joueur['race'], $W_row['royaume']);
+	}
+//Filtre
+if(array_key_exists('filtre', $_GET)) $filtre_url = '&amp;filtre='.$_GET['filtre'];
+else $filtre_url = '';
+?>
+<table class="information_case" style="width:95%;">
+<tr>
+	<td>
+		Nom
+	</td>
+	<td>
+		Action
+	</td>
+</tr>
+<?php
+$i = 0;
+if($joueur['inventaire_slot'] != '')
+{
+	foreach($joueur['inventaire_slot'] as $invent)
+	{
+		if($invent !== 0 AND $invent != '')
+		{
+			$objet_d = decompose_objet($invent);
+			if($objet_d['identifier'])
+			{
+				switch ($objet_d['categorie'])
+				{
+					//Si c'est une arme
+					case 'a' :
+						$requete = "SELECT * FROM arme WHERE ID = ".$objet_d['id_objet'];
+						//Récupération des infos de l'objet
+						$req = $db->query($requete);
+						$row = $db->read_array($req);
+						$mains = explode(';', $row['mains']);
+						$partie = $mains[0];
+					break;
+					//Si c'est une protection
+					case 'p' :
+						$requete = "SELECT * FROM armure WHERE ID = ".$objet_d['id_objet'];
+						//Récupération des infos de l'objet
+						$req = $db->query($requete);
+						$row = $db->read_array($req);
+						$partie = $row['type'];
+					break;
+					case 'o' :
+						$requete = "SELECT * FROM objet WHERE ID = ".$objet_d['id_objet'];
+						//Récupération des infos de l'objet
+						$req = $db->query($requete);
+						$row = $db->read_array($req);
+						$partie = $row['type'];
+					break;
+					case 'g' :
+						$requete = "SELECT * FROM gemme WHERE ID = ".$objet_d['id_objet'];
+						//Récupération des infos de l'objet
+						$req = $db->query($requete);
+						$row = $db->read_array($req);
+						$partie = $row['type'];
+						$row['prix'] = pow(10, $row['niveau']) * 10;
+					break;
+					case 'r' :
+						$requete = "SELECT * FROM objet_royaume WHERE ID = ".$objet_d['id_objet'];
+						//Récupération des infos de l'objet
+						$req = $db->query($requete);
+						$row = $db->read_array($req);
+						$partie = $row['type'];
+						$row['utilisable'] = 'y';
+					break;
+					case 'm' :
+						$requete = "SELECT * FROM accessoire WHERE ID = ".$objet_d['id_objet'];
+						//Récupération des infos de l'objet
+						$req = $db->query($requete);
+						$row = $db->read_array($req);
+						$partie = 'accessoire';
+						$row['utilisable'] = 'n';
+					break;
+				}
+			}
+			else
+			{
+				$row['nom'] = 'Objet non-identifiée';
+			}
+			//Filtrage
+			if(array_key_exists('filtre', $_GET)) $filtre = $_GET['filtre']; else $filtre = 'utile';
+			$check = false;
+			$liste_categorie = array('o', 'a', 'p');
+			if(($objet_d['categorie'] == 'o' AND $filtre == 'utile') OR ($objet_d['categorie'] == 'a' AND $filtre == 'arme') OR ($objet_d['categorie'] == 'p' AND $filtre == 'armure'))
+			{
+				$check = true;
+			}
+			elseif(!in_array($objet_d['categorie'], $liste_categorie) AND $filtre == 'autre') $check = true;
+			if($check)
+			{
+			$echo = description_objet($invent);
+			?>
+			<tr>
+			<td onmouseover="return <?php echo make_overlib($echo); ?>" onmouseout="return nd();">
+			<?php
+
+			echo $row['nom'];
+			$modif_prix = 1;
+			if($objet_d['stack'] > 1) echo ' X '.$objet_d['stack'];
+			if($objet_d['slot'] > 0)
+			{
+				echo '<br /><span class="xsmall">Slot niveau '.$objet_d['slot'].'</span>';
+				$modif_prix = 1 + ($objet_d['slot'] / 5);
+			}
+			if($objet_d['slot'] == '0')
+			{
+				echo '<br /><span class="xsmall">Slot impossible</span>';
+				$modif_prix = 0.9;
+			}
+			if($objet_d['enchantement'] > '0')
+			{
+				$requete = "SELECT * FROM gemme WHERE id = ".$objet_d['enchantement'];
+				$req = $db->query($requete);
+				$row_e = $db->read_assoc($req);
+				$modif_prix = 1 + ($row_e['niveau'] / 2);
+				echo '<br /><span class="xsmall">Enchantement de '.$row_e['enchantement_nom'].'</span>';
+			}
+			//else echo ' X 1';
+			//print_r($objet_d);
+			if($objet_d['identifier'])
+			{
+				if($objet_d['categorie'] == 'g')
+				{
+					echo '<a href="javascript:envoiInfo(\'inventaire.php?action=enchasse&amp;key_slot='.$i.$filtre_url.'\', \'information\');">Enchasser</a> <span class="xsmall">(20 PA)</span> / ';
+				}
+				elseif($objet_d['categorie'] == 'a' OR $objet_d['categorie'] == 'p' OR $objet_d['categorie'] == 'm')
+				{
+					echo '<a href="javascript:envoiInfo(\'inventaire.php?action=equip&amp;id_objet='.$objet_d['id_objet'].'&amp;partie='.$partie.'&amp;key_slot='.$i.'&amp;categorie='.$objet_d['categorie'].$filtre_url.'\', \'information\');">Equiper</a> / ';
+				}
+				elseif($objet_d['categorie'] == 'o' OR $objet_d['categorie'] == 'r')
+				{
+					if($row['utilisable'] == 'y') echo '<a href="javascript:envoiInfo(\'inventaire.php?action=utilise&amp;id_objet='.$objet_d['id_objet'].'&amp;type='.$row['type'].'&amp;key_slot='.$i.$filtre_url.'\', \'information\');">Utiliser</a> / ';
+				}
+				if ($W_row['type'] == 1 AND $objet_d['categorie'] != 'r' AND $objet_d['categorie'] != 'h')
+				{
+					$prix = floor($row['prix'] * $modif_prix / $G_taux_vente);
+					echo '<a href="javascript:if(confirm(\'Voulez vous vendre cet objet ?\')) envoiInfo(\'inventaire.php?action=vente&amp;id_objet='.$objet_d['id'].'&amp;key_slot='.$i.$filtre_url.'\', \'information\');">Vendre '.$prix.' Stars</a> / <a href="javascript:envoiInfo(\'inventaire.php?action=ventehotel&amp;id_objet='.$objet_d['categorie'].$objet_d['id_objet'].'&amp;key_slot='.$i.$filtre_url.'\', \'information\');">Hotel des ventes</a>';
+				}
+				if(($objet_d['categorie'] == 'a' OR $objet_d['categorie'] == 'p') AND $objet_d['slot'] == '' AND $objet_d['enchantement'] == '')
+				{
+					echo '<br /><a href="javascript:envoiInfo(\'inventaire.php?action=slot&amp;key_slot='.$i.$filtre_url.'\', \'information\');">Mettre un slot à cet objet</a> <span class="xsmall">(10 PA)</span>';
+				}
+			}
+			echo '
+			</td>
+		</tr>';
+			}
+			$i++;
+		}
+	}
+}
+?>
+</table>
