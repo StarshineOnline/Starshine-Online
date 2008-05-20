@@ -1,0 +1,1 @@
+<img src="reconnaissance_carte.php" />

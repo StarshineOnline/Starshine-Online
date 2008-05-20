@@ -1,0 +1,8 @@
+* Lorsque l'on meurt, les HP et MP reviennent a 20% du maximum.
+* Même si l'on échoue au lancement d'un sort, les compétences liées au sort peuvent augmenter.
+* Les améliorations de compétences lors de lancement de sort sont signalées en vert.
+- Lorsque l'on meurt, les buffs (ou débuffs) que l'on avait sont supprimés.
+- Les buffs et débuffs depensent correctement les MP et PA maintenant.
+
+Serveur :
+* Suppression des modules inutiles (DAV et SVN)

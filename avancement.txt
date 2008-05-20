@@ -1,0 +1,165 @@
+1- Alpha Test Phase 1 -> en cours                                                                                         
+Construction de toutes les bases du jeux à savoir :                                                                       
+[list]                                                                                                                    
+[*][b]Combats[/b]                                                                                                         
+  [list]                                                                                                                  
+  [*][i]Conception papier (80%)[/i]                                                                                       
+  [*][i]Développement (40%)[/i]                                                                                            
+    [list]                                                                                                                
+    [*][color=green]Fin du combat, xp sharing[/color][/*]                                                                   
+    [*][color=blue]Script de combat[/color][/*]                                                                           
+    [*][color=red]Sorts et compétences[/color][/*]                                                                        
+    [/list]
+  [/*]                                                                                                                    
+  [*][i]Graphisme (1%)[/i]                                                                                                
+    [list]                                                                                                                
+    [*]Icônes de sorts / compétences[/*]                                                                                  
+    [*]Visuelle du combat[/*]                                                                                             
+    [/list]                                                                                                               
+  [/*]                                                                                                                    
+  [*][i]Sécurisation X[/i][/*]                                                                                            
+  [*][i]Débuggage X[/i][/*]                                                                                               
+  [/list]                                                                                                                 
+[/*]                                                                                                                      
+[*][b]Actions[/b]                                                                                                         
+  [list]                                                                                                                  
+  [*][i]Conception papier (0%)[/i]                                                                                        
+  [*][i]Développement (0%)[/i]                                                                                            
+    [list]                                                                                                                
+    [*][/*]                                                                                                               
+    [/list]                                                                                                               
+  [/*]                                                                                                                    
+  [*][i]Graphisme (0%)[/i]                                                                                                
+  [/*]                                                                                                                    
+  [*][i]Sécurisation X[/i][/*]                                                                                            
+  [*][i]Débuggage X[/i][/*]                                                                                               
+  [/list]                                                                                                                 
+[/*]                                                                                                                      
+[*][b]Magies[/b]                                                                                                          
+  [list]                                                                                                                  
+  [*][i]Conception papier (90%)[/i]                                                                                        
+  [*][i]Développement (5%)[/i]                                                                                            
+    [list]                                                                                                                
+    [*][color=blue]Magie hors combat[/color][/*]
+    [*][color=red]Magie en combat[/color][/*]
+    [*][color=red]Apprentissage de la magie[/color][/*]
+    [/list]                                                                                                               
+  [/*]                                                                                                                    
+  [*][i]Graphisme (0%)[/i]                                                                                                
+  [/*]                                                                                                                    
+  [*][i]Sécurisation X[/i][/*]                                                                                            
+  [*][i]Débuggage X[/i][/*]                                                                                               
+  [/list]                                                                                                                 
+[/*]                                                                                                                      
+[*][b]Quètes[/b]                                                                                                          
+  [list]                                                                                                                  
+  [*][i]Conception papier (80%)[/i]                                                                                        
+  [*][i]Développement (30%)[/i]                                                                                            
+    [list]                                                                                                                
+    [*][color=green]Vérification des quètes[/color][/*]
+    [*][color=green]Gain de la quète[/color][/*]
+    [*][color=red]PNJs de quète[/color][/*]
+    [/list]                                                                                                               
+  [/*]                                                                                                                    
+  [*][i]Graphisme (0%)[/i]                                                                                                
+  [/*]                                                                                                                    
+  [*][i]Sécurisation X[/i][/*]                                                                                            
+  [*][i]Débuggage X[/i][/*]                                                                                               
+  [/list]                                                                                                                 
+[/*]                                                                                                                      
+[*][b]Commerce[/b]                                                                                                        
+  [list]                                                                                                                  
+  [*][i]Conception papier (50%)[/i]                                                                                        
+  [*][i]Développement (15%)[/i]                                                                                            
+    [list]                                                                                                                
+    [*][color=green]Boutiques d'armes/armures[/color][/*]
+    [*][color=red]Hotel des ventes[/color][/*]
+    [*][color=red]Taxes fixées par le roi[/color][/*]
+    [/list]                                                                                                               
+  [/*]                                                                                                                    
+  [*][i]Graphisme (0%)[/i]                                                                                                
+  [/*]                                                                                                                    
+  [*][i]Sécurisation X[/i][/*]                                                                                            
+  [*][i]Débuggage X[/i][/*]                                                                                               
+  [/list]                                                                                                                 
+[/*]                                                                                                                      
+[*][b]Diplomatie[/b]                                                                                                      
+  [list]                                                                                                                  
+  [*][i]Conception papier (50%)[/i]                                                                                        
+  [*][i]Développement (15%)[/i]                                                                                            
+    [list]                                                                                                                
+    [*][color=green]La diplomatie influe sur l'expérience et l'honneur gagné[/color][/*]
+    [*][color=red]Les rois peuvent changer la diplomatie, et parlementé avec les autres peuples[/color][/*]
+    [/list]                                                                                                               
+  [/*]                                                                                                                    
+  [*][i]Graphisme (0%)[/i]                                                                                                
+  [/*]                                                                                                                    
+  [*][i]Sécurisation X[/i][/*]                                                                                            
+  [*][i]Débuggage X[/i][/*]                                                                                               
+  [/list]                                                                                                                 
+[/*]                                                                                                                      
+[*][b]Inventaire[/b]                                                                                                      
+  [list]                                                                                                                  
+  [*][i]Conception papier (80%)[/i]                                                                                        
+  [*][i]Développement (60%)[/i]                                                                                            
+    [list]                                                                                                                
+    [*][color=green]Gestion de l'inventaire, équipement/désequipent[/color][/*]                                                                                                               
+    [*][color=blue]Affichage de l'inventaire[/color][/*]                                                                                                               
+    [/list]                                                                                                               
+  [/*]                                                                                                                    
+  [*][i]Graphisme (0%)[/i]                                                                                                
+  [/*]                                                                                                                    
+  [*][i]Sécurisation X[/i][/*]                                                                                            
+  [*][i]Débuggage X[/i][/*]                                                                                               
+  [/list]                                                                                                                 
+[/*]                                                                                                                      
+[/list]                                                                                                                   
+                                                                                                                          
+Phase ouverte uniquement aux personnes proches du projet.                                                                 
+Pour passer en phase 2, chaque élément devra avoir un stade de développement au minimum de 50% et réalisation minimum 80%.
+                                                                                                                          
+Légende :                                                                                                                 
+[color=green]Terminé[/color]                                                                                              
+[color=blue]En cours de réalisation[/color]                                                                               
+[color=red]Pas commencé[/color]                                                                                           
+                                                                                                                          
+[i]                                                                                                                       
+2- Alpha Test Phase 2                                                                                                     
+Débuggage du maximum de GROS problèmes.                                                                                   
+Ajouts d'outils pour administrer le jeu.                                                                                  
+Phase ouverte uniquement aux personnes proches du projet                                                                  
+                                                                                                                          
+Pour passer en phase 3, chaque élément devra avoir un stade de graphisme au minimum de 20%, de développement au minimum de 60% et réalisation minimum 80%.
+De plus le jeu devra avoir un niveau de débuggage inférieur à 15.
+
+3- Alpha Test Phase 3                                                                                                     
+Sécurisation du jeu dans toutes ses fonctionnalitées.                                                                     
+Ajouts d'outils pour "tracer" les joueurs                                                                                 
+Phase ouverte uniquement aux personnes proches du projet                                                                  
+                                                                                                                          
+Pour passer en Beta Test Phase 1, chaque élément devra avoir un stade de graphisme au minimum de 80%, de développement au minimum de 90% et réalisation minimum 90%.
+De plus le jeu devra avoir un niveau de débuggage inférieur à 10, et un niveau de sécurisation inférieur à 2.
+
+4- Beta Test Phase 1                                                                                                      
+Wipe des persos, tout le monde repart à 0, ouverture a plus de joueurs pour corriger un maximum de bugs.                  
+Phase ouverte aux personnes s'interessant au projet.                                                                      
+                                                                                                                          
+Pour passer en Beta Test Phase 2, chaque élément devra avoir un stade de graphisme au minimum de 90%, de développement au minimum de 90% et réalisation minimum 90%.
+De plus le jeu devra avoir un niveau de débuggage inférieur à 5, et un niveau de sécurisation inférieur à 1.
+
+5- Beta Test Phase 2                                                                                                      
+Equilibrage du jeu au maximum.                                                                                            
+Phase ouverte aux personnes s'interessant au projet.                                                                      
+                                                                                                                          
+Pour passer en Beta Test Phase 3, chaque élément devra avoir un stade de graphisme au minimum de 100%, de développement au minimum de 100% et réalisation minimum 100%.
+De plus le jeu devra avoir un niveau de débuggage inférieur à 2, et un niveau de sécurisation inférieur à 0.
+
+6- Beta Test Phase 3                                                                                                      
+Montée en charge du serveur, demande d'inscription au maximum de personne pour tester les capacités du serveur.           
+Phase ouvert à tout le monde                                                                                              
+                                                                                                                          
+Pour passer en Version 1.0, chaque élément devra avoir un stade de graphisme au minimum de 100%, de développement au minimum de 100% et réalisation minimum 100%.
+De plus le jeu devra avoir un niveau de débuggage égal à 0, et un niveau de sécurisation égal à 0.
+
+7- Version 1.0 !                                                                                                          
+Ouverture du jeu a tout le monde, pas de problème majeur en théorie, tout le monde s'amuse. [/i]                          

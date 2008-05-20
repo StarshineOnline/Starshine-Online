@@ -1,0 +1,24 @@
+// Légende //////////////////////////////////
++ Ajout
+* Modification
+- Correction d'un bug
+! A faire
+/////////////////////////////////////////////
+
+
+// Version 0.03 Alpha /////////////////////
++ XP Sharing
+	- Partage de l'expérience gagné lorsqu'un membre du groupe tues un joueur.
+	- L'expérience est partagée en fonction du niveau de chacun.
++ Ajout d'une difficulté pour l'apprentissage, une compétence utilisée en combat sera plus dure a faire monter (5 rounds, donc 5 fois plus de chance de monter)
+  et une compétence spécifique (mort, vie, element, etc.) sera aussi plus difficile à monter.
++ Les objets se désequipent lorsqu'on en achète un nouveau
++ Verification des quètes
++ Ajout des armures et de leur gestion en combat
+* Le nombre de round au total et le cout en PA d'une attaque sont maintenant des variables globales.
+* Les rounds se font automatiquement et passent d'un adversaire à l'autre sans avoir besoin de le spécifier pour chaque action.
+* Lorsqu'on est mort, on ne peut plus attaquer a nouveau.
+
+! Ajouter inventaire_slot dans la bdd
+! Gérer les armes à deux mains
+! Ajouter des quètes

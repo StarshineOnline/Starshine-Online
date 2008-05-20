@@ -1,0 +1,784 @@
+body
+{
+	background-color:#C6D9F5;
+	width : 98%;
+	font-family : arial;
+	font-size : 13px;
+	margin : 0px;
+	padding : 0px;
+}
+
+/***************************************************
+  Vrac
+ ***************************************************/
+
+h2
+{
+	padding-left: 25px ;
+	color : #000;
+	line-height: 25px ;
+	font-size: 1.4em ;
+	border-top : 1px solid;
+	border-bottom : 1px solid;
+	border-color : #888;
+	font-family: "Trebuchet MS", Times, serif;
+	font-variant: small-caps ;
+	text-align : center;
+	margin-top : 5px;
+	margin-bottom : 8px;
+	padding : 0px;
+	background-color: #D8AB41;
+}
+
+h3
+{
+	border-top : 1px solid;
+	border-bottom : 1px solid;
+	border-color : #888;
+	margin-top : 10px;
+	margin-bottom : 5px;
+	padding-left : 10px;
+	background-color: #91AEF2;
+	font-family: "Trebuchet MS", Times, serif;
+	font-variant: small-caps ;
+}
+
+h4
+{
+	margin : 0px;
+	padding : 0px;
+}
+h5
+{
+	color : #000;
+	font-size: 1em ;
+	border-top : 1px solid;
+	border-bottom : 1px solid;
+	border-color : #888;
+	font-family: "Trebuchet MS", Times, serif;
+	font-variant: small-caps ;
+	background-color: #DF3F00;
+	margin : 0px;
+	padding-left : 10px;
+}
+h6
+{
+	color : #000;
+	font-size: 1em ;
+	border-top : 1px solid;
+	border-bottom : 1px solid;
+	border-color : #888;
+	font-family: "Trebuchet MS", Times, serif;
+	font-variant: small-caps ;
+	background-color: #6EB027;
+	margin : 0px;
+	padding-left : 10px;
+}
+a:link
+{
+  color: #000;
+  font-size: 13px
+  text-decoration : underline;
+}
+a:visited
+{
+  color: #496690;
+  font-size: 13px
+}
+a:hover, a:active
+{
+  color: #303090;
+  text-decoration: none;
+}
+img
+{
+	border : 0px none;
+	padding : 0px;
+	margin : 0px;
+}
+dl, dt, dd, ul, li
+{
+	margin: 0;
+	padding: 0;
+	list-style-type : none;
+}
+ol.tuto, ol.tuto li
+{
+	list-style-type : decimal;
+}
+.rose_a
+{
+	margin : 0px;
+	padding : 0px;
+	width : 0px;
+	cursor : pointer;
+	font-size : 0px;
+}
+.rose_a:hover
+{
+	margin : 0px;
+	padding : 0px;
+	cursor : pointer;
+	font-size : 0px;
+}
+.rose_tr
+{
+	font-size : 0px;
+	margin : 0px;
+	padding : 0px;
+	height : 20px;
+}
+.rose_tr td
+{
+	font-size : 0px;
+	margin : 0px;
+	padding : 0px;
+}
+.rose_div
+{
+	height : 25px;
+}
+.brillant
+{
+	padding-top: 8px;
+	text-align : center;
+	background-image : url('../image/forum_h2.gif');
+	height: 23px;
+}
+.information_case
+{
+	padding : 8px;
+	font-family: "Trebuchet MS", Times, serif;
+	background-color: #BACCF7;
+	border : 2px solid;
+	margin : 9px;
+	border-color : #FFF;
+	-moz-border-radius : 13px;
+	-webkit-border-radius :13px;
+}
+.information_case h4
+{
+	width:30%;
+	background-color: #D8AB41;
+	border-top : 1px solid;
+	border-bottom : 1px solid;
+	border-color : #888;
+	text-align:center;
+    margin: 0 auto;
+    margin-bottom : 10px;
+
+}
+.avatar
+{
+	float : right;
+}
+.jsinformation_case 
+{
+	display: none;
+	z-index: 100;
+	position: absolute;
+	top: 250px;
+	right: 150px;
+	background-color:#ffffff;
+	border: 1px solid #000000;
+	font-size:12px;
+	width: 250px;
+	padding: 5px;
+}
+.combat
+{
+	padding : 2px;
+	font-family: "Trebuchet MS", Times, serif;
+	background-color: #BACCF7;
+	border : 2px solid;
+	margin : 2px;
+	border-color : #444;
+	-moz-border-radius : 5px;
+	-webkit-border-radius :5px;
+}
+.echange
+{
+	padding : 2px;
+	font-family: "Trebuchet MS", Times, serif;
+	background-color: #BACCF7;
+	border : 2px solid;
+	margin : 2px;
+	border-color : #FFF;
+	-moz-border-radius : 13px;
+	-webkit-border-radius :13px;
+}
+#liste_quete 
+{
+	border-left : 2px solid;
+	border-color : #FFF;
+	padding-left : 9px;
+	padding-bottom : 10px;
+	overflow : auto;
+	height : 100px;
+	background-color:#91AEF2;
+	width : 95%;
+    margin: 0 auto;
+}
+.quete_description
+{
+	height : 315px;
+	padding-top : 10px;
+	padding : 5px;
+	color : #333;
+	font-family: "Trebuchet MS", Times, serif;
+	background : #BACCF7;
+	border : 2px solid;
+	border-color : #FFF;
+	-moz-border-radius : 7px;
+	-webkit-border-radius : 7px;
+}
+
+.description_quete
+{
+	overflow : auto;
+	height : 280px;
+}
+
+.inventaire
+{
+	background-color: #D4DAE2;
+	margin : 9px;
+
+}
+#carte h2
+{
+color:#000000;
+font-family:"Trebuchet MS",Times,serif;
+font-size:15px;
+font-variant:small-caps;
+text-decoration:none;
+}
+#carte h2 a 
+{
+color:#000000;
+font-family:"Trebuchet MS",Times,serif;
+font-size:15px;
+font-variant:small-caps;
+text-decoration:none;
+}
+.carte_bas {
+background : #000;
+height:05px;
+}
+#deplacement h4
+{
+	text-align: center;
+	background-color: #D4DAE2;
+	border : 1px solid;
+	border-color : #888;
+	-moz-border-radius : 5px;
+	-webkit-border-radius : 5px;
+	margin-bottom : 5px;
+	font-family:"Trebuchet MS",Times,serif;
+}
+
+
+/***************************************************
+  Global Site
+ ***************************************************/
+
+#top
+{
+	display : block;
+	width: 1000px;
+    margin: 0 auto;
+	z-index :5;
+}
+#conteneur
+{
+	width: 1000px;
+    margin: 0 auto;
+	z-index :2;
+}
+#bas
+{
+  clear: both;
+  width: 1000px;
+  margin: 0 auto;
+  text-align: center;
+  font-size: 9px;
+}
+#centre
+{
+	margin-top : 3px;
+	margin-left : 7px;
+	margin-right : 30px;
+	float : left;
+	width : 41%;
+	height : 100%;
+	z-index :3;
+}
+
+#deplacement
+{
+	float : left;
+	vertical-align : top;
+	text-align : right;
+	width : 50px;
+	margin-left : 5px;
+}
+#carte
+{
+	width : 100%;
+	z-index : 4;
+}
+#information
+{
+	height : 100%;
+	width : 49%;
+	float : right;
+	z-index :1;
+}
+#information a {
+	color : #444;
+	text-decoration : none;
+}
+#information a:hover {
+	color : #888;
+	text-decoration : none;
+}
+#perso
+{
+	margin-left : 5px;
+	margin-bottom : 5px;
+	margin-top : 0;
+	overflow : auto;
+	z-index : 0;
+}
+
+/***************************************************
+  Header Menu
+ ***************************************************/
+
+.rose
+{
+	width : 50px;
+	height : 50px;
+	border : 0px;
+	margin : 0px;
+	padding : 0px;
+}
+.decor
+{
+	width : 60px;
+	height : 60px;
+	margin : 0;
+	padding : 0;
+	text-align : center;
+}
+.infobox
+{
+	display : none;
+	z-index : 2;
+	position : absolute;
+	top : 100px;
+	left : 0px;
+	background-color : #ffffff;
+	border : 1px solid #000000;
+	font-size :12px;
+	width : 300px;
+	padding : 5px;
+}
+.tabnoir
+{
+	background : url('../image/bord_map.png');
+	color : #FFF; 
+}
+.debug
+{
+	display : none;
+}
+.baseJumpbox
+{
+	width : 250px;
+	height : 500px;
+}
+select.baseJumpbox optgroup
+{
+	width : 200px;
+	color: black;
+	background-color: #ffffff;
+	margin-bottom: 3pt;
+	border: 2px solid #735225;
+	padding: 2px;
+	margin: 5px;
+}
+.baseRow1
+{
+	background-color: #fff4cc;
+	padding-left : 2px;
+}
+.baseRow2
+{
+	background-color: #ffeeaa;
+	padding-left : 2px;
+}
+
+.inventaire2
+{
+width : 33%;
+font-size : 0.8em;
+text-align : center;
+vertical-align : top;
+background-image:url('../image/1.png');
+-moz-border-radius : 9px;
+-webkit-border-radius : 9px;
+color : #222;
+border : 1px solid #FFF;
+}
+
+
+
+/***************************************************
+  Map
+ ***************************************************/
+
+.jsmap 
+{
+	text-align : left;
+	display: none;
+	z-index: 100;
+	position: absolute;
+	top: 250px;
+	right: 150px;
+	background-image:url('../image/1.png');
+	border: 1px solid #000000;
+	font-size:12px;
+	width: 150px;
+	padding: 5px;
+	-moz-border-radius : 5px;
+	-webkit-border-radius : 5px;
+}
+.bord_carte_haut_gauche {
+	border-top : 2px solid #888;
+	border-left : 2px solid #888;
+	background : #D8AB41;
+	-moz-border-radius-topleft : 9px;
+	-webkit-border-top-left-radius : 9px;
+}
+.bord_carte_haut 
+{
+	text-align : center;
+	border-top : 2px solid #888;
+	border-bottom : 1px solid #888;
+	background : #D8AB41;
+}
+.bord_carte_gauche {
+	border-left : 2px solid #888;
+	border-right : 1px solid #888;
+	width : 20px;
+	text-align : center;
+	background : #D8AB41;
+}
+
+/***************************************************
+  Ville
+ ***************************************************/
+
+ul.ville li
+{
+	margin-bottom : 3px;
+}
+ul.ville li:hover
+{
+	font-weight : bold;
+	text-decoration : none;
+	background-color : #91AEF2;
+}
+.ville_titre a {
+	font-family: "Trebuchet MS", Times, serif;
+	text-decoration : none;
+	font-variant: small-caps ;
+	font-size :15px;	
+	color : #000;
+}
+.ville_test 
+{
+	vertical-align : top;
+	color : #000;
+	padding : 5px;
+	font-variant: small-caps ;
+	font-family: "Trebuchet MS", Times, serif;
+	background-color: #BACCF7;
+	font-weight : bold;
+	border : 2px solid;
+	border-color : #FFF;
+	-moz-border-radius : 7px;
+	-webkit-border-radius : 7px;
+}
+.ville_test a 
+{
+	color : #222;
+	font-size : 14px;	
+	text-decoration : none;	
+}
+.ville_haut 
+{
+	color : #000; 
+	background-image : url('../image/forum_h2.gif');
+	padding : 3px;
+	font-size : 1.1em;
+	font-variant: small-caps ;
+	font-family: "Trebuchet MS", Times, serif;
+	font-weight : bold;
+	text-align: center;
+	height : 25px;
+	margin-left : 2px;
+	margin-right : 3px;
+	margin-top : 0;
+}
+table.marchand, table.inventaire
+{
+	font-size : 0.9em;
+	margin : 2px;
+   	text-align : center;
+   	font-weight : normal;
+	width : 98%;
+	font-family: "Arial";
+	font-variant: normal ;
+}
+.texte_normal 
+{
+	font-size : 0.9em;
+	margin : 2px;
+   	font-weight : normal;
+	width : 100%;
+	font-family: "Arial";
+	font-variant: normal ;	
+}
+tr.header
+{
+	font-weight : bold;
+	text-align : center;
+}
+tr.element td, table.marchand tr.header td
+{
+	padding : 3px;
+}
+table.inventaire tr.element td, table.inventaire tr.header td
+{
+	font-size : 0.9em;
+}
+
+/***************************************************
+  Element de droite
+ ***************************************************/
+
+
+#editcarte
+{
+	width : 100%;
+}
+.selecteur
+{
+	float : left;
+}
+.mapedit
+{
+	float : left;
+}
+
+
+/***************************************************
+  Tableau
+ ***************************************************/
+
+.trcolor1
+{
+	background-color : #91AEF2;
+}
+.trcolor3
+{
+	font-weight : bold;
+	color : #999;
+	font-style : italic;
+}
+.trcolor5
+{
+	font-weight : bold;
+	color : #999;
+	font-style : italic;
+	background-color : #FFF;
+}
+.trstat
+{
+	vertical-align : top;
+	border : 2px solid;
+	border-color : #555;
+	-moz-border-radius : 10px;
+	-webkit-border-radius : 10px;
+	background-color : #91AEF2;
+	padding: 4px;
+}
+.achat {
+	font-style : italic;
+	font-weight : bold;			
+}
+.achat_over
+{
+	color : red;
+}
+.boite_royaume
+{
+	float : left;
+	height : 60px;
+	width : 60px;
+}
+.marque_royaume
+{
+	width : 55px;
+	height : 55px;
+}
+
+/***************************************************
+  Journal des Actions
+ ***************************************************/
+
+.coupcritique
+{
+	font-weight : bold;
+}
+.degat
+{
+	color : #f00;
+}
+.manque
+{
+	color : #00f;
+}
+.augcomp
+{
+	color : #ff791c;
+	font-weight : bold;
+}
+.reward
+{
+	color : #B8860B;
+}
+.soin
+{
+	color : #363;
+}
+.jsoin
+{
+	color : #33CC00;
+}
+.jgsoin
+{
+	color : #009900;
+}
+.jbuff
+{
+	color : #3333FF;
+}
+.jgbuff
+{
+	color : #000099;
+}
+.jdebuff
+{
+	color : #9900CC;
+}
+.jdegat
+{
+	color : darkred;
+}
+.jrdegat
+{
+	color : red;
+}
+.jkill
+{
+	color : #666666;
+}
+.jmort
+{
+	color : #333333;
+}
+.jquete
+{
+	color : orange;
+}
+.jloot
+{
+	color : #CC33CC;
+}
+.small
+{
+	font-style : italic;
+	font-size : 0.9em;
+}
+.xsmall
+{
+	font-style : italic;
+	font-size : 0.8em;
+}
+
+/***************************************************
+  Rose des vents
+ ***************************************************/
+
+.admin
+{
+	width : 600px;
+}
+.info_joueur
+{
+	color : #6633ff;
+	font-weight : bold;
+}
+.info_monstre
+{
+	color : #cc3300;
+	font-weight : bold;
+}
+.admin tr td
+{
+	vertical-align : top;
+}
+.admin tr td ul li
+{
+	margin : 0px;
+	list-style-image: url('../image/arrow.gif');
+}
+.adminListing
+{
+	margin-top : 10px;
+	margin-bottom : 10px;
+	border-top : 0px;
+	border-right : 0px;
+}
+.adminListing tr td
+{
+	border-top : 1px solid #8d8db3;
+	border-right : 1px solid #8d8db3;
+	text-align : center;
+	padding-right : 5px;
+}
+.adminListing tr td a
+{
+	text-decoration : none;
+}
+tr.tabMonstre td
+{
+	border : 1px solid grey;
+	text-align : center;
+	padding : 2px;
+}
+
+#preload-images {
+    width: 0px;
+    height: 0px;
+    display: inline;
+    background-image: url(image/icone/livre_over.png);
+    background-image: url(image/icone/quete_over.png);
+    background-image: url(image/icone/journal-des-actions_over.png);
+    background-image: url(image/icone/script_combat_over.png);
+    background-image: url(image/icone/inventaire_over.png);
+    background-image: url(image/icone/lise_echange_over.png);
+}

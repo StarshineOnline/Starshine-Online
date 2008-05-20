@@ -1,0 +1,493 @@
+/* basic elements */
+
+body
+{
+	font: 1em;
+	color: #000000;
+	background-color : #C6D9F5;
+	margin: 0;
+	padding : 0;
+}
+
+a:link
+{
+  color: #303090;
+  font-size: 13px
+}
+a:visited
+{
+  color: #303090;
+  font-size: 13px
+}
+a:hover, a:active
+{
+  color: #7290db;
+  text-decoration: none;
+  font-size: 13px
+}
+
+a.news
+{
+  font: 15px verdana, arial,sans-serif;
+}
+
+
+h1
+{
+	text-align : center;
+}
+
+img
+{
+  border : 0px;
+}
+
+
+.presentation table
+{
+	margin : auto;
+	empty-cells : hide;
+}
+
+tr.table
+{
+	font-size : 0.9em;
+}
+
+tr.table td
+{
+	padding : 0px;
+	padding-left : 2px;
+	padding-right : 2px;
+	margin : 0px;
+	border : 1px solid #CCCCCC;
+}
+
+ul
+{
+	list-style-type: none;
+	padding : 0px;
+	padding-bottom : 5px;
+	margin : 0px;
+}
+
+li
+{
+	padding-bottom : 2px;
+}
+
+/***************************************************
+ Les gros block
+ ***************************************************/
+
+#site 
+{
+	width : 100%;
+	height : 1000px;
+ 	margin: 0 auto;
+	padding : 0;
+
+}
+#haut
+{
+	padding-bottom: 1px;
+
+}
+
+.ident {
+float: right;
+width : 150px;
+font-size : 1em;
+text-align : center;
+vertical-align : top;
+padding : 5px ;
+margin : 25px;
+-moz-border-radius : 9px;
+-webkit-border-radius : 9px;
+color : #222;
+border : 1px solid #FFF;
+
+}
+
+
+.grade {
+float: right;
+width : 200px;
+font-size : 1em;
+text-align : center;
+vertical-align : top;
+padding : 5px ;
+margin : 25px;
+margin-right : 200px;
+-moz-border-radius : 9px;
+-webkit-border-radius : 9px;
+color : #222;
+border : 1px solid #FFF;
+
+}
+
+#contenu
+{
+
+	margin-left : 16%;
+	width : 82%;
+	text-align: justify;
+}
+#centre2
+{
+	width : 81%;
+	text-align: justify;
+	float : left;
+}
+#centre3
+{
+	width : 97%;
+	text-align: justify;
+	float : left;
+}
+#droite
+{
+
+	border-top : 0px;
+	border-left : 0px;
+	float : right;
+	width : 18%;
+}
+#bloc
+{
+	margin-left : 16%;
+	width : 84%;
+	background-color: #E4EAF2;
+}
+#menuindex
+{	
+
+	border-top : 0px;
+	border-left : 0px;
+	margin-left : 1px;
+	float : left;
+	width : 16%;
+}
+
+
+/***************************************************
+ Menu
+ ***************************************************/
+
+
+.hautsousmenu, .hautsousmenu a, .hautsousmenu a:hover, .hautsousmenu a:visited
+{
+	color : #000; 
+	padding : 3px;
+	font-size : 1.2em;
+	font-variant: small-caps ;
+	font-family: "Trebuchet MS", Times, serif;
+	font-weight : bold;
+	text-align: center;
+	margin-top : 5px;
+	margin-bottom : 5px;
+	background-color : #D8AB41;
+	border-top : 1px solid #888;
+	border-bottom : 1px solid #888;
+	
+}
+
+.sousmenu
+{
+	padding : 5px;
+	padding-top : 0px;
+}
+
+.milieusousmenu
+{
+	padding : 8px;
+	font-variant: small-caps ;
+	font-family: "Trebuchet MS", Times, serif;
+	background-color: #BACCF7;
+	border : 2px solid #FFF;
+	-moz-border-radius : 13px;
+	-webkit-border-radius :13px;
+}
+
+.milieusousmenu a, .hautsousmenu a
+{
+	color : #000;
+	font-weight : bold;
+	text-decoration : none;
+	font-size : 1.1em;
+}
+
+.milieusousmenu a:visited, .hautsousmenu a:visited
+{
+	color : #000;
+	font-weight : bold;
+	text-decoration : none;
+}
+
+.milieusousmenu li:hover
+{
+	color : #555;
+	font-weight : bold;
+	text-decoration : none;
+	background-color : #91AEF2;
+}
+.hautsousmenu a:hover
+{
+	color : #555;
+	font-weight : bold;
+	text-decoration : none;
+
+
+}
+.bassousmenu
+{
+}
+
+.listemenu
+{
+	padding : 0px;
+	margin : 0px;
+}
+
+
+/***************************************************
+MILIEU
+ ***************************************************/
+
+.titre
+{
+	color : #000; 
+	padding : 3px;
+	font-size : 1.2em;
+	font-variant: small-caps ;
+	font-family: "Trebuchet MS", Times, serif;
+	font-weight : bold;
+	text-align: center;
+	margin : auto;
+	margin-top : 5px;
+	margin-bottom : 5px;
+	background-color : #D8AB41;
+	border-top : 1px solid #888;
+	border-bottom : 1px solid #888;
+
+}
+#news
+{
+	padding-bottom : 5px;
+	background-color: #BACCF7;
+	border : 2px solid #FFF;
+	-moz-border-radius : 13px;
+	-webkit-border-radius :13px;
+}
+
+
+div#presentation, div#news, div#jouer, div.bloc
+{
+	width : 100%;
+	font-family: "Trebuchet MS", Times, serif;
+
+}
+
+div#presentation p, div#centre2 p, div#centre2 h3
+{
+	padding-left : 5px;
+	padding-right : 5px;
+}
+
+#copyright
+{
+	padding-top : 600px;
+}
+
+#bas
+{
+	padding-top : 10px;
+	text-align : center;
+}
+
+.input
+{
+	margin : 0px;
+	padding : 0px;
+	font-size : 10px;
+}
+
+/* ELEMENTS SPECIAUX */
+.parade
+{
+	color : green;
+	font-size : 1.1em;
+}
+
+.degat
+{
+	color : red;
+	font-size : 1.3em;
+	font-weight : bold;
+}
+
+.soin
+{
+	color : blue;
+	font-size : 1.1em;
+}
+
+.vie
+{
+	color : green;
+	font-size : 1.2em;
+}
+
+.mana
+{
+	color : blue;
+	font-size : 1.2em;
+}
+
+.victoire
+{
+	color : green;
+}
+
+.defaite
+{
+	color : red;
+}
+
+.ajout
+{
+	color : green;
+}
+
+.correction
+{
+	color : red;
+}
+
+.HautTab
+{
+	background-color : #cccccc;
+	font-weight : bold;
+	font-size : 0.8em;
+}
+
+.sortsoin
+{
+	color : blue;
+}
+
+.sortpoison
+{
+	color : green;
+}
+
+.sortattaque
+{
+	color : red;
+}
+
+.sortassomant
+{
+	color : black;
+}
+
+.compbouclier
+{
+	color : green;
+}
+
+.compdague
+{
+	color : gray;
+}
+
+.compepee
+{
+	color : blue;
+}
+
+.comphache
+{
+	color : red;
+}
+
+.compmarteau
+{
+	color : black;
+}
+
+td.ligne
+{
+	background-color : #fdfdfd;
+}
+
+td.ligne2
+{
+	background-color : #ededed;
+}
+
+.combatlog
+{
+	background-color : #f2f2f9;
+	border : 1px solid #8d8db3;
+	margin : 5px;
+	padding : 2px;
+}
+
+.combatcoup
+{
+	background-color : #ffffff;
+	margin : 10px;
+	padding : 5px;
+}
+
+span.heure
+{
+	font-size : 0.7em;
+	font-style : italic;
+}
+
+div.news
+{
+	margin-bottom : 15px;
+
+	padding : 5px;
+}
+
+a.news
+{
+	text-decoration : none;
+	font-size : 1.1em;
+	font-weight : bold;
+}
+
+a.news:hover
+{
+	text-decoration : underline;
+	font-size : 1.1em;
+}
+
+
+.titre_news
+{
+	margin-top : 10px;
+	font-size : 1.2em;
+	margin-bottom : 3px;
+}
+
+tr.diplo td
+{
+	text-align : center;
+}
+
+ul.bg
+{
+	list-style-type: circle;
+}
+
+ul.bg li
+{
+	padding-top : 5px;
+	list-style-type: disc;
+	margin-left : 20px;
+}

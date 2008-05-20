@@ -1,0 +1,296 @@
+/* basic elements */
+
+body
+{
+  font: 1em; verdana, arial,sans-serif;
+	color: #000000;
+	background-color : #BEC8CE;
+	margin: 0px; 
+	width : 100%;
+}
+
+a:link
+{
+  color: #303090;
+  font-size: 13px
+}
+a:visited
+{
+  color: #303090;
+  font-size: 13px
+}
+a:hover, a:active
+{
+  color: #7290db;
+  text-decoration: none;
+  font-size: 13px
+}
+
+h1
+{
+	text-align : center;
+}
+
+img
+{
+  border : 0px;
+}
+
+table
+{
+	border : 1px solid #000000;
+	padding : 0px;
+	margin : 0px;
+}
+
+tr
+{
+	font-size : 0.9em;
+	padding : 0px;
+	margin : 0px;
+}
+
+td
+{
+	text-align : center;
+	padding : 0px;
+	padding-left : 0px;
+	padding-right : 0px;
+	margin : 0px;
+	border : 0px solid #CCCCCC;
+}
+
+ul
+{
+	list-style-type: none;
+	padding : 0px;
+	padding-bottom : 5px;
+	margin : 0px;
+}
+
+li
+{
+	padding-bottom : 2px;
+}
+
+/* Elements de présentation */
+
+
+/* Elements specifiques */
+
+#haut
+{
+	padding-bottom: 10px;
+	margin-left : 2px;
+}
+
+#milieu
+{
+}
+
+#menu
+{
+	margin-left : 2px;
+	float : left;
+	width : 12%;
+	background-color : #ffffff;
+	border : 1px solid #000000;
+}
+
+.sousmenu
+{
+	margin-left : 2px;
+	margin-right : 2px;
+	margin-bottom : 5px;
+}
+
+.hautsousmenu, .hautsousmenu a, .hautsousmenu a:hover
+{
+	margin-top : 5px;
+	margin-bottom : 5px;
+	color: #b9b9b9;
+	background: #f9f9f9;
+	border-top : 1px dashed #555555;
+	border-bottom : 1px dashed #555555;	padding-left : 18px;
+	padding : 3px;
+	font : 1em verdana, arial, sans-serif;
+	font-weight : bold;
+	text-align: center;
+}
+
+.milieusousmenu
+{
+	padding-left : 5px;
+	padding-bottom : 5px;
+	font : 0.7em verdana, arial, sans-serif;
+}
+
+.milieusousmenu a, .hautsousmenu a
+{
+	color : #777;
+	font-weight : bold;
+	text-decoration : none;
+}
+
+.milieusousmenu a:visited, .hautsousmenu a:visited
+{
+	color : #999;
+	font-weight : bold;
+	text-decoration : none;
+}
+
+.milieusousmenu a:hover, .hautsousmenu a:hover
+{
+	color : #555;
+	font-weight : bold;
+	text-decoration : none;
+}
+
+.bassousmenu
+{
+}
+
+#contenu
+{
+	padding-left: 14%;
+	margin-right: 15px;
+}
+
+#copyright
+{
+	font-size : 0.7em;
+}
+
+#bas
+{
+	padding-top : 10px;
+	text-align : center;
+}
+/* ELEMENTS DU DECORS */
+.tabnavigation
+{
+	background-color : #000000;
+	color : #ffffff;
+}
+.decor
+{
+	width : 60px;
+	height : 60px;
+}
+.tex
+{
+	background: transparent url(image/tex_herbe.png) no-repeat;
+}
+/* ELEMENTS SPECIAUX */
+.parade
+{
+	color : green;
+	font-size : 1.1em;
+}
+
+.degat
+{
+	color : red;
+	font-size : 1.3em;
+	font-weight : bold;
+}
+
+.soin
+{
+	color : blue;
+	font-size : 1.1em;
+}
+
+.vie
+{
+	color : green;
+	font-size : 1.2em;
+}
+
+.mana
+{
+	color : blue;
+	font-size : 1.2em;
+}
+
+.victoire
+{
+	color : green;
+}
+
+.defaite
+{
+	color : red;
+}
+
+.ajout
+{
+	color : green;
+}
+
+.correction
+{
+	color : red;
+}
+
+.HautTab
+{
+	background-color : #cccccc;
+	font-weight : bold;
+	font-size : 0.8em;
+}
+
+.sortsoin
+{
+	color : blue;
+}
+
+.sortpoison
+{
+	color : green;
+}
+
+.sortattaque
+{
+	color : red;
+}
+
+.sortassomant
+{
+	color : black;
+}
+
+.compbouclier
+{
+	color : green;
+}
+
+.compdague
+{
+	color : gray;
+}
+
+.compepee
+{
+	color : blue;
+}
+
+.comphache
+{
+	color : red;
+}
+
+.compmarteau
+{
+	color : black;
+}
+
+td.ligne
+{
+	background-color : #fdfdfd;
+}
+
+td.ligne2
+{
+	background-color : #ededed;
+}

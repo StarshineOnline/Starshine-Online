@@ -1,0 +1,2 @@
+ALTER TABLE `perso_recette` ADD `nombre` TINYINT UNSIGNED NOT NULL ;
+ALTER TABLE `hotel` ADD `nombre` TINYINT UNSIGNED NOT NULL AFTER `prix` ;

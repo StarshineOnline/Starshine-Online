@@ -1,0 +1,20 @@
++ Nouvelle carte !
++ L'histoire de Starshine enfin dévoilée !!!
++ Nouvelles icônes pour tous les peuples et toutes les premières classes.
++ Amélioration de l'interface de création de personnage.
++ Une foule de nouvelles compétences pour les combattants.
++ Plusieurs nouveaux buffs et débuffs.
++ Les clerics ont une compétence qui leur permet de lancer leur sort de buff et soin directement à tout le groupe pour un cout de MP augmenté de 50%
++ Plusieurs nouvelles gemmes.
++ Possibilité d'avoir une dague dans chaque main.
++ On peut vendre les gemmes à l'hotel des ventes ou au marchand.
++ Election des rois.
++ De nombreuses nouvelles quêtes.
++ Affichage plus claires des buffs avec meilleure description.
++ Possibilité de supprimer un buff en double cliquant dessus.
++ Possibilité de lancer un sort sur un joueur via sa page d'infos, ainsi que de voir ses buffs / debuffs (si vous êtes dans son groupe).
++ les sorts ont une portée (3 pour les heal, 2 pour les buffs, 1 pour les débuffs).
++ Validation avant vente d'un objet.
++ Léger ré-équilibrage des races.
++ Amélioration des statistiques journalières (plus lisible nottament pour les stars des royaumes).
++ Corrections de nombreux bugs.
