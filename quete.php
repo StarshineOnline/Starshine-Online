@@ -18,7 +18,7 @@ if(array_key_exists('action', $_GET))
 <div id="liste_quete">
 	<table width="99%">
 		<tr>
-			<td colspan="4" style="font-size : 0.8em; text-align : center;"><div style="float : left;"><a href="" onclick="if(document.getElementById('liste_quete').style.height == '100px') document.getElementById('liste_quete').style.height = '300px'; else document.getElementById('liste_quete').style.height = '100px'; return false;">expand</a></div>Afficher : 
+			<td colspan="4" style="font-size : 0.8em; text-align : center;"><div style="float : left;"><a href="" onclick="if(document.getElementById('liste_quete').style.height == '100px') document.getElementById('liste_quete').style.height = '300px'; else document.getElementById('liste_quete').style.height = '100px'; return false;"><img src="image/expand.png" alt="expand" /></a></div>Afficher : 
 <label onClick="javascript:envoiInfo('quete.php', 'information');montre('');" style="cursor : pointer;">Toutes</label>
 <?php
 $ts = array(1 => 'Plaine',2 => 'Forêt',3 => 'Désert',4 => 'Neige',6 => 'Montagne',7 => 'Marais',8 => 'Route');

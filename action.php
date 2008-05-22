@@ -335,7 +335,7 @@ if(array_key_exists('from', $_GET) && $_GET['id_action'] != '')
 		}
 		?>
 		<br />
-		<h3>Script Actuel - <input type="text" value="<?php echo $action_t['nom']; ?>" id="nom_action" name="nom_action" /> <a href="javascript:envoiInfo('action.php?mode=a&amp;id_action=<?php echo $id_action; ?>&amp;action=change_nom&amp;nom_action=' + document.getElementById('nom_action').value, 'information');">V</a></h3>
+		<h3>Script Actuel - <input type="text" value="<?php echo $action_t['nom']; ?>" id="nom_action" name="nom_action" /> <a href="javascript:envoiInfo('action.php?mode=a&amp;id_action=<?php echo $id_action; ?>&amp;action=change_nom&amp;nom_action=' + document.getElementById('nom_action').value, 'information');"><img src="image/valid.png" alt="Valider" title="Valider le nom du script" /></a></h3>
 		<?php
 		//=== Affichage de la liste des actions ===
 		$i = 0;

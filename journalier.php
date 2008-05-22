@@ -159,4 +159,16 @@ $mail .= mysql_error();
 
 mail('masterob1@chello.fr', 'Starshine - Génération des monstres du '.$date, $mail);
 
+//Si le premier du mois, pop du premier boss de myriandre
+if(date("N") == 1)
+{
+	$requete = "SELECT type FROM map_monstre WHERE type = 64";
+	$db->query($requete);
+	//Si il n'est pas là on le fait pop
+	if($db->num_rows() == 0)
+	{
+		$requete = "INSERT INTO map_monstre VALUES(NULL, '64','3','212','6400', 6, '".addslashes('Devorsis')."','devorsis', ".(time() + 2678400).")";
+		$db->query($requete);
+	}
+}
 ?>

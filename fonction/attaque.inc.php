@@ -357,7 +357,7 @@ function attaque($acteur = 'attaquant', $competence)
 					$degat = round($degat * $multiplicateur);
 					$degat_avant = round($degat_avant * $multiplicateur);
 					$critique = true;
-					if(array_key_exists('renouveau_energetique', $actif['buff']))
+					if(array_key_exists('renouveau_energique', $actif['buff']))
 						{
 							$actif['reserve'] += $actif['buff']['renouveau_energetique']['effet'];
 							echo $actif['nom'].' se ressaisi et gagne '.$actif['buff']['renouveau_energetique']['effet'].' RM<br />';

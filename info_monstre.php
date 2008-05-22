@@ -22,6 +22,7 @@ $coeff = floor($survie / $monstre['level']);
 	<?php
 	if(!array_key_exists('repos_sage', $joueur['debuff'])) echo '<a href="javascript:envoiInfo(\'attaque_monstre.php?ID='.$monstre['id'].'&poscase='.$W_case.'\', \'information\')"><img src="image/attaquer.png" alt="Combattre" style="vertical-align : middle;" /> Attaquer <span class="xsmall">('.($G_PA_attaque_monstre - $reduction_pa).' PA)</span></a>';
 	if($joueur['sort_jeu'] != '') echo ' <a href="javascript:envoiInfo(\'sort_monstre.php?poscase='.$W_case.'&amp;id_monstre='.$monstre['id'].'\', \'information\')"><img src="image/sort_hc_icone.png" title="Lancer un sort" alt="Lancer un sort" style="vertical-align : middle;" /></a>';
+	echo '<br />';
 	//Listing des debuffs
 	if($coeff >= 10)
 	{
