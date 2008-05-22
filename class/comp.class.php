@@ -455,8 +455,19 @@ class magnetique extends effect {
 			$nb_buff_suppr = rand(1, $this->nb);
 			//echo $nb_buff_suppr.'<br />';
 			for($i = 0; $i < $nb_buff_suppr; $i++) {
-				$count = count($passif['buff']);
-				$keys = array_keys($passif['buff']);
+				// BD: on doit ne prendre que les vrais
+				//$count = count($passif['buff']);
+				//$keys = array_keys($passif['buff']);
+
+				$keys = array();
+				foreach ($passif['buff'] as $nbuff => $buff) {
+					if (isset($buff['id'])) {
+						// Voir si on peux enlever un debuff
+						//if ($buff['debuff'] == 1) continue;
+						$keys[] = $nbuff;
+					}
+				}
+				$count = count($keys);
 				//echo $count.'<br />';
 				if($count > 0) {
 					$rand = rand(0, ($count - 1));
