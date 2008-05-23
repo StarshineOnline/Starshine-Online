@@ -31,6 +31,16 @@
  *
  *	v0.1 20040227
  *************************************/
+function zero_before($numero, $lenght)
+{
+	
+	$nb_iteration = strlen($numero);
+	for($i = 0 ; $i  < $lenght - $nb_iteration ; $i++)
+	{
+		$numero = "0".$numero;
+	}
+	return $numero;
+}
 function getmicrotime()
 {
   list($usec, $sec) = explode(" ",microtime());
@@ -53,22 +63,59 @@ function transform_sec_temp($time)
 	{
 		$heures = floor($W_time / 3600);
 		$W_time = $W_time - ($heures * 3600);
-		$string .= ' '.$heures.'h';
+		$string .= ' '.zero_before($heures, 2).'h';
+	}
+	
+	//Affichage en minutes
+	if($W_time >= 60)
+	{
+		if(empty($heures) && !empty($jours)) { $string .= ' '.zero_before($heures, 2).'h'; };
+		
+		$minutes = floor($W_time / 60);
+		$W_time = $W_time - ($minutes * 60);
+		$string .= ' '.zero_before($minutes, 2).'mins';
+	}
+	if($W_time > 0)
+	{
+		if(empty($minutes) && (!empty($heures) || !empty($jours)) ) { $string .= ' '.zero_before($minutes, 2).'mins'; };
+		
+		$string .= ' '.zero_before($W_time, 2).'s';
+	}
+	if(empty($W_time) && (!empty($minutes) || !empty($heures) || !empty($jours)) ) { $string .= ' '.zero_before($W_time, 2).'s'; };
+		
+	return $string;
+}
+function transform_min_temp($time)
+{
+	$W_time = $time;
+	$string = '';
+	//Affichage en jours
+	if($W_time >= 86400)
+	{
+		$jours = floor($W_time / 86400);
+		$W_time = $W_time - ($jours * 86400);
+		$string .= $jours.'j';
+	}
+	//Affichage en heures
+	if($W_time >= 3600)
+	{
+		$heures = floor($W_time / 3600);
+		$W_time = $W_time - ($heures * 3600);
+		$string .= ' '.zero_before($heures, 2).'h';
 	}
 	//Affichage en minutes
 	if($W_time >= 60)
 	{
+		if(empty($heures) && !empty($jours)) { $string .= ' '.zero_before($heures, 2).'h'; };
+		
 		$minutes = floor($W_time / 60);
 		$W_time = $W_time - ($minutes * 60);
-		$string .= ' '.$minutes.'mins';
+		$string .= ' '.zero_before($minutes, 2).'mins';
 	}
-	if($W_time > 0)
-	{
-		$string .= ' '.$W_time.'s';
-	}
+	if(empty($minutes) && (!empty($heures) || !empty($jours)) ) { $string .= ' '.zero_before($minutes, 2).'mins'; };
+		
 	return $string;
 }
-
 function date_prochain_mandat()
 {
 	return date("Y-m", mktime(0, 0, 0, date("m")+1, 1,  date("Y")));
