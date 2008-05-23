@@ -161,6 +161,67 @@ if (isset($_GET['ID']))
 					$requete = "UPDATE perso SET mp = '".$joueur['mp']."', pa = '".$joueur['pa']."', incantation = '".$joueur['incantation']."', ".$row['comp_assoc']." = '".$joueur[$row['comp_assoc']]."' WHERE ID = '".$_SESSION['ID']."'";
 					$req = $db->query($requete);
 				break;
+				case 'maladie_amorphe' :
+					$adversaire = recupperso($_GET['id_joueur']);
+					$cible_s = recup_groupe($adversaire['groupe'], 'all');
+					$cibles = $cibles_s['membre'];
+					foreach($cibles as $cible)
+					{
+						if($cible['distance'] <= 7)
+						{
+							$cible = recupperso($cible['id_joueur']);
+							//Test d'esquive du sort
+							$protecion = $cible['volonte'] * $cible['PM'] / 3;
+							if(array_key_exists('bulle_sanctuaire', $cible['buff'])) $protection *= $cible['buff']['bulle_sanctuaire']['effet'];
+							if(array_key_exists('bulle_dephasante', $cible['buff'])) $protection *= $cible['buff']['bulle_dephasante']['effet'];
+							$attaque = rand(0, ($joueur['volonte'] * $joueur[$row['comp_assoc']]));
+							$defense = rand(0, $protection);
+							$joueur['pa'] = $joueur['pa'] - $sortpa;
+							$joueur['mp'] = $joueur['mp'] - $sortmp;
+							if ($attaque > $defense)
+							{
+								$duree = $row['duree'];
+								if(array_key_exists('souffrance_extenuante', $joueur['buff'])) $duree = $duree * $joueur['buff']['buff_souffrance_extenuante']['effet'];
+								//Mis en place du debuff
+								if(lance_buff($row['type'], $_GET['id_joueur'], $row['effet'], $row['effet2'], $duree, $row['nom'], description($row['description'], $row), 'perso', 1, 0, 0))
+								{
+									echo 'Le sort '.$row['nom'].' a été lancé avec succès<br />';
+									//Insertion du debuff dans les journaux des 2 joueurs
+									$requete = "INSERT INTO journal VALUES('', ".$joueur['ID'].", 'debuff', '".$joueur['nom']."', '".$cible['nom']."', NOW(), '".$row['nom']."', 0, ".$joueur['x'].", ".$joueur['y'].")";
+									$db->query($requete);
+									$requete = "INSERT INTO journal VALUES('', ".sSQL($_GET['id_joueur']).", 'rdebuff', '".$cible['nom']."', '".$joueur['nom']."', NOW(), '".$row['nom']."', 0, ".$joueur['x'].", ".$joueur['y'].")";
+									$db->query($requete);
+								}
+								else
+								{
+									echo 'Il bénéficit d\'un debuff plus puissant<br />';
+								}
+							}
+							else
+							{
+								echo 'Le '.$cible['nom'].' resiste a votre sort !<br />';
+				 			}
+			 			}
+			 		}
+					//Augmentation des compétences
+					$difficulte_sort = diff_sort($row['difficulte'], $joueur, 'incantation', $sortpa_base, $sortmp_base);
+					$augmentation = augmentation_competence('incantation', $joueur, $difficulte_sort);
+					if ($augmentation[1] == 1)
+					{
+						$joueur['incantation'] = $augmentation[0];
+						echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant a '.$joueur['incantation'].' en incantation</span><br />';
+					}
+					$difficulte_sort = diff_sort($row['difficulte'], $joueur, $row['comp_assoc'], $sortpa_base, $sortmp_base);
+					$augmentation = augmentation_competence($row['comp_assoc'], $joueur, $difficulte_sort);
+					if ($augmentation[1] == 1)
+					{
+						$joueur[$row['comp_assoc']] = $augmentation[0];
+						echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant a '.$joueur[$row['comp_assoc']].' en '.$Gtrad[$row['comp_assoc']].'</span><br />';
+					}
+					//Mis à jour du joueur
+					$requete = "UPDATE perso SET mp = '".$joueur['mp']."', pa = '".$joueur['pa']."', incantation = '".$joueur['incantation']."', ".$row['comp_assoc']." = '".$joueur[$row['comp_assoc']]."' WHERE ID = '".$_SESSION['ID']."'";
+					$req = $db->query($requete);
+				break;
 				case 'rez' :
 					$cible = recupperso($_GET['id_joueur']);
 					//On vérifie que le joueur est bien mort !

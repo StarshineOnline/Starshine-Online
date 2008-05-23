@@ -103,12 +103,24 @@ if (isset($_GET['ID']))
 				}
 			break;
 			case 'repos_interieur' :
-				$joueur['pa'] += 2;
-				$joueur['mp'] = $joueur['mp'] - $sortmp;
-				//Mis à jour du joueur
-				$requete = "UPDATE perso SET mp = '".$joueur['mp']."', pa = '".$joueur['pa']."' WHERE ID = '".$_SESSION['ID']."'";
-				$req = $db->query($requete);
-				echo '<a href="javascript:envoiInfo(\'competence_jeu.php?ID='.$_GET['ID'].'\', \'information\')">Utilisez a nouveau cette compétence</a>';
+				if(array_key_exists('repos_interieur', $joueur['debuff']) AND $joueur['debuff']['repos_interieur']['effet'] >= 10)
+				{
+					echo 'Vous avez trop utilisé repos intérieur pour le moment !';
+				}
+				else
+				{
+					if(array_key_exists('repos_interieur', $joueur['debuff'])) $effet = $joueur['debuff']['repos_interieur']['effet'] + 1;
+					else $effet = 1;
+					$joueur['pa'] += 2;
+					$joueur['mp'] = $joueur['mp'] - $sortmp;
+					if(lance_buff('repos_interieur', $joueur['ID'], $effet, 0, (60 * 60 * 24), $row['nom'], description($row['description'].'<br /> Utilisation '.$effet.' / 10', $row), 'perso', 1, 0, 0))
+					{
+						//Mis à jour du joueur
+						$requete = "UPDATE perso SET mp = '".$joueur['mp']."', pa = '".$joueur['pa']."' WHERE ID = '".$_SESSION['ID']."'";
+						$req = $db->query($requete);
+						echo '<a href="javascript:envoiInfo(\'competence_jeu.php?ID='.$_GET['ID'].'\', \'information\')">Utilisez a nouveau cette compétence</a>';
+					}
+				}
 			break;
 		}
 	}

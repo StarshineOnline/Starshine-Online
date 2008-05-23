@@ -1590,7 +1590,7 @@ function lance_buff($type, $id, $effet, $effet2, $duree, $nom, $description, $ty
 			$lancement = false;
 		}
 	}
-	elseif(($effet >= $Buff_row['effet'] AND $debuff == 0) OR ($effet <= $Buff_row['effet'] AND $debuff == 1))
+	elseif($effet >= $Buff_row['effet'])
 	{
 		$requete = "UPDATE ".$table." SET effet = ".$effet.", effet2 = ".$effet2.", fin = ".(time() + $duree).", nom = '".$nom."', description = '".addslashes($description)."' WHERE id = ".$Buff_row['id'];
 		$db->query($requete);
