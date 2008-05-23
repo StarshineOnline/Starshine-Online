@@ -456,13 +456,10 @@ class magnetique extends effect {
 			//echo $nb_buff_suppr.'<br />';
 			for($i = 0; $i < $nb_buff_suppr; $i++) {
 				// BD: on doit ne prendre que les vrais
-				//$count = count($passif['buff']);
-				//$keys = array_keys($passif['buff']);
-
 				$keys = array();
 				foreach ($passif['buff'] as $nbuff => $buff) {
 					if (isset($buff['id'])) {
-						// Voir si on peux enlever un debuff
+						// Voir si on peut enlever un debuff
 						//if ($buff['debuff'] == 1) continue;
 						$keys[] = $nbuff;
 					}
@@ -545,6 +542,7 @@ class empoisonne extends effect {
 		$this->hit($actif['nom'].' perd '.$this->vigueur.' à cause du poison');
 		$actif['hp'] -= $this->vigueur;
 		$actif['etat']['empoisonne']['duree'] -= 1;
+		$actif['etat']['empoisonne']['effet'] -= 1;
 		if ($actif['etat']['empoisonne']['duree'] < 1)
 			unset($actif['etat']['empoisonne']);
 	}
