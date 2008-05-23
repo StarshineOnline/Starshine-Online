@@ -100,7 +100,7 @@ if($joueur['inventaire_slot'] != '')
 			elseif(!in_array($objet_d['categorie'], $liste_categorie) AND $filtre == 'autre') $check = true;
 			if($check)
 			{
-			$echo = description_objet($invent);
+				$echo = description_objet($invent);
 			?>
 			<tr>
 			<td onmouseover="return <?php echo make_overlib($echo); ?>" onmouseout="return nd();">
@@ -133,22 +133,22 @@ if($joueur['inventaire_slot'] != '')
 			{
 				if($objet_d['categorie'] == 'g')
 				{
-					echo '<a href="javascript:envoiInfo(\'inventaire.php?action=enchasse&amp;key_slot='.$i.$filtre_url.'\', \'information\');">Enchasser</a> <span class="xsmall">(20 PA)</span> / ';
+					echo ' <a href="javascript:envoiInfo(\'inventaire.php?action=enchasse&amp;key_slot='.$i.$filtre_url.'\', \'information\');">Enchasser</a> <span class="xsmall">(20 PA)</span> / ';
 				}
 				elseif($objet_d['categorie'] == 'a' OR $objet_d['categorie'] == 'p' OR $objet_d['categorie'] == 'm')
 				{
-					echo '<a href="javascript:envoiInfo(\'inventaire.php?action=equip&amp;id_objet='.$objet_d['id_objet'].'&amp;partie='.$partie.'&amp;key_slot='.$i.'&amp;categorie='.$objet_d['categorie'].$filtre_url.'\', \'information\');">Equiper</a> / ';
+					echo ' <a href="javascript:envoiInfo(\'inventaire.php?action=equip&amp;id_objet='.$objet_d['id_objet'].'&amp;partie='.$partie.'&amp;key_slot='.$i.'&amp;categorie='.$objet_d['categorie'].$filtre_url.'\', \'information\');">Equiper</a> / ';
 				}
 				elseif($objet_d['categorie'] == 'o' OR $objet_d['categorie'] == 'r')
 				{
-					if($row['utilisable'] == 'y') echo '<a href="javascript:envoiInfo(\'inventaire.php?action=utilise&amp;id_objet='.$objet_d['id_objet'].'&amp;type='.$row['type'].'&amp;key_slot='.$i.$filtre_url.'\', \'information\');">Utiliser</a> / ';
+					if($row['utilisable'] == 'y') echo ' <a href="javascript:envoiInfo(\'inventaire.php?action=utilise&amp;id_objet='.$objet_d['id_objet'].'&amp;type='.$row['type'].'&amp;key_slot='.$i.$filtre_url.'\', \'information\');">Utiliser</a> / ';
 				}
 				if ($W_row['type'] == 1 AND $objet_d['categorie'] != 'r' AND $objet_d['categorie'] != 'h')
 				{
 					$prix = floor($row['prix'] * $modif_prix / $G_taux_vente);
-					echo '<a href="javascript:if(confirm(\'Voulez vous vendre cet objet ?\')) envoiInfo(\'inventaire.php?action=vente&amp;id_objet='.$objet_d['id'].'&amp;key_slot='.$i.$filtre_url.'\', \'information\');">Vendre '.$prix.' Stars</a> / <a href="javascript:envoiInfo(\'inventaire.php?action=ventehotel&amp;id_objet='.$objet_d['categorie'].$objet_d['id_objet'].'&amp;key_slot='.$i.$filtre_url.'\', \'information\');">Hotel des ventes</a>';
+					echo ' <a href="javascript:if(confirm(\'Voulez vous vendre cet objet ?\')) envoiInfo(\'inventaire.php?action=vente&amp;id_objet='.$objet_d['id'].'&amp;key_slot='.$i.$filtre_url.'\', \'information\');">Vendre '.$prix.' Stars</a> / <a href="javascript:envoiInfo(\'inventaire.php?action=ventehotel&amp;id_objet='.$objet_d['categorie'].$objet_d['id_objet'].'&amp;key_slot='.$i.$filtre_url.'\', \'information\');">Hotel des ventes</a>';
 				}
-				if(($objet_d['categorie'] == 'a' OR $objet_d['categorie'] == 'p') AND $objet_d['slot'] == '' AND $objet_d['enchantement'] == '')
+				if(($objet_d['categorie'] == 'a' OR $objet_d['categorie'] == 'p' OR $objet_d['categorie'] == 'm') AND $objet_d['slot'] == '' AND $objet_d['enchantement'] == '')
 				{
 					echo '<br /><a href="javascript:envoiInfo(\'inventaire.php?action=slot&amp;key_slot='.$i.$filtre_url.'\', \'information\');">Mettre un slot à cet objet</a> <span class="xsmall">(10 PA)</span>';
 				}

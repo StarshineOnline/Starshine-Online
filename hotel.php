@@ -51,8 +51,8 @@ if($W_distance == 0)
 								$db->query($requete);
 								$requete = 'DELETE FROM hotel WHERE id = '.sSQL($_GET['id_vente']);
 								$db->query($requete);
-								echo '<h5>Arme achetée !</h5>';
-								$message = nom_objet($row['objet']);
+								echo '<h6>Arme achetée !</h6>';
+								$message = addslashes(nom_objet($row['objet']));
 							}
 							else
 							{
@@ -83,8 +83,8 @@ if($W_distance == 0)
 								//Effacement de l'objet
 								$requete = 'DELETE FROM hotel WHERE id = '.sSQL($_GET['id_vente']);
 								$db->query($requete);
-								echo '<h5>Armure achetée !</h5>';
-								$message = nom_objet($row['objet']);
+								echo '<h6>Armure achetée !</h6>';
+								$message = addslashes(nom_objet($row['objet']));
 							}
 							else
 							{
@@ -115,8 +115,8 @@ if($W_distance == 0)
 								//Effacement de l'objet
 								$requete = 'DELETE FROM hotel WHERE id = '.sSQL($_GET['id_vente']);
 								$db->query($requete);
-								echo '<h5>Accessoire acheté !</h5>';
-								$message = nom_objet($row['objet']);
+								echo '<h6>Accessoire acheté !</h6>';
+								$message = addslashes(nom_objet($row['objet']));
 							}
 							else
 							{
@@ -146,8 +146,8 @@ if($W_distance == 0)
 								//Effacement de l'objet
 								$requete = 'DELETE FROM hotel WHERE id = '.sSQL($_GET['id_vente']);
 								$db->query($requete);
-								echo '<h5>Objet achetée !<h5>';
-								$message = nom_objet($row['objet']);
+								echo '<h6>Objet achetée !<h6>';
+								$message = addslashes(nom_objet($row['objet']));
 							}
 							else
 							{
@@ -177,8 +177,8 @@ if($W_distance == 0)
 								//Effacement de l'objet
 								$requete = 'DELETE FROM hotel WHERE id = '.sSQL($_GET['id_vente']);
 								$db->query($requete);
-								echo '<h5>Gemme achetée !</h5>>';
-								$message = nom_objet($row['objet']);
+								echo '<h6>Gemme achetée !</h6>';
+								$message = addslashes(nom_objet($row['objet']));
 							}
 							else
 							{

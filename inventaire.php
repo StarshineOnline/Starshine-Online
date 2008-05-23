@@ -202,7 +202,7 @@ if(!$visu AND isset($_GET['action']))
 								$gemme = mb_substr($joueur['inventaire_slot'][$i], 1);
 								$joueur['inventaire_slot'][$i] = $gemme;
 								echo 'Identification réussie !<br />Votre gemme est une '.$row['nom'];
-								mail('masterob1@chello.fr', 'Starshine Test - Identification réussie', $joueur['nom'].' a identifié une gemme');
+								mail('masterob1@chello.fr', 'Starshine Test - Identification réussie', $joueur['nom'].' a identifié '.$row['nom']);
 							}
 							else
 							{
@@ -604,6 +604,9 @@ if(!$visu AND isset($_GET['action']))
 				case 'armure' :
 					$type = 'p';
 				break;
+				case 'accessoire' :
+					$type = 'm';
+				break;
 			}
 			switch($row['niveau'])
 			{
@@ -632,7 +635,9 @@ if(!$visu AND isset($_GET['action']))
 					//echo '<br />'.$joueur['inventaire_slot'][$i].'<br />';
 					if($objet_i['identifier'])
 					{
-						if($objet_i['categorie'] == 'a') $table = 'arme'; else $table = 'armure';
+						if($objet_i['categorie'] == 'a') $table = 'arme';
+						elseif($objet_i['categorie'] == 'p') $table = 'armure';
+						elseif($objet_i['categorie'] == 'm') $table = 'accessoire';
 						$requete = "SELECT type FROM ".$table." WHERE id = ".$objet_i['id_objet'];
 						$req_i = $db->query($requete);
 						$row_i = $db->read_row($req_i);
@@ -643,7 +648,7 @@ if(!$visu AND isset($_GET['action']))
 						while(!$check AND $j < $count)
 						{
 							if($parties[$j] == $row_i[0]) $check = true;
-							echo $parties[$j].' '.$row_i[0].'<br />';
+							//echo $parties[$j].' '.$row_i[0].'<br />';
 							$j++;
 						}
 						if($check AND ($objet_i['categorie'] == $type) AND ($objet_i['slot'] >= $row['niveau']))

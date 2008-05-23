@@ -546,7 +546,7 @@ function recupperso($ID)
 					$R_perso['arme_type'] = '';
 					$R_perso['arme_degat'] = 0;
 				}
-	    		
+				
 				//Main gauche
 				if ($R_perso['inventaire']->main_gauche != '' AND $R_perso['inventaire']->main_gauche != 'lock')
 				{

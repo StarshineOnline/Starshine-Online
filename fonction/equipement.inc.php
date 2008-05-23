@@ -178,6 +178,15 @@ function enchant($gemme_id, $var)
 	return $var;
 }
 
+function enchant_description($gemme_id)
+{
+	global $db;
+	$requete = "SELECT description FROM gemme WHERE id = ".$gemme_id;
+	$req = $db->query($requete);
+	$row = $db->read_assoc($req);
+	return $row['description'];
+}
+
 function recompose_objet($objet)
 {
 	$objet_rec = $objet['id'];
@@ -258,7 +267,7 @@ function description_objet($id_objet)
 			$description .= '<strong>'.$row['nom'].'</strong><br /><table> <tr> <td> Type </td> <td> '.$row['type'].' </td> </tr> </table>';
 		break;
 		case 'h' :
-			echo 'Objet non identifié';
+			$description = 'Objet non identifié';
 		break;
 		case 'g' :
 			$requete = "SELECT * FROM gemme WHERE id = ".$objet['id_objet'];
@@ -268,6 +277,7 @@ function description_objet($id_objet)
 			$description .= '<strong>'.$row['nom'].'</strong><br /><table> <tr> <td> Type </td> <td> '.$row['type'].' </td> </tr> <tr> <td> Description </td> </tr> <tr> <td> '.description($row['description'], $keys).' </td> </tr> </table>';
 		break;
 	}
+	if($objet['enchantement'] != '') $description .= '<br />Enchantement : '.enchant_description($objet['enchantement']);
 	return $description;
 }
 

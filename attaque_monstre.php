@@ -533,7 +533,6 @@ else
 											}
 											$num = rand(0, (count($ids) - 1));
 											$objet = 'hg'.$ids[$num];
-											echo $objet;
 										}
 									break;
 									case 'o' :
