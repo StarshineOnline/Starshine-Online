@@ -1,457 +1,322 @@
 <?php
+{//-- Inclusion des fichiers & initialisations des variables 
+	//if(!isset($_SESSION["nom"])) { header("Location: index.php"); };	//-- Redirection si la session à expiré ou si le joueur tente d'accéder a la page sans être loggé...
+	require_once("haut.php");
+	
+	if(!isset($joueur)) { $joueur = recupperso($_SESSION["ID"]); };
+	check_perso($joueur);												//-- MaJ des infos du perso...	
+	verif_mort($joueur, 1);												//-- Vérifie si le perso est mort
 
-//Inclusion du haut du document html
-include('haut_ajax.php');
 
-$joueur = recupperso($_SESSION['ID']);
-
-check_perso($joueur);
-
-//Vérifie si le perso est mort
-verif_mort($joueur, 1);
-
-$W_case = $_GET['poscase'];
-$W_requete = 'SELECT * FROM map WHERE ID =\''.sSQL($W_case).'\'';
-$W_req = $db->query($W_requete);
-$W_row = $db->read_array($W_req);
-$R = get_royaume_info($joueur['race'], $W_row['royaume']);
-$mois = 60 * 60 * 24 * 31;
-
-if($W_distance == 0)
-{
-	?>
-	<h2 class="ville_titre"><?php echo '<a href="javascript:envoiInfo(\'ville.php?poscase='.$W_case.'\', \'centre\')">';?><?php echo $R['nom'];?></a> - <?php echo '<a href="javascript:envoiInfo(\'hotel.php?poscase='.$W_case.'\', \'carte\')">';?> Hotel des ventes </a></h2>
-	<?php include('ville_bas.php');?>
-
-	<div class="ville_test">
-	<?php
-	if(isset($_GET['action']))
+	$RqMap = $db->query("SELECT * FROM map WHERE ID=".sSQL($_GET["poscase"]).";");
+	if(mysql_num_rows($RqMap) > 0)
 	{
-		$message = '';
-		switch ($_GET['action'])
+		$arrayMap = $db->read_array($RqMap);
+		$R = get_royaume_info($joueur["race"], $arrayMap["royaume"]);
+	}
+	$mois = 60 * 60 * 24 * 31;
+}
+if($W_distance == 0)
+{//-- On verifie que le joueur est bien sur la ville ($W_distance)
+	echo "<script type='text/javascript'>return nd();</script>";
+	echo "<h2 class='ville_titre'>
+		   <a href=\"javascript:envoiInfo('ville.php?poscase=".$_GET["poscase"]."', 'centre');\">".$R['nom']."</a> - 
+		   <a href=\"javascript:envoiInfo('hotel.php?poscase=".$_GET["poscase"]."', 'carte');\"> Hotel des ventes </a>
+		  </h2>";
+	include("ville_bas.php");
+	{//-- Traitement d'un achat ou d'une recupération
+		if(isset($_GET["action"]))
 		{
-			//Achat
-			case 'achat' :
-				switch ($_GET['type'])
+			$message = "";
+			switch ($_GET["action"])
+			{
+				case "achat" : 	{//-- Achat d'un objet
+									unset($objObjetHotel);
+									unset($RqObjetHotel);
+									$RqObjetHotel = $db->query("SELECT * FROM hotel WHERE id = ".sSQL($_GET["id_vente"]).";");
+									$objObjetHotel = $db->read_object($RqObjetHotel);
+									if ($joueur["star"] >= $objObjetHotel->prix)
+									{
+										if(prend_objet($objObjetHotel->objet, $joueur))
+										{
+											$joueur["star"] = $joueur["star"] - $objObjetHotel->prix;
+											$requete = 
+											$db->query("UPDATE perso SET star=".$joueur["star"]." WHERE ID=".$joueur["ID"].";");
+											$db->query("UPDATE perso SET star=(star+".$objObjetHotel->prix.") WHERE ID = ".sSQL($_GET["id_vendeur"]).";");
+											$db->query("DELETE FROM hotel WHERE id=".sSQL($_GET["id_vente"]).";");
+											$action_message = "<span class='message_vert'>l&apos;".$_GET["type"]." a bien &eacute;t&eacute; achetée.</span>";
+											
+											$db->query("INSERT INTO journal VALUES(NULL, ".$_GET["id_vendeur"].", 'vend', '', '', NOW(), '".nom_objet($objObjetHotel->objet)."', '".$objObjetHotel->prix."', 0, 0)");
+										}
+										else { $action_message = "<span class='message_rouge'>$G_erreur</span>"; };
+									}
+									else { $action_message = "<span class='message_rouge'>Vous n&apos;avez pas assez de stars</span>"; };
+								}
+								break;
+				case "suppr" :	{//-- Récupération d'un objet
+									$RqObjetHotel = $db->query("SELECT id_vendeur, objet FROM hotel WHERE id = ".sSQL($_GET["id_vente"]).";");
+									$objObjetHotel = $db->read_object($RqObjetHotel);
+									if($objObjetHotel->id_vendeur == $joueur["ID"])
+									{//-- vérification que c'est bien l'objet du vendueur
+										if(prend_objet($objObjetHotel->objet, $joueur))
+										{
+											$db->query("DELETE FROM hotel WHERE id = ".sSQL($_GET["id_vente"]).";");
+											
+											$action_message = "<span class='message_vert'>Vous avez bien récupérer votre objet de l&apos;h&ocirc;tel des ventes.</span>";
+											
+											$db->query("INSERT INTO journal VALUES(NULL, ".$joueur["ID"].", 'recup', '', '', NOW(), '".sSQL(nom_objet($objObjetHotel->objet))."', 0, 0, 0)");
+										}
+										else { $action_message = "<span class='message_rouge'>$G_erreur</span>"; };
+									}
+									else { $action_message = "<span class='message_rouge'>Ce n&apos;est pas votre objet !</span>"; };
+								}
+								break;
+			}
+		}
+	}
+	echo "<div class='ville_message'>$action_message</div>";
+	echo "<div class='ville_test' style='max-height:500px;overflow-y:auto;'>";
+	{//-- Catégories de ventes
+		$url = "onclick=\"envoiInfo('hotel.php?poscase=$W_case&amp;type=";
+		$urlfin = "', 'carte');\">";
+		echo " <div class='ville_haut'>
+				<ul id='hotel_liste_type'>
+				 <li ".$url."arme".$urlfin."Armes|</li>
+				 <li ".$url."armure".$urlfin."Armures|</li>
+				 <li ".$url."accessoire".$urlfin."Accessoires|</li>
+				 <li ".$url."objet".$urlfin."Objets|</li>
+				 <li ".$url."gemme".$urlfin."Gemmes|</li>
+				 <li ".$url."moi".$urlfin."Mes objets</li>
+				</ul>
+			   </div>";
+	}
+	{//-- Récupère tout les royaumes qui peuvent avoir des items en commun
+		$RqRoyaumes = $db->query("SELECT * FROM diplomatie WHERE race='".sSQL($R["race"])."';");
+		if(mysql_num_rows($RqRoyaumes) > 0)
+		{
+			$objRoyaumes = $db->read_object($RqRoyaumes);
+			foreach($objRoyaumes as $race => $diplomatie) 
+			{ 
+				if( (($diplomatie <= 5) || ($diplomatie == 128)) && ($diplomatie != "race") )
 				{
-					case 'arme' :
-						$requete = "SELECT * FROM hotel WHERE id = ".sSQL($_GET['id_vente']);
-						$req = $db->query($requete);
-						$row = $db->read_array($req);
-						$cout = $row['prix'];
-						if ($joueur['star'] >= $cout)
-						{
-							if(prend_objet($row['objet'], $joueur))
-							{
-								$joueur['star'] = $joueur['star'] - $cout;
-								$requete = "UPDATE perso SET star = ".$joueur['star']." WHERE ID = ".$joueur['ID'];
-								$req = $db->query($requete);
-								//Récupération de l'argent au vendeur
-								$requete = 'UPDATE perso SET star = star + '.$cout.' WHERE ID = '.sSQL($_GET['id_vendeur']);
-								$db->query($requete);
-								$requete = 'DELETE FROM hotel WHERE id = '.sSQL($_GET['id_vente']);
-								$db->query($requete);
-								echo '<h6>Arme achetée !</h6>';
-								$message = addslashes(nom_objet($row['objet']));
-							}
-							else
-							{
-								echo $G_erreur;
-							}
-						}
-						else
-						{
-							echo '<h5>Vous n\'avez pas assez de Stars</h5>';
-						}
-					break;
-					case 'armure' :
-						$requete = "SELECT * FROM hotel WHERE id = ".sSQL($_GET['id_vente']);
-						$req = $db->query($requete);
-						$row = $db->read_array($req);
-						$cout = $row['prix'];
-						if ($joueur['star'] >= $cout)
-						{
-							if(prend_objet($row['objet'], $joueur))
-							{
-								$joueur = recupperso($joueur['ID']);
-								$joueur['star'] = $joueur['star'] - $cout;
-								$requete = "UPDATE perso SET star = ".$joueur['star']." WHERE ID = ".$joueur['ID'];
-								$req = $db->query($requete);
-								//Récupération de l'argent au vendeur
-								$requete = 'UPDATE perso SET star = star + '.$cout.' WHERE ID = '.sSQL($_GET['id_vendeur']);
-								$db->query($requete);
-								//Effacement de l'objet
-								$requete = 'DELETE FROM hotel WHERE id = '.sSQL($_GET['id_vente']);
-								$db->query($requete);
-								echo '<h6>Armure achetée !</h6>';
-								$message = addslashes(nom_objet($row['objet']));
-							}
-							else
-							{
-								echo $G_erreur;
-							}
-						}
-						else
-						{
-							echo '<h5>Vous n\'avez pas assez de Stars</h5>';
-						}
-					break;
-					case 'accessoire' :
-						$requete = "SELECT * FROM hotel WHERE id = ".sSQL($_GET['id_vente']);
-						$req = $db->query($requete);
-						$row = $db->read_array($req);
-						$cout = $row['prix'];
-						if ($joueur['star'] >= $cout)
-						{
-							if(prend_objet($row['objet'], $joueur))
-							{
-								$joueur = recupperso($joueur['ID']);
-								$joueur['star'] = $joueur['star'] - $cout;
-								$requete = "UPDATE perso SET star = ".$joueur['star']." WHERE ID = ".$joueur['ID'];
-								$req = $db->query($requete);
-								//Récupération de l'argent au vendeur
-								$requete = 'UPDATE perso SET star = star + '.$cout.' WHERE ID = '.sSQL($_GET['id_vendeur']);
-								$db->query($requete);
-								//Effacement de l'objet
-								$requete = 'DELETE FROM hotel WHERE id = '.sSQL($_GET['id_vente']);
-								$db->query($requete);
-								echo '<h6>Accessoire acheté !</h6>';
-								$message = addslashes(nom_objet($row['objet']));
-							}
-							else
-							{
-								echo $G_erreur;
-							}
-						}
-						else
-						{
-							echo '<h5>Vous n\'avez pas assez de Stars</h5>';
-						}
-					break;
-					case 'objet' :
-						$requete = "SELECT * FROM hotel WHERE id = ".sSQL($_GET['id_vente']);
-						$req = $db->query($requete);
-						$row = $db->read_array($req);
-						$cout = $row['prix'];
-						if ($joueur['star'] >= $cout)
-						{
-							if(prend_objet($row['objet'], $joueur))
-							{
-								$joueur['star'] = $joueur['star'] - $cout;
-								$requete = "UPDATE perso SET star = ".$joueur['star']." WHERE ID = ".$joueur['ID'];
-								$req = $db->query($requete);
-								//Récupération de l'argent au vendeur
-								$requete = 'UPDATE perso SET star = star + '.$cout.' WHERE ID = '.sSQL($_GET['id_vendeur']);
-								$db->query($requete);
-								//Effacement de l'objet
-								$requete = 'DELETE FROM hotel WHERE id = '.sSQL($_GET['id_vente']);
-								$db->query($requete);
-								echo '<h6>Objet achetée !<h6>';
-								$message = addslashes(nom_objet($row['objet']));
-							}
-							else
-							{
-								echo $G_erreur;
-							}
-						}
-						else
-						{
-							echo '<h5>Vous n\'avez pas assez de Stars</h5>';
-						}
-					break;
-					case 'gemme' :
-						$requete = "SELECT * FROM hotel WHERE id = ".sSQL($_GET['id_vente']);
-						$req = $db->query($requete);
-						$row = $db->read_array($req);
-						$cout = $row['prix'];
-						if ($joueur['star'] >= $cout)
-						{
-							if(prend_objet($row['objet'], $joueur))
-							{
-								$joueur['star'] = $joueur['star'] - $cout;
-								$requete = "UPDATE perso SET star = ".$joueur['star']." WHERE ID = ".$joueur['ID'];
-								$req = $db->query($requete);
-								//Récupération de l'argent au vendeur
-								$requete = 'UPDATE perso SET star = star + '.$cout.' WHERE ID = '.sSQL($_GET['id_vendeur']);
-								$db->query($requete);
-								//Effacement de l'objet
-								$requete = 'DELETE FROM hotel WHERE id = '.sSQL($_GET['id_vente']);
-								$db->query($requete);
-								echo '<h6>Gemme achetée !</h6>';
-								$message = addslashes(nom_objet($row['objet']));
-							}
-							else
-							{
-								echo $G_erreur;
-							}
-						}
-						else
-						{
-							echo '<h5>Vous n\'avez pas assez de Stars</h5>';
-						}
-					break;
+					$royaumes_sharing_tab[count($royaumes_sharing_tab)] = "'".$race."'"; 
 				}
-			break;
-			//Suppression d'un objet
-			case 'suppr' :
-				//Vérification qu'il sagit bien de son objet
-				$requete = "SELECT id_vendeur, objet FROM hotel WHERE id = ".sSQL($_GET['id_vente']);
-				$req = $db->query($requete);
-				$row = $db->read_assoc($req);
-				if($row['id_vendeur'] == $joueur['ID'])
+			}
+		}
+	}
+	{//-- Filtre & Tri
+		if(array_key_exists("type", $_GET)) { $type = $_GET["type"]; } else { $type = "arme"; };
+		switch($type)
+		{//-- Récupération du filtre
+			case "arme" :		$abbr = "a";	break;
+			case "armure" :		$abbr = "p";	break;
+			case "objet" :		$abbr = "o";	break;
+			case "gemme" :		$abbr = "g";	break;
+			case "accessoire" :	$abbr = "m";	break;
+			default	:			$abbr = "";		break;
+		}
+		{//-- Tri
+			if(array_key_exists("tri_champ", $_GET))
+			{//-- si le tri est envoyé en GET
+				if(array_key_exists("hotel_des_ventes", $_SESSION) )
+				{//-- si le tri existe en session et que le meme tri existe deja, alors on inverse le sens
+					if($_SESSION["hotel_des_ventes"]["sens"] == "DESC") 	{ $sens = "ASC"; }
+					else 											{ $sens = "DESC"; };
+				}
+				else { $sens = "ASC"; };
+				$_SESSION["hotel_des_ventes"] = array("tri_champ" => $_GET["tri_champ"], "sens" => $sens);
+			}
+			if(array_key_exists("hotel_des_ventes", $_SESSION))
+			{//-- On recompose le tri
+				$tri_champ = "";
+				$ordre["tri_champ"] = $_SESSION["hotel_des_ventes"]["tri_champ"];
+				$ordre["sens"] = $_SESSION["hotel_des_ventes"]["sens"];
+				
+				$tri_champ .= $ordre["tri_champ"]." ".$ordre["sens"];
+			}
+			else { $tri_champ = "objet ASC, prix ASC"; }
+		}
+		//-- Recherche tous les objets correspondants à ces races
+		if($type == "moi")	{ $queryObjetsHotel = "SELECT * FROM hotel WHERE id_vendeur=".$joueur["ID"]." ORDER BY $tri_champ;"; }
+		else				{ $queryObjetsHotel = "SELECT * FROM hotel WHERE race IN (".implode($royaumes_sharing_tab, ",").") AND SUBSTRING(objet FROM 1 FOR 1)='$abbr' AND time>".(time() - $mois)." ORDER BY $tri_champ;"; };
+		$RqObjetsHotel = $db->query($queryObjetsHotel);
+		if(mysql_num_rows($RqObjetsHotel) > 0)
+		{
+			$objet_id = array();
+			$objets_tab = array();
+			$objet_id_new = array();
+			$objets_tab_new = array();
+			$tri = array();
+			
+			while($arrayObjetsHotel = $db->read_assoc($RqObjetsHotel))
+			{
+				unset($objet_info); unset($RqObjet); unset($RqObjet);	//-- Reinitialisation
+				
+				$objet_info = decompose_objet($arrayObjetsHotel["objet"]);		//-- on décompose l'identification de l'objet
+				//-- Recherche des infos des objets a afficher
+				$RqObjet = $db->query("SELECT * FROM ".$objet_info["table_categorie"]." WHERE id=".$objet_info["id_objet"].";");
+				if(mysql_num_rows($RqObjet) > 0)
 				{
-					//Suppression de l'objet de l'hotel des vente
-					if(prend_objet($row['objet'], $joueur))
+					$arrayObjet = $db->read_assoc($RqObjet);
+
+					if(!in_array($arrayObjetsHotel["type"], $tri)) 	{ $tri[] = $arrayObjet["type"]; };
+					if(empty($_GET["tri"])) 						{ $all = true; } else { $all = false; };
+					
+					if((array_key_exists("tri", $_GET) AND $_GET["tri"] == $arrayObjet["type"]) OR $all)
 					{
-						$requete = "DELETE FROM hotel WHERE id = ".sSQL($_GET['id_vente']);
-						$db->query($requete);
-						echo '<h6>votre objet a bien été supprimé de l\'hotel des ventes.</h6>';
+						$objet_id[] = $objet_info["id_objet"];
+						$objets_tab[$arrayObjetsHotel["id"]] = $arrayObjetsHotel;
+						
+						$objet_id_new[] = $arrayObjetsHotel["id"];
+						$objets_tab_new[$arrayObjet["id"]] = $arrayObjet;
 					}
+				}
+			}
+			$class = 1;
+			foreach($objet_id_new as $id)
+			{
+				$objet_info = decompose_objet($objets_tab[$id]["objet"]);
+				$objet = $objets_tab_new[$objet_info["id_objet"]];
+				
+				if(strlen($objet["nom"]) > 23) { $tmp_nom = substr($objet["nom"], 0, 23)."&hellip;"; } else { $tmp_nom = $objet["nom"]; };
+				if($type == "moi")
+				{//-- Suivant si c'est un objet que l'on a mis en vente
+					$tmp_achat_click = "onclick=\"envoiInfo('hotel.php?action=suppr&amp;id_vente=".$objets_tab[$id]["id"]."&amp;poscase=".$_GET["poscase"]."', 'carte');\"";
+					$tmp_achat = "R&eacute;cup&eacute;per";
 				}
 				else
-				{
-					echo '<h5>Ce n\'est pas votre objet !</h5>';
+				{//-- ou pas
+					$tmp_achat_click = "onclick=\"envoiInfo('hotel.php?action=achat&amp;type=".$type."&partie=".$objet["type"]."&amp;id=".$id_objet."&amp;id_vente=".$objets_tab[$id]["id"]."&amp;id_vendeur=".$objets_tab[$id]["id_vendeur"]."&amp;poscase=".$_GET["poscase"]."', 'carte');\"";
+					$tmp_achat = "Acheter";
 				}
-			break;			
-		}
-		if($message != '')
-		{
-			//Insertion de la vente dans le journal du vendeur
-			$requete = "INSERT INTO journal VALUES('', ".$_GET['id_vendeur'].", 'vend', '', '', NOW(), '".$message."', '".$cout."', 0, 0)";
-			$db->query($requete);
-		}
-	}
-	if(array_key_exists('type', $_GET)) $type = $_GET['type']; else $type = 'arme';
-	switch($type)
-	{
-		case 'arme' :
-			$abbr = 'a';
-		break;
-		case 'armure' :
-			$abbr = 'p';
-		break;
-		case 'objet' :
-			$abbr = 'o';
-		break;
-		case 'gemme' :
-			$abbr = 'g';
-		break;
-		case 'accessoire' :
-			$abbr = 'm';
-		break;
-	}
-	$url = "<a href=\"javascript:envoiInfo('hotel.php?poscase=$W_case&amp;type=";
-	$urlfin = "', 'carte');\">";
-	echo '
-	<div class="ville_haut">
-		<ul class="onglet-hotel">
-			<li>
-				'.$url.'arme'.$urlfin.'Armes</a>
-			</li>
-			<li>
-				'.$url.'armure'.$urlfin.'Armures</a>
-			</li>
-			<li>
-				'.$url.'accessoire'.$urlfin.'Accessoires</a>
-			</li>
-			<li>
-				'.$url.'objet'.$urlfin.'Objets</a>
-			</li>
-			<li>
-				'.$url.'gemme'.$urlfin.'Gemmes</a>
-			</li>
-			<li>
-				'.$url.'moi'.$urlfin.'Mes objets</a>
-			</li>
-		</ul>
-	</div>';
-	//Récupère tout les royaumes qui peuvent avoir des items en commun
-	$requete = "SELECT * FROM diplomatie WHERE race = '".$R['race']."'";
-	$req = $db->query($requete);
-	$row = $db->read_assoc($req);
-	$races = array();
-	$keys = array_keys($row);
-	$i = 0;
-	$count = count($row);
-	while($i < $count)
-	{
-		if((($row[$keys[$i]] <= 5) OR ($row[$keys[$i]] == 127)) && ($keys[$i] != 'race')) $races[] = "'".$keys[$i]."'";
-		$i++;
-	}
-	$races = implode(',', $races);
-	
-	if(array_key_exists('tri_champ', $_GET))
-	{
-		if(array_key_exists('tri_champ', $_SESSION) AND array_key_exists($_GET['tri_champ'], $_SESSION['tri_champ']))
-		{
-			if($_SESSION['tri_champ'][$_GET['tri_champ']]['sens'] == 'DESC') $sens = 'ASC';
-			else $sens = 'DESC';
-		}
-		else $sens = 'ASC';
-		$_SESSION['tri_champ'][$_GET['tri_champ']] = array('tri_champ' => $_GET['tri_champ'], 'sens' => $sens);
-	}
-	//On recompose le tri
-	if(array_key_exists('tri_champ', $_SESSION))
-	{
-		$tri_champ = '';
-		$check = false;
-		foreach($_SESSION['tri_champ'] as $ordre)
-		{
-			if($check) $tri_champ .= ', ';
-			$tri_champ .= $ordre['tri_champ'].' '.$ordre['sens'];
-			$check = true;
-		}
-	}
-	else $tri_champ = "objet ASC, prix ASC";
-	//Recherche tous les objets correspondants à ces races
-	if($type == 'moi')
-	{
-		$requete = "SELECT * FROM hotel WHERE id_vendeur = ".$joueur['ID']." ORDER BY ".$tri_champ;
-	}
-	else
-	{
-		$requete = "SELECT * FROM hotel WHERE race IN (".$races.") AND SUBSTRING(objet FROM 1 FOR 1) = '".$abbr."' AND time > ".(time() - $mois)." ORDER BY ".$tri_champ;
-	}
-	//echo $requete;
-	$req = $db->query($requete);
-	$objets = array();
-	$ids = array();
-	$ids2 = array();
-	$objets2 = array();
-	$tri = array();
-	while($row = $db->read_assoc($req))
-	{
-		$objet_d = decompose_objet($row['objet']);
-		$categorie = $objet_d['categorie'];
-		$id_o = $objet_d['id_objet'];
-		//Recherche des infos des objets a afficher
-		$requete = "SELECT * FROM ".$objet_d['table_categorie']." WHERE id = ".$id_o;
-		$req_o = $db->query($requete);
-		$row_o = $db->read_assoc($req_o);
-		if(!in_array($row_o['type'], $tri)) $tri[] = $row_o['type'];
-		//echo $_GET['tri'].' '.$row_o['type'].'<br />';
-		if($_GET['tri'] == '') $all = true; else $all = false;
-		if((array_key_exists('tri', $_GET) AND $_GET['tri'] == $row_o['type']) OR $all)
-		{
-			$objets2[$row_o['id']] = $row_o;
-			$objets[$row['id']] = $row;
-			$ids[] = $id_o;
-			$ids2[] = $row['id'];
-		}
-	}
-	//echo '<pre>';
-	//print_r($joueur['inventaire']);
-	$rendu_final = '
-	<table class="marchand" cellspacing="0px">
-	<tr class="header trcolor2">
-		<td>
-			<a href="javascript:envoiInfo(\'hotel.php?poscase='.$W_case.'&amp;type='.$type.'&amp;tri_champ=objet\', \'carte\');">Nom</a>
-		</td>
-		<td>
-			<a href="javascript:envoiInfo(\'hotel.php?poscase='.$W_case.'&amp;type='.$type.'&amp;tri_champ=prix\', \'carte\');">Prix</a>
-		</td>
-		<td>
-			<a href="javascript:envoiInfo(\'hotel.php?poscase='.$W_case.'&amp;type='.$type.'&amp;tri_champ=time\', \'carte\');">Temps restant</a>
-		</td>
-		<td>
-			Achat
-		</td>
-	</tr>';
-	$i = 0;
-	$color = 1;
-	foreach($ids2 as $plop)
-	{
-		$row = $objets[$plop];
-		$objet_d = decompose_objet($row['objet']);
-		$id_objet = $objet_d['id_objet'];
-		$objet = $objets2[$id_objet];
-		/*echo '<pre>';
-		print_r($objet_d);
-		print_r($objet);
-		print_r($row);*/
-		$rendu_final .= '
-	<tr class="element trcolor'.$color.'" onclick="javascript:envoiInfo(\'description_objet.php?id_objet='.$row['objet'].'\', \'info_objet\');">
-		<td onmousemove="afficheInfo(\'info_'.$row['id'].'\', \'block\', event);" onmouseout="afficheInfo(\'info_'.$row['id'].'\', \'none\', event );">
-			'.$objet['nom'];
-		if($objet_d['stack'] > 1) $rendu_final .= ' X '.$objet_d['stack'];
-		if($objet_d['slot'] > 0) $rendu_final .= '<br /><span class="xsmall">Slot niveau '.$objet_d['slot'].'</span>';
-		if($objet_d['slot'] == '0') $rendu_final .= '<br /><span class="xsmall">Slot impossible</span>';
-		if($objet_d['enchantement'] > '0')
-		{
-			$requete = "SELECT * FROM gemme WHERE id = ".$objet_d['enchantement'];
-			$req = $db->query($requete);
-			$row_e = $db->read_assoc($req);
-			$rendu_final .= '<br /><span class="xsmall">Enchantement de '.$row_e['enchantement_nom'].'</span>';
-		}
-		$rendu_final .= '
-		</td>
-		<td>
-			'.$row['prix'].'
-		</td>
-		<td>
-			'.transform_sec_temp(($row['time'] + $mois) - time()).'
-		</td>
-		<td>
-			';
-			if($type == 'moi')
-			{
-				$rendu_final .= '<a href="javascript:envoiInfo(\'hotel.php?action=suppr&amp;id_vente='.$row['id'].'&amp;poscase='.$_GET['poscase'].'\', \'carte\')">Supprimer de l\'hotel des ventes</a>';
-			}
-			else
-			{
-				$rendu_final .= '<a href="javascript:envoiInfo(\'hotel.php?action=achat&amp;type='.$type.'&partie='.$objet['type'].'&amp;id='.$id_objet.'&amp;id_vente='.$row['id'].'&amp;id_vendeur='.$row['id_vendeur'].'&amp;poscase='.$_GET['poscase'].'\', \'carte\')"><span class="achat">Achat</span></a>';
-			}
-			$rendu_final .= '
-		</td>
-	</tr>
-		<div style="display: none; z-index: 2; position: absolute; top: 250px; right: 150px; background-color:#ffffff; border: 1px solid #000000; font-size:12px; width: 300px; padding: 5px;" id="info_'.$row['id'].'">';
-			switch($type)
-			{
-				case 'arme' :
-					$rendu_final .= 'Arme équipée : '.$joueur['arme_nom'].' - '.$joueur['arme_type'].' - Dégats '.$joueur['arme_degat'];
-				break;
-				case 'armure' :
-					//echo $joueur['inventaire']->$objet['type'];
-					if($joueur['inventaire']->$objet['type'] != '' AND $joueur['inventaire']->$objet['type'] !== 0)
+				if($objet_info["stack"] > 1) 	{ $tmp_stack = " X ".$objet_info["stack"]; } else { $tmp_stack = ""; };
+				if($objet_info["slot"] > 0) 	
+				{ 
+					$tmp_slot = "<span class='slot' title='slot de niveau ".$objet_info["slot"]."'>".$objet_info["slot"]."</span>"; 
+					$tmp_slot2 = "slot de niveau ".$objet_info["slot"]; 
+				}
+				elseif($objet_info["slot"] == "0") 	
+				{ 
+					$tmp_slot = "<span class='noslot' title='slot impossible'></span>"; 
+					$tmp_slot2 = "slot impossible"; 
+				} 
+				else { $tmp_slot = ""; }
+				if($objet_info["enchantement"] > "0")
+				{
+					$RqEnchantement = $db->query("SELECT * FROM gemme WHERE id=".$objet_info["enchantement"].";");
+					$objEnchantement = $db->read_object($RqEnchantement);
+					$tmp_enchantement = "<span class='enchantement' title='Enchantement de ".$objEnchantement->enchantement_nom."'>&nbsp;</span>";
+					$tmp_enchantement2 = "Enchantement de ".$objEnchantement->enchantement_nom;
+				}
+				else { $tmp_enchantement = ""; }
+				{//-- OVERLIB
+					$tmp_overlib = "";
+					switch($type)
 					{
-						$obj = decompose_objet($joueur['inventaire']->$objet['type']);
-						$requete = "SELECT * FROM armure WHERE id = ".$obj['id_objet'];
-						$req_armure = $db->query($requete);
-						$row_armure = $db->read_assoc($req_armure);
-						$rendu_final .= 'Armure équipée : '.$row_armure['nom'].' - '.$row_armure['type'].' - PP = '.$row_armure['PP'];
+						case "arme" :		$RqArme = $db->query("SELECT * FROM `arme` WHERE id=".$objet_info["id_objet"].";");
+											$objArme = $db->read_object($RqArme);
+											$cote_arme = split(";", $objArme->mains);
+											$tmp_overlib .= "<ul><li class='overlib_titres'>Arme &agrave; vendre</li>";
+											$tmp_overlib .= "<li class='overlib_img_objet' style='background-image:url(image/arme/arme".$objArme->id.".png);'></li>";
+											$tmp_overlib .= "<li class='overlib_nom_objet'>".$objArme->nom."$tmp_stack</li>";
+											$tmp_overlib .= "<li class='overlib_desc_objet'><span>type : </span>".$objArme->type."</li>";
+											$tmp_overlib .= "<li class='overlib_desc_objet'><span>degat : </span>".$objArme->degat."</li>";
+											$tmp_overlib .= "<li class='overlib_desc_objet'><span>forcex : </span>".$objArme->forcex."</li>";
+											$tmp_overlib .= "<li class='overlib_desc_objet'><span>melee : </span>".$objArme->melee."</li>";
+											$tmp_overlib .= "<li class='overlib_desc_objet'><span>distance : </span>".$objArme->distance."</li>";
+											$tmp_overlib .= "<li class='overlib_desc_objet'><span>distance_tir : </span>".$objArme->distance_tir."</li>";
+											if(!empty($tmp_slot2)) { $tmp_overlib .= "<li class='overlib_infos'>$tmp_slot2</li>"; }
+											$tmp_overlib .= "</ul>";
+											
+											if(in_array("main_droite", $cote_arme))
+											{//-- si elle peut etre porté a droite
+												$main_droite = decompose_objet($joueur["inventaire"]->main_droite);
+												$RqArmeDroite = $db->query("SELECT * FROM `arme` WHERE id=".$main_droite["id_objet"].";");
+												$objArmeDroite = $db->read_object($RqArmeDroite);
+												$tmp_overlib .= "<ul style='border-top:1px dotted black; margin:5px 0px;'><li class='overlib_titres'>Arme droite &eacute;quip&eacute;e</li>";
+												$tmp_overlib .= "<li class='overlib_img_objet' style='background-image:url(image/arme/arme".$objArmeDroite->id.".png);'></li>";
+												$tmp_overlib .= "<li class='overlib_nom_objet'>".$objArmeDroite->nom."</li>";
+												$tmp_overlib .= "<li class='overlib_desc_objet'><span>type : </span>".$objArmeDroite->type."</li>";
+												$tmp_overlib .= "<li class='overlib_desc_objet'><span>degat : </span>".$objArmeDroite->degat."</li>";
+												$tmp_overlib .= "<li class='overlib_desc_objet'><span>forcex : </span>".$objArmeDroite->forcex."</li>";
+												$tmp_overlib .= "<li class='overlib_desc_objet'><span>melee : </span>".$objArmeDroite->melee."</li>";
+												$tmp_overlib .= "<li class='overlib_desc_objet'><span>distance : </span>".$objArmeDroite->distance."</li>";
+												$tmp_overlib .= "<li class='overlib_desc_objet'><span>distance_tir : </span>".$objArmeDroite->distance_tir."</li>";
+												$tmp_overlib .= "</ul>";
+											}
+											if(in_array("main_gauche", $cote_arme))
+											{//-- si elle peut etre porté a gauche
+												$main_gauche = decompose_objet($joueur["inventaire"]->main_gauche);
+												$RqArmeGauche = $db->query("SELECT * FROM `arme` WHERE id=".$main_gauche["id_objet"].";");
+												$objArmeGauche = $db->read_object($RqArmeGauche);
+												$tmp_overlib .= "<ul style='border-top:1px dotted black; margin:5px 0px;'><li class='overlib_titres'>Arme gauche &eacute;quip&eacute;e</li>";
+												$tmp_overlib .= "<li class='overlib_img_objet' style='background-image:url(image/arme/arme".$objArmeGauche->id.".png);'></li>";
+												$tmp_overlib .= "<li class='overlib_nom_objet'>".$objArmeGauche->nom."</li>";
+												$tmp_overlib .= "<li class='overlib_desc_objet'><span>type : </span>".$objArmeGauche->type."</li>";
+												$tmp_overlib .= "<li class='overlib_desc_objet'><span>degat : </span>".$objArmeGauche->degat."</li>";
+												$tmp_overlib .= "<li class='overlib_desc_objet'><span>forcex : </span>".$objArmeGauche->forcex."</li>";
+												$tmp_overlib .= "<li class='overlib_desc_objet'><span>melee : </span>".$objArmeGauche->melee."</li>";
+												$tmp_overlib .= "<li class='overlib_desc_objet'><span>distance : </span>".$objArmeGauche->distance."</li>";
+												$tmp_overlib .= "<li class='overlib_desc_objet'><span>distance_tir : </span>".$objArmeGauche->distance_tir."</li>";
+												$tmp_overlib .= "</ul>";
+											}
+											break;
+											
+						case "armure" :		$RqArmure = $db->query("SELECT * FROM `armure` WHERE id=".$objet_info["id_objet"].";");
+											$objArmure = $db->read_object($RqArmure);
+											$tmp_type = $objArmure->type;
+											$tmp_overlib .= "<ul><li class='overlib_titres'>".ucfirst($objArmure->type)." &agrave; vendre</li>";
+											$tmp_overlib .= "<li class='overlib_img_objet' style='background-image:url(image/armure/".$objArmure->type."/".$objArmure->type.$objArmure->id.".png);'></li>";
+											$tmp_overlib .= "<li class='overlib_nom_objet'>".$objArmure->nom."$tmp_stack</li>";
+											$tmp_overlib .= "<li class='overlib_desc_objet'><span>PP : </span>".$objArmure->PP."</li>";
+											$tmp_overlib .= "<li class='overlib_desc_objet'><span>PM : </span>".$objArmure->PM."</li>";
+											$tmp_overlib .= "<li class='overlib_desc_objet'><span>forcex : </span>".$objArmure->forcex."</li>";
+											if(!empty($tmp_slot2)) { $tmp_overlib .= "<li class='overlib_infos'>$tmp_slot2</li>"; }
+											$tmp_overlib .= "</ul>";
+											
+											$armure = decompose_objet($joueur["inventaire"]->$tmp_type);
+											$RqArmureEquipee = $db->query("SELECT * FROM `armure` WHERE id=".$armure["id_objet"].";");
+											$objArmureEquipee = $db->read_object($RqArmureEquipee);
+											$tmp_overlib .= "<ul style='border-top:1px dotted black; margin:5px 0px;'><li class='overlib_titres'>".ucfirst($objArmureEquipee->type)." &eacute;quip&eacute;</li>";
+											$tmp_overlib .= "<li class='overlib_img_objet' style='background-image:url(image/armure/".$objArmureEquipee->type."/".$objArmureEquipee->type.$objArmureEquipee->id.".png);'></li>";
+											$tmp_overlib .= "<li class='overlib_nom_objet'>".$objArmureEquipee->nom."</li>";
+											$tmp_overlib .= "<li class='overlib_desc_objet'><span>PP : </span>".$objArmureEquipee->PP."</li>";
+											$tmp_overlib .= "<li class='overlib_desc_objet'><span>PM : </span>".$objArmureEquipee->PM."</li>";
+											$tmp_overlib .= "<li class='overlib_desc_objet'><span>forcex : </span>".$objArmureEquipee->forcex."</li>";
+											$tmp_overlib .= "</ul>";
+
+											break;
+											
+						case "gemme" :
+						case "objet" :		$tmp_overlib .= "<ul><li>$tmp_stack ".description($objets_tab_new[$objet_info["id_objet"]]["description"], $objets_tab_new[$objet_info["id_objet"]])."</li></ul>";
+											break;
 					}
-					else $rendu_final .= 'Armure équipée : Aucune';
-				break;
-				case 'objet' :
-					$rendu_final .= description($objets2[$id_objet]['description'], $objets2[$id_objet]);
-				break;
+				}
+				if(!empty($tmp_overlib)) { $tmp_overlib = str_replace("'", "\'", trim($tmp_overlib)); $overlib = "onmouseover=\"return overlib('$tmp_overlib', BGCLASS, 'overlib', BGCOLOR, '', FGCOLOR, '');\" onmouseout=\"return nd();\" "; };
+				$objets_liste .= " <li $overlib class='li$class nom'>".$tmp_nom.$tmp_stack.$tmp_slot.$tmp_enchantement."</li>
+								   <li $overlib class='li$class temps'>".transform_min_temp(($objets_tab[$id]["time"] + $mois) - time())."</li>
+								   <li $overlib class='li$class prix'>".number_format($objet["prix"], 0, ".", " ")."</li>
+								   <li class='li$class achat' $tmp_achat_click>$tmp_achat</li>";
+				if($class == 1) { $class = 2; } else { $class = 1; };
 			}
-		$rendu_final .= '
-		</div>';
-			if($color == 1) $color = 2; else $color = 1;
-		$i++;
-	}
-	$rendu_final .= '
-	</table>';
-	echo '
-	<select id="tri" onchange="javascript:envoiInfo(\'hotel.php?poscase='.$W_case.'&amp;type='.$type.'&amp;tri=\' + document.getElementById(\'tri\').value, \'carte\');">
-		<option value=""></option>';
-	foreach($tri as $t)
-	{
-		echo '<option value="'.$t.'">'.$t.'</option>';
-	}
-	?>
-	</select>
-	<div id="info_objet" style="border : 1px solid black;  width : 150px; margin : auto;">
-	</div>
-	<div>
-	<?php
-	echo $rendu_final;
-	?>
-	</div>
-
-	</div>
-
-<?php
+			
+			$url = "onclick=\"envoiInfo('hotel.php?poscase=$W_case&amp;type=$type&amp;tri_champ=";
+			$urlfin = "', 'carte');\"";
+			echo "<ul id='hotel_liste'>
+			       <li class='entete nom' 	".$url."objet".$urlfin.">nom de l&apos;objet"; 	if($ordre["tri_champ"] == "objet") { if($ordre["sens"] == "ASC"){ echo "<img src='./image/asc.png' style='margin-right:-13px;' alt='ASC' />"; } else { echo "<img src='./image/desc.png' style='margin-right:-13px;' alt='DESC' />"; }; }; echo "</li>
+			       <li class='entete temps' ".$url."time".$urlfin.">temps restant"; 		if($ordre["tri_champ"] == "time") { if($ordre["sens"] == "ASC") { echo "<img src='./image/asc.png' style='margin-right:-13px;' alt='ASC' />"; } else { echo "<img src='./image/desc.png' style='margin-right:-13px;' alt='DESC' />"; }; }; echo "</li>
+			       <li class='entete prix' 	".$url."prix".$urlfin.">prix"; 					if($ordre["tri_champ"] == "prix") { if($ordre["sens"] == "ASC") { echo "<img src='./image/asc.png' style='margin-right:-13px;' alt='ASC' />"; } else { echo "<img src='./image/desc.png' style='margin-right:-13px;' alt='DESC' />"; }; }; echo "</li>
+			       <li class='entete achat'>&nbsp;</li>
+			       ".$objets_liste."
+			      </ul>
+			      <div class='spacer'></div>";
+		}
+		else
+		{
+			echo "<p style='text-align:center; font-style:italic;'>aucun objet dans cette cat&eacute;gorie&hellip;</p>
+			      <div class='spacer'></div>";
+		}
+	}	
+	echo "</div>";
 }
 ?>
