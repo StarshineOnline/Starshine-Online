@@ -137,7 +137,6 @@ if (isset($_GET['ID']))
 				}
 			break;
 			case "esprit_libre" :
-					if(array_key_exists("esprit_libre", $joueur["debuff"])) { $effet = $joueur["debuff"]["repos_interieur"]["effet"] + 1; } else { $effet = 1; };
 					//-- Suppression d'un debuff au hasard
 					if(count($joueur["debuff"]) > 0)
 					{
