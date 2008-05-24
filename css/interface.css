@@ -75,7 +75,7 @@ a:hover, a:active 	{ color:#7290db; }
 #map_bord_haut  				{ height:20px !important; cursor:pointer; }
 #map_bord_haut li 				{ float:left; width:60px; height:inherit; line-height:20px; color:white; text-align:center;background:#D8AB41 repeat scroll 0%;}
 #map_bord_haut2 li 				{ float:left; width:60px; height:inherit; line-height:20px; color:white; text-align:center; background:transparent url('../image/bord_map.png') center; }
-#map_bord_haut_gauche  			{ width:20px !important; height:inherit; background:transparent url('../image/royaume_icone.png') center !important; }
+#map_bord_haut_gauche  			{ width:20px !important; height:inherit; background: #D8AB41 url('../image/icone/royaume_icone.png') center !important;}
 #map_bord_haut_gauche2 			{ width:20px !important; height:inherit; background:transparent url('../image/coin_map.png') center !important; }
 #map_bord_haut_gauche:hover		{ background-position:top; }
 #map_bord_haut_gauche:active	{ background-position:bottom; }
