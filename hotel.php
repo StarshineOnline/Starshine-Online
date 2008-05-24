@@ -148,31 +148,34 @@ if($W_distance == 0)
 			$objets_tab_new = array();
 			$tri = array();
 			
+			unset($RqObjet); unset($RqObjet);	//-- Reinitialisation
+			
 			while($arrayObjetsHotel = $db->read_assoc($RqObjetsHotel))
 			{
-				unset($objet_info); unset($RqObjet); unset($RqObjet);	//-- Reinitialisation
-				
+				unset($objet_info);
 				$objet_info = decompose_objet($arrayObjetsHotel["objet"]);		//-- on décompose l'identification de l'objet
+				
 				//-- Recherche des infos des objets a afficher
 				$RqObjet = $db->query("SELECT * FROM ".$objet_info["table_categorie"]." WHERE id=".$objet_info["id_objet"].";");
 				if(mysql_num_rows($RqObjet) > 0)
 				{
 					$arrayObjet = $db->read_assoc($RqObjet);
 
-					if(!in_array($arrayObjetsHotel["type"], $tri)) 	{ $tri[] = $arrayObjet["type"]; };
-					if(empty($_GET["tri"])) 						{ $all = true; } else { $all = false; };
+					if(!in_array($arrayObjet["type"], $tri)) 	{ $tri[] = $arrayObjet["type"]; };
+					if(empty($_GET["tri"]))						{ $all = true; } else { $all = false; };
 					
 					if((array_key_exists("tri", $_GET) AND $_GET["tri"] == $arrayObjet["type"]) OR $all)
 					{
-						$objet_id[] = $objet_info["id_objet"];
+						$objets_tab_new[$arrayObjet["id"]] = $arrayObjet;
 						$objets_tab[$arrayObjetsHotel["id"]] = $arrayObjetsHotel;
 						
+						$objet_id[] = $objet_info["id_objet"];
 						$objet_id_new[] = $arrayObjetsHotel["id"];
-						$objets_tab_new[$arrayObjet["id"]] = $arrayObjet;
 					}
 				}
 			}
 			$class = 1;
+			unset($objet_info);
 			foreach($objet_id_new as $id)
 			{
 				$objet_info = decompose_objet($objets_tab[$id]["objet"]);
@@ -208,12 +211,14 @@ if($W_distance == 0)
 					$tmp_enchantement = "<span class='enchantement' title='Enchantement de ".$objEnchantement->enchantement_nom."'>&nbsp;</span>";
 					$tmp_enchantement2 = "Enchantement de ".$objEnchantement->enchantement_nom;
 				}
-				else { $tmp_enchantement = ""; }
+				else { $tmp_enchantement = ""; };
+				
 				{//-- OVERLIB
 					$tmp_overlib = "";
+					
 					switch($type)
 					{
-						case "arme" :		$RqArme = $db->query("SELECT * FROM `arme` WHERE id=".$objet_info["id_objet"].";");
+						case "arme" :		$RqArme = $db->query("SELECT * FROM arme WHERE id=".sSQL($objet_info["id_objet"]).";");
 											$objArme = $db->read_object($RqArme);
 											$cote_arme = split(";", $objArme->mains);
 											$tmp_overlib .= "<ul><li class='overlib_titres'>Arme &agrave; vendre</li>";
@@ -228,7 +233,7 @@ if($W_distance == 0)
 											if(!empty($tmp_slot2)) { $tmp_overlib .= "<li class='overlib_infos'>$tmp_slot2</li>"; }
 											$tmp_overlib .= "</ul>";
 											
-											if(in_array("main_droite", $cote_arme))
+											if(in_array("main_droite", $cote_arme) && ($joueur["inventaire"]->main_droite != "lock") && ($joueur["inventaire"]->main_droite != "")) 
 											{//-- si elle peut etre porté a droite
 												$main_droite = decompose_objet($joueur["inventaire"]->main_droite);
 												$RqArmeDroite = $db->query("SELECT * FROM `arme` WHERE id=".$main_droite["id_objet"].";");
@@ -244,7 +249,7 @@ if($W_distance == 0)
 												$tmp_overlib .= "<li class='overlib_desc_objet'><span>distance_tir : </span>".$objArmeDroite->distance_tir."</li>";
 												$tmp_overlib .= "</ul>";
 											}
-											if(in_array("main_gauche", $cote_arme))
+											if(in_array("main_gauche", $cote_arme) && ($joueur["inventaire"]->main_gauche != "lock") && ($joueur["inventaire"]->main_gauche != "") )
 											{//-- si elle peut etre porté a gauche
 												$main_gauche = decompose_objet($joueur["inventaire"]->main_gauche);
 												$RqArmeGauche = $db->query("SELECT * FROM `arme` WHERE id=".$main_gauche["id_objet"].";");
@@ -274,17 +279,19 @@ if($W_distance == 0)
 											if(!empty($tmp_slot2)) { $tmp_overlib .= "<li class='overlib_infos'>$tmp_slot2</li>"; }
 											$tmp_overlib .= "</ul>";
 											
-											$armure = decompose_objet($joueur["inventaire"]->$tmp_type);
-											$RqArmureEquipee = $db->query("SELECT * FROM `armure` WHERE id=".$armure["id_objet"].";");
-											$objArmureEquipee = $db->read_object($RqArmureEquipee);
-											$tmp_overlib .= "<ul style='border-top:1px dotted black; margin:5px 0px;'><li class='overlib_titres'>".ucfirst($objArmureEquipee->type)." &eacute;quip&eacute;</li>";
-											$tmp_overlib .= "<li class='overlib_img_objet' style='background-image:url(image/armure/".$objArmureEquipee->type."/".$objArmureEquipee->type.$objArmureEquipee->id.".png);'></li>";
-											$tmp_overlib .= "<li class='overlib_nom_objet'>".$objArmureEquipee->nom."</li>";
-											$tmp_overlib .= "<li class='overlib_desc_objet'><span>PP : </span>".$objArmureEquipee->PP."</li>";
-											$tmp_overlib .= "<li class='overlib_desc_objet'><span>PM : </span>".$objArmureEquipee->PM."</li>";
-											$tmp_overlib .= "<li class='overlib_desc_objet'><span>forcex : </span>".$objArmureEquipee->forcex."</li>";
-											$tmp_overlib .= "</ul>";
-
+											if($joueur["inventaire"]->$tmp_type != "")
+											{
+												$armure = decompose_objet($joueur["inventaire"]->$tmp_type);
+												$RqArmureEquipee = $db->query("SELECT * FROM `armure` WHERE id=".$armure["id_objet"].";");
+												$objArmureEquipee = $db->read_object($RqArmureEquipee);
+												$tmp_overlib .= "<ul style='border-top:1px dotted black; margin:5px 0px;'><li class='overlib_titres'>".ucfirst($objArmureEquipee->type)." &eacute;quip&eacute;</li>";
+												$tmp_overlib .= "<li class='overlib_img_objet' style='background-image:url(image/armure/".$objArmureEquipee->type."/".$objArmureEquipee->type.$objArmureEquipee->id.".png);'></li>";
+												$tmp_overlib .= "<li class='overlib_nom_objet'>".$objArmureEquipee->nom."</li>";
+												$tmp_overlib .= "<li class='overlib_desc_objet'><span>PP : </span>".$objArmureEquipee->PP."</li>";
+												$tmp_overlib .= "<li class='overlib_desc_objet'><span>PM : </span>".$objArmureEquipee->PM."</li>";
+												$tmp_overlib .= "<li class='overlib_desc_objet'><span>forcex : </span>".$objArmureEquipee->forcex."</li>";
+												$tmp_overlib .= "</ul>";
+											}
 											break;
 											
 						case "gemme" :
