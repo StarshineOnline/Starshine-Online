@@ -299,6 +299,8 @@ function sub_script_action($joueur, $ennemi, $mode)
 				}
 				//Réduction des chances d'anticiper si adversaire glacé
 				if($ennemi['etat']['glace_anticipe']['duree'] > 0) $chance_reussite = $chance_reussite * $ennemi['etat']['glace_anticipe']['effet'];
+				//Réduction des chances d'anticiper si adversaire amorphe
+				if($ennemi['debuff']['amorphe']['duree'] > 0) $chance_reussite = $chance_reussite + $ennemi['debuff']['amorphe']['effet'];
 				$rand = rand(0, 100);
 				echo '
 					<div id="debug'.$debugs.'" class="debug">
@@ -408,13 +410,11 @@ function lance_sort($id, $acteur)
 		{
 			$pm = $passif['PM'];
 			if(array_key_exists('bouclier_protecteur', $passif['etat'])) $pm = $pm + ($passif['etat']['bouclier_protecteur']['effet'] * $passif['bouclier_degat']);
-			if(array_key_exists('debuff_desespoir', $passif['debuff'])) $debuff_desespoir = 1 + (($passif['debuff']['debuff_desespoir']['effet']) / 100); else $debuff_desespoir = 1;
 			if(array_key_exists('batiment_pm', $passif['buff'])) $buff_batiment_barriere = 1 + (($passif['buff']['batiment_pm']['effet']) / 100); else $buff_batiment_barriere = 1;
-			if(array_key_exists('buff_forteresse', $passif['buff'])) $buff_forteresse = 1 + (($passif['buff']['buff_forteresse']['effet']) / 100); else $buff_forteresse = 1;
 			if($passif['etat']['posture']['type'] == 'posture_glace') $aura_glace = 1 + (($passif['etat']['posture']['effet']) / 100); else $aura_glace = 1;
 			//Corrompu la nuit
 			if($actif['race'] == 'humainnoir' AND moment_jour() == 'Nuit') $bonus_race = 1.1; else $bonus_race = 1;
-			$PM = $pm * $bonus_race * $aura_glace * $buff_batiment_barriere * $buff_forteresse / $debuff_desespoir;
+			$PM = $pm * $bonus_race * $aura_glace * $buff_batiment_barriere;
 			$potentiel_toucher = round($actif['volonte'] * $potentiel_magique);
 			$potentiel_parer = round($passif['volonte'] * $PM);
 

@@ -229,8 +229,6 @@ function attaque($acteur = 'attaquant', $competence)
       if(array_key_exists('benediction', $passif['etat'])) $buff_bene_bouclier = 1 + (($passif['etat']['benediction']['effet'] * $G_buff['bene_bouclier']) / 100); else $buff_bene_bouclier = 1;
       if(array_key_exists('berzeker', $passif['etat'])) $buff_berz_bouclier = 1 + (($passif['etat']['berzeker']['effet'] * $G_buff['berz_bouclier']) / 100); else $buff_berz_bouclier = 1;
       if(array_key_exists('batiment_pp', $passif['buff'])) $buff_batiment_bouclier = 1 + (($passif['buff']['batiment_pp']['effet']) / 100); else $buff_batiment_bouclier = 1;
-      if(array_key_exists('buff_forteresse', $passif['buff'])) $buff_forteresse = 1 + (($passif['buff']['buff_forteresse']['effet']) / 100); else $buff_forteresse = 1;
-      if(array_key_exists('buff_cri_protecteur', $passif['buff'])) $buff_cri_protecteur = 1 + (($passif['buff']['buff_cri_protecteur']['effet']) / 100); else $buff_cri_protecteur = 1;
       if(array_key_exists('acide', $passif['etat'])) $debuff_acide = 1 + (($passif['etat']['acide']['effet2']) / 100); else $debuff_acide = 1;
       if($passif['etat']['posture']['type'] == 'posture_pierre') $aura_pierre = 1 + (($passif['etat']['posture']['effet']) / 100); else $aura_pierre = 1;
       //Chance de transpercer l'armure
@@ -262,7 +260,7 @@ function attaque($acteur = 'attaquant', $competence)
 				{
 					$degat = $degat * 4;
 				}
-      $PP = round(($passif['PP'] * $buff_bene_bouclier * $buff_batiment_bouclier * $buff_forteresse * $buff_cri_protecteur * $aura_pierre) / ($buff_berz_bouclier * $debuff_acide));
+      $PP = round(($passif['PP'] * $buff_bene_bouclier * $buff_batiment_bouclier * $aura_pierre) / ($buff_berz_bouclier * $debuff_acide));
 
       
       /* Application des effets de PP */

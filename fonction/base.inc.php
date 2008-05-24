@@ -692,6 +692,14 @@ function recupperso($ID)
 				if(array_key_exists('buff_inspiration', $R_perso['buff'])) $R_perso['reserve'] = $R_perso['reserve'] + $R_perso['buff']['buff_inspiration']['effet'];
 				if(array_key_exists('buff_sacrifice', $R_perso['buff'])) $R_perso['reserve'] += $R_perso['buff']['buff_sacrifice']['effet'];
 				if(array_key_exists('longue_portee', $R_perso['buff']) AND $R_perso['arme_type'] == 'arc') $R_perso['arme_distance'] += 1;
+				if(array_key_exists('buff_forteresse', $R_perso['buff']))
+				{
+					$R_perso['PP'] = round($R_perso['PP'] * (1 + (($R_perso['buff']['buff_forteresse']['effet']) / 100)));
+					$R_perso['PM'] = round($R_perso['PM'] * (1 + (($R_perso['buff']['buff_forteresse']['effet2']) / 100)));
+				}
+				if(array_key_exists('buff_cri_protecteur', $R_perso['buff'])) $R_perso['PP'] = round($R_perso * (1 + (($R_perso['buff']['buff_cri_protecteur']['effet']) / 100)));
+				if(array_key_exists('degenerescence', $R_perso['debuff'])) $R_perso['reserve'] = ceil($R_perso['reserve'] / $R_perso['debuff']['degenerescence']['effet']);
+				if(array_key_exists('debuff_desespoir', $R_perso['debuff'])) $R_perso['PM'] = round($R_perso['PM'] / (1 + (($R_perso['debuff']['debuff_desespoir']['effet']) / 100)));
 				$R_perso['coef_melee'] = $R_perso['force'] * $R_perso['melee'];
 				$R_perso['coef_incantation'] = $R_perso['puissance'] * $R_perso['incantation'];
 				$R_perso['coef_distance'] =  round(($R_perso['force'] + $R_perso['dexterite']) / 2) * $R_perso['distance'];
@@ -1058,6 +1066,8 @@ function recupmonstre($ID, $map_monstre = true)
 		if($row['debuff'] == 1) $col = 'debuff'; else $col = 'buff';
 		$R_monstre[$col][$row['type']] = $row;
 	}
+	if(array_key_exists('degenerescence', $R_monstre['debuff'])) $R_monstre['reserve'] = ceil($R_monstre['reserve'] / $R_monstre['debuff']['degenerescence']['effet']);
+	if(array_key_exists('debuff_desespoir', $R_monstre['debuff'])) $R_monstre['PM'] = round($R_monstre['PM'] / (1 + (($R_monstre['debuff']['debuff_desespoir']['effet']) / 100)));
 	$R_monstre['objet_effet'] = array();
 	
 	return $R_monstre;

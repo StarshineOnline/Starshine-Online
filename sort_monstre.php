@@ -53,17 +53,70 @@ if (isset($_GET['ID']))
 						//Mis en place du debuff
 						if(lance_buff($row['type'], $_GET['id_monstre'], $row['effet'], $row['effet2'], ($row['duree'] * 4), $row['nom'], description($row['description'], $row), 'monstre', 1, 0, 0))
 						{
-							echo 'Le sort '.$row['nom'].' a été lancé avec succès<br />';
+							echo 'Le sort '.$row['nom'].' a été lancé avec succès sur '.$cible['nom'].'<br />';
 						}
 						else
 						{
-							echo 'Il bénéficit d\'un débuff plus puissant<br />';
+							echo $cible['nom'].' bénéficit d\'un débuff plus puissant<br />';
 						}
 					}
 					else
 					{
-						echo 'Le '.$cible['nom'].' resiste a votre sort !<br />';
+						echo $cible['nom'].' resiste a votre sort !<br />';
 				 	}
+					//Augmentation des compétences
+					$difficulte_sort = diff_sort($row['difficulte'], $joueur, 'incantation', $sortpa_base, $sortmp_base);
+					$augmentation = augmentation_competence('incantation', $joueur, $difficulte_sort);
+					if ($augmentation[1] == 1)
+					{
+						$joueur['incantation'] = $augmentation[0];
+						echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant a '.$joueur['incantation'].' en incantation</span><br />';
+					}
+					$difficulte_sort = diff_sort($row['difficulte'], $joueur, $row['comp_assoc'], $sortpa_base, $sortmp_base);
+					$augmentation = augmentation_competence($row['comp_assoc'], $joueur, $difficulte_sort);
+					if ($augmentation[1] == 1)
+					{
+						$joueur[$row['comp_assoc']] = $augmentation[0];
+						echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant a '.$joueur[$row['comp_assoc']].' en '.$Gtrad[$row['comp_assoc']].'</span><br />';
+					}
+					//Mis à jour du joueur
+					$requete = "UPDATE perso SET mp = '".$joueur['mp']."', pa = '".$joueur['pa']."', incantation = '".$joueur['incantation']."', ".$row['comp_assoc']." = '".$joueur[$row['comp_assoc']]."' WHERE ID = '".$_SESSION['ID']."'";
+					$req = $db->query($requete);
+				break;
+				case 'maladie_amorphe' :
+					//On selectionne tous les monstres de la case
+					$requete = "SELECT id FROM map_monstre WHERE x = ".$W_case['x']." AND y =".$W_case['y'];
+					$req_monstre = $db->query($requete);
+					while($row_monstre = $db->read_assoc($req_monstre))
+					{
+						$cible = recupmosntre($row_monstre['id']);
+						//Test d'esquive du sort
+						$protecion = $cible['volonte'] * $cible['PM'] / 3;
+						if(array_key_exists('bulle_sanctuaire', $cible['buff'])) $protection *= $cible['buff']['bulle_sanctuaire']['effet'];
+						if(array_key_exists('bulle_dephasante', $cible['buff'])) $protection *= $cible['buff']['bulle_dephasante']['effet'];
+						$attaque = rand(0, ($joueur['volonte'] * $joueur[$row['comp_assoc']]));
+						$defense = rand(0, $protection);
+						$joueur['pa'] = $joueur['pa'] - $sortpa;
+						$joueur['mp'] = $joueur['mp'] - $sortmp;
+						if ($attaque > $defense)
+						{
+							$duree = $row['duree'];
+							if(array_key_exists('souffrance_extenuante', $joueur['buff'])) $duree = $duree * $joueur['buff']['buff_souffrance_extenuante']['effet'];
+							//Mis en place du debuff
+							if(lance_buff($row['type'], $_GET['id_monstre'], $row['effet'], $row['effet2'], ($duree * 4), $row['nom'], description($row['description'], $row), 'monstre', 1, 0, 0))
+							{
+								echo 'Le sort '.$row['nom'].' a été lancé avec succès sur '.$row['cible'].'<br />';
+							}
+							else
+							{
+								echo $cible['nom'].' bénéficit d\'un debuff plus puissant<br />';
+							}
+						}
+						else
+						{
+							echo $cible['nom'].' resiste a votre sort !<br />';
+			 			}
+			 		}
 					//Augmentation des compétences
 					$difficulte_sort = diff_sort($row['difficulte'], $joueur, 'incantation', $sortpa_base, $sortmp_base);
 					$augmentation = augmentation_competence('incantation', $joueur, $difficulte_sort);

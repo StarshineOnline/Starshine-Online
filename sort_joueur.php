@@ -126,7 +126,7 @@ if (isset($_GET['ID']))
 						//Mis en place du debuff
 						if(lance_buff($row['type'], $_GET['id_joueur'], $row['effet'], $row['effet2'], $duree, $row['nom'], description($row['description'], $row), 'perso', 1, 0, 0))
 						{
-							echo 'Le sort '.$row['nom'].' a été lancé avec succès<br />';
+							echo 'Le sort '.$row['nom'].' a été lancé avec succès sur '.$cible['nom'].'<br />';
 							//Insertion du debuff dans les journaux des 2 joueurs
 							$requete = "INSERT INTO journal VALUES('', ".$joueur['ID'].", 'debuff', '".$joueur['nom']."', '".$cible['nom']."', NOW(), '".$row['nom']."', 0, ".$joueur['x'].", ".$joueur['y'].")";
 							$db->query($requete);
@@ -135,12 +135,12 @@ if (isset($_GET['ID']))
 						}
 						else
 						{
-							echo 'Il bénéficit d\'un debuff plus puissant<br />';
+							echo $cible['nom'].' bénéficit d\'un debuff plus puissant<br />';
 						}
 					}
 					else
 					{
-						echo 'Le '.$cible['nom'].' resiste a votre sort !<br />';
+						echo $cible['nom'].' resiste a votre sort !<br />';
 				 	}
 					//Augmentation des compétences
 					$difficulte_sort = diff_sort($row['difficulte'], $joueur, 'incantation', $sortpa_base, $sortmp_base);
@@ -185,7 +185,7 @@ if (isset($_GET['ID']))
 								//Mis en place du debuff
 								if(lance_buff($row['type'], $_GET['id_joueur'], $row['effet'], $row['effet2'], $duree, $row['nom'], description($row['description'], $row), 'perso', 1, 0, 0))
 								{
-									echo 'Le sort '.$row['nom'].' a été lancé avec succès<br />';
+									echo 'Le sort '.$row['nom'].' a été lancé avec succès sur '.$cible['nom'].'<br />';
 									//Insertion du debuff dans les journaux des 2 joueurs
 									$requete = "INSERT INTO journal VALUES('', ".$joueur['ID'].", 'debuff', '".$joueur['nom']."', '".$cible['nom']."', NOW(), '".$row['nom']."', 0, ".$joueur['x'].", ".$joueur['y'].")";
 									$db->query($requete);
@@ -194,12 +194,12 @@ if (isset($_GET['ID']))
 								}
 								else
 								{
-									echo 'Il bénéficit d\'un debuff plus puissant<br />';
+									echo $cible['nom'].' bénéficit d\'un debuff plus puissant<br />';
 								}
 							}
 							else
 							{
-								echo 'Le '.$cible['nom'].' resiste a votre sort !<br />';
+								echo $cible['nom'].' resiste a votre sort !<br />';
 				 			}
 			 			}
 			 		}
