@@ -58,7 +58,7 @@ a:hover, a:active 	{ color:#7290db; }
 #rose_div_bd 	{ background:transparent url('../../image/rosedesvent/sudest.png') center; width:25px; height:25px; cursor:pointer; float:left; }
 
 /*-- Overlib ----------------------------------------------------------*/
-.overlib						{ background:transparent url('../image/1.png') center; border:1px solid #000000; -moz-border-radius:5px; min-width:250px; }
+.overlib						{ background:transparent url('../image/1.png') center; border:1px solid #000000; -moz-border-radius:5px;-webkit-border-radius :5px; min-width:250px; }
 .overlib ul						{ clear:both; position:relative; }
 .overlib_titres					{ text-align:center; font-weight:bold; color:black; }
 .overlib_batiments span			{ font-weight:bold; color:black; }
@@ -571,7 +571,7 @@ width : 33%;
 font-size : 0.8em;
 text-align : center;
 vertical-align : top;
-background-image:url('../image/1.png');
+background-image:url('../image/interface1.png');
 -moz-border-radius : 9px;
 -webkit-border-radius : 9px;
 color : #222;
@@ -592,7 +592,7 @@ border : 1px solid #FFF;
 	position: absolute;
 	top: 250px;
 	right: 150px;
-	background-image:url('../image/1.png');
+	background-image:url('../image/interface/1.png');
 	border: 1px solid #000000;
 	font-size:12px;
 	width: 150px;
@@ -823,8 +823,6 @@ ul.onglet-hotel li
 	-webkit-border-radius : 10px;
 	background-color : #91AEF2;
 	padding: 4px;
-	background : url('../image/testbg.jpg');
-	
 }
 .achat {
 	font-style : italic;
@@ -955,7 +953,6 @@ ul.onglet-hotel li
 .admin tr td ul li
 {
 	margin : 0px;
-	list-style-image: url('../image/arrow.gif');
 }
 .adminListing
 {
