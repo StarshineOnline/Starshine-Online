@@ -67,7 +67,7 @@ while($W_row = $db->read_array($W_query))
 	// on envois dans infojoueur.php -> ID du joueur et La position de la case ou il se trouve
 	if ($W_hp <= 0)
 	{
-		echo '<img src="image/mort.png" alt="Mort" title="Le personnage est mort" style="vertical-align : top;" /> ';
+		echo '<img src="image/interface/mort.png" alt="Mort" title="Le personnage est mort" style="vertical-align : top;" /> ';
 	}
 	else
 	{
@@ -113,7 +113,7 @@ while($W_row = $db->read_array($W_query))
 //	</div>';
 	if ($W_ID != $_SESSION['ID'])
 	{
-		echo ' <td width="10%"><a href="javascript:envoiInfo(\'envoimessage.php?ID='.$W_ID.'\', \'information\')"><img src="image/message.png" title="Envoyer un message" /></a></td>';
+		echo ' <td width="10%"><a href="javascript:envoiInfo(\'envoimessage.php?ID='.$W_ID.'\', \'information\')"><img src="image/interface/message.png" title="Envoyer un message" /></a></td>';
 		if($joueur['sort_jeu'] != '') echo '<td width="10%"> <a href="javascript:envoiInfo(\'sort_joueur.php?poscase='.$W_case.'&amp;id_joueur='.$W_ID.'\', \'information\')"><img src="image/sort_hc_icone.png" title="Lancer un sort" alt="Lancer un sort" /></a></td>';
 		if($row_diplo[0] <= 5 OR array_key_exists(5, $mybonus)) echo '<td width="10%"> <a href="javascript:envoiInfo(\'echange.php?poscase='.$W_case.'&amp;id_joueur='.$W_ID.'\', \'information\')"><img src="image/icone/echanger.png" alt="Echanger" title="Echanger" /></a></td>';
 	}
@@ -210,7 +210,7 @@ if($num_rows > 0)
 		$row_b = $db->read_assoc($req);
 		$Royaume = get_royaume_info($joueur['race'], $W_row['royaume']);
 		echo '<span onmousemove="afficheInfo(\'infob_'.$W_row['id'].'\', \'block\', event, \'centre\');" onmouseout="afficheInfo(\'infob_'.$W_row['id'].'\', \'none\', event, \'centre\');">'.$row_b['nom'].' '.$Gtrad[$Royaume['race']].'</span> - HP : '.$W_row['hp'];
-		if($joueur['race'] != $Royaume['race'] AND !array_key_exists('repos_sage', $joueur['debuff'])) echo  ' <a href="javascript:envoiInfo(\'attaque_monstre.php?ID='.$W_row['id'].'&amp;type=batiment&amp;table=placement&amp;poscase='.$W_case.'\', \'information\')"><img src="image/attaquer.png" alt="Combattre" style="vertical-align : middle;" /> Attaquer <span class="xsmall">('.($G_PA_attaque_batiment - $reduction_pa).' PA)</a>';
+		if($joueur['race'] != $Royaume['race'] AND !array_key_exists('repos_sage', $joueur['debuff'])) echo  ' <a href="javascript:envoiInfo(\'attaque_monstre.php?ID='.$W_row['id'].'&amp;type=batiment&amp;table=placement&amp;poscase='.$W_case.'\', \'information\')"><img src="image/interface/attaquer.png" alt="Combattre" style="vertical-align : middle;" /> Attaquer <span class="xsmall">('.($G_PA_attaque_batiment - $reduction_pa).' PA)</a>';
 		echo '<br />
 		<div class="jsinformation_case" id="infob_'.$W_row['id'].'">
 			'.transform_sec_temp($W_row['fin_placement'] - time()).' avant fin de construction 
@@ -243,7 +243,7 @@ if($num_rows > 0)
 		echo ' '.$nom;
 		echo ' '.$Gtrad[$Royaume['race']].' - HP : '.$W_row['hp'];
 		echo '</span>';
-		if($joueur['race'] != $Royaume['race']) echo  ' <a href="javascript:envoiInfo(\'attaque_monstre.php?ID='.$W_row['id'].'&amp;type=batiment&amp;table=construction&poscase='.$W_case.'\', \'information\')"><img src="image/attaquer.png" alt="Combattre" style="vertical-align : middle;" /> Attaquer <span class="xsmall">('.($G_PA_attaque_batiment - $reduction_pa).' PA)</a>';
+		if($joueur['race'] != $Royaume['race']) echo  ' <a href="javascript:envoiInfo(\'attaque_monstre.php?ID='.$W_row['id'].'&amp;type=batiment&amp;table=construction&poscase='.$W_case.'\', \'information\')"><img src="image/interface/attaquer.png" alt="Combattre" style="vertical-align : middle;" /> Attaquer <span class="xsmall">('.($G_PA_attaque_batiment - $reduction_pa).' PA)</a>';
 		echo '<br />
 		<div class="jsinformation_case"  id="infob_'.$W_row['id'].'">
 			'.$row_b['description'].'
@@ -283,7 +283,7 @@ while($W_row = $db->read_array($W_query))
 			&nbsp;&nbsp;&nbsp;<span style="color : '.$color.'; font-weight : '.$strong.'">'.$W_nom.'</span>
 		</td>
 		<td width="30%">';
-		if(!array_key_exists('repos_sage', $joueur['debuff'])) echo '<a href="javascript:envoiInfo(\'attaque_monstre.php?ID='.$W_ID.'&poscase='.$W_case.'\', \'information\')"><img src="image/attaquer.png" alt="Combattre" style="vertical-align : middle;" /> Attaquer <span class="xsmall">('.($G_PA_attaque_monstre - $reduction_pa).' PA)</span></a>';
+		if(!array_key_exists('repos_sage', $joueur['debuff'])) echo '<a href="javascript:envoiInfo(\'attaque_monstre.php?ID='.$W_ID.'&poscase='.$W_case.'\', \'information\')"><img src="image/interface/attaquer.png" alt="Combattre" style="vertical-align : middle;" /> Attaquer <span class="xsmall">('.($G_PA_attaque_monstre - $reduction_pa).' PA)</span></a>';
 		echo ' <a href="javascript:envoiInfo(\'info_monstre.php?ID='.$W_ID.'&poscase='.$W_case.'\', \'information\')"><img src="image/icone/mobinfo.png" alt="Voir informations sur le monstre" title="Voir informations sur le monstre" style="vertical-align : middle;" /></a>';
 		if($joueur['sort_jeu'] != '') echo ' <a href="javascript:envoiInfo(\'sort_monstre.php?poscase='.$W_case.'&amp;id_monstre='.$W_ID.'\', \'information\')"><img src="image/sort_hc_icone.png" title="Lancer un sort" alt="Lancer un sort" style="vertical-align : middle;" /></a>';
 	echo '

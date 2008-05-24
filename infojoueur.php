@@ -81,7 +81,7 @@ $W_distance = detection_distance($W_case, $_SESSION["position"]);
 if (($perso['ID'] != $_SESSION['ID']))
 {
 	echo '<tr><td><img src="image/message.png" title="Envoyer un message" /></td><td><a href="javascript:envoiInfo(\'envoimessage.php?ID='.$W_ID.'\', \'information\')">Envoyer un message</a></td></tr>';
-	if($perso['hp'] > 0 AND !array_key_exists('repos_sage', $joueur['debuff'])) echo '<tr><td><img src="image/attaquer.png" alt="Combattre" style="vertical-align : middle;" /></td><td><a href="javascript:envoiInfo(\'attaque.php?ID='.$W_ID.'&amp;poscase='.$W_case.'\', \'information\')"> Attaquer</a><span class="xsmall"> ('.($G_PA_attaque_joueur - $reduction_pa).' PA)</span></td></tr>';
+	if($perso['hp'] > 0 AND !array_key_exists('repos_sage', $joueur['debuff'])) echo '<tr><td><img src="image/interface/attaquer.png" alt="Combattre" style="vertical-align : middle;" /></td><td><a href="javascript:envoiInfo(\'attaque.php?ID='.$W_ID.'&amp;poscase='.$W_case.'\', \'information\')"> Attaquer</a><span class="xsmall"> ('.($G_PA_attaque_joueur - $reduction_pa).' PA)</span></td></tr>';
 }
 if($joueur['sort_jeu'] != '')
 {
