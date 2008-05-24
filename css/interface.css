@@ -58,12 +58,17 @@ a:hover, a:active 	{ color:#7290db; }
 #rose_div_bd 	{ background:transparent url('../../image/rosedesvent/sudest.png') center; width:25px; height:25px; cursor:pointer; float:left; }
 
 /*-- Overlib ----------------------------------------------------------*/
-.overlib						{ background:transparent url('../image/1.png') center; border:1px solid #000000; -moz-border-radius:5px; min-width:150px; }
+.overlib						{ background:transparent url('../image/1.png') center; border:1px solid #000000; -moz-border-radius:5px; min-width:250px; }
+.overlib ul						{ clear:both; position:relative; }
 .overlib_titres					{ text-align:center; font-weight:bold; color:black; }
 .overlib_batiments span			{ font-weight:bold; color:black; }
 .overlib_joueurs span			{ font-weight:bold; color:#6633FF; }
 .overlib_monstres span			{ font-weight:bold; color:#CC3300; }
-.overlib_infos					{ font-size:7pt; font-style:italic; color:black; margin-top:10px; text-align:center; }
+.overlib_infos					{ clear:both; font-size:7pt; font-style:italic; color:black; margin-top:10px; text-align:center; }
+.overlib_img_objet				{ position:absolute;left:-5px; top:-2px; width:50px; height:55px; background-position:center center; background-repeat:no-repeat; }
+.overlib_nom_objet				{ float:right; width:200px; font-style:italic; }
+.overlib_desc_objet				{ float:right; width:200px;  }
+.overlib_desc_objet span		{ float:left; width:75px;  }
 
 /*-- Map --------------------------------------------------------------*/
 #carte							{ width:440px; height:440px; float:left; margin:0px;clear:both; z-index:500; }
@@ -85,6 +90,28 @@ a:hover, a:active 	{ color:#7290db; }
 /*-- Weather ----------------------------------------------------------*/
 #moment_jour { position:absolute; top:0px; left:0px; z-index:-1; width:960px; height:140px; background:transparent url('../../image/weather/matin5.jpg') bottom center no-repeat; }
 
+
+/*-- Ville ------------------------------------------------------------*/
+.ville_message			{ width:100%; text-align:center; }
+.message_rouge			{ font-weight:bold; color:red; }
+.message_vert			{ font-weight:bold; color:green; }
+/*-- Hôtel des ventes -------------------------------------------------*/
+#hotel_liste_type ul	{ width:100%; }
+#hotel_liste_type li	{ display:inline; cursor:pointer; }
+
+#hotel_liste 			{ width:100%; text-align:left; font-variant:normal; }
+#hotel_liste .li1 		{ cursor:default; float:left; font-weight:normal; text-align:center !important; line-height:14pt; }
+#hotel_liste .li2 		{ cursor:default;  float:left; font-weight:normal; text-align:center !important; background-color:#ADC2F5; line-height:14pt; }
+#hotel_liste .entete 	{ cursor:pointer; font-size:10pt !important; font-weight:bold; background-image:none !important; }
+#hotel_liste .nom 		{ float:left; width:165px; text-align:left !important; clear:both; }
+#hotel_liste .temps 	{ float:left; width:90px; text-align:right !important; font-size:8pt; }
+#hotel_liste .prix 		{ float:left; width:75px; text-align:right !important; background-image:url('../image/stars_16.png'); background-position:right; background-repeat:no-repeat; padding-right:18px; }
+#hotel_liste .achat 	{ cursor:pointer; float:left; width:60px; text-align:right !important; font-variant:small-caps; font-weight:bold; }
+#hotel_liste .achat:hover 	{ color:#63A4EB; }
+#hotel_liste .achat:active 	{ color:#A062EC; }
+.slot					{ float:right; margin-top:-16px; width:11px; height:16px; background:transparent url('../image/groupes/vert.png') center left no-repeat; text-align:center; line-height:15px; color:black; font-size:6pt; }
+.noslot					{ float:right; margin-top:-16px; width:11px; height:16px; background:transparent url('../image/groupes/noir.png') center left no-repeat; }
+.enchantement			{ float:right; margin-top:-16px; width:11px; height:16px; background:transparent url('../image/groupes/bleu.png') center left no-repeat; }
 
 /***************************************************
   Vrac
@@ -648,9 +675,9 @@ ul.ville li:hover
 	font-weight : bold;
 	text-align: center;
 	height : 25px;
-	margin-left : 2px;
-	margin-right : 3px;
-	margin-top : 0;
+	margin-left : -2px;
+	margin-right : -2px;
+	margin-top : -2px;
 }
 table.marchand, table.inventaire
 {
