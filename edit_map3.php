@@ -453,12 +453,12 @@ $req = $db->query($requete);
 				</optgroup>
 				<optgroup label="Ville">
 					<option value="1001" class="baseRow1">Ville humaine</option>
-					<option value="1002" class="baseRow1">capitale humaine haut gauche</option>
-					<option value="1003" class="baseRow1">capitale humaine haut centre</option>
-					<option value="1004" class="baseRow1">capitale humaine haut droit</option>
-					<option value="1005" class="baseRow1">capitale humaine bas gauche</option>
-					<option value="1006" class="baseRow1">capitale humaine entrée</option>
-					<option value="1007" class="baseRow1">capitale humaine bas droite</option>
+					<option value="1002" class="baseRow1">capitale defaut haut gauche</option>
+					<option value="1003" class="baseRow1">capitale defaut haut centre</option>
+					<option value="1004" class="baseRow1">capitale defaut haut droit</option>
+					<option value="1005" class="baseRow1">capitale defaut bas gauche</option>
+					<option value="1006" class="baseRow1">capitale defaut entrée</option>
+					<option value="1007" class="baseRow1">capitale defaut bas droite</option>
 					<option value="1008" class="baseRow1">cimetiere</option>
 					<option value="1009" class="baseRow1">capitale vampire haut gauche</option>
 					<option value="1010" class="baseRow1">capitale vampire haut centre</option>
@@ -508,6 +508,18 @@ $req = $db->query($requete);
 					<option value="1054" class="baseRow1">capitale Edb</option>
 					<option value="1055" class="baseRow1">capitale Edb</option>
 					<option value="1056" class="baseRow1">capitale Edb</option>
+					<option value="1057" class="baseRow1">capitale con</option>
+					<option value="1058" class="baseRow1">capitale con</option>
+					<option value="1059" class="baseRow1">capitale con</option>
+					<option value="1060" class="baseRow1">capitale con</option>
+					<option value="1061" class="baseRow1">capitale con</option>
+					<option value="1062" class="baseRow1">capitale con</option>
+					<option value="1063" class="baseRow1">capitale hum</option>
+					<option value="1064" class="baseRow1">capitale hum</option>
+					<option value="1065" class="baseRow1">capitale hum</option>
+					<option value="1066" class="baseRow1">capitale hum</option>
+					<option value="1067" class="baseRow1">capitale hum</option>
+					<option value="1068" class="baseRow1">capitale hum</option>
 				</optgroup>
 				<optgroup label="Donjon">
 					<option value="1601" class="baseRow1">Mur</option>
