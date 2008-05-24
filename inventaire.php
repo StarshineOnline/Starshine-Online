@@ -502,7 +502,7 @@ if(!$visu AND isset($_GET['action']))
 						supprime_objet($joueur, $joueur['inventaire_slot'][$_GET['key_slot']], 1);
 						$requete = "UPDATE perso SET star = star - ".$comm." WHERE ID = ".$joueur['ID'];
 						$req = $db->query($requete);
-						$requete = "INSERT INTO hotel VALUES ('', '".$objet_id."', ".$joueur['ID'].", ".sSQL($_GET['prix']).", 1, '".$R['race']."', ".time().")";
+						$requete = "INSERT INTO hotel VALUES (NULL, '".$objet_id."', ".$joueur['ID'].", ".sSQL($_GET['prix']).", 1, '".$R['race']."', ".time().")";
 						$req = $db->query($requete);
 						$requete = 'UPDATE royaume SET star = star + '.$comm.' WHERE ID = '.$R['ID'];
 						$db->query($requete);
