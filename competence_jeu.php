@@ -29,7 +29,14 @@ if (isset($_GET['ID']))
 	{
 		switch($row['type'])
 		{
-			case 'buff_forteresse' : case 'buff_position' : case 'rapide_vent' : case 'renouveau_energetique' : case 'longue_portee' : case 'fleche_tranchante' : case 'oeil_chasseur' : case 'renouveau_energique' :
+			case 'buff_forteresse' : 
+			case 'buff_position' : 
+			case 'rapide_vent' : 
+			case 'renouveau_energetique' : 
+			case 'longue_portee' : 
+			case 'fleche_tranchante' : 
+			case 'oeil_chasseur' : 
+			case 'renouveau_energique' :
 				foreach($cibles as $cible)
 				{
 					$cible_s = recupperso($cible);
@@ -57,7 +64,14 @@ if (isset($_GET['ID']))
 					$db->query($requete);
 				}
 			break;
-			case 'buff_cri_bataille' : case 'buff_cri_victoire' : case 'buff_cri_rage' : case 'buff_cri_detresse' : case 'buff_cri_protecteur' : case 'preparation_camp' : case 'fouille_gibier' : case 'recherche_precieux' :
+			case 'buff_cri_bataille' : 
+			case 'buff_cri_victoire' : 
+			case 'buff_cri_rage' : 
+			case 'buff_cri_detresse' : 
+			case 'buff_cri_protecteur' : 
+			case 'preparation_camp' : 
+			case 'fouille_gibier' : 
+			case 'recherche_precieux' :
 				if($groupe_joueur)
 				{
 					$cibles = array();
@@ -121,6 +135,33 @@ if (isset($_GET['ID']))
 						echo '<a href="javascript:envoiInfo(\'competence_jeu.php?ID='.$_GET['ID'].'\', \'information\')">Utilisez a nouveau cette compétence</a>';
 					}
 				}
+			break;
+			case "esprit_libre" :
+					if(array_key_exists("esprit_libre", $joueur["debuff"])) { $effet = $joueur["debuff"]["repos_interieur"]["effet"] + 1; } else { $effet = 1; };
+					//-- Suppression d'un debuff au hasard
+					if(count($joueur["debuff"]) > 0)
+					{
+						if(count($joueur["debuff"] == 1) && !array_key_exists("debuff_rez", $joueur["debuff"]) )
+						{
+							$joueur["pa"] = $joueur["pa"] - $sortpa;
+							$joueur["mp"] = $joueur["mp"] - $sortmp;
+						
+							$debuff_tab = array();
+							foreach($joueur["debuff"] as $debuff)
+							{
+								if($debuff["nom"] != "rez") { $debuff_tab[count($debuff_tab)] = $debuff["id"]; };
+							}
+							$db->query("DELETE FROM buff WHERE id=".$debuff_tab[rand(0, count($debuff_tab))].";");
+						}
+						else { echo "Impossible de lancer de lancer le sort. Vous ne pouvez supprimer le mal de r&eacute;surection.<br/>"; };
+					}
+					else { echo "Impossible de lancer de lancer le sort. Vous n&apos;avez aucune debuff.<br/>"; };
+						
+					//-- Mis à jour du joueur
+					$requete = "UPDATE perso SET mp='".$joueur["mp"]."', pa='".$joueur["pa"]."' WHERE ID='".$_SESSION["ID"]."'";
+					$req = $db->query($requete);
+					echo "<a href=\"javascript:envoiInfo('competence_jeu.php?ID=".$_GET["ID"]."', 'information')\">Utilisez a nouveau cette compétence</a>";
+					
 			break;
 		}
 	}
