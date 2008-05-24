@@ -52,14 +52,9 @@ class db
 	Il initialise les variables internes suivantes : lnk, type, string_type, nb_query.
 	La variable $cfg doit avoir été déclarer en global précédemment.
 	*/
-	function db()
+	function db($cfg)
 	{
-		if( array_key_exists("cfg", $GLOBALS) && is_array($GLOBALS["cfg"]) )
-		global $cfg;
-		else
-		exit("SQL.conf file doesn't exist");
-
-		$this->lnk = @mysql_connect($cfg["sql"]["host"].":".$cfg["sql"]["port"], $cfg["sql"]["user"], $cfg["sql"]["pass"], false, MYSQL_CLIENT_COMPRESS) or die("Le serveur de données est en cours de mise à jour ...<br />Merci de revenir dans quelques minutes ...");
+		$this->lnk = @mysql_connect($cfg["sql"]["host"].":".$cfg["sql"]["port"], $cfg["sql"]["user"], $cfg["sql"]["pass"], true, MYSQL_CLIENT_COMPRESS) or die("Le serveur de données est en cours de mise à jour ...<br />Merci de revenir dans quelques minutes ...");
 		@mysql_select_db($cfg["sql"]["db"], $this->lnk) or die("La base de données est en cours de mise à jour ...<br />Merci de revenir dans quelques minutes ...");
 
 		// initialisation des variables par défaut

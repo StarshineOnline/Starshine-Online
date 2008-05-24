@@ -3,6 +3,7 @@ include('inc/fp.php');
 $joueur = recupperso($_SESSION['ID']);
 $tab_sort_jeu = explode(';', $joueur['sort_jeu']);
 $W_case = $_GET['poscase'];
+$coord = convert_in_coord($W_case);
 $W_distance = detection_distance($W_case, $_SESSION["position"]);
 ?>
 <h2>Livre de Sorts</h2>
@@ -85,11 +86,11 @@ if (isset($_GET['ID']))
 				break;
 				case 'maladie_amorphe' :
 					//On selectionne tous les monstres de la case
-					$requete = "SELECT id FROM map_monstre WHERE x = ".$W_case['x']." AND y =".$W_case['y'];
+					$requete = "SELECT id FROM map_monstre WHERE x = ".$coord['x']." AND y = ".$coord['y'];
 					$req_monstre = $db->query($requete);
 					while($row_monstre = $db->read_assoc($req_monstre))
 					{
-						$cible = recupmosntre($row_monstre['id']);
+						$cible = recupmonstre($row_monstre['id']);
 						//Test d'esquive du sort
 						$protecion = $cible['volonte'] * $cible['PM'] / 3;
 						if(array_key_exists('bulle_sanctuaire', $cible['buff'])) $protection *= $cible['buff']['bulle_sanctuaire']['effet'];
@@ -105,7 +106,7 @@ if (isset($_GET['ID']))
 							//Mis en place du debuff
 							if(lance_buff($row['type'], $_GET['id_monstre'], $row['effet'], $row['effet2'], ($duree * 4), $row['nom'], description($row['description'], $row), 'monstre', 1, 0, 0))
 							{
-								echo 'Le sort '.$row['nom'].' a été lancé avec succès sur '.$row['cible'].'<br />';
+								echo 'Le sort '.$row['nom'].' a été lancé avec succès sur '.$cible['nom'].'<br />';
 							}
 							else
 							{

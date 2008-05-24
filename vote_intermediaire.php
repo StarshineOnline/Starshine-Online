@@ -74,10 +74,11 @@ if(date("d") == 1)
 	$groupe['mortvivant'][0] = 16;
 	$groupe['mortvivant'][1] = 18;
 	
+	require('connect_forum.php');
 	foreach($groupe as $group)
 	{
 		$requete = "UPDATE punbbusers SET group_id = ".$group[0]." WHERE group_id = ".$group[1];
-		$db->query($requete);
+		$db_forum->query($requete);
 	}
 	$requete = "UPDATE perso SET rang_royaume = 7 WHERE rang_royaume = 6";
 	$db->query($requete);

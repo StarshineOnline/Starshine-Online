@@ -163,8 +163,16 @@ if (isset($_GET['ID']))
 				break;
 				case 'maladie_amorphe' :
 					$adversaire = recupperso($_GET['id_joueur']);
-					$cible_s = recup_groupe($adversaire['groupe'], 'all');
-					$cibles = $cibles_s['membre'];
+					$adversaire['id_joueur'] = $adversaire['ID'];
+					if($adversaire['groupe'] != 0)
+					{
+						$cible_s = recupgroupe($adversaire['groupe'], 'all');
+						$cibles = $cibles_s['membre'];
+					}
+					else
+					{
+						$cibles[] = $adversaire;
+					}
 					foreach($cibles as $cible)
 					{
 						if($cible['distance'] <= 7)

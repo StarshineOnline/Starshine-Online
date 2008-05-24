@@ -130,7 +130,7 @@ $req = $db->query($requete);
 			'.$type_terrain.'
 		</td>
 		<td>
-			<a href="edit_monstre_action.php?id_monstre='.$row['id'].'">Modifier Script d\'action</a> / <a href="edit_monstre_drop.php?id_monstre='.$row['id'].'">Modifier drops</a>
+			<a href="edit_monstre_action.php?id_monstre='.$row['id'].'">Modifier Script d\'action</a> / <a href="edit_monstre_drop.php?id_monstre='.$row['id'].'">Modifier drops</a> / <a href="edit_monstre_pop.php?id_monstre='.$row['id'].'">Modifier spawn</a>
 		</td>
 	</tr>';
 		$i++;

@@ -9,6 +9,6 @@ $cfg["sql"]['encoding'] = "utf8";
 // Paramètres locaux, à ne pas mettre dans le SVN
 //if (file_exists('connect.local.php')) include_once('connect.local.php');
 
-$db = new db();
+$db = new db($cfg);
 
 ?>

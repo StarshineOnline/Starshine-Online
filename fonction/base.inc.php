@@ -52,7 +52,7 @@ function calcul_distance_pytagore($posjoueur1, $posjoueur2)
 
 function is_donjon($x, $y)
 {
-	if($x > 190 OR $y > 190)
+	if($x > 150 OR $y > 150)
 	{
 		return true;
 	}
@@ -698,7 +698,7 @@ function recupperso($ID)
 					$R_perso['PM'] = round($R_perso['PM'] * (1 + (($R_perso['buff']['buff_forteresse']['effet2']) / 100)));
 				}
 				if(array_key_exists('buff_cri_protecteur', $R_perso['buff'])) $R_perso['PP'] = round($R_perso * (1 + (($R_perso['buff']['buff_cri_protecteur']['effet']) / 100)));
-				if(array_key_exists('degenerescence', $R_perso['debuff'])) $R_perso['reserve'] = ceil($R_perso['reserve'] / $R_perso['debuff']['degenerescence']['effet']);
+				if(array_key_exists('maladie_degenerescence', $R_perso['debuff'])) $R_perso['reserve'] = ceil($R_perso['reserve'] / $R_perso['debuff']['maladie_degenerescence']['effet']);
 				if(array_key_exists('debuff_desespoir', $R_perso['debuff'])) $R_perso['PM'] = round($R_perso['PM'] / (1 + (($R_perso['debuff']['debuff_desespoir']['effet']) / 100)));
 				$R_perso['coef_melee'] = $R_perso['force'] * $R_perso['melee'];
 				$R_perso['coef_incantation'] = $R_perso['puissance'] * $R_perso['incantation'];
@@ -1066,7 +1066,7 @@ function recupmonstre($ID, $map_monstre = true)
 		if($row['debuff'] == 1) $col = 'debuff'; else $col = 'buff';
 		$R_monstre[$col][$row['type']] = $row;
 	}
-	if(array_key_exists('degenerescence', $R_monstre['debuff'])) $R_monstre['reserve'] = ceil($R_monstre['reserve'] / $R_monstre['debuff']['degenerescence']['effet']);
+	if(array_key_exists('maladie_degenerescence', $R_monstre['debuff'])) $R_monstre['reserve'] = ceil($R_monstre['reserve'] / $R_monstre['debuff']['maladie_degenerescence']['effet']);
 	if(array_key_exists('debuff_desespoir', $R_monstre['debuff'])) $R_monstre['PM'] = round($R_monstre['PM'] / (1 + (($R_monstre['debuff']['debuff_desespoir']['effet']) / 100)));
 	$R_monstre['objet_effet'] = array();
 	

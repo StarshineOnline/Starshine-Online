@@ -548,11 +548,12 @@ $groupe['vampire'][2] = 37;
 //Si on est le premier, élection du roi de chaque race
 if(date("d") == 1)
 {	
+	require('connect_forum.php');
 	//Suppression des anciens rois
 	foreach($groupe as $group)
 	{
 		$requete = "UPDATE punbbusers SET group_id = ".$group[0]." WHERE group_id = ".$group[1];
-		$db->query($requete);
+		$db_forum->query($requete);
 	}
 	$requete = "UPDATE perso SET rang_royaume = 7 WHERE rang_royaume = 6";
 	$db->query($requete);
@@ -584,8 +585,7 @@ if(date("d") == 1)
 					$requete = "UPDATE perso SET rang_royaume = 6 WHERE ID = ".$row_c['ID'];
 					$db->query($requete);
 					$requete = "UPDATE punbbusers SET group_id = ".$groupe[$row_c['race']][1]." WHERE username = '".$row_c['nom']."'";
-					$db->query($requete);
-					
+					$db_forum->query($requete);
 				}
 				$data[] = $row_v['count'];
 				$legend[] = $row_c['nom'].'('.$row_v['count'].')';

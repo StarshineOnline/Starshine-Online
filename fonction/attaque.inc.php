@@ -150,6 +150,7 @@ function attaque($acteur = 'attaquant', $competence)
       if(array_key_exists('fleche_tranchante', $actif['buff'])) $degat += $actif['buff']['fleche_tranchante']['effet'];
       if(array_key_exists('oeil_chasseur', $actif['buff']) AND $passif['espece'] == 'bete') $degat += $actif['buff']['oeil_chasseur']['effet'];
       $degat = $degat + $buff_bene_degat + $buff_berz_degat + $buff_berz_degat_r + $buff_force + $buff_cri_victoire;
+      if(array_key_exists('maladie_mollesse', $actif['debuff'])) $degat = ceil($degat / (1 + ($actif['debuff']['maladie_mollesse']['effet'] / 100)));
 
       /* Application des effets de degats */
       foreach ($effects as $effect)

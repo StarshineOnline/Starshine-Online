@@ -1,11 +1,9 @@
 <?php
-
+$textures = false;
 include('haut.php');
-$cfg["sql"]['host'] = "localhost";
-$cfg["sql"]['user'] = "root";
-$cfg["sql"]['pass'] = "ilove50";
-$cfg["sql"]['db'] = "starshine_test";
-$db = new db();
+setlocale(LC_ALL, 'fr_FR');
+include('haut_site.php');
+
 
 if (isset($_GET['direction'])) $direction = $_GET['direction'];
 elseif (isset($_POST['direction'])) $direction = $_POST['direction'];
@@ -16,8 +14,8 @@ if (isset($_GET['ymin'])) $ymin = $_GET['ymin'];
 elseif (isset($_POST['ymin'])) $ymin = $_POST['ymin'];
 else $ymin = 1;
 
-$xmax = $xmin + 9;
-$ymax = $ymin + 9;
+$xmax = $xmin + 15;
+$ymax = $ymin + 15;
 
 if($ymin < 1) $ymin = 1;
 //if($ymax > 99) $ymax = 99;
@@ -157,6 +155,43 @@ echo 'xmin : '.$xmin.' xmax : '.$xmax.' ymin : '.$ymin.' ymax : '.$ymax;
 	</tr>
 	</table>
 	</div>
+	<div class="deplacement">
+	<table cellpadding="0" cellspacing="0">
+	<tr>
+		<td>
+		<img src="image/rosedesvent/nordouest.png" alt="" />
+		</td>
+		<td>
+		<a href="edit_donjon2.php?ymin=<?php echo ($ymin - 5); ?>&xmin=<?php echo $xmin; ?>"><img src="image/rosedesvent/nord.png" alt="" /></a>
+		</td>
+		<td>
+		<img src="image/rosedesvent/nordest.png" alt="" />
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="edit_donjon2.php?xmin=<?php echo ($xmin - 5); ?>&ymin=<?php echo $ymin; ?>"><img src="image/rosedesvent/ouest.png" alt="" /></a>
+		</td>
+		<td>
+		<img src="image/rosedesvent/centre.png" alt="" />
+		</td>
+		<td>
+		<a href="edit_donjon2.php?xmin=<?php echo ($xmax - 4); ?>&ymin=<?php echo $ymin; ?>"><img src="image/rosedesvent/est.png" alt="" /></a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<img src="image/rosedesvent/sudouest.png" alt="" />
+		</td>
+		<td>
+		<a href="edit_donjon2.php?ymin=<?php echo ($ymax - 4); ?>&xmin=<?php echo $xmin; ?>"><img src="image/rosedesvent/sud.png" alt="" /></a>
+		</td>
+		<td>
+		<img src="image/rosedesvent/sudest.png" alt="" />
+		</td>
+	</tr>
+	</table>
+	</div>
 	<div class="selecteur">
 		<select name="<?php echo $positioncase;?>" size="15" class="baseJumpbox" id="selectText" onChange="changeTexture('texturePreview')">
 				<optgroup label="Donjon">
@@ -233,43 +268,6 @@ echo 'xmin : '.$xmin.' xmax : '.$xmax.' ymin : '.$ymin.' ymax : '.$ymax;
 		<input type="hidden" name="ymin" value="<?php echo $ymin; ?>" />
 		<input type="submit" value="ok" /><br />
 		</form>
-	</div>
-	<div class="deplacement">
-	<table cellpadding="0" cellspacing="0">
-	<tr>
-		<td class="rose">
-		<img src="image/rdv_nordouest.png" alt="" />
-		</td>
-		<td class="rose">
-		<a href="edit_donjon2.php?ymin=<?php echo ($ymin - 5); ?>&xmin=<?php echo $xmin; ?>"><img src="image/rdv_nord.png" alt="" /></a>
-		</td>
-		<td class="rose">
-		<img src="image/rdv_nordest.png" alt="" />
-		</td>
-	</tr>
-	<tr>
-		<td class="rose">
-		<a href="edit_donjon2.php?xmin=<?php echo ($xmin - 5); ?>&ymin=<?php echo $ymin; ?>"><img src="image/rdv_ouest.png" alt="" /></a>
-		</td>
-		<td class="rose">
-		<img src="image/rdv_centre.png" alt="" />
-		</td>
-		<td class="rose">
-		<a href="edit_donjon2.php?xmin=<?php echo ($xmax - 4); ?>&ymin=<?php echo $ymin; ?>"><img src="image/rdv_est.png" alt="" /></a>
-		</td>
-	</tr>
-	<tr>
-		<td class="rose">
-		<img src="image/rdv_sudouest.png" alt="" />
-		</td>
-		<td class="rose">
-		<a href="edit_donjon2.php?ymin=<?php echo ($ymax - 4); ?>&xmin=<?php echo $xmin; ?>"><img src="image/rdv_sud.png" alt="" /></a>
-		</td>
-		<td class="rose">
-		<img src="image/rdv_sudest.png" alt="" />
-		</td>
-	</tr>
-	</table>
 	</div>
 	<a href="view_map2.php">Map Globale</a>
 	<div style="margin-top : 650px; text-align : center;">
