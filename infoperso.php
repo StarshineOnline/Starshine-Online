@@ -105,7 +105,7 @@ echo '
 		<table>
 		<tr>
 			<td>
-				<img src="image/'.moment_jour().'.png" alt="'.moment_jour().'" title="'.moment_jour().'" style="vertical-align : middle;">
+				<img src="image/interface/'.moment_jour().'.png" alt="'.moment_jour().'" title="'.moment_jour().'" style="vertical-align : middle;">
 			</td>
 			<td style="text-align : center;">
 				'.moment_jour().'<br />'.date_sso().'
@@ -214,7 +214,7 @@ if ($joueur['groupe'] > 0)
 	<table style="width:250px;">
 	<tr>
 		<td style="text-align: center;">
-		<a href="javascript:envoiInfo(\'infogroupe.php?id='.$groupe['id'].'\', \'information\')"><img src="image/information.png" alt="Informations sur le joueur" /></a> <br /><a href="javascript:envoiInfo(\'envoimessage.php?type=groupe&amp;id_groupe='.$groupe['id'].'\', \'information\');"><img src="image/message.png" alt="Envoie d\'un message au groupe" title="Envoie d\'un message au groupe" /></a>	
+		<a href="javascript:envoiInfo(\'infogroupe.php?id='.$groupe['id'].'\', \'information\')"><img src="image/interface/information.png" alt="Informations sur le joueur" /></a> <br /><a href="javascript:envoiInfo(\'envoimessage.php?type=groupe&amp;id_groupe='.$groupe['id'].'\', \'information\');"><img src="image/interface/message.png" alt="Envoie d\'un message au groupe" title="Envoie d\'un message au groupe" /></a>	
 	</td>
 	<td style="vertical-align : top;">';
 	$i = 0;
@@ -249,7 +249,7 @@ if ($joueur['groupe'] > 0)
 			</table>
 			</td>
 			<td style="width:4%">';
-			if ($leader) echo ' <a href="javascript:if(confirm(\'Voulez vous expulser ce joueur ?\')) envoiInfo(\'kickjoueur.php?ID='.$groupe['membre'][$i]['id_joueur'].'&groupe='.$groupe['id'].'\', \'information\');"><img src="image/exspuler-joueur_icone.png" alt="Expulser le joueur" title="Expulser le joueur" style="width:11px;"/></a>';
+			if ($leader) echo ' <a href="javascript:if(confirm(\'Voulez vous expulser ce joueur ?\')) envoiInfo(\'kickjoueur.php?ID='.$groupe['membre'][$i]['id_joueur'].'&groupe='.$groupe['id'].'\', \'information\');"><img src="image/interface/exspuler-joueur_icone.png" alt="Expulser le joueur" title="Expulser le joueur" style="width:11px;"/></a>';
 			echo '			
 			</tr>
 			</table>';
@@ -266,8 +266,8 @@ if ($joueur['groupe'] > 0)
 }
 ?>
 	<div class="roseeticone">
-		<a href="index.php"><img src="image/icone_index.png" alt="Retour à l'index" title="Retour à l'index" style="vertical-align : middle;" /></a>
-		<a href="javascript:if(confirm('Voulez vous déconnecter ?')) document.location.href = 'index.php?deco=ok';"><img src="image/deconnexion_icone.png" alt="Déconnexion" title="Déconnexion" style="vertical-align : middle;" /></a><br />
-		<a href="http://forum.starshine-online.com/"><img src="image/forum_icone.png" alt="Forum" title="Forum" style="vertical-align : middle;" /></a>
-		<a href="option.php"><img src="image/icone_option.png" alt="Options de jeu" title="Options de jeu" style="vertical-align : middle;" /></a>
+		<a href="index.php"><img src="image/interface/icone_index.png" alt="Retour à l'index" title="Retour à l'index" style="vertical-align : middle;" /></a>
+		<a href="javascript:if(confirm('Voulez vous déconnecter ?')) document.location.href = 'index.php?deco=ok';"><img src="image/interface/deconnexion_icone.png" alt="Déconnexion" title="Déconnexion" style="vertical-align : middle;" /></a><br />
+		<a href="http://forum.starshine-online.com/"><img src="image/interface/forum_icone.png" alt="Forum" title="Forum" style="vertical-align : middle;" /></a>
+		<a href="option.php"><img src="image/interface/icone_option.png" alt="Options de jeu" title="Options de jeu" style="vertical-align : middle;" /></a>
 	</div>
