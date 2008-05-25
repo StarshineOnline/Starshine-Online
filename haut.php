@@ -103,5 +103,5 @@ if (isset($_GET['deco']) AND !isset($_POST['log']))
 
 if(!isset($root)) $root = '';
 //check_undead_players();
-print_head("css:./css/texture.css~./css/interface.css;script:./javascript/fonction.js~./javascript/overlib/overlib.js;title:StarShine, le jeu qu'il s'efface tout seul !");
+print_head("css:./css/texture.css~./css/interface.css;script:./javascript/fonction.js~./javascript/overlib/overlib.js;title:StarShine, le jeu qu'il tient ses plannings !");
 ?>
