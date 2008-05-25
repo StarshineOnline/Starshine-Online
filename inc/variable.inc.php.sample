@@ -1,5 +1,5 @@
 <?php
-	$G_version = '0.5.1 beta';
+	$G_version = '0.5.1.0';
 	$G_revision = 124;
 
 	$G_ligne = 1000;
