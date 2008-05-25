@@ -53,6 +53,7 @@ if($W_distance == 0)
 					if($joueur['pa'] >= $row['pa'])
 					{
 						$valid = true;
+						$bloque_regen = false;
 						if($row['pute'] == 1)
 						{
 							$debuff = false;
@@ -144,7 +145,7 @@ if($W_distance == 0)
 							elseif($debuff)
 							{
 								//Liste des debuff possibles (Identifiants dans la bdd)
-								$liste_debuff = array(39, 35);
+								$liste_debuff = array(39, 35, 128, 133, 138);
 								//Tirage au sort de quel buff lancer
 								$total_debuff = count($liste_debuff);
 								$tirage = rand(0, $total_debuff);
@@ -162,39 +163,141 @@ if($W_distance == 0)
 							$pourcent_risque = 5;
 							if(rand(1, 100) <= $pourcent_risque)
 							{
-								$maladie = true;
 								//Liste des maladies possibles (Identifiants dans la bdd)
 								$liste_maladie = array();
+								$liste_maladie[0]['nom'] = 'Crise cardiaque';
+								$liste_maladie[0]['description'] = '
+								En sortant de la taverne, vous vous sentez faibles. Très faibles.<br />
+								Vous vous appercevez trop tard que vous vous êtes trop démeunés.<br />
+								Vous vous écroulez par terre, et n\'arrivez plus à respirez.<br />
+								Vous mourrez seul et abandonnés de tous.';
+								$liste_maladie[0]['effets'] = 'mort';
+								$liste_maladie[1]['nom'] = 'Lumbago';
+								$liste_maladie[1]['description'] = '
+								A la sortie de la taverne, un violent mal de dos vous surprend.<br />
+								Vous n\'auriez pas du tester la dernière position à la mode.<br />
+								Votre corps n\'était pas prêt pour ca.';
+								$liste_maladie[1]['effets'] = 'bloque_deplacement-12';
+								$liste_maladie[2]['nom'] = 'Foulure du poignet';
+								$liste_maladie[2]['description'] = '
+								En sortant de la taverne, vous regrettez vos ébats physiques.<br />Vous n\'auriez pas du essayer de prouver votre force et de soulever le lit à une main pour impressioner votre partenaire, vous vous êtes foulé le poignet.';
+								$liste_maladie[2]['effets'] = 'bloque_attaque-12;cout_deplacement-2.';
+								$liste_maladie[0]['nom'] = 'Extinction de voix';
+								$liste_maladie[3]['description'] = '
+								En sortant de la taverne, vous ne pouvez plus parler.<br />
+								L\'orgasme fut violent, tellement violent que le cri que vous avez poussé vous a déchiré l\'organe vocal.';
+								$liste_maladie[3]['effets'] = 'bloque_sort-12';
+								$liste_maladie[3]['nom'] = 'Vulnérabilité';
+								$liste_maladie[4]['description'] = '
+								En sortant de la taverne, vous vous sentez fragiles, très fragiles.<br />
+								La fille que vous avez honoré pour a certainement refilé une maladie.<br />
+								Les prochains combats vont être difficiles.';
+								$liste_maladie[4]['effets'] = 'suppr_defense-12';
+								$liste_maladie[4]['nom'] = 'Dernier sursaut';
+								$liste_maladie[5]['description'] = '
+								En sortant de la taverne, vous vous sentez revivre, vous vous sentez forts, très forts, trop forts.<br />
+								Vous pensez qu\'il faut vite profiter de cet état de grace car le retour du baton va être violent.';
+								$liste_maladie[5]['effets'] = 'cout_deplacement-2;cout_attaque-2;mort_regen';
+								$liste_maladie[5]['nom'] = 'Grosse fatigue';
+								$liste_maladie[6]['description'] = '
+								En sortant de la taverne, vous vous sentez las.<br />
+								Cet effort vous a épuisé, vous n\'auriez pas du faire cette partie de jambe en l\'air, ce n\'est plus de votre âge.';
+								$liste_maladie[6]['effets'] = 'plus_cout_deplacement-2;plus_cout_attaque-2';
+								$liste_maladie[7]['nom'] = 'Foulure de la cheville';
+								$liste_maladie[7]['description'] = '
+								En sortant de la taverne, vous appercevez que vous avez des difficultées à marcher.<br />
+								Vous avez du vous foulet la cheville pendant l\'acte.<br />
+								Decidement, mauvaise journée.';
+								$liste_maladie[7]['effets'] = 'plus_cout_deplacement-2;cout_attaque-2';
+								$liste_maladie[8]['nom'] = 'Hémoragie';
+								$liste_maladie[8]['description'] = '
+								En sortant de la taverne, vous vous mettez à saigner abondament.<br />
+								Cette vile coquine a du vous mordre trop violement.';
+								$liste_maladie[8]['effets'] = 'regen_negative-3';
+								$liste_maladie[9]['nom'] = 'Régénération';
+								$liste_maladie[9]['description'] = '
+								En sortant de la taverne, vous vous sentez faible et fragile, mais vous sentez clairement que ca ira mieux à l\'avenir.<br />
+								C\'est juste une mauvaise passe. ';
+								$liste_maladie[9]['effets'] = 'low_hp;high_regen-3';
 								//Tirage au sort de quel maladie lancer
 								$total_maladie = count($liste_maladie);
 								$tirage = rand(0, $total_maladie);
-								$sort = $liste_maladie[$tirage];
-								//On cherche le buff dans la bdd
-								/*$requete = "SELECT * FROM sort_jeu WHERE id = ".$sort;
-								$req = $db->query($requete);
-								$row = $db->read_assoc($req);
-								lance_buff($row['type'], $joueur['ID'], $row['effet'], $row['effet2'], $row['duree'], $row['nom'], description($row['description'], $row), 'perso', 1, 0, 0);*/
-								$texte .= '<br />Phrase en fonction de la maladie : '.$row['nom'].' !!!';
+								$maladie = $liste_maladie[$tirage];
+								$effets = explode(';', $maladie['effets']);
+								foreach($effets as $effet)
+								{
+									$effet_explode = explode('-', $effet);
+									switch($effet_explode[0])
+									{
+										case 'mort' :
+											$joueur ['hp'] = 0;
+											$bloque_regen = true;
+										break;
+										case 'bloque_deplacement' :
+											$duree = $effet_explode[1] * 60 * 60;
+											lance_buff('bloque_deplacement', $joueur['ID'], 1, 0, $duree, $maladie['nom'], description('Vous ne pouvez plus vous déplacer', array()), 'perso', 1, 0, 0);
+										break;
+										case 'bloque_attaque' :
+											$duree = $effet_explode[1] * 60 * 60;
+											lance_buff('bloque_attaque', $joueur['ID'], 1, 0, $duree, $maladie['nom'], description('Vous ne pouvez plus attaquer', array()), 'perso', 1, 0, 0);
+										break;
+										case 'cout_deplacement' :
+											$duree = 12 * 60 * 60;
+											lance_buff('cout_deplacement', $joueur['ID'], 2, 0, $duree, $maladie['nom'], description('Vos couts en déplacements sont divisés par 2', array()), 'perso', 1, 0, 0);
+										break;
+										case 'bloque_sort' :
+											$duree = $effet_explode[1] * 60 * 60;
+											lance_buff('bloque_sort', $joueur['ID'], 1, 0, $duree, $maladie['nom'], description('Vous ne pouvez plus lancer de sorts', array()), 'perso', 1, 0, 0);
+										break;
+										case 'suppr_defense' :
+											$duree = $effet_explode[1] * 60 * 60;
+											lance_buff('suppr_defense', $joueur['ID'], 0, 0, $duree, $maladie['nom'], description('Votre PP est réduite à 0', array()), 'perso', 1, 0, 0);
+										break;
+										case 'cout_attaque' :
+											$duree = 12 * 60 * 60;
+											lance_buff('cout_attaque', $joueur['ID'], 2, 0, $duree, $maladie['nom'], description('Vos couts pour attaquer sont divisés par 2', array()), 'perso', 1, 0, 0);
+										break;
+										case 'mort_regen' :
+											$duree = $effet_explode[1] * 60 * 60;
+											lance_buff('mort_regen', $joueur['ID'], 1, 0, $duree, $maladie['nom'], description('Vous mourez lors de votre prochaine regénération', array()), 'perso', 1, 0, 0);
+										break;
+										case 'plus_cout_attaque' :
+											$duree = 12 * 60 * 60;
+											lance_buff('plus_cout_attaque', $joueur['ID'], 2, 0, $duree, $maladie['nom'], description('Vos couts en attaque sont multipliés par 2', array()), 'perso', 1, 0, 0);
+										break;
+										case 'plus_cout_deplacement' :
+											$duree = 12 * 60 * 60;
+											lance_buff('plus_cout_deplacement', $joueur['ID'], 2, 0, $duree, $maladie['nom'], description('Vos couts en déplacement sont multipliés par 2', array()), 'perso', 1, 0, 0);
+										break;
+										case 'regen_negative' :
+											$duree = 48 * 60 * 60;
+											lance_buff('regen_negative', $joueur['ID'], $effet_explode[1], 0, $duree, $maladie['nom'], description('Vos 3 prochaines regénération vous fait perdre des HP / MP au lieu d\'en regagner.', array()), 'perso', 1, 0, 0);
+										break;
+										case 'low_hp' :
+											$joueur['hp'] = 1;
+											$joueur['mp'] = 1;
+											$bloque_regen = true;
+										break;
+										case 'high_regen' :
+											$duree = $effet_explode[1] * 60 * 60;
+											lance_buff('high_regen', $joueur['ID'], $effet_explode[1], 0, $duree, $maladie['nom'], description('Vos 3 prochaines regénération vous font gagner 3 fois plus de HP / MP', array()), 'perso', 1, 0, 0);
+										break;
+									}
+								}
+								$texte .= '<br />'.$maladie['description'];
 							}
-							if($buff) $buff_t = 'Ok'; else $buff_t = 'Nop';							
-							if($debuff) $debuff_t = 'Ok'; else $debuff_t = 'Nop';							
-							if($maladie) $maladie_t = 'Ok'; else $maladie_t = 'Nop';							
-							echo '
-							<h6>
-								'.$texte.'<br />
-								Buff : '.$buff_t.'<br />
-								Debuff : '.$debuff_t.'<br />
-								Maladie : '.$maladie_t.'
-							</h6>';
 						}
 						if($valid)
 						{
 							$joueur['star'] = $joueur['star'] - $cout;
 							$joueur['pa'] = $joueur['pa'] - $row['pa'];
-							$joueur['hp'] = $joueur['hp'] + $row['hp'];
-							if ($joueur['hp'] > $joueur['hp_max']) $joueur['hp'] = floor($joueur['hp_max']);
-							$joueur['mp'] = $joueur['mp'] + $row['mp'];
-							if ($joueur['mp'] > $joueur['mp_max']) $joueur['mp'] = floor($joueur['mp_max']);
+							if(!$bloque_regen)
+							{
+								$joueur['hp'] = $joueur['hp'] + $row['hp'];
+								if ($joueur['hp'] > $joueur['hp_max']) $joueur['hp'] = floor($joueur['hp_max']);
+								$joueur['mp'] = $joueur['mp'] + $row['mp'];
+								if ($joueur['mp'] > $joueur['mp_max']) $joueur['mp'] = floor($joueur['mp_max']);
+							}
 							$requete = "UPDATE perso SET honneur = ".$joueur['honneur'].", star = ".$joueur['star'].", hp = ".$joueur['hp'].", mp = ".$joueur['mp'].", pa = ".$joueur['pa']." WHERE ID = ".$_SESSION['ID'];
 							$req = $db->query($requete);
 							//Récupération de la taxe

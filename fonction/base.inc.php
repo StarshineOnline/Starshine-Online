@@ -334,6 +334,9 @@ function cout_pa2($coutpa, $joueur, $case, $diagonale)
 	{
 		$coutpa = $coutpa * $joueur['debuff']['debuff_rez']['effet'];
 	}
+	//Maladies
+	if(array_key_exists('cout_deplacement', $joueur['debuff'])) $coutpa = ceil($coutpa / $joueur['debuff']['cout_deplacement']['effet']);
+	if(array_key_exists('plus_cout_deplacement', $joueur['debuff'])) $coutpa = ceil($coutpa * $joueur['debuff']['plus_cout_deplacement']['effet']);
 	//Batiment qui augmente le cout de PA
 	if($batiment = batiment_map($coord['x'], $coord['y']))
 	{
@@ -704,6 +707,8 @@ function recupperso($ID)
 				$R_perso['coef_incantation'] = $R_perso['puissance'] * $R_perso['incantation'];
 				$R_perso['coef_distance'] =  round(($R_perso['force'] + $R_perso['dexterite']) / 2) * $R_perso['distance'];
 				$R_perso['coef_blocage'] =  round(($R_perso['force'] + $R_perso['dexterite']) / 2) * $R_perso['blocage'];
+				//Maladie suppr_defense
+				if(array_key_exists('suppr_defense', $R_perso['debuff'])) $joueur['PP'] = 0;
 				return $R_perso;
 			}
 			else
@@ -924,6 +929,41 @@ function check_perso($joueur)
 				//bonus buff du camp
 				$malus_agonie = ((1 - ($nb_regen_avec_buff / $nb_regen)) - (($nb_regen_avec_buff / $nb_regen) * $joueur['debuff']['lente_agonie']['effet']));
 				$hp_gagne = $hp_gagne * $malus_agonie;
+			}
+			//Maladie regen negative
+			if(array_key_exists('regen_negative', $joueur['debuff']) AND !array_key_exists('lente_agonie', $joueur['debuff']))
+			{
+				$hp_gagne = $hp_gagne * -1;
+				$mp_gagne = $mp_gagne * -1;
+				if($joueur['debuff']['regen_negative']['effet'] > 1)
+				{
+					$requete = "UPDATE buff SET effet = ".($joueur['debuff']['regen_negative']['effet'] - 1)." WHERE id = ".$joueur['debuff']['regen_negative']['id'];
+				}
+				else
+				{
+					$requete = "DELETE FROM buff WHERE id = ".$joueur['debuff']['regen_negative']['id'];
+				}
+				$db->query($requete);
+			}
+			//Maladie high regen
+			if(array_key_exists('high_regen', $joueur['debuff']))
+			{
+				$hp_gagne = $hp_gagne * 3;
+				$mp_gagne = $mp_gagne * 3;
+				if($joueur['debuff']['high_regen']['effet'] > 1)
+				{
+					$requete = "UPDATE buff SET effet = ".($joueur['debuff']['high_regen']['effet'] - 1)." WHERE id = ".$joueur['debuff']['high_regen']['id'];
+				}
+				else
+				{
+					$requete = "DELETE FROM buff WHERE id = ".$joueur['debuff']['high_regen']['id'];
+				}
+				$db->query($requete);
+			}
+			//Maladie mort_regen
+			if(array_key_exists('high_regen', $joueur['debuff']) AND $hp_gagne != 0 AND $mp_gagne != 0)
+			{
+				$hp_gagne = $joueur ['hp'];
 			}
 			$joueur['hp'] = $joueur['hp'] + $hp_gagne;
 			if ($joueur['hp'] > $joueur['hp_max_1']) $joueur['hp'] = floor($joueur['hp_max_1']);
@@ -2068,6 +2108,15 @@ function image_sort($type)
 		break;
 		case 'body_to_mind' :
 			return '<img src="image/buff/body_to_mind.jpg" alt="" style="vertical-align : middle;" />';
+		break;
+		case 'repos_sage' :
+			return '<img src="image/buff/repos_sage.png" alt="" style="vertical-align : middle;" />';
+		break;
+		case 'bulle_sanctuaire' :
+			return '<img src="image/buff/bulle_sanctuaire.png" alt="" style="vertical-align : middle;" />';
+		break;
+		case 'guerison' :
+			return '<img src="image/buff/guerison.png" alt="" style="vertical-align : middle;" />';
 		break;
 	}
 }

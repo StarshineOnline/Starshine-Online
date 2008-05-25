@@ -251,6 +251,10 @@ if($num_rows > 0)
 	}
 }
 
+$pa_attaque = $G_PA_attaque_monstre;
+if(array_key_exists('cout_attaque', $joueur['debuff'])) $pa_attaque = ceil($pa_attaque / $joueur['debuff']['cout_attaque']['effet']);
+if(array_key_exists('plus_cout_attaque', $joueur['debuff'])) $pa_attaque = $pa_attaque * $joueur['debuff']['plus_cout_attaque']['effet'];
+
 $W_requete = 'SELECT id, nom, type, hp, level FROM map_monstre WHERE (x = '.$W_coord["x"].') AND (y = '.$W_coord["y"].') ORDER BY level ASC, nom ASC, id ASC';
 $W_query = $db->query($W_requete);
 
@@ -283,7 +287,7 @@ while($W_row = $db->read_array($W_query))
 			&nbsp;&nbsp;&nbsp;<span style="color : '.$color.'; font-weight : '.$strong.'">'.$W_nom.'</span>
 		</td>
 		<td width="30%">';
-		if(!array_key_exists('repos_sage', $joueur['debuff'])) echo '<a href="javascript:envoiInfo(\'attaque_monstre.php?ID='.$W_ID.'&poscase='.$W_case.'\', \'information\')"><img src="image/interface/attaquer.png" alt="Combattre" style="vertical-align : middle;" /> Attaquer <span class="xsmall">('.($G_PA_attaque_monstre - $reduction_pa).' PA)</span></a>';
+		if(!array_key_exists('repos_sage', $joueur['debuff']) OR !array_key_exists('bloque_attaque', $joueur['debuff'])) echo '<a href="javascript:envoiInfo(\'attaque_monstre.php?ID='.$W_ID.'&poscase='.$W_case.'\', \'information\')"><img src="image/interface/attaquer.png" alt="Combattre" style="vertical-align : middle;" /> Attaquer <span class="xsmall">('.($pa_attaque - $reduction_pa).' PA)</span></a>';
 		echo ' <a href="javascript:envoiInfo(\'info_monstre.php?ID='.$W_ID.'&poscase='.$W_case.'\', \'information\')"><img src="image/icone/mobinfo.png" alt="Voir informations sur le monstre" title="Voir informations sur le monstre" style="vertical-align : middle;" /></a>';
 		if($joueur['sort_jeu'] != '') echo ' <a href="javascript:envoiInfo(\'sort_monstre.php?poscase='.$W_case.'&amp;id_monstre='.$W_ID.'\', \'information\')"><img src="image/sort_hc_icone.png" title="Lancer un sort" alt="Lancer un sort" style="vertical-align : middle;" /></a>';
 	echo '

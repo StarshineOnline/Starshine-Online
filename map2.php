@@ -63,7 +63,7 @@ $case_affiche = ($champ_vision * 2) + 1;
 			$joueurs = count($MAP[$objJoueurs->x][$objJoueurs->y]["Joueurs"]);
 			
 			$MAP[$objJoueurs->x][$objJoueurs->y]["Joueurs"][]["ID"] = $objJoueurs->ID;
-			$MAP[$objJoueurs->x][$objJoueurs->y]["Joueurs"][$joueurs]["nom"] = $objJoueurs->nom;
+			$MAP[$objJoueurs->x][$objJoueurs->y]["Joueurs"][$joueurs]["nom"] = htmlspecialchars($objJoueurs->nom);
 			$MAP[$objJoueurs->x][$objJoueurs->y]["Joueurs"][$joueurs]["level"] = $objJoueurs->level;
 			$MAP[$objJoueurs->x][$objJoueurs->y]["Joueurs"][$joueurs]["race"] = $Gtrad[$objJoueurs->race];
 			$MAP[$objJoueurs->x][$objJoueurs->y]["Joueurs"][$joueurs]["classe"] = $objJoueurs->classe;

@@ -16,19 +16,13 @@ echo '
 		//Listing des buffs
 		foreach($joueur['buff'] as $buff)
 		{
-			echo '<img src="image/buff/'.$buff['type'].'_p.png" ondblclick="if(confirm(\'Voulez vous supprimer '.$buff['nom'].' ?\')) envoiInfo(\'suppbuff.php?id='.$buff['id'].'\', \'perso\');" alt="'.$buff['type'].'" onmousemove="javascript:afficheInfo(\'info_'.$buff['type'].'\', \'block\', event); document.getElementById(\'info_'.$buff['type'].'\').style.zIndex = 2; document.getElementById(\'carte\').style.zIndex = 0;" onmouseout="javascript:afficheInfo(\'info_'.$buff['type'].'\', \'none\', event );" />
-			<div class="infobox" id="info_'.$buff['type'].'">
-				<strong>'.$buff['nom'].'</strong><br />'.$buff['description'].'<br />Durée '.transform_sec_temp($buff['fin'] - time()).'
-			</div>';
+			echo '<img src="image/buff/'.$buff['type'].'_p.png" ondblclick="if(confirm(\'Voulez vous supprimer '.$buff['nom'].' ?\')) envoiInfo(\'suppbuff.php?id='.$buff['id'].'\', \'perso\');" alt="'.$buff['type'].'" onmouseover="return '.make_overlib('<strong>'.$buff['nom'].'</strong><br />'.$buff['description'].'<br />Durée '.transform_sec_temp($buff['fin'] - time())).'" onmouseout="return nd();" />';
 		}
 		if(count($joueur['debuff']) > 0) echo '<br />';
 		//Listing des debuffs
 		foreach($joueur['debuff'] as $buff)
 		{
-			echo '<img src="image/buff/'.$buff['type'].'_p.png" alt="'.$buff['type'].'" onmousemove="javascript:afficheInfo(\'info_'.$buff['type'].'\', \'block\', event); document.getElementById(\'info_'.$buff['type'].'\').style.zIndex = 2; document.getElementById(\'carte\').style.zIndex = 0;" onmouseout="javascript:afficheInfo(\'info_'.$buff['type'].'\', \'none\', event );" />
-			<div class="infobox" id="info_'.$buff['type'].'">
-				<strong>'.$buff['nom'].'</strong><br />'.$buff['description'].'<br />Durée '.transform_sec_temp($buff['fin'] - time()).'
-			</div>';
+			echo '<img src="image/buff/'.$buff['type'].'_p.png" alt="'.$buff['type'].'" onmouseover="return '.make_overlib('<strong>'.$buff['nom'].'</strong><br />'.$buff['description'].'<br />Durée '.transform_sec_temp($buff['fin'] - time())).'" onmouseout="return nd();" />';
 		}
 		//xp
 		$pourcent_level = progression_level(level_courant($joueur['exp']));

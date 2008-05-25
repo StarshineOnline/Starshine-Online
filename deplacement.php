@@ -145,7 +145,7 @@ if (isset($_GET['deplacement']))
 		$coutpa_base = $coutpa;
 		$coutpa = cout_pa2($coutpa, $joueur, $W_row, $diagonale);
 		//Si le joueur a un buff ou débuff qui l'empèche de bouger
-		if(array_key_exists('buff_forteresse', $joueur['buff']) OR array_key_exists('buff_position', $joueur['buff']) OR array_key_exists('debuff_enracinement', $joueur['debuff']))
+		if(array_key_exists('buff_forteresse', $joueur['buff']) OR array_key_exists('buff_position', $joueur['buff']) OR array_key_exists('debuff_enracinement', $joueur['debuff']) OR array_key_exists('bloque_deplacement', $joueur['debuff']))
 		{
 			$peu_bouger = false;
 			$cause = 'Un buff vous empèche de bouger';

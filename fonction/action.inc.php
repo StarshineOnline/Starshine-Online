@@ -300,7 +300,7 @@ function sub_script_action($joueur, $ennemi, $mode)
 				//Réduction des chances d'anticiper si adversaire glacé
 				if($ennemi['etat']['glace_anticipe']['duree'] > 0) $chance_reussite = $chance_reussite * $ennemi['etat']['glace_anticipe']['effet'];
 				//Réduction des chances d'anticiper si adversaire amorphe
-				if(array_key_exists('maladie_amorphe', $ennemi['debuff'])) $chance_reussite = $chance_reussite + $ennemi['debuff']['maladie_amorphe']['effet'];
+				if(array_key_exists('maladie_amorphe', $joueur['debuff'])) $chance_reussite = $chance_reussite - $joueur['debuff']['maladie_amorphe']['effet'];
 				$rand = rand(0, 100);
 				echo '
 					<div id="debug'.$debugs.'" class="debug">

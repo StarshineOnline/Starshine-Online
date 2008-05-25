@@ -84,7 +84,7 @@ if (isset($_GET['ID']))
 					$requete = "UPDATE perso SET mp = '".$joueur['mp']."', pa = '".$joueur['pa']."', incantation = '".$joueur['incantation']."', ".$row['comp_assoc']." = '".$joueur[$row['comp_assoc']]."' WHERE ID = '".$_SESSION['ID']."'";
 					$req = $db->query($requete);
 				break;
-				case 'maladie_amorphe' :
+				case 'maladie_amorphe' : case 'maladie_degenerescence' : case 'maladie_mollesse' :
 					//On selectionne tous les monstres de la case
 					$requete = "SELECT id FROM map_monstre WHERE x = ".$coord['x']." AND y = ".$coord['y'];
 					$req_monstre = $db->query($requete);
@@ -92,19 +92,17 @@ if (isset($_GET['ID']))
 					{
 						$cible = recupmonstre($row_monstre['id']);
 						//Test d'esquive du sort
-						$protecion = $cible['volonte'] * $cible['PM'] / 3;
+						$protection = $cible['volonte'] * $cible['PM'] / 3;
 						if(array_key_exists('bulle_sanctuaire', $cible['buff'])) $protection *= $cible['buff']['bulle_sanctuaire']['effet'];
 						if(array_key_exists('bulle_dephasante', $cible['buff'])) $protection *= $cible['buff']['bulle_dephasante']['effet'];
 						$attaque = rand(0, ($joueur['volonte'] * $joueur[$row['comp_assoc']]));
 						$defense = rand(0, $protection);
-						$joueur['pa'] = $joueur['pa'] - $sortpa;
-						$joueur['mp'] = $joueur['mp'] - $sortmp;
 						if ($attaque > $defense)
 						{
 							$duree = $row['duree'];
 							if(array_key_exists('souffrance_extenuante', $joueur['buff'])) $duree = $duree * $joueur['buff']['buff_souffrance_extenuante']['effet'];
 							//Mis en place du debuff
-							if(lance_buff($row['type'], $_GET['id_monstre'], $row['effet'], $row['effet2'], ($duree * 4), $row['nom'], description($row['description'], $row), 'monstre', 1, 0, 0))
+							if(lance_buff($row['type'], $cible['id'], $row['effet'], $row['effet2'], ($duree * 4), $row['nom'], description($row['description'], $row), 'monstre', 1, 0, 0))
 							{
 								echo 'Le sort '.$row['nom'].' a été lancé avec succès sur '.$cible['nom'].'<br />';
 							}
@@ -118,6 +116,8 @@ if (isset($_GET['ID']))
 							echo $cible['nom'].' resiste a votre sort !<br />';
 			 			}
 			 		}
+					$joueur['pa'] = $joueur['pa'] - $sortpa;
+					$joueur['mp'] = $joueur['mp'] - $sortmp;
 					//Augmentation des compétences
 					$difficulte_sort = diff_sort($row['difficulte'], $joueur, 'incantation', $sortpa_base, $sortmp_base);
 					$augmentation = augmentation_competence('incantation', $joueur, $difficulte_sort);

@@ -414,7 +414,7 @@ else
 	if(array_key_exists('tri', $_GET)) $where = 'AND comp_assoc = \''.$_GET['tri'].'\''; else $_GET['tri'] = 'favoris';
 	if($_GET['tri'] == 'favoris')
 	{
-		$requete = "SELECT * FROM sort_jeu WHERE- type != 'rez' AND id IN (SELECT id_sort FROM sort_favoris WHERE id_perso = ".$joueur['ID'].") ORDER BY comp_assoc ASC, type ASC";
+		$requete = "SELECT * FROM sort_jeu WHERE type != 'rez' AND id IN (SELECT id_sort FROM sort_favoris WHERE id_perso = ".$joueur['ID'].") ORDER BY comp_assoc ASC, type ASC";
 	}
 	else
 	{

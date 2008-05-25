@@ -13,6 +13,11 @@ $survie = $joueur['survie'];
 if($monstre['espece'] == 'bete' AND array_key_exists('survie_bete', $joueur['competences'])) $survie += $joueur['competences']['survie_bete'];
 if($monstre['espece'] == 'humanoide' AND array_key_exists('survie_humanoide', $joueur['competences'])) $survie += $joueur['competences']['survie_humanoide'];
 if($monstre['espece'] == 'magique' AND array_key_exists('survie_magique', $joueur['competences'])) $survie += $joueur['competences']['survie_magique'];
+$pa_attaque = $G_PA_attaque_monstre;
+if(array_key_exists('cout_attaque', $joueur['debuff'])) $pa_attaque = ceil($pa_attaque / $joueur['debuff']['cout_attaque']['effet']);
+if(array_key_exists('plus_cout_attaque', $joueur['debuff'])) $pa_attaque = $pa_attaque * $joueur['debuff']['plus_cout_attaque']['effet'];
+if(array_key_exists('buff_rapidite', $joueur['buff'])) $reduction_pa = $joueur['buff']['buff_rapidite']['effet']; else $reduction_pa = 0;
+if(array_key_exists('debuff_ralentissement', $joueur['debuff'])) $reduction_pa -= $joueur['debuff']['debuff_ralentissement']['effet'];
 $coeff = floor($survie / $monstre['level']);
 ?>
 <div style="font-size : 13px;">
@@ -20,7 +25,7 @@ $coeff = floor($survie / $monstre['level']);
 <div class="information_case">
 	<p><strong><?php echo $monstre['nom']; ?></strong> - Niveau : <?php echo $monstre['level']; ?><?php if($coeff >= 7) echo ' - Type : '.$monstre['espece']; ?>&nbsp;&nbsp;&nbsp;&nbsp;
 	<?php
-	if(!array_key_exists('repos_sage', $joueur['debuff'])) echo '<a href="javascript:envoiInfo(\'attaque_monstre.php?ID='.$monstre['id'].'&poscase='.$W_case.'\', \'information\')"><img src="image/interface/attaquer.png" alt="Combattre" style="vertical-align : middle;" /> Attaquer <span class="xsmall">('.($G_PA_attaque_monstre - $reduction_pa).' PA)</span></a>';
+	if(!array_key_exists('repos_sage', $joueur['debuff']) OR !array_key_exists('bloque_attaque', $joueur['debuff'])) echo '<a href="javascript:envoiInfo(\'attaque_monstre.php?ID='.$monstre['id'].'&poscase='.$W_case.'\', \'information\')"><img src="image/interface/attaquer.png" alt="Combattre" style="vertical-align : middle;" /> Attaquer <span class="xsmall">('.($pa_attaque - $reduction_pa).' PA)</span></a>';
 	if($joueur['sort_jeu'] != '') echo ' <a href="javascript:envoiInfo(\'sort_monstre.php?poscase='.$W_case.'&amp;id_monstre='.$monstre['id'].'\', \'information\')"><img src="image/sort_hc_icone.png" title="Lancer un sort" alt="Lancer un sort" style="vertical-align : middle;" /></a>';
 	echo '<br />';
 	//Listing des debuffs
