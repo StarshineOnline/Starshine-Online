@@ -589,7 +589,7 @@ else
 			}
 			else
 			{
-				echo('<img src="image/attaquer.png" alt="Combattre" style="vertical-align : middle;" /> <a href="javascript:envoiInfo(\'attaque.php?ID='.$W_ID.'&amp;poscase='.$W_case.'\', \'information\')">Attaquer la même cible</a><br />');
+				echo('<img src="image/interface/attaquer.png" alt="Combattre" style="vertical-align : middle;" /> <a href="javascript:envoiInfo(\'attaque.php?ID='.$W_ID.'&amp;poscase='.$W_case.'\', \'information\')">Attaquer la même cible</a><br />');
 			}
 			
 			$attaquant['pa'] = $attaquant['pa'] - $G_PA_attaque_joueur + $reduction_pa;

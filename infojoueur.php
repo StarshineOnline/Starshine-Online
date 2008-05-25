@@ -79,12 +79,16 @@ Distance du joueur : <?php echo calcul_distance(convert_in_pos($joueur['x'], $jo
 $W_distance = detection_distance($W_case, $_SESSION["position"]);
 if (($perso['ID'] != $_SESSION['ID']))
 {
+<<<<<<< .mine
+	echo '<tr><td><img src="image/interface/message.png" title="Envoyer un message" /></td><td><a href="javascript:envoiInfo(\'envoimessage.php?ID='.$W_ID.'\', \'information\')">Envoyer un message</a></td></tr>';
+=======
 	$pa_attaque = $G_PA_attaque_joueur;
 	if(array_key_exists('cout_attaque', $joueur['debuff'])) $pa_attaque = ceil($pa_attaque / $joueur['debuff']['cout_attaque']['effet']);
 	if(array_key_exists('plus_cout_attaque', $joueur['debuff'])) $pa_attaque = $pa_attaque * $joueur['debuff']['plus_cout_attaque']['effet'];
 	if(array_key_exists('buff_rapidite', $joueur['buff'])) $reduction_pa = $joueur['buff']['buff_rapidite']['effet']; else $reduction_pa = 0;
 	if(array_key_exists('debuff_ralentissement', $joueur['debuff'])) $reduction_pa -= $joueur['debuff']['debuff_ralentissement']['effet'];
 	echo '<tr><td><img src="image/message.png" title="Envoyer un message" /></td><td><a href="javascript:envoiInfo(\'envoimessage.php?ID='.$W_ID.'\', \'information\')">Envoyer un message</a></td></tr>';
+>>>>>>> .r278
 	if($perso['hp'] > 0 AND !array_key_exists('repos_sage', $joueur['debuff']) OR !array_key_exists('bloque_attaque', $joueur['debuff'])) echo '<tr><td><img src="image/interface/attaquer.png" alt="Combattre" style="vertical-align : middle;" /></td><td><a href="javascript:envoiInfo(\'attaque.php?ID='.$W_ID.'&amp;poscase='.$W_case.'\', \'information\')"> Attaquer</a><span class="xsmall"> ('.($pa_attaque - $reduction_pa).' PA)</span></td></tr>';
 }
 if($joueur['sort_jeu'] != '')
@@ -101,7 +105,7 @@ if($joueur['sort_jeu'] != '')
 
 if (($W_distance < 2) AND ($W_ID != $_SESSION['ID']) AND ($perso['groupe'] != $joueur['groupe'] OR $joueur['groupe'] == '' OR $joueur['groupe'] == 0))
 {
-	echo('<tr><td><img src="image/demande_groupe.png" alt="Inviter ce joueur dans votre groupe" title="Inviter ce joueur dans votre groupe" style="vertical-align : middle;" /></td><td><a href="javascript:envoiInfo(\'invitegroupe.php?ID='.$W_ID.'\', \'information\')"> Inviter ce joueur dans votre groupe</a></td></tr>');
+	echo('<tr><td><img src="image/interface/demande_groupe.png" alt="Inviter ce joueur dans votre groupe" title="Inviter ce joueur dans votre groupe" style="vertical-align : middle;" /></td><td><a href="javascript:envoiInfo(\'invitegroupe.php?ID='.$W_ID.'\', \'information\')"> Inviter ce joueur dans votre groupe</a></td></tr>');
 }
 //Voir l'inventaire
 if(array_key_exists(20, $bonus) AND check_affiche_bonus($bonus[20], $joueur, $perso))
