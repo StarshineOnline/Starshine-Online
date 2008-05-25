@@ -120,14 +120,14 @@ a:hover, a:active 	{ color:#7290db; }
 .infoperso {
 	vertical-align : top;
 	float : left;
-	padding: 4px;
-	margin : 5px;
+	padding: 2px;
+	margin : 2px;
 	height : 75px;
 	-moz-border-radius : 10px;
 	-webkit-border-radius :10px;
-background-color:#91AEF2;
-border:1px solid #555555;
-vertical-align:top;
+	background-color:#91AEF2;
+	border:1px solid #555555;
+	vertical-align:top;
 
 }
 .infoperso td {
@@ -475,10 +475,8 @@ height:05px;
 }
 #perso
 {
-	margin-left : 5px;
-	margin-bottom : 5px;
-	margin-top : 0;
-	overflow : auto;
+	margin : 0;
+	width:990px;
 	z-index : 0;
 }
 

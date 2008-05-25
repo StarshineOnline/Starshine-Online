@@ -9,9 +9,9 @@ require_once('deplacementjeu.php');
 echo '
 </div>
 <div class="infoperso">
-		<a href="javascript:envoiInfo(\'personnage.php\', \'information\')" style="text-decoration : none; color : #000;" title="Maximum '.($joueur['rang_grade'] + 2).' buffs"><strong>'.ucwords($joueur['grade']).' '.$joueur['nom'].'</strong>
+		<a href="javascript:envoiInfo(\'personnage.php\', \'information\')" style="text-decoration : none; color : #000;" title="Maximum '.($joueur['rang_grade'] + 2).' buffs"><strong><span style="font-size:11px;">'.ucwords($joueur['grade']).' '.$joueur['nom'].'</span></strong>
 		<br />
-		'.$Gtrad[$joueur['race']].' '.$joueur['classe'].'</a><br />
+		<span style="font-size:10px;">'.$Gtrad[$joueur['race']].' '.$joueur['classe'].'</a></span><br />
 		';
 		//Listing des buffs
 		foreach($joueur['buff'] as $buff)

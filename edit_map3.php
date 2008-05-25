@@ -199,7 +199,7 @@ $req = $db->query($requete);
 					<option value="314" class="baseRow1">cactus</option>
 					<option value="315" class="baseRow1">Oasis is good</option>					
 				</optgroup>
-				<optgroup label="Terre Mabite">
+				<optgroup label="Terre Maudite">
 					<option value="1101" class="baseRow2">Centre</option>
 					<option value="1102" class="baseRow1">Haut gauche</option>
 					<option value="1103" class="baseRow2">Gauche</option>
@@ -264,7 +264,7 @@ $req = $db->query($requete);
 					<option value="439" class="baseRow1">Texture spécial neige</option>	
 					
 				</optgroup>
-								<optgroup label="Montagne Neige">
+				<optgroup label="Montagne Neige">
 					<option value="426" class="baseRow2">Centre</option>
 					<option value="427" class="baseRow1">Haut gauche</option>
 					<option value="428" class="baseRow2">Gauche</option>
@@ -451,7 +451,7 @@ $req = $db->query($requete);
 					
 					
 				</optgroup>
-				<optgroup label="Ville">
+				<optgroup label="Capitale">
 					<option value="1001" class="baseRow1">Ville humaine</option>
 					<option value="1002" class="baseRow1">capitale defaut haut gauche</option>
 					<option value="1003" class="baseRow1">capitale defaut haut centre</option>
@@ -459,7 +459,6 @@ $req = $db->query($requete);
 					<option value="1005" class="baseRow1">capitale defaut bas gauche</option>
 					<option value="1006" class="baseRow1">capitale defaut entrée</option>
 					<option value="1007" class="baseRow1">capitale defaut bas droite</option>
-					<option value="1008" class="baseRow1">cimetiere</option>
 					<option value="1009" class="baseRow1">capitale vampire haut gauche</option>
 					<option value="1010" class="baseRow1">capitale vampire haut centre</option>
 					<option value="1011" class="baseRow1">capitale vampire haut droit</option>
@@ -508,18 +507,18 @@ $req = $db->query($requete);
 					<option value="1054" class="baseRow1">capitale Edb</option>
 					<option value="1055" class="baseRow1">capitale Edb</option>
 					<option value="1056" class="baseRow1">capitale Edb</option>
-					<option value="1057" class="baseRow1">capitale con</option>
-					<option value="1058" class="baseRow1">capitale con</option>
-					<option value="1059" class="baseRow1">capitale con</option>
-					<option value="1060" class="baseRow1">capitale con</option>
-					<option value="1061" class="baseRow1">capitale con</option>
-					<option value="1062" class="baseRow1">capitale con</option>
-					<option value="1063" class="baseRow1">capitale hum</option>
-					<option value="1064" class="baseRow1">capitale hum</option>
-					<option value="1065" class="baseRow1">capitale hum</option>
-					<option value="1066" class="baseRow1">capitale hum</option>
-					<option value="1067" class="baseRow1">capitale hum</option>
-					<option value="1068" class="baseRow1">capitale hum</option>
+					<option value="1057" class="baseRow1">capitale Corrompu</option>
+					<option value="1058" class="baseRow1">capitale Corrompu</option>
+					<option value="1059" class="baseRow1">capitale Corrompu</option>
+					<option value="1060" class="baseRow1">capitale Corrompu</option>
+					<option value="1061" class="baseRow1">capitale Corrompu</option>
+					<option value="1062" class="baseRow1">capitale Corrompu</option>
+					<option value="1063" class="baseRow1">capitale Humain</option>
+					<option value="1064" class="baseRow1">capitale Humain</option>
+					<option value="1065" class="baseRow1">capitale Humain</option>
+					<option value="1066" class="baseRow1">capitale Humain</option>
+					<option value="1067" class="baseRow1">capitale Humain</option>
+					<option value="1068" class="baseRow1">capitale Humain</option>
 				</optgroup>
 				<optgroup label="Donjon">
 					<option value="1601" class="baseRow1">Mur</option>
