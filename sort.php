@@ -557,12 +557,7 @@ else
 				<?php echo $image; ?>
 			</td>
 			<td>
-				<span style="<?php echo $cursor; ?>text-decoration : none; color : <?php echo $color; ?>;" onclick="<?php echo $href; ?>" onmousemove="afficheInfo('info_<?php echo $i; ?>', 'block', event, 'centre');" onmouseout="afficheInfo('info_<?php echo $i; ?>', 'none', event );"><?php echo $row['nom']; ?></span>
-				<div style="display: none; z-index: 2; position : absolute; background-color:#ffffff; border: 1px solid #000000; font-size:12px; width: 200px; padding: 5px;" id="info_<?php echo $i; ?>">
-				<?php
-				echo description($row['description'], $row).'<br /><span class="xmall">Incantation : '.$incanta.'</span>';
-				?>
-				</div>
+			    <span style="<?php echo $cursor; ?>; text-decoration : none; color : <?php echo $color; ?>;" onclick="<?php echo $href; ?>; return nd();" onmouseover="return <?php echo make_overlib(description($row['description'], $row).'<br/><span class=&quot;xmall&quot;>Incantation : '.$incanta.'</span>'); ?>" onmouseout="return nd();"> <strong><?php echo $row['nom']; ?></strong></span>
 			</td>
 			<?php
 			echo '
