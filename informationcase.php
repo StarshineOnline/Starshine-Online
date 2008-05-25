@@ -106,7 +106,7 @@ while($W_row = $db->read_array($W_query))
 	if(array_key_exists(6, $bonus) AND !check_affiche_bonus($bonus[6], $joueur, $W_row)) $chaine_nom = $W_nom;
 	else $chaine_nom = $W_row['gnom'].' '.$W_nom;
 	$echo = $Gtrad['diplo'.$diplo].' => XP : '.($facteur_xp * 100).'% - Honneur : '.($facteur_honneur * 100).'%';
-	echo '<a href="javascript:envoiInfo(\'infojoueur.php?ID='.$W_ID.'&poscase='.$W_case.'\', \'information\')" onmouseover="return '.make_overlib($echo).'" onmouseout="return nd();"><strong>'.$chaine_nom.'</strong></td><td width="30%">'.$Gtrad[$W_race].'</a></td>';
+	echo '<a href="javascript:envoiInfo(\'infojoueur.php?ID='.$W_ID.'&poscase='.$W_case.'\', \'information\'); return nd();" onmouseover="return '.make_overlib($echo).'" onmouseout="return nd();"><strong>'.$chaine_nom.'</strong></td><td width="30%">'.$Gtrad[$W_race].'</a></td>';
 //	echo '<a href="javascript:envoiInfo(\'infojoueur.php?ID='.$W_ID.'&poscase='.$W_case.'\', \'information\')" onmousemove="afficheInfo(\'info_'.$W_ID.'\', \'block\', event, \'centre\');" onmouseout="afficheInfo(\'info_'.$W_ID.'\', \'none\', event, \'centre\');"><strong>'.$chaine_nom.'</strong></td><td width="30%">'.$Gtrad[$W_race].'</a></td>';
 //	$affiche_div .= '<div class="jsinformation_case" id="info_'.$W_ID.'">
 //	'.$Gtrad['diplo'.$diplo].' => XP : '.($facteur_xp * 100).'% - Honneur : '.($facteur_honneur * 100).'%
