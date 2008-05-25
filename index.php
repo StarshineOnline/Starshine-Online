@@ -114,22 +114,27 @@ else
 	require('connect_forum.php');
 	$requete = "SELECT * FROM punbbtopics WHERE (forum_id = 5) ORDER BY posted DESC";
 	$req = $db_forum->query($requete);
-	
+
 	$i = 0;
-	while($row = $db_forum->read_array($req))
+	while($row = $db_forum->read_array($req) AND $i < 15)
 	{
-		echo '<div class="titre_news"><img src="image/logo_news.png" alt="" style="float : left;" /> <strong><a class="news" href="http://forum.starshine-online.com/viewtopic.php?id='.$row['id'].'">'.$row['subject'].'</a></strong><br />
-		<span class="heure">Par '.$row['poster'].', le '.date("l d F Y à H:i", $row['posted']).'</span><!-- <span style="font-size : 10px;"> ('.($row['num_replies']).' commentaires)</span> --></div>'; 
+		echo '<div class="titre_news"><strong><a class="news" href="http://forum.starshine-online.com/viewtopic.php?id='.$row['id'].'">'.utf8_encode($row['subject']).'</a></strong><br />
+		<span style="font-size:10px;">Par '.$row['poster'].', le '.date("l d F Y à H:i", $row['posted']).'</span><!-- <span style="font-size : 10px;"> ('.($row['num_replies']).' commentaires)</span> --></div>';
 		if ($i < 5)
 		{
 			$requete_post = "SELECT * FROM punbbposts WHERE (topic_id = ".$row['id'].") ORDER BY id ASC";
 			$req_post = $db_forum->query($requete_post);
 			$row_post = $db_forum->read_array($req_post);
-			$message = nl2br($row_post['message']);
+			$message = utf8_encode(nl2br($row_post['message']));
 			$message = eregi_replace("\[img\]([^[]*)\[/img\]", '<img src=\\1 title="\\1">', $message );
 			$message = eregi_replace("\[b\]([^[]*)\[/b\]", '<strong>\\1</strong>', $message );
 			$message = eregi_replace("\[i\]([^[]*)\[/i\]", '<i>\\1</i>', $message );
 			$message = eregi_replace("\[url\]([^[]*)\[/url\]", '<a href="\\1">\\1</a>', $message );
+			if(strlen($message) > 600)
+			{
+				$message = substr($message, 0, 600);
+				$message .= '<br /><a href="http://forum.starshine-online.com/viewtopic.php?id='.$row['id'].'">Lire la suite</a>';
+			}
 			echo '<div class="news">'.$message.'</div>';
 		}
 		$i++;
@@ -151,11 +156,6 @@ else
 */
 echo '</div>';
 
-
-	
-
-		
-	
 include('bas.php');
 
 ?>
