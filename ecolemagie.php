@@ -188,7 +188,7 @@ if($W_distance == 0)
 			?>
 
 			<tr class="element trcolor<?php echo $couleur; ?>">
-				<td onmouseover="<?php echo make_overlib(addslashes(description('[%cible2%] '.$row['description'], $row))); ?>" onmouseout="return nd();">
+				<td onClick="return nd();" onmouseover="<?php echo make_overlib(addslashes(description('[%cible2%] '.$row['description'], $row))); ?>" onmouseout="return nd();">
 					<?php echo $row['nom']; ?>
 				</td>
 				<td>

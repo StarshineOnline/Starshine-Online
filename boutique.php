@@ -185,7 +185,7 @@ if($W_distance == 0)
 				Dégats
 			</td>
 			<td>
-				<span onmouseover="return <?php echo make_overlib('Coéf Arc = '.$joueur['coef_distance'].'<br />Coéf Mélée = '.$joueur['coef_melee'].'<br />Coéf Incantation = '.$joueur['coef_incantation']); ?>" onmouseout="return nd();">Coéf.</span>
+				<span onClick="return nd();" onmouseover="return <?php echo make_overlib('Coéf Arc = '.$joueur['coef_distance'].'<br />Coéf Mélée = '.$joueur['coef_melee'].'<br />Coéf Incantation = '.$joueur['coef_incantation']); ?>" onmouseout="return nd();">Coéf.</span>
 			</td>
 	<?php
 	foreach($types[$type] as $typ)
@@ -242,7 +242,7 @@ if($W_distance == 0)
 				$echo = 'Rien n\'est équipé';
 		?>
 		<tr class="element trcolor<?php echo $couleur; ?>">
-			<td onmouseover="return <?php echo make_overlib(addslashes($echo)); ?>" onmouseout="nd();">
+			<td onmouseover="return <?php echo make_overlib(addslashes($echo)); ?>" onClick="return nd();" onmouseout="nd();">
 				<?php echo $row['nom']; ?>
 			</td>
 			<td>
@@ -359,7 +359,7 @@ if($W_distance == 0)
 			else $echo = 'Armure équipée : Aucune';
 		?>
 		<tr class="element trcolor<?php echo $couleur; ?>">
-			<td onmouseover="return <?php echo make_overlib($echo); ?>" onmouseout="return nd();">
+			<td onmouseover="return <?php echo make_overlib($echo); ?>" onClick="return nd();" onmouseout="return nd();">
 				<?php echo $row['nom']; ?>
 			</td>
 			<td>

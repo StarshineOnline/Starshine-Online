@@ -219,7 +219,7 @@ else
 			echo '
 			<tr>
 				<td>
-					<span style="'.$cursor.'text-decoration : none; color : '.$color.';" onclick="'.$href.'" onmouseover="return '.make_overlib($echo).'" onmouseout="return nd();"> <strong>'.$row['nom'].'</strong></span>';
+					<span style="'.$cursor.'text-decoration : none; color : '.$color.';" onclick="'.$href.'; return nd();" onmouseover="return '.make_overlib($echo).'" onmouseout="return nd();"> <strong>'.$row['nom'].'</strong></span>';
 					?>
 				
 				</td>
