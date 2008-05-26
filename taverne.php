@@ -46,15 +46,15 @@ if($W_distance == 0)
 				$requete = "SELECT * FROM taverne WHERE id = ".sSQL($_GET['id']);
 				$req_taverne = $db->query($requete);
 				$row_taverne = $db->read_array($req_taverne);
-				$taxe = ceil($row['star'] * $R['taxe'] / 100);
-				$cout = $row['star'] + $taxe;
+				$taxe = ceil($row_taverne['star'] * $R['taxe'] / 100);
+				$cout = $row_taverne['star'] + $taxe;
 				if ($joueur['star'] >= $cout)
 				{
-					if($joueur['pa'] >= $row['pa'])
+					if($joueur['pa'] >= $row_taverne['pa'])
 					{
 						$valid = true;
 						$bloque_regen = false;
-						if($row['pute'] == 1)
+						if($row_taverne['pute'] == 1)
 						{
 							$debuff = false;
 							$buff = false;
@@ -147,9 +147,9 @@ if($W_distance == 0)
 								$liste_debuff = array(39, 35, 128, 133, 138);
 								//Tirage au sort de quel buff lancer
 								$total_debuff = count($liste_debuff);
-								$tirage = rand(0, $total_debuff);
+								$tirage = rand(0, $total_debuff - 1); // array is 0-based
 								$sort = $liste_debuff[$tirage];
-								echo $tirage;
+								//echo $tirage;
 								//On cherche le buff dans la bdd
 								$requete = "SELECT * FROM sort_jeu WHERE id = ".$sort;
 								$req = $db->query($requete);
@@ -298,6 +298,7 @@ if($W_distance == 0)
 								if ($joueur['mp'] > $joueur['mp_max']) $joueur['mp'] = floor($joueur['mp_max']);
 							}
 							$requete = "UPDATE perso SET honneur = ".$joueur['honneur'].", star = ".$joueur['star'].", hp = ".$joueur['hp'].", mp = ".$joueur['mp'].", pa = ".$joueur['pa']." WHERE ID = ".$_SESSION['ID'];
+							//echo $requete;
 							$req = $db->query($requete);
 							//Récupération de la taxe
 							if($taxe > 0)
