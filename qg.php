@@ -137,7 +137,8 @@ if($W_distance == 0)
                 <?php
             break;
             case 'prendre' :
-                $nombre = $_GET['nbr'];
+                if(array_key_exists('nbr', $_GET)) $nombre = $_GET['nbr'];
+                else $nombre = 1;
             	if($nombre > 0)
             	{
                 	$i = 0;
@@ -152,18 +153,21 @@ if($W_distance == 0)
 							$requete = "SELECT *, depot_royaume.id AS id_depot FROM depot_royaume LEFT JOIN objet_royaume ON depot_royaume.id_objet = objet_royaume.id WHERE grade <= ".$joueur['rang_grade']." AND id_royaume = ".$R['ID'];
 							$req = $db->query($requete);
 							$row = $db->read_array($req);
-							$requete2 = "DELETE FROM depot_royaume WHERE id = ".$row['id_depot'];
-							if($db->query($requete2))
+							if($db->num_rows > 0)
 							{
-								if(prend_objet('r'.$_GET['id_objet'], $joueur))
+								$requete2 = "DELETE FROM depot_royaume WHERE id = ".$row['id_depot'];
+								if($db->query($requete2))
 								{
-									echo 'Objet bien pris au dépôt du royaume<br />';
-									$joueur = recupperso($joueur['ID']);
+									if(prend_objet('r'.$_GET['id_objet'], $joueur))
+									{
+										echo 'Objet bien pris au dépôt du royaume<br />';
+										$joueur = recupperso($joueur['ID']);
+									}
 								}
-							}
-							else
-							{
-								echo $G_erreur;
+								else
+								{
+									echo $G_erreur;
+								}
 							}
 							$i++;
 						}

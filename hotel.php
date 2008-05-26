@@ -97,7 +97,7 @@ if($W_distance == 0)
 			$objRoyaumes = $db->read_object($RqRoyaumes);
 			foreach($objRoyaumes as $race => $diplomatie) 
 			{ 
-				if( (($diplomatie <= 5) || ($diplomatie == 128)) && ($diplomatie != "race") )
+				if( (($diplomatie <= 5) || ($diplomatie == 127)) && ($diplomatie != 'race') )
 				{
 					$royaumes_sharing_tab[count($royaumes_sharing_tab)] = "'".$race."'"; 
 				}
@@ -302,7 +302,7 @@ if($W_distance == 0)
 				if(!empty($tmp_overlib)) { $tmp_overlib = str_replace("'", "\'", trim($tmp_overlib)); $overlib = "onmouseover=\"return overlib('$tmp_overlib', BGCLASS, 'overlib', BGCOLOR, '', FGCOLOR, '');\" onmouseout=\"return nd();\" "; };
 				$objets_liste .= " <li $overlib class='li$class nom'>".$tmp_nom.$tmp_stack.$tmp_slot.$tmp_enchantement."</li>
 								   <li $overlib class='li$class temps'>".transform_min_temp(($objets_tab[$id]["time"] + $mois) - time())."</li>
-								   <li $overlib class='li$class prix'>".number_format($objet["prix"], 0, ".", " ")."</li>
+								   <li $overlib class='li$class prix'>".number_format($objets_tab[$id]['prix'], 0, ".", " ")."</li>
 								   <li class='li$class achat' $tmp_achat_click>$tmp_achat</li>";
 				if($class == 1) { $class = 2; } else { $class = 1; };
 			}

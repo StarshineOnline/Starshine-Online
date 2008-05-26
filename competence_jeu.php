@@ -37,6 +37,7 @@ if (isset($_GET['ID']))
 			case 'fleche_tranchante' : 
 			case 'oeil_chasseur' : 
 			case 'renouveau_energique' :
+			case 'bulle_dephasante' :
 				foreach($cibles as $cible)
 				{
 					$cible_s = recupperso($cible);
@@ -138,21 +139,17 @@ if (isset($_GET['ID']))
 			break;
 			case "esprit_libre" :
 					//-- Suppression d'un debuff au hasard
-					if(count($joueur["debuff"]) > 0)
+					$debuff_tab = array();
+					foreach($joueur["debuff"] as $debuff)
 					{
-						if(count($joueur["debuff"] == 1) && !array_key_exists("debuff_rez", $joueur["debuff"]) )
-						{
-							$joueur["pa"] = $joueur["pa"] - $sortpa;
-							$joueur["mp"] = $joueur["mp"] - $sortmp;
-						
-							$debuff_tab = array();
-							foreach($joueur["debuff"] as $debuff)
-							{
-								if($debuff["nom"] != "rez") { $debuff_tab[count($debuff_tab)] = $debuff["id"]; };
-							}
-							$db->query("DELETE FROM buff WHERE id=".$debuff_tab[rand(0, count($debuff_tab))].";");
-						}
-						else { echo "Impossible de lancer de lancer le sort. Vous ne pouvez supprimer le mal de r&eacute;surection.<br/>"; };
+						if($debuff["type"] != "debuff_rez" AND $debuff["type"] != "repos_sage" AND $debuff["type"] != "repos_interieur") { $debuff_tab[count($debuff_tab)] = $debuff["id"]; };
+					}
+					if(count($debuff_tab) > 0)
+					{
+						$joueur["pa"] = $joueur["pa"] - $sortpa;
+						$joueur["mp"] = $joueur["mp"] - $sortmp;
+					
+						$db->query("DELETE FROM buff WHERE id=".$debuff_tab[rand(0, count($debuff_tab))].";");
 					}
 					else { echo "Impossible de lancer de lancer le sort. Vous n&apos;avez aucune debuff.<br/>"; };
 						

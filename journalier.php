@@ -92,58 +92,58 @@ while($row = $db->read_array($req))
 			$i++;
 		}
 		$where .= ')';
-	}
-	$up = ($joueur[$niveau] * 1000) / sqrt($niveau);
-	if($monstre[$niveau]['tot_type'] == 0) $monstre[$niveau]['tot_type'] = 1;
-	$down = $monstre[$niveau]['total'] / $monstre[$niveau]['tot_type'];
-	if($up < 1) $up = 1;
-	if($down == 0) $down = 1;
-	$ratio = $up / $down;
-	if($ratio > 50) $ratio = 50;
-	$limite = $ratio * 10000;
-	$requete = "SELECT ID, info FROM map WHERE ".$where;
-	//echo $requete.'<br />';
-	$req2 = $db->query($requete);
-	while($row2 = $db->read_array($req2))
-	{
-		//echo $row2['ID'].' '.$row2['info'].' ';
-		if (($row2['info'] == '') OR ($row2['info'] == '0')) $row2['info'] = 1;
-		if (in_array($row2['info'], $terrain))
+		$up = ($joueur[$niveau] * 1000) / sqrt($niveau);
+		if($monstre[$niveau]['tot_type'] == 0) $monstre[$niveau]['tot_type'] = 1;
+		$down = $monstre[$niveau]['total'] / $monstre[$niveau]['tot_type'];
+		if($up < 1) $up = 1;
+		if($down == 0) $down = 1;
+		$ratio = $up / $down;
+		if($ratio > 50) $ratio = 50;
+		$limite = $ratio * 10000;
+		$requete = "SELECT ID, info FROM map WHERE ".$where;
+		//echo $requete.'<br />';
+		$req2 = $db->query($requete);
+		while($row2 = $db->read_array($req2))
 		{
-			//echo $row2['info'].'<br />';
-			$rand = rand(0, 1000000);
-			if($rand < $limite OR $spawn == 0)
+			//echo $row2['ID'].' '.$row2['info'].' ';
+			if (($row2['info'] == '') OR ($row2['info'] == '0')) $row2['info'] = 1;
+			if (in_array($row2['info'], $terrain))
 			{
-				$check = true;
-				$coord = convert_in_coord($row2['ID']);
-				if($spawn == 0)
+				//echo $row2['info'].'<br />';
+				$rand = rand(0, 1000000);
+				if($rand < $limite OR $spawn == 0)
 				{
-					$requete = "SELECT id FROM map_monstre WHERE x = ".$coord['x']." AND y = ".$coord['y']." AND type = ".$id;
-					$req4 = $db->query($requete);
-					//echo $requete.'<br />';
-					if($db->num_rows > 0) $check = false;
-				}
-				if($check)
-				{
-					$temps_mort = $niveau * 1 * 30 * 24 * 60 * 60;
-					$mort_naturelle = time() + $temps_mort;
-					if(!$check_virgule) $check_virgule = true;
-					else
+					$check = true;
+					$coord = convert_in_coord($row2['ID']);
+					if($spawn == 0)
 					{
-						$insert .= ', ';
+						$requete = "SELECT id FROM map_monstre WHERE x = ".$coord['x']." AND y = ".$coord['y']." AND type = ".$id;
+						$req4 = $db->query($requete);
+						//echo $requete.'<br />';
+						if($db->num_rows > 0) $check = false;
 					}
-					//Création d'un monstre sur la map
-					$insert .= "('','".$id."','".$coord['x']."','".$coord['y']."','".$hp."', ".$niveau.", '".addslashes($nom)."','".$lib."', ".$mort_naturelle.")";
-					//echo $requete.'<br />';
-					//$req3 = $db->query($requete);
-					$tot_monstre++;
-					$total_monstre++;
-					if(($total_monstre % 500) == 0)
+					if($check)
 					{
-						$db->query($insert);
-						//echo $insert.'<br /><br /><br /><br />';
-						$insert = 'INSERT INTO map_monstre VALUES';
-						$check_virgule = false;
+						$temps_mort = $niveau * 1 * 30 * 24 * 60 * 60;
+						$mort_naturelle = time() + $temps_mort;
+						if(!$check_virgule) $check_virgule = true;
+						else
+						{
+							$insert .= ', ';
+						}
+						//Création d'un monstre sur la map
+						$insert .= "('','".$id."','".$coord['x']."','".$coord['y']."','".$hp."', ".$niveau.", '".addslashes($nom)."','".$lib."', ".$mort_naturelle.")";
+						//echo $requete.'<br />';
+						//$req3 = $db->query($requete);
+						$tot_monstre++;
+						$total_monstre++;
+						if(($total_monstre % 500) == 0)
+						{
+							$db->query($insert);
+							//echo $insert.'<br /><br /><br /><br />';
+							$insert = 'INSERT INTO map_monstre VALUES';
+							$check_virgule = false;
+						}
 					}
 				}
 			}

@@ -47,7 +47,6 @@ else
 	$attaquant['etat'] = array();
 	$defenseur['etat'] = array();
 	
-	if($attaquant['race'] == 'orc' OR $defenseur['race'] == 'orc') $round_total += 1;
 	if(array_key_exists('buff_sacrifice', $attaquant['buff'])) $round_total -= $attaquant['buff']['buff_sacrifice']['effet2'];
 	if(array_key_exists('cout_attaque', $attaquant['debuff'])) $pa_attaque = ceil($pa_attaque / $attaquant['debuff']['cout_attaque']['effet']);
 	if(array_key_exists('plus_cout_attaque', $attaquant['debuff'])) $pa_attaque = $pa_attaque * $attaquant['debuff']['plus_cout_attaque']['effet'];
@@ -67,6 +66,7 @@ else
 		if(array_key_exists('attaque_donjon', $_SESSION) AND $_SESSION['attaque_donjon'] == 'ok') $pa_attaque = $reduction_pa;
 	}
 	else $round_total = $G_round_total;
+	if($attaquant['race'] == 'orc' OR $defenseur['race'] == 'orc') $round_total += 1;
 	//Vérifie si l'attaquant a assez de points d'actions pour attaquer
 	if ($attaquant['pa'] >= ($pa_attaque - $reduction_pa))
 	{
@@ -232,14 +232,14 @@ else
 						//Perte de HP par le poison
 						if($attaquant['etat']['poison']['duree'] > 0)
 						{
-							$perte_hp = $attaquant['etat']['poison']['effet'] * $attaquant['etat']['poison']['duree'];
+							$perte_hp = $attaquant['etat']['poison']['effet'] - $defenseur['etat']['poison']['duree'];
 							if($attaquant['etat']['putrefaction']['duree'] > 0) $perte_hp = $perte_hp * $attaquant['etat']['putrefaction']['effet'];
 							$attaquant['hp'] -= $perte_hp;
 							echo '&nbsp;&nbsp;<span class="degat">'.$attaquant['nom'].' perd '.$perte_hp.' HP par le poison</span><br />';
 						}
 						if($defenseur['etat']['poison']['duree'] > 0)
 						{
-							$perte_hp = $defenseur['etat']['poison']['effet'] * $defenseur['etat']['poison']['duree'];
+							$perte_hp = $defenseur['etat']['poison']['effet'] - $defenseur['etat']['poison']['duree'];
 							if($defenseur['etat']['putrefaction']['duree'] > 0) $perte_hp = $perte_hp * $defenseur['etat']['putrefaction']['effet'];
 							$defenseur['hp'] -= $perte_hp;
 							echo '&nbsp;&nbsp;<span class="degat">'.$defenseur['nom'].' perd '.$perte_hp.' HP par le poison</span><br />';
