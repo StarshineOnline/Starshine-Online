@@ -99,7 +99,9 @@ function print_messbar()
 
 function make_overlib($message)
 {
-	return "overlib('<ul><li class=\'overlib_titres\'>".mb_ereg_replace('\'', '\\\'', $message)."</li></ul>', BGCLASS, 'overlib', BGCOLOR, '', FGCOLOR, '', VAUTO);";
+	$print = ereg_replace('([^\\])\'', '\\1\\\'', $message);
+	$print = ereg_replace("[\n\r]", '<br/>', $print);
+	return "overlib('<ul><li class=\'overlib_titres\'>".$print."</li></ul>', BGCLASS, 'overlib', BGCOLOR, '', FGCOLOR, '', VAUTO);";
 }
 
 ?>
