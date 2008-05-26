@@ -128,13 +128,13 @@ function check_undead_players()
   global $G_undead_checked;
   if ($G_undead_checked) return;
   $G_undead_checked = true;
-  if (strlen($_SERVER["SCRIPT_NAME"]) == 8)
+  if (strlen($_SERVER["SCRIPT_NAME"]) >= 8) // Si on met ==, autant faire == 'mort.php'
     if (substr_compare($_SERVER["SCRIPT_NAME"], 'mort.php', -8, 8) == 0)
       return;
-  if (strlen($_SERVER["SCRIPT_NAME"]) == 9)
+  if (strlen($_SERVER["SCRIPT_NAME"]) >= 9)
     if (substr_compare($_SERVER["SCRIPT_NAME"], 'index.php', -9, 9) == 0)
       return;
-  if (strlen($_SERVER["SCRIPT_NAME"]) == 10)
+  if (strlen($_SERVER["SCRIPT_NAME"]) >= 10)
     if (substr_compare($_SERVER["SCRIPT_NAME"], 'create.php', -10, 10) == 0)
       return;
   global $joueur;
@@ -143,7 +143,7 @@ function check_undead_players()
   }
   if ($joueur['hp'] < 1) {
     ob_end_clean();
-    if (strlen($_SERVER["SCRIPT_NAME"]) == 8)
+    if (strlen($_SERVER["SCRIPT_NAME"]) >= 8)
       if (substr_compare($_SERVER["SCRIPT_NAME"], 'jeu2.php', -8, 8) == 0)
 	print_head();
     verif_mort($joueur, 1);
