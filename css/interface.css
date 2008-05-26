@@ -475,8 +475,9 @@ height:05px;
 }
 #perso
 {
-	margin : 0;
-	width:990px;
+	margin : 0 auto;
+	width:1100px;
+	overflow : auto;
 	z-index : 0;
 }
 
