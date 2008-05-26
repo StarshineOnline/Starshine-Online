@@ -150,7 +150,7 @@ echo '
 	</tr>
 	</table>
 	';
-		if($joueur['teleport_roi'] != 'true')
+		if($joueur['teleport_roi'] != 'true' AND !$visu)
 		{
 			echo '<a href="javascript:if(confirm(\'Voulez vous vraiment vous téléportez sur votre capitale ?\')) envoiInfo(\'personnage.php?direction=stat&action=teleport\', \'information\')">Se téléporter dans votre capitale</a>';
 		}

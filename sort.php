@@ -413,59 +413,59 @@ if (isset($_GET['ID']))
 					
 				echo "<a href=\"javascript:envoiInfo('sort.php?ID=".$_GET["ID"]."', 'information')\">Utilisez a nouveau cette compétence</a>";	
 			break;
-			case "esprit_sacrifie" :	{ //-- Esprit Sacrifié
-												//-- Suppression d'un debuff au hasard
-												if(count($joueur["buff"]) > 0)
-												{
-													if(count($joueur["debuff"]) > 0)
-													{	
-														if(count($joueur["debuff"] == 1) && !array_key_exists("debuff_rez", $joueur["debuff"]) )
-														{
-															$joueur["pa"] = $joueur["pa"] - $sortpa;
-															$joueur["mp"] = $joueur["mp"] - $sortmp;
-														
-															$buff_tab = array();
-															foreach($joueur["buff"] as $buff)
-															{
-																if($buff["nom"] != "debuff_rez") { $buff_tab[count($buff_tab)] = $buff["id"]; };
-															}
-															
-															$debuff_tab = array();
-															foreach($joueur["debuff"] as $debuff)
-															{
-																if($debuff["nom"] != "debuff_rez") { $debuff_tab[count($debuff_tab)] = $debuff["id"]; };
-															}
-															
-															$db->query("DELETE FROM buff WHERE id=".$buff_tab[rand(0, count($buff_tab)-1)].";");
-															$db->query("DELETE FROM buff WHERE id=".$debuff_tab[rand(0, count($debuff_tab)-1)].";");
-															{//-- Augmentation des compétences
-																$difficulte_sort = diff_sort($row['difficulte'], $joueur, 'incantation', $sortpa_base, $sortmp_base);
-																$augmentation = augmentation_competence('incantation', $joueur, $difficulte_sort);
-																if ($augmentation[1] == 1)
-																{
-																	$joueur['incantation'] = $augmentation[0];
-																	echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant a '.$joueur['incantation'].' en incantation</span><br />';
-																}
-																$difficulte_sort = diff_sort($row['difficulte'], $joueur, $row['comp_assoc'], $sortpa_base, $sortmp_base);
-																$augmentation = augmentation_competence($row['comp_assoc'], $joueur, $difficulte_sort);
-																if ($augmentation[1] == 1)
-																{
-																	$joueur[$row['comp_assoc']] = $augmentation[0];
-																	echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant a '.$joueur[$row['comp_assoc']].' en '.$Gtrad[$row['comp_assoc']].'</span><br />';
-																}
-															}
-															//-- Mis à jour du joueur
-															$db->query("UPDATE perso SET mp='".$joueur["mp"]."', pa='".$joueur["pa"]."' WHERE ID='".$_SESSION["ID"]."';");
-														}
-														else { echo "Impossible de lancer de lancer le sort. Vous ne pouvez supprimer le mal de r&eacute;surection.<br/>"; };
-													}
-													else { echo "Impossible de lancer de lancer le sort. Vous n&apos;a aucun debuff.<br/>"; };
-												}
-												else { echo "Impossible de lancer de lancer le sort. Vous n&apos;a aucun buff.<br/>"; };
-													
-												echo "<a href=\"javascript:envoiInfo('sort.php?ID=".$_GET["ID"]."', 'information')\">Utilisez a nouveau cette compétence</a>";	
-											}
-											break;
+			case "esprit_sacrifie" :	 //-- Esprit Sacrifié
+				//-- Suppression d'un debuff au hasard
+				if(count($joueur["buff"]) > 0)
+				{
+					if(count($joueur["debuff"]) > 0)
+					{	
+						if(count($joueur["debuff"] == 1) && !array_key_exists("debuff_rez", $joueur["debuff"]) )
+						{
+							$joueur["pa"] = $joueur["pa"] - $sortpa;
+							$joueur["mp"] = $joueur["mp"] - $sortmp;
+						
+							$buff_tab = array();
+							foreach($joueur["buff"] as $buff)
+							{
+								if($buff["nom"] != "debuff_rez") { $buff_tab[count($buff_tab)] = $buff["id"]; };
+							}
+							
+							$debuff_tab = array();
+							foreach($joueur["debuff"] as $debuff)
+							{
+								if($debuff["nom"] != "debuff_rez") { $debuff_tab[count($debuff_tab)] = $debuff["id"]; };
+							}
+							
+							$db->query("DELETE FROM buff WHERE id=".$buff_tab[rand(0, count($buff_tab)-1)].";");
+							$db->query("DELETE FROM buff WHERE id=".$debuff_tab[rand(0, count($debuff_tab)-1)].";");
+							{//-- Augmentation des compétences
+								$difficulte_sort = diff_sort($row['difficulte'], $joueur, 'incantation', $sortpa_base, $sortmp_base);
+								$augmentation = augmentation_competence('incantation', $joueur, $difficulte_sort);
+								if ($augmentation[1] == 1)
+								{
+									$joueur['incantation'] = $augmentation[0];
+									echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant a '.$joueur['incantation'].' en incantation</span><br />';
+								}
+								$difficulte_sort = diff_sort($row['difficulte'], $joueur, $row['comp_assoc'], $sortpa_base, $sortmp_base);
+								$augmentation = augmentation_competence($row['comp_assoc'], $joueur, $difficulte_sort);
+								if ($augmentation[1] == 1)
+								{
+									$joueur[$row['comp_assoc']] = $augmentation[0];
+									echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant a '.$joueur[$row['comp_assoc']].' en '.$Gtrad[$row['comp_assoc']].'</span><br />';
+								}
+							}
+							//-- Mis à jour du joueur
+							$db->query("UPDATE perso SET mp='".$joueur["mp"]."', pa='".$joueur["pa"]."' WHERE ID='".$_SESSION["ID"]."';");
+						}
+						else { echo "Impossible de lancer de lancer le sort. Vous ne pouvez supprimer le mal de r&eacute;surection.<br/>"; };
+					}
+					else { echo "Impossible de lancer de lancer le sort. Vous n&apos;a aucun debuff.<br/>"; };
+				}
+				else { echo "Impossible de lancer de lancer le sort. Vous n&apos;a aucun buff.<br/>"; };
+					
+				echo "<a href=\"javascript:envoiInfo('sort.php?ID=".$_GET["ID"]."', 'information')\">Utilisez a nouveau cette compétence</a>";	
+			
+			break;
 		}
 	}
 	echo '<br /><a href="javascript:envoiInfo(\'sort.php\', \'information\');">Revenir au livre de sort</a>';

@@ -44,8 +44,8 @@ if($W_distance == 0)
 			//Achat
 			case 'achat' :
 				$requete = "SELECT * FROM taverne WHERE id = ".sSQL($_GET['id']);
-				$req = $db->query($requete);
-				$row = $db->read_array($req);
+				$req_taverne = $db->query($requete);
+				$row_taverne = $db->read_array($req_taverne);
 				$taxe = ceil($row['star'] * $R['taxe'] / 100);
 				$cout = $row['star'] + $taxe;
 				if ($joueur['star'] >= $cout)
@@ -58,7 +58,7 @@ if($W_distance == 0)
 						{
 							$debuff = false;
 							$buff = false;
-							$honneur_need = $row['honneur'] + (($row['honneur_pc'] * $joueur['honneur']) / 100);
+							$honneur_need = $row_taverne['honneur'] + (($row_taverne['honneur_pc'] * $joueur['honneur']) / 100);
 							if($joueur['honneur'] >= $honneur_need)
 							{
 								$joueur['honneur'] = $joueur['honneur'] - $honneur_need;
@@ -134,7 +134,6 @@ if($W_distance == 0)
 								$total_buff = count($liste_buff);
 								$tirage = rand(0, $total_buff);
 								$sort = $liste_buff[$tirage];
-								echo $tirage;
 								//On cherche le buff dans la bdd
 								$requete = "SELECT * FROM sort_jeu WHERE id = ".$sort;
 								$req = $db->query($requete);
@@ -290,12 +289,12 @@ if($W_distance == 0)
 						if($valid)
 						{
 							$joueur['star'] = $joueur['star'] - $cout;
-							$joueur['pa'] = $joueur['pa'] - $row['pa'];
+							$joueur['pa'] = $joueur['pa'] - $row_taverne['pa'];
 							if(!$bloque_regen)
 							{
-								$joueur['hp'] = $joueur['hp'] + $row['hp'];
+								$joueur['hp'] = $joueur['hp'] + $row_taverne['hp'] + floor($row_taverne['hp_pc'] * $joueur['hp_max'] / 100);
 								if ($joueur['hp'] > $joueur['hp_max']) $joueur['hp'] = floor($joueur['hp_max']);
-								$joueur['mp'] = $joueur['mp'] + $row['mp'];
+								$joueur['mp'] = $joueur['mp'] + $row_taverne['mp'] + floor($row_taverne['mp_pc'] * $joueur['mp_max'] / 100);
 								if ($joueur['mp'] > $joueur['mp_max']) $joueur['mp'] = floor($joueur['mp_max']);
 							}
 							$requete = "UPDATE perso SET honneur = ".$joueur['honneur'].", star = ".$joueur['star'].", hp = ".$joueur['hp'].", mp = ".$joueur['mp'].", pa = ".$joueur['pa']." WHERE ID = ".$_SESSION['ID'];
@@ -308,7 +307,7 @@ if($W_distance == 0)
 								$requete = "UPDATE argent_royaume SET taverne = taverne + ".$taxe." WHERE race = '".$R['race']."'";
 								$db->query($requete);
 							}
-							echo '<h6>La taverne vous remercie de votre achat !</h6>';
+							echo '<h6>La taverne vous remercie de votre achat !<br />'.$texte.'</h6>';
 						}
 					}
 					else

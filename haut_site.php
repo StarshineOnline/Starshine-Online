@@ -7,5 +7,3 @@ if(!isset($root)) $root = '';
 	<div id="haut">
 		<a href="<?php echo $root; ?>index.php"><img src="<?php echo $root; ?>image/logossot.png" /></a>
 	</div>
-	<?php 
-	
