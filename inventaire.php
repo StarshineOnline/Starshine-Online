@@ -39,7 +39,7 @@ if(!$visu AND isset($_GET['action']))
 			}
 			else
 			{
-				echo $G_erreur;
+				echo '<h5>'.$G_erreur.'</h5>';
 			}
 		break;
 		case 'equip' :
@@ -54,7 +54,7 @@ if(!$visu AND isset($_GET['action']))
 			}
 			else
 			{
-				echo $G_erreur;
+				echo '<h5>'.$G_erreur.'</h5>';
 			}
 		break;
 		case 'utilise' :
@@ -94,26 +94,26 @@ if(!$visu AND isset($_GET['action']))
 								$inventaire_slot = serialize($joueur['inventaire_slot']);
 								$requete = "UPDATE perso SET inventaire_slot = '".$inventaire_slot."' WHERE ID = ".$joueur['ID'];
 								$req = $db->query($requete);
-								echo $row['nom'].' posé avec succès';
+								echo '<h6>'.$row['nom'].' posé avec succès</h6>';
 							}
 							else
 							{
-								echo 'Il y a déjà un batiment sur cette case !';
+								echo '<h5>Il y a déjà un batiment sur cette case !</h5>';
 							}
 						}
 						else
 						{
-							echo 'Il y a déjà un batiment en construction sur cette case !';
+							echo '<h5>Il y a déjà un batiment en construction sur cette case !</h5>';
 						}
 					}
 					else
 					{
-						echo 'Vous ne pouvez poser un fort uniquement sur un territoire qui vous appartient';
+						echo '<h5>Vous ne pouvez poser un fort uniquement sur un territoire qui vous appartient</h5>';
 					}
 				}
 				else
 				{
-					echo 'Vous ne pouvez pas poser de fort sur une ville';
+					echo '<h5>Vous ne pouvez pas poser de fort sur une ville</h5>';
 				}
 			}
 			switch($_GET['type'])
@@ -149,27 +149,41 @@ if(!$visu AND isset($_GET['action']))
 									$inventaire_slot = serialize($joueur['inventaire_slot']);
 									$requete = "UPDATE perso SET inventaire_slot = '".$inventaire_slot."' WHERE ID = ".$joueur['ID'];
 									$req = $db->query($requete);
-									echo 'Drapeau posé avec succès';
+									echo '<h6>Drapeau posé avec succès</h6>';
 								}
 								else
 								{
-									echo 'Il y a déjà un batiment sur cette case !';
+									echo '<h5>Il y a déjà un batiment sur cette case !</h5>';
 								}
 							}
 							else
 							{
-								echo 'Il y a déjà un batiment en construction sur cette case !';
+								echo '<h5>Il y a déjà un batiment en construction sur cette case !</h5>';
 							}
 						}
 						else
 						{
-							echo 'Vous ne pouvez poser un drapeau uniquement sur les royaumes avec lesquels vous êtes en guerre';
+							echo '<h5>Vous ne pouvez poser un drapeau uniquement sur les royaumes avec lesquels vous êtes en guerre</h5>';
 						}
 					}
 					else
 					{
-						echo 'Vous ne pouvez pas poser de drapeau sur une ville';
+						echo '<h5>Vous ne pouvez pas poser de drapeau sur une ville</h5>';
 					}
+				break;
+				//Dépot de l'objet au dépot militaire
+				case 'depot' :
+					//On le dépose
+					$objet = $joueur['inventaire_slot'][$_GET['key_slot']];
+					$id = mb_substr($objet, 1, strlen($objet));
+					$requete = "INSERT INTO depot_royaume VALUES ('', ".$id.", ".$R['ID'].")";
+					$db->query($requete);
+					//On supprime l'objet de l'inventaire
+					array_splice($joueur['inventaire_slot'], $_GET['key_slot'], 1);
+					$inventaire_slot = serialize($joueur['inventaire_slot']);
+					$requete = "UPDATE perso SET inventaire_slot = '".$inventaire_slot."' WHERE ID = ".$joueur['ID'];
+					$req = $db->query($requete);
+					echo '<h6>Objet posé avec succès</h6>';
 				break;
 				case 'identification' :
 					$fin = false;
@@ -206,7 +220,7 @@ if(!$visu AND isset($_GET['action']))
 							}
 							else
 							{
-								echo 'L\'identification n\'a pas marché...';
+								echo '<h5>L\'identification n\'a pas marché...</h5>';
 							}
 							//On supprime l'objet de l'inventaire
 							//Vérification si objet "stacké"

@@ -237,11 +237,11 @@ if (isset($_GET['ID']))
 					{
 						//On vérifie si le joueur n'a pas déjà une rez plus efficace d'active
 						$requete = "SELECT pourcent FROM rez WHERE id_perso = ".$cible['ID'];
-						$req = $db->query($requete);
+						$req_pourcent = $db->query($requete);
 						$pourcent_max = 0;
-						while($row = $db->read_assoc($req))
+						while($row_pourcent = $db->read_assoc($req_pourcent))
 						{
-							if($row['pourcent'] > $pourcent_max) $pourcent_max = $row['pourcent'];
+							if($row_pourcent['pourcent'] > $pourcent_max) $pourcent_max = $row_pourcent['pourcent'];
 						}
 						if($row['effet'] > $pourcent_max)
 						{

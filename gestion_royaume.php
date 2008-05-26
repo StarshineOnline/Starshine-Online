@@ -481,8 +481,7 @@ if($W_distance == 0)
                     	//On supprime un bourg au compteur
 		            	if($row[0] == 'bourg')
         		    	{
-	        		    	$requete = "UPDATE royaume SET bourg = bourg - 1 WHERE ID = ".$row[1];
-	        		    	$db->query($requete);
+	        		    	supprime_bourg($row[1]);
         		    	}
 	                }
                     echo '<a href="javascript:envoiInfo(\'gestion_royaume.php?poscase='.$W_case.'&amp;direction=drapeau\', \'carte\')">Retour à la liste des drapeaux et constructions</a>';

@@ -357,11 +357,6 @@ if($W_distance == 0)
 		<?php
 		
 		$color = 1;
-		$where = "1";
-		if(array_key_exists('part', $_GET))
-		{
-			$where .= " AND type = '".$_GET['part']."'";
-		}
 		$requete = "SELECT * FROM taverne";
 		$req = $db->query($requete);
 		while($row = $db->read_array($req))
@@ -384,7 +379,7 @@ if($W_distance == 0)
 			<td>
 				<?php echo $row['pa']; ?>
 			</td>
-			<td onmouseover="<?php echo make_overlib('Vous perdrez '.$row['honneur'].' + '.$row['honneur_pc'].'% points d\\\'honneur'); ?>" onmouseout="nd();">
+			<td onmouseover="<?php echo make_overlib('Vous perdrez '.$row['honneur'].' + '.$row['honneur_pc'].'% points d\'honneur'); ?>" onmouseout="nd();">
 				<?php echo ($row['honneur'] + ceil($joueur['honneur'] * $row['honneur_pc'] / 100)); ?>
 			</td>
 			<td onmouseover="<?php echo make_overlib('Vous regagnerez '.$row['hp'].' + '.$row['hp_pc'].'% HP'); ?>" onmouseout="nd();">

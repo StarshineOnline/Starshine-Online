@@ -132,7 +132,7 @@ else
 			$message = eregi_replace("\[url\]([^[]*)\[/url\]", '<a href="\\1">\\1</a>', $message );
 			if(strlen($message) > 600)
 			{
-				$message = substr($message, 0, 600);
+				$message = mb_substr($message, 0, 600);
 				$message .= '<br /><a href="http://forum.starshine-online.com/viewtopic.php?id='.$row['id'].'">Lire la suite</a>';
 			}
 			echo '<div class="news">'.$message.'</div>';

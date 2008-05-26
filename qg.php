@@ -152,10 +152,10 @@ if($W_distance == 0)
 							$requete = "SELECT *, depot_royaume.id AS id_depot FROM depot_royaume LEFT JOIN objet_royaume ON depot_royaume.id_objet = objet_royaume.id WHERE grade <= ".$joueur['rang_grade']." AND id_royaume = ".$R['ID'];
 							$req = $db->query($requete);
 							$row = $db->read_array($req);
-							$requete2 = "DELETE FROM depot_royaume WHERE id = ".$row['id_depot']."";
+							$requete2 = "DELETE FROM depot_royaume WHERE id = ".$row['id_depot'];
 							$db->query($requete2);
 							echo 'Objet bien pris au dépôt du royaume<br />';
-	
+							$joueur = recupperso($joueur['ID']);
 						}
 						else
 						{

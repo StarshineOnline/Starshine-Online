@@ -142,6 +142,7 @@ if($joueur['inventaire_slot'] != '')
 				elseif($objet_d['categorie'] == 'o' OR $objet_d['categorie'] == 'r')
 				{
 					if($row['utilisable'] == 'y') echo ' <a href="javascript:envoiInfo(\'inventaire.php?action=utilise&amp;id_objet='.$objet_d['id_objet'].'&amp;type='.$row['type'].'&amp;key_slot='.$i.$filtre_url.'\', \'information\');">Utiliser</a> / ';
+					if($W_row['type'] == 1) echo '<a href="javascript:envoiInfo(\'inventaire.php?action=depot&amp;id_objet='.$objet_d['id_objet'].'&amp;type='.$row['type'].'&amp;key_slot='.$i.$filtre_url.'\', \'information\');">Déposer au dépot</a>';
 				}
 				if ($W_row['type'] == 1 AND $objet_d['categorie'] != 'r' AND $objet_d['categorie'] != 'h')
 				{

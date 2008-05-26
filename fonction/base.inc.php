@@ -1778,6 +1778,7 @@ function verif_mort($pourcent, $var, $duree_debuff=0, $multiplicateur_mouvement=
 			$duree = $row[0] - time();
 		}
 		else $duree = 0;
+		$duree_debuff += $duree;
 		//Suppression des buffs
 		$requete = "DELETE FROM buff WHERE id_perso = ".$joueur['ID']." AND type <> 'debuff_rez'";
 		$db->query($requete);
@@ -2338,5 +2339,12 @@ function aff_var($v)
 	echo '<pre>';
 	var_dump($v);
 	echo '</pre>';
+}
+
+function supprime_bourg($royaume)
+{
+	global $db;
+	$requete = "UPDATE royaume SET bourg = bourg - 1 WHERE ID = ".$defenseur['ID']." AND bourg > 0";
+	$db->query($requete);
 }
 ?>

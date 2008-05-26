@@ -358,8 +358,8 @@ function attaque($acteur = 'attaquant', $competence)
 					$critique = true;
 					if(array_key_exists('renouveau_energique', $actif['buff']))
 						{
-							$actif['reserve'] += $actif['buff']['renouveau_energetique']['effet'];
-							echo $actif['nom'].' se ressaisi et gagne '.$actif['buff']['renouveau_energetique']['effet'].' RM<br />';
+							$actif['reserve'] += $actif['buff']['renouveau_energique']['effet'];
+							echo $actif['nom'].' se ressaisi et gagne '.$actif['buff']['renouveau_energique']['effet'].' RM<br />';
 						}
 					//if(array_key_exists('maitre_critique', $actif['competences'])) augmentation_competence('maitre_critique', $actif, 3);
 				}

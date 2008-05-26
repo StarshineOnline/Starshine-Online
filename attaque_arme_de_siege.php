@@ -126,8 +126,7 @@ else
                    	//On supprime un bourg au compteur
 	            	if($defenseur['type'] == 'bourg')
        		    	{
-        		    	$requete = "UPDATE royaume SET bourg = bourg - 1 WHERE ID = ".$defenseur['ID'];
-        		    	$db->query($requete);
+        		    	supprime_bourg($defenseur['ID']);
        		    	}
 					//On efface le batiment
 					$requete = "DELETE FROM ".sSQL($_GET['table'])." WHERE ID = ".sSQL($_GET['id_batiment']);
