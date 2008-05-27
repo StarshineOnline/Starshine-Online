@@ -71,20 +71,20 @@ a:hover, a:active 	{ color:#7290db; }
 .overlib_desc_objet span		{ float:left; width:75px;  }
 
 /*-- Map --------------------------------------------------------------*/
-#carte							{ width:440px; height:440px; float:left; margin:0px;clear:both; z-index:500; }
+#carte							{ width:445px; height:440px; float:left; margin:0px;clear:both; z-index:500; }
 #map_bord_haut  				{ height:20px !important; cursor:pointer; }
 #map_bord_haut li 				{ float:left; width:60px; height:inherit; line-height:20px; color:white; text-align:center;background:#D8AB41 repeat scroll 0%;}
 #map_bord_haut2 li 				{ float:left; width:60px; height:inherit; line-height:20px; color:white; text-align:center; background:transparent url('../image/bord_map.png') center; }
-#map_bord_haut_gauche  			{ width:20px !important; height:inherit; background: #D8AB41 url('../image/icone/royaume_icone.png') center !important;}
-#map_bord_haut_gauche2 			{ width:20px !important; height:inherit; background:transparent url('../image/coin_map.png') center !important; }
+#map_bord_haut_gauche  			{ width:25px !important; height:inherit; background: #D8AB41 url('../image/icone/royaume_icone.png') center no-repeat !important;}
+#map_bord_haut_gauche2 			{ width:25px !important; height:inherit; background:transparent url('../image/coin_map.png') center !important; }
 #map_bord_haut_gauche:hover		{ background-position:top; }
 #map_bord_haut_gauche:active	{ background-position:bottom; }
 #bord_haut_x					{ color:black !important; font-weight:bold; }
 #bord_haut_y					{ color:black !important; font-weight:bold; }
 .map							{ height:60px; }
 .map li							{ float:left; width:60px; height:inherit; }
-.map_bord_gauche				{ width:20px !important; color:white; line-height:60px; text-align:center; background:#D8AB41 repeat scroll 0%; }
-.map_bord_gauche2				{ width:20px !important; color:white; line-height:60px; text-align:center; background:transparent url('../image/bord2_map.png') center; }
+.map_bord_gauche				{ width:25px !important; color:white; line-height:60px; text-align:center; background:#D8AB41 repeat scroll 0%; }
+.map_bord_gauche2				{ width:25px !important; color:white; line-height:60px; text-align:center; background:transparent url('../image/bord2_map.png') center; }
 .map_contenu 					{ width:56px; height:56px; margin:2px 2px 2px 2px; }
 
 /*-- Weather ----------------------------------------------------------*/
