@@ -92,10 +92,12 @@ while($row = $db->read_array($req))
 			$i++;
 		}
 		$where .= ')';
+	}
+	if($row['spawn_loc'] != '' OR $row['spawn'] != 0)
+	{
 		$up = ($joueur[$niveau] * 1000) / sqrt($niveau);
 		if($monstre[$niveau]['tot_type'] == 0) $monstre[$niveau]['tot_type'] = 1;
 		$down = $monstre[$niveau]['total'] / $monstre[$niveau]['tot_type'];
-		if($up < 1) $up = 1;
 		if($down == 0) $down = 1;
 		$ratio = $up / $down;
 		if($ratio > 50) $ratio = 50;
@@ -106,7 +108,7 @@ while($row = $db->read_array($req))
 		while($row2 = $db->read_array($req2))
 		{
 			//echo $row2['ID'].' '.$row2['info'].' ';
-			if (($row2['info'] == '') OR ($row2['info'] == '0')) $row2['info'] = 1;
+			if (($row2['info'] === '') OR ($row2['info'] === '0')) $row2['info'] = 1;
 			if (in_array($row2['info'], $terrain))
 			{
 				//echo $row2['info'].'<br />';
@@ -152,7 +154,7 @@ while($row = $db->read_array($req))
 	$mail .= $nom." : ".$tot_monstre." - Up : ".$up." / Down : ".$down." / Ratio : ".$ratio."\n";
 }
 
-$db->query($requete);
+$db->query($insert);
 //echo $insert.'<br /><br /><br /><br />';
 
 $mail .= mysql_error();
@@ -160,7 +162,7 @@ $mail .= mysql_error();
 mail('masterob1@chello.fr', 'Starshine - Génération des monstres du '.$date, $mail);
 
 //Si le premier du mois, pop du premier boss de myriandre
-if(date("N") == 1)
+if(date("j") == 1)
 {
 	$requete = "SELECT type FROM map_monstre WHERE type = 64";
 	$db->query($requete);

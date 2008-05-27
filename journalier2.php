@@ -546,7 +546,7 @@ $groupe['vampire'][0] = 15;
 $groupe['vampire'][1] = 26;
 $groupe['vampire'][2] = 37;
 //Si on est le premier, élection du roi de chaque race
-if(date("d") == 1)
+if(date("j") == 1)
 {	
 	require('connect_forum.php');
 	//Suppression des anciens rois

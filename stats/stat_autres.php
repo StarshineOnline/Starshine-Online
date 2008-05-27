@@ -1,4 +1,6 @@
 <?php
+$root = '';
+
 $data = array();
 $legend = array();
 $label = array();
@@ -25,97 +27,88 @@ while($row = $db->read_assoc($req))
 	$legend[] = $row['race'].'('.$row['total'].')';
 	$label[] = $row['race']."(".$row['total'].")\n%.1f%%";*/
 }
-include_once( '../ofc/ofc-library/open-flash-chart.php' );
-$date = date("Y-m-d");
-if(@mkdir('../stat/'.$date)) echo 'Répertoire '.$date.' créé<br />'; echo 'Le répertoire '.$date.' existe déjà<br />';
 
 //GRAPHES NBR JOUEURS
-// use the chart class to build the chart:
-$g = new graph_flash();
-$g->bg_colour = '#E4F5FC';
-$g->set_inner_background( '#E3F0FD', '#CBD7E6', 90 );
-// Spoon sales, March 2007
-$g->title( 'Evolution du nombre de joueurs le '.$date, '{font-size: 12px; color: #800000}' );
+$graph = new Graph(900, 400, "auto");
+$graph->SetShadow();
 
-$g->set_data( $data['nombre_joueur'] );
-$g->line_hollow( 2, 4, '#447799', 'Nombre de joueurs', 10 );
-// label each point with its value
-$g->set_x_labels( $dates );
-$g->set_x_label_style( 10, '0x9933CC', 2 );
+$graph->SetMarginColor('white');
+$graph->SetScale("textlin");
+$graph->SetFrame(false);
+$graph->SetMargin(50,120,30,30);
 
-// set the Y max
-$max = max($data['nombre_joueur']);
-$min = min($data['nombre_joueur']);
-$max_min = $max - $min;
-$g->set_y_max( $max + ceil($max_min * 0.05) );
-$g->set_y_min( $min - floor($max_min * 0.05) );
-$g->set_tool_tip( 'Le #x_label# : #val# joueurs' );
-// label every 20 (0,20,40,60)
-$g->y_label_steps( 10 );
+$graph->tabtitle->Set('Evolution du nombre de joueurs');
+//$graph->tabtitle->SetFont(FF_ARIAL,FS_BOLD,13);
 
-// display the data
-// display the data
-$fichier = '../stat/'.$date.'/stat_joueur.data';
-$f = fopen($fichier, "w");
-fwrite($f, $g->render());
-fclose($f);
+$graph->yaxis->HideZeroLabel();
+$graph->ygrid->SetFill(true, '#EFEFEF@0.5', '#BBCCFF@0.5');
+$graph->xgrid->Show();
+
+$graph->xaxis->SetTickLabels($dates);
+
+// Create lines
+$p1 = new LinePlot($data['nombre_joueur']);
+$p1 ->SetWeight(2);
+$graph->Add($p1);
+
+$graph->legend->SetShadow('gray@0.4',5);
+$graph->legend->SetPos(0, 0.1, "right", "top");
+// Output line
+$graph->Stroke($root.'image/stat_joueur.jpg');
 
 //GRAPHES NBR MONSTRES
-$g = new graph();
-$g->bg_colour = '#E4F5FC';
-$g->set_inner_background( '#E3F0FD', '#CBD7E6', 90 );
-// Spoon sales, March 2007
-$g->title( 'Evolution du nombre de monstres le '.$date, '{font-size: 12px; color: #800000}' );
+$graph = new Graph(900, 400, "auto");
+$graph->SetShadow();
 
-$g->set_data( $data['nombre_monstre'] );
-$g->line_hollow( 2, 4, '#447799', 'Nombre de monstres', 10 );
-// label each point with its value
-$g->set_x_labels( $dates );
-$g->set_x_label_style( 10, '0x9933CC', 2 );
+$graph->SetMarginColor('white');
+$graph->SetScale("textlin");
+$graph->SetFrame(false);
+$graph->SetMargin(50,120,30,30);
 
-// set the Y max
-$max = max($data['nombre_monstre']);
-$min = min($data['nombre_monstre']);
-$max_min = $max - $min;
-$g->set_y_max( $max + ceil($max_min * 0.05) );
-$g->set_y_min( $min - floor($max_min * 0.05) );
-$g->set_tool_tip( 'Le #x_label# : #val# monstres' );
-// label every 20 (0,20,40,60)
-$g->y_label_steps( 10 );
+$graph->tabtitle->Set('Evolution du nombre de monstres');
+//$graph->tabtitle->SetFont(FF_ARIAL,FS_BOLD,13);
 
-// display the data
-// display the data
-$fichier = '../stat/'.$date.'/stat_monstre.data';
-$f = fopen($fichier, "w");
-fwrite($f, $g->render());
-fclose($f);
+$graph->yaxis->HideZeroLabel();
+$graph->ygrid->SetFill(true, '#EFEFEF@0.5', '#BBCCFF@0.5');
+$graph->xgrid->Show();
+
+$graph->xaxis->SetTickLabels($dates);
+
+// Create lines
+$p1 = new LinePlot($data['nombre_monstre']);
+$p1 ->SetWeight(2);
+$graph->Add($p1);
+
+$graph->legend->SetShadow('gray@0.4',5);
+$graph->legend->SetPos(0, 0.1, "right", "top");
+// Output line
+$graph->Stroke($root.'image/stat_monstre.jpg');
 
 //GRAPHES NBR NIVEAUX MOYEN
-$g = new graph();
-$g->bg_colour = '#E4F5FC';
-$g->set_inner_background( '#E3F0FD', '#CBD7E6', 90 );
-// Spoon sales, March 2007
-$g->title( 'Evolution du niveau moyen le '.$date, '{font-size: 12px; color: #800000}' );
+$graph = new Graph(900, 400, "auto");
+$graph->SetShadow();
 
-$g->set_data( $data['niveau_moyen'] );
-$g->line_hollow( 2, 4, '#447799', 'Niveau moyen', 10 );
-// label each point with its value
-$g->set_x_labels( $dates );
-$g->set_x_label_style( 10, '0x9933CC', 2 );
+$graph->SetMarginColor('white');
+$graph->SetScale("textlin");
+$graph->SetFrame(false);
+$graph->SetMargin(50,120,30,30);
 
-// set the Y max
-$max = max($data['niveau_moyen']);
-$min = min($data['niveau_moyen']);
-$max_min = $max - $min;
-$g->set_y_max( $max + ceil($max_min * 0.05) );
-$g->set_y_min( $min - floor($max_min * 0.05) );
-$g->set_tool_tip( 'Le #x_label#, niveau moyen : #val#' );
-// label every 20 (0,20,40,60)
-$g->y_label_steps( 10 );
+$graph->tabtitle->Set('Evolution du niveau moyen');
+//$graph->tabtitle->SetFont(FF_ARIAL,FS_BOLD,13);
 
-// display the data
-$fichier = '../stat/'.$date.'/stat_niveau_moyen.data';
-$f = fopen($fichier, "w");
-fwrite($f, $g->render());
-fclose($f);
+$graph->yaxis->HideZeroLabel();
+$graph->ygrid->SetFill(true, '#EFEFEF@0.5', '#BBCCFF@0.5');
+$graph->xgrid->Show();
+
+$graph->xaxis->SetTickLabels($dates);
+
+// Create lines
+$p1 = new LinePlot($data['niveau_moyen']);
+$p1 ->SetWeight(2);
+$graph->Add($p1);
+
+$graph->legend->SetShadow('gray@0.4',5);
+$graph->legend->SetPos(0, 0.1, "right", "top");
+// Output line
+$graph->Stroke($root.'image/stat_niveau_moyen.jpg');
 ?>

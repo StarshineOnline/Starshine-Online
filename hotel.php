@@ -299,7 +299,7 @@ if($W_distance == 0)
 											break;
 					}
 				}
-				if(!empty($tmp_overlib)) { $tmp_overlib = str_replace("'", "\'", trim($tmp_overlib)); $overlib = "onmouseover=\"return overlib('$tmp_overlib', BGCLASS, 'overlib', BGCOLOR, '', FGCOLOR, '');\" onmouseout=\"return nd();\" "; };
+				if(!empty($tmp_overlib)) { $tmp_overlib = str_replace("'", "\'", trim($tmp_overlib)); $overlib = "onmouseover=\"return overlib('$tmp_overlib', BGCLASS, 'overlib', BGCOLOR, '', FGCOLOR, '', VAUTO);\" onmouseout=\"return nd();\" "; };
 				$objets_liste .= " <li $overlib class='li$class nom'>".$tmp_nom.$tmp_stack.$tmp_slot.$tmp_enchantement."</li>
 								   <li $overlib class='li$class temps'>".transform_min_temp(($objets_tab[$id]["time"] + $mois) - time())."</li>
 								   <li $overlib class='li$class prix'>".number_format($objets_tab[$id]['prix'], 0, ".", " ")."</li>
