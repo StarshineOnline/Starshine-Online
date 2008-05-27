@@ -240,6 +240,14 @@ echo 'xmin : '.$xmin.' xmax : '.$xmax.' ymin : '.$ymin.' ymax : '.$ymax;
 					<option value="1526" class="baseRow1">Donjon Gobelin 11</option>
 					<option value="1527" class="baseRow1">Donjon Gobelin 12</option>
 					<option value="1528" class="baseRow1">Donjon Gobelin 13</option>
+					<option value="1529" class="baseRow1">Donjon Gobelin 14</option>
+					<option value="1530" class="baseRow1">Donjon Gobelin 15</option>
+					<option value="1531" class="baseRow1">Donjon Gobelin 16</option>
+					<option value="1532" class="baseRow1">Donjon Gobelin 17</option>
+					<option value="1533" class="baseRow1">Donjon Gobelin 18</option>
+					<option value="1534" class="baseRow1">Donjon Gobelin 19</option>
+					<option value="1535" class="baseRow1">Donjon Gobelin 20</option>
+	
 				</optgroup>
 				<optgroup label="Mur Donjon Gobelin">
 					<option value="1616" class="baseRow1">Mur Donjon gobelin 1</option>
