@@ -1,12 +1,12 @@
 <?php
 
-if (isset($_SERVER['REMOTE_ADDR']) &&
+/*if (isset($_SERVER['REMOTE_ADDR']) &&
 	$_SERVER['REMOTE_ADDR']	!= "127.0.0.1" &&
 	$_SERVER['REMOTE_ADDR']	!= "::1") {
 	header('HTTP/1.0 403 Forbidden');
 	die('Forbidden connection from '.$_SERVER['REMOTE_ADDR']);
 }
-
+*/
 $mail = '';
 
 include('class/db.class.php');

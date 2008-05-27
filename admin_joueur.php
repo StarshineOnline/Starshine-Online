@@ -38,7 +38,7 @@ else
 					<strong>Nom</strong>
 				</td>
 				<td style="width : 25%;">
-					<?php echo $row['nom']; ?>
+					<a href="admin_joueur.php?direction=nom&amp;id=<?php echo $row['ID']; ?>"><?php echo $row['nom']; ?></a>
 				</td>
 				<td style="width : 25%;">
 					<strong>Statut</strong>
@@ -231,6 +231,30 @@ else
 				?>
 				<a href="admin_joueur.php?direction=info_joueur&amp;id=<?php echo $_GET['id']; ?>">Revenir à sa feuille de personnage</a>
 				<?php
+			break;
+			case 'nom' :
+				$id = $_GET['id'];
+				$requete = "SELECT ID, nom FROM perso WHERE ID = ".$id;
+				$req = $db->query($requete);
+				$row = $db->read_assoc($req);
+				if($db->query($requete))
+				{
+					echo '<form action="admin_joueur.php?id='.$id.'&amp;direction=nom2" method="post">
+					Nom : <input type="text" id="nom" value="'.$row['nom'].'"/><br />
+					<input type="submit" value="Valider" />
+					</form>';
+				}
+			break;
+			case 'nom2' :
+				$id = $_GET['id'];
+				$requete = "SELECT ID, nom FROM perso WHERE ID = ".$id;
+				$req = $db->query($requete);
+				$row = $db->read_assoc($req);
+				$nom = $_GET['nom'];
+				$tutu = $_POST['nom'];
+				echo 'test :'.$nom.'<br>'.$tutu;
+				$requete = "UPDATE perso SET nom = ".$nom." WHERE ID = ".$id;
+				echo $requete;
 			break;
 			case 'journal' :
 				$joueur = recupperso($_GET['id']);
