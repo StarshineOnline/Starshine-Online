@@ -1086,8 +1086,8 @@ function recupmonstre($ID, $map_monstre = true)
 	$R_monstre['description'] = $row['description'];
 	$R_monstre['image'] = $row['lib'].'.png';
 	if($row['arme'] != '') $R_monstre['arme_type'] = $row['arme'];
-	if($row['arme'] == 'arc') $R_monstre['distance'] = $row['melee'];
 	else $R_monstre['arme_type'] = 'epee';
+	if($row['arme'] == 'arc') $R_monstre['distance'] = $row['melee'];
 	$R_monstre['buff'] = array();
 	$R_monstre['action_d'] = $row['action'];
 	$R_monstre['enchantement'] = array();

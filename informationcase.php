@@ -167,6 +167,9 @@ if($num_rows > 0)
 		{
 			if(in_array('53', $quete_fini)) $unlock = true;
 		}
+		elseif($W_row['nom'] == 'Teleport')
+		{
+		}
 		else $unlock = true;
 		if($W_row['x'] == $joueur["x"] AND $W_row['y'] == $joueur["y"] AND $unlock) echo ' <a href="jeu2.php?donjon_id='.$W_row['id'].'">Entrer dans le donjon</a>';
 		echo '<br /></div>';

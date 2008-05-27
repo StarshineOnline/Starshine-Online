@@ -169,7 +169,8 @@ if(date("j") == 1)
 	//Si il n'est pas là on le fait pop
 	if($db->num_rows() == 0)
 	{
-		$requete = "INSERT INTO map_monstre VALUES(NULL, '64','3','212','6400', 6, '".addslashes('Devorsis')."','devorsis', ".(time() + 2678400).")";
+		$time = time() + 2678400;
+		$requete = "INSERT INTO map_monstre VALUES(NULL, '64','3','212','6400', 6, '".addslashes('Devorsis')."','devorsis', ".$time."), (NULL,'125','36','283','5000', 18, 'Construct draconide','construct_draconide', ".$time."), ('','126','12','289','5000', 18, 'Construct draconide','construct_draconide2', ".$time.")";
 		$db->query($requete);
 	}
 }
