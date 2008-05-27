@@ -240,7 +240,7 @@ else
 				if($db->query($requete))
 				{
 					echo '<form action="admin_joueur.php?id='.$id.'&amp;direction=nom2" method="post">
-					Nom : <input type="text" id="nom" value="'.$row['nom'].'"/><br />
+					Nom : <input type="text" name="nom" value="'.$row['nom'].'"/><br />
 					<input type="submit" value="Valider" />
 					</form>';
 				}
@@ -250,11 +250,9 @@ else
 				$requete = "SELECT ID, nom FROM perso WHERE ID = ".$id;
 				$req = $db->query($requete);
 				$row = $db->read_assoc($req);
-				$nom = $_GET['nom'];
-				$tutu = $_POST['nom'];
-				echo 'test :'.$nom.'<br>'.$tutu;
-				$requete = "UPDATE perso SET nom = ".$nom." WHERE ID = ".$id;
-				echo $requete;
+				$nom = $_POST['nom'];
+				$requete = 'UPDATE perso SET nom = "'.$nom.'" WHERE ID = '.$id;
+				$db->query($requete);
 			break;
 			case 'journal' :
 				$joueur = recupperso($_GET['id']);
