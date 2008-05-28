@@ -28,6 +28,9 @@ $W_requete = 'SELECT * FROM map WHERE ID ='.$W_case;
 $W_req = $db->query($W_requete);
 $W_row = $db->read_array($W_req);
 $R = get_royaume_info($joueur['race'], $W_row['royaume']);
+?>
+<h2>Inventaire</h2>
+<?php
 //Switch des actions
 if(!$visu AND isset($_GET['action']))
 {
@@ -792,10 +795,6 @@ $tab_loc[14]['loc'] = ' ';
 $tab_loc[14]['type'] = 'vide';
 ?>
 
-<h2>Inventaire</h2>
-
-
-
 <table cellspacing="3" width="100%" style="background: url('image/666.png') center no-repeat;">
 
 <?php
@@ -821,6 +820,8 @@ foreach($tab_loc as $loc)
 		if($joueur['inventaire']->$loc['loc'] != '')
 		{
 			$objet = decompose_objet($joueur['inventaire']->$loc['loc']);
+			//On peut désequiper
+			if(!$visu AND $joueur['inventaire']->$loc['loc'] != '' AND $joueur['inventaire']->$loc['loc'] != 'lock') $desequip = true; else $desequip = false;
 			switch($loc['type'])
 			{
 				case 'arme' :
@@ -829,30 +830,35 @@ foreach($tab_loc as $loc)
 						$requete = "SELECT * FROM `arme` WHERE id = ".$objet['id_objet'];
 						$sqlQuery = $db->query($requete);
 						$row = $db->read_array($sqlQuery);
-						echo '<img src="image/arme/arme'.$row['id'].'.png" style="float : left;" />'.$Gtrad[$loc['loc']].'<br />'; 
-						echo '<strong>'.$row['nom'].'</strong>';
+						$image = 'image/arme/arme'.$row['id'].'.png'; 
+						$nom = $row['nom'];
 					}
 					else
 					{
-						echo 'Lock';
+						$nom = 'Lock';
+						$image = '';
 					}
 				break;
 				case 'armure' :
 					$requete = "SELECT * FROM `armure` WHERE id = ".$objet['id_objet'];
 					$sqlQuery = $db->query($requete);
 					$row = @$db->read_array($sqlQuery);
-					echo '<img src="image/armure/'.$loc['loc'].'/'.$loc['loc'].$row['id'].'.png" style="float : left;" />'.$Gtrad[$loc['loc']].'<br />'; 
-					echo '<strong>'.$row['nom'].'</strong>';
+					$image = 'image/armure/'.$loc['loc'].'/'.$loc['loc'].$row['id'].'.png'; 
+					$nom = $row['nom'];
 					
 				break;
 				case 'accessoire' :
 					$requete = "SELECT * FROM `accessoire` WHERE id = ".$objet['id_objet'];
 					$sqlQuery = $db->query($requete);
 					$row = @$db->read_array($sqlQuery);
-					echo '<img src="image/accessoire/accessoire'.$row['id'].'.png" style="float : left;" />Accessoire<br />'; 
-					echo '<strong>'.$row['nom'].'</strong>';
+					$image = 'image/accessoire/accessoire'.$row['id'].'.png'; 
+					$nom = $row['nom'];
 				break;
 			}
+			if($desequip) echo '<a href="javascript:envoiInfo(\'inventaire.php?action=desequip&amp;partie='.$loc['loc'].$filtre_url.'\', \'information\');">';
+			echo '<img src="'.$image.'" style="float : left;" title="Déséquiper" alt="Déséquiper" />';
+			if($desequip) echo '</a>';
+			echo '<strong>'.$nom.'</strong>';
 			if($objet['slot'] > 0)
 			{
 				echo '<br /><span class="xsmall">Slot niveau '.$objet['slot'].'</span>';
@@ -894,13 +900,6 @@ foreach($tab_loc as $loc)
 					echo '<br />PP : '.$row['PP'].' / PM : '.$row['PM'];
 				break;
 			}
-		}
-
-		if(!$visu AND $joueur['inventaire']->$loc['loc'] != '' AND $joueur['inventaire']->$loc['loc'] != 'lock')
-		{
-		?>
-			<br /><a href="javascript:envoiInfo('inventaire.php?action=desequip&amp;partie=<?php echo $loc['loc'].$filtre_url; ?>', 'information');">Déséquiper</a>
-		<?php
 		}
 		
 	echo '</td>';

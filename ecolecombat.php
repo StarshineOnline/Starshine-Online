@@ -180,16 +180,11 @@ if($W_distance == 0)
 					$cout = $row['prix'] + $taxe;
 					$couleur = $color;
 					if($row['carac_requis'] > $joueur[$row['carac_assoc']] OR $row['comp_requis'] > $joueur[$row['comp_assoc']] OR $cout > $joueur['star']) $couleur = 3;
+					$row['cible2'] = $G_cibles[$row['cible']];
 				?>
 				<tr class="element trcolor<?php echo $couleur; ?>">
-					<td onmousemove="afficheInfo('infob_<?php echo $row['id']; ?>', 'block', event);" onmouseout="afficheInfo('infob_<?php echo $row['id']; ?>', 'none', event );">
+					<td onmouseover="return <?php echo make_overlib(description('[%cible2%] '.$row['description'], $row)); ?>;" onmouseout="return nd();">
 						<?php echo $row['nom']; ?>
-						<div style="display: none; z-index: 2; position: absolute; top: 250px; right: 150px; background-color:#ffffff; border: 1px solid #000000; font-size:12px; width: 200px; padding: 5px;" id="infob_<?php echo $row['id']; ?>">
-						<?php
-						$row['cible2'] = $G_cibles[$row['cible']];
-						echo description('[%cible2%] '.$row['description'], $row);
-						?>
-						</div>
 					</td>
 					<td>
 						<?php echo $row['mp']; ?>

@@ -46,7 +46,7 @@ if($W_distance == 0)
 											$db->query("DELETE FROM hotel WHERE id=".sSQL($_GET["id_vente"]).";");
 											$action_message = "<span class='message_vert'>l&apos;".$_GET["type"]." a bien &eacute;t&eacute; achetée.</span>";
 											
-											$db->query("INSERT INTO journal VALUES(NULL, ".$_GET["id_vendeur"].", 'vend', '', '', NOW(), '".nom_objet($objObjetHotel->objet)."', '".$objObjetHotel->prix."', 0, 0)");
+											$db->query("INSERT INTO journal VALUES(NULL, ".$_GET["id_vendeur"].", 'vend', '', '', NOW(), '".addslashes(nom_objet($objObjetHotel->objet))."', '".$objObjetHotel->prix."', 0, 0)");
 										}
 										else { $action_message = "<span class='message_rouge'>$G_erreur</span>"; };
 									}

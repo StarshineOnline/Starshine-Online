@@ -150,7 +150,14 @@ if($W_distance == 0)
                 	{
 						while($i < $nombre)
 						{
-							$requete = "SELECT *, depot_royaume.id AS id_depot FROM depot_royaume LEFT JOIN objet_royaume ON depot_royaume.id_objet = objet_royaume.id WHERE grade <= ".$joueur['rang_grade']." AND id_royaume = ".$R['ID'];
+							if(!array_key_exists('id', $_GET))
+							{
+								$requete = "SELECT *, depot_royaume.id AS id_depot FROM depot_royaume LEFT JOIN objet_royaume ON depot_royaume.id_objet = objet_royaume.id WHERE grade <= ".$joueur['rang_grade']." AND id_royaume = ".$R['ID'];
+							}
+							else
+							{
+								$requete = "SELECT *, id as id_depot FROM depot_royaume WHERE id = ".$_GET['id'];
+							}
 							$req = $db->query($requete);
 							$row = $db->read_array($req);
 							if($db->num_rows > 0)
