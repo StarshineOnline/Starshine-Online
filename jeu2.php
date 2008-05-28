@@ -21,19 +21,19 @@ if(array_key_exists('donjon_id', $_GET))
 	{
 		if($joueur['x'] == $row['x_donjon'] AND $joueur['y'] == $row['y_donjon'])
 		{
-		$requete = "UPDATE perso SET x = ".$row['x'].", y = ".$row['y']." WHERE ID = ".$_SESSION['ID'];
-		$db->query($requete);
-	}
+			$requete = "UPDATE perso SET x = ".$row['x'].", y = ".$row['y']." WHERE ID = ".$_SESSION['ID'];
+			$db->query($requete);
+		}
 	}
 	//Entrée
 	else
 	{
 		if($joueur['x'] == $row['x'] AND $joueur['y'] == $row['y'])
 		{
-		$requete = "UPDATE perso SET x = ".$row['x_donjon'].", y = ".$row['y_donjon']." WHERE ID = ".$_SESSION['ID'];
-		$db->query($requete);
+			$requete = "UPDATE perso SET x = ".$row['x_donjon'].", y = ".$row['y_donjon']." WHERE ID = ".$_SESSION['ID'];
+			$db->query($requete);
+		}
 	}
-}
 }
 
 //Vérifie si le perso est mort
