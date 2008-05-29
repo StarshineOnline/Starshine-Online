@@ -114,7 +114,11 @@ function decompose_objet($objet)
 				$objet_dec['table_categorie'] = 'objet';
 			break;
 			case 'g' :
+				global $db;
 				$objet_dec['table_categorie'] = 'gemme';
+				$requete = "SELECT * FROM gemme WHERE id = ".$objet_dec['id_objet'];
+				$req = $db->query($requete);
+				$objet_dec['valeurs'] = $db->read_assoc($req);
 			break;
 			case 'm' :
 				$objet_dec['table_categorie'] = 'accessoire';

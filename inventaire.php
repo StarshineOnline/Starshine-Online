@@ -655,6 +655,7 @@ if(!$visu AND isset($_GET['action']))
 						if($objet_i['categorie'] == 'a') $table = 'arme';
 						elseif($objet_i['categorie'] == 'p') $table = 'armure';
 						elseif($objet_i['categorie'] == 'm') $table = 'accessoire';
+						elseif($objet_i['categorie'] == 'o') $table = 'objet';
 						$requete = "SELECT type FROM ".$table." WHERE id = ".$objet_i['id_objet'];
 						$req_i = $db->query($requete);
 						$row_i = $db->read_row($req_i);

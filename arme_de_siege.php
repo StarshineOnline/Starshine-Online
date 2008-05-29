@@ -46,7 +46,7 @@ if($W_distance == 0)
 		$pat = true;
 	}
 	echo '<br />';
-	echo 'Batîments à portée :<br />';
+	echo '<h3>Batîments à portée </h3>';
 	$x_min = $joueur['x'] - $row_b['bonus4'];
 	$x_max = $joueur['x'] + $row_b['bonus4'];
 	$y_min = $joueur['y'] - $row_b['bonus4'];
@@ -63,7 +63,7 @@ if($W_distance == 0)
 		}
 	}
 	echo '</ul>';
-	echo 'Batîments en construction à portée :<br />';
+	echo '<h3>Batîments en construction à portée</h3>';
 	$x_min = $joueur['x'] - $row_b['bonus4'];
 	$x_max = $joueur['x'] + $row_b['bonus4'];
 	$y_min = $joueur['y'] - $row_b['bonus4'];
