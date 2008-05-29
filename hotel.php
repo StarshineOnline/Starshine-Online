@@ -175,9 +175,9 @@ if($W_distance == 0)
 				}
 			}
 			$class = 1;
-			unset($objet_info);
 			foreach($objet_id_new as $id)
 			{
+				unset($objet_info);
 				$objet_info = decompose_objet($objets_tab[$id]["objet"]);
 				$objet = $objets_tab_new[$objet_info["id_objet"]];
 				
@@ -200,10 +200,10 @@ if($W_distance == 0)
 				}
 				elseif($objet_info["slot"] == "0") 	
 				{ 
-					$tmp_slot = "<span class='noslot' title='slot impossible'></span>"; 
+					$tmp_slot = "<span class='slot' title='slot impossible'>x</span>"; 
 					$tmp_slot2 = "slot impossible"; 
 				} 
-				else { $tmp_slot = ""; }
+				else { $tmp_slot = ""; $tmp_slot2 = "";}
 				if($objet_info["enchantement"] > "0")
 				{
 					$RqEnchantement = $db->query("SELECT * FROM gemme WHERE id=".$objet_info["enchantement"].";");
@@ -224,12 +224,13 @@ if($W_distance == 0)
 											$tmp_overlib .= "<ul><li class='overlib_titres'>Arme &agrave; vendre</li>";
 											$tmp_overlib .= "<li class='overlib_img_objet' style='background-image:url(image/arme/arme".$objArme->id.".png);'></li>";
 											$tmp_overlib .= "<li class='overlib_nom_objet'>".$objArme->nom."$tmp_stack</li>";
-											$tmp_overlib .= "<li class='overlib_desc_objet'><span>type : </span>".$objArme->type."</li>";
-											$tmp_overlib .= "<li class='overlib_desc_objet'><span>degat : </span>".$objArme->degat."</li>";
-											$tmp_overlib .= "<li class='overlib_desc_objet'><span>forcex : </span>".$objArme->forcex."</li>";
-											$tmp_overlib .= "<li class='overlib_desc_objet'><span>melee : </span>".$objArme->melee."</li>";
-											$tmp_overlib .= "<li class='overlib_desc_objet'><span>distance : </span>".$objArme->distance."</li>";
-											$tmp_overlib .= "<li class='overlib_desc_objet'><span>distance_tir : </span>".$objArme->distance_tir."</li>";
+											$tmp_overlib .= "<li class='overlib_desc_objet'><span>Type : </span>".$objArme->type."</li>";
+											$tmp_overlib .= "<li class='overlib_desc_objet'><span>Degat : </span>".$objArme->degat."</li>";
+											$tmp_overlib .= "<li class='overlib_desc_objet'><span>Prix (HT) : </span>".$objArme->prix."</li>";
+											$tmp_overlib .= "<li class='overlib_desc_objet'><span>Force : </span>".$objArme->forcex."</li>";
+											$tmp_overlib .= "<li class='overlib_desc_objet'><span>Melee : </span>".$objArme->melee."</li>";
+											$tmp_overlib .= "<li class='overlib_desc_objet'><span>Distance : </span>".$objArme->distance."</li>";
+											$tmp_overlib .= "<li class='overlib_desc_objet'><span>Portée : </span>".$objArme->distance_tir."</li>";
 											if(!empty($tmp_slot2)) { $tmp_overlib .= "<li class='overlib_infos'>$tmp_slot2</li>"; }
 											$tmp_overlib .= "</ul>";
 											
@@ -241,12 +242,12 @@ if($W_distance == 0)
 												$tmp_overlib .= "<ul style='border-top:1px dotted black; margin:5px 0px;'><li class='overlib_titres'>Arme droite &eacute;quip&eacute;e</li>";
 												$tmp_overlib .= "<li class='overlib_img_objet' style='background-image:url(image/arme/arme".$objArmeDroite->id.".png);'></li>";
 												$tmp_overlib .= "<li class='overlib_nom_objet'>".$objArmeDroite->nom."</li>";
-												$tmp_overlib .= "<li class='overlib_desc_objet'><span>type : </span>".$objArmeDroite->type."</li>";
-												$tmp_overlib .= "<li class='overlib_desc_objet'><span>degat : </span>".$objArmeDroite->degat."</li>";
-												$tmp_overlib .= "<li class='overlib_desc_objet'><span>forcex : </span>".$objArmeDroite->forcex."</li>";
-												$tmp_overlib .= "<li class='overlib_desc_objet'><span>melee : </span>".$objArmeDroite->melee."</li>";
-												$tmp_overlib .= "<li class='overlib_desc_objet'><span>distance : </span>".$objArmeDroite->distance."</li>";
-												$tmp_overlib .= "<li class='overlib_desc_objet'><span>distance_tir : </span>".$objArmeDroite->distance_tir."</li>";
+												$tmp_overlib .= "<li class='overlib_desc_objet'><span>Type : </span>".$objArmeDroite->type."</li>";
+												$tmp_overlib .= "<li class='overlib_desc_objet'><span>Degat : </span>".$objArmeDroite->degat."</li>";
+												$tmp_overlib .= "<li class='overlib_desc_objet'><span>Force : </span>".$objArmeDroite->forcex."</li>";
+												$tmp_overlib .= "<li class='overlib_desc_objet'><span>Melee : </span>".$objArmeDroite->melee."</li>";
+												$tmp_overlib .= "<li class='overlib_desc_objet'><span>Distance : </span>".$objArmeDroite->distance."</li>";
+												$tmp_overlib .= "<li class='overlib_desc_objet'><span>Portée : </span>".$objArmeDroite->distance_tir."</li>";
 												$tmp_overlib .= "</ul>";
 											}
 											if(in_array("main_gauche", $cote_arme) && ($joueur["inventaire"]->main_gauche != "lock") && ($joueur["inventaire"]->main_gauche != "") )
@@ -257,12 +258,12 @@ if($W_distance == 0)
 												$tmp_overlib .= "<ul style='border-top:1px dotted black; margin:5px 0px;'><li class='overlib_titres'>Arme gauche &eacute;quip&eacute;e</li>";
 												$tmp_overlib .= "<li class='overlib_img_objet' style='background-image:url(image/arme/arme".$objArmeGauche->id.".png);'></li>";
 												$tmp_overlib .= "<li class='overlib_nom_objet'>".$objArmeGauche->nom."</li>";
-												$tmp_overlib .= "<li class='overlib_desc_objet'><span>type : </span>".$objArmeGauche->type."</li>";
-												$tmp_overlib .= "<li class='overlib_desc_objet'><span>degat : </span>".$objArmeGauche->degat."</li>";
-												$tmp_overlib .= "<li class='overlib_desc_objet'><span>forcex : </span>".$objArmeGauche->forcex."</li>";
+												$tmp_overlib .= "<li class='overlib_desc_objet'><span>Type : </span>".$objArmeGauche->type."</li>";
+												$tmp_overlib .= "<li class='overlib_desc_objet'><span>Degat : </span>".$objArmeGauche->degat."</li>";
+												$tmp_overlib .= "<li class='overlib_desc_objet'><span>Force : </span>".$objArmeGauche->forcex."</li>";
 												$tmp_overlib .= "<li class='overlib_desc_objet'><span>melee : </span>".$objArmeGauche->melee."</li>";
-												$tmp_overlib .= "<li class='overlib_desc_objet'><span>distance : </span>".$objArmeGauche->distance."</li>";
-												$tmp_overlib .= "<li class='overlib_desc_objet'><span>distance_tir : </span>".$objArmeGauche->distance_tir."</li>";
+												$tmp_overlib .= "<li class='overlib_desc_objet'><span>Distance : </span>".$objArmeGauche->distance."</li>";
+												$tmp_overlib .= "<li class='overlib_desc_objet'><span>Portée : </span>".$objArmeGauche->distance_tir."</li>";
 												$tmp_overlib .= "</ul>";
 											}
 											break;
@@ -275,7 +276,8 @@ if($W_distance == 0)
 											$tmp_overlib .= "<li class='overlib_nom_objet'>".$objArmure->nom."$tmp_stack</li>";
 											$tmp_overlib .= "<li class='overlib_desc_objet'><span>PP : </span>".$objArmure->PP."</li>";
 											$tmp_overlib .= "<li class='overlib_desc_objet'><span>PM : </span>".$objArmure->PM."</li>";
-											$tmp_overlib .= "<li class='overlib_desc_objet'><span>forcex : </span>".$objArmure->forcex."</li>";
+											$tmp_overlib .= "<li class='overlib_desc_objet'><span>Prix (HT) : </span>".$objArmure->prix."</li>";
+											$tmp_overlib .= "<li class='overlib_desc_objet'><span>Force : </span>".$objArmure->forcex."</li>";
 											if(!empty($tmp_slot2)) { $tmp_overlib .= "<li class='overlib_infos'>$tmp_slot2</li>"; }
 											$tmp_overlib .= "</ul>";
 											
@@ -289,7 +291,7 @@ if($W_distance == 0)
 												$tmp_overlib .= "<li class='overlib_nom_objet'>".$objArmureEquipee->nom."</li>";
 												$tmp_overlib .= "<li class='overlib_desc_objet'><span>PP : </span>".$objArmureEquipee->PP."</li>";
 												$tmp_overlib .= "<li class='overlib_desc_objet'><span>PM : </span>".$objArmureEquipee->PM."</li>";
-												$tmp_overlib .= "<li class='overlib_desc_objet'><span>forcex : </span>".$objArmureEquipee->forcex."</li>";
+												$tmp_overlib .= "<li class='overlib_desc_objet'><span>Force : </span>".$objArmureEquipee->forcex."</li>";
 												$tmp_overlib .= "</ul>";
 											}
 											break;
@@ -310,9 +312,9 @@ if($W_distance == 0)
 			$url = "onclick=\"envoiInfo('hotel.php?poscase=$W_case&amp;type=$type&amp;tri_champ=";
 			$urlfin = "', 'carte');\"";
 			echo "<ul id='hotel_liste'>
-			       <li class='entete nom' 	".$url."objet".$urlfin.">nom de l&apos;objet"; 	if($ordre["tri_champ"] == "objet") { if($ordre["sens"] == "ASC"){ echo "<img src='./image/asc.png' style='margin-right:-13px;' alt='ASC' />"; } else { echo "<img src='./image/desc.png' style='margin-right:-13px;' alt='DESC' />"; }; }; echo "</li>
-			       <li class='entete temps' ".$url."time".$urlfin.">temps restant"; 		if($ordre["tri_champ"] == "time") { if($ordre["sens"] == "ASC") { echo "<img src='./image/asc.png' style='margin-right:-13px;' alt='ASC' />"; } else { echo "<img src='./image/desc.png' style='margin-right:-13px;' alt='DESC' />"; }; }; echo "</li>
-			       <li class='entete prix' 	".$url."prix".$urlfin.">prix"; 					if($ordre["tri_champ"] == "prix") { if($ordre["sens"] == "ASC") { echo "<img src='./image/asc.png' style='margin-right:-13px;' alt='ASC' />"; } else { echo "<img src='./image/desc.png' style='margin-right:-13px;' alt='DESC' />"; }; }; echo "</li>
+			       <li class='entete nom' 	".$url."objet".$urlfin.">Nom de l&apos;objet"; 	if($ordre["tri_champ"] == "objet") { if($ordre["sens"] == "ASC"){ echo "<img src='./image/asc.png' style='margin-right:-13px;' alt='ASC' />"; } else { echo "<img src='./image/desc.png' style='margin-right:-13px;' alt='DESC' />"; }; }; echo "</li>
+			       <li class='entete temps' ".$url."time".$urlfin.">Temps restant"; 		if($ordre["tri_champ"] == "time") { if($ordre["sens"] == "ASC") { echo "<img src='./image/asc.png' style='margin-right:-13px;' alt='ASC' />"; } else { echo "<img src='./image/desc.png' style='margin-right:-13px;' alt='DESC' />"; }; }; echo "</li>
+			       <li class='entete prix' 	".$url."prix".$urlfin.">Prix"; 					if($ordre["tri_champ"] == "prix") { if($ordre["sens"] == "ASC") { echo "<img src='./image/asc.png' style='margin-right:-13px;' alt='ASC' />"; } else { echo "<img src='./image/desc.png' style='margin-right:-13px;' alt='DESC' />"; }; }; echo "</li>
 			       <li class='entete achat'>&nbsp;</li>
 			       ".$objets_liste."
 			      </ul>

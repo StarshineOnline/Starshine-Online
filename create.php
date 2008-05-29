@@ -448,7 +448,7 @@ elseif ($direction == 'phase2')
 	}
 	require('connect_forum.php');
 	//Création de l'utilisateur dans le forum
-	$requete = "INSERT INTO punbbusers(`group_id`, `username`, `password`, `language`, `style`, `registered`) VALUES('".$punbb[$race]."', '$nom', '".sha1($_POST['password'])."', 'French', 'VbStyle-Sand', '".time()."')";
+	$requete = "INSERT INTO punbbusers(`group_id`, `username`, `password`, `language`, `style`, `registered`) VALUES('".$punbb[$race]."', '$nom', '".sha1($_POST['password'])."', 'French', 'SSO', '".time()."')";
 	$db_forum->query($requete);
 	}
 	}
