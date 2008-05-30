@@ -1201,8 +1201,8 @@ function batiment_map($coordx, $coordy)
 function recupobjet($objet)
 {
 	global $db;
-	$type = substr($objet, 0, 1);
-	$id = substr($objet, 1);
+	$type = mb_substr($objet, 0, 1);
+	$id = mb_substr($objet, 1);
 	$return = array();
 	switch($type)
 	{
@@ -1484,7 +1484,7 @@ function prend_objet($id_objet, $joueur)
 function prend_recette($id_recette, $joueur)
 {
 	global $db, $G_erreur;
-	$id_reel_recette = substr($id_recette, 1);
+	$id_reel_recette = mb_substr($id_recette, 1);
 	//Recherche si il a pas déjà cette recette
 	$requete = "SELECT id, nombre FROM perso_recette WHERE id_recette = ".$id_reel_recette." AND id_perso = ".$joueur['ID'];
 	$db->query($requete);
@@ -2151,7 +2151,7 @@ function affiche_condition($action, $joueur)
 	}
 	elseif ($action[0] == '~')
 	{
-		$sort_sort = substr($action, 1, strlen($action));
+		$sort_sort = mb_substr($action, 1, strlen($action));
 		$requete = "SELECT nom, mp, comp_assoc, description, effet, effet2, duree FROM sort_combat WHERE id = ".$sort_sort;
 		$req = $db->query($requete);
 		$row = $db->read_assoc($req);
@@ -2160,11 +2160,11 @@ function affiche_condition($action, $joueur)
 	}
 	elseif ($action[0] == '_')
 	{
-		$sort_sort = substr($action, 1, strlen($action));
+		$sort_sort = mb_substr($action, 1, strlen($action));
 		$requete = "SELECT nom, mp, description, effet, effet2, duree FROM comp_combat WHERE id = ".$sort_sort;
 		$req = $db->query($requete);
 		$row = $db->read_assoc($req);
-		$echo .= 'Utiliser <strong onmouseover="return overlib(\'<ul><li class=\\\'overlib_titres\\\'>'.addslashes(description($row['description'], $row)).'</li></ul>\', BGCLASS, \'overlib\', BGCOLOR, \'\', FGCOLOR, \'\');" onmouseout="return nd();">'.$row['nom'].'</strong> <span class="small">('.$mpsort.' réserves)</span>';
+		$echo .= 'Utiliser <strong onmouseover="return overlib(\'<ul><li class=\\\'overlib_titres\\\'>'.addslashes(description($row['description'], $row)).'</li></ul>\', BGCLASS, \'overlib\', BGCOLOR, \'\', FGCOLOR, \'\');" onmouseout="return nd();">'.$row['nom'].'</strong> <span class="small">('.$row['mp'].' réserves)</span>';
 	}
 	elseif ($action[0] == '#')
 	{
@@ -2178,9 +2178,9 @@ function affiche_condition($action, $joueur)
 		while ($j < $nb_arguments)
 		{
 			if($j != 0) $echo .= '<br />& ';
-			$arg = substr($arguments[$j], 1, 2);
+			$arg = mb_substr($arguments[$j], 1, 2);
 			$operateur = $arguments[$j][3];
-			$parametre = substr($arguments[$j], 4, strlen($arguments[$j]));
+			$parametre = mb_substr($arguments[$j], 4, strlen($arguments[$j]));
 			if ($arg == '00')
 			{
 				$echo .= 'HP '.$operateur.' '.$parametre;
@@ -2211,7 +2211,7 @@ function affiche_condition($action, $joueur)
 			}
 			if ($arg == '14')
 			{
-				$echo .= 'Utilisation de la compétence '.$operateur.' '.$parametre;
+				$echo .= 'utilisation de la compétence '.$operateur.' '.$parametre;
 			}
 			$j++;
 		}
@@ -2222,7 +2222,7 @@ function affiche_condition($action, $joueur)
 		}
 		elseif ($alors[0] == '~')
 		{
-			$sort_sort = substr($alors, 1, strlen($alors));
+			$sort_sort = mb_substr($alors, 1, strlen($alors));
 			$requete = "SELECT nom, mp, comp_assoc, description, effet, effet2, duree FROM sort_combat WHERE id = ".$sort_sort;
 			$req = $db->query($requete);
 			$row = $db->read_assoc($req);
@@ -2231,11 +2231,11 @@ function affiche_condition($action, $joueur)
 		}
 		elseif ($alors[0] == '_')
 		{
-			$sort_sort = substr($alors, 1, strlen($alors));
+			$sort_sort = mb_substr($alors, 1, strlen($alors));
 			$requete = "SELECT nom, mp, description, effet, effet2, duree FROM comp_combat WHERE id = ".$sort_sort;
 			$req = $db->query($requete);
 			$row = $db->read_assoc($req);
-			$echo .= 'Utiliser <strong onmouseover="return overlib(\'<ul><li class=\\\'overlib_titres\\\'>'.addslashes(description($row['description'], $row)).'</li></ul>\', BGCLASS, \'overlib\', BGCOLOR, \'\', FGCOLOR, \'\');" onmouseout="return nd();">'.$row['nom'].'</strong> <span class="small">('.$mpsort.' réserves)</span>';
+			$echo .= 'Utiliser <strong onmouseover="return overlib(\'<ul><li class=\\\'overlib_titres\\\'>'.addslashes(description($row['description'], $row)).'</li></ul>\', BGCLASS, \'overlib\', BGCOLOR, \'\', FGCOLOR, \'\');" onmouseout="return nd();">'.$row['nom'].'</strong> <span class="small">('.$row['mp'].' réserves)</span>';
 		}
 	}
 	return $echo;
@@ -2298,7 +2298,7 @@ function affiche_condition_session($action, $joueur)
 	}
 	elseif ($action['final'][0] == 's')
 	{
-		$sort_sort = substr($action['final'], 1, strlen($action['final']));
+		$sort_sort = mb_substr($action['final'], 1, strlen($action['final']));
 		$requete = "SELECT nom, mp, comp_assoc, description, effet, effet2, duree FROM sort_combat WHERE id = ".$sort_sort;
 		$req = $db->query($requete);
 		$row = $db->read_assoc($req);
@@ -2307,7 +2307,7 @@ function affiche_condition_session($action, $joueur)
 	}
 	elseif ($action['final'][0] == 'c')
 	{
-		$sort_sort = substr($action['final'], 1, strlen($action['final']));
+		$sort_sort = mb_substr($action['final'], 1, strlen($action['final']));
 		$requete = "SELECT nom, mp, description, effet, effet2, duree FROM comp_combat WHERE id = ".$sort_sort;
 		$req = $db->query($requete);
 		$row = $db->read_assoc($req);

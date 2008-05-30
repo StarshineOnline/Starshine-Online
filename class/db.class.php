@@ -588,6 +588,14 @@ class db
     $this->query("SHOW GRANTS FOR ".$user);
   }
 
+  	function table_exists($table = "")
+	{
+		global $db;
+		$req = $this->query("SHOW TABLES LIKE '".$table."'");
+  		if($this->num_rows > 0) return true;
+  		else return false;
+	}
+	
   function optimize_db($db="")
   {
   	if( empty($db) )
