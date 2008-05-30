@@ -151,7 +151,7 @@ if(array_key_exists('from', $_GET) && $_GET['id_action'] != '')
 			$typefinal = $final[0];
 			$numfinal = mb_substr($final, 1, strlen($final));
 			
-			if ($final == 'attaque')
+			if ($final == '!')
 			{
 				$action_temp .= '!';
 			}
@@ -217,36 +217,40 @@ if(array_key_exists('from', $_GET) && $_GET['id_action'] != '')
 			<?php
 			//On récupère l'état lié au sort / à la compétence
 			$id = mb_substr($_SESSION['script'][$id_action]['final'], 1, strlen($_SESSION['script'][$id_action]['final']));
-			if($_SESSION['script'][$id_action]['final'][0] == 's') $table = 'sort_combat'; else $table = 'comp_combat';
-			$requete = "SELECT etat_lie FROM ".$table." WHERE id = ".$id;
-			$req_etat = $db->query($requete);
-			$row_etat = $db->read_assoc($req_etat);
-			$etat_lie = $row_etat['etat_lie'];
-			if($etat_lie != '')
+			$type = $_SESSION['script'][$id_action]['final'][0];
+			if($type != '!')
 			{
-				$etat_explode = explode('-', $etat_lie);
-				$qui = $etat_explode[0];
-				$etat = $etat_explode[1];
-			?>
-			<tr colspan="2">
-				<td style="text-align : right;">
-					<select name="qui_s" id="qui_s">
-						<option value="ve"<?php if($qui == 've') echo ' selected="selected"'; ?>>Vous êtes</option>
-						<option value="vne"<?php if($qui == 'vne') echo ' selected="selected"'; ?>>Vous n'êtes pas</option>
-						<option value="ae"<?php if($qui == 'ae') echo ' selected="selected"'; ?>>L'adversaire est</option>
-						<option value="ane"<?php if($qui == 'ane') echo ' selected="selected"'; ?>>L'adversaire n'est pas</option>
-					</select>
-				</td>
-				<td>
-					<select name="etat_s" id="etat_s">
-						<option value="<?php echo $etats[$etat]['id']; ?>"><?php echo $etats[$etat]['nom']; ?></option>
-					</select>
-				</td>
-				<td>
-					<input type="button" name="valid_cond" value="Valider" onclick="envoiInfo('action.php?mode=a&amp;id_action=<?php echo $id_action; ?>&amp;si=10&amp;op=o&amp;valeur=' + document.getElementById('etat_s').value + '&amp;qui=' + document.getElementById('qui_s').value + '&amp;valid_cond=ok', 'information');" /><br />
-				</td>
-			</tr>
-			<?php
+				if($type == 's') $table = 'sort_combat'; else $table = 'comp_combat';
+				$requete = "SELECT etat_lie FROM ".$table." WHERE id = ".$id;
+				$req_etat = $db->query($requete);
+				$row_etat = $db->read_assoc($req_etat);
+				$etat_lie = $row_etat['etat_lie'];
+				if($etat_lie != '')
+				{
+					$etat_explode = explode('-', $etat_lie);
+					$qui = $etat_explode[0];
+					$etat = $etat_explode[1];
+				?>
+				<tr colspan="2">
+					<td style="text-align : right;">
+						<select name="qui_s" id="qui_s">
+							<option value="ve"<?php if($qui == 've') echo ' selected="selected"'; ?>>Vous êtes</option>
+							<option value="vne"<?php if($qui == 'vne') echo ' selected="selected"'; ?>>Vous n'êtes pas</option>
+							<option value="ae"<?php if($qui == 'ae') echo ' selected="selected"'; ?>>L'adversaire est</option>
+							<option value="ane"<?php if($qui == 'ane') echo ' selected="selected"'; ?>>L'adversaire n'est pas</option>
+						</select>
+					</td>
+					<td>
+						<select name="etat_s" id="etat_s">
+							<option value="<?php echo $etats[$etat]['id']; ?>"><?php echo $etats[$etat]['nom']; ?></option>
+						</select>
+					</td>
+					<td>
+						<input type="button" name="valid_cond" value="Valider" onclick="envoiInfo('action.php?mode=a&amp;id_action=<?php echo $id_action; ?>&amp;si=10&amp;op=o&amp;valeur=' + document.getElementById('etat_s').value + '&amp;qui=' + document.getElementById('qui_s').value + '&amp;valid_cond=ok', 'information');" /><br />
+					</td>
+				</tr>
+				<?php
+				}
 			}
 			else $etat = '';
 			?>
@@ -330,7 +334,7 @@ if(array_key_exists('from', $_GET) && $_GET['id_action'] != '')
 		}
 		?>
 			</form>
-			<input type="button" name="valid" value="Attaque simple" onclick="envoiInfo('action.php?mode=a&amp;id_action=<?php echo $id_action; ?>&amp;final=attaque', 'information');" />
+			<input type="button" name="valid" value="Attaque simple" onclick="envoiInfo('action.php?mode=a&amp;id_action=<?php echo $id_action; ?>&amp;final=!', 'information');" />
 		<?php
 		}
 		?>

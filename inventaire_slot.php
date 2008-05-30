@@ -105,8 +105,65 @@ if($joueur['inventaire_slot'] != '')
 			<tr>
 			<td onmouseover="return <?php echo make_overlib($echo); ?>" onmouseout="return nd();">
 			<?php
+			$pages = array();
+			$pages_nom = array();
+			if($objet_d['identifier'])
+			{
+				if($objet_d['categorie'] == 'g')
+				{
+					$pages[] = 'inventaire.php?action=enchasse&amp;key_slot='.$i.$filtre_url;
+					$pages_nom[] = 'Enchasser (20 PA)';
+				}
+				elseif($objet_d['categorie'] == 'a' OR $objet_d['categorie'] == 'p' OR $objet_d['categorie'] == 'm')
+				{
+					$pages[] = 'inventaire.php?action=equip&amp;id_objet='.$objet_d['id_objet'].'&amp;partie='.$partie.'&amp;key_slot='.$i.'&amp;categorie='.$objet_d['categorie'].$filtre_url;
+					$pages_nom[] = 'Equiper';
+				}
+				elseif($objet_d['categorie'] == 'o' OR $objet_d['categorie'] == 'r')
+				{
+					if($row['utilisable'] == 'y')
+					{
+						$pages[] = 'inventaire.php?action=utilise&amp;id_objet='.$objet_d['id_objet'].'&amp;type='.$row['type'].'&amp;key_slot='.$i.$filtre_url;
+						$pages_nom[] = 'Utiliser';
+					}
+					if($W_row['type'] == 1)
+					{
+						$pages[] = 'inventaire.php?action=depot&amp;id_objet='.$objet_d['id_objet'].'&amp;type='.$row['type'].'&amp;key_slot='.$i.$filtre_url;
+						$pages_nom[] = 'Déposer au dépot';
+					}
+				}
+				if ($W_row['type'] == 1 AND $objet_d['categorie'] != 'r' AND $objet_d['categorie'] != 'h')
+				{
+					$prix = floor($row['prix'] * $modif_prix / $G_taux_vente);
+					$pages[] = 'inventaire.php?action=vente&amp;id_objet='.$objet_d['id'].'&amp;key_slot='.$i.$filtre_url;
+					$pages_nom[] = 'Vendre '.$prix.' Stars';
+					$pages[] = 'inventaire.php?action=ventehotel&amp;id_objet='.$objet_d['categorie'].$objet_d['id_objet'].'&amp;key_slot='.$i.$filtre_url;
+					$pages_nom[] = 'Hotel des ventes';
+				}
+				if(($objet_d['categorie'] == 'a' OR $objet_d['categorie'] == 'p' OR $objet_d['categorie'] == 'm') AND $objet_d['slot'] == '' AND $objet_d['enchantement'] == '')
+				{
+					$pages[] = 'inventaire.php?action=slot&amp;key_slot='.$i.$filtre_url;
+					$pages_nom[] = 'Mettre un slot à cet objet (10 PA)';
+				}
+			}
 
-			echo $row['nom'];
+			$onclick = 'onglet = \'information\';';
+			$ij = 0;
+			foreach($pages as $page)
+			{
+				$onclick .= 'page'.$ij.' = \''.$page.'\';';
+				$ij++;
+			}
+			$text = '';
+			$ij = 0;
+			foreach($pages_nom as $page_nom)
+			{
+				$text .= addslashes('<a onclick=\'envoiInfo(page'.$ij.', onglet); nd()\'>'.$page_nom.'</a><br />');
+				$ij++;
+			}
+			?>
+			<span onclick="<?php echo $onclick; ?> return overlib('<?php echo $text; ?>', STICKY, CAPTION, '<?php echo addslashes($row['nom']); ?>', OFFSETX, -50, OFFSETY, -30, CLOSECLICK);"><?php echo $row['nom']; ?></span>
+			<?php
 			$modif_prix = 1;
 			if($objet_d['stack'] > 1) echo ' X '.$objet_d['stack'];
 			if($objet_d['slot'] > 0)
