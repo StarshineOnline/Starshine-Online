@@ -514,14 +514,15 @@ class fleche_magnetique extends magnetique {
 	static function factory(&$effects, &$actif, &$passif, $acteur) {
 		if (array_key_exists('fleche_magnetique', $passif['etat']))
 			$effects[] = new fleche_magnetique($actif['etat']['fleche_magnetique']
-																				 ['effet'],
+																				 ['effet2'], // nb de debuff
 																				 $actif['etat']['fleche_magnetique']
-																				 ['effet2']);
+																				 ['effet']); // % de chance
 	}
 
 	function __construct($aNb, $achance) {
 		parent::__construct('fleche_magnetique', $aNb);
 		$this->titre = 'La flèche magnétique';
+		$this->chance = $achance;
 	}
 }
 
