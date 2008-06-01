@@ -328,7 +328,7 @@ function attaque($acteur = 'attaquant', $competence)
 // 							echo $att.' '.$defe.'<br />';
 // 							if($att > $defe)
 							$att = rand(0, 100);
-							if($att <= 30)
+							if($att <= $atta)
 								{
 									echo $passif['nom'].' est paralysé par ce coup !<br />';
 									if(array_key_exists('paralysie', $passif['etat'])) $passif['etat']['paralysie']['duree']++;
