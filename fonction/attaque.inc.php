@@ -321,11 +321,14 @@ function attaque($acteur = 'attaquant', $competence)
 					if($actif['etat']['posture']['type'] == 'posture_paralyse')
 						{
 							$atta = $actif['etat']['posture']['effet'];
-							$defe = 100;
-							$att = rand(0, $atta);
-							$defe = rand(0, $defe);
-							echo $att.' '.$defe.'<br />';
-							if($att > $defe)
+// 							1d30 vs 1d100 << 30% de chances ( < 15% même)
+// 							$defe = 100;
+// 							$att = rand(0, $atta);
+// 							$defe = rand(0, $defe);
+// 							echo $att.' '.$defe.'<br />';
+// 							if($att > $defe)
+							$att = rand(0, 100);
+							if($att <= 30)
 								{
 									echo $passif['nom'].' est paralysé par ce coup !<br />';
 									if(array_key_exists('paralysie', $passif['etat'])) $passif['etat']['paralysie']['duree']++;
