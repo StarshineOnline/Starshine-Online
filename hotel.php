@@ -208,10 +208,10 @@ if($W_distance == 0)
 				{
 					$RqEnchantement = $db->query("SELECT * FROM gemme WHERE id=".$objet_info["enchantement"].";");
 					$objEnchantement = $db->read_object($RqEnchantement);
-					$tmp_enchantement = "<span class='enchantement' title='Enchantement de ".$objEnchantement->enchantement_nom."'>&nbsp;</span>";
+					$tmp_enchantement = "<span class='enchantement' title='Enchantement de ".$objEnchantement->enchantement_nom."'>E</span>";
 					$tmp_enchantement2 = "Enchantement de ".$objEnchantement->enchantement_nom;
 				}
-				else { $tmp_enchantement = ""; };
+				else { $tmp_enchantement = ""; $tmp_enchantement2 = "";};
 				
 				{//-- OVERLIB
 					$tmp_overlib = "";
@@ -232,6 +232,7 @@ if($W_distance == 0)
 											$tmp_overlib .= "<li class='overlib_desc_objet'><span>Distance : </span>".$objArme->distance."</li>";
 											$tmp_overlib .= "<li class='overlib_desc_objet'><span>Portée : </span>".$objArme->distance_tir."</li>";
 											if(!empty($tmp_slot2)) { $tmp_overlib .= "<li class='overlib_infos'>$tmp_slot2</li>"; }
+											if(!empty($tmp_enchantement2)) { $tmp_overlib .= "<li class='overlib_infos'>$tmp_enchantement2</li>"; }
 											$tmp_overlib .= "</ul>";
 											
 											if(in_array("main_droite", $cote_arme) && ($joueur["inventaire"]->main_droite != "lock") && ($joueur["inventaire"]->main_droite != "")) 
@@ -279,6 +280,7 @@ if($W_distance == 0)
 											$tmp_overlib .= "<li class='overlib_desc_objet'><span>Prix (HT) : </span>".$objArmure->prix."</li>";
 											$tmp_overlib .= "<li class='overlib_desc_objet'><span>Force : </span>".$objArmure->forcex."</li>";
 											if(!empty($tmp_slot2)) { $tmp_overlib .= "<li class='overlib_infos'>$tmp_slot2</li>"; }
+											if(!empty($tmp_enchantement2)) { $tmp_overlib .= "<li class='overlib_infos'>$tmp_enchantement2</li>"; }
 											$tmp_overlib .= "</ul>";
 											
 											if($joueur["inventaire"]->$tmp_type != "")

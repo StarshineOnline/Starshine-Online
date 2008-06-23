@@ -273,7 +273,7 @@ else
 			break;
 			case 'messagerie';
 				$joueur = recupperso($_GET['id']);			
-				$requete = "SELECT * FROM message WHERE id_dest = ".$joueur['ID']." OR id_envoi = ".$joueur['ID'];
+				$requete = "SELECT * FROM message WHERE id_dest = ".$joueur['ID']." OR id_envoi = ".$joueur['ID']." ORDER BY date DESC";
 				$req = $db->query($requete);	
 				?>
 				<table>
@@ -653,6 +653,14 @@ if($joueur['inventaire_slot'] != '')
 					break;
 					case 'r' :
 						$requete = "SELECT * FROM objet_royaume WHERE ID = ".$objet_d['id_objet'];
+						//Récupération des infos de l'objet
+						$req = $db->query($requete);
+						$row = $db->read_array($req);
+						$partie = $row['type'];
+						$row['utilisable'] = 'y';
+					break;
+					case 'm' :
+						$requete = "SELECT * FROM accessoire WHERE ID = ".$objet_d['id_objet'];
 						//Récupération des infos de l'objet
 						$req = $db->query($requete);
 						$row = $db->read_array($req);

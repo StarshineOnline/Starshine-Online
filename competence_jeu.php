@@ -149,7 +149,7 @@ if (isset($_GET['ID']))
 						$joueur["pa"] = $joueur["pa"] - $sortpa;
 						$joueur["mp"] = $joueur["mp"] - $sortmp;
 					
-						$db->query("DELETE FROM buff WHERE id=".$debuff_tab[rand(0, count($debuff_tab))].";");
+						$db->query("DELETE FROM buff WHERE id=".$debuff_tab[rand(0, count($debuff_tab)-1)].";");
 					}
 					else { echo "Impossible de lancer de lancer le sort. Vous n&apos;avez aucune debuff.<br/>"; };
 						

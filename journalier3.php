@@ -13,7 +13,7 @@ include('fonction/base.inc.php');
 
 //le mois dernier
 $time = time() - (31 * 24 * 60 * 60);
-/*
+
 $requete = "SELECT * FROM log_connexion WHERE time <= ".$time." ORDER BY time ASC";
 $req = $db->query($requete);
 while($row = $db->read_assoc($req))
@@ -30,7 +30,7 @@ while($row = $db->read_assoc($req))
 	$db->query("DELETE FROM log_connexion WHERE id = ".$row['id']);
 	//echo $requete;
 }
-*/
+
 $annee = date("Y");
 $mois = date("n");
 $requete = "SELECT *, EXTRACT(YEAR FROM time) as year, EXTRACT(MONTH FROM time) as month FROM journal WHERE EXTRACT(YEAR FROM time) < ".$annee." OR EXTRACT(MONTH FROM time) < ".$mois." ORDER BY time ASC";

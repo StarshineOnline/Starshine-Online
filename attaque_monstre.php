@@ -62,7 +62,11 @@ else
 		$attaquant['reserve'] = $attaquant['reserve'] * 2;
 		$defenseur['reserve'] = $defenseur['reserve'] * 2;
 		//Un monstre attaque pas de pa pour attaquer
-		if(array_key_exists('attaque_donjon', $_SESSION) AND $_SESSION['attaque_donjon'] == 'ok') $pa_attaque = $reduction_pa;
+		if(array_key_exists('attaque_donjon', $_SESSION) AND $_SESSION['attaque_donjon'] == 'ok')
+		{
+			$pa_attaque = $reduction_pa;
+			unset($_SESSION['attaque_donjon']);
+		}
 	}
 	else $round_total = $G_round_total;
 	if($attaquant['race'] == 'orc' OR $defenseur['race'] == 'orc') $round_total += 1;
@@ -496,7 +500,7 @@ else
 							$objet = $share[0];
 							$taux = ceil($share[1] / $G_drop_rate);
 							if($attaquant['race'] == 'humain') $taux = floor($taux / 1.3);
-							if(in_array('fouille_gibier', $attaquant['buff'])) $taux = $taux * (1 + ($attaquant['buff']['fouille']['effet'] / 100));
+							if(in_array('fouille_gibier', $attaquant['buff'])) $taux = $taux * (1 + ($attaquant['buff']['fouille_gibier']['effet'] / 100));
 							$tirage = rand(1, $taux);
 							//Si c'est un objet de quête :
 							if($objet[0] == 'q')
@@ -702,11 +706,25 @@ else
 						echo '<strong>Tu ne fait que retarder l\'inévitable, Le maître saura te faire payer ton insolence !</strong>';
 					}
 					//Si c'est Finrwirr on fait pop le gros monstre
-					if($defenseur['type'] == 75)
+					/*if($defenseur['type'] == 75)
 					{
 						$requete = "INSERT INTO map_monstre VALUES(NULL, '116','24','209','10000', 8, '".addslashes('Adenaïos le nécromant')."','adennaios', ".(time() + 2678400).")"; 
 						$db->query($requete);
 						echo '<strong>Aaaargh VAINCU, JE SUIS VAINCU, comment est ce possible !!! Maître !! Maître venez à moi, vengez votre plus fidèle serviteur !!!</strong>';
+					}*/
+					//Si c'est un draconide
+					if($defenseur['type'] == 125 OR $defenseur['type'] == 126)
+					{
+						//Si les 2 sont morts, on fait pop le roi gobelin
+						$requete = "SELECT type FROM map_monstre WHERE type = 125 OR type = 126";
+						$db->query($requete);
+						//Si il n'est pas là on le fait pop
+						if($db->num_rows() == 0)
+						{
+							$requete = "INSERT INTO map_monstre VALUES(NULL,'123','44','293','5800', 18, 'Roi Goblin','roi_goblin', ".(time() + 2678400).")";
+							$db->query($requete);
+							echo '<strong>Un bruit de mécanisme eveil votre attention, mais il vous est impossible de savoir d\'où provient ce son.</strong>';
+						}
 					}
 				}
 				elseif($ennemi == 'batiment')
@@ -714,7 +732,7 @@ else
                    	//On supprime un bourg au compteur
 	            	if($defenseur['type'] == 'bourg')
        		    	{
-        		    	supprime_bourg($defenseur['ID']);
+        		    	supprime_bourg($R['ID']);
        		    	}
 					//On efface le batiment
 					$requete = "DELETE FROM ".sSQL($_GET['table'])." WHERE ID = '".$W_ID."'";

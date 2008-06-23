@@ -157,21 +157,36 @@ while($row = $db->read_array($req))
 $db->query($insert);
 //echo $insert.'<br /><br /><br /><br />';
 
-$mail .= mysql_error();
-
-mail('masterob1@chello.fr', 'Starshine - Génération des monstres du '.$date, $mail);
-
-//Si le premier du mois, pop du premier boss de myriandre
+//Si le premier du mois, pop des boss de donjons
 if(date("j") == 1)
 {
-	$requete = "SELECT type FROM map_monstre WHERE type = 64";
+	//Myriandre
+	$requete = "SELECT type FROM map_monstre WHERE type = 64 OR type = 65 OR type = 75";
 	$db->query($requete);
 	//Si il n'est pas là on le fait pop
 	if($db->num_rows() == 0)
 	{
 		$time = time() + 2678400;
-		$requete = "INSERT INTO map_monstre VALUES(NULL, '64','3','212','6400', 6, '".addslashes('Devorsis')."','devorsis', ".$time."), (NULL,'125','36','283','5000', 18, 'Construct draconide','construct_draconide', ".$time."), ('','126','12','289','5000', 18, 'Construct draconide','construct_draconide2', ".$time.")";
+		$requete = "INSERT INTO map_monstre VALUES(NULL, '64','3','212','6400', 6, '".addslashes('Devorsis')."','devorsis', ".$time.")";
 		$db->query($requete);
+		$mail .= "Pop de Devorsis";
+	}
+	//Donjon Gob
+	//Draconide 1
+	$requete = "SELECT type FROM map_monstre WHERE type = 125 OR type = 126 OR type = 123";
+	$db->query($requete);
+	//Si il n'est pas là on le fait pop
+	if($db->num_rows() == 0)
+	{
+		$time = time() + 2678400;
+		$requete = "INSERT INTO map_monstre VALUES(NULL,'125','36','283','5000', 18, 'Construct draconide','construct_draconide', ".$time.")";
+		$db->query($requete);
+		$requete = "INSERT INTO map_monstre VALUES(NULL,'126','12','289','5000', 18, 'Construct draconide','construct_draconide2', ".$time.")";
+		$db->query($requete);
+		$mail .= "Pop du construct draconide 1, construct draconide 2";
 	}
 }
+$mail .= mysql_error();
+
+mail('masterob1@chello.fr', 'Starshine - Génération des monstres du '.$date, $mail);
 ?>

@@ -2344,7 +2344,7 @@ function aff_var($v)
 function supprime_bourg($royaume)
 {
 	global $db;
-	$requete = "UPDATE royaume SET bourg = bourg - 1 WHERE ID = ".$defenseur['ID']." AND bourg > 0";
+	$requete = "UPDATE royaume SET bourg = bourg - 1 WHERE ID = ".$royaume." AND bourg > 0";
 	$db->query($requete);
 }
 ?>
