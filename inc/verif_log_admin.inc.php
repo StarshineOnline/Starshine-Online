@@ -14,6 +14,11 @@
 			$verif = true;
 			$R['statut'] = 'admin';
 		}
+		elseif($_SESSION['admin_nom'] == 'irulan' AND sha1(md5($_SESSION['admin_pass'])) == 'd86a1a6cbeb785711071f80599ba31426bac2220')
+		{
+			$verif = true;
+			$R['statut'] = 'admin';
+		}
 		elseif($_SESSION['admin_nom'] == 'modo' AND sha1(md5($_SESSION['admin_pass'])) == '8015633540bbcfdef5e33c99f01c7495584aad21')
 		{
 			$verif = true;
