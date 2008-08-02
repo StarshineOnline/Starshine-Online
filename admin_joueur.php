@@ -24,7 +24,7 @@ else
 		{
 			case 'info_joueur' :
 				$id = $_GET['id'];
-				$requete = "SELECT ID, nom, statut, password, classe, level, race, rang_royaume, fin_ban FROM perso WHERE ID = ".$id;
+				$requete = "SELECT ID, nom, statut, password, classe, level, race, rang_royaume, fin_ban, x, y FROM perso WHERE ID = ".$id;
 				$req = $db->query($requete);
 				$row = $db->read_assoc($req);
 				$requete = "SELECT COUNT(*) as tot FROM log_connexion WHERE message = 'Ok' AND id_joueur = ".$row['ID'];
@@ -90,6 +90,14 @@ else
 				</td>
 				<td>
 					<?php echo $row_connex[0]; ?>
+				</td>
+				<td>
+					<strong>Position</strong>
+				</td>
+				<td>
+				 	<?php
+				 	echo "x : ".$row['x']." / y : ".$row['y'];
+				 	?>
 				</td>
 			</tr>
 			<tr>
