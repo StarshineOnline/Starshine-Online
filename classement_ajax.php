@@ -73,7 +73,7 @@
 	if(!array_key_exists('tri', $_GET)) $tri = 'honneur';
 	else
 	{
-		$tri = $_GET['tri'];
+		$tri = mysql_escape_string($_GET['tri']);
 		$i = 0;
 	}
 	if(array_key_exists('race', $_GET))
@@ -99,7 +99,7 @@
 	}
 	if($i === 'moi')
 	{
-		$requete = "SELECT COUNT(*) FROM perso WHERE '".sSQL($tri)."' > ".$joueur[$tri]." AND statut = 'actif' AND ".$where;
+		$requete = "SELECT COUNT(*) FROM perso WHERE ".sSQL($tri)." > ".$joueur[$tri]." AND statut = 'actif' AND ".$where;
 		$req = $db->query($requete);
 		$row = $db->read_row($req);
 		$sup = $row[0] + 15;
@@ -119,7 +119,7 @@
 	}
 	if($k < 0) $k = 0;
 	$j = 26;
-	$requete = "SELECT ID, nom, `".sSQL($tri)."`, level, race, classe, cache_stat, cache_classe FROM perso WHERE statut = 'actif' AND ".$where." ORDER BY ".$tri." DESC, nom ASC LIMIT $inf, $j";
+	$requete = "SELECT ID, nom, ".sSQL($tri).", level, race, classe, cache_stat, cache_classe FROM perso WHERE statut = 'actif' AND ".$where." ORDER BY ".$tri." DESC, nom ASC LIMIT $inf, $j";
 	//echo 'inf : '.$inf.' j : '.$j.' k : '.$k.' sup : '.$sup.' '.$requete.'<br />';
 	$req = $db->query($requete);
 
