@@ -27,7 +27,9 @@ if(!array_key_exists('action', $_GET))
 			echo '<h3><strong>'.htmlspecialchars(stripslashes($row['titre'])).'</strong> par '.$row['nom_envoi'].' le '.$date.'</h3>
 			<p class="information_case">'.$message.'</p>';
 			
-			if($row['id_envoi'] != 0 AND $row['date'] > $time2 ) echo '<a href="javascript:envoiInfo(\'envoimessage.php?id_message='.$row['id'].'&amp;ID='.$row['id_envoi'].'\', \'information\')">Répondre</a> / ';
+			$id_envoi = $row['id_envoi'];
+			if(array_key_exists('mode', $_GET) AND $_GET['mode'] == 'envoi') $id_envoi = $row['id_dest'];
+			if($id_envoi != 0 AND $row['date'] > $time2 ) echo '<a href="javascript:envoiInfo(\'envoimessage.php?id_message='.$row['id'].'&amp;ID='.$id_envoi.'\', \'information\')">Répondre</a> / ';
 			
 			
 			if(!array_key_exists('mode', $_GET)) echo '<a href="javascript:envoiInfo(\'messagerie.php?ID='.$_GET['id_message'].'&amp;action=del\', \'information\')">Supprimer</a>';

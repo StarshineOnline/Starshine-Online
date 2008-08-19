@@ -112,7 +112,7 @@ while($row = $db->read_array($req))
 			if (in_array($row2['info'], $terrain))
 			{
 				//echo $row2['info'].'<br />';
-				$rand = rand(0, 1000000);
+				$rand = rand(0, (5000 * 600));
 				if($rand < $limite OR $spawn == 0)
 				{
 					$check = true;

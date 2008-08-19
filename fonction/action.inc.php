@@ -389,8 +389,8 @@ function lance_sort($id, $acteur)
 			break;
 		}
 	}
-	$de_pot = 100;
-	$de_diff = 100;
+	$de_pot = 300;
+	$de_diff = 300;
 	if($potentiel_magique_arme > $row['difficulte']) $de_pot += $potentiel_magique_arme - $row['difficulte'];
 	else $de_diff += $row['difficulte'] - $potentiel_magique_arme;
 	$attaque = rand(0, $de_pot);
@@ -761,13 +761,13 @@ function lance_sort($id, $acteur)
 		echo '&nbsp;&nbsp;<span class="manque">'.$actif['nom'].' rate le lancement de '.$row['nom'].'</span><br />';
 	}
 	//Augmentation des compétences liées
-	$augmentation = augmentation_competence($row['comp_assoc'], $actif, (4 * sqrt($actif[$row['comp_assoc']] / ($row['difficulte'] / 4))));
+	$augmentation = augmentation_competence($row['comp_assoc'], $actif, (5 * sqrt($actif[$row['comp_assoc']] / ($row['difficulte'] / 4))));
 	if ($augmentation[1] == 1)
 	{
 		$actif[$row['comp_assoc']] = $augmentation[0];
 		if($acteur == 'attaquant') echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant à '.$actif[$row['comp_assoc']].' en '.$Gtrad[$row['comp_assoc']].'</span><br />';
 	}
-	$augmentation = augmentation_competence('incantation', $actif, (3 * sqrt($actif['incantation'] / ($row['difficulte'] / 2))));
+	$augmentation = augmentation_competence('incantation', $actif, (4 * sqrt($actif['incantation'] / ($row['difficulte'] / 2))));
 	if ($augmentation[1] == 1)
 	{
 		$actif['incantation'] = $augmentation[0];

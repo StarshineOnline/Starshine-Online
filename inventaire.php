@@ -650,7 +650,7 @@ if(!$visu AND isset($_GET['action']))
 				{
 					$objet_i = decompose_objet($joueur['inventaire_slot'][$i]);
 					//echo '<br />'.$joueur['inventaire_slot'][$i].'<br />';
-					if($objet_i['identifier'])
+					if($objet_i['identifier'] AND $objet_i['categorie'] != 'r')
 					{
 						if($objet_i['categorie'] == 'a') $table = 'arme';
 						elseif($objet_i['categorie'] == 'p') $table = 'armure';

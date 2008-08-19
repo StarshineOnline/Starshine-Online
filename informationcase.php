@@ -169,6 +169,12 @@ if($num_rows > 0)
 		}
 		elseif($W_row['nom'] == 'Teleport')
 		{
+			$requete_dragon = 'SELECT id FROM map_monstre WHERE type = 125 OR type = 126';
+			$req_dragon = $db->query($requete_dragon);
+			
+			$num_rows = $db->num_rows;
+			//Si les 2 dragons sont morts alors on ouvre
+			if($num_rows == 0) $unlock = true;
 		}
 		else $unlock = true;
 		if($W_row['x'] == $joueur["x"] AND $W_row['y'] == $joueur["y"] AND $unlock) echo ' <a href="jeu2.php?donjon_id='.$W_row['id'].'">Entrer dans le donjon</a>';
