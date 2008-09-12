@@ -13,7 +13,7 @@ create table grimoire (
 
 -- Quelques exemples
 -- Competences jeu
-INSERT INTO `starshine`.`grimoire` (
+INSERT INTO `grimoire` (
 `nom` ,
 `comp_jeu`
 )
@@ -22,7 +22,7 @@ VALUES (
 );
 
 -- Competences de combat
-INSERT INTO `starshine`.`grimoire` (
+INSERT INTO `grimoire` (
 `nom` ,
 `comp_combat`
 )
@@ -31,7 +31,7 @@ VALUES (
 );
 
 -- Competences joueur
-INSERT INTO `starshine`.`grimoire` (
+INSERT INTO `grimoire` (
 `nom` ,
 `comp_perso_id`,
 `comp_perso_competence`,
@@ -39,5 +39,11 @@ INSERT INTO `starshine`.`grimoire` (
 )
 VALUES (
 'Tome de protection', 1, 'maitrise_bouclier', 15
+),(
+'Tome d\'archerie élémentaire', 1, 'maitrise_arc', 1
+),(
+'Tome d\'escrime élémentaire', 1, 'maitrise_epee', 1
+),(
+'Tome de hache élémentaire', 1, 'maitrise_hache', 1
 );
 
