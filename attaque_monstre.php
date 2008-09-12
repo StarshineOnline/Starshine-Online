@@ -586,6 +586,13 @@ else
 										$objet = 'o'.$id_objet;
 										$type = 'quete';
 									break;
+									case 'l' :
+										$id_objet = mb_substr($objet, 1);
+										$requete = "SELECT nom FROM grimoire WHERE id = $id_objet";
+										$req = $db->query($requete);
+										$row = $db->read_row($req);
+										$objet_nom = 'Grimoire : '.$row[0];
+									break;
 								}
 								echo 'Vous fouillez le corps du monstre et découvrez "'.$objet_nom.'" !<br />';
 								//Si le joueur a un groupe

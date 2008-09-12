@@ -82,6 +82,12 @@ else
 				{
 					echo '<option value="m'.$row_r['id'].'">'.$row_r['nom'].'</option>';
 				}
+				$requete = "SELECT * FROM grimoire ORDER BY nom";
+				$req_r = $db->query($requete);
+				while($row_r = $db->read_assoc($req_r))
+				{
+					echo '<option value="l'.$row_r['id'].'">'.$row_r['nom'].'</option>';
+				}
 			?>
 			</select>
 			Chance de drop, 1 sur <input type="text" name="chance_drop" />

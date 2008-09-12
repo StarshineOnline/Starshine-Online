@@ -1,8 +1,12 @@
-<?php
+<?php //	 -*- tab-width:	 2 -*-
 //Affiche et gère l'inventaire du personnage
 
 //Inclusion des fichiers indispensables
 include('inc/fp.php');
+
+// Inclusion du gestionnaire de compétences
+include('fonction/competence.inc.php');
+
 //Visu par un autre joueur
 if(array_key_exists('id_perso', $_GET))
 {
@@ -305,6 +309,19 @@ if(!$visu AND isset($_GET['action']))
 						<?php
 					}
 				break;
+			case 'grimoire':
+				$stack = explode('x', $joueur['inventaire_slot'][$_GET['key_slot']]);
+				$id_objet = $stack[0];
+				$id_objet_reel = mb_substr($id_objet, 1);
+				$ok = utilise_grimoire($id_objet_reel, $joueur);
+				if ($ok) {
+					supprime_objet($joueur, $id_objet, 1);
+				} else {
+					echo "Vous ne pouvez pas lire ce grimoire<br />";
+				}
+				break;
+			default:
+				error_log('Utilisation d\'un objet invalide: '.$_GET['type']);
 			}
 		break;
 		//Dépot de l'objet au dépot militaire

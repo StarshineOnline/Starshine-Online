@@ -222,6 +222,12 @@ else
 				{
 					echo '<option value="r'.$row_r['id'].'">'.$row_r['nom'].'</option>';
 				}
+				$requete = "SELECT * FROM grimoire";
+				$req_r = $db->query($requete);
+				while($row_r = $db->read_assoc($req_r))
+				{
+					echo '<option value="l'.$row_r['id'].'">'.$row_r['nom'].'</option>';
+				}
 				echo '
 				</select><br />
 				Nombre <input type="text" id="nombre" /><br />

@@ -1,4 +1,4 @@
-<?php
+<?php // -*- tab-width:	 2 -*-
 	if (isset($_GET['javascript']))
 	{
 		include('inc/fp.php');
@@ -31,6 +31,7 @@ if($joueur['inventaire_slot'] != '')
 		if($invent !== 0 AND $invent != '')
 		{
 			$objet_d = decompose_objet($invent);
+			//echo '<!-- '; var_dump($objet_d); echo '-->';
 			if($objet_d['identifier'])
 			{
 				switch ($objet_d['categorie'])
@@ -83,6 +84,14 @@ if($joueur['inventaire_slot'] != '')
 						$partie = 'accessoire';
 						$row['utilisable'] = 'n';
 					break;
+					case 'l' :
+						$requete = "SELECT * FROM grimoire WHERE ID = ".$objet_d['id_objet'];
+						//Récupération des infos de l'objet
+						$req = $db->query($requete);
+						$row = $db->read_array($req);
+						$partie = $row['type'];
+						$row['utilisable'] = 'y';
+					break;
 				}
 			}
 			else
@@ -93,7 +102,11 @@ if($joueur['inventaire_slot'] != '')
 			if(array_key_exists('filtre', $_GET)) $filtre = $_GET['filtre']; else $filtre = 'utile';
 			$check = false;
 			$liste_categorie = array('o', 'a', 'p');
-			if(($objet_d['categorie'] == 'o' AND $filtre == 'utile') OR ($objet_d['categorie'] == 'a' AND $filtre == 'arme') OR ($objet_d['categorie'] == 'p' AND $filtre == 'armure') AND $objet_d['identifier'])
+			if((($objet_d['categorie'] == 'o' AND $filtre == 'utile')
+					OR ($objet_d['categorie'] == 'l' AND $filtre == 'utile')
+					OR ($objet_d['categorie'] == 'a' AND $filtre == 'arme')
+					OR ($objet_d['categorie'] == 'p' AND $filtre == 'armure'))
+				 AND $objet_d['identifier'])
 			{
 				$check = true;
 			}
@@ -131,6 +144,11 @@ if($joueur['inventaire_slot'] != '')
 						$pages[] = 'inventaire.php?action=depot&amp;id_objet='.$objet_d['id_objet'].'&amp;type='.$row['type'].'&amp;key_slot='.$i.$filtre_url;
 						$pages_nom[] = 'Déposer au dépot';
 					}
+				}
+				elseif($objet_d['categorie'] == 'l')
+				{
+					$pages[] = 'inventaire.php?action=utilise&amp;id_objet='.$objet_d['id_objet'].'&amp;type='.$row['type'].'&amp;key_slot='.$i.$filtre_url;
+					$pages_nom[] = 'Lire';
 				}
 				if ($W_row['type'] == 1 AND $objet_d['categorie'] != 'r' AND $objet_d['categorie'] != 'h')
 				{
@@ -200,6 +218,10 @@ if($joueur['inventaire_slot'] != '')
 				{
 					if($row['utilisable'] == 'y') echo ' <a href="javascript:envoiInfo(\'inventaire.php?action=utilise&amp;id_objet='.$objet_d['id_objet'].'&amp;type='.$row['type'].'&amp;key_slot='.$i.$filtre_url.'\', \'information\');">Utiliser</a> / ';
 					if($W_row['type'] == 1 AND $objet_d['categorie'] == 'o') echo '<a href="javascript:envoiInfo(\'inventaire.php?action=depot&amp;id_objet='.$objet_d['id_objet'].'&amp;type='.$row['type'].'&amp;key_slot='.$i.$filtre_url.'\', \'information\');">Déposer au dépot</a>';
+				}
+				elseif($objet_d['categorie'] == 'l')
+				{
+					echo ' <a href="javascript:envoiInfo(\'inventaire.php?action=utilise&amp;id_objet='.$objet_d['id_objet'].'&amp;type=grimoire&amp;key_slot='.$i.$filtre_url.'\', \'information\');">Lire</a> / ';
 				}
 				if ($W_row['type'] == 1 AND $objet_d['categorie'] != 'r' AND $objet_d['categorie'] != 'h')
 				{

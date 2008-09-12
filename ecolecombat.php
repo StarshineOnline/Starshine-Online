@@ -1,7 +1,10 @@
-<?php
+<?php //	 -*- tab-width:	 2 -*-
 
 //Inclusion du haut du document html
 include('haut_ajax.php');
+
+// Inclusion du gestionnaire de compétences
+include('fonction/competence.inc.php');
 
 $joueur = recupperso($_SESSION['ID']);
 
@@ -50,63 +53,8 @@ if($W_distance == 0)
 			{
 				//Achat
 				case 'apprendre' :
-					$requete = "SELECT * FROM ".$ecole." WHERE id = ".sSQL($_GET['id']);
-					$req = $db->query($requete);
-					$row = $db->read_array($req);
-					$taxe = ceil($row['prix'] * $R['taxe'] / 100);
-					$cout = $row['prix'] + $taxe;
-					if ($joueur['star'] >= $cout)
-					{
-						if($joueur[$row['carac_assoc']] >= $row['carac_requis'])
-						{
-							if($joueur[$row['comp_assoc']] >= $row['comp_requis'])
-							{
-								$sort_jeu = explode(';', $joueur[$ecole]);
-								if(!in_array($row['id'], $sort_jeu))
-								{
-									if(in_array($row['requis'], $sort_jeu) OR $row['requis'] == '')
-									{
-										if($sort_jeu[0] == '') $sort_jeu = array();
-										$sort_jeu[] = $row['id'];
-										$joueur[$ecole] = implode(';', $sort_jeu);
-										$joueur['star'] = $joueur['star'] - $cout;
-										$requete = "UPDATE perso SET star = ".$joueur['star'].", ".$ecole." = '".$joueur[$ecole]."' WHERE ID = ".$_SESSION['ID'];
-										$req = $db->query($requete);
-										//Récupération de la taxe
-										if($taxe > 0)
-										{
-											$requete = 'UPDATE royaume SET star = star + '.$taxe.' WHERE ID = '.$R['ID'];
-											$db->query($requete);
-											$requete = "UPDATE argent_royaume SET ecole_combat = ecole_combat + ".$taxe." WHERE race = '".$R['race']."'";
-											$db->query($requete);
-										}
-										echo '<h6>Compétence apprise !</h6>';
-									}
-									else
-									{
-										echo '<h5>Vous devez connaitre une autre compétence avant d\'apprendre celle ci</h5>';
-									}
-								}
-								else
-								{
-									echo '<h5>Vous connaissez déjà cet compétence</h5>';
-								}
-							}
-							else
-							{
-								echo '<h5>Vous n\'avez pas assez en '.$Gtrad[$row['comp_assoc']].'</h5>';
-							}
-						}
-						else
-						{
-							echo '<h5>Vous n\'avez pas assez en '.$row['carac_assoc'].'</h5>';
-						}
-					}
-					else
-					{
-						echo '<h5>Vous n\'avez pas assez de Stars</h5>';
-					}
-				break;
+					apprend_competence($ecole, sSQL($_GET['id']), $joueur, $R, false);
+					break;
 			}
 		}
 		

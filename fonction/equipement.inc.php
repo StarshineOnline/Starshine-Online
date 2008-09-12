@@ -110,6 +110,9 @@ function decompose_objet($objet)
 			case 'a' :
 				$objet_dec['table_categorie'] = 'arme';
 			break;
+			case 'l' :
+				$objet_dec['table_categorie'] = 'grimoire';
+			break;
 			case 'o' :
 				$objet_dec['table_categorie'] = 'objet';
 			break;
@@ -223,6 +226,9 @@ function nom_objet($id_objet)
 		case 'm' :
 			$table = 'accessoire';
 		break;
+		case 'l' :
+			$table = 'grimoire';
+		break;
 	}
 	$requete = "SELECT nom FROM ".$table." WHERE id = ".$objet['id_objet'];
 	$req = $db->query($requete);
@@ -280,6 +286,31 @@ function description_objet($id_objet)
 			$keys = array_keys($row);
 			$description .= '<strong>'.$row['nom'].'</strong><br /><table> <tr> <td> Type </td> <td> '.$row['type'].' </td> </tr> <tr> <td> Description </td> </tr> <tr> <td> '.description($row['description'], $keys).' </td> </tr> </table>';
 		break;
+	case 'l' :
+	  $requete = "SELECT * FROM grimoire WHERE id = ".$objet['id_objet'];
+	  $req = $db->query($requete);
+	  $row = $db->read_assoc($req);
+	  $description = '<strong>'.$row['nom'].
+	    '</strong><br />';
+	  if (isset($row['comp_jeu'])) {
+	    $table = 'comp_jeu';
+	    $id_comp = $row['comp_jeu'];
+	  }
+	  elseif (isset($row['comp_combat'])) {
+	    $table = 'comp_combat';
+	    $id_comp = $row['comp_combat'];
+	  }
+	  if (isset($row['comp_perso_competence'])) {
+	    $description .= 'Entraîne la compétence '.
+	      $row['comp_perso_competence'].' de '.$row['comp_perso_valueadd'];
+	  }
+	  else {
+	    $requete2 = "SELECT * from $table where id ='$id_comp'";
+	    $req2 = $db->query($requete2);
+	    $row2 = $db->read_assoc($req2);
+	    $description .= 'Apprend la compétence '.$row2['nom'];
+	    // TODO: afficher les prérequis
+	  }
 	}
 	if($objet['enchantement'] != '') $description .= '<br />Enchantement : '.enchant_description($objet['enchantement']);
 	return $description;
