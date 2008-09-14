@@ -7,39 +7,45 @@ function utilise_grimoire($id_objet, &$joueur) {
   $requete = "select * from grimoire where id = '$id_objet'";
   $req = $db->query($requete);
   $row = $db->read_assoc($req);
-    if (isset($row['comp_jeu']) && $row['comp_jeu'] != '') {
+	if (isset($row['classe_requis']) && $row['classe_requis'] != '') {
+		$classes_autorisees = explode(';', $row['classe_requis']);
+		if (!in_array($joueur['classe'], $classes_autorisees)) {
+			echo '<h5>Impossible de lire ce grimoire : il n\'est pas destiné à votre classe</h5>';
+			return false;
+		}
+	}
+	if (isset($row['comp_jeu']) && $row['comp_jeu'] != '') {
     return apprend_competence('comp_jeu', $row['comp_jeu'], 
-			      $joueur, null, true);
+															$joueur, null, true);
   }
   elseif (isset($row['comp_combat']) && $row['comp_combat'] != '') {
     return apprend_competence('comp_combat', $row['comp_combat'], 
-			      $joueur, null, true);
+															$joueur, null, true);
   }
   elseif (isset($row['comp_perso_id']) && $row['comp_perso_id'] != '') {
     if (!isset($joueur['competences'][$row['comp_perso_competence']])) {
-      echo '<h5>Impossible d\'entraîner cette compétence : vous ne la connaissez pas</h5>';
-      return false;
-    } else {
-      $requete2 = "select permet from classe_permet where id_classe = (".
-	'select id from classe where nom = \''.$joueur['classe'].'\') and '.
-	'competence =\''.$row['comp_perso_competence'].'\'';
-      $req2 = $db->query($requete2);
-      $row2 = $db->read_assoc($req2);
-      if ($row2['permet'] <=
-	  $joueur['competences'][$row['comp_perso_competence']]) {
-	echo '<h5>Impossible d\'entraîner cette compétence : vous en connaissez toutes les arcanes</h5>';
-	return false;
-      } else {
-	$newval = min($row2['permet'], 
-		      ($joueur['competences'][$row['comp_perso_competence']] + 
-		       $row['comp_perso_valueadd']));
-	$requete = 'update comp_perso set valeur='.$newval.' where id_comp = '.
-	  $row['comp_perso_id'].' and competence = \''.
-	  $row['comp_perso_competence'].'\' and id_perso = '.$joueur['ID'];
-	$db->query($requete);
-	echo '<h6>Compétence entraînée</h6>';
-	return true;
-      }
+			echo '<h5>Impossible d\'entraîner cette compétence : vous ne la connaissez pas</h5>';
+			return false;
+    }
+		$requete2 = "select permet from classe_permet where id_classe = (".
+			'select id from classe where nom = \''.$joueur['classe'].'\') and '.
+			'competence =\''.$row['comp_perso_competence'].'\'';
+		$req2 = $db->query($requete2);
+		$row2 = $db->read_assoc($req2);
+		if ($row2['permet'] <=
+				$joueur['competences'][$row['comp_perso_competence']]) {
+			echo '<h5>Impossible d\'entraîner cette compétence : vous en connaissez toutes les arcanes</h5>';
+			return false;
+		} else {
+			$newval = min($row2['permet'], 
+										($joueur['competences'][$row['comp_perso_competence']] + 
+										 $row['comp_perso_valueadd']));
+			$requete = 'update comp_perso set valeur='.$newval.' where id_comp = '.
+				$row['comp_perso_id'].' and competence = \''.
+				$row['comp_perso_competence'].'\' and id_perso = '.$joueur['ID'];
+			$db->query($requete);
+			echo '<h6>Compétence entraînée</h6>';
+			return true;
     }
   }
   else {
@@ -75,12 +81,10 @@ function apprend_competence($ecole, $id_competence, &$joueur, $R, $grimoire) {
     if($joueur[$row['carac_assoc']] >= $row['carac_requis']) {
       if($joueur[$row['comp_assoc']] >= $row['comp_requis']) {
 	$sort_jeu = explode(';', $joueur[$ecole]);
-	if(!in_array($row['id'], $sort_jeu)) {
-	  // traite le cas particulier du grimoire pour les compétences lvl 1
-	  if ($grimoire && $row['requis'] == '999') {
-	    $row['requis'] == ''; // Pas de requis
-	  }	  
-	  if(in_array($row['requis'], $sort_jeu) OR $row['requis'] == '') {
+	if(!in_array($row['id'], $sort_jeu)) {	  
+	  if(in_array($row['requis'], $sort_jeu) OR $row['requis'] == ''
+			 OR ($grimoire && $row['requis'] == '999')) {
+			// cas particulier du grimoire pour les compétences lvl 1 (requis 999)
 	    if($sort_jeu[0] == '') $sort_jeu = array();
 	    $sort_jeu[] = $row['id'];
 	    $joueur[$ecole] = implode(';', $sort_jeu);

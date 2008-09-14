@@ -149,6 +149,7 @@ if($joueur['inventaire_slot'] != '')
 				{
 					$pages[] = 'inventaire.php?action=utilise&amp;id_objet='.$objet_d['id_objet'].'&amp;type='.$row['type'].'&amp;key_slot='.$i.$filtre_url;
 					$pages_nom[] = 'Lire';
+					$row['prix'] = 1000;
 				}
 				if ($W_row['type'] == 1 AND $objet_d['categorie'] != 'r' AND $objet_d['categorie'] != 'h')
 				{

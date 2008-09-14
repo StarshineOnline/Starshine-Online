@@ -29,6 +29,7 @@ else
 						<li><a href="edit_donjon.php">Editeur de donjon</a></li>
 						<li><a href="create_quete.php">Création de quête</a></li>
 						<li><a href="create_monstre.php">Création d'un monstre</a></li>
+						<li><a href="create_grimoire.php">Création d'un grimoire</a></li>
 						<li><a href="edit_monstre.php">Edition d'un monstre</a></li>
 						<li><a href="admin_stats_royaume.php">Stats royaumes</a></li>
 						<li><a href="admin_stats.php">Statistiques</a></li>

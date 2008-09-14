@@ -122,4 +122,42 @@ $Gtrad['Bélier'] = 'belier';
 $Gtrad['Catapulte'] = 'catapulte';
 $Gtrad['Trébuchet'] = 'trebuchet';
 $Gtrad['Baliste'] = 'baliste';
+
+$GPluriels = array();
+$GPluriels['combattant'] = 'combattants';
+$GPluriels['guerrier'] = 'guerriers';
+$GPluriels['archer'] = 'archers';
+$GPluriels['voleur'] = 'voleurs';
+$GPluriels['paladin'] = 'paladins';
+$GPluriels['champion'] = 'champions';
+$GPluriels['assassin'] = 'assassins';
+$GPluriels['archer d élite'] = 'archers d élite';
+$GPluriels['paladin+'] = 'paladins+';
+$GPluriels['champion+'] = 'champions+';
+$GPluriels['assassin+'] = 'assassins+';
+$GPluriels['archer d élite+'] = 'archers d élite+';
+$GPluriels['mage'] = 'mages';
+$GPluriels['sorcier'] = 'sorciers';
+$GPluriels['nécromancien'] = 'nécromanciens';
+$GPluriels['clerc'] = 'clercs';
+$GPluriels['grand sorcier'] = 'grands sorciers';
+$GPluriels['grand nécromancien'] = 'grands nécromanciens';
+$GPluriels['prêtre'] = 'prêtres';
+$GPluriels['prêtre+'] = 'prêtres+';
+$GPluriels['grand sorcier+'] = 'grands sorciers+';
+$GPluriels['grand nécromancien+'] = 'grands nécromanciens+';
+
+function pluriel($mot) {
+  global $GPluriels;
+  if (isset($GPluriels[$mot]))
+    return $GPluriels[$mot];
+  return $mot;
+}
+
+function traduit($mot) {
+  global $Gtrad;
+  if (isset($Gtrad[$mot]))
+    return $Gtrad[$mot];
+  return $mot;
+}
 ?>

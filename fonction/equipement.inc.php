@@ -302,14 +302,42 @@ function description_objet($id_objet)
 	  }
 	  if (isset($row['comp_perso_competence'])) {
 	    $description .= 'Entraîne la compétence '.
-	      $row['comp_perso_competence'].' de '.$row['comp_perso_valueadd'];
+	      traduit($row['comp_perso_competence']).
+	      ' de '.$row['comp_perso_valueadd'];
 	  }
 	  else {
 	    $requete2 = "SELECT * from $table where id ='$id_comp'";
 	    $req2 = $db->query($requete2);
 	    $row2 = $db->read_assoc($req2);
-	    $description .= 'Apprend la compétence '.$row2['nom'];
-	    // TODO: afficher les prérequis
+	    $description .= 'Apprend la compétence '.$row2['nom'].'<br />';
+	    if (isset($row2['requis']) && $row2['requis'] != '999') {
+	      $rqs = explode(';', $row2['requis']);
+	      foreach ($rqs as $rq) {
+		$requete3 = "SELECT nom from $table where id ='$rq'";
+		$req3 = $db->query($requete3);
+		$row3 = $db->read_assoc($req3);
+		$description .= '<br />Requiert la compétence '.$row3['nom'];
+	      }
+	    }
+	    if ($row2['carac_requis'] > 0) {
+		$description .= '<br />Requiert '.$row2['carac_assoc'].
+		  ' à '.$row2['carac_requis'];
+	    }
+	    if ($row2['comp_requis'] > 0) {
+		$description .= '<br />Requiert '.$row2['comp_assoc'].
+		  ' à '.$row2['comp_requis'];
+	    }
+	  }
+
+	  if (isset($row['classe_requis'])) {
+	    $description .= '<br />Reservé aux ';
+	    $classes = explode(';', $row['classe_requis']);
+	    $virgule = false;
+	    foreach ($classes as $c) {
+	      if ($virgule) $description .= ', ';
+	      else $virgule = true;
+	      $description .= pluriel($c);
+	    }
 	  }
 	}
 	if($objet['enchantement'] != '') $description .= '<br />Enchantement : '.enchant_description($objet['enchantement']);
