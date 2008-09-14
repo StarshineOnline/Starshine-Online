@@ -643,6 +643,10 @@ function recupperso($ID)
 						$R_perso['accessoire']['effet'] = $row[1];
 						if($row[0] == 'rm') $R_perso['reserve'] += $row[1];
 					}
+					if($partie_d['enchantement'] > 0)
+					{
+						$R_perso = enchant($partie_d['enchantement'], $R_perso);
+					}
 				}
 
 				//Objets magiques

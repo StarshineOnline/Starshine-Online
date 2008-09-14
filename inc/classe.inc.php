@@ -34,6 +34,14 @@ $Tclasse['grand sorcier']['type'] = 'archimage';
 $Tclasse['prètre']['type'] = 'archimage';
 $Tclasse['prêtre']['type'] = 'archimage'; // Bastien: ben oui, c'est un accent circonflexe
 $Tclasse['grand nécromancien']['type'] = 'archimage';
+$Tclasse['assassin+']['type'] = 'voleur';
+$Tclasse['champion+']['type'] = 'champion';
+$Tclasse['paladin+']['type'] = 'champion';
+$Tclasse['archer d élite+']['type'] = 'archer';
+$Tclasse['grand sorcier+']['type'] = 'archimage';
+$Tclasse['prètre+']['type'] = 'archimage';
+$Tclasse['prêtre+']['type'] = 'archimage'; // Bastien: ben oui, c'est un accent circonflexe
+$Tclasse['grand nécromancien+']['type'] = 'archimage';
 $Tclasse['duelliste']['type'] = 'voleur';
 
 ?>

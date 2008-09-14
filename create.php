@@ -172,54 +172,56 @@ function switch_classe()
 	envoiInfo('switch_classe.php?race=' + race + '&classe=' + classe, 'img' + race);
 }
 </script>
-<table border="0" style="width : 700px; border : 0px; background-color : #E4EAF2;">
+<table border="0" style="width : 100%; border : 0px; background-color : #E4EAF2;">
 <tr>
 	<td colspan="2">
-		<a href="tuto.php">Aide de jeu, pour comprendre dans de plus amples détails comment joueur</a><br />
-		N'hésitez pas à faire le tour des races pour en voir toutes les différences, et à passer votre curseur sur les attributs (force, dextérité, etc) pour avoir des détails sur leur fonctionnement.<br />
-		Pour un équilibrage du jeu, les peuples ayant le moins de joueurs recoivent plus de stars à la création du personnage.<br />
-		<br />
-		<strong>Un compte sur le forum sera créé automatiquement avec vos informations du jeu.</strong>
+		<div style="margin : 10px; padding : 10px; border : 2px solid white; -moz-border-radius : 13px;">
+			<a href="wiki.starshine-online.com">Aide de jeu, pour comprendre dans de plus amples détails comment joueur</a><br />
+			N'hésitez pas à faire le tour des races pour en voir toutes les différences, et à passer votre curseur sur les attributs (force, dextérité, etc) pour avoir des détails sur leur fonctionnement.<br />
+			Pour un équilibrage du jeu, les peuples ayant le moins de joueurs recoivent plus de stars à la création du personnage.<br />
+			<br />
+			<strong>Un compte sur le forum sera créé automatiquement avec vos informations du jeu.</strong>
+		</div>
 	</td>
 </tr>
 <tr>
-	<td style="width : 230px;">
-<form action="create.php" method="POST">
-Quel sera votre nom ?<br />
-<input type="text" name="nom" /><br />
-<br />
-Veuillez indiquer un mot de passe :<br />
-<input type="password" name="password" /><br />
-Veuillez confirmer votre mot de passe :<br />
-<input type="password" name="password2" /><br />
-<br />
-Choisissez une race :<br />
-<select name="race" id="race" onChange="switch_race();">
-	<?php
-	$true = true;
-	$requete = "SELECT race FROM royaume WHERE race != '' ORDER BY star_nouveau_joueur DESC, race ASC";
-	$req = $db->query($requete);
-	while($row = $db->read_row($req))
-	{
-		if($true)
-		{
-			$race_1 = $row[0];
-			$true = false;
-		}
-		echo '<option value="'.$row[0].'">'.$Gtrad[$row[0]].'</option>';
-	}
-	?>
-</select>
-<br />
-Choisissez une classe :<br />
-<select name="classe" id="classe" onchange="switch_classe();">
-	<option value="combattant">Combattant</option>
-	<option value="magicien">Magicien</option>
-</select><br />
-<br />
-<input type="hidden" name="direction" value="phase2" />
-<input type="submit" value="Créer ce personnage" />
-</form>
+	<td style="width : 35%; vertical-align : top;">
+		<form action="create.php" method="POST" style="margin : 10px; padding : 5px; border : 2px solid white; -moz-border-radius : 13px; font-size : 0.9em;">
+		Quel sera votre nom ?<br />
+		<input type="text" name="nom" /><br />
+		<br />
+		Indiquer un mot de passe :<br />
+		<input type="password" name="password" /><br />
+		Confirmer votre mot de passe :<br />
+		<input type="password" name="password2" /><br />
+		<br />
+		Choisissez une race :<br />
+		<select name="race" id="race" onChange="switch_race();">
+			<?php
+			$true = true;
+			$requete = "SELECT race FROM royaume WHERE race != '' ORDER BY star_nouveau_joueur DESC, race ASC";
+			$req = $db->query($requete);
+			while($row = $db->read_row($req))
+			{
+				if($true)
+				{
+					$race_1 = $row[0];
+					$true = false;
+				}
+				echo '<option value="'.$row[0].'">'.$Gtrad[$row[0]].'</option>';
+			}
+			?>
+		</select>
+		<br />
+		Choisissez une classe :<br />
+		<select name="classe" id="classe" onchange="switch_classe();">
+			<option value="combattant">Combattant</option>
+			<option value="magicien">Magicien</option>
+		</select><br />
+		<br />
+		<input type="hidden" name="direction" value="phase2" />
+		<input type="submit" value="Créer ce personnage" />
+		</form>
 </td>
 <td style="vertical-align : top;">
 	<?php
@@ -227,7 +229,7 @@ Choisissez une classe :<br />
 	foreach($races as $race)
 	{
 		if($race == $race_1) $style = ''; else $style = 'display : none;';
-		$image = 'image/'.$race;
+		$image = 'image/personnage/'.$race;
 		if (file_exists($image.'_guerrier.png')) $image .= '_guerrier.png';
 		elseif(file_exists($image.'_guerrier.gif')) $image .= '_guerrier.gif';
 		elseif (file_exists($image.'_mage.png')) $image .= '_mage.png';
@@ -457,7 +459,10 @@ elseif ($direction == 'phase2')
 ?>
 		</p>
 	</div>
-		</div>
+<?php
+	include('menu_d.php');
+?>
+	</div>
 </div>
 <?php
 include('bas.php');

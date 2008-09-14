@@ -533,16 +533,19 @@ if(!$visu AND isset($_GET['action']))
 							break;
 						}
 						$prix = $_GET['prix'];
-						supprime_objet($joueur, $joueur['inventaire_slot'][$_GET['key_slot']], 1);
-						$requete = "UPDATE perso SET star = star - ".$comm." WHERE ID = ".$joueur['ID'];
-						$req = $db->query($requete);
-						$requete = "INSERT INTO hotel VALUES (NULL, '".$objet_id."', ".$joueur['ID'].", ".sSQL($_GET['prix']).", 1, '".$R['race']."', ".time().")";
-						$req = $db->query($requete);
-						$requete = 'UPDATE royaume SET star = star + '.$comm.' WHERE ID = '.$R['ID'];
-						$db->query($requete);
-						$requete = "UPDATE argent_royaume SET hv = hv + ".$comm." WHERE race = '".$R['race']."'";
-						$db->query($requete);
-						$message_mail = $joueur['nom']." vend ".$objet." pour ".$_GET['prix']." stars. Commission : ".$comm." stars";;
+						if($objet_id != '')
+						{
+							supprime_objet($joueur, $joueur['inventaire_slot'][$_GET['key_slot']], 1);
+							$requete = "UPDATE perso SET star = star - ".$comm." WHERE ID = ".$joueur['ID'];
+							$req = $db->query($requete);
+							$requete = "INSERT INTO hotel VALUES (NULL, '".$objet_id."', ".$joueur['ID'].", ".sSQL($_GET['prix']).", 1, '".$R['race']."', ".time().")";
+							$req = $db->query($requete);
+							$requete = 'UPDATE royaume SET star = star + '.$comm.' WHERE ID = '.$R['ID'];
+							$db->query($requete);
+							$requete = "UPDATE argent_royaume SET hv = hv + ".$comm." WHERE race = '".$R['race']."'";
+							$db->query($requete);
+							$message_mail = $joueur['nom']." vend ".$objet." (".$objet_id.") pour ".$_GET['prix']." stars. Commission : ".$comm." stars";;
+						}
 						mail('masterob1@chello.fr', 'Starshine - Dépot HV', $message_mail);
 					}
 					else

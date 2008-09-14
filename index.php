@@ -18,10 +18,36 @@ else
 
 	if(array_key_exists('ID', $_SESSION))
 	{
-		echo '<div class="titre">
+		?>
+		<div class="titre">
+		Message du monde
+		</div>
+		<div id="news">
+		<?php
+		//Si message du monde
+		$requete = "SELECT * FROM motd WHERE publie = 1";
+		$req_m = $db->query($requete);
+		$row_m = $db->read_assoc($req_m);
+		$message = htmlspecialchars(stripslashes($row_m['text']));
+		$message = str_replace('[br]', '<br />', $message);
+		//$message = $amessage.$message;
+		$message = eregi_replace("\[img\]([^[]*)\[/img\]", '<img src=\\1 title="\\1">', $message );
+		$message = eregi_replace("\[b\]([^[]*)\[/b\]", '<strong>\\1</strong>', $message );
+		$message = eregi_replace("\[i\]([^[]*)\[/i\]", '<i>\\1</i>', $message );
+		$message = eregi_replace("\[url\]([^[]*)\[/url\]", '<a href="\\1">\\1</a>', $message );
+		$message = str_replace("[/color]", "</span>", $message);
+		$regCouleur = "\[color= ?(([[:alpha:]]+)|(#[[:digit:][:alpha:]]{6})) ?\]";
+		$message = eregi_replace($regCouleur, "<span style=\"color: \\1\">", $message);
+		$motd = '
+		<p>'.$message.'</p>';
+		echo $motd;
+		?>
+		</div>
+		<div class="titre">
 		Les dernières infos du roi
-		</div>';
-		echo '<div id="news">';
+		</div>
+		<div id="news">
+		<?php
 		//Si message du roi
 		$requete = "SELECT * FROM motk WHERE race = '".$joueur['race']."'";
 		$req_m = $db->query($requete);
@@ -118,14 +144,14 @@ else
 	$i = 0;
 	while($row = $db_forum->read_array($req) AND $i < 15)
 	{
-		echo '<div class="titre_news"><strong><a class="news" href="http://forum.starshine-online.com/viewtopic.php?id='.$row['id'].'">'.utf8_encode($row['subject']).'</a></strong><br />
+		echo '<div class="titre_news"><strong><a class="news" href="http://forum.starshine-online.com/viewtopic.php?id='.$row['id'].'">'./*utf8_encode*/($row['subject']).'</a></strong><br />
 		<span style="font-size:10px;">Par '.$row['poster'].', le '.date("l d F Y à H:i", $row['posted']).'</span><!-- <span style="font-size : 10px;"> ('.($row['num_replies']).' commentaires)</span> --></div>';
 		if ($i < 5)
 		{
 			$requete_post = "SELECT * FROM punbbposts WHERE (topic_id = ".$row['id'].") ORDER BY id ASC";
 			$req_post = $db_forum->query($requete_post);
 			$row_post = $db_forum->read_array($req_post);
-			$message = utf8_encode(nl2br($row_post['message']));
+			$message = /*utf8_encode*/(nl2br($row_post['message']));
 			$message = eregi_replace("\[img\]([^[]*)\[/img\]", '<img src=\\1 title="\\1">', $message );
 			$message = eregi_replace("\[b\]([^[]*)\[/b\]", '<strong>\\1</strong>', $message );
 			$message = eregi_replace("\[i\]([^[]*)\[/i\]", '<i>\\1</i>', $message );

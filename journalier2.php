@@ -85,6 +85,7 @@ copy('image/stat_race.jpg', 'image/stat/'.$date.'/stat_race.jpg');
 copy('image/stat_classe1.jpg', 'image/stat/'.$date.'/stat_classe1.jpg');
 copy('image/stat_classe2.jpg', 'image/stat/'.$date.'/stat_classe2.jpg');
 copy('image/stat_classe3.jpg', 'image/stat/'.$date.'/stat_classe3.jpg');
+copy('image/stat_classe3.jpg', 'image/stat/'.$date.'/stat_classe4.jpg');
 copy('image/stat_star1.jpg', 'image/stat/'.$date.'/stat_star1.jpg');
 copy('image/stat_star2.jpg', 'image/stat/'.$date.'/stat_star2.jpg');
 copy('image/stat_star3.jpg', 'image/stat/'.$date.'/stat_star3.jpg');
