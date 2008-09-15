@@ -8,6 +8,8 @@ create table grimoire (
 	comp_perso_id mediumint(8) null comment 'id de la comp_perso à améliorer',
 	comp_perso_competence varchar(50) null comment 'nom de la comp_perso à améliorer',
 	comp_perso_valueadd smallint(3) null comment 'valeur à ajouter à la comp_perso',
+	sort_jeu mediumint(8) null comment 'donne un sort hors combat',
+	sort_combat mediumint(8) null comment 'donne un sort de combat',
 	classe_requis varchar(65000) null comment 'classes donnant accès au grimoire',
 	primary key (id)
 ) comment 'Définit les grimoire qui peuvent enseigner une compétence, ou en améliorer une';
@@ -51,6 +53,26 @@ VALUES (
 'Tome de hache élémentaire', 1, 'maitrise_hache', 1, null
 ),(
 'Tome d\'escrime courtoise', 1, 'maitrise_epee', 5, 'paladin;paladin+'
+);
+
+-- Sort jeu
+INSERT INTO `grimoire` (
+`nom` ,
+`sort_jeu`,
+`classe_requis`
+)
+VALUES (
+'Traité de guérison', (select id from sort_jeu where nom = 'Soin'), null
+);
+
+-- Sort de combat
+INSERT INTO `grimoire` (
+`nom` ,
+`sort_combat`,
+`classe_requis`
+)
+VALUES (
+'Traité de combustion', (select id from sort_combat where nom = 'Embrasement'), null
 );
 
 

@@ -28,11 +28,15 @@ if [ -x /usr/bin/ssh-agent ]; then
     done
 fi
 
-ssh $username@$host ./get_maj
-scp $username@$host:maj.sql .
-iconv -f ISO-8859-1 -t UTF-8 maj.sql | sed s/=latin1/=utf8/g > maj_utf8.sql || exit 1
-mysql $sql_log $bdd -e 'source maj_utf8.sql'
-rm maj.sql maj_utf8.sql
+ssh $username@$host ./dumpstatic.sh stdout > dumpstatic.sql
+#scp $username@$host:maj.sql .
+#iconv -f ISO-8859-1 -t UTF-8 maj.sql | sed s/=latin1/=utf8/g > maj_utf8.sql || exit 1
+#mysql $sql_log $bdd -e 'source maj_utf8.sql'
+#rm maj.sql maj_utf8.sql
+mysql $sql_log $bdd -e 'source dumpstatic.sql'
+#rm maj.sql
+mysql $sql_log $bdd -e 'source update_comp.sql'
+php update_comp.php
 
 echo done
 
