@@ -290,15 +290,28 @@ function description_objet($id_objet)
 	  $requete = "SELECT * FROM grimoire WHERE id = ".$objet['id_objet'];
 	  $req = $db->query($requete);
 	  $row = $db->read_assoc($req);
+	  //var_dump($row);
 	  $description = '<strong>'.$row['nom'].
 	    '</strong><br />';
 	  if (isset($row['comp_jeu'])) {
 	    $table = 'comp_jeu';
 	    $id_comp = $row['comp_jeu'];
+	    $type = "la compétence";
 	  }
 	  elseif (isset($row['comp_combat'])) {
 	    $table = 'comp_combat';
 	    $id_comp = $row['comp_combat'];
+	    $type = "la compétence";
+	  }
+	  elseif (isset($row['sort_jeu'])) {
+	    $table = 'sort_jeu';
+	    $id_comp = $row['sort_jeu'];
+	    $type = "le sort";
+	  }
+	  elseif (isset($row['sort_combat'])) {
+	    $table = 'sort_combat';
+	    $id_comp = $row['sort_combat'];
+	    $type = "le sort";
 	  }
 	  if (isset($row['comp_perso_competence'])) {
 	    $description .= 'Entraîne la compétence '.
@@ -309,23 +322,36 @@ function description_objet($id_objet)
 	    $requete2 = "SELECT * from $table where id ='$id_comp'";
 	    $req2 = $db->query($requete2);
 	    $row2 = $db->read_assoc($req2);
-	    $description .= 'Apprend la compétence '.$row2['nom'].'<br />';
-	    if (isset($row2['requis']) && $row2['requis'] != '999') {
+	    $description .= 'Apprend '.$type.' '.$row2['nom'].'<br />';
+	    if (isset($row2['requis']) && $row2['requis'] != '999'
+		&& $row2['requis'] != '') {
 	      $rqs = explode(';', $row2['requis']);
 	      foreach ($rqs as $rq) {
 		$requete3 = "SELECT nom from $table where id ='$rq'";
 		$req3 = $db->query($requete3);
 		$row3 = $db->read_assoc($req3);
-		$description .= '<br />Requiert la compétence '.$row3['nom'];
+		$description .= '<br />Requiert '.$type.' '.$row3['nom'];
 	      }
 	    }
 	    if ($row2['carac_requis'] > 0) {
-		$description .= '<br />Requiert '.$row2['carac_assoc'].
+		$description .= '<br />Requiert '.traduit($row2['carac_assoc']).
 		  ' à '.$row2['carac_requis'];
 	    }
 	    if ($row2['comp_requis'] > 0) {
-		$description .= '<br />Requiert '.$row2['comp_assoc'].
-		  ' à '.$row2['comp_requis'];
+	      $requis = $row2['comp_requis'];
+	      if ($type == 'le sort') {
+		global $joueur;
+		global $Trace;
+		$requis = round($row2['comp_requis'] * $joueur['facteur_magie'] * 
+				(1 - (($Trace[$joueur['race']]['affinite_'.$row2['comp_assoc']] - 5)
+				      / 10)));
+	      }
+	      $description .= '<br />Requiert '.traduit($row2['comp_assoc']).' à '.$requis;
+	    }
+	    if (isset($row2['incantation']) && $row2['incantation'] != 0) {
+	      global $joueur;
+	      $description .= '<br />Requiert '.traduit('incantation').
+		' à '.($row2['incantation'] * $joueur['facteur_magie']);
 	    }
 	  }
 

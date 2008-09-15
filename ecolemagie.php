@@ -3,6 +3,9 @@
 //Inclusion du haut du document html
 include('haut_ajax.php');
 
+// Inclusion du processus d'apprentissage des sorts
+include_once('fonction/competence.inc.php');
+
 $joueur = recupperso($_SESSION['ID']);
 
 check_perso($joueur);
@@ -54,59 +57,7 @@ if($W_distance == 0)
 			{
 				//Achat
 				case 'apprendre' :
-					$requete = "SELECT * FROM ".$ecole." WHERE id = ".sSQL($_GET['id']);
-					$req = $db->query($requete);
-					$row = $db->read_array($req);
-					$taxe = ceil($row['prix'] * $R['taxe'] / 100);
-					$cout = $row['prix'] + $taxe;
-					if ($joueur['star'] >= $cout)
-					{
-						if($joueur['incantation'] >= ($row['incantation'] * $joueur['facteur_magie']))
-						{
-							if($joueur[$row['comp_assoc']] >= round($row['comp_requis'] * $joueur['facteur_magie'] * (1 - (($Trace[$joueur['race']]['affinite_'.$row['comp_assoc']] - 5) / 10))))
-							{
-								$sort_jeu = explode(';', $joueur[$ecole]);
-								if(!in_array($row['id'], $sort_jeu))
-								{
-									$joueur_sorts = explode(';', $joueur[$ecole]);
-									if($row['requis'] == '' OR in_array($row['requis'], $joueur_sorts))
-									{
-										if($sort_jeu[0] == '') $sort_jeu = array();
-										$sort_jeu[] = $row['id'];
-										$joueur[$ecole] = implode(';', $sort_jeu);
-										$joueur['star'] = $joueur['star'] - $cout;
-										$requete = "UPDATE perso SET star = ".$joueur['star'].", ".$ecole." = '".$joueur[$ecole]."' WHERE ID = ".$_SESSION['ID'];
-										$req = $db->query($requete);
-										//Récupération de la taxe
-										if($taxe > 0)
-										{
-											$requete = 'UPDATE royaume SET star = star + '.$taxe.' WHERE ID = '.$R['ID'];
-											$db->query($requete);
-											$requete = "UPDATE argent_royaume SET ecole_magie = ecole_magie + ".$taxe." WHERE race = '".$R['race']."'";
-											$db->query($requete);
-										}
-										echo '<h6>Sort appris !</h6>';
-									}
-									else
-									{
-										echo '<h5>Vous devez connaitre un autre sort pour apprendre celui-ci</h5>';
-									}
-								}
-							}
-							else
-							{
-								echo '<h5>Vous n\'avez pas assez en '.$Gtrad[$row['comp_assoc']].'</h5>';
-							}
-						}
-						else
-						{
-							echo '<h5>Vous n\'avez pas assez en incantation</h5>';
-						}
-					}
-					else
-					{
-						echo '<h5>Vous n\'avez pas assez de Stars</h5>';
-					}
+				  apprend_sort($ecole, sSQL($_GET['id']), $joueur, $R, false);
 				break;
 			}
 		}
