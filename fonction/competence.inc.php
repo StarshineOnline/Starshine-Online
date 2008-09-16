@@ -146,7 +146,7 @@ function apprend_competence($ecole, $id_competence, &$joueur, $R, $grimoire) {
 * @return true si on a pu apprendre la compétence, false sinon
 */
 function apprend_sort($ecole, $id_sort, &$joueur, $R, $grimoire) {
-  global $db;
+  global $db, $Trace;
 	$requete = "SELECT * FROM $ecole WHERE id = '$id_sort'";
 	$req = $db->query($requete);
 	$row = $db->read_array($req);
