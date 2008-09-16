@@ -41,7 +41,8 @@ else
 						<li><a href="admin_joueur.php">Liste des persos</a></li>
 						<li><a href="admin_2.php">Multi-Compte</a></li>
 						<li><a href="compare_connexion.php">Comparateur de connexion</a></li>
-						<li><a href="http://stats.starshinebox.info">Webalizer</a></li>
+						<li><a href="http://webalizer.starshinebox.info">Webalizer</a></li>
+						<li><a href="http://munin.starshine-online">Performances</a></li>
 				</ul>
 			</div>
 		</div>

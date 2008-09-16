@@ -97,7 +97,7 @@ a:hover, a:active 	{ color:#7290db; }
 .message_vert			{ font-weight:bold; color:green; }
 /*-- Hôtel des ventes -------------------------------------------------*/
 #hotel_liste_type ul	{ width:100%; }
-#hotel_liste_type li	{ display:inline; cursor:pointer; }
+#hotel_liste_type li	{ display:inline; cursor:pointer; font-size : 0.9em;}
 
 #hotel_liste 			{ width:100%; text-align:left; font-variant:normal; }
 #hotel_liste .li1 		{ cursor:default; float:left; font-weight:normal; text-align:center !important; line-height:14pt; }

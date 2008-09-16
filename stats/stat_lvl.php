@@ -4,6 +4,7 @@ $legend = array();
 $label = array();
 $requete = "SELECT level, COUNT(*) as total FROM perso WHERE statut = 'actif' GROUP BY level";
 $req = $db->query($requete);
+echo $requete.'<br />';
 while($row = $db->read_array($req))
 {
 	$data[] = $row['total'];

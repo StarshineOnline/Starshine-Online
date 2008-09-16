@@ -83,9 +83,10 @@ if($W_distance == 0)
 				<ul id='hotel_liste_type'>
 				 <li ".$url."arme".$urlfin."Armes|</li>
 				 <li ".$url."armure".$urlfin."Armures|</li>
-				 <li ".$url."accessoire".$urlfin."Accessoires|</li>
+				 <li ".$url."accessoire".$urlfin."Access.|</li>
 				 <li ".$url."objet".$urlfin."Objets|</li>
 				 <li ".$url."gemme".$urlfin."Gemmes|</li>
+				 <li ".$url."grimoire".$urlfin."Grimoire|</li>
 				 <li ".$url."moi".$urlfin."Mes objets</li>
 				</ul>
 			   </div>";
@@ -113,6 +114,7 @@ if($W_distance == 0)
 			case "objet" :		$abbr = "o";	break;
 			case "gemme" :		$abbr = "g";	break;
 			case "accessoire" :	$abbr = "m";	break;
+			case "grimoire" :	$abbr = "l";	break;
 			default	:			$abbr = "";		break;
 		}
 		{//-- Tri
@@ -300,6 +302,8 @@ if($W_distance == 0)
 											
 						case "gemme" :
 						case "objet" :		$tmp_overlib .= "<ul><li>$tmp_stack ".description($objets_tab_new[$objet_info["id_objet"]]["description"], $objets_tab_new[$objet_info["id_objet"]])."</li></ul>";
+											break;
+						case "grimoire" :		$tmp_overlib .= "<ul><li>$tmp_stack ".description_objet('l'.$objets_tab_new[$objet_info["id_objet"]]['id'])."</li></ul>";
 											break;
 					}
 				}

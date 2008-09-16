@@ -290,7 +290,6 @@ function description_objet($id_objet)
 	  $requete = "SELECT * FROM grimoire WHERE id = ".$objet['id_objet'];
 	  $req = $db->query($requete);
 	  $row = $db->read_assoc($req);
-	  //var_dump($row);
 	  $description = '<strong>'.$row['nom'].
 	    '</strong><br />';
 	  if (isset($row['comp_jeu'])) {

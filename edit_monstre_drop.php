@@ -55,8 +55,9 @@ else
 			?>
 			</ul>
 			<form action="edit_monstre_drop.php" method="post">
-			Donner un objet :<br />
+			Ajouter un drop :<br />
 			<select name="objet">
+				<optgroup label="Objet">
 			<?php
 				$requete = "SELECT * FROM objet ORDER BY nom";
 				$req_r = $db->query($requete);
@@ -64,24 +65,40 @@ else
 				{
 					echo '<option value="o'.$row_r['id'].'">'.$row_r['nom'].'</option>';
 				}
+				?>
+				</optgroup>
+				<optgroup label="Arme">
+				<?php
 				$requete = "SELECT * FROM arme ORDER BY nom";
 				$req_r = $db->query($requete);
 				while($row_r = $db->read_assoc($req_r))
 				{
 					echo '<option value="a'.$row_r['id'].'">'.$row_r['nom'].'</option>';
 				}
+				?>
+				</optgroup>
+				<optgroup label="Armure">
+				<?php
 				$requete = "SELECT * FROM armure ORDER BY nom";
 				$req_r = $db->query($requete);
 				while($row_r = $db->read_assoc($req_r))
 				{
 					echo '<option value="p'.$row_r['id'].'">'.$row_r['nom'].'</option>';
 				}
+				?>
+				</optgroup>
+				<optgroup label="Accessoire">
+				<?php
 				$requete = "SELECT * FROM accessoire ORDER BY nom";
 				$req_r = $db->query($requete);
 				while($row_r = $db->read_assoc($req_r))
 				{
 					echo '<option value="m'.$row_r['id'].'">'.$row_r['nom'].'</option>';
 				}
+				?>
+				</optgroup>
+				<optgroup label="Grimoire">
+				<?php
 				$requete = "SELECT * FROM grimoire ORDER BY nom";
 				$req_r = $db->query($requete);
 				while($row_r = $db->read_assoc($req_r))
@@ -89,6 +106,7 @@ else
 					echo '<option value="l'.$row_r['id'].'">'.$row_r['nom'].'</option>';
 				}
 			?>
+				</optgroup>
 			</select>
 			Chance de drop, 1 sur <input type="text" name="chance_drop" />
 			<input type="hidden" name="id_monstre" value="<?php echo $id_monstre; ?>" />

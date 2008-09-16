@@ -443,6 +443,12 @@ if(!$visu AND isset($_GET['action']))
 						$req = $db->query($requete);
 						$row = $db->read_array($req);
 					break;
+					case 'l' :
+						$requete = "SELECT * FROM grimoire WHERE id = ".$objet['id_objet'];
+						//Récupération des infos de l'objet
+						$req = $db->query($requete);
+						$row = $db->read_array($req);
+					break;
 				}
 				$modif_prix = 1;
 				if($objet['slot'] > 0)
@@ -526,6 +532,13 @@ if(!$visu AND isset($_GET['action']))
 							break;
 							case 'm' :
 								$requete = "SELECT * FROM accessoire WHERE id = ".$objet_d['id_objet'];
+								//Récupération des infos de l'objet
+								$req = $db->query($requete);
+								$row = $db->read_array($req);
+								$objet_id = $objet;
+							break;
+							case 'l' :
+								$requete = "SELECT * FROM grimoire WHERE id = ".$objet_d['id_objet'];
 								//Récupération des infos de l'objet
 								$req = $db->query($requete);
 								$row = $db->read_array($req);

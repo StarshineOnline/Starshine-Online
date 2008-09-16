@@ -3,6 +3,7 @@ $data = array();
 $legend = array();
 $label = array();
 $requete = "SELECT race, COUNT(*) as total FROM perso WHERE statut = 'actif' GROUP BY race";
+echo $requete.'<br />';
 $req = $db->query($requete);
 while($row = $db->read_array($req))
 {

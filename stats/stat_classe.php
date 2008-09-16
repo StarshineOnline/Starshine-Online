@@ -4,6 +4,7 @@ $legend = array();
 $label = array();
 $requete = "SELECT LOWER(nom) as name, rang FROM classe WHERE rang > 0 ORDER BY rang";
 $req = $db->query($requete);
+echo $requete.'<br />';
 while($row = $db->read_assoc($req))
 {
 	$classes[$row['name']]['rang'] = $row['rang'];
@@ -14,6 +15,7 @@ $rang = array(false, false, false, false);
 
 $requete = "SELECT classe, COUNT(*) as total, classe.rang as rang FROM perso RIGHT JOIN classe ON perso.classe_id = classe.id WHERE statut = 'actif' GROUP BY classe ORDER BY classe.rang ASC";
 $req = $db->query($requete);
+echo $requete.'<br />';
 while($row = $db->read_array($req))
 {
 	if(!$rang[$row['rang']])

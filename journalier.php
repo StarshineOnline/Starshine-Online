@@ -164,7 +164,7 @@ if(date("j") == 1)
 	$requete = "SELECT type FROM map_monstre WHERE type = 64 OR type = 65 OR type = 75";
 	$db->query($requete);
 	//Si il n'est pas là on le fait pop
-	if($db->num_rows() == 0)
+	if($db->num_rows == 0)
 	{
 		$time = time() + 2678400;
 		$requete = "INSERT INTO map_monstre VALUES(NULL, '64','3','212','6400', 6, '".addslashes('Devorsis')."','devorsis', ".$time.")";
@@ -176,7 +176,7 @@ if(date("j") == 1)
 	$requete = "SELECT type FROM map_monstre WHERE type = 125 OR type = 126 OR type = 123";
 	$db->query($requete);
 	//Si il n'est pas là on le fait pop
-	if($db->num_rows() == 0)
+	if($db->num_rows == 0)
 	{
 		$time = time() + 2678400;
 		$requete = "INSERT INTO map_monstre VALUES(NULL,'125','36','283','5000', 18, 'Construct draconide','construct_draconide', ".$time.")";

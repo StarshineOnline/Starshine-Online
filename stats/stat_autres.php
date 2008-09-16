@@ -8,6 +8,7 @@ $dates = array();
 
 $date = date("Y-m-d");
 $requete = "SELECT niveau_moyen, nombre_joueur, nombre_monstre, EXTRACT(YEAR FROM date) as year, EXTRACT(MONTH FROM date) as month, EXTRACT(DAY FROM date) as day FROM stat_jeu WHERE date > DATE_SUB('".$date."', INTERVAL 31 DAY) ORDER BY date;";
+echo $requete.'<br />';
 $req = $db->query($requete);
 $strips = array('id', 'date', 'year', 'day', 'month');
 while($row = $db->read_assoc($req))
