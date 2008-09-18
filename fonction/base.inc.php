@@ -1663,7 +1663,7 @@ function verif_mort($pourcent, $var, $duree_debuff=0, $multiplicateur_mouvement=
 	if ($joueur['hp'] <= 0)
 	{
 		//Recherche du fort le plus proche
-		$requete = "SELECT *, (ABS(".$joueur['x']." - x) + ABS(".$joueur['y']." - y)) AS plop FROM `construction` WHERE rez > 0 AND royaume = ".$Trace[$joueur['race']]['numrace']." ORDER BY plop ASC";
+		$requete = "SELECT *, (ABS(".$joueur['x']." - cast(x as signed integer)) + ABS(".$joueur['y']." - cast(y as signed integer))) AS plop FROM `construction` WHERE rez > 0 AND royaume = ".$Trace[$joueur['race']]['numrace']." ORDER BY plop ASC";
 		$req_b = $db->query($requete);
 		$bat = $db->num_rows;
 		$row_b = $db->read_assoc($req_b);
