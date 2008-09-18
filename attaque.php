@@ -164,11 +164,11 @@ else
 							</td>
 							<td>';
 					$etati = 0;
-					$etatkeys = array_keys($defenseur['etat']);
-					while($etati < count($defenseur['etat']))
+					$count = count($defenseur['etat']);
+					foreach($defenseur['etat'] as $key => $value)
 					{
-						$defenseur['etat'][$etatkeys[$etati]]['duree'] -= 1;
-						if($defenseur['etat'][$etatkeys[$etati]]['duree'] <= 0) array_splice($defenseur['etat'], $etati, 1);
+						$defenseur['etat'][$key]['duree'] -= 1;
+						if($defenseur['etat'][$key]['duree'] <= 0) array_splice($defenseur['etat'], $etati, 1);
 						//else echo $defenseur['nom'].' est '.$etatkeys[$etati].' pour '.$defenseur['etat'][$etatkeys[$etati]]['duree'].'<br />';
 						$etati++;
 					}
@@ -176,11 +176,11 @@ else
 				else
 				{
 					$etati = 0;
-					$etatkeys = array_keys($attaquant['etat']);
-					while($etati < count($attaquant['etat']))
+					$count = count($attaquant['etat']);
+					foreach($attaquant['etat'] as $key => $value)
 					{
-						$attaquant['etat'][$etatkeys[$etati]]['duree'] -= 1;
-						if($attaquant['etat'][$etatkeys[$etati]]['duree'] <= 0) array_splice($attaquant['etat'], $etati, 1);
+						$attaquant['etat'][$key]['duree'] -= 1;
+						if($attaquant['etat'][$key]['duree'] <= 0) array_splice($attaquant['etat'], $etati, 1);
 						//else echo $attaquant['nom'].' est '.$etatkeys[$etati].' pour '.$attaquant['etat'][$etatkeys[$etati]]['duree'].'<br />';
 						$etati++;
 					}

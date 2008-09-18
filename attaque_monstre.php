@@ -110,55 +110,26 @@ else
 							</td>
 							<td>';
 					$etati = 0;
-					$etatkeys = array_keys($defenseur['etat']);
-					?>
-					<div id="debug<?php echo $debugs; ?>" class="debug">
-					<?php
-					while($etati < count($defenseur['etat']))
+					$count = count($defenseur['etat']);
+					foreach($defenseur['etat'] as $key => $value)
 					{
-						$defenseur['etat'][$etatkeys[$etati]]['duree'] -= 1;
-						if($defenseur['etat'][$etatkeys[$etati]]['duree'] <= 0)
-						{
-							array_splice($defenseur['etat'], $etati, 1);
-							$etatkeys = array_keys($defenseur['etat']);
-						}
-						else
-						{
-							echo $defenseur['nom'].' est '.$etatkeys[$etati].' pour '.$defenseur['etat'][$etatkeys[$etati]]['duree'].'<br />';
-							$etati++;
-						}
+						$defenseur['etat'][$key]['duree'] -= 1;
+						if($defenseur['etat'][$key]['duree'] <= 0) array_splice($defenseur['etat'], $etati, 1);
+						//else echo $defenseur['nom'].' est '.$etatkeys[$etati].' pour '.$defenseur['etat'][$etatkeys[$etati]]['duree'].'<br />';
+						$etati++;
 					}
-					$debugs++;
-					?>
-					</div>
-					<?php
 				}
 				else
 				{
-
 					$etati = 0;
-					$etatkeys = array_keys($attaquant['etat']);
-					?>
-					<div id="debug<?php echo $debugs; ?>" class="debug">
-					<?php
-					while($etati < count($attaquant['etat']))
+					$count = count($attaquant['etat']);
+					foreach($attaquant['etat'] as $key => $value)
 					{
-						$attaquant['etat'][$etatkeys[$etati]]['duree'] -= 1;
-						if($attaquant['etat'][$etatkeys[$etati]]['duree'] <= 0)
-						{
-							array_splice($attaquant['etat'], $etati, 1);
-							$etatkeys = array_keys($attaquant['etat']);
-						}
-						else
-						{
-							echo $attaquant['nom'].' est '.$etatkeys[$etati].' pour '.$attaquant['etat'][$etatkeys[$etati]]['duree'].'<br />';
-							$etati++;
-						}
+						$attaquant['etat'][$key]['duree'] -= 1;
+						if($attaquant['etat'][$key]['duree'] <= 0) array_splice($attaquant['etat'], $etati, 1);
+						//else echo $attaquant['nom'].' est '.$etatkeys[$etati].' pour '.$attaquant['etat'][$etatkeys[$etati]]['duree'].'<br />';
+						$etati++;
 					}
-					$debugs++;
-					?>
-					</div>
-					<?php
 				}
 					?>
 					<div class="combat">

@@ -12,7 +12,7 @@ else
 
 		<div class="sousmenu">
 			<div class="hautsousmenu">
-				Administration
+				<a href="admin_index.php">Administration</a>
 			</div>
 			<div class="milieusousmenu">
 				<ul class="listemenu">

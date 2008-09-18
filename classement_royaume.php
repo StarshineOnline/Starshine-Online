@@ -510,7 +510,7 @@ foreach($tab2 as $row)
 
 
 $tab = array();
-$requete = "SELECT royaume.race as race_joueur, (SUM( star_royaume ) * 200) AS tot FROM `quete_royaume` LEFT JOIN quete ON quete_royaume.id_quete = quete.id LEFT JOIN royaume ON quete_royaume.id_royaume = royaume.id GROUP BY id_royaume ORDER BY tot DESC";
+$requete = "SELECT royaume.race as race_joueur, (SUM( star_royaume ) * 50) AS tot FROM `quete_royaume` LEFT JOIN quete ON quete_royaume.id_quete = quete.id LEFT JOIN royaume ON quete_royaume.id_royaume = royaume.id GROUP BY id_royaume ORDER BY tot DESC";
 $req = $db->query($requete);
 while($row = $db->read_assoc($req))
 {

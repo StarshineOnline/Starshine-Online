@@ -142,16 +142,25 @@ else
 				</td>
 				<td colspan="3">
 					<ul>
-						<?php if($row['statut'] != 'ban') {?><li><a href="admin_joueur.php?direction=ban&amp;id=<?php echo $_GET['id']; ?>">Banir</a></li>
-						<?php 
+						<?php if($row['statut'] != 'ban')
+						{
+							?><li><a href="admin_joueur.php?direction=ban&amp;id=<?php echo $_GET['id']; ?>">Banir</a></li>
+							<?php
+						}
+						else
+						{
+						?>
+							<li><a href="admin_joueur.php?direction=deban&amp;id=<?php echo $_GET['id']; ?>">Débanir</a></li>
+						<?php
+						}
 						if ($_SESSION['admin_nom'] == 'admin')
 						{
 						?>
-						<li><a href="admin_joueur.php?direction=objet&amp;id=<?php echo $_GET['id']; ?>">Donner un objet</a> | <a href="admin_joueur.php?direction=recette&amp;id=<?php echo $_GET['id']; ?>">Donner une recette</a> | <a href="admin_joueur.php?direction=arme&amp;id=<?php echo $_GET['id']; ?>">Donner une arme</a></li> | <a href="admin_joueur.php?direction=armure&amp;id=<?php echo $_GET['id']; ?>">Donner une armure</a></li>
+						<li><a href="admin_joueur.php?direction=objet&amp;id=<?php echo $_GET['id']; ?>">Donner un objet</a> | <a href="admin_joueur.php?direction=recette&amp;id=<?php echo $_GET['id']; ?>">Donner une recette</a> | <a href="admin_joueur.php?direction=arme&amp;id=<?php echo $_GET['id']; ?>">Donner une arme</a></li> | <a href="admin_joueur.php?direction=armure&amp;id=<?php echo $_GET['id']; ?>">Donner une armure</a> | <a href="admin_joueur.php?direction=accessoire&amp;id=<?php echo $_GET['id']; ?>">Donner un accessoire</a></li>
 						<li><a href="admin_joueur.php?direction=quete&amp;id=<?php echo $_GET['id']; ?>">Quêtes</a> - <a href="admin_joueur.php?direction=inventaire&amp;id=<?php echo $_GET['id']; ?>">Inventaire</a> - <a href="admin_joueur.php?direction=journal&amp;id=<?php echo $_GET['id']; ?>">Voir le journal des actions</a> | <a href="admin_joueur.php?direction=messagerie&amp;id=<?php echo $_GET['id']; ?>">Voir la messagerie</a></li>
 						<?php
 						}
-						 } else { ?><li><a href="admin_joueur.php?direction=deban&amp;id=<?php echo $_GET['id']; ?>">Débanir</a></li><?php } ?>
+						?>
 					</ul>
 				</td>
 			</tr>
@@ -380,6 +389,26 @@ else
 			case 'armure2' :
 				$joueur = recupperso($_GET['id']);
 				equip_objet($_GET['id_armure'], $joueur);
+				echo $G_erreur;
+				?>
+				<a href="admin_joueur.php?direction=info_joueur&amp;id=<?php echo $_GET['id']; ?>">Revenir à sa feuille de personnage</a>
+				<?php
+			break;
+			case 'accessoire' :
+				echo 'Accessoire : <select id="id_accessoire">';
+				$requete = "SELECT * FROM accessoire";
+				$req_r = $db->query($requete);
+				while($row_r = $db->read_assoc($req_r))
+				{
+					echo '<option value="m'.$row_r['id'].'">'.$row_r['nom'].'</option>';
+				}
+				echo '
+				</select><br />
+				<input type="button" value="valider" onclick="document.location = \'admin_joueur.php?id='.$_GET['id'].'&amp;direction=accessoire2&amp;id_accessoire=\' + document.getElementById(\'id_accessoire\').value" />';
+			break;
+			case 'accessoire2' :
+				$joueur = recupperso($_GET['id']);
+				prend_objet($_GET['id_accessoire'], $joueur);
 				echo $G_erreur;
 				?>
 				<a href="admin_joueur.php?direction=info_joueur&amp;id=<?php echo $_GET['id']; ?>">Revenir à sa feuille de personnage</a>
@@ -656,6 +685,13 @@ if($joueur['inventaire_slot'] != '')
 						$req = $db->query($requete);
 						$row = $db->read_array($req);
 						$partie = $row['type'];
+					break;
+					case 'm' :
+						$requete = "SELECT * FROM accessoire WHERE ID = ".$objet_d['id_objet'];
+						//Récupération des infos de l'objet
+						$req = $db->query($requete);
+						$row = $db->read_array($req);
+						$partie = 'accessoire';
 					break;
 					case 'g' :
 						$requete = "SELECT * FROM gemme WHERE ID = ".$objet_d['id_objet'];
