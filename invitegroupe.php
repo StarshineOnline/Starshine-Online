@@ -11,7 +11,7 @@ $row = $db->read_array($req);
 //Si il n'est pas groupé, création du groupe
 if ($row['groupe'] == 0)
 {
-	$W_requete = "INSERT INTO `groupe` VALUES ('', 'r', ".$_SESSION['ID'].")";
+	$W_requete = "INSERT INTO `groupe` VALUES ('', 'r', ".$_SESSION['ID'].", 'groupe_".$_SESSION['ID']."')";
 	if($db->query($W_requete))
 	{
 		$W_ID_groupe = $db->last_insert_id();

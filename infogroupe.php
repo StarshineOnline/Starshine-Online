@@ -8,12 +8,13 @@ if(array_key_exists('partage', $_GET))
 {
 	$requete = "UPDATE groupe SET partage = '".sSQL($_GET['partage'])."' WHERE id = ".sSQL($_GET['id']);
 	$db->query($requete);
+	$requete = "UPDATE groupe SET nom = '".sSQL($_GET['nom'])."' WHERE id = ".sSQL($_GET['id']);
+	$db->query($requete);
 	$requete = "UPDATE groupe_joueur SET leader = 'n' WHERE id_groupe = ".sSQL($_GET['id']);
 	$db->query($requete);
 	$requete = "UPDATE groupe_joueur SET leader = 'y' WHERE id_joueur = ".sSQL($_GET['leader']);
 	$db->query($requete);
 	?>
-	<img src="image/pixel.gif" onLoad="envoiInfo('infoperso.php?javascript=oui', 'perso');" style="float : left;" />
 	<?php
 }
 if(array_key_exists('suppinvit', $_GET))
@@ -30,6 +31,14 @@ $share_xp = ($groupe['membre'][$num_joueur]['share_xp'] / $groupe['share_xp']);
 <form>
 <div class="information_case">
 <table>
+<tr>
+	<td>
+		Nom
+	</td>
+	<td>
+		<input name="nom" id="nom" value="<?php echo $groupe['nom']; ?>" <?php if($groupe['id_leader'] != $_SESSION['ID']) echo ' disabled="true"'; ?>>
+	</td>
+</tr>
 <tr>
 	<td>
 		Groupe niveau
@@ -75,7 +84,7 @@ $share_xp = ($groupe['membre'][$num_joueur]['share_xp'] / $groupe['share_xp']);
 </tr>
 </table>
 </div>
-<?php if($groupe['id_leader'] == $_SESSION['ID']) echo '<input type="button" onclick="javascript:envoiInfo(\'infogroupe.php?id='.$groupe['id'].'&amp;partage=\' + document.getElementById(\'partage\').value + \'&amp;leader=\' + document.getElementById(\'leader\').value, \'information\');" value="Modifier" />'; ?>
+<?php if($groupe['id_leader'] == $_SESSION['ID']) echo '<input type="button" onclick="javascript:envoiInfo(\'infogroupe.php?id='.$groupe['id'].'&amp;partage=\' + document.getElementById(\'partage\').value + \'&amp;leader=\' + document.getElementById(\'leader\').value + \'&amp;nom=\' + document.getElementById(\'nom\').value, \'information\');" value="Modifier" />'; ?>
 </form>
 <br />
 <? echo '<a href="javascript:if(confirm(\'Voulez vous quitter le groupe ?\')) envoiInfo(\'degroup.php?ID='.$joueur['groupe'].'\', \'information\')">Quitter le groupe actuel</a>' ?>

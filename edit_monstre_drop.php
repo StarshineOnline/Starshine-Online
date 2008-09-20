@@ -18,9 +18,16 @@ else
 	$req = $db->query($requete);
 	$monstre = $db->read_assoc($req);
 	$drops = explode(';', $monstre['drops']);
+	print_r($_POST);
 	if(array_key_exists('chance_drop', $_POST))
 	{
-		$drops[] = $_POST['objet'].'-'.$_POST['chance_drop'];
+		if($_POST['objet'] != '') $o_drop = $_POST['objet'];
+		elseif($_POST['arme'] != '') $o_drop = $_POST['arme'];
+		elseif($_POST['armure'] != '') $o_drop = $_POST['armure'];
+		elseif($_POST['accessoire'] != '') $o_drop = $_POST['accessoire'];
+		elseif($_POST['grimoire'] != '') $o_drop = $_POST['grimoire'];
+		echo $o_drop;
+		$drops[] = $o_drop.'-'.$_POST['chance_drop'];
 		$drops_i = implode(';', $drops);
 		$requete = "UPDATE monstre SET drops = '".$drops_i."' WHERE id = ".$id_monstre;
 		$db->query($requete);
@@ -55,9 +62,9 @@ else
 			?>
 			</ul>
 			<form action="edit_monstre_drop.php" method="post">
-			Ajouter un drop :<br />
+			Objet :
 			<select name="objet">
-				<optgroup label="Objet">
+					<option></option>
 			<?php
 				$requete = "SELECT * FROM objet ORDER BY nom";
 				$req_r = $db->query($requete);
@@ -66,8 +73,11 @@ else
 					echo '<option value="o'.$row_r['id'].'">'.$row_r['nom'].'</option>';
 				}
 				?>
-				</optgroup>
-				<optgroup label="Arme">
+			</select>
+			<br />
+			Arme :
+			<select name="arme">
+					<option></option>
 				<?php
 				$requete = "SELECT * FROM arme ORDER BY nom";
 				$req_r = $db->query($requete);
@@ -76,8 +86,11 @@ else
 					echo '<option value="a'.$row_r['id'].'">'.$row_r['nom'].'</option>';
 				}
 				?>
-				</optgroup>
-				<optgroup label="Armure">
+			</select>
+			<br />
+			Armure :
+			<select name="armure">
+					<option></option>
 				<?php
 				$requete = "SELECT * FROM armure ORDER BY nom";
 				$req_r = $db->query($requete);
@@ -86,8 +99,11 @@ else
 					echo '<option value="p'.$row_r['id'].'">'.$row_r['nom'].'</option>';
 				}
 				?>
-				</optgroup>
-				<optgroup label="Accessoire">
+			</select>
+			<br />
+			Accessoire :
+			<select name="accessoire">
+					<option></option>
 				<?php
 				$requete = "SELECT * FROM accessoire ORDER BY nom";
 				$req_r = $db->query($requete);
@@ -96,8 +112,11 @@ else
 					echo '<option value="m'.$row_r['id'].'">'.$row_r['nom'].'</option>';
 				}
 				?>
-				</optgroup>
-				<optgroup label="Grimoire">
+			</select>
+			<br />
+			Grimoire :
+			<select name="grimoire">
+					<option></option>
 				<?php
 				$requete = "SELECT * FROM grimoire ORDER BY nom";
 				$req_r = $db->query($requete);
@@ -106,7 +125,6 @@ else
 					echo '<option value="l'.$row_r['id'].'">'.$row_r['nom'].'</option>';
 				}
 			?>
-				</optgroup>
 			</select>
 			Chance de drop, 1 sur <input type="text" name="chance_drop" />
 			<input type="hidden" name="id_monstre" value="<?php echo $id_monstre; ?>" />

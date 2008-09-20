@@ -339,7 +339,7 @@ function lance_sort($id, $acteur)
   /* Instanciation de toutes les compétences ou effets */
   $effects = array();
 
-	empoisonne::factory($effects, $actif, $passif, $acteur);
+	//empoisonne::factory($effects, $actif, $passif, $acteur);
 
   /* Tri des effets selon leur ordre */
   sort_effects($effects);
@@ -948,11 +948,18 @@ function lance_comp($id, $acteur)
 			$comp_attaque = true;
 		break;
 		case 'fleche_poison' :
-			echo '&nbsp;&nbsp;<strong>'.$actif['nom'].'</strong> empoisone avec '.$row['nom'].' !<br />';
-			$actif['etat']['fleche_poison']['effet'] = $row['effet'];
-			$actif['etat']['fleche_poison']['level'] = $row['level'];
-			$actif['etat']['fleche_poison']['duree'] = 1;
+			echo '&nbsp;&nbsp;<strong>'.$actif['nom'].'</strong> utilise '.$row['nom'].' !<br />';
 			$actif['degat_sup'] = $row['effet'];
+			$de_att = rand(0, (($actif['force'] + $row['effet'])));
+			$de_deff = rand(0, $passif['volonte']);
+			if($de_att > $de_deff)
+			{
+				echo '&nbsp;&nbsp;<strong>'.$passif['nom'].'</strong> est empoisonné pour '.$row['duree'].' tours !<br />';
+				$passif['etat']['poison']['effet'] += $row['effet'];
+				$passif['etat']['poison']['level'] = $row['effet'];
+				$passif['etat']['poison']['duree'] += $row['duree'];
+			}
+			else echo '&nbsp;&nbsp;Le poison n\'agit pas<br />';
 			//On prends en compte la bonne compétence
 			$row['comp_assoc'] = $actif['comp'];
 			$comp_attaque = true;

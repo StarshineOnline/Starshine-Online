@@ -396,7 +396,7 @@ class fleche_poison extends comp_combat {
 	var $poison;
 
   function __construct($aLevel = 1) {
-    parent::__construct('fleche_poison', $aLevel);
+    parent::__construct('fleche_poison', null);
 		if ($this->duree < 1) 
 			$this->duree = 1;
 		$this->poison = false;
@@ -539,8 +539,9 @@ class empoisonne extends effect {
 			$effects[] = new empoisonne($actif['etat']['empoisonne']['effet']);
 	}
 
-  function fin_round(&$actif, &$passif) {
-		$this->hit($actif['nom'].' perd '.$this->vigueur.' à cause du poison');
+  function fin_round(&$actif, &$passif)
+  {
+		$this->hit($actif['nom'].' perd '.$this->vigueur.' HP à cause du poison');
 		$actif['hp'] -= $this->vigueur;
 		$actif['etat']['empoisonne']['duree'] -= 1;
 		$actif['etat']['empoisonne']['effet'] -= 1;

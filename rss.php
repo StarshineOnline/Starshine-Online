@@ -1,6 +1,8 @@
 <?php
+require_once('inc/variable.inc.php');
 require_once('class/baseClass.class.php');
 require_once('class/db.class.php');
+require_once('fonction/time.inc.php');
 require_once('fonction/base.inc.php');
 require_once('fonction/equipement.inc.php');
 include_once('fonction/security.inc.php');
@@ -15,6 +17,8 @@ if(array_key_exists('code', $_GET))
 	{
 		$row = $db->read_assoc($req);
 		$joueur = recupperso($row['id_perso']);
+		$prochain_level = prochain_level($joueur['level']);
+		$pourcent_level = progression_level(level_courant($joueur['exp']));
 ?>
 <rss version="2.0">
 	<channel>
@@ -30,13 +34,19 @@ if(array_key_exists('code', $_GET))
 			<pubDate>Thu, 18 Sep 2008 08:35:25 +0000</pubDate>
 		</item>
 		<item>
-			<title>HP : <?php echo $joueur['hp']; ?> / <?php echo $joueur['hp_max']; ?> - MP : <?php echo $joueur['mp']; ?> / <?php echo $joueur['mp_max']; ?> - X : <?php echo $joueur['x']; ?> - Y : <?php echo $joueur['y']; ?></title>
+			<title>HP : <?php echo $joueur['hp']; ?> / <?php echo $joueur['hp_max']; ?> - PA : <?php echo $joueur['pa']; ?> / 180</title>
 			<link>http://www.starshine-online.com/jeu2.php</link>
 			<description></description>
 			<pubDate>Thu, 18 Sep 2008 08:35:25 +0000</pubDate>
 		</item>
 		<item>
-			<title>Honneur : <?php echo $joueur['honneur']; ?> - Star : <?php echo $joueur['star']; ?> - XP : <?php echo $joueur['exp']; ?></title>
+			<title>MP : <?php echo $joueur['mp']; ?> / <?php echo $joueur['mp_max']; ?> - X : <?php echo $joueur['x']; ?> - Y : <?php echo $joueur['y']; ?></title>
+			<link>http://www.starshine-online.com/jeu2.php</link>
+			<description></description>
+			<pubDate>Thu, 18 Sep 2008 08:35:25 +0000</pubDate>
+		</item>
+		<item>
+			<title>Honneur : <?php echo $joueur['honneur']; ?> - Star : <?php echo $joueur['star']; ?> - Niveau : <?php echo $joueur['level']; ?> - XP : <?php echo $pourcent_level; ?>%</title>
 			<link>http://www.starshine-online.com/jeu2.php</link>
 			<description></description>
 			<pubDate>Thu, 18 Sep 2008 08:35:25 +0000</pubDate>

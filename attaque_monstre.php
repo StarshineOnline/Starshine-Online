@@ -207,7 +207,7 @@ else
 						//Perte de HP par le poison
 						if($attaquant['etat']['poison']['duree'] > 0)
 						{
-							$perte_hp = $attaquant['etat']['poison']['effet'] - $defenseur['etat']['poison']['duree'] + 1;
+							$perte_hp = $attaquant['etat']['poison']['effet'] - $attaquant['etat']['poison']['duree'] + 1;
 							if($attaquant['etat']['putrefaction']['duree'] > 0) $perte_hp = $perte_hp * $attaquant['etat']['putrefaction']['effet'];
 							$attaquant['hp'] -= $perte_hp;
 							echo '&nbsp;&nbsp;<span class="degat">'.$attaquant['nom'].' perd '.$perte_hp.' HP par le poison</span><br />';
