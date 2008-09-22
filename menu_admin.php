@@ -31,6 +31,7 @@ else
 						<li><a href="create_monstre.php">Création d'un monstre</a></li>
 						<li><a href="create_grimoire.php">Création d'un grimoire</a></li>
 						<li><a href="edit_monstre.php">Edition d'un monstre</a></li>
+						<li><a href="admin_bourg.php">Bourgs</a></li>
 						<li><a href="admin_stats_royaume.php">Stats royaumes</a></li>
 						<li><a href="admin_stats.php">Statistiques</a></li>
 				<?php
