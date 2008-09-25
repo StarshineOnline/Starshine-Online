@@ -11,7 +11,7 @@
 	$tab_classement['honneur']['affiche'] = true;
 	$tab_classement['honneur']['affiche_niveau'] = false;
 	$tab_classement['star']['nom'] = 'Les plus fortunés';
-	$tab_classement['star']['champ'] = '';
+	$tab_classement['star']['champ'] = 'Stars';
 	$tab_classement['star']['affiche'] = false;
 	$tab_classement['star']['affiche_niveau'] = false;
 	$tab_classement['craft']['nom'] = 'Les meilleurs artisans';
@@ -60,7 +60,7 @@
 	$k = $inf - 25;
 	if($k < 0) $k = 0;
 	$j = 26;
-	$requete = "SELECT groupe.id AS groupe_id, groupe.nom AS groupe_nom, SUM(perso.".sSQL($tri).") as somme FROM `groupe` LEFT JOIN groupe_joueur ON groupe.id = groupe_joueur.id_groupe LEFT JOIN perso ON groupe_joueur.id_joueur = perso.ID GROUP BY groupe.id ORDER BY somme DESC LIMIT $inf, $j";
+	$requete = "SELECT groupe.id AS groupe_id, groupe.nom AS groupe_nom, SUM(perso.".sSQL($tri).") as somme, COUNT(*) as tot FROM `groupe` LEFT JOIN groupe_joueur ON groupe.id = groupe_joueur.id_groupe LEFT JOIN perso ON groupe_joueur.id_joueur = perso.ID WHERE perso.statut = 'actif' GROUP BY groupe.id ORDER BY somme DESC LIMIT $inf, $j";
 	//echo 'inf : '.$inf.' j : '.$j.' k : '.$k.' sup : '.$sup.' '.$requete.'<br />';
 	$req = $db->query($requete);
 
@@ -82,21 +82,12 @@
 			<td>
 				Nom
 			</td>
-			<?php
-			if($tab_classement[$tri]['affiche'])
-			{
-			?>
 			<td>
 				<?php echo $tab_classement[$tri]['champ']; ?>
 			</td>
-			<?php
-			}
-			if($tab_classement[$tri]['affiche_niveau'])
-			{
-			?>
-			<?php
-			}
-			?>
+			<td>
+				Moyenne
+			</td>
 		</tr>
 
 		<?php
@@ -107,7 +98,11 @@
 				if($z < 25)
 				{
 						$nom = $row['groupe_nom'];
-						$style = '';
+						if($row['groupe_id'] == $joueur['groupe'])
+						{
+							$style = 'background-color : #0aa74c;';
+						}
+						else $style = '';
 						echo '
 						<tr style="'.$style.'" class="table">
 							<td>
@@ -118,7 +113,10 @@
 							</td>';
 						?>
 							<td>
-								<?php echo $row['somme']; ?>
+								<?php echo number_format($row['somme'], 0, ',', ' '); ?>
+							</td>
+							<td>
+								<?php echo number_format(($row['somme'] / $row['tot']), 0, ',', ' '); ?>
 							</td>
 						</tr>
 						<?php

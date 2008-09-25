@@ -16,11 +16,11 @@ $champ_vision = 3;
 $case_affiche = ($champ_vision * 2) + 1;
 
 {//-- Sert à calculer le point d'origine en haut a gauche pour la carte
-	if($x < ($champ_vision))			{ $x_min = 1;		$x_max = $x + ($case_affiche - ($x)); }
+	if($x < ($champ_vision + 1))			{ $x_min = 1;		$x_max = $x + ($case_affiche - ($x)); }
 	elseif($x > (150 - $champ_vision))		{ $x_max = 150;		$x_min = $x - ($case_affiche - (150 - $x + 1)); }
 	else								{ $x_min = $x - $champ_vision;	$x_max = $x + $champ_vision; };
 	
-	if($y < ($champ_vision + 3))		{ $y_min = 1;		$y_max = $y + ($case_affiche - ($y)); }
+	if($y < ($champ_vision + 1))		{ $y_min = 1;		$y_max = $y + ($case_affiche - ($y)); }
 	elseif($y > (150 - $champ_vision))	{ $y_max = 150;		$y_min = $y - ($case_affiche - (150 - $y + 1)); }
 	else								{ $y_min = $y - $champ_vision; 	$y_max = $y + $champ_vision; }
 }	

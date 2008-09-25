@@ -342,7 +342,7 @@ if(!$visu AND isset($_GET['action']))
 			$id_objet = $_GET['id_objet'];
 			$categorie = mb_substr($id_objet, 0, 1);
 			//Rétrocompatibilité avec anciens inventaires
-			if($categorie != 'a' AND $categorie != 'p' AND $categorie != 'o' AND $categorie != 'g' AND $categorie != 'm')
+			if($categorie != 'a' AND $categorie != 'p' AND $categorie != 'o' AND $categorie != 'g' AND $categorie != 'm' AND $categorie != 'l')
 			{
 				$categorie = 'p';
 			}
@@ -380,6 +380,12 @@ if(!$visu AND isset($_GET['action']))
 				break;
 				case 'm' :
 					$requete = "SELECT * FROM accessoire WHERE id = ".$id_objet;
+					//Récupération des infos de l'objet
+					$req = $db->query($requete);
+					$row = $db->read_array($req);
+				break;
+				case 'l' :
+					$requete = "SELECT * FROM grimoire WHERE id = ".$id_objet;
 					//Récupération des infos de l'objet
 					$req = $db->query($requete);
 					$row = $db->read_array($req);
