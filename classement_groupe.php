@@ -13,7 +13,7 @@ else
 	<div id="contenu">
 		<div id="centre2">
 			<div class="titre">
-				Classement personnages
+				Classement des groupes
 			</div>
 	<script language="Javascript" type="text/javascript">
 	function adresse(tri, i, race)
@@ -25,15 +25,14 @@ else
 			if(i != 'moi') i = 0;
 		}
 		if(race == '') race = document.getElementById('race').value;
-		envoiInfo('classement_ajax.php?tri=' + tri + '&i=' + i + '&race=' + race + '&javascript=true', 'table_classement');
+		envoiInfo('classement_groupe_ajax.php?tri=' + tri + '&javascript=true', 'table_classement');
 	}
 	</script>
-		<a href="classement_groupe.php">Classement des groupes</a><br />
+		<a href="classement.php">Classement personnages</a><br />
 		<a href="javascript:adresse('honneur', '', '')">Honneur</a> | <a href="javascript:adresse('exp', '', '')">Expérience</a> | <a href="javascript:adresse('star', '', '')">Stars</a> | <a href="javascript:adresse('frag', '', '')">PvP</a> | <a href="javascript:adresse('mort', '', '')">Suicide</a> | <a href="javascript:adresse('crime', '', '')">Crime</a> | <a href="javascript:adresse('survie', '', '')">Survie</a><br />
-		<a href="javascript:adresse('melee', '', '')">Mélée</a> | <a href="javascript:adresse('esquive', '', '')">Esquive</a> | <a href="javascript:adresse('blocage', '', '')">Blocage</a> | <a href="javascript:adresse('distance', '', '')">Distance</a> | <a href="javascript:adresse('incantation', '', '')">Incantation</a> <span class="xsmall">(<a href="javascript:adresse('sort_element', '', '')">Magie élémentaire</a> | <a href="javascript:adresse('sort_mort', '', '')">Nécromancie</a> | <a href="javascript:adresse('sort_vie', '', '')">Magie de la vie</a>)</span> | <a href="javascript:adresse('craft', '', '')">Fabrication d'objets</a><br />
-		<a href="javascript:adresse('', '', 'tous')">Tous</a><?php if(array_key_exists('ID', $_SESSION)) {?> | <a href="javascript:adresse('', '', 'race')">Votre race</a> | <a href="javascript:adresse('', 'moi', '')">Moi</a><?php } ?><br />
+		<a href="javascript:adresse('craft', '', '')">Fabrication d'objets</a> | <a href="javascript:adresse('hp_max', '', '')">HP</a> | <a href="javascript:adresse('mp_max', '', '')">MP</a><br />
 	<?php
-	include('classement_ajax.php');
+	include('classement_groupe_ajax.php');
 	?>
 		</div>
 	</div>
