@@ -229,21 +229,25 @@ if(!$visu AND isset($_GET['action']))
 					}
 				break;
 				case 'potion_vie' :
-					$stack = explode('x', $joueur['inventaire_slot'][$_GET['key_slot']]);
-					$id_objet = $stack[0];
-					supprime_objet($joueur, $id_objet, 1);
-					$id_objet = mb_substr($id_objet, 1);
-					$requete = "SELECT effet, nom FROM objet WHERE id = ".$id_objet;
-					$req = $db->query($requete);
-					$row = $db->read_row($req);
-					$joueur['hp'] += $row[0];
-					if($joueur['hp'] > floor($joueur['hp_max'])) $joueur['hp'] = floor($joueur['hp_max']);
-					echo 'Vous utilisez une '.$row[1].' elle vous redonne '.$row[0].' points de vie<br />';
-					?>
-					<img src="image/pixel.gif" onLoad="envoiInfo('infoperso.php?javascript=oui', 'perso');" />
-					<?php
-					$requete = "UPDATE perso SET hp = ".$joueur['hp']." WHERE ID = ".$joueur['ID'];
-					$db->query($requete);
+					if($joueur['hp'] > 0)
+					{
+						$stack = explode('x', $joueur['inventaire_slot'][$_GET['key_slot']]);
+						$id_objet = $stack[0];
+						supprime_objet($joueur, $id_objet, 1);
+						$id_objet = mb_substr($id_objet, 1);
+						$requete = "SELECT effet, nom FROM objet WHERE id = ".$id_objet;
+						$req = $db->query($requete);
+						$row = $db->read_row($req);
+						$joueur['hp'] += $row[0];
+						if($joueur['hp'] > floor($joueur['hp_max'])) $joueur['hp'] = floor($joueur['hp_max']);
+						echo 'Vous utilisez une '.$row[1].' elle vous redonne '.$row[0].' points de vie<br />';
+						?>
+						<img src="image/pixel.gif" onLoad="envoiInfo('infoperso.php?javascript=oui', 'perso');" />
+						<?php
+						$requete = "UPDATE perso SET hp = ".$joueur['hp']." WHERE ID = ".$joueur['ID'];
+						$db->query($requete);
+					}
+					else echo 'Vous êtes mort !';
 				break;
 				case 'parchemin_pa' :
 					$stack = explode('x', $joueur['inventaire_slot'][$_GET['key_slot']]);

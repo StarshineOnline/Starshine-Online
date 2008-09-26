@@ -59,7 +59,7 @@ else
 		if($objet['total'] > 0)
 		{
 			$moyen = ($objet['somme'] / $objet['total']);
-			$requete = "SELECT prix FROM objet WHERE nom = '".$objet['nom']."'";
+			$requete = "SELECT prix FROM objet WHERE nom = '".mysql_escape_string($objet['nom'])."'";
 			$req = $db->query($requete);
 			if($db->num_rows > 0)
 			{
