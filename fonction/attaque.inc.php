@@ -1,5 +1,5 @@
 <?php  //  -*- tab-width:2  -*-
-include_once('class/comp.class.php');
+include_once($root.'class/comp.class.php');
 
 function attaque($acteur = 'attaquant', $competence)
 {

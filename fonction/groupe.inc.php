@@ -21,7 +21,7 @@ function recupgroupe($id, $option)
 			$groupe['membre'][] = $row;
 			if($option != '')
 			{
-				$requete = "SELECT x, y, level, race FROM perso WHERE ID = ".$row['id_joueur'];
+				$requete = "SELECT x, y, level, race, nom FROM perso WHERE ID = ".$row['id_joueur'];
 				$req_j = $db->query($requete);
 				$row_j = $db->read_assoc($req_j);
 				$groupe['membre'][$i] = array_merge($groupe['membre'][$i], $row_j);
