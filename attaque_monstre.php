@@ -614,7 +614,7 @@ else
 								{
 									$gagnant = recupperso($attaquant['ID']);
 								}
-								//Insertion du loot dans le journal du gagnat
+								//Insertion du loot dans le journal du gagnant
 								$requete = "INSERT INTO journal VALUES('', ".$gagnant['ID'].", 'loot', '', '', NOW(), '".mysql_escape_string($objet_nom)."', '', ".$attaquant['x'].", ".$attaquant['y'].")";
 								$db->query($requete);
 								if($objet[0] != 'r')
@@ -650,13 +650,13 @@ else
 					}
 
 					//Partage de l'xp au groupe
-					$xp = $xp * (1 + (($defenseur['level'] - $groupe['level_groupe']) / $G_range_level));
 					if ($xp < 0) $xp = 0;
 					
 					foreach($groupe['membre'] as $membre)
 					{
 						//XP Final
-						$xp_joueur = floor($xp * $membre['share_xp'] / $groupe['share_xp']);
+						$xp_joueur = $xp * (1 + (($defenseur['level'] - $membre['level']) / $G_range_level));
+						$xp_joueur = floor($xp_joueur * $membre['share_xp'] / $groupe['share_xp']);
 						$star_joueur = floor($star * $membre['share_xp'] / $groupe['share_xp']);
 						$requete = 'UPDATE perso SET exp = exp + '.$xp_joueur.', star = star + '.$star_joueur.' WHERE ID = '.$membre['id_joueur'];
 						$db->query($requete);

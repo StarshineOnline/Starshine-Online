@@ -83,11 +83,11 @@ $share_xp = ($groupe['membre'][$num_joueur]['share_xp'] / $groupe['share_xp']);
 	</td>
 </tr>
 </table>
-</div>
 <?php if($groupe['id_leader'] == $_SESSION['ID']) echo '<input type="button" onclick="javascript:envoiInfo(\'infogroupe.php?id='.$groupe['id'].'&amp;partage=\' + document.getElementById(\'partage\').value + \'&amp;leader=\' + document.getElementById(\'leader\').value + \'&amp;nom=\' + document.getElementById(\'nom\').value, \'information\');" value="Modifier" />'; ?>
-</form>
 <br />
-<? echo '<a href="javascript:if(confirm(\'Voulez vous quitter le groupe ?\')) envoiInfo(\'degroup.php?ID='.$joueur['groupe'].'\', \'information\')">Quitter le groupe actuel</a>' ?>
+<?php echo '<a href="javascript:if(confirm(\'Voulez vous quitter le groupe ?\')) envoiInfo(\'degroup.php?ID='.$joueur['groupe'].'\', \'information\')">Quitter le groupe actuel</a>' ?>
+</div>
+</form>
 
 <?php
 if($groupe['id_leader'] ==  $_SESSION['ID'])

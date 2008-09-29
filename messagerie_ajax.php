@@ -110,9 +110,14 @@ else
 		$champ = 'id_dest';
 		$champ2 = 'nom_envoi';
 	}
+	
+	if(array_key_exists('page', $_GET)) $page = $_GET['page'];
+	else $page = 1;
+	
+	$mess_page = 10;
+	$limit = ($page - 1) * 25;
 
-	$requete = "SELECT * FROM message WHERE ".$champ." = ".$_SESSION['ID']." ORDER BY date DESC";
-	//echo $requete;
+	$requete = "SELECT id, id_dest, id_envoi, titre, nom_dest, nom_envoi, date FROM message WHERE ".$champ." = ".$_SESSION['ID']." ORDER BY date DESC LIMIT ".$limit.", ".$mess_page;
 	//Affichage des messages
 	?>
 	<table width="95%" class="information_case">
@@ -193,6 +198,9 @@ else
 	}
 	?>
 	</table>
+	<div style="text-align : center;">
+		<a href="javascript:envoiInfo('messagerie_ajax.php?action=<?php echo $_GET['action']; ?>&amp;page=<?php echo ($page - 1); ?>&amp;javascript=oui', 'liste_message');"><<- Page précédente</a> | Page <?php echo $page; ?> | <a href="javascript:envoiInfo('messagerie_ajax.php?action=<?php echo $_GET['action']; ?>&amp;page=<?php echo ($page + 1); ?>&amp;javascript=oui', 'liste_message');">Page suivante ->></a>
+	</div>
 	<?php
 }
 
