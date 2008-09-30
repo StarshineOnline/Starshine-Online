@@ -6,6 +6,8 @@ $id_mess = $_GET['id_message'];
 $joueur = recupperso($_SESSION['ID']);
 if($joueur['groupe'] != 0) $groupe_joueur = recupgroupe($joueur['groupe'], ''); else $groupe_joueur = false;
 
+normalize_entry_charset(array('titre', 'message'));
+
 //Envoi du message
 if(isset($_GET['titre']))
 {

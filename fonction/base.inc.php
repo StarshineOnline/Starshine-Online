@@ -1718,7 +1718,7 @@ function verif_mort($pourcent, $var, $duree_debuff=0, $multiplicateur_mouvement=
 						<li><a href="mort.php?choix=1">'.$echo.' ('.(20 + $bonus).'% HP / '.(20 + $bonus).'% MP)</a></li>';
 					?>
 						<li><a href="index.php?deco=ok">Vous déconnecter</a></li>
-						<li>Vous pouvez attendre qu'un autre joueur vous ressucite</li>
+						<li>Vous pouvez attendre qu&rsquo;un autre joueur vous ressucite</li>
 					</ul>
 				</div>
 				<p>
@@ -2351,4 +2351,56 @@ function supprime_bourg($royaume)
 	$requete = "UPDATE royaume SET bourg = bourg - 1 WHERE ID = ".$royaume." AND bourg > 0";
 	$db->query($requete);
 }
+
+define('ENCLIST', 'UTF-8, UTF-7, ASCII, EUC-JP,SJIS, eucJP-win, SJIS-win, JIS, ISO-2022-JP, ISO-8859-1, WINDOWS-1252');
+function normalize_entry_charset($fields)
+{
+	if (isset($_SERVER["CONTENT_TYPE"])) {
+		$charset = stristr($_SERVER["CONTENT_TYPE"], 'charset=');
+		if ($charset !== false) {
+			$ch = explode('=', $charset);
+			var_dump($ch);
+			$src = $ch[1];
+			//echo "Detected(1) $src<br />\n";
+		}
+	}
+	if (!isset($src)) {
+		$src = mb_http_input("G");
+		if (!$src)
+			$src = mb_http_input("P");
+		if (!$src)
+			unset($src);
+		else
+			//echo "Detected(2) $src<br />\n";
+	}
+	foreach ($fields as $f) {
+		if (isset($_GET[$f])) {
+			if (!isset($src)) {
+				$csrc = mb_detect_encoding($_GET[$f], ENCLIST);
+				//echo "Detected(3) $csrc<br />\n";
+			}
+			else 
+				$csrc = $src;
+			if (strcasecmp($csrc, 'UTF-8') && strcasecmp($csrc, 'UTF8')) {
+				$newfield = iconv($csrc, 'UTF-8//TRANSLIT', $_GET[$f]);
+				//echo "convert to UTF-8: $newfield <br />\n";
+				$_GET[$f] = $newfield;
+			}
+		}
+		elseif (isset($_POST[$f])) {
+			if (!isset($src)) {
+        $csrc = mb_detect_encoding($_POST[$f], ENCLIST);
+				echo "Detected(3) $csrc<br />\n";
+			}
+      else
+        $csrc = $src;
+			if (strcasecmp($csrc, 'UTF-8') && strcasecmp($csrc, 'UTF8')) {
+        $newfield = iconv($csrc, 'UTF-8//TRANSLIT', $_POST[$f]);
+        //echo "convert to UTF-8: $newfield <br />\n";
+        $_POST[$f] = $newfield;
+      }
+		}
+	}
+}
+
 ?>

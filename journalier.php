@@ -189,5 +189,5 @@ if(date("j") == 1)
 }
 $mail .= mysql_error();
 
-mail('masterob1@chello.fr', 'Starshine - Génération des monstres du '.$date, $mail);
+//mail('masterob1@chello.fr', 'Starshine - Génération des monstres du '.$date, $mail);
 ?>
