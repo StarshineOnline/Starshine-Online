@@ -2370,7 +2370,7 @@ function normalize_entry_charset($fields)
 			$src = mb_http_input("P");
 		if (!$src)
 			unset($src);
-		else
+		//else
 			//echo "Detected(2) $src<br />\n";
 	}
 	foreach ($fields as $f) {
