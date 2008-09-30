@@ -21,8 +21,10 @@ Nom : <?php echo $groupe['nom']; ?>
 <?php
 foreach($groupe['membre'] as $membre)
 {
+	$membre_info = recupperso($membre['id_joueur']);
+	$image = "../image/personnage/".$joueur['race']."/".$joueur['race']."_".$Tclasse[$membre_info['classe']]["type"].".png";
 	?>
-	<li><?php echo $membre['nom'].' - '.$membre['race']; ?></li>
+	<li><img src="<?php echo $image; ?>" alt="" style="width : 27px; height : 27px; vertical-align: middle;"> <span style="font-weight : bold;"><?php echo $membre['nom'].'</span> - '.$membre_info['classe'].' - '.$membre_info['grade']; ?></li>
 	<?php
 }
 ?>

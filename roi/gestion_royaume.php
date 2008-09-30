@@ -305,37 +305,57 @@ $W_coord = convert_in_coord($W_case);
 					<table>
 						<tr>
 							<td style="vertical-align : top; font : normal 12px arial;">
-								<h4>ENTRETIEN DES BATIMENTS INTERNES : (en stars / jour)</h4>
-								<ul>';
-								$requete = "SELECT *, construction_ville.id as id_const FROM construction_ville RIGHT JOIN batiment_ville ON construction_ville.id_batiment = batiment_ville.id WHERE construction_ville.statut = 'actif' AND id_royaume = ".$R['ID'];
+								<table style="border-spacing : 0;">
+								<tr>
+									<td colspan="2"><h4>ENTRETIEN DES BATIMENTS INTERNES : (en stars / jour)</h4></td>
+								</tr>';
+								$requete = "SELECT *, construction_ville.id as id_const FROM construction_ville RIGHT JOIN batiment_ville ON construction_ville.id_batiment = batiment_ville.id WHERE construction_ville.statut = 'actif' AND id_royaume = ".$R['ID']." ORDER BY entretien DESC";
 								$req = $db->query($requete);
 								while($row = $db->read_assoc($req))
 								{
 									$entretien = ceil($row['entretien'] * $ratio);
-									echo '<li>'.$row['nom'].' : '.$entretien.'</li>';
+									echo '
+									<tr>
+										<td>'.$row['nom'].'</td><td> : -'.$entretien.'</td>
+									</tr>';
 									$royaumes[$row['id_royaume']]['batiments'][$row['id_const']] = $entretien;
 									$royaumes[$row['id_royaume']]['total'] += $entretien;
 								}
-								 echo '
-								 </ul>
-								 TOTAL : '.$royaumes[$R['ID']]['total'];
+								echo '
+									<tr>
+										<td><h5>Sous Total</h5></td><td><h5> -'.$royaumes[$R['ID']]['total'].'</h5></td>
+									</tr>';
 								//PHASE 2, entretien des batiments externes
 								//On récupère les couts d'entretiens
-								$requete = "SELECT *, construction.id AS id_const, batiment.hp AS hp_m, construction.hp AS hp_c FROM batiment RIGHT JOIN construction ON construction.id_batiment = batiment.id WHERE royaume = ".$R['ID'];
+								echo '
+									<tr>
+										<td colspan="2"><h4>ENTRETIEN DES BATIMENTS EXTERNES : (en stars / jour)</h4></td>
+									</tr>';
+								$requete = "SELECT *, construction.id AS id_const, batiment.nom AS nom_b, construction.x AS x_c, construction.y AS y_c FROM batiment RIGHT JOIN construction ON construction.id_batiment = batiment.id WHERE royaume = ".$R['ID']." ORDER BY entretien DESC";
 								$req = $db->query($requete);
 								while($row = $db->read_assoc($req))
 								{
 									$entretien = ceil($row['entretien'] * $ratio);
-									$royaumes[$row['royaume']]['constructions'][$row['id_const']]['entretien'] = $entretien;
-									$royaumes[$row['royaume']]['constructions'][$row['id_const']]['max_hp'] = $row['hp_m'];
-									$royaumes[$row['royaume']]['constructions'][$row['id_const']]['hp'] = $row['hp_c'];
+									echo '
+									<tr>
+										<td>'.$row['nom_b'].' ('.$row['x_c'].' - '.$row['y_c'].')</td><td> : -'.$entretien.'</td>
+									</tr>';
 									$royaumes[$row['royaume']]['total_c'] += $entretien;
 								}
-								echo '<h4>ENTRETIEN DES BATIMENTS EXTERNES : '.$royaumes[$R['ID']]['total_c'].' STARS / JOUR</h4>
+								echo '
+									<tr>
+										<td><h5>Sous Total</h5></td><td><h5> -'.$royaumes[$R['ID']]['total_c'].'</h5></td>
+									</tr>
+									<tr>
+										<td><h5>TOTAL</h5></td><td><h5> -'.($royaumes[$R['ID']]['total_c'] + $royaumes[$R['ID']]['total']).'</h5></td>
+									</tr>
+								</table>
 							</td>
 							<td style="vertical-align : top; font : normal 12px arial;">
-								<h4>RECETTES, RECOLTE DES TAXES (hier)</h4>
-								<ul>
+								<table style="border-spacing : 0;">
+								<tr>
+									<td colspan="2"><h4>RECETTES, RECOLTE DES TAXES (hier)</h4></td>
+								</tr>
 								';
 								$sources[2] = 'Hotel des ventes';
 								$sources[3] = 'Taverne';
@@ -358,14 +378,25 @@ $W_coord = convert_in_coord($W_case);
 								{
 									if(array_key_exists($i, $sources))
 									{
-										echo '<li>'.$sources[$i].' : '.$stats[$i].'</li>';
+										echo '
+								<tr>
+									<td>'.$sources[$i].'</td><td> : +'.$stats[$i].'</td>
+								</tr>';
 										$total += $stats[$i];
 									}
 									$i++;
 								}
 								echo '
-								</ul>
-								TOTAL : '.$total.'
+								<tr>
+									<td><h6>TOTAL</h6></td><td><h6> +'.$total.'</h6></td>
+								</tr>';
+								$balance = $total - ($royaumes[$R['ID']]['total_c'] + $royaumes[$R['ID']]['total']);
+								if($balance > 0) $h = 6; else $h = 5;
+								echo '
+								<tr>
+									<td><h'.$h.'>BALANCE</h'.$h.'></td><td><h'.$h.'> '.$balance.'</h'.$h.'></td>
+								</tr>
+								</table>
 							</td>
 						</tr>
 					</table>';
@@ -795,7 +826,7 @@ $W_coord = convert_in_coord($W_case);
         		}
         		elseif($_GET['direction'] == 'carte')
         		{
-        			echo '<img src="../carte_roy2.php?url='.$joueur['race'].'" />';
+        			echo '<img src="carte_roy2.php?url='.$joueur['race'].'" />';
         		
         		}
         		elseif($_GET['direction'] == 'stats')

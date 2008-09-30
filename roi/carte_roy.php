@@ -1,11 +1,12 @@
 <?php
 //Connexion obligatoire
 $connexion = true;
+$root = '../';
 //Inclusion du haut du document html
-include('../haut_ajax.php');
+include($root.'haut_ajax.php');
 $im = imagecreatefrompng('../image/carte.png');
 $joueur = recupperso($_SESSION['ID']);
-$requete = "SELECT x, y, count( * ) AS count FROM perso WHERE race = '".$joueur['race']."' GROUP BY x, y";
+$requete = "SELECT x, y, count( * ) AS count FROM perso WHERE race = '".$joueur['race']."' AND statut = 'actif' GROUP BY x, y";
 $req = $db->query($requete);
 $couleur1 = imagecolorallocate($im, 255, 0, 0);
 $couleur2 = imagecolorallocate($im, 255, 100, 100);
