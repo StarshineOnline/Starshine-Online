@@ -117,7 +117,7 @@ else
 	$mess_page = 10;
 	$limit = ($page - 1) * 25;
 
-	$requete = "SELECT id, id_dest, id_envoi, titre, nom_dest, nom_envoi, date FROM message WHERE ".$champ." = ".$_SESSION['ID']." ORDER BY date DESC LIMIT ".$limit.", ".$mess_page;
+	$requete = "SELECT id, id_dest, id_envoi, titre, nom_dest, nom_envoi, date, type FROM message WHERE ".$champ." = ".$_SESSION['ID']." ORDER BY date DESC LIMIT ".$limit.", ".$mess_page;
 	//Affichage des messages
 	?>
 	<table width="95%" class="information_case">

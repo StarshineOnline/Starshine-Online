@@ -647,6 +647,7 @@ else
 						$groupe['share_xp'] = 100;
 						$groupe['membre'][0]['id_joueur'] = $attaquant['ID'];
 						$groupe['membre'][0]['share_xp'] = 100;
+						$groupe['membre'][0]['level'] = $attaquant['level'];
 					}
 
 					//Partage de l'xp au groupe
@@ -657,6 +658,7 @@ else
 						//XP Final
 						$xp_joueur = $xp * (1 + (($defenseur['level'] - $membre['level']) / $G_range_level));
 						$xp_joueur = floor($xp_joueur * $membre['share_xp'] / $groupe['share_xp']);
+						if($xp_joueur < 0) $xp_joueur = 0;
 						$star_joueur = floor($star * $membre['share_xp'] / $groupe['share_xp']);
 						$requete = 'UPDATE perso SET exp = exp + '.$xp_joueur.', star = star + '.$star_joueur.' WHERE ID = '.$membre['id_joueur'];
 						$db->query($requete);
