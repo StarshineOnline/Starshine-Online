@@ -22,9 +22,10 @@ Nom : <?php echo $groupe['nom']; ?>
 foreach($groupe['membre'] as $membre)
 {
 	$membre_info = recupperso($membre['id_joueur']);
-	$image = "../image/personnage/".$joueur['race']."/".$joueur['race']."_".$Tclasse[$membre_info['classe']]["type"].".png";
+	$image = "../image/personnage/".$membre_info['race']."/".$membre_info['race']."_".$Tclasse[$membre_info['classe']]["type"].".png";
+	if($membre_info['ID'] == $groupe['id_leader']) $nom = $membre_info['nom'].'*'; else $nom = $membre_info['nom'];
 	?>
-	<li><img src="<?php echo $image; ?>" alt="" style="width : 27px; height : 27px; vertical-align: middle;"> <span style="font-weight : bold;"><?php echo $membre['nom'].'</span> - '.$membre_info['classe'].' - '.$membre_info['grade']; ?></li>
+	<li><img src="<?php echo $image; ?>" alt="<?php echo $membre_info['classe']; ?>" style="width : 27px; height : 27px; vertical-align: middle;"> <span style="font-weight : bold;"><?php echo $nom.'</span> - '.$membre_info['race'].' - '.$membre_info['grade']; ?></li>
 	<?php
 }
 ?>

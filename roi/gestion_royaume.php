@@ -10,7 +10,7 @@ check_perso($joueur);
 //Vérifie si le perso est mort
 verif_mort($joueur, 1);
 
-$R = get_royaume_info($joueur['race'], 8);
+$R = get_royaume_info($joueur['race'], $Trace[$joueur['race']]['numrace']);
 
 $_SESSION['position'] = convert_in_pos($joueur['x'], $joueur['y']);
 $W_distance = detection_distance($W_case,$_SESSION["position"]);
