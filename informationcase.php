@@ -219,7 +219,17 @@ if($num_rows > 0)
 		$row_b = $db->read_assoc($req);
 		$Royaume = get_royaume_info($joueur['race'], $W_row['royaume']);
 		echo '<span onmousemove="afficheInfo(\'infob_'.$W_row['id'].'\', \'block\', event, \'centre\');" onmouseout="afficheInfo(\'infob_'.$W_row['id'].'\', \'none\', event, \'centre\');">'.$row_b['nom'].' '.$Gtrad[$Royaume['race']].'</span> - HP : '.$W_row['hp'];
-		if($joueur['race'] != $Royaume['race'] AND !array_key_exists('repos_sage', $joueur['debuff'])) echo  ' <a href="javascript:envoiInfo(\'attaque_monstre.php?ID='.$W_row['id'].'&amp;type=batiment&amp;table=placement&amp;poscase='.$W_case.'\', \'information\')"><img src="image/interface/attaquer.png" alt="Combattre" style="vertical-align : middle;" /> Attaquer <span class="xsmall">('.($G_PA_attaque_batiment - $reduction_pa).' PA)</a>';
+		if($joueur['race'] != $Royaume['race'])
+		{
+			if(!array_key_exists('repos_sage', $joueur['debuff']))
+			{
+				echo  ' <a href="javascript:envoiInfo(\'attaque_monstre.php?ID='.$W_row['id'].'&amp;type=batiment&amp;table=placement&amp;poscase='.$W_case.'\', \'information\')"><img src="image/interface/attaquer.png" alt="Combattre" style="vertical-align : middle;" /> Attaquer <span class="xsmall">('.($G_PA_attaque_batiment - $reduction_pa).' PA)</a>';
+			}
+		}
+		else
+		{
+				echo  ' <a href="javascript:envoiInfo(\'archi_accelere_construction.php?id_construction='.$W_row['id'].'\', \'information\')">Accélérer <span class="xsmall">(30 PA)</a>';
+		}
 		echo '<br />
 		<div class="jsinformation_case" id="infob_'.$W_row['id'].'">
 			'.transform_sec_temp($W_row['fin_placement'] - time()).' avant fin de construction 
@@ -253,6 +263,11 @@ if($num_rows > 0)
 		echo ' '.$Gtrad[$Royaume['race']].' - HP : '.$W_row['hp'];
 		echo '</span>';
 		if($joueur['race'] != $Royaume['race']) echo  ' <a href="javascript:envoiInfo(\'attaque_monstre.php?ID='.$W_row['id'].'&amp;type=batiment&amp;table=construction&poscase='.$W_case.'\', \'information\')"><img src="image/interface/attaquer.png" alt="Combattre" style="vertical-align : middle;" /> Attaquer <span class="xsmall">('.($G_PA_attaque_batiment - $reduction_pa).' PA)</a>';
+		elseif($W_row['hp'] < $row_b['hp'])
+		{
+			echo  ' <a href="javascript:envoiInfo(\'archi_soigne_construction.php?id_construction='.$W_row['id'].'\', \'information\')">Réparer <span class="xsmall">(30 PA)</a>';
+		}
+
 		echo '<br />
 		<div class="jsinformation_case"  id="infob_'.$W_row['id'].'">
 			'.$row_b['description'].'

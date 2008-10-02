@@ -15,6 +15,8 @@ $Tmaxcomp['maitrise_dague'] = 100;
 $Tmaxcomp['maitrise_hache'] = 100;
 $Tmaxcomp['identification'] = 500;
 $Tmaxcomp['forge'] = 500;
+$Tmaxcomp['alchimie'] = 500;
+$Tmaxcomp['architecture'] = 500;
 $Tmaxcomp['craft'] = 500;
 $Tmaxcomp['survie'] = 500;
 

@@ -472,7 +472,8 @@ function recupperso($ID)
 				$R_perso['sort_mort'] = $row['sort_mort'];
 				$R_perso['identification'] = $row['identification'];
 				$R_perso['forge'] = $row['forge'];
-				$R_perso['cadeau'] = $row['cadeau'];
+				$R_perso['alchimie'] = $row['alchimie'];
+				$R_perso['architecture'] = $row['architecture'];
 				$R_perso['craft'] = $row['craft'];
 				$R_perso['survie'] = $row['survie'];
 				$R_perso['facteur_magie'] = $row['facteur_magie'];

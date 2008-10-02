@@ -29,13 +29,13 @@ echo '
 <div style="font-size : 13px;">
 	<h2>Nom : '.$joueur['nom'].'</h2>
 	<div class="information_case">
-	<p class="brillant"><a href="javascript:envoiInfo(\''.$adresse.'direction=stat\', \'information\')">Stats</a> | <a href="javascript:envoiInfo(\''.$adresse.'direction=comp\', \'information\')">Compétences</a> | <a href="javascript:envoiInfo(\''.$adresse.'direction=magie\', \'information\')">Magie</a></p>
+	<p class="brillant"><a href="javascript:envoiInfo(\''.$adresse.'direction=carac\', \'information\')">Carac</a> | <a href="javascript:envoiInfo(\''.$adresse.'direction=comp\', \'information\')">Compétences</a> | <a href="javascript:envoiInfo(\''.$adresse.'direction=magie\', \'information\')">Magie</a> | <a href="javascript:envoiInfo(\''.$adresse.'direction=stat\', \'information\')">Stats</a></p>
 	<p><strong>'.$joueur['nom'].'</strong> - '.$Gtrad[$joueur['race']].' - '.$joueur['classe'].'</p>
 	';
-	if(!array_key_exists('direction', $_GET)) $_GET['direction'] = 'stat';
+	if(!array_key_exists('direction', $_GET)) $_GET['direction'] = 'carac';
 	switch($_GET['direction'])
 	{
-		case 'stat' :
+		case 'carac' :
 			if(array_key_exists('action', $_GET) AND $_GET['action'] == 'teleport' AND $joueur['teleport_roi'] == 'false')
 			{
 				$requete = "UPDATE perso SET x = ".$Trace[$joueur['race']]['spawn_x'].", y = ".$Trace[$joueur['race']]['spawn_y'].", teleport_roi = 'true' WHERE ID = ".$joueur['ID'];
@@ -161,20 +161,14 @@ echo '
 			$maximum['distance'] = recup_max_comp('distance', $joueur['classe_id']);
 			$maximum['esquive'] = recup_max_comp('esquive', $joueur['classe_id']);
 			$maximum['blocage'] = recup_max_comp('blocage', $joueur['classe_id']);
-			$maximum['craft'] = recup_max_comp('craft', $joueur['classe_id']);
+			$maximum['architecture'] = recup_max_comp('architecture', $joueur['classe_id']);
+			$maximum['alchimie'] = recup_max_comp('alchimie', $joueur['classe_id']);
+			$maximum['forge'] = recup_max_comp('forge', $joueur['classe_id']);
 			$maximum['identification'] = recup_max_comp('identification', $joueur['classe_id']);
 			$maximum['survie'] = recup_max_comp('survie', $joueur['classe_id']);
 			echo '
 	<table style="border : 0px;" cellspacing="0" width="100%">
 	<tr class="trcolor1">
-		<td>
-			PP
-		</td>
-		<td>
-			<span onmouseover="return '.make_overlib('PP de base : '.$joueur['PP_base']).'" onmouseout="return nd();">'.$joueur['PP'].'</span> - Réduction des dégâts de '.(round(1 - calcul_pp($joueur['PP']), 4) * 100).' %
-		</td>
-	</tr>
-	<tr class="trcolor2">
 		<td>
 			Mêlée
 		</td>
@@ -182,7 +176,7 @@ echo '
 			'.genere_image_comp($joueur, 'melee', $maximum['melee']).' <span class="xsmall">('.$joueur['melee'].' / '.$maximum['melee'].')</span>
 		</td>
 	</tr>
-	<tr class="trcolor1">
+	<tr class="trcolor2">
 		<td>
 			Tir à distance
 		</td>
@@ -190,7 +184,7 @@ echo '
 			'.genere_image_comp($joueur, 'distance', $maximum['distance']).' <span class="xsmall">('.$joueur['distance'].' / '.$maximum['distance'].')</span>
 		</td>
 	</tr>
-	<tr class="trcolor2">
+	<tr class="trcolor1">
 		<td>
 			Esquive
 		</td>
@@ -198,7 +192,7 @@ echo '
 			'.genere_image_comp($joueur, 'esquive', $maximum['esquive']).' <span class="xsmall">('.$joueur['esquive'].' / '.$maximum['esquive'].')</span>
 		</td>
 	</tr>
-	<tr class="trcolor1">
+	<tr class="trcolor2">
 		<td>
 			Blocage
 		</td>
@@ -206,15 +200,31 @@ echo '
 			'.genere_image_comp($joueur, 'blocage', $maximum['blocage']).' <span class="xsmall">('.$joueur['blocage'].' / '.$maximum['blocage'].')</span>
 		</td>
 	</tr>
-	<tr class="trcolor2">
+	<tr class="trcolor1">
 		<td>
-			Fabrication d\'objets
+			Architecture
 		</td>
 		<td>
-			'.genere_image_comp($joueur, 'craft', $maximum['craft']).' <span class="xsmall">('.$joueur['craft'].' / '.$maximum['craft'].')</span>
+			'.genere_image_comp($joueur, 'architecture', $maximum['architecture']).' <span class="xsmall">('.$joueur['architecture'].' / '.$maximum['architecture'].')</span>
+		</td>
+	</tr>
+	<tr class="trcolor2">
+		<td>
+			Alchimie
+		</td>
+		<td>
+			'.genere_image_comp($joueur, 'alchimie', $maximum['alchimie']).' <span class="xsmall">('.$joueur['alchimie'].' / '.$maximum['alchimie'].')</span>
 		</td>
 	</tr>
 	<tr class="trcolor1">
+		<td>
+			Forge
+		</td>
+		<td>
+			'.genere_image_comp($joueur, 'forge', $maximum['forge']).' <span class="xsmall">('.$joueur['forge'].' / '.$maximum['forge'].')</span>
+		</td>
+	</tr>
+	<tr class="trcolor2">
 		<td>
 			Identification d\'objets
 		</td>
@@ -222,68 +232,12 @@ echo '
 			'.genere_image_comp($joueur, 'identification', $maximum['identification']).' <span class="xsmall">('.$joueur['identification'].' / '.$maximum['identification'].')</span>
 		</td>
 	</tr>
-	<tr class="trcolor2">
+	<tr class="trcolor1">
 		<td>
 			Survie
 		</td>
 		<td>
 			'.genere_image_comp($joueur, 'survie', $maximum['survie']).' <span class="xsmall">('.$joueur['survie'].' / '.$maximum['survie'].')</span>
-		</td>
-	</tr>
-	<tr class="trcolor1">
-		<td style="padding-right : 10px;">
-			Dégâts sans arme
-		</td>
-		<td>
-			';
-	$i = 0;
-	while($i < count($de_degat))
-	{
-		if ($i > 0) echo ' + ';
-		echo '1D'.$de_degat[$i];
-		$i++;
-	}
-	echo '
-		</td>
-	</tr>
-	<tr class="trcolor2">
-		<td style="padding-right : 10px;">
-			Dégâts avec arme
-		</td>
-		<td>
-			';
-	$i = 0;
-	while($i < count($de_degat_arme))
-	{
-		if ($i > 0) echo ' + ';
-		echo '1D'.$de_degat_arme[$i];
-		$i++;
-	}
-	echo '
-		</td>
-	</tr>
-	<tr class="trcolor1">
-		<td>
-			Coéf. Mélée
-		</td>
-		<td>
-			'.$joueur['coef_melee'].'
-		</td>
-	</tr>
-	<tr class="trcolor2">
-		<td>
-			Coéf. blocage
-		</td>
-		<td>
-			'.$joueur['coef_blocage'].'
-		</td>
-	</tr>
-	<tr class="trcolor1">
-		<td>
-			Coéf. distance
-		</td>
-		<td>
-			'.$joueur['coef_distance'].'
 		</td>
 	</tr>
 	';
@@ -380,6 +334,77 @@ echo '
 	Magie de la Mort : '.$Gtrad['affinite'.$Trace[$joueur['race']]['affinite_sort_mort']].'<br />
 	Magie Elémentaire : '.$Gtrad['affinite'.$Trace[$joueur['race']]['affinite_sort_element']].'<br />
 			';
+		break;
+
+		case 'stat' :
+			echo '
+	<table style="border : 0px;" cellspacing="0" width="100%">
+	<tr class="trcolor1">
+		<td>
+			PP
+		</td>
+		<td>
+			<span onmouseover="return '.make_overlib('PP de base : '.$joueur['PP_base']).'" onmouseout="return nd();">'.$joueur['PP'].'</span> - Réduction des dégâts de '.(round(1 - calcul_pp($joueur['PP']), 4) * 100).' %
+		</td>
+	</tr>
+	<tr class="trcolor2">
+		<td style="padding-right : 10px;">
+			Dégâts sans arme
+		</td>
+		<td>
+			';
+	$i = 0;
+	while($i < count($de_degat))
+	{
+		if ($i > 0) echo ' + ';
+		echo '1D'.$de_degat[$i];
+		$i++;
+	}
+	echo '
+		</td>
+	</tr>
+	<tr class="trcolor1">
+		<td style="padding-right : 10px;">
+			Dégâts avec arme
+		</td>
+		<td>
+			';
+	$i = 0;
+	while($i < count($de_degat_arme))
+	{
+		if ($i > 0) echo ' + ';
+		echo '1D'.$de_degat_arme[$i];
+		$i++;
+	}
+	echo '
+		</td>
+	</tr>
+	<tr class="trcolor2">
+		<td>
+			Coéf. Mélée
+		</td>
+		<td>
+			'.$joueur['coef_melee'].'
+		</td>
+	</tr>
+	<tr class="trcolor1">
+		<td>
+			Coéf. blocage
+		</td>
+		<td>
+			'.$joueur['coef_blocage'].'
+		</td>
+	</tr>
+	<tr class="trcolor2">
+		<td>
+			Coéf. distance
+		</td>
+		<td>
+			'.$joueur['coef_distance'].'
+		</td>
+	</tr>
+	</table>
+	';
 		break;
 	}
 ?>
