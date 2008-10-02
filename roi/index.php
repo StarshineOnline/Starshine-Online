@@ -38,6 +38,7 @@ $_SESSION['position'] = convert_in_pos($joueur['x'], $joueur['y']);
 					<li><a href="gestion_royaume.php?direction=drapeau" onclick="new Ajax.Updater('conteneur', this.href); return false;">Drapeaux & batiments</a>
 					<li><a href="gestion_royaume.php?direction=carte" onclick="new Ajax.Updater('conteneur', this.href); return false;">Carte des constructions et habitants</a>
 					<li><a href="index.php" onclick="new Ajax.Updater('conteneur', this.href);">Gestion des groupes</a></li>
+					<li><a href="carte_strategique.php" onclick="new Ajax.Updater('conteneur', this.href); return false;">Carte Stratégique</a></li>
 				</ul>
 			</dd>	
 			<dt class="smenu" id="a3"><span>Economie</span></dt>
@@ -60,7 +61,7 @@ $_SESSION['position'] = convert_in_pos($joueur['x'], $joueur['y']);
 			</dd>
 		</dl>
 </div>
-<div id="conteneur">
+<div id="conteneur" style="width : 1200px;">
 	<ul style="float :left;">
 	<?php
 	$requete = "SELECT groupe.id as groupeid, groupe.nom as groupenom, groupe_joueur.id_joueur, perso.nom, perso.race FROM groupe LEFT JOIN groupe_joueur ON groupe.id = groupe_joueur.id_groupe LEFT JOIN perso ON groupe_joueur.id_joueur = perso.ID WHERE groupe_joueur.leader = 'y' AND perso.race = '".$joueur['race']."'";
