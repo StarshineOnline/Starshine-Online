@@ -1,0 +1,94 @@
+<?php
+/**
+	Classe abstraite représentant un objet 
+**/
+abstract class Objet
+{
+	protected $id;
+	protected $nom;
+	protected $type;
+	protected $prix;
+	
+	//Constructeur
+	function __construct($nom, $type, $prix, $id = -1)
+	{
+		$this->nom = $nom;
+		$this->type = $type;
+		$this->prix = $prix;
+		$this->id = $id;
+	}
+	
+	//Liste des Accesseurs
+	function getId()
+	{
+		return $this->id;
+	}
+	
+	function getNom()
+	{
+		return $this->nom;
+	}
+	
+	function getType()
+	{
+		return $this->type;
+	}
+	
+	function getPrix()
+	{
+		return $rhis->prix;
+	}
+	
+	//Liste des Modifieurs
+	function setId($newId)
+	{
+		$this->id = $newId;
+	}
+	
+	function setNom($newNom)
+	{
+		$this->nom = $newNom;
+	}
+	
+	function setType($newType)
+	{
+		$this->type = $newType;
+	}
+	
+	function setPrix($newPrix)
+	{
+		$this->prix = $newPrix;
+	}
+	
+	//Fonction permettant d'ajouter un nouvel objet dans la base
+	abstract public function sauver();
+	
+	//Suppression générique
+	protected function supprimer($table)
+	{
+		if( $this->id != -1 )
+		{
+			$requete = 'DELETE FROM '.$table.' WHERE id = '.$this->id;
+			mysql_query($requete);
+		}
+	}
+	
+	//Retourne une chaine permettant de faciliter l'UPDATE
+	protected function modifBase()
+	{
+		return 'nom = "'.$this->nom.'", type = "'.$this->type.'", prix = "'.$this->prix.'"';
+	}
+	
+	//Retourne une chaine facilittant l'insertion
+	protected function insertBase()
+	{
+		return '"'.$this->nom.'", "'.$this->type.'", "'.$this->prix.'"';
+	}
+	
+	function __toString()
+	{
+		return $this->nom.', '.$this->type.', '.$this->prix;
+	}
+}
+
+?>
