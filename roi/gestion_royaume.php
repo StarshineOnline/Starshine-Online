@@ -16,6 +16,9 @@ $_SESSION['position'] = convert_in_pos($joueur['x'], $joueur['y']);
 $W_distance = detection_distance($W_case,$_SESSION["position"]);
 
 $W_coord = convert_in_coord($W_case);
+?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<?php
                 echo '<strong>Stars du royaume</strong> : '.$R['star'].'<br />';
                 echo '<strong>Taux de taxe</strong> : '.$R['taxe_base'].'%<br />';
                 $W_requete = "SELECT COUNT(*) as count FROM perso WHERE race = '".$R['race']."' AND statut = 'actif'";
@@ -227,6 +230,9 @@ $W_coord = convert_in_coord($W_case);
                     <?php
                         while($row = $db->read_array($req))
                         {
+	                        $href = 'gestion_royaume.php?poscase='.$W_case.'&amp;direction=quete&amp;action=voir&amp;id='.$row['id'];
+                            $js = 'new Tip(\'quete_'.$row['id'].'\', \'content\');
+									';
                             echo '
                             <tr>
                                 <td>
@@ -236,12 +242,18 @@ $W_coord = convert_in_coord($W_case);
                                     '.$row['star_royaume'].'
                                 </td>
                                 <td>
-                                    <a href="gestion_royaume.php?poscase='.$W_case.'&amp;direction=quete&amp;action=voir&amp;id='.$row['id'].'">Détails de la quète</a>
+                                    <a href="'.$href.'" onclick="return false;" id="quete_'.$row['id'].'">Détails de la quète</a>
                                 </td>
                             </tr>';
                         }
                     ?>
                             </table>
+                            <div id="plop">
+                            TEST
+                            </div>
+                            <script type="text/javascript" language="javascript">
+                            	new Tip('plop', 'essai');
+                            </script>
                     <?php
                     }
                 }

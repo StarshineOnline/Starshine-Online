@@ -18,8 +18,10 @@ $_SESSION['position'] = convert_in_pos($joueur['x'], $joueur['y']);
 <head>
 	<link href="../css/texture.css" rel="stylesheet" type="text/css" />
 	<link href="../css/interface.css" rel="stylesheet" type="text/css" />
+	<link href="../css/prototip.css" rel="stylesheet" type="text/css" />
 	<script src="../javascript/scriptaculous/prototype.js" type="text/javascript"></script>
 	<script src="../javascript/scriptaculous/scriptaculous.js" type="text/javascript"></script>
+	<script src="../javascript/scriptaculous/prototip.js" type="text/javascript"></script>
 	<script src="javascript/menu.js" type="text/javascript"></script>
 </head>
 <body>
