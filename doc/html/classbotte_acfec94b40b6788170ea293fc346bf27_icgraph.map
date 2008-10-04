@@ -1,0 +1,6 @@
+<area shape="rect" href="$classbotte__scorpion.html#4a1c40ec721ca3614d0b07b685f43a7f" title="botte_scorpion::calcul_critique" alt="" coords="157,5,355,32">
+<area shape="rect" href="$classbotte__tigre.html#1b5e1e03688fe2a3442dfb05dbeeecee" title="botte_tigre::calcul_degats" alt="" coords="171,56,341,83">
+<area shape="rect" href="$classbotte__chat.html#eb2fc10d3b98187814f6a4559878ccc2" title="botte_chat::debut_round" alt="" coords="176,107,336,133">
+<area shape="rect" href="$classbotte__aigle.html#2e61e1f46def374d1b891334072d41a0" title="botte_aigle::debut_round" alt="" coords="175,157,337,184">
+<area shape="rect" href="$classbotte__ours.html#82e7f504db3826813481b51eeb93dd0e" title="botte_ours::inflige_degats" alt="" coords="172,208,340,235">
+<area shape="rect" href="$classbotte__crabe.html#27032b857366b9504c3ce54561a0e160" title="botte_crabe::inflige_degats" alt="" coords="168,259,344,285">

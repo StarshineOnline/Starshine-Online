@@ -1,0 +1,603 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+<title>Starshine Online: Référence du fichier trunk/fonction/equipement.inc.php</title>
+<link href="doxygen.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- Généré par Doxygen 1.5.6 -->
+<div class="navigation" id="top">
+  <div class="tabs">
+    <ul>
+      <li><a href="index.html"><span>Page&nbsp;principale</span></a></li>
+      <li><a href="classes.html"><span>Classes</span></a></li>
+      <li class="current"><a href="files.html"><span>Fichiers</span></a></li>
+      <li><a href="dirs.html"><span>Répertoires</span></a></li>
+    </ul>
+  </div>
+  <div class="navpath"><a class="el" href="dir_72030663e0f00126986f0653002ad98d.html">trunk</a>&nbsp;&raquo&nbsp;<a class="el" href="dir_5992c3ce1eca1153c6737efdfb55c8f0.html">fonction</a>
+  </div>
+</div>
+<div class="contents">
+<h1>Référence du fichier equipement.inc.php</h1><table border="0" cellpadding="0" cellspacing="0">
+<tr><td></td></tr>
+<tr><td colspan="2"><br><h2>Fonctions</h2></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="equipement_8inc_8php.html#a2dc746737e17205338eaa6a9fb477a9">recherche_objet</a> ($joueur, $id_objet)</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="equipement_8inc_8php.html#cf0c54237b44b383e14a26576197fe9e">recherche_nb_objet</a> ($joueur, $id_objet)</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="equipement_8inc_8php.html#bd4c46ed0ff7d4a615ef33fd2076abed">supprime_objet</a> ($joueur, $id_objet, $nombre)</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="equipement_8inc_8php.html#100ac4065e5a4228780ac85b43d1dda5">decompose_objet</a> ($objet)</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="equipement_8inc_8php.html#6650a744ac48ff6b2775a241e8439a8f">enchant</a> ($gemme_id, $var)</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="equipement_8inc_8php.html#cbcde45d5d76f79ec68d90dc51bda24e">enchant_description</a> ($gemme_id)</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="equipement_8inc_8php.html#3eb880661400bcd461f7b91416a9bc99">recompose_objet</a> ($objet)</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="equipement_8inc_8php.html#55119092ee02830738f54f2fc9f5fd7c">nom_objet</a> ($id_objet)</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="equipement_8inc_8php.html#c3cae32fd35c5c3d572117d38671a59b">description_objet</a> ($id_objet)</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="equipement_8inc_8php.html#7819f0d89772aa351963ada3978870a5">equip_objet</a> ($objet, $joueur)</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="equipement_8inc_8php.html#e5b461c4af02282d38e99ef4d385ca1b">desequip</a> ($<a class="el" href="action__modif__t_8php.html#7aead736a07eaf25623ad7bfa1f0ee2d">type</a>, $joueur)</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="equipement_8inc_8php.html#febb5679b1dafc60c4299c0bc9b35ef2">recup_echange</a> ($id_echange)</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="equipement_8inc_8php.html#54c7a835fd3ae934ccf34aeb0efa7539">recup_echange_perso</a> ($joueur, $receveur)</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="equipement_8inc_8php.html#9c8ebb28f4dae1fed9cc89390d0ab6ef">recup_tout_echange_perso</a> ($joueur_id, $tri= 'id_echange DESC')</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="equipement_8inc_8php.html#9ef262ce6b2454cfffa58481205d1c2e">recup_tout_echange_perso_ranger</a> ($joueur_id, $tri= 'id_echange DESC')</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="equipement_8inc_8php.html#ea0a0acf3578fc049036e57155c05d6d">echange_objet_ajout</a> ($id_objet, $<a class="el" href="action__modif__t_8php.html#7aead736a07eaf25623ad7bfa1f0ee2d">type</a>, $id_echange, $id_joueur)</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="equipement_8inc_8php.html#97116cb44273775bc417b31207bc8af1">echange_objet_suppr</a> ($id_objet_echange)</td></tr>
+
+</table>
+<hr><h2>Documentation des fonctions</h2>
+<a class="anchor" name="100ac4065e5a4228780ac85b43d1dda5"></a><!-- doxytag: member="equipement.inc.php::decompose_objet" ref="100ac4065e5a4228780ac85b43d1dda5" args="($objet)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">decompose_objet           </td>
+          <td>(</td>
+          <td class="paramtype">$&nbsp;</td>
+          <td class="paramname"> <em>objet</em>          </td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+<p>
+<div class="dynheader">
+Voici le graphe d'appel pour cette fonction :</div>
+<div class="dynsection">
+<p><center><img src="equipement_8inc_8php_100ac4065e5a4228780ac85b43d1dda5_icgraph.png" border="0" usemap="#equipement_8inc_8php_100ac4065e5a4228780ac85b43d1dda5_icgraph_map" alt=""></center>
+<map name="equipement_8inc_8php_100ac4065e5a4228780ac85b43d1dda5_icgraph_map">
+<area shape="rect" href="equipement_8inc_8php.html#c3cae32fd35c5c3d572117d38671a59b" title="description_objet" alt="" coords="187,5,307,32"><area shape="rect" href="equipement_8inc_8php.html#7819f0d89772aa351963ada3978870a5" title="equip_objet" alt="" coords="396,259,484,285"><area shape="rect" href="equipement_8inc_8php.html#55119092ee02830738f54f2fc9f5fd7c" title="nom_objet" alt="" coords="207,107,287,133"><area shape="rect" href="base_8inc_8php.html#88fdf6e237810847b63a013e59daaddc" title="prend_objet" alt="" coords="203,157,291,184"><area shape="rect" href="equipement_8inc_8php.html#cf0c54237b44b383e14a26576197fe9e" title="recherche_nb_objet" alt="" coords="180,208,313,235"><area shape="rect" href="equipement_8inc_8php.html#a2dc746737e17205338eaa6a9fb477a9" title="recherche_objet" alt="" coords="191,56,303,83"><area shape="rect" href="base_8inc_8php.html#0c244be4e4bf4a7a5ac3d33caec4fe48" title="recupperso" alt="" coords="204,309,289,336"><area shape="rect" href="quete_8inc_8php.html#855ac234e25aa8926c3bc594fdb0fdf4" title="fin_quete" alt="" coords="404,157,476,184"><area shape="rect" href="quete_8inc_8php.html#4bcfd3fff97b506404ded6239d5fb77d" title="verif_action" alt="" coords="575,208,660,235"><area shape="rect" href="quete_8inc_8php.html#414058c10339ae946e604bb594954b49" title="verif_inventaire" alt="" coords="565,107,669,133"><area shape="rect" href="equipement_8inc_8php.html#bd4c46ed0ff7d4a615ef33fd2076abed" title="supprime_objet" alt="" coords="385,107,495,133"><area shape="rect" href="security_8inc_8php.html#48c4fb90180f16ba2648898fc277710a" title="check_undead_players" alt="" coords="363,360,517,387"></map>
+</div>
+
+</div>
+</div><p>
+<a class="anchor" name="c3cae32fd35c5c3d572117d38671a59b"></a><!-- doxytag: member="equipement.inc.php::description_objet" ref="c3cae32fd35c5c3d572117d38671a59b" args="($id_objet)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">description_objet           </td>
+          <td>(</td>
+          <td class="paramtype">$&nbsp;</td>
+          <td class="paramname"> <em>id_objet</em>          </td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+<p>
+<div class="dynheader">
+Voici le graphe d'appel pour cette fonction :</div>
+<div class="dynsection">
+<p><center><img src="equipement_8inc_8php_c3cae32fd35c5c3d572117d38671a59b_cgraph.png" border="0" usemap="#equipement_8inc_8php_c3cae32fd35c5c3d572117d38671a59b_cgraph_map" alt=""></center>
+<map name="equipement_8inc_8php_c3cae32fd35c5c3d572117d38671a59b_cgraph_map">
+<area shape="rect" href="equipement_8inc_8php.html#100ac4065e5a4228780ac85b43d1dda5" title="decompose_objet" alt="" coords="175,5,297,32"><area shape="rect" href="base_8inc_8php.html#b765e14b3f021d8f4f26d33e13a4a156" title="description" alt="" coords="195,56,277,83"><area shape="rect" href="traduction_8inc_8php.html#422fcd90e4a8e80276c9df8ab8166dc7" title="pluriel" alt="" coords="208,107,264,133"><area shape="rect" href="traduction_8inc_8php.html#7ad5acd3288a040b3757c08d96081d31" title="traduit" alt="" coords="208,157,264,184"></map>
+</div>
+
+</div>
+</div><p>
+<a class="anchor" name="e5b461c4af02282d38e99ef4d385ca1b"></a><!-- doxytag: member="equipement.inc.php::desequip" ref="e5b461c4af02282d38e99ef4d385ca1b" args="($type, $joueur)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">desequip           </td>
+          <td>(</td>
+          <td class="paramtype">$&nbsp;</td>
+          <td class="paramname"> <em>type</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">$&nbsp;</td>
+          <td class="paramname"> <em>joueur</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+<p>
+<div class="dynheader">
+Voici le graphe d'appel pour cette fonction :</div>
+<div class="dynsection">
+<p><center><img src="equipement_8inc_8php_e5b461c4af02282d38e99ef4d385ca1b_icgraph.png" border="0" usemap="#equipement_8inc_8php_e5b461c4af02282d38e99ef4d385ca1b_icgraph_map" alt=""></center>
+<map name="equipement_8inc_8php_e5b461c4af02282d38e99ef4d385ca1b_icgraph_map">
+<area shape="rect" href="equipement_8inc_8php.html#7819f0d89772aa351963ada3978870a5" title="equip_objet" alt="" coords="128,5,216,32"></map>
+</div>
+
+</div>
+</div><p>
+<a class="anchor" name="ea0a0acf3578fc049036e57155c05d6d"></a><!-- doxytag: member="equipement.inc.php::echange_objet_ajout" ref="ea0a0acf3578fc049036e57155c05d6d" args="($id_objet, $type, $id_echange, $id_joueur)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">echange_objet_ajout           </td>
+          <td>(</td>
+          <td class="paramtype">$&nbsp;</td>
+          <td class="paramname"> <em>id_objet</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">$&nbsp;</td>
+          <td class="paramname"> <em>type</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">$&nbsp;</td>
+          <td class="paramname"> <em>id_echange</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">$&nbsp;</td>
+          <td class="paramname"> <em>id_joueur</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="97116cb44273775bc417b31207bc8af1"></a><!-- doxytag: member="equipement.inc.php::echange_objet_suppr" ref="97116cb44273775bc417b31207bc8af1" args="($id_objet_echange)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">echange_objet_suppr           </td>
+          <td>(</td>
+          <td class="paramtype">$&nbsp;</td>
+          <td class="paramname"> <em>id_objet_echange</em>          </td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="6650a744ac48ff6b2775a241e8439a8f"></a><!-- doxytag: member="equipement.inc.php::enchant" ref="6650a744ac48ff6b2775a241e8439a8f" args="($gemme_id, $var)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enchant           </td>
+          <td>(</td>
+          <td class="paramtype">$&nbsp;</td>
+          <td class="paramname"> <em>gemme_id</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">$&nbsp;</td>
+          <td class="paramname"> <em>var</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+<p>
+<div class="dynheader">
+Voici le graphe d'appel pour cette fonction :</div>
+<div class="dynsection">
+<p><center><img src="equipement_8inc_8php_6650a744ac48ff6b2775a241e8439a8f_icgraph.png" border="0" usemap="#equipement_8inc_8php_6650a744ac48ff6b2775a241e8439a8f_icgraph_map" alt=""></center>
+<map name="equipement_8inc_8php_6650a744ac48ff6b2775a241e8439a8f_icgraph_map">
+<area shape="rect" href="base_8inc_8php.html#0c244be4e4bf4a7a5ac3d33caec4fe48" title="recupperso" alt="" coords="123,56,208,83"><area shape="rect" href="security_8inc_8php.html#48c4fb90180f16ba2648898fc277710a" title="check_undead_players" alt="" coords="256,5,411,32"><area shape="rect" href="equipement_8inc_8php.html#7819f0d89772aa351963ada3978870a5" title="equip_objet" alt="" coords="289,56,377,83"><area shape="rect" href="quete_8inc_8php.html#4bcfd3fff97b506404ded6239d5fb77d" title="verif_action" alt="" coords="291,107,376,133"></map>
+</div>
+
+</div>
+</div><p>
+<a class="anchor" name="cbcde45d5d76f79ec68d90dc51bda24e"></a><!-- doxytag: member="equipement.inc.php::enchant_description" ref="cbcde45d5d76f79ec68d90dc51bda24e" args="($gemme_id)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enchant_description           </td>
+          <td>(</td>
+          <td class="paramtype">$&nbsp;</td>
+          <td class="paramname"> <em>gemme_id</em>          </td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="7819f0d89772aa351963ada3978870a5"></a><!-- doxytag: member="equipement.inc.php::equip_objet" ref="7819f0d89772aa351963ada3978870a5" args="($objet, $joueur)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">equip_objet           </td>
+          <td>(</td>
+          <td class="paramtype">$&nbsp;</td>
+          <td class="paramname"> <em>objet</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">$&nbsp;</td>
+          <td class="paramname"> <em>joueur</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+<p>
+<div class="dynheader">
+Voici le graphe d'appel pour cette fonction :</div>
+<div class="dynsection">
+<p><center><img src="equipement_8inc_8php_7819f0d89772aa351963ada3978870a5_cgraph.png" border="0" usemap="#equipement_8inc_8php_7819f0d89772aa351963ada3978870a5_cgraph_map" alt=""></center>
+<map name="equipement_8inc_8php_7819f0d89772aa351963ada3978870a5_cgraph_map">
+<area shape="rect" href="equipement_8inc_8php.html#100ac4065e5a4228780ac85b43d1dda5" title="decompose_objet" alt="" coords="276,5,399,32"><area shape="rect" href="equipement_8inc_8php.html#e5b461c4af02282d38e99ef4d385ca1b" title="desequip" alt="" coords="148,56,220,83"><area shape="rect" href="base_8inc_8php.html#0c244be4e4bf4a7a5ac3d33caec4fe48" title="recupperso" alt="" coords="141,107,227,133"><area shape="rect" href="equipement_8inc_8php.html#6650a744ac48ff6b2775a241e8439a8f" title="enchant" alt="" coords="304,81,371,108"><area shape="rect" href="time_8inc_8php.html#a8bcd4bada1265a01208f21148f60c5e" title="Indique quel est le moment de la journée (matin, journée, soir ou nuit)." alt="" coords="289,132,385,159"><area shape="rect" href="time_8inc_8php.html#5dc4d8d9e53a8d1d65edcab9cd1dacb9" title="Renvoie l&#39;heure (uniquement) qu&#39;il est dans le jeu." alt="" coords="449,132,529,159"></map>
+</div>
+
+</div>
+</div><p>
+<a class="anchor" name="55119092ee02830738f54f2fc9f5fd7c"></a><!-- doxytag: member="equipement.inc.php::nom_objet" ref="55119092ee02830738f54f2fc9f5fd7c" args="($id_objet)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">nom_objet           </td>
+          <td>(</td>
+          <td class="paramtype">$&nbsp;</td>
+          <td class="paramname"> <em>id_objet</em>          </td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+<p>
+<div class="dynheader">
+Voici le graphe d'appel pour cette fonction :</div>
+<div class="dynsection">
+<p><center><img src="equipement_8inc_8php_55119092ee02830738f54f2fc9f5fd7c_cgraph.png" border="0" usemap="#equipement_8inc_8php_55119092ee02830738f54f2fc9f5fd7c_cgraph_map" alt=""></center>
+<map name="equipement_8inc_8php_55119092ee02830738f54f2fc9f5fd7c_cgraph_map">
+<area shape="rect" href="equipement_8inc_8php.html#100ac4065e5a4228780ac85b43d1dda5" title="decompose_objet" alt="" coords="137,5,260,32"></map>
+</div>
+
+</div>
+</div><p>
+<a class="anchor" name="cf0c54237b44b383e14a26576197fe9e"></a><!-- doxytag: member="equipement.inc.php::recherche_nb_objet" ref="cf0c54237b44b383e14a26576197fe9e" args="($joueur, $id_objet)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">recherche_nb_objet           </td>
+          <td>(</td>
+          <td class="paramtype">$&nbsp;</td>
+          <td class="paramname"> <em>joueur</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">$&nbsp;</td>
+          <td class="paramname"> <em>id_objet</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+<p>
+<div class="dynheader">
+Voici le graphe d'appel pour cette fonction :</div>
+<div class="dynsection">
+<p><center><img src="equipement_8inc_8php_cf0c54237b44b383e14a26576197fe9e_cgraph.png" border="0" usemap="#equipement_8inc_8php_cf0c54237b44b383e14a26576197fe9e_cgraph_map" alt=""></center>
+<map name="equipement_8inc_8php_cf0c54237b44b383e14a26576197fe9e_cgraph_map">
+<area shape="rect" href="equipement_8inc_8php.html#100ac4065e5a4228780ac85b43d1dda5" title="decompose_objet" alt="" coords="191,5,313,32"></map>
+</div>
+
+</div>
+</div><p>
+<a class="anchor" name="a2dc746737e17205338eaa6a9fb477a9"></a><!-- doxytag: member="equipement.inc.php::recherche_objet" ref="a2dc746737e17205338eaa6a9fb477a9" args="($joueur, $id_objet)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">recherche_objet           </td>
+          <td>(</td>
+          <td class="paramtype">$&nbsp;</td>
+          <td class="paramname"> <em>joueur</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">$&nbsp;</td>
+          <td class="paramname"> <em>id_objet</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+<p>
+<div class="dynheader">
+Voici le graphe d'appel pour cette fonction :</div>
+<div class="dynsection">
+<p><center><img src="equipement_8inc_8php_a2dc746737e17205338eaa6a9fb477a9_cgraph.png" border="0" usemap="#equipement_8inc_8php_a2dc746737e17205338eaa6a9fb477a9_cgraph_map" alt=""></center>
+<map name="equipement_8inc_8php_a2dc746737e17205338eaa6a9fb477a9_cgraph_map">
+<area shape="rect" href="equipement_8inc_8php.html#100ac4065e5a4228780ac85b43d1dda5" title="decompose_objet" alt="" coords="169,5,292,32"></map>
+</div>
+
+<p>
+<div class="dynheader">
+Voici le graphe d'appel pour cette fonction :</div>
+<div class="dynsection">
+<p><center><img src="equipement_8inc_8php_a2dc746737e17205338eaa6a9fb477a9_icgraph.png" border="0" usemap="#equipement_8inc_8php_a2dc746737e17205338eaa6a9fb477a9_icgraph_map" alt=""></center>
+<map name="equipement_8inc_8php_a2dc746737e17205338eaa6a9fb477a9_icgraph_map">
+<area shape="rect" href="equipement_8inc_8php.html#bd4c46ed0ff7d4a615ef33fd2076abed" title="supprime_objet" alt="" coords="168,5,277,32"><area shape="rect" href="quete_8inc_8php.html#414058c10339ae946e604bb594954b49" title="verif_inventaire" alt="" coords="171,56,275,83"></map>
+</div>
+
+</div>
+</div><p>
+<a class="anchor" name="3eb880661400bcd461f7b91416a9bc99"></a><!-- doxytag: member="equipement.inc.php::recompose_objet" ref="3eb880661400bcd461f7b91416a9bc99" args="($objet)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">recompose_objet           </td>
+          <td>(</td>
+          <td class="paramtype">$&nbsp;</td>
+          <td class="paramname"> <em>objet</em>          </td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="febb5679b1dafc60c4299c0bc9b35ef2"></a><!-- doxytag: member="equipement.inc.php::recup_echange" ref="febb5679b1dafc60c4299c0bc9b35ef2" args="($id_echange)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">recup_echange           </td>
+          <td>(</td>
+          <td class="paramtype">$&nbsp;</td>
+          <td class="paramname"> <em>id_echange</em>          </td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="54c7a835fd3ae934ccf34aeb0efa7539"></a><!-- doxytag: member="equipement.inc.php::recup_echange_perso" ref="54c7a835fd3ae934ccf34aeb0efa7539" args="($joueur, $receveur)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">recup_echange_perso           </td>
+          <td>(</td>
+          <td class="paramtype">$&nbsp;</td>
+          <td class="paramname"> <em>joueur</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">$&nbsp;</td>
+          <td class="paramname"> <em>receveur</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="9c8ebb28f4dae1fed9cc89390d0ab6ef"></a><!-- doxytag: member="equipement.inc.php::recup_tout_echange_perso" ref="9c8ebb28f4dae1fed9cc89390d0ab6ef" args="($joueur_id, $tri= 'id_echange DESC')" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">recup_tout_echange_perso           </td>
+          <td>(</td>
+          <td class="paramtype">$&nbsp;</td>
+          <td class="paramname"> <em>joueur_id</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">$&nbsp;</td>
+          <td class="paramname"> <em>tri</em> = <code>'id_echange&nbsp;DESC'</code></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="9ef262ce6b2454cfffa58481205d1c2e"></a><!-- doxytag: member="equipement.inc.php::recup_tout_echange_perso_ranger" ref="9ef262ce6b2454cfffa58481205d1c2e" args="($joueur_id, $tri= 'id_echange DESC')" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">recup_tout_echange_perso_ranger           </td>
+          <td>(</td>
+          <td class="paramtype">$&nbsp;</td>
+          <td class="paramname"> <em>joueur_id</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">$&nbsp;</td>
+          <td class="paramname"> <em>tri</em> = <code>'id_echange&nbsp;DESC'</code></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="bd4c46ed0ff7d4a615ef33fd2076abed"></a><!-- doxytag: member="equipement.inc.php::supprime_objet" ref="bd4c46ed0ff7d4a615ef33fd2076abed" args="($joueur, $id_objet, $nombre)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">supprime_objet           </td>
+          <td>(</td>
+          <td class="paramtype">$&nbsp;</td>
+          <td class="paramname"> <em>joueur</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">$&nbsp;</td>
+          <td class="paramname"> <em>id_objet</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">$&nbsp;</td>
+          <td class="paramname"> <em>nombre</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+<p>
+<div class="dynheader">
+Voici le graphe d'appel pour cette fonction :</div>
+<div class="dynsection">
+<p><center><img src="equipement_8inc_8php_bd4c46ed0ff7d4a615ef33fd2076abed_cgraph.png" border="0" usemap="#equipement_8inc_8php_bd4c46ed0ff7d4a615ef33fd2076abed_cgraph_map" alt=""></center>
+<map name="equipement_8inc_8php_bd4c46ed0ff7d4a615ef33fd2076abed_cgraph_map">
+<area shape="rect" href="equipement_8inc_8php.html#a2dc746737e17205338eaa6a9fb477a9" title="recherche_objet" alt="" coords="164,5,276,32"><area shape="rect" href="equipement_8inc_8php.html#100ac4065e5a4228780ac85b43d1dda5" title="decompose_objet" alt="" coords="327,5,449,32"></map>
+</div>
+
+</div>
+</div><p>
+</div>
+<hr size="1"><address style="text-align: right;"><small>Généré le Sat Oct 4 20:00:39 2008 pour Starshine Online par&nbsp;
+<a href="http://www.doxygen.org/index.html">
+<img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.6 </small></address>
+</body>
+</html>

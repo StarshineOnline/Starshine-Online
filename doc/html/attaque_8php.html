@@ -1,0 +1,184 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+<title>Starshine Online: Référence du fichier trunk/attaque.php</title>
+<link href="doxygen.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- Généré par Doxygen 1.5.6 -->
+<div class="navigation" id="top">
+  <div class="tabs">
+    <ul>
+      <li><a href="index.html"><span>Page&nbsp;principale</span></a></li>
+      <li><a href="classes.html"><span>Classes</span></a></li>
+      <li class="current"><a href="files.html"><span>Fichiers</span></a></li>
+      <li><a href="dirs.html"><span>Répertoires</span></a></li>
+    </ul>
+  </div>
+  <div class="navpath"><a class="el" href="dir_72030663e0f00126986f0653002ad98d.html">trunk</a>
+  </div>
+</div>
+<div class="contents">
+<h1>Référence du fichier attaque.php</h1><table border="0" cellpadding="0" cellspacing="0">
+<tr><td></td></tr>
+<tr><td colspan="2"><br><h2>Variables</h2></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="attaque_8php.html#a720998827fe9e92a5fe573a62edc0b8">$connexion</a> = true</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="attaque_8php.html#20f940ecc4a1340781f167fb69a76622">$W_ID</a> = $_GET['ID']</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="attaque_8php.html#6ef3be9404e16a993547f006d8deea3f">$attaquant</a> = recupperso($_SESSION['ID'])</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="attaque_8php.html#cf58b788687d9df1a4e1e4b5dccd8daf">$defenseur</a> = recupperso($W_ID)</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="attaque_8php.html#9124f57c210aff9922b25eaed9e0e64a">$attaquant</a> ['action_a'] = recupaction($attaquant['action_a'])</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="attaque_8php.html#31a5334ea200626b7d3c1b7b03f81ef4">$defenseur</a> ['action_d'] = recupaction($defenseur['action_d'])</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="attaque_8php.html#348857e01ece8eec9741a8aac278b4b7">$W_case</a> = convert_in_pos($defenseur['x'], $defenseur['y'])</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="attaque_8php.html#5931357a80d291a4cd7d80833542af80">$W_coord</a> = convert_in_coord($W_case)</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="attaque_8php.html#3bdc395fa40de5f822d4230cf6e5b387">$W_distance</a> = detection_distance($W_case, $_SESSION[&quot;position&quot;])</td></tr>
+
+</table>
+<hr><h2>Documentation des variables</h2>
+<a class="anchor" name="9124f57c210aff9922b25eaed9e0e64a"></a><!-- doxytag: member="attaque.php::$attaquant" ref="9124f57c210aff9922b25eaed9e0e64a" args="['action_a']" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">$attaquant['action_a'] = recupaction($attaquant['action_a'])          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="6ef3be9404e16a993547f006d8deea3f"></a><!-- doxytag: member="attaque.php::$attaquant" ref="6ef3be9404e16a993547f006d8deea3f" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">$attaquant = recupperso($_SESSION['ID'])          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="a720998827fe9e92a5fe573a62edc0b8"></a><!-- doxytag: member="attaque.php::$connexion" ref="a720998827fe9e92a5fe573a62edc0b8" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">$connexion = true          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="31a5334ea200626b7d3c1b7b03f81ef4"></a><!-- doxytag: member="attaque.php::$defenseur" ref="31a5334ea200626b7d3c1b7b03f81ef4" args="['action_d']" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">$defenseur['action_d'] = recupaction($defenseur['action_d'])          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="cf58b788687d9df1a4e1e4b5dccd8daf"></a><!-- doxytag: member="attaque.php::$defenseur" ref="cf58b788687d9df1a4e1e4b5dccd8daf" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">$defenseur = recupperso($W_ID)          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="348857e01ece8eec9741a8aac278b4b7"></a><!-- doxytag: member="attaque.php::$W_case" ref="348857e01ece8eec9741a8aac278b4b7" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">$W_case = convert_in_pos($defenseur['x'], $defenseur['y'])          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="5931357a80d291a4cd7d80833542af80"></a><!-- doxytag: member="attaque.php::$W_coord" ref="5931357a80d291a4cd7d80833542af80" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">$W_coord = convert_in_coord($W_case)          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="3bdc395fa40de5f822d4230cf6e5b387"></a><!-- doxytag: member="attaque.php::$W_distance" ref="3bdc395fa40de5f822d4230cf6e5b387" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">$W_distance = detection_distance($W_case, $_SESSION[&quot;position&quot;])          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="20f940ecc4a1340781f167fb69a76622"></a><!-- doxytag: member="attaque.php::$W_ID" ref="20f940ecc4a1340781f167fb69a76622" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">$W_ID = $_GET['ID']          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+</div>
+<hr size="1"><address style="text-align: right;"><small>Généré le Sat Oct 4 20:00:38 2008 pour Starshine Online par&nbsp;
+<a href="http://www.doxygen.org/index.html">
+<img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.6 </small></address>
+</body>
+</html>

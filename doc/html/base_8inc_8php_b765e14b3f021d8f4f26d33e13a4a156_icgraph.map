@@ -1,0 +1,13 @@
+<area shape="rect" href="$class_objets.html#4a769b13e4f53f5f3899af25620ddc78" title="Constructeur permettant la création d&#39;un accessoire." alt="" coords="160,5,296,32">
+<area shape="rect" href="$class_accessoire.html#dbe8a13ca87ce33ac6c1209a72beb7ea" title="Constructeur permettant la création d&#39;un accessoire." alt="" coords="147,56,309,83">
+<area shape="rect" href="$class_objets.html#db68b047eb7adeafd42275d75348d413" title="Objets::__toString" alt="" coords="165,107,291,133">
+<area shape="rect" href="$class_accessoire.html#73ee6ea8786d77038f7b90d76432643f" title="Accessoire::__toString" alt="" coords="152,157,304,184">
+<area shape="rect" href="$base_8inc_8php.html#736714b05762b33c0d599b1bbc7cde2f" title="affiche_condition" alt="" coords="169,208,287,235">
+<area shape="rect" href="$base_8inc_8php.html#11fd79ebeaf54d026fce07d8bfe0ca41" title="affiche_condition_session" alt="" coords="144,259,312,285">
+<area shape="rect" href="$equipement_8inc_8php.html#c3cae32fd35c5c3d572117d38671a59b" title="description_objet" alt="" coords="168,309,288,336">
+<area shape="rect" href="$class_objets.html#d95d5b2d0ab1ee2551fcd14078d01777" title="Objets::getDescription" alt="" coords="153,360,303,387">
+<area shape="rect" href="$class_accessoire.html#c2950f5fa76a7afa66031cc90b0fba91" title="Accessoire::getDescription" alt="" coords="140,411,316,437">
+<area shape="rect" href="$class_objets.html#f0029c2cd9b1f966492a008877e5633f" title="Objets::sauver" alt="" coords="176,461,280,488">
+<area shape="rect" href="$class_accessoire.html#71bdaff55d277ebacb75b253c2c30bec" title="Accessoire::sauver" alt="" coords="163,512,293,539">
+<area shape="rect" href="$class_objets.html#72396f394b57f13d502d7351d23bf231" title="Objets::setDescription" alt="" coords="153,563,303,589">
+<area shape="rect" href="$class_accessoire.html#c7fe28ac6e5f0df0bcc5bda06b0bdda3" title="Les caractères spéciaux sont échappés lors de la sauvegarde par conséquent $description..." alt="" coords="140,613,316,640">

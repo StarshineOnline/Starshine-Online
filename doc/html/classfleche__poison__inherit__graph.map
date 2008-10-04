@@ -1,0 +1,3 @@
+<area shape="rect" href="$classcomp__combat.html" title="Competence de combat." alt="" coords="43,693,152,773">
+<area shape="rect" href="$classactive__effect.html" title="Effect actif : buff ou compétence de combat." alt="" coords="43,469,152,645">
+<area shape="rect" href="$classeffect.html" title="Classe de base pour la gestion des effets en combat." alt="" coords="5,5,189,421">

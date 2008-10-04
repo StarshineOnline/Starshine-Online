@@ -1,0 +1,802 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+<title>Starshine Online: Référence de la classe effect</title>
+<link href="doxygen.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- Généré par Doxygen 1.5.6 -->
+<div class="navigation" id="top">
+  <div class="tabs">
+    <ul>
+      <li><a href="index.html"><span>Page&nbsp;principale</span></a></li>
+      <li class="current"><a href="classes.html"><span>Classes</span></a></li>
+      <li><a href="files.html"><span>Fichiers</span></a></li>
+      <li><a href="dirs.html"><span>Répertoires</span></a></li>
+    </ul>
+  </div>
+  <div class="tabs">
+    <ul>
+      <li><a href="classes.html"><span>Liste&nbsp;alphabétique</span></a></li>
+      <li><a href="annotated.html"><span>Liste&nbsp;des&nbsp;classes</span></a></li>
+      <li><a href="hierarchy.html"><span>Hiérarchie&nbsp;des&nbsp;classes</span></a></li>
+      <li><a href="functions.html"><span>Membres&nbsp;de&nbsp;classe</span></a></li>
+    </ul>
+  </div>
+</div>
+<div class="contents">
+<h1>Référence de la classe effect</h1><!-- doxytag: class="effect" -->Classe de base pour la gestion des effets en combat.  
+<a href="#_details">Plus de détails...</a>
+<p>
+<div class="dynheader">
+Graphe d'héritage de effect:</div>
+<div class="dynsection">
+<p><center><img src="classeffect__inherit__graph.png" border="0" usemap="#effect__inherit__map" alt="Inheritance graph"></center>
+<map name="effect__inherit__map">
+<area shape="rect" href="classactive__effect.html" title="Effect actif : buff ou compétence de combat." alt="" coords="667,469,776,645"><area shape="rect" href="classcompetence.html" title="Compétence : c&#39;est un effet qui peut s&#39;améliorer." alt="" coords="895,509,1007,605"><area shape="rect" href="classempoisonne.html" title="{empoisonne\n|+ $vigueur\l|+ __construct()\l+ fin_round()\l+ factory()\l}" alt="" coords="1031,501,1140,613"><area shape="rect" href="classmagnetique.html" title="{magnetique\n|+ $nb\l+ $chance\l+ $titre\l+ $hit\l|+ __construct()\l+ calcul_degats()\l+ fin_round()\l+ magnetise()\l}" alt="" coords="1181,469,1301,645"><area shape="rect" href="classcomp__combat.html" title="Competence de combat." alt="" coords="572,717,681,797"><area shape="rect" href="classbotte.html" title="botte : competence de combat avec une condition" alt="" coords="355,893,464,989"><area shape="rect" href="classfleche__poison.html" title="{fleche_poison\n|+ $poison\l|+ __construct()\l+ calcul_arme()\l+ inflige_degats()\l+ fin_round()\l+ factory()\l}" alt="" coords="488,869,608,1013"><area shape="rect" href="classprecision__chirurgicale.html" title="{precision_chirurgicale\n||+ __construct()\l+ calcul_critique()\l}" alt="" coords="632,893,779,989"><area shape="rect" href="classpreparation.html" title="{preparation\n||+ __construct()\l+ debut_round()\l}" alt="" coords="803,893,915,989"><area shape="rect" href="classbotte__aigle.html" title="{botte_aigle\n||+ __construct()\l+ debut_round()\l}" alt="" coords="5,1069,117,1165"><area shape="rect" href="classbotte__chat.html" title="{botte_chat\n||+ __construct()\l+ debut_round()\l}" alt="" coords="141,1069,253,1165"><area shape="rect" href="classbotte__crabe.html" title="{botte_crabe\n||+ __construct()\l+ inflige_degats()\l}" alt="" coords="277,1069,397,1165"><area shape="rect" href="classbotte__ours.html" title="{botte_ours\n||+ __construct()\l+ etourdit()\l+ inflige_degats()\l}" alt="" coords="421,1061,541,1173"><area shape="rect" href="classbotte__scorpion.html" title="{botte_scorpion\n||+ __construct()\l+ calcul_critique()\l}" alt="" coords="565,1069,688,1165"><area shape="rect" href="classbotte__tigre.html" title="{botte_tigre\n||+ __construct()\l+ calcul_degats()\l}" alt="" coords="712,1069,832,1165"><area shape="rect" href="classart__critique.html" title="{art_critique\n|+ $critique\l|+ __construct()\l+ fin_round()\l+ calcul_mult_critique()\l}" alt="" coords="705,701,860,813"><area shape="rect" href="classmaitrise__bouclier.html" title="{maitrise_bouclier\n||+ __construct()\l+ calcul_bloquage()\l+ fin_round()\l+ factory()\l}" alt="" coords="884,693,1017,821"><area shape="rect" href="classmaitrise__dague.html" title="{maitrise_dague\n||+ __construct()\l+ debut_round()\l+ fin_round()\l+ factory()\l}" alt="" coords="1041,693,1153,821"><area shape="rect" href="classfleche__magnetique.html" title="{fleche_magnetique\n||+ __construct()\l+ factory()\l}" alt="" coords="1177,709,1305,805"><area shape="rect" href="classglobe__foudre.html" title="{globe_foudre\n||+ __construct()\l}" alt="" coords="1329,717,1439,797"></map>
+<center><font size="2">[<a href="graph_legend.html">légende</a>]</font></center></div>
+
+<p>
+<a href="classeffect-members.html">Liste de tous les membres</a><table border="0" cellpadding="0" cellspacing="0">
+<tr><td></td></tr>
+<tr><td colspan="2"><br><h2>Fonctions membres publiques</h2></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classeffect.html#b0d55424478d6a027f340cb8599ae301">__construct</a> ($aNom)</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classeffect.html#a9acea1bb724e762f1f603fdf2f5206d">compare_effects</a> ($a, $b)</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classeffect.html#301917a3cf3e45ef2ac88753805481a0">hit</a> ($aMessage)</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classeffect.html#f72cda22ff99402187d15f1dcc4610f5">notice</a> ($aMessage)</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classeffect.html#3fa7d685fd5bd6c9770d87c096621591">debug</a> ($aMessage)</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classeffect.html#8a36b50e355bbadc959c3d23ae5a4d15">message</a> ($aMessage)</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classeffect.html#4cabf23d0fccc8184be223b7faacc981">debut_round</a> (&amp;$actif, &amp;$passif)</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classeffect.html#fbfa14e62cda95021f732d736cc6fbeb">calcul_attaque_magique</a> (&amp;$actif, &amp;$passif, $att)</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classeffect.html#ccb52f4577b3d4b317fa4f708ddf50da">calcul_defense_magique</a> (&amp;$actif, &amp;$passif, $def)</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classeffect.html#3cb7f9caa0cb892aa871e3ac228f3d7f">calcul_arme</a> (&amp;$actif, &amp;$passif, $<a class="el" href="classarme.html">arme</a>)</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classeffect.html#4301f062fc2f675e82c5f625e90e9b36">calcul_degats</a> (&amp;$actif, &amp;$passif, $degats)</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classeffect.html#b9bb1a0cc66823062995c0bce19a1aab">calcul_bloquage</a> (&amp;$actif, &amp;$passif)</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classeffect.html#0ce31601ca3b9a4dc1cd3c874fa87bc7">applique_bloquage</a> (&amp;$actif, &amp;$passif, $degats)</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classeffect.html#0b010ca0b7783cd25352b4c4b4417c56">calcul_pp</a> (&amp;$actif, &amp;$passif, $pp)</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classeffect.html#7bf3a8ebd28a35e5ff506bec4a64f242">calcul_critique</a> (&amp;$actif, &amp;$passif, $chance)</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classeffect.html#b2fa97e104853c3a3ee47a6f1f164d99">calcul_mult_critique</a> (&amp;$actif, &amp;$passif, $mult)</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classeffect.html#6066d3efba0d40d45b81e0f8239ecf4e">inflige_degats</a> (&amp;$actif, &amp;$passif, $degats)</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classeffect.html#8907603b4e1152922cd9a1c8befd6bb5">fin_round</a> (&amp;$actif, &amp;$passif)</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classeffect.html#99575298294cf4cc6bebd4be759c8460">fin_combat</a> (&amp;$actif, &amp;$passif)</td></tr>
+
+<tr><td colspan="2"><br><h2>Fonctions membres publiques statiques</h2></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">static&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classeffect.html#bbc0316d90e9e9e6af4e1ee4e7ca07b7">factory</a> (&amp;$effects, &amp;$actif, &amp;$passif, $acteur)</td></tr>
+
+<tr><td colspan="2"><br><h2>Attributs publics</h2></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classeffect.html#7b22b68cddaa91a20ca073c8bf4b1d51">$nom</a></td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classeffect.html#11b6d75ef923774863a175bd865be7db">$order</a></td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classeffect.html#c45a4cca43bf442217c2d324c2193f3d">$used</a></td></tr>
+
+</table>
+<hr><a name="_details"></a><h2>Description détaillée</h2>
+Classe de base pour la gestion des effets en combat. <hr><h2>Documentation des constructeurs et destructeur</h2>
+<a class="anchor" name="b0d55424478d6a027f340cb8599ae301"></a><!-- doxytag: member="effect::__construct" ref="b0d55424478d6a027f340cb8599ae301" args="($aNom)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">effect::__construct           </td>
+          <td>(</td>
+          <td class="paramtype">$&nbsp;</td>
+          <td class="paramname"> <em>aNom</em>          </td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+<p>Réimplémentée dans <a class="el" href="classmaitrise__bouclier.html#90d2232f49a3af03426d86eb4bb3c991">maitrise_bouclier</a>, <a class="el" href="classmaitrise__dague.html#8049aa783151930b2b338a8e09e37306">maitrise_dague</a>, <a class="el" href="classart__critique.html#fc9e86b5cf30ac1ac1852b4328eb846a">art_critique</a>, <a class="el" href="classpreparation.html#dfa362d130f3212e7113a445843063ae">preparation</a>, <a class="el" href="classprecision__chirurgicale.html#dda7a8e73d78ab9028ded71a15319a0e">precision_chirurgicale</a>, <a class="el" href="classbotte__scorpion.html#c129ea982b45168a2dafe66b5f69c176">botte_scorpion</a>, <a class="el" href="classbotte__crabe.html#94c54892121ed971093cbff96dae67a3">botte_crabe</a>, <a class="el" href="classbotte__aigle.html#7e8376e4aef0653045bd88c38d975db6">botte_aigle</a>, <a class="el" href="classbotte__chat.html#5e5f2b3501dc0c37c68e182567d28e7b">botte_chat</a>, <a class="el" href="classbotte__tigre.html#72ae70fe6c2f8b4cbcdc3fed7e49b50b">botte_tigre</a>, <a class="el" href="classbotte__ours.html#6fe5a53226a379be711b9697bcac17cc">botte_ours</a>, <a class="el" href="classfleche__poison.html#b66829ae42a173797f4a24d7aa6e1913">fleche_poison</a>, et <a class="el" href="classempoisonne.html#dd677ba0ae60f4db01c568012332d419">empoisonne</a>.</p>
+
+</div>
+</div><p>
+<hr><h2>Documentation des fonctions membres</h2>
+<a class="anchor" name="a9acea1bb724e762f1f603fdf2f5206d"></a><!-- doxytag: member="effect::compare_effects" ref="a9acea1bb724e762f1f603fdf2f5206d" args="($a, $b)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">effect::compare_effects           </td>
+          <td>(</td>
+          <td class="paramtype">$&nbsp;</td>
+          <td class="paramname"> <em>a</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">$&nbsp;</td>
+          <td class="paramname"> <em>b</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="301917a3cf3e45ef2ac88753805481a0"></a><!-- doxytag: member="effect::hit" ref="301917a3cf3e45ef2ac88753805481a0" args="($aMessage)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">effect::hit           </td>
+          <td>(</td>
+          <td class="paramtype">$&nbsp;</td>
+          <td class="paramname"> <em>aMessage</em>          </td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+<p>
+<div class="dynheader">
+Voici le graphe d'appel pour cette fonction :</div>
+<div class="dynsection">
+<p><center><img src="classeffect_301917a3cf3e45ef2ac88753805481a0_icgraph.png" border="0" usemap="#classeffect_301917a3cf3e45ef2ac88753805481a0_icgraph_map" alt=""></center>
+<map name="classeffect_301917a3cf3e45ef2ac88753805481a0_icgraph_map">
+<area shape="rect" href="classglobe__foudre.html#ba37eab0bbcea38bf04338b35d2e694e" title="globe_foudre::__construct" alt="" coords="131,5,301,32"><area shape="rect" href="classmagnetique.html#2b239ad153a758decd8c75174c80e477" title="magnetique::__construct" alt="" coords="135,56,297,83"><area shape="rect" href="classmagnetique.html#7e212fbedf6704c0d7f6ac9fbdd3d030" title="magnetique::calcul_degats" alt="" coords="128,107,304,133"><area shape="rect" href="classempoisonne.html#d855640411136a518c1fc302838a3c7a" title="empoisonne::fin_round" alt="" coords="140,157,292,184"><area shape="rect" href="classmagnetique.html#80fb56483bbd15fa02ab492bb718d522" title="magnetique::fin_round" alt="" coords="143,208,289,235"></map>
+</div>
+
+</div>
+</div><p>
+<a class="anchor" name="f72cda22ff99402187d15f1dcc4610f5"></a><!-- doxytag: member="effect::notice" ref="f72cda22ff99402187d15f1dcc4610f5" args="($aMessage)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">effect::notice           </td>
+          <td>(</td>
+          <td class="paramtype">$&nbsp;</td>
+          <td class="paramname"> <em>aMessage</em>          </td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+<p>
+<div class="dynheader">
+Voici le graphe d'appel pour cette fonction :</div>
+<div class="dynsection">
+<p><center><img src="classeffect_f72cda22ff99402187d15f1dcc4610f5_icgraph.png" border="0" usemap="#classeffect_f72cda22ff99402187d15f1dcc4610f5_icgraph_map" alt=""></center>
+<map name="classeffect_f72cda22ff99402187d15f1dcc4610f5_icgraph_map">
+<area shape="rect" href="classmagnetique.html#763a8710c892c062dc8adb7fe795267a" title="magnetique::magnetise" alt="" coords="151,5,305,32"><area shape="rect" href="classmagnetique.html#80fb56483bbd15fa02ab492bb718d522" title="magnetique::fin_round" alt="" coords="356,5,503,32"></map>
+</div>
+
+</div>
+</div><p>
+<a class="anchor" name="3fa7d685fd5bd6c9770d87c096621591"></a><!-- doxytag: member="effect::debug" ref="3fa7d685fd5bd6c9770d87c096621591" args="($aMessage)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">effect::debug           </td>
+          <td>(</td>
+          <td class="paramtype">$&nbsp;</td>
+          <td class="paramname"> <em>aMessage</em>          </td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+<p>
+<div class="dynheader">
+Voici le graphe d'appel pour cette fonction :</div>
+<div class="dynsection">
+<p><center><img src="classeffect_3fa7d685fd5bd6c9770d87c096621591_icgraph.png" border="0" usemap="#classeffect_3fa7d685fd5bd6c9770d87c096621591_icgraph_map" alt=""></center>
+<map name="classeffect_3fa7d685fd5bd6c9770d87c096621591_icgraph_map">
+<area shape="rect" href="classbotte__tigre.html#1b5e1e03688fe2a3442dfb05dbeeecee" title="botte_tigre::calcul_degats" alt="" coords="152,5,323,32"><area shape="rect" href="classbotte__crabe.html#27032b857366b9504c3ce54561a0e160" title="botte_crabe::inflige_degats" alt="" coords="149,56,325,83"></map>
+</div>
+
+</div>
+</div><p>
+<a class="anchor" name="8a36b50e355bbadc959c3d23ae5a4d15"></a><!-- doxytag: member="effect::message" ref="8a36b50e355bbadc959c3d23ae5a4d15" args="($aMessage)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">effect::message           </td>
+          <td>(</td>
+          <td class="paramtype">$&nbsp;</td>
+          <td class="paramname"> <em>aMessage</em>          </td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+<p>
+<div class="dynheader">
+Voici le graphe d'appel pour cette fonction :</div>
+<div class="dynsection">
+<p><center><img src="classeffect_8a36b50e355bbadc959c3d23ae5a4d15_icgraph.png" border="0" usemap="#classeffect_8a36b50e355bbadc959c3d23ae5a4d15_icgraph_map" alt=""></center>
+<map name="classeffect_8a36b50e355bbadc959c3d23ae5a4d15_icgraph_map">
+<area shape="rect" href="classmagnetique.html#763a8710c892c062dc8adb7fe795267a" title="magnetique::magnetise" alt="" coords="169,5,324,32"><area shape="rect" href="classmagnetique.html#80fb56483bbd15fa02ab492bb718d522" title="magnetique::fin_round" alt="" coords="375,5,521,32"></map>
+</div>
+
+</div>
+</div><p>
+<a class="anchor" name="bbc0316d90e9e9e6af4e1ee4e7ca07b7"></a><!-- doxytag: member="effect::factory" ref="bbc0316d90e9e9e6af4e1ee4e7ca07b7" args="(&amp;$effects, &amp;$actif, &amp;$passif, $acteur)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">static effect::factory           </td>
+          <td>(</td>
+          <td class="paramtype">&amp;$&nbsp;</td>
+          <td class="paramname"> <em>effects</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&amp;$&nbsp;</td>
+          <td class="paramname"> <em>actif</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&amp;$&nbsp;</td>
+          <td class="paramname"> <em>passif</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">$&nbsp;</td>
+          <td class="paramname"> <em>acteur</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td><code> [static]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+<p>Réimplémentée dans <a class="el" href="classmaitrise__bouclier.html#2f85328e9f60c54350ada13ba9bdc106">maitrise_bouclier</a>, <a class="el" href="classfleche__poison.html#05d5cdccd5db49d9c0009bcc894a400d">fleche_poison</a>, <a class="el" href="classfleche__magnetique.html#d804267a97e05eae9e9c00032d17f39f">fleche_magnetique</a>, et <a class="el" href="classempoisonne.html#9013df906ce968dcf7e4faac18011e12">empoisonne</a>.</p>
+
+</div>
+</div><p>
+<a class="anchor" name="4cabf23d0fccc8184be223b7faacc981"></a><!-- doxytag: member="effect::debut_round" ref="4cabf23d0fccc8184be223b7faacc981" args="(&amp;$actif, &amp;$passif)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">effect::debut_round           </td>
+          <td>(</td>
+          <td class="paramtype">&amp;$&nbsp;</td>
+          <td class="paramname"> <em>actif</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&amp;$&nbsp;</td>
+          <td class="paramname"> <em>passif</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+<p>Réimplémentée dans <a class="el" href="classmaitrise__dague.html#65ddfe6588c5e924a367ac2ae8996d88">maitrise_dague</a>, <a class="el" href="classpreparation.html#19506d1df9f64b9a458b79c0992a387f">preparation</a>, <a class="el" href="classbotte__aigle.html#2e61e1f46def374d1b891334072d41a0">botte_aigle</a>, et <a class="el" href="classbotte__chat.html#eb2fc10d3b98187814f6a4559878ccc2">botte_chat</a>.</p>
+
+</div>
+</div><p>
+<a class="anchor" name="fbfa14e62cda95021f732d736cc6fbeb"></a><!-- doxytag: member="effect::calcul_attaque_magique" ref="fbfa14e62cda95021f732d736cc6fbeb" args="(&amp;$actif, &amp;$passif, $att)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">effect::calcul_attaque_magique           </td>
+          <td>(</td>
+          <td class="paramtype">&amp;$&nbsp;</td>
+          <td class="paramname"> <em>actif</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&amp;$&nbsp;</td>
+          <td class="paramname"> <em>passif</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">$&nbsp;</td>
+          <td class="paramname"> <em>att</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="ccb52f4577b3d4b317fa4f708ddf50da"></a><!-- doxytag: member="effect::calcul_defense_magique" ref="ccb52f4577b3d4b317fa4f708ddf50da" args="(&amp;$actif, &amp;$passif, $def)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">effect::calcul_defense_magique           </td>
+          <td>(</td>
+          <td class="paramtype">&amp;$&nbsp;</td>
+          <td class="paramname"> <em>actif</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&amp;$&nbsp;</td>
+          <td class="paramname"> <em>passif</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">$&nbsp;</td>
+          <td class="paramname"> <em>def</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="3cb7f9caa0cb892aa871e3ac228f3d7f"></a><!-- doxytag: member="effect::calcul_arme" ref="3cb7f9caa0cb892aa871e3ac228f3d7f" args="(&amp;$actif, &amp;$passif, $arme)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">effect::calcul_arme           </td>
+          <td>(</td>
+          <td class="paramtype">&amp;$&nbsp;</td>
+          <td class="paramname"> <em>actif</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&amp;$&nbsp;</td>
+          <td class="paramname"> <em>passif</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">$&nbsp;</td>
+          <td class="paramname"> <em>arme</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+<p>Réimplémentée dans <a class="el" href="classfleche__poison.html#76478216e4eb90c3051c7ba48bbb788a">fleche_poison</a>.</p>
+
+</div>
+</div><p>
+<a class="anchor" name="4301f062fc2f675e82c5f625e90e9b36"></a><!-- doxytag: member="effect::calcul_degats" ref="4301f062fc2f675e82c5f625e90e9b36" args="(&amp;$actif, &amp;$passif, $degats)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">effect::calcul_degats           </td>
+          <td>(</td>
+          <td class="paramtype">&amp;$&nbsp;</td>
+          <td class="paramname"> <em>actif</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&amp;$&nbsp;</td>
+          <td class="paramname"> <em>passif</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">$&nbsp;</td>
+          <td class="paramname"> <em>degats</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+<p>Réimplémentée dans <a class="el" href="classbotte__tigre.html#1b5e1e03688fe2a3442dfb05dbeeecee">botte_tigre</a>, et <a class="el" href="classmagnetique.html#7e212fbedf6704c0d7f6ac9fbdd3d030">magnetique</a>.</p>
+
+</div>
+</div><p>
+<a class="anchor" name="b9bb1a0cc66823062995c0bce19a1aab"></a><!-- doxytag: member="effect::calcul_bloquage" ref="b9bb1a0cc66823062995c0bce19a1aab" args="(&amp;$actif, &amp;$passif)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">effect::calcul_bloquage           </td>
+          <td>(</td>
+          <td class="paramtype">&amp;$&nbsp;</td>
+          <td class="paramname"> <em>actif</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&amp;$&nbsp;</td>
+          <td class="paramname"> <em>passif</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+<p>Réimplémentée dans <a class="el" href="classmaitrise__bouclier.html#55fea8dbe526d25dbec522bb7da2bd67">maitrise_bouclier</a>.</p>
+
+</div>
+</div><p>
+<a class="anchor" name="0ce31601ca3b9a4dc1cd3c874fa87bc7"></a><!-- doxytag: member="effect::applique_bloquage" ref="0ce31601ca3b9a4dc1cd3c874fa87bc7" args="(&amp;$actif, &amp;$passif, $degats)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">effect::applique_bloquage           </td>
+          <td>(</td>
+          <td class="paramtype">&amp;$&nbsp;</td>
+          <td class="paramname"> <em>actif</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&amp;$&nbsp;</td>
+          <td class="paramname"> <em>passif</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">$&nbsp;</td>
+          <td class="paramname"> <em>degats</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="0b010ca0b7783cd25352b4c4b4417c56"></a><!-- doxytag: member="effect::calcul_pp" ref="0b010ca0b7783cd25352b4c4b4417c56" args="(&amp;$actif, &amp;$passif, $pp)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">effect::calcul_pp           </td>
+          <td>(</td>
+          <td class="paramtype">&amp;$&nbsp;</td>
+          <td class="paramname"> <em>actif</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&amp;$&nbsp;</td>
+          <td class="paramname"> <em>passif</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">$&nbsp;</td>
+          <td class="paramname"> <em>pp</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="7bf3a8ebd28a35e5ff506bec4a64f242"></a><!-- doxytag: member="effect::calcul_critique" ref="7bf3a8ebd28a35e5ff506bec4a64f242" args="(&amp;$actif, &amp;$passif, $chance)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">effect::calcul_critique           </td>
+          <td>(</td>
+          <td class="paramtype">&amp;$&nbsp;</td>
+          <td class="paramname"> <em>actif</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&amp;$&nbsp;</td>
+          <td class="paramname"> <em>passif</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">$&nbsp;</td>
+          <td class="paramname"> <em>chance</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+<p>Réimplémentée dans <a class="el" href="classprecision__chirurgicale.html#7bc180d7e51c2551ae758e927001dec3">precision_chirurgicale</a>, et <a class="el" href="classbotte__scorpion.html#4a1c40ec721ca3614d0b07b685f43a7f">botte_scorpion</a>.</p>
+
+</div>
+</div><p>
+<a class="anchor" name="b2fa97e104853c3a3ee47a6f1f164d99"></a><!-- doxytag: member="effect::calcul_mult_critique" ref="b2fa97e104853c3a3ee47a6f1f164d99" args="(&amp;$actif, &amp;$passif, $mult)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">effect::calcul_mult_critique           </td>
+          <td>(</td>
+          <td class="paramtype">&amp;$&nbsp;</td>
+          <td class="paramname"> <em>actif</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&amp;$&nbsp;</td>
+          <td class="paramname"> <em>passif</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">$&nbsp;</td>
+          <td class="paramname"> <em>mult</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+<p>Réimplémentée dans <a class="el" href="classart__critique.html#f48f757a707fdf2b973b7ea003fe01bf">art_critique</a>.</p>
+
+</div>
+</div><p>
+<a class="anchor" name="6066d3efba0d40d45b81e0f8239ecf4e"></a><!-- doxytag: member="effect::inflige_degats" ref="6066d3efba0d40d45b81e0f8239ecf4e" args="(&amp;$actif, &amp;$passif, $degats)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">effect::inflige_degats           </td>
+          <td>(</td>
+          <td class="paramtype">&amp;$&nbsp;</td>
+          <td class="paramname"> <em>actif</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&amp;$&nbsp;</td>
+          <td class="paramname"> <em>passif</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">$&nbsp;</td>
+          <td class="paramname"> <em>degats</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+<p>Réimplémentée dans <a class="el" href="classbotte__crabe.html#27032b857366b9504c3ce54561a0e160">botte_crabe</a>, <a class="el" href="classbotte__ours.html#82e7f504db3826813481b51eeb93dd0e">botte_ours</a>, et <a class="el" href="classfleche__poison.html#d0c01ef2b8d32af6595eadd8780a1274">fleche_poison</a>.</p>
+
+</div>
+</div><p>
+<a class="anchor" name="8907603b4e1152922cd9a1c8befd6bb5"></a><!-- doxytag: member="effect::fin_round" ref="8907603b4e1152922cd9a1c8befd6bb5" args="(&amp;$actif, &amp;$passif)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">effect::fin_round           </td>
+          <td>(</td>
+          <td class="paramtype">&amp;$&nbsp;</td>
+          <td class="paramname"> <em>actif</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&amp;$&nbsp;</td>
+          <td class="paramname"> <em>passif</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+<p>Réimplémentée dans <a class="el" href="classmaitrise__bouclier.html#ec72dd2a421f85caf36a892c6f95a9fa">maitrise_bouclier</a>, <a class="el" href="classmaitrise__dague.html#7f0a0b02f95cda54f951b2b162dbc8a3">maitrise_dague</a>, <a class="el" href="classart__critique.html#5c053fdffbe1e4a74ef6fc4a1f4c88f6">art_critique</a>, <a class="el" href="classfleche__poison.html#a268d3331a123d871170899452a8ef90">fleche_poison</a>, <a class="el" href="classmagnetique.html#80fb56483bbd15fa02ab492bb718d522">magnetique</a>, et <a class="el" href="classempoisonne.html#d855640411136a518c1fc302838a3c7a">empoisonne</a>.</p>
+
+</div>
+</div><p>
+<a class="anchor" name="99575298294cf4cc6bebd4be759c8460"></a><!-- doxytag: member="effect::fin_combat" ref="99575298294cf4cc6bebd4be759c8460" args="(&amp;$actif, &amp;$passif)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">effect::fin_combat           </td>
+          <td>(</td>
+          <td class="paramtype">&amp;$&nbsp;</td>
+          <td class="paramname"> <em>actif</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&amp;$&nbsp;</td>
+          <td class="paramname"> <em>passif</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<hr><h2>Documentation des données membres</h2>
+<a class="anchor" name="7b22b68cddaa91a20ca073c8bf4b1d51"></a><!-- doxytag: member="effect::$nom" ref="7b22b68cddaa91a20ca073c8bf4b1d51" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">effect::$nom          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="11b6d75ef923774863a175bd865be7db"></a><!-- doxytag: member="effect::$order" ref="11b6d75ef923774863a175bd865be7db" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">effect::$order          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="c45a4cca43bf442217c2d324c2193f3d"></a><!-- doxytag: member="effect::$used" ref="c45a4cca43bf442217c2d324c2193f3d" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">effect::$used          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+</div>
+<hr size="1"><address style="text-align: right;"><small>Généré le Sat Oct 4 20:00:40 2008 pour Starshine Online par&nbsp;
+<a href="http://www.doxygen.org/index.html">
+<img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.6 </small></address>
+</body>
+</html>

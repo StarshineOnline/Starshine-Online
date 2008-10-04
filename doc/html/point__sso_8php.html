@@ -1,0 +1,116 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+<title>Starshine Online: Référence du fichier trunk/point_sso.php</title>
+<link href="doxygen.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- Généré par Doxygen 1.5.6 -->
+<div class="navigation" id="top">
+  <div class="tabs">
+    <ul>
+      <li><a href="index.html"><span>Page&nbsp;principale</span></a></li>
+      <li><a href="classes.html"><span>Classes</span></a></li>
+      <li class="current"><a href="files.html"><span>Fichiers</span></a></li>
+      <li><a href="dirs.html"><span>Répertoires</span></a></li>
+    </ul>
+  </div>
+  <div class="navpath"><a class="el" href="dir_72030663e0f00126986f0653002ad98d.html">trunk</a>
+  </div>
+</div>
+<div class="contents">
+<h1>Référence du fichier point_sso.php</h1><table border="0" cellpadding="0" cellspacing="0">
+<tr><td></td></tr>
+<tr><td colspan="2"><br><h2>Variables</h2></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="point__sso_8php.html#beea5db7af13b1bdd70c46e49f512b26">$joueur</a> = recupperso($_SESSION['ID'])</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="point__sso_8php.html#8c7afa26d3c92b991027d5682b1d85b4">$bonus</a> = recup_bonus($joueur['ID'])</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="jeu2_8php.html#5be84ee6ca5978531539b945d5f4f43a">else</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="point__sso_8php.html#67e90047a3b613b276ccb5d345caa24a">$categorie</a> = $_GET['categorie']</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="point__sso_8php.html#1ea21bf4b1af1ebda1b8c63b0e364ce9">$requete</a> = &quot;SELECT COUNT(*) as tot, ligne FROM bonus WHERE id_categorie = &quot;.$categorie.&quot; GROUP BY ligne&quot;</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="point__sso_8php.html#6ca0bce046e2934280b5bffc56e91ae9">$req_l</a> = $<a class="el" href="classdb.html">db</a>-&gt;query($requete)</td></tr>
+
+</table>
+<hr><h2>Documentation des variables</h2>
+<a class="anchor" name="8c7afa26d3c92b991027d5682b1d85b4"></a><!-- doxytag: member="point_sso.php::$bonus" ref="8c7afa26d3c92b991027d5682b1d85b4" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">$bonus = recup_bonus($joueur['ID'])          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="67e90047a3b613b276ccb5d345caa24a"></a><!-- doxytag: member="point_sso.php::$categorie" ref="67e90047a3b613b276ccb5d345caa24a" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="jeu2_8php.html#5be84ee6ca5978531539b945d5f4f43a">else</a> $categorie = $_GET['categorie']          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="beea5db7af13b1bdd70c46e49f512b26"></a><!-- doxytag: member="point_sso.php::$joueur" ref="beea5db7af13b1bdd70c46e49f512b26" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">$joueur = recupperso($_SESSION['ID'])          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="6ca0bce046e2934280b5bffc56e91ae9"></a><!-- doxytag: member="point_sso.php::$req_l" ref="6ca0bce046e2934280b5bffc56e91ae9" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">$req_l = $<a class="el" href="classdb.html">db</a>-&gt;query($requete)          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="1ea21bf4b1af1ebda1b8c63b0e364ce9"></a><!-- doxytag: member="point_sso.php::$requete" ref="1ea21bf4b1af1ebda1b8c63b0e364ce9" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">$requete = &quot;SELECT COUNT(*) as tot, ligne FROM bonus WHERE id_categorie = &quot;.$categorie.&quot; GROUP BY ligne&quot;          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+</div>
+<hr size="1"><address style="text-align: right;"><small>Généré le Sat Oct 4 20:00:39 2008 pour Starshine Online par&nbsp;
+<a href="http://www.doxygen.org/index.html">
+<img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.6 </small></address>
+</body>
+</html>

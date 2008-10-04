@@ -1,0 +1,322 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+<title>Starshine Online: Référence du fichier trunk/carte_diplo.php</title>
+<link href="doxygen.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- Généré par Doxygen 1.5.6 -->
+<div class="navigation" id="top">
+  <div class="tabs">
+    <ul>
+      <li><a href="index.html"><span>Page&nbsp;principale</span></a></li>
+      <li><a href="classes.html"><span>Classes</span></a></li>
+      <li class="current"><a href="files.html"><span>Fichiers</span></a></li>
+      <li><a href="dirs.html"><span>Répertoires</span></a></li>
+    </ul>
+  </div>
+  <div class="navpath"><a class="el" href="dir_72030663e0f00126986f0653002ad98d.html">trunk</a>
+  </div>
+</div>
+<div class="contents">
+<h1>Référence du fichier carte_diplo.php</h1><table border="0" cellpadding="0" cellspacing="0">
+<tr><td></td></tr>
+<tr><td colspan="2"><br><h2>Variables</h2></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="carte__diplo_8php.html#687c45980461409d6c50a5d8b218b841">$debut</a> = getmicrotime()</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="carte__diplo_8php.html#481c918f8d853749e00b5942cabf599a">$date</a> = date(&quot;Y-m-d&quot;, mktime(0, 0, 0, date(&quot;m&quot;) , date(&quot;d&quot;) - 1, date(&quot;Y&quot;)))</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="carte__diplo_8php.html#0614bfd5e9f35aae3832af0d52b1f611">$show_info</a> = array()</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="carte__diplo_8php.html#76ab3ebd57a683f3311610e54344306f">$im</a></td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="carte__diplo_8php.html#b99599d1702f329ce472bcbf96846531">$background_color</a> = imagecolorallocate ($im, 0, 0, 0)</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="carte__diplo_8php.html#a8c968f8ff06e72439dd8d847cd2c932">$color1</a> = imagecolorallocate($im, 0xc0, 0x07, 0x14)</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="carte__diplo_8php.html#dc07f4cda84ff3a3ce2e637778807e51">$color2</a> = imagecolorallocate($im, 0x33, 0xcc, 0x00)</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="carte__diplo_8php.html#3dbbf8ab29074f3e29878a572583a7ff">$color3</a> = imagecolorallocate($im, 0xff, 0xff, 0xff)</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="carte__diplo_8php.html#04694553853b195d581304a3ee96aaaa">$color4</a> = imagecolorallocate($im, 0xfc, 0xff, 0x00)</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="carte__diplo_8php.html#1ea21bf4b1af1ebda1b8c63b0e364ce9">$requete</a> = &quot;SELECT * FROM diplomatie WHERE race = '&quot;.$_GET['race'].&quot;'&quot;</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="carte__diplo_8php.html#63a7a283ea5dee8af1e2d5a3435bf370">$req</a> = $<a class="el" href="classdb.html">db</a>-&gt;query($requete)</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="carte__diplo_8php.html#a1d731aa570613e5bcff831bb10e9b87">$row</a> = $<a class="el" href="classdb.html">db</a>-&gt;read_assoc($req)</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="carte__diplo_8php.html#f20635b6c08e03bfee9e3fc036fa80f3">$keys</a> = array_keys($row)</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="carte__diplo_8php.html#83018d9153d17d91fbcf3bc10158d34f">$i</a> = 0</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="carte__diplo_8php.html#f789423037bbc89dc7c850e761177570">$count</a> = count($keys)</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="test__bonus_8php.html#e2bd0dad84a3f2569c634969f0d2ee56">while</a>($i&lt; $count)&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="carte__diplo_8php.html#33abd8e03ca4dd74a8bdf8ff7bfcdaa0">$col</a> = 'royaume'</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="carte__diplo_8php.html#242dab441bef25d689102d4f82367ab6">$carte</a> = 'image/carte/carte_diplo_'.$_GET['race'].'.png'</td></tr>
+
+</table>
+<hr><h2>Documentation des variables</h2>
+<a class="anchor" name="b99599d1702f329ce472bcbf96846531"></a><!-- doxytag: member="carte_diplo.php::$background_color" ref="b99599d1702f329ce472bcbf96846531" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">$background_color = imagecolorallocate ($im, 0, 0, 0)          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="242dab441bef25d689102d4f82367ab6"></a><!-- doxytag: member="carte_diplo.php::$carte" ref="242dab441bef25d689102d4f82367ab6" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">$carte = 'image/carte/carte_diplo_'.$_GET['race'].'.png'          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="33abd8e03ca4dd74a8bdf8ff7bfcdaa0"></a><!-- doxytag: member="carte_diplo.php::$col" ref="33abd8e03ca4dd74a8bdf8ff7bfcdaa0" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="test__bonus_8php.html#e2bd0dad84a3f2569c634969f0d2ee56">while</a> ($i&lt; $count) $col = 'royaume'          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="a8c968f8ff06e72439dd8d847cd2c932"></a><!-- doxytag: member="carte_diplo.php::$color1" ref="a8c968f8ff06e72439dd8d847cd2c932" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">$color1 = imagecolorallocate($im, 0xc0, 0x07, 0x14)          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="dc07f4cda84ff3a3ce2e637778807e51"></a><!-- doxytag: member="carte_diplo.php::$color2" ref="dc07f4cda84ff3a3ce2e637778807e51" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">$color2 = imagecolorallocate($im, 0x33, 0xcc, 0x00)          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="3dbbf8ab29074f3e29878a572583a7ff"></a><!-- doxytag: member="carte_diplo.php::$color3" ref="3dbbf8ab29074f3e29878a572583a7ff" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">$color3 = imagecolorallocate($im, 0xff, 0xff, 0xff)          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="04694553853b195d581304a3ee96aaaa"></a><!-- doxytag: member="carte_diplo.php::$color4" ref="04694553853b195d581304a3ee96aaaa" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">$color4 = imagecolorallocate($im, 0xfc, 0xff, 0x00)          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="f789423037bbc89dc7c850e761177570"></a><!-- doxytag: member="carte_diplo.php::$count" ref="f789423037bbc89dc7c850e761177570" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">$count = count($keys)          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="481c918f8d853749e00b5942cabf599a"></a><!-- doxytag: member="carte_diplo.php::$date" ref="481c918f8d853749e00b5942cabf599a" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">$date = date(&quot;Y-m-d&quot;, mktime(0, 0, 0, date(&quot;m&quot;) , date(&quot;d&quot;) - 1, date(&quot;Y&quot;)))          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="687c45980461409d6c50a5d8b218b841"></a><!-- doxytag: member="carte_diplo.php::$debut" ref="687c45980461409d6c50a5d8b218b841" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">$debut = getmicrotime()          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="83018d9153d17d91fbcf3bc10158d34f"></a><!-- doxytag: member="carte_diplo.php::$i" ref="83018d9153d17d91fbcf3bc10158d34f" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">$i = 0          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="76ab3ebd57a683f3311610e54344306f"></a><!-- doxytag: member="carte_diplo.php::$im" ref="76ab3ebd57a683f3311610e54344306f" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">$im          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+<b>Valeur initiale :</b><div class="fragment"><pre class="fragment"> imagecreate (600, 600)
+   or die ("Impossible d'initialiser la biblioth�que GD")
+</pre></div>
+</div>
+</div><p>
+<a class="anchor" name="f20635b6c08e03bfee9e3fc036fa80f3"></a><!-- doxytag: member="carte_diplo.php::$keys" ref="f20635b6c08e03bfee9e3fc036fa80f3" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">$keys = array_keys($row)          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="63a7a283ea5dee8af1e2d5a3435bf370"></a><!-- doxytag: member="carte_diplo.php::$req" ref="63a7a283ea5dee8af1e2d5a3435bf370" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">$req = $<a class="el" href="classdb.html">db</a>-&gt;query($requete)          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="1ea21bf4b1af1ebda1b8c63b0e364ce9"></a><!-- doxytag: member="carte_diplo.php::$requete" ref="1ea21bf4b1af1ebda1b8c63b0e364ce9" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">$requete = &quot;SELECT * FROM diplomatie WHERE race = '&quot;.$_GET['race'].&quot;'&quot;          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="a1d731aa570613e5bcff831bb10e9b87"></a><!-- doxytag: member="carte_diplo.php::$row" ref="a1d731aa570613e5bcff831bb10e9b87" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">$row = $<a class="el" href="classdb.html">db</a>-&gt;read_assoc($req)          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="0614bfd5e9f35aae3832af0d52b1f611"></a><!-- doxytag: member="carte_diplo.php::$show_info" ref="0614bfd5e9f35aae3832af0d52b1f611" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">$show_info = array()          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+</div>
+<hr size="1"><address style="text-align: right;"><small>Généré le Sat Oct 4 20:00:38 2008 pour Starshine Online par&nbsp;
+<a href="http://www.doxygen.org/index.html">
+<img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.6 </small></address>
+</body>
+</html>

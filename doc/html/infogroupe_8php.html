@@ -1,0 +1,135 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+<title>Starshine Online: Référence du fichier trunk/infogroupe.php</title>
+<link href="doxygen.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- Généré par Doxygen 1.5.6 -->
+<div class="navigation" id="top">
+  <div class="tabs">
+    <ul>
+      <li><a href="index.html"><span>Page&nbsp;principale</span></a></li>
+      <li><a href="classes.html"><span>Classes</span></a></li>
+      <li class="current"><a href="files.html"><span>Fichiers</span></a></li>
+      <li><a href="dirs.html"><span>Répertoires</span></a></li>
+    </ul>
+  </div>
+  <div class="navpath"><a class="el" href="dir_72030663e0f00126986f0653002ad98d.html">trunk</a>
+  </div>
+</div>
+<div class="contents">
+<h1>Référence du fichier infogroupe.php</h1><table border="0" cellpadding="0" cellspacing="0">
+<tr><td></td></tr>
+<tr><td colspan="2"><br><h2>Variables</h2></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="infogroupe_8php.html#beea5db7af13b1bdd70c46e49f512b26">$joueur</a> = recupperso($_SESSION['ID'])</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="infogroupe_8php.html#ffbaa94ef95e30532290b44d29502fbc">$partages</a> = array(array('r', 'Aléatoire'), array('t', 'Par tour'), array('l', 'Leader'), array('k', 'Trouve = Garde'))</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="ville__bas_8php.html#b0b4257144253a830116a876a99660c4">if</a>(array_key_exists('partage', <br>
+$_GET)) <a class="el" href="ville__bas_8php.html#b0b4257144253a830116a876a99660c4">if</a>(array_key_exists('suppinvit', <br>
+$_GET))&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="infogroupe_8php.html#2600bc8a31004a9c20fa6d0d8c6ccd4b">$groupe</a> = recupgroupe($_GET['<a class="el" href="bureau__quete_8php.html#cf2488b95c97e0378c9bf49de3b50f28">id</a>'], $joueur['x'].'-'.$joueur['y'])</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="infogroupe_8php.html#9262906353566f717042342ea4eed709">$level_groupe</a> = level_groupe($groupe)</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="infogroupe_8php.html#fb515620df4b1804f7f393a08fe407a5">$num_joueur</a> = groupe_trouve_joueur($joueur['ID'], $groupe)</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="infogroupe_8php.html#c2ac6340099eff11d56ca7be4799794f">$share_xp</a> = ($groupe['membre'][$num_joueur]['share_xp'] / $groupe['share_xp'])</td></tr>
+
+</table>
+<hr><h2>Documentation des variables</h2>
+<a class="anchor" name="2600bc8a31004a9c20fa6d0d8c6ccd4b"></a><!-- doxytag: member="infogroupe.php::$groupe" ref="2600bc8a31004a9c20fa6d0d8c6ccd4b" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="ville__bas_8php.html#b0b4257144253a830116a876a99660c4">if</a> (array_key_exists('partage', $_GET)) <a class="el" href="ville__bas_8php.html#b0b4257144253a830116a876a99660c4">if</a> (array_key_exists('suppinvit', $_GET)) $groupe = recupgroupe($_GET['<a class="el" href="bureau__quete_8php.html#cf2488b95c97e0378c9bf49de3b50f28">id</a>'], $joueur['x'].'-'.$joueur['y'])          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="beea5db7af13b1bdd70c46e49f512b26"></a><!-- doxytag: member="infogroupe.php::$joueur" ref="beea5db7af13b1bdd70c46e49f512b26" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">$joueur = recupperso($_SESSION['ID'])          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="9262906353566f717042342ea4eed709"></a><!-- doxytag: member="infogroupe.php::$level_groupe" ref="9262906353566f717042342ea4eed709" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">$level_groupe = level_groupe($groupe)          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="fb515620df4b1804f7f393a08fe407a5"></a><!-- doxytag: member="infogroupe.php::$num_joueur" ref="fb515620df4b1804f7f393a08fe407a5" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">$num_joueur = groupe_trouve_joueur($joueur['ID'], $groupe)          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="ffbaa94ef95e30532290b44d29502fbc"></a><!-- doxytag: member="infogroupe.php::$partages" ref="ffbaa94ef95e30532290b44d29502fbc" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">$partages = array(array('r', 'Aléatoire'), array('t', 'Par tour'), array('l', 'Leader'), array('k', 'Trouve = Garde'))          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="c2ac6340099eff11d56ca7be4799794f"></a><!-- doxytag: member="infogroupe.php::$share_xp" ref="c2ac6340099eff11d56ca7be4799794f" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">$share_xp = ($groupe['membre'][$num_joueur]['share_xp'] / $groupe['share_xp'])          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+</div>
+<hr size="1"><address style="text-align: right;"><small>Généré le Sat Oct 4 20:00:39 2008 pour Starshine Online par&nbsp;
+<a href="http://www.doxygen.org/index.html">
+<img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.6 </small></address>
+</body>
+</html>

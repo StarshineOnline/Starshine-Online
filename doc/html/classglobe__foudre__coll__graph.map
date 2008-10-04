@@ -1,0 +1,2 @@
+<area shape="rect" href="$classmagnetique.html" title="{magnetique\n|+ $nb\l+ $chance\l+ $titre\l+ $hit\l|+ __construct()\l+ calcul_degats()\l+ fin_round()\l+ magnetise()\l}" alt="" coords="37,469,157,645">
+<area shape="rect" href="$classeffect.html" title="Classe de base pour la gestion des effets en combat." alt="" coords="5,5,189,421">

@@ -1,0 +1,207 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+<title>Starshine Online: Référence du fichier trunk/fonction/competence.inc.php</title>
+<link href="doxygen.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- Généré par Doxygen 1.5.6 -->
+<div class="navigation" id="top">
+  <div class="tabs">
+    <ul>
+      <li><a href="index.html"><span>Page&nbsp;principale</span></a></li>
+      <li><a href="classes.html"><span>Classes</span></a></li>
+      <li class="current"><a href="files.html"><span>Fichiers</span></a></li>
+      <li><a href="dirs.html"><span>Répertoires</span></a></li>
+    </ul>
+  </div>
+  <div class="navpath"><a class="el" href="dir_72030663e0f00126986f0653002ad98d.html">trunk</a>&nbsp;&raquo&nbsp;<a class="el" href="dir_5992c3ce1eca1153c6737efdfb55c8f0.html">fonction</a>
+  </div>
+</div>
+<div class="contents">
+<h1>Référence du fichier competence.inc.php</h1><table border="0" cellpadding="0" cellspacing="0">
+<tr><td></td></tr>
+<tr><td colspan="2"><br><h2>Fonctions</h2></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="competence_8inc_8php.html#e7a828fa765253ca957197e058aebb93">utilise_grimoire</a> ($id_objet, &amp;$joueur)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Utilise un grimoire.  <a href="#e7a828fa765253ca957197e058aebb93"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="competence_8inc_8php.html#d14d69c2b34792ca7c0a99428a6a646a">apprend_competence</a> ($ecole, $id_competence, &amp;$joueur, $R, $grimoire)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Cette fonction permet d'apprendre une compétence, gérant les prérequis, les grimoires, les taxes.  <a href="#d14d69c2b34792ca7c0a99428a6a646a"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="competence_8inc_8php.html#663dd209a90b495eca2cdbfebe345ecb">apprend_sort</a> ($ecole, $id_sort, &amp;$joueur, $R, $grimoire)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Cette fonction permet d'apprendre un sort -- ce qui marche comme une compétence -- gérant les prérequis, les grimoires, les taxes.  <a href="#663dd209a90b495eca2cdbfebe345ecb"></a><br></td></tr>
+</table>
+<hr><h2>Documentation des fonctions</h2>
+<a class="anchor" name="d14d69c2b34792ca7c0a99428a6a646a"></a><!-- doxytag: member="competence.inc.php::apprend_competence" ref="d14d69c2b34792ca7c0a99428a6a646a" args="($ecole, $id_competence, &amp;$joueur, $R, $grimoire)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">apprend_competence           </td>
+          <td>(</td>
+          <td class="paramtype">$&nbsp;</td>
+          <td class="paramname"> <em>ecole</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">$&nbsp;</td>
+          <td class="paramname"> <em>id_competence</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&amp;$&nbsp;</td>
+          <td class="paramname"> <em>joueur</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">$&nbsp;</td>
+          <td class="paramname"> <em>R</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">$&nbsp;</td>
+          <td class="paramname"> <em>grimoire</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+Cette fonction permet d'apprendre une compétence, gérant les prérequis, les grimoires, les taxes. 
+<p>
+<dl compact><dt><b>Paramètres:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>ecole</em>&nbsp;</td><td>l'école/type de compétence à apprendre </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>id_competence</em>&nbsp;</td><td>l'id de la compétence à apprendre </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>joueur</em>&nbsp;</td><td>le joueur qui apprend </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>R</em>&nbsp;</td><td>le royaume à qui on paye la taxe </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>grimoire</em>&nbsp;</td><td>true si on apprend depuis un grimoire(gratis), false sinon </td></tr>
+  </table>
+</dl>
+<dl class="return" compact><dt><b>Renvoie:</b></dt><dd>true si on a pu apprendre la compétence, false sinon </dd></dl>
+
+<p>
+<div class="dynheader">
+Voici le graphe d'appel pour cette fonction :</div>
+<div class="dynsection">
+<p><center><img src="competence_8inc_8php_d14d69c2b34792ca7c0a99428a6a646a_icgraph.png" border="0" usemap="#competence_8inc_8php_d14d69c2b34792ca7c0a99428a6a646a_icgraph_map" alt=""></center>
+<map name="competence_8inc_8php_d14d69c2b34792ca7c0a99428a6a646a_icgraph_map">
+<area shape="rect" href="competence_8inc_8php.html#e7a828fa765253ca957197e058aebb93" title="Utilise un grimoire." alt="" coords="201,5,308,32"></map>
+</div>
+
+</div>
+</div><p>
+<a class="anchor" name="663dd209a90b495eca2cdbfebe345ecb"></a><!-- doxytag: member="competence.inc.php::apprend_sort" ref="663dd209a90b495eca2cdbfebe345ecb" args="($ecole, $id_sort, &amp;$joueur, $R, $grimoire)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">apprend_sort           </td>
+          <td>(</td>
+          <td class="paramtype">$&nbsp;</td>
+          <td class="paramname"> <em>ecole</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">$&nbsp;</td>
+          <td class="paramname"> <em>id_sort</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&amp;$&nbsp;</td>
+          <td class="paramname"> <em>joueur</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">$&nbsp;</td>
+          <td class="paramname"> <em>R</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">$&nbsp;</td>
+          <td class="paramname"> <em>grimoire</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+Cette fonction permet d'apprendre un sort -- ce qui marche comme une compétence -- gérant les prérequis, les grimoires, les taxes. 
+<p>
+<dl compact><dt><b>Paramètres:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>ecole</em>&nbsp;</td><td>l'école/type de compétence à apprendre </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>id_competence</em>&nbsp;</td><td>l'id de la compétence à apprendre </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>joueur</em>&nbsp;</td><td>le joueur qui apprend </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>R</em>&nbsp;</td><td>le royaume à qui on paye la taxe </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>grimoire</em>&nbsp;</td><td>true si on apprend depuis un grimoire(gratis), false sinon </td></tr>
+  </table>
+</dl>
+<dl class="return" compact><dt><b>Renvoie:</b></dt><dd>true si on a pu apprendre la compétence, false sinon </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="e7a828fa765253ca957197e058aebb93"></a><!-- doxytag: member="competence.inc.php::utilise_grimoire" ref="e7a828fa765253ca957197e058aebb93" args="($id_objet, &amp;$joueur)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">utilise_grimoire           </td>
+          <td>(</td>
+          <td class="paramtype">$&nbsp;</td>
+          <td class="paramname"> <em>id_objet</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&amp;$&nbsp;</td>
+          <td class="paramname"> <em>joueur</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+Utilise un grimoire. 
+<p>
+
+<p>
+<div class="dynheader">
+Voici le graphe d'appel pour cette fonction :</div>
+<div class="dynsection">
+<p><center><img src="competence_8inc_8php_e7a828fa765253ca957197e058aebb93_cgraph.png" border="0" usemap="#competence_8inc_8php_e7a828fa765253ca957197e058aebb93_cgraph_map" alt=""></center>
+<map name="competence_8inc_8php_e7a828fa765253ca957197e058aebb93_cgraph_map">
+<area shape="rect" href="competence_8inc_8php.html#d14d69c2b34792ca7c0a99428a6a646a" title="Cette fonction permet d&#39;apprendre une compétence, gérant les prérequis, les..." alt="" coords="164,5,308,32"></map>
+</div>
+
+</div>
+</div><p>
+</div>
+<hr size="1"><address style="text-align: right;"><small>Généré le Sat Oct 4 20:00:39 2008 pour Starshine Online par&nbsp;
+<a href="http://www.doxygen.org/index.html">
+<img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.6 </small></address>
+</body>
+</html>

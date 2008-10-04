@@ -1,0 +1,20 @@
+<area shape="rect" href="$classactive__effect.html" title="Effect actif : buff ou compétence de combat." alt="" coords="667,469,776,645">
+<area shape="rect" href="$classcompetence.html" title="Compétence : c&#39;est un effet qui peut s&#39;améliorer." alt="" coords="895,509,1007,605">
+<area shape="rect" href="$classempoisonne.html" title="{empoisonne\n|+ $vigueur\l|+ __construct()\l+ fin_round()\l+ factory()\l}" alt="" coords="1031,501,1140,613">
+<area shape="rect" href="$classmagnetique.html" title="{magnetique\n|+ $nb\l+ $chance\l+ $titre\l+ $hit\l|+ __construct()\l+ calcul_degats()\l+ fin_round()\l+ magnetise()\l}" alt="" coords="1181,469,1301,645">
+<area shape="rect" href="$classcomp__combat.html" title="Competence de combat." alt="" coords="572,717,681,797">
+<area shape="rect" href="$classbotte.html" title="botte : competence de combat avec une condition" alt="" coords="355,893,464,989">
+<area shape="rect" href="$classfleche__poison.html" title="{fleche_poison\n|+ $poison\l|+ __construct()\l+ calcul_arme()\l+ inflige_degats()\l+ fin_round()\l+ factory()\l}" alt="" coords="488,869,608,1013">
+<area shape="rect" href="$classprecision__chirurgicale.html" title="{precision_chirurgicale\n||+ __construct()\l+ calcul_critique()\l}" alt="" coords="632,893,779,989">
+<area shape="rect" href="$classpreparation.html" title="{preparation\n||+ __construct()\l+ debut_round()\l}" alt="" coords="803,893,915,989">
+<area shape="rect" href="$classbotte__aigle.html" title="{botte_aigle\n||+ __construct()\l+ debut_round()\l}" alt="" coords="5,1069,117,1165">
+<area shape="rect" href="$classbotte__chat.html" title="{botte_chat\n||+ __construct()\l+ debut_round()\l}" alt="" coords="141,1069,253,1165">
+<area shape="rect" href="$classbotte__crabe.html" title="{botte_crabe\n||+ __construct()\l+ inflige_degats()\l}" alt="" coords="277,1069,397,1165">
+<area shape="rect" href="$classbotte__ours.html" title="{botte_ours\n||+ __construct()\l+ etourdit()\l+ inflige_degats()\l}" alt="" coords="421,1061,541,1173">
+<area shape="rect" href="$classbotte__scorpion.html" title="{botte_scorpion\n||+ __construct()\l+ calcul_critique()\l}" alt="" coords="565,1069,688,1165">
+<area shape="rect" href="$classbotte__tigre.html" title="{botte_tigre\n||+ __construct()\l+ calcul_degats()\l}" alt="" coords="712,1069,832,1165">
+<area shape="rect" href="$classart__critique.html" title="{art_critique\n|+ $critique\l|+ __construct()\l+ fin_round()\l+ calcul_mult_critique()\l}" alt="" coords="705,701,860,813">
+<area shape="rect" href="$classmaitrise__bouclier.html" title="{maitrise_bouclier\n||+ __construct()\l+ calcul_bloquage()\l+ fin_round()\l+ factory()\l}" alt="" coords="884,693,1017,821">
+<area shape="rect" href="$classmaitrise__dague.html" title="{maitrise_dague\n||+ __construct()\l+ debut_round()\l+ fin_round()\l+ factory()\l}" alt="" coords="1041,693,1153,821">
+<area shape="rect" href="$classfleche__magnetique.html" title="{fleche_magnetique\n||+ __construct()\l+ factory()\l}" alt="" coords="1177,709,1305,805">
+<area shape="rect" href="$classglobe__foudre.html" title="{globe_foudre\n||+ __construct()\l}" alt="" coords="1329,717,1439,797">
