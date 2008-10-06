@@ -100,7 +100,7 @@ if (isset($_GET['ID']))
 						if ($attaque > $defense)
 						{
 							$duree = $row['duree'];
-							if(array_key_exists('souffrance_extenuante', $joueur['buff'])) $duree = $duree * $joueur['buff']['buff_souffrance_extenuante']['effet'];
+							if(array_key_exists('souffrance_extenuante', $joueur['buff'])) $duree = $duree * $joueur['buff']['souffrance_extenuante']['effet'];
 							//Mis en place du debuff
 							if(lance_buff($row['type'], $cible['id'], $row['effet'], $row['effet2'], ($duree * 4), $row['nom'], description($row['description'], $row), 'monstre', 1, 0, 0))
 							{
