@@ -615,6 +615,30 @@ if(date("N") == 1)
 	//Les rois peuvent de nouveau se téléporter
 	$requete = "UPDATE perso SET teleport_roi = 'false' WHERE rang_royaume = 6";
 	$db->query($requete);
+	//Fin des enchères
+	$requete = "SELECT id_joueur, prix FROM vente_terrain WHERE id_joueur != 0";
+	$req = $db->query($requete);
+	while($row = $db->read_assoc($req))
+	{
+		$requete = "INSERT INTO terrain (id, id_joueur, nb_case) VALUES ('', ".$row['id_joueur'].", 2)";
+		$db->query($requete);
+		$mail .= $row['id_joueur']." gagne un terrain pour ".$row['prix'].".\n";
+	}
+	//Suppression des enchères
+	$requete = "DELETE FROM vente_terrain";
+	$db->query($requete);
+	//Mis en vente de nouveaux terrains
+	foreach($tableau_race as $race => $stats)
+	{
+		$nb_terrains = floor($stats[16] / 500);
+		$i = 0;
+		while($i < $nb_terrains)
+		{
+			$requete = "INSERT INTO vente_terrain (id, id_royaume, date_fin, id_joueur, prix) VALUES ('', ".$Trace[$race]['numrace'].", 0, 0, 5000)"
+			$db->query($requete);
+			$i++;
+		}
+	}
 }
 
 mail('masterob1@chello.fr', 'Starshine - Script journalier du '.$date, $mail);
