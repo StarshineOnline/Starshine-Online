@@ -124,9 +124,18 @@ class Objets extends Objet
 		}
 	}
 	
+	//supprimer l'objet de la base.
 	function supprimer()
 	{
 		parent::supprimer('objet');
+	}
+	
+	//Infobulle d'un objet
+	function infobulle()
+	{
+		$milieu = '<tr><td>Stack:</td><td>'.$this->stack.'</td></tr>'
+		$milieu .= '<tr><td>Description:</td></tr><tr><td>'.addslashes($this->description).'</td></tr>';
+		return bulleBase($milieu);
 	}
 	
 	function __toString()

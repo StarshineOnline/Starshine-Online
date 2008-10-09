@@ -131,6 +131,16 @@ class Armure extends Objet
 		parent::supprimer('armure');
 	}
 	
+	//Infobulle de l'armure
+	function infobulle()
+	{
+		$milieu = '<tr><td>PP:</td><td>'.$this->pp.'</td></tr>'
+		$milieu .= '<tr><td>PM:</td></tr><tr><td>'.$this->pm.'</td></tr>';
+		$milieu .= '<tr><td>Force n&eacute;cessaire:</td></tr><tr><td>'.$this->forceReq.'</td></tr>';
+		//Gemmage?
+		return bulleBase($milieu).'<br />'.$this->effet;
+	}
+	
 	function __toString()
 	{
 		return parent::__toString().', '.$this->effet.', '.$this->pp.', '.$this->pm.', '.$this->forceReq.', '.$this->batimentReq;

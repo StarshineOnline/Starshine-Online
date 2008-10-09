@@ -62,6 +62,7 @@ abstract class Objet
 	
 	//Fonction permettant d'ajouter un nouvel objet dans la base
 	abstract public function sauver();
+	abstract public function infobulle();
 	
 	//Suppression générique
 	protected function supprimer($table)
@@ -88,6 +89,15 @@ abstract class Objet
 	function __toString()
 	{
 		return $this->nom.', '.$this->type.', '.$this->prix;
+	}
+	
+	//Retourne le début et la fin de la chaine de l'infobulle.
+	protected function bulleBase($middle)
+	{
+		$infobulle = '<strong>'.$this->nom.'</strong><br />':
+		$infobulle .= '<table><tr><td>Type:</td><td>'.$this->type.'</td></tr>'.$middle;
+		$infobulle = '<tr><td>Prix HT:<br /><span class=\'xsmall\'>(en magasin)</span></td><td>'.$this->prix.'</td></tr></table>';
+		return $infobulle;
 	}
 }
 

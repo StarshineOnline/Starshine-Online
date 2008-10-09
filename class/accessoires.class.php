@@ -134,6 +134,14 @@ class Accessoire extends Objet
 		parent::supprimer('accessoire');
 	}
 	
+	//Infobulle de l'accessoire
+	function infobulle()
+	{
+		$milieu = '<tr><td>Effet:</td><td>'.$this->description.'</td></tr>'
+		$milieu .= '<tr><td>Puissance n&eacute;cessaire:</td></tr><tr><td>'.$this->puissance.'</td></tr>';
+		return bulleBase($milieu).'<br />';
+	}
+	
 	function __toString()
 	{
 		return parent::__toString().', '.$this->effet.', '.$this->puissance.', '.$this->achetable.', '.$this->description.', '.$this->batimentReq;
