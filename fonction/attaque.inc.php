@@ -474,7 +474,7 @@ function attaque($acteur = 'attaquant', $competence)
   if(array_key_exists('maitrise_critique', $actif['competences']) && $critique)
     {
       $actif['maitrise_critique'] = $actif['competences']['maitrise_critique'];
-      $augmentation = augmentation_competence('maitrise_critique', $actif, 3.5);
+      $augmentation = augmentation_competence('maitrise_critique', $actif, 2.5);
       if ($augmentation[1] == 1)
 				{
 					$actif['competences']['maitrise_critique'] = $augmentation[0];
@@ -485,7 +485,7 @@ function attaque($acteur = 'attaquant', $competence)
   if(array_key_exists('art_critique', $actif['competences']) && $critique)
     {
       $actif['art_critique'] = $actif['competences']['art_critique'];
-      $augmentation = augmentation_competence('art_critique', $actif, 3.5);
+      $augmentation = augmentation_competence('art_critique', $actif, 2.5);
       if ($augmentation[1] == 1)
 				{
 					$actif['competences']['art_critique'] = $augmentation[0];
@@ -494,7 +494,7 @@ function attaque($acteur = 'attaquant', $competence)
 				}
     }
   $diff_att = 3.2 * $G_round_total / 5;
-  $diff_esquive = 3 * $G_round_total / 5;
+  $diff_esquive = 2.7 * $G_round_total / 5;
   $diff_blocage = 2.5 * $G_round_total / 5;
   $augmentation = augmentation_competence($competence, $actif, $diff_att);
   if ($augmentation[1] == 1)

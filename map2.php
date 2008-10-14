@@ -217,27 +217,27 @@ echo "<div id='carte'>";
 		}
 		if( ($coord['x'] == $x) && ($coord['y'] == $y) )
 		{
-			if(!empty($MAP[$coord['x']][$coord['y']]["Joueurs"][0]["image"])) 	{ $background = "background:transparent url(".$MAP[$coord['x']][$coord['y']]["Joueurs"][0]["image"].") center no-repeat;"; };
+			if(!empty($MAP[$coord['x']][$coord['y']]["Joueurs"][0]["image"])) 	{ $background = "background-image : url(".$MAP[$coord['x']][$coord['y']]["Joueurs"][0]["image"].") !important;"; };
 		}
 		elseif(is_array($MAP[$coord['x']][$coord['y']]["PNJ"]))
 		{//-- Affichage des PNJ ---------------------------------------//
-			if(!empty($MAP[$coord['x']][$coord['y']]["PNJ"][0]["image"])) 		{ $background = "background:transparent url(".$MAP[$coord['x']][$coord['y']]["PNJ"][0]["image"].") center no-repeat;"; };
+			if(!empty($MAP[$coord['x']][$coord['y']]["PNJ"][0]["image"])) 		{ $background = "background-image : url(".$MAP[$coord['x']][$coord['y']]["PNJ"][0]["image"].") !important;"; };
 		}
 		elseif(is_array($MAP[$coord['x']][$coord['y']]["Drapeaux"]))
 		{//-- Affichage des Drapeaux ----------------------------------//
-			if(!empty($MAP[$coord['x']][$coord['y']]["Drapeaux"][0]["image"])) 	{ $background = "background:transparent url(".$MAP[$coord['x']][$coord['y']]["Drapeaux"][0]["image"].") center no-repeat;"; };
+			if(!empty($MAP[$coord['x']][$coord['y']]["Drapeaux"][0]["image"])) 	{ $background = "background-image : url(".$MAP[$coord['x']][$coord['y']]["Drapeaux"][0]["image"].") !important;"; };
 		}
 		elseif(is_array($MAP[$coord['x']][$coord['y']]["Batiments"]))
 		{//-- Affichage des Batiments ---------------------------------//
-			if(!empty($MAP[$coord['x']][$coord['y']]["Batiments"][0]["image"])) { $background = "background:transparent url(".$MAP[$coord['x']][$coord['y']]["Batiments"][0]["image"].") center no-repeat;"; };
+			if(!empty($MAP[$coord['x']][$coord['y']]["Batiments"][0]["image"])) { $background = "background-image : url(".$MAP[$coord['x']][$coord['y']]["Batiments"][0]["image"].") !important;"; };
 		}
 		elseif(is_array($MAP[$coord['x']][$coord['y']]["Joueurs"]))
 		{//-- Affichage des Joueurs -----------------------------------//
-			if(!empty($MAP[$coord['x']][$coord['y']]["Joueurs"][0]["image"])) 	{ $background = "background:transparent url(".$MAP[$coord['x']][$coord['y']]["Joueurs"][0]["image"].") center no-repeat;"; };
+			if(!empty($MAP[$coord['x']][$coord['y']]["Joueurs"][0]["image"])) 	{ $background = "background-image : url(".$MAP[$coord['x']][$coord['y']]["Joueurs"][0]["image"].") !important;"; };
 		}
 		elseif(is_array($MAP[$coord['x']][$coord['y']]["Monstres"]))
 		{//-- Affichage des Monstres ----------------------------------//
-			if(!empty($MAP[$coord['x']][$coord['y']]["Monstres"][0]["image"])) 	{ $background = "background:transparent url(".$MAP[$coord['x']][$coord['y']]["Monstres"][0]["image"].") center no-repeat;"; };
+			if(!empty($MAP[$coord['x']][$coord['y']]["Monstres"][0]["image"])) 	{ $background = "background-image : url(".$MAP[$coord['x']][$coord['y']]["Monstres"][0]["image"].") !important;"; };
 		}
 		else { $background = ""; }
 		

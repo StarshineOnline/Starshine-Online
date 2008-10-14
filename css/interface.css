@@ -85,7 +85,7 @@ a:hover, a:active 	{ color:#7290db; }
 .map li							{ float:left; width:60px; height:inherit; }
 .map_bord_gauche				{ width:25px !important; color:white; line-height:60px; text-align:center; background:#D8AB41 repeat scroll 0%; }
 .map_bord_gauche2				{ width:25px !important; color:white; line-height:60px; text-align:center; background:transparent url('../image/bord2_map.png') center; }
-.map_contenu 					{ width:56px; height:56px; margin:2px 2px 2px 2px; }
+.map_contenu 					{ width:56px; height:56px; margin:2px 2px 2px 2px; background:transparent url(image/pixel.gif) center no-repeat;}
 
 /*-- Weather ----------------------------------------------------------*/
 #moment_jour { position:absolute; top:0px; left:0px; z-index:-1; width:960px; height:140px; background:transparent url('../../image/weather/matin5.jpg') bottom center no-repeat; }

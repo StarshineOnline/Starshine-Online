@@ -70,7 +70,7 @@ abstract class Objet
 		if( $this->id != -1 )
 		{
 			$requete = 'DELETE FROM '.$table.' WHERE id = '.$this->id;
-			mysql_query($requete);
+			$db->query($requete);
 		}
 	}
 	

@@ -11,25 +11,24 @@ class Objets extends Objet
 	protected $description;
 	
 	/**	
-	    *  	Constructeur permettant la création d'un accessoire.
+	    *  	Constructeur permettant la création d'un objet.
 	    *	Les valeurs par défaut sont celles de la base de donnée.
 	    *	Le constructeur accepte plusieurs types d'appels:
 	    *		-Objets() qui construit un objet "vide".
 	    *		-Objets($id) qui va chercher l'objet dont l'id est $id dans la base.
 	    *		-Objets($nom,...,$forceReq) qui construit un nouvel objet à partir des valeurs.	   
 	**/
-	function __construct($nom = '', $type = '', $prix = 0, $achetable = 'y',  $effet = 0, $stack = 0,  $utilisable = 'y', $description = '')
+	function __construct($id = '', $nom = '', $type = '', $prix = 0, $achetable = 'y',  $effet = 0, $stack = 0,  $utilisable = 'y', $description = '')
 	{
 		//Verification du nombre et du type d'argument pour construire l'objet adequat.
-		if( (func_num_args() == 1) && is_numeric($nom) )
+		if( (func_num_args() == 1) && is_numeric($id) )
 		{
-			$requeteSQL = mysql_query('SELECT nom, type, prix, effet, stack, description, utilisable, achetable FROM objet WHERE id = '.$nom);
+			$requeteSQL = $db->query('SELECT nom, type, prix, effet, stack, description, utilisable, achetable FROM objet WHERE id = '.$id);
 			//Si l'objet est dans la base, on le charge sinon on crée un objet vide.
-			if( mysql_num_rows($requeteSQL) > 0 )
+			if( $db->num_rows($requeteSQL) > 0 )
 			{
-				$this->id = $nom;
-				list($this->nom, $this->type, $this->prix, $this->effet, $this->stack, $this->description, $this->utilisable, $this->achetable) = 
-				mysql_fetch_row($requeteSQL);
+				$this->id = $id;
+				list($this->nom, $this->type, $this->prix, $this->effet, $this->stack, $this->description, $this->utilisable, $this->achetable) = $db->read_row($requeteSQL);
 				$this->description = stripslashes($this->description);
 			}
 			else
@@ -111,16 +110,16 @@ class Objets extends Objet
 			$requete .= 'effet = "'.$this->effet.'", description = "'.addslashes($this->description).'", ';
 			$requete .= 'stack = "'.$this->stack.'", achetable = "'.$this->achetable.'", ';
 			$requete .= 'utilisable = "'.$this->utilisable.'" WHERE id = '.$this->id;
-			mysql_query($requete);
+			$db->query($requete);
 		}
 		else
 		{
 			$requete = 'INSERT INTO objet (nom, type, prix, effet, utilisable, description, stack, achetable) VALUES(';
 			$requete .= $this->insertBase().', "'.$this->effet.'", "'.$this->utilisable.'", "'.addslashes($this->description).'", "';
 			$requete .= $this->stack.'", "'.$this->achetable.'")';
-			mysql_query($requete);
+			$db->query($requete);
 			//Récuperation du dernier ID inséré.
-			list($this->id) = mysql_fetch_row(mysql_query('SELECT LAST_INSERT_ID()'));
+			list($this->id) = $db->last_insert_id()
 		}
 	}
 	
