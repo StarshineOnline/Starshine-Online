@@ -31,20 +31,26 @@ for($i = 0; $i < 5; $i++)
 {
 	if($rang[$i])
 	{
-		$graph = new PieGraph(700, 400, "auto");
-		$graph->SetShadow();
+		// Dataset definition
+		$DataSet = new pData;
+		$DataSet->AddPoint($data[$i],"Serie1");
+		$DataSet->AddPoint($legend[$i],"Serie2");
+		$DataSet->AddAllSeries();
+		$DataSet->SetAbsciseLabelSerie("Serie2");
 		
-		$graph->title->Set("Répartition de la population par classe - Rang ".$i.", le ".$date);
-		//$graph->tabtitle->SetFont(FF_ARIAL,FS_BOLD,13);
+		// Initialise the graph
+		$graph = new pChart(700, 400);
+		$graph->drawFilledRoundedRectangle(7,7,693,393,5,240,240,240);
+		$graph->drawRoundedRectangle(5,5,695,395,5,230,230,230);
 		
-		$p1 = new PiePlot3D($data[$i]);
-		$p1->SetLabels($label[$i]);
-		$p1->SetSize(0.5);
-		$p1->SetCenter(0.45);
-		//$p1->SetLegends($legend);
-		$p1->SetLabelPos(0.6);
-		$graph->Add($p1);
-		$graph->Stroke('image/stat_classe'.$i.'.jpg');
+		// Draw the pie chart  
+		$graph->setFontProperties("pChart/fonts/tahoma.ttf",8);
+		$graph->drawPieGraph($DataSet->GetData(),$DataSet->GetDataDescription(),315,210,250,PIE_PERCENTAGE_LABEL,TRUE,50,20,5);
+		//$graph->drawPieLegend(590,15,$DataSet->GetData(),$DataSet->GetDataDescription(),250,250,250);
+		$graph->setFontProperties("pChart/fonts/tahoma.ttf",12);
+		$graph->drawTitle(50,22,'Répartition de la population par classe - Rang '.$i.', le '.$date ,50,50,50,585);  
+		
+		$graph->Render('image/stat_classe'.$i.'.png');
 	}
 }
 ?>

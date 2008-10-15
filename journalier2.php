@@ -49,13 +49,9 @@ include('fonction/equipement.inc.php');
 //Inclusion du fichier contenant la classe inventaire
 include('class/inventaire.class.php');
 
-include ("jpgraph/src/jpgraph.php");
-include ("jpgraph/src/jpgraph_pie.php");
-include ("jpgraph/src/jpgraph_pie3d.php");
-include ("jpgraph/src/jpgraph_line.php");
-include ("jpgraph/src/jpgraph_bar.php");
-include ("jpgraph/src/jpgraph_scatter.php");
-include ("jpgraph/src/jpgraph_regstat.php");
+include("pChart/pData.class");
+include("pChart/pChart.class");
+
 $date = date("Y-m-d", mktime(0, 0, 0, date("m") , date("d") - 1, date("Y")));
 
 //Verification des joueurs inactifs
@@ -634,7 +630,7 @@ if(date("N") == 1)
 		$i = 0;
 		while($i < $nb_terrains)
 		{
-			$requete = "INSERT INTO vente_terrain (id, id_royaume, date_fin, id_joueur, prix) VALUES ('', ".$Trace[$race]['numrace'].", 0, 0, 5000)"
+			$requete = "INSERT INTO vente_terrain (id, id_royaume, date_fin, id_joueur, prix) VALUES ('', ".$Trace[$race]['numrace'].", 0, 0, 5000)";
 			$db->query($requete);
 			$i++;
 		}

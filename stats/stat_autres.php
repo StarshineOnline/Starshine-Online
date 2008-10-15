@@ -30,86 +30,92 @@ while($row = $db->read_assoc($req))
 }
 
 //GRAPHES NBR JOUEURS
-$graph = new Graph(900, 400, "auto");
-$graph->SetShadow();
+$DataSet = new pData();
+$DataSet->AddPoint($data['nombre_joueur'], "Serie1");
+$DataSet->AddAllSeries();
+$DataSet->AddPoint($dates, "dates");
+$DataSet->SetAbsciseLabelSerie("dates");
 
-$graph->SetMarginColor('white');
-$graph->SetScale("textlin");
-$graph->SetFrame(false);
-$graph->SetMargin(50,120,30,30);
+//Graph
+$graph = new pChart(900, 400);
+$graph->setFontProperties("pChart/fonts/tahoma.ttf",8);
+$graph->setGraphArea(70,30,880,375);
+$graph->drawFilledRoundedRectangle(7,7,893,393,5,240,240,240);
+$graph->drawRoundedRectangle(5,5,895,395,5,230,230,230);
+$graph->drawGraphArea(255,255,255,TRUE);
+$graph->drawScale($DataSet->GetData(),$DataSet->GetDataDescription(),SCALE_NORMAL,150,150,150,TRUE,0,2);
+$graph->drawGrid(4,TRUE,230,230,230,50);
 
-$graph->tabtitle->Set('Evolution du nombre de joueurs');
-//$graph->tabtitle->SetFont(FF_ARIAL,FS_BOLD,13);
+// Draw the 0 line
+$graph->setFontProperties("pChart/fonts/tahoma.ttf",6);
+$graph->drawTreshold(0,143,55,72,TRUE,TRUE);
 
-$graph->yaxis->HideZeroLabel();
-$graph->ygrid->SetFill(true, '#EFEFEF@0.5', '#BBCCFF@0.5');
-$graph->xgrid->Show();
+// Draw the cubic curve graph
+$graph->drawLineGraph($DataSet->GetData(),$DataSet->GetDataDescription());
+$graph->drawPlotGraph($DataSet->GetData(),$DataSet->GetDataDescription(),3,2,255,255,255);
 
-$graph->xaxis->SetTickLabels($dates);
-
-// Create lines
-$p1 = new LinePlot($data['nombre_joueur']);
-$p1 ->SetWeight(2);
-$graph->Add($p1);
-
-$graph->legend->SetShadow('gray@0.4',5);
-$graph->legend->SetPos(0, 0.1, "right", "top");
-// Output line
-$graph->Stroke($root.'image/stat_joueur.jpg');
+// Finish the graph  
+$graph->setFontProperties("pChart/fonts/tahoma.ttf",12);
+$graph->drawTitle(50,22,'Evolution du nombre de joueurs',50,50,50,585);
+$graph->Render($root.'image/stat_joueur.png');
 
 //GRAPHES NBR MONSTRES
-$graph = new Graph(900, 400, "auto");
-$graph->SetShadow();
+$DataSet = new pData();
+$DataSet->AddPoint($data['nombre_monstre'], "Serie1");
+$DataSet->AddAllSeries();
+$DataSet->AddPoint($dates, "dates");
+$DataSet->SetAbsciseLabelSerie("dates");
 
-$graph->SetMarginColor('white');
-$graph->SetScale("textlin");
-$graph->SetFrame(false);
-$graph->SetMargin(50,120,30,30);
+//Graph
+$graph = new pChart(900, 400);
+$graph->setFontProperties("pChart/fonts/tahoma.ttf",8);
+$graph->setGraphArea(70,30,880,375);
+$graph->drawFilledRoundedRectangle(7,7,893,393,5,240,240,240);
+$graph->drawRoundedRectangle(5,5,895,395,5,230,230,230);
+$graph->drawGraphArea(255,255,255,TRUE);
+$graph->drawScale($DataSet->GetData(),$DataSet->GetDataDescription(),SCALE_NORMAL,150,150,150,TRUE,0,2);
+$graph->drawGrid(4,TRUE,230,230,230,50);
 
-$graph->tabtitle->Set('Evolution du nombre de monstres');
-//$graph->tabtitle->SetFont(FF_ARIAL,FS_BOLD,13);
+// Draw the 0 line
+$graph->setFontProperties("pChart/fonts/tahoma.ttf",6);
+$graph->drawTreshold(0,143,55,72,TRUE,TRUE);
 
-$graph->yaxis->HideZeroLabel();
-$graph->ygrid->SetFill(true, '#EFEFEF@0.5', '#BBCCFF@0.5');
-$graph->xgrid->Show();
+// Draw the cubic curve graph
+$graph->drawLineGraph($DataSet->GetData(),$DataSet->GetDataDescription());
+$graph->drawPlotGraph($DataSet->GetData(),$DataSet->GetDataDescription(),3,2,255,255,255);
 
-$graph->xaxis->SetTickLabels($dates);
-
-// Create lines
-$p1 = new LinePlot($data['nombre_monstre']);
-$p1 ->SetWeight(2);
-$graph->Add($p1);
-
-$graph->legend->SetShadow('gray@0.4',5);
-$graph->legend->SetPos(0, 0.1, "right", "top");
-// Output line
-$graph->Stroke($root.'image/stat_monstre.jpg');
+// Finish the graph  
+$graph->setFontProperties("pChart/fonts/tahoma.ttf",12);
+$graph->drawTitle(50,22,'Evolution du nombre de monstres',50,50,50,585);
+$graph->Render($root.'image/stat_monstre.png');
 
 //GRAPHES NBR NIVEAUX MOYEN
-$graph = new Graph(900, 400, "auto");
-$graph->SetShadow();
+$DataSet = new pData();
+$DataSet->AddPoint($data['niveau_moyen'], "Serie1");
+$DataSet->AddAllSeries();
+$DataSet->AddPoint($dates, "dates");
+$DataSet->SetAbsciseLabelSerie("dates");
 
-$graph->SetMarginColor('white');
-$graph->SetScale("textlin");
-$graph->SetFrame(false);
-$graph->SetMargin(50,120,30,30);
+//Graph
+$graph = new pChart(900, 400);
+$graph->setFontProperties("pChart/fonts/tahoma.ttf",8);
+$graph->setGraphArea(70,30,880,375);
+$graph->drawFilledRoundedRectangle(7,7,893,393,5,240,240,240);
+$graph->drawRoundedRectangle(5,5,895,395,5,230,230,230);
+$graph->drawGraphArea(255,255,255,TRUE);
+$graph->drawScale($DataSet->GetData(),$DataSet->GetDataDescription(),SCALE_NORMAL,150,150,150,TRUE,0,2);
+$graph->drawGrid(4,TRUE,230,230,230,50);
 
-$graph->tabtitle->Set('Evolution du niveau moyen');
-//$graph->tabtitle->SetFont(FF_ARIAL,FS_BOLD,13);
+// Draw the 0 line
+$graph->setFontProperties("pChart/fonts/tahoma.ttf",6);
+$graph->drawTreshold(0,143,55,72,TRUE,TRUE);
 
-$graph->yaxis->HideZeroLabel();
-$graph->ygrid->SetFill(true, '#EFEFEF@0.5', '#BBCCFF@0.5');
-$graph->xgrid->Show();
+// Draw the cubic curve graph
+$graph->drawLineGraph($DataSet->GetData(),$DataSet->GetDataDescription());
+$graph->drawPlotGraph($DataSet->GetData(),$DataSet->GetDataDescription(),3,2,255,255,255);
 
-$graph->xaxis->SetTickLabels($dates);
-
-// Create lines
-$p1 = new LinePlot($data['niveau_moyen']);
-$p1 ->SetWeight(2);
-$graph->Add($p1);
-
-$graph->legend->SetShadow('gray@0.4',5);
-$graph->legend->SetPos(0, 0.1, "right", "top");
-// Output line
-$graph->Stroke($root.'image/stat_niveau_moyen.jpg');
+// Finish the graph  
+$graph->setFontProperties("pChart/fonts/tahoma.ttf",12);
+$graph->drawTitle(50,22,'Evolution du niveau moyen',50,50,50,585);
+$graph->Render($root.'image/stat_niveau_moyen.png');
 ?>
