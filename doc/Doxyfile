@@ -128,8 +128,8 @@ FILE_PATTERNS          = *.c \
                          *.vhdl
 RECURSIVE              = YES
 EXCLUDE                = ../pjirc \
-                         ../jpgraph \
-                         ../sql
+                         ../sql \
+                         ../pChart
 EXCLUDE_SYMLINKS       = NO
 EXCLUDE_PATTERNS       = 
 EXCLUDE_SYMBOLS        = 

@@ -1,14 +1,24 @@
 <?php
+/**
+* @file fp.php
+* Fichier d'inclusion principal.
+* 
+* Fichier contenant les informations de la session et tous les fichiers à inclure.
+*/
+
+
 if(!isset($root)) $root = '';
-// Fichier principal ou l'on pourra les informations de la sessions et ou l'on mettra tout les fichiers a inclure
+
+// Initialisation de la session et de la bufferisation de la sortie.
 session_start();
 ob_start();
 
 // Spécifie à la bibliothèque mb qu'on utilise UTF-8
 mb_internal_encoding("UTF-8");
 
-//Inclusion des fonctions permettant de gérer le temps
+//Classe gérant les accès à la base de données
 include($root.'class/db.class.php');
+//Inclusion des fonctions permettant de gérer le temps
 include($root.'fonction/time.inc.php');
 include($root.'fonction/action.inc.php');
 

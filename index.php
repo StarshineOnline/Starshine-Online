@@ -1,4 +1,10 @@
 <?php
+/**
+* @file
+* Page d'accueil.
+*/
+
+
 $textures = false;
 include('haut.php');
 setlocale(LC_ALL, 'fr_FR', 'FRA');

@@ -8,6 +8,8 @@ elseif($connexion)
 	header("Location: index.php");
 }
 
+/// @var juste pour empêcher Doxygen de bugger
+
 $journal = '';
 //Connexion du joueur
 if (isset($_POST['log']) OR isset($_COOKIE['nom']))

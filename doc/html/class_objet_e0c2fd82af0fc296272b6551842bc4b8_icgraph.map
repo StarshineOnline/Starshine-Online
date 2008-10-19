@@ -1,4 +1,5 @@
 <area shape="rect" href="$class_objets.html#f0029c2cd9b1f966492a008877e5633f" title="Objets::sauver" alt="" coords="200,5,304,32">
 <area shape="rect" href="$class_objet_royaume.html#e21770be28f28265ed1c4ae95e72a641" title="ObjetRoyaume::sauver" alt="" coords="176,56,328,83">
 <area shape="rect" href="$class_armure.html#6f2ed1a7ce82401ce7cbea0891faa239" title="Armure::sauver" alt="" coords="199,107,305,133">
-<area shape="rect" href="$class_accessoire.html#71bdaff55d277ebacb75b253c2c30bec" title="Accessoire::sauver" alt="" coords="187,157,317,184">
+<area shape="rect" href="$class_arme.html#cc3ce6366a9110faede9e6eebdb6c25a" title="Arme::sauver" alt="" coords="204,157,300,184">
+<area shape="rect" href="$class_accessoire.html#71bdaff55d277ebacb75b253c2c30bec" title="Accessoire::sauver" alt="" coords="187,208,317,235">

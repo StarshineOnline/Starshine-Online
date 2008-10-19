@@ -18,13 +18,17 @@
   </div>
 </div>
 <div class="contents">
-<h1>Référence du fichier action.inc.php</h1><table border="0" cellpadding="0" cellspacing="0">
+<h1>Référence du fichier action.inc.php</h1>Gestion des scripts. <a href="#_details">Plus de détails...</a>
+<p>
+<table border="0" cellpadding="0" cellspacing="0">
 <tr><td></td></tr>
 <tr><td colspan="2"><br><h2>Fonctions</h2></td></tr>
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="action_8inc_8php.html#6a794cf834a35c926819c59bf3193219">script_action</a> ($joueur, $ennemi, $mode)</td></tr>
 
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Renvoie l'action a effectuer, si le personnage peut en faire une.  <a href="#6a794cf834a35c926819c59bf3193219"></a><br></td></tr>
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="action_8inc_8php.html#041c268eaf24380770a3922a7c3e55bc">sub_script_action</a> ($joueur, $ennemi, $mode)</td></tr>
 
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Détermine l'action a effectuer, si on peut.  <a href="#041c268eaf24380770a3922a7c3e55bc"></a><br></td></tr>
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="action_8inc_8php.html#eac6f598954a3952c8dbbaed9d6ea370">lance_sort</a> ($<a class="el" href="bureau__quete_8php.html#cf2488b95c97e0378c9bf49de3b50f28">id</a>, $acteur)</td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="action_8inc_8php.html#09b6dc45f599376a3695ec53bbb1d461">lance_comp</a> ($<a class="el" href="bureau__quete_8php.html#cf2488b95c97e0378c9bf49de3b50f28">id</a>, $acteur)</td></tr>
@@ -36,6 +40,9 @@
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="action_8inc_8php.html#abbb250b0c79b0ef7ce8aefc83b026b6">get_etats</a> ()</td></tr>
 
 </table>
+<hr><a name="_details"></a><h2>Description détaillée</h2>
+Gestion des scripts. 
+<p>
 <hr><h2>Documentation des fonctions</h2>
 <a class="anchor" name="fa6728855931f0feb1a5ee09e5a97c08"></a><!-- doxytag: member="action.inc.php::critique_magique" ref="fa6728855931f0feb1a5ee09e5a97c08" args="($attaquant, $defenseur)" -->
 <div class="memitem">
@@ -255,6 +262,19 @@ Voici le graphe d'appel pour cette fonction :</div>
 <div class="memdoc">
 
 <p>
+Renvoie l'action a effectuer, si le personnage peut en faire une. 
+<p>
+Récupère l'action à effectuer à l'aide à l'aide de la fonction <a class="el" href="action_8inc_8php.html#041c268eaf24380770a3922a7c3e55bc" title="Détermine l&#39;action a effectuer, si on peut.">sub_script_action()</a>, vérifie si une dissimulation ne l'empêche pas et si c'est le cas renvoie cette action.<p>
+<dl compact><dt><b>Paramètres:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>$joueur</em>&nbsp;</td><td>Pesonnage. </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>$ennemi</em>&nbsp;</td><td>Adversaire. </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>$mode</em>&nbsp;</td><td>Indique si le personnage attaque ("attaquant") ou défend.</td></tr>
+  </table>
+</dl>
+<dl class="return" compact><dt><b>Renvoie:</b></dt><dd>[0] Type d'action : "lance_sort" pour un sort, "lance_comp" pour une compétence, "attaque" pour une attaque simple, "" si le personnage ne peut pas effectuer d'action <p>
+[1] ID d la compétence ou du sort. <p>
+[2] Pesonnage (paramètre $joueur auquel on a incrémenté le compteur d'utilisation de l'action à effectuer). </dd></dl>
 
 <p>
 <div class="dynheader">
@@ -262,7 +282,7 @@ Voici le graphe d'appel pour cette fonction :</div>
 <div class="dynsection">
 <p><center><img src="action_8inc_8php_6a794cf834a35c926819c59bf3193219_cgraph.png" border="0" usemap="#action_8inc_8php_6a794cf834a35c926819c59bf3193219_cgraph_map" alt=""></center>
 <map name="action_8inc_8php_6a794cf834a35c926819c59bf3193219_cgraph_map">
-<area shape="rect" href="action_8inc_8php.html#041c268eaf24380770a3922a7c3e55bc" title="sub_script_action" alt="" coords="151,5,273,32"></map>
+<area shape="rect" href="action_8inc_8php.html#041c268eaf24380770a3922a7c3e55bc" title="Détermine l&#39;action a effectuer, si on peut." alt="" coords="151,5,273,32"></map>
 </div>
 
 </div>
@@ -299,6 +319,19 @@ Voici le graphe d'appel pour cette fonction :</div>
 <div class="memdoc">
 
 <p>
+Détermine l'action a effectuer, si on peut. 
+<p>
+Commence par vérifier si le personnage peut effectuer une action en fonction de son état. Ensuite détermine l'action à efectuer en foncion du script. Puis finallement détermine si l'action est anticipée.<p>
+<dl compact><dt><b>Paramètres:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>$joueur</em>&nbsp;</td><td>Pesonnage. </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>$ennemi</em>&nbsp;</td><td>Adversaire. </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>$mode</em>&nbsp;</td><td>Indique si le personnage attaque ("attaquant") ou défend.</td></tr>
+  </table>
+</dl>
+<dl class="return" compact><dt><b>Renvoie:</b></dt><dd>[0] Type d'action : "lance_sort" pour un sort, "lance_comp" pour une compétence, "attaque" pour une attaque simple, "" si le personnage ne peut pas effectuer d'action <p>
+[1] ID d la compétence ou du sort. <p>
+[2] Pesonnage (paramètre $joueur auquel on a incrémenté le compteur d'utilisation de l'action à effectuer). </dd></dl>
 
 <p>
 <div class="dynheader">
@@ -306,13 +339,13 @@ Voici le graphe d'appel pour cette fonction :</div>
 <div class="dynsection">
 <p><center><img src="action_8inc_8php_041c268eaf24380770a3922a7c3e55bc_icgraph.png" border="0" usemap="#action_8inc_8php_041c268eaf24380770a3922a7c3e55bc_icgraph_map" alt=""></center>
 <map name="action_8inc_8php_041c268eaf24380770a3922a7c3e55bc_icgraph_map">
-<area shape="rect" href="action_8inc_8php.html#6a794cf834a35c926819c59bf3193219" title="script_action" alt="" coords="179,5,275,32"></map>
+<area shape="rect" href="action_8inc_8php.html#6a794cf834a35c926819c59bf3193219" title="Renvoie l&#39;action a effectuer, si le personnage peut en faire une." alt="" coords="179,5,275,32"></map>
 </div>
 
 </div>
 </div><p>
 </div>
-<hr size="1"><address style="text-align: right;"><small>Généré le Sat Oct 4 20:00:39 2008 pour Starshine Online par&nbsp;
+<hr size="1"><address style="text-align: right;"><small>Généré le Sun Oct 19 17:58:04 2008 pour Starshine Online par&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.6 </small></address>
 </body>

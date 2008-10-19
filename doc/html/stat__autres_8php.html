@@ -39,9 +39,9 @@
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="stat__autres_8php.html#f565d2b00e2cab90793cbc0b7b5bc1f0">$strips</a> = array('<a class="el" href="bureau__quete_8php.html#cf2488b95c97e0378c9bf49de3b50f28">id</a>', 'date', 'year', 'day', 'month')</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="test__bonus_8php.html#e2bd0dad84a3f2569c634969f0d2ee56">while</a>($row=$<a class="el" href="classdb.html">db</a>-&gt;read_assoc($req))&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="stat__autres_8php.html#d2aefb98713fa6f218a6b89ef5f59e48">$graph</a> = new Graph(900, 400, &quot;auto&quot;)</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="test__bonus_8php.html#e2bd0dad84a3f2569c634969f0d2ee56">while</a>($row=$<a class="el" href="classdb.html">db</a>-&gt;read_assoc($req))&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="stat__autres_8php.html#271ae1384438d1a2073da6088aa4e9ac">$DataSet</a> = new pData()</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="stat__autres_8php.html#5037c6a7971fe210d4d6c3a856d9df49">$p1</a> = new LinePlot($data['nombre_joueur'])</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="stat__autres_8php.html#d2aefb98713fa6f218a6b89ef5f59e48">$graph</a> = new pChart(900, 400)</td></tr>
 
 </table>
 <hr><h2>Documentation des variables</h2>
@@ -51,6 +51,21 @@
       <table class="memname">
         <tr>
           <td class="memname">$data = array()          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="271ae1384438d1a2073da6088aa4e9ac"></a><!-- doxytag: member="stat_autres.php::$DataSet" ref="271ae1384438d1a2073da6088aa4e9ac" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">$DataSet = new pData()          </td>
         </tr>
       </table>
 </div>
@@ -95,7 +110,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$graph = new Graph(900, 400, &quot;auto&quot;)          </td>
+          <td class="memname">$graph = new pChart(900, 400)          </td>
         </tr>
       </table>
 </div>
@@ -126,21 +141,6 @@
       <table class="memname">
         <tr>
           <td class="memname">$legend = array()          </td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>
-
-</div>
-</div><p>
-<a class="anchor" name="5037c6a7971fe210d4d6c3a856d9df49"></a><!-- doxytag: member="stat_autres.php::$p1" ref="5037c6a7971fe210d4d6c3a856d9df49" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">$p1 = new LinePlot($data['nombre_joueur'])          </td>
         </tr>
       </table>
 </div>
@@ -211,7 +211,7 @@
 </div>
 </div><p>
 </div>
-<hr size="1"><address style="text-align: right;"><small>Généré le Sat Oct 4 20:00:39 2008 pour Starshine Online par&nbsp;
+<hr size="1"><address style="text-align: right;"><small>Généré le Sun Oct 19 17:58:08 2008 pour Starshine Online par&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.6 </small></address>
 </body>

@@ -1,4 +1,23 @@
 <?php //  -*- tab-width:2  -*-
+/**
+ * @file action.inc.php
+ * Gestion des scripts. 
+ */ 
+
+/**
+ * Renvoie l'action a effectuer, si le personnage peut en faire une.
+ * Récupère l'action à effectuer à l'aide à l'aide de la fonction sub_script_action(), 
+ * vérifie si une dissimulation ne l'empêche pas et si c'est le cas renvoie cette action.  
+ *
+ * @param $joueur Pesonnage. 
+ * @param $ennemi Adversaire. 
+ * @param $mode Indique si le personnage attaque ("attaquant") ou défend.
+ * 
+ * @return [0] Type d'action : "lance_sort" pour un sort, "lance_comp" pour une compétence, 
+ *  "attaque" pour une attaque simple, "" si le personnage ne peut pas effectuer d'action
+ * @return [1] ID d la compétence ou du sort.
+ * @return [2] Pesonnage (paramètre $joueur auquel on a incrémenté le compteur d'utilisation de l'action à effectuer).   
+ */
 function script_action($joueur, $ennemi, $mode)
 {
 	$effectue = sub_script_action($joueur, $ennemi, $mode);
@@ -33,6 +52,21 @@ function script_action($joueur, $ennemi, $mode)
 	return $effectue;
 }
 
+/**
+ * Détermine l'action a effectuer, si on peut.
+ * Commence par vérifier si le personnage peut effectuer une action en fonction de son état.
+ * Ensuite détermine l'action à efectuer en foncion du script. Puis finallement détermine si
+ * l'action est anticipée.    
+ *
+ * @param $joueur Pesonnage. 
+ * @param $ennemi Adversaire. 
+ * @param $mode Indique si le personnage attaque ("attaquant") ou défend.
+ * 
+ * @return [0] Type d'action : "lance_sort" pour un sort, "lance_comp" pour une compétence, 
+ *  "attaque" pour une attaque simple, "" si le personnage ne peut pas effectuer d'action
+ * @return [1] ID d la compétence ou du sort.
+ * @return [2] Pesonnage (paramètre $joueur auquel on a incrémenté le compteur d'utilisation de l'action à effectuer).  
+ */   
 function sub_script_action($joueur, $ennemi, $mode)
 {
 	global $db, $round, $Trace, $debugs;
@@ -65,6 +99,7 @@ function sub_script_action($joueur, $ennemi, $mode)
 	  //var_dump($joueur['etat']['glacer']);
 		if($joueur['etat']['glacer'] > 0)
 		{
+		  // On regarde si le personnage est glacé
 			$rand = rand(1, 100);
 			$cible = 20 + (($joueur['etat']['glacer']['effet'] - 1) * 10);
 			//echo $cible.' chance de glacer / 100. Résultat : '.$rand.'<br />';
@@ -81,8 +116,9 @@ function sub_script_action($joueur, $ennemi, $mode)
 			$effectue[0] = 'attaque';
 			return $effectue;
 		}
-		if(!$stop)
+		if(!$stop)  // Etrange : il y a un "return" juste avant le seul moment ou stop est mit à "true".
 		{
+		  // Récupèration des actions du personnage
 			if($mode == 'attaquant') $actions = explode(';', $joueur['action_a']);
 			else $actions = explode(';', $joueur['action_d']);
 			$count = count($actions);
@@ -90,6 +126,7 @@ function sub_script_action($joueur, $ennemi, $mode)
 			$i = 0;
 			while(($i < $count) && (!$action))
 			{
+			  // Récupération des conditions et de l'action
 				$decompose = explode('@', $actions[$i]);
 				$conditions = '';
 				if(count($decompose) > 1)
@@ -101,9 +138,11 @@ function sub_script_action($joueur, $ennemi, $mode)
 				{
 					$solution = $decompose[0];
 				}
+				// Récupération du type d'action (sort, compétence ou attaque)
 				$type_action = substr($solution, 0, 1);
 				if($conditions != '')
 				{
+				  // Vérification des conditions
 					$conditions = explode('µ', $conditions);
 					$valid = true;
 					$count_c = count($conditions);
@@ -114,8 +153,7 @@ function sub_script_action($joueur, $ennemi, $mode)
 						$parametre = mb_substr($condition, 1, 2);
 						$operateur = mb_substr($condition, 3, 1);
 						$valeur = mb_substr($condition, 4);
-						//Vérification des conditions
-						//Recherche valeur du paramètre
+						// Recherche de la valeur du paramètre
 						switch($parametre)
 						{
 							//Points de vie du joueur
@@ -160,6 +198,7 @@ function sub_script_action($joueur, $ennemi, $mode)
 								{
 									$use = 'attaque';
 								}
+								// Récupération du nombre d'utilisation
 								$param = $joueur['anticipation'][$use][substr($solution, 1)];
 							break;
 							//Dernière action
@@ -170,7 +209,7 @@ function sub_script_action($joueur, $ennemi, $mode)
 									$param = $joueur['precedente']['critique'];
 						}
 						//echo $param.' '.$operateur.' '.$valeur.'<br />';
-						//Vérification
+						// Vérification de la condition
 						switch($operateur)
 						{
 							case '>' :
@@ -182,7 +221,7 @@ function sub_script_action($joueur, $ennemi, $mode)
 							case '=' :
 								if($param == $valeur) $valid = true; else $valid = false;
 							break;
-							//Vérification d'état
+							// Vérification si le personnage est dans un certain état
 							case '°' :
 								if(array_key_exists($valeur, $param))
 								{
@@ -193,7 +232,7 @@ function sub_script_action($joueur, $ennemi, $mode)
 									$valid = true;
 								}
 							break;
-							//Vérification du nom état
+							// Vérification si le personnage n'est pas dans un certain état
 							case '+' :
 								if(!array_key_exists($valeur, $param))
 								{
@@ -206,35 +245,36 @@ function sub_script_action($joueur, $ennemi, $mode)
 							break;
 						}
 						$c++;
-					}
+					}  // Fin de la vérification des actions (boucle while)
 				}
-				else
+				else // Pas de condition
 				{
 					$valid = true;
 				}
 				if($valid)
 				{
 					//Vérification si action possible
-					if($type_action == '~')
+					if($type_action == '~')  // sort
 					{
-						//Recherche du sort
+						// Recherche du sort
 						$id_sort = substr($solution, 1);
 						$requete = "SELECT * FROM sort_combat WHERE id = ".$id_sort;
 						$req = $db->query($requete);
 						$row = $db->read_assoc($req);
+						// Récupération des MP nécessaires
 						$mp_need = round($row['mp'] * (1 - (($Trace[$joueur['race']]['affinite_'.$row['comp_assoc']] - 5) / 10)));
-						//Appel des ténebres
+						// Appel des ténebres
 						if($joueur['etat']['appel_tenebre']['duree'] > 0)
 						{
 							$mp_need += $joueur['etat']['appel_tenebre']['effet'];
 						}
-						//Appel de la forêt
+						// Appel de la forêt
 						if($joueur['etat']['appel_foret']['duree'] > 0 && $mp_need > 1)
 						{
 							$mp_need -= $joueur['etat']['appel_foret']['effet'];
 							if($mp_need < 1) $mp_need = 1;
 						}
-						//Si le joueur a assez de reserve
+						// Si le joueur a assez de reserve on indique l'action à effectuer
 						if($joueur['reserve'] >= $mp_need)
 						{
 							$effectue[0] = 'lance_sort';
@@ -242,13 +282,14 @@ function sub_script_action($joueur, $ennemi, $mode)
 							$action = true;
 						}
 					}
-					elseif($type_action == '_')
+					elseif($type_action == '_')  // compétence
 					{
-						//Recherche de la compétence
+						// Recherche de la compétence
 						$id_sort = substr($solution, 1);
 						$requete = "SELECT * FROM comp_combat WHERE id = ".$id_sort;
 						$req = $db->query($requete);
 						$row = $db->read_assoc($req);
+						// Récupération des MP nécessaires
 						$mp_need = $row['mp'];
 						//Appel des ténebres
 						if($joueur['etat']['appel_tenebre']['duree'] > 0)
@@ -261,10 +302,10 @@ function sub_script_action($joueur, $ennemi, $mode)
 							$mp_need -= $joueur['etat']['appel_foret']['effet'];
 							if($mp_need < 1) $mp_need = 1;
 						}
-						//Si le joueur a assez de reserve
+						// On vérifie que le personnage a assez de MP
 						if($joueur['reserve'] >= $mp_need)
 						{
-							//Si l'arme utilisée est la bonne
+							// Si l'arme utilisée est la bonne on indique l'action à effectuer
 							$arme_requis = explode(';', $row['arme_requis']);
 							if(in_array($joueur['arme_type'], $arme_requis) OR in_array($joueur['bouclier_type'], $arme_requis) OR $row['arme_requis'] == '')
 							{
@@ -274,6 +315,7 @@ function sub_script_action($joueur, $ennemi, $mode)
 							}
 						}
 					}
+					// Attaque simple
 					if($solution == '!')
 					{
 						$effectue[0] = 'attaque';
@@ -281,26 +323,29 @@ function sub_script_action($joueur, $ennemi, $mode)
 					}
 				}
 				$i++;
-			}
+			} // Fin de la revue des actions (boucle while)
+			// Si aucune action n'est définie on indique une attaque par défaut
 			if(!$action) $effectue[0] = 'attaque';
-			//Mis en place de chance que l'ennemi anticipe la compétence et que ca foire
+			
+			// Anticipation (si l'ennemi anticipe alors échec de l'action)
 			if($effectue[0] == 'attaque') $id = 0;
 			else $id = $effectue[1];
 			//Si il y a déjà eu une attaque de ce type, alors risque d'échec
 			if(array_key_exists('anticipation', $joueur) AND array_key_exists($effectue[0], $joueur['anticipation']) AND array_key_exists($id, $joueur['anticipation'][$effectue[0]]) AND $joueur['anticipation'][$effectue[0]][$id] > 0)
 			{
-				//On récupère le nombre d'utilisations
+				// On récupère le nombre d'utilisations et calcul des chances de réussite
 				$nbr_utilisation = $joueur['anticipation'][$effectue[0]][$id];
 				$chance_reussite = 100 - ($nbr_utilisation * $nbr_utilisation);
-				//Si l'adversaire est de niveau < 5, alors il a moins de chances d'anticiper
+				// Si l'adversaire est de niveau < 5, alors il a moins de chances d'anticiper
 				if($ennemi['level'] < 5)
 				{
-					$chance_reussite = 100 - ((100 - $chance_reussite) / (6 - $ennemi['level']));
+					$chance_reussite = 100 - ( (100 - $chance_reussite) / (6 - $ennemi['level']) );
 				}
-				//Réduction des chances d'anticiper si adversaire glacé
+				// Réduction des chances d'anticiper si adversaire glacé (avec une orbe de glace)
 				if($ennemi['etat']['glace_anticipe']['duree'] > 0) $chance_reussite = $chance_reussite * $ennemi['etat']['glace_anticipe']['effet'];
-				//Réduction des chances d'anticiper si adversaire amorphe
+				// Réduction des chances d'anticiper si adversaire amorphe
 				if(array_key_exists('maladie_amorphe', $joueur['debuff'])) $chance_reussite = $chance_reussite - $joueur['debuff']['maladie_amorphe']['effet'];
+				// Ob détermine si l'action est anticipée
 				$rand = rand(0, 100);
 				echo '
 					<div id="debug'.$debugs.'" class="debug">
@@ -308,7 +353,7 @@ function sub_script_action($joueur, $ennemi, $mode)
 						'.$rand.' doit être supérieur à '.$chance_reussite.' pour anticipation<br />
 					</div>';
 				$debugs++;
-				//Echec
+				// Echec
 				if($rand > $chance_reussite)
 				{
 					echo $ennemi['nom'].' anticipe l\'attaque, et elle échoue !<br />';
@@ -323,6 +368,9 @@ function sub_script_action($joueur, $ennemi, $mode)
 	}
 }
 
+/**
+ * 
+ */
 function lance_sort($id, $acteur)
 {
 	global $attaquant, $defenseur, $db, $Gtrad, $debugs, $Trace, $G_buff, $G_debuff;
@@ -349,6 +397,7 @@ function lance_sort($id, $acteur)
 	$req = $db->query($requete);
 	$row = $db->read_assoc($req);
 
+  // Calcul de MP nécessaires
 	$mp_need = round($row['mp'] * (1 - (($Trace[$actif['race']]['affinite_'.$row['comp_assoc']] - 5) / 10)));
 	//Appel des ténebres
 	if($actif['etat']['appel_tenebre']['duree'] > 0)
@@ -365,6 +414,7 @@ function lance_sort($id, $acteur)
 	//Suppresion de la réserve
 	$actif['reserve'] -= $mp_need;
 
+  // Calcul du potentiel magique
 	$potentiel_magique = floor($actif['incantation'] + 1.9 * $actif[$row['comp_assoc']]);
 	if(array_key_exists('batiment_incantation', $passif['buff'])) $potentiel_magique *= 1 + (($passif['buff']['batiment_incantation']['effet']) / 100);
 	if(array_key_exists('buff_meditation', $actif['buff'])) $potentiel_magique *= 1 + (($actif['buff']['buff_meditation']['effet']) / 100);
@@ -389,12 +439,15 @@ function lance_sort($id, $acteur)
 			break;
 		}
 	}
+	// Calcule des dés de potentiel magique et de difficulté
 	$de_pot = 300;
 	$de_diff = 300;
 	if($potentiel_magique_arme > $row['difficulte']) $de_pot += $potentiel_magique_arme - $row['difficulte'];
 	else $de_diff += $row['difficulte'] - $potentiel_magique_arme;
+	// Lancer des dés
 	$attaque = rand(0, $de_pot);
 	$defense = rand(0, $de_diff);
+	// Affichage des informations de debug
 	echo '
 	<div id="debug'.$debugs.'" class="debug">
 		Potentiel magique : '.$potentiel_magique_arme.'<br />
@@ -408,6 +461,7 @@ function lance_sort($id, $acteur)
 		//Lancement du sort sur l'ennemi
 		if($row['cible'] == 4)
 		{
+		  // Calcul de la PM
 			$pm = $passif['PM'];
 			if(array_key_exists('bouclier_protecteur', $passif['etat'])) $pm = $pm + ($passif['etat']['bouclier_protecteur']['effet'] * $passif['bouclier_degat']);
 			if(array_key_exists('batiment_pm', $passif['buff'])) $buff_batiment_barriere = 1 + (($passif['buff']['batiment_pm']['effet']) / 100); else $buff_batiment_barriere = 1;
@@ -415,30 +469,34 @@ function lance_sort($id, $acteur)
 			//Corrompu la nuit
 			if($actif['race'] == 'humainnoir' AND moment_jour() == 'Nuit') $bonus_race = 1.1; else $bonus_race = 1;
 			$PM = $pm * $bonus_race * $aura_glace * $buff_batiment_barriere;
+			// Calcul des potentiels toucher et parer
 			$potentiel_toucher = round($actif['volonte'] * $potentiel_magique);
 			$potentiel_parer = round($passif['volonte'] * $PM);
 
-			/* Application des effets de début de round */
+			/* Application des effets de début de round pour le potentiel toucher */
 			foreach ($effects as $effect)
 				$potentiel_toucher =
 					$effect->calcul_attaque_magique($actif, $passif, $potentiel_toucher);
 			/* ~Debut */
 			
-			/* Application des effets de début de round */
+			/* Application des effets de début de round pour le potentiel parer */
 			foreach ($effects as $effect)
 				$potentiel_parer =
 					$effect->calcul_defense_magique($actif, $passif, $potentiel_parer);
 			/* ~Debut */
 
+      // Lancer des dés
 			$attaque = rand(0, $potentiel_toucher);
 			$defense = rand(0, $potentiel_parer);
 		}
 		//Lancement du sort sur soi
 		else
 		{
+		  // Réussite automatique
 			$attaque = 1;
 			$defense = 0;
 		}
+		// Affichage des informations de debug
 		echo '
 		<div id="debug'.$debugs.'" class="debug">
 			Potentiel toucher : '.$potentiel_toucher.'<br />
@@ -474,6 +532,7 @@ function lance_sort($id, $acteur)
 					$degat = degat_magique($actif[$row['carac_assoc']], ($row['effet'] + $bonus), $actif, $passif);
 					echo '&nbsp;&nbsp;<span class="degat"><strong>'.$actif['nom'].'</strong> inflige <strong>'.$degat.'</strong> dégats avec '.$row['nom'].'</span><br />';
 					$passif['hp'] = $passif['hp'] - $degat;
+					// On regarde si la cible est glacé
 					$chances = rand(0, ($row['effet2'] * 10));
 					$tirage = rand(0, 100);
 					if($chances > $tirage)
@@ -486,8 +545,10 @@ function lance_sort($id, $acteur)
 					$bonus = $actif['etat']['tellurique']['effet'] + $actif['buff']['buff_surpuissance']['effet'];
 					$degat = degat_magique($actif[$row['carac_assoc']], ($row['effet'] + $bonus), $actif, $passif);
 					echo '&nbsp;&nbsp;<span class="degat"><strong>'.$actif['nom'].'</strong> inflige <strong>'.$degat.'</strong> dégats avec '.$row['nom'].'</span><br />';
+					// On regarde s'il y a un gain de PA
 					$cap = $row['effet2'];
 					$de = rand(0, 100);
+					// Affichage des informations de debug
 					echo '
 					<div id="debug'.$debugs.'" class="debug">
 						1d100 doit être inférieur a '.$row['effet2'].'<br />
@@ -521,6 +582,7 @@ function lance_sort($id, $acteur)
 					$degat = degat_magique($actif[$row['carac_assoc']], ($row['effet'] + $bonus), $actif, $passif);
 					echo '&nbsp;&nbsp;<span class="degat"><strong>'.$actif['nom'].'</strong> inflige <strong>'.$degat.'</strong> dégats avec '.$row['nom'].'</span><br />';
 					$passif['hp'] = $passif['hp'] - $degat;
+					// On regarde si la cible est étourdie
 					$chances = $row['effet2'];
 					$tirage = rand(0, 100);
 					if($tirage < $chances)
@@ -548,6 +610,7 @@ function lance_sort($id, $acteur)
 				break;
 				case 'pacte_sang' :
 					$cout_hp = ceil($actif['hp_max'] * $row['effet2'] / 100);
+					// On vérifie que le personnage a assez de HP
 					if($cout_hp < $actif['hp'])
 					{
 						$bonus = $actif['buff']['buff_surpuissance']['effet'];
@@ -558,28 +621,33 @@ function lance_sort($id, $acteur)
 					}
 					else
 					{
+					   // S'il n'a pas assez de HP il ne fait rien
 					}
 				break;
 				case 'drain_vie' :
 					$bonus = $actif['buff']['buff_surpuissance']['effet'];
 					$degat = degat_magique(($actif[$row['carac_assoc']] - 2), ($row['effet'] + $bonus), $actif, $passif);
 					if($passif['type2'] == 'batiment') $drain = 0; else $drain = round($degat * 0.3);
+					// Augmentation du nombre de HP récupérable par récupération
 					if(array_key_exists('recuperation', $actif)) $actif['etat']['recuperation']['hp_max'] += $drain;
 					echo '&nbsp;&nbsp;<span class="degat"><strong>'.$actif['nom'].'</strong> inflige <strong>'.$degat.'</strong> dégats avec '.$row['nom'].'<br />
 					Et gagne <strong>'.$drain.'</strong> hp grâce au drain</span><br />';
 					$passif['hp'] = $passif['hp'] - $degat;
 					$actif['hp'] = $actif['hp'] + $drain;
+					// On vérifie que le personnage n'a pas plus de HP que son maximum
 					if($actif['hp'] > $actif['hp_max']) $actif['hp'] = $actif['hp_max'];
 				break;
 				case 'vortex_vie' :
 					$bonus = $actif['buff']['buff_surpuissance']['effet'];
 					$degat = degat_magique(($actif[$row['carac_assoc']] - 2), ($row['effet'] + $bonus), $actif, $passif);
 					if($passif['type2'] == 'batiment') $drain = 0; else $drain = round($degat * 0.5);
+					// On vérifie que le personnage n'a pas plus de HP que son maximum
 					if(array_key_exists('recuperation', $actif)) $actif['etat']['recuperation']['hp_max'] += $drain;
 					echo '&nbsp;&nbsp;<span class="degat"><strong>'.$actif['nom'].'</strong> inflige <strong>'.$degat.'</strong> dégats avec '.$row['nom'].'<br />
 					Et gagne <strong>'.$drain.'</strong> hp grâce au drain</span><br />';
 					$passif['hp'] = $passif['hp'] - $degat;
 					$actif['hp'] = $actif['hp'] + $drain;
+					// On vérifie que le personnage n'a pas plus de HP que son maximum
 					if($actif['hp'] > $actif['hp_max']) $actif['hp'] = $actif['hp_max'];
 				break;
 				case 'vortex_mana' :
@@ -751,12 +819,12 @@ function lance_sort($id, $acteur)
 				break;
 			}
 		}
-		else
+		else  // pas touché
 		{
 			echo '&nbsp;&nbsp;<span class="manque">'.$actif['nom'].' manque la cible avec '.$row['nom'].'</span><br />';
 		}
 	}
-	else
+	else // lancer raté
 	{
 		echo '&nbsp;&nbsp;<span class="manque">'.$actif['nom'].' rate le lancement de '.$row['nom'].'</span><br />';
 	}

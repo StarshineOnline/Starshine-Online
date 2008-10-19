@@ -29,23 +29,23 @@ Graphe d'héritage de Objets:</div>
 <div class="dynsection">
 <p><center><img src="class_objets__inherit__graph.png" border="0" usemap="#_objets__inherit__map" alt="Inheritance graph"></center>
 <map name="_objets__inherit__map">
-<area shape="rect" href="class_objet.html" title="Classe abstraite représentant un objet." alt="" coords="12,5,121,341"></map>
+<area shape="rect" href="class_objet.html" title="Classe abstraite représentant un objet." alt="" coords="12,5,121,373"></map>
 <center><font size="2">[<a href="graph_legend.html">légende</a>]</font></center></div>
 <div class="dynheader">
 Graphe de collaboration de Objets:</div>
 <div class="dynsection">
 <p><center><img src="class_objets__coll__graph.png" border="0" usemap="#_objets__coll__map" alt="Collaboration graph"></center>
 <map name="_objets__coll__map">
-<area shape="rect" href="class_objet.html" title="Classe abstraite représentant un objet." alt="" coords="12,5,121,341"></map>
+<area shape="rect" href="class_objet.html" title="Classe abstraite représentant un objet." alt="" coords="12,5,121,373"></map>
 <center><font size="2">[<a href="graph_legend.html">légende</a>]</font></center></div>
 
 <p>
 <a href="class_objets-members.html">Liste de tous les membres</a><table border="0" cellpadding="0" cellspacing="0">
 <tr><td></td></tr>
 <tr><td colspan="2"><br><h2>Fonctions membres publiques</h2></td></tr>
-<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_objets.html#4a769b13e4f53f5f3899af25620ddc78">__construct</a> ($nom= '', $<a class="el" href="action__modif__t_8php.html#7aead736a07eaf25623ad7bfa1f0ee2d">type</a>= '', $prix=0, $achetable= 'y', $effet=0, $stack=0, $utilisable= 'y', $description= '')</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_objets.html#edf55c8c43cec7b43c6cf87d09a3bf38">__construct</a> ($<a class="el" href="bureau__quete_8php.html#cf2488b95c97e0378c9bf49de3b50f28">id</a>= '', $nom= '', $<a class="el" href="action__modif__t_8php.html#7aead736a07eaf25623ad7bfa1f0ee2d">type</a>= '', $prix=0, $achetable= 'y', $effet=0, $stack=0, $utilisable= 'y', $description= '')</td></tr>
 
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Constructeur permettant la création d'un accessoire.  <a href="#4a769b13e4f53f5f3899af25620ddc78"></a><br></td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Constructeur permettant la création d'un objet.  <a href="#edf55c8c43cec7b43c6cf87d09a3bf38"></a><br></td></tr>
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_objets.html#b27cf52aa68ee48271da76572c3969ab">isAchetable</a> ()</td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_objets.html#266b8b16047ec60982191d8bbf2378d3">getEffet</a> ()</td></tr>
@@ -70,6 +70,8 @@ Graphe de collaboration de Objets:</div>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_objets.html#9390ddeecedf29e21809ac7cbb5b5fd7">supprimer</a> ()</td></tr>
 
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_objets.html#1a23164c9b05a238625a2e3e5f526336">infobulle</a> ()</td></tr>
+
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_objets.html#db68b047eb7adeafd42275d75348d413">__toString</a> ()</td></tr>
 
 <tr><td colspan="2"><br><h2>Attributs protégés</h2></td></tr>
@@ -85,13 +87,19 @@ Graphe de collaboration de Objets:</div>
 
 </table>
 <hr><h2>Documentation des constructeurs et destructeur</h2>
-<a class="anchor" name="4a769b13e4f53f5f3899af25620ddc78"></a><!-- doxytag: member="Objets::__construct" ref="4a769b13e4f53f5f3899af25620ddc78" args="($nom= '', $type= '', $prix=0, $achetable= 'y', $effet=0, $stack=0, $utilisable= 'y', $description= '')" -->
+<a class="anchor" name="edf55c8c43cec7b43c6cf87d09a3bf38"></a><!-- doxytag: member="Objets::__construct" ref="edf55c8c43cec7b43c6cf87d09a3bf38" args="($id= '', $nom= '', $type= '', $prix=0, $achetable= 'y', $effet=0, $stack=0, $utilisable= 'y', $description= '')" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">Objets::__construct           </td>
           <td>(</td>
+          <td class="paramtype">$&nbsp;</td>
+          <td class="paramname"> <em>id</em> = <code>''</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
           <td class="paramtype">$&nbsp;</td>
           <td class="paramname"> <em>nom</em> = <code>''</code>, </td>
         </tr>
@@ -147,15 +155,15 @@ Graphe de collaboration de Objets:</div>
 <div class="memdoc">
 
 <p>
-Constructeur permettant la création d'un accessoire. 
+Constructeur permettant la création d'un objet. 
 <p>
 Les valeurs par défaut sont celles de la base de donnée. Le constructeur accepte plusieurs types d'appels: -Objets() qui construit un objet "vide". -Objets($id) qui va chercher l'objet dont l'id est $id dans la base. -Objets($nom,...,$forceReq) qui construit un nouvel objet à partir des valeurs. 
 <p>
 <div class="dynheader">
 Voici le graphe d'appel pour cette fonction :</div>
 <div class="dynsection">
-<p><center><img src="class_objets_4a769b13e4f53f5f3899af25620ddc78_cgraph.png" border="0" usemap="#class_objets_4a769b13e4f53f5f3899af25620ddc78_cgraph_map" alt=""></center>
-<map name="class_objets_4a769b13e4f53f5f3899af25620ddc78_cgraph_map">
+<p><center><img src="class_objets_edf55c8c43cec7b43c6cf87d09a3bf38_cgraph.png" border="0" usemap="#class_objets_edf55c8c43cec7b43c6cf87d09a3bf38_cgraph_map" alt=""></center>
+<map name="class_objets_edf55c8c43cec7b43c6cf87d09a3bf38_cgraph_map">
 <area shape="rect" href="base_8inc_8php.html#b765e14b3f021d8f4f26d33e13a4a156" title="description" alt="" coords="191,5,273,32"></map>
 </div>
 
@@ -424,6 +432,36 @@ Voici le graphe d'appel pour cette fonction :</div>
 
 </div>
 </div><p>
+<a class="anchor" name="1a23164c9b05a238625a2e3e5f526336"></a><!-- doxytag: member="Objets::infobulle" ref="1a23164c9b05a238625a2e3e5f526336" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Objets::infobulle           </td>
+          <td>(</td>
+          <td class="paramname">          </td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+<p>Réimplémentée à partir de <a class="el" href="class_objet.html#5c72dbf277d2b3c565ba9586a0afe912">Objet</a>.</p>
+
+<p>
+<div class="dynheader">
+Voici le graphe d'appel pour cette fonction :</div>
+<div class="dynsection">
+<p><center><img src="class_objets_1a23164c9b05a238625a2e3e5f526336_cgraph.png" border="0" usemap="#class_objets_1a23164c9b05a238625a2e3e5f526336_cgraph_map" alt=""></center>
+<map name="class_objets_1a23164c9b05a238625a2e3e5f526336_cgraph_map">
+<area shape="rect" href="class_objet.html#acabc8acd4c7fa08d112ada1b13663d2" title="Objet::bulleBase" alt="" coords="168,5,285,32"><area shape="rect" href="base_8inc_8php.html#b765e14b3f021d8f4f26d33e13a4a156" title="description" alt="" coords="185,56,268,83"></map>
+</div>
+
+</div>
+</div><p>
 <a class="anchor" name="db68b047eb7adeafd42275d75348d413"></a><!-- doxytag: member="Objets::__toString" ref="db68b047eb7adeafd42275d75348d413" args="()" -->
 <div class="memitem">
 <div class="memproto">
@@ -531,7 +569,7 @@ Voici le graphe d'appel pour cette fonction :</div>
 </div>
 </div><p>
 </div>
-<hr size="1"><address style="text-align: right;"><small>Généré le Sat Oct 4 20:00:40 2008 pour Starshine Online par&nbsp;
+<hr size="1"><address style="text-align: right;"><small>Généré le Sun Oct 19 17:58:17 2008 pour Starshine Online par&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.6 </small></address>
 </body>
