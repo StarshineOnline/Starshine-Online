@@ -20,6 +20,8 @@ if($xmin < 1) $xmin = 1;
 if($ymin <= 190) {
   if($ymax > 190) $ymax = 190;
   if($xmax > 190) $xmax = 190;
+} elseif ($ymin >= 300 && $xmin >= 300) {
+  // Nothing
 } else {
   if ($ymin < 200)
     $ymin = 200;
