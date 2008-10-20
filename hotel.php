@@ -183,7 +183,13 @@ if($W_distance == 0)
 				$objet_info = decompose_objet($objets_tab[$id]["objet"]);
 				$objet = $objets_tab_new[$objet_info["id_objet"]];
 				
-				if(strlen($objet["nom"]) > 23) { $tmp_nom = substr($objet["nom"], 0, 23)."&hellip;"; } else { $tmp_nom = $objet["nom"]; };
+				//Modification du nom des grimoires
+				if($objet_info['table_categorie'] == 'grimoire')
+				{
+					$objet['nom'] = str_replace('Traité de ', 'Grim.', $objet['nom']);
+					$objet['nom'] = str_replace('Tome de ', 'Grim.', $objet['nom']);
+				}
+				if(strlen($objet["nom"]) > 26) { $tmp_nom = mb_substr($objet["nom"], 0, 26)."&hellip;"; } else { $tmp_nom = $objet["nom"]; };
 				if($type == "moi")
 				{//-- Suivant si c'est un objet que l'on a mis en vente
 					$tmp_achat_click = "onclick=\"envoiInfo('hotel.php?action=suppr&amp;id_vente=".$objets_tab[$id]["id"]."&amp;poscase=".$_GET["poscase"]."', 'carte');\"";
@@ -215,10 +221,10 @@ if($W_distance == 0)
 				}
 				else { $tmp_enchantement = ""; $tmp_enchantement2 = "";};
 				
-				{//-- OVERLIB
+				{//-- OVERLIB-
 					$tmp_overlib = "";
 					
-					switch($type)
+					switch($objet_info['table_categorie'])
 					{
 						case "arme" :		$RqArme = $db->query("SELECT * FROM arme WHERE id=".sSQL($objet_info["id_objet"]).";");
 											$objArme = $db->read_object($RqArme);

@@ -733,7 +733,7 @@ function lance_sort($id, $acteur)
 					$sm = ($actif['volonte'] * $actif['sort_mort']);
 					$pm = $passif['PM'];
 					if (array_key_exists('bouclier_protecteur', $passif['etat'])) $pm = $pm + ($passif['etat']['bouclier_protecteur']['effet'] * $passif['bouclier_degat']);
-					$pm = $passif['volonte'] * ($pm * 2);
+					$pm = pow($passif['volonte'], 1.83) * sqrt($pm) * 3;
 					$att = rand(0, $sm);
 					$def = rand(0, $pm);
 					echo '&nbsp;&nbsp;<strong>'.$actif['nom'].'</strong> lance le sort paralysie<br />';
