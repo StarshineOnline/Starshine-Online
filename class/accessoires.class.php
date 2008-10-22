@@ -109,7 +109,7 @@ class Accessoire extends Objet
 	//Fonction d'ajout/modification
 	function sauver()
 	{
-		if( $id > 0 )
+		if( $this->id > 0 )
 		{
 			$requete = 'UPDATE TABLE armure SET '.$this->modifBase().', ';
 			$requete .= 'effet = "'.$this->effet.'", description = "'.addslashes($this->description).'", ';
