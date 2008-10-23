@@ -72,7 +72,8 @@ else
 	if($attaquant['race'] == 'orc' OR $defenseur['race'] == 'orc') $round_total += 1;
 	if(array_key_exists('buff_sacrifice', $attaquant['buff'])) $round_total -= $attaquant['buff']['buff_sacrifice']['effet2'];
 	//Vérifie si l'attaquant a assez de points d'actions pour attaquer
-	if ($attaquant['pa'] >= ($pa_attaque - $reduction_pa))
+	$pa_attaque = $pa_attaque - $reduction_pa;
+	if ($attaquant['pa'] >= $pa_attaque)
 	{
 		if($attaquant['hp'] > 0)
 		{
@@ -724,8 +725,7 @@ else
 				echo('<img src="image/interface/attaquer.png" alt="Combattre" style="vertical-align : middle;" /> <a href="javascript:envoiInfo(\'attaque_monstre.php?ID='.$W_ID.'&amp;type='.$ennemi.'&amp;table='.sSQL($_GET['table']).'&amp;poscase='.$W_case.'\', \'information\')">Attaquer la même cible</a><br />');
 			}
 			
-			$attaquant['pa'] = $attaquant['pa'] - $pa_attaque + $reduction_pa;
-			$requete = 'UPDATE perso SET survie = '.$attaquant['survie'].' ,melee = '.$attaquant['melee'].', esquive = '.$attaquant['esquive'].', hp = '.$attaquant['hp'].', pa = '.$attaquant['pa'].' WHERE ID = '.$_SESSION['ID'];
+			$requete = 'UPDATE perso SET survie = '.$attaquant['survie'].' ,melee = '.$attaquant['melee'].', esquive = '.$attaquant['esquive'].', hp = '.$attaquant['hp'].', pa = pa - '.$pa_attaque.' WHERE ID = '.$_SESSION['ID'];
 			$db->query($requete);
 		}
 		else

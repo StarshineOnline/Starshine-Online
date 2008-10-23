@@ -407,10 +407,10 @@ if (isset($_GET['ID']))
 							echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant a '.$joueur[$row['comp_assoc']].' en '.$Gtrad[$row['comp_assoc']].'</span><br />';
 						}
 					}
-					//-- Mis à jour du joueur
-					$db->query("UPDATE perso SET mp='".$joueur["mp"]."', pa='".$joueur["pa"]."' WHERE ID='".$_SESSION["ID"]."';");
 				}
-					
+				//-- Mis à jour du joueur
+				$db->query("UPDATE perso SET mp='".$joueur["mp"]."', pa='".$joueur["pa"]."' WHERE ID = ".$joueur["ID"].";");
+
 				echo "<a href=\"javascript:envoiInfo('sort.php?ID=".$_GET["ID"]."', 'information')\">Utilisez a nouveau cette compétence</a>";	
 			break;
 			case "esprit_sacrifie" :	 //-- Esprit Sacrifié

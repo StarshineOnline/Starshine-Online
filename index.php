@@ -104,7 +104,7 @@ else
 		while($row = $db->read_assoc($req))
 		{
 			$date = strftime("%d/%m/%Y à %H:%M", $row['date']);
-			echo 'Le '.$date.' par '.$row['nom_envoi'].' - <strong>Titre : '.$row['titre'].'</strong><br />';
+			echo 'Le '.$date.' par '.$row['nom_envoi'].' - <strong>Titre : '.stripslashes($row['titre']).'</strong><br />';
 		}
 		echo '</p>';
 		echo '</div>';

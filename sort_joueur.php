@@ -318,45 +318,44 @@ if (isset($_GET['ID']))
 						else echo $cible['nom'].' a trop de buffs.<br />';
 					}
 				break;
-				case "guerison" :
-				{ //-- Guérison
-					$cible = recupperso($_GET["id_joueur"]);
-					//-- Suppression d'un debuff au hasard
-					$debuff_tab = array();
-					foreach($cible["debuff"] as $debuff)
-					{
-						if($debuff["type"] != "debuff_rez" AND $debuff["type"] != "repos_sage" AND $debuff["type"] != "repos_interieur") { $debuff_tab[count($debuff_tab)] = $debuff["id"]; };
-					}
-					if(count($debuff_tab) > 0)
-					{
-						$cible["pa"] = $cible["pa"] - $sortpa;
-						$cible["mp"] = $cible["mp"] - $sortmp;
-					
-						if($db->query("DELETE FROM buff WHERE id=".$debuff_tab[rand(0, count($debuff_tab)-1)].";"))
-						{//-- Augmentation des compétences
-							$difficulte_sort = diff_sort($row['difficulte'], $joueur, 'incantation', $sortpa_base, $sortmp_base);
-							$augmentation = augmentation_competence('incantation', $joueur, $difficulte_sort);
-							if ($augmentation[1] == 1)
-							{
-								$joueur['incantation'] = $augmentation[0];
-								echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant a '.$joueur['incantation'].' en incantation</span><br />';
-							}
-							$difficulte_sort = diff_sort($row['difficulte'], $joueur, $row['comp_assoc'], $sortpa_base, $sortmp_base);
-							$augmentation = augmentation_competence($row['comp_assoc'], $joueur, $difficulte_sort);
-							if ($augmentation[1] == 1)
-							{
-								$joueur[$row['comp_assoc']] = $augmentation[0];
-								echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant a '.$joueur[$row['comp_assoc']].' en '.$Gtrad[$row['comp_assoc']].'</span><br />';
-							}
-						}
-						//-- Mis à jour du joueur
-						$db->query("UPDATE perso SET mp='".$joueur["mp"]."', pa='".$joueur["pa"]."' WHERE ID='".$_SESSION["ID"]."';");
-					}
-					else { echo "Impossible de lancer de lancer le sort. Le joueur n&apos;a aucun debuff.<br/>"; };
-						
-					echo "<a href=\"javascript:envoiInfo('sort_joueur.php?poscase=".$W_case."&amp;ID=".$_GET["ID"]."&amp;id_joueur=".$_GET['id_joueur']."', 'information')\">Utilisez a nouveau cette compétence</a>";	
-				}
-				break;
+				case "guerison" :	{ //-- Guérison
+										$cible = recupperso($_GET["id_joueur"]);
+										//-- Suppression d'un debuff au hasard
+										$debuff_tab = array();
+										foreach($cible["debuff"] as $debuff)
+										{
+											if($debuff["type"] != "debuff_rez" AND $debuff["type"] != "repos_sage" AND $debuff["type"] != "repos_interieur") { $debuff_tab[count($debuff_tab)] = $debuff["id"]; };
+										}
+										if(count($debuff_tab) > 0)
+										{
+											$cible["pa"] = $cible["pa"] - $sortpa;
+											$cible["mp"] = $cible["mp"] - $sortmp;
+										
+											$db->query("DELETE FROM buff WHERE id=".$debuff_tab[rand(0, count($debuff_tab)-1)].";");
+											{//-- Augmentation des compétences
+												$difficulte_sort = diff_sort($row['difficulte'], $joueur, 'incantation', $sortpa_base, $sortmp_base);
+												$augmentation = augmentation_competence('incantation', $joueur, $difficulte_sort);
+												if ($augmentation[1] == 1)
+												{
+													$joueur['incantation'] = $augmentation[0];
+													echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant a '.$joueur['incantation'].' en incantation</span><br />';
+												}
+												$difficulte_sort = diff_sort($row['difficulte'], $joueur, $row['comp_assoc'], $sortpa_base, $sortmp_base);
+												$augmentation = augmentation_competence($row['comp_assoc'], $joueur, $difficulte_sort);
+												if ($augmentation[1] == 1)
+												{
+													$joueur[$row['comp_assoc']] = $augmentation[0];
+													echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant a '.$joueur[$row['comp_assoc']].' en '.$Gtrad[$row['comp_assoc']].'</span><br />';
+												}
+											}
+											//-- Mis à jour du joueur
+											$db->query("UPDATE perso SET mp='".$joueur["mp"]."', pa='".$joueur["pa"]."' WHERE ID = ".$joueur["ID"].";");
+										}
+										else { echo "Impossible de lancer de lancer le sort. Le joueur n&apos;a aucun debuff.<br/>"; };
+											
+										echo "<a href=\"javascript:envoiInfo('sort_joueur.php?poscase=".$W_case."&amp;ID=".$_GET["ID"]."&amp;id_joueur=".$_GET['id_joueur']."', 'information')\">Utilisez a nouveau cette compétence</a>";	
+									}
+									break;
 			}
 		}
 	}

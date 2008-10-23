@@ -86,6 +86,7 @@ else
 	$attaquant['etat'] = array();
 	$defenseur['etat'] = array();
 	$debugs = 0;
+	$pa_attaque = $G_PA_attaque_joueur;
 	if($attaquant['race'] == 'orc' OR $defenseur['race'] == 'orc') $round_total += 1;
 	if(array_key_exists('buff_sacrifice', $attaquant['buff'])) $round_total -= $attaquant['buff']['buff_sacrifice']['effet2'];
 	if(array_key_exists('cout_attaque', $attaquant['debuff'])) $pa_attaque = ceil($pa_attaque / $attaquant['debuff']['cout_attaque']['effet']);
@@ -96,8 +97,10 @@ else
 	if(array_key_exists('engloutissement', $defenseur['debuff'])) $defenseur['dexterite'] -= $defenseur['debuff']['engloutissement']['effet'];
 	if(array_key_exists('deluge', $attaquant['debuff'])) $attaquant['volonte'] -= $attaquant['debuff']['deluge']['effet'];
 	if(array_key_exists('deluge', $defenseur['debuff'])) $defenseur['volonte'] -= $defenseur['debuff']['deluge']['effet'];
+	$pa_attaque = $pa_attaque - $reduction_pa;
+	if($pa_attaque <= 0) $pa_attaque = 1;
 	//Vérifie si l'attaquant a assez de points d'actions pour attaquer
-	if ($attaquant['pa'] >= ($G_PA_attaque_joueur - $reduction_pa))
+	if ($attaquant['pa'] >= $pa_attaque)
 	{
 		if($attaquant['hp'] > 0)
 		{
@@ -534,8 +537,7 @@ else
 				echo('<img src="image/interface/attaquer.png" alt="Combattre" style="vertical-align : middle;" /> <a href="javascript:envoiInfo(\'attaque.php?ID='.$W_ID.'&amp;poscase='.$W_case.'\', \'information\')">Attaquer la même cible</a><br />');
 			}
 			
-			$attaquant['pa'] = $attaquant['pa'] - $G_PA_attaque_joueur + $reduction_pa;
-			$requete = 'UPDATE perso SET survie = '.$attaquant['survie'].' ,pa = '.$attaquant['pa'].' WHERE ID = '.$_SESSION['ID'];
+			$requete = 'UPDATE perso SET survie = '.$attaquant['survie'].' ,pa = pa - '.$pa_attaque.' WHERE ID = '.$_SESSION['ID'];
 			$db->query($requete);
 	
 			//Insertion de l'attaque dans les journaux des 2 joueurs

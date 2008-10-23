@@ -82,7 +82,7 @@ else
 		if($req = $db->query($requete))
 		{
 			$row = $db->read_assoc($req);	
-			$titre_message = $row['titre'];
+			$titre_message = stripslashes($row['titre']);
 			$re_mess = mb_substr($titre_message, 0, 4);
 			if ($re_mess != 'Re :')
 			{
