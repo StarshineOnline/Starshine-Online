@@ -202,7 +202,7 @@ function moment_jour()
     if ($db->num_rows > 0) {
       $heure_donj = $db->read_assoc($req);
       $moment = $heure_donj['heure'];
-      if ($moment == null) return $moment;
+      if ($moment != null) return $moment;
     }
   }
   $heure = heure_sso();
