@@ -211,7 +211,7 @@ if($W_distance == 0)
                 <?
                 
                 
-                $requete = "SELECT *, depot_royaume.id AS id_depot FROM depot_royaume LEFT JOIN objet_royaume ON depot_royaume.id_objet = objet_royaume.id WHERE grade <= ".$joueur['rang_grade']." AND id_objet != '1' AND id_royaume = ".$R['ID'];
+                $requete = "SELECT *, depot_royaume.id AS id_depot FROM depot_royaume LEFT JOIN objet_royaume ON depot_royaume.id_objet = objet_royaume.id WHERE grade <= ".$joueur['rang_grade']." AND id_objet != '1' AND id_royaume = ".$R['ID']." ORDER BY nom ASC";
                 $req = $db->query($requete);
     
                 while($row = $db->read_assoc($req))

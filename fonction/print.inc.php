@@ -76,7 +76,8 @@ function print_head($Option_List = "")
 			}
 		}
 	}
-	echo " </head>
+	echo "    <link rel=\"icon\" type=\"image/png\" href=\"http://www.starshine-online.com/image/favicon.png\" />
+			</head>
 		   <body"; if(!empty($style)) { echo "style='$style'"; }; echo ">
 		    <div id='overDiv' style='position:absolute; visibility:hidden; z-index:1000;'></div>\n";
 }
