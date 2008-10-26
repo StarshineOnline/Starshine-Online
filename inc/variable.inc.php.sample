@@ -1,19 +1,33 @@
 <?php
+  /**
+   * @file variable.inc.php
+   * Définitions des constantes.
+   */  
+
+  /// Version actuelle
 	$G_version = '0.5.1 beta';
+	/// Révision actuelle
 	$G_revision = 124;
 
 	$G_ligne = 1000;
 	$G_colonne = 1000;
 	$G_ligne_donjon = 1000;
 	$G_colonne_donjon = 1000;
-
+  
+  /// Temps entre chaque régénération de PA (en secondes)
 	$G_temps_PA = 10 * 60;
+	/// Nombre maximal de PA
 	$G_PA_max = 180;
 	//$G_bonus_maj_pa = 1;
+  /// Temps entre chaque augmentation des HP (en secondes)
 	$G_temps_maj_hp = 7 * 24 * 60 * 60;
+  /// Temps entre chaque augmentation des MP (en secondes)
 	$G_temps_maj_mp = 7 * 24 * 60 * 60;
+  /// Temps entre chaque régénération de HP et MP (en secondes)
 	$G_temps_regen_hp = 8 * 60 * 60;
+	/// Pourcentage de HP récupérés à chaque régénération
 	$G_pourcent_regen_hp = 0.1;
+	/// Pourcentage de MP récupérés à chaque régénération
 	$G_pourcent_regen_mp = 0.35;
 	//$G_bonus_maj_hp = 60 * 60;
 	//$G_bonus_maj_mp = 60 * 60;
@@ -38,28 +52,40 @@
 	$G_facteur_mana = 10;
 
 	$G_debug = false;
+	/// Indique si le jeu est en maintenance (et donc inaccessible)
 	$G_maintenance = false;
 	
 	$G_erreur = '';
 	
+	/// Nombre de PA pour attaquer un monstre
 	$G_PA_attaque_monstre = 7;
+	/// Nombre de PA pour attaquer un joueur
 	$G_PA_attaque_joueur = 12;
+	/// Nombre de PA pour attaquer un bâtiment
 	$G_PA_attaque_batiment = 10;
+	/// Nombre de round lors d'un combat
 	$G_round_total = 10;
+	/// Nombre de p
 	$G_place_inventaire = 20;
-	//Plus le spawn rate est élevé, plus les mobs pop
+	/// Taux d'apparition des monstres. Plus le spawn rate est élevé, plus les mobs popent
 	$G_spawn_rate = 19;
 	$G_apprentissage_rate = 0.7;
 	$G_drop_rate = 1;
 	$G_xp_rate = 1;
 	
-	//Cibles des sorts
+	/**
+	 * @name 	Cibles des sorts
+	 * 
+	 */
+	//@{
+	/// Cibles des sorts
 	$G_cibles = array();
 	$G_cibles[1] = 'Self';
 	$G_cibles[2] = 'Ami';
 	$G_cibles[4] = 'Ennemi';
 	$G_cibles[5] = 'Groupe';
 	$G_cibles[8] = 'Groupe';
+	//@}
 	
 	//Buffs
 	$G_buff['evasion'] = 10;

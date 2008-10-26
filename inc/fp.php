@@ -18,8 +18,11 @@ mb_internal_encoding("UTF-8");
 
 //Classe gérant les accès à la base de données
 include($root.'class/db.class.php');
+
 //Inclusion des fonctions permettant de gérer le temps
 include($root.'fonction/time.inc.php');
+
+// Inclusion des fonctions gérant les actions en combat
 include($root.'fonction/action.inc.php');
 
 //Récupère le timestamp en milliseconde de début de création de la page

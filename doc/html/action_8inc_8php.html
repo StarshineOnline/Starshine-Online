@@ -31,14 +31,19 @@
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Détermine l'action a effectuer, si on peut.  <a href="#041c268eaf24380770a3922a7c3e55bc"></a><br></td></tr>
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="action_8inc_8php.html#eac6f598954a3952c8dbbaed9d6ea370">lance_sort</a> ($<a class="el" href="bureau__quete_8php.html#cf2488b95c97e0378c9bf49de3b50f28">id</a>, $acteur)</td></tr>
 
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Lance un sort lors d'un combat.  <a href="#eac6f598954a3952c8dbbaed9d6ea370"></a><br></td></tr>
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="action_8inc_8php.html#09b6dc45f599376a3695ec53bbb1d461">lance_comp</a> ($<a class="el" href="bureau__quete_8php.html#cf2488b95c97e0378c9bf49de3b50f28">id</a>, $acteur)</td></tr>
 
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Utilise une compétence.  <a href="#09b6dc45f599376a3695ec53bbb1d461"></a><br></td></tr>
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="action_8inc_8php.html#fa6728855931f0feb1a5ee09e5a97c08">critique_magique</a> ($attaquant, $defenseur)</td></tr>
 
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Regarde s'il y a un critique magique.  <a href="#fa6728855931f0feb1a5ee09e5a97c08"></a><br></td></tr>
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="action_8inc_8php.html#2a9c1e5a32314f87eec36f89a72a9a2e">degat_critique</a> ($actif, $passif, $degat)</td></tr>
 
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Ajuste les dégâts en cas de critique.  <a href="#2a9c1e5a32314f87eec36f89a72a9a2e"></a><br></td></tr>
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="action_8inc_8php.html#abbb250b0c79b0ef7ce8aefc83b026b6">get_etats</a> ()</td></tr>
 
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Renvoie un tableau des éEtats avec l'ID et le nom.  <a href="#abbb250b0c79b0ef7ce8aefc83b026b6"></a><br></td></tr>
 </table>
 <hr><a name="_details"></a><h2>Description détaillée</h2>
 Gestion des scripts. 
@@ -70,6 +75,16 @@ Gestion des scripts.
 <div class="memdoc">
 
 <p>
+Regarde s'il y a un critique magique. 
+<p>
+Calcule le potentiel critique pour les sorts et lance le dé.<p>
+<dl compact><dt><b>Paramètres:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>$attaquant</em>&nbsp;</td><td><a class="el" href="class_personnage.html" title="Class Personnage.">Personnage</a> attaquant. </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>$defenseur</em>&nbsp;</td><td><a class="el" href="class_personnage.html" title="Class Personnage.">Personnage</a> défendant.</td></tr>
+  </table>
+</dl>
+<dl class="return" compact><dt><b>Renvoie:</b></dt><dd>true s'il y un critique, false s'il n'y en a pas. </dd></dl>
 
 <p>
 <div class="dynheader">
@@ -77,7 +92,7 @@ Voici le graphe d'appel pour cette fonction :</div>
 <div class="dynsection">
 <p><center><img src="action_8inc_8php_fa6728855931f0feb1a5ee09e5a97c08_icgraph.png" border="0" usemap="#action_8inc_8php_fa6728855931f0feb1a5ee09e5a97c08_icgraph_map" alt=""></center>
 <map name="action_8inc_8php_fa6728855931f0feb1a5ee09e5a97c08_icgraph_map">
-<area shape="rect" href="attaque_8inc_8php.html#02093b30ac133fbc3bb0c5d4d9ccaeab" title="degat_magique" alt="" coords="173,5,283,32"><area shape="rect" href="action_8inc_8php.html#eac6f598954a3952c8dbbaed9d6ea370" title="lance_sort" alt="" coords="332,31,412,57"></map>
+<area shape="rect" href="attaque_8inc_8php.html#02093b30ac133fbc3bb0c5d4d9ccaeab" title="degat_magique" alt="" coords="173,5,283,32"><area shape="rect" href="action_8inc_8php.html#eac6f598954a3952c8dbbaed9d6ea370" title="Lance un sort lors d&#39;un combat." alt="" coords="332,31,412,57"></map>
 </div>
 
 </div>
@@ -114,6 +129,17 @@ Voici le graphe d'appel pour cette fonction :</div>
 <div class="memdoc">
 
 <p>
+Ajuste les dégâts en cas de critique. 
+<p>
+Double les dégâts et applique la réduction due à la puissance.<p>
+<dl compact><dt><b>Paramètres:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>$actif</em>&nbsp;</td><td><a class="el" href="class_personnage.html" title="Class Personnage.">Personnage</a> attaquant. </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>$passif</em>&nbsp;</td><td><a class="el" href="class_personnage.html" title="Class Personnage.">Personnage</a> défendant. </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>$degat</em>&nbsp;</td><td>Dégâts de base.</td></tr>
+  </table>
+</dl>
+<dl class="return" compact><dt><b>Renvoie:</b></dt><dd>Dégâts une fois les critiques appliqués. </dd></dl>
 
 <p>
 <div class="dynheader">
@@ -121,7 +147,7 @@ Voici le graphe d'appel pour cette fonction :</div>
 <div class="dynsection">
 <p><center><img src="action_8inc_8php_2a9c1e5a32314f87eec36f89a72a9a2e_icgraph.png" border="0" usemap="#action_8inc_8php_2a9c1e5a32314f87eec36f89a72a9a2e_icgraph_map" alt=""></center>
 <map name="action_8inc_8php_2a9c1e5a32314f87eec36f89a72a9a2e_icgraph_map">
-<area shape="rect" href="attaque_8inc_8php.html#02093b30ac133fbc3bb0c5d4d9ccaeab" title="degat_magique" alt="" coords="157,5,267,32"><area shape="rect" href="action_8inc_8php.html#eac6f598954a3952c8dbbaed9d6ea370" title="lance_sort" alt="" coords="316,31,396,57"></map>
+<area shape="rect" href="attaque_8inc_8php.html#02093b30ac133fbc3bb0c5d4d9ccaeab" title="degat_magique" alt="" coords="157,5,267,32"><area shape="rect" href="action_8inc_8php.html#eac6f598954a3952c8dbbaed9d6ea370" title="Lance un sort lors d&#39;un combat." alt="" coords="316,31,396,57"></map>
 </div>
 
 </div>
@@ -142,6 +168,10 @@ Voici le graphe d'appel pour cette fonction :</div>
 <div class="memdoc">
 
 <p>
+Renvoie un tableau des éEtats avec l'ID et le nom. 
+<p>
+Les clés du tableau sont les ID, chaque élément contient deux autres éléments : le nom (clé "nom") et l'ID (clé "id"").<p>
+<dl class="return" compact><dt><b>Renvoie:</b></dt><dd>Tableau des états. </dd></dl>
 
 <p>
 <div class="dynheader">
@@ -180,7 +210,16 @@ Voici le graphe d'appel pour cette fonction :</div>
 <div class="memdoc">
 
 <p>
-
+Utilise une compétence. 
+<p>
+Applique les effets de la compétence et retire la RM.<p>
+<dl compact><dt><b>Paramètres:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>$id</em>&nbsp;</td><td>ID de la compétence. </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>$acteur</em>&nbsp;</td><td>indique si l'acteur de l'action est l'attaquant ('attaquant') ou le défenseur.</td></tr>
+  </table>
+</dl>
+return Compétence associée à la compétence. 
 <p>
 <div class="dynheader">
 Voici le graphe d'appel pour cette fonction :</div>
@@ -218,14 +257,23 @@ Voici le graphe d'appel pour cette fonction :</div>
 <div class="memdoc">
 
 <p>
-
+Lance un sort lors d'un combat. 
+<p>
+Effectuer les jets de lancer et toucher, plus éventuellement le troisième jet pour les effets s'il y en a un. Si le sort est réussi, retire la RM et applique les dégâts et/ou enregistre les effets.<p>
+<dl compact><dt><b>Paramètres:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>$id</em>&nbsp;</td><td>ID du sort. </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>$acteur</em>&nbsp;</td><td>indique si l'acteur de l'action est l'attaquant ('attaquant') ou le défenseur.</td></tr>
+  </table>
+</dl>
+return Compétence de magie associée au sort. 
 <p>
 <div class="dynheader">
 Voici le graphe d'appel pour cette fonction :</div>
 <div class="dynsection">
 <p><center><img src="action_8inc_8php_eac6f598954a3952c8dbbaed9d6ea370_cgraph.png" border="0" usemap="#action_8inc_8php_eac6f598954a3952c8dbbaed9d6ea370_cgraph_map" alt=""></center>
 <map name="action_8inc_8php_eac6f598954a3952c8dbbaed9d6ea370_cgraph_map">
-<area shape="rect" href="base_8inc_8php.html#19a8179130215d05ff50b9e72f2c46d3" title="augmentation_competence" alt="" coords="137,5,313,32"><area shape="rect" href="base_8inc_8php.html#2c272fe9cfde5f7c8117d8571c49c40d" title="calcul_pp" alt="" coords="385,56,460,83"><area shape="rect" href="action_8inc_8php.html#fa6728855931f0feb1a5ee09e5a97c08" title="critique_magique" alt="" coords="363,107,483,133"><area shape="rect" href="action_8inc_8php.html#2a9c1e5a32314f87eec36f89a72a9a2e" title="degat_critique" alt="" coords="372,208,473,235"><area shape="rect" href="attaque_8inc_8php.html#02093b30ac133fbc3bb0c5d4d9ccaeab" title="degat_magique" alt="" coords="171,157,280,184"><area shape="rect" href="time_8inc_8php.html#a8bcd4bada1265a01208f21148f60c5e" title="Indique quel est le moment de la journée (matin, journée, soir ou nuit)." alt="" coords="177,259,273,285"><area shape="rect" href="comp_8class_8php.html#6629c09106d50d1c7d8d03c48d370436" title="sort_effects" alt="" coords="181,309,269,336"><area shape="rect" href="base_8inc_8php.html#19ea8bf3556dd8b7bc94c142cc8c0542" title="de_degat" alt="" coords="385,157,460,184"><area shape="rect" href="time_8inc_8php.html#5dc4d8d9e53a8d1d65edcab9cd1dacb9" title="Renvoie l&#39;heure (uniquement) qu&#39;il est dans le jeu." alt="" coords="383,259,463,285"></map>
+<area shape="rect" href="base_8inc_8php.html#19a8179130215d05ff50b9e72f2c46d3" title="augmentation_competence" alt="" coords="137,5,313,32"><area shape="rect" href="base_8inc_8php.html#2c272fe9cfde5f7c8117d8571c49c40d" title="calcul_pp" alt="" coords="397,56,472,83"><area shape="rect" href="action_8inc_8php.html#fa6728855931f0feb1a5ee09e5a97c08" title="Regarde s&#39;il y a un critique magique." alt="" coords="375,107,495,133"><area shape="rect" href="action_8inc_8php.html#2a9c1e5a32314f87eec36f89a72a9a2e" title="Ajuste les dégâts en cas de critique." alt="" coords="384,208,485,235"><area shape="rect" href="attaque_8inc_8php.html#02093b30ac133fbc3bb0c5d4d9ccaeab" title="degat_magique" alt="" coords="171,157,280,184"><area shape="rect" href="time_8inc_8php.html#a8bcd4bada1265a01208f21148f60c5e" title="Indique quel est le moment de la journée (matin, journée, soir ou nuit)." alt="" coords="177,259,273,285"><area shape="rect" href="comp_8class_8php.html#6629c09106d50d1c7d8d03c48d370436" title="sort_effects" alt="" coords="181,309,269,336"><area shape="rect" href="base_8inc_8php.html#19ea8bf3556dd8b7bc94c142cc8c0542" title="de_degat" alt="" coords="397,157,472,184"><area shape="rect" href="time_8inc_8php.html#5dc4d8d9e53a8d1d65edcab9cd1dacb9" title="Renvoie l&#39;heure (uniquement) qu&#39;il est dans le jeu." alt="" coords="395,259,475,285"><area shape="rect" href="base_8inc_8php.html#c3a04c3bc3e42c54d90b1c14e9061214" title="recupperso_essentiel" alt="" coords="363,309,507,336"></map>
 </div>
 
 </div>
@@ -267,7 +315,7 @@ Renvoie l'action a effectuer, si le personnage peut en faire une.
 Récupère l'action à effectuer à l'aide à l'aide de la fonction <a class="el" href="action_8inc_8php.html#041c268eaf24380770a3922a7c3e55bc" title="Détermine l&#39;action a effectuer, si on peut.">sub_script_action()</a>, vérifie si une dissimulation ne l'empêche pas et si c'est le cas renvoie cette action.<p>
 <dl compact><dt><b>Paramètres:</b></dt><dd>
   <table border="0" cellspacing="2" cellpadding="0">
-    <tr><td valign="top"></td><td valign="top"><em>$joueur</em>&nbsp;</td><td>Pesonnage. </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>$joueur</em>&nbsp;</td><td>Pesonnage du joueur. </td></tr>
     <tr><td valign="top"></td><td valign="top"><em>$ennemi</em>&nbsp;</td><td>Adversaire. </td></tr>
     <tr><td valign="top"></td><td valign="top"><em>$mode</em>&nbsp;</td><td>Indique si le personnage attaque ("attaquant") ou défend.</td></tr>
   </table>
@@ -324,7 +372,7 @@ Détermine l'action a effectuer, si on peut.
 Commence par vérifier si le personnage peut effectuer une action en fonction de son état. Ensuite détermine l'action à efectuer en foncion du script. Puis finallement détermine si l'action est anticipée.<p>
 <dl compact><dt><b>Paramètres:</b></dt><dd>
   <table border="0" cellspacing="2" cellpadding="0">
-    <tr><td valign="top"></td><td valign="top"><em>$joueur</em>&nbsp;</td><td>Pesonnage. </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>$joueur</em>&nbsp;</td><td>Pesonnage du joueur. </td></tr>
     <tr><td valign="top"></td><td valign="top"><em>$ennemi</em>&nbsp;</td><td>Adversaire. </td></tr>
     <tr><td valign="top"></td><td valign="top"><em>$mode</em>&nbsp;</td><td>Indique si le personnage attaque ("attaquant") ou défend.</td></tr>
   </table>
@@ -345,7 +393,7 @@ Voici le graphe d'appel pour cette fonction :</div>
 </div>
 </div><p>
 </div>
-<hr size="1"><address style="text-align: right;"><small>Généré le Sun Oct 19 17:58:04 2008 pour Starshine Online par&nbsp;
+<hr size="1"><address style="text-align: right;"><small>Généré le Sun Oct 26 23:21:46 2008 pour Starshine Online par&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.6 </small></address>
 </body>

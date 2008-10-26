@@ -1,6 +1,8 @@
 Faits :
 class/db.class.php
 fonction/time.inc.php
+fonction/action.inc.php
+connect.php(.sample)
 
 
 
@@ -8,4 +10,10 @@ En cours :
 index.php
 haut.php
 inc/fp.php
-fonction/action.inc.php
+inc/variables.inc.php(.sample)
+inc/races.inc.php
+inc/traduction.inc.php
+
+
+En attente :
+inc/classes.inc.php

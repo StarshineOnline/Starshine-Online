@@ -60,7 +60,7 @@
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="getinfos_8php.html#a3839e976cc3dfcf97eb2d8bd3df4e13">$req_joueurs</a> = $<a class="el" href="classdb.html">db</a>-&gt;query($requete_joueurs)</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="getinfos_8php.html#856749898f829d34c50bae65524486b8">$requete_pnj</a> = 'SELECT <a class="el" href="bureau__quete_8php.html#cf2488b95c97e0378c9bf49de3b50f28">id</a>, nom, image, x, y FROM pnj WHERE (((x &gt;= '.$xmin.') AND (x &lt;= '.$xmax.')) AND ((y &gt;= '.$ymin.') AND (y &lt;= '.$ymax.'))) ORDER BY y ASC, x ASC'</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="getinfos_8php.html#856749898f829d34c50bae65524486b8">$requete_pnj</a> = 'SELECT <a class="el" href="bureau__quete_8php.html#cf2488b95c97e0378c9bf49de3b50f28">id</a>, nom, image, x, y FROM <a class="el" href="classpnj.html">pnj</a> WHERE (((x &gt;= '.$xmin.') AND (x &lt;= '.$xmax.')) AND ((y &gt;= '.$ymin.') AND (y &lt;= '.$ymax.'))) ORDER BY y ASC, x ASC'</td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="getinfos_8php.html#b2b4d85eee8362d5d209c9c5d23b83ce">$req_pnj</a> = $<a class="el" href="classdb.html">db</a>-&gt;query($requete_pnj)</td></tr>
 
@@ -413,7 +413,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$requete_pnj = 'SELECT <a class="el" href="bureau__quete_8php.html#cf2488b95c97e0378c9bf49de3b50f28">id</a>, nom, image, x, y FROM pnj WHERE (((x &gt;= '.$xmin.') AND (x &lt;= '.$xmax.')) AND ((y &gt;= '.$ymin.') AND (y &lt;= '.$ymax.'))) ORDER BY y ASC, x ASC'          </td>
+          <td class="memname">$requete_pnj = 'SELECT <a class="el" href="bureau__quete_8php.html#cf2488b95c97e0378c9bf49de3b50f28">id</a>, nom, image, x, y FROM <a class="el" href="classpnj.html">pnj</a> WHERE (((x &gt;= '.$xmin.') AND (x &lt;= '.$xmax.')) AND ((y &gt;= '.$ymin.') AND (y &lt;= '.$ymax.'))) ORDER BY y ASC, x ASC'          </td>
         </tr>
       </table>
 </div>
@@ -544,7 +544,7 @@
 </div>
 </div><p>
 </div>
-<hr size="1"><address style="text-align: right;"><small>Généré le Sun Oct 19 17:58:07 2008 pour Starshine Online par&nbsp;
+<hr size="1"><address style="text-align: right;"><small>Généré le Sun Oct 26 23:21:55 2008 pour Starshine Online par&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.6 </small></address>
 </body>

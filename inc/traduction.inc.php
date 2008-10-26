@@ -1,5 +1,14 @@
 <?php
+/**
+ * @file traduction.inc.php
+ * Gestion de la traduction. 
+ */
 
+/**
+ * @name Sorts et compétences
+ * Traduction des types de magie, sorts et compétences.
+ * @{  
+ */
 $Gtrad['sort_vie'] = 'Magie de la vie';
 $Gtrad['sort_element'] = 'Magie élémentaire';
 $Gtrad['sort_mort'] = 'Nécromancie';
@@ -25,7 +34,14 @@ $Gtrad['body_to_mind'] = 'Général';
 $Gtrad['tir_precis'] = 'Tir Précis';
 $Gtrad['oeil_faucon'] = 'Oeil du faucon';
 $Gtrad['coup_puissant'] = 'Coup Puissant';
+//@}
 
+
+/**
+ * @name Royaumes
+ * Traduction des noms de royaumes.
+ * @{  
+ */
 $Gtrad['barbare'] = 'Barbare';
 $Gtrad['elfebois'] = 'Elfe des bois';
 $Gtrad['elfehaut'] = 'Haut-Elfe';
@@ -38,7 +54,14 @@ $Gtrad['scavenger'] = 'Scavenger';
 $Gtrad['troll'] = 'Troll';
 $Gtrad['vampire'] = 'Vampire';
 $Gtrad['neutre'] = 'Neutre';
+//@}
 
+
+/**
+ * @name Emplacements
+ * Traduction des emplacements des armes, armures e accessoires.
+ * @{  
+ */
 $Gtrad['main_droite'] = 'Arme droite';
 $Gtrad['main_gauche'] = 'Arme gauche';
 $Gtrad['tete'] = 'Tête';
@@ -51,7 +74,14 @@ $Gtrad['cou'] = 'Cou';
 $Gtrad['dos'] = 'Dos';
 $Gtrad['doigt'] = 'Doigt';
 $Gtrad['accessoire'] = 'Accessoire';
+//@}
 
+
+/**
+ * @name Compétences
+ * Traduction des compétences.
+ * @{  
+ */
 $Gtrad['distance'] = 'Tir à distance';
 $Gtrad['melee'] = 'Mêlée';
 $Gtrad['esquive'] = 'Esquive';
@@ -76,11 +106,25 @@ $Gtrad['survie'] = 'Survie';
 $Gtrad['identification'] = 'Identification d\'objets';
 $Gtrad['sort_vie+'] = 'Apprend magie de la vie a';
 $Gtrad['facteur_magie'] = 'Réduction PA des sorts';
+//@}
 
+
+/**
+ * @name Général
+ * Traductions générales
+ * @{  
+ */
 $Gtrad['classe'] = 'Classe';
 $Gtrad['honneur'] = 'Honneur';
 $Gtrad['level'] = 'Niveau';
+//@}
 
+
+/**
+ * @name Diplomatie
+ * Traduction de la diplomatie.
+ * @{  
+ */
 $Gtrad['diplo0'] = 'Alliance fraternelle';
 $Gtrad['diplo1'] = 'Alliance';
 $Gtrad['diplo2'] = 'Paix durable';
@@ -93,7 +137,14 @@ $Gtrad['diplo8'] = 'Guerre durable';
 $Gtrad['diplo9'] = 'Ennemis';
 $Gtrad['diplo10'] = 'Ennemis eternels';
 $Gtrad['diplo127'] = 'Votre royaume';
+//@}
 
+
+/**
+ * @name Affinités
+ * Traduction des affinités.
+ * @{  
+ */
 $Gtrad['affinite1'] = 'Execrable';
 $Gtrad['affinite2'] = 'Très mauvaise';
 $Gtrad['affinite3'] = 'Mauvaise';
@@ -101,7 +152,14 @@ $Gtrad['affinite4'] = 'Moyenne';
 $Gtrad['affinite5'] = 'Bonne';
 $Gtrad['affinite6'] = 'Très bonne';
 $Gtrad['affinite7'] = 'Superbe';
+//@}
 
+
+/**
+ * @name Bâtiments
+ * Traduction des bâtiments
+ * @{  
+ */
 $Gtrad['Poste avancé'] = 'poste_avance';
 $Gtrad['Fortin'] = 'fortin';
 $Gtrad['Fort'] = 'fort';
@@ -122,7 +180,14 @@ $Gtrad['Bélier'] = 'belier';
 $Gtrad['Catapulte'] = 'catapulte';
 $Gtrad['Trébuchet'] = 'trebuchet';
 $Gtrad['Baliste'] = 'baliste';
+//@}
 
+
+/**
+ * @name Classes
+ * Traduction des classes.
+ * @{  
+ */
 $GPluriels = array();
 $GPluriels['combattant'] = 'combattants';
 $GPluriels['guerrier'] = 'guerriers';
@@ -146,6 +211,7 @@ $GPluriels['prêtre'] = 'prêtres';
 $GPluriels['prêtre+'] = 'prêtres+';
 $GPluriels['grand sorcier+'] = 'grands sorciers+';
 $GPluriels['grand nécromancien+'] = 'grands nécromanciens+';
+//@}
 
 function pluriel($mot) {
   global $GPluriels;

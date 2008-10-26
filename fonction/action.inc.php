@@ -9,7 +9,7 @@
  * Récupère l'action à effectuer à l'aide à l'aide de la fonction sub_script_action(), 
  * vérifie si une dissimulation ne l'empêche pas et si c'est le cas renvoie cette action.  
  *
- * @param $joueur Pesonnage. 
+ * @param $joueur Pesonnage du joueur. 
  * @param $ennemi Adversaire. 
  * @param $mode Indique si le personnage attaque ("attaquant") ou défend.
  * 
@@ -58,7 +58,7 @@ function script_action($joueur, $ennemi, $mode)
  * Ensuite détermine l'action à efectuer en foncion du script. Puis finallement détermine si
  * l'action est anticipée.    
  *
- * @param $joueur Pesonnage. 
+ * @param $joueur Pesonnage du joueur. 
  * @param $ennemi Adversaire. 
  * @param $mode Indique si le personnage attaque ("attaquant") ou défend.
  * 
@@ -369,11 +369,21 @@ function sub_script_action($joueur, $ennemi, $mode)
 }
 
 /**
+ * Lance un sort lors d'un combat.
+ * Effectuer les jets de lancer et toucher, plus éventuellement le troisième jet
+ * pour les effets s'il y en a un. Si le sort est réussi, retire la RM et 
+ * applique les dégâts et/ou enregistre les effets.
  * 
+ * @param $id ID du sort.
+ * @param $acteur indique si l'acteur de l'action est l'attaquant ('attaquant') ou
+ * le défenseur.
+ * 
+ * return Compétence de magie associée au sort.
  */
 function lance_sort($id, $acteur)
 {
 	global $attaquant, $defenseur, $db, $Gtrad, $debugs, $Trace, $G_buff, $G_debuff;
+	// Définition des personnages actif et passif
 	if ($acteur == 'attaquant')
 	{
 		$actif = $attaquant;
@@ -641,7 +651,7 @@ function lance_sort($id, $acteur)
 					$bonus = $actif['buff']['buff_surpuissance']['effet'];
 					$degat = degat_magique(($actif[$row['carac_assoc']] - 2), ($row['effet'] + $bonus), $actif, $passif);
 					if($passif['type2'] == 'batiment') $drain = 0; else $drain = round($degat * 0.5);
-					// On vérifie que le personnage n'a pas plus de HP que son maximum
+					// Augmentation du nombre de HP récupérable par récupération
 					if(array_key_exists('recuperation', $actif)) $actif['etat']['recuperation']['hp_max'] += $drain;
 					echo '&nbsp;&nbsp;<span class="degat"><strong>'.$actif['nom'].'</strong> inflige <strong>'.$degat.'</strong> dégats avec '.$row['nom'].'<br />
 					Et gagne <strong>'.$drain.'</strong> hp grâce au drain</span><br />';
@@ -693,11 +703,12 @@ function lance_sort($id, $acteur)
 				case 'brulure_mana' :
 					$brule_mana = $row['effet'];
 					$degat = $row['effet'] * $row['effet2'];
+					// On regarde si c'est un critique et si oui on modifie les dégât en conséquence
 					if(critique_magique($actif, $passif))
 					{
 						$degat = degat_critique($actif, $passif, $degat);
 					}
-					//Diminution des dégats grâce à l'armure magique
+					// Diminution des dégats grâce à l'armure magique
 					$reduction = calcul_pp(($PM * $passif['puissance']) / 12);
 					$degat = round($degat * $reduction);
 					echo '&nbsp;&nbsp;<span class="degat"><strong>'.$actif['nom'].'</strong> retire '.$brule_mana.' réserve de mana et inflige <strong>'.$degat.'</strong> dégats avec '.$row['nom'].'</span><br />';
@@ -721,7 +732,7 @@ function lance_sort($id, $acteur)
 				break;
 				case 'paralysie' :
 					//Objets magiques
-					foreach($actif['objet_effet'] as $effet)
+					/*foreach($actif['objet_effet'] as $effet)
 					{
 						switch($effet['id'])
 						{
@@ -729,11 +740,14 @@ function lance_sort($id, $acteur)
 								//$potentiel_magique_arme += $potentiel_magique_arme * (1 + ($effet['effet'] / 100));
 							break;
 						}
-					}
+					}*/
+					// Calcul du potentiel paralyser
 					$sm = ($actif['volonte'] * $actif['sort_mort']);
+					// Calcul du potentiel résister
 					$pm = $passif['PM'];
 					if (array_key_exists('bouclier_protecteur', $passif['etat'])) $pm = $pm + ($passif['etat']['bouclier_protecteur']['effet'] * $passif['bouclier_degat']);
 					$pm = pow($passif['volonte'], 1.83) * sqrt($pm) * 3;
+					// Lancer des dés
 					$att = rand(0, $sm);
 					$def = rand(0, $pm);
 					echo '&nbsp;&nbsp;<strong>'.$actif['nom'].'</strong> lance le sort paralysie<br />';
@@ -750,11 +764,14 @@ function lance_sort($id, $acteur)
 					echo '<div class="debug" id="debug'.$debugs++."\">Potentiel paralyser : $sm<br />Potentiel résister : $pm<br />Résultat => Lanceur : $att | Défenseur $def<br /></div>";
 				break;
 				case 'silence' :
+					// Calcul du potentiel paralyser
 					$sm = ($actif['volonte'] * $actif['sort_mort']);
 					
+					// Calcul du potentiel résister
 					$pm = $passif['PM'];
 					if (array_key_exists('bouclier_protecteur', $passif['etat'])) $pm = $pm + ($passif['etat']['bouclier_protecteur']['effet'] * $passif['bouclier_degat']);
 					$pm = $passif['volonte'] * $pm;
+					// Lancer des dés
 					$att = rand(0, $sm);
 					$def = rand(0, $pm);
 					echo '&nbsp;&nbsp;<strong>'.$actif['nom'].'</strong> lance le sort silence<br />';
@@ -842,6 +859,7 @@ function lance_sort($id, $acteur)
 		if($acteur == 'attaquant') echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant à '.$actif['incantation'].' en incantation</span><br />';
 	}
 
+  // On met à jour les protagonistes
 	if ($acteur == 'attaquant')
 	{
 		$attaquant = $actif;
@@ -872,9 +890,20 @@ function lance_sort($id, $acteur)
 	return $row['comp_assoc'];
 }
 
+/**
+ * Utilise une compétence.
+ * Applique les effets de la compétence et retire la RM.
+ * 
+ * @param $id ID de la compétence.
+ * @param $acteur indique si l'acteur de l'action est l'attaquant ('attaquant') ou
+ * le défenseur.
+ * 
+ * return Compétence associée à la compétence.
+ */
 function lance_comp($id, $acteur)
 {
 	global $attaquant, $defenseur, $db, $Gtrad, $debugs, $comp_attaque, $G_round_total;
+	// Définition des personnages actif et passif
 	if ($acteur == 'attaquant')
 	{
 		$actif = $attaquant;
@@ -890,6 +919,7 @@ function lance_comp($id, $acteur)
 	$req = $db->query($requete);
 	$row = $db->read_assoc($req);
 
+  // Calcul des MP nécessaires
 	$mp_need = $row['mp'];
 	//Appel des ténebres
 	if($actif['etat']['appel_tenebre']['duree'] > 0)
@@ -906,7 +936,7 @@ function lance_comp($id, $acteur)
 	//Suppresion de la réserve
 	$actif['reserve'] -= $mp_need;
 
-	$comp_attaque = false;
+	$comp_attaque = false;  // Indique si le personnage attaque se round-ci.
 	$utilise_comp = $row['type'];
 	//echo $row['type'];
 	switch($row['type'])
@@ -961,6 +991,7 @@ function lance_comp($id, $acteur)
 			$actif['etat']['tir_vise']['effet'] = $row['effet'];
 			$actif['etat']['tir_vise']['duree'] = 2;
 			$comp_attaque = false;
+			// Augmentation des compétences
 			$diff = 3 * $G_round_total / 10;
 			$augmentation = augmentation_competence('distance', $actif, $diff);
 			if($actif['arme_type'] == 'arc' AND array_key_exists('maitrise_arc', $actif['competences'])) $maitrise_arc = 1 + ($actif['competences']['maitrise_arc'] / 1000); else $maitrise_arc = 1;
@@ -984,6 +1015,7 @@ function lance_comp($id, $acteur)
 		case 'fleche_etourdissante' :
 			echo '&nbsp;&nbsp;<strong>'.$actif['nom'].'</strong> utilise une flêche étourdissante !<br />';
 			$actif['degat_moins'] = $row['effet'];
+			// On regarde si l'adversaire est étourdit
 			$de_att = rand(0, (($actif['force'] + $actif['dexterite']) / 2));
 			$de_deff = rand(0, $passif['vie']);
 			if($de_att > $de_deff)
@@ -1018,6 +1050,7 @@ function lance_comp($id, $acteur)
 		case 'fleche_poison' :
 			echo '&nbsp;&nbsp;<strong>'.$actif['nom'].'</strong> utilise '.$row['nom'].' !<br />';
 			$actif['degat_sup'] = $row['effet'];
+			// On regarde si le poison fait effet
 			$de_att = rand(0, (($actif['force'] + $row['effet'])));
 			$de_deff = rand(0, $passif['volonte']);
 			if($de_att > $de_deff)
@@ -1065,6 +1098,7 @@ function lance_comp($id, $acteur)
 		break;
 		case 'slam' :
 			echo '&nbsp;&nbsp;<strong>'.$actif['nom'].'</strong> utilises SLAM !<br />';
+			// On regarde si la compétence fait effet
 			$de_att = rand(0, (($actif['force'] + $actif['dexterite']) / 2));
 			$de_deff = rand(0, $passif['vie']);
 			echo $de_att.' '.$de_deff.'<br />';
@@ -1079,6 +1113,7 @@ function lance_comp($id, $acteur)
 			echo '&nbsp;&nbsp;<strong>'.$actif['nom'].'</strong> utilise '.$row['nom'].' !<br />';
 			$actif['etat']['derniere_chance']['effet'] = $row['effet2'];
 			$actif['etat']['derniere_chance']['duree'] = 20;
+			// Diminution de la PM
 			$actif['pm'] = $actif['pm'] / (1 + ($actif['etat']['derniere_chance']['effet'] / 100));
 			$actif['degat_sup'] = $row['effet'];
 			//On prends en compte la bonne compétence
@@ -1149,6 +1184,7 @@ function lance_comp($id, $acteur)
 			$comp_attaque = true;
 		break;
 		case 'dissimulation' :
+		  // On regarde si la dissimulation est réussie
 			$att = rand(0, $actif['dexterite'] * $actif['esquive']);
 			$def = rand(0, $passif['volonte'] * ($passif['PM'] * 2.5));
 			echo '&nbsp;&nbsp;<strong>'.$actif['nom'].'</strong> tente de se dissimuler...';
@@ -1214,6 +1250,7 @@ function lance_comp($id, $acteur)
 			break;
 	}
 
+  // On met à jour les protagonistes
 	if ($acteur == 'attaquant')
 	{
 		$attaquant = $actif;
@@ -1227,13 +1264,24 @@ function lance_comp($id, $acteur)
 	return $row['comp_assoc'];
 }
 
+/**
+ * Regarde s'il y a un critique magique.
+ * Calcule le potentiel critique pour les sorts et lance le dé.
+ * 
+ * @param $attaquant Personnage attaquant.
+ * @param $defenseur Personnage défendant.
+ * 
+ * @return true s'il y un critique, false s'il n'y en a pas.  
+ */
 function critique_magique($attaquant, $defenseur)
 {
-	global $debugs;
+	global $debugs;  // Numéro des informations de debug.
+	// Dé de critiques
 	$chance = rand(0, 10000);
+	// Calcule des chances de critique
 	$actif_chance_critique = ($attaquant['volonte'] * 50);
 	if(array_key_exists('buff_furie_magique', $attaquant['buff'])) $actif_chance_critique = $actif_chance_critique  * (1 + ($attaquant['buff']['buff_furie_magique']['effet'] / 100));
-	$critique = false;
+	$critique = false;  // Indique s'il y a un critique.
 	echo '
 	<div id="debug'.$debugs.'" class="debug">
 		Potentiel critique attaquant : '.$actif_chance_critique.' / 10000<br />
@@ -1248,6 +1296,16 @@ function critique_magique($attaquant, $defenseur)
 	return $critique;
 }
 
+/**
+ * Ajuste les dégâts en cas de critique.
+ *  Double les dégâts et applique la réduction due à la puissance.
+ *  
+ * @param $actif Personnage attaquant.
+ * @param $passif Personnage défendant.
+ * @param $degat Dégâts de base.
+ * 
+ * @return Dégâts une fois les critiques appliqués.       
+ */
 function degat_critique($actif, $passif, $degat)
 {
 	global $debugs;
@@ -1262,6 +1320,13 @@ function degat_critique($actif, $passif, $degat)
 	return($degat);
 }
 
+/**
+ *  Renvoie un tableau des éEtats avec l'ID et le nom.
+ *  Les clés du tableau sont les ID, chaque élément contient deux autres éléments :
+ *  le nom (clé "nom") et l'ID (clé "id"").
+ *  
+ * @return Tableau des états.
+ */
 function get_etats()
 {
 	$etats = array();
