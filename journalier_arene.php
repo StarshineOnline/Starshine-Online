@@ -92,7 +92,7 @@ while($row = $db->read_assoc($req))
 			$joueur->setAttribute('hp_max', $liste_joueurs[$nom]['hp_max']);
 			$joueur->setAttribute('mp', $liste_joueurs[$nom]['mp']);
 			$joueur->setAttribute('pa', $liste_joueurs[$nom]['pa']);
-			next($liste_joueur);
+			next($liste_joueurs);
 		}
 		
 		//Information des cases
