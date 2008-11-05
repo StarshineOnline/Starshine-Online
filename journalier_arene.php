@@ -118,4 +118,5 @@ while($row = $db->read_assoc($req))
 		$taille->setAttribute('xmin', $xmax);
 	}
 }
+$arene_xml->save('./xml/arenes.xml');
 ?>
