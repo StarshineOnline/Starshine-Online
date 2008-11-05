@@ -9,7 +9,7 @@ include_once('personnage.class.php');
    * Classe représentant un PNJ et permettant de l'ajouter, le modifier ou le supprimer de la base.
    *
 */
-class pnj
+class pnj extends Personnage
 {
 	private $image;
 	private $texte;

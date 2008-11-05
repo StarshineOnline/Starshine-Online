@@ -1,0 +1,7 @@
+Fait:
+Accessoires accessoires.class.php
+Armes armes.class.php
+Armure armures.class.php
+Objets objets.class.php
+Objets Royaume objet_royaume.class.php
+PNJ pnj.class.php
