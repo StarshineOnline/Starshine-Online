@@ -73,14 +73,14 @@ while($row = $db->read_assoc($req))
 		$nouveau->parentNode->removeChild($nouveau);
 		$racine = $arene_xml->getElementsByTagName('arenes')->item(0);
 		
-		$nouv_arene = new $arene_xml->createElement('viewarene');
+		$nouv_arene = $arene_xml->createElement('viewarene');
 		$arene_courante = $racine->appendChild($nouv_arene);
 		$arene_courante->setAttribute('type', $row['nom']);
 		
 		while(current($liste_joueurs))
 		{
 			$nom = key($liste_joueurs);
-			$nouv_joueur = new $arene_xml->createElement('joueur');
+			$nouv_joueur = $arene_xml->createElement('joueur');
 			$joueur = $arene_courante->appendChild($nouv_joueur);
 			$joueur->setAttribute('nom', $nom);
 			$joueur->setAttribute('level', $liste_joueurs[$nom]['lvl']);
@@ -107,7 +107,7 @@ while($row = $db->read_assoc($req))
 		}
 		
 		//Taille de l'arène
-		$nouv_taille = new $arene_xml->createElement('taille');
+		$nouv_taille = $arene_xml->createElement('taille');
 		$taille = $arene_courante->appendChild($nouv_taille);
 		$taille->setAttribute('xmin', $xmin);
 		$taille->setAttribute('xmin', $xmax);
