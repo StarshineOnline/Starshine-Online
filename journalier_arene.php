@@ -17,6 +17,7 @@ $row = $db->read_assoc($req);
 
 //Verifie que le fichier ne doit pas être crée
 $nouveau = $arene_xml->getElementsByTagName("nouveau")->item(0);
+$nouv_arenes = !empty($nouveau);
 
 while($row = $db->read_assoc($req))
 {
@@ -44,7 +45,7 @@ while($row = $db->read_assoc($req))
 		$liste_joueurs[$joueur['nom']]['pa'] = $joueur['pa'];
 	}
 	
-	if(empty($nouveau))
+	if(!$nouv_arenes)
 	{
 		$arene = $arene_xml->getElementsByTagName($row['nom']);
 	
