@@ -71,7 +71,7 @@ while($row = $db->read_assoc($req))
 	else
 	{
 		$nouveau->parentNode->removeChild($nouveau);
-		$racine = $arene_xml->getElementsByTagName('arenes');
+		$racine = $arene_xml->getElementsByTagName('arenes')->item(0);
 		
 		$arene_courante = $racine->appendChild('viewarene');
 		$arene_courante->setAttribute('type', $row['nom']);
