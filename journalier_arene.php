@@ -102,7 +102,8 @@ while($row = $db->read_assoc($req))
 		//Création des cases
 		while($case = $db->read_assoc($req))
 		{
-			$case_xml = $arene_courante->appendChild('case');
+			$nouv_case = $arene_xml->createElement('case');
+			$case_xml = $arene_courante->appendChild($nouv_case);
 			$case_xml->setAttribute('id', $case['ID']);
 			$case_xml->setAttribute('decor', $case['decor']);
 		}
