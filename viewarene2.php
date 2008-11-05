@@ -32,7 +32,7 @@ $arene_xml = $fichier_arene->getElementsByTagName('viewarene');
 //Choix de l'arène
 foreach($arene_xml as $type_arene)
 {
-	if( str_cmp($type_arene->getAttribute('type'), $arenenom) )
+	if( strcmp($type_arene->getAttribute('type'), $arenenom) )
 	{
 		$liste_joueurs = $type_arene->getElementsByTagName('joueur');
 		$liste_cases = $type_arene->getElementsByTagName('case');
