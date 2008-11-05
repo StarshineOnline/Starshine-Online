@@ -24,34 +24,27 @@ $req = $db->query($requete);
 if($db->num_rows($req) > 0) die('noob');
 
 
-$requete = "SELECT * FROM arenes WHERE nom = '".sSQL($arenenom)."'";
-$req = $db->query($requete);
-$row = $db->read_assoc($req);
-$xmin = $row['xmin'];
-$xmax = $row['xmax'];
-$ymin = $row['ymin'];
-$ymax = $row['ymax'];
-$coord['x'] = $xmin + round(($xmax - $xmin) / 2);
-$coord['y'] = $ymin + round(($ymax - $ymin) / 2);
-
-/*//Requète pour l'affichage de la map
-$requete = 'SELECT * FROM map WHERE (((FLOOR(ID / '.$G_ligne.') >= '.$ymin.') AND (FLOOR(ID / '.$G_ligne.') <= '.$ymax.')) AND (((ID - (FLOOR(ID / '.$G_colonne.') * 1000)) >= '.$xmin.') AND ((ID - (FLOOR(ID / '.$G_colonne.') * 1000)) <= '.$xmax.'))) ORDER BY ID';
-$req = $db->query($requete);*/
-
 //Récupérations des informations pour l'affichage des joueurs dans l'arène ainsi que l'arène
 $fichier_arene = new DomDocument();
 $fichier_arene->load('./xml/arenes.xml');
-$arene_xml = $fichier_arene->getElementsByTagName("viewarene");
+$arene_xml = $fichier_arene->getElementsByTagName('viewarene');
 
 //Choix de l'arène
 foreach($arene_xml as $type_arene)
 {
-	if( str_cmp($type_arene, $arenenom) )
+	if( str_cmp($type_arene->getAttribute('type'), $arenenom) )
 	{
-		$liste_joueurs = $type_arene->getElementsByTagName("joueur");
-		$liste_cases = $type_arene->getElementsByTagName("case");
+		$liste_joueurs = $type_arene->getElementsByTagName('joueur');
+		$liste_cases = $type_arene->getElementsByTagName('case');
+		$taille_arene = $type_arene->getElementsByTagName('taille')->item(0);
+		$xmin = $taille_arene->getAttribute('xmin');
+		$xmin = $taille_arene->getAttribute('xmax');
+		$xmin = $taille_arene->getAttribute('ymin');
+		$xmin = $taille_arene->getAttribute('xmax');
 	}
 }
+$coord['x'] = $xmin + round(($xmax - $xmin) / 2);
+$coord['y'] = $ymin + round(($ymax - $ymin) / 2);
 
 ?>
 	<div id="carte" style='width:645px !important;'>
@@ -73,8 +66,8 @@ foreach($arene_xml as $type_arene)
 	$index = 0;
 	foreach($liste_cases as $case)
 	{
-		$row_map[$index]['ID'] = $case->getAttribute("nom");
-		$row_map[$index]['decor'] = $case->getAttribute("decor");
+		$row_map[$index]['ID'] = $case->getAttribute('id');
+		$row_map[$index]['decor'] = $case->getAttribute('decor');
 		$index++;
 	}
 	
@@ -83,15 +76,15 @@ foreach($arene_xml as $type_arene)
 	$index = 0;
 	foreach($liste_joueur as $joueur)
 	{
-		$row_j[$index] = $joueur->getAttribute("nom");
-		$row_j[$index]['hp'] = $joueur->getAttribute("hp");
-		$row_j[$index]['mp'] = $joueur->getAttribute("mp");
-		$row_j[$index]['pa'] = $joueur->getAttribute("pa");
-		$row_j[$index]['x'] = $joueur->getAttribute("x");
-		$row_j[$index]['y'] = $joueur->getAttribute("y");
-		$row_j[$index]['hpmax'] = $joueur->getAttribute("hpmax");
-		$row_j[$index]['classe'] = $joueur->getAttribute("classe");
-		$row_j[$index]['level'] = $joueur->getAttribute("lvl");
+		$row_j[$index]['nom'] = $joueur->getAttribute('nom');
+		$row_j[$index]['hp'] = $joueur->getAttribute('hp');
+		$row_j[$index]['mp'] = $joueur->getAttribute('mp');
+		$row_j[$index]['pa'] = $joueur->getAttribute('pa');
+		$row_j[$index]['x'] = $joueur->getAttribute('x');
+		$row_j[$index]['y'] = $joueur->getAttribute('y');
+		$row_j[$index]['hpmax'] = $joueur->getAttribute('hpmax');
+		$row_j[$index]['classe'] = $joueur->getAttribute('classe');
+		$row_j[$index]['level'] = $joueur->getAttribute('lvl');
 		$index++;
 	}
 
@@ -103,7 +96,7 @@ foreach($arene_xml as $type_arene)
 	//Affichage de la map
 	$roy = 0;
 	$race = array();
-	while(($row = current($row_map)) !=== false)
+	while( ($row = current($row_map)) !== false)
 	{
 		$coord = convert_in_coord($row['ID']);
 		$rowid = $row['ID'];
@@ -141,17 +134,7 @@ foreach($arene_xml as $type_arene)
 				if ($z > 0) $case['information'] .= '<br />';
 				$case['information'] .= '<strong>'.htmlspecialchars($info[$rowid][$z]['nom']).'</strong> - '.$Gtrad[$info[$rowid][$z]['race']].' - Niv '.$info[$rowid][$z]['level'];
 				if($admin) $case['information'] .= ' - HP : '.$info[$rowid][$z]['hp'].' - MP : '.$info[$rowid][$z]['mp'].' - PA : '.$info[$rowid][$z]['pa'];
-				
-				//Le joueur ne peut pas voir les vues d'arène?
-				//Si c'est le joueur on le met en haut
-/*				if($row_j[$index]['ID'] == $_SESSION['ID'])
-				{
-					$temp = $info[$rowid][0];
-					$info[$rowid][0] = $info[$rowid][$z];
-					$info[$rowid][$z] = $temp;
-				}*/
-				
-				
+		
 				$z++;
 			}
 
