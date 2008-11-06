@@ -17,3 +17,4 @@ inc/traduction.inc.php
 
 En attente :
 inc/classes.inc.php
+inc/type_terrain.inc.php

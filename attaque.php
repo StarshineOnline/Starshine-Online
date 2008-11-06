@@ -462,7 +462,7 @@ else
 					$groupe['membre'][0]['race'] = $actif['race'];
 				}
 				$G_range_level = ceil($passif['level'] * 0.5);
-				$xp = $xp * (1 + (($passif['level'] - $passif['level']) / $G_range_level));
+				$xp = $xp * (1 + (($passif['level'] - $actif['level']) / $G_range_level));
 				if($xp < 0) $xp = 0;
 				//Si il est en groupe réduction de l'xp gagné par rapport au niveau du groupe
 				if($actif['groupe'] > 0)
