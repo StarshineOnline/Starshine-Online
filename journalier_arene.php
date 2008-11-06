@@ -13,7 +13,7 @@ $arene_xml->load('./xml/arenes.xml');
 //Récupération des arènes
 $requete = "SELECT nom, xmin, xmax, ymin, ymax FROM arenes";
 $req = $db->query($requete);
-$row = $db->read_assoc($req);
+//$row = $db->read_assoc($req);
 
 //Verifie que le fichier ne doit pas être crée
 $nouveau = $arene_xml->getElementsByTagName("nouveau")->item(0);
@@ -34,7 +34,7 @@ while($row = $db->read_assoc($req))
 	$liste_joueurs = array();
 	while($joueur = $db->read_assoc($req_joueur))
 	{
-		$liste_joueurs[$joueur['nom']]['level'] = $joueur['level'];
+		$liste_joueurs[$joueur['nom']]['lvl'] = $joueur['level'];
 		$liste_joueurs[$joueur['nom']]['race'] = $joueur['race'];
 		$liste_joueurs[$joueur['nom']]['x'] = $joueur['x'];
 		$liste_joueurs[$joueur['nom']]['y'] = $joueur['y'];
@@ -113,9 +113,9 @@ while($row = $db->read_assoc($req))
 		$nouv_taille = $arene_xml->createElement('taille');
 		$taille = $arene_courante->appendChild($nouv_taille);
 		$taille->setAttribute('xmin', $xmin);
-		$taille->setAttribute('xmin', $xmax);
-		$taille->setAttribute('xmin', $ymin);
-		$taille->setAttribute('xmin', $xmax);
+		$taille->setAttribute('xmax', $xmax);
+		$taille->setAttribute('ymin', $ymin);
+		$taille->setAttribute('xmax', $xmax);
 	}
 }
 $arene_xml->save('./xml/arenes.xml');

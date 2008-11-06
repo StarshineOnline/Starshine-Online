@@ -74,7 +74,7 @@ $coord['y'] = $ymin + round(($ymax - $ymin) / 2);
 	
 	$row_j = array();
 	$index = 0;
-	foreach($liste_joueur as $joueur)
+	foreach($liste_joueurs as $joueur)
 	{
 		$row_j[$index]['nom'] = $joueur->getAttribute('nom');
 		$row_j[$index]['hp'] = $joueur->getAttribute('hp');
