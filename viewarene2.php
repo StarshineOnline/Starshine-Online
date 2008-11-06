@@ -64,10 +64,10 @@ $coord['y'] = $ymin + round(($ymax - $ymin) / 2);
 	
 	$row_map = array();
 	$index = 0;
-	foreach($liste_cases as $case)
+	foreach($liste_cases as $cases)
 	{
-		$row_map[$index]['ID'] = $case->getAttribute('id');
-		$row_map[$index]['decor'] = $case->getAttribute('decor');
+		$row_map[$index]['ID'] = $cases->getAttribute('id');
+		$row_map[$index]['decor'] = $cases->getAttribute('decor');
 		$index++;
 	}
 	
