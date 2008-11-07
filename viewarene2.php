@@ -217,7 +217,7 @@ $coord['y'] = $ymin + round(($ymax - $ymin) / 2);
 	$req = $db->query($requete);
 	if ($db->num_rows > 0) {
 		while ($R_arene = $db->read_assoc($req)) {
-			echo '<a href="viewarene.php?arene='.$R_arene['nom'].'">'.$R_arene['nom']."</a><br />";
+			echo '<a href="viewarene2.php?arene='.$R_arene['nom'].'">'.$R_arene['nom']."</a><br />";
 		}
 	}	
 	echo "</div>";

@@ -47,7 +47,7 @@ while($row = $db->read_assoc($req))
 	
 	if($nouv_arenes)
 	{
-		$arene = $arene_xml->getElementsByTagName($row['nom']);
+		$arene = $arene_xml->getElementsByTagName($row['nom'])->item(0);
 	
 		$xml_joueur = $arene->getElementsByTagName('joueur');
 		foreach($xml_joueur as $joueur)
