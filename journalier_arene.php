@@ -1,6 +1,6 @@
 <?php
 include('class/db.class.php');
-//Récéption des variables de connexion ࡬a base et connexion ࡣette base
+//Récéption des variables de connexion ?a base et connexion ?ette base
 include('connect.php');
 include('connect_log.php');
 
@@ -52,7 +52,7 @@ while($row = $db->read_assoc($req))
 		$xml_joueur = $arene->getElementsByTagName('joueur');
 		foreach($xml_joueur as $joueur)
 		{
-			$nom = $joueur->getAttribute('nom')
+			$nom = $joueur->getAttribute('nom');
 			if(!empty($nom))
 			{
 				$joueur->setAttribute('level', $liste_joueurs[$nom]['lvl']);
