@@ -298,10 +298,9 @@ if(array_key_exists('from', $_GET) && $_GET['id_action'] != '')
 		if ($sort[0] != '')
 		{
 		?>
-			Lancer 
 			<select name="final_s" id="final_s">
 		<?php
-			$requete = "SELECT * FROM sort_combat WHERE id IN (".implode(',', $sort).") ORDER BY type, nom";
+			$requete = "SELECT * FROM sort_combat WHERE id IN (".implode(',', $sort).") ORDER BY comp_assoc, type, nom";
 			$req = $db->query($requete);
 			while($row = $db->read_array($req))
 			{
@@ -318,10 +317,9 @@ if(array_key_exists('from', $_GET) && $_GET['id_action'] != '')
 		if ($comp[0] != '')
 		{
 		?>
-			Utiliser 
 			<select name="final_c" id="final_c">
 		<?php
-			$requete = "SELECT * FROM comp_combat WHERE id IN (".implode(',', $comp).") ORDER BY type, nom";
+			$requete = "SELECT * FROM comp_combat WHERE id IN (".implode(',', $comp).") ORDER BY comp_assoc, type, nom";
 			$req = $db->query($requete);
 			while($row = $db->read_array($req))
 			{
