@@ -450,6 +450,10 @@ else
 				if($actif['groupe'] > 0)
 				{
 					$groupe = recupgroupe($actif['groupe'], $actif['x'].'-'.$actif['y']);
+					foreach($groupe['membre'] as $membre_id)
+					{
+						if($membre_id['id_joueur'] == $passif['ID']) $xp = 0;
+					}
 				}
 				else
 				{
@@ -512,6 +516,8 @@ else
 								}
 							break;
 						}
+						$xp = $xp / 5;
+						$honneur = $honneur / 5;
 					}
 					$facteur_xp = $row_diplo[0] * 0.2;
 					$facteur_honneur = ($row_diplo[0] * 0.2) - 0.8;
