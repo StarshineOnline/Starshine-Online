@@ -29,6 +29,7 @@ if(isset($_GET['titre']))
 	foreach($ids as $W_ID)
 	{
 		$titre = addslashes($_GET['titre']);
+		if (empty($titre)){$titre = 'Sans titre';}
 		if($titre != '')
 		{
 			$message = addslashes($_GET['message']);
