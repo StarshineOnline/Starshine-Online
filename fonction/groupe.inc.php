@@ -1,7 +1,7 @@
 <?php
 
 //Récupération des infos du groupe
-function recupgroupe($id, $option)
+function recupgroupe($id, $option = '')
 {
 	if($id > 0)
 	{
