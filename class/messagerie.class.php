@@ -63,7 +63,7 @@ class messagerie
 		$i = 0;
 		while($row = $db->read_assoc($req))
 		{
-			$this->threads[$i] = new messagerie_thread($row['id_thread'], $row['groupe'], $row['id_dest'], $row['id_auteur'], $row['important']);
+			$this->threads[$i] = new messagerie_thread($row['id_thread'], $row['id_groupe'], $row['id_dest'], $row['id_auteur'], $row['important']);
 			if($liste_message) $this->threads[$i]->get_messages($nombre_message, $tri_date);
 			$i++;
 		}
