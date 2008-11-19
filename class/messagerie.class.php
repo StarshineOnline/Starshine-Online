@@ -84,11 +84,11 @@ class messagerie
 	}
 
 	//Envoi d'un message
-	function envoi_message($id_thread = 0, $id_auteur, $id_dest = 0, $titre = 'Titre vide', $message, $id_groupe = 0, $roi = 0)
+	function envoi_message($id_thread = 0, $id_dest = 0, $titre = 'Titre vide', $message, $id_groupe = 0, $roi = 0)
 	{
 		global $db;
 		//Création du thread si besoin
-		if($id_thread > 0)
+		if($id_thread == 0)
 		{
 			if($roi == 0) $important = 0;
 			else $important = 1;
@@ -97,31 +97,33 @@ class messagerie
 		}
 
 		//Création du message
-		$auteur = recupperso_essentiel($id_auteur, 'nom');
-		$dest = recupperso_essentiel($id_dest, 'nom');
-		$message = new messagerie_message(0, $id_auteur, $id_dest, $titre, $message, $id_thread);
+		$auteur = recupperso_essentiel($this->id_perso, 'nom');
+		if($id_dest > 0) $dest = recupperso_essentiel($id_dest, 'nom');
+		else $dest['nom'] = null;
+		$message = new messagerie_message(0, $this->id_perso, $id_dest, $titre, $message, $id_thread, null, $auteur['nom'], $dest['nom']);
 		$message->sauver();
 
 		//Si c'est un message de groupe
-		if($groupe = recupgroupe($id_groupe))
+		if($groupe = recupgroupe($id_groupe, ''))
 		{
-			$groupe = 1;
+			$type_groupe = 1;
 			$ids_dest = array();
 			foreach($groupe['membre'] as $membre)
 			{
-				$ids_dest[] = $membre['ID'];
+				$ids_dest[] = $membre['id_joueur'];
 			}
 		}
 		else
 		{
 			$ids_dest = array($id_dest);
+			$type_groupe = 0;
 		}
 		
 		$etat = 'non_lu';
 		//On ajoute un état pour chaque membre
 		foreach($ids_dest as $id)
 		{
-			$etat = new messagerie_etat(0, $id_message, $etat, $id, $groupe);
+			$etat = new messagerie_etat(0, $message->id_message, $etat, $id, $type_groupe);
 			$etat->sauver();
 		}
 	}

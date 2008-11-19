@@ -24,11 +24,6 @@ print_r($messagerie);
 
 echo '<h2>on récupère le nombre de message non lus pour ce perso </h2>';
 $messagerie = new messagerie(426);
-$messagerie->get_non_lu();
-print_r($messagerie);
-
-echo '<h2>on récupère le nombre de message non lus pour ce perso </h2>';
-$messagerie = new messagerie(426);
 print_r($messagerie->get_non_lu());
 
 echo '<h2>on récupère le nombre de messages non lu pour le thread 2 (et pour ce perso)</h2>';
@@ -46,9 +41,12 @@ foreach($messagerie->threads as $thread)
 	if($non_lu > 0) $bold = 'coupcritique';
 	else $bold = '';
 	?>
-	<li class="<?php echo $bold; ?>">(<?php echo $non_lu; ?>) <?php echo $thread->messages[0]->titre; ?> par <?php echo $thread->messages[0]->id_auteur; ?> le <?php echo $thread->messages[0]->date; ?></li>
+	<li class="<?php echo $bold; ?>">(<?php echo $non_lu; ?>) <?php echo $thread->messages[0]->titre; ?> par <?php echo $thread->messages[0]->nom_auteur; ?> le <?php echo $thread->messages[0]->date; ?></li>
 	<?php
 }
 echo '</ul>';
 
+echo '<h2>Création d\'un message dans le thread 1</h2>';
+$messagerie = new messagerie(426);
+$messagerie->envoi_message(1, 0, 'Message créer via test_messagerie.php', 'toutoutititoto', 1098);
 ?>
