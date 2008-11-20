@@ -83,6 +83,30 @@ class messagerie
 		else return false;
 	}
 
+	//Marque comme lu tous les message d'un thread
+	function set_thread_lu($id_thread = 0)
+	{
+		global $db;
+		if($id_thread != 0)
+		{
+			$requete = "UPDATE messagerie_etat, messagerie_message SET messagerie_etat.etat = 'lu' WHERE messagerie_etat.id_message = messagerie_message.id_message AND messagerie_message.id_thread = ".$id_thread." AND messagerie_etat.etat = 'non_lu' AND messagerie_etat.id_dest = ".$this->id_perso;
+			$req = $db->query($requete);
+		}
+		else return false;
+	}
+	
+	//Récupère le thread et les états de message
+	function get_thread($id_thread = 0, $nombre = 'all', $tri_date = 'DESC')
+	{
+		global $db;
+		if($id_thread != 0)
+		{
+			$this->thread = new messagerie_thread($id_thread);
+			$this->thread->get_messages($nombre, $tri_date, $this->id_perso);
+		}
+		else return false;
+	}
+
 	//Envoi d'un message
 	function envoi_message($id_thread = 0, $id_dest = 0, $titre = 'Titre vide', $message, $id_groupe = 0, $roi = 0)
 	{

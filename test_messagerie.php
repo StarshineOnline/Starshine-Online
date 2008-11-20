@@ -46,7 +46,26 @@ foreach($messagerie->threads as $thread)
 }
 echo '</ul>';
 
+echo '<h2>Un exemple de comment générer l\'affichage du thread 1 pour un perso</h2>';
+echo '</pre>';
+$messagerie = new messagerie(426);
+$messagerie->get_thread(1, 'all', 'DESC');
+foreach($messagerie->thread->messages as $message)
+{
+	if($message->etat == 'non_lu') $image = '<img src="http://www.starshine-online.com/image/favoris.png" style="vertical-align : top;" />';
+	else $image = '';
+	?>
+	<div class="message" style="width : 500px;">
+		<h3 class="message_entete"><?php echo $image.' '.$message->titre; ?><span class="xsmall"> par <?php echo $message->nom_auteur; ?> le <?php echo $message->date; ?></span></h3>
+		<p class="information_case">
+			<span class="xsmall"><?php echo $message->etat; ?></span><br />
+			<?php echo $message->message; ?>
+		</p>
+	</div>
+	<?php
+}
+
 echo '<h2>Création d\'un message dans le thread 1</h2>';
 $messagerie = new messagerie(426);
-$messagerie->envoi_message(1, 0, 'Message créer via test_messagerie.php', 'toutoutititoto', 1098);
+//$messagerie->envoi_message(1, 0, 'Message créer via test_messagerie.php', 'toutoutititoto', 1098);
 ?>

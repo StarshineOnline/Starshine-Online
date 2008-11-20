@@ -40,7 +40,7 @@ class messagerie_thread
 	}
 	
 	//Fonction permettant de récupérer tous les messages lié à un thread
-	function get_messages($nombre = 'all', $tri_date = 'DESC')
+	function get_messages($nombre = 'all', $tri_date = 'DESC', $etat = false)
 	{
 		global $db;
 		$this->messages = array();
@@ -49,11 +49,15 @@ class messagerie_thread
 			if($nombre == 'all') $limit = '';
 			elseif(is_numeric($nombre)) $limit = ' LIMIT 0, '.$nombre;
 			else return false;
-			$requete = "SELECT id_message, id_auteur, id_dest, titre, message, date FROM messagerie_message WHERE id_thread = ".$this->id_thread." ORDER BY date ".$tri_date.$limit;
+			if($etat) $requete = "SELECT messagerie_message.id_message as id_message, id_auteur, messagerie_message.id_dest as id_dest, titre, message, date, messagerie_etat.etat as metat FROM messagerie_message LEFT JOIN messagerie_etat ON messagerie_message.id_message = messagerie_etat.id_message WHERE id_thread = ".$this->id_thread." AND messagerie_etat.id_dest = ".$etat." ORDER BY date ".$tri_date.$limit;
+			else $requete = "SELECT id_message, id_auteur, id_dest, titre, message, date FROM messagerie_message WHERE id_thread = ".$this->id_thread." ORDER BY date ".$tri_date.$limit;
 			$req = $db->query($requete);
+			$i = 0;
 			while($row = $db->read_assoc($req))
 			{
-				$this->messages[] = new messagerie_message($row['id_message'], $row['id_auteur'], $row['id_dest'], $row['titre'], $row['message'], $this->id_thread, $row['date']);
+				$this->messages[$i] = new messagerie_message($row['id_message'], $row['id_auteur'], $row['id_dest'], $row['titre'], $row['message'], $this->id_thread, $row['date']);
+				$this->messages[$i]->etat = $row['metat'];
+				$i++;
 			}
 		}
 		return $this->messages;
