@@ -700,12 +700,13 @@ function verif_echange($id_echange, $id_joueur, $id_objet = 0)
 		{
 			$invent_d = decompose_objet($invent);
 			if($invent_d['stack'] == '') $invent_d['stack'] = 1;
-			$invent_objets[$invent_d['id']] += $invent_d['stack'];
+			$invent_objets[$invent_d['sans_stack']] += $invent_d['stack'];
 		}
 	}
 	$check = true;
 	foreach($echange_objets as $key => $objet_nb)
 	{
+		echo $key.'@ @'.$invent_objets[$key].'@ @'.$objet_nb.'<br />';
 		if($invent_objets[$key] < $objet_nb) $check = false;
 	}
 	return $check;
