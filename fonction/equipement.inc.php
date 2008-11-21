@@ -667,8 +667,12 @@ function recup_tout_echange_perso_ranger($joueur_id, $tri = 'id_echange DESC')
 function echange_objet_ajout($id_objet, $type, $id_echange, $id_joueur)
 {
 	global $db;
-	$requete = "INSERT INTO echange_objet(id_echange, id_j, type, objet) VALUES (".$id_echange.", ".$id_joueur.", '".$type."', '".$id_objet."')";
-	if($db->query($requete)) return true; else return false;
+	if(verif_echange($id_echange, $id_joueur, $id_objet))
+	{
+		$requete = "INSERT INTO echange_objet(id_echange, id_j, type, objet) VALUES (".$id_echange.", ".$id_joueur.", '".$type."', '".$id_objet."')";
+		if($db->query($requete)) return true; else return false;
+	}
+	else return false;
 }
 
 //Supprime un objet a l'échange
@@ -677,5 +681,33 @@ function echange_objet_suppr($id_objet_echange)
 	global $db;
 	$requete = "DELETE FROM echange_objet WHERE id_echange_objet = ".$id_objet_echange;
 	if($db->query($requete)) return true; else return false;
+}
+
+function verif_echange($id_echange, $id_joueur, $id_objet = 0)
+{
+	$joueur = recupperso($id_joueur);
+	$echange = recup_echange($id_echange);
+	if($id_objet !== 0) $echange['objet'][] = array('id_j' => $id_joueur, 'objet' => $id_objet);
+	$echange_objets = array();
+	$invent_objets = array();
+	foreach($echange['objet'] as $objet)
+	{
+		if($objet['id_j'] == $id_joueur) $echange_objets[$objet['objet']]++;
+	}
+	if($joueur['inventaire_slot'] != '')
+	{
+		foreach($joueur['inventaire_slot'] as $invent)
+		{
+			$invent_d = decompose_objet($invent);
+			if($invent_d['stack'] == '') $invent_d['stack'] = 1;
+			$invent_objets[$invent_d['id']] += $invent_d['stack'];
+		}
+	}
+	$check = true;
+	foreach($echange_objets as $key => $objet_nb)
+	{
+		if($invent_objets[$key] < $objet_nb) $check = false;
+	}
+	return $check;
 }
 ?>

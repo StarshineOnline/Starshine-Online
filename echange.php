@@ -373,13 +373,6 @@ Vous proposez :
 							$objet_d = decompose_objet($invent);
 							//Si ca n'est pas un objet non identifié ou un objet de royaume
 							$check = true;
-							if(is_array($echange['objet']))
-							{
-								foreach($echange['objet'] as $objet)
-								{
-									if($objet['objet'] == $objet_d['id'] AND $objet['id_j'] == $joueur['ID']) $check = false;
-								}
-							}
 							if($objet_d['categorie'] != 'r' AND $objet_d['id'][0] != 'h' AND $check)
 							{
 								$options .= '
