@@ -86,6 +86,7 @@ abstract class Personnage
 	*/
 	protected function supprimer($table)
 	{
+		global $db;
 		if( $this->id != -1 )
 		{
 			$requete = 'DELETE FROM '.$table.' WHERE ';

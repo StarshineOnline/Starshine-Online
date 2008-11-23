@@ -32,10 +32,14 @@ class pnj extends Personnage
 	*/
 	function __construct($nom = '', $coord_x = 0, $coord_y = 0, $image = '', $texte = '')
 	{
+		global $db;
 		//Verification du nombre et du type d'argument pour construire l'objet adequat.
 		if( (func_num_args() == 1) && is_numeric($nom) )
 		{
-			
+			$this->id = $nom;
+			$requete = 'SELECT nom, coord_x, coord_y, image, texte FROM pnj WHERE id = '.$this->getId();
+			$requeteSQL = $db->query($requete);
+			list($this->nom, $this->coord_x, $this->coord_y, $this->image, $this->texte) = $db->read_row($requeteSQL);
 		}
 		else
 		{
@@ -84,16 +88,17 @@ class pnj extends Personnage
 	//! Fonction permettant d'ajouter ou modifier un atome de la table.
 	function sauver()
 	{
+		global $db;
 		if( $this->id > 0 )
 		{
 			$requete = 'UPDATE TABLE pnj SET '.$this->modifBase();
-			$requete .= ', image = "'.$this->image.'", texte = "'.addslashes($this->texte).'" WHERE id = '.$this->id;
+			$requete .= ', image = "'.$this->image.'", texte = "'.$this->texte.'" WHERE id = '.$this->id;
 			$db->query($requete);
 		}
 		else
 		{
 			$requete = 'INSERT INTO pnj(nom, x, y, image, texte) VALUES(';
-			$requete .= $this->insertBase().', "'.$this->image.'", "'.addslashes($this->texte).'")';
+			$requete .= $this->insertBase().', "'.$this->image.'", "'.$this->texte.'")';
 			$db->query($requete);
 			//Récupère le dernier id inséré.
 			list($this->id) = mysql_fetch_row($db->query('SELECT LAST_INSERT_ID()'));
