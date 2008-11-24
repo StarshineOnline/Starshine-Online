@@ -451,7 +451,9 @@ class magnetique extends effect {
 		//chance de débuffer
 		$rand = rand(0, 100);
 		//Le débuff marche
-		if($rand <= $this->chance) {
+		$this->message($this->chance.'/ 100 => '.$rand);
+		if($rand <= $this->chance)
+		{
 			$nb_buff_suppr = rand(1, $this->nb);
 			//echo $nb_buff_suppr.'<br />';
 			for($i = 0; $i < $nb_buff_suppr; $i++) {
@@ -490,7 +492,7 @@ class magnetique extends effect {
 					}
 				}
 				else {
-					$this->message($this->titre.' ne supprime pas de buff');
+					$this->message($this->titre.' ne supprime pas de buff - plus de buff');
 				}
 			}
 		}
@@ -513,10 +515,7 @@ class globe_foudre extends magnetique {
 class fleche_magnetique extends magnetique {
 	static function factory(&$effects, &$actif, &$passif, $acteur) {
 		if (array_key_exists('fleche_magnetique', $passif['etat']))
-			$effects[] = new fleche_magnetique($actif['etat']['fleche_magnetique']
-																				 ['effet2'], // nb de debuff
-																				 $actif['etat']['fleche_magnetique']
-																				 ['effet']); // % de chance
+			$effects[] = new fleche_magnetique($passif['etat']['fleche_magnetique']['effet2'], $passif['etat']['fleche_magnetique']['effet']); // % de chance
 	}
 
 	function __construct($aNb, $achance) {

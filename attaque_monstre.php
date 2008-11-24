@@ -110,26 +110,20 @@ else
 								<h3 style="margin-top : 3px;">Round '.$round.'</h3>
 							</td>
 							<td>';
-					$etati = 0;
-					$count = count($defenseur['etat']);
 					foreach($defenseur['etat'] as $key => $value)
 					{
 						$defenseur['etat'][$key]['duree'] -= 1;
-						if($defenseur['etat'][$key]['duree'] <= 0) array_splice($defenseur['etat'], $etati, 1);
-						//else echo $defenseur['nom'].' est '.$etatkeys[$etati].' pour '.$defenseur['etat'][$etatkeys[$etati]]['duree'].'<br />';
-						$etati++;
+						if($defenseur['etat'][$key]['duree'] <= 0) unset($defenseur['etat'][$key]);
+						//else echo $defenseur['nom'].' est '.$key.' pour '.$defenseur['etat'][$key]['duree'].' rounds<br />';
 					}
 				}
 				else
 				{
-					$etati = 0;
-					$count = count($attaquant['etat']);
 					foreach($attaquant['etat'] as $key => $value)
 					{
 						$attaquant['etat'][$key]['duree'] -= 1;
-						if($attaquant['etat'][$key]['duree'] <= 0) array_splice($attaquant['etat'], $etati, 1);
-						//else echo $attaquant['nom'].' est '.$etatkeys[$etati].' pour '.$attaquant['etat'][$etatkeys[$etati]]['duree'].'<br />';
-						$etati++;
+						if($attaquant['etat'][$key]['duree'] <= 0) unset($attaquant['etat'][$key]);
+						//else echo $attaquant['nom'].' est '.$key.' pour '.$attaquant['etat'][$key]['duree'].' rounds<br />';
 					}
 				}
 					?>

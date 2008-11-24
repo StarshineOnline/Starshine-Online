@@ -374,6 +374,7 @@ if (isset($_GET['ID']))
 				$req = $db->query($requete);
 			break;
 			case "guerison" :
+				$check = false;
 				//-- Suppression d'un debuff au hasard
 				foreach($cibles as $cible)
 				{
@@ -381,35 +382,44 @@ if (isset($_GET['ID']))
 					$debuff_tab = array();
 					foreach($cible_s["debuff"] as $debuff)
 					{
-						if($debuff["type"] != "debuff_rez" AND $debuff["type"] != "repos_sage" AND $debuff["type"] != "repos_interieur") { $debuff_tab[count($debuff_tab)] = $debuff["id"]; };
+						if($debuff["type"] != "debuff_rez" AND $debuff["type"] != "repos_sage" AND $debuff["type"] != "repos_interieur")
+						{
+							$debuff_tab[] = $debuff["id"];
+						};
 					}
 					if(count($debuff_tab) > 0)
-					{					
+					{
 						$requete = "DELETE FROM buff WHERE id=".$debuff_tab[rand(0, count($debuff_tab)-1)].";";
 						$db->query($requete);
+						$check = true;
 					}
-					else { echo "Impossible de lancer de lancer le sort. ".addslashes($cible_s['nom'])." n&apos;a aucun debuff.<br/>"; };
+					else
+					{
+						echo "Impossible de lancer de lancer le sort. ".addslashes($cible_s['nom'])." n&apos;a aucun debuff.<br/>";
+					};
+				}
+				if($check)
+				{
 					$joueur["pa"] = $joueur["pa"] - $sortpa;
 					$joueur["mp"] = $joueur["mp"] - $sortmp;
-					{//-- Augmentation des compétences
-						$difficulte_sort = diff_sort($row['difficulte'], $joueur, 'incantation', $sortpa_base, $sortmp_base);
-						$augmentation = augmentation_competence('incantation', $joueur, $difficulte_sort);
-						if ($augmentation[1] == 1)
-						{
-							$joueur['incantation'] = $augmentation[0];
-							echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant a '.$joueur['incantation'].' en incantation</span><br />';
-						}
-						$difficulte_sort = diff_sort($row['difficulte'], $joueur, $row['comp_assoc'], $sortpa_base, $sortmp_base);
-						$augmentation = augmentation_competence($row['comp_assoc'], $joueur, $difficulte_sort);
-						if ($augmentation[1] == 1)
-						{
-							$joueur[$row['comp_assoc']] = $augmentation[0];
-							echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant a '.$joueur[$row['comp_assoc']].' en '.$Gtrad[$row['comp_assoc']].'</span><br />';
-						}
+					//-- Mis à jour du joueur
+					$db->query("UPDATE perso SET mp='".$joueur["mp"]."', pa='".$joueur["pa"]."' WHERE ID = ".$joueur["ID"].";");
+					//-- Augmentation des compétences
+					$difficulte_sort = diff_sort($row['difficulte'], $joueur, 'incantation', $sortpa_base, $sortmp_base);
+					$augmentation = augmentation_competence('incantation', $joueur, $difficulte_sort);
+					if ($augmentation[1] == 1)
+					{
+						$joueur['incantation'] = $augmentation[0];
+						echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant a '.$joueur['incantation'].' en incantation</span><br />';
+					}
+					$difficulte_sort = diff_sort($row['difficulte'], $joueur, $row['comp_assoc'], $sortpa_base, $sortmp_base);
+					$augmentation = augmentation_competence($row['comp_assoc'], $joueur, $difficulte_sort);
+					if ($augmentation[1] == 1)
+					{
+						$joueur[$row['comp_assoc']] = $augmentation[0];
+						echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant a '.$joueur[$row['comp_assoc']].' en '.$Gtrad[$row['comp_assoc']].'</span><br />';
 					}
 				}
-				//-- Mis à jour du joueur
-				$db->query("UPDATE perso SET mp='".$joueur["mp"]."', pa='".$joueur["pa"]."' WHERE ID = ".$joueur["ID"].";");
 
 				echo "<a href=\"javascript:envoiInfo('sort.php?ID=".$_GET["ID"]."', 'information')\">Utilisez a nouveau cette compétence</a>";	
 			break;
