@@ -64,8 +64,9 @@ if(!isset($echange))
 		}
 		?>
 					</ul>
+					<br />
+					<a href="javascript:envoiInfo('echange.php?id_joueur=<?php echo $W_ID; ?>&amp;nouvel_echange=true', 'information');">Débuter un nouvel échange avec ce joueur.</a>
 				</div>
-				<a href="javascript:envoiInfo('echange.php?id_joueur=<?php echo $W_ID; ?>&amp;nouvel_echange=true', 'information');">Débuter un nouvel échange avec ce joueur.</a>
 
 		<?php
 	}
@@ -73,9 +74,10 @@ if(!isset($echange))
 	else
 	{
 		?>
-		Vous n'avez actuellement aucun échange en cours avec ce joueur.
+			Vous n'avez actuellement aucun échange en cours avec ce joueur.<br />
+			<br />
+			<a href="javascript:envoiInfo('echange.php?id_joueur=<?php echo $W_ID; ?>&amp;nouvel_echange=true', 'information');">Débuter un nouvel échange avec ce joueur.</a>
 		</div>
-		<a href="javascript:envoiInfo('echange.php?id_joueur=<?php echo $W_ID; ?>&amp;nouvel_echange=true', 'information');">Débuter un nouvel échange avec ce joueur.</a>
 		<?php
 	}
 
@@ -141,6 +143,7 @@ if(array_key_exists('valid_etape', $_GET))
 			{
 				if(verif_echange($_GET['id_echange'], $j1['ID'], $j2['ID']))
 				{
+					$check = true;
 					//Vérification qu'ils ont bien assez de place
 					if($G_place_inventaire - count($j1['inventaire_slot']) < ($nb_objet['j2'] - $nb_objet['j1']))
 					{
@@ -175,6 +178,10 @@ if(array_key_exists('valid_etape', $_GET))
 							$i++;
 						}
 						//On échange les stars
+						$star['j1'] = intval($echange['star'][$j1['ID']]['objet']);
+						$star['j2'] = intval($echange['star'][$j2['ID']]['objet']);
+						$j1star = $star['j1'] - $star['j2'];
+						$j2star = $star['j2'] - $star['j1'];
 						$requete = "UPDATE perso SET star = star - ".$j1star." WHERE ID = ".$j1['ID'];
 						$db->query($requete);
 						$requete = "UPDATE perso SET star = star - ".$j2star." WHERE ID = ".$j2['ID'];
@@ -389,8 +396,7 @@ echo '</div>';
 if($echange['statut'] != 'annule' AND isset($echange))
 {
 ?>
-<br />
-<input type="button" onclick="if(confirm('Voulez vous supprimer cet échange ?')) envoiInfo('liste_echange.php?id_echange=<?php echo $echange['id_echange']; ?>&amp;annule=ok', 'information');" value="Supprimer l'échange" />
+<div class="information_case"><input type="button" onclick="if(confirm('Voulez vous supprimer cet échange ?')) envoiInfo('liste_echange.php?id_echange=<?php echo $echange['id_echange']; ?>&amp;annule=ok', 'information');" value="Supprimer l'échange" /></div>
 <?php
 }
 ?>
