@@ -139,17 +139,7 @@ if(array_key_exists('valid_etape', $_GET))
 			//Vérification que les joueurs ont bien les objets dans leur inventaire
 			else
 			{
-				$i = 0;
-				$count = count($echange['objet']);
-				$check = true;
-				while($i < $count AND $check)
-				{
-					if($j1['ID'] == $echange['objet'][$i]['id_j']) $j = 'j1'; else $j = 'j2';
-					if(!recherche_objet(${$j}, $echange['objet'][$i]['objet'])) $check = false;
-					$nb_objet[$j]++;
-					$i++;
-				}
-				if($check)
+				if(verif_echange($_GET['id_echange'], $j1['ID'], $j2['ID']))
 				{
 					//Vérification qu'ils ont bien assez de place
 					if($G_place_inventaire - count($j1['inventaire_slot']) < ($nb_objet['j2'] - $nb_objet['j1']))
@@ -164,54 +154,41 @@ if(array_key_exists('valid_etape', $_GET))
 					}
 					if($check)
 					{
-						//Vérification qu'ils ont bien assez de stars
+						//On supprime tous les objets
 						$i = 0;
-						$star['j1'] = intval($echange['star'][$j1['ID']]['objet']);
-						$star['j2'] = intval($echange['star'][$j2['ID']]['objet']);
-						$j1star = $star['j1'] - $star['j2'];
-						$j2star = $star['j2'] - $star['j1'];
-						if($j1['star'] < $j1star OR $j2['star'] < $j2star)
+						$count = count($echange['objet']);
+						while($i < $count)
 						{
-							echo '<h5>un Joueur n\'a pas assez de stars</h5>';
+							if($j1['ID'] == $echange['objet'][$i]['id_j']) $j = 'j1'; else $j = 'j2';
+							supprime_objet($$j, $echange['objet'][$i]['objet'], 1);
+							$$j = recupperso($echange['objet'][$i]['id_j']);
+							$i++;
 						}
-						else
+						//On donne tous les objets
+						$i = 0;
+						$count = count($echange['objet']);
+						while($i < $count)
 						{
-							//On supprime tous les objets
-							$i = 0;
-							$count = count($echange['objet']);
-							while($i < $count)
-							{
-								if($j1['ID'] == $echange['objet'][$i]['id_j']) $j = 'j1'; else $j = 'j2';
-								supprime_objet($$j, $echange['objet'][$i]['objet'], 1);
-								$$j = recupperso($echange['objet'][$i]['id_j']);
-								$i++;
-							}
-							//On donne tous les objets
-							$i = 0;
-							$count = count($echange['objet']);
-							while($i < $count)
-							{
-								if($j1['ID'] == $echange['objet'][$i]['id_j']) $j = 'j2'; else $j = 'j1';
-								prend_objet($echange['objet'][$i]['objet'], $$j);
-								$$j = recupperso(${$j}['ID']);
-								$i++;
-							}
-							//On échange les stars
-							$requete = "UPDATE perso SET star = star - ".$j1star." WHERE ID = ".$j1['ID'];
-							$db->query($requete);
-							$requete = "UPDATE perso SET star = star - ".$j2star." WHERE ID = ".$j2['ID'];
-							$db->query($requete);
-							//On met a jour le statut de l'échange
-							//On passe l'échange en mode fini
-							$requete = "UPDATE echange SET statut = 'fini' WHERE id_echange = ".sSQL($_GET['id_echange']);
-							if($db->query($requete))
-							{
-								//On envoi un message au gars <== a faire ==>
-								
-								//C'est ok
-								echo '<h6>L\'échange c\'est déroulé avec succès</h6>';
-								unset($echange);
-							}
+							if($j1['ID'] == $echange['objet'][$i]['id_j']) $j = 'j2'; else $j = 'j1';
+							prend_objet($echange['objet'][$i]['objet'], $$j);
+							$$j = recupperso(${$j}['ID']);
+							$i++;
+						}
+						//On échange les stars
+						$requete = "UPDATE perso SET star = star - ".$j1star." WHERE ID = ".$j1['ID'];
+						$db->query($requete);
+						$requete = "UPDATE perso SET star = star - ".$j2star." WHERE ID = ".$j2['ID'];
+						$db->query($requete);
+						//On met a jour le statut de l'échange
+						//On passe l'échange en mode fini
+						$requete = "UPDATE echange SET statut = 'fini' WHERE id_echange = ".sSQL($_GET['id_echange']);
+						if($db->query($requete))
+						{
+							//On envoi un message au gars <== a faire ==>
+							
+							//C'est ok
+							echo '<h6>L\'échange c\'est déroulé avec succès</h6>';
+							unset($echange);
 						}
 					}
 				}

@@ -667,7 +667,7 @@ function recup_tout_echange_perso_ranger($joueur_id, $tri = 'id_echange DESC')
 function echange_objet_ajout($id_objet, $type, $id_echange, $id_joueur)
 {
 	global $db;
-	if(verif_echange($id_echange, $id_joueur, $id_objet))
+	if(verif_echange_joueur($id_echange, $id_joueur, $id_objet, $type))
 	{
 		$requete = "INSERT INTO echange_objet(id_echange, id_j, type, objet) VALUES (".$id_echange.", ".$id_joueur.", '".$type."', '".$id_objet."')";
 		if($db->query($requete)) return true; else return false;
@@ -683,11 +683,12 @@ function echange_objet_suppr($id_objet_echange)
 	if($db->query($requete)) return true; else return false;
 }
 
-function verif_echange($id_echange, $id_joueur, $id_objet = 0)
+function verif_echange_joueur($id_echange, $id_joueur, $id_objet = 0, $type_objet = 0)
 {
 	$joueur = recupperso($id_joueur);
 	$echange = recup_echange($id_echange);
-	if($id_objet !== 0) $echange['objet'][] = array('id_j' => $id_joueur, 'objet' => $id_objet);
+	//Vérification des objets
+	if($id_objet !== 0 && $type_objet == 'objet') $echange['objet'][] = array('id_j' => $id_joueur, 'objet' => $id_objet);
 	$echange_objets = array();
 	$invent_objets = array();
 	foreach($echange['objet'] as $objet)
@@ -706,9 +707,29 @@ function verif_echange($id_echange, $id_joueur, $id_objet = 0)
 	$check = true;
 	foreach($echange_objets as $key => $objet_nb)
 	{
-		echo $key.'@ @'.$invent_objets[$key].'@ @'.$objet_nb.'<br />';
 		if($invent_objets[$key] < $objet_nb) $check = false;
 	}
+	//Vérification des stars
+	if($type_objet == 'star')
+	{
+		//Si il a assez de stars	
+		if($joueur['star'] >= $id_objet)
+		{
+			//Si ya déjà des stars, on les suppriment
+			if(array_key_exists('star', $echange) && array_key_exists($id_joueur, $echange['star']))
+			{
+				echange_objet_suppr($echange['star'][$id_joueur]['id_echange_objet']);
+			}
+		}
+		else $check = false;
+	}
+	elseif(array_key_exists('star', $echange) && array_key_exists($id_joueur, $echange['star']) && $joueur['star'] < intval($echange['star'][$id_joueur]['id_objet'])) $check = false;
 	return $check;
+}
+
+function verif_echange($id_echange, $id_j1, $id_j2)
+{
+	if(verif_echange_joueur($id_echange, $id_j1) && verif_echange_joueur($id_echange, $id_j2)) return true;
+	else return false;
 }
 ?>
