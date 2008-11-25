@@ -45,6 +45,8 @@ class db
 	public $auto_increment;				// (array bool)		: tableau contenant la liste des champs en auto_increment
 	public $nb_query;            	// (int)          : nombre de requète executer par l'objet
 	public $encoding;							// (string)				: encoding de la connection
+  private $lockname;
+  private $locked;
 
 	//! Constructeur
 	/**
@@ -54,6 +56,8 @@ class db
 	*/
 	function db($cfg)
 	{
+	  $this->lockname = null;
+	  $this->locked = false;
 		$this->lnk = @mysql_connect($cfg["sql"]["host"].":".$cfg["sql"]["port"], $cfg["sql"]["user"], $cfg["sql"]["pass"], true, MYSQL_CLIENT_COMPRESS) or die("Le serveur de données est en cours de mise à jour ...<br />Merci de revenir dans quelques minutes ...");
 		@mysql_select_db($cfg["sql"]["db"], $this->lnk) or die("La base de données est en cours de mise à jour ...<br />Merci de revenir dans quelques minutes ...");
 
@@ -127,11 +131,51 @@ class db
 				set_error_handler("userErrorHandler");
 				trigger_error("Erreur 'SQL_QUERY': ".basename($_SERVER["PHP_SELF"])."?".$_SERVER["QUERY_STRING"]."\nQuery: ".$query."\nErreur:".mysql_errno()." (".mysql_error().")",E_USER_ERROR);
 			}
-
+			if ($this->locked) $this->unlock();
 			exit();
 		}
 		return $this->sql;
 	}
+
+  function lock($name)
+  {
+    if ($this->locked) return false;
+    $this->lockname = $name;
+    $cnt = 0;
+    while ($this->is_locked()) {
+      sleep(1);
+      if ($cnt++ == 5)
+	return false;
+    }
+    $res = $this->query("SELECT GET_LOCK('$name', 5)");
+    $a = $this->read_array($res);
+    if ($a[0] == 1)
+      $this->locked = true;
+    else
+      $this->locked = false;
+    return $this->locked;
+  }
+  
+  function unlock()
+  {
+    if ($this->locked == false) return false;
+    $res = $this->query("SELECT RELEASE_LOCK('$this->lockname')");
+    $a= $this->read_array($res);
+    if($a[0] == 1)
+      $this->locked = false;
+    else
+      $this->locked = true;
+    return !$this->locked;
+  }
+
+  function is_locked()
+  {
+    if ($this->lockname == null) return false;
+    $res = $this->query("SELECT IS_FREE_LOCK('$this->lockname')");
+    $a= $this->read_array($res);
+    if ($a[0] == 1) return false;
+    else return true;
+  }
 
 	//! check_query
 	/**
