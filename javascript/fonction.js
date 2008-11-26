@@ -247,19 +247,20 @@ function Loadchargement()
 {
 	$('loading').show();
 }
+function AfficheCarte(map)
+{
+	$('centre').innerHTML = map.responseText;
+	$('loading').hide();
+
+}
 
 function deplacement(direction)
 {
-	function AfficheCarte(map)
-	{
-		$('loading').hide();
-		$('centre').innerHTML = map.responseText;
-	}
 
 	new Ajax.Request('./deplacement.php',{method:'get',parameters:'deplacement='+direction,onLoading:Loadchargement,onComplete:AfficheCarte});
 }
 function refresh(page,position)
 {
 	function Affiche(requete){$(position).innerHTML = requete.responseText;}
-	new Ajax.Request(page,{method:'get',parameters:'javascript=oui',onLoading:Loadchargement,onComplete:Affiche});
+	new Ajax.Request(page,{method:'get',parameters:'javascript=oui',onComplete:Affiche});
 }

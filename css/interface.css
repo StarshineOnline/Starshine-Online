@@ -116,7 +116,7 @@ a:hover, a:active 	{ color:#7290db; }
 /***************************************************
   Vrac
  ***************************************************/
-#loading {background:transparent url('./../image/ajax-loader-bar.gif') no-repeat scroll left center;height:22px;left:300px;position:absolute;top:300px;width:220px;}
+#loading {background:transparent url('./../image/ajax-loader-bar.gif') no-repeat scroll left center;height:22px;left:140px;position:absolute;top:300px;width:220px;}
 
 .infoperso {
 	vertical-align : top;
