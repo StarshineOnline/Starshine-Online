@@ -51,6 +51,7 @@ $_SESSION['position'] = convert_in_pos($joueur['x'], $joueur['y']);
 		?>
 	</div>
 	<div id="centre">
+	<div id="loading" style='display:none'></div>
 
 <?php
 //Génération de la carte apparaissant au centre.

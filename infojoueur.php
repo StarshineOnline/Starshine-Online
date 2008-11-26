@@ -1,4 +1,5 @@
 <?php
+
 include('inc/fp.php');
 //L'id du joueur dont on veut l'info
 $W_ID = $_GET['ID'];

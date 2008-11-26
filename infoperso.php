@@ -1,267 +1,184 @@
 <?php
-
-if (isset($_GET['javascript'])) include('inc/fp.php');
-$joueur = recupperso($_SESSION['ID']);
-
-include('levelup.php');
-echo '<div class="roseeticone">';
-require_once('deplacementjeu.php');
-echo '
-</div>
-<div class="infoperso">
-		<a href="javascript:envoiInfo(\'personnage.php\', \'information\')" style="text-decoration : none; color : #000;" title="Maximum '.($joueur['rang_grade'] + 2).' buffs"><strong><span style="font-size:11px;">'.ucwords($joueur['grade']).' '.$joueur['nom'].'</span></strong>
-		<br />
-		<span style="font-size:10px;">'.$Gtrad[$joueur['race']].' '.$joueur['classe'].'</a></span><br />
-		';
-		//Listing des buffs
-		foreach($joueur['buff'] as $buff)
-		{
-			echo '<img src="image/buff/'.$buff['type'].'_p.png" ondblclick="if(confirm(\'Voulez vous supprimer '.$buff['nom'].' ?\')) envoiInfo(\'suppbuff.php?id='.$buff['id'].'\', \'perso\');" alt="'.$buff['type'].'" onmouseover="return '.make_overlib('<strong>'.$buff['nom'].'</strong><br />'.$buff['description'].'<br />Durée '.transform_sec_temp($buff['fin'] - time())).'" onmouseout="return nd();" />';
-		}
-		if(count($joueur['debuff']) > 0) echo '<br />';
-		//Listing des debuffs
-		foreach($joueur['debuff'] as $buff)
-		{
-			echo '<img src="image/buff/'.$buff['type'].'_p.png" alt="'.$buff['type'].'" onmouseover="return '.make_overlib('<strong>'.$buff['nom'].'</strong><br />'.$buff['description'].'<br />Durée '.transform_sec_temp($buff['fin'] - time())).'" onmouseout="return nd();" />';
-		}
-		//xp
-		$pourcent_level = progression_level(level_courant($joueur['exp']));
-		echo '
-
-	</div>
-	<div class="infoperso">
-		<table>
-		<tr>
-			<td>
-				PA
-			</td>
-			<td>
-				'.genere_image_pa($joueur).'
-			</td>
-			<td>
-				'.$joueur['pa'].' / '.$G_PA_max.'
-			</td>
-
-		</tr>
-		<tr>
-			<td>
-				HP
-			</td>
-			<td>
-				'.genere_image_hp($joueur).'
-			</td>
-			<td>
-				'.$joueur['hp'].' / '.$joueur['hp_max'].'
-			</td>
-		</tr>
-		<tr>
-			<td>
-				MP
-			</td>
-			<td>
-				'.genere_image_mp($joueur).'
-			</td>
-			<td>
-				'.$joueur['mp'].' / '.$joueur['mp_max'].'
-			</td>
-		</tr>
-		<tr>
-			<td>
-				XP
-			</td>
-			<td>
-				'.genere_image_exp($joueur['exp'], prochain_level($joueur['level']), $pourcent_level).'
-			</td>
-			<td>
-				'.$pourcent_level.' % - <strong>Niv. '.$joueur['level'].'</strong>
-			</td>
-		</tr>
-		<tr>
-			<td colspan="3">
-				';
-				if($joueur['action_a'] == 0)
-				{
-					echo 'Vous n\'avez pas de script d\'action !';
-				}
-				else
-				{
-					$script_attaque = recupaction_all($joueur['action_a']);
-					$script_defense = recupaction_all($joueur['action_d']);
-					echo 'Script : Att = "'.$script_attaque['nom'].'"';
-				}
-				echo '
-			</td>
-		</tr>
-		</table>
-
-</div>
-<div class="infoperso">
-		<table>
-		<tr>
-			<td>
-				<img src="image/interface/'.moment_jour().'.png" alt="'.moment_jour().'" title="'.moment_jour().'" style="vertical-align : middle;">
-			</td>
-			<td style="text-align : center;">
-				'.moment_jour().'<br />'.date_sso().'
-			</td>
-		</tr>
-		<tr>
-			<td>
-				<strong>Stars</strong>
-			</td>
-			<td style="text-align : center;">
-				'.$joueur['star'].'
-			</td>
-		</tr>
-		<tr>
-			<td>
-				<strong>Honneur</strong>
-			</td>
-			<td style="text-align : center;">
-				'.$joueur['honneur'].'
-			</td>
-		</tr>
-		<tr>
-			<td>
-				<strong><a href="javascript:envoiInfo(\'point_sso.php\', \'information\');">Point Shine</a></strong>
-			</td>
-			<td style="text-align : center;">
-				'.$joueur['point_sso'].'
-			</td>
-		</tr>
-		';
-/*	$joueur['lignee'] = recupperso_lignee($joueur['ID']);
-	if($joueur['lignee'] != 0)
-	{
-		$lignee = recup_lignee($joueur['lignee']);
-		echo '
-		<tr class="trcolor1">
-			<td>
-				<strong>Lignée</strong>
-			</td>
-			<td>
-				'.$lignee['nom'].'
-			</td>
-		</tr>';
-	}*/
-	echo '
-		</table>
-	</div>
-	';
-
-//Recherche si le joueur a reçu une invitation pour grouper
-$W_requete = 'SELECT * FROM invitation WHERE receveur = '.$_SESSION['ID'];
-$W_req = $db->query($W_requete);
-$W_row = $db->read_array($W_req);
-$ID_invitation = $W_row['ID'];
-$ID_groupe = $W_row['groupe'];
-//Si il y a une invitation pour le joueur
-if ($db->num_rows > 0)
-{
-	$W_requete = "SELECT nom FROM perso WHERE ID = ".$W_row['inviteur'];
-	$W_req = $db->query($W_requete);
-	$W_row2 = $db->read_array($W_req);
+{//-- Initialisation
+	require_once('haut.php');
+	if(!isset($joueur)) { $joueur = recupperso($_SESSION["ID"]); }; 		//-- Récupération du tableau contenant toutes les informations relatives au joueur
 	
-	echo '
-	<div class="infoperso">
-	Vous avez reçu une invitation pour grouper de la part de '.$W_row2['nom'].'<br />
-	<a href="javascript:envoiInfo(\'reponseinvitation.php?ID='.$ID_invitation.'&groupe='.$ID_groupe.'&reponse=oui\', \'information\')">Accepter</a> / <a href="javascript:envoiInfo(\'reponseinvitation.php?ID='.$ID_invitation.'&reponse=non\', \'information\')">Refuser</a>
-	</div>';
+	require_once("levelup.php"); 				//-- Dans le cas ou le joueur a pris un level on traite son level up.
+}
+{//-- Javascript
+	echo "<script type='text/javascript'>
+			// <![CDATA[\n";
+	{//-- cancelBuff(buff_id)
+		echo "	function cancelBuff(buff_id, buff_nom)
+				{
+					if(confirm('Voulez vous supprimer '+ buff_nom +' ?')) 
+					{
+						envoiInfo('suppbuff.php?id='+ buff_id, 'perso');
+					}
+				}";
+	}
+	echo "	// ]]>
+		  </script>";
 }
 
-$div_membres = '';
-//Affichage du groupe si le joueur est groupé
-if ($joueur['groupe'] > 0)
-{
-	echo '<div class="infoperso">';
-	//Récupération du groupe
-	$groupe = recupgroupe($joueur['groupe'], '');
-	$i = 0;
-	$count = count($groupe['membre']);
-	while($i < $count)
-	{
-		//Recherche infos sur le joueur
-		$requete = "SELECT hp, hp_max, mp, mp_max, x, y, nom, classe, statut FROM perso WHERE ID = ".$groupe['membre'][$i]['id_joueur'];
-		$req = $db->query($requete);
-		$row = $db->read_assoc($req);
-		if($row['statut'] == 'actif')
-		{
-			$groupe['membre'][$i] = array_merge($row, $groupe['membre'][$i]);
-			$groupe['membre'][$i]['hp_max'] = floor($groupe['membre'][$i]['hp_max']);
-			$groupe['membre'][$i]['mp_max'] = floor($groupe['membre'][$i]['mp_max']);
-			$groupe['membre'][$i]['poscase'] = convert_in_pos($row['x'], $row['y']);
-			$ratio_hp = floor(10 * ($groupe['membre'][$i]['hp'] / $groupe['membre'][$i]['hp_max']));
-			if($ratio_hp > 10) $ratio_hp = 10;
-			if($ratio_hp < 0) $ratio_hp = 0;
-			$groupe['membre'][$i]['image_hp'] = 'image/barre/vie'.$ratio_hp.'.png';
-			$ratio_mp = floor(10 * ($groupe['membre'][$i]['mp'] / $groupe['membre'][$i]['mp_max']));
-			if($ratio_mp > 10) $ratio_mp = 10;
-			if($ratio_mp < 0) $ratio_mp = 0;
-			$groupe['membre'][$i]['image_mp'] = 'image/barre/mp'.$ratio_mp.'.png';
-		}
-		$i++;
-	}
-	//Si le joueur est le leader mettre la variable leader a true.
-	if ($groupe['id_leader'] == $_SESSION['ID']) $leader = true;
-	else $leader = false;
-	echo '
-	<table style="width:250px;">
-	<tr>
-		<td style="text-align: center;">
-		<a href="javascript:envoiInfo(\'infogroupe.php?id='.$groupe['id'].'\', \'information\')"><img src="image/interface/information.png" alt="Informations sur le joueur" /></a> <br /><a href="javascript:envoiInfo(\'envoimessage.php?type=groupe&amp;id_groupe='.$groupe['id'].'\', \'information\');"><img src="image/interface/message.png" alt="Envoie d\'un message au groupe" title="Envoie d\'un message au groupe" /></a>	
-	</td>
-	<td style="vertical-align : top;">';
-	$i = 0;
-	$j = 0;
-	$count = count($groupe['membre']);
-	//Boucle d'affichage des membres
-	while ($i < $count)
-	{
-		if ($groupe['membre'][$i]['id_joueur'] != $joueur['ID'])
-		{
-			echo '
-			<table cellspacing="0" style="width:100%;">
-			<tr>
-				<td style="width:35%;">';
-				if ($groupe['membre'][$i]['hp'] <= 0)
-				{
-					echo '<img src="image/mort.png" alt="Mort" title="Mort" width="10px"/>';
-				}
-				echo'
-					<a href="javascript:envoiInfo(\'infojoueur.php?ID='.$groupe['membre'][$i]['id_joueur'].'&amp;poscase='.$groupe['membre'][$i]['poscase'].'\', \'information\');" title="X : '.$groupe['membre'][$i]['x'].' / Y : '.$groupe['membre'][$i]['y'].'" />
-					'.$groupe['membre'][$i]['nom'].'</a>';
-				echo '
-				</td>
-				<td style="width:61%;">
-				<table>
-				<tr>
-					<td style="margin : 0; padding : 0; height : 6px; font-size : 1px;"><img src="'.$groupe['membre'][$i]['image_hp'].'" title="'.$groupe['membre'][$i]['hp'].' / '.$groupe['membre'][$i]['hp_max'].'" /></td>
-				</tr>
-				<tr>
-					<td style="margin : 0; padding : 0; height : 6px; font-size : 1px;"><img src="'.$groupe['membre'][$i]['image_mp'].'" title="'.$groupe['membre'][$i]['mp'].' / '.$groupe['membre'][$i]['mp_max'].'" /></td>
-			</tr>
-			</table>
-			</td>
-			<td style="width:4%">';
-			if ($leader) echo ' <a href="javascript:if(confirm(\'Voulez vous expulser ce joueur ?\')) envoiInfo(\'kickjoueur.php?ID='.$groupe['membre'][$i]['id_joueur'].'&groupe='.$groupe['id'].'\', \'information\');"><img src="image/interface/exspuler-joueur_icone.png" alt="Expulser le joueur" title="Expulser le joueur" style="width:11px;"/></a>';
-			echo '			
-			</tr>
-			</table>';
 
+{//-- PA, HP, MP, XP, ...
+	echo "<div id='infos_perso'>"; 
+	//--  inclusion de la rosace des vents.
+	include_once("deplacementjeu.php");
+
+	echo " <div id='joueur_PA' style='background:transparent url(".genere_image_pa($joueur).") center;'>".$joueur["pa"]." / $G_PA_max</div>";
+	echo " <div id='joueur_HP' style='background:transparent url(".genere_image_hp($joueur).") center;'>".$joueur["hp"]." / ".$joueur["hp_max"]."</div>";
+	echo " <div id='joueur_MP' style='background:transparent url(".genere_image_mp($joueur).") center;'>".$joueur["mp"]." / ".$joueur["mp_max"]."</div>";
+	echo " <div id='joueur_XP' style='background:transparent url(".genere_image_exp($joueur["exp"], prochain_level($joueur["level"]), progression_level(level_courant($joueur["exp"]))).") center;' title='".progression_level(level_courant($joueur["exp"]))." % (".number_format($joueur["exp"], 0, ",", ".")." / ".number_format(prochain_level($joueur["level"]), 0, ",", ".").")'></div>";
+	echo " <div id='joueur_PO'>".$joueur["star"]."</div>";
+	echo " <div id='joueur_PH'>".$joueur["honneur"]."</div>";
+	echo " <div id='joueur_Psso' onclick=\"envoiInfo('point_sso.php', 'information');\" title=\"Vous avez ".$joueur["point_sso"]." point(s) shine en r&eacute;serve.\"></div>";
+	
+	//-- Index, Forums, Exit, Options
+	echo " <div id='joueur_onglets'>
+			<div id='joueur_onglets_index' title=\"Retour &agrave; l&apos;index\" onclick=\"document.location.href='index.php';\">index</div>
+	 		<div id='joueur_onglets_forums' title='Acc&eacute;der aux forums' onclick=\"document.location.href='http://forum.starshine-online.com/';\">forums</div>
+	 		<div id='joueur_onglets_options' title='Modifier vos options' onclick=\"document.location.href='option.php';\">options</div>
+	 	    <div id='joueur_onglets_exit' title='Se déconnecter' onclick=\"if(confirm('Voulez vous déconnecter ?')) { document.location.href='index.php?deco=ok'; };\">exit</div>
+	 	   </div>";
+
+	echo "</div>";
+}
+{//-- Buffs, Grade, Pseudo
+	echo "<div id='joueur_buffs_nom'>";
+	echo " <div id='buff_list'>
+			<ul>";
+		//print_r($joueur["buff"]);
+		if(count($joueur["buff"]) > 0)
+		{
+			foreach($joueur["buff"] as $buff)
+			{//-- Listing des buffs
+				$overlib = str_replace("'", "\'", trim("<ul><li class='overlib_titres'>".$buff["nom"]."</li><li>".$buff["description"]."</li><li>Durée ".transform_sec_temp($buff["fin"] - time())."</li><li class='overlib_infos'>(double-cliquer pour annuler ce buff)</li></ul>"));
+				echo "<li class='buff'>
+					   <img src='image/buff/".$buff["type"]."_p.png' 
+							alt='".$buff["type"]."'
+							ondblclick=\"cancelBuff('".$buff["id"]."', '".$buff["nom"]."');\"
+							onmouseover=\"return overlib('$overlib', BGCLASS, 'overlib', BGCOLOR, '', FGCOLOR, '');\"
+							onmouseout=\"return nd();\"  />
+					   ".genere_image_buff_duree($buff)."
+					  </li>";
+			}
 		}
-		$i++;
+		if(count($joueur["buff"]) < ($joueur["rang_grade"] + 2) )
+		{
+			$case_buff_dispo = ($joueur["rang_grade"] + 2) - count($joueur["buff"]);
+			for($b = 0; $b < $case_buff_dispo; $b++)
+			{
+				echo "<li class='buff_dispo' title='vous pouvez encore recevoir $case_buff_dispo buffs'></li>";
+			}
+		}
+		if(($joueur["rang_grade"] + 2) < 10)
+		{
+			$RqNextGrade = $db->query("SELECT * FROM grade WHERE rang > ".$joueur["rang_grade"]." ORDER BY rang ASC;");
+			while($objNextGrade = $db->read_object($RqNextGrade))
+			{
+				$tmp = "il faut être ".strtolower($objNextGrade->nom)." pour avoir cette case";
+				if($objNextGrade->honneur > 0) { $tmp .= " (encore ".number_format(($objNextGrade->honneur - $joueur["honneur"]), 0, ".", ".")."pt d&apos;honneur)"; }
+				$title_grade[$objNextGrade->rang + 2] = $tmp.".";
+			}
+			for($b = ($joueur["rang_grade"] + 2 + 1); $b <= 10; $b++)
+			{
+				echo "<li class='buff_nondispo' title='".$title_grade[$b]."'></li>";
+			}
+		}
+		if(count($joueur["debuff"]) > 0)
+		{
+			foreach($joueur["debuff"] as $buff)
+			{//-- Listing des buffs
+				$overlib = str_replace("'", "\'", trim("<ul><li class='overlib_titres'>".$buff["nom"]."</li><li>".$buff["description"]."</li><li>Durée ".transform_sec_temp($buff["fin"] - time())."</li><li class='overlib_infos'>(double-cliquer pour annuler ce buff)</li></ul>"));
+				echo "<li class='buff'>
+					   <img src='image/buff/".$buff["type"]."_p.png' 
+							alt='".$buff["type"]."'
+							onmouseover=\"return overlib('$overlib', BGCLASS, 'overlib', BGCOLOR, '', FGCOLOR, '');\"
+							onmouseout=\"return nd();\"  />
+					   ".genere_image_buff_duree($buff)."
+					  </li>";
+			}
+		}
+	echo " </ul>
+		  </div>";
+	echo " <div id='joueur_nom' onclick=\"envoiInfo('personnage.php', 'information');\" title=\"Acc&eacute; &agrave la fiche de votre personnage\">".ucwords($joueur["grade"])." ".ucwords($joueur["nom"])." ".ucwords($Gtrad[$joueur["race"]])." (".ucwords($joueur["classe"]).") - niv.".$joueur["level"]."</div>";
+	echo "</div>";
+}
+if(!empty($joueur["groupe"]))
+{//-- Affichage du groupe si le joueur est groupé
+	if(!isset($groupe)) { $groupe = recupgroupe($joueur["groupe"], ""); };
+
+	echo "<div id='joueur_groupe'>
+		   <div id='mail_groupe' title='Envoyer un message &agrave; l&apos;ensemble du groupe.' onclick=\"envoiInfo('envoimessage.php?type=groupe&amp;id_groupe=".$groupe["id"]."', 'information');\"></div>
+		   <div id='info_groupe' title='Voir les informations de mon groupe.' onclick=\"envoiInfo('infogroupe.php?id=".$groupe["id"]."', 'information');\"></div>";
+	echo " <ul>";
+	for($m = 0; $m < count($groupe["membre"]); $m++)
+	{//-- Récupération des infos sur le membre du groupe
+		if($joueur["ID"] != $groupe["membre"][$m]["id_joueur"])
+		{
+			unset($RqMembre);
+			unset($objMembre);
+			$RqMembre = $db->query("SELECT hp, hp_max, mp, mp_max, x, y, nom, classe, statut, rang_royaume, level, race, dernier_connexion
+									FROM perso 
+									WHERE ID=".$groupe["membre"][$m]["id_joueur"].";");
+			$objMembre = $db->read_assoc($RqMembre);
+			$groupe["membre"][$m] = array_merge($objMembre, $groupe["membre"][$m]);
+			$groupe["membre"][$m]["hp_max"] = floor($groupe["membre"][$m]["hp_max"]);
+			$groupe["membre"][$m]["mp_max"] = floor($groupe["membre"][$m]["mp_max"]);
+			$groupe["membre"][$m]["poscase"] = calcul_distance(convert_in_pos($objMembre["x"], $objMembre["y"]), convert_in_pos($joueur["x"], $joueur["y"]));
+			$groupe["membre"][$m]["pospita"] = calcul_distance_pytagore(convert_in_pos($objMembre["x"], $objMembre["y"]), convert_in_pos($joueur["x"], $joueur["y"]));
+			if(!empty($objMembre["rang_royaume"]))
+			{//-- Récupération du grade
+				$RqGrade = $db->query("SELECT nom, rang FROM grade WHERE id=".$objMembre["rang_royaume"].";");
+				$objGrade = $db->read_assoc($RqGrade);
+				$groupe["membre"][$m]["grade"] = $objGrade["nom"];
+			}
+			$overlib = "<ul><li class='overlib_titres'>".ucwords($groupe["membre"][$m]["grade"])." ".ucwords($groupe["membre"][$m]["nom"])."</li><li>".ucwords($groupe["membre"][$m]["race"])." - ".ucwords($groupe["membre"][$m]["classe"])." (Niv.".$groupe["membre"][$m]["level"].")</li><li>HP : ".$groupe["membre"][$m]["hp"]." / ".$groupe["membre"][$m]["hp_max"]."</li><li>MP : ".$groupe["membre"][$m]["mp"]." / ".$groupe["membre"][$m]["mp_max"]."</li><li>Posisiton : x:".$objMembre["x"].", y:".$objMembre["y"]."</li><li>Distance : ".$groupe["membre"][$m]["poscase"]." - Pitagorienne : ".$groupe["membre"][$m]["pospita"]."</li>";
+			{//-- Récupération des buffs
+				$groupe["membre"][$m]["buff"] = array();
+				$groupe["membre"][$m]["debuff"] = array();
+				
+				$RqBuffMembre = $db->query("SELECT * FROM buff WHERE id_perso = ".$groupe["membre"][$m]["id_joueur"]." ORDER BY debuff ASC;");
+				if(mysql_num_rows($RqBuffMembre) > 0)
+				{
+					$overlib .= "<li>";
+					while($objBuffMembre = $db->read_assoc($RqBuffMembre))
+					{
+						if($objBuffMembre["debuff"] == 1) { $col = "debuff"; } else { $col = "buff"; };
+						$groupe["membre"][$m][$col][$objBuffMembre["type"]] = $row;
+						
+						$overlib .= "<img src='image/buff/".$objBuffMembre["type"]."_p.png' style='margin:0px 2px;' alt='".$objBuffMembre["type"]."' />";
+					}
+					$overlib .= "</li>";
+				}
+			}
+			
+			$laptime_last_connexion = time() - $groupe["membre"][$m]["dernier_connexion"];
+			if($laptime_last_connexion > (21 * 86400)) 														{ $activite_perso = "noir"; 	$libelle_activite = "ce joueur est inactif ou banni"; }	
+			elseif( ($laptime_last_connexion <= (21 * 86400)) && ($laptime_last_connexion > (1 * 86400)) )	{ $activite_perso = "rouge"; 	$libelle_activite = "s'est connecté il y a plus d'1 jour."; }	
+			elseif( ($laptime_last_connexion <= (1 * 86400)) && ($laptime_last_connexion > (10 * 60)) )		{ $activite_perso = "bleu"; 	$libelle_activite = "s'est connecté il y a moins d'1 jour."; }	
+			elseif($laptime_last_connexion <= (10 * 60))													{ $activite_perso = "vert"; 	$libelle_activite = "s'est connecté il y a moins de 10 min."; }	
+			else	
+																									{ $activite_perso = "rouge"; 	$libelle_activite = "impossible de deacute;finir l&apos;activit&eacute; de ce joueur."; }
+			if ($groupe["membre"][$m]["hp"] <= 0) { $joueur_mort = "Le personnage est mort"; } else { $joueur_mort = ""; };
+			$overlib .= "<li>$joueur_mort<br/>$libelle_activite</li><li class='overlib_infos'>(Cliquer pour plus d'information)</li>";
+			$overlib = str_replace("'", "\'", trim($overlib));
+			
+			echo "<li onmouseover=\"return overlib('$overlib', BGCLASS, 'overlib', BGCOLOR, '', FGCOLOR, '');\"
+					  onmouseout=\"return nd();\" 
+					  onclick=\"envoiInfo('infojoueur.php?ID=".$groupe["membre"][$m]["id_joueur"]."&amp;poscase=".$groupe["membre"][$m]["poscase"]."', 'information');\">
+				   <span class='joueur_groupe_activite$activite_perso'></span>
+				   <span class='joueur_groupe_pseudo'>".ucwords($groupe["membre"][$m]["nom"])." : </span>
+				   <span class='joueur_groupe_barre_hp'>".genere_image_hp_groupe($groupe["membre"][$m])."</span>
+				   <span class='joueur_groupe_barre_mp'>".genere_image_mp_groupe($groupe["membre"][$m])."</span>";
+			if ($groupe["membre"][$m]["hp"] <= 0) { echo "<span class='joueur_groupe_mort'></span>"; } 
+			echo " <div class='spacer'></div>
+				  </li>";
+		}
 	}
-	?>
-	</td>
-	</tr>
-	</table>
-	</div>
-	<?php
+	echo " </ul>
+		  </div>";
 }
 ?>
-	<div class="roseeticone">
-		<a href="index.php"><img src="image/interface/icone_index.png" alt="Retour à l'index" title="Retour à l'index" style="vertical-align : middle;" /></a>
-		<a href="javascript:if(confirm('Voulez vous déconnecter ?')) document.location.href = 'index.php?deco=ok';"><img src="image/interface/deconnexion_icone.png" alt="Déconnexion" title="Déconnexion" style="vertical-align : middle;" /></a><br />
-		<a href="http://forum.starshine-online.com/"><img src="image/interface/forum_icone.png" alt="Forum" title="Forum" style="vertical-align : middle;" /></a>
-		<a href="option.php"><img src="image/interface/icone_option.png" alt="Options de jeu" title="Options de jeu" style="vertical-align : middle;" /></a>
-	</div>

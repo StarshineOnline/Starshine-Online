@@ -1804,9 +1804,8 @@ function genere_image_pa($joueur)
 	$ratio_pa = floor(10 * ($joueur['pa'] / $G_PA_max));
 	if($ratio_pa > 10) $ratio_pa = 10;
 	if($ratio_pa < 0) $ratio_pa = 0;
-	$barre_pa = 'image/barre/pa'.$ratio_pa.'.png';
-	return '<img src="'.$barre_pa.'" alt="PA = '.$joueur['pa'].' / '.$G_PA_max.'" title="PA = '.$joueur['pa'].' / '.$G_PA_max.'" style="height : 8px; width : 100px;" />';
-}
+	$barre_pa = './image/barre/pa'.$ratio_pa.'.png';
+	return $barre_pa;}
 
 function genere_image_buff_duree($buff)
 {//-- Barre durée restante du buff
@@ -1823,8 +1822,8 @@ function genere_image_hp($joueur)
 	$ratio_hp = floor(10 * ($joueur['hp'] / $joueur['hp_max']));
 	if($ratio_hp > 10) $ratio_hp = 10;
 	if($ratio_hp < 0) $ratio_hp = 0;
-	$barre_vie = 'image/barre/vie'.$ratio_hp.'.png';
-	return '<img src="'.$barre_vie.'" alt="HP = '.$joueur['hp'].' / '.$joueur['hp_max'].'" title="HP = '.$joueur['hp'].' / '.$joueur['hp_max'].'" style="height : 8px; width : 100px;" />';
+	$barre_vie = './image/barre/vie'.$ratio_hp.'.png';
+	return $barre_vie;
 }
 
 function genere_image_mp($joueur)
@@ -1833,8 +1832,8 @@ function genere_image_mp($joueur)
 	$ratio_mp = floor(10 * ($joueur['mp'] / $joueur['mp_max']));
 	if($ratio_mp > 10) $ratio_mp = 10;
 	if($ratio_mp < 0) $ratio_mp = 0;
-	$barre_mp = 'image/barre/mp'.$ratio_mp.'.png';
-	return '<img src="'.$barre_mp.'" alt="MP = '.$joueur['mp'].' / '.$joueur['mp_max'].'" title="MP = '.$joueur['mp'].' / '.$joueur['mp_max'].'" style="height : 8px; width : 100px;" />';
+	$barre_mp = './image/barre/mp'.$ratio_mp.'.png';
+	return $barre_mp;
 }
 
 function genere_image_hp_groupe($joueur)
@@ -1863,8 +1862,8 @@ function genere_image_exp($xp_joueur, $xp_p_n, $progression)
 	$ration_xp = floor($progression / 10);
 	if($ration_xp > 10) $ration_xp = 10;
 	if($ration_xp < 0) $ration_xp = 0;
-	$barre_xp = 'image/barre/xp'.$ration_xp.'.png';
-	return '<img src="'.$barre_xp.'" alt="'.$xp_joueur.' / '.$xp_p_n.'" title="'.$xp_joueur.' / '.$xp_p_n.'" style="height : 8px; width : 100px;" />';
+	$barre_xp = './image/barre/xp'.$ration_xp.'.png';
+	return $barre_xp;
 }
 
 

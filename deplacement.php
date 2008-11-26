@@ -202,5 +202,5 @@ else include('map2.php');
 if(!$peu_bouger AND $cause != '') echo '<img src="image/pixel.gif" onLoad="alert(\''.$cause.'\');" />';
 ?>
 
-<img src="image/pixel.gif" onLoad="envoiInfo('menu_carteville.php?javascript=oui', 'carteville');" />
-<img src="image/pixel.gif" onLoad="envoiInfo('infoperso.php?javascript=oui', 'perso');" />
+<img src="image/pixel.gif" onLoad="refresh('./menu_carteville.php', 'carteville');" />
+<img src="image/pixel.gif" onLoad="refresh('./infoperso.php', 'perso');" />

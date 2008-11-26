@@ -240,3 +240,26 @@ function checkCase()
 	}
 	if(chaine != '') envoiInfo('messagerie_ajax.php?javascript=ok&action=delc&ID=' + chaine, 'liste_message');
 }
+
+
+// Déplacement sur la carte
+function Loadchargement()
+{
+	$('loading').show();
+}
+
+function deplacement(direction)
+{
+	function AfficheCarte(map)
+	{
+		$('loading').hide();
+		$('centre').innerHTML = map.responseText;
+	}
+
+	new Ajax.Request('./deplacement.php',{method:'get',parameters:'deplacement='+direction,onLoading:Loadchargement,onComplete:AfficheCarte});
+}
+function refresh(page,position)
+{
+	function Affiche(requete){$(position).innerHTML = requete.responseText;}
+	new Ajax.Request(page,{method:'get',parameters:'javascript=oui',onLoading:Loadchargement,onComplete:Affiche});
+}
