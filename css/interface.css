@@ -30,7 +30,7 @@ a:hover, a:active 	{ color:#7290db; }
 #joueur_onglets	 		{ position:absolute; left:88px; top:65px; width:225px; padding:0px 0px 0px 10px; }
 #joueur_onglets_index, #joueur_onglets_forums, #joueur_onglets_options, #joueur_onglets_exit 	{ float:left; width:55px; text-align:center; }
 
-#joueur_buffs_nom 		
+#joueur_buffs_nom 		{ position:relative;float:left;}
 #joueur_nom				{ position:relative; width:210px; float:left; text-align:left; }
 #joueur_type			{ position:relative; width:210px; float:left; text-align:left; font-size:8pt; height:12px; }
 #buff_list				{ position:relative; text-align:center; width:310px; }
@@ -38,7 +38,7 @@ a:hover, a:active 	{ color:#7290db; }
 .buff					{ position:relative; float:left; height:19px; padding:0px; margin:0px 2px; }
 .buff_duree_restante 	{ position:absolute; bottom:0px; left:0px; }
 
-#joueur_groupe			{ width:250px; float:right; }
+#joueur_groupe			{ width:250px; float:left; }
 #joueur_groupe li		{ cursor:pointer; font-size:8pt; border-bottom:1px dotted #8b94b0; padding:0px 0px 2px 0px; }
 
 .joueur_groupe_pseudo	{ float:left; line-height:16px; clear:both; width:125px; border}
