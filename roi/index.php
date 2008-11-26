@@ -25,7 +25,7 @@ $_SESSION['position'] = convert_in_pos($joueur['x'], $joueur['y']);
 	<script src="javascript/menu.js" type="text/javascript"></script>
 </head>
 <body>
-<div id="menu">
+<div id="menu" style="width : 200px;">
 		<dl id="menu">
 			<dt class="smenu" id="a1"><span>Diplomatie</span></dt>
 			<dd id="smenu1">
