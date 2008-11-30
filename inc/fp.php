@@ -73,4 +73,5 @@ include_once($root.'fonction/security.inc.php');
 // Inclusion du fichier permettant d'imprier l'en-tête
 include_once($root.'fonction/print.inc.php');
 
+//include_once($root.'class/perso.class.php');
 ?>

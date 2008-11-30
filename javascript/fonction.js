@@ -259,8 +259,10 @@ function deplacement(direction)
 
 	new Ajax.Request('./deplacement.php',{method:'get',parameters:'deplacement='+direction,onLoading:Loadchargement,onComplete:AfficheCarte});
 }
+
 function refresh(page,position)
-{
-	function Affiche(requete){$(position).innerHTML = requete.responseText;}
-	new Ajax.Request(page,{method:'get',parameters:'javascript=oui',onComplete:Affiche});
+{	
+	function Chargement(){$('loading_'+position).show();}
+	function Affiche(requete){$(position).innerHTML = requete.responseText;$('loading_'+position).hide();}
+	new Ajax.Request(page,{method:'get',parameters:'javascript=oui',onLoading:Chargement,onComplete:Affiche});
 }

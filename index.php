@@ -18,7 +18,7 @@ else
 {
 	include('menu.php');
 	//Si le joueur est connecté on affiche le menu de droite
-
+//plop salut le nain 
 	echo '<div id="contenu">';
 		echo '<div id="centre2">';
 
