@@ -1,31 +1,84 @@
 <?php //  -*- tab-width:2  -*-
-// Convertion de la position en deux chiffres
+/**
+ * @file base.inc.php
+ * Fonctions de base 
+ */ 
+
+
+/**
+ * Convertion de la position d'un nombre en deux nombres.
+ * Donne les coordonées x et y d'un points à partir de la version compressée.
+ *  
+ * @param $pos Position sous forme compressée.
+ *  
+ * @return ['x'] Position horizontale.
+ * @return ['y'] Position verticale.
+ */ 
 function convert_in_coord($pos)
 {
 	$coord['y'] = floor($pos / 1000);
 	$coord['x'] = $pos - ($coord['y'] * 1000);
 	return $coord;
 }
-// Convertion des coordonnés en un chiffre
+
+/**
+ * Convertion des coordonnés de deux nombre en un nombre.
+ * Donne la version compressée de la position à partir des coordonnées x et y.
+ *  
+ * @param $x Position horizontale.
+ * @param $y Position verticale.
+ *  
+ * @return Position sous forme compressée.
+ */ 
 function convert_in_pos($x, $y)
 {
 	$pos = $y * 1000 + $x;
 	return $pos;
 }
-// Convertion de la position dans un donjon en deux chiffres
+
+/**
+ * Convertion de la position de deux nombre en un nombre dans un donjon.
+ * Donne les coordonées x et y d'un points situé dans un donjon à partir de la
+ * version compressée.
+ *  
+ * @param $pos Position sous forme compressée.
+ *  
+ * @return ['x'] Position horizontale.
+ * @return ['y'] Position verticale.
+ */ 
 function convertd_in_coord($pos)
 {
 	$coord['y'] = floor($pos / 1000);
 	$coord['x'] = $pos - ($coord['y'] * 1000);
 	return $coord;
 }
-// Convertion des coordonnés dans un donjon en un chiffre
+
+/**
+ * Convertion des coordonnés de deux nombre en un nombre dans un donjon.
+ * Donne la version compressée de la position dans un donjon à partir des
+ * coordonnées x et y.
+ *  
+ * @param $x Position horizontale.
+ * @param $y Position verticale.
+ *  
+ * @return Position sous forme compressée.
+ */ 
 function convertd_in_pos($x, $y)
 {
 	$pos = $y * 1000 + $x;
 	return $pos;
 }
-// Fonction pour pouvoir detecter si l'attaquant est sur la meme case
+
+/**
+ * Detecte si l'attaquant est sur la meme case.
+ * Donne le maximum entre les distances horizontale et varticale entre deux personnages.
+ * 
+ * @param $posjoueur1 position, sous forme compressée, du premier personnage.
+ * @param $posjoueur2 position, sous forme compressée, du deuxième personnage.
+ *  
+ * @return maximum entre les distances horizontale et varticale (0 s'ils sont sur 
+ * la même case, non nul sinon).
+ */ 
 function detection_distance($posjoueur1, $posjoueur2)
 {
 	$W_coord_joueur1 = convert_in_coord($posjoueur1);
@@ -34,6 +87,15 @@ function detection_distance($posjoueur1, $posjoueur2)
 	return $R_distance;
 }
 
+/**
+ * Calcule la distance "non pythagoriciene" entre deux personnages.
+ * Cette distance est la somme des distance horizontale et verticale.
+ * 
+ * @param $posjoueur1 position, sous forme compressée, du premier personnage.
+ * @param $posjoueur2 position, sous forme compressée, du deuxième personnage.
+ *  
+ * @return distance entre les distances horizontale et varticale.
+ */ 
 function calcul_distance($posjoueur1, $posjoueur2)
 {
 	$W_coord_joueur1 = convert_in_coord($posjoueur1);
@@ -42,6 +104,15 @@ function calcul_distance($posjoueur1, $posjoueur2)
 	return $R_distance;
 }
 
+/**
+ * Calcule la distance "pythagoriciene" entre deux personnages.
+ * La distance est calculée avec la formule de Pythagore (distance "classique").
+ * 
+ * @param $posjoueur1 position, sous forme compressée, du premier personnage.
+ * @param $posjoueur2 position, sous forme compressée, du deuxième personnage.
+ *  
+ * @return distance entre les distances horizontale et varticale.
+ */ 
 function calcul_distance_pytagore($posjoueur1, $posjoueur2)
 {
 	$W_coord_joueur1 = convert_in_coord($posjoueur1);
@@ -50,6 +121,14 @@ function calcul_distance_pytagore($posjoueur1, $posjoueur2)
 	return $R_distance;
 }
 
+/**
+ * Indique si on est dans un donjon.
+ *  
+ * @param $x Position horizontale.
+ * @param $y Position verticale.
+ *  
+ * @return true si on est dans un donjon, non sinon.
+ */ 
 function is_donjon($x, $y)
 {
 	if($x > 150 OR $y > 150)
@@ -59,6 +138,13 @@ function is_donjon($x, $y)
 	return false;
 }
 
+/**
+ * Donne le nombre de bourg que possède un royaume
+ * 
+ * @param $id_royaume ID du royaume.
+ * 
+ * @return nombre de bourgs.
+ */
 function nb_bourg($id_royaume)
 {
 	global $db;
@@ -73,6 +159,13 @@ function nb_bourg($id_royaume)
 	return $bourgs;
 }
 
+/**
+ * Donne le nombre de cases que possède un royaume
+ * 
+ * @param $id_royaume ID du royaume.
+ * 
+ * @return nombre de cases.
+ */
 function nb_case($id_royaume)
 {
 	global $db;
@@ -82,6 +175,13 @@ function nb_case($id_royaume)
 	return $row[0];
 }
 
+/**
+ * Donne le nombre d'habitants que possède un royaume
+ * 
+ * @param $id_royaume ID du royaume.
+ * 
+ * @return nombre d'habitants.
+ */
 function nb_habitant($race)
 {
 	global $db;
@@ -91,7 +191,15 @@ function nb_habitant($race)
 	return $row[0];
 }
 
-// Renvoi le type de terrain, et le type de terrain affichable
+/**
+ * Renvoi le type de terrain, et le type de terrain affichable.
+ * Le "type de terrain affichable" coreespond à ce qui est affiché dans le jeu.
+ * 
+ * @param $info Numéro du type de terrain
+ * 
+ * @return [0] type de terrain (usage interne).
+ * @return [1] type de terrain (pour afficher).
+ */ 
 function type_terrain($info)
 {
 	//Initialise les variables de terrain
@@ -112,7 +220,7 @@ function type_terrain($info)
 	$typeterrain[8][0] = 'route';
 	$typeterrain[8][1] = 'Route';
 	$typeterrain[10][0] = 'objet';
-	$typeterrain[10][1] = 'Batiment';
+	$typeterrain[10][1] = 'Bâtiment';
 	$typeterrain[11][0] = 'terre_maudite';
 	$typeterrain[11][1] = 'Terre Maudite';
 	$typeterrain[15][0] = 'donjon';
@@ -130,6 +238,13 @@ function type_terrain($info)
 	return $return;
 }
 
+/**
+ * Indique si une case fait partie d'une ville.
+ * 
+ * @param $case position compressée de la ville.
+ * 
+ * @return numéro du type de terrain si la case appartient à un royaume false sinon.
+ */
 function is_ville($case)
 {
 	global $db;
@@ -140,6 +255,16 @@ function is_ville($case)
 	else return false;
 }
 
+/**
+ * Donne le coût en PA d'un déplacement en fonction du terrain et de la race.
+ * Une valeur de 50 indique que l'on ne peut pas aller sur la case. Si le type de
+ * terrain n'est pas trouvé, le coût est fixé à 6 PA.
+ * 
+ * @param $info Type de terrain.
+ * @param $race Race.
+ * 
+ * @return Coût en PA. 
+ */
 function cout_pa($info, $race)
 {
 	//Initialisation des variables de déplacement, 50 = infranchissable.
@@ -313,6 +438,18 @@ function cout_pa($info, $race)
 	return $coutpa[$race][$info];
 }
 
+/**
+ * Ajuste le coût en PA d'un déplacement en fonction de tous les parmètres qui le modifient.
+ * Prend en compte la diagonale, le royaume de la case, les buffs et les débuffs.
+ * Le coût minimal est de 3 en diagonal et 2 sinon. 
+ * 
+ * @param $coutpa     coût en PA de base.
+ * @param $joueur     taleau contenant les informaton sur le joueur
+ * @param $case       position compressée de la ville.
+ * @param $diagonale  true si le déplacement est en diagonal, false sinon.
+ * 
+ * @return Coût en PA modifié.  
+ */
 function cout_pa2($coutpa, $joueur, $case, $diagonale)
 {
 	global $Trace;
@@ -337,7 +474,7 @@ function cout_pa2($coutpa, $joueur, $case, $diagonale)
 	//Maladies
 	if(array_key_exists('cout_deplacement', $joueur['debuff'])) $coutpa = ceil($coutpa / $joueur['debuff']['cout_deplacement']['effet']);
 	if(array_key_exists('plus_cout_deplacement', $joueur['debuff'])) $coutpa = ceil($coutpa * $joueur['debuff']['plus_cout_deplacement']['effet']);
-	//Batiment qui augmente le cout de PA
+	//Bâtiment qui augmente le coût de PA
 	if($batiment = batiment_map($coord['x'], $coord['y']))
 	{
 		$coutpa = $coutpa * $batiment['augmentation_pa'];
@@ -350,7 +487,16 @@ function cout_pa2($coutpa, $joueur, $case, $diagonale)
 	return $coutpa;
 }
 
-//Fonction permettant de récupérer les infos essentielles du perso (nom, race, classe, level, ID, rang_royaume)
+/**
+ * Fonction permettant de récupérer les infos essentielles du perso (nom, race, classe, level, ID, rang_royaume).
+ * Si l'ID est égale à une chaîne vide affiche un message demandant au joueur de se
+ * reconnecter et arrête l'interprétation.  
+ * 
+ * @param $ID       ID du personnage.
+ * @param $select   liste des informations (entrées de la base de donnée) à récupérer.
+ *  
+ * @return Informations demandées sous forme de tableau associatif.
+ */ 
 function recupperso_essentiel($ID, $select = 'ID, nom, level, rang_royaume, race, classe')
 {
 	global $db;
@@ -378,10 +524,18 @@ function recupperso_essentiel($ID, $select = 'ID, nom, level, rang_royaume, race
 	}
 }
 
-//Fonction permettant de récupérer les infos des perso, et de les renvoyer
+/**
+ * Fonction permettant de récupérer les infos des perso, et de les renvoyer.
+ * Si l'ID est égale à une chaîne vide affiche un message demandant au joueur de se
+ * reconnecter et arrête l'interprétation.  
+ * 
+ * @param $ID   ID du personnage.
+ * 
+ * #return      Informatiosn du persdonnages sus forme de tableau associatif.
+ */ 
 function recupperso($ID)
 {
-	global $db, $G_buff;
+	global $db, $G_buff;  // $G_buff inutilié
 	if(is_numeric($ID))
 	{
 		if($ID != '')
@@ -397,25 +551,25 @@ function recupperso($ID)
 				$R_perso['exp'] = $row['exp'];
 				$R_perso['honneur'] = $row['honneur'];
 				$R_perso['level'] = $row['level'];
-				$R_perso['rang_royaume'] = $row['rang_royaume'];
+				$R_perso['rang_royaume'] = $row['rang_royaume'];  // ID du grade.
 			
 				//Récupération du grade
 				$requete = "SELECT nom, rang FROM grade WHERE id = ".$R_perso['rang_royaume'];
 				$req = $db->query($requete);
 				$row_grade = $db->read_assoc($req);
-				$R_perso['grade'] = $row_grade['nom'];
-				$R_perso['rang_grade'] = $row_grade['rang'];
+				$R_perso['grade'] = $row_grade['nom'];  // Nom du grade.
+				$R_perso['rang_grade'] = $row_grade['rang'];  //Rang du grade
 			
 				$R_perso['race'] = $row['race'];
 				$R_perso['classe'] = $row['classe'];
 				$R_perso['classe_id'] = $row['classe_id'];
-				$R_perso['vie'] = $row['vie'];
+				$R_perso['vie'] = $row['vie'];  // Constitution
 				$R_perso['force'] = $row['forcex'];
 				$R_perso['dexterite'] = $row['dexterite'];
 				$R_perso['puissance'] = $row['puissance'];
 				$R_perso['volonte'] = $row['volonte'];
 				$R_perso['energie'] = $row['energie'];
-				$R_perso['reserve'] = ceil(2.1 * ($row['energie'] + floor(($row['energie'] - 8) / 2)));
+				$R_perso['reserve'] = ceil(2.1 * ($row['energie'] + floor(($row['energie'] - 8) / 2)));  // RM
 				//bonus vampire
 				if($R_perso['race'] == 'vampire')
 				{
@@ -435,7 +589,6 @@ function recupperso($ID)
 					}
 				}
 				//Bonus Haut Elfe
-				//bonus vampire
 				if($R_perso['race'] == 'elfehaut' AND moment_jour() == 'Nuit')
 				{
 					$R_perso['reserve'] += 2;
@@ -443,25 +596,26 @@ function recupperso($ID)
 					$R_perso['volonte'] += 1;
 				}
 				$R_perso['pa'] = $row['pa'];
-				$R_perso['action_a'] = $row['action_a'];
-				$R_perso['action_d'] = $row['action_d'];
+				$R_perso['action_a'] = $row['action_a'];  // Script d'attaque.
+				$R_perso['action_d'] = $row['action_d'];  // Script de défense.
 				if($row['action_d'] == 0) $row['action_d'] = $row['action_a'];
-				$R_perso['dernieraction'] = $row['dernieraction'];
+				$R_perso['dernieraction'] = $row['dernieraction'];  // Moment où a eu lieu le dernier gain de PA.
 				$R_perso['dernier_connexion'] = $row['dernier_connexion'];
-				$R_perso['regen_hp'] = $row['regen_hp'];
-				$R_perso['maj_hp'] = $row['maj_hp'];
-				$R_perso['maj_mp'] = $row['maj_mp'];
-				$R_perso['point_sso'] = $row['point_sso'];
+				$R_perso['regen_hp'] = $row['regen_hp'];  // Date et heure de la dernière régénération de HP et MP.
+				$R_perso['maj_hp'] = $row['maj_hp'];  // Moment de la dernière augmentation de HP.
+				$R_perso['maj_mp'] = $row['maj_mp'];  // Moment de la dernière augmentation de MP.
+				$R_perso['point_sso'] = $row['point_sso'];  // Points shine.
 				$R_perso['star'] = $row['star'];
-				$R_perso['groupe'] = $row['groupe'];
-				$R_perso['x'] = $row['x'];
-				$R_perso['y'] = $row['y'];
-				$R_perso['hp'] = $row['hp'];
-				$R_perso['hp_max_1'] = $row['hp_max'];
-				$R_perso['hp_max'] = floor($row['hp_max']);
-				$R_perso['mp'] = $row['mp'];
-				$R_perso['mp_max_1'] = $row['mp_max'];
-				$R_perso['mp_max'] = floor($row['mp_max']);
+				$R_perso['groupe'] = $row['groupe'];  // ID du groupe (0 s'il n'en a pas).
+				$R_perso['x'] = $row['x'];  // Position
+				$R_perso['y'] = $row['y'];  // Position
+				$R_perso['hp'] = $row['hp'];  // HP actuels
+				$R_perso['hp_max_1'] = $row['hp_max'];  // HP max réels (non entiers pour les augmentations)
+				$R_perso['hp_max'] = floor($row['hp_max']);  // HP max pris en compte
+				$R_perso['mp'] = $row['mp'];  // MP actuels
+				$R_perso['mp_max_1'] = $row['mp_max'];  // MP max réels (non entiers pour les augmentations)
+				$R_perso['mp_max'] = floor($row['mp_max']);  // MP max pris en compte
+				// Compétences
 				$R_perso['melee'] = $row['melee'];
 				$R_perso['distance'] = $row['distance'];
 				$R_perso['esquive'] = $row['esquive'];
@@ -476,24 +630,26 @@ function recupperso($ID)
 				$R_perso['architecture'] = $row['architecture'];
 				$R_perso['craft'] = $row['craft'];
 				$R_perso['survie'] = $row['survie'];
-				$R_perso['facteur_magie'] = $row['facteur_magie'];
-				$R_perso['facteur_sort_vie'] = $row['facteur_sort_vie'];
-				$R_perso['facteur_sort_element'] = $row['facteur_sort_element'];
-				$R_perso['facteur_sort_mort'] = $row['facteur_sort_mort'];
-				$R_perso['resistmagique'] = $row['resistmagique'];
+				$R_perso['facteur_magie'] = $row['facteur_magie'];  // Facteur multiplicateur, dépendant de la classe, des coûts et pré-requis pour les sorts. 
+				$R_perso['facteur_sort_vie'] = $row['facteur_sort_vie'];  // Inutilisé.
+				$R_perso['facteur_sort_element'] = $row['facteur_sort_element'];  // Inutilisé.
+				$R_perso['facteur_sort_mort'] = $row['facteur_sort_mort'];  // Inutilisé.
+				$R_perso['resistmagique'] = $row['resistmagique'];  // Inutilisé.
 				$R_perso['frag'] = $row['frag'];
 				$R_perso['mort'] = $row['mort'];
 				$R_perso['crime'] = $row['crime'];
-				$R_perso['teleport_roi'] = $row['teleport_roi'];
-				$R_perso['statut'] = $row['statut'];
-				$R_perso['cache_classe'] = $row['cache_classe'];
-				$R_perso['cache_stat'] = $row['cache_stat'];
+				$R_perso['teleport_roi'] = $row['teleport_roi'];  // Indique si la téléportation du roi a été utilisé ce mois-ci (booléen).
+				$R_perso['statut'] = $row['statut'];  // Statut du personnage : 'actif', 'inactif', 'hibern' ou 'ban'.
+				$R_perso['cache_classe'] = $row['cache_classe'];  // 0 si on ne cache pas sa classe, 1 si on la cache aux autre races et 1 si on la cache à tout le monde.
+				$R_perso['cache_stat'] = $row['cache_stat'];  // 0 si on ne cache pas ses stats, 1 si on les cache aux autre races et 1 si on les cache à tout le monde.
+				// Bonus additif de PM des Nains
 				if($R_perso['race'] == 'nain') $R_perso['PM'] = 10;
 				else $R_perso['PM'] = 1;
+				// Bonus additif de PP des Barbares
 				if($R_perso['race'] == 'barbare') $R_perso['PP'] = 10;
 				else $R_perso['PP'] = 0;
 			
-				//Récupération des compétences
+				//Récupération des autres compétences (maîtrises, survies, ...)
 				$R_perso['competences'] = array();
 				$requete = "SELECT * FROM comp_perso WHERE id_perso = ".$R_perso['ID'];
 				$req = $db->query($requete);
@@ -501,17 +657,17 @@ function recupperso($ID)
 				{
 					$R_perso['competences'][$row_c['competence']] = $row_c['valeur'];
 				}
-				$R_perso['sort_jeu'] = $row['sort_jeu'];
-				$R_perso['sort_combat'] = $row['sort_combat'];
-				$R_perso['comp_combat'] = $row['comp_combat'];
-				$R_perso['comp_jeu'] = $row['comp_jeu'];
+				$R_perso['sort_jeu'] = $row['sort_jeu'];  // Sorts hors combat.
+				$R_perso['sort_combat'] = $row['sort_combat'];  // Sorts de combat.
+				$R_perso['comp_combat'] = $row['comp_combat'];  // Compétences de combat.
+				$R_perso['comp_jeu'] = $row['comp_jeu'];  // Compétences hors combat.
 				$R_perso['quete'] = unserialize($row['quete']);
 				$R_perso['quete_fini'] = $row['quete_fini'];
 				$R_perso['inventaire_slot'] = unserialize($row['inventaire_slot']);
 				$R_perso['inventaire'] = unserialize($row['inventaire']);
 				$R_perso['arme'] = $R_perso['inventaire']->main_droite;
-				$R_perso['enchantement'] = array();
-				$R_perso['objet_effet'] = array();
+				$R_perso['enchantement'] = array();  // Enchantement de gemme
+				$R_perso['objet_effet'] = array();  // Effets magiques des objets
 				$objet_effet_id = 0;
 				
 				//Main droite
@@ -525,8 +681,9 @@ function recupperso($ID)
 					$R_perso['arme_nom'] = $row['nom'];
 					$R_perso['arme_type'] = $row['type'];
 					$R_perso['arme_degat'] = $row['degat'];
-					$R_perso['arme_distance'] = $row['distance_tir'];
-					$R_perso['arme_var1'] = $row['var1'];
+					$R_perso['arme_distance'] = $row['distance_tir']; // Distance à laquelle peut toucher l'arme
+					$R_perso['arme_var1'] = $row['var1'];  // Bonus de potentiel des bâtons ou malus d'esquive des autres armes.
+					// Effets magiques
 					if($row['effet'] != '')
 					{
 						$effet = explode(';', $row['effet']);
@@ -538,6 +695,7 @@ function recupperso($ID)
 							$objet_effet_id++;
 						}
 					}
+					// Gemmes
 					if($arme_d['enchantement'] > 0)
 					{
 						$R_perso = enchant($arme_d['enchantement'], $R_perso);
@@ -564,7 +722,7 @@ function recupperso($ID)
 						$R_perso['bouclier_type'] = 'bouclier';
 						$R_perso['bouclier_nom'] = $row['nom'];
 						$R_perso['bouclier_degat'] = $row['degat'];
-						$R_perso['bouclier_var1'] = $row['var1'];
+						$R_perso['bouclier_var1'] = $row['var1'];  // Inutilisé.
 					}
 					elseif($row['type'] == 'dague')
 					{
@@ -577,10 +735,12 @@ function recupperso($ID)
 						$R_perso['bouclier'] = false;
 						$R_perso['bouclier_type'] = '';
 					}
+					// Gemmes
 					if($gauche_d['enchantement'] > 0)
 					{
 						$R_perso = enchant($gauche_d['enchantement'], $R_perso);
 					}
+					// Effets magiques
 					if($row['effet'] != '')
 					{
 						$effet = explode(';', $row['effet']);
@@ -599,8 +759,7 @@ function recupperso($ID)
 					$R_perso['bouclier'] = false;
 				}
 				
-				//Calcul de la PM du perso
-				//Calcul de la PP du perso
+				// Pièces d'armure
 				$partie_armure = array('tete', 'torse', 'main', 'ceinture', 'jambe', 'chaussure', 'dos', 'cou', 'doigt');
 				foreach($partie_armure as $partie)
 				{
@@ -614,6 +773,7 @@ function recupperso($ID)
 							$row = $db->read_row($req);
 							$R_perso['PP'] += $row[0];
 							$R_perso['PM'] += $row[1];
+					    // Effets magiques
 							$effet = explode(';', $row[2]);
 							foreach($effet as $eff)
 							{
@@ -623,6 +783,7 @@ function recupperso($ID)
 							}
 							$objet_effet_id++;
 						}
+					  // Gemmes
 						if($partie_d['enchantement'] > 0)
 						{
 							$R_perso = enchant($partie_d['enchantement'], $R_perso);
@@ -644,13 +805,14 @@ function recupperso($ID)
 						$R_perso['accessoire']['effet'] = $row[1];
 						if($row[0] == 'rm') $R_perso['reserve'] += $row[1];
 					}
+					// Gemmes
 					if($partie_d['enchantement'] > 0)
 					{
 						$R_perso = enchant($partie_d['enchantement'], $R_perso);
 					}
 				}
 
-				//Objets magiques
+				// Effets des objets magiques
 				foreach($R_perso['objet_effet'] as $effet)
 				{
 					switch($effet['id'])
@@ -672,11 +834,12 @@ function recupperso($ID)
 				$R_perso['PP_base'] = $R_perso['PP'];
 				$R_perso['reserve_base'] = $R_perso['reserve'];
 
+        // Bonus raciaux multipilcatif de PM & PP
 				if($R_perso['race'] == 'nain') $R_perso['PM'] = round($R_perso['PM'] * 1.1);
 				if($R_perso['race'] == 'scavenger') $R_perso['PM'] = round($R_perso['PM'] * 1.05);
 				if($R_perso['race'] == 'scavenger') $R_perso['PP'] = round($R_perso['PP'] * 1.15);
 				if($R_perso['race'] == 'barbare') $R_perso['PP'] = round($R_perso['PP'] * 1.3);
-				//Mort vivant
+				// Mort vivant
 				if($R_perso['race'] == 'mortvivant' AND moment_jour() == 'Soir')
 				{
 					$R_perso['PP'] = round($R_perso['PP'] * 1.15);
@@ -708,6 +871,7 @@ function recupperso($ID)
 				if(array_key_exists('buff_cri_protecteur', $R_perso['buff'])) $R_perso['PP'] = round($R_perso['PP'] * (1 + ($R_perso['buff']['buff_cri_protecteur']['effet'] / 100)));
 				if(array_key_exists('maladie_degenerescence', $R_perso['debuff'])) $R_perso['reserve'] = ceil($R_perso['reserve'] / (1 + ($R_perso['debuff']['maladie_degenerescence']['effet'] / 100)));
 				if(array_key_exists('debuff_desespoir', $R_perso['debuff'])) $R_perso['PM'] = round($R_perso['PM'] / (1 + (($R_perso['debuff']['debuff_desespoir']['effet']) / 100)));
+				// Calcul des coefficients
 				$R_perso['coef_melee'] = $R_perso['force'] * $R_perso['melee'];
 				$R_perso['coef_incantation'] = $R_perso['puissance'] * $R_perso['incantation'];
 				$R_perso['coef_distance'] =  round(($R_perso['force'] + $R_perso['dexterite']) / 2) * $R_perso['distance'];
@@ -729,6 +893,13 @@ function recupperso($ID)
 	}
 }
 
+/**
+ * Récupère l'ID de la lignée du personnage.
+ * 
+ * @param $id_perso   ID du perso.
+ *  
+ * @return   ID de la lignée.
+ */
 function recupperso_lignee($id_perso)
 {
 	global $db;
@@ -745,6 +916,13 @@ function recupperso_lignee($id_perso)
 	}
 }
 
+/**
+ * Récupère les options.
+ * 
+ * @param $id_perso   ID du perso.
+ *  
+ * @return   Options.
+ */
 function recup_option($id_perso)
 {
 	global $db;
@@ -758,6 +936,13 @@ function recup_option($id_perso)
 	return $options;
 }
 
+/**
+ * Récupère une lignée.
+ * 
+ * @param $id_perso   ID de la lignée.
+ *  
+ * @return   Lignée sous forme de tableau associatif.
+ */
 function recup_lignee($id_lignee)
 {
 	global $db;
@@ -774,6 +959,13 @@ function recup_lignee($id_lignee)
 	}
 }
 
+/**
+ * Récupère une amande.
+ * 
+ * @param $id_perso   ID du perso.
+ *  
+ * @return   Amande sous forme de tableau associatif ou false s'il n'y en a pas.
+ */
 function recup_amende($id_perso)
 {
 	global $db;
@@ -784,6 +976,13 @@ function recup_amende($id_perso)
 	return $amende;
 }
 
+/**
+ * Récupère les titres honorifiques d'un personnages.
+ * 
+ * @param $id_perso   ID du perso.
+ *  
+ * @return   Titres sous forme de tableau de tableaux associatif.
+ */
 function recup_titre_honorifique($id_perso)
 {
 	global $db;
@@ -797,6 +996,13 @@ function recup_titre_honorifique($id_perso)
 	return $titres;
 }
 
+/**
+ * Récupère les effets des bonus shine d'un personnages.
+ * 
+ * @param $id_perso   ID du perso.
+ *  
+ * @return   Etats dû aux bonus sous forme de tableau indexé par les IDs des bonus.
+ */
 function recup_bonus($id_perso)
 {
 	global $db;
@@ -810,6 +1016,13 @@ function recup_bonus($id_perso)
 	return $bonus;
 }
 
+/**
+ * Récupère toutes les infos des bonus shine d'un personnages.
+ * 
+ * @param $id_perso   ID du perso.
+ *  
+ * @return   Bonus sous forme de tableau de tableaux associatif.
+ */
 function recup_bonus_total($id_perso)
 {
 	global $db;
@@ -823,7 +1036,15 @@ function recup_bonus_total($id_perso)
 	return $bonus;
 }
 
-//Vérifie si on affiche un bonus ou non
+/**
+ * Vérifie si on affiche les informations qui peuvent être caché par un bonus shine.
+ * 
+ * @param $bonus    Type de bonus.
+ * @param $joueur   Tableau décrivant le personnage du joueur. 
+ * @param $perso    Tableau décrivant le personnage concerné par les informations.
+ * 
+ * @return    true si on affiche, false sinon. 
+ */ 
 function check_affiche_bonus($bonus, $joueur, $perso)
 {
 	switch($bonus)
@@ -843,6 +1064,14 @@ function check_affiche_bonus($bonus, $joueur, $perso)
 	return false;
 }
 
+/**
+ * Ajoute un bonus shine à un personnage.
+ * 
+ * @param $bonus      ID du bonus.
+ * @param $id_perso   ID du personnage. 
+ * 
+ * @return    true si ça a réussi, false sinon. 
+ */ 
 function ajout_bonus($id_bonus, $id_perso)
 {
 	global $db;
@@ -851,14 +1080,25 @@ function ajout_bonus($id_bonus, $id_perso)
 	else return false;
 }
 
+/**
+ * Met un jour un personnage.
+ * Gère l'augmentation et la régénération des HP & MP, la régénération des PA et supprime
+ * les buffs et ban périmés.
+ * 
+ * @param $joueur     Tableau associatif décrivant le personnage.
+ * 
+ * @param $joueur     Tableau associatif décrivant le personnage après mise-à-jour.
+ */
 function check_perso($joueur)
 {
-	$modif = false;	
+	$modif = false;	 // Indique si le personnage a été modifié.
 	global $db, $G_temps_regen_hp, $G_temps_maj_hp, $G_temps_maj_mp, $G_temps_PA, $G_PA_max, $G_pourcent_regen_hp, $G_pourcent_regen_mp;
+	// On vérifie que le personnage est vivant
 	if($joueur['hp'] > 0)
 	{
-		$temps_maj = time() - $joueur['maj_hp'];
-		$temps_hp = $G_temps_maj_hp;
+	  // On augmente les HP max si nécessaire
+		$temps_maj = time() - $joueur['maj_hp']; // Temps écoulé depuis la dernière augmentation de HP.
+		$temps_hp = $G_temps_maj_hp;  // Temps entre deux augmentation de HP.
 		if ($temps_maj > $temps_hp && $temps_hp > 0) // Pour ne jamais diviser par 0 ...
 		{
 			$time = time();
@@ -868,8 +1108,9 @@ function check_perso($joueur)
 			$joueur['maj_hp'] += $nb_maj * $temps_hp;
 			$modif = true;
 		}
-		$temps_maj = time() - $joueur['maj_mp'];
-		$temps_mp = $G_temps_maj_mp;
+	  // On augmente les MP max si nécessaire
+		$temps_maj = time() - $joueur['maj_mp']; // Temps écoulé depuis la dernière augmentation de MP.
+		$temps_mp = $G_temps_maj_mp;  // Temps entre deux augmentation de MP.
 		if ($temps_maj > $temps_mp)
 		{
 			$time = time();
@@ -879,7 +1120,8 @@ function check_perso($joueur)
 			$joueur['maj_mp'] += $nb_maj * $temps_mp;
 			$modif = true;
 		}
-		$temps_regen = time() - $joueur['regen_hp'];
+		// Régénération des HP et MP
+		$temps_regen = time() - $joueur['regen_hp']; // Temps écoulé depuis la dernière régénération.
 		if ($temps_regen > $G_temps_regen_hp)
 		{
 			$time = time();
@@ -889,23 +1131,30 @@ function check_perso($joueur)
 			//Buff préparation du camp
 			if(array_key_exists('preparation_camp', $joueur['buff']))
 			{
+			  // Le buff a-t-il été lancé après la dernière régénération ?
 				if($joueur['buff']['preparation_camp']['effet2'] > $joueur['regen_hp'])
 				{
+				  // On calcule le moment où doit avoir lieu la première régénération après le lancement du buff 
 					$regen_cherche = $joueur['regen_hp'] + ($G_temps_regen_hp * floor(($joueur['buff']['preparation_camp']['effet2'] - $joueur['regen_hp']) / $G_temps_regen_hp));
 				}
 				else $regen_cherche = $joueur['regen_hp'];
+				// Le buff s'est-il arrêté entre temps ?
 				if($joueur['buff']['preparation_camp']['fin'] > time()) $fin = time();
 				else $fin = $joueur['buff']['preparation_camp']['fin'];
+				// On calcule le nombre de régénération pour lesquels le buff doit être pris en compte 
 				$nb_regen_avec_buff = floor(($fin - $regen_cherche) / $G_temps_regen_hp);
 				//bonus buff du camp
 				$bonus_camp = 1 + ((($nb_regen_avec_buff / $nb_regen) * $joueur['buff']['preparation_camp']['effet']) / 100);
 				$regen_hp = $regen_hp * $bonus_camp;
 				$regen_mp = $regen_mp * $bonus_camp;
 			}
+			// Bonus raciaux
 			if($joueur['race'] == 'troll') $regen_hp = $regen_hp * 1.2;
 			if($joueur['race'] == 'elfehaut') $regen_mp = $regen_mp * 1.1;
+			// Accessoires
 			if($joueur['accessoire']['id'] != '0' AND $joueur['accessoire']['type'] == 'regen_hp') $bonus_accessoire = $joueur['accessoire']['effet']; else $bonus_accessoire = 0;
 			if($joueur['accessoire']['id'] != '0' AND $joueur['accessoire']['type'] == 'regen_mp') $bonus_accessoire_mp = $joueur['accessoire']['effet']; else $bonus_accessoire_mp = 0;
+			// Effets magiques des objets
 			foreach($joueur['objet_effet'] as $effet)
 			{
 				switch($effet['id'])
@@ -918,20 +1167,24 @@ function check_perso($joueur)
 					break;
 				}
 			}
+			// Calcul des HP et MP récupérés
 			$hp_gagne = $nb_regen * (floor($joueur['hp_max_1'] * $regen_hp) + $bonus_accessoire);
 			$mp_gagne = $nb_regen * (floor($joueur['mp_max_1'] * $regen_mp) + $bonus_accessoire_mp);
 			//DéBuff lente agonie
 			if(array_key_exists('lente_agonie', $joueur['debuff']))
 			{
+			  // Le débuff a-t-il été lancé après la dernière régénération ?
 				if($joueur['debuff']['lente_agonie']['effet2'] > $joueur['regen_hp'])
 				{
 					$regen_cherche = $joueur['regen_hp'] + ($G_temps_regen_hp * floor(($joueur['debuff']['lente_agonie']['effet2'] - $joueur['regen_hp']) / $G_temps_regen_hp));
 				}
 				else $regen_cherche = $joueur['regen_hp'];
+				// Le débuff s'est-il arrêté entre temps ?
 				if($joueur['debuff']['lente_agonie']['fin'] > time()) $fin = time();
 				else $fin = $joueur['debuff']['lente_agonie']['fin'];
+				// On calcule le nombre de régénération pour lesquels le débuff doit être pris en compte 
 				$nb_regen_avec_buff = floor(($fin - $regen_cherche) / $G_temps_regen_hp);
-				//bonus buff du camp
+				// Calcul du malus
 				$malus_agonie = ((1 - ($nb_regen_avec_buff / $nb_regen)) - (($nb_regen_avec_buff / $nb_regen) * $joueur['debuff']['lente_agonie']['effet']));
 				$hp_gagne = $hp_gagne * $malus_agonie;
 			}
@@ -940,6 +1193,7 @@ function check_perso($joueur)
 			{
 				$hp_gagne = $hp_gagne * -1;
 				$mp_gagne = $mp_gagne * -1;
+				// On diminue le nombre de régénération pendant lesquels la maladie est active ou supprime s'il n'y en  plus
 				if($joueur['debuff']['regen_negative']['effet'] > 1)
 				{
 					$requete = "UPDATE buff SET effet = ".($joueur['debuff']['regen_negative']['effet'] - 1)." WHERE id = ".$joueur['debuff']['regen_negative']['id'];
@@ -955,6 +1209,7 @@ function check_perso($joueur)
 			{
 				$hp_gagne = $hp_gagne * 3;
 				$mp_gagne = $mp_gagne * 3;
+				// On diminue le nombre de régénération pendant lesquels la maladie est active ou supprime s'il n'y en  plus
 				if($joueur['debuff']['high_regen']['effet'] > 1)
 				{
 					$requete = "UPDATE buff SET effet = ".($joueur['debuff']['high_regen']['effet'] - 1)." WHERE id = ".$joueur['debuff']['high_regen']['id'];
@@ -970,8 +1225,10 @@ function check_perso($joueur)
 			{
 				$hp_gagne = $joueur ['hp'];
 			}
+			// Mise à jour des HP
 			$joueur['hp'] = $joueur['hp'] + $hp_gagne;
 			if ($joueur['hp'] > $joueur['hp_max_1']) $joueur['hp'] = floor($joueur['hp_max_1']);
+			// Mise à jour des MP
 			$joueur['mp'] = $joueur['mp'] + $mp_gagne;
 			if ($joueur['mp'] > $joueur['mp_max_1']) $joueur['mp'] = floor($joueur['mp_max_1']);
 			$joueur['regen_hp'] = $joueur['regen_hp'] + ($nb_regen * $G_temps_regen_hp);
@@ -980,41 +1237,50 @@ function check_perso($joueur)
 		//Calcul des PA du joueur
 		$time = time();
 		$temps_pa = $G_temps_PA;
+		// Nombre de PA à ajouter 
 		$panew = floor(($time - $joueur['dernieraction']) / $temps_pa);
 		$prochain = ($joueur['dernieraction'] + $temps_pa) - $time;
 		if ($prochain < 0) $prochain = 0;
+		// Mise à jour des PA
 		$joueur['pa'] = $joueur['pa'] + $panew;
 		if ($joueur['pa'] > $G_PA_max) $joueur['pa'] = $G_PA_max;
+		// Calcul du moment où a eu lieu le dernier gain de PA
 		$j_d_a = (floor($time / $temps_pa)) * $temps_pa;
 		if($j_d_a > $joueur['dernieraction']) $joueur['dernieraction'] = $j_d_a;
 		$modif = true;
 		
-		//MAJ DU PERSO SI MODIF	
+		// Mise-à-jour du personnage dans la base de donnée s'il y a eut modificaton	
 		if ($modif)
 		{
 			$requete = "UPDATE perso SET regen_hp = '".$joueur['regen_hp']."', maj_mp = '".$joueur['maj_mp']."', maj_hp = '".$joueur['maj_hp']."', hp = '".$joueur['hp']."', hp_max = '".$joueur['hp_max_1']."', mp = '".$joueur['mp']."', mp_max = '".$joueur['mp_max_1']."', pa = '".$joueur['pa']."', dernieraction = '".$joueur['dernieraction']."' WHERE ID = '".$joueur['ID']."'";
 			$req = $db->query($requete);
 		}
-	}
-	//VERIF BUFF
+	} // if($joueur['hp'] > 0)
+	// On supprime tous les buffs périmés
 	$requete = "DELETE FROM buff WHERE fin <= ".time();
 	$req = $db->query($requete);
-	//VERIF BAN
+	// On enlève le ban s'il y en a un et qu'il est fini
 	$requete = "UPDATE perso SET statut = 'actif' WHERE statut = 'ban' AND fin_ban <= ".time();
 	$db->query($requete);
 
 	return $joueur;
 }
 
-//Vérifie les modifications de la case
+/**
+ * Vérifie les modifications de la case.
+ * 
+ * @param $coord    Coordonnées de la case sous forme de tableau associatif ou 'all'.  
+ */ 
 function check_case($coord)
 {
 	global $db, $Gtrad;
+	// Toutes les cases ou seulement une en particulier ?
 	if($coord == 'all')
 	{
 		$where = '1';
 	}
 	else $where = '(x = '.$coord['x'].') AND (y = '.$coord['y'].')';
+	// Recherche des constructions terminées
 	$requete = "SELECT * FROM placement WHERE ".$where." AND fin_placement <= ".time();
 	$req = $db->query($requete);
 	while($row = $db->read_assoc($req))
@@ -1032,7 +1298,7 @@ function check_case($coord)
 			$requete = "DELETE FROM placement WHERE id = ".$row['id'];
 			$db->query($requete);
 		}
-		//Si c'est un fort, on construit le fort
+		//Si c'est un bâtiment ou une arme de siège, on le construit
 		elseif($row['type'] == 'fort' OR $row['type'] == 'tour' OR $row['type'] == 'bourg' OR $row['type'] == 'mur' OR $row['type'] == 'arme_de_siege')
 		{
 			//Insertion de la construction
@@ -1046,6 +1312,14 @@ function check_case($coord)
 	}
 }
 
+/**
+ * Récupère les informations sur un monstre.
+ * 
+ * @param $ID             ID d'un mosntre présent sur la carte ou type du monstre.
+ * @param $map_monstre    true si on veut voir un monstre présent sur la carte, false si le monstre est créé.
+ * 
+ * @return    Informations sur le monstre sous forme de tableau associatif.
+ */
 function recupmonstre($ID, $map_monstre = true)
 {
 	global $db;
@@ -1070,13 +1344,13 @@ function recupmonstre($ID, $map_monstre = true)
 	$R_monstre['nom'] = $row['nom'];
 	$R_monstre['level'] = $row['level'];
 	$R_monstre['force'] = $row['forcex'];
-	$R_monstre['vie'] = 15;
+	$R_monstre['vie'] = 15;  // Constitution
 	$R_monstre['dexterite'] = $row['dexterite'];
 	$R_monstre['puissance'] = $row['puissance'];
 	$R_monstre['volonte'] = $row['volonte'];
 	$R_monstre['reserve'] = ceil(2.1 * ($row['energie'] + floor(($row['energie'] - 8) / 2)));
 	$R_monstre['melee'] = $row['melee'];
-	$R_monstre['classe_id'] = 4;
+	$R_monstre['classe_id'] = 4;  // ID de la classe du monstre.
 	$R_monstre['esquive'] = $row['esquive'];
 	$R_monstre['incantation'] = $row['incantation'];
 	$R_monstre['sort_vie'] = $row['sort_vie'];
@@ -1085,7 +1359,7 @@ function recupmonstre($ID, $map_monstre = true)
 	$R_monstre['PP'] = $row['pp'];
 	$R_monstre['PM'] = $row['pm'];
 	$R_monstre['hp_max_1'] = $row['hp'];
-	$R_monstre['bouclier'] = false;
+	$R_monstre['bouclier'] = false;  // Indique si le monstre a un bouclier.
 	$R_monstre['competences'] = array();
 	$R_monstre['race'] = 'scavenger';
 	$R_monstre['description'] = $row['description'];
@@ -1094,10 +1368,10 @@ function recupmonstre($ID, $map_monstre = true)
 	else $R_monstre['arme_type'] = 'epee';
 	if($row['arme'] == 'arc') $R_monstre['distance'] = $row['melee'];
 	$R_monstre['buff'] = array();
-	$R_monstre['action_d'] = $row['action'];
+	$R_monstre['action_d'] = $row['action'];  // Script défensif.
 	$R_monstre['enchantement'] = array();
 	$R_monstre['espece'] = $row['type'];
-	//VERIF BUFF
+	// On supprime les buffs périmés
 	$requete = "DELETE FROM buff_monstre WHERE fin <= ".time();
 	$req = $db->query($requete);
 
@@ -1111,6 +1385,7 @@ function recupmonstre($ID, $map_monstre = true)
 		if($row['debuff'] == 1) $col = 'debuff'; else $col = 'buff';
 		$R_monstre[$col][$row['type']] = $row;
 	}
+	// Application de certains buffs
 	if(array_key_exists('maladie_degenerescence', $R_monstre['debuff'])) $R_monstre['reserve'] = ceil($R_monstre['reserve'] / $R_monstre['debuff']['maladie_degenerescence']['effet']);
 	if(array_key_exists('debuff_desespoir', $R_monstre['debuff'])) $R_monstre['PM'] = round($R_monstre['PM'] / (1 + (($R_monstre['debuff']['debuff_desespoir']['effet']) / 100)));
 	$R_monstre['objet_effet'] = array();
@@ -1118,6 +1393,17 @@ function recupmonstre($ID, $map_monstre = true)
 	return $R_monstre;
 }
 
+/**
+ * Récupère les informations sur un bâtiment.
+ * Les informations peuvent être réparties dans deux bases, "batiment" pour tous
+ * et "placement" pour les bâtiments en constructions ou "rechargement" pour ceux
+ * qui ont u temps de rechargment (armes de siège). 
+ * 
+ * @param $ID       ID du bâtiment.
+ * @param $table    Table complémentaire de la base de donnée dans laquelle est le bâtiment, 'none' s'il n'y en a pas.
+ * 
+ * @return    Informations sur le bâtiment sous forme de tableau associatif.
+ */
 function recupbatiment($ID, $table)
 {
 	global $db;
@@ -1127,8 +1413,10 @@ function recupbatiment($ID, $table)
 	}
 	else
 	{
+	  // Champs à récupérer dans la base de donnée en fonction de la table
 		if($table == 'placement') $champ = ', fin_placement, x, y, royaume, debut_placement';
 		else $champ = ', rechargement';
+		// Récupération des informations dépendant de la table
 		$requete = 'SELECT id_batiment, hp, type '.$champ.' FROM '.$table.' WHERE id = '.$ID;
 		$req = $db->query($requete);	
 		$row_p = $db->read_array($req);
@@ -1141,7 +1429,7 @@ function recupbatiment($ID, $table)
 	$row = $db->read_array($req);
 	if($table == 'construction')
 	{
-		$R_monstre['rechargement'] = $row_p['rechargement'];
+		$R_monstre['rechargement'] = $row_p['rechargement'];  // Heure à partir de laquelle une arme de siège peut tirer.
 		$coeff = 1;
 	}
 	elseif($table == 'placement')
@@ -1160,21 +1448,21 @@ function recupbatiment($ID, $table)
 	$R_monstre['hp_max_1'] = $row['hp'];
 	$R_monstre['nom'] = $row['nom'];
 	$R_monstre['level'] = 0;
-	$R_monstre['cout'] = $row['cout'];
+	$R_monstre['cout'] = $row['cout'];  // Coût du bâtiment à la construction.
 	$R_monstre['force'] = ceil($coeff * $row['carac']);
-	$R_monstre['arme_degat'] = $row['bonus1'];
-	$R_monstre['arme_degat2'] = $row['bonus2'];
-	$R_monstre['reload'] = $row['bonus3'];
+	$R_monstre['arme_degat'] = $row['bonus1'];  // Facteur de dégâts contre les bâtiments.
+	$R_monstre['arme_degat2'] = $row['bonus2'];  // Facteur de dégâts contre les armes de sièges.
+	$R_monstre['reload'] = $row['bonus3'];  // Temps entre deux tirs.
 	$R_monstre['dexterite'] = ceil($coeff * $row['carac']);
 	$R_monstre['puissance'] = ceil($coeff * $row['carac']);
 	$R_monstre['volonte'] = ceil($coeff * $row['carac']);
-	$R_monstre['classe_id'] = 4;
+	$R_monstre['classe_id'] = 4;  // ID de la classe du bâtiment.
 	if($row['type'] == 'arme_de_siege') $facteur = 40;
 	else $facteur = 100;
 	$R_monstre['esquive'] = $facteur * ceil($coeff * $row['carac']);
 	$R_monstre['PP'] = $row['PP'];
 	$R_monstre['PM'] = $row['PM'];
-	$R_monstre['augmentation_pa'] = $row['augmentation_pa'];
+	$R_monstre['augmentation_pa'] = $row['augmentation_pa'];  // Facteur multiplicateur augmentant les PA des déplacement sur le bâtiment.
 	$R_monstre['bouclier'] = false;
 	$R_monstre['competences'] = array();
 	$R_monstre['buff'] = array();
@@ -1186,6 +1474,14 @@ function recupbatiment($ID, $table)
 	return $R_monstre;
 }
 
+/**
+ * Donne le bâtiment situé sur une certaine case.
+ * 
+ * @param $coordx   Coordonnée x de la case.
+ * @param $coordy   Coordonnée y de la case.
+ * 
+ * @return  ID du bâtiment s'il en a un, false sinon.
+ */
 function batiment_map($coordx, $coordy)
 {
 	global $db;
@@ -1203,6 +1499,13 @@ function batiment_map($coordx, $coordy)
 	}
 }
 
+/**
+ * Récupère les information sur une gemme
+ * 
+ * @param $objet  Chaine contenant le type de l'objet en premier caractère et ensuite son ID.
+ * 
+ * @return    Informations sur la gemme sous forme de tableau associatif. 
+ */
 function recupobjet($objet)
 {
 	global $db;
@@ -1211,6 +1514,7 @@ function recupobjet($objet)
 	$return = array();
 	switch($type)
 	{
+	  // ?
 		case 'g' :
 			$requete = "SELECT * FROM gemme WHERE id = ".$id;
 			$req = $db->query($requete);
@@ -1219,6 +1523,7 @@ function recupobjet($objet)
 			$return['type'] = $row['type'];
 			$return['niveau'] = $row['niveau'];
 		break;
+	  // ?
 		case 'h' :
 			$requete = "SELECT * FROM gemme WHERE id = ".$id;
 			$req = $db->query($requete);
@@ -1231,6 +1536,13 @@ function recupobjet($objet)
 	return $return;
 }
 
+/**
+ * Récupère un script.
+ * 
+ * @param $action   ID du script.
+ * 
+ * @return  Contenu du script sous forme de chaine de caractère.    
+ */
 function recupaction($action)
 {
 	global $db;
@@ -1240,6 +1552,13 @@ function recupaction($action)
 	return $row[0];
 }
 
+/**
+ * Récupère toutes les informations à propos d'un script.
+ * 
+ * @param $action   ID du script.
+ * 
+ * @return  Informations sur le script sous forme de tableau associatif.    
+ */
 function recupaction_all($action)
 {
 	global $db;
@@ -1249,6 +1568,14 @@ function recupaction_all($action)
 	return $row;
 }
 
+/**
+ * Récupère le maximum atteignable d'une compétence pour une classe.
+ * 
+ * @param  $competence    Nom interne de la compétence.
+ * @param  $classe        ID de la classe.
+ * 
+ * @return Maximum atteignable.
+ */
 function recup_max_comp($competence, $classe)
 {
 	global $db, $Tmaxcomp;
@@ -1267,7 +1594,17 @@ function recup_max_comp($competence, $classe)
 	return $max;
 }
 
-//Facteur de difficulté pour apprendre un sort
+/**
+ * Calcul du facteur de difficulté pour augmenter une compétence liée aux sorts.
+ * 
+ * @param  $difficulte    Difficulté du sort.
+ * @param  $joueur        Informations sur le personnage sous forme de tableau associatif.
+ * @param  $type          Compétence pour laquelle on veut connaitre la difficulté. 
+ * @param  $sortpa        Coût en PA du sort.
+ * @param  $sortmp        Coût en MP du sort.
+ * 
+ * @return    Difficulté.  
+ */
 function diff_sort($difficulte, $joueur, $type, $sortpa, $sortmp)
 {
 	if($type == 'incantation')

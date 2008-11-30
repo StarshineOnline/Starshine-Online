@@ -1,3 +1,3 @@
-<area shape="rect" href="$base_8inc_8php.html#8f6dae8735bd5af08d403f5a2b78de71" title="recupbatiment" alt="" coords="165,5,269,32">
-<area shape="rect" href="$base_8inc_8php.html#2b1d58868952483790df70a8b0539c61" title="batiment_map" alt="" coords="317,5,421,32">
-<area shape="rect" href="$base_8inc_8php.html#c28cbcd0bda84cb77614994a18067f38" title="cout_pa2" alt="" coords="469,5,544,32">
+<area shape="rect" href="$base_8inc_8php.html#8f6dae8735bd5af08d403f5a2b78de71" title="Récupère les informations sur un bâtiment." alt="" coords="172,5,281,35">
+<area shape="rect" href="$base_8inc_8php.html#2b1d58868952483790df70a8b0539c61" title="Donne le bâtiment situé sur une certaine case." alt="" coords="331,5,440,35">
+<area shape="rect" href="$base_8inc_8php.html#c28cbcd0bda84cb77614994a18067f38" title="Ajuste le coût en PA d&#39;un déplacement en fonction de tous les parmètres qui..." alt="" coords="488,5,565,35">

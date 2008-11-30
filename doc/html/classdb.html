@@ -38,6 +38,12 @@
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdb.html#39891365ebd656fc16458dcc98678d1e">query</a> ($query)</td></tr>
 
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Executer une requète.  <a href="#39891365ebd656fc16458dcc98678d1e"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdb.html#a3fb51b71380c547620e0c4d7bc8f5a3">lock</a> ($name)</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdb.html#243ee94521cf6de348caf1cfb35851d9">unlock</a> ()</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdb.html#3226cf59bb5ab3688eb5219e29735066">is_locked</a> ()</td></tr>
+
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdb.html#aa415dd5b6a335d68c521e7e45330071">protect_query</a> (&amp;$query)</td></tr>
 
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">check_query  <a href="#aa415dd5b6a335d68c521e7e45330071"></a><br></td></tr>
@@ -123,6 +129,10 @@
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdb.html#1c2b292eaa4e00a5d26b31b80f6cb810">$string_type</a></td></tr>
 
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdb.html#c584c4d096236821569369362d81c2a1">$lockname</a></td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdb.html#56bc2bc9b7e14f292c36a4fb571b1d6a">$locked</a></td></tr>
+
 </table>
 <hr><a name="_details"></a><h2>Description détaillée</h2>
 Accord de licence et d'utilisation. 
@@ -162,7 +172,7 @@ Voici le graphe d'appel pour cette fonction :</div>
 <div class="dynsection">
 <p><center><img src="classdb_d722af34cba17c7294fe08359bd0563c_icgraph.png" border="0" usemap="#classdb_d722af34cba17c7294fe08359bd0563c_icgraph_map" alt=""></center>
 <map name="classdb_d722af34cba17c7294fe08359bd0563c_icgraph_map">
-<area shape="rect" href="classdb.html#39891365ebd656fc16458dcc98678d1e" title="Executer une requète." alt="" coords="113,233,188,260"><area shape="rect" href="classdb.html#2f6c83e659790391dc6aacc661d45aa4" title="add" alt="" coords="456,19,520,45"><area shape="rect" href="classdb.html#7b7e63f6424ba7a85e8daa8bf81d5caf" title="Vérifie les droits d&#39;un utilisateur à une table/colonne." alt="" coords="259,157,368,184"><area shape="rect" href="classdb.html#1c38b77638998e50afb2d9dfdfa24115" title="db::delete" alt="" coords="275,208,352,235"><area shape="rect" href="classdb.html#aa6f9ee4beba54efd244d7a084da99c4" title="db::get_enum" alt="" coords="264,309,363,336"><area shape="rect" href="classdb.html#78ad7cf837964b52afa62e6b606329a2" title="Changement des valeurs d&#39;un typ ENUM." alt="" coords="439,284,537,311"><area shape="rect" href="classdb.html#9c0d76eccb30b2c527ab87974e85d758" title="Retourne le nom de la clé primaire d&#39;une table." alt="" coords="244,360,383,387"><area shape="rect" href="classdb.html#42640cf484d13cead8f42e9874313152" title="db::get_table_property" alt="" coords="239,56,388,83"><area shape="rect" href="classdb.html#419ba2fcbdf6009b7de23c3e7a6091bb" title="db::update" alt="" coords="447,95,529,121"><area shape="rect" href="classdb.html#7b718b2a88f68c0b352edf57151a301e" title="db::optimize_db" alt="" coords="257,411,369,437"><area shape="rect" href="classdb.html#76676ff4b45acc2b0a384004a4c30272" title="db::table_exists" alt="" coords="257,461,369,488"></map>
+<area shape="rect" href="classdb.html#39891365ebd656fc16458dcc98678d1e" title="Executer une requète." alt="" coords="115,348,195,377"><area shape="rect" href="classdb.html#2f6c83e659790391dc6aacc661d45aa4" title="add" alt="" coords="471,21,537,51"><area shape="rect" href="classdb.html#7b7e63f6424ba7a85e8daa8bf81d5caf" title="Vérifie les droits d&#39;un utilisateur à une table/colonne." alt="" coords="264,164,381,193"><area shape="rect" href="classdb.html#1c38b77638998e50afb2d9dfdfa24115" title="db::delete" alt="" coords="281,217,364,247"><area shape="rect" href="classdb.html#aa6f9ee4beba54efd244d7a084da99c4" title="db::get_enum" alt="" coords="269,321,376,351"><area shape="rect" href="classdb.html#78ad7cf837964b52afa62e6b606329a2" title="Changement des valeurs d&#39;un typ ENUM." alt="" coords="452,296,556,325"><area shape="rect" href="classdb.html#9c0d76eccb30b2c527ab87974e85d758" title="Retourne le nom de la clé primaire d&#39;une table." alt="" coords="249,375,396,404"><area shape="rect" href="classdb.html#42640cf484d13cead8f42e9874313152" title="db::get_table_property" alt="" coords="243,60,403,89"><area shape="rect" href="classdb.html#419ba2fcbdf6009b7de23c3e7a6091bb" title="db::update" alt="" coords="460,100,548,129"><area shape="rect" href="classdb.html#3226cf59bb5ab3688eb5219e29735066" title="db::is_locked" alt="" coords="271,479,375,508"><area shape="rect" href="classdb.html#a3fb51b71380c547620e0c4d7bc8f5a3" title="db::lock" alt="" coords="468,453,540,483"><area shape="rect" href="classdb.html#7b718b2a88f68c0b352edf57151a301e" title="db::optimize_db" alt="" coords="261,532,384,561"><area shape="rect" href="classdb.html#76676ff4b45acc2b0a384004a4c30272" title="db::table_exists" alt="" coords="264,585,381,615"><area shape="rect" href="classdb.html#243ee94521cf6de348caf1cfb35851d9" title="db::unlock" alt="" coords="279,639,367,668"></map>
 </div>
 
 </div>
@@ -193,7 +203,7 @@ Voici le graphe d'appel pour cette fonction :</div>
 <div class="dynsection">
 <p><center><img src="classdb_39891365ebd656fc16458dcc98678d1e_cgraph.png" border="0" usemap="#classdb_39891365ebd656fc16458dcc98678d1e_cgraph_map" alt=""></center>
 <map name="classdb_39891365ebd656fc16458dcc98678d1e_cgraph_map">
-<area shape="rect" href="classdb.html#d722af34cba17c7294fe08359bd0563c" title="Constructeur." alt="" coords="164,5,220,32"><area shape="rect" href="classdb.html#bc2045ceaf9d92bc20fd388518535a9b" title="db::num_rows" alt="" coords="141,56,243,83"><area shape="rect" href="classdb.html#aa415dd5b6a335d68c521e7e45330071" title="check_query" alt="" coords="131,107,253,133"></map>
+<area shape="rect" href="classdb.html#d722af34cba17c7294fe08359bd0563c" title="Constructeur." alt="" coords="168,5,229,35"><area shape="rect" href="classdb.html#bc2045ceaf9d92bc20fd388518535a9b" title="db::num_rows" alt="" coords="144,59,253,88"><area shape="rect" href="classdb.html#aa415dd5b6a335d68c521e7e45330071" title="check_query" alt="" coords="133,112,264,141"><area shape="rect" href="classdb.html#243ee94521cf6de348caf1cfb35851d9" title="db::unlock" alt="" coords="155,165,243,195"><area shape="rect" href="classdb.html#72ff0f699c332046066be4ae10fe0eda" title="db::read_array" alt="" coords="313,165,423,195"></map>
 </div>
 
 <p>
@@ -202,7 +212,110 @@ Voici le graphe d'appel pour cette fonction :</div>
 <div class="dynsection">
 <p><center><img src="classdb_39891365ebd656fc16458dcc98678d1e_icgraph.png" border="0" usemap="#classdb_39891365ebd656fc16458dcc98678d1e_icgraph_map" alt=""></center>
 <map name="classdb_39891365ebd656fc16458dcc98678d1e_icgraph_map">
-<area shape="rect" href="classdb.html#2f6c83e659790391dc6aacc661d45aa4" title="add" alt="" coords="349,19,413,45"><area shape="rect" href="classdb.html#7b7e63f6424ba7a85e8daa8bf81d5caf" title="Vérifie les droits d&#39;un utilisateur à une table/colonne." alt="" coords="152,157,261,184"><area shape="rect" href="classdb.html#1c38b77638998e50afb2d9dfdfa24115" title="db::delete" alt="" coords="168,208,245,235"><area shape="rect" href="classdb.html#aa6f9ee4beba54efd244d7a084da99c4" title="db::get_enum" alt="" coords="157,309,256,336"><area shape="rect" href="classdb.html#78ad7cf837964b52afa62e6b606329a2" title="Changement des valeurs d&#39;un typ ENUM." alt="" coords="332,284,431,311"><area shape="rect" href="classdb.html#9c0d76eccb30b2c527ab87974e85d758" title="Retourne le nom de la clé primaire d&#39;une table." alt="" coords="137,360,276,387"><area shape="rect" href="classdb.html#42640cf484d13cead8f42e9874313152" title="db::get_table_property" alt="" coords="132,56,281,83"><area shape="rect" href="classdb.html#419ba2fcbdf6009b7de23c3e7a6091bb" title="db::update" alt="" coords="340,95,423,121"><area shape="rect" href="classdb.html#7b718b2a88f68c0b352edf57151a301e" title="db::optimize_db" alt="" coords="151,411,263,437"><area shape="rect" href="classdb.html#76676ff4b45acc2b0a384004a4c30272" title="db::table_exists" alt="" coords="151,461,263,488"></map>
+<area shape="rect" href="classdb.html#2f6c83e659790391dc6aacc661d45aa4" title="add" alt="" coords="361,21,428,51"><area shape="rect" href="classdb.html#7b7e63f6424ba7a85e8daa8bf81d5caf" title="Vérifie les droits d&#39;un utilisateur à une table/colonne." alt="" coords="155,164,272,193"><area shape="rect" href="classdb.html#1c38b77638998e50afb2d9dfdfa24115" title="db::delete" alt="" coords="172,217,255,247"><area shape="rect" href="classdb.html#aa6f9ee4beba54efd244d7a084da99c4" title="db::get_enum" alt="" coords="160,321,267,351"><area shape="rect" href="classdb.html#78ad7cf837964b52afa62e6b606329a2" title="Changement des valeurs d&#39;un typ ENUM." alt="" coords="343,296,447,325"><area shape="rect" href="classdb.html#9c0d76eccb30b2c527ab87974e85d758" title="Retourne le nom de la clé primaire d&#39;une table." alt="" coords="140,375,287,404"><area shape="rect" href="classdb.html#42640cf484d13cead8f42e9874313152" title="db::get_table_property" alt="" coords="133,60,293,89"><area shape="rect" href="classdb.html#419ba2fcbdf6009b7de23c3e7a6091bb" title="db::update" alt="" coords="351,100,439,129"><area shape="rect" href="classdb.html#3226cf59bb5ab3688eb5219e29735066" title="db::is_locked" alt="" coords="161,479,265,508"><area shape="rect" href="classdb.html#a3fb51b71380c547620e0c4d7bc8f5a3" title="db::lock" alt="" coords="359,453,431,483"><area shape="rect" href="classdb.html#7b718b2a88f68c0b352edf57151a301e" title="db::optimize_db" alt="" coords="152,532,275,561"><area shape="rect" href="classdb.html#76676ff4b45acc2b0a384004a4c30272" title="db::table_exists" alt="" coords="155,585,272,615"><area shape="rect" href="classdb.html#243ee94521cf6de348caf1cfb35851d9" title="db::unlock" alt="" coords="169,639,257,668"></map>
+</div>
+
+</div>
+</div><p>
+<a class="anchor" name="a3fb51b71380c547620e0c4d7bc8f5a3"></a><!-- doxytag: member="db::lock" ref="a3fb51b71380c547620e0c4d7bc8f5a3" args="($name)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">db::lock           </td>
+          <td>(</td>
+          <td class="paramtype">$&nbsp;</td>
+          <td class="paramname"> <em>name</em>          </td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+<p>
+<div class="dynheader">
+Voici le graphe d'appel pour cette fonction :</div>
+<div class="dynsection">
+<p><center><img src="classdb_a3fb51b71380c547620e0c4d7bc8f5a3_cgraph.png" border="0" usemap="#classdb_a3fb51b71380c547620e0c4d7bc8f5a3_cgraph_map" alt=""></center>
+<map name="classdb_a3fb51b71380c547620e0c4d7bc8f5a3_cgraph_map">
+<area shape="rect" href="classdb.html#3226cf59bb5ab3688eb5219e29735066" title="db::is_locked" alt="" coords="125,216,229,245"><area shape="rect" href="classdb.html#39891365ebd656fc16458dcc98678d1e" title="Executer une requète." alt="" coords="277,164,357,193"><area shape="rect" href="classdb.html#72ff0f699c332046066be4ae10fe0eda" title="db::read_array" alt="" coords="585,217,695,247"><area shape="rect" href="classdb.html#d722af34cba17c7294fe08359bd0563c" title="Constructeur." alt="" coords="440,5,501,35"><area shape="rect" href="classdb.html#bc2045ceaf9d92bc20fd388518535a9b" title="db::num_rows" alt="" coords="416,59,525,88"><area shape="rect" href="classdb.html#aa415dd5b6a335d68c521e7e45330071" title="check_query" alt="" coords="405,112,536,141"><area shape="rect" href="classdb.html#243ee94521cf6de348caf1cfb35851d9" title="db::unlock" alt="" coords="427,165,515,195"></map>
+</div>
+
+</div>
+</div><p>
+<a class="anchor" name="243ee94521cf6de348caf1cfb35851d9"></a><!-- doxytag: member="db::unlock" ref="243ee94521cf6de348caf1cfb35851d9" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">db::unlock           </td>
+          <td>(</td>
+          <td class="paramname">          </td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+<p>
+<div class="dynheader">
+Voici le graphe d'appel pour cette fonction :</div>
+<div class="dynsection">
+<p><center><img src="classdb_243ee94521cf6de348caf1cfb35851d9_cgraph.png" border="0" usemap="#classdb_243ee94521cf6de348caf1cfb35851d9_cgraph_map" alt=""></center>
+<map name="classdb_243ee94521cf6de348caf1cfb35851d9_cgraph_map">
+<area shape="rect" href="classdb.html#39891365ebd656fc16458dcc98678d1e" title="Executer une requète." alt="" coords="157,59,237,88"><area shape="rect" href="classdb.html#72ff0f699c332046066be4ae10fe0eda" title="db::read_array" alt="" coords="143,112,252,141"><area shape="rect" href="classdb.html#d722af34cba17c7294fe08359bd0563c" title="Constructeur." alt="" coords="336,5,397,35"><area shape="rect" href="classdb.html#bc2045ceaf9d92bc20fd388518535a9b" title="db::num_rows" alt="" coords="312,59,421,88"><area shape="rect" href="classdb.html#aa415dd5b6a335d68c521e7e45330071" title="check_query" alt="" coords="301,112,432,141"></map>
+</div>
+
+<p>
+<div class="dynheader">
+Voici le graphe d'appel pour cette fonction :</div>
+<div class="dynsection">
+<p><center><img src="classdb_243ee94521cf6de348caf1cfb35851d9_icgraph.png" border="0" usemap="#classdb_243ee94521cf6de348caf1cfb35851d9_icgraph_map" alt=""></center>
+<map name="classdb_243ee94521cf6de348caf1cfb35851d9_icgraph_map">
+<area shape="rect" href="classdb.html#39891365ebd656fc16458dcc98678d1e" title="Executer une requète." alt="" coords="141,293,221,323"><area shape="rect" href="classdb.html#2f6c83e659790391dc6aacc661d45aa4" title="add" alt="" coords="497,241,564,271"><area shape="rect" href="classdb.html#7b7e63f6424ba7a85e8daa8bf81d5caf" title="Vérifie les droits d&#39;un utilisateur à une table/colonne." alt="" coords="291,59,408,88"><area shape="rect" href="classdb.html#1c38b77638998e50afb2d9dfdfa24115" title="db::delete" alt="" coords="308,112,391,141"><area shape="rect" href="classdb.html#aa6f9ee4beba54efd244d7a084da99c4" title="db::get_enum" alt="" coords="296,5,403,35"><area shape="rect" href="classdb.html#78ad7cf837964b52afa62e6b606329a2" title="Changement des valeurs d&#39;un typ ENUM." alt="" coords="479,137,583,167"><area shape="rect" href="classdb.html#9c0d76eccb30b2c527ab87974e85d758" title="Retourne le nom de la clé primaire d&#39;une table." alt="" coords="276,267,423,296"><area shape="rect" href="classdb.html#42640cf484d13cead8f42e9874313152" title="db::get_table_property" alt="" coords="269,320,429,349"><area shape="rect" href="classdb.html#419ba2fcbdf6009b7de23c3e7a6091bb" title="db::update" alt="" coords="487,359,575,388"><area shape="rect" href="classdb.html#3226cf59bb5ab3688eb5219e29735066" title="db::is_locked" alt="" coords="297,424,401,453"><area shape="rect" href="classdb.html#a3fb51b71380c547620e0c4d7bc8f5a3" title="db::lock" alt="" coords="495,437,567,467"><area shape="rect" href="classdb.html#7b718b2a88f68c0b352edf57151a301e" title="db::optimize_db" alt="" coords="288,528,411,557"><area shape="rect" href="classdb.html#76676ff4b45acc2b0a384004a4c30272" title="db::table_exists" alt="" coords="291,581,408,611"></map>
+</div>
+
+</div>
+</div><p>
+<a class="anchor" name="3226cf59bb5ab3688eb5219e29735066"></a><!-- doxytag: member="db::is_locked" ref="3226cf59bb5ab3688eb5219e29735066" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">db::is_locked           </td>
+          <td>(</td>
+          <td class="paramname">          </td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+<p>
+<div class="dynheader">
+Voici le graphe d'appel pour cette fonction :</div>
+<div class="dynsection">
+<p><center><img src="classdb_3226cf59bb5ab3688eb5219e29735066_cgraph.png" border="0" usemap="#classdb_3226cf59bb5ab3688eb5219e29735066_cgraph_map" alt=""></center>
+<map name="classdb_3226cf59bb5ab3688eb5219e29735066_cgraph_map">
+<area shape="rect" href="classdb.html#39891365ebd656fc16458dcc98678d1e" title="Executer une requète." alt="" coords="157,139,237,168"><area shape="rect" href="classdb.html#72ff0f699c332046066be4ae10fe0eda" title="db::read_array" alt="" coords="465,192,575,221"><area shape="rect" href="classdb.html#d722af34cba17c7294fe08359bd0563c" title="Constructeur." alt="" coords="320,5,381,35"><area shape="rect" href="classdb.html#bc2045ceaf9d92bc20fd388518535a9b" title="db::num_rows" alt="" coords="296,59,405,88"><area shape="rect" href="classdb.html#aa415dd5b6a335d68c521e7e45330071" title="check_query" alt="" coords="285,112,416,141"><area shape="rect" href="classdb.html#243ee94521cf6de348caf1cfb35851d9" title="db::unlock" alt="" coords="307,165,395,195"></map>
+</div>
+
+<p>
+<div class="dynheader">
+Voici le graphe d'appel pour cette fonction :</div>
+<div class="dynsection">
+<p><center><img src="classdb_3226cf59bb5ab3688eb5219e29735066_icgraph.png" border="0" usemap="#classdb_3226cf59bb5ab3688eb5219e29735066_icgraph_map" alt=""></center>
+<map name="classdb_3226cf59bb5ab3688eb5219e29735066_icgraph_map">
+<area shape="rect" href="classdb.html#a3fb51b71380c547620e0c4d7bc8f5a3" title="db::lock" alt="" coords="157,5,229,35"></map>
 </div>
 
 </div>
@@ -233,7 +346,7 @@ Voici le graphe d'appel pour cette fonction :</div>
 <div class="dynsection">
 <p><center><img src="classdb_aa415dd5b6a335d68c521e7e45330071_icgraph.png" border="0" usemap="#classdb_aa415dd5b6a335d68c521e7e45330071_icgraph_map" alt=""></center>
 <map name="classdb_aa415dd5b6a335d68c521e7e45330071_icgraph_map">
-<area shape="rect" href="classdb.html#39891365ebd656fc16458dcc98678d1e" title="Executer une requète." alt="" coords="177,233,252,260"><area shape="rect" href="classdb.html#2f6c83e659790391dc6aacc661d45aa4" title="add" alt="" coords="520,19,584,45"><area shape="rect" href="classdb.html#7b7e63f6424ba7a85e8daa8bf81d5caf" title="Vérifie les droits d&#39;un utilisateur à une table/colonne." alt="" coords="323,157,432,184"><area shape="rect" href="classdb.html#1c38b77638998e50afb2d9dfdfa24115" title="db::delete" alt="" coords="339,208,416,235"><area shape="rect" href="classdb.html#aa6f9ee4beba54efd244d7a084da99c4" title="db::get_enum" alt="" coords="328,309,427,336"><area shape="rect" href="classdb.html#78ad7cf837964b52afa62e6b606329a2" title="Changement des valeurs d&#39;un typ ENUM." alt="" coords="503,284,601,311"><area shape="rect" href="classdb.html#9c0d76eccb30b2c527ab87974e85d758" title="Retourne le nom de la clé primaire d&#39;une table." alt="" coords="308,360,447,387"><area shape="rect" href="classdb.html#42640cf484d13cead8f42e9874313152" title="db::get_table_property" alt="" coords="303,56,452,83"><area shape="rect" href="classdb.html#419ba2fcbdf6009b7de23c3e7a6091bb" title="db::update" alt="" coords="511,95,593,121"><area shape="rect" href="classdb.html#7b718b2a88f68c0b352edf57151a301e" title="db::optimize_db" alt="" coords="321,411,433,437"><area shape="rect" href="classdb.html#76676ff4b45acc2b0a384004a4c30272" title="db::table_exists" alt="" coords="321,461,433,488"></map>
+<area shape="rect" href="classdb.html#39891365ebd656fc16458dcc98678d1e" title="Executer une requète." alt="" coords="184,348,264,377"><area shape="rect" href="classdb.html#2f6c83e659790391dc6aacc661d45aa4" title="add" alt="" coords="540,21,607,51"><area shape="rect" href="classdb.html#7b7e63f6424ba7a85e8daa8bf81d5caf" title="Vérifie les droits d&#39;un utilisateur à une table/colonne." alt="" coords="333,164,451,193"><area shape="rect" href="classdb.html#1c38b77638998e50afb2d9dfdfa24115" title="db::delete" alt="" coords="351,217,433,247"><area shape="rect" href="classdb.html#aa6f9ee4beba54efd244d7a084da99c4" title="db::get_enum" alt="" coords="339,321,445,351"><area shape="rect" href="classdb.html#78ad7cf837964b52afa62e6b606329a2" title="Changement des valeurs d&#39;un typ ENUM." alt="" coords="521,296,625,325"><area shape="rect" href="classdb.html#9c0d76eccb30b2c527ab87974e85d758" title="Retourne le nom de la clé primaire d&#39;une table." alt="" coords="319,375,465,404"><area shape="rect" href="classdb.html#42640cf484d13cead8f42e9874313152" title="db::get_table_property" alt="" coords="312,60,472,89"><area shape="rect" href="classdb.html#419ba2fcbdf6009b7de23c3e7a6091bb" title="db::update" alt="" coords="529,100,617,129"><area shape="rect" href="classdb.html#3226cf59bb5ab3688eb5219e29735066" title="db::is_locked" alt="" coords="340,479,444,508"><area shape="rect" href="classdb.html#a3fb51b71380c547620e0c4d7bc8f5a3" title="db::lock" alt="" coords="537,453,609,483"><area shape="rect" href="classdb.html#7b718b2a88f68c0b352edf57151a301e" title="db::optimize_db" alt="" coords="331,532,453,561"><area shape="rect" href="classdb.html#76676ff4b45acc2b0a384004a4c30272" title="db::table_exists" alt="" coords="333,585,451,615"><area shape="rect" href="classdb.html#243ee94521cf6de348caf1cfb35851d9" title="db::unlock" alt="" coords="348,639,436,668"></map>
 </div>
 
 </div>
@@ -270,7 +383,7 @@ Voici le graphe d'appel pour cette fonction :</div>
 <div class="dynsection">
 <p><center><img src="classdb_2f6c83e659790391dc6aacc661d45aa4_cgraph.png" border="0" usemap="#classdb_2f6c83e659790391dc6aacc661d45aa4_cgraph_map" alt=""></center>
 <map name="classdb_2f6c83e659790391dc6aacc661d45aa4_cgraph_map">
-<area shape="rect" href="classdb.html#fb3a3eb43230dcbb00cb2b3693f3963f" title="db::field_name" alt="" coords="141,5,245,32"><area shape="rect" href="classdb.html#0f2df038aa4fb7f97b7e8eb18d5f5a3e" title="db::field_type" alt="" coords="144,56,243,83"><area shape="rect" href="classdb.html#42640cf484d13cead8f42e9874313152" title="db::get_table_property" alt="" coords="119,157,268,184"><area shape="rect" href="classdb.html#39891365ebd656fc16458dcc98678d1e" title="Executer une requète." alt="" coords="332,107,407,133"><area shape="rect" href="classdb.html#72ff0f699c332046066be4ae10fe0eda" title="db::read_array" alt="" coords="317,157,421,184"><area shape="rect" href="classdb.html#d722af34cba17c7294fe08359bd0563c" title="Constructeur." alt="" coords="503,56,559,83"><area shape="rect" href="classdb.html#bc2045ceaf9d92bc20fd388518535a9b" title="db::num_rows" alt="" coords="480,107,581,133"><area shape="rect" href="classdb.html#aa415dd5b6a335d68c521e7e45330071" title="check_query" alt="" coords="469,157,592,184"></map>
+<area shape="rect" href="classdb.html#fb3a3eb43230dcbb00cb2b3693f3963f" title="db::field_name" alt="" coords="147,33,259,63"><area shape="rect" href="classdb.html#0f2df038aa4fb7f97b7e8eb18d5f5a3e" title="db::field_type" alt="" coords="151,87,255,116"><area shape="rect" href="classdb.html#42640cf484d13cead8f42e9874313152" title="db::get_table_property" alt="" coords="123,191,283,220"><area shape="rect" href="classdb.html#39891365ebd656fc16458dcc98678d1e" title="Executer une requète." alt="" coords="331,139,411,168"><area shape="rect" href="classdb.html#72ff0f699c332046066be4ae10fe0eda" title="db::read_array" alt="" coords="639,192,748,221"><area shape="rect" href="classdb.html#d722af34cba17c7294fe08359bd0563c" title="Constructeur." alt="" coords="493,5,555,35"><area shape="rect" href="classdb.html#bc2045ceaf9d92bc20fd388518535a9b" title="db::num_rows" alt="" coords="469,59,579,88"><area shape="rect" href="classdb.html#aa415dd5b6a335d68c521e7e45330071" title="check_query" alt="" coords="459,112,589,141"><area shape="rect" href="classdb.html#243ee94521cf6de348caf1cfb35851d9" title="db::unlock" alt="" coords="480,165,568,195"></map>
 </div>
 
 </div>
@@ -308,7 +421,7 @@ Voici le graphe d'appel pour cette fonction :</div>
 <div class="dynsection">
 <p><center><img src="classdb_419ba2fcbdf6009b7de23c3e7a6091bb_cgraph.png" border="0" usemap="#classdb_419ba2fcbdf6009b7de23c3e7a6091bb_cgraph_map" alt=""></center>
 <map name="classdb_419ba2fcbdf6009b7de23c3e7a6091bb_cgraph_map">
-<area shape="rect" href="classdb.html#fb3a3eb43230dcbb00cb2b3693f3963f" title="db::field_name" alt="" coords="160,5,264,32"><area shape="rect" href="classdb.html#0f2df038aa4fb7f97b7e8eb18d5f5a3e" title="db::field_type" alt="" coords="163,56,261,83"><area shape="rect" href="classdb.html#42640cf484d13cead8f42e9874313152" title="db::get_table_property" alt="" coords="137,157,287,184"><area shape="rect" href="classdb.html#39891365ebd656fc16458dcc98678d1e" title="Executer une requète." alt="" coords="351,107,425,133"><area shape="rect" href="classdb.html#72ff0f699c332046066be4ae10fe0eda" title="db::read_array" alt="" coords="336,157,440,184"><area shape="rect" href="classdb.html#d722af34cba17c7294fe08359bd0563c" title="Constructeur." alt="" coords="521,56,577,83"><area shape="rect" href="classdb.html#bc2045ceaf9d92bc20fd388518535a9b" title="db::num_rows" alt="" coords="499,107,600,133"><area shape="rect" href="classdb.html#aa415dd5b6a335d68c521e7e45330071" title="check_query" alt="" coords="488,157,611,184"></map>
+<area shape="rect" href="classdb.html#fb3a3eb43230dcbb00cb2b3693f3963f" title="db::field_name" alt="" coords="165,33,277,63"><area shape="rect" href="classdb.html#0f2df038aa4fb7f97b7e8eb18d5f5a3e" title="db::field_type" alt="" coords="169,87,273,116"><area shape="rect" href="classdb.html#42640cf484d13cead8f42e9874313152" title="db::get_table_property" alt="" coords="141,191,301,220"><area shape="rect" href="classdb.html#39891365ebd656fc16458dcc98678d1e" title="Executer une requète." alt="" coords="349,139,429,168"><area shape="rect" href="classdb.html#72ff0f699c332046066be4ae10fe0eda" title="db::read_array" alt="" coords="657,192,767,221"><area shape="rect" href="classdb.html#d722af34cba17c7294fe08359bd0563c" title="Constructeur." alt="" coords="512,5,573,35"><area shape="rect" href="classdb.html#bc2045ceaf9d92bc20fd388518535a9b" title="db::num_rows" alt="" coords="488,59,597,88"><area shape="rect" href="classdb.html#aa415dd5b6a335d68c521e7e45330071" title="check_query" alt="" coords="477,112,608,141"><area shape="rect" href="classdb.html#243ee94521cf6de348caf1cfb35851d9" title="db::unlock" alt="" coords="499,165,587,195"></map>
 </div>
 
 </div>
@@ -346,7 +459,7 @@ Voici le graphe d'appel pour cette fonction :</div>
 <div class="dynsection">
 <p><center><img src="classdb_1c38b77638998e50afb2d9dfdfa24115_cgraph.png" border="0" usemap="#classdb_1c38b77638998e50afb2d9dfdfa24115_cgraph_map" alt=""></center>
 <map name="classdb_1c38b77638998e50afb2d9dfdfa24115_cgraph_map">
-<area shape="rect" href="classdb.html#fb3a3eb43230dcbb00cb2b3693f3963f" title="db::field_name" alt="" coords="135,5,239,32"><area shape="rect" href="classdb.html#39891365ebd656fc16458dcc98678d1e" title="Executer une requète." alt="" coords="149,56,224,83"><area shape="rect" href="classdb.html#d722af34cba17c7294fe08359bd0563c" title="Constructeur." alt="" coords="321,5,377,32"><area shape="rect" href="classdb.html#bc2045ceaf9d92bc20fd388518535a9b" title="db::num_rows" alt="" coords="299,56,400,83"><area shape="rect" href="classdb.html#aa415dd5b6a335d68c521e7e45330071" title="check_query" alt="" coords="288,107,411,133"></map>
+<area shape="rect" href="classdb.html#fb3a3eb43230dcbb00cb2b3693f3963f" title="db::field_name" alt="" coords="137,59,249,88"><area shape="rect" href="classdb.html#39891365ebd656fc16458dcc98678d1e" title="Executer une requète." alt="" coords="153,112,233,141"><area shape="rect" href="classdb.html#d722af34cba17c7294fe08359bd0563c" title="Constructeur." alt="" coords="333,5,395,35"><area shape="rect" href="classdb.html#bc2045ceaf9d92bc20fd388518535a9b" title="db::num_rows" alt="" coords="309,59,419,88"><area shape="rect" href="classdb.html#aa415dd5b6a335d68c521e7e45330071" title="check_query" alt="" coords="299,112,429,141"><area shape="rect" href="classdb.html#243ee94521cf6de348caf1cfb35851d9" title="db::unlock" alt="" coords="320,165,408,195"><area shape="rect" href="classdb.html#72ff0f699c332046066be4ae10fe0eda" title="db::read_array" alt="" coords="479,165,588,195"></map>
 </div>
 
 </div>
@@ -375,7 +488,7 @@ Voici le graphe d'appel pour cette fonction :</div>
 <div class="dynsection">
 <p><center><img src="classdb_72ff0f699c332046066be4ae10fe0eda_icgraph.png" border="0" usemap="#classdb_72ff0f699c332046066be4ae10fe0eda_icgraph_map" alt=""></center>
 <map name="classdb_72ff0f699c332046066be4ae10fe0eda_icgraph_map">
-<area shape="rect" href="classdb.html#9c0d76eccb30b2c527ab87974e85d758" title="Retourne le nom de la clé primaire d&#39;une table." alt="" coords="164,5,303,32"><area shape="rect" href="classdb.html#42640cf484d13cead8f42e9874313152" title="db::get_table_property" alt="" coords="159,56,308,83"><area shape="rect" href="classdb.html#2f6c83e659790391dc6aacc661d45aa4" title="add" alt="" coords="367,31,431,57"><area shape="rect" href="classdb.html#419ba2fcbdf6009b7de23c3e7a6091bb" title="db::update" alt="" coords="357,81,440,108"></map>
+<area shape="rect" href="classdb.html#9c0d76eccb30b2c527ab87974e85d758" title="Retourne le nom de la clé primaire d&#39;une table." alt="" coords="436,37,583,67"><area shape="rect" href="classdb.html#42640cf484d13cead8f42e9874313152" title="db::get_table_property" alt="" coords="429,613,589,643"><area shape="rect" href="classdb.html#3226cf59bb5ab3688eb5219e29735066" title="db::is_locked" alt="" coords="457,91,561,120"><area shape="rect" href="classdb.html#a3fb51b71380c547620e0c4d7bc8f5a3" title="db::lock" alt="" coords="655,91,727,120"><area shape="rect" href="classdb.html#243ee94521cf6de348caf1cfb35851d9" title="db::unlock" alt="" coords="165,301,253,331"><area shape="rect" href="classdb.html#2f6c83e659790391dc6aacc661d45aa4" title="add" alt="" coords="657,444,724,473"><area shape="rect" href="classdb.html#419ba2fcbdf6009b7de23c3e7a6091bb" title="db::update" alt="" coords="647,587,735,616"><area shape="rect" href="classdb.html#39891365ebd656fc16458dcc98678d1e" title="Executer une requète." alt="" coords="301,301,381,331"><area shape="rect" href="classdb.html#7b7e63f6424ba7a85e8daa8bf81d5caf" title="Vérifie les droits d&#39;un utilisateur à une table/colonne." alt="" coords="451,195,568,224"><area shape="rect" href="classdb.html#1c38b77638998e50afb2d9dfdfa24115" title="db::delete" alt="" coords="468,248,551,277"><area shape="rect" href="classdb.html#aa6f9ee4beba54efd244d7a084da99c4" title="db::get_enum" alt="" coords="456,301,563,331"><area shape="rect" href="classdb.html#78ad7cf837964b52afa62e6b606329a2" title="Changement des valeurs d&#39;un typ ENUM." alt="" coords="639,328,743,357"><area shape="rect" href="classdb.html#7b718b2a88f68c0b352edf57151a301e" title="db::optimize_db" alt="" coords="448,456,571,485"><area shape="rect" href="classdb.html#76676ff4b45acc2b0a384004a4c30272" title="db::table_exists" alt="" coords="451,509,568,539"></map>
 </div>
 
 </div>
@@ -580,7 +693,7 @@ Voici le graphe d'appel pour cette fonction :</div>
 <div class="dynsection">
 <p><center><img src="classdb_42640cf484d13cead8f42e9874313152_cgraph.png" border="0" usemap="#classdb_42640cf484d13cead8f42e9874313152_cgraph_map" alt=""></center>
 <map name="classdb_42640cf484d13cead8f42e9874313152_cgraph_map">
-<area shape="rect" href="classdb.html#39891365ebd656fc16458dcc98678d1e" title="Executer une requète." alt="" coords="220,56,295,83"><area shape="rect" href="classdb.html#72ff0f699c332046066be4ae10fe0eda" title="db::read_array" alt="" coords="205,107,309,133"><area shape="rect" href="classdb.html#d722af34cba17c7294fe08359bd0563c" title="Constructeur." alt="" coords="391,5,447,32"><area shape="rect" href="classdb.html#bc2045ceaf9d92bc20fd388518535a9b" title="db::num_rows" alt="" coords="368,56,469,83"><area shape="rect" href="classdb.html#aa415dd5b6a335d68c521e7e45330071" title="check_query" alt="" coords="357,107,480,133"></map>
+<area shape="rect" href="classdb.html#39891365ebd656fc16458dcc98678d1e" title="Executer une requète." alt="" coords="213,139,293,168"><area shape="rect" href="classdb.html#72ff0f699c332046066be4ae10fe0eda" title="db::read_array" alt="" coords="521,192,631,221"><area shape="rect" href="classdb.html#d722af34cba17c7294fe08359bd0563c" title="Constructeur." alt="" coords="376,5,437,35"><area shape="rect" href="classdb.html#bc2045ceaf9d92bc20fd388518535a9b" title="db::num_rows" alt="" coords="352,59,461,88"><area shape="rect" href="classdb.html#aa415dd5b6a335d68c521e7e45330071" title="check_query" alt="" coords="341,112,472,141"><area shape="rect" href="classdb.html#243ee94521cf6de348caf1cfb35851d9" title="db::unlock" alt="" coords="363,165,451,195"></map>
 </div>
 
 <p>
@@ -620,7 +733,7 @@ Voici le graphe d'appel pour cette fonction :</div>
 <div class="dynsection">
 <p><center><img src="classdb_9c0d76eccb30b2c527ab87974e85d758_cgraph.png" border="0" usemap="#classdb_9c0d76eccb30b2c527ab87974e85d758_cgraph_map" alt=""></center>
 <map name="classdb_9c0d76eccb30b2c527ab87974e85d758_cgraph_map">
-<area shape="rect" href="classdb.html#39891365ebd656fc16458dcc98678d1e" title="Executer une requète." alt="" coords="209,56,284,83"><area shape="rect" href="classdb.html#72ff0f699c332046066be4ae10fe0eda" title="db::read_array" alt="" coords="195,107,299,133"><area shape="rect" href="classdb.html#d722af34cba17c7294fe08359bd0563c" title="Constructeur." alt="" coords="380,5,436,32"><area shape="rect" href="classdb.html#bc2045ceaf9d92bc20fd388518535a9b" title="db::num_rows" alt="" coords="357,56,459,83"><area shape="rect" href="classdb.html#aa415dd5b6a335d68c521e7e45330071" title="check_query" alt="" coords="347,107,469,133"></map>
+<area shape="rect" href="classdb.html#39891365ebd656fc16458dcc98678d1e" title="Executer une requète." alt="" coords="203,139,283,168"><area shape="rect" href="classdb.html#72ff0f699c332046066be4ae10fe0eda" title="db::read_array" alt="" coords="511,192,620,221"><area shape="rect" href="classdb.html#d722af34cba17c7294fe08359bd0563c" title="Constructeur." alt="" coords="365,5,427,35"><area shape="rect" href="classdb.html#bc2045ceaf9d92bc20fd388518535a9b" title="db::num_rows" alt="" coords="341,59,451,88"><area shape="rect" href="classdb.html#aa415dd5b6a335d68c521e7e45330071" title="check_query" alt="" coords="331,112,461,141"><area shape="rect" href="classdb.html#243ee94521cf6de348caf1cfb35851d9" title="db::unlock" alt="" coords="352,165,440,195"></map>
 </div>
 
 </div>
@@ -688,7 +801,7 @@ Voici le graphe d'appel pour cette fonction :</div>
 <div class="dynsection">
 <p><center><img src="classdb_bc2045ceaf9d92bc20fd388518535a9b_icgraph.png" border="0" usemap="#classdb_bc2045ceaf9d92bc20fd388518535a9b_icgraph_map" alt=""></center>
 <map name="classdb_bc2045ceaf9d92bc20fd388518535a9b_icgraph_map">
-<area shape="rect" href="classdb.html#aa6f9ee4beba54efd244d7a084da99c4" title="db::get_enum" alt="" coords="309,411,408,437"><area shape="rect" href="classdb.html#7b718b2a88f68c0b352edf57151a301e" title="db::optimize_db" alt="" coords="303,5,415,32"><area shape="rect" href="classdb.html#39891365ebd656fc16458dcc98678d1e" title="Executer une requète." alt="" coords="159,259,233,285"><area shape="rect" href="classdb.html#76676ff4b45acc2b0a384004a4c30272" title="db::table_exists" alt="" coords="303,461,415,488"><area shape="rect" href="classdb.html#78ad7cf837964b52afa62e6b606329a2" title="Changement des valeurs d&#39;un typ ENUM." alt="" coords="484,385,583,412"><area shape="rect" href="classdb.html#2f6c83e659790391dc6aacc661d45aa4" title="add" alt="" coords="501,221,565,248"><area shape="rect" href="classdb.html#7b7e63f6424ba7a85e8daa8bf81d5caf" title="Vérifie les droits d&#39;un utilisateur à une table/colonne." alt="" coords="304,56,413,83"><area shape="rect" href="classdb.html#1c38b77638998e50afb2d9dfdfa24115" title="db::delete" alt="" coords="320,107,397,133"><area shape="rect" href="classdb.html#9c0d76eccb30b2c527ab87974e85d758" title="Retourne le nom de la clé primaire d&#39;une table." alt="" coords="289,157,428,184"><area shape="rect" href="classdb.html#42640cf484d13cead8f42e9874313152" title="db::get_table_property" alt="" coords="284,259,433,285"><area shape="rect" href="classdb.html#419ba2fcbdf6009b7de23c3e7a6091bb" title="db::update" alt="" coords="492,297,575,324"></map>
+<area shape="rect" href="classdb.html#aa6f9ee4beba54efd244d7a084da99c4" title="db::get_enum" alt="" coords="320,59,427,88"><area shape="rect" href="classdb.html#7b718b2a88f68c0b352edf57151a301e" title="db::optimize_db" alt="" coords="312,5,435,35"><area shape="rect" href="classdb.html#39891365ebd656fc16458dcc98678d1e" title="Executer une requète." alt="" coords="165,317,245,347"><area shape="rect" href="classdb.html#76676ff4b45acc2b0a384004a4c30272" title="db::table_exists" alt="" coords="315,635,432,664"><area shape="rect" href="classdb.html#78ad7cf837964b52afa62e6b606329a2" title="Changement des valeurs d&#39;un typ ENUM." alt="" coords="503,97,607,127"><area shape="rect" href="classdb.html#2f6c83e659790391dc6aacc661d45aa4" title="add" alt="" coords="521,175,588,204"><area shape="rect" href="classdb.html#7b7e63f6424ba7a85e8daa8bf81d5caf" title="Vérifie les droits d&#39;un utilisateur à une table/colonne." alt="" coords="315,317,432,347"><area shape="rect" href="classdb.html#1c38b77638998e50afb2d9dfdfa24115" title="db::delete" alt="" coords="332,371,415,400"><area shape="rect" href="classdb.html#9c0d76eccb30b2c527ab87974e85d758" title="Retourne le nom de la clé primaire d&#39;une table." alt="" coords="300,424,447,453"><area shape="rect" href="classdb.html#42640cf484d13cead8f42e9874313152" title="db::get_table_property" alt="" coords="293,213,453,243"><area shape="rect" href="classdb.html#419ba2fcbdf6009b7de23c3e7a6091bb" title="db::update" alt="" coords="511,247,599,276"><area shape="rect" href="classdb.html#3226cf59bb5ab3688eb5219e29735066" title="db::is_locked" alt="" coords="321,581,425,611"><area shape="rect" href="classdb.html#a3fb51b71380c547620e0c4d7bc8f5a3" title="db::lock" alt="" coords="519,528,591,557"><area shape="rect" href="classdb.html#243ee94521cf6de348caf1cfb35851d9" title="db::unlock" alt="" coords="329,528,417,557"></map>
 </div>
 
 </div>
@@ -757,7 +870,7 @@ Voici le graphe d'appel pour cette fonction :</div>
 <div class="dynsection">
 <p><center><img src="classdb_78ad7cf837964b52afa62e6b606329a2_cgraph.png" border="0" usemap="#classdb_78ad7cf837964b52afa62e6b606329a2_cgraph_map" alt=""></center>
 <map name="classdb_78ad7cf837964b52afa62e6b606329a2_cgraph_map">
-<area shape="rect" href="classdb.html#aa6f9ee4beba54efd244d7a084da99c4" title="db::get_enum" alt="" coords="156,31,255,57"><area shape="rect" href="classdb.html#39891365ebd656fc16458dcc98678d1e" title="Executer une requète." alt="" coords="315,81,389,108"><area shape="rect" href="classdb.html#bc2045ceaf9d92bc20fd388518535a9b" title="db::num_rows" alt="" coords="459,5,560,32"><area shape="rect" href="classdb.html#d3ec1733d31b547b63171ccd1c29ffcf" title="db::read_row" alt="" coords="304,31,400,57"><area shape="rect" href="classdb.html#d722af34cba17c7294fe08359bd0563c" title="Constructeur." alt="" coords="481,68,537,95"><area shape="rect" href="classdb.html#aa415dd5b6a335d68c521e7e45330071" title="check_query" alt="" coords="448,119,571,145"></map>
+<area shape="rect" href="classdb.html#aa6f9ee4beba54efd244d7a084da99c4" title="db::get_enum" alt="" coords="160,60,267,89"><area shape="rect" href="classdb.html#39891365ebd656fc16458dcc98678d1e" title="Executer une requète." alt="" coords="327,112,407,141"><area shape="rect" href="classdb.html#bc2045ceaf9d92bc20fd388518535a9b" title="db::num_rows" alt="" coords="477,5,587,35"><area shape="rect" href="classdb.html#d3ec1733d31b547b63171ccd1c29ffcf" title="db::read_row" alt="" coords="316,59,417,88"><area shape="rect" href="classdb.html#d722af34cba17c7294fe08359bd0563c" title="Constructeur." alt="" coords="501,59,563,88"><area shape="rect" href="classdb.html#aa415dd5b6a335d68c521e7e45330071" title="check_query" alt="" coords="467,112,597,141"><area shape="rect" href="classdb.html#243ee94521cf6de348caf1cfb35851d9" title="db::unlock" alt="" coords="488,165,576,195"><area shape="rect" href="classdb.html#72ff0f699c332046066be4ae10fe0eda" title="db::read_array" alt="" coords="647,165,756,195"></map>
 </div>
 
 </div>
@@ -795,7 +908,7 @@ Voici le graphe d'appel pour cette fonction :</div>
 <div class="dynsection">
 <p><center><img src="classdb_aa6f9ee4beba54efd244d7a084da99c4_cgraph.png" border="0" usemap="#classdb_aa6f9ee4beba54efd244d7a084da99c4_cgraph_map" alt=""></center>
 <map name="classdb_aa6f9ee4beba54efd244d7a084da99c4_cgraph_map">
-<area shape="rect" href="classdb.html#bc2045ceaf9d92bc20fd388518535a9b" title="db::num_rows" alt="" coords="309,5,411,32"><area shape="rect" href="classdb.html#39891365ebd656fc16458dcc98678d1e" title="Executer une requète." alt="" coords="165,56,240,83"><area shape="rect" href="classdb.html#d3ec1733d31b547b63171ccd1c29ffcf" title="db::read_row" alt="" coords="155,107,251,133"><area shape="rect" href="classdb.html#d722af34cba17c7294fe08359bd0563c" title="Constructeur." alt="" coords="332,56,388,83"><area shape="rect" href="classdb.html#aa415dd5b6a335d68c521e7e45330071" title="check_query" alt="" coords="299,107,421,133"></map>
+<area shape="rect" href="classdb.html#bc2045ceaf9d92bc20fd388518535a9b" title="db::num_rows" alt="" coords="323,5,432,35"><area shape="rect" href="classdb.html#39891365ebd656fc16458dcc98678d1e" title="Executer une requète." alt="" coords="172,85,252,115"><area shape="rect" href="classdb.html#d3ec1733d31b547b63171ccd1c29ffcf" title="db::read_row" alt="" coords="161,139,263,168"><area shape="rect" href="classdb.html#d722af34cba17c7294fe08359bd0563c" title="Constructeur." alt="" coords="347,59,408,88"><area shape="rect" href="classdb.html#aa415dd5b6a335d68c521e7e45330071" title="check_query" alt="" coords="312,112,443,141"><area shape="rect" href="classdb.html#243ee94521cf6de348caf1cfb35851d9" title="db::unlock" alt="" coords="333,165,421,195"><area shape="rect" href="classdb.html#72ff0f699c332046066be4ae10fe0eda" title="db::read_array" alt="" coords="492,165,601,195"></map>
 </div>
 
 <p>
@@ -850,7 +963,7 @@ Voici le graphe d'appel pour cette fonction :</div>
 <div class="dynsection">
 <p><center><img src="classdb_7b7e63f6424ba7a85e8daa8bf81d5caf_cgraph.png" border="0" usemap="#classdb_7b7e63f6424ba7a85e8daa8bf81d5caf_cgraph_map" alt=""></center>
 <map name="classdb_7b7e63f6424ba7a85e8daa8bf81d5caf_cgraph_map">
-<area shape="rect" href="classdb.html#39891365ebd656fc16458dcc98678d1e" title="Executer une requète." alt="" coords="167,56,241,83"><area shape="rect" href="classdb.html#d722af34cba17c7294fe08359bd0563c" title="Constructeur." alt="" coords="324,5,380,32"><area shape="rect" href="classdb.html#bc2045ceaf9d92bc20fd388518535a9b" title="db::num_rows" alt="" coords="301,56,403,83"><area shape="rect" href="classdb.html#aa415dd5b6a335d68c521e7e45330071" title="check_query" alt="" coords="291,107,413,133"></map>
+<area shape="rect" href="classdb.html#39891365ebd656fc16458dcc98678d1e" title="Executer une requète." alt="" coords="171,112,251,141"><area shape="rect" href="classdb.html#d722af34cba17c7294fe08359bd0563c" title="Constructeur." alt="" coords="333,5,395,35"><area shape="rect" href="classdb.html#bc2045ceaf9d92bc20fd388518535a9b" title="db::num_rows" alt="" coords="309,59,419,88"><area shape="rect" href="classdb.html#aa415dd5b6a335d68c521e7e45330071" title="check_query" alt="" coords="299,112,429,141"><area shape="rect" href="classdb.html#243ee94521cf6de348caf1cfb35851d9" title="db::unlock" alt="" coords="320,165,408,195"><area shape="rect" href="classdb.html#72ff0f699c332046066be4ae10fe0eda" title="db::read_array" alt="" coords="479,165,588,195"></map>
 </div>
 
 </div>
@@ -879,7 +992,7 @@ Voici le graphe d'appel pour cette fonction :</div>
 <div class="dynsection">
 <p><center><img src="classdb_76676ff4b45acc2b0a384004a4c30272_cgraph.png" border="0" usemap="#classdb_76676ff4b45acc2b0a384004a4c30272_cgraph_map" alt=""></center>
 <map name="classdb_76676ff4b45acc2b0a384004a4c30272_cgraph_map">
-<area shape="rect" href="classdb.html#bc2045ceaf9d92bc20fd388518535a9b" title="db::num_rows" alt="" coords="304,5,405,32"><area shape="rect" href="classdb.html#39891365ebd656fc16458dcc98678d1e" title="Executer une requète." alt="" coords="169,56,244,83"><area shape="rect" href="classdb.html#d722af34cba17c7294fe08359bd0563c" title="Constructeur." alt="" coords="327,56,383,83"><area shape="rect" href="classdb.html#aa415dd5b6a335d68c521e7e45330071" title="check_query" alt="" coords="293,107,416,133"></map>
+<area shape="rect" href="classdb.html#bc2045ceaf9d92bc20fd388518535a9b" title="db::num_rows" alt="" coords="312,5,421,35"><area shape="rect" href="classdb.html#39891365ebd656fc16458dcc98678d1e" title="Executer une requète." alt="" coords="173,99,253,128"><area shape="rect" href="classdb.html#d722af34cba17c7294fe08359bd0563c" title="Constructeur." alt="" coords="336,59,397,88"><area shape="rect" href="classdb.html#aa415dd5b6a335d68c521e7e45330071" title="check_query" alt="" coords="301,112,432,141"><area shape="rect" href="classdb.html#243ee94521cf6de348caf1cfb35851d9" title="db::unlock" alt="" coords="323,165,411,195"><area shape="rect" href="classdb.html#72ff0f699c332046066be4ae10fe0eda" title="db::read_array" alt="" coords="481,165,591,195"></map>
 </div>
 
 </div>
@@ -908,7 +1021,7 @@ Voici le graphe d'appel pour cette fonction :</div>
 <div class="dynsection">
 <p><center><img src="classdb_7b718b2a88f68c0b352edf57151a301e_cgraph.png" border="0" usemap="#classdb_7b718b2a88f68c0b352edf57151a301e_cgraph_map" alt=""></center>
 <map name="classdb_7b718b2a88f68c0b352edf57151a301e_cgraph_map">
-<area shape="rect" href="classdb.html#bc2045ceaf9d92bc20fd388518535a9b" title="db::num_rows" alt="" coords="304,5,405,32"><area shape="rect" href="classdb.html#39891365ebd656fc16458dcc98678d1e" title="Executer une requète." alt="" coords="169,56,244,83"><area shape="rect" href="classdb.html#d722af34cba17c7294fe08359bd0563c" title="Constructeur." alt="" coords="327,56,383,83"><area shape="rect" href="classdb.html#aa415dd5b6a335d68c521e7e45330071" title="check_query" alt="" coords="293,107,416,133"></map>
+<area shape="rect" href="classdb.html#bc2045ceaf9d92bc20fd388518535a9b" title="db::num_rows" alt="" coords="315,5,424,35"><area shape="rect" href="classdb.html#39891365ebd656fc16458dcc98678d1e" title="Executer une requète." alt="" coords="176,99,256,128"><area shape="rect" href="classdb.html#d722af34cba17c7294fe08359bd0563c" title="Constructeur." alt="" coords="339,59,400,88"><area shape="rect" href="classdb.html#aa415dd5b6a335d68c521e7e45330071" title="check_query" alt="" coords="304,112,435,141"><area shape="rect" href="classdb.html#243ee94521cf6de348caf1cfb35851d9" title="db::unlock" alt="" coords="325,165,413,195"><area shape="rect" href="classdb.html#72ff0f699c332046066be4ae10fe0eda" title="db::read_array" alt="" coords="484,165,593,195"></map>
 </div>
 
 </div>
@@ -1193,8 +1306,38 @@ Retourne la valeur de la propriété privée $lnk.
 
 </div>
 </div><p>
+<a class="anchor" name="c584c4d096236821569369362d81c2a1"></a><!-- doxytag: member="db::$lockname" ref="c584c4d096236821569369362d81c2a1" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">db::$lockname<code> [private]</code>          </td>
+        </tr>
+      </table>
 </div>
-<hr size="1"><address style="text-align: right;"><small>Généré le Sun Oct 26 23:21:57 2008 pour Starshine Online par&nbsp;
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="56bc2bc9b7e14f292c36a4fb571b1d6a"></a><!-- doxytag: member="db::$locked" ref="56bc2bc9b7e14f292c36a4fb571b1d6a" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">db::$locked<code> [private]</code>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+</div>
+<hr size="1"><address style="text-align: right;"><small>Généré le Sun Nov 30 19:55:08 2008 pour Starshine Online par&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.6 </small></address>
 </body>

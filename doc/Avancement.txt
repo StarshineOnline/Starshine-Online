@@ -13,6 +13,7 @@ inc/fp.php
 inc/variables.inc.php(.sample)
 inc/races.inc.php
 inc/traduction.inc.php
+inc/base.inc.php
 
 
 En attente :

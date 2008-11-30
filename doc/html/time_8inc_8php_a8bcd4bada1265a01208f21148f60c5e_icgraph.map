@@ -1,6 +1,9 @@
-<area shape="rect" href="$attaque_8inc_8php.html#2791684fa0ff34996044148c598a2d64" title="attaque" alt="" coords="160,5,224,32">
-<area shape="rect" href="$action_8inc_8php.html#eac6f598954a3952c8dbbaed9d6ea370" title="Lance un sort lors d&#39;un combat." alt="" coords="152,56,232,83">
-<area shape="rect" href="$base_8inc_8php.html#0c244be4e4bf4a7a5ac3d33caec4fe48" title="recupperso" alt="" coords="149,107,235,133">
-<area shape="rect" href="$security_8inc_8php.html#48c4fb90180f16ba2648898fc277710a" title="check_undead_players" alt="" coords="283,56,437,83">
-<area shape="rect" href="$equipement_8inc_8php.html#7819f0d89772aa351963ada3978870a5" title="equip_objet" alt="" coords="316,107,404,133">
-<area shape="rect" href="$quete_8inc_8php.html#4bcfd3fff97b506404ded6239d5fb77d" title="verif_action" alt="" coords="317,157,403,184">
+<area shape="rect" href="$attaque_8inc_8php.html#2791684fa0ff34996044148c598a2d64" title="attaque" alt="" coords="171,5,237,35">
+<area shape="rect" href="$action_8inc_8php.html#eac6f598954a3952c8dbbaed9d6ea370" title="Lance un sort lors d&#39;un combat." alt="" coords="161,59,247,88">
+<area shape="rect" href="$base_8inc_8php.html#0c244be4e4bf4a7a5ac3d33caec4fe48" title="Fonction permettant de récupérer les infos des perso, et de les renvoyer." alt="" coords="159,112,249,141">
+<area shape="rect" href="$security_8inc_8php.html#48c4fb90180f16ba2648898fc277710a" title="check_undead_players" alt="" coords="299,32,461,61">
+<area shape="rect" href="$equipement_8inc_8php.html#7819f0d89772aa351963ada3978870a5" title="equip_objet" alt="" coords="333,85,427,115">
+<area shape="rect" href="$quete_8inc_8php.html#4bcfd3fff97b506404ded6239d5fb77d" title="verif_action" alt="" coords="333,139,427,168">
+<area shape="rect" href="$equipement_8inc_8php.html#eb5d170da1e7ccdccc8ce037c705f8da" title="verif_echange_joueur" alt="" coords="303,192,457,221">
+<area shape="rect" href="$equipement_8inc_8php.html#ea0a0acf3578fc049036e57155c05d6d" title="echange_objet_ajout" alt="" coords="509,165,659,195">
+<area shape="rect" href="$equipement_8inc_8php.html#29f8f46cb1bf45fdb0d94f39bade0524" title="verif_echange" alt="" coords="531,219,637,248">

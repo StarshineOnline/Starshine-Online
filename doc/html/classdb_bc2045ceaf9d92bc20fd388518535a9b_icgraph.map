@@ -1,11 +1,14 @@
-<area shape="rect" href="$classdb.html#aa6f9ee4beba54efd244d7a084da99c4" title="db::get_enum" alt="" coords="309,411,408,437">
-<area shape="rect" href="$classdb.html#7b718b2a88f68c0b352edf57151a301e" title="db::optimize_db" alt="" coords="303,5,415,32">
-<area shape="rect" href="$classdb.html#39891365ebd656fc16458dcc98678d1e" title="Executer une requète." alt="" coords="159,259,233,285">
-<area shape="rect" href="$classdb.html#76676ff4b45acc2b0a384004a4c30272" title="db::table_exists" alt="" coords="303,461,415,488">
-<area shape="rect" href="$classdb.html#78ad7cf837964b52afa62e6b606329a2" title="Changement des valeurs d&#39;un typ ENUM." alt="" coords="484,385,583,412">
-<area shape="rect" href="$classdb.html#2f6c83e659790391dc6aacc661d45aa4" title="add" alt="" coords="501,221,565,248">
-<area shape="rect" href="$classdb.html#7b7e63f6424ba7a85e8daa8bf81d5caf" title="Vérifie les droits d&#39;un utilisateur à une table/colonne." alt="" coords="304,56,413,83">
-<area shape="rect" href="$classdb.html#1c38b77638998e50afb2d9dfdfa24115" title="db::delete" alt="" coords="320,107,397,133">
-<area shape="rect" href="$classdb.html#9c0d76eccb30b2c527ab87974e85d758" title="Retourne le nom de la clé primaire d&#39;une table." alt="" coords="289,157,428,184">
-<area shape="rect" href="$classdb.html#42640cf484d13cead8f42e9874313152" title="db::get_table_property" alt="" coords="284,259,433,285">
-<area shape="rect" href="$classdb.html#419ba2fcbdf6009b7de23c3e7a6091bb" title="db::update" alt="" coords="492,297,575,324">
+<area shape="rect" href="$classdb.html#aa6f9ee4beba54efd244d7a084da99c4" title="db::get_enum" alt="" coords="320,59,427,88">
+<area shape="rect" href="$classdb.html#7b718b2a88f68c0b352edf57151a301e" title="db::optimize_db" alt="" coords="312,5,435,35">
+<area shape="rect" href="$classdb.html#39891365ebd656fc16458dcc98678d1e" title="Executer une requète." alt="" coords="165,317,245,347">
+<area shape="rect" href="$classdb.html#76676ff4b45acc2b0a384004a4c30272" title="db::table_exists" alt="" coords="315,635,432,664">
+<area shape="rect" href="$classdb.html#78ad7cf837964b52afa62e6b606329a2" title="Changement des valeurs d&#39;un typ ENUM." alt="" coords="503,97,607,127">
+<area shape="rect" href="$classdb.html#2f6c83e659790391dc6aacc661d45aa4" title="add" alt="" coords="521,175,588,204">
+<area shape="rect" href="$classdb.html#7b7e63f6424ba7a85e8daa8bf81d5caf" title="Vérifie les droits d&#39;un utilisateur à une table/colonne." alt="" coords="315,317,432,347">
+<area shape="rect" href="$classdb.html#1c38b77638998e50afb2d9dfdfa24115" title="db::delete" alt="" coords="332,371,415,400">
+<area shape="rect" href="$classdb.html#9c0d76eccb30b2c527ab87974e85d758" title="Retourne le nom de la clé primaire d&#39;une table." alt="" coords="300,424,447,453">
+<area shape="rect" href="$classdb.html#42640cf484d13cead8f42e9874313152" title="db::get_table_property" alt="" coords="293,213,453,243">
+<area shape="rect" href="$classdb.html#419ba2fcbdf6009b7de23c3e7a6091bb" title="db::update" alt="" coords="511,247,599,276">
+<area shape="rect" href="$classdb.html#3226cf59bb5ab3688eb5219e29735066" title="db::is_locked" alt="" coords="321,581,425,611">
+<area shape="rect" href="$classdb.html#a3fb51b71380c547620e0c4d7bc8f5a3" title="db::lock" alt="" coords="519,528,591,557">
+<area shape="rect" href="$classdb.html#243ee94521cf6de348caf1cfb35851d9" title="db::unlock" alt="" coords="329,528,417,557">

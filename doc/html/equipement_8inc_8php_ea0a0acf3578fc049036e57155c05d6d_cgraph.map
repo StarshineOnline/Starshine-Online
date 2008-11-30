@@ -1,0 +1,9 @@
+<area shape="rect" href="$equipement_8inc_8php.html#eb5d170da1e7ccdccc8ce037c705f8da" title="verif_echange_joueur" alt="" coords="203,55,357,84">
+<area shape="rect" href="$equipement_8inc_8php.html#100ac4065e5a4228780ac85b43d1dda5" title="decompose_objet" alt="" coords="609,29,740,59">
+<area shape="rect" href="$equipement_8inc_8php.html#97116cb44273775bc417b31207bc8af1" title="echange_objet_suppr" alt="" coords="405,28,560,57">
+<area shape="rect" href="$equipement_8inc_8php.html#febb5679b1dafc60c4299c0bc9b35ef2" title="recup_echange" alt="" coords="425,81,540,111">
+<area shape="rect" href="$base_8inc_8php.html#0c244be4e4bf4a7a5ac3d33caec4fe48" title="Fonction permettant de récupérer les infos des perso, et de les renvoyer." alt="" coords="437,135,528,164">
+<area shape="rect" href="$equipement_8inc_8php.html#6650a744ac48ff6b2775a241e8439a8f" title="enchant" alt="" coords="640,108,709,137">
+<area shape="rect" href="$time_8inc_8php.html#a8bcd4bada1265a01208f21148f60c5e" title="Indique quel est le moment de la journée (matin, journée, soir ou nuit)." alt="" coords="623,161,727,191">
+<area shape="rect" href="$time_8inc_8php.html#5dc4d8d9e53a8d1d65edcab9cd1dacb9" title="Renvoie l&#39;heure (uniquement) qu&#39;il est dans le jeu." alt="" coords="824,135,909,164">
+<area shape="rect" href="$base_8inc_8php.html#c3a04c3bc3e42c54d90b1c14e9061214" title="Fonction permettant de récupérer les infos essentielles du perso (nom, race, classe..." alt="" coords="791,188,943,217">
