@@ -1056,9 +1056,10 @@ function lance_comp($id, $acteur)
 			if($de_att > $de_deff)
 			{
 				echo '&nbsp;&nbsp;<strong>'.$passif['nom'].'</strong> est empoisonné pour '.$row['duree'].' tours !<br />';
-				$passif['etat']['poison']['effet'] += $row['effet'];
+				$passif['etat']['poison']['effet'] = $row['effet'];
 				$passif['etat']['poison']['level'] = $row['effet'];
 				$passif['etat']['poison']['duree'] += $row['duree'];
+				if($passif['etat']['poison']['duree'] > $row['effet']) $passif['etat']['poison']['duree'] = $row['effet'] - 1;
 			}
 			else echo '&nbsp;&nbsp;Le poison n\'agit pas<br />';
 			//On prends en compte la bonne compétence

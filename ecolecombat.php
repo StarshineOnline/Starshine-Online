@@ -33,7 +33,8 @@ if($W_distance == 0)
 	$requete = "SELECT * FROM construction_ville LEFT JOIN batiment_ville ON construction_ville.id_batiment = batiment_ville.id WHERE batiment_ville.type = '".$batiment."' AND construction_ville.id_royaume = ".$R['ID'];
 	$req = $db->query($requete);
 	$row = $db->read_assoc($req);
-	$level_batiment = $row['level'];
+	//Si le batiment est inactif, on met le batiment au niveau 1, sinon c'est bon
+	if($row['statut'] == 'inactif') $level_batiment = 1; else $level_batiment = $row['level'];
 	if(isset($_GET['ecole']))
 	{
 		$ecole = $_GET['ecole'];
