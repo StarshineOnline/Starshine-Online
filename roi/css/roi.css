@@ -1,0 +1,85 @@
+ul#menu
+{
+	color : #000;
+	height : 26px;
+	float : left;
+	display : inline;
+}
+
+ul#menu ul
+{
+	margin-left: 20px;
+}
+
+ul#menu li
+{
+	display: inline;
+	list-style-type: none;
+	float: left;
+}
+
+ul#menu a
+{
+	font-weight: bold;
+	font-size: 10pt;
+	color: #000;
+	text-decoration: none;
+	margin: 0px;
+	padding-left: 25px;
+	padding-right: 25px;
+	border-left-style: solid;
+	border-left-width: 1px;
+	border-left-color: #AAAAAA;
+}
+
+ul#menu a:link
+{
+	color: #000;
+}
+
+ul#menu a:visited
+{
+	color: #000;
+}
+
+ul#menu a:hover {
+       color: #FF8800;
+}
+
+ul#menu a:active {
+       color: #FF9900;
+       text-decoration: underline overline;
+}
+
+ul#menu ul
+{
+	position: absolute;
+	border-left: 3px solid #555;
+	border-right: 3px solid #555;
+	border-bottom: 5px solid #555;
+}
+
+ul#menu ul li
+{
+       display: block;
+       float: none;
+       border-top: 1px solid #AAA;
+       margin: 0px;
+       padding: 2px;
+       background-color : white;
+}
+
+ul#menu ul a {
+       padding-left : 5px;
+       padding-right : 5px;
+       font-weight: normal;
+       font-size: 9pt;
+       border: 0px;
+}
+
+ul#menu ul li:hover {
+}
+
+#loading {background:transparent url('http://test.starshinebox.info/image/ajax-loader-bar.gif') no-repeat scroll left center;height:22px;left:300px;position:absolute;top:300px;width:220px;}
+
+#infos {display : inline; float : right;}

@@ -18,21 +18,6 @@ $W_distance = detection_distance($W_case,$_SESSION["position"]);
 $W_coord = convert_in_coord($W_case);
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<?php
-	echo '<strong>Stars du royaume</strong> : '.$R['star'].'<br />';
-	echo '<strong>Taux de taxe</strong> : '.$R['taxe_base'].'%<br />';
-	$W_requete = "SELECT COUNT(*) as count FROM perso WHERE race = '".$R['race']."' AND statut = 'actif'";
-	$W_req = $db->query($W_requete);
-	$W_row = $db->read_row($W_req);
-	echo '<strong>Habitants</strong> : '.$W_row[0].'<br />';
-	$semaine = time() - (3600 * 24 * 7);
-	$W_requete = "SELECT COUNT(*) as count FROM perso WHERE race = '".$R['race']."' AND level > 3 AND dernier_connexion > ".$semaine." AND statut = 'actif'";
-	$W_req = $db->query($W_requete);
-	$W_row = $db->read_row($W_req);
-	$hta = $W_row[0];
-	echo '<strong>Habitants très actifs</strong> : '.$hta.'<br />';
-	?>
-	<hr />
 	<?php
 	if($_GET['direction'] == 'motk')
 	{
@@ -675,19 +660,31 @@ $W_coord = convert_in_coord($W_case);
 		{
 			if($keys[$i] != 'race' AND $row[$keys[$i]] != 127)
 			{
-				echo '
-		<tr>
-			<td>
-				'.$Gtrad[$keys[$i]].'
-			</td>
-			<td style="font-weight : normal;">';
 				$temps = $R['diplo_time'][$keys[$i]] - time();
 				if($temps > 0) $show = transform_sec_temp($temps).' avant changement possible';
 				else $show = 'Modif. Possible';
-				echo $Gtrad['diplo'.$row[$keys[$i]]].'
+				if($row[$keys[$i]] > 6)
+				{
+					$image_diplo = '../image/interface/attaquer.png';
+				}
+				elseif($row[$keys[$i]] < 4)
+				{
+					$image_diplo = '../image/interface/paix.png';
+				}
+				else
+				{
+					$image_diplo = '../image/interface/neutre.png';
+				}
+				echo '
+		<tr style="vertical-align : middle;">
+			<td>
+				<img src="../image/g_etendard/g_etendard_'.$Trace[$keys[$i]]['numrace'].'.png" style="vertical-align : middle;">'.$Gtrad[$keys[$i]].'
+			</td>
+			<td style="font-weight : normal;">';
+				echo ' <img src="'.$image_diplo.'" style="vertical-align : middle;"> '.$Gtrad['diplo'.$row[$keys[$i]]].' 
 			</td>
 			<td>
-				<a style="font-size : 0.8em;" href="gestion_royaume.php?poscase='.$W_case.'&amp;direction=diplomatie&amp;action=modif&amp;race='.$keys[$i].'"><span class="xsmall">'.$show.'</span></a>
+				<a style="font-size : 0.8em;" href="gestion_royaume.php?poscase='.$W_case.'&amp;direction=diplomatie&amp;action=modif&amp;race='.$keys[$i].'" onclick="refresh(this.href, \'conteneur\'); return false;"><span class="xsmall">'.$show.'</span></a>
 			</td>
 		</td>';
 			}

@@ -6,6 +6,10 @@ $connexion = true;
 include($root.'inc/fp.php');
 
 $joueur = recupperso($_SESSION['ID']);
+if($joueur['grade'] == 'Roi' OR $joueur['nom'] == 'Mylok' OR strtolower($joueur['nom']) == 'minus')
+{
+
+$R = get_royaume_info($joueur['race'], $Trace[$joueur['race']]['numrace']);
 
 //Vérifie si le perso est mort
 verif_mort($joueur, 1);
@@ -16,54 +20,75 @@ $_SESSION['position'] = convert_in_pos($joueur['x'], $joueur['y']);
 ?>
 <html>
 <head>
+	<title>Starshine-Online / Gestion du royaume</title>
 	<link href="../css/texture.css" rel="stylesheet" type="text/css" />
 	<link href="../css/interface.css" rel="stylesheet" type="text/css" />
 	<link href="../css/prototip.css" rel="stylesheet" type="text/css" />
+	<link href="css/roi.css" rel="stylesheet" type="text/css" />
 	<script src="../javascript/scriptaculous/prototype.js" type="text/javascript"></script>
 	<script src="../javascript/scriptaculous/scriptaculous.js" type="text/javascript"></script>
 	<script src="../javascript/scriptaculous/prototip.js" type="text/javascript"></script>
+	<script src="../javascript/fonction.js" type="text/javascript"></script>
 	<script src="javascript/menu.js" type="text/javascript"></script>
 </head>
 <body>
-<div id="menu" style="width : 200px;">
-		<dl id="menu">
-			<dt class="smenu" id="a1"><span>Diplomatie</span></dt>
-			<dd id="smenu1">
-				<ul>
-					<li><a href="gestion_royaume.php?direction=diplomatie" onclick="new Ajax.Updater('conteneur', this.href); return false;">Diplomatie</a>
-					<li><a href="gestion_royaume.php?direction=telephone" onclick="new Ajax.Updater('conteneur', this.href); return false;">Téléphone rouge</a>
+<div id="top" style="width : 100%;">
+		<ul id="menu">
+			<li>
+				<a href="#" onclick="showMenu(1)">Diplomatie</a>
+				<ul id="smenu1" style="display : none">
+					<li><a href="gestion_royaume.php?direction=diplomatie" onclick="return clickMenu(this);">Diplomatie</a>
+					<li><a href="gestion_royaume.php?direction=telephone" onclick="return clickMenu(this);">Téléphone rouge</a>
 				</ul>
-			</dd>
-			<dt class="smenu" id="a2"><span>Militaire</span></dt>
-			<dd id="smenu2">
-				<ul>
-					<li><a href="gestion_royaume.php?direction=drapeau" onclick="new Ajax.Updater('conteneur', this.href); return false;">Drapeaux & batiments</a>
-					<li><a href="gestion_royaume.php?direction=carte" onclick="new Ajax.Updater('conteneur', this.href); return false;">Carte des constructions et habitants</a>
-					<li><a href="index.php" onclick="new Ajax.Updater('conteneur', this.href);">Gestion des groupes</a></li>
-					<li><a href="carte_strategique.php" onclick="new Ajax.Updater('conteneur', this.href); return false;">Carte Stratégique</a></li>
+			</li>
+			<li>
+				<a href="#" onclick="showMenu(2)">Militaire</a>
+				<ul id="smenu2" style="display : none">
+					<li><a href="gestion_royaume.php?direction=drapeau" onclick="return clickMenu(this);">Drapeaux & batiments</a>
+					<li><a href="gestion_royaume.php?direction=carte" onclick="return clickMenu(this);">Carte des constructions et habitants</a>
+					<li><a href="index.php" onclick="refresh(this.href, 'conteneur');">Gestion des groupes</a></li>
+					<li><a href="carte_strategique.php" onclick="return clickMenu(this);">Carte Stratégique</a></li>
 				</ul>
-			</dd>	
-			<dt class="smenu" id="a3"><span>Economie</span></dt>
-			<dd id="smenu3">
-				<ul>
-					<li><a href="gestion_royaume.php?direction=construction" onclick="new Ajax.Updater('conteneur', this.href); return false;">Construction de la ville</a>
-					<li><a href="gestion_royaume.php?direction=entretien" onclick="new Ajax.Updater('conteneur', this.href); return false;">Entretien</a>
-					<li><a href="gestion_royaume.php?direction=quete" onclick="new Ajax.Updater('conteneur', this.href); return false;">Gestion des quètes</a>
-					<li><a href="gestion_royaume.php?direction=taxe" onclick="new Ajax.Updater('conteneur', this.href); return false;">Gestion des taxes</a>
+			</li>
+			<li>
+				<a href="#" onclick="showMenu(3)">Economie</a>
+				<ul id="smenu3" style="display : none">
+					<li><a href="gestion_royaume.php?direction=construction" onclick="return clickMenu(this);">Construction de la ville</a>
+					<li><a href="gestion_royaume.php?direction=entretien" onclick="return clickMenu(this);">Entretien</a>
+					<li><a href="gestion_royaume.php?direction=quete" onclick="return clickMenu(this);">Gestion des quètes</a>
+					<li><a href="gestion_royaume.php?direction=taxe" onclick="return clickMenu(this);">Gestion des taxes</a>
 				</ul>
-			</dd>
-			<dt class="smenu" id="a4"><span>Divers</span></dt>
-			<dd id="smenu4">
-				<ul>
-					<li><a href="gestion_royaume.php?direction=criminel" onclick="new Ajax.Updater('conteneur', this.href); return false;">Criminels</a>
-					<li><a href="gestion_royaume.php?direction=motk" onclick="new Ajax.Updater('conteneur', this.href); return false;">Message du roi</a>
-					<li><a href="gestion_royaume.php?direction=propagande" onclick="new Ajax.Updater('conteneur', this.href); return false;">Propagande</a>
-					<li><a href="gestion_royaume.php?direction=stats" onclick="new Ajax.Updater('conteneur', this.href); return false;">Statistiques</a>
+			</li>
+			<li>
+				<a href="#" onclick="showMenu(4)">Divers</a>
+				<ul id="smenu4" style="display : none">
+					<li><a href="gestion_royaume.php?direction=criminel" onclick="return clickMenu(this);">Criminels</a>
+					<li><a href="gestion_royaume.php?direction=motk" onclick="return clickMenu(this);">Message du roi</a>
+					<li><a href="gestion_royaume.php?direction=propagande" onclick="return clickMenu(this);">Propagande</a>
+					<li><a href="gestion_royaume.php?direction=stats" onclick="return clickMenu(this);">Statistiques</a>
 				</ul>
-			</dd>
-		</dl>
+			</li>
+		</ul>
+		<div id="loading" style="display : none;"> </div>
+		<div id="infos">
+	<?php
+	$W_requete = "SELECT COUNT(*) as count FROM perso WHERE race = '".$R['race']."' AND statut = 'actif'";
+	$W_req = $db->query($W_requete);
+	$W_row = $db->read_row($W_req);
+	$h = $W_row[0];
+	$semaine = time() - (3600 * 24 * 7);
+	$W_requete = "SELECT COUNT(*) as count FROM perso WHERE race = '".$R['race']."' AND level > 3 AND dernier_connexion > ".$semaine." AND statut = 'actif'";
+	$W_req = $db->query($W_requete);
+	$W_row = $db->read_row($W_req);
+	$hta = $W_row[0];
+	?>
+			<strong>Stars du royaume : </strong><?php echo $R['star']; ?> / <strong>Taux de taxe</strong> : <?php echo $R['taxe_base']; ?>% / <strong>Habitants</strong> : <?php echo $h; ?> / <strong>Habitants très actifs</strong> : <?php echo $hta; ?>
+		</div>
 </div>
-<div id="conteneur" style="width : 1200px;">
+<div style="clear : both; width : 100%;">
+	<hr />
+</div>
+<div id="conteneur">
 	<ul style="float :left;">
 	<?php
 	$requete = "SELECT groupe.id as groupeid, groupe.nom as groupenom, groupe_joueur.id_joueur, perso.nom, perso.race FROM groupe LEFT JOIN groupe_joueur ON groupe.id = groupe_joueur.id_groupe LEFT JOIN perso ON groupe_joueur.id_joueur = perso.ID WHERE groupe_joueur.leader = 'y' AND perso.race = '".$joueur['race']."'";
@@ -72,7 +97,7 @@ $_SESSION['position'] = convert_in_pos($joueur['x'], $joueur['y']);
 	{
 		if($row['groupenom'] == '') $row['groupenom'] = '-----';
 		?>
-		<li id="groupe_<?php echo $row['groupeid']; ?>" onclick="new Ajax.Updater('infos_groupe', 'infos_groupe.php?id_groupe=<?php echo $row['groupeid']; ?>');"><?php echo $row['groupeid'].' - '.$row['groupenom']; ?></li>
+		<li id="groupe_<?php echo $row['groupeid']; ?>" onclick="refresh('infos_groupe.php?id_groupe=<?php echo $row['groupeid']; ?>', 'infos_groupe');"><?php echo $row['groupeid'].' - '.$row['groupenom']; ?></li>
 		<?php
 	}
 	?>
@@ -84,4 +109,7 @@ $_SESSION['position'] = convert_in_pos($joueur['x'], $joueur['y']);
 <?php
 //Inclusion du bas de la page
 include($root.'bas.php');
+}
+else
+echo 'INTERDIT';
 ?>

@@ -1,46 +1,52 @@
-function addEvent(obj, type, fn) {
-	if( obj.attachEvent ) {
-			obj["e"+type+fn] = fn;
-			obj[type+fn] = function(){obj["e"+type+fn]( window.event );};
-			obj.attachEvent( "on"+type, obj[type+fn] );
-	} else {
-			obj.addEventListener( type, fn, true );
-	};
+function hideMenu()
+{
+	for(i = 1; i < 5; i++)
+	{
+		$('smenu' + i).fade({ duration: 0.2 })
+	}
 }
-
-function initMenus() {
-	/*Activate/deactivate menus*/
-	$$('.smenu').each(function(s,index){
-		addEvent(s,'click',function(){
-			if($('smenu'+s.id.replace('a','')).visible()){
-				//do nothing
-			} else {
-				$$('.smenu').each(function(s,index){
-					if($('smenu'+s.id.replace('a','')).visible()) {
-						//$('smenu'+s.id).hide(); //Prototype Method
-						Effect.BlindUp($('smenu'+s.id.replace('a','')), {duration:0.5}); //ScriptAculoUs Method
-					}
-				});
-				//$('smenu'+s.id).show(); //Prototype Method
-				Effect.BlindDown($('smenu'+s.id.replace('a','')), {duration:0.5}); //ScriptAculoUs Method
-			}
-		});
-	});
 	
-	/*All menu hiden by default*/
-	$$('.smenu').each(function(s,index){
-		if($('smenu'+s.id.replace('a','')).visible()) {
-			$('smenu'+s.id.replace('a','')).hide();
+function showMenu(id)
+{
+	new Effect.toggle('smenu' + id, 'appear', { duration: 0.2 })
+	for(i = 1; i < 5; i++)
+	{
+		if(i != id)
+		{
+			$('smenu' + i).fade({ duration: 0.2 })
 		}
-	});
-	
-	/*effects on menu*/
-	$$('dl#menu dt').each(function(s,index){
-		addEvent(s,'mouseout',function(){
-			new Effect.Highlight(s, {duration:0.5, startcolor:'#EFF3FF', endcolor:'#72ACDC', restorecolor
-:'#72ACDC'});
-		});
-	});
+	}
 }
 
-addEvent(window, 'load', initMenus);
+function clickMenu(el)
+{
+	refresh(el.href, 'conteneur');
+	hideMenu();
+	return false;
+}
+
+// Déplacement sur la carte
+function Loadchargement()
+{
+	$('loading').show();
+}
+function Hidechargement()
+{
+	$('loading').hide();
+}
+
+function deplacement(direction)
+{
+	function AfficheCarte(map)
+	{
+		$('loading').hide();
+		$('centre').innerHTML = map.responseText;
+	}
+
+	new Ajax.Request('./deplacement.php',{method:'get',parameters:'deplacement='+direction,onLoading:Loadchargement,onComplete:AfficheCarte});
+}
+function refresh(page, position)
+{
+	function Affiche(requete){$(position).innerHTML = requete.responseText; Hidechargement()}
+	new Ajax.Request(page,{method:'get',onLoading:Loadchargement,onComplete:Affiche});
+}
