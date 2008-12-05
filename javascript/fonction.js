@@ -58,10 +58,10 @@ function sendData(data, page, div, method)
 /**
 * Permet de récupérer les données d'un fichier via les XmlHttpRequest:
 */
-function envoiInfo(page, div)
+/*function envoiInfo(page, div)
 {
     sendData('null', page, div, 'GET')
-}
+}*/
 
 function envoiInfoPost(page, div)
 {
@@ -247,6 +247,10 @@ function Loadchargement()
 {
 	$('loading').show();
 }
+function Hidechargement()
+{
+	$('loading').hide();
+}
 function AfficheCarte(map)
 {
 	$('centre').innerHTML = map.responseText;
@@ -260,9 +264,23 @@ function deplacement(direction)
 	new Ajax.Request('./deplacement.php',{method:'get',parameters:'deplacement='+direction,onLoading:Loadchargement,onComplete:AfficheCarte});
 }
 
+function affiche_info(id_case)
+{	
+	function Chargement(){$('loading_information').show();}
+	function Affiche(requete){$('information').innerHTML = requete.responseText;$('loading_information').hide();}
+	new Ajax.Request('./informationcase.php',{method:'get',parameters:'case='+id_case,onLoading:Chargement,onComplete:Affiche});
+}
+
 function refresh(page,position)
 {	
-	function Chargement(){$('loading_'+position).show();}
-	function Affiche(requete){$(position).innerHTML = requete.responseText;$('loading_'+position).hide();}
-	new Ajax.Request(page,{method:'get',parameters:'javascript=oui',onLoading:Chargement,onComplete:Affiche});
+	function Affiche(requete){$(position).innerHTML = requete.responseText;}
+	new Ajax.Request(page,{method:'get',parameters:'javascript=oui',onComplete:Affiche});
+
+}
+
+function envoiInfo(page,position)
+{	
+	function Affiche(requete){$(position).innerHTML = requete.responseText; Hidechargement();}
+	new Ajax.Request(page,{method:'get',onLoading:Loadchargement,onComplete:Affiche});
+	return false;
 }

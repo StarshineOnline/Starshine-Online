@@ -43,11 +43,11 @@ class messagerie_etat
 	function sauver()
 	{
 		global $db;
-		if( $id_etat > 0 )
+		if( $this->id_etat > 0 )
 		{
-			$requete = 'UPDATE TABLE messagerie_etat SET ';
-			$requete .= 'id_message = '.$this->id_message.', etat = "'.$this->dest.'", id_dest = '.$this->id_dest.', groupe = '.$this->groupe;
-			$requete .= ' WHERE id_etat = '.$this->id_etat;
+			$requete = 'UPDATE messagerie_etat SET ';
+			$requete .= 'id_message = '.$this->id_message.', etat = "'.$this->etat.'", id_dest = '.$this->id_dest.', groupe = '.$this->groupe;
+			$requete .= ' WHERE id_message_etat = '.$this->id_etat;
 			$db->query($requete);
 		}
 		else

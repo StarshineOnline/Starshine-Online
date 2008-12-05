@@ -113,7 +113,7 @@ while($W_row = $db->read_array($W_query))
 //	</div>';
 	if ($W_ID != $_SESSION['ID'])
 	{
-		echo ' <td width="10%"><a href="javascript:envoiInfo(\'envoimessage.php?ID='.$W_ID.'\', \'information\')"><img src="image/interface/message.png" title="Envoyer un message" /></a></td>';
+		echo ' <td width="10%"><a href="envoimessage.php?id_type=p'.$W_ID.'" onclick="return envoiInfo(this.href, \'information\')"><img src="image/interface/message.png" title="Envoyer un message" /></a></td>';
 		if($joueur['sort_jeu'] != '') echo '<td width="10%"> <a href="javascript:envoiInfo(\'sort_joueur.php?poscase='.$W_case.'&amp;id_joueur='.$W_ID.'\', \'information\')"><img src="image/sort_hc_icone.png" title="Lancer un sort" alt="Lancer un sort" /></a></td>';
 		if($row_diplo[0] <= 5 OR array_key_exists(5, $mybonus)) echo '<td width="10%"> <a href="javascript:envoiInfo(\'echange.php?poscase='.$W_case.'&amp;id_joueur='.$W_ID.'\', \'information\')"><img src="image/icone/echanger.png" alt="Echanger" title="Echanger" /></a></td>';
 	}

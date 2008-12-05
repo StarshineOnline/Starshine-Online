@@ -20,14 +20,13 @@ class messagerie_thread
 		//Verification du nombre et du type d'argument pour construire le thread adequat.
 		if( (func_num_args() == 1) && is_numeric($id_thread) )
 		{
-			$requeteSQL = $db->query('SELECT id_groupe, id_dest, important FROM messagerie_thread WHERE id_thread = '.$id_thread);
+			$requeteSQL = $db->query('SELECT id_groupe, id_dest, id_auteur, important FROM messagerie_thread WHERE id_thread = '.$id_thread);
 			//Si le thread est dans la base, on le charge sinon on crée un thread vide.
 			if( $db->num_rows($requeteSQL) > 0 )
 			{
 				list($this->id_groupe, $this->id_dest, $this->id_auteur, $this->important) = $db->read_row($requeteSQL);
 			}
-			else
-				$this->__construct();
+			else $this->__construct();
 		}
 		else
 		{
@@ -67,9 +66,9 @@ class messagerie_thread
 	function sauver()
 	{
 		global $db;
-		if( $id_thread > 0 )
+		if( $this->id_thread > 0 )
 		{
-			$requete = 'UPDATE TABLE messagerie_thread SET ';
+			$requete = 'UPDATE messagerie_thread SET ';
 			$requete .= 'id_groupe = '.$this->id_groupe.', id_dest = '.$this->dest.', id_auteur = '.$this->id_auteur.', important = '.$this->important;
 			$requete .= ' WHERE id_thread = '.$this->id_thread;
 			$db->query($requete);
@@ -80,7 +79,7 @@ class messagerie_thread
 			$requete .= $this->id_groupe.', '.$this->id_dest.', '.$this->id_auteur.', '.$this->important.')';
 			$db->query($requete);
 			//Récuperation du dernier ID inséré.
-			list($this->id_thread) = $db->last_insert_id();
+			$this->id_thread = $db->last_insert_id();
 		}
 	}
 	

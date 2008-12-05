@@ -1,207 +1,121 @@
 <?php
 if(array_key_exists('javascript', $_GET)) include('inc/fp.php');
-if (!isset($_GET['id_message']) AND !array_key_exists('action', $_GET))
+include('fonction/messagerie.inc.php');
+
+if (!isset($_GET['id_thread']) AND !array_key_exists('action', $_GET))
 {
-	$_GET['action'] = 'reception';
+	$_GET['action'] = 'groupe';
 }
 if(!array_key_exists('action', $_GET))
 {
-	if (isset($_GET['id_message']))
+	if (isset($_GET['id_thread']))
 	{
-		if(array_key_exists('mode', $_GET)) $id_dest = '1'; else $id_dest = "id_dest = '".$_SESSION['ID']."'";
-		$requete = "SELECT * FROM message WHERE ".$id_dest." AND id = ".sSQL($_GET['id_message']);
-		if($req = $db->query($requete))
+		$id_thread = $_GET['id_thread'];
+		$messagerie = new messagerie($joueur['ID']);
+		$messagerie->get_thread($id_thread);
+		echo '<h3 style="text-align : center;">'.$messagerie->thread->messages[0]->titre.' / <a href="envoimessage.php?id_type=r'.$messagerie->thread->id_thread.'" onclick="return envoiInfo(this.href, \'information\')">Répondre</a></h3>';
+		foreach($messagerie->thread->messages as $message)
 		{
-			$time2 =  time()-604800;
-			$row = $db->read_assoc($req);
-			$date = strftime("%d/%m/%Y %H:%M", $row['date']);
-			$message = htmlspecialchars(stripslashes($row['message']));
-			//bbcode de merde
-			$message = str_replace('[br]', '<br />', $message);
-			$message = eregi_replace("\[b\]([^[]*)\[/b\]", '<strong>\\1</strong>', $message );
-			$message = eregi_replace("\[i\]([^[]*)\[/i\]", '<i>\\1</i>', $message );
-			$message = eregi_replace("\[url\]([^[]*)\[/url\]", '<a href="\\1">\\1</a>', $message );
-			$message = str_replace("[/color]", "</span>", $message);
-			//Lien vers échange
-			$message = eregi_replace("\[echange:([^[]*)\]", "<a href=\"javascript:envoiInfo('echange.php?id_echange=\\1', 'information')\">Echange ID : \\1</a>", $message);
-			echo '<h3><strong>'.htmlspecialchars(stripslashes($row['titre'])).'</strong> par '.$row['nom_envoi'].' le '.$date.'</h3>
-			<p class="information_case">'.$message.'</p>';
-			
-			$id_envoi = $row['id_envoi'];
-			if(array_key_exists('mode', $_GET) AND $_GET['mode'] == 'envoi') $id_envoi = $row['id_dest'];
-			if($id_envoi != 0 AND $row['date'] > $time2 ) echo '<a href="javascript:envoiInfo(\'envoimessage.php?id_message='.$row['id'].'&amp;ID='.$id_envoi.'\', \'information\')">Répondre</a> / ';
-			
-			
-			if(!array_key_exists('mode', $_GET)) echo '<a href="javascript:envoiInfo(\'messagerie.php?ID='.$_GET['id_message'].'&amp;action=del\', \'information\')">Supprimer</a>';
-			
-			
-			if($row['groupe'] != 0 AND $joueur['groupe'] == $row['groupe'] AND $row['date'] > $time2 ) echo '<br /><a href="javascript:envoiInfo(\'envoimessage.php?id_message='.$row['id'].'&amp;type=groupe&amp;id_groupe='.$row['groupe'].'\', \'information\')">Répondre au groupe</a>';
-			
-			
-			
-			if($row['type'] != 'lu') 
-			{
-				echo '<br /><br />';
-				$requete2 = "SELECT * FROM message WHERE ".$id_dest." AND id > ".sSQL($_GET['id_message'])." LIMIT 0, 1";
-				if($req2 = $db->query($requete2))
-				{
-					$row = $db->read_assoc($req2);
-					$message_suivant = $row['id'];
-				}
-				$requete3 = "SELECT * FROM message WHERE ".$id_dest." AND id < ".sSQL($_GET['id_message'])." ORDER by id DESC LIMIT 0, 1";
-				if($req3 = $db->query($requete3))
-				{
-					$row = $db->read_assoc($req3);
-					$message_precedent = $row['id'];
-				}
-				
-				if ($message_precedent != '' AND $row['type'] != 'lu')
-				{
-				?>
-					<a href="javascript:envoiInfo('messagerie.php?ID=<?php echo $_SESSION['ID']; ?>&amp;id_message=<?php echo $message_precedent; ?>', 'information');" style="<?php echo $style; ?>">Précédent</a>
-				<?php
-				}
-				if ($message_suivant != '')
-				{
-				?>	
-					<a href="javascript:envoiInfo('messagerie.php?ID=<?php echo $_SESSION['ID']; ?>&amp;id_message=<?php echo $message_suivant; ?>', 'information');" style="<?php echo $style; ?>">Suivant</a>
-				<?php
-				}
-			}
-			//mis a jour message lu
-			if(!array_key_exists('mode', $_GET))
-			{
-				$requete = "UPDATE message SET type = 'lu' WHERE id = ".sSQL($_GET['id_message']);
-				$req2 = $db->query($requete);
-			}
-			?><img src="image/pixel.gif" onLoad="envoiInfo('menu_carteville.php?javascript=oui', 'carteville');" />
-		<?php
+			$message_affiche = message_affiche($message, $joueur, $messagerie->thread->messages[0]->titre);
+			?>
+			<div id="message<?php echo $message->id_message; ?>">
+			<?php
+			echo $message_affiche;
+			?>
+			</div>
+			<?php
 		}
+		$messagerie->set_thread_lu($id_thread);
 	}
 }
 else
 {
 	$id_mess = $_GET['ID'];
+	$affiche_threads = false;
 	switch($_GET['action'])
 	{
 		//Confirmation de suppression d'un message
 		case 'del' :
 			echo 'Voulez vous vraiment effacer ce message ?<br />
-			<a href="javascript:envoiInfo(\'messagerie.php?ID='.$id_mess.'&amp;action=delc\', \'information\')">Oui</a> / <a href="javascript:envoiInfo(\'messagerie.php\', \'information\')">Non</a>';
+			<a href="messagerie.php?ID='.$id_mess.'&amp;action=delc" onclick="return envoiInfo(this.href, \'information\')">Oui</a> / <a href="javascript:envoiInfo(\'messagerie.php\', \'information\')">Non</a>';
 		break;
 		//Suppression d'un message
 		case 'delc' :
-			$ids = explode('|', $_GET['ID']);
-			foreach($ids as $id)
-			{
-				$requete = "DELETE FROM message WHERE ID = ".$id;
-				$db->query($requete);
-			}
+			$message = new messagerie_message($id_mess);
+			$message->supprimer();
+		break;
+		case 'groupe' :
+			$affiche_threads = true;
+			$type_thread = 'groupe';
+		break;
+		case 'perso' :
+			$affiche_threads = true;
+			$type_thread = 'perso';
 		break;
 	}
-	//Affichage de la liste des messages envoyés
-	if($_GET['action'] == 'envoi')
-	{
-		$champ = 'id_envoi';
-		$champ2 = 'nom_dest';
-	}
-	else
-	{
-		$champ = 'id_dest';
-		$champ2 = 'nom_envoi';
-	}
-	
-	if(array_key_exists('page', $_GET)) $page = $_GET['page'];
-	else $page = 1;
-	
-	$mess_page = 10;
-	$limit = ($page - 1) * $mess_page;
 
-	$requete = "SELECT id, id_dest, id_envoi, titre, nom_dest, nom_envoi, date, type FROM message WHERE ".$champ." = ".$_SESSION['ID']." ORDER BY date DESC LIMIT ".$limit.", ".$mess_page;
-	//Affichage des messages
-	?>
-	<table width="95%" class="information_case">
-	<tr>
-		<td>
-		</td>
-		<td>
-			Titre
-		</td>
-		<td>
-			<?php
-			if($champ == 'id_dest')
-			{
-			?>
-			Par
-			<?php
-			}
-			else
-			{
-			?>
-			Pour
-			<?php
-			}
-			?>
-		</td>
-		<td>
-			Date
-		</td>
-	</tr>
-	<?php
-	if($req = $db->query($requete))
+	if($affiche_threads)
 	{
-		$i = 0;
-		while($row = $db->read_array($req))
+		$messagerie = new messagerie($joueur['ID']);
+		$messagerie->get_threads($type_thread, 'ASC', true, 1);
+    	
+		//Affichage des messages
+		?>
+		<table width="95%" class="information_case">
+		<tr>
+			<td>
+			</td>
+			<td>
+				Titre
+			</td>
+			<td>
+				Par
+			</td>
+			<td>
+				Date
+			</td>
+		</tr>
+		<?php
+		foreach($messagerie->threads as $key => $thread)
 		{
-			$date = strftime("%d/%m/%Y %H:%M", $row['date']);
-			$style = '';
-			if($champ == 'id_envoi') $mode = '&amp;mode=envoi'; else $mode = '';
-			if($row['type'] == '') $style = 'font-weight : bold;';
+			$date = $thread->messages[0]->date;
+			if($thread->important) $style = 'font-weight : bold;';
+			else $style = '';
+			$thread_non_lu = $messagerie->get_thread_non_lu($thread->id_thread);
+			if($thread_non_lu > 0) $texte_thread_non_lu = '('.$thread_non_lu.')';
+			else $texte_thread_non_lu = '';
 			?>
-	<tr>
-		<td>
-			<?php
-			if($champ == 'id_dest')
-			{
-			?>
-			<input type="checkbox" id="mess<?php echo $i; ?>" value="<?php echo $row['id']; ?>" />
-			<?php
-			}
-			?>
-		</td>
-		<td>
-			<?php
-			//Si le titre est trop long je le coupe pour que ça casse pas ma mise en page qui déchire ta soeur en deux
-			$titre = htmlspecialchars(stripslashes($row['titre']));
-			if(strlen($titre)>=20) 
-			{
-				$titre=mb_substr($titre,0,20) . "...";
-			}
-			?>
-			<a href="javascript:envoiInfo('messagerie.php?ID=<?php echo $_SESSION['ID']; ?>&amp;id_message=<?php echo $row['id'].$mode; ?>', 'information');" style="<?php echo $style; ?>">
-
-			<?php echo $titre; ?></a>
-		</td>
-		<td>
-			<?php
-			if($champ == 'id_envoi' AND $row['groupe'] != 0) echo 'Groupe - '.$row[$champ2];
-			else echo $row[$champ2];
-			?>
-		</td>
-		<td style="font-size : 0.9em;">
-			<?php echo $date; ?>
-		</td>
-	</tr>
-			<?php
-			$i++;
+		<tr>
+			<td>
+				<?php echo $texte_thread_non_lu; ?>
+			</td>
+			<td>
+				<?php
+				//Si le titre est trop long je le coupe pour que ça casse pas ma mise en page qui déchire ta soeur en deux
+				$titre = htmlspecialchars(stripslashes($thread->messages[0]->titre));
+				if(strlen($titre)>=20) 
+				{
+					$titre = mb_substr($titre,0,20) . "...";
+				}
+				?>
+				<a href="messagerie.php?id_thread=<?php echo $thread->id_thread; ?>" onclick="envoiInfo(this.href, 'information'); return false;" style="<?php echo $style; ?>">
+				<?php echo $titre; ?></a>
+			</td>
+			<td>
+				<?php
+				echo $thread->messages[0]->nom_auteur;
+				?>
+			</td>
+			<td style="font-size : 0.9em;">
+				<?php echo $date; ?>
+			</td>
+		</tr>
+				<?php
 		}
+		?>
+		</table>
+		<?php
 	}
-	?>
-	</table>
-	<div style="text-align : center;">
-		<a href="javascript:envoiInfo('messagerie_ajax.php?action=<?php echo $_GET['action']; ?>&amp;page=<?php echo ($page - 1); ?>&amp;javascript=oui', 'liste_message');"><<- Page précédente</a> | Page <?php echo $page; ?> | <a href="javascript:envoiInfo('messagerie_ajax.php?action=<?php echo $_GET['action']; ?>&amp;page=<?php echo ($page + 1); ?>&amp;javascript=oui', 'liste_message');">Page suivante ->></a>
-	</div>
-	<?php
 }
 
 ?>

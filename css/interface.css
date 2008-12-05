@@ -85,7 +85,7 @@ a:hover, a:active 	{ color:#7290db; }
 .map li							{ float:left; width:60px; height:inherit; }
 .map_bord_gauche				{ width:25px !important; color:white; line-height:60px; text-align:center; background:#D8AB41 repeat scroll 0%; }
 .map_bord_gauche2				{ width:25px !important; color:white; line-height:60px; text-align:center; background:transparent url('./../image/bord2_map.png') center; }
-.map_contenu 					{ width:56px; height:56px; margin:2px 2px 2px 2px; background:transparent url(image/pixel.gif) center no-repeat;}
+.map_contenu 					{ width:56px; height:56px; margin:2px 2px 2px 2px; }
 
 /*-- Weather ----------------------------------------------------------*/
 #moment_jour { position:absolute; top:0px; left:0px; z-index:-1; width:960px; height:140px; background:transparent url('image/weather/matin5.jpg') bottom center no-repeat; }
@@ -103,7 +103,7 @@ a:hover, a:active 	{ color:#7290db; }
 #hotel_liste .li1 		{ cursor:default; float:left; font-weight:normal; text-align:center !important; line-height:14pt; }
 #hotel_liste .li2 		{ cursor:default;  float:left; font-weight:normal; text-align:center !important; background-color:#ADC2F5; line-height:14pt; }
 #hotel_liste .entete 	{ cursor:pointer; font-size:10pt !important; font-weight:bold; background-image:none !important; }
-#hotel_liste .nom 		{ float:left; width:185px; text-align:left !important; clear:both; }
+#hotel_liste .nom 		{ float:left; width:165px; text-align:left !important; clear:both; }
 #hotel_liste .temps 	{ float:left; width:90px; text-align:right !important; font-size:8pt; }
 #hotel_liste .prix 		{ float:left; width:75px; text-align:right !important; background-image:url('../image/stars_16.png'); background-position:right; background-repeat:no-repeat; padding-right:18px; }
 #hotel_liste .achat 	{ cursor:pointer; float:left; width:60px; text-align:right !important; font-variant:small-caps; font-weight:bold; }
@@ -117,6 +117,8 @@ a:hover, a:active 	{ color:#7290db; }
   Vrac
  ***************************************************/
 #loading {background:transparent url('./../image/ajax-loader-bar.gif') no-repeat scroll left center;height:22px;left:140px;position:absolute;top:300px;width:220px;}
+
+#loading {background:transparent url('../image/ajax-loader-bar.gif') center left no-repeat; width : 220px; height : 22px; position : absolute; top : 300px; left : 300px; display : none;}
 
 .infoperso {
 	vertical-align : top;
@@ -193,6 +195,43 @@ h3
 	background-color: #91AEF2;
 	font-family: "Trebuchet MS", Times, serif;
 	font-variant: small-caps ;
+}
+
+h3.messagerie
+{
+	margin-top : 0px;
+	margin-bottom : 0px;
+	width : 480px;
+	position : relative;
+	font-variant: normal;
+	height : 20px;
+	font-weight : normal;
+}
+
+h3.messagerie span.auteur
+{
+	position : absolute;
+	left : 0px;
+	font-weight : bold;
+	display : block;
+	width : 114px;
+	text-align : center;
+	text-transform : capitalize;
+}
+
+h3.messagerie span.titre
+{
+	position : absolute;
+	left : 114px;
+	color : #828387;
+	font-weight : normal;
+}
+
+h3.messagerie span.date
+{
+	position : absolute;
+	right : 10px;
+	font-size : 0.8em;
 }
 
 h4

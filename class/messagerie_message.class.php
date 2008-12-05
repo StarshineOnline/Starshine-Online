@@ -60,9 +60,9 @@ class messagerie_message
 	function sauver()
 	{
 		global $db;
-		if( $id_message > 0 )
+		if( $this->id_message > 0 )
 		{
-			$requete = 'UPDATE TABLE messagerie_message SET ';
+			$requete = 'UPDATE messagerie_message SET ';
 			$requete .= 'id_auteur = '.$this->id_auteur.', id_dest = '.$this->id_dest.', titre = "'.$this->dest.'", message = "'.$this->message.'", id_thread = '.$this->id_thread.', date = "'.$this->date.'", nom_auteur = "'.$this->nom_auteur.'", nom_dest = "'.$this->nom_dest;
 			$requete .= ' WHERE id_message = '.$this->id_message;
 			$db->query($requete);
@@ -83,7 +83,11 @@ class messagerie_message
 		global $db;
 		if( $this->id_message > 0 )
 		{
+			//Suppression du message
 			$requete = 'DELETE FROM messagerie_message WHERE id_message = '.$this->id_message;
+			$db->query($requete);
+			//Suppression de tous les états associés
+			$requete = 'DELETE FROM messagerie_etat WHERE id_message = '.$this->id_message;
 			$db->query($requete);
 		}
 	}

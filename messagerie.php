@@ -1,10 +1,12 @@
 <?php
 include('inc/fp.php');
 $joueur = recupperso($_SESSION['ID']);
+$messagerie = new messagerie($joueur['ID']);
+$non_lu = $messagerie->get_non_lu();
 ?>
 <h2>Messagerie</h2>
 <div style="text-align : center;">
-	<a href="javascript:envoiInfo('messagerie.php', 'information');">Réception</a> | <a href="javascript:envoiInfo('messagerie.php?action=envoi', 'information');">Envoi</a> | <a href="javascript:if(confirm('Voulez vous supprimer ces messages ?')) checkCase();">Supprimer</a><br />
+	<a href="messagerie.php" onclick="envoiInfo(this.href, 'information'); return false;">Groupe (<?php echo $non_lu['groupe']; ?>)</a> | <a href="messagerie.php?action=perso" onclick="envoiInfo(this.href, 'information'); return false;">Perso (<?php echo $non_lu['perso']; ?>)</a><br />
 </div>
 <div id="liste_message">
 <?php

@@ -74,4 +74,9 @@ include_once($root.'fonction/security.inc.php');
 include_once($root.'fonction/print.inc.php');
 
 //include_once($root.'class/perso.class.php');
+require_once('class/messagerie.class.php');
+require_once('class/messagerie_etat_message.class.php');
+require_once('class/messagerie_message.class.php');
+require_once('class/messagerie_thread.class.php');
+
 ?>

@@ -44,7 +44,7 @@ class messagerie
 	}
 	
 	//Récupération de tous les threads pour ce perso
-	function get_threads($type = 'groupe', $tri_date = 'DESC', $liste_message = false, $nombre_message = 'all')
+	function get_threads($type = 'groupe', $tri_date = 'ASC', $liste_message = false, $nombre_message = 'all')
 	{
 		global $db;
 		$this->threads = array();
@@ -70,7 +70,7 @@ class messagerie
 		return $this->threads;
 	}
 
-	//Récupération d'un thread pour ce perso
+	//Récupération du nombre de message non lu pour ce thread et ce perso
 	function get_thread_non_lu($id_thread = 0)
 	{
 		global $db;
@@ -96,7 +96,7 @@ class messagerie
 	}
 	
 	//Récupère le thread et les états de message
-	function get_thread($id_thread = 0, $nombre = 'all', $tri_date = 'DESC')
+	function get_thread($id_thread = 0, $nombre = 'all', $tri_date = 'ASC')
 	{
 		global $db;
 		if($id_thread != 0)
@@ -105,6 +105,34 @@ class messagerie
 			$this->thread->get_messages($nombre, $tri_date, $this->id_perso);
 		}
 		else return false;
+	}
+	
+	function set_etat($id_message = 0, $etat = 'non_lu')
+	{
+		global $db;
+		if($id_message != 0)
+		{
+			$requete = "SELECT id_message_etat, groupe FROM messagerie_etat WHERE id_dest = ".$this->id_perso." AND id_message = ".$id_message;
+			$req = $db->query($requete);
+			$row = $db->read_assoc($req);
+			$etat_objet = new messagerie_etat($row['id_message_etat'], $id_message, $etat, $this->id_perso, $row['groupe']);
+			$etat_objet->sauver();
+		}
+	}
+
+	//Fonction permettant de récupérer un message
+	function get_message($id_message = 0)
+	{
+		global $db;
+		if($id_message > 0)
+		{
+			$requete = "SELECT messagerie_message.id_message as id_message, id_auteur, messagerie_message.id_dest as id_dest, titre, message, messagerie_message.id_thread as id_thread, date, messagerie_etat.etat as metat FROM messagerie_message LEFT JOIN messagerie_etat ON messagerie_message.id_message = messagerie_etat.id_message WHERE messagerie_etat.id_message = ".$id_message." AND messagerie_etat.id_dest = ".$this->id_perso;
+			$req = $db->query($requete);
+			$row = $db->read_assoc($req);
+			$this->message = new messagerie_message($row['id_message'], $row['id_auteur'], $row['id_dest'], $row['titre'], $row['message'], $row['id_thread'], $row['date']);
+			$this->message->etat = $row['metat'];
+		}
+		return $this->message;
 	}
 
 	//Envoi d'un message
@@ -116,8 +144,9 @@ class messagerie
 		{
 			if($roi == 0) $important = 0;
 			else $important = 1;
-			$thread = new messagerie_thread(0, $id_groupe, $id_dest, $important);
+			$thread = new messagerie_thread(0, $id_groupe, $id_dest, $this->id_perso, $important);
 			$thread->sauver();
+			$id_thread = $thread->id_thread;
 		}
 
 		//Création du message
@@ -139,16 +168,17 @@ class messagerie
 		}
 		else
 		{
-			$ids_dest = array($id_dest);
+			$ids_dest = array($id_dest, $this->id_perso);
 			$type_groupe = 0;
 		}
 		
-		$etat = 'non_lu';
 		//On ajoute un état pour chaque membre
 		foreach($ids_dest as $id)
 		{
-			$etat = new messagerie_etat(0, $message->id_message, $etat, $id, $type_groupe);
-			$etat->sauver();
+			if($id != $this->id_perso) $etat = 'non_lu';
+			else $etat = 'lu';
+			$etat_objet = new messagerie_etat(0, $message->id_message, $etat, $id, $type_groupe);
+			$etat_objet->sauver();
 		}
 	}
 }

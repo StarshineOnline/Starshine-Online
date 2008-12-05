@@ -45,6 +45,7 @@ $_SESSION['position'] = convert_in_pos($joueur['x'], $joueur['y']);
 ?>
 
 <div id="conteneur">
+	<div id="loading" style="display : none;"> </div>
 	<div id="perso">
 		<?php
 		require_once('infoperso.php');
