@@ -706,7 +706,7 @@ if($W_distance == 0)
         		        echo '
         		        <tr>
         		        	<td>
-        		        		<a href="javascript:envoiInfo(\'envoimessage.php?ID='.$row['ID'].'\', \'information\')">'.$row['nom'].'</a>
+        		        		<a href="envoimessage.php?id_type=p'.$row['ID'].'" onclick="return envoiInfo(this.href, \'information\')">'.$row['nom'].'</a>
         		        	</td>
         		        	<td>
         		        		 - Roi des '.$Gtrad[$row['race']].'

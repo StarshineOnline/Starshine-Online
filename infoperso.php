@@ -111,8 +111,8 @@ if(!empty($joueur["groupe"]))
 	if(!isset($groupe)) { $groupe = recupgroupe($joueur["groupe"], ""); };
 
 	echo "<div id='joueur_groupe'>
-		   <div id='mail_groupe' title='Envoyer un message &agrave; l&apos;ensemble du groupe.' onclick=\"envoiInfo('envoimessage.php?type=groupe&amp;id_groupe=".$groupe["id"]."', 'information');\"></div>
-		   <div id='info_groupe' title='Voir les informations de mon groupe.' onclick=\"envoiInfo('infogroupe.php?id=".$groupe["id"]."', 'information');\"></div>";
+		   <div id='mail_groupe' title='Envoyer un message &agrave; l&apos;ensemble du groupe.' onclick=\"return envoiInfo('envoimessage.php?id_type=g".$groupe["id"]."', 'information');\"></div>
+		   <div id='info_groupe' title='Voir les informations de mon groupe.' onclick=\"return envoiInfo('infogroupe.php?id=".$groupe["id"]."', 'information');\"></div>";
 	echo " <ul>";
 	for($m = 0; $m < count($groupe["membre"]); $m++)
 	{//-- Récupération des infos sur le membre du groupe

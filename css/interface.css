@@ -139,6 +139,11 @@ margin : 0px;
 padding : 0px;
 }
 
+#mail_groupe
+{
+	background:transparent url('../image/interface/message.png') center left no-repeat; width : 28px; height : 19px;
+}
+
 .roseeticone {
 	float : left;
 	padding: 4px;

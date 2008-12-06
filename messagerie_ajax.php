@@ -56,9 +56,10 @@ else
 
 	if($affiche_threads)
 	{
+		$groupe = recupgroupe($joueur['groupe'], '');
 		$messagerie = new messagerie($joueur['ID']);
 		$messagerie->get_threads($type_thread, 'ASC', true, 1);
-    	
+		
 		//Affichage des messages
 		?>
 		<table width="95%" class="information_case">
@@ -74,6 +75,8 @@ else
 			<td>
 				Date
 			</td>
+			<td>
+			</td>
 		</tr>
 		<?php
 		foreach($messagerie->threads as $key => $thread)
@@ -84,6 +87,13 @@ else
 			$thread_non_lu = $messagerie->get_thread_non_lu($thread->id_thread);
 			if($thread_non_lu > 0) $texte_thread_non_lu = '('.$thread_non_lu.')';
 			else $texte_thread_non_lu = '';
+			if($groupe['leader'] && $type_thread == 'groupe')
+			{
+				if($thread->important) $important_etat = 0;
+				else $important_etat = 1;
+				$options = '<a href="thread_modif?id_thread='.$thread->id_thread.'&important='.$important_etat.'" onclick="return envoiInfo(this.href, \'\');">(i)</a> <a href="thread_modif?id_thread='.$thread->id_thread.'&suppr=1" onclick="if(confirm(\'Si vous supprimez ce message, tous les messages à l\\\'intérieur seront supprimés !\')) return envoiInfo(this.href, \'\'); else return false;">(X)</a>';
+			}
+			else $options = '';
 			?>
 		<tr>
 			<td>
@@ -93,9 +103,9 @@ else
 				<?php
 				//Si le titre est trop long je le coupe pour que ça casse pas ma mise en page qui déchire ta soeur en deux
 				$titre = htmlspecialchars(stripslashes($thread->messages[0]->titre));
-				if(strlen($titre)>=20) 
+				if(strlen($titre)>=30) 
 				{
-					$titre = mb_substr($titre,0,20) . "...";
+					$titre = mb_substr($titre,0,30) . "...";
 				}
 				?>
 				<a href="messagerie.php?id_thread=<?php echo $thread->id_thread; ?>" onclick="envoiInfo(this.href, 'information'); return false;" style="<?php echo $style; ?>">
@@ -108,6 +118,9 @@ else
 			</td>
 			<td style="font-size : 0.9em;">
 				<?php echo $date; ?>
+			</td>
+			<td>
+				<?php echo $options; ?>
 			</td>
 		</tr>
 				<?php

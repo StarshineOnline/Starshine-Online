@@ -55,7 +55,7 @@ class messagerie
 				$where = 'id_groupe = '.$perso['groupe'];
 			break;
 			case 'perso' :
-				$where = 'id_dest = '.$this->id_perso.' OR id_auteur = '.$this->id_perso;
+				$where = 'id_dest = '.$this->id_perso.' OR (id_auteur = '.$this->id_perso.' AND id_groupe = 0)';
 			break;
 		}
 		$requete = "SELECT id_thread, id_groupe, id_dest, id_auteur, important FROM messagerie_thread WHERE ".$where." ORDER BY important DESC, id_thread DESC";

@@ -46,10 +46,21 @@ function message_affiche($message, $joueur, $thread_title = '')
 		else $avatar = '';
 	}
 	$message_affiche = '
+		<head>
+		<script type="text/javascript">
+		//<![CDATA[
+		new Event.observe(window, "load", loadTips);
+		function loadTips()
+		{
+			new Tip("option_message_'.$message->id_message.'", "content", {title: "this tooltip has a title"});
+		}
+		//]]>
+		</script>
+		</head>
 		<h3 class="messagerie">
 			<span class="auteur">'.$message->nom_auteur.'</span>
 			<span class="titre">'.$titre.'</span>
-			<span class="date">'.$message->etat.' / '.$date.'</span>
+			<span class="date">'.$message->etat.' / '.$date.'<div id="option_message_'.$message->id_message.'">a</div></span>
 		</h3>
 		<p>'.$avatar.$message_texte.'</p>';
 	
