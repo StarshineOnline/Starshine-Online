@@ -284,3 +284,10 @@ function envoiInfo(page,position)
 	new Ajax.Request(page,{method:'get',onLoading:Loadchargement,onComplete:Affiche});
 	return false;
 }
+
+function envoiInfoJS(page, position)
+{
+	function Affiche(requete){$(position).innerHTML = requete.responseText.evalJSON(); Hidechargement();}
+	new Ajax.Request(page,{method:'get',onLoading:Loadchargement,onComplete:Affiche});
+	return false;
+}

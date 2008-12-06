@@ -84,9 +84,27 @@ class messagerie_thread
 	}
 	
 	//supprimer le thread de la base.
-	function supprimer()
+	function supprimer($cascade = false)
 	{
 		global $db;
+		if($cascade == true)
+		{
+			$messages = array();
+			//On récupère la liste des messages qui appartiennent à ce thread
+			$requete = "SELECT id_message FROM messagerie_message WHERE id_thread = ".$this->id_thread;
+			$req = $db->query($requete);
+			while($row = $db->read_assoc($req))
+			{
+				$messages[] = $row['id_message'];
+			}
+			$in = implode(',', $messages);
+			//On efface tous les etats qui correspondent à ces messages
+			$requete = "DELETE FROM messagerie_etat WHERE id_message IN (".$in.")";
+			$db->query($requete);
+			//On efface tous les messages
+			$requete = "DELETE FROM messagerie_message WHERE id_thread = ".$this->id_thread;
+			$db->query($requete);
+		}
 		if( $this->id_thread > 0 )
 		{
 			$requete = 'DELETE FROM messagerie_thread WHERE id_thread = '.$this->id_thread;
