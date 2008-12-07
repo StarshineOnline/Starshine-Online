@@ -137,4 +137,19 @@ foreach($ressource_final as $key => $value)
 	$requete = "UPDATE royaume SET pierre = pierre + ".$value['Pierre'].", bois = bois + ".$value['Bois'].", eau = eau + ".$value['Eau'].", sable = sable + ".$value['Sable'].", charbon = charbon + ".$value['Charbon'].", essence = essence + ".$value['Essence Magique'].", star = star + ".$value['Star'].", food = food + ".$value['Nourriture']." WHERE race = '".$key."'";
 	$db->query($requete);
 }
+
+//Nourriture
+$requete = "SELECT ID, race, food FROM royaume WHERE ID != 0";
+$req = $db->query($requete);
+while($row = $db->read_assoc($req))
+{
+	$tab_royaume[$row['race']] = array('id' => $row['ID'], 'food' => $row['food']);
+}
+foreach($tab_royaume as $royaume => $value)
+{
+	if($royaume['food_necessaire'] < $royaume['food'])
+	{
+		$requete = "UPDATE royaume SET food = food - ".$royaume['food_necessaire'];
+	}
+}
 ?>

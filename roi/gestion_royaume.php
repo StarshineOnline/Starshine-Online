@@ -1322,6 +1322,53 @@ $W_coord = convert_in_coord($W_case);
 		</table>
 		<?php
 	}
+	elseif($_GET['direction'] == 'bourse')
+	{
+		require_once('../class/bourse_royaume.class.php');
+		require_once('../class/bourse.class.php');
+		$bourse = new bourse($R['ID']);
+		$bourse->get_encheres();
+		print_r($bourse);
+		?>
+		<table style="width : 100%;">
+		<tr>
+			<td>
+				Ressource
+			</td>
+			<td>
+				Nombre
+			</td>
+			<td>
+				Prix actuel
+			</td>
+			<td>
+				Fin vente
+			</td>
+		</tr>
+		<?php
+		foreach($bourse->encheres as $enchere)
+		{
+			?>
+		<tr>
+			<td>
+				<?php echo $enchere->ressource; ?>
+			</td>
+			<td>
+				<?php echo $enchere->nombre; ?>
+			</td>
+			<td>
+				<?php echo $enchere->prix.' ('.round(($enchere->prix / $enchere->nombre), 2).' / u)'; ?>
+			</td>
+			<td>
+				<?php echo $enchere->fin_vente; ?>
+			</td>
+		</tr>
+			<?php
+		}
+		?>
+		</table>
+		<?php
+	}
 	$requete = "SELECT * FROM diplomatie_demande WHERE royaume_recois = '".$joueur['race']."'";
 	$req = $db->query($requete);
 	if($db->num_rows > 0)

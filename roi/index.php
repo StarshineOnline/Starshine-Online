@@ -54,6 +54,7 @@ $_SESSION['position'] = convert_in_pos($joueur['x'], $joueur['y']);
 			<li>
 				<a href="#" onclick="showMenu(3)">Economie</a>
 				<ul id="smenu3" style="display : none">
+					<li><a href="gestion_royaume.php?direction=bourse" onclick="return clickMenu(this);">Bourse Inter Royaume</a>
 					<li><a href="gestion_royaume.php?direction=construction" onclick="return clickMenu(this);">Construction de la ville</a>
 					<li><a href="gestion_royaume.php?direction=entretien" onclick="return clickMenu(this);">Entretien</a>
 					<li><a href="gestion_royaume.php?direction=quete" onclick="return clickMenu(this);">Gestion des quètes</a>

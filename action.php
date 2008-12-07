@@ -9,7 +9,7 @@ check_perso($joueur);
 $round_max = 10;
 if($joueur['race'] == 'orc') $round_max++;
 ?>
-	<h2><a href="javascript:envoiInfo('actions.php', 'information');">Script de combat</a> -  Création</h2>
+	<h2><a href="actions.php" onclick="return envoiInfo(this.href, 'information');">Script de combat</a> -  Création</h2>
 	<?php
 	//Changement du nom du script
 	if(array_key_exists('action', $_GET) && $_GET['action'] == 'change_nom')
@@ -178,8 +178,8 @@ if(array_key_exists('from', $_GET) && $_GET['id_action'] != '')
 		if(array_key_exists('valid_cond', $_GET))
 		{
 			?>
-			<input type="button" name="ajout" value="Ajouter une condition" onclick="envoiInfo('action.php?mode=a&amp;id_action=<?php echo $id_action; ?>', 'information');" />
-			<input type="button" name="valid" value="Valider cette ligne" onclick="envoiInfo('action.php?mode=a&amp;id_action=<?php echo $id_action; ?>&amp;valid=ok', 'information');" />
+			<input type="button" name="ajout" value="Ajouter une condition" onclick="return envoiInfo('action.php?mode=a&amp;id_action=<?php echo $id_action; ?>', 'information');" />
+			<input type="button" name="valid" value="Valider cette ligne" onclick="return envoiInfo('action.php?mode=a&amp;id_action=<?php echo $id_action; ?>&amp;valid=ok', 'information');" />
 			<?php
 		}
 		//=== CONDITION ===
@@ -211,7 +211,7 @@ if(array_key_exists('from', $_GET) && $_GET['id_action'] != '')
 					<input type="text" name="valeur" id="valeur" style="visibility : hidden; width : 40px;" /><br />
 				</td>
 				<td>
-					<input type="button" name="valid_cond" value="Valider" onclick="envoiInfo('action.php?mode=a&amp;id_action=<?php echo $id_action; ?>&amp;si=' + document.getElementById('si').value + '&amp;op=' + document.getElementById('op').value + '&amp;valeur=' + document.getElementById('valeur').value + '&amp;valid_cond=ok', 'information');" /><br />
+					<input type="button" name="valid_cond" value="Valider" onclick="return envoiInfo('action.php?mode=a&amp;id_action=<?php echo $id_action; ?>&amp;si=' + document.getElementById('si').value + '&amp;op=' + document.getElementById('op').value + '&amp;valeur=' + document.getElementById('valeur').value + '&amp;valid_cond=ok', 'information');" /><br />
 				</td>
 			</tr>
 			<?php
@@ -246,7 +246,7 @@ if(array_key_exists('from', $_GET) && $_GET['id_action'] != '')
 						</select>
 					</td>
 					<td>
-						<input type="button" name="valid_cond" value="Valider" onclick="envoiInfo('action.php?mode=a&amp;id_action=<?php echo $id_action; ?>&amp;si=10&amp;op=o&amp;valeur=' + document.getElementById('etat_s').value + '&amp;qui=' + document.getElementById('qui_s').value + '&amp;valid_cond=ok', 'information');" /><br />
+						<input type="button" name="valid_cond" value="Valider" onclick="return envoiInfo('action.php?mode=a&amp;id_action=<?php echo $id_action; ?>&amp;si=10&amp;op=o&amp;valeur=' + document.getElementById('etat_s').value + '&amp;qui=' + document.getElementById('qui_s').value + '&amp;valid_cond=ok', 'information');" /><br />
 					</td>
 				</tr>
 				<?php
@@ -279,7 +279,7 @@ if(array_key_exists('from', $_GET) && $_GET['id_action'] != '')
 					</select>
 				</td>
 				<td>
-					<input type="button" name="valid_cond" value="Valider" onclick="envoiInfo('action.php?mode=a&amp;id_action=<?php echo $id_action; ?>&amp;si=10&amp;op=o&amp;valeur=' + document.getElementById('etat').value + '&amp;qui=' + document.getElementById('qui').value + '&amp;valid_cond=ok', 'information');" /><br />
+					<input type="button" name="valid_cond" value="Valider" onclick="reutn envoiInfo('action.php?mode=a&amp;id_action=<?php echo $id_action; ?>&amp;si=10&amp;op=o&amp;valeur=' + document.getElementById('etat').value + '&amp;qui=' + document.getElementById('qui').value + '&amp;valid_cond=ok', 'information');" /><br />
 				</td>
 			</tr>
 			</table>
@@ -309,7 +309,7 @@ if(array_key_exists('from', $_GET) && $_GET['id_action'] != '')
 			}
 		?>
 			</select>
-			<input type="button" name="valid" value="Utiliser ce sort" onclick="envoiInfo('action.php?mode=a&amp;id_action=<?php echo $id_action; ?>&amp;final=' + document.getElementById('final_s').value, 'information');" />
+			<input type="button" name="valid" value="Utiliser ce sort" onclick="return envoiInfo('action.php?mode=a&amp;id_action=<?php echo $id_action; ?>&amp;final=' + document.getElementById('final_s').value, 'information');" />
 		<?php
 		}
 		//Affichage des compétences de combat
@@ -327,17 +327,17 @@ if(array_key_exists('from', $_GET) && $_GET['id_action'] != '')
 			}
 		?>
 			</select>
-			<input type="button" name="valid" value="Utiliser cette compétence" onclick="envoiInfo('action.php?mode=a&amp;id_action=<?php echo $id_action; ?>&amp;final=' + document.getElementById('final_c').value, 'information');" />
+			<input type="button" name="valid" value="Utiliser cette compétence" onclick="return envoiInfo('action.php?mode=a&amp;id_action=<?php echo $id_action; ?>&amp;final=' + document.getElementById('final_c').value, 'information');" />
 		<?php
 		}
 		?>
 			</form>
-			<input type="button" name="valid" value="Attaque simple" onclick="envoiInfo('action.php?mode=a&amp;id_action=<?php echo $id_action; ?>&amp;final=!', 'information');" />
+			<input type="button" name="valid" value="Attaque simple" onclick="return envoiInfo('action.php?mode=a&amp;id_action=<?php echo $id_action; ?>&amp;final=!', 'information');" />
 		<?php
 		}
 		?>
 		<br />
-		<h3>Script Actuel - <input type="text" value="<?php echo $action_t['nom']; ?>" id="nom_action" name="nom_action" /> <a href="javascript:envoiInfo('action.php?mode=a&amp;id_action=<?php echo $id_action; ?>&amp;action=change_nom&amp;nom_action=' + document.getElementById('nom_action').value, 'information');"><img src="image/valid.png" alt="Valider" title="Valider le nom du script" /></a></h3>
+		<h3>Script Actuel - <input type="text" value="<?php echo $action_t['nom']; ?>" id="nom_action" name="nom_action" /> <a href="#" onclick="return envoiInfo('action.php?mode=a&amp;id_action=<?php echo $id_action; ?>&amp;action=change_nom&amp;nom_action=' + document.getElementById('nom_action').value, 'information');"><img src="image/valid.png" alt="Valider" title="Valider le nom du script" /></a></h3>
 		<?php
 		//=== Affichage de la liste des actions ===
 		$i = 0;
@@ -354,8 +354,8 @@ if(array_key_exists('from', $_GET) && $_GET['id_action'] != '')
 					</td>
 					<td>
 			';
-			if ($i != 0) echo ' <a href="javascript:envoiInfo(\'action.php?mode=a&amp;id_action='.$id_action.'&amp;up='.$i.'\', \'information\')">Monter</a>';
-			if($actionexplode[$i][0] != '') echo '</td><td><a href="javascript:envoiInfo(\'action.php?mode=a&amp;id_action='.$id_action.'&amp;suppr='.$i.'\', \'information\')">Supprimer</a>';
+			if ($i != 0) echo ' <a href="action.php?mode=a&amp;id_action='.$id_action.'&amp;up='.$i.'" onclick="return envoiInfo(this.href, \'information\')">Monter</a>';
+			if($actionexplode[$i][0] != '') echo '</td><td><a href="action.php?mode=a&amp;id_action='.$id_action.'&amp;suppr='.$i.'" onclick="return envoiInfo(this.href, \'information\')">Supprimer</a>';
 			echo '
 					</td>
 				</tr>';
