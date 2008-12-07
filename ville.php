@@ -92,7 +92,7 @@ if($W_distance == 0 AND $verif_ville)
 	if(($R['diplo'] < 7 OR $R['diplo'] == 127) AND !$acces_ville)
 	{
 		?>
-		<h2 class="ville_titre"><?php echo '<a href="javascript:envoiInfo(\'ville.php?poscase='.$W_case.'\',\'centre\')">';?><?php echo $R['nom'];?></a> </h2>
+		<h2 class="ville_titre"><?php echo '<a href="ville.php?poscase='.$W_case.'" onclick="return envoiInfo(this.href,\'centre\')">';?><?php echo $R['nom'];?></a> </h2>
 					<?php include('ville_bas.php');?>
 
 				<?php
@@ -138,19 +138,19 @@ if($W_distance == 0 AND $verif_ville)
 								?>
 							<ul class="ville">
 								<li>
-									<a href="javascript:envoiInfo('boutique.php?type=arme&amp;poscase=<?php echo $W_case; ?>', 'carte')">Forgeron</a>
+									<a href="boutique.php?type=arme&amp;poscase=<?php echo $W_case; ?>" onclick="return envoiInfo(this.href, 'carte')">Forgeron</a>
 								</li>
 								<li>
-									<a href="javascript:envoiInfo('boutique.php?type=armure&amp;poscase=<?php echo $W_case; ?>', 'carte')">Armurerie</a>
+									<a href="boutique.php?type=armure&amp;poscase=<?php echo $W_case; ?>" onclick="return envoiInfo(this.href, 'carte')">Armurerie</a>
 								</li>
 								<li>
-									<a href="javascript:envoiInfo('enchanteur.php?poscase=<?php echo $W_case; ?>', 'carte')">Enchanteur</a>
+									<a href="enchanteur.php?poscase=<?php echo $W_case; ?>" onclick="return envoiInfo(this.href, 'carte')">Enchanteur</a>
 								</li>
 								<li>
-									<a href="javascript:envoiInfo('magasin.php?poscase=<?php echo $W_case; ?>', 'carte')">Alchimiste</a>
+									<a href="magasin.php?poscase=<?php echo $W_case; ?>" onclick="return envoiInfo(this.href, 'carte')">Alchimiste</a>
 								</li>
 								<li>
-									<a href="javascript:envoiInfo('hotel.php?poscase=<?php echo $W_case; ?>', 'carte')">Hotel des ventes</a>
+									<a href="hotel.php?poscase=<?php echo $W_case; ?>" onclick="return envoiInfo(this.href, 'carte')">Hotel des ventes</a>
 								</li>
 							</ul>
 							<?php
@@ -168,7 +168,7 @@ if($W_distance == 0 AND $verif_ville)
 								{
 							?>
 									<li>
-										<a href="javascript:envoiInfo('candidature.php?poscase=<?php echo $W_case; ?>', 'carte')">Candidature</a>
+										<a href="candidature.php?poscase=<?php echo $W_case; ?>" onclick="return envoiInfo(this.href, 'carte')">Candidature</a>
 									</li>
 							<?php
 								}
@@ -176,7 +176,7 @@ if($W_distance == 0 AND $verif_ville)
 										{
 							?>
 									<li>
-										<a href="javascript:envoiInfo('vote_roi.php?poscase=<?php echo $W_case; ?>', 'carte')">Vote</a>
+										<a href="vote_roi.php?poscase=<?php echo $W_case; ?>" onclick="return envoiInfo(this.href, 'carte')">Vote</a>
 									</li>
 							<?php
 										}
@@ -184,31 +184,31 @@ if($W_distance == 0 AND $verif_ville)
 							?>
 							
 									<li>
-										<a href="javascript:envoiInfo('bureau_quete.php?poscase=<?php echo $W_case; ?>','carte')">Bureau des quètes</a>
+										<a href="bureau_quete.php?poscase=<?php echo $W_case; ?>" onclick="return envoiInfo(this.href,'carte')">Bureau des quètes</a>
 									</li>
 							<?php
 									if($R['diplo'] == 127)
 									{
 							?>
 									<li>
-										<a href="javascript:envoiInfo('qg.php?poscase=<?php echo $W_case; ?>', 'carte')">Quartier général</a>
+										<a href="" onclick="return envoiInfo('qg.php?poscase=<?php echo $W_case; ?>', 'carte')">Quartier général</a>
 									</li>
 									<li>
-										<a href="javascript:envoiInfo('vente_terrain.php?poscase=<?php echo $W_case; ?>', 'carte')">Vente de terrain</a>
+										<a href="" onclick="return envoiInfo('vente_terrain.php?poscase=<?php echo $W_case; ?>', 'carte')">Vente de terrain</a>
 									</li>
 							<?php
 										if($joueur['rang_royaume'] == 6)
 										{
 							?>
 									<li>
-										<a href="javascript:envoiInfo('gestion_royaume.php?poscase=<?php echo $W_case; ?>', 'carte')">Gestion du royaume</a>
+										<a href="" onclick="return envoiInfo('gestion_royaume.php?poscase=<?php echo $W_case; ?>', 'carte')">Gestion du royaume</a>
 									</li>
 							<?php
 										}
 									}
 							?>
 					<li>
-						<a href="javascript:envoiInfo('teleport.php?poscase=<?php echo $W_case; ?>', 'carte')">Pierre de Téléportation</a>
+						<a href="" onclick="return envoiInfo('teleport.php?poscase=<?php echo $W_case; ?>', 'carte')">Pierre de Téléportation</a>
 					</li>
 			</ul>
 			</td>
@@ -218,23 +218,23 @@ if($W_distance == 0 AND $verif_ville)
 				<p class="ville_haut">Haut Quartier</p>
 				<ul class="ville">
 					<li>
-						<a href="javascript:envoiInfo('ecolemagie.php?poscase=<?php echo $W_case; ?>', 'carte')">Ecole de magie</a>
+						<a href="" onclick="return envoiInfo('ecolemagie.php?poscase=<?php echo $W_case; ?>', 'carte')">Ecole de magie</a>
 					</li>
 					<li>
-						<a href="javascript:envoiInfo('ecolecombat.php?poscase=<?php echo $W_case; ?>', 'carte')">Ecole de combat</a>
+						<a href="" onclick="return envoiInfo('ecolecombat.php?poscase=<?php echo $W_case; ?>', 'carte')">Ecole de combat</a>
 					</li>
 					<li>
-						<a href="javascript:envoiInfo('universite.php?poscase=<?php echo $W_case; ?>', 'carte')">Université</a>
+						<a href="" onclick="return envoiInfo('universite.php?poscase=<?php echo $W_case; ?>', 'carte')">Université</a>
 					</li>
 					<li>
-						<a href="javascript:envoiInfo('tribunal.php?poscase=<?php echo $W_case; ?>', 'carte')">Tribunal</a>
+						<a href="" onclick="return envoiInfo('tribunal.php?poscase=<?php echo $W_case; ?>', 'carte')">Tribunal</a>
 					</li>
 <?php
 		if($R['diplo'] == 127)
 		{
 /*?>
 					<li>
-						<a href="javascript:envoiInfo('maison_lignee.php?poscase=<?php echo $W_case; ?>','carte')">Maison de lignées</a>
+						<a href="" onclick="return envoiInfo('maison_lignee.php?poscase=<?php echo $W_case; ?>','carte')">Maison de lignées</a>
 					</li>
 <?php*/
 		}
@@ -245,10 +245,10 @@ if($W_distance == 0 AND $verif_ville)
 			<p class="ville_haut">Bas Quartier</p>
 			<ul class="ville">		
 				<li>
-					<a href="javascript:envoiInfo('taverne.php?poscase=<?php echo $W_case; ?>', 'carte')">Taverne</a>
+					<a href="" onclick="return envoiInfo('taverne.php?poscase=<?php echo $W_case; ?>', 'carte')">Taverne</a>
 				</li>
 				<li>
-					<a href="javascript:envoiInfo('poste.php?poscase=<?php echo $W_case; ?>', 'carte')">Poste</a>
+					<a href="" onclick="return envoiInfo('poste.php?poscase=<?php echo $W_case; ?>', 'carte')">Poste</a>
 				</li>
 			</ul>
 						</tr>
@@ -267,7 +267,7 @@ if($W_distance == 0 AND $verif_ville)
 	?>
 	Vous êtes considérez comme criminel par votre royaume.<br />
 	Il vous faut payer une amende de <?php echo $amende['montant']; ?> stars pour redevenir libre.<br />
-	<a href="javascript:envoiInfo('ville.php?poscase=<?php echo $W_case; ?>&amp;direction=paye_amende', 'carte')">Pour payer l'amende, cliquez ici</a>
+	<a href="" onclick="return envoiInfo('ville.php?poscase=<?php echo $W_case; ?>&amp;direction=paye_amende', 'carte')">Pour payer l'amende, cliquez ici</a>
 	<?php
 	}
 }

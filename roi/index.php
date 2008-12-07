@@ -48,6 +48,7 @@ $_SESSION['position'] = convert_in_pos($joueur['x'], $joueur['y']);
 					<li><a href="gestion_royaume.php?direction=carte" onclick="return clickMenu(this);">Carte des constructions et habitants</a>
 					<li><a href="index.php" onclick="refresh(this.href, 'conteneur');">Gestion des groupes</a></li>
 					<li><a href="carte_strategique.php" onclick="return clickMenu(this);">Carte Stratégique</a></li>
+					<li><a href="gestion_royaume.php?direction=boutique" onclick="return clickMenu(this);">Boutique Militaire</a>
 				</ul>
 			</li>
 			<li>
@@ -82,7 +83,8 @@ $_SESSION['position'] = convert_in_pos($joueur['x'], $joueur['y']);
 	$W_row = $db->read_row($W_req);
 	$hta = $W_row[0];
 	?>
-			<strong>Stars du royaume : </strong><?php echo $R['star']; ?> / <strong>Taux de taxe</strong> : <?php echo $R['taxe_base']; ?>% / <strong>Habitants</strong> : <?php echo $h; ?> / <strong>Habitants très actifs</strong> : <?php echo $hta; ?>
+			<strong>Stars du royaume : </strong><?php echo $R['star']; ?> / <strong>Taux de taxe</strong> : <?php echo $R['taxe_base']; ?>% / <strong>Habitants</strong> : <?php echo $h; ?> / <strong>Habitants très actifs</strong> : <?php echo $hta; ?><br />
+			<strong>Pierre : </strong><?php echo $R['pierre']; ?> / <strong>Bois : </strong><?php echo $R['bois']; ?> / <strong>Eau : </strong><?php echo $R['eau']; ?> / <strong>Sable : </strong><?php echo $R['sable']; ?> / <strong>Charbon : </strong><?php echo $R['charbon']; ?> / <strong>Essence Magique : </strong><?php echo $R['essence']; ?>
 		</div>
 </div>
 <div style="clear : both; width : 100%;">

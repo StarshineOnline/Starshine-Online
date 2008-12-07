@@ -1940,7 +1940,7 @@ function return_ville($texte, $poscase)
 {
 	if(is_ville($poscase) == 1)
 	{
-		echo '<a href="javascript:envoiInfo(\'ville.php?poscase='.$poscase.'\', \'centre\')">'.$texte.'</a>';
+		echo '<a href="ville.php?poscase='.$poscase.'" onclick="return envoiInfo(this.href, \'centre\')">'.$texte.'</a>';
 	}
 }
 

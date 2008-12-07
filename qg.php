@@ -30,112 +30,10 @@ if($W_distance == 0)
     {
 	    ?>
 	    <div style="text-align : center;"><a href="javascript:envoiInfo('qg.php?poscase=<?php echo $W_case; ?>&amp;direction=depot', 'carte')">Dépôt militaire</a>
+	    </div>
 	    <?php
-	    if($joueur['rang_royaume'] == 6)
-	    {
-		    ?>
-		    - <a href="javascript:envoiInfo('qg.php?poscase=<?php echo $W_case; ?>&amp;direction=boutique', 'carte')">Boutique militaire</a>
-		    </div><br />
-    		<strong>Stars du royaume</strong> : <?php echo $R['star']; ?><br />
-		    <strong>Taux de taxe</strong> : <?php echo $R['taxe_base']; ?>%<br />
-		    <?php
-	    }
-	    else echo '</div>';
         switch($_GET['direction'])
         {
-            case 'achat' :
-                $requete = "SELECT * FROM objet_royaume WHERE id = ".sSQL($_GET['id']);
-                $nombre = $_GET['nbr'];
-                $req = $db->query($requete);
-                $row = $db->read_assoc($req);
-                $check = true;
-            	//Si c'est pour une bourgade on vérifie combien il y en a déjà
-            	if($row['type'] == 'bourg')
-            	{
-	            	$nb_bourg = nb_bourg($R['ID']);
-	            	$nb_case = nb_case($R['ID']);
-	            	if(($nb_bourg + $nombre - 1) >= ceil($nb_case / 250)) $check = false;
-            	}
-                if($R['star'] >= ($row['prix'] * $nombre) && $check)
-                {
-	                $i = 0;
-	                while($i < $nombre)
-	                {
-                    	//Achat
-                    	$requete = "INSERT INTO depot_royaume VALUES ('', ".$row['id'].", ".$R['ID'].")";
-                    	$db->query($requete);
-                    	//On rajoute un bourg au compteur
-		            	if($row['type'] == 'bourg')
-        		    	{
-	        		    	$requete = "UPDATE royaume SET bourg = bourg + 1 WHERE ID = ".$R['ID'];
-	        		    	$db->query($requete);
-        		    	}
-                    	//On enlève les stars au royaume
-                    	$requete = "UPDATE royaume SET star = star - ".$row['prix']." WHERE ID = ".$R['ID'];
-                    	if($db->query($requete))
-                    	{
-                    	    echo $row['nom'].' bien acheté.<br />';
-                    	}
-                    	$i++;
-                	}
-                }
-                elseif(!$check)
-                {
-                    echo 'Il y a déjà trop de bourg sur votre royaume.<br />
-                    Actuellement : '.$nb_bourg.'<br />
-                    Maximum : '.ceil($nb_case / 250);
-                }
-                else
-                {
-                    echo 'Le royaume n\'a pas assez de stars';
-                }
-           	    echo '<a href="javascript:envoiInfo(\'qg.php?poscase='.$W_case.'&amp;direction=boutique\', \'carte\')">Retour à la boutique militaire</a>';
-            break;
-            case 'boutique' :
-                ?>
-                <table>
-                <tr>
-                    <td>
-                        Nom
-                    </td>
-                    <td>
-                        Prix
-                    </td>
-                    <td>
-                    	Nombre
-                    </td>
-                    <td>
-                        Achat
-                    </td>
-                </tr>
-                <?php
-                $requete = "SELECT * FROM objet_royaume";
-                $req = $db->query($requete);
-                $i = 0;
-                while($row = $db->read_assoc($req))
-                {
-                ?>
-                <tr>
-                    <td>
-                        <?php echo $row['nom']; ?>
-                    </td>
-                    <td>
-                        <?php echo $row['prix']; ?>
-                    </td>
-                    <td>
-                    	<input type="text" id="nbr<?php echo $i; ?>" value="1" />
-                    </td>
-                    <td>
-                        <a href="javascript:envoiInfo('qg.php?poscase=<?php echo $W_case; ?>&amp;direction=achat&amp;id=<?php echo $row['id']; ?>&amp;nbr=' + document.getElementById('nbr<?php echo $i; ?>').value, 'carte')">Acheter</a>
-                    </td>
-                </tr>
-                <?php
-                	$i++;
-                }
-                ?>
-                </table>
-                <?php
-            break;
             case 'prendre' :
                 if(array_key_exists('nbr', $_GET)) $nombre = $_GET['nbr'];
                 else $nombre = 1;
@@ -238,18 +136,8 @@ if($W_distance == 0)
     {
     ?>
     <ul class="ville">
-    <?php
-        if($joueur['rang_royaume'] == 6)
-        {
-    ?>
     <li>
-        <a href="javascript:envoiInfo('qg.php?poscase=<?php echo $W_case; ?>&amp;direction=boutique', 'carte')">Boutique militaire</a>
-    </li>
-    <?php
-        }
-    ?>
-    <li>
-        <a href="javascript:envoiInfo('qg.php?poscase=<?php echo $W_case; ?>&amp;direction=depot', 'carte')">Dépôt militaire</a>
+        <a href="qg.php?poscase=<?php echo $W_case; ?>&amp;direction=depot" onclick="return envoiInfo(this.href, 'carte')">Dépôt militaire</a>
     </li>
     </ul>
     </div>

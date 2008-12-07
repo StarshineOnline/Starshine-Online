@@ -1186,6 +1186,142 @@ $W_coord = convert_in_coord($W_case);
 	    	}
 	    }
 	}
+	elseif($_GET['direction'] == 'achat_militaire')
+	{
+		$requete = "SELECT * FROM objet_royaume WHERE id = ".sSQL($_GET['id']);
+		$nombre = $_GET['nbr'];
+		$req = $db->query($requete);
+		$row = $db->read_assoc($req);
+		$check = true;
+		//Si c'est pour une bourgade on vérifie combien il y en a déjà
+		if($row['type'] == 'bourg')
+		{
+			$nb_bourg = nb_bourg($R['ID']);
+			$nb_case = nb_case($R['ID']);
+			if(($nb_bourg + $nombre - 1) >= ceil($nb_case / 250)) $check = false;
+		}
+		//On vérifie les stars
+		if($R['star'] >= ($row['prix'] * $nombre) && $check)
+		{
+			//On vérifie les ressources
+			if(($R['pierre'] >= $row['pierre'] * $nombre) && ($R['bois'] >= $row['bois'] * $nombre) && ($R['eau'] >= $row['eau'] * $nombre) && ($R['charbon'] >= $row['charbon'] * $nombre) && ($R['sable'] >= $row['sable'] * $nombre) && ($R['essence'] >= $row['essence'] * $nombre))
+			{
+				$i = 0;
+				while($i < $nombre)
+				{
+					//Achat
+					$requete = "INSERT INTO depot_royaume VALUES ('', ".$row['id'].", ".$R['ID'].")";
+					$db->query($requete);
+					//On rajoute un bourg au compteur
+					if($row['type'] == 'bourg')
+					{
+						$requete = "UPDATE royaume SET bourg = bourg + 1 WHERE ID = ".$R['ID'];
+						$db->query($requete);
+					}
+					//On enlève les stars au royaume
+					$requete = "UPDATE royaume SET star = star - ".$row['prix']." WHERE ID = ".$R['ID'];
+					if($db->query($requete))
+					{
+						echo '<h6>'.$row['nom'].' bien acheté.</h6><br />';
+					}
+					$i++;
+				}
+			}
+			else echo '<h5>Il vous manque des ressources !</h5>';
+		}
+		elseif(!$check)
+		{
+			echo '<h5>Il y a déjà trop de bourg sur votre royaume.</h5><br />
+			Actuellement : '.$nb_bourg.'<br />
+			Maximum : '.ceil($nb_case / 250);
+		}
+		else
+		{
+			echo '<h5>Le royaume n\'a pas assez de stars</h5>';
+		}
+	}
+	elseif($_GET['direction'] == 'boutique')
+	{
+		?>
+		<table>
+		<tr>
+			<td>
+				Nom
+			</td>
+			<td>
+				Stars
+			</td>
+			<td>
+				Pierre
+			</td>
+			<td>
+				Bois
+			</td>
+			<td>
+				Eau
+			</td>
+			<td>
+				Sable
+			</td>
+			<td>
+				Charbon
+			</td>
+			<td>
+				Essence Magique
+			</td>
+			<td>
+				Nombre
+			</td>
+			<td>
+				Achat
+			</td>
+		</tr>
+		<?php
+		$requete = "SELECT * FROM objet_royaume";
+		$req = $db->query($requete);
+		$i = 0;
+		while($row = $db->read_assoc($req))
+		{
+		?>
+		<tr>
+			<td>
+				<?php echo $row['nom']; ?>
+			</td>
+			<td>
+				<?php echo $row['prix']; ?>
+			</td>
+			<td>
+				<?php echo $row['pierre']; ?>
+			</td>
+			<td>
+				<?php echo $row['bois']; ?>
+			</td>
+			<td>
+				<?php echo $row['eau']; ?>
+			</td>
+			<td>
+				<?php echo $row['sable']; ?>
+			</td>
+			<td>
+				<?php echo $row['charbon']; ?>
+			</td>
+			<td>
+				<?php echo $row['essence']; ?>
+			</td>
+			<td>
+				<input type="text" id="nbr<?php echo $i; ?>" value="1" />
+			</td>
+			<td>
+				<a href="#" onclick="return envoiInfo('gestion_royaume.php?direction=achat_militaire&amp;id=<?php echo $row['id']; ?>&amp;nbr=' + document.getElementById('nbr<?php echo $i; ?>').value, 'conteneur')">Acheter</a>
+			</td>
+		</tr>
+		<?php
+			$i++;
+		}
+		?>
+		</table>
+		<?php
+	}
 	$requete = "SELECT * FROM diplomatie_demande WHERE royaume_recois = '".$joueur['race']."'";
 	$req = $db->query($requete);
 	if($db->num_rows > 0)
