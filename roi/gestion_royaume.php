@@ -1322,14 +1322,282 @@ $W_coord = convert_in_coord($W_case);
 		</table>
 		<?php
 	}
+	elseif($_GET['direction'] == 'bourse_enchere')
+	{
+		require_once('../class/bourse_royaume.class.php');
+		require_once('../class/bourse.class.php');
+		$enchere = new bourse_royaume($_GET['id_enchere']);
+		//On vérifie que c'est un royaume possible
+		if($R['ID'] != $enchere->id_royaume AND $R['ID'] != $enchere->id_royaume_acheteur)
+		{
+			$prix = ceil($enchere->prix * 1.1);
+			//On vérifie que le royaume a assez de stars
+			if($R['star'] >= $prix)
+			{
+				//On rend les stars à l'autre royaume (si l'id est différent de 0)
+				if($enchere->id_royaume_acheteur)
+				{
+					$requete = "UPDATE royaume SET star = star + ".$enchere->prix." WHERE ID = ".$enchere->id_royaume_acheteur;
+					$db->query($requete);
+				}
+				//On prend les stars de notre royaume
+				$requete = "UPDATE royaume SET star = star - ".$prix." WHERE ID = ".$R['ID'];
+				$db->query($requete);
+				//On met à jour l'enchère
+				$enchere->id_royaume_acheteur = $R['ID'];
+				$enchere->prix = $prix;
+				$enchere->sauver();
+				?>
+				<h6>Enchère prise en compte !</h6>
+				<a href="gestion_royaume.php?direction=bourse" onclick="return envoiInfo(this.href, 'conteneur');">Revenir à la bourse</a>
+				<?php
+			}
+			else
+			{
+				?>
+				<h5>Vous n'avez pas assez de stars pour enchérir !</h5>
+				<?php
+			}
+		}
+	}
+	elseif($_GET['direction'] == 'bourse_ressource')
+	{
+		require_once('../class/bourse_royaume.class.php');
+		require_once('../class/bourse.class.php');
+		$enchere = new bourse_royaume();
+		$ressource = $_GET['ressource'];
+		$nombre = $_GET['nombre'];
+		$prix = $_GET['prix'];
+		//On vérifie que le royaume a assez de cette ressource
+		if($R[$ressource] >= $nombre)
+		{
+			$enchere->id_royaume = $R['ID'];
+			$enchere->ressource = $ressource;
+			$enchere->nombre = $nombre;
+			$enchere->prix = $prix;
+			//7 jours plus tard
+			$time = time() + 7 * (24 * 60 * 60);
+			$enchere->fin_vente = date("Y-m-d H:i:s", $time);
+			$enchere->sauver();
+			//On enlève les ressources au royaume
+			$requete = "UPDATE royaume SET ".$ressource." = ".$ressource." - ".$nombre." WHERE ID = ".$R['ID'];
+			$db->query($requete);
+		}
+		else
+		{
+			?>
+			<h5>Vous n'avez pas assez de <?php echo $ressource; ?> !</h5>
+			<?php
+		}
+	}
 	elseif($_GET['direction'] == 'bourse')
 	{
 		require_once('../class/bourse_royaume.class.php');
 		require_once('../class/bourse.class.php');
 		$bourse = new bourse($R['ID']);
-		$bourse->get_encheres();
-		print_r($bourse);
+		$bourse->check_encheres();
+		$bourse->get_encheres('DESC', 'actif = 1 AND id_royaume != '.$R['ID'].' AND id_royaume_acheteur != '.$R['ID']);
+			//
 		?>
+		<div>
+			<select name="ressource" id="ressource">
+				<option value="pierre">pierre</option>
+				<option value="bois">bois</option>
+				<option value="eau">eau</option>
+				<option value="sable">sable</option>
+				<option value="charbon">charbon</option>
+				<option value="essence">essence</option>
+				<option value="nourriture">nourriture</option>
+			</select><br />
+			Nombre <input type="text" name="nbr" id="nbr" value="0" /><br />
+			Prix total : <input type="text" name="prix" id="prix" value="0" /><br />
+			<a href="#" onclick="if(confirm('Voullez vous mettre ' + $(nbr).value + ' ' + $(ressource).value + ' en vente à ' + $(prix).value + ' stars ?')) return envoiInfo('gestion_royaume.php?direction=bourse_ressource&amp;ressource=' + $(ressource).value + '&amp;prix=' + $(prix).value + '&amp;nombre=' + $(nbr).value, 'conteneur'); else return false;">Mettre ses ressources aux enchères</a><br />
+		</div>
+		<h3>Enchères en cours</h3>
+		<table style="width : 100%;">
+		<tr>
+			<td>
+				Ressource
+			</td>
+			<td>
+				Nombre
+			</td>
+			<td>
+				Prix actuel
+			</td>
+			<td>
+				Fin vente
+			</td>
+			<td>
+			</td>
+		</tr>
+		<?php
+		foreach($bourse->encheres as $enchere)
+		{
+			$time = strtotime($enchere->fin_vente);
+			$restant = transform_sec_temp(($time - time()));
+			$prix = ceil($enchere->prix * 1.1);
+			?>
+		<tr>
+			<td>
+				<?php echo $enchere->ressource; ?>
+			</td>
+			<td>
+				<?php echo $enchere->nombre; ?>
+			</td>
+			<td>
+				<?php echo $enchere->prix.' ('.round(($enchere->prix / $enchere->nombre), 2).' / u)'; ?>
+			</td>
+			<td>
+				<?php echo $restant; ?>
+			</td>
+			<td>
+				<a href="gestion_royaume.php?direction=bourse_enchere&amp;id_enchere=<?php echo $enchere->id_bourse_royaume; ?>" onclick="return envoiInfo(this.href, 'conteneur');">Enchérir pour <?php echo $prix; ?> stars (<?php echo ($prix / $enchere->nombre); ?> / u)</a>
+			</td>
+		</tr>
+			<?php
+		}
+		?>
+		</table>
+		<?php
+		$bourse->encheres = array();
+		$bourse->get_encheres('DESC', 'actif = 1 AND id_royaume_acheteur = '.$R['ID']);
+		?>
+		<h3>Vos mises</h3>
+		<table style="width : 100%;">
+		<tr>
+			<td>
+				Ressource
+			</td>
+			<td>
+				Nombre
+			</td>
+			<td>
+				Prix actuel
+			</td>
+			<td>
+				Fin vente
+			</td>
+		</tr>
+		<?php
+		foreach($bourse->encheres as $enchere)
+		{
+			$time = strtotime($enchere->fin_vente);
+			$restant = transform_sec_temp(($time - time()));
+			?>
+		<tr>
+			<td>
+				<?php echo $enchere->ressource; ?>
+			</td>
+			<td>
+				<?php echo $enchere->nombre; ?>
+			</td>
+			<td>
+				<?php echo $enchere->prix.' ('.round(($enchere->prix / $enchere->nombre), 2).' / u)'; ?>
+			</td>
+			<td>
+				<?php echo $restant; ?>
+			</td>
+		</tr>
+			<?php
+		}
+		?>
+		</table>
+		<?php
+		$bourse->encheres = array();
+		$bourse->get_encheres('DESC', 'actif = 1 AND id_royaume = '.$R['ID']);
+		?>
+		<h3>Vos ressources en vente</h3>
+		<table style="width : 100%;">
+		<tr>
+			<td>
+				Ressource
+			</td>
+			<td>
+				Nombre
+			</td>
+			<td>
+				Prix actuel
+			</td>
+			<td>
+				Fin vente
+			</td>
+		</tr>
+		<?php
+		foreach($bourse->encheres as $enchere)
+		{
+			$time = strtotime($enchere->fin_vente);
+			$restant = transform_sec_temp(($time - time()));
+			?>
+		<tr>
+			<td>
+				<?php echo $enchere->ressource; ?>
+			</td>
+			<td>
+				<?php echo $enchere->nombre; ?>
+			</td>
+			<td>
+				<?php echo $enchere->prix.' ('.round(($enchere->prix / $enchere->nombre), 2).' / u)'; ?>
+			</td>
+			<td>
+				<?php echo $restant; ?>
+			</td>
+		</tr>
+			<?php
+		}
+		?>
+		</table>
+		<?php
+		$bourse->encheres = array();
+		$time = time() - 7 * (24 * 60 * 60);
+		$date = date("Y-m-d H:i:s", $time);
+		$bourse->get_encheres('DESC', 'actif = 0 AND fin_vente > "'.$date.'" AND id_royaume_acheteur = '.$R['ID']);
+		?>
+		<h3>Enchères remportées les 7 derniers jours</h3>
+		<table style="width : 100%;">
+		<tr>
+			<td>
+				Ressource
+			</td>
+			<td>
+				Nombre
+			</td>
+			<td>
+				Prix actuel
+			</td>
+			<td>
+				Fin vente
+			</td>
+		</tr>
+		<?php
+		foreach($bourse->encheres as $enchere)
+		{
+			?>
+		<tr>
+			<td>
+				<?php echo $enchere->ressource; ?>
+			</td>
+			<td>
+				<?php echo $enchere->nombre; ?>
+			</td>
+			<td>
+				<?php echo $enchere->prix.' ('.round(($enchere->prix / $enchere->nombre), 2).' / u)'; ?>
+			</td>
+			<td>
+				<?php echo $enchere->fin_vente; ?>
+			</td>
+		</tr>
+			<?php
+		}
+		?>
+		</table>
+		<?php
+		$bourse->encheres = array();
+		$time = time() - 7 * (24 * 60 * 60);
+		$date = date("Y-m-d H:i:s", $time);
+		$bourse->get_encheres('DESC', 'actif = 0 AND fin_vente > "'.$date.'" AND id_royaume = '.$R['ID']);
+		?>
+		<h3>Ressources vendues les 7 derniers jours</h3>
 		<table style="width : 100%;">
 		<tr>
 			<td>

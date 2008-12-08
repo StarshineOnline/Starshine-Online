@@ -16,20 +16,40 @@ class bourse
 	}
 	
 	//Récupération de tous les enchères disponibles
-	function get_encheres($tri_date = 'ASC')
+	function get_encheres($tri_date = 'ASC', $where = 1)
 	{
 		global $db;
-		$where = 1;
 		$this->encheres = array();
-		$requete = "SELECT id_bourse_royaume, id_royaume, ressource, nombre, id_royaume_acheteur, prix, fin_vente FROM bourse_royaume WHERE ".$where." ORDER BY ressource ASC, fin_vente ".$tri_date;
+		$requete = "SELECT id_bourse_royaume, id_royaume, ressource, nombre, id_royaume_acheteur, prix, fin_vente, actif FROM bourse_royaume WHERE ".$where." ORDER BY ressource ASC, fin_vente ".$tri_date;
 		$req = $db->query($requete);
 		$i = 0;
 		while($row = $db->read_assoc($req))
 		{
-			$this->encheres[$i] = new bourse_royaume($row['id_bourse_royaume'], $row['id_royaume'], $row['ressource'], $row['nombre'], $row['id_royaume_acheteur'], $row['prix'], $row['fin_vente']);
+			$this->encheres[$i] = new bourse_royaume($row['id_bourse_royaume'], $row['id_royaume'], $row['ressource'], $row['nombre'], $row['id_royaume_acheteur'], $row['prix'], $row['fin_vente'], $row['actif']);
 			$i++;
 		}
 		return $this->encheres;
+	}
+	
+	//Finalisation d'enchères
+	function check_encheres()
+	{
+		global $db;
+		$requete = "SELECT id_bourse_royaume, id_royaume, ressource, nombre, id_royaume_acheteur, prix, fin_vente, actif FROM bourse_royaume WHERE fin_vente < NOW() AND actif = 1";
+		$req = $db->query($requete);
+		while($row = $db->read_assoc($req))
+		{
+			$enchere = new bourse_royaume($row['id_bourse_royaume'], $row['id_royaume'], $row['ressource'], $row['nombre'], $row['id_royaume_acheteur'], $row['prix'], $row['fin_vente'], $row['actif']);
+			//On rend l'enchère inactive
+			$enchere->actif = 0;
+			$enchere->sauver();
+			//On donne les stars au royaume concerné
+			$requete = "UPDATE royaume SET star = star + ".$enchere->prix." WHERE ID = ".$enchere->id_royaume;
+			$db->query($requete);
+			//On donne les ressources à l'autre royaume
+			$requete = "UPDATE royaume SET ".$enchere->ressource." = ".$enchere->ressource." + ".$enchere->nombre." WHERE ID = ".$enchere->id_royaume_acheteur;
+			$db->query($requete);
+		}
 	}
 }
 ?>
