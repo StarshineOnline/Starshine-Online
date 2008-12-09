@@ -84,7 +84,7 @@ $_SESSION['position'] = convert_in_pos($joueur['x'], $joueur['y']);
 	$W_row = $db->read_row($W_req);
 	$hta = $W_row[0];
 	?>
-			<strong>Stars du royaume : </strong><?php echo $R['star']; ?> / <strong>Taux de taxe</strong> : <?php echo $R['taxe_base']; ?>% / <strong>Habitants</strong> : <?php echo $h; ?> / <strong>Habitants très actifs</strong> : <?php echo $hta; ?><br />
+			<strong>Stars du royaume : </strong><?php echo $R['star']; ?> / <strong>Taux de taxe</strong> : <?php echo $R['taxe_base']; ?>% / <strong>Habitants</strong> : <?php echo $h; ?> / <strong>Habitants très actifs</strong> : <?php echo $hta; ?> / <strong>Nourriture</strong> : <?php echo $R['food']; ?><br />
 			<strong>Pierre : </strong><?php echo $R['pierre']; ?> / <strong>Bois : </strong><?php echo $R['bois']; ?> / <strong>Eau : </strong><?php echo $R['eau']; ?> / <strong>Sable : </strong><?php echo $R['sable']; ?> / <strong>Charbon : </strong><?php echo $R['charbon']; ?> / <strong>Essence Magique : </strong><?php echo $R['essence']; ?>
 		</div>
 </div>

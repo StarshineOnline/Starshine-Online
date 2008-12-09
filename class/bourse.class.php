@@ -43,12 +43,23 @@ class bourse
 			//On rend l'enchère inactive
 			$enchere->actif = 0;
 			$enchere->sauver();
-			//On donne les stars au royaume concerné
-			$requete = "UPDATE royaume SET star = star + ".$enchere->prix." WHERE ID = ".$enchere->id_royaume;
-			$db->query($requete);
-			//On donne les ressources à l'autre royaume
-			$requete = "UPDATE royaume SET ".$enchere->ressource." = ".$enchere->ressource." + ".$enchere->nombre." WHERE ID = ".$enchere->id_royaume_acheteur;
-			$db->query($requete);
+			//Si il y a un acheteur
+			if($enchere->id_royaume_acheteur != 0)
+			{
+				//On donne les stars au royaume concerné
+				$requete = "UPDATE royaume SET star = star + ".$enchere->prix." WHERE ID = ".$enchere->id_royaume;
+				$db->query($requete);
+				//On donne les ressources à l'autre royaume
+				$requete = "UPDATE royaume SET ".$enchere->ressource." = ".$enchere->ressource." + ".$enchere->nombre." WHERE ID = ".$enchere->id_royaume_acheteur;
+				$db->query($requete);
+			}
+			//Sinon on rend les ressources au royaume
+			else
+			{
+				//On donne les ressources à l'autre royaume
+				$requete = "UPDATE royaume SET ".$enchere->ressource." = ".$enchere->ressource." + ".$enchere->nombre." WHERE ID = ".$enchere->id_royaume;
+				$db->query($requete);
+			}
 		}
 	}
 }

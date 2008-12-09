@@ -1522,12 +1522,16 @@ $W_coord = convert_in_coord($W_case);
 			<td>
 				Fin vente
 			</td>
+			<td>
+			</td>
 		</tr>
 		<?php
 		foreach($bourse->encheres as $enchere)
 		{
 			$time = strtotime($enchere->fin_vente);
 			$restant = transform_sec_temp(($time - time()));
+			if($enchere->id_royaume_acheteur != 0) $acheteur = 'Acheteur';
+			else $acheteur = '';
 			?>
 		<tr>
 			<td>
@@ -1541,6 +1545,9 @@ $W_coord = convert_in_coord($W_case);
 			</td>
 			<td>
 				<?php echo $restant; ?>
+			</td>
+			<td>
+				<?php echo $acheteur; ?>
 			</td>
 		</tr>
 			<?php
@@ -1595,7 +1602,7 @@ $W_coord = convert_in_coord($W_case);
 		$bourse->encheres = array();
 		$time = time() - 7 * (24 * 60 * 60);
 		$date = date("Y-m-d H:i:s", $time);
-		$bourse->get_encheres('DESC', 'actif = 0 AND fin_vente > "'.$date.'" AND id_royaume = '.$R['ID']);
+		$bourse->get_encheres('DESC', 'actif = 0 AND fin_vente > "'.$date.'" AND id_royaume_acheteur != 0 AND id_royaume = '.$R['ID']);
 		?>
 		<h3>Ressources vendues les 7 derniers jours</h3>
 		<table style="width : 100%;">
