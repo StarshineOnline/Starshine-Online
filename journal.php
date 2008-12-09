@@ -85,7 +85,7 @@ while($row = $db_use->read_assoc($req))
 if($page > 1)
 {
 	if(array_key_exists('archive', $_GET)) $archive = '&amp;archive='.$_GET['archive']; else $archive = '';
-	$a1 = '<a href="javascript:envoiInfo(\'journal.php?page='.($page - 1).$archive.'\', \'information\');">';
+	$a1 = '<a href="journal.php?page='.($page - 1).$archive.'" onclick="return envoiInfo(this.href, \'information\');">';
 	$a2 = '</a>';
 }
 else
@@ -96,7 +96,7 @@ else
 if($page != $page_max)
 {
 	if(array_key_exists('archive', $_GET)) $archive = '&amp;archive='.$_GET['archive']; else $archive = '';
-	$a3 = '<a href="javascript:envoiInfo(\'journal.php?page='.($page + 1).$archive.'\', \'information\');">';
+	$a3 = '<a href="journal.php?page='.($page + 1).$archive.'" onclick="return envoiInfo(this.href, \'information\');">';
 	$a4 = '</a>';
 }
 else
@@ -119,4 +119,4 @@ while($row = $db_log->read_assoc($req))
 	<?php
 }
 ?>
-</select> <input type="button" onclick="javascript:envoiInfo('journal.php?archive=' + document.getElementById('archive').value, 'information');" value="Ok" />
+</select> <input type="button" onclick="return envoiInfo('journal.php?archive=' + document.getElementById('archive').value, 'information');" value="Ok" />

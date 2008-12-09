@@ -13,7 +13,7 @@ if($W_distance < 4)
 {
 ?>
 
-<h2>Informations Case - X : <?php echo $W_coord['x']; ?> | Y : <?php echo $W_coord['y']; ?><a href="javascript:envoiInfo('carte_perso_affiche.php', 'information')"> <img src="image/icone/oujesuis.png" alt="Où je suis ?" title="Où je suis ?" style="vertical-align : middle;" /></a> </h2>
+<h2>Informations Case - X : <?php echo $W_coord['x']; ?> | Y : <?php echo $W_coord['y']; ?><a href="carte_perso_affiche.php" onclick="return envoiInfo(this.href, 'information')"> <img src="image/icone/oujesuis.png" alt="Où je suis ?" title="Où je suis ?" style="vertical-align : middle;" /></a> </h2>
 
 <?php
 
@@ -106,20 +106,20 @@ while($W_row = $db->read_array($W_query))
 	if(array_key_exists(6, $bonus) AND !check_affiche_bonus($bonus[6], $joueur, $W_row)) $chaine_nom = $W_nom;
 	else $chaine_nom = $W_row['gnom'].' '.$W_nom;
 	$echo = $Gtrad['diplo'.$diplo].' => XP : '.($facteur_xp * 100).'% - Honneur : '.($facteur_honneur * 100).'%';
-	echo '<a href="javascript:envoiInfo(\'infojoueur.php?ID='.$W_ID.'&poscase='.$W_case.'\', \'information\');" onclick="return nd();" onmouseover="return '.make_overlib($echo).'" onmouseout="return nd();"><strong>'.$chaine_nom.'</strong></td><td width="30%">'.$Gtrad[$W_race].'</a></td>';
-//	echo '<a href="javascript:envoiInfo(\'infojoueur.php?ID='.$W_ID.'&poscase='.$W_case.'\', \'information\')" onmousemove="afficheInfo(\'info_'.$W_ID.'\', \'block\', event, \'centre\');" onmouseout="afficheInfo(\'info_'.$W_ID.'\', \'none\', event, \'centre\');"><strong>'.$chaine_nom.'</strong></td><td width="30%">'.$Gtrad[$W_race].'</a></td>';
+	echo '<a href="infojoueur.php?ID='.$W_ID.'&poscase='.$W_case.'" onclick="return envoiInfo(this.href, \'information\');" onclick="return nd();" onmouseover="return '.make_overlib($echo).'" onmouseout="return nd();"><strong>'.$chaine_nom.'</strong></td><td width="30%">'.$Gtrad[$W_race].'</a></td>';
+//	echo '<a href="" onclick="return envoiInfo(this.href\'infojoueur.php?ID='.$W_ID.'&poscase='.$W_case.'\', \'information\')" onmousemove="afficheInfo(\'info_'.$W_ID.'\', \'block\', event, \'centre\');" onmouseout="afficheInfo(\'info_'.$W_ID.'\', \'none\', event, \'centre\');"><strong>'.$chaine_nom.'</strong></td><td width="30%">'.$Gtrad[$W_race].'</a></td>';
 //	$affiche_div .= '<div class="jsinformation_case" id="info_'.$W_ID.'">
 //	'.$Gtrad['diplo'.$diplo].' => XP : '.($facteur_xp * 100).'% - Honneur : '.($facteur_honneur * 100).'%
 //	</div>';
 	if ($W_ID != $_SESSION['ID'])
 	{
 		echo ' <td width="10%"><a href="envoimessage.php?id_type=p'.$W_ID.'" onclick="return envoiInfo(this.href, \'information\')"><img src="image/interface/message.png" title="Envoyer un message" /></a></td>';
-		if($joueur['sort_jeu'] != '') echo '<td width="10%"> <a href="javascript:envoiInfo(\'sort_joueur.php?poscase='.$W_case.'&amp;id_joueur='.$W_ID.'\', \'information\')"><img src="image/sort_hc_icone.png" title="Lancer un sort" alt="Lancer un sort" /></a></td>';
-		if($row_diplo[0] <= 5 OR array_key_exists(5, $mybonus)) echo '<td width="10%"> <a href="javascript:envoiInfo(\'echange.php?poscase='.$W_case.'&amp;id_joueur='.$W_ID.'\', \'information\')"><img src="image/icone/echanger.png" alt="Echanger" title="Echanger" /></a></td>';
+		if($joueur['sort_jeu'] != '') echo '<td width="10%"> <a href="sort_joueur.php?poscase='.$W_case.'&amp;id_joueur='.$W_ID.'" onclick="return envoiInfo(this.href, \'information\')"><img src="image/sort_hc_icone.png" title="Lancer un sort" alt="Lancer un sort" /></a></td>';
+		if($row_diplo[0] <= 5 OR array_key_exists(5, $mybonus)) echo '<td width="10%"> <a href="echange.php?poscase='.$W_case.'&amp;id_joueur='.$W_ID.'" onclick="return envoiInfo(this.href, \'information\')"><img src="image/icone/echanger.png" alt="Echanger" title="Echanger" /></a></td>';
 	}
 	else
 	{
-		if($joueur['sort_jeu'] != '') echo '<td width="10%"></td><td width="10%"><a href="javascript:envoiInfo(\'sort.php\', \'information\')"><img src="image/sort_hc_icone.png" title="Lancer un sort" alt="Lancer un sort" /></a></td>';
+		if($joueur['sort_jeu'] != '') echo '<td width="10%"></td><td width="10%"><a href="sort.php" onclick="return envoiInfo(this.href, \'information\')"><img src="image/sort_hc_icone.png" title="Lancer un sort" alt="Lancer un sort" /></a></td>';
 	}
 	if($statut_joueur != 'normal') echo ' ('.$statut_joueur.')';
 	echo '</tr>';
@@ -141,7 +141,7 @@ if($num_rows > 0)
 	while($W_row = $db->read_array($W_query))
 	{
 		echo  '&nbsp;&nbsp;&nbsp;'.$W_row['nom'];
-		if($W_row['x'] == $joueur["x"] AND $W_row['y'] == $joueur["y"]) echo ' <a href="javascript:envoiInfo(\'pnj.php?id='.$W_row['id'].'&amp;poscase='.$W_case.'\', \'information\')">Parler...</a>';
+		if($W_row['x'] == $joueur["x"] AND $W_row['y'] == $joueur["y"]) echo ' <a href="pnj.php?id='.$W_row['id'].'&amp;poscase='.$W_case.'" onclick="return envoiInfo(this.href, \'information\')">Parler...</a>';
 		echo '<br /></div>';
 	}
 }
@@ -223,12 +223,12 @@ if($num_rows > 0)
 		{
 			if(!array_key_exists('repos_sage', $joueur['debuff']))
 			{
-				echo  ' <a href="javascript:envoiInfo(\'attaque_monstre.php?ID='.$W_row['id'].'&amp;type=batiment&amp;table=placement&amp;poscase='.$W_case.'\', \'information\')"><img src="image/interface/attaquer.png" alt="Combattre" style="vertical-align : middle;" /> Attaquer <span class="xsmall">('.($G_PA_attaque_batiment - $reduction_pa).' PA)</a>';
+				echo ' <a href="attaque_monstre.php?ID='.$W_row['id'].'&amp;type=batiment&amp;table=placement&amp;poscase='.$W_case.'" onclick="return envoiInfo(this.href, \'information\')"><img src="image/interface/attaquer.png" alt="Combattre" style="vertical-align : middle;" /> Attaquer <span class="xsmall">('.($G_PA_attaque_batiment - $reduction_pa).' PA)</a>';
 			}
 		}
 		else
 		{
-				echo  ' <a href="javascript:envoiInfo(\'archi_accelere_construction.php?id_construction='.$W_row['id'].'\', \'information\')">Accélérer <span class="xsmall">(30 PA)</a>';
+				echo ' <a href="archi_accelere_construction.php?id_construction='.$W_row['id'].'" onclick="return envoiInfo(this.href, \'information\')">Accélérer <span class="xsmall">(30 PA)</a>';
 		}
 		echo '<br />
 		<div class="jsinformation_case" id="infob_'.$W_row['id'].'">
@@ -256,16 +256,16 @@ if($num_rows > 0)
 		$Royaume = get_royaume_info($joueur['race'], $W_row['royaume']);
 		echo '<span onmousemove="afficheInfo(\'infob_'.$W_row['id'].'\', \'block\', event, \'centre\');" onmouseout="afficheInfo(\'infob_'.$W_row['id'].'\', \'none\', event, \'centre\');"><image src="image/mini_'.$row_b['type'].'.png" style="vertical-align : top;" title="'.$row_b['nom'].'" alt="'.$row_b['nom'].'" />';
 		$nom = $row_b['nom'];
-		if($row_b['type'] == 'fort' AND $joueur['race'] == $Royaume['race']) $nom = '<a href="javascript:envoiInfo(\'fort.php?poscase='.$W_case.'&amp;id_batiment='.$row_b['id'].'\', \'centre\');">'.$row_b['nom'].'</a>';
-		if($row_b['type'] == 'bourg' AND $joueur['race'] == $Royaume['race']) $nom = '<a href="javascript:envoiInfo(\'bourg.php?poscase='.$W_case.'&amp;id_batiment='.$row_b['id'].'\', \'centre\');">'.$row_b['nom'].'</a>';
-		if($row_b['type'] == 'arme_de_siege' AND $joueur['race'] == $Royaume['race']) $nom = '<a href="javascript:envoiInfo(\'arme_de_siege.php?poscase='.$W_case.'&amp;id_construction='.$W_row['id'].'\', \'centre\');">'.$row_b['nom'].'</a>';
+		if($row_b['type'] == 'fort' AND $joueur['race'] == $Royaume['race']) $nom = '<a href="fort.php?poscase='.$W_case.'&amp;id_batiment='.$row_b['id'].'" onclick="return envoiInfo(this.href, \'centre\');">'.$row_b['nom'].'</a>';
+		if($row_b['type'] == 'bourg' AND $joueur['race'] == $Royaume['race']) $nom = '<a href="bourg.php?poscase='.$W_case.'&amp;id_batiment='.$row_b['id'].'" onclick="return envoiInfo(this.href, \'centre\');">'.$row_b['nom'].'</a>';
+		if($row_b['type'] == 'arme_de_siege' AND $joueur['race'] == $Royaume['race']) $nom = '<a href="arme_de_siege.php?poscase='.$W_case.'&amp;id_construction='.$W_row['id'].'" onclick="return envoiInfo(this.href, \'centre\');">'.$row_b['nom'].'</a>';
 		echo ' '.$nom;
 		echo ' '.$Gtrad[$Royaume['race']].' - HP : '.$W_row['hp'];
 		echo '</span>';
-		if($joueur['race'] != $Royaume['race']) echo  ' <a href="javascript:envoiInfo(\'attaque_monstre.php?ID='.$W_row['id'].'&amp;type=batiment&amp;table=construction&poscase='.$W_case.'\', \'information\')"><img src="image/interface/attaquer.png" alt="Combattre" style="vertical-align : middle;" /> Attaquer <span class="xsmall">('.($G_PA_attaque_batiment - $reduction_pa).' PA)</a>';
+		if($joueur['race'] != $Royaume['race']) echo  ' <a href="attaque_monstre.php?ID='.$W_row['id'].'&amp;type=batiment&amp;table=construction&poscase='.$W_case.'" onclick="return envoiInfo(this.href, \'information\')"><img src="image/interface/attaquer.png" alt="Combattre" style="vertical-align : middle;" /> Attaquer <span class="xsmall">('.($G_PA_attaque_batiment - $reduction_pa).' PA)</a>';
 		elseif($W_row['hp'] < $row_b['hp'])
 		{
-			echo  ' <a href="javascript:envoiInfo(\'archi_soigne_construction.php?id_construction='.$W_row['id'].'\', \'information\')">Réparer <span class="xsmall">(30 PA)</a>';
+			echo  ' <a href="archi_soigne_construction.php?id_construction='.$W_row['id'].'" onclick="return envoiInfo(this.href, \'information\')">Réparer <span class="xsmall">(30 PA)</a>';
 		}
 
 		echo '<br />
@@ -311,9 +311,9 @@ while($W_row = $db->read_array($W_query))
 			&nbsp;&nbsp;&nbsp;<span style="color : '.$color.'; font-weight : '.$strong.'">'.$W_nom.'</span>
 		</td>
 		<td width="30%">';
-		if(!array_key_exists('repos_sage', $joueur['debuff']) OR !array_key_exists('bloque_attaque', $joueur['debuff'])) echo '<a href="javascript:envoiInfo(\'attaque_monstre.php?ID='.$W_ID.'&poscase='.$W_case.'\', \'information\')"><img src="image/interface/attaquer.png" alt="Combattre" style="vertical-align : middle;" /> Attaquer <span class="xsmall">('.($pa_attaque - $reduction_pa).' PA)</span></a>';
-		echo ' <a href="javascript:envoiInfo(\'info_monstre.php?ID='.$W_ID.'&poscase='.$W_case.'\', \'information\')"><img src="image/icone/mobinfo.png" alt="Voir informations sur le monstre" title="Voir informations sur le monstre" style="vertical-align : middle;" /></a>';
-		if($joueur['sort_jeu'] != '') echo ' <a href="javascript:envoiInfo(\'sort_monstre.php?poscase='.$W_case.'&amp;id_monstre='.$W_ID.'\', \'information\')"><img src="image/sort_hc_icone.png" title="Lancer un sort" alt="Lancer un sort" style="vertical-align : middle;" /></a>';
+		if(!array_key_exists('repos_sage', $joueur['debuff']) OR !array_key_exists('bloque_attaque', $joueur['debuff'])) echo '<a href="attaque_monstre.php?ID='.$W_ID.'&poscase='.$W_case.'" onclick="return envoiInfo(this.href, \'information\')"><img src="image/interface/attaquer.png" alt="Combattre" style="vertical-align : middle;" /> Attaquer <span class="xsmall">('.($pa_attaque - $reduction_pa).' PA)</span></a>';
+		echo ' <a href="info_monstre.php?ID='.$W_ID.'&poscase='.$W_case.'" onclick="return envoiInfo(this.href, \'information\')"><img src="image/icone/mobinfo.png" alt="Voir informations sur le monstre" title="Voir informations sur le monstre" style="vertical-align : middle;" /></a>';
+		if($joueur['sort_jeu'] != '') echo ' <a href="sort_monstre.php?poscase='.$W_case.'&amp;id_monstre='.$W_ID.'" onclick="return envoiInfo(this.href, \'information\')"><img src="image/sort_hc_icone.png" title="Lancer un sort" alt="Lancer un sort" style="vertical-align : middle;" /></a>';
 	echo '
 		</td>
 	</tr>';

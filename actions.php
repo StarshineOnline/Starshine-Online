@@ -84,8 +84,8 @@ check_perso($joueur);
 			Voici l'interface du script de combat, grace à celui ci vous pourrez attaquer avec des sorts ou des compétences.<br />
 			<h3>Création</h3>
 				<ul>
-					<li><a href="javascript:envoiInfo('action.php?mode=s', 'information');">Créer un script de combat en mode simplifié</a></li>
-					<li><a href="javascript:envoiInfo('action.php?mode=a', 'information');">Créer un script de combat en mode avancé</a></li>
+					<li><a href="action.php?mode=s" onclick="return envoiInfo(this.href, 'information');">Créer un script de combat en mode simplifié</a></li>
+					<li><a href="action.php?mode=a" onclick="return envoiInfo(this.href, 'information');">Créer un script de combat en mode avancé</a></li>
 					<li>
 						Copier le script : <select name="id_action_c" id="id_action_c">
 							<?php

@@ -87,6 +87,7 @@ else
 			$thread_non_lu = $messagerie->get_thread_non_lu($thread->id_thread);
 			if($thread_non_lu > 0) $texte_thread_non_lu = '('.$thread_non_lu.')';
 			else $texte_thread_non_lu = '';
+			$options = '';
 			if($groupe['leader'] && $type_thread == 'groupe')
 			{
 				if($thread->important) $important_etat = 0;

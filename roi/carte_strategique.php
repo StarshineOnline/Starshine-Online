@@ -71,7 +71,7 @@ echo '<div id="carte" style="width : 605px; height : 610px;">';
 	while($objMap = $db->read_object($RqMap))
 	{
 		$coord = convert_in_coord($objMap->ID);
-		$class_map = "decor tex".$objMap->decor;	//-- Nom de la classe "terrain" contenu dans texture.css
+		$class_map = "decor texl".$objMap->decor;	//-- Nom de la classe "terrain" contenu dans texture.css
 		
 		if($coord['y'] != $y_BAK)
 		{//-- On passe a la ligne

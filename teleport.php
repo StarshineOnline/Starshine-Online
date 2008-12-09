@@ -115,7 +115,7 @@ $_SESSION['position'] = convert_in_pos($joueur['x'], $joueur['y']);
 			if($cout != 0)
 			{
 				echo '
-				<li><a href="javascript:envoiInfo(\'teleport.php?poscase='.$W_case.'&amp;id='.$row['ID'].'\', \'centre\');" onclick="return confirm(\'Voulez vous vous téléporter à '.addslashes($row_race['capitale']).' ('.$Gtrad[$row_race['race']].' - '.$cout.' Stars et 5 PA)\');">Téléportation à '.$row_race['capitale'].' ('.$Gtrad[$row_race['race']].')</a> ('.$cout.' Stars et 5 PA)</li>';
+				<li><a href="teleport.php?poscase='.$W_case.'&amp;id='.$row['ID'].'" onclick="return envoiInfo(this.href, \'centre\');" onclick="return confirm(\'Voulez vous vous téléporter à '.addslashes($row_race['capitale']).' ('.$Gtrad[$row_race['race']].' - '.$cout.' Stars et 5 PA)\');">Téléportation à '.$row_race['capitale'].' ('.$Gtrad[$row_race['race']].')</a> ('.$cout.' Stars et 5 PA)</li>';
 			}
 		}
 	}

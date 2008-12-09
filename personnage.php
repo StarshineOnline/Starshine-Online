@@ -29,7 +29,7 @@ echo '
 <div style="font-size : 13px;">
 	<h2>Nom : '.$joueur['nom'].'</h2>
 	<div class="information_case">
-	<p class="brillant"><a href="javascript:envoiInfo(\''.$adresse.'direction=carac\', \'information\')">Carac</a> | <a href="javascript:envoiInfo(\''.$adresse.'direction=comp\', \'information\')">Compétences</a> | <a href="javascript:envoiInfo(\''.$adresse.'direction=magie\', \'information\')">Magie</a> | <a href="javascript:envoiInfo(\''.$adresse.'direction=stat\', \'information\')">Stats</a></p>
+	<p class="brillant"><a href="'.$adresse.'direction=carac" onclick="return envoiInfo(this.href, \'information\')">Carac</a> | <a href="'.$adresse.'direction=comp" onclick="return envoiInfo(this.href, \'information\')">Compétences</a> | <a href="'.$adresse.'direction=magie" onclick="return envoiInfo(this.href, \'information\')">Magie</a> | <a href="'.$adresse.'direction=stat" onclick="return envoiInfo(this.href, \'information\')">Stats</a></p>
 	<p><strong>'.$joueur['nom'].'</strong> - '.$Gtrad[$joueur['race']].' - '.$joueur['classe'].'</p>
 	';
 	if(!array_key_exists('direction', $_GET)) $_GET['direction'] = 'carac';

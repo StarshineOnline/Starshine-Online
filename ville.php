@@ -208,7 +208,7 @@ if($W_distance == 0 AND $verif_ville)
 									}
 							?>
 					<li>
-						<a href="" onclick="return envoiInfo('teleport.php?poscase=<?php echo $W_case; ?>', 'carte')">Pierre de Téléportation</a>
+						<a href="teleport.php?poscase=<?php echo $W_case; ?>" onclick="return envoiInfo(this.href, 'carte')">Pierre de Téléportation</a>
 					</li>
 			</ul>
 			</td>
