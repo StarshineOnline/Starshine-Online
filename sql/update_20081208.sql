@@ -1,0 +1,1 @@
+ALTER TABLE `stat_jeu` ADD `food` INT UNSIGNED NOT NULL ;

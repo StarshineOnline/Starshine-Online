@@ -24,6 +24,10 @@ include('inc/type_terrain.inc.php');
 //Inclusion du fichier contenant toutes les fonctions de base
 include('fonction/base.inc.php');
 
+$date = date("Y-m-d", mktime(0, 0, 0, date("m") , date("d") - 1, date("Y")));
+$date_hier = date("Y-m-d", mktime(0, 0, 0, date("m") , date("d") - 2, date("Y")));
+
+
 $ressources = array();
 
 $requete = "SELECT royaume.race as race, info, FLOOR(COUNT(*) / 10) as tot, COUNT(*) as tot_terrain FROM `map` LEFT JOIN royaume ON map.royaume = royaume.id WHERE royaume <> 0 GROUP BY info, royaume";
@@ -138,18 +142,86 @@ foreach($ressource_final as $key => $value)
 	$db->query($requete);
 }
 
+//Mis à jour de la nourriture totales
+$food_total = ceil($tot_nou * 1.01);
+$requete = "UPDATE stat_jeu SET food = ".$food_total." WHERE date = '".$date."'";
+$db->query($requete);
+
 //Nourriture
+//On réduit de 1 les debuff famines
+$requete = "UPDATE buff SET effet = effet - 1 WHERE type= 'famine'";
+$db->query($requete);
+$requete = "DELETE FROM buff WHERE type = 'famine' AND effet <= 0";
+$db->query($requete);
+//On récupère la food nécessaire par habitant
+$requete = "SELECT food, nombre_joueur FROM stat_jeu WHERE date = '".$date_hier."'";
+$req = $db->query($requete);
+$row = $db->read_assoc($req);
+if($row['nombre_joueur'] != 0) $food_necessaire = $row['food'] / $row['nombre_joueur'];
+else $food_necessaire = 0;
+
+//On récupère les infos des royaumes
 $requete = "SELECT ID, race, food FROM royaume WHERE ID != 0";
 $req = $db->query($requete);
 while($row = $db->read_assoc($req))
 {
-	$tab_royaume[$row['race']] = array('id' => $row['ID'], 'food' => $row['food']);
+	$tab_royaume[$row['race']] = array('id' => $row['ID'], 'food' => $row['food'], 'actif' => nb_habitant($row['race']));
 }
-foreach($tab_royaume as $royaume => $value)
+foreach($tab_royaume as $race => $royaume)
 {
+	$royaume['food_necessaire'] = floor($food_necessaire * $royaume['actif']);
+	//Si ya assez de food
 	if($royaume['food_necessaire'] < $royaume['food'])
 	{
-		$requete = "UPDATE royaume SET food = food - ".$royaume['food_necessaire'];
+		$requete = "UPDATE royaume SET food = food - ".$royaume['food_necessaire']." WHERE ID = ".$royaume['id'];
 	}
+	//Sinon
+	else
+	{
+		//Calcul du debuff
+		$royaume['food_doit'] = $royaume['food_necessaire'] - $royaume['food'];
+		$ratio = $royaume['food_doit'] / $royaume['food_necessaire'];
+		$debuff = ceil($ratio * 10) - 1;
+		if($debuff > 6) $debuff = 6;
+		$persos = array();
+		$requete = "SELECT ID FROM perso WHERE race = '".$race."' AND statut = 'actif'";
+		$req = $db->query($requete);
+		while($row = $db->read_assoc($req))
+		{
+			$persos[$row['ID']] = $row['ID'];
+		}
+		$perso_implode = implode(',', $persos);
+		//On sélectionne les buffs à modifier
+		$ids_buff = array();
+		$requete = "SELECT ID FROM buff WHERE type = 'famine' AND id_perso IN (".$perso_implode.")";
+		$req = $db->query($requete);
+		while($row = $db->read_assoc($req))
+		{
+			$ids_buff[] = $row;
+		}
+		$buffs = array();
+		//On supprime les perso qui ont déjà un buff pour mettre à jour
+		foreach($ids_buff as $buff)
+		{
+			unset($persos[$buff['id_joueur']]);
+			$buffs[] = $buff['ID'];
+		}
+		//30 jours
+		$duree = 30 * 24 * 60 * 60;
+		$fin = time() + $duree;
+		$buffs_implode = implode(',', $buffs);
+		$requete = "UPDATE buff SET effet = effet + ".$debuff.", duree = ".$duree.", fin = ".$fin." WHERE ID IN (".$buffs_implode.")";
+		echo $requete;
+		$db->query($requete);
+		foreach($persos as $joueur)
+		{
+			//Lancement du buff
+			lance_buff('famine', $joueur, $debuff, 0, $duree, 'Famine', 'Vos HP et MP max sont réduits de %effet%%', 'perso', 1, 0, 0);
+		}
+		$requete = "UPDATE royaume SET food = 0 WHERE ID = ".$royaume['id'];
+		$db->query($requete);
+	}
+	$requete = "UPDATE buff SET effet = 50 WHERE type = 'famine' AND effet > 50";
+	$db->query($requete);
 }
 ?>

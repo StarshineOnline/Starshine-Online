@@ -834,7 +834,7 @@ function recupperso($ID)
 				$R_perso['PP_base'] = $R_perso['PP'];
 				$R_perso['reserve_base'] = $R_perso['reserve'];
 
-        // Bonus raciaux multipilcatif de PM & PP
+				// Bonus raciaux multipilcatif de PM & PP
 				if($R_perso['race'] == 'nain') $R_perso['PM'] = round($R_perso['PM'] * 1.1);
 				if($R_perso['race'] == 'scavenger') $R_perso['PM'] = round($R_perso['PM'] * 1.05);
 				if($R_perso['race'] == 'scavenger') $R_perso['PP'] = round($R_perso['PP'] * 1.15);
@@ -871,6 +871,11 @@ function recupperso($ID)
 				if(array_key_exists('buff_cri_protecteur', $R_perso['buff'])) $R_perso['PP'] = round($R_perso['PP'] * (1 + ($R_perso['buff']['buff_cri_protecteur']['effet'] / 100)));
 				if(array_key_exists('maladie_degenerescence', $R_perso['debuff'])) $R_perso['reserve'] = ceil($R_perso['reserve'] / (1 + ($R_perso['debuff']['maladie_degenerescence']['effet'] / 100)));
 				if(array_key_exists('debuff_desespoir', $R_perso['debuff'])) $R_perso['PM'] = round($R_perso['PM'] / (1 + (($R_perso['debuff']['debuff_desespoir']['effet']) / 100)));
+				if(array_key_exists('famine', $R_perso['debuff']))
+				{
+					$R_perso['hp_max'] = round($R_perso['hp_max'] - ((($R_perso['debuff']['famine']['effet'] * $R_perso['hp_max']) / 100)));
+					$R_perso['mp_max'] = round($R_perso['mp_max'] - ((($R_perso['debuff']['famine']['effet'] * $R_perso['mp_max']) / 100)));
+				}
 				// Calcul des coefficients
 				$R_perso['coef_melee'] = $R_perso['force'] * $R_perso['melee'];
 				$R_perso['coef_incantation'] = $R_perso['puissance'] * $R_perso['incantation'];
@@ -1096,7 +1101,7 @@ function check_perso($joueur)
 	// On vérifie que le personnage est vivant
 	if($joueur['hp'] > 0)
 	{
-	  // On augmente les HP max si nécessaire
+		// On augmente les HP max si nécessaire
 		$temps_maj = time() - $joueur['maj_hp']; // Temps écoulé depuis la dernière augmentation de HP.
 		$temps_hp = $G_temps_maj_hp;  // Temps entre deux augmentation de HP.
 		if ($temps_maj > $temps_hp && $temps_hp > 0) // Pour ne jamais diviser par 0 ...
@@ -1108,7 +1113,7 @@ function check_perso($joueur)
 			$joueur['maj_hp'] += $nb_maj * $temps_hp;
 			$modif = true;
 		}
-	  // On augmente les MP max si nécessaire
+		// On augmente les MP max si nécessaire
 		$temps_maj = time() - $joueur['maj_mp']; // Temps écoulé depuis la dernière augmentation de MP.
 		$temps_mp = $G_temps_maj_mp;  // Temps entre deux augmentation de MP.
 		if ($temps_maj > $temps_mp)
@@ -1131,10 +1136,10 @@ function check_perso($joueur)
 			//Buff préparation du camp
 			if(array_key_exists('preparation_camp', $joueur['buff']))
 			{
-			  // Le buff a-t-il été lancé après la dernière régénération ?
+				// Le buff a-t-il été lancé après la dernière régénération ?
 				if($joueur['buff']['preparation_camp']['effet2'] > $joueur['regen_hp'])
 				{
-				  // On calcule le moment où doit avoir lieu la première régénération après le lancement du buff 
+					// On calcule le moment où doit avoir lieu la première régénération après le lancement du buff 
 					$regen_cherche = $joueur['regen_hp'] + ($G_temps_regen_hp * floor(($joueur['buff']['preparation_camp']['effet2'] - $joueur['regen_hp']) / $G_temps_regen_hp));
 				}
 				else $regen_cherche = $joueur['regen_hp'];
@@ -1168,8 +1173,8 @@ function check_perso($joueur)
 				}
 			}
 			// Calcul des HP et MP récupérés
-			$hp_gagne = $nb_regen * (floor($joueur['hp_max_1'] * $regen_hp) + $bonus_accessoire);
-			$mp_gagne = $nb_regen * (floor($joueur['mp_max_1'] * $regen_mp) + $bonus_accessoire_mp);
+			$hp_gagne = $nb_regen * (floor($joueur['hp_max'] * $regen_hp) + $bonus_accessoire);
+			$mp_gagne = $nb_regen * (floor($joueur['mp_max'] * $regen_mp) + $bonus_accessoire_mp);
 			//DéBuff lente agonie
 			if(array_key_exists('lente_agonie', $joueur['debuff']))
 			{
@@ -1223,14 +1228,14 @@ function check_perso($joueur)
 			//Maladie mort_regen
 			if(array_key_exists('high_regen', $joueur['debuff']) AND $hp_gagne != 0 AND $mp_gagne != 0)
 			{
-				$hp_gagne = $joueur ['hp'];
+				$hp_gagne = $joueur['hp'];
 			}
 			// Mise à jour des HP
 			$joueur['hp'] = $joueur['hp'] + $hp_gagne;
-			if ($joueur['hp'] > $joueur['hp_max_1']) $joueur['hp'] = floor($joueur['hp_max_1']);
+			if ($joueur['hp'] > $joueur['hp_max']) $joueur['hp'] = floor($joueur['hp_max']);
 			// Mise à jour des MP
 			$joueur['mp'] = $joueur['mp'] + $mp_gagne;
-			if ($joueur['mp'] > $joueur['mp_max_1']) $joueur['mp'] = floor($joueur['mp_max_1']);
+			if ($joueur['mp'] > $joueur['mp_max']) $joueur['mp'] = floor($joueur['mp_max']);
 			$joueur['regen_hp'] = $joueur['regen_hp'] + ($nb_regen * $G_temps_regen_hp);
 			$modif = true;
 		}
