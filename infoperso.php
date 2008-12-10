@@ -47,6 +47,8 @@
 }
 {//-- Buffs, Grade, Pseudo
 	echo "<div id='joueur_buffs_nom'>";
+	echo " <div id='joueur_nom' onclick=\"envoiInfo('personnage.php', 'information');\" title=\"Acc&eacute; &agrave la fiche de votre personnage\">".ucwords($joueur["grade"])." ".ucwords($joueur["nom"])." ".ucwords($Gtrad[$joueur["race"]])." (".ucwords($joueur["classe"]).") - niv.".$joueur["level"]."</div>
+	<br />";
 	echo " <div id='buff_list'>
 			<ul>";
 		//print_r($joueur["buff"]);
@@ -84,14 +86,19 @@
 			}
 			for($b = ($joueur["rang_grade"] + 2 + 1); $b <= 10; $b++)
 			{
-				echo "<li class='buff_nondispo' title='".$title_grade[$b]."'></li>";
+				echo "<li class='buff_nondispo' title='".$title_grade[$b]."'> </li>";
 			}
 		}
+		echo " </ul>
+		</div>
+		<br />
+		<div id='debuff_list'>
+			<ul>";
 		if(count($joueur["debuff"]) > 0)
 		{
 			foreach($joueur["debuff"] as $buff)
 			{//-- Listing des buffs
-				$overlib = str_replace("'", "\'", trim("<ul><li class='overlib_titres'>".$buff["nom"]."</li><li>".$buff["description"]."</li><li>Durée ".transform_sec_temp($buff["fin"] - time())."</li><li class='overlib_infos'>(double-cliquer pour annuler ce buff)</li></ul>"));
+				$overlib = str_replace("'", "\'", trim("<ul><li class='overlib_titres'>".$buff["nom"]."</li><li>".$buff["description"]."</li><li>Durée ".transform_sec_temp($buff["fin"] - time())."</li></ul>"));
 				echo "<li class='buff'>
 					   <img src='image/buff/".$buff["type"]."_p.png' 
 							alt='".$buff["type"]."'
@@ -103,7 +110,6 @@
 		}
 	echo " </ul>
 		  </div>";
-	echo " <div id='joueur_nom' onclick=\"envoiInfo('personnage.php', 'information');\" title=\"Acc&eacute; &agrave la fiche de votre personnage\">".ucwords($joueur["grade"])." ".ucwords($joueur["nom"])." ".ucwords($Gtrad[$joueur["race"]])." (".ucwords($joueur["classe"]).") - niv.".$joueur["level"]."</div>";
 	echo "</div>";
 }
 if(!empty($joueur["groupe"]))

@@ -30,13 +30,15 @@ a:hover, a:active 	{ color:#7290db; }
 #joueur_onglets	 		{ position:absolute; left:88px; top:65px; width:225px; padding:0px 0px 0px 10px; }
 #joueur_onglets_index, #joueur_onglets_forums, #joueur_onglets_options, #joueur_onglets_exit 	{ float:left; width:55px; text-align:center; }
 
-#joueur_buffs_nom 		{ position:relative;float:left;}
-#joueur_nom				{ position:relative; width:210px; float:left; text-align:left; }
-#joueur_type			{ position:relative; width:210px; float:left; text-align:left; font-size:8pt; height:12px; }
-#buff_list				{ position:relative; text-align:center; width:310px; }
-#buff_list ul			{ float:left; list-style-type:none; text-align:center; width:310px; }
-.buff					{ position:relative; float:left; height:19px; padding:0px; margin:0px 2px; }
-.buff_duree_restante 	{ position:absolute; bottom:0px; left:0px; }
+#joueur_buffs_nom 					{ position:relative;float:left;}
+#joueur_nom							{ position:relative; width:210px; float:left; text-align:left; }
+#joueur_type						{ position:relative; width:210px; float:left; text-align:left; font-size:8pt; height:12px; }
+#buff_list, #debuff_list			{ position:relative; text-align:center; width:310px; }
+#buff_list ul, #debuff_list ul		{ float:left; list-style-type:none; text-align:center; width:310px; }
+.buff, .buff_nondispo, .buff_dispo	{ position:relative; float:left; height:19px; padding:0px; margin:0px 2px; }
+.buff_dispo							{ border : 1px solid gray; width : 16px; height : 16px;}
+.buff_nondispo						{ border : 1px solid red; width : 16px; height : 16px;}
+.buff_duree_restante 				{ position:absolute; bottom:0px; left:0px; }
 
 #joueur_groupe			{ width:250px; float:left; }
 #joueur_groupe li		{ cursor:pointer; font-size:8pt; border-bottom:1px dotted #8b94b0; padding:0px 0px 2px 0px; }
@@ -117,8 +119,6 @@ a:hover, a:active 	{ color:#7290db; }
   Vrac
  ***************************************************/
 #loading {background:transparent url('./../image/ajax-loader-bar.gif') no-repeat scroll left center;height:22px;left:140px;position:absolute;top:300px;width:220px;}
-
-#loading {background:transparent url('../image/ajax-loader-bar.gif') center left no-repeat; width : 220px; height : 22px; position : absolute; top : 300px; left : 300px; display : none;}
 
 .infoperso {
 	vertical-align : top;
@@ -1041,7 +1041,7 @@ tr.tabMonstre td
 	height: 0px;
 	display: inline;
 	background-image: url(image/icone/livre_over.png);
-	background-image: url(image/icone/quete_over.png);
+	background-image: url(image/icone/quete_icone_over.png);
 	background-image: url(image/icone/journal-des-actions_over.png);
 	background-image: url(image/icone/script_combat_over.png);
 	background-image: url(image/icone/inventaire_over.png);

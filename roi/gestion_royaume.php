@@ -1399,19 +1399,22 @@ $W_coord = convert_in_coord($W_case);
 		$bourse->get_encheres('DESC', 'actif = 1 AND id_royaume != '.$R['ID'].' AND id_royaume_acheteur != '.$R['ID']);
 			//
 		?>
-		<div>
-			<select name="ressource" id="ressource">
-				<option value="pierre">pierre</option>
-				<option value="bois">bois</option>
-				<option value="eau">eau</option>
-				<option value="sable">sable</option>
-				<option value="charbon">charbon</option>
-				<option value="essence">essence</option>
-				<option value="nourriture">nourriture</option>
-			</select><br />
-			Nombre <input type="text" name="nbr" id="nbr" value="0" /><br />
-			Prix total : <input type="text" name="prix" id="prix" value="0" /><br />
-			<a href="#" onclick="if(confirm('Voullez vous mettre ' + $(nbr).value + ' ' + $(ressource).value + ' en vente à ' + $(prix).value + ' stars ?')) return envoiInfo('gestion_royaume.php?direction=bourse_ressource&amp;ressource=' + $(ressource).value + '&amp;prix=' + $(prix).value + '&amp;nombre=' + $(nbr).value, 'conteneur'); else return false;">Mettre ses ressources aux enchères</a><br />
+		<div style="position : absolute; left : 800px; background-color : grey; padding : 5px 10px 5px 10px;">
+			<div id="ajout_ressource" style="position : relative; right : 0px; display : none; z-index : 10;">
+				Ressource : <select name="ressource" id="ressource">
+					<option value="pierre">pierre</option>
+					<option value="bois">bois</option>
+					<option value="eau">eau</option>
+					<option value="sable">sable</option>
+					<option value="charbon">charbon</option>
+					<option value="essence">essence</option>
+					<option value="nourriture">nourriture</option>
+				</select><br />
+				Nombre <input type="text" name="nbr" id="nbr" value="0" /><br />
+				Prix total : <input type="text" name="prix" id="prix" value="0" /><br />
+				<input type="button" onclick="if(confirm('Voullez vous mettre ' + $(nbr).value + ' ' + $(ressource).value + ' en vente à ' + $(prix).value + ' stars ?')) return envoiInfo('gestion_royaume.php?direction=bourse_ressource&amp;ressource=' + $(ressource).value + '&amp;prix=' + $(prix).value + '&amp;nombre=' + $(nbr).value, 'conteneur'); else return false;" value="Valider" /><br />
+			</div>
+			<a href="" onclick="Effect.toggle('ajout_ressource', 'slide'); return false;">Mettre des ressources aux enchères</a>
 		</div>
 		<h3>Enchères en cours</h3>
 		<table style="width : 100%;">
