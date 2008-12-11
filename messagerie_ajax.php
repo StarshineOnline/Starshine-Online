@@ -16,7 +16,7 @@ if(!array_key_exists('action', $_GET))
 		echo '<h3 style="text-align : center;">'.$messagerie->thread->messages[0]->titre.' / <a href="envoimessage.php?id_type=r'.$messagerie->thread->id_thread.'" onclick="return envoiInfo(this.href, \'information\')">Répondre</a></h3>';
 		foreach($messagerie->thread->messages as $message)
 		{
-			$message_affiche = message_affiche($message, $joueur, $messagerie->thread->messages[0]->titre);
+			$message_affiche = message_affiche($message, $joueur['ID'], $messagerie->thread->messages[0]->titre);
 			?>
 			<div id="message<?php echo $message->id_message; ?>">
 			<?php

@@ -94,7 +94,7 @@ abstract class Personnage
 			if( !strcmp('perso', $table) )
 				$requete .= 'ID = ';
 			else
-				$requete .= 'id = '
+				$requete .= 'id = ';
 			$requete .= $this->id;
 			$db->query($requete);
 		}

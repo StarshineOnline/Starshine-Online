@@ -200,7 +200,7 @@ class PersoJoueur extends Personnage
 	}
 	
 	//! Accesseur $action_d
-	function getClasse()
+	function getActionD()
 	{
 		return $this->action_d;
 	}
@@ -271,8 +271,8 @@ class PersoJoueur extends Personnage
 		return $this->mp;
 	}
 	
-	//! Accesseur $hp
-	function getHPMAX()
+	//! Accesseur $mp_max
+	function getMPMAX()
 	{
 		return $this->mp_max;
 	}
@@ -617,7 +617,7 @@ class PersoJoueur extends Personnage
 	}
 	
 	//! Modifieur $action_d
-	function setClasse($action_d)
+	function setActionD($action_d)
 	{
 		$this->action_d = $action_d;
 	}
@@ -689,7 +689,7 @@ class PersoJoueur extends Personnage
 	}
 	
 	//! Modifieur $hp
-	function setHPMAX($mp_max)
+	function setMPMAX($mp_max)
 	{
 		$this->mp_max = $mp_max;
 	}
@@ -994,11 +994,11 @@ class PersoJoueur extends Personnage
 		@param $cache_niveau int Bonus Shine
 	*/
 	function __construct($nom = '', $coord_x = 0, $coord_y = 0, $mort = 0, $exp = 0, $honneur = 0, $niveau = 0, $mdp = '', $rang = 7, 
-				     $vie = 0, $force = 0, $dexterite = 0, $puissance = 0, $volonte = 0; $energie = 0, $race = '', $classe = '', $id_classe = 0,
+				     $vie = 0, $force = 0, $dexterite = 0, $puissance = 0, $volonte = 0, $energie = 0, $race = '', $classe = '', $id_classe = 0,
 				     $inventaire = '', $inventaire_slot = '', $pa = 1, $dernier_action = 0, $action_a = 0, $action_d = 0, $sort_jeu = '', 
 				     $sort_combat = '', $comp_jeu = '', $comp_combat = '', $star = 0, $arme = 0, $competence = '', $groupe = 0, $hp = 0,
 				     $hp_max = 0, $mp = 0, $mp_max = 0, $melee = 1, $distance = 1, $esquive = 1, $blocage = 1, $incantation = 1, 
-				     $sort_vie = 0, $sort_elem = 0, $sort_mort = 0, $identification = 1, $forge = 1, $craft = 1, $survie = 1, $faceur_magie = 1,
+				     $sort_vie = 0, $sort_elem = 0, $sort_mort = 0, $identification = 1, $forge = 1, $craft = 1, $survie = 1, $facteur_magie = 1,
 				     $facteur_vie = 1, $facteur_elem = 1, $facteur_mort = 1, $resistance_magique = 1, $regen_hp = 0, $maj_hp = 0, 
 				     $maj_mp = 0, $point_shine = 0, $quete = '', $quete_fini = '', $derniere_connexion = 0, $statut = 'actif', $fin_ban = 0, 
 				     $frag = 0, $crime = 0, $amende = 0, $teleport = 'true', $cache_classe = 0, $cache_stat = 0, $cache_niveau = 0)
@@ -1012,9 +1012,9 @@ class PersoJoueur extends Personnage
 			$requete = 'SELECT nom, x, y, mort, exp, honneur, level, password, rang_royaume, vie, forcex, dexterite, 
 			puissance, volonte, energie, race, classe, classe_id, inventaire, inventaire_slot, pa, dernieraction, action_a, action_d,
 			sort_jeu, sort_combat, comp_jeu, comp_combat, star, arme, competence, groupe, hp, hp_max, mp, mp_max, melee,
-			distance, esquive, blocage, incantation, sort_vie, sort_elem, sort_mort, forge, craft, survie, facteur_magie, facteur_vie,
-			facteur_elem, facteur_mort, resistmagique, regen_hp, maj_hp, maj_mp, point_sso, quete, quete_fini, dernier_connexion,
-			statut, fin_ban, frag, crime, amende, teleport_roi, cache_classe, cache_stat, cache_niveau FROM perso WHERE ID = '.
+			distance, esquive, blocage, incantation, sort_vie, sort_element, sort_mort, identification, forge, craft, survie, facteur_magie, 
+			facteur_sort_vie, facteur_sort_element, facteur_sort_mort, resistmagique, regen_hp, maj_hp, maj_mp, point_sso, quete, quete_fini, 
+			dernier_connexion, statut, fin_ban, frag, crime, amende, teleport_roi, cache_classe, cache_stat, cache_niveau FROM perso WHERE ID = '.
 			$this->getId();
 			$requeteSQL = $db->query($requete);
 			list($this->nom, $this->coord_x, $this->coord_y, $this->mort, $this->exp, $this->honneur, $this->niveau, $this->mdp,
@@ -1024,7 +1024,7 @@ class PersoJoueur extends Personnage
 			$this->competence, $this->groupe, $this->hp, $this->hp_max, $this->mp, $this->mp_max, $this->melee, $this->distance,
 			$this->esquive, $this->blocage, $this->incantation, $this->sort_vie, $this->sort_elem, $this->sort_mort, $this->identification,
 			$this->forge, $this->craft, $this->survie, $this->facteur_magie, $this->facteur_vie, $this->facteur_elem, $this->facteur_mort,
-			$this->resistance_magique, $this->regen_hp, $this->maj_hp, $this->maj_mp, $this->point_shine, $this->quete, $this-quete_fini,
+			$this->resistance_magique, $this->regen_hp, $this->maj_hp, $this->maj_mp, $this->point_shine, $this->quete, $this->quete_fini,
 			$this->derniere_connexion, $this->statut, $this->fin_ban, $this->frag, $this->crime, $this->amende, $this->teleport, 
 			$this->cache_classe, $this->cache_stat, $this->cache_niveau) = $db->read_row($requeteSQL);
 		}
@@ -1113,7 +1113,7 @@ class PersoJoueur extends Personnage
 		if( $this->id > 0 )
 		{
 			$requete = 'UPDATE TABLE pnj SET '.$this->modifBase();
-			$requete .= .' mort = "'.$this->mort.'", exp = "'.$this->exp.'", honneur = "'.$this->honneur.'", level = "'.$this->niveau.
+			$requete .= ' mort = "'.$this->mort.'", exp = "'.$this->exp.'", honneur = "'.$this->honneur.'", level = "'.$this->niveau.
 			'", password"'.$this->mdp.'", rang_royaume = "'.$this->rang.'", vie = "'.$this->vie.'", forcex = "'.$this->force.
 			'", dexterite = "'.$this->dexterite.'", puissance = "'.$this->puissance.'", volonte = "'.$this->volonte.'", energie = "'.$this->energie.
 			'", race = "'.$this->race.'", classe = "'.$this->classe.'", classe_id = "'.$this->id_classe.'", inventaire = "'.$this->inventaire.
@@ -1123,9 +1123,9 @@ class PersoJoueur extends Personnage
 			'", competence = "'.$this->competence.'", groupe = "'.$this->groupe.'", hp = "'.$this->hp.'", hp_max = "'.$this->hp_max.
 			'", mp = "'.$this->mp.'", mp_max = "'.$this->mp_max.'", melee = "'.$this->melee.'", distance = "'.$this->distance.
 			'", esquive = "'.$this->esquive.'", blocage = "'.$this->blocage.'", incantaion = "'.$this->incantation.'", sort_vie = "'.$this->sort_vie.
-			'", sort_elem = "'.$this->sort_elem.'", sort_mort = "'.$this->sort_mort.'", identification = "'.$this->identification.'", forge = "'.$this->forge.
-			'", craft = "'.$this->craft.'", survie = "'.$this->survie.'", facteur_magie = "'.$this->facteur_magie.'", facteur_vie = "'.$this->facteur_vie.
-			'", facteur_elem = "'.$this->facteur_elem.'", facteur_mort = "'.$this->facteur_mort.'", resistmagique = "'.$this->resistance_magique.
+			'", sort_element = "'.$this->sort_elem.'", sort_mort = "'.$this->sort_mort.'", identification = "'.$this->identification.'", forge = "'.$this->forge.
+			'", craft = "'.$this->craft.'", survie = "'.$this->survie.'", facteur_magie = "'.$this->facteur_magie.'", facteur_sort_vie = "'.$this->facteur_vie.
+			'", facteur_sort_element = "'.$this->facteur_elem.'", facteur_sort_mort = "'.$this->facteur_mort.'", resistmagique = "'.$this->resistance_magique.
 			'", regen_hp = "'.$this->regen_hp.'", maj_hp = "'.$this->maj_hp.'", maj_mp = "'.$this->maj_mp.'", point_sso = "'.$this->point_shine.
 			'", quete = "'.$this->quete.'", quete_fini = "'.$this-quete_fini.'", dernier_connexion = "'.$this->derniere_connexion.
 			'", statut = "'.$this->statut.'", fin_ban = "'.$this->fin_ban.'", frag = "'.$this->frag.'", crime = "'.$this->crime.'", amende = "'.$this->amende.
@@ -1138,9 +1138,9 @@ class PersoJoueur extends Personnage
 			$requete = 'INSERT INTO perso(nom, x, y, mort, exp, honneur, level, password, rang_royaume, vie, forcex, dexterite, 
 			puissance, volonte, energie, race, classe, classe_id, inventaire, inventaire_slot, pa, dernieraction, action_a, action_d,
 			sort_jeu, sort_combat, comp_jeu, comp_combat, star, arme, competence, groupe, hp, hp_max, mp, mp_max, melee,
-			distance, esquive, blocage, incantation, sort_vie, sort_elem, sort_mort, forge, craft, survie, facteur_magie, facteur_vie,
-			facteur_elem, facteur_mort, resistmagique, regen_hp, maj_hp, maj_mp, point_sso, quete, quete_fini, dernier_connexion,
-			statut, fin_ban, frag, crime, amende, teleport_roi, cache_classe, cache_stat, cache_niveau) VALUES(';
+			distance, esquive, blocage, incantation, sort_vie, sort_element, sort_mort, identification, forge, craft, survie, facteur_magie, 
+			facteur_sort_vie, facteur_sort_element, facteur_sort_mort, resistmagique, regen_hp, maj_hp, maj_mp, point_sso, quete, quete_fini, 
+			dernier_connexion, statut, fin_ban, frag, crime, amende, teleport_roi, cache_classe, cache_stat, cache_niveau) VALUES(';
 			$requete .= $this->insertBase().', "'.$this->mort.'", "'.$this->exp.'", "'.$this->honneur.'", "'.$this->niveau.'", "'.$this->mdp.'", "'.
 			$this->rang.'", "'.$this->vie.'", "'.$this->force.'", "'.$this->dexterite.'", "'.$this->puissance.'", "'.$this->volonte.'", "'.
 			$this->energie.'", "'.$this->race.'", "'.$this->classe.'", "'.$this->id_classe.'", "'.$this->inventaire.'", "'.$this->inventaire_slot.'", "'.
@@ -1150,9 +1150,10 @@ class PersoJoueur extends Personnage
 			$this->blocage.'", "'.$this->incantation.'", "'.$this->sort_vie.'", "'.$this->sort_elem.'", "'.$this->sort_mort.'", "'.$this->identification.'", "'.
 			$this->forge.'", "'.$this->craft.'", "'.$this->survie.'", "'.$this->facteur_magie.'", "'.$this->facteur_vie.'", "'.$this->facteur_elem.'", "'.
 			$this->facteur_mort.'", "'.$this->resistance_magique.'", "'.$this->regen_hp.'", "'.$this->maj_hp.'", "'.$this->maj_mp.'", "'.
-			$this->point_shine.'", "'.$this->quete.'", "'.$this-quete_fini.'", "'.$this->derniere_connexion.'", "'.$this->statut.'", "'.$this->fin_ban.'", "'.
+			$this->point_shine.'", "'.$this->quete.'", "';
+			$requete .= $this-quete_fini.'", "'.$this->derniere_connexion.'", "'.$this->statut.'", "'.$this->fin_ban.'", "'.
 			$this->frag.'", "'.$this->crime.'", "'.$this->amende.'", "'.$this->teleport.'", "'.$this->cache_classe.'", "'.$this->cache_stat.'", "'.
-			$this->cache_niveau.')';
+			$this->cache_niveau.'")';
 			$db->query($requete);
 			//Récupère le dernier id inséré.
 			list($this->id) = mysql_fetch_row($db->query('SELECT LAST_INSERT_ID()'));

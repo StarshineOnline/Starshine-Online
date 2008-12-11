@@ -11,5 +11,6 @@ if(array_key_exists('important', $_GET))
 elseif(array_key_exists('suppr', $_GET) && $_GET['suppr'] == 1)
 {
 	$thread->supprimer(true);
+	echo '<script language="JavaScript">window.location=\'messagerie.php\'</script>';
 }
 ?>
