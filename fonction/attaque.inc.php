@@ -383,6 +383,8 @@ function attaque($acteur = 'attaquant', $competence)
 						{
 							$effet = $actif['hp_max'] - $actif['hp'];
 						}
+					// Augmentation du nombre de HP récupérable par récupération
+					if(array_key_exists('recuperation', $actif['etat'])) $actif['etat']['recuperation']['hp_max'] += $effet;
 					$actif['hp'] += $effet;
 					if($effet > 0) echo '&nbsp;&nbsp;<span class="soin">'.$actif['nom'].' gagne '.$effet.' HP par la rage vampirique</span><br />';
 				}
