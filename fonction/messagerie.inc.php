@@ -58,7 +58,7 @@ function message_affiche($message, $joueur_id, $thread_title = '')
 	//Masquer
 	if($message->etat != 'masque') $message_affiche .= '<a href="message_change_etat.php?id_message='.$message->id_message.'&amp;etat=masque" onclick="return envoiInfo(this.href, \'message'.$message->id_message.'\')">Masquer</a>';
 	//Important
-	if($message->etat != 'important') $message_affiche .= (empty $message_affiche ? '' : ' / ').'<a href="message_change_etat.php?id_message='.$message->id_message.'&amp;etat=important" onclick="return envoiInfo(this.href, \'message'.$message->id_message.'\')">Important</a>';
+	if($message->etat != 'important') $message_affiche .= (empty($message_affiche)?'':' / ').'<a href="message_change_etat.php?id_message='.$message->id_message.'&amp;etat=important" onclick="return envoiInfo(this.href, \'message'.$message->id_message.'\')">Important</a>';
 	//Suppression
 	if($joueur_id == $message->id_auteur) $message_affiche .= ' / <a href="message_change_etat.php?id_message='.$message->id_message.'&amp;etat=del" onclick="if(confirm(\'Voulez vous supprimer votre message ?\')) return envoiInfo(this.href, \'message'.$message->id_message.'\'); else return false;">Supprimer</a>';
 	return $message_affiche;

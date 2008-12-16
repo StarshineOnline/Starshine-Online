@@ -2,43 +2,43 @@
 require('haut_roi.php');
 
 ?>
-<h3>Gestion des Quètes</h3>
+<h3>Gestion des QuÃ¨tes</h3>
 <?php
 if($_GET['action'] == 'achat')
 {
-	//Récupère les informations sur la quète
+	//RÃ©cupÃ¨re les informations sur la quÃ¨te
 	$requete = "SELECT * FROM quete WHERE id = ".sSQL($_GET['id']);
 	$req = $db->query($requete);
 	$row = $db->read_assoc($req);
-	//Vérifie que le royaume a assez de stars pour l'acheter
+	//VÃ©rifie que le royaume a assez de stars pour l'acheter
 	if($R['star'] >= $row['star_royaume'])
 	{
-		//Ajout de la quète dans la liste des quètes du royaume
+		//Ajout de la quÃ¨te dans la liste des quÃ¨tes du royaume
 		$requete = "INSERT INTO quete_royaume VALUES('', ".$R['ID'].", ".$row['id'].")";
 		$req = $db->query($requete);
 		//Mis a jour des stars du royaume
 		$requete = "UPDATE royaume SET star = star - ".$row['star_royaume']." WHERE ID = ".$R['ID'];
 		$req = $db->query($requete);
-		echo 'Votre royaume a bien acheté la quète "'.$row['nom'].'"';
+		echo 'Votre royaume a bien achetÃ© la quÃ¨te "'.$row['nom'].'"';
 	}
 	else
 	{
-		echo 'Votre royaume n\'a pas assez de stars pour acheter cette quète.';
+		echo 'Votre royaume n\'a pas assez de stars pour acheter cette quÃ¨te.';
 	}
 	?>
-	<br /><a href="javascript:envoiInfo('quete.php?poscase=<?php echo $W_case; ?>&amp;direction=quete', 'carte')">Retour au menu des quètes</a>
+	<br /><a href="javascript:envoiInfo('quete.php?poscase=<?php echo $W_case; ?>&amp;direction=quete', 'carte')">Retour au menu des quÃ¨tes</a>
 	<?php
 }
 elseif($_GET['action'] == 'voir')
 {
-	//Récupère les informations sur la quète
+	//RÃ©cupÃ¨re les informations sur la quÃ¨te
 	$requete = "SELECT * FROM quete WHERE id = ".sSQL($_GET['id']);
 	$req = $db->query($requete);
 	$row = $db->read_assoc($req);
 	?>
 	<h3 style="margin-bottom : 3px;""><?php echo $row['nom']; ?></h3>
-	<span style="font-style : italic;">Niveau conseillé <?php echo $row['lvl_joueur']; ?><br />
-	Répétable : <?php if($row['repete'] == 'y') echo 'Oui'; else echo 'Non'; ?><br />
+	<span style="font-style : italic;">Niveau conseillÃ© <?php echo $row['lvl_joueur']; ?><br />
+	RÃ©pÃ©table : <?php if($row['repete'] == 'y') echo 'Oui'; else echo 'Non'; ?><br />
 	<?php if($row['mode'] == 'g') echo 'Groupe'; else echo 'Solo'; ?></span><br />
 	<br />
 	<?php echo nl2br($row['description']); ?>
@@ -56,16 +56,16 @@ elseif($_GET['action'] == 'voir')
 				$qreq = $db->query($requete);
 				$qrow = $db->read_assoc($qreq);
 				?>
-			<li>Avoir fini la quète : <?php echo $qrow['nom']; ?></li>
+			<li>Avoir fini la quÃ¨te : <?php echo $qrow['nom']; ?></li>
 				<?php
 			}
 		}
 		?>
 	</ul>
-	<h3>Récompense</h3>
+	<h3>RÃ©compense</h3>
 	<ul>
 		<li>Stars : <?php echo $row['star']; ?></li>
-		<li>Expérience : <?php echo $row['exp']; ?></li>
+		<li>ExpÃ©rience : <?php echo $row['exp']; ?></li>
 		<li>Honneur : <?php echo $row['honneur']; ?></li>
 		<li><strong>Objets</strong> :</li>
 		<?php
@@ -86,7 +86,7 @@ elseif($_GET['action'] == 'voir')
 					echo '<li>Recette de '.$row_r['nom'].' X '.$reward_nb.'</li>';
 				break;
 				case 'x' :
-					echo '<li>Objet aléatoire</li>';
+					echo '<li>Objet alÃ©atoire</li>';
 				break;
 			}
 			$r++;
@@ -95,15 +95,15 @@ elseif($_GET['action'] == 'voir')
 	</ul>
 	<h3>Cout pour le royaume : <?php echo $row['star_royaume']; ?> stars</h3>
 	<br />
-	<a href="javascript:envoiInfo('quete.php?poscase=<?php echo $W_case; ?>&amp;direction=quete&amp;action=achat&amp;id=<?php echo $row['id']; ?>', 'carte')">Acheter cette quête</a><br />
+	<a href="javascript:envoiInfo('quete.php?poscase=<?php echo $W_case; ?>&amp;direction=quete&amp;action=achat&amp;id=<?php echo $row['id']; ?>', 'carte')">Acheter cette quÃ¨te</a><br />
 	<br />
-	<a href="javascript:envoiInfo('quete.php?poscase=<?php echo $W_case; ?>&amp;direction=quete', 'carte')">Retour à la liste des quêtes</a><br />
+	<a href="javascript:envoiInfo('quete.php?poscase=<?php echo $W_case; ?>&amp;direction=quete', 'carte')">Retour Ã  la liste des quÃ¨tes</a><br />
 	<?php
 }
 else
 {
 	$requete = "SELECT * FROM quete WHERE quete.achat = 'oui' AND id NOT IN (SELECT id_quete FROM quete_royaume WHERE id_royaume = ".$R['ID'].") ORDER BY star_royaume";
-$req = $db->query($requete);
+	$req = $db->query($requete);
 
 ?>
 	<table>
@@ -119,23 +119,26 @@ $req = $db->query($requete);
 		</td>
 	</tr>
 <?php
-while($row = $db->read_array($req))
-{
-	$href = 'quete.php?poscase='.$W_case.'&amp;direction=quete&amp;action=voir&amp;id='.$row['id'];
-	$js = 'new Tip(\'quete_'.$row['id'].'\', \'content\');
-';
-	echo '
-	<tr>
-		<td>
-			'.$row['nom'].'
-		</td>
-		<td>
-			'.$row['star_royaume'].'
-		</td>
-		<td>
-			<a href="'.$href.'" onclick="return false;" id="quete_'.$row['id'].'">Détails de la quète</a>
-		</td>
-	</tr>';
-}
+	while($row = $db->read_array($req))
+	{
+		$href = 'quete.php?poscase='.$W_case.'&amp;direction=quete&amp;action=voir&amp;id='.$row['id'];
+		$js = 'new Tip(\'quete_'.$row['id'].'\', \'content\');
+	';
+		echo '
+		<tr>
+			<td>
+				'.$row['nom'].'
+			</td>
+			<td>
+				'.$row['star_royaume'].'
+			</td>
+			<td>
+				<a href="'.$href.'" onclick="return false;" id="quete_'.$row['id'].'">DÃ©tails de la quÃ¨te</a>
+			</td>
+		</tr>';
+	}
 ?>
 </table>
+<?php
+}
+?>

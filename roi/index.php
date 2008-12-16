@@ -45,7 +45,7 @@ $_SESSION['position'] = convert_in_pos($joueur['x'], $joueur['y']);
 			<li>
 				<a href="#" onclick="showMenu(2)">Militaire</a>
 				<ul id="smenu2" style="display : none">
-					<li><a href="gestion_royaume.php?direction=drapeau" onclick="return clickMenu(this);">Drapeaux & batiments</a>
+					<li><a href="construction.php" onclick="return clickMenu(this);">Drapeaux & batiments</a>
 					<li><a href="gestion_royaume.php?direction=carte" onclick="return clickMenu(this);">Carte des constructions et habitants</a>
 					<li><a href="index.php" onclick="refresh(this.href, 'conteneur');">Gestion des groupes</a></li>
 					<li><a href="carte_strategique.php" onclick="return clickMenu(this);">Carte Stratégique</a></li>
@@ -57,17 +57,17 @@ $_SESSION['position'] = convert_in_pos($joueur['x'], $joueur['y']);
 				<ul id="smenu3" style="display : none">
 					<li><a href="gestion_royaume.php?direction=bourse" onclick="return clickMenu(this);">Bourse Inter Royaume</a>
 					<li><a href="gestion_royaume.php?direction=construction" onclick="return clickMenu(this);">Construction de la ville</a>
-					<li><a href="gestion_royaume.php?direction=entretien" onclick="return clickMenu(this);">Entretien</a>
-					<li><a href="gestion_royaume.php?direction=quete" onclick="return clickMenu(this);">Gestion des quètes</a>
-					<li><a href="gestion_royaume.php?direction=taxe" onclick="return clickMenu(this);">Gestion des taxes</a>
+					<li><a href="entretien.php" onclick="return clickMenu(this);">Entretien</a>
+					<li><a href="quete.php" onclick="return clickMenu(this);">Gestion des quètes</a>
+					<li><a href="taxe.php" onclick="return clickMenu(this);">Gestion des taxes</a>
 				</ul>
 			</li>
 			<li>
 				<a href="#" onclick="showMenu(4)">Divers</a>
 				<ul id="smenu4" style="display : none">
 					<li><a href="gestion_royaume.php?direction=criminel" onclick="return clickMenu(this);">Criminels</a>
-					<li><a href="gestion_royaume.php?direction=motk" onclick="return clickMenu(this);">Message du roi</a>
-					<li><a href="gestion_royaume.php?direction=propagande" onclick="return clickMenu(this);">Propagande</a>
+					<li><a href="motk.php" onclick="return clickMenu(this);">Message du roi</a>
+					<li><a href="propagande.php" onclick="return clickMenu(this);">Propagande</a>
 					<li><a href="gestion_royaume.php?direction=stats" onclick="return clickMenu(this);">Statistiques</a>
 				</ul>
 			</li>
