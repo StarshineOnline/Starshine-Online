@@ -1304,7 +1304,7 @@ function check_case($coord)
 			$db->query($requete);
 		}
 		//Si c'est un bâtiment ou une arme de siège, on le construit
-		elseif($row['type'] == 'fort' OR $row['type'] == 'tour' OR $row['type'] == 'bourg' OR $row['type'] == 'mur' OR $row['type'] == 'arme_de_siege')
+		elseif($row['type'] == 'fort' OR $row['type'] == 'tour' OR $row['type'] == 'bourg' OR $row['type'] == 'mur' OR $row['type'] == 'arme_de_siege' OR $row['type'] == 'mine')
 		{
 			//Insertion de la construction
 			$requete = "INSERT INTO construction VALUES('', ".$row['id_batiment'].", ".$row['x'].", ".$row['y'].", ".$row['royaume'].", ".$row['hp'].", '".$row['nom']."', '".$row['type']."', ".$row['rez'].", ".time().", '".$Gtrad[$row['nom']]."')";

@@ -115,6 +115,7 @@ $ress['Route']['Star'] = 30;
 $ress['Route']['Charbon'] = 0;
 $ress['Route']['Essence Magique'] = 0;
 
+//Ressource normale
 $i = 0;
 $key = array_keys($ressources);
 foreach($ressources as $res)
@@ -134,6 +135,66 @@ foreach($ressources as $res)
 		$j++;
 	}
 	$i++;
+}
+//Ressource mine
+//On récupère la liste des batiments de type mine
+$batiment = array();
+$requete = "SELECT * FROM batiment WHERE type = 'mine'";
+$req = $db->query($requete);
+while($row = $db->read_assoc($requete))
+{
+	$batiment[$row['id']] = $row;
+}
+$requete = "SELECT * as terrain FROM construction LEFT JOIN map ON map.ID = (construction.x * 1000) + construction.x WHERE construction.type = 'mine'";
+$req = $db->query($requete);
+while($row = $db->read_assoc($requete))
+{
+	$terrain = type_terrain($row['info']);
+	$ress_terrain = $ress[$terrain[1]];
+	$royaume = get_royaume_info($row['royaume'], 'orc')
+	if($batiment[$row['id_batiment']]['bonus2'] != 0)
+	{
+		switch($batiment[$row['id_batiment']]['bonus2'])
+		{
+			case 1 :
+				$ress_final = array('Pierre' => $batiment[$row['id_batiment']]['bonus1'] * $ress_terrain['Pierre']);
+			break;
+			case 2 :
+				$ress_final = array('Bois' => $batiment[$row['id_batiment']]['bonus1'] * $ress_terrain['Bois']);
+			break;
+			case 3 :
+				$ress_final = array('Eau' => $batiment[$row['id_batiment']]['bonus1'] * $ress_terrain['Eau']);
+			break;
+			case 4 :
+				$ress_final = array('Sable' => $batiment[$row['id_batiment']]['bonus1'] * $ress_terrain['Sable']);
+			break;
+			case 5 :
+				$ress_final = array('Nourriture' => $batiment[$row['id_batiment']]['bonus1'] * $ress_terrain['Nourriture']);
+			break;
+			case 6 :
+				$ress_final = array('Star' => $batiment[$row['id_batiment']]['bonus1'] * $ress_terrain['Star']);
+			break;
+			case 7 :
+				$ress_final = array('Charbon' => $batiment[$row['id_batiment']]['bonus1'] * $ress_terrain['Charbon']);
+			break;
+			case 8 :
+				$ress_final = array('Essence Magique' => $batiment[$row['id_batiment']]['bonus1'] * $ress_terrain['Essence Magique']);
+			break;
+		}
+	}
+	else
+	{
+		$ress_final = array();
+		foreach($ress_terrain as $key => $value)
+		{
+			$ress_final[$key] = $batiment[$row['id_batiment']]['bonus1'] * $value;
+		}
+	}
+	foreach($ress_final as $key => $value)
+	{
+		$ressource_final[$royaume['race']][$key] += $value;
+		if($key == 'Nourriture') $tot_nou += $value;
+	}
 }
 
 foreach($ressource_final as $key => $value)
