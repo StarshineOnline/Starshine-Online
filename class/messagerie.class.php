@@ -52,7 +52,7 @@ class messagerie
 		{
 			case 'groupe' :
 				$perso = recupperso_essentiel($this->id_perso, 'groupe');
-				$where = 'id_groupe = '.$perso['groupe'];
+				$where = 'id_groupe = '.$perso['groupe'].' AND id_groupe != 0';
 			break;
 			case 'perso' :
 				$where = 'id_dest = '.$this->id_perso.' OR (id_auteur = '.$this->id_perso.' AND id_groupe = 0)';

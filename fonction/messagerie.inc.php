@@ -47,13 +47,42 @@ function message_affiche($message, $joueur_id, $thread_title = '')
 	}
 	$message_affiche = '
 		<head>
+		<script type="text/javascript">
+			function clicMessage()
+			{
+				message = document.getElementById(mess+""+id);
+				titremess = event.srcElement;
+				if(message.style.display == \'none\')
+				{
+					message.style.display = \'block\';
+					titremess.onmouseout = \'\';
+				}
+				else
+				{
+					message.style.display = \'none\';
+					titremess.onmouseout = \'masqueMessage(id)\';
+				}
+			}
+			
+			function afficheMessage(id)
+			{
+				element = document.getElementById(mess+""+id);
+				element.style.display = \'block\';
+			}
+			
+			function masqueMessage(id)
+			{
+				element = document.getElementById(mess+""+id);
+				element.style.display = \'none\';
+			}
+		</script>
 		</head>
-		<h3 class="messagerie">
+		<h3 class="messagerie" onclick="javascript:clicMessage('.$message->id_message.'); false;" '.($message->etat != 'masque' ? 'onmouseover="javascript:afficheMessage('.$message->id_message.'); false;"' : '').' '.($message->etat != 'important' ? 'onmouseout="javascript:masqueMessage('.$message->id_message.'); false;"' : '').'>
 			<span class="auteur">'.$message->nom_auteur.'</span>
 			<span class="titre">'.$titre.'</span>
 			<span class="date">'.$message->etat.' / '.$date.'</span>
 		</h3>
-		<p>'.$avatar.$message_texte.'</p>';
+		<p id=mess"'.$message->id_message.'">'.$avatar.$message_texte.'</p>';
 	
 	//Masquer
 	if($message->etat != 'masque') $message_affiche .= '<a href="message_change_etat.php?id_message='.$message->id_message.'&amp;etat=masque" onclick="return envoiInfo(this.href, \'message'.$message->id_message.'\')">Masquer</a>';

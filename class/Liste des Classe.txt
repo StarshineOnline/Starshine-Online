@@ -1,6 +1,10 @@
 Accessoires accessoires.class.php
 Armes armes.class.php
 Armure armures.class.php
+Map Monstre map_monstre.class.php
+Messagerie Etat messagerie_etat_message.class.php
+Messagerie Thread messagerie_thread.class.php
+Message messagerie_message.class.php
 Objets objets.class.php
 Objets Royaume objet_royaume.class.php
 Perso perso.class.php
