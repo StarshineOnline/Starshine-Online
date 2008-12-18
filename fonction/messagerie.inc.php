@@ -47,35 +47,6 @@ function message_affiche($message, $joueur_id, $thread_title = '')
 	}
 	$message_affiche = '
 		<head>
-		<script type="text/javascript">
-			function clicMessage()
-			{
-				message = document.getElementById(mess+""+id);
-				titremess = event.srcElement;
-				if(message.style.display == \'none\')
-				{
-					message.style.display = \'block\';
-					titremess.onmouseout = \'\';
-				}
-				else
-				{
-					message.style.display = \'none\';
-					titremess.onmouseout = \'masqueMessage(id)\';
-				}
-			}
-			
-			function afficheMessage(id)
-			{
-				element = document.getElementById(mess+""+id);
-				element.style.display = \'block\';
-			}
-			
-			function masqueMessage(id)
-			{
-				element = document.getElementById(mess+""+id);
-				element.style.display = \'none\';
-			}
-		</script>
 		</head>
 		<h3 class="messagerie" onclick="javascript:clicMessage('.$message->id_message.'); false;" '.($message->etat != 'masque' ? 'onmouseover="javascript:afficheMessage('.$message->id_message.'); false;"' : '').' '.($message->etat != 'important' ? 'onmouseout="javascript:masqueMessage('.$message->id_message.'); false;"' : '').'>
 			<span class="auteur">'.$message->nom_auteur.'</span>
@@ -88,6 +59,7 @@ function message_affiche($message, $joueur_id, $thread_title = '')
 	if($message->etat != 'masque') $message_affiche .= '<a href="message_change_etat.php?id_message='.$message->id_message.'&amp;etat=masque" onclick="return envoiInfo(this.href, \'message'.$message->id_message.'\')">Masquer</a>';
 	//Important
 	if($message->etat != 'important') $message_affiche .= (empty($message_affiche)?'':' / ').'<a href="message_change_etat.php?id_message='.$message->id_message.'&amp;etat=important" onclick="return envoiInfo(this.href, \'message'.$message->id_message.'\')">Important</a>';
+	else $message_affiche .= '<script type="text/javascript">masqueMessage('.$message->id_message.');</script>';
 	//Suppression
 	if($joueur_id == $message->id_auteur) $message_affiche .= ' / <a href="message_change_etat.php?id_message='.$message->id_message.'&amp;etat=del" onclick="if(confirm(\'Voulez vous supprimer votre message ?\')) return envoiInfo(this.href, \'message'.$message->id_message.'\'); else return false;">Supprimer</a>';
 	return $message_affiche;
