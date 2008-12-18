@@ -60,6 +60,7 @@ $_SESSION['position'] = convert_in_pos($joueur['x'], $joueur['y']);
 					<li><a href="entretien.php" onclick="return clickMenu(this);">Entretien</a>
 					<li><a href="quete.php" onclick="return clickMenu(this);">Gestion des quètes</a>
 					<li><a href="taxe.php" onclick="return clickMenu(this);">Gestion des taxes</a>
+					<li><a href="mine.php" onclick="return clickMenu(this);">Gestion des mines</a>
 				</ul>
 			</li>
 			<li>

@@ -1,21 +1,5 @@
 <?php
-$root = '../';
-//Inclusion du haut du document html
-include($root.'haut_ajax.php');
-
-$joueur = recupperso($_SESSION['ID']);
-
-check_perso($joueur);
-
-//Vérifie si le perso est mort
-verif_mort($joueur, 1);
-
-$R = get_royaume_info($joueur['race'], $Trace[$joueur['race']]['numrace']);
-
-$_SESSION['position'] = convert_in_pos($joueur['x'], $joueur['y']);
-$W_distance = detection_distance($W_case,$_SESSION["position"]);
-
-$W_coord = convert_in_coord($W_case);
+include('haut_roi.php');
 
 //-- Récupération de la position X, Y du joueur.
 if(!array_key_exists('poscase', $_GET))

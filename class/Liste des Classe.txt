@@ -9,3 +9,5 @@ Objets objets.class.php
 Objets Royaume objet_royaume.class.php
 Perso perso.class.php
 PNJ pnj.class.php
+Bourg bourg.class.php
+Mine mine.class.php
