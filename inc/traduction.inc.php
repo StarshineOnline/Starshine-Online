@@ -180,6 +180,7 @@ $Gtrad['Bélier'] = 'belier';
 $Gtrad['Catapulte'] = 'catapulte';
 $Gtrad['Trébuchet'] = 'trebuchet';
 $Gtrad['Baliste'] = 'baliste';
+$Gtrad['Mine'] = 'mine';
 //@}
 
 

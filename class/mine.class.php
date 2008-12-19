@@ -107,7 +107,7 @@ class mine
 	function get_ressources()
 	{
 		global $db;
-		$requete = "SELECT info FROM map WHERE ID = ((".$this->x." * 1000) + ".$this->y.")";
+		$requete = "SELECT info FROM map WHERE ID = ".convert_in_pos($this->x, $this->y)."";
 		$req = $db->query($requete);
 		$row = $db->read_assoc($req);
 		$terrain = type_terrain($row['info']);

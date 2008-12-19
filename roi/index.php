@@ -30,6 +30,7 @@ $_SESSION['position'] = convert_in_pos($joueur['x'], $joueur['y']);
 	<script src="../javascript/scriptaculous/scriptaculous.js" type="text/javascript"></script>
 	<script src="../javascript/scriptaculous/prototip.js" type="text/javascript"></script>
 	<script src="../javascript/fonction.js" type="text/javascript"></script>
+	<script src="../javascript/overlib/overlib.js" type="text/javascript"></script>
 	<script src="javascript/menu.js" type="text/javascript"></script>
 </head>
 <body>

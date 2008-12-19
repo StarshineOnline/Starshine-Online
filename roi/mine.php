@@ -9,6 +9,7 @@ if(array_key_exists('id', $_GET))
 	$bourg = new bourg($_GET['id']);
 	$bourg->get_mines(true);
 	$bourg->get_placements();
+	$bourg->get_mine_total();
 	$x = $bourg->x;
 	$y = $bourg->y;
 	?>
@@ -34,15 +35,16 @@ if(array_key_exists('id', $_GET))
 						 WHERE ( (FLOOR(ID / $G_ligne) >= $y_min) AND (FLOOR(ID / $G_ligne) <= $y_max) ) 
 						 AND ( ((ID - (FLOOR(ID / $G_colonne) * 1000) ) >= $x_min) AND ((ID - (FLOOR(ID / $G_colonne) * 1000)) <= $x_max) ) 
 						 ORDER BY ID;");
+	$taille_px = 60;
 						 
-	echo '<div id="carte" style="width : 605px; height : 610px;">';
+	echo '<div id="carte" style="width : 700px; height : 700px;">';
 	{//-- Affichage du bord haut (bh) de la map
 		echo "<ul id='map_bord_haut'>
-				<li id='map_bord_haut_gauche' style='width : 20px; height : 20px;' onclick=\"switch_map();\">&nbsp;</li>";
+				<li id='map_bord_haut_gauche' style='width : ".$taille_px."px; height : 20px;' onclick=\"switch_map();\">&nbsp;</li>";
 		for ($bh = $x_min; $bh <= $x_max; $bh++)
 		{
 			if($bh == $x) { $class_x = "id='bord_haut_x' "; } else { $class_x = ""; }; //-- Pour mettre en valeur la position X ou se trouve le joueur
-			echo "<li $class_x style='width : 20px; height : 20px;'>$bh</li>";
+			echo "<li $class_x style='width : ".$taille_px."px; height : 20px;'>$bh</li>";
 		}
 		echo "</ul>";
 	}
@@ -53,25 +55,53 @@ if(array_key_exists('id', $_GET))
 		while($objMap = $db->read_object($RqMap))
 		{
 			$coord = convert_in_coord($objMap->ID);
-			$class_map = "decor texl".$objMap->decor;	//-- Nom de la classe "terrain" contenu dans texture.css
+			$class_map = "decor tex".$objMap->decor;	//-- Nom de la classe "terrain" contenu dans texture.css
 			
 			if($coord['y'] != $y_BAK)
 			{//-- On passe a la ligne
 				if($Once) { echo "</ul>"; } else { $Once = true; };
 				if($coord['y'] == $y) { $class_y = "id='bord_haut_y' "; } else { $class_y = ""; }; //-- Pour mettre en valeur la position Y ou se trouve le joueur
-				echo "<ul class='map' style='height : 20px;'>
-						<li $class_y style='width : 20px; height : 20px;'>".$coord['y']."</li>"; //-- Bord gauche de la map
+				echo "<ul class='map' style='height : ".$taille_px."px;'>
+						<li $class_y style='width : 20px; height : ".$taille_px."px;'>".$coord['y']."</li>"; //-- Bord gauche de la map
 
 				$y_BAK = $coord['y'];
 			}
 			$background = "";
 			$overlib = "";
 			
+			//Si c'est là où est le bourg
+			if($bourg->x == $coord['x'] && $bourg->y == $coord['y'])
+			{
+				$background = "background-image : url('../image/batiment/".$bourg->image."_04.png') !important;";
+			}
+			else
+			{
+				$check = false;
+				foreach($bourg->mines as $mine)
+				{
+					if($mine->x == $coord['x'] && $mine->y == $coord['y'])
+					{
+						$background = "background-image : url('../image/batiment/".$mine->image."_04.png') !important; background-repeat : no-repeat;";
+						$check = true;
+					}
+				}
+				if(!$check)
+				{
+					foreach($bourg->placements as $placement)
+					{
+						if($placement->x == $coord['x'] && $placement->y == $coord['y'])
+						{
+							$background = "background-image : url('../image/batiment/mine_04.png') !important; background-repeat : no-repeat;";
+						}
+					}
+				}
+			}
+			
 			$border = "border:0px solid ".$Gcouleurs[$objMap->royaume].";";
-			echo "<li class='$class_map' style='width : 20px; height : 20px;'>
+			echo "<li class='$class_map' style='width : ".$taille_px."px; height : ".$taille_px."px;'>
 					<div class='map_contenu' 
 							id='marq$case' 
-							style=\"".$background.$border."width : 20px; height : 20px;\" ";
+							style=\"".$background.$border."width : ".$taille_px."px; height : ".$taille_px."px;\" ";
 			echo " 		onclick=\"envoiInfo('mine.php?case=".$objMap->ID."&amp;id_bourg=".$bourg->id_bourg."', 'info_mine');\" 
 					>&nbsp;</div>
 					</li>";	
@@ -87,15 +117,22 @@ if(array_key_exists('id', $_GET))
 			Type : <?php echo $bourg->nom; ?><br />
 			X : <?php echo $bourg->x; ?><br />
 			Y : <?php echo $bourg->y; ?><br />
-			Mines : <?php echo (count($bourg->mines) + count($bourg->placements)); ?> / <?php echo $bourg->mine_max; ?>
+			Mines : <?php echo $bourg->mine_total; ?> / <?php echo $bourg->mine_max; ?>
 			<ul style="margin-left : 15px;">
 			<?php
 				foreach($bourg->mines as $mine)
 				{
+					$overlib = 'Pierre : '.$mine->ressources['Pierre'].'
+					Bois : '.$mine->ressources['Bois'].'
+					Eau : '.$mine->ressources['Eau'].'
+					Sable : '.$mine->ressources['Sable'].'
+					Nourriture : '.$mine->ressources['Nourriture'].'
+					Charbon : '.$mine->ressources['Charbon'].'
+					Essence Magique : '.$mine->ressources['Essence Magique'].'
+					Star : '.$mine->ressources['Star'];
 					echo '
-					<li>
+					<li onmouseover="'.make_overlib($overlib).'" onmouseout="return nd();">
 						'.$mine->nom.' - X : '.$mine->x.' - Y : '.$mine->y.'<br />
-						P '.$mine->ressources['Pierre'].' B '.$mine->ressources['Bois'].' E '.$mine->ressources['Eau'].' S '.$mine->ressources['Sable'].' N '.$mine->ressources['Nourriture'].' C '.$mine->ressources['Charbon'].' EM '.$mine->ressources['Essence Magique'].' Star '.$mine->ressources['Star'].'
 					</li>';
 				}
 			?>
@@ -110,11 +147,13 @@ if(array_key_exists('id', $_GET))
 elseif(array_key_exists('case', $_GET))
 {
 	$coord = convert_in_coord($_GET['case']);
+	check_case($coord);
 	echo 'CASE : X : '.$coord['x'].' - Y : '.$coord['y'].'<br />';
 	$bourg = new bourg($_GET['id_bourg']);
 	$bourg->get_mines();
 	$bourg->get_placements();
-	if($bourg->mine_max > (count($bourg->mines) + count($bourg->placements)))
+	$bourg->get_mine_total();
+	if($bourg->mine_max > $this->mine_total)
 	{
 		//On vérifie qu'il y a pas déjà une construction sur cette case
 		$requete = "SELECT id FROM construction WHERE x = ".$coord['x']." AND y = ".$coord['y'];
@@ -161,9 +200,14 @@ elseif(array_key_exists('case', $_GET))
 elseif(array_key_exists('add', $_GET))
 {
 	$bourg = new bourg($_GET['bourg']);
+
 	$requete = "SELECT nom, hp,temps_construction FROM batiment WHERE id = ".$_GET['add'];
 	$req = $db->query($requete);
 	$row = $db->read_assoc($req);
+
+	$distance = calcul_distance(convert_in_pos($Trace[$R['race']]['spawn_x'], $Trace[$R['race']]['spawn_y']), convert_in_pos($_GET['x'], $_GET['y']));
+	$time = time() + ($row['temps_construction'] * $distance);
+
 	$placement = new placement();
 	$placement->id_royaume = $R['ID'];
 	$placement->id_batiment = $_GET['add'];
@@ -173,7 +217,7 @@ elseif(array_key_exists('add', $_GET))
 	$placement->nom = $row['nom'];
 	$placement->rez = $_GET['bourg'];
 	$placement->type = 'mine';
-	$placement->fin_placement = time() + $row['temps_construction'];
+	$placement->fin_placement = $time;
 	$placement->sauver();
 }
 else
@@ -189,7 +233,8 @@ else
 		$bourg = new bourg($row);
 		$bourg->get_mines();
 		$bourg->get_placements();
-		echo '<li><a href="mine.php?id='.$bourg->id_bourg.'" onclick="return envoiInfo(this.href, \'conteneur\');">'.$bourg->nom.'</a> - X : '.$bourg->x.' - Y : '.$bourg->y.'</li>';
+		$bourg->get_mine_total();
+		echo '<li><a href="mine.php?id='.$bourg->id_bourg.'" onclick="return envoiInfo(this.href, \'conteneur\');">'.$bourg->nom.'</a> - X : '.$bourg->x.' - Y : '.$bourg->y.' - ('.$bourg->mine_total.' / '.$bourg->mine_max.')</li>';
 		if(count($bourg->mines) > 0)
 		{
 		?>

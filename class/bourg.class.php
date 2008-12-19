@@ -143,5 +143,15 @@ class bourg
 			$this->placements[] = new placement($row_m);
 		}
 	}
+	
+	function get_mine_total()
+	{
+		$this->mine_total = 0;
+		if(!isset($this->mines)) $this->get_mines();
+		$this->mine_total += count($this->mines);
+		if(!isset($this->placements)) $this->get_placements();
+		$this->mine_total += count($this->placements);
+		return $this->mine_total;
+	}
 }
 ?>
