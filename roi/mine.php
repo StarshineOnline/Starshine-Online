@@ -2,11 +2,13 @@
 require('haut_roi.php');
 include('../class/bourg.class.php');
 include('../class/mine.class.php');
+include('../class/placement.class.php');
 
 if(array_key_exists('id', $_GET))
 {
 	$bourg = new bourg($_GET['id']);
-	$bourg->get_mines();
+	$bourg->get_mines(true);
+	$bourg->get_placements();
 	$x = $bourg->x;
 	$y = $bourg->y;
 	?>
@@ -85,43 +87,94 @@ if(array_key_exists('id', $_GET))
 			Type : <?php echo $bourg->nom; ?><br />
 			X : <?php echo $bourg->x; ?><br />
 			Y : <?php echo $bourg->y; ?><br />
-			Mines : <?php echo count($bourg->mines); ?> / <?php echo $bourg->mine_max; ?>
+			Mines : <?php echo (count($bourg->mines) + count($bourg->placements)); ?> / <?php echo $bourg->mine_max; ?>
+			<ul style="margin-left : 15px;">
+			<?php
+				foreach($bourg->mines as $mine)
+				{
+					echo '
+					<li>
+						'.$mine->nom.' - X : '.$mine->x.' - Y : '.$mine->y.'<br />
+						P '.$mine->ressources['Pierre'].' B '.$mine->ressources['Bois'].' E '.$mine->ressources['Eau'].' S '.$mine->ressources['Sable'].' N '.$mine->ressources['Nourriture'].' C '.$mine->ressources['Charbon'].' EM '.$mine->ressources['Essence Magique'].' Star '.$mine->ressources['Star'].'
+					</li>';
+				}
+			?>
+			</ul>
 		</div>
 		<div id="info_mine">
 		</div>
 	</div>
 	<?php
 }
+//Info d'une case
 elseif(array_key_exists('case', $_GET))
 {
 	$coord = convert_in_coord($_GET['case']);
 	echo 'CASE : X : '.$coord['x'].' - Y : '.$coord['y'].'<br />';
 	$bourg = new bourg($_GET['id_bourg']);
 	$bourg->get_mines();
-	if($bourg->mine_max > count($bourg->mines))
+	$bourg->get_placements();
+	if($bourg->mine_max > (count($bourg->mines) + count($bourg->placements)))
 	{
 		//On vérifie qu'il y a pas déjà une construction sur cette case
-		$requete = "SELECT * FROM construction WHERE x = ".$coord['x']." AND y = ".$coord['y'];
+		$requete = "SELECT id FROM construction WHERE x = ".$coord['x']." AND y = ".$coord['y'];
 		$db->query($requete);
 		if($db->num_rows > 0)
 		{
 			echo 'Construction impossible, il y a déjà un batiment';
 		}
-		//On peut construire une mine
 		else
 		{
-			?>
-			Quel mine voulait vous construire ?<br />
-			<select name="type_mine" id="type_mine">
-				<option value="">TEST</option>
-			</select>
-			<?php
+			//On vérifie qu'il y a pas déjà une construction sur cette case
+			$requete = "SELECT id FROM placement WHERE x = ".$coord['x']." AND y = ".$coord['y'];
+			$db->query($requete);
+			if($db->num_rows > 0)
+			{
+				echo 'Construction impossible, il y a déjà un batiment en construction';
+			}
+			//On peut construire une mine
+			else
+			{
+				$requete = "SELECT * FROM batiment WHERE type = 'mine' AND cond1 = 0";
+				$req = $db->query($requete);
+				?>
+				Quel mine voulait vous construire ?<br />
+				<select name="type_mine" id="type_mine">
+				<?php
+				while($row = $db->read_assoc($req))
+				{
+					echo '<option value="'.$row['id'].'">'.$row['nom'].'</option>';
+				}
+				?>
+				</select>
+				<input type="button" onclick="envoiInfo('mine.php?bourg=<?php echo $_GET['id_bourg']; ?>&amp;x=<?php echo $coord['x']; ?>&amp;y=<?php echo $coord['y']; ?>&amp;add=' + $('type_mine').value, 'info_mine');" value="Valider" />
+				<?php
+			}
 		}
 	}
 	else
 	{
 		echo 'Construction impossible, ce bourg ne pas plus avoir de mine associée';
 	}
+}
+//Ajout d'une mine
+elseif(array_key_exists('add', $_GET))
+{
+	$bourg = new bourg($_GET['bourg']);
+	$requete = "SELECT nom, hp,temps_construction FROM batiment WHERE id = ".$_GET['add'];
+	$req = $db->query($requete);
+	$row = $db->read_assoc($req);
+	$placement = new placement();
+	$placement->id_royaume = $R['ID'];
+	$placement->id_batiment = $_GET['add'];
+	$placement->x = $_GET['x'];
+	$placement->y = $_GET['y'];
+	$placement->hp = $row['hp'];
+	$placement->nom = $row['nom'];
+	$placement->rez = $_GET['bourg'];
+	$placement->type = 'mine';
+	$placement->fin_placement = time() + $row['temps_construction'];
+	$placement->sauver();
 }
 else
 {
@@ -135,6 +188,7 @@ else
 	{
 		$bourg = new bourg($row);
 		$bourg->get_mines();
+		$bourg->get_placements();
 		echo '<li><a href="mine.php?id='.$bourg->id_bourg.'" onclick="return envoiInfo(this.href, \'conteneur\');">'.$bourg->nom.'</a> - X : '.$bourg->x.' - Y : '.$bourg->y.'</li>';
 		if(count($bourg->mines) > 0)
 		{
@@ -144,6 +198,14 @@ else
 			foreach($bourg->mines as $mine)
 			{
 				echo '<li>'.$mine->nom.' - X : '.$mine->x.' - Y : '.$mine->y.'</li>';
+			}
+		?>
+		</ul>
+		<ul style="margin-left : 15px;">
+		<?php
+			foreach($bourg->placements as $placement)
+			{
+				echo '<li>'.$placement->nom.' - X : '.$placement->x.' - Y : '.$placement->y.' - fini dans '.transform_sec_temp($placement->fin_placement - time()).'</li>';
 			}
 		?>
 		</ul>

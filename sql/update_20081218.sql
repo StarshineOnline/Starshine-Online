@@ -1,0 +1,1 @@
+ ALTER TABLE `placement` CHANGE `rez` `rez` INT UNSIGNED NOT NULL DEFAULT '0';

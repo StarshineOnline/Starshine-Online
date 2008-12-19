@@ -145,7 +145,7 @@ while($row = $db->read_assoc($requete))
 {
 	$batiment[$row['id']] = $row;
 }
-$requete = "SELECT * as terrain FROM construction LEFT JOIN map ON map.ID = (construction.x * 1000) + construction.x WHERE construction.type = 'mine'";
+$requete = "SELECT * FROM construction LEFT JOIN map ON map.ID = (construction.x * 1000) + construction.x WHERE construction.type = 'mine'";
 $req = $db->query($requete);
 while($row = $db->read_assoc($requete))
 {

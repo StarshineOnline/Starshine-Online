@@ -118,15 +118,29 @@ class bourg
 		return $this->id_royaume;
 	}
 	
-	function get_mines()
+	function get_mines($ressource = false)
 	{
 		global $db;
 		$this->mines = array();
 		$requete = "SELECT id, royaume, id_batiment, x, y, hp, nom, type, rez, rechargement, image FROM construction WHERE type = 'mine' AND rechargement = ".$this->id_bourg;
 		$req_m = $db->query($requete);
+		$i = 0;
 		while($row_m = $db->read_assoc($req_m))
 		{
-			$this->mines[] = new mine($row_m);
+			$this->mines[$i] = new mine($row_m);
+			if($ressource) $this->mines[$i]->get_ressources();
+			$i++;
+		}
+	}
+	function get_placements()
+	{
+		global $db;
+		$this->placements = array();
+		$requete = "SELECT id, royaume, id_batiment, x, y, hp, nom, rez, type, debut_placement, fin_placement FROM placement WHERE type = 'mine' AND rez = ".$this->id_bourg;
+		$req_m = $db->query($requete);
+		while($row_m = $db->read_assoc($req_m))
+		{
+			$this->placements[] = new placement($row_m);
 		}
 	}
 }
