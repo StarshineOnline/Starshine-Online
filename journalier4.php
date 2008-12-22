@@ -145,6 +145,7 @@ while($row = $db->read_assoc($requete))
 {
 	$batiment[$row['id']] = $row;
 }
+//@TODO gérer les mines sans construction
 $requete = "SELECT * FROM construction LEFT JOIN map ON map.ID = (construction.y * 1000) + construction.x WHERE construction.type = 'mine'";
 $req = $db->query($requete);
 while($row = $db->read_assoc($requete))

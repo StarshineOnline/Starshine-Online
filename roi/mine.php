@@ -1,5 +1,6 @@
 <?php
 require('haut_roi.php');
+include('../class/construction.class.php');
 include('../class/bourg.class.php');
 include('../class/mine.class.php');
 include('../class/placement.class.php');
@@ -15,9 +16,9 @@ if(array_key_exists('id', $_GET))
 	?>
 	<div id="map_mine">
 	<?php
-	//-- Champ de vision = 5 par d?faut
+	//-- Champ de vision = 5 par défaut
 	$champ_vision = 5;
-	//-- Nombre de case affich?es en longueur et largeur
+	//-- Nombre de case affichées en longueur et largeur
 	$case_affiche = ($champ_vision * 2) + 1;
 	
 	{//-- Sert ? calculer le point d'origine en haut a gauche pour la carte
@@ -102,7 +103,7 @@ if(array_key_exists('id', $_GET))
 					<div class='map_contenu' 
 							id='marq$case' 
 							style=\"".$background.$border."width : ".$taille_px."px; height : ".$taille_px."px;\" ";
-			echo " 		onclick=\"envoiInfo('mine.php?case=".$objMap->ID."&amp;id_bourg=".$bourg->id_bourg."', 'info_mine');\" 
+			echo " 		onclick=\"envoiInfo('mine.php?case=".$objMap->ID."&amp;id_bourg=".$bourg->id."', 'info_mine');\" 
 					>&nbsp;</div>
 					</li>";	
 			
@@ -122,6 +123,7 @@ if(array_key_exists('id', $_GET))
 			<?php
 				foreach($bourg->mines as $mine)
 				{
+					$mine->get_evolution();
 					$overlib = 'Pierre : '.$mine->ressources['Pierre'].'
 					Bois : '.$mine->ressources['Bois'].'
 					Eau : '.$mine->ressources['Eau'].'
@@ -132,7 +134,19 @@ if(array_key_exists('id', $_GET))
 					Star : '.$mine->ressources['Star'];
 					echo '
 					<li onmouseover="'.make_overlib($overlib).'" onmouseout="return nd();">
-						'.$mine->nom.' - X : '.$mine->x.' - Y : '.$mine->y.'<br />
+						'.$mine->nom.' - X : '.$mine->x.' - Y : '.$mine->y.' - <a href="mine.php?mine='.$mine->id.'&amp;up" onclick="return envoiInfo(this.href, 'info_mine');">Evoluer ('.$mine->evolution['cout'].' stars)</a> - <a href="mine.php?mine='.$mine->id.'&amp;suppr" onclick="return envoiInfo(this.href, 'info_mine'>X</a>
+					</li>';
+				}
+			?>
+			</ul>
+			En construction
+			<ul style="margin-left : 15px;">
+			<?php
+				foreach($bourg->placements as $placement)
+				{
+					echo '
+					<li onmouseover="'.make_overlib($overlib).'" onmouseout="return nd();">
+						'.$placement->nom.' - X : '.$placement->x.' - Y : '.$placement->y.' - fin dans '.transform_sec_temp($placement->fin_placement - time()).'
 					</li>';
 				}
 			?>
@@ -174,7 +188,7 @@ elseif(array_key_exists('case', $_GET))
 			//On peut construire une mine
 			else
 			{
-				$requete = "SELECT * FROM batiment WHERE type = 'mine' AND cond1 = 0";
+				$requete = "SELECT id, nom, cout, bonus1, bonus2 FROM batiment WHERE type = 'mine' AND cond1 = 0";
 				$req = $db->query($requete);
 				?>
 				Quel mine voulait vous construire ?<br />
@@ -182,7 +196,39 @@ elseif(array_key_exists('case', $_GET))
 				<?php
 				while($row = $db->read_assoc($req))
 				{
-					echo '<option value="'.$row['id'].'">'.$row['nom'].'</option>';
+					$description = '';
+					if($row['bonus2'] != 0)
+					{
+						switch($row['bonus2'])
+						{
+							case 1 :
+								$description = 'Pierre x'.$row['bonus1'];
+							break;
+							case 2 :
+								$description = 'Bois x'.$row['bonus1'];
+							break;
+							case 3 :
+								$description = 'Eau x'.$row['bonus1'];
+							break;
+							case 4 :
+								$description = 'Sable x'.$row['bonus1'];
+							break;
+							case 5 :
+								$description = 'Nourriture x'.$row['bonus1'];
+							break;
+							case 6 :
+								$description = 'Star x'.$row['bonus1'];
+							break;
+							case 7 :
+								$description = 'Charbon x'.$row['bonus1'];
+							break;
+							case 8 :
+								$description = 'Essence Magique x'.$row['bonus1'];
+							break;
+						}
+					}
+					else $description = 'Toute ressources x'.$row['bonus1'];
+					echo '<option value="'.$row['id'].'">'.$row['nom'].' - '.$row['cout'].' stars ('.$description.')</option>';
 				}
 				?>
 				</select>
@@ -193,32 +239,73 @@ elseif(array_key_exists('case', $_GET))
 	}
 	else
 	{
-		echo 'Construction impossible, ce bourg ne pas plus avoir de mine associée';
+		echo 'Construction impossible, ce bourg ne peut plus avoir de mine associée';
 	}
 }
 //Ajout d'une mine
 elseif(array_key_exists('add', $_GET))
 {
 	$bourg = new bourg($_GET['bourg']);
+	$bourg->get_mine_total();
 
-	$requete = "SELECT nom, hp,temps_construction FROM batiment WHERE id = ".$_GET['add'];
-	$req = $db->query($requete);
-	$row = $db->read_assoc($req);
+	if($bourg->mine_total < $bourg->mine_max)
+	{
+		$requete = "SELECT nom, hp,temps_construction, cout FROM batiment WHERE id = ".$_GET['add'];
+		$req = $db->query($requete);
+		$row = $db->read_assoc($req);
 
-	$distance = calcul_distance(convert_in_pos($Trace[$R['race']]['spawn_x'], $Trace[$R['race']]['spawn_y']), convert_in_pos($_GET['x'], $_GET['y']));
-	$time = time() + ($row['temps_construction'] * $distance);
+		//On vérifie si on a assez de stars
+		if($R['star'] >= $row['cout'])
+		{
+			$distance = calcul_distance(convert_in_pos($Trace[$R['race']]['spawn_x'], $Trace[$R['race']]['spawn_y']), convert_in_pos($_GET['x'], $_GET['y']));
+			$time = time() + ($row['temps_construction'] * $distance);
 
-	$placement = new placement();
-	$placement->id_royaume = $R['ID'];
-	$placement->id_batiment = $_GET['add'];
-	$placement->x = $_GET['x'];
-	$placement->y = $_GET['y'];
-	$placement->hp = $row['hp'];
-	$placement->nom = $row['nom'];
-	$placement->rez = $_GET['bourg'];
-	$placement->type = 'mine';
-	$placement->fin_placement = $time;
-	$placement->sauver();
+			$placement = new placement();
+			$placement->id_royaume = $R['ID'];
+			$placement->id_batiment = $_GET['add'];
+			$placement->x = $_GET['x'];
+			$placement->y = $_GET['y'];
+			$placement->hp = $row['hp'];
+			$placement->nom = $row['nom'];
+			$placement->rez = $_GET['bourg'];
+			$placement->type = 'mine';
+			$placement->fin_placement = $time;
+			$placement->sauver();
+			
+			//On enlève les stars au royaume
+			$requete = "UPDATE royaume SET star = star - ".$row['cout']." WHERE ID = ".$R['ID'];
+			$db->query($requete);
+		}
+		else
+		{
+			echo 'Vous n\'avez pas assez de stars';
+		}
+	}
+}
+//Ajout d'une mine
+elseif(array_key_exists('up', $_GET))
+{
+	$mine = new mine($_GET['mine']);
+	$mine->get_evolution();
+
+
+	//On vérifie si on a assez de stars
+	if($R['star'] >= $mine->evolution['cout'])
+	{
+		$mine->id_batiment = $mine->evolution['id'];
+		$mine->hp = round(($mine->hp / $mine->get_hp_max()) * $mine->evolution['hp']);
+		$mine->nom = $mine->evolution['nom'];
+		$mine->sauver();
+	}
+	else
+	{
+		echo 'Vous n\'avez pas assez de stars';
+	}
+}
+elseif(array_key_exists('suppr', $_GET))
+{
+	$mine = new mine($_GET['mine']);
+	if($mine->id_royaume == $R['ID']) $mine->supprimer();
 }
 else
 {
@@ -234,7 +321,7 @@ else
 		$bourg->get_mines();
 		$bourg->get_placements();
 		$bourg->get_mine_total();
-		echo '<li><a href="mine.php?id='.$bourg->id_bourg.'" onclick="return envoiInfo(this.href, \'conteneur\');">'.$bourg->nom.'</a> - X : '.$bourg->x.' - Y : '.$bourg->y.' - ('.$bourg->mine_total.' / '.$bourg->mine_max.')</li>';
+		echo '<li><a href="mine.php?id='.$bourg->id.'" onclick="return envoiInfo(this.href, \'conteneur\');">'.$bourg->nom.'</a> - X : '.$bourg->x.' - Y : '.$bourg->y.' - ('.$bourg->mine_total.' / '.$bourg->mine_max.')</li>';
 		if(count($bourg->mines) > 0)
 		{
 		?>
@@ -250,7 +337,7 @@ else
 		<?php
 			foreach($bourg->placements as $placement)
 			{
-				echo '<li>'.$placement->nom.' - X : '.$placement->x.' - Y : '.$placement->y.' - fini dans '.transform_sec_temp($placement->fin_placement - time()).'</li>';
+				echo '<li>'.$placement->nom.' - X : '.$placement->x.' - Y : '.$placement->y.' - fin dans '.transform_sec_temp($placement->fin_placement - time()).'</li>';
 			}
 		?>
 		</ul>

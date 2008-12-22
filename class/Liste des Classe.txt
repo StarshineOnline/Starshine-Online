@@ -2,6 +2,7 @@ Accessoires accessoires.class.php
 Armes armes.class.php
 Armure armures.class.php
 Bourg bourg.class.php
+Construction construction.class.php
 Map Monstre map_monstre.class.php
 Messagerie Etat messagerie_etat_message.class.php
 Messagerie Thread messagerie_thread.class.php

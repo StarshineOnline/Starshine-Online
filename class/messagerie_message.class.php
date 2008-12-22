@@ -15,8 +15,8 @@ class messagerie_message
 	    *  	Constructeur permettant la création d'un message.
 	    *	Les valeurs par défaut sont celles de la base de donnée.
 	    *	Le constructeur accepte plusieurs types d'appels:
-	    *		-Objets() qui construit un message "vide".
-	    *		-Objets($id) qui va chercher le message dont l'id est $id_message dans la base.
+	    *		-messagerie_message() qui construit un message "vide".
+	    *		-messagerie_message($id) qui va chercher le message dont l'id est $id_message dans la base.
 	**/
 	function __construct($id_message = 0, $id_auteur = 0, $id_dest = 0, $titre = 'Sans titre', $message = '', $id_thread = 0, $date = null, $nom_auteur = null, $nom_dest = null)
 	{

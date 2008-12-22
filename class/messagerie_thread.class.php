@@ -11,8 +11,8 @@ class messagerie_thread
 	    *  	Constructeur permettant la création d'un thread de messagerie.
 	    *	Les valeurs par défaut sont celles de la base de donnée.
 	    *	Le constructeur accepte plusieurs types d'appels:
-	    *		-Objets() qui construit un thread "vide".
-	    *		-Objets($id) qui va chercher le thread dont l'id est $id dans la base.
+	    *		-messagerie_thread() qui construit un thread "vide".
+	    *		-messagerie_thread($id) qui va chercher le thread dont l'id est $id dans la base.
 	**/
 	function __construct($id_thread = 0, $id_groupe = 0, $id_dest = 0, $id_auteur = 0, $important = 0)
 	{

@@ -11,8 +11,8 @@ class messagerie_etat
 	    *  	Constructeur permettant la création d'un etat de message.
 	    *	Les valeurs par défaut sont celles de la base de donnée.
 	    *	Le constructeur accepte plusieurs types d'appels:
-	    *		-Objets() qui construit un etat "vide".
-	    *		-Objets($id) qui va chercher l'etat dont l'id est $id_etat dans la base.
+	    *		-messagerie_etat() qui construit un etat "vide".
+	    *		-messagerie_etat($id) qui va chercher l'etat dont l'id est $id_etat dans la base.
 	**/
 	function __construct($id_etat = 0, $id_message = 0, $etat = 'non_lu', $id_dest = 0, $groupe = 0)
 	{
