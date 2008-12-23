@@ -107,17 +107,17 @@ class mine extends construction
 	function get_evolution()
 	{
 		global $db;
-		$requete = "SELECT * FROM batiment WHERE cond1 = ".$mine->id_batiment;
+		$requete = "SELECT * FROM batiment WHERE cond1 = ".$this->id_batiment;
 		$req = $db->query($requete);
 		$row = $db->read_assoc($req);
 		
-		$this->evolution[] = $row;
+		$this->evolution = $row;
 	}
 	
 	function get_hp_max()
 	{
 		global $db;
-		$requete = "SELECT hp FROM batiment WHERE id = ".$mine->id_batiment;
+		$requete = "SELECT hp FROM batiment WHERE id = ".$this->id_batiment;
 		$req = $db->query($requete);
 		$row = $db->read_assoc($req);
 		

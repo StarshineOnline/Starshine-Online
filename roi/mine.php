@@ -134,7 +134,7 @@ if(array_key_exists('id', $_GET))
 					Star : '.$mine->ressources['Star'];
 					echo '
 					<li onmouseover="'.make_overlib($overlib).'" onmouseout="return nd();">
-						'.$mine->nom.' - X : '.$mine->x.' - Y : '.$mine->y.' - <a href="mine.php?mine='.$mine->id.'&amp;up" onclick="return envoiInfo(this.href, 'info_mine');">Evoluer ('.$mine->evolution['cout'].' stars)</a> - <a href="mine.php?mine='.$mine->id.'&amp;suppr" onclick="return envoiInfo(this.href, 'info_mine'>X</a>
+						'.$mine->nom.' - X : '.$mine->x.' - Y : '.$mine->y.' - <a href="mine.php?mine='.$mine->id.'&amp;up" onclick="return envoiInfo(this.href, \'info_mine\');">Evoluer ('.$mine->evolution['cout'].' stars)</a> - <a href="mine.php?mine='.$mine->id.'&amp;suppr" onclick="return envoiInfo(this.href, \'info_mine\');">X</a>
 					</li>';
 				}
 			?>
@@ -167,7 +167,7 @@ elseif(array_key_exists('case', $_GET))
 	$bourg->get_mines();
 	$bourg->get_placements();
 	$bourg->get_mine_total();
-	if($bourg->mine_max > $this->mine_total)
+	if($bourg->mine_max > $bourg->mine_total)
 	{
 		//On vérifie qu'il y a pas déjà une construction sur cette case
 		$requete = "SELECT id FROM construction WHERE x = ".$coord['x']." AND y = ".$coord['y'];
