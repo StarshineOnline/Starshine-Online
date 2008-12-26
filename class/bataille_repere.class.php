@@ -85,5 +85,15 @@ class bataille_repere
 	{
 		return $this->id;
 	}
+
+	function get_type()
+	{
+		global $db;
+
+		$requete = "SELECT id, nom, description, ajout_groupe, image FROM bataille_repere_type WHERE id = ".$this->id_type;
+		$req = $db->query($requete);
+		$row = $db->read_assoc($req);
+		$this->type = new bataille_repere_type($row);
+	}
 }
 ?>

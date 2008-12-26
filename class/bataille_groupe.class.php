@@ -4,7 +4,7 @@ class bataille_groupe
 	public $id;
 	public $id_bataille;
 	public $id_groupe;
-	
+
 	/**	
 		*	Constructeur permettant la création d'un repère de bataille.
 		*	Les valeurs par défaut sont celles de la base de donnée.
@@ -42,7 +42,7 @@ class bataille_groupe
 			$this->id = $id;
 		}		
 	}
-	
+
 	//Fonction d'ajout / modification.
 	function sauver()
 	{
@@ -63,7 +63,7 @@ class bataille_groupe
 			list($this->id) = $db->last_insert_id();
 		}
 	}
-	
+
 	//supprimer l'etat de la base.
 	function supprimer()
 	{
@@ -74,10 +74,23 @@ class bataille_groupe
 			$db->query($requete);
 		}
 	}
-	
+
 	function __toString()
 	{
 		return $this->id;
+	}
+
+	function get_reperes()
+	{
+		global $db
+		$this->reperes = array();
+
+		$requete = "SELECT id_repere FROM bataille_groupe_repere WHERE id_groupe = ".$this->id;
+		$req = $db->query($requete);
+		while($row = $db->read_assoc($req))
+		{
+			$this->reperes[] = new bataille_repere($row['id_repere']);
+		}
 	}
 }
 ?>

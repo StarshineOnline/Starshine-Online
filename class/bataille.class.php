@@ -83,9 +83,37 @@ class bataille
 	}
 	
 	//supprimer l'etat de la base.
-	function supprimer()
+	function supprimer($cascade = false)
 	{
 		global $db;
+		if($cascade == true)
+		{
+			//On récupère tous les groupes associés et on les suppriment
+			$requete = "SELECT id FROM bataille_groupe WHERE id_bataille = ".$this->id;
+			$req = $db->query($requete);
+			while($row = $db->read_assoc($req))
+			{
+				$groupes[] = $row['id'];
+			}
+			$in = implode(',', $groupes);
+			//On efface tous les etats qui correspondent à ces messages
+			$requete = "DELETE FROM bataille_groupe WHERE id_groupe IN (".$in.")";
+			$db->query($requete);
+			//On récupère tous les repères associés et on les suppriment
+			$requete = "SELECT id FROM bataille_repere WHERE id_bataille = ".$this->id;
+			$req = $db->query($requete);
+			while($row = $db->read_assoc($req))
+			{
+				$reperes[] = $row['id'];
+			}
+			$in = implode(',', $reperes);
+			//On efface tous les etats qui correspondent à ces messages
+			$requete = "DELETE FROM bataille_repere WHERE id_repere IN (".$in.")";
+			$db->query($requete);
+			//On supprime tous les repère_groupe associés
+			$requete = "DELETE FROM bataille_groupe_repere WHERE id_repere IN (".$in.")";
+			$db->query($requete);
+		}
 		if( $this->id > 0 )
 		{
 			$requete = 'DELETE FROM bataille WHERE id = '.$this->id;
@@ -96,6 +124,19 @@ class bataille
 	function __toString()
 	{
 		return $this->id_royaume;
+	}
+
+	function get_groupes()
+	{
+		global $db;
+		$this->groupes = array();
+
+		$requete = "SELECT id, id_bataille, id_groupe FROM bataille_groupe WHERE id_bataille = ".$this->id;
+		$req = $db->query($requete);
+		while($row = $db->read_assoc($req))
+		{
+			$this->groupes[] = new bataille_groupe($row);
+		}
 	}
 }
 ?>
