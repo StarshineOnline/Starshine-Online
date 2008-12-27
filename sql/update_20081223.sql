@@ -40,5 +40,6 @@ CREATE TABLE `starshine_test`.`bataille_repere_type` (
 `nom` VARCHAR( 100 ) NOT NULL ,
 `description` TEXT NOT NULL ,
 `ajout_groupe` TINYINT UNSIGNED NOT NULL ,
+`image` VARCHAR( 200 ) NOT NULL ,
 PRIMARY KEY ( `id` )
 );

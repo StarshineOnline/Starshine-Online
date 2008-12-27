@@ -138,5 +138,50 @@ class bataille
 			$this->groupes[] = new bataille_groupe($row);
 		}
 	}
+
+	function get_reperes()
+	{
+		global $db;
+		$this->reperes = array();
+
+		$requete = "SELECT id, id_bataille, id_type, x, y FROM bataille_repere WHERE id_bataille = ".$this->id;
+		$req = $db->query($requete);
+		while($row = $db->read_assoc($req))
+		{
+			$this->reperes[] = new bataille_repere($row);
+		}
+	}
+
+	function statut_texte()
+	{
+		switch($this->statut)
+		{
+			case 0 :
+				return 'brouillon';
+			break;
+			case 1 :
+				return 'en cours';
+			break;
+			case 2 :
+				return 'terminée';
+			break;
+		}
+	}
+
+	function get_repere_by_coord($x, $y)
+	{
+		global $db;
+
+		$requete = "SELECT id, id_bataille, id_type, x, y FROM bataille_repere WHERE id_bataille = ".$this->id." AND x = ".$x." AND y = ".$y;
+		$req = $db->query($requete);
+		if($db->num_rows($req) > 0)
+		{
+			while($row = $db->read_assoc($req))
+			{
+				return new bataille_repere($row);
+			}
+		}
+		else return false;
+	}
 }
 ?>

@@ -49,7 +49,7 @@ $_SESSION['position'] = convert_in_pos($joueur['x'], $joueur['y']);
 					<li><a href="construction.php" onclick="return clickMenu(this);">Drapeaux & batiments</a>
 					<li><a href="gestion_royaume.php?direction=carte" onclick="return clickMenu(this);">Carte des constructions et habitants</a>
 					<li><a href="index.php" onclick="refresh(this.href, 'conteneur');">Gestion des groupes</a></li>
-					<li><a href="carte_strategique.php" onclick="return clickMenu(this);">Carte Stratégique</a></li>
+					<li><a href="gestion_bataille.php" onclick="return clickMenu(this);">Gestion des batailles</a></li>
 					<li><a href="gestion_royaume.php?direction=boutique" onclick="return clickMenu(this);">Boutique Militaire</a>
 				</ul>
 			</li>

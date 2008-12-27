@@ -82,7 +82,7 @@ class bataille_groupe
 
 	function get_reperes()
 	{
-		global $db
+		global $db;
 		$this->reperes = array();
 
 		$requete = "SELECT id_repere FROM bataille_groupe_repere WHERE id_groupe = ".$this->id;

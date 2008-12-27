@@ -1,9 +1,9 @@
 <?php
 class bataille_royaume
 {
-	public $id_royaume
+	public $id_royaume;
 
-	__construct($id_royaume = 0)
+	function __construct($id_royaume = 0)
 	{
 		$this->id_royaume = $id_royaume;
 	}
@@ -16,7 +16,7 @@ class bataille_royaume
 		if($etat == 'all') $where = 1;
 		else $where = 'etat = '.$etat;
 		$requete = "SELECT id, id_royaume, x, y, nom, description, etat, debut, fin FROM bataille WHERE id_royaume = ".$this->id_royaume." AND ".$where." ORDER BY etat ASC, fin ASC";
-		$req = $db-query($requete);
+		$req = $db->query($requete);
 
 		while($row = $db->read_assoc($req))
 		{
