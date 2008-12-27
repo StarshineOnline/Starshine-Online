@@ -3,6 +3,11 @@ Armes armes.class.php
 Armure armures.class.php
 Bourg bourg.class.php
 Construction construction.class.php
+Craft Ingredients craft_ingredient.class.php
+Craft Instrument craft_instrument.class.php
+Craft Recette craft_recette.class.php
+Craft Recette Ingredient craft_recette_ingredient.class.php
+Craft Recette Instrument craft_recette_instrument.class.php
 Map Monstre map_monstre.class.php
 Messagerie Etat messagerie_etat_message.class.php
 Messagerie Thread messagerie_thread.class.php
