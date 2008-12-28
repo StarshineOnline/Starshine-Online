@@ -209,7 +209,7 @@ if(!$visu AND isset($_GET['action']))
 								$gemme = mb_substr($joueur['inventaire_slot'][$i], 1);
 								$joueur['inventaire_slot'][$i] = $gemme;
 								echo 'Identification réussie !<br />Votre gemme est une '.$row['nom'];
-								mail('masterob1@chello.fr', 'Starshine Test - Identification réussie', $joueur['nom'].' a identifié '.$row['nom']);
+								mail('masterob1@free.fr', 'Starshine Test - Identification réussie', $joueur['nom'].' a identifié '.$row['nom']);
 							}
 							else
 							{
@@ -569,7 +569,7 @@ if(!$visu AND isset($_GET['action']))
 							$db->query($requete);
 							$message_mail = $joueur['nom']." vend ".$objet." (".$objet_id.") pour ".$_GET['prix']." stars. Commission : ".$comm." stars";;
 						}
-						mail('masterob1@chello.fr', 'Starshine - Dépot HV', $message_mail);
+						mail('masterob1@free.fr', 'Starshine - Dépot HV', $message_mail);
 					}
 					else
 					{
@@ -699,6 +699,7 @@ if(!$visu AND isset($_GET['action']))
 						elseif($objet_i['categorie'] == 'p') $table = 'armure';
 						elseif($objet_i['categorie'] == 'm') $table = 'accessoire';
 						elseif($objet_i['categorie'] == 'o') $table = 'objet';
+						elseif($objet_i['categorie'] == 'g') $table = 'gemme';
 						$requete = "SELECT type FROM ".$table." WHERE id = ".$objet_i['id_objet'];
 						$req_i = $db->query($requete);
 						$row_i = $db->read_row($req_i);
