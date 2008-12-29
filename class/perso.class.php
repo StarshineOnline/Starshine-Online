@@ -1112,7 +1112,7 @@ class PersoJoueur extends Personnage
 		global $db;
 		if( $this->id > 0 )
 		{
-			$requete = 'UPDATE TABLE pnj SET '.$this->modifBase();
+			$requete = 'UPDATE TABLE perso SET '.$this->modifBase();
 			$requete .= ' mort = "'.$this->mort.'", exp = "'.$this->exp.'", honneur = "'.$this->honneur.'", level = "'.$this->niveau.
 			'", password"'.$this->mdp.'", rang_royaume = "'.$this->rang.'", vie = "'.$this->vie.'", forcex = "'.$this->force.
 			'", dexterite = "'.$this->dexterite.'", puissance = "'.$this->puissance.'", volonte = "'.$this->volonte.'", energie = "'.$this->energie.

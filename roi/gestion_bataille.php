@@ -49,20 +49,40 @@ elseif(array_key_exists('info_bataille', $_GET))
 	print_r($bataille->reperes);
 	include('map_strategique.php');
 }
-elseif(array_key_exists('info_case', $_GET))
+elseif(array_key_exists('info_case', $_GET) OR array_key_exists('type', $_GET))
 {
 	$bataille = new bataille($_GET['id_bataille']);
-	$coord = convert_in_coord($_GET['case']);
+	$case = $_GET['case'];
+	$coord = convert_in_coord($case);
+	if(array_key_exists('type', $_GET))
+	{
+		$repere = new bataille_repere();
+		$repere->id_bataille = $_GET['id_bataille'];
+		$repere->id_type = $_GET['id_type'];
+		$repere->x = $coord['x'];
+		$repere->y = $coord['y'];
+		$repere->sauver();
+	}
 	$repere = $bataille->get_repere_by_coord($coord['x'], $coord['y']);
 	//Si ya pas de repère
 	if(!$repere)
 	{
-		$repere = new bataille_repere();
-		$repere->id_bataille = $_GET['id_bataille'];
-		$repere->id_type = 1;
-		$repere->x = $coord['x'];
-		$repere->y = $coord['y'];
-		//$repere->sauver();
+		?>
+		Ajouter un nouveau repère ?<br />
+		<select name="type" id="type">
+		<?php
+		$bataille_royaume = new bataille_royaume($R['ID']);
+		$types = $bataille_royaume->get_all_repere_type();
+		print_r($types);
+		foreach($types as $type)
+		{
+			?>
+			<option value="<?php echo $type->id; ?>"><?php echo $type->nom; ?> (<?php echo $type->description; ?>)</option>
+			<?php
+		}
+		?>
+		</select><input type="button" value="Ok" onclick="envoiInfoPost('gestion_bataille.php?id_type=' + $('type').value + '&amp;id_bataille=<?php echo $bataille->id; ?>&amp;case=<?php echo $case; ?>&amp;type', 'information');"/>
+		<?php
 	}
 	else
 	{
