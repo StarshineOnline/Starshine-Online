@@ -314,7 +314,7 @@ if($W_distance == 0)
 					}
 				}
 				if(!empty($tmp_overlib)) { $tmp_overlib = str_replace("'", "\'", trim($tmp_overlib)); $overlib = "onmouseover=\"return overlib('$tmp_overlib', BGCLASS, 'overlib', BGCOLOR, '', FGCOLOR, '', VAUTO);\" onmouseout=\"return nd();\" "; };
-				$objets_liste .= " <li $overlib class='li$class nom'>".$tmp_nom.$tmp_stack.$tmp_slot.$tmp_enchantement."</li>
+				$objets_liste .= " <li $overlib class='li$class nom'>".$tmp_stack.$tmp_slot.$tmp_enchantement.$tmp_nom."</li>
 								   <li $overlib class='li$class temps'>".transform_min_temp(($objets_tab[$id]["time"] + $mois) - time())."</li>
 								   <li $overlib class='li$class prix'>".number_format($objets_tab[$id]['prix'], 0, ".", " ")."</li>
 								   <li class='li$class achat' $tmp_achat_click>$tmp_achat</li>";
@@ -325,7 +325,7 @@ if($W_distance == 0)
 			$urlfin = "', 'carte');\"";
 			echo "<ul id='hotel_liste'>
 			       <li class='entete nom' 	".$url."objet".$urlfin.">Nom de l&apos;objet"; 	if($ordre["tri_champ"] == "objet") { if($ordre["sens"] == "ASC"){ echo "<img src='./image/asc.png' style='margin-right:-13px;' alt='ASC' />"; } else { echo "<img src='./image/desc.png' style='margin-right:-13px;' alt='DESC' />"; }; }; echo "</li>
-			       <li class='entete temps' ".$url."time".$urlfin.">Temps restant"; 		if($ordre["tri_champ"] == "time") { if($ordre["sens"] == "ASC") { echo "<img src='./image/asc.png' style='margin-right:-13px;' alt='ASC' />"; } else { echo "<img src='./image/desc.png' style='margin-right:-13px;' alt='DESC' />"; }; }; echo "</li>
+			       <li class='entete temps' ".$url."time".$urlfin.">Tps restant"; 		if($ordre["tri_champ"] == "time") { if($ordre["sens"] == "ASC") { echo "<img src='./image/asc.png' style='margin-right:-13px;' alt='ASC' />"; } else { echo "<img src='./image/desc.png' style='margin-right:-13px;' alt='DESC' />"; }; }; echo "</li>
 			       <li class='entete prix' 	".$url."prix".$urlfin.">Prix"; 					if($ordre["tri_champ"] == "prix") { if($ordre["sens"] == "ASC") { echo "<img src='./image/asc.png' style='margin-right:-13px;' alt='ASC' />"; } else { echo "<img src='./image/desc.png' style='margin-right:-13px;' alt='DESC' />"; }; }; echo "</li>
 			       <li class='entete achat'>&nbsp;</li>
 			       ".$objets_liste."
