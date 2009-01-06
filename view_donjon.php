@@ -18,22 +18,22 @@ else
 
 <a href="?donjon=myriandre">Myriandre</a><br/>
 <a href="?donjon=gobelin">Gobelin</a><br/>
-<div>
+<table><tr><td>
 <?php
 
    if (isset($_GET['donjon'])) {
      if ($_GET['donjon'] == 'myriandre') {
        $xmin = 1;
-       $xmax = 50;
-       $ymin = 200;
+       $xmax = 25;
+       $ymin = 197;
        $ymax = 221;
        $print = true;
      }
      if ($_GET['donjon'] == 'gobelin') {
        $xmin = 1;
-       $xmax = 46;
+       $xmax = 47;
        $ymin = 250;
-       $ymax = 300;
+       $ymax = 296;
        $print = true;
      }
    }
@@ -45,7 +45,7 @@ else
       $MAP = Array();
     }
 
-    $map = new map($xmin, $ymin, ($xmax - $xmin) / 2 + 2);
+    $map = new map($xmin, $ymin, ($xmax - $xmin) / 2 + 1);
 
     $map->xmin = $xmin;
     $map->xmax = $xmax;
@@ -55,7 +55,7 @@ else
     $map->get_pnj();
     $map->get_joueur();
     $map->get_drapeau();
-    $map->get_batiment();
+    //$map->get_batiment();
     $map->get_monstre(1);
     
     $map->affiche();
@@ -63,4 +63,4 @@ else
   }
 
 }
-?></div>
+?></td></tr></table>
