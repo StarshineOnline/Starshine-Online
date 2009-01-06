@@ -17,6 +17,7 @@ class map
 		$this->champ_vision = $champ_vision;
 		$this->root = $root;
 		$this->resolution = $resolution;
+		$this->donjon = $donjon;
 
 		$this->case_affiche = ($this->champ_vision * 2) + 1;
 
@@ -43,7 +44,7 @@ class map
 		$this->map = array();
 	}
 
-	function affiche()
+	function affiche($x = 0, $y = 0)
 	{
 		global $db;
 		$RqMap = $db->query("SELECT * FROM map 
@@ -61,18 +62,15 @@ class map
 		{
 			$classe_css['map_bord_haut'] = 'map_bord_haut';
 			$classe_css['map_bord_haut_gauche'] = 'map_bord_haut_gauche';
-			$classe_css[''] = '';
-			$classe_css[''] = '';
-			$classe_css[''] = '';
-			$classe_css[''] = '';
-			$classe_css[''] = '';
+			$classe_css['map_bord_gauche'] = 'map_bord_gauche';
 		}
 		else
 		{
 			$classe_css['map_bord_haut'] = 'map_bord_haut2';
 			$classe_css['map_bord_haut_gauche'] = 'map_bord_haut_gauche2';
+			$classe_css['map_bord_gauche'] = 'map_bord_gauche2';
 		}
-		echo '<div style="width : '.(20 + (61 * $this->case_affiche)).'px">';
+		echo '<div style="width : '.round(20 + (60.75 * $this->case_affiche)).'px">';
 		{//-- Affichage du bord haut (bh) de la map
 			echo "<ul id='".$classe_css['map_bord_haut']."'>
 				   <li id='".$classe_css['map_bord_haut_gauche']."' onclick=\"switch_map();\">&nbsp;</li>";
@@ -96,7 +94,7 @@ class map
 						if($Once) { echo "</ul>"; } else { $Once = true; };
 						if($y_map == $y) { $class_y = "id='bord_haut_y' "; } else { $class_y = ""; }; //-- Pour mettre en valeur la position Y ou se trouve le joueur
 						echo "<ul class='map'>
-					 		   <li $class_y class='map_bord_gauche2'>".$y_map."</li>"; //-- Bord gauche de la map
+					 		   <li $class_y class='".$classe_css['map_bord_gauche']."'>".$y_map."</li>"; //-- Bord gauche de la map
 					}
 					if( ($x_map == $x) && ($y_map == $y) )
 					{
@@ -141,7 +139,7 @@ class map
 					}
 					else { $overlib = ""; }
 					
-					if(is_array($MAPTAB[$x_map][$y_map])) { $class_map = "decor tex".$MAPTAB[$x_map][$y_map]["decor"]; } else { $class_map = "texblack"; };
+					if(is_array($MAPTAB[$x_map][$y_map])) { $class_map = "decor tex".$MAPTAB[$x_map][$y_map]["decor"]; } else { $class_map = "decor texblack"; };
 
 					$border = "border:0px solid ".$Gcouleurs[$objMap->royaume].";";
 					echo "<li class='$class_map'>

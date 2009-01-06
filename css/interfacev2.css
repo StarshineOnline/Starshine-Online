@@ -1,0 +1,1013 @@
+/*-- Global site --------------------------------------------------*/
+
+#top{display : block;width: 1000px;margin: 0 auto;z-index :5;}
+#conteneur{z-index :2;}
+#bas{clear: both; width: 1000px;margin: 0 auto;text-align: center;font-size: 9px;}
+#centre{margin-top : 3px;margin-left : 7px;	margin-right : 30px;float : left;	width : 41%;	height : 100%;	z-index :3;}
+#deplacement{float : left;vertical-align : top;	text-align : right;	width : 50px;	margin-left : 5px;}
+#information{height : 100%;	width : 49%;	float : right;	z-index :1;}
+#information a {color : #444;text-decoration : none;}
+#information a:hover {	color : #888;	text-decoration : none;}
+#perso{background-color:#c6d9f5;min-height: 120px;margin:0;padding:0;}
+#perso_contenu{width:1000px;margin:auto;background:transparent url('./image/v2/site_haut.png') no-repeat left;min-height:120px;}
+#contenu_jeu {	margin : 0 auto;width:1000px;}
+
+
+/*-- Basics elements --------------------------------------------------*/
+#global				{ position:relative; margin:0px auto; width:960px; height:100%; border:1px solid red;}
+.spacer { clear: both !important; float: none !important; border: none !important; height: 1px !important; line-height: 1px !important; font-size: 1px !important; padding: 0 !important; margin: 0 0 -1px 0 !important; visibility: hidden !important; }
+
+/*-- Menu Jeu ---------------------------------------------------------*/
+#menu_jeu
+{
+	float:left;
+	margin:0px -5px 0px 0px;
+	width:32px;
+}
+/*-- Infos perso ------------------------------------------------------*/
+#infos_perso		{ float:left; background:transparent url('./../image/fond_infoperso.png') center; width:325px; height:100px; position:relative;z-index:1;}
+#joueur_PA			{ font-size:8pt; color:white; background:green; width:125px; text-align:center; position:absolute; top:46px; left:105px; }
+#joueur_HP			{ font-size:8pt; color:white; background:transparent url('./../image/barre/hp9.png') center no-repeat; width:125px; text-align:center; position:absolute; top:10px; left:105px; }
+#joueur_MP			{ font-size:8pt; color:white; background:blue; width:125px; text-align:center; position:absolute; top:28px; left:105px; }
+#joueur_XP			{ width:100px; height:100px; position:absolute; top:0px; left:0px; }
+#joueur_PO			{ font-size:8pt; background:transparent url('./../image/starsv2') left no-repeat; width:50px; height:24px; line-height:24px; text-align:center; padding:0px 0px 0px 24px; position:absolute; top:10px; left:235px; }
+#joueur_PH			{ font-size:8pt; background:transparent url('./../image/honneur.png') left no-repeat; width:50px; height:24px; line-height:24px; text-align:center; padding:0px 0px 0px 24px;  position:absolute; top:38px; left:235px; }
+#joueur_Psso		{ cursor:pointer; background:transparent url('./../image/pointshine.png') left no-repeat; width:16px; height:16px; position:absolute; top:0px; left:85px; }
+#joueur_LV			{ width:24px; height:24px; text-align:center; line-height:24px; font-size:8pt; font-weight:bold; background:transparent url('./../image/LV.png') left no-repeat; }
+
+#joueur_onglets	 		{ position:absolute; left:88px; top:65px; width:225px; padding:0px 0px 0px 10px; }
+#joueur_onglets_index, #joueur_onglets_forums, #joueur_onglets_options, #joueur_onglets_exit 	{ float:left; width:55px; text-align:center; }
+
+#joueur_buffs_nom 					{ position:relative;float:left;}
+#joueur_nom							{ position:relative; width:210px; float:left; text-align:left; }
+#joueur_type						{ position:relative; width:210px; float:left; text-align:left; font-size:8pt; height:12px; }
+#buff_list				{ position:relative; text-align:center; width:310px; }
+#buff_list ul			{ float:left; list-style-type:none; text-align:center; width:310px; }
+.buff					{ position:relative; float:left; height:19px; padding:0px; margin:0px 2px; }
+.buff_dispo				{ position:relative; float:left; height:19px; width:16px; padding:0px; margin:0px 2px; background:transparent url('../../image/buff/buff.png') top no-repeat; }
+.buff_nondispo			{ position:relative; float:left; height:19px; width:16px; padding:0px; margin:0px 2px; background:transparent url('../../image/buff/nobuff.png') top no-repeat; }
+.buff_duree_restante 	{ position:absolute; bottom:0px; left:0px; }
+#joueur_groupe			{ width:250px; float:left; }
+#joueur_groupe li		{ cursor:pointer; font-size:8pt; border-bottom:1px dotted #8b94b0; padding:0px 0px 2px 0px; }
+
+.joueur_groupe_pseudo	{ float:left; line-height:16px; clear:both; width:125px; border}
+.joueur_groupe_barre_hp	{ float:left; width:102px; height:6px; margin:0px 0px 0px 0px; }
+.joueur_groupe_barre_mp	{ float:left; width:102px; height:6px; margin:1px 0px 0px 0px; }
+
+/*-- Rose des vents ---------------------------------------------------*/
+#rosedesvents   { width:75px; height:75px;position:absolute; left:13px; top:13px; z-index:200; }
+#rose_div_hg 	{ background:transparent url('./../image/rosedesvent/nordouest.png') center; width:25px; height:25px; cursor:pointer; float:left; }
+#rose_div_hg:hover 		{ background-position:top; }
+#rose_div_hg:active 	{ background-position:bottom; }
+
+#rose_div_h 	{ background:transparent url('./../image/rosedesvent/nord.png') center; width:25px; height:25px; cursor:pointer; float:left; }
+#rose_div_h:hover 		{ background-position:top; }
+#rose_div_h:active 	{ background-position:bottom; }
+
+#rose_div_hd 	{ background:transparent url('./../image/rosedesvent/nordest.png') center; width:25px; height:25px; cursor:pointer; float:left; }
+#rose_div_hd:hover 		{ background-position:top; }
+#rose_div_hd:active 	{ background-position:bottom; }
+
+#rose_div_cg 	{ background:transparent url('./../image/rosedesvent/ouest.png') center; width:25px; height:25px; cursor:pointer; float:left; clear:both; }
+#rose_div_cg:hover 		{ background-position:top; }
+#rose_div_cg:active 	{ background-position:bottom; }
+
+#rose_div_c 	{ background:transparent url('../../image/rosedesvent/rafraichir.png') center; width:25px; height:25px; cursor:pointer; float:left; }
+#rose_div_c:hover 		{ background-position:top; }
+#rose_div_c:active 	{ background-position:bottom; }
+
+#rose_div_cd 	{ background:transparent url('./../image/rosedesvent/est.png') center; width:25px; height:25px; cursor:pointer; float:left;  }
+#rose_div_cd:hover 		{ background-position:top; }
+#rose_div_cd:active 	{ background-position:bottom; }
+
+#rose_div_bg 	{ background:transparent url('./../image/rosedesvent/sudouest.png') center; width:25px; height:25px; cursor:pointer; float:left; clear:both; }
+#rose_div_bg:hover 		{ background-position:top; }
+#rose_div_bg:active 	{ background-position:bottom; }
+
+#rose_div_b 	{ background:transparent url('../../image/rosedesvent/sud.png') center; width:25px; height:25px; cursor:pointer; float:left; }
+#rose_div_b:hover 		{ background-position:top; }
+#rose_div_b:active 	{ background-position:bottom; }
+
+#rose_div_bd 	{ background:transparent url('./../image/rosedesvent/sudest.png') center; width:25px; height:25px; cursor:pointer; float:left; }
+#rose_div_bd:hover 		{ background-position:top; }
+#rose_div_bd:active 	{ background-position:bottom; }
+
+/*-- Overlib ----------------------------------------------------------*/
+.overlib						{ background:transparent url('../image/interface/1.png') center; border:1px solid #000000; -moz-border-radius:5px;-webkit-border-radius :5px; min-width:250px; }
+.overlib ul						{ clear:both; position:relative; }
+.overlib_titres					{ text-align:center; font-weight:bold; color:black; }
+.overlib_batiments span			{ font-weight:bold; color:black; }
+.overlib_joueurs span			{ font-weight:bold; color:#6633FF; }
+.overlib_monstres span			{ font-weight:bold; color:#CC3300; }
+.overlib_infos					{ clear:both; font-size:7pt; font-style:italic; color:black; margin-top:10px; text-align:center; }
+.overlib_img_objet				{ position:absolute;left:-5px; top:-2px; width:50px; height:55px; background-position:center center; background-repeat:no-repeat; }
+.overlib_nom_objet				{ float:right; width:200px; font-style:italic; }
+.overlib_desc_objet				{ float:right; width:200px;  }
+.overlib_desc_objet span		{ float:left; width:75px;  }
+
+/*-- Map --------------------------------------------------------------*/
+#carte							{ width:445px; height:440px; float:left; margin:0px;clear:both; z-index:500; }
+#carte ul {list-style: none;padding:0;margin: 0;}
+#map_bord_haut  				{ height:20px !important; cursor:pointer; }
+#map_bord_haut li 				{ float:left; width:60px; height:inherit; line-height:20px; color:white; text-align:center;background:#D8AB41 repeat scroll 0%;}
+#map_bord_haut2 li 				{ float:left; width:60px; height:inherit; line-height:20px; color:white; text-align:center; background:transparent url('./../image/bord_map.png') center; }
+#map_bord_haut_gauche  			{ width:25px !important; height:inherit; background: #D8AB41 url('../image/icone/royaume_icone.png') center no-repeat !important;}
+#map_bord_haut_gauche2 			{ width:25px !important; height:inherit; background:transparent url('./../image/coin_map.png') center !important; }
+#map_bord_haut_gauche:hover		{ background-position:top; }
+#map_bord_haut_gauche:active	{ background-position:bottom; }
+#bord_haut_x					{ color:black !important; font-weight:bold; }
+#bord_haut_y					{ color:black !important; font-weight:bold; }
+.map							{ height:60px; padding-bottom : 0px;}
+.map li							{ float:left; width:60px; height:inherit; }
+.map_bord_gauche				{ width:20px !important; color:white; line-height:60px; text-align:center; background:transparent url('./../image/bordcartegauche.png') center; padding-bottom : 0px;}
+.map_bord_gauche2				{ width:20px !important; color:white; line-height:60px; text-align:center; background:transparent url('./../image/bord2_map.png') center; padding-bottom : 0px;}
+.map_contenu 					{ width:56px; height:56px; margin:2px 2px 2px 2px; background:transparent url(image/pixel.gif) center no-repeat;}
+/*-- Weather ----------------------------------------------------------*/
+#moment_jour { position:absolute; top:0px; left:0px; z-index:-1; width:960px; height:140px; background:transparent url('image/weather/matin5.jpg') bottom center no-repeat; }
+
+
+/*-- Ville ------------------------------------------------------------*/
+.ville_message			{ width:100%; text-align:center; }
+.message_rouge			{ font-weight:bold; color:red; }
+.message_vert			{ font-weight:bold; color:green; }
+/*-- Hôtel des ventes -------------------------------------------------*/
+#hotel_liste_type ul	{ width:100%; }
+#hotel_liste_type li	{ display:inline; cursor:pointer; font-size : 0.9em;}
+
+#hotel_liste 			{ width:100%; text-align:left; font-variant:normal; }
+#hotel_liste .li1 		{ cursor:default; float:left; font-weight:normal; text-align:center !important; line-height:14pt; }
+#hotel_liste .li2 		{ cursor:default;  float:left; font-weight:normal; text-align:center !important; background-color:#ADC2F5; line-height:14pt; }
+#hotel_liste .entete 	{ cursor:pointer; font-size:10pt !important; font-weight:bold; background-image:none !important; }
+#hotel_liste .nom 		{ float:left; width:165px; text-align:left !important; clear:both; }
+#hotel_liste .temps 	{ float:left; width:75px; text-align:right !important; font-size:7.5pt; }
+#hotel_liste .prix 		{ float:left; width:75px; text-align:right !important; background-image:url('../image/stars_16.png'); background-position:right; background-repeat:no-repeat; padding-right:18px; }
+#hotel_liste .achat 	{ cursor:pointer; float:left; width:60px; text-align:right !important; font-variant:small-caps; font-weight:bold; }
+#hotel_liste .achat:hover 	{ color:#63A4EB; }
+#hotel_liste .achat:active 	{ color:#A062EC; }
+.slot					{ float:right; margin-top:0px; width:11px; height:16px; background:transparent url('../image/groupes/vert.png') center left no-repeat; text-align:center; line-height:15px; color:black; font-size:6pt; display  block;}
+.noslot					{ float:right; margin-top:0px; width:11px; height:16px; background:transparent url('../image/groupes/noir.png') center left no-repeat; display  block;}
+.enchantement			{ float:right; margin-top:0px; width:11px; height:16px; background:transparent url('../image/groupes/bleu.png') center left no-repeat; display  block;}
+
+
+
+
+
+
+
+
+/***************************************************
+  Vrac
+ ***************************************************/
+#loading {background:transparent url('./../image/ajax-loader-bar.gif') no-repeat scroll left center;height:22px;left:140px;position:absolute;top:300px;width:220px;}
+#conteneur_test {height:100%;width:100%;z-index: 99999;cursor: wait;position: absolute;}
+.infoperso {
+	vertical-align : top;
+	float : left;
+	padding: 2px;
+	margin : 2px;
+	height : 75px;
+	-moz-border-radius : 10px;
+	-webkit-border-radius :10px;
+	background-color:#91AEF2;
+	border:1px solid #555555;
+	vertical-align:top;
+
+}
+.infoperso td {
+font-size : 10px;
+margin : 0px;
+padding : 0px;
+}
+
+#mail_groupe
+{
+	background:transparent url('../image/interface/message.png') center left no-repeat; width : 28px; height : 19px;
+}
+
+#info_groupe
+{
+	background:transparent url('../image/interface/message.png') center left no-repeat; width : 28px; height : 19px;
+}
+
+.roseeticone {
+	float : left;
+	padding: 4px;
+	margin : 5px;
+}
+
+
+#carte h2
+{
+	padding-left: 25px ;
+	color : #000;
+	line-height: 25px ;
+	font-size: 1.4em ;
+	border-top : 1px solid;
+	border-bottom : 1px solid;
+	border-color : #888;
+	font-family: "Trebuchet MS", Times, serif;
+	font-variant: small-caps ;
+	text-align : center;
+	margin-top : 5px;
+	margin-bottom : 8px;
+	padding : 0px;
+	background-color: #D8AB41;
+
+}
+#information h2
+{
+	padding-left: 25px ;
+
+	line-height: 25px ;
+	font-size: 1.4em ;
+	font-family: "Trebuchet MS", Times, serif;
+	font-variant: small-caps ;
+	text-align : center;
+	margin-top : 5px;
+	margin-bottom : 8px;
+	height : 40px;
+	padding : 0px;
+		background-color:#D8AB41;
+	border-bottom:1px solid #888888;
+	border-color:#888888;
+	border-top:1px solid #888888;
+	color:#000000;
+}
+
+h3.old
+{
+	border-top : 1px solid;
+	border-bottom : 1px solid;
+	border-color : #888;
+	margin-top : 10px;
+	margin-bottom : 5px;
+	padding-left : 10px;
+	background-color: #91AEF2;
+	font-family: "Trebuchet MS", Times, serif;
+	font-variant: small-caps ;
+}
+
+h3.messagerie
+{
+	margin-top : 0px;
+	margin-bottom : 0px;
+	width : 480px;
+	position : relative;
+	font-variant: normal;
+	height : 20px;
+	font-weight : normal;
+}
+
+h3.messagerie span.auteur
+{
+	position : absolute;
+	left : 0px;
+	font-weight : bold;
+	display : block;
+	width : 114px;
+	text-align : center;
+	text-transform : capitalize;
+}
+
+h3.messagerie span.titre
+{
+	position : absolute;
+	left : 114px;
+	color : #828387;
+	font-weight : normal;
+}
+
+h3.messagerie span.date
+{
+	position : absolute;
+	right : 10px;
+	font-size : 0.8em;
+}
+
+h4
+{
+	margin : 0px;
+	padding : 0px;
+}
+h5
+{
+	color : #000;
+	font-size: 1em ;
+	border-top : 1px solid;
+	border-bottom : 1px solid;
+	border-color : #888;
+	font-family: "Trebuchet MS", Times, serif;
+	font-variant: small-caps ;
+	background-color: #DF3F00;
+	margin : 0px;
+	padding-left : 10px;
+}
+h6
+{
+	color : #000;
+	font-size: 1em ;
+	border-top : 1px solid;
+	border-bottom : 1px solid;
+	border-color : #888;
+	font-family: "Trebuchet MS", Times, serif;
+	font-variant: small-caps ;
+	background-color: #6EB027;
+	margin : 0px;
+	padding-left : 10px;
+}
+img
+{
+	border : 0px none;
+	padding : 0px;
+	margin : 0px;
+}
+dl, dt, dd, ul, li
+{
+	margin: 0;
+	padding: 0;
+	list-style-type : none;
+}
+ol.tuto, ol.tuto li
+{
+	list-style-type : decimal;
+}
+.rose_a
+{
+	margin : 0px;
+	padding : 0px;
+	width : 0px;
+	cursor : pointer;
+	font-size : 0px;
+}
+.rose_a:hover
+{
+	margin : 0px;
+	padding : 0px;
+	cursor : pointer;
+	font-size : 0px;
+}
+.rose_tr
+{
+	font-size : 0px;
+	margin : 0px;
+	padding : 0px;
+	height : 20px;
+}
+.rose_tr td
+{
+	font-size : 0px;
+	margin : 0px;
+	padding : 0px;
+}
+.rose_div
+{
+	height : 25px;
+}
+.brillant
+{
+	padding-top: 8px;
+	text-align : center;
+	background-image : url('../image/forum_h2.gif');
+	height: 23px;
+}
+.information_case
+{
+	padding : 8px;
+	font-family: "Trebuchet MS", Times, serif;
+	background-color: #BACCF7;
+	border : 2px solid;
+	margin : 9px;
+	border-color : #FFF;
+	-moz-border-radius : 13px;
+	-webkit-border-radius :13px;
+}
+.information_case h4
+{
+	width:30%;
+	background-color: #D8AB41;
+	border-top : 1px solid;
+	border-bottom : 1px solid;
+	border-color : #888;
+	text-align:center;
+    margin: 0 auto;
+    margin-bottom : 10px;
+
+}
+.avatar
+{
+	float : right;
+}
+.jsinformation_case 
+{
+	display: none;
+	z-index: 100;
+	position: absolute;
+	top: 250px;
+	right: 150px;
+	background-color:#ffffff;
+	border: 1px solid #000000;
+	font-size:12px;
+	width: 250px;
+	padding: 5px;
+}
+.combat
+{
+	padding : 2px;
+	font-family: "Trebuchet MS", Times, serif;
+	background-color: #BACCF7;
+	border : 2px solid;
+	margin : 2px;
+	border-color : #444;
+	-moz-border-radius : 5px;
+	-webkit-border-radius :5px;
+}
+.echange
+{
+	padding : 2px;
+	font-family: "Trebuchet MS", Times, serif;
+	background-color: #BACCF7;
+	border : 2px solid;
+	margin : 2px;
+	border-color : #FFF;
+	-moz-border-radius : 13px;
+	-webkit-border-radius :13px;
+}
+#liste_quete 
+{
+	border-left : 2px solid;
+	border-color : #FFF;
+	padding-left : 9px;
+	padding-bottom : 10px;
+	overflow : auto;
+	height : 300px;
+	background-color:#91AEF2;
+	width : 95%;
+    margin: 0 auto;
+}
+.quete_description
+{
+	height : 315px;
+	padding-top : 10px;
+	padding : 5px;
+	color : #333;
+	font-family: "Trebuchet MS", Times, serif;
+	background : #BACCF7;
+	border : 2px solid;
+	border-color : #FFF;
+	-moz-border-radius : 7px;
+	-webkit-border-radius : 7px;
+}
+
+.description_quete
+{
+	overflow : auto;
+	height : 280px;
+}
+
+.inventaire
+{
+	background-color: #D4DAE2;
+	margin : 9px;
+
+}
+#carte h2
+{
+color:#000000;
+font-family:"Trebuchet MS",Times,serif;
+font-size:15px;
+font-variant:small-caps;
+text-decoration:none;
+}
+#carte h2 a 
+{
+color:#000000;
+font-family:"Trebuchet MS",Times,serif;
+font-size:15px;
+font-variant:small-caps;
+text-decoration:none;
+}
+.carte_bas {
+background : #000;
+height:05px;
+}
+#deplacement h4
+{
+	text-align: center;
+	background-color: #D4DAE2;
+	border : 1px solid;
+	border-color : #888;
+	-moz-border-radius : 5px;
+	-webkit-border-radius : 5px;
+	margin-bottom : 5px;
+	font-family:"Trebuchet MS",Times,serif;
+}
+
+
+/***************************************************
+  Header Menu
+ ***************************************************/
+
+.rose
+{
+	width : 50px;
+	height : 50px;
+	border : 0px;
+	margin : 0px;
+	padding : 0px;
+}
+.decor
+{
+	width : 60px;
+	height : 60px;
+	margin : 0;
+	padding : 0;
+	text-align : center;
+}
+.decor-edit
+{
+	width : 20px;
+	height : 20px;
+	margin : 0;
+	padding : 0;
+	text-align : center;
+}
+.infobox
+{
+	display : none;
+	z-index : 2;
+	position : absolute;
+	top : 100px;
+	left : 0px;
+	background-color : #ffffff;
+	border : 1px solid #000000;
+	font-size :12px;
+	width : 300px;
+	padding : 5px;
+}
+.tabnoir
+{
+	background : url('../image/bord_map.png');
+	color : #FFF; 
+}
+.debug
+{
+	display : none;
+}
+.baseJumpbox
+{
+	width : 250px;
+	height : 500px;
+}
+select.baseJumpbox optgroup
+{
+	width : 200px;
+	color: black;
+	background-color: #ffffff;
+	margin-bottom: 3pt;
+	border: 2px solid #735225;
+	padding: 2px;
+	margin: 5px;
+}
+.baseRow1
+{
+	background-color: #fff4cc;
+	padding-left : 2px;
+}
+.baseRow2
+{
+	background-color: #ffeeaa;
+	padding-left : 2px;
+}
+.heure {
+	text-align : center;
+	background-color : #D4DAE2;
+	-moz-border-radius : 9px;
+	-webkit-border-radius : 9px;
+	padding : 5px;
+	border : 1px solid #FFF;
+}
+.inventaire2
+{
+width : 33%;
+font-size : 0.8em;
+text-align : center;
+vertical-align : top;
+background-image:url('../image/interface1.png');
+-moz-border-radius : 9px;
+-webkit-border-radius : 9px;
+color : #222;
+border : 1px solid #FFF;
+}
+
+
+
+/***************************************************
+  Map
+ ***************************************************/
+
+.jsmap 
+{
+	text-align : left;
+	display: none;
+	z-index: 100;
+	position: absolute;
+	top: 250px;
+	right: 150px;
+	background-image:url('../image/interface/1.png');
+	border: 1px solid #000000;
+	font-size:12px;
+	width: 150px;
+	padding: 5px;
+	-moz-border-radius : 5px;
+	-webkit-border-radius : 5px;
+}
+.bord_carte_haut_gauche {
+	border-top : 2px solid #888;
+	border-left : 2px solid #888;
+	background : #D8AB41;
+	-moz-border-radius-topleft : 9px;
+	-webkit-border-top-left-radius : 9px;
+	background:transparent url('../image/royaume_icone.png') center;
+}
+.bord_carte_haut 
+{
+	text-align : center;
+	border-top : 2px solid #888;
+	border-bottom : 1px solid #888;
+	background : #D8AB41;
+}
+.bord_carte_gauche {
+	border-left : 2px solid #888;
+	border-right : 1px solid #888;
+	width : 20px;
+	text-align : center;
+	background : #D8AB41;
+}
+
+/***************************************************
+  Ville
+ ***************************************************/
+
+ul.ville li
+{
+	margin-bottom : 3px;
+}
+ul.ville li:hover
+{
+	font-weight : bold;
+	text-decoration : none;
+	background-color : #91AEF2;
+}
+.ville_titre a {
+	font-family: "Trebuchet MS", Times, serif;
+	text-decoration : none;
+	font-variant: small-caps ;
+	font-size :15px;	
+	color : #000;
+}
+.ville_test 
+{
+	vertical-align : top;
+	color : #000;
+	padding : 5px;
+	font-variant: small-caps ;
+	font-family: "Trebuchet MS", Times, serif;
+	background-color: #BACCF7;
+	font-weight : bold;
+	border : 2px solid;
+	border-color : #FFF;
+	-moz-border-radius : 7px;
+	-webkit-border-radius : 7px;
+}
+.ville_test a 
+{
+	color : #222;
+	font-size : 14px;	
+	text-decoration : none;	
+}
+.ville_haut 
+{
+	color : #000; 
+	background-image : url('../image/forum_h2.gif');
+	padding : 3px;
+	font-size : 1.1em;
+	font-variant: small-caps ;
+	font-family: "Trebuchet MS", Times, serif;
+	font-weight : bold;
+	text-align: center;
+	height : 25px;
+	margin-left : -2px;
+	margin-right : -2px;
+	margin-top : -2px;
+}
+table.marchand, table.inventaire
+{
+	font-size : 0.9em;
+	margin : 2px;
+   	text-align : center;
+   	font-weight : normal;
+	width : 98%;
+	font-family: "Arial";
+	font-variant: normal ;
+}
+.texte_normal 
+{
+	font-size : 0.9em;
+	margin : 2px;
+   	font-weight : normal;
+	width : 100%;
+	font-family: "Arial";
+	font-variant: normal ;	
+}
+tr.header
+{
+	font-weight : bold;
+	text-align : center;
+}
+tr.element td, table.marchand tr.header td
+{
+	padding : 3px;
+}
+table.inventaire tr.element td, table.inventaire tr.header td
+{
+	font-size : 0.9em;
+}
+/***************************************************
+  Gestion Royaume
+ ***************************************************/
+
+#gestion-royaume
+{
+	vertical-align : top;
+	padding : 5px;
+	font-family: "Trebuchet MS", Times, serif;
+	background-color: #BACCF7;
+	font-weight : bold;
+}
+
+#gestion-royaume h4
+{
+	border-top : 1px solid;
+	border-bottom : 1px solid;
+	border-color : #888;
+	margin-top : 3px;
+	margin-bottom : 2px;
+	padding-left : 15px;
+	background-color: #d8ab41;
+	font-family: "Trebuchet MS", Times, serif;
+	font-variant: small-caps;
+	font-size : 1em;
+	color : black;
+}
+ul.gestion-royaume
+{
+	margin-left : 25px;
+}
+
+ul.gestion-royaume li
+{
+	list-style-type : disc;
+	margin-bottom : 3px;
+	color : #444444;
+}
+ul.gestion-royaume li:hover
+{
+	font-weight : bold;
+	text-decoration : none;
+	background-color : #91AEF2;
+}
+
+ul.gestion-royaume li a
+{
+	color : #444444;
+}
+
+/***************************************************
+  Hotel des ventes
+ **************************************************/
+
+ul.onglet-hotel
+{
+}
+
+ul.onglet-hotel li
+{
+	display : inline;
+}
+
+/***************************************************
+  Element de droite
+ ***************************************************/
+
+
+#editcarte
+{
+	width : 100%;
+}
+.selecteur
+{
+	float : left;
+}
+.mapedit
+{
+	float : left;
+}
+
+
+/***************************************************
+  Tableau
+ ***************************************************/
+
+.trcolor1
+{
+	background-color : #91AEF2;
+}
+.trcolor3
+{
+	font-weight : bold;
+	color : #999;
+	font-style : italic;
+}
+.trcolor5
+{
+	font-weight : bold;
+	color : #999;
+	font-style : italic;
+	background-color : #FFF;
+}
+.trstat
+{
+	vertical-align : top;
+	border : 2px solid;
+	border-color : #555;
+	-moz-border-radius : 10px;
+	-webkit-border-radius : 10px;
+	background-color : #91AEF2;
+	padding: 4px;
+}
+.achat {
+	font-style : italic;
+	font-weight : bold;			
+}
+.achat_over
+{
+	color : red;
+}
+.boite_royaume
+{
+	float : left;
+	height : 60px;
+	width : 60px;
+}
+.marque_royaume
+{
+	width : 55px;
+	height : 55px;
+}
+
+/***************************************************
+  Journal des Actions
+ ***************************************************/
+
+.coupcritique
+{
+	font-weight : bold;
+}
+.degat
+{
+	color : #f00;
+}
+.manque
+{
+	color : #00f;
+}
+.augcomp
+{
+	color : #ff791c;
+	font-weight : bold;
+}
+.reward
+{
+	color : #B8860B;
+}
+.soin
+{
+	color : #363;
+}
+.jsoin
+{
+	color : #33CC00;
+}
+.jgsoin
+{
+	color : #009900;
+}
+.jbuff
+{
+	color : #3333FF;
+}
+.jgbuff
+{
+	color : #000099;
+}
+.jdebuff
+{
+	color : #9900CC;
+}
+.jdegat
+{
+	color : darkred;
+}
+.jrdegat
+{
+	color : red;
+}
+.jkill
+{
+	color : #666666;
+}
+.jmort
+{
+	color : #333333;
+}
+.jquete
+{
+	color : orange;
+}
+.jloot
+{
+	color : #CC33CC;
+}
+.small
+{
+	font-style : italic;
+	font-size : 0.9em;
+}
+.xsmall
+{
+	font-style : italic;
+	font-size : 0.8em;
+}
+
+/***************************************************
+  Rose des vents
+ ***************************************************/
+
+.admin
+{
+	width : 600px;
+}
+.info_joueur
+{
+	color : #6633ff;
+	font-weight : bold;
+}
+.info_monstre
+{
+	color : #cc3300;
+	font-weight : bold;
+}
+.admin tr td
+{
+	vertical-align : top;
+}
+.admin tr td ul li
+{
+	margin : 0px;
+}
+.adminListing
+{
+	margin-top : 10px;
+	margin-bottom : 10px;
+	border-top : 0px;
+	border-right : 0px;
+}
+.adminListing tr td
+{
+	border-top : 1px solid #8d8db3;
+	border-right : 1px solid #8d8db3;
+	text-align : center;
+	padding-right : 5px;
+}
+.adminListing tr td a
+{
+	text-decoration : none;
+}
+tr.tabMonstre td
+{
+	border : 1px solid grey;
+	text-align : center;
+	padding : 2px;
+}
+
+/**********************************
+ Messagerie 
+ **********************************/
+
+.msgbar
+{ 
+	width:50px;
+}
+
+
+

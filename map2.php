@@ -19,5 +19,5 @@ $map->get_drapeau();
 $map->get_batiment();
 $map->get_monstre($level);
 
-$map->affiche();
+$map->affiche($x, $y);
 ?>
