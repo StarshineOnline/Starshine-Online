@@ -265,8 +265,8 @@ if($W_distance == 0 AND $verif_ville)
 	{
 	//Payer l'amende
 	?>
-	Vous êtes considérez comme criminel par votre royaume.<br />
-	Il vous faut payer une amende de <?php echo $amende['montant']; ?> stars pour redevenir libre.<br />
+	Vous êtes considéré comme criminel par votre royaume.<br />
+	Il vous faut payer une amende de <?php echo $amende['montant']; ?> stars pour ne plus l'être.<br />
 	<a href="" onclick="return envoiInfo('ville.php?poscase=<?php echo $W_case; ?>&amp;direction=paye_amende', 'carte')">Pour payer l'amende, cliquez ici</a>
 	<?php
 	}

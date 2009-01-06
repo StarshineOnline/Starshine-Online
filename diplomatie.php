@@ -256,7 +256,7 @@ while($iii < $count_race)
 				Joueurs Gradés
 			</h3>
 	<?php
-	$requete = "SELECT *, grade.nom as gnom, perso.nom as name FROM perso LEFT JOIN grade ON perso.rang_royaume = grade.id WHERE race = '".$races[$iii]."' AND grade.id <> 7 ORDER BY grade.facteur ASC";
+	$requete = "SELECT *, grade.nom as gnom, perso.nom as name FROM perso LEFT JOIN grade ON perso.rang_royaume = grade.id WHERE race = '".$races[$iii]."' AND grade.id <> 7 AND statut = 'actif' ORDER BY grade.facteur ASC";
 	$req = $db->query( $requete);
 	while($row = $db->read_assoc($req))
 	{
