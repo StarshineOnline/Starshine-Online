@@ -61,6 +61,10 @@ else
 	$menu[17]['nom'] = 'Etude HV';
 	$menu[17]['url'] = 'etude_hotel.php';
 	$menu[17]['acces'] = 'admin';
+	$menu[18]['nom'] = 'Visualiseur de donjon';
+	$menu[18]['url'] = 'view_donjon.php';
+	$menu[18]['acces'] = 'admin';
+
 	}
 	?>
 	
