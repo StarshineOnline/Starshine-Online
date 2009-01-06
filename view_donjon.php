@@ -18,7 +18,7 @@ else
 
 <a href="?donjon=myriandre">Myriandre</a><br/>
 <a href="?donjon=gobelin">Gobelin</a><br/>
-<table><tr><td>
+<table><tr><td><div id="carte">
 <?php
 
    if (isset($_GET['donjon'])) {
@@ -63,4 +63,4 @@ else
   }
 
 }
-?></td></tr></table>
+?></div></td></tr></table>
