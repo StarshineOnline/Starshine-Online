@@ -61,8 +61,11 @@ echo '<div id="carte" style="width : 605px; height : 610px;">';
 		}
 		$background = "";
 		$overlib = "";
+		//Repere
 		if(array_key_exists($objMap->ID, $reperes)) $repere = $reperes[$objMap->ID]->id_type;
 		else $repere = '&nbsp;';
+		//Batiment
+		if(array_key_exists($objMap->ID, $batiments)) $background = "background-image : url('../image/batiment/".$batiments[$objMap->ID]["image"]."_04.png') !important;";
 		
 		$border = "border:0px solid ".$Gcouleurs[$objMap->royaume].";";
 		echo "<li class='$class_map' style='width : 20px; height : 20px;'>

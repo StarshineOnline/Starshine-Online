@@ -55,7 +55,7 @@ $bonus = recup_bonus($joueur['ID']);
 				$db->query($requete);
 				$bonus = recup_bonus($joueur['ID']);
 			}
-			//Changement de description
+			//Changement de css
 			if(array_key_exists('css', $_GET))
 			{
 				$bonus_total = recup_bonus_total($joueur['ID']);
@@ -190,7 +190,7 @@ $bonus = recup_bonus($joueur['ID']);
 						</form>
 						<?php
 					break;
-					//Description
+					//Css
 					case 27 :
 						?>
 						<form action="configure_point_sso.php" method="get">

@@ -37,7 +37,7 @@
 	
 	//-- Index, Forums, Exit, Options
 	echo " <div id='joueur_onglets'>
-			<div id='joueur_onglets_index' title=\"Retour &agrave; l&apos;index\" onclick=\"document.location.href='index.php';\">index</div>
+			<div id='joueur_onglets_index' title=\"Retour &agrave; l&apos;index\" onclick=\"document.location.href='site_index.php';\">index</div>
 	 		<div id='joueur_onglets_forums' title='Acc&eacute;der aux forums' onclick=\"document.location.href='http://forum.starshine-online.com/';\">forums</div>
 	 		<div id='joueur_onglets_options' title='Modifier vos options' onclick=\"document.location.href='option.php';\">options</div>
 	 	    <div id='joueur_onglets_exit' title='Se déconnecter' onclick=\"if(confirm('Voulez vous déconnecter ?')) { document.location.href='index.php?deco=ok'; };\">exit</div>

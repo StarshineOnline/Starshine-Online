@@ -122,6 +122,25 @@ function calcul_distance_pytagore($posjoueur1, $posjoueur2)
 }
 
 /**
+ *
+ */
+function dimension_map($x, $y, $champ_vision)
+{
+	$case_affiche = ($champ_vision * 2) + 1;
+	$dimensions = array();
+
+	if($x < ($champ_vision + 1))			{ $dimensions['xmin'] = 1;		$dimensions['xmax'] = $x + ($case_affiche - ($x)); }
+	elseif($x > (150 - $champ_vision))		{ $dimensions['xmax'] = 150;		$dimensions['xmin'] = $x - ($case_affiche - (150 - $x + 1)); }
+	else								{ $dimensions['xmin'] = $x - $champ_vision;	$dimensions['xmax'] = $x + $champ_vision; };
+	
+	if($y < ($champ_vision + 1))		{ $dimensions['ymin'] = 1;		$dimensions['ymax'] = $y + ($case_affiche - ($y)); }
+	elseif($y > (150 - $champ_vision))	{ $dimensions['ymax'] = 150;		$dimensions['ymin'] = $y - ($case_affiche - (150 - $y + 1)); }
+	else								{ $dimensions['ymin'] = $y - $champ_vision; 	$dimensions['ymax'] = $y + $champ_vision; }
+
+	return $dimensions;
+}
+
+/**
  * Indique si on est dans un donjon.
  *  
  * @param $x Position horizontale.

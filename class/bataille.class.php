@@ -138,6 +138,16 @@ class bataille
 			$this->groupes[] = new bataille_groupe($row);
 		}
 	}
+	
+	function is_groupe_in($id_groupe)
+	{
+		global $db;
+
+		$requete = "SELECT id FROM bataille_groupe WHERE id_bataille = ".$this->id." AND id_groupe = ".$id_groupe;
+		$req = $db->query($requete);
+		if($db->num_rows($req) > 0) return true;
+		else return false;
+	}
 
 	function get_reperes()
 	{
@@ -152,9 +162,9 @@ class bataille
 		}
 	}
 
-	function statut_texte()
+	function etat_texte()
 	{
-		switch($this->statut)
+		switch($this->etat)
 		{
 			case 0 :
 				return 'brouillon';

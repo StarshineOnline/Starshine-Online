@@ -95,5 +95,15 @@ class bataille_repere
 		$row = $db->read_assoc($req);
 		$this->type = new bataille_repere_type($row);
 	}
+
+	function get_groupe($id_groupe)
+	{
+		global $db;
+
+		$requete = "SELECT id, id_repere, id_groupe, accepter FROM bataille_groupe_repere WHERE id_groupe = ".$id_groupe." AND id_repere = ".$this->id;
+		$req = $db->query($requete);
+		if($db->num_rows($req) == 0) return false;
+		else return new bataille_groupe_repere($db->read_assoc($req));
+	}
 }
 ?>

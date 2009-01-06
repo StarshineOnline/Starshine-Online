@@ -8,6 +8,32 @@ include('../class/bataille_groupe_repere.class.php');
 include('../class/bataille_repere_type.class.php');
 include('../fonction/messagerie.inc.php');
 
+function affiche_bataille($bataille)
+{
+	?>
+		<div style="float : right;">
+			<a href="gestion_bataille.php?id_bataille=<?php echo $bataille->id; ?>&amp;info_bataille" onclick="return envoiInfo(this.href, 'conteneur');">modifier</a><br />
+		<?php
+		if($bataille->etat == 0)
+		{
+			?>
+			<a href="gestion_bataille.php?id_bataille=<?php echo $bataille->id; ?>&amp;debut_bataille" onclick="return envoiInfo(this.href, 'bataille_<?php echo $bataille->id; ?>');">Debuter</a><br />
+			<?php
+		}
+		elseif($bataille->etat == 1)
+		{
+			?>
+			<a href="gestion_bataille.php?id_bataille=<?php echo $bataille->id; ?>&amp;fin_bataille" onclick="return envoiInfo(this.href, 'bataille_<?php echo $bataille->id; ?>');">Fermer</a><br />
+			<?php
+		}
+		?>
+		</div>
+		<?php echo $bataille->nom; ?><br />
+		<?php echo transform_texte($bataille->description); ?><br />
+		<?php echo $bataille->etat_texte(); ?><br />
+	<?php
+}
+
 //Nouvelle bataille
 if(array_key_exists('new', $_GET))
 {
@@ -46,8 +72,31 @@ elseif(array_key_exists('info_bataille', $_GET))
 	<h1>Bataille : <?php echo $bataille->nom; ?></h1>
 	<?php echo transform_texte($bataille->description); ?><br />
 	<?php
-	print_r($bataille->reperes);
+	//print_r($bataille->reperes);
+	$dimensions = dimension_map($bataille->x, $bataille->y, 11);
+	$requete = "SELECT x, y, hp, nom, type, image FROM construction WHERE royaume = ".$R['ID']." AND x >= ".$dimensions['xmin']." AND x <= ".$dimensions['xmax']." AND y >= ".$dimensions['ymin']." AND y <= ".$dimensions['ymax'];
+	$req = $db->query($requete);
+	while($row = $db->read_assoc($req))
+	{
+		$batiments[convert_in_pos($row['x'], $row['y'])] = $row;
+	}
 	include('map_strategique.php');
+}
+//Information et modification sur une bataille
+elseif(array_key_exists('debut_bataille', $_GET))
+{
+	$bataille = new bataille($_GET['id_bataille']);
+	$bataille->etat = 1;
+	$bataille->sauver();
+	affiche_bataille($bataille);
+}
+//Information et modification sur une bataille
+elseif(array_key_exists('fin_bataille', $_GET))
+{
+	$bataille = new bataille($_GET['id_bataille']);
+	$bataille->etat = 2;
+	$bataille->sauver();
+	affiche_bataille($bataille);
 }
 elseif(array_key_exists('info_case', $_GET) OR array_key_exists('type', $_GET))
 {
@@ -64,6 +113,13 @@ elseif(array_key_exists('info_case', $_GET) OR array_key_exists('type', $_GET))
 		$repere->sauver();
 	}
 	$repere = $bataille->get_repere_by_coord($coord['x'], $coord['y']);
+	$requete = "SELECT hp, nom FROM construction WHERE royaume = ".$R['ID']." AND x = ".$coord['x']." AND y >= ".$coord['y'];
+	$req = $db->query($requete);
+	if($db->num_rows($req) > 0)
+	{
+		$batiment = $db->read_assoc($req);
+		echo $batiment['nom'].' - '.$batiment['hp'].' HP<br />';
+	}
 	//Si ya pas de repère
 	if(!$repere)
 	{
@@ -102,11 +158,10 @@ else
 	foreach($bataille_royaume->batailles as $bataille)
 	{
 		?>
-		<div style="border : 1px solid black;">
-			<?php echo $bataille->nom; ?><br />
-			<?php echo transform_texte($bataille->description); ?><br />
-			<?php echo $bataille->statut_texte(); ?><br />
-			<a href="gestion_bataille.php?id_bataille=<?php echo $bataille->id; ?>&amp;info_bataille" onclick="return envoiInfo(this.href, 'conteneur');">modifier</a>
+		<div style="border : 1px solid black;" id="bataille_<?php echo $bataille->id; ?>">
+		<?php
+		affiche_bataille($bataille);
+		?>
 		</div>
 		<?php
 	}

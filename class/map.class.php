@@ -1,0 +1,313 @@
+<?php
+class map
+{
+	public $x;
+	public $y;
+	public $champ_vision;
+	public $xmin;
+	public $xmax;
+	public $ymin;
+	public $ymax;
+	public $resolution;
+
+	function __construct($x, $y, $champ_vision = 3, $root = '', $resolution = 'high')
+	{
+		$this->x = $x;
+		$this->y = $y;
+		$this->champ_vision = $champ_vision;
+		$this->root = $root;
+		$this->resolution = $resolution;
+
+		$this->case_affiche = ($this->champ_vision * 2) + 1;
+
+		if($this->x < ($this->champ_vision + 1))			{ $this->xmin = 1;		$this->xmax = $this->x + ($this->case_affiche - ($this->x)); }
+		elseif($this->x > (150 - $this->champ_vision))		{ $this->xmax = 150;		$this->xmin = $this->x - ($this->case_affiche - (150 - $this->x + 1)); }
+		else												{ $this->xmin = $this->x - $this->champ_vision;	$this->xmax = $this->x + $this->champ_vision; };
+		
+		if($this->y < ($this->champ_vision + 1))		{ $this->ymin = 1;		$this->ymax = $this->y + ($this->case_affiche - ($this->y)); }
+		elseif($this->y > (150 - $this->champ_vision))	{ $this->ymax = 150;		$this->ymin = $this->y - ($this->case_affiche - (150 - $this->y + 1)); }
+		else											{ $this->ymin = $this->y - $this->champ_vision; 	$this->ymax = $this->y + $this->champ_vision; }
+
+		$this->map = array();
+	}
+
+	function affiche()
+	{
+		global $db;
+		$RqMap = $db->query("SELECT * FROM map 
+						 WHERE ( (FLOOR(ID / 1000) >= $this->ymin) AND (FLOOR(ID / 1000) <= $this->ymax) ) 
+						 AND ( ((ID - (FLOOR(ID / 1000) * 1000) ) >= $this->xmin) AND ((ID - (FLOOR(ID / 1000) * 1000)) <= $this->xmax) ) 
+						 ORDER BY ID;");
+		echo '<div style="width : '.(20 + (61 * $this->case_affiche)).'px">';
+		{//-- Affichage du bord haut (bh) de la map
+			echo "<ul id='map_bord_haut'>
+				   <li id='map_bord_haut_gauche' onclick=\"switch_map();\">&nbsp;</li>";
+			for ($bh = $this->xmin; $bh <= $this->xmax; $bh++)
+			{
+				if($bh == $x) { $class_x = "id='bord_haut_x' "; } else { $class_x = ""; }; //-- Pour mettre en valeur la position X ou se trouve le joueur
+				echo "<li $class_x>$bh</li>";
+			}
+			echo "</ul>";
+		}
+		{//-- Affichage du reste de la map
+			$y_BAK = 0;
+			$Once = false;
+			$case = 0;
+			while($objMap = $db->read_object($RqMap))
+			{
+				$coord = convert_in_coord($objMap->ID);
+				$class_map = "decor tex".$objMap->decor;	//-- Nom de la classe "terrain" contenu dans texture.css
+				
+				if($coord['y'] != $y_BAK)
+				{//-- On passe a la ligne
+					if($Once) { echo "</ul>"; } else { $Once = true; };
+					if($coord['y'] == $y) { $class_y = "id='bord_haut_y' "; } else { $class_y = ""; }; //-- Pour mettre en valeur la position Y ou se trouve le joueur
+					echo "<ul class='map'>
+					 	   <li $class_y class='map_bord_gauche'>".$coord['y']."</li>"; //-- Bord gauche de la map
+					 
+					$y_BAK = $coord['y'];
+				}
+				if( ($coord['x'] == $x) && ($coord['y'] == $y) )
+				{
+					if(!empty($this->map[$coord['x']][$coord['y']]["Joueurs"][0]["image"])) 	{ $background = "background-image : url(".$this->map[$coord['x']][$coord['y']]["Joueurs"][0]["image"].") !important;"; };
+				}
+				elseif(is_array($this->map[$coord['x']][$coord['y']]["PNJ"]))
+				{//-- Affichage des PNJ ---------------------------------------//
+					if(!empty($this->map[$coord['x']][$coord['y']]["PNJ"][0]["image"])) 		{ $background = "background-image : url(".$this->map[$coord['x']][$coord['y']]["PNJ"][0]["image"].") !important;"; };
+				}
+				elseif(is_array($this->map[$coord['x']][$coord['y']]["Drapeaux"]))
+				{//-- Affichage des Drapeaux ----------------------------------//
+					if(!empty($this->map[$coord['x']][$coord['y']]["Drapeaux"][0]["image"])) 	{ $background = "background-image : url(".$this->map[$coord['x']][$coord['y']]["Drapeaux"][0]["image"].") !important;"; };
+				}
+				elseif(is_array($this->map[$coord['x']][$coord['y']]["Batiments"]))
+				{//-- Affichage des Batiments ---------------------------------//
+					if(!empty($this->map[$coord['x']][$coord['y']]["Batiments"][0]["image"])) { $background = "background-image : url(".$this->map[$coord['x']][$coord['y']]["Batiments"][0]["image"].") !important;"; };
+				}
+				elseif(is_array($this->map[$coord['x']][$coord['y']]["Joueurs"]))
+				{//-- Affichage des Joueurs -----------------------------------//
+					if(!empty($this->map[$coord['x']][$coord['y']]["Joueurs"][0]["image"])) 	{ $background = "background-image : url(".$this->map[$coord['x']][$coord['y']]["Joueurs"][0]["image"].") !important;"; };
+				}
+				elseif(is_array($this->map[$coord['x']][$coord['y']]["Monstres"]))
+				{//-- Affichage des Monstres ----------------------------------//
+					if(!empty($this->map[$coord['x']][$coord['y']]["Monstres"][0]["image"])) 	{ $background = "background-image : url(".$this->map[$coord['x']][$coord['y']]["Monstres"][0]["image"].") !important;"; };
+				}
+				else { $background = ""; }
+				
+				if(   (count($this->map[$coord['x']][$coord['y']]["Batiments"]) > 0)
+				   || (count($this->map[$coord['x']][$coord['y']]["PNJ"]) > 0)
+				   || (count($this->map[$coord['x']][$coord['y']]["Joueurs"]) > 0)
+				   || (count($this->map[$coord['x']][$coord['y']]["Monstres"]) > 0)
+				   || (count($this->map[$coord['x']][$coord['y']]["Drapeaux"]) > 0) )
+				{
+					$overlib = "<ul>";
+					for($i = 0; $i < count($this->map[$coord['x']][$coord['y']]["Batiments"]); $i++) 	{ $overlib .= "<li class='overlib_batiments'><span>Batiment</span>&nbsp;-&nbsp;".$this->map[$coord['x']][$coord['y']]["Batiments"][$i]["nom"]."</li>"; }
+					for($i = 0; $i < count($this->map[$coord['x']][$coord['y']]["PNJ"]); $i++)		{ $overlib .= "<li class='overlib_batiments'><span>PNJ</span>&nbsp;-&nbsp;".ucwords($this->map[$coord['x']][$coord['y']]["PNJ"][$i]["nom"])."</li>"; }
+					for($i = 0; $i < count($this->map[$coord['x']][$coord['y']]["Joueurs"]); $i++)	{ $overlib .= "<li class='overlib_joueurs'><span>".$this->map[$coord['x']][$coord['y']]["Joueurs"][$i]["nom"]."</span>&nbsp;-&nbsp;".ucwords($this->map[$coord['x']][$coord['y']]["Joueurs"][$i]["race"])." - Niv.".$this->map[$coord['x']][$coord['y']]["Joueurs"][$i]["level"]."</li>"; }
+					for($i = 0; $i < count($this->map[$coord['x']][$coord['y']]["Monstres"]); $i++)	{ $overlib .= "<li class='overlib_monstres'><span>Monstre</span>&nbsp;-&nbsp;".$this->map[$coord['x']][$coord['y']]["Monstres"][$i]["nom"]." x".$this->map[$coord['x']][$coord['y']]["Monstres"][$i]["tot"]."</li>"; }
+					for($i = 0; $i < count($this->map[$coord['x']][$coord['y']]["Drapeaux"]); $i++)	{ $overlib .= "<li class='overlib_batiments'><span>Drapeau</span>&nbsp;-&nbsp;".ucwords($this->map[$coord['x']][$coord['y']]["Drapeaux"][$i]["race"])."</li>"; }
+					$overlib .= "</ul>";
+					$overlib = str_replace("'", "\'", trim($overlib));
+				}
+				else { $overlib = ""; }
+				
+				$border = "border:0px solid ".$Gcouleurs[$objMap->royaume].";";
+				echo "<li class='$class_map'>
+					   <div class='map_contenu' 
+					   		id='marq$case' 
+					   		style=\"".$background.$border."\" ";
+				if(!empty($overlib))
+				{
+					echo "	onmouseover=\"return overlib('$overlib', BGCLASS, 'overlib', BGCOLOR, '', FGCOLOR, '');\" 
+					   		onmouseout=\"return nd();\" ";
+				}
+				echo " 		onclick=\"envoiInfo('informationcase.php?case=".$objMap->ID."', 'information');\" 
+					   >&nbsp;</div>
+					  </li>";	
+				
+				$case++;
+			}
+			echo "</ul>";
+		}
+		echo "</div>"; 
+	}
+
+	function get_pnj()
+	{
+		global $db;
+		$RqPNJ = $db->query("SELECT id, nom, image, x, y FROM pnj 
+							 WHERE ( (x >= ".$this->xmin.") AND (x <= ".$this->xmax.") ) 
+							 AND ( (y >= ".$this->ymin.") AND (y <= ".$this->ymax.") )  
+							 ORDER BY y ASC, x ASC;");
+		if($db->num_rows($RqPNJ) > 0)
+		{
+			$pnj = 0;
+			while($objPNJ = $db->read_object($RqPNJ))
+			{
+				$pnj = count($this->map[$objPNJ->x][$objPNJ->y]["PNJ"]);
+				$this->map[$objPNJ->x][$objPNJ->y]["PNJ"][$pnj]["id"] = $objPNJ->id;
+				$this->map[$objPNJ->x][$objPNJ->y]["PNJ"][$pnj]["nom"] = $objPNJ->nom;
+				{//-- vérification que l'image du PNJ existe
+					$image = $this->root."image/pnj/";
+					if(file_exists($image.$objPNJ->image.".png")) 		{ $image .= $objPNJ->image.".png"; }
+					elseif(file_exists($image.$objPNJ->image.".gif")) 	{ $image .= $objPNJ->image.".gif"; }
+					else 												{ $image = ""; } //-- Si aucun des fichiers n'existe autant rien mettre...
+				}
+				$this->map[$objPNJ->x][$objPNJ->y]["PNJ"][$pnj]["image"] = $image;
+			}
+		}
+	}
+
+	function get_joueur($race = 'neutre')
+	{
+		global $db;
+		global $Tclasse;
+		global $Gtrad;
+
+		$requete = "SELECT ID, nom, level, race, x, y, classe, cache_classe, cache_niveau 
+								 FROM perso 
+								 WHERE (( (x >= ".$this->xmin.") AND (x <= ".$this->xmax.") ) 
+								 AND ( (y >= ".$this->ymin.") AND (y <= ".$this->ymax.") ))  
+								 AND statut='actif' 
+								 ORDER BY y ASC, x ASC, dernier_connexion DESC;";
+		$RqJoueurs = $db->query($requete);
+		if($db->num_rows($RqJoueurs) > 0)
+		{
+			$joueurs = 0;
+			while($objJoueurs = $db->read_object($RqJoueurs))
+			{
+				$joueurs = count($this->map[$objJoueurs->x][$objJoueurs->y]["Joueurs"]);
+
+				$image = "";
+				$this->map[$objJoueurs->x][$objJoueurs->y]["Joueurs"][$joueurs]["ID"] = $objJoueurs->ID;
+				$this->map[$objJoueurs->x][$objJoueurs->y]["Joueurs"][$joueurs]["nom"] = htmlspecialchars($objJoueurs->nom);
+				$this->map[$objJoueurs->x][$objJoueurs->y]["Joueurs"][$joueurs]["level"] = $objJoueurs->level;
+				$this->map[$objJoueurs->x][$objJoueurs->y]["Joueurs"][$joueurs]["race"] = $Gtrad[$objJoueurs->race];
+				$this->map[$objJoueurs->x][$objJoueurs->y]["Joueurs"][$joueurs]["classe"] = $objJoueurs->classe;
+				{//-- Vérification des bonus liés au points shine
+					//Si c'est pas lui même
+					if($objJoueurs->ID != $_SESSION["ID"])
+					{
+						if($objJoueurs->cache_classe == 2)	{ $this->map[$objJoueurs->x][$objJoueurs->y]["Joueurs"][$joueurs]["classe"] = "combattant"; }
+						elseif($objJoueurs->cache_classe == 1 && $objJoueurs->race != $race) { $this->map[$objJoueurs->x][$objJoueurs->y]["Joueurs"][$joueurs]["classe"] = "combattant"; }
+						if($objJoueurs->cache_niveau == 2)	{ $this->map[$objJoueurs->x][$objJoueurs->y]["Joueurs"][$joueurs]["level"] = "xxx"; }
+						elseif($objJoueurs->cache_niveau == 1 && $objJoueurs->race != $race) { $this->map[$objJoueurs->x][$objJoueurs->y]["Joueurs"][$joueurs]["level"] = "xxx"; }
+					}
+				}
+				{//-- Vérification que l'image de classe existe ($Tclasse est contenue dans ./inc/classe.inc.php)
+					$classe = $this->map[$objJoueurs->x][$objJoueurs->y]["Joueurs"][$joueurs]["classe"];
+					
+					$image = $this->root."image/personnage/".$objJoueurs->race."/".$objJoueurs->race;
+					if(file_exists($image."_".$Tclasse[$classe]["type"].".png")) 		{ $image .= "_".$Tclasse[$classe]["type"].".png"; }
+					elseif(file_exists($image."_".$Tclasse[$classe]["type"].".gif")) 	{ $image .= "_".$Tclasse[$classe]["type"].".gif"; }
+					elseif(file_exists($image.".png")) 									{ $image .= ".png"; }
+					elseif(file_exists($image.".gif"))  								{ $image .= ".gif"; }
+					else 																{ $image = ""; } //-- Si aucun des fichiers n'existe autant rien mettre...
+				}			
+				$this->map[$objJoueurs->x][$objJoueurs->y]["Joueurs"][$joueurs]["image"] = $image;
+			}
+		}
+	}
+
+	function get_drapeau()
+	{
+		global $db;
+		$RqDrapeaux = $db->query("SELECT placement.x, placement.y, placement.type, placement.nom, placement.royaume, royaume.race, placement.debut_placement, placement.fin_placement, batiment.image 
+							      FROM placement, batiment, royaume
+							      WHERE ( ( (placement.x >= ".$this->xmin.") AND (placement.x <= ".$this->xmax.") ) AND ( (placement.y >= ".$this->ymin.") AND (placement.y <= ".$this->ymax.") ) ) 
+							      AND batiment.id = placement.id_batiment 
+							      AND royaume.ID=placement.royaume
+							      ORDER BY placement.y ASC, placement.x ASC;");
+		if($db->num_rows($RqDrapeaux) > 0)
+		{
+			$drapal = 0;
+			while($objDrapeaux = $db->read_object($RqDrapeaux))
+			{
+				$drapal = count($this->map[$objDrapeaux->x][$objDrapeaux->y]["Drapeaux"]);
+				
+				$this->map[$objDrapeaux->x][$objDrapeaux->y]["Drapeaux"][$drapal]["type"] = $objDrapeaux->type;
+				$this->map[$objDrapeaux->x][$objDrapeaux->y]["Drapeaux"][$drapal]["nom"] = $objDrapeaux->nom;
+				$this->map[$objDrapeaux->x][$objDrapeaux->y]["Drapeaux"][$drapal]["royaume"] = $objDrapeaux->royaume;
+				$this->map[$objDrapeaux->x][$objDrapeaux->y]["Drapeaux"][$drapal]["race"] = $objDrapeaux->race;
+				$this->map[$objDrapeaux->x][$objDrapeaux->y]["Drapeaux"][$drapal]["debut_placement"] = $objDrapeaux->debut_placement;
+				$this->map[$objDrapeaux->x][$objDrapeaux->y]["Drapeaux"][$drapal]["fin_placement"] = $objDrapeaux->fin_placement;
+				$this->map[$objDrapeaux->x][$objDrapeaux->y]["Drapeaux"][$drapal]["image"] = $objDrapeaux->image;
+				{//-- vérification que l'image du drapeau existe
+					$image = $this->root."image/drapeaux/";
+					$image2 = $this->root."image/batiment/";
+					$ratio_temps = ceil(3 * (time() - $objDrapeaux->debut_placement) / ($objDrapeaux->fin_placement - $objDrapeaux->debut_placement) );
+					
+					if(file_exists($image.$objDrapeaux->image."_".$objDrapeaux->royaume.".png")) 		{ $image = $image.$objDrapeaux->image."_".$objDrapeaux->royaume.".png"; }
+					elseif(file_exists($image.$objDrapeaux->image."_".$objDrapeaux->royaume.".gif")) 	{ $image = $image.$objDrapeaux->image."_".$objDrapeaux->royaume.".gif"; }
+					elseif(file_exists($image2.$objDrapeaux->image."_0".$ratio_temps.".png")) 				{ $image = $image2.$objDrapeaux->image."_0".$ratio_temps.".png"; }
+					elseif(file_exists($image2.$objDrapeaux->image."_0".$ratio_temps.".gif")) 			{ $image = $image2.$objDrapeaux->image."_0".$ratio_temps.".gif"; }
+					else 																				{ $image = ""; } //-- Si aucun des fichiers n'existe autant rien mettre...
+				}
+				$this->map[$objDrapeaux->x][$objDrapeaux->y]["Drapeaux"][$drapal]["image"] = $image;
+			}
+		}
+	}
+
+	function get_batiment()
+	{
+		global $db;
+		$RqBatiments = $db->query("SELECT construction.x, construction.y, construction.hp, construction.royaume, construction.nom, construction.id_batiment, batiment.image 
+							FROM construction, batiment 
+							WHERE ( ( (construction.x >= ".$this->xmin.") AND (construction.x <= ".$this->xmax.") ) AND ( (construction.y >= ".$this->ymin.") AND (construction.y <= ".$this->ymax.") ) ) 
+							AND batiment.id = construction.id_batiment 
+							ORDER BY construction.y ASC, construction.x ASC;");
+		if($db->num_rows($RqBatiments) > 0)
+		{
+			$batimat = 0;
+			while($objBatiments = $db->read_object($RqBatiments))
+			{
+				$batimat = count($this->map[$objBatiments->x][$objBatiments->y]["Batiments"]);
+				
+				$this->map[$objBatiments->x][$objBatiments->y]["Batiments"][$batimat]["id_batiment"] = $objBatiments->id_batiment;
+				$this->map[$objBatiments->x][$objBatiments->y]["Batiments"][$batimat]["hp"] = $objBatiments->hp;
+				$this->map[$objBatiments->x][$objBatiments->y]["Batiments"][$batimat]["nom"] = $objBatiments->nom;
+				$this->map[$objBatiments->x][$objBatiments->y]["Batiments"][$batimat]["royaume"] = $objBatiments->royaume;
+				$this->map[$objBatiments->x][$objBatiments->y]["Batiments"][$batimat]["image"] = $objBatiments->image;
+
+				{//-- vérification que l'image du PNJ existe
+					$image = $this->root."image/batiment/";
+					
+					if(file_exists($image.$objBatiments->image."_04.png")) 		{ $image .= $objBatiments->image."_04.png"; }
+					elseif(file_exists($image.$objBatiments->image."_04.gif")) 	{ $image .= $objBatiments->image."_04.gif"; }
+					else 														{ $image = ""; } //-- Si aucun des fichiers n'existe autant rien mettre...
+				}
+				$this->map[$objBatiments->x][$objBatiments->y]["Batiments"][$batimat]["image"] = $image;
+			}
+		}
+	}
+
+	function get_monstre($level = 0)
+	{
+		global $db;
+		$RqMonstres = $db->query("SELECT id, x, y, nom, lib, COUNT(*) as tot 
+								  FROM map_monstre 
+								  WHERE ( ( (x >= ".$this->xmin.") AND (x <= ".$this->xmax.") ) AND ( (y >= ".$this->ymin.") AND (y <= ".$this->ymax.") ) ) 
+								  GROUP BY x, y, lib ORDER BY y ASC, x ASC, ABS(level - $level) ASC, level ASC, nom ASC, id ASC;");
+		if($db->num_rows($RqMonstres) > 0)
+		{
+			$monster = 0;
+			while($objMonstres = $db->read_object($RqMonstres))
+			{
+				$monster = count($this->map[$objMonstres->x][$objMonstres->y]["Monstres"]);
+				
+				$this->map[$objMonstres->x][$objMonstres->y]["Monstres"][$monster]["id"] = $objMonstres->id;
+				$this->map[$objMonstres->x][$objMonstres->y]["Monstres"][$monster]["nom"] = $objMonstres->nom;
+				$this->map[$objMonstres->x][$objMonstres->y]["Monstres"][$monster]["lib"] = $objMonstres->lib;
+				$this->map[$objMonstres->x][$objMonstres->y]["Monstres"][$monster]["tot"] = $objMonstres->tot;
+	
+				{//-- vérification que l'image du PNJ existe
+					$image = $this->root."image/monstre/";
+					if(file_exists($image.$objMonstres->lib.".png")) 		{ $image .= $objMonstres->lib.".png"; }
+					elseif(file_exists($image.$objMonstres->lib.".gif")) 	{ $image .= $objMonstres->lib.".gif"; }
+					else 													{ $image = ""; } //-- Si aucun des fichiers n'existe autant rien mettre...
+				}
+				$this->map[$objMonstres->x][$objMonstres->y]["Monstres"][$monster]["image"] = $image;
+			}
+		}
+	}
+}
+?>
