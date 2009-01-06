@@ -1,10 +1,12 @@
 <?php
 $textures = false;
+$interface_v2 = true;
 include('haut.php');
 setlocale(LC_ALL, 'fr_FR');
 include('haut_site.php');
 
 echo '<link rel="stylesheet" type="text/css" media="screen,projection" title="Normal" href="/css/index.css" />';
+echo '<link rel="stylesheet" type="text/css" media="screen,projection" title="Normal" href="/css/interfacev2.css" />';
 
 if ($G_maintenance)
 {
@@ -45,7 +47,7 @@ else
       $MAP = Array();
     }
 
-    $map = new map($xmin, $ymin, ($xmax - $xmin) / 2 + 1);
+    $map = new map($xmin, $ymin, ($xmax - $xmin) / 2);
 
     $map->xmin = $xmin;
     $map->xmax = $xmax;
