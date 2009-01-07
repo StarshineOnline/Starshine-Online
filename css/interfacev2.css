@@ -108,7 +108,7 @@
 /*-- Map --------------------------------------------------------------*/
 #carte							{ width:445px; height:440px; float:left; margin:0px;clear:both; z-index:500; }
 #carte ul {list-style: none;padding:0;margin: 0;}
-#map_bord_haut  				{ height:20px !important; cursor:pointer; }
+#map_bord_haut  				{ height:20px !important; cursor:pointer; padding-bottom : 0px;}
 #map_bord_haut li 				{ float:left; width:60px; height:inherit; line-height:20px; color:white; text-align:center;background:#D8AB41 repeat scroll 0%;}
 #map_bord_haut2 li 				{ float:left; width:60px; height:inherit; line-height:20px; color:white; text-align:center; background:transparent url('./../image/bord_map.png') center; }
 #map_bord_haut_gauche  			{ width:25px !important; height:inherit; background: #D8AB41 url('../image/icone/royaume_icone.png') center no-repeat !important;}
@@ -118,10 +118,12 @@
 #bord_haut_x					{ color:black !important; font-weight:bold; }
 #bord_haut_y					{ color:black !important; font-weight:bold; }
 .map							{ height:60px; padding-bottom : 0px;}
-.map li							{ float:left; width:60px; height:inherit; }
+.mapl							{ height:20px; padding-bottom : 0px;}
+.map li, .mapl li				{ float:left; width:60px; height:inherit; }
 .map_bord_gauche				{ width:20px !important; color:white; line-height:60px; text-align:center; background:transparent url('./../image/bordcartegauche.png') center; padding-bottom : 0px;}
 .map_bord_gauche2				{ width:20px !important; color:white; line-height:60px; text-align:center; background:transparent url('./../image/bord2_map.png') center; padding-bottom : 0px;}
 .map_contenu 					{ width:56px; height:56px; margin:2px 2px 2px 2px; background:transparent url(image/pixel.gif) center no-repeat;}
+.low_resolution					{ width : 20px !important; height : 20px !important; font-size : 0.8em;}
 /*-- Weather ----------------------------------------------------------*/
 #moment_jour { position:absolute; top:0px; left:0px; z-index:-1; width:960px; height:140px; background:transparent url('image/weather/matin5.jpg') bottom center no-repeat; }
 

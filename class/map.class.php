@@ -9,6 +9,7 @@ class map
 	public $ymin;
 	public $ymax;
 	public $resolution;
+	public $onclick;
 
 	function __construct($x, $y, $champ_vision = 3, $root = '', $donjon = false, $resolution = 'high')
 	{
@@ -18,6 +19,7 @@ class map
 		$this->root = $root;
 		$this->resolution = $resolution;
 		$this->donjon = $donjon;
+		$this->onclick = "envoiInfo('informationcase.php?case=%%ID%%', 'information');";
 
 		$this->case_affiche = ($this->champ_vision * 2) + 1;
 
@@ -44,9 +46,10 @@ class map
 		$this->map = array();
 	}
 
-	function affiche($x = 0, $y = 0)
+	function affiche()
 	{
 		global $db;
+		global $Gcouleurs;
 		$RqMap = $db->query("SELECT * FROM map 
 						 WHERE ( (FLOOR(ID / 1000) >= $this->ymin) AND (FLOOR(ID / 1000) <= $this->ymax) ) 
 						 AND ( ((ID - (FLOOR(ID / 1000) * 1000) ) >= $this->xmin) AND ((ID - (FLOOR(ID / 1000) * 1000)) <= $this->xmax) ) 
@@ -56,6 +59,7 @@ class map
 			$coord = convert_in_coord($objMap->ID);
 			$MAPTAB[$coord['x']][$coord['y']]["ID"] = $objMap->ID;
 			$MAPTAB[$coord['x']][$coord['y']]["decor"] = $objMap->decor;
+			$MAPTAB[$coord['x']][$coord['y']]["royaume"] = $objMap->royaume;
 		}
 		$classe_css = array();
 		if(!$this->donjon)
@@ -70,14 +74,26 @@ class map
 			$classe_css['map_bord_haut_gauche'] = 'map_bord_haut_gauche2';
 			$classe_css['map_bord_gauche'] = 'map_bord_gauche2';
 		}
-		echo '<div style="width : '.round(20 + (60.75 * $this->case_affiche)).'px">';
+		if($this->resolution == 'low')
+		{
+			$class_css['resolution'] = 'low_resolution';
+			$class_css['resolution_map'] = 'mapl';
+			$taille_cellule = 20.75;
+		}
+		else
+		{
+			$class_css['resolution'] = '';
+			$class_css['resolution_map'] = 'map';
+			$taille_cellule = 60.75;
+		}
+		echo '<div style="width : '.round(20 + ($taille_cellule * $this->case_affiche)).'px">';
 		{//-- Affichage du bord haut (bh) de la map
 			echo "<ul id='".$classe_css['map_bord_haut']."'>
-				   <li id='".$classe_css['map_bord_haut_gauche']."' onclick=\"switch_map();\">&nbsp;</li>";
+				   <li id='".$classe_css['map_bord_haut_gauche']."' class='".$class_css['resolution']."' onclick=\"switch_map();\">&nbsp;</li>";
 			for ($bh = $this->xmin; $bh <= $this->xmax; $bh++)
 			{
-				if($bh == $x) { $class_x = "id='bord_haut_x' "; } else { $class_x = ""; }; //-- Pour mettre en valeur la position X ou se trouve le joueur
-				echo "<li $class_x>$bh</li>";
+				if($bh == $this->x) { $class_x = "id='bord_haut_x' "; } else { $class_x = ""; }; //-- Pour mettre en valeur la position X ou se trouve le joueur
+				echo "<li $class_x class='".$class_css['resolution']."'>$bh</li>";
 			}
 			echo "</ul>";
 		}
@@ -92,11 +108,11 @@ class map
 					if($x_map == $this->xmin)
 					{
 						if($Once) { echo "</ul>"; } else { $Once = true; };
-						if($y_map == $y) { $class_y = "id='bord_haut_y' "; } else { $class_y = ""; }; //-- Pour mettre en valeur la position Y ou se trouve le joueur
-						echo "<ul class='map'>
-					 		   <li $class_y class='".$classe_css['map_bord_gauche']."'>".$y_map."</li>"; //-- Bord gauche de la map
+						if($y_map == $this->y) { $class_y = "id='bord_haut_y' "; } else { $class_y = ""; }; //-- Pour mettre en valeur la position Y ou se trouve le joueur
+						echo "<ul class='".$class_css['resolution_map']."'>
+					 		   <li $class_y class='".$classe_css['map_bord_gauche']." ".$class_css['resolution']."'>".$y_map."</li>"; //-- Bord gauche de la map
 					}
-					if( ($x_map == $x) && ($y_map == $y) )
+					if( ($x_map == $this->x) && ($y_map == $this->y) )
 					{
 						if(!empty($this->map[$x_map][$y_map]["Joueurs"][0]["image"])) 	{ $background = "background-image : url(".$this->map[$x_map][$y_map]["Joueurs"][0]["image"].") !important;"; };
 					}
@@ -121,7 +137,7 @@ class map
 						if(!empty($this->map[$x_map][$y_map]["Monstres"][0]["image"])) 	{ $background = "background-image : url(".$this->map[$x_map][$y_map]["Monstres"][0]["image"].") !important;"; };
 					}
 					else { $background = ""; }
-					
+
 					if(   (count($this->map[$x_map][$y_map]["Batiments"]) > 0)
 					   || (count($this->map[$x_map][$y_map]["PNJ"]) > 0)
 					   || (count($this->map[$x_map][$y_map]["Joueurs"]) > 0)
@@ -138,21 +154,30 @@ class map
 						$overlib = str_replace("'", "\'", trim($overlib));
 					}
 					else { $overlib = ""; }
-					
-					if(is_array($MAPTAB[$x_map][$y_map])) { $class_map = "decor tex".$MAPTAB[$x_map][$y_map]["decor"]; } else { $class_map = "decor texblack"; };
 
-					$border = "border:0px solid ".$Gcouleurs[$objMap->royaume].";";
-					echo "<li class='$class_map'>
-						   <div class='map_contenu' 
+					//Repere
+					if(is_array($this->map[$x_map][$y_map]["Reperes"])) $repere = $this->map[$x_map][$y_map]["Reperes"][0]['id_type'];
+					else $repere = '&nbsp;';
+
+					if($this->resolution == 'low') $tex_resolution = 'l';
+					else $tex_resolution = '';
+					if(is_array($MAPTAB[$x_map][$y_map])) { $class_map = "decor tex".$tex_resolution.$MAPTAB[$x_map][$y_map]["decor"]; } else { $class_map = "decor texblack"; };
+
+					$border = "border:0px solid ".$Gcouleurs[$MAPTAB[$x_map][$y_map]['royaume']].";";
+					echo "<li class='$class_map ".$class_css['resolution']."'>
+						   <div class='map_contenu ".$class_css['resolution']."' 
 						   		id='marq$case' 
-						   		style=\"".$background.$border."\" ";
+						   		style='".$background.$border."' ";
 					if(!empty($overlib))
 					{
 						echo "	onmouseover=\"return overlib('$overlib', BGCLASS, 'overlib', BGCOLOR, '', FGCOLOR, '');\" 
 						   		onmouseout=\"return nd();\" ";
 					}
-					echo " 		onclick=\"envoiInfo('informationcase.php?case=".$objMap->ID."', 'information');\" 
-						   >&nbsp;</div>
+
+					$onclick = str_replace('%%ID%%', $MAPTAB[$x_map][$y_map]['ID'], $this->onclick);
+
+					echo " 		onclick=\"".$onclick."\" 
+						   >".$repere."</div>
 						  </li>";	
 					
 					$case++;
@@ -364,6 +389,22 @@ class map
 			}
 			$this->map[$batiment['x']][$batiment['y']]["Batiments"][$batimat]["image"] = $image;
 		}
+	}
+
+	function set_repere($reperes)
+	{
+		$rep = 0;
+		foreach($reperes as $repere)
+		{
+			$rep = count($this->map[$repere->x][$repere->y]["Reperes"]);
+			$this->map[$repere->x][$repere->y]["Reperes"][$rep]["id_repere"] = $repere->id;
+			$this->map[$repere->x][$repere->y]["Reperes"][$rep]["id_type"] = $repere->id_type;
+		}
+	}
+
+	function set_onclick($onclick)
+	{
+		$this->onclick = $onclick;
 	}
 }
 ?>

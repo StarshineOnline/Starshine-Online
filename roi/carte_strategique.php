@@ -1,5 +1,6 @@
 <?php
 include('haut_roi.php');
+include('../class/map.class.php');
 
 //-- Récupération de la position X, Y du joueur.
 if(!array_key_exists('poscase', $_GET))
@@ -16,6 +17,12 @@ else
 	$y = $xy['y'];
 }
 
+$map = new map($x, $y, 14, '../', false, 'low');
+$map->set_batiment();
+
+$map->affiche();
+
+/*
 //-- Champ de vision = 3 par défaut
 $champ_vision = 14;
 //-- Nombre de case affichées en longueur et largeur
@@ -74,14 +81,14 @@ echo '<div id="carte" style="width : 605px; height : 610px;">';
 			   <div class='map_contenu' 
 			   		id='marq$case' 
 			   		style=\"".$background.$border."width : 20px; height : 20px;\" ";
-		echo " 		onclick=\"new Ajax.Updater('information', 'informationcase_roi.php?case=".$objMap->ID."');\" 
-			   >&nbsp;</div>
+		echo " onclick=\"new Ajax.Updater('information', 'informationcase_roi.php?case=".$objMap->ID."');\">&nbsp;</div>
 			  </li>";	
 		
 		$case++;
 	}
 	echo "</ul>";
 }
+*/
 ?>
 </div>
 <div id="information" style="float : right;">

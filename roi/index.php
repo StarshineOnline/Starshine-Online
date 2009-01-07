@@ -23,7 +23,7 @@ $_SESSION['position'] = convert_in_pos($joueur['x'], $joueur['y']);
 	<title>Starshine-Online / Gestion du royaume</title>
 	<link href="../css/texture.css" rel="stylesheet" type="text/css" />
 	<link href="../css/texture_low.css" rel="stylesheet" type="text/css" />
-	<link href="../css/interface.css" rel="stylesheet" type="text/css" />
+	<link href="../css/interfacev2.css" rel="stylesheet" type="text/css" />
 	<link href="../css/prototip.css" rel="stylesheet" type="text/css" />
 	<link href="css/roi.css" rel="stylesheet" type="text/css" />
 	<script src="../javascript/scriptaculous/prototype.js" type="text/javascript"></script>

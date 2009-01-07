@@ -113,7 +113,7 @@ elseif(array_key_exists('info_case', $_GET) OR array_key_exists('type', $_GET))
 		$repere->sauver();
 	}
 	$repere = $bataille->get_repere_by_coord($coord['x'], $coord['y']);
-	$requete = "SELECT hp, nom FROM construction WHERE royaume = ".$R['ID']." AND x = ".$coord['x']." AND y >= ".$coord['y'];
+	$requete = "SELECT hp, nom FROM construction WHERE royaume = ".$R['ID']." AND x = ".$coord['x']." AND y = ".$coord['y'];
 	$req = $db->query($requete);
 	if($db->num_rows($req) > 0)
 	{
