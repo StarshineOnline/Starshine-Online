@@ -68,10 +68,6 @@ elseif(array_key_exists('info_bataille', $_GET))
 {
 	$bataille = new bataille($_GET['id_bataille']);
 	$bataille->get_reperes();
-	?>
-	<h1>Bataille : <?php echo $bataille->nom; ?></h1>
-	<?php echo transform_texte($bataille->description); ?><br />
-	<?php
 	//print_r($bataille->reperes);
 	$dimensions = dimension_map($bataille->x, $bataille->y, 11);
 	$requete = "SELECT x, y, hp, nom, type, image FROM construction WHERE royaume = ".$R['ID']." AND x >= ".$dimensions['xmin']." AND x <= ".$dimensions['xmax']." AND y >= ".$dimensions['ymin']." AND y <= ".$dimensions['ymax'];
@@ -81,6 +77,15 @@ elseif(array_key_exists('info_bataille', $_GET))
 		$batiments[convert_in_pos($row['x'], $row['y'])] = $row;
 	}
 	include('map_strategique.php');
+	?>
+	<div id="info_bataille" style="float : left;">
+		<h1>Bataille : <?php echo $bataille->nom; ?></h1>
+		<?php echo transform_texte($bataille->description); ?><br />
+		<div id="information_case_bataille">
+			INFOS
+		</div>
+	</div>
+	<?php
 }
 //Information et modification sur une bataille
 elseif(array_key_exists('debut_bataille', $_GET))
