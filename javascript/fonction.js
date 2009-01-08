@@ -246,16 +246,19 @@ function checkCase()
 function Loadchargement()
 {
 	$('loading').show();
+	$('conteneur_test').show();
 }
 function Hidechargement()
 {
+	$('conteneur_test').hide();
 	$('loading').hide();
+	
 }
 function AfficheCarte(map)
 {
 	$('centre').innerHTML = map.responseText;
 	$('loading').hide();
-
+	$('conteneur_test').hide();
 }
 
 function deplacement(direction)
@@ -290,4 +293,20 @@ function envoiInfoJS(page, position)
 	function Affiche(requete){$(position).innerHTML = requete.responseText.evalJSON(); Hidechargement();}
 	new Ajax.Request(page,{method:'get',onLoading:Loadchargement,onComplete:Affiche});
 	return false;
+}
+
+function affichePopUp(input_name,input_get)
+{
+	function AffichePopup(resultat)
+	{
+		$('mask').show();
+		$('popup').show();
+		$('popup').innerHTML = resultat.responseText;
+	}
+	new Ajax.Request(input_name,{method:'get',parameters:input_get,onLoading:Loadchargement,onComplete:AffichePopup});
+}
+function fermePopUp()
+{
+	$('popup').hide();
+	$('mask').hide();
 }

@@ -45,43 +45,48 @@ $_SESSION['position'] = convert_in_pos($joueur['x'], $joueur['y']);
 ?>
 
 <div id="conteneur">
-	<div id="loading" style="display : none;"> </div>
+<div id="mask" style='display:none;'></div>
+<div id="popup" style='display:none;'></div>
+<div id="loading" style='display:none'></div>
+<div id="loading_information" style='display:none'></div>
 	<div id="perso">
+		<div id="perso_contenu">
 		<?php
 		require_once('infoperso.php');
 		?>
+		</div>
 	</div>
-	<div id="centre">
-	<div id="loading" style='display:none'></div>
-
-<?php
-//Génération de la carte apparaissant au centre.
-//Si coordonées supérieur à 100 alors c'est un donjon
-if(is_donjon($joueur['x'], $joueur['y']))
-{
-	include('donjon.php');
-}
-else include('map2.php');
-
-?>
-
-
-
-
-</div>
-<?php include('menu_carte.php');?>
-	<div id="information">
-
-			<h2>Information</h2>
+	<div id='menu'>
+	<div id='menu_details'>
 		
-<?php
-
-$case = convert_in_pos($joueur['x'], $joueur['y']);
-if(array_key_exists('page_info', $_GET)) $page_info = $_GET['page_info']; else $page_info = 'informationcase.php';
-?>
-<img src="image/pixel.gif" onLoad="envoiInfo('<?php echo $page_info; ?>?case=<?php echo $case; ?>', 'information');" />
-
 	</div>
+</div>
+<div id='contenu_back'>
+	<div id="contenu_jeu">
+		<div id="centre">
+		<?php
+		//Génération de la carte apparaissant au centre.
+		//Si coordonées supérieur à 100 alors c'est un donjon
+		if(is_donjon($joueur['x'], $joueur['y']))
+		{
+			include('donjon.php');
+		}
+		else include('map2.php');
+		?>
+		</div>
+		<?php include('menu_carte.php');?>
+		<div id="information">
+				<h2>Information</h2>
+		<?php
+		
+		$case = convert_in_pos($joueur['x'], $joueur['y']);
+		if(array_key_exists('page_info', $_GET)) $page_info = $_GET['page_info']; else $page_info = 'informationcase.php';
+		?>
+		<img src="image/pixel.gif" onLoad="envoiInfo('<?php echo $page_info; ?>?case=<?php echo $case; ?>', 'information');" />
+		</div>
+	</div>
+	
+</div>
 </div>
 <?php
 //Inclusion du bas de la page
