@@ -56,7 +56,7 @@ if($W_distance == 0)
 	?>
 	Voulez vous devenir roi ?<br />
 	Si oui, cliquez sur oui et votre candidature pour le poste de roi sera pris en compte.<br />
-	<a href="javascript:envoiInfo('candidature.php?action=oui&amp;poscase=<?php echo $W_case; ?>', 'carte')">Oui</a>, <?php return_ville('Non', $W_case); ?>
+	<a href="candidature.php?action=oui&amp;poscase=<?php echo $W_case; ?>" onclick="return envoiInfo(this.href, 'carte')">Oui</a>, <?php return_ville('Non', $W_case); ?>
 	<?php
 		}
 	}	

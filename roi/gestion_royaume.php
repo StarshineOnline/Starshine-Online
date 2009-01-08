@@ -231,13 +231,13 @@ require('haut_roi.php');
 	        if($row['statut'] == 'actif')
 	        {
 	        ?>
-	        <li><?php echo $row['nom']; ?><span class="small">, entretien : <?php echo $row['entretien']; ?> <a href="javascript:envoiInfo('gestion_royaume.php?poscase=<?php echo $W_case; ?>&amp;direction=amelioration&amp;action=list&amp;batiment=<?php echo $row['type']; ?>', 'carte')">Améliorer</a></li>
+	        <li><?php echo $row['nom']; ?><span class="small">, entretien : <?php echo $row['entretien']; ?> <a href="gestion_royaume.php?poscase=<?php echo $W_case; ?>&amp;direction=amelioration&amp;action=list&amp;batiment=<?php echo $row['type']; ?>" onclick="return envoiInfo(this.href, 'carte')">Améliorer</a></li>
 	        <?php
 	    	}
 	    	else
 	    	{
 	        ?>
-	        <li><?php echo $row['nom']; ?><span class="small">, inactif <a href="javascript:if(confirm('Voulez vous vraiment réactiver cette construction ?')) envoiInfo('gestion_royaume.php?poscase=<?php echo $W_case; ?>&amp;direction=reactif&amp;action=list&amp;batiment=<?php echo $row['id_const']; ?>', 'carte')">Réactiver pour <?php echo $row['dette']; ?> stars</a></li>
+	        <li><?php echo $row['nom']; ?><span class="small">, inactif <a href="gestion_royaume.php?poscase=<?php echo $W_case; ?>&amp;direction=reactif&amp;action=list&amp;batiment=<?php echo $row['id_const']; ?>" onclick="if(confirm('Voulez vous vraiment réactiver cette construction ?')) return envoiInfo(this.href, 'carte'); else return false;">Réactiver pour <?php echo $row['dette']; ?> stars</a></li>
 	        <?php
 	    	}
 	    }
@@ -282,7 +282,7 @@ require('haut_roi.php');
 	            while($row = $db->read_assoc($req))
 	            {
 	                ?>
-	                <li><?php echo $row['nom']; ?>, coût : <?php echo $row['cout']; ?>, entretien par jour : <?php echo $row['entretien']; ?> <a href="javascript:envoiInfo('gestion_royaume.php?poscase=<?php echo $W_case; ?>&amp;direction=amelioration&amp;action=ameliore&amp;batiment=<?php echo $row['type']; ?>&amp;id_batiment=<?php echo $row['id']; ?>', 'carte')">Améliorer</a></li>
+	                <li><?php echo $row['nom']; ?>, coût : <?php echo $row['cout']; ?>, entretien par jour : <?php echo $row['entretien']; ?> <a href="gestion_royaume.php?poscase=<?php echo $W_case; ?>&amp;direction=amelioration&amp;action=ameliore&amp;batiment=<?php echo $row['type']; ?>&amp;id_batiment=<?php echo $row['id']; ?>" onclick="return envoiInfo(this.href, 'carte')">Améliorer</a></li>
 	                <?php
 	            }
 	            ?>
@@ -514,12 +514,12 @@ require('haut_roi.php');
 	    		<?php echo $amende; ?>
 	    	</td>
 	    	<td>
-	    		<a href="javascript:envoiInfo('gestion_royaume.php?poscase=<?php echo $W_case; ?>&amp;direction=gestion_criminel&amp;id=<?php echo $row['ID']; ?>', 'carte')">Gérer</a>
+	    		<a href="gestion_royaume.php?poscase=<?php echo $W_case; ?>&amp;direction=gestion_criminel&amp;id=<?php echo $row['ID']; ?>" onclick="return envoiInfo(this.href, 'carte')">Gérer</a>
 	    		<?php
 	    		if($amende != 0)
 	    		{
 	        		?>
-	        		/ <a href="javascript:envoiInfo('gestion_royaume.php?poscase=<?php echo $W_case; ?>&amp;direction=suppr_criminel&amp;id=<?php echo $row['ID']; ?>', 'carte')">Supprimer</a>
+	        		/ <a href="gestion_royaume.php?poscase=<?php echo $W_case; ?>&amp;direction=suppr_criminel&amp;id=<?php echo $row['ID']; ?>" onclick="return envoiInfo(this.href, 'carte')">Supprimer</a>
 	        		<?php
 	    		}
 	    		?>

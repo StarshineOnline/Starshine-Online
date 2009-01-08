@@ -133,7 +133,7 @@ if (isset($_GET['ID']))
 						//Mis à jour du joueur
 						$requete = "UPDATE perso SET mp = '".$joueur['mp']."', pa = '".$joueur['pa']."' WHERE ID = '".$_SESSION['ID']."'";
 						$req = $db->query($requete);
-						echo '<a href="javascript:envoiInfo(\'competence_jeu.php?ID='.$_GET['ID'].'\', \'information\')">Utilisez a nouveau cette compétence</a>';
+						echo '<a href="competence_jeu.php?ID='.$_GET['ID'].'" onclick="return envoiInfo(this.href, \'information\')">Utilisez a nouveau cette compétence</a>';
 					}
 				}
 			break;
@@ -156,12 +156,12 @@ if (isset($_GET['ID']))
 					//-- Mis à jour du joueur
 					$requete = "UPDATE perso SET mp='".$joueur["mp"]."', pa='".$joueur["pa"]."' WHERE ID='".$_SESSION["ID"]."'";
 					$req = $db->query($requete);
-					echo "<a href=\"javascript:envoiInfo('competence_jeu.php?ID=".$_GET["ID"]."', 'information')\">Utilisez a nouveau cette compétence</a>";
+					echo '<a href="competence_jeu.php?ID='.$_GET['ID'].'" onclick="return envoiInfo(this.href, \'information\')">Utilisez a nouveau cette compétence</a>';
 					
 			break;
 		}
 	}
-	echo '<br /><a href="javascript:envoiInfo(\'competence_jeu.php\', \'information\');">Revenir au livre des compétences</a>';
+	echo '<br /><a href="competence_jeu.php" onclick="return envoiInfo(this.href, \'information\');">Revenir au livre des compétences</a>';
 }
 else
 {
@@ -182,7 +182,7 @@ else
 	
 	foreach($magies as $magie)
 	{
-		echo '<a href="javascript:envoiInfo(\'competence_jeu.php?tri='.$magie.'\', \'information\');"><img src="image/'.$magie.'.png" alt="'.$Gtrad[$magie].'" title="'.$Gtrad[$magie].'"/></a> ';
+		echo '<a href="competence_jeu.php?tri='.$magie.'" onclick="return envoiInfo(this.href, \'information\');"><img src="image/'.$magie.'.png" alt="'.$Gtrad[$magie].'" title="'.$Gtrad[$magie].'"/></a> ';
 	}
 	if ('champion' == $joueur['classe'] AND !array_key_exists('tri', $_GET))
 	{
@@ -209,7 +209,7 @@ else
 		if(in_array($row['id'], $tab_sort_jeu))
 		{
 			echo '<div style="z-index: 3;">';
-			$href = 'javascript:envoiInfo(\'competence_jeu.php?ID='.$row['id'].'\', \'information\')';
+			$href = 'return envoiInfo(\'competence_jeu.php?ID='.$row['id'].'\', \'information\')';
 			$cursor = 'cursor : pointer;';
 			$color = '#444';
 			$echo = addslashes(description($row['description'], $row));

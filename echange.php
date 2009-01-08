@@ -59,13 +59,13 @@ if(!isset($echange))
 		foreach($echanges as $echange_liste)
 		{
 			?>
-				<li><a href="javascript:envoiInfo('echange.php?id_echange=<?php echo $echange_liste['id_echange']; ?>', 'information');">Echange ID : <?php echo $echange_liste['id_echange']; ?> - <?php echo $echange_liste['statut']; ?></a></li>
+				<li><a href="echange.php?id_echange=<?php echo $echange_liste['id_echange']; ?>" onclick="return envoiInfo(this.href, 'information');">Echange ID : <?php echo $echange_liste['id_echange']; ?> - <?php echo $echange_liste['statut']; ?></a></li>
 			<?php
 		}
 		?>
 					</ul>
 					<br />
-					<a href="javascript:envoiInfo('echange.php?id_joueur=<?php echo $W_ID; ?>&amp;nouvel_echange=true', 'information');">Débuter un nouvel échange avec ce joueur.</a>
+					<a href="echange.php?id_joueur=<?php echo $W_ID; ?>&amp;nouvel_echange=true" onclick="return envoiInfo(this.href, 'information');">Débuter un nouvel échange avec ce joueur.</a>
 				</div>
 
 		<?php
@@ -76,7 +76,7 @@ if(!isset($echange))
 		?>
 			Vous n'avez actuellement aucun échange en cours avec ce joueur.<br />
 			<br />
-			<a href="javascript:envoiInfo('echange.php?id_joueur=<?php echo $W_ID; ?>&amp;nouvel_echange=true', 'information');">Débuter un nouvel échange avec ce joueur.</a>
+			<a href="echange.php?id_joueur=<?php echo $W_ID; ?>&amp;nouvel_echange=true" onclick="return envoiInfo(this.href, 'information');">Débuter un nouvel échange avec ce joueur.</a>
 		</div>
 		<?php
 	}
@@ -335,7 +335,7 @@ Vous proposez :
 					if($echange['objet'][$keys[$i]]['type'] == 'objet' AND $echange['objet'][$keys[$i]]['id_j'] == $joueur['ID'])
 					{
 					?>
-					<li><?php echo nom_objet($echange['objet'][$keys[$i]]['objet']); ?> <a href="javascript:envoiInfo('echange.php?id_echange=<?php echo $echange['id_echange']; ?>&amp;suppr_objet=<?php echo $echange['objet'][$keys[$i]]['id_echange_objet']; ?>&amp;index_objet=<?php echo $keys[$i]; ?>', 'information');">X</a></li>
+					<li><?php echo nom_objet($echange['objet'][$keys[$i]]['objet']); ?> <a href="echange.php?id_echange=<?php echo $echange['id_echange']; ?>&amp;suppr_objet=<?php echo $echange['objet'][$keys[$i]]['id_echange_objet']; ?>&amp;index_objet=<?php echo $keys[$i]; ?>" onclick="return envoiInfo(this.href, 'information');">X</a></li>
 					<?php
 					}
 					$i++;

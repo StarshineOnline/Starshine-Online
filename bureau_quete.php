@@ -20,7 +20,7 @@ if(!isset($_GET['type'])) $_GET['type'] = 'arme';
 
 $_SESSION['position'] = convert_in_pos($joueur['x'], $joueur['y']);
 ?>
-		<h2 class="ville_titre"><?php if(verif_ville($joueur['x'], $joueur['y'])) return_ville( '<a href="javascript:envoiInfo(\'ville.php?poscase='.$W_case.'\', \'centre\')">'.$R['nom'].'</a> -', $W_case); ?> <?php echo '<a href="javascript:envoiInfo(\'bureau_quete.php?poscase='.$W_case.'\',\'carte\')">';?> Bureau des Quêtes </a></h2>
+		<h2 class="ville_titre"><?php if(verif_ville($joueur['x'], $joueur['y'])) return_ville( '<a href="ville.php?poscase='.$W_case.'" onclick="return envoiInfo(this.href, \'centre\')">'.$R['nom'].'</a> -', $W_case); ?> <?php echo '<a href="bureau_quete.php?poscase='.$W_case.'" onclick="return envoiInfo(this.href,\'carte\')">';?> Bureau des Quêtes </a></h2>
  		<?php include('ville_bas.php');?>
 
 		<div class="ville_test">
@@ -79,7 +79,7 @@ if($W_distance == 0)
 					?>
 				</ul>
 				<br />
-				<a href="javascript:envoiInfo('bureau_quete.php?action=prendre&amp;id=<?php echo $_GET['id']; ?>&amp;poscase=<?php echo $_GET['poscase']; ?>', 'carte')">Prendre cette quête</a><br />
+				<a href="bureau_quete.php?action=prendre&amp;id=<?php echo $_GET['id']; ?>&amp;poscase=<?php echo $_GET['poscase']; ?>" onclick="return envoiInfo(this.href, 'carte')">Prendre cette quête</a><br />
 				</div>
 			<?php
 			break;
@@ -119,14 +119,14 @@ if($W_distance == 0)
 					if($row['fournisseur'] == '') $link = 'bureau_quete';
 					else $link = $row['fournisseur'];
 					?>
-					<a href="javascript:envoiInfo('<?php echo $link; ?>.php?poscase=<?php echo $_GET['poscase']; ?>', 'carte')">Revenir en arrière</a>
+					<a href="<?php echo $link; ?>.php?poscase=<?php echo $_GET['poscase']; ?>" onclick="return envoiInfo(this.href, 'carte')">Revenir en arrière</a>
 					<?php
 				}
 				else
 				{
 					echo 'Vous avez déjà cette quète en cours !<br />';
 					?>
-					<a href="javascript:envoiInfo('<?php echo $link; ?>.php?poscase=<?php echo $_GET['poscase']; ?>', 'carte')">Revenir en arrière</a>
+					<a href="<?php echo $link; ?>.php?poscase=<?php echo $_GET['poscase']; ?>" onclick="return envoiInfo(this.href, 'carte')">Revenir en arrière</a>
 					<?php
 				}
 			break;

@@ -222,7 +222,7 @@ function affiche_quetes($fournisseur, $joueur)
 			if($check)
 			{
 		$return[0] .= '<li>
-		<a href="javascript:envoiInfo(\'bureau_quete.php?action=description&amp;id='.$row['idq'].'&amp;poscase='.$_GET['poscase'].'\', \'carte\')">'.$row['nom'].'</a> <span class="small">(Niv. '.$row['lvl_joueur'].')</span>
+		<a href="bureau_quete.php?action=description&amp;id='.$row['idq'].'&amp;poscase='.$_GET['poscase'].'" onclick="return envoiInfo(this.href, \'carte\')">'.$row['nom'].'</a> <span class="small">(Niv. '.$row['lvl_joueur'].')</span>
 	</li>';
 			}
 		}

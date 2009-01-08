@@ -2063,7 +2063,7 @@ function return_ville($texte, $poscase)
 //Affiche un lien pour afficher le menu gestion royaume
 function return_gestion_royaume($texte, $poscase)
 {
-	echo '<a href="javascript:envoiInfo(\'ville.php?poscase='.$poscase.'\', \'centre\')">'.$texte.'</a>';
+	echo '<a href="ville.php?poscase='.$poscase.'" onclick="return envoiInfo(this.href, \'centre\')">'.$texte.'</a>';
 }
 
 function lance_buff($type, $id, $effet, $effet2, $duree, $nom, $description, $type_cible, $debuff, $nb_buff, $grade)

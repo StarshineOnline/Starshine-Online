@@ -24,7 +24,7 @@ function transform_texte($texte)
 	$texte = eregi_replace("\[url\]([^[]*)\[/url\]", '<a href="\\1">\\1</a>', $texte);
 	$texte = str_replace("[/color]", "</span>", $texte);
 	//Lien vers échange
-	$texte = eregi_replace("\[echange:([^[]*)\]", "<a href=\"javascript:envoiInfo('echange.php?id_echange=\\1', 'information')\">Echange ID : \\1</a>", $texte);
+	$texte = eregi_replace("\[echange:([^[]*)\]", "<a href=\"echange.php?id_echange=\\1\" onclick=\"return envoiInfo(this.href, 'information')\">Echange ID : \\1</a>", $texte);
 	return $texte;
 }
 

@@ -191,17 +191,17 @@ if($W_distance == 0 AND $verif_ville)
 									{
 							?>
 									<li>
-										<a href="" onclick="return envoiInfo('qg.php?poscase=<?php echo $W_case; ?>', 'carte')">Quartier général</a>
+										<a href="qg.php?poscase=<?php echo $W_case; ?>" onclick="return envoiInfo(this.href, 'carte')">Quartier général</a>
 									</li>
 									<li>
-										<a href="" onclick="return envoiInfo('vente_terrain.php?poscase=<?php echo $W_case; ?>', 'carte')">Vente de terrain</a>
+										<a href="vente_terrain.php?poscase=<?php echo $W_case; ?>" onclick="return envoiInfo(this.href, 'carte')">Vente de terrain</a>
 									</li>
 							<?php
 										if($joueur['rang_royaume'] == 6)
 										{
 							?>
 									<li>
-										<a href="" onclick="return envoiInfo('gestion_royaume.php?poscase=<?php echo $W_case; ?>', 'carte')">Gestion du royaume</a>
+										<a href="roi/">Gestion du royaume</a>
 									</li>
 							<?php
 										}
@@ -218,16 +218,16 @@ if($W_distance == 0 AND $verif_ville)
 				<p class="ville_haut">Haut Quartier</p>
 				<ul class="ville">
 					<li>
-						<a href="" onclick="return envoiInfo('ecolemagie.php?poscase=<?php echo $W_case; ?>', 'carte')">Ecole de magie</a>
+						<a href="ecolemagie.php?poscase=<?php echo $W_case; ?>" onclick="return envoiInfo(this.href, 'carte')">Ecole de magie</a>
 					</li>
 					<li>
-						<a href="" onclick="return envoiInfo('ecolecombat.php?poscase=<?php echo $W_case; ?>', 'carte')">Ecole de combat</a>
+						<a href="ecolecombat.php?poscase=<?php echo $W_case; ?>" onclick="return envoiInfo(this.href, 'carte')">Ecole de combat</a>
 					</li>
 					<li>
-						<a href="" onclick="return envoiInfo('universite.php?poscase=<?php echo $W_case; ?>', 'carte')">Université</a>
+						<a href="universite.php?poscase=<?php echo $W_case; ?>" onclick="return envoiInfo(this.href, 'carte')">Université</a>
 					</li>
 					<li>
-						<a href="" onclick="return envoiInfo('tribunal.php?poscase=<?php echo $W_case; ?>', 'carte')">Tribunal</a>
+						<a href="tribunal.php?poscase=<?php echo $W_case; ?>" onclick="return envoiInfo(this.href, 'carte')">Tribunal</a>
 					</li>
 <?php
 		if($R['diplo'] == 127)
@@ -245,10 +245,10 @@ if($W_distance == 0 AND $verif_ville)
 			<p class="ville_haut">Bas Quartier</p>
 			<ul class="ville">		
 				<li>
-					<a href="" onclick="return envoiInfo('taverne.php?poscase=<?php echo $W_case; ?>', 'carte')">Taverne</a>
+					<a href="taverne.php?poscase=<?php echo $W_case; ?>" onclick="return envoiInfo(this.href, 'carte')">Taverne</a>
 				</li>
 				<li>
-					<a href="" onclick="return envoiInfo('poste.php?poscase=<?php echo $W_case; ?>', 'carte')">Poste</a>
+					<a href="poste.php?poscase=<?php echo $W_case; ?>" onclick="return envoiInfo(this.href, 'carte')">Poste</a>
 				</li>
 			</ul>
 						</tr>
