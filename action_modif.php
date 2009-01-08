@@ -9,7 +9,7 @@ check_perso($joueur);
 
 ?>
 	<div id="carte">
-		<h2><a href="javascript:envoiInfo('actions.php', 'information');">Script de combat</a> - Modification d'un script de combat</h2>
+		<h2><a href="actions.php" onclick="return envoiInfo(this.href, 'information');">Script de combat</a> - Modification d'un script de combat</h2>
 		Sélectionnez le script à modifier :<br />
 		<form action="action.php" method="post">
 			<select name="id_action" id="id_action">

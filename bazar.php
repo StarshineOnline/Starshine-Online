@@ -94,13 +94,13 @@ if($W_distance == 0)
 	$url = 'bazar.php?type='.$_GET['type'].'&amp;poscase='.$W_case.'&amp;order=';
 	?>
 	
-	Trier par :	<a href="javascript:envoiInfo('<?php echo $url; ?>prix', 'carte')">Prix</a> :: <a href="javascript:envoiInfo('<?php echo $url; ?>type', 'carte')">Type</a> :: <a href="javascript:envoiInfo('<?php echo $url; ?>', 'carte')">Effets</a> :: <a href="javascript:envoiInfo('<?php echo $url; ?>forcex', 'carte')">Force</a><br />
+	Trier par :	<a href="<?php echo $url; ?>prix" onclick="return envoiInfo(this.href, 'carte')">Prix</a> :: <a href="<?php echo $url; ?>type" onclick="return envoiInfo(this.href, 'carte')">Type</a> :: <a href="<?php echo $url; ?>" onclick="return envoiInfo(this.href, 'carte')">Effets</a> :: <a href="<?php echo $url; ?>forcex" onclick="return envoiInfo(this.href, 'carte')">Force</a><br />
 	<br />
 	
 	<?php
 	$url2 = 'bazar.php?type=arme&amp;poscase='.$W_case.'&amp;order='.$_GET['order'];
 	?>
-		[<a href="javascript:envoiInfo('<?php echo $url2; ?>&amp;part=dague', 'carte')">Dague</a> - <a href="javascript:envoiInfo('<?php echo $url2; ?>&amp;part=epee', 'carte')">Epée</a> - <a href="javascript:envoiInfo('<?php echo $url2; ?>&amp;part=hache', 'carte')">Hache</a>]<br />
+		[<a href="<?php echo $url2; ?>&amp;part=dague" onclick="return envoiInfo(this.href, 'carte')">Dague</a> - <a href="<?php echo $url2; ?>&amp;part=epee" onclick="return envoiInfo(this.href, 'carte')">Epée</a> - <a href="<?php echo $url2; ?>&amp;part=hache" onclick="return envoiInfo(this.href, 'carte')">Hache</a>]<br />
 		<table class="marchand" cellspacing="0px">
 		<tr class="header trcolor2">
 			<td>
@@ -163,7 +163,7 @@ if($W_distance == 0)
 				<?php echo $cout; ?>
 			</td>
 			<td>
-				<a href="javascript:envoiInfo('bazar.php?action=achat&amp;id=<?php echo $row['id']; ?>&amp;poscase=<?php echo $_GET['poscase']; ?>', 'carte')">Acheter</a>
+				<a href="bazar.php?action=achat&amp;id=<?php echo $row['id']; ?>&amp;poscase=<?php echo $_GET['poscase']; ?>" onclick="return envoiInfo(this.href, 'carte')">Acheter</a>
 			</td>
 		</tr>
 		<?php

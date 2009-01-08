@@ -631,7 +631,7 @@ foreach($tab_loc as $loc)
 		if($joueur['inventaire']->$loc['loc'] != '' AND $joueur['inventaire']->$loc['loc'] != 'lock')
 		{
 		?>
-			<a href="javascript:envoiInfo('inventaire.php?action=desequip&amp;partie=<?php echo $loc['loc']; ?>', 'centre');">Désequiper</a>
+			<a href="inventaire.php?action=desequip&amp;partie=<?php echo $loc['loc']; ?>" onclick="return envoiInfo(this.href, 'centre');">Désequiper</a>
 		<?php
 		}
 		?>

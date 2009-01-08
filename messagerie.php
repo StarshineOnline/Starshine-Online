@@ -6,7 +6,7 @@ $non_lu = $messagerie->get_non_lu();
 ?>
 <h2>Messagerie</h2>
 <div style="text-align : center;">
-	<a href="messagerie.php" onclick="envoiInfo(this.href, 'information'); return false;">Groupe (<?php echo $non_lu['groupe']; ?>)</a> | <a href="messagerie.php?action=perso" onclick="envoiInfo(this.href, 'information'); return false;">Perso (<?php echo $non_lu['perso']; ?>)</a><br />
+	<a href="messagerie.php" onclick="return envoiInfo(this.href, 'information'); return false;">Groupe (<?php echo $non_lu['groupe']; ?>)</a> | <a href="messagerie.php?action=perso" onclick="envoiInfo(this.href, 'information'); return false;">Perso (<?php echo $non_lu['perso']; ?>)</a><br />
 </div>
 <div id="liste_message">
 <?php

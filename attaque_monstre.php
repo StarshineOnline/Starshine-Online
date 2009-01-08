@@ -716,7 +716,7 @@ else
 			}
 			else
 			{
-				echo('<img src="image/interface/attaquer.png" alt="Combattre" style="vertical-align : middle;" /> <a href="javascript:envoiInfo(\'attaque_monstre.php?ID='.$W_ID.'&amp;type='.$ennemi.'&amp;table='.sSQL($_GET['table']).'&amp;poscase='.$W_case.'\', \'information\')">Attaquer la même cible</a><br />');
+				echo('<img src="image/interface/attaquer.png" alt="Combattre" style="vertical-align : middle;" /> <a href="attaque_monstre.php?ID='.$W_ID.'&amp;type='.$ennemi.'&amp;table='.sSQL($_GET['table']).'&amp;poscase='.$W_case.'" onclick="return envoiInfo(this.href, \'information\')">Attaquer la même cible</a><br />');
 			}
 			
 			$requete = 'UPDATE perso SET survie = '.$attaquant['survie'].' ,melee = '.$attaquant['melee'].', esquive = '.$attaquant['esquive'].', hp = '.$attaquant['hp'].', pa = pa - '.$pa_attaque.' WHERE ID = '.$_SESSION['ID'];
@@ -734,7 +734,7 @@ else
 }
 ?>
 <a onclick="for (i=0; i<<?php echo $debugs; ?>; i++) {if(document.getElementById('debug' + i).style.display == 'inline') document.getElementById('debug' + i).style.display = 'none'; else document.getElementById('debug' + i).style.display = 'inline';}">Debug</a> <br />
-<a href="javascript:envoiInfo('informationcase.php?case=<?php echo $W_case; ?>', 'information')">Retour aux informations de la case</a>
+<a href="informationcase.php?case=<?php echo $W_case; ?>" onclick="return envoiInfo(this.href, 'information')">Retour aux informations de la case</a>
 </div>
 <?php
 echo $out1;

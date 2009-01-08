@@ -21,7 +21,7 @@ if(!isset($_GET['type'])) $_GET['type'] = 'arme';
 
 $_SESSION['position'] = convert_in_pos($joueur['x'], $joueur['y']);
 		?>
-		<h2 class="ville_titre"><?php echo '<a href="javascript:envoiInfo(\'ville.php?poscase='.$W_case.'\',\'centre\')">';?><?php echo $R['nom'];?></a> - <?php echo '<a href="javascript:envoiInfo(\'boutique.php?poscase='.$W_case.'\',\'carte\')">';?> Marchand d'<?php echo $_GET['type']; ?>s </a></h2>
+		<h2 class="ville_titre"><?php echo '<a href="ville.php?poscase='.$W_case.'" onclick="return envoiInfo(this.href,\'centre\')">';?><?php echo $R['nom'];?></a> - <?php echo '<a href="boutique.php?poscase='.$W_case.'" onclick="return envoiInfo(this.href,\'carte\')">';?> Marchand d'<?php echo $_GET['type']; ?>s </a></h2>
 		<?php
 		if($_GET['type'] == 'armure')
 		{
@@ -147,7 +147,7 @@ if($W_distance == 0)
 	$url = 'boutique.php?type='.$_GET['type'].'&amp;poscase='.$W_case.'&amp;order=';
 	?>
 	
-	Trier par :	<a href="javascript:envoiInfo('<?php echo $url; ?>prix', 'carte')">Prix</a> :: <a href="javascript:envoiInfo('<?php echo $url; ?>type', 'carte')">Type</a> :: <a href="javascript:envoiInfo('<?php echo $url; if($_GET['type'] == 'arme') echo 'degat'; else echo 'pp'; ?>', 'carte')">Effets</a> :: <a href="javascript:envoiInfo('<?php echo $url; ?>forcex', 'carte')">Force</a><br />
+	Trier par :	<a href="<?php echo $url; ?>prix" onclick="return envoiInfo(this.href, 'carte')">Prix</a> :: <a href="<?php echo $url; ?>type" onclick="return envoiInfo(this.href, 'carte')">Type</a> :: <a href="<?php echo $url; if($_GET['type'] == 'arme') echo 'degat'; else echo 'pp'; ?>" onclick="return envoiInfo(this.href, 'carte')">Effets</a> :: <a href="<?php echo $url; ?>forcex" onclick="return envoiInfo(this.href, 'carte')">Force</a><br />
 	<br />
 	
 	<?php
@@ -167,7 +167,7 @@ if($W_distance == 0)
 		$url2 = 'boutique.php?type=arme&amp;poscase='.$W_case.'&amp;order='.$_GET['order'];
 	?>
 
-		<p class="ville_haut"><a href="javascript:envoiInfo('<?php echo $url2; ?>&amp;part=arc', 'carte')">Arc</a> - <a href="javascript:envoiInfo('<?php echo $url2; ?>&amp;part=dague', 'carte')">Dague</a> - <a href="javascript:envoiInfo('<?php echo $url2; ?>&amp;part=epee', 'carte')">Epée</a> - <a href="javascript:envoiInfo('<?php echo $url2; ?>&amp;part=hache', 'carte')">Hache</a> - <a href="javascript:envoiInfo('<?php echo $url2; ?>&amp;part=bouclier', 'carte')">Bouclier</a> - <a href="javascript:envoiInfo('<?php echo $url2; ?>&amp;part=baton', 'carte')">Baton</a></p>
+		<p class="ville_haut"><a href="<?php echo $url2; ?>&amp;part=arc" onclick="return envoiInfo(this.href, 'carte')">Arc</a> - <a href="<?php echo $url2; ?>&amp;part=dague" onclick="return envoiInfo(this.href, 'carte')">Dague</a> - <a href="<?php echo $url2; ?>&amp;part=epee" onclick="return envoiInfo(this.href, 'carte')">Epée</a> - <a href="<?php echo $url2; ?>&amp;part=hache" onclick="return envoiInfo(this.href, 'carte')">Hache</a> - <a href="<?php echo $url2; ?>&amp;part=bouclier" onclick="return envoiInfo(this.href, 'carte')">Bouclier</a> - <a href="<?php echo $url2; ?>&amp;part=baton" onclick="return envoiInfo(this.href, 'carte')">Baton</a></p>
 
 		
 		<table class="marchand" cellspacing="0px">
@@ -280,7 +280,7 @@ if($W_distance == 0)
 			if (over_price($cout, $joueur['star']) == 'achat_normal' AND over_price($coef, $coef_joueur) == 'achat_normal' AND $check AND over_price($cout, $joueur['star'])== 'achat_normal')
 			{
 			?>
-				<a href="javascript:envoiInfo('boutique.php?action=achat&amp;type=arme&amp;id=<?php echo $row['id']; ?>&amp;poscase=<?php echo $_GET['poscase']; ?>', 'carte')"><span class="achat">Achat</span></a>
+				<a href="boutique.php?action=achat&amp;type=arme&amp;id=<?php echo $row['id']; ?>&amp;poscase=<?php echo $_GET['poscase']; ?>" onclick="return envoiInfo(this.href, 'carte')"><span class="achat">Achat</span></a>
 			<?php
 			}
 			?>
@@ -304,8 +304,8 @@ if($W_distance == 0)
 
 		
 
-		<p class="ville_haut"><a href="javascript:envoiInfo('<?php echo $url2; ?>&amp;part=ceinture', 'carte')">Ceinture</a> - <a href="javascript:envoiInfo('<?php echo $url2; ?>&amp;part=chaussure', 'carte')">Chaussure</a> - <a href="javascript:envoiInfo('<?php echo $url2; ?>&amp;part=jambe', 'carte')">Jambe</a> - <a href="javascript:envoiInfo('<?php echo $url2; ?>&amp;part=main', 'carte')">Main</a> - <a href="javascript:envoiInfo('<?php echo $url2; ?>&amp;part=tete', 'carte')">Tête</a> - <a href="javascript:envoiInfo('<?php echo $url2; ?>&amp;part=torse', 'carte')">Torse</a><br />
-		<a href="javascript:envoiInfo('<?php echo $url2; ?>&amp;part=cou', 'carte')">Cou</a> - <a href="javascript:envoiInfo('<?php echo $url2; ?>&amp;part=dos', 'carte')">Dos</a> - <a href="javascript:envoiInfo('<?php echo $url2; ?>&amp;part=doigt', 'carte')">Doigt</a></p><br />
+		<p class="ville_haut"><a href="<?php echo $url2; ?>&amp;part=ceinture" onclick="return envoiInfo(this.href, 'carte')">Ceinture</a> - <a href="<?php echo $url2; ?>&amp;part=chaussure" onclick="return envoiInfo(this.href, 'carte')">Chaussure</a> - <a href="<?php echo $url2; ?>&amp;part=jambe" onclick="return envoiInfo(this.href, 'carte')">Jambe</a> - <a href="<?php echo $url2; ?>&amp;part=main" onclick="return envoiInfo(this.href, 'carte')">Main</a> - <a href="<?php echo $url2; ?>&amp;part=tete" onclick="return envoiInfo(this.href, 'carte')">Tête</a> - <a href="<?php echo $url2; ?>&amp;part=torse" onclick="return envoiInfo(this.href, 'carte')">Torse</a><br />
+		<a href="<?php echo $url2; ?>&amp;part=cou" onclick="return envoiInfo(this.href, 'carte')">Cou</a> - <a href="<?php echo $url2; ?>&amp;part=dos" onclick="return envoiInfo(this.href, 'carte')">Dos</a> - <a href="<?php echo $url2; ?>&amp;part=doigt" onclick="return envoiInfo(this.href, 'carte')">Doigt</a></p><br />
 		<table class="marchand" cellspacing="0px">
 		<tr class="header trcolor2">
 			<td>
@@ -382,7 +382,7 @@ if($W_distance == 0)
 				if (over_price($cout, $joueur['star']) == 'achat_normal' AND over_price($row['forcex'], $joueur['force']) == 'achat_normal')
 				{
 				?>	
-				<a href="javascript:envoiInfo('boutique.php?action=achat&amp;type=armure&amp;id=<?php echo $row['id']; ?>&amp;poscase=<?php echo $_GET['poscase']; ?>', 'carte')"><span class="achat">Achat</span></a>
+				<a href="boutique.php?action=achat&amp;type=armure&amp;id=<?php echo $row['id']; ?>&amp;poscase=<?php echo $_GET['poscase']; ?>" onclick="return envoiInfo(this.href, 'carte')"><span class="achat">Achat</span></a>
 				<?php 
 				}
 				?>

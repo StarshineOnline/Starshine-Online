@@ -40,23 +40,23 @@ if($W_distance == 0 AND $joueur['race'] == $R['race'])
 	{
 	?>
 		<li>
-			<a href="javascript:envoiInfo('taverne.php?poscase=<?php echo $W_case; ?>&amp;fort=ok', 'carte')">Taverne</a>
+			<a href="taverne.php?poscase=<?php echo $W_case; ?>&amp;fort=ok" onclick="return envoiInfo(this.href, 'carte')">Taverne</a>
 		</li>
 		<li>
-			<a href="javascript:envoiInfo('poste.php?poscase=<?php echo $W_case; ?>&amp;fort=ok', 'carte')">La Poste</a>
+			<a href="poste.php?poscase=<?php echo $W_case; ?>&amp;fort=ok" onclick="return envoiInfo(this.href, 'carte')">La Poste</a>
 		</li>
 	<?php
 	}
 	?>
 		<li>
-			<a href="javascript:envoiInfo('bureau_quete.php?poscase=<?php echo $W_case; ?>', 'carte')">Bureau des quètes</a>
+			<a href="bureau_quete.php?poscase=<?php echo $W_case; ?>" onclick="return envoiInfo(this.href, 'carte')">Bureau des quètes</a>
 		</li>
 <?php
 	if(date("d") >= 15 AND date("d") < 20)
 	{
 ?>
 		<li>
-			<a href="javascript:envoiInfo('candidature.php?poscase=<?php echo $W_case; ?>&amp;fort=ok', 'carte')">Candidature</a>
+			<a href="candidature.php?poscase=<?php echo $W_case; ?>&amp;fort=ok" onclick="return envoiInfo(this.href, 'carte')">Candidature</a>
 		</li>
 <?php
 	}
@@ -64,7 +64,7 @@ if($W_distance == 0 AND $joueur['race'] == $R['race'])
 	{
 ?>
 		<li>
-			<a href="javascript:envoiInfo('vote_roi.php?poscase=<?php echo $W_case; ?>&amp;fort=ok', 'carte')">Vote</a>
+			<a href="vote_roi.php?poscase=<?php echo $W_case; ?>&amp;fort=ok" onclick="return envoiInfo(this.href, 'carte')">Vote</a>
 		</li>
 <?php
 	}
@@ -72,7 +72,7 @@ if($W_distance == 0 AND $joueur['race'] == $R['race'])
 	{
 ?>
 		<li>
-			<a href="javascript:envoiInfo('gestion_royaume.php?poscase=<?php echo $W_case; ?>', 'carte')">Gestion du royaume</a>
+			<a href="gestion_royaume.php?poscase=<?php echo $W_case; ?>" onclick="return envoiInfo(this.href, 'carte')">Gestion du royaume</a>
 		</li>
 <?php
 	}

@@ -59,7 +59,7 @@ if($W_distance == 0)
 		if($row_bp['royaume'] != $Trace[$joueur['race']]['numrace'] && $row_bp['id'] != $row_c['id'])
 		{
 			echo '<li>'.$row_bp['nom'].' - X : '.$row_bp['x'].' - Y : '.$row_bp['y'];
-			if($pat && $joueur['rang_grade'] >= $row_b['bonus6']) echo ' - <a href="javascript:envoiInfo(\'attaque_arme_de_siege.php?poscase='.$W_case.'&amp;table=construction&amp;type=arme_de_siege&amp;id_arme_de_siege='.$row_c['id'].'&amp;id_batiment='.$row_bp['id'].'\', \'information\');">Attaquer avec l\'arme de siège</a></li>';
+			if($pat && $joueur['rang_grade'] >= $row_b['bonus6']) echo ' - <a href="attaque_arme_de_siege.php?poscase='.$W_case.'&amp;table=construction&amp;type=arme_de_siege&amp;id_arme_de_siege='.$row_c['id'].'&amp;id_batiment='.$row_bp['id'].'" onclick="return envoiInfo(this.href, \'information\');">Attaquer avec l\'arme de siège</a></li>';
 		}
 	}
 	echo '</ul>';
@@ -76,7 +76,7 @@ if($W_distance == 0)
 		if($row_bp['royaume'] != $Trace[$joueur['race']]['numrace'] && $row_bp['id'] != $row_c['id'])
 		{
 			echo '<li>'.$row_bp['nom'].' - X : '.$row_bp['x'].' - Y : '.$row_bp['y'];
-			if($pat && $joueur['rang_grade'] >= $row_b['bonus6']) echo ' - <a href="javascript:envoiInfo(\'attaque_arme_de_siege.php?poscase='.$W_case.'&amp;table=placement&amp;type=arme_de_siege&amp;id_arme_de_siege='.$row_c['id'].'&amp;id_batiment='.$row_bp['id'].'\', \'information\');">Attaquer avec l\'arme de siège</a></li>';
+			if($pat && $joueur['rang_grade'] >= $row_b['bonus6']) echo ' - <a href="attaque_arme_de_siege.php?poscase='.$W_case.'&amp;table=placement&amp;type=arme_de_siege&amp;id_arme_de_siege='.$row_c['id'].'&amp;id_batiment='.$row_bp['id'].'" onclick="return envoiInfo(this.href, \'information\');">Attaquer avec l\'arme de siège</a></li>';
 		}
 	}
 	echo '</ul>';

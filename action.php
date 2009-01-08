@@ -279,7 +279,7 @@ if(array_key_exists('from', $_GET) && $_GET['id_action'] != '')
 					</select>
 				</td>
 				<td>
-					<input type="button" name="valid_cond" value="Valider" onclick="reutn envoiInfo('action.php?mode=a&amp;id_action=<?php echo $id_action; ?>&amp;si=10&amp;op=o&amp;valeur=' + document.getElementById('etat').value + '&amp;qui=' + document.getElementById('qui').value + '&amp;valid_cond=ok', 'information');" /><br />
+					<input type="button" name="valid_cond" value="Valider" onclick="return envoiInfo('action.php?mode=a&amp;id_action=<?php echo $id_action; ?>&amp;si=10&amp;op=o&amp;valeur=' + document.getElementById('etat').value + '&amp;qui=' + document.getElementById('qui').value + '&amp;valid_cond=ok', 'information');" /><br />
 				</td>
 			</tr>
 			</table>

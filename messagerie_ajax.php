@@ -142,7 +142,7 @@ else
 					$titre = mb_substr($titre,0,30) . "...";
 				}
 				?>
-				<a href="messagerie.php?id_thread=<?php echo $thread->id_thread; ?>" onclick="envoiInfo(this.href, 'information'); return false;" style="<?php echo $style; ?>">
+				<a href="messagerie.php?id_thread=<?php echo $thread->id_thread; ?>" onclick="return envoiInfo(this.href, 'information'); return false;" style="<?php echo $style; ?>">
 				<?php echo $titre; ?></a>
 			</td>
 			<td>

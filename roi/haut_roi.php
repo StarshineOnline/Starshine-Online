@@ -3,12 +3,6 @@ $root = '../';
 //Inclusion du haut du document html
 include($root.'haut_ajax.php');
 
-function __autoload($class_name)
-{
-	global $root;
-	require_once($root.'class/'.$class_name .'.class.php');
-}
-
 $joueur = recupperso($_SESSION['ID']);
 
 check_perso($joueur);

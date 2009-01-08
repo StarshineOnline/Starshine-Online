@@ -141,5 +141,5 @@ else
 ?>
 <br />
 <a onclick="for (i=0; i<<?php echo $debugs; ?>; i++) {if(document.getElementById('debug' + i).style.display == 'inline') document.getElementById('debug' + i).style.display = 'none'; else document.getElementById('debug' + i).style.display = 'inline';}">Debug</a><br />
-<a href="javascript:envoiInfo('informationcase.php?case=<?php echo $W_case; ?>', 'information')">Retour aux informations de la case</a><br />
+<a href="informationcase.php?case=<?php echo $W_case; ?>" onclick="return envoiInfo(this.href, 'information')">Retour aux informations de la case</a><br />
 <img src="image/pixel.gif" onLoad="envoiInfo('infoperso.php?javascript=oui', 'perso');" />
