@@ -4,7 +4,7 @@ include('inc/fp.php');
 include('fonction/messagerie.inc.php');
 $joueur = recupperso($_SESSION['ID']);
 $R = get_royaume_info($joueur['race'], $Trace[$joueur['race']]['numrace']);
-function affiche_bataille_groupe($bataille)
+function affiche_bataille_groupe($bataille, $leader = true)
 {
 	global $joueur;
 	?>
@@ -24,13 +24,13 @@ function affiche_bataille_groupe($bataille)
 				$repere->get_type();
 				if($repere_groupe->accepter == 0)
 				{
-					$accepter = '<a href="" onclick="return envoiInfo(this.href, '');">V</a>';
+					$accepter = ' - <a href="groupe_bataille.php?id_bataille_repere='.$repere_groupe->id.'&amp;accepter" onclick="return envoiInfo(this.href, \'bgr'.$repere_groupe->id.'\');" id="bgr'.$repere_groupe->id.'">V</a>';
 				}
 				else
 				{
 					$accepter = '';
 				}
-				echo $repere->repere_type->nom.' en '.$repere->x.' / '.$repere->y.' - '.$accepter;
+				if(($repere_groupe->accepter == 0 AND $leader) OR $repere_groupe->accepter == 1) echo $repere->repere_type->nom.' en '.$repere->x.' / '.$repere->y.$accepter;
 			}
 		}
 	}
@@ -83,6 +83,11 @@ else
 			$bataille_groupe->sauver();
 			affiche_bataille_groupe($bataille);
 		}
+		elseif(array_key_exists('accepter', $_GET))
+		{
+			$bgr = new bataille_groupe_repere($_GET['id_bataille_repere']);
+			$bgr->accepte();
+		}
 		else
 		{
 			foreach($bataille_royaume->batailles as $bataille)
@@ -99,6 +104,17 @@ else
 					<?php
 				}
 			}
+		}
+	}
+	//On affiche uniquement les bataille auquel le groupe participe
+	else
+	{
+		$requete = "SELECT bataille_repere.id_bataille FROM bataille_groupe_repere LEFT JOIN bataille_repere ON bataille_repere.id = bataille_groupe_repere.id_repere LEFT JOIN bataille_groupe ON bataille_groupe.id = bataille_groupe_repere.id_groupe WHERE bataille_groupe.id_groupe = ".$joueur['groupe']." AND accepter = 1";
+		$req = $db->query($requete);
+		while($row = $db->read_assoc($req))
+		{
+			$bataille = new bataille($row['id_bataille']);
+			affiche_bataille_groupe($bataille);
 		}
 	}
 }
