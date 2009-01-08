@@ -14,7 +14,7 @@ function affiche_bataille_groupe($bataille)
 {
 	global $joueur;
 	?>
-		<h2><?php echo $bataille->nom; ?></h2>
+		<h2><a href="/roi/gestion_bataille.php?refresh_bataille=<?php echo $bataille->id; ?>" onclick="return envoiInfo(this.href, 'centre');"><?php echo $bataille->nom; ?></a></h2>
 		<div>
 			<?php echo transform_texte($bataille->description); ?>
 		</div>
@@ -22,16 +22,21 @@ function affiche_bataille_groupe($bataille)
 	if($bataille->is_groupe_in($joueur['groupe']))
 	{
 		$bataille->get_reperes();
-		echo 'Vous participez à cette bataille';
+		echo 'Vous participez à cette bataille<br />';
 		foreach($bataille->reperes as $repere)
 		{
 			if($repere_groupe = $repere->get_groupe($joueur['groupe']))
 			{
-				echo $repere->id.' / true';
-			}
-			else
-			{
-				echo $repere->id.' / false';
+				$repere->get_type();
+				if($repere_groupe->accepter == 0)
+				{
+					$accepter = 'V';
+				}
+				else
+				{
+					$accepter = '';
+				}
+				echo $repere->repere_type->nom.' en '.$repere->x.' / '.$repere->y.' - '.$accepter;
 			}
 		}
 	}
@@ -43,32 +48,37 @@ function affiche_bataille_groupe($bataille)
 	}
 }
 
-$bataille_royaume = new bataille_royaume($Trace[$joueur['race']]['numrace']);
-$bataille_royaume->get_batailles();
-
-if(array_key_exists('participe', $_GET))
+$groupe = recupgroupe($joueur['groupe'], '');
+//Si c'est le chef de groupe
+if($groupe['id_leader'] == $joueur['ID'])
 {
-	$bataille = new bataille($_GET['id_bataille']);
-	$bataille_groupe = new bataille_groupe();
-	$bataille_groupe->id_bataille = $_GET['id_bataille'];
-	$bataille_groupe->id_groupe = $joueur['groupe'];
-	$bataille_groupe->sauver();
-	affiche_bataille_groupe($bataille);
-}
-else
-{
-	foreach($bataille_royaume->batailles as $bataille)
+	$bataille_royaume = new bataille_royaume($Trace[$joueur['race']]['numrace']);
+	$bataille_royaume->get_batailles();
+	
+	if(array_key_exists('participe', $_GET))
 	{
-		//il faut que ça soit des batailles "en cours"
-		if($bataille->etat == 1)
+		$bataille = new bataille($_GET['id_bataille']);
+		$bataille_groupe = new bataille_groupe();
+		$bataille_groupe->id_bataille = $_GET['id_bataille'];
+		$bataille_groupe->id_groupe = $joueur['groupe'];
+		$bataille_groupe->sauver();
+		affiche_bataille_groupe($bataille);
+	}
+	else
+	{
+		foreach($bataille_royaume->batailles as $bataille)
 		{
-			?>
-			<div id="bataille_<?php echo $bataille->id; ?>">
-			<?php
-				affiche_bataille_groupe($bataille);
-			?>
-			</div>
-			<?php
+			//il faut que ça soit des batailles "en cours"
+			if($bataille->etat == 1)
+			{
+				?>
+				<div id="bataille_<?php echo $bataille->id; ?>">
+				<?php
+					affiche_bataille_groupe($bataille);
+				?>
+				</div>
+				<?php
+			}
 		}
 	}
 }

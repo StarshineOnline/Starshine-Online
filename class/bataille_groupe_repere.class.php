@@ -88,5 +88,10 @@ class bataille_groupe_repere
 		$this->accepter = true;
 		$this->sauver();
 	}
+
+	function get_repere()
+	{
+		$this->repere = new bataille_repere($this->id_repere);
+	}
 }
 ?>

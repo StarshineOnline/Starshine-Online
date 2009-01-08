@@ -1,0 +1,1 @@
+ALTER TABLE `bataille_repere` ADD `type` ENUM( 'action', 'batiment' ) NOT NULL DEFAULT 'action' AFTER `id_bataille` ;

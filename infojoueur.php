@@ -102,7 +102,7 @@ if($joueur['sort_jeu'] != '')
 
 if (($W_distance < 2) AND ($W_ID != $_SESSION['ID']) AND ($perso['groupe'] != $joueur['groupe'] OR $joueur['groupe'] == '' OR $joueur['groupe'] == 0))
 {
-	echo('<tr><td><img src="image/interface/demande_groupe.png" alt="Inviter ce joueur dans votre groupe" title="Inviter ce joueur dans votre groupe" style="vertical-align : middle;" /></td><td><a href="javascript:envoiInfo(\'invitegroupe.php?ID='.$W_ID.'\', \'information\')"> Inviter ce joueur dans votre groupe</a></td></tr>');
+	echo('<tr><td><img src="image/interface/demande_groupe.png" alt="Inviter ce joueur dans votre groupe" title="Inviter ce joueur dans votre groupe" style="vertical-align : middle;" /></td><td><a href="invitegroupe.php?ID='.$W_ID.'" onclick="envoiInfo(this.href, \'information\')"> Inviter ce joueur dans votre groupe</a></td></tr>');
 }
 //Voir l'inventaire
 if(array_key_exists(20, $bonus) AND check_affiche_bonus($bonus[20], $joueur, $perso))

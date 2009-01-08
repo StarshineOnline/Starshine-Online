@@ -149,16 +149,20 @@ class bataille
 		else return false;
 	}
 
-	function get_reperes()
+	function get_reperes($option = '')
 	{
 		global $db;
 		$this->reperes = array();
 
-		$requete = "SELECT id, id_bataille, id_type, x, y FROM bataille_repere WHERE id_bataille = ".$this->id;
+		$requete = "SELECT id, id_bataille, type, id_type, x, y FROM bataille_repere WHERE id_bataille = ".$this->id;
 		$req = $db->query($requete);
 		while($row = $db->read_assoc($req))
 		{
-			$this->reperes[] = new bataille_repere($row);
+			if($option == 'tri_type')
+			{
+				$this->reperes[$row['type']][] = new bataille_repere($row);
+			}
+			else $this->reperes[] = new bataille_repere($row);
 		}
 	}
 
@@ -182,16 +186,17 @@ class bataille
 	{
 		global $db;
 
-		$requete = "SELECT id, id_bataille, id_type, x, y FROM bataille_repere WHERE id_bataille = ".$this->id." AND x = ".$x." AND y = ".$y;
+		$reperes = array();
+		$requete = "SELECT id, id_bataille, type, id_type, x, y FROM bataille_repere WHERE id_bataille = ".$this->id." AND x = ".$x." AND y = ".$y;
 		$req = $db->query($requete);
 		if($db->num_rows($req) > 0)
 		{
 			while($row = $db->read_assoc($req))
 			{
-				return new bataille_repere($row);
+				$reperes[] = new bataille_repere($row);
 			}
 		}
-		else return false;
+		return $reperes;
 	}
 }
 ?>

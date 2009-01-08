@@ -160,6 +160,11 @@ padding : 0px;
 {
 	background:transparent url('../image/interface/message.png') center left no-repeat; width : 28px; height : 19px;
 }
+#info_groupe
+{
+	background:transparent url('../image/interface/message.png') center left no-repeat; width : 28px; height : 19px;
+}
+
 
 .roseeticone {
 	float : left;

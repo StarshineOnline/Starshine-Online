@@ -4,6 +4,7 @@ class map
 	public $x;
 	public $y;
 	public $champ_vision;
+	public $root;
 	public $xmin;
 	public $xmax;
 	public $ymin;
@@ -128,6 +129,10 @@ class map
 					{//-- Affichage des Batiments ---------------------------------//
 						if(!empty($this->map[$x_map][$y_map]["Batiments"][0]["image"])) { $background = "background-image : url(".$this->map[$x_map][$y_map]["Batiments"][0]["image"].") !important;"; };
 					}
+					elseif(is_array($this->map[$x_map][$y_map]["Batiments_ennemi"]))
+					{//-- Affichage des Batiments Ennemis---------------------------------//
+						if(!empty($this->map[$x_map][$y_map]["Batiments_ennemi"][0]["image"])) { $background = "background-image : url(".$this->map[$x_map][$y_map]["Batiments_ennemi"][0]["image"].") !important;"; };
+					}
 					elseif(is_array($this->map[$x_map][$y_map]["Joueurs"]))
 					{//-- Affichage des Joueurs -----------------------------------//
 						if(!empty($this->map[$x_map][$y_map]["Joueurs"][0]["image"])) 	{ $background = "background-image : url(".$this->map[$x_map][$y_map]["Joueurs"][0]["image"].") !important;"; };
@@ -139,24 +144,28 @@ class map
 					else { $background = ""; }
 
 					if(   (count($this->map[$x_map][$y_map]["Batiments"]) > 0)
-					   || (count($this->map[$x_map][$y_map]["PNJ"]) > 0)
-					   || (count($this->map[$x_map][$y_map]["Joueurs"]) > 0)
-					   || (count($this->map[$x_map][$y_map]["Monstres"]) > 0)
-					   || (count($this->map[$x_map][$y_map]["Drapeaux"]) > 0) )
+						|| (count($this->map[$x_map][$y_map]["Batiments_ennemi"]) > 0)
+						|| (count($this->map[$x_map][$y_map]["Reperes"]) > 0)
+						|| (count($this->map[$x_map][$y_map]["PNJ"]) > 0)
+						|| (count($this->map[$x_map][$y_map]["Joueurs"]) > 0)
+						|| (count($this->map[$x_map][$y_map]["Monstres"]) > 0)
+						|| (count($this->map[$x_map][$y_map]["Drapeaux"]) > 0) )
 					{
 						$overlib = "<ul>";
-						for($i = 0; $i < count($this->map[$x_map][$y_map]["Batiments"]); $i++) 	{ $overlib .= "<li class='overlib_batiments'><span>Batiment</span>&nbsp;-&nbsp;".$this->map[$x_map][$y_map]["Batiments"][$i]["nom"]."</li>"; }
-						for($i = 0; $i < count($this->map[$x_map][$y_map]["PNJ"]); $i++)		{ $overlib .= "<li class='overlib_batiments'><span>PNJ</span>&nbsp;-&nbsp;".ucwords($this->map[$x_map][$y_map]["PNJ"][$i]["nom"])."</li>"; }
-						for($i = 0; $i < count($this->map[$x_map][$y_map]["Joueurs"]); $i++)	{ $overlib .= "<li class='overlib_joueurs'><span>".$this->map[$x_map][$y_map]["Joueurs"][$i]["nom"]."</span>&nbsp;-&nbsp;".ucwords($this->map[$x_map][$y_map]["Joueurs"][$i]["race"])." - Niv.".$this->map[$x_map][$y_map]["Joueurs"][$i]["level"]."</li>"; }
-						for($i = 0; $i < count($this->map[$x_map][$y_map]["Monstres"]); $i++)	{ $overlib .= "<li class='overlib_monstres'><span>Monstre</span>&nbsp;-&nbsp;".$this->map[$x_map][$y_map]["Monstres"][$i]["nom"]." x".$this->map[$x_map][$y_map]["Monstres"][$i]["tot"]."</li>"; }
-						for($i = 0; $i < count($this->map[$x_map][$y_map]["Drapeaux"]); $i++)	{ $overlib .= "<li class='overlib_batiments'><span>Drapeau</span>&nbsp;-&nbsp;".ucwords($this->map[$x_map][$y_map]["Drapeaux"][$i]["race"])."</li>"; }
+						for($i = 0; $i < count($this->map[$x_map][$y_map]["Reperes"]); $i++) 			{ $overlib .= "<li class='overlib_batiments'><span>Mission</span>&nbsp;-&nbsp;".$this->map[$x_map][$y_map]["Reperes"][$i]["nom"]."</li>"; }
+						for($i = 0; $i < count($this->map[$x_map][$y_map]["Batiments"]); $i++)			{ $overlib .= "<li class='overlib_batiments'><span>Batiment</span>&nbsp;-&nbsp;".$this->map[$x_map][$y_map]["Batiments"][$i]["nom"]."</li>"; }
+						for($i = 0; $i < count($this->map[$x_map][$y_map]["Batiments_ennemi"]); $i++) 	{ $overlib .= "<li class='overlib_batiments'><span>Batiment ennemi</span>&nbsp;-&nbsp;".$this->map[$x_map][$y_map]["Batiments_ennemi"][$i]["nom"]."</li>"; }
+						for($i = 0; $i < count($this->map[$x_map][$y_map]["PNJ"]); $i++)				{ $overlib .= "<li class='overlib_batiments'><span>PNJ</span>&nbsp;-&nbsp;".ucwords($this->map[$x_map][$y_map]["PNJ"][$i]["nom"])."</li>"; }
+						for($i = 0; $i < count($this->map[$x_map][$y_map]["Joueurs"]); $i++)			{ $overlib .= "<li class='overlib_joueurs'><span>".$this->map[$x_map][$y_map]["Joueurs"][$i]["nom"]."</span>&nbsp;-&nbsp;".ucwords($this->map[$x_map][$y_map]["Joueurs"][$i]["race"])." - Niv.".$this->map[$x_map][$y_map]["Joueurs"][$i]["level"]."</li>"; }
+						for($i = 0; $i < count($this->map[$x_map][$y_map]["Monstres"]); $i++)			{ $overlib .= "<li class='overlib_monstres'><span>Monstre</span>&nbsp;-&nbsp;".$this->map[$x_map][$y_map]["Monstres"][$i]["nom"]." x".$this->map[$x_map][$y_map]["Monstres"][$i]["tot"]."</li>"; }
+						for($i = 0; $i < count($this->map[$x_map][$y_map]["Drapeaux"]); $i++)			{ $overlib .= "<li class='overlib_batiments'><span>Drapeau</span>&nbsp;-&nbsp;".ucwords($this->map[$x_map][$y_map]["Drapeaux"][$i]["race"])."</li>"; }
 						$overlib .= "</ul>";
 						$overlib = str_replace("'", "\'", trim($overlib));
 					}
 					else { $overlib = ""; }
 
 					//Repere
-					if(is_array($this->map[$x_map][$y_map]["Reperes"])) $repere = $this->map[$x_map][$y_map]["Reperes"][0]['id_type'];
+					if(is_array($this->map[$x_map][$y_map]["Reperes"])) $repere = $this->map[$x_map][$y_map]["Reperes"][0]['nom'][0];
 					else $repere = '&nbsp;';
 
 					if($this->resolution == 'low') $tex_resolution = 'l';
@@ -325,7 +334,7 @@ class map
 				$this->map[$objBatiments->x][$objBatiments->y]["Batiments"][$batimat]["royaume"] = $objBatiments->royaume;
 				$this->map[$objBatiments->x][$objBatiments->y]["Batiments"][$batimat]["image"] = $objBatiments->image;
 
-				{//-- vérification que l'image du PNJ existe
+				{//-- vérification que l'image du batiment existe
 					$image = $this->root."image/batiment/";
 					
 					if(file_exists($image.$objBatiments->image."_04.png")) 		{ $image .= $objBatiments->image."_04.png"; }
@@ -397,8 +406,23 @@ class map
 		foreach($reperes as $repere)
 		{
 			$rep = count($this->map[$repere->x][$repere->y]["Reperes"]);
+			$repere->get_type();
 			$this->map[$repere->x][$repere->y]["Reperes"][$rep]["id_repere"] = $repere->id;
+			$this->map[$repere->x][$repere->y]["Reperes"][$rep]["nom"] = $repere->repere_type->nom;
 			$this->map[$repere->x][$repere->y]["Reperes"][$rep]["id_type"] = $repere->id_type;
+		}
+	}
+
+	function set_batiment_ennemi($reperes)
+	{
+		$rep = 0;
+		foreach($reperes as $repere)
+		{
+			$rep = count($this->map[$repere->x][$repere->y]["Batiments_ennemi"]);
+			$repere->get_type();
+			$this->map[$repere->x][$repere->y]["Batiments_ennemi"][$rep]["id_batiment"] = $repere->id_batiment;
+			$this->map[$repere->x][$repere->y]["Batiments_ennemi"][$rep]["nom"] = $repere->repere_type->nom;
+			$this->map[$repere->x][$repere->y]["Batiments_ennemi"][$rep]["image"] = $repere->repere_type->get_image($this->root);
 		}
 	}
 

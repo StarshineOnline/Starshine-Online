@@ -85,11 +85,11 @@ class bataille_groupe
 		global $db;
 		$this->reperes = array();
 
-		$requete = "SELECT id_repere FROM bataille_groupe_repere WHERE id_groupe = ".$this->id;
+		$requete = "SELECT id, id_repere, id_groupe, accepter FROM bataille_groupe_repere WHERE id_groupe = ".$this->id;
 		$req = $db->query($requete);
 		while($row = $db->read_assoc($req))
 		{
-			$this->reperes[] = new bataille_repere($row['id_repere']);
+			$this->reperes[] = new bataille_groupe_repere($row);
 		}
 	}
 }
