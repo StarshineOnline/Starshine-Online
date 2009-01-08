@@ -1,20 +1,14 @@
 <?php
 
 include('inc/fp.php');
-include('class/bataille.class.php');
-include('class/bataille_royaume.class.php');
-include('class/bataille_repere.class.php');
-include('class/bataille_groupe.class.php');
-include('class/bataille_groupe_repere.class.php');
-include('class/bataille_repere_type.class.php');
 include('fonction/messagerie.inc.php');
 $joueur = recupperso($_SESSION['ID']);
-
+$R = get_royaume_info($joueur['race'], $Trace[$joueur['race']]['numrace']);
 function affiche_bataille_groupe($bataille)
 {
 	global $joueur;
 	?>
-		<h2><a href="/roi/gestion_bataille.php?refresh_bataille=<?php echo $bataille->id; ?>" onclick="return envoiInfo(this.href, 'centre');"><?php echo $bataille->nom; ?></a></h2>
+		<h2><a href="groupe_bataille.php?affiche_bataille=<?php echo $bataille->id; ?>" onclick="affichePopUp(this.href); return false;"><?php echo $bataille->nom; ?></a></h2>
 		<div>
 			<?php echo transform_texte($bataille->description); ?>
 		</div>
@@ -30,7 +24,7 @@ function affiche_bataille_groupe($bataille)
 				$repere->get_type();
 				if($repere_groupe->accepter == 0)
 				{
-					$accepter = 'V';
+					$accepter = '<a href="" onclick="return envoiInfo(this.href, '');">V</a>';
 				}
 				else
 				{
@@ -49,35 +43,61 @@ function affiche_bataille_groupe($bataille)
 }
 
 $groupe = recupgroupe($joueur['groupe'], '');
-//Si c'est le chef de groupe
-if($groupe['id_leader'] == $joueur['ID'])
+
+if(array_key_exists('affiche_bataille', $_GET))
 {
-	$bataille_royaume = new bataille_royaume($Trace[$joueur['race']]['numrace']);
-	$bataille_royaume->get_batailles();
-	
-	if(array_key_exists('participe', $_GET))
+	$bataille = new bataille($_GET['affiche_bataille']);
+	$bataille->get_reperes('tri_type');
+	$batiments = array();
+	$dimensions = dimension_map($bataille->x, $bataille->y, 11);
+	$requete = "SELECT x, y, hp, nom, type, image FROM construction WHERE royaume = ".$R['ID']." AND x >= ".$dimensions['xmin']." AND x <= ".$dimensions['xmax']." AND y >= ".$dimensions['ymin']." AND y <= ".$dimensions['ymax'];
+	$req = $db->query($requete);
+	while($row = $db->read_assoc($req))
 	{
-		$bataille = new bataille($_GET['id_bataille']);
-		$bataille_groupe = new bataille_groupe();
-		$bataille_groupe->id_bataille = $_GET['id_bataille'];
-		$bataille_groupe->id_groupe = $joueur['groupe'];
-		$bataille_groupe->sauver();
-		affiche_bataille_groupe($bataille);
+		$batiments[convert_in_pos($row['x'], $row['y'])] = $row;
 	}
-	else
+	$x = $bataille->x;
+	$y = $bataille->y;
+	
+	$map = new map($x, $y, 12, '', false, 'low');
+	$map->set_batiment($batiments);
+	if(array_key_exists('action', $bataille->reperes)) $map->set_repere($bataille->reperes['action']);
+	if(array_key_exists('batiment', $bataille->reperes)) $map->set_batiment_ennemi($bataille->reperes['batiment']);
+	$map->set_onclick("return false;");
+	$map->affiche();
+}
+else
+{
+	//Si c'est le chef de groupe
+	if($groupe['id_leader'] == $joueur['ID'])
 	{
-		foreach($bataille_royaume->batailles as $bataille)
+		$bataille_royaume = new bataille_royaume($Trace[$joueur['race']]['numrace']);
+		$bataille_royaume->get_batailles();
+		
+		if(array_key_exists('participe', $_GET))
 		{
-			//il faut que ça soit des batailles "en cours"
-			if($bataille->etat == 1)
+			$bataille = new bataille($_GET['id_bataille']);
+			$bataille_groupe = new bataille_groupe();
+			$bataille_groupe->id_bataille = $_GET['id_bataille'];
+			$bataille_groupe->id_groupe = $joueur['groupe'];
+			$bataille_groupe->sauver();
+			affiche_bataille_groupe($bataille);
+		}
+		else
+		{
+			foreach($bataille_royaume->batailles as $bataille)
 			{
-				?>
-				<div id="bataille_<?php echo $bataille->id; ?>">
-				<?php
-					affiche_bataille_groupe($bataille);
-				?>
-				</div>
-				<?php
+				//il faut que ça soit des batailles "en cours"
+				if($bataille->etat == 1)
+				{
+					?>
+					<div id="bataille_<?php echo $bataille->id; ?>">
+					<?php
+						affiche_bataille_groupe($bataille);
+					?>
+					</div>
+					<?php
+				}
 			}
 		}
 	}

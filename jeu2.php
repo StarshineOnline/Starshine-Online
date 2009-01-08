@@ -3,6 +3,7 @@
 //Connexion obligatoire
 $connexion = true;
 //Inclusion du haut du document html
+$interface_v2 = true;
 include('haut.php');
 
 $joueur = recupperso($_SESSION['ID']);

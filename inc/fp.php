@@ -16,9 +16,6 @@ ob_start();
 // Spécifie à la bibliothèque mb qu'on utilise UTF-8
 mb_internal_encoding("UTF-8");
 
-//Classe gérant les accès à la base de données
-include($root.'class/db.class.php');
-
 //Inclusion des fonctions permettant de gérer le temps
 include($root.'fonction/time.inc.php');
 
@@ -61,9 +58,6 @@ include($root.'fonction/quete.inc.php');
 //Inclusion du fichier contenant les fonctions permettant de gérer l'équipement
 include($root.'fonction/equipement.inc.php');
 
-//Inclusion du fichier contenant la classe inventaire
-include($root.'class/inventaire.class.php');
-
 //Inclusion du fichier contenant les fonctions de gestion des réponses
 include_once($root.'fonction/reponses.inc.php');
 
@@ -73,10 +67,10 @@ include_once($root.'fonction/security.inc.php');
 // Inclusion du fichier permettant d'imprier l'en-tête
 include_once($root.'fonction/print.inc.php');
 
-//include_once($root.'class/perso.class.php');
-require_once($root.'class/messagerie.class.php');
-require_once($root.'class/messagerie_etat_message.class.php');
-require_once($root.'class/messagerie_message.class.php');
-require_once($root.'class/messagerie_thread.class.php');
+function __autoload($class_name)
+{
+	global $root;
+	require_once($root.'class/'.$class_name .'.class.php');
+}
 
 ?>
