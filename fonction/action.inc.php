@@ -258,27 +258,35 @@ function sub_script_action($joueur, $ennemi, $mode)
 					{
 						// Recherche du sort
 						$id_sort = substr($solution, 1);
-						$requete = "SELECT * FROM sort_combat WHERE id = ".$id_sort;
-						$req = $db->query($requete);
-						$row = $db->read_assoc($req);
-						// Récupération des MP nécessaires
-						$mp_need = round($row['mp'] * (1 - (($Trace[$joueur['race']]['affinite_'.$row['comp_assoc']] - 5) / 10)));
-						// Appel des ténebres
-						if($joueur['etat']['appel_tenebre']['duree'] > 0)
+						if($id_sort != '')
 						{
-							$mp_need += $joueur['etat']['appel_tenebre']['effet'];
+							$requete = "SELECT * FROM sort_combat WHERE id = ".$id_sort;
+							$req = $db->query($requete);
+							$row = $db->read_assoc($req);
+							// Récupération des MP nécessaires
+							$mp_need = round($row['mp'] * (1 - (($Trace[$joueur['race']]['affinite_'.$row['comp_assoc']] - 5) / 10)));
+							// Appel des ténebres
+							if($joueur['etat']['appel_tenebre']['duree'] > 0)
+							{
+								$mp_need += $joueur['etat']['appel_tenebre']['effet'];
+							}
+							// Appel de la forêt
+							if($joueur['etat']['appel_foret']['duree'] > 0 && $mp_need > 1)
+							{
+								$mp_need -= $joueur['etat']['appel_foret']['effet'];
+								if($mp_need < 1) $mp_need = 1;
+							}
+							// Si le joueur a assez de reserve on indique l'action à effectuer
+							if($joueur['reserve'] >= $mp_need)
+							{
+								$effectue[0] = 'lance_sort';
+								$effectue[1] = $id_sort;
+								$action = true;
+							}
 						}
-						// Appel de la forêt
-						if($joueur['etat']['appel_foret']['duree'] > 0 && $mp_need > 1)
+						else
 						{
-							$mp_need -= $joueur['etat']['appel_foret']['effet'];
-							if($mp_need < 1) $mp_need = 1;
-						}
-						// Si le joueur a assez de reserve on indique l'action à effectuer
-						if($joueur['reserve'] >= $mp_need)
-						{
-							$effectue[0] = 'lance_sort';
-							$effectue[1] = $id_sort;
+							$effectue[0] = 'attaque';
 							$action = true;
 						}
 					}
@@ -286,33 +294,41 @@ function sub_script_action($joueur, $ennemi, $mode)
 					{
 						// Recherche de la compétence
 						$id_sort = substr($solution, 1);
-						$requete = "SELECT * FROM comp_combat WHERE id = ".$id_sort;
-						$req = $db->query($requete);
-						$row = $db->read_assoc($req);
-						// Récupération des MP nécessaires
-						$mp_need = $row['mp'];
-						//Appel des ténebres
-						if($joueur['etat']['appel_tenebre']['duree'] > 0)
+						if($id_sort != '')
 						{
-							$mp_need += $joueur['etat']['appel_tenebre']['effet'];
-						}
-						//Appel de la forêt
-						if($joueur['etat']['appel_foret']['duree'] > 0)
-						{
-							$mp_need -= $joueur['etat']['appel_foret']['effet'];
-							if($mp_need < 1) $mp_need = 1;
-						}
-						// On vérifie que le personnage a assez de MP
-						if($joueur['reserve'] >= $mp_need)
-						{
-							// Si l'arme utilisée est la bonne on indique l'action à effectuer
-							$arme_requis = explode(';', $row['arme_requis']);
-							if(in_array($joueur['arme_type'], $arme_requis) OR in_array($joueur['bouclier_type'], $arme_requis) OR $row['arme_requis'] == '')
+							$requete = "SELECT * FROM comp_combat WHERE id = ".$id_sort;
+							$req = $db->query($requete);
+							$row = $db->read_assoc($req);
+							// Récupération des MP nécessaires
+							$mp_need = $row['mp'];
+							//Appel des ténebres
+							if($joueur['etat']['appel_tenebre']['duree'] > 0)
 							{
-								$effectue[0] = 'lance_comp';
-								$effectue[1] = $id_sort;
-								$action = true;
+								$mp_need += $joueur['etat']['appel_tenebre']['effet'];
 							}
+							//Appel de la forêt
+							if($joueur['etat']['appel_foret']['duree'] > 0)
+							{
+								$mp_need -= $joueur['etat']['appel_foret']['effet'];
+								if($mp_need < 1) $mp_need = 1;
+							}
+							// On vérifie que le personnage a assez de MP
+							if($joueur['reserve'] >= $mp_need)
+							{
+								// Si l'arme utilisée est la bonne on indique l'action à effectuer
+								$arme_requis = explode(';', $row['arme_requis']);
+								if(in_array($joueur['arme_type'], $arme_requis) OR in_array($joueur['bouclier_type'], $arme_requis) OR $row['arme_requis'] == '')
+								{
+									$effectue[0] = 'lance_comp';
+									$effectue[1] = $id_sort;
+									$action = true;
+								}
+							}
+						}
+						else
+						{
+							$effectue[0] = 'attaque';
+							$action = true;
 						}
 					}
 					// Attaque simple
