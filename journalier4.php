@@ -152,7 +152,7 @@ while($row = $db->read_assoc($requete))
 {
 	$terrain = type_terrain($row['info']);
 	$ress_terrain = $ress[$terrain[1]];
-	$royaume = get_royaume_info($row['royaume'], 'orc')
+	$royaume = get_royaume_info($row['royaume'], 'orc');
 	if($batiment[$row['id_batiment']]['bonus2'] != 0)
 	{
 		switch($batiment[$row['id_batiment']]['bonus2'])
@@ -222,6 +222,8 @@ $row = $db->read_assoc($req);
 if($row['nombre_joueur'] != 0) $food_necessaire = $row['food'] / $row['nombre_joueur'];
 else $food_necessaire = 0;
 
+echo $food_necessaire.'<br />';
+
 //On récupère les infos des royaumes
 $requete = "SELECT ID, race, food FROM royaume WHERE ID != 0";
 $req = $db->query($requete);
@@ -232,6 +234,7 @@ while($row = $db->read_assoc($req))
 foreach($tab_royaume as $race => $royaume)
 {
 	$royaume['food_necessaire'] = floor($food_necessaire * $royaume['actif']);
+	//echo $royaume['race'].' '.$royaume['food_necessaire'].'<br />';
 	//Si ya assez de food
 	if($royaume['food_necessaire'] < $royaume['food'])
 	{
@@ -272,9 +275,12 @@ foreach($tab_royaume as $race => $royaume)
 		$duree = 30 * 24 * 60 * 60;
 		$fin = time() + $duree;
 		$buffs_implode = implode(',', $buffs);
-		$requete = "UPDATE buff SET effet = effet + ".$debuff.", duree = ".$duree.", fin = ".$fin." WHERE ID IN (".$buffs_implode.")";
-		echo $requete;
-		$db->query($requete);
+		if(count($buffs) > 0)
+		{
+			$requete = "UPDATE buff SET effet = effet + ".$debuff.", duree = ".$duree.", fin = ".$fin." WHERE ID IN (".$buffs_implode.")";
+			echo $requete;
+			$db->query($requete);
+		}
 		foreach($persos as $joueur)
 		{
 			//Lancement du buff

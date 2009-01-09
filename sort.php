@@ -421,7 +421,7 @@ if (isset($_GET['ID']))
 					}
 				}
 
-				echo "<a href=\"" onclick="return envoiInfo('sort.php?ID=".$_GET["ID"]."', 'information')\">Utilisez a nouveau cette compétence</a>";	
+				echo "<a href=\"\" onclick=\"return envoiInfo('sort.php?ID=".$_GET["ID"]."', 'information')\">Utilisez a nouveau cette compétence</a>";
 			break;
 			case "esprit_sacrifie" :	 //-- Esprit Sacrifié
 				//-- Suppression d'un debuff au hasard
@@ -468,7 +468,7 @@ if (isset($_GET['ID']))
 				}
 				else { echo "Impossible de lancer de lancer le sort. Vous n&apos;a aucun buff.<br/>"; };
 					
-				echo "<a href=\"" onclick="return envoiInfo('sort.php?ID=".$_GET["ID"]."', 'information')\">Utilisez a nouveau cette compétence</a>";	
+				echo "<a href=\"\" onclick=\"return envoiInfo('sort.php?ID=".$_GET["ID"]."', 'information')\">Utilisez a nouveau cette compétence</a>";
 			
 			break;
 		}

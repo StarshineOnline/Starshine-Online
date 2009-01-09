@@ -56,7 +56,7 @@
 		{
 			foreach($joueur["buff"] as $buff)
 			{//-- Listing des buffs
-				$overlib = str_replace("'", "\'", trim("<ul><li class='overlib_titres'>".$buff["nom"]."</li><li>".$buff["description"]."</li><li>Durée ".transform_sec_temp($buff["fin"] - time())."</li><li class='overlib_infos'>(double-cliquer pour annuler ce buff)</li></ul>"));
+				$overlib = str_replace("'", "\'", trim("<ul><li class='overlib_titres'>".$buff["nom"]."</li><li>".description($buff["description"], $buff)."</li><li>Durée ".transform_sec_temp($buff["fin"] - time())."</li><li class='overlib_infos'>(double-cliquer pour annuler ce buff)</li></ul>"));
 				echo "<li class='buff'>
 					   <img src='image/buff/".$buff["type"]."_p.png' 
 							alt='".$buff["type"]."'
