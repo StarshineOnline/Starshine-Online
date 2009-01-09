@@ -21,10 +21,9 @@ $R = get_royaume_info($joueur['race'], $W_row['royaume']);
 
 $_SESSION['position'] = convert_in_pos($joueur['x'], $joueur['y']);
 ?>
-<h2 class="ville_titre"><?php echo '<a href="javascript:envoiInfo(\'ville.php?poscase='.$W_case.'\', \'centre\')">';?><?php echo $R['nom'];?></a> - <?php echo '<a href="javascript:envoiInfo(\'ecolemagie.php?poscase='.$W_case.'\', \'carte\')">';?> Ecole de Magie </a></h2>
+<h2 class="ville_titre"><?php echo '<a href="ville.php?poscase='.$W_case.'" onclick="return envoiInfo(this.href, \'centre\')">';?><?php echo $R['nom'];?></a> - <?php echo '<a href="ecolemagie.php?poscase='.$W_case.'" onclick="return envoiInfo(this.href, \'carte\')">';?> Ecole de Magie </a></h2>
 		<?php include('ville_bas.php');?>
 <?php
-//if($_GET['ecole'] == 'sort_jeu') echo '<a href="javascript:envoiInfo(\'ecolemagie.php?ecole=sort_combat&amp;poscase='.$W_case.'\', \'carte\')">Ecole de magie en combat</a><br />'; elseif($_GET['ecole'] == 'sort_combat') echo '<a href="javascript:envoiInfo(\'ecolemagie.php?ecole=sort_jeu&amp;poscase='.$W_case.'\', \'carte\')">Ecole de magie hors combat</a><br />';
 $W_distance = detection_distance($W_case,$_SESSION["position"]);
 $W_coord = convert_in_coord($W_case);
 $cout_app = 500;
@@ -76,35 +75,35 @@ if($W_distance == 0)
 		$url = 'ecolemagie.php?ecole='.$_GET['ecole'].'&amp;type='.$_GET['type'].'&amp;poscase='.$W_case.'&amp;part='.$_GET['part'].'&amp;order=';
 		?>
 		<div class="ville_test">
-		Passer à une autre école de magie : <a href="javascript:envoiInfo('ecolemagie.php?ecole=<?php echo $autre_ecole; ?>&amp;poscase=<?php echo $_GET['poscase']; ?>', 'carte')"><?php echo $nom_autre_ecole; ?></a>
+		Passer à une autre école de magie : <a href="ecolemagie.php?ecole=<?php echo $autre_ecole; ?>&amp;poscase=<?php echo $_GET['poscase']; ?>" onclick="return envoiInfo(this.href, 'carte')"><?php echo $nom_autre_ecole; ?></a>
 		<br /><br />
 		<?php
 		$url2 = 'ecolemagie.php?ecole='.$_GET['ecole'].'&amp;poscase='.$W_case.'&amp;order='.$_GET['order'];
 		?>
-			<p class="ville_haut"><a href="javascript:envoiInfo('<?php echo $url2; ?>&amp;part=sort_vie', 'carte')">Vie</a> | <a href="javascript:envoiInfo('<?php echo $url2; ?>&amp;part=sort_element', 'carte')">Element</a> | <a href="javascript:envoiInfo('<?php echo $url2; ?>&amp;part=sort_mort', 'carte')">Nécromancie</a> | <a href="javascript:envoiInfo('<?php echo $url2; ?>&amp;part=all', 'carte')">Toutes</a></p>
+			<p class="ville_haut"><a href="<?php echo $url2; ?>&amp;part=sort_vie" onclick="return envoiInfo(this.href, 'carte')">Vie</a> | <a href="<?php echo $url2; ?>&amp;part=sort_element" onclick="return envoiInfo(this.href, 'carte')">Element</a> | <a href="<?php echo $url2; ?>&amp;part=sort_mort" onclick="return envoiInfo(this.href, 'carte')">Nécromancie</a> | <a href="" onclick="return envoiInfo('<?php echo $url2; ?>&amp;part=all', 'carte')">Toutes</a></p>
 			<table class="marchand" cellspacing="0px">
 			<tr class="header trcolor2" style="font-size : 0.9em;">
 				<td>
-					<strong><a href="javascript:envoiInfo('<?php echo $url; ?>nom,prix', 'carte')">Nom</a></strong>
+					<strong><a href="<?php echo $url; ?>nom,prix" onclick="return envoiInfo(this.href, 'carte')">Nom</a></strong>
 				</td>
 				<td>
-					<strong><a href="javascript:envoiInfo('<?php echo $url; ?>nom,prix', 'carte')">PA</a></strong>
+					<strong><a href="<?php echo $url; ?>nom,prix" onclick="return envoiInfo(this.href, 'carte')">PA</a></strong>
 				</td>
 				<td>
-					<strong><a href="javascript:envoiInfo('<?php echo $url; ?>mp,nom,prix', 'carte')">MP</a></strong>
+					<strong><a href="<?php echo $url; ?>mp,nom,prix" onclick="return envoiInfo(this.href, 'carte')">MP</a></strong>
 				</td>
 
 				<td>
-					<strong><a href="javascript:envoiInfo('<?php echo $url; ?>incantation,prix,nom', 'carte')">Incant.</strong>
+					<strong><a href="<?php echo $url; ?>incantation,prix,nom" onclick="return envoiInfo(this.href, 'carte')">Incant.</strong>
 				</td>
 				<td>
-					<strong><a href="javascript:envoiInfo('<?php echo $url; ?>comp_requis,type,prix,nom', 'carte')">Comp.</strong>
+					<strong><a href="<?php echo $url; ?>comp_requis,type,prix,nom" onclick="return envoiInfo(this.href, 'carte')">Comp.</strong>
 				</td>
 				<td>
-					<strong><a href="javascript:envoiInfo('<?php echo $url; ?>prix,type,nom', 'carte')">Stars</a></strong>
+					<strong><a href="<?php echo $url; ?>prix,type,nom" onclick="return envoiInfo(this.href, 'carte')">Stars</a></strong>
 				</td>
 				<td>
-					<strong><a href="javascript:envoiInfo('<?php echo $url.$_GET['order']; ?>&amp;hide=yes', 'carte')">X</a></strong>
+					<strong><a href="<?php echo $url.$_GET['order']; ?>&amp;hide=yes" onclick="return envoiInfo(this.href, 'carte')">X</a></strong>
 				</td>
 			</tr>
 			
@@ -163,7 +162,7 @@ if($W_distance == 0)
 				if (over_price($cout, $joueur['star']) == 'achat_normal' AND over_price($comp, $joueur[$row['comp_assoc']]) == 'achat_normal' AND over_price($inc, $joueur['incantation']) == 'achat_normal' AND $couleur != 5)
 				{
 				?>	
-				<a href="javascript:envoiInfo('ecolemagie.php?ecole=<?php echo $_GET['ecole']; ?>&amp;action=apprendre&amp;id=<?php echo $row['id']; ?>&amp;poscase=<?php echo $_GET['poscase']; ?>', 'carte')"><span class="achat">Achat</span></a>
+				<a href="ecolemagie.php?ecole=<?php echo $_GET['ecole']; ?>&amp;action=apprendre&amp;id=<?php echo $row['id']; ?>&amp;poscase=<?php echo $_GET['poscase']; ?>" onclick="return envoiInfo(this.href, 'carte')"><span class="achat">Achat</span></a>
 				<?php
 				}
 				if ($couleur == 5)
@@ -203,7 +202,7 @@ if($W_distance == 0)
 			echo 'Vous n\'avez pas assez de stars<br />';
 		}
 		?>
-		<a href="javascript:envoiInfo('ecolemagie.php?poscase=<?php echo $_GET['poscase']; ?>', 'carte')">Retour à l'école de magie</a>
+		<a href="ecolemagie.php?poscase=<?php echo $_GET['poscase']; ?>" onclick="return envoiInfo(this.href, 'carte')">Retour à l'école de magie</a>
 		<?php
 	}
 	else
@@ -220,7 +219,7 @@ if($W_distance == 0)
 			{
 				?>
 				<li>
-					<a href="javascript:envoiInfo('ecolemagie.php?app=sort_vie&amp;poscase=<?php echo $_GET['poscase']; ?>', 'carte')">Apprendre la magie de la vie (coût <?php echo $cout; ?> stars)</a>
+					<a href="ecolemagie.php?app=sort_vie&amp;poscase=<?php echo $_GET['poscase']; ?>" onclick="return envoiInfo(this.href, 'carte')">Apprendre la magie de la vie (coût <?php echo $cout; ?> stars)</a>
 				</li>
 				<?php
 			}
@@ -228,7 +227,7 @@ if($W_distance == 0)
 			{
 				?>
 				<li>
-					<a href="javascript:envoiInfo('ecolemagie.php?app=sort_element&amp;poscase=<?php echo $_GET['poscase']; ?>', 'carte')">Apprendre la magie élémentaire (coût <?php echo $cout; ?> stars)</a>
+					<a href="ecolemagie.php?app=sort_element&amp;poscase=<?php echo $_GET['poscase']; ?>" onclick="return envoiInfo(this.href, 'carte')">Apprendre la magie élémentaire (coût <?php echo $cout; ?> stars)</a>
 				</li>
 				<?php
 			}
@@ -236,16 +235,16 @@ if($W_distance == 0)
 			{
 				?>
 				<li>
-					<a href="javascript:envoiInfo('ecolemagie.php?app=sort_mort&amp;poscase=<?php echo $_GET['poscase']; ?>', 'carte')">Apprendre la magie de la mort (coût <?php echo $cout; ?> stars)</a>
+					<a href="ecolemagie.php?app=sort_mort&amp;poscase=<?php echo $_GET['poscase']; ?>" onclick="return envoiInfo(this.href, 'carte')">Apprendre la magie de la mort (coût <?php echo $cout; ?> stars)</a>
 				</li>
 				<?php
 			}
 			?>
 				<li>
-					<a href="javascript:envoiInfo('ecolemagie.php?ecole=sort_jeu&amp;poscase=<?php echo $_GET['poscase']; ?>', 'carte')">Sorts hors combat</a>
+					<a href="ecolemagie.php?ecole=sort_jeu&amp;poscase=<?php echo $_GET['poscase']; ?>" onclick="return envoiInfo(this.href, 'carte')">Sorts hors combat</a>
 				</li>
 				<li>
-					<a href="javascript:envoiInfo('ecolemagie.php?ecole=sort_combat&amp;poscase=<?php echo $_GET['poscase']; ?>', 'carte')">Sorts de combat</a>
+					<a href="ecolemagie.php?ecole=sort_combat&amp;poscase=<?php echo $_GET['poscase']; ?>" onclick="return envoiInfo(this.href, 'carte')">Sorts de combat</a>
 				</li>
 			</ul>
 			</div>

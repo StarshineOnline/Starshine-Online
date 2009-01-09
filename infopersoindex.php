@@ -6,20 +6,20 @@ $joueur = recupperso($_SESSION['ID']);
 include('levelup.php');
 
 echo '
-<table cellspacing="5">			
+<table cellspacing="5">
 <tr>
 	<td>
 	<img src="image/logossot_small.png" alt="sso logo" />
 	</td>
 	<td class="trstat">
-		<a href="javascript:envoiInfo(\'personnage.php\', \'information\')" style="text-decoration : none; color : #000;" title="Maximum '.($joueur['rang_grade'] + 2).' buffs"><strong>'.ucwords($joueur['grade']).' '.$joueur['nom'].'</strong>
+		<a href="personnage.php" onclick="return envoiInfo(this.href, \'information\')" style="text-decoration : none; color : #000;" title="Maximum '.($joueur['rang_grade'] + 2).' buffs"><strong>'.ucwords($joueur['grade']).' '.$joueur['nom'].'</strong>
 		<br />
 		'.$Gtrad[$joueur['race']].' '.$joueur['classe'].'</a><br />
 		';
 		//Listing des buffs
 		foreach($joueur['buff'] as $buff)
 		{
-			echo '<img src="image/buff/'.$buff['type'].'_p.png" ondblclick="if(confirm(\'Voulez vous supprimer '.$buff['nom'].' ?\')) envoiInfo(\'suppbuff.php?id='.$buff['id'].'\', \'perso\');" alt="'.$buff['type'].'" onmousemove="javascript:afficheInfo(\'info_'.$buff['type'].'\', \'block\', event); document.getElementById(\'info_'.$buff['type'].'\').style.zIndex = 2; document.getElementById(\'carte\').style.zIndex = 0;" onmouseout="javascript:afficheInfo(\'info_'.$buff['type'].'\', \'none\', event );" />
+			echo '<img src="image/buff/'.$buff['type'].'_p.png" ondblclick="if(confirm(\'Voulez vous supprimer '.$buff['nom'].' ?\')) envoiInfo(\'suppbuff.php?id='.$buff['id'].'\', \'perso\');" alt="'.$buff['type'].'" onmousemove="" onclick="afficheInfo(\'info_'.$buff['type'].'\', \'block\', event); document.getElementById(\'info_'.$buff['type'].'\').style.zIndex = 2; document.getElementById(\'carte\').style.zIndex = 0;" onmouseout="" onclick="afficheInfo(\'info_'.$buff['type'].'\', \'none\', event );" />
 			<div class="infobox" id="info_'.$buff['type'].'">
 				<strong>'.$buff['nom'].'</strong><br />'.$buff['description'].'<br />Durée '.transform_sec_temp($buff['fin'] - time()).'
 			</div>';
@@ -132,7 +132,7 @@ echo '
 		</tr>
 		<tr class="trcolor2" style="font-size : 10px; margin : 0px; padding : 0px;">
 			<td>
-				<strong><a href="javascript:envoiInfo(\'point_sso.php\', \'information\');">Point Shine</a></strong>
+				<strong><a href="point_sso.php" onclick="return envoiInfo(this.href, \'information\');">Point Shine</a></strong>
 			</td>
 			<td style="font-size : 10px; margin : 0px; padding : 0px; text-align : center;">
 				'.$joueur['point_sso'].'

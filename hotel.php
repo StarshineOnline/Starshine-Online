@@ -20,8 +20,8 @@ if($W_distance == 0)
 {//-- On verifie que le joueur est bien sur la ville ($W_distance)
 	echo "<script type='text/javascript'>return nd();</script>";
 	echo "<h2 class='ville_titre'>
-		   <a href=\"javascript:envoiInfo('ville.php?poscase=".$_GET["poscase"]."', 'centre');\">".$R['nom']."</a> - 
-		   <a href=\"javascript:envoiInfo('hotel.php?poscase=".$_GET["poscase"]."', 'carte');\"> Hotel des ventes </a>
+		   <a href=\"ville.php?poscase=".$_GET["poscase"]."\" onclick=\"return envoiInfo(this.href, 'centre');\">".$R['nom']."</a> - 
+		   <a href=\"hotel.php?poscase=".$_GET["poscase"]."\" onclick=\"return envoiInfo(this.href, 'carte');\"> Hotel des ventes </a>
 		  </h2>";
 	include("ville_bas.php");
 	{//-- Traitement d'un achat ou d'une recupération

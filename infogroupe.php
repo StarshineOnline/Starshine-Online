@@ -88,9 +88,9 @@ $share_xp = ($groupe['membre'][$num_joueur]['share_xp'] / $groupe['share_xp']);
 		</td>
 	</tr>
 	</table>
-	<?php if($groupe['id_leader'] == $_SESSION['ID']) echo '<input type="button" onclick="javascript:envoiInfo(\'infogroupe.php?id='.$groupe['id'].'&amp;partage=\' + document.getElementById(\'partage\').value + \'&amp;leader=\' + document.getElementById(\'leader\').value + \'&amp;nom=\' + document.getElementById(\'nom\').value, \'information\');" value="Modifier" />'; ?>
+	<?php if($groupe['id_leader'] == $_SESSION['ID']) echo '<input type="button" onclick="envoiInfo(\'infogroupe.php?id='.$groupe['id'].'&amp;partage=\' + document.getElementById(\'partage\').value + \'&amp;leader=\' + document.getElementById(\'leader\').value + \'&amp;nom=\' + document.getElementById(\'nom\').value, \'information\');" value="Modifier" />'; ?>
 	<br />
-	<?php echo '<a href="javascript:if(confirm(\'Voulez vous quitter le groupe ?\')) envoiInfo(\'degroup.php?ID='.$joueur['groupe'].'\', \'information\')">Quitter le groupe actuel</a>' ?>
+	<?php echo '<a href="degroup.php?ID='.$joueur['groupe'].'" onclick="return if(confirm(\'Voulez vous quitter le groupe ?\')) return envoiInfo(this.href, \'information\'); else return false;">Quitter le groupe actuel</a>' ?>
 	</div>
 	</form>
 <div>
@@ -106,7 +106,7 @@ if($groupe['id_leader'] ==  $_SESSION['ID'])
 	while($row = $db->read_assoc($req))
 	{
 		$perso = recupperso($row['receveur']);
-		echo '<li>'.$perso['nom'].' - '.$Gtrad[$perso['race']].' '.$perso['classe'].' - Niv.'.$perso['level'].' <a href="javascript:envoiInfo(\'infogroupe.php?id='.$groupe['id'].'&amp;suppinvit='.$row['ID'].'\', \'information\');">X</a></li>';
+		echo '<li>'.$perso['nom'].' - '.$Gtrad[$perso['race']].' '.$perso['classe'].' - Niv.'.$perso['level'].' <a href="infogroupe.php?id='.$groupe['id'].'&amp;suppinvit='.$row['ID'].'" onclick="return envoiInfo(this.href, \'information\');">X</a></li>';
 	}
 	?>
 	</ul>

@@ -72,7 +72,7 @@ else
 				'.$row['star_royaume'].'
 			</td>
 			<td>
-				<a href="javascript:envoiInfo(\'gestion_quete.php?poscase='.$W_case.'&amp;action=achat&amp;id='.$row['id'].'\', \'carte\')">Acheter cette quète</a>
+				<a href="gestion_quete.php?poscase='.$W_case.'&amp;action=achat&amp;id='.$row['id'].'" onclick="return envoiInfo(this.href, \'carte\')">Acheter cette quète</a>
 			</td>
 		</tr>';
 	}

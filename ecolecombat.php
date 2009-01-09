@@ -20,7 +20,7 @@ $W_row = $db->read_array($W_req);
 $R = get_royaume_info($joueur['race'], $W_row['royaume']);
 
 $_SESSION['position'] = convert_in_pos($joueur['x'], $joueur['y']);
-?><h2 class="ville_titre"><?php echo '<a href="javascript:envoiInfo(\'ville.php?poscase='.$W_case.'\', \'centre\')">';?><?php echo $R['nom'];?></a> - <?php echo '<a href="javascript:envoiInfo(\'ecolecombat.php?poscase='.$W_case.'\', \'carte\')">';?> Ecole de combat </a></h2>
+?><h2 class="ville_titre"><?php echo '<a href="ville.php?poscase='.$W_case.'" onclick="return envoiInfo(this.href, \'centre\')">';?><?php echo $R['nom'];?></a> - <?php echo '<a href="ecolecombat.php?poscase='.$W_case.'" onclick="return envoiInfo(this.href, \'carte\')">';?> Ecole de combat </a></h2>
 <?php include('ville_bas.php');?>
 <?php
 $W_distance = detection_distance($W_case,$_SESSION["position"]);
@@ -73,14 +73,14 @@ if($W_distance == 0)
 		$url = 'ecolemagie.php?ecole='.$_GET['ecole'].'&amp;type='.$_GET['type'].'&amp;poscase='.$W_case.'&amp;part='.$_GET['part'].'&amp;order=';
 		?>
 		<div class="ville_test">
-		Passer à une autre école de combat : <a href="javascript:envoiInfo('ecolecombat.php?ecole=<?php echo $autre_ecole; ?>&amp;poscase=<?php echo $_GET['poscase']; ?>', 'carte')"><?php echo $nom_autre_ecole; ?></a>
+		Passer à une autre école de combat : <a href="ecolecombat.php?ecole=<?php echo $autre_ecole; ?>&amp;poscase=<?php echo $_GET['poscase']; ?>" onclick="return envoiInfo(this.href, 'carte')"><?php echo $nom_autre_ecole; ?></a>
 		<br /><br />
 
 		<?php
 		//Affichage du magasin des armes
 		$url2 = 'ecolecombat.php?ecole='.$_GET['ecole'].'&amp;poscase='.$W_case.'&amp;order='.$_GET['order'];
 		?>
-			<p class="ville_haut"><a href="javascript:envoiInfo('<?php echo $url2; ?>&amp;part=melee', 'carte')">Mélée</a> | <a href="javascript:envoiInfo('<?php echo $url2; ?>&amp;part=distance', 'carte')">Distance</a> | <a href="javascript:envoiInfo('<?php echo $url2; ?>&amp;part=esquive', 'carte')">Esquive</a> | <a href="javascript:envoiInfo('<?php echo $url2; ?>&amp;part=blocage', 'carte')">Blocage</a></p>
+			<p class="ville_haut"><a href="<?php echo $url2; ?>&amp;part=melee" onclick="return envoiInfo(this.href, 'carte')">Mélée</a> | <a href="<?php echo $url2; ?>&amp;part=distance" onclick="return envoiInfo(this.href, 'carte')">Distance</a> | <a href="<?php echo $url2; ?>&amp;part=esquive" onclick="return envoiInfo(this.href, 'carte')">Esquive</a> | <a href="<?php echo $url2; ?>&amp;part=blocage" onclick="return envoiInfo(this.href, 'carte')">Blocage</a></p>
 			<table class="marchand" cellspacing="0px">
 			<tr class="header trcolor2">
 				<td>
@@ -159,7 +159,7 @@ if($W_distance == 0)
 					if (over_price($cout, $joueur['star']) == 'achat_normal' AND over_price($row['comp_requis'], $joueur[$row['comp_assoc']]) == 'achat_normal')
 					{	
 					?>
-						<a href="javascript:envoiInfo('ecolecombat.php?ecole=<?php echo $_GET['ecole']; ?>&amp;action=apprendre&amp;id=<?php echo $row['id']; ?>&amp;poscase=<?php echo $_GET['poscase']; ?>', 'carte')"><span class="achat">Apprendre</span></a>
+						<a href="ecolecombat.php?ecole=<?php echo $_GET['ecole']; ?>&amp;action=apprendre&amp;id=<?php echo $row['id']; ?>&amp;poscase=<?php echo $_GET['poscase']; ?>" onclick="return envoiInfo(this.href, 'carte')"><span class="achat">Apprendre</span></a>
 					<?php 
 					}
 					?>
@@ -191,7 +191,7 @@ if($W_distance == 0)
 			echo 'Vous n\'avez pas assez de stars<br />';
 		}
 		?>
-		<a href="javascript:envoiInfo('ecolecombat.php?poscase=<?php echo $_GET['poscase']; ?>', 'carte')">Retour à l'école de combat</a>
+		<a href="ecolecombat.php?poscase=<?php echo $_GET['poscase']; ?>" onclick="return envoiInfo(this.href, 'carte')">Retour à l'école de combat</a>
 		<?php
 	}
 	else
@@ -216,10 +216,10 @@ if($W_distance == 0)
 			$cout = $cout_app + $taxe;
 			?>
 				<li>
-					<a href="javascript:envoiInfo('ecolecombat.php?ecole=comp_jeu&amp;poscase=<?php echo $_GET['poscase']; ?>', 'carte')">Compétences hors combat</a>
+					<a href="ecolecombat.php?ecole=comp_jeu&amp;poscase=<?php echo $_GET['poscase']; ?>" onclick="return envoiInfo(this.href, 'carte')">Compétences hors combat</a>
 				</li>
 				<li>
-					<a href="javascript:envoiInfo('ecolecombat.php?ecole=comp_combat&amp;poscase=<?php echo $_GET['poscase']; ?>', 'carte')">Compétences de combat</a>
+					<a href="ecolecombat.php?ecole=comp_combat&amp;poscase=<?php echo $_GET['poscase']; ?>" onclick="return envoiInfo(this.href, 'carte')">Compétences de combat</a>
 				</li>
 			</ul>
 			</div>

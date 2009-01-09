@@ -41,10 +41,10 @@ if($W_distance == 0 AND $R['diplo'] == 127)
 	{
 	?>
 		<li>
-			<a href="javascript:envoiInfo('magasin.php?poscase=<?php echo $W_case; ?>&amp;fort=ok', 'carte')">Alchimiste</a>
+			<a href="magasin.php?poscase=<?php echo $W_case; ?>&amp;fort=ok" onclick="return envoiInfo(this.href, 'carte')">Alchimiste</a>
 		</li>
 		<li>
-			<a href="javascript:envoiInfo('poste.php?poscase=<?php echo $W_case; ?>&amp;fort=ok', 'carte')">La Poste</a>
+			<a href="poste.php?poscase=<?php echo $W_case; ?>&amp;fort=ok" onclick="return envoiInfo(this.href, 'carte')">La Poste</a>
 		</li>
 	<?php
 	}
@@ -52,13 +52,13 @@ if($W_distance == 0 AND $R['diplo'] == 127)
 	{
 	?>
 		<li>
-			<a href="javascript:envoiInfo('teleport.php?poscase=<?php echo $W_case; ?>&amp;fort=ok', 'carte')">Pierre de Téléportation</a>
+			<a href="teleport.php?poscase=<?php echo $W_case; ?>&amp;fort=ok" onclick="return envoiInfo(this.href, 'carte')">Pierre de Téléportation</a>
 		</li>
 	<?php
 	}
 	?>
 		<li>
-			<a href="javascript:envoiInfo('taverne.php?poscase=<?php echo $W_case; ?>&amp;fort=ok', 'carte')">Taverne</a>
+			<a href="taverne.php?poscase=<?php echo $W_case; ?>&amp;fort=ok" onclick="return envoiInfo(this.href, 'carte')">Taverne</a>
 		</li>
 <?php
 	//Si il est roi
@@ -66,7 +66,7 @@ if($W_distance == 0 AND $R['diplo'] == 127)
 	{
 ?>
 		<li>
-			<a href="javascript:envoiInfo('gestion_royaume.php?poscase=<?php echo $W_case; ?>&amp;fort=ok', 'carte')">Gestion du royaume</a>
+			<a href="gestion_royaume.php?poscase=<?php echo $W_case; ?>&amp;fort=ok" onclick="return envoiInfo(this.href, 'carte')">Gestion du royaume</a>
 		</li>
 <?php
 	}

@@ -86,17 +86,17 @@ if (($perso['ID'] != $_SESSION['ID']))
 	if(array_key_exists('buff_rapidite', $joueur['buff'])) $reduction_pa = $joueur['buff']['buff_rapidite']['effet']; else $reduction_pa = 0;
 	if(array_key_exists('debuff_ralentissement', $joueur['debuff'])) $reduction_pa -= $joueur['debuff']['debuff_ralentissement']['effet'];
 	echo '<tr><td><img src="image/message.png" title="Envoyer un message" /></td><td><a href="envoimessage.php?id_type=p'.$W_ID.'" onclick="return envoiInfo(this.href, \'information\')">Envoyer un message</a></td></tr>';
-	if($perso['hp'] > 0 AND !array_key_exists('repos_sage', $joueur['debuff']) OR !array_key_exists('bloque_attaque', $joueur['debuff'])) echo '<tr><td><img src="image/interface/attaquer.png" alt="Combattre" style="vertical-align : middle;" /></td><td><a href="javascript:envoiInfo(\'attaque.php?ID='.$W_ID.'&amp;poscase='.$W_case.'\', \'information\')"> Attaquer</a><span class="xsmall"> ('.($pa_attaque - $reduction_pa).' PA)</span></td></tr>';
+	if($perso['hp'] > 0 AND !array_key_exists('repos_sage', $joueur['debuff']) OR !array_key_exists('bloque_attaque', $joueur['debuff'])) echo '<tr><td><img src="image/interface/attaquer.png" alt="Combattre" style="vertical-align : middle;" /></td><td><a href="attaque.php?ID='.$W_ID.'&amp;poscase='.$W_case.'" onclick="return envoiInfo(this.href, \'information\')"> Attaquer</a><span class="xsmall"> ('.($pa_attaque - $reduction_pa).' PA)</span></td></tr>';
 }
 if($joueur['sort_jeu'] != '')
 {
 	if($perso['ID'] != $_SESSION['ID'])
 	{
-		echo '<tr><td><img src="image/sort_hc_icone.png" title="Lancer un sort" alt="Lancer un sort" /></td><td><a href="javascript:envoiInfo(\'sort_joueur.php?poscase='.$W_case.'&amp;id_joueur='.$W_ID.'\', \'information\')">Lancer un sort</a></td></tr>';
+		echo '<tr><td><img src="image/sort_hc_icone.png" title="Lancer un sort" alt="Lancer un sort" /></td><td><a href="sort_joueur.php?poscase='.$W_case.'&amp;id_joueur='.$W_ID.'" onclick="return envoiInfo(this.href, \'information\')">Lancer un sort</a></td></tr>';
 	}
 	else
 	{
-		echo '<tr><td><img src="image/sort_hc_icone.png" title="Lancer un sort" alt="Lancer un sort" /></td><td><a href="javascript:envoiInfo(\'sort.php?poscase='.$W_case.'&amp;id_joueur='.$W_ID.'\', \'information\')">Lancer un sort</a></td></tr>';
+		echo '<tr><td><img src="image/sort_hc_icone.png" title="Lancer un sort" alt="Lancer un sort" /></td><td><a href="sort.php?poscase='.$W_case.'&amp;id_joueur='.$W_ID.'" onclick="return envoiInfo(this.href, \'information\')">Lancer un sort</a></td></tr>';
 	}
 }
 
@@ -107,12 +107,12 @@ if (($W_distance < 2) AND ($W_ID != $_SESSION['ID']) AND ($perso['groupe'] != $j
 //Voir l'inventaire
 if(array_key_exists(20, $bonus) AND check_affiche_bonus($bonus[20], $joueur, $perso))
 {
-	echo('<tr><td></td><td><a href="javascript:envoiInfo(\'inventaire.php?id_perso='.$W_ID.'\', \'information\')"> Voir l\'inventaire de ce joueur</a></td></tr>');
+	echo('<tr><td></td><td><a href="inventaire.php?id_perso='.$W_ID.'" onclick="return envoiInfo(this.href, \'information\')"> Voir l\'inventaire de ce joueur</a></td></tr>');
 }
 //Voir les caractéristiques
 if(array_key_exists(23, $bonus) AND check_affiche_bonus($bonus[23], $joueur, $perso))
 {
-	echo('<tr><td></td><td><a href="javascript:envoiInfo(\'personnage.php?id_perso='.$W_ID.'\', \'information\')"> Voir les caractéristiques de ce joueur</a></td></tr>');
+	echo('<tr><td></td><td><a href="personnage.php?id_perso='.$W_ID.'" onclick="return envoiInfo(this.href, \'information\')"> Voir les caractéristiques de ce joueur</a></td></tr>');
 }
 echo '</table>';
 //Affichage des buffs du joueur

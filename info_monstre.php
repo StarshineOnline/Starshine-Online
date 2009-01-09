@@ -25,8 +25,8 @@ $coeff = floor($survie / $monstre['level']);
 <div class="information_case">
 	<p><strong><?php echo $monstre['nom']; ?></strong> - Niveau : <?php echo $monstre['level']; ?><?php if($coeff >= 7) echo ' - Type : '.$monstre['espece']; ?>&nbsp;&nbsp;&nbsp;&nbsp;
 	<?php
-	if(!array_key_exists('repos_sage', $joueur['debuff']) OR !array_key_exists('bloque_attaque', $joueur['debuff'])) echo '<a href="javascript:envoiInfo(\'attaque_monstre.php?ID='.$monstre['id'].'&poscase='.$W_case.'\', \'information\')"><img src="image/interface/attaquer.png" alt="Combattre" style="vertical-align : middle;" /> Attaquer <span class="xsmall">('.($pa_attaque - $reduction_pa).' PA)</span></a>';
-	if($joueur['sort_jeu'] != '') echo ' <a href="javascript:envoiInfo(\'sort_monstre.php?poscase='.$W_case.'&amp;id_monstre='.$monstre['id'].'\', \'information\')"><img src="image/sort_hc_icone.png" title="Lancer un sort" alt="Lancer un sort" style="vertical-align : middle;" /></a>';
+	if(!array_key_exists('repos_sage', $joueur['debuff']) OR !array_key_exists('bloque_attaque', $joueur['debuff'])) echo '<a href="attaque_monstre.php?ID='.$monstre['id'].'&poscase='.$W_case.'" onclick="return envoiInfo(this.href, \'information\')"><img src="image/interface/attaquer.png" alt="Combattre" style="vertical-align : middle;" /> Attaquer <span class="xsmall">('.($pa_attaque - $reduction_pa).' PA)</span></a>';
+	if($joueur['sort_jeu'] != '') echo ' <a href="sort_monstre.php?poscase='.$W_case.'&amp;id_monstre='.$monstre['id'].'" onclick="return envoiInfo(this.href, \'information\')"><img src="image/sort_hc_icone.png" title="Lancer un sort" alt="Lancer un sort" style="vertical-align : middle;" /></a>';
 	echo '<br />';
 	//Listing des debuffs
 	if($coeff >= 10)
