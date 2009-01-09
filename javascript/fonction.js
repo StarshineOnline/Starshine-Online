@@ -299,14 +299,13 @@ function affichePopUp(input_name,input_get)
 {
 	function AffichePopup(resultat)
 	{
-		$('mask').show();
 		$('popup').show();
-		$('popup').innerHTML = resultat.responseText;
+		$('popup_content').innerHTML = resultat.responseText;
 	}
 	new Ajax.Request(input_name,{method:'get',parameters:input_get,onLoading:Loadchargement,onComplete:AffichePopup});
 }
 function fermePopUp()
 {
+	$('popup_content').innerHTML = '';
 	$('popup').hide();
-	$('mask').hide();
 }

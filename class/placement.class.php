@@ -12,6 +12,7 @@ class placement
 	public $fin_placement;
 	public $rez;
 	public $nom;
+	public $image;
 	
 	/**	
 	    *  	Constructeur permettant la création d'un etat de message.
@@ -49,6 +50,7 @@ class placement
 			$this->type = $id_placement['type'];
 			$this->debut_placement = $id_placement['debut_placement'];
 			$this->fin_placement = $id_placement['fin_placement'];
+			$this->image = $id_placement['type'];
 		}
 		else
 		{
@@ -64,6 +66,7 @@ class placement
 			if($this->debut_placement == 0) $this->debut_placement = time();
 			$this->fin_placement = $fin_placement;
 			$this->id_placement = $id_placement;
+			$this->image = $type;
 		}
 	}
 	

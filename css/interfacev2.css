@@ -11,8 +11,8 @@
 #perso{background-color:#c6d9f5;min-height: 120px;margin:0;padding:0;}
 #perso_contenu{width:1000px;margin:auto;background:transparent url('./image/v2/site_haut.png') no-repeat left;min-height:120px;}
 #contenu_jeu {	margin : 0 auto;width:1000px;}
-
-
+#popup {margin-left:250px;position:absolute;top:60px;z-index:999999999; background-color : black;}
+#mask{background-image:url('./image/v2/overlay.png');height:100%;left:0;position:absolute;top:0;width:100%;z-index:9999999;}
 /*-- Basics elements --------------------------------------------------*/
 #global				{ position:relative; margin:0px auto; width:960px; height:100%; border:1px solid red;}
 .spacer { clear: both !important; float: none !important; border: none !important; height: 1px !important; line-height: 1px !important; font-size: 1px !important; padding: 0 !important; margin: 0 0 -1px 0 !important; visibility: hidden !important; }

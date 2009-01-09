@@ -82,4 +82,5 @@ ul#menu ul li:hover {
 
 #loading {background:transparent url('http://test.starshinebox.info/image/ajax-loader-bar.gif') no-repeat scroll left center;height:22px;left:300px;position:absolute;top:300px;width:220px;}
 
-#infos {display : inline; float : right;}
+#map_mine {float : left;}
+#infos {float : left;}

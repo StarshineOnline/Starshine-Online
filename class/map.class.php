@@ -105,7 +105,7 @@ class map
 			for($y_map = $this->ymin; $y_map <= $this->ymax; $y_map++)
 			{
 				for($x_map = $this->xmin; $x_map <= $this->xmax; $x_map++)
-				{	
+				{
 					if($x_map == $this->xmin)
 					{
 						if($Once) { echo "</ul>"; } else { $Once = true; };
@@ -113,7 +113,7 @@ class map
 						echo "<ul class='".$class_css['resolution_map']."'>
 					 		   <li $class_y class='".$classe_css['map_bord_gauche']." ".$class_css['resolution']."'>".$y_map."</li>"; //-- Bord gauche de la map
 					}
-					if( ($x_map == $this->x) && ($y_map == $this->y) )
+					if( ($x_map == $this->x) && ($y_map == $this->y) && is_array($this->map[$x_map][$y_map]["Joueurs"]))
 					{
 						if(!empty($this->map[$x_map][$y_map]["Joueurs"][0]["image"])) 	{ $background = "background-image : url(".$this->map[$x_map][$y_map]["Joueurs"][0]["image"].") !important;"; };
 					}
@@ -212,7 +212,7 @@ class map
 				$pnj = count($this->map[$objPNJ->x][$objPNJ->y]["PNJ"]);
 				$this->map[$objPNJ->x][$objPNJ->y]["PNJ"][$pnj]["id"] = $objPNJ->id;
 				$this->map[$objPNJ->x][$objPNJ->y]["PNJ"][$pnj]["nom"] = $objPNJ->nom;
-				{//-- vÃ©rification que l'image du PNJ existe
+				{//-- vérification que l'image du PNJ existe
 					$image = $this->root."image/pnj/";
 					if(file_exists($image.$objPNJ->image.".png")) 		{ $image .= $objPNJ->image.".png"; }
 					elseif(file_exists($image.$objPNJ->image.".gif")) 	{ $image .= $objPNJ->image.".gif"; }
@@ -249,8 +249,8 @@ class map
 				$this->map[$objJoueurs->x][$objJoueurs->y]["Joueurs"][$joueurs]["level"] = $objJoueurs->level;
 				$this->map[$objJoueurs->x][$objJoueurs->y]["Joueurs"][$joueurs]["race"] = $Gtrad[$objJoueurs->race];
 				$this->map[$objJoueurs->x][$objJoueurs->y]["Joueurs"][$joueurs]["classe"] = $objJoueurs->classe;
-				{//-- VÃ©rification des bonus liÃ©s au points shine
-					//Si c'est pas lui mÃªme
+				{//-- Vérification des bonus liés au points shine
+					//Si c'est pas lui même
 					if($objJoueurs->ID != $_SESSION["ID"])
 					{
 						if($objJoueurs->cache_classe == 2)	{ $this->map[$objJoueurs->x][$objJoueurs->y]["Joueurs"][$joueurs]["classe"] = "combattant"; }
@@ -259,7 +259,7 @@ class map
 						elseif($objJoueurs->cache_niveau == 1 && $objJoueurs->race != $race) { $this->map[$objJoueurs->x][$objJoueurs->y]["Joueurs"][$joueurs]["level"] = "xxx"; }
 					}
 				}
-				{//-- VÃ©rification que l'image de classe existe ($Tclasse est contenue dans ./inc/classe.inc.php)
+				{//-- Vérification que l'image de classe existe ($Tclasse est contenue dans ./inc/classe.inc.php)
 					$classe = $this->map[$objJoueurs->x][$objJoueurs->y]["Joueurs"][$joueurs]["classe"];
 					
 					$image = $this->root."image/personnage/".$objJoueurs->race."/".$objJoueurs->race;
@@ -297,7 +297,7 @@ class map
 				$this->map[$objDrapeaux->x][$objDrapeaux->y]["Drapeaux"][$drapal]["debut_placement"] = $objDrapeaux->debut_placement;
 				$this->map[$objDrapeaux->x][$objDrapeaux->y]["Drapeaux"][$drapal]["fin_placement"] = $objDrapeaux->fin_placement;
 				$this->map[$objDrapeaux->x][$objDrapeaux->y]["Drapeaux"][$drapal]["image"] = $objDrapeaux->image;
-				{//-- vÃ©rification que l'image du drapeau existe
+				{//-- vérification que l'image du drapeau existe
 					$image = $this->root."image/drapeaux/";
 					$image2 = $this->root."image/batiment/";
 					$ratio_temps = ceil(3 * (time() - $objDrapeaux->debut_placement) / ($objDrapeaux->fin_placement - $objDrapeaux->debut_placement) );
@@ -334,7 +334,7 @@ class map
 				$this->map[$objBatiments->x][$objBatiments->y]["Batiments"][$batimat]["royaume"] = $objBatiments->royaume;
 				$this->map[$objBatiments->x][$objBatiments->y]["Batiments"][$batimat]["image"] = $objBatiments->image;
 
-				{//-- vÃ©rification que l'image du batiment existe
+				{//-- vérification que l'image du batiment existe
 					$image = $this->root."image/batiment/";
 					
 					if(file_exists($image.$objBatiments->image."_04.png")) 		{ $image .= $objBatiments->image."_04.png"; }
@@ -365,7 +365,7 @@ class map
 				$this->map[$objMonstres->x][$objMonstres->y]["Monstres"][$monster]["lib"] = $objMonstres->lib;
 				$this->map[$objMonstres->x][$objMonstres->y]["Monstres"][$monster]["tot"] = $objMonstres->tot;
 	
-				{//-- vÃ©rification que l'image du PNJ existe
+				{//-- vérification que l'image du PNJ existe
 					$image = $this->root."image/monstre/";
 					if(file_exists($image.$objMonstres->lib.".png")) 		{ $image .= $objMonstres->lib.".png"; }
 					elseif(file_exists($image.$objMonstres->lib.".gif")) 	{ $image .= $objMonstres->lib.".gif"; }
@@ -389,7 +389,7 @@ class map
 			$this->map[$batiment['x']][$batiment['y']]["Batiments"][$batimat]["royaume"] = $batiment['royaume'];
 			$this->map[$batiment['x']][$batiment['y']]["Batiments"][$batimat]["image"] = $batiment['image'];
 
-			{//-- vÃ©rification que l'image du PNJ existe
+			{//-- vérification que l'image du PNJ existe
 				$image = $this->root."image/batiment/";
 				
 				if(file_exists($image.$batiment['image']."_04.png")) 		{ $image .= $batiment['image']."_04.png"; }
@@ -397,6 +397,30 @@ class map
 				else 														{ $image = ""; } //-- Si aucun des fichiers n'existe autant rien mettre...
 			}
 			$this->map[$batiment['x']][$batiment['y']]["Batiments"][$batimat]["image"] = $image;
+		}
+	}
+
+	//On passe en argumant un tableau contenant la liste des batiments sous forme d'objet
+	function set_batiment_objet($batiments)
+	{
+		$batimat = 0;
+		foreach($batiments as $batiment)
+		{
+			$batimat = count($this->map[$batiment->x][$batiment->y]["Batiments"]);
+			$this->map[$batiment->x][$batiment->y]["Batiments"][$batimat]["id_batiment"] = $batiment->id;
+			$this->map[$batiment->x][$batiment->y]["Batiments"][$batimat]["hp"] = $batiment->hp;
+			$this->map[$batiment->x][$batiment->y]["Batiments"][$batimat]["nom"] = $batiment->nom;
+			$this->map[$batiment->x][$batiment->y]["Batiments"][$batimat]["royaume"] = $batiment->royaume;
+			$this->map[$batiment->x][$batiment->y]["Batiments"][$batimat]["image"] = $batiment->image;
+
+			{//-- vérification que l'image du PNJ existe
+				$image = $this->root."image/batiment/";
+				
+				if(file_exists($image.$batiment->image."_04.png")) 		{ $image .= $batiment->image."_04.png"; }
+				elseif(file_exists($image.$batiment->image."_04.gif")) 	{ $image .= $batiment->image."_04.gif"; }
+				else 														{ $image = ""; } //-- Si aucun des fichiers n'existe autant rien mettre...
+			}
+			$this->map[$batiment->x][$batiment->y]["Batiments"][$batimat]["image"] = $image;
 		}
 	}
 

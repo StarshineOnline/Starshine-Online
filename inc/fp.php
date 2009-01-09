@@ -19,11 +19,11 @@ mb_internal_encoding("UTF-8");
 //Inclusion des fonctions permettant de gérer le temps
 include($root.'fonction/time.inc.php');
 
-// Inclusion des fonctions gérant les actions en combat
-include($root.'fonction/action.inc.php');
-
 //Récupère le timestamp en milliseconde de début de création de la page
 $debut = getmicrotime();
+
+// Inclusion des fonctions gérant les actions en combat
+include($root.'fonction/action.inc.php');
 
 //Récupération des variables de connexion à la base et connexion à cette base
 include($root.'connect.php');
