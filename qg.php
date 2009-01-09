@@ -22,14 +22,14 @@ $W_distance = detection_distance($W_case, $_SESSION["position"]);
 if($W_distance == 0)
 {
     ?>
-    <h2 class="ville_titre"><?php echo '<a href="javascript:envoiInfo(\'ville.php?poscase='.$W_case.'\', \'centre\')">';?><?php echo $R['nom'];?></a> - <?php echo '<a href="javascript:envoiInfo(\'qg.php?poscase='.$W_case.'\', \'carte\')">';?> Quartier Général </a></h2>
+    <h2 class="ville_titre"><?php echo '<a href="ville.php?poscase='.$W_case.'" onclick="return envoiInfo(this.href, \'centre\')">';?><?php echo $R['nom'];?></a> - <?php echo '<a href="qg.php?poscase='.$W_case.'" onclick="return envoiInfo(this.href, \'carte\')">';?> Quartier Général </a></h2>
 		<?php include('ville_bas.php');?>	
 	<div class="ville_test">
     <?php
     if(array_key_exists('direction', $_GET))
     {
 	    ?>
-	    <div style="text-align : center;"><a href="javascript:envoiInfo('qg.php?poscase=<?php echo $W_case; ?>&amp;direction=depot', 'carte')">Dépôt militaire</a>
+	    <div style="text-align : center;"><a href="qg.php?poscase=<?php echo $W_case; ?>&amp;direction=depot" onclick="return envoiInfo(this.href, 'carte')">Dépôt militaire</a>
 	    </div>
 	    <?php
         switch($_GET['direction'])
@@ -103,7 +103,7 @@ if($W_distance == 0)
                 	</td>
                 	<td>
                 	<input type="text" id="nbr<?php echo $i; ?>" value="0" />
-                	 <a href="javascript:envoiInfo('qg.php?poscase=<?php echo $W_case; ?>&amp;direction=prendre&amp;id_objet=1&amp;nbr=' + document.getElementById('nbr<?php echo $i; ?>').value, 'carte')">Prendre</a>
+                	 <a href="" onclick="return envoiInfo('qg.php?poscase=<?php echo $W_case; ?>&amp;direction=prendre&amp;id_objet=1&amp;nbr=' + document.getElementById('nbr<?php echo $i; ?>').value, 'carte')">Prendre</a>
                 	</td>
                 </tr>
                 <?
@@ -121,7 +121,7 @@ if($W_distance == 0)
                         <?php echo $row['nom']; ?>
                     </td>
                     <td>
-                        <a href="javascript:envoiInfo('qg.php?poscase=<?php echo $W_case; ?>&amp;direction=prendre&amp;id=<?php echo $row['id_depot']; ?>&amp;id_objet=<?php echo $row['id_objet']; ?>', 'carte')">Prendre</a>
+                        <a href="qg.php?poscase=<?php echo $W_case; ?>&amp;direction=prendre&amp;id=<?php echo $row['id_depot']; ?>&amp;id_objet=<?php echo $row['id_objet']; ?>" onclick="return envoiInfo(this.href, 'carte')">Prendre</a>
                     </td>
                 </tr>
                 <?php

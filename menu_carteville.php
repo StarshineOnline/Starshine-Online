@@ -7,7 +7,7 @@
 		else
 		{
 			?>
-			<a class="rose_a" OnClick="javascript:envoiInfo('deplacement.php', 'centre')"><img src="image/interface/affiche_carte.png" alt="Afficher la carte"></a>
+			<a class="rose_a" onclick="envoiInfo('deplacement.php', 'centre')"><img src="image/interface/affiche_carte.png" alt="Afficher la carte"></a>
 			<?php
 		}
 		require_once('menu_mess.php');

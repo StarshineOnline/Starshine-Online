@@ -140,7 +140,7 @@ if (isset($_GET['ID']))
 					$db->query($requete);
 				}
 				if($groupe) $groupe_href = '&amp;groupe=yes'; else $groupe_href = '';
-				echo '<a href="javascript:envoiInfo(\'sort.php?ID='.$_GET['ID'].$groupe_href.'\', \'information\')">Utilisez a nouveau ce sort</a>';
+				echo '<a href="sort.php?ID='.$_GET['ID'].$groupe_href.'" onclick="return envoiInfo(this.href, \'information\')">Utilisez a nouveau ce sort</a>';
 			break;
 			case 'body_to_mind' :
 				if($joueur['hp'] > $row['effet'])
@@ -171,7 +171,7 @@ if (isset($_GET['ID']))
 						$requete = "UPDATE perso SET hp = '".$joueur['hp']."', mp = '".$joueur['mp']."', pa = '".$joueur['pa']."', incantation = '".$joueur['incantation']."', sort_mort = '".$joueur['sort_mort']."' WHERE ID = '".$_SESSION['ID']."'";
 						$req = $db->query($requete);
 					}
-					echo '<a href="javascript:envoiInfo(\'sort.php?ID='.$_GET['ID'].'\', \'information\')">Utilisez a nouveau ce sort</a>';
+					echo '<a href="sort.php?ID='.$_GET['ID'].'" onclick="return envoiInfo(this.href, \'information\')">Utilisez a nouveau ce sort</a>';
 				}
 				else
 				{
@@ -421,7 +421,7 @@ if (isset($_GET['ID']))
 					}
 				}
 
-				echo "<a href=\"javascript:envoiInfo('sort.php?ID=".$_GET["ID"]."', 'information')\">Utilisez a nouveau cette compétence</a>";	
+				echo "<a href=\"" onclick="return envoiInfo('sort.php?ID=".$_GET["ID"]."', 'information')\">Utilisez a nouveau cette compétence</a>";	
 			break;
 			case "esprit_sacrifie" :	 //-- Esprit Sacrifié
 				//-- Suppression d'un debuff au hasard
@@ -468,12 +468,12 @@ if (isset($_GET['ID']))
 				}
 				else { echo "Impossible de lancer de lancer le sort. Vous n&apos;a aucun buff.<br/>"; };
 					
-				echo "<a href=\"javascript:envoiInfo('sort.php?ID=".$_GET["ID"]."', 'information')\">Utilisez a nouveau cette compétence</a>";	
+				echo "<a href=\"" onclick="return envoiInfo('sort.php?ID=".$_GET["ID"]."', 'information')\">Utilisez a nouveau cette compétence</a>";	
 			
 			break;
 		}
 	}
-	echo '<br /><a href="javascript:envoiInfo(\'sort.php\', \'information\');">Revenir au livre de sort</a>';
+	echo '<br /><a href="sort.php" onclick="return envoiInfo(this.href, \'information\');">Revenir au livre de sort</a>';
 }
 else
 {
@@ -507,7 +507,7 @@ else
 	}
 	foreach($magies as $magie)
 	{
-		echo '<a href="javascript:envoiInfo(\'sort.php?tri='.$magie.'\', \'information\');"><img src="image/icone_'.$magie.'.png" alt="'.$Gtrad[$magie].'" title="'.$Gtrad[$magie].'" /></a> ';
+		echo '<a href="sort.php?tri='.$magie.'" onclick="return envoiInfo(this.href, \'information\');"><img src="image/icone_'.$magie.'.png" alt="'.$Gtrad[$magie].'" title="'.$Gtrad[$magie].'" /></a> ';
 	}
 	if(array_key_exists('tri', $_GET)) $where = 'AND comp_assoc = \''.$_GET['tri'].'\''; else $_GET['tri'] = 'favoris';
 	if($_GET['tri'] == 'favoris')
@@ -544,8 +544,8 @@ else
 			//On ne peut uniquement faire que les sorts qui nous target ou target tous le groupe
 			if($row['cible'] == 1 OR $row['cible'] == 8 OR $row['cible'] == 2)
 			{
-				$href = 'javascript:envoiInfo(\'sort.php?ID='.$row['id'].'\', \'information\')';
-				$href2 = 'javascript:envoiInfo(\'sort.php?ID='.$row['id'].'&amp;groupe=yes\', \'information\')';
+				$href = 'envoiInfo(\'sort.php?ID='.$row['id'].'\', \'information\')';
+				$href2 = 'envoiInfo(\'sort.php?ID='.$row['id'].'&amp;groupe=yes\', \'information\')';
 				$color = '#444';
 				$cursor = 'cursor : pointer;';
 			}
@@ -562,7 +562,7 @@ else
 				<?php echo $image; ?>
 			</td>
 			<td>
-			    <span style="<?php echo $cursor; ?>; text-decoration : none; color : <?php echo $color; ?>;" onclick="<?php echo $href; ?>; return nd();" onmouseover="return <?php echo make_overlib(description($row['description'], $row).'<br/><span class=&quot;xmall&quot;>Incantation : '.$incanta.'</span>'); ?>" onmouseout="return nd();"> <strong><?php echo $row['nom']; ?></strong></span>
+				<span style="<?php echo $cursor; ?>; text-decoration : none; color : <?php echo $color; ?>;" onclick="<?php echo $href; ?>; return nd();" onmouseover="return <?php echo make_overlib(description($row['description'], $row).'<br/><span class=&quot;xmall&quot;>Incantation : '.$incanta.'</span>'); ?>" onmouseout="return nd();"> <strong><?php echo $row['nom']; ?></strong></span>
 			</td>
 			<?php
 			echo '
@@ -578,8 +578,8 @@ else
 				$keys = array_keys($joueur['competences']);
 				if(in_array('sort_groupe', $keys) || in_array('sort_groupe_'.$row['comp_assoc'], $keys)) echo ' <span style="'.$cursor.'text-decoration : none; color : '.$color.';" onclick="'.$href2.'">(groupe - '.ceil($sortmp * 1.5).' MP)</span>';
 			}
-			if($_GET['tri'] == 'favoris') echo ' <td><a href="javascript:envoiInfo(\'sort.php?action=delfavoris&amp;id='.$row['id'].'\', \'information\')"><img src="image/croix_quitte.png" alt="Supprimer des favoris" title="Supprimer des favoris" /></a></td>';
-			else echo ' <td><a href="javascript:envoiInfo(\'sort.php?action=favoris&amp;id='.$row['id'].'\', \'information\')"><img src="image/favoris.png" alt="Favoris" title="Ajouter aux sorts favoris" /></a></td>';
+			if($_GET['tri'] == 'favoris') echo ' <td><a href="sort.php?action=delfavoris&amp;id='.$row['id'].'" onclick="return envoiInfo(this.href, \'information\')"><img src="image/croix_quitte.png" alt="Supprimer des favoris" title="Supprimer des favoris" /></a></td>';
+			else echo ' <td><a href="sort.php?action=favoris&amp;id='.$row['id'].'" onclick="return envoiInfo(this.href, \'information\')"><img src="image/favoris.png" alt="Favoris" title="Ajouter aux sorts favoris" /></a></td>';
 			echo '</tr>';
 			?>
 			</div>

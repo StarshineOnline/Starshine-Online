@@ -19,7 +19,7 @@ $R = get_royaume_info($joueur['race'], $W_row['royaume']);
 $_SESSION['position'] = convert_in_pos($joueur['x'], $joueur['y']);
 if(array_key_exists('fort', $_GET)) $fort = '&amp;fort=ok'; else $fort = '';
 ?>
-    	<h2 class="ville_titre"><?php if(!array_key_exists('fort', $_GET)) return_ville( '<a href="javascript:envoiInfo(\'ville.php?poscase='.$W_case.'\', \'centre\')">'.$R['nom'].'</a> - ', $W_case); ?> <?php echo '<a href="javascript:envoiInfo(\'taverne.php?poscase='.$W_case.'\',\'carte\')">';?> Magasin </a></h2>
+    	<h2 class="ville_titre"><?php if(!array_key_exists('fort', $_GET)) return_ville('<a href="ville.php?poscase='.$W_case.'" onclick="return envoiInfo(this.href, \'centre\')">'.$R['nom'].'</a> - ', $W_case); ?> <?php echo '<a href="taverne.php?poscase='.$W_case.'" onclick="return envoiInfo(this.href,\'carte\')">';?> Magasin </a></h2>
 				<?php include('ville_bas.php');?>
 		<?php
 $W_distance = detection_distance($W_case,$_SESSION["position"]);
@@ -132,7 +132,7 @@ if($W_distance == 0)
 				<?php echo $cout; ?>
 			</td>
 			<td>
-				<a href="javascript:envoiInfo('magasin.php?action=achat&amp;id=<?php echo $row['id']; ?>&amp;type=<?php echo $row['type']; ?>&amp;poscase=<?php echo $_GET['poscase'].$fort; ?>', 'carte')"><span class="achat">Achat</span></a>
+				<a href="magasin.php?action=achat&amp;id=<?php echo $row['id']; ?>&amp;type=<?php echo $row['type']; ?>&amp;poscase=<?php echo $_GET['poscase'].$fort; ?>" onclick="return envoiInfo(this.href, 'carte')"><span class="achat">Achat</span></a>
 			</td>
 		</tr>
 		<?php

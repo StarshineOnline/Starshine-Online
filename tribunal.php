@@ -17,7 +17,7 @@ $R = get_royaume_info($joueur['race'], $W_row['royaume']);
 
 $_SESSION['position'] = convert_in_pos($joueur['x'], $joueur['y']);
 ?>
-   	<h2 class="ville_titre"><?php echo '<a href="javascript:envoiInfo(\'ville.php?poscase='.$W_case.'\', \'centre\')">';?><?php echo $R['nom'];?></a> - <?php echo '<a href="javascript:envoiInfo(\'tribunal.php?poscase='.$W_case.'\', \'carte\')">';?> Tribunal </a></h2>
+   	<h2 class="ville_titre"><?php echo '<a href="ville.php?poscase='.$W_case.'" onclick="return envoiInfo(this.href, \'centre\')">';?><?php echo $R['nom'];?></a> - <?php echo '<a href="tribunal.php?poscase='.$W_case.'" onclick="return envoiInfo(this.href, \'carte\')">';?> Tribunal </a></h2>
 		<?php include('ville_bas.php');?>
 <?php
 //Affichage des quêtes
@@ -121,7 +121,7 @@ if($W_distance == 0)
 					<?php echo $row['prime']; ?>
 				</td>
 				<td>
-					<a href="javascript:envoiInfo('tribunal.php?poscase=<?php echo $W_case; ?>&amp;action=prime&amp;id_criminel=<?php echo $perso['ID']; ?>', 'carte')">Mettre une prime sur sa tête</a>
+					<a href="tribunal.php?poscase=<?php echo $W_case; ?>&amp;action=prime&amp;id_criminel=<?php echo $perso['ID']; ?>" onclick="return envoiInfo(this.href, 'carte')">Mettre une prime sur sa tête</a>
 				</td>
 			</tr>
 			<?php

@@ -14,7 +14,7 @@ $row = $db->read_assoc($req);
 
 echo '<h2>'.$row['nom'].'</h2>';
 $reponses = explode('*****', nl2br($row['texte']));
-$message = eregi_replace("\[ID:([^[]*)\]([^[]*)\[/ID:([^[]*)\]", "<li><a href=\"javascript:envoiInfo('pnj.php?id=".$id."&amp;reponse=\\1&amp;poscase=".$W_case."', 'information')\">\\2</a></li>", $reponses[$reponse]);
+$message = eregi_replace("\[ID:([^[]*)\]([^[]*)\[/ID:([^[]*)\]", "<li><a href=\"pnj.php?id=".$id."&amp;reponse=\\1&amp;poscase=".$W_case."\" onclick=\"return envoiInfo(this.href, 'information')\">\\2</a></li>", $reponses[$reponse]);
 //On vérifie si ya une quête pour ce pnj
 $supp = true;
 if($joueur['quete'] != '')
@@ -47,7 +47,7 @@ if($joueur['quete'] != '')
 					if($id_cible == 0 OR $id_cible == $id)
 					{*/
 						//On affiche le lien pour la discussion
-						$message = eregi_replace("\[QUETE".$quete['id_quete']."-".$i.":([^[]*)\]([^[]*)\[/QUETE".$quete['id_quete']."-".$i.":([^[]*)\]", "<li><a href=\"javascript:envoiInfo('pnj.php?id=".$id."&amp;reponse=\\1&amp;poscase=".$W_case."', 'information')\">\\2</a></li>", $message);
+						$message = eregi_replace("\[QUETE".$quete['id_quete']."-".$i.":([^[]*)\]([^[]*)\[/QUETE".$quete['id_quete']."-".$i.":([^[]*)\]", "<li><a href=\"pnj.php?id=".$id."&amp;reponse=\\1&amp;poscase=".$W_case."\" onclick=\"return envoiInfo(this.href, 'information')\">\\2</a></li>", $message);
 						$supp = false;
 						//On supprime les autres liens
 						//$message = eregi_replace("\[QUETE([^[]*)\]([^[]*)\[/QUETE([^[]*)\]", "", $message);
@@ -64,7 +64,7 @@ if($joueur['quete_fini'] != '')
 	foreach($quete_fini as $quete)
 	{
 		//On affiche le lien pour la discussion
-		$message = eregi_replace("\[QUETEFINI".$quete.":([^[]*)\]([^[]*)\[/QUETEFINI".$quete.":([^[]*)\]", "<li><a href=\"javascript:envoiInfo('pnj.php?id=".$id."&amp;reponse=\\1&amp;poscase=".$W_case."', 'information')\">\\2</a></li>", $message);
+		$message = eregi_replace("\[QUETEFINI".$quete.":([^[]*)\]([^[]*)\[/QUETEFINI".$quete.":([^[]*)\]", "<li><a href=\"pnj.php?id=".$id."&amp;reponse=\\1&amp;poscase=".$W_case."\" onclick=\"return envoiInfo(this.href, 'information')\">\\2</a></li>", $message);
 		$supp = false;
 	}
 }
@@ -72,7 +72,7 @@ if($joueur['quete_fini'] != '')
 $message = eregi_replace("\[QUETE([^[]*)\]([^[]*)\[/QUETE([^[]*)\]", "", $message);
 //On supprime les autres liens
 $message = eregi_replace("\[QUETEFINI([^[]*)\]([^[]*)\[/QUETEFINI([^[]*)\]", "", $message);
-$message = eregi_replace("\[retour]", "<li><a href=\"javascript:envoiInfo('informationcase.php?case=".$W_case."', 'information')\">Retour aux informations de la case</a></li>", $message);
+$message = eregi_replace("\[retour]", "<li><a href=\"informationcase.php?case=".$W_case."\" onclick=\"return envoiInfo(this.href, 'information')\">Retour aux informations de la case</a></li>", $message);
 //Validation de la quête
 if(eregi("\[quete]", $message))
 {

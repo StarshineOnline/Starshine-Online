@@ -62,7 +62,7 @@ $_SESSION['position'] = convert_in_pos($joueur['x'], $joueur['y']);
 	}
 	$W_coord = convert_in_coord($W_case);
 	?>
-   	<h2 class="ville_titre"><?php if(!array_key_exists('fort', $_GET)) return_ville( '<a href="javascript:envoiInfo(\'ville.php?poscase='.$W_case.'\', \'centre\')">'.$R['nom'].'</a> - ', $W_case); ?> <?php echo '<a href="javascript:envoiInfo(\'teleport.php?poscase='.$W_case.'\', \'carte\')">';?> Pierre de téléportation </a></h2>
+   	<h2 class="ville_titre"><?php if(!array_key_exists('fort', $_GET)) return_ville( '<a href="ville.php?poscase='.$W_case.'" onclick="return envoiInfo(this.href, \'centre\')">'.$R['nom'].'</a> - ', $W_case); ?> <?php echo '<a href="teleport.php?poscase='.$W_case.'" onclick="return envoiInfo(this.href, \'carte\')">';?> Pierre de téléportation </a></h2>
 		<?php include('ville_bas.php');?>
 
 	<div class="ville_test">

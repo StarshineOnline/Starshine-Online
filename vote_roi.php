@@ -18,7 +18,7 @@ $R = get_royaume_info($joueur['race'], $W_row['royaume']);
 
 $_SESSION['position'] = convert_in_pos($joueur['x'], $joueur['y']);
 ?>
-    <h2 class="ville_titre"><?php if(verif_ville($joueur['x'], $joueur['y'])) return_ville( '<a href="javascript:envoiInfo(\'ville.php?poscase='.$W_case.'\', \'centre\')">'.$R['nom'].'</a> -', $W_case); ?> <?php echo '<a href="javascript:envoiInfo(\'qg.php?poscase='.$W_case.'\', \'carte\')">';?> Quartier Général </a></h2>
+	<h2 class="ville_titre"><?php if(verif_ville($joueur['x'], $joueur['y'])) return_ville( '<a href="ville.php?poscase='.$W_case.'" onclick="return envoiInfo(this.href, \'centre\')">'.$R['nom'].'</a> -', $W_case); ?> <?php echo '<a href="qg.php?poscase='.$W_case.'" onclick="return envoiInfo(this.href, \'carte\')">';?> Quartier Général </a></h2>
 		<?php include('ville_bas.php');?>	
 	<div class="ville_test">
 <?php
@@ -75,7 +75,7 @@ if($W_distance == 0)
 		<?php
 		$url = "vote_roi.php?action=vote&amp;id_candidat=' + document.getElementById('id_candidat').value + '&amp;poscase=".$W_case;
 		?>
-	<input type="button" onclick="javascript:envoiInfo('<?php echo $url; ?>', 'carte');" value="Voter !">
+	<input type="button" onclick="envoiInfo('<?php echo $url; ?>', 'carte');" value="Voter !">
 	<?php
 		//echo $url;
 		}

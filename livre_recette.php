@@ -141,7 +141,7 @@ while($row = $db->read_assoc($req))
 	</ul>
 	<br />
 	<?php
-	if($complet) echo '<a href="javascript:envoiInfo(\'livre_recette.php?action=fabrique&amp;id_recette='.$row['id_recette'].'&amp;id='.$row['id'].'\', \'information\');">Fabriquer <span class="xsmall">('.$row_r['pa'].' PA)</span></a>';
+	if($complet) echo '<a href="livre_recette.php?action=fabrique&amp;id_recette='.$row['id_recette'].'&amp;id='.$row['id'].'" onclick="return envoiInfo(this.href, \'information\');">Fabriquer <span class="xsmall">('.$row_r['pa'].' PA)</span></a>';
 echo '</div>';
 }
 ?>

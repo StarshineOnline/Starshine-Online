@@ -19,7 +19,7 @@ if(!isset($_GET['type'])) $_GET['type'] = 'arme';
 
 $_SESSION['position'] = convert_in_pos($joueur['x'], $joueur['y']);
 ?>
-   	<h2 class="ville_titre"><?php echo '<a href="javascript:envoiInfo(\'ville.php?poscase='.$W_case.'\', \'centre\')">';?><?php echo $R['nom'];?></a> - <?php echo '<a href="javascript:envoiInfo(\'universite.php?poscase='.$W_case.'\', \'carte\')">';?> Université </a></h2>
+   	<h2 class="ville_titre"><?php echo '<a href="ville.php?poscase='.$W_case.'" onclick="return envoiInfo(this.href, \'centre\')">';?><?php echo $R['nom'];?></a> - <?php echo '<a href="universite.php?poscase='.$W_case.'" onclick="return envoiInfo(this.href, \'carte\')">';?> Université </a></h2>
 		<?php include('ville_bas.php');?>
 <?php
 $W_distance = detection_distance($W_case,$_SESSION["position"]);
@@ -131,7 +131,7 @@ if($W_distance == 0)
 				</ul>
 				<br />
 				<br />
-				<a href="javascript:envoiInfo('universite.php?action=prendre&amp;id=<?php echo $_GET['id']; ?>&amp;poscase=<?php echo $_GET['poscase']; ?>', 'carte')">Suivre la voie du <?php echo $nom; ?></a>
+				<a href="universite.php?action=prendre&amp;id=<?php echo $_GET['id']; ?>&amp;poscase=<?php echo $_GET['poscase']; ?>" onclick="return envoiInfo(this.href, 'carte')">Suivre la voie du <?php echo $nom; ?></a>
 				</span>
 				</tr></td>
 				</table>
@@ -241,7 +241,7 @@ que Dulfandal nous protège tous, nous sommes perdus ( tache de sang )...<br />
 				}
 			?>
 			<li>
-				<a href="javascript:envoiInfo('universite.php?action=description&amp;id=<?php echo $row['id']; ?>&amp;poscase=<?php echo $_GET['poscase']; ?>', 'carte')"><?php echo $row['nom']; ?></a>
+				<a href="universite.php?action=description&amp;id=<?php echo $row['id']; ?>&amp;poscase=<?php echo $_GET['poscase']; ?>" onclick="return envoiInfo(this.href, 'carte')"><?php echo $row['nom']; ?></a>
 			</li>
 			<?php
 			}
@@ -250,7 +250,7 @@ que Dulfandal nous protège tous, nous sommes perdus ( tache de sang )...<br />
 			?>
 				<h3 class="ville_haut">Bibliothèque</h3>
 				<li>
-					<a href="javascript:envoiInfo('universite.php?action=quete_myriandre&amp;id=1&amp;poscase=<?php echo $_GET['poscase']; ?>', 'carte')">Journal de Frankriss hawkeye</a>
+					<a href="universite.php?action=quete_myriandre&amp;id=1&amp;poscase=<?php echo $_GET['poscase']; ?>" onclick="return envoiInfo(this.href, 'carte')">Journal de Frankriss hawkeye</a>
 				</li>
 			<?php
 			}

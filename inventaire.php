@@ -591,9 +591,9 @@ if(!$visu AND isset($_GET['action']))
 			$chance_reussite3 = pourcent_reussite($craft, 100);
 			echo 'Quel niveau d\'enchassement voulez vous ?
 			<ul>
-				<li><a href="javascript:envoiInfo(\'inventaire.php?action=slot2&amp;key_slot='.$_GET['key_slot'].'&amp;niveau=1'.$filtre_url.'\', \'information\');">Niveau 1</a> <span class="small">('.$chance_reussite1.'% de chances de réussite)</span></li>
-				<li><a href="javascript:envoiInfo(\'inventaire.php?action=slot2&amp;key_slot='.$_GET['key_slot'].'&amp;niveau=2'.$filtre_url.'\', \'information\');">Niveau 2</a> <span class="small">('.$chance_reussite2.'% de chances de réussite)</span></li>
-				<li><a href="javascript:envoiInfo(\'inventaire.php?action=slot2&amp;key_slot='.$_GET['key_slot'].'&amp;niveau=3'.$filtre_url.'\', \'information\');">Niveau 3</a> <span class="small">('.$chance_reussite3.'% de chances de réussite)</span></li>
+				<li><a href="inventaire.php?action=slot2&amp;key_slot='.$_GET['key_slot'].'&amp;niveau=1'.$filtre_url.'" onclick="return envoiInfo(this.href, \'information\');">Niveau 1</a> <span class="small">('.$chance_reussite1.'% de chances de réussite)</span></li>
+				<li><a href="inventaire.php?action=slot2&amp;key_slot='.$_GET['key_slot'].'&amp;niveau=2'.$filtre_url.'" onclick="return envoiInfo(this.href, \'information\');">Niveau 2</a> <span class="small">('.$chance_reussite2.'% de chances de réussite)</span></li>
+				<li><a href="inventaire.php?action=slot2&amp;key_slot='.$_GET['key_slot'].'&amp;niveau=3'.$filtre_url.'" onclick="return envoiInfo(this.href, \'information\');">Niveau 3</a> <span class="small">('.$chance_reussite3.'% de chances de réussite)</span></li>
 			</ul>';
 		break;
 		case 'slot2' :
@@ -718,7 +718,7 @@ if(!$visu AND isset($_GET['action']))
 							$nom = nom_objet($joueur['inventaire_slot'][$i]);
 							$chance_reussite = pourcent_reussite($craft, $difficulte);
 							//On peut mettre la gemme
-							echo '<li><a href="javascript:envoiInfo(\'inventaire.php?action=enchasse2&amp;key_slot='.$_GET['key_slot'].'&amp;key_slot2='.$i.'&amp;niveau='.$row['niveau'].$filtre_url.'\', \'information\');">'.$nom.' / slot niveau '.$objet_i['slot'].'</a> <span class="xsmall">'.$chance_reussite.'% de chance de réussite</span></li>';
+							echo '<li><a href="inventaire.php?action=enchasse2&amp;key_slot='.$_GET['key_slot'].'&amp;key_slot2='.$i.'&amp;niveau='.$row['niveau'].$filtre_url.'" onclick="return envoiInfo(this.href, \'information\');">'.$nom.' / slot niveau '.$objet_i['slot'].'</a> <span class="xsmall">'.$chance_reussite.'% de chance de réussite</span></li>';
 						}
 					}
 				}
@@ -900,7 +900,7 @@ foreach($tab_loc as $loc)
 					$nom = $row['nom'];
 				break;
 			}
-			if($desequip) echo '<a href="javascript:envoiInfo(\'inventaire.php?action=desequip&amp;partie='.$loc['loc'].$filtre_url.'\', \'information\');">';
+			if($desequip) echo '<a href="inventaire.php?action=desequip&amp;partie='.$loc['loc'].$filtre_url.'" onclick="return envoiInfo(this.href, \'information\');">';
 			echo '<img src="'.$image.'" style="float : left;" title="Déséquiper" alt="Déséquiper" />';
 			if($desequip) echo '</a>';
 			echo '<strong>'.$nom.'</strong>';

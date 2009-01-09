@@ -79,13 +79,13 @@ if(!array_key_exists('categorie', $_GET)) $categorie = 1; else $categorie = $_GE
 <table style="width:100%;">
 <tr>
 	<td style="text-align : center; width:33%;">
-		<a href="javascript:envoiInfo('point_sso.php?categorie=1', 'information')">Echange</a>
+		<a href="point_sso.php?categorie=1" onclick="return envoiInfo(this.href, 'information')">Echange</a>
 	</td>
 	<td style="text-align : center; width:33%;">
-		<a href="javascript:envoiInfo('point_sso.php?categorie=2', 'information')">Mimétisme</a>
+		<a href="point_sso.php?categorie=2" onclick="return envoiInfo(this.href, 'information')">Mimétisme</a>
 	</td>
 	<td style="text-align : center; width:33%;">
-		<a href="javascript:envoiInfo('point_sso.php?categorie=3', 'information')">Personalisation</a>
+		<a href="point_sso.php?categorie=3" onclick="return envoiInfo(this.href, 'information')">Personalisation</a>
 	</td>
 </tr>
 </table>
@@ -132,7 +132,7 @@ while($row_l = $db->read_assoc($req_l))
 			$texte = '<strong style="color : '.$color.'">'.$row['nom'].'</strong><br />';
 			if(!$possede) $texte.= '<span class="xsmall">'.$row['point'].' point(s)</span><br />';
 			$texte .= '
-					<a href="javascript:if(confirm(\'Voulez vous vraiment prendre le bonus ~'.$row['nom'].'~ pour '.$row['point'].' points ? \')) javascript:envoiInfo(\'point_sso.php?action=prend&amp;id='.$row['id_bonus'].'&amp;categorie='.$categorie.'\', \'information\');"><img src="image/niveau/'.$image.'.png" onmousemove="afficheInfo(\'cadre_'.$row['id_bonus'].'\', \'block\', event, \'centre\');" onmouseout="afficheInfo(\'cadre_'.$row['id_bonus'].'\', \'none\', event, \'centre\');" alt="cadre"></a>
+					<a href="point_sso.php?action=prend&amp;id='.$row['id_bonus'].'&amp;categorie='.$categorie.'" onclick="if(confirm(\'Voulez vous vraiment prendre le bonus ~'.$row['nom'].'~ pour '.$row['point'].' points ? \')) return envoiInfo(this.href, \'information\'); else return false;"><img src="image/niveau/'.$image.'.png" onmousemove="afficheInfo(\'cadre_'.$row['id_bonus'].'\', \'block\', event, \'centre\');" onmouseout="afficheInfo(\'cadre_'.$row['id_bonus'].'\', \'none\', event, \'centre\');" alt="cadre"></a>
 					<div style="color : #fff; text-align : left; display: none; z-index: 2; position: absolute; top: 250px; right: 150px; background-color : #555; border: 1px solid #000000; font-size:12px; width: 250px; padding: 5px;" id="cadre_'.$row['id_bonus'].'">
 						<strong>'.$row['nom'].'</strong><br />
 						'.$row['description'].'<br />

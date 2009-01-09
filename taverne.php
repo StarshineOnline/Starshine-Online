@@ -19,7 +19,7 @@ if(!isset($_GET['type'])) $_GET['type'] = 'arme';
 
 $_SESSION['position'] = convert_in_pos($joueur['x'], $joueur['y']);
 ?>
-    	<h2 class="ville_titre"><?php if(verif_ville($joueur['x'], $joueur['y'])) return_ville( '<a href="javascript:envoiInfo(\'ville.php?poscase='.$W_case.'\', \'centre\')">'.$R['nom'].'</a> -', $W_case); ?> <?php echo '<a href="javascript:envoiInfo(\'taverne.php?poscase='.$W_case.'\',\'carte\')">';?> Taverne </a></h2>
+    	<h2 class="ville_titre"><?php if(verif_ville($joueur['x'], $joueur['y'])) return_ville( '<a href="ville.php?poscase='.$W_case.'" onclick="return envoiInfo(this.href, \'centre\')">'.$R['nom'].'</a> -', $W_case); ?> <?php echo '<a href="taverne.php?poscase='.$W_case.'" onclick="return envoiInfo(this.href,\'carte\')">';?> Taverne </a></h2>
 		<?php include('ville_bas.php');?>	
 		<div class="ville_test">
 		<span class="texte_normal">
@@ -389,7 +389,7 @@ if($W_distance == 0)
 				<?php echo ($row['mp'] + ceil($joueur['mp_max'] * $row['mp_pc'] / 100)); ?>
 			</td>
 			<td>
-				<a href="javascript:envoiInfo('taverne.php?action=achat&amp;id=<?php echo $row['ID']; ?>&amp;poscase=<?php echo $_GET['poscase'].$fort; ?>', 'carte')"><span class="achat">Achat</span></a>
+				<a href="taverne.php?action=achat&amp;id=<?php echo $row['ID']; ?>&amp;poscase=<?php echo $_GET['poscase'].$fort; ?>" onclick="return envoiInfo(this.href, 'carte')"><span class="achat">Achat</span></a>
 			</td>
 		</tr>
 		<?php
