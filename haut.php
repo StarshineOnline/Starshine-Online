@@ -114,5 +114,5 @@ else {
 }
 $fin = getmicrotime();
 
-echo 'TEMPS : '.($fin - $debut);
+//echo 'TEMPS : '.($fin - $debut);
 ?>

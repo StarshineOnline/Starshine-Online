@@ -1,4 +1,4 @@
-CREATE TABLE `starshine_test`.`bataille` (
+CREATE TABLE `bataille` (
 `id` INT UNSIGNED NOT NULL AUTO_INCREMENT ,
 `id_royaume` TINYINT UNSIGNED NOT NULL ,
 `x` MEDIUMINT UNSIGNED NOT NULL ,
@@ -11,14 +11,14 @@ CREATE TABLE `starshine_test`.`bataille` (
 PRIMARY KEY ( `id` )
 );
 
-CREATE TABLE `starshine_test`.`bataille_groupe` (
+CREATE TABLE `bataille_groupe` (
 `id` INT UNSIGNED NOT NULL AUTO_INCREMENT ,
 `id_bataille` INT UNSIGNED NOT NULL ,
 `id_groupe` INT UNSIGNED NOT NULL ,
 PRIMARY KEY ( `id` )
 );
 
-CREATE TABLE `starshine_test`.`bataille_groupe_repere` (
+CREATE TABLE `bataille_groupe_repere` (
 `id` INT UNSIGNED NOT NULL AUTO_INCREMENT ,
 `id_repere` INT UNSIGNED NOT NULL ,
 `id_groupe` INT UNSIGNED NOT NULL ,
@@ -26,7 +26,7 @@ CREATE TABLE `starshine_test`.`bataille_groupe_repere` (
 PRIMARY KEY ( `id` )
 );
 
-CREATE TABLE `starshine_test`.`bataille_repere` (
+CREATE TABLE `bataille_repere` (
 `id` INT UNSIGNED NOT NULL AUTO_INCREMENT ,
 `id_bataille` INT UNSIGNED NOT NULL ,
 `id_type` TINYINT UNSIGNED NOT NULL ,
@@ -35,7 +35,7 @@ CREATE TABLE `starshine_test`.`bataille_repere` (
 PRIMARY KEY ( `id` )
 );
 
-CREATE TABLE `starshine_test`.`bataille_repere_type` (
+CREATE TABLE `bataille_repere_type` (
 `id` INT UNSIGNED NOT NULL AUTO_INCREMENT ,
 `nom` VARCHAR( 100 ) NOT NULL ,
 `description` TEXT NOT NULL ,

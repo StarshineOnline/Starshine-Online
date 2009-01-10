@@ -406,7 +406,7 @@ if(!$visu AND isset($_GET['action']))
 			$req = $db->query($requete);
 			$row = $db->read_array($req);
 			$objet_max = 10;
-			$bonus_craft = ceil($joueur['craft'] / 5);
+			$bonus_craft = ceil($joueur['artisanat'] / 5);
 			$objet_max += $bonus_craft;
 			if($row[0] >= $objet_max)
 			{
@@ -583,7 +583,7 @@ if(!$visu AND isset($_GET['action']))
 			}
 		break;
 		case 'slot' :
-			$craft = $joueur['craft'];
+			$craft = $joueur['forge'];
 			if($joueur['race'] == 'scavenger') $craft = round($craft * 1.45);
 			if($joueur['accessoire']['id'] != '0' AND $joueur['accessoire']['type'] == 'fabrication') $craft = round($craft * (1 + ($joueur['accessoire']['effet'] / 100)));
 			$chance_reussite1 = pourcent_reussite($craft, 10);
@@ -612,7 +612,7 @@ if(!$visu AND isset($_GET['action']))
 						$difficulte = 100;
 					break;
 				}
-				$craft = $joueur['craft'];
+				$craft = $joueur['forge'];
 				if($joueur['race'] == 'scavenger') $craft = round($craft * 1.45);
 				if($joueur['accessoire']['id'] != '0' AND $joueur['accessoire']['type'] == 'fabrication') $craft = round($craft * (1 + ($joueur['accessoire']['effet'] / 100)));
 				$craftd = rand(0, $craft);
@@ -631,12 +631,12 @@ if(!$visu AND isset($_GET['action']))
 					echo 'Echec... L\'objet ne pourra plus être enchassable<br />';
 					$objet['slot'] = 0;
 				}
-				$augmentation = augmentation_competence('craft', $joueur, 3);
+				$augmentation = augmentation_competence('forge', $joueur, 2);
 				if ($augmentation[1] == 1)
 				{
-					$joueur['craft'] = $augmentation[0];
-					echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant à '.$joueur['craft'].' en fabrication d\'objets</span><br />';
-					$requete = "UPDATE perso SET craft = ".$joueur['craft']." WHERE ID = ".$joueur['ID'];
+					$joueur['forge'] = $augmentation[0];
+					echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant à '.$joueur['forge'].' en Forge</span><br />';
+					$requete = "UPDATE perso SET forge = ".$joueur['forge']." WHERE ID = ".$joueur['ID'];
 					$req = $db->query($requete);
 				}
 				$objet_r = recompose_objet($objet);
@@ -680,7 +680,7 @@ if(!$visu AND isset($_GET['action']))
 					$difficulte = 100;
 				break;
 			}
-			$craft = $joueur['craft'];
+			$craft = $joueur['forge'];
 			if($joueur['race'] == 'scavenger') $craft = round($craft * 1.45);
 			if($joueur['accessoire']['id'] != '0' AND $joueur['accessoire']['type'] == 'fabrication') $craft = round($craft * (1 + ($joueur['accessoire']['effet'] / 100)));
 			echo 'Dans quel objet voulez vous enchasser cette gemme de niveau '.$row['niveau'].' ?
@@ -730,7 +730,7 @@ if(!$visu AND isset($_GET['action']))
 		case 'enchasse2' :
 			if($joueur['pa'] >= 20)
 			{
-				$craft = $joueur['craft'];
+				$craft = $joueur['forge'];
 				if($joueur['race'] == 'scavenger') $craft = round($craft * 1.45);
 				if($joueur['accessoire']['id'] != '0' AND $joueur['accessoire']['type'] == 'fabrication') $craft = round($craft * (1 + ($joueur['accessoire']['effet'] / 100)));
 				$gemme = decompose_objet($joueur['inventaire_slot'][$_GET['key_slot']]);
@@ -776,12 +776,12 @@ if(!$visu AND isset($_GET['action']))
 						$objet['slot'] = 0;
 					}
 				}
-				$augmentation = augmentation_competence('craft', $joueur, 3);
+				$augmentation = augmentation_competence('forge', $joueur, 1);
 				if ($augmentation[1] == 1)
 				{
-					$joueur['craft'] = $augmentation[0];
-					echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant à '.$joueur['craft'].' en fabrication d\'objets</span><br />';
-					$requete = "UPDATE perso SET craft = ".$joueur['craft']." WHERE ID = ".$joueur['ID'];
+					$joueur['forge'] = $augmentation[0];
+					echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant à '.$joueur['forge'].' en Forge</span><br />';
+					$requete = "UPDATE perso SET forge = ".$joueur['forge']." WHERE ID = ".$joueur['ID'];
 					$req = $db->query($requete);
 				}
 				$objet_r = recompose_objet($objet);
