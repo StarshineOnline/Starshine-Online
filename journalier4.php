@@ -1,5 +1,5 @@
 <?php
-
+//JOURNALIER RESSOURCES DE ROYAUME //
 $mail = '';
 
 include('class/db.class.php');

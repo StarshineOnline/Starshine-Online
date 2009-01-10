@@ -1,5 +1,5 @@
 <?php
-
+//JOURNALIER STATISTIQUES ET AUTRES //
 /*if (isset($_SERVER['REMOTE_ADDR']) &&
 	$_SERVER['REMOTE_ADDR']	!= "127.0.0.1" &&
 	$_SERVER['REMOTE_ADDR']	!= "::1") {
@@ -604,6 +604,22 @@ if(date("j") == 1)
 	}
 }
 
+//Fin des enchères
+$ids = array();
+$requete = "SELECT id, id_joueur, prix FROM vente_terrain WHERE id_joueur != 0 AND date_fin <= ".time();
+$req = $db->query($requete);
+while($row = $db->read_assoc($req))
+{
+	$ids[] = $row['id'];
+	$terrain = new terrain($row);
+	$terrain->sauver();
+	$mail .= $row['id_joueur']." gagne un terrain pour ".$row['prix'].".\n";
+}
+//On supprime les enchères finies
+$implode_ids = implode(', ', $ids);
+$requete = "DELETE FROM vente_terrain WHERE id IN (".$implode_ids.")";
+$db->query($requete);
+
 if(date("N") == 1)
 {
 	//Attribution des grades
@@ -611,18 +627,8 @@ if(date("N") == 1)
 	//Les rois peuvent de nouveau se téléporter
 	$requete = "UPDATE perso SET teleport_roi = 'false' WHERE rang_royaume = 6";
 	$db->query($requete);
-	//Fin des enchères
-	$requete = "SELECT id_joueur, prix FROM vente_terrain WHERE id_joueur != 0";
-	$req = $db->query($requete);
-	while($row = $db->read_assoc($req))
-	{
-		$requete = "INSERT INTO terrain (id, id_joueur, nb_case) VALUES ('', ".$row['id_joueur'].", 2)";
-		$db->query($requete);
-		$mail .= $row['id_joueur']." gagne un terrain pour ".$row['prix'].".\n";
-	}
-	//Suppression des enchères
-	$requete = "DELETE FROM vente_terrain";
-	$db->query($requete);
+	$semaine = 60 * 60 * 24 * 7;
+	$fin_vente = time() + $semaine;
 	//Mis en vente de nouveaux terrains
 	foreach($tableau_race as $race => $stats)
 	{
@@ -630,13 +636,13 @@ if(date("N") == 1)
 		$i = 0;
 		while($i < $nb_terrains)
 		{
-			$requete = "INSERT INTO vente_terrain (id, id_royaume, date_fin, id_joueur, prix) VALUES ('', ".$Trace[$race]['numrace'].", 0, 0, 5000)";
+			$requete = "INSERT INTO vente_terrain (id, id_royaume, date_fin, id_joueur, prix) VALUES ('', ".$Trace[$race]['numrace'].", ".$fin_vente.", 0, 5000)";
 			$db->query($requete);
 			$i++;
 		}
 	}
 }
 
-mail('masterob1@chello.fr', 'Starshine - Script journalier du '.$date, $mail);
+mail('masterob1@free.fr', 'Starshine - Script journalier du '.$date, $mail);
 
 ?>

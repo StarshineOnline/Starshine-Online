@@ -1,5 +1,5 @@
 <?php
-
+//JOURNALIER POP DES MONSTRES //
 
 include('class/db.class.php');
 //Récupération des variables de connexion à la base et connexion à cette base
@@ -189,5 +189,5 @@ if(date("j") == 1)
 }
 $mail .= mysql_error();
 
-//mail('masterob1@chello.fr', 'Starshine - Génération des monstres du '.$date, $mail);
+mail('masterob1@free.fr', 'Starshine - Génération des monstres du '.$date, $mail);
 ?>

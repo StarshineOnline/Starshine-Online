@@ -194,7 +194,7 @@ if($W_distance == 0 AND $verif_ville)
 										<a href="qg.php?poscase=<?php echo $W_case; ?>" onclick="return envoiInfo(this.href, 'carte')">Quartier général</a>
 									</li>
 									<li>
-										<a href="vente_terrain.php?poscase=<?php echo $W_case; ?>" onclick="return envoiInfo(this.href, 'carte')">Vente de terrain</a>
+										<a href="vente_terrain.php" onclick="return envoiInfo(this.href, 'carte')">Vente de terrain</a>
 									</li>
 							<?php
 										if($joueur['rang_royaume'] == 6)

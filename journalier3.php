@@ -1,5 +1,5 @@
 <?php
-
+//JOURNALIER TRAITEMENT DES LOGS //
 include('class/db.class.php');
 //Récupération des variables de connexion à la base et connexion à cette base
 include('connect.php');
