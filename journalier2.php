@@ -9,7 +9,12 @@
 */
 $mail = '';
 
-include('class/db.class.php');
+function __autoload($class_name)
+{
+	global $root;
+	require_once($root.'class/'.$class_name .'.class.php');
+}
+
 include('fonction/time.inc.php');
 include('fonction/action.inc.php');
 
@@ -70,7 +75,7 @@ $db->query($requete);
 check_case('all');
 
 echo 'Création du dossier '.$date.'<br />';
-if(@mkdir('image/stat/'.$date, 0777)) echo 'Répertoire '.$date.' créé<br />'; echo 'Le répertoire '.$date.' existe déjà<br />';
+if(mkdir('image/stat/'.$date, 0777)) echo 'Répertoire '.$date.' créé<br />'; echo 'Le répertoire '.$date.' existe déjà<br />';
 
 echo 'Déplacement des anciennes images dans le nouveau dossier<br />';
 copy('image/carte.png', 'image/stat/'.$date.'/carte.png');
@@ -606,14 +611,17 @@ if(date("j") == 1)
 
 //Fin des enchères
 $ids = array();
-$requete = "SELECT id, id_joueur, prix FROM vente_terrain WHERE id_joueur != 0 AND date_fin <= ".time();
+$requete = "SELECT id, id_joueur, prix FROM vente_terrain WHERE date_fin <= ".time();
 $req = $db->query($requete);
 while($row = $db->read_assoc($req))
 {
 	$ids[] = $row['id'];
-	$terrain = new terrain($row);
-	$terrain->sauver();
-	$mail .= $row['id_joueur']." gagne un terrain pour ".$row['prix'].".\n";
+	if($row['id_joueur'] != 0)
+	{
+		$terrain = new terrain(0, $row['id_joueur'], 2);
+		$terrain->sauver();
+		$mail .= $row['id_joueur']." gagne un terrain pour ".$row['prix']." stars.\n";
+	}
 }
 //On supprime les enchères finies
 $implode_ids = implode(', ', $ids);
@@ -632,7 +640,7 @@ if(date("N") == 1)
 	//Mis en vente de nouveaux terrains
 	foreach($tableau_race as $race => $stats)
 	{
-		$nb_terrains = floor($stats[16] / 500);
+		$nb_terrains = floor($stats[15] / 500);
 		$i = 0;
 		while($i < $nb_terrains)
 		{

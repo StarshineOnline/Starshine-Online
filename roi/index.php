@@ -8,6 +8,12 @@ include($root.'inc/fp.php');
 $joueur = recupperso($_SESSION['ID']);
 if($joueur['grade'] == 'Roi' OR $joueur['nom'] == 'Mylok' OR strtolower($joueur['nom']) == 'minus')
 {
+$date_hier = date("Y-m-d", mktime(0, 0, 0, date("m") , date("d") - 2, date("Y")));
+$requete = "SELECT food, nombre_joueur FROM stat_jeu WHERE date = '".$date_hier."'";
+$req = $db->query($requete);
+$row = $db->read_assoc($req);
+if($row['nombre_joueur'] != 0) $food_necessaire = $row['food'] / $row['nombre_joueur'];
+else $food_necessaire = 0;
 
 $R = get_royaume_info($joueur['race'], $Trace[$joueur['race']]['numrace']);
 
@@ -34,7 +40,7 @@ $_SESSION['position'] = convert_in_pos($joueur['x'], $joueur['y']);
 	<script src="javascript/menu.js" type="text/javascript"></script>
 </head>
 <body>
-<div id="top" style="width : 100%;">
+<div id="top">
 		<ul id="menu">
 			<li>
 				<a href="#" onclick="showMenu(1)">Diplomatie</a>
@@ -59,6 +65,7 @@ $_SESSION['position'] = convert_in_pos($joueur['x'], $joueur['y']);
 					<li><a href="gestion_royaume.php?direction=bourse" onclick="return clickMenu(this);">Bourse Inter Royaume</a>
 					<li><a href="gestion_royaume.php?direction=construction" onclick="return clickMenu(this);">Construction de la ville</a>
 					<li><a href="entretien.php" onclick="return clickMenu(this);">Entretien</a>
+					<li><a href="ressources.php" onclick="return clickMenu(this);">Ressources</a>
 					<li><a href="quete.php" onclick="return clickMenu(this);">Gestion des quètes</a>
 					<li><a href="taxe.php" onclick="return clickMenu(this);">Gestion des taxes</a>
 					<li><a href="mine.php" onclick="return clickMenu(this);">Gestion des mines</a>
@@ -86,31 +93,17 @@ $_SESSION['position'] = convert_in_pos($joueur['x'], $joueur['y']);
 	$W_req = $db->query($W_requete);
 	$W_row = $db->read_row($W_req);
 	$hta = $W_row[0];
+	$food_necessaire = floor($food_necessaire * $h);
 	?>
-			<strong>Stars du royaume : </strong><?php echo $R['star']; ?> / <strong>Taux de taxe</strong> : <?php echo $R['taxe_base']; ?>% / <strong>Habitants</strong> : <?php echo $h; ?> / <strong>Habitants très actifs</strong> : <?php echo $hta; ?> / <strong>Nourriture</strong> : <?php echo $R['food']; ?><br />
-			<strong>Pierre : </strong><?php echo $R['pierre']; ?> / <strong>Bois : </strong><?php echo $R['bois']; ?> / <strong>Eau : </strong><?php echo $R['eau']; ?> / <strong>Sable : </strong><?php echo $R['sable']; ?> / <strong>Charbon : </strong><?php echo $R['charbon']; ?> / <strong>Essence Magique : </strong><?php echo $R['essence']; ?>
+			<strong>Bois : </strong><?php echo $R['bois']; ?> / <strong>Eau : </strong><?php echo $R['eau']; ?> / <strong>Essence Magique : </strong><?php echo $R['essence']; ?><br />
+			<strong>Pierre : </strong><?php echo $R['pierre']; ?> / <strong>Sable : </strong><?php echo $R['sable']; ?> / <strong>Charbon : </strong><?php echo $R['charbon']; ?>
 		</div>
 </div>
-<div style="clear : both; width : 100%;">
-	<hr />
+<div id="separateur">
+	<strong>Stars du royaume : </strong><?php echo $R['star']; ?> / <strong>Taux de taxe</strong> : <?php echo $R['taxe_base']; ?>% / <strong>Habitants</strong> : <?php echo $h; ?> / <strong>Habitants très actifs</strong> : <?php echo $hta; ?> / <strong>Nourriture</strong> : <?php echo $R['food']; ?> / <strong>Nourriture nécessaire</strong> : <?php echo $food_necessaire; ?>
 </div>
 <div id="conteneur">
-	<ul style="float :left;">
-	<?php
-	$requete = "SELECT groupe.id as groupeid, groupe.nom as groupenom, groupe_joueur.id_joueur, perso.nom, perso.race FROM groupe LEFT JOIN groupe_joueur ON groupe.id = groupe_joueur.id_groupe LEFT JOIN perso ON groupe_joueur.id_joueur = perso.ID WHERE groupe_joueur.leader = 'y' AND perso.race = '".$joueur['race']."'";
-	$req = $db->query($requete);
-	while($row = $db->read_assoc($req))
-	{
-		if($row['groupenom'] == '') $row['groupenom'] = '-----';
-		?>
-		<li id="groupe_<?php echo $row['groupeid']; ?>" onclick="refresh('infos_groupe.php?id_groupe=<?php echo $row['groupeid']; ?>', 'infos_groupe');"><?php echo $row['groupeid'].' - '.$row['groupenom']; ?></li>
-		<?php
-	}
-	?>
-	</ul>
-	<div id="infos_groupe" style="float : right;">
-		Cliquez sur un groupe pour obtenir des informations
-	</div>
+&nbsp;
 </div>
 <?php
 //Inclusion du bas de la page

@@ -1,3 +1,46 @@
+body
+{
+	margin : 0px;
+	color:#222;
+}
+
+#top
+{
+	background-color: #CCC;
+	overflow : auto;
+	z-index : 0;
+	height : 47px;
+	border-bottom: 1px solid #000;
+	background: transparent url('./../../image/fond_perso.png') repeat-x;
+	width : 100%;
+}
+
+#separateur
+{
+	clear : both;
+	width : 100%;
+	min-height: 20px;
+	border-bottom: 1px solid #888;
+	border-top: 1px solid #888;
+	margin:0;
+	padding:0;
+	background:transparent url('./../../image/v2/bouton_fond.png') repeat-x;
+}
+
+#conteneur
+{
+	background:transparent url('./../../image/v2/bg_site.png') repeat-x;
+	margin:0;
+	padding:0;
+	overflow : auto;
+	height : 700px;
+}
+
+#infos
+{
+	float : right;
+}
+
 ul#menu
 {
 	color : #000;
@@ -80,7 +123,15 @@ ul#menu ul a {
 ul#menu ul li:hover {
 }
 
-#loading {background:transparent url('http://test.starshinebox.info/image/ajax-loader-bar.gif') no-repeat scroll left center;height:22px;left:300px;position:absolute;top:300px;width:220px;}
+#loading
+{
+	background:transparent url('http://test.starshinebox.info/image/ajax-loader-bar.gif') no-repeat scroll left center;
+	height:22px;
+	left:300px;
+	position:absolute;
+	top:300px;
+	width:220px;
+}
 
 #map_mine {float : left;}
 #infos {float : left;}

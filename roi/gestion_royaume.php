@@ -695,14 +695,15 @@ require('haut_roi.php');
 			</td>
 		</tr>
 		<?php
-		$requete = "SELECT * FROM objet_royaume";
+		$requete = "SELECT * FROM objet_royaume LEFT JOIN batiment ON batiment.id = objet_royaume.id_batiment";
 		$req = $db->query($requete);
 		$i = 0;
 		while($row = $db->read_assoc($req))
 		{
+			$overlib = $row['description'];
 		?>
 		<tr>
-			<td>
+			<td onmouseover="return <?php echo make_overlib($overlib); ?>" onmouseout="return nd();">
 				<?php echo $row['nom']; ?>
 			</td>
 			<td>

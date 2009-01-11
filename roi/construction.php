@@ -28,7 +28,7 @@ if(!array_key_exists('direction', $_GET))
 		</tr>';
 	}
 	echo '</table>';
-	echo '<h3>Liste de vos drapeaux sur territoire énnemi</h3>';
+	echo '<h3>Liste de vos drapeaux sur territoire Ã©nnemi</h3>';
 	$requete = "SELECT *, map.royaume AS r FROM placement LEFT JOIN map ON map.id = ((placement.y * 1000) + placement.x) WHERE placement.type = 'drapeau' AND placement.royaume = ".$R['ID'];
 	$req = $db->query($requete);
 	echo '<table  style="width:100%;">';
@@ -88,14 +88,14 @@ elseif($_GET['direction'] == 'suppr_construction')
 	$requete = "DELETE FROM construction WHERE id = ".sSQL($_GET['id']);
 	if($db->query($requete))
 	{
-		echo 'La construction a été correctement supprimée.';
+		echo 'La construction a ?t? correctement supprim?e.';
 		//On supprime un bourg au compteur
 		if($row[0] == 'bourg')
 		{
 			supprime_bourg($row[1]);
 		}
 	}
-	echo '<a href="gestion_royaume.php?poscase='.$W_case.'&amp;direction=drapeau">Retour à la liste des drapeaux et constructions</a>';
+	echo '<a href="gestion_royaume.php?poscase='.$W_case.'&amp;direction=drapeau">Retour ? la liste des drapeaux et constructions</a>';
 }
 elseif($_GET['direction'] == 'up_construction')
 {
@@ -115,7 +115,7 @@ elseif($_GET['direction'] == 'up_construction')
 		{
 			$requete = "UPDATE royaume SET star = star - ".$bat['cout']." WHERE ID = ".$R['ID'];
 			$db->query($requete);
-			echo 'La construction a été correctement upgradée.';
+			echo 'La construction a ?t? correctement upgrad?e.';
 		}
 	}
 }

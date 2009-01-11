@@ -200,7 +200,23 @@ while($row = $db->read_assoc($requete))
 
 foreach($ressource_final as $key => $value)
 {
+	$requete = "SELECT ".$key." FROM stat_jeu WHERE date = '".$date."'";
+	$req_stat_jeu = $db->query($requete);
+	$row_stat_jeu = $db->read_assoc($req_stat_jeu);
+	$explode_stat = explode(';', $row_stat_jeu[$key]);
+	$explode_stat[18] = $value['Pierre'];
+	$explode_stat[19] = $value['Bois'];
+	$explode_stat[20] = $value['Eau'];
+	$explode_stat[21] = $value['Sable'];
+	$explode_stat[22] = $value['Charbon'];
+	$explode_stat[23] = $value['Essence Magique'];
+	$explode_stat[24] = $value['Star'];
+	$explode_stat[25] = $value['Nourriture'];
+	$implode_stat = implode(';', $explode_stat);
 	$requete = "UPDATE royaume SET pierre = pierre + ".$value['Pierre'].", bois = bois + ".$value['Bois'].", eau = eau + ".$value['Eau'].", sable = sable + ".$value['Sable'].", charbon = charbon + ".$value['Charbon'].", essence = essence + ".$value['Essence Magique'].", star = star + ".$value['Star'].", food = food + ".$value['Nourriture']." WHERE race = '".$key."'";
+	$db->query($requete);
+	$requete = "UPDATE stat_jeu SET ".$key." = '".$implode_stat."' WHERE date = '".$date."'";
+	echo $requete;
 	$db->query($requete);
 }
 
