@@ -1,18 +1,39 @@
 /*-- Global site --------------------------------------------------*/
-
+body {margin:0;padding:0;background:transparent url('./image/v2/bg_site.png') repeat-x;}
 #top{display : block;width: 1000px;margin: 0 auto;z-index :5;}
-#conteneur{z-index :2;}
+
+#conteneur {width:985px;margin:auto;}
+#conteneur_back {z-index :2;width: 1000px;margin: 0 auto;background:transparent url('./image/interface/global.png') repeat-y center;}
 #bas{clear: both; width: 1000px;margin: 0 auto;text-align: center;font-size: 9px;}
 #centre{margin-top : 3px;margin-left : 7px;	margin-right : 30px;float : left;	width : 41%;	height : 100%;	z-index :3;}
 #deplacement{float : left;vertical-align : top;	text-align : right;	width : 50px;	margin-left : 5px;}
-#information{height : 100%;	width : 49%;	float : right;	z-index :1;}
+#information{height : 100%;	width : 47%;	float : left;	z-index :1;}
 #information a {color : #444;text-decoration : none;}
 #information a:hover {	color : #888;	text-decoration : none;}
 #perso{background-color:#c6d9f5;min-height: 120px;margin:0;padding:0;}
-#perso_contenu{width:1000px;margin:auto;background:transparent url('./image/v2/site_haut.png') no-repeat left;min-height:120px;}
-#contenu_jeu {	margin : 0 auto;width:1000px;}
+#perso_contenu{margin:auto;min-height:120px;}
+#contenu_jeu {	margin : 0 auto;width:100%;}
 #popup {margin-left:250px;position:absolute;top:60px;z-index:999999999; background-color : black;}
 #mask{background-image:url('./image/v2/overlay.png');height:100%;left:0;position:absolute;top:0;width:100%;z-index:9999999;}
+
+#header {background-color:#c6d9f5;min-height: 120px;margin:0;padding:0;}
+#header_logo {width:1000px;margin:auto;background:transparent url('./image/v2/site_haut.png') no-repeat left;min-height:120px;}
+#header_logo ul {margin:0;padding:0;list-style-type: none;height:20px;text-align: center;top:101px;position: relative;}
+#header_logo ul li {padding-left:5px;padding-right:5px;cursor: pointer;width:100px;background:transparent url('./image/v2/contenu_fond.png');border-left : 1px solid #777;border-right : 1px solid #777;border-top : 1px solid #777;margin-left:5px;margin-right:5px;font-style: italic;-moz-border-radius-topleft: 12px;-moz-border-radius-topright: 12px;-webkit-border-top-right-radius : 12px;-webkit-border-top-left-radius : 12px;}
+#header_logo .menu {float:left;}
+#header_logo .select {background:transparent url('./image/v2/bouton_selected.png') repeat-x;border-bottom:1px solid transparent;font-style:normal;font-weight: bold;}
+
+
+#menu {min-height: 20px;border-bottom: 1px solid #888;border-top: 1px solid #888;margin:0;padding:0;background:transparent url('./image/v2/bouton_fond.png') repeat-x;}
+#menu_details {width:1000px;margin:auto;}
+#menu_details .menu {width:120px;display:block;float:left;cursor:pointer;text-align: center;border-left : 1px solid #CCC;border-rightr : 1px solid #CCC;}
+#menu_details .menu:hover {background:transparent url('./image/v2/bouton_hover.png') no-repeat left;padding-top:1px;}
+
+#contenu_back {margin:0;padding:0;overflow: auto;}
+#contenu {background:transparent url('./image/v2/site_fond2.png') no-repeat left;width:1000px;margin: auto;height: 700px;}
+#news {width:830px;float:left;}
+
+
 /*-- Basics elements --------------------------------------------------*/
 #global				{ position:relative; margin:0px auto; width:960px; height:100%; border:1px solid red;}
 .spacer { clear: both !important; float: none !important; border: none !important; height: 1px !important; line-height: 1px !important; font-size: 1px !important; padding: 0 !important; margin: 0 0 -1px 0 !important; visibility: hidden !important; }

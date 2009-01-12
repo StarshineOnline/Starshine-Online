@@ -106,11 +106,18 @@ if (isset($_GET['deco']) AND !isset($_POST['log']))
 if(array_key_exists('nom', $_SESSION)) $joueur = recupperso($_SESSION['ID']);
 if(!isset($root)) $root = '';
 //check_undead_players();
-if ($interface_v2) {
-  print_head("css:./css/texture.css~./css/texture_low.css~./css/interfacev2.css~./css/prototip.css~./css/site.css;script:./javascript/fonction.js~./javascript/overlib/overlib.js~./javascript/scriptaculous/prototype.js~./javascript/scriptaculous/scriptaculous.js~./javascript/scriptaculous/prototip.js;title:StarShine, le jeu qu'il tient ses plannings !");
+if ($site)
+{
+	  print_head("css:./css/site.css;script:./javascript/fonction.js~./javascript/overlib/overlib.js~./javascript/scriptaculous/prototype.js~./javascript/scriptaculous/scriptaculous.js~./javascript/scriptaculous/prototip.js;title:StarShine, le jeu qu'il tient ses plannings !");
 }
-else {
-  print_head("css:./css/texture.css~./css/interface.css~./css/prototip.css~./css/site.css;script:./javascript/fonction.js~./javascript/overlib/overlib.js~./javascript/scriptaculous/prototype.js~./javascript/scriptaculous/scriptaculous.js~./javascript/scriptaculous/prototip.js;title:StarShine, le jeu qu'il tient ses plannings !");
+else
+{
+	if ($interface_v2) {
+	  print_head("css:./css/texture.css~./css/texture_low.css~./css/interfacev2.css~./css/prototip.css;script:./javascript/fonction.js~./javascript/overlib/overlib.js~./javascript/scriptaculous/prototype.js~./javascript/scriptaculous/scriptaculous.js~./javascript/scriptaculous/prototip.js;title:StarShine, le jeu qu'il tient ses plannings !");
+	}
+	else {
+	  print_head("css:./css/texture.css~./css/interface.css~./css/prototip.css~./css/site.css;script:./javascript/fonction.js~./javascript/overlib/overlib.js~./javascript/scriptaculous/prototype.js~./javascript/scriptaculous/scriptaculous.js~./javascript/scriptaculous/prototip.js;title:StarShine, le jeu qu'il tient ses plannings !");
+	}
 }
 $fin = getmicrotime();
 

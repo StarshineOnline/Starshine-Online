@@ -1,4 +1,5 @@
 <?php 
+$site = true;
 include('haut.php');
 
 ?>
@@ -20,32 +21,67 @@ function menu_change(input_name)
 		$('menu_encours').value= input_name;
 		$(input_name+'_menu').addClassName('selected');
 		$(input_name+'_box').show();
+		if ($('perso_selected_id').value != '')
+		{
+			$($('perso_selected_id').value).className ='';
+			$('personnage').hide();			
+		}		
 	}
 }
-function switch_classe()
+function Chargement()
 {
-	classe = document.getElementById("classe").options.selectedIndex;
-	classe = document.getElementById("classe").options[classe].value;
-	if(classe == 'combattant')
+	$('loading').show();
+	$('accueil').setAttribute('style','cursor:progress !important;')
+}
+function race(input_race,input_classe)
+{
+	function Affiche(requete)
 	{
-		classe = 'guerrier';
-		document.getElementById('magicien').style.display = 'none';
-		document.getElementById('combattant').style.display = 'block';
+		$('personnage').show();
+		$('personnage').innerHTML = requete.responseText;
+		$('loading').hide();
+		$('accueil').setAttribute('style','cursor:normal;')
+		
 	}
-	else
+	if ($('perso_selected_id').value != '')
 	{
-		classe = 'mage';
-		document.getElementById('magicien').style.display = 'block';
-		document.getElementById('combattant').style.display = 'none';
+		$($('perso_selected_id').value).className ='';			
 	}
-	race = document.getElementById("race").options.selectedIndex;
-	race = document.getElementById("race").options[race].value;
-	envoiInfo('switch_classe.php?race=' + race + '&classe=' + classe, 'img' + race);
+	$(input_race+'_'+input_classe).className = 'perso_selected';
+	$('perso_selected_id').value = input_race+'_'+input_classe;
+	new Ajax.Request('./site_accueil_personnage.php',{method:'get',parameters:'race='+input_race+'&classe='+input_classe,onLoading:Chargement,onComplete:Affiche});
+}
+function validation_perso()
+{
+
+	if ($('creat_nom').value == '')
+	{
+		$('creat_erreur').innerHTML = 'Vous avez laisser un champ libre, ou vos mots de passe ne correspondent pas';
+		$('creat_nom').setAttribute('style','border: 1px solid #CC0033;');
+	}
+	
+	if ($('creat_email').value == '')
+	{
+		$('creat_erreur').innerHTML = 'Vous avez laisser un champ libre, ou vos mots de passe ne correspondent pas';
+		$('creat_email').setAttribute('style','border: 1px solid #CC0033;');	
+	}
+	if (($('creat_pass').value != $('creat_pass2').value) || ($('creat_pass2').value=='') || ($('creat_pass2').value==''))
+	{
+		$('creat_erreur').innerHTML = 'Vous avez laisser un champ libre, ou vos mots de passe ne correspondent pas';
+		$('creat_pass').setAttribute('style','border: 1px solid #CC0033;');	
+		$('creat_pass2').setAttribute('style','border: 1px solid #CC0033;');			
+	}
+	if ($('perso_selected_id').value == '')
+	{
+		$('creat_erreur').innerHTML = "Vous n'avez pas sélectionnez de personnage.";
+	}	
+	
 }
 </script>
 
 <div id='accueil'>
 	<div class='logo'></div>
+	<div id='loading' style='display:none;'></div>	
 	<div id='test'>
 	<div id='menu_accueil'>
 	<ul>
@@ -63,7 +99,7 @@ function switch_classe()
 Pour l'instant au stade de la béta (c'est à dire en phase d'équilibrage et d'amélioration du monde), starshine-online sera un jeu de rôle massivement mutijoueur (mmorpg) en tour par tour.<br /><br />
 Il vous permettra d'entrer dans la peau d'un grand héros de l'univers Starshine peuplé de nombreuses créatures et d'autres héros ennemis près a tout pour détruire votre peuple.
 <br /><br />
-Il est recommandé d'avoir un navigateur dernière génération pour jouer à Starshine, nous vous conseillons Firefox.<br />
+Il est recommandé d'avoir un navigateur dernière génération pour jouer à Starshine, nous vous conseillons Firefox, un navigateur libre.<br />
 N'oubliez pas de reporter les bugs et problèmes, et de suggérer de nouvelles choses sur le forum.</p>
 
 		</div>
@@ -105,63 +141,43 @@ N'oubliez pas de reporter les bugs et problèmes, et de suggérer de nouvelles c
 		</div>
 		<div id='creation_box' style='display:none;'>
 		<?php
-		$races = array('barbare', 'elfebois', 'elfehaut', 'humain', 'humainnoir', 'mortvivant', 'nain', 'orc', 'scavenger', 'troll', 'vampire');
-foreach($races as $race)
-{
-	$requete = "SELECT star_nouveau_joueur FROM royaume WHERE ID = ".$Trace[$race]['numrace'];
-	$req = $db->query($requete);
-	$row = $db->read_row($req);
-	$stars[$race] = $row[0];
-	$requete = "SELECT propagande FROM motk WHERE id_royaume = ".$Trace[$race]['numrace'];
-	$req = $db->query($requete);
-	$row = $db->read_row($req);
-	$propa = $row[0];
-	$propa = htmlspecialchars(stripslashes($propa));
-	$propa = str_replace('[br]', '<br />', $propa);
-	$propagande[$race] = $propa;
-}
+	$RqRace = $db->query("SELECT race FROM royaume WHERE race != '' ORDER BY star_nouveau_joueur DESC, race ASC");
 			?>
+
+<form action="" method="POST">
+		<p id='creat_erreur' style='color:#CC0033;'></p>
+		<div style='width:35%;float:left;'>
+			<span class='creation_text'>Quel sera votre nom ?</span><input type="text" name="nom" id='creat_nom' /><br />
+			<span class='creation_text'>Email :</span>
+			<input type="text" name="email" id='creat_email' /><br />			
+			<span class='creation_text'>Indiquer un mot de passe :</span><input type="password" name="password" id='creat_pass' /><br />
+			<span class='creation_text'>Confirmer votre mot de passe :</span>
+			<input type="password" name="password2" id='creat_pass2' /><br />
+			<span onclick="validation_perso();">Créer </span>
+		</div>
+		<div style='width:65%;float:left;'>
+		<?php
+		$i=0;
+		while($objRace = $db->read_object($RqRace))
+		{
+			if ($i=='0'){echo "<p style='clear:both;'>";}
+			echo "<img src='./image/personnage/".$objRace->race."/".$objRace->race."_guerrier.png' id='".$objRace->race."_guerrier' onclick=\"race('".$objRace->race."','guerrier');\" style='width:35px;float:left;cursor:pointer;' />";
+			echo "<img src='./image/personnage/".$objRace->race."/".$objRace->race."_mage.png' id='".$objRace->race."_mage' onclick=\"race('".$objRace->race."','mage');\" style='width:35px;float:left;cursor:pointer;' /><span style='width:17px;float:left;height:1px;'></span>";
+			$i++;
+			if ($i=='4'){echo '</p>';$i=0;}
+
+		}			
+		?>
+		<input type='hidden' id='perso_selected_id' />
+		</div>
+		</form>
+			<div style='clear:both'>
 			Avant de créer un personnage, vous pouvez consulter <a href="wiki.starshine-online.com">l'aide de jeu</a>, pour mieux choisir votre personnage<br />
 			N'hésitez pas à faire le tour des races pour en voir toutes les différences, et à passer votre curseur sur les attributs (force, dextérité, etc) pour avoir des détails sur leur fonctionnement.<br />
 			Pour un équilibrage du jeu, les peuples ayant le moins de joueurs recoivent plus de stars à la création du personnage.<br />
 			<br />
 			<strong>Un compte sur le forum sera créé automatiquement avec vos informations du jeu.</strong>
-<form action="create.php" method="POST" style="margin : 10px; padding : 5px; border : 2px solid white; -moz-border-radius : 13px; font-size : 0.9em;">
-		<p>
-		<span class='creation_text'>Quel sera votre nom ?</span><input type="text" name="nom" /><br />
-		<span class='creation_text'>Indiquer un mot de passe :</span><input type="password" name="password" /><br />
-		<span class='creation_text'>Confirmer votre mot de passe :</span>
-		<input type="password" name="password2" /><br />
-		<br />
-		<span class='creation_text'>Choisissez une race :</span>
-		<select name="race" id="race" onChange="switch_race();">
-			<?php
-			$true = true;
-			$requete = "SELECT race FROM royaume WHERE race != '' ORDER BY star_nouveau_joueur DESC, race ASC";
-			$req = $db->query($requete);
-			while($row = $db->read_row($req))
-			{
-				if($true)
-				{
-					$race_1 = $row[0];
-					$true = false;
-				}
-				echo '<option value="'.$row[0].'">'.$Gtrad[$row[0]].'</option>';
-			}
-			?>
-		</select>
-		<br />
-		<span class='creation_text'>Choisissez une classe :</span>
-		<select name="classe" id="classe" onchange="switch_classe();">
-			<option value="combattant">Combattant</option>
-			<option value="magicien">Magicien</option>
-		</select><br />
-		<br />
-		<input type="hidden" name="direction" value="phase2" />
-		<input type="submit" value="Créer ce personnage" />
-		</form>
-
-		
+			</div>
 		</div>
 		
 	</div>
@@ -181,12 +197,15 @@ foreach($races as $race)
 			}
 			else
 			{
-				echo "<a href='site_index.php'>jouer</a>";
+				echo "<a href='jeu2.php'>jouer</a>";
 			}
 			?>	
 	</div>		
 
+	<div id='personnage' style='display:none'>
+
 	
+	</div>
 	<div id='accueil_pub'>
 	<script type="text/javascript"><!--
 google_ad_client = "pub-7541997421837440";

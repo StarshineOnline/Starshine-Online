@@ -45,7 +45,9 @@ check_perso($joueur);
 $_SESSION['position'] = convert_in_pos($joueur['x'], $joueur['y']);
 ?>
 
+<div id="conteneur_back">
 <div id="conteneur">
+
 <div id="mask" style='display:none;'></div>
 <div id="popup" style='display:none;'><div id="popup_menu"><a href="" onclick="fermePopUp(); return false;">Fermer</a></div><div id="popup_content"></div></div>
 <div id="loading" style='display:none'></div>
@@ -87,6 +89,7 @@ $_SESSION['position'] = convert_in_pos($joueur['x'], $joueur['y']);
 		</div>
 	</div>
 	
+</div>
 </div>
 </div>
 <?php
