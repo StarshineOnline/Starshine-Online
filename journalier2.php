@@ -651,6 +651,6 @@ if(date("N") == 1)
 	}
 }
 
-mail('masterob1@free.fr', 'Starshine - Script journalier du '.$date, $mail);
+mail('starshineonline@gmail.com', 'Starshine - Script journalier du '.$date, $mail);
 
 ?>

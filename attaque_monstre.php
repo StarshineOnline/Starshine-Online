@@ -692,9 +692,9 @@ else
 					{
 						//Si les 2 sont morts, on fait pop le roi gobelin
 						$requete = "SELECT type FROM map_monstre WHERE type = 125 OR type = 126";
-						$db->query($requete);
+						$req_d = $db->query($requete);
 						//Si il n'est pas là on le fait pop
-						if($db->num_rows() == 0)
+						if($db->num_rows($req_d) == 0)
 						{
 							$requete = "INSERT INTO map_monstre VALUES(NULL,'123','44','293','5800', 18, 'Roi Goblin','roi_goblin', ".(time() + 2678400).")";
 							$db->query($requete);
@@ -704,11 +704,11 @@ else
 				}
 				elseif($ennemi == 'batiment')
 				{
-                   	//On supprime un bourg au compteur
-	            	if($defenseur['type'] == 'bourg')
-       		    	{
-        		    	supprime_bourg($R['ID']);
-       		    	}
+					//On supprime un bourg au compteur
+					if($defenseur['type'] == 'bourg')
+					{
+						supprime_bourg($R['ID']);
+					}
 					//On efface le batiment
 					$requete = "DELETE FROM ".sSQL($_GET['table'])." WHERE ID = '".$W_ID."'";
 					$req = $db->query($requete);

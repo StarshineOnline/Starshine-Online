@@ -156,7 +156,16 @@ class map
 						for($i = 0; $i < count($this->map[$x_map][$y_map]["Batiments"]); $i++)			{ $overlib .= "<li class='overlib_batiments'><span>Batiment</span>&nbsp;-&nbsp;".$this->map[$x_map][$y_map]["Batiments"][$i]["nom"]."</li>"; }
 						for($i = 0; $i < count($this->map[$x_map][$y_map]["Batiments_ennemi"]); $i++) 	{ $overlib .= "<li class='overlib_batiments'><span>Batiment ennemi</span>&nbsp;-&nbsp;".$this->map[$x_map][$y_map]["Batiments_ennemi"][$i]["nom"]."</li>"; }
 						for($i = 0; $i < count($this->map[$x_map][$y_map]["PNJ"]); $i++)				{ $overlib .= "<li class='overlib_batiments'><span>PNJ</span>&nbsp;-&nbsp;".ucwords($this->map[$x_map][$y_map]["PNJ"][$i]["nom"])."</li>"; }
-						for($i = 0; $i < count($this->map[$x_map][$y_map]["Joueurs"]); $i++)			{ $overlib .= "<li class='overlib_joueurs'><span>".$this->map[$x_map][$y_map]["Joueurs"][$i]["nom"]."</span>&nbsp;-&nbsp;".ucwords($this->map[$x_map][$y_map]["Joueurs"][$i]["race"])." - Niv.".$this->map[$x_map][$y_map]["Joueurs"][$i]["level"]."</li>"; }
+						for($i = 0; $i < count($this->map[$x_map][$y_map]["Joueurs"]); $i++)
+						{
+							if(array_key_exists('hp', $this->map[$x_map][$y_map]["Joueurs"][$i]))
+							{
+								$all = ' HP : '.$this->map[$x_map][$y_map]["Joueurs"][$i]["hp"].' / '.$this->map[$x_map][$y_map]["Joueurs"][$i]["hp_max"].' - MP : '.$this->map[$x_map][$y_map]["Joueurs"][$i]["mp"].' / '.$this->map[$x_map][$y_map]["Joueurs"][$i]["mp_max"].' - PA : '.$this->map[$x_map][$y_map]["Joueurs"][$i]["pa"];
+
+							}
+							else $all = '';
+							$overlib .= "<li class='overlib_joueurs'><span>".$this->map[$x_map][$y_map]["Joueurs"][$i]["nom"]."</span>&nbsp;-&nbsp;".ucwords($this->map[$x_map][$y_map]["Joueurs"][$i]["race"])." - Niv.".$this->map[$x_map][$y_map]["Joueurs"][$i]["level"].$all."</li>";
+						}
 						for($i = 0; $i < count($this->map[$x_map][$y_map]["Monstres"]); $i++)			{ $overlib .= "<li class='overlib_monstres'><span>Monstre</span>&nbsp;-&nbsp;".$this->map[$x_map][$y_map]["Monstres"][$i]["nom"]." x".$this->map[$x_map][$y_map]["Monstres"][$i]["tot"]."</li>"; }
 						for($i = 0; $i < count($this->map[$x_map][$y_map]["Drapeaux"]); $i++)			{ $overlib .= "<li class='overlib_batiments'><span>Drapeau</span>&nbsp;-&nbsp;".ucwords($this->map[$x_map][$y_map]["Drapeaux"][$i]["race"])."</li>"; }
 						$overlib .= "</ul>";
@@ -223,13 +232,15 @@ class map
 		}
 	}
 
-	function get_joueur($race = 'neutre')
+	function get_joueur($race = 'neutre', $all = false)
 	{
 		global $db;
 		global $Tclasse;
 		global $Gtrad;
 
-		$requete = "SELECT ID, nom, level, race, x, y, classe, cache_classe, cache_niveau 
+		if($all) $champs .= ', hp, hp_max, mp, mp_max, pa ';
+		else $champs = '';
+		$requete = "SELECT ID, nom, level, race, x, y, classe, cache_classe, cache_niveau".$champs."
 								 FROM perso 
 								 WHERE (( (x >= ".$this->xmin.") AND (x <= ".$this->xmax.") ) 
 								 AND ( (y >= ".$this->ymin.") AND (y <= ".$this->ymax.") ))  
@@ -249,6 +260,14 @@ class map
 				$this->map[$objJoueurs->x][$objJoueurs->y]["Joueurs"][$joueurs]["level"] = $objJoueurs->level;
 				$this->map[$objJoueurs->x][$objJoueurs->y]["Joueurs"][$joueurs]["race"] = $Gtrad[$objJoueurs->race];
 				$this->map[$objJoueurs->x][$objJoueurs->y]["Joueurs"][$joueurs]["classe"] = $objJoueurs->classe;
+				if($all)
+				{
+					$this->map[$objJoueurs->x][$objJoueurs->y]["Joueurs"][$joueurs]["hp"] = $objJoueurs->hp;
+					$this->map[$objJoueurs->x][$objJoueurs->y]["Joueurs"][$joueurs]["hp_max"] = floor($objJoueurs->hp_max);
+					$this->map[$objJoueurs->x][$objJoueurs->y]["Joueurs"][$joueurs]["mp"] = $objJoueurs->mp;
+					$this->map[$objJoueurs->x][$objJoueurs->y]["Joueurs"][$joueurs]["mp_max"] = floor($objJoueurs->mp_max);
+					$this->map[$objJoueurs->x][$objJoueurs->y]["Joueurs"][$joueurs]["pa"] = $objJoueurs->pa;
+				}
 				{//-- Vérification des bonus liés au points shine
 					//Si c'est pas lui même
 					if($objJoueurs->ID != $_SESSION["ID"])
