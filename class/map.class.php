@@ -87,7 +87,7 @@ class map
 			$class_css['resolution_map'] = 'map';
 			$taille_cellule = 60.75;
 		}
-		echo '<div style="width : '.round(20 + ($taille_cellule * $this->case_affiche)).'px">';
+		echo '<div class="div_map" style="width : '.round(20 + ($taille_cellule * $this->case_affiche)).'px">';
 		{//-- Affichage du bord haut (bh) de la map
 			echo "<ul id='".$classe_css['map_bord_haut']."'>
 				   <li id='".$classe_css['map_bord_haut_gauche']."' class='".$class_css['resolution']."' onclick=\"switch_map();\">&nbsp;</li>";

@@ -1,17 +1,19 @@
 /*-- Global site --------------------------------------------------*/
-body {margin:0;padding:0;background:transparent url('./image/v2/bg_site.png') repeat-x;}
+body {margin:0;padding:0;background:#5D705F url('./image/v2/bg_site.png') repeat-x;min-height: 100%;font: 13px "Helvetica Neue", Helvetica, Arial, Geneva, sans-serif;}
 #top{display : block;width: 1000px;margin: 0 auto;z-index :5;}
 
-#conteneur {width:985px;margin:auto;}
-#conteneur_back {z-index :2;width: 1000px;margin: 0 auto;background:transparent url('./image/interface/global.png') repeat-y center;}
+#conteneur {width:985px;margin:auto;min-height: 100%;}
+#conteneur_back {z-index :2;width: 1000px;margin: 0 auto;background:transparent url('./image/interface/global2.png') repeat-y center;min-height: 100%;}
 #bas{clear: both; width: 1000px;margin: 0 auto;text-align: center;font-size: 9px;}
-#centre{margin-top : 3px;margin-left : 7px;	margin-right : 30px;float : left;	width : 41%;	height : 100%;	z-index :3;}
+#centre{margin-top : 3px;margin-left : 7px;float : left;	height : 100%;	z-index :3;}
 #deplacement{float : left;vertical-align : top;	text-align : right;	width : 50px;	margin-left : 5px;}
-#information{height : 100%;	width : 47%;	float : left;	z-index :1;}
+#information{height : 100%;	width : 47%;	float : left;	z-index :1;margin-left: 6px;}
+#information fieldset {-moz-border-radius: 10px;background:transparent url('./image/v2/box_accueil2.png');margin-top: 4px; }
+#information fieldset legend {background:transparent url('./image/v2/bouton_fond.png');-moz-border-radius: 10px;padding-left: 5px;font-weight: bold;}
 #information a {color : #444;text-decoration : none;}
 #information a:hover {	color : #888;	text-decoration : none;}
 #perso{background-color:#c6d9f5;min-height: 120px;margin:0;padding:0;}
-#perso_contenu{margin:auto;min-height:120px;}
+#perso_contenu{margin:auto;min-height:110px;padding:5px;}
 #contenu_jeu {	margin : 0 auto;width:100%;}
 #popup {margin-left:250px;position:absolute;top:60px;z-index:999999999; background-color : black;}
 #mask{background-image:url('./image/v2/overlay.png');height:100%;left:0;position:absolute;top:0;width:100%;z-index:9999999;}
@@ -130,19 +132,20 @@ body {margin:0;padding:0;background:transparent url('./image/v2/bg_site.png') re
 #carte							{ width:445px; height:440px; float:left; margin:0px;clear:both; z-index:500; }
 #carte ul {list-style: none;padding:0;margin: 0;}
 #map_bord_haut  				{ height:20px !important; cursor:pointer; padding-bottom : 0px;}
-#map_bord_haut li 				{ float:left; width:60px; height:inherit; line-height:20px; color:white; text-align:center;background:#D8AB41 repeat scroll 0%;}
-#map_bord_haut2 li 				{ float:left; width:60px; height:inherit; line-height:20px; color:white; text-align:center; background:transparent url('./../image/bord_map.png') center; }
-#map_bord_haut_gauche  			{ width:25px !important; height:inherit; background: #D8AB41 url('../image/icone/royaume_icone.png') center no-repeat !important;}
-#map_bord_haut_gauche2 			{ width:25px !important; height:inherit; background:transparent url('./../image/coin_map.png') center !important; }
+#map_bord_haut li 				{ float:left; width:60px; height:inherit; line-height:20px; color:white; text-align:center;}
+#map_bord_haut2 li 				{ float:left; width:60px; height:inherit; line-height:20px; color:white; text-align:center;  }
+#map_bord_haut_gauche  			{ width:20px !important; height:inherit;background: transparent url(../image/icone/royaume_icone.png) no-repeat scroll center center !important }
+#map_bord_haut_gauche2 			{ width:25px !important; height:inherit; }
 #map_bord_haut_gauche:hover		{ background-position:top; }
 #map_bord_haut_gauche:active	{ background-position:bottom; }
 #bord_haut_x					{ color:black !important; font-weight:bold; }
 #bord_haut_y					{ color:black !important; font-weight:bold; }
+.div_map 						{ background:transparent url('./image/v2/map.png') repeat-x;-moz-border-radius: 10px;height:445px;}
 .map							{ height:60px; padding-bottom : 0px;}
 .mapl							{ height:20px; padding-bottom : 0px;}
 .map li, .mapl li				{ float:left; width:60px; height:inherit; }
-.map_bord_gauche				{ width:20px !important; color:white; line-height:60px; text-align:center; background:transparent url('./../image/bordcartegauche.png') center; padding-bottom : 0px;}
-.map_bord_gauche2				{ width:20px !important; color:white; line-height:60px; text-align:center; background:transparent url('./../image/bord2_map.png') center; padding-bottom : 0px;}
+.map_bord_gauche				{ width:20px !important; color:white; line-height:60px; text-align:center;padding-bottom : 0px;}
+.map_bord_gauche2				{ width:20px !important; color:white; line-height:60px; text-align:center;padding-bottom : 0px;}
 .map_contenu 					{ width:56px; height:56px; margin:2px 2px 2px 2px; background:transparent url(image/pixel.gif) center no-repeat;}
 .low_resolution					{ width : 20px !important; height : 20px !important; font-size : 0.8em;}
 /*-- Weather ----------------------------------------------------------*/
@@ -181,7 +184,7 @@ body {margin:0;padding:0;background:transparent url('./image/v2/bg_site.png') re
 /***************************************************
   Vrac
  ***************************************************/
-#loading {background:transparent url('./../image/ajax-loader-bar.gif') no-repeat scroll left center;height:22px;left:140px;position:absolute;top:300px;width:220px;}
+#loading {background:transparent url('./../image/ajax-loader-bar.gif') no-repeat scroll left center;height:22px;margin-left:120px;position:absolute;top:330px;width:220px;}
 #conteneur_test {height:100%;width:100%;z-index: 99999;cursor: wait;position: absolute;}
 .infoperso {
 	vertical-align : top;

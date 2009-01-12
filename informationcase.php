@@ -12,8 +12,8 @@ $W_distance = detection_distance($W_case, $_SESSION["position"]);
 if($W_distance < 4)
 {
 ?>
-
-<h2>Informations Case - X : <?php echo $W_coord['x']; ?> | Y : <?php echo $W_coord['y']; ?><a href="carte_perso_affiche.php" onclick="return envoiInfo(this.href, 'information')"> <img src="image/icone/oujesuis.png" alt="Où je suis ?" title="Où je suis ?" style="vertical-align : middle;" /></a> </h2>
+<fieldset>
+<legend>Informations Case - X : <?php echo $W_coord['x']; ?> | Y : <?php echo $W_coord['y']; ?><a href="carte_perso_affiche.php" onclick="return envoiInfo(this.href, 'information')"> <img src="image/icone/oujesuis.png" alt="Où je suis ?" title="Où je suis ?" style="vertical-align : middle;height:20px;" /></a> </legend>
 
 <?php
 
@@ -35,11 +35,11 @@ if($W_coord['x'] == $Trace[$R['race']]['spawn_x'] AND $W_coord['y'] == $Trace[$R
 	echo '<h3>Capitale '.$R['capitale'].'</h3>';
 }
 ?>
-<div class="information_case">
+
 <h4><?php echo $R['nom']; ?></h4>
 <strong><?php echo $Gtrad[$R['race']]; ?></strong> - <?php echo $Gtrad['diplo'.$R['diplo']]; ?> - Taxe : <?php echo $R['taxe']; ?>%<br />
 <strong><?php echo $type_terrain[1]; ?></strong> - <?php echo $coutpa; ?> PA de déplacement <span class="xsmall">(en diagonale = <?php echo $coutpa_diagonale; ?> PA)</span>
-</div>
+
 <?php
 $W_requete = 'SELECT perso.ID, perso.nom, race, hp, rang_royaume, grade.nom as gnom FROM perso LEFT JOIN grade ON perso.rang_royaume = grade.id WHERE (x = '.$W_coord["x"].') AND (y = '.$W_coord["y"].') AND statut = \'actif\'';
 $W_query = $db->query($W_requete);
@@ -48,7 +48,7 @@ $W_query = $db->query($W_requete);
 if($db->num_rows > 0)
 {
 	echo '
-	<div class="information_case">
+
 	<h4>Joueurs</h4>
 	<table width="90%">';
 }
@@ -127,7 +127,7 @@ while($W_row = $db->read_array($W_query))
 if(array_key_exists('buff_rapidite', $joueur['buff'])) $reduction_pa = $joueur['buff']['buff_rapidite']['effet']; else $reduction_pa = 0;
 if(array_key_exists('debuff_ralentissement', $joueur['debuff'])) $reduction_pa -= $joueur['debuff']['debuff_ralentissement']['effet'];
 echo '</table>'.$affiche_div.'
-</div>';
+';
 //Affichage des PNJ
 $W_requete = 'SELECT * FROM pnj WHERE (x = '.$W_coord["x"].') AND (y = '.$W_coord["y"].')';
 $W_query = $db->query($W_requete);
@@ -136,13 +136,13 @@ $num_rows = $db->num_rows;
 if($num_rows > 0)
 {
 	echo '
-	<div class="information_case">
+
 	<h4>PNJ</h4>';
 	while($W_row = $db->read_array($W_query))
 	{
 		echo  '&nbsp;&nbsp;&nbsp;'.$W_row['nom'];
 		if($W_row['x'] == $joueur["x"] AND $W_row['y'] == $joueur["y"]) echo ' <a href="pnj.php?id='.$W_row['id'].'&amp;poscase='.$W_case.'" onclick="return envoiInfo(this.href, \'information\')">Parler...</a>';
-		echo '<br /></div>';
+		echo '<br />';
 	}
 }
 
@@ -154,7 +154,6 @@ $num_rows = $db->num_rows;
 if($num_rows > 0)
 {
 	echo '
-	<div class="information_case">
 	<h4>Donjons</h4>';
 	while($W_row = $db->read_array($W_query))
 	{
@@ -178,7 +177,7 @@ if($num_rows > 0)
 		}
 		else $unlock = true;
 		if($W_row['x'] == $joueur["x"] AND $W_row['y'] == $joueur["y"] AND $unlock) echo ' <a href="jeu2.php?donjon_id='.$W_row['id'].'">Entrer dans le donjon</a>';
-		echo '<br /></div>';
+		echo '<br />';
 	}
 }
 
@@ -190,14 +189,13 @@ $num_rows = $db->num_rows;
 if($num_rows > 0)
 {
 	echo '
-	<div class="information_case">
 	<h4>Donjons</h4>';
 	while($W_row = $db->read_array($W_query))
 	{
 		echo  '&nbsp;&nbsp;&nbsp;'.$W_row['nom'];
 		//Sortie du donjon
 		if($W_row['x_donjon'] == $joueur["x"] AND $W_row['y_donjon'] == $joueur["y"]) echo ' <a href="jeu2.php?donjon_id='.$W_row['id'].'&amp;type=sortie">Sortir du donjon</a>';
-		echo '<br /></div>';
+		echo '<br />';
 	}
 }
 
@@ -209,7 +207,6 @@ $num_rows = $db->num_rows;
 if($num_rows > 0)
 {
 	echo '
-	<div class="information_case">
 	<h4>En construction</h4>';
 	while($W_row = $db->read_array($W_query))
 	{
@@ -233,7 +230,7 @@ if($num_rows > 0)
 		echo '<br />
 		<div class="jsinformation_case" id="infob_'.$W_row['id'].'">
 			'.transform_sec_temp($W_row['fin_placement'] - time()).' avant fin de construction 
-		</div></div>';
+		</div>';
 	}
 }
 
@@ -245,7 +242,6 @@ $num_rows = $db->num_rows;
 if($num_rows > 0)
 {
 	echo '
-	<div class="information_case">
 	<h4>Batiments</h4>';
 	while($W_row = $db->read_array($W_query))
 	{
@@ -271,7 +267,7 @@ if($num_rows > 0)
 		echo '<br />
 		<div class="jsinformation_case"  id="infob_'.$W_row['id'].'">
 			'.$row_b['description'].'
-		</div></div>';
+		</div>';
 	}
 }
 
@@ -285,7 +281,7 @@ $W_query = $db->query($W_requete);
 $num_rows = $db->num_rows;
 //Affichage des infos des monstres
 if($num_rows > 0) echo '
-<div class="information_case">
+
 <h4>Monstres</h4>
 <table>';
 while($W_row = $db->read_array($W_query))
@@ -320,5 +316,6 @@ while($W_row = $db->read_array($W_query))
 }
 if ($num_rows > 0) echo '</table>';
 }
+echo "</fieldset>";
 ?>
-</div>
+
