@@ -1,0 +1,1 @@
+ALTER TABLE `craft_recette` ADD `resultat` VARCHAR( 100 ) NOT NULL ;

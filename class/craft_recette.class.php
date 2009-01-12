@@ -8,6 +8,7 @@ class craft_recette
 	public $mp;
 	public $type;
 	public $difficulte;
+	public $resultat;
 
 	/**	
 		*	Constructeur permettant la création d'une recette.
@@ -17,17 +18,17 @@ class craft_recette
 		*		-craft_recette($id) qui va chercher l'etat dont l'id est $id
 		*		-craft_recette($array) qui associe les champs de $array à l'objet.
 	**/
-	function __construct($id = 0, $nom = '', $description = '', $pa = 0, $mp = 0, $type = '', $difficulte = 0)
+	function __construct($id = 0, $nom = '', $description = '', $pa = 0, $mp = 0, $type = '', $difficulte = 0, $resultat = '')
 	{
 		global $db;
 		//Verification du nombre et du type d'argument pour construire l'etat adequat.
 		if( (func_num_args() == 1) && is_numeric($id) )
 		{
-			$requeteSQL = $db->query('SELECT nom, description, pa, mp, type, difficulte FROM craft_recette WHERE id = '.$id);
+			$requeteSQL = $db->query('SELECT nom, description, pa, mp, type, difficulte, resultat FROM craft_recette WHERE id = '.$id);
 			//Si le thread est dans la base, on le charge sinon on crée un thread vide.
 			if( $db->num_rows($requeteSQL) > 0 )
 			{
-				list($this->nom, $this->description, $this->pa, $this->mp, $this->type, $this->difficulte) = $db->read_row($requeteSQL);
+				list($this->nom, $this->description, $this->pa, $this->mp, $this->type, $this->difficulte, $this->resultat) = $db->read_row($requeteSQL);
 			}
 			else
 				$this->__construct();
@@ -42,6 +43,7 @@ class craft_recette
 			$this->mp = $id['mp'];
 			$this->type = $id['type'];
 			$this->difficulte = $id['difficulte'];
+			$this->resultat = $id['resultat'];
 		}
 		else
 		{
@@ -52,7 +54,8 @@ class craft_recette
 			$this->type = $type;
 			$this->difficulte = $difficulte;
 			$this->id = $id;
-		}		
+			$this->resultat = $resultat;
+		}
 	}
 
 	//Fonction d'ajout / modification.
@@ -62,14 +65,14 @@ class craft_recette
 		if( $this->id > 0 )
 		{
 			$requete = 'UPDATE craft_recette SET ';
-			$requete .= 'nom = "'.$this->nom.'", description = "'.$this->description.'", pa = '.$this->pa.', mp = '.$this->mp.', type = "'.$this->type.'", difficulte = '.$this->difficulte;
+			$requete .= 'nom = "'.$this->nom.'", description = "'.$this->description.'", pa = '.$this->pa.', mp = '.$this->mp.', type = "'.$this->type.'", difficulte = '.$this->difficulte.', resultat = "'.$this->resultat.'"';
 			$requete .= ' WHERE id = '.$this->id;
 			$db->query($requete);
 		}
 		else
 		{
-			$requete = 'INSERT INTO craft_recette (nom, description, pa, mp, type, difficulte) VALUES(';
-			$requete .= '"'.$this->nom.'", "'.$this->description.'", '.$this->pa.', '.$this->mp.', "'.$this->type.'", '.$this->difficulte.')';
+			$requete = 'INSERT INTO craft_recette (nom, description, pa, mp, type, difficulte, resultat) VALUES(';
+			$requete .= '"'.$this->nom.'", "'.$this->description.'", '.$this->pa.', '.$this->mp.', "'.$this->type.'", '.$this->difficulte.', "'.$this->resultat.'")';
 			$db->query($requete);
 			//Récuperation du dernier ID inséré.
 			list($this->id) = $db->last_insert_id();
@@ -90,6 +93,19 @@ class craft_recette
 	function __toString()
 	{
 		return $this->id;
+	}
+	
+	function get_ingredients()
+	{
+		global $db;
+		$this->ingredients = array();
+		$requete = "SELECT id_recette, id_ingredient, nombre, secret FROM craft_recette_ingredient WHERE id_recette = ".$this->id;
+		$req = $db->query($requete);
+		while($row = $db->read_assoc($req))
+		{
+			$this->ingredients[] = new craft_recette_ingredient($row);
+		}
+		return $this->ingredients;
 	}
 }
 ?>

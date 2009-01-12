@@ -250,8 +250,8 @@ function Loadchargement()
 }
 function Hidechargement()
 {
-	$('conteneur_test').hide();
 	$('loading').hide();
+	$('conteneur_test').hide();
 	
 }
 function AfficheCarte(map)
@@ -301,6 +301,7 @@ function affichePopUp(input_name,input_get)
 	{
 		$('popup').show();
 		$('popup_content').innerHTML = resultat.responseText;
+		Hidechargement();
 	}
 	new Ajax.Request(input_name,{method:'get',parameters:input_get,onLoading:Loadchargement,onComplete:AffichePopup});
 }

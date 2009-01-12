@@ -166,7 +166,12 @@ class map
 							else $all = '';
 							$overlib .= "<li class='overlib_joueurs'><span>".$this->map[$x_map][$y_map]["Joueurs"][$i]["nom"]."</span>&nbsp;-&nbsp;".ucwords($this->map[$x_map][$y_map]["Joueurs"][$i]["race"])." - Niv.".$this->map[$x_map][$y_map]["Joueurs"][$i]["level"].$all."</li>";
 						}
-						for($i = 0; $i < count($this->map[$x_map][$y_map]["Monstres"]); $i++)			{ $overlib .= "<li class='overlib_monstres'><span>Monstre</span>&nbsp;-&nbsp;".$this->map[$x_map][$y_map]["Monstres"][$i]["nom"]." x".$this->map[$x_map][$y_map]["Monstres"][$i]["tot"]."</li>"; }
+						for($i = 0; $i < count($this->map[$x_map][$y_map]["Monstres"]); $i++)
+						{
+							if(array_key_exists('hp', $this->map[$x_map][$y_map]["Monstres"][$i])) $hp = ' - HP : '.$this->map[$x_map][$y_map]["Monstres"][$i]['hp'];
+							else $hp = '';
+							$overlib .= "<li class='overlib_monstres'><span>Monstre</span>&nbsp;-&nbsp;".$this->map[$x_map][$y_map]["Monstres"][$i]["nom"]." x".$this->map[$x_map][$y_map]["Monstres"][$i]["tot"].$hp."</li>";
+						}
 						for($i = 0; $i < count($this->map[$x_map][$y_map]["Drapeaux"]); $i++)			{ $overlib .= "<li class='overlib_batiments'><span>Drapeau</span>&nbsp;-&nbsp;".ucwords($this->map[$x_map][$y_map]["Drapeaux"][$i]["race"])."</li>"; }
 						$overlib .= "</ul>";
 						$overlib = str_replace("'", "\'", trim($overlib));
@@ -365,13 +370,23 @@ class map
 		}
 	}
 
-	function get_monstre($level = 0)
+	function get_monstre($level = 0, $groupe = true)
 	{
 		global $db;
-		$RqMonstres = $db->query("SELECT id, x, y, nom, lib, COUNT(*) as tot 
+		if($groupe)
+		{
+			$group = ' GROUP BY x, y, lib';
+			$champs = ', COUNT(*) as tot';
+		}
+		else
+		{
+			$group = '';
+			$champs = ', hp';
+		}
+		$RqMonstres = $db->query("SELECT id, x, y, nom, lib ".$champs."
 								  FROM map_monstre 
 								  WHERE ( ( (x >= ".$this->xmin.") AND (x <= ".$this->xmax.") ) AND ( (y >= ".$this->ymin.") AND (y <= ".$this->ymax.") ) ) 
-								  GROUP BY x, y, lib ORDER BY y ASC, x ASC, ABS(level - $level) ASC, level ASC, nom ASC, id ASC;");
+								  ".$group." ORDER BY y ASC, x ASC, ABS(level - $level) ASC, level ASC, nom ASC, id ASC;");
 		if($db->num_rows($RqMonstres) > 0)
 		{
 			$monster = 0;
@@ -383,7 +398,8 @@ class map
 				$this->map[$objMonstres->x][$objMonstres->y]["Monstres"][$monster]["nom"] = $objMonstres->nom;
 				$this->map[$objMonstres->x][$objMonstres->y]["Monstres"][$monster]["lib"] = $objMonstres->lib;
 				$this->map[$objMonstres->x][$objMonstres->y]["Monstres"][$monster]["tot"] = $objMonstres->tot;
-	
+				if(!$groupe) $this->map[$objMonstres->x][$objMonstres->y]["Monstres"][$monster]["hp"] = $objMonstres->hp;
+
 				{//-- vérification que l'image du PNJ existe
 					$image = $this->root."image/monstre/";
 					if(file_exists($image.$objMonstres->lib.".png")) 		{ $image .= $objMonstres->lib.".png"; }

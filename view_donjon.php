@@ -62,7 +62,7 @@ else
 		$map->get_joueur('neutre', true);
 		$map->get_drapeau();
 		//$map->get_batiment();
-		$map->get_monstre(1);
+		$map->get_monstre(1, false);
 
 		$map->affiche();
 	
