@@ -102,6 +102,7 @@ $Gtrad['sort_groupe'] = 'Sorts de groupe';
 $Gtrad['sort_groupe_sort_mort'] = 'Sorts de nécromancie de groupe';
 $Gtrad['sort_groupe_sort_element'] = 'Sorts élémentaires de groupe';
 $Gtrad['craft'] = 'Fabrication d\'objets';
+$Gtrad['artisanat'] = 'Artisanat';
 $Gtrad['survie'] = 'Survie';
 $Gtrad['identification'] = 'Identification d\'objets';
 $Gtrad['sort_vie+'] = 'Apprend magie de la vie a';

@@ -47,7 +47,7 @@
 }
 {//-- Buffs, Grade, Pseudo
 	echo "<div id='joueur_buffs_nom'>";
-	echo " <div id='joueur_nom' onclick=\"envoiInfo('personnage.php', 'information');\" title=\"Acc&eacute; &agrave la fiche de votre personnage\">".ucwords($joueur["grade"])." ".ucwords($joueur["nom"])." ".ucwords($Gtrad[$joueur["race"]])." (".ucwords($joueur["classe"]).") - niv.".$joueur["level"]."</div>
+	echo " <div id='joueur_nom' onclick=\"envoiInfo('personnage.php', 'information');\" title=\"Acc&eacute; &agrave la fiche de votre personnage\">".ucwords($joueur["grade"])." ".ucwords($joueur["nom"])." ".ucwords($Gtrad[$joueur["race"]])."<br />(".ucwords($joueur["classe"]).") - niv.".$joueur["level"]."</div>
 	<br />";
 	echo " <div id='buff_list'>
 			<ul>";
@@ -126,7 +126,7 @@ if(!empty($joueur["groupe"]))
 		{
 			unset($RqMembre);
 			unset($objMembre);
-			$RqMembre = $db->query("SELECT hp, hp_max, mp, mp_max, x, y, nom, classe, statut, rang_royaume, level, race, dernier_connexion
+			$RqMembre = $db->query("SELECT hp, hp_max, mp, mp_max, x, y, nom, classe, statut, rang_royaume, level, race, dernieraction
 									FROM perso 
 									WHERE ID=".$groupe["membre"][$m]["id_joueur"].";");
 			$objMembre = $db->read_assoc($RqMembre);
@@ -161,7 +161,7 @@ if(!empty($joueur["groupe"]))
 				}
 			}
 			
-			$laptime_last_connexion = time() - $groupe["membre"][$m]["dernier_connexion"];
+			$laptime_last_connexion = time() - $groupe["membre"][$m]["dernieraction"];
 			if($laptime_last_connexion > (21 * 86400)) 														{ $activite_perso = "noir"; 	$libelle_activite = "ce joueur est inactif ou banni"; }	
 			elseif( ($laptime_last_connexion <= (21 * 86400)) && ($laptime_last_connexion > (1 * 86400)) )	{ $activite_perso = "rouge"; 	$libelle_activite = "s'est connecté il y a plus d'1 jour."; }	
 			elseif( ($laptime_last_connexion <= (1 * 86400)) && ($laptime_last_connexion > (10 * 60)) )		{ $activite_perso = "bleu"; 	$libelle_activite = "s'est connecté il y a moins d'1 jour."; }	
@@ -186,5 +186,26 @@ if(!empty($joueur["groupe"]))
 	}
 	echo " </ul>
 		  </div>";
+}
+else
+{
+$W_requete = 'SELECT * FROM invitation WHERE receveur = '.$_SESSION['ID'];
+$W_req = $db->query($W_requete);
+$W_row = $db->read_array($W_req);
+$ID_invitation = $W_row['ID'];
+$ID_groupe = $W_row['groupe'];
+//Si il y a une invitation pour le joueur
+if ($db->num_rows > 0)
+{
+	$W_requete = "SELECT nom FROM perso WHERE ID = ".$W_row['inviteur'];
+	$W_req = $db->query($W_requete);
+	$W_row2 = $db->read_array($W_req);
+	
+	echo '
+	<div class="infoperso">
+	Vous avez reçu une invitation pour grouper de la part de '.$W_row2['nom'].'<br />
+	<a href="reponseinvitation.php?ID='.$ID_invitation.'&groupe='.$ID_groupe.'&reponse=oui" onclick="return envoiInfo(this.href, \'information\');">Accepter</a> / <a href="reponseinvitation.php?ID='.$ID_invitation.'&reponse=non" onclick="return envoiInfo(this.href, \'information\');">Refuser</a>
+	</div>';
+}
 }
 ?>

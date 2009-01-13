@@ -733,7 +733,7 @@ function recupperso($ID)
 				$R_perso['alchimie'] = $row['alchimie'];
 				$R_perso['architecture'] = $row['architecture'];
 				$R_perso['craft'] = $row['craft'];
-				$R_perso['artisanat'] = round(sqrt($R_perso['architecture'] + $R_perso['forge'] + $R_perso['alchimie']));
+				$R_perso['artisanat'] = round(sqrt(($R_perso['architecture'] + $R_perso['forge'] + $R_perso['alchimie']) * 10));
 				$R_perso['survie'] = $row['survie'];
 				$R_perso['facteur_magie'] = $row['facteur_magie'];  // Facteur multiplicateur, dépendant de la classe, des coûts et pré-requis pour les sorts. 
 				$R_perso['facteur_sort_vie'] = $row['facteur_sort_vie'];  // Inutilisé.

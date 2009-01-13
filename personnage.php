@@ -161,6 +161,7 @@ echo '
 			$maximum['distance'] = recup_max_comp('distance', $joueur['classe_id']);
 			$maximum['esquive'] = recup_max_comp('esquive', $joueur['classe_id']);
 			$maximum['blocage'] = recup_max_comp('blocage', $joueur['classe_id']);
+			$maximum['artisanat'] = 123;
 			$maximum['architecture'] = recup_max_comp('architecture', $joueur['classe_id']);
 			$maximum['alchimie'] = recup_max_comp('alchimie', $joueur['classe_id']);
 			$maximum['forge'] = recup_max_comp('forge', $joueur['classe_id']);
@@ -198,6 +199,14 @@ echo '
 		</td>
 		<td>
 			'.genere_image_comp($joueur, 'blocage', $maximum['blocage']).' <span class="xsmall">('.$joueur['blocage'].' / '.$maximum['blocage'].')</span>
+		</td>
+	</tr>
+	<tr class="trcolor1">
+		<td>
+			Artisanat
+		</td>
+		<td>
+			'.genere_image_comp($joueur, 'artisanat', $maximum['artisanat']).' <span class="xsmall">('.$joueur['artisanat'].' / '.$maximum['artisanat'].')</span>
 		</td>
 	</tr>
 	<tr class="trcolor1">
