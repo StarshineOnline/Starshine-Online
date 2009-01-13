@@ -328,3 +328,15 @@ function menu_change(input_name)
 		$(input_name+'_menu').show();
 	}
 }
+
+function adresse(tri, i, race)
+{
+	if(i == '') i = document.getElementById('i').value;
+	if(tri == '') tri = document.getElementById('tri').value;
+	else
+	{
+		if(i != 'moi') i = 0;
+	}
+	if(race == '') race = document.getElementById('race').value;
+	envoiInfo('classement_ajax.php?tri=' + tri + '&i=' + i + '&race=' + race + '&javascript=true', 'table_classement');
+}

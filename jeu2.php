@@ -76,9 +76,9 @@ $_SESSION['position'] = convert_in_pos($joueur['x'], $joueur['y']);
 	</div>
 <div id='menu'>
 	<div id='menu_details'>
-		<div id='lejeu_menu' style='display:none;'><span class='menu' onclick="affichePopUp('diplomatie.php');">Diplomatie</span><span class='menu'>Classement</span><span class='menu'>Statistique</span></div>
-		<div id='starshine_menu' style='display:none;'><span class='menu'>Bestiaire</span><span class='menu'>Background</span><span class='menu'>Carte</span></div>
-		<div id='communaute_menu' style='display:none;'><span class='menu'>Forum</span><span class='menu'>Wiki</span><span class='menu'>Tchat</span></div>
+		<div id='lejeu_menu' style='display:none;'><span class='menu' onclick="affichePopUp('diplomatie.php');">Diplomatie</span><span class='menu' onclick="affichePopUp('classement.php');">Classement</span><span class='menu' onclick="affichePopUp('stats.php');">Statistique</span></div>
+		<div id='starshine_menu' style='display:none;'><span class='menu' onclick="affichePopUp('liste_monstre.php');">Bestiaire</span><span class='menu' onclick="affichePopUp('background.php');">Background</span><span class='menu' onclick="affichePopUp('royaume.php');">Carte</span></div>
+		<div id='communaute_menu' style='display:none;'><span class='menu'><a href="http://forum.starshinebox.info">Forum</a></span><span class='menu'>Wiki</span><span class='menu'>Tchat</span></div>
 	</div>
 </div>
 <div id='contenu_back'>

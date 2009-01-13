@@ -1,158 +1,123 @@
-<?php
-/**
-* @file
-* Page d'accueil.
-*/
-
-
-$textures = false;
+<?php 
+$site = true;
 include('haut.php');
-setlocale(LC_ALL, 'fr_FR', 'FRA');
-include('haut_site.php');
-if ($G_maintenance)
-{
-	echo 'Starshine-online est actuellement en cours de mis à jour.<br />
-	le forum est toujours disponible <a href="punbb/">ici - Forum</a>';
-}
-else
-{
-	include('menu.php');
-	//Si le joueur est connecté on affiche le menu de droite
-//plop salut le nain 
-	echo '<div id="contenu">';
-		echo '<div id="centre2">';
 
-	if(array_key_exists('ID', $_SESSION))
+?>
+<script type="text/javascript">
+
+function menu_change(input_name)
+{
+	if ($('menu_encours').value=='')
 	{
-		?>
-		<div class="titre">
-		Message du monde
-		</div>
-		<div id="news">
-		<?php
-		//Si message du monde
-		$requete = "SELECT * FROM motd WHERE publie = 1";
-		$req_m = $db->query($requete);
-		$row_m = $db->read_assoc($req_m);
-		$message = htmlspecialchars(stripslashes($row_m['text']));
-		$message = str_replace('[br]', '<br />', $message);
-		//$message = $amessage.$message;
-		$message = eregi_replace("\[img\]([^[]*)\[/img\]", '<img src=\\1 title="\\1">', $message );
-		$message = eregi_replace("\[b\]([^[]*)\[/b\]", '<strong>\\1</strong>', $message );
-		$message = eregi_replace("\[i\]([^[]*)\[/i\]", '<i>\\1</i>', $message );
-		$message = eregi_replace("\[url\]([^[]*)\[/url\]", '<a href="\\1">\\1</a>', $message );
-		$message = str_replace("[/color]", "</span>", $message);
-		$regCouleur = "\[color= ?(([[:alpha:]]+)|(#[[:digit:][:alpha:]]{6})) ?\]";
-		$message = eregi_replace($regCouleur, "<span style=\"color: \\1\">", $message);
-		$motd = '
-		<p>'.$message.'</p>';
-		echo $motd;
-		?>
-		</div>
-		<div class="titre">
-		Les dernières infos du roi
-		</div>
-		<div id="news">
-		<?php
-		//Si message du roi
-		$requete = "SELECT * FROM motk WHERE race = '".$joueur['race']."'";
-		$req_m = $db->query($requete);
-		$row_m = $db->read_assoc($req_m);
-		$message = htmlspecialchars(stripslashes($row_m['message']));
-		$message = str_replace('[br]', '<br />', $message);
-		//$message = $amessage.$message;
-		$message = eregi_replace("\[img\]([^[]*)\[/img\]", '<img src=\\1 title="\\1">', $message );
-		$message = eregi_replace("\[b\]([^[]*)\[/b\]", '<strong>\\1</strong>', $message );
-		$message = eregi_replace("\[i\]([^[]*)\[/i\]", '<i>\\1</i>', $message );
-		$message = eregi_replace("\[url\]([^[]*)\[/url\]", '<a href="\\1">\\1</a>', $message );
-		$message = str_replace("[/color]", "</span>", $message);
-		$regCouleur = "\[color= ?(([[:alpha:]]+)|(#[[:digit:][:alpha:]]{6})) ?\]";
-		$message = eregi_replace($regCouleur, "<span style=\"color: \\1\">", $message);
-		foreach ($G_autorisations as $balise => $grades) {
-			if (!in_array($joueur['rang_royaume'], $grades)) {
-				//$message = eregi_replace("\[$balise\].*?\[/$balise\]", '', $message);
-				$message = preg_replace("/\[$balise\].*?\[\\/$balise\]/i", '', $message);
-		  }
-		  else {
-		  	//$message = eregi_replace("\[$balise\](.+?)\[/$balise\]", '<small class="confidentiel">R&eacute;serv&eacute; aux '.$balise.' :\\1 </small>', $message);
-		  	$message = preg_replace("/\[$balise\](.+?)\[\\/$balise\]/i", '<small class="confidentiel">R&eacute;serv&eacute; aux '.$balise.' : \\1 </small>', $message);
-		  }
-		}
-		//$message = eregi_replace("\[color=(\#[0-9A-F]{6}|[a-z\-]+)\](.*?)\[/color\]", "<span style=\"color : #\\1 \">\\2</span>", $text);
-		$motk = '
-		<p>'.$message.'</p>';
-		echo $motk;
-		//Affichage de nouveaux messages
-		//Détermine le nombre de message du joueur
-		$requete = "SELECT * FROM message WHERE id_dest = '".$_SESSION['ID']."' AND FIND_IN_SET('lu', type) = 0";
-		$req = $db->query($requete);
-		echo '</div>';
-		echo '<div class="titre">
-		Message
-		</div>
-		<div id="news">
-		';
-		if($db->num_rows == 0) 
-		{
-			echo '<p>Pas de nouveaux messages</p>';
-		}
-		else
-		{
-			echo '<p><a href="jeu2.php?page_info=messagerie.php">Vous avez '.$db->num_rows.' nouveaux messages</a></p>';
-		}
-		echo '<p>';
-		while($row = $db->read_assoc($req))
-		{
-			$date = strftime("%d/%m/%Y à %H:%M", $row['date']);
-			echo 'Le '.$date.' par '.$row['nom_envoi'].' - <strong>Titre : '.stripslashes($row['titre']).'</strong><br />';
-		}
-		echo '</p>';
-		echo '</div>';
-		//Affichage du journal des nouvelles actions du joueur
-		if($journal != '')
-		{
-				echo '<div class="titre">';
-				echo '<p>Journal des dernières actions</p>';
-				echo '</div>';
-				echo '<ul class="ville" id="news">';
-				echo '<li>'.$journal.'</li>';
-				echo '</ul>';
-
-		}
+		$('menu_encours').value= input_name;
+		$(input_name+'_menu').addClassName('selected');
+		$(input_name+'_box').show();
 	}
 	else
 	{
-		echo '
-			<div class="titre">
-				Présentation
-			</div>
-			<div id="news">
-
-				<p>Bienvenue dans le monde de Starshine-Online.<br />
-				Pour l\'instant au stade de la béta (c\'est à dire en phase d\'équilibrage et d\'amélioration du monde), starshine-online sera un jeu de rôle massivement mutijoueur (mmorpg) en tour par tour.<br />
-				Il vous permettra d\'entrer dans la peau d\'un grand héros de l\'univers Starshine peuplé de nombreuses créatures et d\'autres héros ennemis près a tout pour détruire votre peuple.<br />
-				<br />
-				Il est recommandé d\'avoir un navigateur dernière génération pour jouer à Starshine, nous vous conseillons <a href="http://www.mozilla-europe.org/fr/products/firefox/">Firefox</a>.<br />
-				<strong>N\'oubliez pas de reporter les bugs et problèmes, et de suggérer de nouvelles choses sur le forum.</strong>
-				</div>';
+		var tmp = $('menu_encours').value;
+		$(tmp+'_box').hide();
+		$(tmp+'_menu').removeClassName('selected');
+		$('menu_encours').value= input_name;
+		$(input_name+'_menu').addClassName('selected');
+		$(input_name+'_box').show();
+		if ($('perso_selected_id').value != '')
+		{
+			$($('perso_selected_id').value).className ='';
+			$('personnage').hide();			
+		}		
 	}
+}
+function Chargement()
+{
+	$('loading').show();
+	$('accueil').setAttribute('style','cursor:progress !important;')
+}
+function race(input_race,input_classe)
+{
+	function Affiche(requete)
+	{
+		$('personnage').show();
+		$('personnage').innerHTML = requete.responseText;
+		$('loading').hide();
+		$('accueil').setAttribute('style','cursor:normal;')
+		
+	}
+	if ($('perso_selected_id').value != '')
+	{
+		$($('perso_selected_id').value).className ='';			
+	}
+	$(input_race+'_'+input_classe).className = 'perso_selected';
+	$('perso_selected_id').value = input_race+'_'+input_classe;
+	new Ajax.Request('./site_accueil_personnage.php',{method:'get',parameters:'race='+input_race+'&classe='+input_classe,onLoading:Chargement,onComplete:Affiche});
+}
+function validation_perso()
+{
 
-	echo '
-	<div class="titre">
-				News
-				</div>
-				<div id="news">
-				';
-	require('connect_forum.php');
+	if ($('creat_nom').value == '')
+	{
+		$('creat_erreur').innerHTML = 'Vous avez laisser un champ libre, ou vos mots de passe ne correspondent pas';
+		$('creat_nom').setAttribute('style','border: 1px solid #CC0033;');
+	}
+	
+	if ($('creat_email').value == '')
+	{
+		$('creat_erreur').innerHTML = 'Vous avez laisser un champ libre, ou vos mots de passe ne correspondent pas';
+		$('creat_email').setAttribute('style','border: 1px solid #CC0033;');	
+	}
+	if (($('creat_pass').value != $('creat_pass2').value) || ($('creat_pass2').value=='') || ($('creat_pass2').value==''))
+	{
+		$('creat_erreur').innerHTML = 'Vous avez laisser un champ libre, ou vos mots de passe ne correspondent pas';
+		$('creat_pass').setAttribute('style','border: 1px solid #CC0033;');	
+		$('creat_pass2').setAttribute('style','border: 1px solid #CC0033;');			
+	}
+	if ($('perso_selected_id').value == '')
+	{
+		$('creat_erreur').innerHTML = "Vous n'avez pas sélectionnez de personnage.";
+	}	
+	
+}
+</script>
+
+<div id='accueil'>
+	<div class='logo'></div>
+	<div id='loading' style='display:none;'></div>	
+	<div id='test'>
+	<div id='menu_accueil'>
+	<ul>
+		<li id='presentation_menu' class='selected' onclick="menu_change('presentation');">Présentation</li>
+		<li id='screenshot_menu' onclick="menu_change('screenshot');">ScreenShot</li>
+		<li id='news_menu' onclick="menu_change('news');">News</li>
+		<li id='creation_menu' onclick="menu_change('creation');">Création d'un compte</li>
+
+	</ul>
+	</div>
+	<div class='box'>
+		<input type='hidden' id='menu_encours' value='presentation'>
+		<div id='presentation_box'>
+			<p>Bienvenue dans le monde de Starshine-Online.<br />
+Pour l'instant au stade de la béta (c'est à dire en phase d'équilibrage et d'amélioration du monde), starshine-online sera un jeu de rôle massivement mutijoueur (mmorpg) en tour par tour.<br /><br />
+Il vous permettra d'entrer dans la peau d'un grand héros de l'univers Starshine peuplé de nombreuses créatures et d'autres héros ennemis près a tout pour détruire votre peuple.
+<br /><br />
+Il est recommandé d'avoir un navigateur dernière génération pour jouer à Starshine, nous vous conseillons Firefox, un navigateur libre.<br />
+N'oubliez pas de reporter les bugs et problèmes, et de suggérer de nouvelles choses sur le forum.</p>
+
+		</div>
+		<div id='screenshot_box' style='display:none;'>
+			<p>Voici quelques screenshots</p>
+		
+		</div>
+		<div id='news_box' style='display:none;'>
+		<?php
+				require('connect_forum.php');
 	$requete = "SELECT * FROM punbbtopics WHERE (forum_id = 5) ORDER BY posted DESC";
 	$req = $db_forum->query($requete);
 
 	$i = 0;
-	while($row = $db_forum->read_array($req) AND $i < 15)
+	while($row = $db_forum->read_array($req) AND $i < 7)
 	{
-		echo '<div class="titre_news"><strong><a class="news" href="http://forum.starshine-online.com/viewtopic.php?id='.$row['id'].'">'./*utf8_encode*/($row['subject']).'</a></strong><br />
-		<span style="font-size:10px;">Par '.$row['poster'].', le '.date("l d F Y à H:i", $row['posted']).'</span><!-- <span style="font-size : 10px;"> ('.($row['num_replies']).' commentaires)</span> --></div>';
-		if ($i < 5)
+		echo '<h2><a href="http://forum.starshine-online.com/viewtopic.php?id='.$row['id'].'">'.($row['subject']).'</a></h2>';
+		if ($i < 2)
 		{
 			$requete_post = "SELECT * FROM punbbposts WHERE (topic_id = ".$row['id'].") ORDER BY id ASC";
 			$req_post = $db_forum->query($requete_post);
@@ -167,27 +132,92 @@ else
 				$message = mb_substr($message, 0, 600);
 				$message .= '<br /><a href="http://forum.starshine-online.com/viewtopic.php?id='.$row['id'].'">Lire la suite</a>';
 			}
-			echo '<div class="news">'.$message.'</div>';
+			echo $message;
 		}
 		$i++;
 	}
-	echo '</div>';
-	echo '</div>';
-	include('menu_d.php');
 
-}
+		?>
+		</div>
+		<div id='creation_box' style='display:none;'>
+		<?php
+	$RqRace = $db->query("SELECT race FROM royaume WHERE race != '' ORDER BY star_nouveau_joueur DESC, race ASC");
+			?>
 
-/*	//Connecté
-	if (isset($_SESSION['nom']))
-	{
-		echo '
-		<div id="jouer">
-			<p style="text-align : center;"><a href="jeu2.php">Cliquez ici pour accéder au jeu.</a></p>
-		</div>';
-	}
-*/
-echo '</div>';
+<form action="" method="POST">
+		<p id='creat_erreur' style='color:#CC0033;'></p>
+		<div style='width:35%;float:left;'>
+			<span class='creation_text'>Quel sera votre nom ?</span><input type="text" name="nom" id='creat_nom' /><br />
+			<span class='creation_text'>Email :</span>
+			<input type="text" name="email" id='creat_email' /><br />			
+			<span class='creation_text'>Indiquer un mot de passe :</span><input type="password" name="password" id='creat_pass' /><br />
+			<span class='creation_text'>Confirmer votre mot de passe :</span>
+			<input type="password" name="password2" id='creat_pass2' /><br />
+			<span onclick="validation_perso();">Créer </span>
+		</div>
+		<div style='width:65%;float:left;'>
+		<?php
+		$i=0;
+		while($objRace = $db->read_object($RqRace))
+		{
+			if ($i=='0'){echo "<p style='clear:both;'>";}
+			echo "<img src='./image/personnage/".$objRace->race."/".$objRace->race."_guerrier.png' id='".$objRace->race."_guerrier' onclick=\"race('".$objRace->race."','guerrier');\" style='width:35px;float:left;cursor:pointer;' />";
+			echo "<img src='./image/personnage/".$objRace->race."/".$objRace->race."_mage.png' id='".$objRace->race."_mage' onclick=\"race('".$objRace->race."','mage');\" style='width:35px;float:left;cursor:pointer;' /><span style='width:17px;float:left;height:1px;'></span>";
+			$i++;
+			if ($i=='4'){echo '</p>';$i=0;}
 
-include('bas.php');
+		}			
+		?>
+		<input type='hidden' id='perso_selected_id' />
+		</div>
+		</form>
+			<div style='clear:both'>
+			Avant de créer un personnage, vous pouvez consulter <a href="wiki.starshine-online.com">l'aide de jeu</a>, pour mieux choisir votre personnage<br />
+			N'hésitez pas à faire le tour des races pour en voir toutes les différences, et à passer votre curseur sur les attributs (force, dextérité, etc) pour avoir des détails sur leur fonctionnement.<br />
+			Pour un équilibrage du jeu, les peuples ayant le moins de joueurs recoivent plus de stars à la création du personnage.<br />
+			<br />
+			<strong>Un compte sur le forum sera créé automatiquement avec vos informations du jeu.</strong>
+			</div>
+		</div>
+		
+	</div>
+	</div>
+	<div id='login'>
+			<?php
+			if (!isset($_SESSION['nom']))
+			{
+			?>
+			<form action="" method="post">
+			ID : <input type="text" name="nom" size="10" class="input" />
+			Pass : <input type="password" name="password" size="10" class="input" />
+			Auto Login <input type="checkbox" name="auto_login" value="Ok" />
+			<input type="submit" name="log" value="Connexion" class="input" />
+			</form>
+			<?php
+			}
+			else
+			{
+				echo "<a href='jeu2.php'>jouer</a>";
+			}
+			?>	
+	</div>		
 
-?>
+	<div id='personnage' style='display:none'>
+
+	
+	</div>
+	<div id='accueil_pub'>
+	<script type="text/javascript"><!--
+google_ad_client = "pub-7541997421837440";
+/* 468x60, date de création 06/01/09 */
+google_ad_slot = "3202928182";
+google_ad_width = 468;
+google_ad_height = 60;
+//-->
+</script>
+<script type="text/javascript"
+src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+</script>
+	
+	</div>
+</div>

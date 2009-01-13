@@ -80,12 +80,6 @@ while($row = $db->read_field($req))
 }
 
 echo '
-<div id="contenu">
-	<div id="centre3">
-	<div class="titre">
-		Diplomatie
-	</div>
-	<br />
 <table style="border : 1px solid #ddd;" cellspacing="0">
 <tr style="font-weight : bold; font-size : 1em; background-color : #cccccc; text-align : center;">
 ';
@@ -281,5 +275,3 @@ while($iii < $count_race)
 	$iii++;
 }
 ?>
-	</div>
-</div>
