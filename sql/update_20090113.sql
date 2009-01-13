@@ -12,3 +12,9 @@ PRIMARY KEY ( `id` )
 ALTER TABLE `royaume` ADD `alchimie` INT UNSIGNED NOT NULL ;
 ALTER TABLE `craft_recette` ADD `royaume_alchimie` INT UNSIGNED NOT NULL ;
 ALTER TABLE `craft_recette` ADD `prix` INT UNSIGNED NOT NULL ;
+CREATE TABLE `starshine_test`.`terrain_construction` (
+`id` INT UNSIGNED NOT NULL AUTO_INCREMENT ,
+`id_terrain` INT UNSIGNED NOT NULL ,
+`id_batiment` INT UNSIGNED NOT NULL ,
+PRIMARY KEY ( `id` )
+);

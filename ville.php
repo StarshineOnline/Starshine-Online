@@ -250,6 +250,20 @@ if($W_distance == 0 AND $verif_ville)
 				<li>
 					<a href="poste.php?poscase=<?php echo $W_case; ?>" onclick="return envoiInfo(this.href, 'carte')">Poste</a>
 				</li>
+<?php
+		if($R['diplo'] == 127)
+		{
+			$terrain = new terrain();
+			if($terrain = $terrain->recoverByIdJoueur($joueur['ID']))
+			{
+			?>
+					<li>
+						<a href="terrain.php" onclick="return envoiInfo(this.href, 'carte')">Votre terrain</a>
+					</li>
+			<?php
+			}
+		}
+?>
 			</ul>
 						</tr>
 					</table>

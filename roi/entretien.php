@@ -78,6 +78,7 @@ echo '
 			$sources[9] = 'Ecole de Combat';
 			$sources[10] = 'Teleportation';
 			$sources[11] = 'Monstres';
+			$sources[24] = 'Mines';
 			if(date("G") > 4) $time = mktime(0, 0, 0, date("m") , date("d")-1, date("Y"));
 			else $time = mktime(0, 0, 0, date("m") , date("d")-2, date("Y"));
 			$requete = "SELECT ".$R['race']." FROM stat_jeu WHERE date = '".date("Y-m-d", $time)."'";

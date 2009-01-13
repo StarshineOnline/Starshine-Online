@@ -79,5 +79,17 @@ class terrain
 	{
 		return $this->id;
 	}
+
+	function recoverByIdJoueur($id_joueur)
+	{
+		global $db;
+		$requete = "SELECT id, id_joueur, nb_case FROM terrain WHERE id_joueur = ".$id_joueur;
+		$req = $db->query($requete);
+		if($db->num_rows($req) > 0)
+		{
+			return new terrain($db->read_assoc($req));
+		}
+		else return false;
+	}
 }
 ?>
