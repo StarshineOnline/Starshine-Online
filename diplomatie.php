@@ -1,7 +1,5 @@
 <?php
-include('haut.php');
-include('haut_site.php');
-include('menu.php');
+include('inc/fp.php');
 
 $diplomatie = array();
 $diplomatie[0][0] = 'Alliance fraternelle';

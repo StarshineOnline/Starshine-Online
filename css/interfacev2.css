@@ -1,5 +1,6 @@
 /*-- Global site --------------------------------------------------*/
-body {margin:0;padding:0;background:#5D705F url('./image/v2/bg_site.png') repeat-x;min-height: 100%;font: 13px "Helvetica Neue", Helvetica, Arial, Geneva, sans-serif;}
+html {width:100%;height:100%;}
+body {margin:0;padding:0;background:#5D705F url('./image/v2/bg_site.png') repeat-x;width:100%;height:100%;font: 13px "Helvetica Neue", Helvetica, Arial, Geneva, sans-serif;}
 #top{display : block;width: 1000px;margin: 0 auto;z-index :5;}
 
 #conteneur {width:985px;margin:auto;min-height: 100%;}
@@ -9,13 +10,22 @@ body {margin:0;padding:0;background:#5D705F url('./image/v2/bg_site.png') repeat
 #deplacement{float : left;vertical-align : top;	text-align : right;	width : 50px;	margin-left : 5px;}
 #information{height : 100%;	width : 47%;	float : left;	z-index :1;margin-left: 6px;}
 #information fieldset {-moz-border-radius: 10px;background:transparent url('./image/v2/box_accueil2.png');margin-top: 4px; }
-#information fieldset legend {background:transparent url('./image/v2/bouton_fond.png');-moz-border-radius: 10px;padding-left: 5px;font-weight: bold;}
+#information fieldset legend {background:transparent url('./image/v2/bouton_fond.png');-moz-border-radius: 10px;padding-left:10px;padding-right:10px;font-weight: bold;}
 #information a {color : #444;text-decoration : none;}
 #information a:hover {	color : #888;	text-decoration : none;}
 #perso{background-color:#c6d9f5;min-height: 120px;margin:0;padding:0;}
+#perso_menu {margin-left:94px;margin-top:-15px;}
+#perso_menu ul {margin:0;padding:0;list-style-type: none;height:17px;text-align: center;position: relative;}
+#perso_menu ul li {padding-left:5px;padding-right:5px;cursor: pointer;width:100px;background:transparent url('./image/v2/contenu_fond.png');border-left : 1px solid #777;border-right : 1px solid #777;border-top : 1px solid #777;margin-left:5px;margin-right:5px;font-style: italic;-moz-border-radius-topleft: 12px;-moz-border-radius-topright: 12px;-webkit-border-top-right-radius : 12px;-webkit-border-top-left-radius : 12px;}
+#perso_menu .menu {float:left;}
+#perso_menu .select {background:transparent url('./image/v2/bouton_selected.png') repeat-x;border-bottom:1px solid transparent;font-style:normal;font-weight: bold;}
+
+
+
+
 #perso_contenu{margin:auto;min-height:110px;padding:5px;}
 #contenu_jeu {	margin : 0 auto;width:100%;}
-#popup {margin-left:250px;position:absolute;top:60px;z-index:999999999; background-color : black;}
+#popup {margin-left:20px;position:absolute;top:60px;z-index:999999999; background-color : black;}
 #mask{background-image:url('./image/v2/overlay.png');height:100%;left:0;position:absolute;top:0;width:100%;z-index:9999999;}
 
 #header {background-color:#c6d9f5;min-height: 120px;margin:0;padding:0;}
@@ -27,7 +37,7 @@ body {margin:0;padding:0;background:#5D705F url('./image/v2/bg_site.png') repeat
 
 
 #menu {min-height: 20px;border-bottom: 1px solid #888;border-top: 1px solid #888;margin:0;padding:0;background:transparent url('./image/v2/bouton_fond.png') repeat-x;}
-#menu_details {width:1000px;margin:auto;}
+#menu_details {width:1000px;margin:auto;margin:2px auto auto 94px;font-size:12px;}
 #menu_details .menu {width:120px;display:block;float:left;cursor:pointer;text-align: center;border-left : 1px solid #CCC;border-rightr : 1px solid #CCC;}
 #menu_details .menu:hover {background:transparent url('./image/v2/bouton_hover.png') no-repeat left;padding-top:1px;}
 
@@ -65,6 +75,11 @@ body {margin:0;padding:0;background:#5D705F url('./image/v2/bg_site.png') repeat
 #joueur_nom							{ position:relative; width:210px; float:left; text-align:left; }
 #joueur_type						{ position:relative; width:210px; float:left; text-align:left; font-size:8pt; height:12px; }
 #buff_list				{ position:relative; text-align:center; width:310px; }
+.joueur_groupe_activitenoir, .joueur_groupe_activiterouge, .joueur_groupe_activitebleu, .joueur_groupe_activitevert { margin:0px 0px 0px 0px; float:left; width:11px; height:11px; margin:2px;}
+.joueur_groupe_activitenoir { background:transparent url('../../image/groupes/noir.png') center; }
+.joueur_groupe_activiterouge{ background:transparent url('../../image/groupes/rouge.png') center; }
+.joueur_groupe_activitebleu { background:transparent url('../../image/groupes/bleu.png') center; }
+.joueur_groupe_activitevert { background:transparent url('../../image/groupes/vert.png') center; }
 #buff_list ul			{ float:left; list-style-type:none; text-align:center; width:310px; }
 .buff					{ position:relative; float:left; height:19px; padding:0px; margin:0px 2px; }
 .buff_dispo				{ position:relative; float:left; height:19px; width:16px; padding:0px; margin:0px 2px; background:transparent url('../../image/buff/buff.png') top no-repeat; }
@@ -73,7 +88,7 @@ body {margin:0;padding:0;background:#5D705F url('./image/v2/bg_site.png') repeat
 #joueur_groupe			{ width:250px; float:left; }
 #joueur_groupe li		{ cursor:pointer; font-size:8pt; border-bottom:1px dotted #8b94b0; padding:0px 0px 2px 0px; }
 
-.joueur_groupe_pseudo	{ float:left; line-height:16px; clear:both; width:125px; border}
+.joueur_groupe_pseudo	{ float:left; line-height:16px; width:125px; border}
 .joueur_groupe_barre_hp	{ float:left; width:102px; height:6px; margin:0px 0px 0px 0px; }
 .joueur_groupe_barre_mp	{ float:left; width:102px; height:6px; margin:1px 0px 0px 0px; }
 
@@ -131,10 +146,10 @@ body {margin:0;padding:0;background:#5D705F url('./image/v2/bg_site.png') repeat
 /*-- Map --------------------------------------------------------------*/
 #carte							{ width:445px; height:440px; float:left; margin:0px;clear:both; z-index:500; }
 #carte ul {list-style: none;padding:0;margin: 0;}
-#map_bord_haut  				{ height:20px !important; cursor:pointer; padding-bottom : 0px;}
+#map_bord_haut  				{ height:20px !important; cursor:pointer; padding-bottom : 0px;cursor: default;}
 #map_bord_haut li 				{ float:left; width:60px; height:inherit; line-height:20px; color:white; text-align:center;}
 #map_bord_haut2 li 				{ float:left; width:60px; height:inherit; line-height:20px; color:white; text-align:center;  }
-#map_bord_haut_gauche  			{ width:20px !important; height:inherit;background: transparent url(../image/icone/royaume_icone.png) no-repeat scroll center center !important }
+#map_bord_haut_gauche  			{ width:20px !important; height:inherit;background: transparent url(../image/icone/royaume_icone.png) no-repeat scroll center center !important;cursor: pointer;}
 #map_bord_haut_gauche2 			{ width:25px !important; height:inherit; }
 #map_bord_haut_gauche:hover		{ background-position:top; }
 #map_bord_haut_gauche:active	{ background-position:bottom; }
@@ -143,8 +158,8 @@ body {margin:0;padding:0;background:#5D705F url('./image/v2/bg_site.png') repeat
 .div_map 						{ background:transparent url('./image/v2/map.png') repeat-x;-moz-border-radius: 10px;height:445px;}
 .map							{ height:60px; padding-bottom : 0px;}
 .mapl							{ height:20px; padding-bottom : 0px;}
-.map li, .mapl li				{ float:left; width:60px; height:inherit; }
-.map_bord_gauche				{ width:20px !important; color:white; line-height:60px; text-align:center;padding-bottom : 0px;}
+.map li, .mapl li				{ float:left; width:60px; height:inherit;cursor: pointer; }
+.map_bord_gauche				{ width:20px !important; color:white; line-height:60px; text-align:center;padding-bottom : 0px;cursor: default !important;}
 .map_bord_gauche2				{ width:20px !important; color:white; line-height:60px; text-align:center;padding-bottom : 0px;}
 .map_contenu 					{ width:56px; height:56px; margin:2px 2px 2px 2px; background:transparent url(image/pixel.gif) center no-repeat;}
 .low_resolution					{ width : 20px !important; height : 20px !important; font-size : 0.8em;}

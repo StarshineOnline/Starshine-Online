@@ -310,3 +310,21 @@ function fermePopUp()
 	$('popup_content').innerHTML = '';
 	$('popup').hide();
 }
+function menu_change(input_name)
+{
+	if ($('menu_encours').value=='')
+	{
+		$('menu_encours').value= input_name;
+		$(input_name).addClassName('select');
+		$(input_name+'_menu').show();
+	}
+	else
+	{
+		var tmp = $('menu_encours').value;
+		$(tmp+'_menu').hide();
+		$(tmp).removeClassName('select');
+		$('menu_encours').value= input_name;
+		$(input_name).addClassName('select');
+		$(input_name+'_menu').show();
+	}
+}

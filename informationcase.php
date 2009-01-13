@@ -50,14 +50,14 @@ if($db->num_rows > 0)
 	echo '
 
 	<h4>Joueurs</h4>
-	<table width="90%">';
+	<ul>';
 }
 	
 $mybonus = recup_bonus($_SESSION['ID']);
 $affiche_div = '';
 while($W_row = $db->read_array($W_query))
 {
-	echo '<tr><td width="50%">
+	echo '<li>
 	';
 	$W_nom = $W_row['nom'];
 	$W_race = $W_row['race'];
@@ -113,20 +113,20 @@ while($W_row = $db->read_array($W_query))
 //	</div>';
 	if ($W_ID != $_SESSION['ID'])
 	{
-		echo ' <td width="10%"><a href="envoimessage.php?id_type=p'.$W_ID.'" onclick="return envoiInfo(this.href, \'information\')"><img src="image/interface/message.png" title="Envoyer un message" /></a></td>';
-		if($joueur['sort_jeu'] != '') echo '<td width="10%"> <a href="sort_joueur.php?poscase='.$W_case.'&amp;id_joueur='.$W_ID.'" onclick="return envoiInfo(this.href, \'information\')"><img src="image/sort_hc_icone.png" title="Lancer un sort" alt="Lancer un sort" /></a></td>';
-		if($row_diplo[0] <= 5 OR array_key_exists(5, $mybonus)) echo '<td width="10%"> <a href="echange.php?poscase='.$W_case.'&amp;id_joueur='.$W_ID.'" onclick="return envoiInfo(this.href, \'information\')"><img src="image/icone/echanger.png" alt="Echanger" title="Echanger" /></a></td>';
+		echo ' <span style="width:10%"><a href="envoimessage.php?id_type=p'.$W_ID.'" onclick="return envoiInfo(this.href, \'information\')"><img src="image/interface/message.png" title="Envoyer un message" /></a></span>';
+		if($joueur['sort_jeu'] != '') echo '<span style="width:10%"> <a href="sort_joueur.php?poscase='.$W_case.'&amp;id_joueur='.$W_ID.'" onclick="return envoiInfo(this.href, \'information\')"><img src="image/sort_hc_icone.png" title="Lancer un sort" alt="Lancer un sort" /></a></span>';
+		if($row_diplo[0] <= 5 OR array_key_exists(5, $mybonus)) echo '<span style="width:10%"> <a href="echange.php?poscase='.$W_case.'&amp;id_joueur='.$W_ID.'" onclick="return envoiInfo(this.href, \'information\')"><img src="image/icone/echanger.png" alt="Echanger" title="Echanger" /></a></span>';
 	}
 	else
 	{
-		if($joueur['sort_jeu'] != '') echo '<td width="10%"></td><td width="10%"><a href="sort.php" onclick="return envoiInfo(this.href, \'information\')"><img src="image/sort_hc_icone.png" title="Lancer un sort" alt="Lancer un sort" /></a></td>';
+		if($joueur['sort_jeu'] != '') echo '<span style="width:10%"></span><span style="width:10%"><a href="sort.php" onclick="return envoiInfo(this.href, \'information\')"><img src="image/sort_hc_icone.png" title="Lancer un sort" alt="Lancer un sort" /></a></span>';
 	}
 	if($statut_joueur != 'normal') echo ' ('.$statut_joueur.')';
-	echo '</tr>';
+	echo '</li>';
 }
 if(array_key_exists('buff_rapidite', $joueur['buff'])) $reduction_pa = $joueur['buff']['buff_rapidite']['effet']; else $reduction_pa = 0;
 if(array_key_exists('debuff_ralentissement', $joueur['debuff'])) $reduction_pa -= $joueur['debuff']['debuff_ralentissement']['effet'];
-echo '</table>'.$affiche_div.'
+echo '</ul>'.$affiche_div.'
 ';
 //Affichage des PNJ
 $W_requete = 'SELECT * FROM pnj WHERE (x = '.$W_coord["x"].') AND (y = '.$W_coord["y"].')';
@@ -147,7 +147,8 @@ if($num_rows > 0)
 }
 
 //Affichage des Donjons
-$W_requete = 'SELECT * FROM donjon WHERE (x = '.$W_coord["x"].') AND (y = '.$W_coord["y"].')';
+$RqDonjon = 'SELECT * FROM donjon WHERE (x = '.$W_coord["x"].') AND (y = '.$W_coord["y"].')';
+
 $W_query = $db->query($W_requete);
 
 $num_rows = $db->num_rows;
@@ -283,7 +284,7 @@ $num_rows = $db->num_rows;
 if($num_rows > 0) echo '
 
 <h4>Monstres</h4>
-<table>';
+<ul>';
 while($W_row = $db->read_array($W_query))
 {
 	$W_nom = $W_row['nom'];
@@ -302,19 +303,16 @@ while($W_row = $db->read_array($W_query))
 	if($diff_level > 0) $strong = 'bold'; else $strong = 'normal';
 	// on envois dans infojoueur.php -> ID du joueur et La position de la case ou il se trouve
 	echo '
-	<tr>
-		<td width="30%">
-			&nbsp;&nbsp;&nbsp;<span style="color : '.$color.'; font-weight : '.$strong.'">'.$W_nom.'</span>
-		</td>
-		<td width="30%">';
+	<li><span style="color : '.$color.'; font-weight : '.$strong.'">'.$W_nom.'</span>
+	
+		<span>';
 		if(!array_key_exists('repos_sage', $joueur['debuff']) OR !array_key_exists('bloque_attaque', $joueur['debuff'])) echo '<a href="attaque_monstre.php?ID='.$W_ID.'&poscase='.$W_case.'" onclick="return envoiInfo(this.href, \'information\')"><img src="image/interface/attaquer.png" alt="Combattre" style="vertical-align : middle;" /> Attaquer <span class="xsmall">('.($pa_attaque - $reduction_pa).' PA)</span></a>';
 		echo ' <a href="info_monstre.php?ID='.$W_ID.'&poscase='.$W_case.'" onclick="return envoiInfo(this.href, \'information\')"><img src="image/icone/mobinfo.png" alt="Voir informations sur le monstre" title="Voir informations sur le monstre" style="vertical-align : middle;" /></a>';
 		if($joueur['sort_jeu'] != '') echo ' <a href="sort_monstre.php?poscase='.$W_case.'&amp;id_monstre='.$W_ID.'" onclick="return envoiInfo(this.href, \'information\')"><img src="image/sort_hc_icone.png" title="Lancer un sort" alt="Lancer un sort" style="vertical-align : middle;" /></a>';
 	echo '
-		</td>
-	</tr>';
+		</li>';
 }
-if ($num_rows > 0) echo '</table>';
+if ($num_rows > 0) echo '</ul>';
 }
 echo "</fieldset>";
 ?>

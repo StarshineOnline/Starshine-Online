@@ -5,7 +5,14 @@ $connexion = true;
 //Inclusion du haut du document html
 $interface_v2 = true;
 include('haut.php');
-
+?>
+<script type="text/javascript">
+window.onload = function()
+{
+	new Draggable('popup', {handle: 'popup_menu'});
+}
+</script>
+<?php
 $joueur = recupperso($_SESSION['ID']);
 
 //Si c'est pour entrer dans un donjon
@@ -58,10 +65,20 @@ $_SESSION['position'] = convert_in_pos($joueur['x'], $joueur['y']);
 		require_once('infoperso.php');
 		?>
 		</div>
+		<div id='perso_menu'>
+			<ul>
+				<li id='lejeu' class='menu' onclick="menu_change('lejeu');">Le jeu</li>
+				<li id='communaute' class='menu' onclick="menu_change('communaute');">Communauté</li>
+				<li id='starshine' class='menu' onclick="menu_change('starshine');">Starshine</li>
+			</ul>
+			<input type='hidden' id='menu_encours' />
+		</div>
 	</div>
-	<div id='menu'>
+<div id='menu'>
 	<div id='menu_details'>
-		
+		<div id='lejeu_menu' style='display:none;'><span class='menu' onclick="affichePopUp('diplomatie.php');">Diplomatie</span><span class='menu'>Classement</span><span class='menu'>Statistique</span></div>
+		<div id='starshine_menu' style='display:none;'><span class='menu'>Bestiaire</span><span class='menu'>Background</span><span class='menu'>Carte</span></div>
+		<div id='communaute_menu' style='display:none;'><span class='menu'>Forum</span><span class='menu'>Wiki</span><span class='menu'>Tchat</span></div>
 	</div>
 </div>
 <div id='contenu_back'>

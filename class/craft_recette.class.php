@@ -9,6 +9,8 @@ class craft_recette
 	public $type;
 	public $difficulte;
 	public $resultat;
+	public $royaume_alchimie;
+	public $prix;
 
 	/**	
 		*	Constructeur permettant la création d'une recette.
@@ -18,17 +20,17 @@ class craft_recette
 		*		-craft_recette($id) qui va chercher l'etat dont l'id est $id
 		*		-craft_recette($array) qui associe les champs de $array à l'objet.
 	**/
-	function __construct($id = 0, $nom = '', $description = '', $pa = 0, $mp = 0, $type = '', $difficulte = 0, $resultat = '')
+	function __construct($id = 0, $nom = '', $description = '', $pa = 0, $mp = 0, $type = '', $difficulte = 0, $resultat = '', $royaume_alchimie = 0, $prix = 0)
 	{
 		global $db;
 		//Verification du nombre et du type d'argument pour construire l'etat adequat.
 		if( (func_num_args() == 1) && is_numeric($id) )
 		{
-			$requeteSQL = $db->query('SELECT nom, description, pa, mp, type, difficulte, resultat FROM craft_recette WHERE id = '.$id);
+			$requeteSQL = $db->query('SELECT nom, description, pa, mp, type, difficulte, resultat, royaume_alchimie, prix FROM craft_recette WHERE id = '.$id);
 			//Si le thread est dans la base, on le charge sinon on crée un thread vide.
 			if( $db->num_rows($requeteSQL) > 0 )
 			{
-				list($this->nom, $this->description, $this->pa, $this->mp, $this->type, $this->difficulte, $this->resultat) = $db->read_row($requeteSQL);
+				list($this->nom, $this->description, $this->pa, $this->mp, $this->type, $this->difficulte, $this->resultat, $this->royaume_alchimie, $this->prix) = $db->read_row($requeteSQL);
 			}
 			else
 				$this->__construct();
@@ -44,6 +46,8 @@ class craft_recette
 			$this->type = $id['type'];
 			$this->difficulte = $id['difficulte'];
 			$this->resultat = $id['resultat'];
+			$this->royaume_alchimie = $id['royaume_alchimie'];
+			$this->prix = $id['prix'];
 		}
 		else
 		{
@@ -55,6 +59,8 @@ class craft_recette
 			$this->difficulte = $difficulte;
 			$this->id = $id;
 			$this->resultat = $resultat;
+			$this->royaume_alchimie = $royaume_alchimie;
+			$this->prix = $prix;
 		}
 	}
 
@@ -65,14 +71,14 @@ class craft_recette
 		if( $this->id > 0 )
 		{
 			$requete = 'UPDATE craft_recette SET ';
-			$requete .= 'nom = "'.$this->nom.'", description = "'.$this->description.'", pa = '.$this->pa.', mp = '.$this->mp.', type = "'.$this->type.'", difficulte = '.$this->difficulte.', resultat = "'.$this->resultat.'"';
+			$requete .= 'nom = "'.$this->nom.'", description = "'.$this->description.'", pa = '.$this->pa.', mp = '.$this->mp.', type = "'.$this->type.'", difficulte = '.$this->difficulte.', resultat = "'.$this->resultat.'", royaume_alchimie = '.$this->royaume_alchimie.', prix = '.$this->prix;
 			$requete .= ' WHERE id = '.$this->id;
 			$db->query($requete);
 		}
 		else
 		{
-			$requete = 'INSERT INTO craft_recette (nom, description, pa, mp, type, difficulte, resultat) VALUES(';
-			$requete .= '"'.$this->nom.'", "'.$this->description.'", '.$this->pa.', '.$this->mp.', "'.$this->type.'", '.$this->difficulte.', "'.$this->resultat.'")';
+			$requete = 'INSERT INTO craft_recette (nom, description, pa, mp, type, difficulte, resultat, royaume_alchimie, prix) VALUES(';
+			$requete .= '"'.$this->nom.'", "'.$this->description.'", '.$this->pa.', '.$this->mp.', "'.$this->type.'", '.$this->difficulte.', "'.$this->resultat.'", '.$this->royaume_alchimie.', '.$this->prix.')';
 			$db->query($requete);
 			//Récuperation du dernier ID inséré.
 			list($this->id) = $db->last_insert_id();
