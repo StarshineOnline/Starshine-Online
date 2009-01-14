@@ -1,15 +1,17 @@
 body {margin:0;padding:0;color:#222;background-color: #000;}
 
 #accueil {background:transparent url('./image/v2/page_accueil.jpg') no-repeat left;width:1024px;min-height: 748px;margin: auto;	font: 13px "Helvetica Neue", Helvetica, Arial, Geneva, sans-serif;}
-#accueil .logo {background:transparent url(./image/v2/logo.png) no-repeat scroll left center;display:block;height:80px;margin-left:600px;position:absolute;top:30px;width:207px;z-index:999;}
+#accueil .logo {background:transparent url(./image/v2/logo.png) no-repeat scroll left center;display:block;height:80px;margin-left:2px;position:absolute;top:27px;width:207px;z-index:1;}
 
 #accueil .box {height:280px;padding:10px;top:90px;width:530px;background:transparent url('./image/v2/box_accueil2.png');color:#EEE;overflow: auto;text-align: justify;-webkit-border-radius:10px;-moz-border-radius: 10px;}
 #accueil .box img {width:500px;}
 #news_box h2 {font-size: 14px;}
 #news_box h2 a {color:#EEE;}
 .creation_text {float:left;display:block;width:200px;}
-#login {margin-left:70px;width:480px;position:absolute;background:transparent url('./image/v2/box_accueil2.png');color:#EEE;height:30px;font-size: 11px;text-align: center;-moz-border-radius-bottomleft: 10px;-moz-border-radius-bottomright: 10px;-webkit-border-bottom-left-radius : 10px;-webkit-border-bottom-right-radius : 10px;}
+#login {padding:3px 10px 0px 10px;margin-left:70px;width:530px;position:absolute;background:transparent url('./image/v2/box_accueil2.png');color:#EEE;height:25px;font-size: 11px;text-align: center;-moz-border-radius-bottomleft: 10px;-moz-border-radius-bottomright: 10px;-webkit-border-bottom-left-radius : 10px;-webkit-border-bottom-right-radius : 10px;}
 #login input {border: 1px solid #CCC;background: #AAA; padding:0px;-moz-border-radius: 5px;-webkit-border-radius:5px;}
+#login a {color : #EEE; font-size : 13px;}
+#login #deco {float : right; cursor : pointer;}
 
 #carac {float:left;width:150px;}
 
@@ -24,13 +26,13 @@ body {margin:0;padding:0;color:#222;background-color: #000;}
 #carac li {clear: both;}
 #carac span {float:left;width:60px;display: block;}
 
-#menu_accueil {width:500px;color:#FFF;margin: auto;}
+#menu_accueil {margin : 0;width:450px;color:#FFF; z-index : 999;}
 #menu_accueil ul li {list-style: none;cursor: pointer;float:left;padding-left:6px;padding-right:6px;background:transparent url('./image/v2/box_accueil.png');margin-left:4px;margin-right:4px;font-family:"Trebuchet MS",Times,serif; font-style: italic;-moz-border-radius-topleft: 8px;;-moz-border-radius-topright: 8px;-webkit-border-top-right-radius : 8px;-webkit-border-top-left-radius : 8px;}
 
 #menu_accueil .selected {background:transparent url('./image/v2/box_accueil2.png');font-style: normal;font-weight: bold;}
-#test {margin-left:74px;position:absolute;top:74px;}
+#test {margin-left:70px;position:absolute;top:74px; z-index : 999;}
 
-#accueil_pub {margin-left:75px;top:430px;width:480px;position:absolute;}
+#accueil_pub {margin-left:115px;top:430px;width:480px;position:absolute;}
 
 
 

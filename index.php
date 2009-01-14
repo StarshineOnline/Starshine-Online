@@ -123,30 +123,31 @@ N'oubliez pas de reporter les bugs et problèmes, et de suggérer de nouvelles c
 		<div id='news_box' style='display:none;'>
 		<?php
 				require('connect_forum.php');
-	$requete = "SELECT * FROM punbbtopics WHERE (forum_id = 5) ORDER BY posted DESC";
+	$requete = "SELECT id, subject, num_replies FROM punbbtopics WHERE (forum_id = 5) ORDER BY posted DESC";
 	$req = $db_forum->query($requete);
 
 	$i = 0;
-	while($row = $db_forum->read_array($req) AND $i < 7)
+	while($row = $db_forum->read_array($req) AND $i < 5)
 	{
+		$regs = '';
 		echo '<h2><a href="http://forum.starshine-online.com/viewtopic.php?id='.$row['id'].'">'.($row['subject']).'</a></h2>';
-		if ($i < 2)
+		$requete_post = "SELECT message FROM punbbposts WHERE (topic_id = ".$row['id'].") ORDER BY id ASC";
+		$req_post = $db_forum->query($requete_post);
+		$row_post = $db_forum->read_array($req_post);
+		eregi("\[chapeau\]([^[]*)\[/chapeau\]", $row_post['message'], $regs);
+		if($regs[1] != '') $message = $regs[1];
+		else $message = $row_post['message'];
+		$message = /*utf8_encode*/(nl2br($message));
+		$message = eregi_replace("\[img\]([^[]*)\[/img\]", '<img src=\\1 title="\\1">', $message );
+		$message = eregi_replace("\[b\]([^[]*)\[/b\]", '<strong>\\1</strong>', $message );
+		$message = eregi_replace("\[i\]([^[]*)\[/i\]", '<i>\\1</i>', $message );
+		$message = eregi_replace("\[url\]([^[]*)\[/url\]", '<a href="\\1">\\1</a>', $message );
+		if(strlen($message) > 600)
 		{
-			$requete_post = "SELECT * FROM punbbposts WHERE (topic_id = ".$row['id'].") ORDER BY id ASC";
-			$req_post = $db_forum->query($requete_post);
-			$row_post = $db_forum->read_array($req_post);
-			$message = /*utf8_encode*/(nl2br($row_post['message']));
-			$message = eregi_replace("\[img\]([^[]*)\[/img\]", '<img src=\\1 title="\\1">', $message );
-			$message = eregi_replace("\[b\]([^[]*)\[/b\]", '<strong>\\1</strong>', $message );
-			$message = eregi_replace("\[i\]([^[]*)\[/i\]", '<i>\\1</i>', $message );
-			$message = eregi_replace("\[url\]([^[]*)\[/url\]", '<a href="\\1">\\1</a>', $message );
-			if(strlen($message) > 600)
-			{
-				$message = mb_substr($message, 0, 600);
-				$message .= '<br /><a href="http://forum.starshine-online.com/viewtopic.php?id='.$row['id'].'">Lire la suite</a>';
-			}
-			echo $message;
+			$message = mb_substr($message, 0, 600);
 		}
+		$message .= '<br /><a href="http://forum.starshine-online.com/viewtopic.php?id='.$row['id'].'">Lire la suite</a> '.$row['num_replies'].' commentaire(s)';
+		echo $message;
 		$i++;
 	}
 
@@ -200,7 +201,7 @@ N'oubliez pas de reporter les bugs et problèmes, et de suggérer de nouvelles c
 			if (!isset($_SESSION['nom']))
 			{
 			?>
-			<form action="" method="post">
+			<form action="index.php" method="post">
 			ID : <input type="text" name="nom" size="10" class="input" />
 			Pass : <input type="password" name="password" size="10" class="input" />
 			Auto Login <input type="checkbox" name="auto_login" value="Ok" />
@@ -210,7 +211,7 @@ N'oubliez pas de reporter les bugs et problèmes, et de suggérer de nouvelles c
 			}
 			else
 			{
-				echo "<a href='jeu2.php'>jouer</a>";
+				echo "<a href='jeu2.php'>Entrez dans Starshine-Online</a> <div id='deco'><div id='joueur_onglets_exit' title='Se déconnecter' onclick=\"if(confirm('Voulez vous déconnecter ?')) { document.location.href='index.php?deco=ok'; };\">X</div></div>";
 			}
 			?>	
 	</div>		
