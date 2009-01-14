@@ -53,6 +53,14 @@ function race(input_race,input_classe)
 }
 function validation_perso()
 {
+	function Afficheperso(requete)
+	{
+		$('personnage').show();
+		$('personnage').innerHTML = requete.responseText;
+		$('loading').hide();
+		$('accueil').setAttribute('style','cursor:normal;')
+		
+	}
 
 	if ($('creat_nom').value == '')
 	{
@@ -75,6 +83,11 @@ function validation_perso()
 	{
 		$('creat_erreur').innerHTML = "Vous n'avez pas sélectionnez de personnage.";
 	}	
+	if (($('perso_selected_id').value != '') && ($('creat_pass').value == $('creat_pass2').value) && ($('creat_pass2').value!='') && ($('creat_pass2').value!='') && ($('creat_nom').value != ''))
+	{
+		var perso = $('perso_selected_id').value.split('_');
+		new Ajax.Request('./site_accueil_creation.php',{method:'get',parameters:'race='+perso[0]+'&classe='+perso[1]+'&pseudo='+$('creat_nom').value+'&mdp='+$('creat_pass').value,onLoading:Chargement,onComplete:Afficheperso});
+	}
 	
 }
 </script>

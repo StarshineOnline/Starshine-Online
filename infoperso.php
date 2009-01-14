@@ -117,8 +117,10 @@ if(!empty($joueur["groupe"]))
 	if(!isset($groupe)) { $groupe = recupgroupe($joueur["groupe"], ""); };
 
 	echo "<div id='joueur_groupe'>
+			<div id='joueur_groupe_bouton'>
 		   <div id='mail_groupe' title='Envoyer un message &agrave; l&apos;ensemble du groupe.' onclick=\"return envoiInfo('envoimessage.php?id_type=g".$groupe["id"]."', 'information');\"></div>
-		   <div id='info_groupe' title='Voir les informations de mon groupe.' onclick=\"return envoiInfo('infogroupe.php?id=".$groupe["id"]."', 'information');\"></div>";
+		   <div id='info_groupe' title='Voir les informations de mon groupe.' onclick=\"return envoiInfo('infogroupe.php?id=".$groupe["id"]."', 'information');\"></div>
+		   </div>";
 	echo " <ul>";
 	for($m = 0; $m < count($groupe["membre"]); $m++)
 	{//-- Récupération des infos sur le membre du groupe
@@ -202,7 +204,7 @@ if ($db->num_rows > 0)
 	$W_row2 = $db->read_array($W_req);
 	
 	echo '
-	<div class="infoperso">
+	<div id="joueur_groupe">
 	Vous avez reçu une invitation pour grouper de la part de '.$W_row2['nom'].'<br />
 	<a href="reponseinvitation.php?ID='.$ID_invitation.'&groupe='.$ID_groupe.'&reponse=oui" onclick="return envoiInfo(this.href, \'information\');">Accepter</a> / <a href="reponseinvitation.php?ID='.$ID_invitation.'&reponse=non" onclick="return envoiInfo(this.href, \'information\');">Refuser</a>
 	</div>';

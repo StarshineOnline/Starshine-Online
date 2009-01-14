@@ -1,27 +1,19 @@
 <?php
 include('./inc/fp.php');
-$race_classe = $_GET['$race_classe'];
+$race = $_GET['race'];
+$classe = $_GET['classe'];
+if ($classe == 'guerrier')$classe = 'combattant';
 $pseudo = $_GET['pseudo'];
 $mdp = $_GET['mdp'];
-$email = = $_GET['mdp'];
 
-	//Verification d'usage
-	if (($_POST['password'] != $_POST['password2']) OR ($_POST['password'] == ''))
-	{
-		echo 'Erreur dans votre mot de passe';
-	}
-	elseif ($_POST['nom'] == '')
-	{
-		echo 'Erreur dans votre pseudo';
-	}
 	//Verification sécuritaire
-	elseif(!check_secu($_POST['nom']))
+	if(!check_secu($pseudo))
 	{
 		echo 'Les caractères spéciaux ne sont pas autorisés';
 	}
 	else
 	{
-	$requete = "SELECT * FROM perso WHERE nom = '".$_POST['nom']."'";
+	$requete = "SELECT * FROM perso WHERE nom = '".$pseudo."'";
 	$req = $db->query($requete);
 	$nombre = $db->num_rows;
 	if ($nombre > 0)
@@ -33,14 +25,14 @@ $email = = $_GET['mdp'];
 		include('inc/race.inc.php');
 		include('inc/classe.inc.php');
 		
-		echo 'Vous venez de créer un '.$Gtrad[$_POST['race']].' '.$_POST['classe'].' du nom de '.$_POST['nom'].'<br />';
+		echo 'Vous venez de créer un '.$Gtrad[$race].' '.$classe.' du nom de '.$pseudo.'<br />';
 		?>
 		N'hésitez pas à aller voir régulièrement les informations fournies dans votre forum de race, et de regarder le message de votre roi.<br />
 		Bon jeu, et bienvenue dans l'univers de Starshine !<br />
 		<br />
 		<?php
 		
-		$caracteristiques = $Trace[$_POST['race']];
+		$caracteristiques = $Trace[$race];
 		if ($_POST['classe'] == 'combattant')
 		{
 			$caracteristiques['vie'] = $caracteristiques['vie'] + 1;
@@ -59,24 +51,19 @@ $email = = $_GET['mdp'];
 			$sort_combat = '1';
 			$comp_combat = '';
 		}
-?>
 
-	<a href="index.php">Retour à l'index</a>
-
-<?php
-	$nom = trim($_POST['nom']);
-	$password = md5($_POST['password']);
+	$nom = trim($pseudo);
+	$password = md5($mdp);
 	$exp = 0;
 	$level = 1;
-	$star = $stars[$_POST['race']];
+	$star = $stars[$race];
 	$vie = $caracteristiques['vie'];
 	$force = $caracteristiques['force'];
 	$dexterite = $caracteristiques['dexterite'];
 	$puissance = $caracteristiques['puissance'];
 	$volonte = $caracteristiques['volonte'];
 	$energie = $caracteristiques['energie'];
-	$race = $_POST['race'];
-	$classe = $_POST['classe'];
+
 	if($classe == 'combattant')
 	{
 		$value = 0;
@@ -113,9 +100,10 @@ $email = = $_GET['mdp'];
 	{
 		echo $requete.'<br />';
 	}
-	require('connect_forum.php');
+/*	require('connect_forum.php');
 	//Création de l'utilisateur dans le forum
 	$requete = "INSERT INTO punbbusers(`group_id`, `username`, `password`, `language`, `style`, `registered`) VALUES('".$punbb[$race]."', '$nom', '".sha1($_POST['password'])."', 'French', 'SSO', '".time()."')";
 	$db_forum->query($requete);
+*/	
 	}
 	}
