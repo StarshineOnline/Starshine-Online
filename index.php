@@ -30,7 +30,7 @@ function menu_change(input_name)
 }
 function Chargement()
 {
-	$('loading').show();
+	$('loading_sso').show();
 	$('accueil').setAttribute('style','cursor:progress !important;')
 }
 function race(input_race,input_classe)
@@ -39,7 +39,7 @@ function race(input_race,input_classe)
 	{
 		$('personnage').show();
 		$('personnage').innerHTML = requete.responseText;
-		$('loading').hide();
+		$('loading_sso').hide();
 		$('accueil').setAttribute('style','cursor:normal;')
 		
 	}
@@ -94,7 +94,7 @@ function validation_perso()
 
 <div id='accueil'>
 	<div class='logo'></div>
-	<div id='loading' style='display:none;'></div>	
+	<div id='loading_sso' style='display:none;'></div>	
 	<div id='test'>
 	<div id='menu_accueil'>
 	<ul>
@@ -117,8 +117,15 @@ N'oubliez pas de reporter les bugs et problèmes, et de suggérer de nouvelles c
 
 		</div>
 		<div id='screenshot_box' style='display:none;'>
-			<p>Voici quelques screenshots</p>
-		
+			<a href="image/screenshots/screenshot01.jpg" rel="lightbox[screens]" title="Screenshot 1" /><img src="image/screenshots/mini_screenshot01.jpg" /></a>
+			<a href="image/screenshots/screenshot02.jpg" rel="lightbox[screens]" title="Screenshot 2" /><img src="image/screenshots/mini_screenshot01.jpg" /></a>
+			<a href="image/screenshots/screenshot03.jpg" rel="lightbox[screens]" title="Screenshot 3" /><img src="image/screenshots/mini_screenshot01.jpg" /></a><br />
+			<a href="image/screenshots/screenshot04.jpg" rel="lightbox[screens]" title="Screenshot 4" /><img src="image/screenshots/mini_screenshot01.jpg" /></a>
+			<a href="image/screenshots/screenshot05.jpg" rel="lightbox[screens]" title="Screenshot 5" /><img src="image/screenshots/mini_screenshot01.jpg" /></a>
+			<a href="image/screenshots/screenshot06.jpg" rel="lightbox[screens]" title="Screenshot 6" /><img src="image/screenshots/mini_screenshot01.jpg" /></a><br />
+			<a href="image/screenshots/screenshot07.jpg" rel="lightbox[screens]" title="Screenshot 7" /><img src="image/screenshots/mini_screenshot01.jpg" /></a>
+			<a href="image/screenshots/screenshot08.jpg" rel="lightbox[screens]" title="Screenshot 8" /><img src="image/screenshots/mini_screenshot01.jpg" /></a>
+			<a href="image/screenshots/screenshot09.jpg" rel="lightbox[screens]" title="Screenshot 9" /><img src="image/screenshots/mini_screenshot01.jpg" /></a>
 		</div>
 		<div id='news_box' style='display:none;'>
 		<?php
@@ -166,8 +173,8 @@ N'oubliez pas de reporter les bugs et problèmes, et de suggérer de nouvelles c
 			<input type="text" name="email" id='creat_email' /><br />			
 			<span class='creation_text'>Indiquer un mot de passe :</span><input type="password" name="password" id='creat_pass' /><br />
 			<span class='creation_text'>Confirmer votre mot de passe :</span>
-			<input type="password" name="password2" id='creat_pass2' /><br />
-			<span onclick="validation_perso();">Créer </span>
+			<input type="password" name="password2" id='creat_pass2' />
+			<span onclick="validation_perso();" id="bouton_creer">Créer</span>
 		</div>
 		<div style='width:65%;float:left;'>
 		<?php
@@ -185,11 +192,10 @@ N'oubliez pas de reporter les bugs et problèmes, et de suggérer de nouvelles c
 		<input type='hidden' id='perso_selected_id' />
 		</div>
 		</form>
-			<div style='clear:both'>
-			Avant de créer un personnage, vous pouvez consulter <a href="wiki.starshine-online.com">l'aide de jeu</a>, pour mieux choisir votre personnage<br />
+			<div id="aide_inscription">
+			Avant de créer un personnage, vous pouvez consulter <a href="http://wiki.starshine-online.com">l'aide de jeu</a>, pour mieux choisir votre personnage<br />
 			N'hésitez pas à faire le tour des races pour en voir toutes les différences, et à passer votre curseur sur les attributs (force, dextérité, etc) pour avoir des détails sur leur fonctionnement.<br />
 			Pour un équilibrage du jeu, les peuples ayant le moins de joueurs recoivent plus de stars à la création du personnage.<br />
-			<br />
 			<strong>Un compte sur le forum sera créé automatiquement avec vos informations du jeu.</strong>
 			</div>
 		</div>

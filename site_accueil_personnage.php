@@ -38,8 +38,6 @@ echo "<h3>".$Gtrad[$race]." - ".$classe."</h3>
 			<br />
 			<strong>Passif :</strong><br />
 			".$Trace[$race]['passif']."<br />
-			<br />
-
 			<ul id='carac'>
 				<li><strong>Caractéristiques :</strong></li>
 				<li title='Caractérise vos points de vie.'>
