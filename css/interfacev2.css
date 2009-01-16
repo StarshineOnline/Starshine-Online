@@ -25,7 +25,7 @@ body {margin:0;padding:0;background:#5D705F url('./image/v2/bg_site.png') repeat
 
 #perso_contenu{margin:auto;min-height:110px;padding:5px;}
 #contenu_jeu {	margin : 0 auto;width:100%;}
-#popup {margin-left:20px;position:absolute;top:60px;z-index:999999999; background-color : black;}
+#popup {margin-left:20px;position:absolute;top:60px;z-index:999999999; background-color : black; background : transparent url('./image/v2/bg_site.png') repeat-x;}
 #mask{background-image:url('./image/v2/overlay.png');height:100%;left:0;position:absolute;top:0;width:100%;z-index:9999999;}
 
 #header {background-color:#c6d9f5;min-height: 120px;margin:0;padding:0;}

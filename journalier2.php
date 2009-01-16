@@ -81,18 +81,18 @@ echo 'Déplacement des anciennes images dans le nouveau dossier<br />';
 copy('image/carte.png', 'image/stat/'.$date.'/carte.png');
 copy('image/carte_royaume.png', 'image/stat/'.$date.'/carte_royaume.png');
 copy('image/carte_densite_mob.png', 'image/stat/'.$date.'/carte_densite_mob.png');
-copy('image/stat_lvl.jpg', 'image/stat/'.$date.'/stat_lvl.jpg');
-copy('image/stat_race.jpg', 'image/stat/'.$date.'/stat_race.jpg');
-copy('image/stat_classe1.jpg', 'image/stat/'.$date.'/stat_classe1.jpg');
-copy('image/stat_classe2.jpg', 'image/stat/'.$date.'/stat_classe2.jpg');
-copy('image/stat_classe3.jpg', 'image/stat/'.$date.'/stat_classe3.jpg');
-copy('image/stat_classe4.jpg', 'image/stat/'.$date.'/stat_classe4.jpg');
-copy('image/stat_star1.jpg', 'image/stat/'.$date.'/stat_star1.jpg');
-copy('image/stat_star2.jpg', 'image/stat/'.$date.'/stat_star2.jpg');
-copy('image/stat_star3.jpg', 'image/stat/'.$date.'/stat_star3.jpg');
-copy('image/stat_joueur.jpg', 'image/stat/'.$date.'/stat_joueur.jpg');
-copy('image/stat_monstre.jpg', 'image/stat/'.$date.'/stat_monstre.jpg');
-copy('image/stat_niveau_moyen.jpg', 'image/stat/'.$date.'/stat_niveau_moyen.jpg');
+copy('image/stat_lvl.jpg', 'image/stat/'.$date.'/stat_lvl.png');
+copy('image/stat_race.jpg', 'image/stat/'.$date.'/stat_race.png');
+copy('image/stat_classe1.jpg', 'image/stat/'.$date.'/stat_classe1.png');
+copy('image/stat_classe2.jpg', 'image/stat/'.$date.'/stat_classe2.png');
+copy('image/stat_classe3.jpg', 'image/stat/'.$date.'/stat_classe3.png');
+copy('image/stat_classe4.jpg', 'image/stat/'.$date.'/stat_classe4.png');
+copy('image/stat_star1.jpg', 'image/stat/'.$date.'/stat_star1.png');
+copy('image/stat_star2.jpg', 'image/stat/'.$date.'/stat_star2.png');
+copy('image/stat_star3.jpg', 'image/stat/'.$date.'/stat_star3.png');
+copy('image/stat_joueur.jpg', 'image/stat/'.$date.'/stat_joueur.png');
+copy('image/stat_monstre.jpg', 'image/stat/'.$date.'/stat_monstre.png');
+copy('image/stat_niveau_moyen.jpg', 'image/stat/'.$date.'/stat_niveau_moyen.png');
 
 //Entretien des batiments et constructions
 //On récupère le nombre d'habitants très actifs
