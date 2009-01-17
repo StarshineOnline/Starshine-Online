@@ -2,7 +2,7 @@
 {//-- Initialisation
 	require_once('inc/fp.php');
 	if(!isset($joueur)) { $joueur = recupperso($_SESSION["ID"]); }; 		//-- Récupération du tableau contenant toutes les informations relatives au joueur
-	
+	echo '<div id="perso_contenu">';
 	require_once("levelup.php"); 				//-- Dans le cas ou le joueur a pris un level on traite son level up.
 }
 {//-- Javascript
@@ -34,21 +34,19 @@
 	echo " <div id='joueur_PO'>".$joueur["star"]."</div>";
 	echo " <div id='joueur_PH'>".$joueur["honneur"]."</div>";
 	echo " <div id='joueur_Psso' onclick=\"envoiInfo('point_sso.php', 'information');\" title=\"Vous avez ".$joueur["point_sso"]." point(s) shine en r&eacute;serve.\"></div>";
-	
+	$script_attaque = recupaction_all($joueur['action_a']);
 	//-- Index, Forums, Exit, Options
 	echo " <div id='joueur_onglets'>
-			<div id='joueur_onglets_index' title=\"Retour &agrave; l&apos;index\" onclick=\"document.location.href='site_index.php';\">index</div>
-	 		<div id='joueur_onglets_forums' title='Acc&eacute;der aux forums' onclick=\"document.location.href='http://forum.starshine-online.com/';\">forums</div>
-	 		<div id='joueur_onglets_options' title='Modifier vos options' onclick=\"document.location.href='option.php';\">options</div>
-	 	    <div id='joueur_onglets_exit' title='Se déconnecter' onclick=\"if(confirm('Voulez vous déconnecter ?')) { document.location.href='index.php?deco=ok'; };\">exit</div>
+			<div id='joueur_onglets_index'>Script : ".$script_attaque['nom']."</div>
+
 	 	   </div>";
 
 	echo "</div>";
 }
 {//-- Buffs, Grade, Pseudo
 	echo "<div id='joueur_buffs_nom'>";
-	echo " <div id='joueur_nom' onclick=\"envoiInfo('personnage.php', 'information');\" title=\"Acc&eacute; &agrave la fiche de votre personnage\">".ucwords($joueur["grade"])." ".ucwords($joueur["nom"])." ".ucwords($Gtrad[$joueur["race"]])."<br />(".ucwords($joueur["classe"]).") - niv.".$joueur["level"]."</div>
-	<br />";
+	echo " <div id='joueur_nom' onclick=\"envoiInfo('personnage.php', 'information');\" title=\"Acc&eacute; &agrave la fiche de votre personnage\">".ucwords($joueur["grade"])." ".ucwords($joueur["nom"])." - niv.".$joueur["level"]."<br />".ucwords($Gtrad[$joueur["race"]])." ".ucwords($joueur["classe"])." </div>
+	";
 	echo " <div id='buff_list'>
 			<ul>";
 		//print_r($joueur["buff"]);
@@ -210,4 +208,14 @@ if ($db->num_rows > 0)
 	</div>';
 }
 }
+echo "</div>
+		<div id='perso_menu'>
+			<ul>
+				<li id='lejeu' class='menu' onclick=\"menu_change('lejeu');\">Le jeu</li>
+				<li id='starshine' class='menu' onclick=\"menu_change('starshine');\">Starshine</li>
+				<li id='communaute' class='menu' onclick=\"menu_change('communaute');\">Communauté</li>
+			</ul>
+			<input type='hidden' id='menu_encours' />
+		</div>";
+
 ?>

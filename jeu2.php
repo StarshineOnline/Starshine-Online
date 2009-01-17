@@ -60,25 +60,23 @@ $_SESSION['position'] = convert_in_pos($joueur['x'], $joueur['y']);
 <div id="loading" style='display:none'></div>
 <div id="loading_information" style='display:none'></div>
 	<div id="perso">
-		<div id="perso_contenu">
+		
 		<?php
 		require_once('infoperso.php');
 		?>
-		</div>
-		<div id='perso_menu'>
-			<ul>
-				<li id='lejeu' class='menu' onclick="menu_change('lejeu');">Le jeu</li>
-				<li id='starshine' class='menu' onclick="menu_change('starshine');">Starshine</li>
-				<li id='communaute' class='menu' onclick="menu_change('communaute');">Communauté</li>
-			</ul>
-			<input type='hidden' id='menu_encours' />
-		</div>
+		
 	</div>
-<div id='menu'>
+	<div id='menu'>
+		<?php echo "<div id='menu_date'><img src='image/interface/".moment_jour().".png' alt='".moment_jour()."' title='".moment_jour()."' >".moment_jour();?>
+	</div>
+
 	<div id='menu_details'>
 		<div id='lejeu_menu' style='display:none;'><span class='menu' onclick="affichePopUp('diplomatie.php');">Diplomatie</span><span class='menu' onclick="affichePopUp('classement.php');">Classement</span><span class='menu' onclick="affichePopUp('stats2.php?historique=y&annee=2009&mois=01&jour=14&image=carte_densite_mob.png');">Statistiques</span><span class='menu' onclick="affichePopUp('repartir_craft.php');">Craft</span></div>
 		<div id='starshine_menu' style='display:none;'><span class='menu' onclick="affichePopUp('liste_monstre.php');">Bestiaire</span><span class='menu' onclick="affichePopUp('background.php');">Background</span><span class='menu' onclick="affichePopUp('royaume.php');">Carte</span></div>
 		<div id='communaute_menu' style='display:none;'><span class='menu'><a href="http://forum.starshinebox.info">Forum</a></span><span class='menu'>Wiki</span><span class='menu'>Tchat</span></div>
+	</div>
+	<div id='menu_deco'>
+		<div title='Se déconnecter' onclick="if(confirm('Voulez vous déconnecter ?')) { document.location.href='index.php?deco=ok'; };">X</div>
 	</div>
 </div>
 <div id='contenu_back'>

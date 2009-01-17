@@ -1,0 +1,1 @@
+ UPDATE perso SET craft = round( (craft * craft) /10 );

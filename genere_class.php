@@ -114,6 +114,6 @@ class <?php echo $table; ?>
 
 	function __toString()
 	{
-		return 'id = '.$this->id.', '.<?php echo $liste_update; ?>;
+		return 'id = '.$this->id.', <?php echo $liste_update; ?>;
 	}
 }

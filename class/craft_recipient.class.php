@@ -1,17 +1,15 @@
-<?php
-class craft_recette_instrument
-{
+class craft_recipient{
 	public $id;
 	public $id_recette;
 	public $type;
-
+		
 	/**	
-		*	Constructeur permettant la création d'un ingredient.
-		*	Les valeurs id_recettebrer défaut sont celles de la base de donnée.
+		*	Constructeur permettant la création d'un terrain_batiment.
+		*	Les valeurs nombrer défaut sont celles de la base de donnée.
 		*	Le constructeur accepte plusieurs effets d'appels:
-		*		-craft_recette_instrument() qui construit un etat "vide".
-		*		-craft_recette_instrument($id) qui va chercher l'etat dont l'id est $id
-		*		-craft_recette_instrument($array) qui associe les chasecrets de $array à l'objet.
+		*		-craft_recipient() qui construit un etat "vide".
+		*		-craft_recipient($id) qui va chercher l'etat dont l'id est $id
+		*		-craft_recipient($array) qui associe les champs de $array à l'objet.
 	**/
 	function __construct($id = 0, $id_recette = 0, $type = '')
 	{
@@ -19,7 +17,7 @@ class craft_recette_instrument
 		//Verification nombre et du type d'argument pour construire l'etat adequat.
 		if( (func_num_args() == 1) && is_numeric($id) )
 		{
-			$requeteSQL = $db->query('SELECT id_recette, type FROM craft_recette_instrument WHERE id = '.$id);
+			$requeteSQL = $db->query('SELECT id_recette, type FROM craft_recipient WHERE id = '.$id);
 			//Si le thread est dans la base, on le charge sinon on crée un thread vide.
 			if( $db->num_rows($requeteSQL) > 0 )
 			{
@@ -49,14 +47,14 @@ class craft_recette_instrument
 		global $db;
 		if( $this->id > 0 )
 		{
-			$requete = 'UPDATE craft_recette_instrument SET ';
+			$requete = 'UPDATE craft_recipient SET ';
 			$requete .= 'id_recette = '.$this->id_recette.', type = "'.$this->type.'"';
 			$requete .= ' WHERE id = '.$this->id;
 			$db->query($requete);
 		}
 		else
 		{
-			$requete = 'INSERT INTO craft_recette_instrument (id_recette, type) VALUES(';
+			$requete = 'INSERT INTO craft_recipient (id_recette, type) VALUES(';
 			$requete .= $this->id_recette.', "'.$this->type.'")';
 			$db->query($requete);
 			//Récuperation du dernier ID inséré.
@@ -70,14 +68,13 @@ class craft_recette_instrument
 		global $db;
 		if( $this->id > 0 )
 		{
-			$requete = 'DELETE FROM craft_recette_instrument WHERE id = '.$this->id;
+			$requete = 'DELETE FROM craft_recipient WHERE id = '.$this->id;
 			$db->query($requete);
 		}
 	}
 
 	function __toString()
 	{
-		return $this->id;
+		return 'id = '.$this->id.', '.id_recette = '.$this->id_recette.', type = '.$this->type;
 	}
 }
-?>

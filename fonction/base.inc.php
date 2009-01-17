@@ -640,10 +640,8 @@ function recupperso_essentiel($ID, $select = 'ID, nom, level, rang_royaume, race
 function recupperso($ID)
 {
 	global $db, $G_buff;  // $G_buff inutilié
-	if(is_numeric($ID))
+	if(is_numeric($ID) AND $ID != '')
 	{
-		if($ID != '')
-		{
 			$requete = 'SELECT * FROM perso WHERE ID = '.$ID;
 			$req = $db->query($requete);
 			if($db->num_rows > 0)
@@ -995,11 +993,10 @@ function recupperso($ID)
 				return false;
 			}
 		}
-		else
-		{
-			echo 'Vous êtes déconnectés, veuillez vous reconnecter.';
-			exit();
-		}
+	else
+	{
+		echo 'Vous êtes déconnecté, veuillez vous reconnecter.';
+		exit();
 	}
 }
 

@@ -76,7 +76,16 @@ class terrain_construction{
 
 	function __toString()
 	{
-		return 'id = '.$this->id.', '.id_terrain = '.$this->id_terrain.', id_batiment = '.$this->id_batiment;
+		return 'id = '.$this->id.', id_terrain = '.$this->id_terrain.', id_batiment = '.$this->id_batiment;
+	}
+
+	function get_batiment()
+	{
+		global $db;
+		$requete = "SELECT id, nom, description, type, effet, nb_case, prix, requis, point_structure FROM terrain_batiment WHERE id = ".$this->id_batiment;
+		$req = $db->query($requete);
+		$row = $db->read_assoc($req);
+		return new terrain_batiment($row);
 	}
 }
 ?>

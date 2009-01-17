@@ -91,5 +91,56 @@ class terrain
 		}
 		else return false;
 	}
+
+	function get_constructions()
+	{
+		global $db;
+		$this->constructions = array();
+		$requete = "SELECT id, id_terrain, id_batiment FROM terrain_construction WHERE id_terrain = ".$this->id;
+		$req = $db->query($requete);
+		while($row = $db->read_assoc($res))
+		{
+			$this->constructions[] = new terrain_construction($row);
+		}
+		return $this->constructions;
+	}
+
+	function get_chantiers()
+	{
+		global $db;
+		$this->chantiers = array();
+		$requete = "SELECT id, id_terrain, id_batiment, point, star_point FROM terrain_chantier WHERE id_terrain = ".$this->id;
+		$req = $db->query($requete);
+		while($row = $db->read_assoc($res))
+		{
+			$this->chantiers[] = new terrain_chantier($row);
+		}
+		return $this->chantiers;
+	}
+
+	function place_restante($force = false)
+	{
+		if(!isset($this->place_restante) OR !$force)
+		{
+			global $db;
+			$place_total = 0;
+			//Nombre de construction
+			$requete = "SELECT nb_case FROM terrain_construction LEFT JOIN terrain_batiment ON terrain_construction.id_batiment = terrain_batiment.id WHERE id_terrain = ".$this->id;
+			$req = $db->query($requete);
+			while($row = $db->read_assoc($req))
+			{
+				$place_total += $row['nb_case'];
+			}
+			//Nombre de batiment en construction
+			$requete = "SELECT nb_case FROM terrain_chantier LEFT JOIN terrain_batiment ON terrain_chantier.id_batiment = terrain_batiment.id WHERE id_terrain = ".$this->id;
+			$req = $db->query($requete);
+			while($row = $db->read_assoc($req))
+			{
+				$place_total += $row['nb_case'];
+			}
+			$this->place_restante = $this->nb_case - $place_total;
+		}
+		return $this->place_restante;
+	}
 }
 ?>
