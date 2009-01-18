@@ -4,8 +4,16 @@ img {border : 0px;}
 #accueil .logo {background:transparent url(./image/v2/logo.png) no-repeat scroll left center;display:block;height:80px;margin-left:2px;position:absolute;top:27px;width:207px;z-index:1;}
 
 #accueil .box {height:280px;padding:10px;top:90px;width:530px;background:transparent url('./image/v2/box_accueil2.png');color:#EEE;overflow: auto;text-align: justify;-webkit-border-radius:10px;-moz-border-radius: 10px;}
-#news_box h2 {font-size: 14px;}
+#news_box h2 {font-size : 1.2em; margin : 0; padding : 0; margin-bottom : 3px;}
 #news_box h2 a {color:#EEE;}
+#news_box a {color : #DDD;}
+#news_box .comms {font-size : 0.9em;}
+.news {font-size: 11px; margin-bottom : 10px; padding-bottom : 5px; border-bottom : 1px dotted #EEE;}
+
+#screenshot_box ul {padding : 0; margin : 0;}
+#screenshot_box ul li {list-style-type : none; float : left; width : 175px; text-align : center; height : 90px; line-height : 75px; vertical-align : middle;}
+#screenshot_box ul li img {vertical-align : middle;}
+
 .creation_text {float:left;display:block;width:200px;}
 #login {padding:3px 10px 0px 10px;margin-left:70px;width:530px;position:absolute;background:transparent url('./image/v2/box_accueil2.png');color:#EEE;height:25px;font-size: 11px;text-align: center;-moz-border-radius-bottomleft: 10px;-moz-border-radius-bottomright: 10px;-webkit-border-bottom-left-radius : 10px;-webkit-border-bottom-right-radius : 10px;}
 #login input {border: 1px solid #CCC;background: #AAA; padding:0px;-moz-border-radius: 5px;-webkit-border-radius:5px;}

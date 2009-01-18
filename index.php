@@ -99,7 +99,7 @@ function validation_perso()
 	<div id='menu_accueil'>
 	<ul>
 		<li id='presentation_menu' class='selected' onclick="menu_change('presentation');">Présentation</li>
-		<li id='screenshot_menu' onclick="menu_change('screenshot');">ScreenShot</li>
+		<li id='screenshot_menu' onclick="menu_change('screenshot');">ScreenShots</li>
 		<li id='news_menu' onclick="menu_change('news');">News</li>
 		<li id='creation_menu' onclick="menu_change('creation');">Création d'un compte</li>
 
@@ -117,19 +117,21 @@ N'oubliez pas de reporter les bugs et problèmes, et de suggérer de nouvelles c
 
 		</div>
 		<div id='screenshot_box' style='display:none;'>
-			<a href="image/screenshots/screenshot01.jpg" rel="lightbox[screens]" title="Screenshot 1" /><img src="image/screenshots/mini_screenshot01.jpg" /></a>
-			<a href="image/screenshots/screenshot02.jpg" rel="lightbox[screens]" title="Screenshot 2" /><img src="image/screenshots/mini_screenshot01.jpg" /></a>
-			<a href="image/screenshots/screenshot03.jpg" rel="lightbox[screens]" title="Screenshot 3" /><img src="image/screenshots/mini_screenshot01.jpg" /></a><br />
-			<a href="image/screenshots/screenshot04.jpg" rel="lightbox[screens]" title="Screenshot 4" /><img src="image/screenshots/mini_screenshot01.jpg" /></a>
-			<a href="image/screenshots/screenshot05.jpg" rel="lightbox[screens]" title="Screenshot 5" /><img src="image/screenshots/mini_screenshot01.jpg" /></a>
-			<a href="image/screenshots/screenshot06.jpg" rel="lightbox[screens]" title="Screenshot 6" /><img src="image/screenshots/mini_screenshot01.jpg" /></a><br />
-			<a href="image/screenshots/screenshot07.jpg" rel="lightbox[screens]" title="Screenshot 7" /><img src="image/screenshots/mini_screenshot01.jpg" /></a>
-			<a href="image/screenshots/screenshot08.jpg" rel="lightbox[screens]" title="Screenshot 8" /><img src="image/screenshots/mini_screenshot01.jpg" /></a>
-			<a href="image/screenshots/screenshot09.jpg" rel="lightbox[screens]" title="Screenshot 9" /><img src="image/screenshots/mini_screenshot01.jpg" /></a>
+			<ul>
+				<li><a href="image/screenshots/screenshot01.jpg" rel="lightbox[screens]" title="Screenshot 1" /><img src="image/screenshots/mini_screenshot01.jpg" /></a></li>
+				<li><a href="image/screenshots/screenshot02.jpg" rel="lightbox[screens]" title="Screenshot 2" /><img src="image/screenshots/mini_screenshot01.jpg" /></a></li>
+				<li><a href="image/screenshots/screenshot03.jpg" rel="lightbox[screens]" title="Screenshot 3" /><img src="image/screenshots/mini_screenshot01.jpg" /></a></li>
+				<li><a href="image/screenshots/screenshot04.jpg" rel="lightbox[screens]" title="Screenshot 4" /><img src="image/screenshots/mini_screenshot01.jpg" /></a></li>
+				<li><a href="image/screenshots/screenshot05.jpg" rel="lightbox[screens]" title="Screenshot 5" /><img src="image/screenshots/mini_screenshot01.jpg" /></a></li>
+				<li><a href="image/screenshots/screenshot06.jpg" rel="lightbox[screens]" title="Screenshot 6" /><img src="image/screenshots/mini_screenshot01.jpg" /></a></li>
+				<li><a href="image/screenshots/screenshot07.jpg" rel="lightbox[screens]" title="Screenshot 7" /><img src="image/screenshots/mini_screenshot01.jpg" /></a></li>
+				<li><a href="image/screenshots/screenshot08.jpg" rel="lightbox[screens]" title="Screenshot 8" /><img src="image/screenshots/mini_screenshot01.jpg" /></a></li>
+				<li><a href="image/screenshots/screenshot09.jpg" rel="lightbox[screens]" title="Screenshot 9" /><img src="image/screenshots/mini_screenshot01.jpg" /></a></li>
+			</ul>
 		</div>
 		<div id='news_box' style='display:none;'>
 		<?php
-				require('connect_forum.php');
+	require('connect_forum.php');
 	$requete = "SELECT id, subject, num_replies FROM punbbtopics WHERE (forum_id = 5) ORDER BY posted DESC";
 	$req = $db_forum->query($requete);
 
@@ -137,7 +139,9 @@ N'oubliez pas de reporter les bugs et problèmes, et de suggérer de nouvelles c
 	while($row = $db_forum->read_array($req) AND $i < 5)
 	{
 		$regs = '';
-		echo '<h2><a href="http://forum.starshine-online.com/viewtopic.php?id='.$row['id'].'">'.($row['subject']).'</a></h2>';
+		echo '
+		<div class="news">
+			<h2><a href="http://forum.starshine-online.com/viewtopic.php?id='.$row['id'].'">'.($row['subject']).'</a></h2>';
 		$requete_post = "SELECT message FROM punbbposts WHERE (topic_id = ".$row['id'].") ORDER BY id ASC";
 		$req_post = $db_forum->query($requete_post);
 		$row_post = $db_forum->read_array($req_post);
@@ -153,7 +157,8 @@ N'oubliez pas de reporter les bugs et problèmes, et de suggérer de nouvelles c
 		{
 			$message = mb_substr($message, 0, 600);
 		}
-		$message .= '<br /><a href="http://forum.starshine-online.com/viewtopic.php?id='.$row['id'].'">Lire la suite</a> '.$row['num_replies'].' commentaire(s)';
+		$message .= '<br /><a href="http://forum.starshine-online.com/viewtopic.php?id='.$row['id'].'">Lire la suite</a> <span class="comms">('.$row['num_replies'].' commentaire(s))</span>
+		</div>';
 		echo $message;
 		$i++;
 	}
