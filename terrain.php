@@ -31,6 +31,43 @@ $_SESSION['position'] = $position;
 				case 'coffre' :
 					echo 'C\'est un coffre';
 				break;
+				case 'laboratoire' :
+					$types = array();
+					//on cherche si il a des instruments
+					$requete = "SELECT id, id_laboratoire, id_instrument, type FROM terrain_laboratoire WHERE id_laboratoire = ".$construction->id;
+					$req = $db->query($requete);
+					while($row = $db->read_assoc($req))
+					{
+						$types[] = "'".$row['type']."'";
+						$instrument = new terrain_laboratoire($row);
+						$instru = $instrument->get_instrument();
+						echo $instru->nom;
+						$requete = "SELECT id, nom, prix FROM craft_instrument WHERE requis = ".$instrument->id_instrument;
+						$req = $db->query($requete);
+						if($db->num_rows > 0)
+						{
+							$taxe = 1 + ($R['taxe'] / 100);
+							while($row = $db->read_assoc($req))
+							{
+								$prix = round($row['prix'] * $taxe);
+								echo ' <a href="terrain.php?upgrade_instrument='.$row['id'].'&amp;labo='.$construction->id.'" onclick="return envoiInfo(this.href, \'carte\');">améliorer en '.$row['nom'].' pour '.$prix.' stars</a>';
+							}
+						}
+						echo '<br />';
+					}
+					echo 'Acheter :<br />';
+					$implode_types = implode(', ', $types);
+					if($implode_types != '') $not_in = ' AND type NOT IN ('.$implode_types.')';
+					else $not_in = '';
+					$requete = "SELECT id, nom, prix FROM craft_instrument WHERE requis = 0".$not_in;
+					$req = $db->query($requete);
+					$taxe = 1 + ($R['taxe'] / 100);
+					while($row = $db->read_assoc($req))
+					{
+						$prix = round($row['prix'] * $taxe);
+						echo '<a href="terrain.php?achat='.$row['id'].'&amp;labo='.$construction->id.'" onclick="return envoiInfo(this.href, \'carte\');">'.$row['nom'].' ('.$prix.' stars)</a><br />';
+					}
+				break;
 			}
 			$requete = "SELECT id, point_structure FROM terrain_batiment WHERE type = '".$batiment->type."' AND requis = ".$batiment->id;
 			$req = $db->query($requete);
@@ -124,6 +161,55 @@ $_SESSION['position'] = $position;
 				else echo '<h5>Vous n\'avez pas assez de stars</h5>';
 			}
 		}
+		elseif(array_key_exists('achat', $_GET))
+		{
+			$instrument = new craft_instrument($_GET['achat']);
+			$taxe = round($R['taxe'] * $instrument->prix / 100);
+			$prix = $instrument->prix + $taxe;
+			if($prix > 0)
+			{
+				if($joueur['star'] >= $prix)
+				{
+					$laboratoire = new terrain_laboratoire();
+					$laboratoire->id_laboratoire = $_GET['labo'];
+					$laboratoire->id_instrument = $instrument->id;
+					$laboratoire->type = $instrument->type;
+					$laboratoire->sauver();
+					//On supprime les stars du joueur
+					$requete = "UPDATE perso SET star = star - ".$prix." WHERE ID = ".$joueur['ID'];
+					$db->query($requete);
+					//On donne les stars au royaume
+					$requete = "UPDATE royaume SET star = star + ".$taxe." WHERE ID = ".$R['ID'];
+					$db->query($requete);
+				}
+				else echo '<h5>Vous n\'avez pas assez de stars</h5>';
+			}
+		}
+		elseif(array_key_exists('upgrade_instrument', $_GET))
+		{
+			$instrument = new craft_instrument($_GET['upgrade_instrument']);
+			$taxe = round($R['taxe'] * $instrument->prix / 100);
+			$prix = $instrument->prix + $taxe;
+			if($prix > 0)
+			{
+				if($joueur['star'] >= $prix)
+				{
+					$requete = "SELECT id, id_laboratoire, id_instrument, type FROM terrain_laboratoire WHERE type = '".$instrument->type."' AND id_laboratoire = ".$_GET['labo'];
+					$req = $db->query($requete);
+					$row = $db->read_assoc($req);
+					$laboratoire = new terrain_laboratoire($row);
+					$laboratoire->id_instrument = $instrument->id;
+					$laboratoire->sauver();
+					//On supprime les stars du joueur
+					$requete = "UPDATE perso SET star = star - ".$prix." WHERE ID = ".$joueur['ID'];
+					$db->query($requete);
+					//On donne les stars au royaume
+					$requete = "UPDATE royaume SET star = star + ".$taxe." WHERE ID = ".$R['ID'];
+					$db->query($requete);
+				}
+				else echo '<h5>Vous n\'avez pas assez de stars</h5>';
+			}
+		}
 		else
 		{
 			$terrain = new terrain();
@@ -158,7 +244,9 @@ $_SESSION['position'] = $position;
 			echo 'Liste des batiments en construction :<br />';
 			echo $chantiers_echo;
 			$implode_types = implode(', ', $types);
-			$requete = "SELECT id, nom, point_structure FROM terrain_batiment WHERE requis = 0 AND type NOT IN (".$implode_types.") AND nb_case <= ".$terrain->place_restante();
+			if($implode_types != '') $not_in = "AND type NOT IN (".$implode_types.")";
+			else $not_in = '';
+			$requete = "SELECT id, nom, point_structure FROM terrain_batiment WHERE requis = 0 ".$not_in." AND nb_case <= ".$terrain->place_restante();
 			$req = $db->query($requete);
 			if($db->num_rows > 0)
 			{
@@ -174,7 +262,6 @@ $_SESSION['position'] = $position;
 				</select><br />
 				Combien voulez vous rémunérer chaque point de structure construit ?<br />
 				<input type="text" id="star_point" nom="star_point" value="10" onkeyup="$('total').value = $('star_point').value * <?php echo $batiment->point_structure; ?>;" /> stars par points<br />
-				Total : <input type="text" value="<?php echo ($batiment->point_structure * 10); ?>" id="total" />
 				<input type="button" value="Valider" onclick="envoiInfo('terrain.php?construire=' + $('construction').value + '&amp;star_point=' + $('star_point').value, 'carte');" />
 				<?php
 			}

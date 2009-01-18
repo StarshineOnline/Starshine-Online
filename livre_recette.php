@@ -98,6 +98,48 @@ if(array_key_exists('action', $_GET))
 		break;
 	}
 }
+$types = array();
+$types['mortier'] = array();
+$types['four'] = array();
+$types['cornue'] = array();
+//Si on est en ville
+if(verif_ville($joueur['x'], $joueur['y']))
+{
+	if($R['diplo'] == 127)
+	{
+		//On récupère toutes les infos sur le labo du joueur (ou pas)
+		$terrain = new terrain();
+		$terrain = $terrain->recoverByIdJoueur($joueur['ID']);
+		//Si il possède un terrain
+		if(is_object($terrain))
+		{
+			$terrain->get_laboratoire();
+			$instruments = $terrain->laboratoire->get_laboratoire_instrument();
+			foreach($instruments as $instrument)
+			{
+				$instru = $instrument->get_instrument();
+				$types[$instru->type]['pa'] = $instru->pa;
+				$types[$instru->type]['mp'] = $instru->mp;
+				$types[$instru->type]['cout'] = 0;
+			}
+		}
+	}
+	//La ville
+	foreach($types as $key => $type)
+	{
+		if(count($type) == 0)
+		{
+			$requete = "SELECT pa, mp, prix FROM craft_instrument WHERE type = '".$key."' AND requis = 0";
+			$req = $db->query($requete);
+			$row = $db->read_assoc($req);
+			$taxe = 1 + ($R['taxe'] / 100);
+			$prix = round($row['prix'] * $taxe / 100);
+			$types[$key]['pa'] = $row['pa'];
+			$types[$key]['mp'] = $row['mp'];
+			$types[$key]['cout'] = $prix;
+		}
+	}
+}
 $requete = "SELECT * FROM perso_recette WHERE id_perso = ".$joueur['ID'];
 $req = $db->query($requete);
 while($row = $db->read_assoc($req))
@@ -106,6 +148,7 @@ while($row = $db->read_assoc($req))
 	//recherche de la recette
 	$recette = new craft_recette($row['id_recette']);
 	$recette->get_ingredients();
+	$recette->get_instruments();
 	$alchimie = $joueur['alchimie'];
 	if($joueur['race'] == 'scavenger') $alchimie = round($alchimie * 1.45);
 	if($joueur['accessoire']['id'] != '0' AND $joueur['accessoire']['type'] == 'fabrication') $alchimie = round($alchimie * (1 + ($joueur['accessoire']['effet'] / 100)));
@@ -114,27 +157,52 @@ while($row = $db->read_assoc($req))
 	<h3><?php echo $recette->nom; ?></h3>
 	<div class="information_case">
 	<strong>Difficulté : <?php echo $recette->difficulte; ?></strong> <span class="small">(<?php echo $chance_reussite; ?>% de chances de réussite)</span><br />
-	<strong>Ingrédients :</strong><br />
-	<ul>
-	<?php
-	foreach($recette->ingredients as $ingredient)
-	{
-		$joueur_ingredient = recherche_objet($joueur, 'o'.$ingredient->id_ingredient);
-		if($joueur_ingredient[0] < $ingredient->nombre)
+	<div class="ingredient" style="float : left;">
+		<strong>Ingrédients :</strong><br />
+		<ul>
+		<?php
+		foreach($recette->ingredients as $ingredient)
 		{
-			$class = '';
-			$complet = false;
+			$joueur_ingredient = recherche_objet($joueur, 'o'.$ingredient->id_ingredient);
+			if($joueur_ingredient[0] < $ingredient->nombre)
+			{
+				$class = '';
+				$complet = false;
+			}
+			else $class = 'reward';
+			//Recherche de l'objet
+			$requete = "SELECT nom FROM objet WHERE id = ".$ingredient->id_ingredient;
+			$req_i = $db->query($requete);
+			$row_i = $db->read_row($req_i);
+			echo '<li><span class="'.$class.'">- '.$row_i[0].' X '.$ingredient->nombre.'</span></li>';
 		}
-		else $class = 'reward';
-		//Recherche de l'objet
-		$requete = "SELECT nom FROM objet WHERE id = ".$ingredient->id_ingredient;
-		$req_i = $db->query($requete);
-		$row_i = $db->read_row($req_i);
-		echo '<li><span class="'.$class.'">- '.$row_i[0].' X '.$ingredient->nombre.'</span></li>';
-	}
+		?>
+		</ul>
+	</div>
+	<div class="instrument" style="float : left;">
+		<strong>Instruments :</strong><br />
+		<ul>
+		<?php
+		$pa_total = 0;
+		$mp_total = 0;
+		$star_total = 0;
+		foreach($recette->instruments as $instrument)
+		{
+			echo '<li><span>'.$instrument->type.'</span></li>';
+			$pa_total += $types[$instrument->type]['pa'];
+			$mp_total += $types[$instrument->type]['mp'];
+			$star_total += $types[$instrument->type]['cout'];
+		}
+		?>
+		</ul>
+		<?php
+		echo 'PA : '.$pa_total.' - MP : '.$mp_total.' - Stars : '.$star_total.'<br />';
+		?>
+	</div>
+	<?php
+	if(count($types['mortier']) == 0) echo 'Création impossible';
 	?>
-	</ul>
-	<br />
+	<br style="clear : both;"/>
 	<?php
 	if($complet) echo '<a href="livre_recette.php?action=fabrique&amp;id_recette='.$row['id_recette'].'&amp;id='.$row['id'].'" onclick="return envoiInfo(this.href, \'information\');">Fabriquer <span class="xsmall">('.$row_r['pa'].' PA)</span></a>';
 echo '</div>';

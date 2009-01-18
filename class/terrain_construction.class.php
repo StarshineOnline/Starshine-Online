@@ -87,5 +87,18 @@ class terrain_construction{
 		$row = $db->read_assoc($req);
 		return new terrain_batiment($row);
 	}
+
+	function get_laboratoire_instrument()
+	{
+		global $db;
+		$this->laboratoire_instruments = array();
+		$requete = "SELECT id, id_laboratoire, id_instrument, type FROM terrain_laboratoire WHERE id_laboratoire = ".$this->id;
+		$req = $db->query($requete);
+		while($row = $db->read_assoc($req))
+		{
+			$this->laboratoire_instruments[] = new terrain_laboratoire($row);
+		}
+		return $this->laboratoire_instruments;
+	}
 }
 ?>

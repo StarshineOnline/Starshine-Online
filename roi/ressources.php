@@ -65,8 +65,7 @@ if(array_key_exists('ress', $_GET))
 }
 else
 {
-	$date_hier = date("Y-m-d", mktime(0, 0, 0, date("m") , date("d") - 1, date("Y")));
-	$requete = "SELECT ".$R['race']." FROM stat_jeu WHERE date = '".$date_hier."'";
+	$requete = "SELECT ".$R['race']." FROM stat_jeu ORDER BY date DESC";
 	$req = $db->query($requete);
 	$row = $db->read_assoc($req);
 	$explode_stat = explode(';', $row[$R['race']]);

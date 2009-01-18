@@ -73,7 +73,7 @@ $_SESSION['position'] = convert_in_pos($joueur['x'], $joueur['y']);
 	<div id='menu_details'>
 		<div id='lejeu_menu' style='display:none;'><span class='menu' onclick="affichePopUp('diplomatie.php');">Diplomatie</span><span class='menu' onclick="affichePopUp('classement.php');">Classement</span><span class='menu' onclick="affichePopUp('stats2.php?historique=y&annee=2009&mois=01&jour=14&image=carte_densite_mob.png');">Statistiques</span><span class='menu' onclick="affichePopUp('repartir_craft.php');">Craft</span></div>
 		<div id='starshine_menu' style='display:none;'><span class='menu' onclick="affichePopUp('liste_monstre.php');">Bestiaire</span><span class='menu' onclick="affichePopUp('background.php');">Background</span><span class='menu' onclick="affichePopUp('royaume.php');">Carte</span></div>
-		<div id='communaute_menu' style='display:none;'><span class='menu'><a href="http://forum.starshinebox.info">Forum</a></span><span class='menu'>Wiki</span><span class='menu'>Tchat</span></div>
+		<div id='communaute_menu' style='display:none;'><span class='menu'><a href="http://forum.starshinebox.info">Forum</a></span><span class='menu'>Wiki</span><span class='menu' onclick="affichePopUp('acces_chat.php');">Tchat</span></div>
 	</div>
 	<div id='menu_deco'>
 		<div title='Se déconnecter' onclick="if(confirm('Voulez vous déconnecter ?')) { document.location.href='index.php?deco=ok'; };">X</div>

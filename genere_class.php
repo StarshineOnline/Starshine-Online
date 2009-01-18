@@ -20,9 +20,9 @@ foreach($champs as $champ)
 		$liste_attributs[] = '$this->'.$champ['Field'];
 		$liste_update[] = $champ['Field'].' = \'.$this->'.$champ['Field'];
 		$liste_array[] = '$this->'.$champ['Field'].' = $id[\''.$champ['Field'].'\'];
-';
+			';
 		 $liste[] = '$this->'.$champ['Field'].' = $'.$champ['Field'].';
-';
+			';
 	}
 	$liste_arguments[] = '$'.$champ['Field'].' = 0';
 }
@@ -40,7 +40,7 @@ class <?php echo $table; ?>
 	foreach($champs as $champ)
 	{
 		echo 'public $'.$champ['Field'].';
-		';
+	';
 	}
 	?>
 

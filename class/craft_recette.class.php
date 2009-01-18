@@ -113,5 +113,18 @@ class craft_recette
 		}
 		return $this->ingredients;
 	}
+
+	function get_instruments()
+	{
+		global $db;
+		$this->instruments = array();
+		$requete = "SELECT id, id_recette, type FROM craft_recette_instrument WHERE id_recette = ".$this->id;
+		$req = $db->query($requete);
+		while($row = $db->read_assoc($req))
+		{
+			$this->instruments[] = new craft_recette_instrument($row);
+		}
+		return $this->instruments;
+	}
 }
 ?>

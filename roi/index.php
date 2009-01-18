@@ -9,7 +9,7 @@ $joueur = recupperso($_SESSION['ID']);
 if($joueur['grade'] == 'Roi' OR $joueur['nom'] == 'Mylok' OR strtolower($joueur['nom']) == 'minus')
 {
 $date_hier = date("Y-m-d", mktime(0, 0, 0, date("m") , date("d") - 2, date("Y")));
-$requete = "SELECT food, nombre_joueur FROM stat_jeu WHERE date = '".$date_hier."'";
+$requete = "SELECT food, nombre_joueur FROM stat_jeu ORDER BY date DESC";
 $req = $db->query($requete);
 $row = $db->read_assoc($req);
 if($row['nombre_joueur'] != 0) $food_necessaire = $row['food'] / $row['nombre_joueur'];
