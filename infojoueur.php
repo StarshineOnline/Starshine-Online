@@ -116,7 +116,7 @@ if(array_key_exists(23, $bonus) AND check_affiche_bonus($bonus[23], $joueur, $pe
 }
 echo '</table>';
 //Affichage des buffs du joueur
-if($joueur['groupe'] == $perso['groupe'])
+if($joueur['groupe'] == $perso['groupe'] && $joueur['groupe'] !== 0 && $joueur['groupe'] != '')
 {
 	if ($perso['buff'] != NULL)
 	{
