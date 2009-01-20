@@ -33,7 +33,7 @@ else
 		if ($echanges['creation'][$i]['statut']=='creation')
 		{
 			?>
-			<li><a href="javascript:onclick=envoiInfo('echange.php?id_echange=<?php echo $echanges['creation'][$i]['id_echange']; ?>', 'information');">N°<?php echo $echanges['creation'][$i]['id_echange']; ?> : <?php echo $j['nom']; ?></a></li>
+			<li><a href="echange.php?id_echange=<?php echo $echanges['creation'][$i]['id_echange']; ?>" onclick="return envoiInfo(this.href, 'information');">N°<?php echo $echanges['creation'][$i]['id_echange']; ?> : <?php echo $j['nom']; ?></a></li>
 			<?php	
 		}
 		$i++;
@@ -57,7 +57,7 @@ else
 		if ($echanges['proposition'][$i]['statut']=='proposition')
 		{
 			?>
-			<li><a href="javascript:onclick=envoiInfo('echange.php?id_echange=<?php echo $echanges['proposition'][$i]['id_echange']; ?>', 'information');">N°<?php echo $echanges['proposition'][$i]['id_echange']; ?> : <?php echo $j['nom']; ?></a></li>
+			<li><a href="echange.php?id_echange=<?php echo $echanges['proposition'][$i]['id_echange']; ?>" onclick="return envoiInfo(this.href, 'information');">N°<?php echo $echanges['proposition'][$i]['id_echange']; ?> : <?php echo $j['nom']; ?></a></li>
 			<?php
 		}
 		$i++;
@@ -82,7 +82,7 @@ else
 			{
 				?>
 		
-				<li><a href="javascript:onclick=envoiInfo('echange.php?id_echange=<?php echo $echanges['finalisation'][$i]['id_echange']; ?>', 'information');">N°<?php echo $echanges['finalisation'][$i]['id_echange']; ?> : <?php echo $j['nom']; ?></a></li>
+				<li><a href="echange.php?id_echange=<?php echo $echanges['finalisation'][$i]['id_echange']; ?>" onclick="return envoiInfo(this.href, 'information');">N°<?php echo $echanges['finalisation'][$i]['id_echange']; ?> : <?php echo $j['nom']; ?></a></li>
 		
 				<?php
 			}

@@ -126,5 +126,53 @@ class craft_recette
 		}
 		return $this->instruments;
 	}
+
+	function get_info_joueur($joueur, $R)
+	{
+		global $db;
+		$types = array();
+		$types['mortier'] = array();
+		$types['four'] = array();
+		$types['cornue'] = array();
+		//Si on est en ville
+		if(verif_ville($joueur['x'], $joueur['y']))
+		{
+			if($R['diplo'] == 127)
+			{
+				//On récupère toutes les infos sur le labo du joueur (ou pas)
+				$terrain = new terrain();
+				$terrain = $terrain->recoverByIdJoueur($joueur['ID']);
+				//Si il possède un terrain
+				if(is_object($terrain))
+				{
+					$terrain->get_laboratoire();
+					$instruments = $terrain->laboratoire->get_laboratoire_instrument();
+					foreach($instruments as $instrument)
+					{
+						$instru = $instrument->get_instrument();
+						$types[$instru->type]['pa'] = $instru->pa;
+						$types[$instru->type]['mp'] = $instru->mp;
+						$types[$instru->type]['cout'] = 0;
+					}
+				}
+			}
+			//La ville
+			foreach($types as $key => $type)
+			{
+				if(count($type) == 0)
+				{
+					$requete = "SELECT pa, mp, prix FROM craft_instrument WHERE type = '".$key."' AND requis = 0";
+					$req = $db->query($requete);
+					$row = $db->read_assoc($req);
+					$taxe = 1 + ($R['taxe'] / 100);
+					$prix = round($row['prix'] * $taxe / 100);
+					$types[$key]['pa'] = $row['pa'];
+					$types[$key]['mp'] = $row['mp'];
+					$types[$key]['cout'] = $prix;
+				}
+			}
+		}
+		return $types;
+	}
 }
 ?>

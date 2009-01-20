@@ -31,7 +31,7 @@ else
 	'.$message1.'<br />
 	<h3>Modifier</h3>';
 	?>
-	<form method="post" action="javascript:message = document.getElementById('message').value.replace(new RegExp('\n', 'gi'), '[br]'); envoiInfoPost('propagande.php?poscase=<?php echo $W_case; ?>&amp;direction=propagande2&amp;message=' + message, 'carte');">
+	<form method="post" action="javascript:message = document.getElementById('message').value.replace(new RegExp('\n', 'gi'), '[br]'); envoiInfoPost('propagande.php?direction=propagande2&amp;message=' + message, 'conteneur');">
 	<?php
 	echo '
 	    <textarea name="message" id="message" cols="45" rows="12">'.$message2.'</textarea><br />

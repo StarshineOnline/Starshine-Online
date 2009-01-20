@@ -17,134 +17,99 @@ if(array_key_exists('action', $_GET))
 	switch($_GET['action'])
 	{
 		case 'fabrique' :
-			$requete = "SELECT * FROM recette WHERE id = ".sSQL($_GET['id_recette']);
-			$req = $db->query($requete);
-			$row = $db->read_assoc($req);
-			$pa_r = $row['pa'];
-			if($pa_r <= $joueur['pa'])
+			$recette = new craft_recette($_GET['id_recette']);
+			$types = $recette->get_info_joueur($joueur, $R);
+			$recette->get_ingredients();
+			$recette->get_instruments();
+			$pa_total = 0;
+			$mp_total = 0;
+			$star_total = 0;
+			foreach($recette->instruments as $instrument)
 			{
-				$ingredients = explode(';', $row['ingredient']);
-				$i = 0;
-				//On utilise tous les objets de la recette
-				while($i < count($ingredients))
+				$pa_total += $types[$instrument->type]['pa'];
+				$mp_total += $types[$instrument->type]['mp'];
+				$star_total += $types[$instrument->type]['cout'];
+			}
+			if($pa_total <= $joueur['pa'])
+			{
+				if($mp_total <= $joueur['mp'])
 				{
-					$ingredient_exp = explode('-', $ingredients[$i]);
-					$ingredient_id = $ingredient_exp[0];
-					$ingredient_nb = $ingredient_exp[1];
-					//Suppression des objets de l'inventaire
-					supprime_objet($joueur, 'o'.$ingredient_id, $ingredient_nb);
-					$joueur = recupperso($_SESSION['ID']);
-					$i++;
-				}
-				$requete = "SELECT nombre FROM perso_recette WHERE id = ".sSQL($_GET['id']);
-				$req_n = $db->query($requete);
-				$row_n = $db->read_row($req_n);
-				//On supprime la recette si recette limitée
-				if($row_n[0] > 0)
-				{
-					if($row_n[0] == 1)
+					if($star_total <= $joueur['star'])
 					{
-						$requete = "DELETE FROM perso_recette WHERE id = ".sSQL($_GET['id']);
+						//On utilise tous les objets de la recette
+						foreach($recette->ingredients as $ingredient)
+						{
+							//Suppression des objets de l'inventaire
+							supprime_objet($joueur, 'o'.$ingredient->id_ingredient, $ingredient->nombre);
+							$joueur = recupperso($_SESSION['ID']);
+							$i++;
+						}
+						//alchiming
+						$player = rand(0, $joueur['alchimie']);
+						$thing = rand(0, $recette->difficulte);
+						//echo $joueur['alchimie'].' / '.$row['difficulte'].' ---- '.$player.' VS '.$thing;
+						//Si la préparation réussie
+						if($player > $thing)
+						{
+							echo '<h6>Fabrication réussie !</h6>';
+							$resultats = explode(';', $row['resultat']);
+							$i = 0;
+							while($i < count($resultats))
+							{
+								$objets = explode('-', $resultats[$i]);
+								$j = $objets[1];
+								while($j > 0)
+								{
+									prend_objet($objets[0], $joueur);
+									//echo $G_erreur;
+									$j--;
+								}
+								$i++;
+							}
+						}
+						else
+						{
+							echo 'La fabrication a échoué...<br />';
+						}
+						$difficulte = 3 * 2.65 / sqrt($pa_total);
+						$augmentation = augmentation_competence('alchimie', $joueur, $difficulte);
+						if ($augmentation[1] == 1)
+						{
+							$joueur['alchimie'] = $augmentation[0];
+							echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant à '.$joueur['alchimie'].' en alchimie</span><br />';
+							$requete = "UPDATE perso SET alchimie = ".$joueur['alchimie']." WHERE ID = ".$joueur['ID'];
+							$req = $db->query($requete);
+						}
+						$requete = "UPDATE perso SET pa = pa - ".$pa_total.", mp = mp - ".$mp_total.", star = star - ".$star_total." WHERE ID = ".$joueur['ID'];
+						$req = $db->query($requete);
 					}
 					else
 					{
-						$requete = "UPDATE perso_recette SET nombre = nombre - 1 WHERE id = ".sSQL($_GET['id']);
-					}
-					$db->query($requete);
-				}
-				//alchimieing
-				$player = rand(0, $joueur['alchimie']);
-				$thing = rand(0, $row['difficulte']);
-				//echo $joueur['alchimie'].' / '.$row['difficulte'].' ---- '.$player.' VS '.$thing;
-				//Si la préparation réussie
-				if($player > $thing)
-				{
-					echo 'Fabrication réussie !<br />';
-					$resultats = explode(';', $row['resultat']);
-					$i = 0;
-					while($i < count($resultats))
-					{
-						$objets = explode('-', $resultats[$i]);
-						$j = $objets[1];
-						while($j > 0)
-						{
-							prend_objet($objets[0], $joueur);
-							//echo $G_erreur;
-							$j--;
-						}
-						$i++;
+						echo '<h5>Vous n\'avez pas assez de stars pour faire cette recette.</h5>';
 					}
 				}
 				else
 				{
-					echo 'La fabrication a échoué...<br />';
+					echo '<h5>Vous n\'avez pas assez de MP pour faire cette recette.</h5>';
 				}
-				$augmentation = augmentation_competence('alchimie', $joueur, 3);
-				if ($augmentation[1] == 1)
-				{
-					$joueur['alchimie'] = $augmentation[0];
-					echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant à '.$joueur['alchimie'].' en alchimie</span><br />';
-					$requete = "UPDATE perso SET alchimie = ".$joueur['alchimie']." WHERE ID = ".$joueur['ID'];
-					$req = $db->query($requete);
-				}
-				$joueur['pa'] -= $pa_r;
-				$requete = "UPDATE perso SET pa = ".$joueur['pa']." WHERE ID = ".$joueur['ID'];
-				$req = $db->query($requete);
 			}
 			else
 			{
-				echo 'Vous n\'avez pas assez de PA pour faire cette recette.';
+				echo '<h5>Vous n\'avez pas assez de PA pour faire cette recette.</h5>';
 			}
 		break;
 	}
 }
-$types = array();
-$types['mortier'] = array();
-$types['four'] = array();
-$types['cornue'] = array();
-//Si on est en ville
-if(verif_ville($joueur['x'], $joueur['y']))
-{
-	if($R['diplo'] == 127)
-	{
-		//On récupère toutes les infos sur le labo du joueur (ou pas)
-		$terrain = new terrain();
-		$terrain = $terrain->recoverByIdJoueur($joueur['ID']);
-		//Si il possède un terrain
-		if(is_object($terrain))
-		{
-			$terrain->get_laboratoire();
-			$instruments = $terrain->laboratoire->get_laboratoire_instrument();
-			foreach($instruments as $instrument)
-			{
-				$instru = $instrument->get_instrument();
-				$types[$instru->type]['pa'] = $instru->pa;
-				$types[$instru->type]['mp'] = $instru->mp;
-				$types[$instru->type]['cout'] = 0;
-			}
-		}
-	}
-	//La ville
-	foreach($types as $key => $type)
-	{
-		if(count($type) == 0)
-		{
-			$requete = "SELECT pa, mp, prix FROM craft_instrument WHERE type = '".$key."' AND requis = 0";
-			$req = $db->query($requete);
-			$row = $db->read_assoc($req);
-			$taxe = 1 + ($R['taxe'] / 100);
-			$prix = round($row['prix'] * $taxe / 100);
-			$types[$key]['pa'] = $row['pa'];
-			$types[$key]['mp'] = $row['mp'];
-			$types[$key]['cout'] = $prix;
-		}
-	}
-}
+$recette = new craft_recette();
+$types = $recette->get_info_joueur($joueur, $R);
 $requete = "SELECT * FROM perso_recette WHERE id_perso = ".$joueur['ID'];
 $req = $db->query($requete);
 while($row = $db->read_assoc($req))
 {
+	ob_start();
 	$complet = true;
+	if(count($types['mortier']) > 0) $possible = true;
+	else $possible = false;
 	//recherche de la recette
 	$recette = new craft_recette($row['id_recette']);
 	$recette->get_ingredients();
@@ -154,58 +119,68 @@ while($row = $db->read_assoc($req))
 	if($joueur['accessoire']['id'] != '0' AND $joueur['accessoire']['type'] == 'fabrication') $alchimie = round($alchimie * (1 + ($joueur['accessoire']['effet'] / 100)));
 	$chance_reussite = pourcent_reussite($alchimie, $recette->difficulte);
 	?>
-	<h3><?php echo $recette->nom; ?></h3>
-	<div class="information_case">
-	<strong>Difficulté : <?php echo $recette->difficulte; ?></strong> <span class="small">(<?php echo $chance_reussite; ?>% de chances de réussite)</span><br />
-	<div class="ingredient" style="float : left;">
-		<strong>Ingrédients :</strong><br />
-		<ul>
-		<?php
-		foreach($recette->ingredients as $ingredient)
-		{
-			$joueur_ingredient = recherche_objet($joueur, 'o'.$ingredient->id_ingredient);
-			if($joueur_ingredient[0] < $ingredient->nombre)
+	<div class="information_case" id="recette<?php echo $row['id_recette']; ?>" style="display : none;">
+		<strong>Difficulté : <?php echo $recette->difficulte; ?></strong> <span class="small">(<?php echo $chance_reussite; ?>% de chances de réussite)</span><br />
+		<div class="ingredient" style="float : left;">
+			<strong>Ingrédients :</strong><br />
+			<ul>
+			<?php
+			foreach($recette->ingredients as $ingredient)
 			{
-				$class = '';
-				$complet = false;
+				$joueur_ingredient = recherche_objet($joueur, 'o'.$ingredient->id_ingredient);
+				if($joueur_ingredient[0] < $ingredient->nombre)
+				{
+					$class = '';
+					$complet = false;
+				}
+				else $class = 'reward';
+				//Recherche de l'objet
+				$requete = "SELECT nom FROM objet WHERE id = ".$ingredient->id_ingredient;
+				$req_i = $db->query($requete);
+				$row_i = $db->read_row($req_i);
+				echo '<li><span class="'.$class.'">- '.$row_i[0].' X '.$ingredient->nombre.'</span></li>';
 			}
-			else $class = 'reward';
-			//Recherche de l'objet
-			$requete = "SELECT nom FROM objet WHERE id = ".$ingredient->id_ingredient;
-			$req_i = $db->query($requete);
-			$row_i = $db->read_row($req_i);
-			echo '<li><span class="'.$class.'">- '.$row_i[0].' X '.$ingredient->nombre.'</span></li>';
-		}
-		?>
-		</ul>
-	</div>
-	<div class="instrument" style="float : left;">
-		<strong>Instruments :</strong><br />
-		<ul>
+			if(!$complet) $possible = false;
+			?>
+			</ul>
+		</div>
+		<div class="instrument" style="float : left;">
+			<strong>Instruments :</strong><br />
+			<ul>
+			<?php
+			$pa_total = 0;
+			$mp_total = 0;
+			$star_total = 0;
+			foreach($recette->instruments as $instrument)
+			{
+				echo '<li><span>'.$instrument->type.'</span></li>';
+				$pa_total += $types[$instrument->type]['pa'];
+				$mp_total += $types[$instrument->type]['mp'];
+				$star_total += $types[$instrument->type]['cout'];
+			}
+			?>
+			</ul>
+			<?php
+			echo 'PA : '.$pa_total.' - MP : '.$mp_total.' - Stars : '.$star_total.'<br />';
+			?>
+		</div>
 		<?php
-		$pa_total = 0;
-		$mp_total = 0;
-		$star_total = 0;
-		foreach($recette->instruments as $instrument)
-		{
-			echo '<li><span>'.$instrument->type.'</span></li>';
-			$pa_total += $types[$instrument->type]['pa'];
-			$mp_total += $types[$instrument->type]['mp'];
-			$star_total += $types[$instrument->type]['cout'];
-		}
+		if(count($types['mortier']) == 0) echo 'Création impossible';
 		?>
-		</ul>
+		<br style="clear : both;"/>
 		<?php
-		echo 'PA : '.$pa_total.' - MP : '.$mp_total.' - Stars : '.$star_total.'<br />';
-		?>
-	</div>
-	<?php
-	if(count($types['mortier']) == 0) echo 'Création impossible';
+		if($possible) $lien = '<a href="livre_recette.php?action=fabrique&amp;id_recette='.$row['id_recette'].'" onclick="return envoiInfo(this.href, \'information\');">Fabriquer <span class="xsmall">('.$pa_total.' PA - '.$mp_total.' MP  - '.$star_total.' stars)</span></a>';
+		else $lien = '';
+		echo $lien;
 	?>
-	<br style="clear : both;"/>
+	</div>
 	<?php
-	if($complet) echo '<a href="livre_recette.php?action=fabrique&amp;id_recette='.$row['id_recette'].'&amp;id='.$row['id'].'" onclick="return envoiInfo(this.href, \'information\');">Fabriquer <span class="xsmall">('.$row_r['pa'].' PA)</span></a>';
-echo '</div>';
+	$echo = ob_get_contents();
+	ob_end_clean();
+	?>
+	<h3 onclick="$('recette<?php echo $row['id_recette']; ?>').toggle();"><?php echo $recette->nom.' '.$lien; ?></h3>
+	<?php
+	echo $echo;
 }
 ?>
 </div>

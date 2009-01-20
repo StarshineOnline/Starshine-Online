@@ -4,7 +4,7 @@ require('haut_roi.php');
 $duree = (60 * 60 * 24) * 7;
 if((time() - $duree) < $R['taxe_time'])
 {
-	echo 'Vous avez dÈj‡ modifiÈ le taux de taxe rÈcemment.<br />
+	echo 'Vous avez d√©j√† modifi√© le taux de taxe r√©cemment.<br />
 	Vous pourrais le modifier dans '.transform_sec_temp(($R['taxe_time'] + $duree) - time());
 }
 else
@@ -14,7 +14,7 @@ else
 		$requete = "UPDATE royaume SET taxe = ".sSQL($_GET['taux']).", taxe_time = ".time()." WHERE id = ".$R['ID'];
 		if($db->query($requete))
 		{
-			echo 'Taux de taxe modifiÈ !';
+			echo 'Taux de taxe modifi√© !';
 		}
 	}
 	else
@@ -32,7 +32,7 @@ else
 			}
 		?>
 		</select>
-		<input type="button" onclick="envoiInfo('gestion_royaume.php?poscase=<?php echo $W_case; ?>&amp;direction=taxe&amp;action=valid&amp;taux=' + document.getElementById('taux').value, 'carte')" value="Ok" />
+		<input type="button" onclick="envoiInfo('taxe.php?direction=taxe&amp;action=valid&amp;taux=' + $('taux').value, 'conteneur')" value="Ok" />
 	</form>
 	<?php
 	}

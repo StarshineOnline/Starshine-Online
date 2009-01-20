@@ -26,7 +26,7 @@ if($_GET['action'] == 'achat')
 		echo 'Votre royaume n\'a pas assez de stars pour acheter cette quète.';
 	}
 	?>
-	<br /><a href="quete.php?poscase=<?php echo $W_case; ?>&amp;direction=quete" onclick="return envoiInfo(this.href, 'carte')">Retour au menu des quètes</a>
+	<br /><a href="quete.php?direction=quete" onclick="return envoiInfo(this.href, 'conteneur')">Retour au menu des quètes</a>
 	<?php
 }
 elseif($_GET['action'] == 'voir')
@@ -95,9 +95,9 @@ elseif($_GET['action'] == 'voir')
 	</ul>
 	<h3>Cout pour le royaume : <?php echo $row['star_royaume']; ?> stars</h3>
 	<br />
-	<a href="quete.php?poscase=<?php echo $W_case; ?>&amp;direction=quete&amp;action=achat&amp;id=<?php echo $row['id']; ?>" onclick="return envoiInfo(this.href, 'carte')">Acheter cette quète</a><br />
+	<a href="quete.php?direction=quete&amp;action=achat&amp;id=<?php echo $row['id']; ?>" onclick="return envoiInfo(this.href, 'conteneur')">Acheter cette quète</a><br />
 	<br />
-	<a href="quete.php?poscase=<?php echo $W_case; ?>&amp;direction=quete" onclick="return envoiInfo(this.href, 'carte')">Retour à la liste des quètes</a><br />
+	<a href="quete.php?direction=quete" onclick="return envoiInfo(this.href, 'conteneur')">Retour à la liste des quètes</a><br />
 	<?php
 }
 else
@@ -133,7 +133,7 @@ else
 				'.$row['star_royaume'].'
 			</td>
 			<td>
-				<a href="'.$href.'" onclick="return false;" id="quete_'.$row['id'].'">Détails de la quète</a>
+				<a href="'.$href.'" onclick="return envoiInfo(this.href, \'conteneur\');" id="quete_'.$row['id'].'">Détails de la quète</a>
 			</td>
 		</tr>';
 	}

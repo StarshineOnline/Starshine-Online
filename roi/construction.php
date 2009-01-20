@@ -64,7 +64,7 @@ if(!array_key_exists('direction', $_GET))
 				</div>
 			</td>
 			<td style="width:33%;">
-				<a href="javascript:if(confirm(\'Voulez vous supprimer ce '.$row['nom'].' ?\')) envoiInfo(\'gestion_royaume.php?poscase='.$W_case.'&amp;direction=suppr_construction&amp;id='.$row['id'].'">Supprimer</a>
+				<a href="gestion_royaume.php?poscase='.$W_case.'&amp;direction=suppr_construction&amp;id='.$row['id'].'" onclick="if(confirm(\'Voulez vous supprimer ce '.$row['nom'].' ?\')) return envoiInfo(this.href, \'conteneur\'); else return false;">Supprimer</a>
 			</td>
 		</tr>';
 		if($row['type'] == 'bourg')
@@ -74,7 +74,7 @@ if(!array_key_exists('direction', $_GET))
 			if($bat['nom'] != 'Bourg')
 			{
 				$bat_suivant = recupbatiment(($row['id_batiment'] + 1), 'none');
-				echo ' - <a href="javascript:if(confirm(\'Voulez vous upgrader ce '.$row['nom'].' ?\')) envoiInfo(\'gestion_royaume.php?poscase='.$W_case.'&amp;direction=up_construction&amp;id='.$row['id'].'">Upgrader - '.$bat_suivant['cout'].' stars</a>';
+				echo ' - <a href="gestion_royaume.php?poscase='.$W_case.'&amp;direction=up_construction&amp;id='.$row['id'].'" onclick="if(confirm(\'Voulez vous upgrader ce '.$row['nom'].' ?\')) return envoiInfo(this.href, \'conteneur\'); else return false;">Upgrader - '.$bat_suivant['cout'].' stars</a>';
 			}
 		}
 	}

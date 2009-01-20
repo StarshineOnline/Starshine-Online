@@ -138,7 +138,7 @@ require('haut_roi.php');
 			}
 			else $href_star = "0'";
 			?>
-			<input type="button" onclick="envoiInfo('gestion_royaume.php?poscase=<?php echo $W_case; ?>&amp;direction=diplomatie&amp;action=valid&amp;race=<?php echo $_GET['race']; ?>&amp;diplo=' + document.getElementById('diplo').value + '&amp;star=<?php echo $href_star; ?>, 'carte')" value="Effectuer le changement diplomatique">
+			<input type="button" onclick="envoiInfo('gestion_royaume.php?direction=diplomatie&amp;action=valid&amp;race=<?php echo $_GET['race']; ?>&amp;diplo=' + document.getElementById('diplo').value + '&amp;star=<?php echo $href_star; ?>, 'conteneur')" value="Effectuer le changement diplomatique">
 			<?php
 		}
 	}
@@ -231,13 +231,13 @@ require('haut_roi.php');
 	        if($row['statut'] == 'actif')
 	        {
 	        ?>
-	        <li><?php echo $row['nom']; ?><span class="small">, entretien : <?php echo $row['entretien']; ?> <a href="gestion_royaume.php?poscase=<?php echo $W_case; ?>&amp;direction=amelioration&amp;action=list&amp;batiment=<?php echo $row['type']; ?>" onclick="return envoiInfo(this.href, 'carte')">Améliorer</a></li>
+	        <li><?php echo $row['nom']; ?><span class="small">, entretien : <?php echo $row['entretien']; ?> <a href="gestion_royaume.php?direction=amelioration&amp;action=list&amp;batiment=<?php echo $row['type']; ?>" onclick="return envoiInfo(this.href, 'conteneur')">Améliorer</a></li>
 	        <?php
 	    	}
 	    	else
 	    	{
 	        ?>
-	        <li><?php echo $row['nom']; ?><span class="small">, inactif <a href="gestion_royaume.php?poscase=<?php echo $W_case; ?>&amp;direction=reactif&amp;action=list&amp;batiment=<?php echo $row['id_const']; ?>" onclick="if(confirm('Voulez vous vraiment réactiver cette construction ?')) return envoiInfo(this.href, 'carte'); else return false;">Réactiver pour <?php echo $row['dette']; ?> stars</a></li>
+	        <li><?php echo $row['nom']; ?><span class="small">, inactif <a href="gestion_royaume.php?direction=reactif&amp;action=list&amp;batiment=<?php echo $row['id_const']; ?>" onclick="if(confirm('Voulez vous vraiment réactiver cette construction ?')) return envoiInfo(this.href, 'conteneur'); else return false;">Réactiver pour <?php echo $row['dette']; ?> stars</a></li>
 	        <?php
 	    	}
 	    }
@@ -282,7 +282,7 @@ require('haut_roi.php');
 	            while($row = $db->read_assoc($req))
 	            {
 	                ?>
-	                <li><?php echo $row['nom']; ?>, coût : <?php echo $row['cout']; ?>, entretien par jour : <?php echo $row['entretien']; ?> <a href="gestion_royaume.php?poscase=<?php echo $W_case; ?>&amp;direction=amelioration&amp;action=ameliore&amp;batiment=<?php echo $row['type']; ?>&amp;id_batiment=<?php echo $row['id']; ?>" onclick="return envoiInfo(this.href, 'carte')">Améliorer</a></li>
+	                <li><?php echo $row['nom']; ?>, coût : <?php echo $row['cout']; ?>, entretien par jour : <?php echo $row['entretien']; ?> <a href="gestion_royaume.php?direction=amelioration&amp;action=ameliore&amp;batiment=<?php echo $row['type']; ?>&amp;id_batiment=<?php echo $row['id']; ?>" onclick="return envoiInfo(this.href, 'conteneur')">Améliorer</a></li>
 	                <?php
 	            }
 	            ?>
@@ -514,12 +514,12 @@ require('haut_roi.php');
 	    		<?php echo $amende; ?>
 	    	</td>
 	    	<td>
-	    		<a href="gestion_royaume.php?poscase=<?php echo $W_case; ?>&amp;direction=gestion_criminel&amp;id=<?php echo $row['ID']; ?>" onclick="return envoiInfo(this.href, 'carte')">Gérer</a>
+	    		<a href="gestion_royaume.php?direction=gestion_criminel&amp;id=<?php echo $row['ID']; ?>" onclick="return envoiInfo(this.href, 'conteneur')">Gérer</a>
 	    		<?php
 	    		if($amende != 0)
 	    		{
 	        		?>
-	        		/ <a href="gestion_royaume.php?poscase=<?php echo $W_case; ?>&amp;direction=suppr_criminel&amp;id=<?php echo $row['ID']; ?>" onclick="return envoiInfo(this.href, 'carte')">Supprimer</a>
+	        		/ <a href="gestion_royaume.php?direction=suppr_criminel&amp;id=<?php echo $row['ID']; ?>" onclick="return envoiInfo(this.href, 'conteneur')">Supprimer</a>
 	        		<?php
 	    		}
 	    		?>
@@ -554,7 +554,7 @@ require('haut_roi.php');
 	    if(!$amende)
 	    {
 	        ?>
-	        <form method="post" action="javascript:envoiInfoPost('gestion_royaume.php?poscase=<?php echo $W_case; ?>&amp;direction=gestion_criminel2&amp;id=<?php echo $joueur['ID']; ?>&amp;acces_ville=' + document.getElementById('acces_ville').checked + '&amp;spawn_ville=' + document.getElementById('spawn_ville').checked + '&amp;statut=' + document.getElementById('statut').value + '&amp;montant=' + document.getElementById('montant').value, 'carte');">
+	        <form method="post" action="javascript:envoiInfoPost('gestion_royaume.php?direction=gestion_criminel2&amp;id=<?php echo $joueur['ID']; ?>&amp;acces_ville=' + document.getElementById('acces_ville').checked + '&amp;spawn_ville=' + document.getElementById('spawn_ville').checked + '&amp;statut=' + document.getElementById('statut').value + '&amp;montant=' + document.getElementById('montant').value, 'conteneur');">
 	        	<input type="checkbox" name="acces_ville" id="acces_ville" /> Empèche le joueur d'accéder à la ville<br />
 	        	<input type="checkbox" name="spawn_ville" id="spawn_ville" <?php if($joueur['crime'] > 30) echo 'disabled'; ?> /> Empèche de renaître à la ville<br />
 	        	<br />
@@ -695,7 +695,7 @@ require('haut_roi.php');
 			</td>
 		</tr>
 		<?php
-		$requete = "SELECT * FROM objet_royaume LEFT JOIN batiment ON batiment.id = objet_royaume.id_batiment";
+		$requete = "SELECT *, objet_royaume.id as oid FROM objet_royaume LEFT JOIN batiment ON batiment.id = objet_royaume.id_batiment";
 		$req = $db->query($requete);
 		$i = 0;
 		while($row = $db->read_assoc($req))
@@ -731,7 +731,7 @@ require('haut_roi.php');
 				<input type="text" id="nbr<?php echo $i; ?>" value="1" />
 			</td>
 			<td>
-				<a href="#" onclick="return envoiInfo('gestion_royaume.php?direction=achat_militaire&amp;id=<?php echo $row['id']; ?>&amp;nbr=' + document.getElementById('nbr<?php echo $i; ?>').value, 'conteneur')">Acheter</a>
+				<a href="#" onclick="return envoiInfo('gestion_royaume.php?direction=achat_militaire&amp;id=<?php echo $row['oid']; ?>&amp;nbr=' + $('nbr<?php echo $i; ?>').value, 'conteneur')">Acheter</a>
 			</td>
 		</tr>
 		<?php
