@@ -71,10 +71,6 @@ if(array_key_exists('action', $_GET))
 if(!array_key_exists('categorie', $_GET)) $categorie = 1; else $categorie = $_GET['categorie'];
 
 ?>
-<head>
-	<link rel="stylesheet" type="text/css" media="screen,projection" title="Normal" href="css/interface.css" />
-	<script language="Javascript" type="text/javascript" src="javascript/fonction.js"></script>
-</head>
 <h3>Vous avez <?php echo $joueur['point_sso']; ?> point(s) Shine</h3>
 <table style="width:100%;">
 <tr>

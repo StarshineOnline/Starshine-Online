@@ -216,7 +216,7 @@ foreach($ressource_final as $key => $value)
 	$requete = "UPDATE royaume SET pierre = pierre + ".$value['Pierre'].", bois = bois + ".$value['Bois'].", eau = eau + ".$value['Eau'].", sable = sable + ".$value['Sable'].", charbon = charbon + ".$value['Charbon'].", essence = essence + ".$value['Essence Magique'].", star = star + ".$value['Star'].", food = food + ".$value['Nourriture']." WHERE race = '".$key."'";
 	$db->query($requete);
 	$requete = "UPDATE stat_jeu SET ".$key." = '".$implode_stat."' WHERE date = '".$date."'";
-	echo $requete;
+	$mail .= $requete."\n";
 	$db->query($requete);
 }
 
@@ -238,7 +238,7 @@ $row = $db->read_assoc($req);
 if($row['nombre_joueur'] != 0) $food_necessaire = $row['food'] / $row['nombre_joueur'];
 else $food_necessaire = 0;
 
-echo $food_necessaire.'<br />';
+$mail .= 'Nourriture nécessaire'.$food_necessaire."\n";
 
 //On récupère les infos des royaumes
 $requete = "SELECT ID, race, food FROM royaume WHERE ID != 0";
@@ -252,6 +252,7 @@ foreach($tab_royaume as $race => $royaume)
 	$royaume['food_necessaire'] = floor($food_necessaire * $royaume['actif']);
 	//echo $royaume['race'].' '.$royaume['food_necessaire'].'<br />';
 	//Si ya assez de food
+	$mail .= "Race : ".$race." - Nécessaire : ".$royaume['food_necessaire']." / Possède : ".$royaume['food']."\n";
 	if($royaume['food_necessaire'] < $royaume['food'])
 	{
 		$requete = "UPDATE royaume SET food = food - ".$royaume['food_necessaire']." WHERE ID = ".$royaume['id'];
@@ -294,7 +295,7 @@ foreach($tab_royaume as $race => $royaume)
 		if(count($buffs) > 0)
 		{
 			$requete = "UPDATE buff SET effet = effet + ".$debuff.", duree = ".$duree.", fin = ".$fin." WHERE ID IN (".$buffs_implode.")";
-			echo $requete;
+			$mail .= $requete."\n";
 			$db->query($requete);
 		}
 		foreach($persos as $joueur)
@@ -308,4 +309,8 @@ foreach($tab_royaume as $race => $royaume)
 	$requete = "UPDATE buff SET effet = 50 WHERE type = 'famine' AND effet > 50";
 	$db->query($requete);
 }
+$db->query("UPDATE perso SET beta = 3");
+
+mail('starshineonline@gmail.com', 'Starshine - Script journalier 4 du '.$date, $mail);
+
 ?>

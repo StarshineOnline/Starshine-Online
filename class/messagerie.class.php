@@ -4,7 +4,7 @@ class messagerie
 	public $id_perso;
 	
 	/**	
-	    *  	Constructeur permettant la création d'un objet pour la gestion de messagerie d'un perso.
+	    *  	Constructeur permettant la cr?ation d'un objet pour la gestion de messagerie d'un perso.
 	**/
 	function __construct($id_perso = 0)
 	{
@@ -43,7 +43,7 @@ class messagerie
 		return $return;		
 	}
 	
-	//Récupération de tous les threads pour ce perso
+	//R?cup?ration de tous les threads pour ce perso
 	function get_threads($type = 'groupe', $tri_date = 'ASC', $liste_message = false, $nombre_message = 'all')
 	{
 		global $db;
@@ -70,7 +70,7 @@ class messagerie
 		return $this->threads;
 	}
 
-	//Récupération du nombre de message non lu pour ce thread et ce perso
+	//R?cup?ration du nombre de message non lu pour ce thread et ce perso
 	function get_thread_non_lu($id_thread = 0)
 	{
 		global $db;
@@ -95,7 +95,7 @@ class messagerie
 		else return false;
 	}
 	
-	//Récupère le thread et les états de message
+	//R?cup?re le thread et les ?tats de message
 	function get_thread($id_thread = 0, $nombre = 'all', $tri_date = 'ASC')
 	{
 		global $db;
@@ -115,12 +115,12 @@ class messagerie
 			$requete = "SELECT id_message_etat, groupe FROM messagerie_etat WHERE id_dest = ".$this->id_perso." AND id_message = ".$id_message;
 			$req = $db->query($requete);
 			$row = $db->read_assoc($req);
-			$etat_objet = new messagerie_etat($row['id_message_etat'], $id_message, $etat, $this->id_perso, $row['groupe']);
+			$etat_objet = new messagerie_etat_message($row['id_message_etat'], $id_message, $etat, $this->id_perso, $row['groupe']);
 			$etat_objet->sauver();
 		}
 	}
 
-	//Fonction permettant de récupérer un message
+	//Fonction permettant de r?cup?rer un message
 	function get_message($id_message = 0)
 	{
 		global $db;
@@ -139,7 +139,7 @@ class messagerie
 	function envoi_message($id_thread = 0, $id_dest = 0, $titre = 'Titre vide', $message, $id_groupe = 0, $roi = 0)
 	{
 		global $db;
-		//Création du thread si besoin
+		//Cr?ation du thread si besoin
 		if($id_thread == 0)
 		{
 			if($roi == 0) $important = 0;
@@ -149,7 +149,7 @@ class messagerie
 			$id_thread = $thread->id_thread;
 		}
 
-		//Création du message
+		//Cr?ation du message
 		$auteur = recupperso_essentiel($this->id_perso, 'nom');
 		if($id_dest > 0) $dest = recupperso_essentiel($id_dest, 'nom');
 		else $dest['nom'] = null;
@@ -172,12 +172,12 @@ class messagerie
 			$type_groupe = 0;
 		}
 		
-		//On ajoute un état pour chaque membre
+		//On ajoute un ?tat pour chaque membre
 		foreach($ids_dest as $id)
 		{
 			if($id != $this->id_perso) $etat = 'non_lu';
 			else $etat = 'lu';
-			$etat_objet = new messagerie_etat(0, $message->id_message, $etat, $id, $type_groupe);
+			$etat_objet = new messagerie_etat_message(0, $message->id_message, $etat, $id, $type_groupe);
 			$etat_objet->sauver();
 		}
 	}

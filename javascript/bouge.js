@@ -26,6 +26,8 @@ if(ob != D){ // décroche l'objet et l'accroche à la souris
 return false 
 }
 
+
+
 function drop(e){ // dépose l'objet
 selObj(e);//
 verif(); 

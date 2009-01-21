@@ -1,20 +1,13 @@
-<?php
-include('haut.php');
-include('haut_site.php');
-include('menu.php');
-?>
-<div id="contenu">
-	<div id="centre2">
 		<div class="titre">
 			Background Peuples elfiques
 		</div>
 		<p style="font-family : comic sans ms ">
 		<i>«  C'est a moi qu'est revenue la charge de dresser le portrait des nations elfes, et je dois avouer que c'est pour moi un grand plaisir. Notre royaume est alliés aux elfes depuis avant l'Exode, et l'amitié solide qui nous lie ne s'est jamais démentie. Il y aurait beaucoup de choses a dire sur les elfes, beaucoup trop en fait, et vous ne trouverez ici qu'un bref aperçu, suffisamment pour vous en faire une idée. Mais je pourrais passez ma vie a vous en raconter sur eux, et vous ne les comprendriez toujours pas, c'est la race mortelle la plus ancienne du monde, et leur durée de vie est nettement plus élevée que la notre, ils n'ont pas la même notion du temps et leur expérience les amène a penser différemment. Selon moi; il y a énormément à apprendre d'eux, si on prend la peine de trier le bon grain de l'ivraie »<br /></i>
-		    </p>
-                <div style="text-align:center"> <i> Troddan, historien de Scythä </i></div><br />
-            <p style="font-family : comic sans ms ">
-
-            <br />
+			</p>
+				<div style="text-align:center"> <i> Troddan, historien de Scythä </i></div><br />
+			<p style="font-family : comic sans ms ">
+			
+			<br />
 			<i>«  Présenté pour votre édification d'après l'oeuvre du troubadour elfe Orianna, extrait de son célèbre livre : «  le livre du lendemain, ou compréhension du monde elfique »</i><br />
 
 			<br />
@@ -80,13 +73,8 @@ include('menu.php');
 			<i>la vision idyllique de la politique elfique est tempérée par des opposants farouches aux préceptes actuels, voici un compte rendu relativement acide de la part du Prince Andonnyar, de la maison Gardonna.</i><br />
 			<br />
 			« à dire vrai je ne saurais dire quand les choses ont commencé à changer... du temps d'Emerhyen évidemment, mais je ne saurais pas donner de dates précises... cela c'est fait petit a petit je pense. Une action après l'autre. Pendant longtemps les royaumes elfiques ont été un peuple pacifique et isolé du monde et cela nous avait plutôt bien réussi. Mais il semble que pour certains dirigeants, ce n'était pas assez. Ô, chaque guerre a eu sa justification, et la plupart de temps extrêmement plausible, l'opinion du peuple avait été soigneusement travaillée, préparée, a accepter l'idée que la guerre était inévitable... jamais de mensonges évidemment,  mais des demi-vérités ou des vérités soigneusement déguisées... du baratin de marchands. Quand à l'opinion publique, je dirais qu'elle était mûre pour se laisser convaincre. De la plèbe a la noblesse, une espèce de nationalisme elfique s'est dégagé, dont ont découlées ces idées hégémoniques. Les autorités politiques ont canalisé cela avec une grand habileté, et l'idée de « guerre préventive » a vite fait son chemin... aujourd'hui les résultats s'en font sentir, Notre royaume est en guerre avec de nombreuses nations, dans le but de satisfaire une sorte d'ego elfique exacerbé par nos dirigeants. Le pire la dedans, c'est que mon peuple croit réellement en ce qu'il fait, ils pensent sincèrement que cette politique agressive amènera la paix a terme...  »<br />
-	    </p>
-	    <div align="center">
-	    <p>
-	    <a href="background.php">| Index |</a>
-	    </p>
-     </div>
-
-
-	</div>
-</div>
+		</p>
+		<div align="center">
+		<p>
+		<a href="background.php" onclick="return envoiInfo(this.href, 'popup_content');">| Index |</a>
+		</p>

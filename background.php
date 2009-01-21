@@ -1,20 +1,13 @@
-<?php
-include('haut.php');
-include('haut_site.php');
-include('menu.php');
-?>
-<div id="contenu">
-	<div id="centre2">
 		<div class="titre">
 			Histoire de Starshine
 		</div>
 		<ul class="bg">
-			<li><a href="background_preface.php">Préface</a></li>
+			<li><a href="background_preface.php" onclick="return envoiInfo(this.href, 'popup_content');">Préface</a></li>
 			<li>
 				Génèse
 				<ul class="bg">
-					<li><a href="background_tome1.php">Tome 1</a></li>
-					<li><a href="background_tome2.php">Tome 2</a></li>
+					<li><a href="background_tome1.php" onclick="return envoiInfo(this.href, 'popup_content');">Tome 1</a></li>
+					<li><a href="background_tome2.php" onclick="return envoiInfo(this.href, 'popup_content');">Tome 2</a></li>
 				</ul>
 			</li>
 		</ul>
@@ -22,8 +15,6 @@ include('menu.php');
 			Background des races
 		</div>
 		<ul class="bg">
-			<li><a href="background_barbare.php">Barbares</a></li>
-			<li><a href="background_elfes.php">Peuples elfiques</a></li>
+			<li><a href="background_barbare.php" onclick="return envoiInfo(this.href, 'popup_content');">Barbares</a></li>
+			<li><a href="background_elfes.php" onclick="return envoiInfo(this.href, 'popup_content');">Peuples elfiques</a></li>
 		</ul>
-	</div>
-</div>

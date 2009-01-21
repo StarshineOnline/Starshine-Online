@@ -210,7 +210,7 @@ require('haut_roi.php');
 	        echo '
 	        <tr>
 	        	<td>
-	        		<a href="envoimessage.php?id_type=p'.$row['ID'].'" onclick="return envoiInfo(this.href, \'information\')">'.$row['nom'].'</a>
+	        		<a href="../envoimessage.php?id_type=p'.$row['ID'].'" onclick="return envoiInfo(this.href, \'conteneur\')">'.$row['nom'].'</a>
 	        	</td>
 	        	<td>
 	        		 - Roi des '.$Gtrad[$row['race']].'

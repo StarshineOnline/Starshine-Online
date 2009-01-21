@@ -1,15 +1,16 @@
+<?php
 class craft_recipient{
 	public $id;
 	public $id_recette;
 	public $type;
 		
 	/**	
-		*	Constructeur permettant la création d'un terrain_batiment.
-		*	Les valeurs nombrer défaut sont celles de la base de donnée.
+		*	Constructeur permettant la cr"ation d'un terrain_batiment.
+		*	Les valeurs nombrer d"faut sont celles de la base de donn"e.
 		*	Le constructeur accepte plusieurs effets d'appels:
 		*		-craft_recipient() qui construit un etat "vide".
 		*		-craft_recipient($id) qui va chercher l'etat dont l'id est $id
-		*		-craft_recipient($array) qui associe les champs de $array à l'objet.
+		*		-craft_recipient($array) qui associe les champs de $array Ã  l'objet.
 	**/
 	function __construct($id = 0, $id_recette = 0, $type = '')
 	{
@@ -18,7 +19,7 @@ class craft_recipient{
 		if( (func_num_args() == 1) && is_numeric($id) )
 		{
 			$requeteSQL = $db->query('SELECT id_recette, type FROM craft_recipient WHERE id = '.$id);
-			//Si le thread est dans la base, on le charge sinon on crée un thread vide.
+			//Si le thread est dans la base, on le charge sinon on cr?e un thread vide.
 			if( $db->num_rows($requeteSQL) > 0 )
 			{
 				list($this->id_recette, $this->type) = $db->read_row($requeteSQL);
@@ -57,7 +58,7 @@ class craft_recipient{
 			$requete = 'INSERT INTO craft_recipient (id_recette, type) VALUES(';
 			$requete .= $this->id_recette.', "'.$this->type.'")';
 			$db->query($requete);
-			//Récuperation du dernier ID inséré.
+			//R?cuperation du dernier ID ins?r?.
 			list($this->id) = $db->last_insert_id();
 		}
 	}
@@ -78,3 +79,4 @@ class craft_recipient{
 		return 'id = '.$this->id.', '.id_recette = '.$this->id_recette.', type = '.$this->type;
 	}
 }
+?>

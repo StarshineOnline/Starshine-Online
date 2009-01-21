@@ -9,14 +9,14 @@ body {margin:0;padding:0;background:#5D705F url('./image/v2/bg_site.png') repeat
 #centre{margin-top : 3px;margin-left : 7px;float : left;	height : 100%;	z-index :3;}
 #deplacement{float : left;vertical-align : top;	text-align : right;	width : 50px;	margin-left : 5px;}
 #information{height : 100%;	width : 47%;	float : left;	z-index :1;margin-left: 6px;}
-#information fieldset {-moz-border-radius: 10px;background:transparent url('./image/v2/box_accueil2.png');margin-top: 4px; }
-#information fieldset legend {background:transparent url('./image/v2/bouton_fond.png');-moz-border-radius: 10px;padding-left:10px;padding-right:10px;font-weight: bold;}
+#information fieldset {-moz-border-radius: 10px;-webkit-border-radius : 10px;background:transparent url('./image/v2/box_accueil2.png');margin-top: 4px; }
+#information fieldset legend {background:transparent url('./image/v2/bouton_fond.png');-moz-border-radius: 10px;-webkit-border-radius: 10px; padding-left:10px;padding-right:10px;font-weight: bold;}
 #information a {color : #444;text-decoration : none;}
 #information a:hover {	color : #888;	text-decoration : none;}
 #perso{background-color:#c6d9f5;min-height: 120px;margin:0;padding:0;}
 #perso_menu {margin-left:94px;margin-top:-15px;}
 #perso_menu ul {margin:0;padding:0;list-style-type: none;height:17px;text-align: center;position: relative;}
-#perso_menu ul li {padding-left:5px;padding-right:5px;cursor: pointer;width:100px;background:transparent url('./image/v2/contenu_fond.png');border-left : 1px solid #777;border-right : 1px solid #777;border-top : 1px solid #777;margin-left:5px;margin-right:5px;font-style: italic;-moz-border-radius-topleft: 12px;-moz-border-radius-topright: 12px;-webkit-border-top-right-radius : 12px;-webkit-border-top-left-radius : 12px;}
+#perso_menu ul li {padding-left:5px;padding-right:5px;cursor: pointer;width:100px;background:transparent url('./image/v2/box_accueil2.png');border-left : 1px solid #777;border-right : 1px solid #777;border-top : 1px solid #777;margin-left:5px;margin-right:5px;font-style: italic;-moz-border-radius-topleft: 12px;-moz-border-radius-topright: 12px;-webkit-border-top-right-radius : 12px;-webkit-border-top-left-radius : 12px;}
 #perso_menu .menu {float:left;}
 #perso_menu .select {background:transparent url('./image/v2/bouton_selected.png') repeat-x;border-bottom:1px solid transparent;font-style:normal;font-weight: bold;}
 
@@ -25,7 +25,12 @@ body {margin:0;padding:0;background:#5D705F url('./image/v2/bg_site.png') repeat
 
 #perso_contenu{margin:auto;min-height:110px;padding:5px;}
 #contenu_jeu {	margin : 0 auto;width:100%;}
-#popup {margin-left:20px;position:absolute;top:60px;z-index:999999999; background-color : black; background : transparent url('./image/v2/bg_site.png') repeat-x;}
+#popup {margin-left:130px;position:absolute;top:60px;z-index:99 !important;  -moz-border-radius: 12px;background:transparent url(./image/v2/box_accueil.png) repeat scroll 0 0;color:#EEE;}
+#popup a {color:#EEE;}
+#popup_menu {cursor: pointer;background:transparent url(./image/v2/bouton_fond.png) repeat-x scroll 0 0;}
+#popup_content {padding:5px;text-align:justify;width:98%;}
+#popup_marge {height:470px;margin:auto;overflow:auto;width:700px;}
+.fermer {background:transparent url('./image/interface/rouge.png') no-repeat top left;display:block;height:16px;width:16px;}
 #mask{background-image:url('./image/v2/overlay.png');height:100%;left:0;position:absolute;top:0;width:100%;z-index:9999999;}
 
 #header {background-color:#c6d9f5;min-height: 120px;margin:0;padding:0;}
@@ -37,6 +42,7 @@ body {margin:0;padding:0;background:#5D705F url('./image/v2/bg_site.png') repeat
 
 
 #menu {height: 20px;border-bottom: 1px solid #888;border-top: 1px solid #888;margin:0;padding:0;background:transparent url('./image/v2/bouton_fond.png') repeat-x;}
+#menu a {color:#222;text-decoration: none;}
 #menu_date {float:left;height: 20px;margin-left:9px; width : 91px; line-height : 20px; font-size : 0.9em;}
 #menu_date img {height: 15px;padding-right:8px; vertical-align : middle;}
 #menu_details {font-size:12px;float:left;margin-top:2px;}
@@ -63,7 +69,7 @@ body {margin:0;padding:0;background:#5D705F url('./image/v2/bg_site.png') repeat
 	width:32px;
 }
 /*-- Infos perso ------------------------------------------------------*/
-#infos_perso		{ float:left; background:transparent url('./../image/fond_infoperso.png') center; width:325px; height:100px; position:relative;z-index:1;}
+#infos_perso		{ float:left; background:transparent url('./../image/fond_infoperso.png') center; width:325px; height:100px; position:relative;}
 #joueur_PA			{ font-size:8pt; color:white; background:green; width:125px; text-align:center; position:absolute; top:46px; left:105px; }
 #joueur_HP			{ font-size:8pt; color:white; background:transparent url('./../image/barre/hp9.png') center no-repeat; width:125px; text-align:center; position:absolute; top:10px; left:105px; }
 #joueur_MP			{ font-size:8pt; color:white; background:blue; width:125px; text-align:center; position:absolute; top:28px; left:105px; }
@@ -92,7 +98,7 @@ margin-top:-3px;}
 .buff_dispo				{ position:relative; float:left; height:19px; width:16px; padding:0px; margin:0px 2px; background:transparent url('../../image/buff/buff.png') top no-repeat; }
 .buff_nondispo			{ position:relative; float:left; height:19px; width:16px; padding:0px; margin:0px 2px; background:transparent url('../../image/buff/nobuff.png') top no-repeat; }
 .buff_duree_restante 	{ position:absolute; bottom:0px; left:0px; }
-#joueur_groupe			{ width:300px; float:left;background:transparent url('../../image/fond_groupe.png') center; margin-left:30px; }
+#joueur_groupe			{ width:300px; float:left;background:transparent url('../../image/fond_groupe.png') center; margin-left:30px; height:83px;margin-top:4px;}
 #joueur_groupe_bouton {width:50px;float: left;}
 #joueur_groupe ul	{ width:250px; float:left;  }
 #mail_groupe			{ cursor:pointer; width:32px; height:32px; background:transparent url('../../image/message.png') center no-repeat; }
@@ -107,7 +113,7 @@ margin-top:-3px;}
 .joueur_groupe_barre_mp	{ float:left; width:102px; height:6px; margin:1px 0px 0px 0px; }
 
 /*-- Rose des vents ---------------------------------------------------*/
-#rosedesvents   { width:75px; height:75px;position:absolute; left:13px; top:13px; z-index:200; }
+#rosedesvents   { width:75px; height:75px;position:absolute; left:13px; top:13px; z-index: 1; }
 #rose_div_hg 	{ background:transparent url('./../image/rosedesvent/nordouest.png') center; width:25px; height:25px; cursor:pointer; float:left; }
 #rose_div_hg:hover 		{ background-position:top; }
 #rose_div_hg:active 	{ background-position:bottom; }
@@ -169,7 +175,7 @@ margin-top:-3px;}
 #map_bord_haut_gauche:active	{ background-position:bottom; }
 #bord_haut_x					{ color:black !important; font-weight:bold; }
 #bord_haut_y					{ color:black !important; font-weight:bold; }
-.div_map 						{ background:transparent url('./image/v2/map.png') repeat-x;-moz-border-radius: 10px;height:445px;}
+.div_map 						{ background:transparent url('./image/v2/map.png') repeat-x;-moz-border-radius: 10px;-webkit-border-radius:10px;height:445px;}
 .map							{ height:60px; padding-bottom : 0px;}
 .mapl							{ height:20px; padding-bottom : 0px;}
 .map li, .mapl li				{ float:left; width:60px; height:inherit;cursor: pointer; }
@@ -228,9 +234,10 @@ margin-top:-3px;}
 	vertical-align:top;
 
 }
+
 #diplo {background-color: #CCC;}
 #diplo ul li {clear:both;}
-#diplo ul li span {float:left;display:block;width:50px;height:50px;-moz-border-radius: 5px;}
+#diplo ul li span {float:left;display:block;width:50px;height:50px;-moz-border-radius: 5px;-webkit-border-radius:5px;}
 .diplo_0 {background-color: }
 .diplo_1 {background-color: }
 .diplo_2 {background-color: }
@@ -243,6 +250,12 @@ margin-top:-3px;}
 .diplo_9 {background-color: }
 .diplo_10 {background-color: }
 
+/***************************************************
+  Info Perso
+ ***************************************************/
+
+
+.mort {background:transparent url('./../image/interface/mort.png') no-repeat scroll left center;text-decoration: line-through;padding-left:20px;}
 
 
 .infoperso td {

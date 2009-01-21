@@ -47,13 +47,6 @@ if (isset($_POST['log']) OR isset($_COOKIE['nom']))
 					//Si il n'y a pas de session
 					if(!array_key_exists('nom', $_SESSION))
 					{
-						//On cherche les derniers événements de ce joueur.
-						$requete_journal = "SELECT * FROM journal WHERE id_perso = ".$ID_base." AND time > '".date("Y-m-d H:i:s", $row['dernier_connexion'])."' ORDER BY time ASC, id ASC";
-						$req_journal = $db->query($requete_journal);
-						while($row_journal = $db->read_assoc($req_journal))
-						{
-							$journal .= affiche_ligne_journal($row_journal);
-						}
 						//Insertion dans les logs
 						$requete = "INSERT INTO log_connexion VALUES(NULL, ".$ID_base.", ".time().", '".$_SERVER['REMOTE_ADDR']."', 'Ok')";
 						$db->query($requete);

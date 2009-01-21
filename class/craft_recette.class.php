@@ -13,12 +13,12 @@ class craft_recette
 	public $prix;
 
 	/**	
-		*	Constructeur permettant la création d'une recette.
-		*	Les valeurs par défaut sont celles de la base de donnée.
+		*	Constructeur permettant la cr?ation d'une recette.
+		*	Les valeurs par d?faut sont celles de la base de donn?e.
 		*	Le constructeur accepte plusieurs types d'appels:
 		*		-craft_recette() qui construit un etat "vide".
 		*		-craft_recette($id) qui va chercher l'etat dont l'id est $id
-		*		-craft_recette($array) qui associe les champs de $array à l'objet.
+		*		-craft_recette($array) qui associe les champs de $array ? l'objet.
 	**/
 	function __construct($id = 0, $nom = '', $description = '', $pa = 0, $mp = 0, $type = '', $difficulte = 0, $resultat = '', $royaume_alchimie = 0, $prix = 0)
 	{
@@ -27,7 +27,7 @@ class craft_recette
 		if( (func_num_args() == 1) && is_numeric($id) )
 		{
 			$requeteSQL = $db->query('SELECT nom, description, pa, mp, type, difficulte, resultat, royaume_alchimie, prix FROM craft_recette WHERE id = '.$id);
-			//Si le thread est dans la base, on le charge sinon on crée un thread vide.
+			//Si le thread est dans la base, on le charge sinon on cr?e un thread vide.
 			if( $db->num_rows($requeteSQL) > 0 )
 			{
 				list($this->nom, $this->description, $this->pa, $this->mp, $this->type, $this->difficulte, $this->resultat, $this->royaume_alchimie, $this->prix) = $db->read_row($requeteSQL);
@@ -80,7 +80,7 @@ class craft_recette
 			$requete = 'INSERT INTO craft_recette (nom, description, pa, mp, type, difficulte, resultat, royaume_alchimie, prix) VALUES(';
 			$requete .= '"'.$this->nom.'", "'.$this->description.'", '.$this->pa.', '.$this->mp.', "'.$this->type.'", '.$this->difficulte.', "'.$this->resultat.'", '.$this->royaume_alchimie.', '.$this->prix.')';
 			$db->query($requete);
-			//Récuperation du dernier ID inséré.
+			//R?cuperation du dernier ID ins?r?.
 			list($this->id) = $db->last_insert_id();
 		}
 	}
@@ -139,10 +139,10 @@ class craft_recette
 		{
 			if($R['diplo'] == 127)
 			{
-				//On récupère toutes les infos sur le labo du joueur (ou pas)
+				//On r?cup?re toutes les infos sur le labo du joueur (ou pas)
 				$terrain = new terrain();
 				$terrain = $terrain->recoverByIdJoueur($joueur['ID']);
-				//Si il possède un terrain
+				//Si il poss?de un terrain
 				if(is_object($terrain))
 				{
 					$terrain->get_laboratoire();

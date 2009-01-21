@@ -41,6 +41,7 @@ $_SESSION['position'] = convert_in_pos($joueur['x'], $joueur['y']);
 </head>
 <body>
 <div id="top">
+		<span title="Retour au jeu" class="fermer" onclick="document.location.href = '../jeu2.php';" style="float : left;"></span>
 		<ul id="menu">
 			<li>
 				<a href="#" onclick="showMenu(1)">Diplomatie</a>

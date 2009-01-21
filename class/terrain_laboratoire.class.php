@@ -7,12 +7,12 @@ class terrain_laboratoire
 	public $type;
 	
 	/**	
-		*	Constructeur permettant la création d'un terrain_batiment.
-		*	Les valeurs nombrer défaut sont celles de la base de donnée.
+		*	Constructeur permettant la crÃ©ation d'un terrain_batiment.
+		*	Les valeurs nombrer dÃ©faut sont celles de la base de donnÃ©e.
 		*	Le constructeur accepte plusieurs effets d'appels:
 		*		-terrain_laboratoire() qui construit un etat "vide".
 		*		-terrain_laboratoire($id) qui va chercher l'etat dont l'id est $id
-		*		-terrain_laboratoire($array) qui associe les champs de $array à l'objet.
+		*		-terrain_laboratoire($array) qui associe les champs de $array Ã© l'objet.
 	**/
 	function __construct($id = 0, $id_laboratoire = 0, $id_instrument = 0, $type = '')
 	{
@@ -21,7 +21,7 @@ class terrain_laboratoire
 		if( (func_num_args() == 1) && is_numeric($id) )
 		{
 			$requeteSQL = $db->query('SELECT id_laboratoire, id_instrument, type FROM terrain_laboratoire WHERE id = '.$id);
-			//Si le thread est dans la base, on le charge sinon on crée un thread vide.
+			//Si le thread est dans la base, on le charge sinon on crÃ©e un thread vide.
 			if( $db->num_rows($requeteSQL) > 0 )
 			{
 				list($this->id_laboratoire, $this->id_instrument, $this->type) = $db->read_row($requeteSQL);
@@ -62,7 +62,7 @@ class terrain_laboratoire
 			$requete = 'INSERT INTO terrain_laboratoire (id_laboratoire, id_instrument, type) VALUES(';
 			$requete .= $this->id_laboratoire.', '.$this->id_instrument.', "'.$this->type.'")';
 			$db->query($requete);
-			//Récuperation du dernier ID inséré.
+			//RÃ©cuperation du dernier ID insÃ©rÃ©.
 			list($this->id) = $db->last_insert_id();
 		}
 	}

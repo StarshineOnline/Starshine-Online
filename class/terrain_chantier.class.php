@@ -9,12 +9,12 @@ class terrain_chantier
 	public $upgrade_id_construction;
 		
 	/**	
-		*	Constructeur permettant la création d'un terrain_batiment.
-		*	Les valeurs nombrer défaut sont celles de la base de donnée.
+		*	Constructeur permettant la crÃ©ation d'un terrain_batiment.
+		*	Les valeurs nombrer dÃ©faut sont celles de la base de donnÃ©e.
 		*	Le constructeur accepte plusieurs effets d'appels:
 		*		-terrain_chantier() qui construit un etat "vide".
 		*		-terrain_chantier($id) qui va chercher l'etat dont l'id est $id
-		*		-terrain_chantier($array) qui associe les champs de $array à l'objet.
+		*		-terrain_chantier($array) qui associe les champs de $array Ã© l'objet.
 	**/
 	function __construct($id = 0, $id_terrain = 0, $id_batiment = 0, $point = 0, $star_point = 0, $upgrade_id_construction = 0)
 	{
@@ -23,7 +23,7 @@ class terrain_chantier
 		if( (func_num_args() == 1) && is_numeric($id) )
 		{
 			$requeteSQL = $db->query('SELECT id_terrain, id_batiment, point, star_point, upgrade_id_construction FROM terrain_chantier WHERE id = '.$id);
-			//Si le thread est dans la base, on le charge sinon on crée un thread vide.
+			//Si le thread est dans la base, on le charge sinon on crÃ©e un thread vide.
 			if( $db->num_rows($requeteSQL) > 0 )
 			{
 				list($this->id_terrain, $this->id_batiment, $this->point, $this->star_point, $this->upgrade_id_construction) = $db->read_row($requeteSQL);
@@ -68,7 +68,7 @@ class terrain_chantier
 			$requete = 'INSERT INTO terrain_chantier (id_terrain, id_batiment, point, star_point, upgrade_id_construction) VALUES(';
 			$requete .= $this->id_terrain.', '.$this->id_batiment.', '.$this->point.', '.$this->star_point.', '.$this->upgrade_id_construction.')';
 			$db->query($requete);
-			//Récuperation du dernier ID inséré.
+			//RÃ©cuperation du dernier ID insÃ©rÃ©.
 			list($this->id) = $db->last_insert_id();
 		}
 	}

@@ -697,6 +697,7 @@ function recupperso($ID)
 					$R_perso['dexterite'] += 1;
 					$R_perso['volonte'] += 1;
 				}
+				$R_perso['beta'] = $row['beta'];
 				$R_perso['pa'] = $row['pa'];
 				$R_perso['action_a'] = $row['action_a'];  // Script d'attaque.
 				$R_perso['action_d'] = $row['action_d'];  // Script de défense.
@@ -1346,6 +1347,7 @@ function check_perso($joueur)
 		$temps_pa = $G_temps_PA;
 		// Nombre de PA à ajouter 
 		$panew = floor(($time - $joueur['dernieraction']) / $temps_pa);
+		if($panew < 0) $panew = 0;
 		$prochain = ($joueur['dernieraction'] + $temps_pa) - $time;
 		if ($prochain < 0) $prochain = 0;
 		// Mise à jour des PA

@@ -628,14 +628,7 @@ $implode_ids = implode(', ', $ids);
 $requete = "DELETE FROM vente_terrain WHERE id IN (".$implode_ids.")";
 $db->query($requete);
 
-if(date("N") == 1)
-{
-	//Attribution des grades
-	require_once('grade.php');
-	//Les rois peuvent de nouveau se téléporter
-	$requete = "UPDATE perso SET teleport_roi = 'false' WHERE rang_royaume = 6";
-	$db->query($requete);
-	$semaine = 60 * 60 * 24 * 7;
+	$semaine = 60 * 60 * 24;
 	$fin_vente = time() + $semaine;
 	//Mis en vente de nouveaux terrains
 	foreach($tableau_race as $race => $stats)
@@ -649,6 +642,14 @@ if(date("N") == 1)
 			$i++;
 		}
 	}
+
+if(date("N") == 1)
+{
+	//Attribution des grades
+	require_once('grade.php');
+	//Les rois peuvent de nouveau se téléporter
+	$requete = "UPDATE perso SET teleport_roi = 'false' WHERE rang_royaume = 6";
+	$db->query($requete);
 }
 
 mail('starshineonline@gmail.com', 'Starshine - Script journalier du '.$date, $mail);

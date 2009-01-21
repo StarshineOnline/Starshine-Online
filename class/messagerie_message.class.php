@@ -12,8 +12,8 @@ class messagerie_message
 	public $nom_dest;
 	
 	/**	
-	    *  	Constructeur permettant la création d'un message.
-	    *	Les valeurs par défaut sont celles de la base de donnée.
+	    *  	Constructeur permettant la cr?ation d'un message.
+	    *	Les valeurs par d?faut sont celles de la base de donn?e.
 	    *	Le constructeur accepte plusieurs types d'appels:
 	    *		-messagerie_message() qui construit un message "vide".
 	    *		-messagerie_message($id) qui va chercher le message dont l'id est $id_message dans la base.
@@ -26,7 +26,7 @@ class messagerie_message
 		if( (func_num_args() == 1) && is_numeric($id_message) )
 		{
 			$requeteSQL = $db->query('SELECT id_auteur, id_dest, titre, message, id_thread, date, nom_auteur, nom_dest FROM messagerie_message WHERE id_message = '.$id_message);
-			//Si le thread est dans la base, on le charge sinon on crée un thread vide.
+			//Si le thread est dans la base, on le charge sinon on cr?e un thread vide.
 			if( $db->num_rows($requeteSQL) > 0 )
 			{
 				list($this->id_auteur, $this->id_dest, $this->titre, $this->message, $this->id_thread, $this->date, $this->nom_auteur, $nom_dest) = $db->read_row($requeteSQL);
@@ -72,7 +72,7 @@ class messagerie_message
 			$requete = 'INSERT INTO messagerie_message (id_auteur, id_dest, titre, message, id_thread, date, nom_auteur, nom_dest) VALUES(';
 			$requete .= $this->id_auteur.', '.$this->id_dest.', "'.$this->titre.'", "'.$this->message.'", '.$this->id_thread.', "'.$this->date.'", "'.$this->nom_auteur.'", "'.$this->nom_dest.'")';
 			$db->query($requete);
-			//Récuperation du dernier ID inséré.
+			//R?cuperation du dernier ID ins?r?.
 			$this->id_message = $db->last_insert_id();
 		}
 	}
@@ -86,7 +86,7 @@ class messagerie_message
 			//Suppression du message
 			$requete = 'DELETE FROM messagerie_message WHERE id_message = '.$this->id_message;
 			$db->query($requete);
-			//Suppression de tous les états associés
+			//Suppression de tous les ?tats associ?s
 			$requete = 'DELETE FROM messagerie_etat WHERE id_message = '.$this->id_message;
 			$db->query($requete);
 		}

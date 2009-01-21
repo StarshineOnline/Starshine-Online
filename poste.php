@@ -98,7 +98,7 @@ if($W_distance == 0)
 								//Récupération de l'argent
 								$requete = 'UPDATE royaume SET star = star + '.$taxe.' WHERE ID = '.$R['ID'];
 								$db->query($requete);
-								echo '<h5>Message bien envoyé !</h5>';
+								echo '<h6>Message bien envoyé !</h6>';
 							}
 							else echo('<h5>Erreur lors de l\'envoi du message</h5>');
 						}

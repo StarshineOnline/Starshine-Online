@@ -4,12 +4,12 @@ class bourg extends construction
 	public $mine_max;
 	
 	/**	
-	    *  	Constructeur permettant la création d'un bourg.
-	    *	Les valeurs par défaut sont celles de la base de donnée.
+	    *  	Constructeur permettant la cr?ation d'un bourg.
+	    *	Les valeurs par d?faut sont celles de la base de donn?e.
 	    *	Le constructeur accepte plusieurs types d'appels:
 	    *		-bourg() qui construit un etat "vide".
 	    *		-bourg($id) qui va chercher l'etat dont l'id est $id
-	    *		-bourg($array) qui associe les champs de $array à l'objet.
+	    *		-bourg($array) qui associe les champs de $array ? l'objet.
 	**/
 	function __construct($id = 0, $id_royaume = 0, $id_batiment = 0, $x = 0, $y = 0, $hp = 0, $nom = '', $type = 0, $rez = 0, $rechargement = 0, $image = '')
 	{
@@ -18,7 +18,7 @@ class bourg extends construction
 		if( (func_num_args() == 1) && is_numeric($id) )
 		{
 			$requeteSQL = $db->query('SELECT royaume, id_batiment, x, y, hp, nom, type, rez, rechargement, image FROM construction WHERE id = '.$id);
-			//Si le thread est dans la base, on le charge sinon on crée un thread vide.
+			//Si le thread est dans la base, on le charge sinon on cr?e un thread vide.
 			if( $db->num_rows($requeteSQL) > 0 )
 			{
 				list($this->id_royaume, $this->id_batiment, $this->x, $this->y, $this->hp, $this->nom, $this->type, $this->rez, $this->rechargement, $this->image) = $db->read_row($requeteSQL);
@@ -62,7 +62,7 @@ class bourg extends construction
 			case 'Bourgade' :
 				$this->mine_max = 1;
 			break;
-			case 'Petit Bourg' :
+			case 'Petit bourg' :
 				$this->mine_max = 2;
 			break;
 			case 'Bourg' :

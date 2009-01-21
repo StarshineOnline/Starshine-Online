@@ -11,8 +11,8 @@ class bourse_royaume
 	public $actif;
 	
 	/**	
-	    *  	Constructeur permettant la création d'un etat de message.
-	    *	Les valeurs par défaut sont celles de la base de donnée.
+	    *  	Constructeur permettant la cr?ation d'un etat de message.
+	    *	Les valeurs par d?faut sont celles de la base de donn?e.
 	    *	Le constructeur accepte plusieurs types d'appels:
 	    *		-Objets() qui construit un etat "vide".
 	    *		-Objets($id) qui va chercher l'etat dont l'id est $id_bourse_royaume dans la base.
@@ -24,7 +24,7 @@ class bourse_royaume
 		if( (func_num_args() == 1) && is_numeric($id_bourse_royaume) )
 		{
 			$requeteSQL = $db->query('SELECT id_royaume, ressource, nombre, id_royaume_acheteur, prix, fin_vente, actif FROM bourse_royaume WHERE id_bourse_royaume = '.$id_bourse_royaume);
-			//Si le thread est dans la base, on le charge sinon on crée un thread vide.
+			//Si le thread est dans la base, on le charge sinon on cr?e un thread vide.
 			if( $db->num_rows($requeteSQL) > 0 )
 			{
 				list($this->id_royaume, $this->ressource, $this->nombre, $this->id_royaume_acheteur, $this->prix, $this->fin_vente, $this->actif) = $db->read_row($requeteSQL);
@@ -61,7 +61,7 @@ class bourse_royaume
 			$requete = 'INSERT INTO bourse_royaume (id_royaume, ressource, nombre, id_royaume_acheteur, prix, fin_vente, actif) VALUES(';
 			$requete .= $this->id_royaume.', "'.$this->ressource.'", '.$this->nombre.', '.$this->id_royaume_acheteur.', '.$this->prix.', "'.$this->fin_vente.'", '.$this->actif.')';
 			$db->query($requete);
-			//Récuperation du dernier ID inséré.
+			//R?cuperation du dernier ID ins?r?.
 			list($this->id_bourse_royaume) = $db->last_insert_id();
 		}
 	}

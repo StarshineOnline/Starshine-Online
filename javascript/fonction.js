@@ -63,9 +63,10 @@ function sendData(data, page, div, method)
     sendData('null', page, div, 'GET')
 }*/
 
-function envoiInfoPost(page, div)
+function envoiInfoPost(page,position)
 {
-    sendData('null', page, div, 'POST')
+	function Affiche(requete){$(position).innerHTML = requete.responseText; Hidechargement();}
+	new Ajax.Request(page,{method:'get',onLoading:Loadchargement,onComplete:Affiche});
 }
 
 function envoiInfoPostData(page, div, data)
@@ -327,4 +328,28 @@ function menu_change(input_name)
 		$(input_name).addClassName('select');
 		$(input_name+'_menu').show();
 	}
+}
+
+function adresse(tri, i, race)
+{
+	if(i == '') i = document.getElementById('i').value;
+	if(tri == '') tri = document.getElementById('tri').value;
+	else
+	{
+		if(i != 'moi') i = 0;
+	}
+	if(race == '') race = document.getElementById('race').value;
+	envoiInfo('classement_ajax.php?tri=' + tri + '&i=' + i + '&race=' + race + '&javascript=true', 'table_classement');
+}
+
+function adresse_groupe(tri, i, race)
+{
+	if(i == '') i = document.getElementById('i').value;
+	if(tri == '') tri = document.getElementById('tri').value;
+	else
+	{
+		if(i != 'moi') i = 0;
+	}
+	if(race == '') race = document.getElementById('race').value;
+	envoiInfo('classement_groupe_ajax.php?tri=' + tri + '&javascript=true', 'table_classement');
 }

@@ -113,7 +113,7 @@ while($W_row = $db->read_array($W_query))
 //	</div>';
 	if ($W_ID != $_SESSION['ID'])
 	{
-		echo ' <span style="width:10%"><a href="envoimessage.php?id_type=p'.$W_ID.'" onclick="return envoiInfo(this.href, \'information\')"><img src="image/interface/message.png" title="Envoyer un message" /></a></span>';
+		echo ' <span style="width:10%"><img src="image/personnage/'.$W_race.'/'.$W_race.'.png" alt="'.$W_race.'" style="vertical-align : middle;height:21px;float:left;width:21px;" /><a href="envoimessage.php?id_type=p'.$W_ID.'" onclick="return envoiInfo(this.href, \'information\')"><img src="image/interface/message.png" title="Envoyer un message" /></a></span>';
 		if($joueur['sort_jeu'] != '') echo '<span style="width:10%"> <a href="sort_joueur.php?poscase='.$W_case.'&amp;id_joueur='.$W_ID.'" onclick="return envoiInfo(this.href, \'information\')"><img src="image/sort_hc_icone.png" title="Lancer un sort" alt="Lancer un sort" /></a></span>';
 		if($row_diplo[0] <= 5 OR array_key_exists(5, $mybonus)) echo '<span style="width:10%"> <a href="echange.php?poscase='.$W_case.'&amp;id_joueur='.$W_ID.'" onclick="return envoiInfo(this.href, \'information\')"><img src="image/icone/echanger.png" alt="Echanger" title="Echanger" /></a></span>';
 	}
@@ -259,7 +259,7 @@ if($num_rows > 0)
 		echo ' '.$nom;
 		echo ' '.$Gtrad[$Royaume['race']].' - HP : '.$W_row['hp'];
 		echo '</span>';
-		if($joueur['race'] != $Royaume['race']) echo  ' <a href="attaque_monstre.php?ID='.$W_row['id'].'&amp;type=batiment&amp;table=construction&poscase='.$W_case.'" onclick="return envoiInfo(this.href, \'information\')"><img src="image/interface/attaquer.png" alt="Combattre" style="vertical-align : middle;" /> Attaquer <span class="xsmall">('.($G_PA_attaque_batiment - $reduction_pa).' PA)</a>';
+		if($joueur['race'] != $Royaume['race']) echo  ' <a href="attaque_monstre.php?ID='.$W_row['id'].'&amp;type=batiment&amp;table=construction&poscase='.$W_case.'" onclick="return envoiInfo(this.href, \'information\')"><img src="image/interface/attaquer.png" alt="Combattre" title="Attaquer '.($G_PA_attaque_batiment - $reduction_pa).' PA" style="vertical-align : middle;" /> Attaquer</a>';
 		elseif($W_row['hp'] < $row_b['hp'])
 		{
 			echo  ' <a href="archi_soigne_construction.php?id_construction='.$W_row['id'].'" onclick="return envoiInfo(this.href, \'information\')">Réparer <span class="xsmall">(30 PA)</a>';
@@ -303,10 +303,11 @@ while($W_row = $db->read_array($W_query))
 	if($diff_level > 0) $strong = 'bold'; else $strong = 'normal';
 	// on envois dans infojoueur.php -> ID du joueur et La position de la case ou il se trouve
 	echo '
-	<li><span style="color : '.$color.'; font-weight : '.$strong.'">'.$W_nom.'</span>
+	<li style="clear:both;"><img src="image/monstre/'.$W2_row['lib'].'.png" alt="'.$W2_row['nom'].'" style="vertical-align : middle;height:21px;float:left;width:21px;" /><span style="color : '.$color.'; font-weight : '.$strong.';float:left;width:325px;margin-left:15px;">'.$W_nom.'</span>
 	
-		<span>';
-		if(!array_key_exists('repos_sage', $joueur['debuff']) OR !array_key_exists('bloque_attaque', $joueur['debuff'])) echo '<a href="attaque_monstre.php?ID='.$W_ID.'&poscase='.$W_case.'" onclick="return envoiInfo(this.href, \'information\')"><img src="image/interface/attaquer.png" alt="Combattre" style="vertical-align : middle;" /> Attaquer <span class="xsmall">('.($pa_attaque - $reduction_pa).' PA)</span></a>';
+		<span style="float:left;">';
+		if(!array_key_exists('repos_sage', $joueur['debuff']) OR !array_key_exists('bloque_attaque', $joueur['debuff'])) echo '
+		<a href="attaque_monstre.php?ID='.$W_ID.'&poscase='.$W_case.'" onclick="return envoiInfo(this.href, \'information\')"><img src="image/interface/attaquer.png" alt="Combattre" title="Attaquez ce monstez ('.($pa_attaque - $reduction_pa).' PA)" style="vertical-align : middle;" /></a>';
 		echo ' <a href="info_monstre.php?ID='.$W_ID.'&poscase='.$W_case.'" onclick="return envoiInfo(this.href, \'information\')"><img src="image/icone/mobinfo.png" alt="Voir informations sur le monstre" title="Voir informations sur le monstre" style="vertical-align : middle;" /></a>';
 		if($joueur['sort_jeu'] != '') echo ' <a href="sort_monstre.php?poscase='.$W_case.'&amp;id_monstre='.$W_ID.'" onclick="return envoiInfo(this.href, \'information\')"><img src="image/sort_hc_icone.png" title="Lancer un sort" alt="Lancer un sort" style="vertical-align : middle;" /></a>';
 	echo '

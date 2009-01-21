@@ -13,7 +13,7 @@ class groupe
 		if( (func_num_args() == 1) && is_numeric($id) )
 		{
 			$requeteSQL = $db->query('SELECT partage, prochain_loot, nom FROM groupe WHERE id = '.$id);
-			//Si le thread est dans la base, on le charge sinon on crée un thread vide.
+			//Si le thread est dans la base, on le charge sinon on crÃ©e un thread vide.
 			if( $db->num_rows($requeteSQL) > 0 )
 			{
 				list($this->partage, $this->prochain_loot, $this->nom) = $db->read_row($requeteSQL);

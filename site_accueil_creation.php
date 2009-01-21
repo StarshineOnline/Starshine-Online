@@ -2,7 +2,8 @@
 include('./inc/fp.php');
 $race = $_GET['race'];
 $classe = $_GET['classe'];
-if ($classe == 'guerrier')$classe = 'combattant';
+if ($classe == 'guerrier') $classe = 'combattant';
+if ($classe == 'mage') $classe = 'magicien';
 $pseudo = $_GET['pseudo'];
 $mdp = $_GET['mdp'];
 
@@ -80,7 +81,7 @@ $mdp = $_GET['mdp'];
 	$requete = "SELECT id FROM classe WHERE nom = '".ucwords($classe)."'";
 	$req = $db->query($requete);
 	$row = $db->read_assoc($req);
-	$classe_id = $row['id'];	
+	$classe_id = $row['id'];
 	$hp = floor(sqrt($vie) * 70);
 	$hp_max = $hp;
 	$mp = $energie * $G_facteur_mana;

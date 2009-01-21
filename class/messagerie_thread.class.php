@@ -8,8 +8,8 @@ class messagerie_thread
 	public $important;
 	
 	/**	
-	    *  	Constructeur permettant la création d'un thread de messagerie.
-	    *	Les valeurs par défaut sont celles de la base de donnée.
+	    *  	Constructeur permettant la crÃ©ation d'un thread de messagerie.
+	    *	Les valeurs par dÃ©faut sont celles de la base de donnÃ©e.
 	    *	Le constructeur accepte plusieurs types d'appels:
 	    *		-messagerie_thread() qui construit un thread "vide".
 	    *		-messagerie_thread($id) qui va chercher le thread dont l'id est $id dans la base.
@@ -21,7 +21,7 @@ class messagerie_thread
 		if( (func_num_args() == 1) && is_numeric($id_thread) )
 		{
 			$requeteSQL = $db->query('SELECT id_groupe, id_dest, id_auteur, important FROM messagerie_thread WHERE id_thread = '.$id_thread);
-			//Si le thread est dans la base, on le charge sinon on crée un thread vide.
+			//Si le thread est dans la base, on le charge sinon on cr?e un thread vide.
 			if( $db->num_rows($requeteSQL) > 0 )
 			{
 				list($this->id_groupe, $this->id_dest, $this->id_auteur, $this->important) = $db->read_row($requeteSQL);
@@ -38,7 +38,7 @@ class messagerie_thread
 		$this->id_thread = $id_thread;
 	}
 	
-	//Fonction permettant de récupérer tous les messages lié à un thread
+	//Fonction permettant de r?cup?rer tous les messages li? ? un thread
 	function get_messages($nombre = 'all', $tri_date = 'DESC', $etat = false)
 	{
 		global $db;
@@ -78,7 +78,7 @@ class messagerie_thread
 			$requete = 'INSERT INTO messagerie_thread (id_groupe, id_dest, id_auteur, important) VALUES(';
 			$requete .= $this->id_groupe.', '.$this->id_dest.', '.$this->id_auteur.', '.$this->important.')';
 			$db->query($requete);
-			//Récuperation du dernier ID inséré.
+			//R?cuperation du dernier ID ins?r?.
 			$this->id_thread = $db->last_insert_id();
 		}
 	}
@@ -90,7 +90,7 @@ class messagerie_thread
 		if($cascade == true)
 		{
 			$messages = array();
-			//On récupère la liste des messages qui appartiennent à ce thread
+			//On r?cup?re la liste des messages qui appartiennent ? ce thread
 			$requete = "SELECT id_message FROM messagerie_message WHERE id_thread = ".$this->id_thread;
 			$req = $db->query($requete);
 			while($row = $db->read_assoc($req))
@@ -98,7 +98,7 @@ class messagerie_thread
 				$messages[] = $row['id_message'];
 			}
 			$in = implode(',', $messages);
-			//On efface tous les etats qui correspondent à ces messages
+			//On efface tous les etats qui correspondent ? ces messages
 			$requete = "DELETE FROM messagerie_etat WHERE id_message IN (".$in.")";
 			$db->query($requete);
 			//On efface tous les messages

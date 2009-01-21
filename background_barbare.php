@@ -1,10 +1,3 @@
-<?php
-include('haut.php');
-include('haut_site.php');
-include('menu.php');
-?>
-<div id="contenu">
-	<div id="centre2">
 		<div class="titre">
 			Background Barbare
 		</div>
@@ -30,7 +23,7 @@ include('menu.php');
 		C'est l'honneur dont ils font preuve qui les rend si féroce au combat, un barbare vous tranchera la tête sans un soupçon d'hésitation, mais il le fera en façe de vous .. Si un barbare veux quelque chose que vous avez, mais que vous vous battez suffisament bien pour le garder, il vous respectera .. si vous n'y parvenez pas, il pensera que vous ne méritiez pas de le posséder en premier lieu.<br />
 		Les barbares ont menés bien des batailles perdues d'avance en raison de leur honneur, et parfois ils ont réussi à vaincre car leur honneur décuple leur courage et leur vaillance.<br />
 		Vous me demandez si le Royaume d'Altar ferait un bon allié pour Scytä ? Je vous répondrais que la vrai question, c'est plutôt est ce que Scytä ferait un bon allié pour Altar .. le peuple barbare est un peuple indépendant et qui n'accorde pas facilement sa confiance aux étrangers .. pourquoi l'accorderaient ils à un peuple de 'pieds verts' qui ne sont même pas capables de se défendre.<br />
-		Ces mots vous mettent en colère ? Ils m'ont fait bouillir le sang moi, quand je les ai entendu il n'y a pas cinq jours de la bouche d'un barbare dont l'haleine puait la bière, c'était juste avant que je lui mette mon poing dans la figure .. une fois le combat terminé, il a éclaté d'un grand rire, et m'a payé un coup a boire .. il m'a expliqué qu'il n'avais jamais voulu insulter mon peuple, il constatait juste un état de faits, si quelqu'un demande de l'aide, c'est qu'il n'est pas capable de se débrouiller tout seul .. et comme Scythä propose une alliance, c'est comme si nous demandions de l'aide à leur yeux.<br />
+		Ces mots vous mettent en colère ? Ils m'ont fait bouillir le sang moi, quand je les ai entendu il n'y a pas cinq jours de la bouche d'un barbare dont l'haleine puait la bière, c'était juste avant que je lui mette mon poing dans la figure .. une fois le combat terminé, il a éclaté d'un grand rire, et m'a payé un coup a boire .. il m'a expliqué qu'il n'avais jamais voulu insulter mon peuple, il constatait juste un état de faits, si quelqu'un demande de l'aide, c'est qu'il n'est pas capable de se d??brouiller tout seul .. et comme Scythä propose une alliance, c'est comme si nous demandions de l'aide à leur yeux.<br />
 		Nous ne gagnerons pas l'amitié de Brisebois avec de belles formules diplomatiques et des bons mots, ces gens aiment qu'on leur parle sans langue de bois. Nous aurions beaucoup à apprendre d'eux croyez moi. Et avec eux a nos cotés, nos ennemis n'auraient qu'a bien se tenir !<br />
 		Je ne vous demande pas de me croire sur parole, écoutez moi, écoutez Lidmorian, écoutez Meddox, et écoutez vos autres conseillers, mais suivez mon conseil, pour cette décision, choisissez avec votre coeur, ce sera votre premiere leçon sur la manière de penser du peuple de Brisebois.<br />
 		<br />
@@ -66,14 +59,9 @@ include('menu.php');
 		En douze siècles d'existence, les Barbares ont connu relativement peu de véritables guerres, ils restent assez replié sur eux même et leur territoire n'a aucune importance stratégique aux yeux des autre peuples.<br />
 		Outre un traité de paix avec le peuple Nain, signé quelques semaines après l'envoi de la lettre de Dosko au roi de l'époque Thraïn II, les Barbares ont tissé des liens d'amitiés avec le royaume Troll dont la Force et la discipline militaire ont su impressionner le peuple d'Altar.<br />
 		Ils gardent des contacts plus ou moins neutre avec la plupart des autres royaumes, dont ils se préoccupent à vrai-dire assez peu. Les Barbares mènent toutefois une guerre larvée contre Kiel'loran, le peuple haut-elfe. Bien que les occasions d'affrontement entre les deux peuples ne soient pas monnaie courante, les Barbares mènent de temps en temps des expéditions de razzias jusqu'aux bordure du royaume elfe, semant carnage et destruction dans leur passage. Les origines du conflit remontent à une querelle entre un Khan barbare et un prince elfe, le prince elfe aurait semble-t-il insulté le Shokla du Khan sans le vouloir et se serait empétré dans des excuses qui n'auraient fait qu'empirer les choses. Depuis lors et jusqu'à aujourd'hui, Brisebois a refusé toutes les tentatives de réconciliations proposées par Ashen'delor.<br />
-	    <br />
-	    </p>
-	    <div align="center">
-	    <p>
-	    <a href="background.php">| Index |</a>
-	    </p>
-     </div>
-
-
-	</div>
-</div>
+		<br />
+		</p>
+		<div align="center">
+		<p>
+		<a href="background.php" onclick="return envoiInfo(this.href, 'popup_content');">| Index |</a>
+		</p>

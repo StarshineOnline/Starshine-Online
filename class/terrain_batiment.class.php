@@ -12,12 +12,12 @@ class terrain_batiment
 	public $point_structure;
 		
 	/**	
-		*	Constructeur permettant la création d'un terrain_batiment.
-		*	Les valeurs nombrer défaut sont celles de la base de donnée.
+		*	Constructeur permettant la crÃ©ation d'un terrain_batiment.
+		*	Les valeurs nombrer dÃ©faut sont celles de la base de donnÃ©e.
 		*	Le constructeur accepte plusieurs effets d'appels:
 		*		-terrain_batiment() qui construit un etat "vide".
 		*		-terrain_batiment($id) qui va chercher l'etat dont l'id est $id
-		*		-terrain_batiment($array) qui associe les champs de $array à l'objet.
+		*		-terrain_batiment($array) qui associe les champs de $array Ã© l'objet.
 	**/
 	function __construct($id = 0, $nom = 0, $description = 0, $type = 0, $effet = 0, $nb_case = 0, $prix = 0, $requis = 0, $point_structure = 0)
 	{
@@ -26,7 +26,7 @@ class terrain_batiment
 		if( (func_num_args() == 1) && is_numeric($id) )
 		{
 			$requeteSQL = $db->query('SELECT nom, description, type, effet, nb_case, prix, requis, point_structure FROM terrain_batiment WHERE id = '.$id);
-			//Si le thread est dans la base, on le charge sinon on crée un thread vide.
+			//Si le thread est dans la base, on le charge sinon on crÃ©e un thread vide.
 			if( $db->num_rows($requeteSQL) > 0 )
 			{
 				list($this->nom, $this->description, $this->type, $this->effet, $this->nb_case, $this->prix, $this->requis, $this->point_structure) = $db->read_row($requeteSQL);
@@ -77,7 +77,7 @@ class terrain_batiment
 			$requete = 'INSERT INTO terrain_batiment (nom, description, type, effet, nb_case, prix, requis, point_structure) VALUES(';
 			$requete .= '"'.$this->nom.'", "'.$this->description.'", "'.$this->type.'", "'.$this->effet.'", '.$this->nb_case.', '.$this->prix.', '.$this->requis.', '.$this->point_structure.')';
 			$db->query($requete);
-			//Récuperation du dernier ID inséré.
+			//RÃ©cuperation du dernier ID insÃ©rÃ©.
 			list($this->id) = $db->last_insert_id();
 		}
 	}

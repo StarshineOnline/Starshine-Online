@@ -1,5 +1,5 @@
 <?php
-class messagerie_etat
+class messagerie_etat_message
 {
 	public $id_etat;
 	public $id_message;
@@ -8,8 +8,8 @@ class messagerie_etat
 	public $groupe;
 	
 	/**	
-	    *  	Constructeur permettant la création d'un etat de message.
-	    *	Les valeurs par défaut sont celles de la base de donnée.
+	    *  	Constructeur permettant la cr?ation d'un etat de message.
+	    *	Les valeurs par d?faut sont celles de la base de donn?e.
 	    *	Le constructeur accepte plusieurs types d'appels:
 	    *		-messagerie_etat() qui construit un etat "vide".
 	    *		-messagerie_etat($id) qui va chercher l'etat dont l'id est $id_etat dans la base.
@@ -21,7 +21,7 @@ class messagerie_etat
 		if( (func_num_args() == 1) && is_numeric($id_etat) )
 		{
 			$requeteSQL = $db->query('SELECT id_message, etat, id_dest, groupe FROM messagerie_etat WHERE id_etat = '.$id_etat);
-			//Si le thread est dans la base, on le charge sinon on crée un thread vide.
+			//Si le thread est dans la base, on le charge sinon on cr?e un thread vide.
 			if( $db->num_rows($requeteSQL) > 0 )
 			{
 				list($this->id_message, $this->etat, $this->id_dest, $this->groupe) = $db->read_row($requeteSQL);
@@ -55,7 +55,7 @@ class messagerie_etat
 			$requete = 'INSERT INTO messagerie_etat (id_message, etat, id_dest, groupe) VALUES(';
 			$requete .= $this->id_message.', "'.$this->etat.'", '.$this->id_dest.', '.$this->groupe.')';
 			$db->query($requete);
-			//Récuperation du dernier ID inséré.
+			//R?cuperation du dernier ID ins?r?.
 			list($this->id_etat) = $db->last_insert_id();
 		}
 	}

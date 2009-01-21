@@ -10,6 +10,7 @@ include('haut.php');
 window.onload = function()
 {
 	new Draggable('popup', {handle: 'popup_menu'});
+	<?php if($_COOKIE['dernier_affichage_popup'] < (time() - 3600)) echo 'affichePopUp(\'message_accueil.php\');'; ?>
 }
 </script>
 <?php
@@ -56,7 +57,7 @@ $_SESSION['position'] = convert_in_pos($joueur['x'], $joueur['y']);
 <div id="conteneur">
 
 <div id="mask" style='display:none;'></div>
-<div id="popup" style='display:none;'><div id="popup_menu"><a href="" onclick="fermePopUp(); return false;">Fermer</a></div><div id="popup_content"></div></div>
+<div id="popup" style='display:none;'><div id="popup_menu"><span class='fermer' title='Fermer le popup' onclick="fermePopUp(); return false;"></span></div><div id="popup_marge"><div id="popup_content"></div></div></div>
 <div id="loading" style='display:none'></div>
 <div id="loading_information" style='display:none'></div>
 	<div id="perso">
@@ -71,12 +72,12 @@ $_SESSION['position'] = convert_in_pos($joueur['x'], $joueur['y']);
 	</div>
 
 	<div id='menu_details'>
-		<div id='lejeu_menu' style='display:none;'><span class='menu' onclick="affichePopUp('diplomatie.php');">Diplomatie</span><span class='menu' onclick="affichePopUp('classement.php');">Classement</span><span class='menu' onclick="affichePopUp('stats2.php?historique=y&annee=2009&mois=01&jour=14&image=carte_densite_mob.png');">Statistiques</span><span class='menu' onclick="affichePopUp('repartir_craft.php');">Craft</span></div>
+		<div id='lejeu_menu' style='display:none;'><span class='menu' onclick="affichePopUp('diplomatie.php');">Diplomatie</span><span class='menu' onclick="affichePopUp('classement.php');">Classement</span><span class='menu' onclick="affichePopUp('stats2.php?historique=y&annee=2009&mois=01&jour=14&image=carte_densite_mob.png');">Statistiques</span><span class='menu' onclick="affichePopUp('message_accueil.php');">Message d'Accueil</span><span class='menu' onclick="affichePopUp('repartir_craft.php');">Craft</span><span class='menu' onclick="affichePopUp('beta_test.php');">Beta Test</span></div>
 		<div id='starshine_menu' style='display:none;'><span class='menu' onclick="affichePopUp('liste_monstre.php');">Bestiaire</span><span class='menu' onclick="affichePopUp('background.php');">Background</span><span class='menu' onclick="affichePopUp('royaume.php');">Carte</span></div>
-		<div id='communaute_menu' style='display:none;'><span class='menu'><a href="http://forum.starshinebox.info">Forum</a></span><span class='menu'>Wiki</span><span class='menu' onclick="affichePopUp('acces_chat.php');">Tchat</span></div>
+		<div id='communaute_menu' style='display:none;'><span class='menu'><a href="http://forum.starshinebox.info">Forum</a></span><span class='menu'><a href="http://wiki.starshine-online.com/">Wiki</a></span><span class='menu' onclick="affichePopUp('acces_chat.php');">Tchat</span></div>
 	</div>
 	<div id='menu_deco'>
-		<div title='Se déconnecter' onclick="if(confirm('Voulez vous déconnecter ?')) { document.location.href='index.php?deco=ok'; };">X</div>
+		<span class="fermer" title='Se déconnecter' onclick="if(confirm('Voulez vous déconnecter ?')) { document.location.href='index.php?deco=ok'; };"></span>
 	</div>
 </div>
 <div id='contenu_back'>

@@ -6,12 +6,12 @@ class craft_ingredient
 	public $description;
 
 	/**	
-		*	Constructeur permettant la création d'un ingredient.
-		*	Les valeurs nombrer défaut sont celles de la base de donnée.
+		*	Constructeur permettant la cr?ation d'un ingredient.
+		*	Les valeurs nombrer d?faut sont celles de la base de donn?e.
 		*	Le constructeur accepte plusieurs effets d'appels:
 		*		-craft_ingredient() qui construit un etat "vide".
 		*		-craft_ingredient($id) qui va chercher l'etat dont l'id est $id
-		*		-craft_ingredient($array) qui associe les chasecrets de $array à l'objet.
+		*		-craft_ingredient($array) qui associe les chasecrets de $array ? l'objet.
 	**/
 	function __construct($id = 0, $nom = '', $description = '')
 	{
@@ -20,7 +20,7 @@ class craft_ingredient
 		if( (func_num_args() == 1) && is_numeric($id) )
 		{
 			$requeteSQL = $db->query('SELECT nom, description FROM craft_ingredient WHERE id = '.$id);
-			//Si le thread est dans la base, on le charge sinon on crée un thread vide.
+			//Si le thread est dans la base, on le charge sinon on cr?e un thread vide.
 			if( $db->num_rows($requeteSQL) > 0 )
 			{
 				list($this->nom, $this->description) = $db->read_row($requeteSQL);
@@ -59,7 +59,7 @@ class craft_ingredient
 			$requete = 'INSERT INTO craft_ingredient (nom, description) VALUES(';
 			$requete .= '"'.$this->nom.'", "'.$this->description.'")';
 			$db->query($requete);
-			//Récuperation du dernier ID inséré.
+			//R?cuperation du dernier ID ins?r?.
 			list($this->id) = $db->last_insert_id();
 		}
 	}

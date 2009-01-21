@@ -12,12 +12,12 @@ class craft_instrument
 	public $alchimie;
 	
 	/**	
-		*	Constructeur permettant la création d'un terrain_batiment.
-		*	Les valeurs nombrer défaut sont celles de la base de donnée.
+		*	Constructeur permettant la cr?ation d'un terrain_batiment.
+		*	Les valeurs nombrer d?faut sont celles de la base de donn?e.
 		*	Le constructeur accepte plusieurs effets d'appels:
 		*		-craft_instrument() qui construit un etat "vide".
 		*		-craft_instrument($id) qui va chercher l'etat dont l'id est $id
-		*		-craft_instrument($array) qui associe les champs de $array à l'objet.
+		*		-craft_instrument($array) qui associe les champs de $array ? l'objet.
 	**/
 	function __construct($id = 0, $nom = '', $type = '', $description = '', $requis = 0, $pa = 0, $mp = 0, $prix = 0, $alchimie = 0)
 	{
@@ -26,7 +26,7 @@ class craft_instrument
 		if( (func_num_args() == 1) && is_numeric($id) )
 		{
 			$requeteSQL = $db->query('SELECT nom, type, description, requis, pa, mp, prix, alchimie FROM craft_instrument WHERE id = '.$id);
-			//Si le thread est dans la base, on le charge sinon on crée un thread vide.
+			//Si le thread est dans la base, on le charge sinon on cr?e un thread vide.
 			if( $db->num_rows($requeteSQL) > 0 )
 			{
 				list($this->nom, $this->type, $this->description, $this->requis, $this->pa, $this->mp, $this->prix, $this->alchimie) = $db->read_row($requeteSQL);
@@ -77,7 +77,7 @@ class craft_instrument
 			$requete = 'INSERT INTO craft_instrument (nom, type, description, requis, pa, mp, prix, alchimie) VALUES(';
 			$requete .= '"'.$this->nom.'", "'.$this->type.'", "'.$this->description.'", '.$this->requis.', '.$this->pa.', '.$this->mp.', '.$this->prix.', '.$this->alchimie.')';
 			$db->query($requete);
-			//Récuperation du dernier ID inséré.
+			//R?cuperation du dernier ID ins?r?.
 			list($this->id) = $db->last_insert_id();
 		}
 	}

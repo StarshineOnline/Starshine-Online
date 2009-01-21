@@ -9,12 +9,12 @@ class craft_recette_ingredient
 	public $effet;
 
 	/**	
-		*	Constructeur permettant la création d'un ingredient de recette.
-		*	Les valeurs nombrer défaut sont celles de la base de donnée.
+		*	Constructeur permettant la cr?ation d'un ingredient de recette.
+		*	Les valeurs nombrer d?faut sont celles de la base de donn?e.
 		*	Le constructeur accepte plusieurs effets d'appels:
 		*		-craft_recette_ingredient() qui construit un etat "vide".
 		*		-craft_recette_ingredient($id) qui va chercher l'etat dont l'id est $id
-		*		-craft_recette_ingredient($array) qui associe les chasecrets de $array à l'objet.
+		*		-craft_recette_ingredient($array) qui associe les chasecrets de $array ? l'objet.
 	**/
 	function __construct($id = 0, $id_recette = 0, $id_ingredient = 0, $nombre = 0, $secret = 0, $effet = '')
 	{
@@ -23,7 +23,7 @@ class craft_recette_ingredient
 		if( (func_num_args() == 1) && is_numeric($id) )
 		{
 			$requeteSQL = $db->query('SELECT id_recette, id_ingredient, nombre, secret, effet FROM craft_recette_ingredient WHERE id = '.$id);
-			//Si le thread est dans la base, on le charge sinon on crée un thread vide.
+			//Si le thread est dans la base, on le charge sinon on cr?e un thread vide.
 			if( $db->num_rows($requeteSQL) > 0 )
 			{
 				list($this->id_recette, $this->id_ingredient, $this->nombre, $this->secret, $this->effet) = $db->read_row($requeteSQL);
@@ -68,7 +68,7 @@ class craft_recette_ingredient
 			$requete = 'INSERT INTO craft_recette_ingredient (id_recette, id_ingredient, nombre, secret, effet) VALUES(';
 			$requete .= $this->id_recette.', '.$this->id_ingredient.', '.$this->nombre.', '.$this->secret.', "'.$this->effet.'")';
 			$db->query($requete);
-			//Récuperation du dernier ID inséré.
+			//R?cuperation du dernier ID ins?r?.
 			list($this->id) = $db->last_insert_id();
 		}
 	}

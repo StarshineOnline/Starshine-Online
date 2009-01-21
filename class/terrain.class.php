@@ -6,12 +6,12 @@ class terrain
 	public $nb_case;
 
 	/**	
-		*	Constructeur permettant la création d'un terrain.
-		*	Les valeurs nombrer défaut sont celles de la base de donnée.
+		*	Constructeur permettant la crÃ©ation d'un terrain.
+		*	Les valeurs nombrer dÃ©faut sont celles de la base de donnÃ©e.
 		*	Le constructeur accepte plusieurs effets d'appels:
 		*		-terrain() qui construit un etat "vide".
 		*		-terrain($id) qui va chercher l'etat dont l'id est $id
-		*		-terrain($array) qui associe les champs de $array à l'objet.
+		*		-terrain($array) qui associe les champs de $array Ã© l'objet.
 	**/
 	function __construct($id = 0, $id_joueur = 0, $nb_case = 0)
 	{
@@ -20,7 +20,7 @@ class terrain
 		if( (func_num_args() == 1) && is_numeric($id) )
 		{
 			$requeteSQL = $db->query('SELECT id_joueur, nb_case FROM terrain WHERE id = '.$id);
-			//Si le thread est dans la base, on le charge sinon on crée un thread vide.
+			//Si le thread est dans la base, on le charge sinon on crÃ©e un thread vide.
 			if( $db->num_rows($requeteSQL) > 0 )
 			{
 				list($this->id_joueur, $this->nb_case) = $db->read_row($requeteSQL);
@@ -59,7 +59,7 @@ class terrain
 			$requete = 'INSERT INTO terrain (id_joueur, nb_case) VALUES(';
 			$requete .= $this->id_joueur.', '.$this->nb_case.')';
 			$db->query($requete);
-			//Récuperation du dernier ID inséré.
+			//RÃ©cuperation du dernier ID insÃ©rÃ©.
 			list($this->id) = $db->last_insert_id();
 		}
 	}

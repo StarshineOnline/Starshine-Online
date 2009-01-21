@@ -4,7 +4,6 @@ include('haut.php');
 
 ?>
 <script type="text/javascript">
-
 function menu_change(input_name)
 {
 	if ($('menu_encours').value=='')
@@ -88,7 +87,6 @@ function validation_perso()
 		var perso = $('perso_selected_id').value.split('_');
 		new Ajax.Request('./site_accueil_creation.php',{method:'get',parameters:'race='+perso[0]+'&classe='+perso[1]+'&pseudo='+$('creat_nom').value+'&mdp='+$('creat_pass').value,onLoading:Chargement,onComplete:Afficheperso});
 	}
-	
 }
 </script>
 
@@ -102,7 +100,6 @@ function validation_perso()
 		<li id='screenshot_menu' onclick="menu_change('screenshot');">ScreenShots</li>
 		<li id='news_menu' onclick="menu_change('news');">News</li>
 		<li id='creation_menu' onclick="menu_change('creation');">Création d'un compte</li>
-
 	</ul>
 	</div>
 	<div class='box'>

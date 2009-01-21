@@ -10,6 +10,12 @@ if(array_key_exists('up', $_GET))
 			case 'forge' :
 				$up = 'forge = forge + 1';
 			break;
+			case 'alchimie' :
+				$up = 'alchimie = alchimie + 1';
+			break;
+			case 'architecture' :
+				$up = 'architecture = architecture + 1';
+			break;
 		}
 		$requete = "UPDATE perso SET craft = craft - 1, ".$up." WHERE ID = ".$joueur['ID'];
 		$db->query($requete);

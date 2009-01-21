@@ -15,8 +15,8 @@ class placement
 	public $image;
 	
 	/**	
-	    *  	Constructeur permettant la création d'un etat de message.
-	    *	Les valeurs par défaut sont celles de la base de donnée.
+	    *  	Constructeur permettant la crÃ©ation d'un etat de message.
+	    *	Les valeurs par dÃ©faut sont celles de la base de donnÃ©e.
 	    *	Le constructeur accepte plusieurs types d'appels:
 	    *		-Objets() qui construit un etat "vide".
 	    *		-Objets($id) qui va chercher l'etat dont l'id est $id_bourse_royaume dans la base.
@@ -28,7 +28,7 @@ class placement
 		if( (func_num_args() == 1) && is_numeric($id_placement) )
 		{
 			$requeteSQL = $db->query('SELECT royaume, id_batiment, x, y, hp, nom, rez, type, debut_placement, fin_placement FROM placement WHERE id = '.$id_placement);
-			//Si le thread est dans la base, on le charge sinon on crée un thread vide.
+			//Si le thread est dans la base, on le charge sinon on crÃ©e un thread vide.
 			if( $db->num_rows($requeteSQL) > 0 )
 			{
 				list($this->id_royaume, $this->id_batiment, $this->x, $this->y, $this->hp, $this->nom, $this->rez, $this->type, $this->debut_placement, $this->fin_placement) = $db->read_row($requeteSQL);
@@ -88,7 +88,7 @@ class placement
 			$requete .= $this->id_royaume.', '.$this->id_batiment.', '.$this->x.', '.$this->y.', '.$this->hp.', "'.$this->nom.'", '.$this->rez.', "'.$this->type.'", '.$this->debut_placement.', '.$this->fin_placement.')';
 			//echo $requete;
 			$db->query($requete);
-			//Récuperation du dernier ID inséré.
+			//RÃ©cuperation du dernier ID insÃ©rÃ©.
 			list($this->id_placement) = $db->last_insert_id();
 		}
 	}

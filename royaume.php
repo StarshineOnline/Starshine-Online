@@ -1,10 +1,3 @@
-<?php
-include('haut.php');
-include('haut_site.php');
-include('menu.php');
-?>
-<div id="contenu">
-	<div class="centre2">
 		<div class="titre">
 			Carte du monde 3D
 		</div>
@@ -51,4 +44,3 @@ include('menu.php');
 		</tr>
 		</table>
 	</div>
-</div>

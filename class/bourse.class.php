@@ -4,7 +4,7 @@ class bourse
 	public $id_royaume;
 	
 	/**	
-	    *  	Constructeur permettant la création d'un objet pour la gestion de messagerie d'un perso.
+	    *  	Constructeur permettant la cr?ation d'un objet pour la gestion de messagerie d'un perso.
 	**/
 	function __construct($id_royaume = 0)
 	{
@@ -15,7 +15,7 @@ class bourse
 		else return false;
 	}
 	
-	//Récupération de tous les enchères disponibles
+	//R?cup?ration de tous les ench?res disponibles
 	function get_encheres($tri_date = 'ASC', $where = 1)
 	{
 		global $db;
@@ -31,7 +31,7 @@ class bourse
 		return $this->encheres;
 	}
 	
-	//Finalisation d'enchères
+	//Finalisation d'ench?res
 	function check_encheres()
 	{
 		global $db;
@@ -40,23 +40,23 @@ class bourse
 		while($row = $db->read_assoc($req))
 		{
 			$enchere = new bourse_royaume($row['id_bourse_royaume'], $row['id_royaume'], $row['ressource'], $row['nombre'], $row['id_royaume_acheteur'], $row['prix'], $row['fin_vente'], $row['actif']);
-			//On rend l'enchère inactive
+			//On rend l'ench?re inactive
 			$enchere->actif = 0;
 			$enchere->sauver();
 			//Si il y a un acheteur
 			if($enchere->id_royaume_acheteur != 0)
 			{
-				//On donne les stars au royaume concerné
+				//On donne les stars au royaume concern?
 				$requete = "UPDATE royaume SET star = star + ".$enchere->prix." WHERE ID = ".$enchere->id_royaume;
 				$db->query($requete);
-				//On donne les ressources à l'autre royaume
+				//On donne les ressources ? l'autre royaume
 				$requete = "UPDATE royaume SET ".$enchere->ressource." = ".$enchere->ressource." + ".$enchere->nombre." WHERE ID = ".$enchere->id_royaume_acheteur;
 				$db->query($requete);
 			}
 			//Sinon on rend les ressources au royaume
 			else
 			{
-				//On donne les ressources à l'autre royaume
+				//On donne les ressources ? l'autre royaume
 				$requete = "UPDATE royaume SET ".$enchere->ressource." = ".$enchere->ressource." + ".$enchere->nombre." WHERE ID = ".$enchere->id_royaume;
 				$db->query($requete);
 			}
