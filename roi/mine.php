@@ -73,71 +73,81 @@ elseif(array_key_exists('case', $_GET))
 	$bourg->get_mine_total();
 	if($bourg->mine_max > $bourg->mine_total)
 	{
-		//On vérifie qu'il y a pas déjà une construction sur cette case
-		$requete = "SELECT id FROM construction WHERE x = ".$coord['x']." AND y = ".$coord['y'];
+		//On vérifie que la case appartient bien au royaume
+		$requete = "SELECT ID FROM map WHERE ID = ".$_GET['case']." AND royaume = ".$R['ID'];
 		$db->query($requete);
-		if($db->num_rows > 0)
+		if($db->num_rows == 0)
 		{
-			echo 'Construction impossible, il y a déjà un batiment';
+			echo 'Construction impossible, ce terrain ne vous appartient pas';
 		}
 		else
 		{
 			//On vérifie qu'il y a pas déjà une construction sur cette case
-			$requete = "SELECT id FROM placement WHERE x = ".$coord['x']." AND y = ".$coord['y'];
+			$requete = "SELECT id FROM construction WHERE x = ".$coord['x']." AND y = ".$coord['y'];
 			$db->query($requete);
 			if($db->num_rows > 0)
 			{
-				echo 'Construction impossible, il y a déjà un batiment en construction';
+				echo 'Construction impossible, il y a déjà un batiment';
 			}
-			//On peut construire une mine
 			else
 			{
-				$requete = "SELECT id, nom, cout, bonus1, bonus2 FROM batiment WHERE type = 'mine' AND cond1 = 0";
-				$req = $db->query($requete);
-				?>
-				Quel mine voulait vous construire ?<br />
-				<select name="type_mine" id="type_mine">
-				<?php
-				while($row = $db->read_assoc($req))
+				//On vérifie qu'il y a pas déjà une construction sur cette case
+				$requete = "SELECT id FROM placement WHERE x = ".$coord['x']." AND y = ".$coord['y'];
+				$db->query($requete);
+				if($db->num_rows > 0)
 				{
-					$description = '';
-					if($row['bonus2'] != 0)
-					{
-						switch($row['bonus2'])
-						{
-							case 1 :
-								$description = 'Pierre x'.$row['bonus1'];
-							break;
-							case 2 :
-								$description = 'Bois x'.$row['bonus1'];
-							break;
-							case 3 :
-								$description = 'Eau x'.$row['bonus1'];
-							break;
-							case 4 :
-								$description = 'Sable x'.$row['bonus1'];
-							break;
-							case 5 :
-								$description = 'Nourriture x'.$row['bonus1'];
-							break;
-							case 6 :
-								$description = 'Star x'.$row['bonus1'];
-							break;
-							case 7 :
-								$description = 'Charbon x'.$row['bonus1'];
-							break;
-							case 8 :
-								$description = 'Essence Magique x'.$row['bonus1'];
-							break;
-						}
-					}
-					else $description = 'Toute ressources x'.$row['bonus1'];
-					echo '<option value="'.$row['id'].'">'.$row['nom'].' - '.$row['cout'].' stars ('.$description.')</option>';
+					echo 'Construction impossible, il y a déjà un batiment en construction';
 				}
-				?>
-				</select>
-				<input type="button" onclick="envoiInfo('mine.php?bourg=<?php echo $_GET['id_bourg']; ?>&amp;x=<?php echo $coord['x']; ?>&amp;y=<?php echo $coord['y']; ?>&amp;add=' + $('type_mine').value, 'info_mine');" value="Valider" />
-				<?php
+				//On peut construire une mine
+				else
+				{
+					$requete = "SELECT id, nom, cout, bonus1, bonus2 FROM batiment WHERE type = 'mine' AND cond1 = 0";
+					$req = $db->query($requete);
+					?>
+					Quel mine voulait vous construire ?<br />
+					<select name="type_mine" id="type_mine">
+					<?php
+					while($row = $db->read_assoc($req))
+					{
+						$description = '';
+						if($row['bonus2'] != 0)
+						{
+							switch($row['bonus2'])
+							{
+								case 1 :
+									$description = 'Pierre x'.$row['bonus1'];
+								break;
+								case 2 :
+									$description = 'Bois x'.$row['bonus1'];
+								break;
+								case 3 :
+									$description = 'Eau x'.$row['bonus1'];
+								break;
+								case 4 :
+									$description = 'Sable x'.$row['bonus1'];
+								break;
+								case 5 :
+									$description = 'Nourriture x'.$row['bonus1'];
+								break;
+								case 6 :
+									$description = 'Star x'.$row['bonus1'];
+								break;
+								case 7 :
+									$description = 'Charbon x'.$row['bonus1'];
+								break;
+								case 8 :
+									$description = 'Essence Magique x'.$row['bonus1'];
+								break;
+							}
+						}
+						else $description = 'Toute ressources x'.$row['bonus1'];
+						echo '<option value="'.$row['id'].'">'.$row['nom'].' - '.$row['cout'].' stars ('.$description.')</option>';
+					}
+					?>
+					</select>
+					<input type="button" onclick="envoiInfo('mine.php?bourg=<?php echo $_GET['id_bourg']; ?>&amp;x=<?php echo $coord['x']; ?>&amp;y=<?php echo $coord['y']; ?>&amp;add=' + $('type_mine').value, 'info_mine');" value="Valider" />
+					<?php
+				}
 			}
 		}
 	}

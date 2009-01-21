@@ -8,21 +8,33 @@ include($root.'inc/fp.php');
 $joueur = recupperso($_SESSION['ID']);
 if($joueur['grade'] == 'Roi' OR $joueur['nom'] == 'Mylok' OR strtolower($joueur['nom']) == 'minus')
 {
-$date_hier = date("Y-m-d", mktime(0, 0, 0, date("m") , date("d") - 2, date("Y")));
-$requete = "SELECT food, nombre_joueur FROM stat_jeu ORDER BY date DESC";
-$req = $db->query($requete);
-$row = $db->read_assoc($req);
-if($row['nombre_joueur'] != 0) $food_necessaire = $row['food'] / $row['nombre_joueur'];
-else $food_necessaire = 0;
-
-$R = get_royaume_info($joueur['race'], $Trace[$joueur['race']]['numrace']);
-
-//Vérifie si le perso est mort
-verif_mort($joueur, 1);
-
-check_perso($joueur);
-
-$_SESSION['position'] = convert_in_pos($joueur['x'], $joueur['y']);
+	$date_hier = date("Y-m-d", mktime(0, 0, 0, date("m") , date("d") - 2, date("Y")));
+	$requete = "SELECT food, nombre_joueur FROM stat_jeu ORDER BY date DESC";
+	$req = $db->query($requete);
+	$row = $db->read_assoc($req);
+	if($row['nombre_joueur'] != 0) $food_necessaire = $row['food'] / $row['nombre_joueur'];
+	else $food_necessaire = 0;
+	
+	$R = get_royaume_info($joueur['race'], $Trace[$joueur['race']]['numrace']);
+	
+	//Vérifie si le perso est mort
+	verif_mort($joueur, 1);
+	
+	check_perso($joueur);
+	
+	$_SESSION['position'] = convert_in_pos($joueur['x'], $joueur['y']);
+	$check = false;
+	if(verif_ville($joueur['x'], $joueur['y']))
+	{
+		$check = true;
+	}
+	elseif($batiment = verif_batiment($joueur['x'], $joueur['y'], $R))
+	{
+		if($batiment['type'] == 'fort') $check = true;
+	}
+	
+	if($check)
+	{
 ?>
 <html>
 <head>
@@ -108,7 +120,9 @@ $_SESSION['position'] = convert_in_pos($joueur['x'], $joueur['y']);
 </div>
 <?php
 //Inclusion du bas de la page
-include($root.'bas.php');
+		include($root.'bas.php');
+	}
+	else echo 'INTERDIT';
 }
 else
 echo 'INTERDIT';

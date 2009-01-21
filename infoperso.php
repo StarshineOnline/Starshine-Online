@@ -31,8 +31,8 @@
 	echo " <div id='joueur_HP' style='background:transparent url(".genere_image_hp($joueur).") center;'>".$joueur["hp"]." / ".$joueur["hp_max"]."</div>";
 	echo " <div id='joueur_MP' style='background:transparent url(".genere_image_mp($joueur).") center;'>".$joueur["mp"]." / ".$joueur["mp_max"]."</div>";
 	echo " <div id='joueur_XP' style='background:transparent url(".genere_image_exp($joueur["exp"], prochain_level($joueur["level"]), progression_level(level_courant($joueur["exp"]))).") center;' title='".progression_level(level_courant($joueur["exp"]))." % (".number_format($joueur["exp"], 0, ",", ".")." / ".number_format(prochain_level($joueur["level"]), 0, ",", ".").")'></div>";
-	echo " <div id='joueur_PO'>".$joueur["star"]."</div>";
-	echo " <div id='joueur_PH'>".$joueur["honneur"]."</div>";
+	echo " <div id='joueur_PO' title='Vos stars'>".$joueur["star"]."</div>";
+	echo " <div id='joueur_PH' title='Votre honneur'>".$joueur["honneur"]."</div>";
 	echo " <div id='joueur_Psso' onclick=\"envoiInfo('point_sso.php', 'information');\" title=\"Vous avez ".$joueur["point_sso"]." point(s) shine en r&eacute;serve.\"></div>";
 	$script_attaque = recupaction_all($joueur['action_a']);
 	//-- Index, Forums, Exit, Options
@@ -45,7 +45,7 @@
 }
 {//-- Buffs, Grade, Pseudo
 	echo "<div id='joueur_buffs_nom'>";
-	echo " <div id='joueur_nom' onclick=\"envoiInfo('personnage.php', 'information');\" title=\"Acc&eacute; &agrave la fiche de votre personnage\">".ucwords($joueur["grade"])." ".ucwords($joueur["nom"])." - niv.".$joueur["level"]."<br />".ucwords($Gtrad[$joueur["race"]])." ".ucwords($joueur["classe"])." </div>
+	echo " <div id='joueur_nom' onclick=\"envoiInfo('personnage.php', 'information');\" title=\"Acc&egrave;s &agrave la fiche de votre personnage\">".ucwords($joueur["grade"])." ".ucwords($joueur["nom"])." - niv.".$joueur["level"]."<br />".ucwords($Gtrad[$joueur["race"]])." ".ucwords($joueur["classe"])." </div>
 	";
 	echo " <div id='buff_list'>
 			<ul>";
@@ -215,7 +215,7 @@ echo "</div>
 				<li id='starshine' class='menu' onclick=\"menu_change('starshine');\">Starshine</li>
 				<li id='communaute' class='menu' onclick=\"menu_change('communaute');\">Communauté</li>
 			</ul>
-			<input type='hidden' id='menu_encours' />
+			
 		</div>";
 
 ?>

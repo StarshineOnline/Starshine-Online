@@ -637,7 +637,7 @@ $db->query($requete);
 		$i = 0;
 		while($i < $nb_terrains)
 		{
-			$requete = "INSERT INTO vente_terrain (id, id_royaume, date_fin, id_joueur, prix) VALUES ('', ".$Trace[$race]['numrace'].", ".$fin_vente.", 0, 5000)";
+			$requete = "INSERT INTO vente_terrain (id_royaume, date_fin, id_joueur, prix) VALUES (".$Trace[$race]['numrace'].", ".$fin_vente.", 0, 5000)";
 			$db->query($requete);
 			$i++;
 		}

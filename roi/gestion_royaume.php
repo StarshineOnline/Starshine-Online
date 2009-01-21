@@ -795,7 +795,7 @@ require('haut_roi.php');
 			$enchere->nombre = $nombre;
 			$enchere->prix = $prix;
 			//7 jours plus tard
-			$time = time() + 7 * (24 * 60 * 60);
+			$time = time() + 1 * (24 * 60 * 60);
 			$enchere->fin_vente = date("Y-m-d H:i:s", $time);
 			$enchere->sauver();
 			//On enlève les ressources au royaume
@@ -1077,7 +1077,7 @@ require('haut_roi.php');
 	        echo '
 	        <li>
 	            Le roi '.$Gtrad[$row['royaume_demande']].' vous demande de passer en diplomatie et vous donne '.$star.' : '.$Gtrad['diplo'.$row['diplo']].'<br />
-	            Accépter ? <a href="gestion_royaume.php?poscase='.$W_case.'&amp;direction=diplomatie_demande&amp;reponse=oui&amp;id_demande='.$row['id'].';">Oui</a> / <a href="gestion_royaume.php?poscase='.$W_case.'&amp;direction=diplomatie_demande&amp;reponse=non&amp;id_demande='.$row['id'].';">Non</a>
+	            Accépter ? <a href="gestion_royaume.php?direction=diplomatie_demande&amp;reponse=oui&amp;id_demande='.$row['id'].';" onclick="return envoiInfo(this.href, \'conteneur\');">Oui</a> / <a href="gestion_royaume.php?direction=diplomatie_demande&amp;reponse=non&amp;id_demande='.$row['id'].';" onclick="return envoiInfo(this.href, \'conteneur\');">Non</a>
 	        </li>';
 	    }
 	    ?>

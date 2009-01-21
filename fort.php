@@ -66,7 +66,7 @@ if($W_distance == 0 AND $R['diplo'] == 127)
 	{
 ?>
 		<li>
-			<a href="gestion_royaume.php?poscase=<?php echo $W_case; ?>&amp;fort=ok" onclick="return envoiInfo(this.href, 'carte')">Gestion du royaume</a>
+			<a href="roi/?fort=ok">Gestion du royaume</a>
 		</li>
 <?php
 	}

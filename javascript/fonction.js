@@ -247,19 +247,15 @@ function checkCase()
 function Loadchargement()
 {
 	$('loading').show();
-	$('conteneur_test').show();
 }
 function Hidechargement()
 {
-	$('loading').hide();
-	$('conteneur_test').hide();
-	
+	$('loading').hide();	
 }
 function AfficheCarte(map)
 {
 	$('centre').innerHTML = map.responseText;
 	$('loading').hide();
-	$('conteneur_test').hide();
 }
 
 function deplacement(direction)
@@ -279,12 +275,11 @@ function refresh(page,position)
 {	
 	function Affiche(requete){$(position).innerHTML = requete.responseText;}
 	new Ajax.Request(page,{method:'get',parameters:'javascript=oui',onComplete:Affiche});
-
 }
 
 function envoiInfo(page,position)
 {	
-	function Affiche(requete){$(position).innerHTML = requete.responseText; Hidechargement();}
+	function Affiche(requete){$(position).innerHTML = requete.responseText; Hidechargement(); nd();}
 	new Ajax.Request(page,{method:'get',onLoading:Loadchargement,onComplete:Affiche});
 	return false;
 }
@@ -330,6 +325,7 @@ function menu_change(input_name)
 	}
 }
 
+
 function adresse(tri, i, race)
 {
 	if(i == '') i = document.getElementById('i').value;
@@ -352,4 +348,32 @@ function adresse_groupe(tri, i, race)
 	}
 	if(race == '') race = document.getElementById('race').value;
 	envoiInfo('classement_groupe_ajax.php?tri=' + tri + '&javascript=true', 'table_classement');
+}
+
+function clicMessage(id)
+{
+	message = document.getElementById("mess"+id);
+	titremess = event.srcElement;
+	if(message.style.display == 'none')
+	{
+		message.style.display = 'block';
+		titremess.onmouseout = '';
+	}
+	else
+	{
+		message.style.display = 'none';
+		titremess.onmouseout = 'masqueMessage(id)';
+	}
+}
+
+function afficheMessage(id)
+{
+	element = document.getElementById("mess"+id);
+	element.style.display = 'block';
+}
+
+function masqueMessage(id)
+{
+	element = document.getElementById("mess"+id);
+	element.style.display = 'none';
 }

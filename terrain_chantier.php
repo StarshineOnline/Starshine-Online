@@ -45,7 +45,7 @@ $_SESSION['position'] = $position;
 					$db->query($requete);
 				}
 				//Gain de stars et Suppression des PA
-				$requete = "UPDATE perso SET star = star + ".$stars.", pa = pa - 10";
+				$requete = "UPDATE perso SET star = star + ".$stars.", pa = pa - 10 WHERE ID = ".$joueur['ID'];
 				$db->query($requete);
 				$delete = false;
 				//Fin de la construction ?

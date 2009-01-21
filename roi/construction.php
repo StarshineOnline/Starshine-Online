@@ -64,7 +64,7 @@ if(!array_key_exists('direction', $_GET))
 				</div>
 			</td>
 			<td style="width:33%;">
-				<a href="gestion_royaume.php?poscase='.$W_case.'&amp;direction=suppr_construction&amp;id='.$row['id'].'" onclick="if(confirm(\'Voulez vous supprimer ce '.$row['nom'].' ?\')) return envoiInfo(this.href, \'conteneur\'); else return false;">Supprimer</a>
+				<a href="construction.php?direction=suppr_construction&amp;id='.$row['id'].'" onclick="if(confirm(\'Voulez vous supprimer ce '.$row['nom'].' ?\')) return envoiInfo(this.href, \'conteneur\'); else return false;">Supprimer</a>
 			</td>
 		</tr>';
 		if($row['type'] == 'bourg')
@@ -74,7 +74,7 @@ if(!array_key_exists('direction', $_GET))
 			if($bat['nom'] != 'Bourg')
 			{
 				$bat_suivant = recupbatiment(($row['id_batiment'] + 1), 'none');
-				echo ' - <a href="gestion_royaume.php?poscase='.$W_case.'&amp;direction=up_construction&amp;id='.$row['id'].'" onclick="if(confirm(\'Voulez vous upgrader ce '.$row['nom'].' ?\')) return envoiInfo(this.href, \'conteneur\'); else return false;">Upgrader - '.$bat_suivant['cout'].' stars</a>';
+				echo ' - <a href="construction.php?direction=up_construction&amp;id='.$row['id'].'" onclick="if(confirm(\'Voulez vous upgrader ce '.$row['nom'].' ?\')) return envoiInfo(this.href, \'conteneur\'); else return false;">Upgrader - '.$bat_suivant['cout'].' stars</a>';
 			}
 		}
 	}
@@ -88,14 +88,14 @@ elseif($_GET['direction'] == 'suppr_construction')
 	$requete = "DELETE FROM construction WHERE id = ".sSQL($_GET['id']);
 	if($db->query($requete))
 	{
-		echo 'La construction a ?t? correctement supprim?e.';
+		echo 'La construction a été correctement supprimée.';
 		//On supprime un bourg au compteur
 		if($row[0] == 'bourg')
 		{
 			supprime_bourg($row[1]);
 		}
 	}
-	echo '<a href="gestion_royaume.php?poscase='.$W_case.'&amp;direction=drapeau">Retour ? la liste des drapeaux et constructions</a>';
+	echo '<a href="construction.php?direction=drapeau">Retour à la liste des drapeaux et constructions</a>';
 }
 elseif($_GET['direction'] == 'up_construction')
 {
@@ -115,7 +115,7 @@ elseif($_GET['direction'] == 'up_construction')
 		{
 			$requete = "UPDATE royaume SET star = star - ".$bat['cout']." WHERE ID = ".$R['ID'];
 			$db->query($requete);
-			echo 'La construction a ?t? correctement upgrad?e.';
+			echo 'La construction a été correctement upgradée.';
 		}
 	}
 }

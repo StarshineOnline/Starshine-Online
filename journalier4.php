@@ -256,6 +256,7 @@ foreach($tab_royaume as $race => $royaume)
 	if($royaume['food_necessaire'] < $royaume['food'])
 	{
 		$requete = "UPDATE royaume SET food = food - ".$royaume['food_necessaire']." WHERE ID = ".$royaume['id'];
+		$db->query($requete);
 	}
 	//Sinon
 	else

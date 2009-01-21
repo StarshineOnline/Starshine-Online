@@ -2797,6 +2797,19 @@ function verif_ville($x, $y)
 	}
 }
 
+function verif_batiment($x, $y, $R)
+{
+	global $db;
+	$requete = "SELECT nom, type FROM construction WHERE x = ".$x." AND y = ".$y." AND royaume = ".$R['ID'];
+	$req = $db->query($requete);
+	if($db->num_rows > 0)
+	{
+		$row = $db->read_assoc($req);
+		return $row;
+	}
+	else return false;
+}
+
 function aff_var($v)
 {
 	echo '<pre>';

@@ -34,7 +34,7 @@ $mdp = $_GET['mdp'];
 		<?php
 		
 		$caracteristiques = $Trace[$race];
-		if ($_POST['classe'] == 'combattant')
+		if ($classe == 'combattant')
 		{
 			$caracteristiques['vie'] = $caracteristiques['vie'] + 1;
 			$caracteristiques['force'] = $caracteristiques['force'] + 1;

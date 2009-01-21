@@ -13,41 +13,12 @@ if(!array_key_exists('action', $_GET))
 		$id_thread = $_GET['id_thread'];
 		$messagerie = new messagerie($joueur['ID']);
 		$messagerie->get_thread($id_thread);
-		echo '<script type="text/javascript">
-			function clicMessage()
-			{
-				message = document.getElementById(mess+""+id);
-				titremess = event.srcElement;
-				if(message.style.display == \'none\')
-				{
-					message.style.display = \'block\';
-					titremess.onmouseout = \'\';
-				}
-				else
-				{
-					message.style.display = \'none\';
-					titremess.onmouseout = \'masqueMessage(id)\';
-				}
-			}
-			
-			function afficheMessage(id)
-			{
-				element = document.getElementById(mess+""+id);
-				element.style.display = \'block\';
-			}
-			
-			function masqueMessage(id)
-			{
-				element = document.getElementById(mess+""+id);
-				element.style.display = \'none\';
-			}
-		</script>';
 		echo '<h3 style="text-align : center;">'.$messagerie->thread->messages[0]->titre.' / <a href="envoimessage.php?id_type=r'.$messagerie->thread->id_thread.'" onclick="return envoiInfo(this.href, \'information\')">Répondre</a></h3>';
 		foreach($messagerie->thread->messages as $message)
 		{
 			$message_affiche = message_affiche($message, $joueur['ID'], $messagerie->thread->messages[0]->titre);
 			?>
-			<div id="message<?php echo $message->id_message; ?>">
+			<div id="message<?php echo $message->id_message; ?>" class="message_complet">
 			<?php
 			echo $message_affiche;
 			?>

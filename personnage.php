@@ -36,11 +36,6 @@ echo '
 	switch($_GET['direction'])
 	{
 		case 'carac' :
-			if(array_key_exists('action', $_GET) AND $_GET['action'] == 'teleport' AND $joueur['teleport_roi'] == 'false')
-			{
-				$requete = "UPDATE perso SET x = ".$Trace[$joueur['race']]['spawn_x'].", y = ".$Trace[$joueur['race']]['spawn_y'].", teleport_roi = 'true' WHERE ID = ".$joueur['ID'];
-				$db->query($requete);
-			}
 		echo '
 	<table style="border : 0px;" cellspacing="0" width="100%">
 	<tr class="trcolor1">
@@ -152,7 +147,7 @@ echo '
 	';
 		if($joueur['teleport_roi'] != 'true' AND !$visu)
 		{
-			echo '<a href="javascript:if(confirm(\'Voulez vous vraiment vous téléportez sur votre capitale ?\')) envoiInfo(\'personnage.php?direction=stat&action=teleport\', \'information\')">Se téléporter dans votre capitale</a>';
+			echo '<a href="personnage.php?direction=stat&action=teleport" onclick="if(confirm(\'Voulez vous vraiment vous téléportez sur votre capitale ?\')) return envoiInfo(this.href, \'information\'); else return false;">Se téléporter dans votre capitale</a>';
 		}
 		break;
 
@@ -346,6 +341,11 @@ echo '
 		break;
 
 		case 'stat' :
+			if(array_key_exists('action', $_GET) AND $_GET['action'] == 'teleport' AND $joueur['teleport_roi'] == 'false')
+			{
+				$requete = "UPDATE perso SET x = ".$Trace[$joueur['race']]['spawn_x'].", y = ".$Trace[$joueur['race']]['spawn_y'].", teleport_roi = 'true' WHERE ID = ".$joueur['ID'];
+				$db->query($requete);
+			}
 			echo '
 	<table style="border : 0px;" cellspacing="0" width="100%">
 	<tr class="trcolor1">

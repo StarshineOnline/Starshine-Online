@@ -13,7 +13,7 @@ $defenseur = recupbatiment($_GET['id_batiment'], $_GET['table']);
 $defenseur['type2'] = 'batiment';
 $attaquant = recupbatiment($_GET['id_arme_de_siege'], 'construction');
 $attaquant['type2'] = 'batiment';
-$attaquant['melee'] = $attaquant['melee'] * (1 + ($joueur['craft'] / 100));
+$attaquant['melee'] = $attaquant['melee'] * (1 + ($joueur['architecture'] / 100));
 if($defenseur['type'] == 'arme_de_siege') $attaquant['arme_degat'] = $attaquant['arme_degat2'];
 $attaquant['action_a'] = '!';
 $defenseur['action_d'] = $defenseur['action_d'];
