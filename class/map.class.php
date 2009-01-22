@@ -11,6 +11,7 @@ class map
 	public $ymax;
 	public $resolution;
 	public $onclick;
+	public $quadrillage;
 
 	function __construct($x, $y, $champ_vision = 3, $root = '', $donjon = false, $resolution = 'high')
 	{
@@ -51,6 +52,7 @@ class map
 	{
 		global $db;
 		global $Gcouleurs;
+		$total_cases = ($this->xmax - $this->xmin + 1) * ($this->ymax - $this->ymin + 1);
 		$RqMap = $db->query("SELECT * FROM map 
 						 WHERE ( (FLOOR(ID / 1000) >= $this->ymin) AND (FLOOR(ID / 1000) <= $this->ymax) ) 
 						 AND ( ((ID - (FLOOR(ID / 1000) * 1000) ) >= $this->xmin) AND ((ID - (FLOOR(ID / 1000) * 1000)) <= $this->xmax) ) 
@@ -90,7 +92,7 @@ class map
 		echo '<div class="div_map" style="width : '.round(20 + ($taille_cellule * $this->case_affiche)).'px">';
 		{//-- Affichage du bord haut (bh) de la map
 			echo "<ul id='".$classe_css['map_bord_haut']."'>
-				   <li id='".$classe_css['map_bord_haut_gauche']."' class='".$class_css['resolution']."' onclick=\"switch_map();\">&nbsp;</li>";
+				   <li id='".$classe_css['map_bord_haut_gauche']."' class='".$class_css['resolution']."' onclick=\"switch_map(".$total_cases.");\">&nbsp;</li>";
 			for ($bh = $this->xmin; $bh <= $this->xmax; $bh++)
 			{
 				if($bh == $this->x) { $class_x = "id='bord_haut_x' "; } else { $class_x = ""; }; //-- Pour mettre en valeur la position X ou se trouve le joueur
@@ -186,7 +188,9 @@ class map
 					else $tex_resolution = '';
 					if(is_array($MAPTAB[$x_map][$y_map])) { $class_map = "decor tex".$tex_resolution.$MAPTAB[$x_map][$y_map]["decor"]; } else { $class_map = "decor texblack"; };
 
-					$border = "border:0px solid ".$Gcouleurs[$MAPTAB[$x_map][$y_map]['royaume']].";";
+					if($this->quadrillage == true) $taille_border = 1;
+					else $taille_border = 0;
+					$border = "border:".$taille_border."px solid ".$Gcouleurs[$MAPTAB[$x_map][$y_map]['royaume']].";";
 					echo "<li class='$class_map ".$class_css['resolution']."'>
 						   <div class='map_contenu ".$class_css['resolution']."' 
 						   		id='marq$case' 

@@ -10,8 +10,8 @@ check_perso($joueur);
 //Vérifie si le perso est mort
 verif_mort($joueur, 1);
 
-$W_case = $_GET['poscase'];
-$W_requete = 'SELECT * FROM map WHERE ID =\''.sSQL($W_case).'\'';
+$pos = convert_in_pos($joueur['x'], $joueur['y']);
+$W_requete = "SELECT royaume FROM map WHERE ID = ".$pos;
 $W_req = $db->query($W_requete);
 $W_row = $db->read_array($W_req);
 $R = get_royaume_info($joueur['race'], $W_row['royaume']);
@@ -19,11 +19,11 @@ $R = get_royaume_info($joueur['race'], $W_row['royaume']);
 $_SESSION['position'] = convert_in_pos($joueur['x'], $joueur['y']);
 if(array_key_exists('fort', $_GET)) $fort = '&amp;fort=ok'; else $fort = '';
 ?>
-    	<h2 class="ville_titre"><?php if(!array_key_exists('fort', $_GET)) return_ville('<a href="ville.php?poscase='.$W_case.'" onclick="return envoiInfo(this.href, \'centre\')">'.$R['nom'].'</a> - ', $W_case); ?> <?php echo '<a href="taverne.php?poscase='.$W_case.'" onclick="return envoiInfo(this.href,\'carte\')">';?> Magasin </a></h2>
+    	<h2 class="ville_titre"><?php if(!array_key_exists('fort', $_GET)) return_ville('<a href="ville.php?poscase='.$pos.'" onclick="return envoiInfo(this.href, \'centre\')">'.$R['nom'].'</a> - ', $pos); ?> <?php echo '<a href="taverne.php?poscase='.$pos.'" onclick="return envoiInfo(this.href,\'carte\')">';?> Magasin </a></h2>
 				<?php include('ville_bas.php');?>
 		<?php
-$W_distance = detection_distance($W_case,$_SESSION["position"]);
-$W_coord = convert_in_coord($W_case);
+$W_distance = detection_distance($pos, $_SESSION["position"]);
+$W_coord = convert_in_coord($pos);
 if($W_distance == 0)
 {
 	if(isset($_GET['action']))
@@ -64,6 +64,29 @@ if($W_distance == 0)
 					echo 'h5>Vous n\'avez pas assez de Stars</h5>';
 				}
 			break;
+			//Recherche
+			case 'recherche' :
+				if($joueur['pa'] >= 10)
+				{
+					//Combien il augmente la recherche ?
+					$recherche = rand(1, $joueur['alchimie']);
+					$requete = "UPDATE royaume SET alchimie = alchimie + ".$recherche." WHERE ID = ".$R['ID'];
+					$db->query($requete);
+					echo '<h6>Vous augmentez la recherche de votre royaume en alchimie de '.$recherche.' points</h6>';
+					$requete = "UPDATE perso SET pa = pa - 10 WHERE ID = ".$joueur['ID'];
+					$db->query($requete);
+					//Augmentation de la compétence d'architecture
+					$augmentation = augmentation_competence('alchimie', $joueur, 2);
+					if ($augmentation[1] == 1)
+					{
+						$joueur['alchimie'] = $augmentation[0];
+						echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant à '.$joueur['alchimie'].' en alchimie</span><br />';
+						$requete = "UPDATE perso SET alchimie = ".$joueur['alchimie']." WHERE ID = ".$joueur['ID'];
+						$db->query($requete);
+					}
+				}
+				else echo '<h5>Vous n\'avez pas assez de PA</h5>';
+			break;
 		}
 	}
 	
@@ -78,7 +101,7 @@ if($W_distance == 0)
 		$i++;
 	}
 	//Affichage du menu de séléction et de tri
-	$url = 'magasin.php?poscase='.$W_case.$fort.'&amp;order=';
+	$url = 'alchimiste.php?order='.$fort;
 
 		$types = array();
 	?>
@@ -93,6 +116,12 @@ if($W_distance == 0)
 			echo '</span></div><br />';
 		}
 		?>
+		<div class="ville_test">
+			<span class="texte_normal">
+				<a href="alchimiste.php?action=recherche" onclick="return envoiInfo(this.href, 'carte');">Faire des recherches en alchimie (10 PA)</a>
+			</span>
+		</div>
+		<br />
 		<div class="ville_test">
 		<table class="marchand" cellspacing="0px">
 		<tr class="header trcolor2">
@@ -132,7 +161,7 @@ if($W_distance == 0)
 				<?php echo $cout; ?>
 			</td>
 			<td>
-				<a href="magasin.php?action=achat&amp;id=<?php echo $row['id']; ?>&amp;type=<?php echo $row['type']; ?>&amp;poscase=<?php echo $_GET['poscase'].$fort; ?>" onclick="return envoiInfo(this.href, 'carte')"><span class="achat">Achat</span></a>
+				<a href="alchimiste.php?action=achat&amp;id=<?php echo $row['id']; ?>&amp;type=<?php echo $row['type']; ?><?php echo $fort; ?>" onclick="return envoiInfo(this.href, 'carte')"><span class="achat">Achat</span></a>
 			</td>
 		</tr>
 		<?php

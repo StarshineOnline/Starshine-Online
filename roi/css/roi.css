@@ -135,3 +135,10 @@ ul#menu ul li:hover {
 
 #map_mine {float : left;}
 #infos {float : left;}
+
+.bataille_groupe
+{
+	border : 1px dotted black;
+	margin : 5px;
+	padding : 3px;
+}

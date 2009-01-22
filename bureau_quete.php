@@ -117,18 +117,16 @@ if($W_distance == 0)
 					$req = $db->query($requete);
 					echo 'Merci de votre aide !<br />';
 					if($row['fournisseur'] == '') $link = 'bureau_quete';
+					elseif($row['fournisseur'] == 'ecole_combat') $link = 'ecolecombat';
 					else $link = $row['fournisseur'];
-					?>
-					<a href="<?php echo $link; ?>.php?poscase=<?php echo $_GET['poscase']; ?>" onclick="return envoiInfo(this.href, 'carte')">Revenir en arrière</a>
-					<?php
 				}
 				else
 				{
 					echo 'Vous avez déjà cette quète en cours !<br />';
-					?>
-					<a href="<?php echo $link; ?>.php?poscase=<?php echo $_GET['poscase']; ?>" onclick="return envoiInfo(this.href, 'carte')">Revenir en arrière</a>
-					<?php
 				}
+				?>
+				<a href="<?php echo $link; ?>.php?poscase=<?php echo $_GET['poscase']; ?>" onclick="return envoiInfo(this.href, 'carte')">Revenir en arrière</a>
+				<?php
 			break;
 		}
 	}

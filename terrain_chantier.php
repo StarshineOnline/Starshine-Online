@@ -29,7 +29,7 @@ $_SESSION['position'] = $position;
 			{
 				$chantier = new terrain_chantier($_GET['id_chantier']);
 				$batiment = $chantier->get_batiment();
-				//d? d'Architecture
+				//dé d'Architecture
 				$de_architecture = rand(1, $joueur['architecture']);
 				$taxe = floor(($chantier->star_point * $de_architecture) * $R['taxe'] / 100);
 				$stars = ($chantier->star_point * $de_architecture) - $taxe;

@@ -8,13 +8,10 @@ $joueur = recupperso($_SESSION['ID']);
 //Vérifie si le perso est mort
 verif_mort($joueur, 1);
 
-$requete = 'SELECT x, y FROM perso WHERE ID = \''.$_SESSION['ID'].'\'';
-$req = $db->query($requete);
-$row = $db->read_array($req);
-$coord['x'] = $row['x'];
-$coord['y'] = $row['y'];
-$coord['xavant'] = $row['x'];
-$coord['yavant'] = $row['y'];
+$coord['x'] = $joueur['x'];
+$coord['y'] = $joueur['y'];
+$coord['xavant'] = $joueur['x'];
+$coord['yavant'] = $joueur['y'];
 
 //Si coordonées supérieur à 100 alors c'est un donjon
 if($joueur['x'] > 150 OR $joueur['y'] > 150)
@@ -131,6 +128,7 @@ if (isset($_GET['deplacement']))
 			break;		
 		}
 	}
+	if($_GET['deplacement'] == 'centre') $mouvement = false;
 	if($mouvement)
 	{
 		if($donjon) $W_pos = convertd_in_pos($coord['x'], $coord['y']);

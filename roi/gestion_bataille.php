@@ -33,6 +33,7 @@ function affiche_map($bataille)
 	global $db, $R;
 	$bataille->get_reperes('tri_type');
 	//print_r($bataille->reperes);
+	$batiments = array();
 	$dimensions = dimension_map($bataille->x, $bataille->y, 11);
 	$requete = "SELECT x, y, hp, nom, type, image FROM construction WHERE royaume = ".$R['ID']." AND x >= ".$dimensions['xmin']." AND x <= ".$dimensions['xmax']." AND y >= ".$dimensions['ymin']." AND y <= ".$dimensions['ymax'];
 	$req = $db->query($requete);
@@ -48,12 +49,14 @@ function affiche_map($bataille)
 	if(array_key_exists('action', $bataille->reperes)) $map->set_repere($bataille->reperes['action']);
 	if(array_key_exists('batiment', $bataille->reperes)) $map->set_batiment_ennemi($bataille->reperes['batiment']);
 	$map->set_onclick("envoiInfo('gestion_bataille.php?id_bataille=".$bataille->id."&amp;case=%%ID%%&amp;info_case', 'information_onglet_bataille');");
+	$map->quadrillage = true;
 	$map->affiche();
 }
 
 //Nouvelle bataille
 if(array_key_exists('new', $_GET))
 {
+	include('gestion_bataille_menu.php');
 	?>
 	<h2>Création d'une bataille</h2>
 	Nom : <input type="text" name="nom" id="nom" /><br />
@@ -67,6 +70,7 @@ if(array_key_exists('new', $_GET))
 //Nouvelle bataille etape 2 => Création
 elseif(array_key_exists('new2', $_GET))
 {
+	include('gestion_bataille_menu.php');
 	$bataille = new bataille();
 	$bataille->nom = $_GET['nom'];
 	$bataille->description = $_GET['description'];
@@ -77,7 +81,6 @@ elseif(array_key_exists('new2', $_GET))
 	$bataille->sauver();
 	?>
 	Bataille créée avec succès<br />
-	<a href="gestion_bataille.php" onclick="return envoiInfo(this.href, 'conteneur');">Revenir à la liste des batailles</a>
 	<?php
 }
 //Refresh de la carte de la bataille
@@ -89,6 +92,7 @@ elseif(array_key_exists('refresh_bataille', $_GET))
 //Information et modification sur une bataille
 elseif(array_key_exists('info_bataille', $_GET))
 {
+	include('gestion_bataille_menu.php');
 	$bataille = new bataille($_GET['id_bataille']);
 	?>
 	<div id="map" style="float : left;">
@@ -232,10 +236,7 @@ elseif(array_key_exists('del_repere', $_GET))
 }
 else
 {
-?>
-	<h1>Gestion des batailles</h1>
-	<?php
-	print_r($_GET);
+	include('gestion_bataille_menu.php');
 	$bataille_royaume = new bataille_royaume($R['ID']);
 	$bataille_royaume->get_batailles();
 	
@@ -249,8 +250,5 @@ else
 		</div>
 		<?php
 	}
-	?>
-	<a href="gestion_bataille.php?new" onclick="return envoiInfo(this.href, 'conteneur');">Nouvelle bataille</a>
-	<?php
 }
 ?>

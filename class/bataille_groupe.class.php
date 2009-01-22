@@ -92,5 +92,19 @@ class bataille_groupe
 			$this->reperes[] = new bataille_groupe_repere($row);
 		}
 	}
+
+	function get_nom()
+	{
+		if(!isset($this->nom))
+		{
+			global $db;
+			$requete = "SELECT nom FROM groupe WHERE id = ".$this->id_groupe;
+			$req = $db->query($requete);
+			$row = $db->read_assoc($req);
+			if($row['nom'] == '') $row['nom'] = 'Groupe n°'.$this->id_groupe;
+			$this->nom =$row['nom'];
+		}
+		return $this->nom;
+	}
 }
 ?>

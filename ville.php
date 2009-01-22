@@ -147,7 +147,7 @@ if($W_distance == 0 AND $verif_ville)
 									<a href="enchanteur.php?poscase=<?php echo $W_case; ?>" onclick="return envoiInfo(this.href, 'carte')">Enchanteur</a>
 								</li>
 								<li>
-									<a href="magasin.php?poscase=<?php echo $W_case; ?>" onclick="return envoiInfo(this.href, 'carte')">Alchimiste</a>
+									<a href="alchimiste.php?poscase=<?php echo $W_case; ?>" onclick="return envoiInfo(this.href, 'carte')">Alchimiste</a>
 								</li>
 								<li>
 									<a href="hotel.php?poscase=<?php echo $W_case; ?>" onclick="return envoiInfo(this.href, 'carte')">Hotel des ventes</a>

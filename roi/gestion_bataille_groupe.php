@@ -24,13 +24,14 @@ else
 	foreach($bataille->groupes as $groupe)
 	{
 		$groupe->get_reperes();
-		echo $groupe->id_groupe.'<br />';
+		echo '<div class="bataille_groupe">
+		'.$groupe->get_nom().'<br />';
 		foreach($groupe->reperes as $repere)
 		{
 			$repere->get_repere();
 			$repere->repere->get_type();
 			if($repere->accepter == 0) $accepter = 'En attente d\'être acceptée';
-			else 'Accept?e';
+			else $accepter = 'Acceptée';
 			echo 'Mission : '.$repere->repere->repere_type->nom.' X : '.$repere->repere->x.' / Y : '.$repere->repere->y.' - '.$accepter.'<br />';
 		}
 		//On peut proposer une mission
@@ -52,6 +53,7 @@ else
 			</div>
 			<?php
 		}
+		echo '</div>';
 	}
 }
 ?>

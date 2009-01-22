@@ -207,9 +207,9 @@ function opii(id)
 	}
 }
 
-function switch_map()
+function switch_map(cases)
 {
-	for (i=0; i < 50; i++)
+	for (i=0; i < cases; i++)
 	{
 		if(document.getElementById('marq' + i))
 		{

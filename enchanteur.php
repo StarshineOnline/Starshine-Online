@@ -1,7 +1,7 @@
 <?php
 
 //Inclusion du haut du document html
-include('haut.php');
+include('haut_ajax.php');
 
 $joueur = recupperso($_SESSION['ID']);
 

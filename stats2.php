@@ -42,15 +42,8 @@ else $categorie = $_GET['categorie'];
 ?>
 <div id="bloc">
 	<div id="presentation">
-		<div class="titre">
-			Statistiques
-		</div>
-		<div>
-			<ul>
-				<li><a href="stats2.php?categorie=global">Générales</a></li>
-				<li><a href="stats2.php?categorie=race">Royaumes</a></li>
-			</ul>
-		</div>
+		<a href="stats2.php?graph=stat_lvl" onclick="return envoiInfo(this.href, 'popup_content');">Niveaux</a> | <a href="stats2.php?graph=stat_joueur" onclick="return envoiInfo(this.href, 'popup_content');">Joueurs</a> | <a href="stats2.php?graph=stat_niveau_moyen" onclick="return envoiInfo(this.href, 'popup_content');">Niveaux Moyen</a> | <a href="stats2.php?graph=stat_classe1" onclick="return envoiInfo(this.href, 'popup_content');">Rang #1</a> | <a href="stats2.php?graph=stat_classe2" onclick="return envoiInfo(this.href, 'popup_content');">Rang #2</a> | <a href="stats2.php?graph=stat_classe3" onclick="return envoiInfo(this.href, 'popup_content');">Rang #3</a> | <a href="stats2.php?graph=stat_classe4" onclick="return envoiInfo(this.href, 'popup_content');">Rang #4</a><br />
+		<a href="stats2.php?graph=stat_race" onclick="return envoiInfo(this.href, 'popup_content');">Races</a> | <a href="stats2.php?graph=stat_star1" onclick="return envoiInfo(this.href, 'popup_content');">Stars #1</a> | <a href="stats2.php?graph=stat_star2" onclick="return envoiInfo(this.href, 'popup_content');">Stars #2</a> | <a href="stats2.php?graph=stat_star3" onclick="return envoiInfo(this.href, 'popup_content');">Stars #3</a>| <a href="stats2.php?graph=carte_royaume" onclick="return envoiInfo(this.href, 'popup_content');">Royaumes</a> | <a href="stats2.php?graph=stat_monstre" onclick="return envoiInfo(this.href, 'popup_content');">Nombre de monstres</a>
 	</div>
 	<?php
 	//Historique d'un graph
@@ -79,27 +72,9 @@ else $categorie = $_GET['categorie'];
 	//Page générale
 	else
 	{
-		foreach($stats[$categorie] as $stat)
-		{
 		?>
-		<div class="bloc">
-			<div class="titre">
-				<?php echo $stat['titre']; ?>
-			</div>
-			<div style="text-align : center;">
-				<?php
-				foreach($stat as $image)
-				{
-					if($image[0] != '#')
-					{
-						?><a href="stats2.php?historique=y&amp;annee=<?php echo date('Y'); ?>&amp;mois=<?php echo date('m'); ?>&amp;jour=<?php echo (date('d') - 1); ?>&amp;image=<?php echo $image['image']; ?>"><img src="image/<?php echo $image['image']; ?>" alt="<?php echo $image['titre']; ?>" /></a><?php
-					}
-				}
-				?>
-			</div>
-		</div>
+		<a href="stats2.php?historique=y&amp;annee=<?php echo date('Y'); ?>&amp;mois=<?php echo date('m'); ?>&amp;jour=<?php echo (date('d') - 1); ?>&amp;image=<?php echo $image['image']; ?>" onclick="return envoiInfo(this.href, 'popup_content');"><img src="image/<?php echo $_GET['graph']; ?>.png" /></a>
 		<?php
-		}
 	}
 	?>
 </div>

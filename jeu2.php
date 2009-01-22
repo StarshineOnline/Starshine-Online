@@ -71,8 +71,9 @@ $_SESSION['position'] = convert_in_pos($joueur['x'], $joueur['y']);
 		<?php echo "<div id='menu_date'><img src='image/interface/".moment_jour().".png' alt='".moment_jour()."' title='".moment_jour()."' >".moment_jour();?>
 	</div>
 
+	<input type="hidden" id="menu_encours" value="lejeu" />
 	<div id='menu_details'>
-		<div id='lejeu_menu' style='display:none;'><span class='menu' onclick="affichePopUp('diplomatie.php');">Diplomatie</span><span class='menu' onclick="affichePopUp('classement.php');">Classement</span><span class='menu' onclick="affichePopUp('stats2.php?historique=y&annee=2009&mois=01&jour=14&image=carte_densite_mob.png');">Statistiques</span><span class='menu' onclick="affichePopUp('message_accueil.php');">Message d'Accueil</span><span class='menu' onclick="affichePopUp('repartir_craft.php');">Craft</span><span class='menu' onclick="affichePopUp('beta_test.php');">Beta Test</span></div>
+		<div id='lejeu_menu' style='display:none;'><span class='menu' onclick="affichePopUp('diplomatie.php');">Diplomatie</span><span class='menu' onclick="affichePopUp('classement.php');">Classement</span><span class='menu' onclick="affichePopUp('stats2.php?graph=carte_royaume');">Statistiques</span><span class='menu' onclick="affichePopUp('message_accueil.php');">Message d'Accueil</span><span class='menu' onclick="affichePopUp('repartir_craft.php');">Craft</span><span class='menu' onclick="affichePopUp('beta_test.php');">Beta Test</span></div>
 		<div id='starshine_menu' style='display:none;'><span class='menu' onclick="affichePopUp('liste_monstre.php');">Bestiaire</span><span class='menu' onclick="affichePopUp('background.php');">Background</span><span class='menu' onclick="affichePopUp('royaume.php');">Carte</span></div>
 		<div id='communaute_menu' style='display:none;'><span class='menu'><a href="http://forum.starshinebox.info">Forum</a></span><span class='menu'><a href="http://wiki.starshine-online.com/">Wiki</a></span><span class='menu' onclick="affichePopUp('acces_chat.php');">Tchat</span></div>
 	</div>

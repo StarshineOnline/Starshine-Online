@@ -1,7 +1,7 @@
 <?php
 {//-- Inclusion des fichiers & initialisations des variables 
 	//if(!isset($_SESSION["nom"])) { header("Location: index.php"); };	//-- Redirection si la session à expiré ou si le joueur tente d'accéder a la page sans être loggé...
-	require_once("haut.php");
+	require_once("haut_ajax.php");
 	
 	if(!isset($joueur)) { $joueur = recupperso($_SESSION["ID"]); };
 	check_perso($joueur);												//-- MaJ des infos du perso...	
