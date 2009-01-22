@@ -19,7 +19,32 @@ if(array_key_exists('action', $_GET))
 		case 'fabrique' :
 			$recette = new craft_recette($_GET['id_recette']);
 			$types = $recette->get_info_joueur($joueur, $R);
+			$recette->get_recipients();
+			?>
+			Quel récipient voulez vous utiliser ?<b />
+			<select id="id_recipient" name="id_recipient">
+			<?php
+			foreach($recette->recipients as $recipient)
+			{
+				$joueur_recipient = recherche_objet($joueur, 'o'.$recipient->id_objet);
+				if($joueur_recipient[0] > 0)
+				{
+				?>
+				<option value="<?php echo $recipient->id; ?>"><?php echo $recipient->prefixe; ?></option>
+				<?php
+				}
+			}
+			?>
+			</select>
+			<input type="button" value="Créer" onclick="envoiInfo('livre_recette.php?action=fabrique_final&amp;id_recette=<?php echo $recette->id; ?>&amp;id_recipient=' + $('id_recipient').value, 'information');" />
+			<?php
+		break;
+		case 'fabrique_final' :
+			$recette = new craft_recette($_GET['id_recette']);
+			$recipient = new craft_recette_recipient($_GET['id_recipient']);
+			$types = $recette->get_info_joueur($joueur, $R);
 			$recette->get_ingredients();
+			$recette->get_recipients();
 			$recette->get_instruments();
 			$pa_total = 0;
 			$mp_total = 0;
@@ -44,15 +69,18 @@ if(array_key_exists('action', $_GET))
 							$joueur = recupperso($_SESSION['ID']);
 							$i++;
 						}
+						//On utilise le recipient
+						supprime_objet($joueur, 'o'.$recipient->id_objet, 1);
+						$joueur = recupperso($_SESSION['ID']);
 						//alchiming
 						$player = rand(0, $joueur['alchimie']);
 						$thing = rand(0, $recette->difficulte);
-						//echo $joueur['alchimie'].' / '.$row['difficulte'].' ---- '.$player.' VS '.$thing;
+						echo $joueur['alchimie'].' / '.$recette->difficulte.' ---- '.$player.' VS '.$thing;
 						//Si la préparation réussie
 						if($player > $thing)
 						{
 							echo '<h6>Fabrication réussie !</h6>';
-							$resultats = explode(';', $row['resultat']);
+							$resultats = explode(';', $recipient->resultat);
 							$i = 0;
 							while($i < count($resultats))
 							{
@@ -113,6 +141,7 @@ while($row = $db->read_assoc($req))
 	//recherche de la recette
 	$recette = new craft_recette($row['id_recette']);
 	$recette->get_ingredients();
+	$recette->get_recipients();
 	$recette->get_instruments();
 	$alchimie = $joueur['alchimie'];
 	if($joueur['race'] == 'scavenger') $alchimie = round($alchimie * 1.45);
@@ -140,6 +169,35 @@ while($row = $db->read_assoc($req))
 				$row_i = $db->read_row($req_i);
 				echo '<li><span class="'.$class.'">- '.$row_i[0].' X '.$ingredient->nombre.'</span></li>';
 			}
+			if(!$complet) $possible = false;
+			?>
+			</ul>
+		</div>
+		<div class="recipient" style="float : left;">
+			<strong>Recipients (au choix) :</strong><br />
+			<ul>
+			<?php
+			if(count($recette->recipients) > 0) $check_recip = false;
+			else $check_recip = true;
+			foreach($recette->recipients as $recipient)
+			{
+				$joueur_recipient = recherche_objet($joueur, 'o'.$recipient->id_objet);
+				if($joueur_recipient[0] < 1)
+				{
+					$class = '';
+				}
+				else
+				{
+					$class = 'reward';
+					$check_recip = true;
+				}
+				//Recherche de l'objet
+				$requete = "SELECT nom FROM objet WHERE id = ".$recipient->id_objet;
+				$req_i = $db->query($requete);
+				$row_i = $db->read_row($req_i);
+				echo '<li><span class="'.$class.'">- '.$row_i[0].'</span></li>';
+			}
+			if(!$check_recip) $complet = false;
 			if(!$complet) $possible = false;
 			?>
 			</ul>

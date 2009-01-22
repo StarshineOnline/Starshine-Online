@@ -64,7 +64,7 @@ if(array_key_exists('new', $_GET))
 	<textarea name="description" id="description"></textarea><br />
 	x : <input type="text" name="x" id="x" /><br />
 	y : <input type="text" name="y" id="y" /><br />
-	<input type="button" onclick="description = $('description').value.replace(new RegExp('\n', 'gi'), '[br]'); envoiInfoPost('gestion_bataille.php?nom=' + $('nom').value + '&amp;description=' + description + '&amp;x=' + $('x').value + '&amp;y=' + $('x').value + '&amp;new2', 'conteneur');" value="Créer cette bataille" />
+	<input type="button" onclick="description = $('description').value.replace(new RegExp('\n', 'gi'), '[br]'); envoiInfoPost('gestion_bataille.php?nom=' + $('nom').value + '&amp;description=' + description + '&amp;x=' + $('x').value + '&amp;y=' + $('y').value + '&amp;new2', 'conteneur');" value="Créer cette bataille" />
 	<?php
 }
 //Nouvelle bataille etape 2 => Création

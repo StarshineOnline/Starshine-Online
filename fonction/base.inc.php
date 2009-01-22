@@ -2228,7 +2228,7 @@ function verif_mort($pourcent, $var, $duree_debuff=0, $multiplicateur_mouvement=
 		$_SESSION['position'] = convert_in_pos($joueur['x'], $joueur['y']);
 
 		//Vérifie si il a déjà un mal de rez
-		$requete = "SELECT fin FROM buff WHERE id_perso = ".$joueur['ID']." AND type = 'debuff_rez' AND type <> 'famine'";
+		$requete = "SELECT fin FROM buff WHERE id_perso = ".$joueur['ID']." AND type = 'debuff_rez'";
 		$req = $db->query($requete);
 		if($db->num_rows > 0)
 		{
@@ -2238,7 +2238,7 @@ function verif_mort($pourcent, $var, $duree_debuff=0, $multiplicateur_mouvement=
 		else $duree = 0;
 		$duree_debuff += $duree;
 		//Suppression des buffs
-		$requete = "DELETE FROM buff WHERE id_perso = ".$joueur['ID']." AND type <> 'debuff_rez'";
+		$requete = "DELETE FROM buff WHERE id_perso = ".$joueur['ID']." AND type <> 'debuff_rez' AND type <> 'famine'";
 		$db->query($requete);
 		//Si rez en ville ou sur fort, on débuff le déplacement
 		if($duree_debuff > 0)

@@ -72,6 +72,7 @@ if($W_distance == 0)
 					$recherche = rand(1, $joueur['alchimie']);
 					$requete = "UPDATE royaume SET alchimie = alchimie + ".$recherche." WHERE ID = ".$R['ID'];
 					$db->query($requete);
+					$R['alchimie'] += $recherche;
 					echo '<h6>Vous augmentez la recherche de votre royaume en alchimie de '.$recherche.' points</h6>';
 					$requete = "UPDATE perso SET pa = pa - 10 WHERE ID = ".$joueur['ID'];
 					$db->query($requete);
@@ -118,6 +119,20 @@ if($W_distance == 0)
 		?>
 		<div class="ville_test">
 			<span class="texte_normal">
+				<?php
+				$requete = "SELECT royaume_alchimie FROM craft_recette WHERE royaume_alchimie < ".$R['alchimie']." ORDER BY royaume_alchimie DESC LIMIT 0, 1";
+				$req = $db->query($requete);
+				$row = $db->read_assoc($req);
+				$min = $row['royaume_alchimie'];
+				$requete = "SELECT royaume_alchimie FROM craft_recette WHERE royaume_alchimie > ".$R['alchimie']." ORDER BY royaume_alchimie ASC LIMIT 0, 1";
+				$req = $db->query($requete);
+				$row = $db->read_assoc($req);
+				$max = $row['royaume_alchimie'];
+				$total = $max - $min;
+				$actuel = $R['alchimie'] - $min;
+				$pourcent = round((($actuel / $total) * 100), 2);
+				echo $pourcent.'% du déblocage de la prochaine recette !<br />';
+				?>
 				<a href="alchimiste.php?action=recherche" onclick="return envoiInfo(this.href, 'carte');">Faire des recherches en alchimie (10 PA)</a>
 			</span>
 		</div>

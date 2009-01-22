@@ -82,11 +82,11 @@ body {margin:0;padding:0;background:#5D705F url('./image/v2/bg_site.png') repeat
 #joueur_onglets	 		{ position:absolute; left:88px; top:65px; width:225px; padding:0px 0px 0px 10px; }
 #joueur_onglets_index, #joueur_onglets_forums, #joueur_onglets_options, #joueur_onglets_exit 	{ float:left; width:250px; text-align:left;padding-left: 5px;color#444; font-size : 0.9em;}
 #joueur_onglets_forums img {height:15px;}
-#joueur_buffs_nom 					{ position:relative;float:left;background:transparent url('./../image/interface/fond_info_perso.png') top left no-repeat;height:100px;width:265px;margin-left:11px;
+#joueur_buffs_nom 					{ position:relative;float:left;height:100px;width:283px;margin-left:11px;
 margin-top:-3px;}
-#joueur_nom							{ position:relative; margin-left:46px;position:relative;text-align:center;width:210px;margin-top:10px;cursor: pointer; }
+#joueur_nom							{ position:relative; margin-left:55px;position:relative;text-align:center;width:210px;margin-top:10px;cursor: pointer; }
 #joueur_type						{ position:relative; width:210px; float:left; text-align:left; font-size:8pt; height:12px; }
-#buff_list				{ position:relative; text-align:center; width:210px;margin-left: 50px; }
+#buff_list				{ position:relative; text-align:center; width:210px;margin-left: 60px; }
 #debuff_list {position:relative; text-align:center; width:210px;margin-left: 50px;}
 .joueur_groupe_activitenoir, .joueur_groupe_activiterouge, .joueur_groupe_activitebleu, .joueur_groupe_activitevert { margin:0px 0px 0px 0px; float:left; width:11px; height:11px; margin:2px;}
 .joueur_groupe_activitenoir { background:transparent url('../../image/groupes/noir.png') center; }
@@ -333,7 +333,9 @@ h3.old
 div.message_complet
 {
 	clear : both;
-	width: 99%;
+	width: 100%;
+	border-top: 1px solid orange;
+
 }
 
 div.message_action
@@ -355,6 +357,7 @@ div.spacer
 	font-variant: normal;
 	height : 20px;
 	font-weight : normal;
+	background-color: orange;
 }
 
 h3.messagerie span.auteur

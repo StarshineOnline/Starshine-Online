@@ -3,12 +3,10 @@
 include('inc/fp.php');
 //L'id du joueur dont on veut l'info
 $W_ID = $_GET['ID'];
-//Case du joueur dont on veut l'info
-if (!isset($_GET['poscase'])) security_block(URL_MANIPULATION);
-$W_case = $_GET['poscase'];
 //Prise des infos du perso
 $joueur = recupperso($_SESSION['ID']);
 $perso = recupperso($W_ID);
+$W_case = convert_in_pos($perso['x'], $perso['y']);
 $bonus = recup_bonus($W_ID);
 $bonus_total = recup_bonus_total($perso['ID']);
 $vue = 4;
@@ -92,7 +90,7 @@ if($joueur['sort_jeu'] != '')
 {
 	if($perso['ID'] != $_SESSION['ID'])
 	{
-		echo '<tr><td><img src="image/sort_hc_icone.png" title="Lancer un sort" alt="Lancer un sort" /></td><td><a href="sort_joueur.php?poscase='.$W_case.'&amp;id_joueur='.$W_ID.'" onclick="return envoiInfo(this.href, \'information\')">Lancer un sort</a></td></tr>';
+		echo '<tr><td><img src="image/sort_hc_icone.png" title="Lancer un sort" alt="Lancer un sort" /></td><td><a href="sort_joueur.php?id_joueur='.$W_ID.'" onclick="return envoiInfo(this.href, \'information\')">Lancer un sort</a></td></tr>';
 	}
 	else
 	{

@@ -13,7 +13,7 @@ if($W_distance < 4)
 {
 ?>
 <fieldset>
-<legend>Informations Case - X : <?php echo $W_coord['x']; ?> | Y : <?php echo $W_coord['y']; ?><a href="carte_perso_affiche.php" onclick="return envoiInfo(this.href, 'information')"> <img src="image/icone/oujesuis.png" alt="Où je suis ?" title="Où je suis ?" style="vertical-align : middle;height:20px;" /></a> </legend>
+<legend>Informations Case - X : <?php echo $W_coord['x']; ?> | Y : <?php echo $W_coord['y']; ?><a href="carte_perso_affiche.php" onclick="affichePopUp(this.href); return false;"> <img src="image/icone/oujesuis.png" alt="Où je suis ?" title="Où je suis ?" style="vertical-align : middle;height:20px;" /></a> </legend>
 <div id='info_case'>
 <?php
 
@@ -264,7 +264,7 @@ if($num_rows > 0)
 		if($row_b['type'] == 'bourg' AND $joueur['race'] == $Royaume['race']) $nom = '<a href="bourg.php?poscase='.$W_case.'&amp;id_batiment='.$row_b['id'].'" onclick="return envoiInfo(this.href, \'centre\');">'.$row_b['nom'].'</a>';
 		if($row_b['type'] == 'arme_de_siege' AND $joueur['race'] == $Royaume['race']) $nom = '<a href="arme_de_siege.php?poscase='.$W_case.'&amp;id_construction='.$W_row['id'].'" onclick="return envoiInfo(this.href, \'centre\');">'.$row_b['nom'].'</a>';
 		echo ' '.$nom;
-		echo ' '.$Gtrad[$Royaume['race']].' - HP : '.$W_row['hp'];
+		echo ' '.$Gtrad[$Royaume['race']].' - HP : '.$W_row['hp'].' / '.$row_b['hp'];
 		echo '</span>';
 		if($joueur['race'] != $Royaume['race']) echo  ' <a href="attaque_monstre.php?ID='.$W_row['id'].'&amp;type=batiment&amp;table=construction&poscase='.$W_case.'" onclick="return envoiInfo(this.href, \'information\')"><img src="image/interface/attaquer.png" alt="Combattre" title="Attaquer '.($G_PA_attaque_batiment - $reduction_pa).' PA" style="vertical-align : middle;" /> Attaquer</a>';
 		elseif($W_row['hp'] < $row_b['hp'])

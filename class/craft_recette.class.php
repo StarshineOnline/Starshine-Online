@@ -127,9 +127,22 @@ class craft_recette
 		return $this->instruments;
 	}
 
-	function get_info_joueur($joueur, $R)
+	function get_recipients()
 	{
 		global $db;
+		$this->recipients = array();
+		$requete = "SELECT id, id_recette, id_objet, resultat, prefixe FROM craft_recette_recipient WHERE id_recette = ".$this->id;
+		$req = $db->query($requete);
+		while($row = $db->read_assoc($req))
+		{
+			$this->recipients[] = new craft_recette_recipient($row);
+		}
+		return $this->recipients;
+	}
+
+	function get_info_joueur($joueur, $R)
+	{
+		global $db, $R;
 		$types = array();
 		$types['mortier'] = array();
 		$types['four'] = array();
@@ -165,7 +178,7 @@ class craft_recette
 					$req = $db->query($requete);
 					$row = $db->read_assoc($req);
 					$taxe = 1 + ($R['taxe'] / 100);
-					$prix = round($row['prix'] * $taxe / 100);
+					$prix = round($row['prix'] * $taxe);
 					$types[$key]['pa'] = $row['pa'];
 					$types[$key]['mp'] = $row['mp'];
 					$types[$key]['cout'] = $prix;

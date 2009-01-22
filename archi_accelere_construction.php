@@ -4,7 +4,7 @@ $joueur = recupperso($_SESSION['ID']);
 check_undead_players();
 
 //Si le joueur a assez de PA
-if($joueur['pa'] > 30)
+if($joueur['pa'] >= 30)
 {
 	//On recherche les informations sur ce placement
 	$requete = 'SELECT * FROM placement WHERE id = '.sSQL($_GET['id_construction']);

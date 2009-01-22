@@ -2,7 +2,7 @@
 include('inc/fp.php');
 $joueur = recupperso($_SESSION['ID']);
 $cible = recupperso($_GET['id_joueur']);
-$W_case = $_GET['poscase'];
+$W_case = convert_in_pos($cible['x'], $cible['y']);
 $W_distance = detection_distance($W_case, $_SESSION["position"]);
 $tab_sort_jeu = explode(';', $joueur['sort_jeu']);
 ?>
@@ -102,7 +102,7 @@ if (isset($_GET['ID']))
 						{
 							echo 'La cible a toute sa vie<br />';
 						}
-						echo '<a href="sort_joueur.php?poscase='.$W_case.'&amp;ID='.$_GET['ID'].'&amp;id_joueur='.$_GET['id_joueur'].'" onclick="return envoiInfo(this.href, \'information\')">Utilisez a nouveau ce sort</a>';
+						echo '<a href="sort_joueur.php?ID='.$_GET['ID'].'&amp;id_joueur='.$_GET['id_joueur'].'" onclick="return envoiInfo(this.href, \'information\')">Utilisez a nouveau ce sort</a>';
 					}
 					else
 					{
@@ -353,13 +353,13 @@ if (isset($_GET['ID']))
 										}
 										else { echo "Impossible de lancer de lancer le sort. Le joueur n&apos;a aucun debuff.<br/>"; };
 											
-										echo "<a href=\"sort_joueur.php?poscase=".$W_case."&amp;ID=".$_GET["ID"]."&amp;id_joueur=".$_GET['id_joueur']."\" onclick=\"return envoiInfo(this.href, 'information')\">Utilisez a nouveau cette compétence</a>";	
+										echo "<a href=\"sort_joueur.php?ID=".$_GET["ID"]."&amp;id_joueur=".$_GET['id_joueur']."\" onclick=\"return envoiInfo(this.href, 'information')\">Utilisez a nouveau cette compétence</a>";	
 									}
 									break;
 			}
 		}
 	}
-	echo '<br /><a href="sort_joueur.php?poscase='.$W_case.'&amp;id_joueur='.$_GET['id_joueur'].'" onclick="return envoiInfo(this.href, \'information\');">Revenir au livre de sort</a>';
+	echo '<br /><a href="sort_joueur.php?id_joueur='.$_GET['id_joueur'].'" onclick="return envoiInfo(this.href, \'information\');">Revenir au livre de sort</a>';
 }
 else
 {
@@ -393,7 +393,7 @@ else
 	}
 	foreach($magies as $magie)
 	{
-		echo '<a href="sort_joueur.php?poscase='.$W_case.'&amp;tri='.$magie.'&amp;id_joueur='.$_GET['id_joueur'].'" onclick="return envoiInfo(this.href, \'information\');"><img src="image/icone_'.$magie.'.png" alt="'.$Gtrad[$magie].'" title="'.$Gtrad[$magie].'" /></a> ';
+		echo '<a href="sort_joueur.php?tri='.$magie.'&amp;id_joueur='.$_GET['id_joueur'].'" onclick="return envoiInfo(this.href, \'information\');"><img src="image/icone_'.$magie.'.png" alt="'.$Gtrad[$magie].'" title="'.$Gtrad[$magie].'" /></a> ';
 	}
 	if(array_key_exists('tri', $_GET)) $where = 'WHERE comp_assoc = \''.sSQL($_GET['tri']).'\''; else $_GET['tri'] = 'favoris';
 	if($_GET['tri'] == 'favoris')
@@ -431,7 +431,7 @@ else
 			//On ne peut uniquement faire que les sorts qui nous target ou target tous le groupe
 			if($row['cible'] == 2 OR $row['cible'] == 4)
 			{
-				$href = 'envoiInfo(\'sort_joueur.php?poscase='.$W_case.'&amp;ID='.$row['id'].'&amp;id_joueur='.$_GET['id_joueur'].'\', \'information\')';
+				$href = 'envoiInfo(\'sort_joueur.php?ID='.$row['id'].'&amp;id_joueur='.$_GET['id_joueur'].'\', \'information\')';
 				$color = 'blue';
 				$cursor = 'cursor : pointer;';
 			}
