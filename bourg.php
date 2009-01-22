@@ -72,7 +72,7 @@ if($W_distance == 0 AND $joueur['race'] == $R['race'])
 	{
 ?>
 		<li>
-			<a href="gestion_royaume.php?poscase=<?php echo $W_case; ?>" onclick="return envoiInfo(this.href, 'carte')">Gestion du royaume</a>
+			<a href="roi/">Gestion du royaume</a>
 		</li>
 <?php
 	}

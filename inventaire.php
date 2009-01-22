@@ -33,7 +33,8 @@ $W_req = $db->query($W_requete);
 $W_row = $db->read_array($W_req);
 $R = get_royaume_info($joueur['race'], $W_row['royaume']);
 ?>
-<h2>Inventaire</h2>
+<fieldset>
+<legend>Inventaire</legend>
 <?php
 //Switch des actions
 if(!$visu AND isset($_GET['action']))
@@ -969,7 +970,7 @@ if(!$visu)
 	<?php
 	require_once('inventaire_slot.php');
 	?>
-</div>
+</fieldset>
 <?php
 }
 ?>

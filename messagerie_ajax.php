@@ -1,4 +1,4 @@
-<?php
+message_complet<?php
 if(array_key_exists('javascript', $_GET)) include('inc/fp.php');
 include('fonction/messagerie.inc.php');
 

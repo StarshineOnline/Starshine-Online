@@ -36,10 +36,7 @@
 	echo " <div id='joueur_Psso' onclick=\"envoiInfo('point_sso.php', 'information');\" title=\"Vous avez ".$joueur["point_sso"]." point(s) shine en r&eacute;serve.\"></div>";
 	$script_attaque = recupaction_all($joueur['action_a']);
 	//-- Index, Forums, Exit, Options
-	echo " <div id='joueur_onglets'>
-			<div id='joueur_onglets_index'>Script : ".$script_attaque['nom']."</div>
 
-	 	   </div>";
 
 	echo "</div>";
 }

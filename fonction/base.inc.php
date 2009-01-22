@@ -2228,7 +2228,7 @@ function verif_mort($pourcent, $var, $duree_debuff=0, $multiplicateur_mouvement=
 		$_SESSION['position'] = convert_in_pos($joueur['x'], $joueur['y']);
 
 		//Vérifie si il a déjà un mal de rez
-		$requete = "SELECT fin FROM buff WHERE id_perso = ".$joueur['ID']." AND type = 'debuff_rez'";
+		$requete = "SELECT fin FROM buff WHERE id_perso = ".$joueur['ID']." AND type = 'debuff_rez' AND type <> 'famine'";
 		$req = $db->query($requete);
 		if($db->num_rows > 0)
 		{

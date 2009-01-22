@@ -14,7 +14,7 @@ if($W_distance < 4)
 ?>
 <fieldset>
 <legend>Informations Case - X : <?php echo $W_coord['x']; ?> | Y : <?php echo $W_coord['y']; ?><a href="carte_perso_affiche.php" onclick="return envoiInfo(this.href, 'information')"> <img src="image/icone/oujesuis.png" alt="Où je suis ?" title="Où je suis ?" style="vertical-align : middle;height:20px;" /></a> </legend>
-
+<div id='info_case'>
 <?php
 
 $W_requete = 'SELECT * FROM map WHERE ID =\''.sSQL($W_case).'\'';
@@ -41,7 +41,7 @@ if($W_coord['x'] == $Trace[$R['race']]['spawn_x'] AND $W_coord['y'] == $Trace[$R
 <strong><?php echo $type_terrain[1]; ?></strong> - <?php echo $coutpa; ?> PA de déplacement <span class="xsmall">(en diagonale = <?php echo $coutpa_diagonale; ?> PA)</span>
 
 <?php
-$W_requete = 'SELECT perso.ID, perso.nom, race, hp, rang_royaume, grade.nom as gnom FROM perso LEFT JOIN grade ON perso.rang_royaume = grade.id WHERE (x = '.$W_coord["x"].') AND (y = '.$W_coord["y"].') AND statut = \'actif\'';
+$W_requete = 'SELECT perso.ID, perso.nom, race, classe, hp, rang_royaume, grade.nom as gnom FROM perso LEFT JOIN grade ON perso.rang_royaume = grade.id WHERE (x = '.$W_coord["x"].') AND (y = '.$W_coord["y"].') AND statut = \'actif\'';
 $W_query = $db->query($W_requete);
 
 //Affichage des infos des joueurs
@@ -57,7 +57,7 @@ $mybonus = recup_bonus($_SESSION['ID']);
 $affiche_div = '';
 while($W_row = $db->read_array($W_query))
 {
-	echo '<li>
+	echo '<li style="clear:both;">
 	';
 	$W_nom = $W_row['nom'];
 	$W_race = $W_row['race'];
@@ -65,14 +65,8 @@ while($W_row = $db->read_array($W_query))
 	$W_hp = $W_row['hp'];
 	$bonus = recup_bonus($W_ID);
 	// on envois dans infojoueur.php -> ID du joueur et La position de la case ou il se trouve
-	if ($W_hp <= 0)
-	{
-		echo '<img src="image/interface/mort.png" alt="Mort" title="Le personnage est mort" style="vertical-align : top;" /> ';
-	}
-	else
-	{
-		echo '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
-	}
+
+
 	$requete = "SELECT ".$W_race." FROM diplomatie WHERE race = '".$joueur['race']."'";
 	$req_diplo = $db->query($requete);
 	$row_diplo = $db->read_array($req_diplo);
@@ -106,22 +100,38 @@ while($W_row = $db->read_array($W_query))
 	if(array_key_exists(6, $bonus) AND !check_affiche_bonus($bonus[6], $joueur, $W_row)) $chaine_nom = $W_nom;
 	else $chaine_nom = $W_row['gnom'].' '.$W_nom;
 	$echo = $Gtrad['diplo'.$diplo].' => XP : '.($facteur_xp * 100).'% - Honneur : '.($facteur_honneur * 100).'%';
-	echo '<a href="infojoueur.php?ID='.$W_ID.'&poscase='.$W_case.'" onclick="return envoiInfo(this.href, \'information\');" onclick="return nd();" onmouseover="return '.make_overlib($echo).'" onmouseout="return nd();"><strong>'.$chaine_nom.'</strong></td><td width="30%">'.$Gtrad[$W_race].'</a></td>';
+	echo '<img src="image/personnage/'.$W_race.'/'.$W_race.'_'.$Tclasse[$W_row['classe']]["type"].'.png" alt="'.$W_race.'" title="'.$W_race.'" style="vertical-align: middle;height:21px;float:left;width:21px;" /><span style="font-weight : bold;float:left;width:325px;margin-left:15px;"><a href="infojoueur.php?ID='.$W_ID.'&poscase='.$W_case.'" onclick="return envoiInfo(this.href, \'information\');" onclick="return nd();" onmouseover="return '.make_overlib($echo).'" onmouseout="return nd();">';
+	
+		if ($W_hp <= 0)
+	{
+		echo '<span class="mort">'.$chaine_nom.'</span> ';
+	}
+	else
+	{
+		echo $chaine_nom;
+	}
+	
+	
+	echo '</a></span>';
 //	echo '<a href="" onclick="return envoiInfo(this.href\'infojoueur.php?ID='.$W_ID.'&poscase='.$W_case.'\', \'information\')" onmousemove="afficheInfo(\'info_'.$W_ID.'\', \'block\', event, \'centre\');" onmouseout="afficheInfo(\'info_'.$W_ID.'\', \'none\', event, \'centre\');"><strong>'.$chaine_nom.'</strong></td><td width="30%">'.$Gtrad[$W_race].'</a></td>';
 //	$affiche_div .= '<div class="jsinformation_case" id="info_'.$W_ID.'">
 //	'.$Gtrad['diplo'.$diplo].' => XP : '.($facteur_xp * 100).'% - Honneur : '.($facteur_honneur * 100).'%
 //	</div>';
+	echo '<span style="float:left;">';
 	if ($W_ID != $_SESSION['ID'])
 	{
-		echo ' <span style="width:10%"><img src="image/personnage/'.$W_race.'/'.$W_race.'.png" alt="'.$W_race.'" style="vertical-align : middle;height:21px;float:left;width:21px;" /><a href="envoimessage.php?id_type=p'.$W_ID.'" onclick="return envoiInfo(this.href, \'information\')"><img src="image/interface/message.png" title="Envoyer un message" /></a></span>';
-		if($joueur['sort_jeu'] != '') echo '<span style="width:10%"> <a href="sort_joueur.php?poscase='.$W_case.'&amp;id_joueur='.$W_ID.'" onclick="return envoiInfo(this.href, \'information\')"><img src="image/sort_hc_icone.png" title="Lancer un sort" alt="Lancer un sort" /></a></span>';
-		if($row_diplo[0] <= 5 OR array_key_exists(5, $mybonus)) echo '<span style="width:10%"> <a href="echange.php?poscase='.$W_case.'&amp;id_joueur='.$W_ID.'" onclick="return envoiInfo(this.href, \'information\')"><img src="image/icone/echanger.png" alt="Echanger" title="Echanger" /></a></span>';
+		echo '
+		<a href="envoimessage.php?id_type=p'.$W_ID.'" onclick="return envoiInfo(this.href, \'information\')"><img src="image/interface/message.png" title="Envoyer un message" /></a>';
+		if($joueur['sort_jeu'] != '') echo '<a href="sort_joueur.php?poscase='.$W_case.'&amp;id_joueur='.$W_ID.'" onclick="return envoiInfo(this.href, \'information\')"><img src="image/sort_hc_icone.png" title="Lancer un sort" alt="Lancer un sort" /></a>';
+		if($row_diplo[0] <= 5 OR array_key_exists(5, $mybonus)) echo '<a href="echange.php?poscase='.$W_case.'&amp;id_joueur='.$W_ID.'" onclick="return envoiInfo(this.href, \'information\')"><img src="image/icone/echanger.png" alt="Echanger" title="Echanger" /></a>';
 	}
 	else
 	{
-		if($joueur['sort_jeu'] != '') echo '<span style="width:10%"></span><span style="width:10%"><a href="sort.php" onclick="return envoiInfo(this.href, \'information\')"><img src="image/sort_hc_icone.png" title="Lancer un sort" alt="Lancer un sort" /></a></span>';
+		if($joueur['sort_jeu'] != '') echo '<a href="sort.php" onclick="return envoiInfo(this.href, \'information\')"><img src="image/sort_hc_icone.png" title="Lancer un sort" alt="Lancer un sort" /></a>';
 	}
 	if($statut_joueur != 'normal') echo ' ('.$statut_joueur.')';
+	echo '</span>';
+
 	echo '</li>';
 }
 if(array_key_exists('buff_rapidite', $joueur['buff'])) $reduction_pa = $joueur['buff']['buff_rapidite']['effet']; else $reduction_pa = 0;
@@ -216,7 +226,7 @@ if($num_rows > 0)
 		$req = $db->query($requete);
 		$row_b = $db->read_assoc($req);
 		$Royaume = get_royaume_info($joueur['race'], $W_row['royaume']);
-		echo '<span onmousemove="afficheInfo(\'infob_'.$W_row['id'].'\', \'block\', event, \'centre\');" onmouseout="afficheInfo(\'infob_'.$W_row['id'].'\', \'none\', event, \'centre\');">'.$row_b['nom'].' '.$Gtrad[$Royaume['race']].'</span> - HP : '.$W_row['hp'];
+		echo '<span onmousemove="return '.make_overlib(transform_sec_temp($W_row['fin_placement'] - time()).' avant fin de construction').'" onmouseout="return nd();">'.$row_b['nom'].' '.$Gtrad[$Royaume['race']].'</span> - HP : '.$W_row['hp'];
 		if($joueur['race'] != $Royaume['race'])
 		{
 			if(!array_key_exists('repos_sage', $joueur['debuff']))
@@ -228,10 +238,7 @@ if($num_rows > 0)
 		{
 				echo ' <a href="archi_accelere_construction.php?id_construction='.$W_row['id'].'" onclick="return envoiInfo(this.href, \'information\')">Accélérer <span class="xsmall">(30 PA)</a>';
 		}
-		echo '<br />
-		<div class="jsinformation_case" id="infob_'.$W_row['id'].'">
-			'.transform_sec_temp($W_row['fin_placement'] - time()).' avant fin de construction 
-		</div>';
+		echo '<br />';
 	}
 }
 
@@ -251,7 +258,7 @@ if($num_rows > 0)
 		$req = $db->query($requete);
 		$row_b = $db->read_assoc($req);
 		$Royaume = get_royaume_info($joueur['race'], $W_row['royaume']);
-		echo '<span onmousemove="afficheInfo(\'infob_'.$W_row['id'].'\', \'block\', event, \'centre\');" onmouseout="afficheInfo(\'infob_'.$W_row['id'].'\', \'none\', event, \'centre\');"><image src="image/mini_'.$row_b['type'].'.png" style="vertical-align : top;" title="'.$row_b['nom'].'" alt="'.$row_b['nom'].'" />';
+		echo '<span onmousemove="return '.make_overlib($row_b['description']).'" onmouseout="return nd();"><image src="image/mini_'.$row_b['type'].'.png" style="vertical-align : top;" title="'.$row_b['nom'].'" alt="'.$row_b['nom'].'" />';
 		$nom = $row_b['nom'];
 		if($row_b['type'] == 'fort' AND $joueur['race'] == $Royaume['race']) $nom = '<a href="fort.php?poscase='.$W_case.'&amp;id_batiment='.$row_b['id'].'" onclick="return envoiInfo(this.href, \'centre\');">'.$row_b['nom'].'</a>';
 		if($row_b['type'] == 'bourg' AND $joueur['race'] == $Royaume['race']) $nom = '<a href="bourg.php?poscase='.$W_case.'&amp;id_batiment='.$row_b['id'].'" onclick="return envoiInfo(this.href, \'centre\');">'.$row_b['nom'].'</a>';
@@ -265,10 +272,7 @@ if($num_rows > 0)
 			echo  ' <a href="archi_soigne_construction.php?id_construction='.$W_row['id'].'" onclick="return envoiInfo(this.href, \'information\')">Réparer <span class="xsmall">(30 PA)</a>';
 		}
 
-		echo '<br />
-		<div class="jsinformation_case"  id="infob_'.$W_row['id'].'">
-			'.$row_b['description'].'
-		</div>';
+		echo '<br />';
 	}
 }
 
@@ -310,11 +314,11 @@ while($W_row = $db->read_array($W_query))
 		<a href="attaque_monstre.php?ID='.$W_ID.'&poscase='.$W_case.'" onclick="return envoiInfo(this.href, \'information\')"><img src="image/interface/attaquer.png" alt="Combattre" title="Attaquez ce monstez ('.($pa_attaque - $reduction_pa).' PA)" style="vertical-align : middle;" /></a>';
 		echo ' <a href="info_monstre.php?ID='.$W_ID.'&poscase='.$W_case.'" onclick="return envoiInfo(this.href, \'information\')"><img src="image/icone/mobinfo.png" alt="Voir informations sur le monstre" title="Voir informations sur le monstre" style="vertical-align : middle;" /></a>';
 		if($joueur['sort_jeu'] != '') echo ' <a href="sort_monstre.php?poscase='.$W_case.'&amp;id_monstre='.$W_ID.'" onclick="return envoiInfo(this.href, \'information\')"><img src="image/sort_hc_icone.png" title="Lancer un sort" alt="Lancer un sort" style="vertical-align : middle;" /></a>';
-	echo '
+	echo '</span>
 		</li>';
 }
 if ($num_rows > 0) echo '</ul>';
 }
-echo "</fieldset>";
+echo "</div></fieldset>";
 ?>
 

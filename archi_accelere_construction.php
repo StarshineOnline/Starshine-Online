@@ -37,10 +37,15 @@ if($joueur['pa'] > 30)
 					$requete = "UPDATE perso SET architecture = ".$joueur['architecture']." WHERE ID = ".$joueur['ID'];
 					$db->query($requete);
 				}
-				echo '<h6>La construction a été accélérée de '.transform_sec_temp($secondes).'</h6>';
+				echo '<h6>La construction a été accélérée de '.transform_sec_temp($secondes).'</h6>
+				<a href="archi_accelere_construction.php?id_construction='.$_GET['id_construction'].'" onclick="return envoiInfo(this.href, \'information\');">Accélérer de nouveau</a>';
 			}
 		}
 	}
+}
+else
+{
+	echo '<h5>Vousn n\'avez pas assez de PA</h5>';
 }
 ?>
 </div>

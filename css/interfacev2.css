@@ -27,10 +27,10 @@ body {margin:0;padding:0;background:#5D705F url('./image/v2/bg_site.png') repeat
 #contenu_jeu {	margin : 0 auto;width:100%;}
 #popup {margin-left:130px;position:absolute;top:60px;z-index:99 !important;  -moz-border-radius: 12px;background:transparent url(./image/v2/box_accueil.png) repeat scroll 0 0;color:#EEE;}
 #popup a {color:#EEE;}
-#popup_menu {cursor: pointer;background:transparent url(./image/v2/bouton_fond.png) repeat-x scroll 0 0;}
+#popup_menu {cursor:move ;background:transparent url(./image/v2/bouton_fond.png) repeat-x scroll 0 0;}
 #popup_content {padding:5px;text-align:justify;width:98%;}
-#popup_marge {height:470px;margin:auto;overflow:auto;width:700px;}
-.fermer {background:transparent url('./image/interface/rouge.png') no-repeat top left;display:block;height:16px;width:16px;}
+#popup_marge {min-height:470px;margin:auto;width:700px;}
+.fermer {background:transparent url('./image/interface/rouge.png') no-repeat top left;display:block;height:16px;width:16px;cursor: pointer !important;}
 #mask{background-image:url('./image/v2/overlay.png');height:100%;left:0;position:absolute;top:0;width:100%;z-index:9999999;}
 
 #header {background-color:#c6d9f5;min-height: 120px;margin:0;padding:0;}
@@ -234,6 +234,8 @@ margin-top:-3px;}
 	vertical-align:top;
 
 }
+#info_case ul li {height:20px;}
+#info_case ul li:hover{background:transparent url('./../image/v2/box_accueil2.png');}
 
 #diplo {background-color: #CCC;}
 #diplo ul li {clear:both;}
@@ -331,7 +333,7 @@ h3.old
 div.message_complet
 {
 	clear : both;
-	border : 1px solid gray;
+	width: 99%;
 }
 
 div.message_action
@@ -345,11 +347,10 @@ div.spacer
 	clear : both;
 }
 
-h3.messagerie
+.messagerie
 {
 	margin-top : 0px;
 	margin-bottom : 0px;
-	width : 480px;
 	position : relative;
 	font-variant: normal;
 	height : 20px;
@@ -691,7 +692,7 @@ width : 33%;
 font-size : 0.8em;
 text-align : center;
 vertical-align : top;
-background-image:url('../image/interface1.png');
+background-image:url('../image/interface/1.png');
 -moz-border-radius : 9px;
 -webkit-border-radius : 9px;
 color : #222;

@@ -30,7 +30,7 @@ if($joueur['grade'] == 'Roi' OR $joueur['nom'] == 'Mylok' OR strtolower($joueur[
 	}
 	elseif($batiment = verif_batiment($joueur['x'], $joueur['y'], $R))
 	{
-		if($batiment['type'] == 'fort') $check = true;
+		if($batiment['type'] == 'fort' OR $batiment['type'] == 'bourg') $check = true;
 	}
 	
 	if($check)

@@ -302,6 +302,7 @@ class map
 		}
 	}
 
+	//Placements
 	function get_drapeau()
 	{
 		global $db;
@@ -428,9 +429,9 @@ class map
 			$this->map[$batiment['x']][$batiment['y']]["Batiments"][$batimat]["royaume"] = $batiment['royaume'];
 			$this->map[$batiment['x']][$batiment['y']]["Batiments"][$batimat]["image"] = $batiment['image'];
 
-			{//-- v?rification que l'image du PNJ existe
+			{//-- vérification que l'image du PNJ existe
 				$image = $this->root."image/batiment/";
-				
+
 				if(file_exists($image.$batiment['image']."_04.png")) 		{ $image .= $batiment['image']."_04.png"; }
 				elseif(file_exists($image.$batiment['image']."_04.gif")) 	{ $image .= $batiment['image']."_04.gif"; }
 				else 														{ $image = ""; } //-- Si aucun des fichiers n'existe autant rien mettre...
@@ -452,7 +453,7 @@ class map
 			$this->map[$batiment->x][$batiment->y]["Batiments"][$batimat]["royaume"] = $batiment->royaume;
 			$this->map[$batiment->x][$batiment->y]["Batiments"][$batimat]["image"] = $batiment->image;
 
-			{//-- v?rification que l'image du PNJ existe
+			{//-- vérification que l'image du PNJ existe
 				$image = $this->root."image/batiment/";
 				
 				if(file_exists($image.$batiment->image."_04.png")) 		{ $image .= $batiment->image."_04.png"; }

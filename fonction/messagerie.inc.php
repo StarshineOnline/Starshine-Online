@@ -46,11 +46,11 @@ function message_affiche($message, $joueur_id, $thread_title = '')
 		else $avatar = '';
 	}
 	$message_affiche = '
-		<h3 class="messagerie" onclick="$(\'mess'.$message->id_message.'\').toggle();">
+		<span class="messagerie" onclick="$(\'mess'.$message->id_message.'\').toggle();">
 			<span class="auteur">'.$message->nom_auteur.'</span>
 			<span class="titre">'.$titre.'</span>
 			<span class="date">'.$message->etat.' / '.$date.'</span>
-		</h3>
+		</span>
 		<p id="mess'.$message->id_message.'">'.$avatar.$message_texte.'</p>';
 
 		$message_affiche .= '<div class="message_action">';
