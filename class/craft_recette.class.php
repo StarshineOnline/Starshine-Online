@@ -178,7 +178,7 @@ class craft_recette
 					$req = $db->query($requete);
 					$row = $db->read_assoc($req);
 					$taxe = 1 + ($R['taxe'] / 100);
-					$prix = round($row['prix'] * $taxe);
+					$prix = round($row['prix'] * $taxe / 100);
 					$types[$key]['pa'] = $row['pa'];
 					$types[$key]['mp'] = $row['mp'];
 					$types[$key]['cout'] = $prix;

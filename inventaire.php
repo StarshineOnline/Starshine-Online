@@ -232,21 +232,34 @@ if(!$visu AND isset($_GET['action']))
 				case 'potion_vie' :
 					if($joueur['hp'] > 0)
 					{
-						$stack = explode('x', $joueur['inventaire_slot'][$_GET['key_slot']]);
-						$id_objet = $stack[0];
-						supprime_objet($joueur, $id_objet, 1);
-						$id_objet = mb_substr($id_objet, 1);
-						$requete = "SELECT effet, nom FROM objet WHERE id = ".$id_objet;
-						$req = $db->query($requete);
-						$row = $db->read_row($req);
-						$joueur['hp'] += $row[0];
-						if($joueur['hp'] > floor($joueur['hp_max'])) $joueur['hp'] = floor($joueur['hp_max']);
-						echo 'Vous utilisez une '.$row[1].' elle vous redonne '.$row[0].' points de vie<br />';
-						?>
-						<img src="image/pixel.gif" onLoad="envoiInfo('infoperso.php?javascript=oui', 'perso');" />
-						<?php
-						$requete = "UPDATE perso SET hp = ".$joueur['hp']." WHERE ID = ".$joueur['ID'];
-						$db->query($requete);
+						$objet = decompose_objet($joueur['inventaire_slot'][$_GET['key_slot']]);
+						$id_objet = $objet['id'];
+						//On chope les infos de l'objet
+						$requete = "SELECT pa, mp FROM objet WHERE id = ".$objet['id_objet'];
+						$req_o = $db->query($requete);
+						$row_o = $db->read_assoc($req_o);
+						//On vérifie les PA / MP
+						if($joueur['pa'] >= $row_o['pa'])
+						{
+							if($joueur['mp'] >= $row_o['pm'])
+							{
+								supprime_objet($joueur, $id_objet, 1);
+								$id_objet = mb_substr($id_objet, 1);
+								$requete = "SELECT effet, nom FROM objet WHERE id = ".$id_objet;
+								$req = $db->query($requete);
+								$row = $db->read_row($req);
+								$joueur['hp'] += $row[0];
+								if($joueur['hp'] > floor($joueur['hp_max'])) $joueur['hp'] = floor($joueur['hp_max']);
+								echo 'Vous utilisez une '.$row[1].' elle vous redonne '.$row[0].' points de vie<br />';
+								?>
+								<img src="image/pixel.gif" onLoad="envoiInfo('infoperso.php?javascript=oui', 'perso');" />
+								<?php
+								$requete = "UPDATE perso SET hp = ".$joueur['hp'].", pa = pa - ".$row_o['pa'].", mp = mp - ".$row_o['mp']." WHERE ID = ".$joueur['ID'];
+								$db->query($requete);
+							}
+							else echo '<h5>Vous n\'avez pas assez de MP</h5>';
+						}
+						else echo '<h5>Vous n\'avez pas assez de PA</h5>';
 					}
 					else echo 'Vous êtes mort !';
 				break;

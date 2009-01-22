@@ -41,17 +41,17 @@ function message_affiche($message, $joueur_id, $thread_title = '')
 		$fichier = 'image/avatar/'.$bonus_total[19]['valeur'];
 		if(is_file($fichier))
 		{
-			$avatar = '<img src="'.$fichier.'" style="float : left; margin : 5px;"/>';
+			$style = 'style="background: transparent url('.$fichier.') no-repeat left;padding-left:42px;"';
 		}
-		else $avatar = '';
 	}
-	$message_affiche = '
+	if ($message->etat=='non_lu'){$div_nonlu = '<div style="background:transparent url(./../image/v2/box_accueil2.png);">';$divfin_nonlu = '</div>';}
+	$message_affiche = $div_nonlu.'
 		<span class="messagerie" onclick="$(\'mess'.$message->id_message.'\').toggle();">
-			<span class="auteur">'.$message->nom_auteur.'</span>
+			<span class="auteur" '.$style.'>'.$message->nom_auteur.'</span>
 			<span class="titre">'.$titre.'</span>
 			<span class="date">'.$message->etat.' / '.$date.'</span>
 		</span>
-		<p id="mess'.$message->id_message.'">'.$avatar.$message_texte.'</p>';
+		<p id="mess'.$message->id_message.'" style="padding:2px;">'.$message_texte.'</p>';
 
 		$message_affiche .= '<div class="message_action">';
 	//Masquer
@@ -62,6 +62,6 @@ function message_affiche($message, $joueur_id, $thread_title = '')
 	if($joueur_id == $message->id_auteur) $actions[] = '<a href="message_change_etat.php?id_message='.$message->id_message.'&amp;etat=del" onclick="if(confirm(\'Voulez vous supprimer votre message ?\')) return envoiInfo(this.href, \'message'.$message->id_message.'\'); else return false;">Supprimer</a>';
 	$actions_implode = implode(' / ', $actions);
 	$message_affiche .= $actions_implode.'</div>
-	<div class="spacer"></div>';
+	<div class="spacer"></div>'.$divfin_nonlu;
 	return $message_affiche;
 }

@@ -236,7 +236,7 @@ while($row = $db->read_assoc($req))
 	$echo = ob_get_contents();
 	ob_end_clean();
 	?>
-	<h3 onclick="$('recette<?php echo $row['id_recette']; ?>').toggle();"><?php echo $recette->nom.' '.$lien; ?></h3>
+	<h3><span onclick="$('recette<?php echo $row['id_recette']; ?>').toggle();"><?php echo $recette->nom.'</span> '.$lien; ?></h3>
 	<?php
 	echo $echo;
 }

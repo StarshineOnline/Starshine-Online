@@ -334,7 +334,7 @@ div.message_complet
 {
 	clear : both;
 	width: 100%;
-	border-top: 1px solid orange;
+	border-top: 1px solid #E7CF98;
 
 }
 
@@ -353,11 +353,11 @@ div.spacer
 {
 	margin-top : 0px;
 	margin-bottom : 0px;
-	position : relative;
 	font-variant: normal;
-	height : 20px;
 	font-weight : normal;
-	background-color: orange;
+	background-color: #E7CF98;
+	padding:0 6px 3px;
+	-moz-border-radius-bottomright:10px;	
 }
 
 h3.messagerie span.auteur

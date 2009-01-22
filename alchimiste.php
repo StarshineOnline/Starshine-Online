@@ -52,7 +52,7 @@ if($W_distance == 0)
 							$requete = "UPDATE argent_royaume SET magasin = magasin + ".$taxe." WHERE race = '".$R['race']."'";
 							$db->query($requete);
 						}
-						echo '<h5>Objet acheté !</h5>';
+						echo '<h6>Objet acheté !</h6>';
 					}
 					else
 					{
@@ -61,7 +61,44 @@ if($W_distance == 0)
 				}
 				else
 				{
-					echo 'h5>Vous n\'avez pas assez de Stars</h5>';
+					echo '<h5>Vous n\'avez pas assez de Stars</h5>';
+				}
+			break;
+			case 'achat_recette' :
+				$recette = new craft_recette($_GET['id']);
+				$taxe = ceil($recette->prix * $R['taxe'] / 100);
+				$cout = $recette->prix + $taxe;
+				if ($joueur['star'] >= $cout)
+				{
+					$perso = new perso_recette();
+					$perso_recette = $perso->recov($joueur['ID'], $_GET['id']);
+					if(!$perso_recette)
+					{
+						$perso_recette = new perso_recette();
+						$perso_recette->id_perso = $joueur['ID'];
+						$perso_recette->id_recette = $_GET['id'];
+						$perso_recette->sauver();
+						$joueur['star'] = $joueur['star'] - $cout;
+						$requete = "UPDATE perso SET star = ".$joueur['star']." WHERE ID = ".$_SESSION['ID'];
+						$req = $db->query($requete);
+						//Récupération de la taxe
+						if($taxe > 0)
+						{
+							$requete = 'UPDATE royaume SET star = star + '.$taxe.' WHERE ID = '.$R['ID'];
+							$db->query($requete);
+							$requete = "UPDATE argent_royaume SET magasin = magasin + ".$taxe." WHERE race = '".$R['race']."'";
+							$db->query($requete);
+						}
+						echo '<h6>Recette achetée !</h6>';
+					}
+					else
+					{
+						echo '<h5>Vous avez déjà cette recette</h5>';
+					}
+				}
+				else
+				{
+					echo '<h5>Vous n\'avez pas assez de Stars</h5>';
 				}
 			break;
 			//Recherche
@@ -154,7 +191,7 @@ if($W_distance == 0)
 		<?php
 		
 		$color = 1;
-		$where = " achetable = 'y'";
+		$where = " 1 ";
 		if(array_key_exists('part', $_GET))
 		{
 			$where .= " AND type = '".sSQL($_GET['part'])."'";
@@ -177,6 +214,51 @@ if($W_distance == 0)
 			</td>
 			<td>
 				<a href="alchimiste.php?action=achat&amp;id=<?php echo $row['id']; ?>&amp;type=<?php echo $row['type']; ?><?php echo $fort; ?>" onclick="return envoiInfo(this.href, 'carte')"><span class="achat">Achat</span></a>
+			</td>
+		</tr>
+		<?php
+			if($color == 1) $color = 2; else $color = 1;
+		}
+		
+		?>
+		
+		</table>
+		</div>
+		<div class="ville_test">
+		<table class="marchand" cellspacing="0px">
+		<tr class="header trcolor2">
+			<td>
+				Nom
+			</td>
+			<td>
+				Stars
+			</td>
+			<td>
+				Achat
+			</td>
+		</tr>
+		
+		<?php
+		
+		$color = 1;
+		$requete = "SELECT * FROM craft_recette WHERE royaume_alchimie <= ".$R['alchimie']." ORDER BY".$ordre;
+		$req = $db->query($requete);
+		while($row = $db->read_array($req))
+		{
+			$taxe = ceil($row['prix'] * $R['taxe'] / 100);
+			$cout = $row['prix'] + $taxe;
+			$couleur = $color;
+			if($cout > $joueur['star']) $couleur = 3;
+		?>
+		<tr class="element trcolor<?php echo $couleur; ?>">
+			<td>
+				Recette <?php echo $row['nom']; ?>
+			</td>
+			<td>
+				<?php echo $cout; ?>
+			</td>
+			<td>
+				<a href="alchimiste.php?action=achat_recette&amp;id=<?php echo $row['id']; ?><?php echo $fort; ?>" onclick="return envoiInfo(this.href, 'carte')"><span class="achat">Achat</span></a>
 			</td>
 		</tr>
 		<?php

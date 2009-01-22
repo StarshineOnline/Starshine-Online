@@ -267,7 +267,11 @@ function description_objet($id_objet)
 			$req = $db->query($requete);
 			$row = $db->read_assoc($req);
 			$keys = array_keys($row);
-			$description .= '<strong>'.$row['nom'].'</strong><br /><table><tr><td>Type</td><td>'.$Gtrad[$row['type']].'</td></tr><tr><td>Stack</td><td>'.$row['stack'].'</td></tr><tr><td>Description</td></tr><tr><td>'.addslashes(description($row['description'], $keys)).'</td></tr><tr><td>Prix HT<br /><span class=\\\'xsmall\\\'>(en magasin)</span></td><td>'.$row['prix'].'</td></tr></table>';
+			if($row['pa'] > 0) $pa = '<tr><td>PA<br /></td><td>'.$row['pa'].'</td></tr>';
+			else $pa = '';
+			if($row['mp'] > 0) $mp = '<tr><td>MP<br /></td><td>'.$row['mp'].'</td></tr>';
+			else $mp = '';
+			$description .= '<strong>'.$row['nom'].'</strong><br /><table><tr><td>Type</td><td>'.$Gtrad[$row['type']].'</td></tr><tr><td>Stack</td><td>'.$row['stack'].'</td></tr><tr><td>Description</td></tr><tr><td>'.addslashes(description($row['description'], $row)).'</td></tr><tr><td>Prix HT<br /><span class=\\\'xsmall\\\'>(en magasin)</span></td><td>'.$row['prix'].'</td></tr>'.$pa.$mp.'</table>';
 		break;
 		case 'r' :
 			$requete = "SELECT * FROM objet_royaume WHERE id = ".$objet['id_objet'];
