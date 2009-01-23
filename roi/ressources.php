@@ -1,16 +1,17 @@
 <?php
 require('haut_roi.php');
+include('../inc/ressource.inc.php');
 
 function ressource($nom)
 {
-	$ressource['pierre'] = 18;
-	$ressource['bois'] = 19;
-	$ressource['eau'] = 20;
-	$ressource['sable'] = 21;
-	$ressource['charbon'] = 22;
-	$ressource['em'] = 23;
-	$ressource['star'] = 24;
-	$ressource['nourriture'] = 25;
+	$ressource['Pierre'] = 18;
+	$ressource['Bois'] = 19;
+	$ressource['Eau'] = 20;
+	$ressource['Sable'] = 21;
+	$ressource['Charbon'] = 22;
+	$ressource['Essence Magique'] = 23;
+	$ressource['Star'] = 24;
+	$ressource['Nourriture'] = 25;
 	return $ressource[$nom];
 }
 
@@ -60,6 +61,7 @@ if(array_key_exists('ress', $_GET))
 	$graph->drawTitle(50,22,$_GET['ress'].' dans la semaine',50,50,50,585);
 	$graph->Render('image/'.$R['race'].'_'.$_GET['ress'].'.png');
 	?>
+	<a href="ressources.php" onclick="return envoiInfo(this.href, 'conteneur');">Retour au tableau des ressources</a>
 	<img src="image/<?php echo $R['race']; ?>_<?php echo $_GET['ress']; ?>.png" />
 	<?php
 }
@@ -70,25 +72,80 @@ else
 	$row = $db->read_assoc($req);
 	$explode_stat = explode(';', $row[$R['race']]);
 	
-	$pierre = $explode_stat[18];
-	$bois = $explode_stat[19];
-	$eau = $explode_stat[20];
-	$sable = $explode_stat[21];
-	$charbon = $explode_stat[22];
-	$em = $explode_stat[23];
-	$star = $explode_stat[24];
-	$nourriture = $explode_stat[25];
+	$hier['Pierre'] = $explode_stat[18];
+	$hier['Bois'] = $explode_stat[19];
+	$hier['Eau'] = $explode_stat[20];
+	$hier['Sable'] = $explode_stat[21];
+	$hier['Charbon'] = $explode_stat[22];
+	$hier['Essence Magique'] = $explode_stat[23];
+	$hier['Star'] = $explode_stat[24];
+	$hier['Nourriture'] = $explode_stat[25];
 	
+	$requete = "SELECT info, FLOOR(COUNT(*) / 10) as tot, COUNT(*) as tot_terrain FROM `map` WHERE royaume = ".$R['ID']." GROUP BY info";
+	$req = $db->query($requete);
+	while($row = $db->read_assoc($req))
+	{
+		if($row['tot'] > 0)
+		{
+			$typeterrain = type_terrain($row['info']);
+			$ressources[$typeterrain[1]] = $row['tot'];
+			$terrain[$typeterrain[1]] = $row['tot_terrain'];
+		}
+	}
+	//Ressource normale
+	foreach($ress as $key_terr => $terr)
+	{
+		$key_terr = utf8_encode($key_terr);
+		//print_r($terr);
+		foreach($terr as $key => $res)
+		{
+			$ressource_final[$key] += $res * $ressources[$key_terr];
+			$ress_terrain[$key_terr][$key] +=  $res * $ressources[$key_terr];
+		}
+	}
+
+	$liste_ressources = array();
+	$liste_ressources[] = 'Pierre';
+	$liste_ressources[] = 'Bois';
+	$liste_ressources[] = 'Eau';
+	$liste_ressources[] = 'Sable';
+	$liste_ressources[] = 'Charbon';
+	$liste_ressources[] = 'Essence Magique';
+	$liste_ressources[] = 'Star';
+	$liste_ressources[] = 'Nourriture';
 	echo '
-	<h3>Ressources gagnées hier</h3>
-	<a href="ressources.php?ress=pierre" onclick="return envoiInfo(this.href, \'conteneur\');">Pierre</a> : '.$pierre.'<br />
-	<a href="ressources.php?ress=bois" onclick="return envoiInfo(this.href, \'conteneur\');">Bois</a> : '.$bois.'<br />
-	<a href="ressources.php?ress=eau" onclick="return envoiInfo(this.href, \'conteneur\');">Eau</a> : '.$eau.'<br />
-	<a href="ressources.php?ress=sable" onclick="return envoiInfo(this.href, \'conteneur\');">Sable</a> : '.$sable.'<br />
-	<a href="ressources.php?ress=charbon" onclick="return envoiInfo(this.href, \'conteneur\');">Charbon</a> : '.$charbon.'<br />
-	<a href="ressources.php?ress=em" onclick="return envoiInfo(this.href, \'conteneur\');">Essence Magique</a> : '.$em.'<br />
-	<a href="ressources.php?ress=star" onclick="return envoiInfo(this.href, \'conteneur\');">Star</a> : '.$star.'<br />
-	<a href="ressources.php?ress=nourriture" onclick="return envoiInfo(this.href, \'conteneur\');">Nourriture</a> : '.$nourriture.'<br />
+	<h3>Récapitulatif ressources</h3>
+	<table>
+	<tr>
+		<td>
+			Ressource
+		</td>
+		<td>
+			Gains hier
+		</td>
+		<td>
+			Cases actuelment
+		</td>
+	</tr>
 	';
+	foreach($liste_ressources as $type_ressource)
+	{
+	?>
+	<tr>
+		<td>
+			<a href="ressources.php?ress=<?php echo $type_ressource; ?>" onclick="affichePopUp(this.href); return false;"><?php echo $type_ressource; ?></a>
+		</td>
+		<td>
+			<?php echo $hier[$type_ressource]; ?>
+		</td>
+		<td>
+			<?php echo $ressource_final[$type_ressource]; ?>
+		</td>
+	</tr>
+	<?php
+	}
+	?>
+	</table>
+	<?php
 }
 ?>

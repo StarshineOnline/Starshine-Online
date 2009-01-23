@@ -48,7 +48,7 @@ function affiche_map($bataille)
 	$map->set_batiment($batiments);
 	if(array_key_exists('action', $bataille->reperes)) $map->set_repere($bataille->reperes['action']);
 	if(array_key_exists('batiment', $bataille->reperes)) $map->set_batiment_ennemi($bataille->reperes['batiment']);
-	$map->set_onclick("envoiInfo('gestion_bataille.php?id_bataille=".$bataille->id."&amp;case=%%ID%%&amp;info_case', 'information_onglet_bataille');");
+	$map->set_onclick("affichePopUp('gestion_bataille.php?id_bataille=".$bataille->id."&amp;case=%%ID%%&amp;info_case');");
 	$map->quadrillage = true;
 	$map->affiche();
 }
@@ -223,7 +223,7 @@ elseif(array_key_exists('info_case', $_GET) OR array_key_exists('type', $_GET))
 			}
 		}
 		?>
-		</select><input type="button" value="Ok" onclick="envoiInfo('gestion_bataille.php?id_type=' + $('type').value + '&amp;id_bataille=<?php echo $bataille->id; ?>&amp;case=<?php echo $case; ?>&amp;type', 'information_onglet_bataille');"/>
+		</select><input type="button" value="Ok" onclick="envoiInfo('gestion_bataille.php?id_type=' + $('type').value + '&amp;id_bataille=<?php echo $bataille->id; ?>&amp;case=<?php echo $case; ?>&amp;type', 'popup_content');"/>
 		<?php
 	}
 }

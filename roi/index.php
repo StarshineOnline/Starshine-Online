@@ -50,6 +50,12 @@ if($joueur['grade'] == 'Roi' OR $joueur['nom'] == 'Mylok' OR strtolower($joueur[
 	<script src="../javascript/fonction.js" type="text/javascript"></script>
 	<script src="../javascript/overlib/overlib.js" type="text/javascript"></script>
 	<script src="javascript/menu.js" type="text/javascript"></script>
+	<script type="text/javascript">
+	window.onload = function()
+	{
+		new Draggable('popup', {handle: 'popup_menu'});
+	}
+	</script>
 </head>
 <body>
 <div id="top">
@@ -94,6 +100,7 @@ if($joueur['grade'] == 'Roi' OR $joueur['nom'] == 'Mylok' OR strtolower($joueur[
 				</ul>
 			</li>
 		</ul>
+		<div id="popup" style='display:none;'><div id="popup_menu"><span class='fermer' title='Fermer le popup' onclick="fermePopUp(); return false;"></span></div><div id="popup_marge"><div id="popup_content"></div></div></div>
 		<div id="loading" style="display : none;"> </div>
 		<div id="infos">
 	<?php
