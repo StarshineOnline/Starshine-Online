@@ -96,7 +96,4 @@ while($row = $db_forum->read_array($req) AND $i < 5)
 	<span style="font-size:10px;">Par '.$row['poster'].', le '.date("l d F Y à H:i", $row['posted']).'</span><!-- <span style="font-size : 10px;"> ('.($row['num_replies']).' commentaires)</span> --></div>';
 	$i++;
 }
-
-
-
 ?>

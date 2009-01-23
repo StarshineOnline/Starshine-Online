@@ -104,6 +104,67 @@ else
 		}
 	}
 
+	//Ressource mine
+	//On récupère la liste des batiments de type mine
+	$batiment = array();
+	$requete = "SELECT * FROM batiment WHERE type = 'mine'";
+	$req = $db->query($requete);
+	while($row = $db->read_assoc($req))
+	{
+		$batiment[$row['id']] = $row;
+	}
+	//@TODO gérer les mines dans construction
+	$requete = "SELECT * FROM construction LEFT JOIN map ON map.ID = (construction.y * 1000) + construction.x WHERE construction.type = 'mine' AND construction.royaume = ".$R['ID'];
+	$req = $db->query($requete);
+	while($row = $db->read_assoc($req))
+	{
+		$terrain = type_terrain($row['info']);
+		$ress_terrain = $ress[utf8_decode($terrain[1])];
+		if($batiment[$row['id_batiment']]['bonus2'] != 0)
+		{
+			switch($batiment[$row['id_batiment']]['bonus2'])
+			{
+				case 1 :
+					$ress_final = array('Pierre' => $batiment[$row['id_batiment']]['bonus1'] * $ress_terrain['Pierre']);
+				break;
+				case 2 :
+					$ress_final = array('Bois' => $batiment[$row['id_batiment']]['bonus1'] * $ress_terrain['Bois']);
+				break;
+				case 3 :
+					$ress_final = array('Eau' => $batiment[$row['id_batiment']]['bonus1'] * $ress_terrain['Eau']);
+				break;
+				case 4 :
+					$ress_final = array('Sable' => $batiment[$row['id_batiment']]['bonus1'] * $ress_terrain['Sable']);
+				break;
+				case 5 :
+					$ress_final = array('Nourriture' => $batiment[$row['id_batiment']]['bonus1'] * $ress_terrain['Nourriture']);
+				break;
+				case 6 :
+					$ress_final = array('Star' => $batiment[$row['id_batiment']]['bonus1'] * $ress_terrain['Star']);
+				break;
+				case 7 :
+					$ress_final = array('Charbon' => $batiment[$row['id_batiment']]['bonus1'] * $ress_terrain['Charbon']);
+				break;
+				case 8 :
+					$ress_final = array('Essence Magique' => $batiment[$row['id_batiment']]['bonus1'] * $ress_terrain['Essence Magique']);
+				break;
+			}
+		}
+		else
+		{
+			$ress_final = array();
+			foreach($ress_terrain as $key => $value)
+			{
+				$ress_final[$key] = $batiment[$row['id_batiment']]['bonus1'] * $value;
+			}
+		}
+		foreach($ress_final as $key => $value)
+		{
+			$ressource_mine_final[$key] += $value;
+			$ress_mine_terrain[$key_terr][$key] +=  $res * $ressources[$key_terr];
+		}
+	}
+
 	$liste_ressources = array();
 	$liste_ressources[] = 'Pierre';
 	$liste_ressources[] = 'Bois';
@@ -124,7 +185,13 @@ else
 			Gains hier
 		</td>
 		<td>
-			Cases actuelment
+			Cases actuelement
+		</td>
+		<td>
+			Mines actuelement
+		</td>
+		<td>
+			Total actuelement
 		</td>
 	</tr>
 	';
@@ -140,6 +207,12 @@ else
 		</td>
 		<td>
 			<?php echo $ressource_final[$type_ressource]; ?>
+		</td>
+		<td>
+			<?php echo $ressource_mine_final[$type_ressource]; ?>
+		</td>
+		<td>
+			<?php echo ($ressource_mine_final[$type_ressource] + $ressource_final[$type_ressource]); ?>
 		</td>
 	</tr>
 	<?php

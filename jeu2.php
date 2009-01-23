@@ -57,7 +57,12 @@ $_SESSION['position'] = convert_in_pos($joueur['x'], $joueur['y']);
 <div id="conteneur">
 
 <div id="mask" style='display:none;'></div>
-<div id="popup" style='display:none;'><div id="popup_menu"><span class='fermer' title='Fermer le popup' onclick="fermePopUp(); return false;"></span></div><div id="popup_marge"><div id="popup_content"></div></div></div>
+<div id="popup" style='display:none;'>
+	<div id="popup_menu"><span class='fermer' title='Fermer le popup' onclick="fermePopUp(); return false;"></span></div>
+	<div id="popup_marge">
+		<div id="popup_content"></div>
+	</div>
+</div>
 <div id="loading" style='display:none'></div>
 <div id="loading_information" style='display:none'></div>
 	<div id="perso">

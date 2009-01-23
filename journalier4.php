@@ -64,6 +64,19 @@ foreach($ressources as $res)
 	}
 	$i++;
 }
+//Suppression des mines sans bourg
+$requete = "SELECT a.id as id, a.rechargement, c.id as bourg_id FROM `construction` as a LEFT JOIN construction as c ON a.rechargement = c.id WHERE a.type ='mine' AND a.royaume = ".$R['ID'];
+$req = $db->query($requete);
+while($row = $db->read_assoc($req))
+{
+	if($row['bourg_id'] == '')
+	{
+		$mine = new construction($row['id']);
+		$mine->supprimer();
+	}
+}
+
+
 //Ressource mine
 //On récupère la liste des batiments de type mine
 $batiment = array();
@@ -73,7 +86,6 @@ while($row = $db->read_assoc($req))
 {
 	$batiment[$row['id']] = $row;
 }
-echo '<pre>';
 //@TODO gérer les mines dans construction
 $requete = "SELECT * FROM construction LEFT JOIN map ON map.ID = (construction.y * 1000) + construction.x WHERE construction.type = 'mine'";
 $req = $db->query($requete);

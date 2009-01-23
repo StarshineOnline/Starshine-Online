@@ -358,7 +358,15 @@ div.spacer
 	background-color: #E7CF98;
 	padding:0 6px 3px;
 	-moz-border-radius-bottomright:10px;	
+	float: left;
 }
+
+.fav_on {background:transparent url('./../image/messagerie_fav_on.png') no-repeat scroll left center;height:14px;width: 16px;display: block;float:left;}
+.fav_off {background:transparent url('./../image/messagerie_fav_off.png') no-repeat scroll left center;height:14px;width: 16px;display: block;float:left;}
+.del {background:transparent url('./../image/messagerie_del.png') no-repeat scroll top;height:16px;width: 16px;display: block;}
+.del:hover {background-position: bottom !important;}
+.msg_cache {background:transparent url('./../image/messagerie_cacher.png') no-repeat scroll top;height:16px;width: 16px;display: block;float:left;}
+.msg_voir{background:transparent url('./../image/messagerie_voir.png') no-repeat scroll top;height:16px;width: 16px;display: block;float:left;}
 
 h3.messagerie span.auteur
 {
@@ -380,11 +388,10 @@ h3.messagerie span.titre
 	font-weight : normal;
 }
 
-h3.messagerie span.date
+.messagerie span.date
 {
-	position : absolute;
-	right : 10px;
-	font-size : 0.8em;
+	font-style: italic;
+	font-size : 0.7em;
 }
 
 h4
