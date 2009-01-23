@@ -2,6 +2,7 @@
 {//-- Initialisation
 	require_once('inc/fp.php');
 	if(!isset($joueur)) { $joueur = recupperso($_SESSION["ID"]); }; 		//-- Récupération du tableau contenant toutes les informations relatives au joueur
+	check_perso($joueur);
 	echo '<div id="perso_contenu">';
 	require_once("levelup.php"); 				//-- Dans le cas ou le joueur a pris un level on traite son level up.
 }

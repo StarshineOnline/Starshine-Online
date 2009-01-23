@@ -45,23 +45,33 @@ function message_affiche($message, $joueur_id, $thread_title = '')
 		}
 	}
 	if ($message->etat=='non_lu'){$div_nonlu = '<div style="background:transparent url(./../image/v2/box_accueil2.png);">';$divfin_nonlu = '</div>';}
+	
+		if($message->etat != 'important' && $message->etat != 'masque') 
+		{
+			$fav = '<a href="message_change_etat.php?id_message='.$message->id_message.'&amp;etat=important" onclick="return envoiInfo(this.href, \'message'.$message->id_message.'\')"><span class="fav_off"></span></a><a href="message_change_etat.php?id_message='.$message->id_message.'&amp;etat=masque" onclick="return envoiInfo(this.href, \'message'.$message->id_message.'\')"><span class="msg_cache"></span></a>';
+		}
+		elseif($message->etat == 'masque')
+		{
+			$fav = '<a href="message_change_etat.php?id_message='.$message->id_message.'&amp;etat=lu" onclick="return envoiInfo(this.href, \'message'.$message->id_message.'\')"><span class="msg_voir"></span></a>';		
+			$masque = 'display:none;';
+		}
+		else 
+		{
+			$fav = '<a href="message_change_etat.php?id_message='.$message->id_message.'&amp;etat=lu" onclick="return envoiInfo(this.href, \'message'.$message->id_message.'\')"><span class="fav_on"></span></a>';
+		}	
+		if($joueur_id == $message->id_auteur) $del =  '<a href="message_change_etat.php?id_message='.$message->id_message.'&amp;etat=del" onclick="if(confirm(\'Voulez vous supprimer votre message ?\')) return envoiInfo(this.href, \'message'.$message->id_message.'\'); else return false;"><span class="del"></span></a>';		
 	$message_affiche = $div_nonlu.'
 		<span class="messagerie" onclick="$(\'mess'.$message->id_message.'\').toggle();">
 			<span class="auteur" '.$style.'>'.$message->nom_auteur.'</span>
 			<span class="titre">'.$titre.'</span>
-			<span class="date">'.$message->etat.' / '.$date.'</span>
+			<span class="date">'.$date.'</span>
 		</span>
-		<p id="mess'.$message->id_message.'" style="padding:2px;">'.$message_texte.'</p>';
-
-		$message_affiche .= '<div class="message_action">';
-	//Masquer
-	if($message->etat != 'masque') $actions[] = '<a href="message_change_etat.php?id_message='.$message->id_message.'&amp;etat=masque" onclick="return envoiInfo(this.href, \'message'.$message->id_message.'\')">Masquer</a>';
-	//Important
-	if($message->etat != 'important') $actions[] = '<a href="message_change_etat.php?id_message='.$message->id_message.'&amp;etat=important" onclick="return envoiInfo(this.href, \'message'.$message->id_message.'\')">Important</a>';
-	//Suppression
-	if($joueur_id == $message->id_auteur) $actions[] = '<a href="message_change_etat.php?id_message='.$message->id_message.'&amp;etat=del" onclick="if(confirm(\'Voulez vous supprimer votre message ?\')) return envoiInfo(this.href, \'message'.$message->id_message.'\'); else return false;">Supprimer</a>';
-	$actions_implode = implode(' / ', $actions);
-	$message_affiche .= $actions_implode.'</div>
+		<span style="float:right">'.$fav.'</span>
+		<p id="mess'.$message->id_message.'" style="clear:both;padding:2px;'.$masque.'" >'.$message_texte.'</p>
+		<div class="message_action">
+		'.$del.'
+	</div>
 	<div class="spacer"></div>'.$divfin_nonlu;
+	
 	return $message_affiche;
 }

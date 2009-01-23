@@ -152,20 +152,22 @@ class craft_recette
 		{
 			if($R['diplo'] == 127)
 			{
-				//On r?cup?re toutes les infos sur le labo du joueur (ou pas)
+				//On récupçre toutes les infos sur le labo du joueur (ou pas)
 				$terrain = new terrain();
 				$terrain = $terrain->recoverByIdJoueur($joueur['ID']);
 				//Si il poss?de un terrain
 				if(is_object($terrain))
 				{
-					$terrain->get_laboratoire();
-					$instruments = $terrain->laboratoire->get_laboratoire_instrument();
-					foreach($instruments as $instrument)
+					if($terrain->get_laboratoire())
 					{
-						$instru = $instrument->get_instrument();
-						$types[$instru->type]['pa'] = $instru->pa;
-						$types[$instru->type]['mp'] = $instru->mp;
-						$types[$instru->type]['cout'] = 0;
+						$instruments = $terrain->laboratoire->get_laboratoire_instrument();
+						foreach($instruments as $instrument)
+						{
+							$instru = $instrument->get_instrument();
+							$types[$instru->type]['pa'] = $instru->pa;
+							$types[$instru->type]['mp'] = $instru->mp;
+							$types[$instru->type]['cout'] = 0;
+						}
 					}
 				}
 			}

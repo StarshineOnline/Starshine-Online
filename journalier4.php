@@ -6,10 +6,10 @@ include('class/db.class.php');
 include('fonction/time.inc.php');
 include('fonction/action.inc.php');
 
-//R?cup?re le timestamp en milliseconde de d?but de cr?ation de la page
+//Récupère le timestamp en milliseconde de début de création de la page
 $debut = getmicrotime();
 
-//R?cup?ration des variables de connexion ? la base et connexion ? cette base
+//Récupération des variables de connexion à la base et connexion à cette base
 include('connect.php');
 
 //Inclusion du fichier contenant toutes les variables indispensablent
@@ -141,18 +141,19 @@ foreach($ressources as $res)
 $batiment = array();
 $requete = "SELECT * FROM batiment WHERE type = 'mine'";
 $req = $db->query($requete);
-while($row = $db->read_assoc($requete))
+while($row = $db->read_assoc($req))
 {
 	$batiment[$row['id']] = $row;
 }
-//@TODO gérer les mines sans construction
+echo '<pre>';
+//@TODO gérer les mines dans construction
 $requete = "SELECT * FROM construction LEFT JOIN map ON map.ID = (construction.y * 1000) + construction.x WHERE construction.type = 'mine'";
 $req = $db->query($requete);
-while($row = $db->read_assoc($requete))
+while($row = $db->read_assoc($req))
 {
 	$terrain = type_terrain($row['info']);
 	$ress_terrain = $ress[$terrain[1]];
-	$royaume = get_royaume_info($row['royaume'], 'orc');
+	$royaume = get_royaume_info($row['royaume'], $row['royaume']);
 	if($batiment[$row['id_batiment']]['bonus2'] != 0)
 	{
 		switch($batiment[$row['id_batiment']]['bonus2'])

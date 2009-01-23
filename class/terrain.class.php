@@ -121,7 +121,7 @@ class terrain
 	function get_laboratoire()
 	{
 		global $db;
-		$this->laboratoire = array();
+		$this->laboratoire = false;
 		$requete = "SELECT terrain_construction.id as id, id_terrain, id_batiment FROM terrain_construction LEFT JOIN terrain_batiment ON terrain_construction.id_batiment = terrain_batiment.id WHERE id_terrain = ".$this->id." AND type = 'laboratoire'";
 		$req = $db->query($requete);
 		while($row = $db->read_assoc($res))

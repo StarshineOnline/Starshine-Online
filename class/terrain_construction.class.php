@@ -100,5 +100,18 @@ class terrain_construction{
 		}
 		return $this->laboratoire_instruments;
 	}
+
+	function get_coffre_inventaire()
+	{
+		global $db;
+		$this->coffre_inventaire = array();
+		$requete = "SELECT id, id_coffre, objet FROM terrain_coffre WHERE id_coffre = ".$this->id;
+		$req = $db->query($requete);
+		while($row = $db->read_assoc($req))
+		{
+			$this->coffre_inventaire[] = new terrain_coffre($row);
+		}
+		return $this->coffre_inventaire;
+	}
 }
 ?>

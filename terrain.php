@@ -29,6 +29,8 @@ $_SESSION['position'] = $position;
 			switch($batiment->type)
 			{
 				case 'coffre' :
+					$coffre_inventaire = $construction->get_coffre_inventaire();
+					print_r($coffre_inventaire);
 					echo 'C\'est un coffre';
 				break;
 				case 'laboratoire' :
@@ -43,14 +45,14 @@ $_SESSION['position'] = $position;
 						$instru = $instrument->get_instrument();
 						echo $instru->nom;
 						$requete = "SELECT id, nom, prix FROM craft_instrument WHERE requis = ".$instrument->id_instrument;
-						$req = $db->query($requete);
+						$req_i = $db->query($requete);
 						if($db->num_rows > 0)
 						{
 							$taxe = 1 + ($R['taxe'] / 100);
-							while($row = $db->read_assoc($req))
+							while($row_i = $db->read_assoc($req_i))
 							{
-								$prix = round($row['prix'] * $taxe);
-								echo ' <a href="terrain.php?upgrade_instrument='.$row['id'].'&amp;labo='.$construction->id.'" onclick="return envoiInfo(this.href, \'carte\');">améliorer en '.$row['nom'].' pour '.$prix.' stars</a>';
+								$prix = round($row_i['prix'] * $taxe);
+								echo ' <a href="terrain.php?upgrade_instrument='.$row_i['id'].'&amp;labo='.$construction->id.'" onclick="return envoiInfo(this.href, \'carte\');">améliorer en '.$row_i['nom'].' pour '.$prix.' stars</a>';
 							}
 						}
 						echo '<br />';
