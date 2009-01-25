@@ -3,6 +3,7 @@
 $mail = '';
 
 include('class/db.class.php');
+include('class/construction.class.php');
 include('fonction/time.inc.php');
 include('fonction/action.inc.php');
 
@@ -43,6 +44,7 @@ while($row = $db->read_assoc($req))
 	}
 }
 
+print_r($ress);
 //Ressource normale
 $i = 0;
 $key = array_keys($ressources);
@@ -53,8 +55,8 @@ foreach($ressources as $res)
 	while($j < count($res))
 	{
 		$k = 0;
-		$kei = array_keys($ress[$keys[$j]]);
-		foreach($ress[$keys[$j]] as $rr)
+		$kei = array_keys($ress[utf8_decode($keys[$j])]);
+		foreach($ress[utf8_decode($keys[$j])] as $rr)
 		{
 			$ressource_final[$key[$i]][$kei[$k]] += $rr * $ressources[$key[$i]][$keys[$j]];
 			if($kei[$k] == 'Nourriture') $tot_nou += $rr * $ressources[$key[$i]][$keys[$j]];
@@ -64,8 +66,10 @@ foreach($ressources as $res)
 	}
 	$i++;
 }
+
+
 //Suppression des mines sans bourg
-$requete = "SELECT a.id as id, a.rechargement, c.id as bourg_id FROM `construction` as a LEFT JOIN construction as c ON a.rechargement = c.id WHERE a.type ='mine' AND a.royaume = ".$R['ID'];
+$requete = "SELECT a.id as id, a.rechargement, c.id as bourg_id FROM `construction` as a LEFT JOIN construction as c ON a.rechargement = c.id WHERE a.type ='mine'";
 $req = $db->query($requete);
 while($row = $db->read_assoc($req))
 {
@@ -75,7 +79,6 @@ while($row = $db->read_assoc($req))
 		$mine->supprimer();
 	}
 }
-
 
 //Ressource mine
 //On récupère la liste des batiments de type mine
@@ -92,7 +95,8 @@ $req = $db->query($requete);
 while($row = $db->read_assoc($req))
 {
 	$terrain = type_terrain($row['info']);
-	$ress_terrain = $ress[$terrain[1]];
+	echo utf8_decode($terrain[1]);
+	$ress_terrain = $ress[utf8_decode($terrain[1])];
 	$royaume = get_royaume_info($row['royaume'], $row['royaume']);
 	if($batiment[$row['id_batiment']]['bonus2'] != 0)
 	{

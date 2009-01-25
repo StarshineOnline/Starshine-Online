@@ -11,7 +11,7 @@ if($joueur['groupe'] != 0) $groupe_joueur = recupgroupe($joueur['groupe'], ''); 
 normalize_entry_charset(array('titre', 'message'));
 
 //Envoi du message
-if(isset($_GET['titre']))
+if(isset($_GET['message']))
 {
 	$titre = addslashes($_GET['titre']);
 	$message = addslashes($_GET['message']);

@@ -63,7 +63,6 @@ function message_affiche($message, $joueur_id, $thread_title = '')
 	$message_affiche = $div_nonlu.'
 		<span class="messagerie" onclick="$(\'mess'.$message->id_message.'\').toggle();">
 			<span class="auteur" '.$style.'>'.$message->nom_auteur.'</span>
-			<span class="titre">'.$titre.'</span>
 			<span class="date">'.$date.'</span>
 		</span>
 		<span style="float:right">'.$fav.'</span>

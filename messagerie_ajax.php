@@ -26,6 +26,15 @@ if(!array_key_exists('action', $_GET))
 			<?php
 		}
 		$messagerie->set_thread_lu($id_thread);
+		?>
+		<form method="post" action="javascript:message = document.getElementById('message').value.replace(new RegExp('\n', 'gi'), '[br]'); envoiInfoPost('envoimessage.php?id_type=<?php echo $id_type; ?>&amp;'+'&amp;message=' + message, 'information');">
+		
+		<textarea name="message" id="message" cols="53" rows="7"></textarea>
+		<br />
+		<input type="submit" name="btnSubmit" value="Envoyer" />
+		
+		</form>
+	<?php
 	}
 }
 else
