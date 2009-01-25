@@ -6,6 +6,7 @@ class messagerie_thread
 	public $id_dest;
 	public $id_auteur;
 	public $important;
+	public $dernier_message;
 	
 	/**	
 	    *  	Constructeur permettant la création d'un thread de messagerie.
@@ -14,17 +15,18 @@ class messagerie_thread
 	    *		-messagerie_thread() qui construit un thread "vide".
 	    *		-messagerie_thread($id) qui va chercher le thread dont l'id est $id dans la base.
 	**/
-	function __construct($id_thread = 0, $id_groupe = 0, $id_dest = 0, $id_auteur = 0, $important = 0)
+	function __construct($id_thread = 0, $id_groupe = 0, $id_dest = 0, $id_auteur = 0, $important = 0, $dernier_message = '')
 	{
 		global $db;
+		if($dernier_message == null) $dernier_message = date("Y-m-d H:i:s", time());
 		//Verification du nombre et du type d'argument pour construire le thread adequat.
 		if( (func_num_args() == 1) && is_numeric($id_thread) )
 		{
-			$requeteSQL = $db->query('SELECT id_groupe, id_dest, id_auteur, important FROM messagerie_thread WHERE id_thread = '.$id_thread);
+			$requeteSQL = $db->query('SELECT id_groupe, id_dest, id_auteur, important, dernier_message FROM messagerie_thread WHERE id_thread = '.$id_thread);
 			//Si le thread est dans la base, on le charge sinon on cr?e un thread vide.
 			if( $db->num_rows($requeteSQL) > 0 )
 			{
-				list($this->id_groupe, $this->id_dest, $this->id_auteur, $this->important) = $db->read_row($requeteSQL);
+				list($this->id_groupe, $this->id_dest, $this->id_auteur, $this->important, $this->dernier_message) = $db->read_row($requeteSQL);
 			}
 			else $this->__construct();
 		}
@@ -34,6 +36,7 @@ class messagerie_thread
 			$this->id_dest = $id_dest;
 			$this->id_auteur = $id_auteur;
 			$this->important = $important;
+			$this->dernier_message = $dernier_message;
 		}
 		$this->id_thread = $id_thread;
 	}
@@ -69,14 +72,14 @@ class messagerie_thread
 		if( $this->id_thread > 0 )
 		{
 			$requete = 'UPDATE messagerie_thread SET ';
-			$requete .= 'id_groupe = '.$this->id_groupe.', id_dest = '.$this->dest.', id_auteur = '.$this->id_auteur.', important = '.$this->important;
+			$requete .= 'id_groupe = '.$this->id_groupe.', id_dest = '.$this->id_dest.', id_auteur = '.$this->id_auteur.', important = '.$this->important.', dernier_message = "'.$this->dernier_message.'"';
 			$requete .= ' WHERE id_thread = '.$this->id_thread;
 			$db->query($requete);
 		}
 		else
 		{
-			$requete = 'INSERT INTO messagerie_thread (id_groupe, id_dest, id_auteur, important) VALUES(';
-			$requete .= $this->id_groupe.', '.$this->id_dest.', '.$this->id_auteur.', '.$this->important.')';
+			$requete = 'INSERT INTO messagerie_thread (id_groupe, id_dest, id_auteur, important, dernier_message) VALUES(';
+			$requete .= $this->id_groupe.', '.$this->id_dest.', '.$this->id_auteur.', '.$this->important.', "'.$this->dernier_message.'")';
 			$db->query($requete);
 			//R?cuperation du dernier ID ins?r?.
 			$this->id_thread = $db->last_insert_id();

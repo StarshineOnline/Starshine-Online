@@ -43,7 +43,7 @@ class messagerie
 		return $return;		
 	}
 	
-	//R?cup?ration de tous les threads pour ce perso
+	//Récupération de tous les threads pour ce perso
 	function get_threads($type = 'groupe', $tri_date = 'ASC', $liste_message = false, $nombre_message = 'all')
 	{
 		global $db;
@@ -58,19 +58,18 @@ class messagerie
 				$where = 'id_dest = '.$this->id_perso.' OR (id_auteur = '.$this->id_perso.' AND id_groupe = 0)';
 			break;
 		}
-		$requete = "SELECT id_thread, id_groupe, id_dest, id_auteur, important FROM messagerie_thread WHERE ".$where." ORDER BY important DESC, id_thread DESC";
+		$requete = "SELECT id_thread, id_groupe, id_dest, id_auteur, important, dernier_message FROM messagerie_thread WHERE ".$where." ORDER BY important DESC, dernier_message DESC, id_thread DESC";
 		$req = $db->query($requete);
 		$i = 0;
 		while($row = $db->read_assoc($req))
 		{
-			$this->threads[$i] = new messagerie_thread($row['id_thread'], $row['id_groupe'], $row['id_dest'], $row['id_auteur'], $row['important']);
+			$this->threads[$i] = new messagerie_thread($row['id_thread'], $row['id_groupe'], $row['id_dest'], $row['id_auteur'], $row['important'], $row['dernier_message']);
 			if($liste_message) $this->threads[$i]->get_messages($nombre_message, $tri_date);
 			$i++;
 		}
-		return $this->threads;
 	}
 
-	//R?cup?ration du nombre de message non lu pour ce thread et ce perso
+	//Récupération du nombre de message non lu pour ce thread et ce perso
 	function get_thread_non_lu($id_thread = 0)
 	{
 		global $db;
@@ -95,7 +94,7 @@ class messagerie
 		else return false;
 	}
 	
-	//R?cup?re le thread et les ?tats de message
+	//Récupère le thread et les ?tats de message
 	function get_thread($id_thread = 0, $nombre = 'all', $tri_date = 'ASC')
 	{
 		global $db;
@@ -139,22 +138,26 @@ class messagerie
 	function envoi_message($id_thread = 0, $id_dest = 0, $titre = 'Titre vide', $message, $id_groupe = 0, $roi = 0)
 	{
 		global $db;
-		//Cr?ation du thread si besoin
+		//Création du thread si besoin
 		if($id_thread == 0)
 		{
 			if($roi == 0) $important = 0;
 			else $important = 1;
-			$thread = new messagerie_thread(0, $id_groupe, $id_dest, $this->id_perso, $important);
+			$thread = new messagerie_thread(0, $id_groupe, $id_dest, $this->id_perso, $important, null);
 			$thread->sauver();
 			$id_thread = $thread->id_thread;
 		}
+		else $thread = new messagerie_thread($id_thread);
 
-		//Cr?ation du message
+		//Création du message
 		$auteur = recupperso_essentiel($this->id_perso, 'nom');
 		if($id_dest > 0) $dest = recupperso_essentiel($id_dest, 'nom');
 		else $dest['nom'] = null;
 		$message = new messagerie_message(0, $this->id_perso, $id_dest, $titre, $message, $id_thread, null, $auteur['nom'], $dest['nom']);
 		$message->sauver();
+		//On modifie le thread
+		$thread->dernier_message = date("Y-m-d H:i:s", time());
+		$thread->sauver();
 
 		//Si c'est un message de groupe
 		if($groupe = recupgroupe($id_groupe, ''))
@@ -172,7 +175,7 @@ class messagerie
 			$type_groupe = 0;
 		}
 		
-		//On ajoute un ?tat pour chaque membre
+		//On ajoute un état pour chaque membre
 		foreach($ids_dest as $id)
 		{
 			if($id != $this->id_perso) $etat = 'non_lu';

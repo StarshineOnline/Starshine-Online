@@ -90,7 +90,7 @@ else
 		<?php
 		foreach($messagerie->threads as $key => $thread)
 		{
-			$date = $thread->messages[0]->date;
+			$date = $thread->dernier_message;
 			if($thread->important) $style = 'font-weight : bold;';
 			else $style = '';
 			$thread_non_lu = $messagerie->get_thread_non_lu($thread->id_thread);

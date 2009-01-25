@@ -17,9 +17,10 @@ $W_req = $db->query($W_requete);
 $W_row = $db->read_array($W_req);
 $R = get_royaume_info($joueur['race'], $W_row['royaume']);
 $_SESSION['position'] = $position;
-?>
-	<?php 
-	include('ville_bas.php');
+include('ville_bas.php');
+	?>
+<div class="ville_test">
+	<?php
 	if($verif_ville AND $R['diplo'] == 127)
 	{
 		if(array_key_exists('id_construction', $_GET))
@@ -96,7 +97,8 @@ $_SESSION['position'] = $position;
 			$terrain = new terrain();
 			$terrain = $terrain->recoverByIdJoueur($joueur['ID']);
 			$batiment = new terrain_batiment($_GET['upgrade']);
-			$cout_total = $batiment->point_structure * $_GET['star_point'];
+			$star_point = ceil($_GET['star_point']);
+			$cout_total = $batiment->point_structure * $star_point;
 			if($cout_total > 0)
 			{
 				if($joueur['star'] >= $cout_total)
@@ -116,7 +118,7 @@ $_SESSION['position'] = $position;
 						$chantier = new terrain_chantier();
 						$chantier->id_batiment = $batiment->id;
 						$chantier->id_terrain = $terrain->id;
-						$chantier->star_point = $_GET['star_point'];
+						$chantier->star_point = $star_point;
 						if($batiment->type != 'agrandissement') $chantier->upgrade_id_construction = $row['id'];
 						$chantier->sauver();
 						//On supprime les stars du joueur
@@ -137,7 +139,8 @@ $_SESSION['position'] = $position;
 			$terrain = new terrain();
 			$terrain = $terrain->recoverByIdJoueur($joueur['ID']);
 			$batiment = new terrain_batiment($_GET['construire']);
-			$cout_total = $batiment->point_structure * $_GET['star_point'];
+			$star_point = ceil($_GET['star_point']);
+			$cout_total = $batiment->point_structure * $star_point;
 			if($cout_total > 0)
 			{
 				if($joueur['star'] >= $cout_total)
@@ -148,7 +151,7 @@ $_SESSION['position'] = $position;
 						$chantier = new terrain_chantier();
 						$chantier->id_batiment = $batiment->id;
 						$chantier->id_terrain = $terrain->id;
-						$chantier->star_point = $_GET['star_point'];
+						$chantier->star_point = $star_point;
 						$chantier->sauver();
 						//On supprime les stars du joueur
 						$requete = "UPDATE perso SET star = star - ".$cout_total." WHERE ID = ".$joueur['ID'];
@@ -267,6 +270,9 @@ $_SESSION['position'] = $position;
 				<input type="button" value="Valider" onclick="envoiInfo('terrain.php?construire=' + $('construction').value + '&amp;star_point=' + $('star_point').value, 'carte');" />
 				<?php
 			}
+			?>
+			<?php
 		}
 	}
 	?>
+</div>

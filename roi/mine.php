@@ -39,9 +39,11 @@ if(array_key_exists('id', $_GET))
 				{
 					$mine->get_evolution();
 					$overlib = 'Pierre : '.$mine->ressources['Pierre'].'<br />Bois : '.$mine->ressources['Bois'].'<br />Eau : '.$mine->ressources['Eau'].'<br />Sable : '.$mine->ressources['Sable'].'<br />Nourriture : '.$mine->ressources['Nourriture'].'<br />Charbon : '.$mine->ressources['Charbon'].'<br />Essence Magique : '.$mine->ressources['Essence Magique'].'<br />Star : '.$mine->ressources['Star'];
+					if($mine->evolution['cout'] != '') $evolution = ' - <a href="mine.php?mine='.$mine->id.'&amp;up" onclick="return envoiInfo(this.href, \'info_mine\');">Evoluer ('.$mine->evolution['cout'].' stars)</a>';
+					else $evolution = '';
 					echo '
 					<li onmouseover="'.make_overlib($overlib).'" onmouseout="return nd();">
-						'.$mine->nom.' - X : '.$mine->x.' - Y : '.$mine->y.' - <a href="mine.php?mine='.$mine->id.'&amp;up" onclick="return envoiInfo(this.href, \'info_mine\');">Evoluer ('.$mine->evolution['cout'].' stars)</a> - <a href="mine.php?mine='.$mine->id.'&amp;suppr" onclick="return envoiInfo(this.href, \'info_mine\');">X</a>
+						'.$mine->nom.' - X : '.$mine->x.' - Y : '.$mine->y.$evolution.' - <a href="mine.php?mine='.$mine->id.'&amp;suppr" onclick="return envoiInfo(this.href, \'info_mine\');">X</a>
 					</li>';
 				}
 			?>
@@ -259,6 +261,11 @@ else
 			}
 		?>
 		</ul>
+		<?php
+		}
+		if(count($bourg->placements) > 0)
+		{
+		?>
 		<ul style="margin-left : 15px;">
 		<?php
 			foreach($bourg->placements as $placement)
