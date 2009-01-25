@@ -19,7 +19,7 @@ $R = get_royaume_info($joueur['race'], $W_row['royaume']);
 $_SESSION['position'] = convert_in_pos($joueur['x'], $joueur['y']);
 if(array_key_exists('fort', $_GET)) $fort = '&amp;fort=ok'; else $fort = '';
 ?>
-    	<h2 class="ville_titre"><?php if(!array_key_exists('fort', $_GET)) return_ville('<a href="ville.php?poscase='.$pos.'" onclick="return envoiInfo(this.href, \'centre\')">'.$R['nom'].'</a> - ', $pos); ?> <?php echo '<a href="taverne.php?poscase='.$pos.'" onclick="return envoiInfo(this.href,\'carte\')">';?> Magasin </a></h2>
+    	<h2 class="ville_titre"><?php if(!array_key_exists('fort', $_GET)) return_ville('<a href="ville.php?poscase='.$pos.'" onclick="return envoiInfo(this.href, \'centre\')">'.$R['nom'].'</a> - ', $pos); ?> <?php echo '<a href="taverne.php?poscase='.$pos.'" onclick="return envoiInfo(this.href,\'carte\')">';?> Taverne </a></h2>
 				<?php include('ville_bas.php');?>
 		<?php
 $W_distance = detection_distance($pos, $_SESSION["position"]);
@@ -169,8 +169,13 @@ if($W_distance == 0)
 				$actuel = $R['alchimie'] - $min;
 				$pourcent = round((($actuel / $total) * 100), 2);
 				echo $pourcent.'% du déblocage de la prochaine recette !<br />';
+				if($R['diplo'] == 127')
+				{
 				?>
 				<a href="alchimiste.php?action=recherche" onclick="return envoiInfo(this.href, 'carte');">Faire des recherches en alchimie (10 PA)</a>
+				<?php
+				}
+				?>
 			</span>
 		</div>
 		<br />

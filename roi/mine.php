@@ -204,7 +204,7 @@ elseif(array_key_exists('add', $_GET))
 		}
 	}
 }
-//Ajout d'une mine
+//Upgrade d'une mine
 elseif(array_key_exists('up', $_GET))
 {
 	$mine = new mine($_GET['mine']);
@@ -218,6 +218,10 @@ elseif(array_key_exists('up', $_GET))
 		$mine->hp = round(($mine->hp / $mine->get_hp_max()) * $mine->evolution['hp']);
 		$mine->nom = $mine->evolution['nom'];
 		$mine->sauver();
+
+		//On enlève les stars au royaume
+		$requete = "UPDATE royaume SET star = star - ".$mine->evolution['cout']." WHERE ID = ".$R['ID'];
+		$db->query($requete);
 	}
 	else
 	{

@@ -139,7 +139,7 @@ if(!empty($joueur["groupe"]))
 				$objGrade = $db->read_assoc($RqGrade);
 				$groupe["membre"][$m]["grade"] = $objGrade["nom"];
 			}
-			$overlib = "<ul><li class='overlib_titres'>".ucwords($groupe["membre"][$m]["grade"])." ".ucwords($groupe["membre"][$m]["nom"])."</li><li>".ucwords($groupe["membre"][$m]["race"])." - ".ucwords($groupe["membre"][$m]["classe"])." (Niv.".$groupe["membre"][$m]["level"].")</li><li>HP : ".$groupe["membre"][$m]["hp"]." / ".$groupe["membre"][$m]["hp_max"]."</li><li>MP : ".$groupe["membre"][$m]["mp"]." / ".$groupe["membre"][$m]["mp_max"]."</li><li>Posisiton : x:".$objMembre["x"].", y:".$objMembre["y"]."</li><li>Distance : ".$groupe["membre"][$m]["poscase"]." - Pitagorienne : ".$groupe["membre"][$m]["pospita"]."</li>";
+			$overlib = "<ul><li class='overlib_titres'>".ucwords($groupe["membre"][$m]["grade"])." ".ucwords($groupe["membre"][$m]["nom"])."</li><li>".ucwords($groupe["membre"][$m]["race"])." - ".ucwords($groupe["membre"][$m]["classe"])." (Niv.".$groupe["membre"][$m]["level"].")</li><li>HP : ".$groupe["membre"][$m]["hp"]." / ".$groupe["membre"][$m]["hp_max"]."</li><li>MP : ".$groupe["membre"][$m]["mp"]." / ".$groupe["membre"][$m]["mp_max"]."</li><li>Posisiton : x:".$objMembre["x"].", y:".$objMembre["y"]."</li><li>Distance : ".$groupe["membre"][$m]["poscase"]." - Pytagorienne : ".$groupe["membre"][$m]["pospita"]."</li>";
 			{//-- Récupération des buffs
 				$groupe["membre"][$m]["buff"] = array();
 				$groupe["membre"][$m]["debuff"] = array();
