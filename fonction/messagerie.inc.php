@@ -48,18 +48,18 @@ function message_affiche($message, $joueur_id, $thread_title = '')
 	
 		if($message->etat != 'important' && $message->etat != 'masque') 
 		{
-			$fav = '<a href="message_change_etat.php?id_message='.$message->id_message.'&amp;etat=important" onclick="return envoiInfo(this.href, \'message'.$message->id_message.'\')"><span class="fav_off"></span></a><a href="message_change_etat.php?id_message='.$message->id_message.'&amp;etat=masque" onclick="return envoiInfo(this.href, \'message'.$message->id_message.'\')"><span class="msg_cache"></span></a>';
+			$fav = '<a href="message_change_etat.php?id_message='.$message->id_message.'&amp;etat=important" onclick="return envoiInfo(this.href, \'message'.$message->id_message.'\')" title="Mettre en favoris"><span class="fav_off"></span></a><a href="message_change_etat.php?id_message='.$message->id_message.'&amp;etat=masque" onclick="return envoiInfo(this.href, \'message'.$message->id_message.'\')" title="Masquer"><span class="msg_cache"></span></a>';
 		}
 		elseif($message->etat == 'masque')
 		{
-			$fav = '<a href="message_change_etat.php?id_message='.$message->id_message.'&amp;etat=lu" onclick="return envoiInfo(this.href, \'message'.$message->id_message.'\')"><span class="msg_voir"></span></a>';		
+			$fav = '<a href="message_change_etat.php?id_message='.$message->id_message.'&amp;etat=lu" onclick="return envoiInfo(this.href, \'message'.$message->id_message.'\')" title="Afficher"><span class="msg_voir"></span></a>';
 			$masque = 'display:none;';
 		}
 		else 
 		{
-			$fav = '<a href="message_change_etat.php?id_message='.$message->id_message.'&amp;etat=lu" onclick="return envoiInfo(this.href, \'message'.$message->id_message.'\')"><span class="fav_on"></span></a>';
+			$fav = '<a href="message_change_etat.php?id_message='.$message->id_message.'&amp;etat=lu" onclick="return envoiInfo(this.href, \'message'.$message->id_message.'\')" title="Mettre en favoris"><span class="fav_on"></span></a>';
 		}	
-		if($joueur_id == $message->id_auteur) $del =  '<a href="message_change_etat.php?id_message='.$message->id_message.'&amp;etat=del" onclick="if(confirm(\'Voulez vous supprimer votre message ?\')) return envoiInfo(this.href, \'message'.$message->id_message.'\'); else return false;"><span class="del"></span></a>';		
+		if($joueur_id == $message->id_auteur) $del =  '<a href="message_change_etat.php?id_message='.$message->id_message.'&amp;etat=del" onclick="if(confirm(\'Voulez vous supprimer votre message ?\')) return envoiInfo(this.href, \'message'.$message->id_message.'\'); else return false;" title="Supprimer"><span class="del"></span></a>';		
 	$message_affiche = $div_nonlu.'
 		<span class="messagerie" onclick="$(\'mess'.$message->id_message.'\').toggle();">
 			<span class="auteur" '.$style.'>'.$message->nom_auteur.'</span>

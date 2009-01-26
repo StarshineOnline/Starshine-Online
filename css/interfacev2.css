@@ -220,6 +220,10 @@ margin-top:-3px;}
   Vrac
  ***************************************************/
 #loading {background:transparent url('./../image/ajax-loader-bar.gif') no-repeat scroll left center;height:22px;margin-left:120px;position:absolute;top:330px;width:220px;}
+
+#messagerie_menu {text-align: center;}
+#messagerie_menu span {padding:2px;margin:2px;cursor: pointer !important;}
+
 #conteneur_test {height:100%;width:100%;z-index: 99999;cursor: wait;position: absolute;}
 .infoperso {
 	vertical-align : top;

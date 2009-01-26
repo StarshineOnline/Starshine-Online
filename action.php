@@ -9,7 +9,8 @@ check_perso($joueur);
 $round_max = 10;
 if($joueur['race'] == 'orc') $round_max++;
 ?>
-	<h2><a href="actions.php" onclick="return envoiInfo(this.href, 'information');">Script de combat</a> -  Création</h2>
+	<fieldset>
+		<legend>Script de combat - Création</legend>
 	<?php
 	//Changement du nom du script
 	if(array_key_exists('action', $_GET) && $_GET['action'] == 'change_nom')
@@ -420,4 +421,4 @@ if(array_key_exists('from', $_GET) && $_GET['id_action'] != '')
 echo '</div>';
 
 ?>
-</div>
+	</fieldset>

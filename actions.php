@@ -7,7 +7,8 @@ include('haut_ajax.php');
 $joueur = recupperso($_SESSION['ID']);
 check_perso($joueur);
 ?>
-		<h2>Script de combat</h2>
+	<fieldset>
+		<legend>Script de combat</legend>
 		<?php
 		//Suppression du script
 		if(array_key_exists('action', $_GET) && $_GET['action'] == 'suppr_action')
@@ -80,7 +81,6 @@ check_perso($joueur);
 		$script_attaque = recupaction_all($joueur['action_a']);
 		$script_defense = recupaction_all($joueur['action_d']);
 		?>
-		<div class="information_case">
 			Voici l'interface du script de combat, grace à celui ci vous pourrez attaquer avec des sorts ou des compétences.<br />
 			<h3>Création</h3>
 				<ul>
@@ -214,4 +214,5 @@ check_perso($joueur);
 		de défense qui s'exécutera automatiquement si vous êtes attaqués par d'autre joueurs. (les compétences que vous pourrez utiliser dans votre script sont limitées par votre réserve de mana)</p>
 		<p><a href="http://wiki.starshine-online.com/index.php?n=PmWiki.ScriptsDeCombat">Pour avoir plus d'information sur le script de combat</a></p>
 		</div>
-	</div>
+
+	</fieldset>

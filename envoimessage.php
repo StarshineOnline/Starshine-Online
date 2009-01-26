@@ -52,7 +52,7 @@ if(isset($_GET['message']))
 	{
 		echo '<h5>Vous n\'avez pas saisi de titre</h5>';
 	}
-	echo '<a href="'.$_SERVER["HTTP_REFERER"].'">Retour au jeu</a><br />';
+	echo '<a href="messagerie.php" onclick="return envoiInfo(this.href, \'information\');">Retour à la messagerie</a><br />';
 }
 else
 {

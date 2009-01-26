@@ -95,13 +95,13 @@ class messagerie
 	}
 	
 	//Récupère le thread et les ?tats de message
-	function get_thread($id_thread = 0, $nombre = 'all', $tri_date = 'ASC')
+	function get_thread($id_thread = 0, $nombre = 'all', $tri_date = 'ASC', $numero_page = false, $message_par_page = 10)
 	{
 		global $db;
 		if($id_thread != 0)
 		{
 			$this->thread = new messagerie_thread($id_thread);
-			$this->thread->get_messages($nombre, $tri_date, $this->id_perso);
+			$this->thread->get_messages($nombre, $tri_date, $this->id_perso, $numero_page, $message_par_page);
 		}
 		else return false;
 	}

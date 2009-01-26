@@ -1,6 +1,9 @@
 <?php
 include('inc/fp.php');
-echo '<h2>Effectuer un échange</h2>';
+?>
+<fieldset>
+<legend>Effectuer un échange</legend>
+<?php
 $joueur = recupperso($_SESSION['ID']);
 //Si un identifiant d'echange est passé alors on récupère les infos sur cet échange
 if(array_key_exists('id_echange', $_GET))
@@ -400,3 +403,4 @@ if($echange['statut'] != 'annule' AND isset($echange))
 <?php
 }
 ?>
+</legend>

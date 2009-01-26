@@ -11,9 +11,21 @@ if(!array_key_exists('action', $_GET))
 	if (isset($_GET['id_thread']))
 	{
 		$id_thread = $_GET['id_thread'];
+		if(array_key_exists('page', $_GET))
+		{
+			$page = $_GET['page'];
+		}
+		else $page = 1;
 		$messagerie = new messagerie($joueur['ID']);
-		$messagerie->get_thread($id_thread);
-		echo '<h3 style="text-align : center;">'.$messagerie->thread->messages[0]->titre.' / <a href="envoimessage.php?id_type=r'.$messagerie->thread->id_thread.'" onclick="return envoiInfo(this.href, \'information\')">Répondre</a></h3>';
+		$messagerie->get_thread($id_thread, 'all', 'ASC', $page, 10);
+		echo '<h3 style="text-align : center;">'.htmlspecialchars(stripslashes($messagerie->thread->messages[0]->titre)).' / <a href="envoimessage.php?id_type=r'.$messagerie->thread->id_thread.'" onclick="return envoiInfo(this.href, \'information\')">Répondre</a></h3>';
+		//Affichage des pages
+		$message_total = $messagerie->thread->get_message_total();
+		$page_max = ceil($message_total / 10);
+		if($page > 1) echo '<a href="messagerie.php?id_thread='.$messagerie->thread->id_thread.'&amp;page='.($page - 1).'" onclick="return envoiInfo(this.href, \'information\');"><< page précédente</a>';
+		else echo '<< page précédente';
+		if($page < $page_max) echo '<a href="messagerie.php?id_thread='.$messagerie->thread->id_thread.'&amp;page='.($page + 1).'" onclick="return envoiInfo(this.href, \'information\');">page suivante >></a>';
+		else echo 'page suivante >>';
 		foreach($messagerie->thread->messages as $message)
 		{
 			$message_affiche = message_affiche($message, $joueur['ID'], $messagerie->thread->messages[0]->titre);
@@ -90,7 +102,7 @@ else
 		<?php
 		foreach($messagerie->threads as $key => $thread)
 		{
-			$date = $thread->dernier_message;
+			$date = date("d-m H:i", strtotime($thread->dernier_message));
 			if($thread->important) $style = 'font-weight : bold;';
 			else $style = '';
 			$thread_non_lu = $messagerie->get_thread_non_lu($thread->id_thread);

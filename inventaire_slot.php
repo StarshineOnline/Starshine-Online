@@ -12,17 +12,7 @@
 //Filtre
 if(array_key_exists('filtre', $_GET)) $filtre_url = '&amp;filtre='.$_GET['filtre'];
 else $filtre_url = '';
-?>
-<table class="information_case" style="width:95%;">
-<tr>
-	<td>
-		Nom
-	</td>
-	<td>
-		Action
-	</td>
-</tr>
-<?php
+
 $i = 0;
 if($joueur['inventaire_slot'] != '')
 {
@@ -242,4 +232,3 @@ if($joueur['inventaire_slot'] != '')
 	}
 }
 ?>
-</table>

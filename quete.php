@@ -14,7 +14,8 @@ if(array_key_exists('action', $_GET))
 	}
 }
 ?>
-<h2 style="margin-bottom : 0px;">Quetes</h2>
+<fieldset>
+<legend>Quetes</legend>
 <div id="liste_quete">
 	<table width="99%">
 		<tr>
@@ -117,3 +118,4 @@ foreach ($ts as $tt => $tn)
 <div id="desc_quete" class="quete_description">
 	Pour avoir une description plus précise d'une quète, il vous faut simplement cliquer sur son titre dans la partie du haut.
 </div>
+</fieldset>

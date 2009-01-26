@@ -973,12 +973,16 @@ $compteur++;
 <?php
 if(!$visu)
 {
-	$check = 'checked="checked"';
 	 if(array_key_exists('filtre', $_GET)) $filtre = $_GET['filtre'];
 	 else $filtre = 'utile';
 ?>
 <p>Place restante dans l'inventaire : <?php echo ($G_place_inventaire - count($joueur['inventaire_slot'])) ?> / <?php echo $G_place_inventaire;?></p>
-<input type="radio" <?php if($filtre == 'utile') echo $check; ?> onclick="envoiInfo('inventaire_slot.php?javascript=ok&amp;filtre=utile', 'inventaire_slot')" name="filtre_inventaire_slot" /> Utile - <input type="radio" <?php if($filtre == 'arme') echo $check; ?> onclick="envoiInfo('inventaire_slot.php?javascript=ok&amp;filtre=arme', 'inventaire_slot')" name="filtre_inventaire_slot" /> Arme - <input type="radio" <?php if($filtre == 'armure') echo $check; ?> onclick="envoiInfo('inventaire_slot.php?javascript=ok&amp;filtre=armure', 'inventaire_slot')" name="filtre_inventaire_slot" /> Armure - <input type="radio" <?php if($filtre == 'autre') echo $check; ?> onclick="envoiInfo('inventaire_slot.php?javascript=ok&amp;filtre=autre', 'inventaire_slot')" name="filtre_inventaire_slot" /> Autre 
+<div id='messagerie_menu'>
+<span class="<?php if($filtre == 'utile'){echo 'seleted';}?>" onclick="envoiInfo('inventaire_slot.php?javascript=ok&amp;filtre=utile', 'inventaire_slot')">Utile</span>
+<span class="<?php if($filtre == 'arme'){ echo 'seleted';} ?>" onclick="envoiInfo('inventaire_slot.php?javascript=ok&amp;filtre=arme', 'inventaire_slot')">Arme</span>
+<span class="<?php if($filtre == 'armure'){echo 'seleted';}?>" onclick="envoiInfo('inventaire_slot.php?javascript=ok&amp;filtre=armure', 'inventaire_slot')">Armure</span>
+<span class="<?php if($filtre == 'autre'){echo 'seleted';}?>" onclick="envoiInfo('inventaire_slot.php?javascript=ok&amp;filtre=autre', 'inventaire_slot')">Autre</span>
+</div>
 <div id="inventaire_slot">
 	<?php
 	require_once('inventaire_slot.php');

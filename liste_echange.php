@@ -3,7 +3,8 @@ include('inc/fp.php');
 
 $joueur = recupperso($_SESSION['ID']);
 ?>
-<h2>Liste de vos échanges</h2>
+<fieldset>
+<legend>Liste de vos échanges</legend>
 <?php
 if(array_key_exists('annule', $_GET))
 {
@@ -92,3 +93,4 @@ else
 echo '</ul>';
 
 ?>
+</fieldset>
