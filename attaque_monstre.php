@@ -34,7 +34,8 @@ $R = get_royaume_info($joueur['race'], $W_row['royaume']);
 $W_distance = detection_distance($W_case,$_SESSION["position"]);
 
 ?>
-<h2>COMBAT</h2>
+<fieldset>
+	<legend>Combat VS <?php echo $defenseur['nom']; ?></legend>
 <?php
 if($W_distance > $attaquant['arme_distance'])
 {
@@ -740,3 +741,4 @@ else
 echo $out1;
 ?>
 <img src="image/pixel.gif" onLoad="envoiInfo('infoperso.php?javascript=oui', 'perso');" />
+</fieldset>

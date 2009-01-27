@@ -1,25 +1,21 @@
 <?php
-
-//Connexion obligatoire
-$connexion = true;
-//Inclusion du haut du document html
-include('haut.php');
-include('haut_site.php');
-include('menu.php');
+include('inc/fp.php');
+$joueur = recupperso($_SESSION['ID']);
 $bonus = recup_bonus($joueur['ID']);
 ?>
-<div id="contenu">
 	<div id="centre2">
 		<?php
-		if(array_key_exists('id', $_GET))
+		if(array_key_exists('id', $_GET) OR array_key_exists('id', $_POST))
 		{
+			if(array_key_exists('id', $_GET)) $id = $_GET['id'];
+			elseif(array_key_exists('id', $_POST)) $id = $_POST['id'];
 			//Changement de l'état
 			if(array_key_exists('etat', $_GET))
 			{
 				//Si besoin de modifier dans la table personnage
-				if($_GET['id'] == 7 OR $_GET['id'] == 8 OR $_GET['id'] == 11)
+				if($id == 7 OR $id == 8 OR $id == 11)
 				{
-					switch($_GET['id'])
+					switch($id)
 					{
 						case 7 :
 							$champ = 'cache_classe';
@@ -35,7 +31,7 @@ $bonus = recup_bonus($joueur['ID']);
 					$db->query($requete);
 				}
 				$bonus_total = recup_bonus_total($joueur['ID']);
-				$requete = "UPDATE bonus_perso SET etat = ".sSQL($_GET['etat'])." WHERE id_bonus_perso = ".$bonus_total[$_GET['id']]['id_bonus_perso'];
+				$requete = "UPDATE bonus_perso SET etat = ".sSQL($_GET['etat'])." WHERE id_bonus_perso = ".$bonus_total[$id]['id_bonus_perso'];
 				$db->query($requete);
 				$bonus = recup_bonus($joueur['ID']);
 			}
@@ -43,7 +39,7 @@ $bonus = recup_bonus($joueur['ID']);
 			if(array_key_exists('sexe', $_GET))
 			{
 				$bonus_total = recup_bonus_total($joueur['ID']);
-				$requete = "UPDATE bonus_perso SET valeur = ".sSQL($_GET['sexe'])." WHERE id_bonus_perso = ".$bonus_total[$_GET['id']]['id_bonus_perso'];
+				$requete = "UPDATE bonus_perso SET valeur = ".sSQL($_GET['sexe'])." WHERE id_bonus_perso = ".$bonus_total[$id]['id_bonus_perso'];
 				$db->query($requete);
 				$bonus = recup_bonus($joueur['ID']);
 			}
@@ -51,7 +47,7 @@ $bonus = recup_bonus($joueur['ID']);
 			if(array_key_exists('description', $_GET))
 			{
 				$bonus_total = recup_bonus_total($joueur['ID']);
-				$requete = "UPDATE bonus_perso SET valeur = '".sSQL(htmlspecialchars($_GET['description']))."' WHERE id_bonus_perso = ".$bonus_total[$_GET['id']]['id_bonus_perso'];
+				$requete = "UPDATE bonus_perso SET valeur = '".sSQL(htmlspecialchars($_GET['description']))."' WHERE id_bonus_perso = ".$bonus_total[$id]['id_bonus_perso'];
 				$db->query($requete);
 				$bonus = recup_bonus($joueur['ID']);
 			}
@@ -59,7 +55,7 @@ $bonus = recup_bonus($joueur['ID']);
 			if(array_key_exists('css', $_GET))
 			{
 				$bonus_total = recup_bonus_total($joueur['ID']);
-				$requete = "UPDATE bonus_perso SET valeur = '".sSQL(htmlspecialchars($_GET['css']))."' WHERE id_bonus_perso = ".$bonus_total[$_GET['id']]['id_bonus_perso'];
+				$requete = "UPDATE bonus_perso SET valeur = '".sSQL(htmlspecialchars($_GET['css']))."' WHERE id_bonus_perso = ".$bonus_total[$id]['id_bonus_perso'];
 				$db->query($requete);
 				$bonus = recup_bonus($joueur['ID']);
 			}
@@ -119,7 +115,7 @@ $bonus = recup_bonus($joueur['ID']);
 						if($size[0] <= 80 AND $size[1] <= 80)
 						{
 							$bonus_total = recup_bonus_total($joueur['ID']);
-							$requete = "UPDATE bonus_perso SET valeur = '".sSQL($joueur['ID'].$type)."' WHERE id_bonus_perso = ".$bonus_total[$_GET['id']]['id_bonus_perso'];
+							$requete = "UPDATE bonus_perso SET valeur = '".sSQL($joueur['ID'].$type)."' WHERE id_bonus_perso = ".$bonus_total[$id]['id_bonus_perso'];
 							$db->query($requete);
 							$bonus = recup_bonus($joueur['ID']);
 						}
@@ -132,7 +128,7 @@ $bonus = recup_bonus($joueur['ID']);
 					}
 				}
 			}
-			$requete = "SELECT * FROM bonus WHERE id_bonus = ".sSQL($_GET['id']);
+			$requete = "SELECT * FROM bonus WHERE id_bonus = ".sSQL($id);
 			$req = $db->query($requete);
 			$row = $db->read_assoc($req);
 			?>
@@ -145,36 +141,36 @@ $bonus = recup_bonus($joueur['ID']);
 			{
 				$bonus_total = recup_bonus_total($joueur['ID']);
 				//Différents type de modification
-				switch($_GET['id'])
+				switch($id)
 				{
 					//Sexe
 					case 12 :
-						if($bonus_total[$_GET['id']]['valeur'] == '0' OR $bonus_total[$_GET['id']]['valeur'] == '')
+						if($bonus_total[$id]['valeur'] == '0' OR $bonus_total[$id]['valeur'] == '')
 						{
 						?>
-						<form action="configure_point_sso.php" method="get">
+						<form action="configure_point_sso.php" method="get" id="formSexe">
 							<select name="sexe">
 								<option value="1">Masculin</option>
 								<option value="2">Feminin</option>
 							</select>
-							<input type="hidden" value="<?php echo $_GET['id']; ?>" name="id" />
-							<input type="submit" value="Valider" />
+							<input type="hidden" value="<?php echo $id; ?>" name="id" />
+							<input type="button" value="Valider" onclick="envoiFormulaireGET('formSexe', 'popup_content');" />
 						</form>
 						<?php
 						}
 						else
 						{
-							if($bonus_total[$_GET['id']]['valeur'] == 1) $sexe = 'Masculin'; else $sexe = 'Feminin';
+							if($bonus_total[$id]['valeur'] == 1) $sexe = 'Masculin'; else $sexe = 'Feminin';
 							echo 'Sexe '.$sexe;
 						}
 					break;
 					//Description
 					case 16 :
 						?>
-						<form action="configure_point_sso.php" method="get">
-							<textarea name="description"><?php echo $bonus_total[$_GET['id']]['valeur']; ?></textarea>
-							<input type="hidden" value="<?php echo $_GET['id']; ?>" name="id" />
-							<input type="submit" value="Valider" />
+						<form action="configure_point_sso.php" method="get" id="formDesc">
+							<textarea name="description"><?php echo $bonus_total[$id]['valeur']; ?></textarea>
+							<input type="hidden" value="<?php echo $id; ?>" name="id" />
+							<input type="button" value="Valider" onclick="envoiFormulaireGET('formDesc', 'popup_content');" />
 						</form>
 						<?php
 					break;
@@ -183,20 +179,21 @@ $bonus = recup_bonus($joueur['ID']);
 						?>
 						Poids maximum du fichier : 20ko<br />
 						Dimensions maximums du fichier : 80px * 80px<br />
-						<form method="POST" enctype="multipart/form-data">
+						<form action="configure_point_sso.php" method="POST" enctype="multipart/form-data" id="formAvatar">
 							<input type="hidden" name="MAX_FILE_SIZE"  VALUE="20240">
 							<input type="file" name="nom_du_fichier">
-							<input type="submit" value="Envoyer">
+							<input type="hidden" value="<?php echo $id; ?>" name="id" />
+							<input type="button" value="Envoyer" onclick="envoiFormulaire('formAvatar', 'popup_content');">
 						</form>
 						<?php
 					break;
 					//Css
 					case 27 :
 						?>
-						<form action="configure_point_sso.php" method="get">
-							<textarea name="css"><?php echo $bonus_total[$_GET['id']]['valeur']; ?></textarea>
-							<input type="hidden" value="<?php echo $_GET['id']; ?>" name="id" />
-							<input type="submit" value="Valider" />
+						<form action="configure_point_sso.php" method="get" id="formCSS">
+							<textarea name="css"><?php echo $bonus_total[$id]['valeur']; ?></textarea>
+							<input type="hidden" value="<?php echo $id; ?>" name="id" />
+							<input type="button" value="Valider" onclick="envoiFormulaireGET('formCSS', 'popup_content');" />
 						</form>
 						<?php
 					break;
@@ -206,19 +203,19 @@ $bonus = recup_bonus($joueur['ID']);
 			if($row['etat_modifiable'])
 			{
 				?>
-				<form action="configure_point_sso.php" method="get">
+				<form action="configure_point_sso.php" method="get" id="formModif">
 					<select name="etat">
-						<option value="0" <?php if($bonus[$_GET['id']] == 0) echo 'selected="selected"'; ?>>Afficher a tout le monde</option>
-						<option value="1" <?php if($bonus[$_GET['id']] == 1) echo 'selected="selected"'; ?>>Afficher aux joueurs de votre race</option>
-						<option value="2" <?php if($bonus[$_GET['id']] == 2) echo 'selected="selected"'; ?>>Afficher a personne</option>
+						<option value="0" <?php if($bonus[$id] == 0) echo 'selected="selected"'; ?>>Afficher a tout le monde</option>
+						<option value="1" <?php if($bonus[$id] == 1) echo 'selected="selected"'; ?>>Afficher aux joueurs de votre race</option>
+						<option value="2" <?php if($bonus[$id] == 2) echo 'selected="selected"'; ?>>Afficher a personne</option>
 					</select>
-					<input type="hidden" value="<?php echo $_GET['id']; ?>" name="id" />
-					<input type="submit" value="Valider" />
+					<input type="hidden" value="<?php echo $id; ?>" name="id" />
+					<input type="button" value="Valider" onclick="envoiFormulaireGET('formModif', 'popup_content');" />
 				</form>
 				<?php
 			}
 			?>
-			<br /><a href="configure_point_sso.php">Retour a la liste des bonus</a>
+			<br /><a href="configure_point_sso.php" onclick="return envoiInfo(this.href, 'popup_content');">Retour a la liste des bonus</a>
 			<?php
 		}
 		else
@@ -243,7 +240,7 @@ $bonus = recup_bonus($joueur['ID']);
 				?>
 				<ul>
 				<?php
-				echo '<li><a href="configure_point_sso.php?id='.$row['id_bonus'].'"><img src="image/niveau/'.$row['id_bonus'].'.png" style="vertical-align : middle;" /> '.$row['nom'].'</a></li>';
+				echo '<li><a href="configure_point_sso.php?id='.$row['id_bonus'].'" onclick="return envoiInfo(this.href, \'popup_content\');"><img src="image/niveau/'.$row['id_bonus'].'.png" style="vertical-align : middle;" /> '.$row['nom'].'</a></li>';
 				?>
 				</ul>
 				<?php
@@ -251,4 +248,3 @@ $bonus = recup_bonus($joueur['ID']);
 		}
 		?>
 	</div>
-</div>

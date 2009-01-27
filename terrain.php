@@ -160,6 +160,8 @@ include('ville_bas.php');
 						//On donne les stars au royaume
 						$requete = "UPDATE royaume SET star = star + ".$taxe." WHERE ID = ".$R['ID'];
 						$db->query($requete);
+						echo '<h6>Le chantier a commencé !</h6>
+						<a href="ville.php" onclick="return envoiInfo(this.href, \'carte\');">Retour à la ville</a>';
 					}
 					else echo '<h5>Vous n\'avez pas assez de place</h5>';
 				}
@@ -233,7 +235,7 @@ include('ville_bas.php');
 			//On cherche si on peut upgrader le terrain
 			if($terrain->nb_case < 5 && $upgrade)
 			{
-				$requete = "SELECT id, point_structure FROM terrain_batiment WHERE type = 'agrandissement' AND requis = 2";
+				$requete = "SELECT id, point_structure FROM terrain_batiment WHERE type = 'agrandissement' AND requis = ".$terrain->nb_case;
 				$req = $db->query($requete);
 				$row = $db->read_assoc($req);
 				$upgrade = ' - <a href="terrain.php?id_upgrade='.$row['id'].'" onclick="return envoiInfo(this.href, \'carte\');">+1 case ('.$row['point_structure'].'points de structure)</a>';

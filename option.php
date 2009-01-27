@@ -1,14 +1,6 @@
 <?php
-
-//Connexion obligatoire
-$connexion = true;
-//Inclusion du haut du document html
-include('haut.php');
-include('haut_site.php');
-include('menu.php');
+include('inc/fp.php');
 ?>
-<div id="contenu">
-	<div id="centre2">
 		<div class="titre">
 			Options de votre compte
 		</div>
@@ -27,8 +19,8 @@ include('menu.php');
 							if($new_pass != $new_pass2)
 							{
 								?>
-								Erreur lors de la saisie du nouveau mot de passe.<br />
-								<a href="option.php?action=mdp">Retour à la modification du mot de passe jeu.</a>
+								<h5>Erreur lors de la saisie du nouveau mot de passe.</h5>
+								<a href="option.php?action=mdp" onclick="return envoiInfo(this.href, 'popup_content');">Retour à la modification du mot de passe jeu.</a>
 								<?php
 							}
 							else
@@ -39,8 +31,8 @@ include('menu.php');
 								if($row[0] != md5($ancien_pass))
 								{
 									?>
-									Erreur, l'ancien mot de passe n'est pas le bon.<br />
-									<a href="option.php?action=mdp">Retour à la modification du mot de passe jeu.</a>
+									<h5>Erreur, l'ancien mot de passe n'est pas le bon.</h5>
+									<a href="option.php?action=mdp" onclick="return envoiInfo(this.href, 'popup_content');">Retour à la modification du mot de passe jeu.</a>
 									<?php
 								}
 								else
@@ -49,7 +41,7 @@ include('menu.php');
 									$requete = "UPDATE perso SET password = '".md5($new_pass)."' WHERE ID = ".$_SESSION['ID'];
 									if($db->query($requete))
 									{
-										echo 'Votre mot de passe a bien été modifié !';
+										echo '<h6>Votre mot de passe a bien été modifié !</h6>';
 									}
 								}
 							}
@@ -57,14 +49,14 @@ include('menu.php');
 						else
 						{
 						?>
-						<form method="post" action="option.php?action=mdp">
+						<form method="post" action="option.php?action=mdp" id="formMDP">
 							<strong>Veuillez indiquez votre mot de passe actuel :</strong><br />
 							<input type="password" name="ancien_pass" /><br />
 							<strong>Veuillez indiquez votre NOUVEAU mot de passe :</strong><br />
 							<input type="password" name="new_pass" /><br />
 							<strong>Veuillez retappez votre NOUVEAU mot de passe :</strong><br />
 							<input type="password" name="new_pass2" /><br />
-							<input type="submit" value="Modifier votre mot de passe jeu" />
+							<input type="button" value="Modifier votre mot de passe jeu" onclick="envoiFormulaire('formMDP', 'popup_content');" />
 						</form>
 						<?php
 						}
@@ -115,9 +107,10 @@ include('menu.php');
 								$i++;
 							}
 							$options = recup_option($_SESSION['ID']);
+							echo '<h6>Filtre du journal modifié avec succès</h6>';
 						}
 						?>
-						<form method="post" action="option.php?action=journal">
+						<form method="post" action="option.php?action=journal" id="formJournal">
 							<ul>
 								<?php
 								$i = 0;
@@ -132,7 +125,7 @@ include('menu.php');
 								}
 								?>
 							</ul>
-							<input type="submit" value="Valider" name="submit" />
+							<input type="button" value="Valider" name="submit" onclick="envoiFormulaire('formJournal', 'popup_content');" />
 						</form>
 						<?php
 					break;
@@ -164,23 +157,23 @@ include('menu.php');
 			<div class"news">
 				<h3>Options du jeu</h3>
 				<ul>
-					<li><a href="option.php?action=journal">Filtrer votre journal des actions</a></li>
-					<li><a href="configure_point_sso.php">Configurer vos bonus Shine</a></li>
+					<li><a href="option.php?action=journal" onclick="return envoiInfo(this.href, 'popup_content');">Filtrer votre journal des actions</a></li>
+					<li><a href="configure_point_sso.php" onclick="return envoiInfo(this.href, 'popup_content');">Configurer vos bonus Shine</a></li>
 				</ul>
 			</div>
 			<div class"news">
 				<h3>Mot de passe</h3>
 				<strong>Attention votre mot de passe jeu, et votre mot de passe forum sont à changer séparément !</strong><br />
 				<ul>
-					<li><a href="option.php?action=mdp">Modifier votre mot de passe JEU</a></li>
-					<li><a href="http://forum.starshine-online.com/profile.php?action=change_pass&id=2">Modifier votre mot de passe FORUM</a></li>
+					<li><a href="option.php?action=mdp" onclick="return envoiInfo(this.href, 'popup_content');">Modifier votre mot de passe JEU</a></li>
+					<li><a href="http://forum.starshine-online.com/profile.php?action=change_pass&id=2" onclick="return envoiInfo(this.href, 'popup_content');">Modifier votre mot de passe FORUM</a></li>
 				</ul>
 			</div>
 			<div class"news">
 				<h3>Hibernation / Suppression</h3>
 				<ul>
-					<li><a href="javascript:if(confirm('Êtes vous sur de vouloir effacer votre personnage ?')) document.location.href='option.php?action=supp'">Supprimer mon personnage</a></li>
-					<li><a href="javascript:if(confirm('Êtes vous sur de vouloir hiberner ?')) document.location.href='option.php?action=hibern'">Mettre mon personnage en hibernation (l'hibernation durera au MINIMUM 2 semaines)</a></li>
+					<li><a href="option.php?action=supp" onclick="if(confirm('Êtes vous sur de vouloir effacer votre personnage ?')) return envoiInfo(this.href, 'popup_content'); else return false;">Supprimer mon personnage</a></li>
+					<li><a href="option.php?action=hibern" onclick="if(confirm('Êtes vous sur de vouloir hiberner ?')) return envoiInfo(this.href, 'popup_content'); else return false;">Mettre mon personnage en hibernation (l'hibernation durera au MINIMUM 2 semaines)</a></li>
 				</ul>
 			</div>
 			</ul>
@@ -189,4 +182,3 @@ include('menu.php');
 			?>
 		</p>
 	</div>
-</div>

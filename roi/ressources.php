@@ -179,19 +179,19 @@ else
 	<table>
 	<tr>
 		<td>
-			Ressource
+			Ressources
 		</td>
 		<td>
 			Gains hier
 		</td>
 		<td>
-			Cases actuelement
+			Cases actuellement
 		</td>
 		<td>
-			Mines actuelement
+			Mines actuellement
 		</td>
 		<td>
-			Total actuelement
+			Total actuellement
 		</td>
 	</tr>
 	';

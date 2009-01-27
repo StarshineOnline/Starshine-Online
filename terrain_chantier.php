@@ -20,6 +20,9 @@ $_SESSION['position'] = $position;
 ?>
 	<?php 
 	include('ville_bas.php');
+	?>
+	<div class="ville_test">
+	<?php
 	if($verif_ville AND $R['diplo'] == 127)
 	{
 		if(array_key_exists('id_chantier', $_GET))
@@ -105,3 +108,4 @@ $_SESSION['position'] = $position;
 		}
 	}
 	?>
+	</div>

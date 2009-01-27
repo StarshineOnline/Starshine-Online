@@ -291,6 +291,20 @@ function envoiInfoJS(page, position)
 	return false;
 }
 
+function envoiFormulaire(formulaire, position)
+{
+	function Affiche(requete){$(position).innerHTML = requete.responseText; Hidechargement(); nd();}
+	$(formulaire).request({method:'post',onLoading:Loadchargement,onComplete:Affiche});
+	return false;
+}
+
+function envoiFormulaireGET(formulaire, position)
+{
+	function Affiche(requete){$(position).innerHTML = requete.responseText; Hidechargement(); nd();}
+	$(formulaire).request({method:'get',onLoading:Loadchargement,onComplete:Affiche});
+	return false;
+}
+
 function affichePopUp(input_name,input_get)
 {
 	function AffichePopup(resultat)
@@ -377,3 +391,4 @@ function masqueMessage(id)
 	element = document.getElementById("mess"+id);
 	element.style.display = 'none';
 }
+

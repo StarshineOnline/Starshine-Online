@@ -26,9 +26,8 @@ $de_degat = de_degat($joueur['force'], 0);
 $de_degat_arme = de_degat($joueur['force'], $joueur['arme_degat']);
 
 echo '
-<div style="font-size : 13px;">
-	<h2>Nom : '.$joueur['nom'].'</h2>
-	<div class="information_case">
+<fieldset>
+	<legend>Nom : '.$joueur['nom'].'</legend>
 	<p class="brillant"><a href="'.$adresse.'direction=carac" onclick="return envoiInfo(this.href, \'information\')">Carac</a> | <a href="'.$adresse.'direction=comp" onclick="return envoiInfo(this.href, \'information\')">Compétences</a> | <a href="'.$adresse.'direction=magie" onclick="return envoiInfo(this.href, \'information\')">Magie</a> | <a href="'.$adresse.'direction=stat" onclick="return envoiInfo(this.href, \'information\')">Stats</a></p>
 	<p><strong>'.$joueur['nom'].'</strong> - '.$Gtrad[$joueur['race']].' - '.$joueur['classe'].'</p>
 	';
@@ -417,5 +416,4 @@ echo '
 		break;
 	}
 ?>
-</div>
-</div>
+</fieldset>

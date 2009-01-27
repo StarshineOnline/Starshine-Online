@@ -26,12 +26,11 @@ if(array_key_exists('up', $_GET))
 else
 {
 ?>
-Craft actuel : <input type="text" value="<?php echo $joueur['craft']; ?>" /><br />
+Craft actuel : <input type="text" value="<?php echo $joueur['craft']; ?>" disabled="disabled" /><br />
 Mettre vos points dans :<br />
-<span class="champs">Forge :</span><div id="forge"><?php echo $joueur['forge']; ?></div><div class="" onclick="envoiInfo('repartir_craft.php?up=forge', 'forge');">+</div><br />
-<span class="champs">Architecture :</span><div id="architecture"><?php echo $joueur['architecture']; ?></div><div class="" onclick="envoiInfo('repartir_craft.php?up=architecture', 'architecture');">+</div><br />
-<span class="champs">Alchimie :</span><div id="alchimie"><?php echo $joueur['alchimie']; ?></div><div class="" onclick="envoiInfo('repartir_craft.php?up=alchimie', 'alchimie');">+</div><br />
-<input type="submit" value="Valider" />
+<span class="champs">Forge :</span> <span id="forge"><?php echo $joueur['forge']; ?></span> <span class="" onclick="envoiInfo('repartir_craft.php?up=forge', 'forge');">+</span><br />
+<span class="champs">Architecture :</span> <span id="architecture"><?php echo $joueur['architecture']; ?></span> <span class="" onclick="envoiInfo('repartir_craft.php?up=architecture', 'architecture');">+</span><br />
+<span class="champs">Alchimie :</span> <span id="alchimie"><?php echo $joueur['alchimie']; ?></span> <span class="" onclick="envoiInfo('repartir_craft.php?up=alchimie', 'alchimie');">+</span><br />
 <?php
 }
 ?>

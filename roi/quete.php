@@ -2,7 +2,7 @@
 require('haut_roi.php');
 
 ?>
-<h3>Gestion des Quètes</h3>
+<h3>Gestion des Quêtes</h3>
 <?php
 if($_GET['action'] == 'achat')
 {
@@ -112,7 +112,7 @@ else
 			Nom
 		</td>
 		<td>
-			Cout en star
+			Coût en stars
 		</td>
 		<td>
 			Achat

@@ -18,7 +18,8 @@ $W_case = convert_in_pos($defenseur['x'], $defenseur['y']);
 $W_coord = convert_in_coord($W_case);
 $W_distance = detection_distance($W_case, $_SESSION["position"]);
 ?>
-<h2>COMBAT</h2>
+<fieldset>
+	<legend>Combat VS <?php echo $defenseur['nom']; ?></legend>
 <?php
 if($W_distance > $attaquant['arme_distance'])
 {
@@ -576,3 +577,4 @@ else
 <a href="informationcase.php?case=<?php echo $W_case; ?>" onclick="return envoiInfo(this.href, 'information');">Retour aux informations de la case</a>
 </div>
 <img src="image/pixel.gif" onLoad="envoiInfo('infoperso.php?javascript=oui', 'perso');" />
+</fieldset>

@@ -22,10 +22,8 @@ if(!array_key_exists('action', $_GET))
 		//Affichage des pages
 		$message_total = $messagerie->thread->get_message_total();
 		$page_max = ceil($message_total / 10);
-		if($page > 1) echo '<a href="messagerie.php?id_thread='.$messagerie->thread->id_thread.'&amp;page='.($page - 1).'" onclick="return envoiInfo(this.href, \'information\');"><< page précédente</a>';
-		else echo '<< page précédente';
-		if($page < $page_max) echo '<a href="messagerie.php?id_thread='.$messagerie->thread->id_thread.'&amp;page='.($page + 1).'" onclick="return envoiInfo(this.href, \'information\');">page suivante >></a>';
-		else echo 'page suivante >>';
+		if($page > 1) echo '<a href="messagerie.php?id_thread='.$messagerie->thread->id_thread.'&amp;page='.($page - 1).'" onclick="return envoiInfo(this.href, \'information\');"><span class="message_prev" title="Revenir à la page précédente"></span></a>';
+		if($page < $page_max) echo '<a href="messagerie.php?id_thread='.$messagerie->thread->id_thread.'&amp;page='.($page + 1).'" onclick="return envoiInfo(this.href, \'information\');"><span class="message_next" title="Allez à la page suivante"></span></a>';
 		foreach($messagerie->thread->messages as $message)
 		{
 			$message_affiche = message_affiche($message, $joueur['ID'], $messagerie->thread->messages[0]->titre);
@@ -83,7 +81,7 @@ else
 		
 		//Affichage des messages
 		?>
-		<table width="95%" class="information_case">
+		<table width="95%">
 		<tr>
 			<td>
 			</td>

@@ -128,10 +128,9 @@ class messagerie_thread
 	function get_message_total()
 	{
 		global $db;
-		$requete = "SELECT COUNT(messagerie_message.id_message) as tot FROM messagerie_message LEFT JOIN messagerie_etat ON messagerie_message.id_message = messagerie_etat.id_message WHERE id_thread = ".$this->id_thread;
+		$requete = "SELECT * FROM messagerie_message LEFT JOIN messagerie_etat ON messagerie_message.id_message = messagerie_etat.id_message WHERE id_thread = ".$this->id_thread." GROUP BY messagerie_etat.id_message";
 		$req = $db->query($requete);
-		$row = $db->read_assoc($req);
-		return $row['tot'];
+		return $db->num_rows;
 	}
 }
 ?>

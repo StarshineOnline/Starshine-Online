@@ -6,8 +6,8 @@ check_perso($joueur);
 $bonus = recup_bonus($joueur['ID']);
 
 echo '
-<div style="font-size : 13px;">
-	<h2>Nom : '.$joueur['nom'].'</h2>';
+<fieldset>
+	<legend>Points Shine</legend>';
 
 if(array_key_exists('action', $_GET))
 {
@@ -71,7 +71,7 @@ if(array_key_exists('action', $_GET))
 if(!array_key_exists('categorie', $_GET)) $categorie = 1; else $categorie = $_GET['categorie'];
 
 ?>
-<h3>Vous avez <?php echo $joueur['point_sso']; ?> point(s) Shine</h3>
+<h3>Vous avez <?php echo $joueur['point_sso']; ?> point(s) Shine <a href="configure_point_sso.php" onclick="affichePopUp(this.href); return false;">(configurer)</a></h3>
 <table style="width:100%;">
 <tr>
 	<td style="text-align : center; width:33%;">
@@ -183,4 +183,4 @@ while($row_l = $db->read_assoc($req_l))
 ?>
 </table>
 </div>
-</div>
+</fieldset>

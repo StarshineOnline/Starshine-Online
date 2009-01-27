@@ -53,7 +53,7 @@ body {margin:0;padding:0;background:#5D705F url('./image/v2/bg_site.png') repeat
 
 
 #contenu_back {margin:0;padding:0;overflow: auto;}
-#contenu {background:transparent url('./image/v2/site_fond2.png') no-repeat left;width:1000px;margin: auto;height: 700px;}
+#contenu {background:transparent url('./image/v2/site_fond2.png') no-repeat left;width:1000px;margin: auto;min-height: 700px;}
 #news {width:830px;float:left;}
 
 
@@ -223,6 +223,12 @@ margin-top:-3px;}
 
 #messagerie_menu {text-align: center;}
 #messagerie_menu span {padding:2px;margin:2px;cursor: pointer !important;}
+
+.message_prev {background:transparent url('./../image/interface/previous_20.png') no-repeat scroll top;height:20px;width: 20px;display: block;float:left;}
+.message_prev:hover {background-position: bottom !important;}
+
+.message_next {background:transparent url('./../image/interface/next_20.png') no-repeat scroll top;height:20px;width: 20px;display: block;float:right;}
+.message_next:hover {background-position: bottom !important;}
 
 #conteneur_test {height:100%;width:100%;z-index: 99999;cursor: wait;position: absolute;}
 .infoperso {

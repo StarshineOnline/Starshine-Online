@@ -27,7 +27,8 @@ $R = get_royaume_info($joueur['race'], $W_row['royaume']);
 $W_distance = detection_distance($W_case,$_SESSION["position"]);
 
 ?>
-<h2>COMBAT</h2>
+<fieldset>
+	<legend>Combat VS <?php echo $defenseur['nom']; ?></legend>
 <?php
 if($W_distance > $attaquant['arme_distance'])
 {
@@ -143,3 +144,4 @@ else
 <a onclick="for (i=0; i<<?php echo $debugs; ?>; i++) {if(document.getElementById('debug' + i).style.display == 'inline') document.getElementById('debug' + i).style.display = 'none'; else document.getElementById('debug' + i).style.display = 'inline';}">Debug</a><br />
 <a href="informationcase.php?case=<?php echo $W_case; ?>" onclick="return envoiInfo(this.href, 'information')">Retour aux informations de la case</a><br />
 <img src="image/pixel.gif" onLoad="envoiInfo('infoperso.php?javascript=oui', 'perso');" />
+</fieldset>
