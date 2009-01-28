@@ -104,6 +104,7 @@ class Objets extends Objet
 	//Fonction d'ajout/modification les caractère spéciaux sont échapés pour les descriptions.
 	function sauver()
 	{
+		global $db;
 		if( $id > 0 )
 		{
 			$requete = 'UPDATE TABLE objet SET '.$this->modifBase().', ';
@@ -119,7 +120,7 @@ class Objets extends Objet
 			$requete .= $this->stack.'", "'.$this->achetable.'")';
 			$db->query($requete);
 			//Récuperation du dernier ID inséré.
-			list($this->id) = $db->last_insert_id()
+			list($this->id) = $db->last_insert_id();
 		}
 	}
 	
@@ -132,7 +133,7 @@ class Objets extends Objet
 	//Infobulle d'un objet
 	function infobulle()
 	{
-		$milieu = '<tr><td>Stack:</td><td>'.$this->stack.'</td></tr>'
+		$milieu = '<tr><td>Stack:</td><td>'.$this->stack.'</td></tr>';
 		$milieu .= '<tr><td>Description:</td></tr><tr><td>'.addslashes($this->description).'</td></tr>';
 		return bulleBase($milieu);
 	}

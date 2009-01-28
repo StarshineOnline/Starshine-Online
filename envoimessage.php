@@ -11,10 +11,10 @@ if($joueur['groupe'] != 0) $groupe_joueur = recupgroupe($joueur['groupe'], ''); 
 normalize_entry_charset(array('titre', 'message'));
 
 //Envoi du message
-if(isset($_GET['message']))
+if(isset($_POST['message']))
 {
-	$titre = addslashes($_GET['titre']);
-	$message = addslashes($_GET['message']);
+	$titre = addslashes($_POST['titre']);
+	$message = addslashes($_POST['message']);
 	if (empty($titre)){$titre = 'Sans titre';}
 	if($titre != '')
 	{
@@ -59,7 +59,7 @@ else
 ?>
 <h2>Envoi d'un message</h2>
 <div class="information_case">
-<form method="post" action="javascript:message = document.getElementById('message').value.replace(new RegExp('\n', 'gi'), '[br]'); envoiInfoPost('envoimessage.php?id_type=<?php echo $id_type; ?>&amp;titre=' + document.getElementById('titre').value + '&amp;message=' + message, 'information');">
+<form method="post" action="envoimessage.php?id_type=<?php echo $id_type; ?>" id="formMessage">
 	<?php
 	if ($type == 'r')
 	{
@@ -74,7 +74,7 @@ else
 	Message :<br />
 	<textarea name="message" id="message" cols="45" rows="12"></textarea><br />
 	<br />
-	<input type="submit" name="btnSubmit" value="Envoyer" />
+	<input type="button" onclick="envoiFormulaire('formMessage', 'information');" name="btnSubmit" value="Envoyer" />
 </form>
 </div>
 <?php

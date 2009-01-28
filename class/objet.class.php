@@ -1,10 +1,10 @@
 <?php
 /**
-	Classe abstraite représentant un objet 
+	Classe abstraite représentant un objet
 **/
 abstract class Objet
 {
-	protected $id;
+	public $id;
 	protected $nom;
 	protected $type;
 	protected $prix;
@@ -94,11 +94,10 @@ abstract class Objet
 	//Retourne le début et la fin de la chaine de l'infobulle.
 	protected function bulleBase($middle)
 	{
-		$infobulle = '<strong>'.$this->nom.'</strong><br />':
+		$infobulle = '<strong>'.$this->nom.'</strong><br />';
 		$infobulle .= '<table><tr><td>Type:</td><td>'.$this->type.'</td></tr>'.$middle;
 		$infobulle = '<tr><td>Prix HT:<br /><span class=\'xsmall\'>(en magasin)</span></td><td>'.$this->prix.'</td></tr></table>';
 		return $infobulle;
 	}
 }
-
 ?>

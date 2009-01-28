@@ -233,72 +233,59 @@ if(!$visu AND isset($_GET['action']))
 					if($joueur['hp'] > 0)
 					{
 						$objet = decompose_objet($joueur['inventaire_slot'][$_GET['key_slot']]);
-						$id_objet = $objet['id'];
-						//On chope les infos de l'objet
-						$requete = "SELECT pa, mp FROM objet WHERE id = ".$objet['id_objet'];
-						$req_o = $db->query($requete);
-						$row_o = $db->read_assoc($req_o);
-						//On vérifie les PA / MP
-						if($joueur['pa'] >= $row_o['pa'])
+						if(check_utilisation_objet($joueur, $objet))
 						{
-							if($joueur['mp'] >= $row_o['pm'])
-							{
-								supprime_objet($joueur, $id_objet, 1);
-								$id_objet = mb_substr($id_objet, 1);
-								$requete = "SELECT effet, nom FROM objet WHERE id = ".$id_objet;
-								$req = $db->query($requete);
-								$row = $db->read_row($req);
-								$joueur['hp'] += $row[0];
-								if($joueur['hp'] > floor($joueur['hp_max'])) $joueur['hp'] = floor($joueur['hp_max']);
-								echo 'Vous utilisez une '.$row[1].' elle vous redonne '.$row[0].' points de vie<br />';
-								?>
-								<img src="image/pixel.gif" onLoad="envoiInfo('infoperso.php?javascript=oui', 'perso');" />
-								<?php
-								$requete = "UPDATE perso SET hp = ".$joueur['hp'].", pa = pa - ".$row_o['pa'].", mp = mp - ".$row_o['mp']." WHERE ID = ".$joueur['ID'];
-								$db->query($requete);
-							}
-							else echo '<h5>Vous n\'avez pas assez de MP</h5>';
+							$requete = "SELECT effet, nom, pa, mp FROM objet WHERE id = ".$objet['id_objet'];
+							$req = $db->query($requete);
+							$row = $db->read_assoc($req);
+							$joueur['hp'] += $row['effet'];
+							if($joueur['hp'] > floor($joueur['hp_max'])) $joueur['hp'] = floor($joueur['hp_max']);
+							echo 'Vous utilisez une '.$row['nom'].' elle vous redonne '.$row['effet'].' points de vie<br />';
+							?>
+							<img src="image/pixel.gif" onLoad="envoiInfo('infoperso.php?javascript=oui', 'perso');" />
+							<?php
+							$requete = "UPDATE perso SET hp = ".$joueur['hp'].", pa = pa - ".$row['pa'].", mp = mp - ".$row['mp']." WHERE ID = ".$joueur['ID'];
+							$db->query($requete);
 						}
-						else echo '<h5>Vous n\'avez pas assez de PA</h5>';
 					}
 					else echo 'Vous êtes mort !';
 				break;
-				case 'parchemin_pa' :
-					$stack = explode('x', $joueur['inventaire_slot'][$_GET['key_slot']]);
-					$id_objet = $stack[0];
-					supprime_objet($joueur, $id_objet, 1);
-					$id_objet = mb_substr($id_objet, 1);
-					$requete = "SELECT effet, nom FROM objet WHERE id = ".$id_objet;
-					$req = $db->query($requete);
-					$row = $db->read_row($req);
-					$joueur['pa'] += $row[0];
-					if($joueur['pa'] > floor($G_PA_max)) $joueur['pa'] = floor($G_PA_max);
-					echo 'Vous utilisez un '.$row[1].'<br />';
-					?>
-					<img src="image/pixel.gif" onLoad="envoiInfo('infoperso.php?javascript=oui', 'perso');" />
-					<?php
-					$requete = "UPDATE perso SET pa = ".$joueur['pa']." WHERE ID = ".$joueur['ID'];
-					$db->query($requete);
-				break;
-				case 'parchemin_tp' :
-					$stack = explode('x', $joueur['inventaire_slot'][$_GET['key_slot']]);
-					$id_objet = $stack[0];
-					$id_objet_reel = mb_substr($id_objet, 1);
-					$requete = "SELECT effet, nom FROM objet WHERE id = ".$id_objet_reel;
-					$req = $db->query($requete);
-					$row = $db->read_row($req);
-					//Calcul de la distance entre le point où est le joueur et sa ville natale
-					$distance = detection_distance($W_case, convert_in_pos($Trace[$joueur['race']]['spawn_x'], $Trace[$joueur['race']]['spawn_y']));
-					if($row[0] >= $distance)
+				case 'globe_pa' :
+					$objet = decompose_objet($joueur['inventaire_slot'][$_GET['key_slot']]);
+					if(check_utilisation_objet($joueur, $objet))
 					{
-						supprime_objet($joueur, $id_objet, 1);
-						//Téléportation du joueur
-						echo 'Vous utilisez un '.$row[1].'<br />';
+						$requete = "SELECT effet, nom, pa, mp FROM objet WHERE id = ".$objet['id_objet'];
+						$req = $db->query($requete);
+						$row = $db->read_assoc($req);
+						$joueur['pa'] += $row['effet'];
+						if($joueur['pa'] > floor($G_PA_max)) $joueur['pa'] = floor($G_PA_max);
+						echo 'Vous utilisez un '.$row['nom'].'<br />';
 						?>
 						<img src="image/pixel.gif" onLoad="envoiInfo('infoperso.php?javascript=oui', 'perso');" />
 						<?php
-						$requete = "UPDATE perso SET x = ".$Trace[$joueur['race']]['spawn_x'].", y = ".$Trace[$joueur['race']]['spawn_y']." WHERE ID = ".$joueur['ID'];
+						$requete = "UPDATE perso SET pa = ".$joueur['pa'].", mp = mp - ".$row['mp']."  WHERE ID = ".$joueur['ID'];
 						$db->query($requete);
+					}
+				break;
+				case 'parchemin_tp' :
+					$objet = decompose_objet($joueur['inventaire_slot'][$_GET['key_slot']]);
+					$requete = "SELECT effet, nom, pa, mp FROM objet WHERE id = ".$objet['id_objet'];
+					$req = $db->query($requete);
+					$row = $db->read_assoc($req);
+					//Calcul de la distance entre le point où est le joueur et sa ville natale
+					$distance = detection_distance($W_case, convert_in_pos($Trace[$joueur['race']]['spawn_x'], $Trace[$joueur['race']]['spawn_y']));
+					if($row['effet'] >= $distance)
+					{
+						if(check_utilisation_objet($joueur, $objet))
+						{
+							//Téléportation du joueur
+							echo 'Vous utilisez un '.$row['nom'].'<br />';
+							?>
+							<img src="image/pixel.gif" onLoad="envoiInfo('infoperso.php?javascript=oui', 'perso');" />
+							<?php
+							$requete = "UPDATE perso SET x = ".$Trace[$joueur['race']]['spawn_x'].", y = ".$Trace[$joueur['race']]['spawn_y'].", pa = pa - ".$row['pa'].", mp = mp - ".$row['mp']." WHERE ID = ".$joueur['ID'];
+							$db->query($requete);
+						}
 					}
 					else
 					{

@@ -86,7 +86,7 @@ if ($_COOKIE['dernier_affichage_popup'] <= $row_news['posted'])
 }
 
 
-$requete = "SELECT * FROM punbbtopics WHERE (forum_id = ".$Trace[$joueur['race']]['forum_id'].") ORDER BY posted DESC";
+$requete = "SELECT * FROM punbbtopics WHERE (forum_id = ".$Trace[$joueur['race']]['forum_id'].") ORDER BY last_post DESC";
 $req = $db_forum->query($requete);
 
 $i = 0;

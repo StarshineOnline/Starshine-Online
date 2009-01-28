@@ -736,4 +736,28 @@ function verif_echange($id_echange, $id_j1, $id_j2)
 	if(verif_echange_joueur($id_echange, $id_j1) && verif_echange_joueur($id_echange, $id_j2)) return true;
 	else return false;
 }
+
+function check_utilisation_objet($joueur, $objet)
+{
+	global $db;
+	$id_objet = $objet['id'];
+	//On chope les infos de l'objet
+	$requete = "SELECT pa, mp FROM objet WHERE id = ".$objet['id_objet'];
+	$req_o = $db->query($requete);
+	$row_o = $db->read_assoc($req_o);
+	//On vérifie les PA / MP
+	if($joueur['pa'] >= $row_o['pa'])
+	{
+		if($joueur['mp'] >= $row_o['pm'])
+		{
+			supprime_objet($joueur, $id_objet, 1);
+			$id_objet = mb_substr($id_objet, 1);
+			return true;
+		}
+		else echo '<h5>Vous n\'avez pas assez de MP</h5>';
+	}
+	else echo '<h5>Vous n\'avez pas assez de PA</h5>';
+	return false;
+}
+
 ?>

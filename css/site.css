@@ -3,7 +3,7 @@ img {border : 0px;}
 #accueil {background:transparent url('./image/v2/page_accueil.jpg') no-repeat left;width:1024px;min-height: 748px;margin: auto;	font: 13px "Helvetica Neue", Helvetica, Arial, Geneva, sans-serif;}
 #accueil .logo {background:transparent url(./image/v2/logo.png) no-repeat scroll left center;display:block;height:80px;margin-left:2px;position:absolute;top:27px;width:207px;z-index:1;}
 
-#accueil .box {height:280px;padding:10px;top:90px;width:530px;background:transparent url('./image/v2/box_accueil2.png');color:#EEE;overflow: auto;text-align: justify;-webkit-border-radius:10px;-moz-border-radius: 10px;}
+#accueil .box {height:280px;padding:10px;top:31px;position : absolute;width:530px;background:transparent url('./image/v2/box_accueil2.png');color:#EEE;overflow: auto;text-align: justify;-webkit-border-radius:10px;-moz-border-radius: 10px;-o-border-radius:10px;}
 #news_box h2 {font-size : 1.2em; margin : 0; padding : 0; margin-bottom : 3px;}
 #news_box h2 a {color:#EEE;}
 #news_box a {color : #DDD;}
@@ -37,7 +37,7 @@ img {border : 0px;}
 #menu_accueil ul li {list-style: none;cursor: pointer;float:left;padding-left:6px;padding-right:6px;background:transparent url('./image/v2/box_accueil.png');margin-left:4px;margin-right:4px;font-family:"Trebuchet MS",Times,serif; font-style: italic;-moz-border-radius-topleft: 8px;;-moz-border-radius-topright: 8px;-webkit-border-top-right-radius : 8px;-webkit-border-top-left-radius : 8px;}
 
 #menu_accueil .selected {background:transparent url('./image/v2/box_accueil2.png');font-style: normal;font-weight: bold;}
-#test {margin-left:70px;position:absolute;top:74px; z-index : 5;}
+#test {margin-left:70px;position:absolute;top:74px; z-index : 5; height : 18px;}
 
 #accueil_pub {margin-left:115px;top:430px;width:480px;position:absolute;}
 
