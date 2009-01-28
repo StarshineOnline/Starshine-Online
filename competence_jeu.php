@@ -128,7 +128,7 @@ if (isset($_GET['ID']))
 					else $effet = 1;
 					$joueur['pa'] += 2;
 					$joueur['mp'] = $joueur['mp'] - $sortmp;
-					if(lance_buff('repos_interieur', $joueur['ID'], $effet, 0, (60 * 60 * 24), $row['nom'], description($row['description'].'<br /> Utilisation '.$effet.' / 10', $row), 'perso', 1, 0, 0))
+					if(lance_buff('repos_interieur', $joueur['ID'], $effet, 0, (60 * 60 * 24), $row['nom'], description($row['description'].'<br /> Utilisation '.$effet.' / 10', $row), 'perso', 1, 0, 0, 0))
 					{
 						//Mis à jour du joueur
 						$requete = "UPDATE perso SET mp = '".$joueur['mp']."', pa = '".$joueur['pa']."' WHERE ID = '".$_SESSION['ID']."'";
@@ -142,7 +142,7 @@ if (isset($_GET['ID']))
 					$debuff_tab = array();
 					foreach($joueur["debuff"] as $debuff)
 					{
-						if($debuff["type"] != "debuff_rez" AND $debuff["type"] != "repos_sage" AND $debuff["type"] != "repos_interieur") { $debuff_tab[count($debuff_tab)] = $debuff["id"]; };
+						if($debuff["supprimable"] == 1) { $debuff_tab[count($debuff_tab)] = $debuff["id"]; };
 					}
 					if(count($debuff_tab) > 0)
 					{

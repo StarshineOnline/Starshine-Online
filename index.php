@@ -88,8 +88,35 @@ function validation_perso()
 		new Ajax.Request('./site_accueil_creation.php',{method:'get',parameters:'race='+perso[0]+'&classe='+perso[1]+'&pseudo='+$('creat_nom').value+'&mdp='+$('creat_pass').value,onLoading:Chargement,onComplete:Afficheperso});
 	}
 }
+function affichePopUpErreur(erreur)
+{
+	$('popup_erreur').show();
+	$('popup_erreur_content').innerHTML = erreur;
+}
+function fermePopUpErreur()
+{
+	Effect.DropOut('popup_erreur', { duration: 0.5, direction : top });
+	$('popup_erreur_content').innerHTML = '';
+}
+<?php
+if($erreur_login != '')
+{
+?>
+window.onload = function()
+{
+	affichePopUpErreur('<?php echo $erreur_login; ?>');
+}
+<?php
+}
+?>
 </script>
 
+<div id="popup_erreur" style='display:none;'>
+	<div id="popup_erreur_menu"><span class='fermer' title='Fermer le popup' onclick="fermePopUpErreur(); return false;"></span></div>
+	<div id="popup_erreur_marge">
+		<div id="popup_erreur_content"></div>
+	</div>
+</div>
 <div id='accueil'>
 	<div class='logo'></div>
 	<div id='loading_sso' style='display:none;'></div>	

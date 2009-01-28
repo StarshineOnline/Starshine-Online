@@ -74,28 +74,26 @@ else
 
 	if($affiche_threads)
 	{
+		echo "<div id='messagerie_liste'>";
 		$groupe = recupgroupe($joueur['groupe'], '');
 		$messagerie = new messagerie($joueur['ID']);
 		$messagerie->get_threads($type_thread, 'ASC', true, 1);
 		
 		//Affichage des messages
 		?>
-		<table width="95%">
-		<tr>
-			<td>
-			</td>
-			<td>
+		<ul>
+			<li>
+			<span class='titre'>
 				Titre
-			</td>
-			<td>
+			</span>
+			<span class='par'>
 				Par
-			</td>
-			<td>
+			</span>
+			<span class='date'>
 				Date
-			</td>
-			<td>
-			</td>
-		</tr>
+			</span>
+			</li>
+
 		<?php
 		foreach($messagerie->threads as $key => $thread)
 		{
@@ -118,11 +116,10 @@ else
 			}
 			else $options = '';
 			?>
-		<tr>
-			<td>
+		<li>
+			<span class='titre'>
 				<?php echo $texte_thread_non_lu; ?>
-			</td>
-			<td>
+
 				<?php
 				//Si le titre est trop long je le coupe pour que ça casse pas ma mise en page qui déchire ta soeur en deux
 				$titre = htmlspecialchars(stripslashes($thread->messages[0]->titre));
@@ -133,23 +130,23 @@ else
 				?>
 				<a href="messagerie.php?id_thread=<?php echo $thread->id_thread; ?>" onclick="return envoiInfo(this.href, 'information'); return false;" style="<?php echo $style; ?>">
 				<?php echo $titre; ?></a>
-			</td>
-			<td>
+			</span>
+			<span class='par'>
 				<?php
 				echo $thread->messages[0]->nom_auteur;
 				?>
-			</td>
-			<td style="font-size : 0.9em;">
+			</span>
+			<span class='date'>
 				<?php echo $date; ?>
-			</td>
-			<td>
+
+
 				<?php echo $options; ?>
-			</td>
-		</tr>
+			</span>
+		</li>
 				<?php
 		}
 		?>
-		</table>
+		</ul>
 		<?php
 	}
 }

@@ -213,7 +213,7 @@ if (isset($_GET['ID']))
 				if(!array_key_exists('repos_sage', $joueur['debuff']))
 				{
 					//Mis en place du debuff
-					lance_buff($row['type'], $joueur['ID'], 1, 0, $row['duree'], $row['nom'], 'Vous ne pouvez plus attaquer ni lancer le sort repos du sage', 'perso', 1, 0, 0);
+					lance_buff($row['type'], $joueur['ID'], 1, 0, $row['duree'], $row['nom'], 'Vous ne pouvez plus attaquer ni lancer le sort repos du sage', 'perso', 1, 0, 0, 0);
 					$joueur['pa'] = $joueur['pa'] - $sortpa;
 					$joueur['mp'] = $joueur['mp'] + $row['effet'];
 					if($joueur['mp'] > $joueur['mp_max']) $joueur['mp'] = $joueur['mp_max'];
@@ -382,7 +382,7 @@ if (isset($_GET['ID']))
 					$debuff_tab = array();
 					foreach($cible_s["debuff"] as $debuff)
 					{
-						if($debuff["type"] != "debuff_rez" AND $debuff["type"] != "repos_sage" AND $debuff["type"] != "repos_interieur")
+						if($debuff["supprimable"] == 1)
 						{
 							$debuff_tab[] = $debuff["id"];
 						};
@@ -430,7 +430,7 @@ if (isset($_GET['ID']))
 					$debuff_tab = array();
 					foreach($joueur["debuff"] as $debuff)
 					{
-						if($debuff["type"] != "debuff_rez" AND $debuff["type"] != "repos_sage" AND $debuff["type"] != "repos_interieur") { $debuff_tab[count($debuff_tab)] = $debuff["id"]; };
+						if($debuff["supprimable"] == 1) { $debuff_tab[count($debuff_tab)] = $debuff["id"]; };
 					}
 					if(count($debuff_tab) > 0)
 					{	
@@ -440,7 +440,7 @@ if (isset($_GET['ID']))
 						$buff_tab = array();
 						foreach($joueur["buff"] as $buff)
 						{
-							if($debuff["type"] != "debuff_rez" OR $debuff["type"] != "repos_sage" OR $debuff["type"] != "repos_interieur") { $buff_tab[count($buff_tab)] = $buff["id"]; };
+							$buff_tab[count($buff_tab)] = $buff["id"];
 						}
 						
 						$db->query("DELETE FROM buff WHERE id=".$buff_tab[rand(0, count($buff_tab)-1)].";");

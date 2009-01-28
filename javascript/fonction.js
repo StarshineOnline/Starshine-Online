@@ -317,8 +317,8 @@ function affichePopUp(input_name,input_get)
 }
 function fermePopUp()
 {
+	Effect.DropOut('popup', { duration: 0.5 });
 	$('popup_content').innerHTML = '';
-	$('popup').hide();
 }
 function menu_change(input_name)
 {

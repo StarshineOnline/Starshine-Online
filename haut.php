@@ -11,6 +11,7 @@ elseif($connexion)
 /// @var juste pour empêcher Doxygen de bugger
 
 $journal = '';
+$erreur_login = '';
 //Connexion du joueur
 if (isset($_POST['log']) OR isset($_COOKIE['nom']))
 {
@@ -40,7 +41,7 @@ if (isset($_POST['log']) OR isset($_COOKIE['nom']))
 			{
 				if(($row['statut'] == 'hibern' AND $row['fin_ban'] >= time()))
 				{
-					echo 'Vous êtes en hibernation pour une durée de '.transform_sec_temp($row['fin_ban'] - time());
+					$erreur_login = 'Vous êtes en hibernation pour une durée de '.transform_sec_temp($row['fin_ban'] - time());
 				}
 				else
 				{
@@ -65,7 +66,7 @@ if (isset($_POST['log']) OR isset($_COOKIE['nom']))
 			}
 			else
 			{
-				echo 'Vous avez été banni pour une durée de '.transform_sec_temp($row['fin_ban'] - time());
+				$erreur_login = 'Vous avez été banni pour une durée de '.transform_sec_temp($row['fin_ban'] - time());
 			}
 		}
 		else
@@ -77,12 +78,12 @@ if (isset($_POST['log']) OR isset($_COOKIE['nom']))
 				$requete = "INSERT INTO log_connexion VALUES(NULL, ".$ID_base.", ".time().", '".$_SERVER['REMOTE_ADDR']."', 'Erreur mot de passe')";
 				$db->query($requete);
 			}
-			echo 'Erreur de mot de passe.';
+			$erreur_login = 'Erreur de mot de passe.';
 		}
 	}
 	else
 	{
-		echo 'Pseudo inconnu.';
+		$erreur_login = 'Pseudo inconnu.';
 	}
 }
 if (isset($_GET['deco']) AND !isset($_POST['log']))

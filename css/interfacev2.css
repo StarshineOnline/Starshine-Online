@@ -25,7 +25,7 @@ body {margin:0;padding:0;background:#5D705F url('./image/v2/bg_site.png') repeat
 
 #perso_contenu{margin:auto;min-height:110px;padding:5px;}
 #contenu_jeu {	margin : 0 auto;width:100%;}
-#popup {margin-left:130px;position:absolute;top:60px;z-index:99 !important;  -moz-border-radius: 12px;background:transparent url(./image/v2/box_accueil.png) repeat scroll 0 0;color:#EEE;}
+#popup {margin-left:130px;position:absolute;top:60px;z-index:99 !important;  -moz-border-radius: 12px;-webkit-border-radius: 12px;background:transparent url(./image/v2/box_accueil.png) repeat scroll 0 0;color:#EEE;}
 #popup a {color:#EEE;}
 #popup_menu {cursor:move ;background:transparent url(./image/v2/bouton_fond.png) repeat-x scroll 0 0;}
 #popup_content {padding:5px;text-align:justify;width:98%;}
@@ -270,6 +270,19 @@ margin-top:-3px;}
 #inventaire_slot .inventaire_span {float:left;display: block;}
 .mort {background:transparent url('./../image/interface/mort.png') no-repeat scroll left center;text-decoration: line-through;padding-left:20px;}
 
+#bestiaire {clear: both;}
+#bestiaire ul li {height:41px;line-height:35px;text-align: center;background:transparent url(./image/v2/box_accueil2.png) repeat scroll 0 0;-moz-border-radius: 15px;-webkit-border-radius: 15px;margin: 1px;}
+#bestiaire ul li:hover {background:transparent url('../image/interface/1.png') center;}
+#bestiaire ul li span {display: block;float: left;margin:1px;height:40px;}
+
+#bestiaire ul li img {height:30px;}
+
+#messagerie_liste {}
+#messagerie_liste ul li {float:left;border-top: 1px dotted #D7BF88;}
+#messagerie_liste ul li:hover {background:transparent url('../image/interface/1.png') center;-moz-border-radius: 2px;-webkit-border-radius: 2px;}
+#messagerie_liste .titre {float:left;display: block;width:225px;padding-left:10px;}
+#messagerie_liste .par {float:left;display: block;width:100px;}
+#messagerie_liste .date {float:left;display: block;width:100px;}
 
 .infoperso td {
 font-size : 10px;
@@ -369,6 +382,8 @@ div.spacer
 	background-color: #E7CF98;
 	padding:0 6px 3px;
 	-moz-border-radius-bottomright:10px;	
+	-webkit-border-bottom-right-radius :10px;
+
 	float: left;
 }
 

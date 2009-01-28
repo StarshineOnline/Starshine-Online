@@ -325,12 +325,12 @@ if (isset($_GET['ID']))
 										$debuff_tab = array();
 										foreach($cible["debuff"] as $debuff)
 										{
-											if($debuff["type"] != "debuff_rez" AND $debuff["type"] != "repos_sage" AND $debuff["type"] != "repos_interieur") { $debuff_tab[count($debuff_tab)] = $debuff["id"]; };
+											if($debuff["supprimable"] == 1) { $debuff_tab[count($debuff_tab)] = $debuff["id"]; };
 										}
 										if(count($debuff_tab) > 0)
 										{
-											$cible["pa"] = $cible["pa"] - $sortpa;
-											$cible["mp"] = $cible["mp"] - $sortmp;
+											$joueur["pa"] = $joueur["pa"] - $sortpa;
+											$joueur["mp"] = $joueur["mp"] - $sortmp;
 										
 											$db->query("DELETE FROM buff WHERE id=".$debuff_tab[rand(0, count($debuff_tab)-1)].";");
 											{//-- Augmentation des compétences

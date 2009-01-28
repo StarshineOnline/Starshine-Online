@@ -247,7 +247,7 @@ foreach($tab_royaume as $race => $royaume)
 		foreach($persos as $joueur)
 		{
 			//Lancement du buff
-			lance_buff('famine', $joueur, $debuff, 0, $duree, 'Famine', 'Vos HP et MP max sont réduits de %effet%%', 'perso', 1, 0, 0);
+			lance_buff('famine', $joueur, $debuff, 0, $duree, 'Famine', 'Vos HP et MP max sont réduits de %effet%%', 'perso', 1, 0, 0, 0);
 		}
 		$requete = "UPDATE royaume SET food = 0 WHERE ID = ".$royaume['id'];
 		$db->query($requete);

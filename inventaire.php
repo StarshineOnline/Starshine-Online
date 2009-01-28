@@ -250,6 +250,26 @@ if(!$visu AND isset($_GET['action']))
 					}
 					else echo 'Vous êtes mort !';
 				break;
+				case 'potion_guerison' :
+					if($joueur['hp'] > 0)
+					{
+						$objet = decompose_objet($joueur['inventaire_slot'][$_GET['key_slot']]);
+						if(check_utilisation_objet($joueur, $objet))
+						{
+							foreach($joueur["debuff"] as $debuff)
+							{
+								if($debuff["supprimable"] == 1) { $debuff_tab[count($debuff_tab)] = $debuff["id"]; };
+							}
+							if(count($debuff_tab) > 0)
+							{
+								$db->query("DELETE FROM buff WHERE id=".$debuff_tab[rand(0, count($debuff_tab)-1)].";");
+								echo '<h6>Une malédiction a été correctement supprimée</h6>';
+							}
+							else echo '<h5>Vous n\'avez pas de malédiction a supprimer</h5>';
+						}
+					}
+					else echo 'Vous êtes mort !';
+				break;
 				case 'globe_pa' :
 					$objet = decompose_objet($joueur['inventaire_slot'][$_GET['key_slot']]);
 					if(check_utilisation_objet($joueur, $objet))

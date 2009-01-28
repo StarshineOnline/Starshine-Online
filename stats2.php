@@ -63,7 +63,7 @@ else $categorie = $_GET['categorie'];
 					$histo_demain_m = date("m", mktime(0, 0, 0, $_GET['mois'] , $_GET['jour'] + 1, $_GET['annee']));
 					$histo_demain_d = date("d", mktime(0, 0, 0, $_GET['mois'] , $_GET['jour'] + 1, $_GET['annee']));
 				?>
-				<a href="stats2.php?historique=y&amp;annee=<?php echo $histo_hier_Y; ?>&amp;mois=<?php echo $histo_hier_m; ?>&amp;jour=<?php echo $histo_hier_d; ?>&amp;image=<?php echo $_GET['image']; ?>">Jour précédent</a> - <a href="stats2.php?historique=y&amp;annee=<?php echo $histo_demain_Y; ?>&amp;mois=<?php echo $histo_demain_m; ?>&amp;jour=<?php echo $histo_demain_d; ?>&amp;image=<?php echo $_GET['image']; ?>">Jour suivant</a><br />
+				<a href="stats2.php?historique=y&amp;annee=<?php echo $histo_hier_Y; ?>&amp;mois=<?php echo $histo_hier_m; ?>&amp;jour=<?php echo $histo_hier_d; ?>&amp;image=<?php echo $_GET['image']; ?>" onclick="return envoiInfo(this.href, 'popup_content');">Jour précédent</a> - <a href="stats2.php?historique=y&amp;annee=<?php echo $histo_demain_Y; ?>&amp;mois=<?php echo $histo_demain_m; ?>&amp;jour=<?php echo $histo_demain_d; ?>&amp;image=<?php echo $_GET['image']; ?>" onclick="return envoiInfo(this.href, 'popup_content');">Jour suivant</a><br />
 				<img src="image/stat/<?php echo $_GET['annee'].'-'.$_GET['mois'].'-'.$_GET['jour']; ?>/<?php echo $_GET['image']; ?>" alt="">
 			</div>
 		</div>

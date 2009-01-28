@@ -30,7 +30,8 @@ function transform_texte($texte)
 
 function message_affiche($message, $joueur_id, $thread_title = '')
 {
-	$date = $message->date;
+	$date =	date("d-m H:i", strtotime($message->date));
+//	$date = $message->date;
 	if($message->titre != $thread_title) $titre = htmlspecialchars(stripslashes($message->titre));
 	else $titre = '';
 	$message_texte = transform_texte($message->message);
