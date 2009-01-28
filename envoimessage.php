@@ -57,26 +57,27 @@ if(isset($_POST['message']))
 else
 {
 ?>
-<h2>Envoi d'un message</h2>
-<div class="information_case">
-<form method="post" action="envoimessage.php?id_type=<?php echo $id_type; ?>" id="formMessage">
-	<?php
-	if ($type == 'r')
-	{
-		$thread = new messagerie_thread($id);
-		$thread->get_messages(1, 'ASC');
-		$titre_message = stripslashes($thread->messages[0]->titre);
-	}
-	?>
-	Titre du message :<br />
-	<input type="text" name="titre" id="titre" size="30" value="<?php echo $titre_message;?>"/><br />
-	<?// print_messbar() ?>
-	Message :<br />
-	<textarea name="message" id="message" cols="45" rows="12"></textarea><br />
-	<br />
-	<input type="button" onclick="envoiFormulaire('formMessage', 'information');" name="btnSubmit" value="Envoyer" />
-</form>
-</div>
+<fieldset>
+	<legend>Envoi d'un message</legend>
+	<div class="information_case">
+	<form method="post" action="envoimessage.php?id_type=<?php echo $id_type; ?>" id="formMessage">
+		<?php
+		if ($type == 'r')
+		{
+			$thread = new messagerie_thread($id);
+			$thread->get_messages(1, 'ASC');
+			$titre_message = stripslashes($thread->messages[0]->titre);
+		}
+		?>
+		Titre du message :<br />
+		<input type="text" name="titre" id="titre" size="30" value="<?php echo $titre_message;?>"/><br />
+		<?// print_messbar() ?>
+		Message :<br />
+		<textarea name="message" id="message" cols="45" rows="12"></textarea><br />
+		<br />
+		<input type="button" onclick="envoiFormulaire('formMessage', 'information');" name="btnSubmit" value="Envoyer" />
+	</form>
+</fieldset>
 <?php
 
 }

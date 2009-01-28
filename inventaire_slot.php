@@ -12,8 +12,8 @@
 //Filtre
 if(array_key_exists('filtre', $_GET)) $filtre_url = '&amp;filtre='.$_GET['filtre'];
 else $filtre_url = '';
-
 $i = 0;
+echo "<ul>";
 if($joueur['inventaire_slot'] != '')
 {
 	foreach($joueur['inventaire_slot'] as $invent)
@@ -105,8 +105,7 @@ if($joueur['inventaire_slot'] != '')
 			{
 				$echo = description_objet($invent);
 			?>
-			<tr>
-			<td onmouseover="return <?php echo make_overlib($echo); ?>" onmouseout="return nd();">
+
 			<?php
 			$pages = array();
 			$pages_nom = array();
@@ -170,18 +169,18 @@ if($joueur['inventaire_slot'] != '')
 				$ij++;
 			}
 			?>
-			<span onclick="<?php echo $onclick; ?> return overlib('<?php echo $text; ?>', STICKY, CAPTION, '<?php echo addslashes($row['nom']); ?>', OFFSETX, -50, OFFSETY, -30, CLOSECLICK);"><?php echo $row['nom']; ?></span>
+			<li onmouseover="return <?php echo make_overlib($echo); ?>" onmouseout="return nd();" onclick="<?php echo $onclick; ?> return overlib('<?php echo $text; ?>', STICKY, CAPTION, '<?php echo addslashes($row['nom']); ?>', OFFSETX, -50, OFFSETY, -30, CLOSECLICK);"><span class='inventaire_span' style='width:150px'><?php echo $row['nom']; ?>
 			<?php
 			$modif_prix = 1;
 			if($objet_d['stack'] > 1) echo ' X '.$objet_d['stack'];
 			if($objet_d['slot'] > 0)
 			{
-				echo '<br /><span class="xsmall">Slot niveau '.$objet_d['slot'].'</span>';
+				echo '<span class="xsmall">Slot niveau '.$objet_d['slot'].'</span>';
 				$modif_prix = 1 + ($objet_d['slot'] / 5);
 			}
 			if($objet_d['slot'] == '0')
 			{
-				echo '<br /><span class="xsmall">Slot impossible</span>';
+				echo '<span class="xsmall">Slot impossible</span>';
 				$modif_prix = 0.9;
 			}
 			if($objet_d['enchantement'] > '0')
@@ -190,45 +189,45 @@ if($joueur['inventaire_slot'] != '')
 				$req = $db->query($requete);
 				$row_e = $db->read_assoc($req);
 				$modif_prix = 1 + ($row_e['niveau'] / 2);
-				echo '<br /><span class="xsmall">Enchantement de '.$row_e['enchantement_nom'].'</span>';
+				echo '<span class="xsmall">Enchantement de '.$row_e['enchantement_nom'].'</span>';
 			}
+			echo "</span>";
 			//else echo ' X 1';
 			//print_r($objet_d);
 			if($objet_d['identifier'])
 			{
 				if($objet_d['categorie'] == 'g')
 				{
-					echo ' <a href="inventaire.php?action=enchasse&amp;key_slot='.$i.$filtre_url.'" onclick="return envoiInfo(this.href, \'information\');">Enchasser</a> <span class="xsmall">(20 PA)</span> / ';
+					echo '<span class="inventaire_span" style="width:60px;"><a href="inventaire.php?action=enchasse&amp;key_slot='.$i.$filtre_url.'" onclick="return envoiInfo(this.href, \'information\');">Enchasser</a><span class="xsmall">(20 PA)</span></span>';
 				}
 				elseif($objet_d['categorie'] == 'a' OR $objet_d['categorie'] == 'p' OR $objet_d['categorie'] == 'm')
 				{
-					echo ' <a href="inventaire.php?action=equip&amp;id_objet='.$objet_d['id_objet'].'&amp;partie='.$partie.'&amp;key_slot='.$i.'&amp;categorie='.$objet_d['categorie'].$filtre_url.'" onclick="return envoiInfo(this.href, \'information\');">Equiper</a> / ';
+					echo '<span class="inventaire_span" style="width:60px;"><a href="inventaire.php?action=equip&amp;id_objet='.$objet_d['id_objet'].'&amp;partie='.$partie.'&amp;key_slot='.$i.'&amp;categorie='.$objet_d['categorie'].$filtre_url.'" onclick="return envoiInfo(this.href, \'information\');">Equiper</a></span> ';
 				}
 				elseif($objet_d['categorie'] == 'o' OR $objet_d['categorie'] == 'r')
 				{
-					if($row['utilisable'] == 'y') echo ' <a href="inventaire.php?action=utilise&amp;id_objet='.$objet_d['id_objet'].'&amp;type='.$row['type'].'&amp;key_slot='.$i.$filtre_url.'" onclick="return envoiInfo(this.href, \'information\');">Utiliser</a> / ';
-					if($W_row['type'] == 1 AND $objet_d['categorie'] == 'r') echo '<a href="inventaire.php?action=depot&amp;id_objet='.$objet_d['id_objet'].'&amp;type='.$row['type'].'&amp;key_slot='.$i.$filtre_url.'" onclick="return envoiInfo(this.href, \'information\');">Déposer au dépot</a>';
+					if($row['utilisable'] == 'y') echo '<span class="inventaire_span" style="width:60px;"><a href="inventaire.php?action=utilise&amp;id_objet='.$objet_d['id_objet'].'&amp;type='.$row['type'].'&amp;key_slot='.$i.$filtre_url.'" onclick="return envoiInfo(this.href, \'information\');">Utiliser</a></span>';
+					if($W_row['type'] == 1 AND $objet_d['categorie'] == 'r') echo '<span class="inventaire_span"><a href="inventaire.php?action=depot&amp;id_objet='.$objet_d['id_objet'].'&amp;type='.$row['type'].'&amp;key_slot='.$i.$filtre_url.'" onclick="return envoiInfo(this.href, \'information\');">Déposer au dépot</a></span>';
 				}
 				elseif($objet_d['categorie'] == 'l')
 				{
-					echo ' <a href="inventaire.php?action=utilise&amp;id_objet='.$objet_d['id_objet'].'&amp;type=grimoire&amp;key_slot='.$i.$filtre_url.'" onclick="return envoiInfo(this.href, \'information\');">Lire</a> / ';
+					echo '<span class="inventaire_span" style="width:50px;"><a href="inventaire.php?action=utilise&amp;id_objet='.$objet_d['id_objet'].'&amp;type=grimoire&amp;key_slot='.$i.$filtre_url.'" onclick="return envoiInfo(this.href, \'information\');">Lire</a></span>';
 				}
 				if ($W_row['type'] == 1 AND $objet_d['categorie'] != 'r' AND $objet_d['categorie'] != 'h')
 				{
 					$prix = floor($row['prix'] * $modif_prix / $G_taux_vente);
-					echo ' <a href="inventaire.php?action=vente&amp;id_objet='.$objet_d['id'].'&amp;key_slot='.$i.$filtre_url.'" onclick="if(confirm(\'Voulez vous vendre cet objet ?\')) return envoiInfo(this.href, \'information\'); else return false;">Vendre '.$prix.' Stars</a> / <a href="inventaire.php?action=ventehotel&amp;id_objet='.$objet_d['categorie'].$objet_d['id_objet'].'&amp;key_slot='.$i.$filtre_url.'" onclick="return envoiInfo(this.href, \'information\');">Hotel des ventes</a>';
+					echo '<span class="inventaire_span" style="width:100px;"><a href="inventaire.php?action=vente&amp;id_objet='.$objet_d['id'].'&amp;key_slot='.$i.$filtre_url.'" onclick="if(confirm(\'Voulez vous vendre cet objet ?\')) return envoiInfo(this.href, \'information\'); else return false;">Vendre '.$prix.' Stars</a> / <a href="inventaire.php?action=ventehotel&amp;id_objet='.$objet_d['categorie'].$objet_d['id_objet'].'&amp;key_slot='.$i.$filtre_url.'" onclick="return envoiInfo(this.href, \'information\');">Hotel des ventes</a></span>';
 				}
 				if(($objet_d['categorie'] == 'a' OR $objet_d['categorie'] == 'p' OR $objet_d['categorie'] == 'm') AND $objet_d['slot'] == '' AND $objet_d['enchantement'] == '')
 				{
-					echo '<br /><a href="inventaire.php?action=slot&amp;key_slot='.$i.$filtre_url.'" onclick="return envoiInfo(this.href, \'information\');">Mettre un slot à cet objet</a> <span class="xsmall">(10 PA)</span>';
+					echo '<span class="inventaire_span" style="width:120px;"><a href="inventaire.php?action=slot&amp;key_slot='.$i.$filtre_url.'" onclick="return envoiInfo(this.href, \'information\');">Mettre un slot</a> <span class="xsmall">(10 PA)</span></span>';
 				}
 			}
-			echo '
-			</td>
-		</tr>';
 			}
+			echo "</li>";
 			$i++;
 		}
 	}
 }
+echo "</ul>";
 ?>

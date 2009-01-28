@@ -6,7 +6,8 @@ $W_case = $_GET['poscase'];
 $coord = convert_in_coord($W_case);
 $W_distance = detection_distance($W_case, $_SESSION["position"]);
 ?>
-<h2>Livre de Sorts</h2>
+<fieldset>
+	<legend>Livre de Sorts</legend>
 <?php
 if (isset($_GET['ID']))
 {
@@ -262,3 +263,4 @@ else
 
 ?>
 <img src="image/pixel.gif" onLoad="envoiInfo('infoperso.php?javascript=oui', 'perso');" />
+</fieldset>

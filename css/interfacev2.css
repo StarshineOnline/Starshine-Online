@@ -265,8 +265,9 @@ margin-top:-3px;}
 /***************************************************
   Info Perso
  ***************************************************/
-
-
+#inventaire_slot {background-color: #FFF;}
+#inventaire_slot ul li {height: 20px;}
+#inventaire_slot .inventaire_span {float:left;display: block;}
 .mort {background:transparent url('./../image/interface/mort.png') no-repeat scroll left center;text-decoration: line-through;padding-left:20px;}
 
 

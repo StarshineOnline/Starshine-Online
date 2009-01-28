@@ -8,10 +8,11 @@ function affiche_bataille_groupe($bataille, $leader = true)
 {
 	global $joueur;
 	?>
-		<h2><a href="groupe_bataille.php?affiche_bataille=<?php echo $bataille->id; ?>" onclick="affichePopUp(this.href); return false;"><?php echo $bataille->nom; ?></a></h2>
-		<div>
-			<?php echo transform_texte($bataille->description); ?>
-		</div>
+		<div class="information_case">
+			<h4><a href="groupe_bataille.php?affiche_bataille=<?php echo $bataille->id; ?>" onclick="affichePopUp(this.href); return false;"><?php echo $bataille->nom; ?></a></h4>
+			<div>
+				<?php echo transform_texte($bataille->description); ?>
+			</div>
 	<?php
 	if($bataille->is_groupe_in($joueur['groupe']))
 	{
@@ -40,6 +41,9 @@ function affiche_bataille_groupe($bataille, $leader = true)
 		<a href="groupe_bataille.php?id_bataille=<?php echo $bataille->id; ?>&amp;participe" onclick="return envoiInfo(this.href, 'bataille_<?php echo $bataille->id; ?>');">Participer à cette bataille</a>
 		<?php
 	}
+	?>
+	</div>
+	<?php
 }
 
 $groupe = recupgroupe($joueur['groupe'], '');

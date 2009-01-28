@@ -6,7 +6,8 @@ $W_case = convert_in_pos($cible['x'], $cible['y']);
 $W_distance = detection_distance($W_case, $_SESSION["position"]);
 $tab_sort_jeu = explode(';', $joueur['sort_jeu']);
 ?>
-<h2>Livre de Sorts</h2>
+<fieldset>
+	<legend>Livre de Sorts</legend>
 <?php
 if (isset($_GET['ID']))
 {
@@ -480,3 +481,4 @@ else
 
 ?>
 <img src="image/pixel.gif" onLoad="envoiInfo('infoperso.php?javascript=oui', 'perso');" />
+</fieldset>

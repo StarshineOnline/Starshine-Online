@@ -16,7 +16,8 @@ if ($joueur['x'] + $vue < $perso['x'] || $perso['x'] < $joueur['x'] - $vue ||
     security_block(URL_MANIPULATION);
 }
 ?>
-<h2>Information Joueur</h2>
+<fieldset>
+	<legend>Information Joueur</legend>
 <?php
 //affichage des informations du joueur dont on veut l'info
 if(array_key_exists(6, $bonus) AND !check_affiche_bonus($bonus[6], $joueur, $perso)) $chaine_nom = $perso['nom'];
@@ -173,4 +174,4 @@ if(array_key_exists(16, $bonus) AND check_affiche_bonus($bonus[16], $joueur, $pe
 	<?php
 }
 ?>
-</div>
+</fieldset>
