@@ -5,8 +5,11 @@ include('../fonction/messagerie.inc.php');
 function affiche_bataille($bataille)
 {
 	?>
-		<div style="float : right;">
-			<a href="gestion_bataille.php?id_bataille=<?php echo $bataille->id; ?>&amp;info_bataille" onclick="return envoiInfo(this.href, 'conteneur');">modifier</a><br />
+	<div style="clear : both;"></div>
+	<div id="bataille_<?php echo $bataille->id; ?>" style="margin : 10px;">
+		<fieldset style="float : left; height : 50px; padding : 5px;">
+			<legend><?php echo ucwords($bataille->etat_texte()); ?></legend>
+			<a href="gestion_bataille.php?id_bataille=<?php echo $bataille->id; ?>&amp;info_bataille" onclick="return envoiInfo(this.href, 'conteneur');">Gérer</a><br />
 		<?php
 		if($bataille->etat == 0)
 		{
@@ -21,10 +24,12 @@ function affiche_bataille($bataille)
 			<?php
 		}
 		?>
-		</div>
-		<?php echo $bataille->nom; ?><br />
-		<?php echo transform_texte($bataille->description); ?><br />
-		<?php echo $bataille->etat_texte(); ?><br />
+		</fieldset>
+		<fieldset style="padding : 5px; width : 500px; float : left; min-height : 50px;">
+			<legend><?php echo $bataille->nom; ?></legend>
+			<?php echo transform_texte($bataille->description); ?><br />
+		</fieldset>
+	</div>
 	<?php
 }
 
@@ -53,6 +58,7 @@ function affiche_map($bataille)
 	$map->affiche();
 }
 
+
 //Nouvelle bataille
 if(array_key_exists('new', $_GET))
 {
@@ -62,9 +68,45 @@ if(array_key_exists('new', $_GET))
 	Nom : <input type="text" name="nom" id="nom" /><br />
 	Description :<br />
 	<textarea name="description" id="description"></textarea><br />
-	x : <input type="text" name="x" id="x" /><br />
-	y : <input type="text" name="y" id="y" /><br />
+	<div id="choix_bataille">
+		<a href="gestion_bataille.php?move_map&x=<?php echo $Trace[$R['race']]['spawn_x']; ?>&y=<?php echo $Trace[$R['race']]['spawn_y'] ?>" onclick="return envoiInfo(this.href, 'choix_bataille');">Cliquez pour définir le centre de la bataille</a>
+	</div>
+	<div style="clear : both;"></div>
 	<input type="button" onclick="description = $('description').value.replace(new RegExp('\n', 'gi'), '[br]'); envoiInfoPost('gestion_bataille.php?nom=' + $('nom').value + '&amp;description=' + description + '&amp;x=' + $('x').value + '&amp;y=' + $('y').value + '&amp;new2', 'conteneur');" value="Créer cette bataille" />
+	<?php
+}
+elseif(array_key_exists('move_map', $_GET))
+{
+	if(array_key_exists('x', $_GET)) $x = $_GET['x'];
+	else $x = $Trace[$R['race']]['spawn_x'];
+	if(array_key_exists('y', $_GET)) $y = $_GET['y'];
+	else $y = $Trace[$R['race']]['spawn_y'];
+	$map = new map($x, $y, 12, '../', false, 'low');
+	$map->set_onclick("envoiInfo('gestion_bataille.php?valide_choix_bataille&amp;case=%%ID%%', 'valide_choix_bataille');");
+	$map->quadrillage = true;
+	?>
+	<div style="float : left;">
+	<?php
+	$map->affiche();
+	?>
+	</div>
+	<div id="move_map_menu" style="float : left;">
+		<a href="gestion_bataille.php?move_map&x=<?php echo $x; ?>&y=<?php echo ($y - 10); ?>" onclick="return envoiInfo(this.href, 'choix_bataille');">Haut</a>
+		<a href="gestion_bataille.php?move_map&x=<?php echo $x; ?>&y=<?php echo ($y + 10); ?>" onclick="return envoiInfo(this.href, 'choix_bataille');">Bas</a>
+		<a href="gestion_bataille.php?move_map&x=<?php echo ($x - 10); ?>&y=<?php echo $y; ?>" onclick="return envoiInfo(this.href, 'choix_bataille');">Gauche</a>
+		<a href="gestion_bataille.php?move_map&x=<?php echo ($x + 10); ?>&y=<?php echo $y; ?>" onclick="return envoiInfo(this.href, 'choix_bataille');">Droite</a><br />
+		X : <input type="text" id="go_x" style="width : 30px;" /> / Y : <input type="text" id="go_y" style="width : 30px;" /> <input type="button" onclick="envoiInfo('gestion_bataille.php?move_map&x=' + $('go_x').value + '&y=' + $('go_y').value, 'choix_bataille');" value="Go !" /><br />
+		<div id="valide_choix_bataille"></div>
+	</div>
+	<?php
+}
+elseif(array_key_exists('valide_choix_bataille', $_GET))
+{
+	$coord = convert_in_coord($_GET['case']);
+	?>
+	Vous avez séléctionné X : <?php echo $coord['x']; ?> / Y : <?php echo $coord['y']; ?> comme centre de la bataille.
+	<input type="hidden" name="x" id="x" value="<?php echo $coord['x']; ?>" />
+	<input type="hidden" name="y" id="y" value="<?php echo $coord['y']; ?>" />
 	<?php
 }
 //Nouvelle bataille etape 2 => Création
@@ -242,13 +284,7 @@ else
 	
 	foreach($bataille_royaume->batailles as $bataille)
 	{
-		?>
-		<div style="border : 1px solid black;" id="bataille_<?php echo $bataille->id; ?>">
-		<?php
 		affiche_bataille($bataille);
-		?>
-		</div>
-		<?php
 	}
 }
 ?>
