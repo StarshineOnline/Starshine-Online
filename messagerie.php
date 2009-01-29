@@ -22,8 +22,10 @@ elseif(array_key_exists('action', $_GET))
 ?>
 <fieldset>
 <legend>Messagerie <?php echo $titre_messagerie; ?></legend>
-<div style="text-align : center;">
-	<a href="messagerie.php" onclick="return envoiInfo(this.href, 'information'); return false;">Groupe (<?php echo $non_lu['groupe']; ?>)</a> | <a href="messagerie.php?action=perso" onclick="envoiInfo(this.href, 'information'); return false;">Perso (<?php echo $non_lu['perso']; ?>)</a><br />
+<div id="messagerie_onglet" style="text-align : center;">
+	<?php
+	include('messagerie_menu_onglet.php');
+	?>
 </div>
 <div id="liste_message">
 <?php

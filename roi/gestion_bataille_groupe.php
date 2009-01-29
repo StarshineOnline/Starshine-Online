@@ -5,16 +5,20 @@ $bataille = new bataille($_GET['id_bataille']);
 
 if(array_key_exists('mission', $_GET))
 {
-	$mission = new bataille_groupe_repere();
-	$mission->id_repere = $_GET['mission'];
-	$mission->id_groupe = $_GET['id_groupe'];
-	$mission->accepter = 0;
-	$mission->sauver();
-	//On envoi un message au chef du groupe
-	$messagerie = new messagerie($joueur['ID']);
-	$titre = 'Mission pour la bataille : '.$bataille->nom;
-	$message = 'Envoi du message, je test là !';
-	$messagerie->envoi_message(0, 4867, $titre, $message, 0, 1);
+	if($_GET['id_groupe'] != 0 AND $_GET['id_groupe'] != '')
+	{
+		$mission = new bataille_groupe_repere();
+		$mission->id_repere = $_GET['mission'];
+		$mission->id_groupe = $_GET['id_groupe'];
+		$mission->accepter = 0;
+		$mission->sauver();
+		//On envoi un message au chef du groupe
+		$messagerie = new messagerie($joueur['ID']);
+		$titre = 'Mission pour la bataille : '.$bataille->nom;
+		$message = 'Votre groupe a été affecté à une mission concernant la bataille : '.$bataille->nom;
+		$messagerie->envoi_message(0, 4867, $titre, $message, 0, 1);
+	}
+	else echo 'Erreur du numéro du groupe ?!';
 }
 else
 {

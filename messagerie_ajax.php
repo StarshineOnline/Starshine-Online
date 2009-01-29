@@ -37,6 +37,8 @@ if(!array_key_exists('action', $_GET))
 		}
 		$messagerie->set_thread_lu($id_thread);
 		?>
+		<img src="image/pixel.gif" onLoad="envoiInfo('menu_carteville.php?javascript=oui', 'carteville');" />
+		<img src="image/pixel.gif" onLoad="envoiInfo('messagerie_menu_onglet.php?javascript=oui', 'messagerie_onglet');" />
 		<form method="post" id="formMessage" action="envoimessage.php?id_type=r<?php echo $messagerie->thread->id_thread; ?>">
 		<textarea name="message" id="message" cols="53" rows="7"></textarea>
 		<br />
@@ -87,7 +89,7 @@ else
 				Titre
 			</span>
 			<span class='par'>
-				Par
+				Interlocuteur
 			</span>
 			<span class='date'>
 				Date
@@ -98,6 +100,15 @@ else
 		foreach($messagerie->threads as $key => $thread)
 		{
 			$date = date("d-m H:i", strtotime($thread->dernier_message));
+			//Recherche du destinataire
+			if($thread->id_dest != 0)
+			{
+				if($thread->id_dest != $joueur['ID']) $id_interlocuteur = $thread->id_dest;
+				else $id_interlocuteur = $thread->id_auteur;
+				$interlocuteur = recupperso_essentiel($id_interlocuteur);
+				$nom_interlocuteur = $interlocuteur['nom'];
+			}
+			else $nom_interlocuteur = 'groupe';
 			if($thread->important) $style = 'font-weight : bold;';
 			else $style = '';
 			$thread_non_lu = $messagerie->get_thread_non_lu($thread->id_thread);
@@ -112,11 +123,11 @@ else
 			}
 			if(($groupe['leader'] && $type_thread == 'groupe') OR ($thread->id_auteur == $joueur['ID'] && !array_key_exists(1, $thread->messages)))
 			{
-				$options .= '<a href="thread_modif.php?id_thread='.$thread->id_thread.'&suppr=1" onclick="if(confirm(\'Si vous supprimez ce message, tous les messages à l\\\'intérieur seront supprimés !\')) return envoiInfo(this.href, \'information\'); else return false;">(X)</a>';
+				$options .= '<a href="thread_modif.php?id_thread='.$thread->id_thread.'&suppr=1" onclick="if(confirm(\'Si vous supprimez ce message, tous les messages à l\\\'intérieur seront supprimés !\')) return envoiInfo(this.href, \'thread_'.$thread->id_thread.'\'); else return false;">(X)</a>';
 			}
 			else $options = '';
 			?>
-		<li>
+		<li id="thread_<?php echo $thread->id_thread; ?>">
 			<span class='titre'>
 				<?php echo $texte_thread_non_lu; ?>
 
@@ -133,7 +144,7 @@ else
 			</span>
 			<span class='par'>
 				<?php
-				echo $thread->messages[0]->nom_auteur;
+				echo $nom_interlocuteur;
 				?>
 			</span>
 			<span class='date'>
