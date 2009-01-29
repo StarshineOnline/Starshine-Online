@@ -13,6 +13,7 @@ normalize_entry_charset(array('titre', 'message'));
 //Envoi du message
 if(isset($_POST['message']))
 {
+	$erreur = false;
 	$titre = addslashes($_POST['titre']);
 	$message = addslashes($_POST['message']);
 	if (empty($titre)){$titre = 'Sans titre';}
@@ -41,18 +42,26 @@ if(isset($_POST['message']))
 			}
 			$messagerie = new messagerie($joueur['ID']);
 			$messagerie->envoi_message($id_thread, $id_dest, $titre, $message, $id_groupe);
-			echo '<h6>Message transmis avec succès</h6>';
+			if($type == 'r')
+			{
+				?>
+				<img src="image/pixel.gif" onload="envoiInfo('messagerie.php?id_thread=<?php echo $thread->id_thread; ?>', 'information');" />
+				<?php
+			}
+			else echo '<h6>Message transmis avec succès</h6>';
 		}
 		else
 		{
 			echo '<h5>Vous n\'avez pas saisi de message</h5>';
+			$erreur = true;
 		}
 	}
 	else
 	{
 		echo '<h5>Vous n\'avez pas saisi de titre</h5>';
+		$erreur = true;
 	}
-	echo '<a href="messagerie.php" onclick="return envoiInfo(this.href, \'information\');">Retour à la messagerie</a><br />';
+	if($type != 'r') echo '<a href="messagerie.php" onclick="return envoiInfo(this.href, \'information\');">Retour à la messagerie</a><br />';
 }
 else
 {

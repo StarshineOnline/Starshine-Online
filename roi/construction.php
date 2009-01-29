@@ -113,10 +113,16 @@ elseif($_GET['direction'] == 'up_construction')
 		$requete = "INSERT INTO construction VALUES('', ".$bat['id'].", ".$row['x'].", ".$row['y'].", ".$row['royaume'].", ".$bat['hp_max'].", '".$bat['nom']."', '".$row['type']."', 0, 0, '".$Gtrad[$bat['nom']]."')";
 		if($db->query($requete))
 		{
+			$bourg_id = $db->last_insert_id();
 			$requete = "UPDATE royaume SET star = star - ".$bat['cout']." WHERE ID = ".$R['ID'];
 			$db->query($requete);
 			echo 'La construction a été correctement upgradée.';
 		}
+		//On migre les anciens extracteurs vers le nouveau bourg
+		$requete = "UPDATE construction SET rechargement = ".$bourg_id." WHERE type = 'mine' AND rechargement = ".$_GET['id'];
+		$db->query($requete);
+		$requete = "UPDATE placement SET rez = ".$bourg_id." WHERE type = 'mine' AND rez = ".$_GET['id'];
+		$db->query($requete);
 	}
 }
 ?>
