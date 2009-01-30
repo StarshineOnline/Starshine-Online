@@ -306,8 +306,11 @@ while($W_row = $db->read_array($W_query))
 	$color = $G_consider[$diff_level];
 	if($diff_level > 0) $strong = 'bold'; else $strong = 'normal';
 	// on envois dans infojoueur.php -> ID du joueur et La position de la case ou il se trouve
+	$image = $W2_row['lib'];
+	if (file_exists('image/monstre/'.$image.'.png')) $image .= '.png';
+	else $image .= '.gif';
 	echo '
-	<li style="clear:both;"><img src="image/monstre/'.$W2_row['lib'].'.png" alt="'.$W2_row['nom'].'" style="vertical-align : middle;height:21px;float:left;width:21px;" /><span style="color : '.$color.'; font-weight : '.$strong.';float:left;width:325px;margin-left:15px;">'.$W_nom.'</span>
+	<li style="clear:both;"><img src="image/monstre/'.$image.'" alt="'.$W2_row['nom'].'" style="vertical-align : middle;height:21px;float:left;width:21px;" /><span style="color : '.$color.'; font-weight : '.$strong.';float:left;width:325px;margin-left:15px;">'.$W_nom.'</span>
 	
 		<span style="float:left;">';
 		if(!array_key_exists('repos_sage', $joueur['debuff']) OR !array_key_exists('bloque_attaque', $joueur['debuff'])) echo '

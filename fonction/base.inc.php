@@ -2582,6 +2582,24 @@ function image_sort($type)
 		case 'guerison' :
 			return '<img src="image/buff/guerison.png" alt="" style="vertical-align : middle;" />';
 		break;
+		case 'maladie_mollesse' :
+			return '<img src="image/buff/maladie_mollesse.png" alt="" style="vertical-align : middle;" />';
+		break;
+		case 'maladie_degenerescence' :
+			return '<img src="image/buff/maladie_degenerescence.png" alt="" style="vertical-align : middle;" />';
+		break;
+		case 'maladie_amorphe' :
+			return '<img src="image/buff/maladie_amorphe.png" alt="" style="vertical-align : middle;" />';
+		break;
+		case 'souffrance_extenuante' :
+			return '<img src="image/buff/souffrance_extenuante.png" alt="" style="vertical-align : middle;" />';
+		break;
+		case 'esprit_sacrifie' :
+			return '<img src="image/buff/esprit_sacrifie.png" alt="" style="vertical-align : middle;" />';
+		break;
+		case 'lente_agonie' :
+			return '<img src="image/buff/lente_agonie.png" alt="" style="vertical-align : middle;" />';
+		break;
 	}
 }
 

@@ -89,7 +89,7 @@ class map
 			$class_css['resolution_map'] = 'map';
 			$taille_cellule = 60.75;
 		}
-		echo '<div class="div_map" style="width : '.round(20 + ($taille_cellule * $this->case_affiche)).'px">';
+		echo '<div class="div_map" style="width : '.round(20 + ($taille_cellule * $this->case_affiche)).'px;height:'.round(20 + ($taille_cellule * $this->case_affiche)).'px;">';
 		{//-- Affichage du bord haut (bh) de la map
 			echo "<ul id='".$classe_css['map_bord_haut']."'>
 				   <li id='".$classe_css['map_bord_haut_gauche']."' class='".$class_css['resolution']."' onclick=\"switch_map(".$total_cases.");\">&nbsp;</li>";
@@ -302,7 +302,6 @@ class map
 		}
 	}
 
-	//Placements
 	function get_drapeau()
 	{
 		global $db;
@@ -429,9 +428,9 @@ class map
 			$this->map[$batiment['x']][$batiment['y']]["Batiments"][$batimat]["royaume"] = $batiment['royaume'];
 			$this->map[$batiment['x']][$batiment['y']]["Batiments"][$batimat]["image"] = $batiment['image'];
 
-			{//-- vérification que l'image du PNJ existe
+			{//-- v?rification que l'image du PNJ existe
 				$image = $this->root."image/batiment/";
-
+				
 				if(file_exists($image.$batiment['image']."_04.png")) 		{ $image .= $batiment['image']."_04.png"; }
 				elseif(file_exists($image.$batiment['image']."_04.gif")) 	{ $image .= $batiment['image']."_04.gif"; }
 				else 														{ $image = ""; } //-- Si aucun des fichiers n'existe autant rien mettre...
@@ -453,7 +452,7 @@ class map
 			$this->map[$batiment->x][$batiment->y]["Batiments"][$batimat]["royaume"] = $batiment->royaume;
 			$this->map[$batiment->x][$batiment->y]["Batiments"][$batimat]["image"] = $batiment->image;
 
-			{//-- vérification que l'image du PNJ existe
+			{//-- v?rification que l'image du PNJ existe
 				$image = $this->root."image/batiment/";
 				
 				if(file_exists($image.$batiment->image."_04.png")) 		{ $image .= $batiment->image."_04.png"; }

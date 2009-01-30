@@ -178,6 +178,7 @@ if(!empty($joueur["groupe"]))
 				   <span class='joueur_groupe_barre_hp'>".genere_image_hp_groupe($groupe["membre"][$m])."</span>
 				   <span class='joueur_groupe_barre_mp'>".genere_image_mp_groupe($groupe["membre"][$m])."</span>";
 			if ($groupe["membre"][$m]["hp"] <= 0) { echo "<span class='joueur_groupe_mort'></span>"; } 
+			
 			echo " <div class='spacer'></div>
 				  </li>";
 		}

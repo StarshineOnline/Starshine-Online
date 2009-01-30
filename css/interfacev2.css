@@ -87,7 +87,7 @@ margin-top:-3px;}
 #joueur_nom							{ position:relative; margin-left:55px;position:relative;text-align:center;width:210px;margin-top:10px;cursor: pointer; }
 #joueur_type						{ position:relative; width:210px; float:left; text-align:left; font-size:8pt; height:12px; }
 #buff_list				{ position:relative; text-align:center; width:210px;margin-left: 60px; }
-#debuff_list {position:relative; text-align:center; width:210px;margin-left: 50px;}
+#debuff_list {position:relative; text-align:center; width:210px;margin-left: 60px;}
 .joueur_groupe_activitenoir, .joueur_groupe_activiterouge, .joueur_groupe_activitebleu, .joueur_groupe_activitevert { margin:0px 0px 0px 0px; float:left; width:11px; height:11px; margin:2px;}
 .joueur_groupe_activitenoir { background:transparent url('../../image/groupes/noir.png') center; }
 .joueur_groupe_activiterouge{ background:transparent url('../../image/groupes/rouge.png') center; }
@@ -164,7 +164,7 @@ margin-top:-3px;}
 .overlib_desc_objet span		{ float:left; width:75px;  }
 
 /*-- Map --------------------------------------------------------------*/
-#carte							{ width:445px; height:440px; float:left; margin:0px;clear:both; z-index:500; }
+#carte							{ width:445px; height:100%; float:left; margin:0px;clear:both; z-index:500; }
 #carte ul {list-style: none;padding:0;margin: 0;}
 #map_bord_haut  				{ height:20px !important; cursor:pointer; padding-bottom : 0px;cursor: default;}
 #map_bord_haut li 				{ float:left; width:60px; height:inherit; line-height:20px; color:white; text-align:center;}
