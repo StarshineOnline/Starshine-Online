@@ -58,6 +58,8 @@ if($joueur['grade'] == 'Roi' OR $joueur['nom'] == 'Mylok' OR strtolower($joueur[
 	</script>
 </head>
 <body>
+<div id="conteneur_back">
+<div id="conteneur2">
 <div id="top">
 		<span title="Retour au jeu" class="fermer" onclick="document.location.href = '../jeu2.php';" style="float : left;"></span>
 		<ul id="menu">
@@ -65,7 +67,7 @@ if($joueur['grade'] == 'Roi' OR $joueur['nom'] == 'Mylok' OR strtolower($joueur[
 				<a href="#" onclick="showMenu(1)">Diplomatie</a>
 				<ul id="smenu1" style="display : none">
 					<li><a href="gestion_royaume.php?direction=diplomatie" onclick="return clickMenu(this);">Diplomatie</a>
-					<li><a href="gestion_royaume.php?direction=telephone" onclick="return clickMenu(this);">Téléphone rouge</a>
+					<li><a href="telephone.php" onclick="return clickMenu(this);">Téléphone rouge</a>
 				</ul>
 			</li>
 			<li>
@@ -125,6 +127,7 @@ if($joueur['grade'] == 'Roi' OR $joueur['nom'] == 'Mylok' OR strtolower($joueur[
 <div id="conteneur">
 &nbsp;
 </div>
+</div></div>
 <?php
 //Inclusion du bas de la page
 		include($root.'bas.php');

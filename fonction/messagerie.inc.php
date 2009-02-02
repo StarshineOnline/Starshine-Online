@@ -19,6 +19,7 @@ function transform_texte($texte)
 	$texte = htmlspecialchars(stripslashes($texte));
 	//bbcode de merde
 	$texte = str_replace('[br]', '<br />', $texte);
+	$texte = nl2br($texte);
 	$texte = eregi_replace("\[b\]([^[]*)\[/b\]", '<strong>\\1</strong>', $texte);
 	$texte = eregi_replace("\[i\]([^[]*)\[/i\]", '<i>\\1</i>', $texte);
 	$texte = eregi_replace("\[url\]([^[]*)\[/url\]", '<a href="\\1">\\1</a>', $texte);

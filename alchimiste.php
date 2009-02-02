@@ -169,7 +169,7 @@ if($W_distance == 0)
 				$actuel = $R['alchimie'] - $min;
 				$pourcent = round((($actuel / $total) * 100), 2);
 				echo $pourcent.'% du déblocage de la prochaine recette !<br />';
-				if($R['diplo'] == 127')
+				if($R['diplo'] == 127)
 				{
 				?>
 				<a href="alchimiste.php?action=recherche" onclick="return envoiInfo(this.href, 'carte');">Faire des recherches en alchimie (10 PA)</a>
@@ -196,7 +196,7 @@ if($W_distance == 0)
 		<?php
 		
 		$color = 1;
-		$where = " 1 ";
+		$where = " achetable = 'y'";
 		if(array_key_exists('part', $_GET))
 		{
 			$where .= " AND type = '".sSQL($_GET['part'])."'";

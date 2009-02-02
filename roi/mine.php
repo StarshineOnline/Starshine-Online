@@ -23,11 +23,11 @@ if(array_key_exists('id', $_GET))
 	$map = new map($x, $y, 5, '../', false, 'high');
 	$map->quadrillage = true;
 	$map->set_batiment_objet($batiments);
-	$map->set_onclick("envoiInfo('mine.php?case=%%ID%%&amp;id_bourg=".$bourg->id."', 'info_mine');");
+	$map->set_onclick("affichePopUp('mine.php?case=%%ID%%&amp;id_bourg=".$bourg->id."');");
 	$map->affiche();
 	?>
 	</div>
-	<div id="infos">
+	<div id="infos" style="width : 290px;">
 		<div id="info_bourg">
 			Type : <?php echo $bourg->nom; ?><br />
 			X : <?php echo $bourg->x; ?><br />
@@ -43,7 +43,7 @@ if(array_key_exists('id', $_GET))
 					else $evolution = '';
 					echo '
 					<li onmouseover="'.make_overlib($overlib).'" onmouseout="return nd();">
-						'.$mine->nom.' - X : '.$mine->x.' - Y : '.$mine->y.$evolution.' - <a href="mine.php?mine='.$mine->id.'&amp;suppr" onclick="return envoiInfo(this.href, \'info_mine\');">X</a>
+						'.$mine->nom.' - '.$mine->x.' / '.$mine->y.$evolution.' - <a href="mine.php?mine='.$mine->id.'&amp;suppr" onclick="if(confirm(\'Voulez vous supprimer cette mine ?\')) return envoiInfo(this.href, \'info_mine\'); else return false;">X</a>
 					</li>';
 				}
 			?>
@@ -153,7 +153,7 @@ elseif(array_key_exists('case', $_GET))
 						}
 						?>
 						</select>
-						<input type="button" onclick="envoiInfo('mine.php?bourg=<?php echo $_GET['id_bourg']; ?>&amp;x=<?php echo $coord['x']; ?>&amp;y=<?php echo $coord['y']; ?>&amp;add=' + $('type_mine').value, 'info_mine');" value="Valider" />
+						<input type="button" onclick="envoiInfo('mine.php?bourg=<?php echo $_GET['id_bourg']; ?>&amp;x=<?php echo $coord['x']; ?>&amp;y=<?php echo $coord['y']; ?>&amp;add=' + $('type_mine').value, 'popup_content');" value="Valider" />
 						<?php
 					}
 				}

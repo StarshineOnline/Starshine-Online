@@ -118,6 +118,7 @@ if($W_distance == 0)
 					echo 'Merci de votre aide !<br />';
 					if($row['fournisseur'] == '') $link = 'bureau_quete';
 					elseif($row['fournisseur'] == 'ecole_combat') $link = 'ecolecombat';
+					elseif($row['fournisseur'] == 'boutique') $link = 'alchimiste';
 					else $link = $row['fournisseur'];
 				}
 				else

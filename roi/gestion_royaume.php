@@ -91,7 +91,7 @@ require('haut_roi.php');
 				}
 				else
 				{
-					$image_diplo = '../image/interface/neutre.png';
+					$image_diplo = '../image/interface/neutre.gif';
 				}
 				echo '
 		<tr style="vertical-align : middle;">
@@ -200,25 +200,6 @@ require('haut_roi.php');
 	        $db->query($requete);
 	    }
 	}
-	elseif($_GET['direction'] == 'telephone')
-	{
-	    $requete = "SELECT * FROM perso WHERE rang_royaume = 6 AND ID <> ".$joueur['ID'];
-	    $req = $db->query($requete);
-	    echo '<table class="ville">';
-	    while($row = $db->read_assoc($req))
-	    {
-	        echo '
-	        <tr>
-	        	<td>
-	        		<a href="../envoimessage.php?id_type=p'.$row['ID'].'" onclick="return envoiInfo(this.href, \'conteneur\')">'.$row['nom'].'</a>
-	        	</td>
-	        	<td>
-	        		 - Roi des '.$Gtrad[$row['race']].'
-	        	</td
-	        </td>';
-	    }
-	    echo '</table>';
-	}
 	elseif($_GET['direction'] == 'construction')
 	{
 	    $requete = "SELECT *, construction_ville.id as id_const FROM construction_ville LEFT JOIN batiment_ville ON construction_ville.id_batiment = batiment_ville.id WHERE id_royaume = ".$R['ID'];
@@ -325,7 +306,7 @@ require('haut_roi.php');
 	elseif($_GET['direction'] == 'stats')
 	{
 	    //Statistiques du royaume
-	    $requete = "SELECT *, COUNT(*) as tot FROM perso WHERE race = '".$joueur['race']."' AND statut = 'actif' GROUP BY classe ORDER BY tot";
+	    $requete = "SELECT *, COUNT(*) as tot FROM perso WHERE race = '".$joueur['race']."' AND statut = 'actif' GROUP BY classe ORDER BY tot DESC, classe ASC";
 	    $req = $db->query($requete);
 	    ?>
 	    <h3>Nombre de joueurs de votre race par classe</h3>
@@ -795,7 +776,7 @@ require('haut_roi.php');
 			$enchere->nombre = $nombre;
 			$enchere->prix = $prix;
 			//7 jours plus tard
-			$time = time() + 1 * (24 * 60 * 60);
+			$time = time() + 7 * (24 * 60 * 60);
 			$enchere->fin_vente = date("Y-m-d H:i:s", $time);
 			$enchere->sauver();
 			//On enlève les ressources au royaume

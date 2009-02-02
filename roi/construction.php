@@ -58,10 +58,7 @@ if(!array_key_exists('direction', $_GET))
 		echo '
 		<tr>
 			<td style="width:33%;">
-				<span onmousemove="afficheInfo(\'info_'.$row['id'].'\', \'block\', event, \'centre\');" onmouseout="afficheInfo(\'info_'.$row['id'].'\', \'none\', event, \'centre\');"><img src="../image/mini_fortin.png" style="vertical-align : top;" title="'.$row['nom'].'" alt="'.$row['nom'].'" /> '.$row['nom'].'</span> </td><td style="width:33%;"> X : '.$row['x'].' - Y : '.$row['y'].'
-				<div style="display: none; z-index: 2; position: absolute; top: 250px; right: 150px; background-color:#ffffff; border: 1px solid #000000; font-size:12px; width: 150px; padding: 5px;" id="info_'.$row['id'].'">
-					HP - '.$row['hp'].' 
-				</div>
+				<span onmousemove="'.make_overlib('HP - '.$row['hp']).'" onmouseout="return nd();"><img src="../image/batiment_low/'.$row['image'].'_04.png" style="vertical-align : top;" title="'.$row['nom'].'" /> '.$row['nom'].'</span> </td><td style="width:33%;"> X : '.$row['x'].' - Y : '.$row['y'].'
 			</td>
 			<td style="width:33%;">
 				<a href="construction.php?direction=suppr_construction&amp;id='.$row['id'].'" onclick="if(confirm(\'Voulez vous supprimer ce '.$row['nom'].' ?\')) return envoiInfo(this.href, \'conteneur\'); else return false;">Supprimer</a>
@@ -95,7 +92,7 @@ elseif($_GET['direction'] == 'suppr_construction')
 			supprime_bourg($row[1]);
 		}
 	}
-	echo '<a href="construction.php?direction=drapeau">Retour à la liste des drapeaux et constructions</a>';
+	echo '<a href="construction.php" onclick="return envoiInfo(this.href, \'conteneur\');">Retour à la liste des drapeaux et constructions</a>';
 }
 elseif($_GET['direction'] == 'up_construction')
 {

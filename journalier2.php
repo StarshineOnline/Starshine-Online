@@ -81,18 +81,18 @@ echo 'Déplacement des anciennes images dans le nouveau dossier<br />';
 copy('image/carte.png', 'image/stat/'.$date.'/carte.png');
 copy('image/carte_royaume.png', 'image/stat/'.$date.'/carte_royaume.png');
 copy('image/carte_densite_mob.png', 'image/stat/'.$date.'/carte_densite_mob.png');
-copy('image/stat_lvl.jpg', 'image/stat/'.$date.'/stat_lvl.png');
-copy('image/stat_race.jpg', 'image/stat/'.$date.'/stat_race.png');
-copy('image/stat_classe1.jpg', 'image/stat/'.$date.'/stat_classe1.png');
-copy('image/stat_classe2.jpg', 'image/stat/'.$date.'/stat_classe2.png');
-copy('image/stat_classe3.jpg', 'image/stat/'.$date.'/stat_classe3.png');
-copy('image/stat_classe4.jpg', 'image/stat/'.$date.'/stat_classe4.png');
-copy('image/stat_star1.jpg', 'image/stat/'.$date.'/stat_star1.png');
-copy('image/stat_star2.jpg', 'image/stat/'.$date.'/stat_star2.png');
-copy('image/stat_star3.jpg', 'image/stat/'.$date.'/stat_star3.png');
-copy('image/stat_joueur.jpg', 'image/stat/'.$date.'/stat_joueur.png');
-copy('image/stat_monstre.jpg', 'image/stat/'.$date.'/stat_monstre.png');
-copy('image/stat_niveau_moyen.jpg', 'image/stat/'.$date.'/stat_niveau_moyen.png');
+copy('image/stat_lvl.png', 'image/stat/'.$date.'/stat_lvl.png');
+copy('image/stat_race.png', 'image/stat/'.$date.'/stat_race.png');
+copy('image/stat_classe1.png', 'image/stat/'.$date.'/stat_classe1.png');
+copy('image/stat_classe2.png', 'image/stat/'.$date.'/stat_classe2.png');
+copy('image/stat_classe3.png', 'image/stat/'.$date.'/stat_classe3.png');
+copy('image/stat_classe4.png', 'image/stat/'.$date.'/stat_classe4.png');
+copy('image/stat_star1.png', 'image/stat/'.$date.'/stat_star1.png');
+copy('image/stat_star2.png', 'image/stat/'.$date.'/stat_star2.png');
+copy('image/stat_star3.png', 'image/stat/'.$date.'/stat_star3.png');
+copy('image/stat_joueur.png', 'image/stat/'.$date.'/stat_joueur.png');
+copy('image/stat_monstre.png', 'image/stat/'.$date.'/stat_monstre.png');
+copy('image/stat_niveau_moyen.png', 'image/stat/'.$date.'/stat_niveau_moyen.png');
 
 //Entretien des batiments et constructions
 //On récupère le nombre d'habitants très actifs
@@ -549,7 +549,7 @@ $groupe['vampire'][1] = 26;
 $groupe['vampire'][2] = 37;
 //Si on est le premier, élection du roi de chaque race
 if(date("j") == 1)
-{	
+{
 	require('connect_forum.php');
 	//Suppression des anciens rois
 	foreach($groupe as $group)
@@ -576,14 +576,12 @@ if(date("j") == 1)
 		{
 			while($row_v = $db->read_assoc($req_v))
 			{
+				$date = $row_v['date'];
 				$requete = "SELECT * FROM perso WHERE ID = ".$row_v['id_candidat'];
 				$req_c = $db->query($requete);
 				$row_c = $db->read_assoc($req_c);
 				if($i == 0)
 				{
-					$graph = new PieGraph(700, 400, "auto");
-					$graph->SetShadow();
-					$graph->title->Set("Elections du roi ".$Gtrad[$row['race']]." du ".$row_v['date']);
 					$requete = "UPDATE perso SET rang_royaume = 6 WHERE ID = ".$row_c['ID'];
 					$db->query($requete);
 					$requete = "UPDATE punbbusers SET group_id = ".$groupe[$row_c['race']][1]." WHERE username = '".$row_c['nom']."'";
@@ -595,16 +593,25 @@ if(date("j") == 1)
 				$i++;
 			}
 			
-			//$graph->tabtitle->SetFont(FF_ARIAL,FS_BOLD,13);
+			$DataSet = new pData;
+			$DataSet->AddPoint($data,"Serie1");
+			$DataSet->AddPoint($legend,"Serie2");
+			$DataSet->AddAllSeries();
+			$DataSet->SetAbsciseLabelSerie("Serie2");
 			
-			$p1 = new PiePlot3D($data);
-			$p1->SetLabels($label);
-			$p1->SetSize(0.5);
-			$p1->SetCenter(0.45);
-			//$p1->SetLegends($legend);
-			$p1->SetLabelPos(0.6);
-			$graph->Add($p1);
-			$graph->Stroke('image/election_'.$row['race'].'.jpg');
+			// Initialise the graph
+			$graph = new pChart(700, 400);
+			$graph->drawFilledRoundedRectangle(7,7,693,393,5,240,240,240);
+			$graph->drawRoundedRectangle(5,5,695,395,5,230,230,230);
+			
+			// Draw the pie chart  
+			$graph->setFontProperties("pChart/fonts/tahoma.ttf",8);
+			$graph->drawPieGraph($DataSet->GetData(),$DataSet->GetDataDescription(),315,210,200,PIE_LABELS,TRUE,50,20,5);
+			//$graph->drawPieLegend(590,15,$DataSet->GetData(),$DataSet->GetDataDescription(),250,250,250);
+			$graph->setFontProperties("pChart/fonts/tahoma.ttf",12);
+			$graph->drawTitle(50,22,'Elections du roi '.$Gtrad[$row['race']].' du '.$date ,50,50,50,585);  
+			
+			$graph->Render('image/election_'.$row['race'].'.png');
 		}
 	}
 }
@@ -624,11 +631,22 @@ while($row = $db->read_assoc($req))
 	}
 }
 //On supprime les enchères finies
-$implode_ids = implode(', ', $ids);
-$requete = "DELETE FROM vente_terrain WHERE id IN (".$implode_ids.")";
-$db->query($requete);
+if(count($ids) > 0)
+{
+	$implode_ids = implode(', ', $ids);
+	$requete = "DELETE FROM vente_terrain WHERE id IN (".$implode_ids.")";
+	$db->query($requete);
+}
 
-	$semaine = 60 * 60 * 24;
+if(date("N") == 1)
+{
+	//Attribution des grades
+	require_once('grade.php');
+	//Les rois peuvent de nouveau se téléporter
+	$requete = "UPDATE perso SET teleport_roi = 'false' WHERE rang_royaume = 6";
+	$db->query($requete);
+
+	$semaine = (60 * 60 * 24 * 7) - 3600;
 	$fin_vente = time() + $semaine;
 	//Mis en vente de nouveaux terrains
 	foreach($tableau_race as $race => $stats)
@@ -642,14 +660,6 @@ $db->query($requete);
 			$i++;
 		}
 	}
-
-if(date("N") == 1)
-{
-	//Attribution des grades
-	require_once('grade.php');
-	//Les rois peuvent de nouveau se téléporter
-	$requete = "UPDATE perso SET teleport_roi = 'false' WHERE rang_royaume = 6";
-	$db->query($requete);
 }
 
 mail('starshineonline@gmail.com', 'Starshine - Script journalier du '.$date, $mail);

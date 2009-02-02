@@ -80,9 +80,10 @@ class batiment
 		return $this->id;
 	}
 
-	function get_image($root)
+	function get_image($root, $resolution = 'high')
 	{
-		$image = $root."image/batiment/";
+		if($this->resolution != 'high') $image = $root."image/batiment_low/";
+		else $image = $root."image/batiment/";
 
 		if(file_exists($image.$this->image."_04.png")) 		{ $image .= $this->image."_04.png"; }
 		elseif(file_exists($image.$this->image."_04.gif")) 	{ $image .= $this->image."_04.gif"; }

@@ -78,7 +78,7 @@ if ($_COOKIE['dernier_affichage_popup'] <= $row_news['posted'])
 	if(strlen($message) > 600)
 	{
 		$message = mb_substr($message, 0, 600);
-		$message .= '<br /><a href="http://forum.starshine-online.com/viewtopic.php?id='.$row['id'].'">Lire la suite</a>';
+		$message .= '<br /><a href="http://forum.starshine-online.com/viewtopic.php?id='.$row_news['id'].'">Lire la suite</a>';
 	}
 	echo '<div class="news">'.$message.'</div>';
 	echo "<hr>";

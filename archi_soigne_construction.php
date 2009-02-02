@@ -48,4 +48,5 @@ if($joueur['pa'] > 30)
 	}
 }
 ?>
+<img src="image/pixel.gif" onLoad="envoiInfo('infoperso.php?javascript=oui', 'perso');" />
 </div>

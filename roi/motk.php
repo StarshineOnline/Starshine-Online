@@ -4,19 +4,19 @@ include('../fonction/messagerie.inc.php');
 
 if(array_key_exists('direction', $_GET) && $_GET['direction'] == 'motk2')
 {
-	$message = addslashes($_GET['message']);
+	$message = addslashes($_POST['message']);
 	if ($message != '')
 	{
 		$requete = "UPDATE motk SET message = '".$message."', date = ".time()." WHERE id_royaume = ".$R['ID'];
 		if($req = $db->query($requete)) 
 		{
-			echo 'Message du roi bien modifié !<br />';
+			echo '<h6>Message du roi bien modifié !</h6>';
 		}
-		else echo('Erreur lors de l\'envoi du message');
+		else echo('<h5>Erreur lors de l\'envoi du message</h5>');
 	}
 	else
 	{
-		echo 'Vous n\'avez pas saisi de message';
+		echo '<h5>Vous n\'avez pas saisi de message</h5>';
 	}
 }
 else
@@ -30,11 +30,10 @@ else
 	'.$message.'<br />
 	<h3>Modifier</h3>';
 	?>
-	<form method="post" action="javascript:message = document.getElementById('message').value.replace(new RegExp('\n', 'gi'), '[br]'); envoiInfoPost('motk.php?direction=motk2&amp;message=' + message, 'conteneur');">
-	<?php
-	echo '
-	    <textarea name="message" id="message" cols="45" rows="12">'.htmlspecialchars(stripslashes($row[0])).'</textarea><br />
-		<input type="submit" name="btnSubmit" value="Envoyer" />
-	</form>';
+	<form method="post" action="motk.php?direction=motk2" id="formMotk">
+		<textarea name="message" id="message" cols="90" rows="12"><?php echo htmlspecialchars(stripslashes($row[0])); ?></textarea><br />
+		<input type="button" name="btnSubmit" value="Envoyer" onclick="envoiFormulaire('formMotk', 'conteneur');" />
+	</form>
+<?php
 }
 ?>

@@ -29,9 +29,3 @@ CREATE TABLE `craft_recette_ingredient` (
 `effet` VARCHAR( 50 ) NOT NULL ,
 PRIMARY KEY ( `id` )
 );
-CREATE TABLE `starshine_test`.`craft_recette_instrument` (
-`id` INT UNSIGNED NOT NULL AUTO_INCREMENT ,
-`id_recette` INT UNSIGNED NOT NULL ,
-`id_instrument` INT UNSIGNED NOT NULL ,
-PRIMARY KEY ( `id` )
-);

@@ -108,4 +108,5 @@ $_SESSION['position'] = $position;
 		}
 	}
 	?>
+	<img src="image/pixel.gif" onLoad="envoiInfo('infoperso.php?javascript=oui', 'perso');" />
 	</div>

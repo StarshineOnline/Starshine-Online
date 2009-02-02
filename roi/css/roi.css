@@ -26,7 +26,7 @@ body
 	padding:0;
 	background:transparent url('./../../image/v2/bouton_fond.png') repeat-x;
 }
-
+#conteneur2 {width:985px;margin:auto;min-height: 100%;}
 #conteneur
 {
 	background:transparent url('./../../image/v2/bg_site.png') repeat-x;
@@ -125,7 +125,7 @@ ul#menu ul li:hover {
 
 #loading
 {
-	background:transparent url('http://test.starshinebox.info/image/ajax-loader-bar.gif') no-repeat scroll left center;
+	background:transparent url('http://www.starshine-online.com/image/ajax-loader-bar.gif') no-repeat scroll left center;
 	height:22px;
 	left:300px;
 	position:absolute;
@@ -134,7 +134,6 @@ ul#menu ul li:hover {
 }
 
 #map_mine {float : left;}
-#infos {float : left;}
 
 .bataille_groupe
 {

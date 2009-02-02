@@ -27,7 +27,9 @@ else $classe = $perso['classe'];
 if(array_key_exists(11, $bonus) AND !check_affiche_bonus($bonus[11], $joueur, $perso)) $niveau = 'xx';
 else $niveau = $perso['level'];
 ?>
-<div class="information_case">
+<div id="info_case">
+<h4><span class="titre_info"><?php echo $chaine_nom; ?></span></h4>
+
 <?php
 //Avatar
 if(array_key_exists(19, $bonus) AND check_affiche_bonus($bonus[19], $joueur, $perso))
@@ -40,9 +42,8 @@ if(array_key_exists(19, $bonus) AND check_affiche_bonus($bonus[19], $joueur, $pe
 	<?php
 	}
 }
-?>
-<h4><?php echo $chaine_nom; ?></h4>
-<?php
+
+
 /*$perso['lignee'] = recupperso_lignee($perso['ID']);
 if($perso['lignee'] != 0)
 {
@@ -72,8 +73,7 @@ if(array_key_exists(12, $bonus) AND check_affiche_bonus($bonus[12], $joueur, $pe
 ?><br />
 <?php echo ucfirst($classe); ?> - niveau <?php echo $niveau; ?><br />
 Distance du joueur : <?php echo calcul_distance(convert_in_pos($joueur['x'], $joueur['y']), $W_case); ?> / Methode pythagorienne : <?php echo calcul_distance_pytagore(convert_in_pos($joueur['x'], $joueur['y']), $W_case); ?>
-</div>
-<div class="information_case">
+<h4><span class="titre_info">Actions</span></h4>
 <table>
 <?php
 $W_distance = detection_distance($W_case, $_SESSION["position"]);
@@ -113,13 +113,25 @@ if(array_key_exists(23, $bonus) AND check_affiche_bonus($bonus[23], $joueur, $pe
 {
 	echo('<tr><td></td><td><a href="personnage.php?id_perso='.$W_ID.'" onclick="return envoiInfo(this.href, \'information\')"> Voir les caractéristiques de ce joueur</a></td></tr>');
 }
+if(!isset($groupe)) { $groupe = recupgroupe($joueur["groupe"], ""); };
+
+
+if(($perso["groupe"]==$joueur['groupe']) AND ($groupe['id_leader']==$joueur['ID']))
+{
+	echo('<tr><td><img src="image/interface/exspuler-joueur_icone.png" alt="Expulser le joueur" title="Expulser le joueur" /></td><td><a style="cursor:pointer;" onclick="javascript:if(confirm(\'Voulez vous expulser ce joueur ?\')) envoiInfo(\'kickjoueur.php?ID='.$perso['ID'].'&groupe='.$groupe['id'].'\', \'information\');">Expulser la personne du groupe</a></td></tr>');
+}
+
+
 echo '</table>';
+
+
+
 //Affichage des buffs du joueur
 if($joueur['groupe'] == $perso['groupe'] && $joueur['groupe'] !== 0 && $joueur['groupe'] != '')
 {
 	if ($perso['buff'] != NULL)
 	{
-		echo '<br />Buffs / Debuffs<br />';
+		echo '<h4><span class="titre_info">Buffs / Debuffs</span></h4>';
 		//Listing des buffs
 		foreach($perso['buff'] as $buff)
 		{
@@ -134,27 +146,23 @@ if($joueur['groupe'] == $perso['groupe'] && $joueur['groupe'] !== 0 && $joueur['
 	}
 }
 
-echo '</div>';
 $titres = recup_titre_honorifique($perso['ID']);
 if(!empty($titres) AND array_key_exists(15, $bonus) AND check_affiche_bonus($bonus[15], $joueur, $perso))
 {
 	?>
-	<div class="information_case">
-		<h4>Titres</h4>
+
+		<h4><span class="titre_info">Titres</span></h4>
 	<?php
 	foreach($titres as $titre)
 	{
 		echo $titre.'<br />';
 	}
-	?>
-	</div>
-	<?php
 }
 if(array_key_exists(16, $bonus) AND check_affiche_bonus($bonus[16], $joueur, $perso))
 {
 	?>
-	<div class="information_case">
-		<h4>Description</h4>
+
+		<h4><span class="titre_info">Description</span></h4>
 		<?php
 		//Inclusion du css
 		if(array_key_exists(27, $bonus) AND $bonus_total[27]['valeur'] != '0')
@@ -169,9 +177,6 @@ if(array_key_exists(16, $bonus) AND check_affiche_bonus($bonus[16], $joueur, $pe
 		}
 		$bonus_total = recup_bonus_total($perso['ID']);
 		echo nl2br($bonus_total[16]['valeur']);
-		?>
-	</div>
-	<?php
 }
 ?>
 </fieldset>

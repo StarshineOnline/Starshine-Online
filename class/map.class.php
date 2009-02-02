@@ -52,10 +52,24 @@ class map
 	{
 		global $db;
 		global $Gcouleurs;
+		if($this->donjon)
+		{
+			$xmin = $this->xmin + 1;
+			$xmax = $this->xmax - 1;
+			$ymin = $this->ymin + 1;
+			$ymax = $this->ymax - 1;
+		}
+		else
+		{
+			$xmin = $this->xmin;
+			$xmax = $this->xmax;
+			$ymin = $this->ymin;
+			$ymax = $this->ymax;
+		}
 		$total_cases = ($this->xmax - $this->xmin + 1) * ($this->ymax - $this->ymin + 1);
 		$RqMap = $db->query("SELECT * FROM map 
-						 WHERE ( (FLOOR(ID / 1000) >= $this->ymin) AND (FLOOR(ID / 1000) <= $this->ymax) ) 
-						 AND ( ((ID - (FLOOR(ID / 1000) * 1000) ) >= $this->xmin) AND ((ID - (FLOOR(ID / 1000) * 1000)) <= $this->xmax) ) 
+						 WHERE ( (FLOOR(ID / 1000) >= $ymin) AND (FLOOR(ID / 1000) <= $ymax) ) 
+						 AND ( ((ID - (FLOOR(ID / 1000) * 1000) ) >= $xmin) AND ((ID - (FLOOR(ID / 1000) * 1000)) <= $xmax) ) 
 						 ORDER BY ID;");
 		while($objMap = $db->read_object($RqMap))
 		{
@@ -174,7 +188,7 @@ class map
 							else $hp = '';
 							$overlib .= "<li class='overlib_monstres'><span>Monstre</span>&nbsp;-&nbsp;".$this->map[$x_map][$y_map]["Monstres"][$i]["nom"]." x".$this->map[$x_map][$y_map]["Monstres"][$i]["tot"].$hp."</li>";
 						}
-						for($i = 0; $i < count($this->map[$x_map][$y_map]["Drapeaux"]); $i++)			{ $overlib .= "<li class='overlib_batiments'><span>Drapeau</span>&nbsp;-&nbsp;".ucwords($this->map[$x_map][$y_map]["Drapeaux"][$i]["race"])."</li>"; }
+						for($i = 0; $i < count($this->map[$x_map][$y_map]["Drapeaux"]); $i++)			{ $overlib .= "<li class='overlib_batiments'><span>Construction</span>&nbsp;-&nbsp;".ucwords($this->map[$x_map][$y_map]["Drapeaux"][$i]["nom"])."</li>"; }
 						$overlib .= "</ul>";
 						$overlib = str_replace("'", "\'", trim($overlib));
 					}
@@ -218,9 +232,23 @@ class map
 	function get_pnj()
 	{
 		global $db;
+		if($this->donjon)
+		{
+			$xmin = $this->xmin + 1;
+			$xmax = $this->xmax - 1;
+			$ymin = $this->ymin + 1;
+			$ymax = $this->ymax - 1;
+		}
+		else
+		{
+			$xmin = $this->xmin;
+			$xmax = $this->xmax;
+			$ymin = $this->ymin;
+			$ymax = $this->ymax;
+		}
 		$RqPNJ = $db->query("SELECT id, nom, image, x, y FROM pnj 
-							 WHERE ( (x >= ".$this->xmin.") AND (x <= ".$this->xmax.") ) 
-							 AND ( (y >= ".$this->ymin.") AND (y <= ".$this->ymax.") )  
+							 WHERE ( (x >= ".$xmin.") AND (x <= ".$xmax.") ) 
+							 AND ( (y >= ".$ymin.") AND (y <= ".$ymax.") )  
 							 ORDER BY y ASC, x ASC;");
 		if($db->num_rows($RqPNJ) > 0)
 		{
@@ -247,12 +275,26 @@ class map
 		global $Tclasse;
 		global $Gtrad;
 
+		if($this->donjon)
+		{
+			$xmin = $this->xmin + 1;
+			$xmax = $this->xmax - 1;
+			$ymin = $this->ymin + 1;
+			$ymax = $this->ymax - 1;
+		}
+		else
+		{
+			$xmin = $this->xmin;
+			$xmax = $this->xmax;
+			$ymin = $this->ymin;
+			$ymax = $this->ymax;
+		}
 		if($all) $champs .= ', hp, hp_max, mp, mp_max, pa ';
 		else $champs = '';
 		$requete = "SELECT ID, nom, level, race, x, y, classe, cache_classe, cache_niveau".$champs."
 								 FROM perso 
-								 WHERE (( (x >= ".$this->xmin.") AND (x <= ".$this->xmax.") ) 
-								 AND ( (y >= ".$this->ymin.") AND (y <= ".$this->ymax.") ))  
+								 WHERE (( (x >= ".$xmin.") AND (x <= ".$xmax.") ) 
+								 AND ( (y >= ".$ymin.") AND (y <= ".$ymax.") ))  
 								 AND statut='actif' 
 								 ORDER BY y ASC, x ASC, dernier_connexion DESC;";
 		$RqJoueurs = $db->query($requete);
@@ -277,8 +319,8 @@ class map
 					$this->map[$objJoueurs->x][$objJoueurs->y]["Joueurs"][$joueurs]["mp_max"] = floor($objJoueurs->mp_max);
 					$this->map[$objJoueurs->x][$objJoueurs->y]["Joueurs"][$joueurs]["pa"] = $objJoueurs->pa;
 				}
-				{//-- V?rification des bonus li?s au points shine
-					//Si c'est pas lui m?me
+				{//-- V?rification des bonus liés au points shine
+					//Si c'est pas lui même
 					if($objJoueurs->ID != $_SESSION["ID"])
 					{
 						if($objJoueurs->cache_classe == 2)	{ $this->map[$objJoueurs->x][$objJoueurs->y]["Joueurs"][$joueurs]["classe"] = "combattant"; }
@@ -377,6 +419,20 @@ class map
 	function get_monstre($level = 0, $groupe = true)
 	{
 		global $db;
+		if($this->donjon)
+		{
+			$xmin = $this->xmin + 1;
+			$xmax = $this->xmax - 1;
+			$ymin = $this->ymin + 1;
+			$ymax = $this->ymax - 1;
+		}
+		else
+		{
+			$xmin = $this->xmin;
+			$xmax = $this->xmax;
+			$ymin = $this->ymin;
+			$ymax = $this->ymax;
+		}
 		if($groupe)
 		{
 			$group = ' GROUP BY x, y, lib';
@@ -389,7 +445,7 @@ class map
 		}
 		$RqMonstres = $db->query("SELECT id, x, y, nom, lib ".$champs."
 								  FROM map_monstre 
-								  WHERE ( ( (x >= ".$this->xmin.") AND (x <= ".$this->xmax.") ) AND ( (y >= ".$this->ymin.") AND (y <= ".$this->ymax.") ) ) 
+								  WHERE ( ( (x >= ".$xmin.") AND (x <= ".$xmax.") ) AND ( (y >= ".$ymin.") AND (y <= ".$ymax.") ) ) 
 								  ".$group." ORDER BY y ASC, x ASC, ABS(level - $level) ASC, level ASC, nom ASC, id ASC;");
 		if($db->num_rows($RqMonstres) > 0)
 		{
@@ -428,8 +484,9 @@ class map
 			$this->map[$batiment['x']][$batiment['y']]["Batiments"][$batimat]["royaume"] = $batiment['royaume'];
 			$this->map[$batiment['x']][$batiment['y']]["Batiments"][$batimat]["image"] = $batiment['image'];
 
-			{//-- v?rification que l'image du PNJ existe
-				$image = $this->root."image/batiment/";
+			{//-- vérification que l'image du PNJ existe
+				if($this->resolution != 'high') $image = $this->root."image/batiment_low/";
+				else $image = $this->root."image/batiment/";
 				
 				if(file_exists($image.$batiment['image']."_04.png")) 		{ $image .= $batiment['image']."_04.png"; }
 				elseif(file_exists($image.$batiment['image']."_04.gif")) 	{ $image .= $batiment['image']."_04.gif"; }
@@ -485,7 +542,7 @@ class map
 			$repere->get_type();
 			$this->map[$repere->x][$repere->y]["Batiments_ennemi"][$rep]["id_batiment"] = $repere->id_batiment;
 			$this->map[$repere->x][$repere->y]["Batiments_ennemi"][$rep]["nom"] = $repere->repere_type->nom;
-			$this->map[$repere->x][$repere->y]["Batiments_ennemi"][$rep]["image"] = $repere->repere_type->get_image($this->root);
+			$this->map[$repere->x][$repere->y]["Batiments_ennemi"][$rep]["image"] = $repere->repere_type->get_image($this->root, $this->resolution);
 		}
 	}
 

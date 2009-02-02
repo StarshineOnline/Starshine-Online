@@ -186,6 +186,13 @@ $Gtrad['Trébuchet'] = 'trebuchet';
 $Gtrad['Baliste'] = 'baliste';
 $Gtrad['Mine'] = 'mine';
 $Gtrad['Extracteur'] = 'mine';
+$Gtrad['Ferme'] = 'mine';
+$Gtrad['Puits'] = 'mine';
+$Gtrad['Scierie'] = 'mine';
+$Gtrad['Carrière de sable'] = 'mine';
+$Gtrad['Péage'] = 'mine';
+$Gtrad['Puits a essence'] = 'mine';
+$Gtrad['Meule'] = 'mine';
 //@}
 
 

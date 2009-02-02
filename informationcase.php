@@ -36,7 +36,7 @@ if($W_coord['x'] == $Trace[$R['race']]['spawn_x'] AND $W_coord['y'] == $Trace[$R
 }
 ?>
 
-<h4><?php echo $R['nom']; ?></h4>
+<h4><span class='titre_info'><?php echo $R['nom']; ?></span></h4>
 <strong><?php echo $Gtrad[$R['race']]; ?></strong> - <?php echo $Gtrad['diplo'.$R['diplo']]; ?> - Taxe : <?php echo $R['taxe']; ?>%<br />
 <strong><?php echo $type_terrain[1]; ?></strong> - <?php echo $coutpa; ?> PA de déplacement <span class="xsmall">(en diagonale = <?php echo $coutpa_diagonale; ?> PA)</span>
 
@@ -49,7 +49,7 @@ if($db->num_rows > 0)
 {
 	echo '
 
-	<h4>Joueurs</h4>
+	<h4><span class="titre_info">Joueurs</span></h4>
 	<ul>';
 }
 	
@@ -147,7 +147,7 @@ if($num_rows > 0)
 {
 	echo '
 
-	<h4>PNJ</h4>';
+	<h4><span class="titre_info">PNJ</span></h4>';
 	while($W_row = $db->read_array($W_query))
 	{
 		echo  '&nbsp;&nbsp;&nbsp;'.$W_row['nom'];
@@ -159,13 +159,13 @@ if($num_rows > 0)
 //Affichage des Donjons
 $RqDonjon = 'SELECT * FROM donjon WHERE (x = '.$W_coord["x"].') AND (y = '.$W_coord["y"].')';
 
-$W_query = $db->query($W_requete);
+$W_query = $db->query($RqDonjon);
 
 $num_rows = $db->num_rows;
 if($num_rows > 0)
 {
 	echo '
-	<h4>Donjons</h4>';
+	<h4><span class="titre_info">Donjons</span></h4>';
 	while($W_row = $db->read_array($W_query))
 	{
 		echo  '&nbsp;&nbsp;&nbsp;'.$W_row['nom'];
@@ -200,7 +200,7 @@ $num_rows = $db->num_rows;
 if($num_rows > 0)
 {
 	echo '
-	<h4>Donjons</h4>';
+	<h4><span class="titre_info">Donjons</span></h4>';
 	while($W_row = $db->read_array($W_query))
 	{
 		echo  '&nbsp;&nbsp;&nbsp;'.$W_row['nom'];
@@ -218,7 +218,7 @@ $num_rows = $db->num_rows;
 if($num_rows > 0)
 {
 	echo '
-	<h4>En construction</h4>';
+	<h4><span class="titre_info">En construction</span></h4>';
 	while($W_row = $db->read_array($W_query))
 	{
 		//Recherche du batiment
@@ -250,7 +250,7 @@ $num_rows = $db->num_rows;
 if($num_rows > 0)
 {
 	echo '
-	<h4>Batiments</h4>';
+	<h4><span class="titre_info">Batiments</span></h4>';
 	while($W_row = $db->read_array($W_query))
 	{
 		//Recherche du batiment
@@ -287,7 +287,7 @@ $num_rows = $db->num_rows;
 //Affichage des infos des monstres
 if($num_rows > 0) echo '
 
-<h4>Monstres</h4>
+<h4><span class="titre_info">Monstres</span></h4>
 <ul>';
 while($W_row = $db->read_array($W_query))
 {

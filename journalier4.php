@@ -211,51 +211,53 @@ foreach($tab_royaume as $race => $royaume)
 		$ratio = $royaume['food_doit'] / $royaume['food_necessaire'];
 		$debuff = ceil($ratio * 10) - 1;
 		if($debuff > 6) $debuff = 6;
-		$persos = array();
-		$requete = "SELECT ID FROM perso WHERE race = '".$race."' AND statut = 'actif'";
-		$req = $db->query($requete);
-		while($row = $db->read_assoc($req))
+		elseif($debuff > 0)
 		{
-			$persos[$row['ID']] = $row['ID'];
-		}
-		$perso_implode = implode(',', $persos);
-		//On sélectionne les buffs à modifier
-		$ids_buff = array();
-		$requete = "SELECT ID FROM buff WHERE type = 'famine' AND id_perso IN (".$perso_implode.")";
-		$req = $db->query($requete);
-		while($row = $db->read_assoc($req))
-		{
-			$ids_buff[] = $row;
-		}
-		$buffs = array();
-		//On supprime les perso qui ont déjà un buff pour mettre à jour
-		foreach($ids_buff as $buff)
-		{
-			unset($persos[$buff['id_joueur']]);
-			$buffs[] = $buff['ID'];
-		}
-		//30 jours
-		$duree = 30 * 24 * 60 * 60;
-		$fin = time() + $duree;
-		$buffs_implode = implode(',', $buffs);
-		if(count($buffs) > 0)
-		{
-			$requete = "UPDATE buff SET effet = effet + ".$debuff.", duree = ".$duree.", fin = ".$fin." WHERE ID IN (".$buffs_implode.")";
-			$mail .= $requete."\n";
+			$persos = array();
+			$requete = "SELECT ID FROM perso WHERE race = '".$race."' AND statut = 'actif'";
+			$req = $db->query($requete);
+			while($row = $db->read_assoc($req))
+			{
+				$persos[$row['ID']] = $row['ID'];
+			}
+			$perso_implode = implode(',', $persos);
+			//On sélectionne les buffs à modifier
+			$ids_buff = array();
+			$requete = "SELECT ID FROM buff WHERE type = 'famine' AND id_perso IN (".$perso_implode.")";
+			$req = $db->query($requete);
+			while($row = $db->read_assoc($req))
+			{
+				$ids_buff[] = $row;
+			}
+			$buffs = array();
+			//On supprime les perso qui ont déjà un buff pour mettre à jour
+			foreach($ids_buff as $buff)
+			{
+				unset($persos[$buff['id_joueur']]);
+				$buffs[] = $buff['ID'];
+			}
+			//30 jours
+			$duree = 30 * 24 * 60 * 60;
+			$fin = time() + $duree;
+			$buffs_implode = implode(',', $buffs);
+			if(count($buffs) > 0)
+			{
+				$requete = "UPDATE buff SET effet = effet + ".$debuff.", duree = ".$duree.", fin = ".$fin." WHERE ID IN (".$buffs_implode.")";
+				$mail .= $requete."\n";
+				$db->query($requete);
+			}
+			foreach($persos as $joueur)
+			{
+				//Lancement du buff
+				lance_buff('famine', $joueur, $debuff, 0, $duree, 'Famine', 'Vos HP et MP max sont réduits de %effet%%', 'perso', 1, 0, 0, 0);
+			}
+			$requete = "UPDATE royaume SET food = 0 WHERE ID = ".$royaume['id'];
 			$db->query($requete);
 		}
-		foreach($persos as $joueur)
-		{
-			//Lancement du buff
-			lance_buff('famine', $joueur, $debuff, 0, $duree, 'Famine', 'Vos HP et MP max sont réduits de %effet%%', 'perso', 1, 0, 0, 0);
-		}
-		$requete = "UPDATE royaume SET food = 0 WHERE ID = ".$royaume['id'];
-		$db->query($requete);
 	}
 	$requete = "UPDATE buff SET effet = 50 WHERE type = 'famine' AND effet > 50";
 	$db->query($requete);
 }
-$db->query("UPDATE perso SET beta = 3");
 
 mail('starshineonline@gmail.com', 'Starshine - Script journalier 4 du '.$date, $mail);
 

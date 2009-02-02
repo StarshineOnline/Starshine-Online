@@ -241,4 +241,5 @@ while($row = $db->read_assoc($req))
 	echo $echo;
 }
 ?>
+<img src="image/pixel.gif" onLoad="envoiInfo('infoperso.php?javascript=oui', 'perso');" />
 </div>

@@ -2335,6 +2335,7 @@ function genere_image_comp2($joueur, $competence, $comp_max)
 {
 	global $Gtrad;
 	//Barre Comp
+	if($comp_max == 0) $comp_max = 1;
 	$ratio_comp = floor(10 * ($joueur['competences'][$competence] / $comp_max));
 	if($ratio_comp > 10) $ratio_comp = 10;
 	if($ratio_comp < 0) $ratio_comp = 0;
@@ -2849,7 +2850,7 @@ function normalize_entry_charset($fields)
 		$charset = stristr($_SERVER["CONTENT_TYPE"], 'charset=');
 		if ($charset !== false) {
 			$ch = explode('=', $charset);
-			var_dump($ch);
+			//var_dump($ch);
 			$src = $ch[1];
 			//echo "Detected(1) $src<br />\n";
 		}

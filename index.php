@@ -23,7 +23,7 @@ function menu_change(input_name)
 		if ($('perso_selected_id').value != '')
 		{
 			$($('perso_selected_id').value).className ='';
-			$('personnage').hide();			
+			$('personnage').hide();
 		}		
 	}
 }
@@ -54,11 +54,11 @@ function validation_perso()
 {
 	function Afficheperso(requete)
 	{
+		$('loading_sso').hide();
+		$('accueil').setAttribute('style','cursor:normal;');
+		menu_change('presentation');
 		$('personnage').show();
 		$('personnage').innerHTML = requete.responseText;
-		$('loading').hide();
-		$('accueil').setAttribute('style','cursor:normal;')
-		
 	}
 
 	if ($('creat_nom').value == '')
@@ -66,12 +66,7 @@ function validation_perso()
 		$('creat_erreur').innerHTML = 'Vous avez laisser un champ libre, ou vos mots de passe ne correspondent pas';
 		$('creat_nom').setAttribute('style','border: 1px solid #CC0033;');
 	}
-	
-	if ($('creat_email').value == '')
-	{
-		$('creat_erreur').innerHTML = 'Vous avez laisser un champ libre, ou vos mots de passe ne correspondent pas';
-		$('creat_email').setAttribute('style','border: 1px solid #CC0033;');	
-	}
+
 	if (($('creat_pass').value != $('creat_pass2').value) || ($('creat_pass2').value=='') || ($('creat_pass2').value==''))
 	{
 		$('creat_erreur').innerHTML = 'Vous avez laisser un champ libre, ou vos mots de passe ne correspondent pas';
@@ -142,15 +137,15 @@ N'oubliez pas de reporter les bugs et problèmes, et de suggérer de nouvelles c
 		</div>
 		<div id='screenshot_box' style='display:none;'>
 			<ul>
-				<li><a href="image/screenshots/screenshot01.jpg" rel="lightbox[screens]" title="Screenshot 1" /><img src="image/screenshots/mini_screenshot01.jpg" /></a></li>
-				<li><a href="image/screenshots/screenshot02.jpg" rel="lightbox[screens]" title="Screenshot 2" /><img src="image/screenshots/mini_screenshot01.jpg" /></a></li>
-				<li><a href="image/screenshots/screenshot03.jpg" rel="lightbox[screens]" title="Screenshot 3" /><img src="image/screenshots/mini_screenshot01.jpg" /></a></li>
-				<li><a href="image/screenshots/screenshot04.jpg" rel="lightbox[screens]" title="Screenshot 4" /><img src="image/screenshots/mini_screenshot01.jpg" /></a></li>
-				<li><a href="image/screenshots/screenshot05.jpg" rel="lightbox[screens]" title="Screenshot 5" /><img src="image/screenshots/mini_screenshot01.jpg" /></a></li>
-				<li><a href="image/screenshots/screenshot06.jpg" rel="lightbox[screens]" title="Screenshot 6" /><img src="image/screenshots/mini_screenshot01.jpg" /></a></li>
-				<li><a href="image/screenshots/screenshot07.jpg" rel="lightbox[screens]" title="Screenshot 7" /><img src="image/screenshots/mini_screenshot01.jpg" /></a></li>
-				<li><a href="image/screenshots/screenshot08.jpg" rel="lightbox[screens]" title="Screenshot 8" /><img src="image/screenshots/mini_screenshot01.jpg" /></a></li>
-				<li><a href="image/screenshots/screenshot09.jpg" rel="lightbox[screens]" title="Screenshot 9" /><img src="image/screenshots/mini_screenshot01.jpg" /></a></li>
+				<li><a href="image/screenshots/screenshot01.jpg" rel="lightbox[screens]" title="Le jeu" /><img src="image/screenshots/mini_screenshot01.jpg" /></a></li>
+				<li><a href="image/screenshots/screenshot02.jpg" rel="lightbox[screens]" title="Inventaire" /><img src="image/screenshots/mini_screenshot02.jpg" /></a></li>
+				<li><a href="image/screenshots/screenshot03.jpg" rel="lightbox[screens]" title="Interface du roi" /><img src="image/screenshots/mini_screenshot03.jpg" /></a></li>
+				<li><a href="image/screenshots/screenshot04.jpg" rel="lightbox[screens]" title="La boutique SSO" /><img src="image/screenshots/mini_screenshot04.jpg" /></a></li>
+				<li><a href="image/screenshots/screenshot05.jpg" rel="lightbox[screens]" title="Screenshot 5" /><img src="image/screenshots/mini_screenshot05.jpg" /></a></li>
+				<li><a href="image/screenshots/screenshot06.jpg" rel="lightbox[screens]" title="Version 0.6 (en test)" /><img src="image/screenshots/mini_screenshot06.jpg" /></a></li>
+				<li><a href="image/screenshots/screenshot07.jpg" rel="lightbox[screens]" title="Version 0.5" /><img src="image/screenshots/mini_screenshot07.jpg" /></a></li>
+				<li><a href="image/screenshots/screenshot08.jpg" rel="lightbox[screens]" title="Début de la béta" /><img src="image/screenshots/mini_screenshot08.jpg" /></a></li>
+				<li><a href="image/screenshots/screenshot09.jpg" rel="lightbox[screens]" title="Version alpha" /><img src="image/screenshots/mini_screenshot09.jpg" /></a></li>
 			</ul>
 		</div>
 		<div id='news_box' style='display:none;'>
@@ -198,8 +193,6 @@ N'oubliez pas de reporter les bugs et problèmes, et de suggérer de nouvelles c
 		<p id='creat_erreur' style='color:#CC0033;'></p>
 		<div style='width:35%;float:left;'>
 			<span class='creation_text'>Quel sera votre nom ?</span><input type="text" name="nom" id='creat_nom' /><br />
-			<span class='creation_text'>Email :</span>
-			<input type="text" name="email" id='creat_email' /><br />			
 			<span class='creation_text'>Indiquer un mot de passe :</span><input type="password" name="password" id='creat_pass' /><br />
 			<span class='creation_text'>Confirmer votre mot de passe :</span>
 			<input type="password" name="password2" id='creat_pass2' />
