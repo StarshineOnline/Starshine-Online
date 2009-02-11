@@ -4,7 +4,7 @@ $joueur = recupperso($_SESSION['ID']);
 check_undead_players();
 
 //Si le joueur a assez de PA
-if($joueur['pa'] > 30)
+if($joueur['pa'] >= 30)
 {
 	//On recherche les informations sur ce placement
 	$requete = 'SELECT x, y, construction.hp as hp_c, batiment.hp as hp_b FROM construction LEFT JOIN batiment ON batiment.id = construction.id_batiment WHERE construction.id = '.sSQL($_GET['id_construction']);
@@ -17,7 +17,9 @@ if($joueur['pa'] > 30)
 	if($distance == 0)
 	{
 		//HP redonnés
-		$hp_repare = ceil(pow($joueur['architecture'], 1.5));
+		$hp_repare_max = ceil(pow($joueur['architecture'], 1.5));
+		$hp_repare_min = ceil($hp_repare_max / 3);
+		$hp_repare = rand($hp_repare_min, $hp_repare_max);
 		$hp = $row['hp_c'] + $hp_repare;
 		if($hp > $row['hp_b'])
 		{

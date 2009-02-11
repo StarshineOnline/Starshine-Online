@@ -89,7 +89,7 @@ else
 		{
 			$typeterrain = type_terrain($row['info']);
 			$ressources[$typeterrain[1]] = $row['tot'];
-			$terrain[$typeterrain[1]] = $row['tot_terrain'];
+			$terrain_ress[$typeterrain[1]] = $row['tot_terrain'];
 		}
 	}
 	//Ressource normale
@@ -219,6 +219,17 @@ else
 	}
 	?>
 	</table>
+	<h3>Vous contrôllez</h3>
+	<ul>
+	<?php
+	foreach($terrain_ress as $terrain => $total)
+	{
+		?>
+		<li><?php echo $total; ?> cases de <?php echo $terrain; ?></li>
+		<?php
+	}
+	?>
+	</ul>
 	<?php
 }
 ?>

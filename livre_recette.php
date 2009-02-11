@@ -61,14 +61,6 @@ if(array_key_exists('action', $_GET))
 				{
 					if($star_total <= $joueur['star'])
 					{
-						//On utilise tous les objets de la recette
-						foreach($recette->ingredients as $ingredient)
-						{
-							//Suppression des objets de l'inventaire
-							supprime_objet($joueur, 'o'.$ingredient->id_ingredient, $ingredient->nombre);
-							$joueur = recupperso($_SESSION['ID']);
-							$i++;
-						}
 						//On utilise le recipient
 						supprime_objet($joueur, 'o'.$recipient->id_objet, 1);
 						$joueur = recupperso($_SESSION['ID']);
@@ -94,10 +86,23 @@ if(array_key_exists('action', $_GET))
 								}
 								$i++;
 							}
+							$reussie = true;
 						}
 						else
 						{
 							echo 'La fabrication a échoué...<br />';
+							$reussie = false;
+						}
+						//On utilise tous les objets de la recette
+						foreach($recette->ingredients as $ingredient)
+						{
+							$rand = rand(1, 100);
+							//Suppression des objets de l'inventaire
+							if($reussie OR ($rand < 50))
+							{
+								supprime_objet($joueur, 'o'.$ingredient->id_ingredient, $ingredient->nombre);
+							}
+							$joueur = recupperso($_SESSION['ID']);
 						}
 						$difficulte = 3 * 2.65 / sqrt($pa_total);
 						$augmentation = augmentation_competence('alchimie', $joueur, $difficulte);
@@ -193,9 +198,15 @@ while($row = $db->read_assoc($req))
 				}
 				//Recherche de l'objet
 				$requete = "SELECT nom FROM objet WHERE id = ".$recipient->id_objet;
+				$req_r = $db->query($requete);
+				$row_r = $db->read_row($req_r);
+				//Recherche du résultat
+				$id_resultat = explode('-', $recipient->resultat);
+				$id_resultat = decompose_objet($id_resultat[0]);
+				$requete = "SELECT description, pa, mp, effet FROM objet WHERE id = ".$id_resultat['id_objet'];
 				$req_i = $db->query($requete);
-				$row_i = $db->read_row($req_i);
-				echo '<li><span class="'.$class.'">- '.$row_i[0].'</span></li>';
+				$row_i = $db->read_assoc($req_i);
+				echo '<li><span class="'.$class.'" title="'.description($row_i['description'], $row_i).' - (coute '.$row_i['pa'].' PA / '.$row_i['mp'].' MP a utiliser)">- '.$row_r[0].'</span></li>';
 			}
 			if(!$check_recip) $complet = false;
 			if(!$complet) $possible = false;

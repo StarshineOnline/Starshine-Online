@@ -8,5 +8,5 @@ include('menu.php');
 	<li>Il manque des screenshots dans la section screenshots</li>
 	<li>Une fois le popup d'accueil affiché, il n'y a plus moyen de voir le message du roi</li>
 	<li>Sous certains navigateurs les menu et popup peuvent être décalés</li>
-	<li>La gestion des groupes dans l'interface des toi ne marche pas</li>
+	<li>La gestion des groupes dans l'interface des roi ne marche pas</li>
 </ul>

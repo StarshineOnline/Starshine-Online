@@ -126,7 +126,7 @@ else
 				}
 				if(($groupe['leader'] && $type_thread == 'groupe') OR ($thread->id_auteur == $joueur['ID'] && !array_key_exists(1, $thread->messages)))
 				{
-					$options .= '<a href="thread_modif.php?id_thread='.$thread->id_thread.'&suppr=1" onclick="if(confirm(\'Si vous supprimez ce message, tous les messages à l\\\'intérieur seront supprimés !\')) return envoiInfo(this.href, \'thread_'.$thread->id_thread.'\'); else return false;">(X)</a>';
+					$options .= '<a href="thread_modif.php?id_thread='.$thread->id_thread.'&suppr=1" onclick="if(confirm(\'Si vous supprimez ce message, tous les messages à l\\\'intérieur seront supprimés !\')) return envoiInfo(this.href, \'thread_'.$thread->id_thread.'\'); else return false;" title="Supprimer"><span class="del" style="float : right;"></span></a>';
 				}
 				else $options = '';
 				?>

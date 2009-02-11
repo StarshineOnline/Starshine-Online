@@ -270,6 +270,21 @@ if(!$visu AND isset($_GET['action']))
 					}
 					else echo 'Vous êtes mort !';
 				break;
+				case 'robustesse' :
+					if($joueur['hp'] > 0)
+					{
+						$objet = decompose_objet($joueur['inventaire_slot'][$_GET['key_slot']]);
+						if(check_utilisation_objet($joueur, $objet))
+						{
+							$requete = "SELECT effet, nom, pa, mp FROM objet WHERE id = ".$objet['id_objet'];
+							$req = $db->query($requete);
+							$row = $db->read_assoc($req);
+							$duree = 31 * 24 * 60 * 60;
+							lance_buff('robustesse', $joueur['ID'], $row['effet'], 0, $duree, 'Robustesse', 'Augmente vos HP et MP de '.$row['effet'].'%.', 'perso', 0, count($joueur['buff']), $joueur['rang_grade']);
+						}
+					}
+					else echo 'Vous êtes mort !';
+				break;
 				case 'globe_pa' :
 					$objet = decompose_objet($joueur['inventaire_slot'][$_GET['key_slot']]);
 					if(check_utilisation_objet($joueur, $objet))

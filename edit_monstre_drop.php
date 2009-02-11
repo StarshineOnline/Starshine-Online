@@ -18,7 +18,6 @@ else
 	$req = $db->query($requete);
 	$monstre = $db->read_assoc($req);
 	$drops = explode(';', $monstre['drops']);
-	print_r($_POST);
 	if(array_key_exists('chance_drop', $_POST))
 	{
 		if($_POST['objet'] != '') $o_drop = $_POST['objet'];
@@ -32,6 +31,13 @@ else
 		$requete = "UPDATE monstre SET drops = '".$drops_i."' WHERE id = ".$id_monstre;
 		$db->query($requete);
 	}
+	if(array_key_exists('key', $_GET))
+	{
+		unset($drops[$_GET['key']]);
+		$drop = implode(';', $drops);
+		$requete = "UPDATE monstre SET drops = '".$drop."' WHERE id = ".$id_monstre;
+		$db->query($requete);
+	}
 	?>
 	<div id="contenu">
 		<div id="centre3">
@@ -41,7 +47,7 @@ else
 			Drops actuels :
 			<ul>
 			<?php
-				foreach($drops as $drop)
+				foreach($drops as $key => $drop)
 				{
 					if($drop != '')
 					{
@@ -56,7 +62,7 @@ else
 							$nom_objet = nom_objet($explode[0]);
 							$description_objet = nom_objet($explode[0]);
 						}
-						echo '<li>'.$nom_objet.' - 1 chance sur '.$explode[1].' <span class="xsmall">'.$description_objet.'</span></li>';
+						echo '<li>'.$nom_objet.' - 1 chance sur '.$explode[1].' <span class="xsmall">'.$description_objet.'</span> <a href="edit_monstre_drop.php?id_monstre='.$id_monstre.'&key='.$key.'">X</a></li>';
 					}
 				}
 			?>

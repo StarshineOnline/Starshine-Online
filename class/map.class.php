@@ -319,7 +319,7 @@ class map
 					$this->map[$objJoueurs->x][$objJoueurs->y]["Joueurs"][$joueurs]["mp_max"] = floor($objJoueurs->mp_max);
 					$this->map[$objJoueurs->x][$objJoueurs->y]["Joueurs"][$joueurs]["pa"] = $objJoueurs->pa;
 				}
-				{//-- V?rification des bonus liés au points shine
+				{//-- Vérification des bonus liés au points shine
 					//Si c'est pas lui même
 					if($objJoueurs->ID != $_SESSION["ID"])
 					{
@@ -329,7 +329,7 @@ class map
 						elseif($objJoueurs->cache_niveau == 1 && $objJoueurs->race != $race) { $this->map[$objJoueurs->x][$objJoueurs->y]["Joueurs"][$joueurs]["level"] = "xxx"; }
 					}
 				}
-				{//-- V?rification que l'image de classe existe ($Tclasse est contenue dans ./inc/classe.inc.php)
+				{//-- Vérification que l'image de classe existe ($Tclasse est contenue dans ./inc/classe.inc.php)
 					$classe = $this->map[$objJoueurs->x][$objJoueurs->y]["Joueurs"][$joueurs]["classe"];
 					
 					$image = $this->root."image/personnage/".$objJoueurs->race."/".$objJoueurs->race;

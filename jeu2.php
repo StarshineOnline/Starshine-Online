@@ -74,7 +74,7 @@ $_SESSION['position'] = convert_in_pos($joueur['x'], $joueur['y']);
 		
 	</div>
 	<div id='menu'>
-		<?php echo "<div id='menu_date'><img src='image/interface/".moment_jour().".png' alt='".moment_jour()."' title='".moment_jour()."' >".moment_jour();?>
+		<?php echo "<div id='menu_date'><img src='image/interface/".moment_jour().".png' alt='".moment_jour()."' title='".moment_jour()." - ".date_sso()."' >".moment_jour();?>
 	</div>
 
 	<input type="hidden" id="menu_encours" value="lejeu" />

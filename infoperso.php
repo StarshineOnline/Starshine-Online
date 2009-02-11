@@ -2,7 +2,7 @@
 {//-- Initialisation
 	require_once('inc/fp.php');
 	if(!isset($joueur)) { $joueur = recupperso($_SESSION["ID"]); }; 		//-- Récupération du tableau contenant toutes les informations relatives au joueur
-	check_perso($joueur);
+	$joueur = check_perso($joueur);
 	echo '<div id="perso_contenu">';
 	require_once("levelup.php"); 				//-- Dans le cas ou le joueur a pris un level on traite son level up.
 }
@@ -28,9 +28,9 @@
 	//--  inclusion de la rosace des vents.
 	include_once("deplacementjeu.php");
 
-	echo " <div id='joueur_PA' style='background:transparent url(".genere_image_pa($joueur).") center;'>".$joueur["pa"]." / $G_PA_max</div>";
-	echo " <div id='joueur_HP' style='background:transparent url(".genere_image_hp($joueur).") center;'>".$joueur["hp"]." / ".$joueur["hp_max"]."</div>";
-	echo " <div id='joueur_MP' style='background:transparent url(".genere_image_mp($joueur).") center;'>".$joueur["mp"]." / ".$joueur["mp_max"]."</div>";
+	echo " <div id='joueur_PA' style='background:transparent url(".genere_image_pa($joueur).") center;' title='PA'>".$joueur["pa"]." / $G_PA_max</div>";
+	echo " <div id='joueur_HP' style='background:transparent url(".genere_image_hp($joueur).") center;' title='HP'>".$joueur["hp"]." / ".$joueur["hp_max"]."</div>";
+	echo " <div id='joueur_MP' style='background:transparent url(".genere_image_mp($joueur).") center;' title='MP'>".$joueur["mp"]." / ".$joueur["mp_max"]."</div>";
 	echo " <div id='joueur_XP' style='background:transparent url(".genere_image_exp($joueur["exp"], prochain_level($joueur["level"]), progression_level(level_courant($joueur["exp"]))).") center;' title='".progression_level(level_courant($joueur["exp"]))." % (".number_format($joueur["exp"], 0, ",", ".")." / ".number_format(prochain_level($joueur["level"]), 0, ",", ".").")'></div>";
 	echo " <div id='joueur_PO' title='Vos stars'>".$joueur["star"]."</div>";
 	echo " <div id='joueur_PH' title='Votre honneur'>".$joueur["honneur"]."</div>";

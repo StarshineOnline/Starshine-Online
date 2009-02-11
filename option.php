@@ -166,7 +166,6 @@ include('inc/fp.php');
 				<strong>Attention votre mot de passe jeu, et votre mot de passe forum sont à changer séparément !</strong><br />
 				<ul>
 					<li><a href="option.php?action=mdp" onclick="return envoiInfo(this.href, 'popup_content');">Modifier votre mot de passe JEU</a></li>
-					<li><a href="http://forum.starshine-online.com/profile.php?action=change_pass&id=2" onclick="return envoiInfo(this.href, 'popup_content');">Modifier votre mot de passe FORUM</a></li>
 				</ul>
 			</div>
 			<div class"news">

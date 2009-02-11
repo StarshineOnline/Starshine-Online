@@ -980,6 +980,11 @@ function recupperso($ID)
 					$R_perso['hp_max'] = round($R_perso['hp_max'] - ((($R_perso['debuff']['famine']['effet'] * $R_perso['hp_max']) / 100)));
 					$R_perso['mp_max'] = round($R_perso['mp_max'] - ((($R_perso['debuff']['famine']['effet'] * $R_perso['mp_max']) / 100)));
 				}
+				if(array_key_exists('robustesse', $R_perso['buff']))
+				{
+					$R_perso['hp_max'] = round($R_perso['hp_max'] + ((($R_perso['buff']['robustesse']['effet'] * $R_perso['hp_max']) / 100)));
+					$R_perso['mp_max'] = round($R_perso['mp_max'] + ((($R_perso['buff']['robustesse']['effet'] * $R_perso['mp_max']) / 100)));
+				}
 				// Calcul des coefficients
 				$R_perso['coef_melee'] = $R_perso['force'] * $R_perso['melee'];
 				$R_perso['coef_incantation'] = $R_perso['puissance'] * $R_perso['incantation'];
@@ -2238,7 +2243,7 @@ function verif_mort($pourcent, $var, $duree_debuff=0, $multiplicateur_mouvement=
 		else $duree = 0;
 		$duree_debuff += $duree;
 		//Suppression des buffs
-		$requete = "DELETE FROM buff WHERE id_perso = ".$joueur['ID']." AND type <> 'debuff_rez' AND type <> 'famine'";
+		$requete = "DELETE FROM buff WHERE id_perso = ".$joueur['ID']." AND supprimable = 1";
 		$db->query($requete);
 		//Si rez en ville ou sur fort, on débuff le déplacement
 		if($duree_debuff > 0)

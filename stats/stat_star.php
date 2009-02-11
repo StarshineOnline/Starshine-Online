@@ -24,10 +24,10 @@ $color['elfehaut'] = array(170, 170, 170);
 $color['vampire'] = array(204, 204, 204);
 
 $date = date("Y-m-d");
-$requete = "SELECT *, EXTRACT(YEAR FROM date) as year, EXTRACT(MONTH FROM date) as month, EXTRACT(DAY FROM date) as day FROM stat_jeu WHERE date > DATE_SUB('".$date."', INTERVAL 31 DAY) ORDER BY date;";
-echo $requete.'<br />';
+$requete = "SELECT *, EXTRACT(YEAR FROM date) as year, EXTRACT(MONTH FROM date) as month, EXTRACT(DAY FROM date) as day FROM stat_jeu WHERE date > DATE_SUB('".$date."', INTERVAL 31 DAY) ORDER BY date ASC;";
+$mail .= $requete."\n";
 $req = $db->query($requete);
-$strips = array('id', 'date', 'year', 'day', 'month', 'niveau_moyen', 'nombre_joueur', 'nombre_monstre');
+$strips = array('id', 'date', 'year', 'day', 'month', 'niveau_moyen', 'nombre_joueur', 'nombre_monstre', 'food');
 $z = 0;
 while($row = $db->read_assoc($req))
 {

@@ -29,10 +29,100 @@ include('ville_bas.php');
 			$batiment = $construction->get_batiment();
 			switch($batiment->type)
 			{
+				case 'chambre' :
+				break;
+				case 'grenier' :
+					if(array_key_exists('famine', $_GET))
+					{
+						if($joueur['pa'] >= 10)
+						{
+							$check = false;
+							foreach($joueur['debuff'] as $key => $debuff)
+							{
+								if($debuff['type'] == 'famine')
+								{
+									$check = true;
+									$id_buff = $debuff['id'];
+									$key_debuff = $key;
+								}
+							}
+							if($check)
+							{
+								//Si effet = 1 on supprime le debuff
+								if($joueur['debuff'][$key_famine]['effet'] <= 1)
+								{
+									$requete = "DELETE FROM buff WHERE id = ".$id_buff;
+								}
+								//Sinon on réduit
+								else
+								{
+									$requete = "UPDATE buff SET effet = effet - 1 WHERE id = ".$id_buff;
+								}
+								$db->query($requete);
+								$requete = "UPDATE perso SET pa = pa - 10 WHERE ID = ".$joueur['ID'];
+								$db->query($requete);
+								refresh_perso();
+								echo '<h6>Famine réduite de 1%</h6>';
+							}
+							echo '<h5>Vous n\'avez pas de famine</h5>';
+						}
+						else
+						{
+							echo '<h5>Vous n\'avez pas assez de PA</h5>';
+						}
+					}
+					echo '<a href="terrain.php?id_construction='.$construction->id.'&amp;famine" onclick="return envoiInfo(this.href, \'carte\');">Réduire de 1% la famine (10 PA)</a>';
+				break;
 				case 'coffre' :
-					$coffre_inventaire = $construction->get_coffre_inventaire();
-					print_r($coffre_inventaire);
-					echo 'C\'est un coffre';
+					$coffre = new coffre($construction->id);
+					$coffre_inventaire = $coffre->get_coffre_inventaire();
+					//On dépose un objet dans le coffre
+					if(array_key_exists('depose', $_GET))
+					{
+						if(count($coffre_inventaire) < $batiment->effet)
+						{
+							$item = $joueur['inventaire_slot'][$_GET['depose']];
+							$objet = decompose_objet($item);
+							//On le met dans le coffre
+							$coffre->depose_objet($objet);
+							//On supprime l'objet
+							supprime_objet($joueur, $item, 1);
+							$coffre_inventaire = $coffre->get_coffre_inventaire();
+							$joueur = recupperso($joueur['ID']);
+						}
+						else echo '<h5>Vous n\'avez pas assez de place dans le coffre</h5>';
+					}
+					if(array_key_exists('prend', $_GET))
+					{
+						$item = $coffre_inventaire[$_GET['prend']];
+						if(prend_objet($item->objet, $joueur))
+						{
+							$item->moins();
+							$coffre_inventaire = $coffre->get_coffre_inventaire();
+							$joueur = recupperso($joueur['ID']);
+						}
+						else echo '<h5>'.$G_erreur.'</h5>';
+					}
+					echo '<h3>Place restante : '.($batiment->effet - count($coffre_inventaire)).' / '.$batiment->effet.'</h3>
+					<h3>Contenu du coffre</h3>
+					';
+					foreach($coffre_inventaire as $key => $item)
+					{
+						$nom = nom_objet($item->objet);
+						if($item->nombre > 1) $stack = ' X'.$item->nombre;
+						else $stack = '';
+						echo $nom.$stack.'<a href="terrain.php?id_construction='.$construction->id.'&amp;prend='.$key.'" onclick="return envoiInfo(this.href, \'carte\');">Prendre</a><br />';
+					}
+					echo '
+					<h3>Votre inventaire</h3>';
+					foreach($joueur['inventaire_slot'] as $key => $item)
+					{
+						$objet = decompose_objet($item);
+						$nom = nom_objet($objet['id']);
+						if($objet['stack'] != '') $stack = ' X'.$objet['stack'];
+						else $stack = '';
+						echo $nom.$stack.'<a href="terrain.php?id_construction='.$construction->id.'&amp;depose='.$key.'" onclick="return envoiInfo(this.href, \'carte\');">Déposer dans votre coffre</a><br />';
+					}
 				break;
 				case 'laboratoire' :
 					$types = array();

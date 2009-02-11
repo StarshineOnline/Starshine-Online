@@ -618,7 +618,7 @@ require('haut_roi.php');
 						$db->query($requete);
 					}
 					//On enlève les stars au royaume
-					$requete = "UPDATE royaume SET star = star - ".$row['prix']." WHERE ID = ".$R['ID'];
+					$requete = "UPDATE royaume SET star = star - ".$row['prix'].", bois = bois - ".$row['bois'].", pierre = pierre - ".$row['pierre'].", eau = eau - ".$row['eau'].", charbon = charbon - ".$row['charbon'].", sable = sable - ".$row['sable'].", essence = essence - ".$row['essence']." WHERE ID = ".$R['ID'];
 					if($db->query($requete))
 					{
 						echo '<h6>'.$row['nom'].' bien acheté.</h6><br />';

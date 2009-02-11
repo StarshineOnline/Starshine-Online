@@ -10,7 +10,7 @@ while($row = $db->read_row($req))
 	$habitants[$row[0]] = $row[1];
 }
 $min_habitants = min($habitants);
-$ratio = $hta / $min_habitants;
+$ratio = $habitants[$R['race']] / $min_habitants;
 if($ratio < 1) $ratio = 1;
 echo '
 <table>

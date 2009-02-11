@@ -1,0 +1,1 @@
+ALTER TABLE `terrain_coffre` ADD `nombre` TINYINT UNSIGNED NOT NULL ;

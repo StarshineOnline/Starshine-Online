@@ -14,6 +14,18 @@ if(!check_secu($pseudo))
 }
 else
 {
+	//Config punbb groups
+	$punbb['elfebois'] = 6;
+	$punbb['orc'] = 12;
+	$punbb['nain'] = 11;
+	$punbb['troll'] = 14;
+	$punbb['humain'] = 8;
+	$punbb['vampire'] = 15;
+	$punbb['elfehaut'] = 7;
+	$punbb['humainnoir'] = 9;
+	$punbb['scavenger'] = 13;
+	$punbb['barbare'] = 5;
+	$punbb['mortvivant'] = 10;
 	$requete = "SELECT ID FROM perso WHERE nom = '".$pseudo."'";
 	$req = $db->query($requete);
 	$nombre = $db->num_rows;

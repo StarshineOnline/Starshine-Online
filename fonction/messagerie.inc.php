@@ -61,8 +61,8 @@ function message_affiche($message, $joueur_id, $thread_title = '')
 		{
 			$fav = '<a href="message_change_etat.php?id_message='.$message->id_message.'&amp;etat=lu" onclick="return envoiInfo(this.href, \'message'.$message->id_message.'\')" title="Mettre en favoris"><span class="fav_on"></span></a>';
 		}	
-		if($joueur_id == $message->id_auteur) $del =  '<a href="message_change_etat.php?id_message='.$message->id_message.'&amp;etat=del" onclick="if(confirm(\'Voulez vous supprimer votre message ?\')) return envoiInfo(this.href, \'message'.$message->id_message.'\'); else return false;" title="Supprimer"><span class="del"></span></a>';		
-	$message_affiche = $div_nonlu.'
+		if($joueur_id == $message->id_auteur) $del =  '<a href="message_change_etat.php?id_message='.$message->id_message.'&amp;etat=del" onclick="if(confirm(\'Voulez vous supprimer votre message ?\')) return envoiInfo(this.href, \'message'.$message->id_message.'\'); else return false;" title="Supprimer"><span class="del"></span></a>';
+		$message_affiche = $div_nonlu.'
 		<span class="messagerie" onclick="$(\'mess'.$message->id_message.'\').toggle();">
 			<span class="auteur" '.$style.'>'.$message->nom_auteur.'</span>
 			<span class="date">'.$date.'</span>
