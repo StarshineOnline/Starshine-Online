@@ -1,5 +1,6 @@
 <?php
-include('inc/fp.php');
+include('class/db.class.php');
+
 $table = $_GET['table'];
 
 $champs = array();

@@ -243,15 +243,17 @@ foreach($tab_royaume as $race => $royaume)
 			if(count($buffs) > 0)
 			{
 				$requete = "UPDATE buff SET effet = effet + ".$debuff.", duree = ".$duree.", fin = ".$fin." WHERE ID IN (".$buffs_implode.")";
-				$mail .= $requete."\n";
 				$db->query($requete);
 			}
+			$mail .= "Mis à jour du buff famine sur ".count($buffs_implode)." ".$race.", effet + ".$debuff.".\n";
 			foreach($persos as $joueur)
 			{
 				//Lancement du buff
 				lance_buff('famine', $joueur, $debuff, 0, $duree, 'Famine', 'Vos HP et MP max sont réduits de %effet%%', 'perso', 1, 0, 0, 0);
 			}
+			$mail .= "Lancement du buff famine sur ".count($persos)." ".$race.", effet : ".$debuff.".\n";
 			$requete = "UPDATE royaume SET food = 0 WHERE ID = ".$royaume['id'];
+			$mail .= $requete."\n";
 			$db->query($requete);
 		}
 	}

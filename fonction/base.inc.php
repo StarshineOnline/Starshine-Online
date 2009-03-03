@@ -2065,12 +2065,16 @@ function return_ville($texte, $poscase)
 	}
 }
 
-//Affiche un lien pour afficher le menu gestion royaume
+/**
+* Affiche un lien pour afficher le menu gestion royaume
+* @access public
+* @param string $texte, int $poscase
+* @return null
+*/
 function return_gestion_royaume($texte, $poscase)
 {
 	echo '<a href="ville.php?poscase='.$poscase.'" onclick="return envoiInfo(this.href, \'centre\')">'.$texte.'</a>';
 }
-
 function lance_buff($type, $id, $effet, $effet2, $duree, $nom, $description, $type_cible, $debuff, $nb_buff, $grade, $supprimable = 1)
 {
 	global $db, $G_erreur;

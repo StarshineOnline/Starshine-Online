@@ -80,7 +80,8 @@ if(array_key_exists('action', $_GET))
 								$j = $objets[1];
 								while($j > 0)
 								{
-									prend_objet($objets[0], $joueur);
+									//echo 'prend objet' . $objets[0];
+									$joueur = prend_objet($objets[0], $joueur);
 									//echo $G_erreur;
 									$j--;
 								}

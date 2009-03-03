@@ -66,7 +66,7 @@ class db
 		$this->string_type  = isset($cfg["sql"]["string_type"]) ? $cfg["sql"]["string_type"]  :"";
 		$this->nb_query     = 0;
 
-	  $this->encoding = isset($cfg["sql"]["encoding"]) ? $cfg["sql"]["encoding"] : 'utf8';
+		$this->encoding = isset($cfg["sql"]["encoding"]) ? $cfg["sql"]["encoding"] : 'utf8';
 		$curenc = mysql_client_encoding($this->lnk);
 		if ($curenc != $this->encoding) {
 			if (function_exists('mysql_set_charset')) {

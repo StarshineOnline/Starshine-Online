@@ -137,15 +137,15 @@ N'oubliez pas de reporter les bugs et problèmes, et de suggérer de nouvelles c
 		</div>
 		<div id='screenshot_box' style='display:none;'>
 			<ul>
-				<li><a href="image/screenshots/screenshot01.jpg" rel="lightbox[screens]" title="Le jeu" /><img src="image/screenshots/mini_screenshot01.jpg" /></a></li>
-				<li><a href="image/screenshots/screenshot02.jpg" rel="lightbox[screens]" title="Inventaire" /><img src="image/screenshots/mini_screenshot02.jpg" /></a></li>
-				<li><a href="image/screenshots/screenshot03.jpg" rel="lightbox[screens]" title="Interface du roi" /><img src="image/screenshots/mini_screenshot03.jpg" /></a></li>
-				<li><a href="image/screenshots/screenshot04.jpg" rel="lightbox[screens]" title="La boutique SSO" /><img src="image/screenshots/mini_screenshot04.jpg" /></a></li>
-				<li><a href="image/screenshots/screenshot05.jpg" rel="lightbox[screens]" title="Screenshot 5" /><img src="image/screenshots/mini_screenshot05.jpg" /></a></li>
-				<li><a href="image/screenshots/screenshot06.jpg" rel="lightbox[screens]" title="Version 0.6 (en test)" /><img src="image/screenshots/mini_screenshot06.jpg" /></a></li>
-				<li><a href="image/screenshots/screenshot07.jpg" rel="lightbox[screens]" title="Version 0.5" /><img src="image/screenshots/mini_screenshot07.jpg" /></a></li>
-				<li><a href="image/screenshots/screenshot08.jpg" rel="lightbox[screens]" title="Début de la béta" /><img src="image/screenshots/mini_screenshot08.jpg" /></a></li>
-				<li><a href="image/screenshots/screenshot09.jpg" rel="lightbox[screens]" title="Version alpha" /><img src="image/screenshots/mini_screenshot09.jpg" /></a></li>
+				<li><a href="image/screenshots/screenshot01.jpg" rel="lightbox[screens]" title="Le jeu"><img src="image/screenshots/mini_screenshot01.jpg" /></a></li>
+				<li><a href="image/screenshots/screenshot02.jpg" rel="lightbox[screens]" title="Inventaire"><img src="image/screenshots/mini_screenshot02.jpg" /></a></li>
+				<li><a href="image/screenshots/screenshot03.jpg" rel="lightbox[screens]" title="Interface du roi"><img src="image/screenshots/mini_screenshot03.jpg" /></a></li>
+				<li><a href="image/screenshots/screenshot04.jpg" rel="lightbox[screens]" title="La boutique SSO"><img src="image/screenshots/mini_screenshot04.jpg" /></a></li>
+				<li><a href="image/screenshots/screenshot05.jpg" rel="lightbox[screens]" title="Screenshot 5"><img src="image/screenshots/mini_screenshot05.jpg" /></a></li>
+				<li><a href="image/screenshots/screenshot06.jpg" rel="lightbox[screens]" title="Version 0.6 (en test)"><img src="image/screenshots/mini_screenshot06.jpg" /></a></li>
+				<li><a href="image/screenshots/screenshot07.jpg" rel="lightbox[screens]" title="Version 0.5"><img src="image/screenshots/mini_screenshot07.jpg" /></a></li>
+				<li><a href="image/screenshots/screenshot08.jpg" rel="lightbox[screens]" title="Début de la béta"><img src="image/screenshots/mini_screenshot08.jpg" /></a></li>
+				<li><a href="image/screenshots/screenshot09.jpg" rel="lightbox[screens]" title="Version alpha"><img src="image/screenshots/mini_screenshot09.jpg" /></a></li>
 			</ul>
 		</div>
 		<div id='news_box' style='display:none;'>

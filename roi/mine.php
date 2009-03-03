@@ -216,8 +216,8 @@ elseif(array_key_exists('up', $_GET))
 	//On vérifie si on a assez de stars
 	if($R['star'] >= $mine->evolution['cout'])
 	{
-		$mine->id_batiment = $mine->evolution['id'];
 		$mine->hp = round(($mine->hp / $mine->get_hp_max()) * $mine->evolution['hp']);
+		$mine->id_batiment = $mine->evolution['id'];
 		$mine->nom = $mine->evolution['nom'];
 		$mine->sauver();
 

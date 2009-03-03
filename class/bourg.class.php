@@ -4,13 +4,11 @@ class bourg extends construction
 	public $mine_max;
 	
 	/**	
-	    *  	Constructeur permettant la cr?ation d'un bourg.
-	    *	Les valeurs par d?faut sont celles de la base de donn?e.
-	    *	Le constructeur accepte plusieurs types d'appels:
-	    *		-bourg() qui construit un etat "vide".
-	    *		-bourg($id) qui va chercher l'etat dont l'id est $id
-	    *		-bourg($array) qui associe les champs de $array ? l'objet.
-	**/
+	* Constructeur permettant la création d'un bourg.
+	* @access public
+	* @param int $id, int $id_royaume, int $id_batiment, int $x, int $y, int $hp, string $nom, int $type, int $rez, int $rechargement, string $image
+	* @return null
+	*/
 	function __construct($id = 0, $id_royaume = 0, $id_batiment = 0, $x = 0, $y = 0, $hp = 0, $nom = '', $type = 0, $rez = 0, $rechargement = 0, $image = '')
 	{
 		global $db;

@@ -808,7 +808,7 @@ require('haut_roi.php');
 					<option value="sable">sable</option>
 					<option value="charbon">charbon</option>
 					<option value="essence">essence</option>
-					<option value="nourriture">nourriture</option>
+					<option value="food">nourriture</option>
 				</select><br />
 				Nombre <input type="text" name="nbr" id="nbr" value="0" /><br />
 				Prix total : <input type="text" name="prix" id="prix" value="0" /><br />
