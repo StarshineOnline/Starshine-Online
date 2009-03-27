@@ -12,6 +12,7 @@ class map
 	public $resolution;
 	public $onclick;
 	public $quadrillage;
+	public $cache_monstre;
 
 	function __construct($x, $y, $champ_vision = 3, $root = '', $donjon = false, $resolution = 'high')
 	{
@@ -22,7 +23,8 @@ class map
 		$this->resolution = $resolution;
 		$this->donjon = $donjon;
 		$this->onclick = "envoiInfo('informationcase.php?case=%%ID%%', 'information');";
-
+		$this->cache_monstre = false;
+		
 		$this->case_affiche = ($this->champ_vision * 2) + 1;
 
 
@@ -153,7 +155,7 @@ class map
 					{//-- Affichage des Joueurs -----------------------------------//
 						if(!empty($this->map[$x_map][$y_map]["Joueurs"][0]["image"])) 	{ $background = "background-image : url(".$this->map[$x_map][$y_map]["Joueurs"][0]["image"].") !important;"; };
 					}
-					elseif(is_array($this->map[$x_map][$y_map]["Monstres"]))
+					elseif(is_array($this->map[$x_map][$y_map]["Monstres"]) && !$cache_monstre)
 					{//-- Affichage des Monstres ----------------------------------//
 						if(!empty($this->map[$x_map][$y_map]["Monstres"][0]["image"])) 	{ $background = "background-image : url(".$this->map[$x_map][$y_map]["Monstres"][0]["image"].") !important;"; };
 					}
@@ -549,6 +551,11 @@ class map
 	function set_onclick($onclick)
 	{
 		$this->onclick = $onclick;
+	}
+	
+	function change_cache_monstre()
+	{
+		$this->cache_monstre = !$this->cache_monstre;
 	}
 }
 ?>

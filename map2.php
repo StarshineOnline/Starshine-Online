@@ -10,7 +10,6 @@ require('class/map.class.php');
 	$y = $objXY->y;
 	$level = $objXY->level;
 }
-
 $map = new map($x, $y);
 
 $map->get_pnj();
@@ -19,5 +18,8 @@ $map->get_drapeau();
 $map->get_batiment();
 $map->get_monstre($level);
 
+if(isset $_GET['cache_monstre'])
+	$map->change_cache_monstre();
+	
 $map->affiche();
 ?>

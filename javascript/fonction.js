@@ -264,6 +264,12 @@ function deplacement(direction)
 	new Ajax.Request('./deplacement.php',{method:'get',parameters:'deplacement='+direction,onLoading:Loadchargement,onComplete:AfficheCarte});
 }
 
+function Hidedeplacement(direction)
+{
+
+	new Ajax.Request('./deplacement.php',{method:'get',parameters:'deplacement='+direction+'&cache_monstre',onLoading:Loadchargement,onComplete:AfficheCarte});
+}
+
 function affiche_info(id_case)
 {	
 	function Chargement(){$('loading_information').show();}
