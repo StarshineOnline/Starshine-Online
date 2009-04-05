@@ -258,22 +258,7 @@ function AfficheCarte(map)
 	$('loading').hide();
 }
 
-function deplacement2(direction)
-{
-
-	new Ajax.Request('./deplacement.php',{method:'get',parameters:'deplacement='+direction,onLoading:Loadchargement,onComplete:AfficheCarte});
-}
-
 function deplacement(direction, cache)
-{
-	if(cache != 'undefined' && cache)
-		cache = '&cache_monstre';
-	else
-		cache = '';
-	new Ajax.Request('./deplacement.php',{method:'get',parameters:'deplacement='+direction+cache,onLoading:Loadchargement,onComplete:AfficheCarte});
-}
-
-function Hidedeplacement(direction, cache)
 {
 	if(cache != 'undefined' && cache)
 		cache = '&cache_monstre';
