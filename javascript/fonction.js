@@ -258,16 +258,28 @@ function AfficheCarte(map)
 	$('loading').hide();
 }
 
-function deplacement(direction)
+function deplacement2(direction)
 {
 
 	new Ajax.Request('./deplacement.php',{method:'get',parameters:'deplacement='+direction,onLoading:Loadchargement,onComplete:AfficheCarte});
 }
 
-function Hidedeplacement(direction)
+function deplacement(direction, cache)
 {
+	if(cache != 'undefined' && cache)
+		cache = '&cache_monstre';
+	else
+		cache = '';
+	new Ajax.Request('./deplacement.php',{method:'get',parameters:'deplacement='+direction+cache,onLoading:Loadchargement,onComplete:AfficheCarte});
+}
 
-	new Ajax.Request('./deplacement.php',{method:'get',parameters:'deplacement='+direction+'&cache_monstre',onLoading:Loadchargement,onComplete:AfficheCarte});
+function Hidedeplacement(direction, cache)
+{
+	if(cache != 'undefined' && cache)
+		cache = '&cache_monstre';
+	else
+		cache = '';
+	new Ajax.Request('./deplacement.php',{method:'get',parameters:'deplacement='+direction+cache,onLoading:Loadchargement,onComplete:AfficheCarte});
 }
 
 function affiche_info(id_case)
@@ -398,3 +410,4 @@ function masqueMessage(id)
 	element.style.display = 'none';
 }
 
+var cache_monstre;

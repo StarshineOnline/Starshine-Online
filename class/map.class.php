@@ -155,7 +155,7 @@ class map
 					{//-- Affichage des Joueurs -----------------------------------//
 						if(!empty($this->map[$x_map][$y_map]["Joueurs"][0]["image"])) 	{ $background = "background-image : url(".$this->map[$x_map][$y_map]["Joueurs"][0]["image"].") !important;"; };
 					}
-					elseif(is_array($this->map[$x_map][$y_map]["Monstres"]) && !$cache_monstre)
+					elseif(is_array($this->map[$x_map][$y_map]["Monstres"]) && !$this->cache_monstre)
 					{//-- Affichage des Monstres ----------------------------------//
 						if(!empty($this->map[$x_map][$y_map]["Monstres"][0]["image"])) 	{ $background = "background-image : url(".$this->map[$x_map][$y_map]["Monstres"][0]["image"].") !important;"; };
 					}
@@ -557,5 +557,6 @@ class map
 	{
 		$this->cache_monstre = !$this->cache_monstre;
 	}
+	
 }
 ?>
