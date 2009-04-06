@@ -380,7 +380,8 @@ if(!$visu AND isset($_GET['action']))
 		break;
 		case 'vente' :
 			$id_objet = $_GET['id_objet'];
-			$categorie = mb_substr($id_objet, 0, 1);
+			$objet = decompose_objet($joueur['inventaire_slot'][$_GET['key_slot']]);
+			$categorie = empty($objet['categorie']) mb_substr($id_objet, 0, 1); ? $objet['categorie'];
 			//Rétrocompatibilité avec anciens inventaires
 			if($categorie != 'a' AND $categorie != 'p' AND $categorie != 'o' AND $categorie != 'g' AND $categorie != 'm' AND $categorie != 'l')
 			{
