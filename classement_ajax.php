@@ -74,6 +74,10 @@
 	else
 	{
 		$tri = mysql_escape_string($_GET['tri']);
+		if(!strcmp($tri, 'craft'))
+		{
+			$tri = 'architecture, forge, alchimie';
+		}
 		$i = 0;
 	}
 	if(array_key_exists('race', $_GET))
@@ -122,7 +126,7 @@
 	$requete = "SELECT ID, nom, ".sSQL($tri).", level, race, classe, cache_stat, cache_classe FROM perso WHERE statut = 'actif' AND ".$where." ORDER BY ".$tri." DESC, nom ASC LIMIT $inf, $j";
 	//echo 'inf : '.$inf.' j : '.$j.' k : '.$k.' sup : '.$sup.' '.$requete.'<br />';
 	$req = $db->query($requete);
-
+	$tri = !strcmp('architecture, forge, alchimie', $tri) ? 'craft' : $tri;
 ?>
 		<input type="hidden" id="tri" value="<?php echo $tri; ?>" />
 		<input type="hidden" id="i" value="<?php echo $i; ?>" />
@@ -221,7 +225,7 @@
 						{
 						?>
 							<td>
-								<?php echo $row[$tri]; ?>
+								<?php echo strcmp($tri, 'craft') ? $row[$tri] : round(sqrt(($row['architecture'] + $row['forge'] + $row['alchimie']) * 10)); ?>
 							</td>
 						<?php
 						}
