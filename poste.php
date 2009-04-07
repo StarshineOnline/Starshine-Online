@@ -84,7 +84,7 @@ if($W_distance == 0)
 					$titre = addslashes(sSQL($_POST['titre']));
 					if($titre != '')
 					{
-						$message = addslashes(sSQL($_POST['message']));
+						$message = sSQL($_POST['message']);
 						if ($message != '')
 						{
 							$id_groupe = 0;

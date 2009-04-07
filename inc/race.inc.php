@@ -216,6 +216,7 @@ $Trace['orc']['spawn_y'] = 99;
 $Trace['orc']['spawn_c_x'] = 88;
 $Trace['orc']['spawn_c_y'] = 110; 
 $Trace['orc']['couleur'] = "#ffcccc";  ///< Couleur des Orcs.
+$Trace['orc']['forum_id'] = 33;   ///< ID du forum des Scavengers.
 //@}
 
 

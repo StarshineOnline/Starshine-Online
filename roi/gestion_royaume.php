@@ -19,16 +19,23 @@ require('haut_roi.php');
 			    //Si modification moins, on envoi la demande à l'autre royaume
 			    if($_GET['diplo'] == 'm')
 			    {
-			        $diplo = $row[$_GET['race']] - 1;
-			        $star = $_GET['star'];
-			        if($star > $R['star']) $star = $R['star'];
-			        //Suppression des stars
-			        $requete = "UPDATE royaume SET star = star - ".$star." WHERE ID = ".$R['ID'];
-			        $db->query($requete);
-			        //Envoi de la demande
-			        $requete = "INSERT INTO diplomatie_demande VALUES(NULL, ".$diplo.", '".$joueur['race']."', '".$_GET['race']."',  ".$star.")";
-			        $db->query($requete);
-			        echo 'Une demande au royaume '.$Gtrad[$_GET['race']].' pour passer en diplomatie : '.$Gtrad['diplo'.$diplo].' en échange de '.$star.' stars a été envoyée<br /><br />';
+				$requete = 'SELECT * FROM diplomatie_demande WHERE royaume_demande = \''.$joueur['race'].'\' AND royaume_recois = \''.$_GET['race'].'\'';
+				$db->query($requete);
+				if(empty($db->num_rows))
+				{
+					$diplo = $row[$_GET['race']] - 1;
+					$star = $_GET['star'];
+					if($star > $R['star']) $star = $R['star'];
+					//Suppression des stars
+					$requete = "UPDATE royaume SET star = star - ".$star." WHERE ID = ".$R['ID'];
+					$db->query($requete);
+					//Envoi de la demande
+					$requete = "INSERT INTO diplomatie_demande VALUES(NULL, ".$diplo.", '".$joueur['race']."', '".$_GET['race']."',  ".$star.")";
+					$db->query($requete);
+					echo 'Une demande au royaume '.$Gtrad[$_GET['race']].' pour passer en diplomatie : '.$Gtrad['diplo'.$diplo].' en échange de '.$star.' stars a été envoyée.<br /><br />';
+				}
+				else
+					echo 'Une demande au royaume '.$Gtrad[$_GET['race']].' pour passer en diplomatie : '.$Gtrad['diplo'.$diplo].' est déjà en cours.<br /><br />';
 			    }
 			    //Sinon, on change la diplomatie.
 			    else
@@ -195,7 +202,7 @@ require('haut_roi.php');
 	        $db->query($requete);
 	        echo 'Vous êtes maintenant en '.$Gtrad['diplo'.$diplo].' avec les '.$Gtrad[$row['royaume_demande']].'<br /><br />';
 	        //Envoi d'un message au roi
-	        $message = 'Le roi des '.$Gtrad[$joueur['race']].' a accepté votre demande diplomatique';
+	        $message = 'Le roi des '.$Gtrad[$joueur['race']].' a accepté votre demande diplomatique'.(empty($row['stars']) ? '' : '.'.$row['stars'].' ont été versés à ce royaume.');
 	        $requete = "INSERT INTO message VALUES('', ".$row_roi['ID'].", 0,'Mess. Auto', '".$row_roi['nom']."', 'Accord diplomatique', '".$message."', '', '".time()."', 0)";
 	        $db->query($requete);
 	    }
@@ -1057,7 +1064,7 @@ require('haut_roi.php');
 	    {
 	        echo '
 	        <li>
-	            Le roi '.$Gtrad[$row['royaume_demande']].' vous demande de passer en diplomatie et vous donne '.$star.' : '.$Gtrad['diplo'.$row['diplo']].'<br />
+	            Le roi '.$Gtrad[$row['royaume_demande']].' vous demande de passer en diplomatie et vous donne '.$row['stars'].' stars : '.$Gtrad['diplo'.$row['diplo']].'<br />
 	            Accépter ? <a href="gestion_royaume.php?direction=diplomatie_demande&amp;reponse=oui&amp;id_demande='.$row['id'].';" onclick="return envoiInfo(this.href, \'conteneur\');">Oui</a> / <a href="gestion_royaume.php?direction=diplomatie_demande&amp;reponse=non&amp;id_demande='.$row['id'].';" onclick="return envoiInfo(this.href, \'conteneur\');">Non</a>
 	        </li>';
 	    }
