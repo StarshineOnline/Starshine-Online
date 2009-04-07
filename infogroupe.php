@@ -26,6 +26,8 @@ $groupe = recupgroupe($_GET['id'], $joueur['x'].'-'.$joueur['y']);
 $level_groupe = level_groupe($groupe);
 $num_joueur = groupe_trouve_joueur($joueur['ID'], $groupe);
 $share_xp = ($groupe['membre'][$num_joueur]['share_xp'] / $groupe['share_xp']);
+if($num_joueur)
+{
 ?>
 <fieldset>
 	<legend>Informations sur votre groupe</legend>
@@ -38,6 +40,14 @@ $share_xp = ($groupe['membre'][$num_joueur]['share_xp'] / $groupe['share_xp']);
 	<div>
 
 <?php
+}
+else
+{
+?>
+<fieldset>
+	<legend class=".message_rouge">Vous n'appartenez pas à ce groupe!</legend>
+<?php
+}
 if($groupe['id_leader'] ==  $_SESSION['ID'])
 {
 	$requete = "SELECT * FROM invitation WHERE groupe = ".$groupe['id'];
