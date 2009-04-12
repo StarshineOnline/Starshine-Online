@@ -26,7 +26,7 @@ $groupe = recupgroupe($_GET['id'], $joueur['x'].'-'.$joueur['y']);
 $level_groupe = level_groupe($groupe);
 $num_joueur = groupe_trouve_joueur($joueur['ID'], $groupe);
 $share_xp = ($groupe['membre'][$num_joueur]['share_xp'] / $groupe['share_xp']);
-if($num_joueur)
+if($num_joueur !== false)
 {
 ?>
 <fieldset>
@@ -45,7 +45,7 @@ else
 {
 ?>
 <fieldset>
-	<legend class=".message_rouge">Vous n'appartenez pas à ce groupe!</legend>
+	<legend class=".message_rouge">Vous n'appartenez pas à ce groupe!<?php echo $num_joueur;?></legend>
 <?php
 }
 if($groupe['id_leader'] ==  $_SESSION['ID'])

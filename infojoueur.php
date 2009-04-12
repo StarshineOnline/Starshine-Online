@@ -129,7 +129,7 @@ echo '</table>';
 //Affichage des buffs du joueur
 if($joueur['groupe'] == $perso['groupe'] && $joueur['groupe'] !== 0 && $joueur['groupe'] != '')
 {
-	if ($perso['buff'] != NULL)
+	if ($perso['buff'] != NULL || $perso['debuff'] != NULL)
 	{
 		echo '<h4><span class="titre_info">Buffs / Debuffs</span></h4>';
 		//Listing des buffs

@@ -18,7 +18,7 @@ $W_row = $db->read_array($W_req);
 $R = get_royaume_info($joueur['race'], $W_row['royaume']);
 
 $_SESSION['position'] = convert_in_pos($joueur['x'], $joueur['y']);
-require_once('menu_carte.php');
+
 ?>
 		<h2><?php if(!array_key_exists('fort', $_GET)) return_ville('<img src="image/ville.gif" alt="Retour en ville" title="Retour en ville" />', $W_case); ?> Candidature</h2>
 <?php

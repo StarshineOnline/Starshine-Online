@@ -7,9 +7,8 @@ $W_ID = $_GET['ID'];
 $W_requete = 'SELECT * FROM perso WHERE ID = \''.$_SESSION['ID'].'\'';
 $req = $db->query($W_requete);
 $row = $db->read_array($req);
-
 //Si il n'est pas groupé, création du groupe
-if ($row['groupe'] == 0)
+if (empty($row['groupe']))
 {
 	$W_requete = "INSERT INTO `groupe` VALUES ('', 'r', ".$_SESSION['ID'].", 'groupe_".$_SESSION['ID']."')";
 	if($db->query($W_requete))
