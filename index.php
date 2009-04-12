@@ -150,38 +150,44 @@ N'oubliez pas de reporter les bugs et problèmes, et de suggérer de nouvelles c
 		</div>
 		<div id='news_box' style='display:none;'>
 		<?php
-	require('connect_forum.php');
-	$requete = "SELECT id, subject, num_replies FROM punbbtopics WHERE (forum_id = 5) ORDER BY posted DESC";
-	$req = $db_forum->query($requete);
-
-	$i = 0;
-	while($row = $db_forum->read_array($req) AND $i < 5)
-	{
-		$regs = '';
-		echo '
-		<div class="news">
-			<h2><a href="http://forum.starshine-online.com/viewtopic.php?id='.$row['id'].'">'.($row['subject']).'</a></h2>';
-		$requete_post = "SELECT message FROM punbbposts WHERE (topic_id = ".$row['id'].") ORDER BY id ASC";
-		$req_post = $db_forum->query($requete_post);
-		$row_post = $db_forum->read_array($req_post);
-		eregi("\[chapeau\]([^[]*)\[/chapeau\]", $row_post['message'], $regs);
-		if($regs[1] != '') $message = $regs[1];
-		else $message = $row_post['message'];
-		$message = /*utf8_encode*/(nl2br($message));
-		$message = eregi_replace("\[img\]([^[]*)\[/img\]", '<img src=\\1 title="\\1">', $message );
-		$message = eregi_replace("\[b\]([^[]*)\[/b\]", '<strong>\\1</strong>', $message );
-		$message = eregi_replace("\[i\]([^[]*)\[/i\]", '<i>\\1</i>', $message );
-		$message = eregi_replace("\[url\]([^[]*)\[/url\]", '<a href="\\1">\\1</a>', $message );
-		if(strlen($message) > 600)
+		if(!file_exists('connect_forum.php'))
 		{
-			$message = mb_substr($message, 0, 600);
+			echo "Le fichier de connexion au forum n'est pas présent sur le serveur";
 		}
-		$message .= '<br /><a href="http://forum.starshine-online.com/viewtopic.php?id='.$row['id'].'">Lire la suite</a> <span class="comms">('.$row['num_replies'].' commentaire(s))</span>
-		</div>';
-		echo $message;
-		$i++;
-	}
-
+		else
+		{
+			require('connect_forum.php');
+			$requete = "SELECT id, subject, num_replies FROM punbbtopics WHERE (forum_id = 5) ORDER BY posted DESC";
+			$req = $db_forum->query($requete);
+		
+			$i = 0;
+			while($row = $db_forum->read_array($req) AND $i < 5)
+			{
+				$regs = '';
+				echo '
+				<div class="news">
+					<h2><a href="http://forum.starshine-online.com/viewtopic.php?id='.$row['id'].'">'.($row['subject']).'</a></h2>';
+				$requete_post = "SELECT message FROM punbbposts WHERE (topic_id = ".$row['id'].") ORDER BY id ASC";
+				$req_post = $db_forum->query($requete_post);
+				$row_post = $db_forum->read_array($req_post);
+				eregi("\[chapeau\]([^[]*)\[/chapeau\]", $row_post['message'], $regs);
+				if($regs[1] != '') $message = $regs[1];
+				else $message = $row_post['message'];
+				$message = /*utf8_encode*/(nl2br($message));
+				$message = eregi_replace("\[img\]([^[]*)\[/img\]", '<img src=\\1 title="\\1">', $message );
+				$message = eregi_replace("\[b\]([^[]*)\[/b\]", '<strong>\\1</strong>', $message );
+				$message = eregi_replace("\[i\]([^[]*)\[/i\]", '<i>\\1</i>', $message );
+				$message = eregi_replace("\[url\]([^[]*)\[/url\]", '<a href="\\1">\\1</a>', $message );
+				if(strlen($message) > 600)
+				{
+					$message = mb_substr($message, 0, 600);
+				}
+				$message .= '<br /><a href="http://forum.starshine-online.com/viewtopic.php?id='.$row['id'].'">Lire la suite</a> <span class="comms">('.$row['num_replies'].' commentaire(s))</span>
+				</div>';
+				echo $message;
+				$i++;
+			}
+		}
 		?>
 		</div>
 		<div id='creation_box' style='display:none;'>
@@ -248,6 +254,12 @@ N'oubliez pas de reporter les bugs et problèmes, et de suggérer de nouvelles c
 
 	
 	</div>
+		<fieldset id='liens'>
+		<legend>Liens d'aide au jeu</legend>
+	 <a href='http://wiki.starshine-online.com/'>Comprendre Starshine</a> <a href='http://bug.starshine-online.com/'>Signaler un Bug</a> <a href='http://forum.starshine-online.com/'>Le Forum
+	 </a>
+	</fieldset>
+
 	<div id='accueil_pub'>
 	<script type="text/javascript"><!--
 google_ad_client = "pub-7541997421837440";

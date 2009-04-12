@@ -3,7 +3,8 @@ include('inc/fp.php');
 $joueur = recupperso($_SESSION['ID']);
 $options = recup_option($_SESSION['ID']);
 ?>
-<h2>Journal</h2>
+<fieldset>
+
 <?php
 $nombre_action_journal = 15;
 if(array_key_exists('page', $_GET))
@@ -22,10 +23,9 @@ else
 	$table = 'journal';
 	$date = '';
 }
-echo '
-<h3 style="text-align : center;">Page '.$page.$date.'</h3>
-<div class="information_case">
-<ul class="ville">';
+echo '<legend>
+Journal - Page '.$page.$date.'</legend>';
+
 $and = '';
 $i = 0;
 $count = count($options);
@@ -80,7 +80,7 @@ while($row = $db_use->read_assoc($req))
 	echo affiche_ligne_journal($row);
 }
 ?>
-</ul>
+
 <?php
 if($page > 1)
 {
@@ -120,3 +120,4 @@ while($row = $db_log->read_assoc($req))
 }
 ?>
 </select> <input type="button" onclick="return envoiInfo('journal.php?archive=' + document.getElementById('archive').value, 'information');" value="Ok" />
+</fieldset>

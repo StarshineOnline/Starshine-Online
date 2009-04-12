@@ -1,6 +1,6 @@
 /*-- Global site --------------------------------------------------*/
 html {width:100%;height:100%;}
-body {margin:0;padding:0;background:#5D705F url('../image/v2/bg_site.png') repeat-x;width:100%;height:100%;font: 13px "Helvetica Neue", Helvetica, Arial, Geneva, sans-serif;}
+body {margin:0;padding:0;background:#7e909c url('../image/v2/bg_site.png') repeat-x;width:100%;height:100%;font: 13px "Helvetica Neue", Helvetica, Arial, Geneva, sans-serif;}
 #top{display : block;width: 1000px;margin: 0 auto;z-index :5;}
 
 #conteneur {width:985px;margin:auto;min-height: 100%;}
@@ -130,7 +130,7 @@ margin-top:-3px;}
 #rose_div_cg:hover 		{ background-position:top; }
 #rose_div_cg:active 	{ background-position:bottom; }
 
-#rose_div_c 	{ background:transparent url('../../image/rosedesvent/rafraichir.png') center; width:25px; height:25px; cursor:pointer; float:left; }
+#rose_div_c 	{ background:transparent url('./../image/rosedesvent/rafraichir.png') center; width:25px; height:25px; cursor:pointer; float:left; }
 #rose_div_c:hover 		{ background-position:top; }
 #rose_div_c:active 	{ background-position:bottom; }
 
@@ -142,7 +142,7 @@ margin-top:-3px;}
 #rose_div_bg:hover 		{ background-position:top; }
 #rose_div_bg:active 	{ background-position:bottom; }
 
-#rose_div_b 	{ background:transparent url('../../image/rosedesvent/sud.png') center; width:25px; height:25px; cursor:pointer; float:left; }
+#rose_div_b 	{ background:transparent url('./../image/rosedesvent/sud.png') center; width:25px; height:25px; cursor:pointer; float:left; }
 #rose_div_b:hover 		{ background-position:top; }
 #rose_div_b:active 	{ background-position:bottom; }
 

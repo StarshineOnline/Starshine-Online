@@ -42,7 +42,7 @@
 	echo "</div>";
 }
 {//-- Buffs, Grade, Pseudo
-	echo "<div id='joueur_buffs_nom' style=\"background:transparent url('./../image/interface/fond_info_perso_".$joueur["race"].".png') top left no-repeat;\">";
+	echo "<div id='joueur_buffs_nom' style=\"background:transparent url('./image/interface/fond_info_perso_".$joueur["race"].".png') top left no-repeat;\">";
 	echo " <div id='joueur_nom' onclick=\"envoiInfo('personnage.php', 'information');\" title=\"Acc&egrave;s &agrave la fiche de votre personnage\">".ucwords($joueur["grade"])." ".ucwords($joueur["nom"])." - niv.".$joueur["level"]."<br />".ucwords($Gtrad[$joueur["race"]])." ".ucwords($joueur["classe"])." </div>
 	";
 	echo " <div id='buff_list'>
