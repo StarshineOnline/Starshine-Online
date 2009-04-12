@@ -103,12 +103,10 @@
 	}
 	if($i === 'moi')
 	{
-		if(strcmp($tri, 'architecture, forge, alchimie'))
-			$requete = "SELECT COUNT(*) FROM perso WHERE ".sSQL($tri)." > ".$joueur[$tri]." AND statut = 'actif' AND ".$where;
-		else
-		{
+		if(!strcmp($tri, 'architecture, forge, alchimie'))
 			$requete = "SELECT COUNT(*) FROM perso WHERE ROUND(SQRT(alchimie + forge + architecture)) > ".round(sqrt($joueur['alchimie']+$joueur['forge']+$joueur['architecture']))." AND statut = 'actif' AND ".$where;
-		}
+		else
+			$requete = "SELECT COUNT(*) FROM perso WHERE ".sSQL($tri)." > ".$joueur[$tri]." AND statut = 'actif' AND ".$where;
 		$req = $db->query($requete);
 		$row = $db->read_row($req);
 		$sup = $row[0] + 15;
