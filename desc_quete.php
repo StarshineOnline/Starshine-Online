@@ -129,5 +129,5 @@ echo '
 		}
 		?>
 	</ul>
-	<a href="javascript:if(confirm('Voulez vous vraiment abandonner cette quète ?')) envoiInfo('quete.php?id_quete=<?php echo $_GET['id_quete']; ?>&amp;quete_joueur=<?php echo $_GET['quete_joueur']; ?>&amp;action=delete', 'information');">Abandonner cette quète</a>
+	<a href="quete.php?id_quete=<?php echo $_GET['id_quete']; ?>&amp;quete_joueur=<?php echo $_GET['quete_joueur']; ?>&amp;action=delete" onclick="if(confirm('Voulez vous vraiment abandonner cette quète ?')) return envoiInfo(this.href, 'information'); else return false;">Abandonner cette quète</a>
 </div>

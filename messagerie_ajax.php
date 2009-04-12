@@ -15,13 +15,14 @@ if(!array_key_exists('action', $_GET))
 		{
 			$page = $_GET['page'];
 		}
-		else $page = 1;
+		else $page = 'last';
 		$messagerie = new messagerie($joueur['ID']);
 		$messagerie->get_thread($id_thread, 'all', 'ASC', $page, 10);
 		echo '<h3 style="text-align : center;">'.htmlspecialchars(stripslashes($messagerie->thread->messages[0]->titre)).' / <a href="envoimessage.php?id_type=r'.$messagerie->thread->id_thread.'" onclick="return envoiInfo(this.href, \'information\')">Répondre</a></h3>';
 		//Affichage des pages
 		$message_total = $messagerie->thread->get_message_total($joueur['ID']);
 		$page_max = ceil($message_total / 10);
+		if($page == 'last') $page = $page_max;
 		if($page > 1) echo '<a href="messagerie.php?id_thread='.$messagerie->thread->id_thread.'&amp;page='.($page - 1).'" onclick="return envoiInfo(this.href, \'information\');"><span class="message_prev" title="Revenir à la page précédente"></span></a>';
 		if($page < $page_max) echo '<a href="messagerie.php?id_thread='.$messagerie->thread->id_thread.'&amp;page='.($page + 1).'" onclick="return envoiInfo(this.href, \'information\');"><span class="message_next" title="Allez à la page suivante"></span></a>';
 		foreach($messagerie->thread->messages as $message)

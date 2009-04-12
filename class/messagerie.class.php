@@ -43,7 +43,7 @@ class messagerie
 		return $return;		
 	}
 	
-	//Récupération de tous les threads pour ce perso
+	//Rï¿½cupï¿½ration de tous les threads pour ce perso
 	function get_threads($type = 'groupe', $tri_date = 'ASC', $liste_message = false, $nombre_message = 'all')
 	{
 		global $db;
@@ -69,7 +69,7 @@ class messagerie
 		}
 	}
 
-	//Récupération du nombre de message non lu pour ce thread et ce perso
+	//Rï¿½cupï¿½ration du nombre de message non lu pour ce thread et ce perso
 	function get_thread_non_lu($id_thread = 0)
 	{
 		global $db;
@@ -94,13 +94,18 @@ class messagerie
 		else return false;
 	}
 	
-	//Récupère le thread et les ?tats de message
+	//Rï¿½cupï¿½re le thread et les ?tats de message
 	function get_thread($id_thread = 0, $nombre = 'all', $tri_date = 'ASC', $numero_page = false, $message_par_page = 10)
 	{
 		global $db;
 		if($id_thread != 0)
 		{
 			$this->thread = new messagerie_thread($id_thread);
+			if($numero_page == 'last')
+			{
+			    $total_message = $this->thread->get_message_total();
+			    $numero_page = ceil($total_message / $message_par_page);
+			}
 			$this->thread->get_messages($nombre, $tri_date, $this->id_perso, $numero_page, $message_par_page);
 		}
 		else return false;
@@ -138,7 +143,7 @@ class messagerie
 	function envoi_message($id_thread = 0, $id_dest = 0, $titre = 'Titre vide', $message, $id_groupe = 0, $roi = 0)
 	{
 		global $db;
-		//Création du thread si besoin
+		//Crï¿½ation du thread si besoin
 		if($id_thread == 0)
 		{
 			if($roi == 0) $important = 0;
@@ -149,7 +154,7 @@ class messagerie
 		}
 		else $thread = new messagerie_thread($id_thread);
 
-		//Création du message
+		//Crï¿½ation du message
 		$auteur = recupperso_essentiel($this->id_perso, 'nom');
 		if($id_dest > 0) $dest = recupperso_essentiel($id_dest, 'nom');
 		else $dest['nom'] = null;
@@ -175,7 +180,7 @@ class messagerie
 			$type_groupe = 0;
 		}
 		
-		//On ajoute un état pour chaque membre
+		//On ajoute un ï¿½tat pour chaque membre
 		foreach($ids_dest as $id)
 		{
 			if($id != $this->id_perso) $etat = 'non_lu';

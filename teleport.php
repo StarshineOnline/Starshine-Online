@@ -156,15 +156,18 @@ $_SESSION['position'] = convert_in_pos($joueur['x'], $joueur['y']);
 	Liste des bourgs possible pour téléportation :<br />
 	<ul>
 	<?php
-	//Séléction de tous les téléport disponibles
-	$requete = "SELECT id, x, y FROM construction WHERE type = 'bourg' AND royaume = ".$R['ID'];
-	$req = $db->query($requete);
-	while($row = $db->read_array($req))
+	if($R['diplo'] == 127)
 	{
-		$distance = calcul_distance(convert_in_pos($row['x'], $row['y']), $_SESSION['position']);
-		$cout =  $distance * 7;
-		$cout = ceil(($cout * $R['taxe'] / 100) + $cout);
-		echo '<li><a href="teleport.php?poscase='.$W_case.'&amp;id_bourg='.$row['id'].'" onclick="if(confirm(\'Voulez vous vous téléporter sur ce bourg - '.$cout.' Stars et 5 PA)\')) return envoiInfo(this.href, \'centre\'); else return false;">Téléportation à '.$row_race['capitale'].' ('.$Gtrad[$row_race['race']].')</a> ('.$cout.' Stars et 5 PA)</li>';
+	    //Séléction de tous les téléport disponibles
+	    $requete = "SELECT id, x, y FROM construction WHERE type = 'bourg' AND royaume = ".$R['ID'];
+	    $req = $db->query($requete);
+	    while($row = $db->read_array($req))
+	    {
+		    $distance = calcul_distance(convert_in_pos($row['x'], $row['y']), $_SESSION['position']);
+		    $cout =  $distance * 7;
+		    $cout = ceil(($cout * $R['taxe'] / 100) + $cout);
+		    echo '<li><a href="teleport.php?poscase='.$W_case.'&amp;id_bourg='.$row['id'].'" onclick="if(confirm(\'Voulez vous vous téléporter sur ce bourg - '.$cout.' Stars et 5 PA)\')) return envoiInfo(this.href, \'centre\'); else return false;">Téléportation sur le bourg (X : '.$row['x'].' / Y : '.$row['y'].')</a> ('.$cout.' Stars et 5 PA)</li>';
+	    }
 	}
 ?>
 </ul>

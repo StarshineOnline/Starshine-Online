@@ -4,18 +4,18 @@ $ress['Plaine']['Pierre'] = 4;
 $ress['Plaine']['Bois'] = 4;
 $ress['Plaine']['Eau'] = 5;
 $ress['Plaine']['Sable'] = 2;
-$ress['Plaine']['Nourriture'] = 8;
+$ress['Plaine']['Nourriture'] = 6;
 $ress['Plaine']['Star'] = 0;
-$ress['Plaine']['Charbon'] = 0;
-$ress['Plaine']['Essence Magique'] = 0;
+$ress['Plaine']['Charbon'] = 1;
+$ress['Plaine']['Essence Magique'] = 1;
 
 $ress['Forêt']['Pierre'] = 3;
 $ress['Forêt']['Bois'] = 8;
 $ress['Forêt']['Eau'] = 4;
 $ress['Forêt']['Sable'] = 0;
-$ress['Forêt']['Nourriture'] = 5;
+$ress['Forêt']['Nourriture'] = 4;
 $ress['Forêt']['Star'] = 0;
-$ress['Forêt']['Charbon'] = 0;
+$ress['Forêt']['Charbon'] = 1;
 $ress['Forêt']['Essence Magique'] = 3;
 
 $ress['Désert']['Pierre'] = 6;
