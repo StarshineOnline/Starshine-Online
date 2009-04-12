@@ -14,7 +14,7 @@ $coord['xavant'] = $joueur['x'];
 $coord['yavant'] = $joueur['y'];
 
 //Si coordonées supérieur à 100 alors c'est un donjon
-if($joueur['x'] > 150 OR $joueur['y'] > 150)
+if($joueur['x'] > 190 OR $joueur['y'] > 190)
 {
 	$donjon = true;
 }

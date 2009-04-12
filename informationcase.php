@@ -266,7 +266,7 @@ if($num_rows > 0)
 		echo ' '.$nom;
 		echo ' '.$Gtrad[$Royaume['race']].' - HP : '.$W_row['hp'].' / '.$row_b['hp'];
 		echo '</span>';
-		if($joueur['race'] != $Royaume['race']) echo  ' <a href="attaque_monstre.php?ID='.$W_row['id'].'&amp;type=batiment&amp;table=construction&poscase='.$W_case.'" onclick="return envoiInfo(this.href, \'information\')"><img src="image/interface/attaquer.png" alt="Combattre" title="Attaquer '.($G_PA_attaque_batiment - $reduction_pa).' PA" style="vertical-align : middle;" /> Attaquer</a>';
+		if($joueur['race'] != $Royaume['race'] && $row_b['type'] != 'bourg') echo  ' <a href="attaque_monstre.php?ID='.$W_row['id'].'&amp;type=batiment&amp;table=construction&poscase='.$W_case.'" onclick="return envoiInfo(this.href, \'information\')"><img src="image/interface/attaquer.png" alt="Combattre" title="Attaquer '.($G_PA_attaque_batiment - $reduction_pa).' PA" style="vertical-align : middle;" /> Attaquer</a>';
 		elseif($W_row['hp'] < $row_b['hp'])
 		{
 			echo  ' <a href="archi_soigne_construction.php?id_construction='.$W_row['id'].'" onclick="return envoiInfo(this.href, \'information\')">Réparer <span class="xsmall">(30 PA)</a>';

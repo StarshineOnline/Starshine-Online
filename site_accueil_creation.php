@@ -123,7 +123,7 @@ else
 		}
 		require('connect_forum.php');
 		//Création de l'utilisateur dans le forum
-		$requete = "INSERT INTO punbbusers(`group_id`, `username`, `password`, `language`, `style`, `registered`) VALUES('".$punbb[$race]."', '$nom', '".sha1($_POST['password'])."', 'French', 'SSO', '".time()."')";
+		$requete = "INSERT INTO punbbusers(`group_id`, `username`, `password`, `language`, `style`, `registered`) VALUES('".$punbb[$race]."', '$nom', '".sha1($mdp)."', 'French', 'SSO', '".time()."')";
 		$db_forum->query($requete);
 	}
 }

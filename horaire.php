@@ -69,7 +69,7 @@ if($db->num_rows > 0)
 //Il n'existe pas, on le recréé
 else
 {
-	$requete = "INSERT INTO map_monstre VALUES('','57','86','71','300', 5, '".addslashes('Squelette de Myriandre')."','protecteur_defunt', ".(time() + 360000).")"; 
+	$requete = "INSERT INTO map_monstre VALUES('','57','87','72','300', 5, '".addslashes('Squelette de Myriandre')."','protecteur_defunt', ".(time() + 360000).")";
 	$db->query($requete);
 }
 

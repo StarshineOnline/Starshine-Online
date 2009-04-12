@@ -611,7 +611,7 @@ height:05px;
 .baseJumpbox
 {
 	width : 250px;
-	height : 500px;
+	height : 750px;
 }
 select.baseJumpbox optgroup
 {
@@ -622,16 +622,19 @@ select.baseJumpbox optgroup
 	border: 2px solid #735225;
 	padding: 2px;
 	margin: 5px;
+	text-align : center;
 }
 .baseRow1
 {
 	background-color: #fff4cc;
 	padding-left : 2px;
+	text-align : left;
 }
 .baseRow2
 {
 	background-color: #ffeeaa;
 	padding-left : 2px;
+	text-align : left;
 }
 .heure {
 	text-align : center;

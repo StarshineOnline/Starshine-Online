@@ -9,8 +9,8 @@ while($row = $db->read_row($req))
 {
 	$habitants[$row[0]] = $row[1];
 }
-$min_habitants = min($habitants);
-$ratio = $habitants[$R['race']] / $min_habitants;
+$min_habitants = @min($habitants);
+if($min_habitants > 0) $ratio = $habitants[$R['race']] / $min_habitants;
 if($ratio < 1) $ratio = 1;
 echo '
 <table>
@@ -37,7 +37,7 @@ echo '
 					<td><h5>Sous Total</h5></td><td><h5> -'.$royaumes[$R['ID']]['total'].'</h5></td>
 				</tr>';
 			//PHASE 2, entretien des batiments externes
-			//On récupère les couts d'entretiens
+			//On rï¿½cupï¿½re les couts d'entretiens
 			echo '
 				<tr>
 					<td colspan="2"><h4>ENTRETIEN DES BATIMENTS EXTERNES : (en stars / jour)</h4></td>

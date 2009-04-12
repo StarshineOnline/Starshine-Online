@@ -150,7 +150,7 @@ function dimension_map($x, $y, $champ_vision)
  */ 
 function is_donjon($x, $y)
 {
-	if($x > 150 OR $y > 150)
+	if($x > 190 OR $y > 190)
 	{
 		return true;
 	}

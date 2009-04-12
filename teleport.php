@@ -20,7 +20,6 @@ $_SESSION['position'] = convert_in_pos($joueur['x'], $joueur['y']);
 
 	if(array_key_exists('id', $_GET))
 	{
-	
 		$W_distance = detection_distance($W_case, $_SESSION["position"]);
 		if($W_distance == 0)
 		{
@@ -43,6 +42,39 @@ $_SESSION['position'] = convert_in_pos($joueur['x'], $joueur['y']);
 			{
 				$joueur['x'] = $row['posx'];
 				$joueur['y'] = $row['posy'];
+				$joueur['star'] = $joueur['star'] - $cout;
+				$joueur['pa'] = $joueur['pa'] - 5;
+				$requete = "UPDATE perso SET x = ".$joueur['x'].", y = ".$joueur['y'].", pa = ".$joueur['pa'].", star = ".$joueur['star']." WHERE ID = ".$_SESSION['ID'];
+				$db->query($requete);
+				//Récupération de la taxe
+				if($taxe > 0)
+				{
+					$requete = 'UPDATE royaume SET star = star + '.$taxe.' WHERE ID = '.$R['ID'];
+					$db->query($requete);
+					$requete = "UPDATE argent_royaume SET teleport = teleport + ".$taxe." WHERE race = '".$R['race']."'";
+					$db->query($requete);
+				}
+				header("Location: deplacement.php");
+			}
+			else echo 'Vous n\'avez pas assez de stars ou de PA !<br />';
+		}
+	}
+	if(array_key_exists('id_bourg', $_GET))
+	{
+		$W_distance = detection_distance($W_case, $_SESSION['position']);
+		if($W_distance == 0)
+		{
+			$requete = "SELECT id, x, y FROM construction WHERE id = ".sSQL($_GET['id_bourg']);
+			$req = $db->query($requete);
+			$row = $db->read_array($req);
+			$P_distance = calcul_distance(convert_in_pos($row['x'], $row['y']), $_SESSION['position']);
+			$cout = ($P_distance * 7);
+			$taxe = ceil($cout * $R['taxe'] / 100);
+			$cout = $cout + $taxe;
+			if(($joueur['star'] >= $cout) AND ($joueur['pa'] >= 5))
+			{
+				$joueur['x'] = $row['x'];
+				$joueur['y'] = $row['y'];
 				$joueur['star'] = $joueur['star'] - $cout;
 				$joueur['pa'] = $joueur['pa'] - 5;
 				$requete = "UPDATE perso SET x = ".$joueur['x'].", y = ".$joueur['y'].", pa = ".$joueur['pa'].", star = ".$joueur['star']." WHERE ID = ".$_SESSION['ID'];
@@ -100,7 +132,7 @@ $_SESSION['position'] = convert_in_pos($joueur['x'], $joueur['y']);
 				$requete_diplo = "SELECT ".$row_race['race']." FROM diplomatie WHERE race = '".$joueur['race']."'";
 				$req_diplo = $db->query($requete_diplo);
 				$row_diplo = $db->read_row($req_diplo);
-				$distance = calcul_distance(convert_in_pos($row['posx'], $row['posy']), $_SESSION["position"]);
+				$distance = calcul_distance(convert_in_pos($row['posx'], $row['posy']), $_SESSION['position']);
 				$cout =  $distance * 10;
 				$cout = ceil(($cout * $R['taxe'] / 100) + $cout);
 			}
@@ -119,6 +151,21 @@ $_SESSION['position'] = convert_in_pos($joueur['x'], $joueur['y']);
 			}
 		}
 	}
-	echo '</ul>';
-	echo'</div>';
+	?>
+	</ul>
+	Liste des bourgs possible pour téléportation :<br />
+	<ul>
+	<?php
+	//Séléction de tous les téléport disponibles
+	$requete = "SELECT id, x, y FROM construction WHERE type = 'bourg' AND royaume = ".$R['ID'];
+	$req = $db->query($requete);
+	while($row = $db->read_array($req))
+	{
+		$distance = calcul_distance(convert_in_pos($row['x'], $row['y']), $_SESSION['position']);
+		$cout =  $distance * 7;
+		$cout = ceil(($cout * $R['taxe'] / 100) + $cout);
+		echo '<li><a href="teleport.php?poscase='.$W_case.'&amp;id_bourg='.$row['id'].'" onclick="if(confirm(\'Voulez vous vous téléporter sur ce bourg - '.$cout.' Stars et 5 PA)\')) return envoiInfo(this.href, \'centre\'); else return false;">Téléportation à '.$row_race['capitale'].' ('.$Gtrad[$row_race['race']].')</a> ('.$cout.' Stars et 5 PA)</li>';
+	}
 ?>
+</ul>
+</div>

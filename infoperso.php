@@ -124,22 +124,22 @@ if(!empty($joueur["groupe"]))
 		{
 			unset($RqMembre);
 			unset($objMembre);
-			$RqMembre = $db->query("SELECT hp, hp_max, mp, mp_max, x, y, nom, classe, statut, rang_royaume, level, race, dernieraction
+			/*$RqMembre = $db->query("SELECT hp, hp_max, mp, mp_max, x, y, nom, classe, statut, rang_royaume, level, race, dernieraction
 									FROM perso 
 									WHERE ID=".$groupe["membre"][$m]["id_joueur"].";");
-			$objMembre = $db->read_assoc($RqMembre);
-			$groupe["membre"][$m] = array_merge($objMembre, $groupe["membre"][$m]);
+			$objMembre = $db->read_assoc($RqMembre);*/
+			$groupe["membre"][$m] = array_merge(recupperso($groupe["membre"][$m]["id_joueur"]), $groupe["membre"][$m]);
 			$groupe["membre"][$m]["hp_max"] = floor($groupe["membre"][$m]["hp_max"]);
 			$groupe["membre"][$m]["mp_max"] = floor($groupe["membre"][$m]["mp_max"]);
-			$groupe["membre"][$m]["poscase"] = calcul_distance(convert_in_pos($objMembre["x"], $objMembre["y"]), convert_in_pos($joueur["x"], $joueur["y"]));
-			$groupe["membre"][$m]["pospita"] = calcul_distance_pytagore(convert_in_pos($objMembre["x"], $objMembre["y"]), convert_in_pos($joueur["x"], $joueur["y"]));
+			$groupe["membre"][$m]["poscase"] = calcul_distance(convert_in_pos($groupe["membre"][$m]["x"], $groupe["membre"][$m]["y"]), convert_in_pos($joueur["x"], $joueur["y"]));
+			$groupe["membre"][$m]["pospita"] = calcul_distance_pytagore(convert_in_pos($groupe["membre"][$m]["x"],$groupe["membre"][$m]["y"]), convert_in_pos($joueur["x"], $joueur["y"]));
 			if(!empty($objMembre["rang_royaume"]))
 			{//-- Récupération du grade
 				$RqGrade = $db->query("SELECT nom, rang FROM grade WHERE id=".$objMembre["rang_royaume"].";");
 				$objGrade = $db->read_assoc($RqGrade);
 				$groupe["membre"][$m]["grade"] = $objGrade["nom"];
 			}
-			$overlib = "<ul><li class='overlib_titres'>".ucwords($groupe["membre"][$m]["grade"])." ".ucwords($groupe["membre"][$m]["nom"])."</li><li>".ucwords($groupe["membre"][$m]["race"])." - ".ucwords($groupe["membre"][$m]["classe"])." (Niv.".$groupe["membre"][$m]["level"].")</li><li>HP : ".$groupe["membre"][$m]["hp"]." / ".$groupe["membre"][$m]["hp_max"]."</li><li>MP : ".$groupe["membre"][$m]["mp"]." / ".$groupe["membre"][$m]["mp_max"]."</li><li>Posisiton : x:".$objMembre["x"].", y:".$objMembre["y"]."</li><li>Distance : ".$groupe["membre"][$m]["poscase"]." - Pytagorienne : ".$groupe["membre"][$m]["pospita"]."</li>";
+			$overlib = "<ul><li class='overlib_titres'>".ucwords($groupe["membre"][$m]["grade"])." ".ucwords($groupe["membre"][$m]["nom"])."</li><li>".ucwords($groupe["membre"][$m]["race"])." - ".ucwords($groupe["membre"][$m]["classe"])." (Niv.".$groupe["membre"][$m]["level"].")</li><li>HP : ".$groupe["membre"][$m]["hp"]." / ".$groupe["membre"][$m]["hp_max"]."</li><li>MP : ".$groupe["membre"][$m]["mp"]." / ".$groupe["membre"][$m]["mp_max"]."</li><li>Posisiton : x:".$groupe["membre"][$m]["x"].", y:".$groupe["membre"][$m]["y"]."</li><li>Distance : ".$groupe["membre"][$m]["poscase"]." - Pytagorienne : ".$groupe["membre"][$m]["pospita"]."</li>";
 			{//-- Récupération des buffs
 				$groupe["membre"][$m]["buff"] = array();
 				$groupe["membre"][$m]["debuff"] = array();

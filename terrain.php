@@ -49,7 +49,7 @@ include('ville_bas.php');
 							if($check)
 							{
 								//Si effet = 1 on supprime le debuff
-								if($joueur['debuff'][$key_famine]['effet'] <= 1)
+								if($joueur['debuff'][$key_debuff]['effet'] <= 1)
 								{
 									$requete = "DELETE FROM buff WHERE id = ".$id_buff;
 								}

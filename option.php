@@ -41,6 +41,9 @@ include('inc/fp.php');
 									$requete = "UPDATE perso SET password = '".md5($new_pass)."' WHERE ID = ".$_SESSION['ID'];
 									if($db->query($requete))
 									{
+										require('connect_forum.php');
+										$requete = "UPDATE punbbusers SET password = '".sha1($new_pass)."' WHERE username = '".$_SESSION['nom']."'";
+										$db_forum->query($requete);
 										echo '<h6>Votre mot de passe a bien été modifié !</h6>';
 									}
 								}

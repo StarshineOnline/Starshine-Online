@@ -4,14 +4,14 @@ include('../inc/ressource.inc.php');
 
 function ressource($nom)
 {
-	$ressource['Pierre'] = 18;
-	$ressource['Bois'] = 19;
-	$ressource['Eau'] = 20;
-	$ressource['Sable'] = 21;
-	$ressource['Charbon'] = 22;
-	$ressource['Essence Magique'] = 23;
-	$ressource['Star'] = 24;
-	$ressource['Nourriture'] = 25;
+	$ressource['Pierre'] = 17;
+	$ressource['Bois'] = 18;
+	$ressource['Eau'] = 19;
+	$ressource['Sable'] = 20;
+	$ressource['Charbon'] = 21;
+	$ressource['Essence Magique'] = 22;
+	$ressource['Star'] = 23;
+	$ressource['Nourriture'] = 24;
 	return $ressource[$nom];
 }
 
@@ -72,14 +72,14 @@ else
 	$row = $db->read_assoc($req);
 	$explode_stat = explode(';', $row[$R['race']]);
 	
-	$hier['Pierre'] = $explode_stat[18];
-	$hier['Bois'] = $explode_stat[19];
-	$hier['Eau'] = $explode_stat[20];
-	$hier['Sable'] = $explode_stat[21];
-	$hier['Charbon'] = $explode_stat[22];
-	$hier['Essence Magique'] = $explode_stat[23];
-	$hier['Star'] = $explode_stat[24];
-	$hier['Nourriture'] = $explode_stat[25];
+	$hier['Pierre'] = $explode_stat[17];
+	$hier['Bois'] = $explode_stat[18];
+	$hier['Eau'] = $explode_stat[19];
+	$hier['Sable'] = $explode_stat[20];
+	$hier['Charbon'] = $explode_stat[21];
+	$hier['Essence Magique'] = $explode_stat[22];
+	$hier['Star'] = $explode_stat[23];
+	$hier['Nourriture'] = $explode_stat[24];
 	
 	$requete = "SELECT info, FLOOR(COUNT(*) / 10) as tot, COUNT(*) as tot_terrain FROM `map` WHERE royaume = ".$R['ID']." GROUP BY info";
 	$req = $db->query($requete);

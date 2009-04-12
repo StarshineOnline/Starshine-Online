@@ -30,8 +30,8 @@ class map
 
 		if(!$this->donjon)
 		{
-			$limite_x = 150;
-			$limite_y = 150;
+			$limite_x = 190;
+			$limite_y = 190;
 		}
 		else
 		{

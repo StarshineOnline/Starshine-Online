@@ -208,7 +208,7 @@ require_once('stats/stat_race.php');
 require_once('stats/stat_classe.php');
 
 echo 'Création de l\'image de la carte du monde<br />';
-$im = imagecreate (450, 450)
+$im = imagecreate (600, 600)
    or die ("Impossible d'initialiser la bibliothèque GD");
 $background_color = imagecolorallocate ($im, 255, 255, 255);
 
@@ -307,7 +307,7 @@ while($row = $db->read_array($req))
 	
 	if (($coord['x'] != 0) AND ($coord['y'] != 0))
 	{
-		imagefilledrectangle($im, (($coord['x'] - 1) * 4), (($coord['y'] - 1) * 4), ((($coord['x'] - 1) * 4) + 3), ((($coord['y'] - 1) * 4) + 3), $show_info[$row[$col]]);
+		imagefilledrectangle($im, (($coord['x'] - 1) * 3), (($coord['y'] - 1) * 3), ((($coord['x'] - 1) * 3) + 2), ((($coord['y'] - 1) * 3) + 2), $show_info[$row[$col]]);
 	}
 	$i++;
 }
@@ -350,9 +350,9 @@ $show_info[5] = $color5;
 $show_info[6] = $color6;
 
 //Création de la map
-for($i = 1; $i <= 150; $i++)
+for($i = 1; $i <= 190; $i++)
 {
-	for($j = 1; $j <= 150; $j++)
+	for($j = 1; $j <= 190; $j++)
 	{
 		if(!isset($map_monstre[$i][$j])) $densite = 0;
 		else
@@ -364,7 +364,7 @@ for($i = 1; $i <= 150; $i++)
 			elseif($map_monstre[$i][$j] < $part * 5) $densite = 5;
 			else $densite = 6;	
 		}
-		imagefilledrectangle($im, (($i - 1) * 4), (($j - 1) * 4), ((($i - 1) * 4) + 3), ((($j - 1) * 4) + 3), $show_info[$densite]);
+		imagefilledrectangle($im, (($i - 1) * 3), (($j - 1) * 3), ((($i - 1) * 3) + 2), ((($j - 1) * 3) + 2), $show_info[$densite]);
 	}
 }
 imagepng ($im, $carte);

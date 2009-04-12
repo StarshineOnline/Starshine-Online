@@ -14,12 +14,12 @@ $coord_joueur['x'] = '50';
 //Sert à calculer le point d'origine en haut a gauche pour la carte
 $xmin = 1;
 if ($xmin < 1) $xmin = 1;
-$xmax = 150;
-if ($xmax > 150) $xmax = 150;
+$xmax = 190;
+if ($xmax > 190) $xmax = 190;
 $ymin = 1;
 if ($ymin < 1) $ymin = 1;
-$ymax = 150;
-if ($ymax > 150) $ymax = 150;
+$ymax = 190;
+if ($ymax > 190) $ymax = 190;
 
 //Requète pour l'affichage de la map
 $requete = 'SELECT * FROM map WHERE (((FLOOR(ID / '.$G_ligne.') >= '.$ymin.') AND (FLOOR(ID / '.$G_ligne.') <= '.$ymax.')) AND (((ID - (FLOOR(ID / '.$G_colonne.') * 1000)) >= '.$xmin.') AND ((ID - (FLOOR(ID / '.$G_colonne.') * 1000)) <= '.$xmax.'))) ORDER BY ID';
