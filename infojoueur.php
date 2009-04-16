@@ -80,6 +80,7 @@ $W_distance = detection_distance($W_case, $_SESSION["position"]);
 if (($perso['ID'] != $_SESSION['ID']))
 {
 	$pa_attaque = $G_PA_attaque_joueur;
+	if($joueur['race'] == $perso['race']) $pa_attaque += 3;
 	if(array_key_exists('cout_attaque', $joueur['debuff'])) $pa_attaque = ceil($pa_attaque / $joueur['debuff']['cout_attaque']['effet']);
 	if(array_key_exists('plus_cout_attaque', $joueur['debuff'])) $pa_attaque = $pa_attaque * $joueur['debuff']['plus_cout_attaque']['effet'];
 	if(array_key_exists('buff_rapidite', $joueur['buff'])) $reduction_pa = $joueur['buff']['buff_rapidite']['effet']; else $reduction_pa = 0;
