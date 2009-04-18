@@ -130,9 +130,17 @@ class messagerie_thread
 		global $db;
 		if($id_joueur != '') $and_joueur = ' AND messagerie_etat.id_dest = '.$id_joueur;
 		else $and_joueur = '';
-		$requete = "SELECT * FROM messagerie_message LEFT JOIN messagerie_etat ON messagerie_message.id_message = messagerie_etat.id_message WHERE id_thread = ".$this->id_thread.$and_joueur." GROUP BY messagerie_etat.id_message";
+		$requete = "SELECT messagerie_etat.id_message FROM messagerie_message LEFT JOIN messagerie_etat ON messagerie_message.id_message = messagerie_etat.id_message WHERE id_thread = ".$this->id_thread.$and_joueur." GROUP BY messagerie_etat.id_message";
 		$req = $db->query($requete);
 		return $db->num_rows;
+	}
+
+	function get_numero_dernier_message($id_joueur)
+	{
+	    global $db;
+	    $requete = "SELECT messagerie_etat.id_message as id_message FROM messagerie_message LEFT JOIN messagerie_etat ON messagerie_message.id_message = messagerie_etat.id_message WHERE id_thread = ".$this->id_thread." AND messagerie_etat.id_dest = ".$id_joueur." AND messagerie_etat.etat <> 'non_lu' GROUP BY messagerie_etat.id_message";
+	    $req = $db->query($requete);
+	    return ($db->num_rows + 1);
 	}
 }
 ?>

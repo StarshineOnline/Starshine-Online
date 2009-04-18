@@ -24,6 +24,7 @@ if(!array_key_exists('action', $_GET))
 		$page_max = ceil($message_total / 10);
 		if($page == 'last') $page = $page_max;
 		if($page > 1) echo '<a href="messagerie.php?id_thread='.$messagerie->thread->id_thread.'&amp;page='.($page - 1).'" onclick="return envoiInfo(this.href, \'information\');"><span class="message_prev" title="Revenir à la page précédente"></span></a>';
+		echo '<span class="pages">'.$page.' / '.$page_max.'</span>';
 		if($page < $page_max) echo '<a href="messagerie.php?id_thread='.$messagerie->thread->id_thread.'&amp;page='.($page + 1).'" onclick="return envoiInfo(this.href, \'information\');"><span class="message_next" title="Allez à la page suivante"></span></a>';
 		foreach($messagerie->thread->messages as $message)
 		{

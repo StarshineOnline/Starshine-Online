@@ -129,6 +129,7 @@
 	$ord = strcmp($tri, 'architecture, forge, alchimie') ? $tri : 'ROUND(SQRT(alchimie + forge + architecture))';
 	
 	$requete = "SELECT ID, nom, ".sSQL($tri).", level, race, classe, cache_stat, cache_classe FROM perso WHERE statut = 'actif' AND ".$where." ORDER BY ".$ord." DESC, nom ASC LIMIT $inf, $j";
+	//echo $requete;
 	//echo 'inf : '.$inf.' j : '.$j.' k : '.$k.' sup : '.$sup.' '.$requete.'<br />';
 	$req = $db->query($requete);
 	$tri = !strcmp('architecture, forge, alchimie', $tri) ? 'craft' : $tri;

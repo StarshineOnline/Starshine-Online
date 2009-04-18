@@ -172,7 +172,7 @@ $db->query($requete);
 
 //Nourriture
 //On réduit de 1 les debuff famines
-$requete = "UPDATE buff SET effet = effet - 1 WHERE type= 'famine'";
+$requete = "UPDATE buff SET effet = effet - 3 WHERE type= 'famine'";
 $db->query($requete);
 $requete = "DELETE FROM buff WHERE type = 'famine' AND effet <= 0";
 $db->query($requete);
@@ -209,7 +209,7 @@ foreach($tab_royaume as $race => $royaume)
 		//Calcul du debuff
 		$royaume['food_doit'] = $royaume['food_necessaire'] - $royaume['food'];
 		$ratio = $royaume['food_doit'] / $royaume['food_necessaire'];
-		$debuff = ceil($ratio * 10) - 1;
+		$debuff = ceil($ratio * 9) - 1;
 		if($debuff > 6) $debuff = 6;
 		elseif($debuff > 0)
 		{

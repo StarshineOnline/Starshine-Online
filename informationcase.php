@@ -18,9 +18,11 @@ if($W_distance < 4)
 <?php
 
 $W_requete = 'SELECT * FROM map WHERE ID =\''.sSQL($W_case).'\'';
+//echo $W_requete;
 $W_req = $db->query($W_requete);
 $W_row = $db->read_array($W_req);
 
+//print_r($W_row);
 $R = get_royaume_info($joueur['race'], $W_row['royaume']);
 $type_terrain = type_terrain($W_row['info']);
 $coutpa = cout_pa($type_terrain[0], $joueur['race']);
