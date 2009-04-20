@@ -70,20 +70,26 @@ function level_groupe($groupe)
 		$group_id[] = $membre['id_joueur'];
 	}
 	$group_id = implode(',', $group_id);
-	//Requete de sélection des persos membres du groupe
-	$W_requete_perso = 'SELECT level FROM perso WHERE ID IN ('.$group_id.')';
-	$W_req_perso = $db->query($W_requete_perso);
-	while($row = $db->read_array($W_req_perso))
+	//On vérifie que le groupe contient des membres
+	if(!empty($group_id))
 	{
-		$somme_groupe += $row['level'];
-		$somme_groupe_carre += $row['level'] * $row['level'];
-		$group[] = $row['level'];
+		//Requete de sélection des persos membres du groupe
+		$W_requete_perso = 'SELECT level FROM perso WHERE ID IN ('.$group_id.')';
+		$W_req_perso = $db->query($W_requete_perso);
+		while($row = $db->read_array($W_req_perso))
+		{
+			$somme_groupe += $row['level'];
+			$somme_groupe_carre += $row['level'] * $row['level'];
+			$group[] = $row['level'];
+		}
+		$max_groupe = max($group);
+		$moy_groupe = ($somme_groupe - $max_groupe) / count($group);
+		$level_groupe = $max_groupe + ceil(($somme_groupe_carre) / ($max_groupe * 25)) + 1;
+		$array = array($level_groupe, $somme_groupe);
+		return $array;
 	}
-	$max_groupe = max($group);
-	$moy_groupe = ($somme_groupe - $max_groupe) / count($group);
-	$level_groupe = $max_groupe + ceil(($somme_groupe_carre) / ($max_groupe * 25)) + 1;
-	$array = array($level_groupe, $somme_groupe);
-	return $array;
+	else 
+		return false;
 }
 
 //Fonction chargée de dégroupé le joueur ID_joueur du groupe ID_groupe
