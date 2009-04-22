@@ -662,6 +662,8 @@ if(date("N") == 1)
 	}
 }
 
-mail('starshineonline@gmail.com', 'Starshine - Script journalier du '.$date, $mail);
+$mail = getenv('SSO_MAIL');
+if ($mail == null || $mail == '') $mail = 'starshineonline@gmail.com';
+mail($mail, 'Starshine - Script journalier du '.$date, $mail);
 
 ?>

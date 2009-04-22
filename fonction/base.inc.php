@@ -2903,4 +2903,34 @@ function normalize_entry_charset($fields)
 	}
 }
 
+/**
+ * Calcul des joueurs dans la visu d'un autre
+ *
+ * @param $joueur joueur qui sert de reference
+ * @param $distance taille de la visu a generer
+ *
+ * @return les joueurs dans la visu sous forme d'un tableau de lignes PERSO
+ */
+function list_joueurs_visu($joueur, $distance) {
+	global $db;
+
+	$x = $joueur['x']; $y = $joueur['y'];
+	$pos1 = convert_in_pos($x, $y);
+	$lx = $x - $distance; $gx = $x + $distance;
+	$ly = $y - $distance; $gy = $y + $distance;
+	$requete = "select * from perso where x >= $lx and x <= $gx and y >= $ly and y <= $gy";
+	$req = $db->query($requete);
+	$ret = array();
+  if ($db->num_rows > 0) {
+		while ($row = $db->read_assoc($req)) {
+			$pos2 = convert_in_pos($row['x'], $row['y']);
+			$dst = calcul_distance_pytagore($pos1, $pos2);
+			if ($dst <= $distance) {
+				$ret[] = $row;
+			}
+		}
+	}
+	return $ret;
+}
+
 ?>

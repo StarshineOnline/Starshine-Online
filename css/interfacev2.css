@@ -11,8 +11,8 @@ body {margin:0;padding:0;background:#7e909c url('../image/v2/bg_site.png') repea
 #information{height : 100%;	width : 47%;	float : left;	z-index :1;margin-left: 6px;}
 #information fieldset {-moz-border-radius: 10px;-webkit-border-radius : 10px;background:transparent url('../image/v2/box_accueil2.png');margin-top: 4px; }
 #information fieldset legend {background:transparent url('../image/v2/bouton_fond.png');-moz-border-radius: 10px;-webkit-border-radius: 10px; padding-left:10px;padding-right:10px;font-weight: bold;}
-#information a {color : #444;text-decoration : none;}
-#information a:hover {	color : #888;	text-decoration : none;}
+#information a, .visu a {color : #444;text-decoration : none;}
+#information a:hover, .visu a:hover {	color : #888;	text-decoration : none;}
 #perso{background-color:#c6d9f5;min-height: 120px;margin:0;padding:0;}
 #perso_menu {margin-left:94px;margin-top:-15px;}
 #perso_menu ul {margin:0;padding:0;list-style-type: none;height:17px;text-align: center;position: relative;}

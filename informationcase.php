@@ -54,90 +54,14 @@ if($db->num_rows > 0)
 	<h4><span class="titre_info">Joueurs</span></h4>
 	<ul>';
 }
-	
-$mybonus = recup_bonus($_SESSION['ID']);
-$affiche_div = '';
-while($W_row = $db->read_array($W_query))
+
+while ($W_row = $db->read_array($W_query))
 {
-	echo '<li style="clear:both;">
-	';
-	$W_nom = $W_row['nom'];
-	$W_race = $W_row['race'];
-	$W_ID = $W_row['ID'];
-	$W_hp = $W_row['hp'];
-	$bonus = recup_bonus($W_ID);
-	// on envois dans infojoueur.php -> ID du joueur et La position de la case ou il se trouve
-
-
-	$requete = "SELECT ".$W_race." FROM diplomatie WHERE race = '".$joueur['race']."'";
-	$req_diplo = $db->query($requete);
-	$row_diplo = $db->read_array($req_diplo);
-	
-	$statut_joueur = 'normal';
-	$diplo = $row_diplo[0];
-	if($row_diplo[0] == 127)
-	{
-		$amende = recup_amende($W_ID);
-		$row_diplo[0] = 0;
-		if($amende)
-		{
-			switch($amende['statut'])
-			{
-				case 'normal' :
-				break;
-				case 'bandit' :
-					$row_diplo[0] = 5;
-					$statut_joueur = 'Bandit';
-				break;
-				case 'criminel' :
-					$row_diplo[0] = 10;
-					$statut_joueur = 'Criminel';
-				break;
-			}
-		}
-	}
-	$facteur_xp = $row_diplo[0] * 0.2;
-	$facteur_honneur = ($row_diplo[0] * 0.2) - 0.8;
-	if ($facteur_honneur < 0) $facteur_honneur = 0;
-	if(array_key_exists(6, $bonus) AND !check_affiche_bonus($bonus[6], $joueur, $W_row)) $chaine_nom = $W_nom;
-	else $chaine_nom = $W_row['gnom'].' '.$W_nom;
-	$echo = $Gtrad['diplo'.$diplo].' => XP : '.($facteur_xp * 100).'% - Honneur : '.($facteur_honneur * 100).'%';
-	echo '<img src="image/personnage/'.$W_race.'/'.$W_race.'_'.$Tclasse[$W_row['classe']]["type"].'.png" alt="'.$W_race.'" title="'.$W_race.'" style="vertical-align: middle;height:21px;float:left;width:21px;" /><span style="font-weight : bold;float:left;width:325px;margin-left:15px;"><a href="infojoueur.php?ID='.$W_ID.'&poscase='.$W_case.'" onclick="return envoiInfo(this.href, \'information\');" onclick="return nd();" onmouseover="return '.make_overlib($echo).'" onmouseout="return nd();">';
-	
-		if ($W_hp <= 0)
-	{
-		echo '<span class="mort">'.$chaine_nom.'</span> ';
-	}
-	else
-	{
-		echo $chaine_nom;
-	}
-	
-	
-	echo '</a></span>';
-//	echo '<a href="" onclick="return envoiInfo(this.href\'infojoueur.php?ID='.$W_ID.'&poscase='.$W_case.'\', \'information\')" onmousemove="afficheInfo(\'info_'.$W_ID.'\', \'block\', event, \'centre\');" onmouseout="afficheInfo(\'info_'.$W_ID.'\', \'none\', event, \'centre\');"><strong>'.$chaine_nom.'</strong></td><td width="30%">'.$Gtrad[$W_race].'</a></td>';
-//	$affiche_div .= '<div class="jsinformation_case" id="info_'.$W_ID.'">
-//	'.$Gtrad['diplo'.$diplo].' => XP : '.($facteur_xp * 100).'% - Honneur : '.($facteur_honneur * 100).'%
-//	</div>';
-	echo '<span style="float:left;">';
-	if ($W_ID != $_SESSION['ID'])
-	{
-		echo '
-		<a href="envoimessage.php?id_type=p'.$W_ID.'" onclick="return envoiInfo(this.href, \'information\')"><img src="image/interface/message.png" title="Envoyer un message" /></a>';
-		if($joueur['sort_jeu'] != '') echo '<a href="sort_joueur.php?poscase='.$W_case.'&amp;id_joueur='.$W_ID.'" onclick="return envoiInfo(this.href, \'information\')"><img src="image/sort_hc_icone.png" title="Lancer un sort" alt="Lancer un sort" /></a>';
-		if($row_diplo[0] <= 5 OR array_key_exists(5, $mybonus)) echo '<a href="echange.php?poscase='.$W_case.'&amp;id_joueur='.$W_ID.'" onclick="return envoiInfo(this.href, \'information\')"><img src="image/icone/echanger.png" alt="Echanger" title="Echanger" /></a>';
-	}
-	else
-	{
-		if($joueur['sort_jeu'] != '') echo '<a href="sort.php" onclick="return envoiInfo(this.href, \'information\')"><img src="image/sort_hc_icone.png" title="Lancer un sort" alt="Lancer un sort" /></a>';
-	}
-	if($statut_joueur != 'normal') echo ' ('.$statut_joueur.')';
-	echo '</span>';
-
-	echo '</li>';
+	affiche_perso_visu($joueur, $W_row);
 }
-if(array_key_exists('buff_rapidite', $joueur['buff'])) $reduction_pa = $joueur['buff']['buff_rapidite']['effet']; else $reduction_pa = 0;
-if(array_key_exists('debuff_ralentissement', $joueur['debuff'])) $reduction_pa -= $joueur['debuff']['debuff_ralentissement']['effet'];
+if (array_key_exists('buff_rapidite', $joueur['buff'])) $reduction_pa = $joueur['buff']['buff_rapidite']['effet']; else $reduction_pa = 0;
+if (array_key_exists('debuff_ralentissement', $joueur['debuff'])) $reduction_pa -= $joueur['debuff']['debuff_ralentissement']['effet'];
+	
 echo '</ul>'.$affiche_div.'
 ';
 //Affichage des PNJ
@@ -265,6 +189,7 @@ if($num_rows > 0)
 		if($row_b['type'] == 'fort' AND $joueur['race'] == $Royaume['race']) $nom = '<a href="fort.php?poscase='.$W_case.'&amp;id_batiment='.$row_b['id'].'" onclick="return envoiInfo(this.href, \'centre\');">'.$row_b['nom'].'</a>';
 		if($row_b['type'] == 'bourg' AND $joueur['race'] == $Royaume['race']) $nom = '<a href="bourg.php?poscase='.$W_case.'&amp;id_batiment='.$row_b['id'].'" onclick="return envoiInfo(this.href, \'centre\');">'.$row_b['nom'].'</a>';
 		if($row_b['type'] == 'arme_de_siege' AND $joueur['race'] == $Royaume['race']) $nom = '<a href="arme_de_siege.php?poscase='.$W_case.'&amp;id_construction='.$W_row['id'].'" onclick="return envoiInfo(this.href, \'centre\');">'.$row_b['nom'].'</a>';
+		if($row_b['type'] == 'tour' AND $joueur['race'] == $Royaume['race']) $nom = '<a href="tour.php?poscase='.$W_case.'&amp;id_construction='.$W_row['id'].'" onclick="return envoiInfo(this.href, \'centre\');">'.$row_b['nom'].'</a>';
 		echo ' '.$nom;
 		echo ' '.$Gtrad[$Royaume['race']].' - HP : '.$W_row['hp'].' / '.$row_b['hp'];
 		echo '</span>';
