@@ -53,7 +53,7 @@ body {margin:0;padding:0;background:#7e909c url('../image/v2/bg_site.png') repea
 
 
 #contenu_back {margin:0;padding:0;overflow: auto;}
-#contenu {background:transparent url('../image/v2/site_fond2.png') no-repeat left;width:1000px;margin: auto;min-height: 700px;}
+#contenu {width:1000px;margin: auto;min-height: 700px;}
 #news {width:830px;float:left;}
 
 
@@ -301,6 +301,9 @@ border : 1px solid #FFF;}
 #messagerie_liste .titre {float:left;display: block;width:225px;padding-left:10px;}
 #messagerie_liste .par {float:left;display: block;width:100px;}
 #messagerie_liste .date {float:left;display: block;width:100px;}
+
+
+#combat_cartouche {clear:both;background-color: #DDDDDD;padding:9px;-moz-border-radius: 12px;-webkit-border-radius: 12px;height:70px; }
 
 .infoperso td {
 font-size : 10px;
