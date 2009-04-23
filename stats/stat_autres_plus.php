@@ -52,6 +52,8 @@ $data = array();
 $legend = array();
 $label = array();
 $dates = array();
+$LARGEUR = 800;
+$HAUTEUR = 400;
 
 $date = date("Y-m-d");
 $requete = "SELECT niveau_moyen, nombre_joueur, nombre_monstre, EXTRACT(YEAR FROM date) as year, EXTRACT(MONTH FROM date) as month, EXTRACT(DAY FROM date) as day FROM stat_jeu WHERE date > DATE_SUB('".$date."', INTERVAL 150 DAY) ORDER BY date;";
@@ -76,7 +78,7 @@ while($row = $db->read_assoc($req))
 }
 
 //GRAPHES NBR JOUEURS
-$graph = new Graph(900, 400, "auto");
+$graph = new Graph($LARGEUR, $HAUTEUR, "auto");
 $graph->SetShadow();
 
 $graph->SetMarginColor('white');
@@ -93,6 +95,9 @@ $graph->xgrid->Show();
 
 $graph->xaxis->SetTickLabels($dates);
 
+//Changer la couleur
+$graph->setColorPalette(0, 32, 38, 111);
+
 // Create lines
 $p1 = new LinePlot($data['nombre_joueur']);
 $p1 ->SetWeight(2);
@@ -104,7 +109,7 @@ $graph->legend->SetPos(0, 0.1, "right", "top");
 $graph->Stroke($root.'image/stat_joueur_plus.jpg');
 
 //GRAPHES NBR MONSTRES
-$graph = new Graph(900, 400, "auto");
+$graph = new Graph($LARGEUR, $HAUTEUR, "auto");
 $graph->SetShadow();
 
 $graph->SetMarginColor('white');
@@ -121,6 +126,9 @@ $graph->xgrid->Show();
 
 $graph->xaxis->SetTickLabels($dates);
 
+//Changer la couleur
+$graph->setColorPalette(0, 32, 38, 111);
+
 // Create lines
 $p1 = new LinePlot($data['nombre_monstre']);
 $p1 ->SetWeight(2);
@@ -132,7 +140,7 @@ $graph->legend->SetPos(0, 0.1, "right", "top");
 $graph->Stroke($root.'image/stat_monstre_plus.jpg');
 
 //GRAPHES NBR NIVEAUX MOYEN
-$graph = new Graph(900, 400, "auto");
+$graph = new Graph($LARGEUR, $HAUTEUR, "auto");
 $graph->SetShadow();
 
 $graph->SetMarginColor('white');
@@ -148,6 +156,9 @@ $graph->ygrid->SetFill(true, '#EFEFEF@0.5', '#BBCCFF@0.5');
 $graph->xgrid->Show();
 
 $graph->xaxis->SetTickLabels($dates);
+
+//Changer la couleur
+$graph->setColorPalette(0, 32, 38, 111);
 
 // Create lines
 $p1 = new LinePlot($data['niveau_moyen']);

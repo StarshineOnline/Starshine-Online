@@ -6,6 +6,9 @@ $legend = array();
 $label = array();
 $dates = array();
 
+$LARGEUR = 800;
+$HAUTEUR = 400;
+
 $date = date("Y-m-d");
 $requete = "SELECT niveau_moyen, nombre_joueur, nombre_monstre, EXTRACT(YEAR FROM date) as year, EXTRACT(MONTH FROM date) as month, EXTRACT(DAY FROM date) as day FROM stat_jeu WHERE date > DATE_SUB('".$date."', INTERVAL 31 DAY) ORDER BY date;";
 echo $requete.'<br />';
@@ -37,7 +40,7 @@ $DataSet->AddPoint($dates, "dates");
 $DataSet->SetAbsciseLabelSerie("dates");
 
 //Graph
-$graph = new pChart(900, 400);
+$graph = new pChart($LARGEUR, $HAUTEUR);
 $graph->setFontProperties("pChart/fonts/tahoma.ttf",8);
 $graph->setGraphArea(70,30,880,375);
 $graph->drawFilledRoundedRectangle(7,7,893,393,5,240,240,240);
@@ -49,6 +52,9 @@ $graph->drawGrid(4,TRUE,230,230,230,50);
 // Draw the 0 line
 $graph->setFontProperties("pChart/fonts/tahoma.ttf",6);
 $graph->drawTreshold(0,143,55,72,TRUE,TRUE);
+
+//Changer la couleur des graphes
+$graph->setColorPalette(0, 32, 38, 111);
 
 // Draw the cubic curve graph
 $graph->drawLineGraph($DataSet->GetData(),$DataSet->GetDataDescription());
@@ -67,7 +73,7 @@ $DataSet->AddPoint($dates, "dates");
 $DataSet->SetAbsciseLabelSerie("dates");
 
 //Graph
-$graph = new pChart(900, 400);
+$graph = new pChart($LARGEUR, $HAUTEUR);
 $graph->setFontProperties("pChart/fonts/tahoma.ttf",8);
 $graph->setGraphArea(70,30,880,375);
 $graph->drawFilledRoundedRectangle(7,7,893,393,5,240,240,240);
@@ -79,6 +85,9 @@ $graph->drawGrid(4,TRUE,230,230,230,50);
 // Draw the 0 line
 $graph->setFontProperties("pChart/fonts/tahoma.ttf",6);
 $graph->drawTreshold(0,143,55,72,TRUE,TRUE);
+
+//Changer la couleur
+$graph->setColorPalette(0, 32, 38, 111);
 
 // Draw the cubic curve graph
 $graph->drawLineGraph($DataSet->GetData(),$DataSet->GetDataDescription());
@@ -97,7 +106,7 @@ $DataSet->AddPoint($dates, "dates");
 $DataSet->SetAbsciseLabelSerie("dates");
 
 //Graph
-$graph = new pChart(900, 400);
+$graph = new pChart($HAUTEUR, $LARGEUR);
 $graph->setFontProperties("pChart/fonts/tahoma.ttf",8);
 $graph->setGraphArea(70,30,880,375);
 $graph->drawFilledRoundedRectangle(7,7,893,393,5,240,240,240);
@@ -109,6 +118,9 @@ $graph->drawGrid(4,TRUE,230,230,230,50);
 // Draw the 0 line
 $graph->setFontProperties("pChart/fonts/tahoma.ttf",6);
 $graph->drawTreshold(0,143,55,72,TRUE,TRUE);
+
+//Changer la couleur
+$graph->setColorPalette(0, 32, 38, 111);
 
 // Draw the cubic curve graph
 $graph->drawLineGraph($DataSet->GetData(),$DataSet->GetDataDescription());

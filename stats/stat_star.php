@@ -21,7 +21,7 @@ $color['mortvivant'] = array(92, 30, 0);
 $color['humainnoir'] = array(0, 0, 0);
 $color['humain'] = array(0, 0, 255);
 $color['elfehaut'] = array(170, 170, 170);
-$color['vampire'] = array(204, 204, 204);
+$color['vampire'] = array(130, 30, 130);
 
 $date = date("Y-m-d");
 $requete = "SELECT *, EXTRACT(YEAR FROM date) as year, EXTRACT(MONTH FROM date) as month, EXTRACT(DAY FROM date) as day FROM stat_jeu WHERE date > DATE_SUB('".$date."', INTERVAL 31 DAY) ORDER BY date ASC;";
@@ -77,7 +77,7 @@ $i = 0;
 $j = 0;
 while($j < 11)
 {
-	$graph = new pChart(900, 400);
+	$graph = new pChart(800, 400);
 	//Datas
 	// Create lines
 	$keys = array_keys($moyenne);
@@ -109,12 +109,13 @@ while($j < 11)
 	$graph->setFontProperties("pChart/fonts/tahoma.ttf",6);
 	$graph->drawTreshold(0,143,55,72,TRUE,TRUE);
 	 
+	 
 	// Draw the cubic curve graph
 	$graph->drawCubicCurve($DataSet->GetData(),$DataSet->GetDataDescription());
 	 
 	// Finish the graph  
 	$graph->setFontProperties("pChart/fonts/tahoma.ttf",8);
-	$graph->drawLegend(800,30,$DataSet->GetDataDescription(),255,255,255);
+	$graph->drawLegend(700,30,$DataSet->GetDataDescription(),255,255,255);
 	$graph->setFontProperties("pChart/fonts/tahoma.ttf",12);
 	$graph->drawTitle(50,22,'Evolution du nombre de stars par royaume (moyenne sur 5 jours) - Graph '.($i + 1),50,50,50,585);
 	$graph->Render($root.'image/stat_star'.($i + 1).'.png');

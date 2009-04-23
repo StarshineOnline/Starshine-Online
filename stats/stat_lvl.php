@@ -33,6 +33,9 @@ $graph->drawGraphArea(255,255,255,TRUE);
 $graph->drawScale($DataSet->GetData(),$DataSet->GetDataDescription(),SCALE_NORMAL,150,150,150,TRUE,0,2,TRUE);
 $graph->drawGrid(4,TRUE,230,230,230,50);
 
+//Changer la couleur
+$graph->setColorPalette(0, 32, 38, 111);
+
 // Draw the 0 line
 $graph->setFontProperties("pChart/font/tahoma.ttf",6);
 $graph->drawTreshold(0,143,55,72,TRUE,TRUE);
