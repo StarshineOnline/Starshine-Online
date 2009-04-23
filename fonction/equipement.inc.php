@@ -604,6 +604,7 @@ function recup_echange($id_echange)
 {
 	global $db;
 	$echange = array();
+	$echange['objet'] = array();
 	$requete = "SELECT * FROM echange WHERE id_echange = ".$id_echange;
 	if($req_e = $db->query($requete))
 	{

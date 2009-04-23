@@ -65,9 +65,12 @@ function level_groupe($groupe)
 	$level_groupe = 0;
 	$somme_groupe_carre = 0;
 	$group_id = array();
-	foreach($groupe['membre'] as $membre)
+	if(is_array($groupe['membre']))
 	{
-		$group_id[] = $membre['id_joueur'];
+	    foreach($groupe['membre'] as $membre)
+	    {
+			$group_id[] = $membre['id_joueur'];
+	    }
 	}
 	$group_id = implode(',', $group_id);
 	//On vérifie que le groupe contient des membres

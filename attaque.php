@@ -540,7 +540,9 @@ else
 				echo('<img src="image/interface/attaquer.png" alt="Combattre" style="vertical-align : middle;" /> <a href="attaque.php?ID='.$W_ID.'&amp;poscase='.$W_case.'" onclick="return envoiInfo(this.href, \'information\')">Attaquer la même cible</a><br />');
 			}
 			
-			$requete = 'UPDATE perso SET survie = '.$attaquant['survie'].' ,pa = pa - '.$pa_attaque.' WHERE ID = '.$_SESSION['ID'];
+			$requete = 'UPDATE perso SET survie = '.$attaquant['survie'].' ,pa = '.$attaquant['pa'].' - '.$pa_attaque.' WHERE ID = '.$_SESSION['ID'];
+			$db->query($requete);
+			$requete = 'UPDATE perso SET pa = '.$defenseur['pa'].' WHERE ID = '.$defenseur['ID'];
 			$db->query($requete);
 	
 			//Insertion de l'attaque dans les journaux des 2 joueurs

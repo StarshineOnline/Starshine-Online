@@ -4,11 +4,13 @@ $joueur = recupperso($_SESSION['ID']);
 
 setcookie('dernier_affichage_popup', time(), time() + (24 * 3600 * 31));
 
+if(array_key_exists('affiche', $_GET)) $affiche = $_GET['affiche']; else $affiche = false;
+
 //Si message du roi
 $requete = "SELECT * FROM motk WHERE race = '".$joueur['race']."'";
 $req_m = $db->query($requete);
 $row_m = $db->read_assoc($req_m);
-if ($_COOKIE['dernier_affichage_popup'] <= $row_m['date'])
+if ($_COOKIE['dernier_affichage_popup'] <= $row_m['date'] OR $affiche == 'all')
 {
 	$message = htmlspecialchars(stripslashes($row_m['message']));
 	$message = str_replace('[br]', '<br />', $message);
@@ -63,7 +65,6 @@ $req_news = $db_forum->query($requete_news);
 $row_news = $db_forum->read_array($req_news);
 if ($_COOKIE['dernier_affichage_popup'] <= $row_news['posted'])
 {
-	
 	echo '<div class="titre_news"><strong><a class="news" href="http://forum.starshine-online.com/viewtopic.php?id='.$row_news['id'].'">'./*utf8_encode*/($row_news['subject']).'</a></strong><br />
 	<span style="font-size:10px;">Par '.$row_news['poster'].', le '.date("l d F Y à H:i", $row_news['posted']).'</span><!-- <span style="font-size : 10px;"> ('.($row_news['num_replies']).' commentaires)</span> --></div>';
 
@@ -82,7 +83,6 @@ if ($_COOKIE['dernier_affichage_popup'] <= $row_news['posted'])
 	}
 	echo '<div class="news">'.$message.'</div>';
 	echo "<hr>";
-
 }
 
 

@@ -129,7 +129,7 @@ if($W_distance == 0)
 							if($buff)
 							{
 								//Liste des buffs possibles (Identifiants dans la bdd)
-								$liste_buff = array(82, 83, 80, 86, 20, 51, );
+								$liste_buff = array(82, 83, 80, 86, 20, 51);
 								//Tirage au sort de quel buff lancer
 								$total_buff = count($liste_buff);
 								$tirage = rand(0, $total_buff);

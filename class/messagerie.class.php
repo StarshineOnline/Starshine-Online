@@ -103,8 +103,9 @@ class messagerie
 			$this->thread = new messagerie_thread($id_thread);
 			if($numero_page == 'last')
 			{
-			    $numero_message = $this->thread->get_numero_dernier_message();
-			    $numero_page = ceil($total_message / $message_par_page);
+			    $numero_message = $this->thread->get_numero_dernier_message($this->id_perso);
+			    $numero_page = ceil($numero_message / $message_par_page);
+			    $this->thread->page = $numero_page;
 			}
 			$this->thread->get_messages($nombre, $tri_date, $this->id_perso, $numero_page, $message_par_page);
 		}
