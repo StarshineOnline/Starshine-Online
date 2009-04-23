@@ -140,7 +140,16 @@ class messagerie_thread
 	    global $db;
 	    $requete = "SELECT messagerie_etat.id_message as id_message FROM messagerie_message LEFT JOIN messagerie_etat ON messagerie_message.id_message = messagerie_etat.id_message WHERE id_thread = ".$this->id_thread." AND messagerie_etat.id_dest = ".$id_joueur." AND messagerie_etat.etat <> 'non_lu' GROUP BY messagerie_etat.id_message";
 	    $req = $db->query($requete);
-	    return ($db->num_rows + 1);
+	    return ($db->num_rows);
+	}
+
+	function get_titre()
+	{
+	    global $db;
+	    $requete = "SELECT messagerie_message.titre as titre FROM messagerie_message LEFT JOIN messagerie_thread ON messagerie_message.id_thread = messagerie_thread.id_thread WHERE messagerie_message.id_thread = ".$this->id_thread." ORDER BY date ASC LIMIT 0, 1";
+	    $req = $db->query($requete);
+	    $row = $db->read_row($req);
+	    $this->titre = $row[0];
 	}
 }
 ?>

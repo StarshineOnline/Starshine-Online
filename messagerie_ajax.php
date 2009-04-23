@@ -18,7 +18,8 @@ if(!array_key_exists('action', $_GET))
 		else $page = 'last';
 		$messagerie = new messagerie($joueur['ID']);
 		$messagerie->get_thread($id_thread, 'all', 'ASC', $page, 10);
-		echo '<h3 style="text-align : center;">'.htmlspecialchars(stripslashes($messagerie->thread->messages[0]->titre)).' / <a href="envoimessage.php?id_type=r'.$messagerie->thread->id_thread.'" onclick="return envoiInfo(this.href, \'information\')">Répondre</a></h3>';
+		$messagerie->thread->get_titre();
+		echo '<h3 style="text-align : center;">'.htmlspecialchars(stripslashes($messagerie->thread->titre)).' / <a href="envoimessage.php?id_type=r'.$messagerie->thread->id_thread.'" onclick="return envoiInfo(this.href, \'information\')">Répondre</a></h3>';
 		//Affichage des pages
 		$message_total = $messagerie->thread->get_message_total($joueur['ID']);
 		$page_max = ceil($message_total / 10);
