@@ -125,7 +125,7 @@ window.onload = function()
 	</ul>
 	</div>
 	<div class='box'>
-		<input type='hidden' id='menu_encours' value='presentation'>
+		<input type='hidden' id='menu_encours' value='presentation' />
 		<div id='presentation_box'>
 			<p>Bienvenue dans le monde de Starshine-Online.<br />
 Pour l'instant au stade de la béta (c'est à dire en phase d'équilibrage et d'amélioration du monde), starshine-online sera un jeu de rôle massivement mutijoueur (mmorpg) en tour par tour.<br /><br />
@@ -137,15 +137,15 @@ N'oubliez pas de reporter les bugs et problèmes, et de suggérer de nouvelles c
 		</div>
 		<div id='screenshot_box' style='display:none;'>
 			<ul>
-				<li><a href="image/screenshots/screenshot01.jpg" rel="lightbox[screens]" title="Le jeu"><img src="image/screenshots/mini_screenshot01.jpg" /></a></li>
-				<li><a href="image/screenshots/screenshot02.jpg" rel="lightbox[screens]" title="Inventaire"><img src="image/screenshots/mini_screenshot02.jpg" /></a></li>
-				<li><a href="image/screenshots/screenshot03.jpg" rel="lightbox[screens]" title="Interface du roi"><img src="image/screenshots/mini_screenshot03.jpg" /></a></li>
-				<li><a href="image/screenshots/screenshot04.jpg" rel="lightbox[screens]" title="La boutique SSO"><img src="image/screenshots/mini_screenshot04.jpg" /></a></li>
-				<li><a href="image/screenshots/screenshot05.jpg" rel="lightbox[screens]" title="Screenshot 5"><img src="image/screenshots/mini_screenshot05.jpg" /></a></li>
-				<li><a href="image/screenshots/screenshot06.jpg" rel="lightbox[screens]" title="Version 0.6 (en test)"><img src="image/screenshots/mini_screenshot06.jpg" /></a></li>
-				<li><a href="image/screenshots/screenshot07.jpg" rel="lightbox[screens]" title="Version 0.5"><img src="image/screenshots/mini_screenshot07.jpg" /></a></li>
-				<li><a href="image/screenshots/screenshot08.jpg" rel="lightbox[screens]" title="Début de la béta"><img src="image/screenshots/mini_screenshot08.jpg" /></a></li>
-				<li><a href="image/screenshots/screenshot09.jpg" rel="lightbox[screens]" title="Version alpha"><img src="image/screenshots/mini_screenshot09.jpg" /></a></li>
+				<li><a href="image/screenshots/screenshot01.jpg" rel="lightbox[screens]" title="Le jeu"><img src="image/screenshots/mini_screenshot01.jpg" alt='screenshot01' /></a></li>
+				<li><a href="image/screenshots/screenshot02.jpg" rel="lightbox[screens]" title="Inventaire"><img src="image/screenshots/mini_screenshot02.jpg" alt='screenshot01' /></a></li>
+				<li><a href="image/screenshots/screenshot03.jpg" rel="lightbox[screens]" title="Interface du roi"><img src="image/screenshots/mini_screenshot03.jpg" alt='screenshot01' /></a></li>
+				<li><a href="image/screenshots/screenshot04.jpg" rel="lightbox[screens]" title="La boutique SSO"><img src="image/screenshots/mini_screenshot04.jpg" alt='screenshot01' /></a></li>
+				<li><a href="image/screenshots/screenshot05.jpg" rel="lightbox[screens]" title="Screenshot 5"><img src="image/screenshots/mini_screenshot05.jpg" alt='screenshot01' /></a></li>
+				<li><a href="image/screenshots/screenshot06.jpg" rel="lightbox[screens]" title="Version 0.6 (en test)"><img src="image/screenshots/mini_screenshot06.jpg" alt='screenshot01' /></a></li>
+				<li><a href="image/screenshots/screenshot07.jpg" rel="lightbox[screens]" title="Version 0.5"><img src="image/screenshots/mini_screenshot07.jpg" alt='screenshot01' /></a></li>
+				<li><a href="image/screenshots/screenshot08.jpg" rel="lightbox[screens]" title="Début de la béta"><img src="image/screenshots/mini_screenshot08.jpg" alt='screenshot01' /></a></li>
+				<li><a href="image/screenshots/screenshot09.jpg" rel="lightbox[screens]" title="Version alpha"><img src="image/screenshots/mini_screenshot09.jpg" alt='screenshot01' /></a></li>
 			</ul>
 		</div>
 		<div id='news_box' style='display:none;'>
@@ -196,7 +196,7 @@ N'oubliez pas de reporter les bugs et problèmes, et de suggérer de nouvelles c
 			?>
 
 <form action="" method="POST">
-		<p id='creat_erreur' style='color:#CC0033;'></p>
+		<p id='creat_erreur' style='color:#CC0033;'>&nbsp;</p>
 		<div style='width:35%;float:left;'>
 			<span class='creation_text'>Quel sera votre nom ?</span><input type="text" name="nom" id='creat_nom' /><br />
 			<span class='creation_text'>Indiquer un mot de passe :</span><input type="password" name="password" id='creat_pass' /><br />
@@ -210,12 +210,13 @@ N'oubliez pas de reporter les bugs et problèmes, et de suggérer de nouvelles c
 		while($objRace = $db->read_object($RqRace))
 		{
 			if ($i=='0'){echo "<p style='clear:both;'>";}
-			echo "<img src='./image/personnage/".$objRace->race."/".$objRace->race."_guerrier.png' id='".$objRace->race."_guerrier' onclick=\"race('".$objRace->race."','guerrier');\" style='width:35px;float:left;cursor:pointer;' />";
-			echo "<img src='./image/personnage/".$objRace->race."/".$objRace->race."_mage.png' id='".$objRace->race."_mage' onclick=\"race('".$objRace->race."','mage');\" style='width:35px;float:left;cursor:pointer;' /><span style='width:17px;float:left;height:1px;'></span>";
+			echo "<img src='./image/personnage/".$objRace->race."/".$objRace->race."_guerrier.png' alt='".$objRace->race."_guerrier' id='".$objRace->race."_guerrier' onclick=\"race('".$objRace->race."','guerrier');\" style='width:35px;float:left;cursor:pointer;' />";
+			echo "<img src='./image/personnage/".$objRace->race."/".$objRace->race."_mage.png' alt='".$objRace->race."_mage' id='".$objRace->race."_mage' onclick=\"race('".$objRace->race."','mage');\" style='width:35px;float:left;cursor:pointer;' /><span style='width:17px;float:left;height:1px;'></span>";
 			$i++;
 			if ($i=='4'){echo '</p>';$i=0;}
 
-		}			
+		}	
+		echo '</p>';		
 		?>
 		<input type='hidden' id='perso_selected_id' />
 		</div>
@@ -236,10 +237,12 @@ N'oubliez pas de reporter les bugs et problèmes, et de suggérer de nouvelles c
 			{
 			?>
 			<form action="index.php" method="post">
+			<div>
 			ID : <input type="text" name="nom" size="10" class="input" />
 			Pass : <input type="password" name="password" size="10" class="input" />
 			Auto Login <input type="checkbox" name="auto_login" value="Ok" />
 			<input type="submit" name="log" value="Connexion" class="input" />
+			</div>
 			</form>
 			<?php
 			}
@@ -275,3 +278,5 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
 	
 	</div>
 </div>
+</body>
+</html>

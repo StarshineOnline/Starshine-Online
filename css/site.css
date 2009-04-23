@@ -1,5 +1,6 @@
 body {margin:0;padding:0;color:#222;background-color: #000;}
 img {border : 0px;}
+a {color:#FFF;}
 #accueil {background:transparent url('./../image/v2/page_accueil.jpg') no-repeat left;width:1024px;min-height: 748px;margin: auto;	font: 13px "Helvetica Neue", Helvetica, Arial, Geneva, sans-serif;}
 #accueil .logo {background:transparent url(./../image/v2/logo.png) no-repeat scroll left center;display:block;height:80px;margin-left:2px;position:absolute;top:27px;width:207px;z-index:1;}
 
@@ -40,6 +41,9 @@ img {border : 0px;}
 #test {margin-left:70px;position:absolute;top:74px; z-index : 5; height : 18px;}
 
 #liens {margin-left:100px;top:430px;width:480px;position:absolute;background:transparent url('./../image/v2/box_accueil2.png');color:#EEE;overflow: auto;text-align: justify;-webkit-border-radius:10px;-moz-border-radius: 10px;-o-border-radius:10px;border:none;}
+
+#liens a {color:#FFF;padding-left:10px;padding-right:10px;text-decoration: none;}
+#liens a:hover {text-decoration: underline;}
 
 #accueil_pub {margin-left:115px;top:500px;width:480px;position:absolute;}
 
