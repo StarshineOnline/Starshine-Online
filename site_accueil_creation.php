@@ -121,6 +121,26 @@ else
 		{
 			echo $requete.'<br />';
 		}
+		else
+		{
+		    //Envoi du message au joueur
+		    $id_groupe = 0;
+		    $id_dest = 0;
+		    $id_thread = 0;
+		    $id_dest = $db->last_insert_id();
+		    $messagerie = new messagerie(0);
+		    $titre = 'Bienvenue sur Starshine-Online';
+		    $message = 'Vous faites maintenant parti de la grande aventure Starshine-Online.
+Pour vous aidez plusieurs outils sont a votre disposition :
+L\'aide : [url]http://wiki.starshine-online.com[/url]
+Le forum : [url]http://forum.starshine-online.com[/url]
+Votre forum de race : [url]http://forum.starshine-online.com/viewforum.php?id='.$Trace[$race]['forum_id'].'[/url]
+Les logins et mot de passe pour se connecter a ces forums sont les m�mes que ceux du jeu.
+
+En espérant que votre périple se passera bien.
+Bon jeu !';
+		    $messagerie->envoi_message($id_thread, $id_dest, $titre, $message, $id_groupe);
+		}
 		require('connect_forum.php');
 		//Création de l'utilisateur dans le forum
 		$requete = "INSERT INTO punbbusers(`group_id`, `username`, `password`, `language`, `style`, `registered`) VALUES('".$punbb[$race]."', '$nom', '".sha1($mdp)."', 'French', 'SSO', '".time()."')";

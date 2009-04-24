@@ -6,9 +6,9 @@ class messagerie
 	/**	
 	    *  	Constructeur permettant la cr?ation d'un objet pour la gestion de messagerie d'un perso.
 	**/
-	function __construct($id_perso = 0)
+	function __construct($id_perso = -1)
 	{
-		if($id_perso > 0)
+		if($id_perso >= 0)
 		{
 			$this->id_perso = $id_perso;
 		}
@@ -156,7 +156,8 @@ class messagerie
 		else $thread = new messagerie_thread($id_thread);
 
 		//Cr�ation du message
-		$auteur = recupperso_essentiel($this->id_perso, 'nom');
+		if($this->id_perso > 0)	$auteur = recupperso_essentiel($this->id_perso, 'nom');
+		else $auteur = 'Administrateur';
 		if($id_dest > 0) $dest = recupperso_essentiel($id_dest, 'nom');
 		else $dest['nom'] = null;
 		$message = new messagerie_message(0, $this->id_perso, $id_dest, $titre, $message, $id_thread, null, $auteur['nom'], $dest['nom']);

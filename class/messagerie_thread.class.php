@@ -109,6 +109,7 @@ class messagerie_thread
 			if(is_numeric($numero_page))
 			{
 				$index_message = ($numero_page - 1) * $message_par_page;
+				if($index_message < 0) $index_message = 0;
 				$limit = ' LIMIT '.$index_message.', '.$message_par_page;
 			}
 			if($etat) $requete = "SELECT messagerie_message.id_message as id_message, id_auteur, messagerie_message.id_dest as id_dest, titre, message, date, messagerie_etat.etat as metat FROM messagerie_message LEFT JOIN messagerie_etat ON messagerie_message.id_message = messagerie_etat.id_message WHERE id_thread = ".$this->id_thread." AND messagerie_etat.id_dest = ".$etat." ORDER BY date ".$tri_date.$limit;
@@ -140,7 +141,7 @@ class messagerie_thread
 	    global $db;
 	    $requete = "SELECT messagerie_etat.id_message as id_message FROM messagerie_message LEFT JOIN messagerie_etat ON messagerie_message.id_message = messagerie_etat.id_message WHERE id_thread = ".$this->id_thread." AND messagerie_etat.id_dest = ".$id_joueur." AND messagerie_etat.etat <> 'non_lu' GROUP BY messagerie_etat.id_message";
 	    $req = $db->query($requete);
-	    return ($db->num_rows);
+	    return ($db->num_rows + 1);
 	}
 
 	function get_titre()

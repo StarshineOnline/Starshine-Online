@@ -65,6 +65,7 @@ function validation_perso()
 	{
 		$('creat_erreur').innerHTML = 'Vous avez laisser un champ libre, ou vos mots de passe ne correspondent pas';
 		$('creat_nom').setAttribute('style','border: 1px solid #CC0033;');
+		$('creat_erreur').show();
 	}
 
 	if (($('creat_pass').value != $('creat_pass2').value) || ($('creat_pass2').value=='') || ($('creat_pass2').value==''))
@@ -72,10 +73,12 @@ function validation_perso()
 		$('creat_erreur').innerHTML = 'Vous avez laisser un champ libre, ou vos mots de passe ne correspondent pas';
 		$('creat_pass').setAttribute('style','border: 1px solid #CC0033;');	
 		$('creat_pass2').setAttribute('style','border: 1px solid #CC0033;');			
+		$('creat_erreur').show();
 	}
 	if ($('perso_selected_id').value == '')
 	{
 		$('creat_erreur').innerHTML = "Vous n'avez pas sélectionnez de personnage.";
+		$('creat_erreur').show();
 	}	
 	if (($('perso_selected_id').value != '') && ($('creat_pass').value == $('creat_pass2').value) && ($('creat_pass2').value!='') && ($('creat_pass2').value!='') && ($('creat_nom').value != ''))
 	{
@@ -138,14 +141,14 @@ N'oubliez pas de reporter les bugs et problèmes, et de suggérer de nouvelles c
 		<div id='screenshot_box' style='display:none;'>
 			<ul>
 				<li><a href="image/screenshots/screenshot01.jpg" rel="lightbox[screens]" title="Le jeu"><img src="image/screenshots/mini_screenshot01.jpg" alt='screenshot01' /></a></li>
-				<li><a href="image/screenshots/screenshot02.jpg" rel="lightbox[screens]" title="Inventaire"><img src="image/screenshots/mini_screenshot02.jpg" alt='screenshot01' /></a></li>
-				<li><a href="image/screenshots/screenshot03.jpg" rel="lightbox[screens]" title="Interface du roi"><img src="image/screenshots/mini_screenshot03.jpg" alt='screenshot01' /></a></li>
-				<li><a href="image/screenshots/screenshot04.jpg" rel="lightbox[screens]" title="La boutique SSO"><img src="image/screenshots/mini_screenshot04.jpg" alt='screenshot01' /></a></li>
-				<li><a href="image/screenshots/screenshot05.jpg" rel="lightbox[screens]" title="Screenshot 5"><img src="image/screenshots/mini_screenshot05.jpg" alt='screenshot01' /></a></li>
-				<li><a href="image/screenshots/screenshot06.jpg" rel="lightbox[screens]" title="Version 0.6 (en test)"><img src="image/screenshots/mini_screenshot06.jpg" alt='screenshot01' /></a></li>
-				<li><a href="image/screenshots/screenshot07.jpg" rel="lightbox[screens]" title="Version 0.5"><img src="image/screenshots/mini_screenshot07.jpg" alt='screenshot01' /></a></li>
-				<li><a href="image/screenshots/screenshot08.jpg" rel="lightbox[screens]" title="Début de la béta"><img src="image/screenshots/mini_screenshot08.jpg" alt='screenshot01' /></a></li>
-				<li><a href="image/screenshots/screenshot09.jpg" rel="lightbox[screens]" title="Version alpha"><img src="image/screenshots/mini_screenshot09.jpg" alt='screenshot01' /></a></li>
+				<li><a href="image/screenshots/screenshot02.jpg" rel="lightbox[screens]" title="Inventaire"><img src="image/screenshots/mini_screenshot02.jpg" alt='screenshot02' /></a></li>
+				<li><a href="image/screenshots/screenshot03.jpg" rel="lightbox[screens]" title="Interface du roi"><img src="image/screenshots/mini_screenshot03.jpg" alt='screenshot03' /></a></li>
+				<li><a href="image/screenshots/screenshot04.jpg" rel="lightbox[screens]" title="La boutique SSO"><img src="image/screenshots/mini_screenshot04.jpg" alt='screenshot04' /></a></li>
+				<li><a href="image/screenshots/screenshot05.jpg" rel="lightbox[screens]" title="Screenshot 5"><img src="image/screenshots/mini_screenshot05.jpg" alt='screenshot05' /></a></li>
+				<li><a href="image/screenshots/screenshot06.jpg" rel="lightbox[screens]" title="Version 0.6 (en test)"><img src="image/screenshots/mini_screenshot06.jpg" alt='screenshot06' /></a></li>
+				<li><a href="image/screenshots/screenshot07.jpg" rel="lightbox[screens]" title="Version 0.5"><img src="image/screenshots/mini_screenshot07.jpg" alt='screenshot07' /></a></li>
+				<li><a href="image/screenshots/screenshot08.jpg" rel="lightbox[screens]" title="Début de la béta"><img src="image/screenshots/mini_screenshot08.jpg" alt='screenshot08' /></a></li>
+				<li><a href="image/screenshots/screenshot09.jpg" rel="lightbox[screens]" title="Version alpha"><img src="image/screenshots/mini_screenshot09.jpg" alt='screenshot09' /></a></li>
 			</ul>
 		</div>
 		<div id='news_box' style='display:none;'>
@@ -196,7 +199,7 @@ N'oubliez pas de reporter les bugs et problèmes, et de suggérer de nouvelles c
 			?>
 
 <form action="" method="POST">
-		<p id='creat_erreur' style='color:#CC0033;'>&nbsp;</p>
+		<p id='creat_erreur' style='color:#CC0033; display : none;'>&nbsp;</p>
 		<div style='width:35%;float:left;'>
 			<span class='creation_text'>Quel sera votre nom ?</span><input type="text" name="nom" id='creat_nom' /><br />
 			<span class='creation_text'>Indiquer un mot de passe :</span><input type="password" name="password" id='creat_pass' /><br />
