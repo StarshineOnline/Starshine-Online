@@ -24,14 +24,14 @@ $DataSet->SetYAxisName("Population");
 $DataSet->SetXAxisName("Niveau");
 
 // Initialise the graph
-$graph = new pChart(700,400);
+$graph = new pChart(750,400);
 $graph->setFontProperties("pChart/fonts/tahoma.ttf",8);
 $graph->setGraphArea(50,35,680,360);
 $graph->drawFilledRoundedRectangle(7,7,693,393,5,240,240,240);
 $graph->drawRoundedRectangle(5,5,695,395,5,230,230,230);
 $graph->drawGraphArea(255,255,255,TRUE);
 $graph->drawScale($DataSet->GetData(),$DataSet->GetDataDescription(),SCALE_NORMAL,150,150,150,TRUE,0,2,TRUE);
-$graph->drawGrid(4,TRUE,230,230,230,50);
+$graph->drawGrid(4,TRUE,230,230,230,150);
 
 //Changer la couleur
 $graph->setColorPalette(0, 32, 38, 111);

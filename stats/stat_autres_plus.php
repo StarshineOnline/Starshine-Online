@@ -52,7 +52,7 @@ $data = array();
 $legend = array();
 $label = array();
 $dates = array();
-$LARGEUR = 800;
+$LARGEUR = 750;
 $HAUTEUR = 400;
 
 $date = date("Y-m-d");

@@ -20,10 +20,10 @@ $DataSet->AddAllSeries();
 $DataSet->SetAbsciseLabelSerie("Serie2");
 
 // Initialise the graph
-$graph = new pChart(700, 400);
-$graph->setColorPalette(8,255,0,0);  
+$graph = new pChart(750, 400);
+/*$graph->setColorPalette(8,255,0,0);  
 $graph->setColorPalette(9,0,255,0);  
-$graph->setColorPalette(10,0,0,255);
+$graph->setColorPalette(10,0,0,255);*/
 $graph->drawFilledRoundedRectangle(7,7,693,393,5,240,240,240);
 $graph->drawRoundedRectangle(5,5,695,395,5,230,230,230);
 
