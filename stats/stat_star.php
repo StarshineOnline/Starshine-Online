@@ -1,6 +1,4 @@
 <?php
-$root = '';
-
 $data = array();
 $dates_m = array();
 $moyenne = array();
@@ -97,16 +95,16 @@ while($j < 11)
 	$DataSet->SetAbsciseLabelSerie("dates");
 
 	//Graph
-	$graph->setFontProperties("pChart/fonts/tahoma.ttf",8);
-	$graph->setGraphArea(70,30,730,375);
-	$graph->drawFilledRoundedRectangle(7,7,730,393,5,240,240,240);
-	$graph->drawRoundedRectangle(5,5,730,395,5,230,230,230);
-	$graph->drawGraphArea(255,255,255,TRUE);
+	$graph->setFontProperties($root."pChart/fonts/tahoma.ttf",8);
+	$graph->setGraphArea(50,30,730,375);
+	$graph->drawFilledRoundedRectangle(7,7,743,393,5,240,240,240);
+	$graph->drawRoundedRectangle(5,5,745,395,5,230,230,230);
+	$graph->drawGraphArea(200,200,200);
 	$graph->drawScale($DataSet->GetData(),$DataSet->GetDataDescription(),SCALE_NORMAL,150,150,150,TRUE,0,2);
-	$graph->drawGrid(4,TRUE,230,230,230,200);
+	$graph->drawGrid(4,TRUE,230,230,230);
 	
 	// Draw the 0 line
-	$graph->setFontProperties("pChart/fonts/tahoma.ttf",6);
+	$graph->setFontProperties($root."pChart/fonts/tahoma.ttf",6);
 	$graph->drawTreshold(0,143,55,72,TRUE,TRUE);
 	 
 	 
@@ -114,9 +112,9 @@ while($j < 11)
 	$graph->drawCubicCurve($DataSet->GetData(),$DataSet->GetDataDescription());
 	 
 	// Finish the graph  
-	$graph->setFontProperties("pChart/fonts/tahoma.ttf",8);
-	$graph->drawLegend(680,30,$DataSet->GetDataDescription(),235,235,235);
-	$graph->setFontProperties("pChart/fonts/tahoma.ttf",12);
+	$graph->setFontProperties($root."pChart/fonts/tahoma.ttf",8);
+	$graph->drawLegend(650,30,$DataSet->GetDataDescription(),235,235,235);
+	$graph->setFontProperties($root."pChart/fonts/tahoma.ttf",12);
 	$graph->drawTitle(50,22,'Evolution du nombre de stars par royaume (moyenne sur 5 jours) - Graph '.($i + 1),50,50,50,585);
 	$graph->Render($root.'image/stat_star'.($i + 1).'.png');
 

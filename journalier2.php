@@ -8,6 +8,7 @@
 }
 */
 $mail = '';
+$root = '';
 
 function __autoload($class_name)
 {
@@ -509,7 +510,6 @@ $requete = "DELETE FROM map_monstre WHERE mort_naturelle < ".time();
 $db->query($requete);
 
 require_once('stats/stat_star.php');
-
 require_once('stats/stat_autres.php');
 
 //Groupes du forum

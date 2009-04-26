@@ -1,6 +1,4 @@
 <?php
-$root = '';
-
 $data = array();
 $legend = array();
 $label = array();
@@ -8,6 +6,7 @@ $dates = array();
 
 $LARGEUR = 750;
 $HAUTEUR = 400;
+$bord_gauche = $LARGEUR - 20;
 
 $date = date("Y-m-d");
 $requete = "SELECT niveau_moyen, nombre_joueur, nombre_monstre, EXTRACT(YEAR FROM date) as year, EXTRACT(MONTH FROM date) as month, EXTRACT(DAY FROM date) as day FROM stat_jeu WHERE date > DATE_SUB('".$date."', INTERVAL 31 DAY) ORDER BY date;";
@@ -41,16 +40,16 @@ $DataSet->SetAbsciseLabelSerie("dates");
 
 //Graph
 $graph = new pChart($LARGEUR, $HAUTEUR);
-$graph->setFontProperties("pChart/fonts/tahoma.ttf",8);
-$graph->setGraphArea(70,30,730,375);
-$graph->drawFilledRoundedRectangle(7,7,730,393,5,240,240,240);
-$graph->drawRoundedRectangle(5,5,730,395,5,230,230,230);
-$graph->drawGraphArea(255,255,255,TRUE);
+$graph->setFontProperties($root."pChart/fonts/tahoma.ttf",8);
+$graph->setGraphArea(70,30,$bord_gauche,375);
+$graph->drawFilledRoundedRectangle(7, 7, ($LARGEUR - 7), 393, 5, 240, 240, 240);
+$graph->drawRoundedRectangle(5, 5, ($LARGEUR - 5), 395, 5, 230, 230, 230);
+$graph->drawGraphArea(200,200,200);
 $graph->drawScale($DataSet->GetData(),$DataSet->GetDataDescription(),SCALE_NORMAL,150,150,150,TRUE,0,2);
-$graph->drawGrid(4,TRUE,230,230,230,200);
+$graph->drawGrid(4,TRUE,230,230,230);
 
 // Draw the 0 line
-$graph->setFontProperties("pChart/fonts/tahoma.ttf",6);
+$graph->setFontProperties($root."pChart/fonts/tahoma.ttf",6);
 $graph->drawTreshold(0,143,55,72,TRUE,TRUE);
 
 //Changer la couleur des graphes
@@ -58,10 +57,10 @@ $graph->setColorPalette(0, 32, 38, 111);
 
 // Draw the cubic curve graph
 $graph->drawLineGraph($DataSet->GetData(),$DataSet->GetDataDescription());
-$graph->drawPlotGraph($DataSet->GetData(),$DataSet->GetDataDescription(),3,2,255,255,255);
+$graph->drawPlotGraph($DataSet->GetData(),$DataSet->GetDataDescription(),2,1,200,200,200);
 
 // Finish the graph  
-$graph->setFontProperties("pChart/fonts/tahoma.ttf",12);
+$graph->setFontProperties($root."pChart/fonts/tahoma.ttf",12);
 $graph->drawTitle(50,22,'Evolution du nombre de joueurs',50,50,50,585);
 $graph->Render($root.'image/stat_joueur.png');
 
@@ -74,16 +73,16 @@ $DataSet->SetAbsciseLabelSerie("dates");
 
 //Graph
 $graph = new pChart($LARGEUR, $HAUTEUR);
-$graph->setFontProperties("pChart/fonts/tahoma.ttf",8);
-$graph->setGraphArea(70,30,750,375);
-$graph->drawFilledRoundedRectangle(7,7,730,393,5,240,240,240);
-$graph->drawRoundedRectangle(5,5,730,395,5,230,230,230);
-$graph->drawGraphArea(255,255,255,TRUE);
+$graph->setFontProperties($root."pChart/fonts/tahoma.ttf",8);
+$graph->setGraphArea(70,30,$bord_gauche,375);
+$graph->drawFilledRoundedRectangle(7,7,($LARGEUR - 7),393,5,240,240,240);
+$graph->drawRoundedRectangle(5,5,($LARGEUR - 5),395,5,230,230,230);
+$graph->drawGraphArea(200,200,200);
 $graph->drawScale($DataSet->GetData(),$DataSet->GetDataDescription(),SCALE_NORMAL,150,150,150,TRUE,0,2);
-$graph->drawGrid(4,TRUE,230,230,230,200);
+$graph->drawGrid(4,TRUE,230,230,230);
 
 // Draw the 0 line
-$graph->setFontProperties("pChart/fonts/tahoma.ttf",6);
+$graph->setFontProperties($root."pChart/fonts/tahoma.ttf",6);
 $graph->drawTreshold(0,143,55,72,TRUE,TRUE);
 
 //Changer la couleur
@@ -91,10 +90,10 @@ $graph->setColorPalette(0, 32, 38, 111);
 
 // Draw the cubic curve graph
 $graph->drawLineGraph($DataSet->GetData(),$DataSet->GetDataDescription());
-$graph->drawPlotGraph($DataSet->GetData(),$DataSet->GetDataDescription(),3,2,255,255,255);
+$graph->drawPlotGraph($DataSet->GetData(),$DataSet->GetDataDescription(),2,1,200,200,200);
 
 // Finish the graph  
-$graph->setFontProperties("pChart/fonts/tahoma.ttf",12);
+$graph->setFontProperties($root."pChart/fonts/tahoma.ttf",12);
 $graph->drawTitle(50,22,'Evolution du nombre de monstres',50,50,50,585);
 $graph->Render($root.'image/stat_monstre.png');
 
@@ -107,16 +106,16 @@ $DataSet->SetAbsciseLabelSerie("dates");
 
 //Graph
 $graph = new pChart($LARGEUR,$HAUTEUR);
-$graph->setFontProperties("pChart/fonts/tahoma.ttf",8);
-$graph->setGraphArea(70,30,750,375);
-$graph->drawFilledRoundedRectangle(7,7,730,393,5,240,240,240);
-$graph->drawRoundedRectangle(5,5,730,395,5,230,230,230);
-$graph->drawGraphArea(255,255,255,TRUE);
+$graph->setFontProperties($root."pChart/fonts/tahoma.ttf",8);
+$graph->setGraphArea(70,30,$bord_gauche,375);
+$graph->drawFilledRoundedRectangle(7,7,($LARGEUR - 7),393,5,240,240,240);
+$graph->drawRoundedRectangle(5,5,($LARGEUR - 5),395,5,230,230,230);
+$graph->drawGraphArea(200,200,200);
 $graph->drawScale($DataSet->GetData(),$DataSet->GetDataDescription(),SCALE_NORMAL,150,150,150,TRUE,0,2);
-$graph->drawGrid(4,TRUE,230,230,230,200);
+$graph->drawGrid(4,TRUE,230,230,230);
 
 // Draw the 0 line
-$graph->setFontProperties("pChart/fonts/tahoma.ttf",6);
+$graph->setFontProperties($root."pChart/fonts/tahoma.ttf",6);
 $graph->drawTreshold(0,143,55,72,TRUE,TRUE);
 
 //Changer la couleur
@@ -124,10 +123,10 @@ $graph->setColorPalette(0, 32, 38, 111);
 
 // Draw the cubic curve graph
 $graph->drawLineGraph($DataSet->GetData(),$DataSet->GetDataDescription());
-$graph->drawPlotGraph($DataSet->GetData(),$DataSet->GetDataDescription(),3,2,255,255,255);
+$graph->drawPlotGraph($DataSet->GetData(),$DataSet->GetDataDescription(),2,1,200,200,200);
 
 // Finish the graph  
-$graph->setFontProperties("pChart/fonts/tahoma.ttf",12);
+$graph->setFontProperties($root."pChart/fonts/tahoma.ttf",12);
 $graph->drawTitle(50,22,'Evolution du niveau moyen',50,50,50,585);
 $graph->Render($root.'image/stat_niveau_moyen.png');
 ?>

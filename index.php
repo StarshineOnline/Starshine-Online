@@ -130,12 +130,13 @@ window.onload = function()
 	<div class='box'>
 		<input type='hidden' id='menu_encours' value='presentation' />
 		<div id='presentation_box'>
-			<p>Bienvenue dans le monde de Starshine-Online.<br />
-Pour l'instant au stade de la béta (c'est à dire en phase d'équilibrage et d'amélioration du monde), starshine-online sera un jeu de rôle massivement mutijoueur (mmorpg) en tour par tour.<br /><br />
-Il vous permettra d'entrer dans la peau d'un grand héros de l'univers Starshine peuplé de nombreuses créatures et d'autres héros ennemis près a tout pour détruire votre peuple.
+			<p>    Bienvenue dans le monde de Starshine-Online.
+Pour l'instant au stade de la bêta (c'est à dire en phase d'équilibrage et d'amélioration du monde), Starshine-Online sera un jeu de rôle massivement multijoueur (MMORPG) en tour par tour.<br />
+<br />
+Il vous permettra d'incarner un grand héros de l'univers Starshine, peuplé de nombreuses créatures et d'autres héros ennemis prêts à tout pour détruire votre peuple.<br />
 <br /><br />
-Il est recommandé d'avoir un navigateur dernière génération pour jouer à Starshine, nous vous conseillons Firefox, un navigateur libre.<br />
-N'oubliez pas de reporter les bugs et problèmes, et de suggérer de nouvelles choses sur le forum.</p>
+Il est recommandé d'utiliser un navigateur dernière génération pour jouer à Starshine, nous vous conseillons Firefox, un navigateur libre.<br />
+N'oubliez pas de reporter les bugs et problèmes, et d'apporter vos suggestions sur le forum.</p>
 
 		</div>
 		<div id='screenshot_box' style='display:none;'>
