@@ -105,7 +105,7 @@ function make_overlib($message)
 	return "overlib('<ul><li class=\'overlib_titres\'>".$print."</li></ul>', BGCLASS, 'overlib', BGCOLOR, '', FGCOLOR, '', VAUTO);";
 }
 
-function affiche_perso_visu($joueur, $W_row)
+function affiche_perso_visu($joueur, $W_row, $position="")
 {
 	global $db;
 	global $Tclasse;
@@ -161,13 +161,8 @@ function affiche_perso_visu($joueur, $W_row)
 		{
 			echo $chaine_nom;
 		}
-	
-	
-	echo '</a></span>';
-	//	echo '<a href="" onclick="return envoiInfo(this.href\'infojoueur.php?ID='.$W_ID.'&poscase='.$W_case.'\', \'information\')" onmousemove="afficheInfo(\'info_'.$W_ID.'\', \'block\', event, \'centre\');" onmouseout="afficheInfo(\'info_'.$W_ID.'\', \'none\', event, \'centre\');"><strong>'.$chaine_nom.'</strong></td><td width="30%">'.$Gtrad[$W_race].'</a></td>';
-	//	$affiche_div .= '<div class="jsinformation_case" id="info_'.$W_ID.'">
-	//	'.$Gtrad['diplo'.$diplo].' => XP : '.($facteur_xp * 100).'% - Honneur : '.($facteur_honneur * 100).'%
-	//	</div>';
+
+	echo '</a>'.$position.'</span>';
 	echo '<span style="float:left;">';
 	if ($W_ID != $_SESSION['ID']) {
 		echo '
