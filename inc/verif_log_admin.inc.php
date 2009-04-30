@@ -19,7 +19,7 @@
 			$verif = true;
 			$R['statut'] = 'admin';
 		}
-		elseif($_SESSION['admin_nom'] == 'modo' AND sha1(md5($_SESSION['admin_pass'])) == '8015633540bbcfdef5e33c99f01c7495584aad21')
+		elseif($_SESSION['admin_nom'] == 'modo' AND sha1(md5($_SESSION['admin_pass'])) == '23da528c728a7454786b82500c7e3cc037080b3d')
 		{
 			$verif = true;
 			$R['statut'] = 'modo';
@@ -28,6 +28,7 @@
 		{
 			echo 'Erreur mot de passe';
 			$verif = false;
+			echo sha1(md5($_POST['pass']));
 		}
 	}
 	if(!$verif)
@@ -49,5 +50,6 @@
 		//On l'enregistre dans les logs
 		$requete = "INSERT INTO log_admin VALUES(NULL, '".$R['statut']."', '".$_SERVER['REMOTE_ADDR']."', ".time().")";
 		$db_log->query($requete);
+		
 	}
 ?>
