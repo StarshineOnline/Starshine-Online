@@ -342,14 +342,16 @@ else
 			$fiabilite = round((100 / $nbr_barre_total), 2);
 			echo '
 			<hr />';
+
+			//Augmentation des compétences liées
+			$augmentation = augmentation_competence('survie', $attaquant, 0.2);
+			//		var_dump($augmentation);
 			if($augmentation[1] == 1)
 			{
 				$attaquant['survie'] = $augmentation[0];
-				$message .= '<span class="augcomp">Vous êtes maintenant à '.$attaquant['survie'].' en '.$Gtrad['survie'].'</span>';
+				echo '<span class="augcomp">Vous êtes maintenant à '.$attaquant['survie'].' en '.$Gtrad['survie'].'</span>';
 			}
 
-			//Augmentation des compétences liées
-			$augmentation = augmentation_competence('survie', $attaquant, 2);
 			if($defenseur['espece'] == 'bete' AND array_key_exists('survie_bete', $attaquant['competences']))
 			{
 				//Augmentation des compétences liées
