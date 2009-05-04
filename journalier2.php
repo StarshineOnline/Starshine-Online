@@ -96,10 +96,21 @@ copy('image/stat_monstre.png', 'image/stat/'.$date.'/stat_monstre.png');
 copy('image/stat_niveau_moyen.png', 'image/stat/'.$date.'/stat_niveau_moyen.png');
 
 //Entretien des batiments et constructions
-//On récupère le nombre d'habitants très actifs
 $semaine = time() - (3600 * 24 * 7);
 $royaumes = array();
-$requete = "SELECT race, COUNT(*) as tot FROM perso WHERE level > 3 AND dernier_connexion > ".$semaine." GROUP BY race";
+// On récupère le niveau moyen
+$requete = "select sum(level)/count(id) moy from perso";
+$req = $db->query($requete);
+$row = $db->read_row($req);
+$moyenne_niveau=$row[0];
+//On récupère le nombre d'habitants très actifs suivant le niveau moyen
+if ($moyenne_niveau > 4) {
+	echo "Niveau de référence pour l'entretien: 4\n<br />";
+	$requete = "SELECT race, COUNT(*) as tot FROM perso WHERE level > 3 AND dernier_connexion > $semaine GROUP BY race";
+} else {
+	echo "Niveau de référence pour l'entretien: $moyenne_niveau\n<br />";
+	$requete = "SELECT race, COUNT(*) as tot FROM perso WHERE level > $moyenne_niveau AND dernier_connexion > $semaine GROUP BY race";
+}
 $req = $db->query($requete);
 while($row = $db->read_row($req))
 {
