@@ -395,12 +395,12 @@ function masqueMessage(id)
 	element.style.display = 'none';
 }
 
-function showChat() {
+function showChat(url) {
 	lnk = document.getElementById('chatlink');
 	lnk.style.display="none";
 	frm = document.getElementById('chatframe');
 	frm.style.display="block";
-	frm.src = "http://widget.mibbit.com/?settings=a0f3506cf53bb4bdc5476642cc300fb2&server=irc.quakenet.org&channel=%23starshine-online&noServerTab=false&autoConnect=true";	
+	frm.src = url;
 	return false;
 }
 
