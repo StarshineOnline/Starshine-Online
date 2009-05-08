@@ -1,33 +1,11 @@
 <?php
-	include('inc/fp.php');
-	$joueur = recupperso($_SESSION['ID']);
-	//Affichage du chat
-	if(array_key_exists('nick', $_GET))
-	{
-	?>
-	<applet codebase="/pjirc/" code=IRCApplet.class archive="irc.jar,pixx.jar" width=640 height=400>
-	<param name="CABINETS" value="irc.cab, securedirc.cab, pixx.cab">
-	<param name="nick" value="<?php echo $_GET['nick']; ?>">
-	<param name="name" value="Starshine User">
-	<param name="host" value="irc.quakenet.org">
-	<param name="gui" value="pixx">
-	<param name="pixx:language" value="pixx-french">
-	<param name="pixx:timestamp" value="true">
-	<param name="highlight" value="true">
-	<param name="pixx:highlightnick" value="true">
-	<param name="style:smileys" value="true">
-	<param name="command1" value="/join #starshine-online">
-	</applet>
-	<?php
-	}
-	//Formulaire chat
-	else
-	{
-	?>
-	<form method="post" action="acces_chat.php">
-		Quel sera votre pseudo : <input type="text" name="nick" id="nick" value="<?php echo $joueur['nom']; ?>" />
-		<input type="button" value="Se connecter" name="chat" onclick="envoiInfo('acces_chat.php?nick=' + $('nick').value, 'popup_content');" />
-	</form>
-	<?php
-	}
+include('inc/fp.php');
+$joueur = recupperso($_SESSION['ID']);
+//Affichage du chat
 ?>
+<script type="text/javascript">
+
+</script>
+<a href="http://widget.mibbit.com/?settings=a0f3506cf53bb4bdc5476642cc300fb2&server=irc.quakenet.org&channel=%23starshine-online&noServerTab=false&autoConnect=true" target="_new">Chat (nouvelle fen&ecirc;tre)</a><br />
+<a href="#" onClick="javascript:showChat();" id="chatlink">Chat (Ingame)</a><br />
+<iframe id="chatframe" style="width: 800px; height: 470px; display: none;" src="" />
