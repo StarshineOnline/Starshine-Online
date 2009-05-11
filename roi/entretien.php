@@ -1,9 +1,14 @@
 <?php
 require('haut_roi.php');
 
+$requete = "select sum(level)/count(id) moy from perso WHERE statut = 'actif'";
+$req = $db->query($requete);
+$row = $db->read_row($req);
+$ref_ta = min(3, floor($row[0]));
+
 $semaine = time() - (3600 * 24 * 7);
 $royaumes = array();
-$requete = "SELECT race, COUNT(*) as tot FROM perso WHERE level > 3 AND dernier_connexion > ".$semaine." GROUP BY race";
+$requete = "SELECT race, COUNT(*) as tot FROM perso WHERE level > $ref_ta AND dernier_connexion > ".$semaine." GROUP BY race";
 $req = $db->query($requete);
 while($row = $db->read_row($req))
 {

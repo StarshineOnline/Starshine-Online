@@ -111,7 +111,13 @@ if($joueur['grade'] == 'Roi' OR $joueur['nom'] == 'Mylok' OR strtolower($joueur[
 	$W_row = $db->read_row($W_req);
 	$h = $W_row[0];
 	$semaine = time() - (3600 * 24 * 7);
-	$W_requete = "SELECT COUNT(*) as count FROM perso WHERE race = '".$R['race']."' AND level > 3 AND dernier_connexion > ".$semaine." AND statut = 'actif'";
+
+	$W_requete = "select sum(level)/count(id) moy from perso WHERE statut = 'actif'";
+	$W_req = $db->query($W_requete);
+	$W_row = $db->read_row($W_req);
+	$ref_ta = min(3, floor($W_row[0]));
+
+	$W_requete = "SELECT COUNT(*) as count FROM perso WHERE race = '".$R['race']."' AND level > $ref_ta AND dernier_connexion > ".$semaine." AND statut = 'actif'";
 	$W_req = $db->query($W_requete);
 	$W_row = $db->read_row($W_req);
 	$hta = $W_row[0];
