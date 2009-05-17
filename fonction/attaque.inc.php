@@ -1,4 +1,8 @@
 <?php  //  -*- tab-width:2  -*-
+/**
+ * @file attaque.inc.php
+ *  
+ */
 include_once($root.'class/comp.class.php');
 
 function attaque($acteur = 'attaquant', $competence)

@@ -1,7 +1,7 @@
 <area shape="rect" href="$quete_8inc_8php.html#855ac234e25aa8926c3bc594fdb0fdf4" title="fin_quete" alt="" coords="155,19,232,48">
 <area shape="rect" href="$base_8inc_8php.html#0c244be4e4bf4a7a5ac3d33caec4fe48" title="Fonction permettant de récupérer les infos des perso, et de les renvoyer." alt="" coords="148,84,239,113">
 <area shape="rect" href="$quete_8inc_8php.html#41e43c9a9929b80cc82ed77870b003ab" title="verif_quete" alt="" coords="149,137,237,167">
-<area shape="rect" href="$base_8inc_8php.html#88fdf6e237810847b63a013e59daaddc" title="prend_objet" alt="" coords="292,5,388,35">
+<area shape="rect" href="$base_8inc_8php.html#88fdf6e237810847b63a013e59daaddc" title="Fonction gérant l&#39;acquisition d&#39;un objet par un personnage." alt="" coords="292,5,388,35">
 <area shape="rect" href="$equipement_8inc_8php.html#100ac4065e5a4228780ac85b43d1dda5" title="decompose_objet" alt="" coords="452,31,583,60">
 <area shape="rect" href="$equipement_8inc_8php.html#6650a744ac48ff6b2775a241e8439a8f" title="enchant" alt="" coords="305,109,375,139">
 <area shape="rect" href="$time_8inc_8php.html#a8bcd4bada1265a01208f21148f60c5e" title="Indique quel est le moment de la journée (matin, journée, soir ou nuit)." alt="" coords="288,163,392,192">

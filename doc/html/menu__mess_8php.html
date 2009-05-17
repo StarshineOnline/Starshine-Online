@@ -21,33 +21,33 @@
 <h1>Référence du fichier menu_mess.php</h1><table border="0" cellpadding="0" cellspacing="0">
 <tr><td></td></tr>
 <tr><td colspan="2"><br><h2>Variables</h2></td></tr>
-<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="menu__mess_8php.html#1ea21bf4b1af1ebda1b8c63b0e364ce9">$requete</a> = &quot;SELECT COUNT(<a class="el" href="bureau__quete_8php.html#cf2488b95c97e0378c9bf49de3b50f28">id</a>) FROM message WHERE id_dest = '&quot;.$_SESSION['ID'].&quot;' AND FIND_IN_SET('lu', <a class="el" href="action__modif__t_8php.html#7aead736a07eaf25623ad7bfa1f0ee2d">type</a>) = 0&quot;</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="menu__mess_8php.html#d235545a8d1696b59690bf3920d7c889">$messagerie</a> = new <a class="el" href="classmessagerie.html">messagerie</a>($_SESSION['ID'])</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="menu__mess_8php.html#4776df15be7b71be139733a68138a595">$nb_mess</a> = $row[0]</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="menu__mess_8php.html#4776df15be7b71be139733a68138a595">$nb_mess</a> = $<a class="el" href="classmessagerie.html">messagerie</a>-&gt;get_non_lu()</td></tr>
 
 </table>
 <hr><h2>Documentation des variables</h2>
+<a class="anchor" name="d235545a8d1696b59690bf3920d7c889"></a><!-- doxytag: member="menu_mess.php::$messagerie" ref="d235545a8d1696b59690bf3920d7c889" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">$<a class="el" href="classmessagerie.html">messagerie</a> = new <a class="el" href="classmessagerie.html">messagerie</a>($_SESSION['ID'])          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
 <a class="anchor" name="4776df15be7b71be139733a68138a595"></a><!-- doxytag: member="menu_mess.php::$nb_mess" ref="4776df15be7b71be139733a68138a595" args="" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$nb_mess = $row[0]          </td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>
-
-</div>
-</div><p>
-<a class="anchor" name="1ea21bf4b1af1ebda1b8c63b0e364ce9"></a><!-- doxytag: member="menu_mess.php::$requete" ref="1ea21bf4b1af1ebda1b8c63b0e364ce9" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">$requete = &quot;SELECT COUNT(<a class="el" href="bureau__quete_8php.html#cf2488b95c97e0378c9bf49de3b50f28">id</a>) FROM message WHERE id_dest = '&quot;.$_SESSION['ID'].&quot;' AND FIND_IN_SET('lu', <a class="el" href="action__modif__t_8php.html#7aead736a07eaf25623ad7bfa1f0ee2d">type</a>) = 0&quot;          </td>
+          <td class="memname">$nb_mess = $<a class="el" href="classmessagerie.html">messagerie</a>-&gt;get_non_lu()          </td>
         </tr>
       </table>
 </div>
@@ -58,7 +58,7 @@
 </div>
 </div><p>
 </div>
-<hr size="1"><address style="text-align: right;"><small>Généré le Sun Nov 30 19:54:58 2008 pour Starshine Online par&nbsp;
+<hr size="1"><address style="text-align: right;"><small>Généré le Fri May 8 12:45:36 2009 pour Starshine Online par&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.6 </small></address>
 </body>

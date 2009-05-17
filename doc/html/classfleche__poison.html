@@ -29,14 +29,14 @@ Graphe d'héritage de fleche_poison:</div>
 <div class="dynsection">
 <p><center><img src="classfleche__poison__inherit__graph.png" border="0" usemap="#fleche__poison__inherit__map" alt="Inheritance graph"></center>
 <map name="fleche__poison__inherit__map">
-<area shape="rect" href="classcomp__combat.html" title="Competence de combat." alt="" coords="43,693,152,773"><area shape="rect" href="classactive__effect.html" title="Effect actif : buff ou compétence de combat." alt="" coords="43,469,152,645"><area shape="rect" href="classeffect.html" title="Classe de base pour la gestion des effets en combat." alt="" coords="5,5,189,421"></map>
+<area shape="rect" href="classcomp__combat.html" title="Competence de combat." alt="" coords="47,1024,159,1112"><area shape="rect" href="classactive__effect.html" title="Effect actif : buff ou compétence de combat." alt="" coords="47,776,159,976"><area shape="rect" href="classeffect.html" title="Classe de base pour la gestion des effets en combat." alt="" coords="5,5,200,728"></map>
 <center><font size="2">[<a href="graph_legend.html">légende</a>]</font></center></div>
 <div class="dynheader">
 Graphe de collaboration de fleche_poison:</div>
 <div class="dynsection">
 <p><center><img src="classfleche__poison__coll__graph.png" border="0" usemap="#fleche__poison__coll__map" alt="Collaboration graph"></center>
 <map name="fleche__poison__coll__map">
-<area shape="rect" href="classcomp__combat.html" title="Competence de combat." alt="" coords="43,693,152,773"><area shape="rect" href="classactive__effect.html" title="Effect actif : buff ou compétence de combat." alt="" coords="43,469,152,645"><area shape="rect" href="classeffect.html" title="Classe de base pour la gestion des effets en combat." alt="" coords="5,5,189,421"></map>
+<area shape="rect" href="classcomp__combat.html" title="Competence de combat." alt="" coords="47,1024,159,1112"><area shape="rect" href="classactive__effect.html" title="Effect actif : buff ou compétence de combat." alt="" coords="47,776,159,976"><area shape="rect" href="classeffect.html" title="Classe de base pour la gestion des effets en combat." alt="" coords="5,5,200,728"></map>
 <center><font size="2">[<a href="graph_legend.html">légende</a>]</font></center></div>
 
 <p>
@@ -45,15 +45,20 @@ Graphe de collaboration de fleche_poison:</div>
 <tr><td colspan="2"><br><h2>Fonctions membres publiques</h2></td></tr>
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfleche__poison.html#b66829ae42a173797f4a24d7aa6e1913">__construct</a> ($aLevel=1)</td></tr>
 
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Constructeur.  <a href="#b66829ae42a173797f4a24d7aa6e1913"></a><br></td></tr>
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfleche__poison.html#76478216e4eb90c3051c7ba48bbb788a">calcul_arme</a> (&amp;$actif, &amp;$passif, $<a class="el" href="classarme.html">arme</a>)</td></tr>
 
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Modifie le facteur de dégâts de l'arme.  <a href="#76478216e4eb90c3051c7ba48bbb788a"></a><br></td></tr>
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfleche__poison.html#d0c01ef2b8d32af6595eadd8780a1274">inflige_degats</a> (&amp;$actif, &amp;$passif, $degats)</td></tr>
 
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Applique les effets ayant lieu lorsque les dégâts ont lieu.  <a href="#d0c01ef2b8d32af6595eadd8780a1274"></a><br></td></tr>
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfleche__poison.html#a268d3331a123d871170899452a8ef90">fin_round</a> (&amp;$actif, &amp;$passif)</td></tr>
 
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Action a effectuer en fin de round.  <a href="#a268d3331a123d871170899452a8ef90"></a><br></td></tr>
 <tr><td colspan="2"><br><h2>Fonctions membres publiques statiques</h2></td></tr>
 <tr><td class="memItemLeft" nowrap align="right" valign="top">static&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfleche__poison.html#05d5cdccd5db49d9c0009bcc894a400d">factory</a> (&amp;$effects, &amp;$actif, &amp;$passif, $acteur)</td></tr>
 
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Crée l'effet.  <a href="#05d5cdccd5db49d9c0009bcc894a400d"></a><br></td></tr>
 <tr><td colspan="2"><br><h2>Attributs publics</h2></td></tr>
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfleche__poison.html#bda6e171a3fc5f88dbffc56234a0fea1">$poison</a></td></tr>
 
@@ -67,7 +72,7 @@ Graphe de collaboration de fleche_poison:</div>
           <td class="memname">fleche_poison::__construct           </td>
           <td>(</td>
           <td class="paramtype">$&nbsp;</td>
-          <td class="paramname"> <em>aLevel</em> = <code>1</code>          </td>
+          <td class="paramname"> <em>aNom</em> = <code>1</code>          </td>
           <td>&nbsp;)&nbsp;</td>
           <td></td>
         </tr>
@@ -76,6 +81,13 @@ Graphe de collaboration de fleche_poison:</div>
 <div class="memdoc">
 
 <p>
+Constructeur. 
+<p>
+<dl compact><dt><b>Paramètres:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>$aNom</em>&nbsp;</td><td>Nom de l'effet. </td></tr>
+  </table>
+</dl>
 
 <p>Réimplémentée à partir de <a class="el" href="classeffect.html#b0d55424478d6a027f340cb8599ae301">effect</a>.</p>
 
@@ -120,6 +132,16 @@ Graphe de collaboration de fleche_poison:</div>
 <div class="memdoc">
 
 <p>
+Crée l'effet. 
+<p>
+<dl compact><dt><b>Paramètres:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>$effects</em>&nbsp;</td><td>Tableau des effets. </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>$actif</em>&nbsp;</td><td><a class="el" href="class_personnage.html" title="Class Personnage.">Personnage</a> actif lors de l'action. </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>$passif</em>&nbsp;</td><td><a class="el" href="class_personnage.html" title="Class Personnage.">Personnage</a> passif lors de l'action. </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>$acteur</em>&nbsp;</td><td>Indique si le personnage à l'origine de l'effet est l'attaquant ("attaquant") ou le défenseur. </td></tr>
+  </table>
+</dl>
 
 <p>Réimplémentée à partir de <a class="el" href="classeffect.html#bbc0316d90e9e9e6af4e1ee4e7ca07b7">effect</a>.</p>
 
@@ -166,6 +188,16 @@ Voici le graphe d'appel pour cette fonction :</div>
 <div class="memdoc">
 
 <p>
+Modifie le facteur de dégâts de l'arme. 
+<p>
+<dl compact><dt><b>Paramètres:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>$actif</em>&nbsp;</td><td><a class="el" href="class_personnage.html" title="Class Personnage.">Personnage</a> actif lors de l'action. </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>$passif</em>&nbsp;</td><td><a class="el" href="class_personnage.html" title="Class Personnage.">Personnage</a> passif lors de l'action. </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>$arme</em>&nbsp;</td><td>Facteur de dégâts avant modification.</td></tr>
+  </table>
+</dl>
+<dl class="return" compact><dt><b>Renvoie:</b></dt><dd>Facteur de dégâts après modification. </dd></dl>
 
 <p>Réimplémentée à partir de <a class="el" href="classeffect.html#3cb7f9caa0cb892aa871e3ac228f3d7f">effect</a>.</p>
 
@@ -203,6 +235,15 @@ Voici le graphe d'appel pour cette fonction :</div>
 <div class="memdoc">
 
 <p>
+Applique les effets ayant lieu lorsque les dégâts ont lieu. 
+<p>
+<dl compact><dt><b>Paramètres:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>$actif</em>&nbsp;</td><td><a class="el" href="class_personnage.html" title="Class Personnage.">Personnage</a> actif lors de l'action. </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>$passif</em>&nbsp;</td><td><a class="el" href="class_personnage.html" title="Class Personnage.">Personnage</a> passif lors de l'action. </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>$degats</em>&nbsp;</td><td>Dégâts infligés. </td></tr>
+  </table>
+</dl>
 
 <p>Réimplémentée à partir de <a class="el" href="classeffect.html#6066d3efba0d40d45b81e0f8239ecf4e">effect</a>.</p>
 
@@ -234,6 +275,14 @@ Voici le graphe d'appel pour cette fonction :</div>
 <div class="memdoc">
 
 <p>
+Action a effectuer en fin de round. 
+<p>
+<dl compact><dt><b>Paramètres:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>$actif</em>&nbsp;</td><td><a class="el" href="class_personnage.html" title="Class Personnage.">Personnage</a> actif lors de l'action. </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>$passif</em>&nbsp;</td><td><a class="el" href="class_personnage.html" title="Class Personnage.">Personnage</a> passif lors de l'action. </td></tr>
+  </table>
+</dl>
 
 <p>Réimplémentée à partir de <a class="el" href="classeffect.html#8907603b4e1152922cd9a1c8befd6bb5">effect</a>.</p>
 
@@ -256,7 +305,7 @@ Voici le graphe d'appel pour cette fonction :</div>
 </div>
 </div><p>
 </div>
-<hr size="1"><address style="text-align: right;"><small>Généré le Sun Nov 30 19:55:09 2008 pour Starshine Online par&nbsp;
+<hr size="1"><address style="text-align: right;"><small>Généré le Fri May 8 12:45:39 2009 pour Starshine Online par&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.6 </small></address>
 </body>

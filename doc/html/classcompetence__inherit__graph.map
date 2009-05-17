@@ -1,4 +1,4 @@
-<area shape="rect" href="$classart__critique.html" title="{art_critique\n|+ $critique\l|+ __construct()\l+ fin_round()\l+ calcul_mult_critique()\l}" alt="" coords="5,621,160,733">
-<area shape="rect" href="$classmaitrise__bouclier.html" title="{maitrise_bouclier\n||+ __construct()\l+ calcul_bloquage()\l+ fin_round()\l+ factory()\l}" alt="" coords="184,613,317,741">
-<area shape="rect" href="$classmaitrise__dague.html" title="{maitrise_dague\n||+ __construct()\l+ debut_round()\l+ fin_round()\l+ factory()\l}" alt="" coords="341,613,453,741">
-<area shape="rect" href="$classeffect.html" title="Classe de base pour la gestion des effets en combat." alt="" coords="159,5,343,421">
+<area shape="rect" href="$classart__critique.html" title="{art_critique\n|+ $critique\l|+ __construct()\l+ fin_round()\l+ calcul_mult_critique()\l}" alt="" coords="5,940,173,1065">
+<area shape="rect" href="$classmaitrise__bouclier.html" title="{maitrise_bouclier\n||+ __construct()\l+ calcul_bloquage()\l+ fin_round()\l+ factory()\l}" alt="" coords="197,931,341,1075">
+<area shape="rect" href="$classmaitrise__dague.html" title="{maitrise_dague\n||+ __construct()\l+ debut_round()\l+ fin_round()\l+ factory()\l}" alt="" coords="365,931,485,1075">
+<area shape="rect" href="$classeffect.html" title="Classe de base pour la gestion des effets en combat." alt="" coords="172,5,367,728">

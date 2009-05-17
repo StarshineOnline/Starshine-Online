@@ -1,4 +1,4 @@
-<area shape="rect" href="$classeffect.html#301917a3cf3e45ef2ac88753805481a0" title="effect::hit" alt="" coords="244,5,319,32">
-<area shape="rect" href="$classmagnetique.html#763a8710c892c062dc8adb7fe795267a" title="magnetique::magnetise" alt="" coords="204,56,359,83">
-<area shape="rect" href="$classeffect.html#8a36b50e355bbadc959c3d23ae5a4d15" title="effect::message" alt="" coords="409,31,521,57">
-<area shape="rect" href="$classeffect.html#f72cda22ff99402187d15f1dcc4610f5" title="effect::notice" alt="" coords="417,81,513,108">
+<area shape="rect" href="$classeffect.html#301917a3cf3e45ef2ac88753805481a0" title="Affiche le message de dégâts correspondant à l&#39;effet." alt="" coords="261,5,339,35">
+<area shape="rect" href="$classmagnetique.html#763a8710c892c062dc8adb7fe795267a" title="magnetique::magnetise" alt="" coords="217,59,383,88">
+<area shape="rect" href="$classeffect.html#8a36b50e355bbadc959c3d23ae5a4d15" title="Affiche un message correspondant à l&#39;effet." alt="" coords="432,32,549,61">
+<area shape="rect" href="$classeffect.html#f72cda22ff99402187d15f1dcc4610f5" title="Affiche le message d&#39;informations correspondant à l&#39;effet." alt="" coords="441,85,540,115">

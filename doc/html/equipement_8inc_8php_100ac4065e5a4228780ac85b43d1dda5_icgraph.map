@@ -1,15 +1,16 @@
 <area shape="rect" href="$equipement_8inc_8php.html#c3cae32fd35c5c3d572117d38671a59b" title="description_objet" alt="" coords="195,5,323,35">
-<area shape="rect" href="$equipement_8inc_8php.html#7819f0d89772aa351963ada3978870a5" title="equip_objet" alt="" coords="413,217,507,247">
-<area shape="rect" href="$equipement_8inc_8php.html#55119092ee02830738f54f2fc9f5fd7c" title="nom_objet" alt="" coords="215,112,303,141">
-<area shape="rect" href="$base_8inc_8php.html#88fdf6e237810847b63a013e59daaddc" title="prend_objet" alt="" coords="211,165,307,195">
-<area shape="rect" href="$equipement_8inc_8php.html#cf0c54237b44b383e14a26576197fe9e" title="recherche_nb_objet" alt="" coords="187,219,331,248">
-<area shape="rect" href="$equipement_8inc_8php.html#a2dc746737e17205338eaa6a9fb477a9" title="recherche_objet" alt="" coords="199,59,319,88">
-<area shape="rect" href="$base_8inc_8php.html#0c244be4e4bf4a7a5ac3d33caec4fe48" title="Fonction permettant de récupérer les infos des perso, et de les renvoyer." alt="" coords="213,323,304,352">
-<area shape="rect" href="$equipement_8inc_8php.html#eb5d170da1e7ccdccc8ce037c705f8da" title="verif_echange_joueur" alt="" coords="383,375,537,404">
-<area shape="rect" href="$quete_8inc_8php.html#855ac234e25aa8926c3bc594fdb0fdf4" title="fin_quete" alt="" coords="421,164,499,193">
-<area shape="rect" href="$quete_8inc_8php.html#4bcfd3fff97b506404ded6239d5fb77d" title="verif_action" alt="" coords="617,211,711,240">
-<area shape="rect" href="$quete_8inc_8php.html#414058c10339ae946e604bb594954b49" title="verif_inventaire" alt="" coords="607,119,721,148">
-<area shape="rect" href="$equipement_8inc_8php.html#bd4c46ed0ff7d4a615ef33fd2076abed" title="supprime_objet" alt="" coords="401,111,519,140">
-<area shape="rect" href="$security_8inc_8php.html#48c4fb90180f16ba2648898fc277710a" title="check_undead_players" alt="" coords="379,271,541,300">
-<area shape="rect" href="$equipement_8inc_8php.html#ea0a0acf3578fc049036e57155c05d6d" title="echange_objet_ajout" alt="" coords="589,348,739,377">
-<area shape="rect" href="$equipement_8inc_8php.html#29f8f46cb1bf45fdb0d94f39bade0524" title="verif_echange" alt="" coords="611,401,717,431">
+<area shape="rect" href="$equipement_8inc_8php.html#7819f0d89772aa351963ada3978870a5" title="equip_objet" alt="" coords="413,5,507,35">
+<area shape="rect" href="$equipement_8inc_8php.html#55119092ee02830738f54f2fc9f5fd7c" title="nom_objet" alt="" coords="215,321,303,351">
+<area shape="rect" href="$base_8inc_8php.html#88fdf6e237810847b63a013e59daaddc" title="Fonction gérant l&#39;acquisition d&#39;un objet par un personnage." alt="" coords="211,215,307,244">
+<area shape="rect" href="$equipement_8inc_8php.html#cf0c54237b44b383e14a26576197fe9e" title="recherche_nb_objet" alt="" coords="187,375,331,404">
+<area shape="rect" href="$equipement_8inc_8php.html#a2dc746737e17205338eaa6a9fb477a9" title="recherche_objet" alt="" coords="199,268,319,297">
+<area shape="rect" href="$base_8inc_8php.html#0c244be4e4bf4a7a5ac3d33caec4fe48" title="Fonction permettant de récupérer les infos des perso, et de les renvoyer." alt="" coords="213,109,304,139">
+<area shape="rect" href="$equipement_8inc_8php.html#eb5d170da1e7ccdccc8ce037c705f8da" title="verif_echange_joueur" alt="" coords="383,163,537,192">
+<area shape="rect" href="$quete_8inc_8php.html#855ac234e25aa8926c3bc594fdb0fdf4" title="fin_quete" alt="" coords="421,216,499,245">
+<area shape="rect" href="$quete_8inc_8php.html#4bcfd3fff97b506404ded6239d5fb77d" title="verif_action" alt="" coords="625,215,719,244">
+<area shape="rect" href="$quete_8inc_8php.html#414058c10339ae946e604bb594954b49" title="verif_inventaire" alt="" coords="615,268,729,297">
+<area shape="rect" href="$equipement_8inc_8php.html#bd4c46ed0ff7d4a615ef33fd2076abed" title="supprime_objet" alt="" coords="401,321,519,351">
+<area shape="rect" href="$equipement_8inc_8php.html#d9e1714a49f4cb1043476151823c4482" title="check_utilisation_objet" alt="" coords="591,321,753,351">
+<area shape="rect" href="$security_8inc_8php.html#48c4fb90180f16ba2648898fc277710a" title="check_undead_players" alt="" coords="379,109,541,139">
+<area shape="rect" href="$equipement_8inc_8php.html#ea0a0acf3578fc049036e57155c05d6d" title="echange_objet_ajout" alt="" coords="597,161,747,191">
+<area shape="rect" href="$equipement_8inc_8php.html#29f8f46cb1bf45fdb0d94f39bade0524" title="verif_echange" alt="" coords="619,108,725,137">

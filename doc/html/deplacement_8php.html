@@ -25,30 +25,24 @@
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="deplacement_8php.html#beea5db7af13b1bdd70c46e49f512b26">$joueur</a> = recupperso($_SESSION['ID'])</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="deplacement_8php.html#1ea21bf4b1af1ebda1b8c63b0e364ce9">$requete</a> = 'SELECT x, y FROM perso WHERE ID = \''.$_SESSION['ID'].'\''</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="deplacement_8php.html#8c6df57bd38c86e700ec4ab36ad8a30a">$coord</a> ['x'] = $joueur['x']</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="deplacement_8php.html#63a7a283ea5dee8af1e2d5a3435bf370">$req</a> = $<a class="el" href="classdb.html">db</a>-&gt;query($requete)</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="deplacement_8php.html#fc13a2edebe36034d9fc149f1b9ee90c">$coord</a> ['y'] = $joueur['y']</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="deplacement_8php.html#a1d731aa570613e5bcff831bb10e9b87">$row</a> = $<a class="el" href="classdb.html">db</a>-&gt;read_array($req)</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="deplacement_8php.html#1da8471f4337d840fa44a6a747c10991">$coord</a> ['xavant'] = $joueur['x']</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="deplacement_8php.html#8c6df57bd38c86e700ec4ab36ad8a30a">$coord</a> ['x'] = $row['x']</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="deplacement_8php.html#03bb4150c5acdee713a3d7e66c14ff54">$coord</a> ['yavant'] = $joueur['y']</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="deplacement_8php.html#fc13a2edebe36034d9fc149f1b9ee90c">$coord</a> ['y'] = $row['y']</td></tr>
-
-<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="deplacement_8php.html#1da8471f4337d840fa44a6a747c10991">$coord</a> ['xavant'] = $row['x']</td></tr>
-
-<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="deplacement_8php.html#03bb4150c5acdee713a3d7e66c14ff54">$coord</a> ['yavant'] = $row['y']</td></tr>
-
-<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="ville__bas_8php.html#b0b4257144253a830116a876a99660c4">if</a>($joueur['x'] &gt; 150 OR <br>
-$joueur['y'] &gt; 150) <a class="el" href="jeu2_8php.html#5be84ee6ca5978531539b945d5f4f43a">else</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="deplacement_8php.html#3cb4d4413abaa8e88ec4b2785d1dbf5b">$donjon</a> = false</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="ville__bas_8php.html#e090d03ba817b92f272d5f9e1e3cf724">if</a>($joueur['x'] &gt; 190 OR <br>
+$joueur['y'] &gt; 190) <a class="el" href="roi_2index_8php.html#1c12d30d2681081f13297744af1014a6">else</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="deplacement_8php.html#2a0f737d98f2ce32d89a2d5bf3323a6a">$donjon</a> = false</td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="deplacement_8php.html#3d4d94443fdf15c9749ae4bb4c870c2f">$peu_bouger</a> = true</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="ville__bas_8php.html#b0b4257144253a830116a876a99660c4">if</a>(isset($_GET['deplacement']))&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="deplacement_8php.html#aa73d4a31f1a435e1ac5e12a21a90817">$W_pos</a> = convert_in_pos($coord['x'], $coord['y'])</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="ville__bas_8php.html#e090d03ba817b92f272d5f9e1e3cf724">if</a>(isset($_GET['deplacement']))&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="deplacement_8php.html#aa73d4a31f1a435e1ac5e12a21a90817">$W_pos</a> = convert_in_pos($coord['x'], $coord['y'])</td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="deplacement_8php.html#dc5bfc941d40883a35083b4167529fec">$_SESSION</a> ['position'] = $W_pos</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="ville__bas_8php.html#b0b4257144253a830116a876a99660c4">if</a>($donjon)&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="deplacement_8php.html#cbda600a6f9b0e4701991d099de5d438">else</a></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="ville__bas_8php.html#e090d03ba817b92f272d5f9e1e3cf724">if</a>($donjon)&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="deplacement_8php.html#cbda600a6f9b0e4701991d099de5d438">else</a></td></tr>
 
 </table>
 <hr><h2>Documentation des variables</h2>
@@ -87,7 +81,7 @@ $joueur['y'] &gt; 150) <a class="el" href="jeu2_8php.html#5be84ee6ca5978531539b9
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$coord['yavant'] = $row['y']          </td>
+          <td class="memname">$coord['yavant'] = $joueur['y']          </td>
         </tr>
       </table>
 </div>
@@ -102,7 +96,7 @@ $joueur['y'] &gt; 150) <a class="el" href="jeu2_8php.html#5be84ee6ca5978531539b9
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$coord['xavant'] = $row['x']          </td>
+          <td class="memname">$coord['xavant'] = $joueur['x']          </td>
         </tr>
       </table>
 </div>
@@ -117,7 +111,7 @@ $joueur['y'] &gt; 150) <a class="el" href="jeu2_8php.html#5be84ee6ca5978531539b9
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$coord['y'] = $row['y']          </td>
+          <td class="memname">$coord['y'] = $joueur['y']          </td>
         </tr>
       </table>
 </div>
@@ -132,7 +126,7 @@ $joueur['y'] &gt; 150) <a class="el" href="jeu2_8php.html#5be84ee6ca5978531539b9
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$coord['x'] = $row['x']          </td>
+          <td class="memname">$coord['x'] = $joueur['x']          </td>
         </tr>
       </table>
 </div>
@@ -142,12 +136,12 @@ $joueur['y'] &gt; 150) <a class="el" href="jeu2_8php.html#5be84ee6ca5978531539b9
 
 </div>
 </div><p>
-<a class="anchor" name="3cb4d4413abaa8e88ec4b2785d1dbf5b"></a><!-- doxytag: member="deplacement.php::$donjon" ref="3cb4d4413abaa8e88ec4b2785d1dbf5b" args="" -->
+<a class="anchor" name="2a0f737d98f2ce32d89a2d5bf3323a6a"></a><!-- doxytag: member="deplacement.php::$donjon" ref="2a0f737d98f2ce32d89a2d5bf3323a6a" args="" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="ville__bas_8php.html#b0b4257144253a830116a876a99660c4">if</a> ($joueur['x'] &gt; 150 OR $joueur['y'] &gt; 150) <a class="el" href="jeu2_8php.html#5be84ee6ca5978531539b945d5f4f43a">else</a> $donjon = false          </td>
+          <td class="memname"><a class="el" href="ville__bas_8php.html#e090d03ba817b92f272d5f9e1e3cf724">if</a> ($joueur['x'] &gt; 190 OR $joueur['y'] &gt; 190) <a class="el" href="roi_2index_8php.html#1c12d30d2681081f13297744af1014a6">else</a> $donjon = false          </td>
         </tr>
       </table>
 </div>
@@ -187,57 +181,12 @@ $joueur['y'] &gt; 150) <a class="el" href="jeu2_8php.html#5be84ee6ca5978531539b9
 
 </div>
 </div><p>
-<a class="anchor" name="63a7a283ea5dee8af1e2d5a3435bf370"></a><!-- doxytag: member="deplacement.php::$req" ref="63a7a283ea5dee8af1e2d5a3435bf370" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">$req = $<a class="el" href="classdb.html">db</a>-&gt;query($requete)          </td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>
-
-</div>
-</div><p>
-<a class="anchor" name="1ea21bf4b1af1ebda1b8c63b0e364ce9"></a><!-- doxytag: member="deplacement.php::$requete" ref="1ea21bf4b1af1ebda1b8c63b0e364ce9" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">$requete = 'SELECT x, y FROM perso WHERE ID = \''.$_SESSION['ID'].'\''          </td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>
-
-</div>
-</div><p>
-<a class="anchor" name="a1d731aa570613e5bcff831bb10e9b87"></a><!-- doxytag: member="deplacement.php::$row" ref="a1d731aa570613e5bcff831bb10e9b87" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">$row = $<a class="el" href="classdb.html">db</a>-&gt;read_array($req)          </td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>
-
-</div>
-</div><p>
 <a class="anchor" name="aa73d4a31f1a435e1ac5e12a21a90817"></a><!-- doxytag: member="deplacement.php::$W_pos" ref="aa73d4a31f1a435e1ac5e12a21a90817" args="" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="ville__bas_8php.html#b0b4257144253a830116a876a99660c4">if</a> (isset($_GET['deplacement'])) $W_pos = convert_in_pos($coord['x'], $coord['y'])          </td>
+          <td class="memname"><a class="el" href="ville__bas_8php.html#e090d03ba817b92f272d5f9e1e3cf724">if</a> (isset($_GET['deplacement'])) $W_pos = convert_in_pos($coord['x'], $coord['y'])          </td>
         </tr>
       </table>
 </div>
@@ -252,7 +201,7 @@ $joueur['y'] &gt; 150) <a class="el" href="jeu2_8php.html#5be84ee6ca5978531539b9
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="ville__bas_8php.html#b0b4257144253a830116a876a99660c4">if</a> ($donjon) <a class="el" href="jeu2_8php.html#5be84ee6ca5978531539b945d5f4f43a">else</a>          </td>
+          <td class="memname"><a class="el" href="ville__bas_8php.html#e090d03ba817b92f272d5f9e1e3cf724">if</a> ($donjon) <a class="el" href="roi_2index_8php.html#1c12d30d2681081f13297744af1014a6">else</a>          </td>
         </tr>
       </table>
 </div>
@@ -263,7 +212,7 @@ $joueur['y'] &gt; 150) <a class="el" href="jeu2_8php.html#5be84ee6ca5978531539b9
 </div>
 </div><p>
 </div>
-<hr size="1"><address style="text-align: right;"><small>Généré le Sun Nov 30 19:54:41 2008 pour Starshine Online par&nbsp;
+<hr size="1"><address style="text-align: right;"><small>Généré le Fri May 8 12:45:35 2009 pour Starshine Online par&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.6 </small></address>
 </body>

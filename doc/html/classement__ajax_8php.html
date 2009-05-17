@@ -155,12 +155,16 @@
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classement__ajax_8php.html#6f16db779ef3ccea921b277b5dc245d1">$j</a> = 26</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classement__ajax_8php.html#1ea21bf4b1af1ebda1b8c63b0e364ce9">$requete</a> = &quot;SELECT ID, nom, &quot;.sSQL($tri).&quot;, level, race, classe, cache_stat, cache_classe FROM perso WHERE statut = 'actif' AND &quot;.$where.&quot; ORDER BY &quot;.$tri.&quot; DESC, nom ASC LIMIT $inf, $j&quot;</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classement__ajax_8php.html#9dc43420569704ab7dc8ccd844da8127">$ord</a> = strcmp($tri, 'architecture, forge, alchimie') ? $tri : 'ROUND(SQRT(alchimie + forge + architecture))'</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classement__ajax_8php.html#1ea21bf4b1af1ebda1b8c63b0e364ce9">$requete</a> = &quot;SELECT ID, nom, &quot;.sSQL($tri).&quot;, level, race, classe, cache_stat, cache_classe FROM perso WHERE statut = 'actif' AND &quot;.$where.&quot; ORDER BY &quot;.$ord.&quot; DESC, nom ASC LIMIT $inf, $j&quot;</td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classement__ajax_8php.html#63a7a283ea5dee8af1e2d5a3435bf370">$req</a> = $<a class="el" href="classdb.html">db</a>-&gt;query($requete)</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="ville__bas_8php.html#b0b4257144253a830116a876a99660c4">if</a>($tab_classement[$tri]['affiche']) <br>
-<a class="el" href="ville__bas_8php.html#b0b4257144253a830116a876a99660c4">if</a>($tab_classement[$tri]['affiche_niveau'])&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classement__ajax_8php.html#b70ee7529112adea60f93b8a3c2fb4a2">$z</a> = 0</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classement__ajax_8php.html#2cb0c11e1311e9cac869cce6a7194474">$tri</a> = !strcmp('architecture, forge, alchimie', $tri) ? 'craft' : $tri</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="ville__bas_8php.html#e090d03ba817b92f272d5f9e1e3cf724">if</a>($tab_classement[$tri]['affiche']) <br>
+<a class="el" href="ville__bas_8php.html#e090d03ba817b92f272d5f9e1e3cf724">if</a>($tab_classement[$tri]['affiche_niveau'])&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classement__ajax_8php.html#b70ee7529112adea60f93b8a3c2fb4a2">$z</a> = 0</td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classement__ajax_8php.html#77b973d137fb33212e018b042df6e3e7">$y</a> = $inf</td></tr>
 
@@ -196,6 +200,21 @@
 
 </div>
 </div><p>
+<a class="anchor" name="9dc43420569704ab7dc8ccd844da8127"></a><!-- doxytag: member="classement_ajax.php::$ord" ref="9dc43420569704ab7dc8ccd844da8127" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">$ord = strcmp($tri, 'architecture, forge, alchimie') ? $tri : 'ROUND(SQRT(alchimie + forge + architecture))'          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
 <a class="anchor" name="63a7a283ea5dee8af1e2d5a3435bf370"></a><!-- doxytag: member="classement_ajax.php::$req" ref="63a7a283ea5dee8af1e2d5a3435bf370" args="" -->
 <div class="memitem">
 <div class="memproto">
@@ -216,7 +235,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$requete = &quot;SELECT ID, nom, &quot;.sSQL($tri).&quot;, level, race, classe, cache_stat, cache_classe FROM perso WHERE statut = 'actif' AND &quot;.$where.&quot; ORDER BY &quot;.$tri.&quot; DESC, nom ASC LIMIT $inf, $j&quot;          </td>
+          <td class="memname">$requete = &quot;SELECT ID, nom, &quot;.sSQL($tri).&quot;, level, race, classe, cache_stat, cache_classe FROM perso WHERE statut = 'actif' AND &quot;.$where.&quot; ORDER BY &quot;.$ord.&quot; DESC, nom ASC LIMIT $inf, $j&quot;          </td>
         </tr>
       </table>
 </div>
@@ -1201,6 +1220,21 @@
 
 </div>
 </div><p>
+<a class="anchor" name="2cb0c11e1311e9cac869cce6a7194474"></a><!-- doxytag: member="classement_ajax.php::$tri" ref="2cb0c11e1311e9cac869cce6a7194474" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">$tri = !strcmp('architecture, forge, alchimie', $tri) ? 'craft' : $tri          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
 <a class="anchor" name="77b973d137fb33212e018b042df6e3e7"></a><!-- doxytag: member="classement_ajax.php::$y" ref="77b973d137fb33212e018b042df6e3e7" args="" -->
 <div class="memitem">
 <div class="memproto">
@@ -1221,7 +1255,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="ville__bas_8php.html#b0b4257144253a830116a876a99660c4">if</a> ($tab_classement[$tri]['affiche']) <a class="el" href="ville__bas_8php.html#b0b4257144253a830116a876a99660c4">if</a> ($tab_classement[$tri]['affiche_niveau']) $z = 0          </td>
+          <td class="memname"><a class="el" href="ville__bas_8php.html#e090d03ba817b92f272d5f9e1e3cf724">if</a> ($tab_classement[$tri]['affiche']) <a class="el" href="ville__bas_8php.html#e090d03ba817b92f272d5f9e1e3cf724">if</a> ($tab_classement[$tri]['affiche_niveau']) $z = 0          </td>
         </tr>
       </table>
 </div>
@@ -1232,7 +1266,7 @@
 </div>
 </div><p>
 </div>
-<hr size="1"><address style="text-align: right;"><small>Généré le Sun Nov 30 19:54:41 2008 pour Starshine Online par&nbsp;
+<hr size="1"><address style="text-align: right;"><small>Généré le Fri May 8 12:45:35 2009 pour Starshine Online par&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.6 </small></address>
 </body>

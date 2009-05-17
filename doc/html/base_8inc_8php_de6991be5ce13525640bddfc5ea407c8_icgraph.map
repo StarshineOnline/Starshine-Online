@@ -1,10 +1,13 @@
-<area shape="rect" href="$base_8inc_8php.html#2b1d58868952483790df70a8b0539c61" title="Donne le bâtiment situé sur une certaine case." alt="" coords="375,15,484,44">
-<area shape="rect" href="$base_8inc_8php.html#ae459f46fc695ca607b6b8dd54abf9a3" title="Vérifie les modifications de la case." alt="" coords="181,40,272,69">
-<area shape="rect" href="$base_8inc_8php.html#8f6dae8735bd5af08d403f5a2b78de71" title="Récupère les informations sur un bâtiment." alt="" coords="172,93,281,123">
-<area shape="rect" href="$groupe_8inc_8php.html#6ff2d5a26752095e92a2ff4b43cf625f" title="recupgroupe" alt="" coords="177,147,276,176">
-<area shape="rect" href="$base_8inc_8php.html#6aa39ff189b7dd018fb6980b5330ab67" title="verif_mort" alt="" coords="185,200,268,229">
-<area shape="rect" href="$base_8inc_8php.html#9c88b8555ba03e4e43a3e77c5c6e575e" title="verif_ville" alt="" coords="187,253,267,283">
-<area shape="rect" href="$base_8inc_8php.html#c28cbcd0bda84cb77614994a18067f38" title="Ajuste le coût en PA d&#39;un déplacement en fonction de tous les parmètres qui..." alt="" coords="576,15,653,44">
-<area shape="rect" href="$groupe_8inc_8php.html#bd6b2a2a82cdaf199d8426253b9b317d" title="degroup" alt="" coords="393,93,465,123">
-<area shape="rect" href="$classmessagerie.html#320289138709a3bd111e218fcc8c6ce5" title="messagerie::envoi_message" alt="" coords="332,147,527,176">
-<area shape="rect" href="$security_8inc_8php.html#48c4fb90180f16ba2648898fc277710a" title="check_undead_players" alt="" coords="348,200,511,229">
+<area shape="rect" href="$gestion__bataille_8php.html#86ed0172b7f26e8f2fcc5361a6d37fbf" title="affiche_map" alt="" coords="187,5,283,35">
+<area shape="rect" href="$base_8inc_8php.html#2b1d58868952483790df70a8b0539c61" title="Donne le bâtiment situé sur une certaine case." alt="" coords="393,111,503,140">
+<area shape="rect" href="$base_8inc_8php.html#ae459f46fc695ca607b6b8dd54abf9a3" title="Vérifie les modifications de la case." alt="" coords="189,109,280,139">
+<area shape="rect" href="$base_8inc_8php.html#0d89eafca33ed40d768bd6dae1d9e805" title="Calcul des joueurs dans la visu d&#39;un autre La distance utilisée est la distance..." alt="" coords="171,163,299,192">
+<area shape="rect" href="$base_8inc_8php.html#8f6dae8735bd5af08d403f5a2b78de71" title="Récupère les informations sur un bâtiment." alt="" coords="180,216,289,245">
+<area shape="rect" href="$groupe_8inc_8php.html#6ff2d5a26752095e92a2ff4b43cf625f" title="recupgroupe" alt="" coords="185,269,284,299">
+<area shape="rect" href="$base_8inc_8php.html#6aa39ff189b7dd018fb6980b5330ab67" title="Vérifie si le personnage est mort est si c&#39;est le cas affiche la page de résurection..." alt="" coords="193,323,276,352">
+<area shape="rect" href="$base_8inc_8php.html#9c88b8555ba03e4e43a3e77c5c6e575e" title="Vérifie si une certaine position correspond a une ville." alt="" coords="195,376,275,405">
+<area shape="rect" href="$base_8inc_8php.html#c28cbcd0bda84cb77614994a18067f38" title="Ajuste le coût en PA d&#39;un déplacement en fonction de tous les parmètres qui..." alt="" coords="597,111,675,140">
+<area shape="rect" href="$groupe_8inc_8php.html#bd6b2a2a82cdaf199d8426253b9b317d" title="degroup" alt="" coords="412,216,484,245">
+<area shape="rect" href="$classmessagerie.html#320289138709a3bd111e218fcc8c6ce5" title="messagerie::envoi_message" alt="" coords="351,269,545,299">
+<area shape="rect" href="$security_8inc_8php.html#48c4fb90180f16ba2648898fc277710a" title="check_undead_players" alt="" coords="367,323,529,352">
+<area shape="rect" href="$classcraft__recette.html#c13f1f3fe45a2c152e99f7e3be4c72a7" title="craft_recette::get_info_joueur" alt="" coords="348,376,548,405">

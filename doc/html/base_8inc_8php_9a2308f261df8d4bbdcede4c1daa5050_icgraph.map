@@ -1,9 +1,11 @@
-<area shape="rect" href="$base_8inc_8php.html#6d2c7638ffdeb0f25c87c6a512e9de19" title="Calcule la distance &quot;non pythagoriciene&quot; entre deux personnages." alt="" coords="215,5,332,35">
-<area shape="rect" href="$base_8inc_8php.html#c28cbcd0bda84cb77614994a18067f38" title="Ajuste le coût en PA d&#39;un déplacement en fonction de tous les parmètres qui..." alt="" coords="816,32,893,61">
-<area shape="rect" href="$base_8inc_8php.html#2d3292ed5dd5c93b9a42992691cee8aa" title="Calcule la distance &quot;pythagoriciene&quot; entre deux personnages." alt="" coords="184,109,363,139">
-<area shape="rect" href="$base_8inc_8php.html#ed5f8dc37c106ba49da25e33dbee3224" title="Detecte si l&#39;attaquant est sur la meme case." alt="" coords="205,163,341,192">
-<area shape="rect" href="$base_8inc_8php.html#8f6dae8735bd5af08d403f5a2b78de71" title="Récupère les informations sur un bâtiment." alt="" coords="412,5,521,35">
-<area shape="rect" href="$base_8inc_8php.html#2b1d58868952483790df70a8b0539c61" title="Donne le bâtiment situé sur une certaine case." alt="" coords="615,5,724,35">
-<area shape="rect" href="$groupe_8inc_8php.html#6ff2d5a26752095e92a2ff4b43cf625f" title="recupgroupe" alt="" coords="417,109,516,139">
-<area shape="rect" href="$groupe_8inc_8php.html#bd6b2a2a82cdaf199d8426253b9b317d" title="degroup" alt="" coords="633,109,705,139">
-<area shape="rect" href="$classmessagerie.html#320289138709a3bd111e218fcc8c6ce5" title="messagerie::envoi_message" alt="" coords="572,163,767,192">
+<area shape="rect" href="$classmap.html#dac487271a21b805ec56f4f8dbe523a3" title="map::affiche" alt="" coords="225,5,321,35">
+<area shape="rect" href="$base_8inc_8php.html#6d2c7638ffdeb0f25c87c6a512e9de19" title="Calcule la distance &quot;non pythagoriciene&quot; entre deux personnages." alt="" coords="215,59,332,88">
+<area shape="rect" href="$base_8inc_8php.html#c28cbcd0bda84cb77614994a18067f38" title="Ajuste le coût en PA d&#39;un déplacement en fonction de tous les parmètres qui..." alt="" coords="832,85,909,115">
+<area shape="rect" href="$base_8inc_8php.html#2d3292ed5dd5c93b9a42992691cee8aa" title="Calcule la distance &quot;pythagoriciene&quot; entre deux personnages." alt="" coords="184,163,363,192">
+<area shape="rect" href="$base_8inc_8php.html#ed5f8dc37c106ba49da25e33dbee3224" title="Detecte si l&#39;attaquant est sur la meme case." alt="" coords="205,216,341,245">
+<area shape="rect" href="$base_8inc_8php.html#8f6dae8735bd5af08d403f5a2b78de71" title="Récupère les informations sur un bâtiment." alt="" coords="420,59,529,88">
+<area shape="rect" href="$base_8inc_8php.html#2b1d58868952483790df70a8b0539c61" title="Donne le bâtiment situé sur une certaine case." alt="" coords="631,59,740,88">
+<area shape="rect" href="$base_8inc_8php.html#0d89eafca33ed40d768bd6dae1d9e805" title="Calcul des joueurs dans la visu d&#39;un autre La distance utilisée est la distance..." alt="" coords="411,163,539,192">
+<area shape="rect" href="$groupe_8inc_8php.html#6ff2d5a26752095e92a2ff4b43cf625f" title="recupgroupe" alt="" coords="425,216,524,245">
+<area shape="rect" href="$groupe_8inc_8php.html#bd6b2a2a82cdaf199d8426253b9b317d" title="degroup" alt="" coords="649,189,721,219">
+<area shape="rect" href="$classmessagerie.html#320289138709a3bd111e218fcc8c6ce5" title="messagerie::envoi_message" alt="" coords="588,243,783,272">

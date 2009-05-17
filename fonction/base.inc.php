@@ -1745,8 +1745,17 @@ function diff_sort($difficulte, $joueur, $type, $sortpa, $sortmp)
 	return $total;
 }
 
-//Fonction permetter de savoir si lors d'une action la compétence augmente de 1, et retourne la nouvelle valeur de la compétence.
-//Plus le chiffre de difficulte est fort, plus il est difficile de l'apprendre
+/**
+ * Permet de savoir si lors d'une action la compétence augmente de 1.
+ * Plus la difficulte est forte, plus il est difficile de l'apprendre.
+ * 
+ * @param  $competence    ID de la compétence.
+ * @param  $joueur        Tableau associatif décrivant le joueur.
+ * @param  $difficulte    Difficuté
+ * 
+ * @return  [0]     Nouvelle valeur de la compétence.
+ * @return  [1]     1 s'il y a augmentation, 0 sinon.
+ */ 
 function augmentation_competence($competence, $joueur, $difficulte)
 {
 	global $db, $Tmaxcomp, $G_apprentissage_rate, $debugs;
@@ -1766,12 +1775,15 @@ function augmentation_competence($competence, $joueur, $difficulte)
 	<div id="debug'.$debugs.'" class="debug" style="color : #ff00c0;">
 	Maximum de la compétence '.$competence.' = '.$max.'<br />';
 	$val_competence = $joueur[$competence];
-	echo 'Valeur actuel de la compétence : '.$val_competence.'<br />
+	echo 'Valeur actuelle de la compétence : '.$val_competence.'<br />
 	Difficulté : '.$difficulte.'<br />';
+	// Si la compétence n'a pas atteint sa valeur maximale, on effectue le jet d'amélioration
 	if($val_competence < $max)
 	{
+	  // Jet d'amélioration
 		$reussite = ceil(10000 / $G_apprentissage_rate);
 		$numero = rand(1, $reussite);
+		// Valeur seuil
 		if($joueur['race'] == 'humain' OR $joueur['race'] == 'humainnoir') $apprentissage = 1.1; else $apprentissage = 1;
 		if(in_array('apprenti_vent', $joueur['buff'])) $apprentissage = $apprentissage * (1 + ($joueur['buff']['apprenti_vent']['effet'] / 100));
 		if($val_competence > 0) $chance = (10000 * $apprentissage) / (sqrt($val_competence) * $difficulte); else $chance = 0;
@@ -1792,9 +1804,17 @@ function augmentation_competence($competence, $joueur, $difficulte)
 	return $R_retour;
 }
 
-//Fonction permettant de calculer les dés de dégat en fonction de la force et de l'arme de la personne
+/**
+ * Fonction permettant de calculer les dés de dégat en fonction de la force et de l'arme de la personne
+ * 
+ * @param  $force         Force du personnage.
+ * @param  $degat_arme    Facteur de dégâts de l'arme.
+ * 
+ * @return  Tableau contenant les dés à lancer (chaque dès apparait autant de fois dans la tableu qu'il faut le lancer).  
+ */ 
 function de_degat($force, $degat_arme)
 {
+  // tableau utilisé pour déterminer les dés 
 	$tab_de = array();
 	$tab_de[0][0] = 2;
 	$tab_de[0][1] = 3;
@@ -1810,7 +1830,9 @@ function de_degat($force, $degat_arme)
 	$tab_de[1][4] = 10;
 	$tab_de[1][5] = 12;
 	$tab_de[1][6] = 20;
+	// Facteur de dégâts
 	$potentiel = ceil($force / 3) + $degat_arme;
+	// Tableau des dés à lancer
 	$de_degat = array();
 	while($potentiel > 1)
 	{		
@@ -1839,9 +1861,17 @@ function de_degat($force, $degat_arme)
 	return $de;
 }
 
-//Fonction permettant de calculer les dés de soins
+/**
+ * Fonction permettant de calculer les dés de soins.
+ * 
+ * @param  $force         Caractéristique associée.
+ * @param  $degat_arme    Effet du sort.
+ * 
+ * @return  Tableau contenant les dés à lancer (chaque dès apparait autant de fois dans la tableu qu'il faut le lancer). 
+ */ 
 function de_soin($force, $degat_arme)
 {
+  // tableau utilisé pour déterminer les dés 
 	$tab_de = array();
 	$tab_de[0][0] = 3;
 	$tab_de[0][1] = 4;
@@ -1874,18 +1904,29 @@ function de_soin($force, $degat_arme)
 	return $de;
 }
 
+/**
+ * Fonction gérant l'acquisition d'un objet par un personnage.
+ * 
+ * @param  $id_objet    Objet acquis.
+ * @param  $joueur      Tableau décrivant le personnage qui acquiert l'objet.
+ * 
+ * @return  Tableau décrivant le personnage qui acquiert l'objet.
+ */
 function prend_objet($id_objet, $joueur)
 {
 	global $db, $G_erreur, $G_place_inventaire;
 	$trouver = false;
 	$stack = false;
 	$objet_d = decompose_objet($id_objet);
+	// Maximum d'empilement possible
 	if($objet_d['categorie'] != 'o')
 	{
+	  // Ne peut pas être empilé
 		$row['stack'] = 0;
 	}
 	else
 	{
+	  // Récupération de la description de l'objet
 		$id_reel_objet = $objet_d['id_objet'];
 		//Recherche de l'objet
 		$requete = "SELECT * FROM objet WHERE id = ".$id_reel_objet;
@@ -1897,6 +1938,7 @@ function prend_objet($id_objet, $joueur)
 	while(($i < $G_place_inventaire) AND !$trouver)
 	{
 		$objet_i = decompose_objet($joueur['inventaire_slot'][$i]);
+		// Comparaison de la description ('sans_stack') et du nombre d'objet empilé par rapport au maximum
 		if($objet_i['sans_stack'] == $objet_d['sans_stack'] AND intval($objet_i['stack']) < $row['stack'])
 		{
 			$trouver = true;
@@ -1917,24 +1959,28 @@ function prend_objet($id_objet, $joueur)
 			else $i++;
 		}
 	}
-	//Inventaire plein
 	if(!$trouver)
 	{
+	  //Inventaire plein
 		$G_erreur = 'Vous n\'avez plus de place dans votre inventaire<br />';
 		return $false;
 	}
 	else
 	{
+	  // Ajout de l'objet...
 		if(!$stack)
 		{
+		  // ...dans un emplacement vide
 			$joueur['inventaire_slot'][$i] = $id_objet;
 		}
 		else
 		{
+		  // ...à une pile d'objet identiques
 			$stacks = $objet_i['stack'] + 1;
 			if($stacks == 1) $stacks = 2;
 			$joueur['inventaire_slot'][$i] = $objet_i['sans_stack'].'x'.$stacks;
 		}
+		// Mise à jour la base de donnée
 		$inventaire_slot = serialize($joueur['inventaire_slot']);
 		$requete = "UPDATE perso SET inventaire_slot = '".$inventaire_slot."' WHERE ID = ".$joueur['ID'];
 		//echo $requete;
@@ -1944,16 +1990,23 @@ function prend_objet($id_objet, $joueur)
 	return $joueur;
 }
 
+/**
+ * Fonction incrémentant le nombre d'utilisations possibles d'une recette par un personnage
+ * 
+ * @param  $id_recette  Id de la recette à apprendre.
+ * @param  $joueur      Tableau décrivant le personnage qui acquiert l'objet.
+ */
 function prend_recette($id_recette, $joueur)
 {
 	global $db, $G_erreur;
 	$id_reel_recette = mb_substr($id_recette, 1);
-	//Recherche si il a pas déjà cette recette
+	//Recherche s'il a déjà cette recette
 	$requete = "SELECT id, nombre FROM perso_recette WHERE id_recette = ".$id_reel_recette." AND id_perso = ".$joueur['ID'];
 	$db->query($requete);
 	if($db->num_rows > 0)
 	{
 		$row = $db->read_row($req);
+		// S'il a un nombre restreint d'utilisation on incrémente
 		if($row[1] > 0)
 		{
 			$requete = "UPDATE perso_recette SET nombre = nombre + 1 WHERE id = ".$row[0];
@@ -1961,11 +2014,20 @@ function prend_recette($id_recette, $joueur)
 	}
 	else
 	{
+	  // On ajoute la recette avec une utilsation de 1
 		$requete = "INSERT INTO perso_recette VALUES('', ".$id_reel_recette.", ".$joueur['ID'].", 1)";
 	}
 	$db->query($requete);
 }
 
+/**
+ * Renvoie les informations sur le royaume
+ * 
+ * @param  $race_joueur   Race du personnage (pour la diplomatie et les taxes.
+ * @param  $royaume_id    Id du royaume.
+ * 
+ * @return    Tableau associatif contenant les informations sur le royaume.  
+ */
 function get_royaume_info($race_joueur, $royaume_id)
 {
 	global $db;
@@ -1979,7 +2041,7 @@ function get_royaume_info($race_joueur, $royaume_id)
 	$Roy_row['diplo_time'] = unserialize($Roy_row['diplo_time']);
 	if($Roy_row['ID'] != 0)
 	{
-		//Sélection de la diplomatie
+		//Sélection de la diplomatie et des taxes
 		$requete_diplo = "SELECT ".$Roy_row['race']." FROM diplomatie WHERE race = '".$race_joueur."'";
 		$req_diplo = $db->query($requete_diplo);
 		$row_diplo = $db->read_row($req_diplo);
@@ -1992,60 +2054,80 @@ function get_royaume_info($race_joueur, $royaume_id)
 	return $Roy_row;
 }
 
+/**
+ * Calcul la taxe payé par un personnage
+ * 
+ * @param  $taxe    Taxe défini du royaume concerné.
+ * @param  $diplo   Diplomatie entre le royaume concerné et celui du personnage.
+ * 
+ * @return  Taxe payé par le personnage.
+ */
 function taux_taxe($taxe, $diplo)
 {
 	//Calcul de la taxe
 	switch($diplo)
 	{
-		case 127 :
+		case 127 : // même royaume
 			$taxe = floor($taxe / 4);
 		break;
-		case 0 :
+		case 0 : // Alliance fraternelle
 			$taxe = ceil($taxe / 4);
 		break;
-		case 1 :
+		case 1 : // Alliance
 			$taxe = floor($taxe / 3);
 		break;
-		case 2 :
+		case 2 : // Paix durable
 			$taxe = ceil($taxe / 3);
 		break;
-		case 3 :
+		case 3 : // Paix
 			$taxe = floor($taxe / 2);
 		break;
-		case 4 :
+		case 4 : // En bons termes
 			$taxe = ceil($taxe / 2);
 		break;
-		case 5 :
+		case 5 : // Neutre
 			$taxe = ceil($taxe / 1.5);
 		break;
-		case 6 :
+		case 6 : // Mauvais termes
 			$taxe = ceil($taxe / 1);
 		break;
-		case 7 :
+		case 7 : // Guerre
 			$taxe = 0;
 		break;
-		case 8 :
+		case 8 : // Guerre durable
 			$taxe = 0;
 		break;
-		case 9 :
+		case 9 : // Ennemis
 			$taxe = 0;
 		break;
-		case 10 :
+		case 10 : // Ennemis eternels
 			$taxe = 0;
 		break;
-		case 11 :
+		case 11 : // ?
 			$taxe = 0;
 		break;
 	}
 	return $taxe;
 }
 
+/**
+ * Formate les descriptions.
+ * Ce qui est entre % sont remplacé par la variable correspondante dans le tableau
+ * fourni et ce qui est entre @ et évalué. 
+ * 
+ * @param  $texte   Description à formater.
+ * @param  $array   Tableau assiociatif contenant les vaeurs à remplacer.
+ * 
+ * @return    Description formatée.  
+ */
 function description($texte, $array)
 {
+  // Remplacement des variables
 	while(eregi("%([a-z0-9]*)%", $texte, $regs))
 	{
 		$texte = str_replace('%'.$regs[1].'%', $array[$regs[1]], $texte);
 	}
+	// Evaluation
 	$valeur = '';
 	while(eregi("@(.*)@", $texte, $regs))
 	{
@@ -2056,7 +2138,12 @@ function description($texte, $array)
 	return $texte;
 }
 
-//Affiche un lien pour afficher le menu ville
+/**
+ * Affiche un lien pour afficher le menu ville si le personnage est en ville
+ * 
+ * @param  $texte     Texte à afficher dans le lien.
+ * @param  $poscase   Position du personnage.   
+ */ 
 function return_ville($texte, $poscase)
 {
 	if(is_ville($poscase) == 1)
@@ -2075,10 +2162,30 @@ function return_gestion_royaume($texte, $poscase)
 {
 	echo '<a href="ville.php?poscase='.$poscase.'" onclick="return envoiInfo(this.href, \'centre\')">'.$texte.'</a>';
 }
+
+/**
+ * Lance un buff sur un personnage ou un monstre
+ * 
+ * @param  $type          Nom générique du sort.
+ * @param  $id            Id du sort.
+ * @param  $effet         Effet du buff
+ * @param  $effet2        Effet secondaire
+ * @param  $duree         Durée du buff
+ * @param  $nom           Nom du buff
+ * @param  $description   Description du buff
+ * @param  $type_cible    Type de cible ('perso' ou 'monstre')
+ * @param  $debuff        1 si c'est un débuff, 0 si c'est un débuff
+ * @param  $nb_buff       Nombre de buffs déjà actifs sur la cible.
+ * @param  $grade         Grade de la cible.
+ * @param  $supprimable   1 si le buff est supprimable, 0 sinon.
+ * 
+ * @return      true si le sort a été lancé et false sinon.
+ */
 function lance_buff($type, $id, $effet, $effet2, $duree, $nom, $description, $type_cible, $debuff, $nb_buff, $grade, $supprimable = 1)
 {
 	global $db, $G_erreur;
 	$lancement = true;
+	// Choix de la table et du champ d'id
 	if($type_cible == 'perso')
 	{
 		$table = 'buff';
@@ -2089,6 +2196,7 @@ function lance_buff($type, $id, $effet, $effet2, $duree, $nom, $description, $ty
 		$table = 'buff_monstre';
 		$champ = 'id_monstre';
 	}
+	// Requête SQL
 	$Buff_requete = 'SELECT * FROM '.$table.' WHERE '.$champ.' = '.$id.' AND type = \''.$type.'\'';
 	//echo $Buff_requete;
 	$Buff_req = $db->query($Buff_requete);
@@ -2096,30 +2204,43 @@ function lance_buff($type, $id, $effet, $effet2, $duree, $nom, $description, $ty
 	//echo $db->num_rows;
 	if($db->num_rows == 0)
 	{
+	  // La cible n'a pas le sort d'encore lancé
 		if($nb_buff < ($grade + 2))
 		{
+		  // Ajout du buff
 			$requete = "INSERT INTO ".$table."(`type`, `effet`, `effet2`, `fin`, `duree`, `".$champ."`, `nom`, `description`, `debuff`, `supprimable`) VALUES('".$type."', ".$effet.", ".$effet2.", ".(time()+$duree).", ".$duree.", ".$id.", '".$nom."', '".addslashes($description)."', ".$debuff.", ".$supprimable.")";
 			$db->query($requete);
 		}
 		else
 		{
+		  // plus de place
 			$G_erreur = 'overbuff';
 			$lancement = false;
 		}
 	}
 	elseif($effet >= $Buff_row['effet'])
 	{
+	  // L'effet est plus grand (ou égal) : on met à jour
 		$requete = "UPDATE ".$table." SET effet = ".$effet.", effet2 = ".$effet2.", fin = ".(time() + $duree).", nom = '".$nom."', description = '".addslashes($description)."' WHERE id = ".$Buff_row['id'];
 		$db->query($requete);
 	}
 	else
 	{
+	  // La cible a déjà le sort (ou mieux).
 		$G_erreur = 'puissant';
 		$lancement = false;
 	}
 	return $lancement;
 }
 
+/**
+ * Vérifie si le personnage est mort est si c'est le cas affiche la page de résurection ou effectue la rez 
+ * 
+ * @param  $pourcent                    Pourcentage de HP et MP récupérés lors de la rez.
+ * @param  $var                         Choix de rez (1 : page de rez, 2 : capitale, 3 : sort, 4 : fort )
+ * @param  $duree_debuff                Durée du mal de rez
+ * @param  $multiplicateur_mouvement    Multiplicateur de mouvement du mal de rez.
+ */
 function verif_mort($pourcent, $var, $duree_debuff=0, $multiplicateur_mouvement=0)
 {
 	global $Trace, $db, $joueur;
@@ -2133,7 +2254,7 @@ function verif_mort($pourcent, $var, $duree_debuff=0, $multiplicateur_mouvement=
 		//Bonus mort-vivant
 		if($joueur['race'] == 'mortvivant') $bonus = 10;
 		else $bonus = 0;
-		//Vérifie si amende qui empèche le spawn en ville
+		//Vérifie s'il y a une amende qui empèche le spawn en ville
 		$amende = recup_amende($joueur['ID']);
 		$echo = 'Revenir dans votre ville natale';
 		$spawn_ville = 'ok';
@@ -2146,7 +2267,7 @@ function verif_mort($pourcent, $var, $duree_debuff=0, $multiplicateur_mouvement=
 			}
 		}
 		if($var == 1)
-		{
+		{ // Page de résurection
 			?>
 			<div id="presentation">
 				<h2 class="ville_titre">Vous êtes mort</h2>
@@ -2162,6 +2283,7 @@ function verif_mort($pourcent, $var, $duree_debuff=0, $multiplicateur_mouvement=
 					//Supprime les Rez plus valident
 					$requete = "DELETE FROM rez WHERE TIMESTAMPDIFF(MINUTE , time, NOW()) > 1440";
 					//$db->query($requete);
+					// Liste des rez
 					$requete = "SELECT * FROM rez WHERE id_perso = ".$joueur['ID'];
 					$req = $db->query($requete);
 					if($db->num_rows > 0)
@@ -2172,11 +2294,13 @@ function verif_mort($pourcent, $var, $duree_debuff=0, $multiplicateur_mouvement=
 						<li><a href="mort.php?choix=2&amp;rez='.$row['id'].'">Vous faire ressuciter par '.$row['nom_rez'].' ('.($row['pourcent'] + $bonus).'% HP / '.($row['pourcent'] + $bonus).' MP)</li>';
 						}
 					}
+					// Fort le plus proche (si on le personnage n'est pas dans un donjon)
 					if($bat > 0 AND !is_donjon($joueur['x'], $joueur['y']))
 					{
 							echo '
 						<li><a href="mort.php?choix=3&amp;rez='.$row_d['id'].'">Revenir dans le fort le plus proche (x : '.$row_b['x'].' / y : '.$row_b['y'].') ('.($row_b['rez'] + $bonus).'% HP / '.($row_b['rez'] + $bonus).'% MP)</li>';
 					}
+					// Capitale ou refuge des criminels
 					echo '
 						<li><a href="mort.php?choix=1">'.$echo.' ('.(20 + $bonus).'% HP / '.(20 + $bonus).'% MP)</a></li>';
 					?>
@@ -2209,20 +2333,20 @@ function verif_mort($pourcent, $var, $duree_debuff=0, $multiplicateur_mouvement=
 			exit();
 		}
 		elseif($var == 2)
-		{
+		{ // Rez en ville ou dans le refuge des criminels
 			if($spawn_ville == 'ok')
-			{
+			{ // Capitale
 				$joueur['x'] = $Trace[$joueur['race']]['spawn_x'];
 				$joueur['y'] = $Trace[$joueur['race']]['spawn_y'];
 			}
 			else
-			{
+			{ // Refuge des criminels
 				$joueur['x'] = $Trace[$joueur['race']]['spawn_c_x'];
 				$joueur['y'] = $Trace[$joueur['race']]['spawn_c_y'];
 			}
 		}
 		elseif($var == 4)
-		{
+		{ // Fort le plus proche
 			$joueur['x'] = $row_b['x'];
 			$joueur['y'] = $row_b['y'];
 			$pourcent = $row_b['rez'];
@@ -2259,6 +2383,13 @@ function verif_mort($pourcent, $var, $duree_debuff=0, $multiplicateur_mouvement=
 	}
 }
 
+/**
+ * Génère l'image de la barre de PA
+ * 
+ * @param  $joueur    Tableau associatif décrivant le personnage
+ * 
+ * @return    chemin de l'image de la barre.  
+ */
 function genere_image_pa($joueur)
 {
 	global $G_PA_max;
@@ -2267,8 +2398,16 @@ function genere_image_pa($joueur)
 	if($ratio_pa > 10) $ratio_pa = 10;
 	if($ratio_pa < 0) $ratio_pa = 0;
 	$barre_pa = './image/barre/pa'.$ratio_pa.'.png';
-	return $barre_pa;}
+	return $barre_pa;
+}
 
+/**
+ * Génère l'image de la barre de durée des buffs
+ * 
+ * @param  $buff    Tableau associatif décrivant le buff
+ * 
+ * @return    chemin de l'image de la barre.  
+ */
 function genere_image_buff_duree($buff)
 {//-- Barre durée restante du buff
 	$ratio_buff_duree = floor(10 * (($buff['fin'] - time()) / ($buff['duree'])));
@@ -2278,6 +2417,13 @@ function genere_image_buff_duree($buff)
 	return "<img src='".$barre_buff_duree."' class='buff_duree_restante' alt='duree buff' />";
 }
 
+/**
+ * Génère l'image de la barre de HP
+ * 
+ * @param  $joueur    Tableau associatif décrivant le personnage
+ * 
+ * @return    chemin de l'image de la barre.  
+ */
 function genere_image_hp($joueur)
 {
 	//Barre HP
@@ -2288,6 +2434,13 @@ function genere_image_hp($joueur)
 	return $barre_vie;
 }
 
+/**
+ * Génère l'image de la barre de MP
+ * 
+ * @param  $joueur    Tableau associatif décrivant le personnage
+ * 
+ * @return    chemin de l'image de la barre.  
+ */
 function genere_image_mp($joueur)
 {
 	//Barre MP
@@ -2298,6 +2451,13 @@ function genere_image_mp($joueur)
 	return $barre_mp;
 }
 
+/**
+ * Génère l'image de la barre de HP d'un membre du groupe
+ * 
+ * @param  $joueur    Tableau associatif décrivant le personnage
+ * 
+ * @return    chemin de l'image de la barre.  
+ */
 function genere_image_hp_groupe($joueur)
 {
 	//Barre HP
@@ -2308,6 +2468,13 @@ function genere_image_hp_groupe($joueur)
 	return '<img src="'.$barre_vie.'" alt="HP = '.$joueur['hp'].' / '.$joueur['hp_max'].'" title="HP = '.$joueur['hp'].' / '.$joueur['hp_max'].'" style="height : 5px; width : 100px;" />';
 }
 
+/**
+ * Génère l'image de la barre de MP d'un membre du groupe
+ * 
+ * @param  $joueur    Tableau associatif décrivant le personnage
+ * 
+ * @return    chemin de l'image de la barre.  
+ */
 function genere_image_mp_groupe($joueur)
 {
 	//Barre MP
@@ -2318,6 +2485,15 @@ function genere_image_mp_groupe($joueur)
 	return '<img src="'.$barre_mp.'" alt="MP = '.$joueur['mp'].' / '.$joueur['mp_max'].'" title="MP = '.$joueur['mp'].' / '.$joueur['mp_max'].'" style="height : 5px; width : 100px;" />';
 }
 
+/**
+ * Génère l'image de la barre d'XP
+ * 
+ * @param  $xp_joueur       Expérience du joueur.
+ * @param  $xp_p_n          Expérience du prochain niveau.
+ * @param  $progression     Pourcentage d'XP pour passer au niveau suivant.
+ * 
+ * @return    chemin de l'image de la barre.  
+ */
 function genere_image_exp($xp_joueur, $xp_p_n, $progression)
 {
 	//Barre EXP
@@ -2328,7 +2504,15 @@ function genere_image_exp($xp_joueur, $xp_p_n, $progression)
 	return $barre_xp;
 }
 
-
+/**
+ * Génère l'image de la barre de compétence
+ * 
+ * @param  $joueur        Tableau associatif contenant les valeurs des compétences.
+ * @param  $competence    Compétence concernée.
+ * @param  $comp_max      Maximum de la compétence.
+ * 
+ * @return    chemin de l'image de la barre.  
+ */
 function genere_image_comp($joueur, $competence, $comp_max)
 {
 	global $Gtrad;
@@ -2340,6 +2524,15 @@ function genere_image_comp($joueur, $competence, $comp_max)
 	return '<img src="'.$barre_comp.'" alt="'.$Gtrad[$competence].' = '.$joueur[$competence].' / '.$comp_max.'" title="'.$Gtrad[$competence].' = '.$joueur[$competence].' / '.$comp_max.'" style="height : 8px; width : 100px;" />';
 }
 
+/**
+ * Génère l'image de la barre de compétence
+ * 
+ * @param  $joueur        Tableau associatif décrivant le personnage
+ * @param  $competence    Compétence concernée.
+ * @param  $comp_max      Maximum de la compétence.
+ * 
+ * @return    chemin de l'image de la barre.  
+ */
 function genere_image_comp2($joueur, $competence, $comp_max)
 {
 	global $Gtrad;
@@ -2352,6 +2545,13 @@ function genere_image_comp2($joueur, $competence, $comp_max)
 	return '<img src="'.$barre_comp.'" alt="'.$Gtrad[$competence].' = '.$joueur['competences'][$competence].' / '.$comp_max.'" title="'.$Gtrad[$competence].' = '.$joueur['competences'][$competence].' / '.$comp_max.'" style="height : 8px; width : 100px;" />';
 }
 
+/**
+ * Affiche une ligne du journal avec la bonne couleur.
+ * 
+ * @param  $row   Tableau associatif contenant l'action à décrire.
+ * 
+ * @return    Code HTML de la ligne à afficher.    
+ */
 function affiche_ligne_journal($row)
 {
 	$date = strtotime($row['time']);
@@ -2421,12 +2621,28 @@ function affiche_ligne_journal($row)
 	}
 }
 
+/**
+ * Renvoie l'expérience necessaire pour atteindre le niveau suivant
+ * 
+ * @param  $level   Niveau actuel.
+ * 
+ * @return    Expérience nécessaire.    
+ */
 function prochain_level($level)
 {
 	global $G_level_xp;
 	return (($level * ($level + 1)) / 2) * $G_level_xp;
 }
 
+/**
+ * Renvoie le niveau correspondant à une certaine valeur de l'expérience.
+ * Le niveau est renvoyée sous forme décimale (les chiffres après la virgule indiquant
+ * de combien le personnage est proche du prochain niveau). 
+ * 
+ * @param  $exp     Expérience.
+ * 
+ * @return    Niveau.  
+ */
 function level_courant($exp)
 {
 	global $G_level_xp;
@@ -2444,6 +2660,13 @@ function level_courant($exp)
 	}
 }
 
+/**
+ * Renvoie le pourcentage d'expérience déjà acquise pour passer au prochain niveau
+ * 
+ * @param  $level   Niveau sous forme décimale (tel que donné par level_courant()).
+ * 
+ *  @return     Pourcentage d'expérience déjà acquise 
+ */
 function progression_level($level)
 {
 	$progress = $level - floor($level);
@@ -2451,6 +2674,15 @@ function progression_level($level)
 	return $progress;
 }
 
+/**
+ * Renvoie la class HTML indiquant si l'acaht est possible ou non.
+ * Les valeurs à comparer peuvent être le pric, le coefficient, la force, ... 
+ * 
+ * @param  $base      Valeur nécessaire poour acheter l'ojet.
+ * @param  $joueur    Valeur du personnage.
+ * 
+ * @return    Classe HTML.   
+ */
 function over_price($base, $joueur)
 {
 	if($base > $joueur AND $joueur != '')
@@ -2463,6 +2695,13 @@ function over_price($base, $joueur)
 	}
 }
 
+/**
+ * Vérifie qu'il n'y a pas de caractères spéciaux dans la chaine fournie.
+ * 
+ * @param  $param   Chaine à vérifier.
+ * 
+ * @return    true s'il n'y a pas de caratères spéciaux, false s'il y en a.    
+ */
 function check_secu($param)
 {
 	if( empty($param) )
@@ -2478,11 +2717,25 @@ function check_secu($param)
 	return true;
 }
 
+/**
+ * Calcul le pourcentage de dégâts absorbé en fonction de la PP
+ * 
+ * @param  $pp    PP.
+ * 
+ * @return    Pourcentage de dégâts absorbé.
+ */
 function calcul_pp($pp)
 {
 	return (1 - (sqrt($pp / 10) / 40));
 }
 
+/**
+ * Renvoie l'image d'un sort
+ * 
+ * $param  $type    Nom générique du sort.
+ * 
+ * @return    Code HTML affichant l'image du sort.
+ */
 function image_sort($type)
 {
 	switch($type)
@@ -2613,6 +2866,14 @@ function image_sort($type)
 	}
 }
 
+/**
+ * Calcul le pourcentage de réussite d'un jet.
+ * 
+ * @param  $base          Valeur maximale du jet.
+ * @param  $difficulte    Valeur maximale du jet en opposition.
+ * 
+ * @return    Pourcentage de réussite.  
+ */
 function pourcent_reussite($base, $difficulte)
 {
 	if($base > $difficulte)
@@ -2626,22 +2887,35 @@ function pourcent_reussite($base, $difficulte)
 	return $chance_reussite;
 }
 
+/**
+ * Renvoie le code HTML permettant le rafraichissement des informations sur le personnage.
+ * 
+ * @return    Code HTML.
+ */   
 function refresh_perso()
 {
 	echo '<img src="image/pixel.gif" onLoad="envoiInfo(\'infoperso.php?javascript=oui\', \'perso\');" />';
 }
 
+/**
+ * Affiche une ligne d'un script de combat
+ *
+ * @param  $action    Ligne à afficher.
+ * @param  $joueur    Tableau associatif décrivant le joueur.
+ * 
+ * @return    Code HTML décrivant la ligne.  
+ */
 function affiche_condition($action, $joueur)
 {
 	global $db, $Trace;
 	$liste_etats = get_etats();
 	$echo = '';
 	if ($action[0] == '!')
-	{
+	{ // Attaque simple sans condition
 		$echo .= 'attaquer';
 	}
 	elseif ($action[0] == '~')
-	{
+	{ // Sort sans condition
 		$sort_sort = mb_substr($action, 1, strlen($action));
 		$requete = "SELECT nom, mp, comp_assoc, description, effet, effet2, duree FROM sort_combat WHERE id = ".$sort_sort;
 		$req = $db->query($requete);
@@ -2650,7 +2924,7 @@ function affiche_condition($action, $joueur)
 		$echo .= 'Lancer le sort <strong onmouseover="return overlib(\'<ul><li class=\\\'overlib_titres\\\'>'.addslashes(description($row['description'], $row)).'</li></ul>\', BGCLASS, \'overlib\', BGCOLOR, \'\', FGCOLOR, \'\');" onmouseout="return nd();">'.$row['nom'].'</strong> <span class="small">('.$mpsort.' réserves)</span>';
 	}
 	elseif ($action[0] == '_')
-	{
+	{ // Compétence sans condition
 		$sort_sort = mb_substr($action, 1, strlen($action));
 		$requete = "SELECT nom, mp, description, effet, effet2, duree FROM comp_combat WHERE id = ".$sort_sort;
 		$req = $db->query($requete);
@@ -2658,13 +2932,16 @@ function affiche_condition($action, $joueur)
 		$echo .= 'Utiliser <strong onmouseover="return overlib(\'<ul><li class=\\\'overlib_titres\\\'>'.addslashes(description($row['description'], $row)).'</li></ul>\', BGCLASS, \'overlib\', BGCOLOR, \'\', FGCOLOR, \'\');" onmouseout="return nd();">'.$row['nom'].'</strong> <span class="small">('.$row['mp'].' réserves)</span>';
 	}
 	elseif ($action[0] == '#')
-	{
+	{ // Conditions
+	  // Séparations des conditions et de l'action
 		$action2 = explode('@', $action);
+		// Séparations des conditions entre elles
 		$arguments = explode('µ', $action2[0]);
 		$alors = $action2[1];
 		$nb_arguments = count($arguments);
-		$j = 0;
+		$j = 0;  // Compteur des conditions
 		$bool2 = 1;
+		// Affichage des conditions
 		$echo = 'Si ';
 		while ($j < $nb_arguments)
 		{
@@ -2707,12 +2984,13 @@ function affiche_condition($action, $joueur)
 			$j++;
 		}
 		$echo .= '<br />';
+		// Affichage de l'action
 		if ($alors[0] == '!')
-		{
+		{ // Attaque simple
 			$echo .= 'Attaquer<br />';
 		}
 		elseif ($alors[0] == '~')
-		{
+		{ // Sort 
 			$sort_sort = mb_substr($alors, 1, strlen($alors));
 			$requete = "SELECT nom, mp, comp_assoc, description, effet, effet2, duree FROM sort_combat WHERE id = ".$sort_sort;
 			$req = $db->query($requete);
@@ -2721,7 +2999,7 @@ function affiche_condition($action, $joueur)
 			$echo .= 'Lancer le sort <strong onmouseover="return overlib(\'<ul><li class=\\\'overlib_titres\\\'>'.addslashes(description($row['description'], $row)).'</li></ul>\', BGCLASS, \'overlib\', BGCOLOR, \'\', FGCOLOR, \'\');" onmouseout="return nd();">'.$row['nom'].'</strong> <span class="small">('.$mpsort.' réserves)</span>';
 		}
 		elseif ($alors[0] == '_')
-		{
+		{ // Compétence
 			$sort_sort = mb_substr($alors, 1, strlen($alors));
 			$requete = "SELECT nom, mp, description, effet, effet2, duree FROM comp_combat WHERE id = ".$sort_sort;
 			$req = $db->query($requete);
@@ -2732,6 +3010,14 @@ function affiche_condition($action, $joueur)
 	return $echo;
 }
 
+/**
+ * Affiche une ligne d'un script de combat
+ *
+ * @param  $action    Ligne à afficher sous forme de tableau associatif.
+ * @param  $joueur    Tableau associatif décrivant le joueur.
+ * 
+ * @return    Code HTML décrivant la ligne.  
+ */
 function affiche_condition_session($action, $joueur)
 {
 	global $db, $Trace;
@@ -2739,7 +3025,7 @@ function affiche_condition_session($action, $joueur)
 	$echo = '';
 	$check = false;
 	if(is_array($action) AND array_key_exists('condition', $action))
-	{
+	{ // Conditions
 		foreach($action['condition'] as $condition)
 		{
 			if($check) $echo .='& ';
@@ -2784,11 +3070,11 @@ function affiche_condition_session($action, $joueur)
 		}
 	}
 	if ($action['final'] == '!')
-	{
+	{ // attaque simple
 		$echo .= 'attaquer';
 	}
 	elseif ($action['final'][0] == 's')
-	{
+	{ // sort
 		$sort_sort = mb_substr($action['final'], 1, strlen($action['final']));
 		$requete = "SELECT nom, mp, comp_assoc, description, effet, effet2, duree FROM sort_combat WHERE id = ".$sort_sort;
 		$req = $db->query($requete);
@@ -2797,7 +3083,7 @@ function affiche_condition_session($action, $joueur)
 		$echo .= 'Lancer le sort <strong onmouseover="return overlib(\'<ul><li class=\\\'overlib_titres\\\'>'.addslashes(description($row['description'], $row)).'</li></ul>\', BGCLASS, \'overlib\', BGCOLOR, \'\', FGCOLOR, \'\');" onmouseout="return nd();">'.$row['nom'].'</strong> <span class="small">('.$mpsort.' réserves)</span>';
 	}
 	elseif ($action['final'][0] == 'c')
-	{
+	{ // compétence
 		$sort_sort = mb_substr($action['final'], 1, strlen($action['final']));
 		$requete = "SELECT nom, mp, description, effet, effet2, duree FROM comp_combat WHERE id = ".$sort_sort;
 		$req = $db->query($requete);
@@ -2807,6 +3093,14 @@ function affiche_condition_session($action, $joueur)
 	return $echo;
 }
 
+/**
+ * Vérifie si une certaine position correspond a une ville
+ * 
+ * @param  $x   Coordonnée x.
+ * @param  $y   Coodronnée y.
+ * 
+ * @return    true si c'est une ville, false sinon.    
+ */
 function verif_ville($x, $y)
 {
 	global $db;
@@ -2825,6 +3119,16 @@ function verif_ville($x, $y)
 	}
 }
 
+/**
+ *  Vérifie s'il y a un bâtiment appartenant à un royaume donné sur une case.
+ * 
+ * @param  $x   Coordonnée x.
+ * @param  $y   Coodronnée y.
+ * @param  $R   Royaume.
+ * 
+ * @return    tableau associatif contenant le nm et le type du bâtiment s'il y en
+ *            a un, false sinon.   
+ */
 function verif_batiment($x, $y, $R)
 {
 	global $db;
@@ -2838,6 +3142,13 @@ function verif_batiment($x, $y, $R)
 	else return false;
 }
 
+/**
+ *  Affiche les informations d'une variable.
+ *  Les informations sont celles données par la fonction PHP var_dump et entourées
+ *  de balises <pre>
+ *  
+ * @param  $v   Variable dont ont veut afficher les informations.  
+ */
 function aff_var($v)
 {
 	echo '<pre>';
@@ -2845,6 +3156,11 @@ function aff_var($v)
 	echo '</pre>';
 }
 
+/**
+ *  Supprime un bourg dans le nombre de bourgs possédés par un royaume
+ *  
+ * @param   $royaume    Royaume auquel on doit supprimer un bourg.  
+ */
 function supprime_bourg($royaume)
 {
 	global $db;
@@ -2852,9 +3168,15 @@ function supprime_bourg($royaume)
 	$db->query($requete);
 }
 
+/// Liste des encodages possibles
 define('ENCLIST', 'UTF-8, UTF-7, ASCII, EUC-JP,SJIS, eucJP-win, SJIS-win, JIS, ISO-2022-JP, ISO-8859-1, WINDOWS-1252');
+
+/**
+ * 
+ */
 function normalize_entry_charset($fields)
 {
+  // Récupération du type d'encodage à partir de l'entête
 	if (isset($_SERVER["CONTENT_TYPE"])) {
 		$charset = stristr($_SERVER["CONTENT_TYPE"], 'charset=');
 		if ($charset !== false) {
@@ -2864,36 +3186,43 @@ function normalize_entry_charset($fields)
 			//echo "Detected(1) $src<br />\n";
 		}
 	}
+	// Récupération du type d'encodage à l'aide des variables transmises par GET et POST
 	if (!isset($src)) {
-		$src = mb_http_input("G");
+		$src = mb_http_input("G"); // GET
 		if (!$src)
-			$src = mb_http_input("P");
+			$src = mb_http_input("P"); // POST
 		if (!$src)
 			unset($src);
 		//else
 			//echo "Detected(2) $src<br />\n";
 	}
 	foreach ($fields as $f) {
+	  // Recherche des variables dans GET
 		if (isset($_GET[$f])) {
+			// Si l'encodage n'est pas connu on le détecte à partir de la variable
 			if (!isset($src)) {
 				$csrc = mb_detect_encoding($_GET[$f], ENCLIST);
 				//echo "Detected(3) $csrc<br />\n";
 			}
 			else 
 				$csrc = $src;
+			// Si l'encodage n'est pas UTF8, on convertit en UTF8
 			if (strcasecmp($csrc, 'UTF-8') && strcasecmp($csrc, 'UTF8')) {
 				$newfield = iconv($csrc, 'UTF-8//TRANSLIT', $_GET[$f]);
 				//echo "convert to UTF-8: $newfield <br />\n";
 				$_GET[$f] = $newfield;
 			}
 		}
+	  // Recherche des variables dans POST
 		elseif (isset($_POST[$f])) {
+			// Si l'encodage n'est pas connu on le détecte à partir de la variable
 			if (!isset($src)) {
         $csrc = mb_detect_encoding($_POST[$f], ENCLIST);
 				echo "Detected(3) $csrc<br />\n";
 			}
       else
         $csrc = $src;
+			// Si l'encodage n'est pas UTF8, on convertit en UTF8
 			if (strcasecmp($csrc, 'UTF-8') && strcasecmp($csrc, 'UTF8')) {
         $newfield = iconv($csrc, 'UTF-8//TRANSLIT', $_POST[$f]);
         //echo "convert to UTF-8: $newfield <br />\n";
@@ -2905,6 +3234,7 @@ function normalize_entry_charset($fields)
 
 /**
  * Calcul des joueurs dans la visu d'un autre
+ * La distance utilisée est la distance pythagoricienne. 
  *
  * @param $joueur joueur qui sert de reference
  * @param $distance taille de la visu a generer
@@ -2914,12 +3244,15 @@ function normalize_entry_charset($fields)
 function list_joueurs_visu($joueur, $distance) {
 	global $db;
 
+  // Calcul de la visue
 	$x = $joueur['x']; $y = $joueur['y'];
 	$pos1 = convert_in_pos($x, $y);
 	$lx = $x - $distance; $gx = $x + $distance;
 	$ly = $y - $distance; $gy = $y + $distance;
+	// Recherche des persos
 	$requete = "select * from perso where x >= $lx and x <= $gx and y >= $ly and y <= $gy";
 	$req = $db->query($requete);
+	// Ajout des persos dans le tableau si la distance pythagoricienne est bonne
 	$ret = array();
   if ($db->num_rows > 0) {
 		while ($row = $db->read_assoc($req)) {

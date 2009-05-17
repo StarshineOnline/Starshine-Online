@@ -27,31 +27,13 @@
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="roi_2index_8php.html#beea5db7af13b1bdd70c46e49f512b26">$joueur</a> = recupperso($_SESSION['ID'])</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="roi_2index_8php.html#dc5bfc941d40883a35083b4167529fec">$_SESSION</a> ['position'] = convert_in_pos($joueur['x'], $joueur['y'])</td></tr>
-
-<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="roi_2index_8php.html#1ea21bf4b1af1ebda1b8c63b0e364ce9">$requete</a> = &quot;SELECT <a class="el" href="bureau__quete_8php.html#cf2488b95c97e0378c9bf49de3b50f28">groupe.id</a> as groupeid, groupe.nom as groupenom, groupe_joueur.id_joueur, perso.nom, perso.race FROM groupe LEFT JOIN groupe_joueur ON <a class="el" href="bureau__quete_8php.html#cf2488b95c97e0378c9bf49de3b50f28">groupe.id</a> = groupe_joueur.id_groupe LEFT JOIN perso ON groupe_joueur.id_joueur = perso.ID WHERE groupe_joueur.leader = 'y' AND perso.race = '&quot;.$joueur['race'].&quot;'&quot;</td></tr>
-
-<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="roi_2index_8php.html#63a7a283ea5dee8af1e2d5a3435bf370">$req</a> = $<a class="el" href="classdb.html">db</a>-&gt;query($requete)</td></tr>
-
-<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="roi_2index_8php.html#9a68e908775966a9b3e9a90097cdacc7">while</a> ($row=$<a class="el" href="classdb.html">db</a>-&gt;read_assoc($req))</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="ville__bas_8php.html#e090d03ba817b92f272d5f9e1e3cf724">if</a>($joueur['grade']== 'Roi'OR <br>
+$joueur['nom']== 'Mylok'OR <br>
+strtolower($joueur['nom'])== <br>
+'minus')&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="roi_2index_8php.html#1c12d30d2681081f13297744af1014a6">else</a></td></tr>
 
 </table>
 <hr><h2>Documentation des variables</h2>
-<a class="anchor" name="dc5bfc941d40883a35083b4167529fec"></a><!-- doxytag: member="index.php::$_SESSION" ref="dc5bfc941d40883a35083b4167529fec" args="['position']" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">$_SESSION['position'] = convert_in_pos($joueur['x'], $joueur['y'])          </td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>
-
-</div>
-</div><p>
 <a class="anchor" name="a720998827fe9e92a5fe573a62edc0b8"></a><!-- doxytag: member="index.php::$connexion" ref="a720998827fe9e92a5fe573a62edc0b8" args="" -->
 <div class="memitem">
 <div class="memproto">
@@ -82,36 +64,6 @@
 
 </div>
 </div><p>
-<a class="anchor" name="63a7a283ea5dee8af1e2d5a3435bf370"></a><!-- doxytag: member="index.php::$req" ref="63a7a283ea5dee8af1e2d5a3435bf370" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">$req = $<a class="el" href="classdb.html">db</a>-&gt;query($requete)          </td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>
-
-</div>
-</div><p>
-<a class="anchor" name="1ea21bf4b1af1ebda1b8c63b0e364ce9"></a><!-- doxytag: member="index.php::$requete" ref="1ea21bf4b1af1ebda1b8c63b0e364ce9" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">$requete = &quot;SELECT <a class="el" href="bureau__quete_8php.html#cf2488b95c97e0378c9bf49de3b50f28">groupe.id</a> as groupeid, groupe.nom as groupenom, groupe_joueur.id_joueur, perso.nom, perso.race FROM groupe LEFT JOIN groupe_joueur ON <a class="el" href="bureau__quete_8php.html#cf2488b95c97e0378c9bf49de3b50f28">groupe.id</a> = groupe_joueur.id_groupe LEFT JOIN perso ON groupe_joueur.id_joueur = perso.ID WHERE groupe_joueur.leader = 'y' AND perso.race = '&quot;.$joueur['race'].&quot;'&quot;          </td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>
-
-</div>
-</div><p>
 <a class="anchor" name="b37f7c32f41c3c61ed940887453767f4"></a><!-- doxytag: member="index.php::$root" ref="b37f7c32f41c3c61ed940887453767f4" args="" -->
 <div class="memitem">
 <div class="memproto">
@@ -127,12 +79,12 @@
 
 </div>
 </div><p>
-<a class="anchor" name="9a68e908775966a9b3e9a90097cdacc7"></a><!-- doxytag: member="index.php::while" ref="9a68e908775966a9b3e9a90097cdacc7" args="($row=$db-&gt;read_assoc($req))" -->
+<a class="anchor" name="1c12d30d2681081f13297744af1014a6"></a><!-- doxytag: member="index.php::else" ref="1c12d30d2681081f13297744af1014a6" args="" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="viewarene2_8php.html#223fe6cddffc1406cf93390144f0f6f7">while</a>($row=$<a class="el" href="classdb.html">db</a>-&gt;read_assoc($req))          </td>
+          <td class="memname"><a class="el" href="ville__bas_8php.html#e090d03ba817b92f272d5f9e1e3cf724">if</a> ($joueur['grade']== 'Roi'OR $joueur['nom']== 'Mylok'OR strtolower($joueur['nom'])== 'minus') <a class="el" href="roi_2index_8php.html#1c12d30d2681081f13297744af1014a6">else</a>          </td>
         </tr>
       </table>
 </div>
@@ -143,7 +95,7 @@
 </div>
 </div><p>
 </div>
-<hr size="1"><address style="text-align: right;"><small>Généré le Sun Nov 30 19:54:57 2008 pour Starshine Online par&nbsp;
+<hr size="1"><address style="text-align: right;"><small>Généré le Fri May 8 12:45:34 2009 pour Starshine Online par&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.6 </small></address>
 </body>

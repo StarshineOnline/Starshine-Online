@@ -25,6 +25,7 @@
 <tr><td colspan="2"><br><h2>Énumérations</h2></td></tr>
 <tr><td class="memItemLeft" nowrap align="right" valign="top">enum &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="base_8inc_8php.html#15558e38aadbbca99d2419e3e9010df9">ENCLIST</a> </td></tr>
 
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Liste des encodages possibles.  <a href="base_8inc_8php.html#15558e38aadbbca99d2419e3e9010df9">Plus de détails...</a><br></td></tr>
 <tr><td colspan="2"><br><h2>Fonctions</h2></td></tr>
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="base_8inc_8php.html#9a2308f261df8d4bbdcede4c1daa5050">convert_in_coord</a> ($pos)</td></tr>
 
@@ -47,12 +48,14 @@
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="base_8inc_8php.html#2d3292ed5dd5c93b9a42992691cee8aa">calcul_distance_pytagore</a> ($posjoueur1, $posjoueur2)</td></tr>
 
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Calcule la distance "pythagoriciene" entre deux personnages.  <a href="#2d3292ed5dd5c93b9a42992691cee8aa"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="base_8inc_8php.html#69380ad364e8b101449df49eff6071ee">dimension_map</a> ($x, $y, $champ_vision)</td></tr>
+
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="base_8inc_8php.html#0b92e404c0f2824993e0076f84ddb3bb">is_donjon</a> ($x, $y)</td></tr>
 
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Indique si on est dans un donjon.  <a href="#0b92e404c0f2824993e0076f84ddb3bb"></a><br></td></tr>
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="base_8inc_8php.html#342b73aa5e75e075b383ee4e6ed794a5">nb_bourg</a> ($id_royaume)</td></tr>
 
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Donne le nombre de bourg que possède un royaume.  <a href="#342b73aa5e75e075b383ee4e6ed794a5"></a><br></td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Donne le nombre de <a class="el" href="classbourg.html">bourg</a> que possède un royaume.  <a href="#342b73aa5e75e075b383ee4e6ed794a5"></a><br></td></tr>
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="base_8inc_8php.html#1dce2f6e989ddda7c733b56bf60633a3">nb_case</a> ($id_royaume)</td></tr>
 
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Donne le nombre de cases que possède un royaume.  <a href="#1dce2f6e989ddda7c733b56bf60633a3"></a><br></td></tr>
@@ -61,13 +64,16 @@
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Donne le nombre d'habitants que possède un royaume.  <a href="#2e4cb12bc2d2c11607345c637d4a56b6"></a><br></td></tr>
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="base_8inc_8php.html#ff0f0cb3f9fda6833cb3e553262ea9b9">type_terrain</a> ($info)</td></tr>
 
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Renvoi le type de terrain, et le type de terrain affichable.  <a href="#ff0f0cb3f9fda6833cb3e553262ea9b9"></a><br></td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Renvoi le type de <a class="el" href="classterrain.html">terrain</a>, et le type de <a class="el" href="classterrain.html">terrain</a> affichable.  <a href="#ff0f0cb3f9fda6833cb3e553262ea9b9"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="base_8inc_8php.html#b0376d84c6454b4235c20bebe7ed434e">ressource_terrain</a> ($<a class="el" href="classterrain.html">terrain</a>)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Renvoi la liste des ressource produite par ce <a class="el" href="classterrain.html">terrain</a>.  <a href="#b0376d84c6454b4235c20bebe7ed434e"></a><br></td></tr>
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="base_8inc_8php.html#4b9453d43c923b8174e4fcefae0a746d">is_ville</a> ($case)</td></tr>
 
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Indique si une case fait partie d'une ville.  <a href="#4b9453d43c923b8174e4fcefae0a746d"></a><br></td></tr>
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="base_8inc_8php.html#154306414a808ee19be875525aeb96e2">cout_pa</a> ($info, $race)</td></tr>
 
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Donne le coût en PA d'un déplacement en fonction du terrain et de la race.  <a href="#154306414a808ee19be875525aeb96e2"></a><br></td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Donne le coût en PA d'un déplacement en fonction du <a class="el" href="classterrain.html">terrain</a> et de la race.  <a href="#154306414a808ee19be875525aeb96e2"></a><br></td></tr>
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="base_8inc_8php.html#c28cbcd0bda84cb77614994a18067f38">cout_pa2</a> ($coutpa, $joueur, $case, $diagonale)</td></tr>
 
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Ajuste le coût en PA d'un déplacement en fonction de tous les parmètres qui le modifient.  <a href="#c28cbcd0bda84cb77614994a18067f38"></a><br></td></tr>
@@ -122,10 +128,10 @@
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="base_8inc_8php.html#d9f6258286a1ebe09bc9b8c73bf10bef">recupobjet</a> ($objet)</td></tr>
 
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Récupère les information sur une gemme.  <a href="#d9f6258286a1ebe09bc9b8c73bf10bef"></a><br></td></tr>
-<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="base_8inc_8php.html#d60de5ebbc43f5d11571894d66672457">recupaction</a> ($<a class="el" href="bureau__quete_8php.html#0318c7aad223eeb9cf7ab4a1259780d5">action</a>)</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="base_8inc_8php.html#d60de5ebbc43f5d11571894d66672457">recupaction</a> ($action)</td></tr>
 
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Récupère un script.  <a href="#d60de5ebbc43f5d11571894d66672457"></a><br></td></tr>
-<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="base_8inc_8php.html#aab089528525ad1141eb40c99552b469">recupaction_all</a> ($<a class="el" href="bureau__quete_8php.html#0318c7aad223eeb9cf7ab4a1259780d5">action</a>)</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="base_8inc_8php.html#aab089528525ad1141eb40c99552b469">recupaction_all</a> ($action)</td></tr>
 
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Récupère toutes les informations à propos d'un script.  <a href="#aab089528525ad1141eb40c99552b469"></a><br></td></tr>
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="base_8inc_8php.html#d1295168d2ab60917694560b24d006a2">recup_max_comp</a> ($<a class="el" href="classcompetence.html">competence</a>, $classe)</td></tr>
@@ -136,78 +142,120 @@
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Calcul du facteur de difficulté pour augmenter une compétence liée aux sorts.  <a href="#9a8a784668e6b5db9ae1f7910a11f3d4"></a><br></td></tr>
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="base_8inc_8php.html#19a8179130215d05ff50b9e72f2c46d3">augmentation_competence</a> ($<a class="el" href="classcompetence.html">competence</a>, $joueur, $difficulte)</td></tr>
 
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Permet de savoir si lors d'une action la compétence augmente de 1.  <a href="#19a8179130215d05ff50b9e72f2c46d3"></a><br></td></tr>
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="base_8inc_8php.html#19ea8bf3556dd8b7bc94c142cc8c0542">de_degat</a> ($force, $degat_arme)</td></tr>
 
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Fonction permettant de calculer les dés de dégat en fonction de la force et de l'arme de la personne.  <a href="#19ea8bf3556dd8b7bc94c142cc8c0542"></a><br></td></tr>
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="base_8inc_8php.html#0d0f516d42c59c48c0d3cd9c04fdf417">de_soin</a> ($force, $degat_arme)</td></tr>
 
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Fonction permettant de calculer les dés de soins.  <a href="#0d0f516d42c59c48c0d3cd9c04fdf417"></a><br></td></tr>
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="base_8inc_8php.html#88fdf6e237810847b63a013e59daaddc">prend_objet</a> ($id_objet, $joueur)</td></tr>
 
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Fonction gérant l'acquisition d'un objet par un personnage.  <a href="#88fdf6e237810847b63a013e59daaddc"></a><br></td></tr>
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="base_8inc_8php.html#4eba8b14b6e14730074b4cbe8eaabe90">prend_recette</a> ($id_recette, $joueur)</td></tr>
 
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Fonction incrémentant le nombre d'utilisations possibles d'une recette par un personnage.  <a href="#4eba8b14b6e14730074b4cbe8eaabe90"></a><br></td></tr>
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="base_8inc_8php.html#b349fa336f26b42f41b67190adf60eaa">get_royaume_info</a> ($race_joueur, $royaume_id)</td></tr>
 
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Renvoie les informations sur le royaume.  <a href="#b349fa336f26b42f41b67190adf60eaa"></a><br></td></tr>
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="base_8inc_8php.html#a74170554bbb08c23372ddf8bb8ab1fd">taux_taxe</a> ($taxe, $diplo)</td></tr>
 
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Calcul la taxe payé par un personnage.  <a href="#a74170554bbb08c23372ddf8bb8ab1fd"></a><br></td></tr>
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="base_8inc_8php.html#b765e14b3f021d8f4f26d33e13a4a156">description</a> ($texte, $array)</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="base_8inc_8php.html#4074f88ced7968af93a7eb088fd7c443">return_ville</a> ($texte, $<a class="el" href="candidature_8php.html#6b62101699f80eb754508183c994ff21">poscase</a>)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Formate les descriptions.  <a href="#b765e14b3f021d8f4f26d33e13a4a156"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="base_8inc_8php.html#4074f88ced7968af93a7eb088fd7c443">return_ville</a> ($texte, $poscase)</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="base_8inc_8php.html#18c15b0e69a77e8ffba446ca07b1c4c8">return_gestion_royaume</a> ($texte, $<a class="el" href="candidature_8php.html#6b62101699f80eb754508183c994ff21">poscase</a>)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Affiche un lien pour afficher le menu ville si le personnage est en ville.  <a href="#4074f88ced7968af93a7eb088fd7c443"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="base_8inc_8php.html#18c15b0e69a77e8ffba446ca07b1c4c8">return_gestion_royaume</a> ($texte, $poscase)</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="base_8inc_8php.html#7f7a0bb4069566d0c403e138ad877678">lance_buff</a> ($<a class="el" href="action__modif__t_8php.html#7aead736a07eaf25623ad7bfa1f0ee2d">type</a>, $<a class="el" href="bureau__quete_8php.html#cf2488b95c97e0378c9bf49de3b50f28">id</a>, $effet, $effet2, $duree, $nom, $description, $type_cible, $debuff, $nb_buff, $grade)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Affiche un lien pour afficher le menu gestion royaume  public.  <a href="#18c15b0e69a77e8ffba446ca07b1c4c8"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="base_8inc_8php.html#bdebed81a12acc10788ddb1133ae76e7">lance_buff</a> ($<a class="el" href="action__modif__t_8php.html#7aead736a07eaf25623ad7bfa1f0ee2d">type</a>, $id, $effet, $effet2, $duree, $nom, $description, $type_cible, $debuff, $nb_buff, $grade, $supprimable=1)</td></tr>
 
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Lance un buff sur un personnage ou un monstre.  <a href="#bdebed81a12acc10788ddb1133ae76e7"></a><br></td></tr>
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="base_8inc_8php.html#6aa39ff189b7dd018fb6980b5330ab67">verif_mort</a> ($pourcent, $var, $duree_debuff=0, $multiplicateur_mouvement=0)</td></tr>
 
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Vérifie si le personnage est mort est si c'est le cas affiche la page de résurection ou effectue la rez.  <a href="#6aa39ff189b7dd018fb6980b5330ab67"></a><br></td></tr>
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="base_8inc_8php.html#f4213259fa2c0df9894da5f71ca0125b">genere_image_pa</a> ($joueur)</td></tr>
 
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Génère l'image de la barre de PA.  <a href="#f4213259fa2c0df9894da5f71ca0125b"></a><br></td></tr>
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="base_8inc_8php.html#6f1aac401ea0f4071838c13678d64103">genere_image_buff_duree</a> ($buff)</td></tr>
 
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Génère l'image de la barre de durée des buffs.  <a href="#6f1aac401ea0f4071838c13678d64103"></a><br></td></tr>
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="base_8inc_8php.html#3c2db11d4bfbb608faabaf528548497f">genere_image_hp</a> ($joueur)</td></tr>
 
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Génère l'image de la barre de HP.  <a href="#3c2db11d4bfbb608faabaf528548497f"></a><br></td></tr>
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="base_8inc_8php.html#c04272a46292947903844780246ddb70">genere_image_mp</a> ($joueur)</td></tr>
 
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Génère l'image de la barre de MP.  <a href="#c04272a46292947903844780246ddb70"></a><br></td></tr>
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="base_8inc_8php.html#4ebd82015080dcc7a4ca4da961bc2109">genere_image_hp_groupe</a> ($joueur)</td></tr>
 
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Génère l'image de la barre de HP d'un membre du <a class="el" href="classgroupe.html">groupe</a>.  <a href="#4ebd82015080dcc7a4ca4da961bc2109"></a><br></td></tr>
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="base_8inc_8php.html#181dbaa58de7782a2ebb04b2fd89f10e">genere_image_mp_groupe</a> ($joueur)</td></tr>
 
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Génère l'image de la barre de MP d'un membre du <a class="el" href="classgroupe.html">groupe</a>.  <a href="#181dbaa58de7782a2ebb04b2fd89f10e"></a><br></td></tr>
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="base_8inc_8php.html#e9a0508dc527388d47255b4014640e15">genere_image_exp</a> ($xp_joueur, $xp_p_n, $progression)</td></tr>
 
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Génère l'image de la barre d'XP.  <a href="#e9a0508dc527388d47255b4014640e15"></a><br></td></tr>
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="base_8inc_8php.html#979d7c2f3cfefc91bc64cac893719663">genere_image_comp</a> ($joueur, $<a class="el" href="classcompetence.html">competence</a>, $comp_max)</td></tr>
 
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Génère l'image de la barre de compétence.  <a href="#979d7c2f3cfefc91bc64cac893719663"></a><br></td></tr>
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="base_8inc_8php.html#ecdda9f8ac45124f86a96d3964415534">genere_image_comp2</a> ($joueur, $<a class="el" href="classcompetence.html">competence</a>, $comp_max)</td></tr>
 
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Génère l'image de la barre de compétence.  <a href="#ecdda9f8ac45124f86a96d3964415534"></a><br></td></tr>
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="base_8inc_8php.html#f084973efa489f91bd766aaa228dd443">affiche_ligne_journal</a> ($row)</td></tr>
 
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Affiche une ligne du journal avec la bonne couleur.  <a href="#f084973efa489f91bd766aaa228dd443"></a><br></td></tr>
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="base_8inc_8php.html#26afa0bb52ccd16abd39dc768ef9d61d">prochain_level</a> ($level)</td></tr>
 
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Renvoie l'expérience necessaire pour atteindre le niveau suivant.  <a href="#26afa0bb52ccd16abd39dc768ef9d61d"></a><br></td></tr>
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="base_8inc_8php.html#d367e1a44d7c68d30fc65eaec919dcb7">level_courant</a> ($exp)</td></tr>
 
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Renvoie le niveau correspondant à une certaine valeur de l'expérience.  <a href="#d367e1a44d7c68d30fc65eaec919dcb7"></a><br></td></tr>
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="base_8inc_8php.html#36721c02156170ceca6b82d311eb91a9">progression_level</a> ($level)</td></tr>
 
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Renvoie le pourcentage d'expérience déjà acquise pour passer au prochain niveau.  <a href="#36721c02156170ceca6b82d311eb91a9"></a><br></td></tr>
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="base_8inc_8php.html#f2c45526dc33e689f8a8dc6d153ecd60">over_price</a> ($base, $joueur)</td></tr>
 
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Renvoie la class HTML indiquant si l'acaht est possible ou non.  <a href="#f2c45526dc33e689f8a8dc6d153ecd60"></a><br></td></tr>
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="base_8inc_8php.html#6b4a23a8dc6885567e74b8ff079ad772">check_secu</a> ($param)</td></tr>
 
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Vérifie qu'il n'y a pas de caractères spéciaux dans la chaine fournie.  <a href="#6b4a23a8dc6885567e74b8ff079ad772"></a><br></td></tr>
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="base_8inc_8php.html#2c272fe9cfde5f7c8117d8571c49c40d">calcul_pp</a> ($pp)</td></tr>
 
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Calcul le pourcentage de dégâts absorbé en fonction de la PP.  <a href="#2c272fe9cfde5f7c8117d8571c49c40d"></a><br></td></tr>
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="base_8inc_8php.html#ce815785754438368ed68d1459629b53">image_sort</a> ($<a class="el" href="action__modif__t_8php.html#7aead736a07eaf25623ad7bfa1f0ee2d">type</a>)</td></tr>
 
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Renvoie l'image d'un sort.  <a href="#ce815785754438368ed68d1459629b53"></a><br></td></tr>
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="base_8inc_8php.html#89422948956181dee8f8060ab39dce6e">pourcent_reussite</a> ($base, $difficulte)</td></tr>
 
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Calcul le pourcentage de réussite d'un jet.  <a href="#89422948956181dee8f8060ab39dce6e"></a><br></td></tr>
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="base_8inc_8php.html#b37aca65e27f3c22dbfe9142c8b87800">refresh_perso</a> ()</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="base_8inc_8php.html#736714b05762b33c0d599b1bbc7cde2f">affiche_condition</a> ($<a class="el" href="bureau__quete_8php.html#0318c7aad223eeb9cf7ab4a1259780d5">action</a>, $joueur)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Renvoie le code HTML permettant le rafraichissement des informations sur le personnage.  <a href="#b37aca65e27f3c22dbfe9142c8b87800"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="base_8inc_8php.html#736714b05762b33c0d599b1bbc7cde2f">affiche_condition</a> ($action, $joueur)</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="base_8inc_8php.html#11fd79ebeaf54d026fce07d8bfe0ca41">affiche_condition_session</a> ($<a class="el" href="bureau__quete_8php.html#0318c7aad223eeb9cf7ab4a1259780d5">action</a>, $joueur)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Affiche une ligne d'un script de combat.  <a href="#736714b05762b33c0d599b1bbc7cde2f"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="base_8inc_8php.html#11fd79ebeaf54d026fce07d8bfe0ca41">affiche_condition_session</a> ($action, $joueur)</td></tr>
 
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Affiche une ligne d'un script de combat.  <a href="#11fd79ebeaf54d026fce07d8bfe0ca41"></a><br></td></tr>
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="base_8inc_8php.html#9c88b8555ba03e4e43a3e77c5c6e575e">verif_ville</a> ($x, $y)</td></tr>
 
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Vérifie si une certaine position correspond a une ville.  <a href="#9c88b8555ba03e4e43a3e77c5c6e575e"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="base_8inc_8php.html#c6b928c9c81bd0d6dd14a83a16e2bea1">verif_batiment</a> ($x, $y, $R)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Vérifie s'il y a un bâtiment appartenant à un royaume donné sur une case.  <a href="#c6b928c9c81bd0d6dd14a83a16e2bea1"></a><br></td></tr>
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="base_8inc_8php.html#5e43effa926749946d73340fb1c23d5b">aff_var</a> ($v)</td></tr>
 
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Affiche les informations d'une variable.  <a href="#5e43effa926749946d73340fb1c23d5b"></a><br></td></tr>
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="base_8inc_8php.html#5cfbe7dfa6a82e8b1b4f722dc4634c16">supprime_bourg</a> ($royaume)</td></tr>
 
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Supprime un <a class="el" href="classbourg.html">bourg</a> dans le nombre de bourgs possédés par un royaume.  <a href="#5cfbe7dfa6a82e8b1b4f722dc4634c16"></a><br></td></tr>
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="base_8inc_8php.html#d82bbc46d6d7e454b45946685c7ab18a">normalize_entry_charset</a> ($fields)</td></tr>
 
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="base_8inc_8php.html#0d89eafca33ed40d768bd6dae1d9e805">list_joueurs_visu</a> ($joueur, $distance)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Calcul des joueurs dans la visu d'un autre La distance utilisée est la distance pythagoricienne.  <a href="#0d89eafca33ed40d768bd6dae1d9e805"></a><br></td></tr>
 </table>
 <hr><a name="_details"></a><h2>Description détaillée</h2>
 Fonctions de base. 
@@ -224,6 +272,8 @@ Fonctions de base.
 </div>
 <div class="memdoc">
 
+<p>
+Liste des encodages possibles. 
 <p>
 
 </div>
@@ -246,7 +296,16 @@ Fonctions de base.
 <div class="memdoc">
 
 <p>
-
+Affiche les informations d'une variable. 
+<p>
+Les informations sont celles données par la fonction PHP var_dump et entourées de balises <pre></pre><p>
+<pre> <dl compact><dt><b>Paramètres:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>$v</em>&nbsp;</td><td>Variable dont ont veut afficher les informations.  
+</td></tr>
+  </table>
+</dl>
+</pre>
 </div>
 </div><p>
 <a class="anchor" name="736714b05762b33c0d599b1bbc7cde2f"></a><!-- doxytag: member="base.inc.php::affiche_condition" ref="736714b05762b33c0d599b1bbc7cde2f" args="($action, $joueur)" -->
@@ -275,6 +334,15 @@ Fonctions de base.
 <div class="memdoc">
 
 <p>
+Affiche une ligne d'un script de combat. 
+<p>
+<dl compact><dt><b>Paramètres:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>$action</em>&nbsp;</td><td>Ligne à afficher. </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>$joueur</em>&nbsp;</td><td>Tableau associatif décrivant le joueur.</td></tr>
+  </table>
+</dl>
+<dl class="return" compact><dt><b>Renvoie:</b></dt><dd>Code HTML décrivant la ligne. </dd></dl>
 
 <p>
 <div class="dynheader">
@@ -282,7 +350,7 @@ Voici le graphe d'appel pour cette fonction :</div>
 <div class="dynsection">
 <p><center><img src="base_8inc_8php_736714b05762b33c0d599b1bbc7cde2f_cgraph.png" border="0" usemap="#base_8inc_8php_736714b05762b33c0d599b1bbc7cde2f_cgraph_map" alt=""></center>
 <map name="base_8inc_8php_736714b05762b33c0d599b1bbc7cde2f_cgraph_map">
-<area shape="rect" href="base_8inc_8php.html#b765e14b3f021d8f4f26d33e13a4a156" title="description" alt="" coords="172,5,255,32"><area shape="rect" href="action_8inc_8php.html#abbb250b0c79b0ef7ce8aefc83b026b6" title="Renvoie un tableau des éEtats avec l&#39;ID et le nom." alt="" coords="176,56,251,83"></map>
+<area shape="rect" href="base_8inc_8php.html#b765e14b3f021d8f4f26d33e13a4a156" title="Formate les descriptions." alt="" coords="183,5,273,35"><area shape="rect" href="action_8inc_8php.html#abbb250b0c79b0ef7ce8aefc83b026b6" title="Renvoie un tableau des éEtats avec l&#39;ID et le nom." alt="" coords="191,59,265,88"></map>
 </div>
 
 </div>
@@ -313,6 +381,15 @@ Voici le graphe d'appel pour cette fonction :</div>
 <div class="memdoc">
 
 <p>
+Affiche une ligne d'un script de combat. 
+<p>
+<dl compact><dt><b>Paramètres:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>$action</em>&nbsp;</td><td>Ligne à afficher sous forme de tableau associatif. </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>$joueur</em>&nbsp;</td><td>Tableau associatif décrivant le joueur.</td></tr>
+  </table>
+</dl>
+<dl class="return" compact><dt><b>Renvoie:</b></dt><dd>Code HTML décrivant la ligne. </dd></dl>
 
 <p>
 <div class="dynheader">
@@ -320,7 +397,7 @@ Voici le graphe d'appel pour cette fonction :</div>
 <div class="dynsection">
 <p><center><img src="base_8inc_8php_11fd79ebeaf54d026fce07d8bfe0ca41_cgraph.png" border="0" usemap="#base_8inc_8php_11fd79ebeaf54d026fce07d8bfe0ca41_cgraph_map" alt=""></center>
 <map name="base_8inc_8php_11fd79ebeaf54d026fce07d8bfe0ca41_cgraph_map">
-<area shape="rect" href="base_8inc_8php.html#b765e14b3f021d8f4f26d33e13a4a156" title="description" alt="" coords="225,5,308,32"><area shape="rect" href="action_8inc_8php.html#abbb250b0c79b0ef7ce8aefc83b026b6" title="Renvoie un tableau des éEtats avec l&#39;ID et le nom." alt="" coords="229,56,304,83"></map>
+<area shape="rect" href="base_8inc_8php.html#b765e14b3f021d8f4f26d33e13a4a156" title="Formate les descriptions." alt="" coords="239,5,329,35"><area shape="rect" href="action_8inc_8php.html#abbb250b0c79b0ef7ce8aefc83b026b6" title="Renvoie un tableau des éEtats avec l&#39;ID et le nom." alt="" coords="247,59,321,88"></map>
 </div>
 
 </div>
@@ -342,6 +419,14 @@ Voici le graphe d'appel pour cette fonction :</div>
 <div class="memdoc">
 
 <p>
+Affiche une ligne du journal avec la bonne couleur. 
+<p>
+<dl compact><dt><b>Paramètres:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>$row</em>&nbsp;</td><td>Tableau associatif contenant l'action à décrire.</td></tr>
+  </table>
+</dl>
+<dl class="return" compact><dt><b>Renvoie:</b></dt><dd>Code HTML de la ligne à afficher. </dd></dl>
 
 </div>
 </div><p>
@@ -415,6 +500,18 @@ Ajoute un bonus shine à un personnage.
 <div class="memdoc">
 
 <p>
+Permet de savoir si lors d'une action la compétence augmente de 1. 
+<p>
+Plus la difficulte est forte, plus il est difficile de l'apprendre.<p>
+<dl compact><dt><b>Paramètres:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>$competence</em>&nbsp;</td><td>ID de la compétence. </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>$joueur</em>&nbsp;</td><td>Tableau associatif décrivant le joueur. </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>$difficulte</em>&nbsp;</td><td>Difficuté</td></tr>
+  </table>
+</dl>
+<dl class="return" compact><dt><b>Renvoie:</b></dt><dd>[0] Nouvelle valeur de la compétence. <p>
+[1] 1 s'il y a augmentation, 0 sinon. </dd></dl>
 
 <p>
 <div class="dynheader">
@@ -422,7 +519,7 @@ Voici le graphe d'appel pour cette fonction :</div>
 <div class="dynsection">
 <p><center><img src="base_8inc_8php_19a8179130215d05ff50b9e72f2c46d3_icgraph.png" border="0" usemap="#base_8inc_8php_19a8179130215d05ff50b9e72f2c46d3_icgraph_map" alt=""></center>
 <map name="base_8inc_8php_19a8179130215d05ff50b9e72f2c46d3_icgraph_map">
-<area shape="rect" href="attaque_8inc_8php.html#2791684fa0ff34996044148c598a2d64" title="attaque" alt="" coords="287,5,351,32"><area shape="rect" href="action_8inc_8php.html#09b6dc45f599376a3695ec53bbb1d461" title="Utilise une compétence." alt="" coords="273,56,364,83"><area shape="rect" href="action_8inc_8php.html#eac6f598954a3952c8dbbaed9d6ea370" title="Lance un sort lors d&#39;un combat." alt="" coords="279,107,359,133"><area shape="rect" href="classcompetence.html#133f24d03a1417764b5b94f0c7c421ab" title="competence::test_montee" alt="" coords="233,157,404,184"><area shape="rect" href="classart__critique.html#5c053fdffbe1e4a74ef6fc4a1f4c88f6" title="art_critique::fin_round" alt="" coords="472,107,616,133"><area shape="rect" href="classmaitrise__dague.html#7f0a0b02f95cda54f951b2b162dbc8a3" title="maitrise_dague::fin_round" alt="" coords="460,157,628,184"><area shape="rect" href="classmaitrise__bouclier.html#ec72dd2a421f85caf36a892c6f95a9fa" title="maitrise_bouclier::fin_round" alt="" coords="455,208,633,235"></map>
+<area shape="rect" href="attaque_8inc_8php.html#2791684fa0ff34996044148c598a2d64" title="attaque" alt="" coords="300,5,367,35"><area shape="rect" href="action_8inc_8php.html#09b6dc45f599376a3695ec53bbb1d461" title="Utilise une compétence." alt="" coords="285,59,381,88"><area shape="rect" href="action_8inc_8php.html#eac6f598954a3952c8dbbaed9d6ea370" title="Lance un sort lors d&#39;un combat." alt="" coords="291,112,376,141"><area shape="rect" href="classcompetence.html#133f24d03a1417764b5b94f0c7c421ab" title="competence::test_montee" alt="" coords="244,165,423,195"><area shape="rect" href="classart__critique.html#5c053fdffbe1e4a74ef6fc4a1f4c88f6" title="Action a effectuer en fin de round." alt="" coords="491,112,651,141"><area shape="rect" href="classmaitrise__dague.html#7f0a0b02f95cda54f951b2b162dbc8a3" title="Action a effectuer en fin de round." alt="" coords="479,165,663,195"><area shape="rect" href="classmaitrise__bouclier.html#ec72dd2a421f85caf36a892c6f95a9fa" title="Action a effectuer en fin de round." alt="" coords="472,219,669,248"></map>
 </div>
 
 </div>
@@ -592,7 +689,7 @@ Voici le graphe d'appel pour cette fonction :</div>
 <div class="dynsection">
 <p><center><img src="base_8inc_8php_2d3292ed5dd5c93b9a42992691cee8aa_icgraph.png" border="0" usemap="#base_8inc_8php_2d3292ed5dd5c93b9a42992691cee8aa_icgraph_map" alt=""></center>
 <map name="base_8inc_8php_2d3292ed5dd5c93b9a42992691cee8aa_icgraph_map">
-<area shape="rect" href="groupe_8inc_8php.html#6ff2d5a26752095e92a2ff4b43cf625f" title="recupgroupe" alt="" coords="233,32,332,61"><area shape="rect" href="groupe_8inc_8php.html#bd6b2a2a82cdaf199d8426253b9b317d" title="degroup" alt="" coords="444,5,516,35"><area shape="rect" href="classmessagerie.html#320289138709a3bd111e218fcc8c6ce5" title="messagerie::envoi_message" alt="" coords="383,59,577,88"></map>
+<area shape="rect" href="base_8inc_8php.html#0d89eafca33ed40d768bd6dae1d9e805" title="Calcul des joueurs dans la visu d&#39;un autre La distance utilisée est la distance..." alt="" coords="232,5,360,35"><area shape="rect" href="groupe_8inc_8php.html#6ff2d5a26752095e92a2ff4b43cf625f" title="recupgroupe" alt="" coords="247,59,345,88"><area shape="rect" href="groupe_8inc_8php.html#bd6b2a2a82cdaf199d8426253b9b317d" title="degroup" alt="" coords="471,32,543,61"><area shape="rect" href="classmessagerie.html#320289138709a3bd111e218fcc8c6ce5" title="messagerie::envoi_message" alt="" coords="409,85,604,115"></map>
 </div>
 
 </div>
@@ -614,6 +711,14 @@ Voici le graphe d'appel pour cette fonction :</div>
 <div class="memdoc">
 
 <p>
+Calcul le pourcentage de dégâts absorbé en fonction de la PP. 
+<p>
+<dl compact><dt><b>Paramètres:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>$pp</em>&nbsp;</td><td>PP.</td></tr>
+  </table>
+</dl>
+<dl class="return" compact><dt><b>Renvoie:</b></dt><dd>Pourcentage de dégâts absorbé. </dd></dl>
 
 <p>
 <div class="dynheader">
@@ -668,6 +773,15 @@ Vérifie si on affiche les informations qui peuvent être caché par un bonus sh
   </table>
 </dl>
 <dl class="return" compact><dt><b>Renvoie:</b></dt><dd>true si on affiche, false sinon. </dd></dl>
+
+<p>
+<div class="dynheader">
+Voici le graphe d'appel pour cette fonction :</div>
+<div class="dynsection">
+<p><center><img src="base_8inc_8php_3a1cb7279256ae2300292213d60ecc70_icgraph.png" border="0" usemap="#base_8inc_8php_3a1cb7279256ae2300292213d60ecc70_icgraph_map" alt=""></center>
+<map name="base_8inc_8php_3a1cb7279256ae2300292213d60ecc70_icgraph_map">
+<area shape="rect" href="print_8inc_8php.html#40a4c245ed98aa4cdfa4acb5fe90f0d0" title="affiche_perso_visu" alt="" coords="207,5,343,35"></map>
+</div>
 
 </div>
 </div><p>
@@ -753,6 +867,14 @@ Gère l'augmentation et la régénération des HP &amp; MP, la régénération d
 <div class="memdoc">
 
 <p>
+Vérifie qu'il n'y a pas de caractères spéciaux dans la chaine fournie. 
+<p>
+<dl compact><dt><b>Paramètres:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>$param</em>&nbsp;</td><td>Chaine à vérifier.</td></tr>
+  </table>
+</dl>
+<dl class="return" compact><dt><b>Renvoie:</b></dt><dd>true s'il n'y a pas de caratères spéciaux, false s'il y en a. </dd></dl>
 
 </div>
 </div><p>
@@ -790,7 +912,7 @@ Voici le graphe d'appel pour cette fonction :</div>
 <div class="dynsection">
 <p><center><img src="base_8inc_8php_9a2308f261df8d4bbdcede4c1daa5050_icgraph.png" border="0" usemap="#base_8inc_8php_9a2308f261df8d4bbdcede4c1daa5050_icgraph_map" alt=""></center>
 <map name="base_8inc_8php_9a2308f261df8d4bbdcede4c1daa5050_icgraph_map">
-<area shape="rect" href="base_8inc_8php.html#6d2c7638ffdeb0f25c87c6a512e9de19" title="Calcule la distance &quot;non pythagoriciene&quot; entre deux personnages." alt="" coords="215,5,332,35"><area shape="rect" href="base_8inc_8php.html#c28cbcd0bda84cb77614994a18067f38" title="Ajuste le coût en PA d&#39;un déplacement en fonction de tous les parmètres qui..." alt="" coords="816,32,893,61"><area shape="rect" href="base_8inc_8php.html#2d3292ed5dd5c93b9a42992691cee8aa" title="Calcule la distance &quot;pythagoriciene&quot; entre deux personnages." alt="" coords="184,109,363,139"><area shape="rect" href="base_8inc_8php.html#ed5f8dc37c106ba49da25e33dbee3224" title="Detecte si l&#39;attaquant est sur la meme case." alt="" coords="205,163,341,192"><area shape="rect" href="base_8inc_8php.html#8f6dae8735bd5af08d403f5a2b78de71" title="Récupère les informations sur un bâtiment." alt="" coords="412,5,521,35"><area shape="rect" href="base_8inc_8php.html#2b1d58868952483790df70a8b0539c61" title="Donne le bâtiment situé sur une certaine case." alt="" coords="615,5,724,35"><area shape="rect" href="groupe_8inc_8php.html#6ff2d5a26752095e92a2ff4b43cf625f" title="recupgroupe" alt="" coords="417,109,516,139"><area shape="rect" href="groupe_8inc_8php.html#bd6b2a2a82cdaf199d8426253b9b317d" title="degroup" alt="" coords="633,109,705,139"><area shape="rect" href="classmessagerie.html#320289138709a3bd111e218fcc8c6ce5" title="messagerie::envoi_message" alt="" coords="572,163,767,192"></map>
+<area shape="rect" href="classmap.html#dac487271a21b805ec56f4f8dbe523a3" title="map::affiche" alt="" coords="225,5,321,35"><area shape="rect" href="base_8inc_8php.html#6d2c7638ffdeb0f25c87c6a512e9de19" title="Calcule la distance &quot;non pythagoriciene&quot; entre deux personnages." alt="" coords="215,59,332,88"><area shape="rect" href="base_8inc_8php.html#c28cbcd0bda84cb77614994a18067f38" title="Ajuste le coût en PA d&#39;un déplacement en fonction de tous les parmètres qui..." alt="" coords="832,85,909,115"><area shape="rect" href="base_8inc_8php.html#2d3292ed5dd5c93b9a42992691cee8aa" title="Calcule la distance &quot;pythagoriciene&quot; entre deux personnages." alt="" coords="184,163,363,192"><area shape="rect" href="base_8inc_8php.html#ed5f8dc37c106ba49da25e33dbee3224" title="Detecte si l&#39;attaquant est sur la meme case." alt="" coords="205,216,341,245"><area shape="rect" href="base_8inc_8php.html#8f6dae8735bd5af08d403f5a2b78de71" title="Récupère les informations sur un bâtiment." alt="" coords="420,59,529,88"><area shape="rect" href="base_8inc_8php.html#2b1d58868952483790df70a8b0539c61" title="Donne le bâtiment situé sur une certaine case." alt="" coords="631,59,740,88"><area shape="rect" href="base_8inc_8php.html#0d89eafca33ed40d768bd6dae1d9e805" title="Calcul des joueurs dans la visu d&#39;un autre La distance utilisée est la distance..." alt="" coords="411,163,539,192"><area shape="rect" href="groupe_8inc_8php.html#6ff2d5a26752095e92a2ff4b43cf625f" title="recupgroupe" alt="" coords="425,216,524,245"><area shape="rect" href="groupe_8inc_8php.html#bd6b2a2a82cdaf199d8426253b9b317d" title="degroup" alt="" coords="649,189,721,219"><area shape="rect" href="classmessagerie.html#320289138709a3bd111e218fcc8c6ce5" title="messagerie::envoi_message" alt="" coords="588,243,783,272"></map>
 </div>
 
 </div>
@@ -838,7 +960,7 @@ Voici le graphe d'appel pour cette fonction :</div>
 <div class="dynsection">
 <p><center><img src="base_8inc_8php_de6991be5ce13525640bddfc5ea407c8_icgraph.png" border="0" usemap="#base_8inc_8php_de6991be5ce13525640bddfc5ea407c8_icgraph_map" alt=""></center>
 <map name="base_8inc_8php_de6991be5ce13525640bddfc5ea407c8_icgraph_map">
-<area shape="rect" href="base_8inc_8php.html#2b1d58868952483790df70a8b0539c61" title="Donne le bâtiment situé sur une certaine case." alt="" coords="375,15,484,44"><area shape="rect" href="base_8inc_8php.html#ae459f46fc695ca607b6b8dd54abf9a3" title="Vérifie les modifications de la case." alt="" coords="181,40,272,69"><area shape="rect" href="base_8inc_8php.html#8f6dae8735bd5af08d403f5a2b78de71" title="Récupère les informations sur un bâtiment." alt="" coords="172,93,281,123"><area shape="rect" href="groupe_8inc_8php.html#6ff2d5a26752095e92a2ff4b43cf625f" title="recupgroupe" alt="" coords="177,147,276,176"><area shape="rect" href="base_8inc_8php.html#6aa39ff189b7dd018fb6980b5330ab67" title="verif_mort" alt="" coords="185,200,268,229"><area shape="rect" href="base_8inc_8php.html#9c88b8555ba03e4e43a3e77c5c6e575e" title="verif_ville" alt="" coords="187,253,267,283"><area shape="rect" href="base_8inc_8php.html#c28cbcd0bda84cb77614994a18067f38" title="Ajuste le coût en PA d&#39;un déplacement en fonction de tous les parmètres qui..." alt="" coords="576,15,653,44"><area shape="rect" href="groupe_8inc_8php.html#bd6b2a2a82cdaf199d8426253b9b317d" title="degroup" alt="" coords="393,93,465,123"><area shape="rect" href="classmessagerie.html#320289138709a3bd111e218fcc8c6ce5" title="messagerie::envoi_message" alt="" coords="332,147,527,176"><area shape="rect" href="security_8inc_8php.html#48c4fb90180f16ba2648898fc277710a" title="check_undead_players" alt="" coords="348,200,511,229"></map>
+<area shape="rect" href="gestion__bataille_8php.html#86ed0172b7f26e8f2fcc5361a6d37fbf" title="affiche_map" alt="" coords="187,5,283,35"><area shape="rect" href="base_8inc_8php.html#2b1d58868952483790df70a8b0539c61" title="Donne le bâtiment situé sur une certaine case." alt="" coords="393,111,503,140"><area shape="rect" href="base_8inc_8php.html#ae459f46fc695ca607b6b8dd54abf9a3" title="Vérifie les modifications de la case." alt="" coords="189,109,280,139"><area shape="rect" href="base_8inc_8php.html#0d89eafca33ed40d768bd6dae1d9e805" title="Calcul des joueurs dans la visu d&#39;un autre La distance utilisée est la distance..." alt="" coords="171,163,299,192"><area shape="rect" href="base_8inc_8php.html#8f6dae8735bd5af08d403f5a2b78de71" title="Récupère les informations sur un bâtiment." alt="" coords="180,216,289,245"><area shape="rect" href="groupe_8inc_8php.html#6ff2d5a26752095e92a2ff4b43cf625f" title="recupgroupe" alt="" coords="185,269,284,299"><area shape="rect" href="base_8inc_8php.html#6aa39ff189b7dd018fb6980b5330ab67" title="Vérifie si le personnage est mort est si c&#39;est le cas affiche la page de résurection..." alt="" coords="193,323,276,352"><area shape="rect" href="base_8inc_8php.html#9c88b8555ba03e4e43a3e77c5c6e575e" title="Vérifie si une certaine position correspond a une ville." alt="" coords="195,376,275,405"><area shape="rect" href="base_8inc_8php.html#c28cbcd0bda84cb77614994a18067f38" title="Ajuste le coût en PA d&#39;un déplacement en fonction de tous les parmètres qui..." alt="" coords="597,111,675,140"><area shape="rect" href="groupe_8inc_8php.html#bd6b2a2a82cdaf199d8426253b9b317d" title="degroup" alt="" coords="412,216,484,245"><area shape="rect" href="classmessagerie.html#320289138709a3bd111e218fcc8c6ce5" title="messagerie::envoi_message" alt="" coords="351,269,545,299"><area shape="rect" href="security_8inc_8php.html#48c4fb90180f16ba2648898fc277710a" title="check_undead_players" alt="" coords="367,323,529,352"><area shape="rect" href="classcraft__recette.html#c13f1f3fe45a2c152e99f7e3be4c72a7" title="craft_recette::get_info_joueur" alt="" coords="348,376,548,405"></map>
 </div>
 
 </div>
@@ -938,12 +1060,12 @@ Donne la version compressée de la position dans un donjon à partir des coordon
 <div class="memdoc">
 
 <p>
-Donne le coût en PA d'un déplacement en fonction du terrain et de la race. 
+Donne le coût en PA d'un déplacement en fonction du <a class="el" href="classterrain.html">terrain</a> et de la race. 
 <p>
-Une valeur de 50 indique que l'on ne peut pas aller sur la case. Si le type de terrain n'est pas trouvé, le coût est fixé à 6 PA.<p>
+Une valeur de 50 indique que l'on ne peut pas aller sur la case. Si le type de <a class="el" href="classterrain.html">terrain</a> n'est pas trouvé, le coût est fixé à 6 PA.<p>
 <dl compact><dt><b>Paramètres:</b></dt><dd>
   <table border="0" cellspacing="2" cellpadding="0">
-    <tr><td valign="top"></td><td valign="top"><em>$info</em>&nbsp;</td><td>Type de terrain. </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>$info</em>&nbsp;</td><td>Type de <a class="el" href="classterrain.html">terrain</a>. </td></tr>
     <tr><td valign="top"></td><td valign="top"><em>$race</em>&nbsp;</td><td>Race.</td></tr>
   </table>
 </dl>
@@ -1039,6 +1161,15 @@ Voici le graphe d'appel pour cette fonction :</div>
 <div class="memdoc">
 
 <p>
+Fonction permettant de calculer les dés de dégat en fonction de la force et de l'arme de la personne. 
+<p>
+<dl compact><dt><b>Paramètres:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>$force</em>&nbsp;</td><td>Force du personnage. </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>$degat_arme</em>&nbsp;</td><td>Facteur de dégâts de l'arme.</td></tr>
+  </table>
+</dl>
+<dl class="return" compact><dt><b>Renvoie:</b></dt><dd>Tableau contenant les dés à lancer (chaque dès apparait autant de fois dans la tableu qu'il faut le lancer). </dd></dl>
 
 <p>
 <div class="dynheader">
@@ -1077,6 +1208,15 @@ Voici le graphe d'appel pour cette fonction :</div>
 <div class="memdoc">
 
 <p>
+Fonction permettant de calculer les dés de soins. 
+<p>
+<dl compact><dt><b>Paramètres:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>$force</em>&nbsp;</td><td>Caractéristique associée. </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>$degat_arme</em>&nbsp;</td><td>Effet du sort.</td></tr>
+  </table>
+</dl>
+<dl class="return" compact><dt><b>Renvoie:</b></dt><dd>Tableau contenant les dés à lancer (chaque dès apparait autant de fois dans la tableu qu'il faut le lancer). </dd></dl>
 
 </div>
 </div><p>
@@ -1106,6 +1246,16 @@ Voici le graphe d'appel pour cette fonction :</div>
 <div class="memdoc">
 
 <p>
+Formate les descriptions. 
+<p>
+Ce qui est entre % sont remplacé par la variable correspondante dans le tableau fourni et ce qui est entre @ et évalué.<p>
+<dl compact><dt><b>Paramètres:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>$texte</em>&nbsp;</td><td>Description à formater. </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>$array</em>&nbsp;</td><td>Tableau assiociatif contenant les vaeurs à remplacer.</td></tr>
+  </table>
+</dl>
+<dl class="return" compact><dt><b>Renvoie:</b></dt><dd>Description formatée. </dd></dl>
 
 <p>
 <div class="dynheader">
@@ -1113,7 +1263,7 @@ Voici le graphe d'appel pour cette fonction :</div>
 <div class="dynsection">
 <p><center><img src="base_8inc_8php_b765e14b3f021d8f4f26d33e13a4a156_icgraph.png" border="0" usemap="#base_8inc_8php_b765e14b3f021d8f4f26d33e13a4a156_icgraph_map" alt=""></center>
 <map name="base_8inc_8php_b765e14b3f021d8f4f26d33e13a4a156_icgraph_map">
-<area shape="rect" href="class_objets.html#edf55c8c43cec7b43c6cf87d09a3bf38" title="Constructeur permettant la création d&#39;un objet." alt="" coords="160,5,296,32"><area shape="rect" href="class_accessoire.html#dbe8a13ca87ce33ac6c1209a72beb7ea" title="Constructeur permettant la création d&#39;un accessoire." alt="" coords="147,56,309,83"><area shape="rect" href="class_objets.html#db68b047eb7adeafd42275d75348d413" title="Objets::__toString" alt="" coords="165,107,291,133"><area shape="rect" href="class_accessoire.html#73ee6ea8786d77038f7b90d76432643f" title="Accessoire::__toString" alt="" coords="152,157,304,184"><area shape="rect" href="base_8inc_8php.html#736714b05762b33c0d599b1bbc7cde2f" title="affiche_condition" alt="" coords="169,208,287,235"><area shape="rect" href="base_8inc_8php.html#11fd79ebeaf54d026fce07d8bfe0ca41" title="affiche_condition_session" alt="" coords="144,259,312,285"><area shape="rect" href="equipement_8inc_8php.html#c3cae32fd35c5c3d572117d38671a59b" title="description_objet" alt="" coords="168,309,288,336"><area shape="rect" href="class_objets.html#d95d5b2d0ab1ee2551fcd14078d01777" title="Objets::getDescription" alt="" coords="153,360,303,387"><area shape="rect" href="class_accessoire.html#c2950f5fa76a7afa66031cc90b0fba91" title="Accessoire::getDescription" alt="" coords="140,411,316,437"><area shape="rect" href="class_objets.html#1a23164c9b05a238625a2e3e5f526336" title="Objets::infobulle" alt="" coords="171,461,285,488"><area shape="rect" href="class_objets.html#f0029c2cd9b1f966492a008877e5633f" title="Objets::sauver" alt="" coords="176,512,280,539"><area shape="rect" href="class_accessoire.html#71bdaff55d277ebacb75b253c2c30bec" title="Accessoire::sauver" alt="" coords="163,563,293,589"><area shape="rect" href="class_objets.html#72396f394b57f13d502d7351d23bf231" title="Objets::setDescription" alt="" coords="153,613,303,640"><area shape="rect" href="class_accessoire.html#c7fe28ac6e5f0df0bcc5bda06b0bdda3" title="Les caractères spéciaux sont échappés lors de la sauvegarde par conséquent $description..." alt="" coords="140,664,316,691"></map>
+<area shape="rect" href="classterrain__batiment.html#27f310dc127894c59816f8c7de398145" title="Constructeur permettant la création d&#39;un terrain_batiment." alt="" coords="173,5,376,35"><area shape="rect" href="class_objets.html#edf55c8c43cec7b43c6cf87d09a3bf38" title="Constructeur permettant la création d&#39;un objet." alt="" coords="204,59,345,88"><area shape="rect" href="classcraft__recette.html#56dc7a04a5a9ec9989ef25fb21d1629a" title="Constructeur permettant la cr?ation d&#39;une recette." alt="" coords="187,112,363,141"><area shape="rect" href="classcraft__instrument.html#dbcb6a2474f77f1cbcdfdcefe304d0f5" title="Constructeur permettant la cr?ation d&#39;un terrain_batiment." alt="" coords="173,165,376,195"><area shape="rect" href="classcraft__ingredient.html#8ad2dc623d429e12dedad5d540a52067" title="Constructeur permettant la cr?ation d&#39;un ingredient." alt="" coords="176,219,373,248"><area shape="rect" href="classbataille__repere__type.html#120b824b420def85264914e4e07c3ce6" title="Constructeur permettant la création d&#39;un repère de bataille." alt="" coords="163,272,387,301"><area shape="rect" href="classbataille.html#c2b3be1f723d7bb6a1557cb117a58df4" title="Constructeur permettant la création d&#39;une bataille." alt="" coords="201,325,348,355"><area shape="rect" href="class_accessoire.html#dbe8a13ca87ce33ac6c1209a72beb7ea" title="Constructeur permettant la création d&#39;un accessoire." alt="" coords="191,379,359,408"><area shape="rect" href="classterrain__batiment.html#037f2935ca1225037bc93abd5b7174d3" title="terrain_batiment::__toString" alt="" coords="177,432,372,461"><area shape="rect" href="class_objets.html#db68b047eb7adeafd42275d75348d413" title="Objets::__toString" alt="" coords="208,485,341,515"><area shape="rect" href="classcraft__instrument.html#d3afec2bfc4a42027333294dd3a204ae" title="craft_instrument::__toString" alt="" coords="177,539,372,568"><area shape="rect" href="class_accessoire.html#73ee6ea8786d77038f7b90d76432643f" title="Accessoire::__toString" alt="" coords="195,592,355,621"><area shape="rect" href="gestion__bataille_8php.html#d9925374b2565426095a239e4c4fe28f" title="affiche_bataille" alt="" coords="217,645,332,675"><area shape="rect" href="groupe__bataille_8php.html#2d4175bfcc7953bc5c82f520714c232b" title="affiche_bataille_groupe" alt="" coords="192,699,357,728"><area shape="rect" href="base_8inc_8php.html#736714b05762b33c0d599b1bbc7cde2f" title="Affiche une ligne d&#39;un script de combat." alt="" coords="211,752,339,781"><area shape="rect" href="base_8inc_8php.html#11fd79ebeaf54d026fce07d8bfe0ca41" title="Affiche une ligne d&#39;un script de combat." alt="" coords="183,805,367,835"><area shape="rect" href="equipement_8inc_8php.html#c3cae32fd35c5c3d572117d38671a59b" title="description_objet" alt="" coords="211,859,339,888"><area shape="rect" href="classbataille__royaume.html#7452509260ed90d556fccdd6ada6eed5" title="bataille_royaume::get_all_repere_type" alt="" coords="147,912,403,941"><area shape="rect" href="class_objets.html#d95d5b2d0ab1ee2551fcd14078d01777" title="Objets::getDescription" alt="" coords="195,965,355,995"><area shape="rect" href="class_accessoire.html#c2950f5fa76a7afa66031cc90b0fba91" title="Accessoire::getDescription" alt="" coords="181,1019,368,1048"><area shape="rect" href="class_objets.html#1a23164c9b05a238625a2e3e5f526336" title="Objets::infobulle" alt="" coords="213,1072,336,1101"><area shape="rect" href="classterrain__batiment.html#e7e8d5f9e4b59841fbeb0d71994f7131" title="terrain_batiment::sauver" alt="" coords="189,1125,360,1155"><area shape="rect" href="class_objets.html#f0029c2cd9b1f966492a008877e5633f" title="Objets::sauver" alt="" coords="220,1179,329,1208"><area shape="rect" href="classcraft__recette.html#f989d978ec6b1509d48c4a09a2165471" title="craft_recette::sauver" alt="" coords="203,1232,347,1261"><area shape="rect" href="classcraft__instrument.html#12cc34c1ae436cc25668719202502a04" title="craft_instrument::sauver" alt="" coords="189,1285,360,1315"><area shape="rect" href="classcraft__ingredient.html#f3abc099f8e967c3cf17c7a5fb06aa2d" title="craft_ingredient::sauver" alt="" coords="191,1339,359,1368"><area shape="rect" href="classbataille__repere__type.html#578da377da48cb17bf261b08f7953708" title="bataille_repere_type::sauver" alt="" coords="177,1392,372,1421"><area shape="rect" href="classbataille.html#3c7a006e194da8fab547a1c250d970fc" title="bataille::sauver" alt="" coords="217,1445,332,1475"><area shape="rect" href="class_accessoire.html#71bdaff55d277ebacb75b253c2c30bec" title="Accessoire::sauver" alt="" coords="205,1499,344,1528"><area shape="rect" href="class_objets.html#72396f394b57f13d502d7351d23bf231" title="Objets::setDescription" alt="" coords="196,1552,353,1581"><area shape="rect" href="class_accessoire.html#c7fe28ac6e5f0df0bcc5bda06b0bdda3" title="Les caractères spéciaux sont échappés lors de la sauvegarde par conséquent $description..." alt="" coords="181,1605,368,1635"></map>
 </div>
 
 </div>
@@ -1225,6 +1375,50 @@ Calcul du facteur de difficulté pour augmenter une compétence liée aux sorts.
 
 </div>
 </div><p>
+<a class="anchor" name="69380ad364e8b101449df49eff6071ee"></a><!-- doxytag: member="base.inc.php::dimension_map" ref="69380ad364e8b101449df49eff6071ee" args="($x, $y, $champ_vision)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">dimension_map           </td>
+          <td>(</td>
+          <td class="paramtype">$&nbsp;</td>
+          <td class="paramname"> <em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">$&nbsp;</td>
+          <td class="paramname"> <em>y</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">$&nbsp;</td>
+          <td class="paramname"> <em>champ_vision</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+<p>
+<div class="dynheader">
+Voici le graphe d'appel pour cette fonction :</div>
+<div class="dynsection">
+<p><center><img src="base_8inc_8php_69380ad364e8b101449df49eff6071ee_icgraph.png" border="0" usemap="#base_8inc_8php_69380ad364e8b101449df49eff6071ee_icgraph_map" alt=""></center>
+<map name="base_8inc_8php_69380ad364e8b101449df49eff6071ee_icgraph_map">
+<area shape="rect" href="gestion__bataille_8php.html#86ed0172b7f26e8f2fcc5361a6d37fbf" title="affiche_map" alt="" coords="176,5,272,35"></map>
+</div>
+
+</div>
+</div><p>
 <a class="anchor" name="6f1aac401ea0f4071838c13678d64103"></a><!-- doxytag: member="base.inc.php::genere_image_buff_duree" ref="6f1aac401ea0f4071838c13678d64103" args="($buff)" -->
 <div class="memitem">
 <div class="memproto">
@@ -1242,6 +1436,14 @@ Calcul du facteur de difficulté pour augmenter une compétence liée aux sorts.
 <div class="memdoc">
 
 <p>
+Génère l'image de la barre de durée des buffs. 
+<p>
+<dl compact><dt><b>Paramètres:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>$buff</em>&nbsp;</td><td>Tableau associatif décrivant le buff</td></tr>
+  </table>
+</dl>
+<dl class="return" compact><dt><b>Renvoie:</b></dt><dd>chemin de l'image de la barre. </dd></dl>
 
 </div>
 </div><p>
@@ -1277,6 +1479,16 @@ Calcul du facteur de difficulté pour augmenter une compétence liée aux sorts.
 <div class="memdoc">
 
 <p>
+Génère l'image de la barre de compétence. 
+<p>
+<dl compact><dt><b>Paramètres:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>$joueur</em>&nbsp;</td><td>Tableau associatif contenant les valeurs des compétences. </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>$competence</em>&nbsp;</td><td>Compétence concernée. </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>$comp_max</em>&nbsp;</td><td>Maximum de la compétence.</td></tr>
+  </table>
+</dl>
+<dl class="return" compact><dt><b>Renvoie:</b></dt><dd>chemin de l'image de la barre. </dd></dl>
 
 </div>
 </div><p>
@@ -1312,6 +1524,16 @@ Calcul du facteur de difficulté pour augmenter une compétence liée aux sorts.
 <div class="memdoc">
 
 <p>
+Génère l'image de la barre de compétence. 
+<p>
+<dl compact><dt><b>Paramètres:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>$joueur</em>&nbsp;</td><td>Tableau associatif décrivant le personnage </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>$competence</em>&nbsp;</td><td>Compétence concernée. </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>$comp_max</em>&nbsp;</td><td>Maximum de la compétence.</td></tr>
+  </table>
+</dl>
+<dl class="return" compact><dt><b>Renvoie:</b></dt><dd>chemin de l'image de la barre. </dd></dl>
 
 </div>
 </div><p>
@@ -1347,6 +1569,16 @@ Calcul du facteur de difficulté pour augmenter une compétence liée aux sorts.
 <div class="memdoc">
 
 <p>
+Génère l'image de la barre d'XP. 
+<p>
+<dl compact><dt><b>Paramètres:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>$xp_joueur</em>&nbsp;</td><td>Expérience du joueur. </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>$xp_p_n</em>&nbsp;</td><td>Expérience du prochain niveau. </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>$progression</em>&nbsp;</td><td>Pourcentage d'XP pour passer au niveau suivant.</td></tr>
+  </table>
+</dl>
+<dl class="return" compact><dt><b>Renvoie:</b></dt><dd>chemin de l'image de la barre. </dd></dl>
 
 </div>
 </div><p>
@@ -1367,6 +1599,14 @@ Calcul du facteur de difficulté pour augmenter une compétence liée aux sorts.
 <div class="memdoc">
 
 <p>
+Génère l'image de la barre de HP. 
+<p>
+<dl compact><dt><b>Paramètres:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>$joueur</em>&nbsp;</td><td>Tableau associatif décrivant le personnage</td></tr>
+  </table>
+</dl>
+<dl class="return" compact><dt><b>Renvoie:</b></dt><dd>chemin de l'image de la barre. </dd></dl>
 
 </div>
 </div><p>
@@ -1387,6 +1627,14 @@ Calcul du facteur de difficulté pour augmenter une compétence liée aux sorts.
 <div class="memdoc">
 
 <p>
+Génère l'image de la barre de HP d'un membre du <a class="el" href="classgroupe.html">groupe</a>. 
+<p>
+<dl compact><dt><b>Paramètres:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>$joueur</em>&nbsp;</td><td>Tableau associatif décrivant le personnage</td></tr>
+  </table>
+</dl>
+<dl class="return" compact><dt><b>Renvoie:</b></dt><dd>chemin de l'image de la barre. </dd></dl>
 
 </div>
 </div><p>
@@ -1407,6 +1655,14 @@ Calcul du facteur de difficulté pour augmenter une compétence liée aux sorts.
 <div class="memdoc">
 
 <p>
+Génère l'image de la barre de MP. 
+<p>
+<dl compact><dt><b>Paramètres:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>$joueur</em>&nbsp;</td><td>Tableau associatif décrivant le personnage</td></tr>
+  </table>
+</dl>
+<dl class="return" compact><dt><b>Renvoie:</b></dt><dd>chemin de l'image de la barre. </dd></dl>
 
 </div>
 </div><p>
@@ -1427,6 +1683,14 @@ Calcul du facteur de difficulté pour augmenter une compétence liée aux sorts.
 <div class="memdoc">
 
 <p>
+Génère l'image de la barre de MP d'un membre du <a class="el" href="classgroupe.html">groupe</a>. 
+<p>
+<dl compact><dt><b>Paramètres:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>$joueur</em>&nbsp;</td><td>Tableau associatif décrivant le personnage</td></tr>
+  </table>
+</dl>
+<dl class="return" compact><dt><b>Renvoie:</b></dt><dd>chemin de l'image de la barre. </dd></dl>
 
 </div>
 </div><p>
@@ -1447,6 +1711,14 @@ Calcul du facteur de difficulté pour augmenter une compétence liée aux sorts.
 <div class="memdoc">
 
 <p>
+Génère l'image de la barre de PA. 
+<p>
+<dl compact><dt><b>Paramètres:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>$joueur</em>&nbsp;</td><td>Tableau associatif décrivant le personnage</td></tr>
+  </table>
+</dl>
+<dl class="return" compact><dt><b>Renvoie:</b></dt><dd>chemin de l'image de la barre. </dd></dl>
 
 </div>
 </div><p>
@@ -1476,6 +1748,15 @@ Calcul du facteur de difficulté pour augmenter une compétence liée aux sorts.
 <div class="memdoc">
 
 <p>
+Renvoie les informations sur le royaume. 
+<p>
+<dl compact><dt><b>Paramètres:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>$race_joueur</em>&nbsp;</td><td>Race du personnage (pour la diplomatie et les taxes. </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>$royaume_id</em>&nbsp;</td><td>Id du royaume.</td></tr>
+  </table>
+</dl>
+<dl class="return" compact><dt><b>Renvoie:</b></dt><dd>Tableau associatif contenant les informations sur le royaume. </dd></dl>
 
 <p>
 <div class="dynheader">
@@ -1483,7 +1764,7 @@ Voici le graphe d'appel pour cette fonction :</div>
 <div class="dynsection">
 <p><center><img src="base_8inc_8php_b349fa336f26b42f41b67190adf60eaa_cgraph.png" border="0" usemap="#base_8inc_8php_b349fa336f26b42f41b67190adf60eaa_cgraph_map" alt=""></center>
 <map name="base_8inc_8php_b349fa336f26b42f41b67190adf60eaa_cgraph_map">
-<area shape="rect" href="base_8inc_8php.html#a74170554bbb08c23372ddf8bb8ab1fd" title="taux_taxe" alt="" coords="180,5,257,32"></map>
+<area shape="rect" href="base_8inc_8php.html#a74170554bbb08c23372ddf8bb8ab1fd" title="Calcul la taxe payé par un personnage." alt="" coords="187,5,267,35"></map>
 </div>
 
 </div>
@@ -1505,6 +1786,10 @@ Voici le graphe d'appel pour cette fonction :</div>
 <div class="memdoc">
 
 <p>
+Renvoie l'image d'un sort. 
+<p>
+$param $type Nom générique du sort.<p>
+<dl class="return" compact><dt><b>Renvoie:</b></dt><dd>Code HTML affichant l'image du sort. </dd></dl>
 
 </div>
 </div><p>
@@ -1550,7 +1835,7 @@ Voici le graphe d'appel pour cette fonction :</div>
 <div class="dynsection">
 <p><center><img src="base_8inc_8php_0b92e404c0f2824993e0076f84ddb3bb_icgraph.png" border="0" usemap="#base_8inc_8php_0b92e404c0f2824993e0076f84ddb3bb_icgraph_map" alt=""></center>
 <map name="base_8inc_8php_0b92e404c0f2824993e0076f84ddb3bb_icgraph_map">
-<area shape="rect" href="base_8inc_8php.html#6aa39ff189b7dd018fb6980b5330ab67" title="verif_mort" alt="" coords="132,5,207,32"><area shape="rect" href="security_8inc_8php.html#48c4fb90180f16ba2648898fc277710a" title="check_undead_players" alt="" coords="256,5,411,32"></map>
+<area shape="rect" href="base_8inc_8php.html#6aa39ff189b7dd018fb6980b5330ab67" title="Vérifie si le personnage est mort est si c&#39;est le cas affiche la page de résurection..." alt="" coords="140,5,223,35"><area shape="rect" href="security_8inc_8php.html#48c4fb90180f16ba2648898fc277710a" title="check_undead_players" alt="" coords="272,5,435,35"></map>
 </div>
 
 </div>
@@ -1579,7 +1864,7 @@ Indique si une case fait partie d'une ville.
     <tr><td valign="top"></td><td valign="top"><em>$case</em>&nbsp;</td><td>position compressée de la ville.</td></tr>
   </table>
 </dl>
-<dl class="return" compact><dt><b>Renvoie:</b></dt><dd>numéro du type de terrain si la case appartient à un royaume false sinon. </dd></dl>
+<dl class="return" compact><dt><b>Renvoie:</b></dt><dd>numéro du type de <a class="el" href="classterrain.html">terrain</a> si la case appartient à un royaume false sinon. </dd></dl>
 
 <p>
 <div class="dynheader">
@@ -1587,12 +1872,12 @@ Voici le graphe d'appel pour cette fonction :</div>
 <div class="dynsection">
 <p><center><img src="base_8inc_8php_4b9453d43c923b8174e4fcefae0a746d_icgraph.png" border="0" usemap="#base_8inc_8php_4b9453d43c923b8174e4fcefae0a746d_icgraph_map" alt=""></center>
 <map name="base_8inc_8php_4b9453d43c923b8174e4fcefae0a746d_icgraph_map">
-<area shape="rect" href="base_8inc_8php.html#4074f88ced7968af93a7eb088fd7c443" title="return_ville" alt="" coords="115,5,197,32"></map>
+<area shape="rect" href="base_8inc_8php.html#4074f88ced7968af93a7eb088fd7c443" title="Affiche un lien pour afficher le menu ville si le personnage est en ville." alt="" coords="121,5,212,35"></map>
 </div>
 
 </div>
 </div><p>
-<a class="anchor" name="7f7a0bb4069566d0c403e138ad877678"></a><!-- doxytag: member="base.inc.php::lance_buff" ref="7f7a0bb4069566d0c403e138ad877678" args="($type, $id, $effet, $effet2, $duree, $nom, $description, $type_cible, $debuff, $nb_buff, $grade)" -->
+<a class="anchor" name="bdebed81a12acc10788ddb1133ae76e7"></a><!-- doxytag: member="base.inc.php::lance_buff" ref="bdebed81a12acc10788ddb1133ae76e7" args="($type, $id, $effet, $effet2, $duree, $nom, $description, $type_cible, $debuff, $nb_buff, $grade, $supprimable=1)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -1660,7 +1945,13 @@ Voici le graphe d'appel pour cette fonction :</div>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">$&nbsp;</td>
-          <td class="paramname"> <em>grade</em></td><td>&nbsp;</td>
+          <td class="paramname"> <em>grade</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">$&nbsp;</td>
+          <td class="paramname"> <em>supprimable</em> = <code>1</code></td><td>&nbsp;</td>
         </tr>
         <tr>
           <td></td>
@@ -1672,14 +1963,33 @@ Voici le graphe d'appel pour cette fonction :</div>
 <div class="memdoc">
 
 <p>
+Lance un buff sur un personnage ou un monstre. 
+<p>
+<dl compact><dt><b>Paramètres:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>$type</em>&nbsp;</td><td>Nom générique du sort. </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>$id</em>&nbsp;</td><td>Id du sort. </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>$effet</em>&nbsp;</td><td>Effet du buff </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>$effet2</em>&nbsp;</td><td>Effet secondaire </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>$duree</em>&nbsp;</td><td>Durée du buff </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>$nom</em>&nbsp;</td><td>Nom du buff </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>$description</em>&nbsp;</td><td>Description du buff </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>$type_cible</em>&nbsp;</td><td>Type de cible ('perso' ou 'monstre') </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>$debuff</em>&nbsp;</td><td>1 si c'est un débuff, 0 si c'est un débuff </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>$nb_buff</em>&nbsp;</td><td>Nombre de buffs déjà actifs sur la cible. </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>$grade</em>&nbsp;</td><td>Grade de la cible. </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>$supprimable</em>&nbsp;</td><td>1 si le buff est supprimable, 0 sinon.</td></tr>
+  </table>
+</dl>
+<dl class="return" compact><dt><b>Renvoie:</b></dt><dd>true si le sort a été lancé et false sinon. </dd></dl>
 
 <p>
 <div class="dynheader">
 Voici le graphe d'appel pour cette fonction :</div>
 <div class="dynsection">
-<p><center><img src="base_8inc_8php_7f7a0bb4069566d0c403e138ad877678_icgraph.png" border="0" usemap="#base_8inc_8php_7f7a0bb4069566d0c403e138ad877678_icgraph_map" alt=""></center>
-<map name="base_8inc_8php_7f7a0bb4069566d0c403e138ad877678_icgraph_map">
-<area shape="rect" href="base_8inc_8php.html#6aa39ff189b7dd018fb6980b5330ab67" title="verif_mort" alt="" coords="135,5,209,32"><area shape="rect" href="security_8inc_8php.html#48c4fb90180f16ba2648898fc277710a" title="check_undead_players" alt="" coords="259,5,413,32"></map>
+<p><center><img src="base_8inc_8php_bdebed81a12acc10788ddb1133ae76e7_icgraph.png" border="0" usemap="#base_8inc_8php_bdebed81a12acc10788ddb1133ae76e7_icgraph_map" alt=""></center>
+<map name="base_8inc_8php_bdebed81a12acc10788ddb1133ae76e7_icgraph_map">
+<area shape="rect" href="base_8inc_8php.html#6aa39ff189b7dd018fb6980b5330ab67" title="Vérifie si le personnage est mort est si c&#39;est le cas affiche la page de résurection..." alt="" coords="140,5,223,35"><area shape="rect" href="security_8inc_8php.html#48c4fb90180f16ba2648898fc277710a" title="check_undead_players" alt="" coords="272,5,435,35"></map>
 </div>
 
 </div>
@@ -1701,6 +2011,62 @@ Voici le graphe d'appel pour cette fonction :</div>
 <div class="memdoc">
 
 <p>
+Renvoie le niveau correspondant à une certaine valeur de l'expérience. 
+<p>
+Le niveau est renvoyée sous forme décimale (les chiffres après la virgule indiquant de combien le personnage est proche du prochain niveau).<p>
+<dl compact><dt><b>Paramètres:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>$exp</em>&nbsp;</td><td>Expérience.</td></tr>
+  </table>
+</dl>
+<dl class="return" compact><dt><b>Renvoie:</b></dt><dd>Niveau. </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="0d89eafca33ed40d768bd6dae1d9e805"></a><!-- doxytag: member="base.inc.php::list_joueurs_visu" ref="0d89eafca33ed40d768bd6dae1d9e805" args="($joueur, $distance)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">list_joueurs_visu           </td>
+          <td>(</td>
+          <td class="paramtype">$&nbsp;</td>
+          <td class="paramname"> <em>joueur</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">$&nbsp;</td>
+          <td class="paramname"> <em>distance</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+Calcul des joueurs dans la visu d'un autre La distance utilisée est la distance pythagoricienne. 
+<p>
+<dl compact><dt><b>Paramètres:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>$joueur</em>&nbsp;</td><td>joueur qui sert de reference </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>$distance</em>&nbsp;</td><td>taille de la visu a generer</td></tr>
+  </table>
+</dl>
+<dl class="return" compact><dt><b>Renvoie:</b></dt><dd>les joueurs dans la visu sous forme d'un tableau de lignes PERSO </dd></dl>
+
+<p>
+<div class="dynheader">
+Voici le graphe d'appel pour cette fonction :</div>
+<div class="dynsection">
+<p><center><img src="base_8inc_8php_0d89eafca33ed40d768bd6dae1d9e805_cgraph.png" border="0" usemap="#base_8inc_8php_0d89eafca33ed40d768bd6dae1d9e805_cgraph_map" alt=""></center>
+<map name="base_8inc_8php_0d89eafca33ed40d768bd6dae1d9e805_cgraph_map">
+<area shape="rect" href="base_8inc_8php.html#2d3292ed5dd5c93b9a42992691cee8aa" title="Calcule la distance &quot;pythagoriciene&quot; entre deux personnages." alt="" coords="181,5,360,35"><area shape="rect" href="base_8inc_8php.html#de6991be5ce13525640bddfc5ea407c8" title="Convertion des coordonnés de deux nombre en un nombre." alt="" coords="213,59,328,88"><area shape="rect" href="base_8inc_8php.html#9a2308f261df8d4bbdcede4c1daa5050" title="Convertion de la position d&#39;un nombre en deux nombres." alt="" coords="409,5,537,35"></map>
+</div>
 
 </div>
 </div><p>
@@ -1721,7 +2087,7 @@ Voici le graphe d'appel pour cette fonction :</div>
 <div class="memdoc">
 
 <p>
-Donne le nombre de bourg que possède un royaume. 
+Donne le nombre de <a class="el" href="classbourg.html">bourg</a> que possède un royaume. 
 <p>
 <dl compact><dt><b>Paramètres:</b></dt><dd>
   <table border="0" cellspacing="2" cellpadding="0">
@@ -1757,6 +2123,15 @@ Donne le nombre de cases que possède un royaume.
   </table>
 </dl>
 <dl class="return" compact><dt><b>Renvoie:</b></dt><dd>nombre de cases. </dd></dl>
+
+<p>
+<div class="dynheader">
+Voici le graphe d'appel pour cette fonction :</div>
+<div class="dynsection">
+<p><center><img src="base_8inc_8php_1dce2f6e989ddda7c733b56bf60633a3_icgraph.png" border="0" usemap="#base_8inc_8php_1dce2f6e989ddda7c733b56bf60633a3_icgraph_map" alt=""></center>
+<map name="base_8inc_8php_1dce2f6e989ddda7c733b56bf60633a3_icgraph_map">
+<area shape="rect" href="classterrain__batiment.html#27f310dc127894c59816f8c7de398145" title="Constructeur permettant la création d&#39;un terrain_batiment." alt="" coords="125,5,328,35"><area shape="rect" href="classterrain.html#06caab71a255f6e0255f91d56fbfd7ac" title="Constructeur permettant la création d&#39;un terrain." alt="" coords="156,59,297,88"><area shape="rect" href="classterrain__batiment.html#037f2935ca1225037bc93abd5b7174d3" title="terrain_batiment::__toString" alt="" coords="129,112,324,141"><area shape="rect" href="classterrain.html#3ffc723579ddbb5c99dba63fcf6dc9df" title="terrain::place_restante" alt="" coords="148,165,305,195"><area shape="rect" href="classterrain__batiment.html#e7e8d5f9e4b59841fbeb0d71994f7131" title="terrain_batiment::sauver" alt="" coords="141,219,312,248"><area shape="rect" href="classterrain.html#53a9632f68cf5d15468561e719ba6958" title="terrain::sauver" alt="" coords="172,272,281,301"></map>
+</div>
 
 </div>
 </div><p>
@@ -1834,6 +2209,16 @@ Donne le nombre d'habitants que possède un royaume.
 <div class="memdoc">
 
 <p>
+Renvoie la class HTML indiquant si l'acaht est possible ou non. 
+<p>
+Les valeurs à comparer peuvent être le pric, le coefficient, la force, ...<p>
+<dl compact><dt><b>Paramètres:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>$base</em>&nbsp;</td><td>Valeur nécessaire poour acheter l'ojet. </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>$joueur</em>&nbsp;</td><td>Valeur du personnage.</td></tr>
+  </table>
+</dl>
+<dl class="return" compact><dt><b>Renvoie:</b></dt><dd>Classe HTML. </dd></dl>
 
 </div>
 </div><p>
@@ -1863,6 +2248,15 @@ Donne le nombre d'habitants que possède un royaume.
 <div class="memdoc">
 
 <p>
+Calcul le pourcentage de réussite d'un jet. 
+<p>
+<dl compact><dt><b>Paramètres:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>$base</em>&nbsp;</td><td>Valeur maximale du jet. </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>$difficulte</em>&nbsp;</td><td>Valeur maximale du jet en opposition.</td></tr>
+  </table>
+</dl>
+<dl class="return" compact><dt><b>Renvoie:</b></dt><dd>Pourcentage de réussite. </dd></dl>
 
 </div>
 </div><p>
@@ -1892,6 +2286,15 @@ Donne le nombre d'habitants que possède un royaume.
 <div class="memdoc">
 
 <p>
+Fonction gérant l'acquisition d'un objet par un personnage. 
+<p>
+<dl compact><dt><b>Paramètres:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>$id_objet</em>&nbsp;</td><td><a class="el" href="class_objet.html" title="Classe abstraite représentant un objet.">Objet</a> acquis. </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>$joueur</em>&nbsp;</td><td>Tableau décrivant le personnage qui acquiert l'objet.</td></tr>
+  </table>
+</dl>
+<dl class="return" compact><dt><b>Renvoie:</b></dt><dd>Tableau décrivant le personnage qui acquiert l'objet. </dd></dl>
 
 <p>
 <div class="dynheader">
@@ -1939,6 +2342,14 @@ Voici le graphe d'appel pour cette fonction :</div>
 <div class="memdoc">
 
 <p>
+Fonction incrémentant le nombre d'utilisations possibles d'une recette par un personnage. 
+<p>
+<dl compact><dt><b>Paramètres:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>$id_recette</em>&nbsp;</td><td>Id de la recette à apprendre. </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>$joueur</em>&nbsp;</td><td>Tableau décrivant le personnage qui acquiert l'objet. </td></tr>
+  </table>
+</dl>
 
 </div>
 </div><p>
@@ -1959,6 +2370,14 @@ Voici le graphe d'appel pour cette fonction :</div>
 <div class="memdoc">
 
 <p>
+Renvoie l'expérience necessaire pour atteindre le niveau suivant. 
+<p>
+<dl compact><dt><b>Paramètres:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>$level</em>&nbsp;</td><td>Niveau actuel.</td></tr>
+  </table>
+</dl>
+<dl class="return" compact><dt><b>Renvoie:</b></dt><dd>Expérience nécessaire. </dd></dl>
 
 </div>
 </div><p>
@@ -1979,6 +2398,14 @@ Voici le graphe d'appel pour cette fonction :</div>
 <div class="memdoc">
 
 <p>
+Renvoie le pourcentage d'expérience déjà acquise pour passer au prochain niveau. 
+<p>
+<dl compact><dt><b>Paramètres:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>$level</em>&nbsp;</td><td>Niveau sous forme décimale (tel que donné par <a class="el" href="base_8inc_8php.html#d367e1a44d7c68d30fc65eaec919dcb7" title="Renvoie le niveau correspondant à une certaine valeur de l&#39;expérience.">level_courant()</a>).</td></tr>
+  </table>
+</dl>
+<dl class="return" compact><dt><b>Renvoie:</b></dt><dd>Pourcentage d'expérience déjà acquise </dd></dl>
 
 </div>
 </div><p>
@@ -2014,7 +2441,7 @@ Voici le graphe d'appel pour cette fonction :</div>
 <div class="dynsection">
 <p><center><img src="base_8inc_8php_50eead0884d92b6e504eba9ac25e2420_icgraph.png" border="0" usemap="#base_8inc_8php_50eead0884d92b6e504eba9ac25e2420_icgraph_map" alt=""></center>
 <map name="base_8inc_8php_50eead0884d92b6e504eba9ac25e2420_icgraph_map">
-<area shape="rect" href="base_8inc_8php.html#6aa39ff189b7dd018fb6980b5330ab67" title="verif_mort" alt="" coords="161,5,236,32"><area shape="rect" href="security_8inc_8php.html#48c4fb90180f16ba2648898fc277710a" title="check_undead_players" alt="" coords="285,5,440,32"></map>
+<area shape="rect" href="print_8inc_8php.html#40a4c245ed98aa4cdfa4acb5fe90f0d0" title="affiche_perso_visu" alt="" coords="167,5,303,35"><area shape="rect" href="base_8inc_8php.html#6aa39ff189b7dd018fb6980b5330ab67" title="Vérifie si le personnage est mort est si c&#39;est le cas affiche la page de résurection..." alt="" coords="193,59,276,88"><area shape="rect" href="security_8inc_8php.html#48c4fb90180f16ba2648898fc277710a" title="check_undead_players" alt="" coords="352,59,515,88"></map>
 </div>
 
 </div>
@@ -2045,6 +2472,15 @@ Récupère les effets des bonus shine d'un personnages.
 </dl>
 <dl class="return" compact><dt><b>Renvoie:</b></dt><dd>Etats dû aux bonus sous forme de tableau indexé par les IDs des bonus. </dd></dl>
 
+<p>
+<div class="dynheader">
+Voici le graphe d'appel pour cette fonction :</div>
+<div class="dynsection">
+<p><center><img src="base_8inc_8php_9d3a772d81721e72d26d632b3d2fb305_icgraph.png" border="0" usemap="#base_8inc_8php_9d3a772d81721e72d26d632b3d2fb305_icgraph_map" alt=""></center>
+<map name="base_8inc_8php_9d3a772d81721e72d26d632b3d2fb305_icgraph_map">
+<area shape="rect" href="print_8inc_8php.html#40a4c245ed98aa4cdfa4acb5fe90f0d0" title="affiche_perso_visu" alt="" coords="159,5,295,35"><area shape="rect" href="messagerie_8inc_8php.html#aa576ba030cbc3abdcca82e9d94fb2c7" title="message_affiche" alt="" coords="165,59,288,88"></map>
+</div>
+
 </div>
 </div><p>
 <a class="anchor" name="622536481e42318c551d867f68f37653"></a><!-- doxytag: member="base.inc.php::recup_bonus_total" ref="622536481e42318c551d867f68f37653" args="($id_perso)" -->
@@ -2072,6 +2508,15 @@ Récupère toutes les infos des bonus shine d'un personnages.
   </table>
 </dl>
 <dl class="return" compact><dt><b>Renvoie:</b></dt><dd>Bonus sous forme de tableau de tableaux associatif. </dd></dl>
+
+<p>
+<div class="dynheader">
+Voici le graphe d'appel pour cette fonction :</div>
+<div class="dynsection">
+<p><center><img src="base_8inc_8php_622536481e42318c551d867f68f37653_icgraph.png" border="0" usemap="#base_8inc_8php_622536481e42318c551d867f68f37653_icgraph_map" alt=""></center>
+<map name="base_8inc_8php_622536481e42318c551d867f68f37653_icgraph_map">
+<area shape="rect" href="messagerie_8inc_8php.html#aa576ba030cbc3abdcca82e9d94fb2c7" title="message_affiche" alt="" coords="191,5,313,35"></map>
+</div>
 
 </div>
 </div><p>
@@ -2495,7 +2940,7 @@ Voici le graphe d'appel pour cette fonction :</div>
 <div class="dynsection">
 <p><center><img src="base_8inc_8php_c3a04c3bc3e42c54d90b1c14e9061214_icgraph.png" border="0" usemap="#base_8inc_8php_c3a04c3bc3e42c54d90b1c14e9061214_icgraph_map" alt=""></center>
 <map name="base_8inc_8php_c3a04c3bc3e42c54d90b1c14e9061214_icgraph_map">
-<area shape="rect" href="classmessagerie__message.html#a9ff9fe04253de375e6360c9f219cddc" title="Constructeur permettant la cr�ation d&#39;un message." alt="" coords="208,5,443,35"><area shape="rect" href="classmessagerie.html#320289138709a3bd111e218fcc8c6ce5" title="messagerie::envoi_message" alt="" coords="228,59,423,88"><area shape="rect" href="classmessagerie.html#9d39fd8105bc06d270df9a98c3bfd867" title="messagerie::get_threads" alt="" coords="240,112,411,141"><area shape="rect" href="time_8inc_8php.html#a8bcd4bada1265a01208f21148f60c5e" title="Indique quel est le moment de la journée (matin, journée, soir ou nuit)." alt="" coords="273,165,377,195"><area shape="rect" href="attaque_8inc_8php.html#2791684fa0ff34996044148c598a2d64" title="attaque" alt="" coords="504,112,571,141"><area shape="rect" href="action_8inc_8php.html#eac6f598954a3952c8dbbaed9d6ea370" title="Lance un sort lors d&#39;un combat." alt="" coords="495,165,580,195"><area shape="rect" href="base_8inc_8php.html#0c244be4e4bf4a7a5ac3d33caec4fe48" title="Fonction permettant de récupérer les infos des perso, et de les renvoyer." alt="" coords="492,219,583,248"><area shape="rect" href="security_8inc_8php.html#48c4fb90180f16ba2648898fc277710a" title="check_undead_players" alt="" coords="632,139,795,168"><area shape="rect" href="equipement_8inc_8php.html#7819f0d89772aa351963ada3978870a5" title="equip_objet" alt="" coords="667,192,760,221"><area shape="rect" href="quete_8inc_8php.html#4bcfd3fff97b506404ded6239d5fb77d" title="verif_action" alt="" coords="667,245,760,275"><area shape="rect" href="equipement_8inc_8php.html#eb5d170da1e7ccdccc8ce037c705f8da" title="verif_echange_joueur" alt="" coords="636,299,791,328"><area shape="rect" href="equipement_8inc_8php.html#ea0a0acf3578fc049036e57155c05d6d" title="echange_objet_ajout" alt="" coords="843,272,992,301"><area shape="rect" href="equipement_8inc_8php.html#29f8f46cb1bf45fdb0d94f39bade0524" title="verif_echange" alt="" coords="864,325,971,355"></map>
+<area shape="rect" href="classmessagerie__message.html#a9ff9fe04253de375e6360c9f219cddc" title="Constructeur permettant la cr?ation d&#39;un message." alt="" coords="208,5,443,35"><area shape="rect" href="classmessagerie.html#320289138709a3bd111e218fcc8c6ce5" title="messagerie::envoi_message" alt="" coords="228,59,423,88"><area shape="rect" href="classmessagerie.html#8a6b9e9b12d4863cd241fcfd4fb3af98" title="messagerie::get_threads" alt="" coords="240,112,411,141"><area shape="rect" href="time_8inc_8php.html#a8bcd4bada1265a01208f21148f60c5e" title="Indique quel est le moment de la journée (matin, journée, soir ou nuit)." alt="" coords="273,165,377,195"><area shape="rect" href="attaque_8inc_8php.html#2791684fa0ff34996044148c598a2d64" title="attaque" alt="" coords="504,112,571,141"><area shape="rect" href="action_8inc_8php.html#eac6f598954a3952c8dbbaed9d6ea370" title="Lance un sort lors d&#39;un combat." alt="" coords="495,165,580,195"><area shape="rect" href="base_8inc_8php.html#0c244be4e4bf4a7a5ac3d33caec4fe48" title="Fonction permettant de récupérer les infos des perso, et de les renvoyer." alt="" coords="492,219,583,248"><area shape="rect" href="security_8inc_8php.html#48c4fb90180f16ba2648898fc277710a" title="check_undead_players" alt="" coords="632,139,795,168"><area shape="rect" href="equipement_8inc_8php.html#7819f0d89772aa351963ada3978870a5" title="equip_objet" alt="" coords="667,192,760,221"><area shape="rect" href="quete_8inc_8php.html#4bcfd3fff97b506404ded6239d5fb77d" title="verif_action" alt="" coords="667,245,760,275"><area shape="rect" href="equipement_8inc_8php.html#eb5d170da1e7ccdccc8ce037c705f8da" title="verif_echange_joueur" alt="" coords="636,299,791,328"><area shape="rect" href="equipement_8inc_8php.html#ea0a0acf3578fc049036e57155c05d6d" title="echange_objet_ajout" alt="" coords="843,272,992,301"><area shape="rect" href="equipement_8inc_8php.html#29f8f46cb1bf45fdb0d94f39bade0524" title="verif_echange" alt="" coords="864,325,971,355"></map>
 </div>
 
 </div>
@@ -2544,6 +2989,46 @@ Récupère l'ID de la lignée du personnage.
 <div class="memdoc">
 
 <p>
+Renvoie le code HTML permettant le rafraichissement des informations sur le personnage. 
+<p>
+<dl class="return" compact><dt><b>Renvoie:</b></dt><dd>Code HTML. </dd></dl>
+
+</div>
+</div><p>
+<a class="anchor" name="b0376d84c6454b4235c20bebe7ed434e"></a><!-- doxytag: member="base.inc.php::ressource_terrain" ref="b0376d84c6454b4235c20bebe7ed434e" args="($terrain)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">ressource_terrain           </td>
+          <td>(</td>
+          <td class="paramtype">$&nbsp;</td>
+          <td class="paramname"> <em>terrain</em>          </td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+Renvoi la liste des ressource produite par ce <a class="el" href="classterrain.html">terrain</a>. 
+<p>
+<dl compact><dt><b>Paramètres:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>$terrain</em>&nbsp;</td><td>Nom du type de <a class="el" href="classterrain.html">terrain</a></td></tr>
+  </table>
+</dl>
+<dl class="return" compact><dt><b>Renvoie:</b></dt><dd>array liste des ressources. </dd></dl>
+
+<p>
+<div class="dynheader">
+Voici le graphe d'appel pour cette fonction :</div>
+<div class="dynsection">
+<p><center><img src="base_8inc_8php_b0376d84c6454b4235c20bebe7ed434e_icgraph.png" border="0" usemap="#base_8inc_8php_b0376d84c6454b4235c20bebe7ed434e_icgraph_map" alt=""></center>
+<map name="base_8inc_8php_b0376d84c6454b4235c20bebe7ed434e_icgraph_map">
+<area shape="rect" href="classmine.html#984d1a2c69ebebf3c3ff49762face5b5" title="mine::get_ressources" alt="" coords="184,5,339,35"></map>
+</div>
 
 </div>
 </div><p>
@@ -2573,6 +3058,14 @@ Récupère l'ID de la lignée du personnage.
 <div class="memdoc">
 
 <p>
+Affiche un lien pour afficher le menu gestion royaume  public. 
+<p>
+<dl compact><dt><b>Paramètres:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>string</em>&nbsp;</td><td>$texte, int $poscase </td></tr>
+  </table>
+</dl>
+<dl class="return" compact><dt><b>Renvoie:</b></dt><dd>null </dd></dl>
 
 </div>
 </div><p>
@@ -2602,6 +3095,14 @@ Récupère l'ID de la lignée du personnage.
 <div class="memdoc">
 
 <p>
+Affiche un lien pour afficher le menu ville si le personnage est en ville. 
+<p>
+<dl compact><dt><b>Paramètres:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>$texte</em>&nbsp;</td><td>Texte à afficher dans le lien. </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>$poscase</em>&nbsp;</td><td>Position du personnage. </td></tr>
+  </table>
+</dl>
 
 <p>
 <div class="dynheader">
@@ -2631,6 +3132,13 @@ Voici le graphe d'appel pour cette fonction :</div>
 <div class="memdoc">
 
 <p>
+Supprime un <a class="el" href="classbourg.html">bourg</a> dans le nombre de bourgs possédés par un royaume. 
+<p>
+<dl compact><dt><b>Paramètres:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>$royaume</em>&nbsp;</td><td>Royaume auquel on doit supprimer un <a class="el" href="classbourg.html">bourg</a>. </td></tr>
+  </table>
+</dl>
 
 </div>
 </div><p>
@@ -2660,6 +3168,15 @@ Voici le graphe d'appel pour cette fonction :</div>
 <div class="memdoc">
 
 <p>
+Calcul la taxe payé par un personnage. 
+<p>
+<dl compact><dt><b>Paramètres:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>$taxe</em>&nbsp;</td><td>Taxe défini du royaume concerné. </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>$diplo</em>&nbsp;</td><td>Diplomatie entre le royaume concerné et celui du personnage.</td></tr>
+  </table>
+</dl>
+<dl class="return" compact><dt><b>Renvoie:</b></dt><dd>Taxe payé par le personnage. </dd></dl>
 
 <p>
 <div class="dynheader">
@@ -2667,7 +3184,7 @@ Voici le graphe d'appel pour cette fonction :</div>
 <div class="dynsection">
 <p><center><img src="base_8inc_8php_a74170554bbb08c23372ddf8bb8ab1fd_icgraph.png" border="0" usemap="#base_8inc_8php_a74170554bbb08c23372ddf8bb8ab1fd_icgraph_map" alt=""></center>
 <map name="base_8inc_8php_a74170554bbb08c23372ddf8bb8ab1fd_icgraph_map">
-<area shape="rect" href="base_8inc_8php.html#b349fa336f26b42f41b67190adf60eaa" title="get_royaume_info" alt="" coords="135,5,257,32"></map>
+<area shape="rect" href="base_8inc_8php.html#b349fa336f26b42f41b67190adf60eaa" title="Renvoie les informations sur le royaume." alt="" coords="135,5,265,35"></map>
 </div>
 
 </div>
@@ -2689,16 +3206,70 @@ Voici le graphe d'appel pour cette fonction :</div>
 <div class="memdoc">
 
 <p>
-Renvoi le type de terrain, et le type de terrain affichable. 
+Renvoi le type de <a class="el" href="classterrain.html">terrain</a>, et le type de <a class="el" href="classterrain.html">terrain</a> affichable. 
 <p>
 Le "type de terrain affichable" coreespond à ce qui est affiché dans le jeu.<p>
 <dl compact><dt><b>Paramètres:</b></dt><dd>
   <table border="0" cellspacing="2" cellpadding="0">
-    <tr><td valign="top"></td><td valign="top"><em>$info</em>&nbsp;</td><td>Numéro du type de terrain</td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>$info</em>&nbsp;</td><td>Numéro du type de <a class="el" href="classterrain.html">terrain</a></td></tr>
   </table>
 </dl>
-<dl class="return" compact><dt><b>Renvoie:</b></dt><dd>[0] type de terrain (usage interne). <p>
-[1] type de terrain (pour afficher). </dd></dl>
+<dl class="return" compact><dt><b>Renvoie:</b></dt><dd>[0] type de <a class="el" href="classterrain.html">terrain</a> (usage interne). <p>
+[1] type de <a class="el" href="classterrain.html">terrain</a> (pour afficher). </dd></dl>
+
+<p>
+<div class="dynheader">
+Voici le graphe d'appel pour cette fonction :</div>
+<div class="dynsection">
+<p><center><img src="base_8inc_8php_ff0f0cb3f9fda6833cb3e553262ea9b9_icgraph.png" border="0" usemap="#base_8inc_8php_ff0f0cb3f9fda6833cb3e553262ea9b9_icgraph_map" alt=""></center>
+<map name="base_8inc_8php_ff0f0cb3f9fda6833cb3e553262ea9b9_icgraph_map">
+<area shape="rect" href="classmine.html#984d1a2c69ebebf3c3ff49762face5b5" title="mine::get_ressources" alt="" coords="149,5,304,35"></map>
+</div>
+
+</div>
+</div><p>
+<a class="anchor" name="c6b928c9c81bd0d6dd14a83a16e2bea1"></a><!-- doxytag: member="base.inc.php::verif_batiment" ref="c6b928c9c81bd0d6dd14a83a16e2bea1" args="($x, $y, $R)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">verif_batiment           </td>
+          <td>(</td>
+          <td class="paramtype">$&nbsp;</td>
+          <td class="paramname"> <em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">$&nbsp;</td>
+          <td class="paramname"> <em>y</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">$&nbsp;</td>
+          <td class="paramname"> <em>R</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+Vérifie s'il y a un bâtiment appartenant à un royaume donné sur une case. 
+<p>
+<dl compact><dt><b>Paramètres:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>$x</em>&nbsp;</td><td>Coordonnée x. </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>$y</em>&nbsp;</td><td>Coodronnée y. </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>$R</em>&nbsp;</td><td>Royaume.</td></tr>
+  </table>
+</dl>
+<dl class="return" compact><dt><b>Renvoie:</b></dt><dd>tableau associatif contenant le nm et le type du bâtiment s'il y en a un, false sinon. </dd></dl>
 
 </div>
 </div><p>
@@ -2740,6 +3311,16 @@ Le "type de terrain affichable" coreespond à ce qui est affiché dans le jeu.<p
 <div class="memdoc">
 
 <p>
+Vérifie si le personnage est mort est si c'est le cas affiche la page de résurection ou effectue la rez. 
+<p>
+<dl compact><dt><b>Paramètres:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>$pourcent</em>&nbsp;</td><td>Pourcentage de HP et MP récupérés lors de la rez. </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>$var</em>&nbsp;</td><td>Choix de rez (1 : page de rez, 2 : capitale, 3 : sort, 4 : fort ) </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>$duree_debuff</em>&nbsp;</td><td>Durée du mal de rez </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>$multiplicateur_mouvement</em>&nbsp;</td><td>Multiplicateur de mouvement du mal de rez. </td></tr>
+  </table>
+</dl>
 
 <p>
 <div class="dynheader">
@@ -2747,7 +3328,7 @@ Voici le graphe d'appel pour cette fonction :</div>
 <div class="dynsection">
 <p><center><img src="base_8inc_8php_6aa39ff189b7dd018fb6980b5330ab67_cgraph.png" border="0" usemap="#base_8inc_8php_6aa39ff189b7dd018fb6980b5330ab67_cgraph_map" alt=""></center>
 <map name="base_8inc_8php_6aa39ff189b7dd018fb6980b5330ab67_cgraph_map">
-<area shape="rect" href="base_8inc_8php.html#de6991be5ce13525640bddfc5ea407c8" title="Convertion des coordonnés de deux nombre en un nombre." alt="" coords="140,5,255,35"><area shape="rect" href="base_8inc_8php.html#0b92e404c0f2824993e0076f84ddb3bb" title="Indique si on est dans un donjon." alt="" coords="156,59,239,88"><area shape="rect" href="base_8inc_8php.html#7f7a0bb4069566d0c403e138ad877678" title="lance_buff" alt="" coords="155,112,240,141"><area shape="rect" href="base_8inc_8php.html#50eead0884d92b6e504eba9ac25e2420" title="Récupère une amande." alt="" coords="141,165,253,195"></map>
+<area shape="rect" href="base_8inc_8php.html#de6991be5ce13525640bddfc5ea407c8" title="Convertion des coordonnés de deux nombre en un nombre." alt="" coords="140,5,255,35"><area shape="rect" href="base_8inc_8php.html#0b92e404c0f2824993e0076f84ddb3bb" title="Indique si on est dans un donjon." alt="" coords="156,59,239,88"><area shape="rect" href="base_8inc_8php.html#bdebed81a12acc10788ddb1133ae76e7" title="Lance un buff sur un personnage ou un monstre." alt="" coords="155,112,240,141"><area shape="rect" href="base_8inc_8php.html#50eead0884d92b6e504eba9ac25e2420" title="Récupère une amande." alt="" coords="141,165,253,195"></map>
 </div>
 
 <p>
@@ -2787,6 +3368,15 @@ Voici le graphe d'appel pour cette fonction :</div>
 <div class="memdoc">
 
 <p>
+Vérifie si une certaine position correspond a une ville. 
+<p>
+<dl compact><dt><b>Paramètres:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>$x</em>&nbsp;</td><td>Coordonnée x. </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>$y</em>&nbsp;</td><td>Coodronnée y.</td></tr>
+  </table>
+</dl>
+<dl class="return" compact><dt><b>Renvoie:</b></dt><dd>true si c'est une ville, false sinon. </dd></dl>
 
 <p>
 <div class="dynheader">
@@ -2797,10 +3387,19 @@ Voici le graphe d'appel pour cette fonction :</div>
 <area shape="rect" href="base_8inc_8php.html#de6991be5ce13525640bddfc5ea407c8" title="Convertion des coordonnés de deux nombre en un nombre." alt="" coords="127,5,233,32"></map>
 </div>
 
+<p>
+<div class="dynheader">
+Voici le graphe d'appel pour cette fonction :</div>
+<div class="dynsection">
+<p><center><img src="base_8inc_8php_9c88b8555ba03e4e43a3e77c5c6e575e_icgraph.png" border="0" usemap="#base_8inc_8php_9c88b8555ba03e4e43a3e77c5c6e575e_icgraph_map" alt=""></center>
+<map name="base_8inc_8php_9c88b8555ba03e4e43a3e77c5c6e575e_icgraph_map">
+<area shape="rect" href="classcraft__recette.html#c13f1f3fe45a2c152e99f7e3be4c72a7" title="craft_recette::get_info_joueur" alt="" coords="137,5,337,35"></map>
+</div>
+
 </div>
 </div><p>
 </div>
-<hr size="1"><address style="text-align: right;"><small>Généré le Sun Nov 30 19:54:50 2008 pour Starshine Online par&nbsp;
+<hr size="1"><address style="text-align: right;"><small>Généré le Fri May 8 12:45:35 2009 pour Starshine Online par&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.6 </small></address>
 </body>

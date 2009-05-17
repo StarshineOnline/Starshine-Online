@@ -26,7 +26,7 @@
 <tr><td colspan="2"><br><h2>Variables</h2></td></tr>
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="getinfos_8php.html#fc5e9ce512cd97cf2e0e25bb20dcd39b">$doc</a> = new DomDocument('1.0', 'utf-8')</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="ville__bas_8php.html#b0b4257144253a830116a876a99660c4">if</a>(isset($_REQUEST['xsl']))&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="getinfos_8php.html#b37f7c32f41c3c61ed940887453767f4">$root</a> = $doc-&gt;createElement('infos')</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="ville__bas_8php.html#e090d03ba817b92f272d5f9e1e3cf724">if</a>(isset($_REQUEST['xsl']))&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="getinfos_8php.html#b37f7c32f41c3c61ed940887453767f4">$root</a> = $doc-&gt;createElement('infos')</td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="getinfos_8php.html#1ea21bf4b1af1ebda1b8c63b0e364ce9">$requete</a> = 'SELECT x, y, level FROM perso WHERE ID = \''.$_SESSION['ID'].'\''</td></tr>
 
@@ -60,19 +60,19 @@
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="getinfos_8php.html#a3839e976cc3dfcf97eb2d8bd3df4e13">$req_joueurs</a> = $<a class="el" href="classdb.html">db</a>-&gt;query($requete_joueurs)</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="getinfos_8php.html#856749898f829d34c50bae65524486b8">$requete_pnj</a> = 'SELECT <a class="el" href="bureau__quete_8php.html#cf2488b95c97e0378c9bf49de3b50f28">id</a>, nom, image, x, y FROM <a class="el" href="classpnj.html">pnj</a> WHERE (((x &gt;= '.$xmin.') AND (x &lt;= '.$xmax.')) AND ((y &gt;= '.$ymin.') AND (y &lt;= '.$ymax.'))) ORDER BY y ASC, x ASC'</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="getinfos_8php.html#856749898f829d34c50bae65524486b8">$requete_pnj</a> = 'SELECT id, nom, image, x, y FROM <a class="el" href="classpnj.html">pnj</a> WHERE (((x &gt;= '.$xmin.') AND (x &lt;= '.$xmax.')) AND ((y &gt;= '.$ymin.') AND (y &lt;= '.$ymax.'))) ORDER BY y ASC, x ASC'</td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="getinfos_8php.html#b2b4d85eee8362d5d209c9c5d23b83ce">$req_pnj</a> = $<a class="el" href="classdb.html">db</a>-&gt;query($requete_pnj)</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="getinfos_8php.html#cab48536c4438e2ca71dacc4fd4017cc">$requete_monstres</a> = 'SELECT <a class="el" href="bureau__quete_8php.html#cf2488b95c97e0378c9bf49de3b50f28">id</a>, x, y, nom, lib, COUNT(*) as tot FROM map_monstre WHERE (((x &gt;= '.$xmin.') AND (x &lt;= '.$xmax.')) AND ((y &gt;= '.$ymin.') AND (y &lt;= '.$ymax.'))) GROUP BY x, y, lib ORDER BY y ASC, x ASC, ABS(level - '.$row['level'].') ASC, level ASC, nom ASC, <a class="el" href="bureau__quete_8php.html#cf2488b95c97e0378c9bf49de3b50f28">id</a> ASC'</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="getinfos_8php.html#cab48536c4438e2ca71dacc4fd4017cc">$requete_monstres</a> = 'SELECT id, x, y, nom, lib, COUNT(*) as tot FROM map_monstre WHERE (((x &gt;= '.$xmin.') AND (x &lt;= '.$xmax.')) AND ((y &gt;= '.$ymin.') AND (y &lt;= '.$ymax.'))) GROUP BY x, y, lib ORDER BY y ASC, x ASC, ABS(level - '.$row['level'].') ASC, level ASC, nom ASC, id ASC'</td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="getinfos_8php.html#9208fa396dd9702b04f713619fccf428">$req_monstres</a> = $<a class="el" href="classdb.html">db</a>-&gt;query($requete_monstres)</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="getinfos_8php.html#b43036f32f48ca3bf16dee751a027a46">$requete_drapeaux</a> = 'SELECT placement.x, placement.y, <a class="el" href="action__modif__t_8php.html#7aead736a07eaf25623ad7bfa1f0ee2d">placement.type</a>, placement.nom, placement.royaume, placement.debut_placement, placement.fin_placement, batiment.image FROM placement, batiment WHERE (((placement.x &gt;= '.$xmin.') AND (placement.x &lt;= '.$xmax.')) AND ((placement.y &gt;= '.$ymin.') AND (placement.y &lt;= '.$ymax.'))) AND <a class="el" href="bureau__quete_8php.html#cf2488b95c97e0378c9bf49de3b50f28">batiment.id</a> = placement.id_batiment ORDER BY placement.y ASC, placement.x ASC'</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="getinfos_8php.html#b43036f32f48ca3bf16dee751a027a46">$requete_drapeaux</a> = 'SELECT placement.x, placement.y, <a class="el" href="action__modif__t_8php.html#7aead736a07eaf25623ad7bfa1f0ee2d">placement.type</a>, placement.nom, placement.royaume, placement.debut_placement, placement.fin_placement, batiment.image FROM <a class="el" href="classplacement.html">placement</a>, <a class="el" href="classbatiment.html">batiment</a> WHERE (((placement.x &gt;= '.$xmin.') AND (placement.x &lt;= '.$xmax.')) AND ((placement.y &gt;= '.$ymin.') AND (placement.y &lt;= '.$ymax.'))) AND batiment.id = placement.id_batiment ORDER BY placement.y ASC, placement.x ASC'</td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="getinfos_8php.html#962800dbb02051a261027cae77d70d84">$req_drapeaux</a> = $<a class="el" href="classdb.html">db</a>-&gt;query($requete_drapeaux)</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="getinfos_8php.html#253ece263f13471e6888f9e6e1425e0b">$requete_batiment</a> = 'SELECT construction.x, construction.y, construction.hp, construction.royaume, construction.nom, construction.id_batiment, batiment.image FROM construction, batiment WHERE (((construction.x &gt;= '.$xmin.') AND (construction.x &lt;= '.$xmax.')) AND ((construction.y &gt;= '.$ymin.') AND (construction.y &lt;= '.$ymax.'))) AND <a class="el" href="bureau__quete_8php.html#cf2488b95c97e0378c9bf49de3b50f28">batiment.id</a> = construction.id_batiment ORDER BY construction.y ASC, construction.x ASC'</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="getinfos_8php.html#253ece263f13471e6888f9e6e1425e0b">$requete_batiment</a> = 'SELECT construction.x, construction.y, construction.hp, construction.royaume, construction.nom, construction.id_batiment, batiment.image FROM <a class="el" href="classconstruction.html">construction</a>, <a class="el" href="classbatiment.html">batiment</a> WHERE (((construction.x &gt;= '.$xmin.') AND (construction.x &lt;= '.$xmax.')) AND ((construction.y &gt;= '.$ymin.') AND (construction.y &lt;= '.$ymax.'))) AND batiment.id = construction.id_batiment ORDER BY construction.y ASC, construction.x ASC'</td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="getinfos_8php.html#9b89e7fb0f356c509a37403acc5f7db1">$req_batiment</a> = $<a class="el" href="classdb.html">db</a>-&gt;query($requete_batiment)</td></tr>
 
@@ -353,7 +353,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$requete_batiment = 'SELECT construction.x, construction.y, construction.hp, construction.royaume, construction.nom, construction.id_batiment, batiment.image FROM construction, batiment WHERE (((construction.x &gt;= '.$xmin.') AND (construction.x &lt;= '.$xmax.')) AND ((construction.y &gt;= '.$ymin.') AND (construction.y &lt;= '.$ymax.'))) AND <a class="el" href="bureau__quete_8php.html#cf2488b95c97e0378c9bf49de3b50f28">batiment.id</a> = construction.id_batiment ORDER BY construction.y ASC, construction.x ASC'          </td>
+          <td class="memname">$requete_batiment = 'SELECT construction.x, construction.y, construction.hp, construction.royaume, construction.nom, construction.id_batiment, batiment.image FROM <a class="el" href="classconstruction.html">construction</a>, <a class="el" href="classbatiment.html">batiment</a> WHERE (((construction.x &gt;= '.$xmin.') AND (construction.x &lt;= '.$xmax.')) AND ((construction.y &gt;= '.$ymin.') AND (construction.y &lt;= '.$ymax.'))) AND batiment.id = construction.id_batiment ORDER BY construction.y ASC, construction.x ASC'          </td>
         </tr>
       </table>
 </div>
@@ -368,7 +368,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$requete_drapeaux = 'SELECT placement.x, placement.y, <a class="el" href="action__modif__t_8php.html#7aead736a07eaf25623ad7bfa1f0ee2d">placement.type</a>, placement.nom, placement.royaume, placement.debut_placement, placement.fin_placement, batiment.image FROM placement, batiment WHERE (((placement.x &gt;= '.$xmin.') AND (placement.x &lt;= '.$xmax.')) AND ((placement.y &gt;= '.$ymin.') AND (placement.y &lt;= '.$ymax.'))) AND <a class="el" href="bureau__quete_8php.html#cf2488b95c97e0378c9bf49de3b50f28">batiment.id</a> = placement.id_batiment ORDER BY placement.y ASC, placement.x ASC'          </td>
+          <td class="memname">$requete_drapeaux = 'SELECT placement.x, placement.y, <a class="el" href="action__modif__t_8php.html#7aead736a07eaf25623ad7bfa1f0ee2d">placement.type</a>, placement.nom, placement.royaume, placement.debut_placement, placement.fin_placement, batiment.image FROM <a class="el" href="classplacement.html">placement</a>, <a class="el" href="classbatiment.html">batiment</a> WHERE (((placement.x &gt;= '.$xmin.') AND (placement.x &lt;= '.$xmax.')) AND ((placement.y &gt;= '.$ymin.') AND (placement.y &lt;= '.$ymax.'))) AND batiment.id = placement.id_batiment ORDER BY placement.y ASC, placement.x ASC'          </td>
         </tr>
       </table>
 </div>
@@ -398,7 +398,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$requete_monstres = 'SELECT <a class="el" href="bureau__quete_8php.html#cf2488b95c97e0378c9bf49de3b50f28">id</a>, x, y, nom, lib, COUNT(*) as tot FROM map_monstre WHERE (((x &gt;= '.$xmin.') AND (x &lt;= '.$xmax.')) AND ((y &gt;= '.$ymin.') AND (y &lt;= '.$ymax.'))) GROUP BY x, y, lib ORDER BY y ASC, x ASC, ABS(level - '.$row['level'].') ASC, level ASC, nom ASC, <a class="el" href="bureau__quete_8php.html#cf2488b95c97e0378c9bf49de3b50f28">id</a> ASC'          </td>
+          <td class="memname">$requete_monstres = 'SELECT id, x, y, nom, lib, COUNT(*) as tot FROM map_monstre WHERE (((x &gt;= '.$xmin.') AND (x &lt;= '.$xmax.')) AND ((y &gt;= '.$ymin.') AND (y &lt;= '.$ymax.'))) GROUP BY x, y, lib ORDER BY y ASC, x ASC, ABS(level - '.$row['level'].') ASC, level ASC, nom ASC, id ASC'          </td>
         </tr>
       </table>
 </div>
@@ -413,7 +413,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$requete_pnj = 'SELECT <a class="el" href="bureau__quete_8php.html#cf2488b95c97e0378c9bf49de3b50f28">id</a>, nom, image, x, y FROM <a class="el" href="classpnj.html">pnj</a> WHERE (((x &gt;= '.$xmin.') AND (x &lt;= '.$xmax.')) AND ((y &gt;= '.$ymin.') AND (y &lt;= '.$ymax.'))) ORDER BY y ASC, x ASC'          </td>
+          <td class="memname">$requete_pnj = 'SELECT id, nom, image, x, y FROM <a class="el" href="classpnj.html">pnj</a> WHERE (((x &gt;= '.$xmin.') AND (x &lt;= '.$xmax.')) AND ((y &gt;= '.$ymin.') AND (y &lt;= '.$ymax.'))) ORDER BY y ASC, x ASC'          </td>
         </tr>
       </table>
 </div>
@@ -544,7 +544,7 @@
 </div>
 </div><p>
 </div>
-<hr size="1"><address style="text-align: right;"><small>Généré le Sun Nov 30 19:54:57 2008 pour Starshine Online par&nbsp;
+<hr size="1"><address style="text-align: right;"><small>Généré le Fri May 8 12:45:36 2009 pour Starshine Online par&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.6 </small></address>
 </body>

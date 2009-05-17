@@ -23,9 +23,9 @@
 <tr><td colspan="2"><br><h2>Variables</h2></td></tr>
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="arme__de__siege_8php.html#beea5db7af13b1bdd70c46e49f512b26">$joueur</a> = recupperso($_SESSION['ID'])</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="arme__de__siege_8php.html#348857e01ece8eec9741a8aac278b4b7">$W_case</a> = $_GET['<a class="el" href="candidature_8php.html#6b62101699f80eb754508183c994ff21">poscase</a>']</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="arme__de__siege_8php.html#348857e01ece8eec9741a8aac278b4b7">$W_case</a> = $_GET['poscase']</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="arme__de__siege_8php.html#19afe5512c8585af83b8156bb7429e5f">$W_requete</a> = 'SELECT * FROM map WHERE ID =\''.sSQL($W_case).'\''</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="arme__de__siege_8php.html#19afe5512c8585af83b8156bb7429e5f">$W_requete</a> = 'SELECT * FROM <a class="el" href="classmap.html">map</a> WHERE ID =\''.sSQL($W_case).'\''</td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="arme__de__siege_8php.html#cb6559abdb149d5869a9dbeff98cf9bd">$W_req</a> = $<a class="el" href="classdb.html">db</a>-&gt;query($W_requete)</td></tr>
 
@@ -35,7 +35,7 @@
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="arme__de__siege_8php.html#dc5bfc941d40883a35083b4167529fec">$_SESSION</a> ['position'] = convert_in_pos($joueur['x'], $joueur['y'])</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="arme__de__siege_8php.html#1ea21bf4b1af1ebda1b8c63b0e364ce9">$requete</a> = &quot;SELECT * FROM construction WHERE <a class="el" href="bureau__quete_8php.html#cf2488b95c97e0378c9bf49de3b50f28">id</a> = &quot;.sSQL($_GET['id_construction'])</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="arme__de__siege_8php.html#1ea21bf4b1af1ebda1b8c63b0e364ce9">$requete</a> = &quot;SELECT * FROM <a class="el" href="classconstruction.html">construction</a> WHERE id = &quot;.sSQL($_GET['id_construction'])</td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="arme__de__siege_8php.html#63a7a283ea5dee8af1e2d5a3435bf370">$req</a> = $<a class="el" href="classdb.html">db</a>-&gt;query($requete)</td></tr>
 
@@ -114,7 +114,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$requete = &quot;SELECT * FROM construction WHERE <a class="el" href="bureau__quete_8php.html#cf2488b95c97e0378c9bf49de3b50f28">id</a> = &quot;.sSQL($_GET['id_construction'])          </td>
+          <td class="memname">$requete = &quot;SELECT * FROM <a class="el" href="classconstruction.html">construction</a> WHERE id = &quot;.sSQL($_GET['id_construction'])          </td>
         </tr>
       </table>
 </div>
@@ -159,7 +159,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$W_case = $_GET['<a class="el" href="candidature_8php.html#6b62101699f80eb754508183c994ff21">poscase</a>']          </td>
+          <td class="memname">$W_case = $_GET['poscase']          </td>
         </tr>
       </table>
 </div>
@@ -219,7 +219,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$W_requete = 'SELECT * FROM map WHERE ID =\''.sSQL($W_case).'\''          </td>
+          <td class="memname">$W_requete = 'SELECT * FROM <a class="el" href="classmap.html">map</a> WHERE ID =\''.sSQL($W_case).'\''          </td>
         </tr>
       </table>
 </div>
@@ -245,7 +245,7 @@
 </div>
 </div><p>
 </div>
-<hr size="1"><address style="text-align: right;"><small>Généré le Sun Nov 30 19:54:40 2008 pour Starshine Online par&nbsp;
+<hr size="1"><address style="text-align: right;"><small>Généré le Fri May 8 12:45:34 2009 pour Starshine Online par&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.6 </small></address>
 </body>

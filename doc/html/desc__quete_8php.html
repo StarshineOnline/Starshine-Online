@@ -25,21 +25,21 @@
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="desc__quete_8php.html#beea5db7af13b1bdd70c46e49f512b26">$joueur</a> = recupperso($_SESSION['ID'])</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="desc__quete_8php.html#1ea21bf4b1af1ebda1b8c63b0e364ce9">$requete</a> = 'SELECT * FROM quete WHERE <a class="el" href="bureau__quete_8php.html#cf2488b95c97e0378c9bf49de3b50f28">id</a> = '.sSQL($_GET['id_quete'])</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="desc__quete_8php.html#1ea21bf4b1af1ebda1b8c63b0e364ce9">$requete</a> = 'SELECT * FROM quete WHERE id = '.sSQL($_GET['id_quete'])</td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="desc__quete_8php.html#63a7a283ea5dee8af1e2d5a3435bf370">$req</a> = $<a class="el" href="classdb.html">db</a>-&gt;query($requete)</td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="desc__quete_8php.html#a1d731aa570613e5bcff831bb10e9b87">$row</a> = $<a class="el" href="classdb.html">db</a>-&gt;read_assoc($req)</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="jeu2_8php.html#5be84ee6ca5978531539b945d5f4f43a">else</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="desc__quete_8php.html#69249587cbd86ec50073aea063bfc722">$repetable</a> = ''</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="roi_2index_8php.html#1c12d30d2681081f13297744af1014a6">else</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="desc__quete_8php.html#69249587cbd86ec50073aea063bfc722">$repetable</a> = ''</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="jeu2_8php.html#5be84ee6ca5978531539b945d5f4f43a">else</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="desc__quete_8php.html#564783307b025aaab648d406a0606930">$mode</a> = 'Groupe'</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="roi_2index_8php.html#1c12d30d2681081f13297744af1014a6">else</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="desc__quete_8php.html#564783307b025aaab648d406a0606930">$mode</a> = 'Groupe'</td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="desc__quete_8php.html#bf06bbad98e08906121b41f4eb12e51f">$objectif</a> = unserialize($row['objectif'])</td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="desc__quete_8php.html#83018d9153d17d91fbcf3bc10158d34f">$i</a> = 0</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="desc__quete_8php.html#26fa106a338e8c6b96cf393dd593dc3e">foreach</a> ($joueur['quete'][$_GET['quete_joueur']]['objectif'] as $objectif_fait) = 0</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="desc__quete_8php.html#26fa106a338e8c6b96cf393dd593dc3e">foreach</a> ($joueur['quete'][$_GET['quete_joueur']]['objectif'] as $objectif_fait) = &quot;SELECT a.id as id, a.rechargement, c.id as bourg_id FROM `<a class="el" href="classconstruction.html">construction</a>` as a LEFT JOIN <a class="el" href="classconstruction.html">construction</a> as c ON a.rechargement = c.id WHERE <a class="el" href="action__modif__t_8php.html#7aead736a07eaf25623ad7bfa1f0ee2d">a.type</a> ='<a class="el" href="classmine.html">mine</a>'&quot;</td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="desc__quete_8php.html#853177bf068acd3f572986321342a037">$rewards</a> = explode(';', $row['reward'])</td></tr>
 
@@ -99,7 +99,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="jeu2_8php.html#5be84ee6ca5978531539b945d5f4f43a">else</a> $mode = 'Groupe'          </td>
+          <td class="memname"><a class="el" href="roi_2index_8php.html#1c12d30d2681081f13297744af1014a6">else</a> $mode = 'Groupe'          </td>
         </tr>
       </table>
 </div>
@@ -144,7 +144,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="jeu2_8php.html#5be84ee6ca5978531539b945d5f4f43a">else</a> $repetable = ''          </td>
+          <td class="memname"><a class="el" href="roi_2index_8php.html#1c12d30d2681081f13297744af1014a6">else</a> $repetable = ''          </td>
         </tr>
       </table>
 </div>
@@ -174,7 +174,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$requete = 'SELECT * FROM quete WHERE <a class="el" href="bureau__quete_8php.html#cf2488b95c97e0378c9bf49de3b50f28">id</a> = '.sSQL($_GET['id_quete'])          </td>
+          <td class="memname">$requete = 'SELECT * FROM quete WHERE id = '.sSQL($_GET['id_quete'])          </td>
         </tr>
       </table>
 </div>
@@ -219,7 +219,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="viewarene2_8php.html#5b12908e955b1d62c5d4a94b8595d5c6">foreach</a> = 0          </td>
+          <td class="memname"><a class="el" href="viewarene2_8php.html#5b12908e955b1d62c5d4a94b8595d5c6">foreach</a> = &quot;SELECT a.id as id, a.rechargement, c.id as bourg_id FROM `<a class="el" href="classconstruction.html">construction</a>` as a LEFT JOIN <a class="el" href="classconstruction.html">construction</a> as c ON a.rechargement = c.id WHERE <a class="el" href="action__modif__t_8php.html#7aead736a07eaf25623ad7bfa1f0ee2d">a.type</a> ='<a class="el" href="classmine.html">mine</a>'&quot;          </td>
         </tr>
       </table>
 </div>
@@ -245,7 +245,7 @@
 </div>
 </div><p>
 </div>
-<hr size="1"><address style="text-align: right;"><small>Généré le Sun Nov 30 19:54:41 2008 pour Starshine Online par&nbsp;
+<hr size="1"><address style="text-align: right;"><small>Généré le Fri May 8 12:45:35 2009 pour Starshine Online par&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.6 </small></address>
 </body>

@@ -1,0 +1,2 @@
+<area shape="rect" href="$classbourg.html" title="{bourg\n|+ $mine_max\l|+ __construct()\l+ get_mines()\l+ get_placements()\l+ get_mine_total()\l}" alt="" coords="5,384,144,528">
+<area shape="rect" href="$classmine.html" title="{mine\n||+ __construct()\l+ get_ressources()\l+ get_evolution()\l+ get_hp_max()\l}" alt="" coords="168,384,304,528">

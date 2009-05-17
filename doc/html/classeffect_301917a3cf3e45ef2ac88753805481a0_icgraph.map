@@ -1,5 +1,5 @@
-<area shape="rect" href="$classglobe__foudre.html#ba37eab0bbcea38bf04338b35d2e694e" title="globe_foudre::__construct" alt="" coords="131,5,301,32">
-<area shape="rect" href="$classmagnetique.html#2b239ad153a758decd8c75174c80e477" title="magnetique::__construct" alt="" coords="135,56,297,83">
-<area shape="rect" href="$classmagnetique.html#7e212fbedf6704c0d7f6ac9fbdd3d030" title="magnetique::calcul_degats" alt="" coords="128,107,304,133">
-<area shape="rect" href="$classempoisonne.html#d855640411136a518c1fc302838a3c7a" title="empoisonne::fin_round" alt="" coords="140,157,292,184">
-<area shape="rect" href="$classmagnetique.html#80fb56483bbd15fa02ab492bb718d522" title="magnetique::fin_round" alt="" coords="143,208,289,235">
+<area shape="rect" href="$classglobe__foudre.html#ba37eab0bbcea38bf04338b35d2e694e" title="globe_foudre::__construct" alt="" coords="136,5,320,35">
+<area shape="rect" href="$classmagnetique.html#2b239ad153a758decd8c75174c80e477" title="magnetique::__construct" alt="" coords="141,59,315,88">
+<area shape="rect" href="$classmagnetique.html#7e212fbedf6704c0d7f6ac9fbdd3d030" title="Modifie les dégâts." alt="" coords="135,112,321,141">
+<area shape="rect" href="$classempoisonne.html#d855640411136a518c1fc302838a3c7a" title="Action a effectuer en fin de round." alt="" coords="145,165,311,195">
+<area shape="rect" href="$classmagnetique.html#80fb56483bbd15fa02ab492bb718d522" title="Action a effectuer en fin de round." alt="" coords="147,219,309,248">

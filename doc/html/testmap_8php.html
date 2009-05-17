@@ -31,13 +31,13 @@
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="testmap_8php.html#4b2a4547bbd9a45f163adccfe8b45980">$xmin</a> = 1</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="testmap_8php.html#6ada433d5a1d814c4c4ad7c29aaf88a7">$xmax</a> = 150</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="testmap_8php.html#6ada433d5a1d814c4c4ad7c29aaf88a7">$xmax</a> = 190</td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="testmap_8php.html#7e30a161a1e1199d07c180857926eaa3">$ymin</a> = 1</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="testmap_8php.html#1443f20f1ed7a3b93e67f797e4916e4d">$ymax</a> = 150</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="testmap_8php.html#1443f20f1ed7a3b93e67f797e4916e4d">$ymax</a> = 190</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="testmap_8php.html#1ea21bf4b1af1ebda1b8c63b0e364ce9">$requete</a> = 'SELECT * FROM map WHERE (((FLOOR(ID / '.$G_ligne.') &gt;= '.$ymin.') AND (FLOOR(ID / '.$G_ligne.') &lt;= '.$ymax.')) AND (((ID - (FLOOR(ID / '.$G_colonne.') * 1000)) &gt;= '.$xmin.') AND ((ID - (FLOOR(ID / '.$G_colonne.') * 1000)) &lt;= '.$xmax.'))) ORDER BY ID'</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="testmap_8php.html#1ea21bf4b1af1ebda1b8c63b0e364ce9">$requete</a> = 'SELECT * FROM <a class="el" href="classmap.html">map</a> WHERE (((FLOOR(ID / '.$G_ligne.') &gt;= '.$ymin.') AND (FLOOR(ID / '.$G_ligne.') &lt;= '.$ymax.')) AND (((ID - (FLOOR(ID / '.$G_colonne.') * 1000)) &gt;= '.$xmin.') AND ((ID - (FLOOR(ID / '.$G_colonne.') * 1000)) &lt;= '.$xmax.'))) ORDER BY ID'</td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="testmap_8php.html#63a7a283ea5dee8af1e2d5a3435bf370">$req</a> = $<a class="el" href="classdb.html">db</a>-&gt;query($requete)</td></tr>
 
@@ -45,11 +45,11 @@
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="testmap_8php.html#a3839e976cc3dfcf97eb2d8bd3df4e13">$req_joueurs</a> = $<a class="el" href="classdb.html">db</a>-&gt;query($requete_joueurs)</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="testmap_8php.html#b43036f32f48ca3bf16dee751a027a46">$requete_drapeaux</a> = 'SELECT x, y, hp, <a class="el" href="action__modif__t_8php.html#7aead736a07eaf25623ad7bfa1f0ee2d">type</a>, nom, royaume, debut_placement, fin_placement FROM placement WHERE (((x &gt;= '.$xmin.') AND (x &lt;= '.$xmax.')) AND ((y &gt;= '.$ymin.') AND (y &lt;= '.$ymax.'))) ORDER BY y ASC, x ASC'</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="testmap_8php.html#b43036f32f48ca3bf16dee751a027a46">$requete_drapeaux</a> = 'SELECT x, y, hp, <a class="el" href="action__modif__t_8php.html#7aead736a07eaf25623ad7bfa1f0ee2d">type</a>, nom, royaume, debut_placement, fin_placement FROM <a class="el" href="classplacement.html">placement</a> WHERE (((x &gt;= '.$xmin.') AND (x &lt;= '.$xmax.')) AND ((y &gt;= '.$ymin.') AND (y &lt;= '.$ymax.'))) ORDER BY y ASC, x ASC'</td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="testmap_8php.html#962800dbb02051a261027cae77d70d84">$req_drapeaux</a> = $<a class="el" href="classdb.html">db</a>-&gt;query($requete_drapeaux)</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="testmap_8php.html#253ece263f13471e6888f9e6e1425e0b">$requete_batiment</a> = 'SELECT x, y, royaume, nom, id_batiment, image, hp FROM construction WHERE (((x &gt;= '.$xmin.') AND (x &lt;= '.$xmax.')) AND ((y &gt;= '.$ymin.') AND (y &lt;= '.$ymax.'))) ORDER BY y ASC, x ASC'</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="testmap_8php.html#253ece263f13471e6888f9e6e1425e0b">$requete_batiment</a> = 'SELECT x, y, royaume, nom, id_batiment, image, hp FROM <a class="el" href="classconstruction.html">construction</a> WHERE (((x &gt;= '.$xmin.') AND (x &lt;= '.$xmax.')) AND ((y &gt;= '.$ymin.') AND (y &lt;= '.$ymax.'))) ORDER BY y ASC, x ASC'</td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="testmap_8php.html#9b89e7fb0f356c509a37403acc5f7db1">$req_batiment</a> = $<a class="el" href="classdb.html">db</a>-&gt;query($requete_batiment)</td></tr>
 
@@ -288,7 +288,7 @@ read_assoc($req_batiment))&nbsp;</td><td class="memItemRight" valign="bottom"><a
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$requete = 'SELECT * FROM map WHERE (((FLOOR(ID / '.$G_ligne.') &gt;= '.$ymin.') AND (FLOOR(ID / '.$G_ligne.') &lt;= '.$ymax.')) AND (((ID - (FLOOR(ID / '.$G_colonne.') * 1000)) &gt;= '.$xmin.') AND ((ID - (FLOOR(ID / '.$G_colonne.') * 1000)) &lt;= '.$xmax.'))) ORDER BY ID'          </td>
+          <td class="memname">$requete = 'SELECT * FROM <a class="el" href="classmap.html">map</a> WHERE (((FLOOR(ID / '.$G_ligne.') &gt;= '.$ymin.') AND (FLOOR(ID / '.$G_ligne.') &lt;= '.$ymax.')) AND (((ID - (FLOOR(ID / '.$G_colonne.') * 1000)) &gt;= '.$xmin.') AND ((ID - (FLOOR(ID / '.$G_colonne.') * 1000)) &lt;= '.$xmax.'))) ORDER BY ID'          </td>
         </tr>
       </table>
 </div>
@@ -303,7 +303,7 @@ read_assoc($req_batiment))&nbsp;</td><td class="memItemRight" valign="bottom"><a
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$requete_batiment = 'SELECT x, y, royaume, nom, id_batiment, image, hp FROM construction WHERE (((x &gt;= '.$xmin.') AND (x &lt;= '.$xmax.')) AND ((y &gt;= '.$ymin.') AND (y &lt;= '.$ymax.'))) ORDER BY y ASC, x ASC'          </td>
+          <td class="memname">$requete_batiment = 'SELECT x, y, royaume, nom, id_batiment, image, hp FROM <a class="el" href="classconstruction.html">construction</a> WHERE (((x &gt;= '.$xmin.') AND (x &lt;= '.$xmax.')) AND ((y &gt;= '.$ymin.') AND (y &lt;= '.$ymax.'))) ORDER BY y ASC, x ASC'          </td>
         </tr>
       </table>
 </div>
@@ -318,7 +318,7 @@ read_assoc($req_batiment))&nbsp;</td><td class="memItemRight" valign="bottom"><a
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$requete_drapeaux = 'SELECT x, y, hp, <a class="el" href="action__modif__t_8php.html#7aead736a07eaf25623ad7bfa1f0ee2d">type</a>, nom, royaume, debut_placement, fin_placement FROM placement WHERE (((x &gt;= '.$xmin.') AND (x &lt;= '.$xmax.')) AND ((y &gt;= '.$ymin.') AND (y &lt;= '.$ymax.'))) ORDER BY y ASC, x ASC'          </td>
+          <td class="memname">$requete_drapeaux = 'SELECT x, y, hp, <a class="el" href="action__modif__t_8php.html#7aead736a07eaf25623ad7bfa1f0ee2d">type</a>, nom, royaume, debut_placement, fin_placement FROM <a class="el" href="classplacement.html">placement</a> WHERE (((x &gt;= '.$xmin.') AND (x &lt;= '.$xmax.')) AND ((y &gt;= '.$ymin.') AND (y &lt;= '.$ymax.'))) ORDER BY y ASC, x ASC'          </td>
         </tr>
       </table>
 </div>
@@ -423,7 +423,7 @@ read_assoc($req_batiment))&nbsp;</td><td class="memItemRight" valign="bottom"><a
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$xmax = 150          </td>
+          <td class="memname">$xmax = 190          </td>
         </tr>
       </table>
 </div>
@@ -513,7 +513,7 @@ read_assoc($req_batiment))&nbsp;</td><td class="memItemRight" valign="bottom"><a
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$ymax = 150          </td>
+          <td class="memname">$ymax = 190          </td>
         </tr>
       </table>
 </div>
@@ -539,7 +539,7 @@ read_assoc($req_batiment))&nbsp;</td><td class="memItemRight" valign="bottom"><a
 </div>
 </div><p>
 </div>
-<hr size="1"><address style="text-align: right;"><small>Généré le Sun Nov 30 19:54:58 2008 pour Starshine Online par&nbsp;
+<hr size="1"><address style="text-align: right;"><small>Généré le Fri May 8 12:45:36 2009 pour Starshine Online par&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.6 </small></address>
 </body>

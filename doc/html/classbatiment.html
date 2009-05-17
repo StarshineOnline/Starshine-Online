@@ -1,0 +1,227 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+<title>Starshine Online: Référence de la classe batiment</title>
+<link href="doxygen.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- Généré par Doxygen 1.5.6 -->
+<div class="navigation" id="top">
+  <div class="tabs">
+    <ul>
+      <li><a href="index.html"><span>Page&nbsp;principale</span></a></li>
+      <li class="current"><a href="classes.html"><span>Classes</span></a></li>
+      <li><a href="files.html"><span>Fichiers</span></a></li>
+      <li><a href="dirs.html"><span>Répertoires</span></a></li>
+    </ul>
+  </div>
+  <div class="tabs">
+    <ul>
+      <li><a href="classes.html"><span>Liste&nbsp;alphabétique</span></a></li>
+      <li><a href="annotated.html"><span>Liste&nbsp;des&nbsp;classes</span></a></li>
+      <li><a href="hierarchy.html"><span>Hiérarchie&nbsp;des&nbsp;classes</span></a></li>
+      <li><a href="functions.html"><span>Membres&nbsp;de&nbsp;classe</span></a></li>
+    </ul>
+  </div>
+</div>
+<div class="contents">
+<h1>Référence de la classe batiment</h1><!-- doxytag: class="batiment" -->
+<p>
+<a href="classbatiment-members.html">Liste de tous les membres</a><table border="0" cellpadding="0" cellspacing="0">
+<tr><td></td></tr>
+<tr><td colspan="2"><br><h2>Fonctions membres publiques</h2></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classbatiment.html#35299395f4a30d8e590e55110f411a04">__construct</a> ($id=0, $nom= '', $image= '')</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Constructeur permettant la création d'un repère de <a class="el" href="classbataille.html">bataille</a>.  <a href="#35299395f4a30d8e590e55110f411a04"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classbatiment.html#898a1e74c3c97388e92b030f08eaf114">sauver</a> ()</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classbatiment.html#1456824853bb79f105aea52d4cefa4f6">supprimer</a> ()</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classbatiment.html#1f6321eabc3db9679210d26a4af1cfe0">__toString</a> ()</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classbatiment.html#217e91d7eb29dc82dd60b393e305394d">get_image</a> ($root, $resolution= 'high')</td></tr>
+
+<tr><td colspan="2"><br><h2>Attributs publics</h2></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classbatiment.html#a2396219fe2186f56f3f3b6ea83c943e">$id</a></td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classbatiment.html#e3cd14a338a55abf11b1966bba9d3801">$nom</a></td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classbatiment.html#dfd63e4e753b3f8fa3c2eb162daaf4c3">$image</a></td></tr>
+
+</table>
+<hr><h2>Documentation des constructeurs et destructeur</h2>
+<a class="anchor" name="35299395f4a30d8e590e55110f411a04"></a><!-- doxytag: member="batiment::__construct" ref="35299395f4a30d8e590e55110f411a04" args="($id=0, $nom= '', $image= '')" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">batiment::__construct           </td>
+          <td>(</td>
+          <td class="paramtype">$&nbsp;</td>
+          <td class="paramname"> <em>id</em> = <code>0</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">$&nbsp;</td>
+          <td class="paramname"> <em>nom</em> = <code>''</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">$&nbsp;</td>
+          <td class="paramname"> <em>image</em> = <code>''</code></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+Constructeur permettant la création d'un repère de <a class="el" href="classbataille.html">bataille</a>. 
+<p>
+Les valeurs par défaut sont celles de la base de donnée. Le constructeur accepte plusieurs types d'appels: -bataille_repere_type() qui construit un etat "vide". -bataille_repere_type($id) qui va chercher l'etat dont l'id est $id -bataille_repere_type($array) qui associe les champs de $array à l'objet. 
+</div>
+</div><p>
+<hr><h2>Documentation des fonctions membres</h2>
+<a class="anchor" name="898a1e74c3c97388e92b030f08eaf114"></a><!-- doxytag: member="batiment::sauver" ref="898a1e74c3c97388e92b030f08eaf114" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">batiment::sauver           </td>
+          <td>(</td>
+          <td class="paramname">          </td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="1456824853bb79f105aea52d4cefa4f6"></a><!-- doxytag: member="batiment::supprimer" ref="1456824853bb79f105aea52d4cefa4f6" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">batiment::supprimer           </td>
+          <td>(</td>
+          <td class="paramname">          </td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="1f6321eabc3db9679210d26a4af1cfe0"></a><!-- doxytag: member="batiment::__toString" ref="1f6321eabc3db9679210d26a4af1cfe0" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">batiment::__toString           </td>
+          <td>(</td>
+          <td class="paramname">          </td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="217e91d7eb29dc82dd60b393e305394d"></a><!-- doxytag: member="batiment::get_image" ref="217e91d7eb29dc82dd60b393e305394d" args="($root, $resolution= 'high')" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">batiment::get_image           </td>
+          <td>(</td>
+          <td class="paramtype">$&nbsp;</td>
+          <td class="paramname"> <em>root</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">$&nbsp;</td>
+          <td class="paramname"> <em>resolution</em> = <code>'high'</code></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<hr><h2>Documentation des données membres</h2>
+<a class="anchor" name="a2396219fe2186f56f3f3b6ea83c943e"></a><!-- doxytag: member="batiment::$id" ref="a2396219fe2186f56f3f3b6ea83c943e" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">batiment::$id          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="e3cd14a338a55abf11b1966bba9d3801"></a><!-- doxytag: member="batiment::$nom" ref="e3cd14a338a55abf11b1966bba9d3801" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">batiment::$nom          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="dfd63e4e753b3f8fa3c2eb162daaf4c3"></a><!-- doxytag: member="batiment::$image" ref="dfd63e4e753b3f8fa3c2eb162daaf4c3" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">batiment::$image          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+</div>
+<hr size="1"><address style="text-align: right;"><small>Généré le Fri May 8 12:45:37 2009 pour Starshine Online par&nbsp;
+<a href="http://www.doxygen.org/index.html">
+<img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.6 </small></address>
+</body>
+</html>

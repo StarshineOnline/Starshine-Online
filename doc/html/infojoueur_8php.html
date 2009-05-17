@@ -23,11 +23,11 @@
 <tr><td colspan="2"><br><h2>Variables</h2></td></tr>
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="infojoueur_8php.html#20f940ecc4a1340781f167fb69a76622">$W_ID</a> = $_GET['ID']</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="infojoueur_8php.html#348857e01ece8eec9741a8aac278b4b7">$W_case</a> = $_GET['<a class="el" href="candidature_8php.html#6b62101699f80eb754508183c994ff21">poscase</a>']</td></tr>
-
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="infojoueur_8php.html#beea5db7af13b1bdd70c46e49f512b26">$joueur</a> = recupperso($_SESSION['ID'])</td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="infojoueur_8php.html#648bcc9981df7cceb4b931a80064a6c5">$perso</a> = recupperso($W_ID)</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="infojoueur_8php.html#348857e01ece8eec9741a8aac278b4b7">$W_case</a> = convert_in_pos($perso['x'], $perso['y'])</td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="infojoueur_8php.html#8c7afa26d3c92b991027d5682b1d85b4">$bonus</a> = recup_bonus($W_ID)</td></tr>
 
@@ -35,31 +35,22 @@
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="infojoueur_8php.html#cd403f21721a7b74fca1454b14fa1bd3">$vue</a> = 4</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="jeu2_8php.html#5be84ee6ca5978531539b945d5f4f43a">else</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="infojoueur_8php.html#c58b42b417012503ea186ea312c6aa46">$chaine_nom</a> = $perso['grade'].' '.$perso['nom']</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="roi_2index_8php.html#1c12d30d2681081f13297744af1014a6">else</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="infojoueur_8php.html#c58b42b417012503ea186ea312c6aa46">$chaine_nom</a> = $perso['grade'].' '.$perso['nom']</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="jeu2_8php.html#5be84ee6ca5978531539b945d5f4f43a">else</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="infojoueur_8php.html#f5826029e31e937d174a49362058483c">$classe</a> = $perso['classe']</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="roi_2index_8php.html#1c12d30d2681081f13297744af1014a6">else</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="infojoueur_8php.html#f5826029e31e937d174a49362058483c">$classe</a> = $perso['classe']</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="jeu2_8php.html#5be84ee6ca5978531539b945d5f4f43a">else</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="infojoueur_8php.html#558bfdffbfe8110be3980862489856ec">$niveau</a> = $perso['level']</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="roi_2index_8php.html#1c12d30d2681081f13297744af1014a6">else</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="infojoueur_8php.html#558bfdffbfe8110be3980862489856ec">$niveau</a> = $perso['level']</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="infojoueur_8php.html#98c26e3859175eedb76ff4c2c0d4a2a6">if</a> (array_key_exists(19, $bonus) AND check_affiche_bonus($bonus[19], $joueur, $perso))</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="infojoueur_8php.html#54826825b575916b70815c586abd4402">if</a> (array_key_exists(19, $bonus) AND check_affiche_bonus($bonus[19], $joueur, $perso))</td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="infojoueur_8php.html#1a99de28ec8c55302f869467cb07a91f">if</a> (array_key_exists(12, $bonus) AND check_affiche_bonus($bonus[12], $joueur, $perso))</td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="infojoueur_8php.html#3bdc395fa40de5f822d4230cf6e5b387">$W_distance</a> = detection_distance($W_case, $_SESSION[&quot;position&quot;])</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="ville__bas_8php.html#b0b4257144253a830116a876a99660c4">if</a>(($perso['ID']!=$_SESSION['ID'])) <br>
-<a class="el" href="ville__bas_8php.html#b0b4257144253a830116a876a99660c4">if</a>($joueur['sort_jeu']!= <br>
-'') <a class="el" href="ville__bas_8php.html#b0b4257144253a830116a876a99660c4">if</a>(($W_distance&lt; 2) AND($W_ID!=$_SESSION['ID']) <br>
-AND($perso['groupe']!=$joueur['groupe'] <br>
-OR $joueur['groupe']== ''OR <br>
-$joueur['groupe']==0)) <a class="el" href="ville__bas_8php.html#b0b4257144253a830116a876a99660c4">if</a>(array_key_exists(20, <br>
-$bonus) AND <br>
-check_affiche_bonus($bonus[20], <br>
-$joueur, $perso))&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="infojoueur_8php.html#90891d0886ca8bd65e7d4487e42669c4">if</a> (array_key_exists(23, $bonus) AND check_affiche_bonus($bonus[23], $joueur, $perso))</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="infojoueur_8php.html#ddb13a7d2f25a14c4bf40fd53dd285ff">if</a> (($perso[&quot;groupe&quot;]==$joueur['<a class="el" href="classgroupe.html">groupe</a>']) AND($<a class="el" href="classgroupe.html">groupe</a>['id_leader']==$joueur['ID']))</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="infojoueur_8php.html#4cf9356a143f80355b6c1a26fbfa96f0">if</a> ($joueur['groupe']==$perso['groupe'])</td></tr>
-
-<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="infojoueur_8php.html#9b3e2529c5db00dac7daa7513ce27e5c">$titres</a> = recup_titre_honorifique($perso['ID'])</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="ville__bas_8php.html#e090d03ba817b92f272d5f9e1e3cf724">if</a>($joueur['<a class="el" href="classgroupe.html">groupe</a>']==$perso['<a class="el" href="classgroupe.html">groupe</a>']&amp;&amp;$joueur['<a class="el" href="classgroupe.html">groupe</a>']!==0 <br>
+&amp;&amp;$joueur['<a class="el" href="classgroupe.html">groupe</a>']!= '')&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="infojoueur_8php.html#7feabce1dce32cd3086e1e6d49a2bf0e">$titres</a> = recup_titre_honorifique($perso['ID'])</td></tr>
 
 </table>
 <hr><h2>Documentation des variables</h2>
@@ -98,7 +89,7 @@ $joueur, $perso))&nbsp;</td><td class="memItemRight" valign="bottom"><a class="e
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="jeu2_8php.html#5be84ee6ca5978531539b945d5f4f43a">else</a> $chaine_nom = $perso['grade'].' '.$perso['nom']          </td>
+          <td class="memname"><a class="el" href="roi_2index_8php.html#1c12d30d2681081f13297744af1014a6">else</a> $chaine_nom = $perso['grade'].' '.$perso['nom']          </td>
         </tr>
       </table>
 </div>
@@ -113,7 +104,7 @@ $joueur, $perso))&nbsp;</td><td class="memItemRight" valign="bottom"><a class="e
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="jeu2_8php.html#5be84ee6ca5978531539b945d5f4f43a">else</a> $classe = $perso['classe']          </td>
+          <td class="memname"><a class="el" href="roi_2index_8php.html#1c12d30d2681081f13297744af1014a6">else</a> $classe = $perso['classe']          </td>
         </tr>
       </table>
 </div>
@@ -143,7 +134,7 @@ $joueur, $perso))&nbsp;</td><td class="memItemRight" valign="bottom"><a class="e
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="jeu2_8php.html#5be84ee6ca5978531539b945d5f4f43a">else</a> $niveau = $perso['level']          </td>
+          <td class="memname"><a class="el" href="roi_2index_8php.html#1c12d30d2681081f13297744af1014a6">else</a> $niveau = $perso['level']          </td>
         </tr>
       </table>
 </div>
@@ -168,12 +159,12 @@ $joueur, $perso))&nbsp;</td><td class="memItemRight" valign="bottom"><a class="e
 
 </div>
 </div><p>
-<a class="anchor" name="9b3e2529c5db00dac7daa7513ce27e5c"></a><!-- doxytag: member="infojoueur.php::$titres" ref="9b3e2529c5db00dac7daa7513ce27e5c" args="" -->
+<a class="anchor" name="7feabce1dce32cd3086e1e6d49a2bf0e"></a><!-- doxytag: member="infojoueur.php::$titres" ref="7feabce1dce32cd3086e1e6d49a2bf0e" args="" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$titres = recup_titre_honorifique($perso['ID'])          </td>
+          <td class="memname"><a class="el" href="ville__bas_8php.html#e090d03ba817b92f272d5f9e1e3cf724">if</a> ($joueur['<a class="el" href="classgroupe.html">groupe</a>']==$perso['<a class="el" href="classgroupe.html">groupe</a>']&amp;&amp;$joueur['<a class="el" href="classgroupe.html">groupe</a>']!==0 &amp;&amp;$joueur['<a class="el" href="classgroupe.html">groupe</a>']!= '') $titres = recup_titre_honorifique($perso['ID'])          </td>
         </tr>
       </table>
 </div>
@@ -203,7 +194,7 @@ $joueur, $perso))&nbsp;</td><td class="memItemRight" valign="bottom"><a class="e
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$W_case = $_GET['<a class="el" href="candidature_8php.html#6b62101699f80eb754508183c994ff21">poscase</a>']          </td>
+          <td class="memname">$W_case = convert_in_pos($perso['x'], $perso['y'])          </td>
         </tr>
       </table>
 </div>
@@ -243,27 +234,12 @@ $joueur, $perso))&nbsp;</td><td class="memItemRight" valign="bottom"><a class="e
 
 </div>
 </div><p>
-<a class="anchor" name="4cf9356a143f80355b6c1a26fbfa96f0"></a><!-- doxytag: member="infojoueur.php::if" ref="4cf9356a143f80355b6c1a26fbfa96f0" args="($joueur['groupe']==$perso['groupe'])" -->
+<a class="anchor" name="ddb13a7d2f25a14c4bf40fd53dd285ff"></a><!-- doxytag: member="infojoueur.php::if" ref="ddb13a7d2f25a14c4bf40fd53dd285ff" args="(($perso[&quot;groupe&quot;]==$joueur['groupe']) AND($groupe['id_leader']==$joueur['ID']))" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="ville__bas_8php.html#b0b4257144253a830116a876a99660c4">if</a>($joueur['groupe']==$perso['groupe'])          </td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>
-
-</div>
-</div><p>
-<a class="anchor" name="90891d0886ca8bd65e7d4487e42669c4"></a><!-- doxytag: member="infojoueur.php::if" ref="90891d0886ca8bd65e7d4487e42669c4" args="(array_key_exists(23, $bonus) AND check_affiche_bonus($bonus[23], $joueur, $perso))" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="ville__bas_8php.html#b0b4257144253a830116a876a99660c4">if</a> (($perso['ID']!=$_SESSION['ID'])) <a class="el" href="ville__bas_8php.html#b0b4257144253a830116a876a99660c4">if</a> ($joueur['sort_jeu']!= '') <a class="el" href="ville__bas_8php.html#b0b4257144253a830116a876a99660c4">if</a> (($W_distance&lt; 2) AND($W_ID!=$_SESSION['ID']) AND($perso['groupe']!=$joueur['groupe'] OR $joueur['groupe']== ''OR $joueur['groupe']==0)) <a class="el" href="ville__bas_8php.html#b0b4257144253a830116a876a99660c4">if</a> (array_key_exists(20, $bonus) AND check_affiche_bonus($bonus[20], $joueur, $perso)) <a class="el" href="ville__bas_8php.html#b0b4257144253a830116a876a99660c4">if</a>(array_key_exists(23, $bonus) AND check_affiche_bonus($bonus[23], $joueur, $perso))          </td>
+          <td class="memname"><a class="el" href="ville__bas_8php.html#e090d03ba817b92f272d5f9e1e3cf724">if</a>(($perso[&quot;groupe&quot;]==$joueur['<a class="el" href="classgroupe.html">groupe</a>']) AND($<a class="el" href="classgroupe.html">groupe</a>['id_leader']==$joueur['ID']))          </td>
         </tr>
       </table>
 </div>
@@ -278,7 +254,7 @@ $joueur, $perso))&nbsp;</td><td class="memItemRight" valign="bottom"><a class="e
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="ville__bas_8php.html#b0b4257144253a830116a876a99660c4">if</a>(array_key_exists(12, $bonus) AND check_affiche_bonus($bonus[12], $joueur, $perso))          </td>
+          <td class="memname"><a class="el" href="ville__bas_8php.html#e090d03ba817b92f272d5f9e1e3cf724">if</a>(array_key_exists(12, $bonus) AND check_affiche_bonus($bonus[12], $joueur, $perso))          </td>
         </tr>
       </table>
 </div>
@@ -288,12 +264,12 @@ $joueur, $perso))&nbsp;</td><td class="memItemRight" valign="bottom"><a class="e
 
 </div>
 </div><p>
-<a class="anchor" name="98c26e3859175eedb76ff4c2c0d4a2a6"></a><!-- doxytag: member="infojoueur.php::if" ref="98c26e3859175eedb76ff4c2c0d4a2a6" args="(array_key_exists(19, $bonus) AND check_affiche_bonus($bonus[19], $joueur, $perso))" -->
+<a class="anchor" name="54826825b575916b70815c586abd4402"></a><!-- doxytag: member="infojoueur.php::if" ref="54826825b575916b70815c586abd4402" args="(array_key_exists(19, $bonus) AND check_affiche_bonus($bonus[19], $joueur, $perso))" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="ville__bas_8php.html#b0b4257144253a830116a876a99660c4">if</a>(array_key_exists(19, $bonus) AND check_affiche_bonus($bonus[19], $joueur, $perso))          </td>
+          <td class="memname"><a class="el" href="ville__bas_8php.html#e090d03ba817b92f272d5f9e1e3cf724">if</a> (($perso['ID']!=$_SESSION['ID'])) <a class="el" href="ville__bas_8php.html#e090d03ba817b92f272d5f9e1e3cf724">if</a> ($joueur['sort_jeu']!= '') <a class="el" href="ville__bas_8php.html#e090d03ba817b92f272d5f9e1e3cf724">if</a> (($W_distance&lt; 2) AND($W_ID!=$_SESSION['ID']) AND($perso['<a class="el" href="classgroupe.html">groupe</a>']!=$joueur['<a class="el" href="classgroupe.html">groupe</a>'] OR $joueur['<a class="el" href="classgroupe.html">groupe</a>']== ''OR $joueur['<a class="el" href="classgroupe.html">groupe</a>']==0)) <a class="el" href="ville__bas_8php.html#e090d03ba817b92f272d5f9e1e3cf724">if</a> (array_key_exists(20, $bonus) AND check_affiche_bonus($bonus[20], $joueur, $perso)) <a class="el" href="ville__bas_8php.html#e090d03ba817b92f272d5f9e1e3cf724">if</a> (array_key_exists(23, $bonus) AND check_affiche_bonus($bonus[23], $joueur, $perso)) <a class="el" href="ville__bas_8php.html#e090d03ba817b92f272d5f9e1e3cf724">if</a>(!isset($<a class="el" href="classgroupe.html">groupe</a>))          </td>
         </tr>
       </table>
 </div>
@@ -304,7 +280,7 @@ $joueur, $perso))&nbsp;</td><td class="memItemRight" valign="bottom"><a class="e
 </div>
 </div><p>
 </div>
-<hr size="1"><address style="text-align: right;"><small>Généré le Sun Nov 30 19:54:57 2008 pour Starshine Online par&nbsp;
+<hr size="1"><address style="text-align: right;"><small>Généré le Fri May 8 12:45:36 2009 pour Starshine Online par&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.6 </small></address>
 </body>

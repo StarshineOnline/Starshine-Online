@@ -1,14 +1,31 @@
-<area shape="rect" href="$class_objets.html#edf55c8c43cec7b43c6cf87d09a3bf38" title="Constructeur permettant la création d&#39;un objet." alt="" coords="160,5,296,32">
-<area shape="rect" href="$class_accessoire.html#dbe8a13ca87ce33ac6c1209a72beb7ea" title="Constructeur permettant la création d&#39;un accessoire." alt="" coords="147,56,309,83">
-<area shape="rect" href="$class_objets.html#db68b047eb7adeafd42275d75348d413" title="Objets::__toString" alt="" coords="165,107,291,133">
-<area shape="rect" href="$class_accessoire.html#73ee6ea8786d77038f7b90d76432643f" title="Accessoire::__toString" alt="" coords="152,157,304,184">
-<area shape="rect" href="$base_8inc_8php.html#736714b05762b33c0d599b1bbc7cde2f" title="affiche_condition" alt="" coords="169,208,287,235">
-<area shape="rect" href="$base_8inc_8php.html#11fd79ebeaf54d026fce07d8bfe0ca41" title="affiche_condition_session" alt="" coords="144,259,312,285">
-<area shape="rect" href="$equipement_8inc_8php.html#c3cae32fd35c5c3d572117d38671a59b" title="description_objet" alt="" coords="168,309,288,336">
-<area shape="rect" href="$class_objets.html#d95d5b2d0ab1ee2551fcd14078d01777" title="Objets::getDescription" alt="" coords="153,360,303,387">
-<area shape="rect" href="$class_accessoire.html#c2950f5fa76a7afa66031cc90b0fba91" title="Accessoire::getDescription" alt="" coords="140,411,316,437">
-<area shape="rect" href="$class_objets.html#1a23164c9b05a238625a2e3e5f526336" title="Objets::infobulle" alt="" coords="171,461,285,488">
-<area shape="rect" href="$class_objets.html#f0029c2cd9b1f966492a008877e5633f" title="Objets::sauver" alt="" coords="176,512,280,539">
-<area shape="rect" href="$class_accessoire.html#71bdaff55d277ebacb75b253c2c30bec" title="Accessoire::sauver" alt="" coords="163,563,293,589">
-<area shape="rect" href="$class_objets.html#72396f394b57f13d502d7351d23bf231" title="Objets::setDescription" alt="" coords="153,613,303,640">
-<area shape="rect" href="$class_accessoire.html#c7fe28ac6e5f0df0bcc5bda06b0bdda3" title="Les caractères spéciaux sont échappés lors de la sauvegarde par conséquent $description..." alt="" coords="140,664,316,691">
+<area shape="rect" href="$classterrain__batiment.html#27f310dc127894c59816f8c7de398145" title="Constructeur permettant la création d&#39;un terrain_batiment." alt="" coords="173,5,376,35">
+<area shape="rect" href="$class_objets.html#edf55c8c43cec7b43c6cf87d09a3bf38" title="Constructeur permettant la création d&#39;un objet." alt="" coords="204,59,345,88">
+<area shape="rect" href="$classcraft__recette.html#56dc7a04a5a9ec9989ef25fb21d1629a" title="Constructeur permettant la cr?ation d&#39;une recette." alt="" coords="187,112,363,141">
+<area shape="rect" href="$classcraft__instrument.html#dbcb6a2474f77f1cbcdfdcefe304d0f5" title="Constructeur permettant la cr?ation d&#39;un terrain_batiment." alt="" coords="173,165,376,195">
+<area shape="rect" href="$classcraft__ingredient.html#8ad2dc623d429e12dedad5d540a52067" title="Constructeur permettant la cr?ation d&#39;un ingredient." alt="" coords="176,219,373,248">
+<area shape="rect" href="$classbataille__repere__type.html#120b824b420def85264914e4e07c3ce6" title="Constructeur permettant la création d&#39;un repère de bataille." alt="" coords="163,272,387,301">
+<area shape="rect" href="$classbataille.html#c2b3be1f723d7bb6a1557cb117a58df4" title="Constructeur permettant la création d&#39;une bataille." alt="" coords="201,325,348,355">
+<area shape="rect" href="$class_accessoire.html#dbe8a13ca87ce33ac6c1209a72beb7ea" title="Constructeur permettant la création d&#39;un accessoire." alt="" coords="191,379,359,408">
+<area shape="rect" href="$classterrain__batiment.html#037f2935ca1225037bc93abd5b7174d3" title="terrain_batiment::__toString" alt="" coords="177,432,372,461">
+<area shape="rect" href="$class_objets.html#db68b047eb7adeafd42275d75348d413" title="Objets::__toString" alt="" coords="208,485,341,515">
+<area shape="rect" href="$classcraft__instrument.html#d3afec2bfc4a42027333294dd3a204ae" title="craft_instrument::__toString" alt="" coords="177,539,372,568">
+<area shape="rect" href="$class_accessoire.html#73ee6ea8786d77038f7b90d76432643f" title="Accessoire::__toString" alt="" coords="195,592,355,621">
+<area shape="rect" href="$gestion__bataille_8php.html#d9925374b2565426095a239e4c4fe28f" title="affiche_bataille" alt="" coords="217,645,332,675">
+<area shape="rect" href="$groupe__bataille_8php.html#2d4175bfcc7953bc5c82f520714c232b" title="affiche_bataille_groupe" alt="" coords="192,699,357,728">
+<area shape="rect" href="$base_8inc_8php.html#736714b05762b33c0d599b1bbc7cde2f" title="Affiche une ligne d&#39;un script de combat." alt="" coords="211,752,339,781">
+<area shape="rect" href="$base_8inc_8php.html#11fd79ebeaf54d026fce07d8bfe0ca41" title="Affiche une ligne d&#39;un script de combat." alt="" coords="183,805,367,835">
+<area shape="rect" href="$equipement_8inc_8php.html#c3cae32fd35c5c3d572117d38671a59b" title="description_objet" alt="" coords="211,859,339,888">
+<area shape="rect" href="$classbataille__royaume.html#7452509260ed90d556fccdd6ada6eed5" title="bataille_royaume::get_all_repere_type" alt="" coords="147,912,403,941">
+<area shape="rect" href="$class_objets.html#d95d5b2d0ab1ee2551fcd14078d01777" title="Objets::getDescription" alt="" coords="195,965,355,995">
+<area shape="rect" href="$class_accessoire.html#c2950f5fa76a7afa66031cc90b0fba91" title="Accessoire::getDescription" alt="" coords="181,1019,368,1048">
+<area shape="rect" href="$class_objets.html#1a23164c9b05a238625a2e3e5f526336" title="Objets::infobulle" alt="" coords="213,1072,336,1101">
+<area shape="rect" href="$classterrain__batiment.html#e7e8d5f9e4b59841fbeb0d71994f7131" title="terrain_batiment::sauver" alt="" coords="189,1125,360,1155">
+<area shape="rect" href="$class_objets.html#f0029c2cd9b1f966492a008877e5633f" title="Objets::sauver" alt="" coords="220,1179,329,1208">
+<area shape="rect" href="$classcraft__recette.html#f989d978ec6b1509d48c4a09a2165471" title="craft_recette::sauver" alt="" coords="203,1232,347,1261">
+<area shape="rect" href="$classcraft__instrument.html#12cc34c1ae436cc25668719202502a04" title="craft_instrument::sauver" alt="" coords="189,1285,360,1315">
+<area shape="rect" href="$classcraft__ingredient.html#f3abc099f8e967c3cf17c7a5fb06aa2d" title="craft_ingredient::sauver" alt="" coords="191,1339,359,1368">
+<area shape="rect" href="$classbataille__repere__type.html#578da377da48cb17bf261b08f7953708" title="bataille_repere_type::sauver" alt="" coords="177,1392,372,1421">
+<area shape="rect" href="$classbataille.html#3c7a006e194da8fab547a1c250d970fc" title="bataille::sauver" alt="" coords="217,1445,332,1475">
+<area shape="rect" href="$class_accessoire.html#71bdaff55d277ebacb75b253c2c30bec" title="Accessoire::sauver" alt="" coords="205,1499,344,1528">
+<area shape="rect" href="$class_objets.html#72396f394b57f13d502d7351d23bf231" title="Objets::setDescription" alt="" coords="196,1552,353,1581">
+<area shape="rect" href="$class_accessoire.html#c7fe28ac6e5f0df0bcc5bda06b0bdda3" title="Les caractères spéciaux sont échappés lors de la sauvegarde par conséquent $description..." alt="" coords="181,1605,368,1635">

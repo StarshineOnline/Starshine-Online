@@ -25,7 +25,7 @@
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="sort__joueur_8php.html#e70f89bec7e03c82a7466718b358fc3e">$cible</a> = recupperso($_GET['id_joueur'])</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="sort__joueur_8php.html#348857e01ece8eec9741a8aac278b4b7">$W_case</a> = $_GET['<a class="el" href="candidature_8php.html#6b62101699f80eb754508183c994ff21">poscase</a>']</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="sort__joueur_8php.html#348857e01ece8eec9741a8aac278b4b7">$W_case</a> = convert_in_pos($cible['x'], $cible['y'])</td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="sort__joueur_8php.html#3bdc395fa40de5f822d4230cf6e5b387">$W_distance</a> = detection_distance($W_case, $_SESSION[&quot;position&quot;])</td></tr>
 
@@ -83,7 +83,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$W_case = $_GET['<a class="el" href="candidature_8php.html#6b62101699f80eb754508183c994ff21">poscase</a>']          </td>
+          <td class="memname">$W_case = convert_in_pos($cible['x'], $cible['y'])          </td>
         </tr>
       </table>
 </div>
@@ -109,7 +109,7 @@
 </div>
 </div><p>
 </div>
-<hr size="1"><address style="text-align: right;"><small>Généré le Sun Nov 30 19:54:58 2008 pour Starshine Online par&nbsp;
+<hr size="1"><address style="text-align: right;"><small>Généré le Fri May 8 12:45:36 2009 pour Starshine Online par&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.6 </small></address>
 </body>

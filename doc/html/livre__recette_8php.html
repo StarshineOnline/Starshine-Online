@@ -23,7 +23,7 @@
 <tr><td colspan="2"><br><h2>Variables</h2></td></tr>
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="livre__recette_8php.html#348857e01ece8eec9741a8aac278b4b7">$W_case</a> = 1000 * $joueur['y'] + $joueur['x']</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="livre__recette_8php.html#19afe5512c8585af83b8156bb7429e5f">$W_requete</a> = 'SELECT * FROM map WHERE ID =\''.sSQL($W_case).'\''</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="livre__recette_8php.html#19afe5512c8585af83b8156bb7429e5f">$W_requete</a> = 'SELECT * FROM <a class="el" href="classmap.html">map</a> WHERE ID =\''.sSQL($W_case).'\''</td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="livre__recette_8php.html#cb6559abdb149d5869a9dbeff98cf9bd">$W_req</a> = $<a class="el" href="classdb.html">db</a>-&gt;query($W_requete)</td></tr>
 
@@ -31,8 +31,12 @@
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="livre__recette_8php.html#be2d79bb4aa8b8243d81c67fdd50511f">$R</a> = get_royaume_info($joueur['race'], $W_row['royaume'])</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="ville__bas_8php.html#b0b4257144253a830116a876a99660c4">if</a>(array_key_exists('<a class="el" href="bureau__quete_8php.html#0318c7aad223eeb9cf7ab4a1259780d5">action</a>', <br>
-$_GET))&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="livre__recette_8php.html#f616187f32d099ffb42f03c62d04a701">$requete</a> = &quot;SELECT * FROM perso_recette WHERE id_perso = &quot;.$joueur['ID']</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="ville__bas_8php.html#e090d03ba817b92f272d5f9e1e3cf724">if</a>(array_key_exists('action', <br>
+$_GET))&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="livre__recette_8php.html#c59f96c255d947452cfd5d2aeb330693">$recette</a> = new <a class="el" href="classcraft__recette.html">craft_recette</a>()</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="livre__recette_8php.html#92d70a97331cc6fc0a79d9da50895be8">$types</a> = $recette-&gt;get_info_joueur($joueur, $R)</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="livre__recette_8php.html#1ea21bf4b1af1ebda1b8c63b0e364ce9">$requete</a> = &quot;SELECT * FROM <a class="el" href="classperso__recette.html">perso_recette</a> WHERE id_perso = &quot;.$joueur['ID']</td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="livre__recette_8php.html#63a7a283ea5dee8af1e2d5a3435bf370">$req</a> = $<a class="el" href="classdb.html">db</a>-&gt;query($requete)</td></tr>
 
@@ -44,6 +48,21 @@ $_GET))&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="l
       <table class="memname">
         <tr>
           <td class="memname">$R = get_royaume_info($joueur['race'], $W_row['royaume'])          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="c59f96c255d947452cfd5d2aeb330693"></a><!-- doxytag: member="livre_recette.php::$recette" ref="c59f96c255d947452cfd5d2aeb330693" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="ville__bas_8php.html#e090d03ba817b92f272d5f9e1e3cf724">if</a> (array_key_exists('action', $_GET)) $recette = new <a class="el" href="classcraft__recette.html">craft_recette</a>()          </td>
         </tr>
       </table>
 </div>
@@ -68,12 +87,27 @@ $_GET))&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="l
 
 </div>
 </div><p>
-<a class="anchor" name="f616187f32d099ffb42f03c62d04a701"></a><!-- doxytag: member="livre_recette.php::$requete" ref="f616187f32d099ffb42f03c62d04a701" args="" -->
+<a class="anchor" name="1ea21bf4b1af1ebda1b8c63b0e364ce9"></a><!-- doxytag: member="livre_recette.php::$requete" ref="1ea21bf4b1af1ebda1b8c63b0e364ce9" args="" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="ville__bas_8php.html#b0b4257144253a830116a876a99660c4">if</a> (array_key_exists('<a class="el" href="bureau__quete_8php.html#0318c7aad223eeb9cf7ab4a1259780d5">action</a>', $_GET)) $requete = &quot;SELECT * FROM perso_recette WHERE id_perso = &quot;.$joueur['ID']          </td>
+          <td class="memname">$requete = &quot;SELECT * FROM <a class="el" href="classperso__recette.html">perso_recette</a> WHERE id_perso = &quot;.$joueur['ID']          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="92d70a97331cc6fc0a79d9da50895be8"></a><!-- doxytag: member="livre_recette.php::$types" ref="92d70a97331cc6fc0a79d9da50895be8" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">$types = $recette-&gt;get_info_joueur($joueur, $R)          </td>
         </tr>
       </table>
 </div>
@@ -118,7 +152,7 @@ $_GET))&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="l
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$W_requete = 'SELECT * FROM map WHERE ID =\''.sSQL($W_case).'\''          </td>
+          <td class="memname">$W_requete = 'SELECT * FROM <a class="el" href="classmap.html">map</a> WHERE ID =\''.sSQL($W_case).'\''          </td>
         </tr>
       </table>
 </div>
@@ -144,7 +178,7 @@ $_GET))&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="l
 </div>
 </div><p>
 </div>
-<hr size="1"><address style="text-align: right;"><small>Généré le Sun Nov 30 19:54:58 2008 pour Starshine Online par&nbsp;
+<hr size="1"><address style="text-align: right;"><small>Généré le Fri May 8 12:45:36 2009 pour Starshine Online par&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.6 </small></address>
 </body>

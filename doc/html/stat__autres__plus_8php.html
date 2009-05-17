@@ -33,15 +33,19 @@
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="stat__autres__plus_8php.html#ab581066837d6296ba35c72937b6fc1c">$dates</a> = array()</td></tr>
 
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="stat__autres__plus_8php.html#6bd57dadc976262084231ffb3f4e972f">$LARGEUR</a> = 750</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="stat__autres__plus_8php.html#f0b11fde8176c5d8247542e0352dd2b5">$HAUTEUR</a> = 400</td></tr>
+
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="stat__autres__plus_8php.html#481c918f8d853749e00b5942cabf599a">$date</a> = date(&quot;Y-m-d&quot;)</td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="stat__autres__plus_8php.html#1ea21bf4b1af1ebda1b8c63b0e364ce9">$requete</a> = &quot;SELECT niveau_moyen, nombre_joueur, nombre_monstre, EXTRACT(YEAR FROM date) as year, EXTRACT(MONTH FROM date) as month, EXTRACT(DAY FROM date) as day FROM stat_jeu WHERE date &gt; DATE_SUB('&quot;.$date.&quot;', INTERVAL 150 DAY) ORDER BY date;&quot;</td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="stat__autres__plus_8php.html#63a7a283ea5dee8af1e2d5a3435bf370">$req</a> = $<a class="el" href="classdb.html">db</a>-&gt;query($requete)</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="stat__autres__plus_8php.html#f565d2b00e2cab90793cbc0b7b5bc1f0">$strips</a> = array('<a class="el" href="bureau__quete_8php.html#cf2488b95c97e0378c9bf49de3b50f28">id</a>', 'date', 'year', 'day', 'month')</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="stat__autres__plus_8php.html#f565d2b00e2cab90793cbc0b7b5bc1f0">$strips</a> = array('id', 'date', 'year', 'day', 'month')</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="viewarene2_8php.html#223fe6cddffc1406cf93390144f0f6f7">while</a>($row=$<a class="el" href="classdb.html">db</a>-&gt;read_assoc($req))&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="stat__autres__plus_8php.html#d2aefb98713fa6f218a6b89ef5f59e48">$graph</a> = new Graph(900, 400, &quot;auto&quot;)</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="viewarene2_8php.html#223fe6cddffc1406cf93390144f0f6f7">while</a>($row=$<a class="el" href="classdb.html">db</a>-&gt;read_assoc($req))&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="stat__autres__plus_8php.html#d2aefb98713fa6f218a6b89ef5f59e48">$graph</a> = new Graph($LARGEUR, $HAUTEUR, &quot;auto&quot;)</td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="stat__autres__plus_8php.html#5037c6a7971fe210d4d6c3a856d9df49">$p1</a> = new LinePlot($data['nombre_joueur'])</td></tr>
 
@@ -112,7 +116,22 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$graph = new Graph(900, 400, &quot;auto&quot;)          </td>
+          <td class="memname">$graph = new Graph($LARGEUR, $HAUTEUR, &quot;auto&quot;)          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="f0b11fde8176c5d8247542e0352dd2b5"></a><!-- doxytag: member="stat_autres_plus.php::$HAUTEUR" ref="f0b11fde8176c5d8247542e0352dd2b5" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">$HAUTEUR = 400          </td>
         </tr>
       </table>
 </div>
@@ -128,6 +147,21 @@
       <table class="memname">
         <tr>
           <td class="memname">$label = array()          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="6bd57dadc976262084231ffb3f4e972f"></a><!-- doxytag: member="stat_autres_plus.php::$LARGEUR" ref="6bd57dadc976262084231ffb3f4e972f" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">$LARGEUR = 750          </td>
         </tr>
       </table>
 </div>
@@ -217,7 +251,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$strips = array('<a class="el" href="bureau__quete_8php.html#cf2488b95c97e0378c9bf49de3b50f28">id</a>', 'date', 'year', 'day', 'month')          </td>
+          <td class="memname">$strips = array('id', 'date', 'year', 'day', 'month')          </td>
         </tr>
       </table>
 </div>
@@ -228,7 +262,7 @@
 </div>
 </div><p>
 </div>
-<hr size="1"><address style="text-align: right;"><small>Généré le Sun Nov 30 19:54:58 2008 pour Starshine Online par&nbsp;
+<hr size="1"><address style="text-align: right;"><small>Généré le Fri May 8 12:45:36 2009 pour Starshine Online par&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.6 </small></address>
 </body>

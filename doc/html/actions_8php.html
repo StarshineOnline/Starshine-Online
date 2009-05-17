@@ -25,14 +25,14 @@
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="actions_8php.html#beea5db7af13b1bdd70c46e49f512b26">$joueur</a> = recupperso($_SESSION['ID'])</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="ville__bas_8php.html#b0b4257144253a830116a876a99660c4">if</a>(array_key_exists('<a class="el" href="bureau__quete_8php.html#0318c7aad223eeb9cf7ab4a1259780d5">action</a>', <br>
-$_GET)&amp;&amp;$_GET['<a class="el" href="bureau__quete_8php.html#0318c7aad223eeb9cf7ab4a1259780d5">action</a>']== <br>
-'suppr_action') <a class="el" href="ville__bas_8php.html#b0b4257144253a830116a876a99660c4">if</a>(array_key_exists('valid', <br>
-$_GET)) <a class="el" href="ville__bas_8php.html#b0b4257144253a830116a876a99660c4">if</a>(array_key_exists('<a class="el" href="bureau__quete_8php.html#0318c7aad223eeb9cf7ab4a1259780d5">action</a>', <br>
-$_GET)&amp;&amp;$_GET['<a class="el" href="bureau__quete_8php.html#0318c7aad223eeb9cf7ab4a1259780d5">action</a>']== <br>
+<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="ville__bas_8php.html#e090d03ba817b92f272d5f9e1e3cf724">if</a>(array_key_exists('action', <br>
+$_GET)&amp;&amp;$_GET['action']== <br>
+'suppr_action') <a class="el" href="ville__bas_8php.html#e090d03ba817b92f272d5f9e1e3cf724">if</a>(array_key_exists('valid', <br>
+$_GET)) <a class="el" href="ville__bas_8php.html#e090d03ba817b92f272d5f9e1e3cf724">if</a>(array_key_exists('action', <br>
+$_GET)&amp;&amp;$_GET['action']== <br>
 'select'&amp;&amp;$_GET['id_action']!= <br>
-'') <a class="el" href="ville__bas_8php.html#b0b4257144253a830116a876a99660c4">if</a>(array_key_exists('<a class="el" href="bureau__quete_8php.html#0318c7aad223eeb9cf7ab4a1259780d5">action</a>', <br>
-$_GET)&amp;&amp;$_GET['<a class="el" href="bureau__quete_8php.html#0318c7aad223eeb9cf7ab4a1259780d5">action</a>']== <br>
+'') <a class="el" href="ville__bas_8php.html#e090d03ba817b92f272d5f9e1e3cf724">if</a>(array_key_exists('action', <br>
+$_GET)&amp;&amp;$_GET['action']== <br>
 'dupliq'&amp;&amp;$_GET['id_action']!= '')&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="actions_8php.html#c041f0fe799fa46658aa8e5d1c6e2575">$script_attaque</a> = recupaction_all($joueur['action_a'])</td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="actions_8php.html#f3ef1db02318bc59f0d806f69597bde0">$script_defense</a> = recupaction_all($joueur['action_d'])</td></tr>
@@ -108,7 +108,7 @@ $_GET)&amp;&amp;$_GET['<a class="el" href="bureau__quete_8php.html#0318c7aad223e
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="ville__bas_8php.html#b0b4257144253a830116a876a99660c4">if</a> (array_key_exists('<a class="el" href="bureau__quete_8php.html#0318c7aad223eeb9cf7ab4a1259780d5">action</a>', $_GET)&amp;&amp;$_GET['<a class="el" href="bureau__quete_8php.html#0318c7aad223eeb9cf7ab4a1259780d5">action</a>']== 'suppr_action') <a class="el" href="ville__bas_8php.html#b0b4257144253a830116a876a99660c4">if</a> (array_key_exists('valid', $_GET)) <a class="el" href="ville__bas_8php.html#b0b4257144253a830116a876a99660c4">if</a> (array_key_exists('<a class="el" href="bureau__quete_8php.html#0318c7aad223eeb9cf7ab4a1259780d5">action</a>', $_GET)&amp;&amp;$_GET['<a class="el" href="bureau__quete_8php.html#0318c7aad223eeb9cf7ab4a1259780d5">action</a>']== 'select'&amp;&amp;$_GET['id_action']!= '') <a class="el" href="ville__bas_8php.html#b0b4257144253a830116a876a99660c4">if</a> (array_key_exists('<a class="el" href="bureau__quete_8php.html#0318c7aad223eeb9cf7ab4a1259780d5">action</a>', $_GET)&amp;&amp;$_GET['<a class="el" href="bureau__quete_8php.html#0318c7aad223eeb9cf7ab4a1259780d5">action</a>']== 'dupliq'&amp;&amp;$_GET['id_action']!= '') $script_attaque = recupaction_all($joueur['action_a'])          </td>
+          <td class="memname"><a class="el" href="ville__bas_8php.html#e090d03ba817b92f272d5f9e1e3cf724">if</a> (array_key_exists('action', $_GET)&amp;&amp;$_GET['action']== 'suppr_action') <a class="el" href="ville__bas_8php.html#e090d03ba817b92f272d5f9e1e3cf724">if</a> (array_key_exists('valid', $_GET)) <a class="el" href="ville__bas_8php.html#e090d03ba817b92f272d5f9e1e3cf724">if</a> (array_key_exists('action', $_GET)&amp;&amp;$_GET['action']== 'select'&amp;&amp;$_GET['id_action']!= '') <a class="el" href="ville__bas_8php.html#e090d03ba817b92f272d5f9e1e3cf724">if</a> (array_key_exists('action', $_GET)&amp;&amp;$_GET['action']== 'dupliq'&amp;&amp;$_GET['id_action']!= '') $script_attaque = recupaction_all($joueur['action_a'])          </td>
         </tr>
       </table>
 </div>
@@ -134,7 +134,7 @@ $_GET)&amp;&amp;$_GET['<a class="el" href="bureau__quete_8php.html#0318c7aad223e
 </div>
 </div><p>
 </div>
-<hr size="1"><address style="text-align: right;"><small>Généré le Sun Nov 30 19:54:40 2008 pour Starshine Online par&nbsp;
+<hr size="1"><address style="text-align: right;"><small>Généré le Fri May 8 12:45:34 2009 pour Starshine Online par&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.6 </small></address>
 </body>

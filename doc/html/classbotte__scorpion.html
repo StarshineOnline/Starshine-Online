@@ -29,14 +29,14 @@ Graphe d'héritage de botte_scorpion:</div>
 <div class="dynsection">
 <p><center><img src="classbotte__scorpion__inherit__graph.png" border="0" usemap="#botte__scorpion__inherit__map" alt="Inheritance graph"></center>
 <map name="botte__scorpion__inherit__map">
-<area shape="rect" href="classbotte.html" title="botte : competence de combat avec une condition" alt="" coords="43,821,152,917"><area shape="rect" href="classcomp__combat.html" title="Competence de combat." alt="" coords="43,693,152,773"><area shape="rect" href="classactive__effect.html" title="Effect actif : buff ou compétence de combat." alt="" coords="43,469,152,645"><area shape="rect" href="classeffect.html" title="Classe de base pour la gestion des effets en combat." alt="" coords="5,5,189,421"></map>
+<area shape="rect" href="classbotte.html" title="botte : competence de combat avec une condition" alt="" coords="47,1160,159,1267"><area shape="rect" href="classcomp__combat.html" title="Competence de combat." alt="" coords="47,1024,159,1112"><area shape="rect" href="classactive__effect.html" title="Effect actif : buff ou compétence de combat." alt="" coords="47,776,159,976"><area shape="rect" href="classeffect.html" title="Classe de base pour la gestion des effets en combat." alt="" coords="5,5,200,728"></map>
 <center><font size="2">[<a href="graph_legend.html">légende</a>]</font></center></div>
 <div class="dynheader">
 Graphe de collaboration de botte_scorpion:</div>
 <div class="dynsection">
 <p><center><img src="classbotte__scorpion__coll__graph.png" border="0" usemap="#botte__scorpion__coll__map" alt="Collaboration graph"></center>
 <map name="botte__scorpion__coll__map">
-<area shape="rect" href="classbotte.html" title="botte : competence de combat avec une condition" alt="" coords="43,821,152,917"><area shape="rect" href="classcomp__combat.html" title="Competence de combat." alt="" coords="43,693,152,773"><area shape="rect" href="classactive__effect.html" title="Effect actif : buff ou compétence de combat." alt="" coords="43,469,152,645"><area shape="rect" href="classeffect.html" title="Classe de base pour la gestion des effets en combat." alt="" coords="5,5,189,421"></map>
+<area shape="rect" href="classbotte.html" title="botte : competence de combat avec une condition" alt="" coords="47,1160,159,1267"><area shape="rect" href="classcomp__combat.html" title="Competence de combat." alt="" coords="47,1024,159,1112"><area shape="rect" href="classactive__effect.html" title="Effect actif : buff ou compétence de combat." alt="" coords="47,776,159,976"><area shape="rect" href="classeffect.html" title="Classe de base pour la gestion des effets en combat." alt="" coords="5,5,200,728"></map>
 <center><font size="2">[<a href="graph_legend.html">légende</a>]</font></center></div>
 
 <p>
@@ -45,8 +45,10 @@ Graphe de collaboration de botte_scorpion:</div>
 <tr><td colspan="2"><br><h2>Fonctions membres publiques</h2></td></tr>
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classbotte__scorpion.html#c129ea982b45168a2dafe66b5f69c176">__construct</a> ($aLevel=1)</td></tr>
 
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Constructeur.  <a href="#c129ea982b45168a2dafe66b5f69c176"></a><br></td></tr>
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classbotte__scorpion.html#4a1c40ec721ca3614d0b07b685f43a7f">calcul_critique</a> (&amp;$actif, &amp;$passif, $chance)</td></tr>
 
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Modifie le potentiel critique physique.  <a href="#4a1c40ec721ca3614d0b07b685f43a7f"></a><br></td></tr>
 </table>
 <hr><h2>Documentation des constructeurs et destructeur</h2>
 <a class="anchor" name="c129ea982b45168a2dafe66b5f69c176"></a><!-- doxytag: member="botte_scorpion::__construct" ref="c129ea982b45168a2dafe66b5f69c176" args="($aLevel=1)" -->
@@ -57,7 +59,7 @@ Graphe de collaboration de botte_scorpion:</div>
           <td class="memname">botte_scorpion::__construct           </td>
           <td>(</td>
           <td class="paramtype">$&nbsp;</td>
-          <td class="paramname"> <em>aLevel</em> = <code>1</code>          </td>
+          <td class="paramname"> <em>aNom</em> = <code>1</code>          </td>
           <td>&nbsp;)&nbsp;</td>
           <td></td>
         </tr>
@@ -66,6 +68,13 @@ Graphe de collaboration de botte_scorpion:</div>
 <div class="memdoc">
 
 <p>
+Constructeur. 
+<p>
+<dl compact><dt><b>Paramètres:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>$aNom</em>&nbsp;</td><td>Nom de l'effet. </td></tr>
+  </table>
+</dl>
 
 <p>Réimplémentée à partir de <a class="el" href="classeffect.html#b0d55424478d6a027f340cb8599ae301">effect</a>.</p>
 
@@ -104,6 +113,16 @@ Graphe de collaboration de botte_scorpion:</div>
 <div class="memdoc">
 
 <p>
+Modifie le potentiel critique physique. 
+<p>
+<dl compact><dt><b>Paramètres:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>$actif</em>&nbsp;</td><td><a class="el" href="class_personnage.html" title="Class Personnage.">Personnage</a> actif lors de l'action. </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>$passif</em>&nbsp;</td><td><a class="el" href="class_personnage.html" title="Class Personnage.">Personnage</a> passif lors de l'action. </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>$chance</em>&nbsp;</td><td>Potentiel critique avant modification.</td></tr>
+  </table>
+</dl>
+<dl class="return" compact><dt><b>Renvoie:</b></dt><dd>Potentiel critique après modification. </dd></dl>
 
 <p>Réimplémentée à partir de <a class="el" href="classeffect.html#7bf3a8ebd28a35e5ff506bec4a64f242">effect</a>.</p>
 
@@ -119,7 +138,7 @@ Voici le graphe d'appel pour cette fonction :</div>
 </div>
 </div><p>
 </div>
-<hr size="1"><address style="text-align: right;"><small>Généré le Sun Nov 30 19:54:59 2008 pour Starshine Online par&nbsp;
+<hr size="1"><address style="text-align: right;"><small>Généré le Fri May 8 12:45:37 2009 pour Starshine Online par&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.6 </small></address>
 </body>

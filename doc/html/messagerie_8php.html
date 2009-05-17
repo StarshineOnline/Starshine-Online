@@ -23,6 +23,14 @@
 <tr><td colspan="2"><br><h2>Variables</h2></td></tr>
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="messagerie_8php.html#beea5db7af13b1bdd70c46e49f512b26">$joueur</a> = recupperso($_SESSION['ID'])</td></tr>
 
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="messagerie_8php.html#d235545a8d1696b59690bf3920d7c889">$messagerie</a> = new <a class="el" href="classmessagerie.html">messagerie</a>($joueur['ID'])</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="messagerie_8php.html#5ed916957d828c52566dc4f805d79c10">$non_lu</a> = $<a class="el" href="classmessagerie.html">messagerie</a>-&gt;get_non_lu()</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="ville__bas_8php.html#e090d03ba817b92f272d5f9e1e3cf724">if</a>(!isset($_GET['id_thread']) <br>
+AND!array_key_exists('action', <br>
+$_GET))&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="messagerie_8php.html#c47ae24a4d2318e7c02e61b4fd73f9a9">elseif</a> (array_key_exists('action', $_GET))</td></tr>
+
 </table>
 <hr><h2>Documentation des variables</h2>
 <a class="anchor" name="beea5db7af13b1bdd70c46e49f512b26"></a><!-- doxytag: member="messagerie.php::$joueur" ref="beea5db7af13b1bdd70c46e49f512b26" args="" -->
@@ -40,8 +48,53 @@
 
 </div>
 </div><p>
+<a class="anchor" name="d235545a8d1696b59690bf3920d7c889"></a><!-- doxytag: member="messagerie.php::$messagerie" ref="d235545a8d1696b59690bf3920d7c889" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">$<a class="el" href="classmessagerie.html">messagerie</a> = new <a class="el" href="classmessagerie.html">messagerie</a>($joueur['ID'])          </td>
+        </tr>
+      </table>
 </div>
-<hr size="1"><address style="text-align: right;"><small>Généré le Sun Nov 30 19:54:58 2008 pour Starshine Online par&nbsp;
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="5ed916957d828c52566dc4f805d79c10"></a><!-- doxytag: member="messagerie.php::$non_lu" ref="5ed916957d828c52566dc4f805d79c10" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">$non_lu = $<a class="el" href="classmessagerie.html">messagerie</a>-&gt;get_non_lu()          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="c47ae24a4d2318e7c02e61b4fd73f9a9"></a><!-- doxytag: member="messagerie.php::elseif" ref="c47ae24a4d2318e7c02e61b4fd73f9a9" args="(array_key_exists('action', $_GET))" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="ville__bas_8php.html#e090d03ba817b92f272d5f9e1e3cf724">if</a> (!isset($_GET['id_thread']) AND!array_key_exists('action', $_GET)) <a class="el" href="messagerie_8php.html#c47ae24a4d2318e7c02e61b4fd73f9a9">elseif</a>(array_key_exists('action', $_GET))          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+</div>
+<hr size="1"><address style="text-align: right;"><small>Généré le Fri May 8 12:45:34 2009 pour Starshine Online par&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.6 </small></address>
 </body>

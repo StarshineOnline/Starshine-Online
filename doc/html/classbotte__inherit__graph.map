@@ -1,9 +1,9 @@
-<area shape="rect" href="$classbotte__aigle.html" title="{botte_aigle\n||+ __construct()\l+ debut_round()\l}" alt="" coords="5,973,117,1069">
-<area shape="rect" href="$classbotte__chat.html" title="{botte_chat\n||+ __construct()\l+ debut_round()\l}" alt="" coords="141,973,253,1069">
-<area shape="rect" href="$classbotte__crabe.html" title="{botte_crabe\n||+ __construct()\l+ inflige_degats()\l}" alt="" coords="277,973,397,1069">
-<area shape="rect" href="$classbotte__ours.html" title="{botte_ours\n||+ __construct()\l+ etourdit()\l+ inflige_degats()\l}" alt="" coords="421,965,541,1077">
-<area shape="rect" href="$classbotte__scorpion.html" title="{botte_scorpion\n||+ __construct()\l+ calcul_critique()\l}" alt="" coords="565,973,688,1069">
-<area shape="rect" href="$classbotte__tigre.html" title="{botte_tigre\n||+ __construct()\l+ calcul_degats()\l}" alt="" coords="712,973,832,1069">
-<area shape="rect" href="$classcomp__combat.html" title="Competence de combat." alt="" coords="355,693,464,773">
-<area shape="rect" href="$classactive__effect.html" title="Effect actif : buff ou compétence de combat." alt="" coords="355,469,464,645">
-<area shape="rect" href="$classeffect.html" title="Classe de base pour la gestion des effets en combat." alt="" coords="317,5,501,421">
+<area shape="rect" href="$classbotte__aigle.html" title="{botte_aigle\n||+ __construct()\l+ debut_round()\l}" alt="" coords="5,1324,125,1431">
+<area shape="rect" href="$classbotte__chat.html" title="{botte_chat\n||+ __construct()\l+ debut_round()\l}" alt="" coords="149,1324,269,1431">
+<area shape="rect" href="$classbotte__crabe.html" title="{botte_crabe\n||+ __construct()\l+ inflige_degats()\l}" alt="" coords="293,1324,421,1431">
+<area shape="rect" href="$classbotte__ours.html" title="{botte_ours\n||+ __construct()\l+ etourdit()\l+ inflige_degats()\l}" alt="" coords="445,1315,573,1440">
+<area shape="rect" href="$classbotte__scorpion.html" title="{botte_scorpion\n||+ __construct()\l+ calcul_critique()\l}" alt="" coords="597,1324,728,1431">
+<area shape="rect" href="$classbotte__tigre.html" title="{botte_tigre\n||+ __construct()\l+ calcul_degats()\l}" alt="" coords="752,1324,877,1431">
+<area shape="rect" href="$classcomp__combat.html" title="Competence de combat." alt="" coords="377,1024,489,1112">
+<area shape="rect" href="$classactive__effect.html" title="Effect actif : buff ou compétence de combat." alt="" coords="377,776,489,976">
+<area shape="rect" href="$classeffect.html" title="Classe de base pour la gestion des effets en combat." alt="" coords="336,5,531,728">

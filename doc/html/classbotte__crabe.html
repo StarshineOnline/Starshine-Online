@@ -29,14 +29,14 @@ Graphe d'héritage de botte_crabe:</div>
 <div class="dynsection">
 <p><center><img src="classbotte__crabe__inherit__graph.png" border="0" usemap="#botte__crabe__inherit__map" alt="Inheritance graph"></center>
 <map name="botte__crabe__inherit__map">
-<area shape="rect" href="classbotte.html" title="botte : competence de combat avec une condition" alt="" coords="43,821,152,917"><area shape="rect" href="classcomp__combat.html" title="Competence de combat." alt="" coords="43,693,152,773"><area shape="rect" href="classactive__effect.html" title="Effect actif : buff ou compétence de combat." alt="" coords="43,469,152,645"><area shape="rect" href="classeffect.html" title="Classe de base pour la gestion des effets en combat." alt="" coords="5,5,189,421"></map>
+<area shape="rect" href="classbotte.html" title="botte : competence de combat avec une condition" alt="" coords="47,1160,159,1267"><area shape="rect" href="classcomp__combat.html" title="Competence de combat." alt="" coords="47,1024,159,1112"><area shape="rect" href="classactive__effect.html" title="Effect actif : buff ou compétence de combat." alt="" coords="47,776,159,976"><area shape="rect" href="classeffect.html" title="Classe de base pour la gestion des effets en combat." alt="" coords="5,5,200,728"></map>
 <center><font size="2">[<a href="graph_legend.html">légende</a>]</font></center></div>
 <div class="dynheader">
 Graphe de collaboration de botte_crabe:</div>
 <div class="dynsection">
 <p><center><img src="classbotte__crabe__coll__graph.png" border="0" usemap="#botte__crabe__coll__map" alt="Collaboration graph"></center>
 <map name="botte__crabe__coll__map">
-<area shape="rect" href="classbotte.html" title="botte : competence de combat avec une condition" alt="" coords="43,821,152,917"><area shape="rect" href="classcomp__combat.html" title="Competence de combat." alt="" coords="43,693,152,773"><area shape="rect" href="classactive__effect.html" title="Effect actif : buff ou compétence de combat." alt="" coords="43,469,152,645"><area shape="rect" href="classeffect.html" title="Classe de base pour la gestion des effets en combat." alt="" coords="5,5,189,421"></map>
+<area shape="rect" href="classbotte.html" title="botte : competence de combat avec une condition" alt="" coords="47,1160,159,1267"><area shape="rect" href="classcomp__combat.html" title="Competence de combat." alt="" coords="47,1024,159,1112"><area shape="rect" href="classactive__effect.html" title="Effect actif : buff ou compétence de combat." alt="" coords="47,776,159,976"><area shape="rect" href="classeffect.html" title="Classe de base pour la gestion des effets en combat." alt="" coords="5,5,200,728"></map>
 <center><font size="2">[<a href="graph_legend.html">légende</a>]</font></center></div>
 
 <p>
@@ -45,8 +45,10 @@ Graphe de collaboration de botte_crabe:</div>
 <tr><td colspan="2"><br><h2>Fonctions membres publiques</h2></td></tr>
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classbotte__crabe.html#94c54892121ed971093cbff96dae67a3">__construct</a> ($aLevel=1)</td></tr>
 
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Constructeur.  <a href="#94c54892121ed971093cbff96dae67a3"></a><br></td></tr>
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classbotte__crabe.html#27032b857366b9504c3ce54561a0e160">inflige_degats</a> (&amp;$actif, &amp;$passif, $degats)</td></tr>
 
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Applique les effets ayant lieu lorsque les dégâts ont lieu.  <a href="#27032b857366b9504c3ce54561a0e160"></a><br></td></tr>
 </table>
 <hr><h2>Documentation des constructeurs et destructeur</h2>
 <a class="anchor" name="94c54892121ed971093cbff96dae67a3"></a><!-- doxytag: member="botte_crabe::__construct" ref="94c54892121ed971093cbff96dae67a3" args="($aLevel=1)" -->
@@ -57,7 +59,7 @@ Graphe de collaboration de botte_crabe:</div>
           <td class="memname">botte_crabe::__construct           </td>
           <td>(</td>
           <td class="paramtype">$&nbsp;</td>
-          <td class="paramname"> <em>aLevel</em> = <code>1</code>          </td>
+          <td class="paramname"> <em>aNom</em> = <code>1</code>          </td>
           <td>&nbsp;)&nbsp;</td>
           <td></td>
         </tr>
@@ -66,6 +68,13 @@ Graphe de collaboration de botte_crabe:</div>
 <div class="memdoc">
 
 <p>
+Constructeur. 
+<p>
+<dl compact><dt><b>Paramètres:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>$aNom</em>&nbsp;</td><td>Nom de l'effet. </td></tr>
+  </table>
+</dl>
 
 <p>Réimplémentée à partir de <a class="el" href="classeffect.html#b0d55424478d6a027f340cb8599ae301">effect</a>.</p>
 
@@ -104,6 +113,15 @@ Graphe de collaboration de botte_crabe:</div>
 <div class="memdoc">
 
 <p>
+Applique les effets ayant lieu lorsque les dégâts ont lieu. 
+<p>
+<dl compact><dt><b>Paramètres:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>$actif</em>&nbsp;</td><td><a class="el" href="class_personnage.html" title="Class Personnage.">Personnage</a> actif lors de l'action. </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>$passif</em>&nbsp;</td><td><a class="el" href="class_personnage.html" title="Class Personnage.">Personnage</a> passif lors de l'action. </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>$degats</em>&nbsp;</td><td>Dégâts infligés. </td></tr>
+  </table>
+</dl>
 
 <p>Réimplémentée à partir de <a class="el" href="classeffect.html#6066d3efba0d40d45b81e0f8239ecf4e">effect</a>.</p>
 
@@ -113,13 +131,13 @@ Voici le graphe d'appel pour cette fonction :</div>
 <div class="dynsection">
 <p><center><img src="classbotte__crabe_27032b857366b9504c3ce54561a0e160_cgraph.png" border="0" usemap="#classbotte__crabe_27032b857366b9504c3ce54561a0e160_cgraph_map" alt=""></center>
 <map name="classbotte__crabe_27032b857366b9504c3ce54561a0e160_cgraph_map">
-<area shape="rect" href="classbotte.html#acfec94b40b6788170ea293fc346bf27" title="botte::canUse" alt="" coords="231,5,332,32"><area shape="rect" href="classeffect.html#3fa7d685fd5bd6c9770d87c096621591" title="effect::debug" alt="" coords="233,56,329,83"></map>
+<area shape="rect" href="classbotte.html#acfec94b40b6788170ea293fc346bf27" title="botte::canUse" alt="" coords="244,5,348,35"><area shape="rect" href="classeffect.html#3fa7d685fd5bd6c9770d87c096621591" title="Affiche le message de debug correspondant à l&#39;effet." alt="" coords="245,59,347,88"></map>
 </div>
 
 </div>
 </div><p>
 </div>
-<hr size="1"><address style="text-align: right;"><small>Généré le Sun Nov 30 19:54:59 2008 pour Starshine Online par&nbsp;
+<hr size="1"><address style="text-align: right;"><small>Généré le Fri May 8 12:45:37 2009 pour Starshine Online par&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.6 </small></address>
 </body>

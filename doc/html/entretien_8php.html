@@ -1,0 +1,524 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+<title>Starshine Online: Référence du fichier trunk/roi/entretien.php</title>
+<link href="doxygen.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- Généré par Doxygen 1.5.6 -->
+<div class="navigation" id="top">
+  <div class="tabs">
+    <ul>
+      <li><a href="index.html"><span>Page&nbsp;principale</span></a></li>
+      <li><a href="classes.html"><span>Classes</span></a></li>
+      <li class="current"><a href="files.html"><span>Fichiers</span></a></li>
+      <li><a href="dirs.html"><span>Répertoires</span></a></li>
+    </ul>
+  </div>
+  <div class="navpath"><a class="el" href="dir_72030663e0f00126986f0653002ad98d.html">trunk</a>&nbsp;&raquo&nbsp;<a class="el" href="dir_7f4fe0632d45c90f93345ace9e6e77d1.html">roi</a>
+  </div>
+</div>
+<div class="contents">
+<h1>Référence du fichier entretien.php</h1><table border="0" cellpadding="0" cellspacing="0">
+<tr><td></td></tr>
+<tr><td colspan="2"><br><h2>Variables</h2></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="entretien_8php.html#2944fe5288422d05f16caa42372610d8">$semaine</a> = time() - (3600 * 24 * 7)</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="entretien_8php.html#b98804ddf128a66866f6ba225fcb0b82">$royaumes</a> = array()</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="entretien_8php.html#1ea21bf4b1af1ebda1b8c63b0e364ce9">$requete</a> = &quot;SELECT race, COUNT(*) as tot FROM perso WHERE level &gt; 3 AND dernier_connexion &gt; &quot;.$semaine.&quot; GROUP BY race&quot;</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="entretien_8php.html#63a7a283ea5dee8af1e2d5a3435bf370">$req</a> = $<a class="el" href="classdb.html">db</a>-&gt;query($requete)</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="viewarene2_8php.html#223fe6cddffc1406cf93390144f0f6f7">while</a>($row=$<a class="el" href="classdb.html">db</a>-&gt;read_row($req))&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="entretien_8php.html#d978c7b6e683a17c6bcc8acfbcb25d28">$min_habitants</a> = @min($habitants)</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="entretien_8php.html#bcd4f2bc860681f599da24c9273f1dc1">while</a> ($row=$<a class="el" href="classdb.html">db</a>-&gt;read_assoc($req))</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="entretien_8php.html#1e07dcc2a2f306eb4a46dca8834b80f0">$sources</a> [2] = 'Hotel des ventes'</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="entretien_8php.html#1c8f37c4f868a4d032389faece1ec18b">$sources</a> [3] = 'Taverne'</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="entretien_8php.html#347ef4ed32d84a63a81227a7de92c660">$sources</a> [4] = 'Forgeron'</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="entretien_8php.html#ffa387d0ddef4c6e59f5a5fc03642fc1">$sources</a> [5] = 'Armurerie'</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="entretien_8php.html#db52cf4406e7fe8caa5303ba6528a050">$sources</a> [6] = 'Alchimiste'</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="entretien_8php.html#c34717dba1baac5fc3653319318c6865">$sources</a> [7] = 'Enchanteur'</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="entretien_8php.html#39f8c80b73d0c01cdb8a087cd9fe369e">$sources</a> [8] = 'Ecole de Magie'</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="entretien_8php.html#edabcdd7e240b4304865c6b253c8927c">$sources</a> [9] = 'Ecole de Combat'</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="entretien_8php.html#af350cadbe5683a3ec619d05b257a008">$sources</a> [10] = 'Teleportation'</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="entretien_8php.html#d04c139c3c7000beb2631d780090706f">$sources</a> [11] = 'Monstres'</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="entretien_8php.html#b235dac1e0fe8d825ead35abdc8430bf">$sources</a> [24] = 'Mines'</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="roi_2index_8php.html#1c12d30d2681081f13297744af1014a6">else</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="entretien_8php.html#2c965868887093c3f39fede9b04cbe23">$time</a> = mktime(0, 0, 0, date(&quot;m&quot;) , date(&quot;d&quot;)-2, date(&quot;Y&quot;))</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="entretien_8php.html#a1d731aa570613e5bcff831bb10e9b87">$row</a> = $<a class="el" href="classdb.html">db</a>-&gt;read_array($req)</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="entretien_8php.html#c61adefb58583938c9b820405ddfa018">$stats</a> = explode(';', $row[$R['race']])</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="entretien_8php.html#83018d9153d17d91fbcf3bc10158d34f">$i</a> = 0</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="entretien_8php.html#241b818f48030b628685b2e5119c5624">$total</a> = 0</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="entretien_8php.html#f789423037bbc89dc7c850e761177570">$count</a> = count($stats)</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="entretien_8php.html#c600cdfc056c66926d1b3f5aff7088a9">$balance</a> = $total - ($royaumes[$R['ID']]['total_c'] + $royaumes[$R['ID']]['total'])</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="ville__bas_8php.html#e090d03ba817b92f272d5f9e1e3cf724">if</a>($balance &gt; 0) <a class="el" href="roi_2index_8php.html#1c12d30d2681081f13297744af1014a6">else</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="entretien_8php.html#a0b4f672b77c9cae5ec9216a2fd2bb36">$h</a> = 5</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="entretien_8php.html#14413ff797446b644da186da80e0c844">$total_source</a> = array()</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="entretien_8php.html#b5cfcc9622fc49308f9236226e3a46d1">$total_total</a> = 0</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="entretien_8php.html#05abc005f5307a3e17a8dd9ede5adec9">$jours</a> = 0</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="entretien_8php.html#6188dc0cd028d26a83cec3fab449b6dc">foreach</a> ($total_source as $key=&gt; $value)</td></tr>
+
+</table>
+<hr><h2>Documentation des variables</h2>
+<a class="anchor" name="c600cdfc056c66926d1b3f5aff7088a9"></a><!-- doxytag: member="entretien.php::$balance" ref="c600cdfc056c66926d1b3f5aff7088a9" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">$balance = $total - ($royaumes[$R['ID']]['total_c'] + $royaumes[$R['ID']]['total'])          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="f789423037bbc89dc7c850e761177570"></a><!-- doxytag: member="entretien.php::$count" ref="f789423037bbc89dc7c850e761177570" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">$count = count($stats)          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="a0b4f672b77c9cae5ec9216a2fd2bb36"></a><!-- doxytag: member="entretien.php::$h" ref="a0b4f672b77c9cae5ec9216a2fd2bb36" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="ville__bas_8php.html#e090d03ba817b92f272d5f9e1e3cf724">if</a> ($balance &gt; 0) <a class="el" href="roi_2index_8php.html#1c12d30d2681081f13297744af1014a6">else</a> $h = 5          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="83018d9153d17d91fbcf3bc10158d34f"></a><!-- doxytag: member="entretien.php::$i" ref="83018d9153d17d91fbcf3bc10158d34f" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">$i = 0          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="05abc005f5307a3e17a8dd9ede5adec9"></a><!-- doxytag: member="entretien.php::$jours" ref="05abc005f5307a3e17a8dd9ede5adec9" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">$jours = 0          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="d978c7b6e683a17c6bcc8acfbcb25d28"></a><!-- doxytag: member="entretien.php::$min_habitants" ref="d978c7b6e683a17c6bcc8acfbcb25d28" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="viewarene2_8php.html#223fe6cddffc1406cf93390144f0f6f7">while</a> ($row=$<a class="el" href="classdb.html">db</a>-&gt;read_row($req)) $min_habitants = @min($habitants)          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="63a7a283ea5dee8af1e2d5a3435bf370"></a><!-- doxytag: member="entretien.php::$req" ref="63a7a283ea5dee8af1e2d5a3435bf370" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">$req = $<a class="el" href="classdb.html">db</a>-&gt;query($requete)          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="1ea21bf4b1af1ebda1b8c63b0e364ce9"></a><!-- doxytag: member="entretien.php::$requete" ref="1ea21bf4b1af1ebda1b8c63b0e364ce9" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">$requete = &quot;SELECT race, COUNT(*) as tot FROM perso WHERE level &gt; 3 AND dernier_connexion &gt; &quot;.$semaine.&quot; GROUP BY race&quot;          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="a1d731aa570613e5bcff831bb10e9b87"></a><!-- doxytag: member="entretien.php::$row" ref="a1d731aa570613e5bcff831bb10e9b87" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">$row = $<a class="el" href="classdb.html">db</a>-&gt;read_array($req)          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="b98804ddf128a66866f6ba225fcb0b82"></a><!-- doxytag: member="entretien.php::$royaumes" ref="b98804ddf128a66866f6ba225fcb0b82" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">$royaumes = array()          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="2944fe5288422d05f16caa42372610d8"></a><!-- doxytag: member="entretien.php::$semaine" ref="2944fe5288422d05f16caa42372610d8" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">$semaine = time() - (3600 * 24 * 7)          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="b235dac1e0fe8d825ead35abdc8430bf"></a><!-- doxytag: member="entretien.php::$sources" ref="b235dac1e0fe8d825ead35abdc8430bf" args="[24]" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">$sources[24] = 'Mines'          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="d04c139c3c7000beb2631d780090706f"></a><!-- doxytag: member="entretien.php::$sources" ref="d04c139c3c7000beb2631d780090706f" args="[11]" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">$sources[11] = 'Monstres'          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="af350cadbe5683a3ec619d05b257a008"></a><!-- doxytag: member="entretien.php::$sources" ref="af350cadbe5683a3ec619d05b257a008" args="[10]" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">$sources[10] = 'Teleportation'          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="edabcdd7e240b4304865c6b253c8927c"></a><!-- doxytag: member="entretien.php::$sources" ref="edabcdd7e240b4304865c6b253c8927c" args="[9]" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">$sources[9] = 'Ecole de Combat'          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="39f8c80b73d0c01cdb8a087cd9fe369e"></a><!-- doxytag: member="entretien.php::$sources" ref="39f8c80b73d0c01cdb8a087cd9fe369e" args="[8]" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">$sources[8] = 'Ecole de Magie'          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="c34717dba1baac5fc3653319318c6865"></a><!-- doxytag: member="entretien.php::$sources" ref="c34717dba1baac5fc3653319318c6865" args="[7]" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">$sources[7] = 'Enchanteur'          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="db52cf4406e7fe8caa5303ba6528a050"></a><!-- doxytag: member="entretien.php::$sources" ref="db52cf4406e7fe8caa5303ba6528a050" args="[6]" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">$sources[6] = 'Alchimiste'          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="ffa387d0ddef4c6e59f5a5fc03642fc1"></a><!-- doxytag: member="entretien.php::$sources" ref="ffa387d0ddef4c6e59f5a5fc03642fc1" args="[5]" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">$sources[5] = 'Armurerie'          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="347ef4ed32d84a63a81227a7de92c660"></a><!-- doxytag: member="entretien.php::$sources" ref="347ef4ed32d84a63a81227a7de92c660" args="[4]" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">$sources[4] = 'Forgeron'          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="1c8f37c4f868a4d032389faece1ec18b"></a><!-- doxytag: member="entretien.php::$sources" ref="1c8f37c4f868a4d032389faece1ec18b" args="[3]" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">$sources[3] = 'Taverne'          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="1e07dcc2a2f306eb4a46dca8834b80f0"></a><!-- doxytag: member="entretien.php::$sources" ref="1e07dcc2a2f306eb4a46dca8834b80f0" args="[2]" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">$sources[2] = 'Hotel des ventes'          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="c61adefb58583938c9b820405ddfa018"></a><!-- doxytag: member="entretien.php::$stats" ref="c61adefb58583938c9b820405ddfa018" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">$stats = explode(';', $row[$R['race']])          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="2c965868887093c3f39fede9b04cbe23"></a><!-- doxytag: member="entretien.php::$time" ref="2c965868887093c3f39fede9b04cbe23" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="roi_2index_8php.html#1c12d30d2681081f13297744af1014a6">else</a> $time = mktime(0, 0, 0, date(&quot;m&quot;) , date(&quot;d&quot;)-2, date(&quot;Y&quot;))          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="241b818f48030b628685b2e5119c5624"></a><!-- doxytag: member="entretien.php::$total" ref="241b818f48030b628685b2e5119c5624" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">$total = 0          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="14413ff797446b644da186da80e0c844"></a><!-- doxytag: member="entretien.php::$total_source" ref="14413ff797446b644da186da80e0c844" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">$total_source = array()          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="b5cfcc9622fc49308f9236226e3a46d1"></a><!-- doxytag: member="entretien.php::$total_total" ref="b5cfcc9622fc49308f9236226e3a46d1" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">$total_total = 0          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="6188dc0cd028d26a83cec3fab449b6dc"></a><!-- doxytag: member="entretien.php::foreach" ref="6188dc0cd028d26a83cec3fab449b6dc" args="($total_source as $key=&gt; $value)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="viewarene2_8php.html#5b12908e955b1d62c5d4a94b8595d5c6">foreach</a>($total_source as $key=&gt; $value)          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="bcd4f2bc860681f599da24c9273f1dc1"></a><!-- doxytag: member="entretien.php::while" ref="bcd4f2bc860681f599da24c9273f1dc1" args="($row=$db-&gt;read_assoc($req))" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="viewarene2_8php.html#223fe6cddffc1406cf93390144f0f6f7">while</a>($row=$<a class="el" href="classdb.html">db</a>-&gt;read_array($req))          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+</div>
+<hr size="1"><address style="text-align: right;"><small>Généré le Fri May 8 12:45:36 2009 pour Starshine Online par&nbsp;
+<a href="http://www.doxygen.org/index.html">
+<img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.6 </small></address>
+</body>
+</html>

@@ -27,25 +27,25 @@
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="attaque__arme__de__siege_8php.html#beea5db7af13b1bdd70c46e49f512b26">$joueur</a> = recupperso($_SESSION['ID'])</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="attaque__arme__de__siege_8php.html#9b6851acc07f093d7a0ce2aa5e5ee525">$ennemi</a> = 'batiment'</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="attaque__arme__de__siege_8php.html#9b6851acc07f093d7a0ce2aa5e5ee525">$ennemi</a> = '<a class="el" href="classbatiment.html">batiment</a>'</td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="attaque__arme__de__siege_8php.html#cf58b788687d9df1a4e1e4b5dccd8daf">$defenseur</a> = recupbatiment($_GET['id_batiment'], $_GET['table'])</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="attaque__arme__de__siege_8php.html#20a2dcb377ab9e07688728fef531aa2f">$defenseur</a> ['type2'] = 'batiment'</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="attaque__arme__de__siege_8php.html#20a2dcb377ab9e07688728fef531aa2f">$defenseur</a> ['type2'] = '<a class="el" href="classbatiment.html">batiment</a>'</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="attaque__arme__de__siege_8php.html#6ef3be9404e16a993547f006d8deea3f">$attaquant</a> = recupbatiment($_GET['id_arme_de_siege'], 'construction')</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="attaque__arme__de__siege_8php.html#6ef3be9404e16a993547f006d8deea3f">$attaquant</a> = recupbatiment($_GET['id_arme_de_siege'], '<a class="el" href="classconstruction.html">construction</a>')</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="attaque__arme__de__siege_8php.html#de09348aee1936b648a049b3647de93d">$attaquant</a> ['type2'] = 'batiment'</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="attaque__arme__de__siege_8php.html#de09348aee1936b648a049b3647de93d">$attaquant</a> ['type2'] = '<a class="el" href="classbatiment.html">batiment</a>'</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="attaque__arme__de__siege_8php.html#ae52ff928b487eff7e40748494a7cb47">$attaquant</a> ['melee'] = $attaquant['melee'] * (1 + ($joueur['craft'] / 100))</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="attaque__arme__de__siege_8php.html#ae52ff928b487eff7e40748494a7cb47">$attaquant</a> ['melee'] = $attaquant['melee'] * (1 + ($joueur['architecture'] / 100))</td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="attaque__arme__de__siege_8php.html#9124f57c210aff9922b25eaed9e0e64a">$attaquant</a> ['action_a'] = '!'</td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="attaque__arme__de__siege_8php.html#31a5334ea200626b7d3c1b7b03f81ef4">$defenseur</a> ['action_d'] = $defenseur['action_d']</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="attaque__arme__de__siege_8php.html#348857e01ece8eec9741a8aac278b4b7">$W_case</a> = $_GET['<a class="el" href="candidature_8php.html#6b62101699f80eb754508183c994ff21">poscase</a>']</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="attaque__arme__de__siege_8php.html#348857e01ece8eec9741a8aac278b4b7">$W_case</a> = $_GET['poscase']</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="attaque__arme__de__siege_8php.html#19afe5512c8585af83b8156bb7429e5f">$W_requete</a> = 'SELECT * FROM map WHERE ID =\''.sSQL($W_case).'\''</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="attaque__arme__de__siege_8php.html#19afe5512c8585af83b8156bb7429e5f">$W_requete</a> = 'SELECT * FROM <a class="el" href="classmap.html">map</a> WHERE ID =\''.sSQL($W_case).'\''</td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="attaque__arme__de__siege_8php.html#cb6559abdb149d5869a9dbeff98cf9bd">$W_req</a> = $<a class="el" href="classdb.html">db</a>-&gt;query($W_requete)</td></tr>
 
@@ -77,7 +77,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$attaquant['melee'] = $attaquant['melee'] * (1 + ($joueur['craft'] / 100))          </td>
+          <td class="memname">$attaquant['melee'] = $attaquant['melee'] * (1 + ($joueur['architecture'] / 100))          </td>
         </tr>
       </table>
 </div>
@@ -92,7 +92,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$attaquant['type2'] = 'batiment'          </td>
+          <td class="memname">$attaquant['type2'] = '<a class="el" href="classbatiment.html">batiment</a>'          </td>
         </tr>
       </table>
 </div>
@@ -107,7 +107,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$attaquant = recupbatiment($_GET['id_arme_de_siege'], 'construction')          </td>
+          <td class="memname">$attaquant = recupbatiment($_GET['id_arme_de_siege'], '<a class="el" href="classconstruction.html">construction</a>')          </td>
         </tr>
       </table>
 </div>
@@ -152,7 +152,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$defenseur['type2'] = 'batiment'          </td>
+          <td class="memname">$defenseur['type2'] = '<a class="el" href="classbatiment.html">batiment</a>'          </td>
         </tr>
       </table>
 </div>
@@ -182,7 +182,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$ennemi = 'batiment'          </td>
+          <td class="memname">$ennemi = '<a class="el" href="classbatiment.html">batiment</a>'          </td>
         </tr>
       </table>
 </div>
@@ -227,7 +227,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$W_case = $_GET['<a class="el" href="candidature_8php.html#6b62101699f80eb754508183c994ff21">poscase</a>']          </td>
+          <td class="memname">$W_case = $_GET['poscase']          </td>
         </tr>
       </table>
 </div>
@@ -287,7 +287,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$W_requete = 'SELECT * FROM map WHERE ID =\''.sSQL($W_case).'\''          </td>
+          <td class="memname">$W_requete = 'SELECT * FROM <a class="el" href="classmap.html">map</a> WHERE ID =\''.sSQL($W_case).'\''          </td>
         </tr>
       </table>
 </div>
@@ -313,7 +313,7 @@
 </div>
 </div><p>
 </div>
-<hr size="1"><address style="text-align: right;"><small>Généré le Sun Nov 30 19:54:40 2008 pour Starshine Online par&nbsp;
+<hr size="1"><address style="text-align: right;"><small>Généré le Fri May 8 12:45:34 2009 pour Starshine Online par&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.6 </small></address>
 </body>

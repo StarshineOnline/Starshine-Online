@@ -25,9 +25,9 @@
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="bureau__quete_8php.html#beea5db7af13b1bdd70c46e49f512b26">$joueur</a> = recupperso($_SESSION['ID'])</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="bureau__quete_8php.html#348857e01ece8eec9741a8aac278b4b7">$W_case</a> = $_GET['<a class="el" href="candidature_8php.html#6b62101699f80eb754508183c994ff21">poscase</a>']</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="bureau__quete_8php.html#348857e01ece8eec9741a8aac278b4b7">$W_case</a> = $_GET['poscase']</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="bureau__quete_8php.html#19afe5512c8585af83b8156bb7429e5f">$W_requete</a> = 'SELECT * FROM map WHERE ID =\''.sSQL($W_case).'\''</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="bureau__quete_8php.html#19afe5512c8585af83b8156bb7429e5f">$W_requete</a> = 'SELECT * FROM <a class="el" href="classmap.html">map</a> WHERE ID =\''.sSQL($W_case).'\''</td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="bureau__quete_8php.html#cb6559abdb149d5869a9dbeff98cf9bd">$W_req</a> = $<a class="el" href="classdb.html">db</a>-&gt;query($W_requete)</td></tr>
 
@@ -36,18 +36,6 @@
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="bureau__quete_8php.html#be2d79bb4aa8b8243d81c67fdd50511f">$R</a> = get_royaume_info($joueur['race'], $W_row['royaume'])</td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="bureau__quete_8php.html#dc5bfc941d40883a35083b4167529fec">$_SESSION</a> ['position'] = convert_in_pos($joueur['x'], $joueur['y'])</td></tr>
-
-<tr><td class="memItemLeft" nowrap align="right" valign="top">reward r&lt; li &gt; Recette de nom <br>
-X&lt;/li &gt; x&lt; li &gt; <a class="el" href="class_objet.html">Objet</a> al <br>
-atoire&lt;/li &gt; bureau_quete php&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="bureau__quete_8php.html#0318c7aad223eeb9cf7ab4a1259780d5">action</a> = prendre&amp;amp</td></tr>
-
-<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="bureau__quete_8php.html#cf2488b95c97e0378c9bf49de3b50f28">id</a> = &lt;?php echo $_GET['<a class="el" href="bureau__quete_8php.html#cf2488b95c97e0378c9bf49de3b50f28">id</a>']</td></tr>
-
-<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="bureau__quete_8php.html#91cf6fbebedd86150a36e5ac3d5d3bfc">break</a></td></tr>
-
-<tr><td class="memItemLeft" nowrap align="right" valign="top">case&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="bureau__quete_8php.html#32d4e07d06bb73a334918feffe29f946">__pad0__</a></td></tr>
-
-<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="bureau__quete_8php.html#0587674d27d00ef497e08e53ccf45bbb">$valid</a> = true</td></tr>
 
 </table>
 <hr><h2>Documentation des variables</h2>
@@ -111,27 +99,12 @@ atoire&lt;/li &gt; bureau_quete php&nbsp;</td><td class="memItemRight" valign="b
 
 </div>
 </div><p>
-<a class="anchor" name="0587674d27d00ef497e08e53ccf45bbb"></a><!-- doxytag: member="bureau_quete.php::$valid" ref="0587674d27d00ef497e08e53ccf45bbb" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">$valid = true          </td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>
-
-</div>
-</div><p>
 <a class="anchor" name="348857e01ece8eec9741a8aac278b4b7"></a><!-- doxytag: member="bureau_quete.php::$W_case" ref="348857e01ece8eec9741a8aac278b4b7" args="" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$W_case = $_GET['<a class="el" href="candidature_8php.html#6b62101699f80eb754508183c994ff21">poscase</a>']          </td>
+          <td class="memname">$W_case = $_GET['poscase']          </td>
         </tr>
       </table>
 </div>
@@ -161,7 +134,7 @@ atoire&lt;/li &gt; bureau_quete php&nbsp;</td><td class="memItemRight" valign="b
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$W_requete = 'SELECT * FROM map WHERE ID =\''.sSQL($W_case).'\''          </td>
+          <td class="memname">$W_requete = 'SELECT * FROM <a class="el" href="classmap.html">map</a> WHERE ID =\''.sSQL($W_case).'\''          </td>
         </tr>
       </table>
 </div>
@@ -186,68 +159,8 @@ atoire&lt;/li &gt; bureau_quete php&nbsp;</td><td class="memItemRight" valign="b
 
 </div>
 </div><p>
-<a class="anchor" name="32d4e07d06bb73a334918feffe29f946"></a><!-- doxytag: member="bureau_quete.php::__pad0__" ref="32d4e07d06bb73a334918feffe29f946" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">case <a class="el" href="bureau__quete_8php.html#32d4e07d06bb73a334918feffe29f946">__pad0__</a>          </td>
-        </tr>
-      </table>
 </div>
-<div class="memdoc">
-
-<p>
-
-</div>
-</div><p>
-<a class="anchor" name="0318c7aad223eeb9cf7ab4a1259780d5"></a><!-- doxytag: member="bureau_quete.php::action" ref="0318c7aad223eeb9cf7ab4a1259780d5" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">reward r&lt;li&gt; Recette de nom X&lt;/li&gt; x&lt;li&gt; <a class="el" href="class_objet.html">Objet</a> al atoire&lt;/li&gt; bureau_quete php <a class="el" href="bureau__quete_8php.html#0318c7aad223eeb9cf7ab4a1259780d5">action</a> = prendre&amp;amp          </td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>
-
-</div>
-</div><p>
-<a class="anchor" name="91cf6fbebedd86150a36e5ac3d5d3bfc"></a><!-- doxytag: member="bureau_quete.php::break" ref="91cf6fbebedd86150a36e5ac3d5d3bfc" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="magasin_8php.html#91cf6fbebedd86150a36e5ac3d5d3bfc">break</a>          </td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>
-
-</div>
-</div><p>
-<a class="anchor" name="cf2488b95c97e0378c9bf49de3b50f28"></a><!-- doxytag: member="bureau_quete.php::id" ref="cf2488b95c97e0378c9bf49de3b50f28" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="bureau__quete_8php.html#cf2488b95c97e0378c9bf49de3b50f28">id</a> = &lt;?php echo $_GET['<a class="el" href="bureau__quete_8php.html#cf2488b95c97e0378c9bf49de3b50f28">id</a>']          </td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>
-
-</div>
-</div><p>
-</div>
-<hr size="1"><address style="text-align: right;"><small>Généré le Sun Nov 30 19:54:41 2008 pour Starshine Online par&nbsp;
+<hr size="1"><address style="text-align: right;"><small>Généré le Fri May 8 12:45:34 2009 pour Starshine Online par&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.6 </small></address>
 </body>

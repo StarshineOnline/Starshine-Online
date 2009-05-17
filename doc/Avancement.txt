@@ -2,6 +2,7 @@ Faits :
 class/db.class.php
 fonction/time.inc.php
 fonction/action.inc.php
+fonction/base.inc.php
 connect.php(.sample)
 
 
@@ -13,7 +14,8 @@ inc/fp.php
 inc/variables.inc.php(.sample)
 inc/races.inc.php
 inc/traduction.inc.php
-inc/base.inc.php
+fonction/attaque.inc.php
+class/comp.class.php
 
 
 En attente :

@@ -27,7 +27,7 @@
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="carte__conflit_8php.html#3815c84bd0dbf0243f908b1b3d5c09a2">$conflits</a> = array()</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="viewarene2_8php.html#9cbfe95d61703a84674cecf0f4ff8370">for</a>($i=1;$i&lt;=150;$i++)&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="carte__conflit_8php.html#5736bfed1643046cc9a17347b073062a">$requete</a> = &quot;SELECT COUNT(*)AS tot, ceil(x/10) as cx, ceil(y/10) as cy FROM journal WHERE DAY(time )=DAY(CURDATE())AND MONTH(time )=MONTH(CURDATE())AND YEAR(time )=YEAR(CURDATE())AND <a class="el" href="bureau__quete_8php.html#0318c7aad223eeb9cf7ab4a1259780d5">action</a> ='attaque' AND x &lt;&gt; 0 AND y &lt;&gt; 0 GROUP BY cx, cy ORDER BY tot DESC&quot;</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="viewarene2_8php.html#9cbfe95d61703a84674cecf0f4ff8370">for</a>($i=1;$i&lt;=150;$i++)&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="carte__conflit_8php.html#5736bfed1643046cc9a17347b073062a">$requete</a> = &quot;SELECT COUNT(*)AS tot, ceil(x/10) as cx, ceil(y/10) as cy FROM journal WHERE DAY(time )=DAY(CURDATE())AND MONTH(time )=MONTH(CURDATE())AND YEAR(time )=YEAR(CURDATE())AND action ='attaque' AND x &lt;&gt; 0 AND y &lt;&gt; 0 GROUP BY cx, cy ORDER BY tot DESC&quot;</td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="carte__conflit_8php.html#63a7a283ea5dee8af1e2d5a3435bf370">$req</a> = $<a class="el" href="classdb.html">db</a>-&gt;query($requete)</td></tr>
 
@@ -223,7 +223,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="viewarene2_8php.html#9cbfe95d61703a84674cecf0f4ff8370">for</a> ($i=1;$i&lt;=150;$i++) $requete = &quot;SELECT COUNT(*)AS tot, ceil(x/10) as cx, ceil(y/10) as cy FROM journal WHERE DAY(time )=DAY(CURDATE())AND MONTH(time )=MONTH(CURDATE())AND YEAR(time )=YEAR(CURDATE())AND <a class="el" href="bureau__quete_8php.html#0318c7aad223eeb9cf7ab4a1259780d5">action</a> ='attaque' AND x &lt;&gt; 0 AND y &lt;&gt; 0 GROUP BY cx, cy ORDER BY tot DESC&quot;          </td>
+          <td class="memname"><a class="el" href="viewarene2_8php.html#9cbfe95d61703a84674cecf0f4ff8370">for</a> ($i=1;$i&lt;=150;$i++) $requete = &quot;SELECT COUNT(*)AS tot, ceil(x/10) as cx, ceil(y/10) as cy FROM journal WHERE DAY(time )=DAY(CURDATE())AND MONTH(time )=MONTH(CURDATE())AND YEAR(time )=YEAR(CURDATE())AND action ='attaque' AND x &lt;&gt; 0 AND y &lt;&gt; 0 GROUP BY cx, cy ORDER BY tot DESC&quot;          </td>
         </tr>
       </table>
 </div>
@@ -264,7 +264,7 @@
 </div>
 </div><p>
 </div>
-<hr size="1"><address style="text-align: right;"><small>Généré le Sun Nov 30 19:54:41 2008 pour Starshine Online par&nbsp;
+<hr size="1"><address style="text-align: right;"><small>Généré le Fri May 8 12:45:34 2009 pour Starshine Online par&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.6 </small></address>
 </body>

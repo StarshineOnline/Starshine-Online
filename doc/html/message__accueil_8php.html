@@ -1,0 +1,255 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+<title>Starshine Online: Référence du fichier trunk/message_accueil.php</title>
+<link href="doxygen.css" rel="stylesheet" type="text/css">
+<link href="tabs.css" rel="stylesheet" type="text/css">
+</head><body>
+<!-- Généré par Doxygen 1.5.6 -->
+<div class="navigation" id="top">
+  <div class="tabs">
+    <ul>
+      <li><a href="index.html"><span>Page&nbsp;principale</span></a></li>
+      <li><a href="classes.html"><span>Classes</span></a></li>
+      <li class="current"><a href="files.html"><span>Fichiers</span></a></li>
+      <li><a href="dirs.html"><span>Répertoires</span></a></li>
+    </ul>
+  </div>
+  <div class="navpath"><a class="el" href="dir_72030663e0f00126986f0653002ad98d.html">trunk</a>
+  </div>
+</div>
+<div class="contents">
+<h1>Référence du fichier message_accueil.php</h1><table border="0" cellpadding="0" cellspacing="0">
+<tr><td></td></tr>
+<tr><td colspan="2"><br><h2>Variables</h2></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="message__accueil_8php.html#beea5db7af13b1bdd70c46e49f512b26">$joueur</a> = recupperso($_SESSION['ID'])</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="roi_2index_8php.html#1c12d30d2681081f13297744af1014a6">else</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="message__accueil_8php.html#62f2f71fe371900bb59e692f74ee433c">$affiche</a> = false</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="message__accueil_8php.html#e1d10ae1efede15b66c566342dfeeea4">$requete</a> = &quot;SELECT * FROM motk WHERE race = '&quot;.$joueur['race'].&quot;'&quot;</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="message__accueil_8php.html#e5d086b23167da6ff376bb13b5c71ba9">$req_m</a> = $<a class="el" href="classdb.html">db</a>-&gt;query($requete)</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="message__accueil_8php.html#13681d721a04d3a3d655b4dc6a2ccb82">$row_m</a> = $<a class="el" href="classdb.html">db</a>-&gt;read_assoc($req_m)</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="ville__bas_8php.html#e090d03ba817b92f272d5f9e1e3cf724">if</a>($_COOKIE['dernier_affichage_popup']<br>
+&lt;=$row_m['date'] OR $affiche== <br>
+'all')&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="message__accueil_8php.html#e102faa239aa099096d344eae3d6d77a">$requete_journal</a> = &quot;SELECT * FROM journal WHERE id_perso = &quot;.$joueur['ID'].&quot; AND time &gt; '&quot;.date(&quot;Y-m-d H:i:s&quot;, $_COOKIE['dernier_affichage_popup']).&quot;' ORDER BY time ASC, id ASC&quot;</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="message__accueil_8php.html#a94135e1887da1bb90d3f5af2729d48f">$req_journal</a> = $<a class="el" href="classdb.html">db</a>-&gt;query($requete_journal)</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="viewarene2_8php.html#223fe6cddffc1406cf93390144f0f6f7">while</a>($row_journal=$<a class="el" href="classdb.html">db</a>-&gt;<br>
+read_assoc($req_journal))&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="message__accueil_8php.html#b88e9e50bf7abe2cc823e682c4cbfcf4">if</a> ($journal!= '')</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="message__accueil_8php.html#306873ba53e795d3a131ed1408c60e68">$requete_news</a> = &quot;SELECT * FROM punbbtopics WHERE (forum_id = 5) ORDER BY posted DESC&quot;</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="message__accueil_8php.html#143d0bbac3267c78f51dc73468572f3d">$req_news</a> = $db_forum-&gt;query($requete_news)</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="message__accueil_8php.html#971da5c93ffa28ec35ebe4461c7b2dc8">$row_news</a> = $db_forum-&gt;read_array($req_news)</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="message__accueil_8php.html#63a7a283ea5dee8af1e2d5a3435bf370">$req</a> = $db_forum-&gt;query($requete)</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="message__accueil_8php.html#83018d9153d17d91fbcf3bc10158d34f">$i</a> = 0</td></tr>
+
+</table>
+<hr><h2>Documentation des variables</h2>
+<a class="anchor" name="62f2f71fe371900bb59e692f74ee433c"></a><!-- doxytag: member="message_accueil.php::$affiche" ref="62f2f71fe371900bb59e692f74ee433c" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="roi_2index_8php.html#1c12d30d2681081f13297744af1014a6">else</a> $affiche = false          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="83018d9153d17d91fbcf3bc10158d34f"></a><!-- doxytag: member="message_accueil.php::$i" ref="83018d9153d17d91fbcf3bc10158d34f" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">$i = 0          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="beea5db7af13b1bdd70c46e49f512b26"></a><!-- doxytag: member="message_accueil.php::$joueur" ref="beea5db7af13b1bdd70c46e49f512b26" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">$joueur = recupperso($_SESSION['ID'])          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="63a7a283ea5dee8af1e2d5a3435bf370"></a><!-- doxytag: member="message_accueil.php::$req" ref="63a7a283ea5dee8af1e2d5a3435bf370" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">$req = $db_forum-&gt;query($requete)          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="a94135e1887da1bb90d3f5af2729d48f"></a><!-- doxytag: member="message_accueil.php::$req_journal" ref="a94135e1887da1bb90d3f5af2729d48f" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">$req_journal = $<a class="el" href="classdb.html">db</a>-&gt;query($requete_journal)          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="e5d086b23167da6ff376bb13b5c71ba9"></a><!-- doxytag: member="message_accueil.php::$req_m" ref="e5d086b23167da6ff376bb13b5c71ba9" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">$req_m = $<a class="el" href="classdb.html">db</a>-&gt;query($requete)          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="143d0bbac3267c78f51dc73468572f3d"></a><!-- doxytag: member="message_accueil.php::$req_news" ref="143d0bbac3267c78f51dc73468572f3d" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">$req_news = $db_forum-&gt;query($requete_news)          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="e1d10ae1efede15b66c566342dfeeea4"></a><!-- doxytag: member="message_accueil.php::$requete" ref="e1d10ae1efede15b66c566342dfeeea4" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="ville__bas_8php.html#e090d03ba817b92f272d5f9e1e3cf724">if</a> ($_COOKIE['dernier_affichage_popup']&lt;=$row_news['posted']) $requete = &quot;SELECT * FROM motk WHERE race = '&quot;.$joueur['race'].&quot;'&quot;          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="e102faa239aa099096d344eae3d6d77a"></a><!-- doxytag: member="message_accueil.php::$requete_journal" ref="e102faa239aa099096d344eae3d6d77a" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="ville__bas_8php.html#e090d03ba817b92f272d5f9e1e3cf724">if</a> ($_COOKIE['dernier_affichage_popup']&lt;=$row_m['date'] OR $affiche== 'all') $requete_journal = &quot;SELECT * FROM journal WHERE id_perso = &quot;.$joueur['ID'].&quot; AND time &gt; '&quot;.date(&quot;Y-m-d H:i:s&quot;, $_COOKIE['dernier_affichage_popup']).&quot;' ORDER BY time ASC, id ASC&quot;          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="306873ba53e795d3a131ed1408c60e68"></a><!-- doxytag: member="message_accueil.php::$requete_news" ref="306873ba53e795d3a131ed1408c60e68" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">$requete_news = &quot;SELECT * FROM punbbtopics WHERE (forum_id = 5) ORDER BY posted DESC&quot;          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="13681d721a04d3a3d655b4dc6a2ccb82"></a><!-- doxytag: member="message_accueil.php::$row_m" ref="13681d721a04d3a3d655b4dc6a2ccb82" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">$row_m = $<a class="el" href="classdb.html">db</a>-&gt;read_assoc($req_m)          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="971da5c93ffa28ec35ebe4461c7b2dc8"></a><!-- doxytag: member="message_accueil.php::$row_news" ref="971da5c93ffa28ec35ebe4461c7b2dc8" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">$row_news = $db_forum-&gt;read_array($req_news)          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="b88e9e50bf7abe2cc823e682c4cbfcf4"></a><!-- doxytag: member="message_accueil.php::if" ref="b88e9e50bf7abe2cc823e682c4cbfcf4" args="($journal!= '')" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="viewarene2_8php.html#223fe6cddffc1406cf93390144f0f6f7">while</a> ($row_journal=$<a class="el" href="classdb.html">db</a>-&gt;read_assoc($req_journal)) <a class="el" href="ville__bas_8php.html#e090d03ba817b92f272d5f9e1e3cf724">if</a>($journal!= '')          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+</div>
+<hr size="1"><address style="text-align: right;"><small>Généré le Fri May 8 12:45:36 2009 pour Starshine Online par&nbsp;
+<a href="http://www.doxygen.org/index.html">
+<img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.6 </small></address>
+</body>
+</html>

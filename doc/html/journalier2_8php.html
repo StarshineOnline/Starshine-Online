@@ -20,14 +20,19 @@
 <div class="contents">
 <h1>Référence du fichier journalier2.php</h1><table border="0" cellpadding="0" cellspacing="0">
 <tr><td></td></tr>
+<tr><td colspan="2"><br><h2>Fonctions</h2></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="journalier2_8php.html#80a3892ecad687b96b542109495df0f0">__autoload</a> ($class_name)</td></tr>
+
 <tr><td colspan="2"><br><h2>Variables</h2></td></tr>
-<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="journalier2_8php.html#c409786c163a1974d1e24a6767a95166">$mail</a> = ''</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="journalier2_8php.html#260ee11a39fd5dc95f366160a87c1bfc">$mail</a> = ''</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="journalier2_8php.html#b37f7c32f41c3c61ed940887453767f4">$root</a> = ''</td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="journalier2_8php.html#687c45980461409d6c50a5d8b218b841">$debut</a> = getmicrotime()</td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="journalier2_8php.html#481c918f8d853749e00b5942cabf599a">$date</a> = date(&quot;Y-m-d&quot;, mktime(0, 0, 0, date(&quot;m&quot;) , date(&quot;d&quot;) - 1, date(&quot;Y&quot;)))</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="journalier2_8php.html#4f97673098642d82a9112474a549db09">$requete</a> = &quot;UPDATE perso SET statut = 'inactif' WHERE dernier_connexion &lt;= &quot;.(time() - (86400 * 21)).&quot; AND statut = 'actif'&quot;</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="journalier2_8php.html#1ea21bf4b1af1ebda1b8c63b0e364ce9">$requete</a> = &quot;UPDATE perso SET statut = 'inactif' WHERE dernier_connexion &lt;= &quot;.(time() - (86400 * 21)).&quot; AND statut = 'actif'&quot;</td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="journalier2_8php.html#2944fe5288422d05f16caa42372610d8">$semaine</a> = time() - (3600 * 24 * 7)</td></tr>
 
@@ -195,7 +200,30 @@
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="journalier2_8php.html#0a28aeecb3fb666a5678f88c21e6ed0e">$groupe</a> ['vampire'][2] = 37</td></tr>
 
+<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="ville__bas_8php.html#e090d03ba817b92f272d5f9e1e3cf724">if</a>(date(&quot;j&quot;)==1)&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="journalier2_8php.html#e5f3410d9496a5402a36f2470bee4880">$ids</a> = array()</td></tr>
+
 </table>
+<hr><h2>Documentation des fonctions</h2>
+<a class="anchor" name="80a3892ecad687b96b542109495df0f0"></a><!-- doxytag: member="journalier2.php::__autoload" ref="80a3892ecad687b96b542109495df0f0" args="($class_name)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">__autoload           </td>
+          <td>(</td>
+          <td class="paramtype">$&nbsp;</td>
+          <td class="paramname"> <em>class_name</em>          </td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
 <hr><h2>Documentation des variables</h2>
 <a class="anchor" name="b99599d1702f329ce472bcbf96846531"></a><!-- doxytag: member="journalier2.php::$background_color" ref="b99599d1702f329ce472bcbf96846531" args="" -->
 <div class="memitem">
@@ -517,7 +545,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$groupe['vampire'][2] = 37          </td>
+          <td class="memname">$<a class="el" href="classgroupe.html">groupe</a>['vampire'][2] = 37          </td>
         </tr>
       </table>
 </div>
@@ -532,7 +560,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$groupe['vampire'][1] = 26          </td>
+          <td class="memname">$<a class="el" href="classgroupe.html">groupe</a>['vampire'][1] = 26          </td>
         </tr>
       </table>
 </div>
@@ -547,7 +575,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$groupe['vampire'][0] = 15          </td>
+          <td class="memname">$<a class="el" href="classgroupe.html">groupe</a>['vampire'][0] = 15          </td>
         </tr>
       </table>
 </div>
@@ -562,7 +590,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$groupe['troll'][2] = 36          </td>
+          <td class="memname">$<a class="el" href="classgroupe.html">groupe</a>['troll'][2] = 36          </td>
         </tr>
       </table>
 </div>
@@ -577,7 +605,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$groupe['troll'][1] = 25          </td>
+          <td class="memname">$<a class="el" href="classgroupe.html">groupe</a>['troll'][1] = 25          </td>
         </tr>
       </table>
 </div>
@@ -592,7 +620,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$groupe['troll'][0] = 14          </td>
+          <td class="memname">$<a class="el" href="classgroupe.html">groupe</a>['troll'][0] = 14          </td>
         </tr>
       </table>
 </div>
@@ -607,7 +635,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$groupe['scavenger'][2] = 35          </td>
+          <td class="memname">$<a class="el" href="classgroupe.html">groupe</a>['scavenger'][2] = 35          </td>
         </tr>
       </table>
 </div>
@@ -622,7 +650,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$groupe['scavenger'][1] = 24          </td>
+          <td class="memname">$<a class="el" href="classgroupe.html">groupe</a>['scavenger'][1] = 24          </td>
         </tr>
       </table>
 </div>
@@ -637,7 +665,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$groupe['scavenger'][0] = 13          </td>
+          <td class="memname">$<a class="el" href="classgroupe.html">groupe</a>['scavenger'][0] = 13          </td>
         </tr>
       </table>
 </div>
@@ -652,7 +680,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$groupe['orc'][2] = 34          </td>
+          <td class="memname">$<a class="el" href="classgroupe.html">groupe</a>['orc'][2] = 34          </td>
         </tr>
       </table>
 </div>
@@ -667,7 +695,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$groupe['orc'][1] = 23          </td>
+          <td class="memname">$<a class="el" href="classgroupe.html">groupe</a>['orc'][1] = 23          </td>
         </tr>
       </table>
 </div>
@@ -682,7 +710,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$groupe['orc'][0] = 12          </td>
+          <td class="memname">$<a class="el" href="classgroupe.html">groupe</a>['orc'][0] = 12          </td>
         </tr>
       </table>
 </div>
@@ -697,7 +725,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$groupe['nain'][2] = 33          </td>
+          <td class="memname">$<a class="el" href="classgroupe.html">groupe</a>['nain'][2] = 33          </td>
         </tr>
       </table>
 </div>
@@ -712,7 +740,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$groupe['nain'][1] = 22          </td>
+          <td class="memname">$<a class="el" href="classgroupe.html">groupe</a>['nain'][1] = 22          </td>
         </tr>
       </table>
 </div>
@@ -727,7 +755,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$groupe['nain'][0] = 11          </td>
+          <td class="memname">$<a class="el" href="classgroupe.html">groupe</a>['nain'][0] = 11          </td>
         </tr>
       </table>
 </div>
@@ -742,7 +770,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$groupe['mortvivant'][2] = 32          </td>
+          <td class="memname">$<a class="el" href="classgroupe.html">groupe</a>['mortvivant'][2] = 32          </td>
         </tr>
       </table>
 </div>
@@ -757,7 +785,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$groupe['mortvivant'][1] = 21          </td>
+          <td class="memname">$<a class="el" href="classgroupe.html">groupe</a>['mortvivant'][1] = 21          </td>
         </tr>
       </table>
 </div>
@@ -772,7 +800,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$groupe['mortvivant'][0] = 10          </td>
+          <td class="memname">$<a class="el" href="classgroupe.html">groupe</a>['mortvivant'][0] = 10          </td>
         </tr>
       </table>
 </div>
@@ -787,7 +815,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$groupe['humainnoir'][2] = 28          </td>
+          <td class="memname">$<a class="el" href="classgroupe.html">groupe</a>['humainnoir'][2] = 28          </td>
         </tr>
       </table>
 </div>
@@ -802,7 +830,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$groupe['humainnoir'][1] = 20          </td>
+          <td class="memname">$<a class="el" href="classgroupe.html">groupe</a>['humainnoir'][1] = 20          </td>
         </tr>
       </table>
 </div>
@@ -817,7 +845,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$groupe['humainnoir'][0] = 9          </td>
+          <td class="memname">$<a class="el" href="classgroupe.html">groupe</a>['humainnoir'][0] = 9          </td>
         </tr>
       </table>
 </div>
@@ -832,7 +860,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$groupe['humain'][2] = 31          </td>
+          <td class="memname">$<a class="el" href="classgroupe.html">groupe</a>['humain'][2] = 31          </td>
         </tr>
       </table>
 </div>
@@ -847,7 +875,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$groupe['humain'][1] = 19          </td>
+          <td class="memname">$<a class="el" href="classgroupe.html">groupe</a>['humain'][1] = 19          </td>
         </tr>
       </table>
 </div>
@@ -862,7 +890,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$groupe['humain'][0] = 8          </td>
+          <td class="memname">$<a class="el" href="classgroupe.html">groupe</a>['humain'][0] = 8          </td>
         </tr>
       </table>
 </div>
@@ -877,7 +905,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$groupe['elfehaut'][2] = 30          </td>
+          <td class="memname">$<a class="el" href="classgroupe.html">groupe</a>['elfehaut'][2] = 30          </td>
         </tr>
       </table>
 </div>
@@ -892,7 +920,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$groupe['elfehaut'][1] = 18          </td>
+          <td class="memname">$<a class="el" href="classgroupe.html">groupe</a>['elfehaut'][1] = 18          </td>
         </tr>
       </table>
 </div>
@@ -907,7 +935,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$groupe['elfehaut'][0] = 7          </td>
+          <td class="memname">$<a class="el" href="classgroupe.html">groupe</a>['elfehaut'][0] = 7          </td>
         </tr>
       </table>
 </div>
@@ -922,7 +950,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$groupe['elfebois'][2] = 29          </td>
+          <td class="memname">$<a class="el" href="classgroupe.html">groupe</a>['elfebois'][2] = 29          </td>
         </tr>
       </table>
 </div>
@@ -937,7 +965,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$groupe['elfebois'][1] = 17          </td>
+          <td class="memname">$<a class="el" href="classgroupe.html">groupe</a>['elfebois'][1] = 17          </td>
         </tr>
       </table>
 </div>
@@ -952,7 +980,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$groupe['elfebois'][0] = 6          </td>
+          <td class="memname">$<a class="el" href="classgroupe.html">groupe</a>['elfebois'][0] = 6          </td>
         </tr>
       </table>
 </div>
@@ -967,7 +995,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$groupe['barbare'][2] = 27          </td>
+          <td class="memname">$<a class="el" href="classgroupe.html">groupe</a>['barbare'][2] = 27          </td>
         </tr>
       </table>
 </div>
@@ -982,7 +1010,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$groupe['barbare'][1] = 16          </td>
+          <td class="memname">$<a class="el" href="classgroupe.html">groupe</a>['barbare'][1] = 16          </td>
         </tr>
       </table>
 </div>
@@ -997,7 +1025,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$groupe['barbare'][0] = 5          </td>
+          <td class="memname">$<a class="el" href="classgroupe.html">groupe</a>['barbare'][0] = 5          </td>
         </tr>
       </table>
 </div>
@@ -1012,7 +1040,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$groupe = array()          </td>
+          <td class="memname">$<a class="el" href="classgroupe.html">groupe</a> = array()          </td>
         </tr>
       </table>
 </div>
@@ -1028,6 +1056,21 @@
       <table class="memname">
         <tr>
           <td class="memname">$i = 0          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="e5f3410d9496a5402a36f2470bee4880"></a><!-- doxytag: member="journalier2.php::$ids" ref="e5f3410d9496a5402a36f2470bee4880" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="ville__bas_8php.html#e090d03ba817b92f272d5f9e1e3cf724">if</a> (date(&quot;j&quot;)==1) $ids = array()          </td>
         </tr>
       </table>
 </div>
@@ -1064,7 +1107,7 @@
 <div class="memdoc">
 
 <p>
-<b>Valeur initiale :</b><div class="fragment"><pre class="fragment"> imagecreate (450, 450)
+<b>Valeur initiale :</b><div class="fragment"><pre class="fragment"> imagecreate (600, 600)
    or die ("Impossible d'initialiser la bibliothèque GD")
 </pre></div>
 </div>
@@ -1099,12 +1142,12 @@
 
 </div>
 </div><p>
-<a class="anchor" name="c409786c163a1974d1e24a6767a95166"></a><!-- doxytag: member="journalier2.php::$mail" ref="c409786c163a1974d1e24a6767a95166" args="" -->
+<a class="anchor" name="260ee11a39fd5dc95f366160a87c1bfc"></a><!-- doxytag: member="journalier2.php::$mail" ref="260ee11a39fd5dc95f366160a87c1bfc" args="" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$mail = ''          </td>
+          <td class="memname"><a class="el" href="viewarene2_8php.html#223fe6cddffc1406cf93390144f0f6f7">while</a> ($row=$<a class="el" href="classdb.html">db</a>-&gt;read_assoc($req)) <a class="el" href="ville__bas_8php.html#e090d03ba817b92f272d5f9e1e3cf724">if</a> (count($ids) &gt; 0) <a class="el" href="ville__bas_8php.html#e090d03ba817b92f272d5f9e1e3cf724">if</a> (date(&quot;N&quot;)==1) $mail = ''          </td>
         </tr>
       </table>
 </div>
@@ -1204,12 +1247,27 @@
 
 </div>
 </div><p>
-<a class="anchor" name="4f97673098642d82a9112474a549db09"></a><!-- doxytag: member="journalier2.php::$requete" ref="4f97673098642d82a9112474a549db09" args="" -->
+<a class="anchor" name="1ea21bf4b1af1ebda1b8c63b0e364ce9"></a><!-- doxytag: member="journalier2.php::$requete" ref="1ea21bf4b1af1ebda1b8c63b0e364ce9" args="" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="viewarene2_8php.html#223fe6cddffc1406cf93390144f0f6f7">while</a> ($i&lt; $count) $requete = &quot;UPDATE perso SET statut = 'inactif' WHERE dernier_connexion &lt;= &quot;.(time() - (86400 * 21)).&quot; AND statut = 'actif'&quot;          </td>
+          <td class="memname">$requete = &quot;UPDATE perso SET statut = 'inactif' WHERE dernier_connexion &lt;= &quot;.(time() - (86400 * 21)).&quot; AND statut = 'actif'&quot;          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="b37f7c32f41c3c61ed940887453767f4"></a><!-- doxytag: member="journalier2.php::$root" ref="b37f7c32f41c3c61ed940887453767f4" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">$root = ''          </td>
         </tr>
       </table>
 </div>
@@ -1505,7 +1563,7 @@
 </div>
 </div><p>
 </div>
-<hr size="1"><address style="text-align: right;"><small>Généré le Sun Nov 30 19:54:58 2008 pour Starshine Online par&nbsp;
+<hr size="1"><address style="text-align: right;"><small>Généré le Fri May 8 12:45:36 2009 pour Starshine Online par&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.6 </small></address>
 </body>

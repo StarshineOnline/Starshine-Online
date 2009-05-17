@@ -23,13 +23,13 @@
 <tr><td colspan="2"><br><h2>Variables</h2></td></tr>
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="pnj_8php.html#beea5db7af13b1bdd70c46e49f512b26">$joueur</a> = recupperso($_SESSION['ID'])</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="pnj_8php.html#348857e01ece8eec9741a8aac278b4b7">$W_case</a> = $_GET['<a class="el" href="candidature_8php.html#6b62101699f80eb754508183c994ff21">poscase</a>']</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="pnj_8php.html#348857e01ece8eec9741a8aac278b4b7">$W_case</a> = $_GET['poscase']</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="jeu2_8php.html#5be84ee6ca5978531539b945d5f4f43a">else</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="pnj_8php.html#46e85247f93878f0c82e3ddf43f9c9c1">$reponse</a> = 0</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="roi_2index_8php.html#1c12d30d2681081f13297744af1014a6">else</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="pnj_8php.html#46e85247f93878f0c82e3ddf43f9c9c1">$reponse</a> = 0</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="pnj_8php.html#e97941710d863131c700f069b109991e">$id</a> = $_GET['<a class="el" href="bureau__quete_8php.html#cf2488b95c97e0378c9bf49de3b50f28">id</a>']</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="pnj_8php.html#e97941710d863131c700f069b109991e">$id</a> = $_GET['id']</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="pnj_8php.html#1ea21bf4b1af1ebda1b8c63b0e364ce9">$requete</a> = 'SELECT * FROM <a class="el" href="classpnj.html">pnj</a> WHERE <a class="el" href="bureau__quete_8php.html#cf2488b95c97e0378c9bf49de3b50f28">id</a> = \''.sSQL($<a class="el" href="bureau__quete_8php.html#cf2488b95c97e0378c9bf49de3b50f28">id</a>).'\''</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="pnj_8php.html#1ea21bf4b1af1ebda1b8c63b0e364ce9">$requete</a> = 'SELECT * FROM <a class="el" href="classpnj.html">pnj</a> WHERE id = \''.sSQL($id).'\''</td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="pnj_8php.html#63a7a283ea5dee8af1e2d5a3435bf370">$req</a> = $<a class="el" href="classdb.html">db</a>-&gt;query($requete)</td></tr>
 
@@ -37,12 +37,12 @@
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="pnj_8php.html#958975b1f7dc386298698b93938d7b37">$reponses</a> = explode('*****', nl2br($row['texte']))</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="pnj_8php.html#bf17cb2dba2ed17cb28aa5f37deb5293">$message</a> = eregi_replace(&quot;\[ID:([^[]*)\]([^[]*)\[/ID:([^[]*)\]&quot;, &quot;&lt;li&gt;&lt;a href=\&quot;javascript:envoiInfo('pnj.php?<a class="el" href="bureau__quete_8php.html#cf2488b95c97e0378c9bf49de3b50f28">id</a>=&quot;.$id.&quot;&amp;amp;reponse=\\1&amp;amp;<a class="el" href="candidature_8php.html#6b62101699f80eb754508183c994ff21">poscase</a>=&quot;.$W_case.&quot;', 'information')\&quot;&gt;\\2&lt;/a&gt;&lt;/li&gt;&quot;, $reponses[$reponse])</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="pnj_8php.html#bf17cb2dba2ed17cb28aa5f37deb5293">$message</a> = eregi_replace(&quot;\[ID:([^[]*)\]([^[]*)\[/ID:([^[]*)\]&quot;, &quot;&lt;li&gt;&lt;a href=\&quot;pnj.php?id=&quot;.$id.&quot;&amp;amp;reponse=\\1&amp;amp;poscase=&quot;.$W_case.&quot;\&quot; onclick=\&quot;return envoiInfo(this.href, 'information')\&quot;&gt;\\2&lt;/a&gt;&lt;/li&gt;&quot;, $reponses[$reponse])</td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="pnj_8php.html#dc850b9058ce43d4e8fd8ab44434be7f">$supp</a> = true</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="ville__bas_8php.html#b0b4257144253a830116a876a99660c4">if</a>(eregi(&quot;\[quete]&quot;, $message)) <br>
-<a class="el" href="ville__bas_8php.html#b0b4257144253a830116a876a99660c4">if</a>(eregi(&quot;\&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="pnj_8php.html#4ec6c78713a709510f78c2357f687ab3">if</a> [prendquete:([^[]*)\]&quot;, $message, $regs))(eregi(&quot;\[verifinventaire:([^[]*)\]&quot;, $message, $regs))</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="ville__bas_8php.html#e090d03ba817b92f272d5f9e1e3cf724">if</a>(eregi(&quot;\[quete]&quot;, $message)) <br>
+<a class="el" href="ville__bas_8php.html#e090d03ba817b92f272d5f9e1e3cf724">if</a>(eregi(&quot;\&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="pnj_8php.html#4ec6c78713a709510f78c2357f687ab3">if</a> [prendquete:([^[]*)\]&quot;, $message, $regs))(eregi(&quot;\[verifinventaire:([^[]*)\]&quot;, $message, $regs))</td></tr>
 
 </table>
 <hr><h2>Documentation des variables</h2>
@@ -51,7 +51,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$<a class="el" href="bureau__quete_8php.html#cf2488b95c97e0378c9bf49de3b50f28">id</a> = $_GET['<a class="el" href="bureau__quete_8php.html#cf2488b95c97e0378c9bf49de3b50f28">id</a>']          </td>
+          <td class="memname">$id = $_GET['id']          </td>
         </tr>
       </table>
 </div>
@@ -81,7 +81,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$message = eregi_replace(&quot;\[ID:([^[]*)\]([^[]*)\[/ID:([^[]*)\]&quot;, &quot;&lt;li&gt;&lt;a href=\&quot;javascript:envoiInfo('pnj.php?<a class="el" href="bureau__quete_8php.html#cf2488b95c97e0378c9bf49de3b50f28">id</a>=&quot;.$id.&quot;&amp;amp;reponse=\\1&amp;amp;<a class="el" href="candidature_8php.html#6b62101699f80eb754508183c994ff21">poscase</a>=&quot;.$W_case.&quot;', 'information')\&quot;&gt;\\2&lt;/a&gt;&lt;/li&gt;&quot;, $reponses[$reponse])          </td>
+          <td class="memname">$message = eregi_replace(&quot;\[ID:([^[]*)\]([^[]*)\[/ID:([^[]*)\]&quot;, &quot;&lt;li&gt;&lt;a href=\&quot;pnj.php?id=&quot;.$id.&quot;&amp;amp;reponse=\\1&amp;amp;poscase=&quot;.$W_case.&quot;\&quot; onclick=\&quot;return envoiInfo(this.href, 'information')\&quot;&gt;\\2&lt;/a&gt;&lt;/li&gt;&quot;, $reponses[$reponse])          </td>
         </tr>
       </table>
 </div>
@@ -96,7 +96,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="jeu2_8php.html#5be84ee6ca5978531539b945d5f4f43a">else</a> $reponse = 0          </td>
+          <td class="memname"><a class="el" href="roi_2index_8php.html#1c12d30d2681081f13297744af1014a6">else</a> $reponse = 0          </td>
         </tr>
       </table>
 </div>
@@ -141,7 +141,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$requete = 'SELECT * FROM <a class="el" href="classpnj.html">pnj</a> WHERE <a class="el" href="bureau__quete_8php.html#cf2488b95c97e0378c9bf49de3b50f28">id</a> = \''.sSQL($<a class="el" href="bureau__quete_8php.html#cf2488b95c97e0378c9bf49de3b50f28">id</a>).'\''          </td>
+          <td class="memname">$requete = 'SELECT * FROM <a class="el" href="classpnj.html">pnj</a> WHERE id = \''.sSQL($id).'\''          </td>
         </tr>
       </table>
 </div>
@@ -186,7 +186,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$W_case = $_GET['<a class="el" href="candidature_8php.html#6b62101699f80eb754508183c994ff21">poscase</a>']          </td>
+          <td class="memname">$W_case = $_GET['poscase']          </td>
         </tr>
       </table>
 </div>
@@ -201,7 +201,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="ville__bas_8php.html#b0b4257144253a830116a876a99660c4">if</a> (eregi(&quot;\[quete]&quot;, $message)) <a class="el" href="ville__bas_8php.html#b0b4257144253a830116a876a99660c4">if</a> (eregi(&quot;\ if[prendquete:([^[]*)\]&quot;, $message, $regs))(eregi(&quot;\[verifinventaire:([^[]*)\]&quot;, $message, $regs))          </td>
+          <td class="memname"><a class="el" href="ville__bas_8php.html#e090d03ba817b92f272d5f9e1e3cf724">if</a> (eregi(&quot;\[quete]&quot;, $message)) <a class="el" href="ville__bas_8php.html#e090d03ba817b92f272d5f9e1e3cf724">if</a> (eregi(&quot;\ if[prendquete:([^[]*)\]&quot;, $message, $regs))(eregi(&quot;\[verifinventaire:([^[]*)\]&quot;, $message, $regs))          </td>
         </tr>
       </table>
 </div>
@@ -212,7 +212,7 @@
 </div>
 </div><p>
 </div>
-<hr size="1"><address style="text-align: right;"><small>Généré le Sun Nov 30 19:54:58 2008 pour Starshine Online par&nbsp;
+<hr size="1"><address style="text-align: right;"><small>Généré le Fri May 8 12:45:36 2009 pour Starshine Online par&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.6 </small></address>
 </body>
