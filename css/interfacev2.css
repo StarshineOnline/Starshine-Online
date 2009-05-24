@@ -303,7 +303,7 @@ border : 1px solid #FFF;}
 #messagerie_liste .date {float:left;display: block;width:100px;}
 
 
-#combat_cartouche {clear:both;background-color: #DDDDDD;padding:9px;-moz-border-radius: 12px;-webkit-border-radius: 12px;height:70px; }
+#combat_cartouche {clear:both;background-color: #DDDDDD;padding:9px;-moz-border-radius: 12px;-webkit-border-radius: 12px;min-height:70px; }
 
 .infoperso td {
 font-size : 10px;
