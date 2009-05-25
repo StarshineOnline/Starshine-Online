@@ -85,7 +85,7 @@ for($i = 1; $i <= 150; $i++)
 	}
 }
 
-$requete = "SELECT COUNT(*)AS tot, ceil(x/10) as cx, ceil(y/10) as cy FROM journal WHERE DAY(time )=DAY(CURDATE())AND MONTH(time )=MONTH(CURDATE())AND YEAR(time )=YEAR(CURDATE())AND action ='attaque' AND x <> 0 AND y <> 0 GROUP BY cx, cy ORDER BY tot DESC";
+$requete = "SELECT COUNT(*) AS tot, ceil(x/10) as cx, ceil(y/10) as cy FROM journal WHERE DAY(time )=DAY(CURDATE())AND MONTH(time )=MONTH(CURDATE())AND YEAR(time )=YEAR(CURDATE())AND action ='attaque' AND x <> 0 AND y <> 0 GROUP BY cx, cy ORDER BY tot DESC";
 $req = $db->query($requete);
 while($row = $db->read_assoc($req))
 {
@@ -95,7 +95,7 @@ while($row = $db->read_assoc($req))
 
 echo 'Création de la carte des conflits<br />';
 
-$im = imagecreate (450, 450)
+$im = imagecreate (600, 600)
    or die ("Impossible d'initialiser la bibliothèque GD");
 $background_color = imagecolorallocate ($im, 255, 255, 255);
 
@@ -105,10 +105,10 @@ $black = imagecolorallocate($im, 0x00, 0x00, 0x00);
 $carte = 'image/carte_conflit.png';
 
 $i = 0;
-while($i <= 15)
+while($i <= 20)
 {
 	$j = 0;
-	while($j <= 15)
+	while($j <= 20)
 	{
 		if($conflits[$i][$j] > ($total / 20))
 		{
@@ -125,7 +125,7 @@ while($i <= 15)
 }
 $im2 = imagecreatefrompng('image/carte.png');
 imagegammacorrect($im2,1,0.6);
-imagecopymerge($im2, $im, 0, 0, 0, 0, 450, 450, 30);
+imagecopymerge($im2, $im, 0, 0, 0, 0, 600, 600, 30);
 imagepng ($im2, $carte);
 imagedestroy($im2);
 imagedestroy($im);

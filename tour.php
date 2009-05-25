@@ -42,7 +42,7 @@ if($W_distance == 0)
 	echo '<div class="visu"><ul>';
 	foreach ($joueurs as $v) {
 		//echo '<li>'.$v['nom'].'</li>';
-		$position = " -- X: $v[x] Y: $v[y]";
+		$position = " -- X: $v[x] - Y: $v[y] - distance : ".$v['distance'];
 		affiche_perso_visu($joueur, $v, $position);
 	}
 	echo '</ul></div>';

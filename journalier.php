@@ -189,7 +189,7 @@ if(date("j") == 1)
 }
 $mail .= mysql_error();
 
-$mail = getenv('SSO_MAIL');
-if ($mail == null || $mail == '') $mail = 'starshineonline@gmail.com';
-mail($mail, 'Starshine - Génération des monstres du '.$date, $mail);
+$mail_send = getenv('SSO_MAIL');
+if ($mail_send == null || $mail_send == '') $mail = 'starshineonline@gmail.com';
+mail($mail_send, 'Starshine - Génération des monstres du '.$date, $mail);
 ?>

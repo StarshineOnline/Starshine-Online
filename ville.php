@@ -150,7 +150,7 @@ if($W_distance == 0 AND $verif_ville)
 									<a href="alchimiste.php?poscase=<?php echo $W_case; ?>" onclick="return envoiInfo(this.href, 'carte')">Alchimiste</a>
 								</li>
 								<li>
-									<a href="hotel.php?poscase=<?php echo $W_case; ?>" onclick="return envoiInfo(this.href, 'carte')">Hotel des ventes</a>
+									<a href="hotel.php?poscase=<?php echo $W_case; ?>" onclick="return envoiInfo(this.href, 'carte')">Hôtel des ventes</a>
 								</li>
 							</ul>
 							<?php
@@ -184,7 +184,7 @@ if($W_distance == 0 AND $verif_ville)
 							?>
 							
 									<li>
-										<a href="bureau_quete.php?poscase=<?php echo $W_case; ?>" onclick="return envoiInfo(this.href,'carte')">Bureau des quètes</a>
+										<a href="bureau_quete.php?poscase=<?php echo $W_case; ?>" onclick="return envoiInfo(this.href,'carte')">Bureau des quêtes</a>
 									</li>
 							<?php
 									if($R['diplo'] == 127)
@@ -218,10 +218,10 @@ if($W_distance == 0 AND $verif_ville)
 				<p class="ville_haut">Haut Quartier</p>
 				<ul class="ville">
 					<li>
-						<a href="ecolemagie.php?poscase=<?php echo $W_case; ?>" onclick="return envoiInfo(this.href, 'carte')">Ecole de magie</a>
+						<a href="ecolemagie.php?poscase=<?php echo $W_case; ?>" onclick="return envoiInfo(this.href, 'carte')">École de magie</a>
 					</li>
 					<li>
-						<a href="ecolecombat.php?poscase=<?php echo $W_case; ?>" onclick="return envoiInfo(this.href, 'carte')">Ecole de combat</a>
+						<a href="ecolecombat.php?poscase=<?php echo $W_case; ?>" onclick="return envoiInfo(this.href, 'carte')">École de combat</a>
 					</li>
 					<li>
 						<a href="universite.php?poscase=<?php echo $W_case; ?>" onclick="return envoiInfo(this.href, 'carte')">Université</a>
@@ -255,7 +255,7 @@ if($W_distance == 0 AND $verif_ville)
 		{
 			?>
 				<li>
-					<a href="terrain_chantier.php" onclick="return envoiInfo(this.href, 'carte')">Batiments en chantier</a>
+					<a href="terrain_chantier.php" onclick="return envoiInfo(this.href, 'carte')">Bâtiments en chantier</a>
 				</li>
 			<?php
 			$terrain = new terrain();

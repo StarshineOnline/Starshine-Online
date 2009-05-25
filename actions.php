@@ -81,7 +81,7 @@ check_perso($joueur);
 		$script_attaque = recupaction_all($joueur['action_a']);
 		$script_defense = recupaction_all($joueur['action_d']);
 		?>
-			Voici l'interface du script de combat, grace à celui ci vous pourrez attaquer avec des sorts ou des compétences.<br />
+			Voici l'interface du script de combat, grâce à celui-ci vous pourrez attaquer avec des sorts ou des compétences.<br />
 			<h3>Création</h3>
 				<ul>
 					<li><a href="action.php?mode=s" onclick="return envoiInfo(this.href, 'information');">Créer un script de combat en mode simplifié</a></li>
@@ -211,8 +211,8 @@ check_perso($joueur);
 		<p><strong>Généralités :</strong> Une attaque sur un monstre ou un joueur se fait généralement en 10 rounds (11 si l'un des deux est un Orc, 9 si l'attaquant
 		a le buff Sacrifice sur lui). Vous pouvez paramétrer les 10 actions que vous allez faire dans le script de combat, afin de les réaliser à chaque attaque. Il
 		est donc conseillé de créer un script d'attaque, et de créer vos 10 actions en ajoutant les compétences que vous voulez utiliser. Vous pouvez aussi créer un script
-		de défense qui s'exécutera automatiquement si vous êtes attaqués par d'autre joueurs. (les compétences que vous pourrez utiliser dans votre script sont limitées par votre réserve de mana)</p>
-		<p><a href="http://wiki.starshine-online.com/index.php?n=PmWiki.ScriptsDeCombat">Pour avoir plus d'information sur le script de combat</a></p>
+		de défense qui s'exécutera automatiquement si vous êtes attaqué par d'autres joueurs. (les compétences que vous pourrez utiliser dans votre script sont limitées par votre réserve de mana)</p>
+		<p><a href="http://wiki.starshine-online.com/index.php?n=PmWiki.ScriptsDeCombat">Pour avoir plus d'informations sur le script de combat</a></p>
 		</div>
 
 	</fieldset>

@@ -823,6 +823,22 @@ require('haut_roi.php');
 			</div>
 			<a href="" onclick="Effect.toggle('ajout_ressource', 'slide'); return false;">Mettre des ressources aux enchères</a>
 		</div>
+		<div style="position : absolute; left : 600px; background-color : grey; padding : 5px 10px 5px 10px;">
+			<div id="cout_ressource" style="position : relative; right : 0px; display : none; z-index : 10;">
+				<ul>
+				<?php
+				$yearmonth = date("Ym");
+				$requete = "SELECT *, (SUM(nombre / prix) / COUNT(*)) as moyenne, COUNT(*) as tot FROM `bourse_royaume` WHERE `id_royaume_acheteur` != 0 AND `actif` = 0 AND EXTRACT(YEAR_MONTH FROM fin_vente) >= '".$yearmonth."' GROUP BY ressource";
+				$req = $db->query($requete);
+				while($row = $db->read_assoc($req))
+				{
+					echo '<li>'.$row['ressource'].' : '.round($row['moyenne'], 2).' ('.$row['tot'].' ventes)</li>';
+				}
+				?>
+				</ul>
+			</div>
+			<a href="" onclick="Effect.toggle('cout_ressource', 'slide'); return false;">Cours des ressources</a>
+		</div>
 		<h3>Enchères en cours</h3>
 		<table style="width : 100%;">
 		<tr>

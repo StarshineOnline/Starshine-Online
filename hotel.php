@@ -44,7 +44,7 @@ if($W_distance == 0)
 											$db->query("UPDATE perso SET star=".$joueur["star"]." WHERE ID=".$joueur["ID"].";");
 											$db->query("UPDATE perso SET star=(star+".$objObjetHotel->prix.") WHERE ID = ".sSQL($_GET["id_vendeur"]).";");
 											$db->query("DELETE FROM hotel WHERE id=".sSQL($_GET["id_vente"]).";");
-											$action_message = "<span class='message_vert'>l&apos;".$_GET["type"]." a bien &eacute;t&eacute; achetée.</span>";
+											$action_message = "<span class='message_vert'>l&apos;".$_GET["type"]." a bien &eacute;t&eacute; acheté.</span>";
 											
 											$db->query("INSERT INTO journal VALUES(NULL, ".$_GET["id_vendeur"].", 'vend', '', '', NOW(), '".addslashes(nom_objet($objObjetHotel->objet))."', '".$objObjetHotel->prix."', 0, 0)");
 										}

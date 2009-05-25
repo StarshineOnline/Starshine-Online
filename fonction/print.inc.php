@@ -164,13 +164,15 @@ function affiche_perso_visu($joueur, $W_row, $position="")
 
 	echo '</a>'.$position.'</span>';
 	echo '<span style="float:left;">';
-	if ($W_ID != $_SESSION['ID']) {
+	if ($W_ID != $_SESSION['ID'])
+	{
 		echo '
 		<a href="envoimessage.php?id_type=p'.$W_ID.'" onclick="return envoiInfo(this.href, \'information\')"><img src="image/interface/message.png" title="Envoyer un message" /></a>';
 		if ($joueur['sort_jeu'] != '') echo '<a href="sort_joueur.php?poscase='.$W_case.'&amp;id_joueur='.$W_ID.'" onclick="return envoiInfo(this.href, \'information\')"><img src="image/sort_hc_icone.png" title="Lancer un sort" alt="Lancer un sort" /></a>';
 		if ($row_diplo[0] <= 5 OR array_key_exists(5, $mybonus)) echo '<a href="echange.php?poscase='.$W_case.'&amp;id_joueur='.$W_ID.'" onclick="return envoiInfo(this.href, \'information\')"><img src="image/icone/echanger.png" alt="Echanger" title="Echanger" /></a>';
 	}
-	else {
+	else
+	{
 		if ($joueur['sort_jeu'] != '') echo '<a href="sort.php" onclick="return envoiInfo(this.href, \'information\')"><img src="image/sort_hc_icone.png" title="Lancer un sort" alt="Lancer un sort" /></a>';
 	}
 	if ($statut_joueur != 'normal') echo ' ('.$statut_joueur.')';

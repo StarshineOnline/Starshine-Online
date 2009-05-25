@@ -3244,21 +3244,22 @@ function normalize_entry_charset($fields)
 function list_joueurs_visu($joueur, $distance) {
 	global $db;
 
-  // Calcul de la visue
+	// Calcul de la visue
 	$x = $joueur['x']; $y = $joueur['y'];
 	$pos1 = convert_in_pos($x, $y);
 	$lx = $x - $distance; $gx = $x + $distance;
 	$ly = $y - $distance; $gy = $y + $distance;
 	// Recherche des persos
-	$requete = "select * from perso where x >= $lx and x <= $gx and y >= $ly and y <= $gy";
+	$requete = "select *, (ABS($x - x) + ABS($y - y)) as distance from perso where x >= $lx and x <= $gx and y >= $ly and y <= $gy ORDER BY (ABS($x - x) + ABS($y - y)) ASC";
 	$req = $db->query($requete);
 	// Ajout des persos dans le tableau si la distance pythagoricienne est bonne
 	$ret = array();
-  if ($db->num_rows > 0) {
+	if ($db->num_rows > 0) {
 		while ($row = $db->read_assoc($req)) {
 			$pos2 = convert_in_pos($row['x'], $row['y']);
-			$dst = calcul_distance_pytagore($pos1, $pos2);
-			if ($dst <= $distance) {
+			$dst = calcul_distance($pos1, $pos2);
+			if ($dst <= $distance)
+			{
 				$ret[] = $row;
 			}
 		}
