@@ -195,13 +195,19 @@ function attaque($acteur = 'attaquant', $competence)
 								{
 									$degat_bloque = $passif['bouclier_degat'];
 									if(array_key_exists('bouclier_terre', $passif['buff'])) $degat_bloque += $passif['buff']['bouclier_terre']['effet'];
+
+									/* Application des degats bloques */
+									foreach ($effects as $effect)
+										$degat_bloque = $effect->calcul_bloquage_reduction($actif, $passif, $degat_bloque);
+									/* ~degats bloques */
+
 									$degat = $degat - $degat_bloque;
 									if($degat < 0) $degat = 0;
 									echo '&nbsp;&nbsp;<span class="manque">'.$passif['nom'].' bloque le coup et absorbe '.$degat_bloque.' dégats</span><br />';
 									if(array_key_exists('bouclier_feu', $passif['buff']))
 										{
 											$degats = $passif['buff']['bouclier_feu']['effet'];
-											$actif['hp'] -= $effet;
+											$actif['hp'] -= $degats;
 											echo '&nbsp;&nbsp;<span class="degat">'.$passif['nom'].' inflige '.$degats.' dégats grâce au bouclier de feu</span><br />';
 										}
 									if(array_key_exists('bouclier_eau', $passif['buff']))

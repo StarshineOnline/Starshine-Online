@@ -144,40 +144,48 @@ function enchant($gemme_id, $var)
 	{
 		switch($enchants[$i])
 		{
-			case 'degat' :
-				$var['arme_degat'] += $effets[$i];
+		case 'degat' :
+			$var['arme_degat'] += $effets[$i];
 			break;
-			case 'blocage' : case 'critique' :
-				$var['enchantement'][$enchants[$i]]['effet'] = $effets[$i];
-				$var['enchantement'][$enchants[$i]]['type'] = $enchants[$i];
+		case 'critique' :
+			$var['enchantement'][$enchants[$i]]['effet'] = $effets[$i];
+			$var['enchantement'][$enchants[$i]]['type'] = $enchants[$i];
 			break;
-			case 'hp' :
-				$var['hp_max'] += $effets[$i];
+		case 'hp' :
+			$var['hp_max'] += $effets[$i];
 			break;
-			case 'mp' :
-				$var['mp_max'] += $effets[$i];
+		case 'mp' :
+			$var['mp_max'] += $effets[$i];
 			break;
-			case 'reserve' :
-				$var['reserve'] += $effets[$i];
+		case 'reserve' :
+			$var['reserve'] += $effets[$i];
 			break;
-			case 'pp' :
-				$var['PP'] += $effets[$i];
+		case 'pp' :
+			$var['PP'] += $effets[$i];
 			break;
-			case 'pourcent_pp' :
-				$var['PP'] = $var['PP'] + ceil($var['PP'] * $effets[$i] / 100);
+		case 'pourcent_pp' :
+			$var['PP'] = $var['PP'] + ceil($var['PP'] * $effets[$i] / 100);
 			break;
-			case 'pm' :
-				$var['PM'] += $effets[$i];
+		case 'pm' :
+			$var['PM'] += $effets[$i];
 			break;
-			case 'pourcent_pm' :
-				$var['PM'] = $var['PM'] + ceil($var['PM'] * $effets[$i] / 100);
+		case 'pourcent_pm' :
+			$var['PM'] = $var['PM'] + ceil($var['PM'] * $effets[$i] / 100);
 			break;
-			case 'portee' :
-				//echo 'plop';
-				$var['arme_distance'] += $effets[$i];
+		case 'portee' :
+			//echo 'plop';
+			$var['arme_distance'] += $effets[$i];
 			break;
-			case 'star' :
-				$var['chance_star'] = $effets[$i];
+		case 'star' :
+			$var['chance_star'] = $effets[$i];
+			break;
+		case 'esquive' :
+		case 'melee' :
+		case 'distance' :
+		case 'incantation' :
+		case 'blocage' : 
+			$var[$enchants[$i]] += $effets[$i];
+			$var['bonus_ignorables'][$enchants[$i]] = $effets[$i];
 			break;
 		}
 		$i++;

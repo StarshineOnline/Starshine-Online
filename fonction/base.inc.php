@@ -1775,6 +1775,12 @@ function augmentation_competence($competence, $joueur, $difficulte)
 	<div id="debug'.$debugs.'" class="debug" style="color : #ff00c0;">
 	Maximum de la compétence '.$competence.' = '.$max.'<br />';
 	$val_competence = $joueur[$competence];
+
+	// Hou le beau hack ...
+	if (isset($joueur['bonus_ignorables']) &&
+			isset($joueur['bonus_ignorables'][$competence]))
+		$val_competence -= $joueur['bonus_ignorables'][$competence];
+
 	echo 'Valeur actuelle de la compétence : '.$val_competence.'<br />
 	Difficulté : '.$difficulte.'<br />';
 	// Si la compétence n'a pas atteint sa valeur maximale, on effectue le jet d'amélioration
