@@ -117,14 +117,14 @@ if (isset($_GET['ID']))
 					if ($augmentation[1] == 1)
 					{
 						$joueur['incantation'] = $augmentation[0];
-						echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant a '.$joueur['incantation'].' en incantation</span><br />';
+						echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant à '.$joueur['incantation'].' en incantation</span><br />';
 					}
 					$difficulte_sort = diff_sort($row['difficulte'], $joueur, 'sort_vie', $sortpa_base, $sortmp_base);
 					$augmentation = augmentation_competence('sort_vie', $joueur, $difficulte_sort);
 					if ($augmentation[1] == 1)
 					{
 						$joueur['sort_vie'] = $augmentation[0];
-						echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant a '.$joueur['sort_vie'].' en '.$Gtrad['sort_vie'].'</span><br />';
+						echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant à '.$joueur['sort_vie'].' en '.$Gtrad['sort_vie'].'</span><br />';
 					}
 					$requete = "UPDATE perso SET mp = '".$joueur['mp']."', pa = '".$joueur['pa']."', incantation = '".$joueur['incantation']."', sort_vie = '".$joueur['sort_vie']."' WHERE ID = '".$_SESSION['ID']."'";
 					$req = $db->query($requete);
@@ -159,14 +159,14 @@ if (isset($_GET['ID']))
 						if ($augmentation[1] == 1)
 						{
 							$joueur['incantation'] = $augmentation[0];
-							echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant a '.$joueur['incantation'].' en incantation</span><br />';
+							echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant à '.$joueur['incantation'].' en incantation</span><br />';
 						}
 						$difficulte_sort = diff_sort($row['difficulte'], $joueur, 'sort_mort', $sortpa_base, $sorthp);
 						$augmentation = augmentation_competence('sort_mort', $joueur, $difficulte_sort);
 						if ($augmentation[1] == 1)
 						{
 							$joueur['sort_mort'] = $augmentation[0];
-							echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant a '.$joueur['sort_mort'].' en '.$Gtrad['sort_mort'].'</span><br />';
+							echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant à '.$joueur['sort_mort'].' en '.$Gtrad['sort_mort'].'</span><br />';
 						}
 						$requete = "UPDATE perso SET hp = '".$joueur['hp']."', mp = '".$joueur['mp']."', pa = '".$joueur['pa']."', incantation = '".$joueur['incantation']."', sort_mort = '".$joueur['sort_mort']."' WHERE ID = '".$_SESSION['ID']."'";
 						$req = $db->query($requete);
@@ -190,14 +190,14 @@ if (isset($_GET['ID']))
 					if ($augmentation[1] == 1)
 					{
 						$joueur['incantation'] = $augmentation[0];
-						echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant a '.$joueur['incantation'].' en incantation</span><br />';
+						echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant à '.$joueur['incantation'].' en incantation</span><br />';
 					}
 					$difficulte_sort = diff_sort($row['difficulte'], $joueur, 'sort_element', $sortpa_base, $sortmp_base);
 					$augmentation = augmentation_competence('sort_element', $joueur, $difficulte_sort);
 					if ($augmentation[1] == 1)
 					{
 						$joueur['sort_element'] = $augmentation[0];
-						echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant a '.$joueur['sort_element'].' en '.$Gtrad['sort_element'].'</span><br />';
+						echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant à '.$joueur['sort_element'].' en '.$Gtrad['sort_element'].'</span><br />';
 					}
 					$requete = "UPDATE perso SET x = '".$joueur['x']."', y = '".$joueur['y']."', mp = '".$joueur['mp']."', pa = '".$joueur['pa']."', incantation = '".$joueur['incantation']."', sort_element = '".$joueur['sort_element']."' WHERE ID = '".$_SESSION['ID']."'";
 					if($db->query($requete)) echo 'Vous vous êtes téléporté dans votre capitale
@@ -223,14 +223,14 @@ if (isset($_GET['ID']))
 					if ($augmentation[1] == 1)
 					{
 						$joueur['incantation'] = $augmentation[0];
-						echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant a '.$joueur['incantation'].' en incantation</span><br />';
+						echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant à '.$joueur['incantation'].' en incantation</span><br />';
 					}
 					$difficulte_sort = diff_sort($row['difficulte'], $joueur, $row['comp_assoc'], $sortpa_base, 1);
 					$augmentation = augmentation_competence($row['comp_assoc'], $joueur, $difficulte_sort);
 					if ($augmentation[1] == 1)
 					{
 						$joueur[$row['comp_assoc']] = $augmentation[0];
-						echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant a '.$joueur[$row['comp_assoc']].' en '.$Gtrad[$row['comp_assoc']].'</span><br />';
+						echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant à '.$joueur[$row['comp_assoc']].' en '.$Gtrad[$row['comp_assoc']].'</span><br />';
 					}
 					//Mis à jour du joueur
 					$requete = "UPDATE perso SET mp = '".$joueur['mp']."', pa = '".$joueur['pa']."', incantation = '".$joueur['incantation']."', ".$row['comp_assoc']." = '".$joueur[$row['comp_assoc']]."' WHERE ID = '".$_SESSION['ID']."'";
@@ -273,14 +273,14 @@ if (isset($_GET['ID']))
 					if ($augmentation[1] == 1)
 					{
 						$joueur['incantation'] = $augmentation[0];
-						echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant a '.$joueur['incantation'].' en incantation</span><br />';
+						echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant à '.$joueur['incantation'].' en incantation</span><br />';
 					}
 					$difficulte_sort = diff_sort($row['difficulte'], $joueur, $row['comp_assoc'], $sortpa_base, $sortmp_base);
 					$augmentation = augmentation_competence($row['comp_assoc'], $joueur, $difficulte_sort);
 					if ($augmentation[1] == 1)
 					{
 						$joueur[$row['comp_assoc']] = $augmentation[0];
-						echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant a '.$joueur[$row['comp_assoc']].' en '.$Gtrad[$row['comp_assoc']].'</span><br />';
+						echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant à '.$joueur[$row['comp_assoc']].' en '.$Gtrad[$row['comp_assoc']].'</span><br />';
 					}
 					//Mis à jour du joueur
 					$requete = "UPDATE perso SET mp = '".$joueur['mp']."', pa = '".$joueur['pa']."', incantation = '".$joueur['incantation']."', ".$row['comp_assoc']." = '".$joueur[$row['comp_assoc']]."' WHERE ID = '".$_SESSION['ID']."'";
@@ -360,14 +360,14 @@ if (isset($_GET['ID']))
 				if ($augmentation[1] == 1)
 				{
 					$joueur['incantation'] = $augmentation[0];
-					echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant a '.$joueur['incantation'].' en incantation</span><br />';
+					echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant à '.$joueur['incantation'].' en incantation</span><br />';
 				}
 				$difficulte_sort = diff_sort($row['difficulte'], $joueur, $row['comp_assoc'], $sortpa_base, $sortmp_base);
 				$augmentation = augmentation_competence($row['comp_assoc'], $joueur, $difficulte_sort);
 				if ($augmentation[1] == 1)
 				{
 					$joueur[$row['comp_assoc']] = $augmentation[0];
-					echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant a '.$joueur[$row['comp_assoc']].' en '.$Gtrad[$row['comp_assoc']].'</span><br />';
+					echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant à '.$joueur[$row['comp_assoc']].' en '.$Gtrad[$row['comp_assoc']].'</span><br />';
 				}
 				//Mis à jour du joueur
 				$requete = "UPDATE perso SET mp = '".$joueur['mp']."', pa = '".$joueur['pa']."', incantation = '".$joueur['incantation']."', ".$row['comp_assoc']." = '".$joueur[$row['comp_assoc']]."' WHERE ID = '".$_SESSION['ID']."'";
@@ -410,14 +410,14 @@ if (isset($_GET['ID']))
 					if ($augmentation[1] == 1)
 					{
 						$joueur['incantation'] = $augmentation[0];
-						echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant a '.$joueur['incantation'].' en incantation</span><br />';
+						echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant à '.$joueur['incantation'].' en incantation</span><br />';
 					}
 					$difficulte_sort = diff_sort($row['difficulte'], $joueur, $row['comp_assoc'], $sortpa_base, $sortmp_base);
 					$augmentation = augmentation_competence($row['comp_assoc'], $joueur, $difficulte_sort);
 					if ($augmentation[1] == 1)
 					{
 						$joueur[$row['comp_assoc']] = $augmentation[0];
-						echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant a '.$joueur[$row['comp_assoc']].' en '.$Gtrad[$row['comp_assoc']].'</span><br />';
+						echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant à '.$joueur[$row['comp_assoc']].' en '.$Gtrad[$row['comp_assoc']].'</span><br />';
 					}
 				}
 
@@ -451,14 +451,14 @@ if (isset($_GET['ID']))
 							if ($augmentation[1] == 1)
 							{
 								$joueur['incantation'] = $augmentation[0];
-								echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant a '.$joueur['incantation'].' en incantation</span><br />';
+								echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant à '.$joueur['incantation'].' en incantation</span><br />';
 							}
 							$difficulte_sort = diff_sort($row['difficulte'], $joueur, $row['comp_assoc'], $sortpa_base, $sortmp_base);
 							$augmentation = augmentation_competence($row['comp_assoc'], $joueur, $difficulte_sort);
 							if ($augmentation[1] == 1)
 							{
 								$joueur[$row['comp_assoc']] = $augmentation[0];
-								echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant a '.$joueur[$row['comp_assoc']].' en '.$Gtrad[$row['comp_assoc']].'</span><br />';
+								echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant à '.$joueur[$row['comp_assoc']].' en '.$Gtrad[$row['comp_assoc']].'</span><br />';
 							}
 						}
 						//-- Mis à jour du joueur

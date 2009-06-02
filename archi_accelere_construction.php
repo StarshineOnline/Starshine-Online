@@ -45,7 +45,7 @@ if($joueur['pa'] >= 30)
 }
 else
 {
-	echo '<h5>Vousn n\'avez pas assez de PA</h5>';
+	echo '<h5>Vous n\'avez pas assez de PA</h5>';
 }
 ?>
 <img src="image/pixel.gif" onLoad="envoiInfo('infoperso.php?javascript=oui', 'perso');" />
