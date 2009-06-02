@@ -63,7 +63,7 @@ a {color:#FFF;}
 #menu_details .menu:hover {background:transparent url('./../image/v2/bouton_hover.png') no-repeat left;padding-top:1px;}
 
 #contenu_back {background:transparent url('./../image/v2/bg_site.png') repeat-x;margin:0;padding:0;overflow: auto;height: 700px;}
-#contenu {background:transparent url('./../image/v2/site_fond2.png') no-repeat left;width:1000px;margin: auto;height: 700px;}
+#contenu {width:1000px;margin: auto;height: 700px;}
 #news {width:830px;float:left;}
 
 #news h2 {background-color: #CCC; margin:0;padding:0;font-size: 13px;text-align: center;margin-top: 5px;-moz-border-radius: 5px;}

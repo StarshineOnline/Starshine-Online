@@ -179,14 +179,15 @@ function enchant($gemme_id, $var)
 		case 'star' :
 			$var['chance_star'] = $effets[$i];
 			break;
-		case 'esquive' :
-		case 'melee' :
+		case 'esquive' : /* gemmes de compétence: bonus ignoré à la montée */
+		case 'melee' : 
 		case 'distance' :
-		case 'incantation' :
-		case 'blocage' : 
+    case 'incantation' :
 			$var[$enchants[$i]] += $effets[$i];
 			$var['bonus_ignorables'][$enchants[$i]] = $effets[$i];
 			break;
+    default: /* gemmes ayant un effect ponctuel */
+      $var['enchantement'][$enchants[$i]]['gemme_id'] = $gemme_id;
 		}
 		$i++;
 	}

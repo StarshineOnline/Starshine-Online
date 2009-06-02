@@ -42,8 +42,9 @@ class effect
    *  
    * @param  $aMessage    Message à afficher.        
    */  
-	function hit($aMessage) {
+	function hit($aMessage, $br = false) {
 		echo "<span class=\"degat\">$aMessage</span>";
+    if ($br) { echo '<br />'; }
 	}
 
   /**
@@ -51,8 +52,9 @@ class effect
    *  
    * @param  $aMessage    Message à afficher.        
    */  
-	function heal($aMessage) {
+	function heal($aMessage, $br = false) {
 		echo "<span class=\"soin\">$aMessage</span>";
+    if ($br) { echo '<br />'; }
 	}
 
   /**
@@ -60,8 +62,9 @@ class effect
    *  
    * @param  $aMessage    Message à afficher.        
    */  
-	function notice($aMessage) {
+	function notice($aMessage, $br = false) {
 		echo "<span class=\"small\">$aMessage</span>";
+    if ($br) { echo '<br />'; }
 	}
 
   /**
@@ -69,10 +72,11 @@ class effect
    *  
    * @param  $aMessage    Message à afficher.        
    */  
-	function debug($aMessage) {
+	function debug($aMessage, $br = true) {
 		global $debugs;
 		echo "<div class=\"debug\" id=\"debug${debugs}\">$aMessage</div>";
-		$debug++;
+    if ($br) { echo '<br />'; }
+		$debugs++;
 	}
 
   /**

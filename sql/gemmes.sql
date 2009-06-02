@@ -1,5 +1,7 @@
-﻿-- anciennes gemmes
+-- anciennes gemmes
+
 delete from gemme;
+
 INSERT INTO `gemme` (`id`, `nom`, `type`, `niveau`, `partie`, `enchantement_nom`, `description`, `enchantement_type`, `enchantement_effet`) VALUES
 (1, 'Gemme d arme', 'arme', 1, '', 'caillou', 'Augmente les dégats de 1', 'degat', 1),
 (2, 'Gemme d arme éclatante', 'arme', 2, '', 'pierre', 'augmente les dégats de 2', 'degat', 2),
@@ -13,7 +15,6 @@ INSERT INTO `gemme` (`id`, `nom`, `type`, `niveau`, `partie`, `enchantement_nom`
 (10, 'Gemme du sage', 'armure', 1, '', 'sage', 'Augmente la protection magique de 20', 'pm', 20),
 (11, 'gemme de l''érudit', 'armure', 2, '', 'érudit', 'Augmente la protection magique de 75', 'pm', 75),
 (12, 'gemme de l archimage', 'armure', 3, '', 'archimage', 'Augmente la protection magique de 200', 'pm', 200);
-
 
 -- nouvelles gemmes
 INSERT INTO `gemme` (
@@ -41,7 +42,7 @@ VALUES (
 ), (
 'Gemme du singe', 'armure', '1', '', 'singe', '+10 à la compétence esquive', 'esquive', '10'
 ), (
-'Gemme de la fabrique', 'armure', '1', '', 'fabrique', '+15% de chances de réussir la fabrication d'objet', 'forge', '15'
+'Gemme de la fabrique', 'armure', '1', '', 'fabrique', '+15% de chances de réussir la fabrication d''objet', 'forge', '15'
 ), (
 'Gemme de la pierre', 'armure', '1', '', 'pierre', '+10 à la compétence blocage', 'blocage', '10'
 ), (
@@ -77,7 +78,7 @@ VALUES (
 ), (
 'Gemme du singe malin', 'armure', '2', '', 'singe', '+20 à la compétence esquive', 'esquive', '20'
 ), (
-'Gemme de la manufacture', 'armure', '2', '', 'fabrique', '+25% de chances de réussir la fabrication d'objet', 'forge', '25'
+'Gemme de la manufacture', 'armure', '2', '', 'fabrique', '+25% de chances de réussir la fabrication d''objet', 'forge', '25'
 ), (
 'Gemme de la pierre polie', 'armure', '2', '', 'pierre', '+20 à la compétence blocage', 'blocage', '20'
 ), (
@@ -113,7 +114,7 @@ VALUES (
 ), (
 'Gemme du singe royal', 'armure', '3', '', 'singe', '+50 à la compétence esquive', 'esquive', '50'
 ), (
-'Gemme de réussite', 'armure', '3', '', 'fabrique', '+50% de chances de réussir la fabrication d'objet', 'forge', '50'
+'Gemme de réussite', 'armure', '3', '', 'fabrique', '+50% de chances de réussir la fabrication d''objet', 'forge', '50'
 ), (
 'Gemme de la pierre parfaite', 'armure', '3', '', 'pierre', '+50 à la compétence blocage', 'blocage', '50'
 ), (
@@ -135,7 +136,7 @@ VALUES (
 ), 
 
 (
-'Gemme d''esquive', 'armure', '3', 'bottes', 'esquive', '50% de chances d'esquiver totalement la 2 ème attaque', 'evasion', '50'
+'Gemme d''esquive', 'armure', '3', 'bottes', 'esquive', '50% de chances d''esquiver totalement la 2 ème attaque', 'evasion', '50'
 ), (
 'Gemme de parade totale', 'arme', '3', 'bouclier', 'parade', '10% de chance de parer totalement un coup en cas de parade réussie', 'parade', '10'
 ), (

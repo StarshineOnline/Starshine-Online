@@ -156,7 +156,7 @@ else
 						if ($_SESSION['admin_nom'] == 'admin')
 						{
 						?>
-						<li><a href="admin_joueur.php?direction=objet&amp;id=<?php echo $_GET['id']; ?>">Donner un objet</a> | <a href="admin_joueur.php?direction=recette&amp;id=<?php echo $_GET['id']; ?>">Donner une recette</a> | <a href="admin_joueur.php?direction=arme&amp;id=<?php echo $_GET['id']; ?>">Donner une arme</a></li> | <a href="admin_joueur.php?direction=armure&amp;id=<?php echo $_GET['id']; ?>">Donner une armure</a> | <a href="admin_joueur.php?direction=accessoire&amp;id=<?php echo $_GET['id']; ?>">Donner un accessoire</a></li>
+						<li><a href="admin_joueur.php?direction=objet&amp;id=<?php echo $_GET['id']; ?>">Donner un objet</a> | <a href="admin_joueur.php?direction=recette&amp;id=<?php echo $_GET['id']; ?>">Donner une recette</a> | <a href="admin_joueur.php?direction=arme&amp;id=<?php echo $_GET['id']; ?>">Donner une arme</a></li> | <a href="admin_joueur.php?direction=armure&amp;id=<?php echo $_GET['id']; ?>">Donner une armure</a> | <a href="admin_joueur.php?direction=accessoire&amp;id=<?php echo $_GET['id']; ?>">Donner un accessoire</a> | <a href="admin_joueur.php?direction=gemme&amp;id=<?php echo $_GET['id']; ?>">Donner une gemme</a></li>
 						<li><a href="admin_joueur.php?direction=quete&amp;id=<?php echo $_GET['id']; ?>">Quêtes</a> - <a href="admin_joueur.php?direction=inventaire&amp;id=<?php echo $_GET['id']; ?>">Inventaire</a> - <a href="admin_joueur.php?direction=journal&amp;id=<?php echo $_GET['id']; ?>">Voir le journal des actions</a> | <a href="admin_joueur.php?direction=messagerie&amp;id=<?php echo $_GET['id']; ?>">Voir la messagerie</a></li>
 						<?php
 						}
@@ -230,6 +230,12 @@ else
 				while($row_r = $db->read_assoc($req_r))
 				{
 					echo '<option value="r'.$row_r['id'].'">'.$row_r['nom'].'</option>';
+				}
+				$requete = "SELECT * FROM gemme";
+				$req_r = $db->query($requete);
+				while($row_r = $db->read_assoc($req_r))
+				{
+					echo '<option value="g'.$row_r['id'].'">'.$row_r['nom'].'</option>';
 				}
 				$requete = "SELECT * FROM grimoire";
 				$req_r = $db->query($requete);
@@ -353,7 +359,7 @@ else
 				</table>
 			<a href="admin_joueur.php?direction=info_joueur&amp;id=<?php echo $joueur['ID']; ?>">Revenir à sa feuille de personnage</a>
 			<?				
-			break;			
+			break;		
 			case 'arme' :
 				echo 'Arme : <select id="id_arme">';
 				$requete = "SELECT * FROM arme";

@@ -4,6 +4,7 @@
  *  
  */
 include_once($root.'class/comp.class.php');
+include_once($root.'class/gemmes.class.php');
 
 function attaque($acteur = 'attaquant', $competence)
 {
@@ -28,6 +29,7 @@ function attaque($acteur = 'attaquant', $competence)
 	fleche_magnetique::factory($effects, $actif, $passif, $acteur);
 	fleche_poison::factory($effects, $actif, $passif, $acteur);
 	maitrise_bouclier::factory($effects, $actif, $passif, $acteur);
+  gemme_enchassee::factory($effects, $actif, $passif, $acteur);
 
   /* Tri des effets selon leur ordre */
   sort_effects($effects);
@@ -176,7 +178,6 @@ function attaque($acteur = 'attaquant', $competence)
 							if(array_key_exists('b_c_bloque', $actif['etat'])) $baisse_chance_bloque = 1 + ($actif['etat']['b_c_bloque']['effet'] / 100); else $baisse_chance_bloque = 1;
 							$passif['potentiel_bloquer'] = floor($passif['blocage'] * (pow($passif['dexterite'], 2) / 100) * $enchantement_blocage * $buff_bene_blocage * $buff_blocage * $augmentation_chance_bloque / ($baisse_chance_bloque));
 
-
 							/* Application des effets de blocage */
 							foreach ($effects as $effect)
 								$effect->calcul_bloquage($actif, $passif);
@@ -224,6 +225,8 @@ function attaque($acteur = 'attaquant', $competence)
 												}
 										}
 									
+                  //echo '<pre>'; var_dump($effects); echo '</pre>';
+
 									/* Application des effets de blocage */
 									foreach ($effects as $effect)
 										$degat = $effect->applique_bloquage($actif,$passif,$degat);
