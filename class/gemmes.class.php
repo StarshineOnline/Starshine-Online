@@ -3,7 +3,11 @@
 * @file gemmes.class.php
 */
 
-include_once('class/effect.class.php');
+if (file_exists('class/effect.class.php')) {
+  include_once('class/effect.class.php');
+} else {
+  include_once('../class/effect.class.php');
+}
 
 class gemme_enchassee extends effect
 {
