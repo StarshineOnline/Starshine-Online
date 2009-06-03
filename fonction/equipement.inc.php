@@ -187,7 +187,11 @@ function enchant($gemme_id, $var)
 			$var['bonus_ignorables'][$enchants[$i]] = $effets[$i];
 			break;
     default: /* gemmes ayant un effect ponctuel */
-      $var['enchantement'][$enchants[$i]]['gemme_id'] = $gemme_id;
+			if (isset($var['enchantement'][$enchants[$i]])) {
+				echo "<b>Attention: deux enchantements de type ".$enchants[$i]." entrent en conflit</b><br />";
+			}
+      $var['enchantement'][$enchants[$i]]['gemme_id'] = $gemme_id; // pour la stack d'effets
+      $var['enchantement'][$enchants[$i]]['effet'] = $effets[$i]; // pour utilisation classique
 		}
 		$i++;
 	}

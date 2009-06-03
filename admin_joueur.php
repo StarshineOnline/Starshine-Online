@@ -156,7 +156,7 @@ else
 						if ($_SESSION['admin_nom'] == 'admin')
 						{
 						?>
-						<li><a href="admin_joueur.php?direction=objet&amp;id=<?php echo $_GET['id']; ?>">Donner un objet</a> | <a href="admin_joueur.php?direction=recette&amp;id=<?php echo $_GET['id']; ?>">Donner une recette</a> | <a href="admin_joueur.php?direction=arme&amp;id=<?php echo $_GET['id']; ?>">Donner une arme</a></li> | <a href="admin_joueur.php?direction=armure&amp;id=<?php echo $_GET['id']; ?>">Donner une armure</a> | <a href="admin_joueur.php?direction=accessoire&amp;id=<?php echo $_GET['id']; ?>">Donner un accessoire</a> | <a href="admin_joueur.php?direction=gemme&amp;id=<?php echo $_GET['id']; ?>">Donner une gemme</a></li>
+						<li><a href="admin_joueur.php?direction=objet&amp;id=<?php echo $_GET['id']; ?>">Donner un objet</a> | <a href="admin_joueur.php?direction=recette&amp;id=<?php echo $_GET['id']; ?>">Donner une recette</a> | <a href="admin_joueur.php?direction=arme&amp;id=<?php echo $_GET['id']; ?>">Donner une arme</a></li> | <a href="admin_joueur.php?direction=armure&amp;id=<?php echo $_GET['id']; ?>">Donner une armure</a> | <a href="admin_joueur.php?direction=accessoire&amp;id=<?php echo $_GET['id']; ?>">Donner un accessoire</a></li>
 						<li><a href="admin_joueur.php?direction=quete&amp;id=<?php echo $_GET['id']; ?>">Quêtes</a> - <a href="admin_joueur.php?direction=inventaire&amp;id=<?php echo $_GET['id']; ?>">Inventaire</a> - <a href="admin_joueur.php?direction=journal&amp;id=<?php echo $_GET['id']; ?>">Voir le journal des actions</a> | <a href="admin_joueur.php?direction=messagerie&amp;id=<?php echo $_GET['id']; ?>">Voir la messagerie</a></li>
 						<?php
 						}

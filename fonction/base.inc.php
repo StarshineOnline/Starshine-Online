@@ -1212,6 +1212,14 @@ function check_perso($joueur)
 		// On augmente les HP max si nécessaire
 		$temps_maj = time() - $joueur['maj_hp']; // Temps écoulé depuis la dernière augmentation de HP.
 		$temps_hp = $G_temps_maj_hp;  // Temps entre deux augmentation de HP.
+
+		// Gemme du troll
+		//echo '<pre>'; var_dump($joueur); echo '</pre>';
+		if (isset($joueur['enchantement']) && isset($joueur['enchantement']['regeneration'])) {
+			$temps_hp -= $joueur['enchantement']['regeneration']['effet'] * 60;
+			if ($temps_hp <= 0) $temps_hp = 1;
+		}
+
 		if ($temps_maj > $temps_hp && $temps_hp > 0) // Pour ne jamais diviser par 0 ...
 		{
 			$time = time();
