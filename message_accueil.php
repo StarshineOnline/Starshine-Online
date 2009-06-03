@@ -93,7 +93,7 @@ $i = 0;
 while($row = $db_forum->read_array($req) AND $i < 5)
 {
 	echo '<div class="titre_news"><strong><a class="news" href="http://forum.starshine-online.com/viewtopic.php?id='.$row['id'].'">'./*utf8_encode*/($row['subject']).'</a></strong><br />
-	<span style="font-size:10px;">Par '.$row['poster'].', le '.date("l d F Y à H:i", $row['posted']).'</span><!-- <span style="font-size : 10px;"> ('.($row['num_replies']).' commentaires)</span> --></div>';
+	<span style="font-size:10px;">Par '.$row['last_poster'].', le '.date("l d F Y à H:i", $row['last_post']).'</span><!-- <span style="font-size : 10px;"> ('.($row['num_replies']).' commentaires)</span> --></div>';
 	$i++;
 }
 ?>
