@@ -146,8 +146,8 @@ VALUES (
 ), 
 
 (
-'Gemme du berseker', 'accessoire', '2', '', 'bersek', '+1 réserve de mana', 'reserve', '1'
+'Gemme du berseker', 'arme', '2', '', 'bersek', '+1 réserve de mana', 'reserve', '1'
 ), (
-'Gemme de l''élémentaliste', 'accessoire', '3', '', 'élémentaliste', '+2 réserve de mana', 'reserve', '2'
+'Gemme de l''élémentaliste', 'arme', '3', '', 'élémentaliste', '+2 réserve de mana', 'reserve', '2'
 )
 ;
