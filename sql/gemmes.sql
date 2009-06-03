@@ -1,6 +1,6 @@
--- anciennes gemmes
+﻿-- anciennes gemmes
 
-delete from gemme;
+delete from `gemme`;
 
 INSERT INTO `gemme` (`id`, `nom`, `type`, `niveau`, `partie`, `enchantement_nom`, `description`, `enchantement_type`, `enchantement_effet`) VALUES
 (1, 'Gemme d arme', 'arme', 1, '', 'caillou', 'Augmente les dégats de 1', 'degat', 1),
@@ -143,5 +143,11 @@ VALUES (
 'Gemme des 7 lieues', 'armure', '3', 'bottes', '7 lieues', '-1 pa de déplacement (2 minimum)', 'course', '50'
 ), (
 'Gemme divine', 'accessoire', '3', '', 'divin', '-1 en cout de réserve de mana pour les compétences ', 'divin', '1'
+), 
+
+(
+'Gemme du berseker', 'accessoire', '2', '', 'bersek', '+1 réserve de mana', 'reserve', '1'
+), (
+'Gemme de l''élémentaliste', 'accessoire', '3', '', 'élémentaliste', '+2 réserve de mana', 'reserve', '2'
 )
 ;
