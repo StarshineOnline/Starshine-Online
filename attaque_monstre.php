@@ -462,7 +462,7 @@ else
 							$share = explode('-', $drops[$i]);
 							$objet = $share[0];
 							$taux = ceil($share[1] / $G_drop_rate);
-							if($attaquant['race'] == 'humain') $taux = floor($taux / 1.3);
+							if($attaquant['race'] == 'humain') $taux = floor($taux * 1.3);
 							if(in_array('fouille_gibier', $attaquant['buff'])) $taux = $taux * (1 + ($attaquant['buff']['fouille_gibier']['effet'] / 100));
 							$tirage = rand(1, $taux);
 							//Si c'est un objet de quête :
