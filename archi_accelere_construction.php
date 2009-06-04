@@ -18,6 +18,13 @@ if($joueur['pa'] >= 30)
 	{
 		//Seconde supprimées du décompte
 		$secondes_max = floor(($row['fin_placement'] - $row['debut_placement']) * sqrt($joueur['architecture']) / 100);
+
+		// Gemme de fabrique : augmente de effet % le max possible
+		if (isset($joueur['enchantement']) &&
+				isset($joueur['enchantement']['forge'])) {
+			$secondes_max += floor($joueur['enchantement']['forge']['effet'] / 100 * $secondes_max);
+		}
+
 		$secondes_min = round($secondes_max / 2);
 		$secondes = round(rand($secondes_min, $secondes_max));
 		//On met à jour le placement

@@ -623,6 +623,13 @@ if(!$visu AND isset($_GET['action']))
 			$craft = $joueur['forge'];
 			if($joueur['race'] == 'scavenger') $craft = round($craft * 1.45);
 			if($joueur['accessoire']['id'] != '0' AND $joueur['accessoire']['type'] == 'fabrication') $craft = round($craft * (1 + ($joueur['accessoire']['effet'] / 100)));
+
+			// Gemme de fabrique : augmente de effet % le craft
+			if (isset($joueur['enchantement']) &&
+					isset($joueur['enchantement']['forge'])) {
+				$craft += round($joueur['enchantement']['forge']['effet'] / 100 * $craft);
+			}
+
 			$chance_reussite1 = pourcent_reussite($craft, 10);
 			$chance_reussite2 = pourcent_reussite($craft, 30);
 			$chance_reussite3 = pourcent_reussite($craft, 100);
@@ -652,6 +659,13 @@ if(!$visu AND isset($_GET['action']))
 				$craft = $joueur['forge'];
 				if($joueur['race'] == 'scavenger') $craft = round($craft * 1.45);
 				if($joueur['accessoire']['id'] != '0' AND $joueur['accessoire']['type'] == 'fabrication') $craft = round($craft * (1 + ($joueur['accessoire']['effet'] / 100)));
+
+				// Gemme de fabrique : augmente de effet % le craft
+				if (isset($joueur['enchantement']) &&
+						isset($joueur['enchantement']['forge'])) {
+					$craft += round($joueur['enchantement']['forge']['effet'] / 100 * $craft);
+				}
+
 				$craftd = rand(0, $craft);
 				$diff = rand(0, $difficulte);
 				echo 'dé du joueur : '.$craft.' / dé difficulté : '.$difficulte.'<br />
@@ -720,6 +734,13 @@ if(!$visu AND isset($_GET['action']))
 			$craft = $joueur['forge'];
 			if($joueur['race'] == 'scavenger') $craft = round($craft * 1.45);
 			if($joueur['accessoire']['id'] != '0' AND $joueur['accessoire']['type'] == 'fabrication') $craft = round($craft * (1 + ($joueur['accessoire']['effet'] / 100)));
+
+			// Gemme de fabrique : augmente de effet % le craft
+			if (isset($joueur['enchantement']) &&
+					isset($joueur['enchantement']['forge'])) {
+				$craft += round($joueur['enchantement']['forge']['effet'] / 100 * $craft);
+			}
+
 			echo 'Dans quel objet voulez vous enchasser cette gemme de niveau '.$row['niveau'].' ?
 			<ul>';
 			//Recherche des objets pour enchassement possible
@@ -784,6 +805,13 @@ if(!$visu AND isset($_GET['action']))
 						$difficulte = 100;
 					break;
 				}
+
+				// Gemme de fabrique : augmente de effet % le craft
+				if (isset($joueur['enchantement']) &&
+						isset($joueur['enchantement']['forge'])) {
+					$craft += round($joueur['enchantement']['forge']['effet'] / 100 * $craft);
+				}
+
 				$craftd = rand(0, $craft);
 				$diff = rand(0, $difficulte);
 				echo 'dé du joueur : '.$craft.' / dé difficulté : '.$difficulte.'<br />
