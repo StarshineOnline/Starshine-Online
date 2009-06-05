@@ -379,26 +379,8 @@ else
 			if($longueur < 0) $longueur = 0;
 			$fiabilite = round((100 / $nbr_barre_total), 2);
 			echo '
-			<table class="information_case" style="float:left;width:180px;">
-				<tr style="text-align : center;">
-					<td>
-						'.$attaquant['nom'].'
-					</td>
-					<td>
-						'.$attaquant['hp'].' HP
-					</td>
-				</tr>
-				<tr style="text-align : center;">
-					<td>
-						'.$defenseur['nom'].'
-					</td>
-					<td>
-						<img src="genere_barre_vie.php?longueur='.$longueur.'" title="Estimation des HP : '.$longueur.'% / + ou - : '.$fiabilite.'%" />
-					</td>
-				</tr>
-			</table>
-			<div class="information_case" style="float : right;width:220px;">
-			';
+			<hr />';
+			
 			//Augmentation des compétences liées
 			$augmentation = augmentation_competence('survie', $attaquant, 2);
 			if($augmentation[1] == 1)
@@ -418,6 +400,17 @@ else
 					$db->query("UPDATE comp_perso SET valeur = ".$augmentation[0]." WHERE id_perso = ".$attaquant['ID']." AND competence = 'survie_humanoide'");
 				}
 			}
+			echo ' 
+			<div id="combat_cartouche">
+			<ul style="float:left;">
+				<li><span style="display:block;float:left;width:150px;">'.$attaquant['nom'].'</span>
+					<span style="display:block;float:left;width:150px;">'.$attaquant['hp'].' HP</span>
+					</li>
+					<li><span style="display:block;float:left;width:150px;">'.$defenseur['nom'].'</span>
+						<span style="display:block;float:left;width:150px;"><img src="genere_barre_vie.php?longueur='.$longueur.'" alt="Estimation des HP : '.$longueur.'% / + ou - : '.$fiabilite.'%"" title="Estimation des HP : '.$longueur.'% / + ou - : '.$fiabilite.'%" /></span>
+					<li>
+			</ul>
+			<div style="float:left;">';
 			$attaque_hp_apres = $attaquant['hp'];
 			$defense_hp_apres = $defenseur['hp'];
 			
@@ -486,7 +479,7 @@ else
 						$points = $G_crime[$row_diplo[0]];
 						$requete = "UPDATE perso SET crime = crime + ".$points." WHERE ID = ".$actif['ID'];
 						$db->query($requete);
-						echo 'Vous tuez un joueur en '.$Gtrad['diplo'.$row[0]].', vous recevez '.$points.' point(s) de crime<br />';
+						$msg_xp .=  'Vous tuez un joueur en '.$Gtrad['diplo'.$row[0]].', vous recevez '.$points.' point(s) de crime<br />';
 					}
 					$star = 0;
 					if ($row_diplo[0] == 127) $row_diplo[0] = 0;
@@ -505,7 +498,7 @@ else
 								if($amende['prime'] > 0)
 								{
 									$star = $amende['prime'];
-									echo 'Vous avez tué un criminel ayant une prime sur sa tête, vous gagnez '.$star.' stars.<br />';
+									$msg_xp .=  'Vous avez tué un criminel ayant une prime sur sa tête, vous gagnez '.$star.' stars.<br />';
 									$requete = "UPDATE amende SET prime = 0 WHERE id = ".$amende['id'];
 									$db->query($requete);
 									$requete = "DELETE FROM prime_criminel WHERE id_amende = ".$amende['id'];
@@ -525,7 +518,7 @@ else
 					$requete = 'UPDATE perso SET star = star + '.$star.', exp = exp + '.$xp_gagne.', honneur = honneur + '.$honneur_gagne.' WHERE ID = '.$membre['id_joueur'];
 					$db->query($requete);
 					$player = recupperso($membre['id_joueur']);
-					echo $player['nom'].' gagne <strong class="reward">'.$xp_gagne.' XP</strong> et <strong class="reward">'.$honneur_gagne.' points d\'honneur</strong><br />';
+					$msg_xp .= $player['nom'].' gagne <strong class="reward">'.$xp_gagne.' XP</strong> et <strong class="reward">'.$honneur_gagne.' points d\'honneur</strong><br />';
 					if($membre['id_joueur'] == $attaquant['ID']) verif_action('J'.$row_diplo[0], $player, 's');
 					else verif_action('J'.$row_diplo[0], $player, 'g');
 				}
@@ -537,7 +530,7 @@ else
 
 			if ($defenseur['hp'] >= 0)
 			{
-				echo('<img src="image/interface/attaquer.png" alt="Combattre" style="vertical-align : middle;" /> <a href="attaque.php?ID='.$W_ID.'&amp;poscase='.$W_case.'" onclick="return envoiInfo(this.href, \'information\')">Attaquer la même cible</a><br />');
+				echo(' <a href="attaque.php?ID='.$W_ID.'&amp;poscase='.$W_case.'" onclick="return envoiInfo(this.href, \'information\')"><img src="image/interface/attaquer.png" alt="Combattre" title="Attaquer la même cible" style="vertical-align : middle;" /></a><br />');
 			}
 			
 			$requete = 'UPDATE perso SET survie = '.$attaquant['survie'].' ,pa = '.$attaquant['pa'].' - '.$pa_attaque.' WHERE ID = '.$_SESSION['ID'];
@@ -577,8 +570,12 @@ else
 }
 
 ?>
-<a onclick="for (i=0; i<<?php echo $debugs; ?>; i++) {if(document.getElementById('debug' + i).style.display == 'inline') document.getElementById('debug' + i).style.display = 'none'; else document.getElementById('debug' + i).style.display = 'inline';}">Debug</a><br />
-<a href="informationcase.php?case=<?php echo $W_case; ?>" onclick="return envoiInfo(this.href, 'information');">Retour aux informations de la case</a>
+<a onclick="for (i=0; i<<?php echo $debugs; ?>; i++) {if(document.getElementById('debug' + i).style.display == 'inline') document.getElementById('debug' + i).style.display = 'none'; else document.getElementById('debug' + i).style.display = 'inline';}"><img src="image/interface/debug.png" alt="Debug" Title="Débug pour voir en détail le combat" style="vertical-align : middle;cursor:pointer;" /></a> <br />
+<a href="informationcase.php?case=<?php echo $W_case; ?>" onclick="return envoiInfo(this.href, 'information')"><img src="image/interface/retour.png" alt="Retour" title="Retour à l'information case" style="vertical-align : middle;" /></a>
+</div>
+<?php
+if (!empty($msg_xp)){echo "<p style='clear:both;'>".$msg_xp."</p>";}
+?>
 </div>
 <img src="image/pixel.gif" onLoad="envoiInfo('infoperso.php?javascript=oui', 'perso');" />
 </fieldset>
