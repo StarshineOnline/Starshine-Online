@@ -94,7 +94,7 @@ class gemme_enchassee extends effect
 					$gain = $actif['hp_max'] - $actif['hp'];
 				$actif['hp'] += $gain;
 				if ($gain > 0) 
-					$this->heal($actif['nom'].' gagne '.$effet.' HP par sa gemme', true);
+					$this->heal($actif['nom'].' gagne '.$gain.' HP par sa gemme', true);
 			}
 		}
 
@@ -120,7 +120,7 @@ class gemme_enchassee extends effect
 
 	// Gemme de l'epervier
 	function calcul_bloquage(&$actif, &$passif) {
-		if ($this->enchantement_type == 'blocage') {
+		if ($this->enchantement_type == 'parade') {
 			$passif['potentiel_bloquer'] +=
 				floor($passif['potentiel_bloquer'] * $this->enchantement_effet / 100);
 		}
