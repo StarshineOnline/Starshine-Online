@@ -145,6 +145,8 @@ else
 			//Boucle principale qui fait durer le combat $round_total round
 			while(($round < ($round_total + 1)) AND ($attaquant['hp'] > 0) AND ($defenseur['hp'] > 0))
 			{
+
+
 				if($attaquant['arme_type'] == 'arc') $attaquant['comp'] = 'distance'; else $attaquant['comp'] = 'melee';
 				if($defenseur['arme_type'] == 'arc') $defenseur['comp'] = 'distance'; else $defenseur['comp'] = 'melee';
 				//Calcul du potentiel de toucher et parer
@@ -160,6 +162,8 @@ else
 				if ($mode == 'attaquant') $mode = 'defenseur';
 				else ($mode = 'attaquant');
 				
+        $effects = effect::general_factory($attaquant, $defenseur, $mode);
+
 				if($mode == 'attaquant')
 				{
 					echo '
@@ -197,7 +201,7 @@ else
 					}
 					else
 					{
-						$action = script_action(${$mode}, ${$mode_def}, $mode);
+						$action = script_action(${$mode}, ${$mode_def}, $mode, $effects);
 						if(is_array($action[2])) ${$mode} = $action[2];
 					}
 					$args = array();
@@ -208,7 +212,7 @@ else
 					{
 						//Attaque
 						case 'attaque' :
-							attaque($mode, ${$mode}['comp']);
+							attaque($mode, ${$mode}['comp'], $effects);
 							$args[] = ${$mode}['comp'].' = '.${$mode}[${$mode}['comp']];
 							$count = count($ups);
 							if($count > 0)
@@ -224,16 +228,16 @@ else
 						break;
 						//Lancement d'un sort
 						case 'lance_sort' :
-							$comp = lance_sort($action[1], $mode);
+							$comp = lance_sort($action[1], $mode, $effects);
 							$args[] = 'incantation = '.${$mode}['incantation'];
 							$args[] = $comp.' = '.${$mode}[$comp];
 						break;
 						//Lancement d'une compétence
 						case 'lance_comp' :
-							$comp = lance_comp($action[1], $mode);
+							$comp = lance_comp($action[1], $mode, $effects);
 							if($comp_attaque)
 							{
-								attaque($mode, ${$mode}['comp']);
+								attaque($mode, ${$mode}['comp'], $effects);
 								$args[] = ${$mode}['comp'].' = '.${$mode}[${$mode}['comp']];
 								$count = count($ups);
 								if($count > 0)
@@ -248,6 +252,14 @@ else
 								}
 							}
 						break;
+						// Rien eu du tout
+					case '':
+
+						/* Application des effets de fin de round */
+						foreach ($effects as $effect)
+							$effect->fin_round(${$mode}, ${$mode_def});
+						/* ~Fin de round */
+						break ;
 					}
 					if($mode == 'defenseur')
 					{
@@ -343,6 +355,8 @@ else
 					if(${$mode_def}['bouclier']) $args_def[] = 'blocage = '.${$mode_def}['blocage'];
 
 					//Update de la base de donnée.
+					//Correction des bonus ignorables
+					corrige_bonus_ignorables($attaquant, $defenseur, $mode, $args, $args_def);
 					//Attaquant
 					$requete = 'UPDATE perso SET '.implode(',', $args).' WHERE ID = '.${$mode}['ID'];
 					$req = $db->query($requete);

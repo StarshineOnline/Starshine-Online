@@ -102,6 +102,8 @@ else
 				
 				if ($mode == 'attaquant') $mode = 'defenseur';
 				else ($mode = 'attaquant');
+
+        $effects = effect::general_factory($attaquant, $defenseur, $mode);
 				
 				if($mode == 'attaquant')
 				{
@@ -141,7 +143,9 @@ else
 					}
 					else
 					{
-						if($ennemi == 'monstre' OR $mode == 'attaquant') $action = script_action(${$mode}, ${$mode_def}, $mode);
+						if($ennemi == 'monstre' OR $mode == 'attaquant') {
+              $action = script_action(${$mode}, ${$mode_def}, $mode, $effects);
+            }
 						else $action = '';
 						if(is_array($action[2])) ${$mode} = $action[2];
 					}
@@ -155,7 +159,7 @@ else
 					{
 						//Attaque
 						case 'attaque' :
-							attaque($mode, ${$mode}['comp']);
+							attaque($mode, ${$mode}['comp'], $effects);
 							$args[] = $attaquant['comp'].' = '.$attaquant[$attaquant['comp']];
 							$args[] = 'esquive = '.$attaquant['esquive'];
 							$count = count($ups);
@@ -172,16 +176,16 @@ else
 						break;
 						//Lancement d'un sort
 						case 'lance_sort' :
-							$comp = lance_sort($action[1], $mode);
+							$comp = lance_sort($action[1], $mode, $effects);
 							$args[] = 'incantation = '.$attaquant['incantation'];
 							$args[] = $comp.' = '.$attaquant[$comp];
 						break;
 						//Lancement d'une compétence
 						case 'lance_comp' :
-							$comp = lance_comp($action[1], $mode);
+							$comp = lance_comp($action[1], $mode, $effects);
 							if($comp_attaque)
 							{
-								attaque($mode, ${$mode}['comp']);
+								attaque($mode, ${$mode}['comp'], $effects);
 								$args[] = $attaquant['comp'].' = '.$attaquant[$attaquant['comp']];
 								$args[] = 'esquive = '.$attaquant['esquive'];
 								$count = count($ups);
@@ -198,7 +202,17 @@ else
 							}
 							
 						break;
+
+						// Rien eu du tout
+					case '':
+						
+						/* Application des effets de fin de round */
+						foreach ($effects as $effect)
+							$effect->fin_round(${$mode}, ${$mode_def});
+						/* ~Fin de round */
+						break ;
 					}
+
 					if($mode == 'defenseur')
 					{
 						//Perte de HP par le poison
@@ -293,6 +307,8 @@ else
 					$args_def[] = 'hp = '.$defenseur['hp'];
 					
 					//Update de la base de donnée.
+					//Correction des bonus ignorables
+					corrige_bonus_ignorables($attaquant, $defenseur, $mode, $args, $args_def);
 					//Attaquant
 					$requete = 'UPDATE perso SET '.implode(',', $args).' WHERE ID = '.$_SESSION['ID'];
 					//echo $requete;
@@ -715,9 +731,10 @@ else
 			{
 				echo(' <a href="attaque_monstre.php?ID='.$W_ID.'&amp;type='.$ennemi.'&amp;table='.sSQL($_GET['table']).'&amp;poscase='.$W_case.'" onclick="return envoiInfo(this.href, \'information\')"><img src="image/interface/attaquer.png" alt="Combattre" title="Attaquer la même cible" style="vertical-align : middle;" /></a><br />');
 			}
-			
-			$requete = 'UPDATE perso SET survie = '.$attaquant['survie'].' ,melee = '.$attaquant['melee'].', esquive = '.$attaquant['esquive'].', hp = '.$attaquant['hp'].', pa = '.$attaquant['pa'].' - '.$pa_attaque.' WHERE ID = '.$_SESSION['ID'];
-			$db->query($requete);
+			$attaquant['pa'] -= $pa_attaque;
+			sauve_sans_bonus_ignorables($attaquant, array('survie', 'melee', 'esquive', 'hp', 'pa'));
+			//$requete = 'UPDATE perso SET survie = '.$attaquant['survie'].' ,melee = '.$attaquant['melee'].', esquive = '.$attaquant['esquive'].', hp = '.$attaquant['hp'].', pa = '.$attaquant['pa'].' - '.$pa_attaque.' WHERE ID = '.$_SESSION['ID'];
+			//$db->query($requete);
 		}
 		else
 		{

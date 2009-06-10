@@ -6,7 +6,12 @@
 include_once($root.'class/comp.class.php');
 include_once($root.'class/gemmes.class.php');
 
-function attaque($acteur = 'attaquant', $competence)
+/**
+ * @param $acteur joueur qui agit
+ * @param $competence compétence utilisée
+ * @param $effects liste des effets.
+ */
+function attaque($acteur = 'attaquant', $competence, $effects)
 {
   global $attaquant, $defenseur, $debugs, $G_buff, $G_debuff, $ups, $Gtrad, $G_round_total, $db;
   $ups = array();
@@ -21,19 +26,6 @@ function attaque($acteur = 'attaquant', $competence)
       $actif = $defenseur;
       $passif = $attaquant;
     }
-
-  /* Instanciation de toutes les compétences ou effets */
-  $effects = array();
-
-	empoisonne::factory($effects, $actif, $passif, $acteur);
-	fleche_magnetique::factory($effects, $actif, $passif, $acteur);
-	fleche_poison::factory($effects, $actif, $passif, $acteur);
-	maitrise_bouclier::factory($effects, $actif, $passif, $acteur);
-  gemme_enchassee::factory($effects, $actif, $passif, $acteur);
-
-  /* Tri des effets selon leur ordre */
-  sort_effects($effects);
-
 
   //Buff evasion
   if(array_key_exists('buff_evasion', $passif['buff'])) $passif['potentiel_parer'] *= (1 + (($passif['buff']['buff_evasion']['effet']) / 100));
@@ -539,7 +531,10 @@ function attaque($acteur = 'attaquant', $competence)
 	// Enregistre si on a critiqué
 	$actif['precedent']['critique'] = $critique;
 
-
+  /* Application des effets de fin de round */
+  foreach ($effects as $effect)
+    $effect->fin_round($actif, $passif);
+  /* ~Fin de round */
 	
   if ($acteur == 'attaquant')
     {
@@ -551,28 +546,25 @@ function attaque($acteur = 'attaquant', $competence)
       $attaquant = $passif;
       $defenseur = $actif;
     }
-
-  /* Application des effets de fin de round */
-  // On passe directement la globale, car $actif et $passif sont des copies
-  if ($acteur == 'attaquant')
-    {
-      $ref_actif =& $attaquant;
-      $ref_passif =& $defenseur;
-    }
-  else
-    {
-      $ref_actif =& $defenseur;
-      $ref_passif =& $attaquant;
-    }
-  foreach ($effects as $effect)
-    $effect->fin_round($ref_actif, $ref_passif);
-  /* ~Fin de round */
 }
 
 function degat_magique($carac, $degat, $actif, $passif)
 {
   global $debugs;
   echo '<div id="debug'.$debugs.'" class="debug">';
+  
+  if (isset($actif['enchantement']) &&
+      isset($actif['enchantement']['degat_magie'])) {    
+    global $db;
+    $requete = "SELECT nom, enchantement_effet FROM gemme WHERE id = ".
+      $actif['enchantement']['degat_magie']['gemme_id'];
+    $req = $db->query($requete);
+    $row = $db->read_assoc($req);
+    $degat += $row['enchantement_effet'];
+    echo "La ".$row['nom'].' augmente les dégats de '.
+      $row['enchantement_effet'].' <br/>';
+  }
+
   $de_degat = de_degat($carac, $degat);
   $degat = 0;
   $i = 0;

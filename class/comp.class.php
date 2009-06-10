@@ -491,6 +491,8 @@ class empoisonne extends effect {
 		$actif['hp'] -= $this->vigueur;
 		$actif['etat']['empoisonne']['duree'] -= 1;
 		$actif['etat']['empoisonne']['effet'] -= 1;
+		if ($actif['etat']['empoisonne']['effet'] < 1)
+			$actif['etat']['empoisonne']['effet'] = 1;
 		if ($actif['etat']['empoisonne']['duree'] < 1)
 			unset($actif['etat']['empoisonne']);
 	}

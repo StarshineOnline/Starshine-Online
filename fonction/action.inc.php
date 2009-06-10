@@ -12,15 +12,16 @@
  * @param $joueur Pesonnage du joueur. 
  * @param $ennemi Adversaire. 
  * @param $mode Indique si le personnage attaque ("attaquant") ou défend.
+ * @param $effects liste des effets.
  * 
  * @return [0] Type d'action : "lance_sort" pour un sort, "lance_comp" pour une compétence, 
  *  "attaque" pour une attaque simple, "" si le personnage ne peut pas effectuer d'action
  * @return [1] ID d la compétence ou du sort.
  * @return [2] Pesonnage (paramètre $joueur auquel on a incrémenté le compteur d'utilisation de l'action à effectuer).   
  */
-function script_action($joueur, $ennemi, $mode)
+function script_action($joueur, $ennemi, $mode, $effects)
 {
-	$effectue = sub_script_action($joueur, $ennemi, $mode);
+	$effectue = sub_script_action($joueur, $ennemi, $mode, $effects);
 	// On gère la dissimulation *après* le choix de l'action
 	if ($ennemi['etat']['dissimulation'] > 0)
 		{
@@ -61,13 +62,14 @@ function script_action($joueur, $ennemi, $mode)
  * @param $joueur Pesonnage du joueur. 
  * @param $ennemi Adversaire. 
  * @param $mode Indique si le personnage attaque ("attaquant") ou défend.
+ * @param $effects liste des effets.
  * 
  * @return [0] Type d'action : "lance_sort" pour un sort, "lance_comp" pour une compétence, 
  *  "attaque" pour une attaque simple, "" si le personnage ne peut pas effectuer d'action
  * @return [1] ID d la compétence ou du sort.
  * @return [2] Pesonnage (paramètre $joueur auquel on a incrémenté le compteur d'utilisation de l'action à effectuer).  
  */   
-function sub_script_action($joueur, $ennemi, $mode)
+function sub_script_action($joueur, $ennemi, $mode, $effects)
 {
 	global $db, $round, $Trace, $debugs;
 	$stop = false;
@@ -276,6 +278,12 @@ function sub_script_action($joueur, $ennemi, $mode)
 								$mp_need -= $joueur['etat']['appel_foret']['effet'];
 								if($mp_need < 1) $mp_need = 1;
 							}
+
+              /* Application des effets de mana */
+              foreach ($effects as $effect)
+                $mp_need = $effect->calcul_mp($actif, $mp_need);
+              /* ~Mana */
+
 							// Si le joueur a assez de reserve on indique l'action à effectuer
 							if($joueur['reserve'] >= $mp_need)
 							{
@@ -312,6 +320,12 @@ function sub_script_action($joueur, $ennemi, $mode)
 								$mp_need -= $joueur['etat']['appel_foret']['effet'];
 								if($mp_need < 1) $mp_need = 1;
 							}
+							
+              /* Application des effets de mana */
+              foreach ($effects as $effect)
+                $mp_need = $effect->calcul_mp($actif, $mp_need);
+              /* ~Mana */
+
 							// On vérifie que le personnage a assez de MP
 							if($joueur['reserve'] >= $mp_need)
 							{
@@ -391,12 +405,13 @@ function sub_script_action($joueur, $ennemi, $mode)
  * applique les dégâts et/ou enregistre les effets.
  * 
  * @param $id ID du sort.
- * @param $acteur indique si l'acteur de l'action est l'attaquant ('attaquant') ou
- * le défenseur.
+ * @param $acteur indique si l'acteur de l'action est l'attaquant
+ * ('attaquant') ou le défenseur.
+ * @param $effects liste des effets.
  * 
  * return Compétence de magie associée au sort.
  */
-function lance_sort($id, $acteur)
+function lance_sort($id, $acteur, $effects)
 {
 	global $attaquant, $defenseur, $db, $Gtrad, $debugs, $Trace, $G_buff, $G_debuff;
 	// Définition des personnages actif et passif
@@ -410,13 +425,10 @@ function lance_sort($id, $acteur)
 		$actif = $defenseur;
 		$passif = $attaquant;
 	}
-  /* Instanciation de toutes les compétences ou effets */
-  $effects = array();
 
-	//empoisonne::factory($effects, $actif, $passif, $acteur);
-
-  /* Tri des effets selon leur ordre */
-  sort_effects($effects);
+  /* Application des effets de début de round */
+  foreach ($effects as $effect) $effect->debut_round($actif, $passif);
+  /* ~Debut */
 
 	//Recherche du sort
 	$requete = "SELECT * FROM sort_combat WHERE id = ".$id;
@@ -437,6 +449,12 @@ function lance_sort($id, $acteur)
 		$mp_need -= $actif['etat']['appel_foret']['effet'];
 		if($mp_need < 1) $mp_need = $mp_need_avant;
 	}
+
+  /* Application des effets de mana */
+  foreach ($effects as $effect)
+    $mp_need = $effect->calcul_mp($actif, $mp_need);
+  /* ~Mana */
+
 	//Suppresion de la réserve
 	$actif['reserve'] -= $mp_need;
 
@@ -489,6 +507,12 @@ function lance_sort($id, $acteur)
 		{
 		  // Calcul de la PM
 			$pm = $passif['PM'];
+
+			/* Application des effets de PM */
+			foreach ($effects as $effect)
+				$pm = $effect->calcul_pm($actif, $passif, $pm);
+			/* ~PM */
+
 			if(array_key_exists('bouclier_protecteur', $passif['etat'])) $pm = $pm + ($passif['etat']['bouclier_protecteur']['effet'] * $passif['bouclier_degat']);
 			if(array_key_exists('batiment_pm', $passif['buff'])) $buff_batiment_barriere = 1 + (($passif['buff']['batiment_pm']['effet']) / 100); else $buff_batiment_barriere = 1;
 			if($passif['etat']['posture']['type'] == 'posture_glace') $aura_glace = 1 + (($passif['etat']['posture']['effet']) / 100); else $aura_glace = 1;
@@ -875,6 +899,11 @@ function lance_sort($id, $acteur)
 		if($acteur == 'attaquant') echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant à '.$actif['incantation'].' en incantation</span><br />';
 	}
 
+  /* Application des effets de fin de round */
+  foreach ($effects as $effect)
+    $effect->fin_round($actif, $passif);
+  /* ~Fin de round */
+
   // On met à jour les protagonistes
 	if ($acteur == 'attaquant')
 	{
@@ -886,22 +915,6 @@ function lance_sort($id, $acteur)
 		$attaquant = $passif;
 		$defenseur = $actif;
 	}
-
-  /* Application des effets de fin de round */
-  // On passe directement la globale, car $actif et $passif sont des copies
-  if ($acteur == 'attaquant')
-    {
-      $ref_actif =& $attaquant;
-      $ref_passif =& $defenseur;
-    }
-  else
-    {
-      $ref_actif =& $defenseur;
-      $ref_passif =& $attaquant;
-    }
-  foreach ($effects as $effect)
-    $effect->fin_round($ref_actif, $ref_passif);
-  /* ~Fin de round */
 
 	return $row['comp_assoc'];
 }
@@ -916,7 +929,7 @@ function lance_sort($id, $acteur)
  * 
  * return Compétence associée à la compétence.
  */
-function lance_comp($id, $acteur)
+function lance_comp($id, $acteur, $effects)
 {
 	global $attaquant, $defenseur, $db, $Gtrad, $debugs, $comp_attaque, $G_round_total;
 	// Définition des personnages actif et passif
@@ -949,6 +962,12 @@ function lance_comp($id, $acteur)
 		$mp_need -= $actif['etat']['appel_foret']['effet'];
 		if($mp_need < 1) $mp_need = $mp_need_avant;
 	}
+
+  /* Application des effets de mana */
+  foreach ($effects as $effect)
+    $mp_need = $effect->calcul_mp($actif, $mp_need);
+  /* ~Debut */
+
 	//Suppresion de la réserve
 	$actif['reserve'] -= $mp_need;
 
@@ -1266,6 +1285,13 @@ function lance_comp($id, $acteur)
 			$comp_attaque = ($G_cibles[$row['cible']] == 'Ennemi');
 			break;
 	}
+
+  /* Application des effets de fin de round SI on ne fait pas d'attaque */
+	if ($comp_attaque == false)
+		foreach ($effects as $effect)
+			$effect->fin_round($actif, $passif);
+  /* ~Fin de round */
+
 
   // On met à jour les protagonistes
 	if ($acteur == 'attaquant')

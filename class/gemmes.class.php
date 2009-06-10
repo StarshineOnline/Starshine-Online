@@ -14,13 +14,14 @@ class gemme_enchassee extends effect
 
 	var $enchantement_type;
 	var $enchantement_effet;
+	var $enchantement_effet2;
 
 	var $poison;
   
   function __construct($aNom) {
     parent::__construct("Gemme $aNom");
     
-    $query = 'select enchantement_type, enchantement_effet, nom from gemme where ';
+    $query = 'select enchantement_type, enchantement_effet, enchantement_effet2, nom from gemme where ';
     if (is_numeric($aNom)) {
       $query .= "id = $aNom";
     }
@@ -38,9 +39,10 @@ class gemme_enchassee extends effect
 		if ($row == false) die("impossible d'initialiser la gemme");
 		$this->enchantement_type = $row['enchantement_type'];
 		$this->enchantement_effet = $row['enchantement_effet'];
+		$this->enchantement_effet2 = $row['enchantement_effet2'];
 		$this->nom = $row['nom'];
 
-		$this->poison = false;
+		$this->poison = 0;
 
     //var_dump($this);
 	}
@@ -54,9 +56,9 @@ class gemme_enchassee extends effect
    * @see effect::factory
 	 */
 	static function factory(&$effects, &$actif, &$passif, $acteur) {
-    $actives = array('vampire', 'poison');
+    $actives = array('vampire', 'poison', 'divine');
     $passives = array('bouclier', 'bouclier_epine', 'blocage',
-                      'parade', 'evasion');
+                      'parade', 'evasion', 'divine');
     foreach ($actif['enchantement'] as $type => $enchant) {
       if (isset($enchant['gemme_id']) and in_array($type, $actives)) {
         $effects[] = new gemme_enchassee($enchant['gemme_id']);
@@ -73,12 +75,13 @@ class gemme_enchassee extends effect
 
     // Test du poison
 		if ($this->enchantement_type == 'poison') {
-			$effets = explode(';', $this->enchantement_effet);
 			$de = rand(1, 100);
-			$this->debug('poison: de 100 < a '.$effets[0].": $de");
-			if ($de <= $effets[0]) {
-				$this->hit($passif['nom'].'est empoisonné');
-				$this->poison = $effets[1];
+			$this->debug('poison: d100 doit être inférieur à '.$this->enchantement_effet.": $de");
+			if ($de <= $this->enchantement_effet) {
+				$this->hit($passif['nom'].' est empoisonné par '.$this->nom);
+				$this->poison = $this->enchantement_effet2;
+				$passif['etat']['poison_lent']['effet'] = $this->enchantement_effet2;
+				$passif['etat']['poison_lent']['duree'] = 5;
 			}
 		}
 
@@ -96,14 +99,6 @@ class gemme_enchassee extends effect
 		}
 
 		return $degats;
-	}
-
-	// Applique le poison
-  function fin_round(&$actif, &$passif) {
-		if ($this->poison) {
-			$passif['etat']['empoisonne']['effet'] = $this->poison;
-			$passif['etat']['empoisonne']['duree'] = 5;
-		}
 	}
 
 	// Gemme d'epine
@@ -126,10 +121,19 @@ class gemme_enchassee extends effect
 	// Gemme de l'epervier
 	function calcul_bloquage(&$actif, &$passif) {
 		if ($this->enchantement_type == 'blocage') {
-			$passif['potentiel_bloquer'] =
-				floor($passif['potentiel_bloquer'] *  $this->enchantement_effet);
+			$passif['potentiel_bloquer'] +=
+				floor($passif['potentiel_bloquer'] * $this->enchantement_effet / 100);
 		}
 	}
+
+  // Gemme divine
+  function calcul_mp(&$actif, $mp) {
+		if ($this->enchantement_type == 'divine') {
+      $mp -= $this->enchantement_effet;
+      if ($mp < 1) { $mp = 1; }
+    }
+    return $mp;
+  }
 
 }
 

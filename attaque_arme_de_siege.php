@@ -62,6 +62,9 @@ else
 				
 				if ($mode == 'attaquant') $mode = 'defenseur';
 				else ($mode = 'attaquant');
+
+				// L'arme de siege n'utilise pas les memes effets
+				$effects = array();
 			
 				if($mode == 'attaquant')
 				{
@@ -85,7 +88,7 @@ else
 
 					//Résolution des actions
 					if($mode == 'attaquant') $mode_def = 'defenseur'; else $mode_def = 'attaquant';
-					if($ennemi == 'monstre' OR $mode == 'attaquant') $action = script_action(${$mode}, ${$mode_def}, $mode);
+					if($ennemi == 'monstre' OR $mode == 'attaquant') $action = script_action(${$mode}, ${$mode_def}, $mode, $effects);
 					else $action[0] = '';
 					$args = array();
 					$args_def = array();
@@ -95,7 +98,7 @@ else
 					{
 						//Attaque
 						case 'attaque' :
-							attaque($mode, ${$mode}['comp']);
+							attaque($mode, ${$mode}['comp'], $effects);
 						break;
 					}
 					$args[] = 'hp = '.$attaquant['hp'];

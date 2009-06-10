@@ -42,7 +42,7 @@ class effect
    *  
    * @param  $aMessage    Message à afficher.        
    */  
-	function hit($aMessage, $br = false) {
+	function hit($aMessage, $br = true) {
 		echo "<span class=\"degat\">$aMessage</span>";
     if ($br) { echo '<br />'; }
 	}
@@ -52,7 +52,7 @@ class effect
    *  
    * @param  $aMessage    Message à afficher.        
    */  
-	function heal($aMessage, $br = false) {
+	function heal($aMessage, $br = true) {
 		echo "<span class=\"soin\">$aMessage</span>";
     if ($br) { echo '<br />'; }
 	}
@@ -62,7 +62,7 @@ class effect
    *  
    * @param  $aMessage    Message à afficher.        
    */  
-	function notice($aMessage, $br = false) {
+	function notice($aMessage, $br = true) {
 		echo "<span class=\"small\">$aMessage</span>";
     if ($br) { echo '<br />'; }
 	}
@@ -89,6 +89,55 @@ class effect
 	}
 
   /**
+   * Crée le tableau des effets
+   *
+   * @return le tableau des effets
+   */
+  static function general_factory(&$attaquant, &$defenseur, $mode) {
+    $effects = array();
+
+    if ($mode == 'attaquant')
+    {
+      $actif = $attaquant;
+      $passif = $defenseur;
+    }
+    else
+    {
+      $actif = $defenseur;
+      $passif = $attaquant;
+    }
+
+    empoisonne::factory($effects, $actif, $passif, $acteur);
+    poison_lent::factory($effects, $actif, $passif, $acteur);
+    fleche_magnetique::factory($effects, $actif, $passif, $acteur);
+    fleche_poison::factory($effects, $actif, $passif, $acteur);
+    maitrise_bouclier::factory($effects, $actif, $passif, $acteur);
+    gemme_enchassee::factory($effects, $actif, $passif, $acteur);
+
+    /* Tri des effets selon leur ordre */
+    sort_effects($effects);
+
+    return $effects;
+
+  }
+
+  /**
+   * Crée le tableau des effets
+   *
+   * @return le tableau des effets
+   */
+	static function general_simple_factory(&$joueur) {
+		$effects = array();
+
+		gemme_enchassee::factory($effects, $joueur, $joueur, '');
+
+		/* Tri des effets selon leur ordre */
+    sort_effects($effects);
+
+    return $effects;
+	}
+
+  /**
    * Crée l'effet
    * 
    * @param  $effects   Tableau des effets.
@@ -112,6 +161,15 @@ class effect
    * @param  $passif    Personnage passif lors de l'action.              
    */  
   function debut_round(&$actif, &$passif) { }
+  /**
+   * Calcul du mana requis
+   * 
+   * @param  $actif     Personnage actif lors de l'action.
+   * @param  $mp        MP requis
+   *
+   * @return    MP requis
+   */
+  function calcul_mp(&$actif, $mp) { return $mp; }
   /**
    * Modifie le potentiel toucher magique
    * 
@@ -153,6 +211,16 @@ class effect
    */ 
   function calcul_degats(&$actif, &$passif, $degats) { return $degats; }
   /**
+   * Modifie les dégâts des sorts
+   * 
+   * @param  $actif     Personnage actif lors de l'action.
+   * @param  $passif    Personnage passif lors de l'action.
+   * @param  $degats    Dégâts avant modification.
+   * 
+   * @return    Dégâts après modification.              
+   */ 
+  function calcul_degats_magiques(&$actif, &$passif, $degats) { return $degats; }
+  /**
    * Effectue les modifications concernant le blocage (potentiel blocage, maitrise du bouclier)
    * 
    * @param  $actif     Personnage actif lors de l'action.
@@ -191,6 +259,16 @@ class effect
    * @return    PP après modification.              
    */ 
   function calcul_pp(&$actif, &$passif, $pp) { return $pp; }
+  /**
+   * Modifie la PM
+   * 
+   * @param  $actif     Personnage actif lors de l'action.
+   * @param  $passif    Personnage passif lors de l'action.
+   * @param  $PM        PM avant modification.
+   * 
+   * @return    PM après modification.
+   */ 
+  function calcul_pm(&$actif, &$passif, $pm) { return $pm; }
   /**
    * Modifie le potentiel critique physique
    * 
@@ -236,6 +314,7 @@ class effect
   //@}
 }
 
+
 /**
  * Tri un tableau d'effets
  *  
@@ -243,6 +322,33 @@ class effect
  */
 function sort_effects(array& $effects) {
   usort($effects, array('effect', 'compare_effects'));
+}
+
+/**
+ * Poison lent: pas d'atténuation de la vigueur
+ */
+class poison_lent extends effect {
+	var $vigueur;
+
+  function __construct($aVigueur) {
+    parent::__construct('poison');
+		$this->vigueur = $aVigueur;
+	}
+
+	static function factory(&$effects, &$actif, &$passif, $acteur) {
+		if (array_key_exists('poison_lent', $actif['etat'])) {
+			$effects[] = new poison_lent($actif['etat']['poison_lent']['effet']);
+		}
+	}
+
+  function fin_round(&$actif, &$passif)
+  {
+		$this->hit($actif['nom'].' perd '.$this->vigueur.' HP à cause du poison');
+		$actif['hp'] -= $this->vigueur;
+		//$actif['etat']['poison_lent']['duree'] -= 1;
+		if ($actif['etat']['poison_lent']['duree'] < 1)
+			unset($actif['etat']['poison_lent']);
+	}
 }
 
 ?>

@@ -163,15 +163,17 @@ function enchant($gemme_id, $var)
 		case 'pp' :
 			$var['PP'] += $effets[$i];
 			break;
+			/* On ne peut pas le faire comme ca car le matos est pas charge en entier
 		case 'pourcent_pp' :
 			$var['PP'] = $var['PP'] + ceil($var['PP'] * $effets[$i] / 100);
-			break;
+			break; */
 		case 'pm' :
 			$var['PM'] += $effets[$i];
 			break;
+			/* On ne peut pas le faire comme ca car le matos est pas charge en entier
 		case 'pourcent_pm' :
 			$var['PM'] = $var['PM'] + ceil($var['PM'] * $effets[$i] / 100);
-			break;
+			break; */
 		case 'portee' :
 			//echo 'plop';
 			$var['arme_distance'] += $effets[$i];
@@ -184,14 +186,20 @@ function enchant($gemme_id, $var)
 		case 'distance' :
     case 'incantation' :
 			$var[$enchants[$i]] += $effets[$i];
-			$var['bonus_ignorables'][$enchants[$i]] = $effets[$i];
+			if (!isset($var['bonus_ignorables'][$enchants[$i]])) {
+				$var['bonus_ignorables'][$enchants[$i]] = 0;
+			}
+			$var['bonus_ignorables'][$enchants[$i]] += $effets[$i];
 			break;
     default: /* gemmes ayant un effect ponctuel */
 			if (isset($var['enchantement'][$enchants[$i]])) {
-				echo "<b>Attention: deux enchantements de type ".$enchants[$i]." entrent en conflit</b><br />";
+				$var['enchantement'][$enchants[$i]]['gemme_id'] .= ';'.$gemme_id;
+				$var['enchantement'][$enchants[$i]]['effet'] += $effets[$i];
 			}
-      $var['enchantement'][$enchants[$i]]['gemme_id'] = $gemme_id; // pour la stack d'effets
-      $var['enchantement'][$enchants[$i]]['effet'] = $effets[$i]; // pour utilisation classique
+			else {
+				$var['enchantement'][$enchants[$i]]['gemme_id'] = $gemme_id; // pour la stack d'effets
+				$var['enchantement'][$enchants[$i]]['effet'] = $effets[$i]; // pour utilisation classique
+			}
 		}
 		$i++;
 	}

@@ -950,6 +950,12 @@ function recupperso($ID)
 					$R_perso['PM'] = round($R_perso['PM'] * 1.15);
 				}
 
+				//Effets des enchantements
+				if (isset($R_perso['enchantement']['pourcent_pm']))
+					$R_perso['PM'] += floor($R_perso['PM'] * $R_perso['enchantement']['pourcent_pm']['effet'] / 100);
+				if (isset($R_perso['enchantement']['pourcent_pp']))
+					$R_perso['PP'] += floor($R_perso['PP'] * $R_perso['enchantement']['pourcent_pp']['effet'] / 100);
+
 				//Récupération des buffs
 				$R_perso['buff'] = array();
 				$R_perso['debuff'] = array();
@@ -1808,7 +1814,8 @@ function augmentation_competence($competence, $joueur, $difficulte)
 		if($numero < $chance)
 		{
 			//Augmentation de la compétence
-			$R_retour[0] = $val_competence + 1;
+			$R_retour[0] = $joueur[$competence] + 1;
+
 			//Indique que la compétence a augmenté
 			$R_retour[1] = true;
 		}
@@ -3279,6 +3286,59 @@ function list_joueurs_visu($joueur, $distance) {
 		}
 	}
 	return $ret;
+}
+
+function corrige_bonus_ignorables($attaquant, $defenseur, $mode, &$args, &$args_def)
+{
+	if (isset(${$mode}['bonus_ignorables'])) {
+		foreach (${$mode}['bonus_ignorables'] as $key => $value) {
+			$test = "$key =";
+			$testlen = strlen($test);
+			foreach ($args as &$arg) {
+				if (strncmp($arg, $test, $testlen) == 0) {
+					$parts = explode('=', $arg);
+					$arg = $parts[0].'='.($parts[1] - $value);
+					//echo "Correction de $key: reduction de $value: '$arg'<br />";
+				}
+			}
+		}
+	}
+	if (isset(${$mode_def}['bonus_ignorables'])) {
+		foreach (${$mode_def}['bonus_ignorables'] as $key => $value) {
+			$test = "$key =";
+			$testlen = strlen($test);
+			foreach ($args_def as &$arg) {
+				if (strncmp($arg, $test, $testlen) == 0) {
+					$parts = explode('=', $arg);
+					$arg = $parts[0].'='.($parts[1] - $value);
+					//echo "Correction de $key: reduction de $value: '$arg'<br />";
+				}
+			}
+		}
+	}
+}
+
+function sauve_sans_bonus_ignorables($joueur, $fields)
+{
+	global $db;
+	$query = 'UPDATE perso SET ';
+	$first = true;
+	foreach ($fields as $field) {
+		if ($first == false) {
+			$query .= ', ';
+		}
+		else {
+			$first = false;
+		}
+		$val = $joueur[$field];
+		if (isset($joueur['bonus_ignorables']) &&
+				isset($joueur['bonus_ignorables'][$field])) {
+			$val -= $joueur['bonus_ignorables'][$field];
+		}
+		$query .= "`$field` = '$val'";
+	}
+	$query .= ' WHERE ID = '.$_SESSION['ID'];
+	$db->query($query);
 }
 
 ?>
