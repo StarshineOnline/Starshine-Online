@@ -101,6 +101,17 @@ class db
 		$this->sql = mysql_query($query, $this->lnk);
 		//}
 
+		/*
+		if (strpos($query, 'esquive') && $query_type == 'UPDATE') {
+			$back = debug_backtrace();
+			echo "QUERY: $query<br/>";
+			foreach ($back as $f) {
+				echo $f["file"].' line '.$f["line"].'<br />';
+			}
+			echo '<br />';
+		}
+		*/
+
 		// La requète à réussis, mise à jour des propriétés de la classe
 		if($this->sql != false)
 		{

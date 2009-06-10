@@ -3290,6 +3290,7 @@ function list_joueurs_visu($joueur, $distance) {
 
 function corrige_bonus_ignorables($attaquant, $defenseur, $mode, &$args, &$args_def)
 {
+	if($mode == 'attaquant') $mode_def = 'defenseur'; else $mode_def = 'attaquant';
 	if (isset(${$mode}['bonus_ignorables'])) {
 		foreach (${$mode}['bonus_ignorables'] as $key => $value) {
 			$test = "$key =";
