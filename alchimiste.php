@@ -165,15 +165,18 @@ if($W_distance == 0)
 				$req = $db->query($requete);
 				$row = $db->read_assoc($req);
 				$max = $row['royaume_alchimie'];
-				$total = $max - $min;
-				$actuel = $R['alchimie'] - $min;
-				$pourcent = round((($actuel / $total) * 100), 2);
-				echo $pourcent.'% du déblocage de la prochaine recette !<br />';
-				if($R['diplo'] == 127)
-				{
+				if ($max == 0) echo 'Plus de recettes à chercher !<br />';
+				else {
+					$total = $max - $min;
+					$actuel = $R['alchimie'] - $min;
+					$pourcent = round((($actuel / $total) * 100), 2);
+					echo $pourcent.'% du déblocage de la prochaine recette !<br />';
+					if($R['diplo'] == 127)
+						{
 				?>
 				<a href="alchimiste.php?action=recherche" onclick="return envoiInfo(this.href, 'carte');">Faire des recherches en alchimie (10 PA)</a>
 				<?php
+					 }
 				}
 				?>
 			</span>
