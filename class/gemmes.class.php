@@ -74,7 +74,7 @@ class gemme_enchassee extends effect
   function inflige_degats(&$actif, &$passif, $degats) {
 
     // Test du poison
-		if ($this->enchantement_type == 'poison') {
+		if ($this->enchantement_type == 'poison' && $passif['type2'] != 'batiment') {
 			$de = rand(1, 100);
 			$this->debug('poison: d100 doit être inférieur à '.$this->enchantement_effet.": $de");
 			if ($de <= $this->enchantement_effet) {
@@ -88,13 +88,17 @@ class gemme_enchassee extends effect
     // Vampirisme
 		if ($this->enchantement_type == 'vampire') {
 			/* elles sont toutes à 30%, sinon il faudra un effet 2 */
-			if (rand(1, 100) <= 30) {
-				$gain = $this->enchantement_effet;
+			$de = rand(1, 100);
+			$this->debug("vampire: d100 doit être inférieur à 30: $de");
+			if ($de <= 30) {
+				$gain = min($this->enchantement_effet, $degats);
 				if (($actif['hp'] + $gain) > $actif['hp_max'])
 					$gain = $actif['hp_max'] - $actif['hp'];
+				if ($passif['type2'] == 'batiment') 
+					$gain = 0;
 				$actif['hp'] += $gain;
 				if ($gain > 0) 
-					$this->heal($actif['nom'].' gagne '.$gain.' HP par sa gemme', true);
+					$this->heal($actif['nom'].' gagne '.$gain.' HP par sa '.$this->nom, true);
 			}
 		}
 

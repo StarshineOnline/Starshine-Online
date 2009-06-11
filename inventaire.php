@@ -765,6 +765,7 @@ if(!$visu AND isset($_GET['action']))
 						$j = 0;
 						$parties = explode(';', $row['partie']);
 						$count = count($parties);
+						if (strlen($row['partie']) > 0) $check = false;
 						while(!$check AND $j < $count)
 						{
 							if($parties[$j] == $row_i[0]) $check = true;

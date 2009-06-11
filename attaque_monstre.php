@@ -360,7 +360,7 @@ else
 			<hr />';
 
 			//Augmentation des compétences liées
-			$augmentation = augmentation_competence('survie', $attaquant, 0.2);
+			$augmentation = augmentation_competence('survie', $attaquant, 2);
 			//		var_dump($augmentation);
 			if($augmentation[1] == 1)
 			{

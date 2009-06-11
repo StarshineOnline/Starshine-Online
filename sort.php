@@ -126,8 +126,7 @@ if (isset($_GET['ID']))
 						$joueur['sort_vie'] = $augmentation[0];
 						echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant à '.$joueur['sort_vie'].' en '.$Gtrad['sort_vie'].'</span><br />';
 					}
-					$requete = "UPDATE perso SET mp = '".$joueur['mp']."', pa = '".$joueur['pa']."', incantation = '".$joueur['incantation']."', sort_vie = '".$joueur['sort_vie']."' WHERE ID = '".$_SESSION['ID']."'";
-					$req = $db->query($requete);
+					sauve_sans_bonus_ignorables($joueur, array('mp', 'pa', 'incantation', 'sort_vie'));
 					//Insertion du soin de groupe dans le journal du lanceur
 					if($groupe)
 					{
@@ -168,8 +167,7 @@ if (isset($_GET['ID']))
 							$joueur['sort_mort'] = $augmentation[0];
 							echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant à '.$joueur['sort_mort'].' en '.$Gtrad['sort_mort'].'</span><br />';
 						}
-						$requete = "UPDATE perso SET hp = '".$joueur['hp']."', mp = '".$joueur['mp']."', pa = '".$joueur['pa']."', incantation = '".$joueur['incantation']."', sort_mort = '".$joueur['sort_mort']."' WHERE ID = '".$_SESSION['ID']."'";
-						$req = $db->query($requete);
+						sauve_sans_bonus_ignorables($joueur, array('mp', 'pa', 'incantation', 'sort_mort'));
 					}
 					echo '<a href="sort.php?ID='.$_GET['ID'].'" onclick="return envoiInfo(this.href, \'information\')">Utilisez a nouveau ce sort</a>';
 				}
@@ -199,7 +197,7 @@ if (isset($_GET['ID']))
 						$joueur['sort_element'] = $augmentation[0];
 						echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant à '.$joueur['sort_element'].' en '.$Gtrad['sort_element'].'</span><br />';
 					}
-					$requete = "UPDATE perso SET x = '".$joueur['x']."', y = '".$joueur['y']."', mp = '".$joueur['mp']."', pa = '".$joueur['pa']."', incantation = '".$joueur['incantation']."', sort_element = '".$joueur['sort_element']."' WHERE ID = '".$_SESSION['ID']."'";
+					sauve_sans_bonus_ignorables($joueur, array('mp', 'pa', 'incantation', 'sort_element', 'x', 'y'));
 					if($db->query($requete)) echo 'Vous vous êtes téléporté dans votre capitale
 					<img src="image/pixel.gif" onLoad="envoiInfo(\'deplacement.php\', \'centre\');" />';
 				}
@@ -233,8 +231,7 @@ if (isset($_GET['ID']))
 						echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant à '.$joueur[$row['comp_assoc']].' en '.$Gtrad[$row['comp_assoc']].'</span><br />';
 					}
 					//Mis à jour du joueur
-					$requete = "UPDATE perso SET mp = '".$joueur['mp']."', pa = '".$joueur['pa']."', incantation = '".$joueur['incantation']."', ".$row['comp_assoc']." = '".$joueur[$row['comp_assoc']]."' WHERE ID = '".$_SESSION['ID']."'";
-					$req = $db->query($requete);
+					sauve_sans_bonus_ignorables($joueur, array('mp', 'pa', 'incantation', $row['comp_assoc']));
 				}
 				else
 				{
@@ -283,8 +280,7 @@ if (isset($_GET['ID']))
 						echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant à '.$joueur[$row['comp_assoc']].' en '.$Gtrad[$row['comp_assoc']].'</span><br />';
 					}
 					//Mis à jour du joueur
-					$requete = "UPDATE perso SET mp = '".$joueur['mp']."', pa = '".$joueur['pa']."', incantation = '".$joueur['incantation']."', ".$row['comp_assoc']." = '".$joueur[$row['comp_assoc']]."' WHERE ID = '".$_SESSION['ID']."'";
-					$req = $db->query($requete);
+					sauve_sans_bonus_ignorables($joueur, array('mp', 'pa', 'incantation', $row['comp_assoc']));
 					if($groupe)
 					{
 						$requete = "INSERT INTO journal VALUES('', ".$joueur['ID'].", 'gbuff', '".$joueur['nom']."', 'groupe', NOW(), '".$row['nom']."', 0, 0, 0)";

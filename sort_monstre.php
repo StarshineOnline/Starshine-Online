@@ -82,8 +82,7 @@ if (isset($_GET['ID']))
 						echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant à '.$joueur[$row['comp_assoc']].' en '.$Gtrad[$row['comp_assoc']].'</span><br />';
 					}
 					//Mis à jour du joueur
-					$requete = "UPDATE perso SET mp = '".$joueur['mp']."', pa = '".$joueur['pa']."', incantation = '".$joueur['incantation']."', ".$row['comp_assoc']." = '".$joueur[$row['comp_assoc']]."' WHERE ID = '".$_SESSION['ID']."'";
-					$req = $db->query($requete);
+					sauve_sans_bonus_ignorables($joueur, array('mp', 'pa', 'incantation', $row['comp_assoc']));
 				break;
 				case 'maladie_amorphe' : case 'maladie_degenerescence' : case 'maladie_mollesse' :
 					//On selectionne tous les monstres de la case
@@ -135,8 +134,7 @@ if (isset($_GET['ID']))
 						echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant à '.$joueur[$row['comp_assoc']].' en '.$Gtrad[$row['comp_assoc']].'</span><br />';
 					}
 					//Mis à jour du joueur
-					$requete = "UPDATE perso SET mp = '".$joueur['mp']."', pa = '".$joueur['pa']."', incantation = '".$joueur['incantation']."', ".$row['comp_assoc']." = '".$joueur[$row['comp_assoc']]."' WHERE ID = '".$_SESSION['ID']."'";
-					$req = $db->query($requete);
+					sauve_sans_bonus_ignorables($joueur, array('mp', 'pa', 'incantation', $row['comp_assoc']));
 				break;
 			}
 		}

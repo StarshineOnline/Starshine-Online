@@ -88,8 +88,7 @@ if (isset($_GET['ID']))
 									$joueur['sort_vie'] = $augmentation[0];
 									echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant à '.$joueur['sort_vie'].' en '.$Gtrad['sort_vie'].'</span><br />';
 								}
-								$requete = "UPDATE perso SET mp = '".$joueur['mp']."', pa = '".$joueur['pa']."', incantation = '".$joueur['incantation']."', sort_vie = '".$joueur['sort_vie']."' WHERE ID = '".$_SESSION['ID']."'";
-								$req = $db->query($requete);
+								sauve_sans_bonus_ignorables($joueur, array('mp', 'pa', 'incantation', 'sort_vie'));
 								$requete = "UPDATE perso SET hp = '".$W_row['hp']."' WHERE ID = '".sSQL($_GET['id_joueur'])."'";
 								$req = $db->query($requete);
 								//Insertion du soin dans les journaux des 2 joueurs
@@ -159,8 +158,7 @@ if (isset($_GET['ID']))
 						echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant à '.$joueur[$row['comp_assoc']].' en '.$Gtrad[$row['comp_assoc']].'</span><br />';
 					}
 					//Mis à jour du joueur
-					$requete = "UPDATE perso SET mp = '".$joueur['mp']."', pa = '".$joueur['pa']."', incantation = '".$joueur['incantation']."', ".$row['comp_assoc']." = '".$joueur[$row['comp_assoc']]."' WHERE ID = '".$_SESSION['ID']."'";
-					$req = $db->query($requete);
+					sauve_sans_bonus_ignorables($joueur, array('mp', 'pa', 'incantation', $row['comp_assoc']));
 				break;
 				case 'maladie_amorphe' : case 'maladie_degenerescence' : case 'maladie_mollesse' :
 					$adversaire = recupperso($_GET['id_joueur']);
@@ -228,8 +226,7 @@ if (isset($_GET['ID']))
 						echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant à '.$joueur[$row['comp_assoc']].' en '.$Gtrad[$row['comp_assoc']].'</span><br />';
 					}
 					//Mis à jour du joueur
-					$requete = "UPDATE perso SET mp = '".$joueur['mp']."', pa = '".$joueur['pa']."', incantation = '".$joueur['incantation']."', ".$row['comp_assoc']." = '".$joueur[$row['comp_assoc']]."' WHERE ID = '".$_SESSION['ID']."'";
-					$req = $db->query($requete);
+					sauve_sans_bonus_ignorables($joueur, array('mp', 'pa', 'incantation', $row['comp_assoc']));
 				break;
 				case 'rez' :
 					$cible = recupperso($_GET['id_joueur']);
@@ -267,8 +264,7 @@ if (isset($_GET['ID']))
 								echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant à '.$joueur[$row['comp_assoc']].' en '.$Gtrad[$row['comp_assoc']].'</span><br />';
 							}
 							//Mis à jour du joueur
-							$requete = "UPDATE perso SET mp = '".$joueur['mp']."', pa = '".$joueur['pa']."', incantation = '".$joueur['incantation']."', ".$row['comp_assoc']." = '".$joueur[$row['comp_assoc']]."' WHERE ID = '".$_SESSION['ID']."'";
-							$req = $db->query($requete);
+							sauve_sans_bonus_ignorables($joueur, array('mp', 'pa', 'incantation', $row['comp_assoc']));
 							echo 'Résurrection bien lancée.';
 						}
 						else
@@ -305,8 +301,7 @@ if (isset($_GET['ID']))
 							echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant à '.$joueur[$row['comp_assoc']].' en '.$Gtrad[$row['comp_assoc']].'</span><br />';
 						}
 						//Mis à jour du joueur
-						$requete = "UPDATE perso SET mp = '".$joueur['mp']."', pa = '".$joueur['pa']."', incantation = '".$joueur['incantation']."', ".$row['comp_assoc']." = '".$joueur[$row['comp_assoc']]."' WHERE ID = '".$_SESSION['ID']."'";
-						$req = $db->query($requete);
+						sauve_sans_bonus_ignorables($joueur, array('mp', 'pa', 'incantation', $row['comp_assoc']));
 						//Insertion du buff dans les journaux des 2 joueurs
 						$requete = "INSERT INTO journal VALUES(NULL,  ".$joueur['ID'].", 'buff', '".$joueur['nom']."', '".$cible['nom']."', NOW(), '".$row['nom']."', 0, ".$joueur['x'].", ".$joueur['y'].")";
 						$db->query($requete);
