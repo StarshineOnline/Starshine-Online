@@ -36,7 +36,14 @@ class gemme_enchassee extends effect
 		global $db;
 		$res = $db->query($aReq);
 		$row = $db->read_array($res);
-		if ($row == false) die("impossible d'initialiser la gemme");
+		if ($row == false) {
+			$back = debug_backtrace();
+      foreach ($back as $f) {
+        echo $f["file"].' line '.$f["line"].'<br />';
+			}
+			echo $aReq.'<br />';
+			die("impossible d'initialiser la gemme");
+		}
 		$this->enchantement_type = $row['enchantement_type'];
 		$this->enchantement_effet = $row['enchantement_effet'];
 		$this->enchantement_effet2 = $row['enchantement_effet2'];
@@ -61,12 +68,18 @@ class gemme_enchassee extends effect
                       'parade', 'evasion', 'divine');
     foreach ($actif['enchantement'] as $type => $enchant) {
       if (isset($enchant['gemme_id']) and in_array($type, $actives)) {
-        $effects[] = new gemme_enchassee($enchant['gemme_id']);
+				$gems = explode(';', $enchant['gemme_id']);
+				foreach ($gems as $gem) {
+					$effects[] = new gemme_enchassee($gem);
+				}
       }
     }
     foreach ($passif['enchantement'] as $type => $enchant) {
       if (isset($enchant['gemme_id']) and in_array($type, $passives)) {
-        $effects[] = new gemme_enchassee($enchant['gemme_id']);
+				$gems = explode(';', $enchant['gemme_id']);
+        foreach ($gems as $gem) {
+          $effects[] = new gemme_enchassee($gem);
+        }
       }
     }
 	}
