@@ -523,13 +523,13 @@ function lance_sort($id, $acteur, $effects)
 			$potentiel_toucher = round($actif['volonte'] * $potentiel_magique);
 			$potentiel_parer = round($passif['volonte'] * $PM);
 
-			/* Application des effets de début de round pour le potentiel toucher */
+			/* Application des effets de potentiel toucher */
 			foreach ($effects as $effect)
 				$potentiel_toucher =
 					$effect->calcul_attaque_magique($actif, $passif, $potentiel_toucher);
 			/* ~Debut */
 			
-			/* Application des effets de début de round pour le potentiel parer */
+			/* Application des effets de potentiel parer */
 			foreach ($effects as $effect)
 				$potentiel_parer =
 					$effect->calcul_defense_magique($actif, $passif, $potentiel_parer);

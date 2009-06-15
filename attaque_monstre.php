@@ -732,7 +732,7 @@ else
 				echo(' <a href="attaque_monstre.php?ID='.$W_ID.'&amp;type='.$ennemi.'&amp;table='.sSQL($_GET['table']).'&amp;poscase='.$W_case.'" onclick="return envoiInfo(this.href, \'information\')"><img src="image/interface/attaquer.png" alt="Combattre" title="Attaquer la même cible" style="vertical-align : middle;" /></a><br />');
 			}
 			$attaquant['pa'] -= $pa_attaque;
-			sauve_sans_bonus_ignorables($attaquant, array('survie', 'melee', 'esquive', 'hp', 'pa'));
+			sauve_sans_bonus_ignorables($attaquant, array('survie', 'melee', 'distance', 'esquive', 'hp', 'pa'));
 			//$requete = 'UPDATE perso SET survie = '.$attaquant['survie'].' ,melee = '.$attaquant['melee'].', esquive = '.$attaquant['esquive'].', hp = '.$attaquant['hp'].', pa = '.$attaquant['pa'].' - '.$pa_attaque.' WHERE ID = '.$_SESSION['ID'];
 			//$db->query($requete);
 		}
