@@ -1219,14 +1219,7 @@ function check_perso($joueur)
 		$temps_maj = time() - $joueur['maj_hp']; // Temps écoulé depuis la dernière augmentation de HP.
 		$temps_hp = $G_temps_maj_hp;  // Temps entre deux augmentation de HP.
 
-		// Gemme du troll
-		//echo '<pre>'; var_dump($joueur); echo '</pre>';
-		if (isset($joueur['enchantement']) && isset($joueur['enchantement']['regeneration'])) {
-			$temps_hp -= $joueur['enchantement']['regeneration']['effet'] * 60;
-			if ($temps_hp <= 0) $temps_hp = 1;
-		}
-
-		if ($temps_maj > $temps_hp && $temps_hp > 0) // Pour ne jamais diviser par 0 ...
+		If ($temps_maj > $temps_hp && $temps_hp > 0) // Pour ne jamais diviser par 0 ...
 		{
 			$time = time();
 			$nb_maj = floor($temps_maj / $temps_hp);
@@ -1249,10 +1242,20 @@ function check_perso($joueur)
 		}
 		// Régénération des HP et MP
 		$temps_regen = time() - $joueur['regen_hp']; // Temps écoulé depuis la dernière régénération.
-		if ($temps_regen > $G_temps_regen_hp)
+
+		// Gemme du troll
+		if (isset($joueur['enchantement']) &&
+				isset($joueur['enchantement']['regeneration'])) {
+			$bonus_regen = $joueur['enchantement']['regeneration']['effet'] * 60;
+			if ($G_temps_regen_hp < $bonus_regen) {
+				$bonus_regen = $G_temps_regen_hp - 1;
+			}
+		}
+
+		if ($temps_regen > ($G_temps_regen_hp - $bonus_regen))
 		{
 			$time = time();
-			$nb_regen = floor($temps_regen / $G_temps_regen_hp);
+			$nb_regen = floor($temps_regen / ($G_temps_regen_hp - $bonus_regen));
 			$regen_hp = $G_pourcent_regen_hp;
 			$regen_mp = $G_pourcent_regen_mp;
 			//Buff préparation du camp
@@ -1262,14 +1265,14 @@ function check_perso($joueur)
 				if($joueur['buff']['preparation_camp']['effet2'] > $joueur['regen_hp'])
 				{
 					// On calcule le moment où doit avoir lieu la première régénération après le lancement du buff 
-					$regen_cherche = $joueur['regen_hp'] + ($G_temps_regen_hp * floor(($joueur['buff']['preparation_camp']['effet2'] - $joueur['regen_hp']) / $G_temps_regen_hp));
+					$regen_cherche = $joueur['regen_hp'] + (($G_temps_regen_hp - $bonus_regen) * floor(($joueur['buff']['preparation_camp']['effet2'] - $joueur['regen_hp']) / $G_temps_regen_hp));
 				}
 				else $regen_cherche = $joueur['regen_hp'];
 				// Le buff s'est-il arrêté entre temps ?
 				if($joueur['buff']['preparation_camp']['fin'] > time()) $fin = time();
 				else $fin = $joueur['buff']['preparation_camp']['fin'];
 				// On calcule le nombre de régénération pour lesquels le buff doit être pris en compte 
-				$nb_regen_avec_buff = floor(($fin - $regen_cherche) / $G_temps_regen_hp);
+				$nb_regen_avec_buff = floor(($fin - $regen_cherche) / ($G_temps_regen_hp - $bonus_regen));
 				//bonus buff du camp
 				$bonus_camp = 1 + ((($nb_regen_avec_buff / $nb_regen) * $joueur['buff']['preparation_camp']['effet']) / 100);
 				$regen_hp = $regen_hp * $bonus_camp;
@@ -1303,14 +1306,14 @@ function check_perso($joueur)
 			  // Le débuff a-t-il été lancé après la dernière régénération ?
 				if($joueur['debuff']['lente_agonie']['effet2'] > $joueur['regen_hp'])
 				{
-					$regen_cherche = $joueur['regen_hp'] + ($G_temps_regen_hp * floor(($joueur['debuff']['lente_agonie']['effet2'] - $joueur['regen_hp']) / $G_temps_regen_hp));
+					$regen_cherche = $joueur['regen_hp'] + (($G_temps_regen_hp - $bonus_regen) * floor(($joueur['debuff']['lente_agonie']['effet2'] - $joueur['regen_hp']) / $G_temps_regen_hp));
 				}
 				else $regen_cherche = $joueur['regen_hp'];
 				// Le débuff s'est-il arrêté entre temps ?
 				if($joueur['debuff']['lente_agonie']['fin'] > time()) $fin = time();
 				else $fin = $joueur['debuff']['lente_agonie']['fin'];
 				// On calcule le nombre de régénération pour lesquels le débuff doit être pris en compte 
-				$nb_regen_avec_buff = floor(($fin - $regen_cherche) / $G_temps_regen_hp);
+				$nb_regen_avec_buff = floor(($fin - $regen_cherche) / ($G_temps_regen_hp - $bonus_regen));
 				// Calcul du malus
 				$malus_agonie = ((1 - ($nb_regen_avec_buff / $nb_regen)) - (($nb_regen_avec_buff / $nb_regen) * $joueur['debuff']['lente_agonie']['effet']));
 				$hp_gagne = $hp_gagne * $malus_agonie;
@@ -1358,7 +1361,7 @@ function check_perso($joueur)
 			// Mise à jour des MP
 			$joueur['mp'] = $joueur['mp'] + $mp_gagne;
 			if ($joueur['mp'] > $joueur['mp_max']) $joueur['mp'] = floor($joueur['mp_max']);
-			$joueur['regen_hp'] = $joueur['regen_hp'] + ($nb_regen * $G_temps_regen_hp);
+			$joueur['regen_hp'] = $joueur['regen_hp'] + ($nb_regen * ($G_temps_regen_hp - $bonus_regen));
 			$modif = true;
 		}
 		//Calcul des PA du joueur

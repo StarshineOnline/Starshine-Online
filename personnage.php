@@ -58,7 +58,16 @@ echo '
 	$prochainpa_m = floor($prochainpa / 60);
 	$prochainpa_s = $prochainpa - ($prochainpa_m * 60);
 
-	$prochainregen = (($joueur['regen_hp'] + $G_temps_regen_hp) - time());
+	// Gemme du troll
+	if (isset($joueur['enchantement']) &&
+			isset($joueur['enchantement']['regeneration'])) {
+		$bonus_regen = $joueur['enchantement']['regeneration']['effet'] * 60;
+		if ($G_temps_regen_hp < $bonus_regen) {
+			$bonus_regen = $G_temps_regen_hp - 1;
+		}
+	}
+
+	$prochainregen = (($joueur['regen_hp'] + ($G_temps_regen_hp - $bonus_regen)) - time());
 	$prochainregen_h = floor($prochainregen / 3600);
 	$prochainregen_m = floor(($prochainregen - ($prochainregen_h * 3600)) / 60);
 	$prochainregen_s = $prochainregen - ($prochainregen_h * 3600) - ($prochainregen_m * 60);
