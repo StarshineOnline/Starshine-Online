@@ -1247,10 +1247,10 @@ function check_perso($joueur)
 		if (isset($joueur['enchantement']) &&
 				isset($joueur['enchantement']['regeneration'])) {
 			$bonus_regen = $joueur['enchantement']['regeneration']['effet'] * 60;
-			if ($G_temps_regen_hp < $bonus_regen) {
+			if ($G_temps_regen_hp <= $bonus_regen) {
 				$bonus_regen = $G_temps_regen_hp - 1;
 			}
-		}
+		} else $bonus_regen = 0;
 
 		if ($temps_regen > ($G_temps_regen_hp - $bonus_regen))
 		{
