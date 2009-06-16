@@ -1027,7 +1027,8 @@ function lance_comp($id, $acteur, $effects)
 			$actif['etat']['tir_vise']['duree'] = 2;
 			$comp_attaque = false;
 			// Augmentation des compétences
-			$diff = 3 * $G_round_total / 10;
+			//$diff = 3 * $G_round_total / 10;
+			$diff = 3.2 * $G_round_total / 5; // Irulan: soyons cohérents
 			$augmentation = augmentation_competence('distance', $actif, $diff);
 			if($actif['arme_type'] == 'arc' AND array_key_exists('maitrise_arc', $actif['competences'])) $maitrise_arc = 1 + ($actif['competences']['maitrise_arc'] / 1000); else $maitrise_arc = 1;
 			if ($augmentation[1] == 1)
