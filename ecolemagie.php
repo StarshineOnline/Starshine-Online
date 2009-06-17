@@ -131,7 +131,15 @@ if($W_distance == 0)
 				//echo $row['pa'].' '.$joueur['facteur_magie'];
 				$sortpa = ($row['pa'] * $joueur['facteur_magie']);
 				$couleur = $color;
-				if($comp > $joueur[$row['comp_assoc']] OR $cout > $joueur['star'] OR $inc > $joueur['incantation']) $couleur = 3;
+				$inc_joueur = $joueur['incantation'];
+				$comp_joueur = $joueur[$row['comp_assoc']];
+				if (isset($joueur['bonus_ignorables'])) {
+					if (isset($joueur['bonus_ignorables']['incantation']))
+						$inc_joueur -= $joueur['bonus_ignorables']['incantation'];
+					if (isset($joueur['bonus_ignorables'][$row['comp_assoc']]))
+						$comp_joueur -= $joueur['bonus_ignorables'][$row['comp_assoc']];
+				}
+				if($comp > $comp_joueur OR $cout > $joueur['star'] OR $inc > $inc_joueur) $couleur = 3;
 				if(in_array($row['id'], $sortt_j)) $couleur = 5;
 				$row['cible2'] = $G_cibles[$row['cible']];
 				
@@ -149,17 +157,17 @@ if($W_distance == 0)
 				</td>
 
 				<td>
-					<span class="<?php echo over_price($inc, $joueur['incantation']); ?>"><?php echo $inc; ?></span>
+					<span class="<?php echo over_price($inc, $inc_joueur); ?>"><?php echo $inc; ?></span>
 				</td>
 				<td style="text-align : right;">
-					<span class="<?php echo over_price($comp, $joueur[$row['comp_assoc']]); ?>"><strong><?php echo $comp; ?></strong> <img src="image/<?php echo $row['comp_assoc']; ?>.png" alt="<?php echo $Gtrad[$row['comp_assoc']]; ?>" title="<?php echo $Gtrad[$row['comp_assoc']]; ?>" style="vertical-align : middle;" /></span>
+					<span class="<?php echo over_price($comp, $comp_joueur); ?>"><strong><?php echo $comp; ?></strong> <img src="image/<?php echo $row['comp_assoc']; ?>.png" alt="<?php echo $Gtrad[$row['comp_assoc']]; ?>" title="<?php echo $Gtrad[$row['comp_assoc']]; ?>" style="vertical-align : middle;" /></span>
 				</td>
 				<td>
 					<span class="<?php echo over_price($cout, $joueur['star']); ?>"><?php echo $cout; ?></span>
 				</td>
 				<td style="width : 50px;">
 				<?php 
-				if (over_price($cout, $joueur['star']) == 'achat_normal' AND over_price($comp, $joueur[$row['comp_assoc']]) == 'achat_normal' AND over_price($inc, $joueur['incantation']) == 'achat_normal' AND $couleur != 5)
+				if (over_price($cout, $joueur['star']) == 'achat_normal' AND over_price($comp, $comp_joueur) == 'achat_normal' AND over_price($inc, $inc_joueur) == 'achat_normal' AND $couleur != 5)
 				{
 				?>	
 				<a href="ecolemagie.php?ecole=<?php echo $_GET['ecole']; ?>&amp;action=apprendre&amp;id=<?php echo $row['id']; ?>&amp;poscase=<?php echo $_GET['poscase']; ?>" onclick="return envoiInfo(this.href, 'carte')"><span class="achat">Achat</span></a>

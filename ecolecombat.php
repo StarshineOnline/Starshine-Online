@@ -128,7 +128,15 @@ if($W_distance == 0)
 					$taxe = ceil($row['prix'] * $R['taxe'] / 100);
 					$cout = $row['prix'] + $taxe;
 					$couleur = $color;
-					if($row['carac_requis'] > $joueur[$row['carac_assoc']] OR $row['comp_requis'] > $joueur[$row['comp_assoc']] OR $cout > $joueur['star']) $couleur = 3;
+					$carac_joueur = $joueur[$row['carac_assoc']];
+					$comp_joueur = $joueur[$row['comp_assoc']];
+					if (isset($joueur['bonus_ignorables'])) {
+						if (isset($joueur['bonus_ignorables'][$row['carac_assoc']]))
+							$carac_joueur -= $joueur['bonus_ignorables'][$row['carac_assoc']];
+						if (isset($joueur['bonus_ignorables'][$row['comp_assoc']]))
+							$comp_joueur -= $joueur['bonus_ignorables'][$row['comp_assoc']];
+					}
+					if($row['carac_requis'] > $carac_joueur OR $row['comp_requis'] > $comp_joueur OR $cout > $joueur['star']) $couleur = 3;
 					$row['cible2'] = $G_cibles[$row['cible']];
 				?>
 				<tr class="element trcolor<?php echo $couleur; ?>">
@@ -142,7 +150,7 @@ if($W_distance == 0)
 						<?php echo $row['effet']; ?>
 					</td>
 					<td>
-						<span class="<?php echo over_price($row['comp_requis'], $joueur[$row['comp_assoc']]); ?>"><?php echo $Gtrad[$row['comp_assoc']].' ('.$row['comp_requis'].')'; ?></span>
+						<span class="<?php echo over_price($row['comp_requis'], $comp_joueur); ?>"><?php echo $Gtrad[$row['comp_assoc']].' ('.$row['comp_requis'].')'; ?></span>
 					</td>
 					<td>
 						<?php
@@ -156,7 +164,7 @@ if($W_distance == 0)
 					</td>
 					<td>
 					<?php
-					if (over_price($cout, $joueur['star']) == 'achat_normal' AND over_price($row['comp_requis'], $joueur[$row['comp_assoc']]) == 'achat_normal')
+					if (over_price($cout, $joueur['star']) == 'achat_normal' AND over_price($row['comp_requis'], $comp_joueur) == 'achat_normal')
 					{	
 					?>
 						<a href="ecolecombat.php?ecole=<?php echo $_GET['ecole']; ?>&amp;action=apprendre&amp;id=<?php echo $row['id']; ?>&amp;poscase=<?php echo $_GET['poscase']; ?>" onclick="return envoiInfo(this.href, 'carte')"><span class="achat">Apprendre</span></a>
@@ -191,7 +199,7 @@ if($W_distance == 0)
 			echo 'Vous n\'avez pas assez de stars<br />';
 		}
 		?>
-		<a href="ecolecombat.php?poscase=<?php echo $_GET['poscase']; ?>" onclick="return envoiInfo(this.href, 'carte')">Retour à l'école de combat</a>
+		<a href="ecolecombat.php?poscase=<?php echo $_GET['poscase']; ?>" onclick="return envoiInfo(this.href, 'carte')">Retour à l&rsquo;école de combat</a>
 		<?php
 	}
 	else

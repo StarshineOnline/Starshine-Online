@@ -349,7 +349,8 @@ echo '
 		break;
 
 		case 'stat' :
-			if(array_key_exists('action', $_GET) AND $_GET['action'] == 'teleport' AND $joueur['teleport_roi'] == false)
+			if(array_key_exists('action', $_GET) AND $_GET['action'] == 'teleport'
+				 AND ($joueur['teleport_roi'] == false OR $joueur['teleport_roi'] == 'false' OR $joueur['teleport_roi'] == ''))
 			{
 				$requete = "UPDATE perso SET x = ".$Trace[$joueur['race']]['spawn_x'].", y = ".$Trace[$joueur['race']]['spawn_y'].", teleport_roi = 'true' WHERE ID = ".$joueur['ID'];
 				$db->query($requete);
