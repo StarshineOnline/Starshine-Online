@@ -43,7 +43,7 @@
 }
 {//-- Buffs, Grade, Pseudo
 	echo "<div id='joueur_buffs_nom' style=\"background:transparent url('./image/interface/fond_info_perso_".$joueur["race"].".png') top left no-repeat;\">";
-	echo " <div id='joueur_nom' onclick=\"envoiInfo('personnage.php', 'information');\" title=\"Acc&egrave;s &agrave la fiche de votre personnage\">".ucwords($joueur["grade"])." ".ucwords($joueur["nom"])." - niv.".$joueur["level"]."<br />".ucwords($Gtrad[$joueur["race"]])." ".ucwords($joueur["classe"])." </div>
+	echo " <div id='joueur_nom' onclick=\"envoiInfo('personnage.php', 'information');\" title=\"Accès à la fiche de votre personnage\">".ucwords($joueur["grade"])." ".ucwords($joueur["nom"])." - niv.".$joueur["level"]."<br />".ucwords($Gtrad[$joueur["race"]])." ".ucwords($joueur["classe"])." </div>
 	";
 	echo " <div id='buff_list'>
 			<ul>";
@@ -68,7 +68,7 @@
 			$case_buff_dispo = ($joueur["rang_grade"] + 2) - count($joueur["buff"]);
 			for($b = 0; $b < $case_buff_dispo; $b++)
 			{
-				echo "<li class='buff_dispo' title='vous pouvez encore recevoir $case_buff_dispo buffs'></li>";
+				echo "<li class='buff_dispo' title='vous pouvez encore recevoir $case_buff_dispo buffs'>&nbsp;</li>";
 			}
 		}
 		if(($joueur["rang_grade"] + 2) < 10)
@@ -82,16 +82,16 @@
 			}
 			for($b = ($joueur["rang_grade"] + 2 + 1); $b <= 10; $b++)
 			{
-				echo "<li class='buff_nondispo' title='".$title_grade[$b]."'> </li>";
+				echo "<li class='buff_nondispo' title='".$title_grade[$b]."'>&nbsp;</li>";
 			}
 		}
 		echo " </ul>
 		</div>
 		<br />
-		<div id='debuff_list'>
-			<ul>";
+		<div id='debuff_list'>";
 		if(count($joueur["debuff"]) > 0)
 		{
+			echo "<ul>";
 			foreach($joueur["debuff"] as $buff)
 			{//-- Listing des buffs
 				$overlib = str_replace("'", "\'", trim("<ul><li class='overlib_titres'>".$buff["nom"]."</li><li>".description($buff["description"], $buff)."</li><li>Durée ".transform_sec_temp($buff["fin"] - time())."</li></ul>"));
@@ -103,9 +103,10 @@
 					   ".genere_image_buff_duree($buff)."
 					  </li>";
 			}
+		echo " </ul>";
 		}
-	echo " </ul>
-		  </div>";
+
+		  echo "</div>";
 	echo "</div>";
 }
 if(!empty($joueur["groupe"]))
@@ -114,7 +115,7 @@ if(!empty($joueur["groupe"]))
 
 	echo "<div id='joueur_groupe'>
 			<div id='joueur_groupe_bouton'>
-		   <div id='mail_groupe' title='Envoyer un message &agrave; l&apos;ensemble du groupe.' onclick=\"return envoiInfo('envoimessage.php?id_type=g".$groupe["id"]."', 'information');\"></div>
+		   <div id='mail_groupe' title='Envoyer un message à l'ensemble du groupe.' onclick=\"return envoiInfo('envoimessage.php?id_type=g".$groupe["id"]."', 'information');\"></div>
 		   <div id='info_groupe' title='Voir les informations de mon groupe.' onclick=\"return envoiInfo('infogroupe.php?id=".$groupe["id"]."', 'information');\"></div>
 		   </div>";
 	echo " <ul>";

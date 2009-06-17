@@ -59,7 +59,7 @@ $_SESSION['position'] = convert_in_pos($joueur['x'], $joueur['y']);
 
 <div id="mask" style='display:none;'></div>
 <div id="popup" style='display:none;'>
-	<div id="popup_menu"><span class='fermer' title='Fermer le popup' onclick="fermePopUp(); return false;"></span></div>
+	<div id="popup_menu"><span class='fermer' title='Fermer le popup' onclick="fermePopUp(); return false;">&nbsp;</span></div>
 	<div id="popup_marge">
 		<div id="popup_content"></div>
 	</div>
@@ -74,7 +74,7 @@ $_SESSION['position'] = convert_in_pos($joueur['x'], $joueur['y']);
 		
 	</div>
 	<div id='menu'>
-		<?php echo "<div id='menu_date'><img src='image/interface/".moment_jour().".png' alt='".moment_jour()."' title='".moment_jour()." - ".date_sso()."' >".moment_jour();?>
+		<?php echo "<div id='menu_date'><img src='image/interface/".moment_jour().".png' alt='".moment_jour()."' title='".moment_jour()." - ".date_sso()."' />".moment_jour();?>
 	</div>
 
 	<input type="hidden" id="menu_encours" value="lejeu" />
@@ -84,7 +84,7 @@ $_SESSION['position'] = convert_in_pos($joueur['x'], $joueur['y']);
 		<div id='communaute_menu' style='display:none;'><span class='menu'><a href="http://forum.starshine-online.com">Forum</a></span><span class='menu'><a href="http://wiki.starshine-online.com/">Wiki</a></span><span class='menu' onclick="affichePopUp('acces_chat.php');">Tchat</span><span class='menu' onclick="affichePopUp('boutique_sso.php');">Boutique SSO</span></div>
 	</div>
 	<div id='menu_deco'>
-		<span class="fermer" title='Se déconnecter' onclick="if(confirm('Voulez vous déconnecter ?')) { document.location.href='index.php?deco=ok'; };"></span>
+		<span class="fermer" title='Se déconnecter' onclick="if(confirm('Voulez vous déconnecter ?')) { document.location.href='index.php?deco=ok'; };">&nbsp;</span>
 	</div>
 </div>
 <div id='contenu_back'>
@@ -107,15 +107,23 @@ $_SESSION['position'] = convert_in_pos($joueur['x'], $joueur['y']);
 		
 		$case = convert_in_pos($joueur['x'], $joueur['y']);
 		if(array_key_exists('page_info', $_GET)) $page_info = $_GET['page_info']; else $page_info = 'informationcase.php';
-		?>
-		<img src="image/pixel.gif" onLoad="envoiInfo('<?php echo $page_info; ?>?case=<?php echo $case; ?>', 'information');" />
-		</div>
+		{//-- Javascript
+			echo "<script type='text/javascript'>
+					// <![CDATA[\n";
+			{//-- envoiInfo
+				echo "envoiInfo('".$page_info."?case=".$case."', 'information');";
+			}
+			echo "	// ]]>
+				  </script>";
+		}
+
+		echo "</div>
 	</div>
 	
 </div>
-</div>
-</div>
-<?php
+</div>";
+
+
 //Inclusion du bas de la page
 include('bas.php');
 ?>

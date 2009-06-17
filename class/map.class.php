@@ -108,11 +108,11 @@ class map
 		echo '<div class="div_map" style="width : '.round(20 + ($taille_cellule * $this->case_affiche)).'px;height:'.round(20 + ($taille_cellule * $this->case_affiche)).'px;">';
 		{//-- Affichage du bord haut (bh) de la map
 			echo "<ul id='".$classe_css['map_bord_haut']."'>
-				   <li id='".$classe_css['map_bord_haut_gauche']."' class='".$class_css['resolution']."' onclick=\"switch_map(".$total_cases.");\">&nbsp;</li>";
+				   <li id='".$classe_css['map_bord_haut_gauche']."'";if (!empty($class_css['resolution'])) {echo "class='".$class_css['resolution']."'";} echo "onclick=\"switch_map(".$total_cases.");\">&nbsp;</li>";
 			for ($bh = $this->xmin; $bh <= $this->xmax; $bh++)
 			{
 				if($bh == $this->x) { $class_x = "id='bord_haut_x' "; } else { $class_x = ""; }; //-- Pour mettre en valeur la position X ou se trouve le joueur
-				echo "<li $class_x class='".$class_css['resolution']."'>$bh</li>";
+				echo "<li $class_x ";if (!empty($class_css['resolution'])) {echo "class='".$class_css['resolution']."'";} echo ">$bh</li>";
 			}
 			echo "</ul>";
 		}
@@ -129,7 +129,7 @@ class map
 						if($Once) { echo "</ul>"; } else { $Once = true; };
 						if($y_map == $this->y) { $class_y = "id='bord_haut_y' "; } else { $class_y = ""; }; //-- Pour mettre en valeur la position Y ou se trouve le joueur
 						echo "<ul class='".$class_css['resolution_map']."'>
-					 		   <li $class_y class='".$classe_css['map_bord_gauche']." ".$class_css['resolution']."'>".$y_map."</li>"; //-- Bord gauche de la map
+					 		   <li $class_y "; if((!empty($class_css['resolution'])) OR (!empty($classe_css['map_bord_gauche']))) { echo "class='".$classe_css['map_bord_gauche']." ".$class_css['resolution']."'";} echo ">".$y_map."</li>"; //-- Bord gauche de la map
 					}
 					if( ($x_map == $this->x) && ($y_map == $this->y) && is_array($this->map[$x_map][$y_map]["Joueurs"]))
 					{
