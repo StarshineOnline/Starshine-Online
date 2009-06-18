@@ -303,10 +303,19 @@ if(array_key_exists('from', $_GET) && $_GET['id_action'] != '')
 		<?php
 			$requete = "SELECT * FROM sort_combat WHERE id IN (".implode(',', $sort).") ORDER BY comp_assoc, type, nom";
 			$req = $db->query($requete);
+			$comp_assoc = '';
+			$i = 0;
 			while($row = $db->read_array($req))
 			{
+				if($comp_assoc != $row['comp_assoc'])
+				{
+					if($i > 0) echo '</optgroup>';
+					echo '<optgroup label="'.$Gtrad[$row['comp_assoc']].'">';
+					$comp_assoc = $row['comp_assoc'];
+				}
 				$mpsort = round($row['mp'] * (1 - (($Trace[$joueur['race']]['affinite_'.$row['comp_assoc']] - 5) / 10)));
-				echo '<option value="s'.$row['id'].'">'.$row['nom'].' ('.$mpsort.' Réserves)</option>';
+				echo '<option value="s'.$row['id'].'">'.$row['nom'].' ('.$mpsort.' RM)</option>';
+				$i++;
 			}
 		?>
 			</select>

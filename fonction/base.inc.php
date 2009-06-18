@@ -581,11 +581,14 @@ function cout_pa2($coutpa, $joueur, $case, $diagonale)
 	//Bâtiment qui augmente le coût de PA
 	if($batiment = batiment_map($coord['x'], $coord['y']))
 	{
-		$coutpa = $coutpa * $batiment['augmentation_pa'];
-		//Si on est sur son royaume réduction du cout de PA par 2
-		if($case['royaume'] == $Trace[$joueur['race']]['numrace'])
+		if($batiment['augmentation_pa'] > 1)
 		{
-			$coutpa = ceil($coutpa / 2);
+			$coutpa = $coutpa * $batiment['augmentation_pa'];
+			//Si on est sur son royaume réduction du cout de PA par 2
+			if($case['royaume'] == $Trace[$joueur['race']]['numrace'])
+			{
+				$coutpa = ceil($coutpa / 2);
+			}
 		}
 	}	
 	return $coutpa;
@@ -3274,7 +3277,7 @@ function list_joueurs_visu($joueur, $distance) {
 	$lx = $x - $distance; $gx = $x + $distance;
 	$ly = $y - $distance; $gy = $y + $distance;
 	// Recherche des persos
-	$requete = "select *, (ABS($x - x) + ABS($y - y)) as distance from perso where x >= $lx and x <= $gx and y >= $ly and y <= $gy ORDER BY (ABS($x - x) + ABS($y - y)) ASC";
+	$requete = "select *, (ABS($x - x) + ABS($y - y)) as distance from perso where x >= $lx and x <= $gx and y >= $ly and y <= $gy AND statut = 'actif' ORDER BY (ABS($x - x) + ABS($y - y)) ASC";
 	$req = $db->query($requete);
 	// Ajout des persos dans le tableau si la distance pythagoricienne est bonne
 	$ret = array();

@@ -61,7 +61,7 @@ $ress['Glace']['Sable'] = 0;
 $ress['Glace']['Nourriture'] = 2;
 $ress['Glace']['Star'] = 0;
 $ress['Glace']['Charbon'] = 2;
-$ress['Glace']['Essence Magique'] = 3;
+$ress['Glace']['Essence Magique'] = 5;
 
 $ress['Route']['Pierre'] = 0;
 $ress['Route']['Bois'] = 0;
