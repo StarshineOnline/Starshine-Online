@@ -10,6 +10,10 @@ if($joueur['pa'] >= 30)
 	$requete = 'SELECT * FROM placement WHERE id = '.sSQL($_GET['id_construction']);
 	$req = $db->query($requete);
 	$row = $db->read_assoc($req);
+
+	if ($row['fin_placement'] < time()) {
+		security_block(BAD_ENTRY, "Construction déjà finie !");
+	}
 	
 	//Calcul de la distance entre le joueur et le placement
 	$distance = calcul_distance(convert_in_pos($joueur['x'], $joueur['y']), convert_in_pos($row['x'], $row['y']));
@@ -44,8 +48,8 @@ if($joueur['pa'] >= 30)
 					$requete = "UPDATE perso SET architecture = ".$joueur['architecture']." WHERE ID = ".$joueur['ID'];
 					$db->query($requete);
 				}
-				echo '<h6>La construction a été accélérée de '.transform_sec_temp($secondes).'</h6>
-				<a href="archi_accelere_construction.php?id_construction='.$_GET['id_construction'].'" onclick="return envoiInfo(this.href, \'information\');">Accélérer de nouveau</a>';
+				echo '<h6>La construction a été accélérée de '.transform_sec_temp($secondes).'</h6>';
+				echo '<a href="archi_accelere_construction.php?id_construction='.$_GET['id_construction'].'" onclick="return envoiInfo(this.href, \'information\');">Accélérer de nouveau</a>';
 			}
 		}
 	}
