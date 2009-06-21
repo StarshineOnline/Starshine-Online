@@ -115,7 +115,7 @@ if(!empty($joueur["groupe"]))
 
 	echo "<div id='joueur_groupe'>
 			<div id='joueur_groupe_bouton'>
-		   <div id='mail_groupe' title='Envoyer un message à l'ensemble du groupe.' onclick=\"return envoiInfo('envoimessage.php?id_type=g".$groupe["id"]."', 'information');\"></div>
+		   <div id='mail_groupe' title=\"Envoyer un message à l'ensemble du groupe.\" onclick=\"return envoiInfo('envoimessage.php?id_type=g".$groupe["id"]."', 'information');\"></div>
 		   <div id='info_groupe' title='Voir les informations de mon groupe.' onclick=\"return envoiInfo('infogroupe.php?id=".$groupe["id"]."', 'information');\"></div>
 		   </div>";
 	echo " <ul>";
