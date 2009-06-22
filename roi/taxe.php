@@ -5,7 +5,7 @@ $duree = (60 * 60 * 24) * 7;
 if((time() - $duree) < $R['taxe_time'])
 {
 	echo 'Vous avez déjà modifié le taux de taxe récemment.<br />
-	Vous pourrais le modifier dans '.transform_sec_temp(($R['taxe_time'] + $duree) - time());
+	Vous pourrez le modifier dans '.transform_sec_temp(($R['taxe_time'] + $duree) - time());
 }
 else
 {

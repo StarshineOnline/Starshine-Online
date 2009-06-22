@@ -15,7 +15,7 @@
 	$tab_classement['star']['affiche'] = false;
 	$tab_classement['star']['affiche_niveau'] = false;
 	$tab_classement['melee']['nom'] = 'Les meilleurs combattants';
-	$tab_classement['melee']['champ'] = 'Mélée';
+	$tab_classement['melee']['champ'] = 'Mêlée';
 	$tab_classement['melee']['affiche'] = true;
 	$tab_classement['melee']['affiche_niveau'] = false;
 	$tab_classement['esquive']['nom'] = 'Les meilleurs esquiveurs';

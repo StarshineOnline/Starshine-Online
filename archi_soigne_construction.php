@@ -26,27 +26,31 @@ if($joueur['pa'] >= 30)
 			$hp = $row['hp_b'];
 			$hp_repare = $row['hp_b'] - $row['hp_c'];
 		}
-		
-		//On met à jour le placement
-		$requete = "UPDATE construction SET hp = ".$hp." WHERE id = ".sSQL($_GET['id_construction']);
-		if($db->query($requete))
+		//On vérifie qu'il y a bien eu réparation du batiment
+		if($hp_repare > 0)
 		{
-			//On supprime les PA du joueurs
-			$requete = "UPDATE perso SET pa = pa - 30 WHERE ID = ".$joueur['ID'];
+			//On met à jour le placement
+			$requete = "UPDATE construction SET hp = ".$hp." WHERE id = ".sSQL($_GET['id_construction']);
 			if($db->query($requete))
 			{
-				//Augmentation de la compétence d'architecture
-				$augmentation = augmentation_competence('architecture', $joueur, 1);
-				if ($augmentation[1] == 1)
+				//On supprime les PA du joueurs
+				$requete = "UPDATE perso SET pa = pa - 30 WHERE ID = ".$joueur['ID'];
+				if($db->query($requete))
 				{
-					$joueur['architecture'] = $augmentation[0];
-					echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant à '.$joueur['architecture'].' en architecture</span><br />';
-					$requete = "UPDATE perso SET architecture = ".$joueur['architecture']." WHERE ID = ".$joueur['ID'];
-					$db->query($requete);
+					//Augmentation de la compétence d'architecture
+					$augmentation = augmentation_competence('architecture', $joueur, 1);
+					if ($augmentation[1] == 1)
+					{
+						$joueur['architecture'] = $augmentation[0];
+						echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant à '.$joueur['architecture'].' en architecture</span><br />';
+						$requete = "UPDATE perso SET architecture = ".$joueur['architecture']." WHERE ID = ".$joueur['ID'];
+						$db->query($requete);
+					}
+					echo '<h6>La construction a été réparée de '.$hp_repare.' HP</h6>';
 				}
-				echo '<h6>La construction a été réparée de '.$hp_repare.' HP</h6>';
 			}
 		}
+		else echo '<h5>La construction est déjà totalement réparée</h5>';
 	}
 }
 ?>

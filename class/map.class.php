@@ -406,12 +406,12 @@ class map
 				$this->map[$objBatiments->x][$objBatiments->y]["Batiments"][$batimat]["royaume"] = $objBatiments->royaume;
 				$this->map[$objBatiments->x][$objBatiments->y]["Batiments"][$batimat]["image"] = $objBatiments->image;
 
-				{//-- v?rification que l'image du batiment existe
+				{//-- vérification que l'image du batiment existe
 					$image = $this->root."image/batiment/";
 					
 					if(file_exists($image.$objBatiments->image."_04.png")) 		{ $image .= $objBatiments->image."_04.png"; }
 					elseif(file_exists($image.$objBatiments->image."_04.gif")) 	{ $image .= $objBatiments->image."_04.gif"; }
-					else 														{ $image = ""; } //-- Si aucun des fichiers n'existe autant rien mettre...
+					else 														{ $image = $objBatiments->image."_introuvable.png"; } //-- Si aucun des fichiers n'existe autant rien mettre...
 				}
 				$this->map[$objBatiments->x][$objBatiments->y]["Batiments"][$batimat]["image"] = $image;
 			}

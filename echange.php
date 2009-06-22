@@ -139,7 +139,7 @@ if(array_key_exists('valid_etape', $_GET))
 			$pos2 = convert_in_pos($j2['x'], $j2['y']);
 			if(detection_distance($pos1, $pos2) > 1)
 			{
-				echo '<h6>Vous êtes trop loin pour finaliser cette échange</h6>';
+				echo '<h6>Vous êtes trop loin pour finaliser cet échange</h6>';
 			}
 			//Vérification que les joueurs ont bien les objets dans leur inventaire
 			else
@@ -197,7 +197,7 @@ if(array_key_exists('valid_etape', $_GET))
 							//On envoi un message au gars <== a faire ==>
 							
 							//C'est ok
-							echo '<h6>L\'échange c\'est déroulé avec succès</h6>';
+							echo '<h6>L\'échange s\'est déroulé avec succès</h6>';
 							unset($echange);
 						}
 					}
@@ -392,7 +392,7 @@ Vous proposez :
 	}
 	elseif($echange['statut'] == 'proposition' AND $echange['id_j1'] == $joueur['ID'])
 	{
-		echo 'Votre proposition est étudié par le joueur';
+		echo 'Votre proposition est étudiée par le joueur';
 	}
 }
 echo '</div>';
