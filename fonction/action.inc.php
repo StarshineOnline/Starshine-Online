@@ -19,7 +19,7 @@
  * @return [1] ID d la compétence ou du sort.
  * @return [2] Pesonnage (paramètre $joueur auquel on a incrémenté le compteur d'utilisation de l'action à effectuer).   
  */
-function script_action($joueur, $ennemi, $mode, $effects)
+function script_action($joueur, $ennemi, $mode, &$effects)
 {
 	$effectue = sub_script_action($joueur, $ennemi, $mode, $effects);
 	// On gère la dissimulation *après* le choix de l'action
@@ -53,6 +53,23 @@ function script_action($joueur, $ennemi, $mode, $effects)
 	return $effectue;
 }
 
+/*
+ * Cette fonction permet de regrouper plusieurs états et leurs états dérivés
+ * @param $valeur valeur 'maître de l'état'
+ * @return le tableau de toutes les faleurs qui matchent
+ */
+function get_array_condition($valeur) {
+  $array = array($valeur);
+  switch ($valeur)
+  {
+    case 'poison':
+      $array[] = 'empoisonne';
+      $array[] = 'poison_lent';
+      break;
+  }
+  return $array;
+}
+
 /**
  * Détermine l'action a effectuer, si on peut.
  * Commence par vérifier si le personnage peut effectuer une action en fonction de son état.
@@ -69,7 +86,7 @@ function script_action($joueur, $ennemi, $mode, $effects)
  * @return [1] ID d la compétence ou du sort.
  * @return [2] Pesonnage (paramètre $joueur auquel on a incrémenté le compteur d'utilisation de l'action à effectuer).  
  */   
-function sub_script_action($joueur, $ennemi, $mode, $effects)
+function sub_script_action($joueur, $ennemi, $mode, &$effects)
 {
 	global $db, $round, $Trace, $debugs;
 	$stop = false;
@@ -215,7 +232,7 @@ function sub_script_action($joueur, $ennemi, $mode, $effects)
 						switch($operateur)
 						{
 							case '>' :
-								if($param > $valeur) $valid = true; else $valid = false;
+                if($param > $valeur) $valid = true; else $valid = false;
 							break;
 							case '<' :
 								if($param < $valeur) $valid = true; else $valid = false;
@@ -225,25 +242,31 @@ function sub_script_action($joueur, $ennemi, $mode, $effects)
 							break;
 							// Vérification si le personnage est dans un certain état
 							case '°' :
-								if(array_key_exists($valeur, $param))
-								{
-									$valid = false;
-								}
-								else
-								{
-									$valid = true;
-								}
+                $array_valeurs = get_array_condition($valeur);
+                foreach ($array_valeurs as $la_valeur)
+                  if(array_key_exists($la_valeur, $param))
+                  {
+                    $valid = false;
+                    break;
+                  }
+                  else
+                  {
+                    $valid = true;
+                  }
 							break;
 							// Vérification si le personnage n'est pas dans un certain état
 							case '+' :
-								if(!array_key_exists($valeur, $param))
-								{
-									$valid = false;
-								}
-								else
-								{
-									$valid = true;
-								}
+                $array_valeurs = get_array_condition($valeur);
+                foreach ($array_valeurs as $la_valeur)
+                  if(!array_key_exists($la_valeur, $param))
+                  {
+                    $valid = false;
+                    break;
+                  }
+                  else
+                  {
+                    $valid = true;
+                  }
 							break;
 						}
 						$c++;
@@ -411,7 +434,7 @@ function sub_script_action($joueur, $ennemi, $mode, $effects)
  * 
  * return Compétence de magie associée au sort.
  */
-function lance_sort($id, $acteur, $effects)
+function lance_sort($id, $acteur, &$effects)
 {
 	global $attaquant, $defenseur, $db, $Gtrad, $debugs, $Trace, $G_buff, $G_debuff;
 	// Définition des personnages actif et passif
@@ -929,7 +952,7 @@ function lance_sort($id, $acteur, $effects)
  * 
  * return Compétence associée à la compétence.
  */
-function lance_comp($id, $acteur, $effects)
+function lance_comp($id, $acteur, &$effects)
 {
 	global $attaquant, $defenseur, $db, $Gtrad, $debugs, $comp_attaque, $G_round_total;
 	// Définition des personnages actif et passif
@@ -1085,19 +1108,8 @@ function lance_comp($id, $acteur, $effects)
 		break;
 		case 'fleche_poison' :
 			echo '&nbsp;&nbsp;<strong>'.$actif['nom'].'</strong> utilise '.$row['nom'].' !<br />';
-			$actif['degat_sup'] = $row['effet'];
-			// On regarde si le poison fait effet
-			$de_att = rand(0, (($actif['force'] + $row['effet'])));
-			$de_deff = rand(0, $passif['volonte']);
-			if($de_att > $de_deff)
-			{
-				echo '&nbsp;&nbsp;<strong>'.$passif['nom'].'</strong> est empoisonné pour '.$row['duree'].' tours !<br />';
-				$passif['etat']['poison']['effet'] = $row['effet'];
-				$passif['etat']['poison']['level'] = $row['effet'];
-				$passif['etat']['poison']['duree'] += $row['duree'];
-				if($passif['etat']['poison']['duree'] > $row['effet']) $passif['etat']['poison']['duree'] = $row['effet'] - 1;
-			}
-			else echo '&nbsp;&nbsp;Le poison n\'agit pas<br />';
+      $effects[] =
+        new fleche_poison($row['effet'], $row['effet2'], $row['duree']);
 			//On prends en compte la bonne compétence
 			$row['comp_assoc'] = $actif['comp'];
 			$comp_attaque = true;

@@ -57,21 +57,23 @@ class active_effect extends effect
 
   function __construct($aNom, $aTable, $aLevel = null) {
     parent::__construct($aNom, false);
-    global $db;
-    $this->table = $aTable;
-    $this->level = $aLevel;
-		$sNom = $aNom;
-		$requete = "select * from $aTable where type = '$aNom'";
-		if ($aLevel != null) $requete .= " and level = '$aLevel'";
-		//echo "<small>$requete</small><br />";
-		$db->query($requete);
-		if ($db->num_rows < 0) throw new Exception("Cannot find $sNom");
-		$row = $db->read_assoc($req);
-		if (isset($row['effet'])) $this->effet = $row['effet'];
-		if (isset($row['effet2'])) $this->effet2 = $row['effet2'];
-		if (isset($row['effet3'])) $this->effet3 = $row['effet3'];
-		if (isset($row['duree'])) $this->duree = $row['duree'];
-		if (isset($row['arme_requis'])) $this->requis = $row['arme_requis'];
+    if ($aTable != null) {
+      global $db;
+      $this->table = $aTable;
+      $this->level = $aLevel;
+      $sNom = $aNom;
+      $requete = "select * from $aTable where type = '$aNom'";
+      if ($aLevel != null) $requete .= " and level = '$aLevel'";
+      //echo "<small>$requete</small><br />";
+      $db->query($requete);
+      if ($db->num_rows < 0) throw new Exception("Cannot find $sNom");
+      $row = $db->read_assoc($req);
+      if (isset($row['effet'])) $this->effet = $row['effet'];
+      if (isset($row['effet2'])) $this->effet2 = $row['effet2'];
+      if (isset($row['effet3'])) $this->effet3 = $row['effet3'];
+      if (isset($row['duree'])) $this->duree = $row['duree'];
+      if (isset($row['arme_requis'])) $this->requis = $row['arme_requis'];
+    }
   }
 }
 
@@ -342,16 +344,12 @@ class botte_ours extends botte
 class fleche_poison extends comp_combat {
 	var $poison;
 
-  function __construct($aLevel = 1) {
-    parent::__construct('fleche_poison', null);
-		if ($this->duree < 1) 
-			$this->duree = 1;
+  function __construct($aEffet, $aEffet2, $aDuree = 5) {
+    parent::__construct('Fleche empoisonnée', null);
+    $this->duree = $aDuree;
+    $this->effet = $aEffet;
+    $this->effet2 = $aEffet2;
 		$this->poison = false;
-	}
-
-	static function factory(&$effects, &$actif, &$passif, $acteur) {
-		if (array_key_exists('fleche_poison', $actif['etat']))
-			$effects[] = new fleche_poison($actif['etat']['fleche_poison']['level']);
 	}
 
   function calcul_arme(&$actif, &$passif, $arme) {
@@ -359,12 +357,23 @@ class fleche_poison extends comp_combat {
 	}
 
   function inflige_degats(&$actif, &$passif, $degats) {
-		$this->poison = true;
-		return $degats;
+    $pot_att = $actif['force'] + $this->effet;
+    $pot_def = $passif['volonte'];
+    $de_att = rand(0, $pot_att);
+    $de_deff = rand(0, $pot_def);
+    $this->debug("Poison: dé de $pot_att doi être supérieur à dé de $pot_def");
+    $this->debug("$de_att / $de_def");
+    if ($de_att > $de_deff) {
+      $this->poison = true;
+    } else {
+      $this->notice("Le poison n'agit pas");
+    }
 	}
 
   function fin_round(&$actif, &$passif) {
 		if ($this->poison) {
+      $this->hit('<strong>'.$passif['nom'].'</strong> est empoisonné pour '.
+                 $this->duree.' tours !');
 			$passif['etat']['empoisonne']['effet'] = $this->effet2;
 			$passif['etat']['empoisonne']['duree'] = $this->duree;
 		}
@@ -469,32 +478,6 @@ class fleche_magnetique extends magnetique {
 		parent::__construct('fleche_magnetique', $aNb);
 		$this->titre = 'La flèche magnétique';
 		$this->chance = $achance;
-	}
-}
-
-class empoisonne extends effect {
-	var $vigueur;
-
-  function __construct($aVigueur) {
-    parent::__construct('poison');
-		$this->vigueur = $aVigueur;
-	}
-
-	static function factory(&$effects, &$actif, &$passif, $acteur) {
-		if (array_key_exists('empoisonne', $actif['etat']))
-			$effects[] = new empoisonne($actif['etat']['empoisonne']['effet']);
-	}
-
-  function fin_round(&$actif, &$passif)
-  {
-		$this->hit($actif['nom'].' perd '.$this->vigueur.' HP à cause du poison');
-		$actif['hp'] -= $this->vigueur;
-		$actif['etat']['empoisonne']['duree'] -= 1;
-		$actif['etat']['empoisonne']['effet'] -= 1;
-		if ($actif['etat']['empoisonne']['effet'] < 1)
-			$actif['etat']['empoisonne']['effet'] = 1;
-		if ($actif['etat']['empoisonne']['duree'] < 1)
-			unset($actif['etat']['empoisonne']);
 	}
 }
 

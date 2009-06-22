@@ -43,8 +43,9 @@ class effect
    * @param  $aMessage    Message à afficher.        
    */  
 	function hit($aMessage, $br = true) {
-		echo "<span class=\"degat\">$aMessage</span>";
+		echo "<span class=\"degat\">$aMessage";
     if ($br) { echo '<br />'; }
+    echo '</span>';
 	}
 
   /**
@@ -53,8 +54,9 @@ class effect
    * @param  $aMessage    Message à afficher.        
    */  
 	function heal($aMessage, $br = true) {
-		echo "<span class=\"soin\">$aMessage</span>";
+		echo "<span class=\"soin\">$aMessage";
     if ($br) { echo '<br />'; }
+    echo '</span>';
 	}
 
   /**
@@ -63,8 +65,9 @@ class effect
    * @param  $aMessage    Message à afficher.        
    */  
 	function notice($aMessage, $br = true) {
-		echo "<span class=\"small\">$aMessage</span>";
+		echo "<span class=\"small\">$aMessage";
     if ($br) { echo '<br />'; }
+    echo '</span>';
 	}
 
   /**
@@ -74,8 +77,9 @@ class effect
    */  
 	function debug($aMessage, $br = true) {
 		global $debugs;
-		echo "<div class=\"debug\" id=\"debug${debugs}\">$aMessage</div>";
+		echo "<div class=\"debug\" id=\"debug${debugs}\">$aMessage";
     if ($br) { echo '<br />'; }
+    echo '</div>';
 		$debugs++;
 	}
 
@@ -110,7 +114,6 @@ class effect
     empoisonne::factory($effects, $actif, $passif, $acteur);
     poison_lent::factory($effects, $actif, $passif, $acteur);
     fleche_magnetique::factory($effects, $actif, $passif, $acteur);
-    fleche_poison::factory($effects, $actif, $passif, $acteur);
     maitrise_bouclier::factory($effects, $actif, $passif, $acteur);
     gemme_enchassee::factory($effects, $actif, $passif, $acteur);
 
@@ -324,6 +327,31 @@ function sort_effects(array& $effects) {
   usort($effects, array('effect', 'compare_effects'));
 }
 
+class empoisonne extends effect {
+	var $vigueur;
+
+  function __construct($aVigueur) {
+    parent::__construct('poison');
+		$this->vigueur = $aVigueur;
+	}
+
+	static function factory(&$effects, &$actif, &$passif, $acteur) {
+		if (array_key_exists('empoisonne', $actif['etat']))
+			$effects[] = new empoisonne($actif['etat']['empoisonne']['effet']);
+	}
+
+  function fin_round(&$actif, &$passif)
+  {
+		$this->hit($actif['nom'].' perd '.$this->vigueur.' HP à cause du poison');
+		$actif['hp'] -= $this->vigueur;
+		$actif['etat']['empoisonne']['effet'] -= 1;
+		if ($actif['etat']['empoisonne']['effet'] < 1)
+			$actif['etat']['empoisonne']['effet'] = 1;
+		if ($actif['etat']['empoisonne']['duree'] < 1)
+			unset($actif['etat']['empoisonne']);
+	}
+}
+
 /**
  * Poison lent: pas d'atténuation de la vigueur
  */
@@ -345,7 +373,6 @@ class poison_lent extends effect {
   {
 		$this->hit($actif['nom'].' perd '.$this->vigueur.' HP à cause du poison');
 		$actif['hp'] -= $this->vigueur;
-		//$actif['etat']['poison_lent']['duree'] -= 1;
 		if ($actif['etat']['poison_lent']['duree'] < 1)
 			unset($actif['etat']['poison_lent']);
 	}
