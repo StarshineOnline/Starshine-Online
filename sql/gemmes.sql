@@ -1,4 +1,4 @@
-﻿--
+--
 -- Structure de la table `gemme`
 --
 
@@ -85,9 +85,9 @@ INSERT INTO `gemme` (`id`, `nom`, `type`, `niveau`, `partie`, `enchantement_nom`
 (61, 'Gemme du sorcier royal', 'accessoire', 3, '', 'mage', '+50 en incantation', 'incantation', 50, 0),
 (62, 'Gemme du guerrier royal', 'accessoire', 3, '', 'combattant', '+50 en mêlée', 'melee', 50, 0),
 (63, 'Gemme de l''archer royal', 'accessoire', 3, '', 'baliste', '+50 en tir à distance', 'distance', 50, 0),
-(64, 'Gemme d''esquive', 'armure', 3, 'bottes', 'esquive', '50% de chances d''esquiver totalement la 2 ème attaque', 'evasion', 50, 0),
+(64, 'Gemme d''esquive', 'armure', 3, 'chaussure', 'esquive', '50% de chances d''esquiver totalement la 2 ème attaque', 'evasion', 50, 0),
 (65, 'Gemme de parade totale', 'arme', 3, 'bouclier', 'parade', '10% de chance de parer totalement un coup en cas de parade réussie', 'parade', 10, 0),
-(66, 'Gemme des 7 lieues', 'armure', 3, 'bottes', '7 lieues', '-1 pa de déplacement (2 minimum)', 'course', 50, 0),
+(66, 'Gemme des 7 lieues', 'armure', 3, 'chaussure', '7 lieues', '-1 pa de déplacement (2 minimum)', 'course', 50, 0),
 (67, 'Gemme divine', 'accessoire', 3, '', 'divin', '-1 en cout de réserve de mana pour les compétences ', 'divin', 1, 0),
 (68, 'Gemme du berseker', 'arme', 2, '', 'bersek', '+1 réserve de mana', 'reserve', 1, 0),
 (69, 'Gemme de l''élémentaliste', 'arme', 3, '', 'élémentaliste', '+2 réserve de mana', 'reserve', 2, 0);

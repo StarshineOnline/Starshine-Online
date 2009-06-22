@@ -43,7 +43,7 @@ class effect
    * @param  $aMessage    Message à afficher.        
    */  
 	function hit($aMessage, $br = true) {
-		echo "<span class=\"degat\">$aMessage";
+		echo "<span class=\"degat\">&nbsp;&nbsp;$aMessage";
     if ($br) { echo '<br />'; }
     echo '</span>';
 	}
@@ -54,7 +54,7 @@ class effect
    * @param  $aMessage    Message à afficher.        
    */  
 	function heal($aMessage, $br = true) {
-		echo "<span class=\"soin\">$aMessage";
+		echo "<span class=\"soin\">&nbsp;&nbsp;$aMessage";
     if ($br) { echo '<br />'; }
     echo '</span>';
 	}
@@ -65,7 +65,7 @@ class effect
    * @param  $aMessage    Message à afficher.        
    */  
 	function notice($aMessage, $br = true) {
-		echo "<span class=\"small\">$aMessage";
+		echo "<span class=\"small\">&nbsp;&nbsp;$aMessage";
     if ($br) { echo '<br />'; }
     echo '</span>';
 	}
@@ -89,7 +89,7 @@ class effect
    * @param  $aMessage    Message à afficher.        
    */  
 	function message($aMessage) {
-		echo $aMessage."<br />\n";
+		echo "&nbsp;&nbsp;$aMessage<br />\n";
 	}
 
   /**
@@ -111,10 +111,24 @@ class effect
       $passif = $attaquant;
     }
 
+    /*
+     * Effets temporaires persistants
+     */
     empoisonne::factory($effects, $actif, $passif, $acteur);
     poison_lent::factory($effects, $actif, $passif, $acteur);
-    fleche_magnetique::factory($effects, $actif, $passif, $acteur);
+    ensable::factory($effects, $actif, $passif, $acteur);
+    /*
+     * Compétences passives
+     */
     maitrise_bouclier::factory($effects, $actif, $passif, $acteur);
+    maitrise_epee::factory($effects, $actif, $passif, $acteur);
+    maitrise_hache::factory($effects, $actif, $passif, $acteur);
+    maitrise_arc::factory($effects, $actif, $passif, $acteur);
+    maitrise_dague::factory($effects, $actif, $passif, $acteur);
+    maitrise_critique::factory($effects, $actif, $passif, $acteur);
+    /*
+     * Équipement
+     */
     gemme_enchassee::factory($effects, $actif, $passif, $acteur);
 
     /* Tri des effets selon leur ordre */
@@ -241,8 +255,8 @@ class effect
   function calcul_bloquage_reduction(&$actif, &$passif, $reduction) { return $reduction; }
   /**
    * Modifie les dégâts lorsque le coup est bloqué (en plus des dégâts bloqués)
-	 * Ceci se fait apres l'affichage du blocage, donc si les degats sont modifies,
-	 * la modification ne sera pas imputee au bouclier lui-meme.
+	 * Ceci se fait apres l'affichage du blocage, donc si les degats sont
+   * modifies, la modification ne sera pas imputee au bouclier lui-meme.
 	 * Il y a peu de raisons de modifier les degats a ce niveau.
    * 
    * @param  $actif     Personnage actif lors de l'action.
@@ -375,6 +389,40 @@ class poison_lent extends effect {
 		$actif['hp'] -= $this->vigueur;
 		if ($actif['etat']['poison_lent']['duree'] < 1)
 			unset($actif['etat']['poison_lent']);
+	}
+}
+
+/**
+ * Ensablé : sous l'effet de flèche de sable
+ */
+class ensable extends effect {
+	var $effet;
+
+  function __construct($aEffet) {
+    parent::__construct('fleche_sable');
+		$this->effet = $aEffet;
+	}
+
+	static function factory(&$effects, &$actif, &$passif, $acteur) {
+		if (array_key_exists('fleche_sable', $actif['etat'])) {
+			$effects[] = new ensable($actif['etat']['fleche_sable']['effet']);
+		}
+	}
+
+  function debut_round(&$actif, &$passif) {
+    $this->debug($actif['nom'].' est ensablé');
+    $actif['potentiel_toucher'] /= 1 + ($this->effet / 100);
+	}
+
+	function calcul_attaque_magique(&$actif, &$passif, $att) {
+    $this->debug($actif['nom'].' est ensablé');
+    return $att / (1 + ($this->effet / 100));
+  }
+
+  function fin_round(&$actif, &$passif)
+  {
+		if ($actif['etat']['fleche_sable']['duree'] < 1)
+			unset($actif['etat']['fleche_sable']);
 	}
 }
 

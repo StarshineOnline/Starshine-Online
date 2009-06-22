@@ -564,7 +564,8 @@ function cout_pa2($coutpa, $joueur, $case, $diagonale)
 		if($coutpa > 2) $coutpa -= 1;
 	}
 	//Buff rapide comme le vent
-	if(array_key_exists('rapide_vent', $joueur['buff']))
+	if(array_key_exists('rapide_vent', $joueur['buff']) or
+     array_key_exists('course', $joueur['enchantement']))
 	{
 		if($coutpa > 2) $coutpa -= 1;
 	}

@@ -7,11 +7,15 @@ include_once($root.'class/comp.class.php');
 include_once($root.'class/gemmes.class.php');
 
 /**
+ * Ca serait bien si dans cette fonction on se limitait à appliquer les effets,
+ * lancer les dés, et qu'on ne codait que les trucs vraiment très particuliers,
+ * qui modifient la cinématique de l'attaque.
+ *
  * @param $acteur joueur qui agit
  * @param $competence compétence utilisée
  * @param $effects liste des effets.
  */
-function attaque($acteur = 'attaquant', $competence, $effects)
+function attaque($acteur = 'attaquant', $competence, &$effects)
 {
   global $attaquant, $defenseur, $debugs, $G_buff, $G_debuff, $ups, $Gtrad, $G_round_total, $db;
   $ups = array();
@@ -42,7 +46,6 @@ function attaque($acteur = 'attaquant', $competence, $effects)
   if(array_key_exists('debuff_aveuglement', $actif['debuff'])) $actif['potentiel_toucher'] /= 1 + (($actif['debuff']['debuff_aveuglement']['effet']) / 100);
   if(array_key_exists('aveugle', $actif['etat'])) $actif['potentiel_toucher'] /= 1 + (($actif['etat']['aveugle']['effet']) / 100);
   if(array_key_exists('lien_sylvestre', $actif['etat'])) $actif['potentiel_toucher'] /= 1 + (($actif['etat']['lien_sylvestre']['effet2']) / 100);
-  if(array_key_exists('fleche_sable', $actif['etat'])) $actif['potentiel_toucher'] /= 1 + ($actif['etat']['fleche_sable']['effet'] / 100);
   if(array_key_exists('b_toucher', $actif['etat'])) $actif['potentiel_toucher'] /= 1 + ($actif['etat']['b_toucher']['effet'] / 100);
   //Buff précision
   if(array_key_exists('benediction', $actif['etat']))	$actif['potentiel_toucher'] *= 1 + (($actif['etat']['benediction']['effet'] * $G_buff['bene_accuracy']) / 100);
@@ -56,10 +59,6 @@ function attaque($acteur = 'attaquant', $competence, $effects)
   //Corrompu la journée
   if($actif['race'] == 'humainnoir' AND moment_jour() == 'Journée') $actif['potentiel_toucher'] *= 1.1; else $bonus_race = 1;
   if($actif['etat']['posture']['type'] == 'posture_touche') $actif['potentiel_toucher'] *= 1 + (($actif['etat']['posture']['effet']) / 100); else $buff_posture_touche = 1;
-  if($actif['arme_type'] == 'epee' AND array_key_exists('maitrise_epee', $actif['competences'])) $actif['potentiel_toucher'] *= 1 + ($actif['competences']['maitrise_epee'] / 1000);
-  if($actif['arme_type'] == 'hache' AND array_key_exists('maitrise_hache', $actif['competences'])) $actif['potentiel_toucher'] *= 1 + ($actif['competences']['maitrise_hache'] / 1000);
-  if($actif['arme_type'] == 'dague' AND array_key_exists('maitrise_dague', $actif['competences'])) $actif['potentiel_toucher'] *= 1 + ($actif['competences']['maitrise_dague'] / 1000);
-  if($actif['arme_type'] == 'arc' AND array_key_exists('maitrise_arc', $actif['competences'])) $actif['potentiel_toucher'] *= 1 + ($actif['competences']['maitrise_arc'] / 1000);
 
   /* Application des effets de début de round */
   foreach ($effects as $effect) $effect->debut_round($actif, $passif);
@@ -282,8 +281,7 @@ function attaque($acteur = 'attaquant', $competence, $effects)
 			
       //Coup critique
       $actif_chance_critique = ceil(pow($actif['dexterite'], 1.5) * 10);
-      //Maitrise du critique
-      if(array_key_exists('maitrise_critique', $actif['competences'])) $actif_chance_critique *= 1 + ($actif['competences']['maitrise_critique'] / 1000);
+
       //Buff du critique
       if(array_key_exists('buff_critique', $actif['buff'])) $actif_chance_critique *= 1 + (($actif['buff']['buff_critique']['effet']) / 100);
       if(array_key_exists('buff_cri_rage', $actif['buff'])) $actif_chance_critique *= 1 + (($actif['buff']['buff_cri_rage']['effet']) / 100);
@@ -434,61 +432,6 @@ function attaque($acteur = 'attaquant', $competence, $effects)
       unset($actif['etat']['dissimulation']);
     }
   //Augmentation des compétences liées
-  if($actif['arme_type'] == 'arc' AND array_key_exists('maitrise_arc', $actif['competences']))
-    {
-      $actif['maitrise_arc'] = $actif['competences']['maitrise_arc'];
-      $augmentation = augmentation_competence('maitrise_arc', $actif, 6);
-      if ($augmentation[1] == 1)
-				{
-					$actif['competences']['maitrise_arc'] = $augmentation[0];
-					if($acteur == 'attaquant') echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant à '.$actif['competences']['maitrise_arc'].' en '.$Gtrad['maitrise_arc'].'</span><br />';
-					$ups[] = 'maitrise_arc';
-				}
-    }
-  if($actif['arme_type'] == 'epee' AND array_key_exists('maitrise_epee', $actif['competences']))
-    {
-      $actif['maitrise_epee'] = $actif['competences']['maitrise_epee'];
-      $augmentation = augmentation_competence('maitrise_epee', $actif, 6);
-      if ($augmentation[1] == 1)
-				{
-					$actif['competences']['maitrise_epee'] = $augmentation[0];
-					if($acteur == 'attaquant') echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant à '.$actif['competences']['maitrise_epee'].' en '.$Gtrad['maitrise_epee'].'</span><br />';
-					$ups[] = 'maitrise_epee';
-				}
-    }
-  if($actif['arme_type'] == 'hache' AND array_key_exists('maitrise_hache', $actif['competences']))
-    {
-      $actif['maitrise_hache'] = $actif['competences']['maitrise_hache'];
-      $augmentation = augmentation_competence('maitrise_hache', $actif, 6);
-      if ($augmentation[1] == 1)
-				{
-					$actif['competences']['maitrise_hache'] = $augmentation[0];
-					if($acteur == 'attaquant') echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant à '.$actif['competences']['maitrise_hache'].' en '.$Gtrad['maitrise_hache'].'</span><br />';
-					$ups[] = 'maitrise_hache';
-				}
-    }
-  if($actif['arme_type'] == 'dague' AND array_key_exists('maitrise_dague', $actif['competences']))
-    {
-      $actif['maitrise_dague'] = $actif['competences']['maitrise_dague'];
-      $augmentation = augmentation_competence('maitrise_dague', $actif, 6);
-      if ($augmentation[1] == 1)
-				{
-					$actif['competences']['maitrise_dague'] = $augmentation[0];
-					if($acteur == 'attaquant') echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant à '.$actif['competences']['maitrise_dague'].' en '.$Gtrad['maitrise_dague'].'</span><br />';
-					$ups[] = 'maitrise_dague';
-				}
-    }
-  if(array_key_exists('maitrise_critique', $actif['competences']) && $critique)
-    {
-      $actif['maitrise_critique'] = $actif['competences']['maitrise_critique'];
-      $augmentation = augmentation_competence('maitrise_critique', $actif, 2.5);
-      if ($augmentation[1] == 1)
-				{
-					$actif['competences']['maitrise_critique'] = $augmentation[0];
-					if($acteur == 'attaquant') echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant à '.$actif['competences']['maitrise_critique'].' en '.$Gtrad['maitrise_critique'].'</span><br />';
-					$ups[] = 'maitrise_critique';
-				}
-    }
   if(array_key_exists('art_critique', $actif['competences']) && $critique)
     {
       $actif['art_critique'] = $actif['competences']['art_critique'];

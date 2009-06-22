@@ -125,6 +125,15 @@ class gemme_enchassee extends effect
 			$this->hit($actif['nom'].' perd '.$this->enchantement_effet.
 								 ' HP par l\'épine du bouclier de '.$passif['nom'], true);
 		}
+    if ($this->enchantement_type == 'parade') {
+			$de = rand(1, 100);
+			$this->debug("parade: d100 doit être inférieur à $this->enchantement_effet: $de");
+      if ($de <= $this->enchantement_effet) {
+        $this->message('La '.$this->nom.' de <strong>'.$passif['nom'].
+                       '</strong> pare totalement le coup');
+        $degats = 0;
+      }
+    }
 		return $degats;
 	}
 

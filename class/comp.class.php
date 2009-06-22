@@ -100,8 +100,16 @@ class botte extends comp_combat
 		$this->condition = $aCondition;
 	}
 
-	function canUse(&$actif) {
-		return true; /* debug */
+	function canUse(&$actif, &$passif) {
+    if (isset($passif['enchantement']['evasion'])) {
+      $chance = $passif['enchantement']['evasion']['effet'];
+      $de = rand(1, 100);
+      $this->debug("Evasion: $de doit être inférieur à $chance");
+      if ($de <= $chance) {
+        $this->message($passif['nom'].'esquive totalement la botte');
+        return false;
+      }
+    }
 		if (isset($actif['precedent'][$this->condition]))
 			return $actif['precedent'][$this->condition];
 		else
@@ -129,7 +137,8 @@ class maitrise_bouclier extends competence
 
   function calcul_bloquage(&$actif, &$passif) {
     $this->used = true;
-    $passif['potentiel_bloquer'] *= 1 + ($passif['competences']['maitrise_bouclier'] / 1000);
+    $passif['potentiel_bloquer'] *=
+      1 + ($passif['competences']['maitrise_bouclier'] / 1000);
     $passif['maitrise_bouclier'] = $passif['competences']['maitrise_bouclier'];
   }
 
@@ -148,17 +157,130 @@ class maitrise_dague extends competence
   }
 
 	static function factory(&$effects, &$actif, &$passif) {
+    if($actif['arme_type'] == 'dague' AND
+       array_key_exists('maitrise_dague', $actif['competences']))
+			$effects[] = new maitrise_dague($acteur == 'attaquant');      
 	}
 
   function debut_round(&$actif, &$passif) {
     $this->used = true;
-    $actif['potentiel_toucher'] *= 1 + ($passif['competences']['maitrise_dague']/ 1000);
-    $passif['maitrise_dague'] = $passif['competences']['maitrise_dague'];
+    $actif['potentiel_toucher'] *=
+      1 + ($actif['competences']['maitrise_dague'] / 1000);
+    $actif['maitrise_dague'] = $actif['competences']['maitrise_dague'];
   }
 
   function fin_round(&$actif, &$passif) {
     if ($this->used) {
-      $this->test_montee($passif, 6);
+      $this->test_montee($actif, 6);
+    }
+  }
+}
+
+/* Maitrise des epees */
+class maitrise_epee extends competence
+{
+  function __construct($aPrintUp = false) {
+    parent::__construct('maitrise_epee', $aPrintUp);
+  }
+
+	static function factory(&$effects, &$actif, &$passif) {
+    if($actif['arme_type'] == 'epee' AND
+       array_key_exists('maitrise_epee', $actif['competences']))
+			$effects[] = new maitrise_epee($acteur == 'attaquant');      
+	}
+
+  function debut_round(&$actif, &$passif) {
+    $this->used = true;
+    $actif['potentiel_toucher'] *=
+      1 + ($actif['competences']['maitrise_epee'] / 1000);
+    $actif['maitrise_epee'] = $actif['competences']['maitrise_epee'];
+  }
+
+  function fin_round(&$actif, &$passif) {
+    if ($this->used) {
+      $this->test_montee($actif, 6);
+    }
+  }
+}
+
+/* Maitrise des haches */
+class maitrise_hache extends competence
+{
+  function __construct($aPrintUp = false) {
+    parent::__construct('maitrise_hache', $aPrintUp);
+  }
+
+	static function factory(&$effects, &$actif, &$passif) {
+    if($actif['arme_type'] == 'hache' AND
+       array_key_exists('maitrise_hache', $actif['competences']))
+			$effects[] = new maitrise_hache($acteur == 'attaquant');      
+	}
+
+  function debut_round(&$actif, &$passif) {
+    $this->used = true;
+    $actif['potentiel_toucher'] *=
+      1 + ($actif['competences']['maitrise_hache'] / 1000);
+    $actif['maitrise_hache'] = $actif['competences']['maitrise_hache'];
+  }
+
+  function fin_round(&$actif, &$passif) {
+    if ($this->used) {
+      $this->test_montee($actif, 6);
+    }
+  }
+}
+
+/* Maitrise des arcs */
+class maitrise_arc extends competence
+{
+  function __construct($aPrintUp = false) {
+    parent::__construct('maitrise_arc', $aPrintUp);
+  }
+
+	static function factory(&$effects, &$actif, &$passif) {
+    if($actif['arme_type'] == 'arc' AND
+       array_key_exists('maitrise_arc', $actif['competences']))
+			$effects[] = new maitrise_arc($acteur == 'attaquant');      
+	}
+
+  function debut_round(&$actif, &$passif) {
+    $this->used = true;
+    $actif['potentiel_toucher'] *=
+      1 + ($actif['competences']['maitrise_arc'] / 1000);
+    $actif['maitrise_arc'] = $actif['competences']['maitrise_arc'];
+  }
+
+  function fin_round(&$actif, &$passif) {
+    if ($this->used) {
+      $this->test_montee($actif, 6);
+    }
+  }
+}
+
+/* Maitrise du critique */
+class maitrise_critique extends competence
+{
+  function __construct($aPrintUp = false) {
+    parent::__construct('maitrise_critique', $aPrintUp);
+  }
+
+	static function factory(&$effects, &$actif, &$passif) {
+    if($actif['arme_type'] == 'critique' AND
+       array_key_exists('maitrise_critique', $actif['competences']))
+			$effects[] = new maitrise_critique($acteur == 'attaquant');      
+	}
+
+  function calcul_critique(&$actif, &$passif, $chance_critique) {
+    $this->used = true;
+    $chance_critique *=
+      1 + ($actif['competences']['maitrise_critique'] / 1000);
+    $actif['maitrise_critique'] = $actif['competences']['maitrise_critique'];
+    return $chance_critique;
+  }
+
+  function fin_round(&$actif, &$passif) {
+    if ($this->used) {
+      $this->test_montee($actif, 6);
     }
   }
 }
@@ -398,6 +520,7 @@ class magnetique extends effect {
 		$this->hit = true;
 		return $degats;
 	}
+
 	function fin_round(&$actif, &$passif) { 
 		if ($this->hit)
 			$this->magnetise($actif, $passif);
@@ -469,16 +592,30 @@ class globe_foudre extends magnetique {
 }
 
 class fleche_magnetique extends magnetique {
-	static function factory(&$effects, &$actif, &$passif, $acteur) {
-		if (array_key_exists('fleche_magnetique', $passif['etat']))
-			$effects[] = new fleche_magnetique($passif['etat']['fleche_magnetique']['effet2'], $passif['etat']['fleche_magnetique']['effet']); // % de chance
-	}
 
 	function __construct($aNb, $achance) {
 		parent::__construct('fleche_magnetique', $aNb);
 		$this->titre = 'La flèche magnétique';
 		$this->chance = $achance;
 	}
+}
+
+class fleche_sable extends comp_combat {
+
+  function __construct($aEffet, $aEffet2, $aDuree) {
+    parent::__construct('Fleche de sable', null);
+    $this->duree = $aDuree;
+    $this->effet = $aEffet;
+    $this->effet2 = $aEffet2;
+	}
+
+	function calcul_degats(&$actif, &$passif, $degats) {
+    $passif['etat']['fleche_sable']['effet'] = $this->effet2;
+    $passif['etat']['fleche_sable']['duree'] = $this->duree;
+    $this->notice($passif['nom'].' est ensablé pour '.$this->duree.' rounds');
+		return $degats - $this->effet;
+	}
+  
 }
 
 ?>

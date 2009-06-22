@@ -486,7 +486,6 @@ function lance_sort($id, $acteur, &$effects)
 	if(array_key_exists('batiment_incantation', $passif['buff'])) $potentiel_magique *= 1 + (($passif['buff']['batiment_incantation']['effet']) / 100);
 	if(array_key_exists('buff_meditation', $actif['buff'])) $potentiel_magique *= 1 + (($actif['buff']['buff_meditation']['effet']) / 100);
 	if(array_key_exists('lien_sylvestre', $actif['etat'])) $potentiel_magique /= 1 + (($actif['etat']['lien_sylvestre']['effet2']) / 100);
-	if(array_key_exists('fleche_sable', $actif['etat'])) $potentiel_magique /= 1 + ($actif['etat']['fleche_sable']['effet'] / 100);
 	if(array_key_exists('fleche_debilitante', $actif['etat'])) $potentiel_magique /= 1 + ($actif['etat']['fleche_debilitante']['effet'] / 100);
 	if($actif['etat']['posture']['type'] == 'posture_feu') $potentiel_magique *= 1 + (($actif['etat']['posture']['effet']) / 100);
 	if($actif['arme_type'] == 'baton') $potentiel_magique_arme = $potentiel_magique * (1 + ($actif['arme_var1'] / 100));
@@ -1093,15 +1092,14 @@ function lance_comp($id, $acteur, &$effects)
 		case 'fleche_magnetique' :
 			echo '&nbsp;&nbsp;<strong>'.$actif['nom'].'</strong> utilise '.
 				$row['nom'].'<br />';
+			$row['comp_assoc'] = $actif['comp'];
 			$comp_attaque = true;
-			$passif['etat']['fleche_magnetique']['effet'] = $row['effet'];
-			$passif['etat']['fleche_magnetique']['effet2'] = $row['effet2'];
+      $effects[] = new fleche_magnetique($row['effet2'], $row['effet']);
 		break;
 		case 'fleche_sable' :
 			echo '&nbsp;&nbsp;<strong>'.$actif['nom'].'</strong> utilise '.$row['nom'].' !<br />';
-			$passif['etat']['fleche_sable']['effet'] = $row['effet2'];
-			$passif['etat']['fleche_sable']['duree'] = $row['duree'];
-			$actif['degat_moins'] = $row['effet'];
+      $effects[] =
+        new fleche_sable($row['effet'], $row['effet2'], $row['duree']);
 			//On prends en compte la bonne compétence
 			$row['comp_assoc'] = $actif['comp'];
 			$comp_attaque = true;
