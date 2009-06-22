@@ -244,7 +244,8 @@ if(!$visu AND isset($_GET['action']))
 							?>
 							<img src="image/pixel.gif" onLoad="envoiInfo('infoperso.php?javascript=oui', 'perso');" />
 							<?php
-							$requete = "UPDATE perso SET hp = ".$joueur['hp'].", pa = pa - ".$row['pa'].", mp = mp - ".$row['mp']." WHERE ID = ".$joueur['ID'];
+							$mp = max(0, ($joueur['mp'] - $row['mp']));
+							$requete = "UPDATE perso SET hp = ".$joueur['hp'].", pa = pa - ".$row['pa'].", mp = mp - ".$mp." WHERE ID = ".$joueur['ID'];
 							$db->query($requete);
 						}
 					}
@@ -298,7 +299,8 @@ if(!$visu AND isset($_GET['action']))
 						?>
 						<img src="image/pixel.gif" onLoad="envoiInfo('infoperso.php?javascript=oui', 'perso');" />
 						<?php
-						$requete = "UPDATE perso SET pa = ".$joueur['pa'].", mp = mp - ".$row['mp']."  WHERE ID = ".$joueur['ID'];
+						$mp = max(0, ($joueur['mp'] - $row['mp']));
+						$requete = "UPDATE perso SET pa = ".$joueur['pa'].", mp = mp - ".$mp."  WHERE ID = ".$joueur['ID'];
 						$db->query($requete);
 					}
 				break;

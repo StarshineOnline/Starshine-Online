@@ -753,9 +753,12 @@ require('haut_roi.php');
 				//On met à jour l'enchère
 				$enchere->id_royaume_acheteur = $R['ID'];
 				$enchere->prix = $prix;
-				//On décale l'enchère de 6h
+				//Si enchère faite 6h avant la fin, on décale l'enchère de 6h
 				$decalage = 6 * 60 * 60;
-				$enchere->fin_vente += $decalage;
+				if(time() > ($enchere->fin_vente - $decalage))
+				{
+					$enchere->fin_vente += $decalage;
+				}
 				$enchere->sauver();
 				?>
 				<h6>Enchère prise en compte !</h6>

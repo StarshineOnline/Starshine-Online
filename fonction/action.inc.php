@@ -780,17 +780,17 @@ function lance_sort($id, $acteur, &$effects)
 				case 'appel_tenebre' :
 					$passif['etat']['appel_tenebre']['effet'] = $row['effet'];
 					$passif['etat']['appel_tenebre']['duree'] = 10;
-					echo '&nbsp;&nbsp;<strong>'.$actif['nom'].'</strong> lance le sort Appel des ténêbres.<br />';
+					echo '&nbsp;&nbsp;<strong>'.$actif['nom'].'</strong> lance le sort '.$row['nom'].'.<br />';
 				break;
 				case 'appel_foret' :
 					$actif['etat']['appel_foret']['effet'] = $row['effet'];
 					$actif['etat']['appel_foret']['duree'] = $row['duree'];
-					echo '&nbsp;&nbsp;<strong>'.$actif['nom'].'</strong> lance le sort Appel de la forêt.<br />';
+					echo '&nbsp;&nbsp;<strong>'.$actif['nom'].'</strong> lance le sort '.$row['nom'].'.<br />';
 				break;
 				case 'benediction' :
 					$actif['etat']['benediction']['effet'] = $row['effet'];
 					$actif['etat']['benediction']['duree'] = 10;
-					echo '&nbsp;&nbsp;<strong>'.$actif['nom'].'</strong> se lance le sort bénédiction<br />';
+					echo '&nbsp;&nbsp;<strong>'.$actif['nom'].'</strong> se lance le sort '.$row['nom'].'<br />';
 				break;
 				case 'paralysie' :
 					//Objets magiques
@@ -812,7 +812,7 @@ function lance_sort($id, $acteur, &$effects)
 					// Lancer des dés
 					$att = rand(0, $sm);
 					$def = rand(0, $pm);
-					echo '&nbsp;&nbsp;<strong>'.$actif['nom'].'</strong> lance le sort paralysie<br />';
+					echo '&nbsp;&nbsp;<strong>'.$actif['nom'].'</strong> lance le sort '.$row['nom'].'<br />';
 					if($att > $def)
 					{
 						echo ' et réussit !<br />';
@@ -836,7 +836,7 @@ function lance_sort($id, $acteur, &$effects)
 					// Lancer des dés
 					$att = rand(0, $sm);
 					$def = rand(0, $pm);
-					echo '&nbsp;&nbsp;<strong>'.$actif['nom'].'</strong> lance le sort silence<br />';
+					echo '&nbsp;&nbsp;<strong>'.$actif['nom'].'</strong> lance le sort '.$row['nom'].'<br />';
 					if($att > $def)
 					{
 						echo ' et réussit !<br />';
@@ -853,12 +853,12 @@ function lance_sort($id, $acteur, &$effects)
 					$passif['etat']['lien_sylvestre']['effet'] = $row['effet'];
 					$passif['etat']['lien_sylvestre']['effet2'] = $row['effet2'];
 					$passif['etat']['lien_sylvestre']['duree'] = $row['duree'];
-					echo '&nbsp;&nbsp;<strong>'.$actif['nom'].'</strong> lance le sort lien sylvestre<br />';
+					echo '&nbsp;&nbsp;<strong>'.$actif['nom'].'</strong> lance le sort '.$row['nom'].'<br />';
 				break;
 				case 'poison' :
 					$passif['etat']['poison']['effet'] = $row['effet'];
 					$passif['etat']['poison']['duree'] = $row['duree'];
-					echo '&nbsp;&nbsp;<strong>'.$actif['nom'].'</strong> lance le sort poison<br />';
+					echo '&nbsp;&nbsp;<strong>'.$actif['nom'].'</strong> lance le sort '.$row['nom'].'<br />';
 				break;
 				case 'jet_acide' :
 					$passif['etat']['acide']['effet'] = $row['effet'];
@@ -870,7 +870,7 @@ function lance_sort($id, $acteur, &$effects)
 					$actif['etat']['recuperation']['effet'] = $row['effet'];
 					$actif['etat']['recuperation']['duree'] = 10;
 					$actif['etat']['recuperation']['hp_max'] = $actif['hp'];
-					echo '&nbsp;&nbsp;<strong>'.$actif['nom'].'</strong> se lance le sort récupération<br />';
+					echo '&nbsp;&nbsp;<strong>'.$actif['nom'].'</strong> se lance le sort '.$row['nom'].'<br />';
 				break;
 				case 'aura_feu' :
 					echo '&nbsp;&nbsp;Une enveloppe de feu entoure <strong>'.$actif['nom'].'</strong> !<br />';

@@ -60,18 +60,15 @@ if (isset($_GET['ID']))
 						$soin += rand(1, $de_degat_sort[$i]);
 						$i++;
 					}
-					$W_requete = 'SELECT nom, hp, hp_max FROM perso WHERE ID = '.sSQL($_GET['id_joueur']);
-					$W_query = $db->query($W_requete);
-					$W_row = $db->read_array($W_query);
-					if($W_row[1] > 0)
+					if($cible['hp'] > 0)
 					{
-						if($W_row[1] < floor($W_row[2]))
+						if($cible['hp'] < $cible['hp_max'])
 						{
-							if($soin > (floor($W_row['hp_max']) - $W_row['hp'])) $soin = floor($W_row['hp_max']) - $W_row['hp'];
-							echo 'Vous soignez '.$W_row['nom'].' de '.$soin.' HP<br />';
+							if($soin > (floor($cible['hp_max'] - $cible['hp']))) $soin = floor($cible['hp_max']) - $cible['hp'];
+							echo 'Vous soignez '.$cible['nom'].' de '.$soin.' HP<br />';
 							$joueur['pa'] = $joueur['pa'] - $sortpa;
 							$joueur['mp'] = $joueur['mp'] - $sortmp;
-							$W_row['hp'] = $W_row['hp'] + $soin;
+							$cible['hp'] = $cible['hp'] + $soin;
 							if($soin > 0)
 							{
 								$difficulte_sort = diff_sort($row['difficulte'], $joueur, 'incantation', $sortpa_base, $sortmp_base);
@@ -89,12 +86,12 @@ if (isset($_GET['ID']))
 									echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant à '.$joueur['sort_vie'].' en '.$Gtrad['sort_vie'].'</span><br />';
 								}
 								sauve_sans_bonus_ignorables($joueur, array('mp', 'pa', 'incantation', 'sort_vie'));
-								$requete = "UPDATE perso SET hp = '".$W_row['hp']."' WHERE ID = '".sSQL($_GET['id_joueur'])."'";
+								$requete = "UPDATE perso SET hp = '".$cible['hp']."' WHERE ID = '".sSQL($_GET['id_joueur'])."'";
 								$req = $db->query($requete);
 								//Insertion du soin dans les journaux des 2 joueurs
-								$requete = "INSERT INTO journal VALUES(NULL,  ".$joueur['ID'].", 'soin', '".$joueur['nom']."', '".$W_row['nom']."', NOW(), ".$soin.", 0, ".$joueur['x'].", ".$joueur['y'].")";
+								$requete = "INSERT INTO journal VALUES(NULL,  ".$joueur['ID'].", 'soin', '".$joueur['nom']."', '".$cible['nom']."', NOW(), ".$soin.", 0, ".$joueur['x'].", ".$joueur['y'].")";
 								$db->query($requete);
-								$requete = "INSERT INTO journal VALUES(NULL,  ".sSQL($_GET['id_joueur']).", 'rsoin', '".$W_row['nom']."', '".$joueur['nom']."', NOW(), ".$soin.", 0, ".$joueur['x'].", ".$joueur['y'].")";
+								$requete = "INSERT INTO journal VALUES(NULL,  ".sSQL($_GET['id_joueur']).", 'rsoin', '".$cible['nom']."', '".$joueur['nom']."', NOW(), ".$soin.", 0, ".$joueur['x'].", ".$joueur['y'].")";
 								$db->query($requete);
 							}
 						}
@@ -463,8 +460,8 @@ else
 			<div style="display: none; z-index: 2; position : absolute; background-color:#ffffff; border: 1px solid #000000; font-size:12px; width: 200px; padding: 5px;" id="info_<?php echo $i; ?>">
 			<?php
 			echo description($row['description'], $row);
-			if($_GET['tri'] == 'favoris') echo ' <td><a href="sort_joueur.php?action=delfavoris&amp;id='.$row['id'].'" onclick="return envoiInfo(this.href, \'information\')"><img src="image/croix_quitte.png" alt="Supprimer des favoris" title="Supprimer des favoris" /></a></td>';
-			else echo ' <td><a href="sort_joueur.php?action=favoris&amp;id='.$row['id'].'" onclick="return envoiInfo(this.href, \'information\')"><img src="image/favoris.png" alt="Favoris" title="Ajouter aux sorts favoris" /></a></td>';
+			if($_GET['tri'] == 'favoris') echo ' <td><a href="sort_joueur.php?action=delfavoris&amp;id='.$row['id'].'&amp;id_joueur='.$_GET['id_joueur'].'" onclick="return envoiInfo(this.href, \'information\')"><img src="image/croix_quitte.png" alt="Supprimer des favoris" title="Supprimer des favoris" /></a></td>';
+			else echo ' <td><a href="sort_joueur.php?action=favoris&amp;id='.$row['id'].'&amp;id_joueur='.$_GET['id_joueur'].'" onclick="return envoiInfo(this.href, \'information\')"><img src="image/favoris.png" alt="Favoris" title="Ajouter aux sorts favoris" /></a></td>';
 			echo '</tr>';
 			?>
 			</div>
