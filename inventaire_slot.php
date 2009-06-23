@@ -86,7 +86,7 @@ if($joueur['inventaire_slot'] != '')
 			}
 			else
 			{
-				$row['nom'] = 'Objet non-identifiée';
+				$row['nom'] = 'Objet non-identifié';
 			}
 			//Filtrage
 			if(array_key_exists('filtre', $_GET)) $filtre = $_GET['filtre']; else $filtre = 'utile';
@@ -103,7 +103,10 @@ if($joueur['inventaire_slot'] != '')
 			elseif(!in_array($objet_d['categorie'], $liste_categorie) AND $filtre == 'autre') $check = true;
 			if($check)
 			{
-				$echo = description_objet($invent);
+			  if ($objet_d['identifier'])
+				  $echo = description_objet($invent);
+				else
+					$echo = 'Objet non indentifié';
 			?>
 			<li onmouseover="return <?php echo make_overlib($echo); ?>" onmouseout="return nd();"><span class='inventaire_span' style='width:150px'><?php echo $row['nom']; ?>
 			<?php
