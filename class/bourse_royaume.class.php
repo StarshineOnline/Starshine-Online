@@ -24,7 +24,7 @@ class bourse_royaume
 		if( (func_num_args() == 1) && is_numeric($id_bourse_royaume) )
 		{
 			$requeteSQL = $db->query('SELECT id_royaume, ressource, nombre, id_royaume_acheteur, prix, fin_vente, actif FROM bourse_royaume WHERE id_bourse_royaume = '.$id_bourse_royaume);
-			//Si le thread est dans la base, on le charge sinon on cr?e un thread vide.
+			//Si le thread est dans la base, on le charge sinon on créer un thread vide.
 			if( $db->num_rows($requeteSQL) > 0 )
 			{
 				list($this->id_royaume, $this->ressource, $this->nombre, $this->id_royaume_acheteur, $this->prix, $this->fin_vente, $this->actif) = $db->read_row($requeteSQL);
@@ -77,6 +77,16 @@ class bourse_royaume
 		}
 	}
 	
+	function set_fin_vente($fin_vente)
+	{
+		$this->fin_vente = date("Y-m-d h:i:s", $fin_vente);
+	}
+	
+	function get_fin_vente($fin_vente)
+	{
+		return strtotime($this->fin_vente);
+	}
+
 	function __toString()
 	{
 		return $this->id_royaume.', '.$this->ressource.', '.$this->nombre.', '.$this->id_royaume_acheteur.', '.$this->prix.', '.$this->fin_vente.', '.$this->actif;

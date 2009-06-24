@@ -755,9 +755,9 @@ require('haut_roi.php');
 				$enchere->prix = $prix;
 				//Si enchère faite 6h avant la fin, on décale l'enchère de 6h
 				$decalage = 6 * 60 * 60;
-				if(time() > ($enchere->fin_vente - $decalage))
+				if(time() > ($enchere->get_fin_vente() - $decalage))
 				{
-					$enchere->fin_vente += $decalage;
+					$enchere->set_fin_vente($enchere->get_fin_vente() + $decalage);
 				}
 				$enchere->sauver();
 				?>
