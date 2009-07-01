@@ -7,7 +7,7 @@ $joueur = recupperso($_SESSION['ID']);
 
 check_perso($joueur);
 
-//Vérifie si le perso est mort
+//VÃ©ifie si le perso est mort
 verif_mort($joueur, 1);
 
 $R = get_royaume_info($joueur['race'], $Trace[$joueur['race']]['numrace']);

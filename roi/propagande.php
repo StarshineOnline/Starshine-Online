@@ -28,14 +28,21 @@ else
 	$req = $db->query($requete);
 	$row = $db->read_row($req);
 	$message = transform_texte($row[0]);
-	echo '<h3>Propagande actuelle</h3>
-	'.$message.'<br />
-	<h3>Modifier</h3>';
+	echo "<fieldset>";
+	echo "<legend>Propagande actuelle</legend>
+	<div id='message_propagande' onclick=\"$('message_propagande_edit').show();$('message_propagande').hide();\">
+	".$message."
+	</div>";
 	?>
-	<form method="post" action="propagande.php?direction=propagande" id="formPropagande">
+	<div id='message_propagande_edit' style='display:none;'>
+		<form method="post" action="propagande.php?direction=propagande" id="formPropagande">
 		<textarea name="message" id="message" cols="90" rows="12"><?php echo htmlspecialchars(stripslashes($row[0])); ?></textarea><br />
 		<input type="button" name="btnSubmit" value="Envoyer" onclick="envoiFormulaire('formPropagande', 'conteneur');" />
 	</form>
+	</div>
+	
+	</fieldset>
+	
 <?php
 }
 ?>

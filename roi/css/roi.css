@@ -1,143 +1,103 @@
-body
-{
-	margin : 0px;
-	color:#222;
-}
+/*-- Global site --------------------------------------------------*/
+html 								{width:100%;height:100%;}
+body 								{margin:0;padding:0;background:#7e909c url('../../image/v2/bg_site.png') repeat-x;width:100%;height:100%;font: 13px "Helvetica Neue", Helvetica, Arial, Geneva, sans-serif;}
+#top								{display : block;width: 1000px;margin: 0 auto;z-index :5;}
 
-#top
-{
-	background-color: #CCC;
-	overflow : auto;
-	z-index : 0;
-	height : 47px;
-	border-bottom: 1px solid #000;
-	background: transparent url('./../../image/fond_perso.png') repeat-x;
-	width : 100%;
-}
+#conteneur 							{width:985px;margin:auto;min-height: 100%;}
+#conteneur_back 					{z-index :2;width: 1000px;margin: 0 auto;background:transparent url('../../image/interface/global2.png') repeat-y center;min-height: 100%;}
+#bas								{clear: both; width: 1000px;margin: 0 auto;text-align: center;font-size: 9px;}
+#centre								{margin-top : 3px;margin-left : 7px;float : left;	height : 100%;	z-index :3;}
+#deplacement						{float : left;vertical-align : top;	text-align : right;	width : 50px;	margin-left : 5px;}
+#information						{height : 100%;	width : 47%;	float : left;	z-index :1;margin-left: 6px;}
+#information fieldset 				{-moz-border-radius: 10px;-webkit-border-radius : 10px;background:transparent url('../../image/v2/box_accueil2.png');margin-top: 4px; }
+#information fieldset legend 		{background:transparent url('../../image/v2/bouton_fond.png');-moz-border-radius: 10px;-webkit-border-radius: 10px; padding-left:10px;padding-right:10px;font-weight: bold;}
+#information a, .visu a 			{color : #444;text-decoration : none;}
+#information a:hover, .visu a:hover {color : #888;	text-decoration : none;}
+#perso								{background-color:#c6d9f5;min-height: 87px;margin:0;padding:0;}
+#perso_menu 						{margin-left:40px;margin-top:-15px;}
+#perso_menu ul						{margin:0;padding:0;list-style-type: none;height:17px;text-align: center;position: relative;}
+#perso_menu ul li 					{padding-left:5px;padding-right:5px;cursor: pointer;width:100px;background:transparent url('../../image/v2/box_accueil2.png');border-left : 1px solid #777;border-right : 1px solid #777;border-top : 1px solid #777;margin-left:5px;margin-right:5px;font-style: italic;-moz-border-radius-topleft: 12px;-moz-border-radius-topright: 12px;-webkit-border-top-right-radius : 12px;-webkit-border-top-left-radius : 12px;}
+#perso_menu .menu 					{float:left;}
+#perso_menu .select 				{background:transparent url('../../image/v2/bouton_selected.png') repeat-x;font-style:normal;font-weight: bold;}
 
-#separateur
-{
-	clear : both;
-	width : 100%;
-	min-height: 20px;
-	border-bottom: 1px solid #888;
-	border-top: 1px solid #888;
-	margin:0;
-	padding:0;
-	background:transparent url('./../../image/v2/bouton_fond.png') repeat-x;
-}
-#conteneur2 {width:985px;margin:auto;min-height: 100%;}
-#conteneur
-{
-	background:transparent url('./../../image/v2/bg_site.png') repeat-x;
-	margin:0;
-	padding:0;
-	overflow : auto;
-	height : 700px;
-}
 
-#infos
-{
-	float : right;
-}
+#contruction fieldset				{float:left;width:565px;-moz-border-radius: 10px;}
+#contruction ul li					{clear:both;height:19px;padding-left:10px;}
+#contruction ul li:hover			{background-color:#C5D4EF;}
 
-ul#menu
-{
-	color : #000;
-	height : 26px;
-	float : left;
-	display : inline;
-}
+#perso_contenu						{margin:auto;min-height:75px;padding:5px;}
+#contenu_jeu 						{margin : 0 auto !important;width:97%;margin:10px;}
+#popup 								{margin-left:130px;position:absolute;top:60px;z-index:99 !important;  -moz-border-radius: 12px;-webkit-border-radius: 12px;background:transparent url(../../image/v2/box_accueil.png) repeat scroll 0 0;color:#EEE;}
+#popup a 							{color:#EEE;}
+#popup_menu 						{cursor:move ;background:transparent url(../../image/v2/bouton_fond.png) repeat-x scroll 0 0;}
+#popup_content 						{padding:5px;text-align:justify;width:98%;}
+#popup_marge 						{min-height:470px;margin:auto;width:800px;}
+.fermer 							{background:transparent url('../../image/interface/rouge.png') no-repeat top left;display:block;height:16px;width:16px;cursor: pointer !important;}
+#mask								{background-image:url('../../image/v2/overlay.png');height:100%;left:0;position:absolute;top:0;width:100%;z-index:9999999;}
 
-ul#menu ul
-{
-	margin-left: 20px;
-}
+#header								{background-color:#c6d9f5;min-height: 120px;margin:0;padding:0;}
+#header_logo 						{width:1000px;margin:auto;background:transparent url('../../image/v2/site_haut.png') no-repeat left;min-height:120px;}
+#header_logo ul 					{margin:0;padding:0;list-style-type: none;height:20px;text-align: center;top:101px;position: relative;}
+#header_logo ul li 					{padding-left:5px;padding-right:5px;cursor: pointer;width:100px;background:transparent url('../../image/v2/contenu_fond.png');border-left : 1px solid #777;border-right : 1px solid #777;border-top : 1px solid #777;margin-left:5px;margin-right:5px;font-style: italic;-moz-border-radius-topleft: 12px;-moz-border-radius-topright: 12px;-webkit-border-top-right-radius : 12px;-webkit-border-top-left-radius : 12px;}
+#header_logo .menu 					{float:left;}
+#header_logo .select 				{background:transparent url('../../image/v2/bouton_selected.png') repeat-x;border-bottom:1px solid transparent;font-style:normal;font-weight: bold;}
 
-ul#menu li
-{
-	display: inline;
-	list-style-type: none;
-	float: left;
-}
 
-ul#menu a
-{
-	font-weight: bold;
-	font-size: 10pt;
-	color: #000;
-	text-decoration: none;
-	margin: 0px;
-	padding-left: 25px;
-	padding-right: 25px;
-	border-left-style: solid;
-	border-left-width: 1px;
-	border-left-color: #AAAAAA;
-}
+#menu 								{height: 20px;border-bottom: 1px solid #888;border-top: 1px solid #888;margin:0;padding:0;background:transparent url('../../image/v2/bouton_fond.png') repeat-x;}
+#menu a 							{color:#222;text-decoration: none;}
+#menu_date 							{float:left;height: 20px;margin-left:9px; width : 91px; line-height : 20px; font-size : 0.9em;}
+#menu_date img 						{height: 15px;padding-right:8px; vertical-align : middle;}
+#menu_details 						{font-size:12px;float:left;margin-top:2px;}
+#menu_details .menu 				{width:138px;display:block;float:left;cursor:pointer;text-align: center;border-left : 1px solid #CCC;border-rightr : 1px solid #CCC;}
+#menu_details .menu:hover 			{background:transparent url('../../image/v2/bouton_hover.png') no-repeat left;padding-top:1px;}
+#menu_deco 							{float : right; cursor : pointer; margin-right : 9px; line-height : 20px; font-size : 0.9em;}
 
-ul#menu a:link
-{
-	color: #000;
-}
 
-ul#menu a:visited
-{
-	color: #000;
-}
 
-ul#menu a:hover {
-       color: #FF8800;
-}
+#contenu_back 						{margin:0;padding:0;overflow: auto;}
+#contenu 							{width:1000px;margin: auto;min-height: 700px;}
+#news 								{width:830px;float:left;}
 
-ul#menu a:active {
-       color: #FF9900;
-       text-decoration: underline overline;
-}
+#message_confirm					{width:90%;margin: 5px auto;}
 
-ul#menu ul
-{
-	position: absolute;
-	border-left: 3px solid #555;
-	border-right: 3px solid #555;
-	border-bottom: 5px solid #555;
-}
+.bois								{text-align:right;margin-right:20px;background:transparent url('../../image/icone/ressources_bois.png') no-repeat;padding-left:40px;display:block;line-height: 30px;width:30px;height:30px;float:left;}
+.eau								{text-align:right;margin-right:20px;background:transparent url('../../image/icone/ressources_eau.png') no-repeat;padding-left:40px;display:block;line-height: 30px;height:30px;width:30px;float:left;}
+.essence							{text-align:right;margin-right:20px;background:transparent url('../../image/icone/ressources_essence.png') no-repeat;padding-left:40px;display:block;line-height: 30px;height:30px;width:30px;float:left;}
+.pierre								{text-align:right;margin-right:20px;background:transparent url('../../image/icone/ressources_pierre.png') no-repeat;padding-left:40px;display:block;line-height: 30px;height:30px;width:30px;float:left;}
+.sable								{text-align:right;margin-right:20px;background:transparent url('../../image/icone/ressources_sable.png') no-repeat;padding-left:40px;display:block;line-height: 30px;height:30px;width:30px;float:left;}
+.charbon							{text-align:right;margin-right:20px;background:transparent url('../../image/icone/ressources_charbon.png') no-repeat;padding-left:40px;display:block;line-height: 30px;height:30px;width:30px;float:left;}
 
-ul#menu ul li
-{
-       display: block;
-       float: none;
-       border-top: 1px solid #AAA;
-       margin: 0px;
-       padding: 2px;
-       background-color : white;
-}
 
-ul#menu ul a {
-       padding-left : 5px;
-       padding-right : 5px;
-       font-weight: normal;
-       font-size: 9pt;
-       border: 0px;
-}
+#stats fieldset						{width:168px;float:left;-moz-border-radius: 10px;}
+#stats ul li 						{clear:both;height:21px;line-height: 21px;-moz-border-radius: 10px;}
+#stats ul li:hover					{background-color:#C5D4EF;-moz-border-radius: 10px;}
+#stats .nom							{float:left;width:100px;text-indent: 5px;}
+#stats .stats						{float:left;width:60px;text-align: right;}
 
-ul#menu ul li:hover {
-}
 
-#loading
-{
-	background:transparent url('http://www.starshine-online.com/image/ajax-loader-bar.gif') no-repeat scroll left center;
-	height:22px;
-	left:300px;
-	position:absolute;
-	top:300px;
-	width:220px;
-}
+#bourse fieldset					{-moz-border-radius: 10px;}
+#bourse ul li 						{clear:both;height:21px;line-height: 21px;-moz-border-radius: 10px;}
+#bourse ul li:hover					{background-color:#C5D4EF;-moz-border-radius: 10px;}
+.ressourse							{display:block;float: left;width:70px;text-align: right;}
+.nombre								{display:block;float: left;width:70px;text-align: right;}
+.prix								{display:block;float: left;width:110px;text-align: right;}
+.finvente							{display:block;float: left;width:135px;text-align: right;}
 
-#map_mine {float : left;}
 
-.bataille_groupe
-{
-	border : 1px dotted black;
-	margin : 5px;
-	padding : 3px;
-}
+#boutique							{margin-left:24px;}
+#boutique ul li 					{clear:both;height:21px;line-height: 21px;-moz-border-radius: 10px;}
+#boutique ul li:hover				{background-color:#C5D4EF;-moz-border-radius: 10px;}
+#boutique input						{border : 1px solid #999;width:30px;background: transparent;-moz-border-radius: 5px;text-align: center;}
+.boutique_nom						{display:block;float: left;width:100px;margin-left:25px;}
+.boutique_nom a						{color:#222;text-decoration: none;}
+.boutique_prix						{display:block;float: left;width:70px;text-align: right;}
+.boutique_pierre					{display:block;float: left;width:70px;text-align: right;}
+.boutique_bois						{display:block;float: left;width:70px;text-align: right;}
+.boutique_eau						{display:block;float: left;width:70px;text-align: right;}
+.boutique_sable						{display:block;float: left;width:70px;text-align: right;}
+.boutique_charbon					{display:block;float: left;width:70px;text-align: right;}
+.boutique_essence					{display:block;float: left;width:70px;text-align: right;}
+.boutique_nombre					{display:block;float: left;width:70px;text-align: right;}
+
+.t1 								{background-color:#A7BBDF;-moz-border-radius: 10px;}
+

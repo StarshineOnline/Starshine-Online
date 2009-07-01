@@ -50,3 +50,58 @@ function refresh(page, position)
 	function Affiche(requete){$(position).innerHTML = requete.responseText; Hidechargement()}
 	new Ajax.Request(page,{method:'get',onLoading:Loadchargement,onComplete:Affiche});
 }
+function menu_change(input_name)
+{
+	if ($('menu_encours').value=='')
+	{
+		$('menu_encours').value= input_name;
+		$(input_name).addClassName('select');
+		$(input_name+'_menu').show();
+	}
+	else
+	{
+		var tmp = $('menu_encours').value;
+		$(tmp+'_menu').hide();
+		$(tmp).removeClassName('select');
+		$('menu_encours').value= input_name;
+		$(input_name).addClassName('select');
+		$(input_name+'_menu').show();
+	}
+	$('message_confirm').innerHTML = '';
+
+}
+function affiche_page(page)
+{
+	function affiche(contenu)
+	{
+		$('loading').hide();
+		$('contenu_jeu').innerHTML = contenu.responseText;
+	}
+	new Ajax.Request(page,{method:'get',onLoading:Loadchargement,onComplete:affiche});
+	$('message_confirm').innerHTML = '';
+	
+}
+
+function royaume_update(id,nbr,action)
+{
+	function Affiche_Royaume(text)
+	{
+		$('loading').hide();	
+		refresh('gestion_royaume.php?direction=boutique','contenu_jeu');
+		refresh('perso_contenu.php','perso_contenu');			
+		$('message_confirm').innerHTML = text.responseText;
+	}
+	new Ajax.Request('./ajax/gestion_royaume_update.php',{method:'post',parameters:'id='+id+'&nbr='+nbr+'&action='+action,onLoading:Loadchargement,onComplete:Affiche_Royaume});
+}
+
+function minimap(x,y)
+{
+	function Affiche_minimap(text)
+	{
+		$('loading').hide();	
+		$('affiche_minimap').innerHTML = text.responseText;
+	}
+	new Ajax.Request('./ajax/mini_map.php',{method:'post',parameters:'x='+x+'&y='+y,onLoading:Loadchargement,onComplete:Affiche_minimap});
+}
+
+

@@ -4,9 +4,6 @@ if($joueur['rang_royaume'] != 6)
 	echo '<p>Cheater</p>';
 	else if($_GET['direction'] == 'diplomatie')
 	{
-		?>
-		<h3>Diplomatie</h3>
-		<?php
 		$requete = "SELECT * FROM diplomatie WHERE race = '".$joueur['race']."'";
 		$req = $db->query($requete);
 		$row = $db->read_assoc($req);
@@ -90,17 +87,36 @@ if($joueur['rang_royaume'] != 6)
 				$temps = $R['diplo_time'][$keys[$i]] - time();
 				if($temps > 0) $show = transform_sec_temp($temps).' avant changement possible';
 				else $show = 'Modif. Possible';
-				if($row[$keys[$i]] > 6)
+				switch($row[$keys[$i]])
 				{
-					$image_diplo = '../image/interface/attaquer.png';
-				}
-				elseif($row[$keys[$i]] < 4)
-				{
-					$image_diplo = '../image/interface/paix.png';
-				}
-				else
-				{
-					$image_diplo = '../image/interface/neutre.gif';
+					case '0' :
+					$image_diplo = '../image/icone/diplomatie_paixdurable.png';					
+					break;
+					case '1' :
+					$image_diplo = '../image/icone/diplomatie_paixdurable.png';					
+					break;
+					case '2' :
+					$image_diplo = '../image/icone/diplomatie_paix.png';					
+					break;
+					case '3' :
+					$image_diplo = '../image/icone/diplomatie_bonterme.png';					
+					break;
+					case '4' :
+					$image_diplo = '../image/icone/diplomatie_neutre.png';					
+					break;
+					case '5' :
+					$image_diplo = '../image/icone/diplomatie_neutre.png';					
+					break;
+					case '6' :
+					$image_diplo = '../image/icone/diplomatie_mauvaisterme.png';					
+					break;
+					case '7' :
+					$image_diplo = '../image/icone/diplomatie_guerre.png';					
+					break;
+					case '8' :
+					$image_diplo = '../image/icone/diplomatie_guerredurable.png';
+					break;
+				
 				}
 				echo '
 		<tr style="vertical-align : middle;">
@@ -309,156 +325,143 @@ if($joueur['rang_royaume'] != 6)
 	}
 	elseif($_GET['direction'] == 'carte')
 	{
-		echo '<img src="carte_roy2.php?url='.$joueur['race'].'" />';
+		echo '<img src="carte_roy2.php?url='.$joueur['race'].'" style="width:600px;margin-left:170px;" />';
 	
 	}
 	elseif($_GET['direction'] == 'stats')
 	{
+		echo "<div id='stats'>";
 	    //Statistiques du royaume
 	    $requete = "SELECT *, COUNT(*) as tot FROM perso WHERE race = '".$joueur['race']."' AND statut = 'actif' GROUP BY classe ORDER BY tot DESC, classe ASC";
 	    $req = $db->query($requete);
+		$boutique_class = 't1';
+	    
 	    ?>
-	    <h3>Nombre de joueurs de votre race par classe</h3>
-	    <table>
-	    <tr>
-	    	<td>
-	    		Classe
-	    	</td>
-	    	<td>
-	    		Nombre
-	    	</td>
-	    </tr>
+	    <fieldset>
+	    <legend>Nombre de joueurs</legend>
+	    <ul>
+	    <li>
+	    	<span class='nom'>Classe</span>
+	    	<span class='stats'>Nombre</span>
+	    </li>
 	    <?php
 	    while($row = $db->read_array($req))
 	    {
-	        echo '
-	        <tr>
-	        	<td>
-	        	'.$row['classe'].'
-	        	</td>
-	        	<td>
-	        	'.$row['tot'].'
-	        	</td>
-	        </tr>'; 
+	        echo "
+	        <li class='$boutique_class'>
+	        	<span class='nom'>".$row['classe']."</span>
+	        	<span class='stats'>".$row['tot']."</span>
+	        </li>"; 
+			if ($boutique_class == 't1'){$boutique_class = 't2';}else{$boutique_class = 't1';}	        
 	    }
 	    ?>
-	    </table>
+	    </ul>
+	    </fieldset>
 	    <?php
 	    $requete = "SELECT nom, melee FROM perso WHERE race = '".$joueur['race']."' AND statut = 'actif' ORDER BY melee DESC LIMIT 0, 5";
 	    $req = $db->query($requete);
+		$boutique_class = 't1';
+	    
 	    ?>
-	    <h3>Meilleurs guerriers</h3>
-	    <table>
-	    <tr>
-	    	<td>
-	    		Nom
-	    	</td>
-	    	<td>
-	    		Mélée
-	    	</td>
-	    </tr>
+	    <fieldset>	    
+	    <legend>Meilleurs guerriers</legend>
+	    <ul>
+	    <li>
+	    	<span class='nom'>Nom</span>
+	    	<span class='stats'>Mélée</span>
+	    </li>
 	    <?php
 	    while($row = $db->read_array($req))
 	    {
-	        echo '
-	        <tr>
-	        	<td>
-	        	'.$row['nom'].'
-	        	</td>
-	        	<td>
-	        	'.$row['melee'].'
-	        	</td>
-	        </tr>'; 
+	        echo "
+	        <li class='$boutique_class'>
+	        	<span class='nom'>".$row['nom']."</span>
+	        	<span class='stats'>".$row['melee']."</span>
+	        </li>"; 
+			if ($boutique_class == 't1'){$boutique_class = 't2';}else{$boutique_class = 't1';}	    
 	    }
 	    ?>
-	    </table>
+	    </ul>
+	    </fieldset>	    
 	    <?php
 	    $requete = "SELECT nom, distance FROM perso WHERE race = '".$joueur['race']."' AND statut = 'actif' ORDER BY distance DESC LIMIT 0, 5";
 	    $req = $db->query($requete);
+		$boutique_class = 't1';
+	    
 	    ?>
-	    <h3>Meilleurs Archers</h3>
-	    <table>
-	    <tr>
-	    	<td>
-	    		Nom
-	    	</td>
-	    	<td>
-	    		Tir à distance
-	    	</td>
-	    </tr>
+	    <fieldset>	    	    
+	    <legend>Meilleurs Archers</legend>
+	    <ul>
+	    <li>
+	    	<span class='nom'>Nom</span>
+	    	<span class='stats'>Tir</span>
+	    </li>
 	    <?php
 	    while($row = $db->read_array($req))
 	    {
-	        echo '
-	        <tr>
-	        	<td>
-	        	'.$row['nom'].'
-	        	</td>
-	        	<td>
-	        	'.$row['distance'].'
-	        	</td>
-	        </tr>'; 
+	        echo "
+	        <li class='$boutique_class'>
+	        	<span class='nom'>".$row['nom']."</span>
+	        	<span class='stats'>".$row['distance']."</span>
+	        </li>"; 
+			if ($boutique_class == 't1'){$boutique_class = 't2';}else{$boutique_class = 't1';}
 	    }
 	    ?>
-	    </table>
+	    </ul>
+	    </fieldset>	    
+	    
 	    <?php
 	    $requete = "SELECT nom, esquive FROM perso WHERE race = '".$joueur['race']."' AND statut = 'actif' ORDER BY esquive DESC LIMIT 0, 5";
 	    $req = $db->query($requete);
+		$boutique_class = 't1';
+	    
 	    ?>
-	    <h3>Meilleurs esquiveurs</h3>
-	    <table>
-	    <tr>
-	    	<td>
-	    		Nom
-	    	</td>
-	    	<td>
-	    		Esquive
-	    	</td>
-	    </tr>
+	    <fieldset>	    	    	    
+	    <legend>Meilleurs esquiveurs</legend>
+	    <ul>
+	    <li>
+	    	<span class='nom'>Nom</span>
+	    	<span class='stats'>Esquive</span>
+	    </li>
 	    <?php
 	    while($row = $db->read_array($req))
 	    {
-	        echo '
-	        <tr>
-	        	<td>
-	        	'.$row['nom'].'
-	        	</td>
-	        	<td>
-	        	'.$row['esquive'].'
-	        	</td>
-	        </tr>'; 
+	        echo "
+	        <li class='$boutique_class'>
+	        	<span class='nom'>".$row['nom']."</span>
+	        	<span class='stats'>".$row['esquive']."</span>
+	        </li>"; 
+			if ($boutique_class == 't1'){$boutique_class = 't2';}else{$boutique_class = 't1';}
 	    }
 	    ?>
-	    </table>
+	    </ul>
+	    </fieldset>	    	    	    	    
 	    <?php
 	    $requete = "SELECT nom, incantation FROM perso WHERE race = '".$joueur['race']."' AND statut = 'actif' ORDER BY incantation DESC LIMIT 0, 5";
 	    $req = $db->query($requete);
+		$boutique_class = 't1';	    
 	    ?>
-	    <h3>Meilleurs mages</h3>
-	    <table>
-	    <tr>
-	    	<td>
-	    		Nom
-	    	</td>
-	    	<td>
-	    		Incantation
-	    	</td>
-	    </tr>
+	    <fieldset>	    	    	    	    
+	    <legend>Meilleurs mages</legend>
+	    <ul>
+	    <li>
+	    	<span class='nom'>Nom</span>
+	    	<span class='stats'>Incantation</span>
+	    </li>
 	    <?php
 	    while($row = $db->read_array($req))
 	    {
-	        echo '
-	        <tr>
-	        	<td>
-	        	'.$row['nom'].'
-	        	</td>
-	        	<td>
-	        	'.$row['incantation'].'
-	        	</td>
-	        </tr>'; 
+	        echo "
+	        <li class='$boutique_class'>
+	        	<span class='nom'>".$row['nom']."</span>
+	        	<span class='stats'>".$row['incantation']."</span>
+	        </li>"; 
+			if ($boutique_class == 't1'){$boutique_class = 't2';}else{$boutique_class = 't1';}
 	    }
 	    ?>
-	    </table>
+	    </ul>
+	    </fieldset>	
+	    </div>    	    	    
 	    <?php
 	}
 	elseif($_GET['direction'] == 'criminel')
@@ -467,20 +470,13 @@ if($joueur['rang_royaume'] != 6)
 	    $requete = "SELECT * FROM perso WHERE crime > 0 AND race = '".$R['race']."' AND statut = 'actif' ORDER BY crime DESC";
 	    $req = $db->query($requete);
 	    ?>
-	    <table>
-	    <tr>
-	    	<td>
-	    		Nom
-	    	</td>
-	    	<td>
-	    		Pts de crime
-	    	</td>
-	    	<td>
-	    		Amende
-	    	</td>
-	    	<td>
-	    	</td>
-	    </tr>
+	    <fieldset>	    	    	    	    
+	    <ul>
+	    <li>
+	    	<span>Nom</span>
+	    	<span>Pts de crime</span>
+	    	<span>Amende</span>
+	    </li>
 	    <?php
 	    while($row = $db->read_assoc($req))
 	    {
@@ -493,17 +489,17 @@ if($joueur['rang_royaume'] != 6)
 	        }
 	        else $amende = 0;
 	        ?>
-	    <tr>
-	    	<td>
+	    <li>
+	    	<span>
 	    		<?php echo $row['nom']; ?>
-	    	</td>
-	    	<td>
+	    	</span>
+	    	<span>
 	    		<?php echo $row['crime']; ?>
-	    	</td>
-	    	<td>
+	    	</span>
+	    	<span>
 	    		<?php echo $amende; ?>
-	    	</td>
-	    	<td>
+	    	</span>
+	    	<span>
 	    		<a href="gestion_royaume.php?direction=gestion_criminel&amp;id=<?php echo $row['ID']; ?>" onclick="return envoiInfo(this.href, 'conteneur')">Gérer</a>
 	    		<?php
 	    		if($amende != 0)
@@ -513,12 +509,13 @@ if($joueur['rang_royaume'] != 6)
 	        		<?php
 	    		}
 	    		?>
-	    	</td>
-	    </tr>
+	    	</span>
+	    </li>
 	    	<?php
 	    }
 	    ?>
-	    </table>
+	    </ul>
+	    </fieldset>
 	    <?php
 	}
 	elseif($_GET['direction'] == 'suppr_criminel')
@@ -596,140 +593,51 @@ if($joueur['rang_royaume'] != 6)
 	}
 	elseif($_GET['direction'] == 'achat_militaire')
 	{
-		$requete = "SELECT * FROM objet_royaume WHERE id = ".sSQL($_GET['id']);
-		$nombre = $_GET['nbr'];
-		$req = $db->query($requete);
-		$row = $db->read_assoc($req);
-		$check = true;
-		//Si c'est pour une bourgade on vérifie combien il y en a déjà
-		if($row['type'] == 'bourg')
-		{
-			$nb_bourg = nb_bourg($R['ID']);
-			$nb_case = nb_case($R['ID']);
-			if(($nb_bourg + $nombre - 1) >= ceil($nb_case / 250)) $check = false;
-		}
-		//On vérifie les stars
-		if($R['star'] >= ($row['prix'] * $nombre) && $check)
-		{
-			//On vérifie les ressources
-			if(($R['pierre'] >= $row['pierre'] * $nombre) && ($R['bois'] >= $row['bois'] * $nombre) && ($R['eau'] >= $row['eau'] * $nombre) && ($R['charbon'] >= $row['charbon'] * $nombre) && ($R['sable'] >= $row['sable'] * $nombre) && ($R['essence'] >= $row['essence'] * $nombre))
-			{
-				$i = 0;
-				while($i < $nombre)
-				{
-					//Achat
-					$requete = "INSERT INTO depot_royaume VALUES ('', ".$row['id'].", ".$R['ID'].")";
-					$db->query($requete);
-					//On rajoute un bourg au compteur
-					if($row['type'] == 'bourg')
-					{
-						$requete = "UPDATE royaume SET bourg = bourg + 1 WHERE ID = ".$R['ID'];
-						$db->query($requete);
-					}
-					//On enlève les stars au royaume
-					$requete = "UPDATE royaume SET star = star - ".$row['prix'].", bois = bois - ".$row['bois'].", pierre = pierre - ".$row['pierre'].", eau = eau - ".$row['eau'].", charbon = charbon - ".$row['charbon'].", sable = sable - ".$row['sable'].", essence = essence - ".$row['essence']." WHERE ID = ".$R['ID'];
-					if($db->query($requete))
-					{
-						echo '<h6>'.$row['nom'].' bien acheté.</h6><br />';
-					}
-					$i++;
-				}
-			}
-			else echo '<h5>Il vous manque des ressources !</h5>';
-		}
-		elseif(!$check)
-		{
-			echo '<h5>Il y a déjà trop de bourg sur votre royaume.</h5><br />
-			Actuellement : '.$nb_bourg.'<br />
-			Maximum : '.ceil($nb_case / 250);
-		}
-		else
-		{
-			echo '<h5>Le royaume n\'a pas assez de stars</h5>';
-		}
 	}
 	elseif($_GET['direction'] == 'boutique')
 	{
-		?>
-		<table>
-		<tr>
-			<td>
-				Nom
-			</td>
-			<td>
-				Stars
-			</td>
-			<td>
-				Pierre
-			</td>
-			<td>
-				Bois
-			</td>
-			<td>
-				Eau
-			</td>
-			<td>
-				Sable
-			</td>
-			<td>
-				Charbon
-			</td>
-			<td>
-				Essence Magique
-			</td>
-			<td>
-				Nombre
-			</td>
-			<td>
-				Achat
-			</td>
-		</tr>
-		<?php
+		echo "
+		<div id='boutique'>
+		<ul>	
+		<li>
+			<span class='boutique_nom'>Nom</span>
+			<span class='boutique_prix'><img src='../image/starsv2.png' alt='Prix' title='Prix' /></span>
+			<span class='boutique_pierre'><img src='../image/icone/ressources_pierre.png' alt='pierre' title='Pierre' /></span>
+			<span class='boutique_bois'><img src='../image/icone/ressources_bois.png' alt='Bois' title='Bois' /></span>
+			<span class='boutique_eau'><img src='../image/icone/ressources_eau.png' alt='Eau' title='Eau'' /></span>
+			<span class='boutique_sable'><img src='../image/icone/ressources_sable.png' alt='Sable' title='Sable' /></span>
+			<span class='boutique_charbon'><img src='../image/icone/ressources_charbon.png' alt='Charbon' title='Charbon' /></span>
+			<span class='boutique_essence'><img src='../image/icone/ressources_essence.png' alt='Essence Magique' title='Essence Magique' /></span>
+			<span class='boutique_nombre'>Nombre</span>
+			<span class='boutique_nom'>Achat</span>
+		</li>";
+
 		$requete = "SELECT *, objet_royaume.id as oid FROM objet_royaume LEFT JOIN batiment ON batiment.id = objet_royaume.id_batiment";
 		$req = $db->query($requete);
 		$i = 0;
+		$boutique_class = 't1';
 		while($row = $db->read_assoc($req))
 		{
 			$overlib = $row['description'];
-		?>
-		<tr>
-			<td onmouseover="return <?php echo make_overlib($overlib); ?>" onmouseout="return nd();">
-				<?php echo $row['nom']; ?>
-			</td>
-			<td>
-				<?php echo $row['prix']; ?>
-			</td>
-			<td>
-				<?php echo $row['pierre']; ?>
-			</td>
-			<td>
-				<?php echo $row['bois']; ?>
-			</td>
-			<td>
-				<?php echo $row['eau']; ?>
-			</td>
-			<td>
-				<?php echo $row['sable']; ?>
-			</td>
-			<td>
-				<?php echo $row['charbon']; ?>
-			</td>
-			<td>
-				<?php echo $row['essence']; ?>
-			</td>
-			<td>
-				<input type="text" id="nbr<?php echo $i; ?>" value="1" />
-			</td>
-			<td>
-				<a href="#" onclick="return envoiInfo('gestion_royaume.php?direction=achat_militaire&amp;id=<?php echo $row['oid']; ?>&amp;nbr=' + $('nbr<?php echo $i; ?>').value, 'conteneur')">Acheter</a>
-			</td>
-		</tr>
-		<?php
+
+			echo "<li class='$boutique_class'>
+				<span class='boutique_nom'>".$row['nom']."</span>
+				<span class='boutique_prix' title='Prix'"; if ($R['star']<$row['prix']){echo " style='font-style: italic;color:#EFA4AE;'";} echo ">".$row['prix']."</span>
+				<span class='boutique_pierre' title='Cout en pierre'"; if ($R['pierre']<$row['pierre']){echo " style='font-style: italic;color:#BF0008;'";} echo ">".$row['pierre']."</span>
+				<span class='boutique_bois' title='Cout en bois'"; if ($R['bois']<$row['bois']){echo " style='font-style: italic;color:#BF0008;'";} echo ">".$row['bois']."</span>
+				<span class='boutique_eau' title='Cout en eau'"; if ($R['eau']<$row['eau']){echo " style='font-style: italic;color:#BF0008;'";} echo ">".$row['eau']."</span>
+				<span class='boutique_sable' title='Cout en sable'"; if ($R['sable']<$row['sable']){echo " style='font-style: italic;color:#BF0008;'";} echo ">".$row['sable']."</span>
+				<span class='boutique_charbon' title='Cout en charbon'"; if ($R['charbon']<$row['charbon']){echo " style='font-style: italic;color:#BF0008;'";} echo ">".$row['charbon']."</span>
+				<span class='boutique_essence' title='Cout en Essence magique'"; if ($R['essence']<$row['essence']){echo " style='font-style: italic;color:#BF0008;'";} echo ">".$row['essence']."</span>
+				<span class='boutique_nombre'><input type='text' id='nbr$i' value='0' /></span>
+				<span class='boutique_nom'><a href='#' onclick=\"royaume_update('".$row['oid']."',$('nbr".$i."').value, 'update_objet_royaume')\">Acheter</a></span>
+				</li>";
+				if ($boutique_class == 't1'){$boutique_class = 't2';}else{$boutique_class = 't1';}
 			$i++;
 		}
-		?>
-		</table>
-		<?php
+		echo "
+		</ul>
+		</div>";
 	}
 	elseif($_GET['direction'] == 'bourse_enchere')
 	{
@@ -814,6 +722,7 @@ if($joueur['rang_royaume'] != 6)
 		$bourse->get_encheres('DESC', 'actif = 1 AND id_royaume != '.$R['ID'].' AND id_royaume_acheteur != '.$R['ID']);
 			//
 		?>
+		<div id='bourse'>
 		<div style="position : absolute; left : 800px; background-color : grey; padding : 5px 10px 5px 10px;">
 			<div id="ajout_ressource" style="position : relative; right : 0px; display : none; z-index : 10;">
 				Ressource : <select name="ressource" id="ressource">
@@ -847,24 +756,15 @@ if($joueur['rang_royaume'] != 6)
 			</div>
 			<a href="" onclick="Effect.toggle('cout_ressource', 'slide'); return false;">Cours des ressources</a>
 		</div>
-		<h3>Enchères en cours</h3>
-		<table style="width : 100%;">
-		<tr>
-			<td>
-				Ressource
-			</td>
-			<td>
-				Nombre
-			</td>
-			<td>
-				Prix actuel
-			</td>
-			<td>
-				Fin vente
-			</td>
-			<td>
-			</td>
-		</tr>
+		<fieldset>
+		<legend>Enchères en cours</legend>
+		<ul>
+		<li>
+			<span class='ressourse'>Ressource</span>
+			<span class='nombre'>Nombre</span>
+			<span class='prix'>Prix actuel</span>
+			<span class='finvente'>Fin vente</span>
+		</li>
 		<?php
 		foreach($bourse->encheres as $enchere)
 		{
@@ -872,210 +772,147 @@ if($joueur['rang_royaume'] != 6)
 			$restant = transform_sec_temp(($time - time()));
 			$prix = ceil($enchere->prix * 1.1);
 			?>
-		<tr>
-			<td>
-				<?php echo $enchere->ressource; ?>
-			</td>
-			<td>
-				<?php echo $enchere->nombre; ?>
-			</td>
-			<td>
-				<?php echo $enchere->prix.' ('.round(($enchere->prix / $enchere->nombre), 2).' / u)'; ?>
-			</td>
-			<td>
-				<?php echo $restant; ?>
-			</td>
-			<td>
-				<a href="gestion_royaume.php?direction=bourse_enchere&amp;id_enchere=<?php echo $enchere->id_bourse_royaume; ?>" onclick="return envoiInfo(this.href, 'conteneur');">Enchérir pour <?php echo $prix; ?> stars (<?php echo ($prix / $enchere->nombre); ?> / u)</a>
-			</td>
-		</tr>
+		<li>
+			<span class='ressourse'><?php echo $enchere->ressource; ?></span>
+			<span class='nombre'><?php echo $enchere->nombre; ?></span>
+			<span class='prix'><?php echo $enchere->prix.' ('.round(($enchere->prix / $enchere->nombre), 2).' / u)'; ?></span>
+			<span class='finvente'><?php echo $restant; ?></span>
+			<span><a href="gestion_royaume.php?direction=bourse_enchere&amp;id_enchere=<?php echo $enchere->id_bourse_royaume; ?>" onclick="return envoiInfo(this.href, 'conteneur');">Enchérir pour <?php echo $prix; ?> stars (<?php echo ($prix / $enchere->nombre); ?> / u)</a></span>
+		</li>
 			<?php
 		}
 		?>
-		</table>
+		</ul>
+		</fieldset>
 		<?php
 		$bourse->encheres = array();
 		$bourse->get_encheres('DESC', 'actif = 1 AND id_royaume_acheteur = '.$R['ID']);
 		?>
-		<h3>Vos mises</h3>
-		<table style="width : 100%;">
-		<tr>
-			<td>
-				Ressource
-			</td>
-			<td>
-				Nombre
-			</td>
-			<td>
-				Prix actuel
-			</td>
-			<td>
-				Fin vente
-			</td>
-		</tr>
+		<fieldset>
+		<legend>Vos mises</legend>
+		<ul>
+		<li>
+			<span class='ressourse'>Ressource</span>
+			<span class='nombre'>Nombre</span>
+			<span class='prix'>Prix actuel</span>
+			<span class='finvente'>Fin vente</span>
+		</li>
 		<?php
+		print_r($bourse);
 		foreach($bourse->encheres as $enchere)
 		{
 			$time = strtotime($enchere->fin_vente);
 			$restant = transform_sec_temp(($time - time()));
 			?>
-		<tr>
-			<td>
-				<?php echo $enchere->ressource; ?>
-			</td>
-			<td>
-				<?php echo $enchere->nombre; ?>
-			</td>
-			<td>
-				<?php echo $enchere->prix.' ('.round(($enchere->prix / $enchere->nombre), 2).' / u)'; ?>
-			</td>
-			<td>
-				<?php echo $restant; ?>
-			</td>
-		</tr>
+		<li>
+			<span class='ressourse'><?php echo $enchere->ressource; ?></span>
+			<span class='nombre'><?php echo $enchere->nombre; ?></span>
+			<span class='prix'><?php echo $enchere->prix.' ('.round(($enchere->prix / $enchere->nombre), 2).' / u)'; ?></span>
+			<span class='finvente'><?php echo $restant; ?></span>
+		</li>
 			<?php
 		}
 		?>
-		</table>
+		</ul>
+		</fieldset>
 		<?php
 		$bourse->encheres = array();
 		$bourse->get_encheres('DESC', 'actif = 1 AND id_royaume = '.$R['ID']);
 		?>
-		<h3>Vos ressources en vente</h3>
-		<table style="width : 100%;">
-		<tr>
-			<td>
-				Ressource
-			</td>
-			<td>
-				Nombre
-			</td>
-			<td>
-				Prix actuel
-			</td>
-			<td>
-				Fin vente
-			</td>
-			<td>
-			</td>
-		</tr>
+		<fieldset>
+		<legend>Vos ressources en vente</legend>
+		<ul>
+		<li>
+			<span class='ressourse'>Ressource</span>
+			<span class='nombre'>Nombre</span>
+			<span class='prix'>Prix actuel</span>
+			<span class='finvente'>Fin vente</span>
+			<span>Acheteur</span>
+			
+		</li>
 		<?php
+				print_r($bourse);
+
 		foreach($bourse->encheres as $enchere)
 		{
+		
 			$time = strtotime($enchere->fin_vente);
 			$restant = transform_sec_temp(($time - time()));
 			if($enchere->id_royaume_acheteur != 0) $acheteur = 'Acheteur';
 			else $acheteur = '';
 			?>
-		<tr>
-			<td>
-				<?php echo $enchere->ressource; ?>
-			</td>
-			<td>
-				<?php echo $enchere->nombre; ?>
-			</td>
-			<td>
-				<?php echo $enchere->prix.' ('.round(($enchere->prix / $enchere->nombre), 2).' / u)'; ?>
-			</td>
-			<td>
-				<?php echo $restant; ?>
-			</td>
-			<td>
-				<?php echo $acheteur; ?>
-			</td>
-		</tr>
-			<?php
+		<li>
+			<span class='ressourse'><?php echo $enchere->ressource; ?></span>
+			<span class='nombre'><?php echo $enchere->nombre; ?></span>
+			<span class='prix'><?php echo $enchere->prix.' ('.round(($enchere->prix / $enchere->nombre), 2).' / u)'; ?></span>
+			<span class='finvente'><?php echo $restant; ?></span>
+			<span><?php echo $acheteur; ?></span>
+		</li>
+		<?php
 		}
 		?>
-		</table>
+		</ul>
+		</fieldset>
 		<?php
 		$bourse->encheres = array();
 		$time = time() - 7 * (24 * 60 * 60);
 		$date = date("Y-m-d H:i:s", $time);
 		$bourse->get_encheres('DESC', 'actif = 0 AND fin_vente > "'.$date.'" AND id_royaume_acheteur = '.$R['ID']);
 		?>
-		<h3>Enchères remportées les 7 derniers jours</h3>
-		<table style="width : 100%;">
-		<tr>
-			<td>
-				Ressource
-			</td>
-			<td>
-				Nombre
-			</td>
-			<td>
-				Prix actuel
-			</td>
-			<td>
-				Fin vente
-			</td>
-		</tr>
+		<fieldset>
+		<legend>Enchères remportées les 7 derniers jours</legend>
+		<ul>
+		<li>
+			<span class='ressourse'>Ressource</span>
+			<span class='nombre'>Nombre</span>
+			<span class='prix'>Prix actuel</span>
+			<span class='finvente'>Fin vente</span>
+		</li>
 		<?php
 		foreach($bourse->encheres as $enchere)
 		{
 			?>
-		<tr>
-			<td>
-				<?php echo $enchere->ressource; ?>
-			</td>
-			<td>
-				<?php echo $enchere->nombre; ?>
-			</td>
-			<td>
-				<?php echo $enchere->prix.' ('.round(($enchere->prix / $enchere->nombre), 2).' / u)'; ?>
-			</td>
-			<td>
-				<?php echo $enchere->fin_vente; ?>
-			</td>
-		</tr>
-			<?php
+		<li>
+			<span class='ressourse'><?php echo $enchere->ressource; ?></span>
+			<span class='nombre'><?php echo $enchere->nombre; ?></span>
+			<span class='prix'><?php echo $enchere->prix.' ('.round(($enchere->prix / $enchere->nombre), 2).' / u)'; ?></span>
+			<span class='finvente'><?php echo $enchere->fin_vente; ?></span>
+		</li>
+		<?php
 		}
 		?>
-		</table>
+		</ul>
+		</fieldset>
 		<?php
 		$bourse->encheres = array();
 		$time = time() - 7 * (24 * 60 * 60);
 		$date = date("Y-m-d H:i:s", $time);
 		$bourse->get_encheres('DESC', 'actif = 0 AND fin_vente > "'.$date.'" AND id_royaume_acheteur != 0 AND id_royaume = '.$R['ID']);
 		?>
-		<h3>Ressources vendues les 7 derniers jours</h3>
-		<table style="width : 100%;">
-		<tr>
-			<td>
-				Ressource
-			</td>
-			<td>
-				Nombre
-			</td>
-			<td>
-				Prix actuel
-			</td>
-			<td>
-				Fin vente
-			</td>
-		</tr>
+		<fieldset>
+		<legend>Ressources vendues les 7 derniers jours</legend>
+		<ul>
+		<li>
+			<span class='ressourse'>Ressource</span>
+			<span class='nombre'>Nombre</span>
+			<span class='prix'>Prix actuel</span>
+			<span class='finvente'>Fin vente</span>
+		</li>
 		<?php
 		foreach($bourse->encheres as $enchere)
 		{
 			?>
-		<tr>
-			<td>
-				<?php echo $enchere->ressource; ?>
-			</td>
-			<td>
-				<?php echo $enchere->nombre; ?>
-			</td>
-			<td>
-				<?php echo $enchere->prix.' ('.round(($enchere->prix / $enchere->nombre), 2).' / u)'; ?>
-			</td>
-			<td>
-				<?php echo $enchere->fin_vente; ?>
-			</td>
-		</tr>
-			<?php
+		<li>
+			<span class='ressourse'><?php echo $enchere->ressource; ?></span>
+			<span class='nombre'><?php echo $enchere->nombre; ?></span>
+			<span class='prix'><?php echo $enchere->prix.' ('.round(($enchere->prix / $enchere->nombre), 2).' / u)'; ?></span>
+			<span class='finvente'><?php echo $enchere->fin_vente; ?></span>
+		</li>
+		<?php
 		}
 		?>
-		</table>
+		</ul>
+		</fieldset>
 		<?php
 	}
 	$requete = "SELECT * FROM diplomatie_demande WHERE royaume_recois = '".$joueur['race']."'";
@@ -1097,5 +934,6 @@ if($joueur['rang_royaume'] != 6)
 	    <?php
 	}
 ?>
+</div>
 </div>
 </div>

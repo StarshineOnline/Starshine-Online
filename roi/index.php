@@ -6,7 +6,7 @@ $connexion = true;
 include($root.'inc/fp.php');
 
 $joueur = recupperso($_SESSION['ID']);
-if($joueur['grade'] == 'Roi' OR $joueur['nom'] == 'Mylok' OR strtolower($joueur['nom']) == 'minus')
+if($joueur['grade'] == 'Roi' OR strtolower($joueur['nom']) == 'r')
 {
 	$date_hier = date("Y-m-d", mktime(0, 0, 0, date("m") , date("d") - 2, date("Y")));
 	$requete = "SELECT food, nombre_joueur FROM stat_jeu ORDER BY date DESC";
@@ -17,7 +17,7 @@ if($joueur['grade'] == 'Roi' OR $joueur['nom'] == 'Mylok' OR strtolower($joueur[
 	
 	$R = get_royaume_info($joueur['race'], $Trace[$joueur['race']]['numrace']);
 	
-	//Vérifie si le perso est mort
+	//VÃ©rifie si le perso est mort
 	verif_mort($joueur, 1);
 	
 	check_perso($joueur);
@@ -50,6 +50,7 @@ if($joueur['grade'] == 'Roi' OR $joueur['nom'] == 'Mylok' OR strtolower($joueur[
 	<script src="../javascript/fonction.js" type="text/javascript"></script>
 	<script src="../javascript/overlib/overlib.js" type="text/javascript"></script>
 	<script src="javascript/menu.js" type="text/javascript"></script>
+	<meta http-equiv='content-type' content='text/html; charset=utf-8' />	
 	<script type="text/javascript">
 	window.onload = function()
 	{
@@ -59,81 +60,60 @@ if($joueur['grade'] == 'Roi' OR $joueur['nom'] == 'Mylok' OR strtolower($joueur[
 </head>
 <body>
 <div id="conteneur_back">
-<div id="conteneur2">
-<div id="top">
-		<span title="Retour au jeu" class="fermer" onclick="document.location.href = '../jeu2.php';" style="float : left;"></span>
-		<ul id="menu">
-			<li>
-				<a href="#" onclick="showMenu(1)">Diplomatie</a>
-				<ul id="smenu1" style="display : none">
-					<li><a href="gestion_royaume.php?direction=diplomatie" onclick="return clickMenu(this);">Diplomatie</a>
-					<li><a href="telephone.php" onclick="return clickMenu(this);">Téléphone rouge</a>
-				</ul>
-			</li>
-			<li>
-				<a href="#" onclick="showMenu(2)">Militaire</a>
-				<ul id="smenu2" style="display : none">
-					<li><a href="construction.php" onclick="return clickMenu(this);">Drapeaux & batiments</a>
-					<li><a href="gestion_royaume.php?direction=carte" onclick="return clickMenu(this);">Carte des constructions et habitants</a>
-					<li><a href="index.php" onclick="refresh(this.href, 'conteneur');">Gestion des groupes</a></li>
-					<li><a href="gestion_bataille.php" onclick="return clickMenu(this);">Gestion des batailles</a></li>
-					<li><a href="gestion_royaume.php?direction=boutique" onclick="return clickMenu(this);">Boutique Militaire</a>
-				</ul>
-			</li>
-			<li>
-				<a href="#" onclick="showMenu(3)">Economie</a>
-				<ul id="smenu3" style="display : none">
-					<li><a href="gestion_royaume.php?direction=bourse" onclick="return clickMenu(this);">Bourse Inter Royaume</a>
-					<li><a href="gestion_royaume.php?direction=construction" onclick="return clickMenu(this);">Construction de la ville</a>
-					<li><a href="entretien.php" onclick="return clickMenu(this);">Entretien</a>
-					<li><a href="ressources.php" onclick="return clickMenu(this);">Ressources</a>
-					<li><a href="quete.php" onclick="return clickMenu(this);">Gestion des quètes</a>
-					<li><a href="taxe.php" onclick="return clickMenu(this);">Gestion des taxes</a>
-					<li><a href="mine.php" onclick="return clickMenu(this);">Gestion des mines</a>
-				</ul>
-			</li>
-			<li>
-				<a href="#" onclick="showMenu(4)">Divers</a>
-				<ul id="smenu4" style="display : none">
-					<li><a href="gestion_royaume.php?direction=criminel" onclick="return clickMenu(this);">Criminels</a>
-					<li><a href="motk.php" onclick="return clickMenu(this);">Message du roi</a>
-					<li><a href="propagande.php" onclick="return clickMenu(this);">Propagande</a>
-					<li><a href="gestion_royaume.php?direction=stats" onclick="return clickMenu(this);">Statistiques</a>
-				</ul>
-			</li>
-		</ul>
-		<div id="popup" style='display:none;'><div id="popup_menu"><span class='fermer' title='Fermer le popup' onclick="fermePopUp(); return false;"></span></div><div id="popup_marge"><div id="popup_content"></div></div></div>
-		<div id="loading" style="display : none;"> </div>
-		<div id="infos">
-	<?php
-	$W_requete = "SELECT COUNT(*) as count FROM perso WHERE race = '".$R['race']."' AND statut = 'actif'";
-	$W_req = $db->query($W_requete);
-	$W_row = $db->read_row($W_req);
-	$h = $W_row[0];
-	$semaine = time() - (3600 * 24 * 7);
-
-	$W_requete = "select sum(level)/count(id) moy from perso WHERE statut = 'actif'";
-	$W_req = $db->query($W_requete);
-	$W_row = $db->read_row($W_req);
-	$ref_ta = min(3, floor($W_row[0]));
-
-	$W_requete = "SELECT COUNT(*) as count FROM perso WHERE race = '".$R['race']."' AND level > $ref_ta AND dernier_connexion > ".$semaine." AND statut = 'actif'";
-	$W_req = $db->query($W_requete);
-	$W_row = $db->read_row($W_req);
-	$hta = $W_row[0];
-	$food_necessaire = floor($food_necessaire * $h);
-	?>
-			<strong>Bois : </strong><?php echo $R['bois']; ?> / <strong>Eau : </strong><?php echo $R['eau']; ?> / <strong>Essence Magique : </strong><?php echo $R['essence']; ?><br />
-			<strong>Pierre : </strong><?php echo $R['pierre']; ?> / <strong>Sable : </strong><?php echo $R['sable']; ?> / <strong>Charbon : </strong><?php echo $R['charbon']; ?>
-		</div>
-</div>
-<div id="separateur">
-	<strong>Stars du royaume : </strong><?php echo $R['star']; ?> / <strong>Taux de taxe</strong> : <?php echo $R['taxe_base']; ?>% / <strong>Habitants</strong> : <?php echo $h; ?> / <strong>Habitants très actifs</strong> : <?php echo $hta; ?> / <strong>Nourriture</strong> : <?php echo $R['food']; ?> / <strong>Nourriture nécessaire</strong> : <?php echo $food_necessaire; ?>
-</div>
 <div id="conteneur">
+
+<div id="mask" style='display:none;'></div>
+<div id="popup" style='display:none;'>
+	<div id="popup_menu"><span class='fermer' title='Fermer le popup' onclick="fermePopUp(); return false;">&nbsp;</span></div>
+	<div id="popup_marge">
+		<div id="popup_content"></div>
+	</div>
+</div>
+<div id="loading" style='display:none'></div>
+<div id="loading_information" style='display:none'></div>
+	<div id="perso">
+
+		<div id="perso_contenu">
+		<?php include('perso_contenu.php'); ?>
+		</div>
+ 
+
+		<div id='perso_menu'>
+			<ul>
+				<li id='diplomatie' class='menu' onclick="menu_change('diplomatie');">Diplomatie</li>
+				<li id='militaire' class='menu' onclick="menu_change('militaire');">Militaire</li>
+				<li id='economie' class='menu' onclick="menu_change('economie');">Economie</li>
+				<li id='divers' class='menu' onclick="menu_change('divers');">Divers</li>
+			</ul>
+			
+		</div>
+		
+	</div>	
+	
+
+
+
+	<div id='menu'>
+	<input type='hidden' id='menu_encours' value='diplomatie' />
+	<div id='menu_details'>
+		<div id='diplomatie_menu' style='display:none;'><span class='menu' onclick="affiche_page('gestion_royaume.php?direction=diplomatie');">Diplomatie</span><span class='menu' onclick="affiche_page('telephone.php');">TÃ©lÃ©phone rouge</span></div>
+		
+		
+		<div id='militaire_menu' style='display:none;'><span class='menu' onclick="affiche_page('construction.php');">Drapeaux & batiments</span><span class='menu' onclick="affiche_page('gestion_royaume.php?direction=carte');">Carte</span><span class='menu' onclick="affiche_page('gestion_groupe.php');">Gestion des groupes</span><span class='menu' onclick="affiche_page('gestion_bataille.php');">Gestion des batailles</span><span class='menu' onclick="affiche_page('gestion_royaume.php?direction=boutique');">Boutique Militaire</span></div>
+		
+		
+		<div id='economie_menu' style='display:none;'><span class='menu' onclick="affiche_page('gestion_royaume.php?direction=bourse');">Bourse Inter Royaume</span><span class='menu'  onclick="affiche_page('gestion_royaume.php?direction=construction');">Construction de la ville</span><span class='menu' onclick="affiche_page('entretien.php');">Entretien</span><span class='menu' onclick="affiche_page('ressources.php');">Ressources</span><span class='menu' onclick="affiche_page('quete.php');">Gestion des quÃ¨tes</span><span class='menu' onclick="affiche_page('taxe.php');">Gestion des taxes</span><span class='menu' onclick="affiche_page('mine.php');">Gestion des mines</span></div>
+		
+		<div id='divers_menu' style='display:none;'><span class='menu' onclick="affiche_page('gestion_royaume.php?direction=criminel');">Criminels</span><span class='menu' onclick="affiche_page('motk.php');">Message du roi</span><span class='menu' onclick="affiche_page('propagande.php');">Propagande</span><span class='menu' onclick="affiche_page('gestion_royaume.php?direction=stats');">Statistiques</span></div>
+	</div>
+	</div>
+</div>
+<div id='contenu_back'>
+		<div id='message_confirm'></div>
+	<div id="contenu_jeu">
 &nbsp;
 </div>
-</div></div>
+</div>
 <?php
 //Inclusion du bas de la page
 		include($root.'bas.php');

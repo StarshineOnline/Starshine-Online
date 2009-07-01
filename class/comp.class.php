@@ -5,8 +5,10 @@
 
 if (file_exists('class/effect.class.php')) {
   include_once('class/effect.class.php');
-} else {
+} elseif (file_exists('../class/effect.class.php')) {
   include_once('../class/effect.class.php');
+}elseif (file_exists('../../class/effect.class.php')) {
+  include_once('../../class/effect.class.php');
 }
 
 /**
