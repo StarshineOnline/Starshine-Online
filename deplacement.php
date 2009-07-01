@@ -190,7 +190,6 @@ if (isset($_GET['deplacement']))
 }
 
 $W_pos = convert_in_pos($coord['x'], $coord['y']);
-$_SESSION['position'] = $W_pos;
 //Si c'est un donjon
 if($donjon)
 {

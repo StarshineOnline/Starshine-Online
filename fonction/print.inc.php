@@ -111,7 +111,6 @@ function affiche_perso_visu($joueur, $W_row, $position="")
 	global $Tclasse;
 
 	$mybonus = recup_bonus($_SESSION['ID']);
-	$affiche_div = '';
 	echo '<li style="clear:both;">
 	';
 	$W_nom = $W_row['nom'];
@@ -121,7 +120,7 @@ function affiche_perso_visu($joueur, $W_row, $position="")
 	$bonus = recup_bonus($W_ID);
 	// on envois dans infojoueur.php -> ID du joueur et La position de la case ou il se trouve
 	
-	$requete = "SELECT ".$W_race." FROM diplomatie WHERE race = '".$joueur['race']."'";
+	$requete = "SELECT ".$W_race." FROM diplomatie WHERE race = '".$joueur->get_race()."'";
 	$req_diplo = $db->query($requete);
 	$row_diplo = $db->read_array($req_diplo);
 	
@@ -168,12 +167,12 @@ function affiche_perso_visu($joueur, $W_row, $position="")
 	{
 		echo '
 		<a href="envoimessage.php?id_type=p'.$W_ID.'" onclick="return envoiInfo(this.href, \'information\')"><img src="image/interface/message.png" title="Envoyer un message" /></a>';
-		if ($joueur['sort_jeu'] != '') echo '<a href="sort_joueur.php?poscase='.$W_case.'&amp;id_joueur='.$W_ID.'" onclick="return envoiInfo(this.href, \'information\')"><img src="image/sort_hc_icone.png" title="Lancer un sort" alt="Lancer un sort" /></a>';
+		if ($joueur->get_sort_jeu() != '') echo '<a href="sort_joueur.php?poscase='.$W_case.'&amp;id_joueur='.$W_ID.'" onclick="return envoiInfo(this.href, \'information\')"><img src="image/sort_hc_icone.png" title="Lancer un sort" alt="Lancer un sort" /></a>';
 		if ($row_diplo[0] <= 5 OR array_key_exists(5, $mybonus)) echo '<a href="echange.php?poscase='.$W_case.'&amp;id_joueur='.$W_ID.'" onclick="return envoiInfo(this.href, \'information\')"><img src="image/icone/echanger.png" alt="Echanger" title="Echanger" /></a>';
 	}
 	else
 	{
-		if ($joueur['sort_jeu'] != '') echo '<a href="sort.php" onclick="return envoiInfo(this.href, \'information\')"><img src="image/sort_hc_icone.png" title="Lancer un sort" alt="Lancer un sort" /></a>';
+		if ($joueur->get_sort_jeu() != '') echo '<a href="sort.php" onclick="return envoiInfo(this.href, \'information\')"><img src="image/sort_hc_icone.png" title="Lancer un sort" alt="Lancer un sort" /></a>';
 	}
 	if ($statut_joueur != 'normal') echo ' ('.$statut_joueur.')';
 	echo '</span>';

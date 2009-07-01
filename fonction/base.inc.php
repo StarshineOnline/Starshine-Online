@@ -557,9 +557,9 @@ function cout_pa($info, $race)
 function cout_pa2($coutpa, $joueur, $case, $diagonale)
 {
 	global $Trace;
-	$coord = convert_in_coord($case['ID']);
+	$coord = convert_in_coord($case->get_id());
 	//Si on est sur son royaume => Cout en PA réduit de 1, minimum 1
-	if($case['royaume'] == $Trace[$joueur['race']]['numrace'])
+	if($case->get_royaume() == $Trace[$joueur['race']]['numrace'])
 	{
 		if($coutpa > 2) $coutpa -= 1;
 	}
@@ -586,7 +586,7 @@ function cout_pa2($coutpa, $joueur, $case, $diagonale)
 		{
 			$coutpa = $coutpa * $batiment['augmentation_pa'];
 			//Si on est sur son royaume réduction du cout de PA par 2
-			if($case['royaume'] == $Trace[$joueur['race']]['numrace'])
+			if($case->get_royaume() == $Trace[$joueur['race']]['numrace'])
 			{
 				$coutpa = ceil($coutpa / 2);
 			}
@@ -1176,11 +1176,11 @@ function check_affiche_bonus($bonus, $joueur, $perso)
 			return true;
 		break;
 		case 1 :
-			if($joueur['race'] == $perso['race']) return true;
+			if($joueur->get_race() == $perso['race']) return true;
 			else return false;
 		break;
 		case 2 :
-			if($joueur['ID'] == $perso['ID']) return true;
+			if($joueur->get_id() == $perso['ID']) return true;
 			else return false;
 		break;
 	}
