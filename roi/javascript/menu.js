@@ -104,4 +104,14 @@ function minimap(x,y)
 	new Ajax.Request('./ajax/mini_map.php',{method:'post',parameters:'x='+x+'&y='+y,onLoading:Loadchargement,onComplete:Affiche_minimap});
 }
 
+function texte_update(message,action)
+{
+	function Affiche_texte(text)
+	{
+		$('loading').hide();	
+		refresh('propagande.php','contenu_jeu');
+		$('message_confirm').innerHTML = text.responseText;
+	}
+	new Ajax.Request('./ajax/gestion_royaume_update.php',{method:'post',parameters:'message='+message+'&action='+action,onLoading:Loadchargement,onComplete:Affiche_texte});
+}
 

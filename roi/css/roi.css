@@ -67,6 +67,13 @@ body 								{margin:0;padding:0;background:#7e909c url('../../image/v2/bg_site.
 .sable								{text-align:right;margin-right:20px;background:transparent url('../../image/icone/ressources_sable.png') no-repeat;padding-left:40px;display:block;line-height: 30px;height:30px;width:30px;float:left;}
 .charbon							{text-align:right;margin-right:20px;background:transparent url('../../image/icone/ressources_charbon.png') no-repeat;padding-left:40px;display:block;line-height: 30px;height:30px;width:30px;float:left;}
 
+#criminel fieldset					{-moz-border-radius: 10px;}
+#criminel ul li 					{clear:both;height:21px;line-height: 21px;-moz-border-radius: 10px;}
+#criminel ul li:hover			    {background-color:#C5D4EF;-moz-border-radius: 10px;}
+#criminel .nom					    {float:left;width:150px;text-indent: 5px;}
+#criminel .crime				    {float:left;width:150px;text-align: right;}
+#criminel .amende				    {float:left;width:150px;text-align: right;}
+
 
 #stats fieldset						{width:168px;float:left;-moz-border-radius: 10px;}
 #stats ul li 						{clear:both;height:21px;line-height: 21px;-moz-border-radius: 10px;}
@@ -74,6 +81,8 @@ body 								{margin:0;padding:0;background:#7e909c url('../../image/v2/bg_site.
 #stats .nom							{float:left;width:100px;text-indent: 5px;}
 #stats .stats						{float:left;width:60px;text-align: right;}
 
+#propagande fieldset				{-moz-border-radius: 10px;}
+#motk fieldset						{-moz-border-radius: 10px;}
 
 #bourse fieldset					{-moz-border-radius: 10px;}
 #bourse ul li 						{clear:both;height:21px;line-height: 21px;-moz-border-radius: 10px;}

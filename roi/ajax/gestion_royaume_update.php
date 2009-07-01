@@ -75,6 +75,41 @@ if (isset($_POST['action']))
 				echo '<h5>Le royaume n\'a pas assez de stars</h5>';
 			}
 		break;
+		case 'update_propagande':
+			$message = addslashes($_POST['message']);
+			if ($message != '')
+			{
+				$requete = "UPDATE motk SET propagande = '".$message."' WHERE id_royaume = ".$R['ID'];
+				if($req = $db->query($requete)) 
+				{
+					echo '<h6>Propagande bien modifiée !</h6>';
+				}
+				else echo('<h5>Erreur lors de l\'envoi du message</h5>');
+			}
+			else
+			{
+				echo '<h5>Vous n\'avez pas saisi de message</h5>';
+			}
+		
+		break;
+		case 'update_motk':		
+			$message = addslashes($_POST['message']);
+			if ($message != '')
+			{
+				$requete = "UPDATE motk SET message = '".$message."', date = ".time()." WHERE id_royaume = ".$R['ID'];
+				if($req = $db->query($requete)) 
+				{
+					echo '<h6>Message du roi bien modifié !</h6>';
+				}
+				else echo('<h5>Erreur lors de l\'envoi du message</h5>');
+			}
+			else
+			{
+				echo '<h5>Vous n\'avez pas saisi de message</h5>';
+			}
+		break;
+
+		
 	}
 }
 ?>

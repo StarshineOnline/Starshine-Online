@@ -466,6 +466,7 @@ if($joueur['rang_royaume'] != 6)
 	}
 	elseif($_GET['direction'] == 'criminel')
 	{
+		echo "<div id='criminel'>";
 	    //Sélection de tous les joueurs ayant des points de crime
 	    $requete = "SELECT * FROM perso WHERE crime > 0 AND race = '".$R['race']."' AND statut = 'actif' ORDER BY crime DESC";
 	    $req = $db->query($requete);
@@ -473,9 +474,9 @@ if($joueur['rang_royaume'] != 6)
 	    <fieldset>	    	    	    	    
 	    <ul>
 	    <li>
-	    	<span>Nom</span>
-	    	<span>Pts de crime</span>
-	    	<span>Amende</span>
+	    	<span class='nom'>Nom</span>
+	    	<span class='crime'>Pts de crime</span>
+	    	<span class='amende'>Amende</span>
 	    </li>
 	    <?php
 	    while($row = $db->read_assoc($req))
@@ -490,16 +491,16 @@ if($joueur['rang_royaume'] != 6)
 	        else $amende = 0;
 	        ?>
 	    <li>
-	    	<span>
+	    	<span class='nom'>
 	    		<?php echo $row['nom']; ?>
 	    	</span>
-	    	<span>
+	    	<span class='crime'>
 	    		<?php echo $row['crime']; ?>
 	    	</span>
-	    	<span>
+	    	<span class='amende'>
 	    		<?php echo $amende; ?>
 	    	</span>
-	    	<span>
+	    	<span class='amende'>
 	    		<a href="gestion_royaume.php?direction=gestion_criminel&amp;id=<?php echo $row['ID']; ?>" onclick="return envoiInfo(this.href, 'conteneur')">Gérer</a>
 	    		<?php
 	    		if($amende != 0)
@@ -516,6 +517,7 @@ if($joueur['rang_royaume'] != 6)
 	    ?>
 	    </ul>
 	    </fieldset>
+	    </div>
 	    <?php
 	}
 	elseif($_GET['direction'] == 'suppr_criminel')
