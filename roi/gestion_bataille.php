@@ -58,9 +58,10 @@ function affiche_map($bataille)
 	$map->affiche();
 }
 
-
+if($joueur['rang'] != 7)
+	echo '<p>Cheater!</p>';
 //Nouvelle bataille
-if(array_key_exists('new', $_GET))
+else if(array_key_exists('new', $_GET))
 {
 	include('gestion_bataille_menu.php');
 	?>

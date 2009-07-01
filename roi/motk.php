@@ -2,7 +2,9 @@
 require('haut_roi.php');
 include('../fonction/messagerie.inc.php');
 
-if(array_key_exists('direction', $_GET) && $_GET['direction'] == 'motk2')
+if($joueur['rang'] != 7)
+	echo '<p>Cheater!</p>';
+else if(array_key_exists('direction', $_GET) && $_GET['direction'] == 'motk2')
 {
 	$message = addslashes($_POST['message']);
 	if ($message != '')

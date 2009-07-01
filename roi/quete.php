@@ -4,7 +4,9 @@ require('haut_roi.php');
 ?>
 <h3>Gestion des Quêtes</h3>
 <?php
-if($_GET['action'] == 'achat')
+if($joueur['rang'] != 7)
+	echo '<p>Cheater!</p>';
+else if($_GET['action'] == 'achat')
 {
 	//Récupère les informations sur la quète
 	$requete = "SELECT * FROM quete WHERE id = ".sSQL($_GET['id']);

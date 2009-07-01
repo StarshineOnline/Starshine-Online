@@ -1,6 +1,8 @@
 <?php
 require('haut_roi.php');
-	if($_GET['direction'] == 'diplomatie')
+if($joueur['rang'] != 7)
+	echo '<p>Cheater!</p>';
+	else if($_GET['direction'] == 'diplomatie')
 	{
 		?>
 		<h3>Diplomatie</h3>

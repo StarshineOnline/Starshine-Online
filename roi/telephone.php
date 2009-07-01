@@ -1,6 +1,8 @@
 <?php
 require('haut_roi.php');
-if(array_key_exists('message', $_POST))
+if($joueur['rang'] != 7)
+	echo '<p>Cheater</p>';
+else if(array_key_exists('message', $_POST))
 {
 	$erreur = false;
 	$titre = addslashes($_POST['titre']);
