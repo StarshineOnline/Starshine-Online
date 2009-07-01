@@ -58,8 +58,8 @@ function affiche_map($bataille)
 	$map->affiche();
 }
 
-if($joueur['rang'] != 7)
-	echo '<p>Cheater!</p>';
+if($joueur['rang_royaume'] != 6)
+	echo '<p>Cheater</p>';
 //Nouvelle bataille
 else if(array_key_exists('new', $_GET))
 {

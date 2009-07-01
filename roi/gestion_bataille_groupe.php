@@ -2,8 +2,8 @@
 require('haut_roi.php');
 
 $bataille = new bataille($_GET['id_bataille']);
-if($joueur['rang'] != 7)
-	echo '<p>Cheater!</p>';
+if($joueur['rang_royaume'] != 6)
+	echo '<p>Cheater</p>';
 else if(array_key_exists('mission', $_GET))
 {
 	if($_GET['id_groupe'] != 0 AND $_GET['id_groupe'] != '')

@@ -1,6 +1,6 @@
 <?php
 require('haut_roi.php');
-if($joueur['rang'] != 7)
+if($joueur['rang_royaume'] != 6)
 	echo '<p>Cheater</p>';
 else if(array_key_exists('message', $_POST))
 {

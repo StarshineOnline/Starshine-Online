@@ -4,10 +4,15 @@
 	// Emplacement de l'image
 	$gs_dirImage = "../image/cart/";
 	$ls_image = $gs_dirImage.'carte_roy_'.$joueur['race'].'.png';
+	
+	if($joueur['rang_royaume'] != 6)
+		echo '<p>Cheater</p>';
+	else
+	{
+		// Description du contenu pour les navigateurs
+		header("Content-type: image/png");
 
-	// Description du contenu pour les navigateurs
-	header("Content-type: image/png");
-
-	// Lire le fichier et renvoyer le flux
-	readfile($ls_image);
+		// Lire le fichier et renvoyer le flux
+		readfile($ls_image);
+	}
 ?>

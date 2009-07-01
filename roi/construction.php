@@ -2,8 +2,8 @@
 require('haut_roi.php');
 
 check_case('all');
-if($joueur['rang'] != 7)
-	echo '<p>Cheater!</p>';
+if($joueur['rang_royaume'] != 6)
+	echo '<p>Cheater</p>';
 else if(!array_key_exists('direction', $_GET))
 {
 	echo '<h3>Liste des drapeaux ennemis sur votre territoire</h3>';

@@ -4,8 +4,8 @@ require('haut_roi.php');
 ?>
 <h3>Gestion des Quêtes</h3>
 <?php
-if($joueur['rang'] != 7)
-	echo '<p>Cheater!</p>';
+if($joueur['rang_royaume'] != 6)
+	echo '<p>Cheater</p>';
 else if($_GET['action'] == 'achat')
 {
 	//Récupère les informations sur la quète

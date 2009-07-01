@@ -2,7 +2,9 @@
 require('haut_roi.php');
 
 $duree = (60 * 60 * 24) * 7;
-if((time() - $duree) < $R['taxe_time'])
+if($joueur['rang_royaume'] != 6)
+	echo '<p>Cheater</p>';
+else if((time() - $duree) < $R['taxe_time'])
 {
 	echo 'Vous avez déjà modifié le taux de taxe récemment.<br />
 	Vous pourrez le modifier dans '.transform_sec_temp(($R['taxe_time'] + $duree) - time());

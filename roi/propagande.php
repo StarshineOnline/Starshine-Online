@@ -2,8 +2,8 @@
 require('haut_roi.php');
 include('../fonction/messagerie.inc.php');
 
-if($joueur['rang'] != 7)
-	echo '<p>Cheater!</p>';
+if($joueur['rang_royaume'] != 6)
+	echo '<p>Cheater</p>';
 else if(array_key_exists('direction', $_GET) && $_GET['direction'] == 'propagande')
 {
 	$message = addslashes($_POST['message']);

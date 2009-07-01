@@ -3,8 +3,8 @@ include('haut_roi.php');
 include('../class/map.class.php');
 
 //-- Récupération de la position X, Y du joueur.
-if($joueur['rang'] != 7)
-	echo '<p>Cheater!</p>';
+if($joueur['rang_royaume'] != 6)
+	echo '<p>Cheater</p>';
 else if(!array_key_exists('poscase', $_GET))
 {
 	$RqXY = $db->query("SELECT x, y FROM perso WHERE ID=".$_SESSION["ID"].";");
