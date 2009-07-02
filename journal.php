@@ -1,6 +1,6 @@
 <?php
 include('inc/fp.php');
-$joueur = recupperso($_SESSION['ID']);
+$joueur = new perso($_SESSION['ID']);
 $options = recup_option($_SESSION['ID']);
 ?>
 <fieldset>
@@ -66,13 +66,13 @@ while($i < $count)
 }
 $limit1 = ($page - 1) * $nombre_action_journal;
 $limit2 = $nombre_action_journal;
-$requete = "SELECT COUNT(*) FROM `".$table."` WHERE id_perso = ".$joueur['ID'];
+$requete = "SELECT COUNT(*) FROM `".$table."` WHERE id_perso = ".$joueur->get_id();
 if($table == 'journal') $db_use = $db;
 else $db_use = $db_log;
 $req = $db_use->query($requete);
 $row = $db_use->read_row($req);
 $page_max = ceil($row[0] / $nombre_action_journal);
-$requete = "SELECT * FROM `".$table."` WHERE id_perso = ".$joueur['ID'].$and." ORDER by time DESC, id DESC LIMIT ".$limit1.", ".$limit2;
+$requete = "SELECT * FROM `".$table."` WHERE id_perso = ".$joueur->get_id().$and." ORDER by time DESC, id DESC LIMIT ".$limit1.", ".$limit2;
 $req = $db_use->query($requete);
 while($row = $db_use->read_assoc($req))
 {

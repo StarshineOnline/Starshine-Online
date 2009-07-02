@@ -557,30 +557,28 @@ function cout_pa($info, $race)
 function cout_pa2($coutpa, $joueur, $case, $diagonale)
 {
 	global $Trace;
-	$coord = convert_in_coord($case->get_id());
 	//Si on est sur son royaume => Cout en PA réduit de 1, minimum 1
 	if($case->get_royaume() == $Trace[$joueur->get_race()]['numrace'])
 	{
 		if($coutpa > 2) $coutpa -= 1;
 	}
 	//Buff rapide comme le vent
-	if(array_key_exists('rapide_vent', $joueur['buff']) or
-     array_key_exists('course', $joueur->get_enchantement()))
+	if($joueur->is_buff('rapide_vent') or $joueur->is_enchantement('course'))
 	{
 		if($coutpa > 2) $coutpa -= 1;
 	}
 	
 	if ($diagonale) $coutpa++;
 	//Mal de rez
-	if(array_key_exists('debuff_rez', $joueur['debuff']))
+	if($joueur->is_debuff('debuff_rez'))
 	{
-		$coutpa = $coutpa * $joueur['debuff']['debuff_rez']['effet'];
+		$coutpa = $coutpa * $joueur->get_debuff('debuff_rez', 'effet');
 	}
 	//Maladies
-	if(array_key_exists('cout_deplacement', $joueur['debuff'])) $coutpa = ceil($coutpa / $joueur['debuff']['cout_deplacement']['effet']);
-	if(array_key_exists('plus_cout_deplacement', $joueur['debuff'])) $coutpa = ceil($coutpa * $joueur['debuff']['plus_cout_deplacement']['effet']);
+	if($joueur->is_debuff('cout_deplacement')) $coutpa = ceil($coutpa / $joueur->get_debuff('cout_deplacement', 'effet'));
+	if($joueur->is_debuff('plus_cout_deplacement')) $coutpa = ceil($coutpa * $joueur->get_debuff('plus_cout_deplacement', 'effet'));
 	//Bâtiment qui augmente le coût de PA
-	if($batiment = batiment_map($coord['x'], $coord['y']))
+	if($batiment = batiment_map($case->get_x(), $case->get_y()))
 	{
 		if($batiment['augmentation_pa'] > 1)
 		{
@@ -2006,20 +2004,6 @@ function get_royaume_info($race_joueur, $royaume_id)
 	$Roy_row = $db->read_array($Roy_req);
 	if ($Roy_row === false) {
 	  error_log('Gros probleme : row === false');
-	}
-	$Roy_row['diplo'] = 5;
-	$Roy_row['diplo_time'] = unserialize($Roy_row['diplo_time']);
-	if($Roy_row['ID'] != 0)
-	{
-		//Sélection de la diplomatie et des taxes
-		$requete_diplo = "SELECT ".$Roy_row['race']." FROM diplomatie WHERE race = '".$race_joueur."'";
-		$req_diplo = $db->query($requete_diplo);
-		$row_diplo = $db->read_row($req_diplo);
-		$Roy_row['taxe_base'] = $Roy_row['taxe'];
-		
-		$Roy_row['taxe'] = taux_taxe($Roy_row['taxe'], $row_diplo[0]);
-	
-		$Roy_row['diplo'] = $row_diplo[0];
 	}
 	return $Roy_row;
 }

@@ -220,7 +220,7 @@ $this-><?php echo $champ_reference; ?> = $<?php echo $champ_reference; ?>;
 
 		$requete = "SELECT <?php echo $champ_reference; ?>, <?php echo $liste_champs; ?> FROM <?php echo $table; ?> WHERE ".$where." ORDER BY ".$ordre;
 		$req = $db->query($requete);
-		if($db->num_rows() > 0)
+		if($db->num_rows($req) > 0)
 		{
 			while($row = $db->read_assoc($req))
 			{
@@ -228,7 +228,7 @@ $this-><?php echo $champ_reference; ?> = $<?php echo $champ_reference; ?>;
 				else $return[$row[$keys]][] = new <?php echo $table; ?>($row);
 			}
 		}
-		else $return = false;
+		else $return = array();
 		return $return;
 	}
 

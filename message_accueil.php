@@ -1,13 +1,13 @@
 <?php
 include('inc/fp.php');
-$joueur = recupperso($_SESSION['ID']);
+$joueur = new perso($_SESSION['ID']);
 
 setcookie('dernier_affichage_popup', time(), time() + (24 * 3600 * 31));
 
 if(array_key_exists('affiche', $_GET)) $affiche = $_GET['affiche']; else $affiche = false;
 
 //Si message du roi
-$requete = "SELECT * FROM motk WHERE race = '".$joueur['race']."'";
+$requete = "SELECT * FROM motk WHERE race = '".$joueur->get_race()."'";
 $req_m = $db->query($requete);
 $row_m = $db->read_assoc($req_m);
 if ($_COOKIE['dernier_affichage_popup'] <= $row_m['date'] OR $affiche == 'all')
@@ -23,7 +23,7 @@ if ($_COOKIE['dernier_affichage_popup'] <= $row_m['date'] OR $affiche == 'all')
 	$regCouleur = "\[color= ?(([[:alpha:]]+)|(#[[:digit:][:alpha:]]{6})) ?\]";
 	$message = eregi_replace($regCouleur, "<span style=\"color: \\1\">", $message);
 	foreach ($G_autorisations as $balise => $grades) {
-		if (!in_array($joueur['rang_royaume'], $grades)) {
+		if (!in_array($joueur->get_rang_royaume(), $grades)) {
 			//$message = eregi_replace("\[$balise\].*?\[/$balise\]", '', $message);
 			$message = preg_replace("/\[$balise\].*?\[\\/$balise\]/i", '', $message);
 	  }
@@ -40,7 +40,7 @@ if ($_COOKIE['dernier_affichage_popup'] <= $row_m['date'] OR $affiche == 'all')
 }
 
 //On cherche les derniers événements de ce joueur.
-$requete_journal = "SELECT * FROM journal WHERE id_perso = ".$joueur['ID']." AND time > '".date("Y-m-d H:i:s", $_COOKIE['dernier_affichage_popup'])."' ORDER BY time ASC, id ASC";
+$requete_journal = "SELECT * FROM journal WHERE id_perso = ".$joueur->get_id()." AND time > '".date("Y-m-d H:i:s", $_COOKIE['dernier_affichage_popup'])."' ORDER BY time ASC, id ASC";
 $req_journal = $db->query($requete_journal);
 while($row_journal = $db->read_assoc($req_journal))
 {
@@ -86,7 +86,7 @@ if ($_COOKIE['dernier_affichage_popup'] <= $row_news['posted'])
 }
 
 
-$requete = "SELECT * FROM punbbtopics WHERE (forum_id = ".$Trace[$joueur['race']]['forum_id'].") ORDER BY last_post DESC";
+$requete = "SELECT * FROM punbbtopics WHERE (forum_id = ".$Trace[$joueur->get_race()]['forum_id'].") ORDER BY last_post DESC";
 $req = $db_forum->query($requete);
 
 $i = 0;

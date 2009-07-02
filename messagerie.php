@@ -1,7 +1,7 @@
 <?php
 include('inc/fp.php');
-$joueur = recupperso($_SESSION['ID']);
-$messagerie = new messagerie($joueur['ID']);
+$joueur = new perso($_SESSION['ID']);
+$messagerie = new messagerie($joueur->get_id());
 $non_lu = $messagerie->get_non_lu();
 if (!isset($_GET['id_thread']) AND !array_key_exists('action', $_GET))
 {

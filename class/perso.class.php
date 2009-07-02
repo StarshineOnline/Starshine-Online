@@ -2401,7 +2401,7 @@ class perso
 		}
 	}
 
-	function get_debuff()
+	function get_debuff($nom = false, $champ = false)
 	{
 		if(!$nom)
 		{
@@ -2431,15 +2431,17 @@ class perso
 
 	function get_grade()
 	{
-	}
-
-	function get_rang_grade()
-	{
+		if(!isset($this->grade)) $this->grade = new grade($this->rang_royaume);
+		return $this->grade;
 	}
 
 	function get_enchantement()
 	{
 		return array();
+	}
+	function is_enchantement()
+	{
+		return false;
 	}
 }
 ?>

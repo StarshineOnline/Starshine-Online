@@ -197,7 +197,6 @@ class buff
 	static function create($champs, $valeurs, $ordre = 'id ASC', $keys = false, $where = false)
 	{
 		global $db;
-		$return = array();
 		if(!$where)
 		{
 			if(!is_array($champs))
@@ -231,7 +230,7 @@ class buff
 				else $return[$row[$keys]][] = new buff($row);
 			}
 		}
-		else $return = false;
+		else $return = array();
 		return $return;
 	}
 

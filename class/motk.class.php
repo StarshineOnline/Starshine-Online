@@ -1,5 +1,5 @@
 <?php
-class groupe
+class motk
 {
 /**
     * @access private
@@ -9,43 +9,57 @@ class groupe
 
 	/**
     * @access private
-    * @var enum('r','t','l','k')
+    * @var varchar(50)
     */
-	private $partage;
+	private $race;
+
+	/**
+    * @access private
+    * @var tinyint(3)
+    */
+	private $id_royaume;
+
+	/**
+    * @access private
+    * @var text
+    */
+	private $message;
+
+	/**
+    * @access private
+    * @var text
+    */
+	private $propagande;
 
 	/**
     * @access private
     * @var int(10)
     */
-	private $prochain_loot;
-
-	/**
-    * @access private
-    * @var varchar(100)
-    */
-	private $nom;
+	private $date;
 
 	
 	/**
 	* @access public
 
 	* @param int(10) id attribut
-	* @param enum('r','t','l','k') partage attribut
-	* @param int(10) prochain_loot attribut
-	* @param varchar(100) nom attribut
+	* @param varchar(50) race attribut
+	* @param tinyint(3) id_royaume attribut
+	* @param text message attribut
+	* @param text propagande attribut
+	* @param int(10) date attribut
 	* @return none
 	*/
-	function __construct($id = 0, $partage = 0, $prochain_loot = 0, $nom = '')
+	function __construct($id = 0, $race = '', $id_royaume = '', $message = '', $propagande = '', $date = '')
 	{
 		global $db;
 		//Verification nombre et du type d'argument pour construire l'etat adequat.
 		if( (func_num_args() == 1) && is_numeric($id) )
 		{
-			$requeteSQL = $db->query("SELECT partage, prochain_loot, nom FROM groupe WHERE id = ".$id);
+			$requeteSQL = $db->query("SELECT race, id_royaume, message, propagande, date FROM motk WHERE id = ".$id);
 			//Si le thread est dans la base, on le charge sinon on crée un thread vide.
 			if( $db->num_rows($requeteSQL) > 0 )
 			{
-				list($this->partage, $this->prochain_loot, $this->nom) = $db->read_array($requeteSQL);
+				list($this->race, $this->id_royaume, $this->message, $this->propagande, $this->date) = $db->read_array($requeteSQL);
 			}
 			else $this->__construct();
 			$this->id = $id;
@@ -53,15 +67,19 @@ class groupe
 		elseif( (func_num_args() == 1) && is_array($id) )
 		{
 			$this->id = $id['id'];
-			$this->partage = $id['partage'];
-			$this->prochain_loot = $id['prochain_loot'];
-			$this->nom = $id['nom'];
+			$this->race = $id['race'];
+			$this->id_royaume = $id['id_royaume'];
+			$this->message = $id['message'];
+			$this->propagande = $id['propagande'];
+			$this->date = $id['date'];
 			}
 		else
 		{
-			$this->partage = $partage;
-			$this->prochain_loot = $prochain_loot;
-			$this->nom = $nom;
+			$this->race = $race;
+			$this->id_royaume = $id_royaume;
+			$this->message = $message;
+			$this->propagande = $propagande;
+			$this->date = $date;
 			$this->id = $id;
 		}
 	}
@@ -79,7 +97,7 @@ class groupe
 		{
 			if(count($this->champs_modif) > 0)
 			{
-				if($force) $champs = 'partage = '.$this->partage.', prochain_loot = '.$this->prochain_loot.', nom = "'.mysql_escape_string($this->nom).'"';
+				if($force) $champs = 'race = "'.mysql_escape_string($this->race).'", id_royaume = "'.mysql_escape_string($this->id_royaume).'", message = "'.mysql_escape_string($this->message).'", propagande = "'.mysql_escape_string($this->propagande).'", date = "'.mysql_escape_string($this->date).'"';
 				else
 				{
 					$champs = '';
@@ -89,7 +107,7 @@ class groupe
 					}
 					$champs = implode(', ', $champs);
 				}
-				$requete = 'UPDATE groupe SET ';
+				$requete = 'UPDATE motk SET ';
 				$requete .= $champs;
 				$requete .= ' WHERE id = '.$this->id;
 				$db->query($requete);
@@ -98,8 +116,8 @@ class groupe
 		}
 		else
 		{
-			$requete = 'INSERT INTO groupe (partage, prochain_loot, nom) VALUES(';
-			$requete .= ''.$this->partage.', '.$this->prochain_loot.', "'.mysql_escape_string($this->nom).'")';
+			$requete = 'INSERT INTO motk (race, id_royaume, message, propagande, date) VALUES(';
+			$requete .= '"'.mysql_escape_string($this->race).'", "'.mysql_escape_string($this->id_royaume).'", "'.mysql_escape_string($this->message).'", "'.mysql_escape_string($this->propagande).'", "'.mysql_escape_string($this->date).'")';
 			$db->query($requete);
 			//Récuperation du dernier ID inséré.
 			$this->id = $db->last_insert_id();
@@ -117,7 +135,7 @@ class groupe
 		global $db;
 		if( $this->id > 0 )
 		{
-			$requete = 'DELETE FROM groupe WHERE id = '.$this->id;
+			$requete = 'DELETE FROM motk WHERE id = '.$this->id;
 			$db->query($requete);
 		}
 	}
@@ -158,14 +176,14 @@ class groupe
 			}
 		}
 
-		$requete = "SELECT id, partage, prochain_loot, nom FROM groupe WHERE ".$where." ORDER BY ".$ordre;
+		$requete = "SELECT id, race, id_royaume, message, propagande, date FROM motk WHERE ".$where." ORDER BY ".$ordre;
 		$req = $db->query($requete);
 		if($db->num_rows() > 0)
 		{
 			while($row = $db->read_assoc($req))
 			{
-				if(!$keys) $return[] = new groupe($row);
-				else $return[$row[$keys]][] = new groupe($row);
+				if(!$keys) $return[] = new motk($row);
+				else $return[$row[$keys]][] = new motk($row);
 			}
 		}
 		else $return = false;
@@ -180,7 +198,7 @@ class groupe
 	*/
 	function __toString()
 	{
-		return 'id = '.$this->id.', partage = '.$this->partage.', prochain_loot = '.$this->prochain_loot.', nom = '.$this->nom;
+		return 'id = '.$this->id.', race = '.$this->race.', id_royaume = '.$this->id_royaume.', message = '.$this->message.', propagande = '.$this->propagande.', date = '.$this->date;
 	}
 	
 	/**
@@ -198,33 +216,55 @@ class groupe
 	* Retourne la valeur de l'attribut
 	* @access public
 	* @param none
-	* @return enum('r','t','l','k') $partage valeur de l'attribut partage
+	* @return varchar(50) $race valeur de l'attribut race
 	*/
-	function get_partage()
+	function get_race()
 	{
-		return $this->partage;
+		return $this->race;
 	}
 
 	/**
 	* Retourne la valeur de l'attribut
 	* @access public
 	* @param none
-	* @return int(10) $prochain_loot valeur de l'attribut prochain_loot
+	* @return tinyint(3) $id_royaume valeur de l'attribut id_royaume
 	*/
-	function get_prochain_loot()
+	function get_id_royaume()
 	{
-		return $this->prochain_loot;
+		return $this->id_royaume;
 	}
 
 	/**
 	* Retourne la valeur de l'attribut
 	* @access public
 	* @param none
-	* @return varchar(100) $nom valeur de l'attribut nom
+	* @return text $message valeur de l'attribut message
 	*/
-	function get_nom()
+	function get_message()
 	{
-		return $this->nom;
+		return $this->message;
+	}
+
+	/**
+	* Retourne la valeur de l'attribut
+	* @access public
+	* @param none
+	* @return text $propagande valeur de l'attribut propagande
+	*/
+	function get_propagande()
+	{
+		return $this->propagande;
+	}
+
+	/**
+	* Retourne la valeur de l'attribut
+	* @access public
+	* @param none
+	* @return int(10) $date valeur de l'attribut date
+	*/
+	function get_date()
+	{
+		return $this->date;
 	}
 
 	/**
@@ -242,59 +282,63 @@ class groupe
 	/**
 	* Modifie la valeur de l'attribut
 	* @access public
-	* @param enum('r','t','l','k') $partage valeur de l'attribut
+	* @param varchar(50) $race valeur de l'attribut
 	* @return none
 	*/
-	function set_partage($partage)
+	function set_race($race)
 	{
-		$this->partage = $partage;
-		$this->champs_modif[] = 'partage';
+		$this->race = $race;
+		$this->champs_modif[] = 'race';
 	}
 
 	/**
 	* Modifie la valeur de l'attribut
 	* @access public
-	* @param int(10) $prochain_loot valeur de l'attribut
+	* @param tinyint(3) $id_royaume valeur de l'attribut
 	* @return none
 	*/
-	function set_prochain_loot($prochain_loot)
+	function set_id_royaume($id_royaume)
 	{
-		$this->prochain_loot = $prochain_loot;
-		$this->champs_modif[] = 'prochain_loot';
+		$this->id_royaume = $id_royaume;
+		$this->champs_modif[] = 'id_royaume';
 	}
 
 	/**
 	* Modifie la valeur de l'attribut
 	* @access public
-	* @param varchar(100) $nom valeur de l'attribut
+	* @param text $message valeur de l'attribut
 	* @return none
 	*/
-	function set_nom($nom)
+	function set_message($message)
 	{
-		$this->nom = $nom;
-		$this->champs_modif[] = 'nom';
+		$this->message = $message;
+		$this->champs_modif[] = 'message';
 	}
 
-	//fonction
-	function get_membre()
+	/**
+	* Modifie la valeur de l'attribut
+	* @access public
+	* @param text $propagande valeur de l'attribut
+	* @return none
+	*/
+	function set_propagande($propagande)
 	{
-		$this->membre = groupe_joueur::create('id_groupe', $this->id);
-		return $this->membre;
+		$this->propagande = $propagande;
+		$this->champs_modif[] = 'propagande';
 	}
 
-	function get_membre_joueur()
+	/**
+	* Modifie la valeur de l'attribut
+	* @access public
+	* @param int(10) $date valeur de l'attribut
+	* @return none
+	*/
+	function set_date($date)
 	{
-		if(!isset($this->membre)) $this->get_membre();
-		$this->membre_joueur = array();
-		foreach($this->membre as $membre)
-		{
-			$this->membre_joueur[] = new perso($membre->get_id_joueur());
-		}
-		return $this->membre_joueur;
+		$this->date = $date;
+		$this->champs_modif[] = 'date';
 	}
 
-	function get_leader()
-	{
-	}
+		//fonction
 }
 ?>

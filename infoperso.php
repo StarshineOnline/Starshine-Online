@@ -43,7 +43,7 @@
 }
 {//-- Buffs, Grade, Pseudo
 	echo "<div id='joueur_buffs_nom' style=\"background:transparent url('./image/interface/fond_info_perso_".$joueur->get_race().".png') top left no-repeat;\">";
-	echo " <div id='joueur_nom' onclick=\"envoiInfo('personnage.php', 'information');\" title=\"Accès à la fiche de votre personnage\">".ucwords($joueur->get_grade())." ".ucwords($joueur->get_nom())." - niv.".$joueur->get_level()."<br />".ucwords($Gtrad[$joueur->get_race()])." ".ucwords($joueur->get_classe())." </div>
+	echo " <div id='joueur_nom' onclick=\"envoiInfo('personnage.php', 'information');\" title=\"Accès à la fiche de votre personnage\">".ucwords($joueur->get_grade()->get_nom())." ".ucwords($joueur->get_nom())." - niv.".$joueur->get_level()."<br />".ucwords($Gtrad[$joueur->get_race()])." ".ucwords($joueur->get_classe())." </div>
 	";
 	echo " <div id='buff_list'>
 			<ul>";
@@ -63,24 +63,24 @@
 					  </li>";
 			}
 		}
-		if(count($joueur->get_buff()) < ($joueur->get_rang_grade() + 2) )
+		if(count($joueur->get_buff()) < ($joueur->get_grade()->get_rang() + 2) )
 		{
-			$case_buff_dispo = ($joueur->get_rang_grade() + 2) - count($joueur->get_buff());
+			$case_buff_dispo = ($joueur->get_grade()->get_rang() + 2) - count($joueur->get_buff());
 			for($b = 0; $b < $case_buff_dispo; $b++)
 			{
 				echo "<li class='buff_dispo' title='vous pouvez encore recevoir $case_buff_dispo buffs'>&nbsp;</li>";
 			}
 		}
-		if(($joueur->get_rang_grade() + 2) < 10)
+		if(($joueur->get_grade()->get_rang() + 2) < 10)
 		{
-			$RqNextGrade = $db->query("SELECT * FROM grade WHERE rang > ".$joueur->get_rang_grade()." ORDER BY rang ASC;");
+			$RqNextGrade = $db->query("SELECT * FROM grade WHERE rang > ".$joueur->get_grade()->get_rang()." ORDER BY rang ASC;");
 			while($objNextGrade = $db->read_object($RqNextGrade))
 			{
 				$tmp = "il faut être ".strtolower($objNextGrade->nom)." pour avoir cette case";
 				if($objNextGrade->honneur > 0) { $tmp .= " (encore ".number_format(($objNextGrade->honneur - $joueur->get_honneur()), 0, ".", ".")."pt d&apos;honneur)"; }
 				$title_grade[$objNextGrade->rang + 2] = $tmp.".";
 			}
-			for($b = ($joueur->get_rang_grade() + 2 + 1); $b <= 10; $b++)
+			for($b = ($joueur->get_grade()->get_rang() + 2 + 1); $b <= 10; $b++)
 			{
 				echo "<li class='buff_nondispo' title='".$title_grade[$b]."'>&nbsp;</li>";
 			}
@@ -89,7 +89,7 @@
 		</div>
 		<br />
 		<div id='debuff_list'>";
-		if(is_array($joueur["debuff"]))
+		if(is_array($joueur->get_debuff()))
 		{
 			echo "<ul>";
 			foreach($joueur->get_debuff() as $buff)
@@ -111,74 +111,53 @@
 }
 if($joueur->get_groupe() != 0)
 {//-- Affichage du groupe si le joueur est groupé
-	if(!isset($groupe)) { $groupe = recupgroupe($joueur["groupe"], ""); };
+	if(!isset($groupe)) $groupe = new groupe($joueur->get_groupe());
 
 	echo "<div id='joueur_groupe'>
 			<div id='joueur_groupe_bouton'>
-		   <div id='mail_groupe' title=\"Envoyer un message à l'ensemble du groupe.\" onclick=\"return envoiInfo('envoimessage.php?id_type=g".$groupe["id"]."', 'information');\"></div>
-		   <div id='info_groupe' title='Voir les informations de mon groupe.' onclick=\"return envoiInfo('infogroupe.php?id=".$groupe["id"]."', 'information');\"></div>
+		   <div id='mail_groupe' title=\"Envoyer un message à l'ensemble du groupe.\" onclick=\"return envoiInfo('envoimessage.php?id_type=g".$groupe->get_id()."', 'information');\"></div>
+		   <div id='info_groupe' title='Voir les informations de mon groupe.' onclick=\"return envoiInfo('infogroupe.php?id=".$groupe->get_id()."', 'information');\"></div>
 		   </div>";
 	echo " <ul>";
-	for($m = 0; $m < count($groupe["membre"]); $m++)
+	foreach($groupe->get_membre_joueur() as $membre)
 	{//-- Récupération des infos sur le membre du groupe
-		if($joueur["ID"] != $groupe["membre"][$m]["id_joueur"])
+		if($joueur->get_id() != $membre->get_id())
 		{
-			unset($RqMembre);
-			unset($objMembre);
-			/*$RqMembre = $db->query("SELECT hp, hp_max, mp, mp_max, x, y, nom, classe, statut, rang_royaume, level, race, dernieraction
-									FROM perso 
-									WHERE ID=".$groupe["membre"][$m]["id_joueur"].";");
-			$objMembre = $db->read_assoc($RqMembre);*/
-			$groupe["membre"][$m] = array_merge(recupperso($groupe["membre"][$m]["id_joueur"]), $groupe["membre"][$m]);
-			$groupe["membre"][$m]["hp_max"] = floor($groupe["membre"][$m]["hp_max"]);
-			$groupe["membre"][$m]["mp_max"] = floor($groupe["membre"][$m]["mp_max"]);
-			$groupe["membre"][$m]["poscase"] = calcul_distance(convert_in_pos($groupe["membre"][$m]["x"], $groupe["membre"][$m]["y"]), convert_in_pos($joueur["x"], $joueur["y"]));
-			$groupe["membre"][$m]["pospita"] = calcul_distance_pytagore(convert_in_pos($groupe["membre"][$m]["x"],$groupe["membre"][$m]["y"]), convert_in_pos($joueur["x"], $joueur["y"]));
-			if(!empty($objMembre["rang_royaume"]))
-			{//-- Récupération du grade
-				$RqGrade = $db->query("SELECT nom, rang FROM grade WHERE id=".$objMembre["rang_royaume"].";");
-				$objGrade = $db->read_assoc($RqGrade);
-				$groupe["membre"][$m]["grade"] = $objGrade["nom"];
-			}
-			$overlib = "<ul><li class='overlib_titres'>".ucwords($groupe["membre"][$m]["grade"])." ".ucwords($groupe["membre"][$m]["nom"])."</li><li>".ucwords($groupe["membre"][$m]["race"])." - ".ucwords($groupe["membre"][$m]["classe"])." (Niv.".$groupe["membre"][$m]["level"].")</li><li>HP : ".$groupe["membre"][$m]["hp"]." / ".$groupe["membre"][$m]["hp_max"]."</li><li>MP : ".$groupe["membre"][$m]["mp"]." / ".$groupe["membre"][$m]["mp_max"]."</li><li>Posisiton : x:".$groupe["membre"][$m]["x"].", y:".$groupe["membre"][$m]["y"]."</li><li>Distance : ".$groupe["membre"][$m]["poscase"]." - Pytagorienne : ".$groupe["membre"][$m]["pospita"]."</li>";
+			$membre->poscase = calcul_distance(convert_in_pos($membre->get_x(), $membre->get_y()), convert_in_pos($joueur->get_x(), $joueur->get_y()));
+			$membre->pospita = calcul_distance_pytagore(convert_in_pos($membre->get_x(),$membre->get_y()), convert_in_pos($joueur->get_x(), $joueur->get_y()));
+			$overlib = "<ul><li class='overlib_titres'>".ucwords($membre->get_grade()->get_nom())." ".ucwords($membre->get_nom())."</li><li>".ucwords($membre->get_race())." - ".ucwords($membre->get_classe())." (Niv.".$membre->get_level().")</li><li>HP : ".$membre->get_hp()." / ".$membre->get_hp_max()."</li><li>MP : ".$membre->get_mp()." / ".$membre->get_mp_max()."</li><li>Posisiton : x:".$membre->get_x().", y:".$membre->get_y()."</li><li>Distance : ".$membre->poscase." - Pytagorienne : ".$membre->pospita."</li>";
 			{//-- Récupération des buffs
-				$groupe["membre"][$m]["buff"] = array();
-				$groupe["membre"][$m]["debuff"] = array();
-				
-				$RqBuffMembre = $db->query("SELECT * FROM buff WHERE id_perso = ".$groupe["membre"][$m]["id_joueur"]." ORDER BY debuff ASC;");
-				if(mysql_num_rows($RqBuffMembre) > 0)
+				$overlib .= "<li>";
+				foreach($membre->get_buff() as $buff)
 				{
-					$overlib .= "<li>";
-					while($objBuffMembre = $db->read_assoc($RqBuffMembre))
-					{
-						if($objBuffMembre["debuff"] == 1) { $col = "debuff"; } else { $col = "buff"; };
-						$groupe["membre"][$m][$col][$objBuffMembre["type"]] = $row;
-						
-						$overlib .= "<img src='image/buff/".$objBuffMembre["type"]."_p.png' style='margin:0px 2px;' alt='".$objBuffMembre["type"]."' />";
-					}
-					$overlib .= "</li>";
+					$overlib .= "<img src='image/buff/".$buff->get_type()."_p.png' style='margin:0px 2px;' alt='".$buff->get_type()."' />";
 				}
+				foreach($membre->get_debuff() as $debuff)
+				{
+					$overlib .= "<img src='image/buff/".$debuff->get_type()."_p.png' style='margin:0px 2px;' alt='".$debuff->get_type()."' />";
+				}
+				$overlib .= "</li>";
 			}
 			
-			$laptime_last_connexion = time() - $groupe["membre"][$m]["dernieraction"];
-			if($laptime_last_connexion > (21 * 86400)) 														{ $activite_perso = "noir"; 	$libelle_activite = "ce joueur est inactif ou banni"; }	
+			$laptime_last_connexion = time() - $membre->get_dernieraction();
+			if($laptime_last_connexion > (21 * 86400))														{ $activite_perso = "noir"; 	$libelle_activite = "ce joueur est inactif ou banni"; }	
 			elseif( ($laptime_last_connexion <= (21 * 86400)) && ($laptime_last_connexion > (1 * 86400)) )	{ $activite_perso = "rouge"; 	$libelle_activite = "s'est connecté il y a plus d'1 jour."; }	
 			elseif( ($laptime_last_connexion <= (1 * 86400)) && ($laptime_last_connexion > (10 * 60)) )		{ $activite_perso = "bleu"; 	$libelle_activite = "s'est connecté il y a moins d'1 jour."; }	
 			elseif($laptime_last_connexion <= (10 * 60))													{ $activite_perso = "vert"; 	$libelle_activite = "s'est connecté il y a moins de 10 min."; }	
 			else	
 																									{ $activite_perso = "rouge"; 	$libelle_activite = "impossible de deacute;finir l&apos;activit&eacute; de ce joueur."; }
-			if ($groupe["membre"][$m]["hp"] <= 0) { $joueur_mort = "Le personnage est mort"; } else { $joueur_mort = ""; };
+			if ($membre->get_hp() <= 0) { $joueur_mort = "Le personnage est mort"; } else { $joueur_mort = ""; };
 			$overlib .= "<li>$joueur_mort<br/>$libelle_activite</li><li class='overlib_infos'>(Cliquer pour plus d'information)</li>";
 			$overlib = str_replace("'", "\'", trim($overlib));
 			
 			echo "<li onmouseover=\"return overlib('$overlib', BGCLASS, 'overlib', BGCOLOR, '', FGCOLOR, '');\"
 					  onmouseout=\"return nd();\" 
-					  onclick=\"envoiInfo('infojoueur.php?ID=".$groupe["membre"][$m]["id_joueur"]."&amp;poscase=".$groupe["membre"][$m]["poscase"]."', 'information');\">
+					  onclick=\"envoiInfo('infojoueur.php?ID=".$membre->get_id()."&amp;poscase=".$membre->poscase."', 'information');\">
 				   <span class='joueur_groupe_activite$activite_perso'></span>
-				   <span class='joueur_groupe_pseudo'>".ucwords($groupe["membre"][$m]["nom"])." : </span>
-				   <span class='joueur_groupe_barre_hp'>".genere_image_hp_groupe($groupe["membre"][$m])."</span>
-				   <span class='joueur_groupe_barre_mp'>".genere_image_mp_groupe($groupe["membre"][$m])."</span>";
-			if ($groupe["membre"][$m]["hp"] <= 0) { echo "<span class='joueur_groupe_mort'></span>"; } 
+				   <span class='joueur_groupe_pseudo'>".ucwords($membre->get_nom())." : </span>
+				   <span class='joueur_groupe_barre_hp'>".genere_image_hp_groupe($membre)."</span>
+				   <span class='joueur_groupe_barre_mp'>".genere_image_mp_groupe($membre)."</span>";
+			if ($membre->get_hp() <= 0) { echo "<span class='joueur_groupe_mort'></span>"; } 
 			
 			echo " <div class='spacer'></div>
 				  </li>";

@@ -3,18 +3,18 @@
 $connexion = true;
 //Inclusion du haut du document html
 include('haut_ajax.php');
-$joueur = recupperso($_SESSION['ID']);
+$joueur = new perso($_SESSION['ID']);
 
 //Vérifie si le perso est mort
 verif_mort($joueur, 1);
 
-$coord['x'] = $joueur['x'];
-$coord['y'] = $joueur['y'];
-$coord['xavant'] = $joueur['x'];
-$coord['yavant'] = $joueur['y'];
+$coord['x'] = $joueur->get_x();
+$coord['y'] = $joueur->get_y();
+$coord['xavant'] = $joueur->get_x();
+$coord['yavant'] = $joueur->get_y();
 
 //Si coordonées supérieur à 100 alors c'est un donjon
-if($joueur['x'] > 190 OR $joueur['y'] > 190)
+if($joueur->get_x() > 190 OR $joueur->get_y() > 190)
 {
 	$donjon = true;
 }
@@ -139,11 +139,12 @@ if (isset($_GET['deplacement']))
 		$num_rows = $db->num_rows;
 		
 		$type_terrain = type_terrain($W_row['info']);
-		$coutpa = cout_pa($type_terrain[0], $joueur['race']);
+		$coutpa = cout_pa($type_terrain[0], $joueur->get_race());
 		$coutpa_base = $coutpa;
-		$coutpa = cout_pa2($coutpa, $joueur, $W_row, $diagonale);
+		$case = new map_case(convert_in_pos($joueur->get_x(), $joueur->get_y()));
+		$coutpa = cout_pa2($coutpa, $joueur, $case, $diagonale);
 		//Si le joueur a un buff ou débuff qui l'empèche de bouger
-		if(array_key_exists('buff_forteresse', $joueur['buff']) OR array_key_exists('buff_position', $joueur['buff']) OR array_key_exists('debuff_enracinement', $joueur['debuff']) OR array_key_exists('bloque_deplacement', $joueur['debuff']))
+		if($joueur->is_buff('buff_forteresse') OR $joueur->is_buff('buff_position') OR $joueur->is_debuff('debuff_enracinement') OR $joueur->is_debuff('bloque_deplacement'))
 		{
 			$peu_bouger = false;
 			$cause = 'Un buff vous empèche de bouger';
@@ -155,17 +156,18 @@ if (isset($_GET['deplacement']))
 			$cause = '';
 		}
 		//if($peu_bouger) echo 'ok';
-		if (($joueur['pa'] >= $coutpa) AND ($coutpa_base < 50) AND $peu_bouger)
+		if (($joueur->get_pa() >= $coutpa) AND ($coutpa_base < 50) AND $peu_bouger)
 		{
 			//Si debuff blizard
-			if(array_key_exists('blizzard', $joueur['debuff']))
+			if($joueur->is_debuff('blizzard'))
 			{
-				$joueur['hp'] -=  round(($joueur['debuff']['blizzard']['effet'] / 100) * $joueur['hp_max']);
+				$joueur->set_hp($joueur->get_hp() - round(($joueur->get_debuff('blizzard', 'effet') / 100) * $joueur->get_hp_max()));
 			}
 			//Déplacement du joueur
-			$joueur['pa'] = $joueur['pa'] - $coutpa;
-			$requete = 'UPDATE perso SET x = \''.$coord['x'].'\', y = \''.$coord['y'].'\', pa = \''.$joueur['pa'].'\', hp = \''.$joueur['hp'].'\'  WHERE ID = '.$_SESSION['ID'];
-			$db->query($requete);
+			$joueur->set_pa($joueur->get_pa() - $coutpa);
+			$joueur->set_x($coord['x']);
+			$joueur->set_y($coord['y']);
+			$joueur->sauver();
 			//Si ya un monstre, paf il attaque le joueur
 			if($donjon)
 			{

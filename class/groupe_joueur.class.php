@@ -1,5 +1,5 @@
 <?php
-class groupe
+class groupe_joueur
 {
 /**
     * @access private
@@ -9,43 +9,43 @@ class groupe
 
 	/**
     * @access private
-    * @var enum('r','t','l','k')
+    * @var int(10)
     */
-	private $partage;
+	private $id_joueur;
 
 	/**
     * @access private
     * @var int(10)
     */
-	private $prochain_loot;
+	private $id_groupe;
 
 	/**
     * @access private
-    * @var varchar(100)
+    * @var enum('y','n')
     */
-	private $nom;
+	private $leader;
 
 	
 	/**
 	* @access public
 
 	* @param int(10) id attribut
-	* @param enum('r','t','l','k') partage attribut
-	* @param int(10) prochain_loot attribut
-	* @param varchar(100) nom attribut
+	* @param int(10) id_joueur attribut
+	* @param int(10) id_groupe attribut
+	* @param enum('y','n') leader attribut
 	* @return none
 	*/
-	function __construct($id = 0, $partage = 0, $prochain_loot = 0, $nom = '')
+	function __construct($id = 0, $id_joueur = 0, $id_groupe = 0, $leader = 0)
 	{
 		global $db;
 		//Verification nombre et du type d'argument pour construire l'etat adequat.
 		if( (func_num_args() == 1) && is_numeric($id) )
 		{
-			$requeteSQL = $db->query("SELECT partage, prochain_loot, nom FROM groupe WHERE id = ".$id);
+			$requeteSQL = $db->query("SELECT id_joueur, id_groupe, leader FROM groupe_joueur WHERE id = ".$id);
 			//Si le thread est dans la base, on le charge sinon on crée un thread vide.
 			if( $db->num_rows($requeteSQL) > 0 )
 			{
-				list($this->partage, $this->prochain_loot, $this->nom) = $db->read_array($requeteSQL);
+				list($this->id_joueur, $this->id_groupe, $this->leader) = $db->read_array($requeteSQL);
 			}
 			else $this->__construct();
 			$this->id = $id;
@@ -53,15 +53,15 @@ class groupe
 		elseif( (func_num_args() == 1) && is_array($id) )
 		{
 			$this->id = $id['id'];
-			$this->partage = $id['partage'];
-			$this->prochain_loot = $id['prochain_loot'];
-			$this->nom = $id['nom'];
+			$this->id_joueur = $id['id_joueur'];
+			$this->id_groupe = $id['id_groupe'];
+			$this->leader = $id['leader'];
 			}
 		else
 		{
-			$this->partage = $partage;
-			$this->prochain_loot = $prochain_loot;
-			$this->nom = $nom;
+			$this->id_joueur = $id_joueur;
+			$this->id_groupe = $id_groupe;
+			$this->leader = $leader;
 			$this->id = $id;
 		}
 	}
@@ -79,7 +79,7 @@ class groupe
 		{
 			if(count($this->champs_modif) > 0)
 			{
-				if($force) $champs = 'partage = '.$this->partage.', prochain_loot = '.$this->prochain_loot.', nom = "'.mysql_escape_string($this->nom).'"';
+				if($force) $champs = 'id_joueur = '.$this->id_joueur.', id_groupe = '.$this->id_groupe.', leader = '.$this->leader.'';
 				else
 				{
 					$champs = '';
@@ -89,7 +89,7 @@ class groupe
 					}
 					$champs = implode(', ', $champs);
 				}
-				$requete = 'UPDATE groupe SET ';
+				$requete = 'UPDATE groupe_joueur SET ';
 				$requete .= $champs;
 				$requete .= ' WHERE id = '.$this->id;
 				$db->query($requete);
@@ -98,8 +98,8 @@ class groupe
 		}
 		else
 		{
-			$requete = 'INSERT INTO groupe (partage, prochain_loot, nom) VALUES(';
-			$requete .= ''.$this->partage.', '.$this->prochain_loot.', "'.mysql_escape_string($this->nom).'")';
+			$requete = 'INSERT INTO groupe_joueur (id_joueur, id_groupe, leader) VALUES(';
+			$requete .= ''.$this->id_joueur.', '.$this->id_groupe.', '.$this->leader.')';
 			$db->query($requete);
 			//Récuperation du dernier ID inséré.
 			$this->id = $db->last_insert_id();
@@ -117,7 +117,7 @@ class groupe
 		global $db;
 		if( $this->id > 0 )
 		{
-			$requete = 'DELETE FROM groupe WHERE id = '.$this->id;
+			$requete = 'DELETE FROM groupe_joueur WHERE id = '.$this->id;
 			$db->query($requete);
 		}
 	}
@@ -158,14 +158,14 @@ class groupe
 			}
 		}
 
-		$requete = "SELECT id, partage, prochain_loot, nom FROM groupe WHERE ".$where." ORDER BY ".$ordre;
+		$requete = "SELECT id, id_joueur, id_groupe, leader FROM groupe_joueur WHERE ".$where." ORDER BY ".$ordre;
 		$req = $db->query($requete);
-		if($db->num_rows() > 0)
+		if($db->num_rows($req) > 0)
 		{
 			while($row = $db->read_assoc($req))
 			{
-				if(!$keys) $return[] = new groupe($row);
-				else $return[$row[$keys]][] = new groupe($row);
+				if(!$keys) $return[] = new groupe_joueur($row);
+				else $return[$row[$keys]][] = new groupe_joueur($row);
 			}
 		}
 		else $return = false;
@@ -180,7 +180,7 @@ class groupe
 	*/
 	function __toString()
 	{
-		return 'id = '.$this->id.', partage = '.$this->partage.', prochain_loot = '.$this->prochain_loot.', nom = '.$this->nom;
+		return 'id = '.$this->id.', id_joueur = '.$this->id_joueur.', id_groupe = '.$this->id_groupe.', leader = '.$this->leader;
 	}
 	
 	/**
@@ -198,33 +198,33 @@ class groupe
 	* Retourne la valeur de l'attribut
 	* @access public
 	* @param none
-	* @return enum('r','t','l','k') $partage valeur de l'attribut partage
+	* @return int(10) $id_joueur valeur de l'attribut id_joueur
 	*/
-	function get_partage()
+	function get_id_joueur()
 	{
-		return $this->partage;
+		return $this->id_joueur;
 	}
 
 	/**
 	* Retourne la valeur de l'attribut
 	* @access public
 	* @param none
-	* @return int(10) $prochain_loot valeur de l'attribut prochain_loot
+	* @return int(10) $id_groupe valeur de l'attribut id_groupe
 	*/
-	function get_prochain_loot()
+	function get_id_groupe()
 	{
-		return $this->prochain_loot;
+		return $this->id_groupe;
 	}
 
 	/**
 	* Retourne la valeur de l'attribut
 	* @access public
 	* @param none
-	* @return varchar(100) $nom valeur de l'attribut nom
+	* @return enum('y','n') $leader valeur de l'attribut leader
 	*/
-	function get_nom()
+	function get_leader()
 	{
-		return $this->nom;
+		return $this->leader;
 	}
 
 	/**
@@ -242,59 +242,39 @@ class groupe
 	/**
 	* Modifie la valeur de l'attribut
 	* @access public
-	* @param enum('r','t','l','k') $partage valeur de l'attribut
+	* @param int(10) $id_joueur valeur de l'attribut
 	* @return none
 	*/
-	function set_partage($partage)
+	function set_id_joueur($id_joueur)
 	{
-		$this->partage = $partage;
-		$this->champs_modif[] = 'partage';
+		$this->id_joueur = $id_joueur;
+		$this->champs_modif[] = 'id_joueur';
 	}
 
 	/**
 	* Modifie la valeur de l'attribut
 	* @access public
-	* @param int(10) $prochain_loot valeur de l'attribut
+	* @param int(10) $id_groupe valeur de l'attribut
 	* @return none
 	*/
-	function set_prochain_loot($prochain_loot)
+	function set_id_groupe($id_groupe)
 	{
-		$this->prochain_loot = $prochain_loot;
-		$this->champs_modif[] = 'prochain_loot';
+		$this->id_groupe = $id_groupe;
+		$this->champs_modif[] = 'id_groupe';
 	}
 
 	/**
 	* Modifie la valeur de l'attribut
 	* @access public
-	* @param varchar(100) $nom valeur de l'attribut
+	* @param enum('y','n') $leader valeur de l'attribut
 	* @return none
 	*/
-	function set_nom($nom)
+	function set_leader($leader)
 	{
-		$this->nom = $nom;
-		$this->champs_modif[] = 'nom';
+		$this->leader = $leader;
+		$this->champs_modif[] = 'leader';
 	}
 
-	//fonction
-	function get_membre()
-	{
-		$this->membre = groupe_joueur::create('id_groupe', $this->id);
-		return $this->membre;
-	}
-
-	function get_membre_joueur()
-	{
-		if(!isset($this->membre)) $this->get_membre();
-		$this->membre_joueur = array();
-		foreach($this->membre as $membre)
-		{
-			$this->membre_joueur[] = new perso($membre->get_id_joueur());
-		}
-		return $this->membre_joueur;
-	}
-
-	function get_leader()
-	{
-	}
+		//fonction
 }
 ?>

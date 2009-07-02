@@ -757,6 +757,26 @@ class royaume
 		$this->champs_modif[] = 'alchimie';
 	}
 
-		//fonction
+	//fonction
+	function get_diplo($race_joueur)
+	{
+		if(!isset($this->diplo))
+		{
+			$this->diplo = 5;
+			if($this->id != 0)
+			{
+				//Sélection de la diplomatie et des taxes
+				$requete_diplo = "SELECT ".$Roy_row['race']." FROM diplomatie WHERE race = '".$race_joueur."'";
+				$req_diplo = $db->query($requete_diplo);
+				$row_diplo = $db->read_row($req_diplo);
+				$Roy_row['taxe_base'] = $Roy_row['taxe'];
+				
+				$Roy_row['taxe'] = taux_taxe($Roy_row['taxe'], $row_diplo[0]);
+			
+				$Roy_row['diplo'] = $row_diplo[0];
+			}
+		}
+		return $this->diplo;
+	}
 }
 ?>

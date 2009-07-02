@@ -3,7 +3,7 @@
 
 //Inclusion des fichiers indispensables
 include('inc/fp.php');
-$joueur = recupperso($_SESSION['ID']);
+$joueur = new perso($_SESSION['ID']);
 if(array_key_exists('action', $_GET))
 {
 	switch($_GET['action'])
@@ -32,7 +32,7 @@ foreach ($ts as $tt => $tn)
 			</td>
 		</tr>
 	<?php
-	if($joueur['quete'] != '')
+	if($joueur->get_quete() != '')
 	{
 		$i = 0;
 		$quete_id = array();

@@ -139,9 +139,9 @@ function check_undead_players()
       return;
   global $joueur;
   if (!isset($joueur) || !$joueur) {
-    $joueur = recupperso($_SESSION['ID']);
+    $joueur = new perso($_SESSION['ID']);
   }
-  if ($joueur['hp'] < 1) {
+  if ($joueur->get_hp() < 1) {
     ob_end_clean();
     if (strlen($_SERVER["SCRIPT_NAME"]) >= 8)
       if (substr_compare($_SERVER["SCRIPT_NAME"], 'jeu2.php', -8, 8) == 0)

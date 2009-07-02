@@ -28,22 +28,22 @@ if($W_distance < 4)
 	
 	
 	$R = new royaume($case->get_royaume(), $joueur->get_race());
-	$type_terrain = $case->type_terrain();
+	$type_terrain = $case->get_type();
 	$coutpa = cout_pa($type_terrain[0], $joueur->get_race());
 	$coutpa_base = $coutpa;
 	$coutpa_diagonale = cout_pa2($coutpa, $joueur, $case, true);
-	$coutpa = cout_pa2($coutpa, $joueur, $W_row, false);
+	$coutpa = cout_pa2($coutpa, $joueur, $case, false);
 	if ($coutpa_base > 49) $coutpa = 'Infranchissable';
 	
 	//Si c'est la capitale
-	if($case->get_x() == $Trace[$R['race']]['spawn_x'] AND $case->get_y() == $Trace[$R['race']]['spawn_y'])
+	if($case->get_x() == $Trace[$R->get_race()]['spawn_x'] AND $case->get_y() == $Trace[$R->get_race()]['spawn_y'])
 	{
-		echo '<h3>Capitale '.$R['capitale'].'</h3>';
+		echo '<h3>Capitale '.$R->get_capitale().'</h3>';
 	}
 	?>
 	
 	<h4><span class='titre_info'><?php echo $R->get_nom(); ?></span></h4>
-	<strong><?php echo $Gtrad[$R->get_race()]; ?></strong> - <?php echo $Gtrad['diplo'.$R->get_diplo()]; ?> - Taxe : <?php echo $R->get_taxe(); ?>%<br />
+	<strong><?php echo $Gtrad[$R->get_race()]; ?></strong> - <?php echo $Gtrad['diplo'.$R->get_diplo($joueur->get_race())]; ?> - Taxe : <?php echo $R->get_taxe(); ?>%<br />
 	<strong><?php echo $type_terrain[1]; ?></strong> - <?php echo $coutpa; ?> PA de déplacement <span class="xsmall">(en diagonale = <?php echo $coutpa_diagonale; ?> PA)</span>
 	
 	<?php
