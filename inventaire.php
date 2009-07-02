@@ -369,16 +369,21 @@ if(!$visu AND isset($_GET['action']))
 		//Dépot de l'objet au dépot militaire
 		case 'depot' :
 			//On le dépose
-			$objet = $joueur['inventaire_slot'][$_GET['key_slot']];
-			$id = mb_substr($objet, 1, strlen($objet));
-			$requete = "INSERT INTO depot_royaume VALUES ('', ".$id.", ".$R['ID'].")";
-			$db->query($requete);
-			//On supprime l'objet de l'inventaire
-			array_splice($joueur['inventaire_slot'], $_GET['key_slot'], 1);
-			$inventaire_slot = serialize($joueur['inventaire_slot']);
-			$requete = "UPDATE perso SET inventaire_slot = '".$inventaire_slot."' WHERE ID = ".$joueur['ID'];
-			$req = $db->query($requete);
-			echo '<h6>Objet posé avec succès</h6>';
+			if ($R["race"] != $joueur["race"]) {
+				echo '<h5>Impossible de poser au dépot '.$R["race"].'</h5>';				
+			}
+			else {
+				$objet = $joueur['inventaire_slot'][$_GET['key_slot']];
+				$id = mb_substr($objet, 1, strlen($objet));
+				$requete = "INSERT INTO depot_royaume VALUES ('', ".$id.", ".$R['ID'].")";
+				$db->query($requete);
+				//On supprime l'objet de l'inventaire
+				array_splice($joueur['inventaire_slot'], $_GET['key_slot'], 1);
+				$inventaire_slot = serialize($joueur['inventaire_slot']);
+				$requete = "UPDATE perso SET inventaire_slot = '$inventaire_slot' WHERE ID = ".$joueur['ID'];
+				$req = $db->query($requete);
+				echo '<h6>Objet posé avec succès</h6>';
+			}
 		break;
 		case 'vente' :
 			$id_objet = $_GET['id_objet'];
