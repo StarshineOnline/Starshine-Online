@@ -1,12 +1,12 @@
 <?php
 include('inc/fp.php');
-$joueur = recupperso($_SESSION['ID']);
+$joueur = new perso($_SESSION['ID']);
 //Affichage du chat
 
-$base = "http://widget.mibbit.com/?settings=a0f3506cf53bb4bdc5476642cc300fb2&server=irc.quakenet.org&noServerTab=true&autoConnect=true&nick=".$joueur['nom'];
+$base = "http://widget.mibbit.com/?settings=a0f3506cf53bb4bdc5476642cc300fb2&server=irc.quakenet.org&noServerTab=true&autoConnect=true&nick=".$joueur->get_nom();
 
 $url = $base.'&channel=%23starshine-online';
-$url_roy = $base.'&channel=%23starshine-online-'.$joueur['race'];
+$url_roy = $base.'&channel=%23starshine-online-'.$joueur->get_race();
 
 ?>
 <script type="text/javascript">

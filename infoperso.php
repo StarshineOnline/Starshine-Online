@@ -1,7 +1,7 @@
 <?php
 {//-- Initialisation
 	require_once('inc/fp.php');
-	if(!isset($joueur)) { $joueur = recupperso($_SESSION["ID"]); }; 		//-- Récupération du tableau contenant toutes les informations relatives au joueur
+	if(!isset($joueur)) { $joueur = new perso($_SESSION["ID"]); }; 		//-- Récupération du tableau contenant toutes les informations relatives au joueur
 	$joueur = check_perso($joueur);
 	echo '<div id="perso_contenu">';
 	require_once("levelup.php"); 				//-- Dans le cas ou le joueur a pris un level on traite son level up.
@@ -28,29 +28,29 @@
 	//--  inclusion de la rosace des vents.
 	include_once("deplacementjeu.php");
 
-	echo " <div id='joueur_PA' style='background:transparent url(".genere_image_pa($joueur).") center;' title='PA'>".$joueur["pa"]." / $G_PA_max</div>";
-	echo " <div id='joueur_HP' style='background:transparent url(".genere_image_hp($joueur).") center;' title='HP'>".$joueur["hp"]." / ".$joueur["hp_max"]."</div>";
-	echo " <div id='joueur_MP' style='background:transparent url(".genere_image_mp($joueur).") center;' title='MP'>".$joueur["mp"]." / ".$joueur["mp_max"]."</div>";
-	echo " <div id='joueur_XP' style='background:transparent url(".genere_image_exp($joueur["exp"], prochain_level($joueur["level"]), progression_level(level_courant($joueur["exp"]))).") center;' title='".progression_level(level_courant($joueur["exp"]))." % (".number_format($joueur["exp"], 0, ",", ".")." / ".number_format(prochain_level($joueur["level"]), 0, ",", ".").")'></div>";
-	echo " <div id='joueur_PO' title='Vos stars'>".$joueur["star"]."</div>";
-	echo " <div id='joueur_PH' title='Votre honneur'>".$joueur["honneur"]."</div>";
-	echo " <div id='joueur_Psso' onclick=\"envoiInfo('point_sso.php', 'information');\" title=\"Vous avez ".$joueur["point_sso"]." point(s) shine en r&eacute;serve.\"></div>";
-	$script_attaque = recupaction_all($joueur['action_a']);
+	echo " <div id='joueur_PA' style='background:transparent url(".genere_image_pa($joueur).") center;' title='PA'>".$joueur->get_pa()." / $G_PA_max</div>";
+	echo " <div id='joueur_HP' style='background:transparent url(".genere_image_hp($joueur).") center;' title='HP'>".$joueur->get_hp()." / ".$joueur->get_hp_max()."</div>";
+	echo " <div id='joueur_MP' style='background:transparent url(".genere_image_mp($joueur).") center;' title='MP'>".$joueur->get_mp()." / ".$joueur->get_mp_max()."</div>";
+	echo " <div id='joueur_XP' style='background:transparent url(".genere_image_exp($joueur->get_exp(), prochain_level($joueur->get_level()), progression_level(level_courant($joueur->get_exp()))).") center;' title='".progression_level(level_courant($joueur->get_exp()))." % (".number_format($joueur->get_exp(), 0, ",", ".")." / ".number_format(prochain_level($joueur->get_level()), 0, ",", ".").")'></div>";
+	echo " <div id='joueur_PO' title='Vos stars'>".$joueur->get_star()."</div>";
+	echo " <div id='joueur_PH' title='Votre honneur'>".$joueur->get_honneur()."</div>";
+	echo " <div id='joueur_Psso' onclick=\"envoiInfo('point_sso.php', 'information');\" title=\"Vous avez ".$joueur->get_point_sso()." point(s) shine en r&eacute;serve.\"></div>";
+	$script_attaque = recupaction_all($joueur->get_action_a());
 	//-- Index, Forums, Exit, Options
 
 
 	echo "</div>";
 }
 {//-- Buffs, Grade, Pseudo
-	echo "<div id='joueur_buffs_nom' style=\"background:transparent url('./image/interface/fond_info_perso_".$joueur["race"].".png') top left no-repeat;\">";
-	echo " <div id='joueur_nom' onclick=\"envoiInfo('personnage.php', 'information');\" title=\"Accès à la fiche de votre personnage\">".ucwords($joueur["grade"])." ".ucwords($joueur["nom"])." - niv.".$joueur["level"]."<br />".ucwords($Gtrad[$joueur["race"]])." ".ucwords($joueur["classe"])." </div>
+	echo "<div id='joueur_buffs_nom' style=\"background:transparent url('./image/interface/fond_info_perso_".$joueur->get_race().".png') top left no-repeat;\">";
+	echo " <div id='joueur_nom' onclick=\"envoiInfo('personnage.php', 'information');\" title=\"Accès à la fiche de votre personnage\">".ucwords($joueur->get_grade())." ".ucwords($joueur->get_nom())." - niv.".$joueur->get_level()."<br />".ucwords($Gtrad[$joueur->get_race()])." ".ucwords($joueur->get_classe())." </div>
 	";
 	echo " <div id='buff_list'>
 			<ul>";
-		//print_r($joueur["buff"]);
-		if(count($joueur["buff"]) > 0)
+		//print_r($joueur->get_buff());
+		if(is_array($joueur->get_buff()))
 		{
-			foreach($joueur["buff"] as $buff)
+			foreach($joueur->get_buff() as $buff)
 			{//-- Listing des buffs
 				$overlib = str_replace("'", "\'", trim("<ul><li class='overlib_titres'>".$buff["nom"]."</li><li>".description($buff["description"], $buff)."</li><li>Durée ".transform_sec_temp($buff["fin"] - time())."</li><li class='overlib_infos'>(double-cliquer pour annuler ce buff)</li></ul>"));
 				echo "<li class='buff'>
@@ -63,24 +63,24 @@
 					  </li>";
 			}
 		}
-		if(count($joueur["buff"]) < ($joueur["rang_grade"] + 2) )
+		if(count($joueur->get_buff()) < ($joueur->get_rang_grade() + 2) )
 		{
-			$case_buff_dispo = ($joueur["rang_grade"] + 2) - count($joueur["buff"]);
+			$case_buff_dispo = ($joueur->get_rang_grade() + 2) - count($joueur->get_buff());
 			for($b = 0; $b < $case_buff_dispo; $b++)
 			{
 				echo "<li class='buff_dispo' title='vous pouvez encore recevoir $case_buff_dispo buffs'>&nbsp;</li>";
 			}
 		}
-		if(($joueur["rang_grade"] + 2) < 10)
+		if(($joueur->get_rang_grade() + 2) < 10)
 		{
-			$RqNextGrade = $db->query("SELECT * FROM grade WHERE rang > ".$joueur["rang_grade"]." ORDER BY rang ASC;");
+			$RqNextGrade = $db->query("SELECT * FROM grade WHERE rang > ".$joueur->get_rang_grade()." ORDER BY rang ASC;");
 			while($objNextGrade = $db->read_object($RqNextGrade))
 			{
 				$tmp = "il faut être ".strtolower($objNextGrade->nom)." pour avoir cette case";
-				if($objNextGrade->honneur > 0) { $tmp .= " (encore ".number_format(($objNextGrade->honneur - $joueur["honneur"]), 0, ".", ".")."pt d&apos;honneur)"; }
+				if($objNextGrade->honneur > 0) { $tmp .= " (encore ".number_format(($objNextGrade->honneur - $joueur->get_honneur()), 0, ".", ".")."pt d&apos;honneur)"; }
 				$title_grade[$objNextGrade->rang + 2] = $tmp.".";
 			}
-			for($b = ($joueur["rang_grade"] + 2 + 1); $b <= 10; $b++)
+			for($b = ($joueur->get_rang_grade() + 2 + 1); $b <= 10; $b++)
 			{
 				echo "<li class='buff_nondispo' title='".$title_grade[$b]."'>&nbsp;</li>";
 			}
@@ -89,10 +89,10 @@
 		</div>
 		<br />
 		<div id='debuff_list'>";
-		if(count($joueur["debuff"]) > 0)
+		if(is_array($joueur["debuff"]))
 		{
 			echo "<ul>";
-			foreach($joueur["debuff"] as $buff)
+			foreach($joueur->get_debuff() as $buff)
 			{//-- Listing des buffs
 				$overlib = str_replace("'", "\'", trim("<ul><li class='overlib_titres'>".$buff["nom"]."</li><li>".description($buff["description"], $buff)."</li><li>Durée ".transform_sec_temp($buff["fin"] - time())."</li></ul>"));
 				echo "<li class='buff'>
@@ -109,7 +109,7 @@
 		  echo "</div>";
 	echo "</div>";
 }
-if(!empty($joueur["groupe"]))
+if($joueur->get_groupe() != 0)
 {//-- Affichage du groupe si le joueur est groupé
 	if(!isset($groupe)) { $groupe = recupgroupe($joueur["groupe"], ""); };
 

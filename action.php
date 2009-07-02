@@ -4,10 +4,10 @@ $connexion = true;
 //Inclusion du haut du document html
 include('haut_ajax.php');
 
-$joueur = recupperso($_SESSION['ID']);
+$joueur = new perso($_SESSION['ID']);
 check_perso($joueur);
 $round_max = 10;
-if($joueur['race'] == 'orc') $round_max++;
+if($joueur->get_race() == 'orc') $round_max++;
 ?>
 	<fieldset>
 		<legend>Script de combat - Création</legend>
@@ -22,7 +22,7 @@ if($joueur['race'] == 'orc') $round_max++;
 		}
 	}
 	?>
-	<h3><strong>Vous avez <?php echo $joueur['reserve']; ?> réserves de mana au total par combat</h3>
+	<h3><strong>Vous avez <?php echo $joueur->get_reserve(); ?> réserves de mana au total par combat</h3>
 <?php
 if(array_key_exists('id_action', $_GET) && $_GET['id_action'] == '')
 {
@@ -54,7 +54,7 @@ if(array_key_exists('from', $_GET) && $_GET['id_action'] != '')
 				$actionexplode[] = '#09='.$i.'@!';
 			}
 		}
-		$requete = "INSERT INTO action_perso VALUES(NULL, ".$joueur['ID'].", '".sSQL($_GET['nom_action'])."', '".implode(';', $actionexplode)."', '".sSQL($_GET['mode'])."')";
+		$requete = "INSERT INTO action_perso VALUES(NULL, ".$joueur->get_id().", '".sSQL($_GET['nom_action'])."', '".implode(';', $actionexplode)."', '".sSQL($_GET['mode'])."')";
 		$req = $db->query($requete);
 		$id_action = $db->last_insert_id();
 	}
@@ -295,7 +295,7 @@ if(array_key_exists('from', $_GET) && $_GET['id_action'] != '')
 			<h3>Quel action voulez vous faire ?</h3>
 		<?php
 		//Affichage de la liste des sorts de combat
-		$sort = explode(';', $joueur['sort_combat']);
+		$sort = explode(';', $joueur->get_sort_combat());
 		if ($sort[0] != '')
 		{
 		?>
@@ -313,7 +313,7 @@ if(array_key_exists('from', $_GET) && $_GET['id_action'] != '')
 					echo '<optgroup label="'.$Gtrad[$row['comp_assoc']].'">';
 					$comp_assoc = $row['comp_assoc'];
 				}
-				$mpsort = round($row['mp'] * (1 - (($Trace[$joueur['race']]['affinite_'.$row['comp_assoc']] - 5) / 10)));
+				$mpsort = round($row['mp'] * (1 - (($Trace[$joueur->get_race()]['affinite_'.$row['comp_assoc']] - 5) / 10)));
 				echo '<option value="s'.$row['id'].'">'.$row['nom'].' ('.$mpsort.' RM)</option>';
 				$i++;
 			}
@@ -323,7 +323,7 @@ if(array_key_exists('from', $_GET) && $_GET['id_action'] != '')
 		<?php
 		}
 		//Affichage des compétences de combat
-		$comp = explode(';', $joueur['comp_combat']);
+		$comp = explode(';', $joueur->get_comp_combat());
 		if ($comp[0] != '')
 		{
 		?>
@@ -389,19 +389,19 @@ if(array_key_exists('from', $_GET) && $_GET['id_action'] != '')
 					<option value="attaque">Attaquer</option>
 			<?php
 			
-			$sort = explode(';', $joueur['sort_combat']);
+			$sort = explode(';', $joueur->get_sort_combat());
 			if ($sort[0] != '')
 			{
 				$requete = "SELECT * FROM sort_combat WHERE id IN (".implode(',', $sort).")";
 				$req = $db->query($requete);
 				while($row = $db->read_array($req))
 				{
-					$mpsort = round($row['mp'] * (1 - (($Trace[$joueur['race']]['affinite_'.$row['comp_assoc']] - 5) / 10)));
+					$mpsort = round($row['mp'] * (1 - (($Trace[$joueur->get_race()]['affinite_'.$row['comp_assoc']] - 5) / 10)));
 					if($actionexplode[($i - 1)] == '#09='.$i.'@~'.$row['id']) $selected = ' selected'; else $selected = '';
 					echo '<option value="s'.$row['id'].'"'.$selected.'>Lancer '.$row['nom'].' ('.$mpsort.' Réserves)</option>';
 				}
 			}
-			$comp = explode(';', $joueur['comp_combat']);
+			$comp = explode(';', $joueur->get_comp_combat());
 			if ($comp[0] != '')
 			{
 				$requete = "SELECT * FROM comp_combat WHERE id IN (".implode(',', $comp).")";

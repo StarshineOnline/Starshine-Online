@@ -36,7 +36,7 @@ if (isset($_GET['deco']) AND !isset($_POST['log']))
 }
 $journal = '';
 
-if(array_key_exists('nom', $_SESSION)) $joueur = recupperso($_SESSION['ID']);
+if(array_key_exists('nom', $_SESSION)) $joueur = new perso($_SESSION['ID']);
 if(!isset($root)) $root = '';
 //check_undead_players();
 if ($site)

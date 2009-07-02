@@ -1,10 +1,9 @@
 <?php
-
-if ($joueur['exp'] > prochain_level($joueur['level']))
+if ($joueur->get_exp() > prochain_level($joueur->get_level()))
 {
-	$requete = "UPDATE perso SET level = level + 1, point_sso = point_sso + 1 WHERE ID = ".$_SESSION['ID'];
-	$db->query($requete);
-	$joueur = recupperso($_SESSION['ID']);
+	$joueur->set_level($joueur->get_level() + 1);
+	$joueur->set_point_sso($joueur->get_point_sso() + 1);
+	$joueur->sauver();
 }
 
 ?>

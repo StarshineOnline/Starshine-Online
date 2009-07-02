@@ -14,7 +14,7 @@ window.onload = function()
 }
 </script>
 <?php
-$joueur = recupperso($_SESSION['ID']);
+$joueur = new perso($_SESSION['ID']);
 
 //Si c'est pour entrer dans un donjon
 if(array_key_exists('donjon_id', $_GET))
@@ -28,7 +28,7 @@ if(array_key_exists('donjon_id', $_GET))
 	//sortie
 	if(array_key_exists('type', $_GET))
 	{
-		if($joueur['x'] == $row['x_donjon'] AND $joueur['y'] == $row['y_donjon'])
+		if($joueur->get_x() == $row['x_donjon'] AND $joueur->get_y() == $row['y_donjon'])
 		{
 			$requete = "UPDATE perso SET x = ".$row['x'].", y = ".$row['y']." WHERE ID = ".$_SESSION['ID'];
 			$db->query($requete);
@@ -37,13 +37,13 @@ if(array_key_exists('donjon_id', $_GET))
 	//Entrée
 	else
 	{
-		if($joueur['x'] == $row['x'] AND $joueur['y'] == $row['y'])
+		if($joueur->get_x() == $row['x'] AND $joueur->get_y() == $row['y'])
 		{
 			$requete = "UPDATE perso SET x = ".$row['x_donjon'].", y = ".$row['y_donjon']." WHERE ID = ".$_SESSION['ID'];
 			$db->query($requete);
 		}
 	}
-	$joueur = recupperso($_SESSION['ID']);
+	$joueur = new perso($_SESSION['ID']);
 }
 
 //Vérifie si le perso est mort
@@ -51,7 +51,7 @@ verif_mort($joueur, 1);
 
 check_perso($joueur);
 
-$_SESSION['position'] = convert_in_pos($joueur['x'], $joueur['y']);
+$_SESSION['position'] = convert_in_pos($joueur->get_x(), $joueur->get_y());
 ?>
 
 <div id="conteneur_back">
@@ -93,7 +93,7 @@ $_SESSION['position'] = convert_in_pos($joueur['x'], $joueur['y']);
 		<?php
 		//Génération de la carte apparaissant au centre.
 		//Si coordonées supérieur à 100 alors c'est un donjon
-		if(is_donjon($joueur['x'], $joueur['y']))
+		if(is_donjon($joueur->get_x(), $joueur->get_y()))
 		{
 			include('donjon.php');
 		}
@@ -105,7 +105,7 @@ $_SESSION['position'] = convert_in_pos($joueur['x'], $joueur['y']);
 				<h2>Information</h2>
 		<?php
 		
-		$case = convert_in_pos($joueur['x'], $joueur['y']);
+		$case = convert_in_pos($joueur->get_x(), $joueur->get_y());
 		if(array_key_exists('page_info', $_GET)) $page_info = $_GET['page_info']; else $page_info = 'informationcase.php';
 		{//-- Javascript
 			echo "<script type='text/javascript'>

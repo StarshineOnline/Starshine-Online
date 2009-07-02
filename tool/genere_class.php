@@ -5,7 +5,8 @@
  * Description : permet de générer une class associée a une table MySQL
  */
 $root = '../';
-include('../connect.php');
+include($root.'class/db.class.php');
+include($root.'connect.php');
 
 if(array_key_exists('table', $_POST))
 {
@@ -293,10 +294,10 @@ $this-><?php echo $champ_reference; ?> = $<?php echo $champ_reference; ?>;
 ';
 	}
 	$new_file .= $string;
+	ob_end_clean();
 	$file_save = fopen($filename, "w+");
 	fwrite($file_save, $new_file);
 	fclose($file_save);
-	ob_end_clean();
 	//echo $new_file;
 }
 //Formulaire

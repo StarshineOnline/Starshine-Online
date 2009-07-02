@@ -559,13 +559,13 @@ function cout_pa2($coutpa, $joueur, $case, $diagonale)
 	global $Trace;
 	$coord = convert_in_coord($case->get_id());
 	//Si on est sur son royaume => Cout en PA réduit de 1, minimum 1
-	if($case->get_royaume() == $Trace[$joueur['race']]['numrace'])
+	if($case->get_royaume() == $Trace[$joueur->get_race()]['numrace'])
 	{
 		if($coutpa > 2) $coutpa -= 1;
 	}
 	//Buff rapide comme le vent
 	if(array_key_exists('rapide_vent', $joueur['buff']) or
-     array_key_exists('course', $joueur['enchantement']))
+     array_key_exists('course', $joueur->get_enchantement()))
 	{
 		if($coutpa > 2) $coutpa -= 1;
 	}
@@ -586,7 +586,7 @@ function cout_pa2($coutpa, $joueur, $case, $diagonale)
 		{
 			$coutpa = $coutpa * $batiment['augmentation_pa'];
 			//Si on est sur son royaume réduction du cout de PA par 2
-			if($case->get_royaume() == $Trace[$joueur['race']]['numrace'])
+			if($case->get_royaume() == $Trace[$joueur->get_race()]['numrace'])
 			{
 				$coutpa = ceil($coutpa / 2);
 			}
@@ -1217,10 +1217,10 @@ function check_perso($joueur)
 	$modif = false;	 // Indique si le personnage a été modifié.
 	global $db, $G_temps_regen_hp, $G_temps_maj_hp, $G_temps_maj_mp, $G_temps_PA, $G_PA_max, $G_pourcent_regen_hp, $G_pourcent_regen_mp;
 	// On vérifie que le personnage est vivant
-	if($joueur['hp'] > 0)
+	if($joueur->get_hp() > 0)
 	{
 		// On augmente les HP max si nécessaire
-		$temps_maj = time() - $joueur['maj_hp']; // Temps écoulé depuis la dernière augmentation de HP.
+		$temps_maj = time() - $joueur->get_maj_hp(); // Temps écoulé depuis la dernière augmentation de HP.
 		$temps_hp = $G_temps_maj_hp;  // Temps entre deux augmentation de HP.
 
 		If ($temps_maj > $temps_hp && $temps_hp > 0) // Pour ne jamais diviser par 0 ...
@@ -1233,7 +1233,7 @@ function check_perso($joueur)
 			$modif = true;
 		}
 		// On augmente les MP max si nécessaire
-		$temps_maj = time() - $joueur['maj_mp']; // Temps écoulé depuis la dernière augmentation de MP.
+		$temps_maj = time() - $joueur->get_maj_mp(); // Temps écoulé depuis la dernière augmentation de MP.
 		$temps_mp = $G_temps_maj_mp;  // Temps entre deux augmentation de MP.
 		if ($temps_maj > $temps_mp)
 		{
@@ -1241,16 +1241,15 @@ function check_perso($joueur)
 			$nb_maj = floor($temps_maj / $temps_mp);
 			$mp_gagne = $nb_maj * (($joueur['energie'] - 3) / 4);
 			$joueur['mp_max_1'] = $joueur['mp_max_1'] + $mp_gagne;
-			$joueur['maj_mp'] += $nb_maj * $temps_mp;
+			$joueur->set_maj_mp($joueur->get_maj_mp() + $nb_maj * $temps_mp);
 			$modif = true;
 		}
 		// Régénération des HP et MP
-		$temps_regen = time() - $joueur['regen_hp']; // Temps écoulé depuis la dernière régénération.
+		$temps_regen = time() - $joueur->get_regen_hp(); // Temps écoulé depuis la dernière régénération.
 
 		// Gemme du troll
-		if (isset($joueur['enchantement']) &&
-				isset($joueur['enchantement']['regeneration'])) {
-			$bonus_regen = $joueur['enchantement']['regeneration']['effet'] * 60;
+		if (array_key_exists('regeneration', $joueur->get_enchantement())) {
+			//$bonus_regen = $joueur->get_enchantement()['regeneration']['effet'] * 60;
 			if ($G_temps_regen_hp <= $bonus_regen) {
 				$bonus_regen = $G_temps_regen_hp - 1;
 			}
@@ -1263,33 +1262,33 @@ function check_perso($joueur)
 			$regen_hp = $G_pourcent_regen_hp;
 			$regen_mp = $G_pourcent_regen_mp;
 			//Buff préparation du camp
-			if(array_key_exists('preparation_camp', $joueur['buff']))
+			if($joueur->is_buff('preparation_camp'))
 			{
 				// Le buff a-t-il été lancé après la dernière régénération ?
-				if($joueur['buff']['preparation_camp']['effet2'] > $joueur['regen_hp'])
+				if($joueur->get_buff('preparation_camp', 'effet2') > $joueur->get_regen_hp())
 				{
 					// On calcule le moment où doit avoir lieu la première régénération après le lancement du buff 
-					$regen_cherche = $joueur['regen_hp'] + (($G_temps_regen_hp - $bonus_regen) * floor(($joueur['buff']['preparation_camp']['effet2'] - $joueur['regen_hp']) / $G_temps_regen_hp));
+					$regen_cherche = $joueur->get_regen_hp() + (($G_temps_regen_hp - $bonus_regen) * floor(($joueur->get_buff('preparation_camp', 'effet2') - $joueur->get_regen_hp()) / $G_temps_regen_hp));
 				}
-				else $regen_cherche = $joueur['regen_hp'];
+				else $regen_cherche = $joueur->get_regen_hp();
 				// Le buff s'est-il arrêté entre temps ?
-				if($joueur['buff']['preparation_camp']['fin'] > time()) $fin = time();
-				else $fin = $joueur['buff']['preparation_camp']['fin'];
+				if($joueur->get_buff('preparation_camp', 'fin') > time()) $fin = time();
+				else $fin = $joueur->get_buff('preparation_camp', 'fin');
 				// On calcule le nombre de régénération pour lesquels le buff doit être pris en compte 
 				$nb_regen_avec_buff = floor(($fin - $regen_cherche) / ($G_temps_regen_hp - $bonus_regen));
 				//bonus buff du camp
-				$bonus_camp = 1 + ((($nb_regen_avec_buff / $nb_regen) * $joueur['buff']['preparation_camp']['effet']) / 100);
+				$bonus_camp = 1 + ((($nb_regen_avec_buff / $nb_regen) * $joueur->get_buff('preparation_camp', 'effet')) / 100);
 				$regen_hp = $regen_hp * $bonus_camp;
 				$regen_mp = $regen_mp * $bonus_camp;
 			}
 			// Bonus raciaux
-			if($joueur['race'] == 'troll') $regen_hp = $regen_hp * 1.2;
-			if($joueur['race'] == 'elfehaut') $regen_mp = $regen_mp * 1.1;
+			if($joueur->get_race() == 'troll') $regen_hp = $regen_hp * 1.2;
+			if($joueur->get_race() == 'elfehaut') $regen_mp = $regen_mp * 1.1;
 			// Accessoires
-			if($joueur['accessoire']['id'] != '0' AND $joueur['accessoire']['type'] == 'regen_hp') $bonus_accessoire = $joueur['accessoire']['effet']; else $bonus_accessoire = 0;
-			if($joueur['accessoire']['id'] != '0' AND $joueur['accessoire']['type'] == 'regen_mp') $bonus_accessoire_mp = $joueur['accessoire']['effet']; else $bonus_accessoire_mp = 0;
+			//if($joueur['accessoire']['id'] != '0' AND $joueur['accessoire']['type'] == 'regen_hp') $bonus_accessoire = $joueur['accessoire']['effet']; else $bonus_accessoire = 0;
+			//if($joueur['accessoire']['id'] != '0' AND $joueur['accessoire']['type'] == 'regen_mp') $bonus_accessoire_mp = $joueur['accessoire']['effet']; else $bonus_accessoire_mp = 0;
 			// Effets magiques des objets
-			foreach($joueur['objet_effet'] as $effet)
+			/*foreach($joueur['objet_effet'] as $effet)
 			{
 				switch($effet['id'])
 				{
@@ -1300,30 +1299,30 @@ function check_perso($joueur)
 						$bonus_accessoire_mp += $effet['effet'];
 					break;
 				}
-			}
+			}*/
 			// Calcul des HP et MP récupérés
-			$hp_gagne = $nb_regen * (floor($joueur['hp_max'] * $regen_hp) + $bonus_accessoire);
-			$mp_gagne = $nb_regen * (floor($joueur['mp_max'] * $regen_mp) + $bonus_accessoire_mp);
+			$hp_gagne = $nb_regen * (floor($joueur->get_hp_max() * $regen_hp) + $bonus_accessoire);
+			$mp_gagne = $nb_regen * (floor($joueur->get_mp_max() * $regen_mp) + $bonus_accessoire_mp);
 			//DéBuff lente agonie
-			if(array_key_exists('lente_agonie', $joueur['debuff']))
+			if($joueur->is_debuff('lente_agonie'))
 			{
-			  // Le débuff a-t-il été lancé après la dernière régénération ?
-				if($joueur['debuff']['lente_agonie']['effet2'] > $joueur['regen_hp'])
+				// Le débuff a-t-il été lancé après la dernière régénération ?
+				if($joueur->get_debuff('lente_agonie', 'effet2') > $joueur->get_regen_hp())
 				{
-					$regen_cherche = $joueur['regen_hp'] + (($G_temps_regen_hp - $bonus_regen) * floor(($joueur['debuff']['lente_agonie']['effet2'] - $joueur['regen_hp']) / $G_temps_regen_hp));
+					$regen_cherche = $joueur->get_regen_hp() + (($G_temps_regen_hp - $bonus_regen) * floor(($joueur->get_debuff('lente_agonie', 'effet2') - $joueur->get_regen_hp()) / $G_temps_regen_hp));
 				}
-				else $regen_cherche = $joueur['regen_hp'];
+				else $regen_cherche = $joueur->get_regen_hp();
 				// Le débuff s'est-il arrêté entre temps ?
-				if($joueur['debuff']['lente_agonie']['fin'] > time()) $fin = time();
-				else $fin = $joueur['debuff']['lente_agonie']['fin'];
+				if($joueur->get_debuff('lente_agonie', 'fin') > time()) $fin = time();
+				else $fin = $joueur->get_debuff('lente_agonie', 'fin');
 				// On calcule le nombre de régénération pour lesquels le débuff doit être pris en compte 
 				$nb_regen_avec_buff = floor(($fin - $regen_cherche) / ($G_temps_regen_hp - $bonus_regen));
 				// Calcul du malus
-				$malus_agonie = ((1 - ($nb_regen_avec_buff / $nb_regen)) - (($nb_regen_avec_buff / $nb_regen) * $joueur['debuff']['lente_agonie']['effet']));
+				$malus_agonie = ((1 - ($nb_regen_avec_buff / $nb_regen)) - (($nb_regen_avec_buff / $nb_regen) * $joueur->get_debuff('lente_agonie', 'effet')));
 				$hp_gagne = $hp_gagne * $malus_agonie;
 			}
 			//Maladie regen negative
-			if(array_key_exists('regen_negative', $joueur['debuff']) AND !array_key_exists('lente_agonie', $joueur['debuff']))
+			if($joueur->is_debuff('regen_negative') AND !$joueur->is_debuff('lente_agonie'))
 			{
 				$hp_gagne = $hp_gagne * -1;
 				$mp_gagne = $mp_gagne * -1;
@@ -1339,7 +1338,7 @@ function check_perso($joueur)
 				$db->query($requete);
 			}
 			//Maladie high regen
-			if(array_key_exists('high_regen', $joueur['debuff']))
+			if($joueur->is_debuff('high_regen'))
 			{
 				$hp_gagne = $hp_gagne * 3;
 				$mp_gagne = $mp_gagne * 3;
@@ -1355,42 +1354,38 @@ function check_perso($joueur)
 				$db->query($requete);
 			}
 			//Maladie mort_regen
-			if(array_key_exists('high_regen', $joueur['debuff']) AND $hp_gagne != 0 AND $mp_gagne != 0)
+			if($joueur->is_debuff('high_regen') AND $hp_gagne != 0 AND $mp_gagne != 0)
 			{
-				$hp_gagne = $joueur['hp'];
+				$hp_gagne = $joueur->get_hp();
 			}
 			// Mise à jour des HP
-			$joueur['hp'] = $joueur['hp'] + $hp_gagne;
-			if ($joueur['hp'] > $joueur['hp_max']) $joueur['hp'] = floor($joueur['hp_max']);
+			$joueur->set_hp($joueur->get_hp() + $hp_gagne);
+			if ($joueur->get_hp() > $joueur->get_hp_max()) $joueur->set_hp(floor($joueur->get_hp_max()));
 			// Mise à jour des MP
-			$joueur['mp'] = $joueur['mp'] + $mp_gagne;
-			if ($joueur['mp'] > $joueur['mp_max']) $joueur['mp'] = floor($joueur['mp_max']);
-			$joueur['regen_hp'] = $joueur['regen_hp'] + ($nb_regen * ($G_temps_regen_hp - $bonus_regen));
+			$joueur->set_mp($joueur->get_mp() + $mp_gagne);
+			if ($joueur->get_mp() > $joueur->get_mp_max()) $joueur->set_mp(floor($joueur->get_mp_max()));
+			$joueur->set_regen_hp($joueur->get_regen_hp() + ($nb_regen * ($G_temps_regen_hp - $bonus_regen)));
 			$modif = true;
 		}
 		//Calcul des PA du joueur
 		$time = time();
 		$temps_pa = $G_temps_PA;
 		// Nombre de PA à ajouter 
-		$panew = floor(($time - $joueur['dernieraction']) / $temps_pa);
+		$panew = floor(($time - $joueur->get_dernieraction()) / $temps_pa);
 		if($panew < 0) $panew = 0;
-		$prochain = ($joueur['dernieraction'] + $temps_pa) - $time;
+		$prochain = ($joueur->get_dernieraction() + $temps_pa) - $time;
 		if ($prochain < 0) $prochain = 0;
 		// Mise à jour des PA
-		$joueur['pa'] = $joueur['pa'] + $panew;
-		if ($joueur['pa'] > $G_PA_max) $joueur['pa'] = $G_PA_max;
+		$joueur->set_pa($joueur->get_pa() + $panew);
+		if ($joueur->get_pa() > $G_PA_max) $joueur->set_pa($G_PA_max);
 		// Calcul du moment où a eu lieu le dernier gain de PA
 		$j_d_a = (floor($time / $temps_pa)) * $temps_pa;
-		if($j_d_a > $joueur['dernieraction']) $joueur['dernieraction'] = $j_d_a;
+		if($j_d_a > $joueur->get_dernieraction()) $joueur->set_dernieraction($j_d_a);
 		$modif = true;
 		
 		// Mise-à-jour du personnage dans la base de donnée s'il y a eut modificaton	
-		if ($modif)
-		{
-			$requete = "UPDATE perso SET regen_hp = '".$joueur['regen_hp']."', maj_mp = '".$joueur['maj_mp']."', maj_hp = '".$joueur['maj_hp']."', hp = '".$joueur['hp']."', hp_max = '".$joueur['hp_max_1']."', mp = '".$joueur['mp']."', mp_max = '".$joueur['mp_max_1']."', pa = '".$joueur['pa']."', dernieraction = '".$joueur['dernieraction']."' WHERE ID = '".$joueur['ID']."'";
-			$req = $db->query($requete);
-		}
-	} // if($joueur['hp'] > 0)
+		$joueur->sauver();
+	} // if($joueur->get_hp() > 0)
 	// On supprime tous les buffs périmés
 	$requete = "DELETE FROM buff WHERE fin <= ".time();
 	$req = $db->query($requete);
@@ -1399,59 +1394,6 @@ function check_perso($joueur)
 	$db->query($requete);
 
 	return $joueur;
-}
-
-/**
- * Vérifie les modifications de la case.
- * 
- * @param $coord    Coordonnées de la case sous forme de tableau associatif ou 'all'.  
- */ 
-function check_case($coord)
-{
-	global $db, $Gtrad;
-	// Toutes les cases ou seulement une en particulier ?
-	if($coord == 'all')
-	{
-		$where = '1';
-	}
-	else $where = '(x = '.$coord['x'].') AND (y = '.$coord['y'].')';
-	// Recherche des constructions terminées
-	$requete = "SELECT * FROM placement WHERE ".$where." AND fin_placement <= ".time();
-	$req = $db->query($requete);
-	while($row = $db->read_assoc($req))
-	{
-		//echo time().' > '.$row['fin_placement'];
-		//Si c'est un drapeau, on transforme le royaume
-		if($row['type'] == 'drapeau')
-		{
-			$pos = convert_in_pos($row['x'], $row['y']);
-			//Mis à jour de la carte
-			$requete = "UPDATE map SET royaume = ".$row['royaume']." WHERE ID = ".$pos;
-			//echo $requete;
-			$db->query($requete);
-			//Suppression du drapeau
-			$requete = "DELETE FROM placement WHERE id = ".$row['id'];
-			$db->query($requete);
-		}
-		//Si c'est un bâtiment ou une arme de siège, on le construit
-		elseif($row['type'] == 'fort' OR $row['type'] == 'tour' OR $row['type'] == 'bourg' OR $row['type'] == 'mur' OR $row['type'] == 'arme_de_siege' OR $row['type'] == 'mine')
-		{
-			$rechargement = time();
-			//Cas spécifique des mines
-			if($row['type'] == 'mine')
-			{
-				$rechargement = $row['rez'];
-				$row['rez'] = 0;
-			}
-			//Insertion de la construction
-			$requete = "INSERT INTO construction VALUES('', ".$row['id_batiment'].", ".$row['x'].", ".$row['y'].", ".$row['royaume'].", ".$row['hp'].", '".$row['nom']."', '".$row['type']."', ".$row['rez'].", ".$rechargement.", '".$Gtrad[$row['nom']]."')";
-			//echo $requete;
-			$db->query($requete);
-			//Suppression du fort
-			$requete = "DELETE FROM placement WHERE id = ".$row['id'];
-			$db->query($requete);
-		}
-	}
 }
 
 /**
@@ -1811,7 +1753,7 @@ function augmentation_competence($competence, $joueur, $difficulte)
 		$reussite = ceil(10000 / $G_apprentissage_rate);
 		$numero = rand(1, $reussite);
 		// Valeur seuil
-		if($joueur['race'] == 'humain' OR $joueur['race'] == 'humainnoir') $apprentissage = 1.1; else $apprentissage = 1;
+		if($joueur->get_race() == 'humain' OR $joueur->get_race() == 'humainnoir') $apprentissage = 1.1; else $apprentissage = 1;
 		if(in_array('apprenti_vent', $joueur['buff'])) $apprentissage = $apprentissage * (1 + ($joueur['buff']['apprenti_vent']['effet'] / 100));
 		if($val_competence > 0) $chance = (10000 * $apprentissage) / (sqrt($val_competence) * $difficulte); else $chance = 0;
 		$R_retour[1] = false;
@@ -2010,7 +1952,7 @@ function prend_objet($id_objet, $joueur)
 		}
 		// Mise à jour la base de donnée
 		$inventaire_slot = serialize($joueur['inventaire_slot']);
-		$requete = "UPDATE perso SET inventaire_slot = '".$inventaire_slot."' WHERE ID = ".$joueur['ID'];
+		$requete = "UPDATE perso SET inventaire_slot = '".$inventaire_slot."' WHERE ID = ".$joueur->get_id();
 		//echo $requete;
 		$req = $db->query($requete);
 		return $joueur;
@@ -2029,7 +1971,7 @@ function prend_recette($id_recette, $joueur)
 	global $db, $G_erreur;
 	$id_reel_recette = mb_substr($id_recette, 1);
 	//Recherche s'il a déjà cette recette
-	$requete = "SELECT id, nombre FROM perso_recette WHERE id_recette = ".$id_reel_recette." AND id_perso = ".$joueur['ID'];
+	$requete = "SELECT id, nombre FROM perso_recette WHERE id_recette = ".$id_reel_recette." AND id_perso = ".$joueur->get_id();
 	$db->query($requete);
 	if($db->num_rows > 0)
 	{
@@ -2043,7 +1985,7 @@ function prend_recette($id_recette, $joueur)
 	else
 	{
 	  // On ajoute la recette avec une utilsation de 1
-		$requete = "INSERT INTO perso_recette VALUES('', ".$id_reel_recette.", ".$joueur['ID'].", 1)";
+		$requete = "INSERT INTO perso_recette VALUES('', ".$id_reel_recette.", ".$joueur->get_id().", 1)";
 	}
 	$db->query($requete);
 }
@@ -2272,18 +2214,18 @@ function lance_buff($type, $id, $effet, $effet2, $duree, $nom, $description, $ty
 function verif_mort($pourcent, $var, $duree_debuff=0, $multiplicateur_mouvement=0)
 {
 	global $Trace, $db, $joueur;
-	if ($joueur['hp'] <= 0)
+	if ($joueur->get_hp() <= 0)
 	{
 		//Recherche du fort le plus proche
-		$requete = "SELECT *, (ABS(".$joueur['x']." - cast(x as signed integer)) + ABS(".$joueur['y']." - cast(y as signed integer))) AS plop FROM `construction` WHERE rez > 0 AND type = 'fort' AND royaume = ".$Trace[$joueur['race']]['numrace']." ORDER BY plop ASC";
+		$requete = "SELECT *, (ABS(".$joueur->get_x()." - cast(x as signed integer)) + ABS(".$joueur->get_y()." - cast(y as signed integer))) AS plop FROM `construction` WHERE rez > 0 AND type = 'fort' AND royaume = ".$Trace[$joueur->get_race()]['numrace']." ORDER BY plop ASC";
 		$req_b = $db->query($requete);
 		$bat = $db->num_rows;
 		$row_b = $db->read_assoc($req_b);
 		//Bonus mort-vivant
-		if($joueur['race'] == 'mortvivant') $bonus = 10;
+		if($joueur->get_race() == 'mortvivant') $bonus = 10;
 		else $bonus = 0;
 		//Vérifie s'il y a une amende qui empèche le spawn en ville
-		$amende = recup_amende($joueur['ID']);
+		$amende = recup_amende($joueur->get_id());
 		$echo = 'Revenir dans votre ville natale';
 		$spawn_ville = 'ok';
 		if($amende)
@@ -2300,7 +2242,7 @@ function verif_mort($pourcent, $var, $duree_debuff=0, $multiplicateur_mouvement=
 			<div id="presentation">
 				<h2 class="ville_titre">Vous êtes mort</h2>
 				<div class="ville_test">
-					Position de votre cadavre : <?php echo 'X - '.$joueur['x'].' / Y - '.$joueur['y']; ?>
+					Position de votre cadavre : <?php echo 'X - '.$joueur->get_x().' / Y - '.$joueur->get_y(); ?>
 				</div>
 				<p>
 				</p>
@@ -2312,7 +2254,7 @@ function verif_mort($pourcent, $var, $duree_debuff=0, $multiplicateur_mouvement=
 					$requete = "DELETE FROM rez WHERE TIMESTAMPDIFF(MINUTE , time, NOW()) > 1440";
 					//$db->query($requete);
 					// Liste des rez
-					$requete = "SELECT * FROM rez WHERE id_perso = ".$joueur['ID'];
+					$requete = "SELECT * FROM rez WHERE id_perso = ".$joueur->get_id();
 					$req = $db->query($requete);
 					if($db->num_rows > 0)
 					{
@@ -2323,7 +2265,7 @@ function verif_mort($pourcent, $var, $duree_debuff=0, $multiplicateur_mouvement=
 						}
 					}
 					// Fort le plus proche (si on le personnage n'est pas dans un donjon)
-					if($bat > 0 AND !is_donjon($joueur['x'], $joueur['y']))
+					if($bat > 0 AND !is_donjon($joueur->get_x(), $joueur->get_y()))
 					{
 							echo '
 						<li><a href="mort.php?choix=3&amp;rez='.$row_d['id'].'">Revenir dans le fort le plus proche (x : '.$row_b['x'].' / y : '.$row_b['y'].') ('.($row_b['rez'] + $bonus).'% HP / '.($row_b['rez'] + $bonus).'% MP)</li>';
@@ -2342,7 +2284,7 @@ function verif_mort($pourcent, $var, $duree_debuff=0, $multiplicateur_mouvement=
 					Vos dernières actions :
 					<ul>
 					<?php
-					$requete = "SELECT * FROM journal WHERE id_perso = ".$joueur['ID']." ORDER by time DESC, id DESC LIMIT 0, 15";
+					$requete = "SELECT * FROM journal WHERE id_perso = ".$joueur->get_id()." ORDER by time DESC, id DESC LIMIT 0, 15";
 					$req = $db->query($requete);
 					while($row = $db->read_assoc($req))
 					{
@@ -2364,32 +2306,32 @@ function verif_mort($pourcent, $var, $duree_debuff=0, $multiplicateur_mouvement=
 		{ // Rez en ville ou dans le refuge des criminels
 			if($spawn_ville == 'ok')
 			{ // Capitale
-				$joueur['x'] = $Trace[$joueur['race']]['spawn_x'];
-				$joueur['y'] = $Trace[$joueur['race']]['spawn_y'];
+				$joueur->set_x($Trace[$joueur->get_race()]['spawn_x']);
+				$joueur->set_y($Trace[$joueur->get_race()]['spawn_y']);
 			}
 			else
 			{ // Refuge des criminels
-				$joueur['x'] = $Trace[$joueur['race']]['spawn_c_x'];
-				$joueur['y'] = $Trace[$joueur['race']]['spawn_c_y'];
+				$joueur->set_x($Trace[$joueur->get_race()]['spawn_c_x']);
+				$joueur->set_y($Trace[$joueur->get_race()]['spawn_c_y']);
 			}
 		}
 		elseif($var == 4)
 		{ // Fort le plus proche
-			$joueur['x'] = $row_b['x'];
-			$joueur['y'] = $row_b['y'];
+			$joueur->set_x($row_b['x']);
+			$joueur->set_y($row_b['y']);
 			$pourcent = $row_b['rez'];
 		}
 		$pourcent += $bonus;
-		$joueur['hp'] = $joueur['hp_max'] * $pourcent / 100;
-		$joueur['mp'] = $joueur['mp_max'] * $pourcent / 100;		
+		$joueur->set_hp($joueur->get_hp_max() * $pourcent / 100);
+		$joueur->set_mp($joueur->get_mp_max() * $pourcent / 100);
+		
+		$joueur->set_regen_hp($time());
 
 		//Téléportation dans sa ville avec PV et MP modifiés
-		$requete = 'UPDATE perso SET x = '.$joueur['x'].', y = '.$joueur['y'].', hp = '.$joueur['hp'].', mp = '.$joueur['mp'].', regen_hp = '.time().' WHERE ID = '.$joueur['ID'];
-		$db->query($requete);
-		$_SESSION['position'] = convert_in_pos($joueur['x'], $joueur['y']);
+		$joueur->sauver();
 
 		//Vérifie si il a déjà un mal de rez
-		$requete = "SELECT fin FROM buff WHERE id_perso = ".$joueur['ID']." AND type = 'debuff_rez'";
+		$requete = "SELECT fin FROM buff WHERE id_perso = ".$joueur->get_id()." AND type = 'debuff_rez'";
 		$req = $db->query($requete);
 		if($db->num_rows > 0)
 		{
@@ -2399,14 +2341,14 @@ function verif_mort($pourcent, $var, $duree_debuff=0, $multiplicateur_mouvement=
 		else $duree = 0;
 		$duree_debuff += $duree;
 		//Suppression des buffs
-		$requete = "DELETE FROM buff WHERE id_perso = ".$joueur['ID']." AND supprimable = 1";
+		$requete = "DELETE FROM buff WHERE id_perso = ".$joueur->get_id()." AND supprimable = 1";
 		$db->query($requete);
 		//Si rez en ville ou sur fort, on débuff le déplacement
 		if($duree_debuff > 0)
 		{
 			//Déplacement * 2
 			$effet = 2;
-			lance_buff('debuff_rez', $joueur['ID'], $effet, $multiplicateur_mouvement, $duree_debuff, 'Mal de résurrection', 'Mulitplie vos coûts de déplacement par '.$effet, 'perso', 1, 0, 0, 0);
+			lance_buff('debuff_rez', $joueur->get_id(), $effet, $multiplicateur_mouvement, $duree_debuff, 'Mal de résurrection', 'Mulitplie vos coûts de déplacement par '.$effet, 'perso', 1, 0, 0, 0);
 		}
 	}
 }
@@ -2422,7 +2364,7 @@ function genere_image_pa($joueur)
 {
 	global $G_PA_max;
 	//Barre PA
-	$ratio_pa = floor(10 * ($joueur['pa'] / $G_PA_max));
+	$ratio_pa = floor(10 * ($joueur->get_pa() / $G_PA_max));
 	if($ratio_pa > 10) $ratio_pa = 10;
 	if($ratio_pa < 0) $ratio_pa = 0;
 	$barre_pa = './image/barre/pa'.$ratio_pa.'.png';
@@ -2455,7 +2397,7 @@ function genere_image_buff_duree($buff)
 function genere_image_hp($joueur)
 {
 	//Barre HP
-	$ratio_hp = floor(10 * ($joueur['hp'] / $joueur['hp_max']));
+	$ratio_hp = floor(10 * ($joueur->get_hp() / $joueur->get_hp_max()));
 	if($ratio_hp > 10) $ratio_hp = 10;
 	if($ratio_hp < 0) $ratio_hp = 0;
 	$barre_vie = './image/barre/vie'.$ratio_hp.'.png';
@@ -2472,7 +2414,7 @@ function genere_image_hp($joueur)
 function genere_image_mp($joueur)
 {
 	//Barre MP
-	$ratio_mp = floor(10 * ($joueur['mp'] / $joueur['mp_max']));
+	$ratio_mp = floor(10 * ($joueur->get_mp() / $joueur->get_mp_max()));
 	if($ratio_mp > 10) $ratio_mp = 10;
 	if($ratio_mp < 0) $ratio_mp = 0;
 	$barre_mp = './image/barre/mp'.$ratio_mp.'.png';
@@ -2489,11 +2431,11 @@ function genere_image_mp($joueur)
 function genere_image_hp_groupe($joueur)
 {
 	//Barre HP
-	$ratio_hp = floor(10 * ($joueur['hp'] / $joueur['hp_max']));
+	$ratio_hp = floor(10 * ($joueur->get_hp() / $joueur->get_hp_max()));
 	if($ratio_hp > 10) $ratio_hp = 10;
 	if($ratio_hp < 0) $ratio_hp = 0;
 	$barre_vie = 'image/barre/g_vie'.$ratio_hp.'.png';
-	return '<img src="'.$barre_vie.'" alt="HP = '.$joueur['hp'].' / '.$joueur['hp_max'].'" title="HP = '.$joueur['hp'].' / '.$joueur['hp_max'].'" style="height : 5px; width : 100px;" />';
+	return '<img src="'.$barre_vie.'" alt="HP = '.$joueur->get_hp().' / '.$joueur->get_hp_max().'" title="HP = '.$joueur->get_hp().' / '.$joueur->get_hp_max().'" style="height : 5px; width : 100px;" />';
 }
 
 /**
@@ -2506,11 +2448,11 @@ function genere_image_hp_groupe($joueur)
 function genere_image_mp_groupe($joueur)
 {
 	//Barre MP
-	$ratio_mp = floor(10 * ($joueur['mp'] / $joueur['mp_max']));
+	$ratio_mp = floor(10 * ($joueur->get_mp() / $joueur->get_mp_max()));
 	if($ratio_mp > 10) $ratio_mp = 10;
 	if($ratio_mp < 0) $ratio_mp = 0;
 	$barre_mp = 'image/barre/g_mp'.$ratio_mp.'.png';
-	return '<img src="'.$barre_mp.'" alt="MP = '.$joueur['mp'].' / '.$joueur['mp_max'].'" title="MP = '.$joueur['mp'].' / '.$joueur['mp_max'].'" style="height : 5px; width : 100px;" />';
+	return '<img src="'.$barre_mp.'" alt="MP = '.$joueur->get_mp().' / '.$joueur->get_mp_max().'" title="MP = '.$joueur->get_mp().' / '.$joueur->get_mp_max().'" style="height : 5px; width : 100px;" />';
 }
 
 /**
@@ -2948,7 +2890,7 @@ function affiche_condition($action, $joueur)
 		$requete = "SELECT nom, mp, comp_assoc, description, effet, effet2, duree FROM sort_combat WHERE id = ".$sort_sort;
 		$req = $db->query($requete);
 		$row = $db->read_assoc($req);
-		$mpsort = round($row['mp'] * (1 - (($Trace[$joueur['race']]['affinite_'.$row['comp_assoc']] - 5) / 10)));
+		$mpsort = round($row['mp'] * (1 - (($Trace[$joueur->get_race()]['affinite_'.$row['comp_assoc']] - 5) / 10)));
 		$echo .= 'Lancer le sort <strong onmouseover="return overlib(\'<ul><li class=\\\'overlib_titres\\\'>'.addslashes(description($row['description'], $row)).'</li></ul>\', BGCLASS, \'overlib\', BGCOLOR, \'\', FGCOLOR, \'\');" onmouseout="return nd();">'.$row['nom'].'</strong> <span class="small">('.$mpsort.' réserves)</span>';
 	}
 	elseif ($action[0] == '_')
@@ -3023,7 +2965,7 @@ function affiche_condition($action, $joueur)
 			$requete = "SELECT nom, mp, comp_assoc, description, effet, effet2, duree FROM sort_combat WHERE id = ".$sort_sort;
 			$req = $db->query($requete);
 			$row = $db->read_assoc($req);
-			$mpsort = round($row['mp'] * (1 - (($Trace[$joueur['race']]['affinite_'.$row['comp_assoc']] - 5) / 10)));
+			$mpsort = round($row['mp'] * (1 - (($Trace[$joueur->get_race()]['affinite_'.$row['comp_assoc']] - 5) / 10)));
 			$echo .= 'Lancer le sort <strong onmouseover="return overlib(\'<ul><li class=\\\'overlib_titres\\\'>'.addslashes(description($row['description'], $row)).'</li></ul>\', BGCLASS, \'overlib\', BGCOLOR, \'\', FGCOLOR, \'\');" onmouseout="return nd();">'.$row['nom'].'</strong> <span class="small">('.$mpsort.' réserves)</span>';
 		}
 		elseif ($alors[0] == '_')
@@ -3107,7 +3049,7 @@ function affiche_condition_session($action, $joueur)
 		$requete = "SELECT nom, mp, comp_assoc, description, effet, effet2, duree FROM sort_combat WHERE id = ".$sort_sort;
 		$req = $db->query($requete);
 		$row = $db->read_assoc($req);
-		$mpsort = round($row['mp'] * (1 - (($Trace[$joueur['race']]['affinite_'.$row['comp_assoc']] - 5) / 10)));
+		$mpsort = round($row['mp'] * (1 - (($Trace[$joueur->get_race()]['affinite_'.$row['comp_assoc']] - 5) / 10)));
 		$echo .= 'Lancer le sort <strong onmouseover="return overlib(\'<ul><li class=\\\'overlib_titres\\\'>'.addslashes(description($row['description'], $row)).'</li></ul>\', BGCLASS, \'overlib\', BGCOLOR, \'\', FGCOLOR, \'\');" onmouseout="return nd();">'.$row['nom'].'</strong> <span class="small">('.$mpsort.' réserves)</span>';
 	}
 	elseif ($action['final'][0] == 'c')
@@ -3273,7 +3215,7 @@ function list_joueurs_visu($joueur, $distance) {
 	global $db;
 
 	// Calcul de la visue
-	$x = $joueur['x']; $y = $joueur['y'];
+	$x = $joueur->get_x(); $y = $joueur->get_y();
 	$pos1 = convert_in_pos($x, $y);
 	$lx = $x - $distance; $gx = $x + $distance;
 	$ly = $y - $distance; $gy = $y + $distance;
