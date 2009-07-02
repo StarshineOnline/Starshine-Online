@@ -1221,13 +1221,13 @@ function check_perso($joueur)
 		$temps_maj = time() - $joueur->get_maj_hp(); // Temps écoulé depuis la dernière augmentation de HP.
 		$temps_hp = $G_temps_maj_hp;  // Temps entre deux augmentation de HP.
 
-		If ($temps_maj > $temps_hp && $temps_hp > 0) // Pour ne jamais diviser par 0 ...
+		If ($temps_maj > $temps_hp && $temps_hp > 0) // Pour ne jamais diviser par 0...
 		{
 			$time = time();
 			$nb_maj = floor($temps_maj / $temps_hp);
-			$hp_gagne = $nb_maj * (sqrt($joueur['vie']) * 2.7);
-			$joueur['hp_max_1'] = $joueur['hp_max_1'] + $hp_gagne;
-			$joueur['maj_hp'] += $nb_maj * $temps_hp;
+			$hp_gagne = $nb_maj * (sqrt($joueur->get_vie()) * 2.7);
+			$joueur->set_hp_max($joueur->get_hp_max() + $hp_gagne);
+			$joueur->set_maj_hp($joueur->get_maj_hp() + $nb_maj * $temps_hp);
 			$modif = true;
 		}
 		// On augmente les MP max si nécessaire
@@ -1237,8 +1237,8 @@ function check_perso($joueur)
 		{
 			$time = time();
 			$nb_maj = floor($temps_maj / $temps_mp);
-			$mp_gagne = $nb_maj * (($joueur['energie'] - 3) / 4);
-			$joueur['mp_max_1'] = $joueur['mp_max_1'] + $mp_gagne;
+			$mp_gagne = $nb_maj * (($joueur->get_energie() - 3) / 4);
+			$joueur->set_mp_max($joueur->get_mp_max() + $mp_gagne);
 			$joueur->set_maj_mp($joueur->get_maj_mp() + $nb_maj * $temps_mp);
 			$modif = true;
 		}

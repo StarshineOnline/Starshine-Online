@@ -186,31 +186,36 @@ function date_sso()
 */
 function moment_jour()
 {
-  global $joueur;
-  if (isset($joueur) && $joueur != null) {
-    $x = $joueur['x'];
-    $y = $joueur['y'];
-  } else {
-    $p = recupperso_essentiel($_SESSION['ID'], 'ID, x, y');
-    $x = $p['x'];
-    $y = $p['y'];
-  }
-  if ($x >= 300) {
-    global $db;
-    $requete = "select heure from arenes where xmin <= $x and $x <= xmax and ymin <= $y and $y <= ymax";
-    $req = $db->query($requete);
-    if ($db->num_rows > 0) {
-      $heure_donj = $db->read_assoc($req);
-      $moment = $heure_donj['heure'];
-      if ($moment != null) return $moment;
-    }
-  }
-  $heure = heure_sso();
-  if($heure > 5 AND $heure < 10) $moment = 'Matin';
-  elseif($heure > 9 AND $heure < 16) $moment = 'Journee';
-  elseif($heure > 15 AND $heure < 20) $moment = 'Soir';
-  else $moment = 'Nuit';
-  return $moment;
+	global $joueur;
+	if (isset($joueur) && $joueur != null)
+	{
+		$x = $joueur->get_x();
+		$y = $joueur->get_y();
+	}
+	else
+	{
+		$joueur = new perso($_SESSION['ID']);
+		$x = $joueur->get_x();
+		$y = $joueur->get_y();
+	}
+	if ($x >= 300)
+	{
+		global $db;
+		$requete = "select heure from arenes where xmin <= $x and $x <= xmax and ymin <= $y and $y <= ymax";
+		$req = $db->query($requete);
+		if ($db->num_rows > 0)
+		{
+			$heure_donj = $db->read_assoc($req);
+			$moment = $heure_donj['heure'];
+			if ($moment != null) return $moment;
+		}
+	}
+	$heure = heure_sso();
+	if($heure > 5 AND $heure < 10) $moment = 'Matin';
+	elseif($heure > 9 AND $heure < 16) $moment = 'Journee';
+	elseif($heure > 15 AND $heure < 20) $moment = 'Soir';
+	else $moment = 'Nuit';
+	return $moment;
 }
 
 ?>
