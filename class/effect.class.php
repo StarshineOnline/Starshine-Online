@@ -98,6 +98,8 @@ class effect
    * @return le tableau des effets
    */
   static function general_factory(&$attaquant, &$defenseur, $mode) {
+		include_once('class/buff.class.php');
+
     $effects = array();
 
     if ($mode == 'attaquant')
@@ -127,9 +129,10 @@ class effect
     maitrise_dague::factory($effects, $actif, $passif, $acteur);
     maitrise_critique::factory($effects, $actif, $passif, $acteur);
     /*
-     * Équipement
+     * Équipement et buffs
      */
     gemme_enchassee::factory($effects, $actif, $passif, $acteur);
+    buff_actif::factory($effects, $actif, $passif, $acteur);
 
     /* Tri des effets selon leur ordre */
     sort_effects($effects);

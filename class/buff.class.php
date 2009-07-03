@@ -1,4 +1,59 @@
-<?php
+<?php //  -*- tab-width:2  -*-
+/**
+* @file buff.class.php
+*/
+
+if (file_exists('class/effect.class.php')) {
+  include_once('class/effect.class.php');
+} else {
+  include_once('../class/effect.class.php');
+}
+
+class buff_actif extends effect
+{
+
+	private static $esquive_buff = array('buff_evasion', 'buff_cri_detresse',
+																			 'batiment_esquive');
+
+	static function factory(&$effects, &$actif, &$passif, $acteur) {
+    $acti = array();
+		$actives = array_merge($acti);
+		$pass = array();
+    $passives = array_merge($pass, self::$esquive_buff);
+    foreach ($actif['buff'] as $type => $buff) {
+      if (in_array($type, $actives)) {
+				$effects[] = new buff_actif($type, $buff, 'actif');
+      }
+    }
+    foreach ($passif['buff'] as $type => $buff) {
+      if (in_array($type, $passives)) {
+				$effects[] = new buff_actif($type , $buff, 'passif');
+      }
+    }
+	}
+
+	var $type;
+	var $buff;
+	var $acteur;
+
+  function __construct($type, $buff, $acteur) {
+		if (isset($buff['nom']))
+			$nom = $buff['nom'];
+		else
+			$nom = $type;
+    parent::__construct($nom);
+		$this->type = $type;
+		$this->buff = $buff;
+		$this->acteur = $acteur;
+		//$this->notice("Activation de $type");
+	}
+
+  function debut_round(&$actif, &$passif) {
+		if (in_array($this->type, self::$esquive_buff))
+			$passif['potentiel_parer'] *= (1 + ($this->buff['effet'] / 100));
+	}
+}
+
 class buff
 {
 /**
@@ -500,4 +555,5 @@ class buff
 
 		//fonction
 }
+
 ?>
