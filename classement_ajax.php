@@ -127,7 +127,7 @@
 	if($k < 0) $k = 0;
 	$j = 26;
 	$ord = strcmp($tri, 'architecture, forge, alchimie') ? $tri : 'ROUND(SQRT(alchimie + forge + architecture))';
-	
+	$tri = strcmp($tri, 'architecture, forge, alchimie') ? $tri : 'ROUND(SQRT(alchimie + forge + architecture) * 10) as craft';
 	$requete = "SELECT ID, nom, ".sSQL($tri).", level, race, classe, cache_stat, cache_classe FROM perso WHERE statut = 'actif' AND ".$where." ORDER BY ".$ord." DESC, nom ASC LIMIT $inf, $j";
 	//echo $requete;
 	//echo 'inf : '.$inf.' j : '.$j.' k : '.$k.' sup : '.$sup.' '.$requete.'<br />';
@@ -231,7 +231,7 @@
 						{
 						?>
 							<td>
-								<?php echo strcmp($tri, 'craft') ? $row[$tri] : round(sqrt(($row['architecture'] + $row['forge'] + $row['alchimie']) * 10)); ?>
+								<?php echo $row[$tri]; ?>
 							</td>
 						<?php
 						}
