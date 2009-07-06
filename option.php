@@ -166,7 +166,7 @@ include('inc/fp.php');
 			</div>
 			<div class"news">
 				<h3>Mot de passe</h3>
-				<strong>Attention votre mot de passe jeu, et votre mot de passe forum sont à changer séparément !</strong><br />
+				<strong>Attention votre mot de passe jeu, et votre mot de passe forum seront changés simultanément !</strong><br />
 				<ul>
 					<li><a href="option.php?action=mdp" onclick="return envoiInfo(this.href, 'popup_content');">Modifier votre mot de passe JEU</a></li>
 				</ul>

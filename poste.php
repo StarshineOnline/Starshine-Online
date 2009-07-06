@@ -56,8 +56,7 @@ if($W_distance == 0)
 					if($row_diplo[0] == 127) $row_diplo[0] = -1;
 					$cout = ceil(pow(1.6, ($row_diplo[0] + 1)));
 					$taxe = ceil($cout * $R['taxe'] / 100);
-					$cout = $cout + $taxe;
-					echo 'Cela vous coutera '.$cout.' stars.<br />';
+					echo 'Cela vous coutera '.($cout+$taxe).' stars.<br />';
 					?>
 					<form method="post" id="formMessage" action="poste.php?action=envoi&amp;cout=<?php echo $cout; ?>&amp;ID=<?php echo $row['ID']; ?>">
 						Titre du message :<br />
@@ -77,7 +76,7 @@ if($W_distance == 0)
 			case 'envoi' :
 				$W_ID = sSQL($_GET['ID']);
 				$cout = sSQL($_GET['cout']);
-				$taxe = ceil(sSQL($_GET['cout']) * $R['taxe'] / 100);
+				$taxe = ceil(sSQL($_GET['cout'] * $R['taxe'] / 100));
 				$cout = sSQL($_GET['cout']) + $taxe;
 				if($cout <= $joueur['star'])
 				{

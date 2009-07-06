@@ -651,58 +651,63 @@ if(!$visu AND isset($_GET['action']))
 			if($joueur['pa'] >= 10)
 			{
 				$objet = decompose_objet($joueur['inventaire_slot'][$_GET['key_slot']]);
-				switch($_GET['niveau'])
+				if(empty($objet['slot']))
 				{
-					case '1' :
-						$difficulte = 10;
-					break;
-					case '2' :
-						$difficulte = 30;
-					break;
-					case '3' :
-						$difficulte = 100;
-					break;
-				}
-				$craft = $joueur['forge'];
-				if($joueur['race'] == 'scavenger') $craft = round($craft * 1.45);
-				if($joueur['accessoire']['id'] != '0' AND $joueur['accessoire']['type'] == 'fabrication') $craft = round($craft * (1 + ($joueur['accessoire']['effet'] / 100)));
+					switch($_GET['niveau'])
+					{
+						case '1' :
+							$difficulte = 10;
+						break;
+						case '2' :
+							$difficulte = 30;
+						break;
+						case '3' :
+							$difficulte = 100;
+						break;
+					}
+					$craft = $joueur['forge'];
+					if($joueur['race'] == 'scavenger') $craft = round($craft * 1.45);
+					if($joueur['accessoire']['id'] != '0' AND $joueur['accessoire']['type'] == 'fabrication') $craft = round($craft * (1 + ($joueur['accessoire']['effet'] / 100)));
 
-				// Gemme de fabrique : augmente de effet % le craft
-				if (isset($joueur['enchantement']) &&
-						isset($joueur['enchantement']['forge'])) {
-					$craft += round($joueur['enchantement']['forge']['effet'] / 100 * $craft);
-				}
+					// Gemme de fabrique : augmente de effet % le craft
+					if (isset($joueur['enchantement']) &&
+							isset($joueur['enchantement']['forge'])) {
+						$craft += round($joueur['enchantement']['forge']['effet'] / 100 * $craft);
+					}
 
-				$craftd = rand(0, $craft);
-				$diff = rand(0, $difficulte);
-				echo 'dé du joueur : '.$craft.' / dé difficulté : '.$difficulte.'<br />
-				Résultat joueur : '.$craftd.' / Résultat difficulte : '.$diff.'<br />';
-				if($craftd >= $diff)
-				{
-					//Craft réussi
-					echo 'Réussite !<br />';
-					$objet['slot'] = $_GET['niveau'];
-				}
-				else
-				{
-					//Craft échec
-					echo 'Echec... L\'objet ne pourra plus être enchassable<br />';
-					$objet['slot'] = 0;
-				}
-				$augmentation = augmentation_competence('forge', $joueur, 2);
-				if ($augmentation[1] == 1)
-				{
-					$joueur['forge'] = $augmentation[0];
-					echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant à '.$joueur['forge'].' en Forge</span><br />';
-					$requete = "UPDATE perso SET forge = ".$joueur['forge']." WHERE ID = ".$joueur['ID'];
+					$craftd = rand(0, $craft);
+					$diff = rand(0, $difficulte);
+					echo 'dé du joueur : '.$craft.' / dé difficulté : '.$difficulte.'<br />
+					Résultat joueur : '.$craftd.' / Résultat difficulte : '.$diff.'<br />';
+					if($craftd >= $diff)
+					{
+						//Craft réussi
+						echo 'Réussite !<br />';
+						$objet['slot'] = $_GET['niveau'];
+					}
+					else
+					{
+						//Craft échec
+						echo 'Echec... L\'objet ne pourra plus être enchassable<br />';
+						$objet['slot'] = 0;
+					}
+					$augmentation = augmentation_competence('forge', $joueur, 2);
+					if ($augmentation[1] == 1)
+					{
+						$joueur['forge'] = $augmentation[0];
+						echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant à '.$joueur['forge'].' en Forge</span><br />';
+						$requete = "UPDATE perso SET forge = ".$joueur['forge']." WHERE ID = ".$joueur['ID'];
+						$req = $db->query($requete);
+					}
+					$objet_r = recompose_objet($objet);
+					$joueur['inventaire_slot'][$_GET['key_slot']] = $objet_r;
+					$inventaire_slot = serialize($joueur['inventaire_slot']);
+					$joueur['pa'] -= 10;
+					$requete = "UPDATE perso SET pa = ".$joueur['pa'].", inventaire_slot = '".$inventaire_slot."' WHERE ID = ".$joueur['ID'];
 					$req = $db->query($requete);
 				}
-				$objet_r = recompose_objet($objet);
-				$joueur['inventaire_slot'][$_GET['key_slot']] = $objet_r;
-				$inventaire_slot = serialize($joueur['inventaire_slot']);
-				$joueur['pa'] -= 10;
-				$requete = "UPDATE perso SET pa = ".$joueur['pa'].", inventaire_slot = '".$inventaire_slot."' WHERE ID = ".$joueur['ID'];
-				$req = $db->query($requete);
+				else
+					echo 'Cet objet &agrave; d&eacute;j&agrave; un slot!';
 			}
 			else
 			{

@@ -57,7 +57,7 @@ function attaque($acteur = 'attaquant', $competence, &$effects)
   if(array_key_exists('buff_position', $actif['buff'])) $actif['potentiel_toucher'] *= 1 + (($actif['buff']['buff_position']['effet']) / 100);
   if(array_key_exists('a_toucher', $actif['etat'])) $actif['potentiel_toucher'] *= 1 + ($actif['etat']['a_toucher']['effet'] / 100);
   //Corrompu la journée
-  if($actif['race'] == 'humainnoir' AND moment_jour() == 'Journée') $actif['potentiel_toucher'] *= 1.1; else $bonus_race = 1;
+  if($actif['race'] == 'humainnoir' AND moment_jour() == 'Journee') $actif['potentiel_toucher'] *= 1.1; else $bonus_race = 1;
   if($actif['etat']['posture']['type'] == 'posture_touche') $actif['potentiel_toucher'] *= 1 + (($actif['etat']['posture']['effet']) / 100); else $buff_posture_touche = 1;
 
   /* Application des effets de début de round */
