@@ -953,7 +953,7 @@ function lance_sort($id, $acteur, &$effects)
  */
 function lance_comp($id, $acteur, &$effects)
 {
-	global $attaquant, $defenseur, $db, $Gtrad, $debugs, $comp_attaque, $G_round_total;
+	global $attaquant, $defenseur, $db, $Gtrad, $debugs, $comp_attaque, $G_round_total, $ups;
 	// Définition des personnages actif et passif
 	if ($acteur == 'attaquant')
 	{
