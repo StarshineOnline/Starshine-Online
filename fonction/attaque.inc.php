@@ -32,9 +32,6 @@ function attaque($acteur = 'attaquant', $competence, &$effects)
     }
 
   //Buff evasion
-  if(array_key_exists('buff_evasion', $passif['buff'])) $passif['potentiel_parer'] *= (1 + (($passif['buff']['buff_evasion']['effet']) / 100));
-  if(array_key_exists('buff_cri_detresse', $passif['buff'])) $passif['potentiel_parer'] *= 1 + (($passif['buff']['buff_cri_detresse']['effet']) / 100);
-  if(array_key_exists('batiment_esquive', $passif['buff'])) $passif['potentiel_parer'] *= 1 + (($passif['buff']['batiment_esquive']['effet']) / 100);
   if(array_key_exists('benediction', $passif['etat'])) $passif['potentiel_parer'] *= 1 + (($passif['etat']['benediction']['effet'] * $G_buff['bene_evasion']) / 100);
   if(array_key_exists('berzeker', $passif['etat'])) $passif['potentiel_parer'] /= 1 + (($passif['etat']['berzeker']['effet'] * $G_buff['berz_evasion']) / 100);
   if(array_key_exists('derniere_chance', $passif['etat'])) $passif['potentiel_parer'] /= 1 + (($passif['etat']['derniere_chance']['effet']) / 100);
