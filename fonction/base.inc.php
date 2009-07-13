@@ -2467,15 +2467,15 @@ function genere_image_exp($xp_joueur, $xp_p_n, $progression)
  * 
  * @return    chemin de l'image de la barre.  
  */
-function genere_image_comp($joueur, $competence, $comp_max)
+function genere_image_comp($val_competence, $nom_competence, $comp_max)
 {
 	global $Gtrad;
 	//Barre Comp
-	$ratio_comp = floor(10 * ($joueur[$competence] / $comp_max));
+	$ratio_comp = floor(10 * ($val_competence / $comp_max));
 	if($ratio_comp > 10) $ratio_comp = 10;
 	if($ratio_comp < 0) $ratio_comp = 0;
 	$barre_comp = 'image/barre/pa'.$ratio_comp.'.png';
-	return '<img src="'.$barre_comp.'" alt="'.$Gtrad[$competence].' = '.$joueur[$competence].' / '.$comp_max.'" title="'.$Gtrad[$competence].' = '.$joueur[$competence].' / '.$comp_max.'" style="height : 8px; width : 100px;" />';
+	return '<img src="'.$barre_comp.'" alt="'.$Gtrad[$nom_competence].' = '.$val_competence.' / '.$comp_max.'" title="'.$Gtrad[$nom_competence].' = '.$val_competence.' / '.$comp_max.'" style="height : 8px; width : 100px;" />';
 }
 
 /**
@@ -2487,16 +2487,16 @@ function genere_image_comp($joueur, $competence, $comp_max)
  * 
  * @return    chemin de l'image de la barre.  
  */
-function genere_image_comp2($joueur, $competence, $comp_max)
+function genere_image_comp2($val_competence, $nom_competence, $comp_max)
 {
 	global $Gtrad;
 	//Barre Comp
 	if($comp_max == 0) $comp_max = 1;
-	$ratio_comp = floor(10 * ($joueur['competences'][$competence] / $comp_max));
+	$ratio_comp = floor(10 * ($val_competence / $comp_max));
 	if($ratio_comp > 10) $ratio_comp = 10;
 	if($ratio_comp < 0) $ratio_comp = 0;
 	$barre_comp = 'image/barre/pa'.$ratio_comp.'.png';
-	return '<img src="'.$barre_comp.'" alt="'.$Gtrad[$competence].' = '.$joueur['competences'][$competence].' / '.$comp_max.'" title="'.$Gtrad[$competence].' = '.$joueur['competences'][$competence].' / '.$comp_max.'" style="height : 8px; width : 100px;" />';
+	return '<img src="'.$barre_comp.'" alt="'.$Gtrad[$nom_competence].' = '.$val_competence.' / '.$comp_max.'" title="'.$Gtrad[$nom_competence].' = '.$val_competence.' / '.$comp_max.'" style="height : 8px; width : 100px;" />';
 }
 
 /**

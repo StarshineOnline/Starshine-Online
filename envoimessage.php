@@ -5,8 +5,8 @@ if(array_key_exists('id_type', $_GET)) $id_type = $_GET['id_type'];
 else echo 'ERREUR';
 $type = $id_type[0];
 $id = intval(mb_substr($id_type, 1, strlen($id_type)));
-$joueur = recupperso($_SESSION['ID']);
-if($joueur['groupe'] != 0) $groupe_joueur = recupgroupe($joueur['groupe'], ''); else $groupe_joueur = false;
+$joueur = new perso($_SESSION['ID']);
+if($joueur->get_groupe() != 0) $groupe_joueur = recupgroupe($joueur->get_groupe(), ''); else $groupe_joueur = false;
 
 normalize_entry_charset(array('titre', 'message'));
 
@@ -28,7 +28,7 @@ if(isset($_POST['message']))
 			{
 				$thread = new messagerie_thread($id);
 				$id_groupe = $thread->id_groupe;
-				if($thread->id_dest == $joueur['ID']) $id_dest = $thread->id_auteur;
+				if($thread->id_dest == $joueur->get_id()) $id_dest = $thread->id_auteur;
 				else $id_dest = $thread->id_dest;
 				$id_thread = $thread->id_thread;
 			}
@@ -40,7 +40,7 @@ if(isset($_POST['message']))
 			{
 				$id_dest = $id;
 			}
-			$messagerie = new messagerie($joueur['ID']);
+			$messagerie = new messagerie($joueur->get_id());
 			$messagerie->envoi_message($id_thread, $id_dest, $titre, $message, $id_groupe);
 			if($type == 'r')
 			{

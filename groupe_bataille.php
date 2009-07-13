@@ -2,8 +2,8 @@
 
 include('inc/fp.php');
 include('fonction/messagerie.inc.php');
-$joueur = recupperso($_SESSION['ID']);
-$R = get_royaume_info($joueur['race'], $Trace[$joueur['race']]['numrace']);
+$joueur = new perso($_SESSION['ID']);
+$R = get_royaume_info($joueur->get_race(), $Trace[$joueur->get_race()]['numrace']);
 function affiche_bataille_groupe($bataille, $leader = true)
 {
 	global $joueur;
@@ -14,13 +14,13 @@ function affiche_bataille_groupe($bataille, $leader = true)
 				<?php echo transform_texte($bataille->description); ?>
 			</div>
 	<?php
-	if($bataille->is_groupe_in($joueur['groupe']))
+	if($bataille->is_groupe_in($joueur->get_groupe()))
 	{
 		$bataille->get_reperes();
 		echo 'Vous participez à cette bataille<br />';
 		foreach($bataille->reperes as $repere)
 		{
-			if($repere_groupe = $repere->get_groupe($joueur['groupe']))
+			if($repere_groupe = $repere->get_groupe($joueur->get_groupe()))
 			{
 				$repere->get_type();
 				if($repere_groupe->accepter == 0)
@@ -46,7 +46,7 @@ function affiche_bataille_groupe($bataille, $leader = true)
 	<?php
 }
 
-$groupe = recupgroupe($joueur['groupe'], '');
+$groupe = recupgroupe($joueur->get_groupe(), '');
 
 if(array_key_exists('affiche_bataille', $_GET))
 {
@@ -73,9 +73,9 @@ if(array_key_exists('affiche_bataille', $_GET))
 else
 {
 	//Si c'est le chef de groupe
-	if($groupe['id_leader'] == $joueur['ID'])
+	if($groupe['id_leader'] == $joueur->get_id())
 	{
-		$bataille_royaume = new bataille_royaume($Trace[$joueur['race']]['numrace']);
+		$bataille_royaume = new bataille_royaume($Trace[$joueur->get_race()]['numrace']);
 		$bataille_royaume->get_batailles();
 		
 		if(array_key_exists('participe', $_GET))
@@ -83,7 +83,7 @@ else
 			$bataille = new bataille($_GET['id_bataille']);
 			$bataille_groupe = new bataille_groupe();
 			$bataille_groupe->id_bataille = $_GET['id_bataille'];
-			$bataille_groupe->id_groupe = $joueur['groupe'];
+			$bataille_groupe->id_groupe = $joueur->get_groupe();
 			$bataille_groupe->sauver();
 			affiche_bataille_groupe($bataille);
 		}
@@ -113,7 +113,7 @@ else
 	//On affiche uniquement les bataille auquel le groupe participe
 	else
 	{
-		$requete = "SELECT bataille_repere.id_bataille FROM bataille_groupe_repere LEFT JOIN bataille_repere ON bataille_repere.id = bataille_groupe_repere.id_repere LEFT JOIN bataille_groupe ON bataille_groupe.id = bataille_groupe_repere.id_groupe WHERE bataille_groupe.id_groupe = ".$joueur['groupe']." AND accepter = 1";
+		$requete = "SELECT bataille_repere.id_bataille FROM bataille_groupe_repere LEFT JOIN bataille_repere ON bataille_repere.id = bataille_groupe_repere.id_repere LEFT JOIN bataille_groupe ON bataille_groupe.id = bataille_groupe_repere.id_groupe WHERE bataille_groupe.id_groupe = ".$joueur->get_groupe()." AND accepter = 1";
 		$req = $db->query($requete);
 		while($row = $db->read_assoc($req))
 		{

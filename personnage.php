@@ -1,5 +1,4 @@
 <?php
-
 include('inc/fp.php');
 //Visu par un autre joueur
 if(array_key_exists('id_perso', $_GET))
@@ -19,17 +18,17 @@ else
 	$adresse = 'personnage.php?';
 	$joueur_id = $_SESSION['ID'];
 }
-$joueur = recupperso($joueur_id);
+$joueur = new perso($joueur_id);
 check_perso($joueur);
-$joueur = recupperso($joueur_id);
-$de_degat = de_degat($joueur['force'], 0);
-$de_degat_arme = de_degat($joueur['force'], $joueur['arme_degat']);
+$joueur = new perso($joueur_id);
+$de_degat = de_degat($joueur->get_forcex(), 0);
+$de_degat_arme = de_degat($joueur->get_forcex(), $joueur->get_arme_degat());
 
 echo '
 <fieldset>
-	<legend>Nom : '.$joueur['nom'].'</legend>
+	<legend>Nom : '.$joueur->get_nom().'</legend>
 	<p class="brillant"><a href="'.$adresse.'direction=carac" onclick="return envoiInfo(this.href, \'information\')">Carac</a> | <a href="'.$adresse.'direction=comp" onclick="return envoiInfo(this.href, \'information\')">Compétences</a> | <a href="'.$adresse.'direction=magie" onclick="return envoiInfo(this.href, \'information\')">Magie</a> | <a href="'.$adresse.'direction=stat" onclick="return envoiInfo(this.href, \'information\')">Stats</a></p>
-	<p><strong>'.$joueur['nom'].'</strong> - '.$Gtrad[$joueur['race']].' - '.$joueur['classe'].'</p>
+	<p><strong>'.$joueur->get_nom().'</strong> - '.$Gtrad[$joueur->get_race()].' - '.$joueur->get_classe().'</p>
 	';
 	if(!array_key_exists('direction', $_GET)) $_GET['direction'] = 'carac';
 	switch($_GET['direction'])
@@ -42,7 +41,7 @@ echo '
 			Constitution
 		</td>
 		<td>
-			'.$joueur['vie'].'
+			'.$joueur->get_vie().'
 		</td>
 	</tr>
 	<tr class="trcolor2">
@@ -50,37 +49,38 @@ echo '
 			Force
 		</td>
 		<td>
-			'.$joueur['force'].'
+			'.$joueur->get_forcex().'
 		</td>
 	</tr>';
-	$prochainpa = (($joueur['dernieraction'] + $G_temps_PA) - time());
+	$prochainpa = (($joueur->get_dernieraction() + $G_temps_PA) - time());
 	if($prochainpa < 0) $prochainpa = 0;
 	$prochainpa_m = floor($prochainpa / 60);
 	$prochainpa_s = $prochainpa - ($prochainpa_m * 60);
 
 	// Gemme du troll
-	if (isset($joueur['enchantement']) &&
-			isset($joueur['enchantement']['regeneration'])) {
-		$bonus_regen = $joueur['enchantement']['regeneration']['effet'] * 60;
-		if ($G_temps_regen_hp <= $bonus_regen) {
+	if ($joueur->is_enchantement('regeneration'))
+	{
+		$bonus_regen = $joueur->get_enchantement('regeneration', 'effet') * 60;
+		if ($G_temps_regen_hp <= $bonus_regen)
+		{
 			$bonus_regen = $G_temps_regen_hp - 1;
 		}
 	} else $bonus_regen = 0;
 
-	$prochainregen = (($joueur['regen_hp'] + ($G_temps_regen_hp - $bonus_regen)) - time());
+	$prochainregen = (($joueur->get_regen_hp() + ($G_temps_regen_hp - $bonus_regen)) - time());
 	$prochainregen_h = floor($prochainregen / 3600);
 	$prochainregen_m = floor(($prochainregen - ($prochainregen_h * 3600)) / 60);
 	$prochainregen_s = $prochainregen - ($prochainregen_h * 3600) - ($prochainregen_m * 60);
 
 	//echo strftime("%d/%m/%Y %H:%M", $joueur['maj_hp']);
-	$prochainmaj = (($joueur['maj_hp'] + $G_temps_maj_hp) - time());
+	$prochainmaj = (($joueur->get_maj_hp() + $G_temps_maj_hp) - time());
 	$prochainmaj_j = floor($prochainmaj / (3600 * 24));
 	$prochainmaj = $prochainmaj - ($prochainmaj_j * 3600 * 24);
 	$prochainmaj_h = floor($prochainmaj / 3600);
 	$prochainmaj_m = floor(($prochainmaj - ($prochainmaj_h * 3600)) / 60);
 	$prochainmaj_s = $prochainmaj - ($prochainmaj_h * 3600) - ($prochainmaj_m * 60);
 
-	$prochainmajm = (($joueur['maj_mp'] + $G_temps_maj_mp) - time());
+	$prochainmajm = (($joueur->get_maj_mp() + $G_temps_maj_mp) - time());
 	$prochainmajm_j = floor($prochainmajm / (3600 * 24));
 	$prochainmajm = $prochainmajm - ($prochainmajm_j * 3600 * 24);
 	$prochainmajm_h = floor($prochainmajm / 3600);
@@ -92,7 +92,7 @@ echo '
 			Dextérité
 		</td>
 		<td>
-			'.$joueur['dexterite'].'
+			'.$joueur->get_dexterite().'
 		</td>
 	</tr>
 	<tr class="trcolor2">
@@ -100,7 +100,7 @@ echo '
 			Puissance
 		</td>
 		<td>
-			'.$joueur['puissance'].'
+			'.$joueur->get_puissance().'
 		</td>
 	</tr>
 	<tr class="trcolor1">
@@ -108,7 +108,7 @@ echo '
 			Volonté
 		</td>
 		<td>
-			'.$joueur['volonte'].'
+			'.$joueur->get_volonte().'
 		</td>
 	</tr>
 	<tr class="trcolor2">
@@ -116,7 +116,7 @@ echo '
 			Energie
 		</td>
 		<td>
-			'.$joueur['energie'].'<br />
+			'.$joueur->get_energie().'<br />
 		</td>
 	</tr>
 	<tr class="trcolor1">
@@ -153,23 +153,23 @@ echo '
 	</tr>
 	</table>
 	';
-		if($joueur['teleport_roi'] != 'true' AND !$visu)
+		if($joueur->get_teleport_roi() != 'true' AND !$visu)
 		{
 			echo '<a href="personnage.php?direction=stat&action=teleport" onclick="if(confirm(\'Voulez vous vraiment vous téléportez sur votre capitale ?\')) return envoiInfo(this.href, \'information\'); else return false;">Se téléporter dans votre capitale</a>';
 		}
 		break;
 
 		case 'comp' :
-			$maximum['melee'] = recup_max_comp('melee', $joueur['classe_id']);
-			$maximum['distance'] = recup_max_comp('distance', $joueur['classe_id']);
-			$maximum['esquive'] = recup_max_comp('esquive', $joueur['classe_id']);
-			$maximum['blocage'] = recup_max_comp('blocage', $joueur['classe_id']);
+			$maximum['melee'] = recup_max_comp('melee', $joueur->get_classe_id());
+			$maximum['distance'] = recup_max_comp('distance', $joueur->get_classe_id());
+			$maximum['esquive'] = recup_max_comp('esquive', $joueur->get_classe_id());
+			$maximum['blocage'] = recup_max_comp('blocage', $joueur->get_classe_id());
 			$maximum['artisanat'] = 123;
-			$maximum['architecture'] = recup_max_comp('architecture', $joueur['classe_id']);
-			$maximum['alchimie'] = recup_max_comp('alchimie', $joueur['classe_id']);
-			$maximum['forge'] = recup_max_comp('forge', $joueur['classe_id']);
-			$maximum['identification'] = recup_max_comp('identification', $joueur['classe_id']);
-			$maximum['survie'] = recup_max_comp('survie', $joueur['classe_id']);
+			$maximum['architecture'] = recup_max_comp('architecture', $joueur->get_classe_id());
+			$maximum['alchimie'] = recup_max_comp('alchimie', $joueur->get_classe_id());
+			$maximum['forge'] = recup_max_comp('forge', $joueur->get_classe_id());
+			$maximum['identification'] = recup_max_comp('identification', $joueur->get_classe_id());
+			$maximum['survie'] = recup_max_comp('survie', $joueur->get_classe_id());
 			echo '
 	<table style="border : 0px;" cellspacing="0" width="100%">
 	<tr class="trcolor1">
@@ -177,7 +177,7 @@ echo '
 			Mêlée
 		</td>
 		<td>
-			'.genere_image_comp($joueur, 'melee', $maximum['melee']).' <span class="xsmall">('.$joueur['melee'].' / '.$maximum['melee'].')</span>
+			'.genere_image_comp($joueur->get_melee(), 'melee', $maximum['melee']).' <span class="xsmall">('.$joueur->get_melee().' / '.$maximum['melee'].')</span>
 		</td>
 	</tr>
 	<tr class="trcolor2">
@@ -185,7 +185,7 @@ echo '
 			Tir à distance
 		</td>
 		<td>
-			'.genere_image_comp($joueur, 'distance', $maximum['distance']).' <span class="xsmall">('.$joueur['distance'].' / '.$maximum['distance'].')</span>
+			'.genere_image_comp($joueur->get_distance(), 'distance', $maximum['distance']).' <span class="xsmall">('.$joueur->get_distance().' / '.$maximum['distance'].')</span>
 		</td>
 	</tr>
 	<tr class="trcolor1">
@@ -193,7 +193,7 @@ echo '
 			Esquive
 		</td>
 		<td>
-			'.genere_image_comp($joueur, 'esquive', $maximum['esquive']).' <span class="xsmall">('.$joueur['esquive'].' / '.$maximum['esquive'].')</span>
+			'.genere_image_comp($joueur->get_esquive(), 'esquive', $maximum['esquive']).' <span class="xsmall">('.$joueur->get_esquive().' / '.$maximum['esquive'].')</span>
 		</td>
 	</tr>
 	<tr class="trcolor2">
@@ -201,7 +201,7 @@ echo '
 			Blocage
 		</td>
 		<td>
-			'.genere_image_comp($joueur, 'blocage', $maximum['blocage']).' <span class="xsmall">('.$joueur['blocage'].' / '.$maximum['blocage'].')</span>
+			'.genere_image_comp($joueur->get_blocage(), 'blocage', $maximum['blocage']).' <span class="xsmall">('.$joueur->get_blocage().' / '.$maximum['blocage'].')</span>
 		</td>
 	</tr>
 	<tr class="trcolor1">
@@ -209,7 +209,7 @@ echo '
 			Artisanat
 		</td>
 		<td>
-			'.genere_image_comp($joueur, 'artisanat', $maximum['artisanat']).' <span class="xsmall">('.$joueur['artisanat'].' / '.$maximum['artisanat'].')</span>
+			'.genere_image_comp($joueur->get_artisanat(), 'artisanat', $maximum['artisanat']).' <span class="xsmall">('.$joueur->get_artisanat().' / '.$maximum['artisanat'].')</span>
 		</td>
 	</tr>
 	<tr class="trcolor1">
@@ -217,7 +217,7 @@ echo '
 			Architecture
 		</td>
 		<td>
-			'.genere_image_comp($joueur, 'architecture', $maximum['architecture']).' <span class="xsmall">('.$joueur['architecture'].' / '.$maximum['architecture'].')</span>
+			'.genere_image_comp($joueur->get_architecture(), 'architecture', $maximum['architecture']).' <span class="xsmall">('.$joueur->get_architecture().' / '.$maximum['architecture'].')</span>
 		</td>
 	</tr>
 	<tr class="trcolor2">
@@ -225,7 +225,7 @@ echo '
 			Alchimie
 		</td>
 		<td>
-			'.genere_image_comp($joueur, 'alchimie', $maximum['alchimie']).' <span class="xsmall">('.$joueur['alchimie'].' / '.$maximum['alchimie'].')</span>
+			'.genere_image_comp($joueur->get_alchimie(), 'alchimie', $maximum['alchimie']).' <span class="xsmall">('.$joueur->get_alchimie().' / '.$maximum['alchimie'].')</span>
 		</td>
 	</tr>
 	<tr class="trcolor1">
@@ -233,7 +233,7 @@ echo '
 			Forge
 		</td>
 		<td>
-			'.genere_image_comp($joueur, 'forge', $maximum['forge']).' <span class="xsmall">('.$joueur['forge'].' / '.$maximum['forge'].')</span>
+			'.genere_image_comp($joueur->get_forge(), 'forge', $maximum['forge']).' <span class="xsmall">('.$joueur->get_forge().' / '.$maximum['forge'].')</span>
 		</td>
 	</tr>
 	<tr class="trcolor2">
@@ -241,7 +241,7 @@ echo '
 			Identification d\'objets
 		</td>
 		<td>
-			'.genere_image_comp($joueur, 'identification', $maximum['identification']).' <span class="xsmall">('.$joueur['identification'].' / '.$maximum['identification'].')</span>
+			'.genere_image_comp($joueur->get_identification(), 'identification', $maximum['identification']).' <span class="xsmall">('.$joueur->get_identification().' / '.$maximum['identification'].')</span>
 		</td>
 	</tr>
 	<tr class="trcolor1">
@@ -249,23 +249,23 @@ echo '
 			Survie
 		</td>
 		<td>
-			'.genere_image_comp($joueur, 'survie', $maximum['survie']).' <span class="xsmall">('.$joueur['survie'].' / '.$maximum['survie'].')</span>
+			'.genere_image_comp($joueur->get_survie(), 'survie', $maximum['survie']).' <span class="xsmall">('.$joueur->get_survie().' / '.$maximum['survie'].')</span>
 		</td>
 	</tr>
 	';
-	$keys = array_keys($joueur['competences']);
+	$keys = array_keys($joueur->get_competence());
 	$i = 0;
-	while($i < count($joueur['competences']))
+	foreach($joueur->get_competence() as $comp)
 	{
 		$numero = (($i % 2) + 1);
-		$maximum = recup_max_comp($keys[$i], $joueur['classe_id']);
+		$maximum = recup_max_comp($comp->get_valeur(), $joueur->get_classe_id());
 		echo '
 	<tr class="trcolor'.$numero.'">
 		<td>
-			'.$Gtrad[$keys[$i]].'
+			'.$Gtrad[$comp->get_competence()].'
 		</td>
 		<td>
-			'.genere_image_comp2($joueur, $keys[$i], $maximum).' <span class="xsmall">('.$joueur['competences'][$keys[$i]].' / '.$maximum.')</span>
+			'.genere_image_comp2($comp->get_valeur(), $comp->get_competence(), $maximum).' <span class="xsmall">('.$comp->get_valeur().' / '.$maximum.')</span>
 		</td>
 	</tr>
 		';
@@ -277,10 +277,10 @@ echo '
 		break;
 
 		case 'magie' :
-			$maximum['incantation'] = recup_max_comp('incantation', $joueur['classe_id']);
-			$maximum['sort_vie'] = recup_max_comp('sort_vie', $joueur['classe_id']);
-			$maximum['sort_mort'] = recup_max_comp('sort_mort', $joueur['classe_id']);
-			$maximum['sort_element'] = recup_max_comp('sort_element', $joueur['classe_id']);
+			$maximum['incantation'] = recup_max_comp('incantation', $joueur->get_classe_id());
+			$maximum['sort_vie'] = recup_max_comp('sort_vie', $joueur->get_classe_id());
+			$maximum['sort_mort'] = recup_max_comp('sort_mort', $joueur->get_classe_id());
+			$maximum['sort_element'] = recup_max_comp('sort_element', $joueur->get_classe_id());
 			echo '
 	<table style="border : 0px;" cellspacing="0" width="100%">
 	<tr class="trcolor2">
@@ -288,7 +288,7 @@ echo '
 			Protection Magique
 		</td>
 		<td>
-			<span onmouseover="return '.make_overlib('PM de base : '.$joueur['PM_base']).'" onmouseout="return nd();">'.$joueur['PM'].'</span> - Réduction des dégâts de '.(round(1 - calcul_pp($joueur['PM'] * $joueur['puissance'] / 12), 2) * 100).' %
+			<span onmouseover="return '.make_overlib('PM de base : '.$joueur['PM_base']).'" onmouseout="return nd();">'.$joueur['PM'].'</span> - Réduction des dégâts de '.(round(1 - calcul_pp($joueur['PM'] * $joueur->get_puissance() / 12), 2) * 100).' %
 		</td>
 	</tr>
 	<tr class="trcolor1">
@@ -304,7 +304,7 @@ echo '
 			Coéf. Incantation
 		</td>
 		<td>
-			'.($joueur['puissance'] * $joueur['incantation']).'
+			'.($joueur->get_puissance() * $joueur->get_incantation()).'
 		</td>
 	</tr>
 	<tr class="trcolor1">
@@ -312,7 +312,7 @@ echo '
 			Incantation
 		</td>
 		<td>
-			'.genere_image_comp($joueur, 'incantation', $maximum['incantation']).' <span class="xsmall">('.$joueur['incantation'].' / '.$maximum['incantation'].')</span>
+			'.genere_image_comp($joueur->get_incantation(), 'incantation', $maximum['incantation']).' <span class="xsmall">('.$joueur->get_incantation().' / '.$maximum['incantation'].')</span>
 		</td>
 	</tr>
 	<tr class="trcolor2">
@@ -342,9 +342,9 @@ echo '
 	</table>
 	<br />
 	<strong>Affinités magiques :</strong><br />
-	Magie de la Vie : '.$Gtrad['affinite'.$Trace[$joueur['race']]['affinite_sort_vie']].'<br />
-	Magie de la Mort : '.$Gtrad['affinite'.$Trace[$joueur['race']]['affinite_sort_mort']].'<br />
-	Magie Elémentaire : '.$Gtrad['affinite'.$Trace[$joueur['race']]['affinite_sort_element']].'<br />
+	Magie de la Vie : '.$Gtrad['affinite'.$Trace[$joueur->get_race()]['affinite_sort_vie']].'<br />
+	Magie de la Mort : '.$Gtrad['affinite'.$Trace[$joueur->get_race()]['affinite_sort_mort']].'<br />
+	Magie Elémentaire : '.$Gtrad['affinite'.$Trace[$joueur->get_race()]['affinite_sort_element']].'<br />
 			';
 		break;
 
@@ -352,7 +352,7 @@ echo '
 			if(array_key_exists('action', $_GET) AND $_GET['action'] == 'teleport'
 				 AND ($joueur['teleport_roi'] == false OR $joueur['teleport_roi'] == 'false' OR $joueur['teleport_roi'] == ''))
 			{
-				$requete = "UPDATE perso SET x = ".$Trace[$joueur['race']]['spawn_x'].", y = ".$Trace[$joueur['race']]['spawn_y'].", teleport_roi = 'true' WHERE ID = ".$joueur['ID'];
+				$requete = "UPDATE perso SET x = ".$Trace[$joueur->get_race()]['spawn_x'].", y = ".$Trace[$joueur->get_race()]['spawn_y'].", teleport_roi = 'true' WHERE ID = ".$joueur['ID'];
 				$db->query($requete);
 			}
 			echo '

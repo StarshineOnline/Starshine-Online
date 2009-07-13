@@ -4,15 +4,15 @@ include('inc/fp.php');
 //L'id du joueur dont on veut l'info
 $W_ID = $_GET['ID'];
 //Prise des infos du perso
-$joueur = recupperso($_SESSION['ID']);
-$perso = recupperso($W_ID);
-$W_case = convert_in_pos($perso['x'], $perso['y']);
+$joueur = new perso($_SESSION['ID']);
+$perso = new perso($W_ID);
+$W_case = convert_in_pos($perso->get_x(), $perso->get_y());
 $bonus = recup_bonus($W_ID);
-$bonus_total = recup_bonus_total($perso['ID']);
+$bonus_total = recup_bonus_total($perso->get_id());
 $vue = 4;
-if ($joueur['x'] + $vue < $perso['x'] || $perso['x'] < $joueur['x'] - $vue ||
-    $joueur['y'] + $vue < $perso['y'] || $perso['y'] < $joueur['y'] - $vue) {
-  if ($joueur['groupe'] != $perso['groupe'] || $perso['groupe'] == '0')
+if ($joueur->get_x() + $vue < $perso->get_x() || $perso->get_x() < $joueur->get_x() - $vue ||
+    $joueur->get_y() + $vue < $perso->get_y() || $perso->get_y() < $joueur->get_y() - $vue) {
+  if ($joueur->get_groupe() != $perso->get_groupe() || $perso->get_groupe() == '0')
     security_block(URL_MANIPULATION);
 }
 ?>
@@ -20,12 +20,12 @@ if ($joueur['x'] + $vue < $perso['x'] || $perso['x'] < $joueur['x'] - $vue ||
 	<legend>Information Joueur</legend>
 <?php
 //affichage des informations du joueur dont on veut l'info
-if(array_key_exists(6, $bonus) AND !check_affiche_bonus($bonus[6], $joueur, $perso)) $chaine_nom = $perso['nom'];
-else $chaine_nom = $perso['grade'].' '.$perso['nom'];
+if(array_key_exists(6, $bonus) AND !check_affiche_bonus($bonus[6], $joueur, $perso)) $chaine_nom = $perso->get_nom();
+else $chaine_nom = $perso->get_grade().' '.$perso->get_nom();
 if(array_key_exists(7, $bonus) AND !check_affiche_bonus($bonus[7], $joueur, $perso)) $classe = 'xxxxx';
-else $classe = $perso['classe'];
+else $classe = $perso->get_classe();
 if(array_key_exists(11, $bonus) AND !check_affiche_bonus($bonus[11], $joueur, $perso)) $niveau = 'xx';
-else $niveau = $perso['level'];
+else $niveau = $perso->get_level();
 ?>
 <div id="info_case">
 <h4><span class="titre_info"><?php echo $chaine_nom; ?></span></h4>
@@ -44,7 +44,7 @@ if(array_key_exists(19, $bonus) AND check_affiche_bonus($bonus[19], $joueur, $pe
 }
 
 
-/*$perso['lignee'] = recupperso_lignee($perso['ID']);
+/*$perso['lignee'] = recupperso_lignee($perso->get_id());
 if($perso['lignee'] != 0)
 {
 	$lignee = recup_lignee($perso['lignee']);
@@ -52,7 +52,7 @@ if($perso['lignee'] != 0)
 }*/
 ?>
 <?php
-echo $Gtrad[$perso['race']];
+echo $Gtrad[$perso->get_race()];
 //Sexe
 if(array_key_exists(12, $bonus) AND check_affiche_bonus($bonus[12], $joueur, $perso))
 {
@@ -72,15 +72,15 @@ if(array_key_exists(12, $bonus) AND check_affiche_bonus($bonus[12], $joueur, $pe
 }
 ?><br />
 <?php echo ucfirst($classe); ?> - niveau <?php echo $niveau; ?><br />
-Distance du joueur : <?php echo calcul_distance(convert_in_pos($joueur['x'], $joueur['y']), $W_case); ?> / Methode pythagorienne : <?php echo calcul_distance_pytagore(convert_in_pos($joueur['x'], $joueur['y']), $W_case); ?>
+Distance du joueur : <?php echo calcul_distance(convert_in_pos($joueur->get_x(), $joueur->get_y()), $W_case); ?> / Methode pythagorienne : <?php echo calcul_distance_pytagore(convert_in_pos($joueur->get_x(), $joueur->get_y()), $W_case); ?>
 <h4><span class="titre_info">Actions</span></h4>
 <table>
 <?php
 $W_distance = detection_distance($W_case, $_SESSION["position"]);
-if (($perso['ID'] != $_SESSION['ID']))
+if (($perso->get_id() != $_SESSION['ID']))
 {
 	$pa_attaque = $G_PA_attaque_joueur;
-	if($joueur['race'] == $perso['race']) $pa_attaque += 3;
+	if($joueur->get_race() == $perso->get_race()) $pa_attaque += 3;
 	if(array_key_exists('cout_attaque', $joueur['debuff'])) $pa_attaque = ceil($pa_attaque / $joueur['debuff']['cout_attaque']['effet']);
 	if(array_key_exists('plus_cout_attaque', $joueur['debuff'])) $pa_attaque = $pa_attaque * $joueur['debuff']['plus_cout_attaque']['effet'];
 	if(array_key_exists('buff_rapidite', $joueur['buff'])) $reduction_pa = $joueur['buff']['buff_rapidite']['effet']; else $reduction_pa = 0;
@@ -90,7 +90,7 @@ if (($perso['ID'] != $_SESSION['ID']))
 }
 if($joueur['sort_jeu'] != '')
 {
-	if($perso['ID'] != $_SESSION['ID'])
+	if($perso->get_id() != $_SESSION['ID'])
 	{
 		echo '<tr><td><img src="image/sort_hc_icone.png" title="Lancer un sort" alt="Lancer un sort" /></td><td><a href="sort_joueur.php?id_joueur='.$W_ID.'" onclick="return envoiInfo(this.href, \'information\')">Lancer un sort</a></td></tr>';
 	}
@@ -100,7 +100,7 @@ if($joueur['sort_jeu'] != '')
 	}
 }
 
-if (($W_distance < 2) AND ($W_ID != $_SESSION['ID']) AND ($perso['groupe'] != $joueur['groupe'] OR $joueur['groupe'] == '' OR $joueur['groupe'] == 0))
+if (($W_distance < 2) AND ($W_ID != $_SESSION['ID']) AND ($perso->get_groupe() != $joueur->get_groupe() OR $joueur->get_groupe() == '' OR $joueur->get_groupe() == 0))
 {
 	echo('<tr><td><img src="image/interface/demande_groupe.png" alt="Inviter ce joueur dans votre groupe" title="Inviter ce joueur dans votre groupe" style="vertical-align : middle;" /></td><td><a href="invitegroupe.php?ID='.$W_ID.'" onclick="return envoiInfo(this.href, \'information\')"> Inviter ce joueur dans votre groupe</a></td></tr>');
 }
@@ -117,9 +117,9 @@ if(array_key_exists(23, $bonus) AND check_affiche_bonus($bonus[23], $joueur, $pe
 if(!isset($groupe)) { $groupe = recupgroupe($joueur["groupe"], ""); };
 
 
-if(($perso["groupe"]==$joueur['groupe']) AND ($groupe['id_leader']==$joueur['ID']))
+if(($perso["groupe"]==$joueur->get_groupe()) AND ($groupe['id_leader']==$joueur['ID']))
 {
-	echo('<tr><td><img src="image/interface/exspuler-joueur_icone.png" alt="Expulser le joueur" title="Expulser le joueur" /></td><td><a style="cursor:pointer;" onclick="javascript:if(confirm(\'Voulez vous expulser ce joueur ?\')) envoiInfo(\'kickjoueur.php?ID='.$perso['ID'].'&groupe='.$groupe['id'].'\', \'information\');">Expulser la personne du groupe</a></td></tr>');
+	echo('<tr><td><img src="image/interface/exspuler-joueur_icone.png" alt="Expulser le joueur" title="Expulser le joueur" /></td><td><a style="cursor:pointer;" onclick="javascript:if(confirm(\'Voulez vous expulser ce joueur ?\')) envoiInfo(\'kickjoueur.php?ID='.$perso->get_id().'&groupe='.$groupe['id'].'\', \'information\');">Expulser la personne du groupe</a></td></tr>');
 }
 
 
@@ -128,7 +128,7 @@ echo '</table>';
 
 
 //Affichage des buffs du joueur
-if($joueur['groupe'] == $perso['groupe'] && $joueur['groupe'] !== 0 && $joueur['groupe'] != '')
+if($joueur->get_groupe() == $perso->get_groupe() && $joueur->get_groupe() !== 0 && $joueur->get_groupe() != '')
 {
 	if ($perso['buff'] != NULL || $perso['debuff'] != NULL)
 	{
@@ -147,7 +147,7 @@ if($joueur['groupe'] == $perso['groupe'] && $joueur['groupe'] !== 0 && $joueur['
 	}
 }
 
-$titres = recup_titre_honorifique($perso['ID']);
+$titres = recup_titre_honorifique($perso->get_id());
 if(!empty($titres) AND array_key_exists(15, $bonus) AND check_affiche_bonus($bonus[15], $joueur, $perso))
 {
 	?>
@@ -176,7 +176,7 @@ if(array_key_exists(16, $bonus) AND check_affiche_bonus($bonus[16], $joueur, $pe
 			</style>
 			<?php
 		}
-		$bonus_total = recup_bonus_total($perso['ID']);
+		$bonus_total = recup_bonus_total($perso->get_id());
 		echo nl2br($bonus_total[16]['valeur']);
 }
 ?>

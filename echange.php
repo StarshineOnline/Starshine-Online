@@ -4,7 +4,7 @@ include('inc/fp.php');
 <fieldset>
 <legend>Effectuer un échange</legend>
 <?php
-$joueur = recupperso($_SESSION['ID']);
+$joueur = new perso($_SESSION['ID']);
 //Si un identifiant d'echange est passé alors on récupère les infos sur cet échange
 if(array_key_exists('id_echange', $_GET))
 {

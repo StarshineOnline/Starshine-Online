@@ -23,7 +23,7 @@ else
 	$visu = false;
 	$joueur_id = $_SESSION['ID'];
 }
-$joueur = recupperso($joueur_id);
+$joueur = new perso($joueur_id);
 //Filtre
 if(array_key_exists('filtre', $_GET)) $filtre_url = '&amp;filtre='.$_GET['filtre'];
 else $filtre_url = '';

@@ -1,6 +1,6 @@
 <?php
 include ('livre.php');
-$tab_sort_jeu = explode(';', $joueur['sort_combat']);
+$tab_sort_jeu = explode(';', $joueur->get_sort_combat());
 ?>
 <hr>
 <?php
@@ -56,7 +56,7 @@ while($row = $db->read_array($req))
 			?>
 			</td>
 			<td>
-				<span class="xsmall"> utilise <?php echo round($row['mp'] * (1 - (($Trace[$joueur['race']]['affinite_'.$row['comp_assoc']] - 5) / 10))); ?> Réserve Mana</span>
+				<span class="xsmall"> utilise <?php echo round($row['mp'] * (1 - (($Trace[$joueur->get_race()]['affinite_'.$row['comp_assoc']] - 5) / 10))); ?> Réserve Mana</span>
 			</td>
 		<?php
 		$sort_de_degat = array('degat_feu', 'degat_nature', 'drain_vie', 'degat_froid', 'degat_mort', 'degat_vent', 'degat_terre', 'pacte_sang'
@@ -64,7 +64,11 @@ while($row = $db->read_array($req))
 		if(in_array($row['type'], $sort_de_degat))
 		{
 			if($row['type'] == 'drain_vie') $j = $joueur[$row['carac_assoc']] - 2;
-			else $j = $joueur[$row['carac_assoc']];
+			else
+			{
+				$fonction = 'get_'.$row['carac_assoc'];
+				$j = $joueur->$fonction();
+			}
 			$de_degat_sort = de_degat($j, $row['effet']);
 			$ide = 0;
 			$des = '';

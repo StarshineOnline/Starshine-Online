@@ -36,7 +36,8 @@ foreach ($ts as $tt => $tn)
 	{
 		$i = 0;
 		$quete_id = array();
-		foreach($joueur['quete'] as $quete)
+		$quetes = unserialize($joueur->get_quete());
+		foreach($quetes as $quete)
 		{
 			$quete_id[] = $quete['id_quete'];
 			$quest[$quete['id_quete']] = $i;
@@ -44,15 +45,15 @@ foreach ($ts as $tt => $tn)
 		}
 		if (array_key_exists('filter', $_GET))
 		{ // On récupère les ID des monstres possibles suivant ce filtre
-		  $requete = 'SELECT id FROM monstre WHERE terrain REGEXP \''.
-		  sSQL('^([0-9]+;)*'.$_GET['filter'].'(;[0-9]+)*$').'\';';
-		  $reqf = $db->query($requete);
-		  $qfilter = array();
-		  while($row = $db->read_array($reqf))
-		  {
-		    $qfilter[] = $row['id'];
-		  }
-		  //var_dump($qfilter);
+			$requete = 'SELECT id FROM monstre WHERE terrain REGEXP \''.
+			sSQL('^([0-9]+;)*'.$_GET['filter'].'(;[0-9]+)*$').'\';';
+			$reqf = $db->query($requete);
+			$qfilter = array();
+			while($row = $db->read_array($reqf))
+			{
+				$qfilter[] = $row['id'];
+			}
+			//var_dump($qfilter);
 		}
 		$i = 0;
 		$ids = implode(',', $quete_id);
@@ -86,7 +87,7 @@ foreach ($ts as $tt => $tn)
 				$i = 0;
 				$total = 0;
 				$total_fait = 0;
-				foreach($joueur['quete'][$quest[$row['id']]]['objectif'] as $objectif_fait)
+				foreach($quetes[$quest[$row['id']]]['objectif'] as $objectif_fait)
 				{
 					$total_fait += $objectif_fait->nombre;
 					$total += $objectif[$i]->nombre;

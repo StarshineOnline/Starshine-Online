@@ -1,7 +1,7 @@
 <?php
 
 include('inc/fp.php');
-$joueur = recupperso($_SESSION['ID']);
+$joueur = new perso($_SESSION['ID']);
 
 $partages = array(array('r', 'Aléatoire'), array('t', 'Par tour'), array('l', 'Leader'), array('k', 'Trouve = Garde'));
 if(array_key_exists('partage', $_GET))
@@ -22,9 +22,9 @@ if(array_key_exists('suppinvit', $_GET))
 	$requete = "DELETE FROM invitation WHERE ID = ".sSQL($_GET['suppinvit']);
 	$db->query($requete);
 }
-$groupe = recupgroupe($_GET['id'], $joueur['x'].'-'.$joueur['y']);
+$groupe = recupgroupe($_GET['id'], $joueur->get_x().'-'.$joueur->get_y());
 $level_groupe = level_groupe($groupe);
-$num_joueur = groupe_trouve_joueur($joueur['ID'], $groupe);
+$num_joueur = groupe_trouve_joueur($joueur->get_id(), $groupe);
 $share_xp = ($groupe['membre'][$num_joueur]['share_xp'] / $groupe['share_xp']);
 if($num_joueur !== false)
 {

@@ -1,7 +1,7 @@
 <?php
 include('inc/fp.php');
 
-$joueur = recupperso($_SESSION['ID']);
+$joueur = new perso($_SESSION['ID']);
 ?>
 <fieldset>
 <legend>Liste de vos échanges</legend>

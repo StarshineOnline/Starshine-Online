@@ -4,7 +4,7 @@ $connexion = true;
 //Inclusion du haut du document html
 include('haut_ajax.php');
 
-$joueur = recupperso($_SESSION['ID']);
+$joueur = new perso($_SESSION['ID']);
 check_perso($joueur);
 ?>
 	<fieldset>
@@ -78,8 +78,8 @@ check_perso($joueur);
 				echo '<h6>Script dupliqué.</h6>';
 			}
 		}
-		$script_attaque = recupaction_all($joueur['action_a']);
-		$script_defense = recupaction_all($joueur['action_d']);
+		$script_attaque = recupaction_all($joueur->get_action_a());
+		$script_defense = recupaction_all($joueur->get_action_d());
 		?>
 			Voici l'interface du script de combat, grâce à celui-ci vous pourrez attaquer avec des sorts ou des compétences.<br />
 			<h3>Création</h3>

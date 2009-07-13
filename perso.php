@@ -2,10 +2,10 @@
 
 include('fonction\base.inc.php');
 
-$joueur = recupperso($_SESION['ID']);
+$joueur = new perso($_SESION['ID']);
 
-$vie = $joueur['vie'];
-$energie = $joueur['energie'];
+$vie = $joueur->get_vie();
+$energie = $joueur->get_energie();
 $dexterite = $joueur['dexterite'];
 $force = $joueur['force'];
 $volonte = $joueur['volonte'];
@@ -15,15 +15,15 @@ echo '
 	<table>
 	<tr>
 		<td>Nom</td>
-		<td>'.$joueur['nom'].'</td>
+		<td>'.$joueur->get_nom().'</td>
 	</tr>
 	<tr>
 		<td>Race</td>
-		<td>'.$joueur['race'].'</td>
+		<td>'.$joueur->get_race().'</td>
 	</tr>
 	<tr>
 		<td>Classe</td>
-		<td>'.$joueur['classe'].'</td>
+		<td>'.$joueur->get_classe().'</td>
 	</tr>
 	<tr>
 		<td>Expérience</td>

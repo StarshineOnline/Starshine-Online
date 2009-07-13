@@ -3,10 +3,10 @@ if(array_key_exists('javascript', $_GET))
 {
 	include('inc/fp.php');
 	$partages = array(array('r', 'Aléatoire'), array('t', 'Par tour'), array('l', 'Leader'), array('k', 'Trouve = Garde'));
-	$joueur = recupperso($_SESSION['ID']);
-	$groupe = recupgroupe($joueur['groupe'], $joueur['x'].'-'.$joueur['y']);
+	$joueur = new perso($_SESSION['ID']);
+	$groupe = recupgroupe($joueur->get_groupe(), $joueur->get_x.'-'.$joueur->get_y());
 	$level_groupe = level_groupe($groupe);
-	$num_joueur = groupe_trouve_joueur($joueur['ID'], $groupe);
+	$num_joueur = groupe_trouve_joueur($joueur->get_id(), $groupe);
 	$share_xp = ($groupe['membre'][$num_joueur]['share_xp'] / $groupe['share_xp']);
 }
 ?>

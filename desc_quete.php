@@ -7,7 +7,7 @@ $connexion = true;
 //Inclusion du haut du document html
 include('haut_ajax.php');
 include('inc/diplo.inc.php');
-$joueur = recupperso($_SESSION['ID']);
+$joueur = new perso($_SESSION['ID']);
 $requete = 'SELECT * FROM quete WHERE id = '.sSQL($_GET['id_quete']);
 $req = $db->query($requete);
 $row = $db->read_assoc($req);
@@ -22,7 +22,8 @@ echo '
 	<h3 style="margin : 0px; padding : 0px; margin-top : 5px;">Objectifs</h3>'; 
 	$objectif = unserialize($row['objectif']);
 	$i = 0;
-	foreach($joueur['quete'][$_GET['quete_joueur']]['objectif'] as $objectif_fait)
+	$quetes = unserialize($joueur->get_quete());
+	foreach($quetes[$_GET['quete_joueur']]['objectif'] as $objectif_fait)
 	{
 		$total_fait = $objectif_fait->nombre;
 		$total = $objectif[$i]->nombre;

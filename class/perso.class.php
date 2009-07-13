@@ -2439,9 +2439,24 @@ class perso
 	{
 		return array();
 	}
+
 	function is_enchantement()
 	{
 		return false;
+	}
+
+	function get_competence()
+	{
+		return array();
+	}
+
+	function get_arme_degat()
+	{
+	}
+
+	function get_artisanat()
+	{
+		return round(sqrt(($this->architecture + $this->forge + $this->alchimie) * 10));
 	}
 }
 ?>

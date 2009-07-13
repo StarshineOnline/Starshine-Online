@@ -3,11 +3,8 @@
 
 //Inclusion des fichiers indispensables
 include ('livre.php');
-$W_case = 1000 * $joueur['y'] + $joueur['x'];
-$W_requete = 'SELECT * FROM map WHERE ID =\''.sSQL($W_case).'\'';
-$W_req = $db->query($W_requete);
-$W_row = $db->read_array($W_req);
-$R = get_royaume_info($joueur['race'], $W_row['royaume']);
+$case = new map_case(convert_in_pos($joueur->get_x(), $joueur->get_y()));
+$R = get_royaume_info($joueur->get_race(), $case->get_royaume());
 ?>
 <hr>
 <?php
@@ -65,9 +62,9 @@ if(array_key_exists('action', $_GET))
 						supprime_objet($joueur, 'o'.$recipient->id_objet, 1);
 						$joueur = recupperso($_SESSION['ID']);
 						//alchiming
-						$player = rand(0, $joueur['alchimie']);
+						$player = rand(0, $joueur->get_alchimie());
 						$thing = rand(0, $recette->difficulte);
-						echo $joueur['alchimie'].' / '.$recette->difficulte.' ---- '.$player.' VS '.$thing;
+						echo $joueur->get_alchimie().' / '.$recette->difficulte.' ---- '.$player.' VS '.$thing;
 						//Si la préparation réussie
 						if($player > $thing)
 						{
@@ -109,13 +106,13 @@ if(array_key_exists('action', $_GET))
 						$augmentation = augmentation_competence('alchimie', $joueur, $difficulte);
 						if ($augmentation[1] == 1)
 						{
-							$joueur['alchimie'] = $augmentation[0];
-							echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant à '.$joueur['alchimie'].' en alchimie</span><br />';
-							$requete = "UPDATE perso SET alchimie = ".$joueur['alchimie']." WHERE ID = ".$joueur['ID'];
-							$req = $db->query($requete);
+							$joueur->set_alchimie($augmentation[0]);
+							echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant à '.$joueur->get_alchimie().' en alchimie</span><br />';
 						}
-						$requete = "UPDATE perso SET pa = pa - ".$pa_total.", mp = mp - ".$mp_total.", star = star - ".$star_total." WHERE ID = ".$joueur['ID'];
-						$req = $db->query($requete);
+						$joueur->set_pa($pa_total);
+						$joueur->set_mp($mp_total);
+						$joueur->set_star($star_total);
+						$joueur->sauver();
 					}
 					else
 					{
@@ -149,8 +146,8 @@ while($row = $db->read_assoc($req))
 	$recette->get_ingredients();
 	$recette->get_recipients();
 	$recette->get_instruments();
-	$alchimie = $joueur['alchimie'];
-	if($joueur['race'] == 'scavenger') $alchimie = round($alchimie * 1.45);
+	$alchimie = $joueur->get_alchimie();
+	if($joueur->get_race() == 'scavenger') $alchimie = round($alchimie * 1.45);
 	if($joueur['accessoire']['id'] != '0' AND $joueur['accessoire']['type'] == 'fabrication') $alchimie = round($alchimie * (1 + ($joueur['accessoire']['effet'] / 100)));
 	$chance_reussite = pourcent_reussite($alchimie, $recette->difficulte);
 	?>
