@@ -17,7 +17,7 @@ if(array_key_exists('annule', $_GET))
 		<?php
 	}
 }
-$echanges = recup_tout_echange_perso_ranger($joueur['ID']);
+$echanges = recup_tout_echange_perso_ranger($joueur->get_id());
 $i = 0;
 $count = count($echanges['creation']);
 echo '<h3>Création</h3><ul class="information_case">';
@@ -29,7 +29,7 @@ else
 {
 	while($i < $count)
 	{
-		if($joueur['ID'] == $echanges['creation'][$i]['id_j1']) $j = recupperso_essentiel($echanges['creation'][$i]['id_j2']);
+		if($joueur->get_id() == $echanges['creation'][$i]['id_j1']) $j = recupperso_essentiel($echanges['creation'][$i]['id_j2']);
 		else $j = recupperso_essentiel($echanges['creation'][$i]['id_j1']);
 		if ($echanges['creation'][$i]['statut']=='creation')
 		{
@@ -41,7 +41,7 @@ else
 	}
 }
 echo '</ul><h3>Proposition</h3><ul class="information_case">';
-$echanges = recup_tout_echange_perso_ranger($joueur['ID']);
+$echanges = recup_tout_echange_perso_ranger($joueur->get_id());
 $i = 0;
 $count = count($echanges['proposition']);
 if ($count == 0) 
@@ -52,7 +52,7 @@ else
 {
 	while($i < $count)
 	{
-		if($joueur['ID'] == $echanges['proposition'][$i]['id_j1']) $j = recupperso_essentiel($echanges['proposition'][$i]['id_j2']);
+		if($joueur->get_id() == $echanges['proposition'][$i]['id_j1']) $j = recupperso_essentiel($echanges['proposition'][$i]['id_j2']);
 		else $j = recupperso_essentiel($echanges['proposition'][$i]['id_j1']);
 		
 		if ($echanges['proposition'][$i]['statut']=='proposition')
@@ -65,7 +65,7 @@ else
 	}
 }
 echo '</ul><h3>Finalisation</h3><ul class="information_case">';
-$echanges = recup_tout_echange_perso_ranger($joueur['ID']);
+$echanges = recup_tout_echange_perso_ranger($joueur->get_id());
 $i = 0;
 $count = count($echanges['finalisation']);
 if ($count == 0) 
@@ -76,7 +76,7 @@ else
 {
 	while($i < $count)
 	{
-		if($joueur['ID'] == $echanges['finalisation'][$i]['id_j1']) $j = recupperso_essentiel($echanges['finalisation'][$i]['id_j2']);
+		if($joueur->get_id() == $echanges['finalisation'][$i]['id_j1']) $j = recupperso_essentiel($echanges['finalisation'][$i]['id_j2']);
 		else $j = recupperso_essentiel($echanges['finalisation'][$i]['id_j1']);
 	
 		if ($echanges['finalisation'][$i]['statut']=='finalisation')

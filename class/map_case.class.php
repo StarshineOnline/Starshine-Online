@@ -310,7 +310,7 @@ class map_case
 	//fonction
 	function coord()
 	{
-		$this->coord = convert_in_coord($this->ID);
+		$this->coord = convert_in_coord($this->id);
 	}
 
 	function get_x()

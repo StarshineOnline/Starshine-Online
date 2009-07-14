@@ -22,7 +22,7 @@ class map
 		$this->root = $root;
 		$this->resolution = $resolution;
 		$this->donjon = $donjon;
-		$this->onclick = "envoiInfo('informationcase.php?case=%%ID%%', 'information');";
+		$this->onclick = "envoiInfo('informationcase.php?case=%%id%%', 'information');";
 		$this->cache_monstre = false;
 		
 		$this->case_affiche = ($this->champ_vision * 2) + 1;
@@ -70,13 +70,13 @@ class map
 		}
 		$total_cases = ($this->xmax - $this->xmin + 1) * ($this->ymax - $this->ymin + 1);
 		$RqMap = $db->query("SELECT * FROM map 
-						 WHERE ( (FLOOR(ID / 1000) >= $ymin) AND (FLOOR(ID / 1000) <= $ymax) ) 
-						 AND ( ((ID - (FLOOR(ID / 1000) * 1000) ) >= $xmin) AND ((ID - (FLOOR(ID / 1000) * 1000)) <= $xmax) ) 
-						 ORDER BY ID;");
+						 WHERE ( (FLOOR(id / 1000) >= $ymin) AND (FLOOR(id / 1000) <= $ymax) ) 
+						 AND ( ((id - (FLOOR(id / 1000) * 1000) ) >= $xmin) AND ((id - (FLOOR(id / 1000) * 1000)) <= $xmax) ) 
+						 ORDER BY id;");
 		while($objMap = $db->read_object($RqMap))
 		{
-			$coord = convert_in_coord($objMap->ID);
-			$MAPTAB[$coord['x']][$coord['y']]["ID"] = $objMap->ID;
+			$coord = convert_in_coord($objMap->id);
+			$MAPTAB[$coord['x']][$coord['y']]["id"] = $objMap->id;
 			$MAPTAB[$coord['x']][$coord['y']]["decor"] = $objMap->decor;
 			$MAPTAB[$coord['x']][$coord['y']]["royaume"] = $objMap->royaume;
 		}
@@ -217,7 +217,7 @@ class map
 						   		onmouseout=\"return nd();\" ";
 					}
 
-					$onclick = str_replace('%%ID%%', $MAPTAB[$x_map][$y_map]['ID'], $this->onclick);
+					$onclick = str_replace('%%id%%', $MAPTAB[$x_map][$y_map]['id'], $this->onclick);
 
 					echo " 		onclick=\"".$onclick."\" 
 						   >".$repere."</div>
@@ -293,7 +293,7 @@ class map
 		}
 		if($all) $champs .= ', hp, hp_max, mp, mp_max, pa ';
 		else $champs = '';
-		$requete = "SELECT ID, nom, level, race, x, y, classe, cache_classe, cache_niveau".$champs."
+		$requete = "SELECT id, nom, level, race, x, y, classe, cache_classe, cache_niveau".$champs."
 								 FROM perso 
 								 WHERE (( (x >= ".$xmin.") AND (x <= ".$xmax.") ) 
 								 AND ( (y >= ".$ymin.") AND (y <= ".$ymax.") ))  
@@ -308,7 +308,7 @@ class map
 				$joueurs = count($this->map[$objJoueurs->x][$objJoueurs->y]["Joueurs"]);
 
 				$image = "";
-				$this->map[$objJoueurs->x][$objJoueurs->y]["Joueurs"][$joueurs]["ID"] = $objJoueurs->ID;
+				$this->map[$objJoueurs->x][$objJoueurs->y]["Joueurs"][$joueurs]["id"] = $objJoueurs->id;
 				$this->map[$objJoueurs->x][$objJoueurs->y]["Joueurs"][$joueurs]["nom"] = htmlspecialchars($objJoueurs->nom);
 				$this->map[$objJoueurs->x][$objJoueurs->y]["Joueurs"][$joueurs]["level"] = $objJoueurs->level;
 				$this->map[$objJoueurs->x][$objJoueurs->y]["Joueurs"][$joueurs]["race"] = $Gtrad[$objJoueurs->race];
@@ -323,7 +323,7 @@ class map
 				}
 				{//-- Vérification des bonus liés au points shine
 					//Si c'est pas lui même
-					if($objJoueurs->ID != $_SESSION["ID"])
+					if($objJoueurs->id != $_SESSION["id"])
 					{
 						if($objJoueurs->cache_classe == 2)	{ $this->map[$objJoueurs->x][$objJoueurs->y]["Joueurs"][$joueurs]["classe"] = "combattant"; }
 						elseif($objJoueurs->cache_classe == 1 && $objJoueurs->race != $race) { $this->map[$objJoueurs->x][$objJoueurs->y]["Joueurs"][$joueurs]["classe"] = "combattant"; }
@@ -353,7 +353,7 @@ class map
 							      FROM placement, batiment, royaume
 							      WHERE ( ( (placement.x >= ".$this->xmin.") AND (placement.x <= ".$this->xmax.") ) AND ( (placement.y >= ".$this->ymin.") AND (placement.y <= ".$this->ymax.") ) ) 
 							      AND batiment.id = placement.id_batiment 
-							      AND royaume.ID=placement.royaume
+							      AND royaume.id=placement.royaume
 							      ORDER BY placement.y ASC, placement.x ASC;");
 		if($db->num_rows($RqDrapeaux) > 0)
 		{

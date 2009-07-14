@@ -18,8 +18,7 @@ $map->get_drapeau();
 $map->get_batiment();
 $map->get_monstre($level);
 
-if(isset($_GET['cache_monstre']))
-	$map->change_cache_monstre();
+if(isset($_GET['cache_monstre'])) $map->change_cache_monstre();
 
 $map->affiche();
 ?>
