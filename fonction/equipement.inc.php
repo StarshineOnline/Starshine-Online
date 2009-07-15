@@ -309,7 +309,11 @@ function description_objet($id_objet)
 			$req = $db->query($requete);
 			$row = $db->read_assoc($req);
 			$keys = array_keys($row);
-			$description .= '<strong>'.$row['nom'].'</strong><br /><table> <tr> <td> Type </td> <td> '.$row['type'].' </td> </tr> <tr> <td> Niveau </td> <td> '.$row['niveau'].' </td> </tr> <tr> <td> Description </td> </tr> <tr> <td> '.description($row['description'], $keys).' </td> </tr> </table>';
+			$partie = '';
+			if ($row['partie'] != '') {
+				$partie = " ($row[partie])";
+			}
+			$description .= '<strong>'.$row['nom'].'</strong><br /><table> <tr> <td> Type </td> <td> '.$row['type'].$partie.' </td> </tr> <tr> <td> Niveau </td> <td> '.$row['niveau'].' </td> </tr> <tr> <td> Description </td> </tr> <tr> <td> '.description($row['description'], $keys).' </td> </tr> </table>';
 		break;
 	case 'l' :
 	  $requete = "SELECT * FROM grimoire WHERE id = ".$objet['id_objet'];
