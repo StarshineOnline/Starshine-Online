@@ -64,6 +64,9 @@ else
 	$menu[18]['nom'] = 'Visualiseur de donjon';
 	$menu[18]['url'] = 'view_donjon.php';
 	$menu[18]['acces'] = 'admin';
+	$menu[18]['nom'] = 'Jabber';
+	$menu[18]['url'] = 'admin_jabber.php';
+	$menu[18]['acces'] = 'admin';
 
 	}
 	?>
