@@ -26,9 +26,10 @@ else
 	$punbb['scavenger'] = 13;
 	$punbb['barbare'] = 5;
 	$punbb['mortvivant'] = 10;
-	$requete = "SELECT ID FROM perso WHERE nom = '".$pseudo."'";
-	$req = $db->query($requete);
-	$nombre = $db->num_rows;
+	//$requete = "SELECT ID FROM perso WHERE nom = '".$pseudo."'";
+	//$req = $db->query($requete);
+	//$nombre = $db->num_rows;
+  $nombre = check_existing_account($pseudo);
 	if ($nombre > 0)
 	{
 		echo 'Erreur nom déjà utilisé';
