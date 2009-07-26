@@ -3,43 +3,43 @@
 //Inclusion du haut du document html
 include('haut_ajax.php');
 
-$joueur = recupperso($_SESSION['ID']);
+$joueur = new perso($_SESSION['ID']);
 
 check_perso($joueur);
 
-$position = convert_in_pos($joueur['x'], $joueur['y']);
+$position = $joueur->get_pos();
 
 //Vérifie si le perso est mort
 verif_mort($joueur, 1);
-$verif_ville = verif_ville($joueur['x'], $joueur['y']);
+$verif_ville = verif_ville($joueur->get_x(), $joueur->get_y());
 $W_case = $_GET['poscase'];
 $W_requete = 'SELECT * FROM map WHERE ID =\''.sSQL($W_case).'\'';
 $W_req = $db->query($W_requete);
 $W_row = $db->read_array($W_req);
-$R = get_royaume_info($joueur['race'], $W_row['royaume']);
+$R = get_royaume_info($joueur->get_race(), $W_row['royaume']);
 $_SESSION['position'] = $position;
 ?>
 	<div id="carte">
 <?php
 
-$W_distance = detection_distance($W_case,$_SESSION["position"]);
+$W_distance = detection_distance($W_case, $_SESSION["position"]);
 
 $W_coord = convert_in_coord($W_case);
 if($W_distance == 0 AND $verif_ville)
 {
-	$amende = recup_amende($joueur['ID']);
+	$amende = recup_amende($joueur->get_id());
 	if($_GET['direction'] == 'paye_amende')
 	{
-		if($amende['montant'] > $joueur['star']) echo 'Vous n\'avez pas assez de stars !';
+		if($amende['montant'] > $joueur->get_star()) echo 'Vous n\'avez pas assez de stars !';
 		else
 		{
 			//On supprime l'amende du joueur
-			$requete = "UPDATE perso SET star = star - ".floor($amende['montant']).", crime = 0, amende = 0 WHERE ID = ".$joueur['ID'];
+			$requete = "UPDATE perso SET star = star - ".floor($amende['montant']).", crime = 0, amende = 0 WHERE ID = ".$joueur->get_id();
 			$db->query($requete);
 			$requete = "DELETE FROM amende WHERE id = ".$amende['id'];
 			$db->query($requete);
 			//On partage l'amende a tous les joueurs du royaume
-			$requete = "SELECT * FROM perso WHERE race = '".$joueur['race']."' AND statut = 'actif' AND ID <> ".$joueur['ID'];
+			$requete = "SELECT * FROM perso WHERE race = '".$joueur->get_race()."' AND statut = 'actif' AND ID <> ".$joueur->get_id();
 			$req = $db->query($requete);
 			$joueurs = array();
 			while($row = $db->read_assoc($req))
@@ -51,35 +51,35 @@ if($W_distance == 0 AND $verif_ville)
 			$star_royaume = floor($amende['montant']) % $tot_joueurs;
 			if($star_joueur > 0)
 			{
-				$requete = "UPDATE perso SET star = star + ".$star_joueur." WHERE race  = '".$joueur['race']."' AND statut = 'actif' AND ID <> ".$joueur['ID'];
+				$requete = "UPDATE perso SET star = star + ".$star_joueur." WHERE race  = '".$joueur->get_race()."' AND statut = 'actif' AND ID <> ".$joueur->get_id();
 				$db->query($requete);
 				foreach($joueurs as $j)
 				{
 					//Inscription dans son journal de l'amende
-					$requete = "INSERT INTO journal VALUES('', ".$j['ID'].", 'r_amende', '".$j['nom']."', '".$joueur['nom']."', NOW(), '".$star_joueur."', 0, 0, 0)";
+					$requete = "INSERT INTO journal VALUES('', ".$j['ID'].", 'r_amende', '".$j['nom']."', '".$joueur->get_nom()."', NOW(), '".$star_joueur."', 0, 0, 0)";
 					$db->query($requete);
 				}
 			}
 			if($star_royaume > 0)
 			{
-				$requete = "UPDATE royaume SET star = star + ".$star_royaume." WHERE race = '".$joueur['race']."'";
+				$requete = "UPDATE royaume SET star = star + ".$star_royaume." WHERE race = '".$joueur->get_race()."'";
 				$db->query($requete);
 			}
 			//Si le joueur avait des primes sur la tête, elles sont effacées
 			if($amende['prime'] > 0)
 			{
-				$requete = "SELECT * FROM prime_criminel WHERE id_criminel = ".$joueur['ID'];
+				$requete = "SELECT * FROM prime_criminel WHERE id_criminel = ".$joueur->get_id();
 				$req = $db->query($requete);
 				while($row = $db->read_assoc($req))
 				{
 					$requete = "UPDATE perso SET star = star + ".$row['montant']." WHERE ID = ".$row['id_joueur'];
 					$db->query($requete);
 				}
-				$requete = "DELETE FROM prime_criminel WHERE id_criminel = ".$joueur['id'];
+				$requete = "DELETE FROM prime_criminel WHERE id_criminel = ".$joueur->get_id();
 				$db->query($requete);
 			}
-			$amende = recup_amende($joueur['ID']);
-			$joueur = recupperso($joueur['ID']);
+			$amende = recup_amende($joueur->get_id());
+			$joueur = recupperso($joueur->get_id());
 		}
 	}
 	if($amende)
@@ -197,7 +197,7 @@ if($W_distance == 0 AND $verif_ville)
 										<a href="vente_terrain.php" onclick="return envoiInfo(this.href, 'carte')">Vente de terrain</a>
 									</li>
 							<?php
-										if($joueur['rang_royaume'] == 6)
+										if($joueur->get_rang_royaume() == 6)
 										{
 							?>
 									<li>
@@ -259,7 +259,7 @@ if($W_distance == 0 AND $verif_ville)
 				</li>
 			<?php
 			$terrain = new terrain();
-			if($terrain = $terrain->recoverByIdJoueur($joueur['ID']))
+			if($terrain = $terrain->recoverByIdJoueur($joueur->get_id()))
 			{
 			?>
 					<li>

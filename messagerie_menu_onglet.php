@@ -3,7 +3,7 @@ if(array_key_exists('javascript', $_GET))
 {
 	include('inc/fp.php');
 	$joueur = new perso($_SESSION['ID']);
-	$messagerie = new messagerie($joueur['ID']);
+	$messagerie = new messagerie($joueur->get_id());
 	$non_lu = $messagerie->get_non_lu();
 }
 ?>

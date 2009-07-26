@@ -103,12 +103,7 @@ class db
 
 		/*
 		if (strpos($query, 'esquive') && $query_type == 'UPDATE') {
-			$back = debug_backtrace();
-			echo "QUERY: $query<br/>";
-			foreach ($back as $f) {
-				echo $f["file"].' line '.$f["line"].'<br />';
-			}
-			echo '<br />';
+      $this->backtrace($query);
 		}
 		*/
 
@@ -136,6 +131,8 @@ class db
 		else
 		{
 			echo "Impossible d'executer la requète suivante:<br />".$query."<br />mySQL a répondus : <span style=\"font-style: italic;\">Erreur n°<span style=\"font-weight: 700;\">".mysql_errno()."</span></span> ".mysql_error();
+
+      $this->backtrace();
 
 			if( function_exists("userErrorHandler") )
 			{
@@ -186,6 +183,16 @@ class db
     $a= $this->read_array($res);
     if ($a[0] == 1) return false;
     else return true;
+  }
+
+  function backtrace($query = null) {
+			$back = debug_backtrace();
+      if ($query != null)
+        echo "QUERY: $query<br/>";
+			foreach ($back as $f) {
+				echo $f["file"].' line '.$f["line"].'<br />';
+			}
+			echo '<br />';
   }
 
 	//! check_query

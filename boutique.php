@@ -4,7 +4,7 @@ $connexion = true;
 //Inclusion du haut du document html
 include('haut_ajax.php');
 
-$joueur = recupperso($_SESSION['ID']);
+$joueur = new perso($_SESSION['ID']);
 
 check_perso($joueur);
 
@@ -15,11 +15,11 @@ $W_case = $_GET['poscase'];
 $W_requete = 'SELECT * FROM map WHERE ID =\''.sSQL($W_case).'\'';
 $W_req = $db->query($W_requete);
 $W_row = $db->read_array($W_req);
-$R = get_royaume_info($joueur['race'], $W_row['royaume']);
+$R = get_royaume_info($joueur->get_race(), $W_row['royaume']);
 
 if(!isset($_GET['type'])) $_GET['type'] = 'arme';
 
-$_SESSION['position'] = convert_in_pos($joueur['x'], $joueur['y']);
+$_SESSION['position'] = $joueur->get_pos();
 		?>
 		<h2 class="ville_titre"><?php echo '<a href="ville.php?poscase='.$W_case.'" onclick="return envoiInfo(this.href,\'centre\')">';?><?php echo $R['nom'];?></a> - <?php echo '<a href="boutique.php?poscase='.$W_case.'" onclick="return envoiInfo(this.href,\'carte\')">';?> Marchand d'<?php echo $_GET['type']; ?>s </a></h2>
 		<?php
@@ -66,12 +66,12 @@ if($W_distance == 0)
 						$row = $db->read_array($req);
 						$taxe = ceil($row['prix'] * $R['taxe'] / 100);
 						$cout = $row['prix'] + $taxe;
-						if ($joueur['star'] >= $cout)
+						if ($joueur->get_star() >= $cout)
 						{
 							if(prend_objet('a'.$row['id'], $joueur))
 							{
-								$joueur['star'] = $joueur['star'] - $cout;
-								$requete = "UPDATE perso SET star = ".$joueur['star']." WHERE ID = ".$_SESSION['ID'];
+								$joueur->set_star($joueur->get_star() - $cout);
+								$requete = "UPDATE perso SET star = ".$joueur->get_star()." WHERE ID = ".$_SESSION['ID'];
 								$req = $db->query($requete);
 								//Récupération de la taxe
 								if($taxe > 0)
@@ -100,12 +100,12 @@ if($W_distance == 0)
 						$row = $db->read_array($req);
 						$taxe = ceil($row['prix'] * $R['taxe'] / 100);
 						$cout = $row['prix'] + $taxe;
-						if ($joueur['star'] >= $cout)
+						if ($joueur->get_star() >= $cout)
 						{
 							if(prend_objet('p'.$row['id'], $joueur))
 							{
-								$joueur['star'] = $joueur['star'] - $cout;
-								$requete = "UPDATE perso SET star = ".$joueur['star']." WHERE ID = ".$_SESSION['ID'];
+								$joueur->set_star($joueur->get_star() - $cout);
+								$requete = "UPDATE perso SET star = ".$joueur->get_star()." WHERE ID = ".$_SESSION['ID'];
 								$req = $db->query($requete);
 								//Récupération de la taxe
 								if($taxe > 0)
@@ -185,7 +185,7 @@ if($W_distance == 0)
 				Dégats
 			</td>
 			<td>
-				<span onClick="return nd();" onmouseover="return <?php echo make_overlib('Coéf Arc = '.$joueur['coef_distance'].'<br />Coéf Mélée = '.$joueur['coef_melee'].'<br />Coéf Incantation = '.$joueur['coef_incantation']); ?>" onmouseout="return nd();">Coéf.</span>
+				<span onClick="return nd();" onmouseover="return <?php echo make_overlib('Coéf Arc = '.$joueur->get_coef_distance().'<br />Coéf Mélée = '.$joueur->get_coef_melee().'<br />Coéf Incantation = '.$joueur->get_coef_incantation()); ?>" onmouseout="return nd();">Coéf.</span>
 			</td>
 	<?php
 	foreach($types[$type] as $typ)
@@ -227,10 +227,10 @@ if($W_distance == 0)
 			else $skill = 'melee';
 			if($row['type'] == 'baton' OR $row['type'] == 'bouclier') $coef = $row['forcex'] * $row['melee'];
 			else $coef = $row['forcex'] * $row[$skill];
-			$coef_joueur = $joueur['coef_'.$skill];
-			if($coef_joueur <= $coef OR $cout > $joueur['star']) $couleur = 3;
+			$coef_joueur = $joueur->{'get_coef_'.$skill}();
+			if($coef_joueur <= $coef OR $cout > $joueur->get_star()) $couleur = 3;
 
-			$arme = decompose_objet($joueur['inventaire']->$main);
+			$arme = decompose_objet($joueur->inventaire()->$main);
 			if($arme['id_objet'] != '')
 			{
 				$requete = "SELECT * FROM arme WHERE id = ".$arme['id_objet'];
@@ -263,21 +263,22 @@ if($W_distance == 0)
 	$check = true;
 	foreach($types[$type] as $typ)
 	{
+    $accesseur = "get_$typ[1]";
 		echo '
 			<td>
-				<span class="'.over_price($row[$typ[1]], $joueur[$typ[1]]).'">'.$row[$typ[1]].'</span>
+				<span class="'.over_price($row[$typ[1]], $joueur->{$accesseur}()).'">'.$row[$typ[1]].'</span>
 			</td>';
-		if (over_price($row[$typ[1]], $joueur[$typ[1]]) == 'achat_over') $check = false;
+		if (over_price($row[$typ[1]], $joueur->{$accesseur}()) == 'achat_over') $check = false;
 	}
 	?>
 			<td>
-				<span class="<?php echo over_price($cout, $joueur['star']); ?>"><?php echo $cout; ?></span>
+				<span class="<?php echo over_price($cout, $joueur->get_star()); ?>"><?php echo $cout; ?></span>
 			</td>
 			<td>
 			
 			<?php 
 
-			if (over_price($cout, $joueur['star']) == 'achat_normal' AND over_price($coef, $coef_joueur) == 'achat_normal' AND $check AND over_price($cout, $joueur['star'])== 'achat_normal')
+			if (over_price($cout, $joueur->get_star()) == 'achat_normal' AND over_price($coef, $coef_joueur) == 'achat_normal' AND $check AND over_price($cout, $joueur->get_star())== 'achat_normal')
 			{
 			?>
 				<a href="boutique.php?action=achat&amp;type=arme&amp;id=<?php echo $row['id']; ?>&amp;poscase=<?php echo $_GET['poscase']; ?>" onclick="return envoiInfo(this.href, 'carte')"><span class="achat">Achat</span></a>
@@ -346,11 +347,11 @@ if($W_distance == 0)
 			$taxe = ceil($row['prix'] * $R['taxe'] / 100);
 			$cout = $row['prix'] + $taxe;
 			$couleur = $color;
-			if($row['forcex'] > $joueur['force'] OR $cout > $joueur['star']) $couleur = 3;
+			if($row['forcex'] > $joueur->get_force() OR $cout > $joueur->get_star()) $couleur = 3;
 
-			if($joueur['inventaire']->$row['type'] != '' AND $joueur['inventaire']->$row['type'] !== 0)
+			if($joueur->inventaire()->$row['type'] != '' AND $joueur->inventaire()->$row['type'] !== 0)
 			{
-				$armure = decompose_objet($joueur['inventaire']->$row['type']);
+				$armure = decompose_objet($joueur->inventaire()->$row['type']);
 				$requete = "SELECT * FROM armure WHERE id = ".$armure['id_objet'];
 				$req_armure = $db->query($requete);
 				$row_armure = $db->read_array($req_armure);
@@ -372,14 +373,14 @@ if($W_distance == 0)
 				<?php echo $row['PM']; ?>
 			</td>
 			<td>
-				<span class="<?php echo over_price($row['forcex'], $joueur['force']); ?>"><?php echo $row['forcex']; ?></span>
+				<span class="<?php echo over_price($row['forcex'], $joueur->get_force()); ?>"><?php echo $row['forcex']; ?></span>
 			</td>
 			<td>
-				<span class="<?php echo over_price($cout, $joueur['star']); ?>"><?php echo $cout; ?></span>
+				<span class="<?php echo over_price($cout, $joueur->get_star()); ?>"><?php echo $cout; ?></span>
 			</td>
 			<td>
 			<?php
-				if (over_price($cout, $joueur['star']) == 'achat_normal' AND over_price($row['forcex'], $joueur['force']) == 'achat_normal')
+				if (over_price($cout, $joueur->get_star()) == 'achat_normal' AND over_price($row['forcex'], $joueur->get_force()) == 'achat_normal')
 				{
 				?>	
 				<a href="boutique.php?action=achat&amp;type=armure&amp;id=<?php echo $row['id']; ?>&amp;poscase=<?php echo $_GET['poscase']; ?>" onclick="return envoiInfo(this.href, 'carte')"><span class="achat">Achat</span></a>

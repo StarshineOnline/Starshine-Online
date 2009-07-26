@@ -2458,5 +2458,43 @@ class perso
 	{
 		return round(sqrt(($this->architecture + $this->forge + $this->alchimie) * 10));
 	}
+
+  function get_pos() {
+    return convert_in_pos($this->x, $this->y);
+  }
+
+  function get_coef_melee() {
+    return $this->forcex * $this->melee;
+  }
+
+  function get_coef_distance() {
+    return round($this->forcex + $this->dexterite) * $this->distance;
+  }
+
+  function get_coef_incantation() {
+    return $this->puissance * $this->incantation;
+  }
+
+  function get_coef_blocage() {
+    return round($this->forcex + $this->dexterite) * $this->blocage;
+  }
+
+  function get_force() { return $this->forcex; }
+  function set_force($force) { $this->set_forcex($force); }
+
+  function inventaire() { return unserialize($this->inventaire); }
+
+  function get_distance_tir() {
+    $arme = $this->inventaire()->main_droite;
+    if ($arme != '') {
+      global $db;
+      $arme_d = decompose_objet($R_perso['arme']);
+      $requete = "SELECT distance_tir FROM arme WHERE id = ".$arme_d['id_objet'];
+      $req = $db->query($requete);
+      $row = $db->read_array($req);
+      return $row['distance_tir'];
+    }
+    return 0;
+  }
 }
 ?>
