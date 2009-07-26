@@ -1,20 +1,28 @@
 <?php
+	$verif = false;
 	if(array_key_exists('nom_admin', $_POST))
 	{
 		$_SESSION['admin_nom'] = $_POST['nom_admin'];
 		$_SESSION['admin_pass'] = $_POST['pass'];
+
+    // Test en base
+    $n = sSQL($_POST['nom_admin']);
+    $p = sSQL($_POST['pass']);
+    $requete = "select statut from jabber_admin where nom = '$n' and password = MD5('$p')";
+    $req = $db->query($requete);
+    if ($row = $db->read_row($req)) {
+      $_SESSION['admin_db_auth'] = $row[0];
+    }
 	}
-	$verif = false;
+  if (isset($_SESSION['admin_db_auth']) && $_SESSION['admin_db_auth'] != '') {
+			$verif = true;
+			$R['statut'] = $_SESSION['admin_db_auth'];
+  }
 	//Vérification du login mdp
-	if(array_key_exists('admin_nom', $_SESSION))
+	elseif(array_key_exists('admin_nom', $_SESSION))
 	{
 		//Vérification du nom et du mot de passe
 		if($_SESSION['admin_nom'] == 'admin' AND sha1(md5($_SESSION['admin_pass'])) == 'c6fbe6c72d199b0353c23d8a0d4cb61cd3ac2f87')
-		{
-			$verif = true;
-			$R['statut'] = 'admin';
-		}
-		elseif($_SESSION['admin_nom'] == 'irulan' AND sha1(md5($_SESSION['admin_pass'])) == 'd86a1a6cbeb785711071f80599ba31426bac2220')
 		{
 			$verif = true;
 			$R['statut'] = 'admin';
