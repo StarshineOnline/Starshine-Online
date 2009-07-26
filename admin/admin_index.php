@@ -1,6 +1,6 @@
 <?php
 $textures = false;
-include('haut.php');
+include('../haut.php');
 setlocale(LC_ALL, 'fr_FR');
 ?>
 <link rel="stylesheet" type="text/css" media="screen,projection" title="Normal" href="<?php echo $root; ?>css/index.css" />
@@ -61,6 +61,6 @@ else
 		</div>
 	</div>
 	<?php
-	include('bas.php');
+	include('../bas.php');
 }
 ?>

@@ -1,8 +1,8 @@
 <?php
 $textures = false;
-include('haut.php');
+include('../haut.php');
 setlocale(LC_ALL, 'fr_FR');
-include('haut_site.php');
+include('../haut_site.php');
 
 if ($G_maintenance)
 {
