@@ -8,7 +8,7 @@ class identification
 	function connexion($nom, $password, $autologin = false)
 	{
 		global $db, $erreur_login;
-		$requete = 'SELECT ID, nom, password, dernier_connexion, statut, fin_ban, race FROM perso WHERE nom = \''.$nom.'\'';
+		$requete = 'SELECT ID, nom, password, dernier_connexion, statut, fin_ban, race, rang_royaume FROM perso WHERE nom = \''.$nom.'\'';
 		$req = $db->query($requete);
 		if ($db->num_rows($req) > 0)
 		{
@@ -36,6 +36,7 @@ class identification
 						}
 						$_SESSION['nom'] = $row['nom'];
 						$_SESSION['race'] = $row['race'];
+						$_SESSION['grade'] = $row['rang_royaume'];
 						$_SESSION['ID'] = $ID_base;
 						if($autologin)
 						{
@@ -75,8 +76,12 @@ class identification
 	
 	function deconnexion()
 	{
-		session_unregister('nom');
 		session_unregister('ID');
+		session_unregister('nom');
+		session_unregister('race');
+		session_unregister('grade');
+		unset($_SESSION['grade']);
+		unset($_SESSION['race']);
 		unset($_SESSION['nom']);
 		unset($_SESSION['ID']);
 		setcookie('nom', '', (time() - 1));
