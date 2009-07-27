@@ -35,6 +35,7 @@ class identification
 							$db->query($requete);
 						}
 						$_SESSION['nom'] = $row['nom'];
+						$_SESSION['race'] = $row['race'];
 						$_SESSION['ID'] = $ID_base;
 						if($autologin)
 						{

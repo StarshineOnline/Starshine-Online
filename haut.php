@@ -20,11 +20,13 @@ if((isset($_POST['log']) OR isset($_COOKIE['nom'])) AND !array_key_exists('nom',
 	{
 		$nom = $_POST['nom'];
 		$password = md5($_POST['password']);
+		$_SESSION['password'] = $_POST['password'];
 	}
 	else
 	{
 		$nom = $_COOKIE['nom'];
 		$password = $_COOKIE['password'];
+		if (!isset($_SESSION['password'])) $_SESSION['password'] = '';
 	}
 	if($_POST['auto_login'] == 'Ok') $autologin = true; else $autologin = false;
 	$check = $identification->connexion($nom, $password, $autologin);
