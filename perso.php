@@ -1,6 +1,9 @@
 <?php
+if (file_exists('root.php'))
+  include_once('root.php');
+?><?php
 
-include('fonction\base.inc.php');
+include_once(root.'fonction\base.inc.php');
 
 $joueur = new perso($_SESION['ID']);
 

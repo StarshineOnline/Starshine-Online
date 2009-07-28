@@ -1,4 +1,7 @@
-		<div class="titre">
+<?php
+if (file_exists('root.php'))
+  include_once('root.php');
+?>		<div class="titre">
 			Histoire de Starshine - Préface
 		</div>
 		<div id="menu_background">

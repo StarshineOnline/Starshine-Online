@@ -1,6 +1,9 @@
 <?php
+if (file_exists('root.php'))
+  include_once('root.php');
+?><?php
 
-include('haut.php');
+include_once(root.'haut.php');
 
 if(array_key_exists('show', $_GET))
 {

@@ -1,6 +1,9 @@
 <?php
+if (file_exists('root.php'))
+  include_once('root.php');
 
-include('inc/fp.php');
+
+include_once(root.'inc/fp.php');
 //L'id du joueur dont on veut l'info
 $W_ID = $_GET['ID'];
 //Prise des infos du perso

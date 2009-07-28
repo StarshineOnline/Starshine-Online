@@ -1,10 +1,13 @@
 <?php
+if (file_exists('root.php'))
+  include_once('root.php');
+
 
 //Connexion obligatoire
 $connexion = true;
 //Inclusion du haut du document html
 $interface_v2 = true;
-include('haut.php');
+include_once(root.'haut.php');
 ?>
 <script type="text/javascript">
 window.onload = function()
@@ -95,12 +98,12 @@ $_SESSION['position'] = convert_in_pos($joueur->get_x(), $joueur->get_y());
 		//Si coordonées supérieur à 100 alors c'est un donjon
 		if(is_donjon($joueur->get_x(), $joueur->get_y()))
 		{
-			include('donjon.php');
+			include_once(root.'donjon.php');
 		}
-		else include('map2.php');
+		else include_once(root.'map2.php');
 		?>
 		</div>
-		<?php include('menu_carte.php');?>
+		<?php include_once(root.'menu_carte.php');?>
 		<div id="information">
 				<h2>Information</h2>
 		<?php
@@ -125,5 +128,5 @@ $_SESSION['position'] = convert_in_pos($joueur->get_x(), $joueur->get_y());
 
 
 //Inclusion du bas de la page
-include('bas.php');
+include_once(root.'bas.php');
 ?>

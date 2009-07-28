@@ -1,4 +1,7 @@
 <?php
+if (file_exists('../root.php'))
+  include_once('../root.php');
+?><?php
 /**
 * @file time.inc.php
 * Fonction relatives au temps / dates / durées

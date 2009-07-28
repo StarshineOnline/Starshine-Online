@@ -1,4 +1,7 @@
-	<applet code=IRCApplet.class archive="irc.jar,pixx.jar" width=640 height=400>
+<?php
+if (file_exists('../root.php'))
+  include_once('../root.php');
+?>	<applet code=IRCApplet.class archive="irc.jar,pixx.jar" width=640 height=400>
 	<param name="CABINETS" value="irc.cab, securedirc.cab, pixx.cab">
 	<param name="nick" value="">
 	<param name="name" value="Starshine User">

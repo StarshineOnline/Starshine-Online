@@ -1,7 +1,10 @@
 <?php
+if (file_exists('../root.php'))
+  include_once('../root.php');
+?><?php
 $root = '../';
 //Inclusion du haut du document html
-include($root.'haut_ajax.php');
+include_once(root.$root.'haut_ajax.php');
 
 $joueur = new perso($_SESSION['ID']);
 

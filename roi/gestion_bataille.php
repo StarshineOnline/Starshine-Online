@@ -1,6 +1,9 @@
 <?php
+if (file_exists('../root.php'))
+  include_once('../root.php');
+?><?php
 require('haut_roi.php');
-include('../fonction/messagerie.inc.php');
+include_once(root.'../fonction/messagerie.inc.php');
 
 function affiche_bataille($bataille)
 {
@@ -63,7 +66,7 @@ if($joueur->get_rang_royaume() != 6)
 //Nouvelle bataille
 else if(array_key_exists('new', $_GET))
 {
-	include('gestion_bataille_menu.php');
+	include_once(root.'gestion_bataille_menu.php');
 	?>
 	<h2>Création d'une bataille</h2>
 	Nom : <input type="text" name="nom" id="nom" /><br />
@@ -113,7 +116,7 @@ elseif(array_key_exists('valide_choix_bataille', $_GET))
 //Nouvelle bataille etape 2 => Création
 elseif(array_key_exists('new2', $_GET))
 {
-	include('gestion_bataille_menu.php');
+	include_once(root.'gestion_bataille_menu.php');
 	$bataille = new bataille();
 	$bataille->nom = $_GET['nom'];
 	$bataille->description = $_GET['description'];
@@ -135,7 +138,7 @@ elseif(array_key_exists('refresh_bataille', $_GET))
 //Information et modification sur une bataille
 elseif(array_key_exists('info_bataille', $_GET))
 {
-	include('gestion_bataille_menu.php');
+	include_once(root.'gestion_bataille_menu.php');
 	$bataille = new bataille($_GET['id_bataille']);
 	?>
 	<div id="map" style="float : left;">
@@ -279,7 +282,7 @@ elseif(array_key_exists('del_repere', $_GET))
 }
 else
 {
-	include('gestion_bataille_menu.php');
+	include_once(root.'gestion_bataille_menu.php');
 	$bataille_royaume = new bataille_royaume($R['ID']);
 	$bataille_royaume->get_batailles();
 	

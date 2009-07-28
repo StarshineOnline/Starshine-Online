@@ -1,4 +1,7 @@
 <?php
+if (file_exists('../root.php'))
+  include_once('../root.php');
+?><?php
 class terrain_construction{
 	public $id;
 		public $id_terrain;

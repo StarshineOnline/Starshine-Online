@@ -1,5 +1,8 @@
 <?php
-include('inc/fp.php');
+if (file_exists('root.php'))
+  include_once('root.php');
+
+include_once(root.'inc/fp.php');
 $joueur = new perso($_SESSION['ID']);
 
 setcookie('dernier_affichage_popup', time(), time() + (24 * 3600 * 31));

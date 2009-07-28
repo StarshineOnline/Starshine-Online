@@ -1,8 +1,11 @@
 <?php
+if (file_exists('../root.php'))
+  include_once('../root.php');
+
 $textures = false;
-include('../haut.php');
+include_once(root.'../haut.php');
 setlocale(LC_ALL, 'fr_FR');
-include('../haut_site.php');
+include_once(root.'../haut_site.php');
 
 if ($G_maintenance)
 {
@@ -11,7 +14,7 @@ if ($G_maintenance)
 }
 else
 {
-	include('menu_admin.php');
+	include_once(root.'menu_admin.php');
 
   if ($_REQUEST['do'] == 'del') {
     $requete = "delete from jabber_admin where nom = '$_REQUEST[who]'";

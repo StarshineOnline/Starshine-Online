@@ -1,7 +1,10 @@
 <?php
+if (file_exists('../root.php'))
+  include_once('../root.php');
+
 $root = '../';
-include('../haut.php');
-include('../haut_site.php');
+include_once(root.'../haut.php');
+include_once(root.'../haut_site.php');
 if ($maintenance)
 {
 	echo 'Starshine-online est actuellement en refonte complète, l\'expérience acquise grâce à l\'alpha m\'a permis de voir les gros problèmes qui pourraient se poser.<br />
@@ -9,7 +12,7 @@ if ($maintenance)
 }
 else
 {
-	include('../menu.php');
+	include_once(root.'../menu.php');
 
 $requete = 'SELECT * FROM monstre ORDER BY level ASC, xp ASC';
 $req = $db->query($requete);
@@ -48,11 +51,11 @@ $req = $db->query($requete);
 		?>
 	</div>
 	<?php
-	include('../menu_d.php');
+	include_once(root.'../menu_d.php');
 	?>
 </div>
 </div>
 <?php
 }
-include('../bas.php');
+include_once(root.'../bas.php');
 ?>

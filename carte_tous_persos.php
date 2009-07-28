@@ -1,8 +1,11 @@
 <?php
+if (file_exists('root.php'))
+  include_once('root.php');
+
 //Connexion obligatoire
 $connexion = true;
 //Inclusion du haut du document html
-include('haut_ajax.php');
+include_once(root.'haut_ajax.php');
 $im = imagecreatefrompng('image/carte.png');
 $requete = "SELECT x, y, count( * ) AS count FROM perso GROUP BY x, y";
 $req = $db->query($requete);

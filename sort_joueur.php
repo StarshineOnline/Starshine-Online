@@ -1,5 +1,8 @@
 <?php
-include('inc/fp.php');
+if (file_exists('root.php'))
+  include_once('root.php');
+?><?php
+include_once(root.'inc/fp.php');
 $joueur = recupperso($_SESSION['ID']);
 $cible = recupperso($_GET['id_joueur']);
 $W_case = convert_in_pos($cible['x'], $cible['y']);

@@ -1,10 +1,13 @@
 <?php
+if (file_exists('../root.php'))
+  include_once('../root.php');
+
 if ($maintenance)
 {
 }
 else
 {
-	include('../inc/verif_log_admin.inc.php');
+	include_once(root.'../inc/verif_log_admin.inc.php');
 	
   $i = 0; // Avec un index, on pourra réordonner tranquille
 	$menu = array();

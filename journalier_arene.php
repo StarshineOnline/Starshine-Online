@@ -1,11 +1,14 @@
 <?php
-include('class/db.class.php');
+if (file_exists('root.php'))
+  include_once('root.php');
+?><?php
+include_once(root.'class/db.class.php');
 //Récéption des variables de connexion ?a base et connexion ?ette base
-include('connect.php');
-include('connect_log.php');
+include_once(root.'connect.php');
+include_once(root.'connect_log.php');
 
 //Inclusion du fichier contenant toutes les variables indispensablent
-include('inc/variable.inc.php');
+include_once(root.'inc/variable.inc.php');
 
 $arene_xml = new DomDocument();
 $arene_xml->load('./xml/arenes.xml');

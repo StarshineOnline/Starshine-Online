@@ -1,8 +1,11 @@
 <?php
+if (file_exists('root.php'))
+  include_once('root.php');
+
 //Connexion obligatoire
 $connexion = true;
 //Inclusion du haut du document html
-include('haut.php');
+include_once(root.'haut.php');
 
 $joueur = recupperso($_SESSION['ID']);
 

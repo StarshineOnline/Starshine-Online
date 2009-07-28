@@ -1,6 +1,9 @@
 <?php
-include('haut.php');
-include('inc/verif_log_admin.inc.php');
+if (file_exists('root.php'))
+  include_once('root.php');
+
+include_once(root.'haut.php');
+include_once(root.'inc/verif_log_admin.inc.php');
 ?>
 <a href="admin_2.php">Revenir à l'administration</a>
 <?php

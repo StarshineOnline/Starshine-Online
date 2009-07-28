@@ -1,4 +1,7 @@
 <?php
+if (file_exists('../root.php'))
+  include_once('../root.php');
+?><?php
 function db_connect($hote, $compte, $password, $database)
 {
 	global $db;

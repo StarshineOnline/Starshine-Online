@@ -1,8 +1,11 @@
-<?php // -*- tab-width:2 -*- 
+<?php
+if (file_exists('root.php'))
+  include_once('root.php');
+?><?php // -*- tab-width:2 -*- 
 //Connexion obligatoire
 $connexion = true;
 //Inclusion du haut du document html
-include('haut_ajax.php');
+include_once(root.'haut_ajax.php');
 //L'ID du du joueur attaqué
 $W_ID = $_GET['ID'];
 

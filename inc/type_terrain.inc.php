@@ -1,4 +1,7 @@
 <?php
+if (file_exists('../root.php'))
+  include_once('../root.php');
+?><?php
 
 $G_type_terrain[0]['nom'] = 'Rien';
 $G_type_terrain[0]['pa'] = 0;

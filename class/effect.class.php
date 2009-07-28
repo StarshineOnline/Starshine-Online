@@ -1,4 +1,7 @@
 <?php
+if (file_exists('../root.php'))
+  include_once('../root.php');
+
 /**
 * @file effect.class.php
 */
@@ -98,7 +101,7 @@ class effect
    * @return le tableau des effets
    */
   static function general_factory(&$attaquant, &$defenseur, $mode) {
-		include_once('class/buff.class.php');
+		include_once(root.'class/buff.class.php');
 
     $effects = array();
 

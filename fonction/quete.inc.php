@@ -1,4 +1,7 @@
 <?php
+if (file_exists('../root.php'))
+  include_once('../root.php');
+
 
 //Vérification si une quête est finie ou non
 function verif_quete($id_quete, $id_quete_joueur, $joueur)

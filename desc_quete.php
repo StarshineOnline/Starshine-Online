@@ -1,12 +1,15 @@
 <?php
+if (file_exists('root.php'))
+  include_once('root.php');
+
 //Affiche et gère l'inventaire du personnage
 
 //Inclusion des fichiers indispensables
 //Connexion obligatoire
 $connexion = true;
 //Inclusion du haut du document html
-include('haut_ajax.php');
-include('inc/diplo.inc.php');
+include_once(root.'haut_ajax.php');
+include_once(root.'inc/diplo.inc.php');
 $joueur = new perso($_SESSION['ID']);
 $requete = 'SELECT * FROM quete WHERE id = '.sSQL($_GET['id_quete']);
 $req = $db->query($requete);

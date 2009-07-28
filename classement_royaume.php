@@ -1,8 +1,11 @@
 <?php
+if (file_exists('root.php'))
+  include_once('root.php');
+?><?php
 $textures = false;
-include('haut.php');
+include_once(root.'haut.php');
 setlocale(LC_ALL, 'fr_FR', 'FRA');
-include('haut_site.php');
+include_once(root.'haut_site.php');
 if ($G_maintenance)
 {
 	echo 'Starshine-online est actuellement en cours de mis à jour.<br />
@@ -10,7 +13,7 @@ if ($G_maintenance)
 }
 else
 {
-	include('menu.php');
+	include_once(root.'menu.php');
 	//Si le joueur est connecté on affiche le menu de droite
 
 	?>
@@ -871,7 +874,7 @@ foreach($tab2 as $row)
 </table>
 </div>
 <?php
-	include('menu_d.php');
+	include_once(root.'menu_d.php');
 }
 ?>
 </div>

@@ -1,6 +1,9 @@
 <?php
+if (file_exists('root.php'))
+  include_once('root.php');
 
-include('inc/fp.php');
+
+include_once(root.'inc/fp.php');
 $joueur = new perso($_SESSION['ID']);
 
 $partages = array(array('r', 'Aléatoire'), array('t', 'Par tour'), array('l', 'Leader'), array('k', 'Trouve = Garde'));
@@ -36,7 +39,7 @@ if($num_joueur !== false)
 		<li><a href="groupe_bataille.php" onclick="return envoiInfo(this.href, 'div_groupe');">Batailles</a></li>
 	</ul>
 	<div id="div_groupe">
-		<?php include('groupe_info.php'); ?>
+		<?php include_once(root.'groupe_info.php'); ?>
 	<div>
 
 <?php

@@ -1,5 +1,8 @@
 <?php
-include('inc/fp.php');
+if (file_exists('root.php'))
+  include_once('root.php');
+?><?php
+include_once(root.'inc/fp.php');
 //Visu par un autre joueur
 if(array_key_exists('id_perso', $_GET))
 {

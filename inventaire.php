@@ -1,11 +1,14 @@
-<?php //	 -*- tab-width:	 2 -*-
+<?php
+if (file_exists('root.php'))
+  include_once('root.php');
+?><?php //	 -*- tab-width:	 2 -*-
 //Affiche et gère l'inventaire du personnage
 
 //Inclusion des fichiers indispensables
-include('inc/fp.php');
+include_once(root.'inc/fp.php');
 
 // Inclusion du gestionnaire de compétences
-include('fonction/competence.inc.php');
+include_once(root.'fonction/competence.inc.php');
 
 //Visu par un autre joueur
 if(array_key_exists('id_perso', $_GET))

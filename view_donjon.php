@@ -1,9 +1,12 @@
 <?php
+if (file_exists('root.php'))
+  include_once('root.php');
+?><?php
 $textures = false;
 $interface_v2 = true;
-include('haut.php');
+include_once(root.'haut.php');
 setlocale(LC_ALL, 'fr_FR');
-include('haut_site.php');
+include_once(root.'haut_site.php');
 
 echo '<link rel="stylesheet" type="text/css" media="screen,projection" title="Normal" href="/css/index.css" />';
 echo '<link rel="stylesheet" type="text/css" media="screen,projection" title="Normal" href="/css/interfacev2.css" />';
@@ -15,7 +18,7 @@ if ($G_maintenance)
 }
 else
 {
-	include('menu_admin.php');
+	include_once(root.'menu_admin.php');
 ?>
 
 <a href="?donjon=myriandre">Myriandre</a><br/>

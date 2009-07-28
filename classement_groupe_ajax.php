@@ -1,5 +1,8 @@
 <?php
-	if(array_key_exists('javascript', $_GET)) include('inc/fp.php');
+if (file_exists('root.php'))
+  include_once('root.php');
+?><?php
+	if(array_key_exists('javascript', $_GET)) include_once(root.'inc/fp.php');
 	//Tableau des classements
 	$tab_classement = array();
 	$tab_classement['exp']['nom'] = 'Les plus expérimentés';

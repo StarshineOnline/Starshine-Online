@@ -1,5 +1,8 @@
 <?php
-include('inc/fp.php');
+if (file_exists('root.php'))
+  include_once('root.php');
+?><?php
+include_once(root.'inc/fp.php');
 $tab = array('', 'Plaine', 'Forêt', 'Désert', 'Glace', 'Eau', 'Montagne', 'Marais', 'Route', '', '', 'Terre maudite');
 if(array_key_exists('terrain', $_GET)) $terrain = $_GET['terrain'];
 else $terrain = 1;

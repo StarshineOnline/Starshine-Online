@@ -1,4 +1,7 @@
 <?php
+if (file_exists('../root.php'))
+  include_once('../root.php');
+?><?php
 /**
 * The purpose of this class is to implement some basic method for all the other class
 */

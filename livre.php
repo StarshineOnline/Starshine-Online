@@ -1,5 +1,8 @@
 <?php
-include('haut_ajax.php');
+if (file_exists('root.php'))
+  include_once('root.php');
+
+include_once(root.'haut_ajax.php');
 $joueur = new perso($_SESSION['ID']);
 ?>
 <fieldset>

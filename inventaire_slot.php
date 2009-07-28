@@ -1,7 +1,10 @@
-<?php // -*- tab-width:	 2 -*-
+<?php
+if (file_exists('root.php'))
+  include_once('root.php');
+?><?php // -*- tab-width:	 2 -*-
 	if (isset($_GET['javascript']))
 	{
-		include('inc/fp.php');
+		include_once(root.'inc/fp.php');
 		$joueur = new perso($_SESSION['ID']);
 		$W_case = 1000 * $joueur->get_y() + $joueur->get_x();
 		$W_requete = 'SELECT * FROM map WHERE ID ='.sSQL($W_case);

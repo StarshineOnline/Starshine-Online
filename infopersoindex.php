@@ -1,9 +1,12 @@
 <?php
+if (file_exists('root.php'))
+  include_once('root.php');
 
-if (isset($_GET['javascript'])) include('inc/fp.php');
+
+if (isset($_GET['javascript'])) include_once(root.'inc/fp.php');
 $joueur = recupperso($_SESSION['ID']);
 
-include('levelup.php');
+include_once(root.'levelup.php');
 
 echo '
 <table cellspacing="5">

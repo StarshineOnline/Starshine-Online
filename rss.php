@@ -1,12 +1,15 @@
 <?php
+if (file_exists('root.php'))
+  include_once('root.php');
+?><?php
 require_once('inc/variable.inc.php');
 require_once('class/baseClass.class.php');
 require_once('class/db.class.php');
 require_once('fonction/time.inc.php');
 require_once('fonction/base.inc.php');
 require_once('fonction/equipement.inc.php');
-include_once('fonction/security.inc.php');
-include('connect.php');
+include_once(root.'fonction/security.inc.php');
+include_once(root.'connect.php');
 
 //Récupération du code
 if(array_key_exists('code', $_GET))

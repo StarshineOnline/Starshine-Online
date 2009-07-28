@@ -1,8 +1,11 @@
 <?php
+if (file_exists('root.php'))
+  include_once('root.php');
+?><?php
 $textures = false;
-include('haut.php');
+include_once(root.'haut.php');
 setlocale(LC_ALL, 'fr_FR');
-include('haut_site.php');
+include_once(root.'haut_site.php');
 
 
 if (isset($_GET['direction'])) $direction = $_GET['direction'];

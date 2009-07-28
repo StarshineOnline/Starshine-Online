@@ -1,4 +1,7 @@
-	<div id="droite">
+<?php
+if (file_exists('root.php'))
+  include_once('root.php');
+?>	<div id="droite">
 		<div class="sousmenu">
 		<?php
 		if(array_key_exists('ID', $_SESSION))

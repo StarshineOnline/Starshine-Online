@@ -1,9 +1,12 @@
 <?php
+if (file_exists('../root.php'))
+  include_once('../root.php');
+
 //Connexion obligatoire
 $connexion = true;
 $root = '../';
 //Inclusion du haut du document html
-include($root.'haut_ajax.php');
+include_once(root.$root.'haut_ajax.php');
 $im = imagecreatefrompng('../image/carte.png');
 $joueur = recupperso($_SESSION['ID']);
 $requete = "SELECT x, y, count( * ) AS count FROM perso WHERE race = '".$joueur['race']."' AND statut = 'actif' GROUP BY x, y";

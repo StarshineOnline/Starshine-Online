@@ -1,10 +1,13 @@
 <?php
+if (file_exists('root.php'))
+  include_once('root.php');
+
 
 //Inclusion du haut du document html
-include('haut_ajax.php');
+include_once(root.'haut_ajax.php');
 
 // Inclusion du processus d'apprentissage des sorts
-include_once('fonction/competence.inc.php');
+include_once(root.'fonction/competence.inc.php');
 
 $joueur = recupperso($_SESSION['ID']);
 
@@ -22,7 +25,7 @@ $R = get_royaume_info($joueur['race'], $W_row['royaume']);
 $_SESSION['position'] = convert_in_pos($joueur['x'], $joueur['y']);
 ?>
 <h2 class="ville_titre"><?php echo '<a href="ville.php?poscase='.$W_case.'" onclick="return envoiInfo(this.href, \'centre\')">';?><?php echo $R['nom'];?></a> - <?php echo '<a href="ecolemagie.php?poscase='.$W_case.'" onclick="return envoiInfo(this.href, \'carte\')">';?> Ecole de Magie </a></h2>
-		<?php include('ville_bas.php');?>
+		<?php include_once(root.'ville_bas.php');?>
 <?php
 $W_distance = detection_distance($W_case,$_SESSION["position"]);
 $W_coord = convert_in_coord($W_case);
@@ -49,7 +52,7 @@ if($W_distance == 0)
 			$nom_autre_ecole = 'En combat';
 			$autre_ecole = 'sort_combat';
 		}
-		?><?php
+		
 		if(isset($_GET['action']))
 		{
 			switch ($_GET['action'])

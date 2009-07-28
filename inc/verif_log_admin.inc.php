@@ -1,4 +1,7 @@
 <?php
+if (file_exists('../root.php'))
+  include_once('../root.php');
+?><?php
 	$verif = false;
 	if(array_key_exists('nom_admin', $_POST))
 	{

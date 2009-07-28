@@ -1,6 +1,9 @@
 <?php
+if (file_exists('../root.php'))
+  include_once('../root.php');
+?><?php
 //Inclusion de la classe abstraite objet
-include_once('objet.class.php');
+include_once(root.'objet.class.php');
 
 class Armure extends Objet
 {

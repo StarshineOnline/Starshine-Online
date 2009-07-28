@@ -1,4 +1,7 @@
-<a href="royaume.php?carte=royaume" onclick="return envoiInfo(this.href, 'popup_content');">Royaumes</a> |
+<?php
+if (file_exists('root.php'))
+  include_once('root.php');
+?><a href="royaume.php?carte=royaume" onclick="return envoiInfo(this.href, 'popup_content');">Royaumes</a> |
 <a href="royaume.php?carte=3d" onclick="return envoiInfo(this.href, 'popup_content');">Carte 3D</a> |
 <a href="royaume.php?carte=densite" onclick="return envoiInfo(this.href, 'popup_content');">Densité des monstres</a><br />
 <?php

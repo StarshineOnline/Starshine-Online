@@ -1,13 +1,16 @@
 <?php
-include('class/db.class.php');
-include('fonction/time.inc.php');
-include('fonction/action.inc.php');
+if (file_exists('root.php'))
+  include_once('root.php');
+?><?php
+include_once(root.'class/db.class.php');
+include_once(root.'fonction/time.inc.php');
+include_once(root.'fonction/action.inc.php');
 
 //Récupère le timestamp en milliseconde de début de création de la page
 $debut = getmicrotime();
 
 //Récupération des variables de connexion à la base et connexion à cette base
-include('connect.php');
+include_once(root.'connect.php');
 
 
 $total = 0;

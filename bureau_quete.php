@@ -1,8 +1,11 @@
 <?php
+if (file_exists('root.php'))
+  include_once('root.php');
+
 //Connexion obligatoire
 $connexion = true;
 //Inclusion du haut du document html
-include('haut_ajax.php');
+include_once(root.'haut_ajax.php');
 $joueur = recupperso($_SESSION['ID']);
 
 check_perso($joueur);
@@ -21,7 +24,7 @@ if(!isset($_GET['type'])) $_GET['type'] = 'arme';
 $_SESSION['position'] = convert_in_pos($joueur['x'], $joueur['y']);
 ?>
 		<h2 class="ville_titre"><?php if(verif_ville($joueur['x'], $joueur['y'])) return_ville( '<a href="ville.php?poscase='.$W_case.'" onclick="return envoiInfo(this.href, \'centre\')">'.$R['nom'].'</a> -', $W_case); ?> <?php echo '<a href="bureau_quete.php?poscase='.$W_case.'" onclick="return envoiInfo(this.href,\'carte\')">';?> Bureau des Quêtes </a></h2>
- 		<?php include('ville_bas.php');?>
+ 		<?php include_once(root.'ville_bas.php');?>
 
 		<div class="ville_test">
 		<p>Voici les différentes Quêtes disponibles :</p>

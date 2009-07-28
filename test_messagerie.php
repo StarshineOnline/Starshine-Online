@@ -1,11 +1,14 @@
 <?php
+if (file_exists('root.php'))
+  include_once('root.php');
+?><?php
 $textures = false;
-include('haut.php');
-include('haut_site.php');
-include('class/messagerie_thread.class.php');
-include('class/messagerie_message.class.php');
-include('class/messagerie_etat_message.class.php');
-include('class/messagerie.class.php');
+include_once(root.'haut.php');
+include_once(root.'haut_site.php');
+include_once(root.'class/messagerie_thread.class.php');
+include_once(root.'class/messagerie_message.class.php');
+include_once(root.'class/messagerie_etat_message.class.php');
+include_once(root.'class/messagerie.class.php');
 
 echo '<pre>';
 echo '<h2>on créer un objet messagerie pour le perso Mylok (426)</h2>';

@@ -1,7 +1,10 @@
 <?php
+if (file_exists('root.php'))
+  include_once('root.php');
+?><?php
 if(array_key_exists('javascript', $_GET))
 {
-	include('inc/fp.php');
+	include_once(root.'inc/fp.php');
 	$partages = array(array('r', 'Aléatoire'), array('t', 'Par tour'), array('l', 'Leader'), array('k', 'Trouve = Garde'));
 	$joueur = new perso($_SESSION['ID']);
 	$groupe = recupgroupe($joueur->get_groupe(), $joueur->get_x.'-'.$joueur->get_y());

@@ -1,5 +1,8 @@
 <?php
-include('haut.php');
+if (file_exists('root.php'))
+  include_once('root.php');
+?><?php
+include_once(root.'haut.php');
 
 $joueur = recupperso($_SESSION['ID']);
 $choix = $_GET['choix'];

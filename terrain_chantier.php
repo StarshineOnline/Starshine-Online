@@ -1,7 +1,10 @@
 <?php
+if (file_exists('root.php'))
+  include_once('root.php');
+?><?php
 
 //Inclusion du haut du document html
-include('haut_ajax.php');
+include_once(root.'haut_ajax.php');
 
 $joueur = recupperso($_SESSION['ID']);
 
@@ -19,7 +22,7 @@ $R = get_royaume_info($joueur['race'], $W_row['royaume']);
 $_SESSION['position'] = $position;
 ?>
 	<?php 
-	include('ville_bas.php');
+	include_once(root.'ville_bas.php');
 	?>
 	<div class="ville_test">
 	<?php

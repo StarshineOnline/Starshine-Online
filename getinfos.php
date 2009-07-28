@@ -1,6 +1,9 @@
 <?php
+if (file_exists('root.php'))
+  include_once('root.php');
+
 //Inclusion du haut du document html
-include('haut_ajax.php');
+include_once(root.'haut_ajax.php');
 header('Content-Type: text/xml; charset=utf-8');
 //header('Content-type: text/plain');
 

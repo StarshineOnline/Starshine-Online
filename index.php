@@ -1,6 +1,9 @@
-<?php 
+<?php
+if (file_exists('root.php'))
+  include_once('root.php');
+?><?php 
 $site = true;
-include('haut.php');
+include_once(root.'haut.php');
 
 ?>
 <script type="text/javascript">

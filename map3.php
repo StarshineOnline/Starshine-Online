@@ -1,4 +1,7 @@
-<html>
+<?php
+if (file_exists('root.php'))
+  include_once('root.php');
+?><html>
 <head>
 <script type="text/javascript">
 var infos = "getinfos.php?monsters=1";

@@ -1,5 +1,8 @@
 <?php
-include('inc/fp.php');
+if (file_exists('root.php'))
+  include_once('root.php');
+?><?php
+include_once(root.'inc/fp.php');
 $joueur = recupperso($_SESSION['ID']);
 $tab_sort_jeu = explode(';', $joueur['sort_jeu']);
 $W_case = $_GET['poscase'];

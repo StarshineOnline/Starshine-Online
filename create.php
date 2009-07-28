@@ -1,5 +1,8 @@
 <?php
-include('haut.php');
+if (file_exists('root.php'))
+  include_once('root.php');
+
+include_once(root.'haut.php');
 
 //Config punbb groups
 $punbb['elfebois'] = 6;
@@ -14,7 +17,7 @@ $punbb['scavenger'] = 13;
 $punbb['barbare'] = 5;
 $punbb['mortvivant'] = 10;
 
-include('haut_site.php');
+include_once(root.'haut_site.php');
 if ($maintenance)
 {
 	echo 'Starshine-online est actuellement en refonte complète, l\'expérience acquérie grâce à l\'alpha m\'a permis de voir les gros problèmes qui pourraient se poser.<br />
@@ -22,7 +25,7 @@ if ($maintenance)
 }
 else
 {
-	include('menu.php');
+	include_once(root.'menu.php');
 	?>
 	<div id="contenu">
 		<div id="centre2">
@@ -365,8 +368,8 @@ elseif ($direction == 'phase2')
 	}
 	else
 	{
-		include('inc/race.inc.php');
-		include('inc/classe.inc.php');
+		include_once(root.'inc/race.inc.php');
+		include_once(root.'inc/classe.inc.php');
 		
 		echo 'Vous venez de créer un '.$Gtrad[$_POST['race']].' '.$_POST['classe'].' du nom de '.$_POST['nom'].'<br />';
 		?>
@@ -460,11 +463,11 @@ elseif ($direction == 'phase2')
 		</p>
 	</div>
 <?php
-	include('menu_d.php');
+	include_once(root.'menu_d.php');
 ?>
 	</div>
 </div>
 <?php
-include('bas.php');
+include_once(root.'bas.php');
 
 ?>

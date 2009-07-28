@@ -1,4 +1,7 @@
 <?php
+if (file_exists('../root.php'))
+  include_once('../root.php');
+
 
 define(URL_MANIPULATION, 1);
 define(SQL_INJECTION, 2);

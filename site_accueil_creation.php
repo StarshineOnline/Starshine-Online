@@ -1,5 +1,8 @@
 <?php
-include('./inc/fp.php');
+if (file_exists('root.php'))
+  include_once('root.php');
+
+include_once(root.'./inc/fp.php');
 $race = $_GET['race'];
 $classe = $_GET['classe'];
 if ($classe == 'guerrier') $classe = 'combattant';
@@ -36,8 +39,8 @@ else
 	}
 	else
 	{
-		include('inc/race.inc.php');
-		include('inc/classe.inc.php');
+		include_once(root.'inc/race.inc.php');
+		include_once(root.'inc/classe.inc.php');
 		
 		echo '
 		<h3>Bienvenue dans Starshine-Online</h3>

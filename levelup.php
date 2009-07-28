@@ -1,4 +1,7 @@
 <?php
+if (file_exists('root.php'))
+  include_once('root.php');
+?><?php
 if ($joueur->get_exp() > prochain_level($joueur->get_level()))
 {
 	$joueur->set_level($joueur->get_level() + 1);

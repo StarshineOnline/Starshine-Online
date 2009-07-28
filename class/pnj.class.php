@@ -1,6 +1,9 @@
 <?php
+if (file_exists('../root.php'))
+  include_once('../root.php');
+?><?php
 //Inclusion de la classe abstraite personnage
-include_once('personnage.class.php');
+include_once(root.'personnage.class.php');
 
 //! Class PNJ
 /**

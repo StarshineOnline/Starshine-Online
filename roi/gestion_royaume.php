@@ -1,4 +1,7 @@
 <?php
+if (file_exists('../root.php'))
+  include_once('../root.php');
+
 require('haut_roi.php');
 if($joueur->get_rang_royaume() != 6)
 	echo '<p>Cheater</p>';

@@ -1,4 +1,7 @@
 <?php
+if (file_exists('root.php'))
+  include_once('root.php');
+?><?php
 require('class/map.class.php');
 {//-- Initialisation
 	$MAP = Array();

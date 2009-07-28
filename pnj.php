@@ -1,6 +1,9 @@
 <?php
+if (file_exists('root.php'))
+  include_once('root.php');
+?><?php
 
-include('inc/fp.php');
+include_once(root.'inc/fp.php');
 $joueur = recupperso($_SESSION['ID']);
 check_perso($joueur);
 $W_case = $_GET['poscase'];

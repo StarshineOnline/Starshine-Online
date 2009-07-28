@@ -1,7 +1,10 @@
 <?php
+if (file_exists('root.php'))
+  include_once('root.php');
 
-include('haut.php');
-include_once('connect.php');
+
+include_once(root.'haut.php');
+include_once(root.'connect.php');
 
 if (isset($_GET['direction'])) $direction = $_GET['direction'];
 elseif (isset($_POST['direction'])) $direction = $_POST['direction'];

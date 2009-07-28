@@ -1,15 +1,18 @@
 <?php
+if (file_exists('root.php'))
+  include_once('root.php');
+?><?php
 //JOURNALIER TRAITEMENT DES LOGS //
-include('class/db.class.php');
+include_once(root.'class/db.class.php');
 //Récupération des variables de connexion à la base et connexion à cette base
-include('connect.php');
-include('connect_log.php');
+include_once(root.'connect.php');
+include_once(root.'connect_log.php');
 
 //Inclusion du fichier contenant toutes les variables indispensablent
-include('inc/variable.inc.php');
+include_once(root.'inc/variable.inc.php');
 
 //Inclusion du fichier contenant toutes les fonctions de base
-include('fonction/base.inc.php');
+include_once(root.'fonction/base.inc.php');
 
 //le mois dernier
 $time = time() - (31 * 24 * 60 * 60);

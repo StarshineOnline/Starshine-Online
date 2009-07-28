@@ -1,4 +1,7 @@
 <?php
+if (file_exists('root.php'))
+  include_once('root.php');
+
 {//-- Inclusion des fichiers & initialisations des variables 
 	//if(!isset($_SESSION["nom"])) { header("Location: index.php"); };	//-- Redirection si la session à expiré ou si le joueur tente d'accéder a la page sans être loggé...
 	require_once("haut_ajax.php");
@@ -23,7 +26,7 @@ if($W_distance == 0)
 		   <a href=\"ville.php?poscase=".$_GET["poscase"]."\" onclick=\"return envoiInfo(this.href, 'centre');\">".$R['nom']."</a> - 
 		   <a href=\"hotel.php?poscase=".$_GET["poscase"]."\" onclick=\"return envoiInfo(this.href, 'carte');\"> Hotel des ventes </a>
 		  </h2>";
-	include("ville_bas.php");
+	include_once(root."ville_bas.php");
 	{//-- Traitement d'un achat ou d'une recupération
 		if(isset($_GET["action"]))
 		{

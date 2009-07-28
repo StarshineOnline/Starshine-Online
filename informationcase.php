@@ -1,10 +1,13 @@
 <?php
+if (file_exists('root.php'))
+  include_once('root.php');
+?><?php
 /**
 * 
 * Permet l'affichage des informations d'une case en fonction du joueur.
 * 
 */
-include('inc/fp.php');
+include_once(root.'inc/fp.php');
 //Récupération des informations du personnage
 $joueur = new perso($_SESSION['ID']);
 if ($joueur->is_buff('buff_rapidite')) $reduction_pa = $joueur->get_buff('buff_rapidite', 'effet'); else $reduction_pa = 0;

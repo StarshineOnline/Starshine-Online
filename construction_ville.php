@@ -1,5 +1,8 @@
 <?php
-include('haut.php');
+if (file_exists('root.php'))
+  include_once('root.php');
+?><?php
+include_once(root.'haut.php');
 for($i = 1; $i <= 12; $i++)
 {
 	if($i != 5)

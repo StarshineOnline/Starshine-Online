@@ -1,4 +1,7 @@
 <?php
+if (file_exists('root.php'))
+  include_once('root.php');
+?><?php
 $race = $_GET['race'];
 $classe = $_GET['classe'];
 $image = 'image/'.$race;

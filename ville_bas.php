@@ -1,4 +1,7 @@
-<p style="text-align : center;">
+<?php
+if (file_exists('root.php'))
+  include_once('root.php');
+?><p style="text-align : center;">
 <?php
 if (!$W_case)
 {

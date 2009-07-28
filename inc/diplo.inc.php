@@ -1,4 +1,7 @@
 <?php
+if (file_exists('../root.php'))
+  include_once('../root.php');
+
 $DIPLO = array();
 $DIPLO[0] = 'Alliance fraternelle';
 $DIPLO[1] = 'Alliance';

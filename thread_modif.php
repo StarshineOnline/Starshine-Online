@@ -1,6 +1,9 @@
 <?php
-include('inc/fp.php');
-include('fonction/messagerie.inc.php');
+if (file_exists('root.php'))
+  include_once('root.php');
+?><?php
+include_once(root.'inc/fp.php');
+include_once(root.'fonction/messagerie.inc.php');
 
 $id_thread = $_GET['id_thread'];
 $thread = new messagerie_thread($id_thread);

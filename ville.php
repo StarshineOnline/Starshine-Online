@@ -1,7 +1,10 @@
 <?php
+if (file_exists('root.php'))
+  include_once('root.php');
+
 
 //Inclusion du haut du document html
-include('haut_ajax.php');
+include_once(root.'haut_ajax.php');
 
 $joueur = new perso($_SESSION['ID']);
 
@@ -93,7 +96,7 @@ if($W_distance == 0 AND $verif_ville)
 	{
 		?>
 		<h2 class="ville_titre"><?php echo '<a href="ville.php?poscase='.$W_case.'" onclick="return envoiInfo(this.href,\'centre\')">';?><?php echo $R['nom'];?></a> </h2>
-					<?php include('ville_bas.php');?>
+					<?php include_once(root.'ville_bas.php');?>
 
 				<?php
 				if($R['ID'] != 0)

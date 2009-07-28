@@ -1,7 +1,10 @@
 <?php
+if (file_exists('root.php'))
+  include_once('root.php');
+?><?php
 
 //Inclusion du haut du document html
-include('haut_ajax.php');
+include_once(root.'haut_ajax.php');
 
 $joueur = recupperso($_SESSION['ID']);
 
@@ -19,7 +22,7 @@ $R = get_royaume_info($joueur['race'], $W_row['royaume']);
 $_SESSION['position'] = convert_in_pos($joueur['x'], $joueur['y']);
 ?>
 	<h2 class="ville_titre"><?php if(verif_ville($joueur['x'], $joueur['y'])) return_ville( '<a href="ville.php?poscase='.$W_case.'" onclick="return envoiInfo(this.href, \'centre\')">'.$R['nom'].'</a> -', $W_case); ?> <?php echo '<a href="qg.php?poscase='.$W_case.'" onclick="return envoiInfo(this.href, \'carte\')">';?> Quartier Général </a></h2>
-		<?php include('ville_bas.php');?>	
+		<?php include_once(root.'ville_bas.php');?>	
 	<div class="ville_test">
 <?php
 $W_distance = detection_distance($W_case,$_SESSION["position"]);

@@ -1,4 +1,7 @@
 <?php
+if (file_exists('root.php'))
+  include_once('root.php');
+?><?php
 if(!isset($root)) $root = '';
 ?>
 <link rel="stylesheet" type="text/css" media="screen,projection" title="Normal" href="<?php echo $root; ?>css/index.css" />

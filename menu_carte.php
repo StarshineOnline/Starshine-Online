@@ -1,4 +1,7 @@
-	<div id="deplacement">
+<?php
+if (file_exists('root.php'))
+  include_once('root.php');
+?>	<div id="deplacement">
 		<div id="carteville">
 		<?php
 		require_once('menu_carteville.php');

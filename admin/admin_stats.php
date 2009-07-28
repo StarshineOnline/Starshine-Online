@@ -1,8 +1,11 @@
 <?php
+if (file_exists('../root.php'))
+  include_once('../root.php');
+?><?php
 $textures = false;
-include('../haut.php');
+include_once(root.'../haut.php');
 setlocale(LC_ALL, 'fr_FR');
-include('../haut_site.php');
+include_once(root.'../haut_site.php');
 if ($G_maintenance)
 {
 	echo 'Starshine-online est actuellement en cours de mis à jour.<br />
@@ -10,7 +13,7 @@ if ($G_maintenance)
 }
 else
 {
-	include('menu_admin.php');	
+	include_once(root.'menu_admin.php');	
 	echo '
 	<div id="contenu">
 	<div id="centre3">
@@ -217,6 +220,6 @@ else
 		</table>
 		<?php
 	}
-	include('../bas.php');
+	include_once(root.'../bas.php');
 }
 ?>

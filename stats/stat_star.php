@@ -1,4 +1,7 @@
 <?php
+if (file_exists('../root.php'))
+  include_once('../root.php');
+?><?php
 $data = array();
 $dates_m = array();
 $moyenne = array();

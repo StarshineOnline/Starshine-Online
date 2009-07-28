@@ -1,6 +1,9 @@
 <?php
+if (file_exists('../root.php'))
+  include_once('../root.php');
+?><?php
 $textures = false;
-include('../haut.php');
+include_once(root.'../haut.php');
 setlocale(LC_ALL, 'fr_FR');
 ?>
 <link rel="stylesheet" type="text/css" media="screen,projection" title="Normal" href="<?php echo $root; ?>css/index.css" />
@@ -12,7 +15,7 @@ if ($G_maintenance)
 }
 else
 {
-	include('menu_admin.php');
+	include_once(root.'menu_admin.php');
 	?>
 	<div id="contenu">
 		<div id="centre3">
@@ -61,6 +64,6 @@ else
 		</div>
 	</div>
 	<?php
-	include('../bas.php');
+	include_once(root.'../bas.php');
 }
 ?>

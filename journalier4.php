@@ -1,30 +1,33 @@
 <?php
+if (file_exists('root.php'))
+  include_once('root.php');
+?><?php
 //JOURNALIER RESSOURCES DE ROYAUME //
 $mail = '';
 
-include('class/db.class.php');
-include('class/construction.class.php');
-include('fonction/time.inc.php');
-include('fonction/action.inc.php');
+include_once(root.'class/db.class.php');
+include_once(root.'class/construction.class.php');
+include_once(root.'fonction/time.inc.php');
+include_once(root.'fonction/action.inc.php');
 
 //Récupère le timestamp en milliseconde de début de création de la page
 $debut = getmicrotime();
 
 //Récupération des variables de connexion à la base et connexion à cette base
-include('connect.php');
+include_once(root.'connect.php');
 
 //Inclusion du fichier contenant toutes les variables indispensablent
-include('inc/variable.inc.php');
+include_once(root.'inc/variable.inc.php');
 
 //Inclusion du fichier contenant toutes les informations sur les races
-include('inc/race.inc.php');
+include_once(root.'inc/race.inc.php');
 
 //Inclusion du fichier contenant toutes les variables du terrain (nom, pa)
-include('inc/type_terrain.inc.php');
+include_once(root.'inc/type_terrain.inc.php');
 
-include('inc/ressource.inc.php');
+include_once(root.'inc/ressource.inc.php');
 //Inclusion du fichier contenant toutes les fonctions de base
-include('fonction/base.inc.php');
+include_once(root.'fonction/base.inc.php');
 
 $date = date("Y-m-d", mktime(0, 0, 0, date("m") , date("d") - 1, date("Y")));
 $date_hier = date("Y-m-d", mktime(0, 0, 0, date("m") , date("d") - 2, date("Y")));

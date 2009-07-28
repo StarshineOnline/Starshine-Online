@@ -1,8 +1,11 @@
 <?php
+if (file_exists('root.php'))
+  include_once('root.php');
+
 //Connexion obligatoire
 $connexion = true;
 //Inclusion du haut du document html
-include('haut_ajax.php');
+include_once(root.'haut_ajax.php');
 $joueur = new perso($_SESSION['ID']);
 
 //Vérifie si le perso est mort
@@ -195,9 +198,9 @@ $W_pos = convert_in_pos($coord['x'], $coord['y']);
 //Si c'est un donjon
 if($donjon)
 {
-	include('donjon.php');
+	include_once(root.'donjon.php');
 }
-else include('map2.php');
+else include_once(root.'map2.php');
 if(!$peu_bouger AND $cause != '') echo '<img src="image/pixel.gif" onLoad="alert(\''.$cause.'\');" />';
 ?>
 

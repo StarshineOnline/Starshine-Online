@@ -1,4 +1,7 @@
 <?php
+if (file_exists('../root.php'))
+  include_once('../root.php');
+?><?php
 function recherche_objet($joueur, $id_objet)
 {
 	global $G_place_inventaire;

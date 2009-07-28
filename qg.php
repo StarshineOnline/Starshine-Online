@@ -1,7 +1,10 @@
 <?php
+if (file_exists('root.php'))
+  include_once('root.php');
+
 
 //Inclusion du haut du document html
-include('inc/fp.php');
+include_once(root.'inc/fp.php');
 
 $joueur = recupperso($_SESSION['ID']);
 
@@ -23,7 +26,7 @@ if($W_distance == 0)
 {
     ?>
     <h2 class="ville_titre"><?php echo '<a href="ville.php?poscase='.$W_case.'" onclick="return envoiInfo(this.href, \'centre\')">';?><?php echo $R['nom'];?></a> - <?php echo '<a href="qg.php?poscase='.$W_case.'" onclick="return envoiInfo(this.href, \'carte\')">';?> Quartier Général </a></h2>
-		<?php include('ville_bas.php');?>	
+		<?php include_once(root.'ville_bas.php');?>	
 	<div class="ville_test">
     <?php
     if(array_key_exists('direction', $_GET))

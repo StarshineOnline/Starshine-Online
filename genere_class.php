@@ -1,5 +1,8 @@
 <?php
-include('class/db.class.php');
+if (file_exists('root.php'))
+  include_once('root.php');
+?><?php
+include_once(root.'class/db.class.php');
 
 $table = $_GET['table'];
 

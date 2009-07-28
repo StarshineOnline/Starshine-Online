@@ -1,14 +1,17 @@
-<?php //  -*- tab-width:2; intent-tabs-mode:nil;  -*-
+<?php
+if (file_exists('../root.php'))
+  include_once('../root.php');
+?><?php //  -*- tab-width:2; intent-tabs-mode:nil;  -*-
 /**
  * @file comp.class.php
  */
 
 if (file_exists('class/effect.class.php')) {
-  include_once('class/effect.class.php');
+  include_once(root.'class/effect.class.php');
 } elseif (file_exists('../class/effect.class.php')) {
-  include_once('../class/effect.class.php');
+  include_once(root.'../class/effect.class.php');
 }elseif (file_exists('../../class/effect.class.php')) {
-  include_once('../../class/effect.class.php');
+  include_once(root.'../../class/effect.class.php');
 }
 
 /**

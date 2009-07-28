@@ -1,6 +1,9 @@
 <?php
+if (file_exists('root.php'))
+  include_once('root.php');
+
 //Inclusion du haut du document html
-include('haut_ajax.php');
+include_once(root.'haut_ajax.php');
 
 $joueur = recupperso($_SESSION['ID']);
 
@@ -18,7 +21,7 @@ $R = get_royaume_info($joueur['race'], $W_row['royaume']);
 $_SESSION['position'] = convert_in_pos($joueur['x'], $joueur['y']);
 ?>
 		<h2 class="ville_titre"><?php if(verif_ville($joueur['x'], $joueur['y'])) return_ville( '<a href="ville.php?poscase='.$W_case.'" onclick="return envoiInfo(this.href, \'centre\')">'.$R['nom'].'</a> -', $W_case); ?> <?php echo '<a href="poste.php?poscase='.$W_case.'" onclick="return envoiInfo(this.href, \'carte\')">';?> Poste </a></h2>
-		<?php include('ville_bas.php');?>
+		<?php include_once(root.'ville_bas.php');?>
 <?php
 //Affichage des quêtes
 if($R['nom'] != 'Neutre') $return = affiche_quetes('poste', $joueur);

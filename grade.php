@@ -1,4 +1,7 @@
 <?php
+if (file_exists('root.php'))
+  include_once('root.php');
+?><?php
 $races = array_keys($Trace);
 $count_race = count($races);
 $iii = 0;

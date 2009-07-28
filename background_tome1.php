@@ -1,4 +1,7 @@
-		<div class="titre">
+<?php
+if (file_exists('root.php'))
+  include_once('root.php');
+?>		<div class="titre">
 			Histoire de Starshine - Génèse - Tome 1
 		</div>
 

@@ -1,14 +1,17 @@
 <?php
+if (file_exists('../root.php'))
+  include_once('../root.php');
+
 
 global $db;
 
-include_once("../class/db.class.php");
+include_once(root."../class/db.class.php");
 if (file_exists('../connect.local.php')) {
-	include_once("../connect.local.php");
+	include_once(root."../connect.local.php");
 	$db = new db();
 }
 else {
-	include_once("../connect.php");
+	include_once(root."../connect.php");
 }
 
 function id_of($type, $lvl, $table = 'comp_combat') {

@@ -1,7 +1,10 @@
 <?php
+if (file_exists('root.php'))
+  include_once('root.php');
+?><?php
 $connexion = true;
 //Inclusion du haut du document html
-include('haut_ajax.php');
+include_once(root.'haut_ajax.php');
 
 $joueur = recupperso($_SESSION['ID']);
 
@@ -20,7 +23,7 @@ if($W_row['type'] == 1)
 {
 	?>
 	<h2 class="ville_titre"><?php if(verif_ville($joueur['x'], $joueur['y'])) return_ville('<a href="ville.php" onclick="return envoiInfo(this.href, \'centre\')">'.$R['nom'].'</a> -', $W_case); ?> <?php echo '<a href="vente_terrain.php" onclick="return envoiInfo(this.href, \'carte\')">';?> Ventes de terrain </a></h2>
-	<?php include('ville_bas.php');?>
+	<?php include_once(root.'ville_bas.php');?>
 	<div class="ville_test">
 	<?php
 	if(isset($_GET['action']))

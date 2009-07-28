@@ -1,4 +1,7 @@
-<div id="contenu">
+<?php
+if (file_exists('root.php'))
+  include_once('root.php');
+?><div id="contenu">
 	<div id="centre2">
 	<applet code=IRCApplet.class archive="irc.jar,pixx.jar" width=640 height=400>
 	<param name="CABINETS" value="irc.cab, securedirc.cab, pixx.cab">

@@ -1,4 +1,7 @@
 <?php
+if (file_exists('root.php'))
+  include_once('root.php');
+
 include ('livre.php');
 $tab_sort_jeu = explode(';', $joueur['sort_jeu']);
 if(array_key_exists('tri', $_GET)) $tris = $_GET['tri']; else $tris = 'favoris';

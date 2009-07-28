@@ -1,4 +1,7 @@
 <?php
+if (file_exists('root.php'))
+  include_once('root.php');
+
 $messagerie = new messagerie($_SESSION['ID']);
 $nb_mess = $messagerie->get_non_lu();
 $nb_mess = $nb_mess['total'];

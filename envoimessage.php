@@ -1,5 +1,8 @@
 <?php
-include('inc/fp.php');
+if (file_exists('root.php'))
+  include_once('root.php');
+
+include_once(root.'inc/fp.php');
 
 if(array_key_exists('id_type', $_GET)) $id_type = $_GET['id_type'];
 else echo 'ERREUR';

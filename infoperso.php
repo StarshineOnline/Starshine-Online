@@ -1,4 +1,7 @@
 <?php
+if (file_exists('root.php'))
+  include_once('root.php');
+
 {//-- Initialisation
 	require_once('inc/fp.php');
 	if(!isset($joueur)) { $joueur = new perso($_SESSION["ID"]); }; 		//-- Récupération du tableau contenant toutes les informations relatives au joueur
@@ -26,7 +29,7 @@
 {//-- PA, HP, MP, XP, ...
 	echo "<div id='infos_perso'>"; 
 	//--  inclusion de la rosace des vents.
-	include_once("deplacementjeu.php");
+	include_once(root."deplacementjeu.php");
 
 	echo " <div id='joueur_PA' style='background:transparent url(".genere_image_pa($joueur).") center;' title='PA'>".$joueur->get_pa()." / $G_PA_max</div>";
 	echo " <div id='joueur_HP' style='background:transparent url(".genere_image_hp($joueur).") center;' title='HP'>".$joueur->get_hp()." / ".$joueur->get_hp_max()."</div>";

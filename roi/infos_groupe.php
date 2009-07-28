@@ -1,9 +1,12 @@
 <?php
+if (file_exists('../root.php'))
+  include_once('../root.php');
+?><?php
 $root = '../';
 //Connexion obligatoire
 $connexion = true;
 //Inclusion du haut du document html
-include($root.'inc/fp.php');
+include_once(root.$root.'inc/fp.php');
 
 $joueur = new perso($_SESSION['ID']);
 

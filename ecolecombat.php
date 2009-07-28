@@ -1,10 +1,13 @@
-<?php //	 -*- tab-width:	 2 -*-
+<?php
+if (file_exists('root.php'))
+  include_once('root.php');
+?><?php //	 -*- tab-width:	 2 -*-
 
 //Inclusion du haut du document html
-include('haut_ajax.php');
+include_once(root.'haut_ajax.php');
 
 // Inclusion du gestionnaire de compétences
-include('fonction/competence.inc.php');
+include_once(root.'fonction/competence.inc.php');
 
 $joueur = recupperso($_SESSION['ID']);
 
@@ -21,7 +24,7 @@ $R = get_royaume_info($joueur['race'], $W_row['royaume']);
 
 $_SESSION['position'] = convert_in_pos($joueur['x'], $joueur['y']);
 ?><h2 class="ville_titre"><?php echo '<a href="ville.php?poscase='.$W_case.'" onclick="return envoiInfo(this.href, \'centre\')">';?><?php echo $R['nom'];?></a> - <?php echo '<a href="ecolecombat.php?poscase='.$W_case.'" onclick="return envoiInfo(this.href, \'carte\')">';?> Ecole de combat </a></h2>
-<?php include('ville_bas.php');?>
+<?php include_once(root.'ville_bas.php');?>
 <?php
 $W_distance = detection_distance($W_case,$_SESSION["position"]);
 $W_coord = convert_in_coord($W_case);

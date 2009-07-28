@@ -1,6 +1,9 @@
 <?php
+if (file_exists('../root.php'))
+  include_once('../root.php');
+?><?php
 require('haut_roi.php');
-include('../fonction/messagerie.inc.php');
+include_once(root.'../fonction/messagerie.inc.php');
 
 if($joueur->get_rang_royaume() != 6)
 	echo '<p>Cheater</p>';

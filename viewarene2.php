@@ -1,5 +1,8 @@
 <?php
-include('haut.php');
+if (file_exists('root.php'))
+  include_once('root.php');
+?><?php
+include_once(root.'haut.php');
 
 //On sort de la bdd les coordonnés du joueur x,y
 $viewer = recupperso($_SESSION['ID']);

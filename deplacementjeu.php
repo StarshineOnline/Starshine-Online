@@ -1,4 +1,7 @@
-<div id='rosedesvents'>
+<?php
+if (file_exists('root.php'))
+  include_once('root.php');
+?><div id='rosedesvents'>
 	   <div id='rose_div_hg' onclick="deplacement('hautgauche', cache_monstre);"></div>
 	   <div id='rose_div_h' onclick="deplacement('haut', cache_monstre);"></div>
 	   <div id='rose_div_hd' onclick="deplacement('hautdroite', cache_monstre);"></div>

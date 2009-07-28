@@ -1,12 +1,15 @@
 <?php
+if (file_exists('root.php'))
+  include_once('root.php');
+?><?php
 session_start();
 header ("Content-type: image/png");
-include('class/db.class.php');
-include('connect.php');
-include('fonction/time.inc.php');
-include('fonction/equipement.inc.php');
-include('fonction/groupe.inc.php');
-include('fonction/base.inc.php');
+include_once(root.'class/db.class.php');
+include_once(root.'connect.php');
+include_once(root.'fonction/time.inc.php');
+include_once(root.'fonction/equipement.inc.php');
+include_once(root.'fonction/groupe.inc.php');
+include_once(root.'fonction/base.inc.php');
 $im = imagecreatefrompng('image/carte.png');
 $rouge = imagecolorallocate($im, 255, 0, 0);
 $violet = imagecolorallocate($im, 102, 0, 153);

@@ -1,43 +1,46 @@
 <?php
-include('class/db.class.php');
-include('fonction/time.inc');
-include('fonction/action.inc.php');
+if (file_exists('../root.php'))
+  include_once('../root.php');
+?><?php
+include_once(root.'class/db.class.php');
+include_once(root.'fonction/time.inc');
+include_once(root.'fonction/action.inc.php');
 
 //Récupère le timestamp en milliseconde de début de création de la page
 $debut = getmicrotime();
 
 //Récupération des variables de connexion à la base et connexion à cette base
-include('connect.php');
+include_once(root.'connect.php');
 
 //Inclusion du fichier contenant toutes les variables indispensablent
-include('inc/variable.inc');
+include_once(root.'inc/variable.inc');
 
 //Inclusion du fichier contenant toutes les informations sur les races
-include('inc/race.inc');
+include_once(root.'inc/race.inc');
 
 //Inclusion du fichier contenant toutes les informations sur les classes
-include('inc/classe.inc');
+include_once(root.'inc/classe.inc');
 
 //Inclusion du fichier contenant les traductions
-include('inc/traduction.inc.php');
+include_once(root.'inc/traduction.inc.php');
 
 //Inclusion du fichier contenant toutes les variables du terrain (nom, pa)
-include('inc/type_terrain.inc');
+include_once(root.'inc/type_terrain.inc');
 
 //Inclusion du fichier contenant toutes les fonctions de base
-include('fonction/base.inc');
+include_once(root.'fonction/base.inc');
 
 //Inclusion du fichier contenant toutes les fonctions concernant les groupes
-include('fonction/groupe.inc');
+include_once(root.'fonction/groupe.inc');
 
 //Inclusion du fichier contenant les fonctions permettant de gérer les quètes
-include('fonction/quete.inc');
+include_once(root.'fonction/quete.inc');
 
 //Inclusion du fichier contenant les fonctions permettant de gérer l'équipement
-include('fonction/equipement.inc');
+include_once(root.'fonction/equipement.inc');
 
 //Inclusion du fichier contenant la classe inventaire
-include('class/inventaire.class.php');
+include_once(root.'class/inventaire.class.php');
 
 include ("jpgraph/src/jpgraph.php");
 include ("jpgraph/src/jpgraph_pie.php");

@@ -1,7 +1,10 @@
 <?php
+if (file_exists('root.php'))
+  include_once('root.php');
+?><?php
 
-include('inc/fp.php');
-include('fonction/messagerie.inc.php');
+include_once(root.'inc/fp.php');
+include_once(root.'fonction/messagerie.inc.php');
 $joueur = new perso($_SESSION['ID']);
 $R = get_royaume_info($joueur->get_race(), $Trace[$joueur->get_race()]['numrace']);
 function affiche_bataille_groupe($bataille, $leader = true)

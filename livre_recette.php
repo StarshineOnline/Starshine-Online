@@ -1,4 +1,7 @@
 <?php
+if (file_exists('root.php'))
+  include_once('root.php');
+
 //Affiche et gère l'inventaire du personnage
 
 //Inclusion des fichiers indispensables

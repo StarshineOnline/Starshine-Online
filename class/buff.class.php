@@ -1,12 +1,15 @@
-<?php //  -*- tab-width:2  -*-
+<?php
+if (file_exists('../root.php'))
+  include_once('../root.php');
+?><?php //  -*- tab-width:2  -*-
 /**
 * @file buff.class.php
 */
 
 if (file_exists('class/effect.class.php')) {
-  include_once('class/effect.class.php');
+  include_once(root.'class/effect.class.php');
 } else {
-  include_once('../class/effect.class.php');
+  include_once(root.'../class/effect.class.php');
 }
 
 class buff_actif extends effect

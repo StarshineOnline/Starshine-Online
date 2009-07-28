@@ -1,8 +1,11 @@
 <?php
+if (file_exists('root.php'))
+  include_once('root.php');
+
 //Connexion obligatoire
 $connexion = true;
 //Inclusion du haut du document html
-include('haut_ajax.php');
+include_once(root.'haut_ajax.php');
 
 $joueur = new perso($_SESSION['ID']);
 
@@ -46,7 +49,7 @@ if($W_distance == 0)
 	$req = $db->query($requete);
 	$row = $db->read_assoc($req);
 	?>
-	<?php include('ville_bas.php');?>
+	<?php include_once(root.'ville_bas.php');?>
 	<div class="ville_test">
 	<?php
 	//Si le batiment est inactif, on met le batiment au niveau 1, sinon c'est bon

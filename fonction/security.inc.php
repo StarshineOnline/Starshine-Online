@@ -1,6 +1,9 @@
 <?php
+if (file_exists('../root.php'))
+  include_once('../root.php');
 
-include_once('reponses.inc.php');
+
+include_once(root.'fonction/reponses.inc.php');
 
 function mydie($p)
 {

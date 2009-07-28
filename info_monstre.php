@@ -1,5 +1,8 @@
 <?php
-include('inc/fp.php');
+if (file_exists('root.php'))
+  include_once('root.php');
+?><?php
+include_once(root.'inc/fp.php');
 //L'id du monstre dont on veut l'info
 $W_ID = $_GET['ID'];
 //Case du monstre dont on veut l'info

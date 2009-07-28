@@ -1,6 +1,9 @@
 <?php
+if (file_exists('../root.php'))
+  include_once('../root.php');
+?><?php
 require('haut_roi.php');
-include('../inc/ressource.inc.php');
+include_once(root.'../inc/ressource.inc.php');
 
 function ressource($nom)
 {
@@ -18,8 +21,8 @@ if($joueur->get_rang_royaume() != 6)
 	echo '<p>Cheater</p>';
 else if(array_key_exists('ress', $_GET))
 {
-	include("../pChart/pData.class");
-	include("../pChart/pChart.class");
+	include_once(root."../pChart/pData.class");
+	include_once(root."../pChart/pChart.class");
 	$date_semaine = date("Y-m-d", mktime(0, 0, 0, date("m") , date("d") - 7, date("Y")));
 	$requete = "SELECT ".$R['race'].", date FROM stat_jeu WHERE date > '".$date_semaine."' ORDER BY date ASC";
 	$req = $db->query($requete);
