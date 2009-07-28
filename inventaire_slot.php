@@ -2,21 +2,21 @@
 	if (isset($_GET['javascript']))
 	{
 		include('inc/fp.php');
-		$joueur = recupperso($_SESSION['ID']);
-		$W_case = 1000 * $joueur['y'] + $joueur['x'];
+		$joueur = new perso($_SESSION['ID']);
+		$W_case = 1000 * $joueur->get_y() + $joueur->get_x();
 		$W_requete = 'SELECT * FROM map WHERE ID ='.sSQL($W_case);
 		$W_req = $db->query($W_requete);
 		$W_row = $db->read_array($W_req);
-		$R = get_royaume_info($joueur['race'], $W_row['royaume']);
+		$R = get_royaume_info($joueur->get_race(), $W_row['royaume']);
 	}
 //Filtre
 if(array_key_exists('filtre', $_GET)) $filtre_url = '&amp;filtre='.$_GET['filtre'];
 else $filtre_url = '';
 $i = 0;
 echo "<ul>";
-if($joueur['inventaire_slot'] != '')
+if($joueur->get_inventaire_slot() != '')
 {
-	foreach($joueur['inventaire_slot'] as $invent)
+	foreach($joueur->get_inventaire_slot_partie() as $invent)
 	{
 		if($invent !== 0 AND $invent != '')
 		{

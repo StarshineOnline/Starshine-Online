@@ -21,7 +21,7 @@ if ($joueur->get_x() + $vue < $perso->get_x() || $perso->get_x() < $joueur->get_
 <?php
 //affichage des informations du joueur dont on veut l'info
 if(array_key_exists(6, $bonus) AND !check_affiche_bonus($bonus[6], $joueur, $perso)) $chaine_nom = $perso->get_nom();
-else $chaine_nom = $perso->get_grade().' '.$perso->get_nom();
+else $chaine_nom = $perso->get_grade()->get_nom().' '.$perso->get_nom();
 if(array_key_exists(7, $bonus) AND !check_affiche_bonus($bonus[7], $joueur, $perso)) $classe = 'xxxxx';
 else $classe = $perso->get_classe();
 if(array_key_exists(11, $bonus) AND !check_affiche_bonus($bonus[11], $joueur, $perso)) $niveau = 'xx';
@@ -81,14 +81,14 @@ if (($perso->get_id() != $_SESSION['ID']))
 {
 	$pa_attaque = $G_PA_attaque_joueur;
 	if($joueur->get_race() == $perso->get_race()) $pa_attaque += 3;
-	if(array_key_exists('cout_attaque', $joueur['debuff'])) $pa_attaque = ceil($pa_attaque / $joueur['debuff']['cout_attaque']['effet']);
-	if(array_key_exists('plus_cout_attaque', $joueur['debuff'])) $pa_attaque = $pa_attaque * $joueur['debuff']['plus_cout_attaque']['effet'];
-	if(array_key_exists('buff_rapidite', $joueur['buff'])) $reduction_pa = $joueur['buff']['buff_rapidite']['effet']; else $reduction_pa = 0;
-	if(array_key_exists('debuff_ralentissement', $joueur['debuff'])) $reduction_pa -= $joueur['debuff']['debuff_ralentissement']['effet'];
+	if($joueur->is_debuff('cout_attaque')) $pa_attaque = ceil($pa_attaque / $joueur->get_debuff('cout_attaque', 'effet'));
+	if($joueur->is_debuff('plus_cout_attaque')) $pa_attaque = $pa_attaque * $joueur->get_debuff('plus_cout_attaque', 'effet');
+	if($joueur->is_buff('buff_rapidite')) $reduction_pa = $joueur->get_buff('buff_rapidite', 'effet'); else $reduction_pa = 0;
+	if($joueur->is_debuff('debuff_ralentissement')) $reduction_pa -= $joueur->get_debuff('debuff_ralentissement', 'effet');
 	echo '<tr><td><img src="image/message.png" title="Envoyer un message" /></td><td><a href="envoimessage.php?id_type=p'.$W_ID.'" onclick="return envoiInfo(this.href, \'information\')">Envoyer un message</a></td></tr>';
-	if($perso['hp'] > 0 AND !array_key_exists('repos_sage', $joueur['debuff']) OR !array_key_exists('bloque_attaque', $joueur['debuff'])) echo '<tr><td><img src="image/interface/attaquer.png" alt="Combattre" style="vertical-align : middle;" /></td><td><a href="attaque.php?ID='.$W_ID.'&amp;poscase='.$W_case.'" onclick="return envoiInfo(this.href, \'information\')"> Attaquer</a><span class="xsmall"> ('.($pa_attaque - $reduction_pa).' PA)</span></td></tr>';
+	if($perso->get_hp() > 0 AND !$joueur->is_debuff('repos_sage') OR !$joueur->is_debuff('bloque_attaque')) echo '<tr><td><img src="image/interface/attaquer.png" alt="Combattre" style="vertical-align : middle;" /></td><td><a href="attaque.php?ID='.$W_ID.'&amp;poscase='.$W_case.'" onclick="return envoiInfo(this.href, \'information\')"> Attaquer</a><span class="xsmall"> ('.($pa_attaque - $reduction_pa).' PA)</span></td></tr>';
 }
-if($joueur['sort_jeu'] != '')
+if($joueur->get_sort_jeu() != '')
 {
 	if($perso->get_id() != $_SESSION['ID'])
 	{
@@ -114,10 +114,10 @@ if(array_key_exists(23, $bonus) AND check_affiche_bonus($bonus[23], $joueur, $pe
 {
 	echo('<tr><td></td><td><a href="personnage.php?id_perso='.$W_ID.'" onclick="return envoiInfo(this.href, \'information\')"> Voir les caractéristiques de ce joueur</a></td></tr>');
 }
-if(!isset($groupe)) { $groupe = recupgroupe($joueur["groupe"], ""); };
+if(!isset($groupe)) { $groupe = new groupe($joueur->get_groupe(), ""); };
 
 
-if(($perso["groupe"]==$joueur->get_groupe()) AND ($groupe['id_leader']==$joueur['ID']))
+if(($perso->get_groupe() == $joueur->get_groupe()) AND ($groupe->get_leader() == $joueur->get_id()))
 {
 	echo('<tr><td><img src="image/interface/exspuler-joueur_icone.png" alt="Expulser le joueur" title="Expulser le joueur" /></td><td><a style="cursor:pointer;" onclick="javascript:if(confirm(\'Voulez vous expulser ce joueur ?\')) envoiInfo(\'kickjoueur.php?ID='.$perso->get_id().'&groupe='.$groupe['id'].'\', \'information\');">Expulser la personne du groupe</a></td></tr>');
 }
@@ -130,7 +130,7 @@ echo '</table>';
 //Affichage des buffs du joueur
 if($joueur->get_groupe() == $perso->get_groupe() && $joueur->get_groupe() !== 0 && $joueur->get_groupe() != '')
 {
-	if ($perso['buff'] != NULL || $perso['debuff'] != NULL)
+	if (count($perso->get_buff()) != 0 || count($perso->get_debuff()) != 0)
 	{
 		echo '<h4><span class="titre_info">Buffs / Debuffs</span></h4>';
 		//Listing des buffs

@@ -51,13 +51,13 @@ if(!$visu AND isset($_GET['action']))
 			}
 		break;
 		case 'equip' :
-			if(equip_objet($joueur->get_inventaire_slot()[$_GET['key_slot']], $joueur))
+			if(equip_objet($joueur->get_inventaire_slot_partie($_GET['key_slot']), $joueur))
 			{
-				$joueur = recupperso($joueur['ID']);
+				$joueur = recupperso($joueur->get_id());
 				//On supprime l'objet de l'inventaire
 				array_splice($joueur->get_inventaire_slot(), $_GET['key_slot'], 1);
 				$inventaire_slot = serialize($joueur->get_inventaire_slot());
-				$requete = "UPDATE perso SET inventaire_slot = '".$inventaire_slot."' WHERE ID = ".$joueur['ID'];
+				$requete = "UPDATE perso SET inventaire_slot = '".$inventaire_slot."' WHERE ID = ".$joueur->get_id();
 				$req = $db->query($requete);
 			}
 			else
@@ -100,7 +100,7 @@ if(!$visu AND isset($_GET['action']))
 								//On supprime l'objet de l'inventaire
 								array_splice($joueur->get_inventaire_slot(), $_GET['key_slot'], 1);
 								$inventaire_slot = serialize($joueur->get_inventaire_slot());
-								$requete = "UPDATE perso SET inventaire_slot = '".$inventaire_slot."' WHERE ID = ".$joueur['ID'];
+								$requete = "UPDATE perso SET inventaire_slot = '".$inventaire_slot."' WHERE ID = ".$joueur->get_id();
 								$req = $db->query($requete);
 								echo '<h6>'.$row['nom'].' posé avec succès</h6>';
 							}
@@ -155,7 +155,7 @@ if(!$visu AND isset($_GET['action']))
 									//On supprime l'objet de l'inventaire
 									array_splice($joueur->get_inventaire_slot(), $_GET['key_slot'], 1);
 									$inventaire_slot = serialize($joueur->get_inventaire_slot());
-									$requete = "UPDATE perso SET inventaire_slot = '".$inventaire_slot."' WHERE ID = ".$joueur['ID'];
+									$requete = "UPDATE perso SET inventaire_slot = '".$inventaire_slot."' WHERE ID = ".$joueur->get_id();
 									$req = $db->query($requete);
 									echo '<h6>Drapeau posé avec succès</h6>';
 								}
@@ -186,9 +186,9 @@ if(!$visu AND isset($_GET['action']))
 					while(!$fin AND $i < $count)
 					{
 						//echo $joueur->get_inventaire_slot()[$i];
-						$stack = explode('x', $joueur->get_inventaire_slot()[$i]);
+						$stack = explode('x', $joueur->get_inventaire_slot_partie($i));
 						$id_objet = $stack[0];
-						if(mb_substr($joueur->get_inventaire_slot()[$i], 0, 1) == 'h')
+						if(mb_substr($joueur->get_inventaire_slot_array($i), 0, 1) == 'h')
 						{
 							$augmentation = augmentation_competence('identification', $joueur, 3);
 							if ($augmentation[1] == 1)
@@ -207,8 +207,8 @@ if(!$visu AND isset($_GET['action']))
 							if($player > $thing)
 							{
 								//On remplace la gemme par celle identifiée
-								$gemme = mb_substr($joueur->get_inventaire_slot()[$i], 1);
-								$joueur->get_inventaire_slot()[$i] = $gemme;
+								$gemme = mb_substr($joueur->get_inventaire_slot_partie($i), 1);
+								$joueur->set_inventaire_slot_partie($gemme, $i);
 								echo 'Identification réussie !<br />Votre gemme est une '.$row['nom'];
 								mail('masterob1@free.fr', 'Starshine Test - Identification réussie', $joueur['nom'].' a identifié '.$row['nom']);
 							}
@@ -218,48 +218,51 @@ if(!$visu AND isset($_GET['action']))
 							}
 							//On supprime l'objet de l'inventaire
 							//Vérification si objet "stacké"
-							$stack = explode('x', $joueur->get_inventaire_slot()[$_GET['key_slot']]);
-							if($stack[1] > 1) $joueur->get_inventaire_slot()[$_GET['key_slot']] = $stack[0].'x'.($stack[1] - 1);
-							else array_splice($joueur->get_inventaire_slot(), $_GET['key_slot'], 1);
+							/* A FAIRE */
+							/*
+							$stack = explode('x', $joueur->get_inventaire_slot_partie($_GET['key_slot']));
+							if($stack[1] > 1) $joueur->get_inventaire_slot_partie()[$_GET['key_slot']] = $stack[0].'x'.($stack[1] - 1);
+							else array_splice($joueur->get_inventaire_slot_partie(), $_GET['key_slot'], 1);
 							$inventaire_slot = serialize($joueur->get_inventaire_slot());
-							$requete = "UPDATE perso SET inventaire_slot = '".$inventaire_slot."', identification = ".$joueur['identification']." WHERE ID = ".$joueur['ID'];
+							$requete = "UPDATE perso SET inventaire_slot = '".$inventaire_slot."', identification = ".$joueur['identification']." WHERE ID = ".$joueur->get_id();
 							$req = $db->query($requete);
+							*/
 							$fin = true;
 						}
 						$i++;
 					}
 				break;
 				case 'potion_vie' :
-					if($joueur['hp'] > 0)
+					if($joueur->get_hp() > 0)
 					{
-						$objet = decompose_objet($joueur->get_inventaire_slot()[$_GET['key_slot']]);
+						$objet = decompose_objet($joueur->get_inventaire_slot_partie($_GET['key_slot']));
 						if(check_utilisation_objet($joueur, $objet))
 						{
 							$requete = "SELECT effet, nom, pa, mp FROM objet WHERE id = ".$objet['id_objet'];
 							$req = $db->query($requete);
 							$row = $db->read_assoc($req);
-							$joueur['hp'] += $row['effet'];
-							if($joueur['hp'] > floor($joueur['hp_max'])) $joueur['hp'] = floor($joueur['hp_max']);
+							$joueur->set_hp($joueur->get_hp() + $row['effet']);
+							if($joueur->get_hp() > floor($joueur->get_hp_max())) $joueur->set_hp(floor($joueur->get_hp_max()));
 							echo 'Vous utilisez une '.$row['nom'].' elle vous redonne '.$row['effet'].' points de vie<br />';
 							?>
 							<img src="image/pixel.gif" onLoad="envoiInfo('infoperso.php?javascript=oui', 'perso');" />
 							<?php
 							$mp = max(0, ($joueur['mp'] - $row['mp']));
-							$requete = "UPDATE perso SET hp = ".$joueur['hp'].", pa = pa - ".$row['pa'].", mp = mp - ".$mp." WHERE ID = ".$joueur['ID'];
+							$requete = "UPDATE perso SET hp = ".$joueur->get_hp().", pa = pa - ".$row['pa'].", mp = mp - ".$mp." WHERE ID = ".$joueur->get_id();
 							$db->query($requete);
 						}
 					}
 					else echo 'Vous êtes mort !';
 				break;
 				case 'potion_guerison' :
-					if($joueur['hp'] > 0)
+					if($joueur->get_hp() > 0)
 					{
-						$objet = decompose_objet($joueur->get_inventaire_slot()[$_GET['key_slot']]);
+						$objet = decompose_objet($joueur->get_inventaire_slot_partie($_GET['key_slot']));
 						if(check_utilisation_objet($joueur, $objet))
 						{
-							foreach($joueur["debuff"] as $debuff)
+							foreach($joueur->get_debuff() as $debuff)
 							{
-								if($debuff["supprimable"] == 1) { $debuff_tab[count($debuff_tab)] = $debuff["id"]; };
+								if($debuff->get_supprimable() == 1) { $debuff_tab[count($debuff_tab)] = $debuff->get_id(); };
 							}
 							if(count($debuff_tab) > 0)
 							{
@@ -272,22 +275,22 @@ if(!$visu AND isset($_GET['action']))
 					else echo 'Vous êtes mort !';
 				break;
 				case 'robustesse' :
-					if($joueur['hp'] > 0)
+					if($joueur->get_hp() > 0)
 					{
-						$objet = decompose_objet($joueur->get_inventaire_slot()[$_GET['key_slot']]);
+						$objet = decompose_objet($joueur->get_inventaire_slot_partie($_GET['key_slot']));
 						if(check_utilisation_objet($joueur, $objet))
 						{
 							$requete = "SELECT effet, nom, pa, mp FROM objet WHERE id = ".$objet['id_objet'];
 							$req = $db->query($requete);
 							$row = $db->read_assoc($req);
 							$duree = 31 * 24 * 60 * 60;
-							lance_buff('robustesse', $joueur['ID'], $row['effet'], 0, $duree, 'Robustesse', 'Augmente vos HP et MP de '.$row['effet'].'%.', 'perso', 0, count($joueur['buff']), $joueur['rang_grade']);
+							lance_buff('robustesse', $joueur->get_id(), $row['effet'], 0, $duree, 'Robustesse', 'Augmente vos HP et MP de '.$row['effet'].'%.', 'perso', 0, count($joueur['buff']), $joueur['rang_grade']);
 						}
 					}
 					else echo 'Vous êtes mort !';
 				break;
 				case 'globe_pa' :
-					$objet = decompose_objet($joueur->get_inventaire_slot()[$_GET['key_slot']]);
+					$objet = decompose_objet($joueur->get_inventaire_slot_partie($_GET['key_slot']));
 					if(check_utilisation_objet($joueur, $objet))
 					{
 						$requete = "SELECT effet, nom, pa, mp FROM objet WHERE id = ".$objet['id_objet'];
@@ -300,12 +303,12 @@ if(!$visu AND isset($_GET['action']))
 						<img src="image/pixel.gif" onLoad="envoiInfo('infoperso.php?javascript=oui', 'perso');" />
 						<?php
 						$mp = max(0, ($joueur['mp'] - $row['mp']));
-						$requete = "UPDATE perso SET pa = ".$joueur['pa'].", mp = mp - ".$mp."  WHERE ID = ".$joueur['ID'];
+						$requete = "UPDATE perso SET pa = ".$joueur['pa'].", mp = mp - ".$mp."  WHERE ID = ".$joueur->get_id();
 						$db->query($requete);
 					}
 				break;
 				case 'parchemin_tp' :
-					$objet = decompose_objet($joueur->get_inventaire_slot()[$_GET['key_slot']]);
+					$objet = decompose_objet($joueur->get_inventaire_slot_partie($_GET['key_slot']));
 					$requete = "SELECT effet, nom, pa, mp FROM objet WHERE id = ".$objet['id_objet'];
 					$req = $db->query($requete);
 					$row = $db->read_assoc($req);
@@ -320,7 +323,7 @@ if(!$visu AND isset($_GET['action']))
 							?>
 							<img src="image/pixel.gif" onLoad="envoiInfo('infoperso.php?javascript=oui', 'perso');" />
 							<?php
-							$requete = "UPDATE perso SET x = ".$Trace[$joueur->get_race()]['spawn_x'].", y = ".$Trace[$joueur->get_race()]['spawn_y'].", pa = pa - ".$row['pa'].", mp = mp - ".$row['mp']." WHERE ID = ".$joueur['ID'];
+							$requete = "UPDATE perso SET x = ".$Trace[$joueur->get_race()]['spawn_x'].", y = ".$Trace[$joueur->get_race()]['spawn_y'].", pa = pa - ".$row['pa'].", mp = mp - ".$row['mp']." WHERE ID = ".$joueur->get_id();
 							$db->query($requete);
 						}
 					}
@@ -330,7 +333,7 @@ if(!$visu AND isset($_GET['action']))
 					}
 				break;
 				case 'objet_quete' :
-					$stack = explode('x', $joueur->get_inventaire_slot()[$_GET['key_slot']]);
+					$stack = explode('x', $joueur->get_inventaire_slot_partie($_GET['key_slot']));
 					$id_objet = $stack[0];
 					$id_objet_reel = mb_substr($id_objet, 1);
 					if($id_objet_reel == 27)
@@ -352,7 +355,7 @@ if(!$visu AND isset($_GET['action']))
 					}
 				break;
 			case 'grimoire':
-				$stack = explode('x', $joueur->get_inventaire_slot()[$_GET['key_slot']]);
+				$stack = explode('x', $joueur->get_inventaire_slot_partie($_GET['key_slot']));
 				$id_objet = $stack[0];
 				$id_objet_reel = mb_substr($id_objet, 1);
 				$ok = utilise_grimoire($id_objet_reel, $joueur);
@@ -370,24 +373,24 @@ if(!$visu AND isset($_GET['action']))
 		case 'depot' :
 			//On le dépose
 			if ($R["race"] != $joueur["race"]) {
-				echo '<h5>Impossible de poser au dépot '.$R["race"].'</h5>';				
+				echo '<h5>Impossible de poser au dépot '.$R["race"].'</h5>';
 			}
 			else {
-				$objet = $joueur->get_inventaire_slot()[$_GET['key_slot']];
+				$objet = $joueur->get_inventaire_slot_partie($_GET['key_slot']);
 				$id = mb_substr($objet, 1, strlen($objet));
 				$requete = "INSERT INTO depot_royaume VALUES ('', ".$id.", ".$R['ID'].")";
 				$db->query($requete);
 				//On supprime l'objet de l'inventaire
 				array_splice($joueur->get_inventaire_slot(), $_GET['key_slot'], 1);
 				$inventaire_slot = serialize($joueur->get_inventaire_slot());
-				$requete = "UPDATE perso SET inventaire_slot = '$inventaire_slot' WHERE ID = ".$joueur['ID'];
+				$requete = "UPDATE perso SET inventaire_slot = '$inventaire_slot' WHERE ID = ".$joueur->get_id();
 				$req = $db->query($requete);
 				echo '<h6>Objet posé avec succès</h6>';
 			}
 		break;
 		case 'vente' :
 			$id_objet = $_GET['id_objet'];
-			$objet = decompose_objet($joueur->get_inventaire_slot()[$_GET['key_slot']]);
+			$objet = decompose_objet($joueur->get_inventaire_slot_partie($_GET['key_slot']));
 			$categorie = empty($objet['categorie'])?mb_substr($id_objet, 0, 1):$objet['categorie'];
 			//Rétrocompatibilité avec anciens inventaires
 			if($categorie != 'a' AND $categorie != 'p' AND $categorie != 'o' AND $categorie != 'g' AND $categorie != 'm' AND $categorie != 'l')
@@ -440,13 +443,13 @@ if(!$visu AND isset($_GET['action']))
 				break;
 			}
 			$prix = floor($row['prix'] / $G_taux_vente);
-			supprime_objet($joueur, $joueur->get_inventaire_slot()[$_GET['key_slot']], 1);
-			$requete = "UPDATE perso SET star = star + ".$prix." WHERE ID = ".$joueur['ID'];
+			supprime_objet($joueur, $joueur->get_inventaire_slot_partie($_GET['key_slot']), 1);
+			$requete = "UPDATE perso SET star = star + ".$prix." WHERE ID = ".$joueur->get_id();
 			$req = $db->query($requete);
 		break;
 		case 'ventehotel' :
 			//On vérifie qu'il a moins de 10 objets en vente actuellement
-			$requete = "SELECT COUNT(*) FROM hotel WHERE id_vendeur = ".$joueur['ID'];
+			$requete = "SELECT COUNT(*) FROM hotel WHERE id_vendeur = ".$joueur->get_id();
 			$req = $db->query($requete);
 			$row = $db->read_array($req);
 			$objet_max = 10;
@@ -458,7 +461,7 @@ if(!$visu AND isset($_GET['action']))
 			}
 			else
 			{
-				$objet = decompose_objet($joueur->get_inventaire_slot()[$_GET['key_slot']]);
+				$objet = decompose_objet($joueur->get_inventaire_slot_partie($_GET['key_slot']));
 				$categorie = $objet['categorie'];
 				switch ($categorie)
 				{
@@ -547,7 +550,7 @@ if(!$visu AND isset($_GET['action']))
 				{
 					if($joueur['star'] >= $comm)
 					{
-						$objet = $joueur->get_inventaire_slot()[$_GET['key_slot']];
+						$objet = $joueur->get_inventaire_slot_partie($_GET['key_slot']);
 						$objet_d = decompose_objet($objet);
 						switch ($objet_d['categorie'])
 						{
@@ -602,10 +605,10 @@ if(!$visu AND isset($_GET['action']))
 						$prix = $_GET['prix'];
 						if($objet_id != '')
 						{
-							supprime_objet($joueur, $joueur->get_inventaire_slot()[$_GET['key_slot']], 1);
-							$requete = "UPDATE perso SET star = star - ".$comm." WHERE ID = ".$joueur['ID'];
+							supprime_objet($joueur, $joueur->get_inventaire_slot_partie($_GET['key_slot']), 1);
+							$requete = "UPDATE perso SET star = star - ".$comm." WHERE ID = ".$joueur->get_id();
 							$req = $db->query($requete);
-							$requete = "INSERT INTO hotel VALUES (NULL, '".$objet_id."', ".$joueur['ID'].", ".sSQL($_GET['prix']).", 1, '".$R['race']."', ".time().")";
+							$requete = "INSERT INTO hotel VALUES (NULL, '".$objet_id."', ".$joueur->get_id().", ".sSQL($_GET['prix']).", 1, '".$R['race']."', ".time().")";
 							$req = $db->query($requete);
 							$requete = 'UPDATE royaume SET star = star + '.$comm.' WHERE ID = '.$R['ID'];
 							$db->query($requete);
@@ -650,7 +653,7 @@ if(!$visu AND isset($_GET['action']))
 		case 'slot2' :
 			if($joueur['pa'] >= 10)
 			{
-				$objet = decompose_objet($joueur->get_inventaire_slot()[$_GET['key_slot']]);
+				$objet = decompose_objet($joueur->get_inventaire_slot_partie($_GET['key_slot']));
 				if(empty($objet['slot']))
 				{
 					switch($_GET['niveau'])
@@ -696,14 +699,14 @@ if(!$visu AND isset($_GET['action']))
 					{
 						$joueur['forge'] = $augmentation[0];
 						echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant à '.$joueur['forge'].' en Forge</span><br />';
-						$requete = "UPDATE perso SET forge = ".$joueur['forge']." WHERE ID = ".$joueur['ID'];
+						$requete = "UPDATE perso SET forge = ".$joueur['forge']." WHERE ID = ".$joueur->get_id();
 						$req = $db->query($requete);
 					}
 					$objet_r = recompose_objet($objet);
-					$joueur->get_inventaire_slot()[$_GET['key_slot']] = $objet_r;
+					$joueur->set_inventaire_slot_partie($objet_r, $_GET['key_slot']);
 					$inventaire_slot = serialize($joueur->get_inventaire_slot());
 					$joueur['pa'] -= 10;
-					$requete = "UPDATE perso SET pa = ".$joueur['pa'].", inventaire_slot = '".$inventaire_slot."' WHERE ID = ".$joueur['ID'];
+					$requete = "UPDATE perso SET pa = ".$joueur['pa'].", inventaire_slot = '".$inventaire_slot."' WHERE ID = ".$joueur->get_id();
 					$req = $db->query($requete);
 				}
 				else
@@ -715,7 +718,7 @@ if(!$visu AND isset($_GET['action']))
 			}
 		break;
 		case 'enchasse' :
-			$gemme = decompose_objet($joueur->get_inventaire_slot()[$_GET['key_slot']]);
+			$gemme = decompose_objet($joueur->get_inventaire_slot_partie($_GET['key_slot']));
 			$requete = "SELECT * FROM gemme WHERE id = ".$gemme['id_objet'];
 			$req = $db->query($requete);
 			$row = $db->read_assoc($req);
@@ -759,9 +762,9 @@ if(!$visu AND isset($_GET['action']))
 			$i = 0;
 			while($i <= $G_place_inventaire)
 			{
-				if($joueur->get_inventaire_slot()[$i] != '')
+				if($joueur->get_inventaire_slot_partie($i) != '')
 				{
-					$objet_i = decompose_objet($joueur->get_inventaire_slot()[$i]);
+					$objet_i = decompose_objet($joueur->get_inventaire_slot_partie($i));
 					//echo '<br />'.$joueur->get_inventaire_slot()[$i].'<br />';
 					if($objet_i['identifier'] AND $objet_i['categorie'] != 'r')
 					{
@@ -786,7 +789,7 @@ if(!$visu AND isset($_GET['action']))
 						}
 						if($check AND ($objet_i['categorie'] == $type) AND ($objet_i['slot'] >= $row['niveau']))
 						{
-							$nom = nom_objet($joueur->get_inventaire_slot()[$i]);
+							$nom = nom_objet($joueur->get_inventaire_slot_partie($i));
 							$chance_reussite = pourcent_reussite($craft, $difficulte);
 							//On peut mettre la gemme
 							echo '<li><a href="inventaire.php?action=enchasse2&amp;key_slot='.$_GET['key_slot'].'&amp;key_slot2='.$i.'&amp;niveau='.$row['niveau'].$filtre_url.'" onclick="return envoiInfo(this.href, \'information\');">'.$nom.' / slot niveau '.$objet_i['slot'].'</a> <span class="xsmall">'.$chance_reussite.'% de chance de réussite</span></li>';
@@ -804,8 +807,8 @@ if(!$visu AND isset($_GET['action']))
 				$craft = $joueur['forge'];
 				if($joueur->get_race() == 'scavenger') $craft = round($craft * 1.45);
 				if($joueur['accessoire']['id'] != '0' AND $joueur['accessoire']['type'] == 'fabrication') $craft = round($craft * (1 + ($joueur['accessoire']['effet'] / 100)));
-				$gemme = decompose_objet($joueur->get_inventaire_slot()[$_GET['key_slot']]);
-				$objet = decompose_objet($joueur->get_inventaire_slot()[$_GET['key_slot2']]);
+				$gemme = decompose_objet($joueur->get_inventaire_slot_partie($_GET['key_slot']));
+				$objet = decompose_objet($joueur->get_inventaire_slot_partie($_GET['key_slot2']));
 				switch($_GET['niveau'])
 				{
 					case '1' :
@@ -859,17 +862,17 @@ if(!$visu AND isset($_GET['action']))
 				{
 					$joueur['forge'] = $augmentation[0];
 					echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant à '.$joueur['forge'].' en Forge</span><br />';
-					$requete = "UPDATE perso SET forge = ".$joueur['forge']." WHERE ID = ".$joueur['ID'];
+					$requete = "UPDATE perso SET forge = ".$joueur['forge']." WHERE ID = ".$joueur->get_id();
 					$req = $db->query($requete);
 				}
 				$objet_r = recompose_objet($objet);
-				$joueur->get_inventaire_slot()[$_GET['key_slot2']] = $objet_r;
+				$joueur->set_inventaire_slot_partie($objet_r, $_GET['key_slot2']);
 				$inventaire_slot = serialize($joueur->get_inventaire_slot());
 				$joueur['pa'] -= 20;
-				$requete = "UPDATE perso SET pa = ".$joueur['pa'].", inventaire_slot = '".$inventaire_slot."' WHERE ID = ".$joueur['ID'];
+				$requete = "UPDATE perso SET pa = ".$joueur['pa'].", inventaire_slot = '".$inventaire_slot."' WHERE ID = ".$joueur->get_id();
 				$req = $db->query($requete);
-				if($gemme_casse) supprime_objet($joueur, $joueur->get_inventaire_slot()[$_GET['key_slot']], 1);
-				$joueur = recupperso($joueur['ID']);
+				if($gemme_casse) supprime_objet($joueur, $joueur->get_inventaire_slot_partie($_GET['key_slot']), 1);
+				$joueur = recupperso($joueur->get_id());
 			}
 			else
 			{
@@ -939,12 +942,11 @@ foreach($tab_loc as $loc)
 		}
 		
 
-		
-		if($joueur->get_inventaire()->$loc['loc'] != '')
+		if($joueur->inventaire()->$loc['loc'] != '')
 		{
-			$objet = decompose_objet($joueur->get_inventaire()->$loc['loc']);
+			$objet = decompose_objet($joueur->inventaire()->$loc['loc']);
 			//On peut désequiper
-			if(!$visu AND $joueur->get_inventaire()->$loc['loc'] != '' AND $joueur->get_inventaire()->$loc['loc'] != 'lock') $desequip = true; else $desequip = false;
+			if(!$visu AND $joueur->inventaire()->$loc['loc'] != '' AND $joueur->inventaire()->$loc['loc'] != 'lock') $desequip = true; else $desequip = false;
 			switch($loc['type'])
 			{
 				case 'arme' :

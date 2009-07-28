@@ -288,7 +288,7 @@ echo '
 			Protection Magique
 		</td>
 		<td>
-			<span onmouseover="return '.make_overlib('PM de base : '.$joueur['PM_base']).'" onmouseout="return nd();">'.$joueur['PM'].'</span> - Réduction des dégâts de '.(round(1 - calcul_pp($joueur['PM'] * $joueur->get_puissance() / 12), 2) * 100).' %
+			<span onmouseover="return '.make_overlib('PM de base : '.$joueur->get_pm(true)).'" onmouseout="return nd();">'.$joueur->get_pm().'</span> - Réduction des dégâts de '.(round(1 - calcul_pp($joueur->get_pm() * $joueur->get_puissance() / 12), 2) * 100).' %
 		</td>
 	</tr>
 	<tr class="trcolor1">
@@ -296,7 +296,7 @@ echo '
 			Réserve de mana
 		</td>
 		<td>
-			<span onmouseover="return '.make_overlib('Réserve de base : '.$joueur['reserve_base']).'" onmouseout="return nd();">'.$joueur['reserve'].'</span>
+			<span onmouseover="return '.make_overlib('Réserve de base : '.$joueur->get_reserve(true)).'" onmouseout="return nd();">'.$joueur->get_reserve().'</span>
 		</td>
 	</tr>
 	<tr class="trcolor2">
@@ -320,7 +320,7 @@ echo '
 			'.$Gtrad['sort_vie'].'
 		</td>
 		<td>
-			'.genere_image_comp($joueur, 'sort_vie', $maximum['sort_vie']).' <span class="xsmall">('.$joueur['sort_vie'].' / '.$maximum['sort_vie'].')</span>
+			'.genere_image_comp($joueur->get_sort_vie(), 'sort_vie', $maximum['sort_vie']).' <span class="xsmall">('.$joueur->get_sort_vie().' / '.$maximum['sort_vie'].')</span>
 		</td>
 	</tr>
 	<tr class="trcolor1">
@@ -328,7 +328,7 @@ echo '
 			'.$Gtrad['sort_element'].'
 		</td>
 		<td>
-			'.genere_image_comp($joueur, 'sort_element', $maximum['sort_element']).' <span class="xsmall">('.$joueur['sort_element'].' / '.$maximum['sort_element'].')</span>
+			'.genere_image_comp($joueur->get_sort_element(), 'sort_element', $maximum['sort_element']).' <span class="xsmall">('.$joueur->get_sort_element().' / '.$maximum['sort_element'].')</span>
 		</td>
 	</tr>
 	<tr class="trcolor2">
@@ -336,7 +336,7 @@ echo '
 			'.$Gtrad['sort_mort'].'
 		</td>
 		<td>
-			'.genere_image_comp($joueur, 'sort_mort', $maximum['sort_mort']).' <span class="xsmall">('.$joueur['sort_mort'].' / '.$maximum['sort_mort'].')</span>
+			'.genere_image_comp($joueur->get_sort_mort(), 'sort_mort', $maximum['sort_mort']).' <span class="xsmall">('.$joueur->get_sort_mort().' / '.$maximum['sort_mort'].')</span>
 		</td>
 	</tr>
 	</table>
@@ -362,7 +362,7 @@ echo '
 			PP
 		</td>
 		<td>
-			<span onmouseover="return '.make_overlib('PP de base : '.$joueur['PP_base']).'" onmouseout="return nd();">'.$joueur['PP'].'</span> - Réduction des dégâts de '.(round(1 - calcul_pp($joueur['PP']), 4) * 100).' %
+			<span onmouseover="return '.make_overlib('PP de base : '.$joueur->get_pp(true)).'" onmouseout="return nd();">'.$joueur->get_pp().'</span> - Réduction des dégâts de '.(round(1 - calcul_pp($joueur->get_pp()), 4) * 100).' %
 		</td>
 	</tr>
 	<tr class="trcolor2">
@@ -402,7 +402,7 @@ echo '
 			Coéf. Mélée
 		</td>
 		<td>
-			'.$joueur['coef_melee'].'
+			'.$joueur->get_coef_melee().'
 		</td>
 	</tr>
 	<tr class="trcolor1">
@@ -410,7 +410,7 @@ echo '
 			Coéf. blocage
 		</td>
 		<td>
-			'.$joueur['coef_blocage'].'
+			'.$joueur->get_coef_blocage().'
 		</td>
 	</tr>
 	<tr class="trcolor2">
@@ -418,7 +418,7 @@ echo '
 			Coéf. distance
 		</td>
 		<td>
-			'.$joueur['coef_distance'].'
+			'.$joueur->get_coef_distance().'
 		</td>
 	</tr>
 	</table>

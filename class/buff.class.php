@@ -12,8 +12,7 @@ if (file_exists('class/effect.class.php')) {
 class buff_actif extends effect
 {
 
-	private static $esquive_buff = array('buff_evasion', 'buff_cri_detresse',
-																			 'batiment_esquive');
+	private static $esquive_buff = array('buff_evasion', 'buff_cri_detresse', 'batiment_esquive');
 
 	static function factory(&$effects, &$actif, &$passif, $acteur) {
     $acti = array();
