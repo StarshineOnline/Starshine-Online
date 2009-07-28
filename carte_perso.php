@@ -4,34 +4,30 @@ if (file_exists('root.php'))
 ?><?php
 session_start();
 header ("Content-type: image/png");
-include_once(root.'class/db.class.php');
-include_once(root.'connect.php');
-include_once(root.'fonction/time.inc.php');
-include_once(root.'fonction/equipement.inc.php');
-include_once(root.'fonction/groupe.inc.php');
-include_once(root.'fonction/base.inc.php');
+include_once(root.'inc/fp.php');
 $im = imagecreatefrompng('image/carte.png');
 $rouge = imagecolorallocate($im, 255, 0, 0);
 $violet = imagecolorallocate($im, 102, 0, 153);
 //Positionnement du perso sur la carte
-$joueur = recupperso($_SESSION['ID']);
-$x = ($joueur['x'] - 1) * 3;
-$y = ($joueur['y'] - 1) * 3;
-$x_fin = (($joueur['x'] - 1) * 3) + 2;
-$y_fin = (($joueur['y'] - 1) * 3) + 2;
+$joueur = new perso($_SESSION['ID']);
+$x = ($joueur->get_x() - 1) * 3;
+$y = ($joueur->get_y() - 1) * 3;
+$x_fin = (($joueur->get_x() - 1) * 3) + 2;
+$y_fin = (($joueur->get_y() - 1) * 3) + 2;
 imagefilledrectangle($im, $x, $y, $x_fin, $y_fin, $rouge);
 //Positionnement des membres du groupe
-if($joueur['groupe'] > 0)
+if($joueur->get_groupe() > 0)
 {
-	$groupe = recupgroupe($joueur['groupe'], $joueur['x'].'-'.$joueur['y']);
-	foreach($groupe['membre'] as $membre)
+	$groupe = new groupe($joueur->get_groupe());
+	$groupe->get_membre_joueur();
+	foreach($groupe->membre_joueur as $membre)
 	{
-		if($membre['id_joueur'] != $_SESSION['ID'])
+		if($membre->get_id() != $_SESSION['ID'])
 		{
-			$x = ($membre['x'] - 1) * 3;
-			$y = ($membre['y'] - 1) * 3;
-			$x_fin = (($membre['x'] - 1) * 3) + 2;
-			$y_fin = (($membre['y'] - 1) * 3) + 2;
+			$x = ($membre->get_x() - 1) * 3;
+			$y = ($membre->get_y() - 1) * 3;
+			$x_fin = (($membre->get_x() - 1) * 3) + 2;
+			$y_fin = (($membre->get_y() - 1) * 3) + 2;
 			imagefilledrectangle($im, $x, $y, $x_fin, $y_fin, $violet);
 		}
 	}

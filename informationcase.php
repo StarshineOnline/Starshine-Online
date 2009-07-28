@@ -29,11 +29,8 @@ if($W_distance < 4)
 	<legend>Informations Case - X : <?php echo $case->get_x(); ?> | Y : <?php echo $case->get_y(); ?><a href="carte_perso_affiche.php" onclick="affichePopUp(this.href); return false;"> <img src="image/icone/oujesuis.png" alt="Où je suis ?" title="Où je suis ?" style="vertical-align : middle;height:20px;" /></a> </legend>
 	<div id='info_case'>
 	<?php
-	
-	
-	$R = new royaume($case->get_royaume(), $joueur->get_race());
-	$type_terrain = $case->get_type();
-	$coutpa = cout_pa($type_terrain[0], $joueur->get_race());
+	$R = new royaume($case->get_royaume());
+	$coutpa = cout_pa($case->get_info(), $joueur->get_race());
 	$coutpa_base = $coutpa;
 	$coutpa_diagonale = cout_pa2($coutpa, $joueur, $case, true);
 	$coutpa = cout_pa2($coutpa, $joueur, $case, false);
@@ -48,7 +45,7 @@ if($W_distance < 4)
 	
 	<h4><span class='titre_info'><?php echo $R->get_nom(); ?></span></h4>
 	<strong><?php echo $Gtrad[$R->get_race()]; ?></strong> - <?php echo $Gtrad['diplo'.$R->get_diplo($joueur->get_race())]; ?> - Taxe : <?php echo $R->get_taxe(); ?>%<br />
-	<strong><?php echo $type_terrain[1]; ?></strong> - <?php echo $coutpa; ?> PA de déplacement <span class="xsmall">(en diagonale = <?php echo $coutpa_diagonale; ?> PA)</span>
+	<strong><?php echo $G_type_terrain[$case->get_info()]['nom']; ?></strong> - <?php echo $coutpa; ?> PA de déplacement <span class="xsmall">(en diagonale = <?php echo $coutpa_diagonale; ?> PA)</span>
 	
 	<?php
 	//Recherche des joueurs sur la case

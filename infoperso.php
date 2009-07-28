@@ -97,10 +97,10 @@ if (file_exists('root.php'))
 			echo "<ul>";
 			foreach($joueur->get_debuff() as $buff)
 			{//-- Listing des buffs
-				$overlib = str_replace("'", "\'", trim("<ul><li class='overlib_titres'>".$buff["nom"]."</li><li>".description($buff["description"], $buff)."</li><li>Durée ".transform_sec_temp($buff["fin"] - time())."</li></ul>"));
+				$overlib = str_replace("'", "\'", trim("<ul><li class='overlib_titres'>".$buff->get_nom()."</li><li>".description($buff->get_description(), $buff)."</li><li>Durée ".transform_sec_temp($buff->get_fin() - time())."</li></ul>"));
 				echo "<li class='buff'>
-					   <img src='image/buff/".$buff["type"]."_p.png' 
-							alt='".$buff["type"]."'
+					   <img src='image/buff/".$buff->get_type()."_p.png' 
+							alt='".$buff->get_type()."'
 							onmouseover=\"return overlib('$overlib', BGCLASS, 'overlib', BGCOLOR, '', FGCOLOR, '');\"
 							onmouseout=\"return nd();\"  />
 					   ".genere_image_buff_duree($buff)."

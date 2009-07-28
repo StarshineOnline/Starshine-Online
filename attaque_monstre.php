@@ -9,7 +9,7 @@ include_once(root.'haut_ajax.php');
 //L'ID du du joueur attaqué
 $W_ID = $_GET['ID'];
 
-$attaquant = recupperso($_SESSION['ID']);
+$attaquant = new perso($_SESSION['ID']);
 if(array_key_exists('type', $_GET) AND $_GET['type'] == 'batiment')
 {
 	$ennemi = 'batiment';
@@ -25,7 +25,7 @@ else
 	$pa_attaque = $G_PA_attaque_monstre;
 }
 
-$attaquant['action_a'] = recupaction($attaquant['action_a']);
+$action_a = recupaction($attaquant->get_action_a());
 $defenseur['action_d'] = $defenseur['action_d'];
 
 //Case du monstre
@@ -33,14 +33,14 @@ $W_case = $_GET['poscase'];
 $W_requete = 'SELECT * FROM map WHERE ID =\''.sSQL($W_case).'\'';
 $W_req = $db->query($W_requete);
 $W_row = $db->read_array($W_req);
-$R = get_royaume_info($joueur['race'], $W_row['royaume']);
+$R = get_royaume_info($joueur->get_race(), $W_row['royaume']);
 $W_distance = detection_distance($W_case,$_SESSION["position"]);
 
 ?>
 <fieldset>
 	<legend>Combat VS <?php echo $defenseur['nom']; ?></legend>
 <?php
-if($W_distance > $attaquant['arme_distance'])
+if($W_distance > $attaquant->get_distance_tir())
 {
 	echo '<h5>Vous êtes trop loin pour l\'attaquer !</h5>';
 }
@@ -48,19 +48,19 @@ else
 {
 	$round = 1;
 	$debugs = 0;
-	$attaquant['etat'] = array();
+	$attaquant->etat = array();
 	$defenseur['etat'] = array();
 	
-	if(array_key_exists('cout_attaque', $attaquant['debuff'])) $pa_attaque = ceil($pa_attaque / $attaquant['debuff']['cout_attaque']['effet']);
-	if(array_key_exists('plus_cout_attaque', $attaquant['debuff'])) $pa_attaque = $pa_attaque * $attaquant['debuff']['plus_cout_attaque']['effet'];
-	if(array_key_exists('buff_rapidite', $attaquant['buff'])) $reduction_pa = $attaquant['buff']['buff_rapidite']['effet']; else $reduction_pa = 0;
-	if(array_key_exists('debuff_ralentissement', $attaquant['debuff'])) $reduction_pa -= $attaquant['debuff']['debuff_ralentissement']['effet'];
-	if(array_key_exists('engloutissement', $attaquant['debuff'])) $attaquant['dexterite'] -= $attaquant['debuff']['engloutissement']['effet'];
-	if(array_key_exists('engloutissement', $defenseur['debuff'])) $defenseur['dexterite'] -= $defenseur['debuff']['engloutissement']['effet'];
-	if(array_key_exists('deluge', $attaquant['debuff'])) $attaquant['volonte'] -= $attaquant['debuff']['deluge']['effet'];
-	if(array_key_exists('deluge', $defenseur['debuff'])) $defenseur['volonte'] -= $defenseur['debuff']['deluge']['effet'];
+	if($attaquant->is_debuff('cout_attaque')) $pa_attaque = ceil($pa_attaque / $attaquant->get_debuff('cout_attaque', 'effet'));
+	if($attaquant->is_debuff('plus_cout_attaque')) $pa_attaque = $pa_attaque * $attaquant->get_debuff('plus_cout_attaque', 'effet');
+	if($attaquant->is_buff('buff_rapidite')) $reduction_pa = $attaquant->get_buff('buff_rapidite', 'effet'); else $reduction_pa = 0;
+	if($attaquant->is_debuff('debuff_ralentissement')) $reduction_pa -= $attaquant->get_debuff('debuff_ralentissement', 'effet');
+	if($attaquant->is_debuff('engloutissement')) $attaquant['dexterite'] -= $attaquant->get_debuff('engloutissement', 'effet');
+	//if($defenseur->is_debuff('engloutissement')) $defenseur['dexterite'] -= $defenseur->get_debuff('engloutissement', 'effet');
+	if($attaquant->is_debuff('deluge')) $attaquant['volonte'] -= $attaquant->get_debuff('deluge', 'effet');
+	//if($defenseur->is_debuff('deluge')) $defenseur['volonte'] -= $defenseur->get_debuff('deluge', 'effet');
 
-	if(is_donjon($attaquant['x'], $attaquant['y']))
+	if(is_donjon($attaquant->get_x(), $attaquant->get_y()))
 	{
 		$round_total = 20;
 		$attaquant['reserve'] = $attaquant['reserve'] * 2;
@@ -73,23 +73,23 @@ else
 		}
 	}
 	else $round_total = $G_round_total;
-	if($attaquant['race'] == 'orc' OR $defenseur['race'] == 'orc') $round_total += 1;
-	if(array_key_exists('buff_sacrifice', $attaquant['buff'])) $round_total -= $attaquant['buff']['buff_sacrifice']['effet2'];
+	if($attaquant->get_race() == 'orc' OR $defenseur['race'] == 'orc') $round_total += 1;
+	if($attaquant->is_buff('buff_sacrifice')) $round_total -= $attaquant->get_buff('buff_sacrifice', 'effet2');
 	//Vérifie si l'attaquant a assez de points d'actions pour attaquer
 	$pa_attaque = $pa_attaque - $reduction_pa;
 	
-	if ($attaquant['pa'] >= $pa_attaque)
+	if ($attaquant->get_pa() >= $pa_attaque)
 	{
-		if($attaquant['hp'] > 0)
+		if($attaquant->get_hp() > 0)
 		{
 			//Suppresion de longue portée si besoin
-			if(array_key_exists('longue_portee', $attaquant['buff']) AND $attaquant['arme_type'] == 'arc')
+			if($attaquant->is_buff('longue_portee') AND $attaquant['arme_type'] == 'arc')
 			{
-				$requete = "DELETE FROM buff WHERE id = ".$attaquant['buff']['longue_portee']['id'];
+				$requete = "DELETE FROM buff WHERE id = ".$attaquant->get_buff('longue_portee', 'id');
 				$db->query($requete);
 			}
 			//Boucle principale qui fait durer le combat $round_total round
-			while(($round < ($round_total + 1)) AND ($attaquant['hp'] > 0) AND ($defenseur['hp'] > 0))
+			while(($round < ($round_total + 1)) AND ($attaquant->get_hp() > 0) AND ($defenseur['hp'] > 0))
 			{
 				if($attaquant['arme_type'] == 'arc') $attaquant['comp'] = 'distance'; else $attaquant['comp'] = 'melee';
 				$defenseur['comp'] = 'melee';
@@ -223,7 +223,7 @@ else
 						{
 							$perte_hp = $attaquant['etat']['poison']['effet'] - $attaquant['etat']['poison']['duree'] + 1;
 							if($attaquant['etat']['putrefaction']['duree'] > 0) $perte_hp = $perte_hp * $attaquant['etat']['putrefaction']['effet'];
-							$attaquant['hp'] -= $perte_hp;
+							$attaquant->set_hp($attaquant->set_hp() - $perte_hp);
 							echo '&nbsp;&nbsp;<span class="degat">'.$attaquant['nom'].' perd '.$perte_hp.' HP par le poison</span><br />';
 						}
 						if($defenseur['etat']['poison']['duree'] > 0)
@@ -237,7 +237,7 @@ else
 						if($attaquant['etat']['hemorragie']['duree'] > 0)
 						{
 							$perte_hp = $attaquant['etat']['hemorragie']['effet'];
-							$attaquant['hp'] -= $perte_hp;
+							$attaquant->set_hp($attaquant->set_hp() - $perte_hp);
 							echo '&nbsp;&nbsp;<span class="degat">'.$attaquant['nom'].' perd '.$perte_hp.' HP par hémorragie</span><br />';
 						}
 						if($defenseur['etat']['hemorragie']['duree'] > 0)
@@ -250,7 +250,7 @@ else
 						if($attaquant['etat']['embraser']['duree'] > 0)
 						{
 							$perte_hp = $attaquant['etat']['embraser']['effet'];
-							$attaquant['hp'] -= $perte_hp;
+							$attaquant->set_hp($attaquant->set_hp() - $perte_hp);
 							echo '&nbsp;&nbsp;<span class="degat">'.$attaquant['nom'].' perd '.$perte_hp.' HP par embrasement</span><br />';
 						}
 						if($defenseur['etat']['embraser']['duree'] > 0)
@@ -263,7 +263,7 @@ else
 						if($attaquant['etat']['acide']['duree'] > 0)
 						{
 							$perte_hp = $attaquant['etat']['acide']['effet'];
-							$attaquant['hp'] -= $perte_hp;
+							$attaquant->set_hp($attaquant->set_hp() - $perte_hp);
 							echo '&nbsp;&nbsp;<span class="degat">'.$attaquant['nom'].' perd '.$perte_hp.' HP par acide</span><br />';
 						}
 						if($defenseur['etat']['acide']['duree'] > 0)
@@ -275,7 +275,7 @@ else
 						//Perte de HP par lien sylvestre
 						if($attaquant['etat']['lien_sylvestre']['duree'] > 0)
 						{
-							$attaquant['hp'] -= $attaquant['etat']['lien_sylvestre']['effet'];
+							$attaquant->set_hp($attaquant->set_hp() - $attaquant['etat']['lien_sylvestre']['effet']);
 							echo '&nbsp;&nbsp;<span class="degat">'.$attaquant['nom'].' perd '.$attaquant['etat']['lien_sylvestre']['effet'].' HP par le lien sylvestre</span><br />';
 						}
 						if($defenseur['etat']['lien_sylvestre']['duree'] > 0)
@@ -287,11 +287,11 @@ else
 						if($attaquant['etat']['recuperation']['duree'] > 0)
 						{
 							$effet = $attaquant['etat']['recuperation']['effet'];
-							if(($attaquant['hp'] + $effet) > $attaquant['etat']['recuperation']['hp_max'])
+							if(($attaquant->get_hp() + $effet) > $attaquant['etat']['recuperation']['hp_max'])
 							{
-								$effet = $attaquant['etat']['recuperation']['hp_max'] - $attaquant['hp'];
+								$effet = $attaquant['etat']['recuperation']['hp_max'] - $attaquant->get_hp();
 							}
-							$attaquant['hp'] += $effet;
+							$attaquant->set_hp($attaquant->get_hp() + $effet);
 							if($effet > 0) echo '&nbsp;&nbsp;<span class="soin">'.$attaquant['nom'].' gagne '.$effet.' HP par récupération</span><br />';
 						}
 						if($defenseur['etat']['recuperation']['duree'] > 0)
@@ -305,7 +305,7 @@ else
 							if($effet > 0) echo '&nbsp;&nbsp;<span class="soin">'.$defenseur['nom'].' gagne '.$effet.' HP par récupération</span><br />';
 						}
 					}
-					$args[] = 'hp = '.$attaquant['hp'];
+					$args[] = 'hp = '.$attaquant->get_hp();
 					if($attaquant['bouclier']) $args[] = 'blocage = '.$attaquant['blocage'];
 					$args_def[] = 'hp = '.$defenseur['hp'];
 					
@@ -411,7 +411,7 @@ else
 			<div id="combat_cartouche">
 			<ul style="float:left;">
 				<li><span style="display:block;float:left;width:150px;">'.$attaquant['nom'].'</span>
-					<span style="display:block;float:left;width:150px;">'.$attaquant['hp'].' HP</span>
+					<span style="display:block;float:left;width:150px;">'.$attaquant->get_hp().' HP</span>
 					</li>
 					<li><span style="display:block;float:left;width:150px;">'.$defenseur['nom'].'</span>
 						<span style="display:block;float:left;width:150px;"><img src="genere_barre_vie.php?longueur='.$longueur.'" alt="Estimation des HP : '.$longueur.'% / + ou - : '.$fiabilite.'%"" title="Estimation des HP : '.$longueur.'% / + ou - : '.$fiabilite.'%" /></span>
@@ -419,7 +419,7 @@ else
 			</ul>
 			<div style="float:left;">';			
 			//L'attaquant est mort !
-			if ($attaquant['hp'] <= 0)
+			if ($attaquant->get_hp() <= 0)
 			{
 				$coeff = 1;
 				//Si c'était un monstre
@@ -455,7 +455,7 @@ else
 					$starmax = $row[1];
 					$starmin = floor($row[1] / 2);
 					$star = rand($starmin, $starmax) * $G_drop_rate;
-					if($attaquant['race'] == 'nain') $star = floor($star * 1.1);
+					if($attaquant->get_race() == 'nain') $star = floor($star * 1.1);
 					if(in_array('recherche_precieux', $attaquant['buff'])) $star = $star * (1 + ($attaquant['buff']['recherche_precieux']['effet'] / 100));
 					$star = ceil($star);
 					$taxe = floor($star * $R['taxe'] / 100);
@@ -469,7 +469,7 @@ else
 						$db->query($requete);
 					}
 					
-					$groupe = recupgroupe($attaquant['groupe'], $attaquant['x'].'-'.$attaquant['y']);
+					$groupe = recupgroupe($attaquant['groupe'], $attaquant->get_x().'-'.$attaquant->get_y());
 					//Drop d'un objet ?
 					$drops = explode(';', $drop);
 					if($drops[0] != '')
@@ -481,7 +481,7 @@ else
 							$share = explode('-', $drops[$i]);
 							$objet = $share[0];
 							$taux = ceil($share[1] / $G_drop_rate);
-							if($attaquant['race'] == 'humain') $taux = floor($taux / 1.3);
+							if($attaquant->get_race() == 'humain') $taux = floor($taux / 1.3);
 							if(in_array('fouille_gibier', $attaquant['buff'])) $taux = floor($taux / (1 + ($attaquant['buff']['fouille_gibier']['effet'] / 100)));
 							$tirage = rand(1, $taux);
 							//Si c'est un objet de quête :
@@ -626,7 +626,7 @@ else
 									$gagnant = recupperso($attaquant['ID']);
 								}
 								//Insertion du loot dans le journal du gagnant
-								$requete = "INSERT INTO journal VALUES('', ".$gagnant['ID'].", 'loot', '', '', NOW(), '".mysql_escape_string($objet_nom)."', '', ".$attaquant['x'].", ".$attaquant['y'].")";
+								$requete = "INSERT INTO journal VALUES('', ".$gagnant['ID'].", 'loot', '', '', NOW(), '".mysql_escape_string($objet_nom)."', '', ".$attaquant->get_x().", ".$attaquant->get_y().")";
 								$db->query($requete);
 								if($objet[0] != 'r')
 								{
@@ -734,9 +734,9 @@ else
 			{
 				echo(' <a href="attaque_monstre.php?ID='.$W_ID.'&amp;type='.$ennemi.'&amp;table='.sSQL($_GET['table']).'&amp;poscase='.$W_case.'" onclick="return envoiInfo(this.href, \'information\')"><img src="image/interface/attaquer.png" alt="Combattre" title="Attaquer la même cible" style="vertical-align : middle;" /></a><br />');
 			}
-			$attaquant['pa'] -= $pa_attaque;
+			$attaquant->set_pa($attaquant->get_pa() - $pa_attaque);
 			sauve_sans_bonus_ignorables($attaquant, array('survie', 'melee', 'distance', 'esquive', 'hp', 'pa'));
-			//$requete = 'UPDATE perso SET survie = '.$attaquant['survie'].' ,melee = '.$attaquant['melee'].', esquive = '.$attaquant['esquive'].', hp = '.$attaquant['hp'].', pa = '.$attaquant['pa'].' - '.$pa_attaque.' WHERE ID = '.$_SESSION['ID'];
+			//$requete = 'UPDATE perso SET survie = '.$attaquant['survie'].' ,melee = '.$attaquant['melee'].', esquive = '.$attaquant['esquive'].', hp = '.$attaquant->get_hp().', pa = '.$attaquant->get_pa().' - '.$pa_attaque.' WHERE ID = '.$_SESSION['ID'];
 			//$db->query($requete);
 		}
 		else

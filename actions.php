@@ -27,7 +27,7 @@ check_perso($joueur);
 			//Si ya pas d'id_action alors création
 			if($_GET['id_action'] == '')
 			{
-				$requete = "INSERT INTO action_perso VALUES('', ".$joueur['ID'].", '".sSQL($_POST['action_nom'])."', '', '".sSQL($_POST['mode'])."')";
+				$requete = "INSERT INTO action_perso VALUES('', ".$joueur->get_id().", '".sSQL($_POST['action_nom'])."', '', '".sSQL($_POST['mode'])."')";
 				$req = $db->query($requete);
 				$id_action = $db->last_insert_id();
 			}
@@ -62,7 +62,7 @@ check_perso($joueur);
 			if($_GET['type'] == 'attaque') $t = 'a';
 			else $t = 'd';
 			$id_action = mysql_escape_string($_GET['id_action']);
-			$requete = "UPDATE perso SET action_".$t." = '".sSQL($id_action)."' WHERE ID = ".$joueur['ID'];
+			$requete = "UPDATE perso SET action_".$t." = '".sSQL($id_action)."' WHERE ID = ".$joueur->get_id();
 			if($db->query($requete))
 			{
 				$joueur['action_'.$t] = $_GET['id_action'];
@@ -74,7 +74,7 @@ check_perso($joueur);
 			$requete = "SELECT action, mode FROM action_perso WHERE id = ".sSQL($_GET['id_action']);
 			$req = $db->query($requete);
 			$row = $db->read_assoc($req);
-			$requete = "INSERT INTO action_perso VALUES('', ".$joueur['ID'].", '".sSQL($_GET['nom_copie'])."', '".$row['action']."', '".$row['mode']."')";
+			$requete = "INSERT INTO action_perso VALUES('', ".$joueur->get_id().", '".sSQL($_GET['nom_copie'])."', '".$row['action']."', '".$row['mode']."')";
 			//echo $requete;
 			if($db->query($requete))
 			{
@@ -92,7 +92,7 @@ check_perso($joueur);
 					<li>
 						Copier le script : <select name="id_action_c" id="id_action_c">
 							<?php
-								$requete = "SELECT * FROM action_perso WHERE id_joueur = ".$joueur['ID']." ORDER BY nom ASC";
+								$requete = "SELECT * FROM action_perso WHERE id_joueur = ".$joueur->get_id()." ORDER BY nom ASC";
 								$req = $db->query($requete);
 								while($row = $db->read_assoc($req))
 								{
@@ -113,7 +113,7 @@ check_perso($joueur);
 						<td>
 							: <select name="id_action_a" id="id_action_a">
 						<?php
-						$requete = "SELECT * FROM action_perso WHERE id_joueur = ".$joueur['ID']." ORDER BY nom ASC";
+						$requete = "SELECT * FROM action_perso WHERE id_joueur = ".$joueur->get_id()." ORDER BY nom ASC";
 						$req = $db->query($requete);
 						while($row = $db->read_assoc($req))
 						{
@@ -140,7 +140,7 @@ check_perso($joueur);
 						<td>
 							: <select name="id_action_d" id="id_action_d">
 							<?php
-								$requete = "SELECT * FROM action_perso WHERE id_joueur = ".$joueur['ID']." ORDER BY nom ASC";
+								$requete = "SELECT * FROM action_perso WHERE id_joueur = ".$joueur->get_id()." ORDER BY nom ASC";
 								$req = $db->query($requete);
 								while($row = $db->read_assoc($req))
 								{
@@ -170,7 +170,7 @@ check_perso($joueur);
 						<td>
 							 : <select name="id_action" id="id_action">
 						<?php
-						$requete = "SELECT * FROM action_perso WHERE id_joueur = ".$joueur['ID']." ORDER BY nom ASC";
+						$requete = "SELECT * FROM action_perso WHERE id_joueur = ".$joueur->get_id()." ORDER BY nom ASC";
 						$req = $db->query($requete);
 						while($row = $db->read_assoc($req))
 						{
@@ -192,7 +192,7 @@ check_perso($joueur);
 						<td>
 							: <select name="id_action_suppr" id="id_action_suppr">
 							<?php
-							$requete = "SELECT * FROM action_perso WHERE id_joueur = ".$joueur['ID']." ORDER BY nom ASC";
+							$requete = "SELECT * FROM action_perso WHERE id_joueur = ".$joueur->get_id()." ORDER BY nom ASC";
 							$req = $db->query($requete);
 							while($row = $db->read_assoc($req))
 							{

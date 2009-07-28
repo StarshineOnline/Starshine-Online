@@ -173,19 +173,20 @@ if(array_key_exists('from', $_GET) && $_GET['id_action'] != '')
 			$req = $db->query($requete);
 			$_SESSION['script'] = array();
 			
-			if(empty($joueur->get_action_a()))
+			if($joueur->get_action_a() == '')
 			{
 				$requete = "UPDATE perso SET action_a = '".sSQL($id_action)."' WHERE ID = ".$joueur->get_id();
 				if($db->query($requete))
 					$joueur->set_action_a($id_action);
 			}
 			
-			if(empty($joueur->get_action_d()))
+			if($joueur->get_action_d() == '')
 			{
 				$requete = "UPDATE perso SET action_d = '".sSQL($id_action)."' WHERE ID = ".$joueur->get_id();
 				if($db->query($requete))
 					$joueur->set_action_d($id_action);
 			}
+			$joueur->sauver();
 		}
 		?>
 			</table>

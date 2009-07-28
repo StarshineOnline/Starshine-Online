@@ -136,7 +136,7 @@ if($W_distance == 0 AND $verif_ville)
 							</p>
 							<?php
 							//Si ca n'est pas en royaume neutre, on peut acheter
-							if($R['ID'] != 0)
+							if($R['id'] != 0)
 							{
 								?>
 							<ul class="ville">

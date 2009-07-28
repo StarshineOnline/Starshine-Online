@@ -355,7 +355,7 @@ function ressource_terrain($terrain)
 function is_ville($case)
 {
 	global $db;
-	$requete = "SELECT type, royaume FROM map WHERE ID = ".$case;
+	$requete = "SELECT type, royaume FROM map WHERE id = ".$case;
 	$req = $db->query($requete);
 	$row = $db->read_row($req);
 	if($row[1] != 0) return $row[0];
@@ -1908,7 +1908,7 @@ function prend_objet($id_objet, $joueur)
 	$i = 0;
 	while(($i < $G_place_inventaire) AND !$trouver)
 	{
-		$objet_i = decompose_objet($joueur['inventaire_slot'][$i]);
+		$objet_i = decompose_objet($joueur->get_inventaire_slot_partie($i));
 		// Comparaison de la description ('sans_stack') et du nombre d'objet empilé par rapport au maximum
 		if($objet_i['sans_stack'] == $objet_d['sans_stack'] AND intval($objet_i['stack']) < $row['stack'])
 		{
@@ -2312,7 +2312,7 @@ function verif_mort($pourcent, $var, $duree_debuff=0, $multiplicateur_mouvement=
 		$joueur->set_hp($joueur->get_hp_max() * $pourcent / 100);
 		$joueur->set_mp($joueur->get_mp_max() * $pourcent / 100);
 		
-		$joueur->set_regen_hp($time());
+		$joueur->set_regen_hp(time());
 
 		//Téléportation dans sa ville avec PV et MP modifiés
 		$joueur->sauver();
@@ -2367,7 +2367,7 @@ function genere_image_pa($joueur)
  */
 function genere_image_buff_duree($buff)
 {//-- Barre durée restante du buff
-	$ratio_buff_duree = floor(10 * (($buff['fin'] - time()) / ($buff['duree'])));
+	$ratio_buff_duree = floor(10 * (($buff->get_fin() - time()) / ($buff->get_duree())));
 	if($ratio_buff_duree > 10) 	{ $ratio_buff_duree = 10; };
 	if($ratio_buff_duree < 0) 	{ $ratio_buff_duree = 0; };
 	$barre_buff_duree = "image/barre/buff_duree".$ratio_buff_duree.".png";

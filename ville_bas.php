@@ -6,7 +6,7 @@ if (file_exists('root.php'))
 if (!$W_case)
 {
 	if(array_key_exists('poscase', $_GET)) $W_case = $_GET['poscase'];
-	else $W_case = convert_in_pos($joueur['x'], $joueur['y']);
+	else $W_case = convert_in_pos($joueur->get_x(), $joueur->get_y());
 }
 if(is_ville($W_case))
 {

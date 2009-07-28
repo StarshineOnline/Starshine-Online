@@ -3,10 +3,10 @@ if (file_exists('../root.php'))
   include_once('../root.php');
 ?><?php
 $textures = false;
-include_once(root.'../haut.php');
+include_once(root.'haut.php');
 setlocale(LC_ALL, 'fr_FR');
 ?>
-<link rel="stylesheet" type="text/css" media="screen,projection" title="Normal" href="<?php echo $root; ?>css/index.css" />
+<link rel="stylesheet" type="text/css" media="screen,projection" title="Normal" href="<?php echo root; ?>css/index.css" />
 <div id="site"><?php
 if ($G_maintenance)
 {

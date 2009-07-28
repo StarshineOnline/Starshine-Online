@@ -2,10 +2,7 @@
 if (file_exists('root.php'))
   include_once('root.php');
 
-include_once(root.'inc/fp.php');
-$joueur = recupperso($_SESSION['ID']);
 //Affichage du chat
-
 $url = 'http://www.starshine-online.com/tigase';
 
 ?>

@@ -6,20 +6,19 @@ if (file_exists('root.php'))
 //Inclusion du haut du document html
 include_once(root.'haut_ajax.php');
 
-$joueur = recupperso($_SESSION['ID']);
+$joueur = new perso($_SESSION['ID']);
 
 check_perso($joueur);
 
 //Vérifie si le perso est mort
 verif_mort($joueur, 1);
 
-$pos = convert_in_pos($joueur['x'], $joueur['y']);
-$W_requete = "SELECT royaume FROM map WHERE ID = ".$pos;
+$pos = convert_in_pos($joueur->get_x(), $joueur->get_y());
+$W_requete = "SELECT royaume FROM map WHERE id = ".$pos;
 $W_req = $db->query($W_requete);
 $W_row = $db->read_array($W_req);
-$R = get_royaume_info($joueur['race'], $W_row['royaume']);
+$R = get_royaume_info($joueur->get_race(), $W_row['royaume']);
 
-$_SESSION['position'] = convert_in_pos($joueur['x'], $joueur['y']);
 if(array_key_exists('fort', $_GET)) $fort = '&amp;fort=ok'; else $fort = '';
 ?>
     	<h2 class="ville_titre"><?php if(!array_key_exists('fort', $_GET)) return_ville('<a href="ville.php?poscase='.$pos.'" onclick="return envoiInfo(this.href, \'centre\')">'.$R['nom'].'</a> - ', $pos); ?> <?php echo '<a href="taverne.php?poscase='.$pos.'" onclick="return envoiInfo(this.href,\'carte\')">';?> Alchimiste </a></h2>
@@ -40,13 +39,12 @@ if($W_distance == 0)
 				$row = $db->read_array($req);
 				$taxe = ceil($row['prix'] * $R['taxe'] / 100);
 				$cout = $row['prix'] + $taxe;
-				if ($joueur['star'] >= $cout)
+				if ($joueur->get_star() >= $cout)
 				{
 					if(prend_objet('o'.$row['id'], $joueur))
 					{
-						$joueur['star'] = $joueur['star'] - $cout;
-						$requete = "UPDATE perso SET star = ".$joueur['star']." WHERE ID = ".$_SESSION['ID'];
-						$req = $db->query($requete);
+						$joueur->set_star($joueur->get_star() - $cout);
+						$joueur->sauver();
 						//Récupération de la taxe
 						if($taxe > 0)
 						{
@@ -71,7 +69,7 @@ if($W_distance == 0)
 				$recette = new craft_recette($_GET['id']);
 				$taxe = ceil($recette->prix * $R['taxe'] / 100);
 				$cout = $recette->prix + $taxe;
-				if ($joueur['star'] >= $cout)
+				if ($joueur->get_star() >= $cout)
 				{
 					$perso = new perso_recette();
 					$perso_recette = $perso->recov($joueur['ID'], $_GET['id']);
@@ -81,9 +79,8 @@ if($W_distance == 0)
 						$perso_recette->id_perso = $joueur['ID'];
 						$perso_recette->id_recette = $_GET['id'];
 						$perso_recette->sauver();
-						$joueur['star'] = $joueur['star'] - $cout;
-						$requete = "UPDATE perso SET star = ".$joueur['star']." WHERE ID = ".$_SESSION['ID'];
-						$req = $db->query($requete);
+						$joueur->set_star($joueur->get_star() - $cout);
+						$joueur->sauver();
 						//Récupération de la taxe
 						if($taxe > 0)
 						{
@@ -114,17 +111,15 @@ if($W_distance == 0)
 					$db->query($requete);
 					$R['alchimie'] += $recherche;
 					echo '<h6>Vous augmentez la recherche de votre royaume en alchimie de '.$recherche.' points</h6>';
-					$requete = "UPDATE perso SET pa = pa - 10 WHERE ID = ".$joueur['ID'];
-					$db->query($requete);
+					$joueur->set_pa($joueur->get_pa() - 10);
 					//Augmentation de la compétence d'architecture
 					$augmentation = augmentation_competence('alchimie', $joueur, 2);
 					if ($augmentation[1] == 1)
 					{
-						$joueur['alchimie'] = $augmentation[0];
+						$joueur->set_alchimie($augmentation[0]);
 						echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant à '.$joueur['alchimie'].' en alchimie</span><br />';
-						$requete = "UPDATE perso SET alchimie = ".$joueur['alchimie']." WHERE ID = ".$joueur['ID'];
-						$db->query($requete);
 					}
+					$joueur->sauver();
 				}
 				else echo '<h5>Vous n\'avez pas assez de PA</h5>';
 			break;
@@ -214,7 +209,7 @@ if($W_distance == 0)
 			$taxe = ceil($row['prix'] * $R['taxe'] / 100);
 			$cout = $row['prix'] + $taxe;
 			$couleur = $color;
-			if($row['forcex'] > $joueur['force'] OR $row['melee'] > $joueur['melee'] OR $cout > $joueur['star'] OR $row['distance'] > $joueur['distance']) $couleur = 3;
+			if($row['forcex'] > $joueur->get_force() OR $row['melee'] > $joueur->get_melee() OR $cout > $joueur->get_star() OR $row['distance'] > $joueur->get_distance()) $couleur = 3;
 		?>
 		<tr class="element trcolor<?php echo $couleur; ?>">
 			<td>
@@ -259,7 +254,7 @@ if($W_distance == 0)
 			$taxe = ceil($row['prix'] * $R['taxe'] / 100);
 			$cout = $row['prix'] + $taxe;
 			$couleur = $color;
-			if($cout > $joueur['star']) $couleur = 3;
+			if($cout > $joueur->get_star()) $couleur = 3;
 		?>
 		<tr class="element trcolor<?php echo $couleur; ?>">
 			<td>

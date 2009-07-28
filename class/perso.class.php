@@ -2585,7 +2585,7 @@ class perso
 		if ($arme != '')
 		{
 			global $db;
-			$arme_d = decompose_objet($R_perso['arme']);
+			$arme_d = decompose_objet($arme);
 			$requete = "SELECT distance_tir FROM arme WHERE id = ".$arme_d['id_objet'];
 			$req = $db->query($requete);
 			$row = $db->read_array($req);

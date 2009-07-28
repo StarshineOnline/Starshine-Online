@@ -184,7 +184,7 @@ function affiche_quetes($fournisseur, $joueur)
 	global $db, $R;
 	$return = array();
 	$quetes = array();
-	if(is_array($joueur['quete']))
+	if(is_array($joueur->get_quete()))
 	{
 		foreach($joueur['quete'] as $quete)
 		{
@@ -197,7 +197,7 @@ function affiche_quetes($fournisseur, $joueur)
 	$where = "";
 	$id_royaume = $R['ID'];
 	if($id_royaume < 10) '0'.$id_royaume;
-	$requete = "SELECT *, quete.id as idq FROM quete LEFT JOIN quete_royaume ON quete.id = quete_royaume.id_quete WHERE ((achat = 'oui' AND quete_royaume.id_royaume = ".$R['ID'].") OR (achat = 'non' AND royaume LIKE '%".$id_royaume."%')) AND quete.fournisseur = '".$fournisseur."' AND quete.niveau_requis <= ".$joueur['level']." AND quete.honneur_requis <= ".$joueur['honneur']." ".$where." ".$notin." ORDER BY quete.lvl_joueur";
+	$requete = "SELECT *, quete.id as idq FROM quete LEFT JOIN quete_royaume ON quete.id = quete_royaume.id_quete WHERE ((achat = 'oui' AND quete_royaume.id_royaume = ".$R['id'].") OR (achat = 'non' AND royaume LIKE '%".$id_royaume."%')) AND quete.fournisseur = '".$fournisseur."' AND quete.niveau_requis <= ".$joueur->get_level()." AND quete.honneur_requis <= ".$joueur->get_honneur()." ".$where." ".$notin." ORDER BY quete.lvl_joueur";
 	$req = $db->query($requete);
 	if($db->num_rows > 0)
 	{
@@ -205,7 +205,7 @@ function affiche_quetes($fournisseur, $joueur)
 	}
 	while($row = $db->read_array($req))
 	{
-		$quete_fini = explode(';', $joueur['quete_fini']);
+		$quete_fini = explode(';', $joueur->get_quete_fini());
 		//Si c'est une quète non répétable et que le joueur a déjà fini la quète, on affiche pas.
 		if($row['repete'] == 'n' AND in_array($row['idq'], $quete_fini))
 		{
