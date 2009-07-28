@@ -3211,7 +3211,7 @@ function list_joueurs_visu($joueur, $distance) {
 	if ($db->num_rows > 0) {
 		while ($row = $db->read_assoc($req)) {
 			$pos2 = convert_in_pos($row['x'], $row['y']);
-			$dst = calcul_distance($pos1, $pos2);
+			$dst = calcul_distance_pytagore($pos1, $pos2);
 			if ($dst <= $distance)
 			{
 				$ret[] = $row;
