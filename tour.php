@@ -36,7 +36,7 @@ $W_coord = convert_in_coord($W_case);
 if($W_distance == 0)
 {
 	echo 'Position - X : '.$row_c['x'].' - Y : '.$row_c['y'].'<br />';
-	echo 'Distance de vue : '.$row_b['bonus4'].' case.<br />';
+	echo 'Distance de vue : '.$row_b['bonus4'].' cases.<br />';
 	echo '<h3>Joueurs en visu</h3>';
 	$joueurs = list_joueurs_visu($joueur, $row_b['bonus4']);
 	echo '<div class="visu"><ul>';
