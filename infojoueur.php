@@ -103,10 +103,13 @@ if($joueur->get_sort_jeu() != '')
 	}
 }
 
-if (($W_distance < 2) AND ($W_ID != $_SESSION['ID']) AND ($perso->get_groupe() != $joueur->get_groupe() OR $joueur->get_groupe() == '' OR $joueur->get_groupe() == 0))
+if (($W_distance < 2) AND ($W_ID != $_SESSION['ID']) AND ($perso->get_groupe() != $joueur->get_groupe() OR $joueur->get_groupe() == '' OR $joueur->get_groupe() == 0) AND !$joueur->is_buff('debuff_groupe'))
 {
 	echo('<tr><td><img src="image/interface/demande_groupe.png" alt="Inviter ce joueur dans votre groupe" title="Inviter ce joueur dans votre groupe" style="vertical-align : middle;" /></td><td><a href="invitegroupe.php?ID='.$W_ID.'" onclick="return envoiInfo(this.href, \'information\')"> Inviter ce joueur dans votre groupe</a></td></tr>');
 }
+else
+	echo 'Vous êtes déprimé, vous ne pouvez pas grouper';
+
 //Voir l'inventaire
 if(array_key_exists(20, $bonus) AND check_affiche_bonus($bonus[20], $joueur, $perso))
 {
@@ -117,7 +120,14 @@ if(array_key_exists(23, $bonus) AND check_affiche_bonus($bonus[23], $joueur, $pe
 {
 	echo('<tr><td></td><td><a href="personnage.php?id_perso='.$W_ID.'" onclick="return envoiInfo(this.href, \'information\')"> Voir les caractéristiques de ce joueur</a></td></tr>');
 }
-if(!isset($groupe)) { $groupe = new groupe($joueur->get_groupe(), ""); };
+if(!isset($groupe)) { 
+
+if($joueur->is_buff('debuff_groupe'))
+	echo 'Vous êtes déprimé, vous ne pouvez pas grouper';
+else
+	$groupe = new groupe($joueur->get_groupe(), ""); 
+
+};
 
 
 if(($perso->get_groupe() == $joueur->get_groupe()) AND ($groupe->get_leader() == $joueur->get_id()))

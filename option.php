@@ -169,7 +169,7 @@ include_once(root.'inc/fp.php');
 			</div>
 			<div class"news">
 				<h3>Mot de passe</h3>
-				<strong>Attention votre mot de passe jeu, et votre mot de passe forum seront changés simultanément !</strong><br />
+				<strong>Attention il vous faudra &eacute;galement changer votre mot de passe sur le forum!</strong><br />
 				<ul>
 					<li><a href="option.php?action=mdp" onclick="return envoiInfo(this.href, 'popup_content');">Modifier votre mot de passe JEU</a></li>
 				</ul>

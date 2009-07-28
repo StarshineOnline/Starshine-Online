@@ -151,6 +151,7 @@ function degroup($ID_joueur, $ID_groupe)
 		$db->query($requete);
 	}
 	echo 'Le joueur a bien quitté le groupe';
+	lance_buff('debuff_groupe', $ID_joueur, '0', '0', 86400, 'Dépression', 'Tant que vous êtes déprimé, vous ne pouvez regrouper avec qui que ce soit.', 'perso', 1, 0, 0, 0);
 }
 
 function groupe_trouve_joueur($id_joueur, $groupe)
