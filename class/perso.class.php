@@ -2459,42 +2459,136 @@ class perso
 		return round(sqrt(($this->architecture + $this->forge + $this->alchimie) * 10));
 	}
 
-  function get_pos() {
-    return convert_in_pos($this->x, $this->y);
-  }
+	function get_inventaire_partie($partie)
+	{
+		if(!isset($this->inventaire_array)) $this->inventaire_array = unserialize($this->get_inventaire());
+		return $this->inventaire_array[$partie];
+	}
 
-  function get_coef_melee() {
-    return $this->forcex * $this->melee;
-  }
+	function get_inventaire_slot_partie($partie = false)
+	{
+		if(!isset($this->inventaire_slot_array)) $this->inventaire_slot_array = unserialize($this->get_inventaire_slot());
+		if(!$partie) return $this->inventaire_slot_array;
+		else return $this->inventaire_slot_array[$partie];
+	}
 
-  function get_coef_distance() {
-    return round($this->forcex + $this->dexterite) * $this->distance;
-  }
+	function get_armure()
+	{
+		if(!isset($this->armure))
+		{
+			$this->pp = 0;
+			$this->pm = 0;
+			// Pièces d'armure
+			$partie_armure = array('tete', 'torse', 'main', 'ceinture', 'jambe', 'chaussure', 'dos', 'cou', 'doigt');
+			foreach($partie_armure as $partie)
+			{
+				if($partie != '')
+				{
+					$partie_d = decompose_objet($this->get_inventaire_partie($partie));
+					if($partie_d['id_objet'] != '')
+					{
+						$requete = "SELECT PP, PM, effet FROM armure WHERE id = ".$partie_d['id_objet'];
+						$req = $db->query($requete);
+						$row = $db->read_row($req);
+						$this->pp += $row[0];
+						$this->pm += $row[1];
+						// Effets magiques
+						$effet = explode(';', $row[2]);
+						foreach($effet as $eff)
+						{
+							$explode = explode('-', $eff);
+							$R_perso['objet_effet'][$objet_effet_id]['id'] = $explode[0];
+							$R_perso['objet_effet'][$objet_effet_id]['effet'] = $explode[1];
+						}
+						$objet_effet_id++;
+					}
+					// Gemmes
+					if($partie_d['enchantement'] > 0)
+					{
+						$R_perso = enchant($partie_d['enchantement'], $R_perso);
+					}
+				}
+			}
+		}
+		return $this->armure;
+	}
 
-  function get_coef_incantation() {
-    return $this->puissance * $this->incantation;
-  }
+	function get_pm($base = false)
+	{
+		if(!isset($this->pm))
+		{
+			$this->get_armure();
+		}
+		if(!$base) return $this->pm;
+		else return $this->pm_base;
+	}
 
-  function get_coef_blocage() {
-    return round($this->forcex + $this->dexterite) * $this->blocage;
-  }
+	function get_pp($base = false)
+	{
+		if(!isset($this->pp))
+		{
+			$this->get_armure();
+		}
+		if(!$base) return $this->pp;
+		else return $this->pp_base;
+	}
 
-  function get_force() { return $this->forcex; }
-  function set_force($force) { $this->set_forcex($force); }
+	function get_reserve($base = false)
+	{
+		if(!isset($this->reserve)) $this->reserve = ceil(2.1 * ($this->energie + floor(($rhis->energie - 8) / 2)));
+		return $this->reserve;
+	}
 
-  function inventaire() { return unserialize($this->inventaire); }
+	function get_coef_melee()
+	{
+		if(!isset($this->coef_melee)) $this->coef_melee = $this->forcex * $this->melee;
+		return $this->coef_melee;
+	}
 
-  function get_distance_tir() {
-    $arme = $this->inventaire()->main_droite;
-    if ($arme != '') {
-      global $db;
-      $arme_d = decompose_objet($R_perso['arme']);
-      $requete = "SELECT distance_tir FROM arme WHERE id = ".$arme_d['id_objet'];
-      $req = $db->query($requete);
-      $row = $db->read_array($req);
-      return $row['distance_tir'];
-    }
-    return 0;
-  }
+	function get_coef_incantation()
+	{
+		if(!isset($this->coef_incantation)) $this->coef_incantation = $this->puissance * $this->incantation;
+		return $this->coef_incantation;
+	}
+
+	function get_coef_distance()
+	{
+		if(!isset($this->coef_distance)) $this->coef_distance = round(($this->forcex + $this->dexterite) / 2) * $this->distance;
+		return $this->coef_distance;
+	}
+
+	function get_coef_blocage()
+	{
+		if(!isset($this->coef_blocage)) $this->coef_blocage = round(($this->forcex + $this->dexterite) / 2) * $this->blocage;
+		return $this->coef_blocage;
+	}
+
+	function get_pos()
+	{
+		return convert_in_pos($this->x, $this->y);
+	}
+
+	function get_force() { return $this->get_forcex(); }
+	function set_force($force) { $this->set_forcex($force); }
+
+	function inventaire()
+	{
+		return unserialize($this->inventaire);
+	}
+
+	function get_distance_tir()
+	{
+		$arme = $this->inventaire()->main_droite;
+		if ($arme != '')
+		{
+			global $db;
+			$arme_d = decompose_objet($R_perso['arme']);
+			$requete = "SELECT distance_tir FROM arme WHERE id = ".$arme_d['id_objet'];
+			$req = $db->query($requete);
+			$row = $db->read_array($req);
+			return $row['distance_tir'];
+		}
+		return 0;
+	}
 }
 ?>
