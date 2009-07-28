@@ -2,11 +2,10 @@
 if (file_exists('../root.php'))
   include_once('../root.php');
 ?><?php
-$root = '../';
 //Connexion obligatoire
 $connexion = true;
 //Inclusion du haut du document html
-include_once(root.$root.'inc/fp.php');
+include_once(root.'inc/fp.php');
 
 $joueur = new perso($_SESSION['ID']);
 if($joueur->get_grade()->get_nom() == 'Roi' OR strtolower($joueur->get_nom()) == 'r')
@@ -77,7 +76,7 @@ if($joueur->get_grade()->get_nom() == 'Roi' OR strtolower($joueur->get_nom()) ==
 	<div id="perso">
 
 		<div id="perso_contenu">
-		<?php include_once(root.'perso_contenu.php'); ?>
+		<?php include_once(root.'roi/perso_contenu.php'); ?>
 		</div>
  
 

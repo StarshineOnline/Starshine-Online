@@ -4,7 +4,7 @@ if (file_exists('../root.php'))
 
 //Inclusion du haut du document html
 $connexion = true;
-$root = '../';
+
 //Inclusion du haut du document html
 include_once(root.$root.'inc/fp.php');
 

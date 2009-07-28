@@ -73,7 +73,7 @@ include_once(root.$root.'fonction/print.inc.php');
 function __autoload($class_name)
 {
 	global $root;
-	require_once($root.'class/'.$class_name .'.class.php');
+	require_once(root.'class/'.$class_name .'.class.php');
 }
 
 ?>

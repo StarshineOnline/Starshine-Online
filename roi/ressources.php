@@ -3,7 +3,7 @@ if (file_exists('../root.php'))
   include_once('../root.php');
 ?><?php
 require('haut_roi.php');
-include_once(root.'../inc/ressource.inc.php');
+include_once(root.'inc/ressource.inc.php');
 
 function ressource($nom)
 {

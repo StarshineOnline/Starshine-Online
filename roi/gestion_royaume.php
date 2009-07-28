@@ -7,7 +7,7 @@ if($joueur->get_rang_royaume() != 6)
 	echo '<p>Cheater</p>';
 	else if($_GET['direction'] == 'diplomatie')
 	{
-		$requete = "SELECT * FROM diplomatie WHERE race = '".$joueur['race']."'";
+		$requete = "SELECT * FROM diplomatie WHERE race = '".$joueur->get_race()."'";
 		$req = $db->query($requete);
 		$row = $db->read_assoc($req);
 		if($_GET['action'] == 'valid')
@@ -21,7 +21,7 @@ if($joueur->get_rang_royaume() != 6)
 			    //Si modification moins, on envoi la demande à l'autre royaume
 			    if($_GET['diplo'] == 'm')
 			    {
-				$requete = 'SELECT * FROM diplomatie_demande WHERE royaume_demande = \''.$joueur['race'].'\' AND royaume_recois = \''.$_GET['race'].'\'';
+				$requete = 'SELECT * FROM diplomatie_demande WHERE royaume_demande = \''.$joueur->get_race().'\' AND royaume_recois = \''.$_GET['race'].'\'';
 				$db->query($requete);
 				if(empty($db->num_rows))
 				{
@@ -32,7 +32,7 @@ if($joueur->get_rang_royaume() != 6)
 					$requete = "UPDATE royaume SET star = star - ".$star." WHERE ID = ".$R['ID'];
 					$db->query($requete);
 					//Envoi de la demande
-					$requete = "INSERT INTO diplomatie_demande VALUES(NULL, ".$diplo.", '".$joueur['race']."', '".$_GET['race']."',  ".$star.")";
+					$requete = "INSERT INTO diplomatie_demande VALUES(NULL, ".$diplo.", '".$joueur->get_race()."', '".$_GET['race']."',  ".$star.")";
 					$db->query($requete);
 					echo 'Une demande au royaume '.$Gtrad[$_GET['race']].' pour passer en diplomatie : '.$Gtrad['diplo'.$diplo].' en échange de '.$star.' stars a été envoyée.<br /><br />';
 				}
@@ -46,16 +46,16 @@ if($joueur->get_rang_royaume() != 6)
 			        $duree = (pow(2, abs(5 - $diplo)) * 60 * 60 * 24);
 			        $prochain_changement = time() + $duree;
 			        //Requète de changement pour ce royaume
-			        $requete = "UPDATE diplomatie SET ".sSQL($_GET['race'])." = ".$diplo." WHERE race = '".$joueur['race']."'";
+			        $requete = "UPDATE diplomatie SET ".sSQL($_GET['race'])." = ".$diplo." WHERE race = '".$joueur->get_race()."'";
 			        $db->query($requete);
 			        //Requète de changement pour l'autre royaume
-			        $requete = "UPDATE diplomatie SET ".$joueur['race']." = ".$diplo." WHERE race = '".sSQL($_GET['race'])."'";
+			        $requete = "UPDATE diplomatie SET ".$joueur->get_race()." = ".$diplo." WHERE race = '".sSQL($_GET['race'])."'";
 			        $db->query($requete);
 			        $requete = "SELECT diplo_time FROM royaume WHERE race = '".sSQL($_GET['race'])."'";
 			        $req = $db->query($requete);
 			        $row2 = $db->read_assoc($req);
 			        $row2['diplo_time'] = unserialize($row2['diplo_time']);
-			        $row2['diplo_time'][$joueur['race']] = $prochain_changement;
+			        $row2['diplo_time'][$joueur->get_race()] = $prochain_changement;
 			        $row2['diplo_time'] = serialize($row2['diplo_time']);
 			        $R['diplo_time'][$_GET['race']] = $prochain_changement;
 			        $R['diplo_time'] = serialize($R['diplo_time']);
@@ -69,11 +69,11 @@ if($joueur->get_rang_royaume() != 6)
 			        $req = $db->query($requete);
 			        $row_roi = $db->read_assoc($req);
 			        //Envoi d'un message au roi
-			        $message = 'Le roi des '.$Gtrad[$joueur['race']].' a changé son attitude diplomatique envers votre royaume en : '.$Gtrad['diplo'.$diplo];
+			        $message = 'Le roi des '.$Gtrad[$joueur->get_race()].' a changé son attitude diplomatique envers votre royaume en : '.$Gtrad['diplo'.$diplo];
 			        $requete = "INSERT INTO message VALUES('', ".$row_roi['ID'].", 0, 'Mess. Auto', '".$row_roi['nom']."', 'Modification de diplomatie', '".$message."', '', '".time()."', 0)";
 			        $db->query($requete);
 			    }
-			    $requete = "SELECT * FROM diplomatie WHERE race = '".$joueur['race']."'";
+			    $requete = "SELECT * FROM diplomatie WHERE race = '".$joueur->get_race()."'";
 			    $req = $db->query($requete);
 			    $row = $db->read_assoc($req);
 			}
@@ -186,7 +186,7 @@ if($joueur->get_rang_royaume() != 6)
 	    if($_GET['reponse'] == 'non')
 	    {
 	        //Envoi d'un message au roi
-	        $message = 'Le roi des '.$Gtrad[$joueur['race']].' a refusé votre demande diplomatique';
+	        $message = 'Le roi des '.$Gtrad[$joueur->get_race()].' a refusé votre demande diplomatique';
 	        $requete = "INSERT INTO message VALUES('', ".$row_roi['ID'].", 0,'Mess. Auto', '".$row_roi['nom']."', 'Refus de diplomatie', '".$message."', '', '".time()."', 0)";
 	        $db->query($requete);
 	        //On redonne les stars
@@ -200,19 +200,19 @@ if($joueur->get_rang_royaume() != 6)
 	        $duree = (pow(2, abs(5 - $diplo)) * 60 * 60 * 24);
 	        $prochain_changement = time() + $duree;
 	        //Requète de changement pour ce royaume
-	        $requete = "UPDATE diplomatie SET ".$row['royaume_demande']." = ".$diplo." WHERE race = '".$joueur['race']."'";
+	        $requete = "UPDATE diplomatie SET ".$row['royaume_demande']." = ".$diplo." WHERE race = '".$joueur->get_race()."'";
 	        $db->query($requete);
 	        //On donne les stars au royaume qui recoit
 	        $requete = "UPDATE royaume SET star = star + ".$row['stars']." WHERE race = '".$row['royaume_recois']."'";
 	        $db->query($requete);
 	        //Requète de changement pour l'autre royaume
-	        $requete = "UPDATE diplomatie SET ".$joueur['race']." = ".$diplo." WHERE race = '".$row['royaume_demande']."'";
+	        $requete = "UPDATE diplomatie SET ".$joueur->get_race()." = ".$diplo." WHERE race = '".$row['royaume_demande']."'";
 	        $db->query($requete);
 	        $requete = "SELECT diplo_time FROM royaume WHERE race = '".$row['royaume_demande']."'";
 	        $req = $db->query($requete);
 	        $row2 = $db->read_assoc($req);
 	        $row2['diplo_time'] = unserialize($row2['diplo_time']);
-	        $row2['diplo_time'][$joueur['race']] = $prochain_changement;
+	        $row2['diplo_time'][$joueur->get_race()] = $prochain_changement;
 	        $row2['diplo_time'] = serialize($row2['diplo_time']);
 	        $row3['diplo_time'] = $R['diplo_time'];
 	        $row3['diplo_time'][$row['royaume_demande']] = $prochain_changement;
@@ -223,7 +223,7 @@ if($joueur->get_rang_royaume() != 6)
 	        $db->query($requete);
 	        echo 'Vous êtes maintenant en '.$Gtrad['diplo'.$diplo].' avec les '.$Gtrad[$row['royaume_demande']].'<br /><br />';
 	        //Envoi d'un message au roi
-	        $message = 'Le roi des '.$Gtrad[$joueur['race']].' a accepté votre demande diplomatique'.(empty($row['stars']) ? '' : '.'.$row['stars'].' ont été versés à ce royaume.');
+	        $message = 'Le roi des '.$Gtrad[$joueur->get_race()].' a accepté votre demande diplomatique'.(empty($row['stars']) ? '' : '.'.$row['stars'].' ont été versés à ce royaume.');
 	        $requete = "INSERT INTO message VALUES('', ".$row_roi['ID'].", 0,'Mess. Auto', '".$row_roi['nom']."', 'Accord diplomatique', '".$message."', '', '".time()."', 0)";
 	        $db->query($requete);
 	    }
@@ -328,14 +328,14 @@ if($joueur->get_rang_royaume() != 6)
 	}
 	elseif($_GET['direction'] == 'carte')
 	{
-		echo '<img src="carte_roy2.php?url='.$joueur['race'].'" style="width:600px;margin-left:170px;" />';
+		echo '<img src="carte_roy2.php?url='.$joueur->get_race().'" style="width:600px;margin-left:170px;" />';
 	
 	}
 	elseif($_GET['direction'] == 'stats')
 	{
 		echo "<div id='stats'>";
 	    //Statistiques du royaume
-	    $requete = "SELECT *, COUNT(*) as tot FROM perso WHERE race = '".$joueur['race']."' AND statut = 'actif' GROUP BY classe ORDER BY tot DESC, classe ASC";
+	    $requete = "SELECT *, COUNT(*) as tot FROM perso WHERE race = '".$joueur->get_race()."' AND statut = 'actif' GROUP BY classe ORDER BY tot DESC, classe ASC";
 	    $req = $db->query($requete);
 		$boutique_class = 't1';
 	    
@@ -361,7 +361,7 @@ if($joueur->get_rang_royaume() != 6)
 	    </ul>
 	    </fieldset>
 	    <?php
-	    $requete = "SELECT nom, melee FROM perso WHERE race = '".$joueur['race']."' AND statut = 'actif' ORDER BY melee DESC LIMIT 0, 5";
+	    $requete = "SELECT nom, melee FROM perso WHERE race = '".$joueur->get_race()."' AND statut = 'actif' ORDER BY melee DESC LIMIT 0, 5";
 	    $req = $db->query($requete);
 		$boutique_class = 't1';
 	    
@@ -387,7 +387,7 @@ if($joueur->get_rang_royaume() != 6)
 	    </ul>
 	    </fieldset>	    
 	    <?php
-	    $requete = "SELECT nom, distance FROM perso WHERE race = '".$joueur['race']."' AND statut = 'actif' ORDER BY distance DESC LIMIT 0, 5";
+	    $requete = "SELECT nom, distance FROM perso WHERE race = '".$joueur->get_race()."' AND statut = 'actif' ORDER BY distance DESC LIMIT 0, 5";
 	    $req = $db->query($requete);
 		$boutique_class = 't1';
 	    
@@ -414,7 +414,7 @@ if($joueur->get_rang_royaume() != 6)
 	    </fieldset>	    
 	    
 	    <?php
-	    $requete = "SELECT nom, esquive FROM perso WHERE race = '".$joueur['race']."' AND statut = 'actif' ORDER BY esquive DESC LIMIT 0, 5";
+	    $requete = "SELECT nom, esquive FROM perso WHERE race = '".$joueur->get_race()."' AND statut = 'actif' ORDER BY esquive DESC LIMIT 0, 5";
 	    $req = $db->query($requete);
 		$boutique_class = 't1';
 	    
@@ -440,7 +440,7 @@ if($joueur->get_rang_royaume() != 6)
 	    </ul>
 	    </fieldset>	    	    	    	    
 	    <?php
-	    $requete = "SELECT nom, incantation FROM perso WHERE race = '".$joueur['race']."' AND statut = 'actif' ORDER BY incantation DESC LIMIT 0, 5";
+	    $requete = "SELECT nom, incantation FROM perso WHERE race = '".$joueur->get_race()."' AND statut = 'actif' ORDER BY incantation DESC LIMIT 0, 5";
 	    $req = $db->query($requete);
 		$boutique_class = 't1';	    
 	    ?>
@@ -504,12 +504,12 @@ if($joueur->get_rang_royaume() != 6)
 	    		<?php echo $amende; ?>
 	    	</span>
 	    	<span class='amende'>
-	    		<a href="gestion_royaume.php?direction=gestion_criminel&amp;id=<?php echo $row['ID']; ?>" onclick="return envoiInfo(this.href, 'conteneur')">Gérer</a>
+	    		<span onclick="affichePopUp('gestion_royaume.php?direction=gestion_criminel&amp;id=<?php echo $row['id']; ?>')">Gérer</span>
 	    		<?php
 	    		if($amende != 0)
 	    		{
 	        		?>
-	        		/ <a href="gestion_royaume.php?direction=suppr_criminel&amp;id=<?php echo $row['ID']; ?>" onclick="return envoiInfo(this.href, 'conteneur')">Supprimer</a>
+	        		/ <span onclick="affichePopUp('gestion_royaume.php?direction=suppr_criminel&amp;id=<?php echo $row['id']; ?>')">Supprimer</a>
 	        		<?php
 	    		}
 	    		?>
@@ -535,20 +535,20 @@ if($joueur->get_rang_royaume() != 6)
 	}
 	elseif($_GET['direction'] == 'gestion_criminel')
 	{
-	    $joueur = recupperso($_GET['id']);
+	    $joueur = new perso($_GET['id']);
 	    //Récupère l'amende
 	    $amende = recup_amende($_GET['id']);
-	    $amende_max = ($joueur['crime'] * $joueur['crime']) * 10;
+	    $amende_max = ($joueur->get_crime() * $joueur->get_crime()) * 10;
 	    $etats = array('normal');
-	    if($joueur['crime'] > 30) $etats[] = 'bandit';
-	    if($joueur['crime'] > 60) $etats[] = 'criminel';
+	    if($joueur->get_crime() > 30) $etats[] = 'bandit';
+	    if($joueur->get_crime() > 60) $etats[] = 'criminel';
 	    //Si il en a pas
 	    if(!$amende)
 	    {
 	        ?>
-	        <form method="post" action="javascript:envoiInfoPost('gestion_royaume.php?direction=gestion_criminel2&amp;id=<?php echo $joueur['ID']; ?>&amp;acces_ville=' + document.getElementById('acces_ville').checked + '&amp;spawn_ville=' + document.getElementById('spawn_ville').checked + '&amp;statut=' + document.getElementById('statut').value + '&amp;montant=' + document.getElementById('montant').value, 'conteneur');">
+	        <form method="post" action="javascript:envoiInfoPost('gestion_royaume.php?direction=gestion_criminel2&amp;id=<?php echo $joueur->get_id; ?>&amp;acces_ville=' + document.getElementById('acces_ville').checked + '&amp;spawn_ville=' + document.getElementById('spawn_ville').checked + '&amp;statut=' + document.getElementById('statut').value + '&amp;montant=' + document.getElementById('montant').value, 'conteneur');">
 	        	<input type="checkbox" name="acces_ville" id="acces_ville" /> Empèche le joueur d'accéder à la ville<br />
-	        	<input type="checkbox" name="spawn_ville" id="spawn_ville" <?php if($joueur['crime'] > 30) echo 'disabled'; ?> /> Empèche de renaître à la ville<br />
+	        	<input type="checkbox" name="spawn_ville" id="spawn_ville" <?php if($joueur->get_crime() > 30) echo 'disabled'; ?> /> Empèche de renaître à la ville<br />
 	        	<br />
 	        	Statut du personnage <select name="statut" id="statut">
 	        	<?php
@@ -570,10 +570,10 @@ if($joueur->get_rang_royaume() != 6)
 	}
 	elseif($_GET['direction'] == 'gestion_criminel2')
 	{
-	    $joueur = recupperso($_GET['id']);
+	    $joueur = new perso($_GET['id']);
 	    //Récupère l'amende
 	    $amende = recup_amende($_GET['id']);
-	    $amende_max = ($joueur['crime'] * $joueur['crime']) * 10;
+	    $amende_max = ($joueur->get_crime() * $joueur->get_crime()) * 10;
 	    //Vérification d'usage
 	    if($_GET['montant'] > 0)
 	    {
@@ -582,11 +582,11 @@ if($joueur->get_rang_royaume() != 6)
 	        	if($_GET['spawn_ville'] == 'true') $spawn_ville = 'y'; else $spawn_ville = 'n';
 	        	if($_GET['acces_ville'] == 'true') $acces_ville = 'y'; else $acces_ville = 'n';
 	        	//Inscription de l'amende dans la bdd
-	        	$requete = "INSERT INTO amende(id, id_joueur, id_royaume, montant, acces_ville, respawn_ville, statut) VALUES ('', ".$joueur['ID'].", ".$Trace[$joueur['race']]['numrace'].", ".sSQL($_GET['montant']).", '".$acces_ville."', '".$spawn_ville."', '".sSQL($_GET['statut'])."')";
+	        	$requete = "INSERT INTO amende(id, id_joueur, id_royaume, montant, acces_ville, respawn_ville, statut) VALUES ('', ".$joueur->get_id().", ".$Trace[$joueur->get_race()]['numrace'].", ".sSQL($_GET['montant']).", '".$acces_ville."', '".$spawn_ville."', '".sSQL($_GET['statut'])."')";
 	        	if($db->query($requete))
 	        	{
-	            	$amende = recup_amende($joueur['ID']);
-	            	$requete = "UPDATE perso SET amende = ".$amende['id']." WHERE ID = ".$joueur['ID'];
+	            	$amende = recup_amende($joueur->get_id());
+	            	$requete = "UPDATE perso SET amende = ".$amende['id']." WHERE ID = ".$joueur->get_id();
 	            	if($db->query($requete)) echo 'Amende bien prise en compte !';
 	        	}
 	    	}
@@ -920,7 +920,7 @@ if($joueur->get_rang_royaume() != 6)
 		</fieldset>
 		<?php
 	}
-	$requete = "SELECT * FROM diplomatie_demande WHERE royaume_recois = '".$joueur['race']."'";
+	$requete = "SELECT * FROM diplomatie_demande WHERE royaume_recois = '".$joueur->get_race()."'";
 	$req = $db->query($requete);
 	if($db->num_rows > 0)
 	{

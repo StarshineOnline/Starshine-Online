@@ -6,18 +6,7 @@ if (file_exists('../root.php'))
 * @file gemmes.class.php
 */
 
-if (file_exists('class/effect.class.php')) 
-{
-  include_once(root.'class/effect.class.php');
-} 
-elseif (file_exists('../class/effect.class.php'))
-{
-  include_once(root.'../class/effect.class.php');
-}
-elseif (file_exists('../../class/effect.class.php'))
-{
-  include_once(root.'../../class/effect.class.php');
-}
+include_once(root.'class/effect.class.php');
 
 
 class gemme_enchassee extends effect

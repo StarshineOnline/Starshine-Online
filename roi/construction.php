@@ -4,7 +4,7 @@ if (file_exists('../root.php'))
 ?><?php
 require('haut_roi.php');
 
-check_case('all');
+//check_case('all');
 
 if($joueur->get_rang_royaume() != 6)
 	echo '<p>Cheater</p>';
@@ -26,7 +26,7 @@ else if(!array_key_exists('direction', $_GET))
 		echo "<ul>";		
 		while($row = $db->read_assoc($req))
 		{			
-			$Royaume = get_royaume_info($joueur['race'], $row['r']);
+			$Royaume = get_royaume_info($joueur->get_race(), $row['r']);
 			$tmp = transform_sec_temp($row['fin_placement'] - time())." avant fin de construction";
 			echo "
 			<li class='$boutique_class' onclick=\"minimap(".$row['x'].",".$row['y'].")\" onmousemove=\"".make_overlib($tmp)."\" onmouseout='return nd();'>
@@ -52,7 +52,7 @@ else if(!array_key_exists('direction', $_GET))
 		$boutique_class = 't1';
 		while($row = $db->read_assoc($req))
 		{
-			$Royaume = get_royaume_info($joueur['race'], $row['r']);			
+			$Royaume = get_royaume_info($joueur->get_race(), $row['r']);			
 			if (empty($Gtrad[$Royaume['race']])){$nom = 'Neutre';}else{$nom = $Gtrad[$Royaume['race']];}
 			$tmp = transform_sec_temp($row['fin_placement'] - time())."avant fin de construction";
 			echo "

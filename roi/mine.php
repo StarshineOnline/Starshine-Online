@@ -1,12 +1,12 @@
 <?php
 if (file_exists('../root.php'))
   include_once('../root.php');
-?><?php
+
 require('haut_roi.php');
-include_once(root.'../class/construction.class.php');
-include_once(root.'../class/bourg.class.php');
-include_once(root.'../class/mine.class.php');
-include_once(root.'../class/placement.class.php');
+include_once(root.'class/construction.class.php');
+include_once(root.'class/bourg.class.php');
+include_once(root.'class/mine.class.php');
+include_once(root.'class/placement.class.php');
 
 if($joueur->get_rang_royaume() != 6)
 	echo '<p>Cheater</p>';
