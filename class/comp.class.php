@@ -6,13 +6,7 @@ if (file_exists('../root.php'))
  * @file comp.class.php
  */
 
-if (file_exists('class/effect.class.php')) {
   include_once(root.'class/effect.class.php');
-} elseif (file_exists('../class/effect.class.php')) {
-  include_once(root.'../class/effect.class.php');
-}elseif (file_exists('../../class/effect.class.php')) {
-  include_once(root.'../../class/effect.class.php');
-}
 
 /**
 * Compétence : c'est un effet qui peut s'améliorer

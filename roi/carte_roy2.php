@@ -3,7 +3,7 @@ if (file_exists('../root.php'))
   include_once('../root.php');
 
 // Votre fonction de vérification des accès à l'image
-	include_once(root.'carte_roy.php');
+	include_once(root.'roi/carte_roy.php');
 	// Emplacement de l'image
 	$gs_dirImage = "../image/cart/";
 	$ls_image = $gs_dirImage.'carte_roy_'.$joueur['race'].'.png';
