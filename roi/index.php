@@ -5,8 +5,8 @@ $connexion = true;
 //Inclusion du haut du document html
 include($root.'inc/fp.php');
 
-$joueur = recupperso($_SESSION['ID']);
-if($joueur['grade'] == 'Roi' OR strtolower($joueur['nom']) == 'r')
+$joueur = new perso($_SESSION['ID']);
+if($joueur->get_grade()->get_nom() == 'Roi' OR strtolower($joueur->get_nom()) == 'r')
 {
 	$date_hier = date("Y-m-d", mktime(0, 0, 0, date("m") , date("d") - 2, date("Y")));
 	$requete = "SELECT food, nombre_joueur FROM stat_jeu ORDER BY date DESC";
@@ -15,20 +15,20 @@ if($joueur['grade'] == 'Roi' OR strtolower($joueur['nom']) == 'r')
 	if($row['nombre_joueur'] != 0) $food_necessaire = $row['food'] / $row['nombre_joueur'];
 	else $food_necessaire = 0;
 	
-	$R = get_royaume_info($joueur['race'], $Trace[$joueur['race']]['numrace']);
+	$R = get_royaume_info($joueur->get_race(), $Trace[$joueur->get_race()]['numrace']);
 	
 	//Vérifie si le perso est mort
 	verif_mort($joueur, 1);
 	
 	check_perso($joueur);
 	
-	$_SESSION['position'] = convert_in_pos($joueur['x'], $joueur['y']);
+	$_SESSION['position'] = convert_in_pos($joueur->get_x(), $joueur->get_y());
 	$check = false;
-	if(verif_ville($joueur['x'], $joueur['y']))
+	if(verif_ville($joueur->get_x(), $joueur->get_y()))
 	{
 		$check = true;
 	}
-	elseif($batiment = verif_batiment($joueur['x'], $joueur['y'], $R))
+	elseif($batiment = verif_batiment($joueur->get_x(), $joueur->get_y(), $R))
 	{
 		if($batiment['type'] == 'fort' OR $batiment['type'] == 'bourg') $check = true;
 	}

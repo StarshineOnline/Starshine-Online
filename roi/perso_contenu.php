@@ -5,16 +5,16 @@ $root = '../';
 //Inclusion du haut du document html
 include_once($root.'inc/fp.php');
 
-$joueur = recupperso($_SESSION['ID']);
+$joueur = new perso($_SESSION['ID']);
 
 check_perso($joueur);
 
 //Véifie si le perso est mort
 verif_mort($joueur, 1);
 
-$R = get_royaume_info($joueur['race'], $Trace[$joueur['race']]['numrace']);
+$R = get_royaume_info($joueur->get_race(), $Trace[$joueur->get_race()]['numrace']);
 
-$_SESSION['position'] = convert_in_pos($joueur['x'], $joueur['y']);
+$_SESSION['position'] = convert_in_pos($joueur->get_x(), $joueur->get_y());
 $W_distance = detection_distance($W_case,$_SESSION["position"]);
 
 $W_coord = convert_in_coord($W_case);

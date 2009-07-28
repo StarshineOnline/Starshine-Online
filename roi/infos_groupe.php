@@ -5,7 +5,7 @@ $connexion = true;
 //Inclusion du haut du document html
 include($root.'inc/fp.php');
 
-$joueur = recupperso($_SESSION['ID']);
+$joueur = new perso($_SESSION['ID']);
 
 //Vérifie si le perso est mort
 verif_mort($joueur, 1);

@@ -5,7 +5,7 @@ include('../class/bourg.class.php');
 include('../class/mine.class.php');
 include('../class/placement.class.php');
 
-if($joueur['rang_royaume'] != 6)
+if($joueur->get_rang_royaume() != 6)
 	echo '<p>Cheater</p>';
 else if(array_key_exists('id', $_GET))
 {

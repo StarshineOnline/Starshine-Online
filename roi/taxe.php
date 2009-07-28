@@ -2,7 +2,7 @@
 require('haut_roi.php');
 
 $duree = (60 * 60 * 24) * 7;
-if($joueur['rang_royaume'] != 6)
+if($joueur->get_rang_royaume() != 6)
 	echo '<p>Cheater</p>';
 else if((time() - $duree) < $R['taxe_time'])
 {

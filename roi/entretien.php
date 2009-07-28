@@ -16,7 +16,7 @@ while($row = $db->read_row($req))
 }
 $min_habitants = @min($habitants);
 if($min_habitants > 0) $ratio = $habitants[$R['race']] / $min_habitants;
-if($joueur['rang_royaume'] != 6)
+if($joueur->get_rang_royaume() != 6)
 	echo '<p>Cheater</p>';
 else if($ratio < 1) $ratio = 1;
 echo '

@@ -1,6 +1,6 @@
 <?php
 require('haut_roi.php');
-if($joueur['rang_royaume'] != 6)
+if($joueur->get_rang_royaume() != 6)
 	echo '<p>Cheater</p>';
 else if(array_key_exists('message', $_POST))
 {
@@ -55,7 +55,7 @@ else
 ?>
 <table class="ville">
 <?php
-$requete = "SELECT * FROM perso WHERE rang_royaume = 6 AND ID <> ".$joueur['ID'];
+$requete = "SELECT * FROM perso WHERE rang_royaume = 6 AND id <> ".$joueur->get_id();
 $req = $db->query($requete);
 while($row = $db->read_assoc($req))
 {

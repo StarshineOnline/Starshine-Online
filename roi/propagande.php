@@ -2,7 +2,7 @@
 require('haut_roi.php');
 include('../fonction/messagerie.inc.php');
 
-if($joueur['rang_royaume'] != 6)
+if($joueur->get_rang_royaume() != 6)
 	echo '<p>Cheater</p>';
 else
 {

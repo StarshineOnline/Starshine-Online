@@ -4,7 +4,7 @@ require('haut_roi.php');
 ?>
 <h3>Gestion des Quêtes</h3>
 <?php
-if($joueur['rang_royaume'] != 6)
+if($joueur->get_rang_royaume() != 6)
 	echo '<p>Cheater</p>';
 else if($_GET['action'] == 'achat')
 {
