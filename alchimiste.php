@@ -41,14 +41,14 @@ if($W_distance == 0)
 				$cout = $row['prix'] + $taxe;
 				if ($joueur->get_star() >= $cout)
 				{
-					if(prend_objet('o'.$row['id'], $joueur))
+					if($joueur->prend_objet('o'.$row['id']))
 					{
 						$joueur->set_star($joueur->get_star() - $cout);
 						$joueur->sauver();
 						//Récupération de la taxe
 						if($taxe > 0)
 						{
-							$requete = 'UPDATE royaume SET star = star + '.$taxe.' WHERE ID = '.$R['ID'];
+							$requete = 'UPDATE royaume SET star = star + '.$taxe.' WHERE id = '.$R['id'];
 							$db->query($requete);
 							$requete = "UPDATE argent_royaume SET magasin = magasin + ".$taxe." WHERE race = '".$R['race']."'";
 							$db->query($requete);
@@ -72,11 +72,11 @@ if($W_distance == 0)
 				if ($joueur->get_star() >= $cout)
 				{
 					$perso = new perso_recette();
-					$perso_recette = $perso->recov($joueur['ID'], $_GET['id']);
+					$perso_recette = $perso->recov($joueur->get_id(), $_GET['id']);
 					if(!$perso_recette)
 					{
 						$perso_recette = new perso_recette();
-						$perso_recette->id_perso = $joueur['ID'];
+						$perso_recette->id_perso = $joueur->get_id();
 						$perso_recette->id_recette = $_GET['id'];
 						$perso_recette->sauver();
 						$joueur->set_star($joueur->get_star() - $cout);
@@ -84,7 +84,7 @@ if($W_distance == 0)
 						//Récupération de la taxe
 						if($taxe > 0)
 						{
-							$requete = 'UPDATE royaume SET star = star + '.$taxe.' WHERE ID = '.$R['ID'];
+							$requete = 'UPDATE royaume SET star = star + '.$taxe.' WHERE id = '.$R['id'];
 							$db->query($requete);
 							$requete = "UPDATE argent_royaume SET magasin = magasin + ".$taxe." WHERE race = '".$R['race']."'";
 							$db->query($requete);
@@ -106,7 +106,7 @@ if($W_distance == 0)
 				if($joueur['pa'] >= 10)
 				{
 					//Combien il augmente la recherche ?
-					$recherche = rand(1, $joueur['alchimie']);
+					$recherche = rand(1, $joueur->get_alchimie());
 					$requete = "UPDATE royaume SET alchimie = alchimie + ".$recherche." WHERE ID = ".$R['ID'];
 					$db->query($requete);
 					$R['alchimie'] += $recherche;
@@ -117,7 +117,7 @@ if($W_distance == 0)
 					if ($augmentation[1] == 1)
 					{
 						$joueur->set_alchimie($augmentation[0]);
-						echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant à '.$joueur['alchimie'].' en alchimie</span><br />';
+						echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant à '.$joueur->get_alchimie().' en alchimie</span><br />';
 					}
 					$joueur->sauver();
 				}

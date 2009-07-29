@@ -39,7 +39,7 @@ abstract class Objet
 	
 	function getPrix()
 	{
-		return $rhis->prix;
+		return $this->prix;
 	}
 	
 	//Liste des Modifieurs

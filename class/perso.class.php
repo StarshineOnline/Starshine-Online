@@ -2593,5 +2593,17 @@ class perso
 		}
 		return 0;
 	}
+
+	function prend_objet($id_objet)
+	{
+		if(!isset($this->inventaire_perso)) $this->inventaire_perso = new inventaire($this->inventaire, $this->inventaire_slot);
+		if($this->inventaire_perso->prend_objet($id_objet))
+		{
+			$this->set_inventaire_slot(serialize($this->inventaire_perso->liste_slot));
+			$this->sauver();
+			return true;
+		}
+		else return true;
+	}
 }
 ?>
