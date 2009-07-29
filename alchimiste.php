@@ -17,11 +17,12 @@ $pos = convert_in_pos($joueur->get_x(), $joueur->get_y());
 $W_requete = "SELECT royaume FROM map WHERE id = ".$pos;
 $W_req = $db->query($W_requete);
 $W_row = $db->read_array($W_req);
-$R = get_royaume_info($joueur->get_race(), $W_row['royaume']);
+$R = new royaume($W_row['royaume']);
+$R->get_diplo($joueur->get_race());
 
 if(array_key_exists('fort', $_GET)) $fort = '&amp;fort=ok'; else $fort = '';
 ?>
-    	<h2 class="ville_titre"><?php if(!array_key_exists('fort', $_GET)) return_ville('<a href="ville.php?poscase='.$pos.'" onclick="return envoiInfo(this.href, \'centre\')">'.$R['nom'].'</a> - ', $pos); ?> <?php echo '<a href="taverne.php?poscase='.$pos.'" onclick="return envoiInfo(this.href,\'carte\')">';?> Alchimiste </a></h2>
+    	<h2 class="ville_titre"><?php if(!array_key_exists('fort', $_GET)) return_ville('<a href="ville.php?poscase='.$pos.'" onclick="return envoiInfo(this.href, \'centre\')">'.$R->get_nom().'</a> - ', $pos); ?> <?php echo '<a href="taverne.php?poscase='.$pos.'" onclick="return envoiInfo(this.href,\'carte\')">';?> Alchimiste </a></h2>
 				<?php include_once(root.'ville_bas.php');?>
 		<?php
 $W_distance = detection_distance($pos, $_SESSION["position"]);
@@ -37,7 +38,7 @@ if($W_distance == 0)
 				$requete = "SELECT id, prix FROM objet WHERE id = ".sSQL($_GET['id']);
 				$req = $db->query($requete);
 				$row = $db->read_array($req);
-				$taxe = ceil($row['prix'] * $R['taxe'] / 100);
+				$taxe = ceil($row['prix'] * $R->get_taxe / 100);
 				$cout = $row['prix'] + $taxe;
 				if ($joueur->get_star() >= $cout)
 				{
@@ -48,9 +49,9 @@ if($W_distance == 0)
 						//Récupération de la taxe
 						if($taxe > 0)
 						{
-							$requete = 'UPDATE royaume SET star = star + '.$taxe.' WHERE id = '.$R['id'];
-							$db->query($requete);
-							$requete = "UPDATE argent_royaume SET magasin = magasin + ".$taxe." WHERE race = '".$R['race']."'";
+							$R->set_star($R->get_star() + $taxe);
+							$R->sauver();
+							$requete = "UPDATE argent_royaume SET magasin = magasin + ".$taxe." WHERE race = '".$R->get_race()."'";
 							$db->query($requete);
 						}
 						echo '<h6>Objet acheté !</h6>';
@@ -67,7 +68,7 @@ if($W_distance == 0)
 			break;
 			case 'achat_recette' :
 				$recette = new craft_recette($_GET['id']);
-				$taxe = ceil($recette->prix * $R['taxe'] / 100);
+				$taxe = ceil($recette->prix * $R->get_taxe() / 100);
 				$cout = $recette->prix + $taxe;
 				if ($joueur->get_star() >= $cout)
 				{
@@ -84,9 +85,9 @@ if($W_distance == 0)
 						//Récupération de la taxe
 						if($taxe > 0)
 						{
-							$requete = 'UPDATE royaume SET star = star + '.$taxe.' WHERE id = '.$R['id'];
-							$db->query($requete);
-							$requete = "UPDATE argent_royaume SET magasin = magasin + ".$taxe." WHERE race = '".$R['race']."'";
+							$R->set_star($R->get_star() + $taxe);
+							$R->sauver();
+							$requete = "UPDATE argent_royaume SET magasin = magasin + ".$taxe." WHERE race = '".$R->get_race()."'";
 							$db->query($requete);
 						}
 						echo '<h6>Recette achetée !</h6>';
@@ -107,9 +108,8 @@ if($W_distance == 0)
 				{
 					//Combien il augmente la recherche ?
 					$recherche = rand(1, $joueur->get_alchimie());
-					$requete = "UPDATE royaume SET alchimie = alchimie + ".$recherche." WHERE ID = ".$R['ID'];
-					$db->query($requete);
-					$R['alchimie'] += $recherche;
+					$R->set_alchimie($R->get_alchimie() + $recherche);
+					$R->sauver();
 					echo '<h6>Vous augmentez la recherche de votre royaume en alchimie de '.$recherche.' points</h6>';
 					$joueur->set_pa($joueur->get_pa() - 10);
 					//Augmentation de la compétence d'architecture
@@ -155,21 +155,21 @@ if($W_distance == 0)
 		<div class="ville_test">
 			<span class="texte_normal">
 				<?php
-				$requete = "SELECT royaume_alchimie FROM craft_recette WHERE royaume_alchimie < ".$R['alchimie']." ORDER BY royaume_alchimie DESC LIMIT 0, 1";
+				$requete = "SELECT royaume_alchimie FROM craft_recette WHERE royaume_alchimie < ".$R->get_alchimie()." ORDER BY royaume_alchimie DESC LIMIT 0, 1";
 				$req = $db->query($requete);
 				$row = $db->read_assoc($req);
 				$min = $row['royaume_alchimie'];
-				$requete = "SELECT royaume_alchimie FROM craft_recette WHERE royaume_alchimie > ".$R['alchimie']." ORDER BY royaume_alchimie ASC LIMIT 0, 1";
+				$requete = "SELECT royaume_alchimie FROM craft_recette WHERE royaume_alchimie > ".$R->get_alchimie()." ORDER BY royaume_alchimie ASC LIMIT 0, 1";
 				$req = $db->query($requete);
 				$row = $db->read_assoc($req);
 				$max = $row['royaume_alchimie'];
 				if ($max == 0) echo 'Plus de recettes à chercher !<br />';
 				else {
 					$total = $max - $min;
-					$actuel = $R['alchimie'] - $min;
+					$actuel = $R->get_alchimie() - $min;
 					$pourcent = round((($actuel / $total) * 100), 2);
 					echo $pourcent.'% du déblocage de la prochaine recette !<br />';
-					if($R['diplo'] == 127)
+					if($R->diplo == 127)
 						{
 				?>
 				<a href="alchimiste.php?action=recherche" onclick="return envoiInfo(this.href, 'carte');">Faire des recherches en alchimie (10 PA)</a>
@@ -206,7 +206,7 @@ if($W_distance == 0)
 		$req = $db->query($requete);
 		while($row = $db->read_array($req))
 		{
-			$taxe = ceil($row['prix'] * $R['taxe'] / 100);
+			$taxe = ceil($row['prix'] * $R->get_taxe() / 100);
 			$cout = $row['prix'] + $taxe;
 			$couleur = $color;
 			if($row['forcex'] > $joueur->get_force() OR $row['melee'] > $joueur->get_melee() OR $cout > $joueur->get_star() OR $row['distance'] > $joueur->get_distance()) $couleur = 3;
@@ -247,11 +247,11 @@ if($W_distance == 0)
 		<?php
 		
 		$color = 1;
-		$requete = "SELECT * FROM craft_recette WHERE royaume_alchimie <= ".$R['alchimie']." ORDER BY".$ordre;
+		$requete = "SELECT * FROM craft_recette WHERE royaume_alchimie <= ".$R->get_alchimie()." ORDER BY".$ordre;
 		$req = $db->query($requete);
 		while($row = $db->read_array($req))
 		{
-			$taxe = ceil($row['prix'] * $R['taxe'] / 100);
+			$taxe = ceil($row['prix'] * $R->get_taxe() / 100);
 			$cout = $row['prix'] + $taxe;
 			$couleur = $color;
 			if($cout > $joueur->get_star()) $couleur = 3;

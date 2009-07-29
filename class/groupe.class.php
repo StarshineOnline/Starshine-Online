@@ -102,7 +102,7 @@ class groupe
 		else
 		{
 			$requete = 'INSERT INTO groupe (partage, prochain_loot, nom) VALUES(';
-			$requete .= ''.$this->partage.', '.$this->prochain_loot.', "'.mysql_escape_string($this->nom).'")';
+			$requete .= '\''.$this->partage.'\', '.$this->prochain_loot.', "'.mysql_escape_string($this->nom).'")';
 			$db->query($requete);
 			//Récuperation du dernier ID inséré.
 			$this->id = $db->last_insert_id();
@@ -298,6 +298,23 @@ class groupe
 
 	function get_leader()
 	{
+		$W_requete = 'SELECT id_joueur FROM groupe_joueur WHERE leader = \'y\' AND id_groupe = '.$this->get_id();
+		$W_query = $db->query($W_requete);
+		$W_row = $db->read_array($W_query);
+		return $W_row['id_joueur'];
+	}
+
+	function get_place_libre()
+	{
+		$W_requete = 'SELECT COUNT(inviteur) as count FROM invitation WHERE inviteur = '.$this->get_leader();
+		$W_query = $db->query($W_requete);
+		$W_row = $db->read_array($W_query);
+		$nb_invitation = $W_row['count'];
+	
+		$W_requete = 'SELECT COUNT(id_joueur) as count FROM froupe_joueur WHERE id_groupe = '.$this->get_id();
+		$nb_membre = $W_row['count'];
+		
+		return ($G_nb_joueur_groupe - $nb_invitation - $nb_membre);
 	}
 }
 ?>

@@ -59,7 +59,15 @@ class groupe_joueur
 			$this->id_joueur = $id['id_joueur'];
 			$this->id_groupe = $id['id_groupe'];
 			$this->leader = $id['leader'];
-			}
+		}
+		elseif( (func_num_args() == 2) )
+		{
+			$requeteSQL = $db->query("SELECT id_joueur, id_groupe, leader FROM groupe_joueur WHERE id_groupe = ".$id.' AND id_joueur = '.$id_joueur);
+			if( $db->num_rows($requeteSQL) > 0 )
+				list($this->id_joueur, $this->id_groupe, $this->leader) = $db->read_array($requeteSQL);
+			else $this->__construct();
+			$this->id = $id;
+		}
 		else
 		{
 			$this->id_joueur = $id_joueur;
@@ -228,6 +236,17 @@ class groupe_joueur
 	function get_leader()
 	{
 		return $this->leader;
+	}
+
+	/**
+	* Permet de savoir si le joueur est le leader
+	* @access public
+	* @param none
+	* @return boolean
+	*/
+	function is_leader()
+	{
+		return $this->leader == 'y';
 	}
 
 	/**

@@ -3,11 +3,11 @@ if (file_exists('root.php'))
   include_once('root.php');
 
 include_once(root.'inc/fp.php');
-$joueur = recupperso($_SESSION['ID']);
+$joueur = new perso($_SESSION['ID']);
 check_undead_players();
 
 //Si le joueur a assez de PA
-if($joueur['pa'] >= 30)
+if($joueur->get_pa() >= 30)
 {
 	//On recherche les informations sur ce placement
 	$requete = 'SELECT * FROM placement WHERE id = '.sSQL($_GET['id_construction']);
@@ -19,17 +19,17 @@ if($joueur['pa'] >= 30)
 	}
 	
 	//Calcul de la distance entre le joueur et le placement
-	$distance = calcul_distance(convert_in_pos($joueur['x'], $joueur['y']), convert_in_pos($row['x'], $row['y']));
+	$distance = calcul_distance(convert_in_pos($joueur->get_x(), $joueur->get_y()), convert_in_pos($row['x'], $row['y']));
 	//Si il est sur la case
 	if($distance == 0)
 	{
 		//Seconde supprimées du décompte
-		$secondes_max = floor(($row['fin_placement'] - $row['debut_placement']) * sqrt($joueur['architecture']) / 100);
+		$secondes_max = floor(($row['fin_placement'] - $row['debut_placement']) * sqrt($joueur->get_architecture()) / 100);
 
 		// Gemme de fabrique : augmente de effet % le max possible
-		if (isset($joueur['enchantement']) &&
-				isset($joueur['enchantement']['forge'])) {
-			$secondes_max += floor($joueur['enchantement']['forge']['effet'] / 100 * $secondes_max);
+		if ($joueur->is_enchantement('forge'))
+		{
+			$secondes_max += floor($joueur->get_enchantement('forge', 'effet') / 100 * $secondes_max);
 		}
 
 		$secondes_min = round($secondes_max / 2);
@@ -39,21 +39,17 @@ if($joueur['pa'] >= 30)
 		if($db->query($requete))
 		{
 			//On supprime les PA du joueurs
-			$requete = "UPDATE perso SET pa = pa - 30 WHERE ID = ".$joueur['ID'];
-			if($db->query($requete))
+			$joueur->set_pa($joueur->get_pa() - 30);
+			//Augmentation de la compétence d'architecture
+			$augmentation = augmentation_competence('architecture', $joueur, 1);
+			if ($augmentation[1] == 1)
 			{
-				//Augmentation de la compétence d'architecture
-				$augmentation = augmentation_competence('architecture', $joueur, 1);
-				if ($augmentation[1] == 1)
-				{
-					$joueur['architecture'] = $augmentation[0];
-					echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant à '.$joueur['architecture'].' en architecture</span><br />';
-					$requete = "UPDATE perso SET architecture = ".$joueur['architecture']." WHERE ID = ".$joueur['ID'];
-					$db->query($requete);
-				}
-				echo '<h6>La construction a été accélérée de '.transform_sec_temp($secondes).'</h6>';
-				echo '<a href="archi_accelere_construction.php?id_construction='.$_GET['id_construction'].'" onclick="return envoiInfo(this.href, \'information\');">Accélérer de nouveau</a>';
+				$joueur->set_architecture($augmentation[0]);
+				echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant à '.$joueur->get_architecture().' en architecture</span><br />';
 			}
+			echo '<h6>La construction a été accélérée de '.transform_sec_temp($secondes).'</h6>';
+			echo '<a href="archi_accelere_construction.php?id_construction='.$_GET['id_construction'].'" onclick="return envoiInfo(this.href, \'information\');">Accélérer de nouveau</a>';
+			$joueur->sauver();
 		}
 	}
 }

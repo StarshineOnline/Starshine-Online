@@ -8,7 +8,7 @@ $connexion = true;
 include_once(root.'haut_ajax.php');
 
 $joueur = recupperso($_SESSION['ID']);
-check_perso($joueur);
+$joueur->check_perso();
 
 if($_GET['type'] == 'attaque')
 {

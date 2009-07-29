@@ -8,7 +8,7 @@ $connexion = true;
 include_once(root.'haut_ajax.php');
 
 $joueur = new perso($_SESSION['ID']);
-check_perso($joueur);
+$joueur->check_perso();
 $round_max = 10;
 if($joueur->get_race() == 'orc') $round_max++;
 ?>

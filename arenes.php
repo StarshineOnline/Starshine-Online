@@ -7,10 +7,10 @@ $connexion = true;
 //Inclusion du haut du document html
 include_once(root.'haut.php');
 
-$joueur = recupperso($_SESSION['ID']);
+$joueur = new perso($_SESSION['ID']);
 
 $arene_masters = array('Irulan', 'Azeroth');
-if (!in_array($joueur['nom'], $arene_masters))
+if (!in_array($joueur->get_nom(), $arene_masters))
      die("Vous n'êtes pas arène master");
 
 if (isset($_REQUEST['teleport_in'])) {
@@ -38,11 +38,12 @@ if (isset($_REQUEST['teleport_in'])) {
   $req = $db->query($requete_arenes_perso);
   $requete_perso = "update perso set x=$nx, y=$ny where id = $id";
   $req = $db->query($requete_perso);
-  $requete_journal = "INSERT INTO journal VALUES('', $id, 'teleport', '".$joueur['nom']."', '".$R_perso['nom']."', NOW(), '$arene', 0, ".$joueur['x'].", ".$joueur['y'].")";
+  $requete_journal = "INSERT INTO journal VALUES('', $id, 'teleport', '".$joueur->get_nom()."', '".$R_perso['nom']."', NOW(), '$arene', 0, ".$joueur->get_x().", ".$joueur->get_y().")";
   $req = $db->query($requete_journal);
 }
 
-if (isset($_REQUEST['remove'])) {
+if (isset($_REQUEST['remove']))
+{
   $requete_arenes_perso = "select * from arenes_joueurs where id = '".sSQL($_REQUEST['remove'])."'";
   $req = $db->query($requete_arenes_perso);
   if ($db->num_rows > 0)
@@ -56,7 +57,7 @@ if (isset($_REQUEST['remove'])) {
   $req = $db->query($requete_perso);
   $requete_arenes_perso = "delete from arenes_joueurs where id = '$id'";
   $db->query($requete_arenes_perso);
-  $requete_journal = "INSERT INTO journal VALUES('', $id, 'teleport', '".$joueur['nom']."', '".$R_perso['nom']."', NOW(), 'jeu', 0, ".$joueur['x'].", ".$joueur['y'].")";
+  $requete_journal = "INSERT INTO journal VALUES('', $id, 'teleport', '".$joueur->get_nom()."', '".$R_perso['nom']."', NOW(), 'jeu', 0, ".$joueur->get_x().", ".$joueur->get_y().")";
   $req = $db->query($requete_journal);
 }
 
@@ -81,11 +82,13 @@ if ($db->num_rows > 0) {
 <?php
 $requete_arene = "select * from arenes_joueurs";
 $req = $db->query($requete_arene);
-if ($db->num_rows > 0) {
-  while ($R_arene = $db->read_assoc($req)) {
-    $p = recupperso_essentiel($R_arene['id'], 'ID, nom');
-    echo '<a href="arenes.php?remove='.$R_arene['id'].'">'.$p['nom']."</a><br />\n";
-  }
+if ($db->num_rows > 0)
+{
+	while ($R_arene = $db->read_assoc($req))
+	{
+		$p = recupperso_essentiel($R_arene['id'], 'ID, nom');
+		echo '<a href="arenes.php?remove='.$R_arene['id'].'">'.$p['nom']."</a><br />\n";
+	}
 }
 ?>
 </p>
