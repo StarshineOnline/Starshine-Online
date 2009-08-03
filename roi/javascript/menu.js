@@ -82,6 +82,19 @@ function affiche_page(page)
 	
 }
 
+function affiche_bataille(page,action)
+{
+	function affiche(contenu)
+	{
+		$('loading').hide();
+		$('contenu_jeu').innerHTML = contenu.responseText;
+	}
+	new Ajax.Request(page,{method:'get',parameters:action,onLoading:Loadchargement,onComplete:affiche});
+	$('message_confirm').innerHTML = '';
+	
+}
+
+
 function royaume_update(id,nbr,action)
 {
 	function Affiche_Royaume(text)

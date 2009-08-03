@@ -3,7 +3,7 @@ if (file_exists('../root.php'))
   include_once('../root.php');
 ?><?php
 require('haut_roi.php');
-include_once(root.'../fonction/messagerie.inc.php');
+include_once(root.'fonction/messagerie.inc.php');
 
 function affiche_bataille($bataille)
 {
@@ -12,7 +12,7 @@ function affiche_bataille($bataille)
 	<div id="bataille_<?php echo $bataille->id; ?>" style="margin : 10px;">
 		<fieldset style="float : left; height : 50px; padding : 5px;">
 			<legend><?php echo ucwords($bataille->etat_texte()); ?></legend>
-			<a href="gestion_bataille.php?id_bataille=<?php echo $bataille->id; ?>&amp;info_bataille" onclick="return envoiInfo(this.href, 'conteneur');">Gérer</a><br />
+			<a href="#" onclick="affiche_bataille('gestion_bataille.php','id_bataille=<?php echo $bataille->id; ?>&amp;info_bataille');">Gérer</a><br />
 		<?php
 		if($bataille->etat == 0)
 		{
@@ -66,14 +66,31 @@ if($joueur->get_rang_royaume() != 6)
 //Nouvelle bataille
 else if(array_key_exists('new', $_GET))
 {
-	include_once(root.'gestion_bataille_menu.php');
+	include_once(root.'roi/gestion_bataille_menu.php');
 	?>
 	<h2>Création d'une bataille</h2>
 	Nom : <input type="text" name="nom" id="nom" /><br />
 	Description :<br />
 	<textarea name="description" id="description"></textarea><br />
 	<div id="choix_bataille">
-		<a href="gestion_bataille.php?move_map&x=<?php echo $Trace[$R['race']]['spawn_x']; ?>&y=<?php echo $Trace[$R['race']]['spawn_y'] ?>" onclick="return envoiInfo(this.href, 'choix_bataille');">Cliquez pour définir le centre de la bataille</a>
+	<?php
+	$x = $Trace[$R['race']]['spawn_x'];
+	$y = $Trace[$R['race']]['spawn_y'];
+	$map = new map($x, $y, 12, '../', false, 'low');
+	$map->set_onclick("envoiInfo('gestion_bataille.php?valide_choix_bataille&amp;case=%%ID%%', 'valide_choix_bataille');");
+	$map->quadrillage = true;
+	echo "<div style='float : left;'>";
+	$map->affiche();
+	?>
+	</div>
+	<div id="move_map_menu" style="float : left;">
+		<a href="gestion_bataille.php?move_map&x=<?php echo $x; ?>&y=<?php echo ($y - 10); ?>" onclick="return envoiInfo(this.href, 'choix_bataille');">Haut</a>
+		<a href="gestion_bataille.php?move_map&x=<?php echo $x; ?>&y=<?php echo ($y + 10); ?>" onclick="return envoiInfo(this.href, 'choix_bataille');">Bas</a>
+		<a href="gestion_bataille.php?move_map&x=<?php echo ($x - 10); ?>&y=<?php echo $y; ?>" onclick="return envoiInfo(this.href, 'choix_bataille');">Gauche</a>
+		<a href="gestion_bataille.php?move_map&x=<?php echo ($x + 10); ?>&y=<?php echo $y; ?>" onclick="return envoiInfo(this.href, 'choix_bataille');">Droite</a><br />
+		X : <input type="text" id="go_x" style="width : 30px;" /> / Y : <input type="text" id="go_y" style="width : 30px;" /> <input type="button" onclick="envoiInfo('gestion_bataille.php?move_map&x=' + $('go_x').value + '&y=' + $('go_y').value, 'choix_bataille');" value="Go !" /><br />
+		<div id="valide_choix_bataille"></div>
+	</div>	
 	</div>
 	<div style="clear : both;"></div>
 	<input type="button" onclick="description = $('description').value.replace(new RegExp('\n', 'gi'), '[br]'); envoiInfoPost('gestion_bataille.php?nom=' + $('nom').value + '&amp;description=' + description + '&amp;x=' + $('x').value + '&amp;y=' + $('y').value + '&amp;new2', 'conteneur');" value="Créer cette bataille" />
@@ -116,7 +133,7 @@ elseif(array_key_exists('valide_choix_bataille', $_GET))
 //Nouvelle bataille etape 2 => Création
 elseif(array_key_exists('new2', $_GET))
 {
-	include_once(root.'gestion_bataille_menu.php');
+	include_once(root.'roi/gestion_bataille_menu.php');
 	$bataille = new bataille();
 	$bataille->nom = $_GET['nom'];
 	$bataille->description = $_GET['description'];
@@ -138,7 +155,7 @@ elseif(array_key_exists('refresh_bataille', $_GET))
 //Information et modification sur une bataille
 elseif(array_key_exists('info_bataille', $_GET))
 {
-	include_once(root.'gestion_bataille_menu.php');
+	include_once(root.'roi/gestion_bataille_menu.php');
 	$bataille = new bataille($_GET['id_bataille']);
 	?>
 	<div id="map" style="float : left;">
@@ -282,7 +299,7 @@ elseif(array_key_exists('del_repere', $_GET))
 }
 else
 {
-	include_once(root.'gestion_bataille_menu.php');
+	include_once(root.'roi/gestion_bataille_menu.php');
 	$bataille_royaume = new bataille_royaume($R['ID']);
 	$bataille_royaume->get_batailles();
 	
