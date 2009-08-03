@@ -71,8 +71,10 @@ if($db->num_rows > 0)
 }
 //Il n'existe pas, on le recréé
 else
-{
-	$requete = "INSERT INTO map_monstre VALUES('','57','88','79','300', 5, '".addslashes('Squelette de Myriandre')."','protecteur_defunt', ".(time() + 360000).")";
+{ // En SQL c'est mieux et on aura pas d'erreur
+	$mort = time() + 360000;
+	$requete = "insert into map_monstre (type, x, y, hp, level, nom, lib, mort_naturelle) select ".
+		"m.id, d.x, d.y, m.hp, m.level, m.nom, m.lib, $mort from monstre m, donjon d where m.id = 57 and d.nom = 'Myriandre'";
 	$db->query($requete);
 }
 
