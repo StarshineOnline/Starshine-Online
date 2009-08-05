@@ -110,7 +110,7 @@ class groupe_joueur
 		else
 		{
 			$requete = 'INSERT INTO groupe_joueur (id_joueur, id_groupe, leader) VALUES(';
-			$requete .= ''.$this->id_joueur.', '.$this->id_groupe.', '.$this->leader.')';
+			$requete .= ''.$this->id_joueur.', '.$this->id_groupe.', \''.$this->leader.'\')';
 			$db->query($requete);
 			//Récuperation du dernier ID inséré.
 			$this->id = $db->last_insert_id();

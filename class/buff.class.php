@@ -17,7 +17,7 @@ class buff_actif extends effect
 
 	private static $esquive_buff = array('buff_evasion', 'buff_cri_detresse', 'batiment_esquive');
 
-	static function factory(&$effects, &$actif, &$passif, $acteur) {
+	static function factory(&$effects, &$actif, &$passif, $acteur = '') {
     $acti = array();
 		$actives = array_merge($acti);
 		$pass = array();

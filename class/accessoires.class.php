@@ -140,7 +140,7 @@ class Accessoire extends Objet
 	//Infobulle de l'accessoire
 	function infobulle()
 	{
-		$milieu = '<tr><td>Effet:</td><td>'.$this->description.'</td></tr>'
+		$milieu = '<tr><td>Effet:</td><td>'.$this->description.'</td></tr>';
 		$milieu .= '<tr><td>Puissance n&eacute;cessaire:</td></tr><tr><td>'.$this->puissance.'</td></tr>';
 		return bulleBase($milieu).'<br />';
 	}

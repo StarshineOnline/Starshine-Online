@@ -3,9 +3,9 @@ if (file_exists('../root.php'))
   include_once('../root.php');
 
 
-define(URL_MANIPULATION, 1);
-define(SQL_INJECTION, 2);
-define(BAD_ENTRY, 3);
+define('URL_MANIPULATION', 1);
+define('SQL_INJECTION', 2);
+define('BAD_ENTRY', 3);
 
 // Envoie une erreur 403 avec le message personnalisé passé en paramètre
 function send_forbidden($message=null)

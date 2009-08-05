@@ -10,46 +10,46 @@ $W_ID = $_GET['ID'];
 $W_requete = 'SELECT * FROM perso WHERE ID = \''.$_SESSION['ID'].'\'';
 $req = $db->query($W_requete);
 $row = $db->read_array($req);
+$joueur = new perso($_SESSION['ID']);
+$perso = new perso($W_ID);
 //Si il n'est pas groupé, création du groupe
 if (empty($row['groupe']))
 {
-	$W_requete = "INSERT INTO `groupe` VALUES ('', 'r', ".$_SESSION['ID'].", 'groupe_".$_SESSION['ID']."')";
-	if($db->query($W_requete))
+	if($joueur->is_debuff('Dépression'))
 	{
-		$W_ID_groupe = $db->last_insert_id();
-		$W_requete = 'UPDATE perso SET groupe = '.$W_ID_groupe.' WHERE ID = '.$_SESSION['ID'];
-		$W_req = $db->query($W_requete);
-		$W_requete = "INSERT INTO groupe_joueur VALUES('', ".$_SESSION['ID'].", ".$W_ID_groupe.", 'y')";
-		$W_req = $db->query($W_requete);
+		
+	}
+	
+	if(!$joueur->is_debuff('Dépression'))
+	{
+		$groupe = new groupe('', 'r', $joueur->get_id(), 'groupe_'.$joueur->get_id());
+		$groupe->sauver();
+		$joueur->set_groupe($groupe->get_id());
+		$joueur->sauver();
+		$groupe_joueur = new groupe_joueur('', $joueur->get_id(), $groupe->get_id(), 'y');
+		$groupe_joueur->sauver();
 		echo 'Groupe créé<br />';
 	}
+	else
+		echo 'Vous êtes trop déprimé pour créer un groupe, pour le moment vous ne voulez parler à personne.';
 }
 else
 {
-	$W_ID_groupe = $row['groupe'];
+	$groupe = new groupe($joueur->get_groupe());
+	$groupe_joueur = new groupe_joueur($groupe->get_id(), $joueur->get_id());
 }
-$groupe = recupgroupe($W_ID_groupe, '');
 
 //Regarde si le joueur est leader du groupe
-if ($groupe['id_leader'] == $_SESSION['ID'])
+if (isset($groupe_joueur) && $groupe_joueur->is_leader())
 {
-	//Requète pour regarder le nombre d'invitation
-	$W_requete = 'SELECT COUNT(inviteur) as count FROM invitation WHERE inviteur = '.$_SESSION['ID'];
-	$W_query = $db->query($W_requete);
-	$W_row = $db->read_array($W_query);
-	
 	//Si il y a moins de 4 invitations déjà, faire une invitation
-	if ($W_row['count'] < $G_nb_joueur_groupe - ($nb_perso_groupe))
+	if ($groupe->get_place_libre() > 0)
 	{
 		//Si il y est déjà groupé
-		$W_requete = 'SELECT groupe FROM perso WHERE ID = '.$W_ID;
-		$W_query = $db->query($W_requete);
-		$W_row = $db->read_array($W_query);
-		$W_groupe = $W_row['groupe'];
-		if ($W_groupe == 0)
+		if ($perso->get_groupe() == 0)
 		{
 			//Regarde si vous l'avez déjà invité
-			$W_requete = 'SELECT COUNT(inviteur), groupe FROM invitation WHERE inviteur = '.$_SESSION['ID'].' AND receveur = '.$W_ID.' GROUP BY groupe';
+			$W_requete = 'SELECT COUNT(inviteur), groupe FROM invitation WHERE inviteur = '.$joueur->get_id().' AND receveur = '.$perso->get_id().' GROUP BY groupe';
 			$W_query = $db->query($W_requete);
 			$W_row = $db->read_array($W_query);
 			if ($W_row['COUNT(inviteur)'] == 0)
@@ -57,29 +57,31 @@ if ($groupe['id_leader'] == $_SESSION['ID'])
 				$W_requete = "INSERT INTO `invitation` ( `ID` , `inviteur` , `receveur` , `time`, `groupe` ) VALUES ('', '".$_SESSION['ID']."', '".$W_ID."', '".time()."','".$W_ID_groupe."')";
 				if ($db->query($W_requete))
 				{
-					echo 'Invitation bien envoyée !<br />';
+					echo 'Invitation bien envoyée!<br />';
 				}
 				else
 				{
+					echo 'Veuillez renvoyer l\'invitation.';
 				}
 			}
 			else
 			{
-				echo 'Vous avez déjà envoyé une invitation à cette personne';
+				echo 'Vous avez déjà envoyé une invitation à cette personne.';
 			}
 		}
 		else
 		{
-			echo 'Ce joueur est déjà groupé<br />';
+			echo 'Ce joueur est déjà groupé.<br />';
 		}
 	}
 	else
 	{
-		echo 'Vous avez déjà invité 4 autres joueurs !<br />';
+		echo 'Vous avez déjà invité '.$G_nb_joueur_groupe.' autres joueurs!<br />';
 	}
 }
 else
 {
-	echo 'Vous n\'êtes pas leader du groupe';
+	if(isset($groupe_joueur))
+		echo 'Vous n\'êtes pas leader du groupe.';
 }
 ?>

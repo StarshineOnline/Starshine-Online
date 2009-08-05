@@ -128,7 +128,7 @@ class maitrise_bouclier extends competence
     //echo 'instance de maitrise_bouclier <br/>';
   }
 
-	static function factory(&$effects, &$actif, &$passif, $acteur) {
+	static function factory(&$effects, &$actif, &$passif, $acteur = '') {
 		if ($passif['bouclier'] AND 
 				array_key_exists('maitrise_bouclier', $passif['competences']))
 			$effects[] = new maitrise_bouclier($acteur != 'attaquant');
@@ -155,10 +155,10 @@ class maitrise_dague extends competence
     parent::__construct('maitrise_dague', $aPrintUp);
   }
 
-	static function factory(&$effects, &$actif, &$passif) {
-    if($actif['arme_type'] == 'dague' AND
-       array_key_exists('maitrise_dague', $actif['competences']))
-			$effects[] = new maitrise_dague($acteur == 'attaquant');      
+	static function factory(&$effects, &$actif, &$passif, $acteur = '') {
+    	if($actif['arme_type'] == 'dague' AND
+       		array_key_exists('maitrise_dague', $actif['competences']))
+		$effects[] = new maitrise_dague($acteur == 'attaquant');      
 	}
 
   function debut_round(&$actif, &$passif) {
@@ -182,7 +182,7 @@ class maitrise_epee extends competence
     parent::__construct('maitrise_epee', $aPrintUp);
   }
 
-	static function factory(&$effects, &$actif, &$passif) {
+	static function factory(&$effects, &$actif, &$passif, $acteur = '') {
     if($actif['arme_type'] == 'epee' AND
        array_key_exists('maitrise_epee', $actif['competences']))
 			$effects[] = new maitrise_epee($acteur == 'attaquant');      
@@ -209,7 +209,7 @@ class maitrise_hache extends competence
     parent::__construct('maitrise_hache', $aPrintUp);
   }
 
-	static function factory(&$effects, &$actif, &$passif) {
+	static function factory(&$effects, &$actif, &$passif, $acteur = '') {
     if($actif['arme_type'] == 'hache' AND
        array_key_exists('maitrise_hache', $actif['competences']))
 			$effects[] = new maitrise_hache($acteur == 'attaquant');      
@@ -236,7 +236,7 @@ class maitrise_arc extends competence
     parent::__construct('maitrise_arc', $aPrintUp);
   }
 
-	static function factory(&$effects, &$actif, &$passif) {
+	static function factory(&$effects, &$actif, &$passif, $acteur = '') {
     if($actif['arme_type'] == 'arc' AND
        array_key_exists('maitrise_arc', $actif['competences']))
 			$effects[] = new maitrise_arc($acteur == 'attaquant');      
@@ -263,7 +263,7 @@ class maitrise_critique extends competence
     parent::__construct('maitrise_critique', $aPrintUp);
   }
 
-	static function factory(&$effects, &$actif, &$passif) {
+	static function factory(&$effects, &$actif, &$passif, $acteur = '') {
     if($actif['arme_type'] == 'critique' AND
        array_key_exists('maitrise_critique', $actif['competences']))
 			$effects[] = new maitrise_critique($acteur == 'attaquant');      

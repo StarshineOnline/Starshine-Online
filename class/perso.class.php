@@ -1109,6 +1109,17 @@ class perso
 	{
 		return $this->y;
 	}
+	
+	/**
+	* Retourne la position
+	* @access public
+	* @param none
+	* @return int
+	*/
+	function get_case()
+	{
+		return $this->x.$this->y;
+	}
 
 	/**
 	* Retourne la valeur de l'attribut
@@ -2425,10 +2436,18 @@ class perso
 		else return false;
 	}
 
-	function is_debuff()
+	function is_debuff($nom = '')
 	{
 		if(!isset($this->debuff)) $this->get_debuff();
-		if(is_array($this->debuff)) return array_key_exists($nom, $this->debuff);
+		if(is_array($this->debuff))
+		{
+			foreach($this->debuff as $dbuff)
+			{
+				if(strcmp($dbuff->get_nom(), $nom) == 0)
+					return true;
+			}
+			return false;
+		}
 		else return false;
 	}
 

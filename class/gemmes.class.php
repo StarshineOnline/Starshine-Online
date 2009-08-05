@@ -62,7 +62,7 @@ class gemme_enchassee extends effect
    *
    * @see effect::factory
 	 */
-	static function factory(&$effects, &$actif, &$passif, $acteur) {
+	static function factory(&$effects, &$actif, &$passif, $acteur = '') {
     $actives = array('vampire', 'poison', 'divine');
     $passives = array('bouclier', 'bouclier_epine', 'blocage',
                       'parade', 'evasion', 'divine');

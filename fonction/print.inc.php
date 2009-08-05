@@ -64,12 +64,12 @@ function print_head($Option_List = "")
 				case "title"			:	echo "	<title>".trim($opt_value[1])."</title>\n";
 											break;
 											
-				case "css"				:	$tmp = split("~", trim($opt_value[1]));
+				case "css"				:	$tmp = explode("~", trim($opt_value[1]));
 											for($i = 0; $i < count($tmp); $i++)
 												echo "<link href='".trim($tmp[$i])."' rel='stylesheet' type='text/css' />\n";
 											break;
 
-				case "script"			:	$tmp = split("~", trim($opt_value[1]));
+				case "script"			:	$tmp = explode("~", trim($opt_value[1]));
 											for($i = 0; $i < count($tmp); $i++)
 												echo "<script type='text/javascript' src='".trim($tmp[$i])."'></script>\n";
 											break;
@@ -116,14 +116,13 @@ function affiche_perso_visu($joueur, $W_row, $position="")
 	$mybonus = recup_bonus($_SESSION['ID']);
 	echo '<li style="clear:both;">
 	';
-	$W_nom = $W_row['nom'];
-	$W_race = $W_row['race'];
 	$W_ID = $W_row['ID'];
-	$W_hp = $W_row['hp'];
+	$perso = new perso($W_ID);
+	
 	$bonus = recup_bonus($W_ID);
 	// on envois dans infojoueur.php -> ID du joueur et La position de la case ou il se trouve
 	
-	$requete = "SELECT ".$W_race." FROM diplomatie WHERE race = '".$joueur->get_race()."'";
+	$requete = "SELECT ".$perso->get_race()." FROM diplomatie WHERE race = '".$joueur->get_race()."'";
 	$req_diplo = $db->query($requete);
 	$row_diplo = $db->read_array($req_diplo);
 	
@@ -149,13 +148,14 @@ function affiche_perso_visu($joueur, $W_row, $position="")
 	}
 	$facteur_xp = $row_diplo[0] * 0.2;
 	$facteur_honneur = ($row_diplo[0] * 0.2) - 0.8;
+
 	if ($facteur_honneur < 0) $facteur_honneur = 0;
-	if(array_key_exists(6, $bonus) AND !check_affiche_bonus($bonus[6], $joueur, $W_row)) $chaine_nom = $W_nom;
-	else $chaine_nom = $W_row['gnom'].' '.$W_nom;
+	if(array_key_exists(6, $bonus) AND !check_affiche_bonus($bonus[6], $joueur, $perso)) $chaine_nom = $perso->get_nom();
+	else $chaine_nom = $W_row['gnom'].' '.$perso->get_nom();
 	$echo = $Gtrad['diplo'.$diplo].' => XP : '.($facteur_xp * 100).'% - Honneur : '.($facteur_honneur * 100).'%';
-	echo '<img src="image/personnage/'.$W_race.'/'.$W_race.'_'.$Tclasse[$W_row['classe']]["type"].'.png" alt="'.$W_race.'" title="'.$W_race.'" style="vertical-align: middle;height:21px;float:left;width:21px;" /><span style="font-weight : bold;float:left;width:325px;margin-left:15px;"><a href="infojoueur.php?ID='.$W_ID.'&poscase='.$W_case.'" onclick="return envoiInfo(this.href, \'information\');" onclick="return nd();" onmouseover="return '.make_overlib($echo).'" onmouseout="return nd();">';
+	echo '<img src="image/personnage/'.$perso->get_race().'/'.$perso->get_race().'_'.$Tclasse[$perso->get_classe()]["type"].'.png" alt="'.$perso->get_race().'" title="'.$perso->get_race().'" style="vertical-align: middle;height:21px;float:left;width:21px;" /><span style="font-weight : bold;float:left;width:325px;margin-left:15px;"><a href="infojoueur.php?ID='.$perso->get_id().'&poscase='.$perso->get_case().'" onclick="return envoiInfo(this.href, \'information\');" onclick="return nd();" onmouseover="return '.make_overlib($echo).'" onmouseout="return nd();">';
 			
-	if ($W_hp <= 0)
+	if ($joueur->get_hp() <= 0)
 		{
 			echo '<span class="mort">'.$chaine_nom.'</span> ';
 		}
@@ -166,12 +166,12 @@ function affiche_perso_visu($joueur, $W_row, $position="")
 
 	echo '</a>'.$position.'</span>';
 	echo '<span style="float:left;">';
-	if ($W_ID != $_SESSION['ID'])
+	if ($perso->get_id() != $_SESSION['ID'])
 	{
 		echo '
-		<a href="envoimessage.php?id_type=p'.$W_ID.'" onclick="return envoiInfo(this.href, \'information\')"><img src="image/interface/message.png" title="Envoyer un message" /></a>';
-		if ($joueur->get_sort_jeu() != '') echo '<a href="sort_joueur.php?poscase='.$W_case.'&amp;id_joueur='.$W_ID.'" onclick="return envoiInfo(this.href, \'information\')"><img src="image/sort_hc_icone.png" title="Lancer un sort" alt="Lancer un sort" /></a>';
-		if ($row_diplo[0] <= 5 OR array_key_exists(5, $mybonus)) echo '<a href="echange.php?poscase='.$W_case.'&amp;id_joueur='.$W_ID.'" onclick="return envoiInfo(this.href, \'information\')"><img src="image/icone/echanger.png" alt="Echanger" title="Echanger" /></a>';
+		<a href="envoimessage.php?id_type=p'.$perso->get_id().'" onclick="return envoiInfo(this.href, \'information\')"><img src="image/interface/message.png" title="Envoyer un message" /></a>';
+		if ($joueur->get_sort_jeu() != '') echo '<a href="sort_joueur.php?poscase='.$perso->get_case().'&amp;id_joueur='.$perso->get_id().'" onclick="return envoiInfo(this.href, \'information\')"><img src="image/sort_hc_icone.png" title="Lancer un sort" alt="Lancer un sort" /></a>';
+		if ($row_diplo[0] <= 5 OR array_key_exists(5, $mybonus)) echo '<a href="echange.php?poscase='.$perso->get_case().'&amp;id_joueur='.$perso->get_id().'" onclick="return envoiInfo(this.href, \'information\')"><img src="image/icone/echanger.png" alt="Echanger" title="Echanger" /></a>';
 	}
 	else
 	{

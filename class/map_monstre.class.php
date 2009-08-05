@@ -142,5 +142,5 @@ class MapMonstre extends Personnage
 		}
 
 	}
-	
+}
 ?>

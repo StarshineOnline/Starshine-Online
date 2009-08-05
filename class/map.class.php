@@ -78,8 +78,8 @@ class map
 						 ORDER BY id;");
 		while($objMap = $db->read_object($RqMap))
 		{
-			$coord = convert_in_coord($objMap->id);
-			$MAPTAB[$coord['x']][$coord['y']]["id"] = $objMap->id;
+			$coord = convert_in_coord($objMap->ID);
+			$MAPTAB[$coord['x']][$coord['y']]["id"] = $objMap->ID;
 			$MAPTAB[$coord['x']][$coord['y']]["decor"] = $objMap->decor;
 			$MAPTAB[$coord['x']][$coord['y']]["royaume"] = $objMap->royaume;
 		}
@@ -326,7 +326,7 @@ class map
 				}
 				{//-- Vérification des bonus liés au points shine
 					//Si c'est pas lui même
-					if($objJoueurs->id != $_SESSION["id"])
+					if($objJoueurs->id != $_SESSION['id'])
 					{
 						if($objJoueurs->cache_classe == 2)	{ $this->map[$objJoueurs->x][$objJoueurs->y]["Joueurs"][$joueurs]["classe"] = "combattant"; }
 						elseif($objJoueurs->cache_classe == 1 && $objJoueurs->race != $race) { $this->map[$objJoueurs->x][$objJoueurs->y]["Joueurs"][$joueurs]["classe"] = "combattant"; }

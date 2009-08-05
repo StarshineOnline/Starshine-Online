@@ -169,7 +169,7 @@ class effect
    * @param  $acteur    Indique si le personnage à l'origine de l'effet est l'attaquant
    *                    ("attaquant") ou le défenseur.   
    */  
-	static function factory(&$effects, &$actif, &$passif, $acteur) {}
+	static function factory(&$effects, &$actif, &$passif, $acteur = '') {}
 
 
   /**
@@ -355,7 +355,7 @@ class empoisonne extends effect {
 		$this->vigueur = $aVigueur;
 	}
 
-	static function factory(&$effects, &$actif, &$passif, $acteur) {
+	static function factory(&$effects, &$actif, &$passif, $acteur = '') {
 		if (array_key_exists('empoisonne', $actif['etat']))
 			$effects[] = new empoisonne($actif['etat']['empoisonne']['effet']);
 	}
@@ -383,7 +383,7 @@ class poison_lent extends effect {
 		$this->vigueur = $aVigueur;
 	}
 
-	static function factory(&$effects, &$actif, &$passif, $acteur) {
+	static function factory(&$effects, &$actif, &$passif, $acteur = '') {
 		if (array_key_exists('poison_lent', $actif['etat'])) {
 			$effects[] = new poison_lent($actif['etat']['poison_lent']['effet']);
 		}
@@ -409,7 +409,7 @@ class ensable extends effect {
 		$this->effet = $aEffet;
 	}
 
-	static function factory(&$effects, &$actif, &$passif, $acteur) {
+	static function factory(&$effects, &$actif, &$passif, $acteur = '') {
 		if (array_key_exists('fleche_sable', $actif['etat'])) {
 			$effects[] = new ensable($actif['etat']['fleche_sable']['effet']);
 		}

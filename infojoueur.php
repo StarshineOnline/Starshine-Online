@@ -9,6 +9,8 @@ $W_ID = $_GET['ID'];
 //Prise des infos du perso
 $joueur = new perso($_SESSION['ID']);
 $perso = new perso($W_ID);
+$groupe = new groupe($joueur->get_groupe());
+
 $W_case = convert_in_pos($perso->get_x(), $perso->get_y());
 $bonus = recup_bonus($W_ID);
 $bonus_total = recup_bonus_total($perso->get_id());
@@ -103,12 +105,12 @@ if($joueur->get_sort_jeu() != '')
 	}
 }
 
-if (($W_distance < 2) AND ($W_ID != $_SESSION['ID']) AND ($perso->get_groupe() != $joueur->get_groupe() OR $joueur->get_groupe() == '' OR $joueur->get_groupe() == 0) AND !$joueur->is_buff('debuff_groupe'))
+if (($W_distance < 2) AND ($W_ID != $_SESSION['ID']) AND ($perso->get_groupe() != $joueur->get_groupe() OR $joueur->get_groupe() == '' OR $joueur->get_groupe() == 0))
 {
+	if($joueur->is_buff('debuff_groupe')) echo 'Vous êtes déprimé, vous ne pouvez pas grouper';
 	echo('<tr><td><img src="image/interface/demande_groupe.png" alt="Inviter ce joueur dans votre groupe" title="Inviter ce joueur dans votre groupe" style="vertical-align : middle;" /></td><td><a href="invitegroupe.php?ID='.$W_ID.'" onclick="return envoiInfo(this.href, \'information\')"> Inviter ce joueur dans votre groupe</a></td></tr>');
 }
-else
-	echo 'Vous êtes déprimé, vous ne pouvez pas grouper';
+
 
 //Voir l'inventaire
 if(array_key_exists(20, $bonus) AND check_affiche_bonus($bonus[20], $joueur, $perso))
@@ -120,17 +122,8 @@ if(array_key_exists(23, $bonus) AND check_affiche_bonus($bonus[23], $joueur, $pe
 {
 	echo('<tr><td></td><td><a href="personnage.php?id_perso='.$W_ID.'" onclick="return envoiInfo(this.href, \'information\')"> Voir les caractéristiques de ce joueur</a></td></tr>');
 }
-if(!isset($groupe)) { 
 
-if($joueur->is_buff('debuff_groupe'))
-	echo 'Vous êtes déprimé, vous ne pouvez pas grouper';
-else
-	$groupe = new groupe($joueur->get_groupe(), ""); 
-
-};
-
-
-if(($perso->get_groupe() == $joueur->get_groupe()) AND ($groupe->get_leader() == $joueur->get_id()))
+if( (($perso->get_groupe() == $joueur->get_groupe()) && $joueur->get_groupe() != 0) AND ($groupe->get_leader() == $joueur->get_id()))
 {
 	echo('<tr><td><img src="image/interface/exspuler-joueur_icone.png" alt="Expulser le joueur" title="Expulser le joueur" /></td><td><a style="cursor:pointer;" onclick="javascript:if(confirm(\'Voulez vous expulser ce joueur ?\')) envoiInfo(\'kickjoueur.php?ID='.$perso->get_id().'&groupe='.$groupe['id'].'\', \'information\');">Expulser la personne du groupe</a></td></tr>');
 }
@@ -141,19 +134,19 @@ echo '</table>';
 
 
 //Affichage des buffs du joueur
-if($joueur->get_groupe() == $perso->get_groupe() && $joueur->get_groupe() !== 0 && $joueur->get_groupe() != '')
+if($joueur->get_groupe() == $perso->get_groupe() && $joueur->get_groupe() != 0 && $joueur->get_groupe() != '')
 {
 	if (count($perso->get_buff()) != 0 || count($perso->get_debuff()) != 0)
 	{
 		echo '<h4><span class="titre_info">Buffs / Debuffs</span></h4>';
 		//Listing des buffs
-		foreach($perso['buff'] as $buff)
+		foreach($perso->get_buff() as $buff)
 		{
 			echo '<img src="image/buff/'.$buff['type'].'_p.png" alt="'.$buff['type'].'" ondblclick="if(confirm(\'Voulez vous supprimer '.$buff['nom'].' ?\')) envoiInfo(\'suppbuff.php?id='.$buff['id'].'\', \'perso\');" onmouseover="'.make_overlib('<strong>'.$buff['nom'].'</strong><br />'.description($buff['description'], $buff).'<br />Durée '.transform_sec_temp($buff['fin'] - time())).'" onmouseout="return nd();" />';
 		}
-		if(count($perso['debuff']) > 0) echo '<br />';
+		if(count($perso->get_debuff()) > 0) echo '<br />';
 		//Listing des debuffs
-		foreach($perso['debuff'] as $buff)
+		foreach($perso->get_debuff() as $buff)
 		{
 			echo '<img src="image/buff/'.$buff['type'].'_p.png" alt="'.$buff['type'].'" onmouseover="'.make_overlib('<strong>'.$buff['nom'].'</strong><br />'.description($buff['description'], $buff).'<br />Durée '.transform_sec_temp($buff['fin'] - time())).'" onmouseout="return nd();" />';
 		}

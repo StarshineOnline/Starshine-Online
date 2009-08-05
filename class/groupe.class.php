@@ -28,6 +28,15 @@ class groupe
     */
 	private $nom;
 
+	/**
+	 * @access private
+	 */
+	private $share_xp;
+	
+	/**
+	 * @access private
+	 */
+	 private $lvl;
 	
 	/**
 	* @access public
@@ -196,6 +205,16 @@ class groupe
 	{
 		return $this->id;
 	}
+	/**
+	 * Retourne le niveau du groupe
+	 * @access public
+	 * @param none
+	 * @return int(10) $lvl niveau du groupe 
+ 	*/
+	function get_lvl()
+	{
+		return $this->lvl;
+	}
 
 	/**
 	* Retourne la valeur de l'attribut
@@ -296,22 +315,43 @@ class groupe
 		return $this->membre_joueur;
 	}
 
-	function get_leader()
+	function get_id_leader()
 	{
+		global $db;
 		$W_requete = 'SELECT id_joueur FROM groupe_joueur WHERE leader = \'y\' AND id_groupe = '.$this->get_id();
 		$W_query = $db->query($W_requete);
 		$W_row = $db->read_array($W_query);
 		return $W_row['id_joueur'];
 	}
-
+	
+	function trouve_position_joueur($id_perso)
+	{
+		if(!isset($this->membre)) $this->get_membre();
+		$poursuite = true;
+		
+		$pos = 0;
+		$i = 0;
+		while($poursuite && $i < count($this->membre))
+		{
+			if($this->membre[$i] == $id_perso)
+				$pos = $i; 
+			$i++;			
+		}
+		if(!isset($pos))
+			$pos = false;
+			
+		return $pos;
+	}
+	
 	function get_place_libre()
 	{
+		global $db, $G_nb_joueur_groupe;
 		$W_requete = 'SELECT COUNT(inviteur) as count FROM invitation WHERE inviteur = '.$this->get_leader();
 		$W_query = $db->query($W_requete);
 		$W_row = $db->read_array($W_query);
 		$nb_invitation = $W_row['count'];
 	
-		$W_requete = 'SELECT COUNT(id_joueur) as count FROM froupe_joueur WHERE id_groupe = '.$this->get_id();
+		$W_requete = 'SELECT COUNT(id_joueur) as count FROM groupe_joueur WHERE id_groupe = '.$this->get_id();
 		$nb_membre = $W_row['count'];
 		
 		return ($G_nb_joueur_groupe - $nb_invitation - $nb_membre);

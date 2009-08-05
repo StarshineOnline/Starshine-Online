@@ -6,7 +6,7 @@ include_once(root.'inc/fp.php');
 if (isset($_SESSION['nom']))
 {
 }
-elseif($connexion)
+elseif(isset($connexion) && $connexion)
 {
 	header("Location: index.php");
 }
@@ -31,7 +31,7 @@ if((isset($_POST['log']) OR isset($_COOKIE['nom'])) AND !array_key_exists('nom',
 		$password = $_COOKIE['password'];
 		if (!isset($_SESSION['password'])) $_SESSION['password'] = '';
 	}
-	if($_POST['auto_login'] == 'Ok') $autologin = true; else $autologin = false;
+	if(isset($_POST['auto_login']) && $_POST['auto_login'] == 'Ok') $autologin = true; else $autologin = false;
 	$check = $identification->connexion($nom, $password, $autologin);
 }
 //Déconnexion du joueur
@@ -44,7 +44,7 @@ $journal = '';
 if(array_key_exists('nom', $_SESSION)) $joueur = new perso($_SESSION['ID']);
 if(!isset($root)) $root = '';
 //check_undead_players();
-if ($site)
+if (isset($site) && $site)
 {
 	print_head("css:./css/site.css~./css/lightbox.css;script:./javascript/fonction.js~./javascript/overlib/overlib.js~./javascript/scriptaculous/prototype.js~./javascript/scriptaculous/scriptaculous.js?load=effects,builder~./javascript/scriptaculous/lightbox.js~./javascript/scriptaculous/prototip.js;title:StarShine, le jeu qu'il tient ses plannings !");
 }
