@@ -184,9 +184,9 @@ function affiche_quetes($fournisseur, $joueur)
 	global $db, $R;
 	$return = array();
 	$quetes = array();
-	if(is_array($joueur->get_quete()))
+	if(is_array($joueur->get_liste_quete()))
 	{
-		foreach($joueur['quete'] as $quete)
+		foreach($joueur->get_liste_quete() as $quete)
 		{
 			$quetes[] = $quete['id_quete'];
 		}

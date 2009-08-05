@@ -2631,7 +2631,52 @@ class perso
 			$this->sauver();
 			return true;
 		}
-		else return true;
+		else return false;
+	}
+
+	function get_liste_quete()
+	{
+		$this->liste_quete = unserialize($this->quete)
+		return $this->liste_quete;
+	}
+
+	function prend_quete($quete)
+	{
+		$valid = true;
+		//Vérifie si le joueur n'a pas déjà pris la quète.
+		if($joueur->get_quete() != '')
+		{
+			foreach($joueur->get_liste_quete() as $quest)
+			{
+				if($quest['id_quete'] == $_GET['id']) $valid = false;
+			}
+			$numero_quete = (count($joueur->liste_quete));
+		}
+		else
+		{
+			$numero_quete = 0;
+		}
+		if($valid)
+		{
+			$quete = unserialize($row['objectif']);
+			$count = count($quete);
+			$i = 0;
+			while($i < $count)
+			{
+				$joueur->liste_quete[$numero_quete]['objectif'][$i]->cible = $quete[$i]->cible;
+				$joueur->liste_quete[$numero_quete]['objectif'][$i]->requis = $quete[$i]->requis;
+				$joueur->liste_quete[$numero_quete]['objectif'][$i]->nombre = 0;
+				$joueur->liste_quete[$numero_quete]['id_quete'] = $row['id'];
+				$i++;
+			}
+			$joueur->set_quete(serialize($joueur->liste_quete));
+			return true;
+		}
+		else
+		{
+			$G_erreur = 'Vous avez déjà cette quète en cours !';
+			return false;
+		}
 	}
 
 	function check_perso()

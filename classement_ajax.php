@@ -72,7 +72,7 @@ if (file_exists('root.php'))
 ?>
 		<div id="table_classement">
 <?php
-	$joueur = recupperso($_SESSION['ID']);
+	$joueur = new perso($_SESSION['ID']);
 	if(!array_key_exists('tri', $_GET)) $tri = 'honneur';
 	else
 	{
@@ -98,7 +98,7 @@ if (file_exists('root.php'))
 	}
 	if($race == 'race')
 	{
-		$where = "race = '".sSQL($joueur['race'])."'";
+		$where = "race = '".sSQL($joueur->get_race())."'";
 	}
 	else
 	{
@@ -107,9 +107,9 @@ if (file_exists('root.php'))
 	if($i === 'moi')
 	{
 		if(!strcmp($tri, 'architecture, forge, alchimie'))
-			$requete = "SELECT COUNT(*) FROM perso WHERE ROUND(SQRT(alchimie + forge + architecture)) > ".round(sqrt($joueur['alchimie']+$joueur['forge']+$joueur['architecture']))." AND statut = 'actif' AND ".$where;
+			$requete = "SELECT COUNT(*) FROM perso WHERE ROUND(SQRT(alchimie + forge + architecture)) > ".$joueur->get_artisanat()." AND statut = 'actif' AND ".$where;
 		else
-			$requete = "SELECT COUNT(*) FROM perso WHERE ".sSQL($tri)." > ".$joueur[$tri]." AND statut = 'actif' AND ".$where;
+			$requete = "SELECT COUNT(*) FROM perso WHERE ".sSQL($tri)." > ".$joueur->get_{$tri}." AND statut = 'actif' AND ".$where;
 		$req = $db->query($requete);
 		$row = $db->read_row($req);
 		$sup = $row[0] + 15;
@@ -215,7 +215,7 @@ if (file_exists('root.php'))
 						$nom = $row['nom'];
 						if((strtolower($row['nom']) != strtolower($_SESSION['nom'])) AND
 							 ($row['cache_classe'] > 1 OR
-								($row['cache_classe'] == 1 AND $row['race'] != $joueur['race'])))
+								($row['cache_classe'] == 1 AND $row['race'] != $joueur->get_race())))
 							$row['classe'] = 'combattant';
 						if(strtolower($nom) == strtolower($_SESSION['nom']))
 						{

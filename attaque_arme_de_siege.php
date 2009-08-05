@@ -9,24 +9,24 @@ include_once(root.'haut_ajax.php');
 //L'ID du du joueur attaqué
 $W_ID = $_GET['ID'];
 
-$joueur = recupperso($_SESSION['ID']);
+$joueur = new perso($_SESSION['ID']);
 
 $ennemi = 'batiment';
 $defenseur = recupbatiment($_GET['id_batiment'], $_GET['table']);
 $defenseur['type2'] = 'batiment';
 $attaquant = recupbatiment($_GET['id_arme_de_siege'], 'construction');
 $attaquant['type2'] = 'batiment';
-$attaquant['melee'] = $attaquant['melee'] * (1 + ($joueur['architecture'] / 100));
+$attaquant['melee'] = $attaquant['melee'] * (1 + ($joueur->get_architecture() / 100));
 if($defenseur['type'] == 'arme_de_siege') $attaquant['arme_degat'] = $attaquant['arme_degat2'];
 $attaquant['action_a'] = '!';
 $defenseur['action_d'] = $defenseur['action_d'];
 
 //Case du monstre
 $W_case = $_GET['poscase'];
-$W_requete = 'SELECT * FROM map WHERE ID =\''.sSQL($W_case).'\'';
+$W_requete = 'SELECT * FROM map WHERE id =\''.sSQL($W_case).'\'';
 $W_req = $db->query($W_requete);
 $W_row = $db->read_array($W_req);
-$R = get_royaume_info($joueur['race'], $W_row['royaume']);
+$R = get_royaume_info($joueur->get_race(), $W_row['royaume']);
 $W_distance = detection_distance($W_case,$_SESSION["position"]);
 
 ?>

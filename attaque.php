@@ -356,6 +356,7 @@ else
 					?>
 					</div>
 					<?php
+				//Fin du round
 				if($mode == 'defenseur')
 				{
 					$round++;
@@ -366,6 +367,7 @@ else
 					<?php
 				}
 			}
+			//Fin du combat
 			if($mode == 'attaquant')
 			{
 					?>
@@ -374,6 +376,8 @@ else
 			</table>
 					<?php
 			}
+
+			//Calculs liés à la survie, fiabilité de l'estimation de HP etc.
 			$survie = $attaquant->get_survie();
 			if($attaquant->is_competence('survie_humanoide')) $survie += $attaquant->get_competence('survie_humanoide');
 			$nbr_barre_total = ceil($survie / $defenseur->get_level());
@@ -404,6 +408,7 @@ else
 					$db->query("UPDATE comp_perso SET valeur = ".$augmentation[0]." WHERE id_perso = ".$attaquant->get_id()." AND competence = 'survie_humanoide'");
 				}
 			}
+			//Cartouche de fin de combat
 			echo ' 
 			<div id="combat_cartouche">
 			<ul style="float:left;">
@@ -438,51 +443,53 @@ else
 			if($gains)
 			{
 				//Gain d'expérience
-				$xp = $passif['level'] * 100 * $G_xp_rate;
+				$xp = $passif->get_level() * 100 * $G_xp_rate;
             	
-				//Niveau du groupe
-				if($actif['groupe'] > 0)
+				//Si le joueur a un groupe
+				if($actif->get_groupe() > 0)
 				{
-					$groupe = recupgroupe($actif['groupe'], $actif['x'].'-'.$actif['y']);
-					foreach($groupe['membre'] as $membre_id)
+					$groupe = new groupe($actif->get_groupe());
+					$groupe->get_membre_joueur();
+					//Si on tape un joueur de son groupe xp = 0
+					foreach($groupe->membre_joueur as $membre_id)
 					{
-						if($membre_id['id_joueur'] == $passif['ID']) $xp = 0;
+						if($membre_id->get_id() == $passif->get_id()) $xp = 0;
 					}
 				}
+				//Joueur solo
 				else
 				{
-					$groupe = array();
-					$groupe['level_groupe'] = $actif['level'];
-					$groupe['somme_groupe'] = $actif['level'];
-					$groupe['share_xp'] = 100;
-					$groupe['membre'][0]['id_joueur'] = $actif['ID'];
-					$groupe['membre'][0]['share_xp'] = 100;
-					$groupe['membre'][0]['race'] = $actif['race'];
+					$groupe = new groupe();
+					$groupe->level_groupe = $actif->get_level();
+					$groupe->somme_groupe = $actif->get_level();
+					$groupe->share_xp = 100;
+					$groupe->membre_joueur[0]['id_joueur'] = $actif->get_id();
+					$groupe->membre_joueur[0]['share_xp'] = 100;
+					$groupe->membre_joueur[0]['race'] = $actif->get_race();
 				}
-				$G_range_level = ceil($passif['level'] * 0.5);
-				$xp = $xp * (1 + (($passif['level'] - $actif['level']) / $G_range_level));
+				$G_range_level = ceil($passif->get_level * 0.5);
+				$xp = $xp * (1 + (($passif->get_level() - $actif->get_level()) / $G_range_level));
 				if($xp < 0) $xp = 0;
 				//Si il est en groupe réduction de l'xp gagné par rapport au niveau du groupe
-				if($actif['groupe'] > 0)
+				if($actif->get_groupe() > 0)
 				{
-					$xp = $xp * $actif['level'] / $groupe['level_groupe'];
+					$xp = $xp * $actif->get_level() / $groupe['level_groupe'];
 				}
 				$honneur = floor($xp * 4);
 				
 				//Partage de l'xp au groupe
-				foreach($groupe['membre'] as $membre)
+				foreach($groupe->membre_joueur as $membre)
 				{
-					//Facteur de diplomatie	
-					$requete = "SELECT ".$passif['race']." FROM diplomatie WHERE race = '".$membre['race']."'";
+					//Facteur de diplomatie
+					$requete = "SELECT ".$passif->get_race()." FROM diplomatie WHERE race = '".$membre->get_race()."'";
 					$req_diplo = $db->query($requete);
 					$row_diplo = $db->read_row($req_diplo);
 					
 					//Vérification crime
-					if($membre['id_joueur'] == $actif['ID'] AND $crime AND $actif['ID'] == $attaquant->get_id())
+					if($membre->get_id() == $actif->get_id() AND $crime AND $actif->get_id() == $attaquant->get_id())
 					{
 						$points = $G_crime[$row_diplo[0]];
-						$requete = "UPDATE perso SET crime = crime + ".$points." WHERE ID = ".$actif['ID'];
-						$db->query($requete);
+						$actif->set_crime($actif->get_crime() + $points);
 						$msg_xp .=  'Vous tuez un joueur en '.$Gtrad['diplo'.$row[0]].', vous recevez '.$points.' point(s) de crime<br />';
 					}
 					$star = 0;
@@ -517,30 +524,30 @@ else
 					$facteur_honneur = ($row_diplo[0] * 0.2) - 0.8;
 					if ($facteur_honneur < 0) $facteur_honneur = 0;
 					//XP Final
-					$xp_gagne = floor(($xp * $facteur_xp) * $membre['share_xp'] / $groupe['share_xp']);
-					$honneur_gagne = floor(($honneur * $facteur_honneur) * $membre['share_xp'] / $groupe['share_xp']);
-					$requete = 'UPDATE perso SET star = star + '.$star.', exp = exp + '.$xp_gagne.', honneur = honneur + '.$honneur_gagne.' WHERE ID = '.$membre['id_joueur'];
-					$db->query($requete);
-					$player = recupperso($membre['id_joueur']);
-					$msg_xp .= $player['nom'].' gagne <strong class="reward">'.$xp_gagne.' XP</strong> et <strong class="reward">'.$honneur_gagne.' points d\'honneur</strong><br />';
-					if($membre['id_joueur'] == $attaquant->get_id()) verif_action('J'.$row_diplo[0], $player, 's');
-					else verif_action('J'.$row_diplo[0], $player, 'g');
+					$xp_gagne = floor(($xp * $facteur_xp) * $membre->share_xp / $groupe->share_xp);
+					$honneur_gagne = floor(($honneur * $facteur_honneur) * $membre->share_xp / $groupe->share_xp);
+					$membre->set_star($membre->get_star() + $star);
+					$membre->set_xp($membre->get_xp() + $xp_gagne);
+					$membre->set_honneur($membre->get_honneur() + $honneur_gagne);
+					$msg_xp .= $membre->get_nom().' gagne <strong class="reward">'.$xp_gagne.' XP</strong> et <strong class="reward">'.$honneur_gagne.' points d\'honneur</strong><br />';
+					if($membre->get_id() == $attaquant->get_id()) verif_action('J'.$row_diplo[0], $membre, 's');
+					else verif_action('J'.$row_diplo[0], $membre 'g');
+					$membre->sauver();
 				}
-				$requete = 'UPDATE perso SET frag = frag + 1 WHERE ID = '.$actif['ID'];
-				$db->query($requete);
-				$requete = 'UPDATE perso SET mort = mort + 1 WHERE ID = '.$passif['ID'];
-				$db->query($requete);
+				$actif->set_frag($actif->get_frag() + 1);
+				$passif->set_mort($passif->get_mort() + 1);
+				$actif->sauver();
+				$passif->sauver();
 			}
 
 			if ($defenseur->get_hp() >= 0)
 			{
 				echo(' <a href="attaque.php?ID='.$W_ID.'&amp;poscase='.$W_case.'" onclick="return envoiInfo(this.href, \'information\')"><img src="image/interface/attaquer.png" alt="Combattre" title="Attaquer la même cible" style="vertical-align : middle;" /></a><br />');
 			}
-			
-			$requete = 'UPDATE perso SET survie = '.$attaquant->get_survie().' ,pa = '.$attaquant->get_pa().' - '.$pa_attaque.' WHERE ID = '.$_SESSION['ID'];
-			$db->query($requete);
-			$requete = 'UPDATE perso SET pa = '.$defenseur['pa'].' WHERE ID = '.$defenseur->get_id();
-			$db->query($requete);
+
+			$attaquant->set_pa($attaquant->get_pa() - $pa_attaque);
+			$attaquant->sauver();
+			$defenseur->sauver();
 	
 			//Insertion de l'attaque dans les journaux des 2 joueurs
 			$requete = "INSERT INTO journal VALUES('', ".$attaquant->get_id().", 'attaque', '".$attaquant->get_nom()."', '".$defenseur->get_nom()."', NOW(), ".($defense_hp_avant - $defense_hp_apres).", ".($attaque_hp_avant - $attaque_hp_apres).", ".$defenseur['x'].", ".$defenseur['y'].")";

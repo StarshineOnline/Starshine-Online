@@ -6,8 +6,8 @@ if (file_exists('root.php'))
 //Inclusion du haut du document html
 include_once(root.'haut_ajax.php');
 
-$joueur = recupperso($_SESSION['ID']);
-check_perso($joueur);
+$joueur = new perso($_SESSION['ID']);
+$joueur->check_perso();
 
 //Vérifie si le perso est mort
 verif_mort($joueur, 1);
@@ -16,11 +16,12 @@ $W_case = $_GET['poscase'];
 $W_requete = 'SELECT * FROM map WHERE ID =\''.sSQL($W_case).'\'';
 $W_req = $db->query($W_requete);
 $W_row = $db->read_array($W_req);
-$R = get_royaume_info($joueur['race'], $W_row['royaume']);
+$R = new royaume($W_row['royaume']);
+$R->get_diplo($joueur->get_race());
 
 if(!isset($_GET['type'])) $_GET['type'] = 'arme';
 
-$_SESSION['position'] = convert_in_pos($joueur['x'], $joueur['y']);
+$_SESSION['position'] = convert_in_pos($joueur->get_x(), $joueur->get_y());
 $W_distance = detection_distance($W_case,$_SESSION["position"]);
 $W_coord = convert_in_coord($W_case);
 if($W_distance == 0)
@@ -39,38 +40,23 @@ if($W_distance == 0)
 						$row = $db->read_array($req);
 						$taxe = ceil($row['prix'] * $R['taxe'] / 100);
 						$cout = $row['prix'] + $taxe;
-						if ($joueur['star'] >= $cout)
+						if ($joueur->get_star() >= $cout)
 						{
-							$i = 0;
-							//Recherche un emplacement libre
-							while(($i <= $G_place_inventaire) AND !$trouver)
+							if($joueur->prend_objet())
 							{
-								if($joueur['inventaire_slot'][$i] === 0 OR $joueur['inventaire_slot'][$i] == '')
-								{
-									$trouver = true;
-								}
-								else $i++;
-							}
-							//Inventaire plein
-							if(!$trouver)
-							{
-								echo 'Vous n\'avez plus de place dans votre inventaire<br />';
-							}
-							else
-							{
-								$joueur['inventaire_slot'][$i] = 'o'.$_GET['id'];
-								$inventaire_slot = serialize($joueur['inventaire_slot']);
-								$req = $db->query($requete);
-								$joueur['star'] = $joueur['star'] - $cout;
-								$requete = "UPDATE perso SET inventaire_slot = '".$inventaire_slot."', star = ".$joueur['star']." WHERE ID = ".$joueur['ID'];
-								$req = $db->query($requete);
+								$joueur->set_star($joueur->get_star() - $cout);
+								$joueur->sauver();
 								//Récupération de la taxe
 								if($taxe > 0)
 								{
-									$requete = 'UPDATE royaume SET star = star + '.$taxe.' WHERE ID = '.$R['ID'];
-									$db->query($requete);
+									$R->set_star($R->get_star() + $taxe);
+									$R->sauver();
 								}
 								echo 'Objet acheté !<br />';
+							}
+							else
+							{
+								echo $G_erreur.'<br />';
 							}
 						}
 						else
@@ -144,7 +130,7 @@ if($W_distance == 0)
 			$taxe = ceil($row['prix'] * $R['taxe'] / 100);
 			$cout = $row['prix'] + $taxe;
 			$couleur = $color;
-			if($cout > $joueur['star']) $couleur = 3;
+			if($cout > $joueur->get_star()) $couleur = 3;
 		?>
 		<tr class="element trcolor<?php echo $couleur; ?>">
 			<td>

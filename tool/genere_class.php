@@ -150,6 +150,14 @@ $this-><?php echo $champ_reference; ?> = $<?php echo $champ_reference; ?>;
 					{
 						$champs[] .= $champ.' = "'.mysql_escape_string($this->{$champ}).'"';
 					}
+					foreach($this->champs_add as $champ)
+					{
+						$champs[] .= $champ['nom'].' = '.$champ['nom'].' + '.$champ['valeur'];
+					}
+					foreach($this->champs_del as $champ)
+					{
+						$champs[] .= $champ['nom'].' = '.$champ['nom'].' - '.$champ['valeur'];
+					}
 					$champs = implode(', ', $champs);
 				}
 				$requete = 'UPDATE <?php echo $table; ?> SET ';
@@ -271,13 +279,27 @@ $this-><?php echo $champ_reference; ?> = $<?php echo $champ_reference; ?>;
 	* @param '.$champ['Type_doc'].' $'.$champ['Field'].' valeur de l\'attribut
 	* @return none
 	*/
-	function set_'.$champ['Field'].'($'.$champ['Field'].')
+	function set_'.$champ['Field'].'($'.$champ['Field'].', $param = \'set\')
 	{
-		$this->'.$champ['Field'].' = $'.$champ['Field'].';
-		$this->champs_modif[] = \''.$champ['Field'].'\';
+		switch($param)
+		{
+			case \'set\' :
+				$this->'.$champ['Field'].' = $'.$champ['Field'].';
+				$this->champs_modif[] = \''.$champ['Field'].'\';
+			break;
+			case \'add\' :
+				$this->'.$champ['Field'].' += $'.$champ['Field'].';
+				$this->champs_add[] = array(\'nom\' => \''.$champ['Field'].'\', \'valeur\' => $'.$champ['Field'].');
+			break;
+			case \'del\' :
+				$this->'.$champ['Field'].' -= $'.$champ['Field'].';
+				$this->champs_del[] = array(\'nom\' => \''.$champ['Field'].'\', \'valeur\' => $'.$champ['Field'].');
+			break;
+		}
 	}
 ';
 	}
+
 	//Inclusion des fonctions spécifiques
 	$filename= 'class/'.$table.'.class.php';
 	$new_file = ob_get_contents();

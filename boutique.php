@@ -9,7 +9,7 @@ include_once(root.'haut_ajax.php');
 
 $joueur = new perso($_SESSION['ID']);
 
-check_perso($joueur);
+$joueur->check_perso();
 
 //Vérifie si le perso est mort
 verif_mort($joueur, 1);
@@ -18,13 +18,13 @@ $W_case = $_GET['poscase'];
 $W_requete = 'SELECT * FROM map WHERE ID =\''.sSQL($W_case).'\'';
 $W_req = $db->query($W_requete);
 $W_row = $db->read_array($W_req);
-$R = get_royaume_info($joueur->get_race(), $W_row['royaume']);
+$R = new royaume($W_row['royaume']);
+$R->get_diplo($joueur->get_race());
 
 if(!isset($_GET['type'])) $_GET['type'] = 'arme';
 
-$_SESSION['position'] = $joueur->get_pos();
 		?>
-		<h2 class="ville_titre"><?php echo '<a href="ville.php?poscase='.$W_case.'" onclick="return envoiInfo(this.href,\'centre\')">';?><?php echo $R['nom'];?></a> - <?php echo '<a href="boutique.php?poscase='.$W_case.'" onclick="return envoiInfo(this.href,\'carte\')">';?> Marchand d'<?php echo $_GET['type']; ?>s </a></h2>
+		<h2 class="ville_titre"><?php echo '<a href="ville.php?poscase='.$W_case.'" onclick="return envoiInfo(this.href,\'centre\')">';?><?php echo $R->get_nom();?></a> - <?php echo '<a href="boutique.php?poscase='.$W_case.'" onclick="return envoiInfo(this.href,\'carte\')">';?> Marchand d'<?php echo $_GET['type']; ?>s </a></h2>
 		<?php
 		if($_GET['type'] == 'armure')
 		{
@@ -45,7 +45,7 @@ $W_coord = convert_in_coord($W_case);
 if($W_distance == 0)
 {
 	//On recherche le niveau de la construction
-	$requete = "SELECT * FROM construction_ville LEFT JOIN batiment_ville ON construction_ville.id_batiment = batiment_ville.id WHERE batiment_ville.type = '".$batiment."' AND construction_ville.id_royaume = ".$R['ID'];
+	$requete = "SELECT * FROM construction_ville LEFT JOIN batiment_ville ON construction_ville.id_batiment = batiment_ville.id WHERE batiment_ville.type = '".$batiment."' AND construction_ville.id_royaume = ".$R->get_id();
 	$req = $db->query($requete);
 	$row = $db->read_assoc($req);
 	?>
@@ -71,18 +71,16 @@ if($W_distance == 0)
 						$cout = $row['prix'] + $taxe;
 						if ($joueur->get_star() >= $cout)
 						{
-							if(prend_objet('a'.$row['id'], $joueur))
+							if($joueur->prend_objet('a'.$row['id']))
 							{
 								$joueur->set_star($joueur->get_star() - $cout);
-								$requete = "UPDATE perso SET star = ".$joueur->get_star()." WHERE ID = ".$_SESSION['ID'];
-								$req = $db->query($requete);
+								$joueur->sauver();
 								//Récupération de la taxe
 								if($taxe > 0)
 								{
-									$requete = 'UPDATE royaume SET star = star + '.$taxe.' WHERE ID = '.$R['ID'];
-									$db->query($requete);
-									$requete = "UPDATE argent_royaume SET forgeron = forgeron + ".$taxe." WHERE race = '".$R['race']."'";
-									$db->query($requete);
+									$R->set_star($R->get_star() + $taxe);
+									$R->set_forgeron($R->get_forgeron() + $taxe));
+									$R->sauver();
 								}
 								echo '<h6>Arme achetée !</h6>
 								<img src="image/pixel.gif" onLoad="envoiInfo(\'infoperso.php?javascript=oui\', \'perso\');" />';
@@ -105,18 +103,16 @@ if($W_distance == 0)
 						$cout = $row['prix'] + $taxe;
 						if ($joueur->get_star() >= $cout)
 						{
-							if(prend_objet('p'.$row['id'], $joueur))
+							if($joueur->prend_objet('p'.$row['id']))
 							{
 								$joueur->set_star($joueur->get_star() - $cout);
-								$requete = "UPDATE perso SET star = ".$joueur->get_star()." WHERE ID = ".$_SESSION['ID'];
-								$req = $db->query($requete);
+								$joueur->sauver();
 								//Récupération de la taxe
 								if($taxe > 0)
 								{
-									$requete = 'UPDATE royaume SET star = star + '.$taxe.' WHERE ID = '.$R['ID'];
-									$db->query($requete);
-									$requete = "UPDATE argent_royaume SET armurerie = armurerie + ".$taxe." WHERE race = '".$R['race']."'";
-									$db->query($requete);
+									$R->set_star($R->get_star() + $taxe);
+									$R->set_armurerie($R->get_armurerie() + $taxe));
+									$R->sauver();
 								}
 								echo '<h6>Armure achetée !</h6>
 								<img src="image/pixel.gif" onLoad="envoiInfo(\'infoperso.php?javascript=oui\', \'perso\');" />';

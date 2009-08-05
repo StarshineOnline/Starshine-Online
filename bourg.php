@@ -7,9 +7,9 @@ $connexion = true;
 //Inclusion du haut du document html
 include_once(root.'haut_ajax.php');
 
-$joueur = recupperso($_SESSION['ID']);
+$joueur = new perso($_SESSION['ID']);
 
-check_perso($joueur);
+$joueur->check_perso();
 
 //Vérifie si le perso est mort
 verif_mort($joueur, 1);
@@ -18,9 +18,8 @@ $W_case = $_GET['poscase'];
 $W_requete = 'SELECT * FROM map WHERE ID =\''.sSQL($W_case).'\'';
 $W_req = $db->query($W_requete);
 $W_row = $db->read_array($W_req);
-$R = get_royaume_info($joueur['race'], $W_row['royaume']);
-
-$_SESSION['position'] = convert_in_pos($joueur['x'], $joueur['y']);
+$R = new royaume($W_row['royaume']);
+$R->get_diplo($joueur->get_race());
 
 //Informations sur le batiment
 $requete = "SELECT * FROM batiment WHERE id = ".sSQL($_GET['id_batiment']);
@@ -34,7 +33,7 @@ $row_b = $db->read_assoc($req);
 $W_distance = detection_distance($W_case, $_SESSION["position"]);
 
 $W_coord = convert_in_coord($W_case);
-if($W_distance == 0 AND $joueur['race'] == $R['race'])
+if($W_distance == 0 AND $joueur->get_race() == $R->get_race())
 {
 	?>
 	<ul class="ville">
@@ -71,7 +70,7 @@ if($W_distance == 0 AND $joueur['race'] == $R['race'])
 		</li>
 <?php
 	}
-	if($row_b['bonus5'] == 1 AND $joueur['rang_royaume'] == 6)
+	if($row_b['bonus5'] == 1 AND $joueur->get_rang_royaume() == 6)
 	{
 ?>
 		<li>

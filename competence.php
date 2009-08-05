@@ -3,7 +3,7 @@ if (file_exists('root.php'))
   include_once('root.php');
 
 include ('livre.php');
-$tab_sort_jeu = explode(';', $joueur['comp_combat']);
+$tab_sort_jeu = explode(';', $joueur->get_comp_combat());
 ?>
 <hr>
 <?php

@@ -6,9 +6,9 @@ if (file_exists('root.php'))
 $connexion = true;
 //Inclusion du haut du document html
 include_once(root.'haut_ajax.php');
-$joueur = recupperso($_SESSION['ID']);
+$joueur = new perso($_SESSION['ID']);
 
-check_perso($joueur);
+$joueur->check_perso();
 
 //Vérifie si le perso est mort
 verif_mort($joueur, 1);
@@ -17,19 +17,19 @@ $W_case = $_GET['poscase'];
 $W_requete = 'SELECT * FROM map WHERE ID =\''.sSQL($W_case).'\'';
 $W_req = $db->query($W_requete);
 $W_row = $db->read_array($W_req);
-$R = get_royaume_info($joueur['race'], $W_row['royaume']);
+$R = new royaume($W_row['royaume']);
+$R->get_diplo($joueur->get_race());
 
 if(!isset($_GET['type'])) $_GET['type'] = 'arme';
 
-$_SESSION['position'] = convert_in_pos($joueur['x'], $joueur['y']);
 ?>
-		<h2 class="ville_titre"><?php if(verif_ville($joueur['x'], $joueur['y'])) return_ville( '<a href="ville.php?poscase='.$W_case.'" onclick="return envoiInfo(this.href, \'centre\')">'.$R['nom'].'</a> -', $W_case); ?> <?php echo '<a href="bureau_quete.php?poscase='.$W_case.'" onclick="return envoiInfo(this.href,\'carte\')">';?> Bureau des Quêtes </a></h2>
+		<h2 class="ville_titre"><?php if(verif_ville($joueur->get_x(), $joueur->get_y())) return_ville( '<a href="ville.php?poscase='.$W_case.'" onclick="return envoiInfo(this.href, \'centre\')">'.$R['nom'].'</a> -', $W_case); ?> <?php echo '<a href="bureau_quete.php?poscase='.$W_case.'" onclick="return envoiInfo(this.href,\'carte\')">';?> Bureau des Quêtes </a></h2>
  		<?php include_once(root.'ville_bas.php');?>
 
 		<div class="ville_test">
 		<p>Voici les différentes Quêtes disponibles :</p>
 <?php
-$W_distance = detection_distance($W_case,$_SESSION["position"]);
+$W_distance = detection_distance($W_case, $joueur->get_pos());
 $W_coord = convert_in_coord($W_case);
 if($W_distance == 0)
 {
@@ -88,46 +88,15 @@ if($W_distance == 0)
 			break;
 			//Prise de la quète
 			case 'prendre' :
-				$numero_quete = (count($joueur['quete']));
-				$valid = true;
-				//Vérifie si le joueur n'a pas déjà pris la quète.
-				if($joueur['quete'] != '')
+				if($joueur->prend_quete($quete))
 				{
-					foreach($joueur['quete'] as $quest)
-					{
-						if($quest['id_quete'] == $_GET['id']) $valid = false;
-					}
-				}
-				else
-				{
-					$numero_quete = 0;
-				}
-				if($valid)
-				{
-					$quete = unserialize($row['objectif']);
-					$count = count($quete);
-					$i = 0;
-					while($i < $count)
-					{
-						$joueur['quete'][$numero_quete]['objectif'][$i]->cible = $quete[$i]->cible;
-						$joueur['quete'][$numero_quete]['objectif'][$i]->requis = $quete[$i]->requis;
-						$joueur['quete'][$numero_quete]['id_quete'] = $row['id'];
-						$joueur['quete'][$numero_quete]['objectif'][$i]->nombre = 0;
-						$i++;
-					}
-					$joueur_quete = serialize($joueur['quete']);
-					$requete = "UPDATE perso SET quete = '".$joueur_quete."' WHERE ID = ".$_SESSION['ID'];
-					$req = $db->query($requete);
 					echo 'Merci de votre aide !<br />';
 					if($row['fournisseur'] == '') $link = 'bureau_quete';
 					elseif($row['fournisseur'] == 'ecole_combat') $link = 'ecolecombat';
 					elseif($row['fournisseur'] == 'boutique') $link = 'alchimiste';
 					else $link = $row['fournisseur'];
 				}
-				else
-				{
-					echo 'Vous avez déjà cette quète en cours !<br />';
-				}
+				else echo $G_erreur.'<br />';
 				?>
 				<a href="<?php echo $link; ?>.php?poscase=<?php echo $_GET['poscase']; ?>" onclick="return envoiInfo(this.href, 'carte')">Revenir en arrière</a>
 				<?php
