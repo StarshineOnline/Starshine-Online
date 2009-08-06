@@ -2636,7 +2636,7 @@ class perso
 
 	function get_liste_quete()
 	{
-		$this->liste_quete = unserialize($this->quete)
+		$this->liste_quete = unserialize($this->quete);
 		return $this->liste_quete;
 	}
 
