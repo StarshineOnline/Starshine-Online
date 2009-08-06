@@ -85,14 +85,14 @@ function verif_action($type_cible, $joueur, $mode)
 						if(verif_quete($joueur['quete'][$i]['id_quete'], $i, $joueur))
 						{
 							fin_quete($joueur, $i, $joueur['quete'][$i]['id_quete']);
-							$joueur = recupperso($joueur['ID']);
+							$joueur = recupperso($joueur->get_id());
 							$count--;
 						}
 						else
 						{
 							//Mis à jour des quêtes du perso
 							$quete = serialize($joueur['quete']);
-							$requete = "UPDATE perso SET quete = '".$quete."' WHERE ID = ".$joueur['ID'];
+							$requete = "UPDATE perso SET quete = '".$quete."' WHERE ID = ".$joueur->get_id();
 							$req = $db->query($requete);
 						}
 					}
@@ -136,7 +136,7 @@ function fin_quete($joueur, $id_quete_joueur, $id_quete)
 		{
 			//On gagne une recette
 			case 'r' :
-				$requete = "SELECT id FROM perso_recette WHERE id_recette = ".$reward_id_objet." AND id_perso = ".$joueur['ID'];
+				$requete = "SELECT id FROM perso_recette WHERE id_recette = ".$reward_id_objet." AND id_perso = ".$joueur->get_id();
 				//echo $requete;
 				$req_r = $db->query($requete);
 				if($db->num_rows > 0)
@@ -150,7 +150,7 @@ function fin_quete($joueur, $id_quete_joueur, $id_quete)
 					$row_r = $db->read_assoc($req_r);
 					$echo .= ' Recette de '.$row_r['nom'].' X '.$reward_nb.', ';
 					//On lui donne la recette
-					$requete = "INSERT INTO perso_recette VALUES('', ".$reward_id_objet.", ".$joueur['ID'].", 0)";
+					$requete = "INSERT INTO perso_recette VALUES('', ".$reward_id_objet.", ".$joueur->get_id().", 0)";
 					$db->query($requete);
 				}
 			break;
@@ -171,11 +171,11 @@ function fin_quete($joueur, $id_quete_joueur, $id_quete)
 		$r++;
 	}
 	$stars = round($row['star'] * (1 + ($joueur['rang_grade'] * 2 / 100)));
-	$requete = "UPDATE perso SET quete = '".$quete."', quete_fini = '".$joueur['quete_fini']."', star = star + ".$stars.", honneur = honneur + ".$row['honneur'].", exp = exp + ".$row['exp']." WHERE ID = ".$joueur['ID'];
-	echo $joueur['nom'].' finit la quête "'.$row['nom'].'", et gagne '.$stars.' stars, '.$echo.' '.$row['exp'].' points d\'expérience et '.$row['honneur'].' points d\'honneur.<br />';
+	$requete = "UPDATE perso SET quete = '".$quete."', quete_fini = '".$joueur['quete_fini']."', star = star + ".$stars.", honneur = honneur + ".$row['honneur'].", exp = exp + ".$row['exp']." WHERE ID = ".$joueur->get_id();
+	echo $joueur->get_nom().' finit la quête "'.$row['nom'].'", et gagne '.$stars.' stars, '.$echo.' '.$row['exp'].' points d\'expérience et '.$row['honneur'].' points d\'honneur.<br />';
 	$req = $db->query($requete);
 	//Mis dans le journal
-	$requete = "INSERT INTO journal VALUES('', ".$joueur['ID'].", 'f_quete', '".$joueur['nom']."', '', NOW(), '".addslashes($row['nom'])."', 0, 0, 0)";
+	$requete = "INSERT INTO journal VALUES('', ".$joueur->get_id().", 'f_quete', '".$joueur->get_nom()."', '', NOW(), '".addslashes($row['nom'])."', 0, 0, 0)";
 	$db->query($requete);
 }
 
@@ -280,7 +280,7 @@ function prend_quete($id_quete, $joueur)
 			$i++;
 		}
 		$joueur_quete = serialize($joueur['quete']);
-		$requete = "UPDATE perso SET quete = '".$joueur_quete."' WHERE ID = ".$joueur['ID'];
+		$requete = "UPDATE perso SET quete = '".$joueur_quete."' WHERE ID = ".$joueur->get_id();
 		$req = $db->query($requete);
 	}
 	else
@@ -343,7 +343,7 @@ function supprime_quete($joueur, $quete_joueur)
 {
 	global $db;
 	array_splice($joueur['quete'], $quete_joueur, 1);
-	$requete = "UPDATE perso SET quete = '".serialize($joueur['quete'])."' WHERE ID = ".$joueur['ID'];
+	$requete = "UPDATE perso SET quete = '".serialize($joueur['quete'])."' WHERE ID = ".$joueur->get_id();
 	$db->query($requete);
 	return $joueur;
 }

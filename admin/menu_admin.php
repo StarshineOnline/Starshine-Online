@@ -9,7 +9,7 @@ else
 {
 	include_once(root.'inc/verif_log_admin.inc.php');
 	
-  $i = 0; // Avec un index, on pourra réordonner tranquille
+	$i = 0; // Avec un index, on pourra réordonner tranquille
 	$menu = array();
 
 	$menu[$i]['nom'] = 'Wiki Admin';
@@ -24,7 +24,7 @@ else
 	$menu[$i]['url'] = 'admin_mess.php';
 	$menu[$i++]['acces'] = 'admin';
 
-  $menu[$i++]['nom'] = '--'; // Séparateur
+	$menu[$i++]['nom'] = '--'; // Séparateur
 
 	$menu[$i]['nom'] = 'Editeur de carte';
 	$menu[$i]['url'] = 'edit_map3.php';
@@ -108,13 +108,13 @@ else
 				<?php
 				foreach($menu as $item)
 				{
-          if($item['nom'] == '--') {
-            echo '<li><hr /></li>';
-            continue;
-          }
+					if($item['nom'] == '--')
+					{
+						echo '<li><hr /></li>';
+						continue;
+					}
 					if($item['acces'] == '' OR ($item['acces'] == 'admin' AND 
-                                      ($_SESSION['admin_nom'] == 'admin' OR 
-                                       $_SESSION['admin_db_auth'] == 'admin')))
+						($_SESSION['admin_nom'] == 'admin' OR $_SESSION['admin_db_auth'] == 'admin')))
 					{
 				?>
 						<li><a href="<?php echo $item['url']; ?>"><?php echo $item['nom']; ?></a></li>

@@ -14,7 +14,7 @@ if(array_key_exists('id_echange', $_GET))
 	$echange = recup_echange($_GET['id_echange']);
 	$receveur = recupperso_essentiel($echange['id_j2']);
 	//Vérification si le joueur fait parti du donneur ou receveur
-	if($joueur['ID'] != $echange['id_j1'] AND $joueur['ID'] != $echange['id_j2'])
+	if($joueur->get_id() != $echange['id_j1'] AND $joueur->get_id() != $echange['id_j2'])
 	{
 		?>
 		Vous ne faîtes pas parti de cet échange...
@@ -32,7 +32,7 @@ else
 {
 	$W_ID = $_GET['id_joueur'];
 	$receveur = recupperso_essentiel($W_ID);
-	$j1 = recupperso_essentiel($joueur['ID']);
+	$j1 = recupperso_essentiel($joueur->get_id());
 	$j2 = recupperso_essentiel($W_ID);
 }
 
@@ -42,7 +42,7 @@ else
 if(array_key_exists('nouvel_echange', $_GET))
 {
 	//On créé l'échange
-	$requete = "INSERT INTO echange(id_j1, id_j2, statut, date_debut, date_fin) VALUES(".$joueur['ID'].", ".$receveur['ID'].", 'creation', ".time().", ".(time() + 100000).")";
+	$requete = "INSERT INTO echange(id_j1, id_j2, statut, date_debut, date_fin) VALUES(".$joueur->get_id().", ".$receveur['ID'].", 'creation', ".time().", ".(time() + 100000).")";
 	$db->query($requete);
 	$echange = recup_echange($db->last_insert_id());
 }
@@ -54,7 +54,7 @@ if(!isset($echange))
 	$receveur = recupperso_essentiel($W_ID);
 	echo '<div class="information_case">';
 	//On demande au joueurs si il veut faire un échange ou en récupérer un ancien
-	$echanges = recup_echange_perso($joueur['ID'], $receveur['ID']);
+	$echanges = recup_echange_perso($joueur->get_id(), $receveur['ID']);
 	//Il y a déjà eu des échanges
 	if(count($echanges) > 0)
 	{
@@ -96,7 +96,7 @@ if(array_key_exists('valid_etape', $_GET))
 	{
 		case 'creation' :
 			//Ajout des stars dans la bdd
-			if(echange_objet_ajout($_GET['star'], 'star', $echange['id_echange'], $joueur['ID']))
+			if(echange_objet_ajout($_GET['star'], 'star', $echange['id_echange'], $joueur->get_id()))
 			{
 				$echange = recup_echange($echange['id_echange']);
 			}
@@ -105,10 +105,10 @@ if(array_key_exists('valid_etape', $_GET))
 			if($db->query($requete))
 			{
 				//On envoi un message au gars
-				$titre = $joueur['nom'].' vous propose un échange';
-				$message = mysql_escape_string($joueur['nom'].' vous propose un échange[br]
+				$titre = $joueur->get_nom().' vous propose un échange';
+				$message = mysql_escape_string($joueur->get_nom().' vous propose un échange[br]
 				Pour voir ce qu\'il vous propose cliquez ici : [echange:'.$_GET['id_echange'].']');
-				$requete = "INSERT INTO message VALUES('', ".$receveur['ID'].", ".$joueur['ID'].", '".$joueur['nom']."', '".$receveur['nom']."', '".$titre."', '".$message."', '', '".time()."', 0)";
+				$requete = "INSERT INTO message VALUES('', ".$receveur['ID'].", ".$joueur->get_id().", '".$joueur->get_nom()."', '".$receveur['nom']."', '".$titre."', '".$message."', '', '".time()."', 0)";
 				$req = $db->query($requete);
 				//C'est ok
 				echo '<h6>Votre proposition a bien été envoyée</h6>';
@@ -118,7 +118,7 @@ if(array_key_exists('valid_etape', $_GET))
 		break;
 		case 'proposition' :
 			//Ajout des stars dans la bdd
-			if(echange_objet_ajout($_GET['star'], 'star', $echange['id_echange'], $joueur['ID']))
+			if(echange_objet_ajout($_GET['star'], 'star', $echange['id_echange'], $joueur->get_id()))
 			{
 				$echange = recup_echange($echange['id_echange']);
 			}
@@ -218,7 +218,7 @@ if(array_key_exists('valid_etape', $_GET))
 if(array_key_exists('ajout_objet', $_GET))
 {
 	//Ajout de l'objet dans la bdd
-	if(echange_objet_ajout($_GET['ajout_objet'], 'objet', $echange['id_echange'], $joueur['ID']))
+	if(echange_objet_ajout($_GET['ajout_objet'], 'objet', $echange['id_echange'], $joueur->get_id()))
 	{
 		$echange = recup_echange($echange['id_echange']);
 	}
@@ -299,14 +299,14 @@ if(isset($echange))
 		</ul>
 		</div>
 		<?php
-		if($echange['id_j1'] == $joueur['ID'])
+		if($echange['id_j1'] == $joueur->get_id())
 		{
 		?>
 		<input type="button" value="Finir l'échange" onclick="envoiInfo('echange.php?id_echange=<?php echo $echange['id_echange']; ?>&amp;valid_etape=true', 'information');" />
 		<?php
 		}
 	}
-	elseif(($echange['statut'] == 'creation' AND $echange['id_j1'] == $joueur['ID']) OR ($echange['statut'] == 'proposition' AND $echange['id_j2'] == $joueur['ID']))
+	elseif(($echange['statut'] == 'creation' AND $echange['id_j1'] == $joueur->get_id()) OR ($echange['statut'] == 'proposition' AND $echange['id_j2'] == $joueur->get_id()))
 	{
 		$j1['bonus'] = recup_bonus($j1['ID']);
 		$j2['bonus'] = recup_bonus($j2['ID']);
@@ -338,7 +338,7 @@ Vous proposez :
 				$count = count($echange['objet']);
 				while($i < $count)
 				{
-					if($echange['objet'][$keys[$i]]['type'] == 'objet' AND $echange['objet'][$keys[$i]]['id_j'] == $joueur['ID'])
+					if($echange['objet'][$keys[$i]]['type'] == 'objet' AND $echange['objet'][$keys[$i]]['id_j'] == $joueur->get_id())
 					{
 					?>
 					<li><?php echo nom_objet($echange['objet'][$keys[$i]]['objet']); ?> <a href="echange.php?id_echange=<?php echo $echange['id_echange']; ?>&amp;suppr_objet=<?php echo $echange['objet'][$keys[$i]]['id_echange_objet']; ?>&amp;index_objet=<?php echo $keys[$i]; ?>" onclick="return envoiInfo(this.href, 'information');">X</a></li>
@@ -389,11 +389,11 @@ Vous proposez :
 </div>
 <?php
 	}
-	elseif($echange['statut'] == 'creation' AND $echange['id_j2'] == $joueur['ID'])
+	elseif($echange['statut'] == 'creation' AND $echange['id_j2'] == $joueur->get_id())
 	{
 		echo 'Un échange est en train d\'être créé';
 	}
-	elseif($echange['statut'] == 'proposition' AND $echange['id_j1'] == $joueur['ID'])
+	elseif($echange['statut'] == 'proposition' AND $echange['id_j1'] == $joueur->get_id())
 	{
 		echo 'Votre proposition est étudiée par le joueur';
 	}

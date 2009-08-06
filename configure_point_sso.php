@@ -3,8 +3,8 @@ if (file_exists('root.php'))
   include_once('root.php');
 ?><?php
 include_once(root.'inc/fp.php');
-$joueur = recupperso($_SESSION['ID']);
-$bonus = recup_bonus($joueur['ID']);
+$joueur = new perso($_SESSION['ID']);
+$bonus = recup_bonus($joueur->get_id());
 ?>
 	<div id="centre2">
 		<?php
@@ -21,46 +21,45 @@ $bonus = recup_bonus($joueur['ID']);
 					switch($id)
 					{
 						case 7 :
-							$champ = 'cache_classe';
+							$joueur->set_cache_classe($_GET['etat']);
 						break;
 						case 8 :
-							$champ = 'cache_stat';
+							$joueur->set_cache_stat($_GET['etat']);
 						break;
 						case 11 :
-							$champ = 'cache_niveau';
+							$joueur->set_cache_niveau($_GET['etat']);
 						break;
 					}
-					$requete = "UPDATE perso SET ".$champ." = ".$_GET['etat']." WHERE ID = ".$joueur['ID'];
-					$db->query($requete);
+					$joueur->sauver();
 				}
-				$bonus_total = recup_bonus_total($joueur['ID']);
+				$bonus_total = recup_bonus_total($joueur->get_id());
 				$requete = "UPDATE bonus_perso SET etat = ".sSQL($_GET['etat'])." WHERE id_bonus_perso = ".$bonus_total[$id]['id_bonus_perso'];
 				$db->query($requete);
-				$bonus = recup_bonus($joueur['ID']);
+				$bonus = recup_bonus($joueur->get_id());
 			}
 			//Changement de sexe
 			if(array_key_exists('sexe', $_GET))
 			{
-				$bonus_total = recup_bonus_total($joueur['ID']);
+				$bonus_total = recup_bonus_total($joueur->get_id());
 				$requete = "UPDATE bonus_perso SET valeur = ".sSQL($_GET['sexe'])." WHERE id_bonus_perso = ".$bonus_total[$id]['id_bonus_perso'];
 				$db->query($requete);
-				$bonus = recup_bonus($joueur['ID']);
+				$bonus = recup_bonus($joueur->get_id());
 			}
 			//Changement de description
 			if(array_key_exists('description', $_GET))
 			{
-				$bonus_total = recup_bonus_total($joueur['ID']);
+				$bonus_total = recup_bonus_total($joueur->get_id());
 				$requete = "UPDATE bonus_perso SET valeur = '".sSQL(htmlspecialchars($_GET['description']))."' WHERE id_bonus_perso = ".$bonus_total[$id]['id_bonus_perso'];
 				$db->query($requete);
-				$bonus = recup_bonus($joueur['ID']);
+				$bonus = recup_bonus($joueur->get_id());
 			}
 			//Changement de css
 			if(array_key_exists('css', $_GET))
 			{
-				$bonus_total = recup_bonus_total($joueur['ID']);
+				$bonus_total = recup_bonus_total($joueur->get_id());
 				$requete = "UPDATE bonus_perso SET valeur = '".sSQL(htmlspecialchars($_GET['css']))."' WHERE id_bonus_perso = ".$bonus_total[$id]['id_bonus_perso'];
 				$db->query($requete);
-				$bonus = recup_bonus($joueur['ID']);
+				$bonus = recup_bonus($joueur->get_id());
 			}
 			//Avatar
 			if(array_key_exists('nom_du_fichier', $_FILES))
@@ -109,18 +108,18 @@ $bonus = recup_bonus($joueur['ID']);
 						exit("Le fichier n'est pas une image");
 					}
 					//Récupère le type
-					$nom_fichier = $chemin_destination.$joueur['ID'].$type;
-					if(move_uploaded_file($_FILES['nom_du_fichier']['tmp_name'], $chemin_destination.$joueur['ID'].$type))
+					$nom_fichier = $chemin_destination.$joueur->get_id().$type;
+					if(move_uploaded_file($_FILES['nom_du_fichier']['tmp_name'], $chemin_destination.$joueur->get_id().$type))
 					{
 						//On vérifie la taille de l'image
 						$size = getimagesize($nom_fichier);
 						//Si compris entre 80 * 80
 						if($size[0] <= 80 AND $size[1] <= 80)
 						{
-							$bonus_total = recup_bonus_total($joueur['ID']);
-							$requete = "UPDATE bonus_perso SET valeur = '".sSQL($joueur['ID'].$type)."' WHERE id_bonus_perso = ".$bonus_total[$id]['id_bonus_perso'];
+							$bonus_total = recup_bonus_total($joueur->get_id());
+							$requete = "UPDATE bonus_perso SET valeur = '".sSQL($joueur->get_id().$type)."' WHERE id_bonus_perso = ".$bonus_total[$id]['id_bonus_perso'];
 							$db->query($requete);
-							$bonus = recup_bonus($joueur['ID']);
+							$bonus = recup_bonus($joueur->get_id());
 						}
 						//Sinon on efface l'image
 						else
@@ -142,7 +141,7 @@ $bonus = recup_bonus($joueur['ID']);
 			//Configuration de la valeur
 			if($row['valeur_modifiable'])
 			{
-				$bonus_total = recup_bonus_total($joueur['ID']);
+				$bonus_total = recup_bonus_total($joueur->get_id());
 				//Différents type de modification
 				switch($id)
 				{
@@ -228,7 +227,7 @@ $bonus = recup_bonus($joueur['ID']);
 			Configuration de vos bonus Shine
 		</div>
 		<?php
-			$requete = "SELECT * FROM bonus_perso RIGHT JOIN bonus ON bonus_perso.id_bonus = bonus.id_bonus WHERE bonus_perso.id_perso = ".$joueur['ID']." ORDER BY bonus.id_categorie ASC";
+			$requete = "SELECT * FROM bonus_perso RIGHT JOIN bonus ON bonus_perso.id_bonus = bonus.id_bonus WHERE bonus_perso.id_perso = ".$joueur->get_id()." ORDER BY bonus.id_categorie ASC";
 			$req = $db->query($requete);
 			$categorie = '';
 			while($row = $db->read_assoc($req))

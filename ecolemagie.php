@@ -9,7 +9,7 @@ include_once(root.'haut_ajax.php');
 // Inclusion du processus d'apprentissage des sorts
 include_once(root.'fonction/competence.inc.php');
 
-$joueur = recupperso($_SESSION['ID']);
+$joueur = new perso($_SESSION['ID']);
 
 check_perso($joueur);
 
@@ -20,7 +20,7 @@ $W_case = $_GET['poscase'];
 $W_requete = 'SELECT * FROM map WHERE ID =\''.sSQL($W_case).'\'';
 $W_req = $db->query($W_requete);
 $W_row = $db->read_array($W_req);
-$R = get_royaume_info($joueur['race'], $W_row['royaume']);
+$R = get_royaume_info($joueur->get_race(), $W_row['royaume']);
 
 $_SESSION['position'] = convert_in_pos($joueur['x'], $joueur['y']);
 ?>
@@ -130,7 +130,7 @@ if($W_distance == 0)
 				$taxe = ceil($row['prix'] * $R['taxe'] / 100);
 				$cout = $row['prix'] + $taxe;
 				$inc = ($row['incantation'] * $joueur['facteur_magie']);
-				$comp = round($row['comp_requis'] * $joueur['facteur_magie'] * (1 - (($Trace[$joueur['race']]['affinite_'.$row['comp_assoc']] - 5) / 10)));
+				$comp = round($row['comp_requis'] * $joueur['facteur_magie'] * (1 - (($Trace[$joueur->get_race()]['affinite_'.$row['comp_assoc']] - 5) / 10)));
 				//echo $row['pa'].' '.$joueur['facteur_magie'];
 				$sortpa = ($row['pa'] * $joueur['facteur_magie']);
 				$couleur = $color;
@@ -156,7 +156,7 @@ if($W_distance == 0)
 					<?php echo round($sortpa); ?>
 				</td>
 				<td>
-					<?php echo round($row['mp'] * (1 - (($Trace[$joueur['race']]['affinite_'.$row['comp_assoc']] - 5) / 10))); ?>
+					<?php echo round($row['mp'] * (1 - (($Trace[$joueur->get_race()]['affinite_'.$row['comp_assoc']] - 5) / 10))); ?>
 				</td>
 
 				<td>
@@ -200,7 +200,7 @@ if($W_distance == 0)
 		if($joueur['star'] >= $cout)
 		{
 			$joueur['star'] -= $cout;
-			$requete = "UPDATE perso SET star = ".$joueur['star'].", ".sSQL($_GET['app'])." = 3 WHERE ID = ".$joueur['ID'];
+			$requete = "UPDATE perso SET star = ".$joueur['star'].", ".sSQL($_GET['app'])." = 3 WHERE ID = ".$joueur->get_id();
 			if($db->query($requete)) echo 'L\'apprentissage de '.$Gtrad[$_GET['app']].' est un succès !<br />';
 			if($taxe > 0)
 			{

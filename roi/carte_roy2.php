@@ -6,7 +6,7 @@ if (file_exists('../root.php'))
 	include_once(root.'roi/carte_roy.php');
 	// Emplacement de l'image
 	$gs_dirImage = "../image/cart/";
-	$ls_image = $gs_dirImage.'carte_roy_'.$joueur['race'].'.png';
+	$ls_image = $gs_dirImage.'carte_roy_'.$joueur->get_race().'.png';
 	
 	if($joueur['rang_royaume'] != 6)
 		echo '<p>Cheater</p>';

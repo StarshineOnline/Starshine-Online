@@ -48,7 +48,7 @@ else
 				?>
 			<tr>
 				<td>
-					<a href="admin_joueur.php?direction=info_joueur&id=<?php echo $row['id_perso']; ?>"><?php echo $joueur['nom']; ?></a>
+					<a href="admin_joueur.php?direction=info_joueur&id=<?php echo $row['id_perso']; ?>"><?php echo $joueur->get_nom(); ?></a>
 				</td>
 				<td>
 					<?php echo $row['valeur']; ?>

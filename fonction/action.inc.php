@@ -48,7 +48,7 @@ function script_action($joueur, $ennemi, $mode, &$effects)
 			$row = $db->read_assoc($req);
 			// Si la cible est l'adversaire, alors c'est foiré
 			if ($G_cibles[$row['cible']] == 'Ennemi') {
-				echo $ennemi['nom'].' est caché, '.$joueur['nom'].
+				echo $ennemi['nom'].' est caché, '.$joueur->get_nom().
 					' ne peut pas attaquer<br />';
 				return '';
 			}
@@ -95,24 +95,24 @@ function sub_script_action($joueur, $ennemi, $mode, &$effects)
 	$stop = false;
 	if($joueur['etat']['paralysie'] > 0)
 	{
-		echo $joueur['nom'].' est paralysé<br />';
+		echo $joueur->get_nom().' est paralysé<br />';
 		return '';
 	}
 	elseif($joueur['etat']['etourdit'] > 0)
 	{
-		echo $joueur['nom'].' est étourdi<br />';
+		echo $joueur->get_nom().' est étourdi<br />';
 		return '';
 	}
 	elseif($joueur['etat']['tir_vise'] > 0)
 	{
-		echo $joueur['nom'].' décoche une terrible flèche<br />';
+		echo $joueur->get_nom().' décoche une terrible flèche<br />';
 		$effectue[0] = 'attaque';
 		return $effectue;
 	}
 	/*
 	elseif($ennemi['etat']['dissimulation'] > 0)
 	{
-		echo $ennemi['nom'].' est caché, '.$joueur['nom'].' ne peut pas attaquer<br />';
+		echo $ennemi['nom'].' est caché, '.$joueur->get_nom().' ne peut pas attaquer<br />';
 		return '';
 	}
 */
@@ -127,14 +127,14 @@ function sub_script_action($joueur, $ennemi, $mode, &$effects)
 			//echo $cible.' chance de glacer / 100. Résultat : '.$rand.'<br />';
 			if($rand < $cible)
 			{
-				echo $joueur['nom'].' est glacé<br />';
+				echo $joueur->get_nom().' est glacé<br />';
 				return '';
 				$stop = true;
 			}
 		}
 		if($joueur['etat']['silence'] > 0)
 		{
-			echo $joueur['nom'].' est sous silence<br />';
+			echo $joueur->get_nom().' est sous silence<br />';
 			$effectue[0] = 'attaque';
 			return $effectue;
 		}
@@ -292,7 +292,7 @@ function sub_script_action($joueur, $ennemi, $mode, &$effects)
 							$req = $db->query($requete);
 							$row = $db->read_assoc($req);
 							// Récupération des MP nécessaires
-							$mp_need = round($row['mp'] * (1 - (($Trace[$joueur['race']]['affinite_'.$row['comp_assoc']] - 5) / 10)));
+							$mp_need = round($row['mp'] * (1 - (($Trace[$joueur->get_race()]['affinite_'.$row['comp_assoc']] - 5) / 10)));
 							// Appel des ténebres
 							if($joueur['etat']['appel_tenebre']['duree'] > 0)
 							{

@@ -3,7 +3,7 @@ if (file_exists('root.php'))
   include_once('root.php');
 
 	include_once(root.'inc/fp.php');
-	$joueur = recupperso($_SESSION['ID']);
+	$joueur = new perso($_SESSION['ID']);
 	
 	if(array_key_exists('action', $_GET))
 	{

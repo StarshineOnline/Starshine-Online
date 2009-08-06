@@ -4,7 +4,7 @@ if (file_exists('root.php'))
 
 
 if (isset($_GET['javascript'])) include_once(root.'inc/fp.php');
-$joueur = recupperso($_SESSION['ID']);
+$joueur = new perso($_SESSION['ID']);
 
 include_once(root.'levelup.php');
 
@@ -15,9 +15,9 @@ echo '
 	<img src="image/logossot_small.png" alt="sso logo" />
 	</td>
 	<td class="trstat">
-		<a href="personnage.php" onclick="return envoiInfo(this.href, \'information\')" style="text-decoration : none; color : #000;" title="Maximum '.($joueur['rang_grade'] + 2).' buffs"><strong>'.ucwords($joueur['grade']).' '.$joueur['nom'].'</strong>
+		<a href="personnage.php" onclick="return envoiInfo(this.href, \'information\')" style="text-decoration : none; color : #000;" title="Maximum '.($joueur['rang_grade'] + 2).' buffs"><strong>'.ucwords($joueur['grade']).' '.$joueur->get_nom().'</strong>
 		<br />
-		'.$Gtrad[$joueur['race']].' '.$joueur['classe'].'</a><br />
+		'.$Gtrad[$joueur->get_race()].' '.$joueur['classe'].'</a><br />
 		';
 		//Listing des buffs
 		foreach($joueur['buff'] as $buff)
@@ -142,7 +142,7 @@ echo '
 			</td>
 		</tr>
 		';
-/*	$joueur['lignee'] = recupperso_lignee($joueur['ID']);
+/*	$joueur['lignee'] = recupperso_lignee($joueur->get_id());
 	if($joueur['lignee'] != 0)
 	{
 		$lignee = recup_lignee($joueur['lignee']);

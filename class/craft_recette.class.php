@@ -155,9 +155,9 @@ class craft_recette
 		{
 			if($R['diplo'] == 127)
 			{
-				//On récupçre toutes les infos sur le labo du joueur (ou pas)
+				//On rï¿½cupï¿½re toutes les infos sur le labo du joueur (ou pas)
 				$terrain = new terrain();
-				$terrain = $terrain->recoverByIdJoueur($joueur['ID']);
+				$terrain = $terrain->recoverByIdJoueur($joueur->get_id());
 				//Si il poss?de un terrain
 				if(is_object($terrain))
 				{

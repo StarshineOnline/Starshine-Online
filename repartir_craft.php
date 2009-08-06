@@ -3,7 +3,7 @@ if (file_exists('root.php'))
   include_once('root.php');
 ?><?php
 include_once(root.'inc/fp.php');
-$joueur = recupperso($_SESSION['ID']);
+$joueur = new perso($_SESSION['ID']);
 if(array_key_exists('up', $_GET))
 {
 	if($joueur['craft'] > 0)
@@ -20,7 +20,7 @@ if(array_key_exists('up', $_GET))
 				$up = 'architecture = architecture + 1';
 			break;
 		}
-		$requete = "UPDATE perso SET craft = craft - 1, ".$up." WHERE ID = ".$joueur['ID'];
+		$requete = "UPDATE perso SET craft = craft - 1, ".$up." WHERE ID = ".$joueur->get_id();
 		$db->query($requete);
 		echo ($joueur[$_GET['up']] + 1);
 	}

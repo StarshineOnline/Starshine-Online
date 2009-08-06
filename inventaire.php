@@ -213,7 +213,7 @@ if(!$visu AND isset($_GET['action']))
 								$gemme = mb_substr($joueur->get_inventaire_slot_partie($i), 1);
 								$joueur->set_inventaire_slot_partie($gemme, $i);
 								echo 'Identification réussie !<br />Votre gemme est une '.$row['nom'];
-								mail('masterob1@free.fr', 'Starshine Test - Identification réussie', $joueur['nom'].' a identifié '.$row['nom']);
+								mail('masterob1@free.fr', 'Starshine Test - Identification réussie', $joueur->get_nom().' a identifié '.$row['nom']);
 							}
 							else
 							{
@@ -617,7 +617,7 @@ if(!$visu AND isset($_GET['action']))
 							$db->query($requete);
 							$requete = "UPDATE argent_royaume SET hv = hv + ".$comm." WHERE race = '".$R['race']."'";
 							$db->query($requete);
-							$message_mail = $joueur['nom']." vend ".$objet." (".$objet_id.") pour ".$_GET['prix']." stars. Commission : ".$comm." stars";;
+							$message_mail = $joueur->get_nom()." vend ".$objet." (".$objet_id.") pour ".$_GET['prix']." stars. Commission : ".$comm." stars";;
 						}
 						mail('masterob1@free.fr', 'Starshine - Dépot HV', $message_mail);
 					}

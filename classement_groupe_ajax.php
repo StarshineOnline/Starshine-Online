@@ -48,7 +48,7 @@ if (file_exists('root.php'))
 ?>
 		<div id="table_classement">
 <?php
-	$joueur = recupperso($_SESSION['ID']);
+	$joueur = new perso($_SESSION['ID']);
 	if(!array_key_exists('tri', $_GET)) $tri = 'honneur';
 	else
 	{

@@ -211,7 +211,7 @@ $req_batiment = $db->query($requete_batiment);
 			}
 			if($coord['x'] == $coord_joueur['x'] AND $coord['y'] == $coord_joueur['y'])
 			{
-				$case['infoj'] = $joueur['race'];
+				$case['infoj'] = $joueur->get_race();
 				$case['infoj_classe'] = $Tclasse[$joueur['classe']]['type'];
 			}
 			if ($coord['y'] != $y)

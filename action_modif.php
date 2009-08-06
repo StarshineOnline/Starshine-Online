@@ -7,7 +7,7 @@ $connexion = true;
 //Inclusion du haut du document html
 include_once(root.'haut_ajax.php');
 
-$joueur = recupperso($_SESSION['ID']);
+$joueur = new perso($_SESSION['ID']);
 $joueur->check_perso();
 
 ?>
@@ -17,7 +17,7 @@ $joueur->check_perso();
 		<form action="action.php" method="post">
 			<select name="id_action" id="id_action">
 				<?php
-				$requete = "SELECT * FROM action_perso WHERE id_joueur = ".$joueur['ID'];
+				$requete = "SELECT * FROM action_perso WHERE id_joueur = ".$joueur->get_id();
 				$req = $db->query($requete);
 				while($row = $db->read_assoc($req))
 				{

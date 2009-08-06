@@ -42,7 +42,7 @@ if($W_distance == 0)
 					}
 					else
 					{
-						$requete = "INSERT INTO candidat ( `id` , `id_perso` , `date` , `royaume` , `programme`, `nom` ) VALUES('', ".$joueur->get_id().", '".$date."', ".$R['ID'].", '', '".$joueur['nom']."')";
+						$requete = "INSERT INTO candidat ( `id` , `id_perso` , `date` , `royaume` , `programme`, `nom` ) VALUES('', ".$joueur->get_id().", '".$date."', ".$R['ID'].", '', '".$joueur->get_nom()."')";
 						if($db->query($requete))
 						{
 							echo 'Votre candidature pour le poste de roi a bien été prise en compte';

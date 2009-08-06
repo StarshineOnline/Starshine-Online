@@ -4,9 +4,9 @@ if (file_exists('root.php'))
 
 
 include_once(root.'inc/fp.php');
-$joueur = recupperso($_SESSION['ID']);
+$joueur = new perso($_SESSION['ID']);
 check_perso($joueur);
-$bonus = recup_bonus($joueur['ID']);
+$bonus = recup_bonus($joueur->get_id());
 
 echo '
 <fieldset>
@@ -43,15 +43,15 @@ if(array_key_exists('action', $_GET))
 						}
 						if($check)
 						{
-							ajout_bonus($_GET['id'], $joueur['ID']);
+							ajout_bonus($_GET['id'], $joueur->get_id());
 							$joueur['point_sso'] -= $row['point'];
 							$set = 'point_sso = '.$joueur['point_sso'];
 							//Si le bonus est cache grade ou cache classe on l'insere aussi dans la bdd
 							if($_GET['id'] == 7) $set .= ', cache_classe = 1';
 							elseif($_GET['id'] == 8) $set .= ', cache_stat = 1';
-							$requete = "UPDATE perso SET ".$set." WHERE ID = ".$joueur['ID'];
+							$requete = "UPDATE perso SET ".$set." WHERE ID = ".$joueur->get_id();
 							$db->query($requete);
-							$bonus = recup_bonus($joueur['ID']);
+							$bonus = recup_bonus($joueur->get_id());
 						}
 						else
 						{

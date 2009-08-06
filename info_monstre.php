@@ -9,7 +9,7 @@ $W_ID = $_GET['ID'];
 //if (!isset($_GET['poscase'])) security_block(URL_MANIPULATION);
 $W_case = $_GET['poscase'];
 //Prise des infos du perso
-$joueur = recupperso($_SESSION['ID']);
+$joueur = new perso($_SESSION['ID']);
 $monstre = recupmonstre($W_ID);
 
 $survie = $joueur['survie'];

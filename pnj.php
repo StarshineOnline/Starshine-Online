@@ -4,7 +4,7 @@ if (file_exists('root.php'))
 ?><?php
 
 include_once(root.'inc/fp.php');
-$joueur = recupperso($_SESSION['ID']);
+$joueur = new perso($_SESSION['ID']);
 check_perso($joueur);
 $W_case = $_GET['poscase'];
 

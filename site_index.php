@@ -70,7 +70,7 @@ function switch_race()
 	<div id='news'>
 	
 <?php
-	echo	$joueur['nom'];
+	echo	$joueur->get_nom();
 	require('connect_forum.php');
 	$requete = "SELECT * FROM punbbtopics WHERE (forum_id = 5) ORDER BY posted DESC";
 	$req = $db_forum->query($requete);

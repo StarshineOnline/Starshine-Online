@@ -7,7 +7,7 @@ $tab_sort_jeu = explode(';', $joueur->get_comp_jeu());
 ?>
 <hr>
 <?php
-if($joueur->get_ groupe() != 0) $groupe_joueur = recupgroupe($joueur->get_ groupe(), $joueur->get_x().'-'.$joueur->get_y()); else $groupe_joueur = false;
+if($joueur->get_ groupe() != 0) $groupe_joueur = new groupe($joueur->get_ groupe()); else $groupe_joueur = false;
 if (isset($_GET['ID']))
 {
 	$requete = "SELECT * FROM comp_jeu WHERE id = ".sSQL($_GET['ID']);
@@ -43,28 +43,26 @@ if (isset($_GET['ID']))
 			case 'bulle_dephasante' :
 				foreach($cibles as $cible)
 				{
-					$cible_s = recupperso($cible);
+					$cible_s = new perso($cible);
 					//Mis en place du buff
-					if(lance_buff($row['type'], $cible_s['ID'], $row['effet'], $row['effet2'], $row['duree'], $row['nom'], description($row['description'], $row), 'perso', 0, count($cible_s['buff']), $cible_s['rang_grade']))
+					if(lance_buff($row['type'], $cible_s->get_id(), $row['effet'], $row['effet2'], $row['duree'], $row['nom'], description($row['description'], $row), 'perso', 0, count($cible_s->get_liste_buff()), $cible_s->get_rang_grade()))
 					{
 						$action = true;
-						echo $cible_s['nom'].' a bien reçu le buff<br />';
+						echo $cible_s->get_nom().' a bien reçu le buff<br />';
 					}
 					else
 					{
 						if($G_erreur == 'puissant') echo $cibles_s.' bénéficie d\'un buff plus puissant<br />';
-						else echo $cible_s['nom'].' a trop de buff<br />';
+						else echo $cible_s->get_nom().' a trop de buff<br />';
 					}
 				}
 				if($action)
 				{
-					$joueur->get_pa() = $joueur->get_pa() - $sortpa;
-					$joueur->get_mp() = $joueur->get_mp() - $sortmp;
-					//Mis à jour du joueur
-					$requete = "UPDATE perso SET mp = '".$joueur->get_mp()."', pa = '".$joueur->get_pa()."' WHERE ID = '".$_SESSION['ID']."'";
-					$req = $db->query($requete);
+					$joueur->set_pa($joueur->get_pa() - $sortpa);
+					$joueur->set_mp($joueur->get_mp() - $sortmp);
+					$joueur->sauver();
 					//Insertion du buff dans le journal du lanceur
-					$requete = "INSERT INTO journal VALUES('', ".$joueur->get_id().", 'buff', '".$joueur->get_nom()."', '".$cible_s['nom']."', NOW(), '".$row['nom']."', 0, 0, 0)";
+					$requete = "INSERT INTO journal VALUES('', ".$joueur->get_id().", 'buff', '".$joueur->get_nom()."', '".$cible_s->get_nom()."', NOW(), '".$row['nom']."', 0, 0, 0)";
 					$db->query($requete);
 				}
 			break;
@@ -79,10 +77,10 @@ if (isset($_GET['ID']))
 				if($groupe_joueur)
 				{
 					$cibles = array();
-					foreach($groupe_joueur['membre'] as $membre)
+					foreach($groupe_joueur->membre as $membre)
 					{
 						//On peut agir avec les membres du groupe si ils sont a 7 ou moins de distance
-						if($membre['distance'] <= 7) $cibles[] = $membre['id_joueur'];
+						if($membre['distance'] <= 7) $cibles[] = $membre->get_id();
 					}
 				}
 				else
@@ -91,32 +89,33 @@ if (isset($_GET['ID']))
 				}
 				foreach($cibles as $cible)
 				{
-					$cible_s = recupperso($cible);
+					$cible_s = new perso($cible);
 					if($row['type'] == 'preparation_camp') $row['effet2'] = time();
 					//Mis en place du buff
-					if(lance_buff($row['type'], $cible_s['ID'], $row['effet'], $row['effet2'], $row['duree'], $row['nom'], description($row['description'], $row), 'perso', 0, count($cible_s['buff']), $cible_s['rang_grade']))
+					if(lance_buff($row['type'], $cible_s->get_id(), $row['effet'], $row['effet2'], $row['duree'], $row['nom'], description($row['description'], $row), 'perso', 0, count($cible_s->get_liste_buff()), $cible_s->get_rang_grade()))
 					{
 						$action = true;
-						echo $cible_s['nom'].' a bien reçu le buff<br />';
+						echo $cible_s->get_nom().' a bien reçu le buff<br />';
 						//Insertion du buff dans le journal du receveur
-						$requete = "INSERT INTO journal VALUES('', ".$cible_s['ID'].", 'rgbuff', '".$cible_s['nom']."', '".$joueur->get_nom()."', NOW(), '".$row['nom']."', 0, 0, 0)";
+						$requete = "INSERT INTO journal VALUES('', ".$cible_s->get_id().", 'rgbuff', '".$cible_s->get_nom()."', '".$joueur->get_nom()."', NOW(), '".$row['nom']."', 0, 0, 0)";
 						$db->query($requete);
 					}
 					else
 					{
 						if($G_erreur == 'puissant') echo $cibles_s.' bénéficie d\'un buff plus puissant<br />';
-						else echo $cible_s['nom'].' a trop de buffs.<br />';
+						else echo $cible_s->get_nom().' a trop de buffs.<br />';
 					}
 				}
 				if($action)
 				{
-					$joueur->get_pa() = $joueur->get_pa() - $sortpa;
-					$joueur->get_mp() = $joueur->get_mp() - $sortmp;
+					$joueur->set_pa($joueur->get_pa() - $sortpa);
+					$joueur->set_mp($joueur->get_mp() - $sortmp);
+					$joueur->sauver();
 					//Mis à jour du joueur
 					$requete = "UPDATE perso SET mp = '".$joueur->get_mp()."', pa = '".$joueur->get_pa()."' WHERE ID = '".$_SESSION['ID']."'";
 					$req = $db->query($requete);
 					//Insertion du buff dans le journal du lanceur
-					$requete = "INSERT INTO journal VALUES('', ".$joueur->get_id().", 'gbuff', '".$joueur->get_nom()."', '".$cible_s['nom']."', NOW(), '".$row['nom']."', 0, 0, 0)";
+					$requete = "INSERT INTO journal VALUES('', ".$joueur->get_id().", 'gbuff', '".$joueur->get_nom()."', '".$cible_s->get_nom()."', NOW(), '".$row['nom']."', 0, 0, 0)";
 					$db->query($requete);
 				}
 			break;
@@ -156,9 +155,6 @@ if (isset($_GET['ID']))
 					}
 					else { echo "Impossible de lancer de lancer le sort. Vous n&apos;avez aucune debuff.<br/>"; };
 						
-					//-- Mis à jour du joueur
-					$requete = "UPDATE perso SET mp='".$joueur->get_mp()."', pa='".$joueur->get_pa()."' WHERE ID='".$_SESSION["ID"]."'";
-					$req = $db->query($requete);
 					echo '<a href="competence_jeu.php?ID='.$_GET['ID'].'" onclick="return envoiInfo(this.href, \'information\')">Utilisez a nouveau cette compétence</a>';
 					
 			break;

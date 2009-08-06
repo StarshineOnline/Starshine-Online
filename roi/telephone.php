@@ -19,7 +19,7 @@ else if(array_key_exists('message', $_POST))
 			$id_dest = 0;
 			$id_thread = 0;
 			$id_dest = $_POST['id_dest'];
-			$messagerie = new messagerie($joueur['ID']);
+			$messagerie = new messagerie($joueur->get_id());
 			$messagerie->envoi_message($id_thread, $id_dest, $titre, $message, $id_groupe);
 			echo '<h6>Message transmis avec succés</h6>';
 		}

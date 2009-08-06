@@ -75,7 +75,7 @@ $req_drapeaux = $db->query($requete_drapeaux);
 $requete_batiment = 'SELECT construction.x, construction.y, construction.hp, construction.royaume, construction.nom, construction.id_batiment, batiment.image FROM construction, batiment WHERE (((construction.x >= '.$xmin.') AND (construction.x <= '.$xmax.')) AND ((construction.y >= '.$ymin.') AND (construction.y <= '.$ymax.'))) AND batiment.id = construction.id_batiment ORDER BY construction.y ASC, construction.x ASC';
 $req_batiment = $db->query($requete_batiment);
 
-$joueur = recupperso($_SESSION['ID']);
+$joueur = new perso($_SESSION['ID']);
 
 while($row_joueurs = $db->read_assoc($req_joueurs))   $row_j[] = $row_joueurs;
 while($row_p = $db->read_assoc($req_pnj))             $row_pnj[] = $row_p;

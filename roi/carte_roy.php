@@ -7,8 +7,8 @@ $connexion = true;
 //Inclusion du haut du document html
 include_once(root.'roi/haut_ajax.php');
 $im = imagecreatefrompng('../image/carte.png');
-$joueur = recupperso($_SESSION['ID']);
-$requete = "SELECT x, y, count( * ) AS count FROM perso WHERE race = '".$joueur['race']."' AND statut = 'actif' GROUP BY x, y";
+$joueur = new perso($_SESSION['ID']);
+$requete = "SELECT x, y, count( * ) AS count FROM perso WHERE race = '".$joueur->get_race()."' AND statut = 'actif' GROUP BY x, y";
 $req = $db->query($requete);
 $couleur1 = imagecolorallocate($im, 255, 0, 0);
 $couleur2 = imagecolorallocate($im, 255, 100, 100);
@@ -29,5 +29,5 @@ while($row = $db->read_row($req))
 	$y_fin = (($row[1] - 1) * 3) + 2;
 	imagefilledrectangle($im, $x, $y, $x_fin, $y_fin, $couleur);
 }
-imagepng ($im, '../image/cart/carte_roy_'.$joueur['race'].'.png');
+imagepng ($im, '../image/cart/carte_roy_'.$joueur->get_race().'.png');
 ?>

@@ -45,7 +45,7 @@ function utilise_grimoire($id_objet, &$joueur) {
 										 $row['comp_perso_valueadd']));
 			$requete = 'update comp_perso set valeur='.$newval.' where id_comp = '.
 				$row['comp_perso_id'].' and competence = \''.
-				$row['comp_perso_competence'].'\' and id_perso = '.$joueur['ID'];
+				$row['comp_perso_competence'].'\' and id_perso = '.$joueur->get_id();
 			$db->query($requete);
 			echo '<h6>Compétence entraînée</h6>';
 			return true;
@@ -162,7 +162,7 @@ function apprend_sort($ecole, $id_sort, &$joueur, $R, $grimoire) {
 	}
 	if ($joueur['star'] >= $cout) {
 		if($joueur['incantation'] >= ($row['incantation'] * $joueur['facteur_magie'])) {
-			if($joueur[$row['comp_assoc']] >= round($row['comp_requis'] * $joueur['facteur_magie'] * (1 - (($Trace[$joueur['race']]['affinite_'.$row['comp_assoc']] - 5) / 10)))) {
+			if($joueur[$row['comp_assoc']] >= round($row['comp_requis'] * $joueur['facteur_magie'] * (1 - (($Trace[$joueur->get_race()]['affinite_'.$row['comp_assoc']] - 5) / 10)))) {
 				$sort_jeu = explode(';', $joueur[$ecole]);
 				if(!in_array($row['id'], $sort_jeu)) {
 					$joueur_sorts = explode(';', $joueur[$ecole]);

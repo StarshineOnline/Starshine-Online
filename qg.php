@@ -6,13 +6,13 @@ if (file_exists('root.php'))
 //Inclusion du haut du document html
 include_once(root.'inc/fp.php');
 
-$joueur = recupperso($_SESSION['ID']);
+$joueur = new perso($_SESSION['ID']);
 
 $W_case = $_GET['poscase'];
 $W_requete = 'SELECT * FROM map WHERE ID =\''.sSQL($W_case).'\'';
 $W_req = $db->query($W_requete);
 $W_row = $db->read_array($W_req);
-$R = get_royaume_info($joueur['race'], $W_row['royaume']);
+$R = get_royaume_info($joueur->get_race(), $W_row['royaume']);
 
 check_perso($joueur);
 
@@ -69,7 +69,7 @@ if($W_distance == 0)
 									if(prend_objet('r'.$_GET['id_objet'], $joueur))
 									{
 										echo 'Objet bien pris au dépôt du royaume<br />';
-										$joueur = recupperso($joueur['ID']);
+										$joueur = recupperso($joueur->get_id());
 									}
 								}
 								else

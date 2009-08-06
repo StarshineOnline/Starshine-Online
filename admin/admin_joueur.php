@@ -288,11 +288,11 @@ else
 			break;
 			case 'journal' :
 				$joueur = recupperso($_GET['id']);
-				$requete = "SELECT COUNT(*) FROM journal WHERE id_perso = ".$joueur['ID'];
+				$requete = "SELECT COUNT(*) FROM journal WHERE id_perso = ".$joueur->get_id();
 				$req = $db->query($requete);
 				$row = $db->read_row($req);
 				$req = $db->query($requete);
-				$requete = "SELECT * FROM journal WHERE id_perso = ".$joueur['ID']." ORDER by time DESC, id DESC";
+				$requete = "SELECT * FROM journal WHERE id_perso = ".$joueur->get_id()." ORDER by time DESC, id DESC";
 				$req = $db->query($requete);
 				while($row = $db->read_assoc($req))
 				{
@@ -305,7 +305,7 @@ else
 			break;
 			case 'messagerie';
 				$joueur = recupperso($_GET['id']);			
-				$requete = "SELECT * FROM message WHERE id_dest = ".$joueur['ID']." OR id_envoi = ".$joueur['ID']." ORDER BY date DESC";
+				$requete = "SELECT * FROM message WHERE id_dest = ".$joueur->get_id()." OR id_envoi = ".$joueur->get_id()." ORDER BY date DESC";
 				$req = $db->query($requete);	
 				?>
 				<table>
@@ -360,7 +360,7 @@ else
 				}
 				?>
 				</table>
-			<a href="admin_joueur.php?direction=info_joueur&amp;id=<?php echo $joueur['ID']; ?>">Revenir à sa feuille de personnage</a>
+			<a href="admin_joueur.php?direction=info_joueur&amp;id=<?php echo $joueur->get_id(); ?>">Revenir à sa feuille de personnage</a>
 			<?				
 			break;		
 			case 'arme' :
@@ -760,7 +760,7 @@ if($joueur['inventaire_slot'] != '')
 		echo '
 		</td>
 		<td>
-			<a href="admin_joueur.php?direction=supp_objet&amp;id='.$joueur['ID'].'&amp;id_objet='.$objet_d['id_objet'].'&amp;key_slot='.$i.'">Supprimer</a>
+			<a href="admin_joueur.php?direction=supp_objet&amp;id='.$joueur->get_id().'&amp;id_objet='.$objet_d['id_objet'].'&amp;key_slot='.$i.'">Supprimer</a>
 		</td>
 	</tr>';
 			$i++;
@@ -775,7 +775,7 @@ if($joueur['inventaire_slot'] != '')
 				$joueur = recupperso($_GET['id']);
 				supprime_objet($joueur, $_GET['id_objet'], 1);
 				echo 'Objet bien supprimer<br />';
-				echo '<a href="admin_joueur.php?direction=inventaire&amp;id='.$joueur['ID'].'">Retour à l\'inventaire</a> | <a href="admin_joueur.php?direction=info_joueur&amp;id='.$joueur['ID'].'">Retour au personnage</a>';
+				echo '<a href="admin_joueur.php?direction=inventaire&amp;id='.$joueur->get_id().'">Retour à l\'inventaire</a> | <a href="admin_joueur.php?direction=info_joueur&amp;id='.$joueur->get_id().'">Retour au personnage</a>';
 			break;
 		}
 	}

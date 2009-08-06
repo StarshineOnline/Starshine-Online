@@ -69,7 +69,7 @@ function supprime_objet($joueur, $id_objet, $nombre)
 		$i--;
 	}
 	$inventaire_slot = serialize($joueur['inventaire_slot']);
-	$requete = "UPDATE perso SET inventaire_slot = '".$inventaire_slot."' WHERE ID = ".$joueur['ID'];
+	$requete = "UPDATE perso SET inventaire_slot = '".$inventaire_slot."' WHERE ID = ".$joueur->get_id();
 	//echo $requete;
 	$req = $db->query($requete);
 }
@@ -374,7 +374,7 @@ function description_objet($id_objet)
 		global $joueur;
 		global $Trace;
 		$requis = round($row2['comp_requis'] * $joueur['facteur_magie'] * 
-				(1 - (($Trace[$joueur['race']]['affinite_'.$row2['comp_assoc']] - 5)
+				(1 - (($Trace[$joueur->get_race()]['affinite_'.$row2['comp_assoc']] - 5)
 				      / 10)));
 	      }
 	      $description .= '<br />Requiert '.traduit($row2['comp_assoc']).' à '.$requis;
@@ -522,7 +522,7 @@ function equip_objet($objet, $joueur)
 					if($row_mg['type'] == 'dague')
 					{
 						desequip('main_gauche', $joueur);
-						$joueur = recupperso($joueur['ID']);
+						$joueur = recupperso($joueur->get_id());
 					}
 				}
 				else
@@ -551,16 +551,16 @@ function equip_objet($objet, $joueur)
 					{
 						desequip('main_droite', $joueur);
 					}
-					$joueur = recupperso($joueur['ID']);
+					$joueur = recupperso($joueur->get_id());
 					$desequip = desequip($mains[$i], $joueur);
-					$joueur = recupperso($joueur['ID']);
+					$joueur = recupperso($joueur->get_id());
 					$i++;
 				}
 			}
 			else
 			{
 				$desequip = desequip($type, $joueur);
-				$joueur = recupperso($joueur['ID']);
+				$joueur = recupperso($joueur->get_id());
 			}
 		}
 		
@@ -571,7 +571,7 @@ function equip_objet($objet, $joueur)
 			if($categorie == 'a' AND $count == 2) $joueur['inventaire']->main_gauche = 'lock';
 			$inventaire = serialize($joueur['inventaire']);
 			$inventaire_slot = serialize($joueur['inventaire_slot']);
-			$requete = "UPDATE perso SET inventaire = '".$inventaire."', inventaire_slot = '".$inventaire_slot."' WHERE ID = ".$joueur['ID'];
+			$requete = "UPDATE perso SET inventaire = '".$inventaire."', inventaire_slot = '".$inventaire_slot."' WHERE ID = ".$joueur->get_id();
 			$req = $db->query($requete);
 			return true;
 		}
@@ -619,7 +619,7 @@ function desequip($type, $joueur)
 			$joueur['inventaire']->$type = 0;
 			$inventaire = serialize($joueur['inventaire']);
 			$inventaire_slot = serialize($joueur['inventaire_slot']);
-			$requete = "UPDATE perso SET inventaire = '".$inventaire."', inventaire_slot = '".$inventaire_slot."' WHERE ID = ".$joueur['ID'];
+			$requete = "UPDATE perso SET inventaire = '".$inventaire."', inventaire_slot = '".$inventaire_slot."' WHERE ID = ".$joueur->get_id();
 			$req = $db->query($requete);
 			return true;
 		}

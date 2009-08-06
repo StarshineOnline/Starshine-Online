@@ -15,7 +15,7 @@ if($etat == 'del')
 }
 else
 {
-	$joueur = recupperso($_SESSION['ID']);
+	$joueur = new perso($_SESSION['ID']);
 	$messagerie = new messagerie($_SESSION['ID']);
 	$messagerie->set_etat($id_message, $etat);
 	$messagerie->get_message($id_message);

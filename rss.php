@@ -11,7 +11,7 @@ require_once('fonction/equipement.inc.php');
 include_once(root.'fonction/security.inc.php');
 include_once(root.'connect.php');
 
-//Récupération du code
+//Rï¿½cupï¿½ration du code
 if(array_key_exists('code', $_GET))
 {
 	$requete = "SELECT id_perso FROM perso_code WHERE code = '".sSQL($_GET['code'])."'";
@@ -31,7 +31,7 @@ if(array_key_exists('code', $_GET))
 		<lastBuildDate>Thu, 18 Sep 2008 08:35:25 +0000</lastBuildDate>
 		<generator>SSO Viewer</generator>
 		<item>
-			<title><?php echo $joueur['nom']; ?></title>
+			<title><?php echo $joueur->get_nom(); ?></title>
 			<link>http://www.starshine-online.com/jeu2.php</link>
 			<description></description>
 			<pubDate>Thu, 18 Sep 2008 08:35:25 +0000</pubDate>

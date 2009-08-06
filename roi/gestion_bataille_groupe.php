@@ -17,7 +17,7 @@ else if(array_key_exists('mission', $_GET))
 		$mission->accepter = 0;
 		$mission->sauver();
 		//On envoi un message au chef du groupe
-		$messagerie = new messagerie($joueur['ID']);
+		$messagerie = new messagerie($joueur->get_id());
 		$titre = 'Mission pour la bataille : '.$bataille->nom;
 		$message = 'Votre groupe a été affecté à une mission concernant la bataille : '.$bataille->nom;
 		$messagerie->envoi_message(0, 4867, $titre, $message, 0, 1);

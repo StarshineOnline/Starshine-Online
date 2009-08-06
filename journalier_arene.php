@@ -37,15 +37,15 @@ while($row = $db->read_assoc($req))
 	$liste_joueurs = array();
 	while($joueur = $db->read_assoc($req_joueur))
 	{
-		$liste_joueurs[$joueur['nom']]['lvl'] = $joueur['level'];
-		$liste_joueurs[$joueur['nom']]['race'] = $joueur['race'];
-		$liste_joueurs[$joueur['nom']]['x'] = $joueur['x'];
-		$liste_joueurs[$joueur['nom']]['y'] = $joueur['y'];
-		$liste_joueurs[$joueur['nom']]['classe'] = $joueur['classe'];
-		$liste_joueurs[$joueur['nom']]['hp'] = $joueur['hp'];
-		$liste_joueurs[$joueur['nom']]['hp_max'] = $joueur['hp_max'];
-		$liste_joueurs[$joueur['nom']]['mp'] = $joueur['mp'];
-		$liste_joueurs[$joueur['nom']]['pa'] = $joueur['pa'];
+		$liste_joueurs[$joueur->get_nom()]['lvl'] = $joueur['level'];
+		$liste_joueurs[$joueur->get_nom()]['race'] = $joueur->get_race();
+		$liste_joueurs[$joueur->get_nom()]['x'] = $joueur['x'];
+		$liste_joueurs[$joueur->get_nom()]['y'] = $joueur['y'];
+		$liste_joueurs[$joueur->get_nom()]['classe'] = $joueur['classe'];
+		$liste_joueurs[$joueur->get_nom()]['hp'] = $joueur['hp'];
+		$liste_joueurs[$joueur->get_nom()]['hp_max'] = $joueur['hp_max'];
+		$liste_joueurs[$joueur->get_nom()]['mp'] = $joueur['mp'];
+		$liste_joueurs[$joueur->get_nom()]['pa'] = $joueur['pa'];
 	}
 	
 	if($nouv_arenes)
