@@ -3,7 +3,7 @@ if (file_exists('root.php'))
   include_once('root.php');
 
 include ('livre.php');
-$tab_sort_jeu = explode(';', $joueur['sort_jeu']);
+$tab_sort_jeu = explode(';', $joueur->get_sort_jeu());
 if(array_key_exists('tri', $_GET)) $tris = $_GET['tri']; else $tris = 'favoris';
 ?>
 <hr>
@@ -18,10 +18,10 @@ if (isset($_GET['ID']))
 	if(array_key_exists('groupe', $_GET) AND $_GET['groupe'] == 'yes') $groupe = true; else $groupe = false;
 	$sortpa_base = $row['pa'];
 	$sortmp_base = $row['mp'];
-	$sortpa = round($row['pa'] * $joueur['facteur_magie']);
-	$sortmp = round($row['mp'] * (1 - (($Trace[$joueur['race']]['affinite_'.$row['comp_assoc']] - 5) / 10)));
+	$sortpa = round($row['pa'] * $joueur->get_facteur_magie());
+	$sortmp = round($row['mp'] * (1 - (($Trace[$joueur->get_race()]['affinite_'.$row['comp_assoc']] - 5) / 10)));
 	//Réduction du cout par concentration
-	if(array_key_exists('buff_concentration', $joueur['buff'])) $sortmp = ceil($sortmp * (1 - ($joueur['buff']['buff_concentration']['effet'] / 100)));
+	if(array_key_exists('buff_concentration', $joueur->get_buff())) $sortmp = ceil($sortmp * (1 - ($joueur->get_buff()['buff_concentration']['effet'] / 100)));
 	//Coût en MP * 1.5 si sort de groupe
 	if($groupe) $sortmp = ceil($sortmp * 1.5);
 	$action = false;
@@ -36,17 +36,17 @@ if (isset($_GET['ID']))
 	}
 	else
 	{
-		$cibles = array($joueur['ID']);
+		$cibles = array($joueur->get_id());
 	}
-	if($joueur['pa'] < $sortpa)
+	if($joueur->get_pa() < $sortpa)
 	{
 		echo '<h5>Pas assez de PA</h5>';
 	}
-	elseif($joueur['mp'] < $sortmp)
+	elseif($joueur->get_mp() < $sortmp)
 	{
 		echo '<h5>Pas assez de mana</h5>';
 	}
-	elseif($joueur['hp'] <= 0)
+	elseif($joueur->get_hp() <= 0)
 	{
 		echo '<h5>Vous êtes mort</h5>';
 	}
@@ -97,7 +97,7 @@ if (isset($_GET['ID']))
 							if($groupe)
 							{
 								//Insertion du soin de groupe dans le journal de la cible
-								$requete = "INSERT INTO journal VALUES('', ".$cible_s['ID'].", 'rgsoin', '".$cible_s['nom']."', '".$joueur['nom']."', NOW(), ".$soin.", 0, ".$joueur['x'].", ".$joueur['y'].")";
+								$requete = "INSERT INTO journal VALUES('', ".$cible_s['ID'].", 'rgsoin', '".$cible_s['nom']."', '".$joueur->get_nom()."', NOW(), ".$soin.", 0, ".$joueur['x'].", ".$joueur['y'].")";
 								$db->query($requete);
 							}
 						}
@@ -111,16 +111,16 @@ if (isset($_GET['ID']))
 						echo $cible_s['nom'].' est mort.<br />';
 					}
 				}
-				$joueur['pa'] = $joueur['pa'] - $sortpa;
-				$joueur['mp'] = $joueur['mp'] - $sortmp;
+				$joueur->get_pa() = $joueur->get_pa() - $sortpa;
+				$joueur->get_mp() = $joueur->get_mp() - $sortmp;
 				if($action)
 				{
 					$difficulte_sort = diff_sort($row['difficulte'], $joueur, 'incantation', $sortpa_base, $sortmp_base);
 					$augmentation = augmentation_competence('incantation', $joueur, $difficulte_sort);
 					if ($augmentation[1] == 1)
 					{
-						$joueur['incantation'] = $augmentation[0];
-						echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant à '.$joueur['incantation'].' en incantation</span><br />';
+						$joueur->get_incantation() = $augmentation[0];
+						echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant à '.$joueur->get_incantation().' en incantation</span><br />';
 					}
 					$difficulte_sort = diff_sort($row['difficulte'], $joueur, 'sort_vie', $sortpa_base, $sortmp_base);
 					$augmentation = augmentation_competence('sort_vie', $joueur, $difficulte_sort);
@@ -133,11 +133,11 @@ if (isset($_GET['ID']))
 					//Insertion du soin de groupe dans le journal du lanceur
 					if($groupe)
 					{
-						$requete = "INSERT INTO journal VALUES('', ".$joueur['ID'].", 'gsoin', '".$joueur['nom']."', 'groupe', NOW(), ".$soin_total.", 0, ".$joueur['x'].", ".$joueur['y'].")";
+						$requete = "INSERT INTO journal VALUES('', ".$joueur->get_id().", 'gsoin', '".$joueur->get_nom()."', 'groupe', NOW(), ".$soin_total.", 0, ".$joueur['x'].", ".$joueur['y'].")";
 					}
 					else
 					{
-						$requete = "INSERT INTO journal VALUES('', ".$joueur['ID'].", 'soin', '".$joueur['nom']."', '".$joueur['nom']."', NOW(), ".$soin_total.", 0, ".$joueur['x'].", ".$joueur['y'].")";
+						$requete = "INSERT INTO journal VALUES('', ".$joueur->get_id().", 'soin', '".$joueur->get_nom()."', '".$joueur->get_nom()."', NOW(), ".$soin_total.", 0, ".$joueur['x'].", ".$joueur['y'].")";
 					}
 					$db->query($requete);
 				}
@@ -145,23 +145,23 @@ if (isset($_GET['ID']))
 				echo '<a href="sort.php?ID='.$_GET['ID'].$groupe_href.'" onclick="return envoiInfo(this.href, \'information\')">Utilisez a nouveau ce sort</a>';
 			break;
 			case 'body_to_mind' :
-				if($joueur['hp'] > $row['effet'])
+				if($joueur->get_hp() > $row['effet'])
 				{
 					$sorthp = $row['effet'];
 					$sortmp = $row['effet2'];
-					if($sortmp > (floor($joueur['mp_max']) - $joueur['mp'])) $sortmp = floor($joueur['mp_max']) - $joueur['mp'];
+					if($sortmp > (floor($joueur['mp_max']) - $joueur->get_mp())) $sortmp = floor($joueur['mp_max']) - $joueur->get_mp();
 					echo 'Vous utilisez '.$sorthp.' HP pour convertir en '.$sortmp.' MP<br />';
-					$joueur['pa'] = $joueur['pa'] - $sortpa;
-					$joueur['mp'] = $joueur['mp'] + $sortmp;
-					$joueur['hp'] = $joueur['hp'] - $sorthp;
+					$joueur->get_pa() = $joueur->get_pa() - $sortpa;
+					$joueur->get_mp() = $joueur->get_mp() + $sortmp;
+					$joueur->get_hp() = $joueur->get_hp() - $sorthp;
 					if($sortmp > 0)
 					{
 						$difficulte_sort = diff_sort($row['difficulte'], $joueur, 'incantation', $sortpa_base, $sorthp);
 						$augmentation = augmentation_competence('incantation', $joueur, $difficulte_sort);
 						if ($augmentation[1] == 1)
 						{
-							$joueur['incantation'] = $augmentation[0];
-							echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant à '.$joueur['incantation'].' en incantation</span><br />';
+							$joueur->get_incantation() = $augmentation[0];
+							echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant à '.$joueur->get_incantation().' en incantation</span><br />';
 						}
 						$difficulte_sort = diff_sort($row['difficulte'], $joueur, 'sort_mort', $sortpa_base, $sorthp);
 						$augmentation = augmentation_competence('sort_mort', $joueur, $difficulte_sort);
@@ -180,18 +180,18 @@ if (isset($_GET['ID']))
 				}
 			break;
 			case 'teleport' :
-				if($joueur['hp'] > 0)
+				if($joueur->get_hp() > 0)
 				{
-					$joueur['x'] = $Trace[$joueur['race']]['spawn_x'];
-					$joueur['y'] = $Trace[$joueur['race']]['spawn_y'];
-					$joueur['mp'] = $joueur['mp'] - $sortmp;
-					$joueur['pa'] = $joueur['pa'] - $sortpa;
+					$joueur['x'] = $Trace[$joueur->get_race()]['spawn_x'];
+					$joueur['y'] = $Trace[$joueur->get_race()]['spawn_y'];
+					$joueur->get_mp() = $joueur->get_mp() - $sortmp;
+					$joueur->get_pa() = $joueur->get_pa() - $sortpa;
 					$difficulte_sort = diff_sort($row['difficulte'], $joueur, 'incantation', $sortpa_base, $sortmp_base);
 					$augmentation = augmentation_competence('incantation', $joueur, $difficulte_sort);
 					if ($augmentation[1] == 1)
 					{
-						$joueur['incantation'] = $augmentation[0];
-						echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant à '.$joueur['incantation'].' en incantation</span><br />';
+						$joueur->get_incantation() = $augmentation[0];
+						echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant à '.$joueur->get_incantation().' en incantation</span><br />';
 					}
 					$difficulte_sort = diff_sort($row['difficulte'], $joueur, 'sort_element', $sortpa_base, $sortmp_base);
 					$augmentation = augmentation_competence('sort_element', $joueur, $difficulte_sort);
@@ -214,17 +214,17 @@ if (isset($_GET['ID']))
 				if(!array_key_exists('repos_sage', $joueur['debuff']))
 				{
 					//Mis en place du debuff
-					lance_buff($row['type'], $joueur['ID'], 1, 0, $row['duree'], $row['nom'], 'Vous ne pouvez plus attaquer ni lancer le sort repos du sage', 'perso', 1, 0, 0, 0);
-					$joueur['pa'] = $joueur['pa'] - $sortpa;
-					$joueur['mp'] = $joueur['mp'] + $row['effet'];
-					if($joueur['mp'] > $joueur['mp_max']) $joueur['mp'] = $joueur['mp_max'];
+					lance_buff($row['type'], $joueur->get_id(), 1, 0, $row['duree'], $row['nom'], 'Vous ne pouvez plus attaquer ni lancer le sort repos du sage', 'perso', 1, 0, 0, 0);
+					$joueur->get_pa() = $joueur->get_pa() - $sortpa;
+					$joueur->get_mp() = $joueur->get_mp() + $row['effet'];
+					if($joueur->get_mp() > $joueur['mp_max']) $joueur->get_mp() = $joueur['mp_max'];
 					//Augmentation des compétences
 					$difficulte_sort = diff_sort($row['difficulte'], $joueur, 'incantation', $sortpa_base, 1);
 					$augmentation = augmentation_competence('incantation', $joueur, $difficulte_sort);
 					if ($augmentation[1] == 1)
 					{
-						$joueur['incantation'] = $augmentation[0];
-						echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant à '.$joueur['incantation'].' en incantation</span><br />';
+						$joueur->get_incantation() = $augmentation[0];
+						echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant à '.$joueur->get_incantation().' en incantation</span><br />';
 					}
 					$difficulte_sort = diff_sort($row['difficulte'], $joueur, $row['comp_assoc'], $sortpa_base, 1);
 					$augmentation = augmentation_competence($row['comp_assoc'], $joueur, $difficulte_sort);
@@ -253,7 +253,7 @@ if (isset($_GET['ID']))
 						//Insertion du buff dans le journal de la cible
 						if($groupe)
 						{
-							$requete = "INSERT INTO journal VALUES('', ".$cible_s['ID'].", 'rgbuff', '".$cible_s['nom']."', '".$joueur['nom']."', NOW(), '".$row['nom']."', 0, 0, 0)";
+							$requete = "INSERT INTO journal VALUES('', ".$cible_s['ID'].", 'rgbuff', '".$cible_s['nom']."', '".$joueur->get_nom()."', NOW(), '".$row['nom']."', 0, 0, 0)";
 						}
 						$db->query($requete);
 					}
@@ -265,15 +265,15 @@ if (isset($_GET['ID']))
 				}
 				if($action)
 				{
-					$joueur['pa'] = $joueur['pa'] - $sortpa;
-					$joueur['mp'] = $joueur['mp'] - $sortmp;
+					$joueur->get_pa() = $joueur->get_pa() - $sortpa;
+					$joueur->get_mp() = $joueur->get_mp() - $sortmp;
 					//Augmentation des compétences
 					$difficulte_sort = diff_sort($row['difficulte'], $joueur, 'incantation', $sortpa_base, $sortmp_base);
 					$augmentation = augmentation_competence('incantation', $joueur, $difficulte_sort);
 					if ($augmentation[1] == 1)
 					{
-						$joueur['incantation'] = $augmentation[0];
-						echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant à '.$joueur['incantation'].' en incantation</span><br />';
+						$joueur->get_incantation() = $augmentation[0];
+						echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant à '.$joueur->get_incantation().' en incantation</span><br />';
 					}
 					$difficulte_sort = diff_sort($row['difficulte'], $joueur, $row['comp_assoc'], $sortpa_base, $sortmp_base);
 					$augmentation = augmentation_competence($row['comp_assoc'], $joueur, $difficulte_sort);
@@ -286,12 +286,12 @@ if (isset($_GET['ID']))
 					sauve_sans_bonus_ignorables($joueur, array('mp', 'pa', 'incantation', $row['comp_assoc']));
 					if($groupe)
 					{
-						$requete = "INSERT INTO journal VALUES('', ".$joueur['ID'].", 'gbuff', '".$joueur['nom']."', 'groupe', NOW(), '".$row['nom']."', 0, 0, 0)";
+						$requete = "INSERT INTO journal VALUES('', ".$joueur->get_id().", 'gbuff', '".$joueur->get_nom()."', 'groupe', NOW(), '".$row['nom']."', 0, 0, 0)";
 						$db->query($requete);
 					}
 					else
 					{
-						$requete = "INSERT INTO journal VALUES('', ".$joueur['ID'].", 'buff', '".$joueur['nom']."', '".$joueur['nom']."', NOW(), '".$row['nom']."', 0, ".$joueur['x'].", ".$joueur['y'].")";
+						$requete = "INSERT INTO journal VALUES('', ".$joueur->get_id().", 'buff', '".$joueur->get_nom()."', '".$joueur->get_nom()."', NOW(), '".$row['nom']."', 0, ".$joueur['x'].", ".$joueur['y'].")";
 					}
 				}
 			break;
@@ -304,24 +304,24 @@ if (isset($_GET['ID']))
 				{
 					$cible = recupperso($row_j[0]);
 					//Si c'est pas le joueur
-					if($cible['ID'] != $joueur['ID'])
+					if($cible->get_id() != $joueur->get_id())
 					{
 						//Test d'esquive du sort
-						$protecion = $cible['volonte'] * $cible['PM'] / 3;
-						if(array_key_exists('bulle_sanctuaire', $cible['buff'])) $protection *= $cible['buff']['bulle_sanctuaire']['effet'];
-						if(array_key_exists('bulle_dephasante', $cible['buff'])) $protection *= $cible['buff']['bulle_dephasante']['effet'];
-						$attaque = rand(0, ($joueur['volonte'] * $joueur[$row['comp_assoc']]));
+						$protecion = $cible['volonte'] * $cible->get_pm() / 3;
+						if(array_key_exists('bulle_sanctuaire', $cible->get_buff())) $protection *= $cible->get_buff()['bulle_sanctuaire']['effet'];
+						if(array_key_exists('bulle_dephasante', $cible->get_buff())) $protection *= $cible->get_buff()['bulle_dephasante']['effet'];
+						$attaque = rand(0, ($joueur->get_volonte() * $joueur[$row['comp_assoc']]));
 						$defense = rand(0, $protection);
 						if ($attaque > $defense)
 						{
 							//Mis en place du debuff pour tous
-							if(lance_buff($row['type'], $cible['ID'], $row['effet'], $row['effet2'], $row['duree'], $row['nom'], description($row['description'], $row), 'perso', 1, 0, 0))
+							if(lance_buff($row['type'], $cible->get_id(), $row['effet'], $row['effet2'], $row['duree'], $row['nom'], description($row['description'], $row), 'perso', 1, 0, 0))
 							{
-								echo 'Le sort '.$row['nom'].' a été lancé avec succès sur '.$cible['nom'].'<br />';
+								echo 'Le sort '.$row['nom'].' a été lancé avec succès sur '.$cible->get_nom().'<br />';
 								//Insertion du debuff dans les journaux des 2 joueurs
-								$requete = "INSERT INTO journal VALUES('', ".$joueur['ID'].", 'debuff', '".$joueur['nom']."', '".$cible['nom']."', NOW(), '".$row['nom']."', 0, ".$joueur['x'].", ".$joueur['y'].")";
+								$requete = "INSERT INTO journal VALUES('', ".$joueur->get_id().", 'debuff', '".$joueur->get_nom()."', '".$cible->get_nom()."', NOW(), '".$row['nom']."', 0, ".$joueur['x'].", ".$joueur['y'].")";
 								$db->query($requete);
-								$requete = "INSERT INTO journal VALUES('', ".$cible['ID'].", 'rdebuff', '".$cible['nom']."', '".$joueur['nom']."', NOW(), '".$row['nom']."', 0, ".$joueur['x'].", ".$joueur['y'].")";
+								$requete = "INSERT INTO journal VALUES('', ".$cible->get_id().", 'rdebuff', '".$cible->get_nom()."', '".$joueur->get_nom()."', NOW(), '".$row['nom']."', 0, ".$joueur['x'].", ".$joueur['y'].")";
 								$db->query($requete);
 							}
 							else
@@ -333,33 +333,33 @@ if (isset($_GET['ID']))
 							{
 								if(array_key_exists('orage_magnetique', $cible['debuff']))
 								{
-									echo $cible['nom'].' Est déjà sous cet effet<br />';
+									echo $cible->get_nom().' Est déjà sous cet effet<br />';
 								}
 								else
 								{
 									//Réduction des mp de la cible
 									$cible['mp'] -= $cible['mp_max'] * $row['effet'] / 100;
 									if($cible['mp'] < 0) $cible['mp'] = 0;
-									$requete = "UPDATE perso SET mp = ".$cible['mp']." WHERE ID = ".$cible['ID'];
+									$requete = "UPDATE perso SET mp = ".$cible['mp']." WHERE ID = ".$cible->get_id();
 									$db->query($requete);
 								}
 							}
 						}
 						else
 						{
-							echo $cible['nom'].' resiste a votre sort !<br />';
+							echo $cible->get_nom().' resiste a votre sort !<br />';
 						}
 					}
 				}
-				$joueur['pa'] = $joueur['pa'] - $sortpa;
-				$joueur['mp'] = $joueur['mp'] - $sortmp;
+				$joueur->get_pa() = $joueur->get_pa() - $sortpa;
+				$joueur->get_mp() = $joueur->get_mp() - $sortmp;
 				//Augmentation des compétences
 				$difficulte_sort = diff_sort($row['difficulte'], $joueur, 'incantation', $sortpa_base, $sortmp_base);
 				$augmentation = augmentation_competence('incantation', $joueur, $difficulte_sort);
 				if ($augmentation[1] == 1)
 				{
-					$joueur['incantation'] = $augmentation[0];
-					echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant à '.$joueur['incantation'].' en incantation</span><br />';
+					$joueur->get_incantation() = $augmentation[0];
+					echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant à '.$joueur->get_incantation().' en incantation</span><br />';
 				}
 				$difficulte_sort = diff_sort($row['difficulte'], $joueur, $row['comp_assoc'], $sortpa_base, $sortmp_base);
 				$augmentation = augmentation_competence($row['comp_assoc'], $joueur, $difficulte_sort);
@@ -369,7 +369,7 @@ if (isset($_GET['ID']))
 					echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant à '.$joueur[$row['comp_assoc']].' en '.$Gtrad[$row['comp_assoc']].'</span><br />';
 				}
 				//Mis à jour du joueur
-				$requete = "UPDATE perso SET mp = '".$joueur['mp']."', pa = '".$joueur['pa']."', incantation = '".$joueur['incantation']."', ".$row['comp_assoc']." = '".$joueur[$row['comp_assoc']]."' WHERE ID = '".$_SESSION['ID']."'";
+				$requete = "UPDATE perso SET mp = '".$joueur->get_mp()."', pa = '".$joueur->get_pa()."', incantation = '".$joueur->get_incantation()."', ".$row['comp_assoc']." = '".$joueur[$row['comp_assoc']]."' WHERE ID = '".$_SESSION['ID']."'";
 				$req = $db->query($requete);
 			break;
 			case "guerison" :
@@ -399,17 +399,17 @@ if (isset($_GET['ID']))
 				}
 				if($check)
 				{
-					$joueur["pa"] = $joueur["pa"] - $sortpa;
-					$joueur["mp"] = $joueur["mp"] - $sortmp;
+					$joueur->get_pa() = $joueur->get_pa() - $sortpa;
+					$joueur->get_mp() = $joueur->get_mp() - $sortmp;
 					//-- Mis à jour du joueur
-					$db->query("UPDATE perso SET mp='".$joueur["mp"]."', pa='".$joueur["pa"]."' WHERE ID = ".$joueur["ID"].";");
+					$db->query("UPDATE perso SET mp='".$joueur->get_mp()."', pa='".$joueur->get_pa()."' WHERE ID = ".$joueur->get_id().";");
 					//-- Augmentation des compétences
 					$difficulte_sort = diff_sort($row['difficulte'], $joueur, 'incantation', $sortpa_base, $sortmp_base);
 					$augmentation = augmentation_competence('incantation', $joueur, $difficulte_sort);
 					if ($augmentation[1] == 1)
 					{
-						$joueur['incantation'] = $augmentation[0];
-						echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant à '.$joueur['incantation'].' en incantation</span><br />';
+						$joueur->get_incantation() = $augmentation[0];
+						echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant à '.$joueur->get_incantation().' en incantation</span><br />';
 					}
 					$difficulte_sort = diff_sort($row['difficulte'], $joueur, $row['comp_assoc'], $sortpa_base, $sortmp_base);
 					$augmentation = augmentation_competence($row['comp_assoc'], $joueur, $difficulte_sort);
@@ -433,8 +433,8 @@ if (isset($_GET['ID']))
 					}
 					if(count($debuff_tab) > 0)
 					{	
-						$joueur["pa"] = $joueur["pa"] - $sortpa;
-						$joueur["mp"] = $joueur["mp"] - $sortmp;
+						$joueur->get_pa() = $joueur->get_pa() - $sortpa;
+						$joueur->get_mp() = $joueur->get_mp() - $sortmp;
 						
 						$buff_tab = array();
 						foreach($joueur["buff"] as $buff)
@@ -449,8 +449,8 @@ if (isset($_GET['ID']))
 							$augmentation = augmentation_competence('incantation', $joueur, $difficulte_sort);
 							if ($augmentation[1] == 1)
 							{
-								$joueur['incantation'] = $augmentation[0];
-								echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant à '.$joueur['incantation'].' en incantation</span><br />';
+								$joueur->get_incantation() = $augmentation[0];
+								echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant à '.$joueur->get_incantation().' en incantation</span><br />';
 							}
 							$difficulte_sort = diff_sort($row['difficulte'], $joueur, $row['comp_assoc'], $sortpa_base, $sortmp_base);
 							$augmentation = augmentation_competence($row['comp_assoc'], $joueur, $difficulte_sort);
@@ -461,7 +461,7 @@ if (isset($_GET['ID']))
 							}
 						}
 						//-- Mis à jour du joueur
-						$db->query("UPDATE perso SET mp='".$joueur["mp"]."', pa='".$joueur["pa"]."' WHERE ID='".$_SESSION["ID"]."';");
+						$db->query("UPDATE perso SET mp='".$joueur->get_mp()."', pa='".$joueur->get_pa()."' WHERE ID='".$_SESSION["ID"]."';");
 					}
 					else { echo "Impossible de lancer de lancer le sort. Vous n&apos;a aucun debuff.<br/>"; };
 				}
@@ -481,11 +481,11 @@ else
 		switch($_GET['action'])
 		{
 			case 'favoris' :
-				$requete = "INSERT INTO sort_favoris VALUES('', ".sSQL($_GET['id']).", ".$joueur['ID'].")";
+				$requete = "INSERT INTO sort_favoris VALUES('', ".sSQL($_GET['id']).", ".$joueur->get_id().")";
 				$db->query($requete);
 			break;
 			case 'delfavoris' :
-				$requete = "DELETE FROM sort_favoris WHERE id_sort =  ".sSQL($_GET['id'])." AND id_perso = ".$joueur['ID'];
+				$requete = "DELETE FROM sort_favoris WHERE id_sort =  ".sSQL($_GET['id'])." AND id_perso = ".$joueur->get_id();
 				$db->query($requete);
 			break;
 		}
@@ -511,7 +511,7 @@ else
 	if(array_key_exists('tri', $_GET)) $where = 'AND comp_assoc = \''.$_GET['tri'].'\''; else $_GET['tri'] = 'favoris';
 	if($_GET['tri'] == 'favoris')
 	{
-		$requete = "SELECT * FROM sort_jeu WHERE type != 'rez' AND id IN (SELECT id_sort FROM sort_favoris WHERE id_perso = ".$joueur['ID'].") ORDER BY comp_assoc ASC, type ASC";
+		$requete = "SELECT * FROM sort_jeu WHERE type != 'rez' AND id IN (SELECT id_sort FROM sort_favoris WHERE id_perso = ".$joueur->get_id().") ORDER BY comp_assoc ASC, type ASC";
 	}
 	else
 	{
@@ -522,10 +522,10 @@ else
 	echo '<table width="97%" class="information_case">';
 	while($row = $db->read_array($req))
 	{	
-		$sortpa = round($row['pa'] * $joueur['facteur_magie']);
-		$sortmp = round($row['mp'] * (1 - (($Trace[$joueur['race']]['affinite_'.$row['comp_assoc']] - 5) / 10)));
+		$sortpa = round($row['pa'] * $joueur->get_facteur_magie());
+		$sortmp = round($row['mp'] * (1 - (($Trace[$joueur->get_race()]['affinite_'.$row['comp_assoc']] - 5) / 10)));
 		//Réduction du cout par concentration
-		if(array_key_exists('buff_concentration', $joueur['buff'])) $sortmp = ceil($sortmp * (1 - ($joueur['buff']['buff_concentration']['effet'] / 100)));
+		if(array_key_exists('buff_concentration', $joueur->get_buff())) $sortmp = ceil($sortmp * (1 - ($joueur->get_buff()['buff_concentration']['effet'] / 100)));
 		if($magie != $row['comp_assoc'])
 		{
 			$magie = $row['comp_assoc'];
