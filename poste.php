@@ -5,9 +5,9 @@ if (file_exists('root.php'))
 //Inclusion du haut du document html
 include_once(root.'haut_ajax.php');
 
-$joueur = recupperso($_SESSION['ID']);
+$joueur = new perso($_SESSION['ID']);;
 
-check_perso($joueur);
+$joueur->check_perso();
 
 //Vérifie si le perso est mort
 verif_mort($joueur, 1);
@@ -16,7 +16,7 @@ $W_case = convert_in_pos($joueur['x'], $joueur['y']);
 $W_requete = 'SELECT * FROM map WHERE ID =\''.sSQL($W_case).'\'';
 $W_req = $db->query($W_requete);
 $W_row = $db->read_array($W_req);
-$R = get_royaume_info($joueur['race'], $W_row['royaume']);
+$R = get_royaume_info($joueur->get_race(), $W_row['royaume']);
 
 $_SESSION['position'] = convert_in_pos($joueur['x'], $joueur['y']);
 ?>
@@ -53,7 +53,7 @@ if($W_distance == 0)
 				if($db->num_rows > 0)
 				{
 					$row = $db->read_assoc($req);
-					$requete = "SELECT ".$row['race']." FROM diplomatie WHERE race = '".$joueur['race']."'";
+					$requete = "SELECT ".$row['race']." FROM diplomatie WHERE race = '".$joueur->get_race()."'";
 					$req_diplo = $db->query($requete);
 					$row_diplo = $db->read_row($req_diplo);
 					if($row_diplo[0] == 127) $row_diplo[0] = -1;
@@ -93,12 +93,12 @@ if($W_distance == 0)
 							$id_dest = 0;
 							$id_thread = 0;
 							$id_dest = $W_ID;
-							$messagerie = new messagerie($joueur['ID']);
+							$messagerie = new messagerie($joueur->get_id());
 							$messagerie->envoi_message($id_thread, $id_dest, $titre, $message, $id_groupe);
 							echo '<h6>Message transmis avec succès</h6>';
 
 							$joueur['star'] -= $cout;
-							$requete = "UPDATE perso SET star = ".$joueur['star']." WHERE ID = ".$joueur['ID'];
+							$requete = "UPDATE perso SET star = ".$joueur['star']." WHERE ID = ".$joueur->get_id();
 							$req = $db->query($requete);
 							//Récupération de l'argent
 							$requete = 'UPDATE royaume SET star = star + '.$taxe.' WHERE ID = '.$R['ID'];

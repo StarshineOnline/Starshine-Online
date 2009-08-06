@@ -6,19 +6,19 @@ if (file_exists('root.php'))
 //Inclusion du haut du document html
 include_once(root.'haut_ajax.php');
 
-$joueur = recupperso($_SESSION['ID']);
+$joueur = new perso($_SESSION['ID']);;
 
-check_perso($joueur);
+$joueur->check_perso();
 
-$position = convert_in_pos($joueur['x'], $joueur['y']);
+$position = convert_in_pos($joueur->get_x(), $joueur->get_y());
 
 //V?rifie si le perso est mort
 verif_mort($joueur, 1);
-$verif_ville = verif_ville($joueur['x'], $joueur['y']);
+$verif_ville = verif_ville($joueur->get_x(), $joueur->get_y());
 $W_requete = 'SELECT * FROM map WHERE ID =\''.sSQL($position).'\'';
 $W_req = $db->query($W_requete);
 $W_row = $db->read_array($W_req);
-$R = get_royaume_info($joueur['race'], $W_row['royaume']);
+$R = get_royaume_info($joueur->get_race(), $W_row['royaume']);
 $_SESSION['position'] = $position;
 ?>
 	<?php 
@@ -31,7 +31,7 @@ $_SESSION['position'] = $position;
 		if(array_key_exists('id_chantier', $_GET))
 		{
 			//Il faut qu'il ai 10 PA
-			if($joueur['pa'] >= 10)
+			if($joueur->get_pa() >= 10)
 			{
 				$chantier = new terrain_chantier($_GET['id_chantier']);
 				$batiment = $chantier->get_batiment();
@@ -47,11 +47,11 @@ $_SESSION['position'] = $position;
 				{
 					$joueur['architecture'] = $augmentation[0];
 					echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant à '.$joueur['architecture'].' en architecture</span><br />';
-					$requete = "UPDATE perso SET architecture = ".$joueur['architecture']." WHERE ID = ".$joueur['ID'];
+					$requete = "UPDATE perso SET architecture = ".$joueur['architecture']." WHERE ID = ".$joueur->get_id();
 					$db->query($requete);
 				}
 				//Gain de stars et Suppression des PA
-				$requete = "UPDATE perso SET star = star + ".$stars.", pa = pa - 10 WHERE ID = ".$joueur['ID'];
+				$requete = "UPDATE perso SET star = star + ".$stars.", pa = pa - 10 WHERE ID = ".$joueur->get_id();
 				$db->query($requete);
 				$delete = false;
 				//Fin de la construction ?

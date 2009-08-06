@@ -5,9 +5,9 @@ if (file_exists('root.php'))
 //Inclusion du haut du document html
 include_once(root.'haut_ajax.php');
 
-$joueur = recupperso($_SESSION['ID']);
+$joueur = new perso($_SESSION['ID']);;
 
-check_perso($joueur);
+$joueur->check_perso();
 
 //Vérifie si le perso est mort
 verif_mort($joueur, 1);
@@ -16,9 +16,9 @@ $W_case = $_GET['poscase'];
 $W_requete = 'SELECT * FROM map WHERE ID =\''.sSQL($W_case).'\'';
 $W_req = $db->query($W_requete);
 $W_row = $db->read_array($W_req);
-$R = get_royaume_info($joueur['race'], $W_row['royaume']);
+$R = get_royaume_info($joueur->get_race(), $W_row['royaume']);
 
-$_SESSION['position'] = convert_in_pos($joueur['x'], $joueur['y']);
+$_SESSION['position'] = convert_in_pos($joueur->get_x(), $joueur->get_y());
 ?>
    	<h2 class="ville_titre"><?php echo '<a href="ville.php?poscase='.$W_case.'" onclick="return envoiInfo(this.href, \'centre\')">';?><?php echo $R['nom'];?></a> - <?php echo '<a href="tribunal.php?poscase='.$W_case.'" onclick="return envoiInfo(this.href, \'carte\')">';?> Tribunal </a></h2>
 		<?php include_once(root.'ville_bas.php');?>
@@ -65,10 +65,10 @@ if($W_distance == 0)
 					{
 						$amende = recup_amende($criminel);
 						//On supprime les stars au joueur
-						$requete = "UPDATE perso SET star = star - ".$prime." WHERE ID = ".$joueur['ID'];
+						$requete = "UPDATE perso SET star = star - ".$prime." WHERE ID = ".$joueur->get_id();
 						$db->query($requete);
 						//On ajoute la prime dans la liste des primes
-						$requete = "INSERT INTO prime_criminel VALUES('', ".$criminel.", ".$joueur['ID'].", ".$amende['id'].", ".$prime.")";
+						$requete = "INSERT INTO prime_criminel VALUES('', ".$criminel.", ".$joueur->get_id().", ".$amende['id'].", ".$prime.")";
 						$db->query($requete);
 						//On totalise la prime avec les autres
 						$requete = "UPDATE amende SET prime = prime + ".$prime." WHERE id = ".$amende['id'];

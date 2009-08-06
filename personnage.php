@@ -22,7 +22,7 @@ else
 	$joueur_id = $_SESSION['ID'];
 }
 $joueur = new perso($joueur_id);
-check_perso($joueur);
+$joueur->check_perso();
 $joueur = new perso($joueur_id);
 $de_degat = de_degat($joueur->get_forcex(), 0);
 $de_degat_arme = de_degat($joueur->get_forcex(), $joueur->get_arme_degat());
@@ -355,7 +355,7 @@ echo '
 			if(array_key_exists('action', $_GET) AND $_GET['action'] == 'teleport'
 				 AND ($joueur['teleport_roi'] == false OR $joueur['teleport_roi'] == 'false' OR $joueur['teleport_roi'] == ''))
 			{
-				$requete = "UPDATE perso SET x = ".$Trace[$joueur->get_race()]['spawn_x'].", y = ".$Trace[$joueur->get_race()]['spawn_y'].", teleport_roi = 'true' WHERE ID = ".$joueur['ID'];
+				$requete = "UPDATE perso SET x = ".$Trace[$joueur->get_race()]['spawn_x'].", y = ".$Trace[$joueur->get_race()]['spawn_y'].", teleport_roi = 'true' WHERE ID = ".$joueur->get_id();
 				$db->query($requete);
 			}
 			echo '

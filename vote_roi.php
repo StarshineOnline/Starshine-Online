@@ -6,9 +6,9 @@ if (file_exists('root.php'))
 //Inclusion du haut du document html
 include_once(root.'haut_ajax.php');
 
-$joueur = recupperso($_SESSION['ID']);
+$joueur = new perso($_SESSION['ID']);
 
-check_perso($joueur);
+$joueur->check_perso();
 
 //Vérifie si le perso est mort
 verif_mort($joueur, 1);
@@ -17,11 +17,11 @@ $W_case = $_GET['poscase'];
 $W_requete = 'SELECT * FROM map WHERE ID =\''.sSQL($W_case).'\'';
 $W_req = $db->query($W_requete);
 $W_row = $db->read_array($W_req);
-$R = get_royaume_info($joueur['race'], $W_row['royaume']);
+$R = get_royaume_info($joueur->get_race(), $W_row['royaume']);
 
-$_SESSION['position'] = convert_in_pos($joueur['x'], $joueur['y']);
+$_SESSION['position'] = convert_in_pos($joueur->get_x(), $joueur->get_y());
 ?>
-	<h2 class="ville_titre"><?php if(verif_ville($joueur['x'], $joueur['y'])) return_ville( '<a href="ville.php?poscase='.$W_case.'" onclick="return envoiInfo(this.href, \'centre\')">'.$R['nom'].'</a> -', $W_case); ?> <?php echo '<a href="qg.php?poscase='.$W_case.'" onclick="return envoiInfo(this.href, \'carte\')">';?> Quartier Général </a></h2>
+	<h2 class="ville_titre"><?php if(verif_ville($joueur->get_x(), $joueur->get_y())) return_ville( '<a href="ville.php?poscase='.$W_case.'" onclick="return envoiInfo(this.href, \'centre\')">'.$R['nom'].'</a> -', $W_case); ?> <?php echo '<a href="qg.php?poscase='.$W_case.'" onclick="return envoiInfo(this.href, \'carte\')">';?> Quartier Général </a></h2>
 		<?php include_once(root.'ville_bas.php');?>	
 	<div class="ville_test">
 <?php
@@ -37,7 +37,7 @@ if($W_distance == 0)
 			{
 				case 'vote' :
 					$date = date_prochain_mandat();
-					$requete = "SELECT * FROM vote WHERE id_perso = ".$joueur['ID']." AND date = '".$date."'";
+					$requete = "SELECT * FROM vote WHERE id_perso = ".$joueur->get_id()." AND date = '".$date."'";
 					$db->query($requete);
 					if($db->num_rows > 0)
 					{
@@ -49,7 +49,7 @@ if($W_distance == 0)
 						
 					    validate_integer_value($_GET['id_candidat']);
 						validate_against_printf_predicate($_GET['id_candidat'], "select count(`id`) from candidat where `date` = '$date' and `id_perso` = '%d'", 1);
-						$requete = "INSERT INTO vote ( `id` , `id_perso`, `id_candidat`, `date` , `royaume`) VALUES('', ".$joueur['ID'].", ".sSQL($_GET['id_candidat']).", '".$date."', ".$R['ID'].")";
+						$requete = "INSERT INTO vote ( `id` , `id_perso`, `id_candidat`, `date` , `royaume`) VALUES('', ".$joueur->get_id().", ".sSQL($_GET['id_candidat']).", '".$date."', ".$R['ID'].")";
 						if($db->query($requete))
 						{
 							echo 'Votre vote a bien été pris en compte';

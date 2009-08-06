@@ -8,7 +8,7 @@ include_once(root.'haut_ajax.php');
 
 $joueur = new perso($_SESSION['ID']);
 
-check_perso($joueur);
+$joueur->check_perso();
 
 $position = $joueur->get_pos();
 

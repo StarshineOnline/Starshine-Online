@@ -6,20 +6,20 @@ if (file_exists('root.php'))
 //Inclusion du haut du document html
 include_once(root.'inc/fp.php');
 
-$joueur = recupperso($_SESSION['ID']);
+$joueur = new perso($_SESSION['ID']);;
 
 $W_case = $_GET['poscase'];
 $W_requete = 'SELECT * FROM map WHERE ID =\''.sSQL($W_case).'\'';
 $W_req = $db->query($W_requete);
 $W_row = $db->read_array($W_req);
-$R = get_royaume_info($joueur['race'], $W_row['royaume']);
+$R = get_royaume_info($joueur->get_race(), $W_row['royaume']);
 
-check_perso($joueur);
+$joueur->check_perso();
 
 //Vérifie si le perso est mort
 verif_mort($joueur, 1);
 
-$_SESSION['position'] = convert_in_pos($joueur['x'], $joueur['y']);
+$_SESSION['position'] = convert_in_pos($joueur->get_x(), $joueur->get_y());
 
 	if(array_key_exists('id', $_GET))
 	{
@@ -41,13 +41,13 @@ $_SESSION['position'] = convert_in_pos($joueur['x'], $joueur['y']);
 				$taxe = ceil($cout * $R['taxe'] / 100);
 				$cout = $cout + $taxe;
 			}
-			if(($joueur['star'] >= $cout) AND ($joueur['pa'] >= 5))
+			if(($joueur['star'] >= $cout) AND ($joueur->get_pa() >= 5))
 			{
-				$joueur['x'] = $row['posx'];
-				$joueur['y'] = $row['posy'];
+				$joueur->get_x() = $row['posx'];
+				$joueur->get_y() = $row['posy'];
 				$joueur['star'] = $joueur['star'] - $cout;
-				$joueur['pa'] = $joueur['pa'] - 5;
-				$requete = "UPDATE perso SET x = ".$joueur['x'].", y = ".$joueur['y'].", pa = ".$joueur['pa'].", star = ".$joueur['star']." WHERE ID = ".$_SESSION['ID'];
+				$joueur->get_pa() = $joueur->get_pa() - 5;
+				$requete = "UPDATE perso SET x = ".$joueur->get_x().", y = ".$joueur->get_y().", pa = ".$joueur->get_pa().", star = ".$joueur['star']." WHERE ID = ".$_SESSION['ID'];
 				$db->query($requete);
 				//Récupération de la taxe
 				if($taxe > 0)
@@ -74,13 +74,13 @@ $_SESSION['position'] = convert_in_pos($joueur['x'], $joueur['y']);
 			$cout = ($P_distance * 7);
 			$taxe = ceil($cout * $R['taxe'] / 100);
 			$cout = $cout + $taxe;
-			if(($joueur['star'] >= $cout) AND ($joueur['pa'] >= 5))
+			if(($joueur['star'] >= $cout) AND ($joueur->get_pa() >= 5))
 			{
-				$joueur['x'] = $row['x'];
-				$joueur['y'] = $row['y'];
+				$joueur->get_x() = $row['x'];
+				$joueur->get_y() = $row['y'];
 				$joueur['star'] = $joueur['star'] - $cout;
-				$joueur['pa'] = $joueur['pa'] - 5;
-				$requete = "UPDATE perso SET x = ".$joueur['x'].", y = ".$joueur['y'].", pa = ".$joueur['pa'].", star = ".$joueur['star']." WHERE ID = ".$_SESSION['ID'];
+				$joueur->get_pa() = $joueur->get_pa() - 5;
+				$requete = "UPDATE perso SET x = ".$joueur->get_x().", y = ".$joueur->get_y().", pa = ".$joueur->get_pa().", star = ".$joueur['star']." WHERE ID = ".$_SESSION['ID'];
 				$db->query($requete);
 				//Récupération de la taxe
 				if($taxe > 0)
@@ -132,7 +132,7 @@ $_SESSION['position'] = convert_in_pos($joueur['x'], $joueur['y']);
 			if($row_race['race'] != '')
 			{
 				//Sélection de la diplomatie
-				$requete_diplo = "SELECT ".$row_race['race']." FROM diplomatie WHERE race = '".$joueur['race']."'";
+				$requete_diplo = "SELECT ".$row_race['race']." FROM diplomatie WHERE race = '".$joueur->get_race()."'";
 				$req_diplo = $db->query($requete_diplo);
 				$row_diplo = $db->read_row($req_diplo);
 				$distance = calcul_distance(convert_in_pos($row['posx'], $row['posy']), $_SESSION['position']);

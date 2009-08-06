@@ -267,8 +267,8 @@ $req_batiment = $db->query($requete_batiment);
 				}
 				if($x == $coord_joueur['x'] AND $y == $coord_joueur['y'])
 				{
-					$case['infoj'] = $joueur['race'];
-					$case['infoj_classe'] = $Tclasse[$joueur['classe']]['type'];
+					$case['infoj'] = $joueur->get_race();
+					$case['infoj_classe'] = $Tclasse[$joueur->get_classe()]['type'];
 				}
 				if ($case['information'] != '') $on = 'onmousemove="afficheInfo(\'info_'.$rowid.'\', \'block\', event, \'centre\');" onmouseout="afficheInfo(\'info_'.$rowid.'\', \'none\', event, \'centre\');"';
 				else $on = '';

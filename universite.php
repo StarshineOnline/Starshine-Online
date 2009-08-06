@@ -5,9 +5,9 @@ if (file_exists('root.php'))
 //Inclusion du haut du document html
 include_once(root.'haut_ajax.php');
 
-$joueur = recupperso($_SESSION['ID']);
+$joueur = new perso($_SESSION['ID']);;
 
-check_perso($joueur);
+$joueur->check_perso();
 
 //Vérifie si le perso est mort
 verif_mort($joueur, 1);
@@ -16,11 +16,11 @@ $W_case = $_GET['poscase'];
 $W_requete = 'SELECT * FROM map WHERE ID =\''.sSQL($W_case).'\'';
 $W_req = $db->query($W_requete);
 $W_row = $db->read_array($W_req);
-$R = get_royaume_info($joueur['race'], $W_row['royaume']);
+$R = get_royaume_info($joueur->get_race(), $W_row['royaume']);
 
 if(!isset($_GET['type'])) $_GET['type'] = 'arme';
 
-$_SESSION['position'] = convert_in_pos($joueur['x'], $joueur['y']);
+$_SESSION['position'] = convert_in_pos($joueur->get_x(), $joueur->get_y());
 ?>
    	<h2 class="ville_titre"><?php echo '<a href="ville.php?poscase='.$W_case.'" onclick="return envoiInfo(this.href, \'centre\')">';?><?php echo $R['nom'];?></a> - <?php echo '<a href="universite.php?poscase='.$W_case.'" onclick="return envoiInfo(this.href, \'carte\')">';?> Université </a></h2>
 		<?php include_once(root.'ville_bas.php');?>
@@ -155,7 +155,7 @@ if($W_distance == 0)
 						$requete = "SELECT * FROM classe WHERE id = ".$row['requis'];
 						$req_classe = $db->query($requete);
 						$row_classe = $db->read_array($req_classe);
-						if(strtolower($row_classe['nom']) != strtolower($joueur['classe']))
+						if(strtolower($row_classe['nom']) != strtolower($joueur->get_classe()))
 						{
 							echo 'Il vous faut être un '.$row_classe['nom'].'<br />';
 							$fin = true;
@@ -189,7 +189,7 @@ if($W_distance == 0)
 					}
 					$comp_combat = explode(';', $joueur['comp_combat']);
 					if($comp_combat[0] == '') $comp_combat = array();
-					$comp_jeu = explode(';', $joueur['comp_jeu']);
+					$comp_jeu = explode(';', $joueur->get_comp_jeu());
 					if($comp_jeu[0] == '') $comp_jeu = array();
 					$requete = "SELECT * FROM classe_comp_permet WHERE id_classe = '".sSQL($_GET['id'])."'";
 					$req = $db->query($requete);
@@ -199,8 +199,8 @@ if($W_distance == 0)
 						if($row['type'] == 'comp_jeu') $comp_jeu[] = $row['competence'];
 					}
 					$joueur['comp_combat'] = implode(';', $comp_combat);
-					$joueur['comp_jeu'] = implode(';', $comp_jeu);
-					$requete = "UPDATE perso SET classe = '".strtolower($nom)."', classe_id = '".sSQL($_GET['id'])."', comp_combat = '".$joueur['comp_combat']."', comp_jeu = '".$joueur['comp_jeu']."' ".$and." WHERE ID = ".$_SESSION['ID'];
+					$joueur->get_comp_jeu() = implode(';', $comp_jeu);
+					$requete = "UPDATE perso SET classe = '".strtolower($nom)."', classe_id = '".sSQL($_GET['id'])."', comp_combat = '".$joueur['comp_combat']."', comp_jeu = '".$joueur->get_comp_jeu()."' ".$and." WHERE ID = ".$_SESSION['ID'];
 					$req = $db->query($requete);
 					echo 'Félicitations vous suivez maintenant la voie du '.strtolower($nom).'<br />';
 				}

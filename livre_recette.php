@@ -55,15 +55,15 @@ if(array_key_exists('action', $_GET))
 				$mp_total += $types[$instrument->type]['mp'];
 				$star_total += $types[$instrument->type]['cout'];
 			}
-			if($pa_total <= $joueur['pa'])
+			if($pa_total <= $joueur->get_pa())
 			{
-				if($mp_total <= $joueur['mp'])
+				if($mp_total <= $joueur->get_mp())
 				{
 					if($star_total <= $joueur['star'])
 					{
 						//On utilise le recipient
 						supprime_objet($joueur, 'o'.$recipient->id_objet, 1);
-						$joueur = recupperso($_SESSION['ID']);
+						$joueur = new perso($_SESSION['ID']);;
 						//alchiming
 						$player = rand(0, $joueur->get_alchimie());
 						$thing = rand(0, $recette->difficulte);
@@ -103,7 +103,7 @@ if(array_key_exists('action', $_GET))
 							{
 								supprime_objet($joueur, 'o'.$ingredient->id_ingredient, $ingredient->nombre);
 							}
-							$joueur = recupperso($_SESSION['ID']);
+							$joueur = new perso($_SESSION['ID']);;
 						}
 						$difficulte = 3 * 2.65 / sqrt($pa_total);
 						$augmentation = augmentation_competence('alchimie', $joueur, $difficulte);
@@ -136,7 +136,7 @@ if(array_key_exists('action', $_GET))
 }
 $recette = new craft_recette();
 $types = $recette->get_info_joueur($joueur, $R);
-$requete = "SELECT * FROM perso_recette WHERE id_perso = ".$joueur['ID'];
+$requete = "SELECT * FROM perso_recette WHERE id_perso = ".$joueur->get_id();
 $req = $db->query($requete);
 while($row = $db->read_assoc($req))
 {

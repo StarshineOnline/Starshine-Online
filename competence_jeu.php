@@ -3,11 +3,11 @@ if (file_exists('root.php'))
   include_once('root.php');
 
 include ('livre.php');
-$tab_sort_jeu = explode(';', $joueur['comp_jeu']);
+$tab_sort_jeu = explode(';', $joueur->get_comp_jeu());
 ?>
 <hr>
 <?php
-if($joueur['groupe'] != 0) $groupe_joueur = recupgroupe($joueur['groupe'], $joueur['x'].'-'.$joueur['y']); else $groupe_joueur = false;
+if($joueur->get_ groupe() != 0) $groupe_joueur = recupgroupe($joueur->get_ groupe(), $joueur->get_x().'-'.$joueur->get_y()); else $groupe_joueur = false;
 if (isset($_GET['ID']))
 {
 	$requete = "SELECT * FROM comp_jeu WHERE id = ".sSQL($_GET['ID']);
@@ -19,12 +19,12 @@ if (isset($_GET['ID']))
 	$sortpa = round($row['pa']);
 	$sortmp = round($row['mp']);
 	$action = false;
-	$cibles = array($joueur['ID']);
-	if($joueur['pa'] < $sortpa)
+	$cibles = array($joueur->get_id());
+	if($joueur->get_pa() < $sortpa)
 	{
 		echo '<h5>Pas assez de PA</h5>';
 	}
-	elseif($joueur['mp'] < $sortmp)
+	elseif($joueur->get_mp() < $sortmp)
 	{
 		echo '<h5>Pas assez de mana</h5>';
 	}
@@ -58,13 +58,13 @@ if (isset($_GET['ID']))
 				}
 				if($action)
 				{
-					$joueur['pa'] = $joueur['pa'] - $sortpa;
-					$joueur['mp'] = $joueur['mp'] - $sortmp;
+					$joueur->get_pa() = $joueur->get_pa() - $sortpa;
+					$joueur->get_mp() = $joueur->get_mp() - $sortmp;
 					//Mis à jour du joueur
-					$requete = "UPDATE perso SET mp = '".$joueur['mp']."', pa = '".$joueur['pa']."' WHERE ID = '".$_SESSION['ID']."'";
+					$requete = "UPDATE perso SET mp = '".$joueur->get_mp()."', pa = '".$joueur->get_pa()."' WHERE ID = '".$_SESSION['ID']."'";
 					$req = $db->query($requete);
 					//Insertion du buff dans le journal du lanceur
-					$requete = "INSERT INTO journal VALUES('', ".$joueur['ID'].", 'buff', '".$joueur['nom']."', '".$cible_s['nom']."', NOW(), '".$row['nom']."', 0, 0, 0)";
+					$requete = "INSERT INTO journal VALUES('', ".$joueur->get_id().", 'buff', '".$joueur->get_nom()."', '".$cible_s['nom']."', NOW(), '".$row['nom']."', 0, 0, 0)";
 					$db->query($requete);
 				}
 			break;
@@ -87,7 +87,7 @@ if (isset($_GET['ID']))
 				}
 				else
 				{
-					$cibles = array($joueur['ID']);
+					$cibles = array($joueur->get_id());
 				}
 				foreach($cibles as $cible)
 				{
@@ -99,7 +99,7 @@ if (isset($_GET['ID']))
 						$action = true;
 						echo $cible_s['nom'].' a bien reçu le buff<br />';
 						//Insertion du buff dans le journal du receveur
-						$requete = "INSERT INTO journal VALUES('', ".$cible_s['ID'].", 'rgbuff', '".$cible_s['nom']."', '".$joueur['nom']."', NOW(), '".$row['nom']."', 0, 0, 0)";
+						$requete = "INSERT INTO journal VALUES('', ".$cible_s['ID'].", 'rgbuff', '".$cible_s['nom']."', '".$joueur->get_nom()."', NOW(), '".$row['nom']."', 0, 0, 0)";
 						$db->query($requete);
 					}
 					else
@@ -110,13 +110,13 @@ if (isset($_GET['ID']))
 				}
 				if($action)
 				{
-					$joueur['pa'] = $joueur['pa'] - $sortpa;
-					$joueur['mp'] = $joueur['mp'] - $sortmp;
+					$joueur->get_pa() = $joueur->get_pa() - $sortpa;
+					$joueur->get_mp() = $joueur->get_mp() - $sortmp;
 					//Mis à jour du joueur
-					$requete = "UPDATE perso SET mp = '".$joueur['mp']."', pa = '".$joueur['pa']."' WHERE ID = '".$_SESSION['ID']."'";
+					$requete = "UPDATE perso SET mp = '".$joueur->get_mp()."', pa = '".$joueur->get_pa()."' WHERE ID = '".$_SESSION['ID']."'";
 					$req = $db->query($requete);
 					//Insertion du buff dans le journal du lanceur
-					$requete = "INSERT INTO journal VALUES('', ".$joueur['ID'].", 'gbuff', '".$joueur['nom']."', '".$cible_s['nom']."', NOW(), '".$row['nom']."', 0, 0, 0)";
+					$requete = "INSERT INTO journal VALUES('', ".$joueur->get_id().", 'gbuff', '".$joueur->get_nom()."', '".$cible_s['nom']."', NOW(), '".$row['nom']."', 0, 0, 0)";
 					$db->query($requete);
 				}
 			break;
@@ -129,12 +129,12 @@ if (isset($_GET['ID']))
 				{
 					if(array_key_exists('repos_interieur', $joueur['debuff'])) $effet = $joueur['debuff']['repos_interieur']['effet'] + 1;
 					else $effet = 1;
-					$joueur['pa'] += 2;
-					$joueur['mp'] = $joueur['mp'] - $sortmp;
-					if(lance_buff('repos_interieur', $joueur['ID'], $effet, 0, (60 * 60 * 24), $row['nom'], description($row['description'].'<br /> Utilisation '.$effet.' / 10', $row), 'perso', 1, 0, 0, 0))
+					$joueur->get_pa() += 2;
+					$joueur->get_mp() = $joueur->get_mp() - $sortmp;
+					if(lance_buff('repos_interieur', $joueur->get_id(), $effet, 0, (60 * 60 * 24), $row['nom'], description($row['description'].'<br /> Utilisation '.$effet.' / 10', $row), 'perso', 1, 0, 0, 0))
 					{
 						//Mis à jour du joueur
-						$requete = "UPDATE perso SET mp = '".$joueur['mp']."', pa = '".$joueur['pa']."' WHERE ID = '".$_SESSION['ID']."'";
+						$requete = "UPDATE perso SET mp = '".$joueur->get_mp()."', pa = '".$joueur->get_pa()."' WHERE ID = '".$_SESSION['ID']."'";
 						$req = $db->query($requete);
 						echo '<a href="competence_jeu.php?ID='.$_GET['ID'].'" onclick="return envoiInfo(this.href, \'information\')">Utilisez a nouveau cette compétence</a>';
 					}
@@ -149,15 +149,15 @@ if (isset($_GET['ID']))
 					}
 					if(count($debuff_tab) > 0)
 					{
-						$joueur["pa"] = $joueur["pa"] - $sortpa;
-						$joueur["mp"] = $joueur["mp"] - $sortmp;
+						$joueur->get_pa() = $joueur->get_pa() - $sortpa;
+						$joueur->get_mp() = $joueur->get_mp() - $sortmp;
 					
 						$db->query("DELETE FROM buff WHERE id=".$debuff_tab[rand(0, count($debuff_tab)-1)].";");
 					}
 					else { echo "Impossible de lancer de lancer le sort. Vous n&apos;avez aucune debuff.<br/>"; };
 						
 					//-- Mis à jour du joueur
-					$requete = "UPDATE perso SET mp='".$joueur["mp"]."', pa='".$joueur["pa"]."' WHERE ID='".$_SESSION["ID"]."'";
+					$requete = "UPDATE perso SET mp='".$joueur->get_mp()."', pa='".$joueur->get_pa()."' WHERE ID='".$_SESSION["ID"]."'";
 					$req = $db->query($requete);
 					echo '<a href="competence_jeu.php?ID='.$_GET['ID'].'" onclick="return envoiInfo(this.href, \'information\')">Utilisez a nouveau cette compétence</a>';
 					
@@ -187,7 +187,7 @@ else
 	{
 		echo '<a href="competence_jeu.php?tri='.$magie.'" onclick="return envoiInfo(this.href, \'information\');"><img src="image/'.$magie.'.png" alt="'.$Gtrad[$magie].'" title="'.$Gtrad[$magie].'"/></a> ';
 	}
-	if ('champion' == $joueur['classe'] AND !array_key_exists('tri', $_GET))
+	if ('champion' == $joueur->get_classe() AND !array_key_exists('tri', $_GET))
 	{
 		$where = "WHERE comp_assoc = 'melee'";
 	}

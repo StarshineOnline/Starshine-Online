@@ -5,9 +5,9 @@ if (file_exists('root.php'))
 //Inclusion du haut du document html
 include_once(root.'haut_ajax.php');
 
-$joueur = recupperso($_SESSION['ID']);
+$joueur = new perso($_SESSION['ID']);;
 
-check_perso($joueur);
+$joueur->check_perso();
 
 //Vérifie si le perso est mort
 verif_mort($joueur, 1);
@@ -16,13 +16,13 @@ $W_case = $_GET['poscase'];
 $W_requete = 'SELECT * FROM map WHERE ID =\''.sSQL($W_case).'\'';
 $W_req = $db->query($W_requete);
 $W_row = $db->read_array($W_req);
-$R = get_royaume_info($joueur['race'], $W_row['royaume']);
+$R = get_royaume_info($joueur->get_race(), $W_row['royaume']);
 
 if(!isset($_GET['type'])) $_GET['type'] = 'arme';
 
-$_SESSION['position'] = convert_in_pos($joueur['x'], $joueur['y']);
+$_SESSION['position'] = convert_in_pos($joueur->get_x(), $joueur->get_y());
 ?>
-    	<h2 class="ville_titre"><?php if(verif_ville($joueur['x'], $joueur['y'])) return_ville( '<a href="ville.php?poscase='.$W_case.'" onclick="return envoiInfo(this.href, \'centre\')">'.$R['nom'].'</a> -', $W_case); ?> <?php echo '<a href="taverne.php?poscase='.$W_case.'" onclick="return envoiInfo(this.href,\'carte\')">';?> Taverne </a></h2>
+    	<h2 class="ville_titre"><?php if(verif_ville($joueur->get_x(), $joueur->get_y())) return_ville( '<a href="ville.php?poscase='.$W_case.'" onclick="return envoiInfo(this.href, \'centre\')">'.$R['nom'].'</a> -', $W_case); ?> <?php echo '<a href="taverne.php?poscase='.$W_case.'" onclick="return envoiInfo(this.href,\'carte\')">';?> Taverne </a></h2>
 		<?php include_once(root.'ville_bas.php');?>	
 		<div class="ville_test">
 		<span class="texte_normal">
@@ -53,7 +53,7 @@ if($W_distance == 0)
 				$cout = $row_taverne['star'] + $taxe;
 				if ($joueur['star'] >= $cout)
 				{
-					if($joueur['pa'] >= $row_taverne['pa'])
+					if($joueur->get_pa() >= $row_taverne['pa'])
 					{
 						$valid = true;
 						$bloque_regen = false;
@@ -141,7 +141,7 @@ if($W_distance == 0)
 								$requete = "SELECT * FROM sort_jeu WHERE id = ".$sort;
 								$req = $db->query($requete);
 								$row = $db->read_assoc($req);
-								lance_buff($row['type'], $joueur['ID'], $row['effet'], $row['effet2'], $row['duree'], $row['nom'], description($row['description'], $row), 'perso', 0, 0, $joueur['rang_grade']);
+								lance_buff($row['type'], $joueur->get_id(), $row['effet'], $row['effet2'], $row['duree'], $row['nom'], description($row['description'], $row), 'perso', 0, 0, $joueur['rang_grade']);
 								$texte .= '<br />En plus, vous recevez le buff : '.$row['nom'].' !!!';
 							}
 							elseif($debuff)
@@ -157,7 +157,7 @@ if($W_distance == 0)
 								$requete = "SELECT * FROM sort_jeu WHERE id = ".$sort;
 								$req = $db->query($requete);
 								$row = $db->read_assoc($req);
-								lance_buff($row['type'], $joueur['ID'], $row['effet'], $row['effet2'], $row['duree'], $row['nom'], description($row['description'], $row), 'perso', 1, 0, 0);
+								lance_buff($row['type'], $joueur->get_id(), $row['effet'], $row['effet2'], $row['duree'], $row['nom'], description($row['description'], $row), 'perso', 1, 0, 0);
 								$texte .= '<br />Ouch cette piètre prestation vous coupe le moral, vous recevez le debuff : '.$row['nom'].' !!!';
 							}
 							
@@ -237,52 +237,52 @@ if($W_distance == 0)
 										break;
 										case 'bloque_deplacement' :
 											$duree = $effet_explode[1] * 60 * 60;
-											lance_buff('bloque_deplacement', $joueur['ID'], 1, 0, $duree, $maladie['nom'], description('Vous ne pouvez plus vous déplacer', array()), 'perso', 1, 0, 0);
+											lance_buff('bloque_deplacement', $joueur->get_id(), 1, 0, $duree, $maladie['nom'], description('Vous ne pouvez plus vous déplacer', array()), 'perso', 1, 0, 0);
 										break;
 										case 'bloque_attaque' :
 											$duree = $effet_explode[1] * 60 * 60;
-											lance_buff('bloque_attaque', $joueur['ID'], 1, 0, $duree, $maladie['nom'], description('Vous ne pouvez plus attaquer', array()), 'perso', 1, 0, 0);
+											lance_buff('bloque_attaque', $joueur->get_id(), 1, 0, $duree, $maladie['nom'], description('Vous ne pouvez plus attaquer', array()), 'perso', 1, 0, 0);
 										break;
 										case 'cout_deplacement' :
 											$duree = 12 * 60 * 60;
-											lance_buff('cout_deplacement', $joueur['ID'], 2, 0, $duree, $maladie['nom'], description('Vos couts en déplacements sont divisés par 2', array()), 'perso', 1, 0, 0);
+											lance_buff('cout_deplacement', $joueur->get_id(), 2, 0, $duree, $maladie['nom'], description('Vos couts en déplacements sont divisés par 2', array()), 'perso', 1, 0, 0);
 										break;
 										case 'bloque_sort' :
 											$duree = $effet_explode[1] * 60 * 60;
-											lance_buff('bloque_sort', $joueur['ID'], 1, 0, $duree, $maladie['nom'], description('Vous ne pouvez plus lancer de sorts', array()), 'perso', 1, 0, 0);
+											lance_buff('bloque_sort', $joueur->get_id(), 1, 0, $duree, $maladie['nom'], description('Vous ne pouvez plus lancer de sorts', array()), 'perso', 1, 0, 0);
 										break;
 										case 'suppr_defense' :
 											$duree = $effet_explode[1] * 60 * 60;
-											lance_buff('suppr_defense', $joueur['ID'], 0, 0, $duree, $maladie['nom'], description('Votre PP est réduite à 0', array()), 'perso', 1, 0, 0);
+											lance_buff('suppr_defense', $joueur->get_id(), 0, 0, $duree, $maladie['nom'], description('Votre PP est réduite à 0', array()), 'perso', 1, 0, 0);
 										break;
 										case 'cout_attaque' :
 											$duree = 12 * 60 * 60;
-											lance_buff('cout_attaque', $joueur['ID'], 2, 0, $duree, $maladie['nom'], description('Vos couts pour attaquer sont divisés par 2', array()), 'perso', 1, 0, 0);
+											lance_buff('cout_attaque', $joueur->get_id(), 2, 0, $duree, $maladie['nom'], description('Vos couts pour attaquer sont divisés par 2', array()), 'perso', 1, 0, 0);
 										break;
 										case 'mort_regen' :
 											$duree = $effet_explode[1] * 60 * 60;
-											lance_buff('mort_regen', $joueur['ID'], 1, 0, $duree, $maladie['nom'], description('Vous mourez lors de votre prochaine regénération', array()), 'perso', 1, 0, 0);
+											lance_buff('mort_regen', $joueur->get_id(), 1, 0, $duree, $maladie['nom'], description('Vous mourez lors de votre prochaine regénération', array()), 'perso', 1, 0, 0);
 										break;
 										case 'plus_cout_attaque' :
 											$duree = 12 * 60 * 60;
-											lance_buff('plus_cout_attaque', $joueur['ID'], 2, 0, $duree, $maladie['nom'], description('Vos couts en attaque sont multipliés par 2', array()), 'perso', 1, 0, 0);
+											lance_buff('plus_cout_attaque', $joueur->get_id(), 2, 0, $duree, $maladie['nom'], description('Vos couts en attaque sont multipliés par 2', array()), 'perso', 1, 0, 0);
 										break;
 										case 'plus_cout_deplacement' :
 											$duree = 12 * 60 * 60;
-											lance_buff('plus_cout_deplacement', $joueur['ID'], 2, 0, $duree, $maladie['nom'], description('Vos couts en déplacement sont multipliés par 2', array()), 'perso', 1, 0, 0);
+											lance_buff('plus_cout_deplacement', $joueur->get_id(), 2, 0, $duree, $maladie['nom'], description('Vos couts en déplacement sont multipliés par 2', array()), 'perso', 1, 0, 0);
 										break;
 										case 'regen_negative' :
 											$duree = 48 * 60 * 60;
-											lance_buff('regen_negative', $joueur['ID'], $effet_explode[1], 0, $duree, $maladie['nom'], description('Vos 3 prochaines regénération vous fait perdre des HP / MP au lieu d\'en regagner.', array()), 'perso', 1, 0, 0);
+											lance_buff('regen_negative', $joueur->get_id(), $effet_explode[1], 0, $duree, $maladie['nom'], description('Vos 3 prochaines regénération vous fait perdre des HP / MP au lieu d\'en regagner.', array()), 'perso', 1, 0, 0);
 										break;
 										case 'low_hp' :
 											$joueur['hp'] = 1;
-											$joueur['mp'] = 1;
+											$joueur->get_mp() = 1;
 											$bloque_regen = true;
 										break;
 										case 'high_regen' :
 											$duree = $effet_explode[1] * 60 * 60;
-											lance_buff('high_regen', $joueur['ID'], $effet_explode[1], 0, $duree, $maladie['nom'], description('Vos 3 prochaines regénération vous font gagner 3 fois plus de HP / MP', array()), 'perso', 1, 0, 0);
+											lance_buff('high_regen', $joueur->get_id(), $effet_explode[1], 0, $duree, $maladie['nom'], description('Vos 3 prochaines regénération vous font gagner 3 fois plus de HP / MP', array()), 'perso', 1, 0, 0);
 										break;
 									}
 								}
@@ -292,15 +292,15 @@ if($W_distance == 0)
 						if($valid)
 						{
 							$joueur['star'] = $joueur['star'] - $cout;
-							$joueur['pa'] = $joueur['pa'] - $row_taverne['pa'];
+							$joueur->get_pa() = $joueur->get_pa() - $row_taverne['pa'];
 							if(!$bloque_regen)
 							{
 								$joueur['hp'] = $joueur['hp'] + $row_taverne['hp'] + floor($row_taverne['hp_pc'] * $joueur['hp_max'] / 100);
 								if ($joueur['hp'] > $joueur['hp_max']) $joueur['hp'] = floor($joueur['hp_max']);
-								$joueur['mp'] = $joueur['mp'] + $row_taverne['mp'] + floor($row_taverne['mp_pc'] * $joueur['mp_max'] / 100);
-								if ($joueur['mp'] > $joueur['mp_max']) $joueur['mp'] = floor($joueur['mp_max']);
+								$joueur->get_mp() = $joueur->get_mp() + $row_taverne['mp'] + floor($row_taverne['mp_pc'] * $joueur['mp_max'] / 100);
+								if ($joueur->get_mp() > $joueur['mp_max']) $joueur->get_mp() = floor($joueur['mp_max']);
 							}
-							$requete = "UPDATE perso SET honneur = ".$joueur['honneur'].", star = ".$joueur['star'].", hp = ".$joueur['hp'].", mp = ".$joueur['mp'].", pa = ".$joueur['pa']." WHERE ID = ".$_SESSION['ID'];
+							$requete = "UPDATE perso SET honneur = ".$joueur['honneur'].", star = ".$joueur['star'].", hp = ".$joueur['hp'].", mp = ".$joueur->get_mp().", pa = ".$joueur->get_pa()." WHERE ID = ".$_SESSION['ID'];
 							//echo $requete;
 							$req = $db->query($requete);
 							//Récupération de la taxe
@@ -368,7 +368,7 @@ if($W_distance == 0)
 			$cout = $row['star'] + $taxe;
 			if(array_key_exists('fort', $_GET)) $fort = '&amp;fort=ok'; else $fort = '';
 			//On vérifie le sexe du joueur
-			$joueur['bonus'] = recup_bonus_total($joueur['ID']);
+			$joueur['bonus'] = recup_bonus_total($joueur->get_id());
 			if(array_key_exists(12, $joueur['bonus']) AND $joueur['bonus'][12]['valeur'] == 2) $champ = 'nom_f';
 			else $champ = 'nom';
 		?>

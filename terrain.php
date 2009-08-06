@@ -6,19 +6,19 @@ if (file_exists('root.php'))
 //Inclusion du haut du document html
 include_once(root.'haut_ajax.php');
 
-$joueur = recupperso($_SESSION['ID']);
+$joueur = new perso($_SESSION['ID']);;
 
-check_perso($joueur);
+$joueur->check_perso();
 
-$position = convert_in_pos($joueur['x'], $joueur['y']);
+$position = convert_in_pos($joueur->get_x(), $joueur->get_y());
 
 //Vérifie si le perso est mort
 verif_mort($joueur, 1);
-$verif_ville = verif_ville($joueur['x'], $joueur['y']);
+$verif_ville = verif_ville($joueur->get_x(), $joueur->get_y());
 $W_requete = 'SELECT * FROM map WHERE ID =\''.sSQL($position).'\'';
 $W_req = $db->query($W_requete);
 $W_row = $db->read_array($W_req);
-$R = get_royaume_info($joueur['race'], $W_row['royaume']);
+$R = get_royaume_info($joueur->get_race(), $W_row['royaume']);
 $_SESSION['position'] = $position;
 include_once(root.'ville_bas.php');
 	?>
@@ -37,7 +37,7 @@ include_once(root.'ville_bas.php');
 				case 'grenier' :
 					if(array_key_exists('famine', $_GET))
 					{
-						if($joueur['pa'] >= 10)
+						if($joueur->get_pa() >= 10)
 						{
 							$check = false;
 							foreach($joueur['debuff'] as $key => $debuff)
@@ -62,7 +62,7 @@ include_once(root.'ville_bas.php');
 									$requete = "UPDATE buff SET effet = effet - 1 WHERE id = ".$id_buff;
 								}
 								$db->query($requete);
-								$requete = "UPDATE perso SET pa = pa - 10 WHERE ID = ".$joueur['ID'];
+								$requete = "UPDATE perso SET pa = pa - 10 WHERE ID = ".$joueur->get_id();
 								$db->query($requete);
 								refresh_perso();
 								echo '<h6>Famine réduite de 1%</h6>';
@@ -91,7 +91,7 @@ include_once(root.'ville_bas.php');
 							//On supprime l'objet
 							supprime_objet($joueur, $item, 1);
 							$coffre_inventaire = $coffre->get_coffre_inventaire();
-							$joueur = recupperso($joueur['ID']);
+							$joueur = recupperso($joueur->get_id());
 						}
 						else echo '<h5>Vous n\'avez pas assez de place dans le coffre</h5>';
 					}
@@ -102,7 +102,7 @@ include_once(root.'ville_bas.php');
 						{
 							$item->moins();
 							$coffre_inventaire = $coffre->get_coffre_inventaire();
-							$joueur = recupperso($joueur['ID']);
+							$joueur = recupperso($joueur->get_id());
 						}
 						else echo '<h5>'.$G_erreur.'</h5>';
 					}
@@ -188,7 +188,7 @@ include_once(root.'ville_bas.php');
 		elseif(array_key_exists('upgrade', $_GET))
 		{
 			$terrain = new terrain();
-			$terrain = $terrain->recoverByIdJoueur($joueur['ID']);
+			$terrain = $terrain->recoverByIdJoueur($joueur->get_id());
 			$batiment = new terrain_batiment($_GET['upgrade']);
 			$star_point = ceil($_GET['star_point']);
 			$cout_total = $batiment->point_structure * $star_point;
@@ -215,7 +215,7 @@ include_once(root.'ville_bas.php');
 						if($batiment->type != 'agrandissement') $chantier->upgrade_id_construction = $row['id'];
 						$chantier->sauver();
 						//On supprime les stars du joueur
-						$requete = "UPDATE perso SET star = star - ".$cout_total." WHERE ID = ".$joueur['ID'];
+						$requete = "UPDATE perso SET star = star - ".$cout_total." WHERE ID = ".$joueur->get_id();
 						$db->query($requete);
 						$taxe = floor(($chantier->star_point * $batiment->point_structure) * $R['taxe'] / 100);
 						//On donne les stars au royaume
@@ -230,7 +230,7 @@ include_once(root.'ville_bas.php');
 		elseif(array_key_exists('construire', $_GET))
 		{
 			$terrain = new terrain();
-			$terrain = $terrain->recoverByIdJoueur($joueur['ID']);
+			$terrain = $terrain->recoverByIdJoueur($joueur->get_id());
 			$batiment = new terrain_batiment($_GET['construire']);
 			$star_point = ceil($_GET['star_point']);
 			$cout_total = $batiment->point_structure * $star_point;
@@ -247,7 +247,7 @@ include_once(root.'ville_bas.php');
 						$chantier->star_point = $star_point;
 						$chantier->sauver();
 						//On supprime les stars du joueur
-						$requete = "UPDATE perso SET star = star - ".$cout_total." WHERE ID = ".$joueur['ID'];
+						$requete = "UPDATE perso SET star = star - ".$cout_total." WHERE ID = ".$joueur->get_id();
 						$db->query($requete);
 						$taxe = floor(($chantier->star_point * $batiment->point_structure) * $R['taxe'] / 100);
 						//On donne les stars au royaume
@@ -276,7 +276,7 @@ include_once(root.'ville_bas.php');
 					$laboratoire->type = $instrument->type;
 					$laboratoire->sauver();
 					//On supprime les stars du joueur
-					$requete = "UPDATE perso SET star = star - ".$prix." WHERE ID = ".$joueur['ID'];
+					$requete = "UPDATE perso SET star = star - ".$prix." WHERE ID = ".$joueur->get_id();
 					$db->query($requete);
 					//On donne les stars au royaume
 					$requete = "UPDATE royaume SET star = star + ".$taxe." WHERE ID = ".$R['ID'];
@@ -301,7 +301,7 @@ include_once(root.'ville_bas.php');
 					$laboratoire->id_instrument = $instrument->id;
 					$laboratoire->sauver();
 					//On supprime les stars du joueur
-					$requete = "UPDATE perso SET star = star - ".$prix." WHERE ID = ".$joueur['ID'];
+					$requete = "UPDATE perso SET star = star - ".$prix." WHERE ID = ".$joueur->get_id();
 					$db->query($requete);
 					//On donne les stars au royaume
 					$requete = "UPDATE royaume SET star = star + ".$taxe." WHERE ID = ".$R['ID'];
@@ -313,7 +313,7 @@ include_once(root.'ville_bas.php');
 		else
 		{
 			$terrain = new terrain();
-			$terrain = $terrain->recoverByIdJoueur($joueur['ID']);
+			$terrain = $terrain->recoverByIdJoueur($joueur->get_id());
 			$constructions = $terrain->get_constructions();
 			$chantiers = $terrain->get_chantiers();
 			$upgrade = true;
