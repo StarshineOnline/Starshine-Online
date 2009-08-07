@@ -2,7 +2,7 @@
 if (file_exists('../root.php'))
   include_once('../root.php');
 
-class perso
+class perso extends entite
 {
 /**
     * @access private
@@ -2607,19 +2607,39 @@ class perso
 		return unserialize($this->inventaire);
 	}
 
+	function get_arme()
+	{
+		global $db;
+		$arme = $this->inventaire()->main_droite;
+		if($arme != '')
+		{
+			$arme_d = decompose_objet($arme);
+			$requete = "SELECT * FROM arme WHERE id = ".$arme_d['id_objet'];
+			$req = $db->query($requete);
+			$this->arme = $db->read_object($req);
+		}
+		else $this->arme = false;
+		return $this->arme;
+	}
+
 	function get_distance_tir()
 	{
-		$arme = $this->inventaire()->main_droite;
-		if ($arme != '')
+		if(!isset($this->distance_tir))
 		{
-			global $db;
-			$arme_d = decompose_objet($arme);
-			$requete = "SELECT distance_tir FROM arme WHERE id = ".$arme_d['id_objet'];
-			$req = $db->query($requete);
-			$row = $db->read_array($req);
-			return $row['distance_tir'];
+			$arme = $this->inventaire()->main_droite;
+			if(!isset($this->arme)) $this->get_arme();
+			if($this->arme)
+			{
+				return $this->arme->distance_tir;
+			}
+			return 0;
 		}
-		return 0;
+	}
+
+	function get_arme_type()
+	{
+		if(!isset($this->arme)) $this->get_arme();
+		return $this->arme->type;
 	}
 
 	function prend_objet($id_objet)
@@ -2684,7 +2704,7 @@ class perso
 		$modif = false;	 // Indique si le personnage a été modifié.
 		global $db, $G_temps_regen_hp, $G_temps_maj_hp, $G_temps_maj_mp, $G_temps_PA, $G_PA_max, $G_pourcent_regen_hp, $G_pourcent_regen_mp;
 		// On vérifie que le personnage est vivant
-		if($joueur->get_hp() > 0)
+		if($this->hp > 0)
 		{
 			// On augmente les HP max si nécessaire
 			$temps_maj = time() - $joueur->get_maj_hp(); // Temps écoulé depuis la dernière augmentation de HP.

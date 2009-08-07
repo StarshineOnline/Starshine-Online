@@ -24,7 +24,9 @@ else
 	$menu[$i]['url'] = 'admin_mess.php';
 	$menu[$i++]['acces'] = 'admin';
 
-	$menu[$i++]['nom'] = '--'; // Séparateur
+	$menu[$i]['nom'] = '--'; // Séparateur
+	$menu[$i]['url'] = '';
+	$menu[$i++]['acces'] = '';
 
 	$menu[$i]['nom'] = 'Editeur de carte';
 	$menu[$i]['url'] = 'edit_map3.php';

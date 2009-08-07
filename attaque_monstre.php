@@ -34,7 +34,7 @@ $W_requete = 'SELECT * FROM map WHERE ID =\''.sSQL($W_case).'\'';
 $W_req = $db->query($W_requete);
 $W_row = $db->read_array($W_req);
 $R = get_royaume_info($joueur->get_race(), $W_row['royaume']);
-$W_distance = detection_distance($W_case,$_SESSION["position"]);
+$W_distance = detection_distance($W_case, $attaquant->get_pos());
 
 ?>
 <fieldset>
@@ -91,17 +91,17 @@ else
 			//Boucle principale qui fait durer le combat $round_total round
 			while(($round < ($round_total + 1)) AND ($attaquant->get_hp() > 0) AND ($defenseur['hp'] > 0))
 			{
-				if($attaquant['arme_type'] == 'arc') $attaquant['comp'] = 'distance'; else $attaquant['comp'] = 'melee';
+				if($attaquant->get_arme_type() == 'arc') $attaquant->comp = 'distance'; else $attaquant->comp = 'melee';
 				$defenseur['comp'] = 'melee';
 				//Calcul du potentiel de toucher et parer
-				$attaquant['potentiel_toucher'] = round($attaquant[$attaquant['comp']] + ($attaquant[$attaquant['comp']] * ((pow($attaquant['dexterite'], 2)) / 1000)));
-				$defenseur['potentiel_toucher'] = round($defenseur[$defenseur['comp']] + ($defenseur[$defenseur['comp']] * ((pow($defenseur['dexterite'], 2)) / 1000)));
-				$attaquant['potentiel_parer'] = round($attaquant['esquive'] + ($attaquant['esquive'] * ((pow($attaquant['dexterite'], 2)) / 1000)));
-				$defenseur['potentiel_parer'] = round($defenseur['esquive'] + ($defenseur['esquive'] * ((pow($defenseur['dexterite'], 2)) / 1000)));
-				$attaquant['degat_sup'] = 0;
-				$attaquant['degat_moins'] = 0;
-				$defenseur['degat_sup'] = 0;
-				$defenseur['degat_moins'] = 0;
+				$attaquant->get_potentiel_toucher();
+				$defenseur->get_potentiel_toucher();
+				$attaquant->get_potentiel_parer();
+				$defenseur->get_potentiel_parer;
+				$attaquant->degat_sup = 0;
+				$attaquant->degat_moins = 0;
+				$defenseur->degat_sup = 0;
+				$defenseur->degat_moins = 0;
 				
 				if ($mode == 'attaquant') $mode = 'defenseur';
 				else ($mode = 'attaquant');
@@ -117,19 +117,19 @@ else
 								<h3 style="margin-top : 3px;">Round '.$round.'</h3>
 							</td>
 							<td>';
-					foreach($defenseur['etat'] as $key => $value)
+					foreach($defenseur->etat as $key => $value)
 					{
-						$defenseur['etat'][$key]['duree'] -= 1;
-						if($defenseur['etat'][$key]['duree'] <= 0) unset($defenseur['etat'][$key]);
+						$defenseur->etat[$key]['duree'] -= 1;
+						if($defenseur->etat[$key]['duree'] <= 0) unset($defenseur->etat[$key]);
 						//else echo $defenseur['nom'].' est '.$key.' pour '.$defenseur['etat'][$key]['duree'].' rounds<br />';
 					}
 				}
 				else
 				{
-					foreach($attaquant['etat'] as $key => $value)
+					foreach($attaquant->etat as $key => $value)
 					{
-						$attaquant['etat'][$key]['duree'] -= 1;
-						if($attaquant['etat'][$key]['duree'] <= 0) unset($attaquant['etat'][$key]);
+						$attaquant->etat[$key]['duree'] -= 1;
+						if($attaquant->etat[$key]['duree'] <= 0) unset($attaquant->etat[$key]);
 						//else echo $attaquant['nom'].' est '.$key.' pour '.$attaquant['etat'][$key]['duree'].' rounds<br />';
 					}
 				}
