@@ -79,10 +79,11 @@ class identification
 	
 	function deconnexion()
 	{
-		session_unregister('ID');
+		//Deprecated
+		/*session_unregister('ID');
 		session_unregister('nom');
 		session_unregister('race');
-		session_unregister('grade');
+		session_unregister('grade');*/
 		unset($_SESSION['grade']);
 		unset($_SESSION['race']);
 		unset($_SESSION['nom']);

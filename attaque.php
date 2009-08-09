@@ -531,7 +531,7 @@ else
 					$membre->set_honneur($membre->get_honneur() + $honneur_gagne);
 					$msg_xp .= $membre->get_nom().' gagne <strong class="reward">'.$xp_gagne.' XP</strong> et <strong class="reward">'.$honneur_gagne.' points d\'honneur</strong><br />';
 					if($membre->get_id() == $attaquant->get_id()) verif_action('J'.$row_diplo[0], $membre, 's');
-					else verif_action('J'.$row_diplo[0], $membre 'g');
+					else verif_action('J'.$row_diplo[0], $membre, 'g');
 					$membre->sauver();
 				}
 				$actif->set_frag($actif->get_frag() + 1);

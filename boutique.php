@@ -79,7 +79,7 @@ if($W_distance == 0)
 								if($taxe > 0)
 								{
 									$R->set_star($R->get_star() + $taxe);
-									$R->set_forgeron($R->get_forgeron() + $taxe));
+									$R->set_forgeron($R->get_forgeron() + $taxe);
 									$R->sauver();
 								}
 								echo '<h6>Arme achetée !</h6>
@@ -111,7 +111,7 @@ if($W_distance == 0)
 								if($taxe > 0)
 								{
 									$R->set_star($R->get_star() + $taxe);
-									$R->set_armurerie($R->get_armurerie() + $taxe));
+									$R->set_armurerie($R->get_armurerie() + $taxe);
 									$R->sauver();
 								}
 								echo '<h6>Armure achetée !</h6>

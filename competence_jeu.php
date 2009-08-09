@@ -7,7 +7,7 @@ $tab_sort_jeu = explode(';', $joueur->get_comp_jeu());
 ?>
 <hr>
 <?php
-if($joueur->get_ groupe() != 0) $groupe_joueur = new groupe($joueur->get_ groupe()); else $groupe_joueur = false;
+if($joueur->get_groupe() != 0) $groupe_joueur = new groupe($joueur->get_groupe()); else $groupe_joueur = false;
 if (isset($_GET['ID']))
 {
 	$requete = "SELECT * FROM comp_jeu WHERE id = ".sSQL($_GET['ID']);

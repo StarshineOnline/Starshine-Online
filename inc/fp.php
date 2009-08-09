@@ -19,6 +19,9 @@ ob_start();
 // Spécifie à la bibliothèque mb qu'on utilise UTF-8
 mb_internal_encoding("UTF-8");
 
+// Spécifie le fuseau horraire pour les dates.
+date_default_timezone_set('Europe/Paris');
+
 //Inclusion des fonctions permettant de gérer le temps
 include_once(root.$root.'fonction/time.inc.php');
 

@@ -81,8 +81,8 @@ Distance du joueur : <?php echo calcul_distance(convert_in_pos($joueur->get_x(),
 <h4><span class="titre_info">Actions</span></h4>
 <table>
 <?php
-$W_distance = detection_distance($W_case, $_SESSION["position"]);
-if (($perso->get_id() != $_SESSION['ID']))
+$W_distance = detection_distance($W_case, $joueur->get_pos());
+if ($perso->get_id() != $joueur->get_id())
 {
 	$pa_attaque = $G_PA_attaque_joueur;
 	if($joueur->get_race() == $perso->get_race()) $pa_attaque += 3;
@@ -95,7 +95,7 @@ if (($perso->get_id() != $_SESSION['ID']))
 }
 if($joueur->get_sort_jeu() != '')
 {
-	if($perso->get_id() != $_SESSION['ID'])
+	if($perso->get_id() != $joueur->get_id())
 	{
 		echo '<tr><td><img src="image/sort_hc_icone.png" title="Lancer un sort" alt="Lancer un sort" /></td><td><a href="sort_joueur.php?id_joueur='.$W_ID.'" onclick="return envoiInfo(this.href, \'information\')">Lancer un sort</a></td></tr>';
 	}
@@ -105,10 +105,12 @@ if($joueur->get_sort_jeu() != '')
 	}
 }
 
-if (($W_distance < 2) AND ($W_ID != $_SESSION['ID']) AND ($perso->get_groupe() != $joueur->get_groupe() OR $joueur->get_groupe() == '' OR $joueur->get_groupe() == 0))
+if (($W_distance < 2) AND ($perso->get_id() != $joueur->get_id()) AND ($perso->get_groupe() != $joueur->get_groupe() OR $joueur->get_groupe() == '' OR $joueur->get_groupe() == 0))
 {
-	if($joueur->is_buff('debuff_groupe')) echo 'Vous êtes déprimé, vous ne pouvez pas grouper';
-	echo('<tr><td><img src="image/interface/demande_groupe.png" alt="Inviter ce joueur dans votre groupe" title="Inviter ce joueur dans votre groupe" style="vertical-align : middle;" /></td><td><a href="invitegroupe.php?ID='.$W_ID.'" onclick="return envoiInfo(this.href, \'information\')"> Inviter ce joueur dans votre groupe</a></td></tr>');
+	if($joueur->is_debuff('debuff_groupe', true)) 
+		echo '<tr><td><img src="image/interface/demande_groupe.png" alt="Inviter ce joueur dans votre groupe" title="Inviter ce joueur dans votre groupe" style="vertical-align : middle;" /></td><td>Vous êtes trop déprimé pour pouvoir grouper.</td></tr>';
+	else
+		echo('<tr><td><img src="image/interface/demande_groupe.png" alt="Inviter ce joueur dans votre groupe" title="Inviter ce joueur dans votre groupe" style="vertical-align : middle;" /></td><td><a href="invitegroupe.php?ID='.$perso->get_id().'" onclick="return envoiInfo(this.href, \'information\')"> Inviter ce joueur dans votre groupe</a></td></tr>');
 }
 
 
@@ -123,9 +125,9 @@ if(array_key_exists(23, $bonus) AND check_affiche_bonus($bonus[23], $joueur, $pe
 	echo('<tr><td></td><td><a href="personnage.php?id_perso='.$W_ID.'" onclick="return envoiInfo(this.href, \'information\')"> Voir les caractéristiques de ce joueur</a></td></tr>');
 }
 
-if( (($perso->get_groupe() == $joueur->get_groupe()) && $joueur->get_groupe() != 0) AND ($groupe->get_leader() == $joueur->get_id()))
+if( (($perso->get_groupe() == $joueur->get_groupe()) && $joueur->get_groupe() != 0) AND ($groupe->get_id_leader() == $joueur->get_id()))
 {
-	echo('<tr><td><img src="image/interface/exspuler-joueur_icone.png" alt="Expulser le joueur" title="Expulser le joueur" /></td><td><a style="cursor:pointer;" onclick="javascript:if(confirm(\'Voulez vous expulser ce joueur ?\')) envoiInfo(\'kickjoueur.php?ID='.$perso->get_id().'&groupe='.$groupe['id'].'\', \'information\');">Expulser la personne du groupe</a></td></tr>');
+	echo('<tr><td><img src="image/interface/exspuler-joueur_icone.png" alt="Expulser le joueur" title="Expulser le joueur" /></td><td><a style="cursor:pointer;" onclick="javascript:if(confirm(\'Voulez vous expulser ce joueur ?\')) envoiInfo(\'kickjoueur.php?ID='.$perso->get_id().'&groupe='.$groupe->get_id().'\', \'information\');">Expulser la personne du groupe</a></td></tr>');
 }
 
 

@@ -103,8 +103,9 @@ function print_messbar()
 
 function make_overlib($message)
 {
-	$print = ereg_replace('([^\\])\'', '\\1\\\'', $message);
-	$print = ereg_replace("[\n\r]", '', $print);
+	$print = preg_replace('`([^\\\])\'`', '\\1\\\'', $message);
+	// \' '\1\'
+	$print = preg_replace("[\n\r]", '', $print);
 	return "overlib('<ul><li class=\'overlib_titres\'>".$print."</li></ul>', BGCLASS, 'overlib', BGCOLOR, '', FGCOLOR, '', VAUTO);";
 }
 

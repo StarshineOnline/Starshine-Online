@@ -21,7 +21,7 @@ if (isset($_GET['ID']))
 	$sortpa = round($row['pa'] * $joueur->get_facteur_magie());
 	$sortmp = round($row['mp'] * (1 - (($Trace[$joueur->get_race()]['affinite_'.$row['comp_assoc']] - 5) / 10)));
 	//Réduction du cout par concentration
-	if(array_key_exists('buff_concentration', $joueur->get_buff())) $sortmp = ceil($sortmp * (1 - ($joueur->get_buff()['buff_concentration']['effet'] / 100)));
+	if(array_key_exists('buff_concentration', $joueur->get_buff())) $sortmp = ceil($sortmp * (1 - ($joueur->get_buff('buff_concentration','effet') / 100)));
 	//Coût en MP * 1.5 si sort de groupe
 	if($groupe) $sortmp = ceil($sortmp * 1.5);
 	$action = false;
@@ -308,8 +308,8 @@ if (isset($_GET['ID']))
 					{
 						//Test d'esquive du sort
 						$protecion = $cible['volonte'] * $cible->get_pm() / 3;
-						if(array_key_exists('bulle_sanctuaire', $cible->get_buff())) $protection *= $cible->get_buff()['bulle_sanctuaire']['effet'];
-						if(array_key_exists('bulle_dephasante', $cible->get_buff())) $protection *= $cible->get_buff()['bulle_dephasante']['effet'];
+						if(array_key_exists('bulle_sanctuaire', $cible->get_buff())) $protection *= $cible->get_buff('bulle_sanctuaire','effet');
+						if(array_key_exists('bulle_dephasante', $cible->get_buff())) $protection *= $cible->get_buff('bulle_dephasante','effet');
 						$attaque = rand(0, ($joueur->get_volonte() * $joueur[$row['comp_assoc']]));
 						$defense = rand(0, $protection);
 						if ($attaque > $defense)
@@ -525,7 +525,7 @@ else
 		$sortpa = round($row['pa'] * $joueur->get_facteur_magie());
 		$sortmp = round($row['mp'] * (1 - (($Trace[$joueur->get_race()]['affinite_'.$row['comp_assoc']] - 5) / 10)));
 		//Réduction du cout par concentration
-		if(array_key_exists('buff_concentration', $joueur->get_buff())) $sortmp = ceil($sortmp * (1 - ($joueur->get_buff()['buff_concentration']['effet'] / 100)));
+		if(array_key_exists('buff_concentration', $joueur->get_buff())) $sortmp = ceil($sortmp * (1 - ($joueur->get_buff('buff_concentration','effet') / 100)));
 		if($magie != $row['comp_assoc'])
 		{
 			$magie = $row['comp_assoc'];

@@ -8,9 +8,7 @@ if(array_key_exists('javascript', $_GET))
 	$partages = array(array('r', 'Aléatoire'), array('t', 'Par tour'), array('l', 'Leader'), array('k', 'Trouve = Garde'));
 	$joueur = new perso($_SESSION['ID']);
 	$groupe = new groupe($joueur->get_groupe());
-	//$groupe = recupgroupe($joueur->get_groupe(), $joueur->get_x.'-'.$joueur->get_y());
-	$num_joueur = groupe_trouve_joueur($joueur->get_id(), $groupe);
-	$share_xp = ($groupe['membre'][$num_joueur]['share_xp'] / $groupe['share_xp']);
+	$num_joueur = $groupe->trouve_position_joueur($joueur->get_id());
 }
 else
 {
@@ -37,7 +35,7 @@ else
 				Groupe niveau
 			</td>
 			<td>
-				: <?php echo $groupe->get_level(); ?>
+				: <?php echo $groupe->get_lvl(); ?>
 			</td>
 		</tr>
 		<tr>
@@ -45,12 +43,12 @@ else
 				Mode de partage
 			</td>
 			<td>
-				<select name="partage" id="partage" <?php if($groupe->get_leader() != $_SESSION['ID']) echo ' disabled="true"'; ?>>
+				<select name="partage" id="partage" <?php if($groupe->get_id_leader() != $joueur->get_id()) echo ' disabled="true"'; ?>>
 					<?php
 					foreach($partages as $part)
 					{
 						?>
-						<option value="<?php echo $part[0]; ?>"<?php if($groupe['partage'] == $part[0]) echo ' selected'; ?>><?php echo $part[1]; ?></option>
+						<option value="<?php echo $part[0]; ?>"<?php if($groupe->get_partage() == $part[0]) echo ' selected'; ?>><?php echo $part[1]; ?></option>
 						<?php
 					}
 					?>
@@ -62,13 +60,13 @@ else
 				Leader du groupe
 			</td>
 			<td>
-				<select name="leader" id="leader" <?php if($groupe['id_leader'] != $_SESSION['ID']) echo ' disabled="true"'; ?>>
+				<select name="leader" id="leader" <?php if($groupe->get_id_leader() != $joueur->get_id()) echo ' disabled="true"'; ?>>
 					<?php
-					foreach($groupe['membre'] as $membre)
+					$groupe_membre = $groupe->get_membre_joueur();
+					foreach($groupe_membre as $membre)
 					{
-						$memb = recupperso($membre['id_joueur']);
 						?>
-						<option value="<?php echo $membre['id_joueur']; ?>"<?php if($groupe['id_leader'] == $membre['id_joueur']) echo ' selected'; ?>><?php echo $memb['nom']; ?></option>
+						<option value="<?php echo $membre->get_id(); ?>"<?php if($groupe->get_id_leader() == $membre->get_id()) echo ' selected'; ?>><?php echo $membre->get_nom(); ?></option>
 						<?php
 					}
 					?>
@@ -76,7 +74,7 @@ else
 			</td>
 		</tr>
 		</table>
-		<?php if($groupe['id_leader'] == $_SESSION['ID']) echo '<input type="button" onclick="envoiInfo(\'infogroupe.php?id='.$groupe['id'].'&amp;partage=\' + document.getElementById(\'partage\').value + \'&amp;leader=\' + document.getElementById(\'leader\').value + \'&amp;nom=\' + document.getElementById(\'nom\').value, \'information\');" value="Modifier" />'; ?>
+		<?php if($groupe->get_id_leader() == $joueur->get_id()) echo '<input type="button" onclick="envoiInfo(\'infogroupe.php?id='.$groupe->get_id().'&amp;partage=\' + document.getElementById(\'partage\').value + \'&amp;leader=\' + document.getElementById(\'leader\').value + \'&amp;nom=\' + document.getElementById(\'nom\').value, \'information\');" value="Modifier" />'; ?>
 		<br />
 		<?php echo '<a href="degroup.php?ID='.$joueur->get_groupe().'" onclick="if(confirm(\'Voulez vous quitter le groupe ?\')) return envoiInfo(this.href, \'information\'); else return false;">Quitter le groupe actuel</a>'; ?>
 		</div>

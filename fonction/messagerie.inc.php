@@ -23,11 +23,11 @@ function transform_texte($texte)
 	//bbcode de merde
 	$texte = str_replace('[br]', '<br />', $texte);
 	$texte = nl2br($texte);
-	$texte = eregi_replace("\[b\]([^[]*)\[/b\]", '<strong>\\1</strong>', $texte);
-	$texte = eregi_replace("\[i\]([^[]*)\[/i\]", '<i>\\1</i>', $texte);
-	$texte = eregi_replace("\[url\]([^[]*)\[/url\]", '<a href="\\1">\\1</a>', $texte);
+	$texte = pregi_replace("\[b\]([^[]*)\[/b\]", '<strong>\\1</strong>', $texte);
+	$texte = pregi_replace("\[i\]([^[]*)\[/i\]", '<i>\\1</i>', $texte);
+	$texte = pregi_replace("\[url\]([^[]*)\[/url\]", '<a href="\\1">\\1</a>', $texte);
 	$texte = str_replace("[/color]", "</span>", $texte);
-	//Lien vers échange
+	//Lien vers ï¿½change
 	$texte = eregi_replace("\[echange:([^[]*)\]", "<a href=\"echange.php?id_echange=\\1\" onclick=\"return envoiInfo(this.href, 'information')\">Echange ID : \\1</a>", $texte);
 	return $texte;
 }

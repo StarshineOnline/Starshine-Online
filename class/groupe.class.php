@@ -205,16 +205,6 @@ class groupe
 	{
 		return $this->id;
 	}
-	/**
-	 * Retourne le niveau du groupe
-	 * @access public
-	 * @param none
-	 * @return int(10) $lvl niveau du groupe 
- 	*/
-	function get_lvl()
-	{
-		return $this->lvl;
-	}
 
 	/**
 	* Retourne la valeur de l'attribut
@@ -298,9 +288,52 @@ class groupe
 	}
 
 	//fonction
+	
+	/**
+	 * Retourne le niveau du groupe
+	 * @access public
+	 * @param none
+	 * @return int(10) $lvl niveau du groupe 
+ 	*/
+	function get_lvl()
+	{
+		$max = 0;
+		$moyenne = 0;
+		$niveau = 0;
+		$membre_groupe = $this->get_membre_joueur();
+		foreach($membre_groupe as $membre);
+		{
+			$niveau = $membre->get_level();
+			$max = $max < $niveau ? $niveau : $max;
+			$moyenne += $niveau; 	
+		}
+		
+		$this->lvl = $max + ceil(($moyenne / $max) * floor(sqrt($moyenne)));
+		
+		return $this->lvl;
+	}
+	
+	function get_share_xp($pos)
+	{
+		$membre_groupe = $this->get_membre_joueur();
+		$share_xp = 0;
+		foreach($membre_groupe as $membre)
+		{
+			$distance = calcul_distance_pytagore($pos, $membre->get_pos());
+			if($distance < 10)
+				$share_xp += 100 * $membre->get_level();
+			else
+			{
+				$tmp = 100 - $distance / 2 * $membre->get_level();
+				$share_xp += (($tmp) > 0 ? $tmp : 0);
+			}
+		}
+		return $share_xp;
+	}
+	
 	function get_membre()
 	{
-		$this->membre = groupe_joueur::create('id_groupe', $this->id);
+		$this->membre = groupe_joueur::create('id_groupe', $this->id, 'leader ASC, id_joueur ASC');
 		return $this->membre;
 	}
 
@@ -333,11 +366,15 @@ class groupe
 		$i = 0;
 		while($poursuite && $i < count($this->membre))
 		{
-			if($this->membre[$i] == $id_perso)
-				$pos = $i; 
-			$i++;			
+			if($this->membre[$i]->get_id_joueur() == $id_perso)
+			{
+				$pos = $i;
+				$poursuite = false;
+			} 
+			else
+				$i++;
 		}
-		if(!isset($pos))
+		if($poursuite)
 			$pos = false;
 			
 		return $pos;
@@ -346,13 +383,11 @@ class groupe
 	function get_place_libre()
 	{
 		global $db, $G_nb_joueur_groupe;
-		$W_requete = 'SELECT COUNT(inviteur) as count FROM invitation WHERE inviteur = '.$this->get_leader();
-		$W_query = $db->query($W_requete);
-		$W_row = $db->read_array($W_query);
-		$nb_invitation = $W_row['count'];
+		$invitations = invitation::create('inviteur', $this->get_id());
+		$nb_invitation = count($invitations);
 	
-		$W_requete = 'SELECT COUNT(id_joueur) as count FROM groupe_joueur WHERE id_groupe = '.$this->get_id();
-		$nb_membre = $W_row['count'];
+		$membres = $this->get_membre();
+		$nb_membre = count($membres);
 		
 		return ($G_nb_joueur_groupe - $nb_invitation - $nb_membre);
 	}

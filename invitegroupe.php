@@ -13,13 +13,8 @@ $row = $db->read_array($req);
 $joueur = new perso($_SESSION['ID']);
 $perso = new perso($W_ID);
 //Si il n'est pas groupé, création du groupe
-if (empty($row['groupe']))
+if(!$joueur->is_groupe())
 {
-	if($joueur->is_debuff('Dépression'))
-	{
-		
-	}
-	
 	if(!$joueur->is_debuff('Dépression'))
 	{
 		$groupe = new groupe('', 'r', $joueur->get_id(), 'groupe_'.$joueur->get_id());
@@ -31,7 +26,7 @@ if (empty($row['groupe']))
 		echo 'Groupe créé<br />';
 	}
 	else
-		echo 'Vous êtes trop déprimé pour créer un groupe, pour le moment vous ne voulez parler à personne.';
+		echo 'Vous êtes trop déprimé pour créer un groupe. Pour le moment vous ne voulez parler à personne.';
 }
 else
 {
@@ -42,37 +37,37 @@ else
 //Regarde si le joueur est leader du groupe
 if (isset($groupe_joueur) && $groupe_joueur->is_leader())
 {
-	//Si il y a moins de 4 invitations déjà, faire une invitation
+	//Si il y a moins de X invitations déjà, faire une invitation
 	if ($groupe->get_place_libre() > 0)
 	{
-		//Si il y est déjà groupé
+		//Si il est déjà groupé
 		if ($perso->get_groupe() == 0)
 		{
-			//Regarde si vous l'avez déjà invité
-			$W_requete = 'SELECT COUNT(inviteur), groupe FROM invitation WHERE inviteur = '.$joueur->get_id().' AND receveur = '.$perso->get_id().' GROUP BY groupe';
-			$W_query = $db->query($W_requete);
-			$W_row = $db->read_array($W_query);
-			if ($W_row['COUNT(inviteur)'] == 0)
+			//Vérifie qu'il n'est pas déprimmé
+			if($perso->is_debuff('debuff_groupe', true))
 			{
-				$W_requete = "INSERT INTO `invitation` ( `ID` , `inviteur` , `receveur` , `time`, `groupe` ) VALUES ('', '".$_SESSION['ID']."', '".$W_ID."', '".time()."','".$W_ID_groupe."')";
-				if ($db->query($W_requete))
-				{
-					echo 'Invitation bien envoyée!<br />';
-				}
-				else
-				{
-					echo 'Veuillez renvoyer l\'invitation.';
-				}
+				echo 'Ce joueur est déprimé, il ne vous voit même pas!';
 			}
 			else
 			{
-				echo 'Vous avez déjà envoyé une invitation à cette personne.';
+				//Regarde si vous l'avez déjà invité
+				$invitations = invitation::create(array('inviteur', 'receveur'), array($joueur->get_id(), $perso->get_id()));
+
+				if(count($invitations) == 0)
+				{
+					$invit = new invitation(-1, $joueur->get_id(), $perso->get_id(), time(), $joueur->get_groupe());
+					$invit->sauver();
+					if($invit->get_id() >= 0)
+						echo 'Invitation bien envoyée!<br />';
+					else
+						echo 'Veuillez renvoyer l\'invitation.';
+				}
+				else
+					echo 'Vous avez déjà envoyé une invitation à cette personne.';
 			}
 		}
 		else
-		{
 			echo 'Ce joueur est déjà groupé.<br />';
-		}
 	}
 	else
 	{

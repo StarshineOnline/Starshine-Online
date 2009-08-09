@@ -1,0 +1,1 @@
+ALTER TABLE `invitation` CHANGE `ID` `id` int(10);

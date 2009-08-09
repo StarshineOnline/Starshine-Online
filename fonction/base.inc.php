@@ -2077,16 +2077,17 @@ function taux_taxe($taxe, $diplo)
  * 
  * @return    Description formatée.  
  */
-function description($texte, $array)
+function description($texte, $objet)
 {
   // Remplacement des variables
-	while(eregi("%([a-z0-9]*)%", $texte, $regs))
+
+	while(preg_match("`%([a-z0-9]*)%`i",$texte, $regs))
 	{
-		$texte = str_replace('%'.$regs[1].'%', $array[$regs[1]], $texte);
+		$texte = str_replace('%'.$regs[1].'%', $objet->get_effet(), $texte);
 	}
 	// Evaluation
 	$valeur = '';
-	while(eregi("@(.*)@", $texte, $regs))
+	while(preg_match('`@(.*)@`', $texte, $regs))
 	{
 		$r = $regs[1];
 		eval("\$valeur = ".$r.";");

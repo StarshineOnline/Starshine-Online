@@ -7,7 +7,7 @@ if (file_exists('../root.php'))
  * Version : 1.2
  * Description : permet de générer une class associée a une table MySQL
  */
-$root = '../';
+//$root = '../';
 include_once(root.$root.'class/db.class.php');
 include_once(root.$root.'connect.php');
 
@@ -301,7 +301,7 @@ $this-><?php echo $champ_reference; ?> = $<?php echo $champ_reference; ?>;
 	}
 
 	//Inclusion des fonctions spécifiques
-	$filename= 'class/'.$table.'.class.php';
+	$filename= root.'class/'.$table.'.class.php';
 	$new_file = ob_get_contents();
 	if(file_exists($filename))
 	{

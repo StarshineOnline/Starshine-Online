@@ -1132,6 +1132,11 @@ class perso extends entite
 		return $this->groupe;
 	}
 
+	function is_groupe()
+	{
+		return !empty($this->groupe);
+	}
+
 	/**
 	* Retourne la valeur de l'attribut
 	* @access public
@@ -2436,19 +2441,31 @@ class perso extends entite
 		else return false;
 	}
 
-	function is_debuff($nom = '')
+	function is_debuff($nom = '', $type = false)
 	{
 		if(!isset($this->debuff)) $this->get_debuff();
+		$debuffe = false;
+		
 		if(is_array($this->debuff))
 		{
-			foreach($this->debuff as $dbuff)
+			$tmp = $this->debuff;
+			while(current($tmp) && !$debuffe)
 			{
-				if(strcmp($dbuff->get_nom(), $nom) == 0)
-					return true;
+				if($type)
+				{
+					if(strcmp(current($tmp)->get_type(), $nom) == 0)
+						$debuffe = true;
+				}
+				else
+					if(strcmp(current($tmp)->get_nom(), $nom) == 0)
+						$debuffe = true;
+				next($tmp);
 			}
-			return false;
 		}
-		else return false;
+		else
+			$debuffe = false;
+
+		return $debuffe;
 	}
 
 	function add_buff($nom, $effet)
@@ -2599,8 +2616,15 @@ class perso extends entite
 		return convert_in_pos($this->x, $this->y);
 	}
 
-	function get_force() { return $this->get_forcex(); }
-	function set_force($force) { $this->set_forcex($force); }
+	function get_force() 
+	{ 
+		return $this->get_forcex(); 
+	}
+	
+	function set_force($force) 
+	{ 
+		$this->set_forcex($force); 
+	}
 
 	function inventaire()
 	{

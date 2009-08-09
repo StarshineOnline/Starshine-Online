@@ -89,21 +89,21 @@ margin-top:-3px;}
 #buff_list				{ position:relative; text-align:center; width:210px;margin-left: 60px; }
 #debuff_list {position:relative; text-align:center; width:210px;margin-left: 60px;}
 .joueur_groupe_activitenoir, .joueur_groupe_activiterouge, .joueur_groupe_activitebleu, .joueur_groupe_activitevert { margin:0px 0px 0px 0px; float:left; width:11px; height:11px; margin:2px;}
-.joueur_groupe_activitenoir { background:transparent url('../../image/groupes/noir.png') center; }
-.joueur_groupe_activiterouge{ background:transparent url('../../image/groupes/rouge.png') center; }
-.joueur_groupe_activitebleu { background:transparent url('../../image/groupes/bleu.png') center; }
-.joueur_groupe_activitevert { background:transparent url('../../image/groupes/vert.png') center; }
+.joueur_groupe_activitenoir { background:transparent url('../image/groupes/noir.png') center; }
+.joueur_groupe_activiterouge{ background:transparent url('../image/groupes/rouge.png') center; }
+.joueur_groupe_activitebleu { background:transparent url('../image/groupes/bleu.png') center; }
+.joueur_groupe_activitevert { background:transparent url('../image/groupes/vert.png') center; }
 #buff_list ul			{ float:left; list-style-type:none; text-align:center; width:210px; }
 .buff					{ position:relative; float:left; height:19px; padding:0px; margin:0px 2px;cursor: pointer; }
-.buff_dispo				{ position:relative; float:left; height:19px; width:16px; padding:0px; margin:0px 2px; background:transparent url('../../image/buff/buff.png') top no-repeat; }
-.buff_nondispo			{ position:relative; float:left; height:19px; width:16px; padding:0px; margin:0px 2px; background:transparent url('../../image/buff/nobuff.png') top no-repeat; }
+.buff_dispo				{ position:relative; float:left; height:19px; width:16px; padding:0px; margin:0px 2px; background:transparent url('../image/buff/buff.png') top no-repeat; }
+.buff_nondispo			{ position:relative; float:left; height:19px; width:16px; padding:0px; margin:0px 2px; background:transparent url('../image/buff/nobuff.png') top no-repeat; }
 .buff_duree_restante 	{ position:absolute; bottom:0px; left:0px; }
-#joueur_groupe			{ width:300px; float:left;background:transparent url('../../image/fond_groupe.png') center; margin-left:30px; height:83px;margin-top:4px;}
+#joueur_groupe			{ width:300px; float:left;background:transparent url('../image/fond_groupe.png') center; margin-left:30px; height:83px;margin-top:4px;}
 #joueur_groupe_bouton {width:50px;float: left;}
 #joueur_groupe ul	{ width:250px; float:left;  }
-#mail_groupe			{ cursor:pointer; width:32px; height:32px; background:transparent url('../../image/message.png') center no-repeat; }
+#mail_groupe			{ cursor:pointer; width:32px; height:32px; background:transparent url('../image/message.png') center no-repeat; }
 
-#info_groupe			{ cursor:pointer; width:21px; height:21px; background:transparent url('../../image/interface/information.png') center;  }
+#info_groupe			{ cursor:pointer; width:21px; height:21px; background:transparent url('../image/interface/information.png') center;  }
 #info_groupe:hover		{ background-position:top; }
 #info_groupe:active		{ background-position:bottom; }
 #joueur_groupe li		{ cursor:pointer; font-size:8pt; border-bottom:1px dotted #8b94b0; padding:0px 0px 2px 0px; }

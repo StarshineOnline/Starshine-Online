@@ -25,10 +25,8 @@ if(array_key_exists('suppinvit', $_GET))
 	$requete = "DELETE FROM invitation WHERE ID = ".sSQL($_GET['suppinvit']);
 	$db->query($requete);
 }
-$groupe = recupgroupe($_GET['id'], $joueur->get_x().'-'.$joueur->get_y());
-$level_groupe = level_groupe($groupe);
-$num_joueur = groupe_trouve_joueur($joueur->get_id(), $groupe);
-$share_xp = ($groupe['membre'][$num_joueur]['share_xp'] / $groupe['share_xp']);
+$groupe = new groupe($_GET['id']);
+$num_joueur = $groupe->trouve_position_joueur($joueur->get_id());
 if($num_joueur !== false)
 {
 ?>
@@ -51,17 +49,15 @@ else
 	<legend class=".message_rouge">Vous n'appartenez pas à ce groupe!<?php echo $num_joueur;?></legend>
 <?php
 }
-if($groupe['id_leader'] ==  $_SESSION['ID'])
+if($groupe->get_id_leader() ==  $joueur->get_id())
 {
-	$requete = "SELECT * FROM invitation WHERE groupe = ".$groupe['id'];
-	$req = $db->query($requete);
-
+	$invitations = invitation::create('groupe', $groupe->get_id());
 	echo '<h3>Invitations envoyées</h3>';
 	echo '<ul>';
-	while($row = $db->read_assoc($req))
+	foreach($invitations as $invit)
 	{
-		$perso = recupperso($row['receveur']);
-		echo '<li>'.$perso['nom'].' - '.$Gtrad[$perso['race']].' '.$perso['classe'].' - Niv.'.$perso['level'].' <a href="infogroupe.php?id='.$groupe['id'].'&amp;suppinvit='.$row['ID'].'" onclick="return envoiInfo(this.href, \'information\');">X</a></li>';
+		$perso = new perso($invit->get_receveur());
+		echo '<li>'.$perso->get_nom().' - '.$Gtrad[$perso->get_race()].' '.$perso->get_classe().' - Niv.'.$perso->get_level().' <a href="infogroupe.php?id='.$groupe->get_id().'&amp;suppinvit='.$invit->get_id().'" onclick="return envoiInfo(this.href, \'information\');">X</a></li>';
 	}
 	?>
 	</ul>

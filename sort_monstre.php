@@ -29,7 +29,7 @@ if (isset($_GET['ID']))
 		$sortpa = round($row['pa'] * $joueur->get_facteur_magie());
 		$sortmp = round($row['mp'] * (1 - (($Trace[$joueur->get_race()]['affinite_'.$row['comp_assoc']] - 5) / 10)));
 		//Réduction du cout par concentration
-		if(array_key_exists('buff_concentration', $joueur->get_buff())) $sortmp = ceil($sortmp * (1 - ($joueur->get_buff()['buff_concentration']['effet'] / 100)));
+		if(array_key_exists('buff_concentration', $joueur->get_buff())) $sortmp = ceil($sortmp * (1 - ($joueur->get_buff('buff_concentration','effet') / 100)));
 		if($joueur->get_pa() < $sortpa)
 		{
 			echo 'Pas assez de PA';
@@ -96,14 +96,14 @@ if (isset($_GET['ID']))
 						$cible = recupmonstre($row_monstre['id']);
 						//Test d'esquive du sort
 						$protection = $cible['volonte'] * $cible->get_pm() / 3;
-						if(array_key_exists('bulle_sanctuaire', $cible->get_buff())) $protection *= $cible->get_buff()['bulle_sanctuaire']['effet'];
-						if(array_key_exists('bulle_dephasante', $cible->get_buff())) $protection *= $cible->get_buff()['bulle_dephasante']['effet'];
+						if(array_key_exists('bulle_sanctuaire', $cible->get_buff())) $protection *= $cible->get_buff('bulle_sanctuaire','effet');
+						if(array_key_exists('bulle_dephasante', $cible->get_buff())) $protection *= $cible->get_buff('bulle_dephasante','effet');
 						$attaque = rand(0, ($joueur->get_volonte() * $joueur[$row['comp_assoc']]));
 						$defense = rand(0, $protection);
 						if ($attaque > $defense)
 						{
 							$duree = $row['duree'];
-							if(array_key_exists('souffrance_extenuante', $joueur->get_buff())) $duree = $duree * $joueur->get_buff()['souffrance_extenuante']['effet'];
+							if(array_key_exists('souffrance_extenuante', $joueur->get_buff())) $duree = $duree * $joueur->get_buff('souffrance_extenuante','effet');
 							//Mis en place du debuff
 							if(lance_buff($row['type'], $cible->get_id(), $row['effet'], $row['effet2'], ($duree * 4), $row['nom'], description($row['description'], $row), 'monstre', 1, 0, 0))
 							{
@@ -194,7 +194,7 @@ else
 		$sortmp = round($row['mp'] * (1 - (($Trace[$joueur->get_race()]['affinite_'.$row['comp_assoc']] - 5) / 10)));
 		$sortpa = round($row['pa'] * $joueur->get_facteur_magie());
 		//Réduction du cout par concentration
-		if(array_key_exists('buff_concentration', $joueur->get_buff())) $sortmp = ceil($sortmp * (1 - ($joueur->get_buff()['buff_concentration']['effet'] / 100)));
+		if(array_key_exists('buff_concentration', $joueur->get_buff())) $sortmp = ceil($sortmp * (1 - ($joueur->get_buff('buff_concentration','effet') / 100)));
 		if($magie != $row['comp_assoc'])
 		{
 			$magie = $row['comp_assoc'];
