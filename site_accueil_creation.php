@@ -47,12 +47,12 @@ else
 		<div style="padding:5px">
 			Vous venez de créer un '.$Gtrad[$race].' '.$classe.' du nom de '.$pseudo.'<br />';
 			?>
-			N'hésitez pas à aller voir régulièrement les informations fournies dans votre forum de race, et de regarder le message de votre roi.<br />
+			N'hésitez pas à aller voir régulièrement les informations fournies dans votre forum de race, et de lire le message de votre roi.<br />
 			Bon jeu !<br />
 		</div>
 		<br />
 		<?php
-		
+		$joueur = new perso();
 		$caracteristiques = $Trace[$race];
 		if ($classe == 'combattant')
 		{
@@ -72,56 +72,64 @@ else
 			$sort_combat = '1';
 			$comp_combat = '';
 		}
-
-		$requete = "SELECT star_nouveau_joueur FROM royaume WHERE ID = ".$caracteristiques['numrace'];
-		$req_s = $db->query($requete);
-		$row_s = $db->read_row($req_s);
-
-		$nom = trim($pseudo);
-		$password = md5($mdp);
-		$exp = 0;
-		$level = 1;
-		$star = $row_s[0];
-		$vie = $caracteristiques['vie'];
-		$force = $caracteristiques['force'];
-		$dexterite = $caracteristiques['dexterite'];
-		$puissance = $caracteristiques['puissance'];
-		$volonte = $caracteristiques['volonte'];
-		$energie = $caracteristiques['energie'];
-
+		$royaume = new royaume($caracteristiques['numrace']);
+		
+		$joueur->set_nom(trim($pseudo));
+		$joueur->set_password(md5($mdp));
+		$joueur->set_race($race);
+		$joueur->set_level(1);
+		$joueur->set_star($royaume->get_star());
+		$joueur->set_vie($caracteristiques['vie']);
+		$joueur->set_force($caracteristiques['force']);
+		$joueur->set_dexterite($caracteristiques['dexterite']);
+		$joueur->set_puissance($caracteristiques['puissance']);
+		$joueur->set_volonte($caracteristiques['volonte']);
+		$joueur->set_energie($caracteristiques['energie']);		
+		$joueur->set_sort_jeu($sort_jeu);
+		$joueur->set_sort_combat($sort_combat);
+		$joueur->set_comp_combat($comp_combat);
+		
 		if($classe == 'combattant')
 		{
-			$value = 0;
-			$facteur_magie = 2;
+			$joueur->set_sort_vie(0);
+			$joueur->set_sort_element(0);
+			$joueur->set_sort_mort(0);
+			$joueur->set_facteur_magie(2);
 		}
 		else
 		{
-			$value = 1;
-			$facteur_magie = 1;
+			$joueur->set_sort_vie(1);
+			$joueur->set_sort_element(1);
+			$joueur->set_sort_mort(1);
+			$joueur->set_facteur_magie(1);
 		}
-		$sort_vie = $value;
-		$sort_element = $value;
-		$sort_mort = $value;
 		$requete = "SELECT id FROM classe WHERE nom = '".ucwords($classe)."'";
 		$req = $db->query($requete);
 		$row = $db->read_assoc($req);
-		$classe_id = $row['id'];
-		$hp = floor(sqrt($vie) * 70);
-		$hp_max = $hp;
-		$mp = $energie * $G_facteur_mana;
-		$mp_max = $mp;
-		$regen_hp = time();
-		$maj_mp = time();
-		$maj_hp = time();
-		$x = $Trace[$race]['spawn_x'];
-		$y = $Trace[$race]['spawn_y'];
-		$inventaire = 'O:10:"inventaire":12:{s:4:"cape";N;s:5:"mains";N;s:11:"main_droite";N;s:11:"main_gauche";N;s:5:"torse";N;s:4:"tete";N;s:8:"ceinture";N;s:6:"jambes";N;s:5:"pieds";N;s:3:"dos";N;s:5:"doigt";N;s:3:"cou";N;}';
-		$quete = '';
-		$time = time();
+		$joueur->set_classe($classe);
+		$joueur->set_classe_id($row['id']);
+		echo $joueur->get_classe_id(), '...';
+		$joueur->set_hp(floor(sqrt($joueur->get_vie()) * 70));
+		$joueur->set_hp_max($joueur->get_hp());
+		$joueur->set_mp($joueur->get_energie() * $G_facteur_mana);
+		$joueur->set_mp_max($joueur->get_mp());
+		$joueur->set_regen_hp(time());
+		$joueur->set_maj_mp(time());
+		$joueur->set_maj_hp(time());
+
+		$joueur->set_x($Trace[$race]['spawn_x']);
+		$joueur->set_y($Trace[$race]['spawn_y']);
+		$joueur->set_inventaire('O:10:"inventaire":12:{s:4:"cape";N;s:5:"mains";N;s:11:"main_droite";N;s:11:"main_gauche";N;s:5:"torse";N;s:4:"tete";N;s:8:"ceinture";N;s:6:"jambes";N;s:5:"pieds";N;s:3:"dos";N;s:5:"doigt";N;s:3:"cou";N;}');
+		$joueur->set_quete('');
+		$joueur->set_pa(180);
 		
-		$requete = "INSERT INTO perso(`ID`,`nom`,`password`,`exp`,`level`,`star`,`vie`,`forcex`,`dexterite`,`puissance`,`volonte`,`energie`,`race`,`classe`, `classe_id`, `inventaire`,`pa`,`dernieraction`, `x`,`y`,`hp`,`hp_max`,`mp`,`mp_max`,`regen_hp`,`maj_mp`,`maj_hp`,`sort_jeu`,`sort_combat`, `comp_combat`, `quete`, `sort_vie`, `sort_element`, `sort_mort`, `facteur_magie`)
-		VALUES ('','$nom','$password','$exp','$level','$star','$vie','$force','$dexterite','$puissance','$volonte','$energie','$race','$classe', $classe_id, '$inventaire','180','$time',$x,$y,'$hp','$hp_max','$mp','$mp_max','$regen_hp','$maj_mp','$maj_hp', '$sort_jeu', '$sort_combat', '$comp_combat', '$quete', '$sort_vie', '$sort_element', '$sort_mort', '$facteur_magie')";
-		if(!$db->query($requete))
+		$joueur->set_dernieraction(time());
+		//($id = 0, $mort = 0, $nom = '', $password = '', $exp = '', $honneur = '', $level = '', $rang_royaume = '', $vie = '', $forcex = '', $dexterite = '', $puissance = '', $volonte = '', $energie = '', $race = '', $classe = '', $classe_id = '', $inventaire = '', $inventaire_slot = '', $pa = '', $dernieraction = '', $action_a = '', $action_d = '', $sort_jeu = '', $sort_combat = '', $comp_combat = '', $comp_jeu = '', $star = '', $x = '', $y = '', $groupe = '', $hp = '', $hp_max = '', $mp = '', $mp_max = '', $melee = '', $distance = '', $esquive = '', $blocage = '', $incantation = '', $sort_vie = '', $sort_element = '', $sort_mort = '', $identification = '', $craft = '', $alchimie = '', $architecture = '', $forge = '', $survie = '', $facteur_magie = '', $facteur_sort_vie = '', $facteur_sort_mort = '', $facteur_sort_element = '', $regen_hp = '', $maj_hp = '', $maj_mp = '', $point_sso = '', $quete = '', $quete_fini = '', $dernier_connexion = '', $statut = '', $fin_ban = '', $frag = '', $crime = '', $amende = '', $teleport_roi = '', $cache_classe = '', $cache_stat = '', $cache_niveau = '', $beta = '')
+		/*$requete = "INSERT INTO perso(`ID`,`nom`,`password`,`exp`,`level`,`star`,`vie`,`forcex`,`dexterite`,`puissance`,`volonte`,`energie`,`race`,`classe`, `classe_id`, `inventaire`,`pa`,`dernieraction`, `x`,`y`,`hp`,`hp_max`,`mp`,`mp_max`,`regen_hp`,`maj_mp`,`maj_hp`,`sort_jeu`,`sort_combat`, `comp_combat`, `quete`, `sort_vie`, `sort_element`, `sort_mort`, `facteur_magie`)
+		VALUES ('','$nom','$password','$exp','$level','$star','$vie','$force','$dexterite','$puissance','$volonte','$energie','$race','$classe', $classe_id, '$inventaire','180','$time',$x,$y,'$hp','$hp_max','$mp','$mp_max','$regen_hp','$maj_mp','$maj_hp', '$sort_jeu', '$sort_combat', '$comp_combat', '$quete', '$sort_vie', '$sort_element', '$sort_mort', '$facteur_magie')";*/
+
+		$joueur->sauver();
+		if($joueur->get_id() == -1)
 		{
 			echo $requete.'<br />';
 		}
@@ -139,7 +147,7 @@ Pour vous aidez plusieurs outils sont a votre disposition :
 L\'aide : [url]http://wiki.starshine-online.com[/url]
 Le forum : [url]http://forum.starshine-online.com[/url]
 Votre forum de race : [url]http://forum.starshine-online.com/viewforum.php?id='.$Trace[$race]['forum_id'].'[/url]
-Les logins et mot de passe pour se connecter a ces forums sont les m�mes que ceux du jeu.
+Les logins et mot de passe pour se connecter a ces forums sont les mêmes que ceux du jeu.
 
 En espérant que votre périple se passera bien.
 Bon jeu !';

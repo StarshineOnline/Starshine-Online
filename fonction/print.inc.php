@@ -123,7 +123,7 @@ function affiche_perso_visu($joueur, $W_row, $position="")
 	$bonus = recup_bonus($W_ID);
 	// on envois dans infojoueur.php -> ID du joueur et La position de la case ou il se trouve
 	
-	$requete = "SELECT ".$perso->get_race()." FROM diplomatie WHERE race = '".$joueur->get_race()."'";
+	$requete = "SELECT '".$perso->get_race()."' FROM diplomatie WHERE race = '".$joueur->get_race()."'";
 	$req_diplo = $db->query($requete);
 	$row_diplo = $db->read_array($req_diplo);
 	

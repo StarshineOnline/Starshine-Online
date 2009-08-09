@@ -23,12 +23,12 @@ function transform_texte($texte)
 	//bbcode de merde
 	$texte = str_replace('[br]', '<br />', $texte);
 	$texte = nl2br($texte);
-	$texte = pregi_replace("\[b\]([^[]*)\[/b\]", '<strong>\\1</strong>', $texte);
-	$texte = pregi_replace("\[i\]([^[]*)\[/i\]", '<i>\\1</i>', $texte);
-	$texte = pregi_replace("\[url\]([^[]*)\[/url\]", '<a href="\\1">\\1</a>', $texte);
+	$texte = preg_replace("`\[b\]([^[]*)\[/b\]`i", '<strong>\\1</strong>', $texte);
+	$texte = preg_replace("`\[i\]([^[]*)\[/i\]`i", '<i>\\1</i>', $texte);
+	$texte = preg_replace("`\[url\]([^[]*)\[/url\]`i", '<a href="\\1">\\1</a>', $texte);
 	$texte = str_replace("[/color]", "</span>", $texte);
-	//Lien vers �change
-	$texte = eregi_replace("\[echange:([^[]*)\]", "<a href=\"echange.php?id_echange=\\1\" onclick=\"return envoiInfo(this.href, 'information')\">Echange ID : \\1</a>", $texte);
+	//Lien vers échange
+	$texte = preg_replace("`\[echange:([^[]*)\]`i", "<a href=\"echange.php?id_echange=\\1\" onclick=\"return envoiInfo(this.href, 'information')\">Echange ID : \\1</a>", $texte);
 	return $texte;
 }
 

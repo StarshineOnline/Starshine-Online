@@ -357,6 +357,11 @@ class groupe
 		return $W_row['id_joueur'];
 	}
 	
+	function get_leader()
+	{
+		return $this->get_id_leader();
+	}
+	
 	function trouve_position_joueur($id_perso)
 	{
 		if(!isset($this->membre)) $this->get_membre();
