@@ -3259,7 +3259,7 @@ function list_construction_visu($joueur, $distance) {
 		while ($row = $db->read_assoc($req)) {
 			$pos2 = convert_in_pos($row['x'], $row['y']);
 			$dst = calcul_distance_pytagore($pos1, $pos2);
-			if ($dst <= $distance)
+			if ($dst <= $distance && $dst != 0)
 			{
         $bat = recupbatiment($row['id'], 'construction');
         $bat['distance'] = $dst;
