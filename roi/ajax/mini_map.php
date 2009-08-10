@@ -1,19 +1,16 @@
 <?php
-$root = './../../';
+if (file_exists('../../root.php'))
+  include_once('../../root.php');
+
 //Inclusion du haut du document html
-include($root.'haut_ajax.php');
+include(root.'haut_ajax.php');
 
 $joueur = new perso($_SESSION['ID']);
 
-check_perso($joueur);
-
-//Véifie si le perso est mort
-verif_mort($joueur, 1);
-
 $R = get_royaume_info($joueur->get_race(), $Trace[$joueur->get_race()]['numrace']);
 
-$_SESSION['position'] = convert_in_pos($joueur->get_x(), $joueur->get_y());
-$W_distance = detection_distance($W_case,$_SESSION["position"]);
+
+$W_distance = detection_distance($W_case,convert_in_pos($joueur->get_x(), $joueur->get_y()));
 
 $W_coord = convert_in_coord($W_case);
 
