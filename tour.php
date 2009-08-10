@@ -42,11 +42,18 @@ if($W_distance == 0)
 	echo 'Distance de vue : '.$row_b['bonus4'].' cases.<br />';
 	echo '<h3>Joueurs en visu</h3>';
 	$joueurs = list_joueurs_visu($joueur, $row_b['bonus4']);
+	$constructions = list_construction_visu($joueur, $row_b['bonus4']);
 	echo '<div class="visu"><ul>';
 	foreach ($joueurs as $v) {
 		//echo '<li>'.$v['nom'].'</li>';
 		$position = " -- X: $v[x] - Y: $v[y] - distance : ".$v['distance'];
 		affiche_perso_visu($joueur, $v, $position);
+	}
+	echo '</ul><h3>Constructions en visu</h3><ul>';
+	foreach ($constructions as $v) {
+		//echo '<li>'.$v['nom'].'</li>';
+		$position = " -- X: $v[x] - Y: $v[y] - distance : ".$v['distance'];
+		affiche_construction_visu($joueur, $v, $position);
 	}
 	echo '</ul></div>';
 }

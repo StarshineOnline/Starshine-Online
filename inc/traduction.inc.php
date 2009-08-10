@@ -1,7 +1,7 @@
 <?php
 if (file_exists('../root.php'))
   include_once('../root.php');
-?><?php
+
 /**
  * @file traduction.inc.php
  * Gestion de la traduction. 

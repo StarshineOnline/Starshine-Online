@@ -181,7 +181,22 @@ function affiche_perso_visu($joueur, $W_row, $position="")
 	if ($statut_joueur != 'normal') echo ' ('.$statut_joueur.')';
 	echo '</span>';
 	
-	echo '</li>';	
+	echo '</li>';
+}
+
+function affiche_construction_visu($joueur, $W_row, $position="")
+{
+	echo '<li style="clear:both;">
+	';
+
+  echo '<img src="image/'.$W_row['image'].'.png" alt="'.$W_row['nom'].
+    '" title="'.$W_row['nom'].'" style="vertical-align: middle;height:21px;'.
+    'float:left;width:21px;" /><span style="font-weight : bold;float:left;'.
+    'width:325px;margin-left:15px;">'.$W_row['nom'].' ('.$W_row['royaume'].')'.
+    $position.'</span>';
+
+	echo '</li>
+';	
 }
 
 ?>
