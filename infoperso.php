@@ -171,22 +171,16 @@ if($joueur->get_groupe() != 0)
 }
 else
 {
-$W_requete = 'SELECT * FROM invitation WHERE receveur = '.$_SESSION['ID'];
-$W_req = $db->query($W_requete);
-$W_row = $db->read_array($W_req);
-$ID_invitation = $W_row['ID'];
-$ID_groupe = $W_row['groupe'];
+$invitation = invitation::create('receveur', $_SESSION['ID']);
+
 //Si il y a une invitation pour le joueur
-if ($db->num_rows > 0)
+if (count($invitation) > 0)
 {
-	$W_requete = "SELECT nom FROM perso WHERE ID = ".$W_row['inviteur'];
-	$W_req = $db->query($W_requete);
-	$W_row2 = $db->read_array($W_req);
-	
+	$perso = new perso($invitation[0]->get_inviteur());
 	echo '
 	<div id="joueur_groupe">
-	Vous avez reçu une invitation pour grouper de la part de '.$W_row2['nom'].'<br />
-	<a href="reponseinvitation.php?ID='.$ID_invitation.'&groupe='.$ID_groupe.'&reponse=oui" onclick="return envoiInfo(this.href, \'information\');">Accepter</a> / <a href="reponseinvitation.php?ID='.$ID_invitation.'&reponse=non" onclick="return envoiInfo(this.href, \'information\');">Refuser</a>
+	Vous avez reçu une invitation pour grouper de la part de '.$perso->get_nom().'<br />
+	<a href="reponseinvitation.php?id='.$invitation[0]->get_id().'&groupe='.$invitation[0]->get_groupe().'&reponse=oui" onclick="return envoiInfo(this.href, \'information\');">Accepter</a> / <a href="reponseinvitation.php?ID='.$invitation[0]->get_id().'&reponse=non" onclick="return envoiInfo(this.href, \'information\');">Refuser</a>
 	</div>';
 }
 }

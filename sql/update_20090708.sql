@@ -1,1 +1,1 @@
-ALTER TABLE `invitation` CHANGE `ID` `id` int(10);
+ALTER TABLE `invitation` CHANGE `id` `id` int(10) AUTO_INCREMENT;

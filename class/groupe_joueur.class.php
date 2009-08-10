@@ -38,7 +38,7 @@ class groupe_joueur
 	* @param enum('y','n') leader attribut
 	* @return none
 	*/
-	function __construct($id = 0, $id_joueur = 0, $id_groupe = 0, $leader = 0)
+	function __construct($id = -1, $id_joueur = 0, $id_groupe = 0, $leader = 'n')
 	{
 		global $db;
 		//Verification nombre et du type d'argument pour construire l'etat adequat.
