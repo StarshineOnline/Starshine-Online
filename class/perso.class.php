@@ -2731,35 +2731,35 @@ class perso extends entite
 		if($this->hp > 0)
 		{
 			// On augmente les HP max si nécessaire
-			$temps_maj = time() - $joueur->get_maj_hp(); // Temps écoulé depuis la dernière augmentation de HP.
+			$temps_maj = time() - $this->get_maj_hp(); // Temps écoulé depuis la dernière augmentation de HP.
 			$temps_hp = $G_temps_maj_hp;  // Temps entre deux augmentation de HP.
 
 			If ($temps_maj > $temps_hp && $temps_hp > 0) // Pour ne jamais diviser par 0...
 			{
 				$time = time();
 				$nb_maj = floor($temps_maj / $temps_hp);
-				$hp_gagne = $nb_maj * (sqrt($joueur->get_vie()) * 2.7);
-				$joueur->set_hp_max($joueur->get_hp_max() + $hp_gagne);
-				$joueur->set_maj_hp($joueur->get_maj_hp() + $nb_maj * $temps_hp);
+				$hp_gagne = $nb_maj * (sqrt($this->get_vie()) * 2.7);
+				$this->set_hp_max($this->get_hp_max() + $hp_gagne);
+				$this->set_maj_hp($this->get_maj_hp() + $nb_maj * $temps_hp);
 				$modif = true;
 			}
 			// On augmente les MP max si nécessaire
-			$temps_maj = time() - $joueur->get_maj_mp(); // Temps écoulé depuis la dernière augmentation de MP.
+			$temps_maj = time() - $this->get_maj_mp(); // Temps écoulé depuis la dernière augmentation de MP.
 			$temps_mp = $G_temps_maj_mp;  // Temps entre deux augmentation de MP.
 			if ($temps_maj > $temps_mp)
 			{
 				$time = time();
 				$nb_maj = floor($temps_maj / $temps_mp);
-				$mp_gagne = $nb_maj * (($joueur->get_energie() - 3) / 4);
-				$joueur->set_mp_max($joueur->get_mp_max() + $mp_gagne);
-				$joueur->set_maj_mp($joueur->get_maj_mp() + $nb_maj * $temps_mp);
+				$mp_gagne = $nb_maj * (($this->get_energie() - 3) / 4);
+				$this->set_mp_max($this->get_mp_max() + $mp_gagne);
+				$this->set_maj_mp($this->get_maj_mp() + $nb_maj * $temps_mp);
 				$modif = true;
 			}
 			// Régénération des HP et MP
-			$temps_regen = time() - $joueur->get_regen_hp(); // Temps écoulé depuis la dernière régénération.
+			$temps_regen = time() - $this->get_regen_hp(); // Temps écoulé depuis la dernière régénération.
 
 			// Gemme du troll
-			if (array_key_exists('regeneration', $joueur->get_enchantement())) {
+			if (array_key_exists('regeneration', $this->get_enchantement())) {
 				//$bonus_regen = $joueur->get_enchantement()['regeneration']['effet'] * 60;
 				if ($G_temps_regen_hp <= $bonus_regen) {
 					$bonus_regen = $G_temps_regen_hp - 1;
@@ -2773,28 +2773,28 @@ class perso extends entite
 				$regen_hp = $G_pourcent_regen_hp;
 				$regen_mp = $G_pourcent_regen_mp;
 				//Buff préparation du camp
-				if($joueur->is_buff('preparation_camp'))
+				if($this->is_buff('preparation_camp'))
 				{
 					// Le buff a-t-il été lancé après la dernière régénération ?
-					if($joueur->get_buff('preparation_camp', 'effet2') > $joueur->get_regen_hp())
+					if($this->get_buff('preparation_camp', 'effet2') > $this->get_regen_hp())
 					{
 						// On calcule le moment où doit avoir lieu la première régénération après le lancement du buff 
-						$regen_cherche = $joueur->get_regen_hp() + (($G_temps_regen_hp - $bonus_regen) * floor(($joueur->get_buff('preparation_camp', 'effet2') - $joueur->get_regen_hp()) / $G_temps_regen_hp));
+						$regen_cherche = $this->get_regen_hp() + (($G_temps_regen_hp - $bonus_regen) * floor(($this->get_buff('preparation_camp', 'effet2') - $this->get_regen_hp()) / $G_temps_regen_hp));
 					}
-					else $regen_cherche = $joueur->get_regen_hp();
+					else $regen_cherche = $this->get_regen_hp();
 					// Le buff s'est-il arrêté entre temps ?
-					if($joueur->get_buff('preparation_camp', 'fin') > time()) $fin = time();
-					else $fin = $joueur->get_buff('preparation_camp', 'fin');
+					if($this->get_buff('preparation_camp', 'fin') > time()) $fin = time();
+					else $fin = $this->get_buff('preparation_camp', 'fin');
 					// On calcule le nombre de régénération pour lesquels le buff doit être pris en compte 
 					$nb_regen_avec_buff = floor(($fin - $regen_cherche) / ($G_temps_regen_hp - $bonus_regen));
 					//bonus buff du camp
-					$bonus_camp = 1 + ((($nb_regen_avec_buff / $nb_regen) * $joueur->get_buff('preparation_camp', 'effet')) / 100);
+					$bonus_camp = 1 + ((($nb_regen_avec_buff / $nb_regen) * $this->get_buff('preparation_camp', 'effet')) / 100);
 					$regen_hp = $regen_hp * $bonus_camp;
 					$regen_mp = $regen_mp * $bonus_camp;
 				}
 				// Bonus raciaux
-				if($joueur->get_race() == 'troll') $regen_hp = $regen_hp * 1.2;
-				if($joueur->get_race() == 'elfehaut') $regen_mp = $regen_mp * 1.1;
+				if($this->get_race() == 'troll') $regen_hp = $regen_hp * 1.2;
+				if($this->get_race() == 'elfehaut') $regen_mp = $regen_mp * 1.1;
 				// Accessoires
 				//if($joueur['accessoire']['id'] != '0' AND $joueur['accessoire']['type'] == 'regen_hp') $bonus_accessoire = $joueur['accessoire']['effet']; else $bonus_accessoire = 0;
 				//if($joueur['accessoire']['id'] != '0' AND $joueur['accessoire']['type'] == 'regen_mp') $bonus_accessoire_mp = $joueur['accessoire']['effet']; else $bonus_accessoire_mp = 0;
@@ -2812,33 +2812,33 @@ class perso extends entite
 					}
 				}*/
 				// Calcul des HP et MP récupérés
-				$hp_gagne = $nb_regen * (floor($joueur->get_hp_max() * $regen_hp) + $bonus_accessoire);
-				$mp_gagne = $nb_regen * (floor($joueur->get_mp_max() * $regen_mp) + $bonus_accessoire_mp);
+				$hp_gagne = $nb_regen * (floor($this->get_hp_max() * $regen_hp) + $bonus_accessoire);
+				$mp_gagne = $nb_regen * (floor($this->get_mp_max() * $regen_mp) + $bonus_accessoire_mp);
 				//DéBuff lente agonie
-				if($joueur->is_debuff('lente_agonie'))
+				if($this->is_debuff('lente_agonie'))
 				{
 					// Le débuff a-t-il été lancé après la dernière régénération ?
-					if($joueur->get_debuff('lente_agonie', 'effet2') > $joueur->get_regen_hp())
+					if($this->get_debuff('lente_agonie', 'effet2') > $this->get_regen_hp())
 					{
-						$regen_cherche = $joueur->get_regen_hp() + (($G_temps_regen_hp - $bonus_regen) * floor(($joueur->get_debuff('lente_agonie', 'effet2') - $joueur->get_regen_hp()) / $G_temps_regen_hp));
+						$regen_cherche = $this->get_regen_hp() + (($G_temps_regen_hp - $bonus_regen) * floor(($this->get_debuff('lente_agonie', 'effet2') - $joueur->get_regen_hp()) / $G_temps_regen_hp));
 					}
-					else $regen_cherche = $joueur->get_regen_hp();
+					else $regen_cherche = $this->get_regen_hp();
 					// Le débuff s'est-il arrêté entre temps ?
-					if($joueur->get_debuff('lente_agonie', 'fin') > time()) $fin = time();
-					else $fin = $joueur->get_debuff('lente_agonie', 'fin');
+					if($this->get_debuff('lente_agonie', 'fin') > time()) $fin = time();
+					else $fin = $this->get_debuff('lente_agonie', 'fin');
 					// On calcule le nombre de régénération pour lesquels le débuff doit être pris en compte 
 					$nb_regen_avec_buff = floor(($fin - $regen_cherche) / ($G_temps_regen_hp - $bonus_regen));
 					// Calcul du malus
-					$malus_agonie = ((1 - ($nb_regen_avec_buff / $nb_regen)) - (($nb_regen_avec_buff / $nb_regen) * $joueur->get_debuff('lente_agonie', 'effet')));
+					$malus_agonie = ((1 - ($nb_regen_avec_buff / $nb_regen)) - (($nb_regen_avec_buff / $nb_regen) * $this->get_debuff('lente_agonie', 'effet')));
 					$hp_gagne = $hp_gagne * $malus_agonie;
 				}
 				//Maladie regen negative
-				if($joueur->is_debuff('regen_negative') AND !$joueur->is_debuff('lente_agonie'))
+				if($this->is_debuff('regen_negative') AND !$this->is_debuff('lente_agonie'))
 				{
 					$hp_gagne = $hp_gagne * -1;
 					$mp_gagne = $mp_gagne * -1;
 					// On diminue le nombre de régénération pendant lesquels la maladie est active ou supprime s'il n'y en  plus
-					if($joueur['debuff']['regen_negative']['effet'] > 1)
+					if($this->get_debuff('regen_negative', 'effet') > 1)
 					{
 						$requete = "UPDATE buff SET effet = ".($joueur['debuff']['regen_negative']['effet'] - 1)." WHERE id = ".$joueur['debuff']['regen_negative']['id'];
 					}
@@ -2849,12 +2849,12 @@ class perso extends entite
 					$db->query($requete);
 				}
 				//Maladie high regen
-				if($joueur->is_debuff('high_regen'))
+				if($this->is_debuff('high_regen'))
 				{
 					$hp_gagne = $hp_gagne * 3;
 					$mp_gagne = $mp_gagne * 3;
 					// On diminue le nombre de régénération pendant lesquels la maladie est active ou supprime s'il n'y en  plus
-					if($joueur['debuff']['high_regen']['effet'] > 1)
+					if($this['debuff']['high_regen']['effet'] > 1)
 					{
 						$requete = "UPDATE buff SET effet = ".($joueur['debuff']['high_regen']['effet'] - 1)." WHERE id = ".$joueur['debuff']['high_regen']['id'];
 					}
@@ -2865,36 +2865,36 @@ class perso extends entite
 					$db->query($requete);
 				}
 				//Maladie mort_regen
-				if($joueur->is_debuff('high_regen') AND $hp_gagne != 0 AND $mp_gagne != 0)
+				if($this->is_debuff('high_regen') AND $hp_gagne != 0 AND $mp_gagne != 0)
 				{
-					$hp_gagne = $joueur->get_hp();
+					$hp_gagne = $this->get_hp();
 				}
 				// Mise à jour des HP
-				$joueur->set_hp($joueur->get_hp() + $hp_gagne);
-				if ($joueur->get_hp() > $joueur->get_hp_max()) $joueur->set_hp(floor($joueur->get_hp_max()));
+				$this->set_hp($this->get_hp() + $hp_gagne);
+				if ($this->get_hp() > $this->get_hp_max()) $this->set_hp(floor($this->get_hp_max()));
 				// Mise à jour des MP
-				$joueur->set_mp($joueur->get_mp() + $mp_gagne);
-				if ($joueur->get_mp() > $joueur->get_mp_max()) $joueur->set_mp(floor($joueur->get_mp_max()));
-				$joueur->set_regen_hp($joueur->get_regen_hp() + ($nb_regen * ($G_temps_regen_hp - $bonus_regen)));
+				$this->set_mp($this->get_mp() + $mp_gagne);
+				if ($this->get_mp() > $this->get_mp_max()) $this->set_mp(floor($this->get_mp_max()));
+				$this->set_regen_hp($this->get_regen_hp() + ($nb_regen * ($G_temps_regen_hp - $bonus_regen)));
 			}
 			//Calcul des PA du joueur
 			$time = time();
 			$temps_pa = $G_temps_PA;
 			// Nombre de PA à ajouter 
-			$panew = floor(($time - $joueur->get_dernieraction()) / $temps_pa);
+			$panew = floor(($time - $this->get_dernieraction()) / $temps_pa);
 			if($panew < 0) $panew = 0;
-			$prochain = ($joueur->get_dernieraction() + $temps_pa) - $time;
+			$prochain = ($this->get_dernieraction() + $temps_pa) - $time;
 			if ($prochain < 0) $prochain = 0;
 			// Mise à jour des PA
-			$joueur->set_pa($joueur->get_pa() + $panew);
-			if ($joueur->get_pa() > $G_PA_max) $joueur->set_pa($G_PA_max);
+			$this->set_pa($this->get_pa() + $panew);
+			if ($this->get_pa() > $G_PA_max) $this->set_pa($G_PA_max);
 			// Calcul du moment où a eu lieu le dernier gain de PA
 			$j_d_a = (floor($time / $temps_pa)) * $temps_pa;
-			if($j_d_a > $joueur->get_dernieraction()) $joueur->set_dernieraction($j_d_a);
+			if($j_d_a > $this->get_dernieraction()) $this->set_dernieraction($j_d_a);
 
 			// Mise-à-jour du personnage dans la base de donnée
-			$joueur->sauver();
-		} // if($joueur->get_hp() > 0)
+			$this->sauver();
+		} // if($this->get_hp() > 0)
 		// On supprime tous les buffs périmés
 		$requete = "DELETE FROM buff WHERE fin <= ".time();
 		$req = $db->query($requete);
