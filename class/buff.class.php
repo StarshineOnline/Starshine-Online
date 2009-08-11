@@ -555,7 +555,16 @@ class buff
 		$this->champs_modif[] = 'supprimable';
 	}
 
-		//fonction
+	//fonction
+	
+	/**
+	 * Fonction vérifiant si un buff est supprimable.
+	 * @return booleen vrai s'il est supprimable faux sinon.
+	 */
+	function is_supprimable()
+	{
+		return $this->supprimable == 0;
+	}
 }
 
 ?>

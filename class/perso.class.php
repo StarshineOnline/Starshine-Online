@@ -2406,6 +2406,40 @@ class perso extends entite
 		$this->champs_modif[] = 'beta';
 	}
 //fonction
+
+	function get_comp_assoc($comp_assoc = '')
+	{
+		$get = 'get_'.$comp_assoc;
+		return $this->$get();
+	}
+
+	function set_comp_assoc($comp_assoc = '', $valeur)
+	{
+		$set = 'set_'.$comp_assoc;
+		return $this->$set($valeur);
+	}
+
+	function get_comp_perso($nom = '')
+	{
+		if(empty($nom))
+		{
+			$this->comp_perso = comp_perso::create(array('id_perso'), array($this->id));
+			return $this->comp_perso;
+		}
+		else
+		{
+			if(!isset($this->comp_perso)) $this->get_comp_perso();
+				return $this->comp_perso[$nom];
+		}
+	}
+
+	function is_comp_perso($nom = '')
+	{
+		if(!isset($this->comp_perso)) $this->get_comp_perso();
+		
+		return array_key_exists($this->comp_perso, $nom);
+	}
+
 	function get_buff($nom = false, $champ = false)
 	{
 		if(!$nom)
@@ -2434,13 +2468,51 @@ class perso extends entite
 		}
 	}
 
-	function is_buff($nom)
+	/**
+	 * Permet de savoir si le joueur est sous le buff nom
+	 * @param $nom le nom du buff
+	 * @param $type si le nom est le type du buff
+	 * @return true si le perso est sous le buff false sinon.
+ 	*/
+	function is_buff($nom = '', $type = false)
 	{
 		if(!isset($this->buff)) $this->get_buff();
-		if(is_array($this->buff)) return array_key_exists($nom, $this->buff);
-		else return false;
+		$buffe = false;
+		
+		if(is_array($this->buff))
+		{
+			if(!empty($nom))
+			{
+				$tmp = $this->buff;
+				while(current($tmp) && !$buffe)
+				{
+					if($type)
+					{
+						if(strcmp(current($tmp)->get_type(), $nom) == 0)
+							$buffe = true;
+					}
+					else if(strcmp(current($tmp)->get_nom(), $nom) == 0)
+					{
+						$buffe = true;
+					}
+					next($tmp);
+				}
+			}
+			else
+				$buffe = (count($this->buff) > 0);
+		}
+		else
+			$buffe = false;
+			
+		return $buffe;
 	}
-
+	
+	/**
+	 * Permet de savoir si le joueur est sous le debuff nom
+	 * @param $nom le nom du debuff
+	 * @param $type si le nom est le type du debuff
+	 * @return true si le perso est sous le debuff false sinon.
+ 	*/
 	function is_debuff($nom = '', $type = false)
 	{
 		if(!isset($this->debuff)) $this->get_debuff();
@@ -2451,15 +2523,20 @@ class perso extends entite
 			$tmp = $this->debuff;
 			while(current($tmp) && !$debuffe)
 			{
-				if($type)
+				if(!empty($nom))
 				{
-					if(strcmp(current($tmp)->get_type(), $nom) == 0)
+					if($type)
+					{
+						if(strcmp(current($tmp)->get_type(), $nom) == 0)
+							$debuffe = true;
+					}
+					else if(strcmp(current($tmp)->get_nom(), $nom) == 0)
 						$debuffe = true;
+				
+					next($tmp);
 				}
 				else
-					if(strcmp(current($tmp)->get_nom(), $nom) == 0)
-						$debuffe = true;
-				next($tmp);
+					$debuffe = (count($this->debuff) > 0);
 			}
 		}
 		else
@@ -2616,6 +2693,16 @@ class perso extends entite
 		return convert_in_pos($this->x, $this->y);
 	}
 
+	function get_distance_joueur($joueur)
+	{
+		return calcul_distance($this->get_pos(), $joueur->get_pos());
+	}
+
+	function get_distance_pytagore($joueur)
+	{
+		return calcul_distance_pytagore($this->get_pos(), $joueur->get_pos());	
+	}
+	
 	function get_force() 
 	{ 
 		return $this->get_forcex(); 

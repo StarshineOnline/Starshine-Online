@@ -8,7 +8,7 @@ if(array_key_exists('tri', $_GET)) $tris = $_GET['tri']; else $tris = 'favoris';
 ?>
 <hr>
 <?php
-if($joueur['groupe'] != 0) $groupe_joueur = recupgroupe($joueur['groupe'], $joueur['x'].'-'.$joueur['y']); else $groupe_joueur = false;
+if($joueur->get_groupe() != 0) $groupe_joueur = new groupe($joueur->get_groupe());
 if (isset($_GET['ID']))
 {
 	$requete = "SELECT * FROM sort_jeu WHERE id = ".sSQL($_GET['ID']);
@@ -25,13 +25,13 @@ if (isset($_GET['ID']))
 	//Coût en MP * 1.5 si sort de groupe
 	if($groupe) $sortmp = ceil($sortmp * 1.5);
 	$action = false;
-	if($groupe_joueur AND $groupe)
+	if(isset($groupe_joueur) AND $groupe)
 	{
 		$cibles = array();
-		foreach($groupe_joueur['membre'] as $membre)
+		foreach($groupe_joueur->get_membre_joueur() as $membre)
 		{
 			//On peut agir avec les membres du groupe si ils sont a 7 ou moins de distance
-			if($membre['distance'] <= 7) $cibles[] = $membre['id_joueur'];
+			if($joueur->get_distance_pytagore($membre) <= 7) $cibles[] = $membre->get_id();
 		}
 	}
 	else
@@ -111,23 +111,23 @@ if (isset($_GET['ID']))
 						echo $cible_s['nom'].' est mort.<br />';
 					}
 				}
-				$joueur->get_pa() = $joueur->get_pa() - $sortpa;
-				$joueur->get_mp() = $joueur->get_mp() - $sortmp;
+				$joueur->set_pa($joueur->get_pa() - $sortpa);
+				$joueur->set_mp($joueur->get_mp() - $sortmp);
 				if($action)
 				{
 					$difficulte_sort = diff_sort($row['difficulte'], $joueur, 'incantation', $sortpa_base, $sortmp_base);
 					$augmentation = augmentation_competence('incantation', $joueur, $difficulte_sort);
 					if ($augmentation[1] == 1)
 					{
-						$joueur->get_incantation() = $augmentation[0];
+						$joueur->set_incantation($augmentation[0]);
 						echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant à '.$joueur->get_incantation().' en incantation</span><br />';
 					}
 					$difficulte_sort = diff_sort($row['difficulte'], $joueur, 'sort_vie', $sortpa_base, $sortmp_base);
 					$augmentation = augmentation_competence('sort_vie', $joueur, $difficulte_sort);
 					if ($augmentation[1] == 1)
 					{
-						$joueur['sort_vie'] = $augmentation[0];
-						echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant à '.$joueur['sort_vie'].' en '.$Gtrad['sort_vie'].'</span><br />';
+						$joueur->set_sort_vie($augmentation[0]);
+						echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant à '.$joueur->get_sort_vie().' en '.$Gtrad['sort_vie'].'</span><br />';
 					}
 					sauve_sans_bonus_ignorables($joueur, array('mp', 'pa', 'incantation', 'sort_vie'));
 					//Insertion du soin de groupe dans le journal du lanceur
@@ -151,24 +151,24 @@ if (isset($_GET['ID']))
 					$sortmp = $row['effet2'];
 					if($sortmp > (floor($joueur['mp_max']) - $joueur->get_mp())) $sortmp = floor($joueur['mp_max']) - $joueur->get_mp();
 					echo 'Vous utilisez '.$sorthp.' HP pour convertir en '.$sortmp.' MP<br />';
-					$joueur->get_pa() = $joueur->get_pa() - $sortpa;
-					$joueur->get_mp() = $joueur->get_mp() + $sortmp;
-					$joueur->get_hp() = $joueur->get_hp() - $sorthp;
+					$joueur->set_pa($joueur->get_pa() - $sortpa);
+					$joueur->set_mp($joueur->get_mp() + $sortmp);
+					$joueur->set_hp($joueur->get_hp() - $sorthp);
 					if($sortmp > 0)
 					{
 						$difficulte_sort = diff_sort($row['difficulte'], $joueur, 'incantation', $sortpa_base, $sorthp);
 						$augmentation = augmentation_competence('incantation', $joueur, $difficulte_sort);
 						if ($augmentation[1] == 1)
 						{
-							$joueur->get_incantation() = $augmentation[0];
+							$joueur->set_incantation($augmentation[0]);
 							echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant à '.$joueur->get_incantation().' en incantation</span><br />';
 						}
 						$difficulte_sort = diff_sort($row['difficulte'], $joueur, 'sort_mort', $sortpa_base, $sorthp);
 						$augmentation = augmentation_competence('sort_mort', $joueur, $difficulte_sort);
 						if ($augmentation[1] == 1)
 						{
-							$joueur['sort_mort'] = $augmentation[0];
-							echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant à '.$joueur['sort_mort'].' en '.$Gtrad['sort_mort'].'</span><br />';
+							$joueur->set_sort_mort($augmentation[0]);
+							echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant à '.$joueur->get_sort_mort().' en '.$Gtrad['sort_mort'].'</span><br />';
 						}
 						sauve_sans_bonus_ignorables($joueur, array('mp', 'pa', 'incantation', 'sort_mort'));
 					}
@@ -182,23 +182,23 @@ if (isset($_GET['ID']))
 			case 'teleport' :
 				if($joueur->get_hp() > 0)
 				{
-					$joueur['x'] = $Trace[$joueur->get_race()]['spawn_x'];
-					$joueur['y'] = $Trace[$joueur->get_race()]['spawn_y'];
-					$joueur->get_mp() = $joueur->get_mp() - $sortmp;
-					$joueur->get_pa() = $joueur->get_pa() - $sortpa;
+					$joueur->set_x($Trace[$joueur->get_race()]['spawn_x']);
+					$joueur->set_y($Trace[$joueur->get_race()]['spawn_y']);
+					$joueur->set_mp($joueur->get_mp() - $sortmp);
+					$joueur->set_pa($joueur->get_pa() - $sortpa);
 					$difficulte_sort = diff_sort($row['difficulte'], $joueur, 'incantation', $sortpa_base, $sortmp_base);
 					$augmentation = augmentation_competence('incantation', $joueur, $difficulte_sort);
 					if ($augmentation[1] == 1)
 					{
-						$joueur->get_incantation() = $augmentation[0];
+						$joueur->set_incantation($augmentation[0]);
 						echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant à '.$joueur->get_incantation().' en incantation</span><br />';
 					}
 					$difficulte_sort = diff_sort($row['difficulte'], $joueur, 'sort_element', $sortpa_base, $sortmp_base);
 					$augmentation = augmentation_competence('sort_element', $joueur, $difficulte_sort);
 					if ($augmentation[1] == 1)
 					{
-						$joueur['sort_element'] = $augmentation[0];
-						echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant à '.$joueur['sort_element'].' en '.$Gtrad['sort_element'].'</span><br />';
+						$joueur->set_sort_element($augmentation[0]);
+						echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant à '.$joueur->get_sort_element().' en '.$Gtrad['sort_element'].'</span><br />';
 					}
 					sauve_sans_bonus_ignorables($joueur, array('mp', 'pa', 'incantation', 'sort_element', 'x', 'y'));
 					if($db->query($requete)) echo 'Vous vous êtes téléporté dans votre capitale
@@ -211,27 +211,29 @@ if (isset($_GET['ID']))
 			break;
 			case 'repos_sage' :
 				//On vérifie qu'il a pas déjà le debuff
-				if(!array_key_exists('repos_sage', $joueur['debuff']))
+				if(!$joueur->is_debuff('repos_sage', true))
 				{
 					//Mis en place du debuff
 					lance_buff($row['type'], $joueur->get_id(), 1, 0, $row['duree'], $row['nom'], 'Vous ne pouvez plus attaquer ni lancer le sort repos du sage', 'perso', 1, 0, 0, 0);
-					$joueur->get_pa() = $joueur->get_pa() - $sortpa;
-					$joueur->get_mp() = $joueur->get_mp() + $row['effet'];
-					if($joueur->get_mp() > $joueur['mp_max']) $joueur->get_mp() = $joueur['mp_max'];
+					$joueur->set_pa($joueur->get_pa() - $sortpa);
+					$joueur->set_mp($joueur->get_mp() + $row['effet']);
+					if($joueur->get_mp() > $joueur->get_mp_max()) $joueur->set_mp($joueur->get_mp_max());
 					//Augmentation des compétences
 					$difficulte_sort = diff_sort($row['difficulte'], $joueur, 'incantation', $sortpa_base, 1);
 					$augmentation = augmentation_competence('incantation', $joueur, $difficulte_sort);
 					if ($augmentation[1] == 1)
 					{
-						$joueur->get_incantation() = $augmentation[0];
+						$joueur->set_incantation($augmentation[0]);
 						echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant à '.$joueur->get_incantation().' en incantation</span><br />';
 					}
 					$difficulte_sort = diff_sort($row['difficulte'], $joueur, $row['comp_assoc'], $sortpa_base, 1);
 					$augmentation = augmentation_competence($row['comp_assoc'], $joueur, $difficulte_sort);
 					if ($augmentation[1] == 1)
 					{
-						$joueur[$row['comp_assoc']] = $augmentation[0];
-						echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant à '.$joueur[$row['comp_assoc']].' en '.$Gtrad[$row['comp_assoc']].'</span><br />';
+						$comp_assoc = "set_".$row['comp_assoc'];
+						$joueur->$comp_assoc($augmentation[0]);
+						$comp_assoc = "get_".$row['comp_assoc'];
+						echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant à '.$joueur->$comp_assoc().' en '.$Gtrad[$row['comp_assoc']].'</span><br />';
 					}
 					//Mis à jour du joueur
 					sauve_sans_bonus_ignorables($joueur, array('mp', 'pa', 'incantation', $row['comp_assoc']));
@@ -265,22 +267,24 @@ if (isset($_GET['ID']))
 				}
 				if($action)
 				{
-					$joueur->get_pa() = $joueur->get_pa() - $sortpa;
-					$joueur->get_mp() = $joueur->get_mp() - $sortmp;
+					$joueur->set_pa($joueur->get_pa() - $sortpa);
+					$joueur->set_mp($joueur->get_mp() - $sortmp);
 					//Augmentation des compétences
 					$difficulte_sort = diff_sort($row['difficulte'], $joueur, 'incantation', $sortpa_base, $sortmp_base);
 					$augmentation = augmentation_competence('incantation', $joueur, $difficulte_sort);
 					if ($augmentation[1] == 1)
 					{
-						$joueur->get_incantation() = $augmentation[0];
+						$joueur->set_incantation($augmentation[0]);
 						echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant à '.$joueur->get_incantation().' en incantation</span><br />';
 					}
 					$difficulte_sort = diff_sort($row['difficulte'], $joueur, $row['comp_assoc'], $sortpa_base, $sortmp_base);
 					$augmentation = augmentation_competence($row['comp_assoc'], $joueur, $difficulte_sort);
 					if ($augmentation[1] == 1)
 					{
-						$joueur[$row['comp_assoc']] = $augmentation[0];
-						echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant à '.$joueur[$row['comp_assoc']].' en '.$Gtrad[$row['comp_assoc']].'</span><br />';
+						$comp_assoc = 'set_'.$row['comp_assoc'];
+						$joueur->$comp_assoc($augmentation[0]);
+						$comp_assoc = 'get_'.$row['comp_assoc'];
+						echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant à '.$joueur->$comp_assoc().' en '.$Gtrad[$row['comp_assoc']].'</span><br />';
 					}
 					//Mis à jour du joueur
 					sauve_sans_bonus_ignorables($joueur, array('mp', 'pa', 'incantation', $row['comp_assoc']));
@@ -297,20 +301,21 @@ if (isset($_GET['ID']))
 			break;
 			case 'engloutissement' : case 'deluge' : case 'blizzard' : case 'orage_magnetique' :
 				//Récupération de tous les joueurs de la case
-				$requete = "SELECT ID FROM perso WHERE x = ".$joueur['x']." AND y = ".$joueur['y']." AND statut = 'actif'";
+				/*$requete = "SELECT ID FROM perso WHERE x = ".$joueur->get_x()." AND y = ".$joueur->get_y()." AND statut = 'actif'";
 				$req_j = $db->query($requete);
-				$cibles = array();
-				while($row_j = $db->read_row($req_j))
+				$cibles = array();*/
+				$cibles = perso::create(array('x', 'y'), array($joueur->get_x(), $joueur->get_y()), 'id ASC', false, 'statut = \'actif\'');
+				foreach($cibles as $cible)
 				{
-					$cible = recupperso($row_j[0]);
 					//Si c'est pas le joueur
 					if($cible->get_id() != $joueur->get_id())
 					{
 						//Test d'esquive du sort
-						$protecion = $cible['volonte'] * $cible->get_pm() / 3;
-						if(array_key_exists('bulle_sanctuaire', $cible->get_buff())) $protection *= $cible->get_buff('bulle_sanctuaire','effet');
-						if(array_key_exists('bulle_dephasante', $cible->get_buff())) $protection *= $cible->get_buff('bulle_dephasante','effet');
-						$attaque = rand(0, ($joueur->get_volonte() * $joueur[$row['comp_assoc']]));
+						$protecion = $cible->get_volonte() * $cible->get_pm() / 3;
+						if($cible->is_buff('bulle_sanctuaire', true)) $protection *= $cible->get_buff('bulle_sanctuaire','effet');
+						if($cible->is_buff('bulle_dephasante', true)) $protection *= $cible->get_buff('bulle_dephasante','effet');
+						$comp_assoc = 'get_'.$row['comp_assoc'];
+						$attaque = rand(0, ($joueur->get_volonte() * $joueur->$com_assoc()));
 						$defense = rand(0, $protection);
 						if ($attaque > $defense)
 						{
@@ -319,9 +324,9 @@ if (isset($_GET['ID']))
 							{
 								echo 'Le sort '.$row['nom'].' a été lancé avec succès sur '.$cible->get_nom().'<br />';
 								//Insertion du debuff dans les journaux des 2 joueurs
-								$requete = "INSERT INTO journal VALUES('', ".$joueur->get_id().", 'debuff', '".$joueur->get_nom()."', '".$cible->get_nom()."', NOW(), '".$row['nom']."', 0, ".$joueur['x'].", ".$joueur['y'].")";
+								$requete = "INSERT INTO journal VALUES('', ".$joueur->get_id().", 'debuff', '".$joueur->get_nom()."', '".$cible->get_nom()."', NOW(), '".$row['nom']."', 0, ".$joueur->get_x().", ".$joueur->get_y().")";
 								$db->query($requete);
-								$requete = "INSERT INTO journal VALUES('', ".$cible->get_id().", 'rdebuff', '".$cible->get_nom()."', '".$joueur->get_nom()."', NOW(), '".$row['nom']."', 0, ".$joueur['x'].", ".$joueur['y'].")";
+								$requete = "INSERT INTO journal VALUES('', ".$cible->get_id().", 'rdebuff', '".$cible->get_nom()."', '".$joueur->get_nom()."', NOW(), '".$row['nom']."', 0, ".$joueur->get_x().", ".$joueur->get_y().")";
 								$db->query($requete);
 							}
 							else
@@ -331,17 +336,16 @@ if (isset($_GET['ID']))
 							//Suppression de MP pour orage magnétique
 							if($row['type'] == 'orage_magnetique')
 							{
-								if(array_key_exists('orage_magnetique', $cible['debuff']))
+								if($cible->is_debuff('orage_magnetique'))
 								{
 									echo $cible->get_nom().' Est déjà sous cet effet<br />';
 								}
 								else
 								{
 									//Réduction des mp de la cible
-									$cible['mp'] -= $cible['mp_max'] * $row['effet'] / 100;
-									if($cible['mp'] < 0) $cible['mp'] = 0;
-									$requete = "UPDATE perso SET mp = ".$cible['mp']." WHERE ID = ".$cible->get_id();
-									$db->query($requete);
+									$cible->set_mp($cible->get_mp() - ($cible->get_mp_max() * $row['effet'] / 100));
+									if($cible->get_mp() < 0) $cible->set_mp(0);
+									$cible->sauver();
 								}
 							}
 						}
@@ -351,39 +355,38 @@ if (isset($_GET['ID']))
 						}
 					}
 				}
-				$joueur->get_pa() = $joueur->get_pa() - $sortpa;
-				$joueur->get_mp() = $joueur->get_mp() - $sortmp;
+				$joueur->set_pa($joueur->get_pa() - $sortpa);
+				$joueur->set_mp($joueur->get_mp() - $sortmp);
 				//Augmentation des compétences
 				$difficulte_sort = diff_sort($row['difficulte'], $joueur, 'incantation', $sortpa_base, $sortmp_base);
 				$augmentation = augmentation_competence('incantation', $joueur, $difficulte_sort);
 				if ($augmentation[1] == 1)
 				{
-					$joueur->get_incantation() = $augmentation[0];
+					$joueur->set_incantation($augmentation[0]);
 					echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant à '.$joueur->get_incantation().' en incantation</span><br />';
 				}
 				$difficulte_sort = diff_sort($row['difficulte'], $joueur, $row['comp_assoc'], $sortpa_base, $sortmp_base);
 				$augmentation = augmentation_competence($row['comp_assoc'], $joueur, $difficulte_sort);
 				if ($augmentation[1] == 1)
 				{
-					$joueur[$row['comp_assoc']] = $augmentation[0];
-					echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant à '.$joueur[$row['comp_assoc']].' en '.$Gtrad[$row['comp_assoc']].'</span><br />';
+					$joueur->set_comp_assoc($row['comp_assoc'], $augmentation[0]);
+					echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant à '.$joueur->get_comp_assoc($row['comp_assoc']).' en '.$Gtrad[$row['comp_assoc']].'</span><br />';
 				}
 				//Mis à jour du joueur
-				$requete = "UPDATE perso SET mp = '".$joueur->get_mp()."', pa = '".$joueur->get_pa()."', incantation = '".$joueur->get_incantation()."', ".$row['comp_assoc']." = '".$joueur[$row['comp_assoc']]."' WHERE ID = '".$_SESSION['ID']."'";
-				$req = $db->query($requete);
+				$joueur->sauver();
 			break;
 			case "guerison" :
 				$check = false;
 				//-- Suppression d'un debuff au hasard
 				foreach($cibles as $cible)
 				{
-					$cible_s = recupperso($cible);
+					$cible_s = new perso($cible);
 					$debuff_tab = array();
-					foreach($cible_s["debuff"] as $debuff)
+					foreach($cible_s->get_debuff() as $debuff)
 					{
-						if($debuff["supprimable"] == 1)
+						if($debuff->is_supprimable())
 						{
-							$debuff_tab[] = $debuff["id"];
+							$debuff_tab[] = $debuff->get_id();
 						};
 					}
 					if(count($debuff_tab) > 0)
@@ -394,52 +397,53 @@ if (isset($_GET['ID']))
 					}
 					else
 					{
-						echo "Impossible de lancer de lancer le sort. ".addslashes($cible_s['nom'])." n&apos;a aucun debuff.<br/>";
+						echo "Impossible de lancer de lancer le sort. ".addslashes($cible_s->get_nom())." n&apos;a aucun debuff.<br/>";
 					};
 				}
 				if($check)
 				{
-					$joueur->get_pa() = $joueur->get_pa() - $sortpa;
-					$joueur->get_mp() = $joueur->get_mp() - $sortmp;
-					//-- Mis à jour du joueur
-					$db->query("UPDATE perso SET mp='".$joueur->get_mp()."', pa='".$joueur->get_pa()."' WHERE ID = ".$joueur->get_id().";");
+					$joueur->set_pa($joueur->get_pa() - $sortpa);
+					$joueur->set_mp($joueur->get_mp() - $sortmp);
+
 					//-- Augmentation des compétences
 					$difficulte_sort = diff_sort($row['difficulte'], $joueur, 'incantation', $sortpa_base, $sortmp_base);
 					$augmentation = augmentation_competence('incantation', $joueur, $difficulte_sort);
 					if ($augmentation[1] == 1)
 					{
-						$joueur->get_incantation() = $augmentation[0];
+						$joueur->set_incantation($augmentation[0]);
 						echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant à '.$joueur->get_incantation().' en incantation</span><br />';
 					}
 					$difficulte_sort = diff_sort($row['difficulte'], $joueur, $row['comp_assoc'], $sortpa_base, $sortmp_base);
 					$augmentation = augmentation_competence($row['comp_assoc'], $joueur, $difficulte_sort);
 					if ($augmentation[1] == 1)
 					{
-						$joueur[$row['comp_assoc']] = $augmentation[0];
-						echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant à '.$joueur[$row['comp_assoc']].' en '.$Gtrad[$row['comp_assoc']].'</span><br />';
+						$joueur->set_comp_assoc($row['comp_assoc'], $augmentation[0]);
+						echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant à '.$joueur->get_comp_assoc($row['comp_assoc']).' en '.$Gtrad[$row['comp_assoc']].'</span><br />';
 					}
+					//-- Mis à jour du joueur
+					$joueur->sauver();
 				}
 
 				echo "<a href=\"\" onclick=\"return envoiInfo('sort.php?ID=".$_GET["ID"]."', 'information')\">Utilisez a nouveau cette compétence</a>";
 			break;
 			case "esprit_sacrifie" :	 //-- Esprit Sacrifié
 				//-- Suppression d'un debuff au hasard
-				if(count($joueur["buff"]) > 0)
+				if($joueur->is_buff())
 				{
 					$debuff_tab = array();
-					foreach($joueur["debuff"] as $debuff)
+					foreach($joueur->get_debuff() as $debuff)
 					{
-						if($debuff["supprimable"] == 1) { $debuff_tab[count($debuff_tab)] = $debuff["id"]; };
+						if($debuff->is_supprimable()) { $debuff_tab[count($debuff_tab)] = $debuff->get_id(); };
 					}
 					if(count($debuff_tab) > 0)
 					{	
-						$joueur->get_pa() = $joueur->get_pa() - $sortpa;
-						$joueur->get_mp() = $joueur->get_mp() - $sortmp;
+						$joueur->set_pa($joueur->get_pa() - $sortpa);
+						$joueur->set_mp($joueur->get_mp() - $sortmp);
 						
 						$buff_tab = array();
-						foreach($joueur["buff"] as $buff)
+						foreach($joueur->get_buff() as $buff)
 						{
-							$buff_tab[count($buff_tab)] = $buff["id"];
+							$buff_tab[count($buff_tab)] = $buff->get_id();
 						}
 						
 						$db->query("DELETE FROM buff WHERE id=".$buff_tab[rand(0, count($buff_tab)-1)].";");
@@ -449,19 +453,19 @@ if (isset($_GET['ID']))
 							$augmentation = augmentation_competence('incantation', $joueur, $difficulte_sort);
 							if ($augmentation[1] == 1)
 							{
-								$joueur->get_incantation() = $augmentation[0];
+								$joueur->set_incantation($augmentation[0]);
 								echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant à '.$joueur->get_incantation().' en incantation</span><br />';
 							}
 							$difficulte_sort = diff_sort($row['difficulte'], $joueur, $row['comp_assoc'], $sortpa_base, $sortmp_base);
 							$augmentation = augmentation_competence($row['comp_assoc'], $joueur, $difficulte_sort);
 							if ($augmentation[1] == 1)
 							{
-								$joueur[$row['comp_assoc']] = $augmentation[0];
-								echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant à '.$joueur[$row['comp_assoc']].' en '.$Gtrad[$row['comp_assoc']].'</span><br />';
+								$joueur->set_comp_assoc($row['comp_assoc'],$augmentation[0]);
+								echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant à '.$joueur->get_comp_assoc($row['comp_assoc']).' en '.$Gtrad[$row['comp_assoc']].'</span><br />';
 							}
 						}
 						//-- Mis à jour du joueur
-						$db->query("UPDATE perso SET mp='".$joueur->get_mp()."', pa='".$joueur->get_pa()."' WHERE ID='".$_SESSION["ID"]."';");
+						$joueur->sauver();
 					}
 					else { echo "Impossible de lancer de lancer le sort. Vous n&apos;a aucun debuff.<br/>"; };
 				}
@@ -525,7 +529,7 @@ else
 		$sortpa = round($row['pa'] * $joueur->get_facteur_magie());
 		$sortmp = round($row['mp'] * (1 - (($Trace[$joueur->get_race()]['affinite_'.$row['comp_assoc']] - 5) / 10)));
 		//Réduction du cout par concentration
-		if(array_key_exists('buff_concentration', $joueur->get_buff())) $sortmp = ceil($sortmp * (1 - ($joueur->get_buff('buff_concentration','effet') / 100)));
+		if($joueur->is_buff('buff_concentration')) $sortmp = ceil($sortmp * (1 - ($joueur->get_buff('buff_concentration','effet') / 100)));
 		if($magie != $row['comp_assoc'])
 		{
 			$magie = $row['comp_assoc'];
@@ -574,8 +578,7 @@ else
 			<td>';
 			if($row['cible'] == 2)
 			{
-				$keys = array_keys($joueur['competences']);
-				if(in_array('sort_groupe', $keys) || in_array('sort_groupe_'.$row['comp_assoc'], $keys)) echo ' <span style="'.$cursor.'text-decoration : none; color : '.$color.';" onclick="'.$href2.'">(groupe - '.ceil($sortmp * 1.5).' MP)</span>';
+				if($joueur->is_comp_perso('sort_groupe') || $joueur->is_comp_perso('sort_groupe_'.$row['comp_assoc'])) echo ' <span style="'.$cursor.'text-decoration : none; color : '.$color.';" onclick="'.$href2.'">(groupe - '.ceil($sortmp * 1.5).' MP)</span>';
 			}
 			if($_GET['tri'] == 'favoris') echo ' <td><a href="sort.php?action=delfavoris&amp;id='.$row['id'].'" onclick="return envoiInfo(this.href, \'information\')"><img src="image/croix_quitte.png" alt="Supprimer des favoris" title="Supprimer des favoris" /></a></td>';
 			else echo ' <td><a href="sort.php?action=favoris&amp;id='.$row['id'].'" onclick="return envoiInfo(this.href, \'information\')"><img src="image/favoris.png" alt="Favoris" title="Ajouter aux sorts favoris" /></a></td>';
