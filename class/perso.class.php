@@ -2440,7 +2440,7 @@ class perso extends entite
 		return array_key_exists($this->comp_perso, $nom);
 	}
 
-	function get_buff($nom = false, $champ = false)
+	function get_buff($nom = false, $champ = false, $type = false)
 	{
 		if(!$nom)
 		{
@@ -2450,7 +2450,17 @@ class perso extends entite
 		else
 		{
 			if(!isset($this->buff)) $this->get_buff();
-			return $this->buff[$nom][$champ];
+			if(!$type)
+				return $this->buff[$nom][$champ];
+			else
+				foreach($this->buff as $buff)
+				{
+					if($buff->get_type() == $nom)
+					{
+						$get = 'get_'.$champ;
+						return $buff->$get();
+					}
+				}
 		}
 	}
 

@@ -3,7 +3,6 @@ if (file_exists('root.php'))
   include_once('root.php');
 
 include ('livre.php');
-$tab_sort_jeu = explode(';', $joueur->get_sort_jeu());
 if(array_key_exists('tri', $_GET)) $tris = $_GET['tri']; else $tris = 'favoris';
 ?>
 <hr>
@@ -11,17 +10,15 @@ if(array_key_exists('tri', $_GET)) $tris = $_GET['tri']; else $tris = 'favoris';
 if($joueur->get_groupe() != 0) $groupe_joueur = new groupe($joueur->get_groupe());
 if (isset($_GET['ID']))
 {
-	$requete = "SELECT * FROM sort_jeu WHERE id = ".sSQL($_GET['ID']);
-	$req = $db->query($requete);
+	$sort = new sort_jeu($_GET['ID']);
 
-	$row = $db->read_array($req);
 	if(array_key_exists('groupe', $_GET) AND $_GET['groupe'] == 'yes') $groupe = true; else $groupe = false;
-	$sortpa_base = $row['pa'];
-	$sortmp_base = $row['mp'];
-	$sortpa = round($row['pa'] * $joueur->get_facteur_magie());
-	$sortmp = round($row['mp'] * (1 - (($Trace[$joueur->get_race()]['affinite_'.$row['comp_assoc']] - 5) / 10)));
+	$sortpa_base = $sort->get_pa();
+	$sortmp_base = $sort->get_mp();
+	$sortpa = round($sort->get_pa() * $joueur->get_facteur_magie());
+	$sortmp = round($sort->get_mp() * (1 - (($Trace[$joueur->get_race()]['affinite_'.$sort->get_comp_assoc()] - 5) / 10)));
 	//Réduction du cout par concentration
-	if(array_key_exists('buff_concentration', $joueur->get_buff())) $sortmp = ceil($sortmp * (1 - ($joueur->get_buff('buff_concentration','effet') / 100)));
+	if($joueur->is_buff('buff_concentration', true)) $sortmp = ceil($sortmp * (1 - ($joueur->get_buff('buff_concentration','effet') / 100)));
 	//Coût en MP * 1.5 si sort de groupe
 	if($groupe) $sortmp = ceil($sortmp * 1.5);
 	$action = false;
@@ -31,40 +28,32 @@ if (isset($_GET['ID']))
 		foreach($groupe_joueur->get_membre_joueur() as $membre)
 		{
 			//On peut agir avec les membres du groupe si ils sont a 7 ou moins de distance
-			if($joueur->get_distance_pytagore($membre) <= 7) $cibles[] = $membre->get_id();
+			if($joueur->get_distance_pytagore($membre) <= 7) $cibles[] = $membre;
 		}
 	}
 	else
-	{
-		$cibles = array($joueur->get_id());
-	}
+		$cibles = array($joueur);
+
 	if($joueur->get_pa() < $sortpa)
-	{
 		echo '<h5>Pas assez de PA</h5>';
-	}
 	elseif($joueur->get_mp() < $sortmp)
-	{
 		echo '<h5>Pas assez de mana</h5>';
-	}
 	elseif($joueur->get_hp() <= 0)
-	{
 		echo '<h5>Vous êtes mort</h5>';
-	}
 	else
 	{
-		switch($row['type'])
+		switch($sort->get_type())
 		{
 			case 'vie' :
 				$soin_total = 0;
 				foreach($cibles as $cible)
 				{
-					$cible_s = recupperso($cible);
-					if($cible_s['hp'] > 0)
+					if($cible->get_hp() > 0)
 					{
-						if($cible_s['hp'] < floor($cible_s['hp_max']))
+						if($cible->get_hp() < floor($cible->get_hp_max()))
 						{
 							$action = true;
-							$de_degat_sort = de_soin($joueur[$row['carac_assoc']], $row['effet']);
+							$de_degat_sort = de_soin($joueur->get_comp_assoc($sort->get_carac_assoc()), $sort->get_effet());
 							$i = 0;
 							$de_degat_sort2 = array();
 							while($i < count($de_degat_sort))
@@ -88,12 +77,11 @@ if (isset($_GET['ID']))
 								$soin += rand(1, $de_degat_sort[$i]);
 								$i++;
 							}
-							if($soin > (floor($cible_s['hp_max']) - $cible_s['hp'])) $soin = floor($cible_s['hp_max']) - $cible_s['hp'];
-							echo 'Vous soignez '.$cible_s['nom'].' de '.$soin.' HP<br />';
+							if($soin > (floor($cible->get_hp_max()) - $cible->get_hp())) $soin = floor($cible->get_hp_max()) - $cible->get_hp();
+							echo 'Vous soignez '.$cible->get_nom().' de '.$soin.' HP<br />';
 							$soin_total += $soin;
-							$cible_s['hp'] = $cible_s['hp'] + $soin;
-							$requete = "UPDATE perso SET hp = '".$cible_s['hp']."' WHERE ID = '".$cible_s['ID']."'";
-							$req = $db->query($requete);
+							$cible->set_hp($cible->get_hp() + $soin);
+							$cible->sauver();
 							if($groupe)
 							{
 								//Insertion du soin de groupe dans le journal de la cible
@@ -108,21 +96,21 @@ if (isset($_GET['ID']))
 					}
 					else
 					{
-						echo $cible_s['nom'].' est mort.<br />';
+						echo $cible->get_nom().' est mort.<br />';
 					}
 				}
 				$joueur->set_pa($joueur->get_pa() - $sortpa);
 				$joueur->set_mp($joueur->get_mp() - $sortmp);
 				if($action)
 				{
-					$difficulte_sort = diff_sort($row['difficulte'], $joueur, 'incantation', $sortpa_base, $sortmp_base);
+					$difficulte_sort = diff_sort($sort->get_difficulte(), $joueur, 'incantation', $sortpa_base, $sortmp_base);
 					$augmentation = augmentation_competence('incantation', $joueur, $difficulte_sort);
 					if ($augmentation[1] == 1)
 					{
 						$joueur->set_incantation($augmentation[0]);
 						echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant à '.$joueur->get_incantation().' en incantation</span><br />';
 					}
-					$difficulte_sort = diff_sort($row['difficulte'], $joueur, 'sort_vie', $sortpa_base, $sortmp_base);
+					$difficulte_sort = diff_sort($sort->get_difficulte(), $joueur, 'sort_vie', $sortpa_base, $sortmp_base);
 					$augmentation = augmentation_competence('sort_vie', $joueur, $difficulte_sort);
 					if ($augmentation[1] == 1)
 					{
@@ -246,23 +234,22 @@ if (isset($_GET['ID']))
 			case 'buff_critique' : case 'buff_evasion' : case 'buff_bouclier' : case 'buff_sacrifice' : case 'buff_inspiration' : case 'buff_force' : case 'buff_armure_glace' : case 'buff_barriere' : case 'buff_bouclier_sacre' : case 'buff_colere' : case 'buff_epine' : case 'buff_meditation' : case 'buff_rage_vampirique' : case 'buff_rapidite' : case 'buff_concentration' : case 'buff_furie_magique' : case 'buff_surpuissance' : case 'bouclier_feu' : case 'bouclier_terre' : case 'bouclier_eau' : case 'souffrance_extenuante' : case 'bulle_sanctuaire' : case 'bulle_dephasante' :
 				foreach($cibles as $cible)
 				{
-					$cible_s = recupperso($cible);
 					//Mis en place du buff
-					if(lance_buff($row['type'], $cible_s['ID'], $row['effet'], $row['effet2'], $row['duree'], $row['nom'], description($row['description'], $row), 'perso', 0, count($cible_s['buff']), $cible_s['rang_grade']))
+					if(lance_buff($sort->get_type(), $cible->get_id(), $sort->get_effet(), $sort->get_effet2(), $sort->get_duree(), $sort->get_nom(), description($sort->get_description(), $sort), 'perso', 0, count($cible->get_buff()), $cible->get_rang_royaume()))
 					{
 						$action = true;
-						echo $cible_s['nom'].' a bien reçu le buff<br />';
+						echo $cible->get_nom().' a bien reçu le buff<br />';
 						//Insertion du buff dans le journal de la cible
 						if($groupe)
 						{
-							$requete = "INSERT INTO journal VALUES('', ".$cible_s['ID'].", 'rgbuff', '".$cible_s['nom']."', '".$joueur->get_nom()."', NOW(), '".$row['nom']."', 0, 0, 0)";
+							$requete = "INSERT INTO journal VALUES('', ".$cible->get_id().", 'rgbuff', '".$cible->get_nom()."', '".$joueur->get_nom()."', NOW(), '".$sort->get_nom()."', 0, 0, 0)";
+							$db->query($requete);
 						}
-						$db->query($requete);
 					}
 					else
 					{
-						if($G_erreur == 'puissant') echo $cibles_s.' bénéficie d\'un buff plus puissant<br />';
-						else echo $cible_s['nom'].' a trop de buffs.<br />';
+						if($G_erreur == 'puissant') echo $cible->get_nom().' bénéficie d\'un buff plus puissant<br />';
+						else echo $cible->get_nom().' a trop de buffs.<br />';
 					}
 				}
 				if($action)
@@ -270,7 +257,7 @@ if (isset($_GET['ID']))
 					$joueur->set_pa($joueur->get_pa() - $sortpa);
 					$joueur->set_mp($joueur->get_mp() - $sortmp);
 					//Augmentation des compétences
-					$difficulte_sort = diff_sort($row['difficulte'], $joueur, 'incantation', $sortpa_base, $sortmp_base);
+					$difficulte_sort = diff_sort($sort->get_difficulte(), $joueur, 'incantation', $sortpa_base, $sortmp_base);
 					$augmentation = augmentation_competence('incantation', $joueur, $difficulte_sort);
 					if ($augmentation[1] == 1)
 					{
@@ -485,7 +472,8 @@ else
 		switch($_GET['action'])
 		{
 			case 'favoris' :
-				$requete = "INSERT INTO sort_favoris VALUES('', ".sSQL($_GET['id']).", ".$joueur->get_id().")";
+				$requete = "INSERT INTO sort_favoris(id_sort, id_perso) VALUES(".sSQL($_GET['id']).", ".$joueur->get_id().")";
+				echo $requete;
 				$db->query($requete);
 			break;
 			case 'delfavoris' :
@@ -512,43 +500,46 @@ else
 	{
 		echo '<a href="sort.php?tri='.$magie.'" onclick="return envoiInfo(this.href, \'information\');"><img src="image/icone_'.$magie.'.png" alt="'.$Gtrad[$magie].'" title="'.$Gtrad[$magie].'" /></a> ';
 	}
+	$where = '';
 	if(array_key_exists('tri', $_GET)) $where = 'AND comp_assoc = \''.$_GET['tri'].'\''; else $_GET['tri'] = 'favoris';
 	if($_GET['tri'] == 'favoris')
 	{
-		$requete = "SELECT * FROM sort_jeu WHERE type != 'rez' AND id IN (SELECT id_sort FROM sort_favoris WHERE id_perso = ".$joueur->get_id().") ORDER BY comp_assoc ASC, type ASC";
+		$where = ' AND id IN (SELECT id_sort FROM sort_favoris WHERE id_perso = \''.$joueur->get_id().'\')';
+		$requete = "SELECT * FROM sort WHERE type != 'rez' AND id IN (SELECT id_sort FROM sort_favoris WHERE id_perso = ".$joueur->get_id().") ORDER BY comp_assoc ASC, type ASC";
 	}
 	else
 	{
-		$requete = "SELECT * FROM sort_jeu WHERE type != 'rez' ".$where." ORDER BY comp_assoc ASC, type ASC";
+		$requete = "SELECT * FROM sort WHERE type != 'rez' ".$where." ORDER BY comp_assoc ASC, type ASC";
 	}
-	$req = $db->query($requete);
+	$test = false;
+	$sorts = sort_jeu::create('', '', 'comp_assoc ASC, type ASC', false, 'type != \'rez\''.$where);
+	//$req = $db->query($requete);
 	$magie = '';
 	echo '<table width="97%" class="information_case">';
-	while($row = $db->read_array($req))
+	foreach($sorts as $sort)
 	{	
-		$sortpa = round($row['pa'] * $joueur->get_facteur_magie());
-		$sortmp = round($row['mp'] * (1 - (($Trace[$joueur->get_race()]['affinite_'.$row['comp_assoc']] - 5) / 10)));
+		$sortpa = round($sort->get_pa() * $joueur->get_facteur_magie());
+		$sortmp = round($sort->get_mp() * (1 - (($Trace[$joueur->get_race()]['affinite_'.$sort->get_comp_assoc()] - 5) / 10)));
 		//Réduction du cout par concentration
-		if($joueur->is_buff('buff_concentration')) $sortmp = ceil($sortmp * (1 - ($joueur->get_buff('buff_concentration','effet') / 100)));
-		if($magie != $row['comp_assoc'])
+		if($joueur->is_buff('buff_concentration', true)) $sortmp = ceil($sortmp * (1 - ($joueur->get_buff('buff_concentration','effet') / 100)));
+		if($magie != $sort->get_comp_assoc())
 		{
-			$magie = $row['comp_assoc'];
+			$magie = $sort->get_comp_assoc();
 			$type = '';
 			echo '<tr><td colspan="6"><h3>'.$Gtrad[$magie].'</h3></td></tr>';
 		}
-
-		if(in_array($row['id'], $tab_sort_jeu))
+		if(in_array($sort->get_id(), explode(';',$joueur->get_sort_jeu())))
 		{
-			$image = image_sort($row['type']);
-			$incanta = $row['incantation'];
+			$image = image_sort($sort->get_type());
+			$incanta = $sort->get_incantation();
 			echo '
 			<div style="z-index: 3;">
 				<tr>';
 			//On ne peut uniquement faire que les sorts qui nous target ou target tous le groupe
-			if($row['cible'] == 1 OR $row['cible'] == 8 OR $row['cible'] == 2)
+			if($sort->get_cible() == 1 OR $sort->get_cible() == 8 OR $sort->get_cible() == 2)
 			{
-				$href = 'envoiInfo(\'sort.php?ID='.$row['id'].'\', \'information\')';
-				$href2 = 'envoiInfo(\'sort.php?ID='.$row['id'].'&amp;groupe=yes\', \'information\')';
+				$href = 'envoiInfo(\'sort.php?ID='.$sort->get_id().'\', \'information\')';
+				$href2 = 'envoiInfo(\'sort.php?ID='.$sort->get_id().'&amp;groupe=yes\', \'information\')';
 				$color = '#444';
 				$cursor = 'cursor : pointer;';
 			}
@@ -565,7 +556,7 @@ else
 				<?php echo $image; ?>
 			</td>
 			<td>
-				<span style="<?php echo $cursor; ?>; text-decoration : none; color : <?php echo $color; ?>;" onclick="<?php echo $href; ?>; return nd();" onmouseover="return <?php echo make_overlib(description($row['description'], $row).'<br/><span class=&quot;xmall&quot;>Incantation : '.$incanta.'</span>'); ?>" onmouseout="return nd();"> <strong><?php echo $row['nom']; ?></strong></span>
+				<span style="<?php echo $cursor; ?>; text-decoration : none; color : <?php echo $color; ?>;" onclick="<?php echo $href; ?>; return nd();" onmouseover="return <?php echo make_overlib(description($sort->get_description(), $sort).'<br/><span class=&quot;xmall&quot;>Incantation : '.$incanta.'</span>'); ?>" onmouseout="return nd();"> <strong><?php echo $sort->get_nom(); ?></strong></span>
 			</td>
 			<?php
 			echo '
@@ -578,10 +569,10 @@ else
 			<td>';
 			if($row['cible'] == 2)
 			{
-				if($joueur->is_comp_perso('sort_groupe') || $joueur->is_comp_perso('sort_groupe_'.$row['comp_assoc'])) echo ' <span style="'.$cursor.'text-decoration : none; color : '.$color.';" onclick="'.$href2.'">(groupe - '.ceil($sortmp * 1.5).' MP)</span>';
+				if($joueur->is_comp_perso('sort_groupe') || $joueur->is_comp_perso('sort_groupe_'.$sort->get_comp_assoc())) echo ' <span style="'.$cursor.'text-decoration : none; color : '.$color.';" onclick="'.$href2.'">(groupe - '.ceil($sortmp * 1.5).' MP)</span>';
 			}
-			if($_GET['tri'] == 'favoris') echo ' <td><a href="sort.php?action=delfavoris&amp;id='.$row['id'].'" onclick="return envoiInfo(this.href, \'information\')"><img src="image/croix_quitte.png" alt="Supprimer des favoris" title="Supprimer des favoris" /></a></td>';
-			else echo ' <td><a href="sort.php?action=favoris&amp;id='.$row['id'].'" onclick="return envoiInfo(this.href, \'information\')"><img src="image/favoris.png" alt="Favoris" title="Ajouter aux sorts favoris" /></a></td>';
+			if($_GET['tri'] == 'favoris') echo ' <td><a href="sort.php?action=delfavoris&amp;id='.$sort->get_id().'" onclick="return envoiInfo(this.href, \'information\')"><img src="image/interface/croix_quitte.png" alt="Supprimer des favoris" title="Supprimer des favoris" /></a></td>';
+			else echo ' <td><a href="sort.php?action=favoris&amp;id='.$sort->get_id().'" onclick="return envoiInfo(this.href, \'information\')"><img src="image/favoris.png" alt="Favoris" title="Ajouter aux sorts favoris" /></a></td>';
 			echo '</tr>';
 			?>
 			</div>

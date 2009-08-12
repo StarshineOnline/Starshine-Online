@@ -55,11 +55,11 @@ if (file_exists('root.php'))
 		{
 			foreach($joueur->get_buff() as $buff)
 			{//-- Listing des buffs
-				$overlib = str_replace("'", "\'", trim("<ul><li class='overlib_titres'>".$buff["nom"]."</li><li>".description($buff["description"], $buff)."</li><li>Durée ".transform_sec_temp($buff["fin"] - time())."</li><li class='overlib_infos'>(double-cliquer pour annuler ce buff)</li></ul>"));
+				$overlib = str_replace("'", "\'", trim("<ul><li class='overlib_titres'>".$buff->get_nom()."</li><li>".description($buff->get_description(), $buff)."</li><li>Durée ".transform_sec_temp($buff->get_fin() - time())."</li><li class='overlib_infos'>(double-cliquer pour annuler ce buff)</li></ul>"));
 				echo "<li class='buff'>
-					   <img src='image/buff/".$buff["type"]."_p.png' 
-							alt='".$buff["type"]."'
-							ondblclick=\"cancelBuff('".$buff["id"]."', '".$buff["nom"]."');\"
+					   <img src='image/buff/".$buff->get_type()."_p.png' 
+							alt='".$buff->get_type()."'
+							ondblclick=\"cancelBuff('".$buff->get_id()."', '".$buff->get_nom()."');\"
 							onmouseover=\"return overlib('$overlib', BGCLASS, 'overlib', BGCOLOR, '', FGCOLOR, '');\"
 							onmouseout=\"return nd();\"  />
 					   ".genere_image_buff_duree($buff)."
