@@ -2407,13 +2407,13 @@ class perso extends entite
 	}
 //fonction
 
-	function get_comp_assoc($comp_assoc = '')
+	function get_comp($comp_assoc = '')
 	{
 		$get = 'get_'.$comp_assoc;
 		return $this->$get();
 	}
 
-	function set_comp_assoc($comp_assoc = '', $valeur)
+	function set_comp($comp_assoc = '', $valeur)
 	{
 		$set = 'set_'.$comp_assoc;
 		return $this->$set($valeur);

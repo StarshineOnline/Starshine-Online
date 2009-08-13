@@ -1704,7 +1704,7 @@ function diff_sort($difficulte, $joueur, $type, $sortpa, $sortmp)
 	}
 	$difficulte = $difficulte / $facteur1;
 	$pamp = 7 / sqrt($sortpa * $sortmp);
-	$total = ($facteur2 * $pamp * sqrt($joueur->get_comp_assoc($type) / $difficulte));
+	$total = ($facteur2 * $pamp * sqrt($joueur->get_comp($type) / $difficulte));
 	//echo $total.'<br />';
 	return $total;
 }
@@ -1724,6 +1724,7 @@ function augmentation_competence($competence, $joueur, $difficulte)
 {
 	global $db, $Tmaxcomp, $G_apprentissage_rate, $debugs;
 	//Récupère les limitations de la classe
+	$perso = new perso($joueur->get_id());
 	$requete = "SELECT * FROM classe_permet WHERE id_classe = ".$joueur->get_id()." AND competence = '".$competence."'";
 	$req = $db->query($requete);
 	$row = $db->read_assoc($req);
@@ -1738,12 +1739,7 @@ function augmentation_competence($competence, $joueur, $difficulte)
 	echo '
 	<div id="debug'.$debugs.'" class="debug" style="color : #ff00c0;">
 	Maximum de la compétence '.$competence.' = '.$max.'<br />';
-	$val_competence = $joueur->get_comp_assoc($competence);
-
-	// Hou le beau hack ...
-	if (isset($joueur['bonus_ignorables']) &&
-			isset($joueur['bonus_ignorables'][$competence]))
-		$val_competence -= $joueur['bonus_ignorables'][$competence];
+	$val_competence = $perso->get_comp($competence);
 
 	echo 'Valeur actuelle de la compétence : '.$val_competence.'<br />
 	Difficulté : '.$difficulte.'<br />';
@@ -1754,8 +1750,8 @@ function augmentation_competence($competence, $joueur, $difficulte)
 		$reussite = ceil(10000 / $G_apprentissage_rate);
 		$numero = rand(1, $reussite);
 		// Valeur seuil
-		if($joueur->get_race() == 'humain' OR $joueur->get_race() == 'humainnoir') $apprentissage = 1.1; else $apprentissage = 1;
-		if($joueur->is_buff('apprenti_vent', true)) $apprentissage = $apprentissage * (1 + ($joueur->get_buff('apprenti_vent', 'effet', true) / 100));
+		if($perso->get_race() == 'humain' OR $perso->get_race() == 'humainnoir') $apprentissage = 1.1; else $apprentissage = 1;
+		if($perso->is_buff('apprenti_vent', true)) $apprentissage = $apprentissage * (1 + ($perso->get_buff('apprenti_vent', 'effet', true) / 100));
 		if($val_competence > 0) $chance = (10000 * $apprentissage) / (sqrt($val_competence) * $difficulte); else $chance = 0;
 		$R_retour[1] = false;
 		echo 'Chances : dé de : '.$reussite.' doit être inférieur à '.$chance.' <i>'.($chance * 100 / $reussite).'% de chance</i><br />';
@@ -1764,7 +1760,7 @@ function augmentation_competence($competence, $joueur, $difficulte)
 		if($numero < $chance)
 		{
 			//Augmentation de la compétence
-			$R_retour[0] = $joueur->get_comp_assoc($competence) + 1;
+			$R_retour[0] = $perso->get_comp($competence) + 1;
 
 			//Indique que la compétence a augmenté
 			$R_retour[1] = true;

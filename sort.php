@@ -53,7 +53,7 @@ if (isset($_GET['ID']))
 						if($cible->get_hp() < floor($cible->get_hp_max()))
 						{
 							$action = true;
-							$de_degat_sort = de_soin($joueur->get_comp_assoc($sort->get_carac_assoc()), $sort->get_effet());
+							$de_degat_sort = de_soin($joueur->get_comp($sort->get_carac_assoc()), $sort->get_effet());
 							$i = 0;
 							$de_degat_sort2 = array();
 							while($i < count($de_degat_sort))
@@ -85,7 +85,7 @@ if (isset($_GET['ID']))
 							if($groupe)
 							{
 								//Insertion du soin de groupe dans le journal de la cible
-								$requete = "INSERT INTO journal VALUES('', ".$cible_s['ID'].", 'rgsoin', '".$cible_s['nom']."', '".$joueur->get_nom()."', NOW(), ".$soin.", 0, ".$joueur['x'].", ".$joueur['y'].")";
+								$requete = "INSERT INTO journal VALUES('', ".$cible->get_id().", 'rgsoin', '".$cible->get_nom()."', '".$joueur->get_nom()."', NOW(), ".$soin.", 0, ".$joueur->get_x().", ".$joueur->get_y().")";
 								$db->query($requete);
 							}
 						}
@@ -117,15 +117,16 @@ if (isset($_GET['ID']))
 						$joueur->set_sort_vie($augmentation[0]);
 						echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant à '.$joueur->get_sort_vie().' en '.$Gtrad['sort_vie'].'</span><br />';
 					}
-					sauve_sans_bonus_ignorables($joueur, array('mp', 'pa', 'incantation', 'sort_vie'));
+					//sauve_sans_bonus_ignorables($joueur, array('mp', 'pa', 'incantation', 'sort_vie'));
+					$joueur->sauver();
 					//Insertion du soin de groupe dans le journal du lanceur
 					if($groupe)
 					{
-						$requete = "INSERT INTO journal VALUES('', ".$joueur->get_id().", 'gsoin', '".$joueur->get_nom()."', 'groupe', NOW(), ".$soin_total.", 0, ".$joueur['x'].", ".$joueur['y'].")";
+						$requete = "INSERT INTO journal(id_perso, action, actif, passif, time, valeur, valeur2, x, y) VALUES(".$joueur->get_id().", 'gsoin', '".$joueur->get_nom()."', 'groupe', NOW(), ".$soin_total.", 0, ".$joueur->get_x().", ".$joueur->get_y().")";
 					}
 					else
 					{
-						$requete = "INSERT INTO journal VALUES('', ".$joueur->get_id().", 'soin', '".$joueur->get_nom()."', '".$joueur->get_nom()."', NOW(), ".$soin_total.", 0, ".$joueur['x'].", ".$joueur['y'].")";
+						$requete = "INSERT INTO journal(id_perso, action, actif, passif, time, valeur, valeur2, x, y) VALUES(".$joueur->get_id().", 'soin', '".$joueur->get_nom()."', '".$joueur->get_nom()."', NOW(), ".$soin_total.", 0, ".$joueur->get_x().", ".$joueur->get_y().")";
 					}
 					$db->query($requete);
 				}
@@ -357,7 +358,7 @@ if (isset($_GET['ID']))
 				if ($augmentation[1] == 1)
 				{
 					$joueur->set_comp_assoc($row['comp_assoc'], $augmentation[0]);
-					echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant à '.$joueur->get_comp_assoc($row['comp_assoc']).' en '.$Gtrad[$row['comp_assoc']].'</span><br />';
+					echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant à '.$joueur->get_comp($row['comp_assoc']).' en '.$Gtrad[$row['comp_assoc']].'</span><br />';
 				}
 				//Mis à jour du joueur
 				$joueur->sauver();
@@ -405,7 +406,7 @@ if (isset($_GET['ID']))
 					if ($augmentation[1] == 1)
 					{
 						$joueur->set_comp_assoc($row['comp_assoc'], $augmentation[0]);
-						echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant à '.$joueur->get_comp_assoc($row['comp_assoc']).' en '.$Gtrad[$row['comp_assoc']].'</span><br />';
+						echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant à '.$joueur->get_comp($row['comp_assoc']).' en '.$Gtrad[$row['comp_assoc']].'</span><br />';
 					}
 					//-- Mis à jour du joueur
 					$joueur->sauver();
@@ -448,7 +449,7 @@ if (isset($_GET['ID']))
 							if ($augmentation[1] == 1)
 							{
 								$joueur->set_comp_assoc($row['comp_assoc'],$augmentation[0]);
-								echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant à '.$joueur->get_comp_assoc($row['comp_assoc']).' en '.$Gtrad[$row['comp_assoc']].'</span><br />';
+								echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant à '.$joueur->get_comp($row['comp_assoc']).' en '.$Gtrad[$row['comp_assoc']].'</span><br />';
 							}
 						}
 						//-- Mis à jour du joueur
@@ -569,7 +570,7 @@ else
 			<td>';
 			if($row['cible'] == 2)
 			{
-				if($joueur->is_comp_perso('sort_groupe') || $joueur->is_comp_perso('sort_groupe_'.$sort->get_comp_assoc())) echo ' <span style="'.$cursor.'text-decoration : none; color : '.$color.';" onclick="'.$href2.'">(groupe - '.ceil($sortmp * 1.5).' MP)</span>';
+				if($joueur->is_comp_perso('sort_groupe') || $joueur->is_comp_perso('sort_groupe_'.$sort->get_comp())) echo ' <span style="'.$cursor.'text-decoration : none; color : '.$color.';" onclick="'.$href2.'">(groupe - '.ceil($sortmp * 1.5).' MP)</span>';
 			}
 			if($_GET['tri'] == 'favoris') echo ' <td><a href="sort.php?action=delfavoris&amp;id='.$sort->get_id().'" onclick="return envoiInfo(this.href, \'information\')"><img src="image/interface/croix_quitte.png" alt="Supprimer des favoris" title="Supprimer des favoris" /></a></td>';
 			else echo ' <td><a href="sort.php?action=favoris&amp;id='.$sort->get_id().'" onclick="return envoiInfo(this.href, \'information\')"><img src="image/favoris.png" alt="Favoris" title="Ajouter aux sorts favoris" /></a></td>';

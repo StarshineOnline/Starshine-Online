@@ -3,5 +3,5 @@ CREATE TABLE `achievement_perso_variable` (
 `id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
 `id_perso` INT,
 `variable` VARCHAR(20),
-`compteur` INT
+`compteur` VARCHAR(50)
 );
