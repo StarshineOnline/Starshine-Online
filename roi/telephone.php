@@ -5,11 +5,11 @@ if (file_exists('../root.php'))
 require('haut_roi.php');
 if($joueur->get_rang_royaume() != 6)
 	echo '<p>Cheater</p>';
-else if(array_key_exists('message', $_POST))
+else if(array_key_exists('message', $_GET))
 {
 	$erreur = false;
-	$titre = addslashes($_POST['titre']);
-	$message = addslashes($_POST['message']);
+	$titre = addslashes($_GET['titre']);
+	$message = addslashes($_GET['message']);
 	if (empty($titre)){$titre = 'Sans titre';}
 	if($titre != '')
 	{
@@ -18,7 +18,7 @@ else if(array_key_exists('message', $_POST))
 			$id_groupe = 0;
 			$id_dest = 0;
 			$id_thread = 0;
-			$id_dest = $_POST['id_dest'];
+			$id_dest = $_GET['id_destinataire'];
 			$messagerie = new messagerie($joueur->get_id());
 			$messagerie->envoi_message($id_thread, $id_dest, $titre, $message, $id_groupe);
 			echo '<h6>Message transmis avec succés</h6>';
@@ -47,8 +47,8 @@ elseif(array_key_exists('id_dest', $_GET))
 		Message :<br />
 		<textarea name="message" id="message" cols="45" rows="12"></textarea><br />
 		<br />
-		<input type="hidden" name="id_dest" id="id_dest" value="<?php echo $_GET['id_dest']; ?>" />
-		<input type="button" onclick="envoiFormulaire('formMessage', 'conteneur');" name="btnSubmit" value="Envoyer" />
+		<input type="hidden" name="id_destinataire" id="id_destinataire" value="<?php echo $_GET['id_dest']; ?>" />
+		<input type="button" onclick="envoiInfo('telephone.php?message=' + $('message').value + '&amp;titre=' + $('titre').value + '&amp;id_destinataire=' + $('id_destinataire').value, 'message_confirm');$('popup').hide();" name="btnSubmit" value="Envoyer" />
 	</form>
 </fieldset>
 <?php
@@ -65,7 +65,7 @@ while($row = $db->read_assoc($req))
 	echo '
 	<tr>
 		<td>
-			<a href="telephone.php?id_dest='.$row['ID'].'" onclick="return envoiInfo(this.href, \'conteneur\')">'.$row['nom'].'</a>
+			<a onclick="affichePopUp(\'telephone.php\',\'id_dest='.$row['id'].'\');">'.$row['nom'].'</a>
 		</td>
 		<td>
 			 - Roi des '.$Gtrad[$row['race']].'

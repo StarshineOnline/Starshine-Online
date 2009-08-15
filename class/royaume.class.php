@@ -417,7 +417,7 @@ class royaume
 	*/
 	function get_diplo_time()
 	{
-		return $this->diplo_time;
+		return unserialize($this->diplo_time);
 	}
 
 	/**
@@ -780,6 +780,58 @@ class royaume
 		$this->food = $food;
 		$this->champs_modif[] = 'food';
 	}
+	/**
+	* Modifie la valeur de l'attribut
+	* @access public
+	*/
+	function get_propagande()
+	{
+		global $db;
+		$req = $db->query("SELECT propagande FROM motk WHERE id_royaume = ".$this->get_id()."");
+		$row = $db->read_object($req);
+		return $row->propagande;
+		
+	}
+
+	/**
+	* Modifie la valeur de l'attribut
+	message if the king
+	* @access public
+	*/
+	function get_motk()
+	{
+		global $db;
+		$req = $db->query("SELECT message FROM motk WHERE id_royaume = ".$this->get_id()."");
+		$row = $db->read_object($req);
+		return $row->message;
+	}
+
+
+	/**
+	* Modifie la valeur de l'attribut
+	* @access public
+	*/
+	function set_propagande($message)
+	{
+		global $db;
+		$message = addslashes($message);
+		$requete = "UPDATE motk SET propagande = '".$message."' WHERE id_royaume = ".$this->get_id();
+		if($req = $db->query($requete)){return true;}else{return false;}
+	}
+
+	/**
+	* Modifie la valeur de l'attribut
+	message if the king
+	* @access public
+	*/
+	function set_motk($message)
+	{
+		global $db;
+		$message = addslashes($message);
+		$requete = "UPDATE motk SET message = '".$message."' WHERE id_royaume = ".$this->get_id();
+		if($req = $db->query($requete)){return true;}else{return false;}
+	}
+
 
 	/**
 	* Modifie la valeur de l'attribut
