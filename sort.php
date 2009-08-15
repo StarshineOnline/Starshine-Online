@@ -265,25 +265,24 @@ if (isset($_GET['ID']))
 						$joueur->set_incantation($augmentation[0]);
 						echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant à '.$joueur->get_incantation().' en incantation</span><br />';
 					}
-					$difficulte_sort = diff_sort($row['difficulte'], $joueur, $row['comp_assoc'], $sortpa_base, $sortmp_base);
-					$augmentation = augmentation_competence($row['comp_assoc'], $joueur, $difficulte_sort);
+					$difficulte_sort = diff_sort($sort->get_difficulte(), $joueur, $sort->get_comp_assoc(), $sortpa_base, $sortmp_base);
+					$augmentation = augmentation_competence($sort->get_comp_assoc(), $joueur, $difficulte_sort);
 					if ($augmentation[1] == 1)
 					{
-						$comp_assoc = 'set_'.$row['comp_assoc'];
-						$joueur->$comp_assoc($augmentation[0]);
-						$comp_assoc = 'get_'.$row['comp_assoc'];
-						echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant à '.$joueur->$comp_assoc().' en '.$Gtrad[$row['comp_assoc']].'</span><br />';
+						$joueur->set_comp($sort->get_comp_assoc(), $augmentation[0]);
+						echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant à '.$joueur->$comp_assoc().' en '.$Gtrad[$sort->get_comp_assoc()].'</span><br />';
 					}
 					//Mis à jour du joueur
-					sauve_sans_bonus_ignorables($joueur, array('mp', 'pa', 'incantation', $row['comp_assoc']));
+					//sauve_sans_bonus_ignorables($joueur, array('mp', 'pa', 'incantation', $row['comp_assoc']));
+					$joueur->sauver();
 					if($groupe)
 					{
-						$requete = "INSERT INTO journal VALUES('', ".$joueur->get_id().", 'gbuff', '".$joueur->get_nom()."', 'groupe', NOW(), '".$row['nom']."', 0, 0, 0)";
+						$requete = "INSERT INTO journal VALUES('', ".$joueur->get_id().", 'gbuff', '".$joueur->get_nom()."', 'groupe', NOW(), '".$sort->get_nom()."', 0, 0, 0)";
 						$db->query($requete);
 					}
 					else
 					{
-						$requete = "INSERT INTO journal VALUES('', ".$joueur->get_id().", 'buff', '".$joueur->get_nom()."', '".$joueur->get_nom()."', NOW(), '".$row['nom']."', 0, ".$joueur['x'].", ".$joueur['y'].")";
+						$requete = "INSERT INTO journal VALUES('', ".$joueur->get_id().", 'buff', '".$joueur->get_nom()."', '".$joueur->get_nom()."', NOW(), '".$sort->get_nom()."', 0, ".$joueur->get_x().", ".$joueur->get_y().")";
 					}
 				}
 			break;

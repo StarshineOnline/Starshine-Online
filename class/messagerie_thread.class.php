@@ -132,10 +132,12 @@ class messagerie_thread
 	function get_message_total($id_joueur = '')
 	{
 		global $db;
-		if($id_joueur != '') $and_joueur = ' AND messagerie_etat.id_dest = '.$id_joueur;
+		if($id_joueur != '') $and_joueur = ' AND id_dest = '.$id_joueur;
 		else $and_joueur = '';
-		$requete = "SELECT messagerie_etat.id_message FROM messagerie_message LEFT JOIN messagerie_etat ON messagerie_message.id_message = messagerie_etat.id_message WHERE id_thread = ".$this->id_thread.$and_joueur." GROUP BY messagerie_etat.id_message";
-		$req = $db->query($requete);
+		$count = 0;
+		$requete = "SELECT id_message FROM messagerie_message WHERE id_thread = ".$this->id_thread;
+		//$requete = "SELECT messagerie_etat.id_message FROM messagerie_message LEFT JOIN messagerie_etat ON messagerie_message.id_message = messagerie_etat.id_message WHERE id_thread = ".$this->id_thread.$and_joueur." GROUP BY messagerie_etat.id_message";
+		$db->query($requete);
 		return $db->num_rows;
 	}
 

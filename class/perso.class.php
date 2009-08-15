@@ -2597,7 +2597,7 @@ class perso extends entite
 	function get_inventaire_partie($partie)
 	{
 		if(!isset($this->inventaire_array)) $this->inventaire_array = unserialize($this->get_inventaire());
-		return $this->inventaire_array[$partie];
+		return $this->inventaire_array->$partie;
 	}
 
 	function get_inventaire_slot_partie($partie = false)
@@ -2609,6 +2609,7 @@ class perso extends entite
 
 	function get_armure()
 	{
+		global $db;
 		if(!isset($this->armure))
 		{
 			$this->pp = 0;

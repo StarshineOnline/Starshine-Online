@@ -5,8 +5,7 @@ if (file_exists('root.php'))
 include_once(root.'inc/fp.php');
 $joueur = new perso($_SESSION['ID']);
 $cible = new perso($_GET['id_joueur']);
-$W_case = convert_in_pos($cible->get_x(), $cible->get_y);
-$W_distance = detection_distance($W_case, $_SESSION["position"]);
+$W_distance = detection_distance($cible->get_pos(), $joueur->get_pos());
 $tab_sort_jeu = explode(';', $joueur->get_sort_jeu());
 ?>
 <fieldset>
@@ -14,20 +13,18 @@ $tab_sort_jeu = explode(';', $joueur->get_sort_jeu());
 <?php
 if (isset($_GET['ID']))
 {
-	$requete = "SELECT * FROM sort_jeu WHERE id = ".sSQL($_GET['ID']);
-	$req = $db->query($requete);
-	$row = $db->read_array($req);
+	$sort = new sort_jeu($_GET['ID']);
 	
-	if($W_distance > $row['portee'])
+	if($W_distance > $sort->get_portee())
 	{
 		echo 'Vous êtes trop loin pour lancer ce sort !';
 	}
 	else
 	{
-		$sortpa_base = $row['pa'];
-		$sortmp_base = $row['mp'];
-		$sortpa = round($row['pa'] * $joueur->get_facteur_magie());
-		$sortmp = round($row['mp'] * (1 - (($Trace[$joueur->get_race()]['affinite_'.$row['comp_assoc']] - 5) / 10)));
+		$sortpa_base = $sort->get_pa();
+		$sortmp_base = $sort->get_mp();
+		$sortpa = round($sort->get_pa() * $joueur->get_facteur_magie());
+		$sortmp = round($sort->get_mp() * (1 - (($Trace[$joueur->get_race()]['affinite_'.$sort->get_comp_assoc()] - 5) / 10)));
 		//Réduction du cout par concentration
 		if(array_key_exists('buff_concentration', $joueur->get_buff())) $sortmp = ceil($sortmp * (1 - ($joueur->get_buff('buff_concentration','effet') / 100)));
 		if($joueur->get_pa() < $sortpa)

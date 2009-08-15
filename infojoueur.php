@@ -125,7 +125,7 @@ if(array_key_exists(23, $bonus) AND check_affiche_bonus($bonus[23], $joueur, $pe
 	echo('<tr><td></td><td><a href="personnage.php?id_perso='.$W_ID.'" onclick="return envoiInfo(this.href, \'information\')"> Voir les caractéristiques de ce joueur</a></td></tr>');
 }
 
-if( (($perso->get_groupe() == $joueur->get_groupe()) && $joueur->get_groupe() != 0) AND ($groupe->get_id_leader() == $joueur->get_id()))
+if( (($perso->get_groupe() == $joueur->get_groupe()) && $joueur->get_groupe() != 0) AND ($groupe->get_id_leader() == $joueur->get_id()) AND $joueur->get_id() != $perso->get_id())
 {
 	echo('<tr><td><img src="image/interface/exspuler-joueur_icone.png" alt="Expulser le joueur" title="Expulser le joueur" /></td><td><a style="cursor:pointer;" onclick="javascript:if(confirm(\'Voulez vous expulser ce joueur ?\')) envoiInfo(\'kickjoueur.php?ID='.$perso->get_id().'&groupe='.$groupe->get_id().'\', \'information\');">Expulser la personne du groupe</a></td></tr>');
 }
