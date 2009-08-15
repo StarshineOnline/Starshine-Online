@@ -16,6 +16,7 @@ class map
 	public $onclick;
 	public $quadrillage;
 	public $cache_monstre;
+	public $onclick_status;
 
 	function __construct($x, $y, $champ_vision = 3, $root = '', $donjon = false, $resolution = 'high')
 	{
@@ -219,9 +220,10 @@ class map
 						echo "	onmouseover=\"return overlib('$overlib', BGCLASS, 'overlib', BGCOLOR, '', FGCOLOR, '');\" 
 						   		onmouseout=\"return nd();\" ";
 					}
-
-					$onclick = str_replace('%%id%%', $MAPTAB[$x_map][$y_map]['id'], $this->onclick);
-
+					if($this->onclick_status == true)
+					{
+						$onclick = str_replace('%%id%%', $MAPTAB[$x_map][$y_map]['id'], $this->onclick);
+					}
 					echo " 		onclick=\"".$onclick."\" 
 						   >".$repere."</div>
 						  </li>";	

@@ -14,6 +14,7 @@ $map = new map($_POST['x'], $_POST['y'], 8, '../', false, 'low');
 $map->get_drapeau();
 $map->get_batiment();
 $map->quadrillage = true;
+$map->onclick_status = false;
 $map->affiche();
 
 ?>

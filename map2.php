@@ -19,6 +19,7 @@ $map->get_pnj();
 $map->get_joueur($objXY->race);
 $map->get_drapeau();
 $map->get_batiment();
+$map->onclick_status = true;
 $map->get_monstre($level);
 
 if(isset($_GET['cache_monstre'])) $map->change_cache_monstre();
