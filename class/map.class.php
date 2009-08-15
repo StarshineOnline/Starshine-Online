@@ -72,7 +72,7 @@ class map
 			$ymax = $this->ymax;
 		}
 		$total_cases = ($this->xmax - $this->xmin + 1) * ($this->ymax - $this->ymin + 1);
-		$RqMap = $db->query("SELECT * FROM map 
+		$RqMap = $db->query("SELECT ID,decor,royaume FROM map 
 						 WHERE ( (FLOOR(id / 1000) >= $ymin) AND (FLOOR(id / 1000) <= $ymax) ) 
 						 AND ( ((id - (FLOOR(id / 1000) * 1000) ) >= $xmin) AND ((id - (FLOOR(id / 1000) * 1000)) <= $xmax) ) 
 						 ORDER BY id;");
@@ -373,8 +373,16 @@ class map
 				$this->map[$objDrapeaux->x][$objDrapeaux->y]["Drapeaux"][$drapal]["fin_placement"] = $objDrapeaux->fin_placement;
 				$this->map[$objDrapeaux->x][$objDrapeaux->y]["Drapeaux"][$drapal]["image"] = $objDrapeaux->image;
 				{//-- v?rification que l'image du drapeau existe
-					$image = $this->root."image/drapeaux/";
-					$image2 = $this->root."image/batiment/";
+					if($this->resolution == 'low')
+					{					
+						$image = $this->root."image/drapeaux_low/";
+						$image2 = $this->root."image/batiment_low/";
+					}
+					else
+					{
+						$image = $this->root."image/drapeaux/";
+						$image2 = $this->root."image/batiment/";
+					}
 					$ratio_temps = ceil(3 * (time() - $objDrapeaux->debut_placement) / ($objDrapeaux->fin_placement - $objDrapeaux->debut_placement) );
 					
 					if(file_exists($image.$objDrapeaux->image."_".$objDrapeaux->royaume.".png")) 		{ $image = $image.$objDrapeaux->image."_".$objDrapeaux->royaume.".png"; }
@@ -410,7 +418,14 @@ class map
 				$this->map[$objBatiments->x][$objBatiments->y]["Batiments"][$batimat]["image"] = $objBatiments->image;
 
 				{//-- vérification que l'image du batiment existe
-					$image = $this->root."image/batiment/";
+					if($this->resolution == 'low')
+					{					
+						$image = $this->root."image/batiment_low/";
+					}
+					else
+					{
+						$image = $this->root."image/batiment/";
+					}
 					
 					if(file_exists($image.$objBatiments->image."_04.png")) 		{ $image .= $objBatiments->image."_04.png"; }
 					elseif(file_exists($image.$objBatiments->image."_04.gif")) 	{ $image .= $objBatiments->image."_04.gif"; }

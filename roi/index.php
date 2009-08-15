@@ -30,7 +30,7 @@ if($joueur->get_grade()->get_nom() == 'Roi' OR strtolower($joueur->get_nom()) ==
 	{
 		$check = true;
 	}
-	elseif($batiment = verif_batiment($joueur->get_x(), $joueur->get_y(), $R))
+	elseif($batiment = verif_batiment($joueur->get_x(), $joueur->get_y(), $royaume->get_id()))
 	{
 		if($batiment['type'] == 'fort' OR $batiment['type'] == 'bourg') $check = true;
 	}

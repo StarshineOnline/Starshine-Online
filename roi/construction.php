@@ -81,7 +81,7 @@ else if(!array_key_exists('direction', $_GET))
 				</span>
 				<span style='display:block;width:100px;float:left;'> X : ".$row['x']." - Y : ".$row['y']."</span>
 				<span style='display:block;width:30px;float:left;cursor:pointer;'>
-					<a href='construction.php?direction=suppr_construction&amp;id=".$row['id']."' onclick=\"if(confirm('Voulez vous supprimer ce ".$row['nom']." ?')) return envoiInfo(this.href, \'conteneur\'); else return false;\"><img src='../image/interface/croix_quitte.png'</a>
+					<a onclick=\"if(confirm('Voulez vous supprimer ce ".$row['nom']." ?')) {return envoiInfo('construction.php?direction=suppr_construction&amp;id=".$row['id']."', 'message_confirm');envoiInfo('construction.php','contenu_jeu');} else {return false;}\"><img src='../image/interface/croix_quitte.png'</a>
 				</span>
 			</li>";
 			if ($boutique_class == 't1'){$boutique_class = 't2';}else{$boutique_class = 't1';}									
@@ -108,14 +108,13 @@ elseif($_GET['direction'] == 'suppr_construction')
 	$requete = "DELETE FROM construction WHERE id = ".sSQL($_GET['id']);
 	if($db->query($requete))
 	{
-		echo 'La construction a été correctement supprimée.';
+		echo '<h6>La construction a été correctement supprimée.</h6>';
 		//On supprime un bourg au compteur
 		if($row[0] == 'bourg')
 		{
 			supprime_bourg($row[1]);
 		}
 	}
-	echo '<a href="construction.php" onclick="return envoiInfo(this.href, \'conteneur\');">Retour à la liste des drapeaux et constructions</a>';
 }
 elseif($_GET['direction'] == 'up_construction')
 {

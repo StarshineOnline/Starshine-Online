@@ -1,6 +1,6 @@
 <?php
-if (file_exists('../../root.php'))
-  include_once('../../root.php');
+if (file_exists('../root.php'))
+  include_once('../root.php');
 
 //Inclusion du haut du document html
 include(root.'haut_ajax.php');

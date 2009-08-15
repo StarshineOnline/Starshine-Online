@@ -7,7 +7,7 @@ require('class/map.class.php');
 	$MAP = Array();
 }
 {//-- Récupération de la position X, Y du joueur et de son level pour la detection des monstres.
-	$RqXY = $db->query("SELECT x, y, level, race FROM perso WHERE ID=".$_SESSION["ID"].";");
+	$RqXY = $db->query("SELECT x, y, level, race FROM perso WHERE ID=".$joueur->get_id().";");
 	$objXY = $db->read_object($RqXY);
 	$x = $objXY->x;
 	$y = $objXY->y;

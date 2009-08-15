@@ -114,7 +114,7 @@ function minimap(x,y)
 		$('loading').hide();	
 		$('affiche_minimap').innerHTML = text.responseText;
 	}
-	new Ajax.Request('./ajax/mini_map.php',{method:'post',parameters:'x='+x+'&y='+y,onLoading:Loadchargement,onComplete:Affiche_minimap});
+	new Ajax.Request('./mini_map.php',{method:'post',parameters:'x='+x+'&y='+y,onLoading:Loadchargement,onComplete:Affiche_minimap});
 }
 
 function texte_update(message,action)

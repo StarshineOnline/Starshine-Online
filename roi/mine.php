@@ -84,7 +84,7 @@ elseif(array_key_exists('case', $_GET))
 	if($bourg->mine_max > $bourg->mine_total)
 	{
 		//On vérifie que la case appartient bien au royaume
-		$requete = "SELECT ID, type FROM map WHERE ID = ".$_GET['case']." AND royaume = ".$R['ID'];
+		$requete = "SELECT ID, type FROM map WHERE ID = ".$_GET['case']." AND royaume = ".$royaume->get_id();
 		$db->query($requete);
 		if($db->num_rows == 0)
 		{
@@ -190,7 +190,7 @@ elseif(array_key_exists('add', $_GET))
 			$time = time() + ($row['temps_construction'] * $distance);
 
 			$placement = new placement();
-			$placement->id_royaume = $R['ID'];
+			$placement->id_royaume = $royaume->get_id();
 			$placement->id_batiment = $_GET['add'];
 			$placement->x = $_GET['x'];
 			$placement->y = $_GET['y'];
@@ -202,7 +202,7 @@ elseif(array_key_exists('add', $_GET))
 			$placement->sauver();
 			
 			//On enlève les stars au royaume
-			$requete = "UPDATE royaume SET star = star - ".$row['cout']." WHERE ID = ".$R['ID'];
+			$requete = "UPDATE royaume SET star = star - ".$row['cout']." WHERE ID = ".$royaume->get_id();
 			$db->query($requete);
 		}
 		else
@@ -227,7 +227,7 @@ elseif(array_key_exists('up', $_GET))
 		$mine->sauver();
 
 		//On enlève les stars au royaume
-		$requete = "UPDATE royaume SET star = star - ".$mine->evolution['cout']." WHERE ID = ".$R['ID'];
+		$requete = "UPDATE royaume SET star = star - ".$mine->evolution['cout']." WHERE ID = ".$royaume->get_id();
 		$db->query($requete);
 	}
 	else
@@ -238,11 +238,11 @@ elseif(array_key_exists('up', $_GET))
 elseif(array_key_exists('suppr', $_GET))
 {
 	$mine = new mine($_GET['mine']);
-	if($mine->id_royaume == $R['ID']) $mine->supprimer();
+	if($mine->id_royaume == $royaume->get_id()) $mine->supprimer();
 }
 else
 {
-	$requete = "SELECT id, royaume, id_batiment, x, y, hp, nom, type, rez, rechargement, image FROM construction WHERE type = 'bourg' AND royaume = ".$R['ID'];
+	$requete = "SELECT id, royaume, id_batiment, x, y, hp, nom, type, rez, rechargement, image FROM construction WHERE type = 'bourg' AND royaume = ".$royaume->get_id();
 	$req = $db->query($requete);
 	
 	?>

@@ -3083,10 +3083,10 @@ function verif_ville($x, $y)
  * @return    tableau associatif contenant le nm et le type du bâtiment s'il y en
  *            a un, false sinon.   
  */
-function verif_batiment($x, $y, $R)
+function verif_batiment($x, $y, $r)
 {
 	global $db;
-	$requete = "SELECT nom, type FROM construction WHERE x = ".$x." AND y = ".$y." AND royaume = ".$R['ID'];
+	$requete = "SELECT nom, type FROM construction WHERE x = ".$x." AND y = ".$y." AND royaume = ".$r;
 	$req = $db->query($requete);
 	if($db->num_rows > 0)
 	{
