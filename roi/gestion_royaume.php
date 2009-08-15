@@ -219,7 +219,7 @@ if($joueur->get_rang_royaume() != 6)
 	        $row3['diplo_time'] = serialize($row3['diplo_time']);
 	        $requete = "UPDATE royaume SET diplo_time = '".$row2['diplo_time']."' WHERE race = '".$row['royaume_demande']."'";
 	        $db->query($requete);
-	        $requete = "UPDATE royaume SET diplo_time = '".$row3['diplo_time']."' WHERE race = '".$R['race']."'";
+	        $requete = "UPDATE royaume SET diplo_time = '".$row3['diplo_time']."' WHERE race = '".$royaume->get_race()."'";
 	        $db->query($requete);
 	        echo 'Vous êtes maintenant en '.$Gtrad['diplo'.$diplo].' avec les '.$Gtrad[$row['royaume_demande']].'<br /><br />';
 	        //Envoi d'un message au roi
@@ -471,7 +471,7 @@ if($joueur->get_rang_royaume() != 6)
 	{
 		echo "<div id='criminel'>";
 	    //Sélection de tous les joueurs ayant des points de crime
-	    $requete = "SELECT * FROM perso WHERE crime > 0 AND race = '".$R['race']."' AND statut = 'actif' ORDER BY crime DESC";
+	    $requete = "SELECT * FROM perso WHERE crime > 0 AND race = '".$royaume->get_race()."' AND statut = 'actif' ORDER BY crime DESC";
 	    $req = $db->query($requete);
 	    ?>
 	    <fieldset>	    	    	    	    
@@ -628,12 +628,12 @@ if($joueur->get_rang_royaume() != 6)
 			echo "<li class='$boutique_class'>
 				<span class='boutique_nom'>".$row['nom']."</span>
 				<span class='boutique_prix' title='Prix'"; if ($R['star']<$row['prix']){echo " style='font-style: italic;color:#EFA4AE;'";} echo ">".$row['prix']."</span>
-				<span class='boutique_pierre' title='Cout en pierre'"; if ($R['pierre']<$row['pierre']){echo " style='font-style: italic;color:#BF0008;'";} echo ">".$row['pierre']."</span>
-				<span class='boutique_bois' title='Cout en bois'"; if ($R['bois']<$row['bois']){echo " style='font-style: italic;color:#BF0008;'";} echo ">".$row['bois']."</span>
-				<span class='boutique_eau' title='Cout en eau'"; if ($R['eau']<$row['eau']){echo " style='font-style: italic;color:#BF0008;'";} echo ">".$row['eau']."</span>
-				<span class='boutique_sable' title='Cout en sable'"; if ($R['sable']<$row['sable']){echo " style='font-style: italic;color:#BF0008;'";} echo ">".$row['sable']."</span>
-				<span class='boutique_charbon' title='Cout en charbon'"; if ($R['charbon']<$row['charbon']){echo " style='font-style: italic;color:#BF0008;'";} echo ">".$row['charbon']."</span>
-				<span class='boutique_essence' title='Cout en Essence magique'"; if ($R['essence']<$row['essence']){echo " style='font-style: italic;color:#BF0008;'";} echo ">".$row['essence']."</span>
+				<span class='boutique_pierre' title='Cout en pierre'"; if ($royaume->get_pierre()<$row['pierre']){echo " style='font-style: italic;color:#BF0008;'";} echo ">".$row['pierre']."</span>
+				<span class='boutique_bois' title='Cout en bois'"; if ($royaume->get_bois()<$row['bois']){echo " style='font-style: italic;color:#BF0008;'";} echo ">".$row['bois']."</span>
+				<span class='boutique_eau' title='Cout en eau'"; if ($royaume->get_eau()<$row['eau']){echo " style='font-style: italic;color:#BF0008;'";} echo ">".$row['eau']."</span>
+				<span class='boutique_sable' title='Cout en sable'"; if ($royaume->get_sable()<$row['sable']){echo " style='font-style: italic;color:#BF0008;'";} echo ">".$row['sable']."</span>
+				<span class='boutique_charbon' title='Cout en charbon'"; if ($royaume->get_charbon()<$row['charbon']){echo " style='font-style: italic;color:#BF0008;'";} echo ">".$row['charbon']."</span>
+				<span class='boutique_essence' title='Cout en Essence magique'"; if ($royaume->get_essence()<$row['essence']){echo " style='font-style: italic;color:#BF0008;'";} echo ">".$row['essence']."</span>
 				<span class='boutique_nombre'><input type='text' id='nbr$i' value='0' /></span>
 				<span class='boutique_nom'><a href='#' onclick=\"royaume_update('".$row['oid']."',$('nbr".$i."').value, 'update_objet_royaume')\">Acheter</a></span>
 				</li>";

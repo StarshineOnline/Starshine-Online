@@ -186,7 +186,7 @@ elseif(array_key_exists('add', $_GET))
 		//On vérifie si on a assez de stars
 		if($R['star'] >= $row['cout'])
 		{
-			$distance = calcul_distance(convert_in_pos($Trace[$R['race']]['spawn_x'], $Trace[$R['race']]['spawn_y']), convert_in_pos($_GET['x'], $_GET['y']));
+			$distance = calcul_distance(convert_in_pos($Trace[$royaume->get_race()]['spawn_x'], $Trace[$royaume->get_race()]['spawn_y']), convert_in_pos($_GET['x'], $_GET['y']));
 			$time = time() + ($row['temps_construction'] * $distance);
 
 			$placement = new placement();

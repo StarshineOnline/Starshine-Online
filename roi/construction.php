@@ -12,12 +12,10 @@ else if(!array_key_exists('direction', $_GET))
 
 {
 	echo "<div id='affiche_minimap' style='float:right;'>";
-	
 	echo "</div>";
 	echo "<div id='contruction'>";
 	
-	$requete = "SELECT *, placement.royaume AS r FROM placement LEFT JOIN map ON map.id = ((placement.y * 1000) + placement.x) WHERE placement.type = 'drapeau' AND placement.royaume != ".$R['ID']." AND map.royaume = ".$R['ID'];
-	$req = $db->query($requete);
+	$req = $db->query("SELECT *, placement.royaume AS r FROM placement LEFT JOIN map ON map.id = ((placement.y * 1000) + placement.x) WHERE placement.type = 'drapeau' AND placement.royaume != ".$royaume->get_id()." AND map.royaume = ".$royaume->get_id()."");
 	if ($db->num_rows($req)>0)
 	{
 		echo "<fieldset>";	
@@ -26,14 +24,14 @@ else if(!array_key_exists('direction', $_GET))
 		echo "<ul>";		
 		while($row = $db->read_assoc($req))
 		{			
-			$Royaume = get_royaume_info($joueur->get_race(), $row['r']);
+			$royaume_req = new royaume($row['r']);
 			$tmp = transform_sec_temp($row['fin_placement'] - time())." avant fin de construction";
 			echo "
 			<li class='$boutique_class' onclick=\"minimap(".$row['x'].",".$row['y'].")\" onmousemove=\"".make_overlib($tmp)."\" onmouseout='return nd();'>
 				<span style='display:block;width:40px;float:left;'>
-					<img src='../image/drapeaux/drapeau_".$R['ID'].".png' style='width:19px;' alt='Drapeau' />".$row['nom']."
+					<img src='../image/drapeaux/drapeau_".$royaume->get_id().".png' style='width:19px;' alt='Drapeau' />".$row['nom']."
 				</span>
-				<span style='display:block;width:100px;float:left;'>".$Gtrad[$Royaume['race']]."</span>
+				<span style='display:block;width:100px;float:left;'>".$Gtrad[$royaume_req->get_race()]."</span>
 				<span style='display:block;width:100px;float:left;'>X : ".$row['x']." - Y : ".$row['y']."</span>
 				<span style='display:block;width:30px;float:left;cursor:pointer;' onmousemove=\"".make_overlib($tmp)."\" onmouseout='return nd();'><img src='../image/icone/mobinfo.png' alt='Avoir les informations' title='Avoir les informations' /></span>
 			</li>";
@@ -42,8 +40,7 @@ else if(!array_key_exists('direction', $_GET))
 	echo "</ul>";
 	echo "</fieldset>";	
 	}
-	$requete = "SELECT *, map.royaume AS r FROM placement LEFT JOIN map ON map.id = ((placement.y * 1000) + placement.x) WHERE placement.type = 'drapeau' AND placement.royaume = ".$R['ID'];
-	$req = $db->query($requete);
+	$req = $db->query("SELECT *, map.royaume AS r FROM placement LEFT JOIN map ON map.id = ((placement.y * 1000) + placement.x) WHERE placement.type = 'drapeau' AND placement.royaume = ".$royaume->get_id()."");
 	if ($db->num_rows($req)>0)
 	{
 		echo "<fieldset>";	
@@ -52,13 +49,13 @@ else if(!array_key_exists('direction', $_GET))
 		$boutique_class = 't1';
 		while($row = $db->read_assoc($req))
 		{
-			$Royaume = get_royaume_info($joueur->get_race(), $row['r']);			
-			if (empty($Gtrad[$Royaume['race']])){$nom = 'Neutre';}else{$nom = $Gtrad[$Royaume['race']];}
+			$royaume_req = new royaume($row['r']);
+			if (empty($Gtrad[$royaume_req->get_race()])){$nom = 'Neutre';}else{$nom = $Gtrad[$royaume_req->get_race()];}
 			$tmp = transform_sec_temp($row['fin_placement'] - time())."avant fin de construction";
 			echo "
 			<li class='$boutique_class' onclick=\"minimap(".$row['x'].",".$row['y'].")\" onmousemove=\"".make_overlib($tmp)."\" onmouseout='return nd();'>
 				<span style='display:block;width:420px;float:left;'>
-					<img src='../image/drapeaux/drapeau_".$R['ID'].".png' style='width:19px;' alt='Drapeau' /> ".$row['nom']." chez les ".$nom."
+					<img src='../image/drapeaux/drapeau_".$royaume->get_id().".png' style='width:19px;' alt='Drapeau' /> ".$row['nom']." chez les ".$nom."
 				</span>
 				<span style='display:block;width:100px;float:left;'>X : ".$row['x']." - Y : ".$row['y']."</span>
 			</li>";			
@@ -67,15 +64,14 @@ else if(!array_key_exists('direction', $_GET))
 		echo "</ul>";
 		echo "</fieldset>";
 	}
-	$requete = "SELECT * FROM construction WHERE royaume = ".$R['ID'];
-	$req = $db->query($requete);
-	if ($db->num_rows($req)>0)
+	$requete = $db->query("SELECT * FROM construction WHERE royaume = ".$royaume->get_id()."");
+	if ($db->num_rows($requete)>0)
 	{
 		echo "<fieldset>";	
 		echo "<legend>Liste de vos batiments</legend>";	
 		echo "<ul>";
 		$boutique_class = 't1';		
-		while($row = $db->read_assoc($req))
+		while($row = $db->read_assoc($requete))
 		{
 			$tmp = "HP - ".$row['hp'];
 			echo "
@@ -138,7 +134,7 @@ elseif($_GET['direction'] == 'up_construction')
 		if($db->query($requete))
 		{
 			$bourg_id = $db->last_insert_id();
-			$requete = "UPDATE royaume SET star = star - ".$bat['cout']." WHERE ID = ".$R['ID'];
+			$requete = "UPDATE royaume SET star = star - ".$bat['cout']." WHERE ID = ".$royaume->get_id();
 			$db->query($requete);
 			echo 'La construction a été correctement upgradée.';
 		}

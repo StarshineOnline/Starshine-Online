@@ -531,6 +531,41 @@ class royaume
 	}
 
 	/**
+	* Retourne la valeur de l'attribut
+	* @access public
+	* @param none
+	* @return le nombre d'habitants
+	*/
+	function get_habitants()
+	{
+		global $db;
+		$requete = $db->query("SELECT COUNT(id) as count FROM perso WHERE race = '".$this->get_race()."' AND statut = 'actif'");
+		$row = $db->read_row($requete);
+		return $row[0];
+	}
+
+	/**
+	* Retourne la valeur de l'attribut
+	* @access public
+	* @param none
+	* @return le nombre d'habitants très actif
+	*/
+	function get_habitants_actif()
+	{
+		global $db;
+		$semaine = time() - (3600 * 24 * 7);
+		$requete = $db->query("select sum(level)/count(id) moy from perso WHERE statut = 'actif'");
+		$row = $db->read_row($requete);
+		$ref_ta = min(3, floor($row[0]));
+
+		$requete = $db->query("SELECT COUNT(*) as count FROM perso WHERE race = '".$this->get_race()."' AND level > $ref_ta AND dernier_connexion > ".$semaine." AND statut = 'actif'");
+		$row = $db->read_row($requete);
+		return $row[0];
+
+	}
+
+
+	/**
 	* Modifie la valeur de l'attribut
 	* @access public
 	* @param int(11) $id valeur de l'attribut

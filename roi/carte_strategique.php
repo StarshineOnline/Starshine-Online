@@ -10,7 +10,7 @@ if($joueur->get_rang_royaume() != 6)
 	echo '<p>Cheater</p>';
 else if(!array_key_exists('poscase', $_GET))
 {
-	$RqXY = $db->query("SELECT x, y FROM perso WHERE ID=".$_SESSION["ID"].";");
+	$RqXY = $db->query("SELECT x, y FROM perso WHERE ID=".$joueur->get_id().";");
 	$objXY = $db->read_object($RqXY);
 	$x = $objXY->x;
 	$y = $objXY->y;

@@ -15,47 +15,32 @@ check_perso($joueur);
 //Véifie si le perso est mort
 verif_mort($joueur, 1);
 
-$R = get_royaume_info($joueur->get_race(), $Trace[$joueur->get_race()]['numrace']);
+$royaume = new royaume($Trace[$joueur->get_race()]['numrace']);
 
 $_SESSION['position'] = convert_in_pos($joueur->get_x(), $joueur->get_y());
 $W_distance = detection_distance($W_case,$_SESSION["position"]);
 
 $W_coord = convert_in_coord($W_case);
 
-$W_requete = "SELECT COUNT(*) as count FROM perso WHERE race = '".$R['race']."' AND statut = 'actif'";
-$W_req = $db->query($W_requete);
-$W_row = $db->read_row($W_req);
-$h = $W_row[0];
-$semaine = time() - (3600 * 24 * 7);
-
-$W_requete = "select sum(level)/count(id) moy from perso WHERE statut = 'actif'";
-$W_req = $db->query($W_requete);
-$W_row = $db->read_row($W_req);
-$ref_ta = min(3, floor($W_row[0]));
-
-$W_requete = "SELECT COUNT(*) as count FROM perso WHERE race = '".$R['race']."' AND level > $ref_ta AND dernier_connexion > ".$semaine." AND statut = 'actif'";
-$W_req = $db->query($W_requete);
-$W_row = $db->read_row($W_req);
-$hta = $W_row[0];
-$food_necessaire = floor($food_necessaire * $h);
+$food_necessaire = floor($food_necessaire * $royaume->get_habitants());
 ?>
 <div style='width:300px;float:left;'>
 
-	<strong>Stars du royaume : </strong><?php echo $R['star']; ?><br />
-	<strong>Taux de taxe</strong> : <?php echo $R['taxe_base']; ?>% <br />
-	<strong>Habitants</strong> : <?php echo $h; ?> <br />
+	<strong>Stars du royaume : </strong><?php echo $royaume->get_star(); ?><br />
+	<strong>Taux de taxe</strong> : <?php echo $royaume->get_taxe(); ?>% <br />
+	<strong>Habitants</strong> : <?php echo $royaume->get_habitants(); ?> <br />
 </div>
 <div style='width:300px;float:left;'>
-	<strong>Habitants très actifs</strong> : <?php echo $hta; ?><br />
-	<strong>Nourriture</strong> : <?php echo $R['food']; ?><br />
+	<strong>Habitants très actifs</strong> : <?php echo $royaume->get_habitants_actif(); ?><br />
+	<strong>Nourriture</strong> : <?php echo $royaume->get_food(); ?><br />
 	<strong>Nourriture nécessaire</strong> : <?php echo $food_necessaire; ?>
 </div>
 
 <div style='width:270px;float:left;'>
-	<span class='bois' title='Bois'><?php echo $R['bois']; ?></span>
-	<span class='eau' title='Eau'><?php echo $R['eau']; ?></span>
-	<span class='essence' title='Essence Magique'><?php echo $R['essence']; ?></span>
-	<span class='pierre' title='Pierre'><?php echo $R['pierre']; ?></span>
-	<span class='sable' title='Sable'><?php echo $R['sable']; ?></span>
-	<span class='charbon' title='Charbon'><?php echo $R['charbon']; ?></span>
+	<span class='bois' title='Bois'><?php echo $royaume->get_bois(); ?></span>
+	<span class='eau' title='Eau'><?php echo $royaume->get_eau(); ?></span>
+	<span class='essence' title='Essence Magique'><?php echo $royaume->get_essence(); ?></span>
+	<span class='pierre' title='Pierre'><?php echo $royaume->get_pierre(); ?></span>
+	<span class='sable' title='Sable'><?php echo $royaume->get_sable(); ?></span>
+	<span class='charbon' title='Charbon'><?php echo $royaume->get_charbon(); ?></span>
 </div>

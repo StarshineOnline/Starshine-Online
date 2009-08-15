@@ -24,13 +24,13 @@ else if(array_key_exists('ress', $_GET))
 	include_once(root."../pChart/pData.class");
 	include_once(root."../pChart/pChart.class");
 	$date_semaine = date("Y-m-d", mktime(0, 0, 0, date("m") , date("d") - 7, date("Y")));
-	$requete = "SELECT ".$R['race'].", date FROM stat_jeu WHERE date > '".$date_semaine."' ORDER BY date ASC";
+	$requete = "SELECT ".$royaume->get_race().", date FROM stat_jeu WHERE date > '".$date_semaine."' ORDER BY date ASC";
 	$req = $db->query($requete);
 	$data = array();
 	$dates = array();
 	while($row = $db->read_assoc($req))
 	{
-		$stat_race = $row[$R['race']];
+		$stat_race = $row[$royaume->get_race()];
 		$explode = explode(';', $stat_race);
 		$dates[] = $row['date'];
 		$data[] = $explode[ressource($_GET['ress'])];
@@ -63,18 +63,18 @@ else if(array_key_exists('ress', $_GET))
 	// Finish the graph  
 	$graph->setFontProperties("../pChart/fonts/tahoma.ttf",12);
 	$graph->drawTitle(50,22,$_GET['ress'].' dans la semaine',50,50,50,585);
-	$graph->Render('image/'.$R['race'].'_'.$_GET['ress'].'.png');
+	$graph->Render('image/'.$royaume->get_race().'_'.$_GET['ress'].'.png');
 	?>
 	<a href="ressources.php" onclick="return envoiInfo(this.href, 'conteneur');">Retour au tableau des ressources</a>
-	<img src="image/<?php echo $R['race']; ?>_<?php echo $_GET['ress']; ?>.png" />
+	<img src="image/<?php echo $royaume->get_race(); ?>_<?php echo $_GET['ress']; ?>.png" />
 	<?php
 }
 else
 {
-	$requete = "SELECT ".$R['race']." FROM stat_jeu ORDER BY date DESC";
+	$requete = "SELECT ".$royaume->get_race()." FROM stat_jeu ORDER BY date DESC";
 	$req = $db->query($requete);
 	$row = $db->read_assoc($req);
-	$explode_stat = explode(';', $row[$R['race']]);
+	$explode_stat = explode(';', $row[$royaume->get_race()]);
 	
 	$hier['Pierre'] = $explode_stat[17];
 	$hier['Bois'] = $explode_stat[18];

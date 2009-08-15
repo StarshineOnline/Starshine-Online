@@ -17,7 +17,7 @@ if($joueur->get_grade()->get_nom() == 'Roi' OR strtolower($joueur->get_nom()) ==
 	if($row['nombre_joueur'] != 0) $food_necessaire = $row['food'] / $row['nombre_joueur'];
 	else $food_necessaire = 0;
 	
-	$R = get_royaume_info($joueur->get_race(), $Trace[$joueur->get_race()]['numrace']);
+	$royaume = new royaume($Trace[$joueur->get_race()]['numrace']);
 	
 	//Vérifie si le perso est mort
 	verif_mort($joueur, 1);

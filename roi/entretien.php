@@ -18,7 +18,7 @@ while($row = $db->read_row($req))
 	$habitants[$row[0]] = $row[1];
 }
 $min_habitants = @min($habitants);
-if($min_habitants > 0) $ratio = $habitants[$R['race']] / $min_habitants;
+if($min_habitants > 0) $ratio = $habitants[$royaume->get_race()] / $min_habitants;
 if($joueur->get_rang_royaume() != 6)
 	echo '<p>Cheater</p>';
 else if($ratio < 1) $ratio = 1;
@@ -91,10 +91,10 @@ echo '
 			$sources[24] = 'Mines';
 			if(date("G") > 4) $time = mktime(0, 0, 0, date("m") , date("d")-1, date("Y"));
 			else $time = mktime(0, 0, 0, date("m") , date("d")-2, date("Y"));
-			$requete = "SELECT ".$R['race']." FROM stat_jeu WHERE date = '".date("Y-m-d", $time)."'";
+			$requete = "SELECT ".$royaume->get_race()." FROM stat_jeu WHERE date = '".date("Y-m-d", $time)."'";
 			$req = $db->query($requete);
 			$row = $db->read_array($req);
-			$stats = explode(';', $row[$R['race']]);
+			$stats = explode(';', $row[$royaume->get_race()]);
 			$i = 0;
 			$total = 0;
 			$count = count($stats);
@@ -137,14 +137,14 @@ echo '
 <?php
 if(date("G") > 4) $time = mktime(0, 0, 0, date("m") , date("d")-1, date("Y"));
 else $time = mktime(0, 0, 0, date("m") , date("d")-2, date("Y"));
-$requete = "SELECT ".$R['race'].", date FROM stat_jeu WHERE EXTRACT(YEAR_MONTH FROM date) = '".date("Ym", time())."'";
+$requete = "SELECT ".$royaume->get_race().", date FROM stat_jeu WHERE EXTRACT(YEAR_MONTH FROM date) = '".date("Ym", time())."'";
 $req = $db->query($requete);
 $total_source = array();
 $total_total = 0;
 $jours = 0;
 while($row = $db->read_array($req))
 {
-	$stats = explode(';', $row[$R['race']]);
+	$stats = explode(';', $row[$royaume->get_race()]);
 	$i = 0;
 	$total = 0;
 	$count = count($stats);

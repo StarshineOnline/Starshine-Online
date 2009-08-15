@@ -74,8 +74,8 @@ else if(array_key_exists('new', $_GET))
 	<textarea name="description" id="description"></textarea><br />
 	<div id="choix_bataille">
 	<?php
-	$x = $Trace[$R['race']]['spawn_x'];
-	$y = $Trace[$R['race']]['spawn_y'];
+	$x = $Trace[$royaume->get_race()]['spawn_x'];
+	$y = $Trace[$royaume->get_race()]['spawn_y'];
 	$map = new map($x, $y, 12, '../', false, 'low');
 	$map->set_onclick("envoiInfo('gestion_bataille.php?valide_choix_bataille&amp;case=%%ID%%', 'valide_choix_bataille');");
 	$map->quadrillage = true;
@@ -99,9 +99,9 @@ else if(array_key_exists('new', $_GET))
 elseif(array_key_exists('move_map', $_GET))
 {
 	if(array_key_exists('x', $_GET)) $x = $_GET['x'];
-	else $x = $Trace[$R['race']]['spawn_x'];
+	else $x = $Trace[$royaume->get_race()]['spawn_x'];
 	if(array_key_exists('y', $_GET)) $y = $_GET['y'];
-	else $y = $Trace[$R['race']]['spawn_y'];
+	else $y = $Trace[$royaume->get_race()]['spawn_y'];
 	$map = new map($x, $y, 12, '../', false, 'low');
 	$map->set_onclick("envoiInfo('gestion_bataille.php?valide_choix_bataille&amp;case=%%ID%%', 'valide_choix_bataille');");
 	$map->quadrillage = true;
