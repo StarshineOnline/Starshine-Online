@@ -857,15 +857,64 @@ class royaume
 				$requete_diplo = "SELECT ".$this->race." FROM diplomatie WHERE race = '".$race_joueur."'";
 				$req_diplo = $db->query($requete_diplo);
 				$row_diplo = $db->read_row($req_diplo);
-				$Roy_row['taxe_base'] = $Roy_row['taxe'];
+				$this->diplo['taxe_base'] = $this->taxe;
 				
-				$Roy_row['taxe'] = taux_taxe($Roy_row['taxe'], $row_diplo[0]);
+				$this->diplo['taxe'] = taux_taxe($this->taxe, $row_diplo[0]);
 			
-				$Roy_row['diplo'] = $row_diplo[0];
+				$this->diplo['diplo'] = $row_diplo[0];
 				$this->diplo = $row_diplo[0];
 			}
 		}
 		return $this->diplo;
+	}
+
+	function get_diplos()
+	{
+		global $db;
+		if(!isset($this->diplos))
+		{
+			if($this->id != 0)
+			{
+				//Sélection de la diplomatie
+				$requete_diplo = "SELECT ".$this->race." FROM diplomatie";
+				$req_diplo = $db->query($requete_diplo);
+				$this->diplos = $db->read_assoc($req_diplo);
+			}
+			$this->diplos = false;
+		}
+		return $this->diplos;
+	}
+
+	function change_diplo($royaume, $changement = '+')
+	{
+		if($this->diplo_time[$royaume->get_nom()] > time()) return false;
+		else
+		{
+			$diplo = $this->get_diplo($royaume->get_nom());
+			if($changement == '+' AND $diplo >= 9)
+			{
+				if(verif_nb_diplo(array(10, 11)) > 2) return false;
+				elseif($diplo == 10 AND verif_nb_diplo(array(11)) > 0) return false;
+				return true;
+			}
+			elseif($changement == '-' AND $diplo <= 3)
+			{
+				if($diplo == 3 AND verif_nb_diplo(array(1, 2)) > 2) return false;
+				elseif($diplo == 2 AND verif_nb_diplo(array(1))) return false;
+				return true;
+			}
+			return true;
+		}
+	}
+
+	function verif_nb_diplo($valeurs)
+	{
+		$nb = 0;
+		foreach($valeurs as $diplomatie)
+		{
+			if(in_array($diplomatie, $valeurs)) $nb++;
+		}
+		return $nb;
 	}
 }
 ?>

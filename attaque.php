@@ -424,7 +424,7 @@ else
 			$defense_hp_apres = $defenseur->get_hp();
 			
 			$gains = false;
-			
+			$coef = 1;
 			//L'attaquant est mort !
 			if ($attaquant->get_hp() <= 0)
 			{

@@ -107,6 +107,7 @@ else
 				else ($mode = 'attaquant');
 
         $effects = effect::general_factory($attaquant, $defenseur, $mode);
+		$defenseur_hp_avant = $defenseur->get_hp();
 				
 				if($mode == 'attaquant')
 				{
@@ -421,10 +422,19 @@ else
 			//L'attaquant est mort !
 			if ($attaquant->get_hp() <= 0)
 			{
-				$coeff = 1;
-				//Si c'était un monstre
+				$requete = 'UPDATE perso SET mort = mort + 1, honneur = honneur * '.$coeff.' WHERE ID = '.$attaquant['ID'];
+				$db->query($requete);
+			}
+			$gains_xp = false;
+			$gains_drop = false;
+			$gains_star = false;
+			$defenseur_hp_apres = $defenseur->get_hp();
+			//Le défenseur est mort !
+			if ($defenseur['hp'] <= 0)
+			{
 				if($ennemi == 'monstre')
 				{
+					$coeff = 0.5;
 					//Différence de level
 					$diff_level = abs($attaquant['level'] - $defenseur['level']);
 					//Perde d'honneur
@@ -436,22 +446,100 @@ else
 						$defenseur['hp'] += $gain_hp;
 						echo 'Dévorsis regagne '.$gain_hp.' HP en vous tuant.<br />';
 					}
+					$gains_xp = true;
+					$coef = 1;
+					$gains_drop = true;
+					$gains_star = true;
+
+					//On efface le monstre
+					$requete = "DELETE FROM map_monstre WHERE ID = '".$W_ID."'";
+					$req = $db->query($requete);
+					//Si c'est Devorsis on fait pop le fossoyeur
+					if($defenseur['type'] == 64)
+					{
+						$requete = "INSERT INTO map_monstre VALUES(NULL, '65','3','212','4800', 6, '".addslashes('Le Fossoyeur')."','fossoyeur', ".(time() + 2678400).")";
+						$db->query($requete);
+						echo '<strong>Rha, tu me détruis aujourdhui mais le fossoyeur saura saisir ton âme... tu es déja mort !</strong>';
+					}
+					//Si c'est le fossoyeur on fait pop finwir
+					if($defenseur['type'] == 65)
+					{
+						$requete = "INSERT INTO map_monstre VALUES(NULL, '75','24','209','8000', 7, '".addslashes('Finrwirr le serviteur')."','finrwirr', ".(time() + 2678400).")";
+						$db->query($requete);
+						echo '<strong>Tu ne fait que retarder l\'inévitable, Le maître saura te faire payer ton insolence !</strong>';
+					}
+					//Si c'est Finrwirr on fait pop le gros monstre
+					/*if($defenseur['type'] == 75)
+					{
+						$requete = "INSERT INTO map_monstre VALUES(NULL, '116','24','209','10000', 8, '".addslashes('Adenaïos le nécromant')."','adennaios', ".(time() + 2678400).")";
+						$db->query($requete);
+						echo '<strong>Aaaargh VAINCU, JE SUIS VAINCU, comment est ce possible !!! Maître !! Maître venez à moi, vengez votre plus fidèle serviteur !!!</strong>';
+					}*/
+					//Si c'est un draconide
+					if($defenseur['type'] == 125 OR $defenseur['type'] == 126)
+					{
+						//Si les 2 sont morts, on fait pop le roi gobelin
+						$requete = "SELECT type FROM map_monstre WHERE type = 125 OR type = 126";
+						$req_d = $db->query($requete);
+						//Si il n'est pas là on le fait pop
+						if($db->num_rows($req_d) == 0)
+						{
+							$requete = "INSERT INTO map_monstre VALUES(NULL,'123','44','293','5800', 18, 'Roi Goblin','roi_goblin', ".(time() + 2678400).")";
+							$db->query($requete);
+							echo '<strong>Un bruit de mécanisme eveil votre attention, mais il vous est impossible de savoir d\'où provient ce son.</strong>';
+						}
+					}
 				}
-				$requete = 'UPDATE perso SET mort = mort + 1, honneur = honneur * '.$coeff.' WHERE ID = '.$attaquant['ID'];
-				$db->query($requete);
+				elseif($ennemi == 'batiment')
+				{
+					//On supprime un bourg au compteur
+					if($defenseur['type'] == 'bourg')
+					{
+						supprime_bourg($R->get_id());
+					}
+					//On efface le batiment
+					$requete = "DELETE FROM ".sSQL($_GET['table'])." WHERE ID = '".$W_ID."'";
+					$req = $db->query($requete);
+					//On retrouve les points de victoire
+					$point_victoire = $defenseur->get_point_victoire();
+					$R->set_point_victoire($R->get_point_victoire() + $point_victoire);
+				}
 			}
-			//Le défenseur est mort !
-			if ($defenseur['hp'] <= 0)
+			else
 			{
 				if($ennemi == 'monstre')
 				{
+					$gains_xp = true;
+					$coef = 0.5 * ($defenseur_hp_avant - $defenseur_hp_apres) / $defenseur_hp_total;
+				}
+				echo(' <a href="attaque_monstre.php?ID='.$W_ID.'&amp;type='.$ennemi.'&amp;table='.sSQL($_GET['table']).'&amp;poscase='.$W_case.'" onclick="return envoiInfo(this.href, \'information\')"><img src="image/interface/attaquer.png" alt="Combattre" title="Attaquer la même cible" style="vertical-align : middle;" /></a><br />');
+			}
+
+			if($gains_xp)
+			{
+					//Niveau du groupe
+					if($attaquant->get_groupe() == 0)
+					{
+						$groupe = new groupe();
+						$groupe->level_groupe = $attaquant->get_level();
+						$groupe->somme_groupe = $attaquant->get_level();
+						$groupe->share_xp = 100;
+						$groupe->membres[0]['id_joueur'] = $attaquant->get_id();
+						$groupe->membres[0]['share_xp'] = 100;
+						$groupe->membres[0]['level'] = $attaquant->get_level();
+					}
 					//Gain d'expérience
 					$requete = "SELECT xp, star, drops FROM monstre WHERE id = '".$defenseur['type']."'";
 					$req = $db->query($requete);
-					$row = $db->read_row($req);
+					$row = $db->read_row($req);				
+					$xp = $row[0] * $G_xp_rate * $coef;
+			}
+			if($gains_drop)
+			{
 					$drop = $row[2];
-					
-					$xp = $row[0] * $G_xp_rate;
+			}
+			if($gains_star)
+			{
 					$starmax = $row[1];
 					$starmin = floor($row[1] / 2);
 					$star = rand($starmin, $starmax) * $G_drop_rate;
@@ -463,13 +551,15 @@ else
 					//Récupération de la taxe
 					if($taxe > 0)
 					{
-						$requete = 'UPDATE royaume SET star = star + '.$taxe.' WHERE ID = '.$R['ID'];
-						$db->query($requete);
-						$requete = "UPDATE argent_royaume SET monstre = monstre + ".$taxe." WHERE race = '".$R['race']."'";
+						$R->set_star($R->get_star() + $taxe);
+						$requete = "UPDATE argent_royaume SET monstre = monstre + ".$taxe." WHERE race = '".$R->get_race()."'";
 						$db->query($requete);
 					}
+			}
 					
-					$groupe = recupgroupe($attaquant['groupe'], $attaquant->get_x().'-'.$attaquant->get_y());
+			$groupe = new groupe($attaquant->get_groupe());
+			if($gains_drop)
+			{
 					//Drop d'un objet ?
 					$drops = explode(';', $drop);
 					if($drops[0] != '')
@@ -648,91 +738,29 @@ else
 							$i++;
 						}
 					}
-
-					//Niveau du groupe
-					if($attaquant['groupe'] == 0)
-					{
-						$groupe = array();
-						$groupe['level_groupe'] = $attaquant['level'];
-						$groupe['somme_groupe'] = $attaquant['level'];
-						$groupe['share_xp'] = 100;
-						$groupe['membre'][0]['id_joueur'] = $attaquant['ID'];
-						$groupe['membre'][0]['share_xp'] = 100;
-						$groupe['membre'][0]['level'] = $attaquant['level'];
-					}
-
-					//Partage de l'xp au groupe
-					if ($xp < 0) $xp = 0;
-					
-					foreach($groupe['membre'] as $membre)
-					{
-						//XP Final
-						$xp_joueur = $xp * (1 + (($defenseur['level'] - $membre['level']) / $G_range_level));
-						$xp_joueur = floor($xp_joueur * $membre['share_xp'] / $groupe['share_xp']);
-						if($xp_joueur < 0) $xp_joueur = 0;
-						$star_joueur = floor($star * $membre['share_xp'] / $groupe['share_xp']);
-						$requete = 'UPDATE perso SET exp = exp + '.$xp_joueur.', star = star + '.$star_joueur.' WHERE ID = '.$membre['id_joueur'];
-						$db->query($requete);
-						$player = recupperso($membre['id_joueur']);
-						$msg_xp .= $player['nom'].' gagne <strong class="reward">'.$xp_joueur.' XP</strong> et <strong class="reward">'.$star_joueur.' Stars</strong><br />';
-						//Vérification de l'avancement des quètes solo pour le tueur, groupe pour les autres
-						if($membre['id_joueur'] == $attaquant['ID']) verif_action('M'.$defenseur['type'], $player, 's');
-						else verif_action('M'.$defenseur['type'], $player, 'g');
-					}
-					//On efface le monstre
-					$requete = "DELETE FROM map_monstre WHERE ID = '".$W_ID."'";
-					$req = $db->query($requete);
-					//Si c'est Devorsis on fait pop le fossoyeur
-					if($defenseur['type'] == 64)
-					{
-						$requete = "INSERT INTO map_monstre VALUES(NULL, '65','3','212','4800', 6, '".addslashes('Le Fossoyeur')."','fossoyeur', ".(time() + 2678400).")"; 
-						$db->query($requete);
-						echo '<strong>Rha, tu me détruis aujourdhui mais le fossoyeur saura saisir ton âme... tu es déja mort !</strong>';
-					}
-					//Si c'est le fossoyeur on fait pop finwir
-					if($defenseur['type'] == 65)
-					{
-						$requete = "INSERT INTO map_monstre VALUES(NULL, '75','24','209','8000', 7, '".addslashes('Finrwirr le serviteur')."','finrwirr', ".(time() + 2678400).")"; 
-						$db->query($requete);
-						echo '<strong>Tu ne fait que retarder l\'inévitable, Le maître saura te faire payer ton insolence !</strong>';
-					}
-					//Si c'est Finrwirr on fait pop le gros monstre
-					/*if($defenseur['type'] == 75)
-					{
-						$requete = "INSERT INTO map_monstre VALUES(NULL, '116','24','209','10000', 8, '".addslashes('Adenaïos le nécromant')."','adennaios', ".(time() + 2678400).")"; 
-						$db->query($requete);
-						echo '<strong>Aaaargh VAINCU, JE SUIS VAINCU, comment est ce possible !!! Maître !! Maître venez à moi, vengez votre plus fidèle serviteur !!!</strong>';
-					}*/
-					//Si c'est un draconide
-					if($defenseur['type'] == 125 OR $defenseur['type'] == 126)
-					{
-						//Si les 2 sont morts, on fait pop le roi gobelin
-						$requete = "SELECT type FROM map_monstre WHERE type = 125 OR type = 126";
-						$req_d = $db->query($requete);
-						//Si il n'est pas là on le fait pop
-						if($db->num_rows($req_d) == 0)
-						{
-							$requete = "INSERT INTO map_monstre VALUES(NULL,'123','44','293','5800', 18, 'Roi Goblin','roi_goblin', ".(time() + 2678400).")";
-							$db->query($requete);
-							echo '<strong>Un bruit de mécanisme eveil votre attention, mais il vous est impossible de savoir d\'où provient ce son.</strong>';
-						}
-					}
-				}
-				elseif($ennemi == 'batiment')
-				{
-					//On supprime un bourg au compteur
-					if($defenseur['type'] == 'bourg')
-					{
-						supprime_bourg($R['ID']);
-					}
-					//On efface le batiment
-					$requete = "DELETE FROM ".sSQL($_GET['table'])." WHERE ID = '".$W_ID."'";
-					$req = $db->query($requete);
-				}
 			}
-			else
+
+			if($gains_xp)
 			{
-				echo(' <a href="attaque_monstre.php?ID='.$W_ID.'&amp;type='.$ennemi.'&amp;table='.sSQL($_GET['table']).'&amp;poscase='.$W_case.'" onclick="return envoiInfo(this.href, \'information\')"><img src="image/interface/attaquer.png" alt="Combattre" title="Attaquer la même cible" style="vertical-align : middle;" /></a><br />');
+				//Partage de l'xp au groupe
+				if ($xp < 0) $xp = 0;
+					
+				foreach($groupe->membres as $membre)
+				{
+					//XP Final
+					$xp_joueur = $xp * (1 + (($defenseur['level'] - $membre->get_level()) / $G_range_level));
+					$xp_joueur = floor($xp_joueur * $membre->get_share_xp() / $groupe->get_share_xp());
+					if($xp_joueur < 0) $xp_joueur = 0;
+					if($gains_star)
+					{
+						$star_joueur = floor($star * $membre->get_share_xp() / $groupe->get_share_xp());
+						$membre->set_star($membre->get_star() + $star_joueur);
+					}
+					$msg_xp .= $membre->get_nom().' gagne <strong class="reward">'.$xp_joueur.' XP</strong> et <strong class="reward">'.$star_joueur.' Stars</strong><br />';
+					//Vérification de l'avancement des quètes solo pour le tueur, groupe pour les autres
+					if($membre->get_id() == $attaquant->get_id()) verif_action('M'.$defenseur['type'], $membre, 's');
+					else verif_action('M'.$defenseur['type'], $membre, 'g');
+				}
 			}
 			$attaquant->set_pa($attaquant->get_pa() - $pa_attaque);
 			sauve_sans_bonus_ignorables($attaquant, array('survie', 'melee', 'distance', 'esquive', 'hp', 'pa'));
@@ -743,6 +771,7 @@ else
 		{
 			echo 'Vous êtes mort !<img src="image/pixel.gif" onload="window.location.reload();" />';
 		}
+		$R->sauver();
 	}
 	else
 	{
