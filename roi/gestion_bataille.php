@@ -43,7 +43,7 @@ function affiche_map($bataille)
 	//print_r($bataille->reperes);
 	$batiments = array();
 	$dimensions = dimension_map($bataille->x, $bataille->y, 11);
-	$requete = "SELECT x, y, hp, nom, type, image FROM construction WHERE royaume = ".$R['ID']." AND x >= ".$dimensions['xmin']." AND x <= ".$dimensions['xmax']." AND y >= ".$dimensions['ymin']." AND y <= ".$dimensions['ymax'];
+	$requete = "SELECT x, y, hp, nom, type, image FROM construction WHERE royaume = ".$royaume->get_id()." AND x >= ".$dimensions['xmin']." AND x <= ".$dimensions['xmax']." AND y >= ".$dimensions['ymin']." AND y <= ".$dimensions['ymax'];
 	$req = $db->query($requete);
 	while($row = $db->read_assoc($req))
 	{
@@ -137,7 +137,7 @@ elseif(array_key_exists('new2', $_GET))
 	$bataille = new bataille();
 	$bataille->nom = $_GET['nom'];
 	$bataille->description = $_GET['description'];
-	$bataille->id_royaume = $R['ID'];
+	$bataille->id_royaume = $royaume->get_id();
 	$bataille->etat = 0;
 	$bataille->x = $_GET['x'];
 	$bataille->y = $_GET['y'];
@@ -224,7 +224,7 @@ elseif(array_key_exists('info_case', $_GET) OR array_key_exists('type', $_GET))
 	<h4>Case <?php echo $coord['x']; ?> / <?php echo $coord['y']; ?></h4>
 	<?php
 	$batiment = false;
-	$requete = "SELECT hp, nom FROM construction WHERE royaume = ".$R['ID']." AND x = ".$coord['x']." AND y = ".$coord['y'];
+	$requete = "SELECT hp, nom FROM construction WHERE royaume = ".$royaume->get_id()." AND x = ".$coord['x']." AND y = ".$coord['y'];
 	$req = $db->query($requete);
 	if($db->num_rows($req) > 0)
 	{
@@ -262,7 +262,7 @@ elseif(array_key_exists('info_case', $_GET) OR array_key_exists('type', $_GET))
 		<?php
 		if(!in_array('action', $type_reperes))
 		{
-			$bataille_royaume = new bataille_royaume($R['ID']);
+			$bataille_royaume = new bataille_royaume($royaume->get_id());
 			$types = $bataille_royaume->get_all_repere_type();
 			foreach($types as $type)
 			{
@@ -300,7 +300,7 @@ elseif(array_key_exists('del_repere', $_GET))
 else
 {
 	include_once(root.'roi/gestion_bataille_menu.php');
-	$bataille_royaume = new bataille_royaume($R['ID']);
+	$bataille_royaume = new bataille_royaume($royaume->get_id());
 	$bataille_royaume->get_batailles();
 	
 	foreach($bataille_royaume->batailles as $bataille)

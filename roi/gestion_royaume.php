@@ -642,7 +642,7 @@ if($joueur->get_rang_royaume() != 6)
 
 			echo "<li class='$boutique_class'>
 				<span class='boutique_nom'>".$row['nom']."</span>
-				<span class='boutique_prix' title='Prix'"; if ($R['star']<$row['prix']){echo " style='font-style: italic;color:#EFA4AE;'";} echo ">".$row['prix']."</span>
+				<span class='boutique_prix' title='Prix'"; if ($royaume->get_star()<$row['prix']){echo " style='font-style: italic;color:#BF0008;'";} echo ">".$row['prix']."</span>
 				<span class='boutique_pierre' title='Cout en pierre'"; if ($royaume->get_pierre()<$row['pierre']){echo " style='font-style: italic;color:#BF0008;'";} echo ">".$row['pierre']."</span>
 				<span class='boutique_bois' title='Cout en bois'"; if ($royaume->get_bois()<$row['bois']){echo " style='font-style: italic;color:#BF0008;'";} echo ">".$row['bois']."</span>
 				<span class='boutique_eau' title='Cout en eau'"; if ($royaume->get_eau()<$row['eau']){echo " style='font-style: italic;color:#BF0008;'";} echo ">".$row['eau']."</span>

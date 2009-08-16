@@ -21,8 +21,8 @@ if($joueur->get_rang_royaume() != 6)
 	echo '<p>Cheater</p>';
 else if(array_key_exists('ress', $_GET))
 {
-	include_once(root."../pChart/pData.class");
-	include_once(root."../pChart/pChart.class");
+	include_once(root."pChart/pData.class");
+	include_once(root."pChart/pChart.class");
 	$date_semaine = date("Y-m-d", mktime(0, 0, 0, date("m") , date("d") - 7, date("Y")));
 	$requete = "SELECT ".$royaume->get_race().", date FROM stat_jeu WHERE date > '".$date_semaine."' ORDER BY date ASC";
 	$req = $db->query($requete);
@@ -85,7 +85,7 @@ else
 	$hier['Star'] = $explode_stat[23];
 	$hier['Nourriture'] = $explode_stat[24];
 	
-	$requete = "SELECT info, FLOOR(COUNT(*) / 10) as tot, COUNT(*) as tot_terrain FROM `map` WHERE royaume = ".$R['ID']." GROUP BY info";
+	$requete = "SELECT info, FLOOR(COUNT(*) / 10) as tot, COUNT(*) as tot_terrain FROM `map` WHERE royaume = ".$royaume->get_id()." GROUP BY info";
 	$req = $db->query($requete);
 	while($row = $db->read_assoc($req))
 	{
@@ -118,7 +118,7 @@ else
 		$batiment[$row['id']] = $row;
 	}
 	//@TODO gérer les mines dans construction
-	$requete = "SELECT * FROM construction LEFT JOIN map ON map.ID = (construction.y * 1000) + construction.x WHERE construction.type = 'mine' AND construction.royaume = ".$R['ID'];
+	$requete = "SELECT * FROM construction LEFT JOIN map ON map.ID = (construction.y * 1000) + construction.x WHERE construction.type = 'mine' AND construction.royaume = ".$royaume->get_id();
 	$req = $db->query($requete);
 	while($row = $db->read_assoc($req))
 	{
@@ -178,51 +178,36 @@ else
 	$liste_ressources[] = 'Essence Magique';
 	$liste_ressources[] = 'Star';
 	$liste_ressources[] = 'Nourriture';
-	echo '
-	<h3>Récapitulatif ressources</h3>
-	<table>
-	<tr>
-		<td>
-			Ressources
-		</td>
-		<td>
-			Gains hier
-		</td>
-		<td>
-			Cases actuellement
-		</td>
-		<td>
-			Mines actuellement
-		</td>
-		<td>
-			Total actuellement
-		</td>
-	</tr>
-	';
+	echo "
+	<div id='ressource'>
+	<ul>
+	<li>
+		<span class='ressource_nom'>Ressource</span>
+		<span class='ressource_gains'>Gains hier</span>
+		<span class='ressource_case'>Cases actuellement</span>
+		<span class='ressource_mines'>Mines actuellement</span>
+		<span class='ressource_total'>Total actuellement</span>
+	</li>
+	";
+	$class='t1';
 	foreach($liste_ressources as $type_ressource)
 	{
+		if ($type_ressource == 'Essence Magique')
+		{$class_ressource='essence';}else{	$class_ressource = strtolower($type_ressource);}
 	?>
-	<tr>
-		<td>
-			<a href="ressources.php?ress=<?php echo $type_ressource; ?>" onclick="affichePopUp(this.href); return false;"><?php echo $type_ressource; ?></a>
-		</td>
-		<td>
-			<?php echo $hier[$type_ressource]; ?>
-		</td>
-		<td>
-			<?php echo $ressource_final[$type_ressource]; ?>
-		</td>
-		<td>
-			<?php echo $ressource_mine_final[$type_ressource]; ?>
-		</td>
-		<td>
-			<?php echo ($ressource_mine_final[$type_ressource] + $ressource_final[$type_ressource]); ?>
-		</td>
-	</tr>
+	<li class='<?php echo $class; ?>' onclick="affichePopUp('ressources.php?ress=<?php echo $type_ressource; ?>');">
+		<span class='ressource_nom'><span class='<?php echo $class_ressource; ?>'></span><?php echo $type_ressource; ?></span>
+		<span class='ressource_gains'><?php echo $hier[$type_ressource]; ?></span>
+		<span class='ressource_case'><?php echo $ressource_final[$type_ressource]; ?></span>
+		<span class='ressource_mines'><?php echo $ressource_mine_final[$type_ressource]; ?></span>
+		<span class='ressource_total'><?php echo ($ressource_mine_final[$type_ressource] + $ressource_final[$type_ressource]); ?></span>
+	</li>
 	<?php
+	if ($class == 't1'){$class = 't2';}else{$class = 't1';}		
 	}
+	
 	?>
-	</table>
+	</ul></div>
 	<h3>Vous contrôllez</h3>
 	<ul>
 	<?php

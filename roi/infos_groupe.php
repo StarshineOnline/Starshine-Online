@@ -2,20 +2,19 @@
 if (file_exists('../root.php'))
   include_once('../root.php');
 ?><?php
-$root = '../';
 //Connexion obligatoire
 $connexion = true;
 //Inclusion du haut du document html
-include_once(root.$root.'inc/fp.php');
+include_once(root.'inc/fp.php');
 
 $joueur = new perso($_SESSION['ID']);
 
 //Vérifie si le perso est mort
 verif_mort($joueur, 1);
 
-check_perso($joueur);
+$joueur->check_perso();
 
-$_SESSION['position'] = convert_in_pos($joueur['x'], $joueur['y']);
+$_SESSION['position'] = convert_in_pos($joueur->get_x(), $joueur->get_y());
 $groupe = recupgroupe($_GET['id_groupe'], 'membre');
 ?>
 INFOS :

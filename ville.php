@@ -7,7 +7,6 @@ if (file_exists('root.php'))
 include_once(root.'haut_ajax.php');
 
 $joueur = new perso($_SESSION['ID']);
-
 $joueur->check_perso();
 
 $position = $joueur->get_pos();
@@ -19,7 +18,7 @@ $W_case = $_GET['poscase'];
 $W_requete = 'SELECT * FROM map WHERE ID =\''.sSQL($W_case).'\'';
 $W_req = $db->query($W_requete);
 $W_row = $db->read_array($W_req);
-$R = get_royaume_info($joueur->get_race(), $W_row['royaume']);
+$royaume = new royaume($W_row['royaume']);
 $_SESSION['position'] = $position;
 ?>
 	<div id="carte">
@@ -92,17 +91,17 @@ if($W_distance == 0 AND $verif_ville)
 	}
 	else $acces_ville = false;
 	//Affichage de la ville uniquement pour les persos qui ne sont pas en guerre, et qui n'ont pas d'amende
-	if(($R['diplo'] < 7 OR $R['diplo'] == 127) AND !$acces_ville)
+	if(($royaume->get_diplo($joueur->get_race()) < 7 OR $royaume->get_diplo($joueur->get_race()) == 127) AND !$acces_ville)
 	{
 		?>
 		<h2 class="ville_titre"><?php echo '<a href="ville.php?poscase='.$W_case.'" onclick="return envoiInfo(this.href,\'centre\')">';?><?php echo $R['nom'];?></a> </h2>
 					<?php include_once(root.'ville_bas.php');?>
 
 				<?php
-				if($R['ID'] != 0)
+				if($royaume->get_id() != 0)
 				{
 					//Récupère tout les royaumes qui peuvent avoir des items dans l'HV
-					$requete = "SELECT * FROM diplomatie WHERE race = '".$R['race']."'";
+					$requete = "SELECT * FROM diplomatie WHERE race = '".$royaume->get_race()."'";
 					$req = $db->query($requete);
 					$row = $db->read_assoc($req);
 					$races = array();
@@ -136,7 +135,7 @@ if($W_distance == 0 AND $verif_ville)
 							</p>
 							<?php
 							//Si ca n'est pas en royaume neutre, on peut acheter
-							if($R['id'] != 0)
+							if($royaume->get_id() != 0)
 							{
 								?>
 							<ul class="ville">
@@ -165,7 +164,7 @@ if($W_distance == 0 AND $verif_ville)
 							<ul class="ville">
 							<?php
 							//Si on est dans notre royaume
-							if($R['diplo'] == 127)
+							if($royaume->get_diplo($joueur->get_race()) == 127)
 							{
 								if(date("d") >= 15 AND date("d") < 20)
 								{
@@ -190,7 +189,7 @@ if($W_distance == 0 AND $verif_ville)
 										<a href="bureau_quete.php?poscase=<?php echo $W_case; ?>" onclick="return envoiInfo(this.href,'carte')">Bureau des quêtes</a>
 									</li>
 							<?php
-									if($R['diplo'] == 127)
+									if($royaume->get_diplo($joueur->get_race()) == 127)
 									{
 							?>
 									<li>
@@ -233,7 +232,7 @@ if($W_distance == 0 AND $verif_ville)
 						<a href="tribunal.php?poscase=<?php echo $W_case; ?>" onclick="return envoiInfo(this.href, 'carte')">Tribunal</a>
 					</li>
 <?php
-		if($R['diplo'] == 127)
+		if($royaume->get_diplo($joueur->get_race()) == 127)
 		{
 /*?>
 					<li>
@@ -254,7 +253,7 @@ if($W_distance == 0 AND $verif_ville)
 					<a href="poste.php?poscase=<?php echo $W_case; ?>" onclick="return envoiInfo(this.href, 'carte')">Poste</a>
 				</li>
 <?php
-		if($R['diplo'] == 127)
+		if($royaume->get_diplo($joueur->get_race()) == 127)
 		{
 			?>
 				<li>
@@ -281,7 +280,7 @@ if($W_distance == 0 AND $verif_ville)
 	}
 	else
 	{
-		if($R['diplo'] >= 7 AND $R['diplo'] != 127)	echo 'Vous êtes en guerre avec ce royaume !';
+		if($royaume->get_diplo($joueur->get_race()) >= 7 AND $royaume->get_diplo($joueur->get_race()) != 127)	echo 'Vous êtes en guerre avec ce royaume !';
 	}
 	if($amende)
 	{

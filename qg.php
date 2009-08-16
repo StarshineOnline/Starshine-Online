@@ -9,23 +9,22 @@ include_once(root.'inc/fp.php');
 $joueur = new perso($_SESSION['ID']);
 
 $W_case = $_GET['poscase'];
-$W_requete = 'SELECT * FROM map WHERE ID =\''.sSQL($W_case).'\'';
-$W_req = $db->query($W_requete);
+$W_req = $db->query('SELECT royaume FROM map WHERE ID =\''.sSQL($W_case).'\'');
 $W_row = $db->read_array($W_req);
-$R = get_royaume_info($joueur->get_race(), $W_row['royaume']);
+$royaume = new royaume($W_row['royaume']);
 
-check_perso($joueur);
+$joueur->check_perso();
 
 //Vérifie si le perso est mort
 verif_mort($joueur, 1);
 
-$_SESSION['position'] = convert_in_pos($joueur['x'], $joueur['y']);
+$_SESSION['position'] = convert_in_pos($joueur->get_x(), $joueur->get_y());
 
 $W_distance = detection_distance($W_case, $_SESSION["position"]);
 if($W_distance == 0)
 {
     ?>
-    <h2 class="ville_titre"><?php echo '<a href="ville.php?poscase='.$W_case.'" onclick="return envoiInfo(this.href, \'centre\')">';?><?php echo $R['nom'];?></a> - <?php echo '<a href="qg.php?poscase='.$W_case.'" onclick="return envoiInfo(this.href, \'carte\')">';?> Quartier Général </a></h2>
+    <h2 class="ville_titre"><?php echo '<a href="ville.php?poscase='.$W_case.'" onclick="return envoiInfo(this.href, \'centre\')">';?><?php echo $royaume->get_nom();?></a> - <?php echo '<a href="qg.php?poscase='.$W_case.'" onclick="return envoiInfo(this.href, \'carte\')">';?> Quartier Général </a></h2>
 		<?php include_once(root.'ville_bas.php');?>	
 	<div class="ville_test">
     <?php
@@ -43,7 +42,7 @@ if($W_distance == 0)
             	if($nombre > 0)
             	{
                 	$i = 0;
-                	if ($nombre > ($G_place_inventaire - count($joueur['inventaire_slot'])))
+                	if ($nombre > ($G_place_inventaire - count($joueur->get_inventaire_slot())))
                 	{
                 		echo 'Plus de place';
                 	}
@@ -53,11 +52,11 @@ if($W_distance == 0)
 						{
 							if(!array_key_exists('id', $_GET))
 							{
-								$requete = "SELECT *, depot_royaume.id AS id_depot FROM depot_royaume LEFT JOIN objet_royaume ON depot_royaume.id_objet = objet_royaume.id WHERE grade <= ".$joueur['rang_grade']." AND id_royaume = ".$R['ID'];
+								$requete = "SELECT *, depot_royaume.id AS id_depot FROM depot_royaume LEFT JOIN objet_royaume ON depot_royaume.id_objet = objet_royaume.id WHERE grade <= ".$joueur->get_rang_royaume()." AND id_royaume = ".$royaume->get_id();
 							}
 							else
 							{
-								$requete = "SELECT *, id as id_depot FROM depot_royaume WHERE id = ".$_GET['id'];
+								$requete = "SELECT *, id as id_depot FROM depot_royaume WHERE id = ".sSQL($_GET['id']);
 							}
 							$req = $db->query($requete);
 							$row = $db->read_array($req);
@@ -94,7 +93,7 @@ if($W_distance == 0)
                     </td>
                 </tr>
                 <?php
-                 $requete = "SELECT *, depot_royaume.id AS id_depot FROM depot_royaume LEFT JOIN objet_royaume ON depot_royaume.id_objet = objet_royaume.id WHERE grade <= ".$joueur['rang_grade']." AND id_objet = '1' AND id_royaume = ".$R['ID'];
+                 $requete = "SELECT *, depot_royaume.id AS id_depot FROM depot_royaume LEFT JOIN objet_royaume ON depot_royaume.id_objet = objet_royaume.id WHERE grade <= ".$joueur->get_rang_royaume()." AND id_objet = '1' AND id_royaume = ".$royaume->get_id();
                 $req = $db->query($requete);
 
                 ?>
@@ -112,7 +111,7 @@ if($W_distance == 0)
                 <?
                 
                 
-                $requete = "SELECT *, depot_royaume.id AS id_depot FROM depot_royaume LEFT JOIN objet_royaume ON depot_royaume.id_objet = objet_royaume.id WHERE grade <= ".$joueur['rang_grade']." AND id_objet != '1' AND id_royaume = ".$R['ID']." ORDER BY nom ASC";
+                $requete = "SELECT *, depot_royaume.id AS id_depot FROM depot_royaume LEFT JOIN objet_royaume ON depot_royaume.id_objet = objet_royaume.id WHERE grade <= ".$joueur->get_rang_royaume()." AND id_objet != '1' AND id_royaume = ".$royaume->get_id()." ORDER BY nom ASC";
                 $req = $db->query($requete);
     
                 while($row = $db->read_assoc($req))

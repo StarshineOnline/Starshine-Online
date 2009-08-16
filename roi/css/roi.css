@@ -66,6 +66,9 @@ body 								{margin:0;padding:0;background:#7e909c url('../../image/v2/bg_site.
 .pierre								{text-align:right;margin-right:20px;background:transparent url('../../image/icone/ressources_pierre.png') no-repeat;padding-left:40px;display:block;line-height: 30px;height:30px;width:30px;float:left;}
 .sable								{text-align:right;margin-right:20px;background:transparent url('../../image/icone/ressources_sable.png') no-repeat;padding-left:40px;display:block;line-height: 30px;height:30px;width:30px;float:left;}
 .charbon							{text-align:right;margin-right:20px;background:transparent url('../../image/icone/ressources_charbon.png') no-repeat;padding-left:40px;display:block;line-height: 30px;height:30px;width:30px;float:left;}
+.nourriture							{text-align:right;margin-right:20px;background:transparent url('../../image/icone/ressources_nourriture.png') no-repeat;padding-left:40px;display:block;line-height: 30px;height:30px;width:30px;float:left;}
+.star							{text-align:right;margin-right:20px;background:transparent url('../../image/icone/ressources_star.png') no-repeat;padding-left:40px;display:block;line-height: 30px;height:30px;width:30px;float:left;}
+
 
 #criminel fieldset					{-moz-border-radius: 10px;}
 #criminel ul li 					{clear:both;height:21px;line-height: 21px;-moz-border-radius: 10px;}
@@ -108,5 +111,29 @@ body 								{margin:0;padding:0;background:#7e909c url('../../image/v2/bg_site.
 .boutique_essence					{display:block;float: left;width:70px;text-align: right;}
 .boutique_nombre					{display:block;float: left;width:70px;text-align: right;}
 
-.t1 								{background-color:#A7BBDF;-moz-border-radius: 10px;}
+#quete								{margin-left:24px;}
+#quete ul li 						{clear:both;height:21px;line-height: 21px;-moz-border-radius: 10px;}
+#quete ul li:hover					{background-color:#C5D4EF;-moz-border-radius: 10px;}
+#quete input						{border : 1px solid #999;width:30px;background: transparent;-moz-border-radius: 5px;text-align: center;}
+.quete_nom							{display:block;float: left;width:180px;margin-left:25px;}
+.quete_niveau						{display:block;float: left;width:70px;text-align: right;}
+.quete_groupe						{display:block;float: left;width:70px;text-align: right;}
+.quete_repetable				    {display:block;float: left;width:70px;text-align: right;}
+.quete_cout						    {display:block;float: left;width:70px;text-align: right;}
+.quete_star						    {display:block;float: left;width:70px;text-align: right;}
+.quete_exp						    {display:block;float: left;width:70px;text-align: right;}
+.quete_honneur					    {display:block;float: left;width:70px;text-align: right;}
+.quete_achat					    {display:block;float: left;width:150px;text-align: right;}
+
+#ressource								{margin-left:24px;}
+#ressource ul li 						{clear:both;height:21px;line-height: 30px;height: 30px; -moz-border-radius: 10px;}
+#ressource ul li:hover					{background-color:#C5D4EF;-moz-border-radius: 10px;}
+#ressource input						{border : 1px solid #999;width:30px;background: transparent;-moz-border-radius: 5px;text-align: center;}
+.ressource_nom							{display:block;float: left;width:230px;margin-left:25px;}
+.ressource_gains						{display:block;float: left;width:150px;text-align: right;}
+.ressource_case							{display:block;float: left;width:150px;text-align: right;}
+.ressource_mines						{display:block;float: left;width:150px;text-align: right;}
+.ressource_total						{display:block;float: left;width:150px;text-align: right;}
+
+.t1 							    {background-color:#A7BBDF;-moz-border-radius: 10px;}
 

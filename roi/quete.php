@@ -5,7 +5,6 @@ if (file_exists('../root.php'))
 require('haut_roi.php');
 
 ?>
-<h3>Gestion des Quêtes</h3>
 <?php
 if($joueur->get_rang_royaume() != 6)
 	echo '<p>Cheater</p>';
@@ -16,22 +15,21 @@ else if($_GET['action'] == 'achat')
 	$req = $db->query($requete);
 	$row = $db->read_assoc($req);
 	//Vérifie que le royaume a assez de stars pour l'acheter
-	if($R['star'] >= $row['star_royaume'])
+	if($royaume->get_star() >= $row['star_royaume'])
 	{
 		//Ajout de la quète dans la liste des quètes du royaume
-		$requete = "INSERT INTO quete_royaume VALUES('', ".$R['ID'].", ".$row['id'].")";
+		$requete = "INSERT INTO quete_royaume VALUES('', ".$royaume->get_id().", ".$row['id'].")";
 		$req = $db->query($requete);
 		//Mis a jour des stars du royaume
-		$requete = "UPDATE royaume SET star = star - ".$row['star_royaume']." WHERE ID = ".$R['ID'];
+		$requete = "UPDATE royaume SET star = star - ".$row['star_royaume']." WHERE ID = ".$royaume->get_id();
 		$req = $db->query($requete);
-		echo 'Votre royaume a bien acheté la quète "'.$row['nom'].'"';
+		echo '<h6>Votre royaume a bien acheté la quète "'.$row['nom'].'</h6>';
 	}
 	else
 	{
-		echo 'Votre royaume n\'a pas assez de stars pour acheter cette quète.';
+		echo '<h5>Votre royaume n\'a pas assez de stars pour acheter cette quète.</h5>';
 	}
 	?>
-	<br /><a href="quete.php?direction=quete" onclick="return envoiInfo(this.href, 'conteneur')">Retour au menu des quètes</a>
 	<?php
 }
 elseif($_GET['action'] == 'voir')
@@ -100,50 +98,49 @@ elseif($_GET['action'] == 'voir')
 	</ul>
 	<h3>Cout pour le royaume : <?php echo $row['star_royaume']; ?> stars</h3>
 	<br />
-	<a href="quete.php?direction=quete&amp;action=achat&amp;id=<?php echo $row['id']; ?>" onclick="return envoiInfo(this.href, 'conteneur')">Acheter cette quète</a><br />
+	<a onclick="envoiInfo('quete.php?direction=quete&amp;action=achat&amp;id=<?php echo $row['id']; ?>','message_confirm');envoiInfo('quete.php','contenu_jeu');refresh('perso_contenu.php','perso_contenu');$('popup').hide();">Acheter cette quète</a><br />
 	<br />
-	<a href="quete.php?direction=quete" onclick="return envoiInfo(this.href, 'conteneur')">Retour à la liste des quètes</a><br />
 	<?php
 }
 else
 {
-	$requete = "SELECT * FROM quete WHERE quete.achat = 'oui' AND id NOT IN (SELECT id_quete FROM quete_royaume WHERE id_royaume = ".$R['ID'].") ORDER BY star_royaume";
-	$req = $db->query($requete);
-
-?>
-	<table>
-	<tr>
-		<td>
-			Nom
-		</td>
-		<td>
-			Coût en stars
-		</td>
-		<td>
-			Achat
-		</td>
-	</tr>
+	$req = $db->query("SELECT * FROM quete WHERE quete.achat = 'oui' AND id NOT IN (SELECT id_quete FROM quete_royaume WHERE id_royaume = ".$royaume->get_id().") AND star_royaume<".$royaume->get_star()." ORDER BY lvl_joueur");
+	echo "<div id='quete'>";
+	?>
+	<ul>
+	<li>
+			<span class='quete_nom'>Nom</span>
+			<span class='quete_niveau'>Level</span>
+			<span class='quete_groupe'>Mode</span>
+			<span class='quete_repetable'>Répétable</span>
+			<span class='quete_cout'>Coût</span>
+			<span class='quete_star'>Stars</span>
+			<span class='quete_exp'>Expérience</span>
+			<span class='quete_honneur'>Honneur</span>
+	</li>
 <?php
-	while($row = $db->read_array($req))
+	$class = 't1';
+	while($quete = $db->read_object($req))
 	{
-		$href = 'quete.php?poscase='.$W_case.'&amp;direction=quete&amp;action=voir&amp;id='.$row['id'];
-		$js = 'new Tip(\'quete_'.$row['id'].'\', \'content\');
-	';
-		echo '
-		<tr>
-			<td>
-				'.$row['nom'].'
-			</td>
-			<td>
-				'.$row['star_royaume'].'
-			</td>
-			<td>
-				<a href="'.$href.'" onclick="return envoiInfo(this.href, \'conteneur\');" id="quete_'.$row['id'].'">Détails de la quète</a>
-			</td>
-		</tr>';
+		$href = 'poscase='.$W_case.'&amp;direction=quete&amp;action=voir&amp;id='.$quete->id;
+		//$js = 'new Tip(\'quete_'.$row['id'].'\', \'content\');';
+		echo "
+		<li class='$class'>
+			<span class='quete_nom'>".$quete->nom."</span>
+			<span class='quete_niveau'>".$quete->lvl_joueur."</span>
+			<span class='quete_groupe'>".$quete->mode."</span>
+			<span class='quete_repetable'>".$quete->repete."</span>
+			<span class='quete_cout'>".$quete->star_royaume."</span>
+			<span class='quete_star'>".$quete->star."</span>
+			<span class='quete_exp'>".$quete->exp."</span>
+			<span class='quete_honneur'>".$quete->honneur."</span>
+			<span class='quete_achat'><a onclick=\"affichePopUp('quete.php','".$href."');\" id='quete_".$quete->id."'>Détails de la quète</a></span>
+		</li>";
+		if ($class == 't1'){$class = 't2';}else{$class = 't1';}		
 	}
+	echo "</ul></div>";
 ?>
-</table>
+
 <?php
 }
 ?>

@@ -30,7 +30,7 @@ echo '
 			<tr>
 				<td colspan="2"><h4>ENTRETIEN DES BATIMENTS INTERNES : (en stars / jour)</h4></td>
 			</tr>';
-			$requete = "SELECT *, construction_ville.id as id_const FROM construction_ville RIGHT JOIN batiment_ville ON construction_ville.id_batiment = batiment_ville.id WHERE construction_ville.statut = 'actif' AND id_royaume = ".$R['ID']." ORDER BY entretien DESC";
+			$requete = "SELECT *, construction_ville.id as id_const FROM construction_ville RIGHT JOIN batiment_ville ON construction_ville.id_batiment = batiment_ville.id WHERE construction_ville.statut = 'actif' AND id_royaume = ".$royaume->get_id()." ORDER BY entretien DESC";
 			$req = $db->query($requete);
 			while($row = $db->read_assoc($req))
 			{
@@ -44,7 +44,7 @@ echo '
 			}
 			echo '
 				<tr>
-					<td><h5>Sous Total</h5></td><td><h5> -'.$royaumes[$R['ID']]['total'].'</h5></td>
+					<td><h5>Sous Total</h5></td><td><h5> -'.$royaumes[$royaume->get_id()]['total'].'</h5></td>
 				</tr>';
 			//PHASE 2, entretien des batiments externes
 			//On r�cup�re les couts d'entretiens
@@ -52,7 +52,7 @@ echo '
 				<tr>
 					<td colspan="2"><h4>ENTRETIEN DES BATIMENTS EXTERNES : (en stars / jour)</h4></td>
 				</tr>';
-			$requete = "SELECT *, construction.id AS id_const, batiment.nom AS nom_b, construction.x AS x_c, construction.y AS y_c FROM batiment RIGHT JOIN construction ON construction.id_batiment = batiment.id WHERE royaume = ".$R['ID']." ORDER BY entretien DESC";
+			$requete = "SELECT *, construction.id AS id_const, batiment.nom AS nom_b, construction.x AS x_c, construction.y AS y_c FROM batiment RIGHT JOIN construction ON construction.id_batiment = batiment.id WHERE royaume = ".$royaume->get_id()." ORDER BY entretien DESC";
 			$req = $db->query($requete);
 			while($row = $db->read_assoc($req))
 			{
@@ -65,10 +65,10 @@ echo '
 			}
 			echo '
 				<tr>
-					<td><h5>Sous Total</h5></td><td><h5> -'.$royaumes[$R['ID']]['total_c'].'</h5></td>
+					<td><h5>Sous Total</h5></td><td><h5> -'.$royaumes[$royaume->get_id()]['total_c'].'</h5></td>
 				</tr>
 				<tr>
-					<td><h5>TOTAL</h5></td><td><h5> -'.($royaumes[$R['ID']]['total_c'] + $royaumes[$R['ID']]['total']).'</h5></td>
+					<td><h5>TOTAL</h5></td><td><h5> -'.($royaumes[$royaume->get_id()]['total_c'] + $royaumes[$royaume->get_id()]['total']).'</h5></td>
 				</tr>
 			</table>
 		</td>
@@ -114,7 +114,7 @@ echo '
 			<tr>
 				<td><h6>TOTAL</h6></td><td><h6> +'.$total.'</h6></td>
 			</tr>';
-			$balance = $total - ($royaumes[$R['ID']]['total_c'] + $royaumes[$R['ID']]['total']);
+			$balance = $total - ($royaumes[$royaume->get_id()]['total_c'] + $royaumes[$royaume->get_id()]['total']);
 			if($balance > 0)
 			{
 				$h = 6;

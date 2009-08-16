@@ -8,7 +8,7 @@ $connexion = true;
 include_once(root.'inc/fp.php');
 
 $joueur = new perso($_SESSION['ID']);
-if($joueur->get_grade()->get_nom() == 'Roi' OR strtolower($joueur->get_nom()) == 'r')
+if($joueur->get_grade()->get_nom() == 'Roi')
 {
 	$date_hier = date("Y-m-d", mktime(0, 0, 0, date("m") , date("d") - 2, date("Y")));
 	$requete = "SELECT food, nombre_joueur FROM stat_jeu ORDER BY date DESC";

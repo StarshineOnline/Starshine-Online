@@ -851,7 +851,6 @@ class royaume
 		global $db;
 		if(!isset($this->diplo))
 		{
-			$this->diplo = 5;
 			if($this->id != 0)
 			{
 				//Sélection de la diplomatie et des taxes
@@ -863,6 +862,7 @@ class royaume
 				$Roy_row['taxe'] = taux_taxe($Roy_row['taxe'], $row_diplo[0]);
 			
 				$Roy_row['diplo'] = $row_diplo[0];
+				$this->diplo = $row_diplo[0];
 			}
 		}
 		return $this->diplo;
