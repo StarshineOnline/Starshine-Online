@@ -54,6 +54,10 @@ else
 	{
 		print_head("css:./css/texture.css~./css/texture_low.css~./css/interfacev2.css~./css/prototip.css;script:./javascript/fonction.js~./javascript/overlib/overlib.js~./javascript/scriptaculous/prototype.js~./javascript/scriptaculous/scriptaculous.js?load=effects,builder,dragdrop~./javascript/scriptaculous/prototip.js;title:StarShine, le jeu qu'il tient ses plannings !");
 	}
+	elseif($interface_3D)
+	{
+		print_head("css:./css/texture3D.css~./css/interface.css~./css/prototip.css~./css/site.css;script:./javascript/fonction.js~./javascript/overlib/overlib.js~./javascript/scriptaculous/prototype.js~./javascript/scriptaculous/scriptaculous.js~./javascript/scriptaculous/prototip.js;title:StarShine, le jeu qu'il tient ses plannings !");
+	}
 	else
 	{
 		print_head("css:./css/texture.css~./css/interface.css~./css/prototip.css~./css/site.css;script:./javascript/fonction.js~./javascript/overlib/overlib.js~./javascript/scriptaculous/prototype.js~./javascript/scriptaculous/scriptaculous.js~./javascript/scriptaculous/prototip.js;title:StarShine, le jeu qu'il tient ses plannings !");
