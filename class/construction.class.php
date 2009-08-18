@@ -1,97 +1,189 @@
 <?php
-if (file_exists('../root.php'))
-  include_once('../root.php');
-?><?php
 class construction
 {
-	public $id;
-	public $id_royaume;
-	public $id_batiment;
-	public $x;
-	public $y;
-	public $hp;
-	public $nom;
-	public $type;
-	public $rez;
-	public $rechargement;
-	public $image;
+/**
+    * @access private
+    * @var int(10)
+    */
+	private $id;
+
+	/**
+    * @access private
+    * @var tinyint(3)
+    */
+	private $id_batiment;
+
+	/**
+    * @access private
+    * @var tinyint(3)
+    */
+	private $x;
+
+	/**
+    * @access private
+    * @var tinyint(3)
+    */
+	private $y;
+
+	/**
+    * @access private
+    * @var tinyint(3)
+    */
+	private $royaume;
+
+	/**
+    * @access private
+    * @var int(10)
+    */
+	private $hp;
+
+	/**
+    * @access private
+    * @var varchar(50)
+    */
+	private $nom;
+
+	/**
+    * @access private
+    * @var varchar(50)
+    */
+	private $type;
+
+	/**
+    * @access private
+    * @var tinyint(3)
+    */
+	private $rez;
+
+	/**
+    * @access private
+    * @var int(10)
+    */
+	private $rechargement;
+
+	/**
+    * @access private
+    * @var varchar(50)
+    */
+	private $image;
+
+	/**
+    * @access private
+    * @var int(10)
+    */
+	private $date_construction;
+
 	
-	/**	
-	    *  	Constructeur permettant la création d'une construction.
-	    *	Les valeurs par défaut sont celles de la base de donnée.
-	    *	Le constructeur accepte plusieurs types d'appels:
-	    *		-construction() qui construit un etat "vide".
-	    *		-construction($id) qui va chercher l'etat dont l'id est $id
-	    *		-construction($array) qui associe les champs de $array à l'objet.
-	**/
-	function __construct($id = 0, $id_royaume = 0, $id_batiment = 0, $x = 0, $y = 0, $hp = 0, $nom = '', $type = 0, $rez = 0, $rechargement = 0, $image = '')
+	/**
+	* @access public
+
+	* @param int(10) id attribut
+	* @param tinyint(3) id_batiment attribut
+	* @param tinyint(3) x attribut
+	* @param tinyint(3) y attribut
+	* @param tinyint(3) royaume attribut
+	* @param int(10) hp attribut
+	* @param varchar(50) nom attribut
+	* @param varchar(50) type attribut
+	* @param tinyint(3) rez attribut
+	* @param int(10) rechargement attribut
+	* @param varchar(50) image attribut
+	* @param int(10) date_construction attribut
+	* @return none
+	*/
+	function __construct($id = 0, $id_batiment = 0, $x = 0, $y = 0, $royaume = 0, $hp = 0, $nom = '', $type = '', $rez = '', $rechargement = '', $image = '', $date_construction = '')
 	{
 		global $db;
-		//Verification du nombre et du type d'argument pour construire l'etat adequat.
+		//Verification nombre et du type d'argument pour construire l'etat adequat.
 		if( (func_num_args() == 1) && is_numeric($id) )
 		{
-			$requeteSQL = $db->query('SELECT royaume, id_batiment, x, y, hp, nom, type, rez, rechargement, image FROM construction WHERE id = '.$id);
+			$requeteSQL = $db->query("SELECT id_batiment, x, y, royaume, hp, nom, type, rez, rechargement, image, date_construction FROM construction WHERE id = ".$id);
 			//Si le thread est dans la base, on le charge sinon on crée un thread vide.
 			if( $db->num_rows($requeteSQL) > 0 )
 			{
-				list($this->id_royaume, $this->id_batiment, $this->x, $this->y, $this->hp, $this->nom, $this->type, $this->rez, $this->rechargement, $this->image) = $db->read_row($requeteSQL);
+				list($this->id_batiment, $this->x, $this->y, $this->royaume, $this->hp, $this->nom, $this->type, $this->rez, $this->rechargement, $this->image, $this->date_construction) = $db->read_array($requeteSQL);
 			}
-			else
-				$this->__construct();
+			else $this->__construct();
 			$this->id = $id;
 		}
 		elseif( (func_num_args() == 1) && is_array($id) )
 		{
 			$this->id = $id['id'];
-			$this->id_royaume = $id['royaume'];
 			$this->id_batiment = $id['id_batiment'];
 			$this->x = $id['x'];
 			$this->y = $id['y'];
+			$this->royaume = $id['royaume'];
 			$this->hp = $id['hp'];
 			$this->nom = $id['nom'];
 			$this->type = $id['type'];
 			$this->rez = $id['rez'];
 			$this->rechargement = $id['rechargement'];
 			$this->image = $id['image'];
-		}
+			$this->date_construction = $id['date_construction'];
+			}
 		else
 		{
-			$this->id_royaume = $id_royaume;
 			$this->id_batiment = $id_batiment;
 			$this->x = $x;
 			$this->y = $y;
+			$this->royaume = $royaume;
 			$this->hp = $hp;
 			$this->nom = $nom;
 			$this->type = $type;
 			$this->rez = $rez;
 			$this->rechargement = $rechargement;
 			$this->image = $image;
+			$this->date_construction = $date_construction;
 			$this->id = $id;
-		}		
+		}
 	}
-	
-	//Fonction d'ajout / modification.
-	function sauver()
+
+	/**
+	* Sauvegarde automatiquement en base de donnée. Si c'est un nouvel objet, INSERT, sinon UPDATE
+	* @access public
+	* @param bool $force force la mis à jour de tous les attributs de l'objet si true, sinon uniquement ceux qui ont été modifiés
+	* @return none
+	*/
+	function sauver($force = false)
 	{
 		global $db;
 		if( $this->id > 0 )
 		{
-			$requete = 'UPDATE construction SET ';
-			$requete .= 'royaume = '.$this->id_royaume.', id_batiment = '.$this->id_batiment.', x = '.$this->x.', y = '.$this->y.', hp = '.$this->hp.', nom = "'.$this->nom.'", rez = '.$this->rez.', rechargement = '.$this->rechargement.', image = "'.$this->image.'"';
-			$requete .= ' WHERE id = '.$this->id;
-			$db->query($requete);
+			if(count($this->champs_modif) > 0)
+			{
+				if($force) $champs = 'id_batiment = '.$this->id_batiment.', x = '.$this->x.', y = '.$this->y.', royaume = '.$this->royaume.', hp = '.$this->hp.', nom = "'.mysql_escape_string($this->nom).'", type = "'.mysql_escape_string($this->type).'", rez = "'.mysql_escape_string($this->rez).'", rechargement = "'.mysql_escape_string($this->rechargement).'", image = "'.mysql_escape_string($this->image).'", date_construction = "'.mysql_escape_string($this->date_construction).'"';
+				else
+				{
+					$champs = '';
+					foreach($this->champs_modif as $champ)
+					{
+						$champs[] .= $champ.' = "'.mysql_escape_string($this->{$champ}).'"';
+					}
+					$champs = implode(', ', $champs);
+				}
+				$requete = 'UPDATE construction SET ';
+				$requete .= $champs;
+				$requete .= ' WHERE id = '.$this->id;
+				$db->query($requete);
+				$this->champs_modif = array();
+			}
 		}
 		else
 		{
-			$requete = 'INSERT INTO construction (royaume, id_batiment, x, y, hp, nom, type, rez, rechargement, image) VALUES(';
-			$requete .= $this->id_royaume.', '.$this->id_batiment.', '.$this->x.', '.$this->y.', '.$this->hp.', "'.$this->nom.'", "'.$this->type.'", '.$this->rez.', '.$this->rechargement.', "'.$this->image.'")';
+			$requete = 'INSERT INTO construction (id_batiment, x, y, royaume, hp, nom, type, rez, rechargement, image, date_construction) VALUES(';
+			$requete .= ''.$this->id_batiment.', '.$this->x.', '.$this->y.', '.$this->royaume.', '.$this->hp.', "'.mysql_escape_string($this->nom).'", "'.mysql_escape_string($this->type).'", "'.mysql_escape_string($this->rez).'", "'.mysql_escape_string($this->rechargement).'", "'.mysql_escape_string($this->image).'", "'.mysql_escape_string($this->date_construction).'")';
 			$db->query($requete);
 			//Récuperation du dernier ID inséré.
-			list($this->id) = $db->last_insert_id();
+			$this->id = $db->last_insert_id();
 		}
 	}
-	
-	//supprimer l'etat de la base.
+
+	/**
+	* Supprime de la base de donnée
+	* @access public
+	* @param none
+	* @return none
+	*/
 	function supprimer()
 	{
 		global $db;
@@ -101,10 +193,343 @@ class construction
 			$db->query($requete);
 		}
 	}
-	
+
+	/**
+	* Supprime de la base de donnée
+	* @access static
+	* @param array|string $champs champs servant a trouver les résultats
+	* @param array|string $valeurs valeurs servant a trouver les résultats
+	* @param string $ordre ordre de tri
+	* @param bool|string $keys Si false, stockage en tableau classique, si string stockage avec sous tableau en fonction du champ $keys
+	* @return array $return liste d'objets
+	*/
+	static function create($champs, $valeurs, $ordre = 'id ASC', $keys = false, $where = false)
+	{
+		global $db;
+		$return = array();
+		if(!$where)
+		{
+			if(!is_array($champs))
+			{
+				$array_champs[] = $champs;
+				$array_valeurs[] = $valeurs;
+			}
+			else
+			{
+				$array_champs = $champs;
+				$array_valeurs = $valeurs;
+			}
+			foreach($array_champs as $key => $champ)
+			{
+				$where[] = $champ .' = "'.mysql_escape_string($array_valeurs[$key]).'"';
+			}
+			$where = implode(' AND ', $where);
+			if($champs === 0)
+			{
+				$where = ' 1 ';
+			}
+		}
+
+		$requete = "SELECT id, id_batiment, x, y, royaume, hp, nom, type, rez, rechargement, image, date_construction FROM construction WHERE ".$where." ORDER BY ".$ordre;
+		$req = $db->query($requete);
+		if($db->num_rows($req) > 0)
+		{
+			while($row = $db->read_assoc($req))
+			{
+				if(!$keys) $return[] = new construction($row);
+				else $return[$row[$keys]][] = new construction($row);
+			}
+		}
+		else $return = array();
+		return $return;
+	}
+
+	/**
+	* Affiche l'objet sous forme de string
+	* @access public
+	* @param none
+	* @return string objet en string
+	*/
 	function __toString()
 	{
-		return $this->id_royaume;
+		return 'id = '.$this->id.', id_batiment = '.$this->id_batiment.', x = '.$this->x.', y = '.$this->y.', royaume = '.$this->royaume.', hp = '.$this->hp.', nom = '.$this->nom.', type = '.$this->type.', rez = '.$this->rez.', rechargement = '.$this->rechargement.', image = '.$this->image.', date_construction = '.$this->date_construction;
 	}
+	
+	/**
+	* Retourne la valeur de l'attribut
+	* @access public
+	* @param none
+	* @return int(10) $id valeur de l'attribut id
+	*/
+	function get_id()
+	{
+		return $this->id;
+	}
+
+	/**
+	* Retourne la valeur de l'attribut
+	* @access public
+	* @param none
+	* @return tinyint(3) $id_batiment valeur de l'attribut id_batiment
+	*/
+	function get_id_batiment()
+	{
+		return $this->id_batiment;
+	}
+
+	/**
+	* Retourne la valeur de l'attribut
+	* @access public
+	* @param none
+	* @return tinyint(3) $x valeur de l'attribut x
+	*/
+	function get_x()
+	{
+		return $this->x;
+	}
+
+	/**
+	* Retourne la valeur de l'attribut
+	* @access public
+	* @param none
+	* @return tinyint(3) $y valeur de l'attribut y
+	*/
+	function get_y()
+	{
+		return $this->y;
+	}
+
+	/**
+	* Retourne la valeur de l'attribut
+	* @access public
+	* @param none
+	* @return tinyint(3) $royaume valeur de l'attribut royaume
+	*/
+	function get_royaume()
+	{
+		return $this->royaume;
+	}
+
+	/**
+	* Retourne la valeur de l'attribut
+	* @access public
+	* @param none
+	* @return int(10) $hp valeur de l'attribut hp
+	*/
+	function get_hp()
+	{
+		return $this->hp;
+	}
+
+	/**
+	* Retourne la valeur de l'attribut
+	* @access public
+	* @param none
+	* @return varchar(50) $nom valeur de l'attribut nom
+	*/
+	function get_nom()
+	{
+		return $this->nom;
+	}
+
+	/**
+	* Retourne la valeur de l'attribut
+	* @access public
+	* @param none
+	* @return varchar(50) $type valeur de l'attribut type
+	*/
+	function get_type()
+	{
+		return $this->type;
+	}
+
+	/**
+	* Retourne la valeur de l'attribut
+	* @access public
+	* @param none
+	* @return tinyint(3) $rez valeur de l'attribut rez
+	*/
+	function get_rez()
+	{
+		return $this->rez;
+	}
+
+	/**
+	* Retourne la valeur de l'attribut
+	* @access public
+	* @param none
+	* @return int(10) $rechargement valeur de l'attribut rechargement
+	*/
+	function get_rechargement()
+	{
+		return $this->rechargement;
+	}
+
+	/**
+	* Retourne la valeur de l'attribut
+	* @access public
+	* @param none
+	* @return varchar(50) $image valeur de l'attribut image
+	*/
+	function get_image()
+	{
+		return $this->image;
+	}
+
+	/**
+	* Retourne la valeur de l'attribut
+	* @access public
+	* @param none
+	* @return int(10) $date_construction valeur de l'attribut date_construction
+	*/
+	function get_date_construction()
+	{
+		return $this->date_construction;
+	}
+
+	/**
+	* Modifie la valeur de l'attribut
+	* @access public
+	* @param int(10) $id valeur de l'attribut
+	* @return none
+	*/
+	function set_id($id)
+	{
+		$this->id = $id;
+		$this->champs_modif[] = 'id';
+	}
+
+	/**
+	* Modifie la valeur de l'attribut
+	* @access public
+	* @param tinyint(3) $id_batiment valeur de l'attribut
+	* @return none
+	*/
+	function set_id_batiment($id_batiment)
+	{
+		$this->id_batiment = $id_batiment;
+		$this->champs_modif[] = 'id_batiment';
+	}
+
+	/**
+	* Modifie la valeur de l'attribut
+	* @access public
+	* @param tinyint(3) $x valeur de l'attribut
+	* @return none
+	*/
+	function set_x($x)
+	{
+		$this->x = $x;
+		$this->champs_modif[] = 'x';
+	}
+
+	/**
+	* Modifie la valeur de l'attribut
+	* @access public
+	* @param tinyint(3) $y valeur de l'attribut
+	* @return none
+	*/
+	function set_y($y)
+	{
+		$this->y = $y;
+		$this->champs_modif[] = 'y';
+	}
+
+	/**
+	* Modifie la valeur de l'attribut
+	* @access public
+	* @param tinyint(3) $royaume valeur de l'attribut
+	* @return none
+	*/
+	function set_royaume($royaume)
+	{
+		$this->royaume = $royaume;
+		$this->champs_modif[] = 'royaume';
+	}
+
+	/**
+	* Modifie la valeur de l'attribut
+	* @access public
+	* @param int(10) $hp valeur de l'attribut
+	* @return none
+	*/
+	function set_hp($hp)
+	{
+		$this->hp = $hp;
+		$this->champs_modif[] = 'hp';
+	}
+
+	/**
+	* Modifie la valeur de l'attribut
+	* @access public
+	* @param varchar(50) $nom valeur de l'attribut
+	* @return none
+	*/
+	function set_nom($nom)
+	{
+		$this->nom = $nom;
+		$this->champs_modif[] = 'nom';
+	}
+
+	/**
+	* Modifie la valeur de l'attribut
+	* @access public
+	* @param varchar(50) $type valeur de l'attribut
+	* @return none
+	*/
+	function set_type($type)
+	{
+		$this->type = $type;
+		$this->champs_modif[] = 'type';
+	}
+
+	/**
+	* Modifie la valeur de l'attribut
+	* @access public
+	* @param tinyint(3) $rez valeur de l'attribut
+	* @return none
+	*/
+	function set_rez($rez)
+	{
+		$this->rez = $rez;
+		$this->champs_modif[] = 'rez';
+	}
+
+	/**
+	* Modifie la valeur de l'attribut
+	* @access public
+	* @param int(10) $rechargement valeur de l'attribut
+	* @return none
+	*/
+	function set_rechargement($rechargement)
+	{
+		$this->rechargement = $rechargement;
+		$this->champs_modif[] = 'rechargement';
+	}
+
+	/**
+	* Modifie la valeur de l'attribut
+	* @access public
+	* @param varchar(50) $image valeur de l'attribut
+	* @return none
+	*/
+	function set_image($image)
+	{
+		$this->image = $image;
+		$this->champs_modif[] = 'image';
+	}
+
+	/**
+	* Modifie la valeur de l'attribut
+	* @access public
+	* @param int(10) $date_construction valeur de l'attribut
+	* @return none
+	*/
+	function set_date_construction($date_construction)
+	{
+		$this->date_construction = $date_construction;
+		$this->champs_modif[] = 'date_construction';
+	}
+//fonction
 }
 ?>

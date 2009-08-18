@@ -493,16 +493,16 @@ else
 				elseif($ennemi == 'batiment')
 				{
 					//On supprime un bourg au compteur
-					if($defenseur['type'] == 'bourg')
+					if($defenseur->get_type() == 'bourg')
 					{
 						supprime_bourg($R->get_id());
 					}
-					//On efface le batiment
-					$requete = "DELETE FROM ".sSQL($_GET['table'])." WHERE ID = '".$W_ID."'";
-					$req = $db->query($requete);
 					//On retrouve les points de victoire
 					$point_victoire = $defenseur->get_point_victoire();
 					$R->set_point_victoire($R->get_point_victoire() + $point_victoire);
+					$R->set_point_victoire_total($R->get_point_victoire_total() + $point_victoire);
+					//On efface le batiment
+					$defenseur->supprimer();
 				}
 			}
 			else

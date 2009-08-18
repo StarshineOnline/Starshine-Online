@@ -68,7 +68,9 @@ $requete = "UPDATE perso SET statut = 'inactif' WHERE dernier_connexion <= ".(ti
 $db->query($requete);
 
 //Réduction de l'honneur pour tous les joueurs
-$requete = "UPDATE perso SET honneur = ROUND(honneur / 1.03)";
+$requete = "UPDATE perso SET honneur = ROUND(honneur / 1.02) WHERE honneur <= reputation";
+$db->query($requete);
+$requete = "UPDATE perso SET honneur = ROUND(honneur / 1.03) WHERE honneur > reputation";
 $db->query($requete);
 
 //Point de crime -1

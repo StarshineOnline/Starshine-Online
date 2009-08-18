@@ -1,15 +1,12 @@
 <?php
-if (file_exists('../root.php'))
-  include_once('../root.php');
-
 /**
  * Auteur : Florian Mahieu
  * Version : 1.2
  * Description : permet de générer une class associée a une table MySQL
  */
-//$root = '../';
-include_once(root.$root.'class/db.class.php');
-include_once(root.$root.'connect.php');
+$root = '';
+include($root.'class/db.class.php');
+include($root.'connect.php');
 
 if(array_key_exists('table', $_POST))
 {
@@ -150,14 +147,6 @@ $this-><?php echo $champ_reference; ?> = $<?php echo $champ_reference; ?>;
 					{
 						$champs[] .= $champ.' = "'.mysql_escape_string($this->{$champ}).'"';
 					}
-					foreach($this->champs_add as $champ)
-					{
-						$champs[] .= $champ['nom'].' = '.$champ['nom'].' + '.$champ['valeur'];
-					}
-					foreach($this->champs_del as $champ)
-					{
-						$champs[] .= $champ['nom'].' = '.$champ['nom'].' - '.$champ['valeur'];
-					}
 					$champs = implode(', ', $champs);
 				}
 				$requete = 'UPDATE <?php echo $table; ?> SET ';
@@ -279,29 +268,15 @@ $this-><?php echo $champ_reference; ?> = $<?php echo $champ_reference; ?>;
 	* @param '.$champ['Type_doc'].' $'.$champ['Field'].' valeur de l\'attribut
 	* @return none
 	*/
-	function set_'.$champ['Field'].'($'.$champ['Field'].', $param = \'set\')
+	function set_'.$champ['Field'].'($'.$champ['Field'].')
 	{
-		switch($param)
-		{
-			case \'set\' :
-				$this->'.$champ['Field'].' = $'.$champ['Field'].';
-				$this->champs_modif[] = \''.$champ['Field'].'\';
-			break;
-			case \'add\' :
-				$this->'.$champ['Field'].' += $'.$champ['Field'].';
-				$this->champs_add[] = array(\'nom\' => \''.$champ['Field'].'\', \'valeur\' => $'.$champ['Field'].');
-			break;
-			case \'del\' :
-				$this->'.$champ['Field'].' -= $'.$champ['Field'].';
-				$this->champs_del[] = array(\'nom\' => \''.$champ['Field'].'\', \'valeur\' => $'.$champ['Field'].');
-			break;
-		}
+		$this->'.$champ['Field'].' = $'.$champ['Field'].';
+		$this->champs_modif[] = \''.$champ['Field'].'\';
 	}
 ';
 	}
-
 	//Inclusion des fonctions spécifiques
-	$filename= root.'class/'.$table.'.class.php';
+	$filename= 'class/'.$table.'.class.php';
 	$new_file = ob_get_contents();
 	if(file_exists($filename))
 	{

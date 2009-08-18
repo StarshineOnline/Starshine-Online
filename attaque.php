@@ -526,9 +526,11 @@ else
 					//XP Final
 					$xp_gagne = floor(($xp * $facteur_xp) * $membre->share_xp / $groupe->share_xp);
 					$honneur_gagne = floor(($honneur * $facteur_honneur) * $membre->share_xp / $groupe->share_xp);
+					$reputation_gagne = floor($honneur_gagne / 10);
 					$membre->set_star($membre->get_star() + $star);
 					$membre->set_xp($membre->get_xp() + $xp_gagne);
 					$membre->set_honneur($membre->get_honneur() + $honneur_gagne);
+					$membre->set_reputation($membre->get_reputation() + $reputation_gagne);
 					$msg_xp .= $membre->get_nom().' gagne <strong class="reward">'.$xp_gagne.' XP</strong> et <strong class="reward">'.$honneur_gagne.' points d\'honneur</strong><br />';
 					if($membre->get_id() == $attaquant->get_id()) verif_action('J'.$row_diplo[0], $membre, 's');
 					else verif_action('J'.$row_diplo[0], $membre, 'g');

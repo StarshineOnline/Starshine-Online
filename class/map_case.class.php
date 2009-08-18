@@ -362,18 +362,27 @@ class map_case
 			//Si c'est un bâtiment ou une arme de siège, on le construit
 			elseif($row['type'] == 'fort' OR $row['type'] == 'tour' OR $row['type'] == 'bourg' OR $row['type'] == 'mur' OR $row['type'] == 'arme_de_siege' OR $row['type'] == 'mine')
 			{
-				$rechargement = time();
+				$construction = new construction();
+				$construction->set_rechargement(time());
 				//Cas spécifique des mines
 				if($row['type'] == 'mine')
 				{
-					$rechargement = $row['rez'];
+					$construction->set_rechargement($row['rez']);
 					$row['rez'] = 0;
 				}
+				$construction->set_id_batiment($row['id_batiment']);
+				$construction->set_x($row['x']);
+				$construction->set_y($row['y']);
+				$construction->set_royaume($row['royaume']);
+				$construction->set_hp($row['hp']);
+				$construction->set_nom($row['nom']);
+				$construction->set_type($row['type']);
+				$construction->set_rez($row['rez']);
+				$construction->set_image($Gtrad[$row['nom']]);
+				$construction->set_date_construction(time());
 				//Insertion de la construction
-				$requete = "INSERT INTO construction VALUES('', ".$row['id_batiment'].", ".$row['x'].", ".$row['y'].", ".$row['royaume'].", ".$row['hp'].", '".$row['nom']."', '".$row['type']."', ".$row['rez'].", ".$rechargement.", '".$Gtrad[$row['nom']]."')";
-				//echo $requete;
-				$db->query($requete);
-				//Suppression du fort
+				$construction->sauver();
+				//Suppression du placement
 				$requete = "DELETE FROM placement WHERE id = ".$row['id'];
 				$db->query($requete);
 			}

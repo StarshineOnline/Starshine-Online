@@ -118,14 +118,14 @@ elseif($_GET['direction'] == 'suppr_construction')
 }
 elseif($_GET['direction'] == 'up_construction')
 {
-	$requete = "SELECT x, y, type, id_batiment, royaume FROM construction WHERE id = ".sSQL($_GET['id']);
+	$requete = "SELECT x, y, type, id_batiment, royaume, date_construction FROM construction WHERE id = ".sSQL($_GET['id']);
 	$req = $db->query($requete);
 	$row = $db->read_assoc($req);
 	$bat = recupbatiment(($row['id_batiment'] + 1), 'none');
-	//Si le royaume a assez de stars
-	if($R['star'] >= $bat['cout'])
+	//Si le royaume a assez de stars et que le bourg est assez vieux
+	if($R['star'] >= $bat['cout'] && $bat['cond1'] < (time() - $row['date_construction']))
 	{
-		//On supprime l'ancien bourg
+		//On supprime l'ancienne construction
 		$requete = "DELETE FROM construction WHERE id = ".sSQL($_GET['id']);
 		$db->query($requete);
 		//On place le nouveau

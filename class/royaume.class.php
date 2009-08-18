@@ -1,7 +1,4 @@
 <?php
-if (file_exists('../root.php'))
-  include_once('../root.php');
-
 class royaume
 {
 /**
@@ -39,6 +36,18 @@ class royaume
     * @var int(10)
     */
 	private $star;
+
+	/**
+    * @access private
+    * @var int(10)
+    */
+	private $point_victoire;
+
+	/**
+    * @access private
+    * @var int(10)
+    */
+	private $point_victoire_total;
 
 	/**
     * @access private
@@ -128,6 +137,8 @@ class royaume
 	* @param varchar(50) nom attribut
 	* @param varchar(50) capitale attribut
 	* @param int(10) star attribut
+	* @param int(10) point_victoire attribut
+	* @param int(10) point_victoire_total attribut
 	* @param mediumint(8) star_nouveau_joueur attribut
 	* @param tinyint(3) taxe attribut
 	* @param text diplo_time attribut
@@ -143,17 +154,17 @@ class royaume
 	* @param int(10) alchimie attribut
 	* @return none
 	*/
-	function __construct($id = 0, $taxe_time = 0, $race = '', $nom = '', $capitale = '', $star = '', $star_nouveau_joueur = '', $taxe = '', $diplo_time = '', $honneur_candidat = '', $bourg = '', $pierre = '', $bois = '', $eau = '', $sable = '', $charbon = '', $essence = '', $food = '', $alchimie = '')
+	function __construct($id = 0, $taxe_time = 0, $race = '', $nom = '', $capitale = '', $star = '', $point_victoire = '', $point_victoire_total = '', $star_nouveau_joueur = '', $taxe = '', $diplo_time = '', $honneur_candidat = '', $bourg = '', $pierre = '', $bois = '', $eau = '', $sable = '', $charbon = '', $essence = '', $food = '', $alchimie = '')
 	{
 		global $db;
 		//Verification nombre et du type d'argument pour construire l'etat adequat.
 		if( (func_num_args() == 1) && is_numeric($id) )
 		{
-			$requeteSQL = $db->query("SELECT id, taxe_time, race, nom, capitale, star, star_nouveau_joueur, taxe, diplo_time, honneur_candidat, bourg, pierre, bois, eau, sable, charbon, essence, food, alchimie FROM royaume WHERE id = ".$id);
+			$requeteSQL = $db->query("SELECT taxe_time, race, nom, capitale, star, point_victoire, point_victoire_total, star_nouveau_joueur, taxe, diplo_time, honneur_candidat, bourg, pierre, bois, eau, sable, charbon, essence, food, alchimie FROM royaume WHERE id = ".$id);
 			//Si le thread est dans la base, on le charge sinon on crée un thread vide.
 			if( $db->num_rows($requeteSQL) > 0 )
 			{
-				list($this->id, $this->taxe_time, $this->race, $this->nom, $this->capitale, $this->star, $this->star_nouveau_joueur, $this->taxe, $this->diplo_time, $this->honneur_candidat, $this->bourg, $this->pierre, $this->bois, $this->eau, $this->sable, $this->charbon, $this->essence, $this->food, $this->alchimie) = $db->read_array($requeteSQL);
+				list($this->taxe_time, $this->race, $this->nom, $this->capitale, $this->star, $this->point_victoire, $this->point_victoire_total, $this->star_nouveau_joueur, $this->taxe, $this->diplo_time, $this->honneur_candidat, $this->bourg, $this->pierre, $this->bois, $this->eau, $this->sable, $this->charbon, $this->essence, $this->food, $this->alchimie) = $db->read_array($requeteSQL);
 			}
 			else $this->__construct();
 			$this->id = $id;
@@ -166,6 +177,8 @@ class royaume
 			$this->nom = $id['nom'];
 			$this->capitale = $id['capitale'];
 			$this->star = $id['star'];
+			$this->point_victoire = $id['point_victoire'];
+			$this->point_victoire_total = $id['point_victoire_total'];
 			$this->star_nouveau_joueur = $id['star_nouveau_joueur'];
 			$this->taxe = $id['taxe'];
 			$this->diplo_time = $id['diplo_time'];
@@ -182,12 +195,13 @@ class royaume
 			}
 		else
 		{
-			$this->id = $id;
 			$this->taxe_time = $taxe_time;
 			$this->race = $race;
 			$this->nom = $nom;
 			$this->capitale = $capitale;
 			$this->star = $star;
+			$this->point_victoire = $point_victoire;
+			$this->point_victoire_total = $point_victoire_total;
 			$this->star_nouveau_joueur = $star_nouveau_joueur;
 			$this->taxe = $taxe;
 			$this->diplo_time = $diplo_time;
@@ -201,6 +215,7 @@ class royaume
 			$this->essence = $essence;
 			$this->food = $food;
 			$this->alchimie = $alchimie;
+			$this->id = $id;
 		}
 	}
 
@@ -217,7 +232,7 @@ class royaume
 		{
 			if(count($this->champs_modif) > 0)
 			{
-				if($force) $champs = 'id = '.$this->id.', taxe_time = '.$this->taxe_time.', race = "'.mysql_escape_string($this->race).'", nom = "'.mysql_escape_string($this->nom).'", capitale = "'.mysql_escape_string($this->capitale).'", star = "'.mysql_escape_string($this->star).'", star_nouveau_joueur = "'.mysql_escape_string($this->star_nouveau_joueur).'", taxe = "'.mysql_escape_string($this->taxe).'", diplo_time = "'.mysql_escape_string($this->diplo_time).'", honneur_candidat = "'.mysql_escape_string($this->honneur_candidat).'", bourg = "'.mysql_escape_string($this->bourg).'", pierre = "'.mysql_escape_string($this->pierre).'", bois = "'.mysql_escape_string($this->bois).'", eau = "'.mysql_escape_string($this->eau).'", sable = "'.mysql_escape_string($this->sable).'", charbon = "'.mysql_escape_string($this->charbon).'", essence = "'.mysql_escape_string($this->essence).'", food = "'.mysql_escape_string($this->food).'", alchimie = "'.mysql_escape_string($this->alchimie).'"';
+				if($force) $champs = 'taxe_time = '.$this->taxe_time.', race = "'.mysql_escape_string($this->race).'", nom = "'.mysql_escape_string($this->nom).'", capitale = "'.mysql_escape_string($this->capitale).'", star = "'.mysql_escape_string($this->star).'", point_victoire = "'.mysql_escape_string($this->point_victoire).'", point_victoire_total = "'.mysql_escape_string($this->point_victoire_total).'", star_nouveau_joueur = "'.mysql_escape_string($this->star_nouveau_joueur).'", taxe = "'.mysql_escape_string($this->taxe).'", diplo_time = "'.mysql_escape_string($this->diplo_time).'", honneur_candidat = "'.mysql_escape_string($this->honneur_candidat).'", bourg = "'.mysql_escape_string($this->bourg).'", pierre = "'.mysql_escape_string($this->pierre).'", bois = "'.mysql_escape_string($this->bois).'", eau = "'.mysql_escape_string($this->eau).'", sable = "'.mysql_escape_string($this->sable).'", charbon = "'.mysql_escape_string($this->charbon).'", essence = "'.mysql_escape_string($this->essence).'", food = "'.mysql_escape_string($this->food).'", alchimie = "'.mysql_escape_string($this->alchimie).'"';
 				else
 				{
 					$champs = '';
@@ -236,10 +251,10 @@ class royaume
 		}
 		else
 		{
-			$requete = 'INSERT INTO royaume (id, taxe_time, race, nom, capitale, star, star_nouveau_joueur, taxe, diplo_time, honneur_candidat, bourg, pierre, bois, eau, sable, charbon, essence, food, alchimie) VALUES(';
-			$requete .= ''.$this->id.', '.$this->taxe_time.', "'.mysql_escape_string($this->race).'", "'.mysql_escape_string($this->nom).'", "'.mysql_escape_string($this->capitale).'", "'.mysql_escape_string($this->star).'", "'.mysql_escape_string($this->star_nouveau_joueur).'", "'.mysql_escape_string($this->taxe).'", "'.mysql_escape_string($this->diplo_time).'", "'.mysql_escape_string($this->honneur_candidat).'", "'.mysql_escape_string($this->bourg).'", "'.mysql_escape_string($this->pierre).'", "'.mysql_escape_string($this->bois).'", "'.mysql_escape_string($this->eau).'", "'.mysql_escape_string($this->sable).'", "'.mysql_escape_string($this->charbon).'", "'.mysql_escape_string($this->essence).'", "'.mysql_escape_string($this->food).'", "'.mysql_escape_string($this->alchimie).'")';
+			$requete = 'INSERT INTO royaume (taxe_time, race, nom, capitale, star, point_victoire, point_victoire_total, star_nouveau_joueur, taxe, diplo_time, honneur_candidat, bourg, pierre, bois, eau, sable, charbon, essence, food, alchimie) VALUES(';
+			$requete .= ''.$this->taxe_time.', "'.mysql_escape_string($this->race).'", "'.mysql_escape_string($this->nom).'", "'.mysql_escape_string($this->capitale).'", "'.mysql_escape_string($this->star).'", "'.mysql_escape_string($this->point_victoire).'", "'.mysql_escape_string($this->point_victoire_total).'", "'.mysql_escape_string($this->star_nouveau_joueur).'", "'.mysql_escape_string($this->taxe).'", "'.mysql_escape_string($this->diplo_time).'", "'.mysql_escape_string($this->honneur_candidat).'", "'.mysql_escape_string($this->bourg).'", "'.mysql_escape_string($this->pierre).'", "'.mysql_escape_string($this->bois).'", "'.mysql_escape_string($this->eau).'", "'.mysql_escape_string($this->sable).'", "'.mysql_escape_string($this->charbon).'", "'.mysql_escape_string($this->essence).'", "'.mysql_escape_string($this->food).'", "'.mysql_escape_string($this->alchimie).'")';
 			$db->query($requete);
-			//Récuperation du dernier id inséré.
+			//Récuperation du dernier ID inséré.
 			$this->id = $db->last_insert_id();
 		}
 	}
@@ -296,9 +311,9 @@ class royaume
 			}
 		}
 
-		$requete = "SELECT id, taxe_time, race, nom, capitale, star, star_nouveau_joueur, taxe, diplo_time, honneur_candidat, bourg, pierre, bois, eau, sable, charbon, essence, food, alchimie FROM royaume WHERE ".$where." ORDER BY ".$ordre;
+		$requete = "SELECT id, taxe_time, race, nom, capitale, star, point_victoire, point_victoire_total, star_nouveau_joueur, taxe, diplo_time, honneur_candidat, bourg, pierre, bois, eau, sable, charbon, essence, food, alchimie FROM royaume WHERE ".$where." ORDER BY ".$ordre;
 		$req = $db->query($requete);
-		if($db->num_rows() > 0)
+		if($db->num_rows($req) > 0)
 		{
 			while($row = $db->read_assoc($req))
 			{
@@ -306,7 +321,7 @@ class royaume
 				else $return[$row[$keys]][] = new royaume($row);
 			}
 		}
-		else $return = false;
+		else $return = array();
 		return $return;
 	}
 
@@ -318,7 +333,7 @@ class royaume
 	*/
 	function __toString()
 	{
-		return 'id = '.$this->id.', taxe_time = '.$this->taxe_time.', race = '.$this->race.', nom = '.$this->nom.', capitale = '.$this->capitale.', star = '.$this->star.', star_nouveau_joueur = '.$this->star_nouveau_joueur.', taxe = '.$this->taxe.', diplo_time = '.$this->diplo_time.', honneur_candidat = '.$this->honneur_candidat.', bourg = '.$this->bourg.', pierre = '.$this->pierre.', bois = '.$this->bois.', eau = '.$this->eau.', sable = '.$this->sable.', charbon = '.$this->charbon.', essence = '.$this->essence.', food = '.$this->food.', alchimie = '.$this->alchimie;
+		return 'id = '.$this->id.', taxe_time = '.$this->taxe_time.', race = '.$this->race.', nom = '.$this->nom.', capitale = '.$this->capitale.', star = '.$this->star.', point_victoire = '.$this->point_victoire.', point_victoire_total = '.$this->point_victoire_total.', star_nouveau_joueur = '.$this->star_nouveau_joueur.', taxe = '.$this->taxe.', diplo_time = '.$this->diplo_time.', honneur_candidat = '.$this->honneur_candidat.', bourg = '.$this->bourg.', pierre = '.$this->pierre.', bois = '.$this->bois.', eau = '.$this->eau.', sable = '.$this->sable.', charbon = '.$this->charbon.', essence = '.$this->essence.', food = '.$this->food.', alchimie = '.$this->alchimie;
 	}
 	
 	/**
@@ -391,6 +406,28 @@ class royaume
 	* Retourne la valeur de l'attribut
 	* @access public
 	* @param none
+	* @return int(10) $point_victoire valeur de l'attribut point_victoire
+	*/
+	function get_point_victoire()
+	{
+		return $this->point_victoire;
+	}
+
+	/**
+	* Retourne la valeur de l'attribut
+	* @access public
+	* @param none
+	* @return int(10) $point_victoire_total valeur de l'attribut point_victoire_total
+	*/
+	function get_point_victoire_total()
+	{
+		return $this->point_victoire_total;
+	}
+
+	/**
+	* Retourne la valeur de l'attribut
+	* @access public
+	* @param none
 	* @return mediumint(8) $star_nouveau_joueur valeur de l'attribut star_nouveau_joueur
 	*/
 	function get_star_nouveau_joueur()
@@ -417,7 +454,7 @@ class royaume
 	*/
 	function get_diplo_time()
 	{
-		return unserialize($this->diplo_time);
+		return $this->diplo_time;
 	}
 
 	/**
@@ -531,41 +568,6 @@ class royaume
 	}
 
 	/**
-	* Retourne la valeur de l'attribut
-	* @access public
-	* @param none
-	* @return le nombre d'habitants
-	*/
-	function get_habitants()
-	{
-		global $db;
-		$requete = $db->query("SELECT COUNT(id) as count FROM perso WHERE race = '".$this->get_race()."' AND statut = 'actif'");
-		$row = $db->read_row($requete);
-		return $row[0];
-	}
-
-	/**
-	* Retourne la valeur de l'attribut
-	* @access public
-	* @param none
-	* @return le nombre d'habitants très actif
-	*/
-	function get_habitants_actif()
-	{
-		global $db;
-		$semaine = time() - (3600 * 24 * 7);
-		$requete = $db->query("select sum(level)/count(id) moy from perso WHERE statut = 'actif'");
-		$row = $db->read_row($requete);
-		$ref_ta = min(3, floor($row[0]));
-
-		$requete = $db->query("SELECT COUNT(*) as count FROM perso WHERE race = '".$this->get_race()."' AND level > $ref_ta AND dernier_connexion > ".$semaine." AND statut = 'actif'");
-		$row = $db->read_row($requete);
-		return $row[0];
-
-	}
-
-
-	/**
 	* Modifie la valeur de l'attribut
 	* @access public
 	* @param int(11) $id valeur de l'attribut
@@ -635,6 +637,30 @@ class royaume
 	{
 		$this->star = $star;
 		$this->champs_modif[] = 'star';
+	}
+
+	/**
+	* Modifie la valeur de l'attribut
+	* @access public
+	* @param int(10) $point_victoire valeur de l'attribut
+	* @return none
+	*/
+	function set_point_victoire($point_victoire)
+	{
+		$this->point_victoire = $point_victoire;
+		$this->champs_modif[] = 'point_victoire';
+	}
+
+	/**
+	* Modifie la valeur de l'attribut
+	* @access public
+	* @param int(10) $point_victoire_total valeur de l'attribut
+	* @return none
+	*/
+	function set_point_victoire_total($point_victoire_total)
+	{
+		$this->point_victoire_total = $point_victoire_total;
+		$this->champs_modif[] = 'point_victoire_total';
 	}
 
 	/**
@@ -780,58 +806,6 @@ class royaume
 		$this->food = $food;
 		$this->champs_modif[] = 'food';
 	}
-	/**
-	* Modifie la valeur de l'attribut
-	* @access public
-	*/
-	function get_propagande()
-	{
-		global $db;
-		$req = $db->query("SELECT propagande FROM motk WHERE id_royaume = ".$this->get_id()."");
-		$row = $db->read_object($req);
-		return $row->propagande;
-		
-	}
-
-	/**
-	* Modifie la valeur de l'attribut
-	message if the king
-	* @access public
-	*/
-	function get_motk()
-	{
-		global $db;
-		$req = $db->query("SELECT message FROM motk WHERE id_royaume = ".$this->get_id()."");
-		$row = $db->read_object($req);
-		return $row->message;
-	}
-
-
-	/**
-	* Modifie la valeur de l'attribut
-	* @access public
-	*/
-	function set_propagande($message)
-	{
-		global $db;
-		$message = addslashes($message);
-		$requete = "UPDATE motk SET propagande = '".$message."' WHERE id_royaume = ".$this->get_id();
-		if($req = $db->query($requete)){return true;}else{return false;}
-	}
-
-	/**
-	* Modifie la valeur de l'attribut
-	message if the king
-	* @access public
-	*/
-	function set_motk($message)
-	{
-		global $db;
-		$message = addslashes($message);
-		$requete = "UPDATE motk SET message = '".$message."' WHERE id_royaume = ".$this->get_id();
-		if($req = $db->query($requete)){return true;}else{return false;}
-	}
-
 
 	/**
 	* Modifie la valeur de l'attribut
@@ -844,8 +818,7 @@ class royaume
 		$this->alchimie = $alchimie;
 		$this->champs_modif[] = 'alchimie';
 	}
-
-	//fonction
+//fonction
 	function get_diplo($race_joueur)
 	{
 		global $db;
@@ -915,6 +888,40 @@ class royaume
 			if(in_array($diplomatie, $valeurs)) $nb++;
 		}
 		return $nb;
+	}
+
+	/**
+	* Retourne la valeur de l'attribut
+	* @access public
+	* @param none
+	* @return le nombre d'habitants
+	*/
+	function get_habitants()
+	{
+		global $db;
+		$requete = $db->query("SELECT COUNT(id) as count FROM perso WHERE race = '".$this->get_race()."' AND statut = 'actif'");
+		$row = $db->read_row($requete);
+		return $row[0];
+	}
+
+	/**
+	* Retourne la valeur de l'attribut
+	* @access public
+	* @param none
+	* @return le nombre d'habitants très actif
+	*/
+	function get_habitants_actif()
+	{
+		global $db;
+		$semaine = time() - (3600 * 24 * 7);
+		$requete = $db->query("select sum(level)/count(id) moy from perso WHERE statut = 'actif'");
+		$row = $db->read_row($requete);
+		$ref_ta = min(3, floor($row[0]));
+
+		$requete = $db->query("SELECT COUNT(*) as count FROM perso WHERE race = '".$this->get_race()."' AND level > $ref_ta AND dernier_connexion > ".$semaine." AND statut = 'actif'");
+		$row = $db->read_row($requete);
+		return $row[0];
+
 	}
 }
 ?>
