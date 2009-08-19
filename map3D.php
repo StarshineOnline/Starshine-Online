@@ -2,8 +2,6 @@
 //Inclusion des fonctions permettant de gérer le temps
 if (file_exists('root.php'))
   include_once('root.php');
-$interface_3D=true;
-include(root."haut.php");
 /*
 function convert_in_coord($pos)
 {
@@ -26,31 +24,6 @@ function calcul_distance_pytagore($posjoueur1, $posjoueur2)
 	return $R_distance;
 }
 */
-?>
-<style>
-html, body { width:100%; height:100%; margin:0px; padding:0px; }
-body { background:#C6D9F5 url('../image/html.png') center; }
-
-#perso { z-index:999; margin-top:-15px; width:70px; height:36px; background:transparent url('../image/scavenger_voleur.png') center no-repeat; }
-.poring { z-index:200; margin-top:-50px; width:80px; height:80px; background:transparent url('../image/poring00.gif') center; }
-
-.hover { position:absolute; margin-left:20px; margin-top:5px; width:41px; height: 35px; z-index:999; }
-
-ul { position:absolute; list-style-type:none; }
-li { position:absolute; width:100px; height:60px;  }
-.case { background:transparent url('image/tex_herbe1.png') center; }
-.bord_bas { background:transparent url('image/bord_bas.png') center; color:black; font-size:7pt; font-weight:bold; height:50px; padding-left:65px; padding-top:10px; text-align:left; width:35px;  }
-.bord_haut { background:transparent url('image/bord_haut.png') center; color:black; font-size:7pt; font-weight:bold; height:50px; padding-left:28px; padding-top:10px; width:72px; }
-#bord_gauche { color:black; background:transparent url('image/bord_gauche.png') center; font-size:7pt; font-weight:bold; }
-
-#global { width:960px; height:100%; min-height:100%; background:transparent url('image/backtest.png') top no-repeat; margin:0px auto 0px auto; border:1px solid red; }
-#header { height:175px; border:1px solid blue; }
-#logo { float:right; width:266px; height:197px; background:transparent url('image/logossot.png') center; }
-#content { float:left; clear:both; width:750px; }
-.decor {width:100px;}
-
-</style>
-<?php
 $Tclasse['combattant']['type'] = 'guerrier';
 $Tclasse['magicien']['type'] = 'mage';
 $Tclasse['voleur']['type'] = 'voleur';
@@ -175,7 +148,7 @@ $Tclasse['grand nécromancien']['type'] = 'archimage';
 	}
 }
 echo "<div id='carte_3D'>";
-echo "<div><b>Debug :</b><br/>x : $x, y : $y<br/>x_min : $x_min, x_max : $x_max<br/>y_min : $y_min, y_max : $y_max<br/></div>";
+//echo "<div><b>Debug :</b><br/>x : $x, y : $y<br/>x_min : $x_min, x_max : $x_max<br/>y_min : $y_min, y_max : $y_max<br/></div>";
 {//-- MAP
 	$x_pos = $x_init;
 	$y_pos = $y_init;
@@ -266,5 +239,5 @@ echo "<div><b>Debug :</b><br/>x : $x, y : $y<br/>x_min : $x_min, x_max : $x_max<
 }
 echo "  </div>";
 
-print_foot();
+
 ?>
