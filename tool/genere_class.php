@@ -55,12 +55,19 @@ foreach($champs as $key => $champ)
 		 $liste[] = '$this->'.$champ['Field'].' = $'.$champ['Field'].';
 			';
 	}
-	if($type == 'string') $liste_arguments[] = '$'.$champ['Field']." = ''";
-	else $liste_arguments[] = '$'.$champ['Field'].' = 0';
+	if($type == 'string') {
+		$liste_arguments[] = '$'.$champ['Field']." = ''";
+		$liste_arguments_names[] = '$'.$champ['Field'];
+	}
+	else {
+		$liste_arguments[] = '$'.$champ['Field'].' = 0';
+		$liste_arguments_names[] = '$'.$champ['Field'];
+	}
 	$champs[$key]['Type_doc'] = $champ['Type'];
 	$champs[$key]['Type_doc'] = str_ireplace(' unsigned', '', $champs[$key]['Type_doc']);
 }
 $liste_arguments = implode(', ', $liste_arguments);
+$liste_arguments_names = implode(', ', $liste_arguments_names);
 $liste_update = implode(", ", $liste_update);
 $liste_tostring = implode(".', ", $liste_tostring);
 $liste_array = implode('', $liste_array);
@@ -71,7 +78,7 @@ $liste_attributs = implode(', ', $liste_attributs);
 echo '<?php
 ';
 ?>
-class <?php echo $table; ?>
+class <?php echo $table; ?>_db
 
 {
 <?php
@@ -275,6 +282,20 @@ $this-><?php echo $champ_reference; ?> = $<?php echo $champ_reference; ?>;
 	}
 ';
 	}
+
+
+		echo "
+}
+
+class $table extends ${table}_db {
+  function __construct($liste_arguments) {
+    parent::__construct($liste_arguments_names);
+  }
+
+";
+
+
+
 	//Inclusion des fonctions spécifiques
 	$filename= 'class/'.$table.'.class.php';
 	$new_file = ob_get_contents();
@@ -287,8 +308,9 @@ $this-><?php echo $champ_reference; ?> = $<?php echo $champ_reference; ?>;
 	}
 	else
 	{
-		$string .= '
-		//fonction
+		$string = '
+  //fonction
+
 }
 ?>
 ';
