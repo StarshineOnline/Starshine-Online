@@ -2593,9 +2593,49 @@ class perso
 		return false;
 	}
 
-	function get_competence()
+	/**
+	 * Permet de savoir si le joueur possède la compétence nom
+	 * @param $nom le nom de la compétence
+	 * @return true si le perso est sous le debuff false sinon.
+ 	*/
+	function is_competence($nom = '')
 	{
-		return array();
+		if(!isset($this->competences)) $this->get_competence();
+		$competence = false;
+
+		if(is_array($this->competences))
+		{
+			$tmp = $this->competences;
+			while(current($tmp) && !$competence)
+			{
+				if(!empty($nom))
+				{
+					if(strcmp(current($tmp)->get_competence(), $nom) == 0)
+						$competence = true;
+
+					next($tmp);
+				}
+				else
+					$competence = (count($this->competences) > 0);
+			}
+		}
+		else $competence = false;
+
+		return $competence;
+	}
+
+	function get_competence($nom = false, $champ = false)
+	{
+		if(!$nom)
+		{
+			$this->competences = comp_perso::create(array('id_perso'), array($this->id));
+			return $this->competences;
+		}
+		else
+		{
+			if(!isset($this->competences)) $this->get_competence();
+			return $this->competences[$nom][$champ];
+		}
 	}
 
 	function get_arme_degat()

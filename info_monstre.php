@@ -12,23 +12,23 @@ $W_case = $_GET['poscase'];
 $joueur = new perso($_SESSION['ID']);
 $monstre = recupmonstre($W_ID);
 
-$survie = $joueur['survie'];
-if($monstre['espece'] == 'bete' AND array_key_exists('survie_bete', $joueur['competences'])) $survie += $joueur['competences']['survie_bete'];
-if($monstre['espece'] == 'humanoide' AND array_key_exists('survie_humanoide', $joueur['competences'])) $survie += $joueur['competences']['survie_humanoide'];
-if($monstre['espece'] == 'magique' AND array_key_exists('survie_magique', $joueur['competences'])) $survie += $joueur['competences']['survie_magique'];
+$survie = $joueur->get_survie();
+if($monstre['espece'] == 'bete' AND $joueur->is_competence('survie_bete')) $survie += $joueur->get_competence('survie_bete', 'effet');
+if($monstre['espece'] == 'humanoide' AND $joueur->is_competence('survie_humanoide')) $survie += $joueur->get_competence('survie_humanoide');
+if($monstre['espece'] == 'magique' AND $joueur->is_competence('survie_magique')) $survie += $joueur->get_competence('survie_magique');
 $pa_attaque = $G_PA_attaque_monstre;
-if(array_key_exists('cout_attaque', $joueur['debuff'])) $pa_attaque = ceil($pa_attaque / $joueur['debuff']['cout_attaque']['effet']);
-if(array_key_exists('plus_cout_attaque', $joueur['debuff'])) $pa_attaque = $pa_attaque * $joueur['debuff']['plus_cout_attaque']['effet'];
-if(array_key_exists('buff_rapidite', $joueur['buff'])) $reduction_pa = $joueur['buff']['buff_rapidite']['effet']; else $reduction_pa = 0;
-if(array_key_exists('debuff_ralentissement', $joueur['debuff'])) $reduction_pa -= $joueur['debuff']['debuff_ralentissement']['effet'];
+if($joueur->is_debuff('cout_attaque')) $pa_attaque = ceil($pa_attaque / $joueur->get_debuff('cout_attaque', 'effet'));
+if($joueur->is_debuff('plus_cout_attaque')) $pa_attaque = $pa_attaque * $joueur->get_debuff('plus_cout_attaque');
+if($joueur->is_buff('buff_rapidite')) $reduction_pa = $joueur->get_buff('buff_rapidite'); else $reduction_pa = 0;
+if($joueur->is_debuff('debuff_ralentissement')) $reduction_pa -= $joueur->get_debuff('debuff_ralentissement');
 $coeff = floor($survie / $monstre['level']);
 ?>
 <fieldset>
 	<legend>Information sur <?php echo $monstre['nom'] ?></legend>
 	<p>Niveau : <?php echo $monstre['level']; ?><?php if($coeff >= 7) echo ' - Type : '.$monstre['espece']; ?>&nbsp;&nbsp;&nbsp;&nbsp;
 	<?php
-	if(!array_key_exists('repos_sage', $joueur['debuff']) OR !array_key_exists('bloque_attaque', $joueur['debuff'])) echo '<a href="attaque_monstre.php?ID='.$monstre['id'].'&poscase='.$W_case.'" onclick="return envoiInfo(this.href, \'information\')"><img src="image/interface/attaquer.png" alt="Combattre" title="Attaquer ('.($pa_attaque - $reduction_pa).' PA)" style="vertical-align : middle;" /> </a>';
-	if($joueur['sort_jeu'] != '') echo ' <a href="sort_monstre.php?poscase='.$W_case.'&amp;id_monstre='.$monstre['id'].'" onclick="return envoiInfo(this.href, \'information\')"><img src="image/sort_hc_icone.png" title="Lancer un sort" alt="Lancer un sort" style="vertical-align : middle;" /></a>';
+	if(!$joueur->is_debuff('repos_sage') OR !$joueur->is_debuff('bloque_attaque')) echo '<a href="attaque_monstre.php?ID='.$monstre['id'].'&poscase='.$W_case.'" onclick="return envoiInfo(this.href, \'information\')"><img src="image/interface/attaquer.png" alt="Combattre" title="Attaquer ('.($pa_attaque - $reduction_pa).' PA)" style="vertical-align : middle;" /> </a>';
+	if($joueur->get_sort_jeu() != '') echo ' <a href="sort_monstre.php?poscase='.$W_case.'&amp;id_monstre='.$monstre['id'].'" onclick="return envoiInfo(this.href, \'information\')"><img src="image/sort_hc_icone.png" title="Lancer un sort" alt="Lancer un sort" style="vertical-align : middle;" /></a>';
 	echo '<a href="informationcase.php?case='.$W_case.'" onclick="return envoiInfo(this.href, \'information\')"><img src="image/interface/retour.png" alt="Retour" title="Retour à l\'information case" style="vertical-align : middle;" /></a>';
 	echo '<br />';
 	//Listing des debuffs
@@ -42,10 +42,6 @@ $coeff = floor($survie / $monstre['level']);
 	?>
 	</p>
 	<?php
-	$survie = $joueur['survie'];
-	if($monstre['espece'] == 'bete' AND array_key_exists('survie_bete', $joueur['competences'])) $survie += $joueur['competences']['survie_bete'];
-	if($monstre['espece'] == 'humanoide' AND array_key_exists('survie_humanoide', $joueur['competences'])) $survie += $joueur['competences']['survie_humanoide'];
-	if($monstre['espece'] == 'magique' AND array_key_exists('survie_magique', $joueur['competences'])) $survie += $joueur['competences']['survie_magique'];
 	if($monstre['level'] > 0) $level = $monstre['level']; else $level = 1;
 	$nbr_barre_total = ceil($survie / $level);
 	if($nbr_barre_total < 1) $nbr_barre_total = 1;

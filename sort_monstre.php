@@ -29,7 +29,7 @@ if (isset($_GET['ID']))
 		$sortpa = round($row['pa'] * $joueur->get_facteur_magie());
 		$sortmp = round($row['mp'] * (1 - (($Trace[$joueur->get_race()]['affinite_'.$row['comp_assoc']] - 5) / 10)));
 		//Réduction du cout par concentration
-		if(array_key_exists('buff_concentration', $joueur->get_buff())) $sortmp = ceil($sortmp * (1 - ($joueur->get_buff('buff_concentration','effet') / 100)));
+		if($joueur->is_buff('buff_concentration')) $sortmp = ceil($sortmp * (1 - ($joueur->get_buff('buff_concentration','effet') / 100)));
 		if($joueur->get_pa() < $sortpa)
 		{
 			echo 'Pas assez de PA';
@@ -51,8 +51,8 @@ if (isset($_GET['ID']))
 					//Test d'esquive du sort
 					$attaque = rand(0, ($joueur->get_volonte() * ($joueur[$row['comp_assoc']] + $joueur->get_incantation())));
 					$defense = rand(0, ($cible['volonte'] * $cible->get_pm() / 3));
-					$joueur->get_pa() = $joueur->get_pa() - $sortpa;
-					$joueur->get_mp() = $joueur->get_mp() - $sortmp;
+					$joueur->set_pa($joueur->get_pa() - $sortpa);
+					$joueur->set_mp($joueur->get_mp() - $sortmp);
 					if ($attaque > $defense)
 					{
 						//Mis en place du debuff
@@ -74,7 +74,7 @@ if (isset($_GET['ID']))
 					$augmentation = augmentation_competence('incantation', $joueur, $difficulte_sort);
 					if ($augmentation[1] == 1)
 					{
-						$joueur->get_incantation() = $augmentation[0];
+						$joueur->set_incantation($augmentation[0]);
 						echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant à '.$joueur->get_incantation().' en incantation</span><br />';
 					}
 					$difficulte_sort = diff_sort($row['difficulte'], $joueur, $row['comp_assoc'], $sortpa_base, $sortmp_base);
@@ -119,8 +119,8 @@ if (isset($_GET['ID']))
 							echo $cible->get_nom().' resiste a votre sort !<br />';
 			 			}
 			 		}
-					$joueur->get_pa() = $joueur->get_pa() - $sortpa;
-					$joueur->get_mp() = $joueur->get_mp() - $sortmp;
+					$joueur->set_pa($joueur->get_pa() - $sortpa);
+					$joueur->set_mp($joueur->get_mp() - $sortmp);
 					//Augmentation des compétences
 					$difficulte_sort = diff_sort($row['difficulte'], $joueur, 'incantation', $sortpa_base, $sortmp_base);
 					$augmentation = augmentation_competence('incantation', $joueur, $difficulte_sort);

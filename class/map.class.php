@@ -27,6 +27,7 @@ class map
 		$this->resolution = $resolution;
 		$this->donjon = $donjon;
 		$this->onclick = "envoiInfo('informationcase.php?case=%%id%%', 'information');";
+		$this->onclick_status = false;
 		$this->cache_monstre = false;
 		
 		$this->case_affiche = ($this->champ_vision * 2) + 1;
@@ -220,10 +221,11 @@ class map
 						echo "	onmouseover=\"return overlib('$overlib', BGCLASS, 'overlib', BGCOLOR, '', FGCOLOR, '');\" 
 						   		onmouseout=\"return nd();\" ";
 					}
-					if($this->onclick_status == true)
+					if($this->onclick_status)
 					{
 						$onclick = str_replace('%%id%%', $MAPTAB[$x_map][$y_map]['id'], $this->onclick);
 					}
+					else $onclick = $this->onclick;
 					echo " 		onclick=\"".$onclick."\" 
 						   >".$repere."</div>
 						  </li>";	
