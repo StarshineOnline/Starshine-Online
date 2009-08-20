@@ -47,7 +47,7 @@ while($row = $db->read_assoc($req))
 	}
 }
 
-print_r($ress);
+//print_r($ress);
 //Ressource normale
 $i = 0;
 $key = array_keys($ressources);

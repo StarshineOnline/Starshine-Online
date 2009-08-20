@@ -151,11 +151,11 @@ class craft_recette
 		$types['four'] = array();
 		$types['cornue'] = array();
 		//Si on est en ville
-		if(verif_ville($joueur['x'], $joueur['y']))
+		if(verif_ville($joueur->get_x(), $joueur->get_y()))
 		{
 			if($R['diplo'] == 127)
 			{
-				//On r�cup�re toutes les infos sur le labo du joueur (ou pas)
+				//On récupère toutes les infos sur le labo du joueur (ou pas)
 				$terrain = new terrain();
 				$terrain = $terrain->recoverByIdJoueur($joueur->get_id());
 				//Si il poss?de un terrain

@@ -151,7 +151,8 @@ while($row = $db->read_assoc($req))
 	$recette->get_instruments();
 	$alchimie = $joueur->get_alchimie();
 	if($joueur->get_race() == 'scavenger') $alchimie = round($alchimie * 1.45);
-	if($joueur['accessoire']['id'] != '0' AND $joueur['accessoire']['type'] == 'fabrication') $alchimie = round($alchimie * (1 + ($joueur['accessoire']['effet'] / 100)));
+	$accessoire = new accessoire($joueur->get_inventaire_partie('accessoire'));
+	if($accessoire->get_id() != '0' AND $accessoire->get_type() == 'fabrication') $alchimie = round($alchimie * (1 + ($accessoire->get_effet() / 100)));
 	$chance_reussite = pourcent_reussite($alchimie, $recette->difficulte);
 	?>
 	<div class="information_case" id="recette<?php echo $row['id_recette']; ?>" style="display : none;">

@@ -1,5 +1,5 @@
 <?php
-class perso
+class perso extends entite
 {
 /**
     * @access private

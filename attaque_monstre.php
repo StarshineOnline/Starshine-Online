@@ -20,13 +20,12 @@ if(array_key_exists('type', $_GET) AND $_GET['type'] == 'batiment')
 else
 {
 	$ennemi = 'monstre';
-	$defenseur = recupmonstre($W_ID);
-	$defenseur['type2'] = 'monstre';
+	$defenseur = new monstre($W_ID);
+	$defenseur->type2 = 'monstre';
 	$pa_attaque = $G_PA_attaque_monstre;
 }
 
 $action_a = recupaction($attaquant->get_action_a());
-$defenseur['action_d'] = $defenseur['action_d'];
 
 //Case du monstre
 $W_case = $_GET['poscase'];
@@ -38,7 +37,7 @@ $W_distance = detection_distance($W_case, $attaquant->get_pos());
 
 ?>
 <fieldset>
-	<legend>Combat VS <?php echo $defenseur['nom']; ?></legend>
+	<legend>Combat VS <?php echo $defenseur->get_nom(); ?></legend>
 <?php
 if($W_distance > $attaquant->get_distance_tir())
 {
@@ -49,22 +48,22 @@ else
 	$round = 1;
 	$debugs = 0;
 	$attaquant->etat = array();
-	$defenseur['etat'] = array();
+	$defenseur->etat = array();
 	
 	if($attaquant->is_debuff('cout_attaque')) $pa_attaque = ceil($pa_attaque / $attaquant->get_debuff('cout_attaque', 'effet'));
 	if($attaquant->is_debuff('plus_cout_attaque')) $pa_attaque = $pa_attaque * $attaquant->get_debuff('plus_cout_attaque', 'effet');
 	if($attaquant->is_buff('buff_rapidite')) $reduction_pa = $attaquant->get_buff('buff_rapidite', 'effet'); else $reduction_pa = 0;
 	if($attaquant->is_debuff('debuff_ralentissement')) $reduction_pa -= $attaquant->get_debuff('debuff_ralentissement', 'effet');
 	if($attaquant->is_debuff('engloutissement')) $attaquant['dexterite'] -= $attaquant->get_debuff('engloutissement', 'effet');
-	//if($defenseur->is_debuff('engloutissement')) $defenseur['dexterite'] -= $defenseur->get_debuff('engloutissement', 'effet');
+	if($defenseur->is_debuff('engloutissement')) $defenseur['dexterite'] -= $defenseur->get_debuff('engloutissement', 'effet');
 	if($attaquant->is_debuff('deluge')) $attaquant['volonte'] -= $attaquant->get_debuff('deluge', 'effet');
-	//if($defenseur->is_debuff('deluge')) $defenseur['volonte'] -= $defenseur->get_debuff('deluge', 'effet');
+	if($defenseur->is_debuff('deluge')) $defenseur['volonte'] -= $defenseur->get_debuff('deluge', 'effet');
 
 	if(is_donjon($attaquant->get_x(), $attaquant->get_y()))
 	{
 		$round_total = 20;
-		$attaquant['reserve'] = $attaquant['reserve'] * 2;
-		$defenseur['reserve'] = $defenseur['reserve'] * 2;
+		$attaquant->reserve = $attaquant->reserve * 2;
+		$defenseur->reserve = $defenseur->reserve * 2;
 		//Un monstre attaque pas de pa pour attaquer
 		if(array_key_exists('attaque_donjon', $_SESSION) AND $_SESSION['attaque_donjon'] == 'ok')
 		{
@@ -73,7 +72,7 @@ else
 		}
 	}
 	else $round_total = $G_round_total;
-	if($attaquant->get_race() == 'orc' OR $defenseur['race'] == 'orc') $round_total += 1;
+	if($attaquant->get_race() == 'orc') $round_total += 1;
 	if($attaquant->is_buff('buff_sacrifice')) $round_total -= $attaquant->get_buff('buff_sacrifice', 'effet2');
 	//Vérifie si l'attaquant a assez de points d'actions pour attaquer
 	$pa_attaque = $pa_attaque - $reduction_pa;
@@ -89,10 +88,10 @@ else
 				$db->query($requete);
 			}
 			//Boucle principale qui fait durer le combat $round_total round
-			while(($round < ($round_total + 1)) AND ($attaquant->get_hp() > 0) AND ($defenseur['hp'] > 0))
+			while(($round < ($round_total + 1)) AND ($attaquant->get_hp() > 0) AND ($defenseur->get_hp() > 0))
 			{
 				if($attaquant->get_arme_type() == 'arc') $attaquant->comp = 'distance'; else $attaquant->comp = 'melee';
-				$defenseur['comp'] = 'melee';
+				$defenseur->comp = 'melee';
 				//Calcul du potentiel de toucher et parer
 				$attaquant->get_potentiel_toucher();
 				$defenseur->get_potentiel_toucher();
@@ -308,7 +307,7 @@ else
 					}
 					$args[] = 'hp = '.$attaquant->get_hp();
 					if($attaquant['bouclier']) $args[] = 'blocage = '.$attaquant['blocage'];
-					$args_def[] = 'hp = '.$defenseur['hp'];
+					$args_def[] = 'hp = '.$defenseur->get_hp();
 					
 					//Update de la base de donnée.
 					//Correction des bonus ignorables
@@ -324,7 +323,7 @@ else
 					}
 					elseif($ennemi == 'batiment')
 					{
-						$requete = 'UPDATE '.sSQL($_GET['table']).' SET hp = '.$defenseur['hp'].' WHERE id = '.$W_ID;
+						$requete = 'UPDATE '.sSQL($_GET['table']).' SET hp = '.$defenseur->get_hp().' WHERE id = '.$W_ID;
 					}
 					$req = $db->query($requete);
 				?>
@@ -348,15 +347,15 @@ else
 			</table>
 					<?php
 			}
-			$survie = $attaquant['survie'];
-			if($defenseur['espece'] == 'bete' AND array_key_exists('survie_bete', $attaquant['competences'])) $survie += $attaquant['competences']['survie_bete'];
-			if($defenseur['espece'] == 'humanoide' AND array_key_exists('survie_humanoide', $attaquant['competences'])) $survie += $attaquant['competences']['survie_humanoide'];
-			if($defenseur['espece'] == 'magique' AND array_key_exists('survie_magique', $attaquant['competences'])) $survie += $attaquant['competences']['survie_magique'];
-			if($defenseur['level'] > 0) $level = $defenseur['level']; else $level = 1;
+			$survie = $attaquant->get_survie();
+			if($defenseur->get_type() == 'bete' AND $attaquant->is_competence('survie_bete')) $survie += $attaquant->get_competence('survie_bete', 'valeur');
+			if($defenseur->get_type() == 'humanoide' AND $attaquant->is_competence('survie_humanoide')) $survie += $attaquant->get_competence('survie_humanoide', 'valeur');
+			if($defenseur->get_type() == 'magique' AND $attaquant->is_competence('survie_magique')) $survie += $attaquant->get_competence('survie_magique', 'valeur');
+			if($defenseur->get_level() > 0) $level = $defenseur->get_level(); else $level = 1;
 			$nbr_barre_total = ceil($survie / $level);
 			if($nbr_barre_total < 1) $nbr_barre_total = 1;
 			if($nbr_barre_total > 100) $nbr_barre_total = 100;
-			$nbr_barre = round(($defenseur['hp'] / $defenseur['hp_max_1']) * $nbr_barre_total);
+			$nbr_barre = round(($defenseur->get_hp() / $defenseur->get_hp_max()) * $nbr_barre_total);
 			$longueur = round(100 * ($nbr_barre / $nbr_barre_total), 2);
 			if($longueur < 0) $longueur = 0;
 			$fiabilite = round((100 / $nbr_barre_total), 2);
@@ -368,53 +367,53 @@ else
 			//		var_dump($augmentation);
 			if($augmentation[1] == 1)
 			{
-				$attaquant['survie'] = $augmentation[0];
+				$attaquant->set_survie($augmentation[0]);
 				echo '<span class="augcomp">Vous êtes maintenant à '.$attaquant['survie'].' en '.$Gtrad['survie'].'</span>';
 			}
 
-			if($defenseur['espece'] == 'bete' AND array_key_exists('survie_bete', $attaquant['competences']))
+			if($defenseur->get_type() == 'bete' AND $attaquant->is_competence('survie_bete'))
 			{
 				//Augmentation des compétences liées
-				$attaquant['survie_bete'] = $attaquant['competences']['survie_bete'];
+				$attaquant->survie_bete = $attaquant->get_competence('survie_bete', 'valeur');
 				$augmentation = augmentation_competence('survie_bete', $attaquant, 4);
 				if($augmentation[1] == 1)
 				{
-					$attaquant['survie_bete'] = $augmentation[0];
-					echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant à '.$attaquant['survie_bete'].' en '.$Gtrad['survie_bete'].'</span><br />';
-					$db->query("UPDATE comp_perso SET valeur = ".$augmentation[0]." WHERE id_perso = ".$attaquant['ID']." AND competence = 'survie_bete'");
+					$attaquant->competences['survie_bete']->set_valeur($augmentation[0]);
+					echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant à '.$augmentation[0].' en '.$Gtrad['survie_bete'].'</span><br />';
+					$attaquant->competences['survie_bete']->sauver();
 				}
 			}
-			if($defenseur['espece'] == 'magique' AND array_key_exists('survie_magique', $attaquant['competences']))
+			if($defenseur->get_type() == 'magique' AND $attaquant->is_competence('survie_magique'))
 			{
 				//Augmentation des compétences liées
-				$attaquant['survie_magique'] = $attaquant['competences']['survie_magique'];
+				$attaquant->survie_magique = $attaquant->get_competence('survie_magique', 'valeur');
 				$augmentation = augmentation_competence('survie_magique', $attaquant, 4);
 				if($augmentation[1] == 1)
 				{
-					$attaquant['survie_magique'] = $augmentation[0];
-					echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant à '.$attaquant['survie_magique'].' en '.$Gtrad['survie_magique'].'</span><br />';
-					$db->query("UPDATE comp_perso SET valeur = ".$augmentation[0]." WHERE id_perso = ".$attaquant['ID']." AND competence = 'survie_magique'");
+					$attaquant->competences['survie_magique']->set_valeur($augmentation[0]);
+					echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant à '.$augmentation[0].' en '.$Gtrad['survie_magique'].'</span><br />';
+					$attaquant->competences['survie_magique']->sauver();
 				}
 			}
-			if($defenseur['espece'] == 'humanoide' AND array_key_exists('survie_humanoide', $attaquant['competences']))
+			if($defenseur->get_type() == 'humanoide' AND  $attaquant->is_competence('survie_humanoide'))
 			{
 				//Augmentation des compétences liées
-				$attaquant['survie_humanoide'] = $attaquant['competences']['survie_humanoide'];
+				$attaquant->survie_humanoide = $attaquant->get_competence('survie_humanoide', 'valeur');
 				$augmentation = augmentation_competence('survie_humanoide', $attaquant, 4);
 				if($augmentation[1] == 1)
 				{
-					$attaquant['survie_humanoide'] = $augmentation[0];
-					echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant à '.$attaquant['survie_humanoide'].' en '.$Gtrad['survie_humanoide'].'</span><br />';
-					$db->query("UPDATE comp_perso SET valeur = ".$augmentation[0]." WHERE id_perso = ".$attaquant['ID']." AND competence = 'survie_humanoide'");
+					$attaquant->competences['survie_humanoide']->set_valeur($augmentation[0]);
+					echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant à '.$augmentation[0].' en '.$Gtrad['survie_humanoide'].'</span><br />';
+					$attaquant->competences['survie_humanoide']->sauver();
 				}
 			}
 			echo ' 
 			<div id="combat_cartouche">
 			<ul style="float:left;">
-				<li><span style="display:block;float:left;width:150px;">'.$attaquant['nom'].'</span>
+				<li><span style="display:block;float:left;width:150px;">'.$attaquant->get_nom().'</span>
 					<span style="display:block;float:left;width:150px;">'.$attaquant->get_hp().' HP</span>
 					</li>
-					<li><span style="display:block;float:left;width:150px;">'.$defenseur['nom'].'</span>
+					<li><span style="display:block;float:left;width:150px;">'.$defenseur->get_nom().'</span>
 						<span style="display:block;float:left;width:150px;"><img src="genere_barre_vie.php?longueur='.$longueur.'" alt="Estimation des HP : '.$longueur.'% / + ou - : '.$fiabilite.'%"" title="Estimation des HP : '.$longueur.'% / + ou - : '.$fiabilite.'%" /></span>
 					<li>
 			</ul>
@@ -422,8 +421,7 @@ else
 			//L'attaquant est mort !
 			if ($attaquant->get_hp() <= 0)
 			{
-				$requete = 'UPDATE perso SET mort = mort + 1, honneur = honneur * '.$coeff.' WHERE ID = '.$attaquant['ID'];
-				$db->query($requete);
+				$attaquant->set_mort($attaquant->get_mort() + 1);
 			}
 			$gains_xp = false;
 			$gains_drop = false;
@@ -499,8 +497,7 @@ else
 					}
 					//On retrouve les points de victoire
 					$point_victoire = $defenseur->get_point_victoire();
-					$R->set_point_victoire($R->get_point_victoire() + $point_victoire);
-					$R->set_point_victoire_total($R->get_point_victoire_total() + $point_victoire);
+					$R->add_point_victoire($point_victoire);
 					//On efface le batiment
 					$defenseur->supprimer();
 				}

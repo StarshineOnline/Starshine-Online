@@ -100,6 +100,15 @@ copy('image/stat_joueur.png', 'image/stat/'.$date.'/stat_joueur.png');
 copy('image/stat_monstre.png', 'image/stat/'.$date.'/stat_monstre.png');
 copy('image/stat_niveau_moyen.png', 'image/stat/'.$date.'/stat_niveau_moyen.png');
 
+//Récupération de points de victoire
+$requete = "SELECT royaume FROM map WHERE type = '3' AND royaume != 0";
+$req = $db->quert($requete);
+while($row = $db->read_assoc($req))
+{
+	$requete = "UPDATE royaume SET point_victoire = point_victoire + 1, point_victoire_total = point_victoire_total + 1 WHERE id = ".$row['royaume'];
+	$db->query($requete);
+}
+
 //Entretien des batiments et constructions
 $semaine = time() - (3600 * 24 * 7);
 $royaumes = array();

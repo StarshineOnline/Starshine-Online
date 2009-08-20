@@ -4,7 +4,7 @@ if (file_exists('root.php'))
 ?><?php
 //JOURNALIER TRAITEMENT DES LOGS //
 include_once(root.'class/db.class.php');
-//Récupération des variables de connexion à la base et connexion à cette base
+//RÃ©cupÃ©ration des variables de connexion Ã  la base et connexion Ã  cette base
 include_once(root.'connect.php');
 include_once(root.'connect_log.php');
 
@@ -26,7 +26,7 @@ while($row = $db->read_assoc($req))
 	if(!$db_log->table_exists($table))
 	{
 		$db_log->query("CREATE TABLE `".$table."` (`id` int(10) unsigned NOT NULL, `id_joueur` int(10) unsigned NOT NULL default '0', `time` int(10) unsigned NOT NULL default '0', `ip` varchar(50) NOT NULL default '', `message` text NOT NULL, PRIMARY KEY  (`id`)) ENGINE=MyISAM  DEFAULT CHARSET=utf8;");
-		echo 'Création de la table : '.$table.'<br />';
+		echo 'CrÃ©ation de la table : '.$table.'<br />';
 	}
 	$requete = "INSERT INTO `".$table."` VALUES(".$row['id'].", ".$row['id_joueur'].", ".$row['time'].", '".$row['ip']."', '".$row['message']."');";
 	$db_log->query($requete);
@@ -46,7 +46,7 @@ while($row = $db->read_assoc($req))
 	if(!$db_log->table_exists($table))
 	{
 		$db_log->query("CREATE TABLE `".$table."` (`id` int(10) unsigned NOT NULL, `id_perso` int(10) unsigned NOT NULL default '0', `action` varchar(50) NOT NULL default '', `actif` varchar(50) NOT NULL default '', `passif` varchar(50) NOT NULL default '', `time` datetime NOT NULL default '0000-00-00 00:00:00', `valeur` text NOT NULL, `valeur2` int(11) NOT NULL default '0', `x` mediumint(9) NOT NULL, `y` mediumint(9) NOT NULL, PRIMARY KEY  (`id`)) ENGINE=MyISAM  DEFAULT CHARSET=utf8 ;");
-		//echo 'Création de la table : '.$table.'<br />';
+		//echo 'Crï¿½ation de la table : '.$table.'<br />';
 	}
 	$requete = "INSERT INTO `".$table."` VALUES(".$row['id'].", ".$row['id_perso'].", '".$row['action']."', '".mysql_escape_string($row['actif'])."', '".mysql_escape_string($row['passif'])."', '".$row['time']."', '".mysql_escape_string($row['valeur'])."', ".mysql_escape_string($row['valeur2']).", ".$row['x'].", ".$row['y'].");";
 	$db_log->query($requete);

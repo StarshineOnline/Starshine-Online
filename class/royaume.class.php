@@ -923,5 +923,11 @@ class royaume
 		return $row[0];
 
 	}
+
+	function add_point_victoire($nombre)
+	{
+		$this->set_point_victoire($this->point_victoire + $nombre);
+		$this->set_point_victoire_total($this->point_victoire_total + $nombre);
+	}
 }
 ?>
