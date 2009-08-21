@@ -66,7 +66,7 @@ class gemme_enchassee extends effect
     $actives = array('vampire', 'poison', 'divine');
     $passives = array('bouclier', 'bouclier_epine', 'blocage',
                       'parade', 'evasion', 'divine');
-    foreach ($actif['enchantement'] as $type => $enchant) {
+    foreach ($actif->get_enchantement() as $type => $enchant) {
       if (isset($enchant['gemme_id']) and in_array($type, $actives)) {
 				$gems = explode(';', $enchant['gemme_id']);
 				foreach ($gems as $gem) {
@@ -74,7 +74,7 @@ class gemme_enchassee extends effect
 				}
       }
     }
-    foreach ($passif['enchantement'] as $type => $enchant) {
+    foreach ($passif->get_enchantement() as $type => $enchant) {
       if (isset($enchant['gemme_id']) and in_array($type, $passives)) {
 				$gems = explode(';', $enchant['gemme_id']);
         foreach ($gems as $gem) {

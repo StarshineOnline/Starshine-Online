@@ -35,30 +35,30 @@ function attaque($acteur = 'attaquant', $competence, &$effects)
     }
 
   //Buff evasion
-  if(array_key_exists('benediction', $passif['etat'])) $passif['potentiel_parer'] *= 1 + (($passif['etat']['benediction']['effet'] * $G_buff['bene_evasion']) / 100);
-  if(array_key_exists('berzeker', $passif['etat'])) $passif['potentiel_parer'] /= 1 + (($passif['etat']['berzeker']['effet'] * $G_buff['berz_evasion']) / 100);
-  if(array_key_exists('derniere_chance', $passif['etat'])) $passif['potentiel_parer'] /= 1 + (($passif['etat']['derniere_chance']['effet']) / 100);
-  if($passif['etat']['posture']['type'] == 'posture_esquive') $passif['potentiel_parer'] *= 1 + (($passif['etat']['posture']['effet']) / 100);
-  if($passif['etat']['posture']['type'] == 'posture_vent') $passif['potentiel_parer'] *= 1 + (($passif['etat']['posture']['effet']) / 100);
-  if($passif['arme_type'] != 'baton') $passif['potentiel_parer'] *= (100 - $passif['arme_var1']) / 100;
-  if($passif['race'] == 'elfebois') $passif['potentiel_parer'] *= 1.15;
+  if(array_key_exists('benediction', $passif->etat)) $passif->potentiel_parer *= 1 + (($passif->etat['benediction']['effet'] * $G_buff['bene_evasion']) / 100);
+  if(array_key_exists('berzeker', $passif->etat)) $passif->potentiel_parer /= 1 + (($passif->etat['berzeker']['effet'] * $G_buff['berz_evasion']) / 100);
+  if(array_key_exists('derniere_chance', $passif->etat)) $passif->potentiel_parer /= 1 + (($passif->etat['derniere_chance']['effet']) / 100);
+  if($passif->etat['posture']['type'] == 'posture_esquive') $passif->potentiel_parer *= 1 + (($passif->etat['posture']['effet']) / 100);
+  if($passif->etat['posture']['type'] == 'posture_vent') $passif->potentiel_parer *= 1 + (($passif->etat['posture']['effet']) / 100);
+  if($passif->get_arme_type() != 'baton') $passif->potentiel_parer *= (100 - $passif->arme_var1) / 100;
+  if($passif->get_race() == 'elfebois') $passif->potentiel_parer *= 1.15;
   //Debuff precision
-  if(array_key_exists('debuff_aveuglement', $actif['debuff'])) $actif['potentiel_toucher'] /= 1 + (($actif['debuff']['debuff_aveuglement']['effet']) / 100);
-  if(array_key_exists('aveugle', $actif['etat'])) $actif['potentiel_toucher'] /= 1 + (($actif['etat']['aveugle']['effet']) / 100);
-  if(array_key_exists('lien_sylvestre', $actif['etat'])) $actif['potentiel_toucher'] /= 1 + (($actif['etat']['lien_sylvestre']['effet2']) / 100);
-  if(array_key_exists('b_toucher', $actif['etat'])) $actif['potentiel_toucher'] /= 1 + ($actif['etat']['b_toucher']['effet'] / 100);
+  if(array_key_exists('debuff_aveuglement', $actif->buff)) $actif->potentiel_toucher /= 1 + (($actif->buff['debuff_aveuglement']['effet']) / 100);
+  if(array_key_exists('aveugle', $actif->etat)) $actif->potentiel_toucher /= 1 + (($actif->etat['aveugle']['effet']) / 100);
+  if(array_key_exists('lien_sylvestre', $actif->etat)) $actif->potentiel_toucher /= 1 + (($actif->etat['lien_sylvestre']['effet2']) / 100);
+  if(array_key_exists('b_toucher', $actif->etat)) $actif->potentiel_toucher /= 1 + ($actif->etat['b_toucher']['effet'] / 100);
   //Buff précision
-  if(array_key_exists('benediction', $actif['etat']))	$actif['potentiel_toucher'] *= 1 + (($actif['etat']['benediction']['effet'] * $G_buff['bene_accuracy']) / 100);
-  if(array_key_exists('berzeker', $actif['etat'])) $actif['potentiel_toucher'] *= 1 + (($actif['etat']['berzeker']['effet'] * $G_buff['berz_accuracy']) / 100);
-  if(array_key_exists('tir_vise', $actif['etat'])) $actif['potentiel_toucher'] *= 1 + (($actif['etat']['tir_vise']['effet'] * $G_buff['vise_accuracy']) / 100);
-  if(array_key_exists('batiment_distance', $actif['buff'])) $actif['potentiel_toucher'] *= 1 + (($actif['buff']['batiment_distance']['effet']) / 100);
-  if(array_key_exists('buff_cri_bataille', $actif['buff'])) $actif['potentiel_toucher'] *= 1 + (($actif['buff']['buff_cri_bataille']['effet']) / 100);
-  if(array_key_exists('dissimulation', $actif['etat'])) $actif['potentiel_toucher'] *= 1 + (($actif['etat']['dissimulation']['effet']) / 100);
-  if(array_key_exists('buff_position', $actif['buff'])) $actif['potentiel_toucher'] *= 1 + (($actif['buff']['buff_position']['effet']) / 100);
-  if(array_key_exists('a_toucher', $actif['etat'])) $actif['potentiel_toucher'] *= 1 + ($actif['etat']['a_toucher']['effet'] / 100);
+  if(array_key_exists('benediction', $actif->etat))	$actif->potentiel_toucher *= 1 + (($actif->etat['benediction']['effet'] * $G_buff['bene_accuracy']) / 100);
+  if(array_key_exists('berzeker', $actif->etat)) $actif->potentiel_toucher *= 1 + (($actif->etat['berzeker']['effet'] * $G_buff['berz_accuracy']) / 100);
+  if(array_key_exists('tir_vise', $actif->etat)) $actif->potentiel_toucher *= 1 + (($actif->etat['tir_vise']['effet'] * $G_buff['vise_accuracy']) / 100);
+  if(array_key_exists('batiment_distance', $actif->buff)) $actif->potentiel_toucher *= 1 + (($actif->buff['batiment_distance']['effet']) / 100);
+  if(array_key_exists('buff_cri_bataille', $actif->buff)) $actif->potentiel_toucher *= 1 + (($actif->buff['buff_cri_bataille']['effet']) / 100);
+  if(array_key_exists('dissimulation', $actif->etat)) $actif->potentiel_toucher *= 1 + (($actif->etat['dissimulation']['effet']) / 100);
+  if(array_key_exists('buff_position', $actif->buff)) $actif->potentiel_toucher *= 1 + (($actif->buff['buff_position']['effet']) / 100);
+  if(array_key_exists('a_toucher', $actif->etat)) $actif->potentiel_toucher *= 1 + ($actif->etat['a_toucher']['effet'] / 100);
   //Corrompu la journée
-  if($actif['race'] == 'humainnoir' AND moment_jour() == 'Journee') $actif['potentiel_toucher'] *= 1.1; else $bonus_race = 1;
-  if($actif['etat']['posture']['type'] == 'posture_touche') $actif['potentiel_toucher'] *= 1 + (($actif['etat']['posture']['effet']) / 100); else $buff_posture_touche = 1;
+  if($actif->get_race() == 'humainnoir' AND moment_jour() == 'Journee') $actif->potentiel_toucher *= 1.1; else $bonus_race = 1;
+  if($actif->etat['posture']['type'] == 'posture_touche') $actif->potentiel_toucher *= 1 + (($actif->etat['posture']['effet']) / 100); else $buff_posture_touche = 1;
 
   /* Application des effets de début de round */
   foreach ($effects as $effect) $effect->debut_round($actif, $passif);
@@ -66,12 +66,12 @@ function attaque($acteur = 'attaquant', $competence, &$effects)
 
 
   //Test d'esquive
-  $attaque = rand(0, $actif['potentiel_toucher']);
-  $defense = rand(0, $passif['potentiel_parer']);
+  $attaque = rand(0, $actif->potentiel_toucher);
+  $defense = rand(0, $passif->potentiel_parer);
   echo '
 	<div id="debug'.$debugs.'" class="debug">
-		Potentiel toucher attaquant : '.$actif['potentiel_toucher'].'<br />
-		Potentiel parer défenseur : '.$passif['potentiel_parer'].'<br />
+		Potentiel toucher attaquant : '.$actif->potentiel_toucher.'<br />
+		Potentiel parer défenseur : '.$passif->potentiel_parer.'<br />
 		Résultat => Attaquant : '.$attaque.' | Défense '.$defense.'<br />
 	</div>';
   $debugs++;
@@ -79,7 +79,7 @@ function attaque($acteur = 'attaquant', $competence, &$effects)
   if ($attaque > $defense)
     {
       //Si c'est un coup de bouclier, infliger les dégats du bouclier et teste d'étourdissement
-      if($actif['etat']['coup_bouclier'] > 0)
+      if($actif->etat['coup_bouclier'] > 0)
 				{
 					$degat = $actif['bouclier_degat'];
 					$att = $actif['force'] + $actif['bouclier_degat'];
@@ -91,22 +91,22 @@ function attaque($acteur = 'attaquant', $competence, &$effects)
 						"Potentiel resister défenseur : $def<br />".
 						"Résultat => Attaquant : $atta | Défenseur : $defe".
 						"<br /></div>";
-					//aff_var($actif['etat']['coup_bouclier']);
+					//aff_var($actif->etat['coup_bouclier']);
 					$debug++;
 					//Hop ca étourdit
 					if($atta > $defe)
 						{
-							$passif['etat']['etourdit']['effet'] = $actif['etat']['coup_bouclier']['effet'];
-							$passif['etat']['etourdit']['duree'] = $actif['etat']['coup_bouclier']['effet2'];
-							echo '&nbsp;&nbsp;Le coup de bouclier étourdit '.$passif['nom'].' pour '.$passif['etat']['etourdit']['duree'].' !<br />';
+							$passif->etat['etourdit']['effet'] = $actif->etat['coup_bouclier']['effet'];
+							$passif->etat['etourdit']['duree'] = $actif->etat['coup_bouclier']['effet2'];
+							echo '&nbsp;&nbsp;Le coup de bouclier étourdit '.$passif->get_nom().' pour '.$passif->etat['etourdit']['duree'].' !<br />';
 						}
 				}
       //sinon
       else
 				{
-					if(array_key_exists('tir_vise', $actif['etat'])) $buff_vise_degat = $actif['etat']['tir_vise']['effet'] + 1; else $buff_vise_degat = 1;
-					if($actif['etat']['posture']['type'] == 'posture_degat') $buff_posture_degat = $actif['etat']['posture']['effet']; else $buff_posture_degat = 0;
-					$arme_degat = ($actif['arme_degat'] + $buff_posture_degat) * $buff_vise_degat;
+					if(array_key_exists('tir_vise', $actif->etat)) $buff_vise_degat = $actif->etat['tir_vise']['effet'] + 1; else $buff_vise_degat = 1;
+					if($actif->etat['posture']['type'] == 'posture_degat') $buff_posture_degat = $actif->etat['posture']['effet']; else $buff_posture_degat = 0;
+					$arme_degat = ($actif->get_arme_degat() + $buff_posture_degat) * $buff_vise_degat;
 
 					
 					/* Application des effets de boost des armes */
@@ -114,7 +114,7 @@ function attaque($acteur = 'attaquant', $competence, &$effects)
 						$arme_degat = $effect->calcul_arme($actif, $passif, $arme_degat);
 					/* ~Armes */
 
-					$de_degat = de_degat($actif['force'], $arme_degat);
+					$de_degat = de_degat($actif->get_force(), $arme_degat);
 					$degat = 0;
 					$i = 0;
 					echo '
@@ -129,44 +129,44 @@ function attaque($acteur = 'attaquant', $competence, &$effects)
 					echo '</div>';
 					$debugs++;
 				}
-      if($passif['type2'] == 'batiment' AND $actif['race'] == 'barbare') $degat = floor($degat * 1.4);
-      $degat = $degat + $actif['degat_sup'] - $actif['degat_moins'];
-      if(array_key_exists('attaque_vicieuse', $actif))
+      if($passif->type2 == 'batiment' AND $actif->get_race() == 'barbare') $degat = floor($degat * 1.4);
+      $degat = $degat + $actif->degat_sup - $actif->degat_moins;
+      if(array_key_exists('attaque_vicieuse', $actif->etat))
 				{
-					$degat = $degat + $actif['attaque_vicieuse'];
-					$passif['etat']['hemorragie']['duree'] = 5;
-					$passif['etat']['hemorragie']['effet'] = $actif['attaque_vicieuse'];
+					$degat = $degat + $actif->etat['attaque_vicieuse'];
+					$passif->etat['hemorragie']['duree'] = 5;
+					$passif->etat['hemorragie']['effet'] = $actif->etat['attaque_vicieuse'];
 					echo '&nbsp;&nbsp;L\'attaque inflige une hémorragie !<br />';
 				}
       if($degat < 0) $degat = 0;
-      if(array_key_exists('benediction', $actif['etat'])) $buff_bene_degat = $actif['etat']['benediction']['effet'] * $G_buff['bene_degat']; else $buff_bene_degat = 0;
-      if(array_key_exists('berzeker', $actif['etat'])) $buff_berz_degat = $actif['etat']['berzeker']['effet'] * $G_buff['berz_degat']; else $buff_berz_degat = 0;
-      if(array_key_exists('berzeker', $passif['etat'])) $buff_berz_degat_r = $passif['etat']['berzeker']['effet'] * $G_buff['berz_degat_recu']; else $buff_berz_degat_r = 0;
-      if(array_key_exists('buff_force', $actif['buff'])) $buff_force = $actif['buff']['buff_force']['effet']; else $buff_force = 0;
-      if(array_key_exists('buff_cri_victoire', $actif['buff'])) $buff_cri_victoire = $actif['buff']['buff_cri_victoire']['effet']; else $buff_cri_victoire = 0;
-      if(array_key_exists('fleche_tranchante', $actif['buff'])) $degat += $actif['buff']['fleche_tranchante']['effet'];
-      if(array_key_exists('oeil_chasseur', $actif['buff']) AND $passif['espece'] == 'bete') $degat += $actif['buff']['oeil_chasseur']['effet'];
+      if(array_key_exists('benediction', $actif->etat)) $buff_bene_degat = $actif->etat['benediction']['effet'] * $G_buff['bene_degat']; else $buff_bene_degat = 0;
+      if(array_key_exists('berzeker', $actif->etat)) $buff_berz_degat = $actif->etat['berzeker']['effet'] * $G_buff['berz_degat']; else $buff_berz_degat = 0;
+      if(array_key_exists('berzeker', $passif->etat)) $buff_berz_degat_r = $passif->etat['berzeker']['effet'] * $G_buff['berz_degat_recu']; else $buff_berz_degat_r = 0;
+      if(array_key_exists('buff_force', $actif->buff)) $buff_force = $actif->buff['buff_force']['effet']; else $buff_force = 0;
+      if(array_key_exists('buff_cri_victoire', $actif->buff)) $buff_cri_victoire = $actif->buff['buff_cri_victoire']['effet']; else $buff_cri_victoire = 0;
+      if(array_key_exists('fleche_tranchante', $actif->buff)) $degat += $actif->buff['fleche_tranchante']['effet'];
+      if(array_key_exists('oeil_chasseur', $actif->buff) AND $passif['espece'] == 'bete') $degat += $actif->buff['oeil_chasseur']['effet'];
       $degat = $degat + $buff_bene_degat + $buff_berz_degat + $buff_berz_degat_r + $buff_force + $buff_cri_victoire;
-      if(array_key_exists('maladie_mollesse', $actif['debuff'])) $degat = ceil($degat / (1 + ($actif['debuff']['maladie_mollesse']['effet'] / 100)));
+      if(array_key_exists('maladie_mollesse', $actif->buff)) $degat = ceil($degat / (1 + ($actif->buff['maladie_mollesse']['effet'] / 100)));
 
       /* Application des effets de degats */
       foreach ($effects as $effect)
 				$degat = $effect->calcul_degats($actif, $passif, $degat);
       /* ~Degats */
 
-      if($passif['bouclier'])
+      if($passif->bouclier)
 				{
 					//Si c'est une flèche rapide, on ignore le blocage
-					if(array_key_exists('fleche_rapide', $actif['etat']))
+					if(array_key_exists('fleche_rapide', $actif->etat))
 						{
 						}
 					else
 						{
 							if(array_key_exists('blocage', $passif['enchantement'])) $enchantement_blocage = 1 + ($passif['enchantement']['blocage']['effet'] / 100); else $enchantement_blocage = 1;
-							if(array_key_exists('buff_bouclier_sacre', $passif['buff'])) $buff_blocage = 1 + ($passif['buff']['buff_bouclier_sacre']['effet'] / 100); else $buff_blocage = 1;
-							if(array_key_exists('benediction', $passif['etat'])) $buff_bene_blocage = 1 + (($passif['etat']['benediction']['effet'] * $G_buff['bene_bouclier']) / 100); else $buff_bene_blocage = 1;
-							if(array_key_exists('a_c_bloque', $actif['etat'])) $augmentation_chance_bloque = 1 + ($actif['etat']['a_c_bloque']['effet'] / 100); else $augmentation_chance_bloque = 1;
-							if(array_key_exists('b_c_bloque', $actif['etat'])) $baisse_chance_bloque = 1 + ($actif['etat']['b_c_bloque']['effet'] / 100); else $baisse_chance_bloque = 1;
+							if(array_key_exists('buff_bouclier_sacre', $actif->buff)) $buff_blocage = 1 + ($actif->buff['buff_bouclier_sacre']['effet'] / 100); else $buff_blocage = 1;
+							if(array_key_exists('benediction', $passif->etat)) $buff_bene_blocage = 1 + (($passif->etat['benediction']['effet'] * $G_buff['bene_bouclier']) / 100); else $buff_bene_blocage = 1;
+							if(array_key_exists('a_c_bloque', $actif->etat)) $augmentation_chance_bloque = 1 + ($actif->etat['a_c_bloque']['effet'] / 100); else $augmentation_chance_bloque = 1;
+							if(array_key_exists('b_c_bloque', $actif->etat)) $baisse_chance_bloque = 1 + ($actif->etat['b_c_bloque']['effet'] / 100); else $baisse_chance_bloque = 1;
 							$passif['potentiel_bloquer'] = floor($passif['blocage'] * (pow($passif['dexterite'], 2) / 100) * $enchantement_blocage * $buff_bene_blocage * $buff_blocage * $augmentation_chance_bloque / ($baisse_chance_bloque));
 
 							/* Application des effets de blocage */
@@ -186,7 +186,7 @@ function attaque($acteur = 'attaquant', $competence, &$effects)
 							if ($attaque <= $blocage)
 								{
 									$degat_bloque = $passif['bouclier_degat'];
-									if(array_key_exists('bouclier_terre', $passif['buff'])) $degat_bloque += $passif['buff']['bouclier_terre']['effet'];
+									if(array_key_exists('bouclier_terre', $actif->buff)) $degat_bloque += $actif->buff['bouclier_terre']['effet'];
 
 									/* Application des degats bloques */
 									foreach ($effects as $effect)
@@ -195,24 +195,24 @@ function attaque($acteur = 'attaquant', $competence, &$effects)
 
 									$degat = $degat - $degat_bloque;
 									if($degat < 0) $degat = 0;
-									echo '&nbsp;&nbsp;<span class="manque">'.$passif['nom'].' bloque le coup et absorbe '.$degat_bloque.' dégats</span><br />';
-									if(array_key_exists('bouclier_feu', $passif['buff']))
+									echo '&nbsp;&nbsp;<span class="manque">'.$passif->get_nom().' bloque le coup et absorbe '.$degat_bloque.' dégats</span><br />';
+									if(array_key_exists('bouclier_feu', $actif->buff))
 										{
-											$degats = $passif['buff']['bouclier_feu']['effet'];
+											$degats = $actif->buff['bouclier_feu']['effet'];
 											$actif['hp'] -= $degats;
-											echo '&nbsp;&nbsp;<span class="degat">'.$passif['nom'].' inflige '.$degats.' dégats grâce au bouclier de feu</span><br />';
+											echo '&nbsp;&nbsp;<span class="degat">'.$passif->get_nom().' inflige '.$degats.' dégats grâce au bouclier de feu</span><br />';
 										}
-									if(array_key_exists('bouclier_eau', $passif['buff']))
+									if(array_key_exists('bouclier_eau', $actif->buff))
 										{
-											$chances = $passif['buff']['bouclier_eau']['effet'] * 2;
+											$chances = $actif->buff['bouclier_eau']['effet'] * 2;
 											$diffi = 100;
 											$att = rand(0, $chances);
 											$def = rand(0, $diffi);
 											if($att > $def)
 												{
-													echo '&nbsp;&nbsp;<span class="degat">'.$passif['nom'].' bloque et glace '.$actif['nom'].'</span><br />';
-													$actif['etat']['paralysie']['effet'] = 1;
-													$actif['etat']['paralysie']['duree'] = ($passif['buff']['bouclier_eau']['effet2'] + 1);
+													echo '&nbsp;&nbsp;<span class="degat">'.$passif->get_nom().' bloque et glace '.$actif->get_nom().'</span><br />';
+													$actif->etat['paralysie']['effet'] = 1;
+													$actif->etat['paralysie']['duree'] = ($actif->buff['bouclier_eau']['effet2'] + 1);
 												}
 										}
 									
@@ -227,20 +227,20 @@ function attaque($acteur = 'attaquant', $competence, &$effects)
 						}
 				}
       //Posture défensive
-      if($passif['etat']['posture']['type'] == 'posture_defense') $buff_posture_defense = $passif['etat']['posture']['effet']; else $buff_posture_defense = 0;
+      if($passif->etat['posture']['type'] == 'posture_defense') $buff_posture_defense = $passif->etat['posture']['effet']; else $buff_posture_defense = 0;
       $degat = $degat - $buff_posture_defense;
       if($degat < 0) $degat = 0;
       //Diminution des dégats grâce à l'armure
-      if(array_key_exists('benediction', $passif['etat'])) $buff_bene_bouclier = 1 + (($passif['etat']['benediction']['effet'] * $G_buff['bene_bouclier']) / 100); else $buff_bene_bouclier = 1;
-      if(array_key_exists('berzeker', $passif['etat'])) $buff_berz_bouclier = 1 + (($passif['etat']['berzeker']['effet'] * $G_buff['berz_bouclier']) / 100); else $buff_berz_bouclier = 1;
-      if(array_key_exists('batiment_pp', $passif['buff'])) $buff_batiment_bouclier = 1 + (($passif['buff']['batiment_pp']['effet']) / 100); else $buff_batiment_bouclier = 1;
-      if(array_key_exists('acide', $passif['etat'])) $debuff_acide = 1 + (($passif['etat']['acide']['effet2']) / 100); else $debuff_acide = 1;
-      if($passif['etat']['posture']['type'] == 'posture_pierre') $aura_pierre = 1 + (($passif['etat']['posture']['effet']) / 100); else $aura_pierre = 1;
+      if(array_key_exists('benediction', $passif->etat)) $buff_bene_bouclier = 1 + (($passif->etat['benediction']['effet'] * $G_buff['bene_bouclier']) / 100); else $buff_bene_bouclier = 1;
+      if(array_key_exists('berzeker', $passif->etat)) $buff_berz_bouclier = 1 + (($passif->etat['berzeker']['effet'] * $G_buff['berz_bouclier']) / 100); else $buff_berz_bouclier = 1;
+      if(array_key_exists('batiment_pp', $actif->buff)) $buff_batiment_bouclier = 1 + (($actif->buff['batiment_pp']['effet']) / 100); else $buff_batiment_bouclier = 1;
+      if(array_key_exists('acide', $passif->etat)) $debuff_acide = 1 + (($passif->etat['acide']['effet2']) / 100); else $debuff_acide = 1;
+      if($passif->etat['posture']['type'] == 'posture_pierre') $aura_pierre = 1 + (($passif->etat['posture']['effet']) / 100); else $aura_pierre = 1;
       //Chance de transpercer l'armure
       $transperce = false;
-      if($actif['etat']['posture']['type'] == 'posture_transperce')
+      if($actif->etat['posture']['type'] == 'posture_transperce')
 				{
-					$atta = $actif['etat']['posture']['effet'];
+					$atta = $actif->etat['posture']['effet'];
 					$defe = 100;
 					$att = rand(0, $atta);
 					$defe = rand(0, $defe);
@@ -251,9 +251,9 @@ function attaque($acteur = 'attaquant', $competence, &$effects)
 						}
 				}
       //Si c'est une flèche rapide, chance d'ignorer l'armure
-      if(array_key_exists('fleche_rapide', $actif['etat']))
+      if(array_key_exists('fleche_rapide', $actif->etat))
 				{
-					$atta = $actif['etat']['fleche_rapide']['effet'];
+					$atta = $actif->etat['fleche_rapide']['effet'];
 					$defe = rand(0, 100);
 					if($defe < $atta)
 						{
@@ -265,13 +265,13 @@ function attaque($acteur = 'attaquant', $competence, &$effects)
 				{
 					$degat = $degat * 4;
 				}
-      $PP = round(($passif['PP'] * $buff_bene_bouclier * $buff_batiment_bouclier * $aura_pierre) / ($buff_berz_bouclier * $debuff_acide));
+      $PP = round(($passif->get_pp() * $buff_bene_bouclier * $buff_batiment_bouclier * $aura_pierre) / ($buff_berz_bouclier * $debuff_acide));
 
       
       /* Application des effets de PP */
       foreach ($effects as $effect)
 				$PP = $effect->calcul_pp($actif, $passif, $PP);
-			$passif['PP_effective'] = $PP;
+			$passif->PP_effective = $PP;
       /* ~PP */
       
 
@@ -280,28 +280,28 @@ function attaque($acteur = 'attaquant', $competence, &$effects)
       $degat = round($degat * $reduction);
 			
       //Coup critique
-      $actif_chance_critique = ceil(pow($actif['dexterite'], 1.5) * 10);
+      $actif_chance_critique = ceil(pow($actif->get_dexterite(), 1.5) * 10);
 
       //Buff du critique
-      if(array_key_exists('buff_critique', $actif['buff'])) $actif_chance_critique *= 1 + (($actif['buff']['buff_critique']['effet']) / 100);
-      if(array_key_exists('buff_cri_rage', $actif['buff'])) $actif_chance_critique *= 1 + (($actif['buff']['buff_cri_rage']['effet']) / 100);
-      if(array_key_exists('benediction', $actif['etat'])) $actif_chance_critique *= 1 + (($actif['etat']['benediction']['effet'] * $G_buff['bene_critique']) / 100);;
-      if(array_key_exists('tir_vise', $actif['etat'])) $actif_chance_critique *= 1 + (($actif['etat']['tir_vise']['effet'] * 5) / 100);
-      if(array_key_exists('berzeker', $actif['etat'])) $actif_chance_critique *= 1 + (($actif['etat']['berzeker']['effet'] * $G_buff['berz_critique']) / 100);
-      if(array_key_exists('coup_sournois', $actif['etat'])) $actif_chance_critique *= 1 + (($actif['etat']['coup_sournois']['effet']) / 100);
-      if(array_key_exists('fleche_sanglante', $actif['etat'])) $actif_chance_critique *= 1 + (($actif['etat']['fleche_sanglante']['effet']) / 100);
-      if(array_key_exists('a_critique', $actif['etat'])) $actif_chance_critique *= 1 + (($actif['etat']['a_critique']['effet']) / 100);
-      if(array_key_exists('b_critique', $actif['etat'])) $actif_chance_critique /= 1 + (($actif['etat']['b_critique']['effet']) / 100);
+      if(array_key_exists('buff_critique', $actif->buff)) $actif_chance_critique *= 1 + (($actif->buff['buff_critique']['effet']) / 100);
+      if(array_key_exists('buff_cri_rage', $actif->buff)) $actif_chance_critique *= 1 + (($actif->buff['buff_cri_rage']['effet']) / 100);
+      if(array_key_exists('benediction', $actif->etat)) $actif_chance_critique *= 1 + (($actif->etat['benediction']['effet'] * $G_buff['bene_critique']) / 100);;
+      if(array_key_exists('tir_vise', $actif->etat)) $actif_chance_critique *= 1 + (($actif->etat['tir_vise']['effet'] * 5) / 100);
+      if(array_key_exists('berzeker', $actif->etat)) $actif_chance_critique *= 1 + (($actif->etat['berzeker']['effet'] * $G_buff['berz_critique']) / 100);
+      if(array_key_exists('coup_sournois', $actif->etat)) $actif_chance_critique *= 1 + (($actif->etat['coup_sournois']['effet']) / 100);
+      if(array_key_exists('fleche_sanglante', $actif->etat)) $actif_chance_critique *= 1 + (($actif->etat['fleche_sanglante']['effet']) / 100);
+      if(array_key_exists('a_critique', $actif->etat)) $actif_chance_critique *= 1 + (($actif->etat['a_critique']['effet']) / 100);
+      if(array_key_exists('b_critique', $actif->etat)) $actif_chance_critique /= 1 + (($actif->etat['b_critique']['effet']) / 100);
       //Elfe des bois
-      if($actif['race'] == 'elfebois') $actif_chance_critique *= 1.15;
-      if(array_key_exists('coup_mortel', $actif))
+      if($actif->get_race() == 'elfebois') $actif_chance_critique *= 1.15;
+      if(array_key_exists('coup_mortel', $actif->etat))
 				{
 					$actif_chance_critique *= 1.7;
-					unset($actif['coup_mortel']);
+					unset($actif->etat['coup_mortel']);
 				}
       //Enchantement critique
-      if(array_key_exists('critique', $actif['enchantement'])) $actif_chance_critique *= 1 + (($actif['enchantement']['critique']['effet']) / 100);
-      if($actif['etat']['posture']['type'] == 'posture_critique') $actif_chance_critique *= 1 + (($actif['etat']['posture']['effet']) / 100);
+      if(array_key_exists('critique', $actif->get_enchantement())) $actif_chance_critique *= 1 + (($actif->enchantement['critique']['effet']) / 100);
+      if($actif->etat['posture']['type'] == 'posture_critique') $actif_chance_critique *= 1 + (($actif->etat['posture']['effet']) / 100);
 
       /* Application des effets de chance critique */
       foreach ($effects as $effect)
@@ -321,9 +321,9 @@ function attaque($acteur = 'attaquant', $competence, &$effects)
 				{
 					echo '&nbsp;&nbsp;<span class="coupcritique">COUP CRITIQUE !</span><br />';
 					//Chance de paralyser l'adversaire
-					if($actif['etat']['posture']['type'] == 'posture_paralyse')
+					if($actif->etat['posture']['type'] == 'posture_paralyse')
 						{
-							$atta = $actif['etat']['posture']['effet'];
+							$atta = $actif->etat['posture']['effet'];
 // 							1d30 vs 1d100 << 30% de chances ( < 15% même)
 // 							$defe = 100;
 // 							$att = rand(0, $atta);
@@ -333,21 +333,21 @@ function attaque($acteur = 'attaquant', $competence, &$effects)
 							$att = rand(0, 100);
 							if($att <= $atta)
 								{
-									echo $passif['nom'].' est paralysé par ce coup !<br />';
-									if(array_key_exists('paralysie', $passif['etat'])) $passif['etat']['paralysie']['duree']++;
+									echo $passif->get_nom().' est paralysé par ce coup !<br />';
+									if(array_key_exists('paralysie', $passif->etat)) $passif->etat['paralysie']['duree']++;
 									else
 										{
-											$passif['etat']['paralysie']['effet'] = 1;
-											$passif['etat']['paralysie']['duree'] = 1;
+											$passif->etat['paralysie']['effet'] = 1;
+											$passif->etat['paralysie']['duree'] = 1;
 										}
 								}
 						}
 					//Art du critique : augmente les dégats fait par un coup critique
 					if(array_key_exists('art_critique', $actif['competences'])) $art_critique = ($actif['competences']['art_critique'] / 100); else $art_critique = 0;
 					//Buff Colère
-					if(array_key_exists('buff_colere', $actif['buff'])) $buff_colere = ($actif['buff']['buff_colere']['effet']) / 100; else $buff_colere = 0;
+					if(array_key_exists('buff_colere', $actif->buff)) $buff_colere = ($actif->buff['buff_colere']['effet']) / 100; else $buff_colere = 0;
 					//Orc
-					if($actif['race'] == 'orc') $bonuscritique_race = 1.05; else $bonuscritique_race = 1;
+					if($actif->get_race() == 'orc') $bonuscritique_race = 1.05; else $bonuscritique_race = 1;
 					if($passif['race'] == 'troll') $maluscritique_race = 1.2; else $maluscritique_race = 1;
 
 					$multiplicateur = (2 + $art_critique + $buff_colere) * $bonuscritique_race / $maluscritique_race;
@@ -362,53 +362,53 @@ function attaque($acteur = 'attaquant', $competence, &$effects)
 					$degat = round($degat * $multiplicateur);
 					$degat_avant = round($degat_avant * $multiplicateur);
 					$critique = true;
-					if(array_key_exists('renouveau_energique', $actif['buff']))
+					if(array_key_exists('renouveau_energique', $actif->buff))
 						{
-							$actif['reserve'] += $actif['buff']['renouveau_energique']['effet'];
-							echo $actif['nom'].' se ressaisi et gagne '.$actif['buff']['renouveau_energique']['effet'].' RM<br />';
+							$actif['reserve'] += $actif->buff['renouveau_energique']['effet'];
+							echo $actif->get_nom().' se ressaisi et gagne '.$actif->buff['renouveau_energique']['effet'].' RM<br />';
 						}
 					//if(array_key_exists('maitre_critique', $actif['competences'])) augmentation_competence('maitre_critique', $actif, 3);
 				}
       $reduction = $degat_avant - $degat;
-      echo '&nbsp;&nbsp;<span class="degat"><strong>'.$actif['nom'].'</strong> inflige <strong>'.$degat.'</strong> dégats</span><br />';
+      echo '&nbsp;&nbsp;<span class="degat"><strong>'.$actif->get_nom().'</strong> inflige <strong>'.$degat.'</strong> dégats</span><br />';
       if($reduction != 0) echo '&nbsp;&nbsp;<span class="small">(réduits de '.$reduction.' par l\'armure)</span><br />';
       //Si flêche étourdissante
-      if($actif['etat']['fleche_etourdit'] > 0)
+      if($actif->etat['fleche_etourdit'] > 0)
 				{
-					echo '&nbsp;&nbsp;<strong>'.$passif['nom'].'</strong> est étourdit par la flêche !<br />';
-					$passif['etat']['etourdit']['duree'] = 2;
+					echo '&nbsp;&nbsp;<strong>'.$passif->get_nom().'</strong> est étourdit par la flêche !<br />';
+					$passif->etat['etourdit']['duree'] = 2;
 				}
-      if(array_key_exists('buff_rage_vampirique', $actif['buff']))
+      if(array_key_exists('buff_rage_vampirique', $actif->buff))
 				{
-					$buff_rage_vampirique = $actif['buff']['buff_rage_vampirique']['effet'] / 100;
+					$buff_rage_vampirique = $actif->buff['buff_rage_vampirique']['effet'] / 100;
 					$effet = round($degat * $buff_rage_vampirique);
 					if(($actif['hp'] + $effet) > $actif['hp_max'])
 						{
 							$effet = $actif['hp_max'] - $actif['hp'];
 						}
 					// Augmentation du nombre de HP récupérable par récupération
-					if(array_key_exists('recuperation', $actif['etat'])) $actif['etat']['recuperation']['hp_max'] += $effet;
+					if(array_key_exists('recuperation', $actif->etat)) $actif->etat['recuperation']['hp_max'] += $effet;
 					$actif['hp'] += $effet;
-					if($effet > 0) echo '&nbsp;&nbsp;<span class="soin">'.$actif['nom'].' gagne '.$effet.' HP par la rage vampirique</span><br />';
+					if($effet > 0) echo '&nbsp;&nbsp;<span class="soin">'.$actif->get_nom().' gagne '.$effet.' HP par la rage vampirique</span><br />';
 				}
       //Epines
-      if(array_key_exists('buff_epine', $passif['buff']))
+      if(array_key_exists('buff_epine', $actif->buff))
 				{
-					$buff_epine = $passif['buff']['buff_epine']['effet'] / 100;
+					$buff_epine = $actif->buff['buff_epine']['effet'] / 100;
 					$effet = round($degat * $buff_epine);
 					$actif['hp'] -= $effet;
-					if($effet > 0) echo '&nbsp;&nbsp;<span class="degat">'.$passif['nom'].' renvoi '.$effet.' dégats grâce a Armure en épine</span><br />';
+					if($effet > 0) echo '&nbsp;&nbsp;<span class="degat">'.$passif->get_nom().' renvoi '.$effet.' dégats grâce a Armure en épine</span><br />';
 				}
       //Armure de glace
-      if(array_key_exists('buff_armure_glace', $passif['buff']))
+      if(array_key_exists('buff_armure_glace', $actif->buff))
 				{
-					$chance = $passif['buff']['buff_armure_glace']['effet'];
+					$chance = $actif->buff['buff_armure_glace']['effet'];
 					$de1 = rand(0, $chance);
 					$de2 = rand(0, 100);
 					if($de1 > $de2)
 						{
-							echo '&nbsp;&nbsp;<span class="degat">'.$passif['nom'].' glace '.$actif['nom'].' avec son armure de glace</span><br />';
-							$actif['etat']['paralysie']['duree'] += 1;
+							echo '&nbsp;&nbsp;<span class="degat">'.$passif->get_nom().' glace '.$actif->get_nom().' avec son armure de glace</span><br />';
+							$actif->etat['paralysie']['duree'] += 1;
 						}
 				}
 
@@ -417,22 +417,22 @@ function attaque($acteur = 'attaquant', $competence, &$effects)
 				$effect->inflige_degats($actif, $passif, $degat);
 			/* ~Dégats infligés */
 
-      $passif['hp'] = $passif['hp'] - $degat;
+      $passif->set_hp($passif->get_hp() - $degat);
     }
   else
     {
-      echo '&nbsp;&nbsp;<span class="manque">'.$actif['nom'].' manque la cible</span><br />';
+      echo '&nbsp;&nbsp;<span class="manque">'.$actif->get_nom().' manque la cible</span><br />';
     }
   if(array_key_exists('coup_mortel', $actif))
     {
       unset($actif['coup_mortel']);
     }
-  if(array_key_exists('dissimulation', $actif['etat']))
+  if(array_key_exists('dissimulation', $actif->etat))
     {
-      unset($actif['etat']['dissimulation']);
+      unset($actif->etat['dissimulation']);
     }
   //Augmentation des compétences liées
-  if(array_key_exists('art_critique', $actif['competences']) && $critique)
+  if($actif->is_competence('art_critique') && $critique)
     {
       $actif['art_critique'] = $actif['competences']['art_critique'];
       $augmentation = augmentation_competence('art_critique', $actif, 2.5);

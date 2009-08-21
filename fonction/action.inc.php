@@ -26,7 +26,7 @@ function script_action($joueur, $ennemi, $mode, &$effects)
 {
 	$effectue = sub_script_action($joueur, $ennemi, $mode, $effects);
 	// On gère la dissimulation *après* le choix de l'action
-	if ($ennemi['etat']['dissimulation'] > 0)
+	if ($ennemi->etat['dissimulation'] > 0)
 		{
 			switch ($effectue[0])
 				{
@@ -93,24 +93,24 @@ function sub_script_action($joueur, $ennemi, $mode, &$effects)
 {
 	global $db, $round, $Trace, $debugs;
 	$stop = false;
-	if($joueur['etat']['paralysie'] > 0)
+	if($joueur->etat['paralysie'] > 0)
 	{
 		echo $joueur->get_nom().' est paralysé<br />';
 		return '';
 	}
-	elseif($joueur['etat']['etourdit'] > 0)
+	elseif($joueur->etat['etourdit'] > 0)
 	{
 		echo $joueur->get_nom().' est étourdi<br />';
 		return '';
 	}
-	elseif($joueur['etat']['tir_vise'] > 0)
+	elseif($joueur->etat['tir_vise'] > 0)
 	{
 		echo $joueur->get_nom().' décoche une terrible flèche<br />';
 		$effectue[0] = 'attaque';
 		return $effectue;
 	}
 	/*
-	elseif($ennemi['etat']['dissimulation'] > 0)
+	elseif($ennemi->etat['dissimulation'] > 0)
 	{
 		echo $ennemi['nom'].' est caché, '.$joueur->get_nom().' ne peut pas attaquer<br />';
 		return '';
@@ -118,12 +118,12 @@ function sub_script_action($joueur, $ennemi, $mode, &$effects)
 */
 	else
 	{
-	  //var_dump($joueur['etat']['glacer']);
-		if($joueur['etat']['glacer'] > 0)
+	  //var_dump($joueur->etat['glacer']);
+		if($joueur->etat['glacer'] > 0)
 		{
 		  // On regarde si le personnage est glacé
 			$rand = rand(1, 100);
-			$cible = 20 + (($joueur['etat']['glacer']['effet'] - 1) * 10);
+			$cible = 20 + (($joueur->etat['glacer']['effet'] - 1) * 10);
 			//echo $cible.' chance de glacer / 100. Résultat : '.$rand.'<br />';
 			if($rand < $cible)
 			{
@@ -132,7 +132,7 @@ function sub_script_action($joueur, $ennemi, $mode, &$effects)
 				$stop = true;
 			}
 		}
-		if($joueur['etat']['silence'] > 0)
+		if($joueur->etat['silence'] > 0)
 		{
 			echo $joueur->get_nom().' est sous silence<br />';
 			$effectue[0] = 'attaque';
@@ -141,8 +141,7 @@ function sub_script_action($joueur, $ennemi, $mode, &$effects)
 		if(!$stop)  // Etrange : il y a un "return" juste avant le seul moment ou stop est mit à "true".
 		{
 		  // Récupèration des actions du personnage
-			if($mode == 'attaquant') $actions = explode(';', $joueur['action_a']);
-			else $actions = explode(';', $joueur['action_d']);
+			$actions = explode(';', $joueur->get_action());
 			$count = count($actions);
 			$action = false;
 			$i = 0;
@@ -192,19 +191,19 @@ function sub_script_action($joueur, $ennemi, $mode, &$effects)
 							break;
 							//Etat du joueur
 							case '10' :
-								$param = $joueur['etat'];
+								$param = $joueur->etat;
 							break;
 							//Etat de l'adversaire
 							case '11' :
-								$param = $ennemi['etat'];
+								$param = $ennemi->etat;
 							break;
 							//Etat du joueur
 							case '12' :
-								$param = $joueur['etat'];
+								$param = $joueur->etat;
 							break;
 							//Etat de l'adversaire
 							case '13' :
-								$param = $ennemi['etat'];
+								$param = $ennemi->etat;
 							break;
 							//Nombre d'utilisations
 							case '14' :
@@ -221,7 +220,7 @@ function sub_script_action($joueur, $ennemi, $mode, &$effects)
 									$use = 'attaque';
 								}
 								// Récupération du nombre d'utilisation
-								$param = $joueur['anticipation'][$use][substr($solution, 1)];
+								$param = $joueur->anticipation[$use][substr($solution, 1)];
 							break;
 							//Dernière action
 							case '15' :
@@ -294,14 +293,14 @@ function sub_script_action($joueur, $ennemi, $mode, &$effects)
 							// Récupération des MP nécessaires
 							$mp_need = round($row['mp'] * (1 - (($Trace[$joueur->get_race()]['affinite_'.$row['comp_assoc']] - 5) / 10)));
 							// Appel des ténebres
-							if($joueur['etat']['appel_tenebre']['duree'] > 0)
+							if($joueur->etat['appel_tenebre']['duree'] > 0)
 							{
-								$mp_need += $joueur['etat']['appel_tenebre']['effet'];
+								$mp_need += $joueur->etat['appel_tenebre']['effet'];
 							}
 							// Appel de la forêt
-							if($joueur['etat']['appel_foret']['duree'] > 0 && $mp_need > 1)
+							if($joueur->etat['appel_foret']['duree'] > 0 && $mp_need > 1)
 							{
-								$mp_need -= $joueur['etat']['appel_foret']['effet'];
+								$mp_need -= $joueur->etat['appel_foret']['effet'];
 								if($mp_need < 1) $mp_need = 1;
 							}
 
@@ -336,14 +335,14 @@ function sub_script_action($joueur, $ennemi, $mode, &$effects)
 							// Récupération des MP nécessaires
 							$mp_need = $row['mp'];
 							//Appel des ténebres
-							if($joueur['etat']['appel_tenebre']['duree'] > 0)
+							if($joueur->etat['appel_tenebre']['duree'] > 0)
 							{
-								$mp_need += $joueur['etat']['appel_tenebre']['effet'];
+								$mp_need += $joueur->etat['appel_tenebre']['effet'];
 							}
 							//Appel de la forêt
-							if($joueur['etat']['appel_foret']['duree'] > 0)
+							if($joueur->etat['appel_foret']['duree'] > 0)
 							{
-								$mp_need -= $joueur['etat']['appel_foret']['effet'];
+								$mp_need -= $joueur->etat['appel_foret']['effet'];
 								if($mp_need < 1) $mp_need = 1;
 							}
 							
@@ -387,10 +386,10 @@ function sub_script_action($joueur, $ennemi, $mode, &$effects)
 			if($effectue[0] == 'attaque') $id = 0;
 			else $id = $effectue[1];
 			//Si il y a déjà eu une attaque de ce type, alors risque d'échec
-			if(array_key_exists('anticipation', $joueur) AND array_key_exists($effectue[0], $joueur['anticipation']) AND array_key_exists($id, $joueur['anticipation'][$effectue[0]]) AND $joueur['anticipation'][$effectue[0]][$id] > 0)
+			if(array_key_exists('anticipation', $joueur) AND array_key_exists($effectue[0], $joueur->anticipation) AND array_key_exists($id, $joueur->anticipation[$effectue[0]]) AND $joueur->anticipation[$effectue[0]][$id] > 0)
 			{
 				// On récupère le nombre d'utilisations et calcul des chances de réussite
-				$nbr_utilisation = $joueur['anticipation'][$effectue[0]][$id];
+				$nbr_utilisation = $joueur->anticipation[$effectue[0]][$id];
 				$chance_reussite = 100 - ($nbr_utilisation * $nbr_utilisation);
 				// Si l'adversaire est de niveau < 5, alors il a moins de chances d'anticiper
 				if($ennemi['level'] < 5)
@@ -398,7 +397,7 @@ function sub_script_action($joueur, $ennemi, $mode, &$effects)
 					$chance_reussite = 100 - ( (100 - $chance_reussite) / (6 - $ennemi['level']) );
 				}
 				// Réduction des chances d'anticiper si adversaire glacé (avec une orbe de glace)
-				if($ennemi['etat']['glace_anticipe']['duree'] > 0) $chance_reussite = $chance_reussite * $ennemi['etat']['glace_anticipe']['effet'];
+				if($ennemi->etat['glace_anticipe']['duree'] > 0) $chance_reussite = $chance_reussite * $ennemi->etat['glace_anticipe']['effet'];
 				// Réduction des chances d'anticiper si adversaire amorphe
 				if(array_key_exists('maladie_amorphe', $joueur['debuff'])) $chance_reussite = $chance_reussite - $joueur['debuff']['maladie_amorphe']['effet'];
 				// Ob détermine si l'action est anticipée
@@ -417,7 +416,7 @@ function sub_script_action($joueur, $ennemi, $mode, &$effects)
 				}
 			}
 			//On incrémente l'anticipation de la compétence de l'attaque classique ou du sort.
-			$joueur['anticipation'][$effectue[0]][$id]++;
+			$joueur->anticipation[$effectue[0]][$id]++;
 			$effectue[2] = $joueur;
 			return $effectue;
 		}

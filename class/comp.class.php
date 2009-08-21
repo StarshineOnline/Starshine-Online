@@ -129,9 +129,7 @@ class maitrise_bouclier extends competence
   }
 
 	static function factory(&$effects, &$actif, &$passif, $acteur = '') {
-		if ($passif['bouclier'] AND 
-				array_key_exists('maitrise_bouclier', $passif['competences']))
-			$effects[] = new maitrise_bouclier($acteur != 'attaquant');
+		if ($passif->bouclier AND $passif->is_competence('maitrise_bouclier')) $effects[] = new maitrise_bouclier($acteur != 'attaquant');
 	}
 
   function calcul_bloquage(&$actif, &$passif) {
@@ -156,8 +154,7 @@ class maitrise_dague extends competence
   }
 
 	static function factory(&$effects, &$actif, &$passif, $acteur = '') {
-    	if($actif['arme_type'] == 'dague' AND
-       		array_key_exists('maitrise_dague', $actif['competences']))
+    	if($actif->get_arme_type() == 'dague' AND $actif->is_competence('maitrise_dague'))
 		$effects[] = new maitrise_dague($acteur == 'attaquant');      
 	}
 
@@ -183,8 +180,7 @@ class maitrise_epee extends competence
   }
 
 	static function factory(&$effects, &$actif, &$passif, $acteur = '') {
-    if($actif['arme_type'] == 'epee' AND
-       array_key_exists('maitrise_epee', $actif['competences']))
+    if($actif->get_arme_type() == 'epee' AND $actif->is_competence('maitrise_epee'))
 			$effects[] = new maitrise_epee($acteur == 'attaquant');      
 	}
 
@@ -210,15 +206,13 @@ class maitrise_hache extends competence
   }
 
 	static function factory(&$effects, &$actif, &$passif, $acteur = '') {
-    if($actif['arme_type'] == 'hache' AND
-       array_key_exists('maitrise_hache', $actif['competences']))
+    if($actif->get_arme_type() == 'hache' AND $actif->is_competence('maitrise_hache'))
 			$effects[] = new maitrise_hache($acteur == 'attaquant');      
 	}
 
   function debut_round(&$actif, &$passif) {
     $this->used = true;
-    $actif['potentiel_toucher'] *=
-      1 + ($actif['competences']['maitrise_hache'] / 1000);
+    $actif->potentiel_toucher *= 1 + ($actif['competences']['maitrise_hache'] / 1000);
     $actif['maitrise_hache'] = $actif['competences']['maitrise_hache'];
   }
 
@@ -237,8 +231,7 @@ class maitrise_arc extends competence
   }
 
 	static function factory(&$effects, &$actif, &$passif, $acteur = '') {
-    if($actif['arme_type'] == 'arc' AND
-       array_key_exists('maitrise_arc', $actif['competences']))
+    if($actif->get_arme_type() == 'arc' AND $actif->is_competence('maitrise_arc'))
 			$effects[] = new maitrise_arc($acteur == 'attaquant');      
 	}
 
@@ -264,8 +257,7 @@ class maitrise_critique extends competence
   }
 
 	static function factory(&$effects, &$actif, &$passif, $acteur = '') {
-    if($actif['arme_type'] == 'critique' AND
-       array_key_exists('maitrise_critique', $actif['competences']))
+    if($actif->is_competence('maitrise_critique'))
 			$effects[] = new maitrise_critique($acteur == 'attaquant');      
 	}
 

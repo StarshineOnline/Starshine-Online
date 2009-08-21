@@ -2890,6 +2890,25 @@ class perso extends entite
 		return !empty($this->groupe);
 	}
 
+	function recupaction($type_action)
+	{
+		global $db;
+		if($type_action == 'defense' && $this->action_d != 0) $action_id = $this->action_d;
+		else $action_id = $this->action_a;
+		if($action_id != 0)
+		{
+			$requete = "SELECT action FROM action_perso WHERE id = ".$action_id;
+			$req = $db->query($requete);
+			$row = $db->read_row($req);
+		}
+		else
+		{
+			$row[0] = '!';
+		}
+		$this->action = $row[0];
+		return $this->action;
+	}
+
 	function check_perso()
 	{
 		$modif = false;	 // Indique si le personnage a été modifié.

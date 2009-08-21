@@ -10,18 +10,15 @@ $type = $_GET['type'];
 switch($type)
 {
 	case 'joueur' :
-		$joueur = new perso($_SESSION['id']);
+		$joueur = new perso($_SESSION['ID']);
 		$joueur_defenseur = new perso($_GET['id_joueur']);
 		$joueur_defenseur->check_perso();
+		$joueur->action = $joueur->recupaction('attaque');
+		$joueur_defenseur->action = $joueur_defenseur->recupaction('defense');
 		$attaquant = new entite('joueur', $joueur);
 		$defenseur = new entite('joueur', $joueur_defenseur);
 	break;
 }
-
-
-$attaquant->action = recupaction($attaquant->get_action_a());
-$defenseur->action = recupaction($defenseur->get_action_d());
-
 
 $W_case = convert_in_pos($defenseur->get_x(), $defenseur->get_y());
 $W_coord = convert_in_coord($W_case);
@@ -103,14 +100,14 @@ else
 	if($attaquant->get_race() == $defenseur->get_race()) $pa_attaque += 3;
 	if($attaquant->get_race() == 'orc' OR $defenseur->get_race() == 'orc') $round_total += 1;
 	if($attaquant->is_buff('buff_sacrifice')) $round_total -= $attaquant->get_buff('buff_sacrifice', 'effet2');
-	if($attaquant->is_debuff('cout_attaque')) $pa_attaque = ceil($pa_attaque / $attaquant->get_debuff('cout_attaque', 'effet'));
-	if($attaquant->is_debuff('plus_cout_attaque')) $pa_attaque = $pa_attaque * $attaquant->get_debuff('plus_cout_attaque', 'effet');
+	if($attaquant->is_buff('cout_attaque')) $pa_attaque = ceil($pa_attaque / $attaquant->get_buff('cout_attaque', 'effet'));
+	if($attaquant->is_buff('plus_cout_attaque')) $pa_attaque = $pa_attaque * $attaquant->get_buff('plus_cout_attaque', 'effet');
 	if($attaquant->is_buff('buff_rapidite')) $reduction_pa = $attaquant->get_buff('buff_rapidite', 'effet'); else $reduction_pa = 0;
-	if($attaquant->is_debuff('debuff_ralentissement')) $reduction_pa -= $attaquant->get_debuff('debuff_ralentissement', 'effet');
-	if($attaquant->is_debuff('engloutissement')) $attaquant->set_dexterite($attaquant->get_dexterite - $attaquant->get_debuff('engloutissement', 'effet'));
-	if($attaquant->is_debuff('deluge')) $attaquant->set_volonte($attaquant->get_colonte - $attaquant->get_debuff('deluge', 'effet'));
-	if($defenseur->is_debuff('engloutissement')) $defenseur->set_dexterite($defenseur->get_dexterite() - $defenseur->get_debuff('engloutissement', 'effet'));
-	if($defenseur->is_debuff('deluge')) $defenseur->set_volonte($defenseur->get_volonte - $defenseur->get_debuff('deluge', 'effet'));
+	if($attaquant->is_buff('debuff_ralentissement')) $reduction_pa -= $attaquant->get_debuff('debuff_ralentissement', 'effet');
+	if($attaquant->is_buff('engloutissement')) $attaquant->set_dexterite($attaquant->get_dexterite - $attaquant->get_buff('engloutissement', 'effet'));
+	if($attaquant->is_buff('deluge')) $attaquant->set_volonte($attaquant->get_colonte - $attaquant->get_buff('deluge', 'effet'));
+	if($defenseur->is_buff('engloutissement')) $defenseur->set_dexterite($defenseur->get_dexterite() - $defenseur->get_buff('engloutissement', 'effet'));
+	if($defenseur->is_buff('deluge')) $defenseur->set_volonte($defenseur->get_volonte - $defenseur->get_buff('deluge', 'effet'));
 	$pa_attaque = $pa_attaque - $reduction_pa;
 	if($pa_attaque <= 0) $pa_attaque = 1;
 	//Vérifie si l'attaquant a assez de points d'actions pour attaquer
@@ -119,7 +116,7 @@ else
 		if($attaquant->get_hp() > 0)
 		{
 			//Suppresion de longue portée si besoin
-			if($attaquant->id_buff('longue_portee') AND $attaquant->get_arme_type() == 'arc')
+			if($attaquant->is_buff('longue_portee') AND $attaquant->get_arme_type() == 'arc')
 			{
 				$requete = "DELETE FROM buff WHERE id = ".$attaquant->get_buff('longue_portee', 'id');
 				$db->query($requete);
@@ -159,8 +156,8 @@ else
 			//Boucle principale qui fait durer le combat $round_total round
 			while(($round < ($round_total + 1)) AND ($attaquant->get_hp() > 0) AND ($defenseur->get_hp() > 0))
 			{
-				if($attaquant->get_arme_type() == 'arc') $attaquant->comp = 'distance'; else $attaquant->comp = 'melee';
-				if($defenseur->get_arme_type() == 'arc') $defenseur->comp = 'distance'; else $defenseur->comp = 'melee';
+				if($attaquant->get_arme_type() == 'arc') $attaquant->set_comp('distance'); else $attaquant->set_comp('melee');
+				if($defenseur->get_arme_type() == 'arc') $defenseur->set_comp('distance'); else $defenseur->set_comp('melee');
 				//Calcul du potentiel de toucher et parer
 				$attaquant->get_potentiel_toucher();
 				$defenseur->get_potentiel_toucher();
@@ -219,13 +216,13 @@ else
 					$args = array();
 					$args_def = array();
 					//echo $action[0];
-					$hp_avant = ${$mode_def}['hp'];
+					$hp_avant = ${$mode_def}->get_hp();
 					switch($action[0])
 					{
 						//Attaque
 						case 'attaque' :
-							attaque($mode, ${$mode}->comp, $effects);
-							$args[] = ${$mode}->comp.' = '.${$mode}->get_{${$mode}->comp}();
+							attaque($mode, ${$mode}->get_comp(), $effects);
+							$args[] = ${$mode}->get_comp().' = '.${$mode}->get_{${$mode}->comp}();
 							$count = count($ups);
 							if($count > 0)
 							{

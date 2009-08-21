@@ -356,19 +356,19 @@ class empoisonne extends effect {
 	}
 
 	static function factory(&$effects, &$actif, &$passif, $acteur = '') {
-		if (array_key_exists('empoisonne', $actif['etat']))
-			$effects[] = new empoisonne($actif['etat']['empoisonne']['effet']);
+		if (array_key_exists('empoisonne', $actif->etat))
+			$effects[] = new empoisonne($actif->etat['empoisonne']['effet']);
 	}
 
   function fin_round(&$actif, &$passif)
   {
 		$this->hit($actif['nom'].' perd '.$this->vigueur.' HP à cause du poison');
-		$actif['hp'] -= $this->vigueur;
-		$actif['etat']['empoisonne']['effet'] -= 1;
-		if ($actif['etat']['empoisonne']['effet'] < 1)
-			$actif['etat']['empoisonne']['effet'] = 1;
-		if ($actif['etat']['empoisonne']['duree'] < 1)
-			unset($actif['etat']['empoisonne']);
+		$actif->set_hp($actif->get_hp() - $this->vigueur);
+		$actif->etat['empoisonne']['effet'] -= 1;
+		if ($actif->etat['empoisonne']['effet'] < 1)
+			$actif->etat['empoisonne']['effet'] = 1;
+		if ($actif->etat['empoisonne']['duree'] < 1)
+			unset($actif->etat['empoisonne']);
 	}
 }
 
@@ -384,8 +384,8 @@ class poison_lent extends effect {
 	}
 
 	static function factory(&$effects, &$actif, &$passif, $acteur = '') {
-		if (array_key_exists('poison_lent', $actif['etat'])) {
-			$effects[] = new poison_lent($actif['etat']['poison_lent']['effet']);
+		if (array_key_exists('poison_lent', $actif->etat)) {
+			$effects[] = new poison_lent($actif->etat['poison_lent']['effet']);
 		}
 	}
 
@@ -393,8 +393,8 @@ class poison_lent extends effect {
   {
 		$this->hit($actif['nom'].' perd '.$this->vigueur.' HP à cause du poison');
 		$actif['hp'] -= $this->vigueur;
-		if ($actif['etat']['poison_lent']['duree'] < 1)
-			unset($actif['etat']['poison_lent']);
+		if ($actif->etat['poison_lent']['duree'] < 1)
+			unset($actif->etat['poison_lent']);
 	}
 }
 
@@ -410,8 +410,8 @@ class ensable extends effect {
 	}
 
 	static function factory(&$effects, &$actif, &$passif, $acteur = '') {
-		if (array_key_exists('fleche_sable', $actif['etat'])) {
-			$effects[] = new ensable($actif['etat']['fleche_sable']['effet']);
+		if (array_key_exists('fleche_sable', $actif->etat)) {
+			$effects[] = new ensable($actif->etat['fleche_sable']['effet']);
 		}
 	}
 
@@ -427,8 +427,8 @@ class ensable extends effect {
 
   function fin_round(&$actif, &$passif)
   {
-		if ($actif['etat']['fleche_sable']['duree'] < 1)
-			unset($actif['etat']['fleche_sable']);
+		if ($actif->etat['fleche_sable']['duree'] < 1)
+			unset($actif->etat['fleche_sable']);
 	}
 }
 
