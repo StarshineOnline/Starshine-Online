@@ -11,6 +11,31 @@
  */
 class entite
 {
+	private $action_a;
+	private $action_d;
+	private $arme_type;
+	private $comp;
+	private $x;
+	private $y;
+	private $hp;
+	private $reserve;
+	private $pa;
+	private $nom;
+	private $race;
+	private $pp;
+	private $pm;
+	private $distance_tir;
+	private $distance;
+	private $melee;
+	private $incantation;
+	private $buff;
+	private $etat;
+	private $force;
+	private $puissance;
+	private $energie;
+	private $vitalite;
+	private $volonte;
+	private $dexterite;
     //put your code here
 	function get_potentiel_toucher()
 	{
@@ -25,9 +50,10 @@ class entite
 		return $this->potentiel_toucher;
 	}
 
-	function get_potentiel_parer()
+	function get_potentiel_parer($esquive = false)
 	{
-		$this->potentiel_parer = round($this->get_esquive() + ($this->get_esquive() * ((pow($this->get_dexterite(), 2)) / 1000)));
+		if(!$esquive) $this->potentiel_parer = round($this->get_esquive() + ($this->get_esquive() * ((pow($this->get_dexterite(), 2)) / 1000)));
+		else $this->potentiel_parer = round($esquive + ($esquive * ((pow($this->get_dexterite(), 2)) / 1000)));
 		return $this->potentiel_parer;
 	}
 

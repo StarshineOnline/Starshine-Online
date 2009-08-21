@@ -6,20 +6,26 @@ if (file_exists('root.php'))
 $connexion = true;
 //Inclusion du haut du document html
 include_once(root.'haut_ajax.php');
-//L'ID du du joueur attaqué
-$W_ID = $_GET['ID'];
+$type = $_GET['type'];
+switch($type)
+{
+	case 'joueur' :
+		$joueur = new perso($_SESSION['id']);
+		$joueur_defenseur = new perso($_GET['id_joueur']);
+		$joueur_defenseur->check_perso();
+		$attaquant = new entite('joueur', $joueur);
+		$defenseur = new entite('joueur', $joueur_defenseur);
+	break;
+}
 
-$attaquant = new perso($_SESSION['ID']);
-$defenseur = new perso($W_ID);
 
 $attaquant->action = recupaction($attaquant->get_action_a());
 $defenseur->action = recupaction($defenseur->get_action_d());
 
-$defenseur->check_perso();
 
 $W_case = convert_in_pos($defenseur->get_x(), $defenseur->get_y());
 $W_coord = convert_in_coord($W_case);
-$W_distance = detection_distance($W_case, convert_in_pos($joueur->get_x(), $joueur->get_y()));
+$W_distance = detection_distance($W_case, convert_in_pos($attaquant->get_x(), $attaquant->get_y()));
 ?>
 <fieldset>
 	<legend>Combat VS <?php echo $defenseur->get_nom(); ?></legend>
@@ -34,57 +40,60 @@ elseif($attaquant->get_hp() <= 0 OR $defenseur->get_hp() <= 0)
 }
 else
 {
-	//Récupération si la case est une ville et diplomatie
-	$chateau = false;
-	$requete = "SELECT type FROM map WHERE id = ".$W_case." AND type = 1 AND royaume = ".$Trace[$defenseur->get_race()]['numrace'];
-	$db->query($requete);
-	if($db->num_rows > 0)
+	if($type == 'joueur')
 	{
-		echo 'Le défenseur est sur sa ville, application des bonus !<br />';
-		$defenseur->pm = $defenseur->get_pm() * 1.16;
-		$defenseur->pp = $defenseur->get_pp() * 1.3;
-		$chateau = true;
-	}
-	//On vérifie si le défenseur est sur un batiment défensif
-	$requete = "SELECT id_batiment FROM construction WHERE x = ".$W_coord['x']." AND y = ".$W_coord['y']." AND royaume = ".$Trace[$defenseur->get_race()]['numrace'];
-	$req = $db->query($requete);
-	if($db->num_rows > 0)
-	{
-		$row = $db->read_row($req);
-		$requete = "SELECT * FROM batiment WHERE id = ".$row[0];
-		$req = $db->query($requete);
-		$row = $db->read_assoc($req);
-		switch($row['type'])
+		//Récupération si la case est une ville et diplomatie
+		$chateau = false;
+		$requete = "SELECT type FROM map WHERE id = ".$W_case." AND type = 1 AND royaume = ".$Trace[$defenseur->get_race()]['numrace'];
+		$db->query($requete);
+		if($db->num_rows > 0)
 		{
-			case 'fort' :
-				//Augmentation des chances d'esquiver
-				$defenseur->add_buff('batiment_esquive', $row['bonus1']);
-				//Augmentation de la PP
-				$defenseur->add_buff('batiment_pp', $row['bonus2']);
-				//Augmentation de la PM
-				$defenseur->add_buff('batiment_pm', $row['bonus3']);
-			break;
+			echo 'Le défenseur est sur sa ville, application des bonus !<br />';
+			$defenseur->pm = $defenseur->get_pm() * 1.16;
+			$defenseur->pp = $defenseur->get_pp() * 1.3;
+			$chateau = true;
 		}
-	}
-	//On vérifie si l'attaquant est sur un batiment offensif
-	$requete = "SELECT id_batiment FROM construction WHERE x = ".$attaquant->get_x()." AND y = ".$attaquant->get_y()." AND royaume = ".$Trace[$attaquant->get_race()]['numrace'];
-	$req = $db->query($requete);
-	if($db->num_rows > 0)
-	{
-		$row = $db->read_row($req);
-		$requete = "SELECT * FROM batiment WHERE id = ".$row[0];
+		//On vérifie si le défenseur est sur un batiment défensif
+		$requete = "SELECT id_batiment FROM construction WHERE x = ".$W_coord['x']." AND y = ".$W_coord['y']." AND royaume = ".$Trace[$defenseur->get_race()]['numrace'];
 		$req = $db->query($requete);
-		$row = $db->read_assoc($req);
-		switch($row['type'])
+		if($db->num_rows > 0)
 		{
-			case 'tour' :
-				//Augmentation de tir à distance
-				$defenseur->add_buff('batiment_distance', $row['bonus1']);
-				//Augmentation de l'ancement de sorts
-				$defenseur->add_buff('batiment_incantation', $row['bonus2']);
-			break;
+			$row = $db->read_row($req);
+			$requete = "SELECT bonus1, bonus2, bonus3 FROM batiment WHERE id = ".$row[0];
+			$req = $db->query($requete);
+			$row = $db->read_assoc($req);
+			switch($row['type'])
+			{
+				case 'fort' :
+					//Augmentation des chances d'esquiver
+					$defenseur->add_buff('batiment_esquive', $row['bonus1']);
+					//Augmentation de la PP
+					$defenseur->add_buff('batiment_pp', $row['bonus2']);
+					//Augmentation de la PM
+					$defenseur->add_buff('batiment_pm', $row['bonus3']);
+				break;
+			}
 		}
-	}
+		//On vérifie si l'attaquant est sur un batiment offensif
+		$requete = "SELECT id_batiment FROM construction WHERE x = ".$attaquant->get_x()." AND y = ".$attaquant->get_y()." AND royaume = ".$Trace[$attaquant->get_race()]['numrace'];
+		$req = $db->query($requete);
+		if($db->num_rows > 0)
+		{
+			$row = $db->read_row($req);
+			$requete = "SELECT bonus1, bonus2 FROM batiment WHERE id = ".$row[0];
+			$req = $db->query($requete);
+			$row = $db->read_assoc($req);
+			switch($row['type'])
+			{
+				case 'tour' :
+					//Augmentation de tir à distance
+					$defenseur->add_buff('batiment_distance', $row['bonus1']);
+					//Augmentation de l'ancement de sorts
+					$defenseur->add_buff('batiment_incantation', $row['bonus2']);
+				break;
+			}
+		}
+	} //fin $type = 'joueur'
 	$round_total = $G_round_total;
 	$round = 1;
 	$attaquant->etat = array();
@@ -98,10 +107,10 @@ else
 	if($attaquant->is_debuff('plus_cout_attaque')) $pa_attaque = $pa_attaque * $attaquant->get_debuff('plus_cout_attaque', 'effet');
 	if($attaquant->is_buff('buff_rapidite')) $reduction_pa = $attaquant->get_buff('buff_rapidite', 'effet'); else $reduction_pa = 0;
 	if($attaquant->is_debuff('debuff_ralentissement')) $reduction_pa -= $attaquant->get_debuff('debuff_ralentissement', 'effet');
-	if($attaquant->is_debuff('engloutissement')) $attaquant['dexterite'] -= $attaquant->get_debuff('engloutissement', 'effet');
-	if($attaquant->is_debuff('deluge')) $attaquant['volonte'] -= $attaquant->get_debuff('deluge', 'effet');
-	if($defenseur->is_debuff('engloutissement')) $defenseur->get_dexterite() -= $defenseur->get_debuff('engloutissement', 'effet');
-	if($defenseur->is_debuff('deluge')) $defenseur['volonte'] -= $defenseur->get_debuff('deluge', 'effet');
+	if($attaquant->is_debuff('engloutissement')) $attaquant->set_dexterite($attaquant->get_dexterite - $attaquant->get_debuff('engloutissement', 'effet'));
+	if($attaquant->is_debuff('deluge')) $attaquant->set_volonte($attaquant->get_colonte - $attaquant->get_debuff('deluge', 'effet'));
+	if($defenseur->is_debuff('engloutissement')) $defenseur->set_dexterite($defenseur->get_dexterite() - $defenseur->get_debuff('engloutissement', 'effet'));
+	if($defenseur->is_debuff('deluge')) $defenseur->set_volonte($defenseur->get_volonte - $defenseur->get_debuff('deluge', 'effet'));
 	$pa_attaque = $pa_attaque - $reduction_pa;
 	if($pa_attaque <= 0) $pa_attaque = 1;
 	//Vérifie si l'attaquant a assez de points d'actions pour attaquer
@@ -110,33 +119,37 @@ else
 		if($attaquant->get_hp() > 0)
 		{
 			//Suppresion de longue portée si besoin
-			if($attaquant->id_buff('longue_portee') AND $attaquant['arme_type'] == 'arc')
+			if($attaquant->id_buff('longue_portee') AND $attaquant->get_arme_type() == 'arc')
 			{
 				$requete = "DELETE FROM buff WHERE id = ".$attaquant->get_buff('longue_portee', 'id');
 				$db->query($requete);
 			}
-			$crime = false;
-			$requete = "SELECT ".$defenseur->get_race()." FROM diplomatie WHERE race = '".$attaquant->get_race()."'";
-			$req = $db->query($requete);
-			$row = $db->read_row($req);
-			$pascrime = false;
-			//Vérification si crime
-			if(array_key_exists($row[0], $G_crime))
+			//Gestion des points de crime
+			if($type == 'joueur')
 			{
-				if($row[0] == 127)
+				$crime = false;
+				$requete = "SELECT ".$defenseur->get_race()." FROM diplomatie WHERE race = '".$attaquant->get_race()."'";
+				$req = $db->query($requete);
+				$row = $db->read_row($req);
+				$pascrime = false;
+				//Vérification si crime
+				if(array_key_exists($row[0], $G_crime))
 				{
-					$amende = recup_amende($defenseur->get_id());
-					if($amende)
+					if($row[0] == 127)
 					{
-						if($amende['statut'] != 'normal') $pascrime = true;
+						$amende = recup_amende($defenseur->get_id());
+						if($amende)
+						{
+							if($amende['statut'] != 'normal') $pascrime = true;
+						}
 					}
-				}
-				if(!$pascrime)
-				{
-					$crime = true;
-					$points = ($G_crime[$row[0]] / 10);
-					$attaquant->set_crime($attaquant->get_crime() + $points);
-					echo '<h5>Vous attaquez un joueur en '.$Gtrad['diplo'.$row[0]].', vous recevez '.$points.' point(s) de crime</h5>';
+					if(!$pascrime)
+					{
+						$crime = true;
+						$points = ($G_crime[$row[0]] / 10);
+						$joueur->set_crime($joueur->get_crime() + $points);
+						echo '<h5>Vous attaquez un joueur en '.$Gtrad['diplo'.$row[0]].', vous recevez '.$points.' point(s) de crime</h5>';
+					}
 				}
 			}
 
@@ -146,14 +159,14 @@ else
 			//Boucle principale qui fait durer le combat $round_total round
 			while(($round < ($round_total + 1)) AND ($attaquant->get_hp() > 0) AND ($defenseur->get_hp() > 0))
 			{
-				if($attaquant['arme_type'] == 'arc') $attaquant->comp = 'distance'; else $attaquant->comp = 'melee';
-				if($defenseur['arme_type'] == 'arc') $defenseur->comp = 'distance'; else $defenseur->comp = 'melee';
+				if($attaquant->get_arme_type() == 'arc') $attaquant->comp = 'distance'; else $attaquant->comp = 'melee';
+				if($defenseur->get_arme_type() == 'arc') $defenseur->comp = 'distance'; else $defenseur->comp = 'melee';
 				//Calcul du potentiel de toucher et parer
-				$attaquant->potentiel_toucher = round($attaquant[$attaquant->comp] + ($attaquant[$attaquant->comp] * ((pow($attaquant->get_dexterite(), 2)) / 1000)));
-				$defenseur->potentiel_toucher = round($defenseur[$defenseur->comp] + ($defenseur[$defenseur->comp] * ((pow($defenseur->get_dexterite(), 2)) / 1000)));
-				$attaquant->potentiel_parer = round($attaquant->get_esquive() + ($attaquant->get_esquive() * ((pow($attaquant->get_dexterite(), 2)) / 1000)));
-				if($chateau) $esquive = $defenseur->get_esquive() * 1.5; else $esquive = $defenseur->get_esquive();
-				$defenseur->potentiel_parer = round($esquive + ($esquive * ((pow($defenseur->get_dexterite(), 2)) / 1000)));
+				$attaquant->get_potentiel_toucher();
+				$defenseur->get_potentiel_toucher();
+				$attaquant->get_potentiel_parer();
+				if($type == 'joueur' && $chateau) $esquive = $defenseur->get_esquive() * 1.5; else $esquive = $defenseur->get_esquive();
+				$defenseur->get_potentiel_parer($esquive);
 				$attaquant->degat_sup = 0;
 				$attaquant->degat_moins = 0;
 				$defenseur->degat_sup = 0;
