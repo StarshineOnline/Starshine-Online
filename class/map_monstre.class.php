@@ -434,3 +434,4 @@ class map_monstre
 		$this->mort_naturelle = $mort_naturelle;
 		$this->champs_modif[] = 'mort_naturelle';
 	}
+}

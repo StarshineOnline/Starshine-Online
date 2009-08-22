@@ -38,7 +38,7 @@ class entite
 	private $force;
 	private $puissance;
 	private $energie;
-	private $vitalite;
+	private $vie;
 	private $volonte;
 	private $dexterite;
 	private $enchantement;
@@ -78,7 +78,42 @@ class entite
 				$this->force = $objet->get_force();
 				$this->puissance = $objet->get_puissance();
 				$this->energie = $objet->get_energie();
-				$this->vitalite = $objet->get_vitalite();
+				$this->vie = $objet->get_vie();
+				$this->volonte = $objet->get_volonte();
+				$this->dexterite = $objet->get_dexterite();
+				$this->enchantement = array();
+				$this->arme_degat = 0;
+				$this->level = $objet->get_level();
+			break;
+			case 'monstre' :
+				$this->action = $objet->get_action();
+				$this->arme_type = $objet->get_arme();
+				$this->comp_combat = 'melee';
+				$this->comp = array();
+				$this->x = $objet->x;
+				$this->y = $objet->y;
+				$this->hp = $objet->get_hp();
+				$this->hp_max = $objet->hp_max;
+				$this->reserve = $objet->get_reserve();
+				$this->pa = 0;
+				$this->nom = $objet->get_nom();
+				$this->race = 'neutre';
+				$this->pp = $objet->get_pp();
+				$this->pm = $objet->get_pm();
+				$this->distance_tir = 1;
+				$this->esquive = $objet->get_esquive();
+				$this->distance = $objet->get_melee();
+				$this->melee = $objet->get_melee();
+				$this->incantation = $objet->get_incantation();
+				$this->sort_mort = $objet->get_sort_mort();
+				$this->sort_vie = $objet->get_sort_vie();
+				$this->sort_element = $objet->get_sort_element();
+				$this->buff = $objet->get_buff();
+				$this->etat = array();
+				$this->force = $objet->get_forcex();
+				$this->puissance = $objet->get_puissance();
+				$this->energie = $objet->get_energie();
+				$this->vie = 15;
 				$this->volonte = $objet->get_volonte();
 				$this->dexterite = $objet->get_dexterite();
 				$this->enchantement = array();
@@ -208,9 +243,9 @@ class entite
 	{
 		return $this->energie;
 	}
-	function get_vitalite()
+	function get_vie()
 	{
-		return $this->vitalite;
+		return $this->vie;
 	}
 	function get_volonte()
 	{

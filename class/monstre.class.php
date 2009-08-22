@@ -1076,5 +1076,14 @@ class monstre
 	}
 
 		//fonction
+	function get_reserve()
+	{
+		return ceil(2.1 * ($this->energie + floor(($this->energie - 8) / 2)));
+	}
+
+	function get_buff()
+	{
+		return array();
+	}
 }
 ?>
