@@ -98,7 +98,7 @@ if(!$visu AND isset($_GET['action']))
 									$rez = 0;
 								}
 								else $rez = $row['bonus4'];
-								$requete = "INSERT INTO placement (type, x, y, royaume, debut_placement, fin_placement, id_batiment, hp, nom, rez) VALUES('".sSQL($_GET['type'])."', '".$joueur->get_x()."', '".$joueur->get_y()."', '".$Trace[$joueur->get_race()]['numrace']."', ".time().", '".$time."', '".$row['batiment_id']."', '".$row['hp']."', '".$row['batiment_nom']."', '".$rez."')";
+								$requete = "INSERT INTO placement (type, x, y, royaume, debut_placement, fin_placement, id_batiment, hp, nom, rez, pointvictoire) VALUES('".sSQL($_GET['type'])."', '".$joueur->get_x()."', '".$joueur->get_y()."', '".$Trace[$joueur->get_race()]['numrace']."', ".time().", '".$time."', '".$row['batiment_id']."', '".$row['hp']."', '".$row['batiment_nom']."', '".$rez."', '".$row['point_victoire']."')";
 								$db->query($requete);
 								//On supprime l'objet de l'inventaire
 								array_splice($joueur->get_inventaire_slot(), $_GET['key_slot'], 1);

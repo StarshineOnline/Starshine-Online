@@ -380,6 +380,7 @@ class map_case
 				$construction->set_rez($row['rez']);
 				$construction->set_image($Gtrad[$row['nom']]);
 				$construction->set_date_construction(time());
+				$construction->set_point_victoire($row['point_victoire']);
 				//Insertion de la construction
 				$construction->sauver();
 				//Suppression du placement

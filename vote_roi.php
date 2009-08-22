@@ -17,7 +17,7 @@ $W_case = $_GET['poscase'];
 $W_requete = 'SELECT * FROM map WHERE ID =\''.sSQL($W_case).'\'';
 $W_req = $db->query($W_requete);
 $W_row = $db->read_array($W_req);
-$R = get_royaume_info($joueur->get_race(), $W_row['royaume']);
+$R = new royaume($W_row['royaume']);
 
 $_SESSION['position'] = convert_in_pos($joueur->get_x(), $joueur->get_y());
 ?>
@@ -36,8 +36,9 @@ if($W_distance == 0)
 			switch ($_GET['action'])
 			{
 				case 'vote' :
-					$date = date_prochain_mandat();
-					$requete = "SELECT * FROM vote WHERE id_perso = ".$joueur->get_id()." AND date = '".$date."'";
+					$elections = elections::get_prochain_election($R->get_id());
+					$prochain_election = $elections[0];
+					$requete = "SELECT id FROM vote WHERE id_perso = ".$joueur->get_id()." AND date = '".$date."'";
 					$db->query($requete);
 					if($db->num_rows > 0)
 					{
@@ -45,11 +46,9 @@ if($W_distance == 0)
 					}
 					else
 					{
-
-						
 					    validate_integer_value($_GET['id_candidat']);
 						validate_against_printf_predicate($_GET['id_candidat'], "select count(`id`) from candidat where `date` = '$date' and `id_perso` = '%d'", 1);
-						$requete = "INSERT INTO vote ( `id` , `id_perso`, `id_candidat`, `date` , `royaume`) VALUES('', ".$joueur->get_id().", ".sSQL($_GET['id_candidat']).", '".$date."', ".$R['ID'].")";
+						$requete = "INSERT INTO vote ( `id` , `id_perso`, `id_candidat`, `id_election`) VALUES('', ".$joueur->get_id().", ".sSQL($_GET['id_candidat']).", ".$prochain_election->get_id().")";
 						if($db->query($requete))
 						{
 							echo 'Votre vote a bien été pris en compte';
@@ -64,8 +63,9 @@ if($W_distance == 0)
 	Pour qui allez vous voter ?<br />
 	<select name="id_candidat" id="id_candidat">
 		<?php
-		$date = date_prochain_mandat();
-		$requete = "SELECT * FROM candidat WHERE date = '".$date."' AND royaume = ".$R['ID'];
+		$elections = elections::get_prochain_election($R->get_id());
+		$prochain_election = $elections[0];
+		$requete = "SELECT * FROM candidat WHERE id_election = '".$prochain_election->get_id();
 		$req = $db->query($requete);
 		while($row = $db->read_assoc($req))
 		{

@@ -301,7 +301,7 @@ if($joueur->get_rang_royaume() != 6)
 	        break;
 	        case 'ameliore' :
 	            $id_batiment = $_GET['id_batiment'];
-	            $requete = "SELECT * FROM batiment_ville WHERE id = ".$id_batiment;
+	            $requete = "SELECT cout, nom, hp FROM batiment_ville WHERE id = ".$id_batiment;
 	            $req = $db->query($requete);
 	            $row = $db->read_assoc($req);
 	            //Si le royaume a assez de stars on achète le batiment
@@ -314,7 +314,7 @@ if($joueur->get_rang_royaume() != 6)
 	                //On ajoute le batiment et on supprime l'ancien
 	                $requete = "DELETE FROM construction_ville WHERE id = ".$id_batiment_ville;
 	                $db->query($requete);
-	                $requete = "INSERT INTO construction_ville VALUES ('', ".$royaume->get_id().", ".$id_batiment.", 'actif', '')";
+	                $requete = "INSERT INTO construction_ville VALUES ('', ".$royaume->get_id().", ".$id_batiment.", 'actif', '', ".$row['hp'].")";
 	                if($db->query($requete))
 	                {
 	                    echo $row['nom'].' bien acheté.';
