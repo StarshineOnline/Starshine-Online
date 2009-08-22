@@ -177,7 +177,7 @@ class comp_perso
 			while($row = $db->read_assoc($req))
 			{
 				if(!$keys) $return[] = new comp_perso($row);
-				else $return[$row[$keys]][] = new comp_perso($row);
+				else $return[$row[$keys]] = new comp_perso($row);
 			}
 		}
 		else $return = array();

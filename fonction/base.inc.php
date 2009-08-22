@@ -1709,6 +1709,21 @@ function diff_sort($difficulte, $joueur, $type, $sortpa, $sortmp)
 	return $total;
 }
 
+function augmentation_competences($liste_augmentations, $joueur)
+{
+	foreach($liste_augmentations['comp'] as $aug)
+	{
+		$retour = augmentation_competence($aug[0], $joueur, $aug[1]);
+		if($retour[1]) $joueur->set_comp($aug[0], $retour[0]);
+	}
+	foreach($liste_augmentations['comp_perso'] as $aug)
+	{
+		$retour = augmentation_competence($aug[0], $joueur, $aug[1]);
+		if($retour[1]) $joueur->set_comp($aug[0], $retour[0]);
+	}
+	return $joueur;
+}
+
 /**
  * Permet de savoir si lors d'une action la compétence augmente de 1.
  * Plus la difficulte est forte, plus il est difficile de l'apprendre.
@@ -3298,8 +3313,8 @@ function list_construction_visu($joueur, $distance) {
 function corrige_bonus_ignorables($attaquant, $defenseur, $mode, &$args, &$args_def)
 {
 	if($mode == 'attaquant') $mode_def = 'defenseur'; else $mode_def = 'attaquant';
-	if (isset(${$mode}['bonus_ignorables'])) {
-		foreach (${$mode}['bonus_ignorables'] as $key => $value) {
+	if (isset(${$mode}->bonus_ignorables)) {
+		foreach (${$mode}->bonus_ignorables as $key => $value) {
 			$test = "$key =";
 			$testlen = strlen($test);
 			foreach ($args as &$arg) {
@@ -3311,8 +3326,8 @@ function corrige_bonus_ignorables($attaquant, $defenseur, $mode, &$args, &$args_
 			}
 		}
 	}
-	if (isset(${$mode_def}['bonus_ignorables'])) {
-		foreach (${$mode_def}['bonus_ignorables'] as $key => $value) {
+	if (isset(${$mode_def}->bonus_ignorables)) {
+		foreach (${$mode_def}->bonus_ignorables as $key => $value) {
 			$test = "$key =";
 			$testlen = strlen($test);
 			foreach ($args_def as &$arg) {

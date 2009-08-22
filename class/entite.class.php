@@ -13,10 +13,12 @@ class entite
 {
 	private $action;
 	private $arme_type;
+	private $comp_combat;
 	private $comp;
 	private $x;
 	private $y;
 	private $hp;
+	private $hp_max;
 	private $reserve;
 	private $pa;
 	private $nom;
@@ -28,6 +30,9 @@ class entite
 	private $distance;
 	private $melee;
 	private $incantation;
+	private $sort_mort;
+	private $sort_vie;
+	private $sort_element;
 	public $buff;
 	public $etat;
 	private $force;
@@ -38,18 +43,22 @@ class entite
 	private $dexterite;
 	private $enchantement;
 	private $arme_degat;
+	private $level;
 
 	function __construct($type, $objet)
 	{
+		$this->objet_effet = array();
 		switch($type)
 		{
 			case 'joueur' :
-				$this->action = $objet->action;
+				$this->action = $objet->action_do;
 				$this->arme_type = $objet->get_arme_type();
-				$this->comp = 'melee';
+				$this->comp_combat = 'melee';
+				$this->comp = $objet->get_comp();
 				$this->x = $objet->get_x();
 				$this->y = $objet->get_y();
 				$this->hp = $objet->get_hp();
+				$this->hp_max = $objet->get_hp_max();
 				$this->reserve = $objet->get_reserve();
 				$this->pa = $objet->get_pa();
 				$this->nom = $objet->get_nom();
@@ -61,6 +70,9 @@ class entite
 				$this->distance = $objet->get_distance();
 				$this->melee = $objet->get_melee();
 				$this->incantation = $objet->get_incantation();
+				$this->sort_mort = $objet->get_sort_mort();
+				$this->sort_vie = $objet->get_sort_vie();
+				$this->sort_element = $objet->get_sort_element();
 				$this->buff = $objet->get_buff();
 				$this->etat = array();
 				$this->force = $objet->get_force();
@@ -71,6 +83,7 @@ class entite
 				$this->dexterite = $objet->get_dexterite();
 				$this->enchantement = array();
 				$this->arme_degat = 0;
+				$this->level = $objet->get_level();
 			break;
 		}
 	}
@@ -82,6 +95,10 @@ class entite
 	function get_arme_type()
 	{
 		return $this->arme_type;
+	}
+	function get_comp_combat()
+	{
+		return $this->comp_combat;
 	}
 	function get_comp()
 	{
@@ -107,9 +124,17 @@ class entite
 	{
 		$this->hp = $valeur;
 	}
+	function get_hp_max()
+	{
+		return $this->hp_max;
+	}
 	function get_reserve()
 	{
 		return $this->reserve;
+	}
+	function set_reserve($valeur)
+	{
+		$this->reserve = $valeur;
 	}
 	function get_pa()
 	{
@@ -151,6 +176,18 @@ class entite
 	{
 		return $this->incantation;
 	}
+	function get_sort_mort()
+	{
+		return $this->sort_mort;
+	}
+	function get_sort_vie()
+	{
+		return $this->sort_vie;
+	}
+	function get_sort_element()
+	{
+		return $this->sort_element;
+	}
 	function get_buff()
 	{
 		return $this->buff;
@@ -190,6 +227,10 @@ class entite
 	function get_arme_degat()
 	{
 		return $this->arme_degat;
+	}
+	function get_level()
+	{
+		return $this->level;
 	}
 
 	function get_potentiel_toucher()

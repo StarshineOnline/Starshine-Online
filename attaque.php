@@ -13,15 +13,14 @@ switch($type)
 		$joueur = new perso($_SESSION['ID']);
 		$joueur_defenseur = new perso($_GET['id_joueur']);
 		$joueur_defenseur->check_perso();
-		$joueur->action = $joueur->recupaction('attaque');
-		$joueur_defenseur->action = $joueur_defenseur->recupaction('defense');
+		$joueur->action_do = $joueur->recupaction('attaque');
+		$joueur_defenseur->action_do = $joueur_defenseur->recupaction('defense');
 		$attaquant = new entite('joueur', $joueur);
 		$defenseur = new entite('joueur', $joueur_defenseur);
 	break;
 }
 
 $W_case = convert_in_pos($defenseur->get_x(), $defenseur->get_y());
-$W_coord = convert_in_coord($W_case);
 $W_distance = detection_distance($W_case, convert_in_pos($attaquant->get_x(), $attaquant->get_y()));
 ?>
 <fieldset>
@@ -51,7 +50,7 @@ else
 			$chateau = true;
 		}
 		//On vérifie si le défenseur est sur un batiment défensif
-		$requete = "SELECT id_batiment FROM construction WHERE x = ".$W_coord['x']." AND y = ".$W_coord['y']." AND royaume = ".$Trace[$defenseur->get_race()]['numrace'];
+		$requete = "SELECT id_batiment FROM construction WHERE x = ".$defenseur->get_x()." AND y = ".$defenseur->get_y()." AND royaume = ".$Trace[$defenseur->get_race()]['numrace'];
 		$req = $db->query($requete);
 		if($db->num_rows > 0)
 		{
@@ -210,38 +209,29 @@ else
 					}
 					else
 					{
+						${$mode}->get_action();
 						$action = script_action(${$mode}, ${$mode_def}, $mode, $effects);
 						if(is_array($action[2])) ${$mode} = $action[2];
 					}
+					//print_r($action);
 					$args = array();
 					$args_def = array();
 					//echo $action[0];
 					$hp_avant = ${$mode_def}->get_hp();
+					$augmentation = array('actif' => array('comp' => array(), 'comp_perso' => array()), 'passif' => array('comp' => array(), 'comp_perso' => array()));
 					switch($action[0])
 					{
 						//Attaque
 						case 'attaque' :
-							attaque($mode, ${$mode}->get_comp(), $effects);
-							$args[] = ${$mode}->get_comp().' = '.${$mode}->get_{${$mode}->comp}();
-							$count = count($ups);
-							if($count > 0)
-							{
-								$upi = 0;
-								while($upi < $count)
-								{
-									$requete = "UPDATE comp_perso SET valeur = ".${$mode}['competences'][$ups[$upi]]." WHERE id_perso = ".${$mode}->get_id()." AND competence = '".$ups[$upi]."'";
-									$db->query($requete);
-									$upi++;
-								}
-							}
+							$augmentations = attaque($mode, ${$mode}->get_comp_combat(), $effects);
 						break;
 						//Lancement d'un sort
 						case 'lance_sort' :
-							lance_sort($action[1], $mode, $effects);
+							$augmentations = lance_sort($action[1], $mode, $effects);
 						break;
 						//Lancement d'une compétence
 						case 'lance_comp' :
-							lance_comp($action[1], $mode, $effects);
+							$augmentations = lance_comp($action[1], $mode, $effects);
 							if($comp_attaque)
 							{
 								attaque($mode, ${$mode}->comp, $effects);
@@ -266,6 +256,17 @@ else
 							$effect->fin_round(${$mode}, ${$mode_def});
 						/* ~Fin de round */
 						break ;
+					}
+					//Augmentation des compétences liées
+					if($mode == 'attaquant')
+					{
+						$joueur = augmentation_competences($augmentations['actif'], $joueur);
+						$joueur_defenseur = augmentation_competences($augmentations['passif'], $joueur_defenseur);
+					}
+					else
+					{
+						$joueur_defenseur = augmentation_competences($augmentations['actif'], $joueur_defenseur);
+						$joueur = augmentation_competences($augmentations['passif'], $joueur);
 					}
 					if($mode == 'defenseur')
 					{
@@ -360,9 +361,9 @@ else
 					//Correction des bonus ignorables
 					corrige_bonus_ignorables($attaquant, $defenseur, $mode, $args, $args_def);
 					//Attaquant
-					$attaquant->sauver();
+					$joueur->sauver();
 					//Defenseur
-					$defenseur->sauver();
+					$joueur_defenseur->sauver();
 					?>
 					</div>
 					<?php
@@ -388,11 +389,11 @@ else
 			}
 
 			//Calculs liés à la survie, fiabilité de l'estimation de HP etc.
-			$survie = $attaquant->get_survie();
-			if($attaquant->is_competence('survie_humanoide')) $survie += $attaquant->get_competence('survie_humanoide');
+			$survie = $joueur->get_survie();
+			if($joueur->is_competence('survie_humanoide')) $survie += $joueur->get_competence('survie_humanoide');
 			$nbr_barre_total = ceil($survie / $defenseur->get_level());
 			if($nbr_barre_total > 100) $nbr_barre_total = 100;
-			$nbr_barre = round(($defenseur->get_hp() / $defenseur->hp_max()) * $nbr_barre_total);
+			$nbr_barre = round(($defenseur->get_hp() / $defenseur->get_hp_max()) * $nbr_barre_total);
 			$longueur = round(100 * ($nbr_barre / $nbr_barre_total), 2);
 			if($longueur < 0) $longueur = 0;
 			$fiabilite = round((100 / $nbr_barre_total), 2);
@@ -400,22 +401,20 @@ else
 			<hr />';
 			
 			//Augmentation des compétences liées
-			$augmentation = augmentation_competence('survie', $attaquant, 2);
+			$augmentation = augmentation_competence('survie', $joueur, 2);
 			if($augmentation[1] == 1)
 			{
-				$attaquant->set_survie($augmentation[0]);
-				echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant à '.$attaquant->get_survie().' en '.$Gtrad['survie'].'</span><br />';
+				$joueur->set_survie($augmentation[0]);
+				echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant à '.$joueur->get_survie().' en '.$Gtrad['survie'].'</span><br />';
 			}
-			if(array_key_exists('survie_humanoide', $attaquant['competences']))
+			if($joueur->is_competence('survie_humanoide'))
 			{
 				//Augmentation des compétences liées
-				$attaquant['survie_humanoide'] = $attaquant['competences']['survie_humanoide'];
-				$augmentation = augmentation_competence('survie_humanoide', $attaquant, 4);
+				$augmentation = augmentation_competence('survie_humanoide', $joueur, 4);
 				if($augmentation[1] == 1)
 				{
-					$attaquant['survie_humanoide'] = $augmentation[0];
-					echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant à '.$attaquant['survie_humanoide'].' en '.$Gtrad['survie_humanoide'].'</span><br />';
-					$db->query("UPDATE comp_perso SET valeur = ".$augmentation[0]." WHERE id_perso = ".$attaquant->get_id()." AND competence = 'survie_humanoide'");
+					$joueur->set_comp('survie_humanoide', $augmentation[0]);
+					echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant à '.$augmentation[0].' en '.$Gtrad['survie_humanoide'].'</span><br />';
 				}
 			}
 			//Cartouche de fin de combat
@@ -554,30 +553,30 @@ else
 
 			if ($defenseur->get_hp() >= 0)
 			{
-				echo(' <a href="attaque.php?ID='.$W_ID.'&amp;poscase='.$W_case.'" onclick="return envoiInfo(this.href, \'information\')"><img src="image/interface/attaquer.png" alt="Combattre" title="Attaquer la même cible" style="vertical-align : middle;" /></a><br />');
+				if($type == 'joueur') echo(' <a href="attaque.php?id_joueur='.$joueur_defenseur->get_id().'&amp;type=joueur" onclick="return envoiInfo(this.href, \'information\')"><img src="image/interface/attaquer.png" alt="Combattre" title="Attaquer la même cible" style="vertical-align : middle;" /></a><br />');
 			}
 
-			$attaquant->set_pa($attaquant->get_pa() - $pa_attaque);
-			$attaquant->sauver();
-			$defenseur->sauver();
+			$joueur->set_pa($joueur->get_pa() - $pa_attaque);
+			$joueur->sauver();
+			$joueur_defenseur->sauver();
 	
 			//Insertion de l'attaque dans les journaux des 2 joueurs
-			$requete = "INSERT INTO journal VALUES('', ".$attaquant->get_id().", 'attaque', '".$attaquant->get_nom()."', '".$defenseur->get_nom()."', NOW(), ".($defense_hp_avant - $defense_hp_apres).", ".($attaque_hp_avant - $attaque_hp_apres).", ".$defenseur['x'].", ".$defenseur['y'].")";
+			$requete = "INSERT INTO journal VALUES('', ".$joueur->get_id().", 'attaque', '".$joueur->get_nom()."', '".$defenseur->get_nom()."', NOW(), ".($defense_hp_avant - $defense_hp_apres).", ".($attaque_hp_avant - $attaque_hp_apres).", ".$joueur_defenseur->get_x().", ".$joueur_defenseur->get_y().")";
 			$db->query($requete);
-			$requete = "INSERT INTO journal VALUES('', ".$defenseur->get_id().", 'defense', '".$defenseur->get_nom()."', '".$attaquant->get_nom()."', NOW(), ".($defense_hp_avant - $defense_hp_apres).", ".($attaque_hp_avant - $attaque_hp_apres).", ".$defenseur['x'].", ".$defenseur['y'].")";
+			$requete = "INSERT INTO journal VALUES('', ".$joueur_defenseur->get_id().", 'defense', '".$joueur_defenseur->get_nom()."', '".$joueur->get_nom()."', NOW(), ".($defense_hp_avant - $defense_hp_apres).", ".($attaque_hp_avant - $attaque_hp_apres).", ".$joueur_defenseur->get_x().", ".$joueur_defenseur->get_y().")";
 			$db->query($requete);
 			if($defenseur->get_hp() <= 0)
 			{
-				$requete = "INSERT INTO journal VALUES('', ".$attaquant->get_id().", 'tue', '".$attaquant->get_nom()."', '".$defenseur->get_nom()."', NOW(), 0, 0, ".$defenseur['x'].", ".$defenseur['y'].")";
+				$requete = "INSERT INTO journal VALUES('', ".$joueur->get_id().", 'tue', '".$joueur->get_nom()."', '".$joueur_defenseur->get_nom()."', NOW(), 0, 0, ".$joueur_defenseur->get_x().", ".$joueur_defenseur->get_y().")";
 				$db->query($requete);
-				$requete = "INSERT INTO journal VALUES('', ".$defenseur->get_id().", 'mort', '".$defenseur->get_nom()."', '".$attaquant->get_nom()."', NOW(), 0, 0, ".$defenseur['x'].", ".$defenseur['y'].")";
+				$requete = "INSERT INTO journal VALUES('', ".$joueurdefenseur->get_id().", 'mort', '".$joueur_defenseur->get_nom()."', '".$joueur->get_nom()."', NOW(), 0, 0, ".$joueur_defenseur->get_x().", ".$joueurdefenseur->get_y().")";
 				$db->query($requete);
 			}
 			elseif($attaquant->get_hp() <= 0)
 			{
-				$requete = "INSERT INTO journal VALUES('', ".$attaquant->get_id().", 'mort', '".$attaquant->get_nom()."', '".$defenseur->get_nom()."', NOW(), 0, 0, ".$defenseur['x'].", ".$defenseur['y'].")";
+				$requete = "INSERT INTO journal VALUES('', ".$joueur->get_id().", 'mort', '".$joueur->get_nom()."', '".$joueur_defenseur->get_nom()."', NOW(), 0, 0, ".$joueur_defenseur->get_x().", ".$joueur_defenseur->get_y().")";
 				$db->query($requete);
-				$requete = "INSERT INTO journal VALUES('', ".$defenseur->get_id().", 'tue', '".$defenseur->get_nom()."', '".$attaquant->get_nom()."', NOW(), 0, 0, ".$defenseur['x'].", ".$defenseur['y'].")";
+				$requete = "INSERT INTO journal VALUES('', ".$joueur_defenseur->get_id().", 'tue', '".$joueur_defenseur->get_nom()."', '".$joueur->get_nom()."', NOW(), 0, 0, ".$joueur_defenseur->get_x().", ".$joueur_defenseur->get_y().")";
 				$db->query($requete);
 			}
 		}

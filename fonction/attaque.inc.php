@@ -21,6 +21,7 @@ include_once(root.$root.'class/gemmes.class.php');
 function attaque($acteur = 'attaquant', $competence, &$effects)
 {
   global $attaquant, $defenseur, $debugs, $G_buff, $G_debuff, $ups, $Gtrad, $G_round_total, $db;
+  $augmentation = array('actif' => array('comp' => array(), 'comp_perso' => array()), 'passif' => array('comp' => array(), 'comp_perso' => array()));
   $ups = array();
 
   if ($acteur == 'attaquant')
@@ -343,12 +344,12 @@ function attaque($acteur = 'attaquant', $competence, &$effects)
 								}
 						}
 					//Art du critique : augmente les dégats fait par un coup critique
-					if(array_key_exists('art_critique', $actif['competences'])) $art_critique = ($actif['competences']['art_critique'] / 100); else $art_critique = 0;
+					if($actif->is_competence('art_critique')) $art_critique = ($actif->get_competences('art_critique') / 100); else $art_critique = 0;
 					//Buff Colère
-					if(array_key_exists('buff_colere', $actif->buff)) $buff_colere = ($actif->buff['buff_colere']['effet']) / 100; else $buff_colere = 0;
+					if($actif->is_buff('buff_colere')) $buff_colere = ($actif->get_buff('buff_colere', 'effet')) / 100; else $buff_colere = 0;
 					//Orc
 					if($actif->get_race() == 'orc') $bonuscritique_race = 1.05; else $bonuscritique_race = 1;
-					if($passif['race'] == 'troll') $maluscritique_race = 1.2; else $maluscritique_race = 1;
+					if($passif->get_race() == 'troll') $maluscritique_race = 1.2; else $maluscritique_race = 1;
 
 					$multiplicateur = (2 + $art_critique + $buff_colere) * $bonuscritique_race / $maluscritique_race;
 
@@ -431,48 +432,26 @@ function attaque($acteur = 'attaquant', $competence, &$effects)
     {
       unset($actif->etat['dissimulation']);
     }
-  //Augmentation des compétences liées
-  if($actif->is_competence('art_critique') && $critique)
-    {
-      $actif['art_critique'] = $actif['competences']['art_critique'];
-      $augmentation = augmentation_competence('art_critique', $actif, 2.5);
-      if ($augmentation[1] == 1)
-				{
-					$actif['competences']['art_critique'] = $augmentation[0];
-					if($acteur == 'attaquant') echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant à '.$actif['competences']['art_critique'].' en '.$Gtrad['art_critique'].'</span><br />';
-					$ups[] = 'art_critique';
-				}
+	//Augmentation des compétences liées
+	if($actif->is_competence('art_critique') && $critique)
+	{
+		$augmentation['actif']['comp_perso'][] = array('art_critique', 2.5);
     }
-  $diff_att = 3.2 * $G_round_total / 5;
-  $diff_esquive = 2.7 * $G_round_total / 5;
-  $diff_blocage = 2.5 * $G_round_total / 5;
-  $augmentation = augmentation_competence($competence, $actif, $diff_att);
-  if ($augmentation[1] == 1)
+	$diff_att = 3.2 * $G_round_total / 5;
+	$diff_esquive = 2.7 * $G_round_total / 5;
+	$augmentation['actif']['comp'][] = array($competence, $diff_att);
+	$augmentation['passif']['comp'][] = array('esquive', $diff_esquive);
+	if($passif->bouclier AND ($attaque > $defense))
     {
-      $actif[$competence] = $augmentation[0];
-      if($acteur == 'attaquant') echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant à '.$actif[$competence].' en '.$Gtrad[$competence].'</span><br />';
-    }
-  $augmentation = augmentation_competence('esquive', $passif, $diff_esquive);
-  if ($augmentation[1] == 1)
-    {
-      $passif['esquive'] = $augmentation[0];
-      if($acteur != 'attaquant') echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant à '.$passif['esquive'].' en esquive</span><br />';
-    }
-  if($passif['bouclier'] AND ($attaque > $defense))
-    {
-      $augmentation = augmentation_competence('blocage', $passif, $diff_blocage);
-      if ($augmentation[1] == 1)
-				{
-					$passif['blocage'] = $augmentation[0];
-					if($acteur != 'attaquant') echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant à '.$passif['blocage'].' en blocage</span><br />';
-				}
+		$diff_blocage = 2.5 * $G_round_total / 5;
+		$augmentation['passif']['comp'][] = array('blocage', $diff_blocage);
     }
 
 	/* Ici on va enregistrer les etats précédents */
 	// Enregistre si on a esquivé ou non
-	$passif['precedent']['esquive'] = ($defense >= $attaque);
+	$passif->precedent['esquive'] = ($defense >= $attaque);
 	// Enregistre si on a critiqué
-	$actif['precedent']['critique'] = $critique;
+	$actif->precedent['critique'] = $critique;
 
   /* Application des effets de fin de round */
   foreach ($effects as $effect)
@@ -489,6 +468,7 @@ function attaque($acteur = 'attaquant', $competence, &$effects)
       $attaquant = $passif;
       $defenseur = $actif;
     }
+	return $augmentation;
 }
 
 function degat_magique($carac, $degat, $actif, $passif)
@@ -496,8 +476,8 @@ function degat_magique($carac, $degat, $actif, $passif)
   global $debugs;
   echo '<div id="debug'.$debugs.'" class="debug">';
   
-  if (isset($actif['enchantement']) &&
-      isset($actif['enchantement']['degat_magie'])) {    
+  if (isset($actif->enchantement) &&
+      isset($actif->enchantement['degat_magie'])) {
     global $db;
     $requete = "SELECT nom, enchantement_effet FROM gemme WHERE id = ".
       $actif['enchantement']['degat_magie']['gemme_id'];
@@ -525,7 +505,7 @@ function degat_magique($carac, $degat, $actif, $passif)
       $degat = degat_critique($actif, $passif, $degat);
     }
   //Diminution des dégats grâce à l'armure magique
-  $reduction = calcul_pp(($passif['PM'] * $passif['puissance']) / 12);
+  $reduction = calcul_pp(($passif->get_pm() * $passif->get_puissance()) / 12);
   $degat_avant = $degat;
   $degat = round($degat * $reduction);
   echo '<div id="debug'.$debugs.'" class="debug">';

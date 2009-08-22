@@ -2423,13 +2423,16 @@ class perso extends entite
 	function get_comp($comp_assoc = '')
 	{
 		$get = 'get_'.$comp_assoc;
-		return $this->$get();
+		echo $comp_assoc;
+		if(method_exists($this, $get)) return $this->$get();
+		else return $this->get_competence($comp_assoc);
 	}
 
 	function set_comp($comp_assoc = '', $valeur)
 	{
 		$set = 'set_'.$comp_assoc;
-		return $this->$set($valeur);
+		if(method_exists($this, $set)) $this->$set($valeur);
+		else $this->set_competence($comp_assoc, $valeur);
 	}
 
 	function get_comp_perso($nom = '')
@@ -2628,13 +2631,29 @@ class perso extends entite
 	{
 		if(!$nom)
 		{
-			$this->competences = comp_perso::create(array('id_perso'), array($this->id));
+			$this->competences = comp_perso::create(array('id_perso'), array($this->id), 'id ASC', 'competence');
 			return $this->competences;
 		}
 		else
 		{
 			if(!isset($this->competences)) $this->get_competence();
-			return $this->competences[$nom][$champ];
+			print_r($this->competences);
+			var_dump($this->competences[$nom]);
+			if($champ)
+			{
+				$get = 'get_'.$champ;
+				return $this->competences[$nom]->$get();
+			}
+			else return $this->competences[$nom]->get_valeur();
+		}
+	}
+
+	function set_competence($nom, $valeur)
+	{
+		if(array_key_exists($nom, $this->competences))
+		{
+			$this->competences[$nom]->set_valeur($valeur);
+			$this->competences[$nom]->sauver();
 		}
 	}
 
@@ -2724,7 +2743,7 @@ class perso extends entite
 
 	function get_reserve($base = false)
 	{
-		if(!isset($this->reserve)) $this->reserve = ceil(2.1 * ($this->energie + floor(($rhis->energie - 8) / 2)));
+		if(!isset($this->reserve)) $this->reserve = ceil(2.1 * ($this->energie + floor(($this->energie - 8) / 2)));
 		return $this->reserve;
 	}
 
