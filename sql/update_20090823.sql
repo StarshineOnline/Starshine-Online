@@ -29,3 +29,6 @@ INSERT INTO `construction_ville` (`id` ,`id_royaume` , `id_batiment` ,`statut` ,
 INSERT INTO `construction_ville` (`id` ,`id_royaume` , `id_batiment` ,`statut` ,`dette` ,`hp`) VALUES (NULL , '10', '25', 'actif', '0', '1000');
 INSERT INTO `construction_ville` (`id` ,`id_royaume` , `id_batiment` ,`statut` ,`dette` ,`hp`) VALUES (NULL , '11', '25', 'actif', '0', '1000');
 INSERT INTO `construction_ville` (`id` ,`id_royaume` , `id_batiment` ,`statut` ,`dette` ,`hp`) VALUES (NULL , '12', '25', 'actif', '0', '1000');
+
+ALTER TABLE `elections` CHANGE `date` `date` DATE NOT NULL;
+ALTER TABLE `revolution` CHANGE `date` `date` DATE NOT NULL

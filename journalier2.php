@@ -573,71 +573,163 @@ $groupe['troll'][2] = 36;
 $groupe['vampire'][0] = 15;
 $groupe['vampire'][1] = 26;
 $groupe['vampire'][2] = 37;
-//Si on est le premier, élection du roi de chaque race
-if(date("j") == 1)
+//On regarde si une élection a lieu
+$requete = "SELECT id, id_royaume FROM elections WHERE date = ".date("Y-m-d", time());
+$req = $db->query();
+//Si ya une élection de prévue
+if($db->num_rows > 0)
 {
 	require('connect_forum.php');
-	//Suppression des anciens rois
-	foreach($groupe as $group)
-	{
-		$requete = "UPDATE punbbusers SET group_id = ".$group[0]." WHERE group_id = ".$group[1];
-		$db_forum->query($requete);
-	}
-	$requete = "UPDATE perso SET rang_royaume = 7 WHERE rang_royaume = 6";
-	$db->query($requete);
-	//Groupe forum
-
-	echo 'Election des rois';
-	$requete = "SELECT * FROM royaume WHERE ID <> 0";
-	$req = $db->query($requete);
 	while($row = $db->read_assoc($req))
 	{
+		$requete = "SELECT race FROM royaume WHERE id = ".$row['id'];
+		$req_n = $db->query($requete);
+		$row_n = $db->read_assoc($req);
+		$race = $row_n['race'];
+		//Suppression de l'ancien roi
+		$requete = "UPDATE punbbusers SET group_id = ".$groupe[$race][2]." WHERE group_id = ".$groupe[$race][1];
+		$db_forum->query($requete);
+		$requete = "UPDATE perso SET rang_royaume = 7 WHERE rang_royaume = 6 AND race = '".$race."'";
+		$db->query($requete);
+		//Groupe forum
 		$data = array();
 		$legend = array();
 		$label = array();
-		$requete = "SELECT *, COUNT(*) as count FROM vote WHERE royaume = ".$row['ID']." AND date = '".date("Y-m")."' GROUP BY id_candidat ORDER BY count DESC";
+		$requete = "SELECT *, COUNT(*) as count FROM vote WHERE id_election = ".$row['id']." GROUP BY id_candidat ORDER BY count DESC";
 		$req_v = $db->query($requete);
 		$i = 0;
 		if($db->num_rows > 0)
 		{
 			while($row_v = $db->read_assoc($req_v))
 			{
-				$date = $row_v['date'];
-				$requete = "SELECT * FROM perso WHERE ID = ".$row_v['id_candidat'];
+				$requete = "SELECT id, nom FROM perso WHERE id = ".$row_v['id_candidat'];
 				$req_c = $db->query($requete);
 				$row_c = $db->read_assoc($req_c);
+				//C'est le roi on l'active, et on met en place la prochaine élection
 				if($i == 0)
 				{
-					$requete = "UPDATE perso SET rang_royaume = 6 WHERE ID = ".$row_c['ID'];
+					$requete = "UPDATE perso SET rang_royaume = 6 WHERE id = ".$row_c['id'];
 					$db->query($requete);
-					$requete = "UPDATE punbbusers SET group_id = ".$groupe[$row_c['race']][1]." WHERE username = '".$row_c['nom']."'";
+					$requete = "UPDATE punbbusers SET group_id = ".$groupe[$race][1]." WHERE username = '".$row_c['nom']."'";
 					$db_forum->query($requete);
+
+					//Prochaine élection
+					$requete = "SELECT duree, type FROM candidature WHERE id = ".$row_v['id_candidat'];
+					$req_duree = $db->query($requete);
+					$row_duree = $db->read_assoc($req_duree);
+					if($row_duree['duree'] == 1 && date('d') > 12) $date_e = date("Y-m-d", mktime(0, 0, 0, date("m") + 2, 1, date("Y")));
+					else $date_e = date("Y-m-d", mktime(0, 0, 0, date("m") + $row_duree['duree'], 1, date("Y")));
+					$election = new elections();
+					$election->set_id_royaume($row['id_royaume']);
+					$election->set_date($date_e);
+					$election->set_type($row_duree['type']);
+					$election->sauver();
 				}
 				$data[] = $row_v['count'];
 				$legend[] = $row_c['nom'].'('.$row_v['count'].')';
 				$label[] = $row_c['nom']."(".$row_v['count'].")\n%.1f%%";
 				$i++;
 			}
-			
+
 			$DataSet = new pData;
 			$DataSet->AddPoint($data,"Serie1");
 			$DataSet->AddPoint($legend,"Serie2");
 			$DataSet->AddAllSeries();
 			$DataSet->SetAbsciseLabelSerie("Serie2");
-			
+
 			// Initialise the graph
 			$graph = new pChart(700, 400);
 			$graph->drawFilledRoundedRectangle(7,7,693,393,5,240,240,240);
 			$graph->drawRoundedRectangle(5,5,695,395,5,230,230,230);
-			
-			// Draw the pie chart  
+
+			// Draw the pie chart
 			$graph->setFontProperties("pChart/fonts/tahoma.ttf",8);
 			$graph->drawPieGraph($DataSet->GetData(),$DataSet->GetDataDescription(),315,210,200,PIE_LABELS,TRUE,50,20,5);
 			//$graph->drawPieLegend(590,15,$DataSet->GetData(),$DataSet->GetDataDescription(),250,250,250);
 			$graph->setFontProperties("pChart/fonts/tahoma.ttf",12);
-			$graph->drawTitle(50,22,'Elections du roi '.$Gtrad[$row['race']].' du '.$date ,50,50,50,585);  
-			
-			$graph->Render('image/election_'.$row['race'].'.png');
+			$graph->drawTitle(50,22,'Elections du roi '.$Gtrad[$race].' du '.$date ,50,50,50,585);
+
+			$graph->Render('image/election_'.$race.'.png');
+		}
+	}
+}
+
+//On regarde si une révolution a lieu
+$requete = "SELECT id, id_royaume FROM revolution WHERE date = ".date("Y-m-d", time());
+$req = $db->query();
+//Si ya une élection de prévue
+if($db->num_rows > 0)
+{
+	require('connect_forum.php');
+	while($row = $db->read_assoc($req))
+	{
+		$requete = "SELECT race FROM royaume WHERE id = ".$row['id'];
+		$req_n = $db->query($requete);
+		$row_n = $db->read_assoc($req);
+		$race = $row_n['race'];
+		$data = array();
+		$legend = array();
+		$label = array();
+		$requete = "SELECT *, SUM(poid_vote) as count FROM vote_revolution WHERE id_election = ".$row['id']." GROUP BY pour ORDER BY count DESC";
+		$req_v = $db->query($requete);
+		$i = 0;
+		if($db->num_rows > 0)
+		{
+			while($row_v = $db->read_assoc($req_v))
+			{
+				if($row_v['pour'] == 1)
+				{
+					$pour = $row['count'];
+					$data[] = $row_v['count'];
+					$legend[] = 'Pour ('.$row_v['count'].')';
+					$label[] = 'Pour ('.$row_v['count'].")\n%.1f%%";
+				}
+				else
+				{
+					$contre = $row['count'];
+					$data[] = $row_v['count'];
+					$legend[] = 'Contre ('.$row_v['count'].')';
+					$label[] = 'Contre ('.$row_v['count'].")\n%.1f%%";
+				}
+			}
+
+			$DataSet = new pData;
+			$DataSet->AddPoint($data,"Serie1");
+			$DataSet->AddPoint($legend,"Serie2");
+			$DataSet->AddAllSeries();
+			$DataSet->SetAbsciseLabelSerie("Serie2");
+
+			// Initialise the graph
+			$graph = new pChart(700, 400);
+			$graph->drawFilledRoundedRectangle(7,7,693,393,5,240,240,240);
+			$graph->drawRoundedRectangle(5,5,695,395,5,230,230,230);
+
+			// Draw the pie chart
+			$graph->setFontProperties("pChart/fonts/tahoma.ttf",8);
+			$graph->drawPieGraph($DataSet->GetData(),$DataSet->GetDataDescription(),315,210,200,PIE_LABELS,TRUE,50,20,5);
+			//$graph->drawPieLegend(590,15,$DataSet->GetData(),$DataSet->GetDataDescription(),250,250,250);
+			$graph->setFontProperties("pChart/fonts/tahoma.ttf",12);
+			$graph->drawTitle(50,22,'Révolution du peuple '.$Gtrad[$race].' du '.$date ,50,50,50,585);
+
+			$graph->Render('image/revolution_'.$race.'_'.date("Y-m-d").'.png');
+
+			//On met en route la révolution si pour > contre
+			if($pour > $contre)
+			{
+				//Suppression de l'ancien roi
+				$requete = "UPDATE punbbusers SET group_id = ".$groupe[$race][2]." WHERE group_id = ".$groupe[$race][1];
+				$db_forum->query($requete);
+				$requete = "UPDATE perso SET rang_royaume = 7 WHERE rang_royaume = 6 AND race = '".$race."'";
+				$db->query($requete);
+				//Mis en route de nouvelles élections pour le mois suivant
+				if(date('d') > 12) $date_e = date("Y-m-d", mktime(0, 0, 0, date("m") + 2, 1, date("Y")));
+				else $date_e = date("Y-m-d", mktime(0, 0, 0, date("m") + 1, 1, date("Y")));
+				$election = new elections();
+				$election->set_id_royaume($row['id_royaume']);
+				$election->set_date($date_e);
+				$election->set_type('universel');
+				$election->sauver();
+			}
 		}
 	}
 }

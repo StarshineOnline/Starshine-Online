@@ -161,22 +161,23 @@ if($W_row['type'] == 1)
 							//Si on est dans notre royaume
 							if($R->get_diplo($joueur->get_race()) == 127)
 							{
-								if(date("d") >= 15 AND date("d") < 20)
+								$is_election = elections::is_mois_election($R->get_id());
+								if($is_election && date("d") >= 5 && date("d") < 15)
 								{
-							?>
+									?>
 									<li>
 										<a href="candidature.php" onclick="return envoiInfo(this.href, 'carte')">Candidature</a>
 									</li>
-							<?php
+									<?php
 								}
-										if(date("d") >= 20)
-										{
-							?>
+								if($is_election && date("d") >= 15)
+								{
+									?>
 									<li>
 										<a href="vote_roi.php" onclick="return envoiInfo(this.href, 'carte')">Vote</a>
 									</li>
-							<?php
-										}
+									<?php
+								}
 							}
 							?>
 							

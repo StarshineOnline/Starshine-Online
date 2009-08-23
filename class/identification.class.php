@@ -75,6 +75,7 @@ class identification
 			$erreur_login = 'Pseudo inconnu.';
 			return false;
 		}
+		return true;
 	}
 	
 	function deconnexion()

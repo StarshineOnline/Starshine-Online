@@ -281,5 +281,13 @@ class elections
 	{
 		return elections::create('id_royaume', $id_royaume, 'id DESC');
 	}
+
+	static function is_mois_election($id_royaume)
+	{
+		$elections = get_prochain_election($id_royaume);
+		$explode_date = explode('-', $elections[0]);
+		if($explode_date[0] == date('Y') && $explode_date[1] == date('m', mktime(0, 0, 0, date("m") + 1 , date("d"), date("Y")))) return true;
+		else return false;
+	}
 }
 ?>

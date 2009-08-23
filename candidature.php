@@ -12,19 +12,14 @@ $joueur->check_perso();
 
 //Vérifie si le perso est mort
 verif_mort($joueur, 1);
-
-$W_case = $_GET['poscase'];
-$W_requete = 'SELECT * FROM map WHERE ID =\''.sSQL($W_case).'\'';
+$W_requete = 'SELECT * FROM map WHERE ID =\''.sSQL($joueur->get_pos()).'\'';
 $W_req = $db->query($W_requete);
-$W_row = $db->read_array($W_req);
+$W_row = $db->read_assoc($W_req);
 $R = new royaume($W_row['royaume']);
-$R->get_diplo($joueur->get_race());
 ?>
 		<h2><?php if(!array_key_exists('fort', $_GET)) return_ville('<img src="image/ville.gif" alt="Retour en ville" title="Retour en ville" />', $W_case); ?> Candidature</h2>
 <?php
-$W_distance = detection_distance($W_case, $joueur->get_pos());
-$W_coord = convert_in_coord($W_case);
-if($W_distance == 0)
+if($W_row('type') == 1)
 {
 	if($joueur->get_honneur() >= $R->honneur_candidat())
 	{

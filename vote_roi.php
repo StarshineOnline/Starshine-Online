@@ -7,29 +7,22 @@ if (file_exists('root.php'))
 include_once(root.'haut_ajax.php');
 
 $joueur = new perso($_SESSION['ID']);
-
 $joueur->check_perso();
 
 //Vérifie si le perso est mort
 verif_mort($joueur, 1);
-
-$W_case = $_GET['poscase'];
-$W_requete = 'SELECT * FROM map WHERE ID =\''.sSQL($W_case).'\'';
+$W_requete = 'SELECT * FROM map WHERE ID =\''.sSQL($joueur->get_pos()).'\'';
 $W_req = $db->query($W_requete);
-$W_row = $db->read_array($W_req);
+$W_row = $db->read_assoc($W_req);
 $R = new royaume($W_row['royaume']);
-
-$_SESSION['position'] = convert_in_pos($joueur->get_x(), $joueur->get_y());
 ?>
-	<h2 class="ville_titre"><?php if(verif_ville($joueur->get_x(), $joueur->get_y())) return_ville( '<a href="ville.php?poscase='.$W_case.'" onclick="return envoiInfo(this.href, \'centre\')">'.$R['nom'].'</a> -', $W_case); ?> <?php echo '<a href="qg.php?poscase='.$W_case.'" onclick="return envoiInfo(this.href, \'carte\')">';?> Quartier Général </a></h2>
+	<h2 class="ville_titre"><?php if(verif_ville($joueur->get_x(), $joueur->get_y())) return_ville( '<a href="ville.php" onclick="return envoiInfo(this.href, \'centre\')">'.$R->get_nom().'</a> -', $W_case); ?> <?php echo '<a href="qg.php?poscase='.$W_case.'" onclick="return envoiInfo(this.href, \'carte\')">';?> Quartier Général </a></h2>
 		<?php include_once(root.'ville_bas.php');?>	
 	<div class="ville_test">
 <?php
-$W_distance = detection_distance($W_case,$_SESSION["position"]);
-$W_coord = convert_in_coord($W_case);
-if($W_distance == 0)
+if($W_row['type'] == 1)
 {
-	if($joueur['honneur'] >= $R['honneur_candidat'])
+	if($joueur['honneur'] >= $R->get_honneur_candidat())
 	{
 		if(isset($_GET['action']))
 		{
@@ -38,7 +31,7 @@ if($W_distance == 0)
 				case 'vote' :
 					$elections = elections::get_prochain_election($R->get_id());
 					$prochain_election = $elections[0];
-					$requete = "SELECT id FROM vote WHERE id_perso = ".$joueur->get_id()." AND date = '".$date."'";
+					$requete = "SELECT id FROM vote WHERE id_perso = ".$joueur->get_id()." AND id_election = ".$prochain_election->get_id();
 					$db->query($requete);
 					if($db->num_rows > 0)
 					{
@@ -70,7 +63,7 @@ if($W_distance == 0)
 		while($row = $db->read_assoc($req))
 		{
 			?>
-			<option value="<?php echo $row['id_perso']; ?>"><?php echo $row['nom']; ?></option>
+			<option value="<?php echo $row['id_perso']; ?>"><?php echo $row['nom']; ?> / pour <?php echo $row['duree']; ?> mois / Prochaine élection : <?php echo $row['type']; ?></option>
 			<?php
 		}
 		?>
