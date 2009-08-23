@@ -8,7 +8,7 @@ if (isset($_SESSION['nom']))
 }
 elseif(isset($connexion) && $connexion)
 {
-	header("Location: index.php");
+	header("Location: jeu2.php");
 }
 
 /// @var juste pour empêcher Doxygen de bugger

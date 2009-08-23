@@ -6,16 +6,16 @@ if (file_exists('root.php'))
 	//if(!isset($_SESSION["nom"])) { header("Location: index.php"); };	//-- Redirection si la session à expiré ou si le joueur tente d'accéder a la page sans être loggé...
 	require_once("haut_ajax.php");
 	
-	if(!isset($joueur)) { $joueur = recupperso($_SESSION["ID"]); };
-	check_perso($joueur);												//-- MaJ des infos du perso...	
-	verif_mort($joueur, 1);												//-- Vérifie si le perso est mort
+	if(!isset($joueur)) { $joueur = new perso($_SESSION["ID"]); };
+	$joueur->check_perso();												//-- MaJ des infos du perso...
+	//	verif_mort($joueur, 1);												//-- Vérifie si le perso est mort
 
 
 	$RqMap = $db->query("SELECT * FROM map WHERE ID=".sSQL($_GET["poscase"]).";");
 	if(mysql_num_rows($RqMap) > 0)
 	{
 		$arrayMap = $db->read_array($RqMap);
-		$R = get_royaume_info($joueur["race"], $arrayMap["royaume"]);
+		$R = new royaume($arrayMap["royaume"]);
 	}
 	$mois = 60 * 60 * 24 * 31;
 }
@@ -23,7 +23,7 @@ if($W_distance == 0)
 {//-- On verifie que le joueur est bien sur la ville ($W_distance)
 	echo "<script type='text/javascript'>return nd();</script>";
 	echo "<h2 class='ville_titre'>
-		   <a href=\"ville.php?poscase=".$_GET["poscase"]."\" onclick=\"return envoiInfo(this.href, 'centre');\">".$R['nom']."</a> - 
+		   <a href=\"ville.php?poscase=".$_GET["poscase"]."\" onclick=\"return envoiInfo(this.href, 'centre');\">".$R->get_nom()."</a> -
 		   <a href=\"hotel.php?poscase=".$_GET["poscase"]."\" onclick=\"return envoiInfo(this.href, 'carte');\"> Hotel des ventes </a>
 		  </h2>";
 	include_once(root."ville_bas.php");
@@ -95,7 +95,7 @@ if($W_distance == 0)
 			   </div>";
 	}
 	{//-- Récupère tout les royaumes qui peuvent avoir des items en commun
-		$RqRoyaumes = $db->query("SELECT * FROM diplomatie WHERE race='".sSQL($R["race"])."';");
+		$RqRoyaumes = $db->query("SELECT * FROM diplomatie WHERE race='".sSQL($R->get_race())."';");
 		if(mysql_num_rows($RqRoyaumes) > 0)
 		{
 			$objRoyaumes = $db->read_object($RqRoyaumes);

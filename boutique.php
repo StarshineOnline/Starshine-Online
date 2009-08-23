@@ -8,16 +8,14 @@ $connexion = true;
 include_once(root.'haut_ajax.php');
 
 $joueur = new perso($_SESSION['ID']);
-
 $joueur->check_perso();
 
 //Vérifie si le perso est mort
 verif_mort($joueur, 1);
 
-$W_case = $_GET['poscase'];
-$W_requete = 'SELECT * FROM map WHERE ID =\''.sSQL($W_case).'\'';
+$W_requete = 'SELECT royaume, type FROM map WHERE ID =\''.sSQL($joueur->get_pos()).'\'';
 $W_req = $db->query($W_requete);
-$W_row = $db->read_array($W_req);
+$W_row = $db->read_assoc($W_req);
 $R = new royaume($W_row['royaume']);
 $R->get_diplo($joueur->get_race());
 
@@ -39,10 +37,8 @@ if(!isset($_GET['type'])) $_GET['type'] = 'arme';
 		}
 		?>
 <?php
-
-$W_distance = detection_distance($W_case,$_SESSION["position"]);
-$W_coord = convert_in_coord($W_case);
-if($W_distance == 0)
+//Uniquement si le joueur se trouve sur une case de ville
+if($W_row['type'] == 1)
 {
 	//On recherche le niveau de la construction
 	$requete = "SELECT * FROM construction_ville LEFT JOIN batiment_ville ON construction_ville.id_batiment = batiment_ville.id WHERE batiment_ville.type = '".$batiment."' AND construction_ville.id_royaume = ".$R->get_id();
@@ -67,7 +63,7 @@ if($W_distance == 0)
 						$requete = "SELECT id, prix FROM arme WHERE id = ".sSQL($_GET['id']);
 						$req = $db->query($requete);
 						$row = $db->read_array($req);
-						$taxe = ceil($row['prix'] * $R['taxe'] / 100);
+						$taxe = ceil($row['prix'] * $R->get_taxe() / 100);
 						$cout = $row['prix'] + $taxe;
 						if ($joueur->get_star() >= $cout)
 						{
@@ -99,7 +95,7 @@ if($W_distance == 0)
 						$requete = "SELECT id, prix, type FROM armure WHERE id = ".sSQL($_GET['id']);
 						$req = $db->query($requete);
 						$row = $db->read_array($req);
-						$taxe = ceil($row['prix'] * $R['taxe'] / 100);
+						$taxe = ceil($row['prix'] * $R->get_taxe() / 100);
 						$cout = $row['prix'] + $taxe;
 						if ($joueur->get_star() >= $cout)
 						{
@@ -215,7 +211,7 @@ if($W_distance == 0)
 		$req = $db->query($requete);
 		while($row = $db->read_array($req))
 		{
-			$taxe = ceil($row['prix'] * $R['taxe'] / 100);
+			$taxe = ceil($row['prix'] * $R->get_taxe() / 100);
 			$cout = $row['prix'] + $taxe;
 			$couleur = $color;
 			$mains = explode(';', $row['mains']);
@@ -343,7 +339,7 @@ if($W_distance == 0)
 		
 		while($row = $db->read_array($req))
 		{
-			$taxe = ceil($row['prix'] * $R['taxe'] / 100);
+			$taxe = ceil($row['prix'] * $R->get_taxe() / 100);
 			$cout = $row['prix'] + $taxe;
 			$couleur = $color;
 			if($row['forcex'] > $joueur->get_force() OR $cout > $joueur->get_star()) $couleur = 3;

@@ -10,31 +10,25 @@ include_once(root.'haut_ajax.php');
 include_once(root.'fonction/competence.inc.php');
 
 $joueur = new perso($_SESSION['ID']);
-
-check_perso($joueur);
+$joueur->check_perso();
 
 //Vérifie si le perso est mort
 verif_mort($joueur, 1);
-
-$W_case = $_GET['poscase'];
-$W_requete = 'SELECT * FROM map WHERE ID =\''.sSQL($W_case).'\'';
+$W_requete = 'SELECT * FROM map WHERE ID =\''.sSQL($joueur->get_pos()).'\'';
 $W_req = $db->query($W_requete);
-$W_row = $db->read_array($W_req);
-$R = get_royaume_info($joueur->get_race(), $W_row['royaume']);
+$W_row = $db->read_assoc($W_req);
+$R = new royaume($W_row['royaume']);
 
-$_SESSION['position'] = convert_in_pos($joueur['x'], $joueur['y']);
 ?>
-<h2 class="ville_titre"><?php echo '<a href="ville.php?poscase='.$W_case.'" onclick="return envoiInfo(this.href, \'centre\')">';?><?php echo $R['nom'];?></a> - <?php echo '<a href="ecolemagie.php?poscase='.$W_case.'" onclick="return envoiInfo(this.href, \'carte\')">';?> Ecole de Magie </a></h2>
+<h2 class="ville_titre"><?php echo '<a href="ville.php" onclick="return envoiInfo(this.href, \'centre\')">';?><?php echo $R->get_nom();?></a> - <?php echo '<a href="ecolemagie.php?poscase='.$W_case.'" onclick="return envoiInfo(this.href, \'carte\')">';?> Ecole de Magie </a></h2>
 		<?php include_once(root.'ville_bas.php');?>
 <?php
-$W_distance = detection_distance($W_case,$_SESSION["position"]);
-$W_coord = convert_in_coord($W_case);
 $cout_app = 500;
-if($W_distance == 0)
+if($W_row['type'] == 1)
 {
 	//On recherche le niveau de la construction
 	$batiment = 'ecole_magie';
-	$requete = "SELECT * FROM construction_ville LEFT JOIN batiment_ville ON construction_ville.id_batiment = batiment_ville.id WHERE batiment_ville.type = '".$batiment."' AND construction_ville.id_royaume = ".$R['ID'];
+	$requete = "SELECT * FROM construction_ville LEFT JOIN batiment_ville ON construction_ville.id_batiment = batiment_ville.id WHERE batiment_ville.type = '".$batiment."' AND construction_ville.id_royaume = ".$R->get_id();
 	$req = $db->query($requete);
 	$row = $db->read_assoc($req);
 	//Si le batiment est inactif, on met le batiment au niveau 1, sinon c'est bon
@@ -119,7 +113,8 @@ if($W_distance == 0)
 				$where .= " AND comp_assoc = '".sSQL($_GET['part'])."'";
 			}
 			else $_GET['part'] = 'all';
-			$sortt_j = explode(';', $joueur[$ecole]);
+			$get = 'get_'.$ecole;
+			$sortt_j = explode(';', $joueur->$get());
 			$sort_j = '('.implode(', ', $sortt_j).')';
 			if(array_key_exists('hide', $_GET) AND $_GET['hide'] == 'yes') $where .= " AND id NOT IN ".$sort_j;
 			$requete = "SELECT * FROM ".$ecole." WHERE ".$where." ORDER BY".$ordre;
@@ -127,22 +122,23 @@ if($W_distance == 0)
 			$req = $db->query($requete);
 			while($row = $db->read_array($req))
 			{
-				$taxe = ceil($row['prix'] * $R['taxe'] / 100);
+				$taxe = ceil($row['prix'] * $R->get_taxe() / 100);
 				$cout = $row['prix'] + $taxe;
-				$inc = ($row['incantation'] * $joueur['facteur_magie']);
-				$comp = round($row['comp_requis'] * $joueur['facteur_magie'] * (1 - (($Trace[$joueur->get_race()]['affinite_'.$row['comp_assoc']] - 5) / 10)));
-				//echo $row['pa'].' '.$joueur['facteur_magie'];
-				$sortpa = ($row['pa'] * $joueur['facteur_magie']);
+				$inc = ($row['incantation'] * $joueur->get_facteur_magie());
+				$comp = round($row['comp_requis'] * $joueur->get_facteur_magie() * (1 - (($Trace[$joueur->get_race()]['affinite_'.$row['comp_assoc']] - 5) / 10)));
+				//echo $row['pa'].' '.$joueur->get_facteur_magie();
+				$sortpa = ($row['pa'] * $joueur->get_facteur_magie());
 				$couleur = $color;
-				$inc_joueur = $joueur['incantation'];
-				$comp_joueur = $joueur[$row['comp_assoc']];
-				if (isset($joueur['bonus_ignorables'])) {
-					if (isset($joueur['bonus_ignorables']['incantation']))
-						$inc_joueur -= $joueur['bonus_ignorables']['incantation'];
-					if (isset($joueur['bonus_ignorables'][$row['comp_assoc']]))
-						$comp_joueur -= $joueur['bonus_ignorables'][$row['comp_assoc']];
+				$inc_joueur = $joueur->get_incantation();
+				$get = 'get_'.$row['comp_assoc'];
+				$comp_joueur = $joueur->$get();
+				if (isset($joueur->bonus_ignorables)) {
+					if (isset($joueur->bonus_ignorables['incantation']))
+						$inc_joueur -= $joueur->bonus_ignorables['incantation'];
+					if (isset($joueur->bonus_ignorables[$row['comp_assoc']]))
+						$comp_joueur -= $joueur->bonus_ignorables[$row['comp_assoc']];
 				}
-				if($comp > $comp_joueur OR $cout > $joueur['star'] OR $inc > $inc_joueur) $couleur = 3;
+				if($comp > $comp_joueur OR $cout > $joueur->get_star() OR $inc > $inc_joueur) $couleur = 3;
 				if(in_array($row['id'], $sortt_j)) $couleur = 5;
 				$row['cible2'] = $G_cibles[$row['cible']];
 				
@@ -166,11 +162,11 @@ if($W_distance == 0)
 					<span class="<?php echo over_price($comp, $comp_joueur); ?>"><strong><?php echo $comp; ?></strong> <img src="image/<?php echo $row['comp_assoc']; ?>.png" alt="<?php echo $Gtrad[$row['comp_assoc']]; ?>" title="<?php echo $Gtrad[$row['comp_assoc']]; ?>" style="vertical-align : middle;" /></span>
 				</td>
 				<td>
-					<span class="<?php echo over_price($cout, $joueur['star']); ?>"><?php echo $cout; ?></span>
+					<span class="<?php echo over_price($cout, $joueur->get_star()); ?>"><?php echo $cout; ?></span>
 				</td>
 				<td style="width : 50px;">
 				<?php 
-				if (over_price($cout, $joueur['star']) == 'achat_normal' AND over_price($comp, $comp_joueur) == 'achat_normal' AND over_price($inc, $inc_joueur) == 'achat_normal' AND $couleur != 5)
+				if (over_price($cout, $joueur->get_star()) == 'achat_normal' AND over_price($comp, $comp_joueur) == 'achat_normal' AND over_price($inc, $inc_joueur) == 'achat_normal' AND $couleur != 5)
 				{
 				?>	
 				<a href="ecolemagie.php?ecole=<?php echo $_GET['ecole']; ?>&amp;action=apprendre&amp;id=<?php echo $row['id']; ?>&amp;poscase=<?php echo $_GET['poscase']; ?>" onclick="return envoiInfo(this.href, 'carte')"><span class="achat">Achat</span></a>
@@ -195,17 +191,19 @@ if($W_distance == 0)
 	}
 	elseif(array_key_exists('app', $_GET))
 	{
-		$taxe = ceil($cout_app * $R['taxe'] / 100);
+		$taxe = ceil($cout_app * $R->get_taxe() / 100);
 		$cout = $cout_app + $taxe;
-		if($joueur['star'] >= $cout)
+		if($joueur->get_star() >= $cout)
 		{
-			$joueur['star'] -= $cout;
-			$requete = "UPDATE perso SET star = ".$joueur['star'].", ".sSQL($_GET['app'])." = 3 WHERE ID = ".$joueur->get_id();
-			if($db->query($requete)) echo 'L\'apprentissage de '.$Gtrad[$_GET['app']].' est un succès !<br />';
+			$joueur->set_star($joueur->get_star() - $cout);
+			$set = 'set_'.$_GET['app'];
+			$joueur->$set(3);
+			$joueur->sauver();
+			echo 'L\'apprentissage de '.$Gtrad[$_GET['app']].' est un succès !<br />';
 			if($taxe > 0)
 			{
-				$requete = 'UPDATE royaume SET star = star + '.$taxe.' WHERE ID = '.$R['ID'];
-				$db->query($requete);
+				$R->set_star($R->get_star() + $taxe);
+				$R->sauver();
 			}
 		}
 		else
@@ -224,35 +222,35 @@ if($W_distance == 0)
 		<div class="ville_test">
 			<ul class="ville">
 			<?php
-			$taxe = ceil($cout_app * $R['taxe'] / 100);
+			$taxe = ceil($cout_app * $R->get_taxe() / 100);
 			$cout = $cout_app + $taxe;
-			if($joueur['sort_vie'] == 0)
+			if($joueur->get_sort_vie() == 0)
 			{
 				?>
 				<li>
-					<a href="ecolemagie.php?app=sort_vie&amp;poscase=<?php echo $_GET['poscase']; ?>" onclick="return envoiInfo(this.href, 'carte')">Apprendre la magie de la vie (coût <?php echo $cout; ?> stars)</a>
+					<a href="ecolemagie.php?app=sort_vie" onclick="return envoiInfo(this.href, 'carte')">Apprendre la magie de la vie (coût <?php echo $cout; ?> stars)</a>
 				</li>
 				<?php
 			}
-			if($joueur['sort_element'] == 0)
+			if($joueur->get_sort_element() == 0)
 			{
 				?>
 				<li>
-					<a href="ecolemagie.php?app=sort_element&amp;poscase=<?php echo $_GET['poscase']; ?>" onclick="return envoiInfo(this.href, 'carte')">Apprendre la magie élémentaire (coût <?php echo $cout; ?> stars)</a>
+					<a href="ecolemagie.php?app=sort_element" onclick="return envoiInfo(this.href, 'carte')">Apprendre la magie élémentaire (coût <?php echo $cout; ?> stars)</a>
 				</li>
 				<?php
 			}
-			if($joueur['sort_mort'] == 0)
+			if($joueur->get_sort_mort() == 0)
 			{
 				?>
 				<li>
-					<a href="ecolemagie.php?app=sort_mort&amp;poscase=<?php echo $_GET['poscase']; ?>" onclick="return envoiInfo(this.href, 'carte')">Apprendre la magie de la mort (coût <?php echo $cout; ?> stars)</a>
+					<a href="ecolemagie.php?app=sort_mort" onclick="return envoiInfo(this.href, 'carte')">Apprendre la magie de la mort (coût <?php echo $cout; ?> stars)</a>
 				</li>
 				<?php
 			}
 			?>
 				<li>
-					<a href="ecolemagie.php?ecole=sort_jeu&amp;poscase=<?php echo $_GET['poscase']; ?>" onclick="return envoiInfo(this.href, 'carte')">Sorts hors combat</a>
+					<a href="ecolemagie.php?ecole=sort_jeu" onclick="return envoiInfo(this.href, 'carte')">Sorts hors combat</a>
 				</li>
 				<li>
 					<a href="ecolemagie.php?ecole=sort_combat&amp;poscase=<?php echo $_GET['poscase']; ?>" onclick="return envoiInfo(this.href, 'carte')">Sorts de combat</a>

@@ -9,25 +9,20 @@ include_once(root.'haut_ajax.php');
 $joueur = new perso($_SESSION['ID']);
 $joueur->check_perso();
 
-$position = $joueur->get_pos();
-
 //Vérifie si le perso est mort
 verif_mort($joueur, 1);
-$verif_ville = verif_ville($joueur->get_x(), $joueur->get_y());
-$W_case = $_GET['poscase'];
-$W_requete = 'SELECT * FROM map WHERE ID =\''.sSQL($W_case).'\'';
+$W_requete = 'SELECT * FROM map WHERE ID =\''.sSQL($joueur->get_pos()).'\'';
 $W_req = $db->query($W_requete);
-$W_row = $db->read_array($W_req);
-$royaume = new royaume($W_row['royaume']);
-$_SESSION['position'] = $position;
+$W_row = $db->read_assoc($W_req);
+$R = new royaume($W_row['royaume']);
 ?>
 	<div id="carte">
 <?php
 
-$W_distance = detection_distance($W_case, $_SESSION["position"]);
+$W_distance = detection_distance($W_case, $joueur->get_pos());
 
 $W_coord = convert_in_coord($W_case);
-if($W_distance == 0 AND $verif_ville)
+if($W_row['type'] == 1)
 {
 	$amende = recup_amende($joueur->get_id());
 	if($_GET['direction'] == 'paye_amende')
@@ -91,17 +86,17 @@ if($W_distance == 0 AND $verif_ville)
 	}
 	else $acces_ville = false;
 	//Affichage de la ville uniquement pour les persos qui ne sont pas en guerre, et qui n'ont pas d'amende
-	if(($royaume->get_diplo($joueur->get_race()) < 7 OR $royaume->get_diplo($joueur->get_race()) == 127) AND !$acces_ville)
+	if(($R->get_diplo($joueur->get_race()) < 7 OR $R->get_diplo($joueur->get_race()) == 127) AND !$acces_ville)
 	{
 		?>
-		<h2 class="ville_titre"><?php echo '<a href="ville.php?poscase='.$W_case.'" onclick="return envoiInfo(this.href,\'centre\')">';?><?php echo $R['nom'];?></a> </h2>
+		<h2 class="ville_titre"><?php echo '<a href="ville.php" onclick="return envoiInfo(this.href,\'centre\')">';?><?php echo $R->get_nom();?></a> </h2>
 					<?php include_once(root.'ville_bas.php');?>
 
 				<?php
-				if($royaume->get_id() != 0)
+				if($R->get_id() != 0)
 				{
 					//Récupère tout les royaumes qui peuvent avoir des items dans l'HV
-					$requete = "SELECT * FROM diplomatie WHERE race = '".$royaume->get_race()."'";
+					$requete = "SELECT * FROM diplomatie WHERE race = '".$R->get_race()."'";
 					$req = $db->query($requete);
 					$row = $db->read_assoc($req);
 					$races = array();
@@ -135,24 +130,24 @@ if($W_distance == 0 AND $verif_ville)
 							</p>
 							<?php
 							//Si ca n'est pas en royaume neutre, on peut acheter
-							if($royaume->get_id() != 0)
+							if($R->get_id() != 0)
 							{
 								?>
 							<ul class="ville">
 								<li>
-									<a href="boutique.php?type=arme&amp;poscase=<?php echo $W_case; ?>" onclick="return envoiInfo(this.href, 'carte')">Forgeron</a>
+									<a href="boutique.php?type=arme" onclick="return envoiInfo(this.href, 'carte')">Forgeron</a>
 								</li>
 								<li>
-									<a href="boutique.php?type=armure&amp;poscase=<?php echo $W_case; ?>" onclick="return envoiInfo(this.href, 'carte')">Armurerie</a>
+									<a href="boutique.php?type=armure" onclick="return envoiInfo(this.href, 'carte')">Armurerie</a>
 								</li>
 								<li>
-									<a href="enchanteur.php?poscase=<?php echo $W_case; ?>" onclick="return envoiInfo(this.href, 'carte')">Enchanteur</a>
+									<a href="enchanteur.php" onclick="return envoiInfo(this.href, 'carte')">Enchanteur</a>
 								</li>
 								<li>
-									<a href="alchimiste.php?poscase=<?php echo $W_case; ?>" onclick="return envoiInfo(this.href, 'carte')">Alchimiste</a>
+									<a href="alchimiste.php" onclick="return envoiInfo(this.href, 'carte')">Alchimiste</a>
 								</li>
 								<li>
-									<a href="hotel.php?poscase=<?php echo $W_case; ?>" onclick="return envoiInfo(this.href, 'carte')">Hôtel des ventes</a>
+									<a href="hotel.php" onclick="return envoiInfo(this.href, 'carte')">Hôtel des ventes</a>
 								</li>
 							</ul>
 							<?php
@@ -164,13 +159,13 @@ if($W_distance == 0 AND $verif_ville)
 							<ul class="ville">
 							<?php
 							//Si on est dans notre royaume
-							if($royaume->get_diplo($joueur->get_race()) == 127)
+							if($R->get_diplo($joueur->get_race()) == 127)
 							{
 								if(date("d") >= 15 AND date("d") < 20)
 								{
 							?>
 									<li>
-										<a href="candidature.php?poscase=<?php echo $W_case; ?>" onclick="return envoiInfo(this.href, 'carte')">Candidature</a>
+										<a href="candidature.php" onclick="return envoiInfo(this.href, 'carte')">Candidature</a>
 									</li>
 							<?php
 								}
@@ -178,7 +173,7 @@ if($W_distance == 0 AND $verif_ville)
 										{
 							?>
 									<li>
-										<a href="vote_roi.php?poscase=<?php echo $W_case; ?>" onclick="return envoiInfo(this.href, 'carte')">Vote</a>
+										<a href="vote_roi.php" onclick="return envoiInfo(this.href, 'carte')">Vote</a>
 									</li>
 							<?php
 										}
@@ -186,14 +181,14 @@ if($W_distance == 0 AND $verif_ville)
 							?>
 							
 									<li>
-										<a href="bureau_quete.php?poscase=<?php echo $W_case; ?>" onclick="return envoiInfo(this.href,'carte')">Bureau des quêtes</a>
+										<a href="bureau_quete.php" onclick="return envoiInfo(this.href,'carte')">Bureau des quêtes</a>
 									</li>
 							<?php
-									if($royaume->get_diplo($joueur->get_race()) == 127)
+									if($R->get_diplo($joueur->get_race()) == 127)
 									{
 							?>
 									<li>
-										<a href="qg.php?poscase=<?php echo $W_case; ?>" onclick="return envoiInfo(this.href, 'carte')">Quartier général</a>
+										<a href="qg.php" onclick="return envoiInfo(this.href, 'carte')">Quartier général</a>
 									</li>
 									<li>
 										<a href="vente_terrain.php" onclick="return envoiInfo(this.href, 'carte')">Vente de terrain</a>
@@ -210,7 +205,7 @@ if($W_distance == 0 AND $verif_ville)
 									}
 							?>
 					<li>
-						<a href="teleport.php?poscase=<?php echo $W_case; ?>" onclick="return envoiInfo(this.href, 'carte')">Pierre de Téléportation</a>
+						<a href="teleport.php" onclick="return envoiInfo(this.href, 'carte')">Pierre de Téléportation</a>
 					</li>
 			</ul>
 			</td>
@@ -220,23 +215,23 @@ if($W_distance == 0 AND $verif_ville)
 				<p class="ville_haut">Haut Quartier</p>
 				<ul class="ville">
 					<li>
-						<a href="ecolemagie.php?poscase=<?php echo $W_case; ?>" onclick="return envoiInfo(this.href, 'carte')">École de magie</a>
+						<a href="ecolemagie.php" onclick="return envoiInfo(this.href, 'carte')">École de magie</a>
 					</li>
 					<li>
-						<a href="ecolecombat.php?poscase=<?php echo $W_case; ?>" onclick="return envoiInfo(this.href, 'carte')">École de combat</a>
+						<a href="ecolecombat.php" onclick="return envoiInfo(this.href, 'carte')">École de combat</a>
 					</li>
 					<li>
-						<a href="universite.php?poscase=<?php echo $W_case; ?>" onclick="return envoiInfo(this.href, 'carte')">Université</a>
+						<a href="universite.php" onclick="return envoiInfo(this.href, 'carte')">Université</a>
 					</li>
 					<li>
-						<a href="tribunal.php?poscase=<?php echo $W_case; ?>" onclick="return envoiInfo(this.href, 'carte')">Tribunal</a>
+						<a href="tribunal.php" onclick="return envoiInfo(this.href, 'carte')">Tribunal</a>
 					</li>
 <?php
-		if($royaume->get_diplo($joueur->get_race()) == 127)
+		if($R->get_diplo($joueur->get_race()) == 127)
 		{
 /*?>
 					<li>
-						<a href="" onclick="return envoiInfo('maison_lignee.php?poscase=<?php echo $W_case; ?>','carte')">Maison de lignées</a>
+						<a href="" onclick="return envoiInfo('maison_lignee.php','carte')">Maison de lignées</a>
 					</li>
 <?php*/
 		}
@@ -247,13 +242,13 @@ if($W_distance == 0 AND $verif_ville)
 			<p class="ville_haut">Bas Quartier</p>
 			<ul class="ville">		
 				<li>
-					<a href="taverne.php?poscase=<?php echo $W_case; ?>" onclick="return envoiInfo(this.href, 'carte')">Taverne</a>
+					<a href="taverne.php" onclick="return envoiInfo(this.href, 'carte')">Taverne</a>
 				</li>
 				<li>
-					<a href="poste.php?poscase=<?php echo $W_case; ?>" onclick="return envoiInfo(this.href, 'carte')">Poste</a>
+					<a href="poste.php" onclick="return envoiInfo(this.href, 'carte')">Poste</a>
 				</li>
 <?php
-		if($royaume->get_diplo($joueur->get_race()) == 127)
+		if($R->get_diplo($joueur->get_race()) == 127)
 		{
 			?>
 				<li>
@@ -280,7 +275,7 @@ if($W_distance == 0 AND $verif_ville)
 	}
 	else
 	{
-		if($royaume->get_diplo($joueur->get_race()) >= 7 AND $royaume->get_diplo($joueur->get_race()) != 127)	echo 'Vous êtes en guerre avec ce royaume !';
+		if($R->get_diplo($joueur->get_race()) >= 7 AND $R->get_diplo($joueur->get_race()) != 127)	echo 'Vous êtes en guerre avec ce royaume !';
 	}
 	if($amende)
 	{
@@ -288,7 +283,7 @@ if($W_distance == 0 AND $verif_ville)
 	?>
 	Vous êtes considéré comme criminel par votre royaume.<br />
 	Il vous faut payer une amende de <?php echo $amende['montant']; ?> stars pour ne plus l'être.<br />
-	<a href="" onclick="return envoiInfo('ville.php?poscase=<?php echo $W_case; ?>&amp;direction=paye_amende', 'carte')">Pour payer l'amende, cliquez ici</a>
+	<a href="" onclick="return envoiInfo('ville.php&amp;direction=paye_amende', 'carte')">Pour payer l'amende, cliquez ici</a>
 	<?php
 	}
 }

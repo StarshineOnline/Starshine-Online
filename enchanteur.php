@@ -7,27 +7,23 @@ if (file_exists('root.php'))
 include_once(root.'haut_ajax.php');
 
 $joueur = new perso($_SESSION['ID']);
-
-check_perso($joueur);
+$joueur->check_perso();
 
 //Vérifie si le perso est mort
 verif_mort($joueur, 1);
 
-$W_case = $_GET['poscase'];
-$W_requete = 'SELECT * FROM map WHERE ID =\''.sSQL($W_case).'\'';
+$W_requete = 'SELECT royaume, type FROM map WHERE ID =\''.sSQL($joueur->get_pos()).'\'';
 $W_req = $db->query($W_requete);
-$W_row = $db->read_array($W_req);
-$R = get_royaume_info($joueur->get_race(), $W_row['royaume']);
+$W_row = $db->read_assoc($W_req);
+$R = new royaume($W_row['royaume']);
+$R->get_diplo($joueur->get_race());
 
-$_SESSION['position'] = convert_in_pos($joueur['x'], $joueur['y']);
 if(array_key_exists('fort', $_GET)) $fort = '&amp;fort=ok'; else $fort = '';
 ?>
-   <h2 class="ville_titre"><?php echo '<a href="ville.php?poscase='.$W_case.'" onclick="return envoiInfo(this.href, \'centre\')">';?><?php echo $R['nom'];?></a> - <?php echo '<a href="enchanteur.php?poscase='.$W_case.'" onclick="return envoiInfo(this.href, \'carte\')">';?> Enchanteur </a></h2>
+   <h2 class="ville_titre"><?php echo '<a href="ville.php?poscase='.$W_case.'" onclick="return envoiInfo(this.href, \'centre\')">';?><?php echo $R->get_nom();?></a> - <?php echo '<a href="enchanteur.php?poscase='.$W_case.'" onclick="return envoiInfo(this.href, \'carte\')">';?> Enchanteur </a></h2>
 		<?php include_once(root.'ville_bas.php');?>
 <?php
-$W_distance = detection_distance($W_case,$_SESSION["position"]);
-$W_coord = convert_in_coord($W_case);
-if($W_distance == 0)
+if($W_row['type'] == 1)
 {
 	if(isset($_GET['action']))
 	{
@@ -38,21 +34,20 @@ if($W_distance == 0)
 				$requete = "SELECT id, prix FROM accessoire WHERE id = ".sSQL($_GET['id']);
 				$req = $db->query($requete);
 				$row = $db->read_array($req);
-				$taxe = ceil($row['prix'] * $R['taxe'] / 100);
+				$taxe = ceil($row['prix'] * $R->get_taxe() / 100);
 				$cout = $row['prix'] + $taxe;
-				if ($joueur['star'] >= $cout)
+				if ($joueur->get_star() >= $cout)
 				{
-					if(prend_objet('m'.$row['id'], $joueur))
+					if($joueur->prend_objet('m'.$row['id']))
 					{
-						$joueur['star'] = $joueur['star'] - $cout;
-						$requete = "UPDATE perso SET star = ".$joueur['star']." WHERE ID = ".$_SESSION['ID'];
-						$req = $db->query($requete);
+						$joueur->set_star($joueur->get_star() - $cout);
+						$joueur->sauver();
 						//Récupération de la taxe
 						if($taxe > 0)
 						{
-							$requete = 'UPDATE royaume SET star = star + '.$taxe.' WHERE ID = '.$R['ID'];
-							$db->query($requete);
-							$requete = "UPDATE argent_royaume SET enchanteur = enchanteur + ".$taxe." WHERE race = '".$R['race']."'";
+							$R->set_star($R->ger_star() + $taxe);
+							$R->sauver();
+							$requete = "UPDATE argent_royaume SET enchanteur = enchanteur + ".$taxe." WHERE race = '".$R->get_race()."'";
 							$db->query($requete);
 						}
 						echo '<h5>Objet acheté !</h5>';
@@ -129,10 +124,10 @@ if($W_distance == 0)
 		$req = $db->query($requete);
 		while($row = $db->read_array($req))
 		{
-			$taxe = ceil($row['prix'] * $R['taxe'] / 100);
+			$taxe = ceil($row['prix'] * $R->get_taxe() / 100);
 			$cout = $row['prix'] + $taxe;
 			$couleur = $color;
-			if($row['puissance'] > $joueur['puissance']) $couleur = 3;
+			if($row['puissance'] > $joueur->get_puissance()) $couleur = 3;
 		?>
 		<tr class="element trcolor<?php echo $couleur; ?>">
 			<td>
@@ -149,7 +144,7 @@ if($W_distance == 0)
 			</td>
 			<td>
 				<?php 
-				if($row['puissance'] <= $joueur['puissance'] AND over_price($cout, $joueur['star']) == 'achat_normal' )
+				if($row['puissance'] <= $joueur->get_puissance() AND over_price($cout, $joueur->get_star()) == 'achat_normal' )
 				{
 				?>
 				<a href="enchanteur.php?action=achat&amp;id=<?php echo $row['id']; ?>&amp;type=<?php echo $row['type']; ?>&amp;poscase=<?php echo $_GET['poscase'].$fort; ?>" onclick="return envoiInfo(this.href, 'carte')"><span class="achat">Achat</span></a>

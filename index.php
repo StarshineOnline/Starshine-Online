@@ -243,7 +243,7 @@ N'oubliez pas de reporter les bugs et problèmes, et d'apporter vos suggestions 
 			if (!isset($_SESSION['nom']))
 			{
 			?>
-			<form action="index.php" method="post">
+			<form action="jeu2.php" method="post">
 			<div>
 			ID : <input type="text" name="nom" size="10" class="input" />
 			Pass : <input type="password" name="password" size="10" class="input" />
