@@ -31,4 +31,12 @@ INSERT INTO `construction_ville` (`id` ,`id_royaume` , `id_batiment` ,`statut` ,
 INSERT INTO `construction_ville` (`id` ,`id_royaume` , `id_batiment` ,`statut` ,`dette` ,`hp`) VALUES (NULL , '12', '25', 'actif', '0', '1000');
 
 ALTER TABLE `elections` CHANGE `date` `date` DATE NOT NULL;
-ALTER TABLE `revolution` CHANGE `date` `date` DATE NOT NULL
+ALTER TABLE `revolution` CHANGE `date` `date` DATE NOT NULL;
+CREATE TABLE IF NOT EXISTS `vote_revolution` (
+  `id` int(10) unsigned NOT NULL auto_increment,
+  `id_revolution` int(10) unsigned NOT NULL,
+  `id_perso` int(10) unsigned NOT NULL default '0',
+  `pour` tinyint(1) NOT NULL default '0',
+  `poid_vote` mediumint(8) unsigned NOT NULL default '0',
+  PRIMARY KEY  (`id`)
+);

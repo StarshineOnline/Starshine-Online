@@ -670,7 +670,7 @@ if($db->num_rows > 0)
 		$data = array();
 		$legend = array();
 		$label = array();
-		$requete = "SELECT *, SUM(poid_vote) as count FROM vote_revolution WHERE id_election = ".$row['id']." GROUP BY pour ORDER BY count DESC";
+		$requete = "SELECT *, SUM(poid_vote) as count FROM vote_revolution WHERE id_revolution = ".$row['id']." GROUP BY pour ORDER BY count DESC";
 		$req_v = $db->query($requete);
 		$i = 0;
 		if($db->num_rows > 0)
