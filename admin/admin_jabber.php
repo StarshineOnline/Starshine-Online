@@ -72,7 +72,7 @@ else
   echo '<hl/><h3>Salons</h3>';
   
   echo '<table><tr><th>Nom</th><th>Topic</th><th>Users</th></tr>';
-  $requete = "select * from rooms";
+  $requete = "select * from jabber.rooms";
   $req = $db->query($requete);
   while ($row = $db->read_assoc($req)) {
     echo "<tr><td>$row[name]</td><td>$row[topic]</td><td>$row[users]</td></tr>\n";
