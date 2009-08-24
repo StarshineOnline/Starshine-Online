@@ -15,15 +15,12 @@ class inventaire
 	public $chaussure;
 	public $liste;
 	public $slot_liste;
-	function inventaire($res=0)
+	function __construct($inventaire, $inventaire_slot)
 	{
-		function __construct($inventaire, $inventaire_slot)
-		{
-			if(!is_array($inventaire)) $this->liste = unserialize($inventaire);
-			else $this->liste = $inventaire;
-			if(!is_array($inventaire_slot)) $this->slot_liste = unserialize($inventaire_slot);
-			else $this->slot_liste = $inventaire_slot;
-		}
+		if(!is_array($inventaire)) $this->liste = unserialize($inventaire);
+		else $this->liste = $inventaire;
+		if(!is_array($inventaire_slot)) $this->slot_liste = unserialize($inventaire_slot);
+		else $this->slot_liste = $inventaire_slot;
 	}
 
 	function prend_objet($id_objet)
@@ -66,7 +63,7 @@ class inventaire
 			$i = 0;
 			while(($i < $G_place_inventaire) AND !$trouver)
 			{
-				if($liste_slot[$i] === 0 OR $liste_slot[$i] == '')
+				if($this->slot_liste[$i] === 0 OR $this->slot_liste[$i] == '')
 				{
 					$trouver = true;
 				}
@@ -81,18 +78,18 @@ class inventaire
 		}
 		else
 		{
-		  // Ajout de l'objet...
+			// Ajout de l'objet...
 			if(!$stack)
 			{
-			  // ...dans un emplacement vide
-				$liste_slot[$i] = $id_objet;
+				// ...dans un emplacement vide
+				$this->slot_liste[$i] = $id_objet;
 			}
 			else
 			{
 			  // ...à une pile d'objet identiques
 				$stacks = $objet_i['stack'] + 1;
 				if($stacks == 1) $stacks = 2;
-				$liste_slot[$i] = $objet_i['sans_stack'].'x'.$stacks;
+				$this->slot_liste[$i] = $objet_i['sans_stack'].'x'.$stacks;
 			}
 			return true;
 		}

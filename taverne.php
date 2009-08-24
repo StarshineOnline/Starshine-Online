@@ -5,40 +5,33 @@ if (file_exists('root.php'))
 //Inclusion du haut du document html
 include_once(root.'haut_ajax.php');
 
-$joueur = new perso($_SESSION['ID']);;
-
+$joueur = new perso($_SESSION['ID']);
 $joueur->check_perso();
 
 //Vérifie si le perso est mort
 verif_mort($joueur, 1);
 
-$W_case = $_GET['poscase'];
-$W_requete = 'SELECT * FROM map WHERE ID =\''.sSQL($W_case).'\'';
+$W_requete = 'SELECT royaume, type FROM map WHERE ID =\''.sSQL($joueur->get_pos()).'\'';
 $W_req = $db->query($W_requete);
-$W_row = $db->read_array($W_req);
-$R = get_royaume_info($joueur->get_race(), $W_row['royaume']);
-
-if(!isset($_GET['type'])) $_GET['type'] = 'arme';
-
-$_SESSION['position'] = convert_in_pos($joueur->get_x(), $joueur->get_y());
+$W_row = $db->read_assoc($W_req);
+$R = new royaume($W_row['royaume']);
+$R->get_diplo($joueur->get_race());
 ?>
-    	<h2 class="ville_titre"><?php if(verif_ville($joueur->get_x(), $joueur->get_y())) return_ville( '<a href="ville.php?poscase='.$W_case.'" onclick="return envoiInfo(this.href, \'centre\')">'.$R['nom'].'</a> -', $W_case); ?> <?php echo '<a href="taverne.php?poscase='.$W_case.'" onclick="return envoiInfo(this.href,\'carte\')">';?> Taverne </a></h2>
+    	<h2 class="ville_titre"><?php if(verif_ville($joueur->get_x(), $joueur->get_y())) return_ville( '<a href="ville.php" onclick="return envoiInfo(this.href, \'centre\')">'.$R->get_nom().'</a> -', $joueur->get_pos()); ?> <?php echo '<a href="taverne.php?poscase='.$W_case.'" onclick="return envoiInfo(this.href,\'carte\')">';?> Taverne </a></h2>
 		<?php include_once(root.'ville_bas.php');?>	
 		<div class="ville_test">
 		<span class="texte_normal">
 		Bien le bonjour ami voyageur !<br />
 		<?php
 		//Affichage des quêtes
-		if($R['nom'] != 'Neutre') $return = affiche_quetes('taverne', $joueur);
+		if($R->get_nom() != 'Neutre') $return = affiche_quetes('taverne', $joueur);
 		if($return[1] > 0 AND !array_key_exists('fort', $_GET))
 		{
 			echo 'Voici quelques petits services que j\'ai à vous proposer :';
 			echo $return[0];
 		}
 		?></span></div><br /><?php
-$W_distance = detection_distance($W_case,$_SESSION["position"]);
-$W_coord = convert_in_coord($W_case);
-if($W_distance == 0)
+if($W_row['type'] == 1)
 {
 	if(isset($_GET['action']))
 	{
@@ -49,9 +42,9 @@ if($W_distance == 0)
 				$requete = "SELECT * FROM taverne WHERE id = ".sSQL($_GET['id']);
 				$req_taverne = $db->query($requete);
 				$row_taverne = $db->read_array($req_taverne);
-				$taxe = ceil($row_taverne['star'] * $R['taxe'] / 100);
+				$taxe = ceil($row_taverne['star'] * $R->get_taxe() / 100);
 				$cout = $row_taverne['star'] + $taxe;
-				if ($joueur['star'] >= $cout)
+				if ($joueur->get_star() >= $cout)
 				{
 					if($joueur->get_pa() >= $row_taverne['pa'])
 					{
@@ -61,12 +54,12 @@ if($W_distance == 0)
 						{
 							$debuff = false;
 							$buff = false;
-							$honneur_need = $row_taverne['honneur'] + (($row_taverne['honneur_pc'] * $joueur['honneur']) / 100);
-							if($joueur['honneur'] >= $honneur_need)
+							$honneur_need = $row_taverne['honneur'] + (($row_taverne['honneur_pc'] * $joueur->get_honneur()) / 100);
+							if($joueur->get_honneur() >= $honneur_need)
 							{
-								$joueur['honneur'] = $joueur['honneur'] - $honneur_need;
+								$joueur->set_honneur($joueur->get_honneur() - $honneur_need);
 							}
-							else $joueur['honneur'] = 0;
+							else $joueur->set_honneur(0);
 							
 							//tirage au sort :
 							$de = rand(1, 10) + rand(1, $joueur['puissance']);
@@ -276,8 +269,8 @@ if($W_distance == 0)
 											lance_buff('regen_negative', $joueur->get_id(), $effet_explode[1], 0, $duree, $maladie['nom'], description('Vos 3 prochaines regénération vous fait perdre des HP / MP au lieu d\'en regagner.', array()), 'perso', 1, 0, 0);
 										break;
 										case 'low_hp' :
-											$joueur['hp'] = 1;
-											$joueur->get_mp() = 1;
+											$joueur->set_hp(1);
+											$joueur->set_mp(1);
 											$bloque_regen = true;
 										break;
 										case 'high_regen' :
@@ -291,24 +284,22 @@ if($W_distance == 0)
 						}
 						if($valid)
 						{
-							$joueur['star'] = $joueur['star'] - $cout;
-							$joueur->get_pa() = $joueur->get_pa() - $row_taverne['pa'];
+							$joueur->set_star($joueur->get_star() - $cout);
+							$joueur->set_pa($joueur->get_pa() - $row_taverne['pa']);
 							if(!$bloque_regen)
 							{
-								$joueur['hp'] = $joueur['hp'] + $row_taverne['hp'] + floor($row_taverne['hp_pc'] * $joueur['hp_max'] / 100);
-								if ($joueur['hp'] > $joueur['hp_max']) $joueur['hp'] = floor($joueur['hp_max']);
-								$joueur->get_mp() = $joueur->get_mp() + $row_taverne['mp'] + floor($row_taverne['mp_pc'] * $joueur['mp_max'] / 100);
-								if ($joueur->get_mp() > $joueur['mp_max']) $joueur->get_mp() = floor($joueur['mp_max']);
+								$joueur->set_hp($joueur->get_hp() + $row_taverne['hp'] + floor($row_taverne['hp_pc'] * $joueur->get_hp_max() / 100));
+								if ($joueur->get_hp() > $joueur->get_hp_max()) $joueur->set_hp(floor($joueur->get_hp_max()));
+								$joueur->set_mp($joueur->get_mp() + $row_taverne['mp'] + floor($row_taverne['mp_pc'] * $joueur->get_mp_max() / 100));
+								if ($joueur->get_mp() > $joueur->get_mp_max()) $joueur->set_mp(floor($joueur->get_mp_max()));
 							}
-							$requete = "UPDATE perso SET honneur = ".$joueur['honneur'].", star = ".$joueur['star'].", hp = ".$joueur['hp'].", mp = ".$joueur->get_mp().", pa = ".$joueur->get_pa()." WHERE ID = ".$_SESSION['ID'];
-							//echo $requete;
-							$req = $db->query($requete);
+							$joueur->sauver();
 							//Récupération de la taxe
 							if($taxe > 0)
 							{
-								$requete = 'UPDATE royaume SET star = star + '.$taxe.' WHERE ID = '.$R['ID'];
-								$db->query($requete);
-								$requete = "UPDATE argent_royaume SET taverne = taverne + ".$taxe." WHERE race = '".$R['race']."'";
+								$R->set_star($R->get_star() + $taxe);
+								$R->sauver();
+								$requete = "UPDATE argent_royaume SET taverne = taverne + ".$taxe." WHERE race = '".$R->get_race()."'";
 								$db->query($requete);
 							}
 							echo '<h6>La taverne vous remercie de votre achat !<br />'.$texte.'</h6>';
@@ -364,13 +355,13 @@ if($W_distance == 0)
 		$req = $db->query($requete);
 		while($row = $db->read_array($req))
 		{
-			$taxe = ceil($row['star'] * $R['taxe'] / 100);
+			$taxe = ceil($row['star'] * $R->get_taxe() / 100);
 			$cout = $row['star'] + $taxe;
 			if(array_key_exists('fort', $_GET)) $fort = '&amp;fort=ok'; else $fort = '';
 			//On vérifie le sexe du joueur
-			$joueur['bonus'] = recup_bonus_total($joueur->get_id());
-			if(array_key_exists(12, $joueur['bonus']) AND $joueur['bonus'][12]['valeur'] == 2) $champ = 'nom_f';
-			else $champ = 'nom';
+//			$joueur->get_bonus() = recup_bonus_total($joueur->get_id());
+//			if(array_key_exists(12, $joueur->get_bonus()) AND $joueur->get_bonus(12)->valeur == 2) $champ = 'nom_f';
+			$champ = 'nom';
 		?>
 		<tr class="element trcolor<?php echo $color; ?>">
 			<td>
@@ -383,16 +374,16 @@ if($W_distance == 0)
 				<?php echo $row['pa']; ?>
 			</td>
 			<td onmouseover="<?php echo make_overlib('Vous perdrez '.$row['honneur'].' + '.$row['honneur_pc'].'% points d\'honneur'); ?>" onmouseout="nd();">
-				<?php echo ($row['honneur'] + ceil($joueur['honneur'] * $row['honneur_pc'] / 100)); ?>
+				<?php echo ($row['honneur'] + ceil($joueur->get_honneur() * $row['honneur_pc'] / 100)); ?>
 			</td>
 			<td onmouseover="<?php echo make_overlib('Vous regagnerez '.$row['hp'].' + '.$row['hp_pc'].'% HP'); ?>" onmouseout="nd();">
-				<?php echo ($row['hp'] + ceil($joueur['hp_max'] * $row['hp_pc'] / 100)); ?>
+				<?php echo ($row['hp'] + ceil($joueur->get_hp_max() * $row['hp_pc'] / 100)); ?>
 			</td>
 			<td onmouseover="<?php echo make_overlib('Vous regagnerez '.$row['mp'].' + '.$row['mp_pc'].'% MP'); ?>" onmouseout="nd();">
-				<?php echo ($row['mp'] + ceil($joueur['mp_max'] * $row['mp_pc'] / 100)); ?>
+				<?php echo ($row['mp'] + ceil($joueur->get_mp_max() * $row['mp_pc'] / 100)); ?>
 			</td>
 			<td>
-				<a href="taverne.php?action=achat&amp;id=<?php echo $row['ID']; ?>&amp;poscase=<?php echo $_GET['poscase'].$fort; ?>" onclick="return envoiInfo(this.href, 'carte')"><span class="achat">Achat</span></a>
+				<a href="taverne.php?action=achat&amp;id=<?php echo $row['ID'].$fort; ?>" onclick="return envoiInfo(this.href, 'carte')"><span class="achat">Achat</span></a>
 			</td>
 		</tr>
 		<?php

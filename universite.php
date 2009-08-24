@@ -5,29 +5,22 @@ if (file_exists('root.php'))
 //Inclusion du haut du document html
 include_once(root.'haut_ajax.php');
 
-$joueur = new perso($_SESSION['ID']);;
-
+$joueur = new perso($_SESSION['ID']);
 $joueur->check_perso();
 
 //Vérifie si le perso est mort
 verif_mort($joueur, 1);
 
-$W_case = $_GET['poscase'];
-$W_requete = 'SELECT * FROM map WHERE ID =\''.sSQL($W_case).'\'';
+$W_requete = 'SELECT royaume, type FROM map WHERE ID =\''.sSQL($joueur->get_pos()).'\'';
 $W_req = $db->query($W_requete);
-$W_row = $db->read_array($W_req);
-$R = get_royaume_info($joueur->get_race(), $W_row['royaume']);
-
-if(!isset($_GET['type'])) $_GET['type'] = 'arme';
-
-$_SESSION['position'] = convert_in_pos($joueur->get_x(), $joueur->get_y());
+$W_row = $db->read_assoc($W_req);
+$R = new royaume($W_row['royaume']);
+$R->get_diplo($joueur->get_race());
 ?>
-   	<h2 class="ville_titre"><?php echo '<a href="ville.php?poscase='.$W_case.'" onclick="return envoiInfo(this.href, \'centre\')">';?><?php echo $R['nom'];?></a> - <?php echo '<a href="universite.php?poscase='.$W_case.'" onclick="return envoiInfo(this.href, \'carte\')">';?> Université </a></h2>
+   	<h2 class="ville_titre"><?php echo '<a href="ville.php?poscase='.$W_case.'" onclick="return envoiInfo(this.href, \'centre\')">';?><?php echo $R->get_nom();?></a> - <?php echo '<a href="universite.php?poscase='.$W_case.'" onclick="return envoiInfo(this.href, \'carte\')">';?> Université </a></h2>
 		<?php include_once(root.'ville_bas.php');?>
 <?php
-$W_distance = detection_distance($W_case,$_SESSION["position"]);
-$W_coord = convert_in_coord($W_case);
-if($W_distance == 0)
+if($W_row['type'] == 1)
 {
 	if(isset($_GET['action']))
 	{
@@ -161,10 +154,14 @@ if($W_distance == 0)
 							$fin = true;
 						}
 					}
-					if($joueur[$row['competence']] < $row['requis'] AND $joueur['competences'][$row['competence']] < $row['requis'])
+					else
 					{
-						echo 'Vous n\'avez pas assez en : '.ucwords($row['competence']).'<br />';
-						$fin = true;
+						$get = 'get_'.$row['competence'];
+						if((method_exists($joueur, $get) && $joueur->$get() < $row['requis']) OR (!method_exists($joueur, $get) && $joueur->get_competence($row['competence']) < $row['requis']))
+						{
+							echo 'Vous n\'avez pas assez en : '.ucwords($row['competence']).'<br />';
+							$fin = true;
+						}
 					}
 				}
 				//Le joueur rempli les conditions
@@ -177,8 +174,8 @@ if($W_distance == 0)
 					while($row = $db->read_array($req))
 					{
 						if($row['new'] == 'yes') $new[] = $row['competence'];
-						if($row['competence'] == 'facteur_magie') $and .= ", facteur_magie = ".$row['permet'];
-						if($row['competence'] == 'sort_vie+') $and .= ", sort_vie = sort_vie + ".$row['permet'];
+						if($row['competence'] == 'facteur_magie') $joueur->set_facteur_magie($row['permet']);
+						if($row['competence'] == 'sort_vie+') $joueur->set_sort_vie($joueur->get_sort_vie() + $row['permet']);
 					}
 					$newi = 0;
 					while($newi < count($new))
@@ -187,7 +184,7 @@ if($W_distance == 0)
 						$req = $db->query($requete);
 						$newi++;
 					}
-					$comp_combat = explode(';', $joueur['comp_combat']);
+					$comp_combat = explode(';', $joueur->get_comp_combat());
 					if($comp_combat[0] == '') $comp_combat = array();
 					$comp_jeu = explode(';', $joueur->get_comp_jeu());
 					if($comp_jeu[0] == '') $comp_jeu = array();
@@ -198,8 +195,10 @@ if($W_distance == 0)
 						if($row['type'] == 'comp_combat') $comp_combat[] = $row['competence'];
 						if($row['type'] == 'comp_jeu') $comp_jeu[] = $row['competence'];
 					}
-					$joueur['comp_combat'] = implode(';', $comp_combat);
-					$joueur->get_comp_jeu() = implode(';', $comp_jeu);
+					$joueur->set_comp_combat(implode(';', $comp_combat));
+					$joueur->set_comp_jeu(implode(';', $comp_jeu));
+					$joueur->set_classe_id($_GET['id']);
+					$joueur->set_classe(strtolower($nom));
 					$requete = "UPDATE perso SET classe = '".strtolower($nom)."', classe_id = '".sSQL($_GET['id'])."', comp_combat = '".$joueur['comp_combat']."', comp_jeu = '".$joueur->get_comp_jeu()."' ".$and." WHERE ID = ".$_SESSION['ID'];
 					$req = $db->query($requete);
 					echo 'Félicitations vous suivez maintenant la voie du '.strtolower($nom).'<br />';
@@ -248,7 +247,7 @@ que Dulfandal nous protège tous, nous sommes perdus ( tache de sang )...<br />
 			</li>
 			<?php
 			}
-			if($R['ID'] == 7)
+			if($R->get_id() == 7)
 			{
 			?>
 				<h3 class="ville_haut">Bibliothèque</h3>

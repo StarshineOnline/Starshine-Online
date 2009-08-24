@@ -929,5 +929,19 @@ class royaume
 		$this->set_point_victoire($this->point_victoire + $nombre);
 		$this->set_point_victoire_total($this->point_victoire_total + $nombre);
 	}
+
+	function add_forgeron($valeur)
+	{
+		global $db;
+		$requete = "UPDATE argent_royaume SET forgeron = forgeron + ".$valeur." WHERE race = '".$this->race."'";
+		$db->query($requete);
+	}
+
+	function add_armurerie($valeur)
+	{
+		global $db;
+		$requete = "UPDATE argent_royaume SET armurerie = armurerie + ".$valeur." WHERE race = '".$this->race."'";
+		$db->query($requete);
+	}
 }
 ?>

@@ -277,14 +277,24 @@ class elections
 
 		//fonction
 
-	static function get_prochain_election($id_royaume)
+	static function get_prochain_election($id_royaume, $all = false)
 	{
-		return elections::create('id_royaume', $id_royaume, 'id DESC');
+		if($all)
+		{
+			$champ ='id_royaume';
+			$valeur = $id_royaume;
+		}
+		else
+		{
+			$champ = array('id_royaume', 'type');
+			$valeur = array($id_royaume, 'universel');
+		}
+		return elections::create($champ, $valeur, 'id DESC');
 	}
 
 	static function is_mois_election($id_royaume)
 	{
-		$elections = get_prochain_election($id_royaume);
+		$elections = elections::get_prochain_election($id_royaume);
 		$explode_date = explode('-', $elections[0]);
 		if($explode_date[0] == date('Y') && $explode_date[1] == date('m', mktime(0, 0, 0, date("m") + 1 , date("d"), date("Y")))) return true;
 		else return false;

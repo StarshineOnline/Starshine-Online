@@ -10,30 +10,28 @@ include_once(root.'haut_ajax.php');
 include_once(root.'fonction/competence.inc.php');
 
 $joueur = new perso($_SESSION['ID']);
-
-check_perso($joueur);
+$joueur->check_perso();
 
 //Vérifie si le perso est mort
 verif_mort($joueur, 1);
 
-$W_case = $_GET['poscase'];
-$W_requete = 'SELECT * FROM map WHERE ID =\''.sSQL($W_case).'\'';
+$W_requete = 'SELECT royaume, type FROM map WHERE ID =\''.sSQL($joueur->get_pos()).'\'';
 $W_req = $db->query($W_requete);
-$W_row = $db->read_array($W_req);
-$R = get_royaume_info($joueur->get_race(), $W_row['royaume']);
+$W_row = $db->read_assoc($W_req);
+$R = new royaume($W_row['royaume']);
+$R->get_diplo($joueur->get_race());
 
-$_SESSION['position'] = convert_in_pos($joueur['x'], $joueur['y']);
-?><h2 class="ville_titre"><?php echo '<a href="ville.php?poscase='.$W_case.'" onclick="return envoiInfo(this.href, \'centre\')">';?><?php echo $R['nom'];?></a> - <?php echo '<a href="ecolecombat.php?poscase='.$W_case.'" onclick="return envoiInfo(this.href, \'carte\')">';?> Ecole de combat </a></h2>
+?><h2 class="ville_titre"><?php echo '<a href="ville.php?poscase='.$W_case.'" onclick="return envoiInfo(this.href, \'centre\')">';?><?php echo $R->get_nom();?></a> - <?php echo '<a href="ecolecombat.php?poscase='.$W_case.'" onclick="return envoiInfo(this.href, \'carte\')">';?> Ecole de combat </a></h2>
 <?php include_once(root.'ville_bas.php');?>
 <?php
 $W_distance = detection_distance($W_case,$_SESSION["position"]);
 $W_coord = convert_in_coord($W_case);
 $cout_app = 500;
-if($W_distance == 0)
+if($W_row['type'] == 1)
 {
 	//On recherche le niveau de la construction
 	$batiment = 'ecole_combat';
-	$requete = "SELECT * FROM construction_ville LEFT JOIN batiment_ville ON construction_ville.id_batiment = batiment_ville.id WHERE batiment_ville.type = '".$batiment."' AND construction_ville.id_royaume = ".$R['ID'];
+	$requete = "SELECT * FROM construction_ville LEFT JOIN batiment_ville ON construction_ville.id_batiment = batiment_ville.id WHERE batiment_ville.type = '".$batiment."' AND construction_ville.id_royaume = ".$R->get_id();
 	$req = $db->query($requete);
 	$row = $db->read_assoc($req);
 	//Si le batiment est inactif, on met le batiment au niveau 1, sinon c'est bon
@@ -81,7 +79,7 @@ if($W_distance == 0)
 
 		<?php
 		//Affichage du magasin des armes
-		$url2 = 'ecolecombat.php?ecole='.$_GET['ecole'].'&amp;poscase='.$W_case.'&amp;order='.$_GET['order'];
+		$url2 = 'ecolecombat.php?ecole='.$_GET['ecole'].'&amp;order='.$_GET['order'];
 		?>
 			<p class="ville_haut"><a href="<?php echo $url2; ?>&amp;part=melee" onclick="return envoiInfo(this.href, 'carte')">Mélée</a> | <a href="<?php echo $url2; ?>&amp;part=distance" onclick="return envoiInfo(this.href, 'carte')">Distance</a> | <a href="<?php echo $url2; ?>&amp;part=esquive" onclick="return envoiInfo(this.href, 'carte')">Esquive</a> | <a href="<?php echo $url2; ?>&amp;part=blocage" onclick="return envoiInfo(this.href, 'carte')">Blocage</a></p>
 			<table class="marchand" cellspacing="0px">
@@ -117,29 +115,29 @@ if($W_distance == 0)
 			{
 				$where .= " AND comp_assoc = '".sSQL($_GET['part'])."'";
 			}
-			$comps = explode(';', $joueur[$ecole]);
+			$get = 'get_'.$ecole;
+			$comps = explode(';', $joueur->$get());
 			$count = count($comps);
 			$comps = implode(', ', $comps);
 			if($comps != '' AND $count > 0) $where .= " AND id NOT IN (".$comps.") ";
 			$requete = "SELECT * FROM ".$ecole." WHERE ".$where." ORDER BY".$ordre;
-			//echo $requete;
 			$req = $db->query($requete);
-			while($row = $db->read_array($req))
+			while($row = $db->read_assoc($req))
 			{
 				if($row['requis'] != '999')
 				{
-					$taxe = ceil($row['prix'] * $R['taxe'] / 100);
+					$taxe = ceil($row['prix'] * $R->get_taxe() / 100);
 					$cout = $row['prix'] + $taxe;
 					$couleur = $color;
 					$carac_joueur = $joueur[$row['carac_assoc']];
 					$comp_joueur = $joueur[$row['comp_assoc']];
-					if (isset($joueur['bonus_ignorables'])) {
-						if (isset($joueur['bonus_ignorables'][$row['carac_assoc']]))
-							$carac_joueur -= $joueur['bonus_ignorables'][$row['carac_assoc']];
-						if (isset($joueur['bonus_ignorables'][$row['comp_assoc']]))
-							$comp_joueur -= $joueur['bonus_ignorables'][$row['comp_assoc']];
+					if (isset($joueur->bonus_ignorables)) {
+						if (isset($joueur->bonus_ignorables[$row['carac_assoc']]))
+							$carac_joueur -= $joueur->bonus_ignorables[$row['carac_assoc']];
+						if (isset($joueur->bonus_ignorables[$row['comp_assoc']]))
+							$comp_joueur -= $joueur->bonus_ignorables[$row['comp_assoc']];
 					}
-					if($row['carac_requis'] > $carac_joueur OR $row['comp_requis'] > $comp_joueur OR $cout > $joueur['star']) $couleur = 3;
+					if($row['carac_requis'] > $carac_joueur OR $row['comp_requis'] > $comp_joueur OR $cout > $joueur->get_star()) $couleur = 3;
 					$row['cible2'] = $G_cibles[$row['cible']];
 				?>
 				<tr class="element trcolor<?php echo $couleur; ?>">
@@ -163,11 +161,11 @@ if($W_distance == 0)
 						?>
 					</td>
 					<td>
-						<span class="<?php echo over_price($cout, $joueur['star']); ?>"><?php echo $cout; ?></span>
+						<span class="<?php echo over_price($cout, $joueur->get_star()); ?>"><?php echo $cout; ?></span>
 					</td>
 					<td>
 					<?php
-					if (over_price($cout, $joueur['star']) == 'achat_normal' AND over_price($row['comp_requis'], $comp_joueur) == 'achat_normal')
+					if (over_price($cout, $joueur->get_star()) == 'achat_normal' AND over_price($row['comp_requis'], $comp_joueur) == 'achat_normal')
 					{	
 					?>
 						<a href="ecolecombat.php?ecole=<?php echo $_GET['ecole']; ?>&amp;action=apprendre&amp;id=<?php echo $row['id']; ?>&amp;poscase=<?php echo $_GET['poscase']; ?>" onclick="return envoiInfo(this.href, 'carte')"><span class="achat">Apprendre</span></a>
@@ -189,20 +187,20 @@ if($W_distance == 0)
 	}
 	elseif(array_key_exists('app', $_GET))
 	{
-		$taxe = ceil($cout_app * $R['taxe'] / 100);
+		$taxe = ceil($cout_app * $R->get_taxe() / 100);
 		$cout = $cout_app + $taxe;
-		if($joueur['star'] >= $cout)
+		if($joueur->get_star() >= $cout)
 		{
-			$joueur['star'] -= $cout;
-			$requete = "UPDATE perso SET star = ".$joueur['star'].", ".sSQL($_GET['app'])." = 1 WHERE ID = ".$joueur->get_id();
-			if($db->query($requete)) echo 'L\'apprentissage de '.$Gtrad[$_GET['app']].' est un succès !<br />';
+			$joueur->set_star($joueur->get_star() - $cout);
+			$joueur->sauver();
+			echo 'L\'apprentissage de '.$Gtrad[$_GET['app']].' est un succès !<br />';
 		}
 		else
 		{
 			echo 'Vous n\'avez pas assez de stars<br />';
 		}
 		?>
-		<a href="ecolecombat.php?poscase=<?php echo $_GET['poscase']; ?>" onclick="return envoiInfo(this.href, 'carte')">Retour à l&rsquo;école de combat</a>
+		<a href="ecolecombat.php" onclick="return envoiInfo(this.href, 'carte')">Retour à l&rsquo;école de combat</a>
 		<?php
 	}
 	else
@@ -223,7 +221,7 @@ if($W_distance == 0)
 		<div class="ville_test">
 			<ul class="ville">
 			<?php
-			$taxe = ceil($cout_app * $R['taxe'] / 100);
+			$taxe = ceil($cout_app * $R->get_taxe() / 100);
 			$cout = $cout_app + $taxe;
 			?>
 				<li>

@@ -2637,14 +2637,13 @@ class perso extends entite
 		else
 		{
 			if(!isset($this->competences)) $this->get_competence();
-			print_r($this->competences);
-			var_dump($this->competences[$nom]);
 			if($champ)
 			{
 				$get = 'get_'.$champ;
 				return $this->competences[$nom]->$get();
 			}
-			else return $this->competences[$nom]->get_valeur();
+			elseif(is_object($this->competences[$nom])) return $this->competences[$nom]->get_valeur();
+			else return false;
 		}
 	}
 
@@ -2841,7 +2840,8 @@ class perso extends entite
 		if(!isset($this->inventaire_perso)) $this->inventaire_perso = new inventaire($this->inventaire, $this->inventaire_slot);
 		if($this->inventaire_perso->prend_objet($id_objet))
 		{
-			$this->set_inventaire_slot(serialize($this->inventaire_perso->liste_slot));
+			if(is_array($this->inventaire_perso->slot_liste)) $this->set_inventaire_slot(serialize($this->inventaire_perso->slot_liste));
+			else $this->set_inventaire_slot($this->inventaire_perso->slot_liste);
 			$this->sauver();
 			return true;
 		}

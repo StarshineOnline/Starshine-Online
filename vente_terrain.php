@@ -6,23 +6,22 @@ $connexion = true;
 //Inclusion du haut du document html
 include_once(root.'haut_ajax.php');
 
-$joueur = new perso($_SESSION['ID']);;
-
+$joueur = new perso($_SESSION['ID']);
 $joueur->check_perso();
 
 //Vérifie si le perso est mort
 verif_mort($joueur, 1);
 
-$_SESSION['position'] = convert_in_pos($joueur->get_x(), $joueur->get_y());
-$W_case = convert_in_pos($joueur->get_x(), $joueur->get_y());
-$W_requete = "SELECT royaume, type FROM map WHERE ID = '".sSQL($W_case)."'";
+$W_requete = 'SELECT royaume, type FROM map WHERE ID =\''.sSQL($joueur->get_pos()).'\'';
 $W_req = $db->query($W_requete);
-$W_row = $db->read_array($W_req);
-$R = get_royaume_info($joueur->get_race(), $W_row['royaume']);
+$W_row = $db->read_assoc($W_req);
+$R = new royaume($W_row['royaume']);
+$R->get_diplo($joueur->get_race());
+
 if($W_row['type'] == 1)
 {
 	?>
-	<h2 class="ville_titre"><?php if(verif_ville($joueur->get_x(), $joueur->get_y())) return_ville('<a href="ville.php" onclick="return envoiInfo(this.href, \'centre\')">'.$R['nom'].'</a> -', $W_case); ?> <?php echo '<a href="vente_terrain.php" onclick="return envoiInfo(this.href, \'carte\')">';?> Ventes de terrain </a></h2>
+	<h2 class="ville_titre"><?php if(verif_ville($joueur->get_x(), $joueur->get_y())) return_ville('<a href="ville.php" onclick="return envoiInfo(this.href, \'centre\')">'.$R->get_nom().'</a> -', $joueur->get_pos()); ?> <?php echo '<a href="vente_terrain.php" onclick="return envoiInfo(this.href, \'carte\')">';?> Ventes de terrain </a></h2>
 	<?php include_once(root.'ville_bas.php');?>
 	<div class="ville_test">
 	<?php
@@ -61,7 +60,7 @@ if($W_row['type'] == 1)
 	else
 	{
 		echo '<h3>Liste des terrains à vendre</h3>';
-		$requete = "SELECT id, id_royaume, date_fin, id_joueur, prix FROM vente_terrain WHERE id_royaume = ".$R['ID']." AND date_fin > ".time();
+		$requete = "SELECT id, id_royaume, date_fin, id_joueur, prix FROM vente_terrain WHERE id_royaume = ".$R->get_id()." AND date_fin > ".time();
 		$req = $db->query($requete);
 		?>
 		<table>

@@ -75,8 +75,8 @@ if($W_row['type'] == 1)
 								if($taxe > 0)
 								{
 									$R->set_star($R->get_star() + $taxe);
-									$R->set_forgeron($R->get_forgeron() + $taxe);
 									$R->sauver();
+									$R->add_forgeron($taxe);
 								}
 								echo '<h6>Arme achetée !</h6>
 								<img src="image/pixel.gif" onLoad="envoiInfo(\'infoperso.php?javascript=oui\', \'perso\');" />';
@@ -107,8 +107,8 @@ if($W_row['type'] == 1)
 								if($taxe > 0)
 								{
 									$R->set_star($R->get_star() + $taxe);
-									$R->set_armurerie($R->get_armurerie() + $taxe);
 									$R->sauver();
+									$R->add_armurerie($taxe);
 								}
 								echo '<h6>Armure achetée !</h6>
 								<img src="image/pixel.gif" onLoad="envoiInfo(\'infoperso.php?javascript=oui\', \'perso\');" />';

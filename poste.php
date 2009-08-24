@@ -5,26 +5,23 @@ if (file_exists('root.php'))
 //Inclusion du haut du document html
 include_once(root.'haut_ajax.php');
 
-$joueur = new perso($_SESSION['ID']);;
-
+$joueur = new perso($_SESSION['ID']);
 $joueur->check_perso();
 
 //Vérifie si le perso est mort
 verif_mort($joueur, 1);
 
-$W_case = convert_in_pos($joueur['x'], $joueur['y']);
-$W_requete = 'SELECT * FROM map WHERE ID =\''.sSQL($W_case).'\'';
+$W_requete = 'SELECT royaume, type FROM map WHERE ID =\''.sSQL($joueur->get_pos()).'\'';
 $W_req = $db->query($W_requete);
-$W_row = $db->read_array($W_req);
-$R = get_royaume_info($joueur->get_race(), $W_row['royaume']);
-
-$_SESSION['position'] = convert_in_pos($joueur['x'], $joueur['y']);
+$W_row = $db->read_assoc($W_req);
+$R = new royaume($W_row['royaume']);
+$R->get_diplo($joueur->get_race());
 ?>
-		<h2 class="ville_titre"><?php if(verif_ville($joueur['x'], $joueur['y'])) return_ville( '<a href="ville.php?poscase='.$W_case.'" onclick="return envoiInfo(this.href, \'centre\')">'.$R['nom'].'</a> -', $W_case); ?> <?php echo '<a href="poste.php?poscase='.$W_case.'" onclick="return envoiInfo(this.href, \'carte\')">';?> Poste </a></h2>
+		<h2 class="ville_titre"><?php if(verif_ville($joueur->get_x(), $joueur->get_y())) return_ville( '<a href="ville.php" onclick="return envoiInfo(this.href, \'centre\')">'.$R->get_nom().'</a> -', $joueur->get_pos()); ?> <?php echo '<a href="poste.php?poscase='.$W_case.'" onclick="return envoiInfo(this.href, \'carte\')">';?> Poste </a></h2>
 		<?php include_once(root.'ville_bas.php');?>
 <?php
 //Affichage des quêtes
-if($R['nom'] != 'Neutre') $return = affiche_quetes('poste', $joueur);
+if($R->get_nom() != 'Neutre') $return = affiche_quetes('poste', $joueur);
 if($return[1] > 0 AND !array_key_exists('fort', $_GET))
 {
 	echo '<div class="ville_test"><span class="texte_normal">';
@@ -33,9 +30,7 @@ if($return[1] > 0 AND !array_key_exists('fort', $_GET))
 	echo '</span></div><br />';
 }
 
-$W_distance = detection_distance($W_case,$_SESSION["position"]);
-$W_coord = convert_in_coord($W_case);
-if($W_distance == 0)
+if($W_row['type'] == 1)
 {
 	if(isset($_GET['action']))
 	{
@@ -58,7 +53,7 @@ if($W_distance == 0)
 					$row_diplo = $db->read_row($req_diplo);
 					if($row_diplo[0] == 127) $row_diplo[0] = -1;
 					$cout = ceil(pow(1.6, ($row_diplo[0] + 1)));
-					$taxe = ceil($cout * $R['taxe'] / 100);
+					$taxe = ceil($cout * $R->get_taxe() / 100);
 					echo 'Cela vous coutera '.($cout+$taxe).' stars.<br />';
 					?>
 					<form method="post" id="formMessage" action="poste.php?action=envoi&amp;cout=<?php echo $cout; ?>&amp;ID=<?php echo $row['ID']; ?>">
@@ -79,9 +74,9 @@ if($W_distance == 0)
 			case 'envoi' :
 				$W_ID = sSQL($_GET['ID']);
 				$cout = sSQL($_GET['cout']);
-				$taxe = ceil(sSQL($_GET['cout'] * $R['taxe'] / 100));
+				$taxe = ceil(sSQL($_GET['cout'] * $R->get_taxe() / 100));
 				$cout = sSQL($_GET['cout']) + $taxe;
-				if($cout <= $joueur['star'])
+				if($cout <= $joueur->get_star())
 				{
 					$titre = addslashes(sSQL($_POST['titre']));
 					if($titre != '')
@@ -97,12 +92,11 @@ if($W_distance == 0)
 							$messagerie->envoi_message($id_thread, $id_dest, $titre, $message, $id_groupe);
 							echo '<h6>Message transmis avec succès</h6>';
 
-							$joueur['star'] -= $cout;
-							$requete = "UPDATE perso SET star = ".$joueur['star']." WHERE ID = ".$joueur->get_id();
-							$req = $db->query($requete);
+							$joueur->set_star($joueur->get_star() - $cout);
+							$joueur->sauver();
 							//Récupération de l'argent
-							$requete = 'UPDATE royaume SET star = star + '.$taxe.' WHERE ID = '.$R['ID'];
-							$db->query($requete);
+							$R->set_star($R->get_star() + $taxe);
+							$R->sauver();
 							echo '<h6>Message bien envoyé !</h6>';
 						}
 						else
@@ -134,7 +128,7 @@ if($W_distance == 0)
 	<div class="ville_test">
 	A qui voulez vous envoyer un message ?
 	<input type="text" id="perso_envoi" value="" /><br />
-	<input type="button" onclick="javascript:envoiInfo('poste.php?poscase=<?php echo $W_case; ?>&amp;action=select_perso&amp;perso_envoi=' + document.getElementById('perso_envoi').value, 'carte')" value="Sélectionner" />
+	<input type="button" onclick="javascript:envoiInfo('poste.php?action=select_perso&amp;perso_envoi=' + document.getElementById('perso_envoi').value, 'carte')" value="Sélectionner" />
 	</div>
 	<?php
 	}

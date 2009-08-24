@@ -5,26 +5,23 @@ if (file_exists('root.php'))
 //Inclusion du haut du document html
 include_once(root.'haut_ajax.php');
 
-$joueur = new perso($_SESSION['ID']);;
-
+$joueur = new perso($_SESSION['ID']);
 $joueur->check_perso();
 
 //Vérifie si le perso est mort
 verif_mort($joueur, 1);
 
-$W_case = $_GET['poscase'];
-$W_requete = 'SELECT * FROM map WHERE ID =\''.sSQL($W_case).'\'';
+$W_requete = 'SELECT royaume, type FROM map WHERE ID =\''.sSQL($joueur->get_pos()).'\'';
 $W_req = $db->query($W_requete);
-$W_row = $db->read_array($W_req);
-$R = get_royaume_info($joueur->get_race(), $W_row['royaume']);
-
-$_SESSION['position'] = convert_in_pos($joueur->get_x(), $joueur->get_y());
+$W_row = $db->read_assoc($W_req);
+$R = new royaume($W_row['royaume']);
+$R->get_diplo($joueur->get_race());
 ?>
-   	<h2 class="ville_titre"><?php echo '<a href="ville.php?poscase='.$W_case.'" onclick="return envoiInfo(this.href, \'centre\')">';?><?php echo $R['nom'];?></a> - <?php echo '<a href="tribunal.php?poscase='.$W_case.'" onclick="return envoiInfo(this.href, \'carte\')">';?> Tribunal </a></h2>
+   	<h2 class="ville_titre"><?php echo '<a href="ville.php?poscase='.$W_case.'" onclick="return envoiInfo(this.href, \'centre\')">';?><?php echo $R->get_nom();?></a> - <?php echo '<a href="tribunal.php?poscase='.$W_case.'" onclick="return envoiInfo(this.href, \'carte\')">';?> Tribunal </a></h2>
 		<?php include_once(root.'ville_bas.php');?>
 <?php
 //Affichage des quêtes
-if($R['nom'] != 'Neutre') $return = affiche_quetes('poste', $joueur);
+if($R->get_nom() != 'Neutre') $return = affiche_quetes('poste', $joueur);
 if($return[1] > 0 AND !array_key_exists('fort', $_GET))
 {
 	echo '<div class="ville_test"><span class="texte_normal">';
@@ -36,9 +33,7 @@ if($return[1] > 0 AND !array_key_exists('fort', $_GET))
 
 	<div class="ville_test">
 	<?php
-$W_distance = detection_distance($W_case,$_SESSION["position"]);
-$W_coord = convert_in_coord($W_case);
-if($W_distance == 0)
+if($W_row['type'] == 1)
 {
 	if(isset($_GET['action']))
 	{
@@ -107,7 +102,7 @@ if($W_distance == 0)
 				</td>
 			</tr>
 		<?php
-		$requete = "SELECT * FROM perso RIGHT JOIN amende ON amende.id_joueur = perso.ID WHERE perso.amende > 0 AND amende.statut = 'criminel' AND race = '".$R['race']."'";
+		$requete = "SELECT * FROM perso RIGHT JOIN amende ON amende.id_joueur = perso.ID WHERE perso.amende > 0 AND amende.statut = 'criminel' AND race = '".$R->get_race()."'";
 		$req = $db->query($requete);
 		while($row = $db->read_assoc($req))
 		{
