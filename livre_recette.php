@@ -7,7 +7,7 @@ if (file_exists('root.php'))
 //Inclusion des fichiers indispensables
 include ('livre.php');
 $case = new map_case(convert_in_pos($joueur->get_x(), $joueur->get_y()));
-$R = get_royaume_info($joueur->get_race(), $case->get_royaume());
+$R = new royaume($case->get_royaume());
 ?>
 <hr>
 <?php

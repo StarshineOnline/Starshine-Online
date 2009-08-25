@@ -30,11 +30,10 @@ $joueur = new perso($joueur_id);
 //Filtre
 if(array_key_exists('filtre', $_GET)) $filtre_url = '&amp;filtre='.$_GET['filtre'];
 else $filtre_url = '';
-$W_case = 1000 * $joueur->get_y() + $joueur->get_x();
-$W_requete = 'SELECT * FROM map WHERE ID ='.$W_case;
+$W_requete = 'SELECT royaume, type FROM map WHERE ID =\''.sSQL($joueur->get_pos()).'\'';
 $W_req = $db->query($W_requete);
-$W_row = $db->read_array($W_req);
-$R = get_royaume_info($joueur->get_race(), $W_row['royaume']);
+$W_row = $db->read_assoc($W_req);
+$R = new royaume($W_row['royaume']);
 ?>
 <fieldset>
 <legend>Inventaire</legend>
@@ -124,7 +123,7 @@ if(!$visu AND isset($_GET['action']))
 				}
 				else
 				{
-					echo '<h5>Vous ne pouvez pas poser de fort sur une ville</h5>';
+					echo '<h5>Vous ne pouvez pas poser de batiment sur une ville</h5>';
 				}
 			}
 			switch($_GET['type'])
@@ -1045,7 +1044,7 @@ if(!$visu)
 	 if(array_key_exists('filtre', $_GET)) $filtre = $_GET['filtre'];
 	 else $filtre = 'utile';
 ?>
-<p>Place restante dans l'inventaire : <?php echo ($G_place_inventaire - count($joueur->get_inventaire_slot())) ?> / <?php echo $G_place_inventaire;?></p>
+<p>Place restante dans l'inventaire : <?php echo ($G_place_inventaire - count($joueur->get_inventaire_slot_partie())) ?> / <?php echo $G_place_inventaire;?></p>
 <div id='messagerie_menu'>
 <span class="<?php if($filtre == 'utile'){echo 'seleted';}?>" onclick="envoiInfo('inventaire_slot.php?javascript=ok&amp;filtre=utile', 'inventaire_slot')">Utile</span>
 <span class="<?php if($filtre == 'arme'){ echo 'seleted';} ?>" onclick="envoiInfo('inventaire_slot.php?javascript=ok&amp;filtre=arme', 'inventaire_slot')">Arme</span>

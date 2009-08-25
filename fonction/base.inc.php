@@ -2094,7 +2094,7 @@ function description($texte, $objet)
 
 	while(preg_match("`%([a-z0-9]*)%`i",$texte, $regs))
 	{
-		$texte = str_replace('%'.$regs[1].'%', $objet->get_effet(), $texte);
+		$texte = str_replace('%'.$regs[1].'%', $objet['effet'], $texte);
 	}
 	// Evaluation
 	$valeur = '';

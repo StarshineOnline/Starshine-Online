@@ -9,9 +9,10 @@ function recherche_objet($joueur, $id_objet)
 	$trouver=  false;
 	//Recherche si le joueur n'a pas des objets de ce type dans son inventaire
 	$i = 0;
+	$partie = $joueur->get_inventaire_slot_partie();
 	while(($i < $G_place_inventaire) AND !$trouver)
 	{
-		$objet_i = decompose_objet($joueur['inventaire_slot'][$i]);
+		$objet_i = decompose_objet($partie[$i]);
 		if($objet_i['sans_stack'] == $objet_d['sans_stack'])
 		{
 			$trouver = true;

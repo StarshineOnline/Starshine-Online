@@ -153,7 +153,7 @@ class craft_recette
 		//Si on est en ville
 		if(verif_ville($joueur->get_x(), $joueur->get_y()))
 		{
-			if($R['diplo'] == 127)
+			if($R->get_diplo($joueur->get_race()) == 127)
 			{
 				//On récupère toutes les infos sur le labo du joueur (ou pas)
 				$terrain = new terrain();
