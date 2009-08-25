@@ -298,15 +298,14 @@ if(!$visu AND isset($_GET['action']))
 						$requete = "SELECT effet, nom, pa, mp FROM objet WHERE id = ".$objet['id_objet'];
 						$req = $db->query($requete);
 						$row = $db->read_assoc($req);
-						$joueur['pa'] += $row['effet'];
-						if($joueur['pa'] > floor($G_PA_max)) $joueur['pa'] = floor($G_PA_max);
+						$joueur->set_pa($joueur->get_pa() + $row['effet']);
+						if($joueur->get_pa() > floor($G_PA_max)) $joueur->set_pa(floor($G_PA_max));
 						echo 'Vous utilisez un '.$row['nom'].'<br />';
 						?>
 						<img src="image/pixel.gif" onLoad="envoiInfo('infoperso.php?javascript=oui', 'perso');" />
 						<?php
-						$mp = max(0, ($joueur['mp'] - $row['mp']));
-						$requete = "UPDATE perso SET pa = ".$joueur['pa'].", mp = mp - ".$mp."  WHERE ID = ".$joueur->get_id();
-						$db->query($requete);
+						$$joueur->set_mp(max(0, ($joueur->get_mp() - $row['mp'])));
+						$joueur->sauver();
 					}
 				break;
 				case 'parchemin_tp' :
@@ -361,8 +360,9 @@ if(!$visu AND isset($_GET['action']))
 				$id_objet = $stack[0];
 				$id_objet_reel = mb_substr($id_objet, 1);
 				$ok = utilise_grimoire($id_objet_reel, $joueur);
-				if ($ok) {
-					supprime_objet($joueur, $id_objet, 1);
+				if ($ok)
+				{
+					$joueur->supprime_objet($id_objet, 1);
 				} else {
 					echo "Vous ne pouvez pas lire ce grimoire<br />";
 				}
@@ -445,7 +445,7 @@ if(!$visu AND isset($_GET['action']))
 				break;
 			}
 			$prix = floor($row['prix'] / $G_taux_vente);
-			supprime_objet($joueur, $joueur->get_inventaire_slot_partie($_GET['key_slot']), 1);
+			$joueur->supprime_objet($joueur->get_inventaire_slot_partie($_GET['key_slot']), 1);
 			$requete = "UPDATE perso SET star = star + ".$prix." WHERE ID = ".$joueur->get_id();
 			$req = $db->query($requete);
 		break;
@@ -455,7 +455,7 @@ if(!$visu AND isset($_GET['action']))
 			$req = $db->query($requete);
 			$row = $db->read_array($req);
 			$objet_max = 10;
-			$bonus_craft = ceil($joueur['artisanat'] / 5);
+			$bonus_craft = ceil($joueur->get_artisanat() / 5);
 			$objet_max += $bonus_craft;
 			if($row[0] >= $objet_max)
 			{
@@ -531,8 +531,8 @@ if(!$visu AND isset($_GET['action']))
 				<h2>Inventaire</h2>
 			<div style="font-size : 0.9em;">
 				<form method="get" name="formulaire" action="javascript:envoiInfo(\'inventaire.php\', \'information\');">
-					Mettre en vente à l\'hotel des ventes pour <input type="text" name="prix" value="'.$prix.'" onchange="formulaire.comm.value = formulaire.prix.value * '.($R['taxe'] / 100).';" onkeyup="formulaire.comm.value = formulaire.prix.value * '.($R['taxe'] / 100).';" /> Stars<br />
-					Taxe : <input type="text" name="comm" value="'.($prix * $R['taxe'] / 100).'" disabled="true" /><br />
+					Mettre en vente à l\'hotel des ventes pour <input type="text" name="prix" value="'.$prix.'" onchange="formulaire.comm.value = formulaire.prix.value * '.($R->get_taxe() / 100).';" onkeyup="formulaire.comm.value = formulaire.prix.value * '.($R->get_taxe() / 100).';" /> Stars<br />
+					Taxe : <input type="text" name="comm" value="'.($prix * $R->get_taxe() / 100).'" disabled="true" /><br />
 					Maximum = '.$prixmax.' stars.<br />
 					<input type="hidden" name="action" value="ventehotel2" />
 					<input type="button" name="btnSubmit" value="Mettre en vente" onclick="javascript:envoiInfo(\'inventaire.php?action=ventehotel2&amp;key_slot='.$_GET['key_slot'].'&amp;prix=\' + formulaire.prix.value + \'&amp;max='.$prixmax.'&amp;comm=\' + formulaire.comm.value, \'information\');" />
@@ -607,7 +607,7 @@ if(!$visu AND isset($_GET['action']))
 						$prix = $_GET['prix'];
 						if($objet_id != '')
 						{
-							supprime_objet($joueur, $joueur->get_inventaire_slot_partie($_GET['key_slot']), 1);
+							$joueur->supprime_objet($joueur->get_inventaire_slot_partie($_GET['key_slot']), 1);
 							$requete = "UPDATE perso SET star = star - ".$comm." WHERE ID = ".$joueur->get_id();
 							$req = $db->query($requete);
 							$requete = "INSERT INTO hotel VALUES (NULL, '".$objet_id."', ".$joueur->get_id().", ".sSQL($_GET['prix']).", 1, '".$R['race']."', ".time().")";
@@ -632,7 +632,7 @@ if(!$visu AND isset($_GET['action']))
 			}
 		break;
 		case 'slot' :
-			$craft = $joueur['forge'];
+			$craft = $joueur->get_forge();
 			if($joueur->get_race() == 'scavenger') $craft = round($craft * 1.45);
 			if($joueur['accessoire']['id'] != '0' AND $joueur['accessoire']['type'] == 'fabrication') $craft = round($craft * (1 + ($joueur['accessoire']['effet'] / 100)));
 
@@ -653,7 +653,7 @@ if(!$visu AND isset($_GET['action']))
 			</ul>';
 		break;
 		case 'slot2' :
-			if($joueur['pa'] >= 10)
+			if($joueur->get_pa() >= 10)
 			{
 				$objet = decompose_objet($joueur->get_inventaire_slot_partie($_GET['key_slot']));
 				if(empty($objet['slot']))
@@ -670,7 +670,7 @@ if(!$visu AND isset($_GET['action']))
 							$difficulte = 100;
 						break;
 					}
-					$craft = $joueur['forge'];
+					$craft = $joueur->get_forge();
 					if($joueur->get_race() == 'scavenger') $craft = round($craft * 1.45);
 					if($joueur['accessoire']['id'] != '0' AND $joueur['accessoire']['type'] == 'fabrication') $craft = round($craft * (1 + ($joueur['accessoire']['effet'] / 100)));
 
@@ -699,17 +699,15 @@ if(!$visu AND isset($_GET['action']))
 					$augmentation = augmentation_competence('forge', $joueur, 2);
 					if ($augmentation[1] == 1)
 					{
-						$joueur['forge'] = $augmentation[0];
-						echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant à '.$joueur['forge'].' en Forge</span><br />';
-						$requete = "UPDATE perso SET forge = ".$joueur['forge']." WHERE ID = ".$joueur->get_id();
-						$req = $db->query($requete);
+						$joueur->set_forge($augmentation[0]);
+						echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant à '.$joueur->get_forge().' en Forge</span><br />';
+						$joueur->sauver();
 					}
 					$objet_r = recompose_objet($objet);
 					$joueur->set_inventaire_slot_partie($objet_r, $_GET['key_slot']);
-					$inventaire_slot = serialize($joueur->get_inventaire_slot());
-					$joueur['pa'] -= 10;
-					$requete = "UPDATE perso SET pa = ".$joueur['pa'].", inventaire_slot = '".$inventaire_slot."' WHERE ID = ".$joueur->get_id();
-					$req = $db->query($requete);
+					$joueur->set_inventaire_slot(serialize($joueur->get_inventaire_slot()));
+					$joueur->set_pa($joueur->get_pa() - 10);
+					$joueur->sauver();
 				}
 				else
 					echo 'Cet objet &agrave; d&eacute;j&agrave; un slot!';
@@ -748,7 +746,7 @@ if(!$visu AND isset($_GET['action']))
 					$difficulte = 100;
 				break;
 			}
-			$craft = $joueur['forge'];
+			$craft = $joueur->get_forge();
 			if($joueur->get_race() == 'scavenger') $craft = round($craft * 1.45);
 			if($joueur['accessoire']['id'] != '0' AND $joueur['accessoire']['type'] == 'fabrication') $craft = round($craft * (1 + ($joueur['accessoire']['effet'] / 100)));
 
@@ -804,9 +802,9 @@ if(!$visu AND isset($_GET['action']))
 			</ul>';
 		break;
 		case 'enchasse2' :
-			if($joueur['pa'] >= 20)
+			if($joueur->get_pa() >= 20)
 			{
-				$craft = $joueur['forge'];
+				$craft = $joueur->get_forge();
 				if($joueur->get_race() == 'scavenger') $craft = round($craft * 1.45);
 				if($joueur['accessoire']['id'] != '0' AND $joueur['accessoire']['type'] == 'fabrication') $craft = round($craft * (1 + ($joueur['accessoire']['effet'] / 100)));
 				$gemme = decompose_objet($joueur->get_inventaire_slot_partie($_GET['key_slot']));
@@ -862,19 +860,16 @@ if(!$visu AND isset($_GET['action']))
 				$augmentation = augmentation_competence('forge', $joueur, 1);
 				if ($augmentation[1] == 1)
 				{
-					$joueur['forge'] = $augmentation[0];
-					echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant à '.$joueur['forge'].' en Forge</span><br />';
-					$requete = "UPDATE perso SET forge = ".$joueur['forge']." WHERE ID = ".$joueur->get_id();
-					$req = $db->query($requete);
+					$joueur->set_forge($augmentation[0]);
+					echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant à '.$joueur->get_forge().' en Forge</span><br />';
+					$joueur->sauver();
 				}
 				$objet_r = recompose_objet($objet);
 				$joueur->set_inventaire_slot_partie($objet_r, $_GET['key_slot2']);
-				$inventaire_slot = serialize($joueur->get_inventaire_slot());
-				$joueur['pa'] -= 20;
-				$requete = "UPDATE perso SET pa = ".$joueur['pa'].", inventaire_slot = '".$inventaire_slot."' WHERE ID = ".$joueur->get_id();
-				$req = $db->query($requete);
-				if($gemme_casse) supprime_objet($joueur, $joueur->get_inventaire_slot_partie($_GET['key_slot']), 1);
-				$joueur = recupperso($joueur->get_id());
+				$joueur->set_inventaire_slot(serialize($joueur->get_inventaire_slot()));
+				$joueur->set_pa($joueur->get_pa() - 20);
+				$joueur->sauver();
+				if($gemme_casse) $joueur->supprime_objet($joueur->get_inventaire_slot_partie($_GET['key_slot']), 1);
 			}
 			else
 			{

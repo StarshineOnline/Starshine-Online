@@ -45,12 +45,12 @@ if($W_row['type'] == 1)
 						//Récupération de la taxe
 						if($taxe > 0)
 						{
-							$R->set_star($R->ger_star() + $taxe);
+							$R->set_star($R->get_star() + $taxe);
 							$R->sauver();
 							$requete = "UPDATE argent_royaume SET enchanteur = enchanteur + ".$taxe." WHERE race = '".$R->get_race()."'";
 							$db->query($requete);
 						}
-						echo '<h5>Objet acheté !</h5>';
+						echo '<h6>Objet acheté !</h6>';
 					}
 					else
 					{

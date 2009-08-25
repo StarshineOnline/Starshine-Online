@@ -2,33 +2,6 @@
 if (file_exists('../root.php'))
   include_once('../root.php');
 ?><?php
-function recherche_objet($joueur, $id_objet)
-{
-	global $G_place_inventaire;
-	$objet_d = decompose_objet($id_objet);
-	$trouver=  false;
-	//Recherche si le joueur n'a pas des objets de ce type dans son inventaire
-	$i = 0;
-	$partie = $joueur->get_inventaire_slot_partie();
-	while(($i < $G_place_inventaire) AND !$trouver)
-	{
-		$objet_i = decompose_objet($partie[$i]);
-		if($objet_i['sans_stack'] == $objet_d['sans_stack'])
-		{
-			$trouver = true;
-		}
-		else $i++;
-	}
-	if($trouver)
-	{
-		if($objet_i['stack'] > 1) $return[0] = $objet_i['stack'];
-		else $return[0] = 1;
-		$return[1] = $i;
-		return $return;
-	}
-	else return false;
-}
-
 //Recherche le nombre d'objet de ce type dans l'inventaire
 function recherche_nb_objet($joueur, $id_objet)
 {
@@ -53,26 +26,6 @@ function recherche_nb_objet($joueur, $id_objet)
 		return $return;
 	}
 	else return false;
-}
-
-function supprime_objet($joueur, $id_objet, $nombre)
-{
-	global $db;
-	$i = $nombre;
-	while($i > 0)
-	{
-		$objet = recherche_objet($joueur, $id_objet);
-		//Vérification si objet "stacké"
-		//print_r($objet);
-		$stack = explode('x', $joueur['inventaire_slot'][$objet[1]]);
-		if($stack[1] > 1) $joueur['inventaire_slot'][$objet[1]] = $stack[0].'x'.($stack[1] - 1);
-		else array_splice($joueur['inventaire_slot'], $objet[1], 1);
-		$i--;
-	}
-	$inventaire_slot = serialize($joueur['inventaire_slot']);
-	$requete = "UPDATE perso SET inventaire_slot = '".$inventaire_slot."' WHERE ID = ".$joueur->get_id();
-	//echo $requete;
-	$req = $db->query($requete);
 }
 
 //Renvoi l'objet décomposé sous forme de tableau => stack, slot, enchantement, id, id_objet, sans_stack
@@ -481,12 +434,12 @@ function equip_objet($objet, $joueur)
 		//Si c'est une dague main gauche, vérifie qu'il a aussi une dague en main droite
 		if($type == 'main_gauche' AND $row['type'] == 'dague')
 		{
-			if($joueur['inventaire']->main_droite === 0)
+			if($joueur->get_inventaire()->main_droite === 0)
 			{
 			}
 			else
 			{
-				$main_droite = decompose_objet($joueur['inventaire']->main_droite);
+				$main_droite = decompose_objet($joueur->get_inventaire()->main_droite);
 				$requete = "SELECT * FROM arme WHERE ID = ".$main_droite['id_objet'];
 				//Récupération des infos de l'objet
 				$req_md = $db->query($requete);
@@ -509,12 +462,12 @@ function equip_objet($objet, $joueur)
 		//Vérifie si il a une dague en main gauche et si c'est le cas et que l'arme n'est pas une dague, on désequipe
 		if($type == 'main_droite' AND $row['type'] != 'dague')
 		{
-			if($joueur['inventaire']->main_gauche === 0 OR $joueur['inventaire']->main_gauche == '')
+			if($joueur->get_inventaire()->main_gauche === 0 OR $joueur->get_inventaire()->main_gauche == '')
 			{
 			}
 			else
 			{
-				if($main_gauche = decompose_objet($joueur['inventaire']->main_gauche))
+				if($main_gauche = decompose_objet($joueur->get_inventaire()->main_gauche))
 				{
 					$requete = "SELECT * FROM arme WHERE ID = ".$main_gauche['id_objet'];
 					//Récupération des infos de l'objet
@@ -548,7 +501,7 @@ function equip_objet($objet, $joueur)
 				$i = 0;
 				while($desequip AND $i < $count)
 				{
-					if($joueur['inventaire']->$mains[$i] === 'lock' AND $joueur['inventaire']->main_droite !== 0)
+					if($joueur->get_inventaire()->$mains[$i] === 'lock' AND $joueur->get_inventaire()->main_droite !== 0)
 					{
 						desequip('main_droite', $joueur);
 					}
@@ -568,9 +521,9 @@ function equip_objet($objet, $joueur)
 		if($desequip)
 		{
 			//On équipe
-			$joueur['inventaire']->$type = $objet;
-			if($categorie == 'a' AND $count == 2) $joueur['inventaire']->main_gauche = 'lock';
-			$inventaire = serialize($joueur['inventaire']);
+			$joueur->get_inventaire()->$type = $objet;
+			if($categorie == 'a' AND $count == 2) $joueur->get_inventaire()->main_gauche = 'lock';
+			$inventaire = serialize($joueur->get_inventaire());
 			$inventaire_slot = serialize($joueur['inventaire_slot']);
 			$requete = "UPDATE perso SET inventaire = '".$inventaire."', inventaire_slot = '".$inventaire_slot."' WHERE ID = ".$joueur->get_id();
 			$req = $db->query($requete);

@@ -3107,5 +3107,52 @@ class perso extends entite
 		$requete = "UPDATE perso SET statut = 'actif' WHERE statut = 'ban' AND fin_ban <= ".time();
 		$db->query($requete);
 	}
+
+	function recherche_objet($id_objet)
+	{
+		global $G_place_inventaire;
+		$objet_d = decompose_objet($id_objet);
+		$trouver =  false;
+		//Recherche si le joueur n'a pas des objets de ce type dans son inventaire
+		$i = 0;
+		$partie = $this->get_inventaire_slot_partie();
+		while(($i < $G_place_inventaire) AND !$trouver)
+		{
+			$objet_i = decompose_objet($partie[$i]);
+			if($objet_i['sans_stack'] == $objet_d['sans_stack'])
+			{
+				$trouver = true;
+			}
+			else $i++;
+		}
+		if($trouver)
+		{
+			if($objet_i['stack'] > 1) $return[0] = $objet_i['stack'];
+			else $return[0] = 1;
+			$return[1] = $i;
+			return $return;
+		}
+		else return false;
+	}
+
+	function supprime_objet($id_objet, $nombre)
+	{
+		global $db;
+		$i = $nombre;
+		while($i > 0)
+		{
+			$objet = $this->recherche_objet($id_objet);
+			//Vérification si objet "stacké"
+			//print_r($objet);
+			$inventaire = $this->get_inventaire_slot_partie();
+			$stack = explode('x', $inventaire[$objet[1]]);
+			if($stack[1] > 1) $inventaire[$objet[1]] = $stack[0].'x'.($stack[1] - 1);
+			else array_splice($inventaire, $objet[1], 1);
+			$i--;
+		}
+		$this->set_inventaire_slot(serialize($inventaire));
+		$this->sauver();
+	}
+
 }
 ?>

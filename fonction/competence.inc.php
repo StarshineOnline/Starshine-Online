@@ -76,46 +76,54 @@ function utilise_grimoire($id_objet, &$joueur) {
 * @param grimoire true si on apprend depuis un grimoire(gratis), false sinon
 * @return true si on a pu apprendre la compétence, false sinon
 */
-function apprend_competence($ecole, $id_competence, &$joueur, $R, $grimoire) {
-  global $db;
-  $requete = "SELECT * FROM ".$ecole." WHERE id = '$id_competence'";
-  $req = $db->query($requete);
-  $row = $db->read_array($req);
-  if ($grimoire) {
-    $taxe = 0;
-    $cout = 0;
-  } else {
-    $taxe = ceil($row['prix'] * $R['taxe'] / 100);
-    $cout = $row['prix'] + $taxe;
-  }
-  if ($joueur['star'] >= $cout) {
-    if($joueur[$row['carac_assoc']] >= $row['carac_requis']) {
-      if($joueur[$row['comp_assoc']] >= $row['comp_requis']) {
-	$sort_jeu = explode(';', $joueur[$ecole]);
-	if(!in_array($row['id'], $sort_jeu)) {	  
-	  if(in_array($row['requis'], $sort_jeu) OR $row['requis'] == ''
-			 OR ($grimoire && $row['requis'] == '999')) {
-			// cas particulier du grimoire pour les compétences lvl 1 (requis 999)
-	    if($sort_jeu[0] == '') $sort_jeu = array();
-	    $sort_jeu[] = $row['id'];
-	    $joueur[$ecole] = implode(';', $sort_jeu);
-	    $joueur['star'] = $joueur['star'] - $cout;
-	    $requete = "UPDATE perso SET star = ".$joueur['star'].", ".$ecole.
-	      " = '".$joueur[$ecole]."' WHERE ID = ".$_SESSION['ID'];
-	    $req = $db->query($requete);
-	    //Récupération de la taxe
-	    if($taxe > 0) {
-	      $requete = 'UPDATE royaume SET star = star + '.$taxe.
-		' WHERE ID = '.$R['ID'];
-	      $db->query($requete);
-	      $requete = 
-		"UPDATE argent_royaume SET ecole_combat = ecole_combat + ".
-		$taxe." WHERE race = '".$R['race']."'";
-	      $db->query($requete);
-	    }
-	    echo '<h6>Compétence apprise !</h6>';
-	    return true;
-	  }
+function apprend_competence($ecole, $id_competence, &$joueur, $R, $grimoire)
+{
+	global $db;
+	$requete = "SELECT * FROM ".$ecole." WHERE id = '$id_competence'";
+	$req = $db->query($requete);
+	$row = $db->read_array($req);
+	if ($grimoire)
+	{
+		$taxe = 0;
+		$cout = 0;
+	}
+    else
+    {
+		$taxe = ceil($row['prix'] * $R->get_taxe() / 100);
+		$cout = $row['prix'] + $taxe;
+    }
+	if ($joueur->get_star() >= $cout)
+	{
+		$get = 'get_'.$row['carac_assoc'];
+		if($joueur->$get() >= $row['carac_requis'])
+		{
+			$get = 'get_'.$row['comp_assoc'];
+			if($joueur->$get() >= $row['comp_requis'])
+			{
+				$get = 'get_'.$ecole;
+				$sort_jeu = explode(';', $joueur->$get());
+				if(!in_array($row['id'], $sort_jeu))
+				{
+					if(in_array($row['requis'], $sort_jeu) OR $row['requis'] == '' OR ($grimoire && $row['requis'] == '999'))
+					{
+						// cas particulier du grimoire pour les compétences lvl 1 (requis 999)
+						if($sort_jeu[0] == '') $sort_jeu = array();
+						$sort_jeu[] = $row['id'];
+						$set = 'set_'.$ecole;
+						$joueur->$set(implode(';', $sort_jeu));
+						$joueur->set_star($joueur->get_star() - $cout);
+						$joueur->sauver();
+						//Récupération de la taxe
+						if($taxe > 0)
+						{
+							$R->set_star($R->get_star() + $taxe);
+							$R->sauver();
+							$requete = "UPDATE argent_royaume SET ecole_combat = ecole_combat + ".$taxe." WHERE race = '".$R->get_race()."'";
+							$db->query($requete);
+						}
+						echo '<h6>Compétence apprise !</h6>';
+						return true;
+					}
 	  else {
 	    echo '<h5>Vous devez connaitre une autre compétence avant d\'apprendre celle ci</h5>';
 	  }
@@ -148,50 +156,65 @@ function apprend_competence($ecole, $id_competence, &$joueur, $R, $grimoire) {
 * @param grimoire true si on apprend depuis un grimoire(gratis), false sinon
 * @return true si on a pu apprendre la compétence, false sinon
 */
-function apprend_sort($ecole, $id_sort, &$joueur, $R, $grimoire) {
-  global $db, $Trace;
-	$requete = "SELECT * FROM $ecole WHERE id = '$id_sort'";
+function apprend_sort($ecole, $id_sort, &$joueur, $R, $grimoire)
+{
+	global $db, $Trace;
+	$requete = "SELECT * FROM ".$ecole." WHERE id = '$id_sort'";
 	$req = $db->query($requete);
 	$row = $db->read_array($req);
-  if ($grimoire) {
-    $taxe = 0;
-    $cout = 0;
-  } else {
-		$taxe = ceil($row['prix'] * $R['taxe'] / 100);
-		$cout = $row['prix'] + $taxe;
+	if ($grimoire)
+	{
+		$taxe = 0;
+		$cout = 0;
 	}
-	if ($joueur['star'] >= $cout) {
-		if($joueur['incantation'] >= ($row['incantation'] * $joueur['facteur_magie'])) {
-			if($joueur[$row['comp_assoc']] >= round($row['comp_requis'] * $joueur['facteur_magie'] * (1 - (($Trace[$joueur->get_race()]['affinite_'.$row['comp_assoc']] - 5) / 10)))) {
-				$sort_jeu = explode(';', $joueur[$ecole]);
-				if(!in_array($row['id'], $sort_jeu)) {
-					$joueur_sorts = explode(';', $joueur[$ecole]);
-					if($row['requis'] == '' OR in_array($row['requis'], $joueur_sorts)) {
-						if($sort_jeu[0] == '') $sort_jeu = array();
-						$sort_jeu[] = $row['id'];
-						$joueur[$ecole] = implode(';', $sort_jeu);
-						$joueur['star'] = $joueur['star'] - $cout;
-						$requete = "UPDATE perso SET star = ".$joueur['star'].", ".$ecole." = '".$joueur[$ecole]."' WHERE ID = ".$_SESSION['ID'];
-						$req = $db->query($requete);
+    else
+    {
+		$taxe = ceil($row['prix'] * $R->get_taxe() / 100);
+		$cout = $row['prix'] + $taxe;
+    }
+	if ($joueur->get_star() >= $cout)
+	{
+		if($joueur->get_incantation() >= ($row['incantation'] * $joueur->get_facteur_magie()))
+		{
+			$get = 'get_'.$row['comp_assoc'];
+			if($joueur->$get() >= round($row['comp_requis'] * $joueur->get_facteur_magie() * (1 - (($Trace[$joueur->get_race()]['affinite_'.$row['comp_assoc']] - 5) / 10))))
+			{
+				$get_ecole = 'get_'.$ecole;
+				$sort_jeu = explode(';', $joueur->$get_ecole());
+				if(!in_array($row['id'], $sort_jeu))
+				{
+					$joueur_sorts = explode(';', $joueur->$get_ecole());
+					if($row['requis'] == '' OR in_array($row['requis'], $joueur_sorts) OR ($grimoire && $row['requis'] == '999'))
+					{
+						if($joueur_sorts[0] == '') $joueur_sorts = array();
+						$joueur_sorts[] = $row['id'];
+						$set = 'set_'.$ecole;
+						$joueur->$set(implode(';', $joueur_sorts));
+						$joueur->set_star($joueur->get_star() - $cout);
+						$joueur->sauver();
 						//Récupération de la taxe
-						if($taxe > 0) {
-							$requete = 'UPDATE royaume SET star = star + '.$taxe.' WHERE ID = '.$R['ID'];
-							$db->query($requete);
-							$requete = "UPDATE argent_royaume SET ecole_magie = ecole_magie + ".$taxe." WHERE race = '".$R['race']."'";
+						if($taxe > 0)
+						{
+							$R->set_star($R->get_star() + $taxe);
+							$R->sauver();
+							$requete = "UPDATE argent_royaume SET ecole_magie = ecole_magie + ".$taxe." WHERE race = '".$R->get_race()."'";
 							$db->query($requete);
 						}
 						echo '<h6>Sort appris !</h6>';
 						return true;
 					}
-					else {
+					else
+					{
 						echo '<h5>Vous devez connaitre un autre sort pour apprendre celui-ci</h5>';
 					}
 				}
-				else {
+				else
+				{
 					echo '<h5>Vous possédez déjà ce sort</h5>';
 				}
 			}
-			else {
+			else
+			{
 				echo '<h5>Vous n\'avez pas assez en '.traduit($row['comp_assoc']).'</h5>';
 			}
 		}

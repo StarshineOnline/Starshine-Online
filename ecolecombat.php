@@ -129,8 +129,10 @@ if($W_row['type'] == 1)
 					$taxe = ceil($row['prix'] * $R->get_taxe() / 100);
 					$cout = $row['prix'] + $taxe;
 					$couleur = $color;
-					$carac_joueur = $joueur[$row['carac_assoc']];
-					$comp_joueur = $joueur[$row['comp_assoc']];
+					$get_carac = 'get_'.$row['carac_assoc'];
+					$carac_joueur = $joueur->$get_carac();
+					$get_comp = 'get_'.$row['comp_assoc'];
+					$comp_joueur = $joueur->$get_comp();
 					if (isset($joueur->bonus_ignorables)) {
 						if (isset($joueur->bonus_ignorables[$row['carac_assoc']]))
 							$carac_joueur -= $joueur->bonus_ignorables[$row['carac_assoc']];
