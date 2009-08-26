@@ -356,7 +356,7 @@ function sub_script_action($joueur, $ennemi, $mode, &$effects)
 							{
 								// Si l'arme utilisée est la bonne on indique l'action à effectuer
 								$arme_requis = explode(';', $row['arme_requis']);
-								if(in_array($joueur['arme_type'], $arme_requis) OR in_array($joueur['bouclier_type'], $arme_requis) OR $row['arme_requis'] == '')
+								if(in_array($joueur->get_arme_type(), $arme_requis) OR in_array($joueur->get_bouclier_type(), $arme_requis) OR $row['arme_requis'] == '')
 								{
 									$effectue[0] = 'lance_comp';
 									$effectue[1] = $id_sort;
@@ -997,27 +997,27 @@ function lance_comp($id, $acteur, &$effects)
 	{
 		case 'tir_precis' :
 			echo '&nbsp;&nbsp;<strong>'.$actif->get_nom().'</strong> utilise '.$row['nom'].'<br />';
-			$actif['potentiel_toucher'] = $actif['potentiel_toucher'] * (1 + ($row['effet'] / 100));
+			$actif->set_potentiel_toucher($actif->get_potentiel_toucher() * (1 + ($row['effet'] / 100)));
 			$comp_attaque = true;
 		break;
 		case 'oeil_faucon' :
 			echo '&nbsp;&nbsp;<strong>'.$actif->get_nom().'</strong> utilise '.$row['nom'].'<br />';
-			$actif['potentiel_toucher'] = $actif['potentiel_toucher'] * (1 + ($row['effet'] / 10));
+			$actif->set_potentiel_toucher($actif->get_potentiel_toucher() * (1 + ($row['effet'] / 10)));
 			$comp_attaque = true;
 		break;
 		case 'coup_puissant' :
 			echo '&nbsp;&nbsp;<strong>'.$actif->get_nom().'</strong> utilise '.$row['nom'].'<br />';
-			$actif['degat_sup'] = $row['effet'];
+			$actif->degat_sup = $row['effet'];
 			$comp_attaque = true;
 		break;
 		case 'coup_violent' :
 			echo '&nbsp;&nbsp;<strong>'.$actif->get_nom().'</strong> utilise '.$row['nom'].'<br />';
-			$actif['degat_sup'] = $row['effet'];
+			$actif->degat_sup = $row['effet'];
 			$comp_attaque = true;
 		break;
 		case 'coup_mortel' :
 			echo '&nbsp;&nbsp;<strong>'.$actif->get_nom().'</strong> utilise '.$row['nom'].'<br />';
-			$actif['potentiel_toucher'] = $actif['potentiel_toucher'] * (1 - ($row['effet'] / 100));
+			$actif->set_potentiel_toucher($actif->get_potentiel_toucher() * (1 - ($row['effet'] / 100)));
 			$actif['coup_mortel'] = true;
 			$comp_attaque = true;
 		break;
@@ -1029,8 +1029,8 @@ function lance_comp($id, $acteur, &$effects)
 		break;
 		case 'attaque_vicieuse' :
 			echo '&nbsp;&nbsp;<strong>'.$actif->get_nom().'</strong> utilise '.$row['nom'].'<br />';
-			$actif['potentiel_toucher'] = $actif['potentiel_toucher'] * (1 - ($row['effet'] / 100));
-			$actif['degat_sup'] = $row['effet2'];
+			$actif->set_potentiel_toucher($actif->get_potentiel_toucher() * (1 - ($row['effet'] / 100)));
+			$actif->degat_sup = $row['effet2'];
 			$actif['attaque_vicieuse'] = $row['effet2'];
 			$comp_attaque = true;
 		break;
@@ -1072,14 +1072,14 @@ function lance_comp($id, $acteur, &$effects)
 		break;
 		case 'tir_puissant' :
 			echo '&nbsp;&nbsp;<strong>'.$actif->get_nom().'</strong> utilise '.$row['nom'].'<br />';
-			$actif['potentiel_toucher'] = $actif['potentiel_toucher'] * (1 - ($row['effet2'] / 100));
-			$actif['degat_sup'] = $row['effet'];
+			$actif->set_potentiel_toucher($actif->get_potentiel_toucher() * (1 - ($row['effet2'] / 100)));
+			$actif->degat_sup = $row['effet'];
 			$comp_attaque = true;
 		break;
 		case 'fleche_magnetique' :
 			echo '&nbsp;&nbsp;<strong>'.$actif->get_nom().'</strong> utilise '.
 				$row['nom'].'<br />';
-			$row['comp_assoc'] = $actif['comp'];
+			$row['comp_assoc'] = $actif->get_comp_combat();
 			$comp_attaque = true;
       $effects[] = new fleche_magnetique($row['effet2'], $row['effet']);
 		break;
@@ -1088,7 +1088,7 @@ function lance_comp($id, $acteur, &$effects)
       $effects[] =
         new fleche_sable($row['effet'], $row['effet2'], $row['duree']);
 			//On prends en compte la bonne compétence
-			$row['comp_assoc'] = $actif['comp'];
+			$row['comp_assoc'] = $actif->get_comp_combat();
 			$comp_attaque = true;
 		break;
 		case 'fleche_poison' :
@@ -1096,7 +1096,7 @@ function lance_comp($id, $acteur, &$effects)
       $effects[] =
         new fleche_poison($row['effet'], $row['effet2'], $row['duree']);
 			//On prends en compte la bonne compétence
-			$row['comp_assoc'] = $actif['comp'];
+			$row['comp_assoc'] = $actif->get_comp_combat();
 			$comp_attaque = true;
 		break;
 		case 'fleche_rapide' :
@@ -1104,7 +1104,7 @@ function lance_comp($id, $acteur, &$effects)
 			$passif->etat['fleche_rapide']['effet'] = $row['effet'];
 			$passif->etat['fleche_rapide']['duree'] = 1;
 			//On prends en compte la bonne compétence
-			$row['comp_assoc'] = $actif['comp'];
+			$row['comp_assoc'] = $actif->get_comp_combat();
 			$comp_attaque = true;
 		break;
 		case 'fleche_sanglante' :
@@ -1112,7 +1112,7 @@ function lance_comp($id, $acteur, &$effects)
 			$actif->etat['fleche_sanglante']['effet'] = $row['effet'];
 			$actif->etat['fleche_sanglante']['duree'] = 1;
 			//On prends en compte la bonne compétence
-			$row['comp_assoc'] = $actif['comp'];
+			$row['comp_assoc'] = $actif->get_comp_combat();
 			$comp_attaque = true;
 		break;
 		case 'fleche_debilitante' :
@@ -1120,7 +1120,7 @@ function lance_comp($id, $acteur, &$effects)
 			$passif->etat['fleche_debilitante']['effet'] = $row['effet'];
 			$passif->etat['fleche_debilitante']['duree'] = 3;
 			//On prends en compte la bonne compétence
-			$row['comp_assoc'] = $actif['comp'];
+			$row['comp_assoc'] = $actif->get_comp_combat();
 			$comp_attaque = true;
 		break;
 		case 'coup_bouclier' :
@@ -1148,10 +1148,10 @@ function lance_comp($id, $acteur, &$effects)
 			$actif->etat['derniere_chance']['effet'] = $row['effet2'];
 			$actif->etat['derniere_chance']['duree'] = 20;
 			// Diminution de la PM
-			$actif['pm'] = $actif['pm'] / (1 + ($actif->etat['derniere_chance']['effet'] / 100));
-			$actif['degat_sup'] = $row['effet'];
+			$actif->set_pm($actif->get_pm() / (1 + ($actif->etat['derniere_chance']['effet'] / 100)));
+			$actif->degat_sup = $row['effet'];
 			//On prends en compte la bonne compétence
-			$row['comp_assoc'] = $actif['comp'];
+			$row['comp_assoc'] = $actif->get_comp_combat();
 			$comp_attaque = true;
 		break;
 		case 'posture_critique' :
@@ -1160,7 +1160,7 @@ function lance_comp($id, $acteur, &$effects)
 			$actif->etat['posture']['duree'] = 20;
 			$actif->etat['posture']['type'] = 'posture_critique';
 			//On prends en compte la bonne compétence
-			$row['comp_assoc'] = $actif['comp'];
+			$row['comp_assoc'] = $actif->get_comp_combat();
 			$comp_attaque = true;
 		break;
 		case 'posture_esquive' :
@@ -1169,7 +1169,7 @@ function lance_comp($id, $acteur, &$effects)
 			$actif->etat['posture']['duree'] = 20;
 			$actif->etat['posture']['type'] = 'posture_esquive';
 			//On prends en compte la bonne compétence
-			$row['comp_assoc'] = $actif['comp'];
+			$row['comp_assoc'] = $actif->get_comp_combat();
 			$comp_attaque = true;
 		break;
 		case 'posture_defense' :
@@ -1178,7 +1178,7 @@ function lance_comp($id, $acteur, &$effects)
 			$actif->etat['posture']['duree'] = 20;
 			$actif->etat['posture']['type'] = 'posture_defense';
 			//On prends en compte la bonne compétence
-			$row['comp_assoc'] = $actif['comp'];
+			$row['comp_assoc'] = $actif->get_comp_combat();
 			$comp_attaque = true;
 		break;
 		case 'posture_degat' :
@@ -1187,7 +1187,7 @@ function lance_comp($id, $acteur, &$effects)
 			$actif->etat['posture']['duree'] = 20;
 			$actif->etat['posture']['type'] = 'posture_degat';
 			//On prends en compte la bonne compétence
-			$row['comp_assoc'] = $actif['comp'];
+			$row['comp_assoc'] = $actif->get_comp_combat();
 			$comp_attaque = true;
 		break;
 		case 'posture_transperce' :
@@ -1196,7 +1196,7 @@ function lance_comp($id, $acteur, &$effects)
 			$actif->etat['posture']['duree'] = 20;
 			$actif->etat['posture']['type'] = 'posture_transperce';
 			//On prends en compte la bonne compétence
-			$row['comp_assoc'] = $actif['comp'];
+			$row['comp_assoc'] = $actif->get_comp_combat();
 			$comp_attaque = true;
 		break;
 		case 'posture_paralyse' :
@@ -1205,7 +1205,7 @@ function lance_comp($id, $acteur, &$effects)
 			$actif->etat['posture']['duree'] = 20;
 			$actif->etat['posture']['type'] = 'posture_paralyse';
 			//On prends en compte la bonne compétence
-			$row['comp_assoc'] = $actif['comp'];
+			$row['comp_assoc'] = $actif->get_comp_combat();
 			$comp_attaque = true;
 		break;
 		case 'posture_touche' :
@@ -1214,7 +1214,7 @@ function lance_comp($id, $acteur, &$effects)
 			$actif->etat['posture']['duree'] = 20;
 			$actif->etat['posture']['type'] = 'posture_touche';
 			//On prends en compte la bonne compétence
-			$row['comp_assoc'] = $actif['comp'];
+			$row['comp_assoc'] = $actif->get_comp_combat();
 			$comp_attaque = true;
 		break;
 		case 'dissimulation' :
@@ -1258,7 +1258,7 @@ function lance_comp($id, $acteur, &$effects)
 		break;
 		case 'attaque_brutale' :
 			echo '&nbsp;&nbsp;<strong>'.$actif->get_nom().'</strong> utilise '.$row['nom'].'<br />';
-			$actif['degat_sup'] += $row['effet'];
+			$actif->degat_sup += $row['effet'];
 			$actif->etat['a_c_bloque']['effet'] += $row['effet2'];
 			$actif->etat['a_c_bloque']['duree'] = 1;
 			$actif->etat['b_critique']['effet'] += $row['effet'];

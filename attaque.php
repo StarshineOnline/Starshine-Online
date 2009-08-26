@@ -30,6 +30,18 @@ switch($type)
 		$attaquant = new entite('joueur', $joueur);
 		$defenseur = new entite('monstre', $joueur_defenseur);
 	break;
+	case 'batiment' :
+		$joueur = new perso($_SESSION['ID']);
+		$map_batiment = new construction($_GET['id_batiment']);
+		$joueur->action_do = $joueur->recupaction('attaque');
+		$joueur_defenseur = new batiment($map_batiment->get_id_batiment());
+		$joueur_defenseur->hp_max = $joueur_defenseur->get_hp();
+		$joueur_defenseur->set_hp($map_batiment->get_hp());
+		$joueur_defenseur->x = $map_batiment->get_x();
+		$joueur_defenseur->y = $map_batiment->get_y();
+		$attaquant = new entite('joueur', $joueur);
+		$defenseur = new entite('batiment', $joueur_defenseur);
+	break;
 }
 
 $W_case = convert_in_pos($defenseur->get_x(), $defenseur->get_y());
@@ -246,7 +258,7 @@ else
 							$augmentations = lance_comp($action[1], $mode, $effects);
 							if($comp_attaque)
 							{
-								attaque($mode, ${$mode}->comp, $effects);
+								attaque($mode, ${$mode}->get_comp_combat(), $effects);
 								$count = count($ups);
 								if($count > 0)
 								{
@@ -904,6 +916,7 @@ else
 			{
 				if($type == 'joueur') echo(' <a href="attaque.php?id_joueur='.$joueur_defenseur->get_id().'&amp;type=joueur" onclick="return envoiInfo(this.href, \'information\')"><img src="image/interface/attaquer.png" alt="Combattre" title="Attaquer la même cible" style="vertical-align : middle;" /></a><br />');
 				elseif($type == 'monstre') echo(' <a href="attaque.php?id_monstre='.$map_monstre->get_id().'&amp;type=monstre" onclick="return envoiInfo(this.href, \'information\')"><img src="image/interface/attaquer.png" alt="Combattre" title="Attaquer la même cible" style="vertical-align : middle;" /></a><br />');
+				elseif($type == 'batiment') echo(' <a href="attaque.php?id_batiment='.$map_batiment->get_id().'&amp;type=batiment" onclick="return envoiInfo(this.href, \'information\')"><img src="image/interface/attaquer.png" alt="Combattre" title="Attaquer la même cible" style="vertical-align : middle;" /></a><br />');
 			}
 
 			$joueur->set_pa($joueur->get_pa() - $pa_attaque);

@@ -39,8 +39,8 @@ class buff_actif extends effect
 	var $acteur;
 
   function __construct($type, $buff, $acteur) {
-		if (isset($buff['nom']))
-			$nom = $buff['nom'];
+		if (method_exists($buff, 'get_nom'))
+			$nom = $buff->get_nom();
 		else
 			$nom = $type;
     parent::__construct($nom);
@@ -52,7 +52,7 @@ class buff_actif extends effect
 
   function debut_round(&$actif, &$passif) {
 		if (in_array($this->type, self::$esquive_buff))
-			$passif['potentiel_parer'] *= (1 + ($this->buff['effet'] / 100));
+			$passif->potentiel_parer = $passif->get_potentiel_parer() * (1 + ($this->buff->get_effet() / 100));
 	}
 }
 

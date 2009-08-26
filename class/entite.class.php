@@ -120,6 +120,42 @@ class entite
 				$this->arme_degat = 0;
 				$this->level = $objet->get_level();
 			break;
+			case 'batiment' :
+				$this->coef_carac = 1;
+				$this->action = '';
+				$this->arme_type = '';
+				$this->comp_combat = 'melee';
+				$this->comp = array();
+				$this->x = $objet->x;
+				$this->y = $objet->y;
+				$this->hp = $objet->get_hp();
+				$this->hp_max = $objet->hp_max;
+				$this->reserve = 0;
+				$this->pa = 0;
+				$this->nom = $objet->get_nom();
+				$this->race = 'neutre';
+				$this->pp = $objet->get_pp();
+				$this->pm = $objet->get_pm();
+				$this->distance_tir = 1;
+				$this->esquive = $facteur * ceil($this->coef_carac * $objet->get_carac());
+				$this->distance = 0;
+				$this->melee = 0;
+				$this->incantation = 0;
+				$this->sort_mort = 0;
+				$this->sort_vie = 0;
+				$this->sort_element = 0;
+				$this->buff = array();
+				$this->etat = array();
+				$this->force = 	ceil($this->coef_carac * $objet->get_carac());
+				$this->puissance = ceil($this->coef_carac * $objet->get_carac());
+				$this->energie = ceil($this->coef_carac * $objet->get_carac());
+				$this->vie = ceil($this->coef_carac * $objet->get_carac());
+				$this->volonte = ceil($this->coef_carac * $objet->get_carac());
+				$this->dexterite = ceil($this->coef_carac * $objet->get_carac());
+				$this->enchantement = array();
+				$this->arme_degat = 0;
+				$this->level = 1;
+			break;
 		}
 	}
 
@@ -128,6 +164,10 @@ class entite
 		return $this->action;
 	}
 	function get_arme_type()
+	{
+		return $this->arme_type;
+	}
+	function get_bouclier_type()
 	{
 		return $this->arme_type;
 	}
@@ -190,6 +230,10 @@ class entite
 	function get_pm()
 	{
 		return $this->pm;
+	}
+	function set_pm($valeur)
+	{
+		$this->pm = $valeur;
 	}
 	function get_distance_tir()
 	{

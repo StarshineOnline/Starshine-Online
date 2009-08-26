@@ -2835,19 +2835,6 @@ class perso extends entite
 		return $this->arme->type;
 	}
 
-	function prend_objet($id_objet)
-	{
-		if(!isset($this->inventaire_perso)) $this->inventaire_perso = new inventaire($this->inventaire, $this->inventaire_slot);
-		if($this->inventaire_perso->prend_objet($id_objet))
-		{
-			if(is_array($this->inventaire_perso->slot_liste)) $this->set_inventaire_slot(serialize($this->inventaire_perso->slot_liste));
-			else $this->set_inventaire_slot($this->inventaire_perso->slot_liste);
-			$this->sauver();
-			return true;
-		}
-		else return false;
-	}
-
 	function get_liste_quete()
 	{
 		$this->liste_quete = unserialize($this->quete);
@@ -3154,5 +3141,45 @@ class perso extends entite
 		$this->sauver();
 	}
 
+	function prend_objet($id_objet)
+	{
+		if(!isset($this->inventaire_perso)) $this->inventaire_perso = new inventaire($this->inventaire, $this->inventaire_slot);
+		if($this->inventaire_perso->prend_objet($id_objet))
+		{
+			if(is_array($this->inventaire_perso->slot_liste)) $this->set_inventaire_slot(serialize($this->inventaire_perso->slot_liste));
+			else $this->set_inventaire_slot($this->inventaire_perso->slot_liste);
+			$this->sauver();
+			return true;
+		}
+		else return false;
+	}
+
+	function desequip($type)
+	{
+		global $db, $G_erreur, $G_place_inventaire;
+		$inventaire = $this->inventaire();
+		if($inventaire->$type !== 0 AND $inventaire->$type != '')
+		{
+			//Inventaire plein
+			if(!$this->prend_objet($inventaire->$type))
+			{
+				$G_erreur = 'Vous n\'avez plus de place dans votre inventaire<br />';
+				return $false;
+			}
+			else
+			{
+				//On enlève l'objet de l'emplacement pour le mettre dans l'inventaire
+				if($type == 'main_droite')
+				{
+					if($inventaire->main_gauche == 'lock') $inventaire->main_gauche = 0;
+				}
+				$inventaire->$type = 0;
+				$this->set_inventaire(serialize($inventaire));
+				$this->sauver();
+				return true;
+			}
+		}
+		return true;
+	}
 }
 ?>

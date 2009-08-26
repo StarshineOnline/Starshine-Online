@@ -422,7 +422,8 @@ function equip_objet($objet, $joueur)
 			$i = 0;
 			while ($i < count($conditions))
 			{
-				if ($joueur[$conditions[$i]['attribut']] < $conditions[$i]['valeur'])
+				$get = 'get_'.$conditions[$i]['attribut'];
+				if ($joueur->$get() < $conditions[$i]['valeur'])
 				{
 					$G_erreur = 'Vous n\'avez pas assez en '.$conditions[$i]['attribut'].'<br />';
 					return false;
@@ -513,20 +514,19 @@ function equip_objet($objet, $joueur)
 			}
 			else
 			{
-				$desequip = desequip($type, $joueur);
-				$joueur = recupperso($joueur->get_id());
+				$desequip = $joueur->desequip($type);
 			}
 		}
 		
 		if($desequip)
 		{
 			//On équipe
-			$joueur->get_inventaire()->$type = $objet;
-			if($categorie == 'a' AND $count == 2) $joueur->get_inventaire()->main_gauche = 'lock';
-			$inventaire = serialize($joueur->get_inventaire());
-			$inventaire_slot = serialize($joueur['inventaire_slot']);
-			$requete = "UPDATE perso SET inventaire = '".$inventaire."', inventaire_slot = '".$inventaire_slot."' WHERE ID = ".$joueur->get_id();
-			$req = $db->query($requete);
+			$inventaire = $joueur->inventaire();
+			$inventaire->$type = $objet;
+			if($categorie == 'a' AND $count == 2) $inventaire->main_gauche = 'lock';
+			$joueur->set_inventaire(serialize($inventaire));
+			$joueur->set_inventaire_slot(serialize($joueur->get_inventaire_slot_partie()));
+			$joueur->sauver();
 			return true;
 		}
 		else
@@ -535,50 +535,6 @@ function equip_objet($objet, $joueur)
 		}
 	}
 	else return false;
-}
-
-function desequip($type, $joueur)
-{
-	global $db, $G_erreur, $G_place_inventaire;
-	if($joueur['inventaire']->$type !== 0 AND $joueur['inventaire']->$type != '')
-	{
-		$trouver = false;
-		$i = 0;
-		//Recherche un emplacement libre
-		while(($i < $G_place_inventaire) AND !$trouver)
-		{
-			if($joueur['inventaire_slot'][$i] === 0 OR $joueur['inventaire_slot'][$i] == '')
-			{
-				$trouver = true;
-			}
-			else $i++;
-		}
-		//Inventaire plein
-		if(!$trouver)
-		{
-			$G_erreur = 'Vous n\'avez plus de place dans votre inventaire<br />';
-			return $false;
-		}
-		else
-		{
-			//On enlève l'objet de l'emplacement pour le mettre dans l'inventaire
-			if($type == 'main_droite')
-			{
-				if($joueur['inventaire']->main_gauche == 'lock') $joueur['inventaire']->main_gauche = 0;
-			}
-			if($joueur['inventaire']->$type != 'lock')
-			{
-				$joueur['inventaire_slot'][$i] = $joueur['inventaire']->$type;
-			}
-			$joueur['inventaire']->$type = 0;
-			$inventaire = serialize($joueur['inventaire']);
-			$inventaire_slot = serialize($joueur['inventaire_slot']);
-			$requete = "UPDATE perso SET inventaire = '".$inventaire."', inventaire_slot = '".$inventaire_slot."' WHERE ID = ".$joueur->get_id();
-			$req = $db->query($requete);
-			return true;
-		}
-	}
-	return true;
 }
 
 //Récupère les données d'un echange

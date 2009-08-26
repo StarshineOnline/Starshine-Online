@@ -44,7 +44,7 @@ if(!$visu AND isset($_GET['action']))
 	switch($_GET['action'])
 	{
 		case 'desequip' :
-			if(desequip($_GET['partie'], $joueur))
+			if($joueur->desequip($_GET['partie']))
 			{
 			}
 			else
@@ -55,12 +55,10 @@ if(!$visu AND isset($_GET['action']))
 		case 'equip' :
 			if(equip_objet($joueur->get_inventaire_slot_partie($_GET['key_slot']), $joueur))
 			{
-				$joueur = recupperso($joueur->get_id());
 				//On supprime l'objet de l'inventaire
-				array_splice($joueur->get_inventaire_slot(), $_GET['key_slot'], 1);
-				$inventaire_slot = serialize($joueur->get_inventaire_slot());
-				$requete = "UPDATE perso SET inventaire_slot = '".$inventaire_slot."' WHERE ID = ".$joueur->get_id();
-				$req = $db->query($requete);
+				array_splice($joueur->get_inventaire_slot_partie(), $_GET['key_slot'], 1);
+				$inventaire_slot = serialize($joueur->get_inventaire_slot_partie());
+				$joueur->sauver();
 			}
 			else
 			{
