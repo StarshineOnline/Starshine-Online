@@ -20,9 +20,9 @@ $reponses = explode('*****', nl2br($row['texte']));
 $message = eregi_replace("\[ID:([^[]*)\]([^[]*)\[/ID:([^[]*)\]", "<li><a href=\"pnj.php?id=".$id."&amp;reponse=\\1&amp;poscase=".$W_case."\" onclick=\"return envoiInfo(this.href, 'information')\">\\2</a></li>", $reponses[$reponse]);
 //On vérifie si ya une quête pour ce pnj
 $supp = true;
-if($joueur['quete'] != '')
+if($joueur->get_quete() != '')
 {
-	foreach($joueur['quete'] as $quete)
+	foreach(unserialize($joueur->get_quete()) as $quete)
 	{
 		$requete = 'SELECT * FROM quete WHERE id = '.$quete['id_quete'];
 		$req = $db->query($requete);

@@ -11,6 +11,7 @@
  */
 class entite
 {
+	private $id;
 	private $action;
 	private $arme_type;
 	private $comp_combat;
@@ -51,6 +52,7 @@ class entite
 		switch($type)
 		{
 			case 'joueur' :
+				$this->id = $objet->get_id();
 				$this->action = $objet->action_do;
 				$this->arme_type = $objet->get_arme_type();
 				$this->comp_combat = 'melee';
@@ -159,6 +161,10 @@ class entite
 		}
 	}
 
+	function get_id()
+	{
+		return $this->id;
+	}
 	function get_action()
 	{
 		return $this->action;

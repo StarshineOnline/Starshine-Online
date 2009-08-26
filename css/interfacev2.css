@@ -219,7 +219,7 @@ margin-top:-3px;}
 /***************************************************
   Vrac
  ***************************************************/
-#loading {background:transparent url('./../image/ajax-loader-bar.gif') no-repeat scroll left center;height:22px;margin-left:120px;position:absolute;top:330px;width:220px;}
+#loading {background:#E7CF98 url('./../image/ajax-loader-bar.gif') no-repeat scroll left center;height:25px;margin-left:393px;position:absolute;top:0px;width:220px;-moz-border-radius-bottomleft: 10px;-moz-border-radius-bottomright:10px;-webkit-border-bottom-right-radius :10px;-webkit-border-bottom-left-radius :10px;z-index: 1;}
 
 #messagerie_menu {text-align: center;}
 #messagerie_menu span {padding:2px;margin:2px;cursor: pointer !important;}

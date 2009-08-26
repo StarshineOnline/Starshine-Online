@@ -135,7 +135,7 @@
 /***************************************************
   Vrac
  ***************************************************/
-#loading {background:transparent url('./../image/ajax-loader-bar.gif') no-repeat scroll left center;height:22px;left:140px;position:absolute;top:300px;width:220px;}
+#loading {background:#E7CF98 url('./../image/ajax-loader-bar.gif') no-repeat scroll left center;height:25px;margin-left:370px;position:absolute;top:0px;width:220px;-moz-border-radius-bottomleft: 10px;-moz-border-radius-bottomright:10px;-webkit-border-bottom-right-radius :10px;-webkit-border-bottom-left-radius :10px;}
 #conteneur_test {height:100%;width:100%;z-index: 99999;cursor: wait;position: absolute;}
 .infoperso {
 	vertical-align : top;

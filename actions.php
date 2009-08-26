@@ -65,7 +65,9 @@ $joueur->check_perso();
 			$requete = "UPDATE perso SET action_".$t." = '".sSQL($id_action)."' WHERE ID = ".$joueur->get_id();
 			if($db->query($requete))
 			{
-				$joueur['action_'.$t] = $_GET['id_action'];
+				$set = 'set_action_'.$t;
+				$joueur->$set($_GET['id_action']);
+				$joueur->sauver();
 				echo '<h6>Script '.$_GET['type'].' bien séléctionné.</h6>';
 			}
 		}

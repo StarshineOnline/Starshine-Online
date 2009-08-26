@@ -28,7 +28,7 @@ if(array_key_exists('action', $_GET))
 				$req = $db->query($requete);
 				$row = $db->read_assoc($req);
 				//Vérification si il a assez de points
-				if($joueur['point_sso'] >= $row['point'])
+				if($joueur->get_point_sso() >= $row['point'])
 				{
 					//Vérifie si il a assez en compétence requise
 					if($joueur[$row['competence_requis']] >= $row['valeur_requis'])
@@ -44,13 +44,11 @@ if(array_key_exists('action', $_GET))
 						if($check)
 						{
 							ajout_bonus($_GET['id'], $joueur->get_id());
-							$joueur['point_sso'] -= $row['point'];
-							$set = 'point_sso = '.$joueur['point_sso'];
+							$joueur->set_point_sso($joueur->get_point_sso() - $row['point']);
 							//Si le bonus est cache grade ou cache classe on l'insere aussi dans la bdd
-							if($_GET['id'] == 7) $set .= ', cache_classe = 1';
-							elseif($_GET['id'] == 8) $set .= ', cache_stat = 1';
-							$requete = "UPDATE perso SET ".$set." WHERE ID = ".$joueur->get_id();
-							$db->query($requete);
+							if($_GET['id'] == 7) $joueur->set_cache_classe(1);
+							elseif($_GET['id'] == 8) $joueur->set_cache_stat(1);
+							$joueur->sauver();
 							$bonus = recup_bonus($joueur->get_id());
 						}
 						else
@@ -74,7 +72,7 @@ if(array_key_exists('action', $_GET))
 if(!array_key_exists('categorie', $_GET)) $categorie = 1; else $categorie = $_GET['categorie'];
 
 ?>
-<h3>Vous avez <?php echo $joueur['point_sso']; ?> point(s) Shine <a href="configure_point_sso.php" onclick="affichePopUp(this.href); return false;">(configurer)</a></h3>
+<h3>Vous avez <?php echo $joueur->get_point_sso(); ?> point(s) Shine <a href="configure_point_sso.php" onclick="affichePopUp(this.href); return false;">(configurer)</a></h3>
 <table style="width:100%;">
 <tr>
 	<td style="text-align : center; width:33%;">

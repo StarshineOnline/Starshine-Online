@@ -138,7 +138,7 @@ if (isset($_GET['ID']))
 				{
 					$sorthp = $row['effet'];
 					$sortmp = $row['effet2'];
-					if($sortmp > (floor($joueur['mp_max']) - $joueur->get_mp())) $sortmp = floor($joueur['mp_max']) - $joueur->get_mp();
+					if($sortmp > (floor($joueur->get_mp_max()) - $joueur->get_mp())) $sortmp = floor($joueur->get_mp_max()) - $joueur->get_mp();
 					echo 'Vous utilisez '.$sorthp.' HP pour convertir en '.$sortmp.' MP<br />';
 					$joueur->set_pa($joueur->get_pa() - $sortpa);
 					$joueur->set_mp($joueur->get_mp() + $sortmp);
