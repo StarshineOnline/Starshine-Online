@@ -181,7 +181,7 @@ else
 	echo "
 	<div id='ressource'>
 	<ul>
-	<li>
+	<li class='haut'>
 		<span class='ressource_nom'>Ressource</span>
 		<span class='ressource_gains'>Gains hier</span>
 		<span class='ressource_case'>Cases actuellement</span>

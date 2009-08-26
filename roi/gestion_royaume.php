@@ -619,7 +619,7 @@ if($joueur->get_rang_royaume() != 6)
 		echo "
 		<div id='boutique'>
 		<ul>	
-		<li>
+		<li class='haut' style='height:30px !important;line-height:30px !important;'>
 			<span class='boutique_nom'>Nom</span>
 			<span class='boutique_prix'><img src='../image/starsv2.png' alt='Prix' title='Prix' /></span>
 			<span class='boutique_pierre'><img src='../image/icone/ressources_pierre.png' alt='pierre' title='Pierre' /></span>
@@ -779,27 +779,30 @@ if($joueur->get_rang_royaume() != 6)
 		<fieldset>
 		<legend>Enchères en cours</legend>
 		<ul>
-		<li>
+		<li class='haut'>
 			<span class='ressourse'>Ressource</span>
 			<span class='nombre'>Nombre</span>
 			<span class='prix'>Prix actuel</span>
 			<span class='finvente'>Fin vente</span>
 		</li>
 		<?php
+		$class='t2';
 		foreach($bourse->encheres as $enchere)
 		{
 			$time = strtotime($enchere->fin_vente);
 			$restant = transform_sec_temp(($time - time()));
 			$prix = ceil($enchere->prix * 1.1);
+			
+			echo "<li class='$class'>";
 			?>
-		<li>
 			<span class='ressourse'><span class='<?php echo $enchere->ressource; ?>'></span><?php echo $enchere->ressource; ?></span>
 			<span class='nombre'><?php echo $enchere->nombre; ?></span>
 			<span class='prix'><?php echo $enchere->prix.' ('.round(($enchere->prix / $enchere->nombre), 2).' / u)'; ?></span>
 			<span class='finvente'><?php echo $restant; ?></span>
 			<span><a href="gestion_royaume.php?direction=bourse_enchere&amp;id_enchere=<?php echo $enchere->id_bourse_royaume; ?>" onclick="return envoiInfo(this.href, 'message_confirm');envoiInfo('gestion_royaume.php?direction=bourse', 'contenu_jeu')">Enchérir pour <?php echo $prix; ?> stars (<?php echo ($prix / $enchere->nombre); ?> / u)</a></span>
-		</li>
+			</li>
 			<?php
+			if ($class=='t1'){$class='t2';}else{$class='t1';}
 		}
 		?>
 		</ul>
@@ -811,26 +814,28 @@ if($joueur->get_rang_royaume() != 6)
 		<fieldset class='moitie'>
 		<legend>Vos mises</legend>
 		<ul>
-		<li>
+		<li class='haut'>
 			<span class='ressourse'>Ressource</span>
 			<span class='nombre'>Nombre</span>
 			<span class='prix'>Prix actuel</span>
 			<span class='finvente'>Fin vente</span>
 		</li>
 		<?php
+		$class='t2';
 		foreach($bourse->encheres as $enchere)
 		{
 			$time = strtotime($enchere->fin_vente);
 			$restant = transform_sec_temp(($time - time()));
-			?>
-		<li>
-					
+			
+			echo "<li class='$class'>";
+			?>			
 			<span class='ressourse'><span class='<?php echo $enchere->ressource; ?>'></span><?php echo $enchere->ressource; ?></span>
 			<span class='nombre'><?php echo $enchere->nombre; ?></span>
 			<span class='prix'><?php echo $enchere->prix.' ('.round(($enchere->prix / $enchere->nombre), 2).' / u)'; ?></span>
 			<span class='finvente'><?php echo $restant; ?></span>
-		</li>
+			</li>
 			<?php
+			if ($class=='t1'){$class='t2';}else{$class='t1';}			
 		}
 		?>
 		</ul>
@@ -842,31 +847,34 @@ if($joueur->get_rang_royaume() != 6)
 		<fieldset class='moitie'>
 		<legend>Vos ressources en vente</legend>
 		<ul>
-		<li>
+		<li class='haut'>
 			<span class='ressourse'>Ressource</span>
 			<span class='nombre'>Nombre</span>
 			<span class='prix'>Prix actuel</span>
 			<span class='finvente'>Fin vente</span>
-			<span>Acheteur</span>
 			
 		</li>
 		<?php
+		$class='t2';
+		
 		foreach($bourse->encheres as $enchere)
 		{
 		
 			$time = strtotime($enchere->fin_vente);
 			$restant = transform_sec_temp(($time - time()));
-			if($enchere->id_royaume_acheteur != 0) $acheteur = 'Acheteur';
-			else $acheteur = '';
-			?>
-		<li>
+			if($enchere->id_royaume_acheteur != 0) $acheteur = true;
+			else $acheteur = false;
+			echo "<li class='$class'>";
+			?>			
 			<span class='ressourse'><span class='<?php echo $enchere->ressource; ?>'></span><?php echo $enchere->ressource; ?></span>
 			<span class='nombre'><?php echo $enchere->nombre; ?></span>
 			<span class='prix'><?php echo $enchere->prix.' ('.round(($enchere->prix / $enchere->nombre), 2).' / u)'; ?></span>
 			<span class='finvente'><?php echo $restant; ?></span>
-			<span><?php echo $acheteur; ?></span>
-		</li>
-		<?php
+			<?php
+			if ($acheteur){echo "<span class='acheteur'></span>";}
+			echo "</li>";
+			if ($class=='t1'){$class='t2';}else{$class='t1';}			
+		
 		}
 		?>
 		</ul>
@@ -880,23 +888,27 @@ if($joueur->get_rang_royaume() != 6)
 		<fieldset class='moitie'>
 		<legend>Enchères remportées les 7 derniers jours</legend>
 		<ul>
-		<li>
+		<li class='haut'>
 			<span class='ressourse'>Ressource</span>
 			<span class='nombre'>Nombre</span>
 			<span class='prix'>Prix actuel</span>
 			<span class='finvente'>Fin vente</span>
 		</li>
 		<?php
+		$class='t2';
+		
 		foreach($bourse->encheres as $enchere)
 		{
-			?>
-		<li>
+			echo "<li class='$class'>";
+			?>			
 			<span class='ressourse'><span class='<?php echo $enchere->ressource; ?>'></span><?php echo $enchere->ressource; ?></span>
 			<span class='nombre'><?php echo $enchere->nombre; ?></span>
 			<span class='prix'><?php echo $enchere->prix.' ('.round(($enchere->prix / $enchere->nombre), 2).' / u)'; ?></span>
 			<span class='finvente'><?php echo $enchere->fin_vente; ?></span>
 		</li>
 		<?php
+			if ($class=='t1'){$class='t2';}else{$class='t1';}			
+		
 		}
 		?>
 		</ul>
@@ -910,23 +922,27 @@ if($joueur->get_rang_royaume() != 6)
 		<fieldset class='moitie'>
 		<legend>Ressources vendues les 7 derniers jours</legend>
 		<ul>
-		<li>
+		<li class='haut'>
 			<span class='ressourse'>Ressource</span>
 			<span class='nombre'>Nombre</span>
 			<span class='prix'>Prix actuel</span>
 			<span class='finvente'>Fin vente</span>
 		</li>
 		<?php
+		$class='t2';
+		
 		foreach($bourse->encheres as $enchere)
 		{
-			?>
-		<li>
+			echo "<li class='$class'>";
+			?>			
 			<span class='ressourse'><span class='<?php echo $enchere->ressource; ?>'></span><?php echo $enchere->ressource; ?></span>
 			<span class='nombre'><?php echo $enchere->nombre; ?></span>
 			<span class='prix'><?php echo $enchere->prix.' ('.round(($enchere->prix / $enchere->nombre), 2).' / u)'; ?></span>
 			<span class='finvente'><?php echo $enchere->fin_vente; ?></span>
 		</li>
 		<?php
+		if ($class=='t1'){$class='t2';}else{$class='t1';}			
+		
 		}
 		?>
 		</ul>

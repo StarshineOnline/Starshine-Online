@@ -95,8 +95,11 @@ body 								{margin:0;padding:0;background:#7e909c url('../../image/v2/bg_site.
 .nombre								{display:block;float: left;width:70px;text-align: right;}
 .prix								{display:block;float: left;width:110px;text-align: right;}
 .finvente							{display:block;float: left;width:135px;text-align: right;}
-
+.haut								{background : #EEE !important;line-height: 19px !important;height:19px !important;padding-left:6px !important;padding-right:6px !important;}
 #bourse .moitie								{width:460px;float:left;}
+.acheteur								{background:transparent url('../../image/icone/smiley.png') no-repeat;position:absolute;}
+
+
 
 #boutique							{margin-left:24px;}
 #boutique ul li 					{clear:both;height:21px;line-height: 21px;-moz-border-radius: 10px;}
@@ -136,6 +139,7 @@ body 								{margin:0;padding:0;background:#7e909c url('../../image/v2/bg_site.
 .ressource_case							{display:block;float: left;width:150px;text-align: right;}
 .ressource_mines						{display:block;float: left;width:150px;text-align: right;}
 .ressource_total						{display:block;float: left;width:150px;text-align: right;}
+
 
 .t1 							    {background-color:#A7BBDF;-moz-border-radius: 10px;}
 

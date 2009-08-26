@@ -108,7 +108,7 @@ else
 	echo "<div id='quete'>";
 	?>
 	<ul>
-	<li>
+	<li class='haut'>
 			<span class='quete_nom'>Nom</span>
 			<span class='quete_niveau'>Level</span>
 			<span class='quete_groupe'>Mode</span>
