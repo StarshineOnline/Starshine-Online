@@ -163,7 +163,7 @@ while($row = $db->read_assoc($req))
 			<?php
 			foreach($recette->ingredients as $ingredient)
 			{
-				$joueur_ingredient = recherche_objet($joueur, 'o'.$ingredient->id_ingredient);
+				$joueur_ingredient = $joueur->recherche_objet('o'.$ingredient->id_ingredient);
 				if($joueur_ingredient[0] < $ingredient->nombre)
 				{
 					$class = '';
@@ -188,7 +188,7 @@ while($row = $db->read_assoc($req))
 			else $check_recip = true;
 			foreach($recette->recipients as $recipient)
 			{
-				$joueur_recipient = recherche_objet($joueur, 'o'.$recipient->id_objet);
+				$joueur_recipient = $joueur->recherche_objet('o'.$recipient->id_objet);
 				if($joueur_recipient[0] < 1)
 				{
 					$class = '';

@@ -36,14 +36,15 @@ if($W_row['type'] == 1)
 									unset($RqObjetHotel);
 									$RqObjetHotel = $db->query("SELECT * FROM hotel WHERE id = ".sSQL($_GET["id_vente"]).";");
 									$objObjetHotel = $db->read_object($RqObjetHotel);
-									if ($joueur["star"] >= $objObjetHotel->prix)
+									if ($joueur->get_star() >= $objObjetHotel->prix)
 									{
-										if(prend_objet($objObjetHotel->objet, $joueur))
+										if($joueur->prend_objet($objObjetHotel->objet))
 										{
-											$joueur["star"] = $joueur["star"] - $objObjetHotel->prix;
-											$requete = 
-											$db->query("UPDATE perso SET star=".$joueur["star"]." WHERE ID=".$joueur["ID"].";");
-											$db->query("UPDATE perso SET star=(star+".$objObjetHotel->prix.") WHERE ID = ".sSQL($_GET["id_vendeur"]).";");
+											$joueur->set_star($joueur->get_star() - $objObjetHotel->prix);
+											$joueur->sauver();
+											$vendeur = new perso($_GET["id_vendeur"]);
+											$vendeur->set_star($vendeur->get_star() + $objObjetHotel->prix);
+											$vendeur->sauver();
 											$db->query("DELETE FROM hotel WHERE id=".sSQL($_GET["id_vente"]).";");
 											$action_message = "<span class='message_vert'>l&apos;".$_GET["type"]." a bien &eacute;t&eacute; acheté.</span>";
 											
@@ -57,15 +58,15 @@ if($W_row['type'] == 1)
 				case "suppr" :	{//-- Récupération d'un objet
 									$RqObjetHotel = $db->query("SELECT id_vendeur, objet FROM hotel WHERE id = ".sSQL($_GET["id_vente"]).";");
 									$objObjetHotel = $db->read_object($RqObjetHotel);
-									if($objObjetHotel->id_vendeur == $joueur["ID"])
+									if($objObjetHotel->id_vendeur == $joueur->get_id())
 									{//-- vérification que c'est bien l'objet du vendueur
-										if(prend_objet($objObjetHotel->objet, $joueur))
+										if($joueur->prend_objet($objObjetHotel->objet))
 										{
 											$db->query("DELETE FROM hotel WHERE id = ".sSQL($_GET["id_vente"]).";");
 											
 											$action_message = "<span class='message_vert'>Vous avez bien récupérer votre objet de l&apos;h&ocirc;tel des ventes.</span>";
 											
-											$db->query("INSERT INTO journal VALUES(NULL, ".$joueur["ID"].", 'recup', '', '', NOW(), '".sSQL(nom_objet($objObjetHotel->objet))."', 0, 0, 0)");
+											$db->query("INSERT INTO journal VALUES(NULL, ".$joueur->get_id().", 'recup', '', '', NOW(), '".sSQL(nom_objet($objObjetHotel->objet))."', 0, 0, 0)");
 										}
 										else { $action_message = "<span class='message_rouge'>$G_erreur</span>"; };
 									}
@@ -140,7 +141,7 @@ if($W_row['type'] == 1)
 			else { $tri_champ = "objet ASC, prix ASC"; }
 		}
 		//-- Recherche tous les objets correspondants à ces races
-		if($type == "moi")	{ $queryObjetsHotel = "SELECT * FROM hotel WHERE id_vendeur=".$joueur["ID"]." ORDER BY $tri_champ;"; }
+		if($type == "moi")	{ $queryObjetsHotel = "SELECT * FROM hotel WHERE id_vendeur=".$joueur->get_id()." ORDER BY $tri_champ;"; }
 		else				{ $queryObjetsHotel = "SELECT * FROM hotel WHERE race IN (".implode($royaumes_sharing_tab, ",").") AND SUBSTRING(objet FROM 1 FOR 1)='$abbr' AND time>".(time() - $mois)." ORDER BY $tri_champ;"; };
 		$RqObjetsHotel = $db->query($queryObjetsHotel);
 		if(mysql_num_rows($RqObjetsHotel) > 0)
@@ -244,9 +245,9 @@ if($W_row['type'] == 1)
 											if(!empty($tmp_enchantement2)) { $tmp_overlib .= "<li class='overlib_infos'>$tmp_enchantement2</li>"; }
 											$tmp_overlib .= "</ul>";
 											
-											if(in_array("main_droite", $cote_arme) && ($joueur["inventaire"]->main_droite != "lock") && ($joueur["inventaire"]->main_droite != "")) 
+											if(in_array("main_droite", $cote_arme) && ($joueur->get_inventaire()->main_droite != "lock") && ($joueur->get_inventaire()->main_droite != ""))
 											{//-- si elle peut etre porté a droite
-												$main_droite = decompose_objet($joueur["inventaire"]->main_droite);
+												$main_droite = decompose_objet($joueur->get_inventaire()->main_droite);
 												$RqArmeDroite = $db->query("SELECT * FROM `arme` WHERE id=".$main_droite["id_objet"].";");
 												$objArmeDroite = $db->read_object($RqArmeDroite);
 												$tmp_overlib .= "<ul style='border-top:1px dotted black; margin:5px 0px;'><li class='overlib_titres'>Arme droite &eacute;quip&eacute;e</li>";
@@ -260,9 +261,9 @@ if($W_row['type'] == 1)
 												$tmp_overlib .= "<li class='overlib_desc_objet'><span>Portée : </span>".$objArmeDroite->distance_tir."</li>";
 												$tmp_overlib .= "</ul>";
 											}
-											if(in_array("main_gauche", $cote_arme) && ($joueur["inventaire"]->main_gauche != "lock") && ($joueur["inventaire"]->main_gauche != "") )
+											if(in_array("main_gauche", $cote_arme) && ($joueur->get_inventaire()->main_gauche != "lock") && ($joueur->get_inventaire()->main_gauche != "") )
 											{//-- si elle peut etre porté a gauche
-												$main_gauche = decompose_objet($joueur["inventaire"]->main_gauche);
+												$main_gauche = decompose_objet($joueur->get_inventaire()->main_gauche);
 												$RqArmeGauche = $db->query("SELECT * FROM `arme` WHERE id=".$main_gauche["id_objet"].";");
 												$objArmeGauche = $db->read_object($RqArmeGauche);
 												$tmp_overlib .= "<ul style='border-top:1px dotted black; margin:5px 0px;'><li class='overlib_titres'>Arme gauche &eacute;quip&eacute;e</li>";
@@ -292,9 +293,9 @@ if($W_row['type'] == 1)
 											if(!empty($tmp_enchantement2)) { $tmp_overlib .= "<li class='overlib_infos'>$tmp_enchantement2</li>"; }
 											$tmp_overlib .= "</ul>";
 											
-											if($joueur["inventaire"]->$tmp_type != "")
+											if($joueur->get_inventaire()->$tmp_type != "")
 											{
-												$armure = decompose_objet($joueur["inventaire"]->$tmp_type);
+												$armure = decompose_objet($joueur->get_inventaire()->$tmp_type);
 												$RqArmureEquipee = $db->query("SELECT * FROM `armure` WHERE id=".$armure["id_objet"].";");
 												$objArmureEquipee = $db->read_object($RqArmureEquipee);
 												$tmp_overlib .= "<ul style='border-top:1px dotted black; margin:5px 0px;'><li class='overlib_titres'>".ucfirst($objArmureEquipee->type)." &eacute;quip&eacute;</li>";

@@ -69,8 +69,8 @@ else
 		if($db->num_rows > 0)
 		{
 			echo 'Le défenseur est sur sa ville, application des bonus !<br />';
-			$defenseur->pm = $defenseur->get_pm() * 1.16;
-			$defenseur->pp = $defenseur->get_pp() * 1.3;
+			$defenseur->set_pm($defenseur->get_pm() * 1.16);
+			$defenseur->set_pp($defenseur->get_pp() * 1.3);
 			$chateau = true;
 		}
 		//On vérifie si le défenseur est sur un batiment défensif

@@ -233,6 +233,10 @@ class entite
 	{
 		return $this->pp;
 	}
+	function set_pp($valeur)
+	{
+		$this->pp = $valeur;
+	}
 	function get_pm()
 	{
 		return $this->pm;
@@ -330,12 +334,20 @@ class entite
 		}
 		return $this->potentiel_toucher;
 	}
+	function set_potentiel_toucher($valeur)
+	{
+		$this->potentiel_toucher = $valeur;
+	}
 
 	function get_potentiel_parer($esquive = false)
 	{
 		if(!$esquive) $this->potentiel_parer = round($this->get_esquive() + ($this->get_esquive() * ((pow($this->get_dexterite(), 2)) / 1000)));
 		else $this->potentiel_parer = round($esquive + ($esquive * ((pow($this->get_dexterite(), 2)) / 1000)));
 		return $this->potentiel_parer;
+	}
+	function set_potentiel_parer($valeur)
+	{
+		$this->potentiel_parer = $valeur;
 	}
 
 	function is_buff($nom = '', $type = false)
