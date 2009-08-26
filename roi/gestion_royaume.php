@@ -661,15 +661,15 @@ if($joueur->get_rang_royaume() != 6)
 	}
 	elseif($_GET['direction'] == 'bourse_enchere')
 	{
-		require_once('../class/bourse_royaume.class.php');
-		require_once('../class/bourse.class.php');
+		require_once(root.'class/bourse_royaume.class.php');
+		require_once(root.'class/bourse.class.php');
 		$enchere = new bourse_royaume($_GET['id_enchere']);
 		//On vérifie que c'est un royaume possible
 		if($royaume->get_id() != $enchere->id_royaume AND $royaume->get_id() != $enchere->id_royaume_acheteur)
 		{
 			$prix = ceil($enchere->prix * 1.1);
 			//On vérifie que le royaume a assez de stars
-			if($R['star'] >= $prix)
+			if($royaume->get_star() >= $prix)
 			{
 				//On rend les stars à l'autre royaume (si l'id est différent de 0)
 				if($enchere->id_royaume_acheteur)
@@ -705,8 +705,8 @@ if($joueur->get_rang_royaume() != 6)
 	}
 	elseif($_GET['direction'] == 'bourse_ressource')
 	{
-		require_once('../class/bourse_royaume.class.php');
-		require_once('../class/bourse.class.php');
+		require_once(root.'class/bourse_royaume.class.php');
+		require_once(root.'class/bourse.class.php');
 		$enchere = new bourse_royaume();
 		$ressource = $_GET['ressource'];
 		$nombre = $_GET['nombre'];
@@ -735,8 +735,8 @@ if($joueur->get_rang_royaume() != 6)
 	}
 	elseif($_GET['direction'] == 'bourse')
 	{
-		require_once('../class/bourse_royaume.class.php');
-		require_once('../class/bourse.class.php');
+		require_once(root.'class/bourse_royaume.class.php');
+		require_once(root.'class/bourse.class.php');
 		$bourse = new bourse($royaume->get_id());
 		$bourse->check_encheres();
 		$bourse->get_encheres('DESC', 'actif = 1 AND id_royaume != '.$royaume->get_id().' AND id_royaume_acheteur != '.$royaume->get_id());
@@ -793,11 +793,11 @@ if($joueur->get_rang_royaume() != 6)
 			$prix = ceil($enchere->prix * 1.1);
 			?>
 		<li>
-			<span class='ressourse'><?php echo $enchere->ressource; ?></span>
+			<span class='ressourse'><span class='<?php echo $enchere->ressource; ?>'></span><?php echo $enchere->ressource; ?></span>
 			<span class='nombre'><?php echo $enchere->nombre; ?></span>
 			<span class='prix'><?php echo $enchere->prix.' ('.round(($enchere->prix / $enchere->nombre), 2).' / u)'; ?></span>
 			<span class='finvente'><?php echo $restant; ?></span>
-			<span><a href="gestion_royaume.php?direction=bourse_enchere&amp;id_enchere=<?php echo $enchere->id_bourse_royaume; ?>" onclick="return envoiInfo(this.href, 'conteneur');">Enchérir pour <?php echo $prix; ?> stars (<?php echo ($prix / $enchere->nombre); ?> / u)</a></span>
+			<span><a href="gestion_royaume.php?direction=bourse_enchere&amp;id_enchere=<?php echo $enchere->id_bourse_royaume; ?>" onclick="return envoiInfo(this.href, 'message_confirm');envoiInfo('gestion_royaume.php?direction=bourse', 'contenu_jeu')">Enchérir pour <?php echo $prix; ?> stars (<?php echo ($prix / $enchere->nombre); ?> / u)</a></span>
 		</li>
 			<?php
 		}
@@ -808,7 +808,7 @@ if($joueur->get_rang_royaume() != 6)
 		$bourse->encheres = array();
 		$bourse->get_encheres('DESC', 'actif = 1 AND id_royaume_acheteur = '.$royaume->get_id());
 		?>
-		<fieldset>
+		<fieldset class='moitie'>
 		<legend>Vos mises</legend>
 		<ul>
 		<li>
@@ -818,14 +818,14 @@ if($joueur->get_rang_royaume() != 6)
 			<span class='finvente'>Fin vente</span>
 		</li>
 		<?php
-		print_r($bourse);
 		foreach($bourse->encheres as $enchere)
 		{
 			$time = strtotime($enchere->fin_vente);
 			$restant = transform_sec_temp(($time - time()));
 			?>
 		<li>
-			<span class='ressourse'><?php echo $enchere->ressource; ?></span>
+					
+			<span class='ressourse'><span class='<?php echo $enchere->ressource; ?>'></span><?php echo $enchere->ressource; ?></span>
 			<span class='nombre'><?php echo $enchere->nombre; ?></span>
 			<span class='prix'><?php echo $enchere->prix.' ('.round(($enchere->prix / $enchere->nombre), 2).' / u)'; ?></span>
 			<span class='finvente'><?php echo $restant; ?></span>
@@ -839,7 +839,7 @@ if($joueur->get_rang_royaume() != 6)
 		$bourse->encheres = array();
 		$bourse->get_encheres('DESC', 'actif = 1 AND id_royaume = '.$royaume->get_id());
 		?>
-		<fieldset>
+		<fieldset class='moitie'>
 		<legend>Vos ressources en vente</legend>
 		<ul>
 		<li>
@@ -851,8 +851,6 @@ if($joueur->get_rang_royaume() != 6)
 			
 		</li>
 		<?php
-				print_r($bourse);
-
 		foreach($bourse->encheres as $enchere)
 		{
 		
@@ -862,7 +860,7 @@ if($joueur->get_rang_royaume() != 6)
 			else $acheteur = '';
 			?>
 		<li>
-			<span class='ressourse'><?php echo $enchere->ressource; ?></span>
+			<span class='ressourse'><span class='<?php echo $enchere->ressource; ?>'></span><?php echo $enchere->ressource; ?></span>
 			<span class='nombre'><?php echo $enchere->nombre; ?></span>
 			<span class='prix'><?php echo $enchere->prix.' ('.round(($enchere->prix / $enchere->nombre), 2).' / u)'; ?></span>
 			<span class='finvente'><?php echo $restant; ?></span>
@@ -879,7 +877,7 @@ if($joueur->get_rang_royaume() != 6)
 		$date = date("Y-m-d H:i:s", $time);
 		$bourse->get_encheres('DESC', 'actif = 0 AND fin_vente > "'.$date.'" AND id_royaume_acheteur = '.$royaume->get_id());
 		?>
-		<fieldset>
+		<fieldset class='moitie'>
 		<legend>Enchères remportées les 7 derniers jours</legend>
 		<ul>
 		<li>
@@ -893,7 +891,7 @@ if($joueur->get_rang_royaume() != 6)
 		{
 			?>
 		<li>
-			<span class='ressourse'><?php echo $enchere->ressource; ?></span>
+			<span class='ressourse'><span class='<?php echo $enchere->ressource; ?>'></span><?php echo $enchere->ressource; ?></span>
 			<span class='nombre'><?php echo $enchere->nombre; ?></span>
 			<span class='prix'><?php echo $enchere->prix.' ('.round(($enchere->prix / $enchere->nombre), 2).' / u)'; ?></span>
 			<span class='finvente'><?php echo $enchere->fin_vente; ?></span>
@@ -909,7 +907,7 @@ if($joueur->get_rang_royaume() != 6)
 		$date = date("Y-m-d H:i:s", $time);
 		$bourse->get_encheres('DESC', 'actif = 0 AND fin_vente > "'.$date.'" AND id_royaume_acheteur != 0 AND id_royaume = '.$royaume->get_id());
 		?>
-		<fieldset>
+		<fieldset class='moitie'>
 		<legend>Ressources vendues les 7 derniers jours</legend>
 		<ul>
 		<li>
@@ -923,7 +921,7 @@ if($joueur->get_rang_royaume() != 6)
 		{
 			?>
 		<li>
-			<span class='ressourse'><?php echo $enchere->ressource; ?></span>
+			<span class='ressourse'><span class='<?php echo $enchere->ressource; ?>'></span><?php echo $enchere->ressource; ?></span>
 			<span class='nombre'><?php echo $enchere->nombre; ?></span>
 			<span class='prix'><?php echo $enchere->prix.' ('.round(($enchere->prix / $enchere->nombre), 2).' / u)'; ?></span>
 			<span class='finvente'><?php echo $enchere->fin_vente; ?></span>

@@ -37,10 +37,10 @@ $food_necessaire = floor($food_necessaire * $royaume->get_habitants());
 </div>
 
 <div style='width:270px;float:left;'>
-	<span class='bois' title='Bois'><?php echo $royaume->get_bois(); ?></span>
-	<span class='eau' title='Eau'><?php echo $royaume->get_eau(); ?></span>
-	<span class='essence' title='Essence Magique'><?php echo $royaume->get_essence(); ?></span>
-	<span class='pierre' title='Pierre'><?php echo $royaume->get_pierre(); ?></span>
-	<span class='sable' title='Sable'><?php echo $royaume->get_sable(); ?></span>
-	<span class='charbon' title='Charbon'><?php echo $royaume->get_charbon(); ?></span>
+	<span class='bois' title='Bois' style='padding-left:40px;'><?php echo $royaume->get_bois(); ?></span>
+	<span class='eau' title='Eau' style='padding-left:40px;'><?php echo $royaume->get_eau(); ?></span>
+	<span class='essence' title='Essence Magique' style='padding-left:40px;'><?php echo $royaume->get_essence(); ?></span>
+	<span class='pierre' title='Pierre' style='padding-left:40px;'><?php echo $royaume->get_pierre(); ?></span>
+	<span class='sable' title='Sable' style='padding-left:40px;'><?php echo $royaume->get_sable(); ?></span>
+	<span class='charbon' title='Charbon' style='padding-left:40px;'><?php echo $royaume->get_charbon(); ?></span>
 </div>

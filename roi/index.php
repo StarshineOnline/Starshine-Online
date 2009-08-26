@@ -8,7 +8,7 @@ $connexion = true;
 include_once(root.'inc/fp.php');
 
 $joueur = new perso($_SESSION['ID']);
-if($joueur->get_grade()->get_nom() == 'Roi')
+if($joueur->get_grade()->get_id() == 6)
 {
 	$date_hier = date("Y-m-d", mktime(0, 0, 0, date("m") , date("d") - 2, date("Y")));
 	$requete = "SELECT food, nombre_joueur FROM stat_jeu ORDER BY date DESC";
@@ -21,8 +21,7 @@ if($joueur->get_grade()->get_nom() == 'Roi')
 	
 	//Vérifie si le perso est mort
 	verif_mort($joueur, 1);
-	
-	check_perso($joueur);
+	$joueur->check_perso();
 	
 	$_SESSION['position'] = convert_in_pos($joueur->get_x(), $joueur->get_y());
 	$check = false;

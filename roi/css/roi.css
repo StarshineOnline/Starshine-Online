@@ -60,14 +60,15 @@ body 								{margin:0;padding:0;background:#7e909c url('../../image/v2/bg_site.
 
 #message_confirm					{width:90%;margin: 5px auto;}
 
-.bois								{text-align:right;margin-right:20px;background:transparent url('../../image/icone/ressources_bois.png') no-repeat;padding-left:40px;display:block;line-height: 30px;width:30px;height:30px;float:left;}
-.eau								{text-align:right;margin-right:20px;background:transparent url('../../image/icone/ressources_eau.png') no-repeat;padding-left:40px;display:block;line-height: 30px;height:30px;width:30px;float:left;}
-.essence							{text-align:right;margin-right:20px;background:transparent url('../../image/icone/ressources_essence.png') no-repeat;padding-left:40px;display:block;line-height: 30px;height:30px;width:30px;float:left;}
-.pierre								{text-align:right;margin-right:20px;background:transparent url('../../image/icone/ressources_pierre.png') no-repeat;padding-left:40px;display:block;line-height: 30px;height:30px;width:30px;float:left;}
-.sable								{text-align:right;margin-right:20px;background:transparent url('../../image/icone/ressources_sable.png') no-repeat;padding-left:40px;display:block;line-height: 30px;height:30px;width:30px;float:left;}
-.charbon							{text-align:right;margin-right:20px;background:transparent url('../../image/icone/ressources_charbon.png') no-repeat;padding-left:40px;display:block;line-height: 30px;height:30px;width:30px;float:left;}
-.nourriture							{text-align:right;margin-right:20px;background:transparent url('../../image/icone/ressources_nourriture.png') no-repeat;padding-left:40px;display:block;line-height: 30px;height:30px;width:30px;float:left;}
-.star							{text-align:right;margin-right:20px;background:transparent url('../../image/icone/ressources_star.png') no-repeat;padding-left:40px;display:block;line-height: 30px;height:30px;width:30px;float:left;}
+.bois								{text-align:right;margin-right:20px;background:transparent url('../../image/icone/ressources_bois.png') no-repeat;display:block;line-height: 30px;width:30px;height:30px;float:left;}
+.eau								{text-align:right;margin-right:20px;background:transparent url('../../image/icone/ressources_eau.png') no-repeat;display:block;line-height: 30px;height:30px;width:30px;float:left;}
+.essence							{text-align:right;margin-right:20px;background:transparent url('../../image/icone/ressources_essence.png') no-repeat;display:block;line-height: 30px;height:30px;width:30px;float:left;}
+.pierre								{text-align:right;margin-right:20px;background:transparent url('../../image/icone/ressources_pierre.png') no-repeat;display:block;line-height: 30px;height:30px;width:30px;float:left;}
+.sable								{text-align:right;margin-right:20px;background:transparent url('../../image/icone/ressources_sable.png') no-repeat;display:block;line-height: 30px;height:30px;width:30px;float:left;}
+.charbon							{text-align:right;margin-right:20px;background:transparent url('../../image/icone/ressources_charbon.png') no-repeat;display:block;line-height: 30px;height:30px;width:30px;float:left;}
+.nourriture							{text-align:right;margin-right:20px;background:transparent url('../../image/icone/ressources_nourriture.png') no-repeat;display:block;line-height: 30px;height:30px;width:30px;float:left;}
+.star							{text-align:right;margin-right:20px;background:transparent url('../../image/icone/ressources_star.png') no-repeat;display:block;line-height: 30px;height:30px;width:30px;float:left;}
+.food							{text-align:right;margin-right:20px;background:transparent url('../../image/icone/ressources_nourriture.png') no-repeat;display:block;line-height: 30px;height:30px;width:30px;float:left;}
 
 
 #criminel fieldset					{-moz-border-radius: 10px;}
@@ -88,13 +89,14 @@ body 								{margin:0;padding:0;background:#7e909c url('../../image/v2/bg_site.
 #motk fieldset						{-moz-border-radius: 10px;}
 
 #bourse fieldset					{-moz-border-radius: 10px;}
-#bourse ul li 						{clear:both;height:21px;line-height: 21px;-moz-border-radius: 10px;}
+#bourse ul li 						{clear:both;height:30px;line-height: 30px;-moz-border-radius: 10px;}
 #bourse ul li:hover					{background-color:#C5D4EF;-moz-border-radius: 10px;}
-.ressourse							{display:block;float: left;width:70px;text-align: right;}
+.ressourse							{display:block;float: left;width:120px;text-align: left;}
 .nombre								{display:block;float: left;width:70px;text-align: right;}
 .prix								{display:block;float: left;width:110px;text-align: right;}
 .finvente							{display:block;float: left;width:135px;text-align: right;}
 
+#bourse .moitie								{width:460px;float:left;}
 
 #boutique							{margin-left:24px;}
 #boutique ul li 					{clear:both;height:21px;line-height: 21px;-moz-border-radius: 10px;}
