@@ -259,7 +259,7 @@ if($joueur->get_rang_royaume() != 6)
 	    $requete = "SELECT * FROM construction_ville WHERE id = ".$id_batiment;
 	    $req = $db->query($requete);
 	    $row = $db->read_assoc($req);
-	    if($R['star'] >= $row['dette'])
+	    if($royaume->get_star() >= $row['dette'])
 	    {
 	        $requete = "UPDATE construction_ville SET statut = 'actif', dette = 0 WHERE id = ".$id_batiment;
 	        $db->query($requete);
@@ -305,12 +305,11 @@ if($joueur->get_rang_royaume() != 6)
 	            $req = $db->query($requete);
 	            $row = $db->read_assoc($req);
 	            //Si le royaume a assez de stars on achète le batiment
-	            if($R['star'] >= $row['cout'])
+	            if($royaume->get_star() >= $row['cout'])
 	            {
 	                //On paye
-	                $R['star'] = $R['star'] - $row['cout'];
-	                $requete = "UPDATE royaume SET star = ".$R['star']." WHERE ID = ".$royaume->get_id();
-	                $db->query($requete);
+	                $royaume->set_star($royaume->get_star() - $row['cout']);
+	                $royaume->sauver();
 	                //On ajoute le batiment et on supprime l'ancien
 	                $requete = "DELETE FROM construction_ville WHERE id = ".$id_batiment_ville;
 	                $db->query($requete);
@@ -344,7 +343,7 @@ if($joueur->get_rang_royaume() != 6)
 	    <fieldset>
 	    <legend>Nombre de joueurs</legend>
 	    <ul>
-	    <li>
+	    <li class='haut'>
 	    	<span class='nom'>Classe</span>
 	    	<span class='stats'>Nombre</span>
 	    </li>
@@ -370,7 +369,7 @@ if($joueur->get_rang_royaume() != 6)
 	    <fieldset>	    
 	    <legend>Meilleurs guerriers</legend>
 	    <ul>
-	    <li>
+	    <li class='haut'>
 	    	<span class='nom'>Nom</span>
 	    	<span class='stats'>Mélée</span>
 	    </li>
@@ -396,7 +395,7 @@ if($joueur->get_rang_royaume() != 6)
 	    <fieldset>	    	    
 	    <legend>Meilleurs Archers</legend>
 	    <ul>
-	    <li>
+	    <li class='haut'>
 	    	<span class='nom'>Nom</span>
 	    	<span class='stats'>Tir</span>
 	    </li>
@@ -423,7 +422,7 @@ if($joueur->get_rang_royaume() != 6)
 	    <fieldset>	    	    	    
 	    <legend>Meilleurs esquiveurs</legend>
 	    <ul>
-	    <li>
+	    <li class='haut'>
 	    	<span class='nom'>Nom</span>
 	    	<span class='stats'>Esquive</span>
 	    </li>
@@ -448,7 +447,7 @@ if($joueur->get_rang_royaume() != 6)
 	    <fieldset>	    	    	    	    
 	    <legend>Meilleurs mages</legend>
 	    <ul>
-	    <li>
+	    <li class='haut'>
 	    	<span class='nom'>Nom</span>
 	    	<span class='stats'>Incantation</span>
 	    </li>
@@ -477,7 +476,7 @@ if($joueur->get_rang_royaume() != 6)
 	    ?>
 	    <fieldset>	    	    	    	    
 	    <ul>
-	    <li>
+	    <li class='haut'>
 	    	<span class='nom'>Nom</span>
 	    	<span class='crime'>Pts de crime</span>
 	    	<span class='amende'>Amende</span>
@@ -871,7 +870,7 @@ if($joueur->get_rang_royaume() != 6)
 			<span class='prix'><?php echo $enchere->prix.' ('.round(($enchere->prix / $enchere->nombre), 2).' / u)'; ?></span>
 			<span class='finvente'><?php echo $restant; ?></span>
 			<?php
-			if ($acheteur){echo "<span class='acheteur'></span>";}
+			if ($acheteur){echo "<span class='acheteur' title='Il y a un acheteur sur cette offre'></span>";}
 			echo "</li>";
 			if ($class=='t1'){$class='t2';}else{$class='t1';}			
 		

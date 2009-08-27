@@ -1,7 +1,11 @@
 <?php
 if (file_exists('../root.php'))
   include_once('../root.php');
-?><?php
+
+if (file_exists(root.'class/contruction.class.php')) {
+  include_once(root.'class/contruction.class.php');
+} 
+
 class mine extends construction
 {
 	/**	

@@ -82,7 +82,7 @@ body 								{margin:0;padding:0;background:#7e909c url('../../image/v2/bg_site.
 #stats fieldset						{width:168px;float:left;-moz-border-radius: 10px;}
 #stats ul li 						{clear:both;height:21px;line-height: 21px;-moz-border-radius: 10px;}
 #stats ul li:hover					{background-color:#C5D4EF;-moz-border-radius: 10px;}
-#stats .nom							{float:left;width:100px;text-indent: 5px;}
+#stats .nom							{float:left;width:95px;text-indent: 5px;}
 #stats .stats						{float:left;width:60px;text-align: right;}
 
 #propagande fieldset				{-moz-border-radius: 10px;}
@@ -96,8 +96,8 @@ body 								{margin:0;padding:0;background:#7e909c url('../../image/v2/bg_site.
 .prix								{display:block;float: left;width:110px;text-align: right;}
 .finvente							{display:block;float: left;width:135px;text-align: right;}
 .haut								{background : #EEE !important;line-height: 19px !important;height:19px !important;padding-left:6px !important;padding-right:6px !important;}
-#bourse .moitie								{width:460px;float:left;}
-.acheteur								{background:transparent url('../../image/icone/smiley.png') no-repeat;position:absolute;}
+#bourse .moitie						{width:460px;float:left;}
+.acheteur							{background:transparent url('../../image/icone/smile.png') no-repeat 0px;height:30px;display:block;margin-left:440px;width:16px;}
 
 
 

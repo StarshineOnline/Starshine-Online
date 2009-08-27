@@ -74,9 +74,10 @@ else if(array_key_exists('id', $_GET))
 //Info d'une case
 elseif(array_key_exists('case', $_GET))
 {
-	$coord = convert_in_coord($_GET['case']);
-	check_case($coord);
-	echo 'CASE : X : '.$coord['x'].' - Y : '.$coord['y'].'<br />';
+	$case = new map_case($_GET['case']);
+	$case->check_case();
+	//echo $case->get_info();
+	//echo 'CASE : X : '.$coord['x'].' - Y : '.$coord['y'].'<br />';
 	$bourg = new bourg($_GET['id_bourg']);
 	$bourg->get_mines();
 	$bourg->get_placements();
@@ -84,7 +85,7 @@ elseif(array_key_exists('case', $_GET))
 	if($bourg->mine_max > $bourg->mine_total)
 	{
 		//On vérifie que la case appartient bien au royaume
-		$requete = "SELECT ID, type FROM map WHERE ID = ".$_GET['case']." AND royaume = ".$royaume->get_id();
+		$requete = "SELECT ID, type FROM map WHERE ID = ".sSQL($_GET['case'])." AND royaume = ".$royaume->get_id();
 		$db->query($requete);
 		if($db->num_rows == 0)
 		{
@@ -238,7 +239,10 @@ elseif(array_key_exists('up', $_GET))
 elseif(array_key_exists('suppr', $_GET))
 {
 	$mine = new mine($_GET['mine']);
-	if($mine->id_royaume == $royaume->get_id()) $mine->supprimer();
+	if($mine->id_royaume == $royaume->get_id())
+	{
+		echo $mine->supprimer();
+	}
 }
 else
 {
@@ -254,7 +258,7 @@ else
 		$bourg->get_mines();
 		$bourg->get_placements();
 		$bourg->get_mine_total();
-		echo '<li><a href="mine.php?id='.$bourg->id.'" onclick="return envoiInfo(this.href, \'conteneur\');">'.$bourg->nom.'</a> - X : '.$bourg->x.' - Y : '.$bourg->y.' - ('.$bourg->mine_total.' / '.$bourg->mine_max.')</li>';
+		echo '<li><a href="mine.php?id='.$bourg->id.'" onclick="return envoiInfo(this.href, \'contenu_jeu\');">'.$bourg->nom.'</a> - X : '.$bourg->x.' - Y : '.$bourg->y.' - ('.$bourg->mine_total.' / '.$bourg->mine_max.')</li>';
 		if(count($bourg->mines) > 0)
 		{
 		?>
