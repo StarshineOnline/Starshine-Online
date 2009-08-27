@@ -7,23 +7,21 @@ if (file_exists('root.php'))
 include_once(root.'haut_ajax.php');
 
 $joueur = new perso($_SESSION['ID']);
+$joueur->get_grade();
 
 $joueur->check_perso();
 
 //Vérifie si le perso est mort
 verif_mort($joueur, 1);
 
-$W_case = $_GET['poscase'];
 $W_requete = 'SELECT * FROM map WHERE ID =\''.sSQL($W_case).'\'';
 $W_req = $db->query($W_requete);
 $W_row = $db->read_array($W_req);
 $R = new royaume($W_row['royaume']);
 
 //Informations sur le batiment
-$requete = "SELECT * FROM construction WHERE id = ".sSQL($_GET['id_construction']);
-$req = $db->query($requete);
-$row_c = $db->read_assoc($req);
-$requete = "SELECT * FROM batiment WHERE id = ".$row_c['id_batiment'];
+$arme = new construction($_GET['id_construction']);
+$requete = "SELECT * FROM batiment WHERE id = ".$arme->get_id_batiment();
 $req = $db->query($requete);
 $row_b = $db->read_assoc($req);
 ?>
@@ -31,16 +29,15 @@ $row_b = $db->read_assoc($req);
 		<h2><?php echo $row_b['nom']; ?></h2>
 <?php
 
-$W_distance = detection_distance($W_case, $_SESSION["position"]);
+$W_distance = detection_distance(convert_in_pos($arme->get_x(), $arme->get_y()), $joueur->get_pos());
 
-$W_coord = convert_in_coord($W_case);
 if($W_distance == 0)
 {
-	echo 'Position - X : '.$row_c['x'].' - Y : '.$row_c['y'].'<br />';
+	echo 'Position - X : '.$arme->get_x().' - Y : '.$arme->get_y().'<br />';
 	echo 'Distance de tir : '.$row_b['bonus4'].' case.<br />';
 	echo 'Temps avant de pouvoir tirer : ';
 	$pat = false;
-	if($row_c['rechargement'] > time()) echo transform_sec_temp($row_c['rechargement'] - time());
+	if($arme->get_rechargement() > time()) echo transform_sec_temp($arme->get_rechargement() - time());
 	else
 	{
 		echo 'Pret à tirer !';
@@ -57,10 +54,10 @@ if($W_distance == 0)
 	echo '<ul>';
 	while($row_bp = $db->read_assoc($req_bp))
 	{
-		if($row_bp['royaume'] != $Trace[$joueur->get_race()]['numrace'] && $row_bp['id'] != $row_c['id'])
+		if($row_bp['royaume'] != $Trace[$joueur->get_race()]['numrace'] && $row_bp['id'] != $arme->get_id())
 		{
 			echo '<li>'.$row_bp['nom'].' - X : '.$row_bp['x'].' - Y : '.$row_bp['y'];
-			if($pat && $joueur->get_rang_grade() >= $row_b['bonus6']) echo ' - <a href="attaque_arme_de_siege.php?poscase='.$W_case.'&amp;table=construction&amp;type=arme_de_siege&amp;id_arme_de_siege='.$row_c['id'].'&amp;id_batiment='.$row_bp['id'].'" onclick="return envoiInfo(this.href, \'information\');">Attaquer avec l\'arme de siège</a></li>';
+			if($pat && $joueur->grade->get_rang() >= $row_b['bonus6']) echo ' - <a href="attaque.php?type=siege&table=construction&id_arme_de_siege='.$arme->get_id().'&id_batiment='.$row_bp['id'].'" onclick="return envoiInfo(this.href, \'information\');">Attaquer avec l\'arme de siège</a></li>';
 		}
 	}
 	echo '</ul>';
@@ -74,10 +71,10 @@ if($W_distance == 0)
 	echo '<ul>';
 	while($row_bp = $db->read_assoc($req_bp))
 	{
-		if($row_bp['royaume'] != $Trace[$joueur->get_race()]['numrace'] && $row_bp['id'] != $row_c['id'])
+		if($row_bp['royaume'] != $Trace[$joueur->get_race()]['numrace'] && $row_bp['id'] != $arme->get_id())
 		{
 			echo '<li>'.$row_bp['nom'].' - X : '.$row_bp['x'].' - Y : '.$row_bp['y'];
-			if($pat && $joueur->get_rang_grade() >= $row_b['bonus6']) echo ' - <a href="attaque_arme_de_siege.php?poscase='.$W_case.'&amp;table=placement&amp;type=arme_de_siege&amp;id_arme_de_siege='.$row_c['id'].'&amp;id_batiment='.$row_bp['id'].'" onclick="return envoiInfo(this.href, \'information\');">Attaquer avec l\'arme de siège</a></li>';
+			if($pat && $joueur->grade->get_rang() >= $row_b['bonus6']) echo ' - <a href="attaque.php?table=placement&amp;type=siege&amp;id_arme_de_siege='.$arme->get_id().'&amp;id_batiment='.$row_bp['id'].'" onclick="return envoiInfo(this.href, \'information\');">Attaquer avec l\'arme de siège</a></li>';
 		}
 	}
 	echo '</ul>';

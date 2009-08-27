@@ -55,14 +55,6 @@ function sendData(data, page, div, method)
     }//fin elseif
 }//fin fonction SendData
 
-/**
-* Permet de récupérer les données d'un fichier via les XmlHttpRequest:
-*/
-/*function envoiInfo(page, div)
-{
-    sendData('null', page, div, 'GET')
-}*/
-
 function envoiInfoPost(page,position)
 {
 	function Affiche(requete){$(position).innerHTML = requete.responseText; Hidechargement();}
@@ -72,40 +64,6 @@ function envoiInfoPost(page,position)
 function envoiInfoPostData(page, div, data)
 {
     sendData(data, page, div, 'POST')
-}
-/**
-* Permet d'afficher une info bulle au passage d'une case
-*/
-function afficheInfo2(id, display, evt, xml)
-{
-	if(document.all) // IE
-	{
-		x = evt.x + document.body.scrollLeft;
-		y = evt.y + document.body.scrollTop;
-		dwidth = document.body.clientWidth;
-		dheight = document.body.clientHeight;
-	}
-	else // FF
-	{
-		x = evt.pageX;
-		y = evt.pageY;
-		dwidth = document.width;
-		dheight = document.height;
-	}
-
-	if(xml == 'centre')
-	{
-	}
-
-	element = document.getElementById(id);
-
-	x += 10;
-	y += 10;
-
-	element.style.top 	= y + "px";
-	element.style.left 	= x + "px";
-
-	element.style.display = display;
 }
 
 /**

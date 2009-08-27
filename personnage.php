@@ -261,7 +261,7 @@ echo '
 	foreach($joueur->get_competence() as $comp)
 	{
 		$numero = (($i % 2) + 1);
-		$maximum = recup_max_comp($comp->get_valeur(), $joueur->get_classe_id());
+		$maximum = recup_max_comp($comp->get_competence(), $joueur->get_classe_id());
 		echo '
 	<tr class="trcolor'.$numero.'">
 		<td>
@@ -353,9 +353,12 @@ echo '
 
 		case 'stat' :
 			if(array_key_exists('action', $_GET) AND $_GET['action'] == 'teleport'
-				 AND ($joueur['teleport_roi'] == false OR $joueur['teleport_roi'] == 'false' OR $joueur['teleport_roi'] == ''))
+				 AND ($joueur->get_teleport_roi() == false OR $joueur->get_teleport_roi() == 'false' OR $joueur->get_teleport_roi() == ''))
 			{
-				$requete = "UPDATE perso SET x = ".$Trace[$joueur->get_race()]['spawn_x'].", y = ".$Trace[$joueur->get_race()]['spawn_y'].", teleport_roi = 'true' WHERE ID = ".$joueur->get_id();
+				$joueur->set_x($Trace[$joueur->get_race()]['spawn_x']);
+				$joueur->set_y($Trace[$joueur->get_race()]['spawn_y']);
+				$joueur->set_teleport_roi('true');
+				$joueur->sauver();
 				$db->query($requete);
 			}
 			echo '

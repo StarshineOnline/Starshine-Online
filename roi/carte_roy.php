@@ -5,7 +5,7 @@ if (file_exists('../root.php'))
 //Connexion obligatoire
 $connexion = true;
 //Inclusion du haut du document html
-include_once(root.'roi/haut_ajax.php');
+include_once('haut_roi.php');
 $im = imagecreatefrompng('../image/carte.png');
 $joueur = new perso($_SESSION['ID']);
 $requete = "SELECT x, y, count( * ) AS count FROM perso WHERE race = '".$joueur->get_race()."' AND statut = 'actif' GROUP BY x, y";

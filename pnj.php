@@ -61,9 +61,9 @@ if($joueur->get_quete() != '')
 		}
 	}
 }
-if($joueur['quete_fini'] != '')
+if($joueur->get_quete_fini() != '')
 {
-	$quete_fini = explode(';', $joueur['quete_fini']);
+	$quete_fini = explode(';', $joueur->get_quete_fini());
 	foreach($quete_fini as $quete)
 	{
 		//On affiche le lien pour la discussion

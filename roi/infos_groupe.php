@@ -9,25 +9,24 @@ include_once(root.'inc/fp.php');
 
 $joueur = new perso($_SESSION['ID']);
 
-//Vérifie si le perso est mort
+//Vï¿½rifie si le perso est mort
 verif_mort($joueur, 1);
 
 $joueur->check_perso();
-
-$_SESSION['position'] = convert_in_pos($joueur->get_x(), $joueur->get_y());
-$groupe = recupgroupe($_GET['id_groupe'], 'membre');
+$groupe = new groupe($_GET['id_groupe']);
 ?>
 INFOS :
-Nom : <?php echo $groupe['nom']; ?>
+Nom : <?php echo $groupe->get_nom(); ?>
 <ul>
 <?php
-foreach($groupe['membre'] as $membre)
+$groupe->get_membre_joueur();
+foreach($groupe->membre_joueur as $membre)
 {
-	$membre_info = recupperso($membre['id_joueur']);
-	$image = "../image/personnage/".$membre_info['race']."/".$membre_info['race']."_".$Tclasse[$membre_info['classe']]["type"].".png";
-	if($membre_info['ID'] == $groupe['id_leader']) $nom = $membre_info['nom'].'*'; else $nom = $membre_info['nom'];
+	$image = "../image/personnage/".$membre->get_race()."/".$membre->get_race()."_".$Tclasse[$membre->get_classe()]["type"].".png";
+	if($membre->get_id() == $groupe->get_id_leader()) $nom = $membre->get_nom().'*'; else $nom = $membre->get_nom();
+	$membre->get_grade();
 	?>
-	<li onMouseOver="new Tip('membre_<?php echo $membre_info['ID']; ?>', '<?php echo $membre_info['classe']; ?>', {style : 'protoblue'});" id="membre_<?php echo $membre_info['ID']; ?>"><img src="<?php echo $image; ?>" alt="<?php echo $membre_info['classe']; ?>" style="width : 27px; height : 27px; vertical-align: middle;"> <span style="font-weight : bold;"><a href="carte_strategique.php" onclick="new Ajax.Updater('conteneur', this.href); return false;"><?php echo $nom.'</a></span> - '.$membre_info['race'].' - '.$membre_info['grade']; ?></li>
+	<li onMouseOver="new Tip('membre_<?php echo $membre->get_id(); ?>', '<?php echo $membre->get_classe(); ?>', {style : 'protoblue'});" id="membre_<?php echo $membre->get_id(); ?>"><img src="<?php echo $image; ?>" alt="<?php echo $membre->get_classe(); ?>" style="width : 27px; height : 27px; vertical-align: middle;"> <span style="font-weight : bold;"><a href="carte_strategique.php" onclick="new Ajax.Updater('conteneur', this.href); return false;"><?php echo $nom.'</a></span> - '.$membre->get_race().' - '.$membre->grade->get_nom(); ?></li>
 	<?php
 }
 ?>

@@ -16,7 +16,8 @@ function verif_quete($id_quete, $id_quete_joueur, $joueur)
 	while(($i < count($objectif) AND $valid))
 	{
 		$obj = $objectif[$i];
-		if($joueur['quete'][$id_quete_joueur]['objectif'][$i]->nombre >= $obj->nombre)
+		$liste_quete = $joueur->get_liste_quete();
+		if($liste_quete[$id_quete_joueur]['objectif'][$i]->nombre >= $obj->nombre)
 		{		
 		}
 		else
@@ -33,13 +34,14 @@ function verif_action($type_cible, $joueur, $mode)
 {
 	global $db;
 	$i = 0;
-	$count = count($joueur['quete']);
-	if($joueur['quete'] != '')
+	$liste_quete = $joueur->get_liste_quete();
+	$count = count($liste_quete);
+	if($liste_quete != '')
 	{
 		$echo = '';
 		while($i < $count)
 		{
-			$requete = "SELECT id, nom, objectif, honneur, star, exp, reward, mode FROM quete WHERE ID = ".$joueur['quete'][$i]['id_quete'];
+			$requete = "SELECT id, nom, objectif, honneur, star, exp, reward, mode FROM quete WHERE ID = ".$liste_quete[$i]['id_quete'];
 			$req = $db->query($requete);
 			$row = $db->read_array($req);
 			//Vérification si quête solo ou groupe
@@ -51,7 +53,7 @@ function verif_action($type_cible, $joueur, $mode)
 				while($j < $count2)
 				{
 					//On a validé cette étape
-					if($joueur['quete'][$i]['objectif'][$j]->nombre >= $row['objectif'][$j]->nombre)
+					if($liste_quete[$i]['objectif'][$j]->nombre >= $row['objectif'][$j]->nombre)
 					{
 						$valid_objectif[$j] = true;
 					}
@@ -67,31 +69,31 @@ function verif_action($type_cible, $joueur, $mode)
 					if($row['objectif'][$j]->cible == $type_cible OR ($row['objectif'][$j]->cible == 'P0' AND $type_cible[0] == 'P') OR ($type_cible != 'J127' AND intval($id_type_cible) >= intval($id_cible) AND $type_cible[0] == 'J' AND $type_cible_objectif[0] == 'J'))
 					{
 						$echo .= "Ca c'est ok !\n";
-						$requis = explode(';', $joueur['quete'][$i]['objectif'][$j]->requis);
+						$requis = explode(';', $liste_quete[$i]['objectif'][$j]->requis);
 						$check = false;
 						foreach($requis as $requi)
 						{
-							if($joueur['quete'][$i]['objectif'][$j]->requis == '' OR $valid_objectif[$joueur['quete'][$i]['objectif'][$j]->requis])
+							if($liste_quete[$i]['objectif'][$j]->requis == '' OR $valid_objectif[$liste_quete[$i]['objectif'][$j]->requis])
 							{
 								$check = true;
 							}
 						}
-						if($check) $joueur['quete'][$i]['objectif'][$j]->nombre++;
-						if($joueur['quete'][$i]['objectif'][$j]->nombre >= $row['objectif'][$j]->nombre)
+						if($check) $liste_quete[$i]['objectif'][$j]->nombre++;
+						if($liste_quete[$i]['objectif'][$j]->nombre >= $row['objectif'][$j]->nombre)
 						{
-							$joueur['quete'][$i]['objectif'][$j]->nombre = $row['objectif'][$j]->nombre;
+							$liste_quete[$i]['objectif'][$j]->nombre = $row['objectif'][$j]->nombre;
 							$valid_objectif[$i] = true;
 						}
-						if(verif_quete($joueur['quete'][$i]['id_quete'], $i, $joueur))
+						if(verif_quete($liste_quete[$i]['id_quete'], $i, $joueur))
 						{
-							fin_quete($joueur, $i, $joueur['quete'][$i]['id_quete']);
+							fin_quete($joueur, $i, $liste_quete[$i]['id_quete']);
 							$joueur = recupperso($joueur->get_id());
 							$count--;
 						}
 						else
 						{
 							//Mis à jour des quêtes du perso
-							$quete = serialize($joueur['quete']);
+							$quete = serialize($liste_quete);
 							$requete = "UPDATE perso SET quete = '".$quete."' WHERE ID = ".$joueur->get_id();
 							$req = $db->query($requete);
 						}
@@ -112,9 +114,10 @@ function fin_quete($joueur, $id_quete_joueur, $id_quete)
 	$requete = "SELECT id, nom, objectif, honneur, star, exp, reward, mode FROM quete WHERE ID = ".$id_quete;
 	$req = $db->query($requete);
 	$row = $db->read_array($req);
+	$liste_quete = $joueur->get_liste_quete();
 	//Validation de la quête et mis à jour des quêtes du perso
-	array_splice($joueur['quete'], $id_quete_joueur, 1);
-	$quete = serialize($joueur['quete']);
+	array_splice($liste_quete, $id_quete_joueur, 1);
+	$quete = serialize($liste_quete);
 	//On vérifie si la quète a déjà était fini, si non, on la mets dans les quètes finies
 	$quete_fini = explode(';', $joueur['quete_fini']);
 	if(!in_array($id_quete, $quete_fini))
@@ -184,9 +187,10 @@ function affiche_quetes($fournisseur, $joueur)
 	global $db, $R;
 	$return = array();
 	$quetes = array();
-	if(is_array($joueur->get_liste_quete()))
+	$liste_quete = $joueur->get_liste_quete();
+	if(is_array($liste_quete))
 	{
-		foreach($joueur->get_liste_quete() as $quete)
+		foreach($liste_quete as $quete)
 		{
 			$quetes[] = $quete['id_quete'];
 		}
@@ -244,13 +248,14 @@ function prend_quete($id_quete, $joueur)
 	$requete = "SELECT * FROM quete WHERE id = ".$id_quete;
 	$req = $db->query($requete);
 	$row = $db->read_array($req);
-	$numero_quete = (count($joueur['quete']));
+	$liste_quete = $joueur->get_liste_quete();
+	$numero_quete = (count($liste_quete));
 	$valid = true;
 	$G_erreur = '';
 	//Vérifie si le joueur n'a pas déjà pris la quète.
-	if($joueur['quete'] != '')
+	if($liste_quete != '')
 	{
-		foreach($joueur['quete'] as $quest)
+		foreach($liste_quete as $quest)
 		{
 			if($quest['id_quete'] == $id_quete) $valid = false;
 		}
@@ -260,7 +265,7 @@ function prend_quete($id_quete, $joueur)
 		$numero_quete = 0;
 	}
 	//Vérifie si il peut prendre cette quète
-	$quete_fini = explode(';', $joueur['quete_fini']);
+	$quete_fini = explode(';', $joueur->get_quete_fini());
 	$quete_requis = explode(';', $row['quete_requis']);
 	foreach($quete_requis as $requis)
 	{
@@ -273,13 +278,13 @@ function prend_quete($id_quete, $joueur)
 		$i = 0;
 		while($i < $count)
 		{
-			$joueur['quete'][$numero_quete]['objectif'][$i]->cible = $quete[$i]->cible;
-			$joueur['quete'][$numero_quete]['objectif'][$i]->requis = $quete[$i]->requis;
-			$joueur['quete'][$numero_quete]['id_quete'] = $row['id'];
-			$joueur['quete'][$numero_quete]['objectif'][$i]->nombre = 0;
+			$liste_quete[$numero_quete]['objectif'][$i]->cible = $quete[$i]->cible;
+			$liste_quete[$numero_quete]['objectif'][$i]->requis = $quete[$i]->requis;
+			$liste_quete[$numero_quete]['id_quete'] = $row['id'];
+			$liste_quete[$numero_quete]['objectif'][$i]->nombre = 0;
 			$i++;
 		}
-		$joueur_quete = serialize($joueur['quete']);
+		$joueur_quete = serialize($liste_quete);
 		$requete = "UPDATE perso SET quete = '".$joueur_quete."' WHERE ID = ".$joueur->get_id();
 		$req = $db->query($requete);
 	}
@@ -296,11 +301,12 @@ function verif_inventaire($id_quete, $joueur)
 {
 	global $db;
 	$i = 0;
-	$count = count($joueur['quete']);
+	$liste_quete = $joueur->get_liste_quete();
+	$count = count($liste_quete);
 	$check = false;
 	while($i < $count AND !$check)
 	{
-		if($joueur['quete'][$i]['id_quete'] == $id_quete)
+		if($liste_quete[$i]['id_quete'] == $id_quete)
 		{
 			$check = true;
 			$id_quete_joueur = $i;
@@ -329,7 +335,7 @@ function verif_inventaire($id_quete, $joueur)
 			$count = count($row['objectif']);
 			while($i < $count AND $check)
 			{
-				$joueur['quete'][$id_quete_joueur]['objectif'][$i]->nombre = 1;
+				$liste_quete[$id_quete_joueur]['objectif'][$i]->nombre = 1;
 				$i++;
 			}
 			verif_quete($id_quete, $id_quete_joueur, $joueur);
@@ -342,8 +348,9 @@ function verif_inventaire($id_quete, $joueur)
 function supprime_quete($joueur, $quete_joueur)
 {
 	global $db;
-	array_splice($joueur['quete'], $quete_joueur, 1);
-	$requete = "UPDATE perso SET quete = '".serialize($joueur['quete'])."' WHERE ID = ".$joueur->get_id();
+	$liste_quete = $joueur->get_liste_quete();
+	array_splice($liste_quete, $quete_joueur, 1);
+	$requete = "UPDATE perso SET quete = '".serialize($liste_quete)."' WHERE ID = ".$joueur->get_id();
 	$db->query($requete);
 	return $joueur;
 }

@@ -10,7 +10,8 @@ $joueur = new perso($_SESSION['ID']);
 
 //Véifie si le perso est mort
 
-$R = get_royaume_info($joueur->get_race(), $Trace[$joueur->get_race()]['numrace']);
+$R = new royaume($Trace[$joueur->get_race()]['numrace']);
+$R->get_diplo($joueur->get_race());
 
 $_SESSION['position'] = convert_in_pos($joueur->get_x(), $joueur->get_y());
 $W_distance = detection_distance($W_case,$_SESSION["position"]);
@@ -31,34 +32,37 @@ if (isset($_POST['action']))
 			//Si c'est pour une bourgade on vérifie combien il y en a déjà
 			if($row['type'] == 'bourg')
 			{
-				$nb_bourg = nb_bourg($R['ID']);
-				$nb_case = nb_case($R['ID']);
+				$nb_bourg = nb_bourg($R->get_id());
+				$nb_case = nb_case($R->get_id());
 				if(($nb_bourg + $nombre - 1) >= ceil($nb_case / 250)) $check = false;
 			}
 			//On vérifie les stars
-			if($R['star'] >= ($row['prix'] * $nombre) && $check)
+			if($R->get_star() >= ($row['prix'] * $nombre) && $check)
 			{
 				//On vérifie les ressources
-				if(($R['pierre'] >= $row['pierre'] * $nombre) && ($R['bois'] >= $row['bois'] * $nombre) && ($R['eau'] >= $row['eau'] * $nombre) && ($R['charbon'] >= $row['charbon'] * $nombre) && ($R['sable'] >= $row['sable'] * $nombre) && ($R['essence'] >= $row['essence'] * $nombre))
+				if(($R->get_pierre() >= $row['pierre'] * $nombre) && ($R->get_bois() >= $row['bois'] * $nombre) && ($R->get_eau() >= $row['eau'] * $nombre) && ($R->get_charbon() >= $row['charbon'] * $nombre) && ($R->get_sable() >= $row['sable'] * $nombre) && ($R->get_essence() >= $row['essence'] * $nombre))
 				{
 					$i = 0;
 					while($i < $nombre)
 					{
 						//Achat
-						$requete = "INSERT INTO depot_royaume VALUES ('', ".$row['id'].", ".$R['ID'].")";
+						$requete = "INSERT INTO depot_royaume VALUES ('', ".$row['id'].", ".$R->get_id().")";
 						$db->query($requete);
 						//On rajoute un bourg au compteur
 						if($row['type'] == 'bourg')
 						{
-							$requete = "UPDATE royaume SET bourg = bourg + 1 WHERE ID = ".$R['ID'];
-							$db->query($requete);
+							$R->set_bourg($R->get_bourg() + 1);
 						}
 						//On enlève les stars au royaume
-						$requete = "UPDATE royaume SET star = star - ".$row['prix'].", bois = bois - ".$row['bois'].", pierre = pierre - ".$row['pierre'].", eau = eau - ".$row['eau'].", charbon = charbon - ".$row['charbon'].", sable = sable - ".$row['sable'].", essence = essence - ".$row['essence']." WHERE ID = ".$R['ID'];
-						if($db->query($requete))
-						{
-							echo '<h6>'.$row['nom'].' bien acheté.</h6><br />';
-						}
+						$R->set_star($R->get_star() - $row['prix']);
+						$R->set_eau($R->get_eau() - $row['eau']);
+						$R->set_pierre($R->get_pierre() - $row['pierre']);
+						$R->set_bois($R->get_bois() - $row['bois']);
+						$R->set_sable($R->get_sable() - $row['sable']);
+						$R->set_essence($R->get_essence() - $row['essence']);
+						$R->set_charbon($R->get_charbon() - $row['charbon']);
+						$R->sauver();
+						echo '<h6>'.$row['nom'].' bien acheté.</h6><br />';
 						$i++;
 					}
 				}
@@ -79,7 +83,7 @@ if (isset($_POST['action']))
 			$message = addslashes($_POST['message']);
 			if ($message != '')
 			{
-				$requete = "UPDATE motk SET message = '".$message."', date = ".time()." WHERE id_royaume = ".$R['ID'];
+				$requete = "UPDATE motk SET message = '".$message."', date = ".time()." WHERE id_royaume = ".$R->get_id();
 				if($req = $db->query($requete)) 
 				{
 					echo '<h6>Message du roi bien modifié !</h6>';

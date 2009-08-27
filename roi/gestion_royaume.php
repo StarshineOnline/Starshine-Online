@@ -97,13 +97,13 @@ if($joueur->get_rang_royaume() != 6)
 					$image_diplo = '../image/icone/diplomatie_paixdurable.png';					
 					break;
 					case '2' :
-					$image_diplo = '../image/icone/diplomatie_paix.png';					
+					$image_diplo = '../image/icone/diplomatie_paixdurable.png';
 					break;
 					case '3' :
-					$image_diplo = '../image/icone/diplomatie_bonterme.png';					
+					$image_diplo = '../image/icone/diplomatie_paix.png';					
 					break;
 					case '4' :
-					$image_diplo = '../image/icone/diplomatie_neutre.png';					
+					$image_diplo = '../image/icone/diplomatie_bonterme.png';					
 					break;
 					case '5' :
 					$image_diplo = '../image/icone/diplomatie_neutre.png';					
@@ -116,8 +116,13 @@ if($joueur->get_rang_royaume() != 6)
 					break;
 					case '8' :
 					$image_diplo = '../image/icone/diplomatie_guerredurable.png';
+					break;				
+					case '9' :
+					$image_diplo = '../image/icone/diplomatie_guerredurable.png';
 					break;
-				
+					case '10' :
+					$image_diplo = '../image/icone/diplomatie_guerredurable.png';
+					break;
 				}
 				echo '
 		<tr style="vertical-align : middle;">
@@ -763,8 +768,7 @@ if($joueur->get_rang_royaume() != 6)
 			<div id="cout_ressource" style="position : relative; right : 0px; display : none; z-index : 10;">
 				<ul>
 				<?php
-				$yearmonth = date("Ym");
-				$requete = "SELECT *, (SUM(nombre / prix) / COUNT(*)) as moyenne, COUNT(*) as tot FROM `bourse_royaume` WHERE `id_royaume_acheteur` != 0 AND `actif` = 0 AND EXTRACT(YEAR_MONTH FROM fin_vente) >= '".$yearmonth."' GROUP BY ressource";
+				$requete = "SELECT *, (SUM(prix / nombre) / COUNT(*)) as moyenne, COUNT(*) as tot FROM `bourse_royaume` WHERE `id_royaume_acheteur` != 0 AND `actif` = 0 AND fin_vente > DATE_SUB(NOW(), INTERVAL 31 DAY) GROUP BY ressource";
 				$req = $db->query($requete);
 				while($row = $db->read_assoc($req))
 				{

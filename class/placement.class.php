@@ -1,115 +1,544 @@
 <?php
-if (file_exists('../root.php'))
-  include_once('../root.php');
-?><?php
 class placement
 {
-	public $id_placement;
-	public $id_royaume;
-	public $id_batiment;
-	public $x;
-	public $y;
-	public $type;
-	public $hp;
-	public $debut_placement;
-	public $fin_placement;
-	public $rez;
-	public $nom;
-	public $image;
+/**
+    * @access private
+    * @var int(10)
+    */
+	private $id;
+
+	/**
+    * @access private
+    * @var varchar(50)
+    */
+	private $type;
+
+	/**
+    * @access private
+    * @var tinyint(3)
+    */
+	private $x;
+
+	/**
+    * @access private
+    * @var tinyint(3)
+    */
+	private $y;
+
+	/**
+    * @access private
+    * @var tinyint(3)
+    */
+	private $royaume;
+
+	/**
+    * @access private
+    * @var int(10)
+    */
+	private $debut_placement;
+
+	/**
+    * @access private
+    * @var int(10)
+    */
+	private $fin_placement;
+
+	/**
+    * @access private
+    * @var int(10)
+    */
+	private $id_batiment;
+
+	/**
+    * @access private
+    * @var int(10)
+    */
+	private $hp;
+
+	/**
+    * @access private
+    * @var varchar(50)
+    */
+	private $nom;
+
+	/**
+    * @access private
+    * @var int(10)
+    */
+	private $rez;
+
+	/**
+    * @access private
+    * @var tinyint(3)
+    */
+	private $point_victoire;
+
 	
-	/**	
-	    *  	Constructeur permettant la création d'un etat de message.
-	    *	Les valeurs par défaut sont celles de la base de donnée.
-	    *	Le constructeur accepte plusieurs types d'appels:
-	    *		-Objets() qui construit un etat "vide".
-	    *		-Objets($id) qui va chercher l'etat dont l'id est $id_bourse_royaume dans la base.
-	**/
-	function __construct($id_placement = 0, $id_royaume = 0, $id_batiment = 0, $x = 0, $y = 0, $hp = 0, $nom = '', $rez = 0, $type = '', $debut_placement = 0, $fin_placement = 0)
+	/**
+	* @access public
+
+	* @param int(10) id attribut
+	* @param varchar(50) type attribut
+	* @param tinyint(3) x attribut
+	* @param tinyint(3) y attribut
+	* @param tinyint(3) royaume attribut
+	* @param int(10) debut_placement attribut
+	* @param int(10) fin_placement attribut
+	* @param int(10) id_batiment attribut
+	* @param int(10) hp attribut
+	* @param varchar(50) nom attribut
+	* @param int(10) rez attribut
+	* @param tinyint(3) point_victoire attribut
+	* @return none
+	*/
+	function __construct($id = 0, $type = '', $x = '', $y = '', $royaume = '', $debut_placement = '', $fin_placement = '', $id_batiment = '', $hp = '', $nom = '', $rez = '', $point_victoire = '')
 	{
 		global $db;
-		//Verification du nombre et du type d'argument pour construire l'etat adequat.
-		if( (func_num_args() == 1) && is_numeric($id_placement) )
+		//Verification nombre et du type d'argument pour construire l'etat adequat.
+		if( (func_num_args() == 1) && is_numeric($id) )
 		{
-			$requeteSQL = $db->query('SELECT royaume, id_batiment, x, y, hp, nom, rez, type, debut_placement, fin_placement FROM placement WHERE id = '.$id_placement);
+			$requeteSQL = $db->query("SELECT type, x, y, royaume, debut_placement, fin_placement, id_batiment, hp, nom, rez, point_victoire FROM placement WHERE id = ".$id);
 			//Si le thread est dans la base, on le charge sinon on crée un thread vide.
 			if( $db->num_rows($requeteSQL) > 0 )
 			{
-				list($this->id_royaume, $this->id_batiment, $this->x, $this->y, $this->hp, $this->nom, $this->rez, $this->type, $this->debut_placement, $this->fin_placement) = $db->read_row($requeteSQL);
+				list($this->type, $this->x, $this->y, $this->royaume, $this->debut_placement, $this->fin_placement, $this->id_batiment, $this->hp, $this->nom, $this->rez, $this->point_victoire) = $db->read_array($requeteSQL);
 			}
-			else
-				$this->__construct();
-			$this->id_placement = $id_placement;
+			else $this->__construct();
+			$this->id = $id;
 		}
-		elseif( (func_num_args() == 1) && is_array($id_placement) )
+		elseif( (func_num_args() == 1) && is_array($id) )
 		{
-			$this->id_placement = $id_placement['id'];
-			$this->id_royaume = $id_placement['royaume'];
-			$this->id_batiment = $id_placement['id_batiment'];
-			$this->x = $id_placement['x'];
-			$this->y = $id_placement['y'];
-			$this->hp = $id_placement['hp'];
-			$this->nom = $id_placement['nom'];
-			$this->rez = $id_placement['rez'];
-			$this->type = $id_placement['type'];
-			$this->debut_placement = $id_placement['debut_placement'];
-			$this->fin_placement = $id_placement['fin_placement'];
-			$this->image = $id_placement['type'];
-		}
+			$this->id = $id['id'];
+			$this->type = $id['type'];
+			$this->x = $id['x'];
+			$this->y = $id['y'];
+			$this->royaume = $id['royaume'];
+			$this->debut_placement = $id['debut_placement'];
+			$this->fin_placement = $id['fin_placement'];
+			$this->id_batiment = $id['id_batiment'];
+			$this->hp = $id['hp'];
+			$this->nom = $id['nom'];
+			$this->rez = $id['rez'];
+			$this->point_victoire = $id['point_victoire'];
+			}
 		else
 		{
-			$this->id_royaume = $id_royaume;
-			$this->id_batiment = $id_batiment;
+			$this->type = $type;
 			$this->x = $x;
 			$this->y = $y;
+			$this->royaume = $royaume;
+			$this->debut_placement = $debut_placement;
+			$this->fin_placement = $fin_placement;
+			$this->id_batiment = $id_batiment;
 			$this->hp = $hp;
 			$this->nom = $nom;
 			$this->rez = $rez;
-			$this->type = $type;
-			$this->debut_placement = $debut_placement;
-			if($this->debut_placement == 0) $this->debut_placement = time();
-			$this->fin_placement = $fin_placement;
-			$this->id_placement = $id_placement;
-			$this->image = $type;
+			$this->point_victoire = $point_victoire;
+			$this->id = $id;
 		}
 	}
-	
-	//Fonction d'ajout / modification.
-	function sauver()
+
+	/**
+	* Sauvegarde automatiquement en base de donnée. Si c'est un nouvel objet, INSERT, sinon UPDATE
+	* @access public
+	* @param bool $force force la mis à jour de tous les attributs de l'objet si true, sinon uniquement ceux qui ont été modifiés
+	* @return none
+	*/
+	function sauver($force = false)
 	{
 		global $db;
-		if( $this->id_placement > 0 )
+		if( $this->id > 0 )
 		{
-			$requete = 'UPDATE placement SET ';
-			$requete .= 'royaume = '.$this->id_royaume.', id_batiment = '.$this->id_batiment.', x = '.$this->x.', y = '.$this->y.', hp = '.$this->hp.', nom = "'.$this->nom.'", rez = '.$this->rez.', type = "'.$this->type.'", debut_placement = '.$this->debut_placement.', fin_placement = '.$this->fin_placement;
-			$requete .= ' WHERE id = '.$this->id_placement;
-			//echo $requete;
-			$db->query($requete);
+			if(count($this->champs_modif) > 0)
+			{
+				if($force) $champs = 'type = "'.mysql_escape_string($this->type).'", x = "'.mysql_escape_string($this->x).'", y = "'.mysql_escape_string($this->y).'", royaume = "'.mysql_escape_string($this->royaume).'", debut_placement = "'.mysql_escape_string($this->debut_placement).'", fin_placement = "'.mysql_escape_string($this->fin_placement).'", id_batiment = "'.mysql_escape_string($this->id_batiment).'", hp = "'.mysql_escape_string($this->hp).'", nom = "'.mysql_escape_string($this->nom).'", rez = "'.mysql_escape_string($this->rez).'", point_victoire = "'.mysql_escape_string($this->point_victoire).'"';
+				else
+				{
+					$champs = '';
+					foreach($this->champs_modif as $champ)
+					{
+						$champs[] .= $champ.' = "'.mysql_escape_string($this->{$champ}).'"';
+					}
+					$champs = implode(', ', $champs);
+				}
+				$requete = 'UPDATE placement SET ';
+				$requete .= $champs;
+				$requete .= ' WHERE id = '.$this->id;
+				$db->query($requete);
+				$this->champs_modif = array();
+			}
 		}
 		else
 		{
-			$requete = 'INSERT INTO placement (royaume, id_batiment, x, y, hp, nom, rez, type, debut_placement, fin_placement) VALUES(';
-			$requete .= $this->id_royaume.', '.$this->id_batiment.', '.$this->x.', '.$this->y.', '.$this->hp.', "'.$this->nom.'", '.$this->rez.', "'.$this->type.'", '.$this->debut_placement.', '.$this->fin_placement.')';
-			//echo $requete;
+			$requete = 'INSERT INTO placement (type, x, y, royaume, debut_placement, fin_placement, id_batiment, hp, nom, rez, point_victoire) VALUES(';
+			$requete .= '"'.mysql_escape_string($this->type).'", "'.mysql_escape_string($this->x).'", "'.mysql_escape_string($this->y).'", "'.mysql_escape_string($this->royaume).'", "'.mysql_escape_string($this->debut_placement).'", "'.mysql_escape_string($this->fin_placement).'", "'.mysql_escape_string($this->id_batiment).'", "'.mysql_escape_string($this->hp).'", "'.mysql_escape_string($this->nom).'", "'.mysql_escape_string($this->rez).'", "'.mysql_escape_string($this->point_victoire).'")';
 			$db->query($requete);
 			//Récuperation du dernier ID inséré.
-			list($this->id_placement) = $db->last_insert_id();
+			$this->id = $db->last_insert_id();
 		}
 	}
-	
-	//supprimer l'etat de la base.
+
+	/**
+	* Supprime de la base de donnée
+	* @access public
+	* @param none
+	* @return none
+	*/
 	function supprimer()
 	{
 		global $db;
-		if( $this->id_placement > 0 )
+		if( $this->id > 0 )
 		{
-			$requete = 'DELETE FROM cplacement WHERE id_placement = '.$this->id_placement;
+			$requete = 'DELETE FROM placement WHERE id = '.$this->id;
 			$db->query($requete);
 		}
 	}
-	
+
+	/**
+	* Supprime de la base de donnée
+	* @access static
+	* @param array|string $champs champs servant a trouver les résultats
+	* @param array|string $valeurs valeurs servant a trouver les résultats
+	* @param string $ordre ordre de tri
+	* @param bool|string $keys Si false, stockage en tableau classique, si string stockage avec sous tableau en fonction du champ $keys
+	* @return array $return liste d'objets
+	*/
+	static function create($champs, $valeurs, $ordre = 'id ASC', $keys = false, $where = false)
+	{
+		global $db;
+		$return = array();
+		if(!$where)
+		{
+			if(!is_array($champs))
+			{
+				$array_champs[] = $champs;
+				$array_valeurs[] = $valeurs;
+			}
+			else
+			{
+				$array_champs = $champs;
+				$array_valeurs = $valeurs;
+			}
+			foreach($array_champs as $key => $champ)
+			{
+				$where[] = $champ .' = "'.mysql_escape_string($array_valeurs[$key]).'"';
+			}
+			$where = implode(' AND ', $where);
+			if($champs === 0)
+			{
+				$where = ' 1 ';
+			}
+		}
+
+		$requete = "SELECT id, type, x, y, royaume, debut_placement, fin_placement, id_batiment, hp, nom, rez, point_victoire FROM placement WHERE ".$where." ORDER BY ".$ordre;
+		$req = $db->query($requete);
+		if($db->num_rows($req) > 0)
+		{
+			while($row = $db->read_assoc($req))
+			{
+				if(!$keys) $return[] = new placement($row);
+				else $return[$row[$keys]][] = new placement($row);
+			}
+		}
+		else $return = array();
+		return $return;
+	}
+
+	/**
+	* Affiche l'objet sous forme de string
+	* @access public
+	* @param none
+	* @return string objet en string
+	*/
 	function __toString()
 	{
-		return $this->id_royaume;
-	}	
+		return 'id = '.$this->id.', type = '.$this->type.', x = '.$this->x.', y = '.$this->y.', royaume = '.$this->royaume.', debut_placement = '.$this->debut_placement.', fin_placement = '.$this->fin_placement.', id_batiment = '.$this->id_batiment.', hp = '.$this->hp.', nom = '.$this->nom.', rez = '.$this->rez.', point_victoire = '.$this->point_victoire;
+	}
+	
+	/**
+	* Retourne la valeur de l'attribut
+	* @access public
+	* @param none
+	* @return int(10) $id valeur de l'attribut id
+	*/
+	function get_id()
+	{
+		return $this->id;
+	}
+
+	/**
+	* Retourne la valeur de l'attribut
+	* @access public
+	* @param none
+	* @return varchar(50) $type valeur de l'attribut type
+	*/
+	function get_type()
+	{
+		return $this->type;
+	}
+
+	/**
+	* Retourne la valeur de l'attribut
+	* @access public
+	* @param none
+	* @return tinyint(3) $x valeur de l'attribut x
+	*/
+	function get_x()
+	{
+		return $this->x;
+	}
+
+	/**
+	* Retourne la valeur de l'attribut
+	* @access public
+	* @param none
+	* @return tinyint(3) $y valeur de l'attribut y
+	*/
+	function get_y()
+	{
+		return $this->y;
+	}
+
+	/**
+	* Retourne la valeur de l'attribut
+	* @access public
+	* @param none
+	* @return tinyint(3) $royaume valeur de l'attribut royaume
+	*/
+	function get_royaume()
+	{
+		return $this->royaume;
+	}
+
+	/**
+	* Retourne la valeur de l'attribut
+	* @access public
+	* @param none
+	* @return int(10) $debut_placement valeur de l'attribut debut_placement
+	*/
+	function get_debut_placement()
+	{
+		return $this->debut_placement;
+	}
+
+	/**
+	* Retourne la valeur de l'attribut
+	* @access public
+	* @param none
+	* @return int(10) $fin_placement valeur de l'attribut fin_placement
+	*/
+	function get_fin_placement()
+	{
+		return $this->fin_placement;
+	}
+
+	/**
+	* Retourne la valeur de l'attribut
+	* @access public
+	* @param none
+	* @return int(10) $id_batiment valeur de l'attribut id_batiment
+	*/
+	function get_id_batiment()
+	{
+		return $this->id_batiment;
+	}
+
+	/**
+	* Retourne la valeur de l'attribut
+	* @access public
+	* @param none
+	* @return int(10) $hp valeur de l'attribut hp
+	*/
+	function get_hp()
+	{
+		return $this->hp;
+	}
+
+	/**
+	* Retourne la valeur de l'attribut
+	* @access public
+	* @param none
+	* @return varchar(50) $nom valeur de l'attribut nom
+	*/
+	function get_nom()
+	{
+		return $this->nom;
+	}
+
+	/**
+	* Retourne la valeur de l'attribut
+	* @access public
+	* @param none
+	* @return int(10) $rez valeur de l'attribut rez
+	*/
+	function get_rez()
+	{
+		return $this->rez;
+	}
+
+	/**
+	* Retourne la valeur de l'attribut
+	* @access public
+	* @param none
+	* @return tinyint(3) $point_victoire valeur de l'attribut point_victoire
+	*/
+	function get_point_victoire()
+	{
+		return $this->point_victoire;
+	}
+
+	/**
+	* Modifie la valeur de l'attribut
+	* @access public
+	* @param int(10) $id valeur de l'attribut
+	* @return none
+	*/
+	function set_id($id)
+	{
+		$this->id = $id;
+		$this->champs_modif[] = 'id';
+	}
+
+	/**
+	* Modifie la valeur de l'attribut
+	* @access public
+	* @param varchar(50) $type valeur de l'attribut
+	* @return none
+	*/
+	function set_type($type)
+	{
+		$this->type = $type;
+		$this->champs_modif[] = 'type';
+	}
+
+	/**
+	* Modifie la valeur de l'attribut
+	* @access public
+	* @param tinyint(3) $x valeur de l'attribut
+	* @return none
+	*/
+	function set_x($x)
+	{
+		$this->x = $x;
+		$this->champs_modif[] = 'x';
+	}
+
+	/**
+	* Modifie la valeur de l'attribut
+	* @access public
+	* @param tinyint(3) $y valeur de l'attribut
+	* @return none
+	*/
+	function set_y($y)
+	{
+		$this->y = $y;
+		$this->champs_modif[] = 'y';
+	}
+
+	/**
+	* Modifie la valeur de l'attribut
+	* @access public
+	* @param tinyint(3) $royaume valeur de l'attribut
+	* @return none
+	*/
+	function set_royaume($royaume)
+	{
+		$this->royaume = $royaume;
+		$this->champs_modif[] = 'royaume';
+	}
+
+	/**
+	* Modifie la valeur de l'attribut
+	* @access public
+	* @param int(10) $debut_placement valeur de l'attribut
+	* @return none
+	*/
+	function set_debut_placement($debut_placement)
+	{
+		$this->debut_placement = $debut_placement;
+		$this->champs_modif[] = 'debut_placement';
+	}
+
+	/**
+	* Modifie la valeur de l'attribut
+	* @access public
+	* @param int(10) $fin_placement valeur de l'attribut
+	* @return none
+	*/
+	function set_fin_placement($fin_placement)
+	{
+		$this->fin_placement = $fin_placement;
+		$this->champs_modif[] = 'fin_placement';
+	}
+
+	/**
+	* Modifie la valeur de l'attribut
+	* @access public
+	* @param int(10) $id_batiment valeur de l'attribut
+	* @return none
+	*/
+	function set_id_batiment($id_batiment)
+	{
+		$this->id_batiment = $id_batiment;
+		$this->champs_modif[] = 'id_batiment';
+	}
+
+	/**
+	* Modifie la valeur de l'attribut
+	* @access public
+	* @param int(10) $hp valeur de l'attribut
+	* @return none
+	*/
+	function set_hp($hp)
+	{
+		$this->hp = $hp;
+		$this->champs_modif[] = 'hp';
+	}
+
+	/**
+	* Modifie la valeur de l'attribut
+	* @access public
+	* @param varchar(50) $nom valeur de l'attribut
+	* @return none
+	*/
+	function set_nom($nom)
+	{
+		$this->nom = $nom;
+		$this->champs_modif[] = 'nom';
+	}
+
+	/**
+	* Modifie la valeur de l'attribut
+	* @access public
+	* @param int(10) $rez valeur de l'attribut
+	* @return none
+	*/
+	function set_rez($rez)
+	{
+		$this->rez = $rez;
+		$this->champs_modif[] = 'rez';
+	}
+
+	/**
+	* Modifie la valeur de l'attribut
+	* @access public
+	* @param tinyint(3) $point_victoire valeur de l'attribut
+	* @return none
+	*/
+	function set_point_victoire($point_victoire)
+	{
+		$this->point_victoire = $point_victoire;
+		$this->champs_modif[] = 'point_victoire';
+	}
+	//fonction
+	function get_temps_total()
+	{
+		return $this->fin_placement - $this->debut_placement;
+	}
+
+	function get_temps_restant()
+	{
+		return time() - $this->debut_placement;
+	}
+
 }
-?>

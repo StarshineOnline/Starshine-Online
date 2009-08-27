@@ -628,7 +628,7 @@ function echange_objet_suppr($id_objet_echange)
 
 function verif_echange_joueur($id_echange, $id_joueur, $id_objet = 0, $type_objet = 0)
 {
-	$joueur = recupperso($id_joueur);
+	$joueur = new perso($id_joueur);
 	$echange = recup_echange($id_echange);
 	//Vérification des objets
 	if($id_objet !== 0 && $type_objet == 'objet') $echange['objet'][] = array('id_j' => $id_joueur, 'objet' => $id_objet);
@@ -638,9 +638,9 @@ function verif_echange_joueur($id_echange, $id_joueur, $id_objet = 0, $type_obje
 	{
 		if($objet['id_j'] == $id_joueur) $echange_objets[$objet['objet']]++;
 	}
-	if($joueur['inventaire_slot'] != '')
+	if($joueur->get_inventaire_slot() != '')
 	{
-		foreach($joueur['inventaire_slot'] as $invent)
+		foreach($joueur->get_inventaire_slot_partie() as $invent)
 		{
 			$invent_d = decompose_objet($invent);
 			if($invent_d['stack'] == '') $invent_d['stack'] = 1;
@@ -656,7 +656,7 @@ function verif_echange_joueur($id_echange, $id_joueur, $id_objet = 0, $type_obje
 	if($type_objet == 'star')
 	{
 		//Si il a assez de stars	
-		if($joueur['star'] >= $id_objet)
+		if($joueur->get_star() >= $id_objet)
 		{
 			//Si ya déjà des stars, on les suppriment
 			if(array_key_exists('star', $echange) && array_key_exists($id_joueur, $echange['star']))

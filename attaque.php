@@ -32,14 +32,41 @@ switch($type)
 	break;
 	case 'batiment' :
 		$joueur = new perso($_SESSION['ID']);
-		$map_batiment = new construction($_GET['id_batiment']);
+		if($_GET['table'] == 'construction') $map_batiment = new construction($_GET['id_batiment']);
+		else $map_batiment = new placement($_GET['id_batiment']);
 		$joueur->action_do = $joueur->recupaction('attaque');
 		$joueur_defenseur = new batiment($map_batiment->get_id_batiment());
+		if($_GET['table'] == 'construction') $joueur_defenseur->coef = 1;
+		else $joueur_defenseur->coef = $map_batiment->get_temps_restant() / $map_batiment->get_temps_total();
 		$joueur_defenseur->hp_max = $joueur_defenseur->get_hp();
 		$joueur_defenseur->set_hp($map_batiment->get_hp());
 		$joueur_defenseur->x = $map_batiment->get_x();
 		$joueur_defenseur->y = $map_batiment->get_y();
 		$attaquant = new entite('joueur', $joueur);
+		$defenseur = new entite('batiment', $joueur_defenseur);
+	break;
+	case 'siege' :
+		$map_siege = new construction($_GET['id_arme_de_siege']);
+		if($_GET['table'] == 'construction') $map_batiment = new construction($_GET['id_batiment']);
+		else $map_batiment = new placement($_GET['id_batiment']);
+		$joueur = new perso($_SESSION['ID']);
+		$siege = new batiment($map_siege->get_id_batiment());
+		$siege->bonus_architecture = 1 + ($joueur->get_architecture() / 100);
+		$siege->hp_max = $siege->get_hp();
+		$siege->set_hp($map_siege->get_hp());
+		$siege->x = $map_siege->get_x();
+		$siege->y = $map_siege->get_y();
+		$joueur_defenseur = new batiment($map_batiment->get_id_batiment());
+		if($_GET['table'] == 'construction') $joueur_defenseur->coef = 1;
+		else $joueur_defenseur->coef = $map_batiment->get_temps_restant() / $map_batiment->get_temps_total();
+		$joueur_defenseur->hp_max = $joueur_defenseur->get_hp();
+		$joueur_defenseur->set_hp($map_batiment->get_hp());
+		$joueur_defenseur->x = $map_batiment->get_x();
+		$joueur_defenseur->y = $map_batiment->get_y();
+		//Si en défense c'est une arme de siège, on applique les dégats 2
+		if($joueur_defenseur->get_type() == 'arme_de_siege') $siege->arme_degat = $siege->get_bonus2();
+		else $siege->arme_degat = $siege->get_bonus1;
+		$attaquant = new entite('siege', $siege);
 		$defenseur = new entite('batiment', $joueur_defenseur);
 	break;
 }
@@ -114,7 +141,8 @@ else
 			}
 		}
 	} //fin $type = 'joueur'
-	$round_total = $G_round_total;
+	if($type == 'siege') $round_total = 1;
+	else $round_total = $G_round_total;
 	$round = 1;
 	$attaquant->etat = array();
 	$defenseur->etat = array();
@@ -384,10 +412,6 @@ else
 					//Update de la base de donnée.
 					//Correction des bonus ignorables
 					corrige_bonus_ignorables($attaquant, $defenseur, $mode, $args, $args_def);
-					//Attaquant
-					$joueur->sauver();
-					//Defenseur
-					$joueur_defenseur->sauver();
 					?>
 					</div>
 					<?php
@@ -401,6 +425,35 @@ else
 			</table>
 					<?php
 				}
+			}
+			//On donne les bons HP à l'attaque et la défense
+			if($type == 'joueur')
+			{
+				$joueur->set_hp($attaquant->get_hp());
+				$joueur->sauver();
+				$joueur_defenseur->set_hp($defenseur->get_hp());
+				$joueur_defenseur->sauver();
+			}
+			if($type == 'monstre')
+			{
+				$joueur->set_hp($attaquant->get_hp());
+				$joueur->sauver();
+				$map_monstre->set_hp($defenseur->get_hp());
+				$map_monstre->sauver();
+			}
+			elseif($type == 'batiment')
+			{
+				$joueur->set_hp($attaquant->get_hp());
+				$joueur->sauver();
+				$map_batiment->set_hp($defenseur->get_hp());
+				$map_batiment->sauver();
+			}
+			elseif($type == 'siege')
+			{
+				$map_siege->set_hp($attaquant->get_hp());
+				$map_siege->sauver();
+				$map_batiment->set_hp($defenseur->get_hp());
+				$map_batiment->sauver();
 			}
 			//Fin du combat
 			if($mode == 'attaquant')
@@ -921,7 +974,6 @@ else
 
 			$joueur->set_pa($joueur->get_pa() - $pa_attaque);
 			$joueur->sauver();
-			$joueur_defenseur->sauver();
 
 			//Mise dans les journaux si attaque pvp
 			if($type == 'joueur')

@@ -144,13 +144,13 @@ if($joueur->get_groupe() == $perso->get_groupe() && $joueur->get_groupe() != 0 &
 		//Listing des buffs
 		foreach($perso->get_buff() as $buff)
 		{
-			echo '<img src="image/buff/'.$buff->get_type().'_p.png" alt="'.$buff->get_type().'" ondblclick="if(confirm(\'Voulez vous supprimer '.$buff->get_nom().' ?\')) envoiInfo(\'suppbuff.php?id='.$buff->get_id().'\', \'perso\');" onmouseover="'.make_overlib('<strong>'.$buff->get_nom().'</strong><br />'.description($buff['description'], $buff).'<br />Durée '.transform_sec_temp($buff->get_fin() - time())).'" onmouseout="return nd();" />';
+			echo '<img src="image/buff/'.$buff->get_type().'_p.png" alt="'.$buff->get_type().'" ondblclick="if(confirm(\'Voulez vous supprimer '.$buff->get_nom().' ?\')) envoiInfo(\'suppbuff.php?id='.$buff->get_id().'\', \'perso\');" onmouseover="'.make_overlib('<strong>'.$buff->get_nom().'</strong><br />'.description($buff->get_description(), $buff).'<br />Durée '.transform_sec_temp($buff->get_fin() - time())).'" onmouseout="return nd();" />';
 		}
 		if(count($perso->get_debuff()) > 0) echo '<br />';
 		//Listing des debuffs
 		foreach($perso->get_debuff() as $buff)
 		{
-			echo '<img src="image/buff/'.$buff->get_type().'_p.png" alt="'.$buff->get_type().'" onmouseover="'.make_overlib('<strong>'.$buff->get_nom().'</strong><br />'.description($buff['description'], $buff).'<br />Durée '.transform_sec_temp($buff->get_fin() - time())).'" onmouseout="return nd();" />';
+			echo '<img src="image/buff/'.$buff->get_type().'_p.png" alt="'.$buff->get_type().'" onmouseover="'.make_overlib('<strong>'.$buff->get_nom().'</strong><br />'.description($buff->get_description(), $buff).'<br />Durée '.transform_sec_temp($buff->get_fin() - time())).'" onmouseout="return nd();" />';
 		}
 	}
 }

@@ -74,7 +74,7 @@ if(!$visu AND isset($_GET['action']))
 					$requete = "SELECT *, batiment.id AS batiment_id, batiment.nom AS batiment_nom  FROM objet_royaume RIGHT JOIN batiment ON batiment.id = objet_royaume.id_batiment WHERE objet_royaume.id = ".sSQL($_GET['id_objet']);
 					$req = $db->query($requete);
 					$row = $db->read_assoc($req);
-					if($R['diplo'] == 127 OR $_GET['type'] == 'arme_de_siege')
+					if($R->diplo == 127 OR $_GET['type'] == 'arme_de_siege')
 					{
 						//On vérifie si ya pas déjà un batiment en construction
 						$requete = "SELECT id FROM placement WHERE x = ".$joueur->get_x()." AND y = ".$joueur->get_y();
@@ -95,13 +95,12 @@ if(!$visu AND isset($_GET['action']))
 									$rez = 0;
 								}
 								else $rez = $row['bonus4'];
-								$requete = "INSERT INTO placement (type, x, y, royaume, debut_placement, fin_placement, id_batiment, hp, nom, rez, pointvictoire) VALUES('".sSQL($_GET['type'])."', '".$joueur->get_x()."', '".$joueur->get_y()."', '".$Trace[$joueur->get_race()]['numrace']."', ".time().", '".$time."', '".$row['batiment_id']."', '".$row['hp']."', '".$row['batiment_nom']."', '".$rez."', '".$row['point_victoire']."')";
+								$requete = "INSERT INTO placement (type, x, y, royaume, debut_placement, fin_placement, id_batiment, hp, nom, rez, point_victoire) VALUES('".sSQL($_GET['type'])."', '".$joueur->get_x()."', '".$joueur->get_y()."', '".$Trace[$joueur->get_race()]['numrace']."', ".time().", '".$time."', '".$row['batiment_id']."', '".$row['hp']."', '".$row['batiment_nom']."', '".$rez."', '".$row['point_victoire']."')";
 								$db->query($requete);
 								//On supprime l'objet de l'inventaire
-								array_splice($joueur->get_inventaire_slot(), $_GET['key_slot'], 1);
-								$inventaire_slot = serialize($joueur->get_inventaire_slot());
-								$requete = "UPDATE perso SET inventaire_slot = '".$inventaire_slot."' WHERE ID = ".$joueur->get_id();
-								$req = $db->query($requete);
+								array_splice($joueur->get_inventaire_slot_partie(), $_GET['key_slot'], 1);
+								$joueur->set_inventaire_slot(serialize($joueur->get_inventaire_slot_partie()));
+								$joueur->sauver();
 								echo '<h6>'.$row['nom'].' posé avec succès</h6>';
 							}
 							else

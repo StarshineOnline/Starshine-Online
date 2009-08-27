@@ -12,7 +12,7 @@ $joueur = new perso($_SESSION['ID']);
 if(array_key_exists('id_echange', $_GET))
 {
 	$echange = recup_echange($_GET['id_echange']);
-	$receveur = recupperso_essentiel($echange['id_j2']);
+	$receveur = new perso($echange['id_j2']);
 	//Vérification si le joueur fait parti du donneur ou receveur
 	if($joueur->get_id() != $echange['id_j1'] AND $joueur->get_id() != $echange['id_j2'])
 	{
@@ -23,17 +23,17 @@ if(array_key_exists('id_echange', $_GET))
 	}
 	else
 	{
-		$j1 = recupperso_essentiel($echange['id_j1']);
-		$j2 = recupperso_essentiel($echange['id_j2']);
+		$j1 = new perso($echange['id_j1']);
+		$j2 = new perso($echange['id_j2']);
 	}
 }
 //Sinon c'est le début d'un echange
 else
 {
 	$W_ID = $_GET['id_joueur'];
-	$receveur = recupperso_essentiel($W_ID);
-	$j1 = recupperso_essentiel($joueur->get_id());
-	$j2 = recupperso_essentiel($W_ID);
+	$receveur = new perso($W_ID);
+	$j1 = new perso($joueur->get_id());
+	$j2 = new perso($W_ID);
 }
 
 
@@ -42,7 +42,7 @@ else
 if(array_key_exists('nouvel_echange', $_GET))
 {
 	//On créé l'échange
-	$requete = "INSERT INTO echange(id_j1, id_j2, statut, date_debut, date_fin) VALUES(".$joueur->get_id().", ".$receveur['ID'].", 'creation', ".time().", ".(time() + 100000).")";
+	$requete = "INSERT INTO echange(id_j1, id_j2, statut, date_debut, date_fin) VALUES(".$joueur->get_id().", ".$receveur->get_id().", 'creation', ".time().", ".(time() + 100000).")";
 	$db->query($requete);
 	$echange = recup_echange($db->last_insert_id());
 }
@@ -51,10 +51,10 @@ if(array_key_exists('nouvel_echange', $_GET))
 if(!isset($echange))
 {
 	$W_ID = $_GET['id_joueur'];
-	$receveur = recupperso_essentiel($W_ID);
+	$receveur = new perso($W_ID);
 	echo '<div class="information_case">';
 	//On demande au joueurs si il veut faire un échange ou en récupérer un ancien
-	$echanges = recup_echange_perso($joueur->get_id(), $receveur['ID']);
+	$echanges = recup_echange_perso($joueur->get_id(), $receveur->get_id());
 	//Il y a déjà eu des échanges
 	if(count($echanges) > 0)
 	{
@@ -108,7 +108,7 @@ if(array_key_exists('valid_etape', $_GET))
 				$titre = $joueur->get_nom().' vous propose un échange';
 				$message = mysql_escape_string($joueur->get_nom().' vous propose un échange[br]
 				Pour voir ce qu\'il vous propose cliquez ici : [echange:'.$_GET['id_echange'].']');
-				$requete = "INSERT INTO message VALUES('', ".$receveur['ID'].", ".$joueur->get_id().", '".$joueur->get_nom()."', '".$receveur['nom']."', '".$titre."', '".$message."', '', '".time()."', 0)";
+				$requete = "INSERT INTO message VALUES('', ".$receveur->get_id().", ".$joueur->get_id().", '".$joueur->get_nom()."', '".$receveur->get_nom()."', '".$titre."', '".$message."', '', '".time()."', 0)";
 				$req = $db->query($requete);
 				//C'est ok
 				echo '<h6>Votre proposition a bien été envoyée</h6>';
@@ -136,8 +136,8 @@ if(array_key_exists('valid_etape', $_GET))
 		case 'finalisation' :
 			//Finalisation de l'échange donc vérifications
 			//Les joueurs doivent être a moins d'une case l'un de l'autre
-			$j1 = recupperso($j1['ID']);
-			$j2 = recupperso($j2['ID']);
+			$j1 = recupperso($j1->get_id());
+			$j2 = recupperso($j2->get_id());
 			$pos1 = convert_in_pos($j1['x'], $j1['y']);
 			$pos2 = convert_in_pos($j2['x'], $j2['y']);
 			if(detection_distance($pos1, $pos2) > 1)
@@ -147,19 +147,19 @@ if(array_key_exists('valid_etape', $_GET))
 			//Vérification que les joueurs ont bien les objets dans leur inventaire
 			else
 			{
-				if(verif_echange($_GET['id_echange'], $j1['ID'], $j2['ID']))
+				if(verif_echange($_GET['id_echange'], $j1->get_id(), $j2->get_id()))
 				{
 					$check = true;
 					//Vérification qu'ils ont bien assez de place
 					if($G_place_inventaire - count($j1['inventaire_slot']) < ($nb_objet['j2'] - $nb_objet['j1']))
 					{
 						$check = false;
-						echo '<h5>'.$j1['nom'].' n\'a pas assez de place dans son inventaire</h5>';
+						echo '<h5>'.$j1->get_nom().' n\'a pas assez de place dans son inventaire</h5>';
 					}
 					if($G_place_inventaire - count($j2['inventaire_slot']) < ($nb_objet['j1'] - $nb_objet['j2']))
 					{
 						$check = false;
-						echo '<h5>'.$j2['nom'].' n\'a pas assez de place dans son inventaire</h5>';
+						echo '<h5>'.$j2->get_nom().' n\'a pas assez de place dans son inventaire</h5>';
 					}
 					if($check)
 					{
@@ -168,7 +168,7 @@ if(array_key_exists('valid_etape', $_GET))
 						$count = count($echange['objet']);
 						while($i < $count)
 						{
-							if($j1['ID'] == $echange['objet'][$i]['id_j']) $j = 'j1'; else $j = 'j2';
+							if($j1->get_id() == $echange['objet'][$i]['id_j']) $j = 'j1'; else $j = 'j2';
 							supprime_objet($$j, $echange['objet'][$i]['objet'], 1);
 							$$j = recupperso($echange['objet'][$i]['id_j']);
 							$i++;
@@ -178,19 +178,19 @@ if(array_key_exists('valid_etape', $_GET))
 						$count = count($echange['objet']);
 						while($i < $count)
 						{
-							if($j1['ID'] == $echange['objet'][$i]['id_j']) $j = 'j2'; else $j = 'j1';
+							if($j1->get_id() == $echange['objet'][$i]['id_j']) $j = 'j2'; else $j = 'j1';
 							prend_objet($echange['objet'][$i]['objet'], $$j);
 							$$j = recupperso(${$j}['ID']);
 							$i++;
 						}
 						//On échange les stars
-						$star['j1'] = intval($echange['star'][$j1['ID']]['objet']);
-						$star['j2'] = intval($echange['star'][$j2['ID']]['objet']);
+						$star['j1'] = intval($echange['star'][$j1->get_id()]['objet']);
+						$star['j2'] = intval($echange['star'][$j2->get_id()]['objet']);
 						$j1star = $star['j1'] - $star['j2'];
 						$j2star = $star['j2'] - $star['j1'];
-						$requete = "UPDATE perso SET star = star - ".$j1star." WHERE ID = ".$j1['ID'];
+						$requete = "UPDATE perso SET star = star - ".$j1star." WHERE ID = ".$j1->get_id();
 						$db->query($requete);
-						$requete = "UPDATE perso SET star = star - ".$j2star." WHERE ID = ".$j2['ID'];
+						$requete = "UPDATE perso SET star = star - ".$j2star." WHERE ID = ".$j2->get_id();
 						$db->query($requete);
 						//On met a jour le statut de l'échange
 						//On passe l'échange en mode fini
@@ -237,15 +237,15 @@ if(array_key_exists('suppr_objet', $_GET))
 if(isset($echange))
 {
 ?>
-<h3>Echange avec <?php echo $receveur['nom']; ?> - N° : <?php echo $echange['id_echange']; ?> - <?php echo $echange['statut']; ?></h3>
+<h3>Echange avec <?php echo $receveur->get_nom(); ?> - N° : <?php echo $echange['id_echange']; ?> - <?php echo $echange['statut']; ?></h3>
 <div class="information_case">
 <?php
 	if(($echange['statut'] == 'proposition') OR ($echange['statut'] == 'finalisation'))
 	{
 		?>
-		Proposition de <?php echo $j1['nom']; ?> :
+		Proposition de <?php echo $j1->get_nom(); ?> :
 		<div>
-		Stars : <?php echo $echange['star'][$j1['ID']]['objet']; ?><br />
+		Stars : <?php echo $echange['star'][$j1->get_id()]['objet']; ?><br />
 		Objets :
 		<ul>
 			<?php
@@ -256,7 +256,7 @@ if(isset($echange))
 				$count = count($echange['objet']);
 				while($i < $count)
 				{
-					if($echange['objet'][$keys[$i]]['type'] == 'objet' AND $echange['objet'][$keys[$i]]['id_j'] == $j1['ID'])
+					if($echange['objet'][$keys[$i]]['type'] == 'objet' AND $echange['objet'][$keys[$i]]['id_j'] == $j1->get_id())
 					{
 					?>
 					<li><?php echo nom_objet($echange['objet'][$keys[$i]]['objet']); ?></li>
@@ -273,9 +273,9 @@ if(isset($echange))
 	if($echange['statut'] == 'finalisation')
 	{
 		?>
-		Proposition de <?php echo $j2['nom']; ?> :
+		Proposition de <?php echo $j2->get_nom(); ?> :
 		<div>
-		Stars : <?php echo $echange['star'][$j2['ID']]['objet']; ?><br />
+		Stars : <?php echo $echange['star'][$j2->get_id()]['objet']; ?><br />
 		Objets :
 		<ul>
 			<?php
@@ -286,7 +286,7 @@ if(isset($echange))
 				$count = count($echange['objet']);
 				while($i < $count)
 				{
-					if($echange['objet'][$keys[$i]]['type'] == 'objet' AND $echange['objet'][$keys[$i]]['id_j'] == $j2['ID'])
+					if($echange['objet'][$keys[$i]]['type'] == 'objet' AND $echange['objet'][$keys[$i]]['id_j'] == $j2->get_id())
 					{
 					?>
 					<li><?php echo nom_objet($echange['objet'][$keys[$i]]['objet']); ?></li>
@@ -308,25 +308,25 @@ if(isset($echange))
 	}
 	elseif(($echange['statut'] == 'creation' AND $echange['id_j1'] == $joueur->get_id()) OR ($echange['statut'] == 'proposition' AND $echange['id_j2'] == $joueur->get_id()))
 	{
-		$j1['bonus'] = recup_bonus($j1['ID']);
-		$j2['bonus'] = recup_bonus($j2['ID']);
+		$j1_bonus = recup_bonus($j1->get_id());
+		$j2_bonus = recup_bonus($j2->get_id());
 		$echange_star = false;
 		$echange_objet = false;
 		//Si mode création alors on check pour j1 peut donner et j2 peut recevoir
 		if($echange['statut'] == 'creation')
 		{
-			if(array_key_exists(3, $j1['bonus']) AND array_key_exists(1, $j2['bonus'])) $echange_star = true;
-			if(array_key_exists(4, $j1['bonus']) AND array_key_exists(2, $j2['bonus'])) $echange_objet = true;
+			if(array_key_exists(3, $j1_bonus) AND array_key_exists(1, $j2_bonus)) $echange_star = true;
+			if(array_key_exists(4, $j1_bonus) AND array_key_exists(2, $j2_bonus)) $echange_objet = true;
 		}
 		elseif($echange['statut'] == 'proposition')
 		{
-			if(array_key_exists(3, $j2['bonus']) AND array_key_exists(1, $j1['bonus'])) $echange_star = true;
-			if(array_key_exists(4, $j2['bonus']) AND array_key_exists(2, $j1['bonus'])) $echange_objet = true;
+			if(array_key_exists(3, $j2_bonus) AND array_key_exists(1, $j1_bonus)) $echange_star = true;
+			if(array_key_exists(4, $j2_bonus) AND array_key_exists(2, $j1_bonus)) $echange_objet = true;
 		}
 	?>
 Vous proposez :
 <div>
-	<form method="post" action="envoiInfoPostData('echange.php?direction=motk2&amp', 'information', 'message=' + message);">
+	<form method="post" action="envoiInfoPostData('echange.php?direction=echange&amp', 'information', 'message=' + message);">
 		Stars : <input type="text" name="star" id="star" value="0" <?php if(!$echange_star) echo 'disabled="true"'; ?> /><br />
 		Objets :
 		<ul>

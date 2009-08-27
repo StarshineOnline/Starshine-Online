@@ -155,7 +155,7 @@ if($W_distance < 4)
 			$requete = "SELECT * FROM batiment WHERE id = ".$W_row['id_batiment'];
 			$req = $db->query($requete);
 			$row_b = $db->read_assoc($req);
-			$Royaume = new royaume($W_row['royaume'], $joueur->get_race());
+			$Royaume = new royaume($W_row['royaume']);
 			echo '<span onmousemove="return '.make_overlib(transform_sec_temp($W_row['fin_placement'] - time()).' avant fin de construction').'" onmouseout="return nd();">'.$row_b['nom'].' '.$Gtrad[$Royaume->get_race()].'</span> - HP : '.$W_row['hp'];
 			if($joueur->get_race() != $Royaume->get_race())
 			{
@@ -187,7 +187,7 @@ if($W_distance < 4)
 			$requete = "SELECT * FROM batiment WHERE id = ".$W_row['id_batiment'];
 			$req = $db->query($requete);
 			$row_b = $db->read_assoc($req);
-			$Royaume = new royaume($W_row['royaume'], $joueur->get_race());
+			$Royaume = new royaume($W_row['royaume']);
 			echo '<span onmousemove="return '.make_overlib($row_b['description']).'" onmouseout="return nd();"><image src="image/mini_'.$row_b['type'].'.png" style="vertical-align : top;" title="'.$row_b['nom'].'" alt="'.$row_b['nom'].'" />';
 			$nom = $row_b['nom'];
 			if($row_b['type'] == 'fort' AND $joueur->get_race() == $Royaume->get_race()) $nom = '<a href="fort.php?id_batiment='.$row_b['id'].'" onclick="return envoiInfo(this.href, \'centre\');">'.$row_b['nom'].'</a>';
