@@ -5,7 +5,7 @@
    */  
 
   /// Version actuelle
-	$G_version = '0.5.1 beta';
+	$G_version = '0.7 beta';
 	/// Révision actuelle
 	$G_revision = 124;
 

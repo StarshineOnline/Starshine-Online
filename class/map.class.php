@@ -579,6 +579,5 @@ class map
 	{
 		$this->cache_monstre = !$this->cache_monstre;
 	}
-	
 }
 ?>

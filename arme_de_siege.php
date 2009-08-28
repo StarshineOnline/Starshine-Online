@@ -62,10 +62,6 @@ if($W_distance == 0)
 	}
 	echo '</ul>';
 	echo '<h3>Batîments en construction à portée</h3>';
-	$x_min = $joueur->get_x() - $row_b['bonus4'];
-	$x_max = $joueur->get_x() + $row_b['bonus4'];
-	$y_min = $joueur->get_y() - $row_b['bonus4'];
-	$y_max = $joueur->get_y() + $row_b['bonus4'];
 	$requete = "SELECT * FROM placement WHERE x >= ".$x_min." AND x <= ".$x_max." AND y >= ".$y_min." AND y <= ".$y_max;
 	$req_bp = $db->query($requete);
 	echo '<ul>';
@@ -78,7 +74,11 @@ if($W_distance == 0)
 		}
 	}
 	echo '</ul>';
+	echo '<h3>Ville à portée</h3>';
+	$requete = "SELECT map.id as id, nom FROM map LEFT JOIN royaume ON map.royaume = royaume.id WHERE (map.id - (floor(map.id / 1000)) * 1000) >= ".$x_min." AND (map.id - (floor(map.id / 1000)) * 1000) <= ".$x_max." AND floor(map.id / 1000) >= ".$y_min." AND floor(map.id / 1000) <= ".$y_max." AND type = 1";
+	$req_v = $db->query($requete);
+	$row_v = $db->read_assoc($req_v);
+	if($pat && $joueur->grade->get_rang() >= $row_b['bonus6']) echo $row_v['nom'].' - <a href="attaque.php?type=ville&amp;id_arme_de_siege='.$arme->get_id().'&id_ville='.$row_v['id'].'" onclick="return envoiInfo(this.href, \'information\');">Attaquer avec l\'arme de siège</a>';
 }
 ?>
-	</ul>
 	</div>

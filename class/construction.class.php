@@ -73,6 +73,12 @@ class construction
     */
 	private $date_construction;
 
+	/**
+    * @access private
+    * @var tinyint(3)
+    */
+	private $point_victoire;
+
 	
 	/**
 	* @access public
@@ -89,19 +95,20 @@ class construction
 	* @param int(10) rechargement attribut
 	* @param varchar(50) image attribut
 	* @param int(10) date_construction attribut
+	* @param tinyint(3) point_victoire attribut
 	* @return none
 	*/
-	function __construct($id = 0, $id_batiment = 0, $x = 0, $y = 0, $royaume = 0, $hp = 0, $nom = '', $type = '', $rez = '', $rechargement = '', $image = '', $date_construction = '')
+	function __construct($id = 0, $id_batiment = 0, $x = 0, $y = 0, $royaume = 0, $hp = 0, $nom = '', $type = '', $rez = '', $rechargement = '', $image = '', $date_construction = '', $point_victoire = '')
 	{
 		global $db;
 		//Verification nombre et du type d'argument pour construire l'etat adequat.
 		if( (func_num_args() == 1) && is_numeric($id) )
 		{
-			$requeteSQL = $db->query("SELECT id_batiment, x, y, royaume, hp, nom, type, rez, rechargement, image, date_construction FROM construction WHERE id = ".$id);
+			$requeteSQL = $db->query("SELECT id_batiment, x, y, royaume, hp, nom, type, rez, rechargement, image, date_construction, point_victoire FROM construction WHERE id = ".$id);
 			//Si le thread est dans la base, on le charge sinon on crée un thread vide.
 			if( $db->num_rows($requeteSQL) > 0 )
 			{
-				list($this->id_batiment, $this->x, $this->y, $this->royaume, $this->hp, $this->nom, $this->type, $this->rez, $this->rechargement, $this->image, $this->date_construction) = $db->read_array($requeteSQL);
+				list($this->id_batiment, $this->x, $this->y, $this->royaume, $this->hp, $this->nom, $this->type, $this->rez, $this->rechargement, $this->image, $this->date_construction, $this->point_victoire) = $db->read_array($requeteSQL);
 			}
 			else $this->__construct();
 			$this->id = $id;
@@ -120,6 +127,7 @@ class construction
 			$this->rechargement = $id['rechargement'];
 			$this->image = $id['image'];
 			$this->date_construction = $id['date_construction'];
+			$this->point_victoire = $id['point_victoire'];
 			}
 		else
 		{
@@ -134,6 +142,7 @@ class construction
 			$this->rechargement = $rechargement;
 			$this->image = $image;
 			$this->date_construction = $date_construction;
+			$this->point_victoire = $point_victoire;
 			$this->id = $id;
 		}
 	}
@@ -151,7 +160,7 @@ class construction
 		{
 			if(count($this->champs_modif) > 0)
 			{
-				if($force) $champs = 'id_batiment = '.$this->id_batiment.', x = '.$this->x.', y = '.$this->y.', royaume = '.$this->royaume.', hp = '.$this->hp.', nom = "'.mysql_escape_string($this->nom).'", type = "'.mysql_escape_string($this->type).'", rez = "'.mysql_escape_string($this->rez).'", rechargement = "'.mysql_escape_string($this->rechargement).'", image = "'.mysql_escape_string($this->image).'", date_construction = "'.mysql_escape_string($this->date_construction).'"';
+				if($force) $champs = 'id_batiment = '.$this->id_batiment.', x = '.$this->x.', y = '.$this->y.', royaume = '.$this->royaume.', hp = '.$this->hp.', nom = "'.mysql_escape_string($this->nom).'", type = "'.mysql_escape_string($this->type).'", rez = "'.mysql_escape_string($this->rez).'", rechargement = "'.mysql_escape_string($this->rechargement).'", image = "'.mysql_escape_string($this->image).'", date_construction = "'.mysql_escape_string($this->date_construction).'", point_victoire = "'.mysql_escape_string($this->point_victoire).'"';
 				else
 				{
 					$champs = '';
@@ -170,8 +179,8 @@ class construction
 		}
 		else
 		{
-			$requete = 'INSERT INTO construction (id_batiment, x, y, royaume, hp, nom, type, rez, rechargement, image, date_construction) VALUES(';
-			$requete .= ''.$this->id_batiment.', '.$this->x.', '.$this->y.', '.$this->royaume.', '.$this->hp.', "'.mysql_escape_string($this->nom).'", "'.mysql_escape_string($this->type).'", "'.mysql_escape_string($this->rez).'", "'.mysql_escape_string($this->rechargement).'", "'.mysql_escape_string($this->image).'", "'.mysql_escape_string($this->date_construction).'")';
+			$requete = 'INSERT INTO construction (id_batiment, x, y, royaume, hp, nom, type, rez, rechargement, image, date_construction, point_victoire) VALUES(';
+			$requete .= ''.$this->id_batiment.', '.$this->x.', '.$this->y.', '.$this->royaume.', '.$this->hp.', "'.mysql_escape_string($this->nom).'", "'.mysql_escape_string($this->type).'", "'.mysql_escape_string($this->rez).'", "'.mysql_escape_string($this->rechargement).'", "'.mysql_escape_string($this->image).'", "'.mysql_escape_string($this->date_construction).'", "'.mysql_escape_string($this->point_victoire).'")';
 			$db->query($requete);
 			//Récuperation du dernier ID inséré.
 			$this->id = $db->last_insert_id();
@@ -230,7 +239,7 @@ class construction
 			}
 		}
 
-		$requete = "SELECT id, id_batiment, x, y, royaume, hp, nom, type, rez, rechargement, image, date_construction FROM construction WHERE ".$where." ORDER BY ".$ordre;
+		$requete = "SELECT id, id_batiment, x, y, royaume, hp, nom, type, rez, rechargement, image, date_construction, point_victoire FROM construction WHERE ".$where." ORDER BY ".$ordre;
 		$req = $db->query($requete);
 		if($db->num_rows($req) > 0)
 		{
@@ -252,7 +261,7 @@ class construction
 	*/
 	function __toString()
 	{
-		return 'id = '.$this->id.', id_batiment = '.$this->id_batiment.', x = '.$this->x.', y = '.$this->y.', royaume = '.$this->royaume.', hp = '.$this->hp.', nom = '.$this->nom.', type = '.$this->type.', rez = '.$this->rez.', rechargement = '.$this->rechargement.', image = '.$this->image.', date_construction = '.$this->date_construction;
+		return 'id = '.$this->id.', id_batiment = '.$this->id_batiment.', x = '.$this->x.', y = '.$this->y.', royaume = '.$this->royaume.', hp = '.$this->hp.', nom = '.$this->nom.', type = '.$this->type.', rez = '.$this->rez.', rechargement = '.$this->rechargement.', image = '.$this->image.', date_construction = '.$this->date_construction.', point_victoire = '.$this->point_victoire;
 	}
 	
 	/**
@@ -385,6 +394,17 @@ class construction
 	function get_date_construction()
 	{
 		return $this->date_construction;
+	}
+
+	/**
+	* Retourne la valeur de l'attribut
+	* @access public
+	* @param none
+	* @return tinyint(3) $point_victoire valeur de l'attribut point_victoire
+	*/
+	function get_point_victoire()
+	{
+		return $this->point_victoire;
 	}
 
 	/**
@@ -529,6 +549,18 @@ class construction
 	{
 		$this->date_construction = $date_construction;
 		$this->champs_modif[] = 'date_construction';
+	}
+
+	/**
+	* Modifie la valeur de l'attribut
+	* @access public
+	* @param tinyint(3) $point_victoire valeur de l'attribut
+	* @return none
+	*/
+	function set_point_victoire($point_victoire)
+	{
+		$this->point_victoire = $point_victoire;
+		$this->champs_modif[] = 'point_victoire';
 	}
 //fonction
 }

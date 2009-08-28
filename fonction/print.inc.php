@@ -117,7 +117,7 @@ function affiche_perso_visu($joueur, $W_row, $position="")
 	$mybonus = recup_bonus($_SESSION['ID']);
 	echo '<li style="clear:both;">
 	';
-	$W_ID = $W_row['ID'];
+	$W_ID = $W_row['id'];
 	$perso = new perso($W_ID);
 	
 	$bonus = recup_bonus($W_ID);
@@ -129,7 +129,8 @@ function affiche_perso_visu($joueur, $W_row, $position="")
 	
 	$statut_joueur = 'normal';
 	$diplo = $row_diplo[0];
-	if ($row_diplo[0] == 127) {
+	if ($row_diplo[0] == 127)
+	{
 		$amende = recup_amende($W_ID);
 		$row_diplo[0] = 0;
 		if($amende)	{
@@ -156,14 +157,14 @@ function affiche_perso_visu($joueur, $W_row, $position="")
 	$echo = $Gtrad['diplo'.$diplo].' => XP : '.($facteur_xp * 100).'% - Honneur : '.($facteur_honneur * 100).'%';
 	echo '<img src="image/personnage/'.$perso->get_race().'/'.$perso->get_race().'_'.$Tclasse[$perso->get_classe()]["type"].'.png" alt="'.$perso->get_race().'" title="'.$perso->get_race().'" style="vertical-align: middle;height:21px;float:left;width:21px;" /><span style="font-weight : bold;float:left;width:325px;margin-left:15px;"><a href="infojoueur.php?ID='.$perso->get_id().'&poscase='.$perso->get_case().'" onclick="return envoiInfo(this.href, \'information\');" onclick="return nd();" onmouseover="return '.make_overlib($echo).'" onmouseout="return nd();">';
 			
-	if ($joueur->get_hp() <= 0)
-		{
-			echo '<span class="mort">'.$chaine_nom.'</span> ';
-		}
+	if ($perso->get_hp() <= 0)
+	{
+		echo '<span class="mort">'.$chaine_nom.'</span> ';
+	}
 	else
-		{
-			echo $chaine_nom;
-		}
+	{
+		echo $chaine_nom;
+	}
 
 	echo '</a>'.$position.'</span>';
 	echo '<span style="float:left;">';

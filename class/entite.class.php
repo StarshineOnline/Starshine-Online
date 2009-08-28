@@ -196,6 +196,43 @@ class entite
 				$this->arme_degat = $objet->arme_degat;
 				$this->level = 1;
 			break;
+			case 'ville' :
+				$this->coef_carac = $objet->coef;
+				$this->facteur = 40;
+				$this->action = '!';
+				$this->arme_type = 'epee';
+				$this->comp_combat = 'melee';
+				$this->comp = array();
+				$this->x = $objet->x;
+				$this->y = $objet->y;
+				$this->hp = $objet->get_hp();
+				$this->hp_max = $objet->hp_max;
+				$this->reserve = 0;
+				$this->pa = 100;
+				$this->nom = $objet->get_nom();
+				$this->race = 'neutre';
+				$this->pp = $objet->get_pp();
+				$this->pm = $objet->get_pm();
+				$this->distance_tir = 1;
+				$this->esquive = $this->facteur * ceil($this->coef_carac * $objet->get_carac());
+				$this->distance = $objet->get_bonus4();
+				$this->melee = $objet->get_bonus5() * $objet->bonus_architecture;
+				$this->incantation = 0;
+				$this->sort_mort = 0;
+				$this->sort_vie = 0;
+				$this->sort_element = 0;
+				$this->buff = array();
+				$this->etat = array();
+				$this->force = 	ceil($this->coef_carac * $objet->get_carac());
+				$this->puissance = ceil($this->coef_carac * $objet->get_carac());
+				$this->energie = ceil($this->coef_carac * $objet->get_carac());
+				$this->vie = ceil($this->coef_carac * $objet->get_carac());
+				$this->volonte = ceil($this->coef_carac * $objet->get_carac());
+				$this->dexterite = ceil($this->coef_carac * $objet->get_carac());
+				$this->enchantement = array();
+				$this->arme_degat = $objet->arme_degat;
+				$this->level = 1;
+			break;
 		}
 	}
 

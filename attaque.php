@@ -65,9 +65,31 @@ switch($type)
 		$joueur_defenseur->y = $map_batiment->get_y();
 		//Si en défense c'est une arme de siège, on applique les dégats 2
 		if($joueur_defenseur->get_type() == 'arme_de_siege') $siege->arme_degat = $siege->get_bonus2();
-		else $siege->arme_degat = $siege->get_bonus1;
+		else $siege->arme_degat = $siege->get_bonus1();
 		$attaquant = new entite('siege', $siege);
 		$defenseur = new entite('batiment', $joueur_defenseur);
+	break;
+	case 'ville' :
+		$map_siege = new construction($_GET['id_arme_de_siege']);
+		$joueur = new perso($_SESSION['ID']);
+		$map_case = new map_case($_GET['id_ville']);
+		$map_royaume = new royaume($map_case->get_royaume());
+		$siege = new batiment($map_siege->get_id_batiment());
+		$siege->bonus_architecture = 1 + ($joueur->get_architecture() / 100);
+		$siege->hp_max = $siege->get_hp();
+		$siege->set_hp($map_siege->get_hp());
+		$siege->x = $map_siege->get_x();
+		$siege->y = $map_siege->get_y();
+		$joueur_defenseur = new batiment();
+		$joueur_defenseur->coef = 1;
+		$joueur_defenseur->hp_max = 20000;
+		$joueur_defenseur->set_hp($map_royaume->get_capitale_hp());
+		$coord = convert_in_coord($_GET['id_ville']);
+		$joueur_defenseur->x = $coord['x'];
+		$joueur_defenseur->y = $coord['y'];
+		$siege->arme_degat = $siege->get_bonus1();
+		$attaquant = new entite('siege', $siege);
+		$defenseur = new entite('ville', $joueur_defenseur);
 	break;
 }
 
@@ -141,13 +163,14 @@ else
 			}
 		}
 	} //fin $type = 'joueur'
-	if($type == 'siege') $round_total = 1;
+	if($type == 'siege' OR $type == 'ville') $round_total = 1;
 	else $round_total = $G_round_total;
 	$round = 1;
 	$attaquant->etat = array();
 	$defenseur->etat = array();
 	$debugs = 0;
-	$pa_attaque = $G_PA_attaque_joueur;
+	if($type == 'joueur') $pa_attaque = $G_PA_attaque_joueur;
+	else $pa_attaque = $G_PA_attaque_monstre;
 	if($attaquant->get_race() == $defenseur->get_race()) $pa_attaque += 3;
 	if($attaquant->get_race() == 'orc' OR $defenseur->get_race() == 'orc') $round_total += 1;
 	if($attaquant->is_buff('buff_sacrifice')) $round_total -= $attaquant->get_buff('buff_sacrifice', 'effet2');
@@ -439,21 +462,28 @@ else
 				$joueur->set_hp($attaquant->get_hp());
 				$joueur->sauver();
 				$map_monstre->set_hp($defenseur->get_hp());
-				$map_monstre->sauver();
+				if($map_monstre->get_hp() > 0) $map_monstre->sauver();
+				else $map_monstre->supprimer();
 			}
 			elseif($type == 'batiment')
 			{
 				$joueur->set_hp($attaquant->get_hp());
 				$joueur->sauver();
 				$map_batiment->set_hp($defenseur->get_hp());
-				$map_batiment->sauver();
+				if($map_batiment->get_hp() > 0) $map_batiment->sauver();
+				else $map_batiment->supprimer();
 			}
 			elseif($type == 'siege')
 			{
-				$map_siege->set_hp($attaquant->get_hp());
-				$map_siege->sauver();
 				$map_batiment->set_hp($defenseur->get_hp());
-				$map_batiment->sauver();
+				if($map_batiment->get_hp() > 0) $map_batiment->sauver();
+				else $map_batiment->supprimer();
+			}
+			elseif($type == 'ville')
+			{
+				//hasard pour différente actions de destruction sur la ville.
+				$map_royaume->set_capitale_hp($defenseur->get_hp());
+				$map_royaume->sauver();
 			}
 			//Fin du combat
 			if($mode == 'attaquant')
