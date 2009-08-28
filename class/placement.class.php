@@ -541,4 +541,17 @@ class placement
 		return time() - $this->debut_placement;
 	}
 
+	function get_image()
+	{
+		if(!isset($this->image))
+		{
+			global $db;
+			$requete = "SELECT image FROM batiment WHERE id = ".$this->id_batiment;
+			$req = $db->query($requete);
+			$row = $db->read_assoc($req);
+			$this->image = $row['image'];
+		}
+		return $this->image;
+	}
+
 }

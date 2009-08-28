@@ -13,17 +13,18 @@ if($joueur->get_rang_royaume() != 6)
 else if(array_key_exists('id', $_GET))
 {
 	$bourg = new bourg($_GET['id']);
+	$bourg->get_mine_max();
 	$bourg->get_mines(true);
 	$bourg->get_placements();
 	$bourg->get_mine_total();
-	$x = $bourg->x;
-	$y = $bourg->y;
+	$x = $bourg->get_x();
+	$y = $bourg->get_y();
 	//echo '<pre>';
 	//print_r($bourg->mines);
 	$batiments = array_merge($bourg->mines, $bourg->placements);
-	echo "<pre>";
-	print_R($batiments);
-	echo "</pre>";
+	//echo "<pre>";
+	//print_R($batiments);
+	//echo "</pre>";
 	$batiments[] = $bourg;
 	?>
 	<div id="map_mine" style='float:left;'>
@@ -32,13 +33,13 @@ else if(array_key_exists('id', $_GET))
 	$map->quadrillage = true;
 	$map->set_batiment_objet($batiments);
 	$map->onclick_status = true;
-	$map->set_onclick("affichePopUp('mine.php?case=%%id%%&amp;id_bourg=".$bourg->id."');");
+	$map->set_onclick("affichePopUp('mine.php?case=%%id%%&amp;id_bourg=".$bourg->get_id()."');");
 	$map->affiche();
 	?>
 	</div>
 	<div id="infos" style='margin-left:5px;float:left;'>
 		<fieldset>
-			<legend><?php echo $bourg->nom; ?> en <?php echo $bourg->x; ?> / <?php echo $bourg->y; ?></legend>
+			<legend><?php echo $bourg->get_nom(); ?> en <?php echo $bourg->get_x(); ?> / <?php echo $bourg->get_y(); ?></legend>
 			Mines : <?php echo $bourg->mine_total; ?> / <?php echo $bourg->mine_max; ?>
 			<ul style="margin-left : 15px;">
 			<?php
@@ -232,7 +233,7 @@ elseif(array_key_exists('up', $_GET))
 	{
 		$mine->hp = round(($mine->hp / $mine->get_hp_max()) * $mine->evolution['hp']);
 		$mine->id_batiment = $mine->evolution['id'];
-		$mine->nom = $mine->evolution['nom'];
+		$mine->set_nom($mine->evolution['nom']);
 		$mine->sauver();
 
 		//On enlève les stars au royaume
@@ -267,7 +268,8 @@ else
 		$bourg->get_mines();
 		$bourg->get_placements();
 		$bourg->get_mine_total();
-		echo '<li><a href="mine.php?id='.$bourg->id.'" onclick="return envoiInfo(this.href, \'contenu_jeu\');">'.$bourg->nom.'</a> - X : '.$bourg->x.' - Y : '.$bourg->y.' - ('.$bourg->mine_total.' / '.$bourg->mine_max.')</li>';
+		$bourg->get_mine_max();
+		echo '<li><a href="mine.php?id='.$bourg->get_id().'" onclick="return envoiInfo(this.href, \'contenu_jeu\');">'.$bourg->get_nom().'</a> - X : '.$bourg->get_x().' - Y : '.$bourg->get_y().' - ('.$bourg->mine_total.' / '.$bourg->mine_max.')</li>';
 		if(count($bourg->mines) > 0)
 		{
 		?>
@@ -275,7 +277,7 @@ else
 		<?php
 			foreach($bourg->mines as $mine)
 			{
-				echo '<li>'.$mine->nom.' - X : '.$mine->x.' - Y : '.$mine->y.'</li>';
+				echo '<li>'.$mine->get_nom().' - X : '.$mine->get_x().' - Y : '.$mine->get_y().'</li>';
 			}
 		?>
 		</ul>

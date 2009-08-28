@@ -526,21 +526,21 @@ class map
 		$batimat = 0;
 		foreach($batiments as $batiment)
 		{
-			$batimat = count($this->map[$batiment->x][$batiment->y]["Batiments"]);
-			$this->map[$batiment->x][$batiment->y]["Batiments"][$batimat]["id_batiment"] = $batiment->id;
-			$this->map[$batiment->x][$batiment->y]["Batiments"][$batimat]["hp"] = $batiment->hp;
-			$this->map[$batiment->x][$batiment->y]["Batiments"][$batimat]["nom"] = $batiment->nom;
-			$this->map[$batiment->x][$batiment->y]["Batiments"][$batimat]["royaume"] = $batiment->royaume;
-			$this->map[$batiment->x][$batiment->y]["Batiments"][$batimat]["image"] = $batiment->image;
+			$batimat = count($this->map[$batiment->get_x()][$batiment->get_y()]["Batiments"]);
+			$this->map[$batiment->get_x()][$batiment->get_y()]["Batiments"][$batimat]["id_batiment"] = $batiment->get_id();
+			$this->map[$batiment->get_x()][$batiment->get_y()]["Batiments"][$batimat]["hp"] = $batiment->get_hp();
+			$this->map[$batiment->get_x()][$batiment->get_y()]["Batiments"][$batimat]["nom"] = $batiment->get_nom();
+			$this->map[$batiment->get_x()][$batiment->get_y()]["Batiments"][$batimat]["royaume"] = $batiment->get_royaume();
+			$this->map[$batiment->get_x()][$batiment->get_y()]["Batiments"][$batimat]["image"] = $batiment->get_image();
 
-			{//-- v?rification que l'image du PNJ existe
+			{//-- vérification que l'image du PNJ existe
 				$image = $this->root."image/batiment/";
 				
-				if(file_exists($image.$batiment->image."_04.png")) 		{ $image .= $batiment->image."_04.png"; }
-				elseif(file_exists($image.$batiment->image."_04.gif")) 	{ $image .= $batiment->image."_04.gif"; }
+				if(file_exists($image.$batiment->get_image()."_04.png")) 		{ $image .= $batiment->get_image()."_04.png"; }
+				elseif(file_exists($image.$batiment->get_image()."_04.gif")) 	{ $image .= $batiment->get_image()."_04.gif"; }
 				else 														{ $image = ""; } //-- Si aucun des fichiers n'existe autant rien mettre...
 			}
-			$this->map[$batiment->x][$batiment->y]["Batiments"][$batimat]["image"] = $image;
+			$this->map[$batiment->get_x()][$batiment->get_y()]["Batiments"][$batimat]["image"] = $image;
 		}
 	}
 
