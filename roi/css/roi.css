@@ -70,6 +70,21 @@ body 								{margin:0;padding:0;background:#7e909c url('../../image/v2/bg_site.
 .star							{text-align:right;margin-right:20px;background:transparent url('../../image/icone/ressources_star.png') no-repeat;display:block;line-height: 30px;height:30px;width:30px;float:left;}
 .food							{text-align:right;margin-right:20px;background:transparent url('../../image/icone/ressources_nourriture.png') no-repeat;display:block;line-height: 30px;height:30px;width:30px;float:left;}
 
+#diplomatie fieldset					{-moz-border-radius: 10px;}
+#diplomatie ul li 					{clear:both;height:30px;line-height: 30px;-moz-border-radius: 10px;}
+#diplomatie ul li:hover			    {background-color:#C5D4EF;-moz-border-radius: 10px;}
+#diplomatie .drapeau				{float:left;width:200px;}
+#diplomatie .diplo					{float:left;width:200px;}
+#diplomatie .liens					{float:left;width:200px;}
+#diplomatie .nom					{float:left;width:200px;}
+
+
+#telephone fieldset					{-moz-border-radius: 10px;}
+#telephone ul li 					{clear:both;height:30px;line-height: 30px;-moz-border-radius: 10px;}
+#telephone ul li:hover			    {background-color:#C5D4EF;-moz-border-radius: 10px;}
+#telephone .roi						{float:left;width:450px;}
+#telephone .nom						{float:left;width:450px;}
+
 
 #criminel fieldset					{-moz-border-radius: 10px;}
 #criminel ul li 					{clear:both;height:21px;line-height: 21px;-moz-border-radius: 10px;}

@@ -79,8 +79,11 @@ if($joueur->get_rang_royaume() != 6)
 		$i = 0;
 		$keys = array_keys($row);
 		$count = count($keys);
-		echo '
-		<table>';
+		echo 
+		'<div id="diplomatie">
+		<fieldset>
+		
+		<ul>';
 		while($i < $count)
 		{
 			if($keys[$i] != 'race' AND $row[$keys[$i]] != 127)
@@ -124,23 +127,28 @@ if($joueur->get_rang_royaume() != 6)
 					$image_diplo = '../image/icone/diplomatie_guerredurable.png';
 					break;
 				}
-				echo '
-		<tr style="vertical-align : middle;">
-			<td>
-				<img src="../image/g_etendard/g_etendard_'.$Trace[$keys[$i]]['numrace'].'.png" style="vertical-align : middle;">'.$Gtrad[$keys[$i]].'
-			</td>
-			<td style="font-weight : normal;">';
-				echo ' <img src="'.$image_diplo.'" style="vertical-align : middle;"> '.$Gtrad['diplo'.$row[$keys[$i]]].' 
-			</td>
-			<td>
-				<a style="font-size : 0.8em;" onclick="affichePopUp(\'gestion_royaume.php\',\'direction=diplomatie_modif&amp;race='.$keys[$i].'\');"><span class="xsmall">'.$show.'</span></a>
-			</td>
-		</td>';
+		$requete = "SELECT id FROM perso WHERE rang_royaume = 6 AND race = '".$keys[$i]."'";
+		$req_roi = $db->query($requete);
+		$row_roi = $db->read_assoc($req_roi);
+		$roi = new perso($row_roi['id']);				
+		echo '
+		<li class="'.$diplo_class.'">
+		<span class="drapeau"><img src="../image/g_etendard/g_etendard_'.$Trace[$keys[$i]]['numrace'].'.png" style="vertical-align : middle;height:30px;">'.$Gtrad[$keys[$i]].'</span>
+		<span class="diplo"><img src="'.$image_diplo.'" style="vertical-align : middle;height:25px;"> '.$Gtrad['diplo'.$row[$keys[$i]]].' </span>
+		<span class="liens" style="cursor:pointer;"><a style="font-size : 0.8em;" onclick="affichePopUp(\'gestion_royaume.php\',\'direction=diplomatie_modif&amp;race='.$keys[$i].'\');"><span class="xsmall">'.$show.'</span></a></span>
+		<span class="nom"><img src="../image/personnage/'.$roi->get_race().'/'.$roi->get_race().'_'.$Tclasse[$roi->get_classe()]["type"].'.png" alt="'.$roi->get_race().'" title="'.$roi->get_race().'" style="vertical-align: middle;float:left;height:28px;padding-right:15px;" />'.$roi->get_nom().'</span>
+		<span style="cursor:pointer;" onclick="affichePopUp(\'telephone.php\',\'id_dest='.$roi->get_id().'\');"><img src="../image/interface/message.png" alt="Envoyer un message" title="Envoyer un message"></span>
+		
+		</li>';
 			}
 			$i++;
+			if ($diplo_class == 't1'){$diplo_class = 't2';}else{$diplo_class = 't1';}	    
+
 		}
 		?>
-		</table>
+		</ul>
+		</fieldset>
+		</div>
 		<?php
 
 	}
@@ -198,7 +206,7 @@ if($joueur->get_rang_royaume() != 6)
 	        //On redonne les stars
 	        $requete = "UPDATE royaume SET star = star + ".$row['stars']." WHERE race = '".$row['royaume_demande']."'";
 	        $db->query($requete);
-	        echo 'Demande refusée<br />';
+	        echo '<h5>Demande refusée</h5>';
 	    }
 	    else
 	    {
@@ -227,7 +235,7 @@ if($joueur->get_rang_royaume() != 6)
 	        $db->query($requete);
 	        $requete = "UPDATE royaume SET diplo_time = '".$row3['diplo_time']."' WHERE race = '".$royaume->get_race()."'";
 	        $db->query($requete);
-	        echo 'Vous êtes maintenant en '.$Gtrad['diplo'.$diplo].' avec les '.$Gtrad[$row['royaume_demande']].'<br /><br />';
+	        echo '<h6>Vous êtes maintenant en '.$Gtrad['diplo'.$diplo].' avec les '.$Gtrad[$row['royaume_demande']].'</h6>';
 	        //Envoi d'un message au roi
 	        $message = 'Le roi des '.$Gtrad[$joueur->get_race()].' a accepté votre demande diplomatique'.(empty($row['stars']) ? '' : '.'.$row['stars'].' ont été versés à ce royaume.');
 	        $requete = "INSERT INTO message VALUES('', ".$row_roi['ID'].", 0,'Mess. Auto', '".$row_roi['nom']."', 'Accord diplomatique', '".$message."', '', '".time()."', 0)";

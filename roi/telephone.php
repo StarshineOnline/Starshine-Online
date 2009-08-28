@@ -53,27 +53,4 @@ elseif(array_key_exists('id_dest', $_GET))
 </fieldset>
 <?php
 }
-else
-{
-?>
-<table class="ville">
-<?php
-$requete = "SELECT * FROM perso WHERE rang_royaume = 6 AND id <> ".$joueur->get_id();
-$req = $db->query($requete);
-while($row = $db->read_assoc($req))
-{
-	echo '
-	<tr>
-		<td>
-			<a onclick="affichePopUp(\'telephone.php\',\'id_dest='.$row['id'].'\');">'.$row['nom'].'</a>
-		</td>
-		<td>
-			 - Roi des '.$Gtrad[$row['race']].'
-		</td
-	</td>';
-}
-?>
-</table>
-<?php
-}
 ?>

@@ -97,7 +97,7 @@ if($joueur->get_grade()->get_id() == 6)
 	<div id='menu'>
 	<input type='hidden' id='menu_encours' value='diplomatie' />
 	<div id='menu_details'>
-		<div id='diplomatie_menu' style='display:none;'><span class='menu' onclick="affiche_page('gestion_royaume.php?direction=diplomatie');">Diplomatie</span><span class='menu' onclick="affiche_page('telephone.php');">Téléphone rouge</span></div>
+		<div id='diplomatie_menu' style='display:none;'><span class='menu' onclick="affiche_page('gestion_royaume.php?direction=diplomatie');">Diplomatie</span></div>
 		
 		
 		<div id='militaire_menu' style='display:none;'><span class='menu' onclick="affiche_page('construction.php');">Drapeaux & batiments</span><span class='menu' onclick="affiche_page('gestion_royaume.php?direction=carte');">Carte</span><span class='menu' onclick="affiche_page('gestion_groupe.php');">Gestion des groupes</span><span class='menu' onclick="affiche_page('gestion_bataille.php');">Gestion des batailles</span><span class='menu' onclick="affiche_page('gestion_royaume.php?direction=boutique');">Boutique Militaire</span></div>
