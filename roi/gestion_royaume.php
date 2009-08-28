@@ -246,13 +246,13 @@ if($joueur->get_rang_royaume() != 6)
 	        if($row['statut'] == 'actif')
 	        {
 	        ?>
-	        <li><?php echo $row['nom']; ?><span class="small">, entretien : <?php echo $row['entretien']; ?> <a href="gestion_royaume.php?direction=amelioration&amp;action=list&amp;batiment=<?php echo $row['type']; ?>" onclick="return envoiInfo(this.href, 'conteneur')">Améliorer</a></li>
+	        <li><?php echo $row['nom']; ?><span class="small">, entretien : <?php echo $row['entretien']; ?> <a href="gestion_royaume.php?direction=amelioration&amp;action=list&amp;batiment=<?php echo $row['type']; ?>" onclick="return envoiInfo(this.href, 'contenu_jeu')">Améliorer</a></li>
 	        <?php
 	    	}
 	    	else
 	    	{
 	        ?>
-	        <li><?php echo $row['nom']; ?><span class="small">, inactif <a href="gestion_royaume.php?direction=reactif&amp;action=list&amp;batiment=<?php echo $row['id_const']; ?>" onclick="if(confirm('Voulez vous vraiment réactiver cette construction ?')) return envoiInfo(this.href, 'conteneur'); else return false;">Réactiver pour <?php echo $row['dette']; ?> stars</a></li>
+	        <li><?php echo $row['nom']; ?><span class="small">, inactif <a href="gestion_royaume.php?direction=reactif&amp;action=list&amp;batiment=<?php echo $row['id_const']; ?>" onclick="if(confirm('Voulez vous vraiment réactiver cette construction ?')) return envoiInfo(this.href, 'contenu_jeu'); else return false;">Réactiver pour <?php echo $row['dette']; ?> stars</a></li>
 	        <?php
 	    	}
 	    }
@@ -297,7 +297,7 @@ if($joueur->get_rang_royaume() != 6)
 	            while($row = $db->read_assoc($req))
 	            {
 	                ?>
-	                <li><?php echo $row['nom']; ?>, coût : <?php echo $row['cout']; ?>, entretien par jour : <?php echo $row['entretien']; ?> <a href="gestion_royaume.php?direction=amelioration&amp;action=ameliore&amp;batiment=<?php echo $row['type']; ?>&amp;id_batiment=<?php echo $row['id']; ?>" onclick="return envoiInfo(this.href, 'conteneur')">Améliorer</a></li>
+	                <li><?php echo $row['nom']; ?>, coût : <?php echo $row['cout']; ?>, entretien par jour : <?php echo $row['entretien']; ?> <a href="gestion_royaume.php?direction=amelioration&amp;action=ameliore&amp;batiment=<?php echo $row['type']; ?>&amp;id_batiment=<?php echo $row['id']; ?>" onclick="return envoiInfo(this.href, 'contenu_jeu')">Améliorer</a></li>
 	                <?php
 	            }
 	            ?>
@@ -696,7 +696,7 @@ if($joueur->get_rang_royaume() != 6)
 				$enchere->sauver();
 				?>
 				<h6>Enchère prise en compte !</h6>
-				<a href="gestion_royaume.php?direction=bourse" onclick="return envoiInfo(this.href, 'conteneur');">Revenir à la bourse</a>
+				<a href="gestion_royaume.php?direction=bourse" onclick="return envoiInfo(this.href, 'contenu_jeu');">Revenir à la bourse</a>
 				<?php
 			}
 			else
@@ -760,7 +760,7 @@ if($joueur->get_rang_royaume() != 6)
 				</select><br />
 				Nombre <input type="text" name="nbr" id="nbr" value="0" /><br />
 				Prix total : <input type="text" name="prix" id="prix" value="0" /><br />
-				<input type="button" onclick="if(confirm('Voullez vous mettre ' + $(nbr).value + ' ' + $(ressource).value + ' en vente à ' + $(prix).value + ' stars ?')) return envoiInfo('gestion_royaume.php?direction=bourse_ressource&amp;ressource=' + $(ressource).value + '&amp;prix=' + $(prix).value + '&amp;nombre=' + $(nbr).value, 'conteneur'); else return false;" value="Valider" /><br />
+				<input type="button" onclick="if(confirm('Voullez vous mettre ' + $(nbr).value + ' ' + $(ressource).value + ' en vente à ' + $(prix).value + ' stars ?')) return envoiInfo('gestion_royaume.php?direction=bourse_ressource&amp;ressource=' + $(ressource).value + '&amp;prix=' + $(prix).value + '&amp;nombre=' + $(nbr).value, 'contenu_jeu'); else return false;" value="Valider" /><br />
 			</div>
 			<a href="" onclick="Effect.toggle('ajout_ressource', 'slide'); return false;">Mettre des ressources aux enchères</a>
 		</div>
@@ -963,7 +963,7 @@ if($joueur->get_rang_royaume() != 6)
 	        echo '
 	        <li>
 	            Le roi '.$Gtrad[$row['royaume_demande']].' vous demande de passer en diplomatie et vous donne '.$row['stars'].' stars : '.$Gtrad['diplo'.$row['diplo']].'<br />
-	            Accépter ? <a href="gestion_royaume.php?direction=diplomatie_demande&amp;reponse=oui&amp;id_demande='.$row['id'].';" onclick="return envoiInfo(this.href, \'conteneur\');">Oui</a> / <a href="gestion_royaume.php?direction=diplomatie_demande&amp;reponse=non&amp;id_demande='.$row['id'].';" onclick="return envoiInfo(this.href, \'conteneur\');">Non</a>
+	            Accépter ? <a href="gestion_royaume.php?direction=diplomatie_demande&amp;reponse=oui&amp;id_demande='.$row['id'].';" onclick="return envoiInfo(this.href, \'contenu_jeu\');">Oui</a> / <a href="gestion_royaume.php?direction=diplomatie_demande&amp;reponse=non&amp;id_demande='.$row['id'].';" onclick="return envoiInfo(this.href, \'contenu_jeu\');">Non</a>
 	        </li>';
 	    }
 	    ?>

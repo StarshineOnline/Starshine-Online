@@ -21,22 +21,24 @@ else if(array_key_exists('id', $_GET))
 	//echo '<pre>';
 	//print_r($bourg->mines);
 	$batiments = array_merge($bourg->mines, $bourg->placements);
+	echo "<pre>";
+	print_R($batiments);
+	echo "</pre>";
 	$batiments[] = $bourg;
 	?>
-	<div id="map_mine">
+	<div id="map_mine" style='float:left;'>
 	<?php
 	$map = new map($x, $y, 5, '../', false, 'high');
 	$map->quadrillage = true;
 	$map->set_batiment_objet($batiments);
-	$map->set_onclick("affichePopUp('mine.php?case=%%ID%%&amp;id_bourg=".$bourg->id."');");
+	$map->onclick_status = true;
+	$map->set_onclick("affichePopUp('mine.php?case=%%id%%&amp;id_bourg=".$bourg->id."');");
 	$map->affiche();
 	?>
 	</div>
-	<div id="infos" style="width : 290px;">
-		<div id="info_bourg">
-			Type : <?php echo $bourg->nom; ?><br />
-			X : <?php echo $bourg->x; ?><br />
-			Y : <?php echo $bourg->y; ?><br />
+	<div id="infos" style='margin-left:5px;float:left;'>
+		<fieldset>
+			<legend><?php echo $bourg->nom; ?> en <?php echo $bourg->x; ?> / <?php echo $bourg->y; ?></legend>
 			Mines : <?php echo $bourg->mine_total; ?> / <?php echo $bourg->mine_max; ?>
 			<ul style="margin-left : 15px;">
 			<?php
@@ -44,28 +46,35 @@ else if(array_key_exists('id', $_GET))
 				{
 					$mine->get_evolution();
 					$overlib = 'Pierre : '.$mine->ressources['Pierre'].'<br />Bois : '.$mine->ressources['Bois'].'<br />Eau : '.$mine->ressources['Eau'].'<br />Sable : '.$mine->ressources['Sable'].'<br />Nourriture : '.$mine->ressources['Nourriture'].'<br />Charbon : '.$mine->ressources['Charbon'].'<br />Essence Magique : '.$mine->ressources['Essence Magique'].'<br />Star : '.$mine->ressources['Star'];
-					if($mine->evolution['cout'] != '') $evolution = ' - <a href="mine.php?mine='.$mine->id.'&amp;up" onclick="return envoiInfo(this.href, \'info_mine\');">Evoluer ('.$mine->evolution['cout'].' stars)</a>';
+					if($mine->evolution['cout'] != '') $evolution = ' - <a href="mine.php?mine='.$mine->get_id().'&amp;up" onclick="return envoiInfo(this.href, \'info_mine\');">Evoluer ('.$mine->evolution['cout'].' stars)</a>';
 					else $evolution = '';
 					echo '
 					<li onmouseover="'.make_overlib($overlib).'" onmouseout="return nd();">
-						'.$mine->nom.' - '.$mine->x.' / '.$mine->y.$evolution.' - <a href="mine.php?mine='.$mine->id.'&amp;suppr" onclick="if(confirm(\'Voulez vous supprimer cette mine ?\')) return envoiInfo(this.href, \'info_mine\'); else return false;">X</a>
+						'.$mine->get_nom().' - '.$mine->get_x().' / '.$mine->get_y().$evolution.' - <a href="mine.php?mine='.$mine->get_id().'&amp;suppr" onclick="if(confirm(\'Voulez vous supprimer cette mine ?\')) return envoiInfo(this.href, \'info_mine\'); else return false;">X</a>
 					</li>';
 				}
 			?>
 			</ul>
+			<?php
+			if (count($bourg->placements)>0)
+			{
+			?>
 			En construction
 			<ul style="margin-left : 15px;">
 			<?php
+						$bourg->placements;
+
 				foreach($bourg->placements as $placement)
 				{
 					echo '
 					<li onmouseover="'.make_overlib($overlib).'" onmouseout="return nd();">
-						'.$placement->nom.' - X : '.$placement->x.' - Y : '.$placement->y.' - fin dans '.transform_sec_temp($placement->fin_placement - time()).'
+						'.$placement->get_nom().' - X : '.$placement->get_x().' - Y : '.$placement->get_y().' - fin dans '.transform_sec_temp($placement->get_fin_placement() - time()).'
 					</li>';
 				}
+			}
 			?>
 			</ul>
-		</div>
+		</fieldset>
 		<div id="info_mine">
 		</div>
 	</div>
@@ -76,8 +85,7 @@ elseif(array_key_exists('case', $_GET))
 {
 	$case = new map_case($_GET['case']);
 	$case->check_case();
-	//echo $case->get_info();
-	//echo 'CASE : X : '.$coord['x'].' - Y : '.$coord['y'].'<br />';
+	$coord = convertd_in_coord($case->get_id());
 	$bourg = new bourg($_GET['id_bourg']);
 	$bourg->get_mines();
 	$bourg->get_placements();
@@ -180,26 +188,26 @@ elseif(array_key_exists('add', $_GET))
 
 	if($bourg->mine_total < $bourg->mine_max)
 	{
-		$requete = "SELECT nom, hp,temps_construction, cout FROM batiment WHERE id = ".$_GET['add'];
+		$requete = "SELECT nom, hp,temps_construction, cout FROM batiment WHERE id = ".sSQL($_GET['add']);
 		$req = $db->query($requete);
 		$row = $db->read_assoc($req);
 
 		//On vérifie si on a assez de stars
-		if($R['star'] >= $row['cout'])
+		if($royaume->get_star() >= $row['cout'])
 		{
 			$distance = calcul_distance(convert_in_pos($Trace[$royaume->get_race()]['spawn_x'], $Trace[$royaume->get_race()]['spawn_y']), convert_in_pos($_GET['x'], $_GET['y']));
 			$time = time() + ($row['temps_construction'] * $distance);
 
 			$placement = new placement();
-			$placement->id_royaume = $royaume->get_id();
-			$placement->id_batiment = $_GET['add'];
-			$placement->x = $_GET['x'];
-			$placement->y = $_GET['y'];
-			$placement->hp = $row['hp'];
-			$placement->nom = $row['nom'];
-			$placement->rez = $_GET['bourg'];
-			$placement->type = 'mine';
-			$placement->fin_placement = $time;
+			$placement->set_royaume($royaume->get_id());
+			$placement->set_id_batiment($_GET['add']);
+			$placement->set_x($_GET['x']);
+			$placement->set_y($_GET['y']);
+			$placement->set_hp($row['hp']);
+			$placement->set_nom($row['nom']);
+			$placement->set_rez($_GET['bourg']);
+			$placement->set_type('mine');
+			$placement->set_fin_placement($time);
 			$placement->sauver();
 			
 			//On enlève les stars au royaume
@@ -220,7 +228,7 @@ elseif(array_key_exists('up', $_GET))
 
 
 	//On vérifie si on a assez de stars
-	if($R['star'] >= $mine->evolution['cout'])
+	if($royaume->get_star() >= $mine->evolution['cout'])
 	{
 		$mine->hp = round(($mine->hp / $mine->get_hp_max()) * $mine->evolution['hp']);
 		$mine->id_batiment = $mine->evolution['id'];
@@ -239,9 +247,10 @@ elseif(array_key_exists('up', $_GET))
 elseif(array_key_exists('suppr', $_GET))
 {
 	$mine = new mine($_GET['mine']);
+	
 	if($mine->id_royaume == $royaume->get_id())
 	{
-		echo $mine->supprimer();
+		$mine->supprimer();
 	}
 }
 else
@@ -279,7 +288,7 @@ else
 		<?php
 			foreach($bourg->placements as $placement)
 			{
-				echo '<li>'.$placement->nom.' - X : '.$placement->x.' - Y : '.$placement->y.' - fin dans '.transform_sec_temp($placement->fin_placement - time()).'</li>';
+				echo '<li>'.$placement->get_nom().' - X : '.$placement->get_x().' - Y : '.$placement->get_y().' - fin dans '.transform_sec_temp($placement->get_fin_placement() - time()).'</li>';
 			}
 		?>
 		</ul>
