@@ -247,24 +247,29 @@ if($joueur->get_rang_royaume() != 6)
 	    $requete = "SELECT *, construction_ville.id as id_const FROM construction_ville LEFT JOIN batiment_ville ON construction_ville.id_batiment = batiment_ville.id WHERE id_royaume = ".$royaume->get_id();
 	    $req = $db->query($requete);
 	    echo '
-	    <h3>Liste des batiments de la ville :</h3>
-	    <ul class="ville">';
+	    <div id="construction">
+	    <fieldset>
+	    <legend>Liste des batiments de la ville :</legend>
+	    <ul>';
 	    while($row = $db->read_assoc($req))
 	    {
 	        if($row['statut'] == 'actif')
 	        {
-	        ?>
-	        <li><?php echo $row['nom']; ?><span class="small">, entretien : <?php echo $row['entretien']; ?> <a href="gestion_royaume.php?direction=amelioration&amp;action=list&amp;batiment=<?php echo $row['type']; ?>" onclick="return envoiInfo(this.href, 'contenu_jeu')">Améliorer</a></li>
+	        
+	       echo "<li class='$construc_class'><span class='nom'>".$row['nom']; ?></span><span class="small" style='float:left;width:100px;'> entretien : <?php echo $row['entretien']; ?></span><span style='float:left;width:100px;'> <a href="gestion_royaume.php?direction=amelioration&amp;action=list&amp;batiment=<?php echo $row['type']; ?>" onclick="return envoiInfo(this.href, 'contenu_jeu')">Améliorer</a></li>
 	        <?php
 	    	}
 	    	else
 	    	{
-	        ?>
-	        <li><?php echo $row['nom']; ?><span class="small">, inactif <a href="gestion_royaume.php?direction=reactif&amp;action=list&amp;batiment=<?php echo $row['id_const']; ?>" onclick="if(confirm('Voulez vous vraiment réactiver cette construction ?')) return envoiInfo(this.href, 'contenu_jeu'); else return false;">Réactiver pour <?php echo $row['dette']; ?> stars</a></li>
+		       echo "<li class='$construc_class'><span class='nom'>".$row['nom']; ?></span><span class="small" style='float:left;width:100px;'> inactif </span><span style='float:left;width:100px;'><a href="gestion_royaume.php?direction=reactif&amp;action=list&amp;batiment=<?php echo $row['id_const']; ?>" onclick="if(confirm('Voulez vous vraiment réactiver cette construction ?')) return envoiInfo(this.href, 'contenu_jeu'); else return false;">Réactiver pour <?php echo $row['dette']; ?> stars</a></li>
 	        <?php
 	    	}
+	  		if ($construc_class == 't1'){$construc_class = 't2';}else{$construc_class = 't1';}	    
 	    }
-	    echo '</ul>';
+
+	    echo '</ul>
+	    </fieldset>
+	    </div>';
 	}
 	elseif($_GET['direction'] == 'reactif')
 	{

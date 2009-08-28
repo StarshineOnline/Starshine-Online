@@ -78,6 +78,16 @@ body 								{margin:0;padding:0;background:#7e909c url('../../image/v2/bg_site.
 #diplomatie .liens					{float:left;width:200px;}
 #diplomatie .nom					{float:left;width:200px;}
 
+#construction fieldset					{-moz-border-radius: 10px;}
+#construction ul li 					{clear:both;height:30px;line-height: 30px;-moz-border-radius: 10px;}
+#construction ul li:hover			    {background-color:#C5D4EF;-moz-border-radius: 10px;}
+#construction .nom					{float:left;width:200px;}
+
+#mine fieldset					{-moz-border-radius: 10px;float:left;width:280px;}
+#mine fieldset:hover					{background-color:#C5D4EF;}
+#mine ul li 					{clear:both;height:20px;line-height: 20px;-moz-border-radius: 10px;}
+
+
 
 #telephone fieldset					{-moz-border-radius: 10px;}
 #telephone ul li 					{clear:both;height:30px;line-height: 30px;-moz-border-radius: 10px;}

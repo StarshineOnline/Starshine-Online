@@ -260,7 +260,7 @@ else
 	$req = $db->query($requete);
 	
 	?>
-	<ul>
+	<div id='mine'>
 	<?php
 	while($row = $db->read_assoc($req))
 	{
@@ -269,7 +269,9 @@ else
 		$bourg->get_placements();
 		$bourg->get_mine_total();
 		$bourg->get_mine_max();
-		echo '<li><a href="mine.php?id='.$bourg->get_id().'" onclick="return envoiInfo(this.href, \'contenu_jeu\');">'.$bourg->get_nom().'</a> - X : '.$bourg->get_x().' - Y : '.$bourg->get_y().' - ('.$bourg->mine_total.' / '.$bourg->mine_max.')</li>';
+		echo '<fieldset onclick="envoiInfo(\'mine.php?id='.$bourg->get_id().'\', \'contenu_jeu\');">
+		<legend>'.$bourg->get_nom().'</a> - '.$bourg->get_x().' / '.$bourg->get_y().' - ('.$bourg->mine_total.' / '.$bourg->mine_max.')
+		</legend>';
 		if(count($bourg->mines) > 0)
 		{
 		?>
@@ -277,7 +279,7 @@ else
 		<?php
 			foreach($bourg->mines as $mine)
 			{
-				echo '<li>'.$mine->get_nom().' - X : '.$mine->get_x().' - Y : '.$mine->get_y().'</li>';
+				echo '<li>'.$mine->get_nom().'</li>';
 			}
 		?>
 		</ul>
@@ -290,15 +292,16 @@ else
 		<?php
 			foreach($bourg->placements as $placement)
 			{
-				echo '<li>'.$placement->get_nom().' - X : '.$placement->get_x().' - Y : '.$placement->get_y().' - fin dans '.transform_sec_temp($placement->get_fin_placement() - time()).'</li>';
+				echo '<li>Construction de '.$placement->get_nom().'  - fin dans '.$placement->get_fin_placement() - time().' '.transform_sec_temp($placement->get_fin_placement() - time()).'</li>';
 			}
 		?>
 		</ul>
+		</fieldset>
 		<?php
 		}
 	}
 	?>
-	</ul>
+	</div>
 <?php
 }
 ?>
