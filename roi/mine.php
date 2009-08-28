@@ -37,11 +37,11 @@ else if(array_key_exists('id', $_GET))
 	$map->affiche();
 	?>
 	</div>
-	<div id="infos" style='margin-left:5px;float:left;'>
+	<div id="infos" style='margin-left:5px;float:left;width:275px;'>
 		<fieldset>
-			<legend><?php echo $bourg->get_nom(); ?> en <?php echo $bourg->get_x(); ?> / <?php echo $bourg->get_y(); ?></legend>
-			Mines : <?php echo $bourg->mine_total; ?> / <?php echo $bourg->mine_max; ?>
-			<ul style="margin-left : 15px;">
+			<legend><?php echo $bourg->get_nom(); ?> en <?php echo $bourg->get_x(); ?> / <?php echo $bourg->get_y(); ?> - Mines : <?php echo $bourg->mine_total; ?> / <?php echo $bourg->mine_max; ?></legend>
+			
+			<ul>
 			<?php
 				foreach($bourg->mines as $mine)
 				{
@@ -76,6 +76,11 @@ else if(array_key_exists('id', $_GET))
 			?>
 			</ul>
 		</fieldset>
+		<fieldset>
+			<legend>Info</legend>
+			<p>Pour mettre un extracteur, cliquez sur une case vous appartenant sur la map.</p>
+		</fieldset>
+		
 		<div id="info_mine">
 		</div>
 	</div>
@@ -296,9 +301,9 @@ else
 			}
 		?>
 		</ul>
-		</fieldset>
 		<?php
 		}
+		echo '</fieldset>';
 	}
 	?>
 	</div>

@@ -67,10 +67,10 @@ body 								{margin:0;padding:0;background:#7e909c url('../../image/v2/bg_site.
 .sable								{text-align:right;margin-right:20px;background:transparent url('../../image/icone/ressources_sable.png') no-repeat;display:block;line-height: 30px;height:30px;width:30px;float:left;}
 .charbon							{text-align:right;margin-right:20px;background:transparent url('../../image/icone/ressources_charbon.png') no-repeat;display:block;line-height: 30px;height:30px;width:30px;float:left;}
 .nourriture							{text-align:right;margin-right:20px;background:transparent url('../../image/icone/ressources_nourriture.png') no-repeat;display:block;line-height: 30px;height:30px;width:30px;float:left;}
-.star							{text-align:right;margin-right:20px;background:transparent url('../../image/icone/ressources_star.png') no-repeat;display:block;line-height: 30px;height:30px;width:30px;float:left;}
-.food							{text-align:right;margin-right:20px;background:transparent url('../../image/icone/ressources_nourriture.png') no-repeat;display:block;line-height: 30px;height:30px;width:30px;float:left;}
+.star								{text-align:right;margin-right:20px;background:transparent url('../../image/icone/ressources_star.png') no-repeat;display:block;line-height: 30px;height:30px;width:30px;float:left;}
+.food								{text-align:right;margin-right:20px;background:transparent url('../../image/icone/ressources_nourriture.png') no-repeat;display:block;line-height: 30px;height:30px;width:30px;float:left;}
 
-#diplomatie fieldset					{-moz-border-radius: 10px;}
+#diplomatie fieldset				{-moz-border-radius: 10px;}
 #diplomatie ul li 					{clear:both;height:30px;line-height: 30px;-moz-border-radius: 10px;}
 #diplomatie ul li:hover			    {background-color:#C5D4EF;-moz-border-radius: 10px;}
 #diplomatie .drapeau				{float:left;width:200px;}
@@ -78,15 +78,16 @@ body 								{margin:0;padding:0;background:#7e909c url('../../image/v2/bg_site.
 #diplomatie .liens					{float:left;width:200px;}
 #diplomatie .nom					{float:left;width:200px;}
 
-#construction fieldset					{-moz-border-radius: 10px;}
-#construction ul li 					{clear:both;height:30px;line-height: 30px;-moz-border-radius: 10px;}
-#construction ul li:hover			    {background-color:#C5D4EF;-moz-border-radius: 10px;}
+#construction fieldset				{-moz-border-radius: 10px;}
+#construction ul li 				{clear:both;height:30px;line-height: 30px;-moz-border-radius: 10px;}
+#construction ul li:hover		    {background-color:#C5D4EF;-moz-border-radius: 10px;}
 #construction .nom					{float:left;width:200px;}
 
-#mine fieldset					{-moz-border-radius: 10px;float:left;width:280px;}
-#mine fieldset:hover					{background-color:#C5D4EF;}
-#mine ul li 					{clear:both;height:20px;line-height: 20px;-moz-border-radius: 10px;}
+#mine fieldset						{-moz-border-radius: 10px;float:left;width:280px;}
+#mine fieldset:hover				{background-color:#C5D4EF;}
+#mine ul li 						{clear:both;height:20px;line-height: 20px;-moz-border-radius: 10px;}
 
+#infos	fieldset					{-moz-border-radius: 10px;}
 
 
 #telephone fieldset					{-moz-border-radius: 10px;}
