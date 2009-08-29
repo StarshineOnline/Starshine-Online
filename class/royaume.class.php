@@ -1128,5 +1128,19 @@ class royaume
 			$this->sauver();
 		}
 	}
+
+	function get_constructions_ville($destructible = false)
+	{
+		global $db;
+		if($destructible) $and = ' AND construction_ville.hp > 0 AND (construction_ville.level > 1 OR construction_ville.statut = \'actif\')';
+		else $and = '';
+		$requete = "SELECT construction_ville.id as id, id_batiment, statut, construction_ville.hp as hp, level FROM `construction_ville` RIGHT JOIN batiment_ville ON construction_ville.id_batiment = batiment_ville.id WHERE `id_royaume` = ".$this->id.$and;
+		$req = $db->query($requete);
+		while($row = $db->read_assoc($req))
+		{
+			$this->constructions_ville[] = $row;
+		}
+		return $this->constructions_ville;
+	}
 }
 ?>

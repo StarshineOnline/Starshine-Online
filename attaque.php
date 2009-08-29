@@ -507,12 +507,25 @@ else
 				//Sinon on attaque les batiments ou la ville
 				if($suppr_hp)
 				{
-					$map_royaume->set_capitale_hp($defenseur->get_hp());
-					//Si la capitale n'a plus de vie, on met le royaume en raz
-					if($map_royaume->get_capitale_hp() < 0)
+					$map_royaume->get_constructions_ville(true);
+					$count = count($map_royaume->constructions_ville);
+					//Si on peut détruire des bâtiments en ville
+					if($count > 0)
 					{
-						$time = time() + 3600 * 24 * 31;
-						$map_royaume->set_fin_raz_capitale($time);
+						$rand = rand(1, $count);
+						//On attaque la construction $rand du tableau
+						$construction_ville = new construction_ville($map_royaume->constructions_ville[$rand]['id']);
+						$construction_ville->suppr_hp($degat_defenseur);
+					}
+					else
+					{
+						$map_royaume->set_capitale_hp($defenseur->get_hp());
+						//Si la capitale n'a plus de vie, on met le royaume en raz
+						if($map_royaume->get_capitale_hp() < 0)
+						{
+							$time = time() + 3600 * 24 * 31;
+							$map_royaume->set_fin_raz_capitale($time);
+						}
 					}
 				}
 				$map_royaume->sauver();
