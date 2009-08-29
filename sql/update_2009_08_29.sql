@@ -1,0 +1,1 @@
+ALTER TABLE `royaume` ADD `fin_raz_capitale` INT UNSIGNED NOT NULL ;

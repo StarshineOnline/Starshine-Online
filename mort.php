@@ -33,8 +33,12 @@ elseif($choix == 3)
 {
 	$requete = "DELETE FROM rez WHERE id_perso = ".$joueur->get_id();
 	$db->query($requete);
+	$R = new royaume($Trace[$joueur->get_race()]['numrace']);
+	$R->verif_hp();
+	if($R->get_capitale_hp() > 0) $malus = 15;
+	else $malus = 5;
 	//Ville
-	verif_mort(15, 4, 43200, 2);
+	verif_mort($malus, 4, 43200, 2);
 }
 ?>
 <img src="image/pixel.gif" onload="window.location = 'jeu2.php';" />

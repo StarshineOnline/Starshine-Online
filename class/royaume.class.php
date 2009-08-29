@@ -151,6 +151,12 @@ class royaume
     */
 	private $capitale_hp;
 
+	/**
+    * @access private
+    * @var int(10)
+    */
+	private $fin_raz_capitale;
+
 	
 	/**
 	* @access public
@@ -180,19 +186,20 @@ class royaume
 	* @param int(10) ministre_economie attribut
 	* @param int(10) ministre_militaire attribut
 	* @param int(10) capitale_hp attribut
+	* @param int(10) fin_raz_capitale attribut
 	* @return none
 	*/
-	function __construct($id = 0, $taxe_time = 0, $race = '', $nom = '', $capitale = '', $star = '', $point_victoire = '', $point_victoire_total = '', $star_nouveau_joueur = '', $taxe = '', $diplo_time = '', $honneur_candidat = '', $bourg = '', $pierre = '', $bois = '', $eau = '', $sable = '', $charbon = '', $essence = '', $food = '', $alchimie = '', $roi = '', $ministre_economie = '', $ministre_militaire = '', $capitale_hp = '')
+	function __construct($id = 0, $taxe_time = 0, $race = '', $nom = '', $capitale = '', $star = '', $point_victoire = '', $point_victoire_total = '', $star_nouveau_joueur = '', $taxe = '', $diplo_time = '', $honneur_candidat = '', $bourg = '', $pierre = '', $bois = '', $eau = '', $sable = '', $charbon = '', $essence = '', $food = '', $alchimie = '', $roi = '', $ministre_economie = '', $ministre_militaire = '', $capitale_hp = '', $fin_raz_capitale = '')
 	{
 		global $db;
 		//Verification nombre et du type d'argument pour construire l'etat adequat.
 		if( (func_num_args() == 1) && is_numeric($id) )
 		{
-			$requeteSQL = $db->query("SELECT taxe_time, race, nom, capitale, star, point_victoire, point_victoire_total, star_nouveau_joueur, taxe, diplo_time, honneur_candidat, bourg, pierre, bois, eau, sable, charbon, essence, food, alchimie, roi, ministre_economie, ministre_militaire, capitale_hp FROM royaume WHERE id = ".$id);
+			$requeteSQL = $db->query("SELECT taxe_time, race, nom, capitale, star, point_victoire, point_victoire_total, star_nouveau_joueur, taxe, diplo_time, honneur_candidat, bourg, pierre, bois, eau, sable, charbon, essence, food, alchimie, roi, ministre_economie, ministre_militaire, capitale_hp, fin_raz_capitale FROM royaume WHERE id = ".$id);
 			//Si le thread est dans la base, on le charge sinon on crée un thread vide.
 			if( $db->num_rows($requeteSQL) > 0 )
 			{
-				list($this->taxe_time, $this->race, $this->nom, $this->capitale, $this->star, $this->point_victoire, $this->point_victoire_total, $this->star_nouveau_joueur, $this->taxe, $this->diplo_time, $this->honneur_candidat, $this->bourg, $this->pierre, $this->bois, $this->eau, $this->sable, $this->charbon, $this->essence, $this->food, $this->alchimie, $this->roi, $this->ministre_economie, $this->ministre_militaire, $this->capitale_hp) = $db->read_array($requeteSQL);
+				list($this->taxe_time, $this->race, $this->nom, $this->capitale, $this->star, $this->point_victoire, $this->point_victoire_total, $this->star_nouveau_joueur, $this->taxe, $this->diplo_time, $this->honneur_candidat, $this->bourg, $this->pierre, $this->bois, $this->eau, $this->sable, $this->charbon, $this->essence, $this->food, $this->alchimie, $this->roi, $this->ministre_economie, $this->ministre_militaire, $this->capitale_hp, $this->fin_raz_capitale) = $db->read_array($requeteSQL);
 			}
 			else $this->__construct();
 			$this->id = $id;
@@ -224,6 +231,7 @@ class royaume
 			$this->ministre_economie = $id['ministre_economie'];
 			$this->ministre_militaire = $id['ministre_militaire'];
 			$this->capitale_hp = $id['capitale_hp'];
+			$this->fin_raz_capitale = $id['fin_raz_capitale'];
 			}
 		else
 		{
@@ -251,6 +259,7 @@ class royaume
 			$this->ministre_economie = $ministre_economie;
 			$this->ministre_militaire = $ministre_militaire;
 			$this->capitale_hp = $capitale_hp;
+			$this->fin_raz_capitale = $fin_raz_capitale;
 			$this->id = $id;
 		}
 	}
@@ -268,7 +277,7 @@ class royaume
 		{
 			if(count($this->champs_modif) > 0)
 			{
-				if($force) $champs = 'taxe_time = '.$this->taxe_time.', race = "'.mysql_escape_string($this->race).'", nom = "'.mysql_escape_string($this->nom).'", capitale = "'.mysql_escape_string($this->capitale).'", star = "'.mysql_escape_string($this->star).'", point_victoire = "'.mysql_escape_string($this->point_victoire).'", point_victoire_total = "'.mysql_escape_string($this->point_victoire_total).'", star_nouveau_joueur = "'.mysql_escape_string($this->star_nouveau_joueur).'", taxe = "'.mysql_escape_string($this->taxe).'", diplo_time = "'.mysql_escape_string($this->diplo_time).'", honneur_candidat = "'.mysql_escape_string($this->honneur_candidat).'", bourg = "'.mysql_escape_string($this->bourg).'", pierre = "'.mysql_escape_string($this->pierre).'", bois = "'.mysql_escape_string($this->bois).'", eau = "'.mysql_escape_string($this->eau).'", sable = "'.mysql_escape_string($this->sable).'", charbon = "'.mysql_escape_string($this->charbon).'", essence = "'.mysql_escape_string($this->essence).'", food = "'.mysql_escape_string($this->food).'", alchimie = "'.mysql_escape_string($this->alchimie).'", roi = "'.mysql_escape_string($this->roi).'", ministre_economie = "'.mysql_escape_string($this->ministre_economie).'", ministre_militaire = "'.mysql_escape_string($this->ministre_militaire).'", capitale_hp = "'.mysql_escape_string($this->capitale_hp).'"';
+				if($force) $champs = 'taxe_time = '.$this->taxe_time.', race = "'.mysql_escape_string($this->race).'", nom = "'.mysql_escape_string($this->nom).'", capitale = "'.mysql_escape_string($this->capitale).'", star = "'.mysql_escape_string($this->star).'", point_victoire = "'.mysql_escape_string($this->point_victoire).'", point_victoire_total = "'.mysql_escape_string($this->point_victoire_total).'", star_nouveau_joueur = "'.mysql_escape_string($this->star_nouveau_joueur).'", taxe = "'.mysql_escape_string($this->taxe).'", diplo_time = "'.mysql_escape_string($this->diplo_time).'", honneur_candidat = "'.mysql_escape_string($this->honneur_candidat).'", bourg = "'.mysql_escape_string($this->bourg).'", pierre = "'.mysql_escape_string($this->pierre).'", bois = "'.mysql_escape_string($this->bois).'", eau = "'.mysql_escape_string($this->eau).'", sable = "'.mysql_escape_string($this->sable).'", charbon = "'.mysql_escape_string($this->charbon).'", essence = "'.mysql_escape_string($this->essence).'", food = "'.mysql_escape_string($this->food).'", alchimie = "'.mysql_escape_string($this->alchimie).'", roi = "'.mysql_escape_string($this->roi).'", ministre_economie = "'.mysql_escape_string($this->ministre_economie).'", ministre_militaire = "'.mysql_escape_string($this->ministre_militaire).'", capitale_hp = "'.mysql_escape_string($this->capitale_hp).'", fin_raz_capitale = "'.mysql_escape_string($this->fin_raz_capitale).'"';
 				else
 				{
 					$champs = '';
@@ -287,8 +296,8 @@ class royaume
 		}
 		else
 		{
-			$requete = 'INSERT INTO royaume (taxe_time, race, nom, capitale, star, point_victoire, point_victoire_total, star_nouveau_joueur, taxe, diplo_time, honneur_candidat, bourg, pierre, bois, eau, sable, charbon, essence, food, alchimie, roi, ministre_economie, ministre_militaire, capitale_hp) VALUES(';
-			$requete .= ''.$this->taxe_time.', "'.mysql_escape_string($this->race).'", "'.mysql_escape_string($this->nom).'", "'.mysql_escape_string($this->capitale).'", "'.mysql_escape_string($this->star).'", "'.mysql_escape_string($this->point_victoire).'", "'.mysql_escape_string($this->point_victoire_total).'", "'.mysql_escape_string($this->star_nouveau_joueur).'", "'.mysql_escape_string($this->taxe).'", "'.mysql_escape_string($this->diplo_time).'", "'.mysql_escape_string($this->honneur_candidat).'", "'.mysql_escape_string($this->bourg).'", "'.mysql_escape_string($this->pierre).'", "'.mysql_escape_string($this->bois).'", "'.mysql_escape_string($this->eau).'", "'.mysql_escape_string($this->sable).'", "'.mysql_escape_string($this->charbon).'", "'.mysql_escape_string($this->essence).'", "'.mysql_escape_string($this->food).'", "'.mysql_escape_string($this->alchimie).'", "'.mysql_escape_string($this->roi).'", "'.mysql_escape_string($this->ministre_economie).'", "'.mysql_escape_string($this->ministre_militaire).'", "'.mysql_escape_string($this->capitale_hp).'")';
+			$requete = 'INSERT INTO royaume (taxe_time, race, nom, capitale, star, point_victoire, point_victoire_total, star_nouveau_joueur, taxe, diplo_time, honneur_candidat, bourg, pierre, bois, eau, sable, charbon, essence, food, alchimie, roi, ministre_economie, ministre_militaire, capitale_hp, fin_raz_capitale) VALUES(';
+			$requete .= ''.$this->taxe_time.', "'.mysql_escape_string($this->race).'", "'.mysql_escape_string($this->nom).'", "'.mysql_escape_string($this->capitale).'", "'.mysql_escape_string($this->star).'", "'.mysql_escape_string($this->point_victoire).'", "'.mysql_escape_string($this->point_victoire_total).'", "'.mysql_escape_string($this->star_nouveau_joueur).'", "'.mysql_escape_string($this->taxe).'", "'.mysql_escape_string($this->diplo_time).'", "'.mysql_escape_string($this->honneur_candidat).'", "'.mysql_escape_string($this->bourg).'", "'.mysql_escape_string($this->pierre).'", "'.mysql_escape_string($this->bois).'", "'.mysql_escape_string($this->eau).'", "'.mysql_escape_string($this->sable).'", "'.mysql_escape_string($this->charbon).'", "'.mysql_escape_string($this->essence).'", "'.mysql_escape_string($this->food).'", "'.mysql_escape_string($this->alchimie).'", "'.mysql_escape_string($this->roi).'", "'.mysql_escape_string($this->ministre_economie).'", "'.mysql_escape_string($this->ministre_militaire).'", "'.mysql_escape_string($this->capitale_hp).'", "'.mysql_escape_string($this->fin_raz_capitale).'")';
 			$db->query($requete);
 			//Récuperation du dernier ID inséré.
 			$this->id = $db->last_insert_id();
@@ -347,7 +356,7 @@ class royaume
 			}
 		}
 
-		$requete = "SELECT id, taxe_time, race, nom, capitale, star, point_victoire, point_victoire_total, star_nouveau_joueur, taxe, diplo_time, honneur_candidat, bourg, pierre, bois, eau, sable, charbon, essence, food, alchimie, roi, ministre_economie, ministre_militaire, capitale_hp FROM royaume WHERE ".$where." ORDER BY ".$ordre;
+		$requete = "SELECT id, taxe_time, race, nom, capitale, star, point_victoire, point_victoire_total, star_nouveau_joueur, taxe, diplo_time, honneur_candidat, bourg, pierre, bois, eau, sable, charbon, essence, food, alchimie, roi, ministre_economie, ministre_militaire, capitale_hp, fin_raz_capitale FROM royaume WHERE ".$where." ORDER BY ".$ordre;
 		$req = $db->query($requete);
 		if($db->num_rows($req) > 0)
 		{
@@ -369,7 +378,7 @@ class royaume
 	*/
 	function __toString()
 	{
-		return 'id = '.$this->id.', taxe_time = '.$this->taxe_time.', race = '.$this->race.', nom = '.$this->nom.', capitale = '.$this->capitale.', star = '.$this->star.', point_victoire = '.$this->point_victoire.', point_victoire_total = '.$this->point_victoire_total.', star_nouveau_joueur = '.$this->star_nouveau_joueur.', taxe = '.$this->taxe.', diplo_time = '.$this->diplo_time.', honneur_candidat = '.$this->honneur_candidat.', bourg = '.$this->bourg.', pierre = '.$this->pierre.', bois = '.$this->bois.', eau = '.$this->eau.', sable = '.$this->sable.', charbon = '.$this->charbon.', essence = '.$this->essence.', food = '.$this->food.', alchimie = '.$this->alchimie.', roi = '.$this->roi.', ministre_economie = '.$this->ministre_economie.', ministre_militaire = '.$this->ministre_militaire.', capitale_hp = '.$this->capitale_hp;
+		return 'id = '.$this->id.', taxe_time = '.$this->taxe_time.', race = '.$this->race.', nom = '.$this->nom.', capitale = '.$this->capitale.', star = '.$this->star.', point_victoire = '.$this->point_victoire.', point_victoire_total = '.$this->point_victoire_total.', star_nouveau_joueur = '.$this->star_nouveau_joueur.', taxe = '.$this->taxe.', diplo_time = '.$this->diplo_time.', honneur_candidat = '.$this->honneur_candidat.', bourg = '.$this->bourg.', pierre = '.$this->pierre.', bois = '.$this->bois.', eau = '.$this->eau.', sable = '.$this->sable.', charbon = '.$this->charbon.', essence = '.$this->essence.', food = '.$this->food.', alchimie = '.$this->alchimie.', roi = '.$this->roi.', ministre_economie = '.$this->ministre_economie.', ministre_militaire = '.$this->ministre_militaire.', capitale_hp = '.$this->capitale_hp.', fin_raz_capitale = '.$this->fin_raz_capitale;
 	}
 	
 	/**
@@ -645,6 +654,17 @@ class royaume
 	function get_capitale_hp()
 	{
 		return $this->capitale_hp;
+	}
+
+	/**
+	* Retourne la valeur de l'attribut
+	* @access public
+	* @param none
+	* @return int(10) $fin_raz_capitale valeur de l'attribut fin_raz_capitale
+	*/
+	function get_fin_raz_capitale()
+	{
+		return $this->fin_raz_capitale;
 	}
 
 	/**
@@ -946,6 +966,18 @@ class royaume
 		$this->capitale_hp = $capitale_hp;
 		$this->champs_modif[] = 'capitale_hp';
 	}
+
+	/**
+	* Modifie la valeur de l'attribut
+	* @access public
+	* @param int(10) $fin_raz_capitale valeur de l'attribut
+	* @return none
+	*/
+	function set_fin_raz_capitale($fin_raz_capitale)
+	{
+		$this->fin_raz_capitale = $fin_raz_capitale;
+		$this->champs_modif[] = 'fin_raz_capitale';
+	}
 //fonction
 	function get_diplo($race_joueur)
 	{
@@ -1070,6 +1102,31 @@ class royaume
 		global $db;
 		$requete = "UPDATE argent_royaume SET armurerie = armurerie + ".$valeur." WHERE race = '".$this->race."'";
 		$db->query($requete);
+	}
+
+	function total_ressources()
+	{
+		return ($this->bois + $this->charbon + $this->eau + $this->essence + $this->food + $this->pierre + $this->sable);
+	}
+
+	function supprime_ressources($pourcent)
+	{
+		$this->set_bois(floor($this->bois / (1 + ($pourcent / 100))));
+		$this->set_charbon(floor($this->charbon / (1 + ($pourcent / 100))));
+		$this->set_eau(floor($this->eau / (1 + ($pourcent / 100))));
+		$this->set_essence(floor($this->essence / (1 + ($pourcent / 100))));
+		$this->set_food(floor($this->food / (1 + ($pourcent / 100))));
+		$this->set_pierre(floor($this->pierre / (1 + ($pourcent / 100))));
+		$this->set_sable(floor($this->sable / (1 + ($pourcent / 100))));
+	}
+
+	function verif_hp()
+	{
+		if($this->hp <= 0 && $this->fin_raz_capitale < time())
+		{
+			$this->set_hp(30000);
+			$this->sauver();
+		}
 	}
 }
 ?>

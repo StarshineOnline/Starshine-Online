@@ -74,6 +74,7 @@ switch($type)
 		$joueur = new perso($_SESSION['ID']);
 		$map_case = new map_case($_GET['id_ville']);
 		$map_royaume = new royaume($map_case->get_royaume());
+		$map_royaume->verif_hp();
 		$siege = new batiment($map_siege->get_id_batiment());
 		$siege->bonus_architecture = 1 + ($joueur->get_architecture() / 100);
 		$siege->hp_max = $siege->get_hp();
@@ -184,8 +185,13 @@ else
 	if($defenseur->is_buff('deluge')) $defenseur->set_volonte($defenseur->get_volonte - $defenseur->get_buff('deluge', 'effet'));
 	$pa_attaque = $pa_attaque - $reduction_pa;
 	if($pa_attaque <= 0) $pa_attaque = 1;
-	//Vérifie si l'attaquant a assez de points d'actions pour attaquer
-	if ($attaquant->get_pa() >= $pa_attaque)
+
+	$joueur_true = false;
+	$siege_true = false;
+	if ($type == 'joueur' OR $type == 'monstre' OR $type == 'batiment') if($attaquant->get_pa() >= $pa_attaque) $joueur_true = true;
+	if($type == 'siege' OR $type == 'ville') if ($map_siege->get_rechargement() <= time()) $siege_true = true;
+	//Vérifie si l'attaquant a assez de points d'actions pour attaquer ou si l'arme de siege a assez de rechargement
+	if ($joueur_true OR $siege_true)
 	{
 		if($attaquant->get_hp() > 0)
 		{
@@ -449,6 +455,9 @@ else
 					<?php
 				}
 			}
+			$attaque_hp_apres = $attaquant->get_hp();
+			$defense_hp_apres = $defenseur->get_hp();
+			$degat_defense = $defense_hp_avant - $defense_hp_apres;
 			//On donne les bons HP à l'attaque et la défense
 			if($type == 'joueur')
 			{
@@ -482,7 +491,30 @@ else
 			elseif($type == 'ville')
 			{
 				//hasard pour différente actions de destruction sur la ville.
-				$map_royaume->set_capitale_hp($defenseur->get_hp());
+				//Si il y a assez de ressources en ville
+				$suppr_hp = true;
+				if($map_royaume->total_ressources() > 1000)
+				{
+					$rand = rand(1, 100);
+					//Premier cas, on supprime les ressources
+					if($rand > 50)
+					{
+						$suppr_hp = false;
+						$map_royaume->supprime_ressources($degat_defense / 100);
+						echo 'L\'attaque détruit des ressources au royaume '.$Gtrad[$map_royaume->get_race()].'<br />';
+					}
+				}
+				//Sinon on attaque les batiments ou la ville
+				if($suppr_hp)
+				{
+					$map_royaume->set_capitale_hp($defenseur->get_hp());
+					//Si la capitale n'a plus de vie, on met le royaume en raz
+					if($map_royaume->get_capitale_hp() < 0)
+					{
+						$time = time() + 3600 * 24 * 31;
+						$map_royaume->set_fin_raz_capitale($time);
+					}
+				}
 				$map_royaume->sauver();
 			}
 			//Fin du combat
@@ -536,8 +568,6 @@ else
 					<li>
 			</ul>
 			<div style="float:left;">';
-			$attaque_hp_apres = $attaquant->get_hp();
-			$defense_hp_apres = $defenseur->get_hp();
 
 			if($type == 'joueur')
 			{
@@ -1002,8 +1032,18 @@ else
 				elseif($type == 'batiment') echo(' <a href="attaque.php?id_batiment='.$map_batiment->get_id().'&amp;type=batiment" onclick="return envoiInfo(this.href, \'information\')"><img src="image/interface/attaquer.png" alt="Combattre" title="Attaquer la même cible" style="vertical-align : middle;" /></a><br />');
 			}
 
-			$joueur->set_pa($joueur->get_pa() - $pa_attaque);
-			$joueur->sauver();
+			//Suppression des PA si c'est une attaque du joueur
+			if($type == 'joueur' OR $type == 'monstre' OR $type == 'batiment')
+			{
+				$joueur->set_pa($joueur->get_pa() - $pa_attaque);
+				$joueur->sauver();
+			}
+			//Sinon c'est une arme de siège, et il faut modifier son rechargement
+			else
+			{
+				$map_siege->set_rechargement(time() + $siege->get_bonus3());
+				$map_siege->sauver();
+			}
 
 			//Mise dans les journaux si attaque pvp
 			if($type == 'joueur')
