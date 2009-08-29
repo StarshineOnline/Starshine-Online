@@ -9,7 +9,6 @@ else echo 'ERREUR';
 $type = $id_type[0];
 $id = intval(mb_substr($id_type, 1, strlen($id_type)));
 $joueur = new perso($_SESSION['ID']);
-if($joueur->get_groupe() != 0) $groupe_joueur = recupgroupe($joueur->get_groupe(), ''); else $groupe_joueur = false;
 
 normalize_entry_charset(array('titre', 'message'));
 

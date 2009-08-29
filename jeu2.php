@@ -83,7 +83,7 @@ $_SESSION['position'] = convert_in_pos($joueur->get_x(), $joueur->get_y());
 	<input type="hidden" id="menu_encours" value="lejeu" />
 	<div id='menu_details'>
 		<div id='lejeu_menu' style='display:none;'><span class='menu' onclick="affichePopUp('diplomatie.php');">Diplomatie</span><span class='menu' onclick="affichePopUp('classement.php');">Classement</span><span class='menu' onclick="affichePopUp('stats2.php?graph=carte_royaume');">Statistiques</span><span class='menu' onclick="affichePopUp('message_accueil.php?affiche=all');">Message d'Accueil</span><span class='menu' onclick="affichePopUp('option.php');">Options</span></div>
-		<div id='starshine_menu' style='display:none;'><span class='menu' onclick="affichePopUp('liste_monstre.php');">Bestiaire</span><span class='menu' onclick="affichePopUp('background.php');">Background</span><span class='menu' onclick="affichePopUp('royaume.php');">Carte</span></div>
+		<div id='starshine_menu' style='display:none;'><span class='menu' onclick="affichePopUp('liste_monstre.php');">Bestiaire</span><span class='menu' onclick="affichePopUp('background.php');">Background</span><span class='menu' onclick="affichePopUp('royaume.php');">Carte</span><span class='menu' onclick="affichePopUp('beta_test.php');">Beta</span></div>
 		<div id='communaute_menu' style='display:none;'><span class='menu'><a href="http://forum.starshine-online.com">Forum</a></span><span class='menu'><a href="http://wiki.starshine-online.com/">Wiki</a></span><span class='menu' onclick="affichePopUp('acces_chat.php');">Tchat</span><span class='menu' onclick="affichePopUp('boutique_sso.php');">Boutique SSO</span></div>
 	</div>
 	<div id='menu_deco'>

@@ -258,12 +258,15 @@ if($W_row['type'] == 1)
 	$check = true;
 	foreach($types[$type] as $typ)
 	{
-    $accesseur = "get_$typ[1]";
-		echo '
-			<td>
-				<span class="'.over_price($row[$typ[1]], $joueur->{$accesseur}()).'">'.$row[$typ[1]].'</span>
-			</td>';
-		if (over_price($row[$typ[1]], $joueur->{$accesseur}()) == 'achat_over') $check = false;
+		if($typ[1] != 'var1')
+		{
+			$accesseur = "get_$typ[1]";
+			echo '
+				<td>
+					<span class="'.over_price($row[$typ[1]], $joueur->{$accesseur}()).'">'.$row[$typ[1]].'</span>
+				</td>';
+			if (over_price($row[$typ[1]], $joueur->{$accesseur}()) == 'achat_over') $check = false;
+		}
 	}
 	?>
 			<td>

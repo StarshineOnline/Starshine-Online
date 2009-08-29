@@ -7,29 +7,29 @@ if (file_exists('root.php'))
 	
 	if(array_key_exists('action', $_GET))
 	{
-		if($joueur['beta'] > 0)
+		$joueur->set_beta(1);
+		if($joueur->get_beta() > 0)
 		{
-			$joueur['beta']--;
 			switch($_GET['action'])
 			{
 				case 'hp' :
-					$requete = "UPDATE perso SET hp = FLOOR(hp_max), beta = ".$joueur['beta']." WHERE ID = ".$_SESSION['ID'];
+					$joueur->set_hp($joueur->get_hp_max());
 				break;
 				case 'mp' :
-					$requete = "UPDATE perso SET mp = FLOOR(mp_max), beta = ".$joueur['beta']." WHERE ID = ".$_SESSION['ID'];
+					$joueur->set_mp($joueur->get_mp_max());
 				break;
 				case 'pa' :
-					$requete = "UPDATE perso SET pa = 180, beta = ".$joueur['beta']." WHERE ID = ".$_SESSION['ID'];
+					$joueur->set_pa(180);
 				break;
 				case 'star' :
-					$requete = "UPDATE perso SET star = star + 10000, beta = ".$joueur['beta']." WHERE ID = ".$_SESSION['ID'];
+					$joueur->set_star($joueur->get_star() + 10000);
 				break;
 			}
-			$db->query($requete);
 		}
+		$joueur->sauver();
 	}
 ?>
-Vous avez <?php echo $joueur['beta']; ?> points beta test.<br />
+Vous avez <?php echo $joueur->get_beta(); ?> points beta test.<br />
 En utilisez un pour :<br />
 - <a href="beta_test.php?action=hp" onclick="return envoiInfo(this.href, 'popup_content');">Full HP</a><br />
 - <a href="beta_test.php?action=mp" onclick="return envoiInfo(this.href, 'popup_content');">Full MP</a><br />

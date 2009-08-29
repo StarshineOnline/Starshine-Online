@@ -26,81 +26,84 @@ echo '
 	$objectif = unserialize($row['objectif']);
 	$i = 0;
 	$quetes = unserialize($joueur->get_quete());
-	foreach($quetes[$_GET['quete_joueur']]['objectif'] as $objectif_fait)
+	if(is_array($quetes))
 	{
-		$total_fait = $objectif_fait->nombre;
-		$total = $objectif[$i]->nombre;
-		if($total_fait >= $total) $objectif[$i]->termine = true;
-		else $objectif[$i]->termine = false;
-		if($objectif_fait->requis == '' OR $objectif[$objectif_fait->requis]->termine)
+		foreach($quetes[$_GET['quete_joueur']]['objectif'] as $objectif_fait)
 		{
-			$cible = $objectif[$i]->cible;
-			$type = $cible[0];
-			$cible = mb_substr($cible, 1);
-			switch($type)
+			$total_fait = $objectif_fait->nombre;
+			$total = $objectif[$i]->nombre;
+			if($total_fait >= $total) $objectif[$i]->termine = true;
+			else $objectif[$i]->termine = false;
+			if($objectif_fait->requis == '' OR $objectif[$objectif_fait->requis]->termine)
 			{
-				case 'M' :
-					$afaire = 'Tuer ';
-					$table = 'monstre';
-					$requete = "SELECT * FROM monstre WHERE id = ".$cible;
-					$req_m = $db->query($requete);
-					$row_m = $db->read_assoc($req_m);
-					$cible_nom = $row_m['nom'];
-					$total_o = $total;
-				break;
-				case 'J' :
-					$afaire = 'Tuer ';
-					$table = 'diplomatie';
-					$cible_nom = 'joueurs en '.$DIPLO[$cible];
-					$total_o = $total;
-				break;
-				case 'P' :
-					$afaire = 'Parler à ';
-					$table = 'pnj';
-					if($cible != 0)
-					{
-						$requete = "SELECT * FROM pnj WHERE id = ".$cible;
+				$cible = $objectif[$i]->cible;
+				$type = $cible[0];
+				$cible = mb_substr($cible, 1);
+				switch($type)
+				{
+					case 'M' :
+						$afaire = 'Tuer ';
+						$table = 'monstre';
+						$requete = "SELECT * FROM monstre WHERE id = ".$cible;
 						$req_m = $db->query($requete);
 						$row_m = $db->read_assoc($req_m);
 						$cible_nom = $row_m['nom'];
-					}
-					else
-					{
-						$cible_nom = 'n\'importe quel PNJ';
-					}
-					$total_o = '';
-				break;
-				case 'L' :
-					$afaire = 'Trouver ';
-					$table = 'objet';
-					if($cible != 0)
-					{
-						$requete = "SELECT * FROM ".$table." WHERE id = ".$cible;
+						$total_o = $total;
+					break;
+					case 'J' :
+						$afaire = 'Tuer ';
+						$table = 'diplomatie';
+						$cible_nom = 'joueurs en '.$DIPLO[$cible];
+						$total_o = $total;
+					break;
+					case 'P' :
+						$afaire = 'Parler à ';
+						$table = 'pnj';
+						if($cible != 0)
+						{
+							$requete = "SELECT * FROM pnj WHERE id = ".$cible;
+							$req_m = $db->query($requete);
+							$row_m = $db->read_assoc($req_m);
+							$cible_nom = $row_m['nom'];
+						}
+						else
+						{
+							$cible_nom = 'n\'importe quel PNJ';
+						}
+						$total_o = '';
+					break;
+					case 'L' :
+						$afaire = 'Trouver ';
+						$table = 'objet';
+						if($cible != 0)
+						{
+							$requete = "SELECT * FROM ".$table." WHERE id = ".$cible;
+							$req_m = $db->query($requete);
+							$row_m = $db->read_assoc($req_m);
+							$cible_nom = $row_m['nom'];
+						}
+						else
+						{
+							$cible_nom = 'n\'importe quel PNJ';
+						}
+						$total_o = '';
+					break;
+					case 'O' :
+						$afaire = 'Rapporter ';
+						$objet = decompose_objet($cible);
+						$table = $objet['table_categorie'];
+						$requete = "SELECT * FROM ".$table." WHERE id = ".$objet['id_objet'];
 						$req_m = $db->query($requete);
 						$row_m = $db->read_assoc($req_m);
 						$cible_nom = $row_m['nom'];
-					}
-					else
-					{
-						$cible_nom = 'n\'importe quel PNJ';
-					}
-					$total_o = '';
-				break;
-				case 'O' :
-					$afaire = 'Rapporter ';
-					$objet = decompose_objet($cible);
-					$table = $objet['table_categorie'];
-					$requete = "SELECT * FROM ".$table." WHERE id = ".$objet['id_objet'];
-					$req_m = $db->query($requete);
-					$row_m = $db->read_assoc($req_m);
-					$cible_nom = $row_m['nom'];
-					if($objet['slot'] != '') $cible_nom .= ' slot niveau '.$objet['slot'];
-					$total_o = '';
-				break;
+						if($objet['slot'] != '') $cible_nom .= ' slot niveau '.$objet['slot'];
+						$total_o = '';
+					break;
+				}
+				echo $afaire.' '.$total_o.' '.$cible_nom.' => '.$total_fait.' / '.$total.'<br />';
 			}
-			echo $afaire.' '.$total_o.' '.$cible_nom.' => '.$total_fait.' / '.$total.'<br />';
+			$i++;
 		}
-		$i++;
 	}
 	echo '
 	<h3 style="margin : 0px; padding : 0px; margin-top : 5px;">Récompense</h3>

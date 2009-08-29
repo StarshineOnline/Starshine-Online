@@ -62,7 +62,7 @@ if($W_row['type'] == 1)
 							else $joueur->set_honneur(0);
 							
 							//tirage au sort :
-							$de = rand(1, 10) + rand(1, $joueur['puissance']);
+							$de = rand(1, 10) + rand(1, $joueur->get_puissance());
 							if($de <= 2)
 							{
 								$debuff = true;

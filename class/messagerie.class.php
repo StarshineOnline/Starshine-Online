@@ -46,7 +46,7 @@ class messagerie
 		return $return;		
 	}
 	
-	//R�cup�ration de tous les threads pour ce perso
+	//Récupération de tous les threads pour ce perso
 	function get_threads($type = 'groupe', $tri_date = 'ASC', $liste_message = false, $nombre_message = 'all')
 	{
 		global $db;
@@ -72,7 +72,7 @@ class messagerie
 		}
 	}
 
-	//R�cup�ration du nombre de message non lu pour ce thread et ce perso
+	//Récupération du nombre de message non lu pour ce thread et ce perso
 	function get_thread_non_lu($id_thread = 0)
 	{
 		global $db;
@@ -97,7 +97,7 @@ class messagerie
 		else return false;
 	}
 	
-	//R�cup�re le thread et les ?tats de message
+	//Récupère le thread et les ?tats de message
 	function get_thread($id_thread = 0, $nombre = 'all', $tri_date = 'ASC', $numero_page = false, $message_par_page = 10)
 	{
 		global $db;
@@ -147,7 +147,7 @@ class messagerie
 	function envoi_message($id_thread = 0, $id_dest = 0, $titre = 'Titre vide', $message, $id_groupe = 0, $roi = 0)
 	{
 		global $db;
-		//Cr�ation du thread si besoin
+		//Création du thread si besoin
 		if($id_thread == 0)
 		{
 			if($roi == 0) $important = 0;
@@ -158,9 +158,9 @@ class messagerie
 		}
 		else $thread = new messagerie_thread($id_thread);
 
-		//Cr�ation du message
+		//Création du message
 		if($this->id_perso > 0)	$auteur = recupperso_essentiel($this->id_perso, 'nom');
-		else $auteur = 'Administrateur';
+		else $auteur['nom'] = 'Administrateur';
 		if($id_dest > 0) $dest = recupperso_essentiel($id_dest, 'nom');
 		else $dest['nom'] = null;
 		$message = new messagerie_message(0, $this->id_perso, $id_dest, $titre, $message, $id_thread, null, $auteur['nom'], $dest['nom']);
@@ -170,13 +170,15 @@ class messagerie
 		$thread->sauver();
 
 		//Si c'est un message de groupe
-		if($groupe = recupgroupe($id_groupe, ''))
+		if($id_groupe > 0)
 		{
+			$groupe = new groupe($id_groupe);
 			$type_groupe = 1;
 			$ids_dest = array();
-			foreach($groupe['membre'] as $membre)
+			$groupe->get_membre();
+			foreach($groupe->membre as $membre)
 			{
-				$ids_dest[] = $membre['id_joueur'];
+				$ids_dest[] = $membre->get_id_joueur();
 			}
 		}
 		else
@@ -185,7 +187,7 @@ class messagerie
 			$type_groupe = 0;
 		}
 		
-		//On ajoute un �tat pour chaque membre
+		//On ajoute un état pour chaque membre
 		foreach($ids_dest as $id)
 		{
 			if($id != $this->id_perso) $etat = 'non_lu';

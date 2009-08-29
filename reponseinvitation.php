@@ -36,6 +36,5 @@ elseif ($W_reponse == 'oui')
 		echo 'Vous êtes maintenant membre du groupe !';
 	}
 }
-
 ?>
 <img src="image/pixel.gif" onLoad="envoiInfo('infoperso.php?javascript=oui', 'perso');" />

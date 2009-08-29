@@ -3,15 +3,9 @@ if (file_exists('root.php'))
   include_once('root.php');
 ?><?php
 include_once(root.'inc/fp.php');
-//L'id du joueur que l'ont veut inviter
-$W_ID = $_GET['ID'];
-
 //On sort de la bdd l'ID du groupe du joueur
-$W_requete = 'SELECT * FROM perso WHERE ID = \''.$_SESSION['ID'].'\'';
-$req = $db->query($W_requete);
-$row = $db->read_array($req);
 $joueur = new perso($_SESSION['ID']);
-$perso = new perso($W_ID);
+$perso = new perso($_GET['ID']);
 //Si il n'est pas groupé, création du groupe
 if(!$joueur->is_groupe())
 {

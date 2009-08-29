@@ -31,7 +31,7 @@ if(array_key_exists('action', $_GET))
 				if($joueur->get_point_sso() >= $row['point'])
 				{
 					//Vérifie si il a assez en compétence requise
-					if($joueur[$row['competence_requis']] >= $row['valeur_requis'])
+					if($joueur->get_comp($row['competence_requis']) >= $row['valeur_requis'])
 					{
 						$requete = "SELECT * FROM bonus_permet WHERE id_bonus_permet = ".sSQL($_GET['id']);
 						$req_bn = $db->query($requete);

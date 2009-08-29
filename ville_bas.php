@@ -16,7 +16,7 @@ if(is_ville($joueur->get_pos()))
 <?php
 }
 ?>
-<a href="taverne.php&amp;fort=<?php echo $W_fort;?>" onclick="return envoiInfo(this.href,'carte')" title="Taverne"><img src="image/ville/taverne.png" alt="Taverne" /></a>
+<a href="taverne.php" onclick="return envoiInfo(this.href,'carte')" title="Taverne"><img src="image/ville/taverne.png" alt="Taverne" /></a>
 
 </p>
 

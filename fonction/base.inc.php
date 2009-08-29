@@ -606,14 +606,14 @@ function cout_pa2($coutpa, $joueur, $case, $diagonale)
  *  
  * @return Informations demandées sous forme de tableau associatif.
  */ 
-function recupperso_essentiel($ID, $select = 'ID, nom, level, rang_royaume, race, classe')
+function recupperso_essentiel($id, $select = 'id, nom, level, rang_royaume, race, classe')
 {
 	global $db;
-	if(is_numeric($ID))
+	if(is_numeric($id))
 	{
-		if($ID != '')
+		if($id != '')
 		{
-			$requete = 'SELECT '.$select.' FROM perso WHERE ID = '.$ID;
+			$requete = 'SELECT '.$select.' FROM perso WHERE id = '.$id;
 			$req = $db->query($requete);
 			if($db->num_rows > 0)
 			{
@@ -647,13 +647,13 @@ function recupperso($ID)
 	global $db, $G_buff;  // $G_buff inutilié
 	if(is_numeric($ID) AND $ID != '')
 	{
-			$requete = 'SELECT * FROM perso WHERE ID = '.$ID;
+			$requete = 'SELECT * FROM perso WHERE id = '.$ID;
 			$req = $db->query($requete);
 			if($db->num_rows > 0)
 			{
 				$row = $db->read_array($req);
 				
-				$R_perso['ID'] = $row['ID'];
+				$R_perso['id'] = $row['id'];
 				$R_perso['nom'] = $row['nom'];
 				$R_perso['exp'] = $row['exp'];
 				$R_perso['honneur'] = $row['honneur'];
