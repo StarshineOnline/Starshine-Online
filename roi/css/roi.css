@@ -88,7 +88,9 @@ body 								{margin:0;padding:0;background:#7e909c url('../../image/v2/bg_site.
 #mine ul li 						{clear:both;height:20px;line-height: 20px;-moz-border-radius: 10px;}
 
 #infos	fieldset					{-moz-border-radius: 10px;}
-
+#infos .nom							{float:left;width:155px;}
+#infos .position					{float:left;width:70px;}
+#infos .supprimer					{float:left;width:20px;}
 
 #telephone fieldset					{-moz-border-radius: 10px;}
 #telephone ul li 					{clear:both;height:30px;line-height: 30px;-moz-border-radius: 10px;}

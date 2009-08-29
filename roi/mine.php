@@ -47,11 +47,11 @@ else if(array_key_exists('id', $_GET))
 				{
 					$mine->get_evolution();
 					$overlib = 'Pierre : '.$mine->ressources['Pierre'].'<br />Bois : '.$mine->ressources['Bois'].'<br />Eau : '.$mine->ressources['Eau'].'<br />Sable : '.$mine->ressources['Sable'].'<br />Nourriture : '.$mine->ressources['Nourriture'].'<br />Charbon : '.$mine->ressources['Charbon'].'<br />Essence Magique : '.$mine->ressources['Essence Magique'].'<br />Star : '.$mine->ressources['Star'];
-					if($mine->evolution['cout'] != '') $evolution = ' - <a href="mine.php?mine='.$mine->get_id().'&amp;up" onclick="return envoiInfo(this.href, \'info_mine\');">Evoluer ('.$mine->evolution['cout'].' stars)</a>';
+					if($mine->evolution['cout'] != '') $evolution = ' <a onclick="envoiInfo(\'mine.php?mine='.$mine->get_id().'&amp;up\', \'info_mine\');$(\'info_mine\').show();" title="Evoluer ('.$mine->evolution['cout'].' stars)">Up</a>';
 					else $evolution = '';
 					echo '
 					<li onmouseover="'.make_overlib($overlib).'" onmouseout="return nd();">
-						'.$mine->get_nom().' - '.$mine->get_x().' / '.$mine->get_y().$evolution.' - <a href="mine.php?mine='.$mine->get_id().'&amp;suppr" onclick="if(confirm(\'Voulez vous supprimer cette mine ?\')) return envoiInfo(this.href, \'info_mine\'); else return false;">X</a>
+						<span class="nom">'.$mine->get_nom().'</span><span class="position">'.$mine->get_x().' / '.$mine->get_y().$evolution.'</span><span class="supprimer"><a href="mine.php?mine='.$mine->get_id().'&amp;suppr" onclick="if(confirm(\'Voulez vous supprimer cette mine ?\')) return envoiInfo(this.href, \'info_mine\'); else return false;">X</a></span>
 					</li>';
 				}
 			?>
@@ -69,7 +69,7 @@ else if(array_key_exists('id', $_GET))
 				{
 					echo '
 					<li onmouseover="'.make_overlib($overlib).'" onmouseout="return nd();">
-						'.$placement->get_nom().' - X : '.$placement->get_x().' - Y : '.$placement->get_y().' - fin dans '.transform_sec_temp($placement->get_fin_placement() - time()).'
+						<span class="nom">'.$placement->get_nom().'</span><span class="position">'.$placement->get_x().' / '.$placement->get_y().'</span><span class="supprimer">'.transform_sec_temp($placement->get_fin_placement() - time()).'</span>
 					</li>';
 				}
 			}
@@ -81,8 +81,8 @@ else if(array_key_exists('id', $_GET))
 			<p>Pour mettre un extracteur, cliquez sur une case vous appartenant sur la map.</p>
 		</fieldset>
 		
-		<div id="info_mine">
-		</div>
+		<fieldset id="info_mine" style='display:none;'>
+		</fieldset>
 	</div>
 	<?php
 }
@@ -244,6 +244,7 @@ elseif(array_key_exists('up', $_GET))
 		//On enlève les stars au royaume
 		$requete = "UPDATE royaume SET star = star - ".$mine->evolution['cout']." WHERE ID = ".$royaume->get_id();
 		$db->query($requete);
+		echo "Vous venez de faire évoluer votre ".$mine->get_nom();
 	}
 	else
 	{
