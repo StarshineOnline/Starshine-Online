@@ -6,7 +6,7 @@ include_once(root.'inc/fp.php');
 if(isset($_SESSION['nom']))
 {
 }
-elseif(!array_key_exists('log', $_POST) && $_SERVER['SCRIPT_NAME'] != '/index.php')
+elseif(!array_key_exists('log', $_POST) && !strpos($_SERVER['SCRIPT_NAME'], '/index.php'))
 {
 	header("Location: index.php");
 }
