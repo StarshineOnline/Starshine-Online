@@ -77,10 +77,10 @@ if (isset($_GET['ID']))
 				if($groupe_joueur)
 				{
 					$cibles = array();
-					foreach($groupe_joueur->membre as $membre)
+					foreach($groupe_joueur->get_membre() as $membre)
 					{
 						//On peut agir avec les membres du groupe si ils sont a 7 ou moins de distance
-						if($membre['distance'] <= 7) $cibles[] = $membre->get_id();
+						if($membre->distance($joueur) <= 7) $cibles[] = $membre->get_id_joueur();
 					}
 				}
 				else
@@ -128,8 +128,8 @@ if (isset($_GET['ID']))
 				{
 					if(array_key_exists('repos_interieur', $joueur['debuff'])) $effet = $joueur['debuff']['repos_interieur']['effet'] + 1;
 					else $effet = 1;
-					$joueur->get_pa() += 2;
-					$joueur->get_mp() = $joueur->get_mp() - $sortmp;
+					$joueur->set_pa($joueur->get_pa() + 2);
+					$joueur->set_mp($joueur->get_mp() - $sortmp);
 					if(lance_buff('repos_interieur', $joueur->get_id(), $effet, 0, (60 * 60 * 24), $row['nom'], description($row['description'].'<br /> Utilisation '.$effet.' / 10', $row), 'perso', 1, 0, 0, 0))
 					{
 						//Mis à jour du joueur
@@ -148,8 +148,8 @@ if (isset($_GET['ID']))
 					}
 					if(count($debuff_tab) > 0)
 					{
-						$joueur->get_pa() = $joueur->get_pa() - $sortpa;
-						$joueur->get_mp() = $joueur->get_mp() - $sortmp;
+						$joueur->set_pa($joueur->get_pa() - $sortpa);
+						$joueur->set_mp($joueur->get_mp() - $sortmp);
 					
 						$db->query("DELETE FROM buff WHERE id=".$debuff_tab[rand(0, count($debuff_tab)-1)].";");
 					}

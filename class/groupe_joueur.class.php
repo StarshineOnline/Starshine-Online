@@ -298,5 +298,13 @@ class groupe_joueur
 	}
 
 		//fonction
+	
+	/**
+  * Renvoie la distance du membre au joueur
+  */
+	function distance($joueur)
+	{
+		return $joueur->get_distance_joueur(new perso($this->id_joueur));
+	}
 }
 ?>
