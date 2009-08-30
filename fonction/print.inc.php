@@ -113,7 +113,8 @@ function affiche_perso_visu($joueur, $W_row, $position="")
 {
 	global $db;
 	global $Tclasse;
-
+	global $Gtrad;
+	
 	$mybonus = recup_bonus($_SESSION['ID']);
 	echo '<li style="clear:both;">
 	';
@@ -172,7 +173,7 @@ function affiche_perso_visu($joueur, $W_row, $position="")
 	{
 		echo '
 		<a href="envoimessage.php?id_type=p'.$perso->get_id().'" onclick="return envoiInfo(this.href, \'information\')"><img src="image/interface/message.png" title="Envoyer un message" /></a>';
-		if ($joueur->get_sort_jeu() != '') echo '<a href="sort_joueur.php?poscase='.$perso->get_case().'&amp;id_joueur='.$perso->get_id().'" onclick="return envoiInfo(this.href, \'information\')"><img src="image/sort_hc_icone.png" title="Lancer un sort" alt="Lancer un sort" /></a>';
+		if ($joueur->get_sort_jeu() != '') echo '<a href="sort.php?poscase='.$perso->get_case().'&amp;id_joueur='.$perso->get_id().'&type=joueur" onclick="return envoiInfo(this.href, \'information\')"><img src="image/sort_hc_icone.png" title="Lancer un sort" alt="Lancer un sort" /></a>';
 		if ($row_diplo[0] <= 5 OR array_key_exists(5, $mybonus)) echo '<a href="echange.php?poscase='.$perso->get_case().'&amp;id_joueur='.$perso->get_id().'" onclick="return envoiInfo(this.href, \'information\')"><img src="image/icone/echanger.png" alt="Echanger" title="Echanger" /></a>';
 	}
 	else

@@ -45,10 +45,13 @@ class entite
 	private $enchantement;
 	private $arme_degat;
 	private $level;
+	private $type;
+	private $rang_royaume;
 
 	function __construct($type, $objet)
 	{
 		$this->objet_effet = array();
+		$this->type = $type;
 		switch($type)
 		{
 			case 'joueur' :
@@ -86,6 +89,7 @@ class entite
 				$this->enchantement = array();
 				$this->arme_degat = 0;
 				$this->level = $objet->get_level();
+				$this->rang_royaume = $objet->get_rang_royaume();
 			break;
 			case 'monstre' :
 				$this->action = $objet->get_action();
@@ -121,6 +125,7 @@ class entite
 				$this->enchantement = array();
 				$this->arme_degat = 0;
 				$this->level = $objet->get_level();
+				$this->rang_royaume = 0;
 			break;
 			case 'batiment' :
 				$this->coef_carac = $objet->coef;
@@ -236,6 +241,31 @@ class entite
 		}
 	}
 
+	function get_type()
+	{
+		return $this->type;
+	}
+
+	function is_type($type)
+	{
+		return !strcmp($this->type, $type);
+	}
+
+	function get_objet()
+	{
+		$objet = null;
+		switch($this->type)
+		{
+			case 'joueur' :
+				$objet = new perso($this->id);
+				break;
+			case 'monstre' : 
+				$objet = new map_monstre($this->id);
+				break;
+		}
+		return $objet;
+	}
+
 	function get_id()
 	{
 		return $this->id;
@@ -243,6 +273,10 @@ class entite
 	function get_action()
 	{
 		return $this->action;
+	}
+	function get_rang_royaume()
+	{
+		return $this->rang_royaume;
 	}
 	function get_arme_type()
 	{
@@ -485,6 +519,11 @@ class entite
 			$buffe = false;
 
 		return $buffe;
+	}
+	
+	function get_pos()
+	{
+		return convert_in_pos($this->x, $this->y);
 	}
 }
 ?>

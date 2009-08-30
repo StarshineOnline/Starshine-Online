@@ -1,4 +1,4 @@
- INSERT INTO `batiment_ville` (
+INSERT INTO `batiment_ville` (
 `id` ,
 `nom` ,
 `cout` ,

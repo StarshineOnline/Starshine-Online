@@ -28,7 +28,7 @@ $coeff = floor($survie / $monstre['level']);
 	<p>Niveau : <?php echo $monstre['level']; ?><?php if($coeff >= 7) echo ' - Type : '.$monstre['espece']; ?>&nbsp;&nbsp;&nbsp;&nbsp;
 	<?php
 	if(!$joueur->is_debuff('repos_sage') OR !$joueur->is_debuff('bloque_attaque')) echo '<a href="attaque.php?type=monstre&id_monstre='.$monstre['id'].'" onclick="return envoiInfo(this.href, \'information\')"><img src="image/interface/attaquer.png" alt="Combattre" title="Attaquer ('.($pa_attaque - $reduction_pa).' PA)" style="vertical-align : middle;" /> </a>';
-	if($joueur->get_sort_jeu() != '') echo ' <a href="sort_monstre.php?poscase='.$W_case.'&amp;id_monstre='.$monstre['id'].'" onclick="return envoiInfo(this.href, \'information\')"><img src="image/sort_hc_icone.png" title="Lancer un sort" alt="Lancer un sort" style="vertical-align : middle;" /></a>';
+	if($joueur->get_sort_jeu() != '') echo ' <a href="sort.php?poscase='.$W_case.'&amp;id_monstre='.$monstre['id'].'&amp;type=monstre" onclick="return envoiInfo(this.href, \'information\')"><img src="image/sort_hc_icone.png" title="Lancer un sort" alt="Lancer un sort" style="vertical-align : middle;" /></a>';
 	echo '<a href="informationcase.php?case='.$W_case.'" onclick="return envoiInfo(this.href, \'information\')"><img src="image/interface/retour.png" alt="Retour" title="Retour à l\'information case" style="vertical-align : middle;" /></a>';
 	echo '<br />';
 	//Listing des debuffs

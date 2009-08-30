@@ -96,13 +96,9 @@ if ($perso->get_id() != $joueur->get_id())
 if($joueur->get_sort_jeu() != '')
 {
 	if($perso->get_id() != $joueur->get_id())
-	{
-		echo '<tr><td><img src="image/sort_hc_icone.png" title="Lancer un sort" alt="Lancer un sort" /></td><td><a href="sort_joueur.php?id_joueur='.$W_ID.'" onclick="return envoiInfo(this.href, \'information\')">Lancer un sort</a></td></tr>';
-	}
+		echo '<tr><td><img src="image/sort_hc_icone.png" title="Lancer un sort" alt="Lancer un sort" /></td><td><a href="sort.php?id_joueur='.$W_ID.'&amp;type=joueur" onclick="return envoiInfo(this.href, \'information\')">Lancer un sort</a></td></tr>';
 	else
-	{
-		echo '<tr><td><img src="image/sort_hc_icone.png" title="Lancer un sort" alt="Lancer un sort" /></td><td><a href="sort.php?poscase='.$W_case.'&amp;id_joueur='.$W_ID.'" onclick="return envoiInfo(this.href, \'information\')">Lancer un sort</a></td></tr>';
-	}
+		echo '<tr><td><img src="image/sort_hc_icone.png" title="Lancer un sort" alt="Lancer un sort" /></td><td><a href="sort.php" onclick="return envoiInfo(this.href, \'information\')">Lancer un sort</a></td></tr>';
 }
 
 if (($W_distance < 2) AND ($perso->get_id() != $joueur->get_id()) AND ($perso->get_groupe() != $joueur->get_groupe() OR $joueur->get_groupe() == '' OR $joueur->get_groupe() == 0))

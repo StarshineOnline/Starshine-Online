@@ -2428,7 +2428,7 @@ class perso extends entite
 		else return $this->get_competence($comp_assoc);
 	}
 
-	function set_comp($comp_assoc = '', $valeur)
+	function set_comp($comp_assoc = '', $valeur = '')
 	{
 		$set = 'set_'.$comp_assoc;
 		if(method_exists($this, $set)) $this->$set($valeur);
@@ -2452,8 +2452,8 @@ class perso extends entite
 	function is_comp_perso($nom = '')
 	{
 		if(!isset($this->comp_perso)) $this->get_comp_perso();
-		
-		return array_key_exists($this->comp_perso, $nom);
+
+		return array_key_exists($nom, $this->comp_perso);
 	}
 
 	function get_buff($nom = false, $champ = false, $type = false)
@@ -2601,7 +2601,7 @@ class perso extends entite
 	 * @param $nom le nom de la compétence
 	 * @return true si le perso est sous le debuff false sinon.
  	*/
-	function is_competence($nom = '')
+	function is_competence($nom = '', $type = false)
 	{
 		if(!isset($this->competences)) $this->get_competence();
 		$competence = false;
@@ -2647,7 +2647,7 @@ class perso extends entite
 		}
 	}
 
-	function set_competence($nom, $valeur)
+	function set_competence($nom, $valeur = '')
 	{
 		if(array_key_exists($nom, $this->competences))
 		{
