@@ -33,7 +33,7 @@ class effect
    * 
    * @return  1 si l'effet "a" a un ordre supérieur à l'effet "b", -1 sinon.
    */  
-  function compare_effects($a, $b) {
+  static function compare_effects($a, $b) {
     if ($a->order == $b->order) {
       return 0;
     }

@@ -1085,5 +1085,12 @@ class monstre
 	{
 		return array();
 	}
+	
+	function set_comp($comp_assoc = '', $valeur = '')
+	{
+		$set = 'set_'.$comp_assoc;
+		if(method_exists($this, $set)) $this->$set($valeur);
+		else $this->set_competence($comp_assoc, $valeur);
+	}
 }
 ?>

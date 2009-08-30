@@ -270,6 +270,10 @@ class entite
 	{
 		return $this->id;
 	}
+	function set_id($id)
+	{
+		$this->id = $id;
+	}
 	function get_action()
 	{
 		return $this->action;

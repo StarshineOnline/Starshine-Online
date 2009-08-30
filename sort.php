@@ -33,15 +33,16 @@ switch($type_cible)
 		$monstre->x = $map_monstre->get_x();
 		$monstre->y = $map_monstre->get_y();
 		$cible = new entite('monstre', $monstre);
+		$cible->set_id($map_monstre->get_id());
 		break;
 }
 
 if($joueur->get_groupe() != 0) $groupe_joueur = new groupe($joueur->get_groupe());
-$W_distance = calcul_distance_pytagore($cible->get_pos(), $joueur->get_pos());
+
 if (isset($_GET['ID']))
 {
 	$sort = new sort_jeu($_GET['ID']);
-
+	$W_distance = calcul_distance_pytagore($cible->get_pos(), $joueur->get_pos());
 	if($W_distance > $sort->get_portee())
 		echo 'Vous êtes trop loin pour lancer ce sort !';
 	else
@@ -236,7 +237,7 @@ if (isset($_GET['ID']))
 						}
 						//sauve_sans_bonus_ignorables($joueur, array('mp', 'pa', 'incantation', 'sort_element', 'x', 'y'));
 						$joueur->sauver();
-						if($db->query($requete)) echo 'Vous vous êtes téléporté dans votre capitale
+						echo 'Vous vous êtes téléporté dans votre capitale
 						<img src="image/pixel.gif" onLoad="envoiInfo(\'deplacement.php\', \'centre\');" />';
 					}	
 					else
@@ -369,14 +370,14 @@ if (isset($_GET['ID']))
 								}
 								else
 								{
-									echo 'Il bénéficit d\'un debuff plus puissant<br />';
+									echo 'Il bénéficie d\'un debuff plus puissant.<br />';
 								}
 								//Suppression de MP pour orage magnétique
 								if($sort->get_type() == 'orage_magnetique')
 								{
 									if($cible->is_debuff('orage_magnetique', true))
 									{
-										echo $cible->get_nom().' Est déjà sous cet effet<br />';
+										echo $cible->get_nom().' est déjà sous cet effet.<br />';
 									}
 									else
 									{
@@ -389,7 +390,7 @@ if (isset($_GET['ID']))
 							}
 							else
 							{
-								echo $cible->get_nom().' resiste a votre sort !<br />';
+								echo $cible->get_nom().' résiste à votre sort !<br />';
 							}
 						}
 					}
@@ -504,12 +505,149 @@ if (isset($_GET['ID']))
 							//-- Mise à jour du joueur
 							$joueur->sauver();
 						}
-						else { echo "Impossible de lancer de lancer le sort. Vous n&apos;a aucun debuff.<br/>"; };
+						else { echo "Impossible de lancer le sort. Vous n&apos;avez aucun debuff.<br/>"; };
 					}
-					else { echo "Impossible de lancer de lancer le sort. Vous n&apos;a aucun buff.<br/>"; };
+					else { echo "Impossible de lancer de lancer le sort. Vous n&apos;avez aucun buff.<br/>"; };
 					$groupe_href = '&amp;type='.$type_cible.'&amp;id_'.$type_cible.'='.$cible->get_id();
 					echo "<a href=\"\" onclick=\"return envoiInfo('sort.php?ID=".$_GET["ID"]."', 'information')\">Utiliser de nouveau cette compétence.</a>";
 				break;
+				case 'debuff_aveuglement' : case 'debuff_enracinement' : case 'debuff_desespoir' : case 'debuff_ralentissement' : case 'lente_agonie' :
+					//Test d'esquive du sort
+					$protecion = $cible->get_volonte() * $cible->get_pm() / 3;
+					if($cible->is_buff('bulle_sanctuaire', true)) $protection *= $cible->get_buff('bulle_sanctuaire','effet');
+					if($cible->is_buff('bulle_dephasante', true)) $protection *= $cible->get_buff('bulle_dephasante','effet');
+					$attaque = rand(0, ($joueur->get_volonte() * $joueur->get_comp($sort->get_comp_assoc())));
+					$defense = rand(0, $protection);
+					$joueur->set_pa($joueur->get_pa() - $sortpa);
+					$joueur->set_mp($joueur->get_mp() - $sortmp);
+					if ($attaque > $defense)
+					{
+						$duree = $sort->get_duree();
+						if($joueur->is_buff('souffrance_extenuante', true)) $duree = $duree * $joueur->get_buff('buff_souffrance_extenuante','effet');
+						//Mis en place du debuff
+						if(lance_buff($sort->get_type(), $cible->get_id(), $sort->get_effet(), $sort->get_effet2(), $duree, $sort->get_nom(), description($sort->get_description(), $sort), 'perso', 1, 0, 0))
+						{
+							echo 'Le sort '.$sort->get_nom().' a été lancé avec succès sur '.$cible->get_nom().'<br />';
+							//Insertion du debuff dans les journaux des 2 joueurs
+							$requete = "INSERT INTO journal VALUES(NULL,  ".$joueur->get_id().", 'debuff', '".$joueur->get_nom()."', '".$cible->get_nom()."', NOW(), '".$sort->get_nom()."', 0, ".$joueur->get_x().", ".$joueur->get_y().")";
+							$db->query($requete);
+							$requete = "INSERT INTO journal VALUES(NULL,  ".$cible->get_id().", 'rdebuff', '".$cible->get_nom()."', '".$joueur->get_nom()."', NOW(), '".$sort->get_nom()."', 0, ".$joueur->get_x().", ".$joueur->get_y().")";
+							$db->query($requete);
+						}
+						else
+						{
+							echo $cible->get_nom().' bénéficie d\'un debuff plus puissant<br />';
+						}
+					}
+					else
+					{
+						echo $cible->get_nom().' résiste à votre sort !<br />';
+				 	}
+					//Augmentation des compétences
+					$difficulte_sort = diff_sort($sort->get_difficulte(), $joueur, 'incantation', $sortpa_base, $sortmp_base);
+					$augmentation = augmentation_competence('incantation', $joueur, $difficulte_sort);
+					if ($augmentation[1] == 1)
+					{
+						$joueur->set_incantation($augmentation[0]);
+						echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant à '.$joueur->get_incantation().' en incantation</span><br />';
+					}
+					$difficulte_sort = diff_sort($sort->get_difficulte(), $joueur, $sort->get_comp_assoc(), $sortpa_base, $sortmp_base);
+					$augmentation = augmentation_competence($sort->get_comp_assoc(), $joueur, $difficulte_sort);
+					if ($augmentation[1] == 1)
+					{
+						$joueur->set_comp($sort->get_comp_assoc(), $augmentation[0]);
+						echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant à '.$joueur->get_comp($sort->get_comp_assoc()).' en '.$Gtrad[$sort->get_comp_assoc()].'</span><br />';
+					}
+					//Mis à jour du joueur
+					//sauve_sans_bonus_ignorables($joueur, array('mp', 'pa', 'incantation', $sort->get_comp_assoc()));
+					$joueur->sauver();
+				break;
+				case 'maladie_amorphe' : case 'maladie_degenerescence' : case 'maladie_mollesse' :
+					if($type_cible == 'joueur')
+					{
+						$perso = new perso($cible->get_id());
+						if($perso->get_groupe() != 0)
+							$groupe_cible = new groupe($perso->get_id());
+							
+						foreach($groupe_cible->get_membre_joueur() as $cbl)
+							$cibles[] = new entite('joueur', $cbl);
+					}
+					else
+					{
+						$cibles_mob = map_monstre::create(array('x', 'y'), array($cible->get_x(), $cible->get_y()));
+	
+						foreach($cibles_mob as $cbl)
+						{
+							$monstre = new monstre($cbl->get_type());
+							$monstre->hp_max = $monstre->get_hp();
+							$monstre->set_hp($cbl->get_hp());
+							$monstre->x = $cbl->get_x();
+							$monstre->y = $cbl->get_y();
+							$monstre->set_id($cbl->get_id());
+							$cibles[] = new entite('monstre', $monstre); 
+						}
+					}
+
+					foreach($cibles as $cible)
+					{
+						$distance = calcul_distance_pytagore($joueur->get_pos(), $cible->get_pos());
+						if($distance <= 7)
+						{
+							//Test d'esquive du sort
+							$protection = $cible->get_volonte() * $cible->get_pm() / 3;
+							if($cible->is_buff('bulle_sanctuaire', true)) $protection *= $cible->get_buff('bulle_sanctuaire','effet');
+							if($cible->is_buff('bulle_dephasante', true)) $protection *= $cible->get_buff('bulle_dephasante','effet');
+							$attaque = rand(0, ($joueur->get_volonte() * $joueur->get_comp($sort->get_comp_assoc())));
+							$defense = rand(0, $protection);
+							if ($attaque > $defense)
+							{
+								$duree = $sort->get_duree();
+								if($joueur->is_buff('souffrance_extenuante', true)) $duree = $duree * $joueur->get_buff('souffrance_extenuante','effet');
+								//Mis en place du debuff
+								if(lance_buff($sort->get_type(), $cible->get_id(), $sort->get_effet(), $sort->get_effet2(), $duree, $sort->get_nom(), description($sort->get_description(), $sort), 'perso', 1, 0, 0))
+								{
+									echo 'Le sort '.$sort->get_nom().' a été lancé avec succès sur '.$cible->get_nom().'<br />';
+									//Insertion du debuff dans les journaux des 2 joueurs
+									if($type_cible != 'monstre')
+									{										
+										$requete = "INSERT INTO journal VALUES(NULL,  ".$joueur->get_id().", 'debuff', '".$joueur->get_nom()."', '".$cible->get_nom()."', NOW(), '".$sort->get_nom()."', 0, ".$joueur->get_x().", ".$joueur->get_y().")";
+										$db->query($requete);
+										$requete = "INSERT INTO journal VALUES(NULL,  ".$cible->get_id().", 'rdebuff', '".$cible->get_nom()."', '".$joueur->get_nom()."', NOW(), '".$sort->get_nom()."', 0, ".$joueur->get_x().", ".$joueur->get_y().")";
+										$db->query($requete);
+									}
+								}
+								else
+								{
+									echo $cible->get_nom().' bénéficie d\'un debuff plus puissant.<br />';
+								}
+							}
+							else
+							{
+								echo $cible->get_nom().' résiste à votre sort !<br />';
+				 			}
+			 			}
+			 		}
+					$joueur->set_pa($joueur->get_pa() - $sortpa);
+					$joueur->set_mp($joueur->get_mp() - $sortmp);
+					//Augmentation des compétences
+					$difficulte_sort = diff_sort($sort->get_difficulte(), $joueur, 'incantation', $sortpa_base, $sortmp_base);
+					$augmentation = augmentation_competence('incantation', $joueur, $difficulte_sort);
+					if ($augmentation[1] == 1)
+					{
+						$joueur->set_incantation($augmentation[0]);
+						echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant à '.$joueur->get_incantation().' en incantation</span><br />';
+					}
+					$difficulte_sort = diff_sort($sort->get_difficulte(), $joueur, $sort->get_comp_assoc(), $sortpa_base, $sortmp_base);
+					$augmentation = augmentation_competence($sort->get_comp_assoc(), $joueur, $difficulte_sort);
+					if ($augmentation[1] == 1)
+					{
+						$joueur->set_comp($sort->get_comp_assoc(), $augmentation[0]);
+						echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant à '.$joueur->get_comp($sort->get_comp_assoc()).' en '.$Gtrad[$sort->get_comp_assoc()].'</span><br />';
+					}
+					//Mis à jour du joueur
+					//sauve_sans_bonus_ignorables($joueur, array('mp', 'pa', 'incantation', $row['comp_assoc']));
+					$joueur->sauver();
+				break;						
 			}
 		}
 		echo '<br /><a href="sort.php?type='.$type_cible.'&amp;id_'.$cible->get_type().'='.$cible->get_id().'" onclick="return envoiInfo(this.href, \'information\');">Revenir au livre de sort</a>';
@@ -546,9 +684,10 @@ else
 			$magies[] = $row['comp_assoc'];
 		}
 	}
+	$groupe_href = '&amp;type='.$type_cible.'&amp;id_'.$type_cible.'='.$cible->get_id();
 	foreach($magies as $magie)
 	{
-		echo '<a href="sort.php?tri='.$magie.'" onclick="return envoiInfo(this.href, \'information\');"><img src="image/icone_'.$magie.'.png" alt="'.$Gtrad[$magie].'" title="'.$Gtrad[$magie].'" /></a> ';
+		echo '<a href="sort.php?tri='.$magie.$groupe_href.'" onclick="return envoiInfo(this.href, \'information\');"><img src="image/icone_'.$magie.'.png" alt="'.$Gtrad[$magie].'" title="'.$Gtrad[$magie].'" /></a> ';
 	}
 	$where = '';
 	if(array_key_exists('tri', $_GET)) $where = 'AND comp_assoc = \''.$_GET['tri'].'\''; else $_GET['tri'] = 'favoris';
@@ -611,7 +750,7 @@ else
 			{
 				if($sort->get_cible() == 2 OR $sort->get_cible() == 4)
 				{
-					$href = 'envoiInfo(\'sort.php?ID='.$sort->get_id().'&amp;type=monstre&amp;id_joueur='.$cible->get_id().'&amp;type=monstre\', \'information\')';
+					$href = 'envoiInfo(\'sort.php?ID='.$sort->get_id().'&amp;type=monstre&amp;id_monstre='.$cible->get_id().'\', \'information\')';
 					$color = '#444';
 					$cursor = 'cursor : pointer;';
 					$affiche = true;
