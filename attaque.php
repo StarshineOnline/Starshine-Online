@@ -85,6 +85,7 @@ switch($type)
 		$joueur_defenseur->coef = 1;
 		$joueur_defenseur->hp_max = 20000;
 		$joueur_defenseur->set_hp($map_royaume->get_capitale_hp());
+		$joueur_defenseur->set_pp($map_royaume->get_pp());
 		$coord = convert_in_coord($_GET['id_ville']);
 		$joueur_defenseur->x = $coord['x'];
 		$joueur_defenseur->y = $coord['y'];
@@ -501,7 +502,7 @@ else
 					{
 						$suppr_hp = false;
 						$map_royaume->supprime_ressources($degat_defense / 100);
-						echo 'L\'attaque détruit des ressources au royaume '.$Gtrad[$map_royaume->get_race()].'<br />';
+						echo '<h6>L\'attaque détruit des ressources au royaume '.$Gtrad[$map_royaume->get_race()].'</h6><br />';
 					}
 				}
 				//Sinon on attaque les batiments ou la ville
@@ -515,7 +516,16 @@ else
 						$rand = rand(1, $count);
 						//On attaque la construction $rand du tableau
 						$construction_ville = new construction_ville($map_royaume->constructions_ville[$rand]['id']);
-						$construction_ville->suppr_hp($degat_defenseur);
+						$return = $construction_ville->suppr_hp($degat_defenseur);
+						echo '<h6>Attaque d\'un batiment en ville</h6>';
+						//On a downgrade un batiment, on gagne des points de victoire
+						if($return > 0)
+						{
+							$royaume_attaquant = new royaume($Trace[$joueur->get_race]['numrace']);
+							$royaume_attaquant->add_point_victoire($return);
+							$royaume_attaquant->sauver();
+							echo '<h6>Une construction a été détruire ! Votre royaume gagne '.$return .' points de victoire.</h6><br />';
+						}
 					}
 					else
 					{
@@ -525,6 +535,10 @@ else
 						{
 							$time = time() + 3600 * 24 * 31;
 							$map_royaume->set_fin_raz_capitale($time);
+							$royaume_attaquant = new royaume($Trace[$joueur->get_race]['numrace']);
+							$royaume_attaquant->add_point_victoire(100);
+							$royaume_attaquant->sauver();
+							echo '<h6>La capitale est détruite ! Votre royaume gagne 100 points de victoire.</h6><br />';
 						}
 					}
 				}
@@ -1054,7 +1068,7 @@ else
 			//Sinon c'est une arme de siège, et il faut modifier son rechargement
 			else
 			{
-				$map_siege->set_rechargement(time() + $siege->get_bonus3());
+				//$map_siege->set_rechargement(time() + $siege->get_bonus3());
 				$map_siege->sauver();
 			}
 

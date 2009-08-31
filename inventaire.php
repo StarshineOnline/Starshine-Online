@@ -371,17 +371,19 @@ if(!$visu AND isset($_GET['action']))
 		//Dépot de l'objet au dépot militaire
 		case 'depot' :
 			//On le dépose
-			if ($R["race"] != $joueur["race"]) {
-				echo '<h5>Impossible de poser au dépot '.$R["race"].'</h5>';
+			if ($R->get_race() != $joueur->get_race())
+			{
+				echo '<h5>Impossible de poser au dépot '.$R->get_race().'</h5>';
 			}
-			else {
+			else
+			{
 				$objet = $joueur->get_inventaire_slot_partie($_GET['key_slot']);
 				$id = mb_substr($objet, 1, strlen($objet));
 				$requete = "INSERT INTO depot_royaume VALUES ('', ".$id.", ".$R['ID'].")";
 				$db->query($requete);
 				//On supprime l'objet de l'inventaire
-				array_splice($joueur->get_inventaire_slot(), $_GET['key_slot'], 1);
-				$inventaire_slot = serialize($joueur->get_inventaire_slot());
+				$inventaire = array_splice($joueur->get_inventaire_slot_partie(), $_GET['key_slot'], 1);
+				$joueur->set_inventaire_slot(serialize($inventaire));
 				$requete = "UPDATE perso SET inventaire_slot = '$inventaire_slot' WHERE ID = ".$joueur->get_id();
 				$req = $db->query($requete);
 				echo '<h6>Objet posé avec succès</h6>';

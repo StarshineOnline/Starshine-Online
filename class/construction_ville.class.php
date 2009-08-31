@@ -371,10 +371,17 @@ class construction_ville
 				$batiment = $this->get_batiment_inferieur();
 				$this->set_id_batiment($batiment->get_id());
 				$this->set_hp($batiment->get_hp());
+				$return = ($batiment->get_level() * $batiment->get_level());
 			}
-			else $this->set_statut('inactif');
+			else
+			{
+				$this->set_statut('inactif');
+				$return = 1;
+			}
 		}
+		else $return = 0;
 		$this->sauver();
+		return $return;
 	}
 }
 ?>

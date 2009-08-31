@@ -81,7 +81,7 @@ else if(array_key_exists('id', $_GET))
 			<p>Pour mettre un extracteur, cliquez sur une case vous appartenant sur la map.</p>
 		</fieldset>
 		
-		<fieldset id="info_mine" style='display:none;'>
+		<fieldset id="info_mine">
 		</fieldset>
 	</div>
 	<?php
@@ -254,9 +254,11 @@ elseif(array_key_exists('up', $_GET))
 elseif(array_key_exists('suppr', $_GET))
 {
 	$mine = new mine($_GET['mine']);
+	print_r($mine);
 	
-	if($mine->id_royaume == $royaume->get_id())
+	if($mine->get_royaume() == $royaume->get_id())
 	{
+		echo 'plop';
 		$mine->supprimer();
 	}
 }

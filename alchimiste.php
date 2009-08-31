@@ -104,7 +104,7 @@ if($W_distance == 0)
 			break;
 			//Recherche
 			case 'recherche' :
-				if($joueur['pa'] >= 10)
+				if($joueur->get_pa() >= 10)
 				{
 					//Combien il augmente la recherche ?
 					$recherche = rand(1, $joueur->get_alchimie());

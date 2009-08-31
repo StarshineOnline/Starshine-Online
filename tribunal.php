@@ -106,11 +106,11 @@ if($W_row['type'] == 1)
 		$req = $db->query($requete);
 		while($row = $db->read_assoc($req))
 		{
-			$perso = recupperso($row['id_joueur']);
+			$perso = new perso($row['id_joueur']);
 			?>
 			<tr>
 				<td>
-					<?php echo $perso['nom']; ?>
+					<?php echo $perso->get_nom(); ?>
 				</td>
 				<td>
 					<?php echo $row['crime']; ?>
@@ -119,7 +119,7 @@ if($W_row['type'] == 1)
 					<?php echo $row['prime']; ?>
 				</td>
 				<td>
-					<a href="tribunal.php?poscase=<?php echo $W_case; ?>&amp;action=prime&amp;id_criminel=<?php echo $perso['ID']; ?>" onclick="return envoiInfo(this.href, 'carte')">Mettre une prime sur sa tête</a>
+					<a href="tribunal.php?poscase=<?php echo $W_case; ?>&amp;action=prime&amp;id_criminel=<?php echo $perso->get_id(); ?>" onclick="return envoiInfo(this.href, 'carte')">Mettre une prime sur sa tête</a>
 				</td>
 			</tr>
 			<?php

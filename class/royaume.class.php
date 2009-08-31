@@ -1124,7 +1124,7 @@ class royaume
 	{
 		if($this->hp <= 0 && $this->fin_raz_capitale < time())
 		{
-			$this->set_hp(30000);
+			$this->set_capitale_hp(30000);
 			$this->sauver();
 		}
 	}
@@ -1132,7 +1132,7 @@ class royaume
 	function get_constructions_ville($destructible = false)
 	{
 		global $db;
-		if($destructible) $and = ' AND construction_ville.hp > 0 AND (construction_ville.level > 1 OR construction_ville.statut = \'actif\')';
+		if($destructible) $and = ' AND construction_ville.hp > 0 AND (batiment_ville.level > 1 OR construction_ville.statut = \'actif\')';
 		else $and = '';
 		$requete = "SELECT construction_ville.id as id, id_batiment, statut, construction_ville.hp as hp, level FROM `construction_ville` RIGHT JOIN batiment_ville ON construction_ville.id_batiment = batiment_ville.id WHERE `id_royaume` = ".$this->id.$and;
 		$req = $db->query($requete);
@@ -1141,6 +1141,20 @@ class royaume
 			$this->constructions_ville[] = $row;
 		}
 		return $this->constructions_ville;
+	}
+
+	function get_pp()
+	{
+		global $db;
+		$requete = "SELECT statut, level FROM `construction_ville` RIGHT JOIN batiment_ville ON construction_ville.id_batiment = batiment_ville.id WHERE `id_royaume` = ".$this->id.$and." AND type = 'mur'";
+		$req = $db->query($requete);
+		$row = $db->read_assoc($req);
+		if($row['statut'] == 'actif')
+		{
+			$this->pp = 150 * ($row['level'] * $row['level']) + 50 * $row['level'];
+		}
+		else $this->pp = 100;
+		return $this->pp;
 	}
 }
 ?>
