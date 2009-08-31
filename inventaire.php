@@ -53,11 +53,10 @@ if(!$visu AND isset($_GET['action']))
 			}
 		break;
 		case 'equip' :
-			if(equip_objet($joueur->get_inventaire_slot_partie($_GET['key_slot']), $joueur))
+			if($joueur->equip_objet($joueur->get_inventaire_slot_partie($_GET['key_slot'])))
 			{
 				//On supprime l'objet de l'inventaire
-				array_splice($joueur->get_inventaire_slot_partie(), $_GET['key_slot'], 1);
-				$inventaire_slot = serialize($joueur->get_inventaire_slot_partie());
+				$joueur->supprime_objet($joueur->get_inventaire_slot_partie($_GET['key_slot'], true), 1);
 				$joueur->sauver();
 			}
 			else
@@ -379,13 +378,10 @@ if(!$visu AND isset($_GET['action']))
 			{
 				$objet = $joueur->get_inventaire_slot_partie($_GET['key_slot']);
 				$id = mb_substr($objet, 1, strlen($objet));
-				$requete = "INSERT INTO depot_royaume VALUES ('', ".$id.", ".$R['ID'].")";
+				$requete = "INSERT INTO depot_royaume VALUES ('', ".$id.", ".$R->get_id().")";
 				$db->query($requete);
 				//On supprime l'objet de l'inventaire
-				$inventaire = array_splice($joueur->get_inventaire_slot_partie(), $_GET['key_slot'], 1);
-				$joueur->set_inventaire_slot(serialize($inventaire));
-				$requete = "UPDATE perso SET inventaire_slot = '$inventaire_slot' WHERE ID = ".$joueur->get_id();
-				$req = $db->query($requete);
+				$joueur->supprime_objet($joueur->get_inventaire_slot_partie($_GET['key_slot']), 1);
 				echo '<h6>Objet posé avec succès</h6>';
 			}
 		break;
@@ -634,12 +630,13 @@ if(!$visu AND isset($_GET['action']))
 		case 'slot' :
 			$craft = $joueur->get_forge();
 			if($joueur->get_race() == 'scavenger') $craft = round($craft * 1.45);
-			if($joueur['accessoire']['id'] != '0' AND $joueur['accessoire']['type'] == 'fabrication') $craft = round($craft * (1 + ($joueur['accessoire']['effet'] / 100)));
+			//A FAIRE
+			//if($joueur['accessoire']['id'] != '0' AND $joueur['accessoire']['type'] == 'fabrication') $craft = round($craft * (1 + ($joueur['accessoire']['effet'] / 100)));
 
 			// Gemme de fabrique : augmente de effet % le craft
-			if (isset($joueur['enchantement']) &&
-					isset($joueur['enchantement']['forge'])) {
-				$craft += round($joueur['enchantement']['forge']['effet'] / 100 * $craft);
+			if (isset($joueur->enchantement) &&
+					isset($joueur->enchantement['forge'])) {
+				$craft += round($joueur->enchantement['forge']['effet'] / 100 * $craft);
 			}
 
 			$chance_reussite1 = pourcent_reussite($craft, 10);
@@ -672,12 +669,13 @@ if(!$visu AND isset($_GET['action']))
 					}
 					$craft = $joueur->get_forge();
 					if($joueur->get_race() == 'scavenger') $craft = round($craft * 1.45);
-					if($joueur['accessoire']['id'] != '0' AND $joueur['accessoire']['type'] == 'fabrication') $craft = round($craft * (1 + ($joueur['accessoire']['effet'] / 100)));
+					//A FAIRE
+					//if($joueur['accessoire']['id'] != '0' AND $joueur['accessoire']['type'] == 'fabrication') $craft = round($craft * (1 + ($joueur['accessoire']['effet'] / 100)));
 
 					// Gemme de fabrique : augmente de effet % le craft
-					if (isset($joueur['enchantement']) &&
-							isset($joueur['enchantement']['forge'])) {
-						$craft += round($joueur['enchantement']['forge']['effet'] / 100 * $craft);
+					if (isset($joueur->enchantement) &&
+							isset($joueur->enchantement['forge'])) {
+						$craft += round($joueur->enchantement['forge']['effet'] / 100 * $craft);
 					}
 
 					$craftd = rand(0, $craft);
@@ -748,12 +746,13 @@ if(!$visu AND isset($_GET['action']))
 			}
 			$craft = $joueur->get_forge();
 			if($joueur->get_race() == 'scavenger') $craft = round($craft * 1.45);
-			if($joueur['accessoire']['id'] != '0' AND $joueur['accessoire']['type'] == 'fabrication') $craft = round($craft * (1 + ($joueur['accessoire']['effet'] / 100)));
+			//A FAIRE
+			//if($joueur['accessoire']['id'] != '0' AND $joueur['accessoire']['type'] == 'fabrication') $craft = round($craft * (1 + ($joueur['accessoire']['effet'] / 100)));
 
 			// Gemme de fabrique : augmente de effet % le craft
-			if (isset($joueur['enchantement']) &&
-					isset($joueur['enchantement']['forge'])) {
-				$craft += round($joueur['enchantement']['forge']['effet'] / 100 * $craft);
+			if (isset($joueur->enchantement) &&
+					isset($joueur->enchantement['forge'])) {
+				$craft += round($joueur->enchantement['forge']['effet'] / 100 * $craft);
 			}
 
 			echo 'Dans quel objet voulez vous enchasser cette gemme de niveau '.$row['niveau'].' ?
@@ -806,7 +805,8 @@ if(!$visu AND isset($_GET['action']))
 			{
 				$craft = $joueur->get_forge();
 				if($joueur->get_race() == 'scavenger') $craft = round($craft * 1.45);
-				if($joueur['accessoire']['id'] != '0' AND $joueur['accessoire']['type'] == 'fabrication') $craft = round($craft * (1 + ($joueur['accessoire']['effet'] / 100)));
+				//A FAIRE
+				//if($joueur['accessoire']['id'] != '0' AND $joueur['accessoire']['type'] == 'fabrication') $craft = round($craft * (1 + ($joueur['accessoire']['effet'] / 100)));
 				$gemme = decompose_objet($joueur->get_inventaire_slot_partie($_GET['key_slot']));
 				$objet = decompose_objet($joueur->get_inventaire_slot_partie($_GET['key_slot2']));
 				switch($_GET['niveau'])
@@ -823,9 +823,9 @@ if(!$visu AND isset($_GET['action']))
 				}
 
 				// Gemme de fabrique : augmente de effet % le craft
-				if (isset($joueur['enchantement']) &&
-						isset($joueur['enchantement']['forge'])) {
-					$craft += round($joueur['enchantement']['forge']['effet'] / 100 * $craft);
+				if (isset($joueur->enchantement) &&
+						isset($joueur->enchantement['forge'])) {
+					$craft += round($joueur->enchantement['forge']['effet'] / 100 * $craft);
 				}
 
 				$craftd = rand(0, $craft);
@@ -941,13 +941,13 @@ foreach($tab_loc as $loc)
 
 		if($joueur->inventaire()->$loc['loc'] != '')
 		{
-			$objet = decompose_objet($joueur->inventaire()->$loc['loc']);
+			$objet = decompose_objet($joueur->get_inventaire_partie($loc['loc']));
 			//On peut désequiper
-			if(!$visu AND $joueur->inventaire()->$loc['loc'] != '' AND $joueur->inventaire()->$loc['loc'] != 'lock') $desequip = true; else $desequip = false;
+			if(!$visu AND $joueur->get_inventaire_partie($loc['loc']) != '' AND $joueur->get_inventaire_partie($loc['loc']) != 'lock') $desequip = true; else $desequip = false;
 			switch($loc['type'])
 			{
 				case 'arme' :
-					if($joueur->get_inventaire()->$loc['loc'] != 'lock')
+					if($joueur->get_inventaire_partie($loc['loc']) != 'lock')
 					{
 						$requete = "SELECT * FROM `arme` WHERE id = ".$objet['id_objet'];
 						$sqlQuery = $db->query($requete);
@@ -977,9 +977,12 @@ foreach($tab_loc as $loc)
 					$nom = $row['nom'];
 				break;
 			}
-			if($desequip) echo '<a href="inventaire.php?action=desequip&amp;partie='.$loc['loc'].$filtre_url.'" onclick="return envoiInfo(this.href, \'information\');">';
-			echo '<img src="'.$image.'" style="float : left;" title="Déséquiper" alt="Déséquiper" />';
-			if($desequip) echo '</a>';
+			if($desequip)
+			{
+				echo '<a href="inventaire.php?action=desequip&amp;partie='.$loc['loc'].$filtre_url.'" onclick="return envoiInfo(this.href, \'information\');">
+				<img src="'.$image.'" style="float : left;" title="Déséquiper" alt="Déséquiper" />
+				</a>';
+			}
 			echo '<strong>'.$nom.'</strong>';
 			if($objet['slot'] > 0)
 			{
@@ -1003,18 +1006,18 @@ foreach($tab_loc as $loc)
 		}
 		
 		
-		if($joueur->get_inventaire()->$loc['loc'] != '' AND $joueur->get_inventaire()->$loc['loc'] != 'lock')
+		if($joueur->get_inventaire_partie($loc['loc']) != '' AND $joueur->get_inventaire_partie($loc['loc']) != 'lock')
 		{
 			switch($loc['type'])
 			{
 				case 'arme' :
 					if($loc['loc'] == 'main_droite')
 					{
-						echo '<br />Dégats : '.$joueur['arme_droite'];
+						echo '<br />Dégats : '.$joueur->get_arme_degat();
 					}
 					else
 					{
-						if($row['type'] == 'dague')	echo '<br />Dégats : '.$joueur['arme_gauche'];
+						if($row['type'] == 'dague')	echo '<br />Dégats : '.$joueur->get_arme_degat('gauche');
 						else echo '<br />Dégats absorbés : '.$row['degat'];
 					}
 				break;

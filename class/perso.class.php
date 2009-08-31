@@ -2460,7 +2460,7 @@ class perso extends entite
 	{
 		if(!$nom)
 		{
-			$this->buff = buff::create(array('id_perso', 'debuff'), array($this->id, 0), 'type');
+			$this->buff = buff::create(array('id_perso', 'debuff'), array($this->id, 0), 'id ASC', 'type');
 			return $this->buff;
 		}
 		else
@@ -2509,19 +2509,16 @@ class perso extends entite
 		{
 			if(!empty($nom))
 			{
-				$tmp = $this->buff;
-				while(current($tmp) && !$buffe)
+				foreach($this->buff as $key => $buff)
 				{
 					if($type)
 					{
-						if(strcmp(current($tmp)->get_type(), $nom) == 0)
-							$buffe = true;
+						if($key == $nom) $buffe = true;
 					}
-					else if(strcmp(current($tmp)->get_nom(), $nom) == 0)
+					else if($buff->get_nom() ==  $nom)
 					{
 						$buffe = true;
 					}
-					next($tmp);
 				}
 			}
 			else
@@ -2656,7 +2653,7 @@ class perso extends entite
 		}
 	}
 
-	function get_arme_degat()
+	function get_arme_degat($main = 'droite')
 	{
 	}
 
@@ -2671,10 +2668,10 @@ class perso extends entite
 		return $this->inventaire_array->$partie;
 	}
 
-	function get_inventaire_slot_partie($partie = false)
+	function get_inventaire_slot_partie($partie = false, $force = false)
 	{
-		if(!isset($this->inventaire_slot_array)) $this->inventaire_slot_array = unserialize($this->get_inventaire_slot());
-		if(!$partie) return $this->inventaire_slot_array;
+		if(!isset($this->inventaire_slot_array) OR !$force) $this->inventaire_slot_array = unserialize($this->get_inventaire_slot());
+		if($partie === false) return $this->inventaire_slot_array;
 		else return $this->inventaire_slot_array[$partie];
 	}
 
@@ -3180,6 +3177,184 @@ class perso extends entite
 			}
 		}
 		return true;
+	}
+
+	function equip_objet($objet)
+	{
+		global $db, $G_erreur;
+		$equip = false;
+		$conditions = array();
+		if($objet_d = decompose_objet($objet))
+		{
+			//print_r($objet_d);
+			$id_objet = $objet_d['id_objet'];
+			$categorie = $objet_d['categorie'];
+			switch ($categorie)
+			{
+				//Si c'est une arme
+				case 'a' :
+					$requete = "SELECT * FROM arme WHERE ID = ".$id_objet;
+					//Récupération des infos de l'objet
+					$req = $db->query($requete);
+					$row = $db->read_array($req);
+					if($row['type'] == 'baton')
+					{
+						$conditions[0]['attribut']	= 'coef_incantation';
+						$conditions[0]['valeur']	= $row['forcex'] * $row['melee'];
+					}
+					elseif($row['type'] == 'bouclier')
+					{
+						$conditions[0]['attribut']	= 'coef_blocage';
+						$conditions[0]['valeur']	= $row['forcex'] * $row['melee'];
+					}
+					else
+					{
+						$conditions[0]['attribut']	= 'coef_melee';
+						$conditions[0]['valeur']	= $row['forcex'] * $row['melee'];
+					}
+					$conditions[1]['attribut']	= 'coef_distance';
+					$conditions[1]['valeur']	= $row['forcex'] * $row['distance'];
+					$type = explode(';', $row['mains']);
+					$type = $type[0];
+					$mains = $row['mains'];
+				break;
+				//Si c'est une protection
+				case 'p' :
+					$requete = "SELECT * FROM armure WHERE ID = ".$id_objet;
+					//Récupération des infos de l'objet
+					$req = $db->query($requete);
+					$row = $db->read_array($req);
+					$conditions[0]['attribut']	= 'force';
+					$conditions[0]['valeur']	= $row['forcex'];
+					$type = $row['type'];
+				break;
+				//Si c'est un accessoire
+				case 'm' :
+					$requete = "SELECT * FROM accessoire WHERE ID = ".$id_objet;
+					//Récupération des infos de l'objet
+					$req = $db->query($requete);
+					$row = $db->read_array($req);
+					$conditions[0]['attribut']	= 'puissance';
+					$conditions[0]['valeur']	= $row['puissance'];
+					$type = 'accessoire';
+				break;
+			}
+
+			//Vérification des conditions
+			if (is_array($conditions))
+			{
+				$i = 0;
+				while ($i < count($conditions))
+				{
+					$get = 'get_'.$conditions[$i]['attribut'];
+					if ($this->$get() < $conditions[$i]['valeur'])
+					{
+						$G_erreur = 'Vous n\'avez pas assez en '.$conditions[$i]['attribut'].'<br />';
+						return false;
+					}
+					$i++;
+				}
+			}
+
+			//Si c'est une dague main gauche, vérifie qu'il a aussi une dague en main droite
+			if($type == 'main_gauche' AND $row['type'] == 'dague')
+			{
+				if($this->get_inventaire_partie('main_droite') === 0)
+				{
+				}
+				else
+				{
+					$main_droite = decompose_objet($this->get_inventaire_partie('main_droite'));
+					$requete = "SELECT * FROM arme WHERE ID = ".$main_droite['id_objet'];
+					//Récupération des infos de l'objet
+					$req_md = $db->query($requete);
+					$row_md = $db->read_array($req_md);
+					if($row['type'] == 'dague')
+					{
+						if($row_md['type'] != 'dague')
+						{
+							$G_erreur = 'L\'arme équipée en main droite n\'est pas une dague<br />';
+							return false;
+						}
+					}
+					elseif(count(explode(';', $row_md['mains'])) > 1)
+					{
+						$G_erreur = 'Vous devez enlever votre arme à 2 mains pour porter cet objet<br />';
+						return false;
+					}
+				}
+			}
+			//Vérifie si il a une dague en main gauche et si c'est le cas et que l'arme n'est pas une dague, on désequipe
+			if($type == 'main_droite' AND $row['type'] != 'dague')
+			{
+				if($this->get_inventaire_partie('main_gauche') === 0 OR $this->get_inventaire_partie('main_gauche') == '')
+				{
+				}
+				else
+				{
+					if($main_gauche = decompose_objet($this->get_inventaire_partie('main_gauche')))
+					{
+						$requete = "SELECT * FROM arme WHERE ID = ".$main_gauche['id_objet'];
+						//Récupération des infos de l'objet
+						$req_mg = $db->query($requete);
+						$row_mg = $db->read_array($req_mg);
+						if($row_mg['type'] == 'dague')
+						{
+							$this->desequip('main_gauche');
+						}
+					}
+					else
+					{
+					}
+				}
+			}
+
+			$desequip = true;
+			if($categorie == 'a')
+			{
+				$mains = explode(';', $mains);
+				$type = $mains[0];
+				$count = count($mains);
+			}
+			//Verifie si il a déjà un objet de ce type sur lui
+			if ($type != '')
+			{
+				//Desequipement
+				if($categorie == 'a')
+				{
+					$i = 0;
+					while($desequip AND $i < $count)
+					{
+						if($this->get_inventaire_partie($mains[$i]) === 'lock' AND $this->get_inventaire_partie('main_droite') !== 0)
+						{
+							$this->desequip('main_droite');
+						}
+						$desequip = $this->desequip($mains[$i]);
+						$i++;
+					}
+				}
+				else
+				{
+					$desequip = $this->desequip($type);
+				}
+			}
+
+			if($desequip)
+			{
+				//On équipe
+				$inventaire = $this->inventaire();
+				$inventaire->$type = $objet;
+				if($categorie == 'a' AND $count == 2) $inventaire->main_gauche = 'lock';
+				$this->set_inventaire(serialize($inventaire));
+				$this->sauver();
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+		}
+		else return false;
 	}
 }
 ?>

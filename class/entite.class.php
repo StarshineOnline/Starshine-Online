@@ -390,9 +390,31 @@ class entite
 	{
 		return $this->sort_element;
 	}
-	function get_buff()
+	function get_buff($nom = false, $champ = false, $type = false)
 	{
-		return $this->buff;
+		if(!$nom)
+		{
+			return $this->buff;
+		}
+		else
+		{
+			if(!isset($this->buff)) $this->get_buff();
+			if(!$type)
+			{
+				$get = 'get_'.$champ;
+				if(method_exists($this->buff[$nom], $get)) return $this->buff[$nom]->$get();
+				else return false;
+			}
+			else
+				foreach($this->buff as $buff)
+				{
+					if($buff->get_type() == $nom)
+					{
+						$get = 'get_'.$champ;
+						return $buff->$get();
+					}
+				}
+		}
 	}
 	function get_etat()
 	{
@@ -463,26 +485,23 @@ class entite
 		$this->potentiel_parer = $valeur;
 	}
 
-	function is_buff($nom = '', $type = false)
+	function is_buff($nom = '', $type = true)
 	{
 		$buffe = false;
 		if(is_array($this->buff))
 		{
 			if(!empty($nom))
 			{
-				$tmp = $this->buff;
-				while(current($tmp) && !$buffe)
+				foreach($this->buff as $key => $buff)
 				{
 					if($type)
 					{
-						if(strcmp(current($tmp)->get_type(), $nom) == 0)
-							$buffe = true;
+						if($key == $nom) $buffe = true;
 					}
-					else if(strcmp(current($tmp)->get_nom(), $nom) == 0)
+					else if($buff->get_nom() ==  $nom)
 					{
 						$buffe = true;
 					}
-					next($tmp);
 				}
 			}
 			else

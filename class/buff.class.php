@@ -284,7 +284,7 @@ class buff
 			while($row = $db->read_assoc($req))
 			{
 				if(!$keys) $return[] = new buff($row);
-				else $return[$row[$keys]][] = new buff($row);
+				else $return[$row[$keys]] = new buff($row);
 			}
 		}
 		else $return = array();

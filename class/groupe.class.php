@@ -295,7 +295,7 @@ class groupe
 	 * @param none
 	 * @return int(10) $lvl niveau du groupe 
  	*/
-	function get_lvl()
+	function get_level()
 	{
 		$max = 0;
 		$moyenne = 0;
@@ -313,24 +313,36 @@ class groupe
 		return $this->lvl;
 	}
 	
-	function get_share_xp($pos)
+	function get_share_xp($pos = false)
 	{
-		$membre_groupe = $this->get_membre_joueur();
-		$share_xp = 0;
-		foreach($membre_groupe as $membre)
+		if(!isset($this->share_xp))
 		{
-			$distance = calcul_distance_pytagore($pos, $membre->get_pos());
-			if($distance < 10)
-				$share_xp += 100 * $membre->get_level();
-			else
+			if(!isset($this->membre_joueur)) $this->get_membre_joueur();
+			$this->share_xp = 0;
+			foreach($this->membre_joueur as $membre)
 			{
-				$tmp = 100 - $distance / 2 * $membre->get_level();
-				$share_xp += (($tmp) > 0 ? $tmp : 0);
+				$distance = calcul_distance_pytagore($pos, $membre->get_pos());
+				if($distance < 10)
+				{
+					$share_xp = 100 * $membre->get_level();
+				}
+				else
+				{
+					$tmp = 100 - $distance / 2 * $membre->get_level();
+					$share_xp = (($tmp) > 0 ? $tmp : 0);
+				}
+				$membre->share_xp = $share_xp;
+				$this->share_xp += $share_xp;
 			}
 		}
-		return $share_xp;
+		return $this->share_xp;
 	}
-	
+
+	function set_share_xp($share)
+	{
+		$this->share_xp = $share;
+	}
+
 	function get_membre()
 	{
 		$this->membre = groupe_joueur::create('id_groupe', $this->id, 'leader ASC, id_joueur ASC');

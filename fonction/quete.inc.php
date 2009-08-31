@@ -87,15 +87,13 @@ function verif_action($type_cible, $joueur, $mode)
 						if(verif_quete($liste_quete[$i]['id_quete'], $i, $joueur))
 						{
 							fin_quete($joueur, $i, $liste_quete[$i]['id_quete']);
-							$joueur = recupperso($joueur->get_id());
 							$count--;
 						}
 						else
 						{
 							//Mis à jour des quêtes du perso
-							$quete = serialize($liste_quete);
-							$requete = "UPDATE perso SET quete = '".$quete."' WHERE ID = ".$joueur->get_id();
-							$req = $db->query($requete);
+							$joueur->set_quete(serialize($liste_quete));
+							$joueur->sauver();
 						}
 					}
 					$echo .= "\n";
@@ -117,13 +115,13 @@ function fin_quete($joueur, $id_quete_joueur, $id_quete)
 	$liste_quete = $joueur->get_liste_quete();
 	//Validation de la quête et mis à jour des quêtes du perso
 	array_splice($liste_quete, $id_quete_joueur, 1);
-	$quete = serialize($liste_quete);
+	$joueur->set_quete(serialize($liste_quete));
 	//On vérifie si la quète a déjà était fini, si non, on la mets dans les quètes finies
-	$quete_fini = explode(';', $joueur['quete_fini']);
+	$quete_fini = explode(';', $joueur->get_quete_fini());
 	if(!in_array($id_quete, $quete_fini))
 	{
 		$quete_fini[] = $id_quete;
-		$joueur['quete_fini'] = implode(';', $quete_fini);
+		$joueur->set_quete_fini(implode(';', $quete_fini));
 	}
 	$rewards = explode(';', $row['reward']);
 	//print_r($rewards);
@@ -168,13 +166,16 @@ function fin_quete($joueur, $id_quete_joueur, $id_quete)
 				}
 				$count2 = count($liste);
 				$random = floor(rand(0, $count2));
-				prend_objet('o'.$liste[$random][0], $joueur);
+				$joueur->prend_objet('o'.$liste[$random][0]);
 			break;
 		}
 		$r++;
 	}
-	$stars = round($row['star'] * (1 + ($joueur['rang_grade'] * 2 / 100)));
-	$requete = "UPDATE perso SET quete = '".$quete."', quete_fini = '".$joueur['quete_fini']."', star = star + ".$stars.", honneur = honneur + ".$row['honneur'].", exp = exp + ".$row['exp']." WHERE ID = ".$joueur->get_id();
+	$joueur->get_grade();
+	$stars = round($row['star'] * (1 + ($joueur->grade->get_rang() * 2 / 100)));
+	$joueur->set_honneur($joueur->get_honneur() + $row['honneur']);
+	$joueur->set_exp($joueur->get_exp() + $row['exp']);
+	$joueur->sauver();
 	echo $joueur->get_nom().' finit la quête "'.$row['nom'].'", et gagne '.$stars.' stars, '.$echo.' '.$row['exp'].' points d\'expérience et '.$row['honneur'].' points d\'honneur.<br />';
 	$req = $db->query($requete);
 	//Mis dans le journal
