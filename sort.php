@@ -647,7 +647,63 @@ if (isset($_GET['ID']))
 					//Mis à jour du joueur
 					//sauve_sans_bonus_ignorables($joueur, array('mp', 'pa', 'incantation', $row['comp_assoc']));
 					$joueur->sauver();
-				break;						
+				break;
+				case 'rez' :
+					//Sale
+					if($type_cible != 'joueur')
+					{
+						echo 'Ce sort ne peut être utilisé que sur un joueur mort.';
+						break;
+					}
+					
+					//On vérifie que le joueur est bien mort !
+					if($cible->get_hp() <= 0)
+					{
+						//On vérifie si le joueur n'a pas déjà une rez plus efficace d'active
+						$requete = "SELECT pourcent FROM rez WHERE id_perso = ".$cible->get_id();
+						$req_pourcent = $db->query($requete);
+						$pourcent_max = 0;
+						while($row_pourcent = $db->read_assoc($req_pourcent))
+						{
+							if($row_pourcent['pourcent'] > $pourcent_max) $pourcent_max = $row_pourcent['pourcent'];
+						}
+						if($sort->get_effet() > $pourcent_max)
+						{
+							$joueur->set_pa($joueur->get_pa() - $sortpa);
+							$joueur->set_mp($joueur->get_mp() - $sortmp);
+							//Mis en place de la résurection
+							$requete = "INSERT INTO rez VALUES('', ".$cible->get_id().", ".$joueur->get_id().", '".$joueur->get_nom()."', ".$sort->get_effet().", ".$sort->get_effet2().", ".$sort->get_duree().", NOW())";
+							$db->query($requete);
+							//Augmentation des compétences
+							$difficulte_sort = diff_sort($sort->get_difficulte(), $joueur, 'incantation', $sortpa_base, $sortmp_base);
+							$augmentation = augmentation_competence('incantation', $joueur, $difficulte_sort);
+							if ($augmentation[1] == 1)
+							{
+								$joueur->set_incantation($augmentation[0]);
+								echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant à '.$joueur->get_incantation().' en incantation</span><br />';
+							}
+							$difficulte_sort = diff_sort($sort->get_difficulte(), $joueur, $sort->get_comp_assoc(), $sortpa_base, $sortmp_base);
+							$augmentation = augmentation_competence($sort->get_comp_assoc(), $joueur, $difficulte_sort);
+							if ($augmentation[1] == 1)
+							{
+								$joueur->set_comp($sort->get_comp_assoc(), $augmentation[0]);
+								echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant à '.$joueur->get_comp($sort->get_comp_assoc()).' en '.$Gtrad[$sort->get_comp_assoc()].'</span><br />';
+							}
+							//Mis à jour du joueur
+							//sauve_sans_bonus_ignorables($joueur, array('mp', 'pa', 'incantation', $row['comp_assoc']));
+							$joueur->sauver();
+							echo 'Résurrection bien lancée.';
+						}
+						else
+						{
+							echo 'Le joueur bénéficie d\'une résurrection plus puissante.';
+						}
+					}
+					else
+					{
+						echo 'Le joueur n\'est pas mort';
+					}
+				break;				
 			}
 		}
 		echo '<br /><a href="sort.php?type='.$type_cible.'&amp;id_'.$cible->get_type().'='.$cible->get_id().'" onclick="return envoiInfo(this.href, \'information\');">Revenir au livre de sort</a>';
