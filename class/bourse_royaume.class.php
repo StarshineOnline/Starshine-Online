@@ -85,7 +85,7 @@ class bourse_royaume
 		$this->fin_vente = date("Y-m-d h:i:s", $fin_vente);
 	}
 	
-	function get_fin_vente($fin_vente)
+	function get_fin_vente()
 	{
 		return strtotime($this->fin_vente);
 	}

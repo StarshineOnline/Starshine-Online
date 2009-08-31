@@ -51,8 +51,8 @@ else if(array_key_exists('id', $_GET))
 					else $evolution = '';
 					echo '
 					<li onmouseover="'.make_overlib($overlib).'" onmouseout="return nd();">
-						<span class="nom">'.$mine->get_nom().'</span><span class="position">'.$mine->get_x().' / '.$mine->get_y().$evolution.'</span><span class="supprimer"><a href="mine.php?mine='.$mine->get_id().'&amp;suppr" onclick="if(confirm(\'Voulez vous supprimer cette mine ?\')) return envoiInfo(this.href, \'info_mine\'); else return false;">X</a></span>
-					</li>';
+						<span class="nom">'.$mine->get_nom().'</span><span class="position">'.$mine->get_x().' / '.$mine->get_y().$evolution.'</span><span class="supprimer"><a href="mine.php?mine='.$mine->get_id().'&amp;bourg='.$bourg->get_id().'&amp;suppr" onclick="if(confirm(\'Voulez vous supprimer cette mine ?\')) {return envoiInfo(this.href, \'info_mine\');envoiInfo(\'mine.php?id='.$bourg->get_id().'\', \'contenu_jeu\');} else {return false;}">X</a></span>
+					</li>';					
 				}
 			?>
 			</ul>
@@ -60,16 +60,16 @@ else if(array_key_exists('id', $_GET))
 			if (count($bourg->placements)>0)
 			{
 			?>
-			En construction
-			<ul style="margin-left : 15px;">
+			<strong>En construction</strong>
+			<ul>
 			<?php
-						$bourg->placements;
-
+				$bourg->placements;
 				foreach($bourg->placements as $placement)
 				{
+					$overlib = "Fin de construction dans ".transform_sec_temp($placement->get_fin_placement() - time());
 					echo '
 					<li onmouseover="'.make_overlib($overlib).'" onmouseout="return nd();">
-						<span class="nom">'.$placement->get_nom().'</span><span class="position">'.$placement->get_x().' / '.$placement->get_y().'</span><span class="supprimer">'.transform_sec_temp($placement->get_fin_placement() - time()).'</span>
+						<span class="nom">'.$placement->get_nom().'</span><span class="position">'.$placement->get_x().' / '.$placement->get_y().'</span>
 					</li>';
 				}
 			}
@@ -94,6 +94,7 @@ elseif(array_key_exists('case', $_GET))
 	$coord = convertd_in_coord($case->get_id());
 	$bourg = new bourg($_GET['id_bourg']);
 	$bourg->get_mines();
+	$bourg->get_mine_max();
 	$bourg->get_placements();
 	$bourg->get_mine_total();
 	if($bourg->mine_max > $bourg->mine_total)
@@ -191,6 +192,7 @@ elseif(array_key_exists('add', $_GET))
 {
 	$bourg = new bourg($_GET['bourg']);
 	$bourg->get_mine_total();
+	$bourg->get_mine_max();
 
 	if($bourg->mine_total < $bourg->mine_max)
 	{
@@ -254,11 +256,9 @@ elseif(array_key_exists('up', $_GET))
 elseif(array_key_exists('suppr', $_GET))
 {
 	$mine = new mine($_GET['mine']);
-	print_r($mine);
 	
 	if($mine->get_royaume() == $royaume->get_id())
 	{
-		echo 'plop';
 		$mine->supprimer();
 	}
 }
@@ -283,7 +283,7 @@ else
 		if(count($bourg->mines) > 0)
 		{
 		?>
-		<ul style="margin-left : 15px;">
+		<ul>
 		<?php
 			foreach($bourg->mines as $mine)
 			{
@@ -296,11 +296,12 @@ else
 		if(count($bourg->placements) > 0)
 		{
 		?>
-		<ul style="margin-left : 15px;">
+		<strong>Construction</strong>
+		<ul>
 		<?php
 			foreach($bourg->placements as $placement)
 			{
-				echo '<li>Construction de '.$placement->get_nom().'  - fin dans '.$placement->get_fin_placement() - time().' '.transform_sec_temp($placement->get_fin_placement() - time()).'</li>';
+				echo '<li>'.$placement->get_nom().'  - fin dans  '.transform_sec_temp($placement->get_fin_placement() - time()).'</li>';
 			}
 		?>
 		</ul>

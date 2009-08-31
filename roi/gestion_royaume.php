@@ -709,7 +709,6 @@ if($joueur->get_rang_royaume() != 6)
 				$enchere->sauver();
 				?>
 				<h6>Enchère prise en compte !</h6>
-				<a href="gestion_royaume.php?direction=bourse" onclick="return envoiInfo(this.href, 'contenu_jeu');">Revenir à la bourse</a>
 				<?php
 			}
 			else
@@ -725,14 +724,37 @@ if($joueur->get_rang_royaume() != 6)
 		require_once(root.'class/bourse_royaume.class.php');
 		require_once(root.'class/bourse.class.php');
 		$enchere = new bourse_royaume();
-		$ressource = $_GET['ressource'];
+		switch ($_GET['ressource'])
+		{
+			case 'bois' :
+			$ressource = $royaume->get_bois(); 
+			break;
+			case 'eau' :
+			$ressource = $royaume->get_eau(); 
+			break;
+			case 'essence' :
+			$ressource = $royaume->get_essence(); 
+			break;
+			case 'pierre' :
+			$ressource = $royaume->get_pierre(); 
+			break;
+			case 'sable' :
+			$ressource = $royaume->get_sable();
+			break;
+			case 'charbon' :
+			$ressource = $royaume->get_charbon(); 
+			break;
+		
+		
+		}
+
 		$nombre = $_GET['nombre'];
 		$prix = $_GET['prix'];
 		//On vérifie que le royaume a assez de cette ressource
-		if($R[$ressource] >= $nombre)
+		if($ressource >= $nombre)
 		{
 			$enchere->id_royaume = $royaume->get_id();
-			$enchere->ressource = $ressource;
+			$enchere->ressource = $_GET['ressource'];
 			$enchere->nombre = $nombre;
 			$enchere->prix = $prix;
 			//7 jours plus tard
@@ -740,13 +762,14 @@ if($joueur->get_rang_royaume() != 6)
 			$enchere->fin_vente = date("Y-m-d H:i:s", $time);
 			$enchere->sauver();
 			//On enlève les ressources au royaume
-			$requete = "UPDATE royaume SET ".$ressource." = ".$ressource." - ".$nombre." WHERE ID = ".$royaume->get_id();
+			$requete = "UPDATE royaume SET ".$_GET['ressource']." = ".$_GET['ressource']." - ".$nombre." WHERE ID = ".$royaume->get_id();
 			$db->query($requete);
+			echo "<h6>Votre ressource a bien été mise en vente</h6>";
 		}
 		else
 		{
 			?>
-			<h5>Vous n'avez pas assez de <?php echo $ressource; ?> !</h5>
+			<h5>Vous n'avez pas assez de <?php echo $_GET['ressource']; ?> !</h5>
 			<?php
 		}
 	}
@@ -760,7 +783,7 @@ if($joueur->get_rang_royaume() != 6)
 			//
 		?>
 		<div id='bourse'>
-		<div style="position : absolute; left : 800px; background-color : grey; padding : 5px 10px 5px 10px;">
+		<div class='bourse_ressource'>
 			<div id="ajout_ressource" style="position : relative; right : 0px; display : none; z-index : 10;">
 				Ressource : <select name="ressource" id="ressource">
 					<option value="pierre">pierre</option>
@@ -773,11 +796,11 @@ if($joueur->get_rang_royaume() != 6)
 				</select><br />
 				Nombre <input type="text" name="nbr" id="nbr" value="0" /><br />
 				Prix total : <input type="text" name="prix" id="prix" value="0" /><br />
-				<input type="button" onclick="if(confirm('Voullez vous mettre ' + $(nbr).value + ' ' + $(ressource).value + ' en vente à ' + $(prix).value + ' stars ?')) return envoiInfo('gestion_royaume.php?direction=bourse_ressource&amp;ressource=' + $(ressource).value + '&amp;prix=' + $(prix).value + '&amp;nombre=' + $(nbr).value, 'contenu_jeu'); else return false;" value="Valider" /><br />
+				<input type="button" onclick="if(confirm('Voullez vous mettre ' + $(nbr).value + ' ' + $(ressource).value + ' en vente à ' + $(prix).value + ' stars ?')) {envoiInfo('gestion_royaume.php?direction=bourse_ressource&amp;ressource=' + $(ressource).value + '&amp;prix=' + $(prix).value + '&amp;nombre=' + $(nbr).value, 'message_confirm'); envoiInfo('gestion_royaume.php?direction=bourse', 'contenu_jeu'); } else {return false;}" value="Valider" /><br />
 			</div>
 			<a href="" onclick="Effect.toggle('ajout_ressource', 'slide'); return false;">Mettre des ressources aux enchères</a>
 		</div>
-		<div style="position : absolute; left : 600px; background-color : grey; padding : 5px 10px 5px 10px;">
+		<div class='bourse_cours'>
 			<div id="cout_ressource" style="position : relative; right : 0px; display : none; z-index : 10;">
 				<ul>
 				<?php

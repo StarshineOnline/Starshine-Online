@@ -71,21 +71,21 @@ body 								{margin:0;padding:0;background:#7e909c url('../../image/v2/bg_site.
 .food								{text-align:right;margin-right:20px;background:transparent url('../../image/icone/ressources_nourriture.png') no-repeat;display:block;line-height: 30px;height:30px;width:30px;float:left;}
 
 #diplomatie fieldset				{-moz-border-radius: 10px;}
-#diplomatie ul li 					{clear:both;height:30px;line-height: 30px;-moz-border-radius: 10px;}
-#diplomatie ul li:hover			    {background-color:#C5D4EF;-moz-border-radius: 10px;}
+#diplomatie ul li 					{clear:both;height:30px;line-height: 30px;-moz-border-radius: 10px; -webkit-border-radius:10px;}
+#diplomatie ul li:hover			    {background-color:#C5D4EF;-moz-border-radius: 10px; -webkit-border-radius:10px;}
 #diplomatie .drapeau				{float:left;width:200px;}
 #diplomatie .diplo					{float:left;width:200px;}
 #diplomatie .liens					{float:left;width:200px;}
 #diplomatie .nom					{float:left;width:200px;}
 
 #construction fieldset				{-moz-border-radius: 10px;}
-#construction ul li 				{clear:both;height:30px;line-height: 30px;-moz-border-radius: 10px;}
+#construction ul li 				{clear:both;height:30px;line-height: 30px;-moz-border-radius: 10px; -webkit-border-radius:10px;}
 #construction ul li:hover		    {background-color:#C5D4EF;-moz-border-radius: 10px;}
 #construction .nom					{float:left;width:200px;}
 
 #mine fieldset						{-moz-border-radius: 10px;float:left;width:280px;}
 #mine fieldset:hover				{background-color:#C5D4EF;}
-#mine ul li 						{clear:both;height:20px;line-height: 20px;-moz-border-radius: 10px;}
+#mine ul li 						{clear:both;height:20px;line-height: 20px;-moz-border-radius: 10px; -webkit-border-radius:10px;}
 
 #infos	fieldset					{-moz-border-radius: 10px;}
 #infos .nom							{float:left;width:155px;}
@@ -93,14 +93,14 @@ body 								{margin:0;padding:0;background:#7e909c url('../../image/v2/bg_site.
 #infos .supprimer					{float:left;width:20px;}
 
 #telephone fieldset					{-moz-border-radius: 10px;}
-#telephone ul li 					{clear:both;height:30px;line-height: 30px;-moz-border-radius: 10px;}
+#telephone ul li 					{clear:both;height:30px;line-height: 30px;-moz-border-radius: 10px; -webkit-border-radius:10px;}
 #telephone ul li:hover			    {background-color:#C5D4EF;-moz-border-radius: 10px;}
 #telephone .roi						{float:left;width:450px;}
 #telephone .nom						{float:left;width:450px;}
 
 
 #criminel fieldset					{-moz-border-radius: 10px;}
-#criminel ul li 					{clear:both;height:21px;line-height: 21px;-moz-border-radius: 10px;}
+#criminel ul li 					{clear:both;height:21px;line-height: 21px;-moz-border-radius: 10px; -webkit-border-radius:10px;}
 #criminel ul li:hover			    {background-color:#C5D4EF;-moz-border-radius: 10px;}
 #criminel .nom					    {float:left;width:150px;text-indent: 5px;}
 #criminel .crime				    {float:left;width:150px;text-align: right;}
@@ -108,7 +108,7 @@ body 								{margin:0;padding:0;background:#7e909c url('../../image/v2/bg_site.
 
 
 #stats fieldset						{width:168px;float:left;-moz-border-radius: 10px;}
-#stats ul li 						{clear:both;height:21px;line-height: 21px;-moz-border-radius: 10px;}
+#stats ul li 						{clear:both;height:21px;line-height: 21px;-moz-border-radius: 10px; -webkit-border-radius:10px;}
 #stats ul li:hover					{background-color:#C5D4EF;-moz-border-radius: 10px;}
 #stats .nom							{float:left;width:95px;text-indent: 5px;}
 #stats .stats						{float:left;width:60px;text-align: right;}
@@ -117,7 +117,7 @@ body 								{margin:0;padding:0;background:#7e909c url('../../image/v2/bg_site.
 #motk fieldset						{-moz-border-radius: 10px;}
 
 #bourse fieldset					{-moz-border-radius: 10px;}
-#bourse ul li 						{clear:both;height:30px;line-height: 30px;-moz-border-radius: 10px;}
+#bourse ul li 						{clear:both;height:30px;line-height: 30px;-moz-border-radius: 10px; -webkit-border-radius:10px;}
 #bourse ul li:hover					{background-color:#C5D4EF;-moz-border-radius: 10px;}
 .ressourse							{display:block;float: left;width:120px;text-align: left;}
 .nombre								{display:block;float: left;width:70px;text-align: right;}
@@ -132,7 +132,7 @@ body 								{margin:0;padding:0;background:#7e909c url('../../image/v2/bg_site.
 #boutique							{margin-left:24px;}
 #boutique ul li 					{clear:both;height:21px;line-height: 21px;-moz-border-radius: 10px;}
 #boutique ul li:hover				{background-color:#C5D4EF;-moz-border-radius: 10px;}
-#boutique input						{border : 1px solid #999;width:30px;background: transparent;-moz-border-radius: 5px;text-align: center;}
+#boutique input						{border : 1px solid #999;width:30px;background: transparent;-moz-border-radius: 5px; -webkit-border-radius:5px;text-align: center;}
 .boutique_nom						{display:block;float: left;width:100px;margin-left:25px;}
 .boutique_nom a						{color:#222;text-decoration: none;}
 .boutique_prix						{display:block;float: left;width:70px;text-align: right;}
@@ -146,8 +146,8 @@ body 								{margin:0;padding:0;background:#7e909c url('../../image/v2/bg_site.
 
 #quete								{margin-left:24px;}
 #quete ul li 						{clear:both;height:21px;line-height: 21px;-moz-border-radius: 10px;}
-#quete ul li:hover					{background-color:#C5D4EF;-moz-border-radius: 10px;}
-#quete input						{border : 1px solid #999;width:30px;background: transparent;-moz-border-radius: 5px;text-align: center;}
+#quete ul li:hover					{background-color:#C5D4EF;-moz-border-radius: 10px; -webkit-border-radius:10px;}
+#quete input						{border : 1px solid #999;width:30px;background: transparent;-moz-border-radius: 5px; -webkit-border-radius:5px;text-align: center;}
 .quete_nom							{display:block;float: left;width:180px;margin-left:25px;}
 .quete_niveau						{display:block;float: left;width:70px;text-align: right;}
 .quete_groupe						{display:block;float: left;width:70px;text-align: right;}
@@ -159,7 +159,7 @@ body 								{margin:0;padding:0;background:#7e909c url('../../image/v2/bg_site.
 .quete_achat					    {display:block;float: left;width:150px;text-align: right;}
 
 #ressource								{margin-left:24px;}
-#ressource ul li 						{clear:both;height:21px;line-height: 30px;height: 30px; -moz-border-radius: 10px;}
+#ressource ul li 						{clear:both;height:21px;line-height: 30px;height: 30px; -moz-border-radius: 10px; -webkit-border-radius:10px;}
 #ressource ul li:hover					{background-color:#C5D4EF;-moz-border-radius: 10px;}
 #ressource input						{border : 1px solid #999;width:30px;background: transparent;-moz-border-radius: 5px;text-align: center;}
 .ressource_nom							{display:block;float: left;width:230px;margin-left:25px;}
@@ -168,6 +168,9 @@ body 								{margin:0;padding:0;background:#7e909c url('../../image/v2/bg_site.
 .ressource_mines						{display:block;float: left;width:150px;text-align: right;}
 .ressource_total						{display:block;float: left;width:150px;text-align: right;}
 
+.bourse_ressource 					{position : absolute; left : 800px; background-color : #E7CF98; padding : 5px 10px 5px 10px;-moz-border-radius: 10px; -webkit-border-radius:10px;}
+
+.bourse_cours 						{position : absolute; left : 600px; background-color : #E7CF98; padding : 5px 10px 5px 10px;-moz-border-radius: 10px; -webkit-border-radius:10px;}
 
 .t1 							    {background-color:#A7BBDF;-moz-border-radius: 10px;}
 
