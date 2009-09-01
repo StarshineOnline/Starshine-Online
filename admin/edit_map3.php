@@ -578,8 +578,6 @@ $req = $db->query($requete);
 					<option value="811" class="baseRow1">pavée tournant s-o</option>
 					<option value="812" class="baseRow1">pont pavé horizontal</option>
 					<option value="813" class="baseRow1">pont pavé vertical</option>
-					<option value="814" class="baseRow1">chemin vertical</option>
-					<option value="815" class="baseRow1">chemin horizontal</option>
 					<option value="816" class="baseRow1">pont bois vertical</option>
 					<option value="817" class="baseRow1">pont bois horizontal</option>
 					<option value="818" class="baseRow1">Désert verticale</option>
