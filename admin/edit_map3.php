@@ -185,66 +185,75 @@ $req = $db->query($requete);
 					<option value="122" class="baseRow1">hautherbe_jonction_horig</option>
 					<option value="123" class="baseRow1">hautherbe_jonction_vertib</option>
 					<option value="124" class="baseRow1">hautherbe_jonction_vertih</option>
-					<option value="125" class="baseRow1">Arbre 2</option>
-					<option value="126" class="baseRow1">Arbre 2</option>
-					<option value="127" class="baseRow1">Arbre 2</option>
-					<option value="128" class="baseRow1">Arbre 2</option>
-					<option value="129" class="baseRow1">Arbre 2</option>
-					<option value="130" class="baseRow1">Arbre 2</option>
-					<option value="131" class="baseRow1">Arbre 2</option>
-					<option value="132" class="baseRow1">Arbre 2</option>
-					<option value="133" class="baseRow1">Arbre 2</option>
-					<option value="134" class="baseRow1">Arbre 2</option>
-					<option value="135" class="baseRow1">Arbre 2</option>
-					<option value="136" class="baseRow1">Arbre 2</option>
-					<option value="137" class="baseRow1">Arbre 2</option>
-					<option value="138" class="baseRow1">Arbre 2</option>
-					<option value="139" class="baseRow1">Arbre 2</option>
-					<option value="140" class="baseRow1">Arbre 2</option>
-					<option value="141" class="baseRow1">Arbre 2</option>
-					<option value="142" class="baseRow1">Arbre 2</option>
-					<option value="143" class="baseRow1">Arbre 2</option>
-					<option value="144" class="baseRow1">Arbre 2</option>
-					<option value="145" class="baseRow1">Arbre 2</option>
-					<option value="146" class="baseRow1">Arbre 2</option>
-					<option value="147" class="baseRow1">Arbre 2</option>
-					<option value="148" class="baseRow1">Arbre 2</option>
-					<option value="149" class="baseRow1">Arbre 2</option>
-					<option value="150" class="baseRow1">Arbre 2</option>
-					<option value="151" class="baseRow1">Arbre 2</option>
-					<option value="152" class="baseRow1">Arbre 2</option>
-					<option value="153" class="baseRow1">Arbre 2</option>
-					<option value="154" class="baseRow1">Arbre 2</option>
-					<option value="155" class="baseRow1">Arbre 2</option>
-					<option value="156" class="baseRow1">Arbre 2</option>
-					<option value="157" class="baseRow1">Arbre 2</option>
-					<option value="158" class="baseRow1">Arbre 2</option>
-					<option value="159" class="baseRow1">Arbre 2</option>
-					<option value="160" class="baseRow1">Arbre 2</option>
-					<option value="161" class="baseRow1">Arbre 2</option>
-					<option value="162" class="baseRow1">Arbre 2</option>
-					<option value="163" class="baseRow1">Arbre 2</option>
-					<option value="164" class="baseRow1">Arbre 2</option>
-					<option value="165" class="baseRow1">Arbre 2</option>
-					<option value="166" class="baseRow1">Arbre 2</option>
-					<option value="167" class="baseRow1">Arbre 2</option>
-					<option value="168" class="baseRow1">Arbre 2</option>
-					<option value="169" class="baseRow1">Arbre 2</option>
-					<option value="170" class="baseRow1">Arbre 2</option>
-					<option value="171" class="baseRow1">Arbre 2</option>
-					<option value="172" class="baseRow1">Arbre 2</option>
-					<option value="173" class="baseRow1">Arbre 2</option>
-					<option value="174" class="baseRow1">Arbre 2</option>
-					<option value="175" class="baseRow1">Arbre 2</option>
-					<option value="176" class="baseRow1">Arbre 2</option>
-					<option value="177" class="baseRow1">Arbre 2</option>
-					<option value="178" class="baseRow1">Arbre 2</option>
-					<option value="179" class="baseRow1">Arbre 2</option>
-					<option value="180" class="baseRow1">Arbre 2</option>
-					<option value="181" class="baseRow1">Arbre 2</option>
-					<option value="182" class="baseRow1">Arbre 2</option>
-					<option value="183" class="baseRow1">Arbre 2</option>
-					<option value="184" class="baseRow1">Arbre 2</option>
+
+					<option value="125" class="baseRow1">hautherbe_bd2</option>
+					<option value="126" class="baseRow1">hautherbe_bdm2</option>
+					<option value="127" class="baseRow1">hautherbe_bg2</option>
+					<option value="128" class="baseRow1">hautherbe_bgm2</option>
+					<option value="129" class="baseRow1">hautherbe_hd2</option>
+					<option value="130" class="baseRow1">hautherbe_hdm2</option>
+					<option value="131" class="baseRow1">hautherbe_hg2</option>
+					<option value="132" class="baseRow1">hautherbe_hgm2</option>
+					
+					<option value="133" class="baseRow1">hautherbe_hm2</option>
+					<option value="134" class="baseRow1">hautherbe_bd3</option>
+					<option value="135" class="baseRow1">hautherbe_bg3</option>
+					<option value="136" class="baseRow1">hautherbe_hd3</option>
+					<option value="137" class="baseRow1">hautherbe_hg3</option>
+					<option value="138" class="baseRow1">tex_herbeenforet</option>
+					<option value="139" class="baseRow1">text_hterrebd</option>
+					
+					<option value="140" class="baseRow1">text_hterrebg</option>
+					<option value="141" class="baseRow1">text_hterrebm</option>
+					<option value="142" class="baseRow1">text_hterrehd</option>
+					<option value="143" class="baseRow1">text_hterrehm</option>
+					<option value="144" class="baseRow1">text_hterrehg</option>
+					<option value="145" class="baseRow1">text_hterremd</option>
+										
+					<option value="146" class="baseRow1">text_hterremg</option>
+					<option value="147" class="baseRow1">text_hterre_diagonhd</option>
+					<option value="148" class="baseRow1">text_hterre_diagonhg</option>
+					<option value="149" class="baseRow1">text_hterre_diagonbg</option>
+					<option value="150" class="baseRow1">text_hterre_diagonbd</option>
+					<option value="151" class="baseRow1">text_hterrebd2</option>
+					<option value="152" class="baseRow1">text_hterrebg2</option>
+					<option value="153" class="baseRow1">text_hterrebm2</option>
+					<option value="154" class="baseRow1">text_hterrehd2</option>
+					<option value="155" class="baseRow1">text_hterrehg2</option>
+					<option value="156" class="baseRow1">text_hterrehm2</option>
+					<option value="157" class="baseRow1">text_hterre_diagonbd2</option>
+					<option value="158" class="baseRow1">text_hterre_diagonbg2</option>
+					
+					
+					<option value="159" class="baseRow1">text_hterre_diagonhd2</option>
+					<option value="160" class="baseRow1">text_hterre_diagonhg2</option>
+					<option value="161" class="baseRow1">text_hterremg2</option>
+					<option value="162" class="baseRow1">text_hterremd2</option>
+					<option value="163" class="baseRow1">text_hterrecentre</option>
+					<option value="164" class="baseRow1">text_hterrecentre2</option>
+					<option value="165" class="baseRow1">hautherbearbre</option>
+					
+					<option value="166" class="baseRow1">tex_herbenuage4</option>
+					<option value="167" class="baseRow1">jointure_herbeb_lachd_neigehg</option>
+					<option value="168" class="baseRow1">jointure_herbeb_lachg_neigehd</option>
+					<option value="169" class="baseRow1">jointure_herbebd_lacbg_neigeh</option>
+					<option value="170" class="baseRow1">jointure_herbebd_lachd_neigeg</option>
+					<option value="171" class="baseRow1">jointure_herbebg_lacbd_neigeh</option>
+					
+					<option value="172" class="baseRow1">jointure_herbebg_lachg_neiged</option>
+					<option value="173" class="baseRow1">jointure_herbed_lach_neigebg</option>
+					<option value="174" class="baseRow1">jointure_herbeh_lacbd_neigebg</option>
+					<option value="175" class="baseRow1">jointure_herbeh_lacbg_neigebd</option>
+					<option value="176" class="baseRow1">jointure_herbeh_lacd_neigebg</option>
+					<option value="177" class="baseRow1">jointure_herbehd_lacbd_neigeg</option>
+					<option value="178" class="baseRow1">jointure_herbehd_lachg_neigeb</option>
+					
+					<option value="179" class="baseRow1">jointure_herbehg_lacbg_neiged</option>
+					<option value="180" class="baseRow1">jointure_herbehg_lachd_neigeb</option>
+					<option value="181" class="baseRow1">jointure_herbeb_neigeh_montagned</option>
+					<option value="182" class="baseRow1">jointure_herbed_neigeg_montagneh</option>
+					<option value="183" class="baseRow1">tex_herbeenmouvement3</option>
+					<option value="184" class="baseRow1">tex_herbebuisson2</option>
 					
 				</optgroup>
 				<optgroup label="Foret">
