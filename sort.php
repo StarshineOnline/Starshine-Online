@@ -745,17 +745,18 @@ else
 	{
 		echo '<a href="sort.php?tri='.$magie.$groupe_href.'" onclick="return envoiInfo(this.href, \'information\');"><img src="image/icone_'.$magie.'.png" alt="'.$Gtrad[$magie].'" title="'.$Gtrad[$magie].'" /></a> ';
 	}
-	$where = '1';
-	if(array_key_exists('tri', $_GET)) $where = 'AND comp_assoc = \''.$_GET['tri'].'\''; else $_GET['tri'] = 'favoris';
+	$where = '';
+	
+	if(array_key_exists('tri', $_GET)) 
+		$where = 'comp_assoc = \''.$_GET['tri'].'\''; 
+	else 
+		$_GET['tri'] = 'favoris';
+	
 	if($_GET['tri'] == 'favoris')
-	{
-		$where = $where.' AND id IN (SELECT id_sort FROM sort_favoris WHERE id_perso = \''.$joueur->get_id().'\')';
-		$requete = "SELECT * FROM sort WHERE type != 'rez' AND id IN (SELECT id_sort FROM sort_favoris WHERE id_perso = ".$joueur->get_id().") ORDER BY comp_assoc ASC, type ASC";
-	}
+		$where = 'id IN (SELECT id_sort FROM sort_favoris WHERE id_perso = \''.$joueur->get_id().'\')';
 	else
-	{
-		$requete = "SELECT * FROM sort WHERE type != 'rez' ".$where." ORDER BY comp_assoc ASC, type ASC";
-	}
+		$sorts = sort_jeu::create('', '', 'comp_assoc ASC, type ASC', false, ''.$where);
+
 	$test = false;
 	$sorts = sort_jeu::create('', '', 'comp_assoc ASC, type ASC', false, ''.$where);
 	//$req = $db->query($requete);
