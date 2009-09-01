@@ -745,7 +745,7 @@ else
 	{
 		echo '<a href="sort.php?tri='.$magie.$groupe_href.'" onclick="return envoiInfo(this.href, \'information\');"><img src="image/icone_'.$magie.'.png" alt="'.$Gtrad[$magie].'" title="'.$Gtrad[$magie].'" /></a> ';
 	}
-	$where = '';
+	$where = '1';
 	if(array_key_exists('tri', $_GET)) $where = 'AND comp_assoc = \''.$_GET['tri'].'\''; else $_GET['tri'] = 'favoris';
 	if($_GET['tri'] == 'favoris')
 	{
