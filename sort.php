@@ -749,7 +749,7 @@ else
 	if(array_key_exists('tri', $_GET)) $where = 'AND comp_assoc = \''.$_GET['tri'].'\''; else $_GET['tri'] = 'favoris';
 	if($_GET['tri'] == 'favoris')
 	{
-		$where = ' AND id IN (SELECT id_sort FROM sort_favoris WHERE id_perso = \''.$joueur->get_id().'\')';
+		$where = $where.' AND id IN (SELECT id_sort FROM sort_favoris WHERE id_perso = \''.$joueur->get_id().'\')';
 		$requete = "SELECT * FROM sort WHERE type != 'rez' AND id IN (SELECT id_sort FROM sort_favoris WHERE id_perso = ".$joueur->get_id().") ORDER BY comp_assoc ASC, type ASC";
 	}
 	else
@@ -757,7 +757,7 @@ else
 		$requete = "SELECT * FROM sort WHERE type != 'rez' ".$where." ORDER BY comp_assoc ASC, type ASC";
 	}
 	$test = false;
-	$sorts = sort_jeu::create('', '', 'comp_assoc ASC, type ASC', false, $where);
+	$sorts = sort_jeu::create('', '', 'comp_assoc ASC, type ASC', false, ''.$where);
 	//$req = $db->query($requete);
 	$magie = '';
 	echo '<table width="97%" class="information_case">';
