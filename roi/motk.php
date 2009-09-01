@@ -29,16 +29,17 @@ else
 {
 	echo "<div id='propagande'>";
 	//Message actuel
-	$message = transform_texte($royaume->get_motk());
+	$royaume->get_motk();
+	$message = transform_texte($royaume->motk->get_message());
 	if (empty($message)){$message = "Aucun message du roi pour l'instant";}
 	echo "<fieldset>";
-	echo "<legend>Propagande actuelle</legend>
-	<div id='message_propagande' onclick=\"$('message_propagande_edit').show();$('message_propagande').hide();\">
+	echo "<legend>Message du roi actuel</legend>
+	<div id='message_roi' onclick=\"$('message_roi_edit').show();$('message_roi').hide();\">
 	".$message."
 	</div>";
 	?>
-	<div id='message_propagande_edit' style='display:none;'>
-		<textarea name="message" id="messageid" cols="90" rows="12"><?php echo htmlspecialchars(stripslashes($royaume->get_motk())); ?></textarea><br />
+	<div id='message_roi_edit' style='display:none;'>
+		<textarea name="message" id="messageid" cols="90" rows="12"><?php echo htmlspecialchars(stripslashes(($royaume->motk->get_message()))); ?></textarea><br />
 		<input type="button" value="Envoyer" onclick="envoiInfo('motk.php?message=' + $('messageid').value, 'message_confirm');envoiInfo('motk.php', 'contenu_jeu');" />
 	</div>
 	

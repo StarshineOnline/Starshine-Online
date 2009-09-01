@@ -18,6 +18,24 @@ $_SESSION['position'] = convert_in_pos($joueur->get_x(), $joueur->get_y());
 $W_distance = detection_distance($W_case,$_SESSION["position"]);
 
 $W_coord = convert_in_coord($W_case);
+$check = false;
+if(verif_ville($joueur->get_x(), $joueur->get_y()))
+{
+	$check = true;
+}
+elseif($batiment = verif_batiment($joueur->get_x(), $joueur->get_y(), $royaume->get_id()))
+{
+	if($batiment['type'] == 'fort' OR $batiment['type'] == 'bourg') $check = true;
+}
 
+if($check)
+{
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<?php
+}
+else
+{
+	echo 'INTERDIT';
+	exit();
+}

@@ -81,9 +81,10 @@ if($joueur->get_grade()->get_id() == 6)
 
 		<div id='perso_menu'>
 			<ul>
-				<li id='diplomatie' class='menu' onclick="menu_change('diplomatie');">Diplomatie</li>
-				<li id='militaire' class='menu' onclick="menu_change('militaire');">Militaire</li>
+				<li id='ressource' class='menu' onclick="menu_change('ressource');">Ressources</li>
 				<li id='economie' class='menu' onclick="menu_change('economie');">Economie</li>
+				<li id='militaire' class='menu' onclick="menu_change('militaire');">Militaire</li>
+				<li id='communication' class='menu' onclick="menu_change('communication');">Communication</li>
 				<li id='divers' class='menu' onclick="menu_change('divers');">Divers</li>
 			</ul>
 			
@@ -95,17 +96,13 @@ if($joueur->get_grade()->get_id() == 6)
 
 
 	<div id='menu'>
-	<input type='hidden' id='menu_encours' value='diplomatie' />
+	<input type='hidden' id='menu_encours' value='ressource' />
 	<div id='menu_details'>
-		<div id='diplomatie_menu' style='display:none;'><span class='menu' onclick="affiche_page('gestion_royaume.php?direction=diplomatie');">Diplomatie</span></div>
-		
-		
+		<div id='ressource_menu' style='display:none;'><span class='menu' onclick="affiche_page('gestion_royaume.php?direction=bourse');">Bourse Inter Royaume</span><span class='menu' onclick="affiche_page('ressources.php');">Ressources</span><span class='menu' onclick="affiche_page('mine.php');">Gestion des mines</span></div>
+		<div id='economie_menu' style='display:none;'><span class='menu'  onclick="affiche_page('gestion_royaume.php?direction=construction');">Construction de la ville</span><span class='menu' onclick="affiche_page('entretien.php');">Entretien</span><span class='menu' onclick="affiche_page('taxe.php');">Gestion des taxes</span></div>
 		<div id='militaire_menu' style='display:none;'><span class='menu' onclick="affiche_page('construction.php');">Drapeaux & batiments</span><span class='menu' onclick="affiche_page('gestion_royaume.php?direction=carte');">Carte</span><span class='menu' onclick="affiche_page('gestion_groupe.php');">Gestion des groupes</span><span class='menu' onclick="affiche_page('gestion_bataille.php');">Gestion des batailles</span><span class='menu' onclick="affiche_page('gestion_royaume.php?direction=boutique');">Boutique Militaire</span></div>
-		
-		
-		<div id='economie_menu' style='display:none;'><span class='menu' onclick="affiche_page('gestion_royaume.php?direction=bourse');">Bourse Inter Royaume</span><span class='menu'  onclick="affiche_page('gestion_royaume.php?direction=construction');">Construction de la ville</span><span class='menu' onclick="affiche_page('entretien.php');">Entretien</span><span class='menu' onclick="affiche_page('ressources.php');">Ressources</span><span class='menu' onclick="affiche_page('quete.php');">Gestion des quètes</span><span class='menu' onclick="affiche_page('taxe.php');">Gestion des taxes</span><span class='menu' onclick="affiche_page('mine.php');">Gestion des mines</span></div>
-		
-		<div id='divers_menu' style='display:none;'><span class='menu' onclick="affiche_page('gestion_royaume.php?direction=criminel');">Criminels</span><span class='menu' onclick="affiche_page('motk.php');">Message du roi</span><span class='menu' onclick="affiche_page('propagande.php');">Propagande</span><span class='menu' onclick="affiche_page('gestion_royaume.php?direction=stats');">Statistiques</span></div>
+		<div id='communication_menu' style='display:none;'><span class='menu' onclick="affiche_page('gestion_royaume.php?direction=diplomatie');">Diplomatie</span><span class='menu' onclick="affiche_page('motk.php');">Message du roi</span><span class='menu' onclick="affiche_page('propagande.php');">Propagande</span></div>
+		<div id='divers_menu' style='display:none;'><span class='menu' onclick="affiche_page('quete.php');">Gestion des quètes</span><span class='menu' onclick="affiche_page('gestion_royaume.php?direction=criminel');">Criminels</span><span class='menu' onclick="affiche_page('gestion_royaume.php?direction=stats');">Statistiques</span><span class='menu' onclick="affiche_page('point_victoire.php');">Points de victoires</span></div>
 	</div>
 	</div>
 </div>

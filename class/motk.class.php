@@ -181,7 +181,7 @@ class motk
 
 		$requete = "SELECT id, race, id_royaume, message, propagande, date FROM motk WHERE ".$where." ORDER BY ".$ordre;
 		$req = $db->query($requete);
-		if($db->num_rows() > 0)
+		if($db->num_rows($req) > 0)
 		{
 			while($row = $db->read_assoc($req))
 			{

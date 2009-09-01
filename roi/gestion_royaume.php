@@ -7,7 +7,8 @@ if($joueur->get_rang_royaume() != 6)
 	echo '<p>Cheater</p>';
 	else if($_GET['direction'] == 'diplomatie')
 	{
-		$diplo = $royaume->get_diplo_time();
+		$diplo = unserialize($royaume->get_diplo_time());
+		print_r($diplo);
 		$req = $db->query("SELECT * FROM diplomatie WHERE race = '".$joueur->get_race()."'");
 		$row = $db->read_assoc($req);
 		if($_GET['action'] == 'valid')
@@ -63,7 +64,7 @@ if($joueur->get_rang_royaume() != 6)
 			        $db->query($requete);
 			        echo 'Vous êtes maintenant en '.$Gtrad['diplo'.$diplo_req].' avec les '.$Gtrad[$_GET['race']].'<br /><br />';
 			        //Recherche du roi
-			        $requete = "SELECT ID, nom FROM perso WHERE race = '".sSQL($_GET['race'])."' AND rang_royaume = 6";
+			        $requete = "SELECT id, nom FROM perso WHERE race = '".sSQL($_GET['race'])."' AND rang_royaume = 6";
 			        $req = $db->query($requete);
 			        $row_roi = $db->read_assoc($req);
 			        //Envoi d'un message au roi

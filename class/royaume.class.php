@@ -1156,5 +1156,29 @@ class royaume
 		else $this->pp = 100;
 		return $this->pp;
 	}
+
+	function get_motk()
+	{
+		if(!isset($this->motk))
+		{
+			$this->motk_array = motk::create('id_royaume', $this->id);
+			$this->motk = $this->motk_array[0];
+		}
+		return $this->motk;
+	}
+
+	function set_motk($texte)
+	{
+		if(!isset($this->motk)) $this->get_motk();
+		$this->motk->set_message($texte);
+		$this->motk->sauver();
+	}
+
+	function set_propagande($texte)
+	{
+		if(!isset($this->motk)) $this->get_motk();
+		$this->motk->set_propagande($texte);
+		$this->motk->sauver();
+	}
 }
 ?>
