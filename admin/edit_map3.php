@@ -257,61 +257,66 @@ $req = $db->query($requete);
 					
 				</optgroup>
 				<optgroup label="Foret">
-					<option value="201" class="baseRow1">Simple</option>
-					<option value="202" class="baseRow2">Touffu</option>
-					<option value="203" class="baseRow1">Haut gauche</option>
-					<option value="204" class="baseRow2">Gauche</option>
-					<option value="205" class="baseRow1">Bas gauche</option>
-					<option value="206" class="baseRow2">Bas</option>
-					<option value="207" class="baseRow1">Bas droite</option>
-					<option value="208" class="baseRow2">Droite</option>
-					<option value="209" class="baseRow2">Haut droite</option>
-					<option value="210" class="baseRow1">Haut</option>
-					<option value="211" class="baseRow2">Coin haut gauche</option>
-					<option value="212" class="baseRow1">Coin bas gauche</option>
-					<option value="213" class="baseRow2">Coin bas droite</option>
-					<option value="214" class="baseRow1">Coin haut droite</option>
-					<option value="215" class="baseRow2">Coin bas droite</option>
-					<option value="216" class="baseRow1">Coin haut droite</option>
-					<option value="217" class="baseRow2">Coin bas droite</option>
-					<option value="218" class="baseRow1">Coin haut droite</option>
+				
+					<option value="201" class="baseRow1">tex_foret1</option>
+					<option value="202" class="baseRow2">tex_foret2</option>
+					<option value="203" class="baseRow1">tex_foret3</option>
+					<option value="204" class="baseRow2">tex_foret4</option>
+					<option value="205" class="baseRow1">tex_foret5</option>
+					<option value="206" class="baseRow2">tex_foret6</option>
+					<option value="207" class="baseRow1">tex_foret7</option>
+					<option value="208" class="baseRow2">tex_foret8</option>
+					<option value="209" class="baseRow2">tex_foret9</option>
+					<option value="210" class="baseRow1">tex_foret10</option>
+					<option value="211" class="baseRow2">tex_foret11</option>
+					<option value="212" class="baseRow1">tex_foret12</option>
+					<option value="213" class="baseRow2">tex_foret13</option>
+					<option value="214" class="baseRow1">tex_foret14</option>
+					<option value="215" class="baseRow2">tex_foreteau</option>
+					<option value="216" class="baseRow1">tex_foreteclate</option>
+					<option value="217" class="baseRow2">tex_foreteclate2</option>
+					<option value="218" class="baseRow1">tex_foretceleste</option>
 
 					
 				</optgroup>
 				<optgroup label="Desert">
-					<option value="301" class="baseRow2">Centre</option>
-					<option value="302" class="baseRow1">Haut gauche</option>
-					<option value="303" class="baseRow2">Gauche</option>
-					<option value="304" class="baseRow1">Bas gauche</option>
-					<option value="305" class="baseRow2">Bas</option>
-					<option value="306" class="baseRow1">Bas droite</option>
-					<option value="307" class="baseRow2">Droite</option>
-					<option value="308" class="baseRow2">Haut droite</option>
-					<option value="309" class="baseRow1">Haut</option>
-					<option value="310" class="baseRow2">Coin haut gauche</option>
-					<option value="311" class="baseRow1">Coin bas gauche</option>
-					<option value="312" class="baseRow2">Coin bas droite</option>
-					<option value="313" class="baseRow1">Coin haut droite</option>
-					<option value="314" class="baseRow2">cactus</option>
-					<option value="315" class="baseRow1">Oasis is good</option>		
-					<option value="316" class="baseRow2">cactus</option>
-					<option value="317" class="baseRow1">Oasis is good</option>					
-					<option value="318" class="baseRow2">cactus</option>
-					<option value="319" class="baseRow1">Oasis is good</option>					
-					<option value="320" class="baseRow2">cactus</option>
-					<option value="321" class="baseRow1">Oasis is good</option>					
-					<option value="322" class="baseRow2">cactus</option>
-					<option value="323" class="baseRow1">Oasis is good</option>					
-					<option value="324" class="baseRow2">cactus</option>
-					<option value="325" class="baseRow1">Oasis is good</option>					
-					<option value="326" class="baseRow2">cactus</option>
-					<option value="327" class="baseRow1">Oasis is good</option>					
-					<option value="328" class="baseRow2">cactus</option>
-					<option value="329" class="baseRow1">Oasis is good</option>					
-					<option value="330" class="baseRow2">cactus</option>
-					<option value="331" class="baseRow1">Oasis is good</option>					
-					<option value="332" class="baseRow2">cactus</option>
-					<option value="333" class="baseRow1">Oasis is good</option>					
+				
+					<option value="301" class="baseRow2">tex_desert.png</option>
+					<option value="302" class="baseRow1">tex_herbedesertno.png</option>
+					<option value="303" class="baseRow2">tex_desertherbeo.png</option>
+					<option value="304" class="baseRow1">tex_herbedesertso.png</option>
+					<option value="305" class="baseRow2">tex_desertherbes.png</option>
+					<option value="306" class="baseRow1">tex_herbedesertse.png</option>
+					<option value="307" class="baseRow2">tex_desertherbee.png</option>
+					<option value="308" class="baseRow2">tex_herbedesertne.png</option>
+					<option value="309" class="baseRow1">tex_desertherben.png</option>
+					<option value="310" class="baseRow2">tex_desertherbese.png</option>
+					<option value="311" class="baseRow1">tex_desertherbene.png</option>
+					<option value="312" class="baseRow2">tex_desertherbeno.png</option>
+					<option value="313" class="baseRow1">tex_desertherbeso.png</option>
+					<option value="314" class="baseRow2">tex_desertcac.png</option>
+					<option value="315" class="baseRow1">tex_desertoasis.png</option>		
+					<option value="316" class="baseRow2">tex_desertmarecage</option>
+					<option value="317" class="baseRow1">desertbg2</option>		
+					
+								
+					<option value="318" class="baseRow2">desertbd2</option>
+					<option value="319" class="baseRow1">desertbm2</option>					
+					<option value="320" class="baseRow2">deserthg2</option>
+					<option value="321" class="baseRow1">deserthm2</option>					
+					<option value="322" class="baseRow2">deserthd2</option>
+					<option value="323" class="baseRow1">desertmd2</option>					
+					<option value="324" class="baseRow2">desertmg2</option>
+					<option value="325" class="baseRow1">desertcentre2</option>					
+					<option value="326" class="baseRow2">desertbdiagong2</option>
+					<option value="327" class="baseRow1">desertbdiagond2</option>	
+					
+					<option value="328" class="baseRow2">deserthdiagond2</option>
+					<option value="329" class="baseRow1">deserthdiagong2</option>					
+					<option value="330" class="baseRow2">desertjointurehg2</option>
+					<option value="331" class="baseRow1">desertjointurehd2</option>					
+					<option value="332" class="baseRow2">desertjointuregd2</option>
+					<option value="333" class="baseRow1">desertjointuredg2</option>					
 				</optgroup>
 				<optgroup label="Neige">
 
