@@ -1416,91 +1416,91 @@ texture/route/
 
 .tex848
 {
-	background: url('../image/texture/route/route/routemarais/tex_routemarais2.png') no-repeat;
+	background: url('../image/texture/route/tex_routemarais2.png') no-repeat;
 }
 .tex849
 {
-	background: url('../image/texture/route/route/routemarais/tex_routemarais5.png') no-repeat;
+	background: url('../image/texture/route/tex_routemarais5.png') no-repeat;
 }
 .tex850
 {
-	background: url('../image/texture/route/route/routemarais/tex_routemaraiscroisement.png') no-repeat;
+	background: url('../image/texture/route/tex_routemaraiscroisement.png') no-repeat;
 }
 .tex851
 {
-	background: url('../image/texture/route/route/routemarais/tex_intersectionmarais4.png') no-repeat;
+	background: url('../image/texture/route/tex_intersectionmarais4.png') no-repeat;
 }
 .tex852
 {
-	background: url('../image/texture/route/route/routemarais/tex_intersectionmarais2.png') no-repeat;
+	background: url('../image/texture/route/tex_intersectionmarais2.png') no-repeat;
 }
 .tex853
 {
-	background: url('../image/texture/route/routemarais/tex_intersectionmarais.png') no-repeat;
+	background: url('../image/texture/route/tex_intersectionmarais.png') no-repeat;
 }
 .tex854
 {
-	background: url('../image/texture/route/routemarais/tex_intersectionmarais3.png') no-repeat;
+	background: url('../image/texture/route/tex_intersectionmarais3.png') no-repeat;
 }
 .tex855
 {
-	background: url('../image/texture/route/routemarais/tex_routemarais1.png') no-repeat;
+	background: url('../image/texture/route/tex_routemarais1.png') no-repeat;
 }
 .tex856
 {
-	background: url('../image/texture/route/routemarais/tex_routemarais4.png') no-repeat;
+	background: url('../image/texture/route/tex_routemarais4.png') no-repeat;
 }
 .tex857
 {
-	background: url('../image/texture/route/routemarais/tex_routemarais6.png') no-repeat;
+	background: url('../image/texture/route/tex_routemarais6.png') no-repeat;
 }
 .tex858
 {
-	background: url('../image/texture/route/routemarais/tex_routemarais7.png') no-repeat;
+	background: url('../image/texture/route/tex_routemarais7.png') no-repeat;
 }
 
 .tex859
 {
-	background: url('../image/texture/route/routemarais/tex_routemaraisherbens.png') no-repeat;
+	background: url('../image/texture/route/tex_routemaraisherbens.png') no-repeat;
 }
 
 /* tex860 prise */
 
 .tex861
 {
-	background: url('../image/texture/route/terremaudite/tex_routeterremauditecroise.png') no-repeat;
+	background: url('../image/texture/route/tex_routeterremauditecroise.png') no-repeat;
 }
 .tex862
 {
-	background: url('../image/texture/route/terremaudite/tex_routeterremauditene.png') no-repeat;
+	background: url('../image/texture/route/tex_routeterremauditene.png') no-repeat;
 }
 .tex863
 {
-	background: url('../image/texture/route/terremaudite/tex_routeterremauditeno.png') no-repeat;
+	background: url('../image/texture/route/tex_routeterremauditeno.png') no-repeat;
 }
 .tex864
 {
-	background: url('../image/texture/route/terremaudite/tex_routeterremauditese.png') no-repeat;
+	background: url('../image/texture/route/tex_routeterremauditese.png') no-repeat;
 }
 .tex865
 {
-	background: url('../image/texture/route/terremaudite/tex_routeterremauditeso.png') no-repeat;
+	background: url('../image/texture/route/tex_routeterremauditeso.png') no-repeat;
 }
 .tex866
 {
-	background: url('../image/texture/route/terremaudite/tex_routeterremauditees.png') no-repeat;
+	background: url('../image/texture/route/tex_routeterremauditees.png') no-repeat;
 }
 .tex867
 {
-	background: url('../image/texture/route/terremaudite/tex_routeterremauditens.png') no-repeat;
+	background: url('../image/texture/route/tex_routeterremauditens.png') no-repeat;
 }
 .tex868
 {
-        background: url('../image/texture/route/Jointures/tex_desertrouteraccord.png') no-repeat;
+        background: url('../image/texture/route/tex_desertrouteraccord.png') no-repeat;
 }
 .tex869
 {    
-        background: url('../image/texture/route/Jointures/tex_routechemineo.png') no-repeat;
+        background: url('../image/texture/route/tex_routechemineo.png') no-repeat;
 }
 .tex870
 {
@@ -1508,12 +1508,169 @@ texture/route/
 }
 .tex871
 {
-        background: url('../image/texture/route/Jointures/tex_desertrouteeo.png') no-repeat;
+        background: url('../image/texture/route/tex_desertrouteeo.png') no-repeat;
 }
 .tex872
 {
 	background: url('../image/texture/route/donjon_gobelin/tex_donjongob_pont.png') no-repeat;
 }
+.tex873
+{
+	background: url('../image/texture/route/jonction_foret_herbe_hd.png') no-repeat;
+}
+.tex874
+{
+	background: url('../image/texture/route/jonction_foret_herbe_verti.png') no-repeat;
+}
+.tex875
+{
+	background: url('../image/texture/route/tex_intersecrouteforethorbas.png') no-repeat;
+}
+.tex876
+{
+	background: url('../image/texture/route/tex_intersecrouteforethorvertnord.png') no-repeat;
+}
+.tex877
+{
+	background: url('../image/texture/route/tex_intersecrouteforetvertidroite.png') no-repeat;
+}
+.tex878
+{
+	background: url('../image/texture/route/tex_intersecrouteforetvertigauche.png') no-repeat;
+}
+.tex880
+{
+	background: url('../image/texture/route/tex_routeforetbd.png') no-repeat;
+}
+.tex881
+{
+	background: url('../image/texture/route/tex_routeforetbg.png') no-repeat;
+}
+.tex882
+{
+	background: url('../image/texture/route/tex_routeforethd.png') no-repeat;
+}
+.tex883
+{
+	background: url('../image/texture/route/tex_routeforethg.png') no-repeat;
+}
+.tex884
+{
+	background: url('../image/texture/route/tex_routeforethor.png') no-repeat;
+}
+.tex885
+{
+	background: url('../image/texture/route/tex_routeforetverti.png') no-repeat;
+}
+.tex886
+{
+	background: url('../image/texture/route/tex_routedesertherb.png') no-repeat;
+}
+.tex887
+{
+	background: url('../image/texture/route/tex_pontpavens.png') no-repeat;
+}
+.tex888
+{
+	background: url('../image/texture/route/tex_pontpaveeo.png') no-repeat;
+}
+.tex889
+{
+	background: url('../image/texture/route/tex_routebanquiseherbebg.png') no-repeat;
+}
+.tex890
+{
+	background: url('../image/texture/route/tex_routebanquiseherbebd.png') no-repeat;
+}
+.tex891
+{
+	background: url('../image/texture/route/tex_routebanquiseherbehd.png') no-repeat;
+}
+.tex892
+{
+	background: url('../image/texture/route/tex_routebanquiseherbehg.png') no-repeat;
+}
+.tex893
+{
+	background: url('../image/texture/route/tex_intersectionpaveneigesn.png') no-repeat;
+}
+.tex894
+{
+	background: url('../image/texture/route/tex_intersectionpaveneigens.png') no-repeat;
+}
+.tex895
+{
+	background: url('../image/texture/route/tex_intersectionpaveneigeeo.png') no-repeat;
+}
+.tex896
+{
+	background: url('../image/texture/route/tex_intersectionpaveneigeoe.png') no-repeat;
+}
+.tex897
+{
+	background: url('../image/texture/route/tex_routeherbebanquisebd.png') no-repeat;
+}
+.tex898
+{
+	background: url('../image/texture/route/tex_routeherbebanquisebg.png') no-repeat;
+}
+.tex899
+{
+	background: url('../image/texture/route/tex_routeherbebanquisehd.png') no-repeat;
+}
+.tex900
+{
+	background: url('../image/texture/route/tex_routeherbebanquisehg.png') no-repeat;
+}
+.tex901
+{
+	background: url('../image/texture/route/tex_routemaraisherbeeo.png') no-repeat;
+}
+.tex902
+{
+	background: url('../image/texture/route/tex_routemaraisherbens.png') no-repeat;
+}
+.tex903
+{
+	background: url('../image/texture/route/tex_routemaraisherbeoe.png') no-repeat;
+}
+.tex904
+{
+	background: url('../image/texture/route/tex_routemaraisherbesn.png') no-repeat;
+}
+.tex905
+{
+	background: url('../image/texture/route/tex_routeherbeterremauditebd.png') no-repeat;
+}
+.tex906
+{
+	background: url('../image/texture/route/tex_routeherbeterremauditebg.png') no-repeat;
+}
+.tex907
+{
+	background: url('../image/texture/route/tex_routeherbeterremauditehd.png') no-repeat;
+}
+.tex908
+{
+	background: url('../image/texture/route/tex_routeherbeterremauditehg.png') no-repeat;
+}
+.tex909
+{
+	background: url('../image/texture/route/tex_routeherbeterremauditee.png') no-repeat;
+}
+.tex910
+{
+	background: url('../image/texture/route/tex_routeherbeterremauditen.png') no-repeat;
+}
+.tex911
+{
+	background: url('../image/texture/route/tex_routeherbeterremauditeo.png') no-repeat;
+}
+.tex912
+{
+	background: url('../image/texture/route/tex_routeherbeterremaudites.png') no-repeat;
+}
+
 .tex6
 {
 	background: url('../image/texture/tex_desert1.png') no-repeat;
@@ -1661,27 +1818,27 @@ texture/route/
 }
 .tex1033
 {
-	background: url('../image/texture/capitale/haut_elfs/villehautelfhg.png') no-repeat;
+	background: url('../image/texture/capitale/haut_elfs/capitale1.png') no-repeat;
 }
 .tex1034
 {
-	background: url('../image/texture/capitale/haut_elfs/villehautelfhm.png') no-repeat;
+	background: url('../image/texture/capitale/haut_elfs/capitale2.png') no-repeat;
 }
 .tex1035
 {
-	background: url('../image/texture/capitale/haut_elfs/villehautelfhd.png') no-repeat;
+	background: url('../image/texture/capitale/haut_elfs/capitale3.png') no-repeat;
 }
 .tex1036
 {
-	background: url('../image/texture/capitale/haut_elfs/villehautelfbd.png') no-repeat;
+	background: url('../image/texture/capitale/haut_elfs/capitale4.png') no-repeat;
 }
 .tex1037
 {
-	background: url('../image/texture/capitale/haut_elfs/villehautelfbm.png') no-repeat;
+	background: url('../image/texture/capitale/haut_elfs/capitale5.png') no-repeat;
 }
 .tex1038
 {
-	background: url('../image/texture/capitale/haut_elfs/villehautelfbg.png') no-repeat;
+	background: url('../image/texture/capitale/haut_elfs/capitale6.png') no-repeat;
 }
 .tex1039
 {
