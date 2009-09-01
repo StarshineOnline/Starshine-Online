@@ -184,6 +184,7 @@ foreach($total_source as $key => $value)
 	<td>'.$sources[$key].'</td><td> : +'.$value.'</td><td>'.$pourcent.'%</td>
 </tr>';
 }
+$jours = $jours > 0 ? $jours : 1;
 echo '
 <tr>
 	<td><h6>TOTAL</h6></td><td><h6> +'.$total_total.'</h6></td><td><h6> '.round(($total_total / $jours), 2).' / jour</h6></td>
