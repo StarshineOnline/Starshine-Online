@@ -66,11 +66,10 @@ while($row = $db->read_array($req))
 		, 'brisement_os', 'lapidation', 'globe_foudre', 'vortex_vie', 'vortex_mana', 'putrefaction', 'embrasement', 'sphere_glace');
 		if(in_array($row['type'], $sort_de_degat))
 		{
-			if($row['type'] == 'drain_vie') $j = $joueur[$row['carac_assoc']] - 2;
+			if($row['type'] == 'drain_vie') $j = $joueur->get_comp($row['carac_assoc']) - 2;
 			else
 			{
-				$fonction = 'get_'.$row['carac_assoc'];
-				$j = $joueur->$fonction();
+				$j = $joueur->get_comp($row['carac_assoc']);
 			}
 			$de_degat_sort = de_degat($j, $row['effet']);
 			$ide = 0;
