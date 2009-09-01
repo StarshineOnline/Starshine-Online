@@ -174,21 +174,17 @@ $req = $db->query($requete);
 					<option value="107" class="baseRow1">Herbe Haute Bas Milieu</option>
 					<option value="108" class="baseRow1">Herbe Haute Bas Droite</option>		
 					<option value="109" class="baseRow1">Herbe Haute Haut Droite</option>
-					<option value="110" class="baseRow1">Herbe Haute Haut Gauche</option>
-					<option value="111" class="baseRow1">Herbe Haute Haut Milieu</option>
-					<option value="112" class="baseRow1">Herbe fleur</option>
-					<option value="113" class="baseRow1">Buisson</option>		
-					<option value="114" class="baseRow1">Arbre 1</option>
-					<option value="115" class="baseRow1">Arbre 2</option>
-					<option value="116" class="baseRow1">Arbre 2</option>
-					<option value="117" class="baseRow1">Arbre 2</option>
-					<option value="118" class="baseRow1">Arbre 2</option>
-					<option value="119" class="baseRow1">Arbre 2</option>
-					<option value="120" class="baseRow1">Arbre 2</option>
-					<option value="121" class="baseRow1">Arbre 2</option>
-					<option value="122" class="baseRow1">Arbre 2</option>
-					<option value="123" class="baseRow1">Arbre 2</option>
-					<option value="124" class="baseRow1">Arbre 2</option>
+					<option value="110" class="baseRow1">Herbe Haute Haut Milieu</option>
+					<option value="111" class="baseRow1">Herbe Haute Haut Gauche</option>
+					<option value="116" class="baseRow1">Herbe Haute Diag Bas Droit</option>
+					<option value="117" class="baseRow1">Herbe Haute Diag Bas Gauche</option>
+					<option value="118" class="baseRow1">Herbe Haute Diag Haut Droit</option>
+					<option value="119" class="baseRow1">Herbe Haute Diag Haut Gauche</option>
+					<option value="120" class="baseRow1">Herbe Haute Centre</option>
+					<option value="121" class="baseRow1">hautherbe_jonction_horid</option>
+					<option value="122" class="baseRow1">hautherbe_jonction_horig</option>
+					<option value="123" class="baseRow1">hautherbe_jonction_vertib</option>
+					<option value="124" class="baseRow1">hautherbe_jonction_vertih</option>
 					<option value="125" class="baseRow1">Arbre 2</option>
 					<option value="126" class="baseRow1">Arbre 2</option>
 					<option value="127" class="baseRow1">Arbre 2</option>
@@ -309,86 +305,90 @@ $req = $db->query($requete);
 					<option value="333" class="baseRow1">Oasis is good</option>					
 				</optgroup>
 				<optgroup label="Neige">
-					<option value="401" class="baseRow2">Centre</option>
-					<option value="402" class="baseRow1">Haut gauche</option>
-					<option value="403" class="baseRow2">Gauche</option>
-					<option value="404" class="baseRow1">Bas gauche</option>
-					<option value="405" class="baseRow2">Bas</option>
-					<option value="406" class="baseRow1">Bas droite</option>
-					<option value="407" class="baseRow2">Droite</option>
-					<option value="408" class="baseRow1">Haut droite</option>
-					<option value="409" class="baseRow2">Haut</option>
-					<option value="410" class="baseRow1">Coin haut gauche</option>
-					<option value="411" class="baseRow2">Coin bas gauche</option>
-					<option value="412" class="baseRow1">Coin bas droite</option>
-					<option value="413" class="baseRow2">Coin haut droite</option>
-					<option value="414" class="baseRow1">Coin bas gauche herbe</option>					
-					<option value="415" class="baseRow2">Coin bas droite herbe</option>
-					<option value="416" class="baseRow1">Coin haut gauche herbe</option>
-					<option value="417" class="baseRow2">Coin haut droite herbe</option>
-					<option value="418" class="baseRow1">gauche herbe</option>
-					<option value="419" class="baseRow2">bas herbe</option>
-					<option value="420" class="baseRow1">droite herbe</option>
-					<option value="421" class="baseRow2">haut herbe</option>
-					<option value="422" class="baseRow1">Coin2 bas gauche herbe</option>					
-					<option value="423" class="baseRow2">Coin2 bas droite herbe</option>
-					<option value="424" class="baseRow1">Coin2 haut gauche herbe</option>
-					<option value="425" class="baseRow2">Coin2 haut droite herbe</option>
-					<option value="426" class="baseRow1">Texture spécial neige</option>	
-					<option value="427" class="baseRow2">Texture spécial neige</option>	
-					<option value="428" class="baseRow1">Coin2 haut gauche herbe</option>
-					<option value="429" class="baseRow2">Coin2 haut droite herbe</option>
-					<option value="430" class="baseRow1">Texture spécial neige</option>	
-					<option value="431" class="baseRow2">Texture spécial neige</option>	
-					<option value="432" class="baseRow1">Coin2 haut gauche herbe</option>
-					<option value="433" class="baseRow2">Coin2 haut droite herbe</option>
-					<option value="434" class="baseRow1">Texture spécial neige</option>	
-					<option value="435" class="baseRow2">Texture spécial neige</option>	
-					<option value="436" class="baseRow1">Coin2 haut gauche herbe</option>
-					<option value="437" class="baseRow2">Coin2 haut droite herbe</option>
-					<option value="438" class="baseRow1">Texture spécial neige</option>	
-					<option value="439" class="baseRow2">Texture spécial neige</option>	
-					<option value="440" class="baseRow1">Coin2 haut gauche herbe</option>
-					<option value="441" class="baseRow2">Coin2 haut droite herbe</option>
-					<option value="442" class="baseRow1">Texture spécial neige</option>	
-					<option value="443" class="baseRow2">Texture spécial neige</option>	
-					<option value="444" class="baseRow1">Coin2 haut gauche herbe</option>
-					<option value="445" class="baseRow2">Coin2 haut droite herbe</option>
-					<option value="446" class="baseRow1">Texture spécial neige</option>	
-					<option value="447" class="baseRow2">Texture spécial neige</option>	
-					<option value="448" class="baseRow1">Coin2 haut gauche herbe</option>
-					<option value="449" class="baseRow2">Coin2 haut droite herbe</option>
-					<option value="450" class="baseRow1">Texture spécial neige</option>	
-					<option value="451" class="baseRow2">Texture spécial neige</option>	
-					<option value="452" class="baseRow1">Coin2 haut gauche herbe</option>
-					<option value="453" class="baseRow2">Coin2 haut droite herbe</option>
-					<option value="454" class="baseRow1">Texture spécial neige</option>	
-					<option value="455" class="baseRow2">Texture spécial neige</option>	
-					<option value="456" class="baseRow1">Coin2 haut gauche herbe</option>
-					<option value="457" class="baseRow2">Coin2 haut droite herbe</option>
-					<option value="458" class="baseRow1">Texture spécial neige</option>	
-					<option value="459" class="baseRow2">Texture spécial neige</option>	
-					<option value="460" class="baseRow1">Coin2 haut gauche herbe</option>
-					<option value="461" class="baseRow2">Coin2 haut droite herbe</option>
-					<option value="462" class="baseRow1">Texture spécial neige</option>	
-					<option value="463" class="baseRow2">Texture spécial neige</option>	
-					<option value="464" class="baseRow1">Coin2 haut gauche herbe</option>
-					<option value="465" class="baseRow2">Coin2 haut droite herbe</option>
-					<option value="466" class="baseRow1">Texture spécial neige</option>	
-					<option value="467" class="baseRow2">Texture spécial neige</option>	
-					<option value="468" class="baseRow1">Coin2 haut gauche herbe</option>
-					<option value="469" class="baseRow2">Coin2 haut droite herbe</option>
-					<option value="470" class="baseRow1">Texture spécial neige</option>	
-					<option value="471" class="baseRow2">Texture spécial neige</option>	
-					<option value="472" class="baseRow1">Coin2 haut gauche herbe</option>
-					<option value="473" class="baseRow2">Coin2 haut droite herbe</option>
-					<option value="474" class="baseRow1">Texture spécial neige</option>	
-					<option value="475" class="baseRow2">Texture spécial neige</option>	
-					<option value="476" class="baseRow1">Coin2 haut gauche herbe</option>
-					<option value="477" class="baseRow2">Coin2 haut droite herbe</option>
-					<option value="478" class="baseRow1">Texture spécial neige</option>	
-					<option value="479" class="baseRow2">Texture spécial neige</option>	
-					<option value="480" class="baseRow1">Coin2 haut gauche herbe</option>
+
+					<option value="401" class="baseRow2">tex_neige1</option>
+					<option value="402" class="baseRow1">tex_banquiseno</option>
+					<option value="403" class="baseRow2">tex_banquiseo</option>
+					<option value="404" class="baseRow1">tex_banquiseso</option>
+					<option value="405" class="baseRow2">tex_banquises</option>
+					<option value="406" class="baseRow1">tex_banquisese</option>
+					<option value="407" class="baseRow2">tex_banquisee</option>
+					<option value="408" class="baseRow1">tex_banquisene</option>
+					<option value="409" class="baseRow2">tex_banquisen</option>
+					<option value="410" class="baseRow1">tex_banquiseint1</option>
+					<option value="411" class="baseRow2">tex_banquiseint2</option>
+					<option value="412" class="baseRow1">tex_banquiseint3</option>
+					<option value="413" class="baseRow2">tex_banquiseint4</option>
+					<option value="414" class="baseRow1">tex_neigeherbecoinne</option>					
+					<option value="415" class="baseRow2">tex_neigeherbecoinno</option>
+					<option value="416" class="baseRow1">tex_neigeherbecoinse</option>
+					<option value="417" class="baseRow2">tex_neigeherbecoinso</option>
+					<option value="418" class="baseRow1">tex_neigeherbee</option>
+					<option value="419" class="baseRow2">tex_neigeherben</option>
+					<option value="420" class="baseRow1">tex_neigeherbeo</option>
+					<option value="421" class="baseRow2">tex_neigeherbes</option>
+					<option value="422" class="baseRow1">tex_neigeherbene</option>										
+					<option value="423" class="baseRow2">tex_neigeherbeno</option>
+					<option value="424" class="baseRow1">tex_neigeherbese</option>
+					<option value="425" class="baseRow2">tex_neigeherbesoinso</option>
+					<option value="426" class="baseRow1">textbanquisegele_bm</option>	
+					<option value="427" class="baseRow2">textbanquisegele_bd</option>	
+					<option value="428" class="baseRow1">textbanquisegele_hg</option>
+					<option value="429" class="baseRow2">textbanquisegele_hm</option>
+					<option value="430" class="baseRow1">textbanquisegele_hd</option>	
+					<option value="431" class="baseRow2">textbanquisegele_md</option>						
+					<option value="432" class="baseRow1">textbanquisegele_mg</option>
+					<option value="433" class="baseRow2">textbanquisegele_mg2</option>
+					<option value="434" class="baseRow1">textbanquisegele_centre</option>	
+					<option value="435" class="baseRow2">textgelebanquise_bd</option>	
+					<option value="436" class="baseRow1">textgelebanquise_bg</option>
+					<option value="437" class="baseRow2">textgelebanquise_hd</option>
+					<option value="438" class="baseRow1">textgelebanquise_hg</option>	
+					<option value="439" class="baseRow2">jointgelebanqvertidroit</option>	
+					<option value="440" class="baseRow1">jointgelebanqvertigauche</option>
+					<option value="441" class="baseRow2">jointgelebanqhorizdroit</option>
+					<option value="442" class="baseRow1">jointgelebanqhorizgauche</option>	
+					<option value="443" class="baseRow2">textbanquisegele_diago_bd</option>
+					
+					<option value="444" class="baseRow1">textbanquisegele_diago_bg</option>
+					<option value="445" class="baseRow2">banqgelefissure1</option>
+					<option value="446" class="baseRow1">banqgelefissure2</option>	
+					<option value="447" class="baseRow2">banqgele_centre1</option>	
+					<option value="448" class="baseRow1">banqgele_centre2</option>
+					<option value="449" class="baseRow2">banqgele_centre3</option>
+					<option value="450" class="baseRow1">banqgeleperso</option>	
+										
+					<option value="451" class="baseRow2">textbanquisegele_bg2</option>	
+					<option value="452" class="baseRow1">textbanquisegele_bm2</option>
+					<option value="453" class="baseRow2">textbanquisegele_bd2</option>
+					<option value="454" class="baseRow1">textbanquisegele_hg2</option>	
+					<option value="455" class="baseRow2">textbanquisegele_hm2</option>	
+					<option value="456" class="baseRow1">textbanquisegele_hd2</option>
+					<option value="457" class="baseRow2">textbanquisegele_md2</option>
+					
+					<option value="458" class="baseRow1">textbanquisegele_centre2</option>	
+					<option value="459" class="baseRow2">textgelebanquise_bd2</option>	
+					<option value="460" class="baseRow1">textgelebanquise_bg2</option>
+					<option value="461" class="baseRow2">textgelebanquise_hd2</option>
+					<option value="462" class="baseRow1">textgelebanquise_hg2</option>	
+					<option value="463" class="baseRow2">jointgelebanqvertidroit2</option>	
+					
+					<option value="464" class="baseRow1">jointgelebanqvertigauche2</option>
+					<option value="465" class="baseRow2">jointgelebanqhorizdroit2</option>
+					<option value="466" class="baseRow1">jointgelebanqhorizgauche2</option>	
+					<option value="467" class="baseRow2">textbanquisegele_diago bd2</option>	
+					<option value="468" class="baseRow1">textbanquisegele_diago bg2</option>
+					<option value="469" class="baseRow2">tex_montneige3</option>
+					<option value="470" class="baseRow1">tex_montneige9</option>	
+					<option value="471" class="baseRow2">tex_montneige5</option>	
+					<option value="472" class="baseRow1">tex_montneige6</option>
+					<option value="473" class="baseRow2">tex_montneige7</option>
+					<option value="474" class="baseRow1">tex_montneige8</option>	
+					<option value="475" class="baseRow2">tex_montneige2</option>
+					<option value="476" class="baseRow1">tex_montneige10</option>
+					<option value="477" class="baseRow2">tex_montneige11</option>
+					<option value="478" class="baseRow1">tex_montneige3</option>	
+					<option value="479" class="baseRow2">tex_montneige4</option>	
 					
 				</optgroup>
 				

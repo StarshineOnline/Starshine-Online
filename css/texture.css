@@ -46,28 +46,13 @@
 }
 .tex110
 {
-	background: url('../image/texture/hautesherbes/hautherbe_hm.png') no-repeat;
+	background: url('../image/texture/hautesherbes/hautherbe_h.png') no-repeat;
 }
 .tex111
 {
 	background: url('../image/texture/hautesherbes/hautherbe_hg.png') no-repeat;
 }
-.tex112
-{
-	background: url('../image/texture/hautesherbes/hautherbe_b.png') no-repeat;
-}
-.tex113
-{
-	background: url('../image/texture/hautesherbes/hautherbe_h.png') no-repeat;
-}
-.tex114
-{
-	background: url('../image/texture/hautesherbes/hautherbe_g.png') no-repeat;
-}
-.tex115
-{
-	background: url('../image/texture/hautesherbes/hautherbe_d.png') no-repeat;
-}
+
 .tex116
 {
 	background: url('../image/texture/hautesherbes/hautherbe_diag_bd.png') no-repeat;
@@ -654,7 +639,7 @@
 }
 .tex425
 {
-	background: url('../image/texture/neigeherbe/tex_neigeherbesoinso.png') no-repeat;
+	background: url('../image/texture/neigeherbe/tex_neigeherbeso.png') no-repeat;
 }
 .tex426
 {
@@ -710,19 +695,19 @@
 }
 .tex439
 {
-	background: url('../image/texture/textbanquise/jointgelebanqvertidroit.png') no-repeat;
+	background: url('../image/texture/textbanquise/textjointgelebanqvertidroit.png') no-repeat;
 }
 .tex440
 {
-	background: url('../image/texture/textbanquise/jointgelebanqvertigauche.png') no-repeat;
+	background: url('../image/texture/textbanquise/textjointgelebanqvertigauche.png') no-repeat;
 }
 .tex441
 {
-	background: url('../image/texture/textbanquise/jointgelebanqhorizdroit.png') no-repeat;
+	background: url('../image/texture/textbanquise/textjointgelebanqhorizdroite.png') no-repeat;
 }
 .tex442
 {
-	background: url('../image/texture/textbanquise/jointgelebanqhorizgauche.png') no-repeat;
+	background: url('../image/texture/textbanquise/textjointgelebanqhorizgauche.png') no-repeat;
 }
 .tex443
 {
@@ -742,19 +727,19 @@
 }
 .tex447
 {
-	background: url('../image/texture/textbanquise/banqgele_centre1.png') no-repeat;
+	background: url('../image/texture/textbanquise/textbanqgele_centre1.png') no-repeat;
 }
 .tex448
 {
-	background: url('../image/texture/textbanquise/banqgele_centre2.png') no-repeat;
+	background: url('../image/texture/textbanquise/textbanqgele_centre2.png') no-repeat;
 }
 .tex449
 {
-	background: url('../image/texture/textbanquise/banqgele_centre3.png') no-repeat;
+	background: url('../image/texture/textbanquise/textbanqgele_centre3.png') no-repeat;
 }
 .tex450
 {
-	background: url('../image/texture/textbanquise/banqgeleperso.png') no-repeat;
+	background: url('../image/texture/textbanquise/textbanqgeleperso.png') no-repeat;
 }
 .tex451
 {
@@ -822,11 +807,11 @@
 }
 .tex467
 {
-	background: url('../image/texture/textbanquise/textbanquisegele_diago bd2.png') no-repeat;
+	background: url('../image/texture/textbanquise/textbanquisegele_diago_bd2.png') no-repeat;
 }
 .tex468
 {
-	background: url('../image/texture/textbanquise/textbanquisegele_diago bg2.png') no-repeat;
+	background: url('../image/texture/textbanquise/textbanquisegele_diago_bg2.png') no-repeat;
 }
 .tex469
 {
@@ -871,10 +856,6 @@
 .tex479
 {
 	background: url('../image/texture/textbanquise/tex_montneige4.png') no-repeat;
-}
-.tex480
-{
-	background: url('../image/texture/textbanquise/tex_montneige12.png') no-repeat;
 }
 
 
