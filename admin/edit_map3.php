@@ -405,7 +405,36 @@ $req = $db->query($requete);
 					<option value="479" class="baseRow2">tex_montneige4</option>	
 					
 				</optgroup>
-				
+
+				<optgroup label="Eau">
+					<option value="501" class="baseRow1">tex_eau1</option>
+					<option value="502" class="baseRow1">tex_riviereeo</option>
+					<option value="503" class="baseRow1">tex_rivierens</option>
+					<option value="504" class="baseRow1">tex_rivierene</option>
+					<option value="505" class="baseRow1">tex_riviereno</option>
+					<option value="506" class="baseRow1">tex_rivierese</option>
+					<option value="507" class="baseRow1">tex_riviereso</option>
+					<option value="508" class="baseRow1">tex_lace</option>
+					<option value="509" class="baseRow1">tex_laco</option>
+					<option value="510" class="baseRow1">tex_lacn</option>
+					<option value="511" class="baseRow1">tex_lacs</option>
+					<option value="512" class="baseRow1">tex_lacno</option>
+					<option value="513" class="baseRow1">tex_lacne</option>
+					<option value="514" class="baseRow1">tex_lacso</option>
+					<option value="515" class="baseRow1">tex_lacse</option>
+					<option value="516" class="baseRow1">tex_lacon</option>
+					<option value="517" class="baseRow1">tex_lacos</option>
+					<option value="518" class="baseRow1">tex_laces</option>
+					<option value="519" class="baseRow1">tex_lacen</option>
+					<option value="520" class="baseRow1">tex_embouchureo</option>
+					<option value="521" class="baseRow1">tex_embouchuree</option>
+					<option value="522" class="baseRow1">tex_embouchuren</option>
+					<option value="523" class="baseRow1">tex_embouchures</option>
+					<option value="525" class="baseRow1">tex_eaubanquise1</option>
+					<option value="526" class="baseRow1">tex_eaubanquise2</option>
+					<option value="527" class="baseRow1">tex_lacSpiralJetty</option>
+				</optgroup>
+
 				<optgroup label="Terre Maudite">
 					<option value="1101" class="baseRow2">Centre</option>
 					<option value="1102" class="baseRow1">Haut gauche</option>
@@ -420,8 +449,6 @@ $req = $db->query($requete);
 					<option value="1111" class="baseRow1">Coin bas gauche</option>
 					<option value="1112" class="baseRow1">Coin bas droite</option>
 					<option value="1113" class="baseRow1">Coin haut droite</option>
-				</optgroup>
-				<optgroup label="Terre Maudite forêt">
 				<option value="1114" class="baseRow2">simple</option>
 				<option value="1115" class="baseRow2">Centre touffu</option>
 				<option value="1116" class="baseRow2">haut-gauche</option>
@@ -455,36 +482,7 @@ $req = $db->query($requete);
 					<option value="436" class="baseRow1">Haut bas</option>
 					
 				</optgroup>
-				<optgroup label="Eau">
-					<option value="501" class="baseRow1">Eau</option>
-					<option value="502" class="baseRow1">riviere horizontale</option>
-					<option value="503" class="baseRow1">riviere verticale</option>
-					<option value="504" class="baseRow1">riviere bas gauche</option>
-					<option value="505" class="baseRow1">riviere bas droite</option>
-					<option value="506" class="baseRow1">riviere haut gauche</option>
-					<option value="507" class="baseRow1">riviere haut droite</option>
-					<option value="508" class="baseRow1">lac droite</option>
-					<option value="509" class="baseRow1">lac gauche</option>
-					<option value="510" class="baseRow1">lac haut</option>
-					<option value="511" class="baseRow1">lac bas</option>
-					<option value="512" class="baseRow1">lac haut gauche</option>
-					<option value="513" class="baseRow1">lac haut droit</option>
-					<option value="514" class="baseRow1">lac bas gauche</option>
-					<option value="515" class="baseRow1">lac bas droit</option>
-					<option value="516" class="baseRow1">lac coin haut gauche</option>
-					<option value="517" class="baseRow1">lac coin bas gauche</option>
-					<option value="518" class="baseRow1">lac coin bas droite</option>
-					<option value="519" class="baseRow1">lac coin haut droite</option>
-					<option value="520" class="baseRow1">embouchure gauche</option>
-					<option value="521" class="baseRow1">embouchure droite</option>
-					<option value="522" class="baseRow1">embouchure haut</option>
-					<option value="523" class="baseRow1">embouchure bas</option>
-					<option value="524" class="baseRow1">embouchure haut</option>
-					<option value="525" class="baseRow1">embouchure bas</option>
-					<option value="526" class="baseRow1">embouchure haut</option>
-					<option value="527" class="baseRow1">embouchure bas</option>
 					
-				</optgroup>
 				<optgroup label="Montagne">
 					<option value="601" class="baseRow2">Centre1</option>
 					<option value="602" class="baseRow2">Centre2</option>
@@ -535,45 +533,50 @@ $req = $db->query($requete);
 				
 
 				<optgroup label="Marais">
-					<option value="701" class="baseRow2">Centre</option>
-					<option value="702" class="baseRow2">Haut gauche</option>
-					<option value="703" class="baseRow2">Gauche</option>
-					<option value="704" class="baseRow2">Bas gauche</option>
-					<option value="705" class="baseRow2">Bas</option>
-					<option value="706" class="baseRow2">Bas droite</option>
-					<option value="707" class="baseRow2">Droite</option>
-					<option value="708" class="baseRow2">Haut</option>
-					<option value="709" class="baseRow2">Haut droite</option>
-					<option value="710" class="baseRow2">Nenu</option>
-					<option value="711" class="baseRow2">Nenu 2</option>
-					<option value="712" class="baseRow2">Coin bas gauche</option>
-					<option value="713" class="baseRow2">Coin bas droite</option>
-					<option value="714" class="baseRow1">Coin haut gauche</option>
-					<option value="715" class="baseRow2">Coin haut droite</option>
-					<option value="716" class="baseRow1">Coin haut gauche</option>
-					<option value="717" class="baseRow2">Coin haut droite</option>
-					<option value="718" class="baseRow1">Coin haut gauche</option>
-					<option value="719" class="baseRow2">Coin haut droite</option>
-					<option value="720" class="baseRow1">Coin haut gauche</option>
-					<option value="721" class="baseRow2">Coin haut droite</option>
-					<option value="722" class="baseRow1">Coin haut gauche</option>
-					<option value="723" class="baseRow2">Coin haut droite</option>
-					<option value="724" class="baseRow1">Coin haut gauche</option>
-					<option value="725" class="baseRow2">Coin haut droite</option>
-					<option value="726" class="baseRow1">Coin haut gauche</option>
-					<option value="727" class="baseRow2">Coin haut droite</option>
-					<option value="728" class="baseRow1">Coin haut gauche</option>
-					<option value="729" class="baseRow2">Coin haut droite</option>
-					<option value="730" class="baseRow1">Coin haut gauche</option>
-					<option value="731" class="baseRow2">Coin haut droite</option>
-					<option value="732" class="baseRow1">Coin haut gauche</option>
-					<option value="733" class="baseRow2">Coin haut droite</option>
-					<option value="734" class="baseRow1">Coin haut gauche</option>
-					<option value="735" class="baseRow2">Coin haut droite</option>
-					<option value="736" class="baseRow1">Coin haut gauche</option>
-					<option value="737" class="baseRow2">Coin haut droite</option>
-					<option value="738" class="baseRow1">Coin haut gauche</option>
-					<option value="739" class="baseRow2">Coin haut droite</option>
+					<option value="701" class="baseRow2">tex_marais</option>
+					<option value="702" class="baseRow2">tex_marais1</option>
+					<option value="703" class="baseRow2">tex_marais2</option>
+					<option value="704" class="baseRow2">tex_marais3</option>
+					<option value="705" class="baseRow2">tex_marais4</option>
+					<option value="706" class="baseRow2">tex_marais5</option>
+					<option value="707" class="baseRow2">tex_marais6</option>
+					
+					<option value="708" class="baseRow2">tex_marais7</option>
+					<option value="709" class="baseRow2">tex_marais8</option>
+					<option value="710" class="baseRow2">tex_marais9</option>
+					<option value="711" class="baseRow2">tex_marais10</option>
+					<option value="712" class="baseRow2">tex_marais11</option>
+					<option value="713" class="baseRow2">tex_marais12</option>
+					<option value="714" class="baseRow1">tex_marais13</option>
+					<option value="715" class="baseRow2">tex_marais14</option>
+					<option value="716" class="baseRow1">tex_marais15</option>
+					<option value="717" class="baseRow2">tex_marais16</option>
+					<option value="718" class="baseRow1">tex_maraisnenu</option>
+					<option value="719" class="baseRow2">tex_maraisnenu2</option>				
+					<option value="720" class="baseRow1">tex_maraisupbd</option>
+					<option value="721" class="baseRow2">tex_maraisupbm</option>
+					<option value="722" class="baseRow1">tex_maraisupbg</option>
+					<option value="723" class="baseRow2">tex_maraisuphg</option>
+					<option value="724" class="baseRow1">tex_maraisuphm</option>
+					<option value="725" class="baseRow2">tex_maraisuphd</option>
+					<option value="726" class="baseRow1">tex_maraisupmd</option>
+					
+					
+					
+					<option value="727" class="baseRow2">tex_maraisupmg</option>
+					<option value="728" class="baseRow1">tex_maraisupcentre</option>
+					<option value="729" class="baseRow2">tex_maraisupmg2</option>
+					<option value="730" class="baseRow1">tex_maraisupbd2</option>
+					<option value="731" class="baseRow2">tex_maraisupsquelbd</option>
+					<option value="732" class="baseRow1">tex_maraisupsquelbg</option>
+				
+					<option value="733" class="baseRow2">tex_maraisupsquelhg</option>
+					<option value="734" class="baseRow1">tex_maraisupsquelhd</option>
+					<option value="735" class="baseRow2">tex_maraisupsquelhd</option>
+					<option value="736" class="baseRow1">tex_maraisnenub</option>
+					<option value="737" class="baseRow2">tex_maraisnenu3</option>
+					<option value="738" class="baseRow1">tex_maraisnenu4</option>
+					<option value="739" class="baseRow2">tex_maraisnenu5</option>
 					
 				</optgroup>
 				
