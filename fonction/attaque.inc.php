@@ -44,7 +44,7 @@ function attaque($acteur = 'attaquant', $competence, &$effects)
   if($passif->get_arme_type() != 'baton') $passif->potentiel_parer *= (100 - $passif->arme_var1) / 100;
   if($passif->get_race() == 'elfebois') $passif->potentiel_parer *= 1.15;
   //Debuff precision
-  if(array_key_exists('debuff_aveuglement', $actif->buff)) $actif->potentiel_toucher /= 1 + (($actif->buff['debuff_aveuglement']['effet']) / 100);
+  if($actif->is_buff('debuff_aveuglement')) $actif->potentiel_toucher /= 1 + (($actif->get_buff('debuff_aveuglement', 'effet')) / 100);
   if(array_key_exists('aveugle', $actif->etat)) $actif->potentiel_toucher /= 1 + (($actif->etat['aveugle']['effet']) / 100);
   if(array_key_exists('lien_sylvestre', $actif->etat)) $actif->potentiel_toucher /= 1 + (($actif->etat['lien_sylvestre']['effet2']) / 100);
   if(array_key_exists('b_toucher', $actif->etat)) $actif->potentiel_toucher /= 1 + ($actif->etat['b_toucher']['effet'] / 100);
@@ -52,10 +52,10 @@ function attaque($acteur = 'attaquant', $competence, &$effects)
   if(array_key_exists('benediction', $actif->etat))	$actif->potentiel_toucher *= 1 + (($actif->etat['benediction']['effet'] * $G_buff['bene_accuracy']) / 100);
   if(array_key_exists('berzeker', $actif->etat)) $actif->potentiel_toucher *= 1 + (($actif->etat['berzeker']['effet'] * $G_buff['berz_accuracy']) / 100);
   if(array_key_exists('tir_vise', $actif->etat)) $actif->potentiel_toucher *= 1 + (($actif->etat['tir_vise']['effet'] * $G_buff['vise_accuracy']) / 100);
-  if(array_key_exists('batiment_distance', $actif->buff)) $actif->potentiel_toucher *= 1 + (($actif->buff['batiment_distance']['effet']) / 100);
-  if(array_key_exists('buff_cri_bataille', $actif->buff)) $actif->potentiel_toucher *= 1 + (($actif->buff['buff_cri_bataille']['effet']) / 100);
+  if($actif->is_buff('batiment_distance')) $actif->potentiel_toucher *= 1 + (($actif->get_buff('batiment_distance', 'effet')) / 100);
+  if($actif->is_buff('buff_cri_bataille')) $actif->potentiel_toucher *= 1 + (($actif->get_buff('buff_cri_bataille', 'effet')) / 100);
   if(array_key_exists('dissimulation', $actif->etat)) $actif->potentiel_toucher *= 1 + (($actif->etat['dissimulation']['effet']) / 100);
-  if(array_key_exists('buff_position', $actif->buff)) $actif->potentiel_toucher *= 1 + (($actif->buff['buff_position']['effet']) / 100);
+  if($actif->is_buff('buff_position')) $actif->potentiel_toucher *= 1 + (($actif->get_buff('buff_position', 'effet')) / 100);
   if(array_key_exists('a_toucher', $actif->etat)) $actif->potentiel_toucher *= 1 + ($actif->etat['a_toucher']['effet'] / 100);
   //Corrompu la journée
   if($actif->get_race() == 'humainnoir' AND moment_jour() == 'Journee') $actif->potentiel_toucher *= 1.1; else $bonus_race = 1;

@@ -87,7 +87,7 @@ class entite
 				$this->volonte = $objet->get_volonte();
 				$this->dexterite = $objet->get_dexterite();
 				$this->enchantement = array();
-				$this->arme_degat = 0;
+				$this->arme_degat = $objet->get_arme_degat();
 				$this->level = $objet->get_level();
 				$this->rang_royaume = $objet->get_rang_royaume();
 			break;

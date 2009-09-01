@@ -68,7 +68,7 @@ if($joueur->get_rang_royaume() != 6)
 			        $row_roi = $db->read_assoc($req);
 			        //Envoi d'un message au roi
 			        $message = 'Le roi des '.$Gtrad[$joueur->get_race()].' a changé son attitude diplomatique envers votre royaume en : '.$Gtrad['diplo'.$diplo_req];
-			        $requete = "INSERT INTO message VALUES('', ".$row_roi['ID'].", 0, 'Mess. Auto', '".$row_roi['nom']."', 'Modification de diplomatie', '".$message."', '', '".time()."', 0)";
+			        $requete = "INSERT INTO message VALUES('', ".$row_roi['id'].", 0, 'Mess. Auto', '".$row_roi['nom']."', 'Modification de diplomatie', '".$message."', '', '".time()."', 0)";
 			        $db->query($requete);
 			    }
 			    $requete = "SELECT * FROM diplomatie WHERE race = '".$joueur->get_race()."'";
@@ -601,7 +601,7 @@ if($joueur->get_rang_royaume() != 6)
 		        	$requete = "UPDATE amende SET montant = ".sSQL($_GET['montant'])."
 		        								AND acces_ville = '".$acces_ville."'
 		        								AND respawn_ville = '".$spawn_ville."'
-		        								AND statut = '".sSQL($_GET['statut'])."
+		        								AND statut = '".sSQL($_GET['statut'])."'
 		        								WHERE id_joueur = ".$joueur->get_id()."')";
 		        	if($db->query($requete))
 		        	{

@@ -2655,6 +2655,28 @@ class perso extends entite
 
 	function get_arme_degat($main = 'droite')
 	{
+		if($this->get_arme())
+		{
+			return $this->arme->degat;
+			// Effets magiques
+			/*if($row['effet'] != '')
+			{
+				$effet = explode(';', $row['effet']);
+				foreach($effet as $eff)
+				{
+					$explode = explode('-', $eff);
+					$R_perso['objet_effet'][$objet_effet_id]['id'] = $explode[0];
+					$R_perso['objet_effet'][$objet_effet_id]['effet'] = $explode[1];
+					$objet_effet_id++;
+				}
+			}
+			// Gemmes
+			if($arme_d['enchantement'] > 0)
+			{
+				$R_perso = enchant($arme_d['enchantement'], $R_perso);
+			}*/
+		}
+		else return 0;
 	}
 
 	function get_artisanat()
@@ -2799,16 +2821,19 @@ class perso extends entite
 
 	function get_arme()
 	{
-		global $db;
-		$arme = $this->inventaire()->main_droite;
-		if($arme != '')
+		if(!isset($this->arme))
 		{
-			$arme_d = decompose_objet($arme);
-			$requete = "SELECT * FROM arme WHERE id = ".$arme_d['id_objet'];
-			$req = $db->query($requete);
-			$this->arme = $db->read_object($req);
+			global $db;
+			$arme = $this->inventaire()->main_droite;
+			if($arme != '')
+			{
+				$arme_d = decompose_objet($arme);
+				$requete = "SELECT * FROM arme WHERE id = ".$arme_d['id_objet'];
+				$req = $db->query($requete);
+				$this->arme = $db->read_object($req);
+			}
+			else $this->arme = false;
 		}
-		else $this->arme = false;
 		return $this->arme;
 	}
 

@@ -156,38 +156,18 @@ if($W_row['type'] == 1)
 						</td>
 						<td class="ville_test">
 							<p class="ville_haut">Quartier Royal</p>
-							<ul class="ville">
-							<?php
-							//Si on est dans notre royaume
-							if($R->get_diplo($joueur->get_race()) == 127)
-							{
-								$is_election = elections::is_mois_election($R->get_id());
-								if($is_election && date("d") >= 5 && date("d") < 15)
-								{
-									?>
-									<li>
-										<a href="candidature.php" onclick="return envoiInfo(this.href, 'carte')">Candidature</a>
-									</li>
-									<?php
-								}
-								if($is_election && date("d") >= 15)
-								{
-									?>
-									<li>
-										<a href="vote_roi.php" onclick="return envoiInfo(this.href, 'carte')">Vote</a>
-									</li>
-									<?php
-								}
-							}
-							?>
-							
+							<ul class="ville">							
 									<li>
 										<a href="bureau_quete.php" onclick="return envoiInfo(this.href,'carte')">Bureau des quêtes</a>
 									</li>
 							<?php
+									//Si on est dans notre royaume
 									if($R->get_diplo($joueur->get_race()) == 127)
 									{
 							?>
+									<li>
+										<a href="vie_royaume.php" onclick="return envoiInfo(this.href, 'carte')">Vie du royaume</a>
+									</li>
 									<li>
 										<a href="qg.php" onclick="return envoiInfo(this.href, 'carte')">Quartier général</a>
 									</li>
@@ -284,7 +264,7 @@ if($W_row['type'] == 1)
 	?>
 	Vous êtes considéré comme criminel par votre royaume.<br />
 	Il vous faut payer une amende de <?php echo $amende['montant']; ?> stars pour ne plus l'être.<br />
-	<a href="" onclick="return envoiInfo('ville.php&amp;direction=paye_amende', 'carte')">Pour payer l'amende, cliquez ici</a>
+	<a href="" onclick="return envoiInfo('ville.php?direction=paye_amende', 'carte')">Pour payer l'amende, cliquez ici</a>
 	<?php
 	}
 }

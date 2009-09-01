@@ -1093,7 +1093,7 @@ else
 				{
 					$requete = "INSERT INTO journal VALUES('', ".$joueur->get_id().", 'tue', '".$joueur->get_nom()."', '".$joueur_defenseur->get_nom()."', NOW(), 0, 0, ".$joueur_defenseur->get_x().", ".$joueur_defenseur->get_y().")";
 					$db->query($requete);
-					$requete = "INSERT INTO journal VALUES('', ".$joueurdefenseur->get_id().", 'mort', '".$joueur_defenseur->get_nom()."', '".$joueur->get_nom()."', NOW(), 0, 0, ".$joueur_defenseur->get_x().", ".$joueurdefenseur->get_y().")";
+					$requete = "INSERT INTO journal VALUES('', ".$joueur_defenseur->get_id().", 'mort', '".$joueur_defenseur->get_nom()."', '".$joueur->get_nom()."', NOW(), 0, 0, ".$joueur_defenseur->get_x().", ".$joueur_defenseur->get_y().")";
 					$db->query($requete);
 				}
 				elseif($attaquant->get_hp() <= 0)
