@@ -42,6 +42,11 @@ if($W_distance < 4)
 	{
 		echo '<h3>Capitale '.$R->get_capitale().'</h3>';
 	}
+	//C'est un point exceptionnel
+	elseif($case->get_type() == 3)
+	{
+		echo '<h3>Point exceptionnel</h3>';
+	}
 	?>
 	
 	<h4><span class='titre_info'><?php echo $R->get_nom(); ?></span></h4>

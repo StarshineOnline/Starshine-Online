@@ -173,10 +173,12 @@ function fin_quete($joueur, $id_quete_joueur, $id_quete)
 	}
 	$joueur->get_grade();
 	$stars = round($row['star'] * (1 + ($joueur->grade->get_rang() * 2 / 100)));
-	$joueur->set_honneur($joueur->get_honneur() + $row['honneur']);
+	$honneur_gagne = $row['honneur'];
+	if($membre->is_buff('moral')) $honneur_gagne = $honneur_gagne * (1 + ($membre->get_buff('moral', 'effet') / 100));
+	$joueur->set_honneur($joueur->get_honneur() + $honneur_gagne);
 	$joueur->set_exp($joueur->get_exp() + $row['exp']);
 	$joueur->sauver();
-	echo $joueur->get_nom().' finit la quête "'.$row['nom'].'", et gagne '.$stars.' stars, '.$echo.' '.$row['exp'].' points d\'expérience et '.$row['honneur'].' points d\'honneur.<br />';
+	echo $joueur->get_nom().' finit la quête "'.$row['nom'].'", et gagne '.$stars.' stars, '.$echo.' '.$row['exp'].' points d\'expérience et '.$honneur_gagne.' points d\'honneur.<br />';
 	$req = $db->query($requete);
 	//Mis dans le journal
 	$requete = "INSERT INTO journal VALUES('', ".$joueur->get_id().", 'f_quete', '".$joueur->get_nom()."', '', NOW(), '".addslashes($row['nom'])."', 0, 0, 0)";

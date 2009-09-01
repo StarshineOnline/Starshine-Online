@@ -556,6 +556,7 @@ else
 
 			//Calculs liés à la survie, fiabilité de l'estimation de HP etc.
 			$survie = $joueur->get_survie();
+			if($survie <= 0) $survie = 1;
 			if($joueur->is_competence('survie_humanoide')) $survie += $joueur->get_competence('survie_humanoide');
 			$nbr_barre_total = ceil($survie / $defenseur->get_level());
 			if($nbr_barre_total > 100) $nbr_barre_total = 100;
@@ -701,6 +702,8 @@ else
 						//XP Final
 						$xp_gagne = floor(($xp * $facteur_xp) * $membre->share_xp / $groupe->get_share_xp());
 						$honneur_gagne = floor(($honneur * $facteur_honneur) * $membre->share_xp / $groupe->get_share_xp());
+						//Buff moral
+						if($membre->is_buff('moral')) $honneur_gagne = $honneur_gagne * (1 + ($membre->get_buff('moral', 'effet') / 100));
 						$reputation_gagne = floor($honneur_gagne / 10);
 						$membre->set_star($membre->get_star() + $star);
 						$membre->set_exp($membre->get_exp() + $xp_gagne);
@@ -793,9 +796,10 @@ else
 						$groupe->level_groupe = $attaquant->get_level();
 						$groupe->somme_groupe = $attaquant->get_level();
 						$groupe->set_share_xp(100);
-						$groupe->membres[0]['id_joueur'] = $attaquant->get_id();
-						$groupe->membres[0]['share_xp'] = 100;
-						$groupe->membres[0]['level'] = $attaquant->get_level();
+						$groupe->membre_joueur[0] = new perso();
+						$groupe->membre_joueur[0]->set_id($attaquant->get_id());
+						$groupe->membre_joueur[0]->share_xp = 100;
+						$groupe->membre_joueur[0]->set_level($attaquant->get_level());
 					}
 					else
 					{
@@ -807,7 +811,6 @@ else
 					$req = $db->query($requete);
 					$row = $db->read_row($req);
 					$xp = $row[0] * $G_xp_rate * $coef;
-					echo $xp;
 				}
 				if($gains_drop)
 				{
@@ -1033,6 +1036,7 @@ else
 							$star_joueur = floor($star * $membre->share_xp / $groupe->get_share_xp());
 							$membre->set_star($membre->get_star() + $star_joueur);
 						}
+						else $star_joueur = 0;
 						$msg_xp .= $membre->get_nom().' gagne <strong class="reward">'.$xp_joueur.' XP</strong> et <strong class="reward">'.$star_joueur.' Stars</strong><br />';
 						//Vérification de l'avancement des quètes solo pour le tueur, groupe pour les autres
 						if($defenseur->get_hp() < 0)

@@ -284,8 +284,8 @@ function attaque($acteur = 'attaquant', $competence, &$effects)
       $actif_chance_critique = ceil(pow($actif->get_dexterite(), 1.5) * 10);
 
       //Buff du critique
-      if(array_key_exists('buff_critique', $actif->buff)) $actif_chance_critique *= 1 + (($actif->buff['buff_critique']['effet']) / 100);
-      if(array_key_exists('buff_cri_rage', $actif->buff)) $actif_chance_critique *= 1 + (($actif->buff['buff_cri_rage']['effet']) / 100);
+      if($actif->is_buff('buff_critique')) $actif_chance_critique *= 1 + (($actif->get_buff('buff_critique', 'effet')) / 100);
+      if($actif->is_buff('buff_cri_rage')) $actif_chance_critique *= 1 + (($actif->get_buff('buff_cri_rage', 'effet')) / 100);
       if(array_key_exists('benediction', $actif->etat)) $actif_chance_critique *= 1 + (($actif->etat['benediction']['effet'] * $G_buff['bene_critique']) / 100);;
       if(array_key_exists('tir_vise', $actif->etat)) $actif_chance_critique *= 1 + (($actif->etat['tir_vise']['effet'] * 5) / 100);
       if(array_key_exists('berzeker', $actif->etat)) $actif_chance_critique *= 1 + (($actif->etat['berzeker']['effet'] * $G_buff['berz_critique']) / 100);
