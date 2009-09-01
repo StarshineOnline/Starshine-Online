@@ -281,21 +281,21 @@ $req = $db->query($requete);
 				</optgroup>
 				<optgroup label="Desert">
 				
-					<option value="301" class="baseRow2">tex_desert.png</option>
-					<option value="302" class="baseRow1">tex_herbedesertno.png</option>
-					<option value="303" class="baseRow2">tex_desertherbeo.png</option>
-					<option value="304" class="baseRow1">tex_herbedesertso.png</option>
-					<option value="305" class="baseRow2">tex_desertherbes.png</option>
-					<option value="306" class="baseRow1">tex_herbedesertse.png</option>
-					<option value="307" class="baseRow2">tex_desertherbee.png</option>
-					<option value="308" class="baseRow2">tex_herbedesertne.png</option>
-					<option value="309" class="baseRow1">tex_desertherben.png</option>
-					<option value="310" class="baseRow2">tex_desertherbese.png</option>
-					<option value="311" class="baseRow1">tex_desertherbene.png</option>
-					<option value="312" class="baseRow2">tex_desertherbeno.png</option>
-					<option value="313" class="baseRow1">tex_desertherbeso.png</option>
-					<option value="314" class="baseRow2">tex_desertcac.png</option>
-					<option value="315" class="baseRow1">tex_desertoasis.png</option>		
+					<option value="301" class="baseRow2">tex_desert</option>
+					<option value="302" class="baseRow1">tex_herbedesertno</option>
+					<option value="303" class="baseRow2">tex_desertherbeo</option>
+					<option value="304" class="baseRow1">tex_herbedesertso</option>
+					<option value="305" class="baseRow2">tex_desertherbes</option>
+					<option value="306" class="baseRow1">tex_herbedesertse</option>
+					<option value="307" class="baseRow2">tex_desertherbee</option>
+					<option value="308" class="baseRow2">tex_herbedesertne</option>
+					<option value="309" class="baseRow1">tex_desertherben</option>
+					<option value="310" class="baseRow2">tex_desertherbese</option>
+					<option value="311" class="baseRow1">tex_desertherbene</option>
+					<option value="312" class="baseRow2">tex_desertherbeno</option>
+					<option value="313" class="baseRow1">tex_desertherbeso</option>
+					<option value="314" class="baseRow2">tex_desertcac</option>
+					<option value="315" class="baseRow1">tex_desertoasis</option>		
 					<option value="316" class="baseRow2">tex_desertmarecage</option>
 					<option value="317" class="baseRow1">desertbg2</option>		
 					
