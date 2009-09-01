@@ -676,6 +676,26 @@ function verif_echange($id_echange, $id_j1, $id_j2)
 	else return false;
 }
 
+function supprime_objet($joueur, $id_objet, $nombre)
+{
+	global $db;
+	$i = $nombre;
+	while($i > 0)
+	{
+		$objet = recherche_objet($joueur, $id_objet);
+		//Vérification si objet "stacké"
+		//print_r($objet);
+		$stack = explode('x', $joueur->get_inventaire_slot_partie($objet[1]));
+		if($stack[1] > 1) $joueur['inventaire_slot'][$objet[1]] = $stack[0].'x'.($stack[1] - 1);
+		else array_splice($joueur['inventaire_slot'], $objet[1], 1);
+		$i--;
+	}
+	$inventaire_slot = serialize($joueur->get_inventaire_slot());
+	$requete = "UPDATE perso SET inventaire_slot = '".$inventaire_slot."' WHERE ID = ".$joueur->get_id();
+	//echo $requete;
+	$req = $db->query($requete);
+}
+
 function check_utilisation_objet($joueur, $objet)
 {
 	global $db;
