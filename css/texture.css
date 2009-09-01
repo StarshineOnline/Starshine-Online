@@ -1,4 +1,4 @@
-/* Textures */
+/* textures */
 .tex0
 {
 	background: url('../image/texture/tex_herbe1.png') no-repeat;
@@ -88,187 +88,187 @@
 {
 	background: url('../image/texture/hautesherbes/hautherbecentre.png') no-repeat;
 }
-tex121
+.tex121
 {
 	background: url('../image/texture/hautesherbes/hautherbe_jonction_horid.png') no-repeat;
 }
-tex122
+.tex122
 {
 	background: url('../image/texture/hautesherbes/hautherbe_jonction_horig.png') no-repeat;
 }
-tex123
+.tex123
 {
 	background: url('../image/texture/hautesherbes/hautherbe_jonction_vertib.png') no-repeat;
 }
-tex124
+.tex124
 {
 	background: url('../image/texture/hautesherbes/hautherbe_jonction_vertih.png') no-repeat;
 }
-tex125
+.tex125
 {
 	background: url('../image/texture/texthherbe2/hautherbe_bd2.png') no-repeat;
 }
-tex126
+.tex126
 {
 	background: url('../image/texture/texthherbe2/hautherbe_bdm2.png') no-repeat;
 }
-tex127
+.tex127
 {
 	background: url('../image/texture/texthherbe2/hautherbe_bg2.png') no-repeat;
 }
-tex128
+.tex128
 {
 	background: url('../image/texture/texthherbe2/hautherbe_bgm2.png') no-repeat;
 }
-tex129
+.tex129
 {
 	background: url('../image/texture/texthherbe2/hautherbe_hd2.png') no-repeat;
 }
-tex130
+.tex130
 {
 	background: url('../image/texture/texthherbe2/hautherbe_hdm2.png') no-repeat;
 }
-tex131
+.tex131
 {
 	background: url('../image/texture/texthherbe2/hautherbe_hg2.png') no-repeat;
 }
-tex132
+.tex132
 {
 	background: url('../image/texture/texthherbe2/hautherbe_hgm2.png') no-repeat;
 }
-tex133
+.tex133
 {
 	background: url('../image/texture/texthherbe2/hautherbe_hm2.png') no-repeat;
 }
-tex134
+.tex134
 {
 	background: url('../image/texture/texthherbe3/hautherbe_bd3.png') no-repeat;
 }
-tex135
+.tex135
 {
 	background: url('../image/texture/texthherbe3/hautherbe_bg3.png') no-repeat;
 }
-tex136
+.tex136
 {
 	background: url('../image/texture/texthherbe3/hautherbe_hd3.png') no-repeat;
 }
-tex137
+.tex137
 {
 	background: url('../image/texture/texthherbe3/hautherbe_hg3.png') no-repeat;
 }
-tex138
+.tex138
 {
 	background: url('../image/texture/tex_herbeenforet.png') no-repeat;
 }
-tex139
+.tex139
 {
     background: url('../image/texture/texthterre/text_hterrebd.png') no-repeat;
 }
-tex140
+.tex140
 {
     background: url('../image/texture/texthterre/text_hterrebg.png') no-repeat;
 }
-tex141
+.tex141
 {
     background: url('../image/texture/texthterre/text_hterrebm.png') no-repeat;
 }
-tex142
+.tex142
 {
     background: url('../image/texture/texthterre/text_hterrehd.png') no-repeat;
 }
-tex143
+.tex143
 {
     background: url('../image/texture/texthterre/text_hterrehm.png') no-repeat;
 }
-tex144
+.tex144
 {
     background: url('../image/texture/texthterre/text_hterrehg.png') no-repeat;
 }
-tex145
+.tex145
 {
     background: url('../image/texture/texthterre/text_hterremd.png') no-repeat;
 }
-tex146
+.tex146
 {
     background: url('../image/texture/texthterre/text_hterremg.png') no-repeat;
 }
-tex147
+.tex147
 {
     background: url('../image/texture/texthterre/text_hterre_diagonhd.png') no-repeat;
 }
-tex148
+.tex148
 {
     background: url('../image/texture/texthterre/text_hterre_diagonhg.png') no-repeat;
 }
-tex149
+.tex149
 {
     background: url('../image/texture/texthterre/text_hterre_diagonbg.png') no-repeat;
 }
-tex150
+.tex150
 {
     background: url('../image/texture/texthterre/text_hterre_diagonbd.png') no-repeat;
 }
-tex151
+.tex151
 {
     background: url('../image/texture/texthterre/text_hterrebd2.png') no-repeat;
 }
-tex152
+.tex152
 {
     background: url('../image/texture/texthterre/text_hterrebg2.png') no-repeat;
 }
-tex153
+.tex153
 {
     background: url('../image/texture/texthterre/text_hterrebm2.png') no-repeat;
 }
-tex154
+.tex154
 {
     background: url('../image/texture/texthterre/text_hterrehd2.png') no-repeat;
 }
-tex155
+.tex155
 {
     background: url('../image/texture/texthterre/text_hterrehg2.png') no-repeat;
 }
-tex156
+.tex156
 {
     background: url('../image/texture/texthterre/text_hterrehm2.png') no-repeat;
 }
-tex157
+.tex157
 {
     background: url('../image/texture/texthterre/text_hterre_diagonbd2.png') no-repeat;
 }
-tex158
+.tex158
 {
     background: url('../image/texture/texthterre/text_hterre_diagonbg2.png') no-repeat;
 }
-tex159
+.tex159
 {
     background: url('../image/texture/texthterre/text_hterre_diagonhd2.png') no-repeat;
 }
-tex160
+.tex160
 {
     background: url('../image/texture/texthterre/text_hterre_diagonhg2.png') no-repeat;
 }
-tex161
+.tex161
 {
     background: url('../image/texture/texthterre/text_hterremg2.png') no-repeat;
 }
-tex162
+.tex162
 {
     background: url('../image/texture/texthterre/text_hterremd2.png') no-repeat;
 }
-tex163
+.tex163
 {
     background: url('../image/texture/texthterre/text_hterrecentre.png') no-repeat;
 }
-tex164
+.tex164
 {
     background: url('../image/texture/texthterre/text_hterrecentre2.png') no-repeat;
 }
-tex165
+.tex165
 {
     background: url('../image/texture/hautesherbes/hautherbearbre.png') no-repeat;
 }
-tex166
+.tex166
 {
     background: url('../image/texture/hautesherbes/tex_herbenuage4.png') no-repeat;
 }
@@ -2090,35 +2090,35 @@ tex166
 {
 	background: url('../image/texture/terremaudite/tex_terremauditeblood.png') no-repeat;
 }
-tex1130
+.tex1130
 {
     background: url('../image/texture/terremaudite/tex_terremauditeblood2mg.png') no-repeat;
 }
-tex1131
+.tex1131
 {
     background: url('../image/texture/terremaudite/tex_terremauditeblood2bm.png') no-repeat;
 }
-tex1132
+.tex1132
 {
     background: url('../image/texture/terremaudite/tex_terremauditeblood2md.png') no-repeat;
 }
-tex1133
+.tex1133
 {
     background: url('../image/texture/terremaudite/tex_terremauditeblood2centre.png') no-repeat;
 }
-tex1134
+.tex1134
 {
     background: url('../image/texture/terremaudite/tex_terremauditeblood3centre.png') no-repeat;
 }
-tex1135
+.tex1135
 {
     background: url('../image/texture/terremaudite/tex_terremauditeblood2hg.png') no-repeat;
 }
-tex1136
+.tex1136
 {
     background: url('../image/texture/terremaudite/tex_terremauditeblood2hm.png') no-repeat;
 }
-tex1137
+.tex1137
 {
     background: url('../image/texture/terremaudite/tex_tmfailleceleste.png') no-repeat;
 }
