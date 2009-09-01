@@ -757,7 +757,7 @@ else
 		$requete = "SELECT * FROM sort WHERE type != 'rez' ".$where." ORDER BY comp_assoc ASC, type ASC";
 	}
 	$test = false;
-	$sorts = sort_jeu::create('', '', 'comp_assoc ASC, type ASC', false, 'type != \'rez\''.$where);
+	$sorts = sort_jeu::create('', '', 'comp_assoc ASC, type ASC', false, $where);
 	//$req = $db->query($requete);
 	$magie = '';
 	echo '<table width="97%" class="information_case">';
@@ -787,8 +787,9 @@ else
 				$sort_groupe = false;
 				if($cible->get_id() == $joueur->get_id())
 				{
-					$cond = ($sort->get_cible() == 1 OR $sort->get_cible() == 8 OR $sort->get_cible() == 2);
-					$sort_groupe = true;
+					$cond = ($sort->get_cible() == 1 OR $sort->get_cible() == 8 OR $sort->get_cible() == 2) && $sort->get_type() != 'rez';
+					if($cond)
+						$sort_groupe = true;
 				}
 				else
 					$cond = ($sort->get_cible() == 2 OR $sort->get_cible() == 4);
@@ -804,7 +805,7 @@ else
 			}
 			else if($type_cible == 'monstre')
 			{
-				if($sort->get_cible() == 2 OR $sort->get_cible() == 4)
+				if(($sort->get_cible() == 2 OR $sort->get_cible() == 4) AND $sort->get_type() != 'rez')
 				{
 					$href = 'envoiInfo(\'sort.php?ID='.$sort->get_id().'&amp;type=monstre&amp;id_monstre='.$cible->get_id().'\', \'information\')';
 					$color = '#444';
