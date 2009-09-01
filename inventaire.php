@@ -703,7 +703,7 @@ if(!$visu AND isset($_GET['action']))
 					}
 					$objet_r = recompose_objet($objet);
 					$joueur->set_inventaire_slot_partie($objet_r, $_GET['key_slot']);
-					$joueur->set_inventaire_slot(serialize($joueur->get_inventaire_slot()));
+					$joueur->set_inventaire_slot(serialize($joueur->get_inventaire_slot_partie(false, true)));
 					$joueur->set_pa($joueur->get_pa() - 10);
 					$joueur->sauver();
 				}
