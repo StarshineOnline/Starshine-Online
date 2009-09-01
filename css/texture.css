@@ -255,7 +255,7 @@
 }
 .tex166
 {
-    background: url('../image/texture/hautesherbes/tex_herbenuage4.png') no-repeat;
+    background: url('../image/texture/textureherbe/tex_herbenuage4.gif') no-repeat;
 }
 .tex167
 {
@@ -323,7 +323,7 @@
 }
 .tex183
 {
-	background: url('../image/texture/textureherbe/tex_herbeenmouvement3.png') no-repeat;
+	background: url('../image/texture/textureherbe/tex_herbeenmouvement3.gif') no-repeat;
 }
 .tex184
 {
@@ -1051,7 +1051,7 @@
 }
 .tex622
 {
-	background: url('../image/texture/tex_montacteon2.png') no-repeat;
+	background: url('../image/texture/textmontagne/tex_montacteon2.gif') no-repeat;
 }
 /* Marais */
 .tex701
@@ -1949,7 +1949,7 @@ texture/route/
 }
 .tex1137
 {
-    background: url('../image/texture/terremaudite/tex_tmfailleceleste.png') no-repeat;
+    background: url('../image/texture/terremaudite/tex_tmfailleceleste.gif') no-repeat;
 }
 
 /* Donjon */
