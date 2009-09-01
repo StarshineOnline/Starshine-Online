@@ -88,6 +88,7 @@ else
 		$joueur->set_sort_jeu($sort_jeu);
 		$joueur->set_sort_combat($sort_combat);
 		$joueur->set_comp_combat($comp_combat);
+		$joueur->set_rang_royaume(7);
 		
 		if($classe == 'combattant')
 		{

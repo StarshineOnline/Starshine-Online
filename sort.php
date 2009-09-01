@@ -761,7 +761,7 @@ else
 	$magie = '';
 	echo '<table width="97%" class="information_case">';
 	foreach($sorts as $sort)
-	{	
+	{
 		$sortpa = round($sort->get_pa() * $joueur->get_facteur_magie());
 		$sortmp = round($sort->get_mp() * (1 - (($Trace[$joueur->get_race()]['affinite_'.$sort->get_comp_assoc()] - 5) / 10)));
 		//Réduction du cout par concentration

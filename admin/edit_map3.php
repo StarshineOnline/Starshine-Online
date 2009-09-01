@@ -42,8 +42,8 @@ if($ymin <= 190) {
 //Fonction permettant de changer la texture de preview
 function changeTexture(title)
 {
-	a = eval('document.getElementById("' + title + '")');
-	b = eval('document.getElementById("selectText")');
+	a = eval('document.getElementByid("' + title + '")');
+	b = eval('document.getElementByid("selectText")');
 	texture = b.options[b.selectedIndex].value;
 	nomclass = 'decor tex' + texture;
 	a.className = nomclass;
@@ -53,9 +53,9 @@ function changeTexture(title)
 //Fonction permettant de modifier la texture de numerocase et de changer le formulaire hidden
 function clickTexture(numeroCase)
 {
-	Case = eval('document.getElementById("case' + numeroCase + '")');
-	Selecteur = eval('document.getElementById("selectText")');
-	Input = eval('document.getElementById("input' + numeroCase + '")');
+	Case = eval('document.getElementByid("case' + numeroCase + '")');
+	Selecteur = eval('document.getElementByid("selectText")');
+	Input = eval('document.getElementByid("input' + numeroCase + '")');
 	texture = Selecteur.options[Selecteur.selectedIndex].value;
 	nomclass = 'decor tex' + texture;
 	Case.className = nomclass;
@@ -77,14 +77,14 @@ if ($direction == 'phase2')
 			$temp = $d + $c;
 			$decor = $_POST['hidden'.$temp];
 			$info = floor($decor / 100);
-			$requete = "UPDATE map SET decor = $decor WHERE ID = $temp";
+			$requete = "UPDATE map SET decor = $decor WHERE id = $temp";
 			$req = $db->query($requete);
-			$requete = "UPDATE map SET info = $info WHERE ID = $temp";
+			$requete = "UPDATE map SET info = $info WHERE id = $temp";
 			$req = $db->query($requete);
 			$ville = array(1001, 1002, 1003, 1004, 1005, 1006, 1007);
 			if (in_array($decor, $ville))
 			{
-				$requete = "UPDATE map SET type = 1 WHERE ID = $temp";
+				$requete = "UPDATE map SET type = 1 WHERE id = $temp";
 				$req = $db->query($requete);
 			}
 		}
@@ -100,7 +100,7 @@ echo 'xmin : '.$xmin.' xmax : '.$xmax.' ymin : '.$ymin.' ymax : '.$ymax;
 
 
 //Requète pour l'affichage de la map
-$requete = 'SELECT * FROM map WHERE (((FLOOR(ID / '.$G_ligne.') >= '.$ymin.') AND (FLOOR(ID / '.$G_ligne.') <= '.$ymax.')) AND (((ID - (FLOOR(ID / '.$G_colonne.') * 1000)) >= '.$xmin.') AND ((ID - (FLOOR(ID / '.$G_colonne.') * 1000)) <= '.$xmax.'))) ORDER BY ID';
+$requete = 'SELECT * FROM map WHERE (((FLOOR(id / '.$G_ligne.') >= '.$ymin.') AND (FLOOR(id / '.$G_ligne.') <= '.$ymax.')) AND (((id - (FLOOR(id / '.$G_colonne.') * 1000)) >= '.$xmin.') AND ((id - (FLOOR(id / '.$G_colonne.') * 1000)) <= '.$xmax.'))) ORDER BY id';
 $req = $db->query($requete);
 ?>
 	<div class="mapedit">
@@ -126,8 +126,8 @@ $req = $db->query($requete);
 	//Affichage de la map
 	while($row = $db->read_array($req))
 	{
-		$coord = convert_in_coord($row['ID']);
-		$rowid = $row['ID'];
+		$coord = convert_in_coord($row['id']);
+		$rowid = $row['id'];
 		$W_terrain_case = $row['decor'];
 		
 		if (($coord['x'] != 0) AND ($coord['y'] != 0))
@@ -811,11 +811,11 @@ $req = $db->query($requete);
 	<div>
 <div id='rosedesvents'>
 	   <a id='rose_div_hg'></a>
-	   <a id='rose_div_h' href="edit_map3.php?ymin=<?php echo ($ymin - 5); ?>&xmin=<?php echo $xmin; ?>"></a>
+	   <a id='rose_div_h' href="edit_map3.php?ymin=<?php echo ($ymin - 4); ?>&xmin=<?php echo $xmin; ?>"></a>
 	   <a id='rose_div_hd'></a>
-	   <a id='rose_div_cg'href="edit_map3.php?xmin=<?php echo ($xmax - 4); ?>&ymin=<?php echo $ymin; ?>"></a>
+	   <a id='rose_div_cg'href="edit_map3.php?xmin=<?php echo ($xmin - 4); ?>&ymin=<?php echo $ymin; ?>"></a>
 	   <a id='rose_div_c'></a>
-	   <a id='rose_div_cd' href="edit_map3.php?xmin=<?php echo ($xmax - 4); ?>&ymin=<?php echo $ymin; ?>"></a>
+	   <a id='rose_div_cd' href="edit_map3.php?xmin=<?php echo ($xmax + 4); ?>&ymin=<?php echo $ymin; ?>"></a>
 	   <a id='rose_div_bg'></a>
 	   <a id='rose_div_b' href="edit_map3.php?ymin=<?php echo ($ymax - 4); ?>&xmin=<?php echo $xmin; ?>"></a>
 	   <a id='rose_div_bd'></a>
