@@ -42,8 +42,8 @@ if($ymin <= 190) {
 //Fonction permettant de changer la texture de preview
 function changeTexture(title)
 {
-	a = eval('document.getElementByid("' + title + '")');
-	b = eval('document.getElementByid("selectText")');
+	a = eval('$("' + title + '")');
+	b = eval('$("selectText")');
 	texture = b.options[b.selectedIndex].value;
 	nomclass = 'decor tex' + texture;
 	a.className = nomclass;
@@ -53,9 +53,9 @@ function changeTexture(title)
 //Fonction permettant de modifier la texture de numerocase et de changer le formulaire hidden
 function clickTexture(numeroCase)
 {
-	Case = eval('document.getElementByid("case' + numeroCase + '")');
-	Selecteur = eval('document.getElementByid("selectText")');
-	Input = eval('document.getElementByid("input' + numeroCase + '")');
+	Case = eval('$("case' + numeroCase + '")');
+	Selecteur = eval('$("selectText")');
+	Input = eval('$("input' + numeroCase + '")');
 	texture = Selecteur.options[Selecteur.selectedIndex].value;
 	nomclass = 'decor tex' + texture;
 	Case.className = nomclass;
@@ -170,12 +170,12 @@ $req = $db->query($requete);
 					<option value="103" class="baseRow1">Buisson</option>		
 					<option value="104" class="baseRow1">Arbre 1</option>
 					<option value="105" class="baseRow1">Arbre 2</option>
-					<option value="106" class="baseRow1">Herbe</option>
-					<option value="107" class="baseRow1">Herbe fleur</option>
-					<option value="108" class="baseRow1">Buisson</option>		
-					<option value="109" class="baseRow1">Arbre 1</option>
-					<option value="110" class="baseRow1">Arbre 2</option>
-					<option value="111" class="baseRow1">Herbe</option>
+					<option value="106" class="baseRow1">Herbe Haute Bas Gauche</option>
+					<option value="107" class="baseRow1">Herbe Haute Bas Milieu</option>
+					<option value="108" class="baseRow1">Herbe Haute Bas Droite</option>		
+					<option value="109" class="baseRow1">Herbe Haute Haut Droite</option>
+					<option value="110" class="baseRow1">Herbe Haute Haut Gauche</option>
+					<option value="111" class="baseRow1">Herbe Haute Haut Milieu</option>
 					<option value="112" class="baseRow1">Herbe fleur</option>
 					<option value="113" class="baseRow1">Buisson</option>		
 					<option value="114" class="baseRow1">Arbre 1</option>
