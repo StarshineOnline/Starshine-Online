@@ -436,36 +436,45 @@ $req = $db->query($requete);
 				</optgroup>
 
 				<optgroup label="Terre Maudite">
-					<option value="1101" class="baseRow2">Centre</option>
-					<option value="1102" class="baseRow1">Haut gauche</option>
-					<option value="1103" class="baseRow2">Gauche</option>
-					<option value="1104" class="baseRow1">Bas gauche</option>
-					<option value="1105" class="baseRow2">Bas</option>
-					<option value="1106" class="baseRow1">Bas droite</option>
-					<option value="1107" class="baseRow2">Droite</option>
-					<option value="1108" class="baseRow2">Haut droite</option>
-					<option value="1109" class="baseRow1">Haut</option>
-					<option value="1110" class="baseRow1">Coin haut gauche</option>
-					<option value="1111" class="baseRow1">Coin bas gauche</option>
-					<option value="1112" class="baseRow1">Coin bas droite</option>
-					<option value="1113" class="baseRow1">Coin haut droite</option>
-				<option value="1114" class="baseRow2">simple</option>
-				<option value="1115" class="baseRow2">Centre touffu</option>
-				<option value="1116" class="baseRow2">haut-gauche</option>
-				<option value="1117" class="baseRow2">gauche</option>
-				<option value="1118" class="baseRow2">bas-gauche</option>
-				<option value="1119" class="baseRow2">Bas</option>
-				<option value="1120" class="baseRow2">bas-droit</option>
-				<option value="1121" class="baseRow2">droite</option>
-				<option value="1122" class="baseRow2">haut-droite</option>
-				<option value="1123" class="baseRow2">haut</option>
-				<option value="1124" class="baseRow2">coin haut-gauche</option>
-				<option value="1125" class="baseRow2">coin bas-gauche</option>
-				<option value="1126" class="baseRow2">coin bas-droit</option>
-				<option value="1127" class="baseRow2">doin haut-droit</option>
-				<option value="1128" class="baseRow2">grave</option>
-				<option value="1129" class="baseRow2">blood</option>
-										    
+					<option value="1101" class="baseRow2">tex_terremaudite</option>
+					<option value="1102" class="baseRow1">tex_terremauditecoinse</option>
+					<option value="1103" class="baseRow2">tex_terremauditee</option>
+					<option value="1104" class="baseRow1">tex_terremauditecoinne</option>
+					<option value="1105" class="baseRow2">tex_terremauditen</option>
+					<option value="1106" class="baseRow1">tex_terremauditecoinno</option>
+					<option value="1107" class="baseRow2">tex_terremauditeo</option>
+					<option value="1108" class="baseRow2">tex_terremauditecoinso</option>
+					<option value="1109" class="baseRow1">tex_terremaudites</option>
+					<option value="1110" class="baseRow1">tex_terremauditese</option>
+					<option value="1111" class="baseRow1">tex_terremauditene</option>
+					<option value="1112" class="baseRow1">tex_terremauditeno</option>
+					<option value="1113" class="baseRow1">tex_terremauditeso</option>
+				<option value="1114" class="baseRow2">tex_terremauditeforet1</option>
+				<option value="1115" class="baseRow2">tex_terremauditeforet2</option>
+				<option value="1116" class="baseRow2">tex_terremauditeforet3</option>
+				<option value="1117" class="baseRow2">tex_terremauditeforet4</option>
+				<option value="1118" class="baseRow2">tex_terremauditeforet5</option>
+				<option value="1119" class="baseRow2">tex_terremauditeforet6</option>
+				<option value="1120" class="baseRow2">tex_terremauditeforet7</option>
+			
+				<option value="1121" class="baseRow2">tex_terremauditeforet8</option>
+				<option value="1122" class="baseRow2">tex_terremauditeforet9</option>
+				<option value="1123" class="baseRow2">tex_terremauditeforet10</option>
+				<option value="1124" class="baseRow2">tex_terremauditeforet11</option>
+				<option value="1125" class="baseRow2">tex_terremauditeforet12</option>
+				<option value="1126" class="baseRow2">tex_terremauditeforet13</option>
+				<option value="1127" class="baseRow2">tex_terremauditeforet14</option>
+				<option value="1128" class="baseRow2">tex_terremauditegrave</option>
+				<option value="1129" class="baseRow2">tex_terremauditeblood</option>
+				<option value="1130" class="baseRow2">tex_terremauditeblood2mg</option>
+				<option value="1131" class="baseRow2">tex_terremauditeblood2bm</option>
+				<option value="1132" class="baseRow2">tex_terremauditeblood2md</option>
+				<option value="1133" class="baseRow2">tex_terremauditeblood2centre</option>
+				<option value="1134" class="baseRow2">tex_terremauditeblood3centre</option>
+				<option value="1135" class="baseRow2">tex_terremauditeblood2hg</option>
+				<option value="1136" class="baseRow2">tex_terremauditeblood2hm</option>
+				<option value="1137" class="baseRow2">tex_tmfailleceleste</option>
+				
 				</optgroup>				
 				
 				<optgroup label="Montagne Neige">
