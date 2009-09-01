@@ -28,7 +28,322 @@
 {
 	background: url('../image/texture/tex_herbearbre2.png') no-repeat;
 }
-
+.tex106
+{
+	background: url('../image/texture/hautesherbes/hautherbe_bg.png') no-repeat;
+}
+.tex107
+{
+	background: url('../image/texture/hautesherbes/hautherbe_bm.png') no-repeat;
+}
+.tex108
+{
+	background: url('../image/texture/hautesherbes/hautherbe_bd.png') no-repeat;
+}
+.tex109
+{
+	background: url('../image/texture/hautesherbes/hautherbe_hd.png') no-repeat;
+}
+.tex110
+{
+	background: url('../image/texture/hautesherbes/hautherbe_hm.png') no-repeat;
+}
+.tex111
+{
+	background: url('../image/texture/hautesherbes/hautherbe_hg.png') no-repeat;
+}
+.tex112
+{
+	background: url('../image/texture/hautesherbes/hautherbe_b.png') no-repeat;
+}
+.tex113
+{
+	background: url('../image/texture/hautesherbes/hautherbe_h.png') no-repeat;
+}
+.tex114
+{
+	background: url('../image/texture/hautesherbes/hautherbe_g.png') no-repeat;
+}
+.tex115
+{
+	background: url('../image/texture/hautesherbes/hautherbe_d.png') no-repeat;
+}
+.tex116
+{
+	background: url('../image/texture/hautesherbes/hautherbe_diag_bd.png') no-repeat;
+}
+.tex117
+{
+	background: url('../image/texture/hautesherbes/hautherbe_diag_bg.png') no-repeat;
+}
+.tex118
+{
+	background: url('../image/texture/hautesherbes/hautherbe_diag_hd.png') no-repeat;
+}
+.tex119
+{
+	background: url('../image/texture/hautesherbes/hautherbe_diag_hg.png') no-repeat;
+}
+.tex120
+{
+	background: url('../image/texture/hautesherbes/hautherbecentre.png') no-repeat;
+}
+tex121
+{
+	background: url('../image/texture/hautesherbes/hautherbe_jonction_horid.png') no-repeat;
+}
+tex122
+{
+	background: url('../image/texture/hautesherbes/hautherbe_jonction_horig.png') no-repeat;
+}
+tex123
+{
+	background: url('../image/texture/hautesherbes/hautherbe_jonction_vertib.png') no-repeat;
+}
+tex124
+{
+	background: url('../image/texture/hautesherbes/hautherbe_jonction_vertih.png') no-repeat;
+}
+tex125
+{
+	background: url('../image/texture/texthherbe2/hautherbe_bd2.png') no-repeat;
+}
+tex126
+{
+	background: url('../image/texture/texthherbe2/hautherbe_bdm2.png') no-repeat;
+}
+tex127
+{
+	background: url('../image/texture/texthherbe2/hautherbe_bg2.png') no-repeat;
+}
+tex128
+{
+	background: url('../image/texture/texthherbe2/hautherbe_bgm2.png') no-repeat;
+}
+tex129
+{
+	background: url('../image/texture/texthherbe2/hautherbe_hd2.png') no-repeat;
+}
+tex130
+{
+	background: url('../image/texture/texthherbe2/hautherbe_hdm2.png') no-repeat;
+}
+tex131
+{
+	background: url('../image/texture/texthherbe2/hautherbe_hg2.png') no-repeat;
+}
+tex132
+{
+	background: url('../image/texture/texthherbe2/hautherbe_hgm2.png') no-repeat;
+}
+tex133
+{
+	background: url('../image/texture/texthherbe2/hautherbe_hm2.png') no-repeat;
+}
+tex134
+{
+	background: url('../image/texture/texthherbe3/hautherbe_bd3.png') no-repeat;
+}
+tex135
+{
+	background: url('../image/texture/texthherbe3/hautherbe_bg3.png') no-repeat;
+}
+tex136
+{
+	background: url('../image/texture/texthherbe3/hautherbe_hd3.png') no-repeat;
+}
+tex137
+{
+	background: url('../image/texture/texthherbe3/hautherbe_hg3.png') no-repeat;
+}
+tex138
+{
+	background: url('../image/texture/tex_herbeenforet.png') no-repeat;
+}
+tex139
+{
+    background: url('../image/texture/texthterre/text_hterrebd.png') no-repeat;
+}
+tex140
+{
+    background: url('../image/texture/texthterre/text_hterrebg.png') no-repeat;
+}
+tex141
+{
+    background: url('../image/texture/texthterre/text_hterrebm.png') no-repeat;
+}
+tex142
+{
+    background: url('../image/texture/texthterre/text_hterrehd.png') no-repeat;
+}
+tex143
+{
+    background: url('../image/texture/texthterre/text_hterrehm.png') no-repeat;
+}
+tex144
+{
+    background: url('../image/texture/texthterre/text_hterrehg.png') no-repeat;
+}
+tex145
+{
+    background: url('../image/texture/texthterre/text_hterremd.png') no-repeat;
+}
+tex146
+{
+    background: url('../image/texture/texthterre/text_hterremg.png') no-repeat;
+}
+tex147
+{
+    background: url('../image/texture/texthterre/text_hterre_diagonhd.png') no-repeat;
+}
+tex148
+{
+    background: url('../image/texture/texthterre/text_hterre_diagonhg.png') no-repeat;
+}
+tex149
+{
+    background: url('../image/texture/texthterre/text_hterre_diagonbg.png') no-repeat;
+}
+tex150
+{
+    background: url('../image/texture/texthterre/text_hterre_diagonbd.png') no-repeat;
+}
+tex151
+{
+    background: url('../image/texture/texthterre/text_hterrebd2.png') no-repeat;
+}
+tex152
+{
+    background: url('../image/texture/texthterre/text_hterrebg2.png') no-repeat;
+}
+tex153
+{
+    background: url('../image/texture/texthterre/text_hterrebm2.png') no-repeat;
+}
+tex154
+{
+    background: url('../image/texture/texthterre/text_hterrehd2.png') no-repeat;
+}
+tex155
+{
+    background: url('../image/texture/texthterre/text_hterrehg2.png') no-repeat;
+}
+tex156
+{
+    background: url('../image/texture/texthterre/text_hterrehm2.png') no-repeat;
+}
+tex157
+{
+    background: url('../image/texture/texthterre/text_hterre_diagonbd2.png') no-repeat;
+}
+tex158
+{
+    background: url('../image/texture/texthterre/text_hterre_diagonbg2.png') no-repeat;
+}
+tex159
+{
+    background: url('../image/texture/texthterre/text_hterre_diagonhd2.png') no-repeat;
+}
+tex160
+{
+    background: url('../image/texture/texthterre/text_hterre_diagonhg2.png') no-repeat;
+}
+tex161
+{
+    background: url('../image/texture/texthterre/text_hterremg2.png') no-repeat;
+}
+tex162
+{
+    background: url('../image/texture/texthterre/text_hterremd2.png') no-repeat;
+}
+tex163
+{
+    background: url('../image/texture/texthterre/text_hterrecentre.png') no-repeat;
+}
+tex164
+{
+    background: url('../image/texture/texthterre/text_hterrecentre2.png') no-repeat;
+}
+tex165
+{
+    background: url('../image/texture/hautesherbes/hautherbearbre.png') no-repeat;
+}
+tex166
+{
+    background: url('../image/texture/hautesherbes/tex_herbenuage4.png') no-repeat;
+}
+.tex167
+{
+	background: url('../image/texture/jointure_herbeb_lachd_neigehg.png') no-repeat;
+}
+.tex168
+{
+	background: url('../image/texture/jointure_herbeb_lachg_neigehd.png') no-repeat;
+}
+.tex169
+{
+	background: url('../image/texture/jointure_herbebd_lacbg_neigeh.png') no-repeat;
+}
+.tex170
+{
+	background: url('../image/texture/jointure_herbebd_lachd_neigeg.png') no-repeat;
+}
+.tex171
+{
+	background: url('../image/texture/jointure_herbebg_lacbd_neigeh.png') no-repeat;
+}
+.tex172
+{
+	background: url('../image/texture/jointure_herbebg_lachg_neiged.png') no-repeat;
+}
+.tex173
+{
+	background: url('../image/texture/jointure_herbed_lach_neigebg.png') no-repeat;
+}
+.tex174
+{
+	background: url('../image/texture/jointure_herbeh_lacbd_neigebg.png') no-repeat;
+}
+.tex175
+{
+	background: url('../image/texture/jointure_herbeh_lacbg_neigebd.png') no-repeat;
+}
+.tex176
+{
+	background: url('../image/texture/jointure_herbeh_lacd_neigebg.png') no-repeat;
+}
+.tex177
+{
+	background: url('../image/texture/jointure_herbehd_lacbd_neigeg.png') no-repeat;
+}
+.tex178
+{
+	background: url('../image/texture/jointure_herbehd_lachg_neigeb.png') no-repeat;
+}
+.tex179
+{
+	background: url('../image/texture/jointure_herbehg_lacbg_neiged.png') no-repeat;
+}
+.tex180
+{
+	background: url('../image/texture/jointure_herbehg_lachd_neigeb.png') no-repeat;
+}
+.tex181
+{
+	background: url('../image/texture/jointure_herbeb_neigeh_montagned.png') no-repeat;
+}
+.tex182
+{
+	background: url('../image/texture/jointure_herbed_neigeg_montagneh.png') no-repeat;
+}
+.tex183
+{
+	background: url('../image/texture/textureherbe/tex_herbeenmouvement3.png') no-repeat;
+}
+.tex184
+{
+	background: url('../image/texture/textureherbe/tex_herbebuisson2.png') no-repeat;
+}
 /* Foret */
 .tex2
 {
@@ -92,58 +407,20 @@
 }
 .tex215
 {
-	background: url('../image/texture/jungle.png') no-repeat;
+	background: url('../image/texture/textureforet/tex_foreteau.png') no-repeat;
 }
 .tex216
 {
-	background: url('../image/texture/junglecoinne.png') no-repeat;
+	background: url('../image/texture/textureforet/tex_foreteclate.png') no-repeat;
 }
 .tex217
 {
-	background: url('../image/texture/junglecoinno.png') no-repeat;
+	background: url('../image/texture/textureforet/tex_foreteclate2.png') no-repeat;
 }
 .tex218
 {
-	background: url('../image/texture/junglecoinse.png') no-repeat;
+	background: url('../image/texture/textureforet/tex_foretceleste.png') no-repeat;
 }
-.tex219
-{
-	background: url('../image/texture/junglecoinso.png') no-repeat;
-}
-.tex220
-{
-	background: url('../image/texture/jungleherbecoinne.png') no-repeat;
-}
-.tex221
-{
-	background: url('../image/texture/jungleherbecoinse.png') no-repeat;
-}
-.tex222
-{
-	background: url('../image/texture/jungleherbecoinso.png') no-repeat;
-}
-.tex223
-{
-	background: url('../image/texture/jungleherbee.png') no-repeat;
-}
-.tex224
-{
-	background: url('../image/texture/jungleherben.png') no-repeat;
-}
-.tex225
-{
-	background: url('../image/texture/jungleherbeo.png') no-repeat;
-}
-.tex226
-{
-	background: url('../image/texture/jungleherbes.png') no-repeat;
-}
-.tex227
-{
-	background: url('../image/texture/jungleherbesoinno.png') no-repeat;
-}
-
-
 /* DÈsert */
 .tex301
 {
@@ -205,6 +482,79 @@
 {
 	background: url('../image/texture/tex_desertoasis.png') no-repeat;
 }
+.tex316
+{
+    background: url('../image/texture/textdesert/tex_desertmarecage') no-repeat;
+}
+.tex317
+{
+	background: url('../image/texture/textdesert/desertbg2.png') no-repeat;
+}
+.tex318
+{
+	background: url('../image/texture/textdesert/desertbd2.png') no-repeat;
+}
+.tex319
+{
+	background: url('../image/texture/textdesert/desertbm2.png') no-repeat;
+}
+.tex320
+{
+	background: url('../image/texture/textdesert/deserthg2.png') no-repeat;
+}
+.tex321
+{
+	background: url('../image/texture/textdesert/deserthm2.png') no-repeat;
+}
+.tex322
+{
+	background: url('../image/texture/textdesert/deserthd2.png') no-repeat;
+}
+.tex323
+{
+	background: url('../image/texture/textdesert/desertmd2.png') no-repeat;
+}
+.tex324
+{
+	background: url('../image/texture/textdesert/desertmg2.png') no-repeat;
+}
+.tex325
+{
+	background: url('../image/texture/textdesert/desertcentre2.png') no-repeat;
+}
+.tex326
+{
+	background: url('../image/texture/textdesert/desertbdiagong2.png') no-repeat;
+}
+.tex327
+{
+	background: url('../image/texture/textdesert/desertbdiagond2.png') no-repeat;
+}
+.tex328
+{
+	background: url('../image/texture/textdesert/deserthdiagond2.png') no-repeat;
+}
+.tex329
+{
+	background: url('../image/texture/textdesert/deserthdiagong2.png') no-repeat;
+}
+.tex330
+{
+	background: url('../image/texture/textdesert/desertjointurehg2.png') no-repeat;
+}
+.tex331
+{
+	background: url('../image/texture/textdesert/desertjointurehd2.png') no-repeat;
+}
+.tex332
+{
+	background: url('../image/texture/textdesert/desertjointuregd2.png') no-repeat;
+}
+.tex333
+{
+	background: url('../image/texture/textdesert/desertjointuredg2.png') no-repeat;
+}
+
 /* Glace */
 .tex401
 {
@@ -306,69 +656,226 @@
 {
 	background: url('../image/texture/neigeherbe/tex_neigeherbesoinso.png') no-repeat;
 }
-
-/* Montagne neige */
-
 .tex426
 {
-	background: url('../image/texture/montagneneige/tex_montneige3.png') no-repeat;
+	background: url('../image/texture/textbanquise/textbanquisegele_bm.png') no-repeat;
 }
 .tex427
 {
-	background: url('../image/texture/montagneneige/tex_montneige9.png') no-repeat;
+	background: url('../image/texture/textbanquise/textbanquisegele_bd.png') no-repeat;
 }
 .tex428
 {
-	background: url('../image/texture/montagneneige/tex_montneige5.png') no-repeat;
+	background: url('../image/texture/textbanquise/textbanquisegele_hg.png') no-repeat;
 }
 .tex429
 {
-	background: url('../image/texture/montagneneige/tex_montneige6.png') no-repeat;
+	background: url('../image/texture/textbanquise/textbanquisegele_hm.png') no-repeat;
 }
 .tex430
 {
-	background: url('../image/texture/montagneneige/tex_montneige7.png') no-repeat;
+	background: url('../image/texture/textbanquise/textbanquisegele_hd.png') no-repeat;
 }
 .tex431
 {
-	background: url('../image/texture/montagneneige/tex_montneige8.png') no-repeat;
+	background: url('../image/texture/textbanquise/textbanquisegele_md.png') no-repeat;
 }
 .tex432
 {
-	background: url('../image/texture/montagneneige/tex_montneige2.png') no-repeat;
+	background: url('../image/texture/textbanquise/textbanquisegele_mg.png') no-repeat;
 }
 .tex433
 {
-	background: url('../image/texture/montagneneige/tex_montneige10.png') no-repeat;
+	background: url('../image/texture/textbanquise/textbanquisegele_mg2.png') no-repeat;
 }
 .tex434
 {
-	background: url('../image/texture/montagneneige/tex_montneige11.png') no-repeat;
+	background: url('../image/texture/textbanquise/textbanquisegele_centre.png') no-repeat;
 }
 .tex435
 {
-	background: url('../image/texture/montagneneige/tex_montneige3.png') no-repeat;
+	background: url('../image/texture/textbanquise/textgelebanquise_bd.png') no-repeat;
 }
 .tex436
 {
-	background: url('../image/texture/montagneneige/tex_montneige4.png') no-repeat;
+	background: url('../image/texture/textbanquise/textgelebanquise_bg.png') no-repeat;
 }
 .tex437
 {
-	background: url('../image/texture/montagneneige/tex_montneige12.png') no-repeat;
+	background: url('../image/texture/textbanquise/textgelebanquise_hd.png') no-repeat;
 }
-
-/* Texture spÈciale neige */
-
 .tex438
 {
-	background: url('../image/texture/neigeherbe/tex_raccordeauneigeherbe.png') no-repeat;
+	background: url('../image/texture/textbanquise/textgelebanquise_hg.png') no-repeat;
 }
 .tex439
 {
-	background: url('../image/texture/neigeherbe/tex_raccordeauneigeherbe2.png') no-repeat;
+	background: url('../image/texture/textbanquise/jointgelebanqvertidroit.png') no-repeat;
 }
-
+.tex440
+{
+	background: url('../image/texture/textbanquise/jointgelebanqvertigauche.png') no-repeat;
+}
+.tex441
+{
+	background: url('../image/texture/textbanquise/jointgelebanqhorizdroit.png') no-repeat;
+}
+.tex442
+{
+	background: url('../image/texture/textbanquise/jointgelebanqhorizgauche.png') no-repeat;
+}
+.tex443
+{
+	background: url('../image/texture/textbanquise/textbanquisegele_diago_bd.png') no-repeat;
+}
+.tex444
+{
+	background: url('../image/texture/textbanquise/textbanquisegele_diago_bg.png') no-repeat;
+}
+.tex445
+{
+	background: url('../image/texture/textbanquise/banqgelefissure1.png') no-repeat;
+}
+.tex446
+{
+	background: url('../image/texture/textbanquise/banqgelefissure2.png') no-repeat;
+}
+.tex447
+{
+	background: url('../image/texture/textbanquise/banqgele_centre1.png') no-repeat;
+}
+.tex448
+{
+	background: url('../image/texture/textbanquise/banqgele_centre2.png') no-repeat;
+}
+.tex449
+{
+	background: url('../image/texture/textbanquise/banqgele_centre3.png') no-repeat;
+}
+.tex450
+{
+	background: url('../image/texture/textbanquise/banqgeleperso.png') no-repeat;
+}
+.tex451
+{
+	background: url('../image/texture/textbanquise/textbanquisegele_bg2.png') no-repeat;
+}
+.tex452
+{
+	background: url('../image/texture/textbanquise/textbanquisegele_bm2.png') no-repeat;
+}
+.tex453
+{
+	background: url('../image/texture/textbanquise/textbanquisegele_bd2.png') no-repeat;
+}
+.tex454
+{
+	background: url('../image/texture/textbanquise/textbanquisegele_hg2.png') no-repeat;
+}
+.tex455
+{
+	background: url('../image/texture/textbanquise/textbanquisegele_hm2.png') no-repeat;
+}
+.tex456
+{
+	background: url('../image/texture/textbanquise/textbanquisegele_hd2.png') no-repeat;
+}
+.tex457
+{
+	background: url('../image/texture/textbanquise/textbanquisegele_md2.png') no-repeat;
+}
+.tex458
+{
+	background: url('../image/texture/textbanquise/textbanquisegele_centre2.png') no-repeat;
+}
+.tex459
+{
+	background: url('../image/texture/textbanquise/textgelebanquise_bd2.png') no-repeat;
+}
+.tex460
+{
+	background: url('../image/texture/textbanquise/textgelebanquise_bg2.png') no-repeat;
+}
+.tex461
+{
+	background: url('../image/texture/textbanquise/textgelebanquise_hd2.png') no-repeat;
+}
+.tex462
+{
+	background: url('../image/texture/textbanquise/textgelebanquise_hg2.png') no-repeat;
+}
+.tex463
+{
+	background: url('../image/texture/textbanquise/jointgelebanqvertidroit2.png') no-repeat;
+}
+.tex464
+{
+	background: url('../image/texture/textbanquise/jointgelebanqvertigauche2.png') no-repeat;
+}
+.tex465
+{
+	background: url('../image/texture/textbanquise/jointgelebanqhorizdroit2.png') no-repeat;
+}
+.tex466
+{
+	background: url('../image/texture/textbanquise/jointgelebanqhorizgauche2.png') no-repeat;
+}
+.tex467
+{
+	background: url('../image/texture/textbanquise/textbanquisegele_diago bd2.png') no-repeat;
+}
+.tex468
+{
+	background: url('../image/texture/textbanquise/textbanquisegele_diago bg2.png') no-repeat;
+}
+.tex469
+{
+	background: url('../image/texture/textbanquise/tex_montneige3.png') no-repeat;
+}
+.tex470
+{
+	background: url('../image/texture/textbanquise/tex_montneige9.png') no-repeat;
+}
+.tex471
+{
+	background: url('../image/texture/textbanquise/tex_montneige5.png') no-repeat;
+}
+.tex472
+{
+	background: url('../image/texture/textbanquise/tex_montneige6.png') no-repeat;
+}
+.tex473
+{
+	background: url('../image/texture/textbanquise/tex_montneige7.png') no-repeat;
+}
+.tex474
+{
+	background: url('../image/texture/textbanquise/tex_montneige8.png') no-repeat;
+}
+.tex475
+{
+	background: url('../image/texture/textbanquise/tex_montneige2.png') no-repeat;
+}
+.tex476
+{
+	background: url('../image/texture/textbanquise/tex_montneige10.png') no-repeat;
+}
+.tex477
+{
+	background: url('../image/texture/textbanquise/tex_montneige11.png') no-repeat;
+}
+.tex478
+{
+	background: url('../image/texture/textbanquise/tex_montneige3.png') no-repeat;
+}
+.tex479
+{
+	background: url('../image/texture/textbanquise/tex_montneige4.png') no-repeat;
+}
+.tex480
+{
+	background: url('../image/texture/textbanquise/tex_montneige12.png') no-repeat;
+}
 
 
 /* Eau */
@@ -402,72 +909,84 @@
 }
 .tex508
 {
-	background: url('../image/texture/tex_lace.png') no-repeat;
+	background: url('../image/texture/texturelac/tex_lace.png') no-repeat;
 }
 .tex509
 {
-	background: url('../image/texture/tex_laco.png') no-repeat;
+	background: url('../image/texture/texturelac/tex_laco.png') no-repeat;
 }
 .tex510
 {
-	background: url('../image/texture/tex_lacn.png') no-repeat;
+	background: url('../image/texture/texturelac/tex_lacn.png') no-repeat;
 }
 .tex511
 {
-	background: url('../image/texture/tex_lacs.png') no-repeat;
+	background: url('../image/texture/texturelac/tex_lacs.png') no-repeat;
 }
 .tex512
 {
-	background: url('../image/texture/tex_lacno.png') no-repeat;
+	background: url('../image/texture/texturelac/tex_lacno.png') no-repeat;
 }
 .tex513
 {
-	background: url('../image/texture/tex_lacne.png') no-repeat;
+	background: url('../image/texture/texturelac/tex_lacne.png') no-repeat;
 }
 .tex514
 {
-	background: url('../image/texture/tex_lacso.png') no-repeat;
+	background: url('../image/texture/texturelac/tex_lacso.png') no-repeat;
 }
 .tex515
 {
-	background: url('../image/texture/tex_lacse.png') no-repeat;
+	background: url('../image/texture/texturelac/tex_lacse.png') no-repeat;
 }
 .tex516
 {
-	background: url('../image/texture/tex_lacon.png') no-repeat;
+	background: url('../image/texture/texturelac/tex_lacon.png') no-repeat;
 }
 .tex517
 {
-	background: url('../image/texture/tex_lacos.png') no-repeat;
+	background: url('../image/texture/texturelac/tex_lacos.png') no-repeat;
 }
 .tex518
 {
-	background: url('../image/texture/tex_laces.png') no-repeat;
+	background: url('../image/texture/texturelac/tex_laces.png') no-repeat;
 }
 .tex519
 {
-	background: url('../image/texture/tex_lacen.png') no-repeat;
+	background: url('../image/texture/texturelac/tex_lacen.png') no-repeat;
 }
 .tex520
 {
-	background: url('../image/texture/tex_embouchureo.png') no-repeat;
+	background: url('../image/texture/texturelac/tex_embouchureo.png') no-repeat;
 }
 .tex521
 {
-	background: url('../image/texture/tex_embouchuree.png') no-repeat;
+	background: url('../image/texture/texturelac/tex_embouchuree.png') no-repeat;
 }
 .tex522
 {
-	background: url('../image/texture/tex_embouchuren.png') no-repeat;
+	background: url('../image/texture/texturelac/tex_embouchuren.png') no-repeat;
 }
 .tex523
 {
-	background: url('../image/texture/tex_embouchures.png') no-repeat;
+	background: url('../image/texture/texturelac/tex_embouchures.png') no-repeat;
+}
+.tex525
+{
+	background: url('../image/texture/tex_eaubanquise1.png') no-repeat;
+}
+.tex526
+{
+	background: url('../image/texture/tex_eaubanquise2.png') no-repeat;
+}
+.tex527
+{
+	background: url('../image/texture/texturelac/tex_lacSpiralJetty.png') no-repeat;
 }
 /* Montagne */
 .tex601
 {
-	background: url('../image/texture/tex_monthorigauche.png') no-repeat;
+	background: url('../image/texture/tex_monthorigauche.png.png') no-repeat;
 }
 .tex602
 {
@@ -517,138 +1036,42 @@
 {
 	background: url('../image/texture/tex_montcentre.png') no-repeat;
 }
+.tex614
+{
+	background: url('../image/texture/jointuretex_montneige2.png') no-repeat;
+}
 .tex615
 {
-	background: url('../image/texture/tex_rocaille1.png') no-repeat;
+	background: url('../image/texture/jointuretex_montneige5.png') no-repeat;
 }
 .tex616
 {
-	background: url('../image/texture/tex_rocaille2.png') no-repeat;
+	background: url('../image/texture/jointuretex_montneige6.png') no-repeat;
 }
 .tex617
 {
-	background: url('../image/texture/tex_rocaille3.png') no-repeat;
+	background: url('../image/texture/jointuretex_montneige8.png') no-repeat;
 }
 .tex618
 {
-	background: url('../image/texture/tex_rocaille4.png') no-repeat;
+	background: url('../image/texture/jointuretex_montneige9.png') no-repeat;
 }
 .tex619
 {
-	background: url('../image/texture/tex_rocaille5.png') no-repeat;
+	background: url('../image/texture/jointuretex_montneige10.png') no-repeat;
 }
 .tex620
 {
-	background: url('../image/texture/tex_rocaille6.png') no-repeat;
+	background: url('../image/texture/jointuretex_montneige11.png') no-repeat;
 }
 .tex621
 {
-	background: url('../image/texture/tex_rocaille7.png') no-repeat;
+	background: url('../image/texture/jointuretex_montneige3') no-repeat;
 }
 .tex622
 {
-	background: url('../image/texture/tex_rocaille8.png') no-repeat;
+	background: url('../image/texture/tex_montacteon2.png') no-repeat;
 }
-.tex623
-{
-	background: url('../image/texture/tex_rocaille9.png') no-repeat;
-}
-.tex624
-{
-	background: url('../image/texture/tex_rocaille10.png') no-repeat;
-}
-.tex627
-{
-	background: url('../image/texture/tex_rocaille13.png') no-repeat;
-}
-.tex628
-{
-	background: url('../image/texture/tex_rocaille14.png') no-repeat;
-}
-.tex629
-{
-	background: url('../image/texture/tex_rocaille15.png') no-repeat;
-}
-.tex630
-{
-	background: url('../image/texture/tex_rocaille.png') no-repeat;
-}
-
-
-/*Montagne haut */
-
-
-.tex640
-{
-	background: url('../image/texture/montagneeau/tex_monteau1.png') no-repeat;
-}
-.tex641
-{
-	background: url('../image/texture/montagneeau/tex_monteau2.png') no-repeat;
-}
-.tex642
-{
-	background: url('../image/texture/montagneeau/tex_monteau3.png') no-repeat;
-}
-.tex643
-{
-	background: url('../image/texture/montagneeau/tex_monteau4.png') no-repeat;
-}
-.tex644
-{
-	background: url('../image/texture/montagneeau/tex_monteau5.png') no-repeat;
-}
-.tex645
-{
-	background: url('../image/texture/montagneeau/tex_monteau6.png') no-repeat;
-}
-.tex646
-{
-	background: url('../image/texture/montagneeau/tex_monteau7.png') no-repeat;
-}
-.tex647
-{
-	background: url('../image/texture/montagneeau/tex_rivieresourcemontagne.png') no-repeat;
-}
-.tex648
-{
-	background: url('../image/texture/montagneeau/tex_rivieresourcemontagne1.png') no-repeat;
-}
-.tex649
-{
-	background: url('../image/texture/montagneeau/tex_rivieresourcemontagne2.png') no-repeat;
-}
-.tex650
-{
-	background: url('../image/texture/montagneeau/tex_rivieresourcemontagne4.png') no-repeat;
-}
-.tex651
-{
-	background: url('../image/texture/montagneeau/tex_monteau8.png') no-repeat;
-}
-.tex652
-{
-	background: url('../image/texture/montagneeau/tex_monteau9.png') no-repeat;
-}
-
-.tex653
-{
-	background: url('../image/texture/montagneeau/tex_monteau10.png') no-repeat;
-}
-.tex654
-{
-	background: url('../image/texture/montagneeau/tex_monteau11.png') no-repeat;
-}
-.tex655
-{
-	background: url('../image/texture/montagneeau/tex_monteau12.png') no-repeat;
-}
-.tex656
-{
-	background: url('../image/texture/montagneeau/tex_monteau13.png') no-repeat;
-}
-
-
 /* Marais */
 .tex701
 {
@@ -726,302 +1149,533 @@
 {
 	background: url('../image/texture/tex_maraisnenu2.png') no-repeat;
 }
+.tex720
+{
+    background: url('../image/texture/marais/tex_maraisupbd.png') no-repeat;
+}
+.tex721
+{
+    background: url('../image/texture/marais/tex_maraisupbm.png') no-repeat;
+}
+.tex722
+{
+    background: url('../image/texture/marais/tex_maraisupbg.png') no-repeat;
+}
+.tex723
+{
+    background: url('../image/texture/marais/tex_maraisuphg.png') no-repeat;
+}
+.tex724
+{
+    background: url('../image/texture/marais/tex_maraisuphm.png') no-repeat;
+}
+.tex725
+{
+    background: url('../image/texture/marais/tex_maraisuphd.png') no-repeat;
+}
+.tex726
+{
+    background: url('../image/texture/marais/tex_maraisupmd.png') no-repeat;
+}
+.tex727
+{
+    background: url('../image/texture/marais/tex_maraisupmg.png') no-repeat;
+}
+.tex728
+{
+    background: url('../image/texture/marais/tex_maraisupcentre.png') no-repeat;
+}
+.tex729
+{
+    background: url('../image/texture/marais/tex_maraisupmg2.png') no-repeat;
+}
+.tex730
+{
+    background: url('../image/texture/marais/tex_maraisupbd2.png') no-repeat;
+}
+.tex731
+{
+    background: url('../image/texture/marais/tex_maraisupsquelbd.png') no-repeat;
+}
+.tex732
+{
+    background: url('../image/texture/marais/tex_maraisupsquelbg.png') no-repeat;
+}
+.tex733
+{
+    background: url('../image/texture/marais/tex_maraisupsquelhg.png') no-repeat;
+}
+.tex734
+{
+    background: url('../image/texture/marais/tex_maraisupsquelhd.png') no-repeat;
+}
+.tex735
+{
+    background: url('../image/texture/marais/tex_maraisupsquelhd.png') no-repeat;
+}
+.tex736
+{
+    background: url('../image/texture/marais/tex_maraisnenub.png') no-repeat;
+}
+.tex737
+{
+    background: url('../image/texture/marais/tex_maraisnenu3.png') no-repeat;
+}
+.tex738
+{
+    background: url('../image/texture/marais/tex_maraisnenu4.png') no-repeat;
+}
+.tex739
+{
+    background: url('../image/texture/marais/tex_maraisnenu5.png') no-repeat;
+}
+
+
 /* Route */
 .tex801
 {
-	background: url('../image/texture/tex_routepaveens.png') no-repeat;
+	background: url('../image/texture/route/tex_routepaveens.png') no-repeat;
 }
 .tex802
 {
-	background: url('../image/texture/tex_routepaveeeo.png') no-repeat;
+	background: url('../image/texture/route/tex_routepaveeeo.png') no-repeat;
 }
 .tex803
 {
-	background: url('../image/texture/tex_croisementpave.png') no-repeat;
+	background: url('../image/texture/route/tex_croisementpave.png') no-repeat;
 }
 .tex804
 {
-	background: url('../image/texture/tex_intersectionpaveeso.png') no-repeat;
+	background: url('../image/texture/route/tex_intersectionpaveeso.png') no-repeat;
 }
 .tex805
 {
-	background: url('../image/texture/tex_intersectionpavenes.png') no-repeat;
+	background: url('../image/texture/route/tex_intersectionpavenes.png') no-repeat;
 }
 .tex806
 {
-	background: url('../image/texture/tex_intersectionpavenos.png') no-repeat;
+	background: url('../image/texture/route/tex_intersectionpavenos.png') no-repeat;
 }
 .tex807
 {
-	background: url('../image/texture/tex_intersectionpaveone.png') no-repeat;
+	background: url('../image/texture/route/tex_intersectionpaveone.png') no-repeat;
 }
 .tex808
 {
-	background: url('../image/texture/tex_tournantpavene.png') no-repeat;
+	background: url('../image/texture/route/tex_tournantpavene.png') no-repeat;
 }
 .tex809
 {
-	background: url('../image/texture/tex_tournantpaveno.png') no-repeat;
+	background: url('../image/texture/route/tex_tournantpaveno.png') no-repeat;
 }
 .tex810
 {
-	background: url('../image/texture/tex_tournantpavese.png') no-repeat;
+	background: url('../image/texture/route/tex_tournantpavese.png') no-repeat;
 }
 .tex811
 {
-	background: url('../image/texture/tex_tournantpaveso.png') no-repeat;
+	background: url('../image/texture/route/tex_tournantpaveso.png') no-repeat;
 }
 .tex812
 {
-	background: url('../image/texture/tex_pontpaveeo.png') no-repeat;
+	background: url('../image/texture/route/tex_pontpaveeo.png') no-repeat;
 }
 .tex813
 {
-	background: url('../image/texture/tex_pontpavens.png') no-repeat;
+	background: url('../image/texture/route/tex_pontpavens.png') no-repeat;
 }
 .tex814
 {
-	background: url('../image/texture/tex_cheminherbns.png') no-repeat;
+	background: url('../image/texture/route/tex_chemindesertns.png') no-repeat;
 }
 .tex815
 {
-	background: url('../image/texture/tex_cheminherbeo.png') no-repeat;
+	background: url('../image/texture/route/tex_chemindesertoe.png') no-repeat;
 }
 .tex816
 {
-	background: url('../image/texture/tex_pontdeboisns.png') no-repeat;
+	background: url('../image/texture/route/tex_chemindesertones.png') no-repeat;
 }
 .tex817
 {
-	background: url('../image/texture/tex_pontdeboiseo.png') no-repeat;
+	background: url('../image/texture/route/tex_chemindesertone.png') no-repeat;
 }
 .tex818
 {
-	background: url('../image/texture/tex_chemindesertns.png') no-repeat;
+	background: url('../image/texture/route/tex_chemindesertons.png') no-repeat;
 }
 .tex819
 {
-	background: url('../image/texture/tex_chemindesertoe.png') no-repeat;
+	background: url('../image/texture/route/tex_chemindesertnes.png') no-repeat;
 }
 .tex820
 {
-	background: url('../image/texture/tex_chemindesertones.png') no-repeat;
+	background: url('../image/texture/route/tex_chemindesertoes.png') no-repeat;
 }
 .tex821
 {
-	background: url('../image/texture/tex_chemindesertone.png') no-repeat;
+	background: url('../image/texture/route/tex_chemindesertos.png') no-repeat;
 }
 .tex822
 {
-	background: url('../image/texture/tex_chemindesertons.png') no-repeat;
+	background: url('../image/texture/route/tex_chemindesertse.png') no-repeat;
 }
 .tex823
 {
-	background: url('../image/texture/tex_chemindesertnes.png') no-repeat;
+	background: url('../image/texture/route/tex_chemindeserton.png') no-repeat;
 }
 .tex824
 {
-	background: url('../image/texture/tex_chemindesertoes.png') no-repeat;
+	background: url('../image/texture/route/tex_chemindesertne.png') no-repeat;
 }
 .tex825
 {
-	background: url('../image/texture/tex_chemindesertos.png') no-repeat;
+	background: url('../image/texture/route/tex_neigeroutens.png') no-repeat;
 }
 .tex826
 {
-	background: url('../image/texture/tex_chemindesertse.png') no-repeat;
+	background: url('../image/texture/route/tex_neigerouteoe.png') no-repeat;
 }
 .tex827
 {
-	background: url('../image/texture/tex_chemindeserton.png') no-repeat;
+	background: url('../image/texture/route/tex_croisementneige.png') no-repeat;
 }
 .tex828
 {
-	background: url('../image/texture/tex_chemindesertne.png') no-repeat;
+	background: url('../image/texture/route/tex_intersectionneigeose.png') no-repeat;
 }
 .tex829
 {
-	background: url('../image/texture/tex_neigeroutens.png') no-repeat;
+	background: url('../image/texture/route/tex_intersectionneigenso.png') no-repeat;
 }
 .tex830
 {
-	background: url('../image/texture/tex_neigerouteoe.png') no-repeat;
+	background: url('../image/texture/route/tex_intersectionneigenos.png') no-repeat;
 }
 .tex831
 {
-	background: url('../image/texture/tex_croisementneige.png') no-repeat;
+	background: url('../image/texture/route/tex_intersectionneigenoe.png') no-repeat;
 }
 .tex832
 {
-	background: url('../image/texture/tex_intersectionneigeose.png') no-repeat;
+	background: url('../image/texture/route/tex_neigeroutene.png') no-repeat;
 }
 .tex833
 {
-	background: url('../image/texture/tex_intersectionneigenso.png') no-repeat;
+	background: url('../image/texture/route/tex_neigerouteno.png') no-repeat;
 }
 .tex834
 {
-	background: url('../image/texture/tex_intersectionneigenos.png') no-repeat;
+	background: url('../image/texture/route/tex_neigeroutese.png') no-repeat;
 }
 .tex835
 {
-	background: url('../image/texture/tex_intersectionneigenoe.png') no-repeat;
+	background: url('../image/texture/route/tex_neigerouteso.png') no-repeat;
 }
 .tex836
 {
-	background: url('../image/texture/tex_neigeroutene.png') no-repeat;
+	background: url('../image/texture/route/tex_intersectionpaveneigens.png') no-repeat;
 }
 .tex837
 {
-	background: url('../image/texture/tex_neigerouteno.png') no-repeat;
+	background: url('../image/texture/route/tex_routemarais2.png') no-repeat;
 }
 .tex838
 {
-	background: url('../image/texture/tex_neigeroutese.png') no-repeat;
+	background: url('../image/texture/route/tex_routemarais5.png') no-repeat;
 }
 .tex839
 {
-	background: url('../image/texture/tex_neigerouteso.png') no-repeat;
+	background: url('../image/texture/route/tex_routemaraiscroisement.png') no-repeat;
 }
 .tex840
 {
-	background: url('../image/texture/tex_pontherbeneige2.png') no-repeat;
+	background: url('../image/texture/route/tex_intersectionmarais4.png') no-repeat;
 }
 .tex841
 {
-	background: url('../image/texture/tex_pontherbeneigeo2.png') no-repeat;
+	background: url('../image/texture/route/tex_intersectionmarais2.png') no-repeat;
 }
 .tex842
 {
-	background: url('../image/texture/tex_pontherbeneigen2.png') no-repeat;
+	background: url('../image/texture/route/tex_intersectionmarais.png') no-repeat;
 }
 .tex843
 {
-	background: url('../image/texture/tex_pontherbeneiges2.png') no-repeat;
+	background: url('../image/texture/route/tex_intersectionmarais3.png') no-repeat;
 }
 .tex844
 {
-	background: url('../image/texture/tex_pontherbeneigeo.png') no-repeat;
+	background: url('../image/texture/route/tex_routemarais1.png') no-repeat;
 }
 .tex845
 {
-	background: url('../image/texture/tex_pontherbeneigee.png') no-repeat;
+	background: url('../image/texture/route/tex_routemarais4.png') no-repeat;
 }
 .tex846
 {
-	background: url('../image/texture/tex_pontherbeneiges.png') no-repeat;
+	background: url('../image/texture/route/tex_routemarais6.png') no-repeat;
 }
 .tex847
 {
-	background: url('../image/texture/tex_pontherbeneigen.png') no-repeat;
+	background: url('../image/texture/route/tex_routemarais7.png') no-repeat;
 }
-.tex860
-{
-	background: url('../image/texture/tex_intersectionpaveneigens.png') no-repeat;
-}
-
-
 .tex848
 {
-	background: url('../image/texture/routemarais/tex_routemarais2.png') no-repeat;
+	background: url('../image/texture/route/tex_routemaraisherbens.png') no-repeat;
 }
 .tex849
 {
-	background: url('../image/texture/routemarais/tex_routemarais5.png') no-repeat;
+	background: url('../image/texture/route/tex_routeterremauditecroise.png') no-repeat;
 }
 .tex850
 {
-	background: url('../image/texture/routemarais/tex_routemaraiscroisement.png') no-repeat;
+	background: url('../image/texture/route/tex_routeterremauditene.png') no-repeat;
 }
 .tex851
 {
-	background: url('../image/texture/routemarais/tex_intersectionmarais4.png') no-repeat;
+	background: url('../image/texture/route/tex_routeterremauditeno.png') no-repeat;
 }
 .tex852
 {
-	background: url('../image/texture/routemarais/tex_intersectionmarais2.png') no-repeat;
+	background: url('../image/texture/route/tex_routeterremauditese.png') no-repeat;
 }
 .tex853
 {
-	background: url('../image/texture/routemarais/tex_intersectionmarais.png') no-repeat;
+	background: url('../image/texture/route/tex_routeterremauditeso.png') no-repeat;
 }
 .tex854
 {
-	background: url('../image/texture/routemarais/tex_intersectionmarais3.png') no-repeat;
+	background: url('../image/texture/route/tex_routeterremauditees.png') no-repeat;
 }
 .tex855
 {
-	background: url('../image/texture/routemarais/tex_routemarais1.png') no-repeat;
+	background: url('../image/texture/route/tex_routeterremauditens.png') no-repeat;
 }
 .tex856
 {
-	background: url('../image/texture/routemarais/tex_routemarais4.png') no-repeat;
+        background: url('../image/texture/route/tex_desertrouteraccord.png') no-repeat;
 }
 .tex857
-{
-	background: url('../image/texture/routemarais/tex_routemarais6.png') no-repeat;
+{    
+        background: url('../image/texture/route/tex_routechemineo.png') no-repeat;
 }
 .tex858
 {
-	background: url('../image/texture/routemarais/tex_routemarais7.png') no-repeat;
+        background: url('../image/texture/route/tex_routeherbeterremauditen.png') no-repeat;
 }
-
 .tex859
 {
-	background: url('../image/texture/routemarais/tex_routemaraisherbens.png') no-repeat;
+        background: url('../image/texture/route/tex_desertrouteeo.png') no-repeat;
 }
-
-/* tex860 prise */
-
-.tex861
-{
-	background: url('../image/texture/terremaudite/tex_routeterremauditecroise.png') no-repeat;
-}
-.tex862
-{
-	background: url('../image/texture/terremaudite/tex_routeterremauditene.png') no-repeat;
-}
-.tex863
-{
-	background: url('../image/texture/terremaudite/tex_routeterremauditeno.png') no-repeat;
-}
-.tex864
-{
-	background: url('../image/texture/terremaudite/tex_routeterremauditese.png') no-repeat;
-}
-.tex865
-{
-	background: url('../image/texture/terremaudite/tex_routeterremauditeso.png') no-repeat;
-}
-.tex866
-{
-	background: url('../image/texture/terremaudite/tex_routeterremauditees.png') no-repeat;
-}
-.tex867
-{
-	background: url('../image/texture/terremaudite/tex_routeterremauditens.png') no-repeat;
-}
-.tex868
-{
-        background: url('../image/texture/Jointures/tex_desertrouteraccord.png') no-repeat;
-}
-.tex869
-{    
-        background: url('../image/texture/Jointures/tex_routechemineo.png') no-repeat;
-}
-.tex870
-{
-        background: url('../image/texture/terremaudite/tex_routeherbeterremauditen.png') no-repeat;
-}
-.tex871
-{
-        background: url('../image/texture/Jointures/tex_desertrouteeo.png') no-repeat;
-}
-.tex872
+.tex860
 {
 	background: url('../image/texture/donjon_gobelin/tex_donjongob_pont.png') no-repeat;
 }
-
+.tex861
+{
+	background: url('../image/texture/route/tex_cheminplaineforetverti.png') no-repeat;
+}
+.tex862
+{
+	background: url('../image/texture/route/tex_cheminplaineforetvertijonctionbd.png') no-repeat;
+}
+.tex863
+{
+	background: url('../image/texture/route/tex_cheminplaineforethd.png') no-repeat;
+}
+.tex864
+{
+	background: url('../image/texture/route/jonction foret herbe hori.png') no-repeat;
+}
+.tex865
+{
+	background: url('../image/texture/route/tex_pontpavens2.png') no-repeat;
+}
+.tex866
+{
+	background: url('../image/texture/route/tex_pontherbeeauh.png') no-repeat;
+}
+.tex867
+{
+	background: url('../image/texture/route/tex_ponteauverti.png') no-repeat;
+}
+.tex868
+{
+	background: url('../image/texture/route/tex_pontherbeeaub.png') no-repeat;
+}
+.tex869
+{
+	background: url('../image/texture/route/tex_routeterremauditeherbebd.png') no-repeat;
+}
+.tex870
+{
+	background: url('../image/texture/route/tex_routeterremauditeherbebg.png') no-repeat;
+}
+.tex871
+{
+	background: url('../image/texture/route/tex_routeterremauditeherbehd.png') no-repeat;
+}
+.tex872
+{
+	background: url('../image/texture/route/tex_routeterremauditeherbehg.png') no-repeat;
+}
+.tex873
+{
+	background: url('../image/texture/route/jonction_foret_herbe_hd.png') no-repeat;
+}
+.tex874
+{
+	background: url('../image/texture/route/jonction_foret_herbe_verti.png') no-repeat;
+}
+.tex875
+{
+	background: url('../image/texture/route/tex_intersecrouteforethorbas.png') no-repeat;
+}
+.tex876
+{
+	background: url('../image/texture/route/tex_intersecrouteforethorvertnord.png') no-repeat;
+}
+.tex877
+{
+	background: url('../image/texture/route/tex_intersecrouteforetvertidroite.png') no-repeat;
+}
+.tex878
+{
+	background: url('../image/texture/route/tex_intersecrouteforetvertigauche.png') no-repeat;
+}
+.tex880
+{
+	background: url('../image/texture/route/tex_routeforetbd.png') no-repeat;
+}
+.tex881
+{
+	background: url('../image/texture/route/tex_routeforetbg.png') no-repeat;
+}
+.tex882
+{
+	background: url('../image/texture/route/tex_routeforethd.png') no-repeat;
+}
+.tex883
+{
+	background: url('../image/texture/route/tex_routeforethg.png') no-repeat;
+}
+.tex884
+{
+	background: url('../image/texture/route/tex_routeforethor.png') no-repeat;
+}
+.tex885
+{
+	background: url('../image/texture/route/tex_routeforetverti.png') no-repeat;
+}
+.tex886
+{
+	background: url('../image/texture/route/tex_routedesertherb.png') no-repeat;
+}
+.tex887
+{
+	background: url('../image/texture/route/tex_pontpavens.png') no-repeat;
+}
+.tex888
+{
+	background: url('../image/texture/route/tex_pontpaveeo.png') no-repeat;
+}
+.tex889
+{
+	background: url('../image/texture/route/tex_routebanquiseherbebg.png') no-repeat;
+}
+.tex890
+{
+	background: url('../image/texture/route/tex_routebanquiseherbebd.png') no-repeat;
+}
+.tex891
+{
+	background: url('../image/texture/route/tex_routebanquiseherbehd.png') no-repeat;
+}
+.tex892
+{
+	background: url('../image/texture/route/tex_routebanquiseherbehg.png') no-repeat;
+}
+.tex893
+{
+	background: url('../image/texture/route/tex_intersectionpaveneigesn.png') no-repeat;
+}
+.tex894
+{
+	background: url('../image/texture/route/tex_intersectionpaveneigens.png') no-repeat;
+}
+.tex895
+{
+	background: url('../image/texture/route/tex_intersectionpaveneigeeo.png') no-repeat;
+}
+.tex896
+{
+	background: url('../image/texture/route/tex_intersectionpaveneigeoe.png') no-repeat;
+}
+.tex897
+{
+	background: url('../image/texture/route/tex_routeherbebanquisebd.png') no-repeat;
+}
+.tex898
+{
+	background: url('../image/texture/route/tex_routeherbebanquisebg.png') no-repeat;
+}
+.tex899
+{
+	background: url('../image/texture/route/tex_routeherbebanquisehd.png') no-repeat;
+}
+.tex900
+{
+	background: url('../image/texture/route/tex_routeherbebanquisehg.png') no-repeat;
+}
+.tex901
+{
+	background: url('../image/texture/route/tex_routemaraisherbeeo.png') no-repeat;
+}
+.tex902
+{
+	background: url('../image/texture/route/tex_routemaraisherbens.png') no-repeat;
+}
+.tex903
+{
+	background: url('../image/texture/route/tex_routemaraisherbeoe.png') no-repeat;
+}
+.tex904
+{
+	background: url('../image/texture/route/tex_routemaraisherbesn.png') no-repeat;
+}
+.tex905
+{
+	background: url('../image/texture/route/tex_routeherbeterremauditebd.png') no-repeat;
+}
+.tex906
+{
+	background: url('../image/texture/route/tex_routeherbeterremauditebg.png') no-repeat;
+}
+.tex907
+{
+	background: url('../image/texture/route/tex_routeherbeterremauditehd.png') no-repeat;
+}
+.tex908
+{
+	background: url('../image/texture/route/tex_routeherbeterremauditehg.png') no-repeat;
+}
+.tex909
+{
+	background: url('../image/texture/route/tex_routeherbeterremauditee.png') no-repeat;
+}
+.tex910
+{
+	background: url('../image/texture/route/tex_routeherbeterremauditen.png') no-repeat;
+}
+.tex911
+{
+	background: url('../image/texture/route/tex_routeherbeterremauditeo.png') no-repeat;
+}
+.tex912
+{
+	background: url('../image/texture/route/tex_routeherbeterremaudites.png') no-repeat;
+}
 .tex6
 {
 	background: url('../image/texture/tex_desert1.png') no-repeat;
@@ -1032,7 +1686,7 @@
 }
 .tex4
 {
-	background: url('../image/texture/tex_forthumain1.png') no-repeat;
+	background: url('../image/texture/tex_myriandre.png') no-repeat;
 }
 .tex7
 {
@@ -1045,7 +1699,7 @@
 /* Batiments */
 .tex1001
 {
-	background: url('../image/texture/tex_forthumain1.png') no-repeat;
+	background: url('../image/texture/tex_myriandre.png') no-repeat;
 }
 .tex1002
 {
@@ -1071,7 +1725,6 @@
 {
 	background: url('../image/texture/capitale/defaut/tex_capitalehum6.png') no-repeat;
 }
-
 .tex1009
 {
 	background: url('../image/texture/capitale/vampire/tex_capitalevamp1.png') no-repeat;
@@ -1168,33 +1821,30 @@
 {
 	background: url('../image/texture/capitale/mort-vivant/tex_capitalemarais6v2.png') no-repeat;
 }
-
-
 .tex1033
 {
-	background: url('../image/texture/capitale/haut_elfs/capitale1.png') no-repeat;
+	background: url('../image/texture/capitale/haut_elfs/villehautelfhg.png') no-repeat;
 }
 .tex1034
 {
-	background: url('../image/texture/capitale/haut_elfs/capitale2.png') no-repeat;
+	background: url('../image/texture/capitale/haut_elfs/villehautelfhm.png') no-repeat;
 }
 .tex1035
 {
-	background: url('../image/texture/capitale/haut_elfs/capitale3.png') no-repeat;
+	background: url('../image/texture/capitale/haut_elfs/villehautelfhd.png') no-repeat;
 }
 .tex1036
 {
-	background: url('../image/texture/capitale/haut_elfs/capitale4.png') no-repeat;
+	background: url('../image/texture/capitale/haut_elfs/villehautelfbd.png') no-repeat;
 }
 .tex1037
 {
-	background: url('../image/texture/capitale/haut_elfs/capitale5.png') no-repeat;
+	background: url('../image/texture/capitale/haut_elfs/villehautelfbm.png') no-repeat;
 }
 .tex1038
 {
-	background: url('../image/texture/capitale/haut_elfs/capitale6.png') no-repeat;
+	background: url('../image/texture/capitale/haut_elfs/villehautelfbg.png') no-repeat;
 }
-
 .tex1039
 {
 	background: url('../image/texture/capitale/troll/capital1.png') no-repeat;
@@ -1314,6 +1964,10 @@
 .tex1068
 {
 	background: url('../image/texture/capitale/humain/tex_capitalehum6.png') no-repeat;
+}
+.tex1069
+{
+	background: url('../image/texture/tex_desertmyriandre.png') no-repeat;
 }
 /* Terre mabite*/
 .tex1101
@@ -1435,6 +2089,38 @@
 .tex1129
 {
 	background: url('../image/texture/terremaudite/tex_terremauditeblood.png') no-repeat;
+}
+tex1130
+{
+    background: url('../image/texture/terremaudite/tex_terremauditeblood2mg.png') no-repeat;
+}
+tex1131
+{
+    background: url('../image/texture/terremaudite/tex_terremauditeblood2bm.png') no-repeat;
+}
+tex1132
+{
+    background: url('../image/texture/terremaudite/tex_terremauditeblood2md.png') no-repeat;
+}
+tex1133
+{
+    background: url('../image/texture/terremaudite/tex_terremauditeblood2centre.png') no-repeat;
+}
+tex1134
+{
+    background: url('../image/texture/terremaudite/tex_terremauditeblood3centre.png') no-repeat;
+}
+tex1135
+{
+    background: url('../image/texture/terremaudite/tex_terremauditeblood2hg.png') no-repeat;
+}
+tex1136
+{
+    background: url('../image/texture/terremaudite/tex_terremauditeblood2hm.png') no-repeat;
+}
+tex1137
+{
+    background: url('../image/texture/terremaudite/tex_tmfailleceleste.png') no-repeat;
 }
 
 /* Donjon */
@@ -1706,6 +2392,566 @@
 .tex1642
 {
 	background: url('../image/texture/donjon_gobelin/tex_donjongob_prison3.png') no-repeat;
+}
+.tex2000
+{
+	background: url('../image/texture/capitale/vampire/villevampendestrbg.gif') no-repeat; 
+}
+.tex2001
+{
+	background: url('../image/texture/capitale/vampire/villevampendestrbm.gif') no-repeat; 
+}
+.tex2002
+{
+	background: url('../image/texture/capitale/vampire/villevampendestrbd.gif') no-repeat; 	
+}
+.tex2003
+{
+	background: url('../image/texture/capitale/vampire/villevampendestrhg.gif') no-repeat; 	
+}
+.tex2004
+{
+	background: url('../image/texture/capitale/vampire/villevampendestrhm.gif') no-repeat; 	
+}
+.tex2005
+{
+	background: url('../image/texture/capitale/vampire/villevampendestrhd.gif') no-repeat; 	
+}
+.tex2006
+{
+	background: url('../image/texture/capitale/humain/villehumendestrbg.gif') no-repeat; 	
+}
+.tex2007
+{
+	background: url('../image/texture/capitale/humain/villehumendestrbm.gif') no-repeat;
+}
+.tex2008
+{
+	background: url('../image/texture/capitale/humain/villehumendestrbd.gif') no-repeat;
+}
+.tex2009
+{
+	background: url('../image/texture/capitale/humain/villehumendestrhg.gif') no-repeat;
+}
+.tex2010
+{
+	background: url('../image/texture/capitale/humain/villehumendestrhm.gif') no-repeat;
+}
+.tex2011
+{
+	background: url('../image/texture/capitale/humain/villehumendestrhd.gif') no-repeat;
+}
+.tex2012
+{
+	background: url('../image/texture/capitale/barbare/villebabaendestrbg.gif') no-repeat;
+}
+.tex2013
+{
+	background: url('../image/texture/capitale/barbare/villebabaendestrbm.gif') no-repeat;
+}
+.tex2014
+{
+	background: url('../image/texture/capitale/barbare/villebabaendestrbd.gif') no-repeat;
+}
+.tex2015
+{
+	background: url('../image/texture/capitale/barbare/villebabaendestrhg.gif') no-repeat;
+}
+.tex2016
+{
+	background: url('../image/texture/capitale/barbare/villebabaendestrhm.gif') no-repeat;
+}
+.tex2017
+{
+	background: url('../image/texture/capitale/barbare/villebabaendestrhd.gif') no-repeat;
+}
+.tex2018
+{
+	background: url('../image/texture/capitale/corrompu/villecorrendestrbg.gif') no-repeat;
+}
+.tex2019
+{
+	background: url('../image/texture/capitale/corrompu/villecorrendestrbm.gif') no-repeat;
+}
+.tex2020
+{
+	background: url('../image/texture/capitale/corrompu/villecorrendestrbd.gif') no-repeat;
+}
+.tex2021
+{
+	background: url('../image/texture/capitale/corrompu/villecorrendestrhg.gif') no-repeat;
+}
+.tex2022
+{
+	background: url('../image/texture/capitale/corrompu/villecorrendestrhm.gif') no-repeat;
+}
+.tex2023
+{
+	background: url('../image/texture/capitale/corrompu/villecorrendestrhd.gif') no-repeat;
+}
+.tex2024
+{
+	background: url('../image/texture/capitale/mort-vivant/villemortvivendestrbg.gif') no-repeat;
+}
+.tex2025
+{
+	background: url('../image/texture/capitale/mort-vivant/villemortvivendestrbm.gif') no-repeat;
+}
+.tex2026
+{
+	background: url('../image/texture/capitale/mort-vivant/villemortvivendestrbd.gif') no-repeat;
+}
+.tex2027
+{
+	background: url('../image/texture/capitale/mort-vivant/villemortvivendestrhg.gif') no-repeat;
+}
+.tex2028
+{
+	background: url('../image/texture/capitale/mort-vivant/villemortvivendestrhm.gif') no-repeat;
+}
+.tex2029
+{
+	background: url('../image/texture/capitale/mort-vivant/villemortvivendestrhd.gif') no-repeat;
+}
+.tex2030
+{
+	background: url('../image/texture/capitale/troll/villetrollendestrbg.gif') no-repeat;
+}
+.tex2031
+{
+	background: url('../image/texture/capitale/troll/villetrollendestrbm.gif') no-repeat;
+}
+.tex2032
+{
+	background: url('../image/texture/capitale/troll/villetrollendestrbd.gif') no-repeat;
+}
+.tex2033
+{
+	background: url('../image/texture/capitale/troll/villetrollendestrhg.gif') no-repeat;
+}
+.tex2034
+{
+	background: url('../image/texture/capitale/troll/villetrollendestrhm.gif') no-repeat;
+}
+.tex2035
+{
+	background: url('../image/texture/capitale/troll/villetrollendestrhd.gif') no-repeat;
+}
+.tex2036
+{
+	background: url('../image/texture/capitale/orc/villeorcendestrbg.gif') no-repeat;
+}
+.tex2037
+{
+	background: url('../image/texture/capitale/orc/villeorcendestrbm.gif') no-repeat;
+}
+.tex2038
+{
+	background: url('../image/texture/capitale/orc/villeorcendestrbd.gif') no-repeat;
+}
+.tex2039
+{
+	background: url('../image/texture/capitale/orc/villeorcendestrhg.gif') no-repeat;
+}
+.tex2040
+{
+	background: url('../image/texture/capitale/orc/villeorcendestrhm.gif') no-repeat;
+}
+.tex2041
+{
+	background: url('../image/texture/capitale/orc/villeorcendestrhd.gif') no-repeat;
+}
+.tex2042
+{
+	background: url('../image/texture/capitale/nain/villenainendestrbg.gif') no-repeat;
+}
+.tex2043
+{
+	background: url('../image/texture/capitale/nain/villenainendestrbm.gif') no-repeat;
+}
+.tex2044
+{
+	background: url('../image/texture/capitale/nain/villenainendestrbd.gif') no-repeat;
+}
+.tex2045
+{
+	background: url('../image/texture/capitale/nain/villenainendestrhg.gif') no-repeat;
+}
+.tex2046
+{
+	background: url('../image/texture/capitale/nain/villenainendestrhm.gif') no-repeat;
+}
+.tex2047
+{
+	background: url('../image/texture/capitale/nain/villenainendestrhd.gif') no-repeat;
+}
+.tex2048
+{
+	background: url('../image/texture/capitale/haut-elf/villehautelfendestrbg.gif') no-repeat;
+}
+.tex2049
+{
+	background: url('../image/texture/capitale/haut-elf/villehautelfendestrbm.gif') no-repeat;
+}
+.tex2050
+{
+	background: url('../image/texture/capitale/haut-elf/villehautelfendestrbd.gif') no-repeat;
+}
+.tex2051
+{
+	background: url('../image/texture/capitale/haut-elf/villehautelfendestrhg.gif') no-repeat;
+}
+.tex2052
+{
+	background: url('../image/texture/capitale/haut-elf/villehautelfendestrhm.gif') no-repeat;
+}
+.tex2053
+{
+	background: url('../image/texture/capitale/haut-elf/villehautelfendestrhd.gif') no-repeat;
+}
+.tex2054
+{
+	background: url('../image/texture/capitale/EDB/villeEDBendestrbg.gif') no-repeat;
+}
+.tex2055
+{
+	background: url('../image/texture/capitale/EDB/villeEDBendestrbm.gif') no-repeat;
+}
+.tex2056
+{
+	background: url('../image/texture/capitale/EDB/villeEDBendestrbd.gif') no-repeat;
+}
+.tex2057
+{
+	background: url('../image/texture/capitale/EDB/villeEDBendestrhg.gif') no-repeat;
+}
+.tex2058
+{
+	background: url('../image/texture/capitale/EDB/villeEDBendestrhm.gif') no-repeat;
+}
+.tex2059
+{
+	background: url('../image/texture/capitale/EDB/villeEDBendestrhd.gif') no-repeat;
+}
+.tex2060
+{
+	background: url('../image/texture/capitale/scavenger/villescavendestrbg.gif') no-repeat;
+}
+.tex2061
+{
+	background: url('../image/texture/capitale/scavenger/villescavendestrbm.gif') no-repeat;
+}
+.tex2062
+{
+	background: url('../image/texture/capitale/scavenger/villescavendestrbd.gif') no-repeat;
+}
+.tex2063
+{
+	background: url('../image/texture/capitale/scavenger/villescavendestrhg.gif') no-repeat;
+}
+.tex2064
+{
+	background: url('../image/texture/capitale/scavenger/villescavendestrhm.gif') no-repeat;
+}
+.tex2065
+{
+	background: url('../image/texture/capitale/scavenger/villescavendestrhd.gif') no-repeat;
+}
+.tex2100
+{
+	background: url('../image/texture/capitale/EDB/villeEDBdetruitebg.png') no-repeat;
+}
+.tex2101
+{
+	background: url('../image/texture/capitale/EDB/villeEDBdetruitebm.png') no-repeat;
+}
+.tex2102
+{
+	background: url('../image/texture/capitale/EDB/villeEDBdetruitebd.png') no-repeat;
+}
+.tex2103
+{
+	background: url('../image/texture/capitale/EDB/villeEDBdetruitehg.png') no-repeat;
+}
+.tex2104
+{
+	background: url('../image/texture/capitale/EDB/villeEDBdetruitehm.png') no-repeat;
+}
+.tex2105
+{
+	background: url('../image/texture/capitale/EDB/villeEDBdetruitehd.png') no-repeat;
+}
+.tex2106
+{
+	background: url('../image/texture/capitale/orc/villeorcdetruitebg.png') no-repeat;
+}
+.tex2107
+{
+	background: url('../image/texture/capitale/orc/villeorcdetruitebm.png') no-repeat;
+}
+.tex2108
+{
+	background: url('../image/texture/capitale/orc/villeorcdetruitebd.png') no-repeat;
+}
+.tex2109
+{
+	background: url('../image/texture/capitale/orc/villeorcdetruitehg.png') no-repeat;
+}
+.tex2110
+{
+	background: url('../image/texture/capitale/orc/villeorcdetruitehm.png') no-repeat;
+}
+.tex2111
+{
+	background: url('../image/texture/capitale/orc/villeorcdetruitehd.png') no-repeat;
+}
+.tex2112
+{
+	background: url('../image/texture/capitale/mort-vivant/villemorvivdetruitebg.png') no-repeat;
+}
+.tex2113
+{
+	background: url('../image/texture/capitale/mort-vivant/villemorvivdetruitebm.png') no-repeat;
+}
+.tex2114
+{
+	background: url('../image/texture/capitale/mort-vivant/villemorvivdetruitebd.png') no-repeat;
+}
+.tex2115
+{
+	background: url('../image/texture/capitale/mort-vivant/villemorvivdetruitehg.png') no-repeat;
+}
+.tex2116
+{
+	background: url('../image/texture/capitale/mort-vivant/villemorvivdetruitehm.png') no-repeat;
+}
+.tex2117
+{
+	background: url('../image/texture/capitale/mort-vivant/villemorvivdetruitehd.png') no-repeat;
+}
+.tex2118
+{
+	background: url('../image/texture/capitale/vampire/villevampdetruitebg.png') no-repeat;
+}
+.tex2119
+{
+	background: url('../image/texture/capitale/vampire/villevampdetruitebm.png') no-repeat;
+}
+.tex2120
+{
+	background: url('../image/texture/capitale/vampire/villevampdetruitebd.png') no-repeat;
+}
+.tex2121
+{
+	background: url('../image/texture/capitale/vampire/villevampdetruitehg.png') no-repeat;
+}
+.tex2122
+{
+	background: url('../image/texture/capitale/vampire/villevampdetruitehm.png') no-repeat;
+}
+.tex2123
+{
+	background: url('../image/texture/capitale/vampire/villevampdetruitehd.png') no-repeat;
+}
+.tex2124
+{
+	background: url('../image/texture/capitale/corrompu/villecorrdetruitebg.png') no-repeat;
+}
+.tex2125
+{
+	background: url('../image/texture/capitale/corrompu/villecorrdetruitebm.png') no-repeat;
+}
+.tex2126
+{
+	background: url('../image/texture/capitale/corrompu/villecorrdetruitebd.png') no-repeat;
+}
+.tex2127
+{
+	background: url('../image/texture/capitale/corrompu/villecorrdetruitehg.png') no-repeat;
+}
+.tex2128
+{
+	background: url('../image/texture/capitale/corrompu/villecorrdetruitehm.png') no-repeat;
+}
+.tex2129
+{
+	background: url('../image/texture/capitale/corrompu/villecorrdetruitehd.png') no-repeat;
+}
+.tex2130
+{
+	background: url('../image/texture/capitale/humain/villehumaindetruitebg.png') no-repeat;
+}
+.tex2131
+{
+	background: url('../image/texture/capitale/humain/villehumaindetruitebm.png') no-repeat;
+}
+.tex2132
+{
+	background: url('../image/texture/capitale/humain/villehumaindetruitebd.png') no-repeat;
+}
+.tex2133
+{
+	background: url('../image/texture/capitale/humain/villehumaindetruitehg.png') no-repeat;
+}
+.tex2134
+{
+	background: url('../image/texture/capitale/humain/villehumaindetruitehm.png') no-repeat;
+}
+.tex2135
+{
+	background: url('../image/texture/capitale/humain/villehumaindetruitehd.png') no-repeat;
+}
+.tex2136
+{
+	background: url('../image/texture/capitale/barbare/villebabadetruitebg.png') no-repeat;
+}
+.tex2137
+{
+	background: url('../image/texture/capitale/barbare/villebabadetruitebm.png') no-repeat;
+}
+.tex2138
+{
+	background: url('../image/texture/capitale/barbare/villebabadetruitebd.png') no-repeat;
+}
+.tex2139
+{
+	background: url('../image/texture/capitale/barbare/villebabadetruitehg.png') no-repeat;
+}
+.tex2140
+{
+	background: url('../image/texture/capitale/barbare/villebabadetruitehm.png') no-repeat;
+}
+.tex2141
+{
+	background: url('../image/texture/capitale/barbare/villebabadetruitehd.png') no-repeat;
+}
+.tex2142
+{
+	background: url('../image/texture/capitale/nain/villenaindetruitebg.png') no-repeat;
+}
+.tex2143
+{
+	background: url('../image/texture/capitale/nain/villenaindetruitebm.png') no-repeat;
+}
+.tex2144
+{
+	background: url('../image/texture/capitale/nain/villenaindetruitebd.png') no-repeat;
+}
+.tex2145
+{
+	background: url('../image/texture/capitale/nain/villenaindetruitehg.png') no-repeat;
+}
+.tex2146
+{
+	background: url('../image/texture/capitale/nain/villenaindetruitehm.png') no-repeat;
+}
+.tex2147
+{
+	background: url('../image/texture/capitale/nain/villenaindetruitehd.png') no-repeat;
+}
+.tex2148
+{
+	background: url('../image/texture/capitale/haut-elf/villehautelfdetruitebg.png') no-repeat;
+}
+.tex2149
+{
+	background: url('../image/texture/capitale/haut-elf/villehautelfdetruitebm.png') no-repeat;
+}
+.tex2150
+{
+	background: url('../image/texture/capitale/haut-elf/villehautelfdetruitebd.png') no-repeat;
+}
+.tex2151
+{
+	background: url('../image/texture/capitale/haut-elf/villehautelfdetruitehg.png') no-repeat;
+}
+.tex2152
+{
+	background: url('../image/texture/capitale/haut-elf/villehautelfdetruitehm.png') no-repeat;
+}
+.tex2153
+{
+	background: url('../image/texture/capitale/haut-elf/villehautelfdetruitehd.png') no-repeat;
+}
+.tex2154
+{
+	background: url('../image/texture/capitale/scavenger/villescavendetruitebg.png') no-repeat;
+}
+.tex2155
+{
+	background: url('../image/texture/capitale/scavenger/villescavendetruitebm.png') no-repeat;
+}
+.tex2156
+{
+	background: url('../image/texture/capitale/scavenger/villescavendetruitebd.png') no-repeat;
+}
+.tex2157
+{
+	background: url('../image/texture/capitale/scavenger/villescavendetruitehg.png') no-repeat;
+}
+.tex2158
+{
+	background: url('../image/texture/capitale/scavenger/villescavendetruitehm.png') no-repeat;
+}
+.tex2159
+{
+	background: url('../image/texture/capitale/scavenger/villescavendetruitehd.png') no-repeat;
+}
+.tex2160
+{
+	background: url('../image/texture/capitale/troll/villetrolldetruitebg.png') no-repeat;
+}
+.tex2161
+{
+	background: url('../image/texture/capitale/troll/villetrolldetruitebm.png') no-repeat;
+}
+.tex2162
+{
+	background: url('../image/texture/capitale/troll/villetrolldetruitebd.png') no-repeat;
+}
+.tex2163
+{
+	background: url('../image/texture/capitale/troll/villetrolldetruitehg.png') no-repeat;
+}
+.tex2164
+{
+	background: url('../image/texture/capitale/troll/villetrolldetruitehm.png') no-repeat;
+}
+.tex2165
+{
+	background: url('../image/texture/capitale/troll/villetrolldetruitehd.png') no-repeat;
+}
+.tex2166
+{
+	background: url('../image/texture/batimentdestr/bourgade_destr04') no-repeat;
+}
+.tex2167
+{
+	background: url('../image/texture/batimentdestr/bourgdestr04') no-repeat;
+}
+.tex2168
+{
+	background: url('../image/texture/batimentdestr/fortdestr04') no-repeat;
+}
+.tex2169
+{
+	background: url('../image/texture/batimentdestr/forteressedestr_04') no-repeat;
+}
+.tex2170
+{
+	background: url('../image/texture/batimentdestr/fortindestr04') no-repeat;
+}
+.tex2171
+{
+	background: url('../image/texture/batimentdestr/minedestr_04') no-repeat;
+}
+.tex2172
+{
+	background: url('../image/texture/batimentdestr/tour_archerdestr04') no-repeat;
+}
+.tex2173
+{
+	background: url('../image/texture/batimentdestr/tourdemagedestr04') no-repeat;
 }
 .texblack
 {
