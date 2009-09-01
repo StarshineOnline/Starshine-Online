@@ -15,7 +15,7 @@ if ($G_maintenance)
 }
 else
 {
-	include_once(root.'menu_admin.php');
+	include_once(root.'admin/menu_admin.php');
 	?>
 	<div id="contenu">
 		<div id="centre3">
@@ -64,6 +64,6 @@ else
 		</div>
 	</div>
 	<?php
-	include_once(root.'../bas.php');
+	include_once(root.'bas.php');
 }
 ?>
