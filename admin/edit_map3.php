@@ -170,6 +170,9 @@ $req = $db->query($requete);
 					<option value="103" class="baseRow1">Buisson</option>		
 					<option value="104" class="baseRow1">Arbre 1</option>
 					<option value="105" class="baseRow1">Arbre 2</option>
+					<option value="112" class="baseRow1">Herbe Haute Gauche</option>
+					<option value="113" class="baseRow1">Herbe Haute Droit</option>
+					
 					<option value="106" class="baseRow1">Herbe Haute Bas Gauche</option>
 					<option value="107" class="baseRow1">Herbe Haute Bas Milieu</option>
 					<option value="108" class="baseRow1">Herbe Haute Bas Droite</option>		
@@ -180,6 +183,7 @@ $req = $db->query($requete);
 					<option value="117" class="baseRow1">Herbe Haute Diag Bas Gauche</option>
 					<option value="118" class="baseRow1">Herbe Haute Diag Haut Droit</option>
 					<option value="119" class="baseRow1">Herbe Haute Diag Haut Gauche</option>
+					
 					<option value="120" class="baseRow1">Herbe Haute Centre</option>
 					<option value="121" class="baseRow1">hautherbe_jonction_horid</option>
 					<option value="122" class="baseRow1">hautherbe_jonction_horig</option>
