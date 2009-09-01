@@ -1,6 +1,6 @@
 <?php
-if (file_exists('root.php'))
-  include_once('root.php');
+if (file_exists('../root.php'))
+  include_once('../root.php');
 
 
 include_once(root.'haut.php');
@@ -583,41 +583,17 @@ $req = $db->query($requete);
 	</div>
 	<br />
 	<div>
-	<table cellpadding="0" cellspacing="0">
-	<tr>
-		<td class="rose">
-		<img src="image/rosedesvent/nordouest.png" alt="" />
-		</td>
-		<td class="rose">
-		<a href="edit_map3.php?ymin=<?php echo ($ymin - 5); ?>&xmin=<?php echo $xmin; ?>"><img src="image/rosedesvent/nord.png" alt="" /></a>
-		</td>
-		<td class="rose">
-		<img src="image/rosedesvent/nordest.png" alt="" />
-		</td>
-	</tr>
-	<tr>
-		<td class="rose">
-		<a href="edit_map3.php?xmin=<?php echo ($xmin - 5); ?>&ymin=<?php echo $ymin; ?>"><img src="image/rosedesvent/ouest.png" alt="" /></a>
-		</td>
-		<td class="rose">
-		<img src="image/rosedesvent/centre.png" alt="" />
-		</td>
-		<td class="rose">
-		<a href="edit_map3.php?xmin=<?php echo ($xmax - 4); ?>&ymin=<?php echo $ymin; ?>"><img src="image/rosedesvent/est.png" alt="" /></a>
-		</td>
-	</tr>
-	<tr>
-		<td class="rose">
-		<img src="image/rosedesvent/sudouest.png" alt="" />
-		</td>
-		<td class="rose">
-		<a href="edit_map3.php?ymin=<?php echo ($ymax - 4); ?>&xmin=<?php echo $xmin; ?>"><img src="image/rosedesvent/sud.png" alt="" /></a>
-		</td>
-		<td class="rose">
-		<img src="image/rosedesvent/sudest.png" alt="" />
-		</td>
-	</tr>
-	</table>
+<div id='rosedesvents'>
+	   <a id='rose_div_hg'></a>
+	   <a id='rose_div_h' href="edit_map3.php?ymin=<?php echo ($ymin - 5); ?>&xmin=<?php echo $xmin; ?>"></a>
+	   <a id='rose_div_hd'></a>
+	   <a id='rose_div_cg'href="edit_map3.php?xmin=<?php echo ($xmax - 4); ?>&ymin=<?php echo $ymin; ?>"></a>
+	   <a id='rose_div_c'></a>
+	   <a id='rose_div_cd' href="edit_map3.php?xmin=<?php echo ($xmax - 4); ?>&ymin=<?php echo $ymin; ?>"></a>
+	   <a id='rose_div_bg'></a>
+	   <a id='rose_div_b' href="edit_map3.php?ymin=<?php echo ($ymax - 4); ?>&xmin=<?php echo $xmin; ?>"></a>
+	   <a id='rose_div_bd'></a>
+</div>	
 	</div>
 	<a href="view_map.php">Map Globale</a>
 	<div style="margin-top : 650px; text-align : center;">
