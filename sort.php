@@ -754,8 +754,6 @@ else
 	
 	if($_GET['tri'] == 'favoris')
 		$where = 'id IN (SELECT id_sort FROM sort_favoris WHERE id_perso = \''.$joueur->get_id().'\')';
-	else
-		$sorts = sort_jeu::create('', '', 'comp_assoc ASC, type ASC', false, ''.$where);
 
 	$test = false;
 	$sorts = sort_jeu::create('', '', 'comp_assoc ASC, type ASC', false, ''.$where);
