@@ -247,6 +247,8 @@ $req = $db->query($requete);
 					<option value="180" class="baseRow1">Arbre 2</option>
 					<option value="181" class="baseRow1">Arbre 2</option>
 					<option value="182" class="baseRow1">Arbre 2</option>
+					<option value="183" class="baseRow1">Arbre 2</option>
+					<option value="184" class="baseRow1">Arbre 2</option>
 					
 				</optgroup>
 				<optgroup label="Foret">
@@ -260,10 +262,16 @@ $req = $db->query($requete);
 					<option value="208" class="baseRow2">Droite</option>
 					<option value="209" class="baseRow2">Haut droite</option>
 					<option value="210" class="baseRow1">Haut</option>
-					<option value="211" class="baseRow1">Coin haut gauche</option>
+					<option value="211" class="baseRow2">Coin haut gauche</option>
 					<option value="212" class="baseRow1">Coin bas gauche</option>
-					<option value="213" class="baseRow1">Coin bas droite</option>
+					<option value="213" class="baseRow2">Coin bas droite</option>
 					<option value="214" class="baseRow1">Coin haut droite</option>
+					<option value="215" class="baseRow2">Coin bas droite</option>
+					<option value="216" class="baseRow1">Coin haut droite</option>
+					<option value="217" class="baseRow2">Coin bas droite</option>
+					<option value="218" class="baseRow1">Coin haut droite</option>
+
+					
 				</optgroup>
 				<optgroup label="Desert">
 					<option value="301" class="baseRow2">Centre</option>
@@ -275,13 +283,115 @@ $req = $db->query($requete);
 					<option value="307" class="baseRow2">Droite</option>
 					<option value="308" class="baseRow2">Haut droite</option>
 					<option value="309" class="baseRow1">Haut</option>
-					<option value="310" class="baseRow1">Coin haut gauche</option>
+					<option value="310" class="baseRow2">Coin haut gauche</option>
 					<option value="311" class="baseRow1">Coin bas gauche</option>
-					<option value="312" class="baseRow1">Coin bas droite</option>
+					<option value="312" class="baseRow2">Coin bas droite</option>
 					<option value="313" class="baseRow1">Coin haut droite</option>
-					<option value="314" class="baseRow1">cactus</option>
-					<option value="315" class="baseRow1">Oasis is good</option>					
+					<option value="314" class="baseRow2">cactus</option>
+					<option value="315" class="baseRow1">Oasis is good</option>		
+					<option value="316" class="baseRow2">cactus</option>
+					<option value="317" class="baseRow1">Oasis is good</option>					
+					<option value="318" class="baseRow2">cactus</option>
+					<option value="319" class="baseRow1">Oasis is good</option>					
+					<option value="320" class="baseRow2">cactus</option>
+					<option value="321" class="baseRow1">Oasis is good</option>					
+					<option value="322" class="baseRow2">cactus</option>
+					<option value="323" class="baseRow1">Oasis is good</option>					
+					<option value="324" class="baseRow2">cactus</option>
+					<option value="325" class="baseRow1">Oasis is good</option>					
+					<option value="326" class="baseRow2">cactus</option>
+					<option value="327" class="baseRow1">Oasis is good</option>					
+					<option value="328" class="baseRow2">cactus</option>
+					<option value="329" class="baseRow1">Oasis is good</option>					
+					<option value="330" class="baseRow2">cactus</option>
+					<option value="331" class="baseRow1">Oasis is good</option>					
+					<option value="332" class="baseRow2">cactus</option>
+					<option value="333" class="baseRow1">Oasis is good</option>					
 				</optgroup>
+				<optgroup label="Neige">
+					<option value="401" class="baseRow2">Centre</option>
+					<option value="402" class="baseRow1">Haut gauche</option>
+					<option value="403" class="baseRow2">Gauche</option>
+					<option value="404" class="baseRow1">Bas gauche</option>
+					<option value="405" class="baseRow2">Bas</option>
+					<option value="406" class="baseRow1">Bas droite</option>
+					<option value="407" class="baseRow2">Droite</option>
+					<option value="408" class="baseRow1">Haut droite</option>
+					<option value="409" class="baseRow2">Haut</option>
+					<option value="410" class="baseRow1">Coin haut gauche</option>
+					<option value="411" class="baseRow2">Coin bas gauche</option>
+					<option value="412" class="baseRow1">Coin bas droite</option>
+					<option value="413" class="baseRow2">Coin haut droite</option>
+					<option value="414" class="baseRow1">Coin bas gauche herbe</option>					
+					<option value="415" class="baseRow2">Coin bas droite herbe</option>
+					<option value="416" class="baseRow1">Coin haut gauche herbe</option>
+					<option value="417" class="baseRow2">Coin haut droite herbe</option>
+					<option value="418" class="baseRow1">gauche herbe</option>
+					<option value="419" class="baseRow2">bas herbe</option>
+					<option value="420" class="baseRow1">droite herbe</option>
+					<option value="421" class="baseRow2">haut herbe</option>
+					<option value="422" class="baseRow1">Coin2 bas gauche herbe</option>					
+					<option value="423" class="baseRow2">Coin2 bas droite herbe</option>
+					<option value="424" class="baseRow1">Coin2 haut gauche herbe</option>
+					<option value="425" class="baseRow2">Coin2 haut droite herbe</option>
+					<option value="426" class="baseRow1">Texture spécial neige</option>	
+					<option value="427" class="baseRow2">Texture spécial neige</option>	
+					<option value="428" class="baseRow1">Coin2 haut gauche herbe</option>
+					<option value="429" class="baseRow2">Coin2 haut droite herbe</option>
+					<option value="430" class="baseRow1">Texture spécial neige</option>	
+					<option value="431" class="baseRow2">Texture spécial neige</option>	
+					<option value="432" class="baseRow1">Coin2 haut gauche herbe</option>
+					<option value="433" class="baseRow2">Coin2 haut droite herbe</option>
+					<option value="434" class="baseRow1">Texture spécial neige</option>	
+					<option value="435" class="baseRow2">Texture spécial neige</option>	
+					<option value="436" class="baseRow1">Coin2 haut gauche herbe</option>
+					<option value="437" class="baseRow2">Coin2 haut droite herbe</option>
+					<option value="438" class="baseRow1">Texture spécial neige</option>	
+					<option value="439" class="baseRow2">Texture spécial neige</option>	
+					<option value="440" class="baseRow1">Coin2 haut gauche herbe</option>
+					<option value="441" class="baseRow2">Coin2 haut droite herbe</option>
+					<option value="442" class="baseRow1">Texture spécial neige</option>	
+					<option value="443" class="baseRow2">Texture spécial neige</option>	
+					<option value="444" class="baseRow1">Coin2 haut gauche herbe</option>
+					<option value="445" class="baseRow2">Coin2 haut droite herbe</option>
+					<option value="446" class="baseRow1">Texture spécial neige</option>	
+					<option value="447" class="baseRow2">Texture spécial neige</option>	
+					<option value="448" class="baseRow1">Coin2 haut gauche herbe</option>
+					<option value="449" class="baseRow2">Coin2 haut droite herbe</option>
+					<option value="450" class="baseRow1">Texture spécial neige</option>	
+					<option value="451" class="baseRow2">Texture spécial neige</option>	
+					<option value="452" class="baseRow1">Coin2 haut gauche herbe</option>
+					<option value="453" class="baseRow2">Coin2 haut droite herbe</option>
+					<option value="454" class="baseRow1">Texture spécial neige</option>	
+					<option value="455" class="baseRow2">Texture spécial neige</option>	
+					<option value="456" class="baseRow1">Coin2 haut gauche herbe</option>
+					<option value="457" class="baseRow2">Coin2 haut droite herbe</option>
+					<option value="458" class="baseRow1">Texture spécial neige</option>	
+					<option value="459" class="baseRow2">Texture spécial neige</option>	
+					<option value="460" class="baseRow1">Coin2 haut gauche herbe</option>
+					<option value="461" class="baseRow2">Coin2 haut droite herbe</option>
+					<option value="462" class="baseRow1">Texture spécial neige</option>	
+					<option value="463" class="baseRow2">Texture spécial neige</option>	
+					<option value="464" class="baseRow1">Coin2 haut gauche herbe</option>
+					<option value="465" class="baseRow2">Coin2 haut droite herbe</option>
+					<option value="466" class="baseRow1">Texture spécial neige</option>	
+					<option value="467" class="baseRow2">Texture spécial neige</option>	
+					<option value="468" class="baseRow1">Coin2 haut gauche herbe</option>
+					<option value="469" class="baseRow2">Coin2 haut droite herbe</option>
+					<option value="470" class="baseRow1">Texture spécial neige</option>	
+					<option value="471" class="baseRow2">Texture spécial neige</option>	
+					<option value="472" class="baseRow1">Coin2 haut gauche herbe</option>
+					<option value="473" class="baseRow2">Coin2 haut droite herbe</option>
+					<option value="474" class="baseRow1">Texture spécial neige</option>	
+					<option value="475" class="baseRow2">Texture spécial neige</option>	
+					<option value="476" class="baseRow1">Coin2 haut gauche herbe</option>
+					<option value="477" class="baseRow2">Coin2 haut droite herbe</option>
+					<option value="478" class="baseRow1">Texture spécial neige</option>	
+					<option value="479" class="baseRow2">Texture spécial neige</option>	
+					<option value="480" class="baseRow1">Coin2 haut gauche herbe</option>
+					
+				</optgroup>
+				
 				<optgroup label="Terre Maudite">
 					<option value="1101" class="baseRow2">Centre</option>
 					<option value="1102" class="baseRow1">Haut gauche</option>
@@ -317,36 +427,6 @@ $req = $db->query($requete);
 										    
 				</optgroup>				
 				
-				<optgroup label="Neige">
-					<option value="401" class="baseRow2">Centre</option>
-					<option value="402" class="baseRow1">Haut gauche</option>
-					<option value="403" class="baseRow2">Gauche</option>
-					<option value="404" class="baseRow1">Bas gauche</option>
-					<option value="405" class="baseRow2">Bas</option>
-					<option value="406" class="baseRow1">Bas droite</option>
-					<option value="407" class="baseRow1">Droite</option>
-					<option value="408" class="baseRow1">Haut droite</option>
-					<option value="409" class="baseRow1">Haut</option>
-					<option value="410" class="baseRow1">Coin haut gauche</option>
-					<option value="411" class="baseRow1">Coin bas gauche</option>
-					<option value="412" class="baseRow1">Coin bas droite</option>
-					<option value="413" class="baseRow1">Coin haut droite</option>
-					<option value="414" class="baseRow1">Coin bas gauche herbe</option>					
-					<option value="415" class="baseRow1">Coin bas droite herbe</option>
-					<option value="416" class="baseRow1">Coin haut gauche herbe</option>
-					<option value="417" class="baseRow1">Coin haut droite herbe</option>
-					<option value="418" class="baseRow1">gauche herbe</option>
-					<option value="419" class="baseRow1">bas herbe</option>
-					<option value="420" class="baseRow1">droite herbe</option>
-					<option value="421" class="baseRow1">haut herbe</option>
-					<option value="422" class="baseRow1">Coin2 bas gauche herbe</option>					
-					<option value="423" class="baseRow1">Coin2 bas droite herbe</option>
-					<option value="424" class="baseRow1">Coin2 haut gauche herbe</option>
-					<option value="425" class="baseRow1">Coin2 haut droite herbe</option>
-					<option value="438" class="baseRow1">Texture spécial neige</option>	
-					<option value="439" class="baseRow1">Texture spécial neige</option>	
-					
-				</optgroup>
 				<optgroup label="Montagne Neige">
 					<option value="426" class="baseRow2">Centre</option>
 					<option value="427" class="baseRow1">Haut gauche</option>
@@ -385,6 +465,11 @@ $req = $db->query($requete);
 					<option value="521" class="baseRow1">embouchure droite</option>
 					<option value="522" class="baseRow1">embouchure haut</option>
 					<option value="523" class="baseRow1">embouchure bas</option>
+					<option value="524" class="baseRow1">embouchure haut</option>
+					<option value="525" class="baseRow1">embouchure bas</option>
+					<option value="526" class="baseRow1">embouchure haut</option>
+					<option value="527" class="baseRow1">embouchure bas</option>
+					
 				</optgroup>
 				<optgroup label="Montagne">
 					<option value="601" class="baseRow2">Centre1</option>
@@ -398,8 +483,18 @@ $req = $db->query($requete);
 					<option value="609" class="baseRow2">Centre9</option>
 					<option value="610" class="baseRow2">Centre10</option>
 					<option value="611" class="baseRow2">Centre11</option>
-					<option value="612" class="baseRow2">Centre12</option>
+					<option value="612" class="baseRow1">Centre12</option>
 					<option value="613" class="baseRow2">Centre</option>
+					<option value="614" class="baseRow1">Centre12</option>
+					<option value="615" class="baseRow2">Centre</option>
+					<option value="616" class="baseRow1">Centre12</option>
+					<option value="617" class="baseRow2">Centre</option>
+					<option value="618" class="baseRow1">Centre12</option>
+					<option value="619" class="baseRow2">Centre</option>
+					<option value="620" class="baseRow1">Centre12</option>
+					<option value="621" class="baseRow2">Centre</option>
+					<option value="622" class="baseRow1">Centre12</option>
+					
 				</optgroup>
 				
 				<optgroup label="Montagne eau">
@@ -424,39 +519,51 @@ $req = $db->query($requete);
 					
 				</optgroup>
 				
-				<optgroup label="Rocaille">
-					<option value="615" class="baseRow1">Rocaille 1</option>
-					<option value="616" class="baseRow2">Rocaille 2</option>
-					<option value="617" class="baseRow1">Rocaille 3</option>
-					<option value="618" class="baseRow2">Rocaille 4</option>
-					<option value="619" class="baseRow1">Rocaille 5</option>
-					<option value="620" class="baseRow2">Rocaille 6</option>
-					<option value="621" class="baseRow1">Rocaille 7</option>
-					<option value="622" class="baseRow2">Rocaille 8</option>
-					<option value="623" class="baseRow2">Rocaille 9</option>
-					<option value="624" class="baseRow1">Rocaille 10</option>
-					<option value="627" class="baseRow1">Rocaille 13</option>
-					<option value="628" class="baseRow1">Rocaille 14</option>
-					<option value="629" class="baseRow1">Rocaille 15</option>
-					<option value="630" class="baseRow1">Rocaille 16</option>
-				</optgroup>
+
 				<optgroup label="Marais">
 					<option value="701" class="baseRow2">Centre</option>
 					<option value="702" class="baseRow2">Haut gauche</option>
 					<option value="703" class="baseRow2">Gauche</option>
 					<option value="704" class="baseRow2">Bas gauche</option>
-					<option value="707" class="baseRow2">Bas</option>
-					<option value="710" class="baseRow2">Bas droite</option>
-					<option value="711" class="baseRow2">Droite</option>
-					<option value="716" class="baseRow2">Haut</option>
-					<option value="713" class="baseRow2">Haut droite</option>
-					<option value="718" class="baseRow2">Nenu</option>
-					<option value="719" class="baseRow2">Nenu 2</option>
-					<option value="705" class="baseRow2">Coin bas gauche</option>
-					<option value="709" class="baseRow2">Coin bas droite</option>
-					<option value="712" class="baseRow2">Coin haut gauche</option>
-					<option value="714" class="baseRow2">Coin haut droite</option>
+					<option value="705" class="baseRow2">Bas</option>
+					<option value="706" class="baseRow2">Bas droite</option>
+					<option value="707" class="baseRow2">Droite</option>
+					<option value="708" class="baseRow2">Haut</option>
+					<option value="709" class="baseRow2">Haut droite</option>
+					<option value="710" class="baseRow2">Nenu</option>
+					<option value="711" class="baseRow2">Nenu 2</option>
+					<option value="712" class="baseRow2">Coin bas gauche</option>
+					<option value="713" class="baseRow2">Coin bas droite</option>
+					<option value="714" class="baseRow1">Coin haut gauche</option>
+					<option value="715" class="baseRow2">Coin haut droite</option>
+					<option value="716" class="baseRow1">Coin haut gauche</option>
+					<option value="717" class="baseRow2">Coin haut droite</option>
+					<option value="718" class="baseRow1">Coin haut gauche</option>
+					<option value="719" class="baseRow2">Coin haut droite</option>
+					<option value="720" class="baseRow1">Coin haut gauche</option>
+					<option value="721" class="baseRow2">Coin haut droite</option>
+					<option value="722" class="baseRow1">Coin haut gauche</option>
+					<option value="723" class="baseRow2">Coin haut droite</option>
+					<option value="724" class="baseRow1">Coin haut gauche</option>
+					<option value="725" class="baseRow2">Coin haut droite</option>
+					<option value="726" class="baseRow1">Coin haut gauche</option>
+					<option value="727" class="baseRow2">Coin haut droite</option>
+					<option value="728" class="baseRow1">Coin haut gauche</option>
+					<option value="729" class="baseRow2">Coin haut droite</option>
+					<option value="730" class="baseRow1">Coin haut gauche</option>
+					<option value="731" class="baseRow2">Coin haut droite</option>
+					<option value="732" class="baseRow1">Coin haut gauche</option>
+					<option value="733" class="baseRow2">Coin haut droite</option>
+					<option value="734" class="baseRow1">Coin haut gauche</option>
+					<option value="735" class="baseRow2">Coin haut droite</option>
+					<option value="736" class="baseRow1">Coin haut gauche</option>
+					<option value="737" class="baseRow2">Coin haut droite</option>
+					<option value="738" class="baseRow1">Coin haut gauche</option>
+					<option value="739" class="baseRow2">Coin haut droite</option>
+					
 				</optgroup>
+				
+				
 				<optgroup label="route">
 					<option value="801" class="baseRow1">pavée verticale</option>
 					<option value="802" class="baseRow1">pavée horizontale</option>
@@ -530,7 +637,48 @@ $req = $db->query($requete);
 					<option value="868" class="baseRow1">Liaison desert-route pavéeNS</option>
 					<option value="869" class="baseRow1">Liaison Chemin-route pavée</option>
 					<option value="870" class="baseRow1">Liaison Route pavée Herbe-TM</option>	
-					<option value="871" class="baseRow1">Liaison desert-route pavéeEO </option>					
+					<option value="871" class="baseRow2">Liaison desert-route pavéeEO </option>					
+					<option value="872" class="baseRow1">Liaison Route pavée Herbe-TM</option>	
+					<option value="873" class="baseRow2">Liaison desert-route pavéeEO </option>					
+					<option value="874" class="baseRow1">Liaison Route pavée Herbe-TM</option>	
+					<option value="875" class="baseRow2">Liaison desert-route pavéeEO </option>					
+					<option value="876" class="baseRow1">Liaison Route pavée Herbe-TM</option>	
+					<option value="877" class="baseRow2">Liaison desert-route pavéeEO </option>					
+					<option value="878" class="baseRow1">Liaison Route pavée Herbe-TM</option>	
+					<option value="879" class="baseRow2">Liaison desert-route pavéeEO </option>					
+					<option value="880" class="baseRow1">Liaison Route pavée Herbe-TM</option>	
+					<option value="881" class="baseRow2">Liaison desert-route pavéeEO </option>					
+					<option value="882" class="baseRow1">Liaison Route pavée Herbe-TM</option>	
+					<option value="883" class="baseRow2">Liaison desert-route pavéeEO </option>					
+					<option value="884" class="baseRow1">Liaison Route pavée Herbe-TM</option>	
+					<option value="885" class="baseRow2">Liaison desert-route pavéeEO </option>					
+					<option value="886" class="baseRow1">Liaison Route pavée Herbe-TM</option>	
+					<option value="887" class="baseRow2">Liaison desert-route pavéeEO </option>					
+					<option value="888" class="baseRow1">Liaison Route pavée Herbe-TM</option>	
+					<option value="889" class="baseRow2">Liaison desert-route pavéeEO </option>					
+					<option value="890" class="baseRow1">Liaison Route pavée Herbe-TM</option>	
+					<option value="891" class="baseRow2">Liaison desert-route pavéeEO </option>					
+					<option value="892" class="baseRow1">Liaison Route pavée Herbe-TM</option>	
+					<option value="893" class="baseRow2">Liaison desert-route pavéeEO </option>					
+					<option value="894" class="baseRow1">Liaison Route pavée Herbe-TM</option>	
+					<option value="895" class="baseRow2">Liaison desert-route pavéeEO </option>					
+					<option value="896" class="baseRow1">Liaison Route pavée Herbe-TM</option>	
+					<option value="897" class="baseRow2">Liaison desert-route pavéeEO </option>					
+					<option value="898" class="baseRow1">Liaison Route pavée Herbe-TM</option>	
+					<option value="899" class="baseRow2">Liaison desert-route pavéeEO </option>					
+					<option value="900" class="baseRow1">Liaison Route pavée Herbe-TM</option>	
+					<option value="901" class="baseRow2">Liaison desert-route pavéeEO </option>					
+					<option value="902" class="baseRow1">Liaison Route pavée Herbe-TM</option>	
+					<option value="903" class="baseRow2">Liaison desert-route pavéeEO </option>					
+					<option value="904" class="baseRow1">Liaison Route pavée Herbe-TM</option>	
+					<option value="905" class="baseRow2">Liaison desert-route pavéeEO </option>					
+					<option value="906" class="baseRow1">Liaison Route pavée Herbe-TM</option>	
+					<option value="907" class="baseRow2">Liaison desert-route pavéeEO </option>					
+					<option value="908" class="baseRow1">Liaison Route pavée Herbe-TM</option>	
+					<option value="909" class="baseRow2">Liaison desert-route pavéeEO </option>					
+					<option value="910" class="baseRow1">Liaison Route pavée Herbe-TM</option>	
+					<option value="911" class="baseRow2">Liaison desert-route pavéeEO </option>					
+					<option value="912" class="baseRow1">Liaison Route pavée Herbe-TM</option>	
 					
 					
 				</optgroup>
