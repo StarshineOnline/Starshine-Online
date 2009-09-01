@@ -327,7 +327,7 @@ function description_objet($id_objet)
 	      if ($type == 'le sort') {
 		global $joueur;
 		global $Trace;
-		$requis = round($row2['comp_requis'] * $joueur['facteur_magie'] * 
+		$requis = round($row2['comp_requis'] * $joueur->get_facteur_magie() * 
 				(1 - (($Trace[$joueur->get_race()]['affinite_'.$row2['comp_assoc']] - 5)
 				      / 10)));
 	      }
@@ -336,7 +336,7 @@ function description_objet($id_objet)
 	    if (isset($row2['incantation']) && $row2['incantation'] != 0) {
 	      global $joueur;
 	      $description .= '<br />Requiert '.traduit('incantation').
-		' à '.($row2['incantation'] * $joueur['facteur_magie']);
+		' à '.($row2['incantation'] * $joueur->get_facteur_magie());
 	    }
 	  }
 
@@ -565,11 +565,11 @@ function recup_echange($id_echange)
 }
 
 //Récupère tous les échanges entre 2 joueurs
-function recup_echange_perso($joueur, $receveur)
+function recup_echange_perso($joueur_id, $receveur)
 {
 	global $db;
 	$echanges = array();
-	$requete = "SELECT id_echange, statut FROM echange WHERE ((id_j1 = ".$joueur." AND id_j2 = ".$receveur.") OR (id_j1 = ".$receveur." AND id_j2 = ".$joueur.")) AND statut <> 'fini' AND statut <> 'annule'";
+	$requete = "SELECT id_echange, statut FROM echange WHERE ((id_j1 = ".$joueur_id." AND id_j2 = ".$receveur.") OR (id_j1 = ".$receveur." AND id_j2 = ".$joueur_id.")) AND statut <> 'fini' AND statut <> 'annule'";
 	$req = $db->query($requete);
 	while($row = $db->read_assoc($req))
 	{
@@ -685,9 +685,9 @@ function check_utilisation_objet($joueur, $objet)
 	$req_o = $db->query($requete);
 	$row_o = $db->read_assoc($req_o);
 	//On vérifie les PA / MP
-	if($joueur['pa'] >= $row_o['pa'])
+	if($joueur->get_pa() >= $row_o['pa'])
 	{
-		if($joueur['mp'] >= $row_o['pm'])
+		if($joueur->get_mp() >= $row_o['pm'])
 		{
 			supprime_objet($joueur, $id_objet, 1);
 			$id_objet = mb_substr($id_objet, 1);
