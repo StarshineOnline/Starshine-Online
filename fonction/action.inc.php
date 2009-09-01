@@ -1,7 +1,7 @@
-<?php
+<?php //  -*- tab-width:2  -*-
 if (file_exists('../root.php'))
   include_once('../root.php');
-?><?php //  -*- tab-width:2  -*-
+
 /**
  * @file action.inc.php
  * Gestion des scripts. 
@@ -814,6 +814,9 @@ function lance_sort($id, $acteur, &$effects)
 					$pm = $passif->get_pm();
 					if (array_key_exists('bouclier_protecteur', $passif->etat)) $pm = $pm + ($passif->etat['bouclier_protecteur']['effet'] * $passif['bouclier_degat']);
 					$pm = pow($passif->get_volonte(), 1.83) * sqrt($pm) * 3;
+					// Bottes en peau de Basilic, quick'n dirty
+          if ($passif->get_inventaire()->chaussure == "p112")
+						$pm *= 2;
 					// Lancer des dés
 					$att = rand(0, $sm);
 					$def = rand(0, $pm);
