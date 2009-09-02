@@ -1,7 +1,7 @@
-<?php
+<?php // -*- tab-width:2 -*- 
 if (file_exists('root.php'))
   include_once('root.php');
-?><?php // -*- tab-width:2 -*- 
+
 //Connexion obligatoire
 $connexion = true;
 //Inclusion du haut du document html
@@ -316,7 +316,8 @@ else
 							$augmentations = lance_comp($action[1], $mode, $effects);
 							if($comp_attaque)
 							{
-								attaque($mode, ${$mode}->get_comp_combat(), $effects);
+								$aug2 = attaque($mode, ${$mode}->get_comp_combat(), $effects);
+								$augmentations = merge_augmentations($augmentations, $aug2);
 								$count = count($ups);
 								if($count > 0)
 								{

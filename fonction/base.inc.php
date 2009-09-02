@@ -1728,6 +1728,18 @@ function augmentation_competences($liste_augmentations, $joueur)
 	return $joueur;
 }
 
+function merge_augmentations($a1, $a2)
+{
+	foreach ($a2 as $target => $augg) {
+		foreach ($augg as $type => $comps) {
+			foreach ($comps as $acomp) {
+				$a1[$target][$type][] = $acomp;
+			}
+		}
+	}
+	return $a1;
+}
+
 /**
  * Permet de savoir si lors d'une action la compétence augmente de 1.
  * Plus la difficulte est forte, plus il est difficile de l'apprendre.
