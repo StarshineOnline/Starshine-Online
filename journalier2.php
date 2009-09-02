@@ -140,7 +140,7 @@ while($ii < count($habitants))
 	$ii++;
 }
 //On récupère les stars de chaque royaume
-$requete = "SELECT ID, star FROM royaume WHERE ID <> 0 ORDER BY ID ASC";
+$requete = "SELECT id, star FROM royaume WHERE id <> 0 ORDER BY id ASC";
 $req = $db->query($requete);
 while($row = $db->read_row($req))
 {
@@ -180,7 +180,7 @@ foreach($royaumes as $royaume)
 		}
 		$royaume['stars'] = 0;
 	}
-	$requete = "UPDATE royaume SET star = ".$royaume['stars']." WHERE ID = ".$royaume['id'];
+	$requete = "UPDATE royaume SET star = ".$royaume['stars']." WHERE id = ".$royaume['id'];
 	$db->query($requete);
 }
 //PHASE 2, entretien des batiments externes
@@ -226,7 +226,7 @@ foreach($royaumes as $royaume)
 		}
 		$royaume['stars'] = 0;
 	}
-	$requete = "UPDATE royaume SET star = ".$royaume['stars']." WHERE ID = ".$royaume['id'];
+	$requete = "UPDATE royaume SET star = ".$royaume['stars']." WHERE id = ".$royaume['id'];
 	$db->query($requete);
 }
 echo 'Création des images statistiques<br />';
@@ -265,14 +265,14 @@ $col = 'info';
 $carte = 'image/carte.png';
 
 //Requète pour l'affichage de la map
-$requete = 'SELECT * FROM map ORDER BY ID';
+$requete = 'SELECT * FROM map ORDER BY id';
 $req = $db->query($requete);
 
 $i = 0;
 while($row = $db->read_array($req))
 {
-	$coord = convert_in_coord($row['ID']);
-	$rowid = $row['ID'];
+	$coord = convert_in_coord($row['id']);
+	$rowid = $row['id'];
 	$W_terrain_case = $row['decor'];
 	
 	if (($coord['x'] != 0) AND ($coord['y'] != 0))
@@ -322,14 +322,14 @@ $col = 'royaume';
 $carte = 'image/carte_royaume.png';
 
 //Requète pour l'affichage de la map
-$requete = 'SELECT * FROM map ORDER BY ID';
+$requete = 'SELECT * FROM map ORDER BY id';
 $req = $db->query($requete);
 
 $i = 0;
 while($row = $db->read_array($req))
 {
-	$coord = convert_in_coord($row['ID']);
-	$rowid = $row['ID'];
+	$coord = convert_in_coord($row['id']);
+	$rowid = $row['id'];
 	$W_terrain_case = $row['decor'];
 	
 	if (($coord['x'] != 0) AND ($coord['y'] != 0))
@@ -525,7 +525,7 @@ while($i < $count)
 	if($keys[$i] != '')
 	{
 		$mail .= $keys[$i]." - ".$stars."\n";
-		$requete = "UPDATE royaume SET star_nouveau_joueur = ".$stars." WHERE ID = ".$Trace[$keys[$i]]['numrace'];
+		$requete = "UPDATE royaume SET star_nouveau_joueur = ".$stars." WHERE id = ".$Trace[$keys[$i]]['numrace'];
 		echo $requete;
 		$db->query($requete);
 	}

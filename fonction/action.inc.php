@@ -635,7 +635,7 @@ function lance_sort($id, $acteur, &$effects)
 					if($de < $cap)
 					{
 						echo '&nbsp;&nbsp;<strong>'.$actif->get_nom().'</strong> gagne 1 PA<br />';
-						$actif['pa'] += 1;
+						$actif->set_pa($actif->get_pa() + 1);
 					}
 					$passif->set_hp($passif->get_hp() - $degat);
 				break;

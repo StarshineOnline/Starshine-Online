@@ -133,7 +133,7 @@ if(!$visu AND isset($_GET['action']))
 						$row = $db->read_assoc($req);
 
 						//Si terrain neutre ou pas a nous ET que c'est pas dans un donjon
-						if((($R->get_diplo() > 6 && $R->get_diplo() != 127) OR $R->get_nom() == 'Neutre') AND !is_donjon($joueur->get_x(), $joueur->get_y()))
+						if((($R->get_diplo($joueur->get_race()) > 6 && $R->get_diplo($joueur->get_race()) != 127) OR $R->get_nom() == 'Neutre') AND !is_donjon($joueur->get_x(), $joueur->get_y()))
 						{
 							//On vérifie si ya pas déjà un batiment en construction
 							$requete = "SELECT id FROM placement WHERE x = ".$joueur->get_x()." AND y = ".$joueur->get_y();

@@ -2439,7 +2439,7 @@ class perso extends entite
 	{
 		if(empty($nom))
 		{
-			$this->comp_perso = comp_perso::create(array('id_perso'), array($this->id));
+			$this->comp_perso = comp_perso::create(array('id_perso'), array($this->id), 'id ASC', 'competence');
 			return $this->comp_perso;
 		}
 		else

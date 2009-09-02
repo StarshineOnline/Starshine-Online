@@ -93,7 +93,7 @@ while($row = $db->read_assoc($req))
 	$batiment[$row['id']] = $row;
 }
 //@TODO gérer les mines dans construction
-$requete = "SELECT * FROM construction LEFT JOIN map ON map.ID = (construction.y * 1000) + construction.x WHERE construction.type = 'mine'";
+$requete = "SELECT * FROM construction LEFT JOIN map ON map.id = (construction.y * 1000) + construction.x WHERE construction.type = 'mine'";
 $req = $db->query($requete);
 while($row = $db->read_assoc($req))
 {
@@ -189,11 +189,11 @@ else $food_necessaire = 0;
 $mail .= 'Nourriture nécessaire'.$food_necessaire."\n";
 
 //On récupère les infos des royaumes
-$requete = "SELECT ID, race, food FROM royaume WHERE ID != 0";
+$requete = "SELECT id, race, food FROM royaume WHERE id != 0";
 $req = $db->query($requete);
 while($row = $db->read_assoc($req))
 {
-	$tab_royaume[$row['race']] = array('id' => $row['ID'], 'food' => $row['food'], 'actif' => nb_habitant($row['race']));
+	$tab_royaume[$row['race']] = array('id' => $row['id'], 'food' => $row['food'], 'actif' => nb_habitant($row['race']));
 }
 foreach($tab_royaume as $race => $royaume)
 {
@@ -203,7 +203,7 @@ foreach($tab_royaume as $race => $royaume)
 	$mail .= "Race : ".$race." - Nécessaire : ".$royaume['food_necessaire']." / Possède : ".$royaume['food']."\n";
 	if($royaume['food_necessaire'] < $royaume['food'])
 	{
-		$requete = "UPDATE royaume SET food = food - ".$royaume['food_necessaire']." WHERE ID = ".$royaume['id'];
+		$requete = "UPDATE royaume SET food = food - ".$royaume['food_necessaire']." WHERE id = ".$royaume['id'];
 		$db->query($requete);
 	}
 	//Sinon
@@ -217,16 +217,16 @@ foreach($tab_royaume as $race => $royaume)
 		elseif($debuff > 0)
 		{
 			$persos = array();
-			$requete = "SELECT ID FROM perso WHERE race = '".$race."' AND statut = 'actif'";
+			$requete = "SELECT id FROM perso WHERE race = '".$race."' AND statut = 'actif'";
 			$req = $db->query($requete);
 			while($row = $db->read_assoc($req))
 			{
-				$persos[$row['ID']] = $row['ID'];
+				$persos[$row['id']] = $row['id'];
 			}
 			$perso_implode = implode(',', $persos);
 			//On sélectionne les buffs à modifier
 			$ids_buff = array();
-			$requete = "SELECT ID FROM buff WHERE type = 'famine' AND id_perso IN (".$perso_implode.")";
+			$requete = "SELECT id FROM buff WHERE type = 'famine' AND id_perso IN (".$perso_implode.")";
 			$req = $db->query($requete);
 			while($row = $db->read_assoc($req))
 			{
@@ -237,7 +237,7 @@ foreach($tab_royaume as $race => $royaume)
 			foreach($ids_buff as $buff)
 			{
 				unset($persos[$buff['id_joueur']]);
-				$buffs[] = $buff['ID'];
+				$buffs[] = $buff['id'];
 			}
 			//30 jours
 			$duree = 30 * 24 * 60 * 60;
@@ -245,7 +245,7 @@ foreach($tab_royaume as $race => $royaume)
 			$buffs_implode = implode(',', $buffs);
 			if(count($buffs) > 0)
 			{
-				$requete = "UPDATE buff SET effet = effet + ".$debuff.", duree = ".$duree.", fin = ".$fin." WHERE ID IN (".$buffs_implode.")";
+				$requete = "UPDATE buff SET effet = effet + ".$debuff.", duree = ".$duree.", fin = ".$fin." WHERE id IN (".$buffs_implode.")";
 				$db->query($requete);
 			}
 			$mail .= "Mis à jour du buff famine sur ".count($buffs_implode)." ".$race.", effet + ".$debuff.".\n";
@@ -255,7 +255,7 @@ foreach($tab_royaume as $race => $royaume)
 				lance_buff('famine', $joueur, $debuff, 0, $duree, 'Famine', 'Vos HP et MP max sont réduits de %effet%%', 'perso', 1, 0, 0, 0);
 			}
 			$mail .= "Lancement du buff famine sur ".count($persos)." ".$race.", effet : ".$debuff.".\n";
-			$requete = "UPDATE royaume SET food = 0 WHERE ID = ".$royaume['id'];
+			$requete = "UPDATE royaume SET food = 0 WHERE id = ".$royaume['id'];
 			$mail .= $requete."\n";
 			$db->query($requete);
 		}

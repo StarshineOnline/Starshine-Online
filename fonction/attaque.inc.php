@@ -143,12 +143,12 @@ function attaque($acteur = 'attaquant', $competence, &$effects)
       if(array_key_exists('benediction', $actif->etat)) $buff_bene_degat = $actif->etat['benediction']['effet'] * $G_buff['bene_degat']; else $buff_bene_degat = 0;
       if(array_key_exists('berzeker', $actif->etat)) $buff_berz_degat = $actif->etat['berzeker']['effet'] * $G_buff['berz_degat']; else $buff_berz_degat = 0;
       if(array_key_exists('berzeker', $passif->etat)) $buff_berz_degat_r = $passif->etat['berzeker']['effet'] * $G_buff['berz_degat_recu']; else $buff_berz_degat_r = 0;
-      if(array_key_exists('buff_force', $actif->buff)) $buff_force = $actif->buff['buff_force']['effet']; else $buff_force = 0;
-      if(array_key_exists('buff_cri_victoire', $actif->buff)) $buff_cri_victoire = $actif->buff->buff_cri_victoire['effet']; else $buff_cri_victoire = 0;
-      if(array_key_exists('fleche_tranchante', $actif->buff)) $degat += $actif->buff['fleche_tranchante']['effet'];
-      if($actif->is_buff('oeil_chasseur', true) AND $passif->get_espece() == 'bete') $degat += $actif->get_buff('oeil_chasseur', true)->get_effet();
+      if($actif->is_buff('buff_force')) $buff_force = $actif->get_buff('buff_force', 'effet'); else $buff_force = 0;
+      if($actif->is_buff('buff_cri_victoire')) $buff_cri_victoire = $actif->get_buff('buff_cri_victoire', 'effet'); else $buff_cri_victoire = 0;
+      if($actif->is_buff('fleche_tranchante')) $degat += $actif->get_buff('fleche_tranchante', 'effet');
+      if($actif->is_buff('oeil_chasseur') AND $passif->get_espece() == 'bete') $degat += $actif->get_buff('oeil_chasseur', 'effet');
       $degat = $degat + $buff_bene_degat + $buff_berz_degat + $buff_berz_degat_r + $buff_force + $buff_cri_victoire;
-      if(array_key_exists('maladie_mollesse', $actif->buff)) $degat = ceil($degat / (1 + ($actif->buff->maladie_mollesse['effet'] / 100)));
+      if($actif->is_buff('maladie_mollesse')) $degat = ceil($degat / (1 + ($actif->get_buff('maladie_mollesse', 'effet') / 100)));
 
       /* Application des effets de degats */
       foreach ($effects as $effect)
@@ -164,7 +164,7 @@ function attaque($acteur = 'attaquant', $competence, &$effects)
 					else
 						{
 							if(array_key_exists('blocage', $passif['enchantement'])) $enchantement_blocage = 1 + ($passif['enchantement']['blocage']['effet'] / 100); else $enchantement_blocage = 1;
-							if(array_key_exists('buff_bouclier_sacre', $actif->buff)) $buff_blocage = 1 + ($actif->buff['buff_bouclier_sacre']['effet'] / 100); else $buff_blocage = 1;
+							if($actif->is_buff('buff_bouclier_sacre')) $buff_blocage = 1 + ($actif->get_buff('buff_bouclier_sacre', 'effet') / 100); else $buff_blocage = 1;
 							if(array_key_exists('benediction', $passif->etat)) $buff_bene_blocage = 1 + (($passif->etat['benediction']['effet'] * $G_buff['bene_bouclier']) / 100); else $buff_bene_blocage = 1;
 							if(array_key_exists('a_c_bloque', $actif->etat)) $augmentation_chance_bloque = 1 + ($actif->etat['a_c_bloque']['effet'] / 100); else $augmentation_chance_bloque = 1;
 							if(array_key_exists('b_c_bloque', $actif->etat)) $baisse_chance_bloque = 1 + ($actif->etat['b_c_bloque']['effet'] / 100); else $baisse_chance_bloque = 1;

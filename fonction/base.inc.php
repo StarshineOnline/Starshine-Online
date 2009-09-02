@@ -2409,7 +2409,7 @@ function genere_image_buff_duree($buff)
 function genere_image_hp($joueur)
 {
 	//Barre HP
-	$ratio_hp = floor(10 * ($joueur->get_hp() / $joueur->get_hp_max()));
+	$ratio_hp = floor(10 * ($joueur->get_hp() / floor($joueur->get_hp_max())));
 	if($ratio_hp > 10) $ratio_hp = 10;
 	if($ratio_hp < 0) $ratio_hp = 0;
 	$barre_vie = './image/barre/vie'.$ratio_hp.'.png';
@@ -2426,7 +2426,7 @@ function genere_image_hp($joueur)
 function genere_image_mp($joueur)
 {
 	//Barre MP
-	$ratio_mp = floor(10 * ($joueur->get_mp() / $joueur->get_mp_max()));
+	$ratio_mp = floor(10 * ($joueur->get_mp() / floor($joueur->get_mp_max())));
 	if($ratio_mp > 10) $ratio_mp = 10;
 	if($ratio_mp < 0) $ratio_mp = 0;
 	$barre_mp = './image/barre/mp'.$ratio_mp.'.png';

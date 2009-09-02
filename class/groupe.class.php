@@ -315,25 +315,22 @@ class groupe
 	
 	function get_share_xp($pos = false)
 	{
-		if(!isset($this->share_xp))
+		if(!isset($this->membre_joueur)) $this->get_membre_joueur();
+		$this->share_xp = 0;
+		foreach($this->membre_joueur as $membre)
 		{
-			if(!isset($this->membre_joueur)) $this->get_membre_joueur();
-			$this->share_xp = 0;
-			foreach($this->membre_joueur as $membre)
+			$distance = calcul_distance_pytagore($pos, $membre->get_pos());
+			if($distance < 10)
 			{
-				$distance = calcul_distance_pytagore($pos, $membre->get_pos());
-				if($distance < 10)
-				{
-					$share_xp = 100 * $membre->get_level();
-				}
-				else
-				{
-					$tmp = 100 - $distance / 2 * $membre->get_level();
-					$share_xp = (($tmp) > 0 ? $tmp : 0);
-				}
-				$membre->share_xp = $share_xp;
-				$this->share_xp += $share_xp;
+				$share_xp = 100 * $membre->get_level();
 			}
+			else
+			{
+				$tmp = 100 - $distance / 2 * $membre->get_level();
+				$share_xp = (($tmp) > 0 ? $tmp : 0);
+			}
+			$membre->share_xp = $share_xp;
+			$this->share_xp += $share_xp;
 		}
 		return $this->share_xp;
 	}

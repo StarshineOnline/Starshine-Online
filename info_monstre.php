@@ -13,14 +13,14 @@ $joueur = new perso($_SESSION['ID']);
 $monstre = recupmonstre($W_ID);
 
 $survie = $joueur->get_survie();
-if($monstre['espece'] == 'bete' AND $joueur->is_competence('survie_bete')) $survie += $joueur->get_competence('survie_bete', 'effet');
+if($monstre['espece'] == 'bete' AND $joueur->is_competence('survie_bete')) $survie += $joueur->get_competence('survie_bete');
 if($monstre['espece'] == 'humanoide' AND $joueur->is_competence('survie_humanoide')) $survie += $joueur->get_competence('survie_humanoide');
 if($monstre['espece'] == 'magique' AND $joueur->is_competence('survie_magique')) $survie += $joueur->get_competence('survie_magique');
 $pa_attaque = $G_PA_attaque_monstre;
 if($joueur->is_debuff('cout_attaque')) $pa_attaque = ceil($pa_attaque / $joueur->get_debuff('cout_attaque', 'effet'));
-if($joueur->is_debuff('plus_cout_attaque')) $pa_attaque = $pa_attaque * $joueur->get_debuff('plus_cout_attaque');
-if($joueur->is_buff('buff_rapidite')) $reduction_pa = $joueur->get_buff('buff_rapidite'); else $reduction_pa = 0;
-if($joueur->is_debuff('debuff_ralentissement')) $reduction_pa -= $joueur->get_debuff('debuff_ralentissement');
+if($joueur->is_debuff('plus_cout_attaque')) $pa_attaque = $pa_attaque * $joueur->get_debuff('plus_cout_attaque', 'effet');
+if($joueur->is_buff('buff_rapidite')) $reduction_pa = $joueur->get_buff('buff_rapidite', 'effet'); else $reduction_pa = 0;
+if($joueur->is_debuff('debuff_ralentissement')) $reduction_pa -= $joueur->get_debuff('debuff_ralentissement', 'effet');
 $coeff = floor($survie / $monstre['level']);
 ?>
 <fieldset>

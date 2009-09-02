@@ -625,7 +625,7 @@ else
 					if($actif->get_groupe() > 0)
 					{
 						$groupe = new groupe($actif->get_groupe());
-						$groupe->get_share_xp();
+						$groupe->get_share_xp($joueur->get_pos());
 						//Si on tape un joueur de son groupe xp = 0
 						foreach($groupe->membre_joueur as $membre_id)
 						{
@@ -700,8 +700,8 @@ else
 						$facteur_honneur = ($row_diplo[0] * 0.2) - 0.8;
 						if ($facteur_honneur < 0) $facteur_honneur = 0;
 						//XP Final
-						$xp_gagne = floor(($xp * $facteur_xp) * $membre->share_xp / $groupe->get_share_xp());
-						$honneur_gagne = floor(($honneur * $facteur_honneur) * $membre->share_xp / $groupe->get_share_xp());
+						$xp_gagne = floor(($xp * $facteur_xp) * $membre->share_xp / $groupe->get_share_xp($joueur->get_pos()));
+						$honneur_gagne = floor(($honneur * $facteur_honneur) * $membre->share_xp / $groupe->get_share_xp($joueur->get_pos()));
 						//Buff moral
 						if($membre->is_buff('moral')) $honneur_gagne = $honneur_gagne * (1 + ($membre->get_buff('moral', 'effet') / 100));
 						$reputation_gagne = floor($honneur_gagne / 10);
@@ -1028,12 +1028,12 @@ else
 					{
 						//XP Final
 						$xp_joueur = $xp * (1 + (($defenseur->get_level() - $membre->get_level()) / $G_range_level));
-						$xp_joueur = floor($xp_joueur * $membre->share_xp / $groupe->get_share_xp());
+						$xp_joueur = floor($xp_joueur * $membre->share_xp / $groupe->get_share_xp($joueur->get_pos()));
 						if($xp_joueur < 0) $xp_joueur = 0;
 						$membre->set_exp($membre->get_exp() + $xp_joueur);
 						if($gains_star)
 						{
-							$star_joueur = floor($star * $membre->share_xp / $groupe->get_share_xp());
+							$star_joueur = floor($star * $membre->share_xp / $groupe->get_share_xp($joueur->get_pos()));
 							$membre->set_star($membre->get_star() + $star_joueur);
 						}
 						else $star_joueur = 0;

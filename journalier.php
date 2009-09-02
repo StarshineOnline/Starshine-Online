@@ -87,7 +87,7 @@ while($row = $db->read_array($req))
 					case 'd' :
 					break;
 					case 'p' :
-						$where .= '(ID - (floor(ID / 1000) * 1000)) = '.$xy[0].' AND (floor(ID / 1000)) = '.$xy[1];
+						$where .= '(id - (floor(id / 1000) * 1000)) = '.$xy[0].' AND (floor(id / 1000)) = '.$xy[1];
 					break;
 				}
 			}
@@ -105,12 +105,12 @@ while($row = $db->read_array($req))
 		$ratio = $up / $down;
 		if($ratio > 50) $ratio = 50;
 		$limite = $ratio * 10000;
-		$requete = "SELECT ID, info FROM map WHERE ".$where;
+		$requete = "SELECT id, info FROM map WHERE ".$where;
 		//echo $requete.'<br />';
 		$req2 = $db->query($requete);
 		while($row2 = $db->read_array($req2))
 		{
-			//echo $row2['ID'].' '.$row2['info'].' ';
+			//echo $row2['id'].' '.$row2['info'].' ';
 			if (($row2['info'] === '') OR ($row2['info'] === '0')) $row2['info'] = 1;
 			if (in_array($row2['info'], $terrain))
 			{
@@ -120,7 +120,7 @@ while($row = $db->read_array($req))
 				if($rand < $limite OR $spawn == 0)
 				{
 					$check = true;
-					$coord = convert_in_coord($row2['ID']);
+					$coord = convert_in_coord($row2['id']);
 					if($spawn == 0)
 					{
 						$requete = "SELECT id FROM map_monstre WHERE x = ".$coord['x']." AND y = ".$coord['y']." AND type = ".$id;
