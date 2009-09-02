@@ -446,7 +446,7 @@ else
 					corrige_bonus_ignorables($attaquant, $defenseur, $mode, $args, $args_def);
 
 					// Mets a jour les entites
-					$attaquant = new entite('joueur', $joueur);
+					/*$attaquant = new entite('joueur', $joueur);
 					switch($type)
 					{
 					case 'joueur' :
@@ -455,7 +455,7 @@ else
 					case 'monstre' :
 						$defenseur = new entite('monstre', $joueur_defenseur);
 						break;
-					}
+					}*/
 
 					?>
 					</div>
