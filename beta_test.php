@@ -1,7 +1,7 @@
 <?php
 if (file_exists('root.php'))
   include_once('root.php');
-
+/*
 	include_once(root.'inc/fp.php');
 	$joueur = new perso($_SESSION['ID']);
 	
@@ -28,6 +28,7 @@ if (file_exists('root.php'))
 		}
 		$joueur->sauver();
 	}
+	*/
 ?>
 Vous avez <?php echo $joueur->get_beta(); ?> points beta test.<br />
 En utilisez un pour :<br />
