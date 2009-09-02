@@ -78,7 +78,8 @@ $requete = "UPDATE perso SET crime = crime - 1";
 $db->query($requete);
 
 //Vérification si batiments fini de construire
-check_case('all');
+$case = new map_case();
+$case->check_case('all');
 
 echo 'Création du dossier '.$date.'<br />';
 if(mkdir('image/stat/'.$date, 0777)) echo 'Répertoire '.$date.' créé<br />'; echo 'Le répertoire '.$date.' existe déjà<br />';
@@ -102,7 +103,7 @@ copy('image/stat_niveau_moyen.png', 'image/stat/'.$date.'/stat_niveau_moyen.png'
 
 //Récupération de points de victoire
 $requete = "SELECT royaume FROM map WHERE type = '3' AND royaume != 0";
-$req = $db->quert($requete);
+$req = $db->query($requete);
 while($row = $db->read_assoc($req))
 {
 	$requete = "UPDATE royaume SET point_victoire = point_victoire + 1, point_victoire_total = point_victoire_total + 1 WHERE id = ".$row['royaume'];
@@ -575,7 +576,7 @@ $groupe['vampire'][1] = 26;
 $groupe['vampire'][2] = 37;
 //On regarde si une élection a lieu
 $requete = "SELECT id, id_royaume FROM elections WHERE date = ".date("Y-m-d", time());
-$req = $db->query();
+$req = $db->query($requete);
 //Si ya une élection de prévue
 if($db->num_rows > 0)
 {
@@ -656,7 +657,7 @@ if($db->num_rows > 0)
 
 //On regarde si une révolution a lieu
 $requete = "SELECT id, id_royaume FROM revolution WHERE date = ".date("Y-m-d", time());
-$req = $db->query();
+$req = $db->query($requete);
 //Si ya une élection de prévue
 if($db->num_rows > 0)
 {

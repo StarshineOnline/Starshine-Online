@@ -393,7 +393,7 @@ function attaque($acteur = 'attaquant', $competence, &$effects)
 					if($effet > 0) echo '&nbsp;&nbsp;<span class="soin">'.$actif->get_nom().' gagne '.$effet.' HP par la rage vampirique</span><br />';
 				}
       //Epines
-      if($atcif->is_buff('buff_epine'))
+      if($actif->is_buff('buff_epine'))
 				{
 					$buff_epine = $actif->get_buff('buff_epine', 'effet') / 100;
 					$effet = round($degat * $buff_epine);
