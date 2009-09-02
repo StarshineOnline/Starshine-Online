@@ -7,7 +7,7 @@ include_once(root.'haut.php');
 ?>
 <a href="admin_2.php">Revenir à l'administration</a>
 <?php
-$map = new map(1, 1, 190);
+$map = new map(95, 95, 95);
 
 $map->get_pnj();
 $map->get_joueur('neutre');

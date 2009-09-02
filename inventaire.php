@@ -86,7 +86,7 @@ if(!$visu AND isset($_GET['action']))
 							if($db->num_rows <= 0)
 							{
 								//Positionnement de la construction
-								$distance = calcul_distance(convert_in_pos($Trace[$joueur->get_race()]['spawn_x'], $Trace[$joueur->get_race()]['spawn_y']), ($W_case));
+								$distance = calcul_distance(convert_in_pos($Trace[$joueur->get_race()]['spawn_x'], $Trace[$joueur->get_race()]['spawn_y']), ($joueur->get_pos()));
 								$time = time() + ($row['temps_construction'] * $distance);
 								if($_GET['type'] == 'arme_de_siege')
 								{
@@ -97,8 +97,7 @@ if(!$visu AND isset($_GET['action']))
 								$requete = "INSERT INTO placement (type, x, y, royaume, debut_placement, fin_placement, id_batiment, hp, nom, rez, point_victoire) VALUES('".sSQL($_GET['type'])."', '".$joueur->get_x()."', '".$joueur->get_y()."', '".$Trace[$joueur->get_race()]['numrace']."', ".time().", '".$time."', '".$row['batiment_id']."', '".$row['hp']."', '".$row['batiment_nom']."', '".$rez."', '".$row['point_victoire']."')";
 								$db->query($requete);
 								//On supprime l'objet de l'inventaire
-								array_splice($joueur->get_inventaire_slot_partie(), $_GET['key_slot'], 1);
-								$joueur->set_inventaire_slot(serialize($joueur->get_inventaire_slot_partie()));
+								$joueur->supprime_objet($joueur->get_inventaire_slot_partie($_GET['key_slot']), 1);
 								$joueur->sauver();
 								echo '<h6>'.$row['nom'].' posé avec succès</h6>';
 							}
@@ -146,15 +145,13 @@ if(!$visu AND isset($_GET['action']))
 								if($db->num_rows <= 0)
 								{
 									//Positionnement du drapeau
-									$distance = calcul_distance(convert_in_pos($Trace[$joueur->get_race()]['spawn_x'], $Trace[$joueur->get_race()]['spawn_y']), ($W_case));
+									$distance = calcul_distance(convert_in_pos($Trace[$joueur->get_race()]['spawn_x'], $Trace[$joueur->get_race()]['spawn_y']), ($joueur->get_pos()));
 									$time = time() + ($row['temps_construction'] * $distance);
 									$requete = "INSERT INTO placement (id, type, x, y, royaume, debut_placement, fin_placement, id_batiment, hp, nom, rez) VALUES('', 'drapeau', '".$joueur->get_x()."', '".$joueur->get_y()."', '".$Trace[$joueur->get_race()]['numrace']."', ".time().", '".$time."', '".$row['batiment_id']."', '".$row['hp']."', 'drapeau', 0)";
 									$db->query($requete);
 									//On supprime l'objet de l'inventaire
-									array_splice($joueur->get_inventaire_slot(), $_GET['key_slot'], 1);
-									$inventaire_slot = serialize($joueur->get_inventaire_slot());
-									$requete = "UPDATE perso SET inventaire_slot = '".$inventaire_slot."' WHERE ID = ".$joueur->get_id();
-									$req = $db->query($requete);
+									$joueur->supprime_objet($joueur->get_inventaire_slot_partie($_GET['key_slot'], true), 1);
+									$joueur->sauver();
 									echo '<h6>Drapeau posé avec succès</h6>';
 								}
 								else

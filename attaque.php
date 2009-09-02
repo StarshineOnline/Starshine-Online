@@ -640,9 +640,14 @@ else
 						$groupe->level_groupe = $actif->get_level();
 						$groupe->somme_groupe = $actif->get_level();
 						$groupe->set_share_xp(100);
-						$groupe->membre_joueur[0]['id_joueur'] = $actif->get_id();
-						$groupe->membre_joueur[0]['share_xp'] = 100;
-						$groupe->membre_joueur[0]['race'] = $actif->get_race();
+						$groupe->membre_joueur[0] = new perso();
+						$groupe->membre_joueur[0]->set_id($attaquant->get_id());
+						$groupe->membre_joueur[0]->share_xp = 100;
+						$groupe->membre_joueur[0]->set_level($attaquant->get_level());
+						$groupe->membre_joueur[0]->set_exp($attaquant->get_exp());
+						$groupe->membre_joueur[0]->set_star($attaquant->get_star());
+						$groupe->membre_joueur[0]->set_honneur($attaquant->get_honneur());
+						$groupe->membre_joueur[0]->set_reputation($attaquant->get_reputation());
 					}
 					$G_range_level = ceil($passif->get_level() * 0.5);
 					$xp = $xp * (1 + (($actif->get_level() - $passif->get_level()) / $G_range_level));
@@ -797,10 +802,8 @@ else
 						$groupe->level_groupe = $attaquant->get_level();
 						$groupe->somme_groupe = $attaquant->get_level();
 						$groupe->set_share_xp(100);
-						$groupe->membre_joueur[0] = new perso();
-						$groupe->membre_joueur[0]->set_id($attaquant->get_id());
+						$groupe->membre_joueur[0] = $joueur;
 						$groupe->membre_joueur[0]->share_xp = 100;
-						$groupe->membre_joueur[0]->set_level($attaquant->get_level());
 					}
 					else
 					{
