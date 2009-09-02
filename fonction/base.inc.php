@@ -566,14 +566,14 @@ function cout_pa2($coutpa, $joueur, $case, $diagonale)
 		if($coutpa > 2) $coutpa -= 1;
 	}
 	//Buff rapide comme le vent
-	if($joueur->is_buff('rapide_vent') or $joueur->is_enchantement('course'))
+	if($joueur->is_buff('rapide_vent', true) or $joueur->is_enchantement('course'))
 	{
 		if($coutpa > 2) $coutpa -= 1;
 	}
 	
 	if ($diagonale) $coutpa++;
 	//Mal de rez
-	if($joueur->is_debuff('debuff_rez'))
+	if($joueur->is_debuff('debuff_rez', true))
 	{
 		$coutpa = $coutpa * $joueur->get_debuff('debuff_rez', 'effet');
 	}

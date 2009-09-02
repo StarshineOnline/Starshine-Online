@@ -2466,7 +2466,10 @@ class perso extends entite
 		{
 			if(!isset($this->buff)) $this->get_buff();
 			if(!$type)
-				return $this->buff[$nom][$champ];
+			{
+				$get = 'get_'.$champ;
+				return $this->buff[$nom]->$get();
+			}
 			else
 				foreach($this->buff as $buff)
 				{
