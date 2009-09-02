@@ -48,7 +48,7 @@ function script_action($joueur, $ennemi, $mode, &$effects)
 			$row = $db->read_assoc($req);
 			// Si la cible est l'adversaire, alors c'est foiré
 			if ($G_cibles[$row['cible']] == 'Ennemi') {
-				echo $ennemi['nom'].' est caché, '.$joueur->get_nom().
+				echo $ennemi->get_nom().' est caché, '.$joueur->get_nom().
 					' ne peut pas attaquer<br />';
 				return '';
 			}

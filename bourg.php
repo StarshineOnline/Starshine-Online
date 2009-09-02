@@ -14,15 +14,16 @@ $joueur->check_perso();
 //Vérifie si le perso est mort
 verif_mort($joueur, 1);
 
-$W_case = $_GET['poscase'];
-$W_requete = 'SELECT * FROM map WHERE ID =\''.sSQL($W_case).'\'';
+$W_requete = 'SELECT royaume, type FROM map WHERE ID =\''.sSQL($joueur->get_pos()).'\'';
 $W_req = $db->query($W_requete);
-$W_row = $db->read_array($W_req);
+$W_row = $db->read_assoc($W_req);
 $R = new royaume($W_row['royaume']);
 $R->get_diplo($joueur->get_race());
 
+$bourg = new construction($_GET['id_construction']);
+
 //Informations sur le batiment
-$requete = "SELECT * FROM batiment WHERE id = ".sSQL($_GET['id_batiment']);
+$requete = "SELECT * FROM batiment WHERE id = ".sSQL($bourg->get_id_batiment());
 $req = $db->query($requete);
 $row_b = $db->read_assoc($req);
 ?>
@@ -30,9 +31,7 @@ $row_b = $db->read_assoc($req);
 		<h2><?php echo $row_b['nom']; ?></h2>
 <?php
 
-$W_distance = detection_distance($W_case, $_SESSION["position"]);
-
-$W_coord = convert_in_coord($W_case);
+$W_distance = detection_distance(convert_in_pos($bourg->get_x(), $bourg->get_y()), $joueur->get_pos());
 if($W_distance == 0 AND $joueur->get_race() == $R->get_race())
 {
 	?>
@@ -54,7 +53,7 @@ if($W_distance == 0 AND $joueur->get_race() == $R->get_race())
 			<a href="bureau_quete.php?poscase=<?php echo $W_case; ?>" onclick="return envoiInfo(this.href, 'carte')">Bureau des quètes</a>
 		</li>
 <?php
-	if(date("d") >= 15 AND date("d") < 20)
+	if(date("d") >= 5 AND date("d") < 20)
 	{
 ?>
 		<li>

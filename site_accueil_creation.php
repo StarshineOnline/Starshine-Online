@@ -78,7 +78,7 @@ else
 		$joueur->set_password(md5($mdp));
 		$joueur->set_race($race);
 		$joueur->set_level(1);
-		$joueur->set_star($royaume->get_star());
+		$joueur->set_star($royaume->get_star_nouveau_joueur());
 		$joueur->set_vie($caracteristiques['vie']);
 		$joueur->set_force($caracteristiques['force']);
 		$joueur->set_dexterite($caracteristiques['dexterite']);
@@ -156,7 +156,7 @@ Bon jeu !';
 		}
 		require('connect_forum.php');
 		//Création de l'utilisateur dans le forum
-		$requete = "INSERT INTO punbbusers(`group_id`, `username`, `password`, `language`, `style`, `registered`) VALUES('".$punbb[$race]."', '$nom', '".sha1($mdp)."', 'French', 'SSO', '".time()."')";
+		$requete = "INSERT INTO punbbusers(`group_id`, `username`, `password`, `language`, `style`, `registered`) VALUES('".$punbb[$race]."', '".$joueur->get_nom()."', '".sha1($mdp)."', 'French', 'SSO', '".time()."')";
 		$db_forum->query($requete);
 	}
 }

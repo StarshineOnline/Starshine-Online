@@ -101,7 +101,7 @@ if (file_exists('root.php'))
 				if($z < 25)
 				{
 						$nom = $row['groupe_nom'];
-						if($row['groupe_id'] == $joueur['groupe'])
+						if($row['groupe_id'] == $joueur->get_groupe())
 						{
 							$style = 'background-color : #0aa74c;';
 						}

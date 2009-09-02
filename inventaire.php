@@ -148,7 +148,7 @@ if(!$visu AND isset($_GET['action']))
 									//Positionnement du drapeau
 									$distance = calcul_distance(convert_in_pos($Trace[$joueur->get_race()]['spawn_x'], $Trace[$joueur->get_race()]['spawn_y']), ($W_case));
 									$time = time() + ($row['temps_construction'] * $distance);
-									$requete = "INSERT INTO placement VALUES('', 'drapeau', '".$joueur->get_x()."', '".$joueur->get_y()."', '".$Trace[$joueur->get_race()]['numrace']."', ".time().", '".$time."', '".$row['batiment_id']."', '".$row['hp']."', 'drapeau', 0)";
+									$requete = "INSERT INTO placement (id, type, x, y, royaume, debut_placement, fin_placement, id_batiment, hp, nom, rez) VALUES('', 'drapeau', '".$joueur->get_x()."', '".$joueur->get_y()."', '".$Trace[$joueur->get_race()]['numrace']."', ".time().", '".$time."', '".$row['batiment_id']."', '".$row['hp']."', 'drapeau', 0)";
 									$db->query($requete);
 									//On supprime l'objet de l'inventaire
 									array_splice($joueur->get_inventaire_slot(), $_GET['key_slot'], 1);

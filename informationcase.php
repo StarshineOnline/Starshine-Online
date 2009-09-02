@@ -159,9 +159,9 @@ if($W_distance < 4)
 			$requete = "SELECT * FROM batiment WHERE id = ".$W_row['id_batiment'];
 			$req = $db->query($requete);
 			$row_b = $db->read_assoc($req);
-			$Royaume = new royaume($W_row['royaume']);
-			echo '<span onmousemove="return '.make_overlib(transform_sec_temp($W_row['fin_placement'] - time()).' avant fin de construction').'" onmouseout="return nd();">'.$row_b['nom'].' '.$Gtrad[$Royaume->get_race()].'</span> - HP : '.$W_row['hp'];
-			if($joueur->get_race() != $Royaume->get_race())
+			$R = new royaume($W_row['royaume']);
+			echo '<span onmousemove="return '.make_overlib(transform_sec_temp($W_row['fin_placement'] - time()).' avant fin de construction').'" onmouseout="return nd();">'.$row_b['nom'].' '.$Gtrad[$R->get_race()].'</span> - HP : '.$W_row['hp'];
+			if($joueur->get_race() != $R->get_race())
 			{
 				if(!array_key_exists('repos_sage', $joueur->get_debuff()))
 				{
@@ -191,17 +191,17 @@ if($W_distance < 4)
 			$requete = "SELECT * FROM batiment WHERE id = ".$W_row['id_batiment'];
 			$req = $db->query($requete);
 			$row_b = $db->read_assoc($req);
-			$Royaume = new royaume($W_row['royaume']);
+			$R = new royaume($W_row['royaume']);
 			echo '<span onmousemove="return '.make_overlib($row_b['description']).'" onmouseout="return nd();"><image src="image/mini_'.$row_b['type'].'.png" style="vertical-align : top;" title="'.$row_b['nom'].'" alt="'.$row_b['nom'].'" />';
 			$nom = $row_b['nom'];
-			if($row_b['type'] == 'fort' AND $joueur->get_race() == $Royaume->get_race()) $nom = '<a href="fort.php?id_batiment='.$row_b['id'].'" onclick="return envoiInfo(this.href, \'centre\');">'.$row_b['nom'].'</a>';
-			if($row_b['type'] == 'bourg' AND $joueur->get_race() == $Royaume->get_race()) $nom = '<a href="bourg.php?id_batiment='.$row_b['id'].'" onclick="return envoiInfo(this.href, \'centre\');">'.$row_b['nom'].'</a>';
-			if($row_b['type'] == 'arme_de_siege' AND $joueur->get_race() == $Royaume->get_race()) $nom = '<a href="arme_de_siege.php?id_construction='.$W_row['id'].'" onclick="return envoiInfo(this.href, \'centre\');">'.$row_b['nom'].'</a>';
-			if($row_b['type'] == 'tour' AND $joueur->get_race() == $Royaume->get_race()) $nom = '<a href="tour.php?id_construction='.$W_row['id'].'" onclick="return envoiInfo(this.href, \'centre\');">'.$row_b['nom'].'</a>';
+			if($row_b['type'] == 'fort' AND $joueur->get_race() == $R->get_race()) $nom = '<a href="fort.php?id_batiment='.$row_b['id'].'" onclick="return envoiInfo(this.href, \'centre\');">'.$row_b['nom'].'</a>';
+			if($row_b['type'] == 'bourg' AND $joueur->get_race() == $R->get_race()) $nom = '<a href="bourg.php?id_construction='.$W_row['id'].'" onclick="return envoiInfo(this.href, \'centre\');">'.$row_b['nom'].'</a>';
+			if($row_b['type'] == 'arme_de_siege' AND $joueur->get_race() == $R->get_race()) $nom = '<a href="arme_de_siege.php?id_construction='.$W_row['id'].'" onclick="return envoiInfo(this.href, \'centre\');">'.$row_b['nom'].'</a>';
+			if($row_b['type'] == 'tour' AND $joueur->get_race() == $R->get_race()) $nom = '<a href="tour.php?id_construction='.$W_row['id'].'" onclick="return envoiInfo(this.href, \'centre\');">'.$row_b['nom'].'</a>';
 			echo ' '.$nom;
-			echo ' '.$Gtrad[$Royaume->get_race()].' - HP : '.$W_row['hp'].' / '.$row_b['hp'];
+			echo ' '.$Gtrad[$R->get_race()].' - HP : '.$W_row['hp'].' / '.$row_b['hp'];
 			echo '</span>';
-			if($joueur->get_race() != $Royaume->get_race() && $row_b['type'] != 'bourg') echo  ' <a href="attaque.php?id_batiment='.$W_row['id'].'&amp;type=batiment&amp;table=construction" onclick="return envoiInfo(this.href, \'information\')"><img src="image/interface/attaquer.png" alt="Combattre" title="Attaquer '.($G_PA_attaque_batiment - $reduction_pa).' PA" style="vertical-align : middle;" /> Attaquer</a>';
+			if($joueur->get_race() != $R->get_race() && $row_b['type'] != 'bourg') echo  ' <a href="attaque.php?id_batiment='.$W_row['id'].'&amp;type=batiment&amp;table=construction" onclick="return envoiInfo(this.href, \'information\')"><img src="image/interface/attaquer.png" alt="Combattre" title="Attaquer '.($G_PA_attaque_batiment - $reduction_pa).' PA" style="vertical-align : middle;" /> Attaquer</a>';
 			elseif($W_row['hp'] < $row_b['hp'])
 			{
 				echo ' <a href="archi_soigne_construction.php?id_construction='.$W_row['id'].'" onclick="return envoiInfo(this.href, \'information\')">Réparer <span class="xsmall">(30 PA)</a>';

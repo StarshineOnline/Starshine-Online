@@ -354,9 +354,9 @@ Vous proposez :
 			{
 				$options = '';
 				//On affiche la liste des objets échangeables par ce joueur
-				if($joueur['inventaire_slot'] != '')
+				if($joueur->get_inventaire_slot_partie() != '')
 				{
-					foreach($joueur['inventaire_slot'] as $invent)
+					foreach($joueurget_inventaire_slot_partie() as $invent)
 					{
 						if($invent !== 0 AND $invent != '')
 						{

@@ -23,7 +23,7 @@ switch($type_cible)
 			$perso = new perso($joueur->get_id());
 			
 		$perso->check_perso();
-		$cible = new entite('joueur', $perso);
+		$cible = $perso;
 		break;
 	case 'monstre':
 		$map_monstre = new map_monstre($_GET['id_monstre']);
@@ -32,9 +32,8 @@ switch($type_cible)
 		$monstre->set_hp($map_monstre->get_hp());
 		$monstre->x = $map_monstre->get_x();
 		$monstre->y = $map_monstre->get_y();
-		$cible = new entite('monstre', $monstre);
-		$cible->set_id($map_monstre->get_id());
-		break;
+		$cible = $monstre;
+	break;
 }
 
 if($joueur->get_groupe() != 0) $groupe_joueur = new groupe($joueur->get_groupe());
@@ -117,9 +116,8 @@ if (isset($_GET['ID']))
 								echo 'Vous soignez '.$cible->get_nom().' de '.$soin.' HP<br />';
 								$soin_total += $soin;
 								
-								$tmp = $cible->get_objet();
-								$tmp->set_hp($cible->get_hp() + $soin);
-								$tmp->sauver();
+								$cible->set_hp($cible->get_hp() + $soin);
+								$cible->sauver();
 								
 								if($groupe)
 								{
