@@ -144,11 +144,11 @@ function attaque($acteur = 'attaquant', $competence, &$effects)
       if(array_key_exists('berzeker', $actif->etat)) $buff_berz_degat = $actif->etat['berzeker']['effet'] * $G_buff['berz_degat']; else $buff_berz_degat = 0;
       if(array_key_exists('berzeker', $passif->etat)) $buff_berz_degat_r = $passif->etat['berzeker']['effet'] * $G_buff['berz_degat_recu']; else $buff_berz_degat_r = 0;
       if(array_key_exists('buff_force', $actif->buff)) $buff_force = $actif->buff['buff_force']['effet']; else $buff_force = 0;
-      if(array_key_exists('buff_cri_victoire', $actif->buff)) $buff_cri_victoire = $actif->buff['buff_cri_victoire']['effet']; else $buff_cri_victoire = 0;
+      if(array_key_exists('buff_cri_victoire', $actif->buff)) $buff_cri_victoire = $actif->buff->buff_cri_victoire['effet']; else $buff_cri_victoire = 0;
       if(array_key_exists('fleche_tranchante', $actif->buff)) $degat += $actif->buff['fleche_tranchante']['effet'];
-      if(array_key_exists('oeil_chasseur', $actif->buff) AND $passif['espece'] == 'bete') $degat += $actif->buff['oeil_chasseur']['effet'];
+      if(array_key_exists('oeil_chasseur', $actif->buff) AND $passif['espece'] == 'bete') $degat += $actif->buff->oeil_chasseur['effet'];
       $degat = $degat + $buff_bene_degat + $buff_berz_degat + $buff_berz_degat_r + $buff_force + $buff_cri_victoire;
-      if(array_key_exists('maladie_mollesse', $actif->buff)) $degat = ceil($degat / (1 + ($actif->buff['maladie_mollesse']['effet'] / 100)));
+      if(array_key_exists('maladie_mollesse', $actif->buff)) $degat = ceil($degat / (1 + ($actif->buff->maladie_mollesse['effet'] / 100)));
 
       /* Application des effets de degats */
       foreach ($effects as $effect)
