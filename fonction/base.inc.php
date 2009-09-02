@@ -1782,7 +1782,9 @@ function augmentation_competence($competence, $joueur, $difficulte)
 		echo '
 		<div id="debug'.$debugs.'" class="debug" style="color : #ff00c0;">
 		Maximum de la compétence '.$competence.' = '.$max.'<br />';
-		$val_competence = $perso->get_comp($competence);
+		// On se base sur le joueur et non le perso, sinon on perds les montees
+		// des rounds precedents vu qu'on ne sauve qu'a la fin
+		$val_competence = $joueur->get_comp($competence);
 
 		echo 'Valeur actuelle de la compétence : '.$val_competence.'<br />
 		Difficulté : '.$difficulte.'<br />';
@@ -1803,7 +1805,7 @@ function augmentation_competence($competence, $joueur, $difficulte)
 			if($numero < $chance)
 			{
 				//Augmentation de la compétence
-				$R_retour[0] = $perso->get_comp($competence) + 1;
+				$R_retour[0] = $joueur->get_comp($competence) + 1;
 
 				//Indique que la compétence a augmenté
 				$R_retour[1] = true;
@@ -1811,8 +1813,8 @@ function augmentation_competence($competence, $joueur, $difficulte)
 		}
 		echo '</div>';
 		$debugs++;
-		if ($R_retour[1] == true && $perso->get_id() == $_SESSION['ID'])
-			echo "";
+		if ($R_retour[1] == true/* && $perso->get_id() == $_SESSION['ID'] */)
+			print_montee_comp($perso->get_nom(), $R_retour[0], $competence);
 	}
 	return $R_retour;
 }

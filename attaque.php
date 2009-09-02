@@ -340,6 +340,7 @@ else
 						/* ~Fin de round */
 						break ;
 					}
+
 					//Augmentation des compétences liées
 					if($mode == 'attaquant')
 					{
@@ -443,6 +444,19 @@ else
 					//Update de la base de donnée.
 					//Correction des bonus ignorables
 					corrige_bonus_ignorables($attaquant, $defenseur, $mode, $args, $args_def);
+
+					// Mets a jour les entites
+					$attaquant = new entite('joueur', $joueur);
+					switch($type)
+					{
+					case 'joueur' :
+						$defenseur = new entite('joueur', $joueur_defenseur);
+						break;
+					case 'monstre' :
+						$defenseur = new entite('monstre', $joueur_defenseur);
+						break;
+					}
+
 					?>
 					</div>
 					<?php
@@ -470,6 +484,7 @@ else
 			}
 			if($type == 'monstre')
 			{
+				//echo '<pre>'; var_dump($joueur); echo '</pre>';
 				$joueur->set_hp($attaquant->get_hp());
 				$joueur->sauver();
 				$map_monstre->set_hp($defenseur->get_hp());
@@ -573,7 +588,6 @@ else
 			if($augmentation[1] == 1)
 			{
 				$joueur->set_survie($augmentation[0]);
-				echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant à '.$joueur->get_survie().' en '.$Gtrad['survie'].'</span><br />';
 			}
 			if($joueur->is_competence('survie_humanoide'))
 			{
@@ -582,7 +596,6 @@ else
 				if($augmentation[1] == 1)
 				{
 					$joueur->set_comp('survie_humanoide', $augmentation[0]);
-					echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant à '.$augmentation[0].' en '.$Gtrad['survie_humanoide'].'</span><br />';
 				}
 			}
 			//Cartouche de fin de combat
