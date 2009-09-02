@@ -1069,7 +1069,7 @@ else
 			{
 				if($type == 'joueur') echo(' <a href="attaque.php?id_joueur='.$joueur_defenseur->get_id().'&amp;type=joueur" onclick="return envoiInfo(this.href, \'information\')"><img src="image/interface/attaquer.png" alt="Combattre" title="Attaquer la même cible" style="vertical-align : middle;" /></a><br />');
 				elseif($type == 'monstre') echo(' <a href="attaque.php?id_monstre='.$map_monstre->get_id().'&amp;type=monstre" onclick="return envoiInfo(this.href, \'information\')"><img src="image/interface/attaquer.png" alt="Combattre" title="Attaquer la même cible" style="vertical-align : middle;" /></a><br />');
-				elseif($type == 'batiment') echo(' <a href="attaque.php?id_batiment='.$map_batiment->get_id().'&amp;type=batiment" onclick="return envoiInfo(this.href, \'information\')"><img src="image/interface/attaquer.png" alt="Combattre" title="Attaquer la même cible" style="vertical-align : middle;" /></a><br />');
+				elseif($type == 'batiment') echo(' <a href="attaque.php?id_batiment='.$map_batiment->get_id().'&amp;type=batiment&amp;table='.$_GET['table'].'" onclick="return envoiInfo(this.href, \'information\')"><img src="image/interface/attaquer.png" alt="Combattre" title="Attaquer la même cible" style="vertical-align : middle;" /></a><br />');
 			}
 
 			//Suppression des PA si c'est une attaque du joueur

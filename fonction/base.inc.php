@@ -1742,51 +1742,56 @@ function augmentation_competences($liste_augmentations, $joueur)
 function augmentation_competence($competence, $joueur, $difficulte)
 {
 	global $db, $Tmaxcomp, $G_apprentissage_rate, $debugs;
-	//Récupère les limitations de la classe
-	$perso = new perso($joueur->get_id());
-	$requete = "SELECT * FROM classe_permet WHERE id_classe = ".$joueur->get_id()." AND competence = '".$competence."'";
-	$req = $db->query($requete);
-	$row = $db->read_assoc($req);
-	if($db->num_rows > 0)
+	$R_retour = array('melee', false);
+	//On vérifie que la chose a bien une classe :D
+	if(method_exists($joueur, 'get_classe_id'))
 	{
-		$max = $row['permet'];
-	}
-	else
-	{
-		$max = $Tmaxcomp[$competence];
-	}
-	echo '
-	<div id="debug'.$debugs.'" class="debug" style="color : #ff00c0;">
-	Maximum de la compétence '.$competence.' = '.$max.'<br />';
-	$val_competence = $perso->get_comp($competence);
-
-	echo 'Valeur actuelle de la compétence : '.$val_competence.'<br />
-	Difficulté : '.$difficulte.'<br />';
-	// Si la compétence n'a pas atteint sa valeur maximale, on effectue le jet d'amélioration
-	if($val_competence < $max)
-	{
-	  // Jet d'amélioration
-		$reussite = ceil(10000 / $G_apprentissage_rate);
-		$numero = rand(1, $reussite);
-		// Valeur seuil
-		if($perso->get_race() == 'humain' OR $perso->get_race() == 'humainnoir') $apprentissage = 1.1; else $apprentissage = 1;
-		if($perso->is_buff('apprenti_vent', true)) $apprentissage = $apprentissage * (1 + ($perso->get_buff('apprenti_vent', 'effet', true) / 100));
-		if($val_competence > 0) $chance = (10000 * $apprentissage) / (sqrt($val_competence) * $difficulte); else $chance = 0;
-		$R_retour[1] = false;
-		echo 'Chances : dé de : '.$reussite.' doit être inférieur à '.$chance.' <i>'.($chance * 100 / $reussite).'% de chance</i><br />';
-		echo 'Résultat : '.$numero.'<br />';
-		//Si le numero est inférieur a chance, alors la compétence augmente d'un
-		if($numero < $chance)
+		//Récupère les limitations de la classe
+		$perso = new perso($joueur->get_id());
+		$requete = "SELECT * FROM classe_permet WHERE id_classe = ".$joueur->get_classe_id()." AND competence = '".$competence."'";
+		$req = $db->query($requete);
+		$row = $db->read_assoc($req);
+		if($db->num_rows > 0)
 		{
-			//Augmentation de la compétence
-			$R_retour[0] = $perso->get_comp($competence) + 1;
-
-			//Indique que la compétence a augmenté
-			$R_retour[1] = true;
+			$max = $row['permet'];
 		}
+		else
+		{
+			$max = $Tmaxcomp[$competence];
+		}
+		echo '
+		<div id="debug'.$debugs.'" class="debug" style="color : #ff00c0;">
+		Maximum de la compétence '.$competence.' = '.$max.'<br />';
+		$val_competence = $perso->get_comp($competence);
+
+		echo 'Valeur actuelle de la compétence : '.$val_competence.'<br />
+		Difficulté : '.$difficulte.'<br />';
+		// Si la compétence n'a pas atteint sa valeur maximale, on effectue le jet d'amélioration
+		if($val_competence < $max)
+		{
+		  // Jet d'amélioration
+			$reussite = ceil(10000 / $G_apprentissage_rate);
+			$numero = rand(1, $reussite);
+			// Valeur seuil
+			if($perso->get_race() == 'humain' OR $perso->get_race() == 'humainnoir') $apprentissage = 1.1; else $apprentissage = 1;
+			if($perso->is_buff('apprenti_vent', true)) $apprentissage = $apprentissage * (1 + ($perso->get_buff('apprenti_vent', 'effet', true) / 100));
+			if($val_competence > 0) $chance = (10000 * $apprentissage) / (sqrt($val_competence) * $difficulte); else $chance = 0;
+			$R_retour[1] = false;
+			echo 'Chances : dé de : '.$reussite.' doit être inférieur à '.$chance.' <i>'.($chance * 100 / $reussite).'% de chance</i><br />';
+			echo 'Résultat : '.$numero.'<br />';
+			//Si le numero est inférieur a chance, alors la compétence augmente d'un
+			if($numero < $chance)
+			{
+				//Augmentation de la compétence
+				$R_retour[0] = $perso->get_comp($competence) + 1;
+
+				//Indique que la compétence a augmenté
+				$R_retour[1] = true;
+			}
+		}
+		echo '</div>';
+		$debugs++;
 	}
-	echo '</div>';
-	$debugs++;
 	return $R_retour;
 }
 
