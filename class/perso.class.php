@@ -2423,7 +2423,6 @@ class perso extends entite
 	function get_comp($comp_assoc = '')
 	{
 		$get = 'get_'.$comp_assoc;
-		echo $comp_assoc;
 		if(method_exists($this, $get)) return $this->$get();
 		else return $this->get_competence($comp_assoc);
 	}
@@ -2700,7 +2699,6 @@ class perso extends entite
 	function set_inventaire_slot_partie($objet, $partie)
 	{
 		$this->inventaire_slot_array[$partie] = $objet;
-		echo $this->inventaire_slot_array[$partie];
 	}
 
 	function get_armure()

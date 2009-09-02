@@ -125,7 +125,7 @@ if (isset($_GET['ID']))
 									$requete = "INSERT INTO journal(id_perso, action, actif, passif, time, valeur, valeur2, x, y) VALUES(".$cible->get_id().", 'rgsoin', '".$cible->get_nom()."', '".$joueur->get_nom()."', NOW(), ".$soin.", 0, ".$joueur->get_x().", ".$joueur->get_y().")";
 									$db->query($requete);
 								}
-								else
+								else if($cible->get_id() != $joueur->get_id())
 								{
 									//Insertion du soin de groupe dans le journal de la cible
 									$requete = "INSERT INTO journal(id_perso, action, actif, passif, time, valeur, valeur2, x, y) VALUES(".$cible->get_id().", 'rsoin', '".$cible->get_nom()."', '".$joueur->get_nom()."', NOW(), ".$soin.", 0, ".$joueur->get_x().", ".$joueur->get_y().")";
