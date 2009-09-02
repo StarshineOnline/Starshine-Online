@@ -1728,6 +1728,14 @@ function augmentation_competences($liste_augmentations, $joueur)
 	return $joueur;
 }
 
+/**
+ * Merge deux tableaux d'ameliorations en un
+ *
+ * @param				$a1			premier tableau
+ * @param				$a2			second tableau
+ *
+ * @return			le premier tableau dans lequel on a merge le second
+ */
 function merge_augmentations($a1, $a2)
 {
 	foreach ($a2 as $target => $augg) {
@@ -1803,6 +1811,8 @@ function augmentation_competence($competence, $joueur, $difficulte)
 		}
 		echo '</div>';
 		$debugs++;
+		if ($R_retour[1] == true && $perso->get_id() == $_SESSION['ID'])
+			echo "";
 	}
 	return $R_retour;
 }

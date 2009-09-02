@@ -201,4 +201,8 @@ function affiche_construction_visu($joueur, $W_row, $position="")
 ';	
 }
 
+function print_montee_comp($nom, $valeur, $comp) {
+	echo "<span class=\".augcomp\"><strong>$nom</strong> est maintenant à $valeur en $comp</span>";
+}
+
 ?>
