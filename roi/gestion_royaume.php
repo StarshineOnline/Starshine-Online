@@ -786,7 +786,7 @@ if($joueur->get_rang_royaume() != 6)
 		<div id='bourse'>
 		<div class='bourse_ressource'>
 			<div id="ajout_ressource" style="position : relative; right : 0px; display : none; z-index : 10;">
-				Ressource : <select name="ressource" id="ressource">
+				Ressource : <select name="ressource_vente" id="ressource_vente">
 					<option value="pierre">pierre</option>
 					<option value="bois">bois</option>
 					<option value="eau">eau</option>
@@ -797,7 +797,7 @@ if($joueur->get_rang_royaume() != 6)
 				</select><br />
 				Nombre <input type="text" name="nbr" id="nbr" value="0" /><br />
 				Prix total : <input type="text" name="prix" id="prix" value="0" /><br />
-				<input type="button" onclick="if(confirm('Voullez vous mettre ' + $(nbr).value + ' ' + $(ressource).value + ' en vente à ' + $(prix).value + ' stars ?')) {envoiInfo('gestion_royaume.php?direction=bourse_ressource&amp;ressource=' + $(ressource).value + '&amp;prix=' + $(prix).value + '&amp;nombre=' + $(nbr).value, 'message_confirm'); envoiInfo('gestion_royaume.php?direction=bourse', 'contenu_jeu'); } else {return false;}" value="Valider" /><br />
+				<input type="button" onclick="enchere();" value="Valider" /><br />
 			</div>
 			<a href="" onclick="Effect.toggle('ajout_ressource', 'slide'); return false;">Mettre des ressources aux enchères</a>
 		</div>

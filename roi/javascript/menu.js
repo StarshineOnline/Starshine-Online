@@ -17,7 +17,10 @@ function showMenu(id)
 		}
 	}
 }
-
+function enchere()
+{
+	if(confirm('Voullez vous mettre ' + $('nbr').value + ' ' + $('ressource_vente').value + ' en vente à ' + $('prix').value + ' stars ?')) {envoiInfo('gestion_royaume.php?direction=bourse_ressource&ressource=' + $('ressource_vente').value + '&prix=' + $('prix').value + '&nombre=' + $('nbr').value, 'message_confirm'); envoiInfo('gestion_royaume.php?direction=bourse', 'contenu_jeu'); } else {return false;}
+}
 function clickMenu(el)
 {
 	refresh(el.href, 'conteneur');
@@ -25,7 +28,7 @@ function clickMenu(el)
 	return false;
 }
 
-// D�placement sur la carte
+// Déplacement sur la carte
 function Loadchargement()
 {
 	$('loading').show();
