@@ -23,7 +23,7 @@ switch($type_cible)
 			$perso = new perso($joueur->get_id());
 			
 		$perso->check_perso();
-		$cible = $perso;
+		$cible = new entite('joueur', $perso);
 		break;
 	case 'monstre':
 		$map_monstre = new map_monstre($_GET['id_monstre']);
@@ -32,7 +32,8 @@ switch($type_cible)
 		$monstre->set_hp($map_monstre->get_hp());
 		$monstre->x = $map_monstre->get_x();
 		$monstre->y = $map_monstre->get_y();
-		$cible = $monstre;
+		$cible = new entite('monstre', $monstre);
+		$cible->set_id($map_monstre->get_id());
 	break;
 }
 
