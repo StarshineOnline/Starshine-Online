@@ -1021,7 +1021,8 @@ function lance_comp($id, $acteur, &$effects)
 		case 'coup_mortel' :
 			echo '&nbsp;&nbsp;<strong>'.$actif->get_nom().'</strong> utilise '.$row['nom'].'<br />';
 			$actif->set_potentiel_toucher($actif->get_potentiel_toucher() * (1 - ($row['effet'] / 100)));
-			$actif['coup_mortel'] = true;
+			$actif->etat['coup_mortel']['effet'] = true;
+			$actif->etat['coup_mortel']['duree'] = 1;
 			$comp_attaque = true;
 		break;
 		case 'coup_sournois' :
@@ -1222,7 +1223,7 @@ function lance_comp($id, $acteur, &$effects)
 		break;
 		case 'dissimulation' :
 		  // On regarde si la dissimulation est réussie
-			$att = rand(0, $actif['dexterite'] * $actif['esquive']);
+			$att = rand(0, $actif->get_dexterite() * $actif->get_esquive());
 			$def = rand(0, $passif->get_volonte() * ($passif->get_pm() * 2.5));
 			echo '&nbsp;&nbsp;<strong>'.$actif->get_nom().'</strong> tente de se dissimuler...';
 			if($att > $def)

@@ -262,7 +262,7 @@ function attaque($acteur = 'attaquant', $competence, &$effects)
 							$transperce = true;
 						}
 				}
-      if(array_key_exists('coup_mortel', $actif))
+      if(array_key_exists('coup_mortel', $actif->etat))
 				{
 					$degat = $degat * 4;
 				}
@@ -379,9 +379,9 @@ function attaque($acteur = 'attaquant', $competence, &$effects)
 					echo '&nbsp;&nbsp;<strong>'.$passif->get_nom().'</strong> est étourdit par la flêche !<br />';
 					$passif->etat['etourdit']['duree'] = 2;
 				}
-      if(array_key_exists('buff_rage_vampirique', $actif->buff))
+      if($actif->is_buff('buff_rage_vampirique'))
 				{
-					$buff_rage_vampirique = $actif->buff['buff_rage_vampirique']['effet'] / 100;
+					$buff_rage_vampirique = $actif->get_buff('buff_rage_vampirique', 'effet') / 100;
 					$effet = round($degat * $buff_rage_vampirique);
 					if(($actif['hp'] + $effet) > $actif['hp_max'])
 						{
@@ -393,17 +393,17 @@ function attaque($acteur = 'attaquant', $competence, &$effects)
 					if($effet > 0) echo '&nbsp;&nbsp;<span class="soin">'.$actif->get_nom().' gagne '.$effet.' HP par la rage vampirique</span><br />';
 				}
       //Epines
-      if(array_key_exists('buff_epine', $actif->buff))
+      if($atcif->is_buff('buff_epine'))
 				{
-					$buff_epine = $actif->buff['buff_epine']['effet'] / 100;
+					$buff_epine = $actif->get_buff('buff_epine', 'effet') / 100;
 					$effet = round($degat * $buff_epine);
 					$actif['hp'] -= $effet;
 					if($effet > 0) echo '&nbsp;&nbsp;<span class="degat">'.$passif->get_nom().' renvoi '.$effet.' dégats grâce a Armure en épine</span><br />';
 				}
       //Armure de glace
-      if(array_key_exists('buff_armure_glace', $actif->buff))
+      if($actif->is_buff('buff_armure_glace'))
 				{
-					$chance = $actif->buff['buff_armure_glace']['effet'];
+					$chance = $actif->get_buff('buff_armure_glace', 'effet');
 					$de1 = rand(0, $chance);
 					$de2 = rand(0, 100);
 					if($de1 > $de2)
