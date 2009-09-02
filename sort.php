@@ -835,7 +835,7 @@ else
 			</td> 
 			<td>';
 			if($sort->get_cible() == 2 && $sort_groupe)
-				if($joueur->is_comp_perso('sort_groupe') || $joueur->is_competence('sort_groupe_'.$sort->get_comp_assoc())) echo ' <span style="'.$cursor.'text-decoration : none; color : '.$color.';" onclick="'.$href2.'">(groupe - '.ceil($sortmp * 1.5).' MP)</span>';
+				if($joueur->is_competence('sort_groupe')|| $joueur->is_competence('sort_groupe_'.$sort->get_comp_assoc())) echo ' <span style="'.$cursor.'text-decoration : none; color : '.$color.';" onclick="'.$href2.'">(groupe - '.ceil($sortmp * 1.5).' MP)</span>';
 				
 			if($_GET['tri'] == 'favoris') echo ' <td><a href="sort.php?action=delfavoris&amp;id='.$sort->get_id().'" onclick="return envoiInfo(this.href, \'information\')"><img src="image/interface/croix_quitte.png" alt="Supprimer des favoris" title="Supprimer des favoris" /></a></td>';
 			else echo ' <td><a href="sort.php?action=favoris&amp;id='.$sort->get_id().'" onclick="return envoiInfo(this.href, \'information\')"><img src="image/favoris.png" alt="Favoris" title="Ajouter aux sorts favoris" /></a></td>';
