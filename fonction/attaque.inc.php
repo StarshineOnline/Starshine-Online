@@ -146,7 +146,7 @@ function attaque($acteur = 'attaquant', $competence, &$effects)
       if(array_key_exists('buff_force', $actif->buff)) $buff_force = $actif->buff['buff_force']['effet']; else $buff_force = 0;
       if(array_key_exists('buff_cri_victoire', $actif->buff)) $buff_cri_victoire = $actif->buff->buff_cri_victoire['effet']; else $buff_cri_victoire = 0;
       if(array_key_exists('fleche_tranchante', $actif->buff)) $degat += $actif->buff['fleche_tranchante']['effet'];
-      if(array_key_exists('oeil_chasseur', $actif->buff) AND $passif['espece'] == 'bete') $degat += $actif->buff->oeil_chasseur['effet'];
+      if($actif->is_buff('oeil_chasseur', true) AND $passif->get_espece() == 'bete') $degat += $actif->get_buff('oeil_chasseur', true)->get_effet();
       $degat = $degat + $buff_bene_degat + $buff_berz_degat + $buff_berz_degat_r + $buff_force + $buff_cri_victoire;
       if(array_key_exists('maladie_mollesse', $actif->buff)) $degat = ceil($degat / (1 + ($actif->buff->maladie_mollesse['effet'] / 100)));
 

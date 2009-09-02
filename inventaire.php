@@ -133,7 +133,7 @@ if(!$visu AND isset($_GET['action']))
 						$row = $db->read_assoc($req);
 
 						//Si terrain neutre ou pas a nous ET que c'est pas dans un donjon
-						if((($R['diplo'] > 6 && $R['diplo'] != 127) OR $R['nom'] == 'Neutre') AND !is_donjon($joueur->get_x(), $joueur->get_y()))
+						if((($R->get_diplo() > 6 && $R->get_diplo() != 127) OR $R->get_nom() == 'Neutre') AND !is_donjon($joueur->get_x(), $joueur->get_y()))
 						{
 							//On vérifie si ya pas déjà un batiment en construction
 							$requete = "SELECT id FROM placement WHERE x = ".$joueur->get_x()." AND y = ".$joueur->get_y();
@@ -191,14 +191,15 @@ if(!$visu AND isset($_GET['action']))
 							$augmentation = augmentation_competence('identification', $joueur, 3);
 							if ($augmentation[1] == 1)
 							{
-								$joueur['identification'] = $augmentation[0];
-								echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant à '.$joueur['identification'].' en identification</span><br />';
+								$joueur->set_comp('identification', $augmentation[0]);
+								echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant à '.$joueur->get_identification().' en identification</span><br />';
+								$joueur->sauver();
 							}
 							//echo $id_objet;
 							$requete = "SELECT * FROM gemme WHERE id = ".mb_substr($id_objet, 2);
 							$req = $db->query($requete);
 							$row = $db->read_assoc($req);
-							$player = rand(0, $joueur['identification']);
+							$player = rand(0, $joueur->get_identification());
 							$thing = rand(0, pow(10, $row['niveau']));
 							//echo $joueur['identification'].' / '.pow(10, $row['niveau']).' ---- '.$player.' VS '.$thing;
 							//Si l'identification réussie

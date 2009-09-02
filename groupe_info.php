@@ -35,7 +35,7 @@ else
 				Groupe niveau
 			</td>
 			<td>
-				: <?php echo $groupe->get_lvl(); ?>
+				: <?php echo $groupe->get_level();?>
 			</td>
 		</tr>
 		<tr>

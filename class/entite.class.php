@@ -47,6 +47,7 @@ class entite
 	private $level;
 	private $type;
 	private $rang_royaume;
+	private $espece;
 
 	function __construct($type, $objet)
 	{
@@ -90,6 +91,7 @@ class entite
 				$this->arme_degat = $objet->get_arme_degat();
 				$this->level = $objet->get_level();
 				$this->rang_royaume = $objet->get_rang_royaume();
+				$this->espece = 'humainoïde';
 			break;
 			case 'monstre' :
 				$this->action = $objet->get_action();
