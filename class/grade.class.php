@@ -172,7 +172,7 @@ class grade
 
 		$requete = "SELECT id, nom, facteur, honneur, rang FROM grade WHERE ".$where." ORDER BY ".$ordre;
 		$req = $db->query($requete);
-		if($db->num_rows() > 0)
+		if($db->num_rows($req) > 0)
 		{
 			while($row = $db->read_assoc($req))
 			{

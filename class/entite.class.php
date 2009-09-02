@@ -91,6 +91,7 @@ class entite
 				$this->arme_degat = $objet->get_arme_degat();
 				$this->level = $objet->get_level();
 				$this->rang_royaume = $objet->get_rang_royaume();
+				$this->rang = $objet->get_grade()->get_rang();
 				$this->espece = 'humainoïde';
 			break;
 			case 'monstre' :
@@ -284,6 +285,13 @@ class entite
 	{
 		return $this->rang_royaume;
 	}
+	function get_rang()
+	{
+		if(isset($this->rang))
+			return $this->rang;
+		else
+			return $this->rang_royaume;
+	}
 	function get_arme_type()
 	{
 		return $this->arme_type;
@@ -458,7 +466,11 @@ class entite
 	{
 		return $this->level;
 	}
-
+	function get_grade()
+	{
+		$grade = grade::create(array('rang'), array($this->rang_royaume));
+		return $grade[0];
+	}
 	function get_potentiel_toucher()
 	{
 		if($this->get_arme_type() == 'arc')

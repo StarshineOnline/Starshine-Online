@@ -23,7 +23,7 @@ switch($type_cible)
 			$perso = new perso($joueur->get_id());
 			
 		$perso->check_perso();
-		$cible = new entite('joueur', $perso);
+		$cible = $perso;
 		break;
 	case 'monstre':
 		$map_monstre = new map_monstre($_GET['id_monstre']);
@@ -174,7 +174,7 @@ if (isset($_GET['ID']))
 						}
 						$db->query($requete);
 					}
-					if($groupe) $groupe_href = '&amp;groupe=yes'; else $groupe_href = '&amp;type='.$cible->get_type().'&amp;id_'.$cible->get_type().'='.$cible->get_id();
+					if($groupe) $groupe_href = '&amp;groupe=yes'; else $groupe_href = '&amp;type='.$type_cible.'&amp;id_'.$type_cible.'='.$cible->get_id();
 					echo '<a href="sort.php?ID='.$_GET['ID'].$groupe_href.'" onclick="return envoiInfo(this.href, \'information\')">Utiliser de nouveau ce sort</a>';
 				break;
 				case 'body_to_mind' :
@@ -281,7 +281,7 @@ if (isset($_GET['ID']))
 					foreach($cibles as $cible)
 					{
 						//Mis en place du buff
-						if(lance_buff($sort->get_type(), $cible->get_id(), $sort->get_effet(), $sort->get_effet2(), $sort->get_duree(), $sort->get_nom(), description($sort->get_description(), $sort), $type_cible == 'joueur' ? 'perso' : 'monstre', 0, count($cible->get_buff()), $cible->get_rang_royaume()))
+						if(lance_buff($sort->get_type(), $cible->get_id(), $sort->get_effet(), $sort->get_effet2(), $sort->get_duree(), $sort->get_nom(), description($sort->get_description(), $sort), $type_cible == 'joueur' ? 'perso' : 'monstre', 0, count($cible->get_buff()), $cible->get_grade()->get_rang()))
 						{
 							$action = true;
 							echo $cible->get_nom().' a bien reçu le buff<br />';
@@ -321,7 +321,7 @@ if (isset($_GET['ID']))
 						if ($augmentation[1] == 1)
 						{
 							$joueur->set_comp($sort->get_comp_assoc(), $augmentation[0]);
-							echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant à '.$joueur->$comp_assoc().' en '.$Gtrad[$sort->get_comp_assoc()].'</span><br />';
+							echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant à '.$joueur->get_comp($sort->get_comp_assoc()).' en '.$Gtrad[$sort->get_comp_assoc()].'</span><br />';
 						}
 						//Mis à jour du joueur
 						//sauve_sans_bonus_ignorables($joueur, array('mp', 'pa', 'incantation', $row['comp_assoc']));
