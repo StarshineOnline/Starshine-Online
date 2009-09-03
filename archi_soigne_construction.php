@@ -42,10 +42,8 @@ if($joueur->get_pa() >= 30)
 				$augmentation = augmentation_competence('architecture', $joueur, 1);
 				if ($augmentation[1] == 1)
 				{
-					$joueur->get_architecture() = $augmentation[0];
-					echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant à '.$joueur->get_architecture().' en architecture</span><br />';
-					$requete = "UPDATE perso SET architecture = ".$joueur->get_architecture()." WHERE ID = ".$joueur->get_id();
-					$db->query($requete);
+					$joueur->set_architecture($augmentation[0]);
+					$joueur->sauver();
 				}
 				echo '<h6>La construction a été réparée de '.$hp_repare.' HP</h6>';
 				$joueur->sauver();

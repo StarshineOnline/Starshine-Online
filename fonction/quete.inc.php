@@ -7,21 +7,17 @@ if (file_exists('../root.php'))
 function verif_quete($id_quete, $id_quete_joueur, $joueur)
 {
 	global $db;	
-	$requete = "SELECT * FROM quete WHERE ID = ".$id_quete;
+	$requete = "SELECT * FROM quete WHERE id = ".$id_quete;
 	$req = $db->query($requete);
 	$row = $db->read_array($req);
 	$objectif = unserialize($row['objectif']);
 	$i = 0;
 	$valid = true;
+	$liste_quete = $joueur->get_liste_quete();
 	while(($i < count($objectif) AND $valid))
 	{
-		$obj = $objectif[$i];
-		$liste_quete = $joueur->get_liste_quete();
-		if($liste_quete[$id_quete_joueur]['objectif'][$i]->nombre >= $obj->nombre)
+		if($liste_quete[$id_quete_joueur]['objectif'][$i]->nombre < $objectif[$i]->nombre)
 		{		
-		}
-		else
-		{
 			$valid = false;
 		}
 		$i++;
@@ -41,7 +37,7 @@ function verif_action($type_cible, $joueur, $mode)
 		$echo = '';
 		while($i < $count)
 		{
-			$requete = "SELECT id, nom, objectif, honneur, star, exp, reward, mode FROM quete WHERE ID = ".$liste_quete[$i]['id_quete'];
+			$requete = "SELECT id, nom, objectif, honneur, star, exp, reward, mode FROM quete WHERE id = ".$liste_quete[$i]['id_quete'];
 			$req = $db->query($requete);
 			$row = $db->read_array($req);
 			//Vérification si quête solo ou groupe
@@ -109,7 +105,7 @@ function verif_action($type_cible, $joueur, $mode)
 function fin_quete($joueur, $id_quete_joueur, $id_quete)
 {
 	global $db;
-	$requete = "SELECT id, nom, objectif, honneur, star, exp, reward, mode FROM quete WHERE ID = ".$id_quete;
+	$requete = "SELECT id, nom, objectif, honneur, star, exp, reward, mode FROM quete WHERE id = ".$id_quete;
 	$req = $db->query($requete);
 	$row = $db->read_array($req);
 	$liste_quete = $joueur->get_liste_quete();
@@ -174,9 +170,10 @@ function fin_quete($joueur, $id_quete_joueur, $id_quete)
 	$joueur->get_grade();
 	$stars = round($row['star'] * (1 + ($joueur->grade->get_rang() * 2 / 100)));
 	$honneur_gagne = $row['honneur'];
-	if($membre->is_buff('moral')) $honneur_gagne = $honneur_gagne * (1 + ($membre->get_buff('moral', 'effet') / 100));
+	if($joueur->is_buff('moral')) $honneur_gagne = $honneur_gagne * (1 + ($joueur->get_buff('moral', 'effet') / 100));
 	$joueur->set_honneur($joueur->get_honneur() + $honneur_gagne);
 	$joueur->set_exp($joueur->get_exp() + $row['exp']);
+	$joueur->set_star($joueur->get_star() + $stars);
 	$joueur->sauver();
 	echo $joueur->get_nom().' finit la quête "'.$row['nom'].'", et gagne '.$stars.' stars, '.$echo.' '.$row['exp'].' points d\'expérience et '.$honneur_gagne.' points d\'honneur.<br />';
 	$req = $db->query($requete);
@@ -288,7 +285,7 @@ function prend_quete($id_quete, $joueur)
 			$i++;
 		}
 		$joueur_quete = serialize($liste_quete);
-		$requete = "UPDATE perso SET quete = '".$joueur_quete."' WHERE ID = ".$joueur->get_id();
+		$requete = "UPDATE perso SET quete = '".$joueur_quete."' WHERE id = ".$joueur->get_id();
 		$req = $db->query($requete);
 	}
 	else
@@ -318,7 +315,7 @@ function verif_inventaire($id_quete, $joueur)
 	}
 	if($check)
 	{
-		$requete = "SELECT objectif FROM quete WHERE ID = ".$id_quete;
+		$requete = "SELECT objectif FROM quete WHERE id = ".$id_quete;
 		$req = $db->query($requete);
 		$row = $db->read_assoc($req);
 		$row['objectif'] = unserialize($row['objectif']);
@@ -353,7 +350,7 @@ function supprime_quete($joueur, $quete_joueur)
 	global $db;
 	$liste_quete = $joueur->get_liste_quete();
 	array_splice($liste_quete, $quete_joueur, 1);
-	$requete = "UPDATE perso SET quete = '".serialize($liste_quete)."' WHERE ID = ".$joueur->get_id();
+	$requete = "UPDATE perso SET quete = '".serialize($liste_quete)."' WHERE id = ".$joueur->get_id();
 	$db->query($requete);
 	return $joueur;
 }

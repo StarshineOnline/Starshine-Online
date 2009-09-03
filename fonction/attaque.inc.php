@@ -365,8 +365,8 @@ function attaque($acteur = 'attaquant', $competence, &$effects)
 					$critique = true;
 					if(array_key_exists('renouveau_energique', $actif->buff))
 						{
-							$actif['reserve'] += $actif->buff['renouveau_energique']['effet'];
-							echo $actif->get_nom().' se ressaisi et gagne '.$actif->buff['renouveau_energique']['effet'].' RM<br />';
+							$actif->set_reserve($actif->get_reserve() + $actif->get_buff('renouveau_energique', 'effet'));
+							echo $actif->get_nom().' se ressaisi et gagne '.$actif->get_buff('renouveau_energique', 'effet').' RM<br />';
 						}
 					//if(array_key_exists('maitre_critique', $actif['competences'])) augmentation_competence('maitre_critique', $actif, 3);
 				}
@@ -389,7 +389,7 @@ function attaque($acteur = 'attaquant', $competence, &$effects)
 						}
 					// Augmentation du nombre de HP récupérable par récupération
 					if(array_key_exists('recuperation', $actif->etat)) $actif->etat['recuperation']['hp_max'] += $effet;
-					$actif['hp'] += $effet;
+					$actif->set_hp($actif->get_hp() + $effet);
 					if($effet > 0) echo '&nbsp;&nbsp;<span class="soin">'.$actif->get_nom().' gagne '.$effet.' HP par la rage vampirique</span><br />';
 				}
       //Epines
@@ -397,7 +397,7 @@ function attaque($acteur = 'attaquant', $competence, &$effects)
 				{
 					$buff_epine = $actif->get_buff('buff_epine', 'effet') / 100;
 					$effet = round($degat * $buff_epine);
-					$actif['hp'] -= $effet;
+					$actif->set_hp($actif->get_hp() - $effet);
 					if($effet > 0) echo '&nbsp;&nbsp;<span class="degat">'.$passif->get_nom().' renvoi '.$effet.' dégats grâce a Armure en épine</span><br />';
 				}
       //Armure de glace

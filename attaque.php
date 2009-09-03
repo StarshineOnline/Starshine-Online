@@ -300,7 +300,7 @@ else
 					$args_def = array();
 					//echo $action[0];
 					$hp_avant = ${$mode_def}->get_hp();
-					$augmentation = array('actif' => array('comp' => array(), 'comp_perso' => array()), 'passif' => array('comp' => array(), 'comp_perso' => array()));
+					$augmentations = array('actif' => array('comp' => array(), 'comp_perso' => array()), 'passif' => array('comp' => array(), 'comp_perso' => array()));
 					switch($action[0])
 					{
 						//Attaque
@@ -729,9 +729,9 @@ else
 						$membre->set_honneur($membre->get_honneur() + $honneur_gagne);
 						$membre->set_reputation($membre->get_reputation() + $reputation_gagne);
 						$msg_xp .= $membre->get_nom().' gagne <strong class="reward">'.$xp_gagne.' XP</strong> et <strong class="reward">'.$honneur_gagne.' points d\'honneur</strong><br />';
+						$membre->sauver();
 						if($membre->get_id() == $attaquant->get_id()) verif_action('J'.$row_diplo[0], $membre, 's');
 						else verif_action('J'.$row_diplo[0], $membre, 'g');
-						$membre->sauver();
 					}
 					$actif->set_frag($actif->get_frag() + 1);
 					$passif->set_mort($passif->get_mort() + 1);
