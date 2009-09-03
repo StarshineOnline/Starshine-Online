@@ -23,41 +23,38 @@ $R->get_diplo($joueur->get_race());
 $bourg = new construction($_GET['id_construction']);
 
 //Informations sur le batiment
-$requete = "SELECT * FROM batiment WHERE id = ".sSQL($bourg->get_id_batiment());
-$req = $db->query($requete);
-$row_b = $db->read_assoc($req);
+$batiment = new batiment($bourg->get_id_batiment());
 ?>
 	<div id="carte">
-		<h2><?php echo $row_b['nom']; ?></h2>
+		<h2><?php echo $batiment->get_nom(); ?></h2>
 <?php
 
-$W_distance = detection_distance(convert_in_pos($bourg->get_x(), $bourg->get_y()), $joueur->get_pos());
-if($W_distance == 0 AND $joueur->get_race() == $R->get_race())
+if($bourg->get_x() == $joueur->get_x() AND $bourg->get_y() == $joueur->get_y() AND $joueur->get_race() == $R->get_race())
 {
 	?>
 	<ul class="ville">
 	<?php
-	if($row_b['bonus7'] == 1)
+	if($batiment->get_bonus7() == 1)
 	{
 	?>
 		<li>
-			<a href="taverne.php?poscase=<?php echo $W_case; ?>&amp;fort=ok" onclick="return envoiInfo(this.href, 'carte')">Taverne</a>
+			<a href="taverne.php?poscase=<?php echo $joueur->get_pos(); ?>&amp;fort=ok" onclick="return envoiInfo(this.href, 'carte')">Taverne</a>
 		</li>
 		<li>
-			<a href="poste.php?poscase=<?php echo $W_case; ?>&amp;fort=ok" onclick="return envoiInfo(this.href, 'carte')">La Poste</a>
+			<a href="poste.php?poscase=<?php echo $joueur->get_pos(); ?>&amp;fort=ok" onclick="return envoiInfo(this.href, 'carte')">La Poste</a>
 		</li>
 	<?php
 	}
 	?>
 		<li>
-			<a href="bureau_quete.php?poscase=<?php echo $W_case; ?>" onclick="return envoiInfo(this.href, 'carte')">Bureau des quètes</a>
+			<a href="bureau_quete.php?poscase=<?php echo $joueur->get_pos(); ?>" onclick="return envoiInfo(this.href, 'carte')">Bureau des quètes</a>
 		</li>
 <?php
 	if(date("d") >= 5 AND date("d") < 20)
 	{
 ?>
 		<li>
-			<a href="candidature.php?poscase=<?php echo $W_case; ?>&amp;fort=ok" onclick="return envoiInfo(this.href, 'carte')">Candidature</a>
+			<a href="candidature.php?poscase=<?php echo $joueur->get_pos(); ?>&amp;fort=ok" onclick="return envoiInfo(this.href, 'carte')">Candidature</a>
 		</li>
 <?php
 	}
@@ -65,11 +62,11 @@ if($W_distance == 0 AND $joueur->get_race() == $R->get_race())
 	{
 ?>
 		<li>
-			<a href="vote_roi.php?poscase=<?php echo $W_case; ?>&amp;fort=ok" onclick="return envoiInfo(this.href, 'carte')">Vote</a>
+			<a href="vote_roi.php?poscase=<?php echo $joueur->get_pos(); ?>&amp;fort=ok" onclick="return envoiInfo(this.href, 'carte')">Vote</a>
 		</li>
 <?php
 	}
-	if($row_b['bonus5'] == 1 AND $joueur->get_rang_royaume() == 6)
+	if($batiment->get_bonus7() == 1 AND $joueur->get_rang_royaume() == 6)
 	{
 ?>
 		<li>

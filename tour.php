@@ -12,7 +12,11 @@ $joueur->check_perso();
 
 //Vérifie si le perso est mort
 verif_mort($joueur, 1);
-$_SESSION['position'] = convert_in_pos($joueur->get_x(), $joueur->get_y());
+
+$W_requete = 'SELECT royaume, type FROM map WHERE ID =\''.sSQL($joueur->get_pos()).'\'';
+$W_req = $db->query($W_requete);
+$W_row = $db->read_assoc($W_req);
+$R = new royaume($W_row['royaume']);
 
 //Informations sur le batiment
 $construction = new construction(sSQL($_GET['id_construction']));
@@ -24,7 +28,7 @@ $batiment = new batiment($construction->get_id_batiment());
 
 
 echo $W_distance;
-if($joueur->get_x() == $construction->get_x() AND $joueur->get_y() == $construction->get_y())
+if($joueur->get_x() == $construction->get_x() AND $joueur->get_y() == $construction->get_y() AND $joueur->get_race() == $R->get_race())
 {
 	echo 'Position - X : '.$construction->get_x().' - Y : '.$construction->get_y().'<br />';
 	echo 'Distance de vue : '.$batiment->get_bonus4().' cases.<br />';
