@@ -194,7 +194,7 @@ if($W_distance < 4)
 			$R = new royaume($W_row['royaume']);
 			echo '<span onmousemove="return '.make_overlib($row_b['description']).'" onmouseout="return nd();"><image src="image/mini_'.$row_b['type'].'.png" style="vertical-align : top;" title="'.$row_b['nom'].'" alt="'.$row_b['nom'].'" />';
 			$nom = $row_b['nom'];
-			if($row_b['type'] == 'fort' AND $joueur->get_race() == $R->get_race()) $nom = '<a href="fort.php?id_batiment='.$row_b['id'].'" onclick="return envoiInfo(this.href, \'centre\');">'.$row_b['nom'].'</a>';
+			if($row_b['type'] == 'fort' AND $joueur->get_race() == $R->get_race()) $nom = '<a href="fort.php?id_construction='.$W_row['id'].'" onclick="return envoiInfo(this.href, \'centre\');">'.$row_b['nom'].'</a>';
 			if($row_b['type'] == 'bourg' AND $joueur->get_race() == $R->get_race()) $nom = '<a href="bourg.php?id_construction='.$W_row['id'].'" onclick="return envoiInfo(this.href, \'centre\');">'.$row_b['nom'].'</a>';
 			if($row_b['type'] == 'arme_de_siege' AND $joueur->get_race() == $R->get_race()) $nom = '<a href="arme_de_siege.php?id_construction='.$W_row['id'].'" onclick="return envoiInfo(this.href, \'centre\');">'.$row_b['nom'].'</a>';
 			if($row_b['type'] == 'tour' AND $joueur->get_race() == $R->get_race()) $nom = '<a href="tour.php?id_construction='.$W_row['id'].'" onclick="return envoiInfo(this.href, \'centre\');">'.$row_b['nom'].'</a>';

@@ -8,64 +8,57 @@ include_once(root.'haut_ajax.php');
 
 $joueur = new perso($_SESSION['ID']);
 
-check_perso($joueur);
+$joueur->check_perso();
 
 //Vérifie si le perso est mort
 verif_mort($joueur, 1);
 
-$W_case = $_GET['poscase'];
-$W_requete = 'SELECT * FROM map WHERE ID =\''.sSQL($W_case).'\'';
+$W_requete = 'SELECT * FROM map WHERE ID =\''.$joueur->get_pos().'\'';
 $W_req = $db->query($W_requete);
 $W_row = $db->read_array($W_req);
-$R = get_royaume_info($joueur->get_race(), $W_row['royaume']);
+$R = new royaume($W_row['royaume']);
+$R->get_diplo($joueur->get_race());
 
-$_SESSION['position'] = convert_in_pos($joueur['x'], $joueur['y']);
+$construction = new construction(sSQL($_GET['id_construction']));
+$batiment = new batiment($construction->get_id_batiment());
 
-//Informations sur le batiment
-$requete = "SELECT * FROM batiment WHERE id = ".sSQL($_GET['id_batiment']);
-$req = $db->query($requete);
-$row_b = $db->read_assoc($req);
 ?>
 	<div id="carte">
 	
 <?php
-
-$W_distance = detection_distance($W_case, $_SESSION["position"]);
-
-$W_coord = convert_in_coord($W_case);
 //Distance + royaume
-if($W_distance == 0 AND $R['diplo'] == 127)
+if($joueur->get_x() == $construction->get_x() AND $joueur->get_y() == $construction->get_y() AND $joueur->get_race() == $R->get_race())
 {
 	?>
-			<h2><?php echo $row_b['nom']; ?></h2>
+			<h2><?php echo $batiment->get_nom(); ?></h2>
 	<ul class="ville">
 	<?php
-	if($row_b['bonus7'] == 1)
+	if($batiment->get_bonus7() == 1)
 	{
 	?>
 		<li>
-			<a href="alchimiste.php?poscase=<?php echo $W_case; ?>&amp;fort=ok" onclick="return envoiInfo(this.href, 'carte')">Alchimiste</a>
+			<a href="alchimiste.php" onclick="return envoiInfo(this.href, 'carte')">Alchimiste</a>
 		</li>
 		<li>
-			<a href="poste.php?poscase=<?php echo $W_case; ?>&amp;fort=ok" onclick="return envoiInfo(this.href, 'carte')">La Poste</a>
+			<a href="poste.php" onclick="return envoiInfo(this.href, 'carte')">La Poste</a>
 		</li>
 	<?php
 	}
-	if($row_b['bonus6'] == 1)
+	if($batiment->get_bonus6() == 1)
 	{
 	?>
 		<li>
-			<a href="teleport.php?poscase=<?php echo $W_case; ?>&amp;fort=ok" onclick="return envoiInfo(this.href, 'carte')">Pierre de Téléportation</a>
+			<a href="teleport.php" onclick="return envoiInfo(this.href, 'carte')">Pierre de Téléportation</a>
 		</li>
 	<?php
 	}
 	?>
 		<li>
-			<a href="taverne.php?poscase=<?php echo $W_case; ?>&amp;fort=ok" onclick="return envoiInfo(this.href, 'carte')">Taverne</a>
+			<a href="taverne.php" onclick="return envoiInfo(this.href, 'carte')">Taverne</a>
 		</li>
 <?php
 	//Si il est roi
-	if($joueur['rang_royaume'] == 6)
+	if($joueur->get_rang_royaume() == 6)
 	{
 ?>
 		<li>

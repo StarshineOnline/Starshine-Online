@@ -38,23 +38,23 @@ if($bourg->get_x() == $joueur->get_x() AND $bourg->get_y() == $joueur->get_y() A
 	{
 	?>
 		<li>
-			<a href="taverne.php?poscase=<?php echo $joueur->get_pos(); ?>&amp;fort=ok" onclick="return envoiInfo(this.href, 'carte')">Taverne</a>
+			<a href="taverne.php" onclick="return envoiInfo(this.href, 'carte')">Taverne</a>
 		</li>
 		<li>
-			<a href="poste.php?poscase=<?php echo $joueur->get_pos(); ?>&amp;fort=ok" onclick="return envoiInfo(this.href, 'carte')">La Poste</a>
+			<a href="poste.php" onclick="return envoiInfo(this.href, 'carte')">La Poste</a>
 		</li>
 	<?php
 	}
 	?>
 		<li>
-			<a href="bureau_quete.php?poscase=<?php echo $joueur->get_pos(); ?>" onclick="return envoiInfo(this.href, 'carte')">Bureau des quètes</a>
+			<a href="bureau_quete.php" onclick="return envoiInfo(this.href, 'carte')">Bureau des quètes</a>
 		</li>
 <?php
 	if(date("d") >= 5 AND date("d") < 20)
 	{
 ?>
 		<li>
-			<a href="candidature.php?poscase=<?php echo $joueur->get_pos(); ?>&amp;fort=ok" onclick="return envoiInfo(this.href, 'carte')">Candidature</a>
+			<a href="candidature.php" onclick="return envoiInfo(this.href, 'carte')">Candidature</a>
 		</li>
 <?php
 	}

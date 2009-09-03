@@ -31,7 +31,7 @@ $R->get_diplo($joueur->get_race());
 			echo $return[0];
 		}
 		?></span></div><br /><?php
-if($W_row['type'] == 1)
+if($joueur->get_race() == $R->get_race())
 {
 	if(isset($_GET['action']))
 	{
@@ -319,8 +319,8 @@ if($W_row['type'] == 1)
 	}
 	
 	//Affichage de la taverne
-	?>
 
+	?>
 
 	<div class="ville_test">
 	<table class="marchand" cellspacing="0px">

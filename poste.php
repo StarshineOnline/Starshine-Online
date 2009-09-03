@@ -30,7 +30,7 @@ if($return[1] > 0 AND !array_key_exists('fort', $_GET))
 	echo '</span></div><br />';
 }
 
-if($W_row['type'] == 1)
+if($joueur->get_race() == $R->get_race())
 {
 	if(isset($_GET['action']))
 	{

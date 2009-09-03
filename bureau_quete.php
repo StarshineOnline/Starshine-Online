@@ -25,7 +25,7 @@ $R->get_diplo($joueur->get_race());
 		<div class="ville_test">
 		<p>Voici les différentes Quêtes disponibles :</p>
 <?php
-if($W_row['type'] == 1)
+if($joueur->get_race() == $R->get_race())
 {
 	if(isset($_GET['action']))
 	{

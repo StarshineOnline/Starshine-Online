@@ -26,8 +26,6 @@ $batiment = new batiment($construction->get_id_batiment());
 		<h2><?php echo $batiment->get_nom(); ?></h2>
 <?php
 
-
-echo $W_distance;
 if($joueur->get_x() == $construction->get_x() AND $joueur->get_y() == $construction->get_y() AND $joueur->get_race() == $R->get_race())
 {
 	echo 'Position - X : '.$construction->get_x().' - Y : '.$construction->get_y().'<br />';
