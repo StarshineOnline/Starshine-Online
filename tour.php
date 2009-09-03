@@ -14,35 +14,31 @@ $joueur->check_perso();
 verif_mort($joueur, 1);
 
 $W_case = $_GET['poscase'];
-$W_requete = 'SELECT * FROM map WHERE ID =\''.sSQL($W_case).'\'';
-$W_req = $db->query($W_requete);
+$W_req = $db->query('SELECT * FROM map WHERE ID =\''.sSQL($W_case).'\'');
 $W_row = $db->read_array($W_req);
-$R = get_royaume_info($joueur->get_race(), $W_row['royaume']);
+$R = new royaume($W_row['royaume']);
 
 $_SESSION['position'] = convert_in_pos($joueur->get_x(), $joueur->get_y());
 
 //Informations sur le batiment
-$requete = "SELECT * FROM construction WHERE id = ".sSQL($_GET['id_construction']);
-$req = $db->query($requete);
-$row_c = $db->read_assoc($req);
-$requete = "SELECT * FROM batiment WHERE id = ".$row_c['id_batiment'];
-$req = $db->query($requete);
-$row_b = $db->read_assoc($req);
+$construction = new construction(sSQL($_GET['id_construction']));
+$batiment = new batiment($construction->get_id_batiment());
 ?>
 	<div id="carte">
-		<h2><?php echo $row_b['nom']; ?></h2>
+		<h2><?php echo $batiment->get_nom(); ?></h2>
 <?php
 
 $W_distance = detection_distance($W_case, $_SESSION["position"]);
 
 $W_coord = convert_in_coord($W_case);
-if($W_distance == 0)
+
+if($W_coord->x == 0 AND $W_coord->y == 0)
 {
-	echo 'Position - X : '.$row_c['x'].' - Y : '.$row_c['y'].'<br />';
-	echo 'Distance de vue : '.$row_b['bonus4'].' cases.<br />';
+	echo 'Position - X : '.$batiment->get_x().' - Y : '.$batiment->get_y().'<br />';
+	echo 'Distance de vue : '.$batiment->get_bonus4().' cases.<br />';
 	echo '<h3>Joueurs en visu</h3>';
-	$joueurs = list_joueurs_visu($joueur, $row_b['bonus4']);
-	$constructions = list_construction_visu($joueur, $row_b['bonus4']);
+	$joueurs = list_joueurs_visu($joueur, $batiment->get_bonus4());
+	$constructions = list_construction_visu($joueur, $batiment->get_bonus4());
 	echo '<div class="visu"><ul>';
 	foreach ($joueurs as $v) {
 		//echo '<li>'.$v['nom'].'</li>';
