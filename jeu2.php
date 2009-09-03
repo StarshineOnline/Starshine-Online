@@ -52,7 +52,7 @@ if(array_key_exists('donjon_id', $_GET))
 //Vérifie si le perso est mort
 verif_mort($joueur, 1);
 
-check_perso($joueur);
+$joueur->check_perso();
 
 $_SESSION['position'] = convert_in_pos($joueur->get_x(), $joueur->get_y());
 ?>
