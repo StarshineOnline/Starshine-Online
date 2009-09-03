@@ -1,0 +1,5 @@
+<area shape="rect" href="$classperso.html#69bd3542e2a635f8fe5817967af9f191" title="perso::get_comp_perso" alt="" coords="197,5,365,35">
+<area shape="rect" href="$classperso.html#d71aaf6bace5f1e9af97f9fc16e87c4e" title="perso::get_competence" alt="" coords="199,59,364,88">
+<area shape="rect" href="$classperso.html#5e30971904b7aa3848efca5248e86586" title="perso::is_comp_perso" alt="" coords="413,5,573,35">
+<area shape="rect" href="$classperso.html#bf389c8d94c37bcc7b6d25f5e137fd35" title="perso::get_comp" alt="" coords="431,59,556,88">
+<area shape="rect" href="$classperso.html#48e208fa7d8e2ee866f50006435e3a73" title="Permet de savoir si le joueur possède la compétence nom." alt="" coords="415,112,572,141">

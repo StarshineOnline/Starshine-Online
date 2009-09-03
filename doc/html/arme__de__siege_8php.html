@@ -21,9 +21,7 @@
 <h1>Référence du fichier arme_de_siege.php</h1><table border="0" cellpadding="0" cellspacing="0">
 <tr><td></td></tr>
 <tr><td colspan="2"><br><h2>Variables</h2></td></tr>
-<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="arme__de__siege_8php.html#beea5db7af13b1bdd70c46e49f512b26">$joueur</a> = recupperso($_SESSION['ID'])</td></tr>
-
-<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="arme__de__siege_8php.html#348857e01ece8eec9741a8aac278b4b7">$W_case</a> = $_GET['poscase']</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="arme__de__siege_8php.html#beea5db7af13b1bdd70c46e49f512b26">$joueur</a> = new <a class="el" href="classperso.html">perso</a>($_SESSION['ID'])</td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="arme__de__siege_8php.html#19afe5512c8585af83b8156bb7429e5f">$W_requete</a> = 'SELECT * FROM <a class="el" href="classmap.html">map</a> WHERE ID =\''.sSQL($W_case).'\''</td></tr>
 
@@ -31,30 +29,26 @@
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="arme__de__siege_8php.html#59eabebcf9db04fe004af49fb94e6e79">$W_row</a> = $<a class="el" href="classdb.html">db</a>-&gt;read_array($W_req)</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="arme__de__siege_8php.html#be2d79bb4aa8b8243d81c67fdd50511f">$R</a> = get_royaume_info($joueur['race'], $W_row['royaume'])</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="arme__de__siege_8php.html#be2d79bb4aa8b8243d81c67fdd50511f">$R</a> = new <a class="el" href="classroyaume.html">royaume</a>($W_row['<a class="el" href="classroyaume.html">royaume</a>'])</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="arme__de__siege_8php.html#dc5bfc941d40883a35083b4167529fec">$_SESSION</a> ['position'] = convert_in_pos($joueur['x'], $joueur['y'])</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="arme__de__siege_8php.html#222f755c9f4d12dc349ec48b042c8d41">$arme</a> = new <a class="el" href="classconstruction.html">construction</a>($_GET['id_construction'])</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="arme__de__siege_8php.html#1ea21bf4b1af1ebda1b8c63b0e364ce9">$requete</a> = &quot;SELECT * FROM <a class="el" href="classconstruction.html">construction</a> WHERE id = &quot;.sSQL($_GET['id_construction'])</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="arme__de__siege_8php.html#1ea21bf4b1af1ebda1b8c63b0e364ce9">$requete</a> = &quot;SELECT * FROM <a class="el" href="classbatiment.html">batiment</a> WHERE id = &quot;.$arme-&gt;get_id_batiment()</td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="arme__de__siege_8php.html#63a7a283ea5dee8af1e2d5a3435bf370">$req</a> = $<a class="el" href="classdb.html">db</a>-&gt;query($requete)</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="arme__de__siege_8php.html#51095a5bfef26d3ca4a90bc33babb2fb">$row_c</a> = $<a class="el" href="classdb.html">db</a>-&gt;read_assoc($req)</td></tr>
-
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="arme__de__siege_8php.html#f0c1239ce4134f8c2cba4ceca512c26f">$row_b</a> = $<a class="el" href="classdb.html">db</a>-&gt;read_assoc($req)</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="arme__de__siege_8php.html#3bdc395fa40de5f822d4230cf6e5b387">$W_distance</a> = detection_distance($W_case, $_SESSION[&quot;position&quot;])</td></tr>
-
-<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="arme__de__siege_8php.html#5931357a80d291a4cd7d80833542af80">$W_coord</a> = convert_in_coord($W_case)</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="arme__de__siege_8php.html#3bdc395fa40de5f822d4230cf6e5b387">$W_distance</a> = detection_distance(convert_in_pos($<a class="el" href="classarme.html">arme</a>-&gt;get_x(), $<a class="el" href="classarme.html">arme</a>-&gt;get_y()), $joueur-&gt;get_pos())</td></tr>
 
 </table>
 <hr><h2>Documentation des variables</h2>
-<a class="anchor" name="dc5bfc941d40883a35083b4167529fec"></a><!-- doxytag: member="arme_de_siege.php::$_SESSION" ref="dc5bfc941d40883a35083b4167529fec" args="['position']" -->
+<a class="anchor" name="222f755c9f4d12dc349ec48b042c8d41"></a><!-- doxytag: member="arme_de_siege.php::$arme" ref="222f755c9f4d12dc349ec48b042c8d41" args="" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$_SESSION['position'] = convert_in_pos($joueur['x'], $joueur['y'])          </td>
+          <td class="memname">$<a class="el" href="classarme.html">arme</a> = new <a class="el" href="classconstruction.html">construction</a>($_GET['id_construction'])          </td>
         </tr>
       </table>
 </div>
@@ -69,7 +63,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$joueur = recupperso($_SESSION['ID'])          </td>
+          <td class="memname">$joueur = new <a class="el" href="classperso.html">perso</a>($_SESSION['ID'])          </td>
         </tr>
       </table>
 </div>
@@ -84,7 +78,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$R = get_royaume_info($joueur['race'], $W_row['royaume'])          </td>
+          <td class="memname">$R = new <a class="el" href="classroyaume.html">royaume</a>($W_row['<a class="el" href="classroyaume.html">royaume</a>'])          </td>
         </tr>
       </table>
 </div>
@@ -114,7 +108,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$requete = &quot;SELECT * FROM <a class="el" href="classconstruction.html">construction</a> WHERE id = &quot;.sSQL($_GET['id_construction'])          </td>
+          <td class="memname">$requete = &quot;SELECT * FROM <a class="el" href="classbatiment.html">batiment</a> WHERE id = &quot;.$arme-&gt;get_id_batiment()          </td>
         </tr>
       </table>
 </div>
@@ -139,57 +133,12 @@
 
 </div>
 </div><p>
-<a class="anchor" name="51095a5bfef26d3ca4a90bc33babb2fb"></a><!-- doxytag: member="arme_de_siege.php::$row_c" ref="51095a5bfef26d3ca4a90bc33babb2fb" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">$row_c = $<a class="el" href="classdb.html">db</a>-&gt;read_assoc($req)          </td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>
-
-</div>
-</div><p>
-<a class="anchor" name="348857e01ece8eec9741a8aac278b4b7"></a><!-- doxytag: member="arme_de_siege.php::$W_case" ref="348857e01ece8eec9741a8aac278b4b7" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">$W_case = $_GET['poscase']          </td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>
-
-</div>
-</div><p>
-<a class="anchor" name="5931357a80d291a4cd7d80833542af80"></a><!-- doxytag: member="arme_de_siege.php::$W_coord" ref="5931357a80d291a4cd7d80833542af80" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">$W_coord = convert_in_coord($W_case)          </td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>
-
-</div>
-</div><p>
 <a class="anchor" name="3bdc395fa40de5f822d4230cf6e5b387"></a><!-- doxytag: member="arme_de_siege.php::$W_distance" ref="3bdc395fa40de5f822d4230cf6e5b387" args="" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$W_distance = detection_distance($W_case, $_SESSION[&quot;position&quot;])          </td>
+          <td class="memname">$W_distance = detection_distance(convert_in_pos($<a class="el" href="classarme.html">arme</a>-&gt;get_x(), $<a class="el" href="classarme.html">arme</a>-&gt;get_y()), $joueur-&gt;get_pos())          </td>
         </tr>
       </table>
 </div>
@@ -245,7 +194,7 @@
 </div>
 </div><p>
 </div>
-<hr size="1"><address style="text-align: right;"><small>Généré le Fri May 8 12:45:34 2009 pour Starshine Online par&nbsp;
+<hr size="1"><address style="text-align: right;"><small>Généré le Thu Sep 3 23:10:59 2009 pour Starshine Online par&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.6 </small></address>
 </body>

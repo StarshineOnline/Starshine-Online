@@ -1,7 +1,10 @@
-<area shape="rect" href="$attaque_8inc_8php.html#2791684fa0ff34996044148c598a2d64" title="attaque" alt="" coords="300,5,367,35">
-<area shape="rect" href="$action_8inc_8php.html#09b6dc45f599376a3695ec53bbb1d461" title="Utilise une compétence." alt="" coords="285,59,381,88">
-<area shape="rect" href="$action_8inc_8php.html#eac6f598954a3952c8dbbaed9d6ea370" title="Lance un sort lors d&#39;un combat." alt="" coords="291,112,376,141">
-<area shape="rect" href="$classcompetence.html#133f24d03a1417764b5b94f0c7c421ab" title="competence::test_montee" alt="" coords="244,165,423,195">
-<area shape="rect" href="$classart__critique.html#5c053fdffbe1e4a74ef6fc4a1f4c88f6" title="Action a effectuer en fin de round." alt="" coords="491,112,651,141">
-<area shape="rect" href="$classmaitrise__dague.html#7f0a0b02f95cda54f951b2b162dbc8a3" title="Action a effectuer en fin de round." alt="" coords="479,165,663,195">
-<area shape="rect" href="$classmaitrise__bouclier.html#ec72dd2a421f85caf36a892c6f95a9fa" title="Action a effectuer en fin de round." alt="" coords="472,219,669,248">
+<area shape="rect" href="$base_8inc_8php.html#e078063a0b644948f696731d9623bdb7" title="augmentation_competences" alt="" coords="244,59,439,88">
+<area shape="rect" href="$action_8inc_8php.html#03d5a809119b3b4bacc24f59ae41a5f8" title="Utilise une compétence." alt="" coords="293,112,389,141">
+<area shape="rect" href="$classcompetence.html#133f24d03a1417764b5b94f0c7c421ab" title="competence::test_montee" alt="" coords="252,165,431,195">
+<area shape="rect" href="$classart__critique.html#5c053fdffbe1e4a74ef6fc4a1f4c88f6" title="Action a effectuer en fin de round." alt="" coords="507,5,667,35">
+<area shape="rect" href="$classmaitrise__critique.html#071091973b2a0e75d1d0998626bc14b0" title="Action a effectuer en fin de round." alt="" coords="491,59,683,88">
+<area shape="rect" href="$classmaitrise__arc.html#6e9bf1be37410534beb49c0fb1f6b525" title="Action a effectuer en fin de round." alt="" coords="504,112,669,141">
+<area shape="rect" href="$classmaitrise__hache.html#4545264270e62508e3170714ea72491c" title="Action a effectuer en fin de round." alt="" coords="495,165,679,195">
+<area shape="rect" href="$classmaitrise__epee.html#2601edf4f2edb4aec4efc00233e8cb51" title="Action a effectuer en fin de round." alt="" coords="499,219,675,248">
+<area shape="rect" href="$classmaitrise__dague.html#7f0a0b02f95cda54f951b2b162dbc8a3" title="Action a effectuer en fin de round." alt="" coords="495,272,679,301">
+<area shape="rect" href="$classmaitrise__bouclier.html#ec72dd2a421f85caf36a892c6f95a9fa" title="Action a effectuer en fin de round." alt="" coords="488,325,685,355">

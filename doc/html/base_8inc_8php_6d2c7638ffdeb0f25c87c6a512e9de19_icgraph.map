@@ -1,3 +1,5 @@
-<area shape="rect" href="$base_8inc_8php.html#8f6dae8735bd5af08d403f5a2b78de71" title="Récupère les informations sur un bâtiment." alt="" coords="172,5,281,35">
-<area shape="rect" href="$base_8inc_8php.html#2b1d58868952483790df70a8b0539c61" title="Donne le bâtiment situé sur une certaine case." alt="" coords="331,5,440,35">
-<area shape="rect" href="$base_8inc_8php.html#c28cbcd0bda84cb77614994a18067f38" title="Ajuste le coût en PA d&#39;un déplacement en fonction de tous les parmètres qui..." alt="" coords="488,5,565,35">
+<area shape="rect" href="$classperso.html#37ae33d8cbbd31f76cb5117e042dacaa" title="perso::get_distance_joueur" alt="" coords="171,5,360,35">
+<area shape="rect" href="$base_8inc_8php.html#8f6dae8735bd5af08d403f5a2b78de71" title="Récupère les informations sur un bâtiment." alt="" coords="211,59,320,88">
+<area shape="rect" href="$base_8inc_8php.html#2b1d58868952483790df70a8b0539c61" title="Donne le bâtiment situé sur une certaine case." alt="" coords="433,32,543,61">
+<area shape="rect" href="$base_8inc_8php.html#2e5c99ff4944f082bdea55e9fd279336" title="Calcul des constructions/armes de siege dans la visu d&#39;un joueur La distance..." alt="" coords="409,85,567,115">
+<area shape="rect" href="$base_8inc_8php.html#c28cbcd0bda84cb77614994a18067f38" title="Ajuste le coût en PA d&#39;un déplacement en fonction de tous les parmètres qui..." alt="" coords="616,32,693,61">

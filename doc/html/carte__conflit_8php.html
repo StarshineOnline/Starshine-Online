@@ -31,7 +31,7 @@
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="carte__conflit_8php.html#63a7a283ea5dee8af1e2d5a3435bf370">$req</a> = $<a class="el" href="classdb.html">db</a>-&gt;query($requete)</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="carte__conflit_8php.html#1fd809190e4b4640b1be514e7f12484d">while</a> ($row=$<a class="el" href="classdb.html">db</a>-&gt;read_assoc($req)) = &quot;SELECT * FROM action_perso WHERE id_joueur = &quot;.$joueur['ID'].&quot; ORDER BY nom ASC&quot;</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="carte__conflit_8php.html#9a68e908775966a9b3e9a90097cdacc7">while</a> ($row=$<a class="el" href="classdb.html">db</a>-&gt;read_assoc($req))</td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="carte__conflit_8php.html#76ab3ebd57a683f3311610e54344306f">$im</a></td></tr>
 
@@ -248,12 +248,12 @@
 
 </div>
 </div><p>
-<a class="anchor" name="1fd809190e4b4640b1be514e7f12484d"></a><!-- doxytag: member="carte_conflit.php::while" ref="1fd809190e4b4640b1be514e7f12484d" args="($row=$db-&gt;read_assoc($req))" -->
+<a class="anchor" name="9a68e908775966a9b3e9a90097cdacc7"></a><!-- doxytag: member="carte_conflit.php::while" ref="9a68e908775966a9b3e9a90097cdacc7" args="($row=$db-&gt;read_assoc($req))" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="viewarene2_8php.html#223fe6cddffc1406cf93390144f0f6f7">while</a> = &quot;SELECT * FROM action_perso WHERE id_joueur = &quot;.$joueur['ID'].&quot; ORDER BY nom ASC&quot;          </td>
+          <td class="memname"><a class="el" href="viewarene2_8php.html#223fe6cddffc1406cf93390144f0f6f7">while</a>($row=$<a class="el" href="classdb.html">db</a>-&gt;read_assoc($req))          </td>
         </tr>
       </table>
 </div>
@@ -264,7 +264,7 @@
 </div>
 </div><p>
 </div>
-<hr size="1"><address style="text-align: right;"><small>Généré le Fri May 8 12:45:34 2009 pour Starshine Online par&nbsp;
+<hr size="1"><address style="text-align: right;"><small>Généré le Thu Sep 3 23:10:59 2009 pour Starshine Online par&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.6 </small></address>
 </body>

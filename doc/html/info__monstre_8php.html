@@ -25,17 +25,17 @@
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="info__monstre_8php.html#348857e01ece8eec9741a8aac278b4b7">$W_case</a> = $_GET['poscase']</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="info__monstre_8php.html#beea5db7af13b1bdd70c46e49f512b26">$joueur</a> = recupperso($_SESSION['ID'])</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="info__monstre_8php.html#beea5db7af13b1bdd70c46e49f512b26">$joueur</a> = new <a class="el" href="classperso.html">perso</a>($_SESSION['ID'])</td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="info__monstre_8php.html#cad6354f875a0b603c1567c02afa4b4b">$monstre</a> = recupmonstre($W_ID)</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="info__monstre_8php.html#f78d1b7af5ff75f6285204456b51eb44">$survie</a> = $joueur['survie']</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="info__monstre_8php.html#f78d1b7af5ff75f6285204456b51eb44">$survie</a> = $joueur-&gt;get_survie()</td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="info__monstre_8php.html#296e6a2225be72a8db7fda31a5f1398b">$pa_attaque</a> = $G_PA_attaque_monstre</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="roi_2index_8php.html#1c12d30d2681081f13297744af1014a6">else</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="info__monstre_8php.html#879c3481c0675ae3433e73058bed4c0d">$reduction_pa</a> = 0</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="roi_2index_8php.html#c3eceeb81f31105aa439f443d8f5edb8">else</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="info__monstre_8php.html#879c3481c0675ae3433e73058bed4c0d">$reduction_pa</a> = 0</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="info__monstre_8php.html#08bf1de0bfc9c422d5f6a444d25b5f52">$coeff</a> = floor($survie / $monstre['level'])</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="info__monstre_8php.html#08bf1de0bfc9c422d5f6a444d25b5f52">$coeff</a> = floor($survie / $<a class="el" href="classmonstre.html">monstre</a>['level'])</td></tr>
 
 </table>
 <hr><h2>Documentation des variables</h2>
@@ -44,7 +44,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$coeff = floor($survie / $monstre['level'])          </td>
+          <td class="memname">$coeff = floor($survie / $<a class="el" href="classmonstre.html">monstre</a>['level'])          </td>
         </tr>
       </table>
 </div>
@@ -59,7 +59,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$joueur = recupperso($_SESSION['ID'])          </td>
+          <td class="memname">$joueur = new <a class="el" href="classperso.html">perso</a>($_SESSION['ID'])          </td>
         </tr>
       </table>
 </div>
@@ -74,7 +74,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$monstre = recupmonstre($W_ID)          </td>
+          <td class="memname">$<a class="el" href="classmonstre.html">monstre</a> = recupmonstre($W_ID)          </td>
         </tr>
       </table>
 </div>
@@ -104,7 +104,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="roi_2index_8php.html#1c12d30d2681081f13297744af1014a6">else</a> $reduction_pa = 0          </td>
+          <td class="memname"><a class="el" href="roi_2index_8php.html#c3eceeb81f31105aa439f443d8f5edb8">else</a> $reduction_pa = 0          </td>
         </tr>
       </table>
 </div>
@@ -119,7 +119,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$survie = $joueur['survie']          </td>
+          <td class="memname">$survie = $joueur-&gt;get_survie()          </td>
         </tr>
       </table>
 </div>
@@ -160,7 +160,7 @@
 </div>
 </div><p>
 </div>
-<hr size="1"><address style="text-align: right;"><small>Généré le Fri May 8 12:45:36 2009 pour Starshine Online par&nbsp;
+<hr size="1"><address style="text-align: right;"><small>Généré le Thu Sep 3 23:11:18 2009 pour Starshine Online par&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.6 </small></address>
 </body>

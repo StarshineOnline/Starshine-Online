@@ -21,33 +21,14 @@
 <h1>Référence du fichier infos_groupe.php</h1><table border="0" cellpadding="0" cellspacing="0">
 <tr><td></td></tr>
 <tr><td colspan="2"><br><h2>Variables</h2></td></tr>
-<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="infos__groupe_8php.html#b37f7c32f41c3c61ed940887453767f4">$root</a> = '../'</td></tr>
-
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="infos__groupe_8php.html#a720998827fe9e92a5fe573a62edc0b8">$connexion</a> = true</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="infos__groupe_8php.html#beea5db7af13b1bdd70c46e49f512b26">$joueur</a> = recupperso($_SESSION['ID'])</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="infos__groupe_8php.html#beea5db7af13b1bdd70c46e49f512b26">$joueur</a> = new <a class="el" href="classperso.html">perso</a>($_SESSION['ID'])</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="infos__groupe_8php.html#dc5bfc941d40883a35083b4167529fec">$_SESSION</a> ['position'] = convert_in_pos($joueur['x'], $joueur['y'])</td></tr>
-
-<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="infos__groupe_8php.html#71f2aa6a4b2bf64caee0b33cd32056dd">$groupe</a> = recupgroupe($_GET['id_groupe'], 'membre')</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="infos__groupe_8php.html#71f2aa6a4b2bf64caee0b33cd32056dd">$groupe</a> = new <a class="el" href="classgroupe.html">groupe</a>($_GET['id_groupe'])</td></tr>
 
 </table>
 <hr><h2>Documentation des variables</h2>
-<a class="anchor" name="dc5bfc941d40883a35083b4167529fec"></a><!-- doxytag: member="infos_groupe.php::$_SESSION" ref="dc5bfc941d40883a35083b4167529fec" args="['position']" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">$_SESSION['position'] = convert_in_pos($joueur['x'], $joueur['y'])          </td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>
-
-</div>
-</div><p>
 <a class="anchor" name="a720998827fe9e92a5fe573a62edc0b8"></a><!-- doxytag: member="infos_groupe.php::$connexion" ref="a720998827fe9e92a5fe573a62edc0b8" args="" -->
 <div class="memitem">
 <div class="memproto">
@@ -68,7 +49,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$<a class="el" href="classgroupe.html">groupe</a> = recupgroupe($_GET['id_groupe'], 'membre')          </td>
+          <td class="memname">$<a class="el" href="classgroupe.html">groupe</a> = new <a class="el" href="classgroupe.html">groupe</a>($_GET['id_groupe'])          </td>
         </tr>
       </table>
 </div>
@@ -83,22 +64,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$joueur = recupperso($_SESSION['ID'])          </td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>
-
-</div>
-</div><p>
-<a class="anchor" name="b37f7c32f41c3c61ed940887453767f4"></a><!-- doxytag: member="infos_groupe.php::$root" ref="b37f7c32f41c3c61ed940887453767f4" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">$root = '../'          </td>
+          <td class="memname">$joueur = new <a class="el" href="classperso.html">perso</a>($_SESSION['ID'])          </td>
         </tr>
       </table>
 </div>
@@ -109,7 +75,7 @@
 </div>
 </div><p>
 </div>
-<hr size="1"><address style="text-align: right;"><small>Généré le Fri May 8 12:45:36 2009 pour Starshine Online par&nbsp;
+<hr size="1"><address style="text-align: right;"><small>Généré le Thu Sep 3 23:11:18 2009 pour Starshine Online par&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.6 </small></address>
 </body>

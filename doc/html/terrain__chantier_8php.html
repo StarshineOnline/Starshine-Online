@@ -21,11 +21,11 @@
 <h1>Référence du fichier terrain_chantier.php</h1><table border="0" cellpadding="0" cellspacing="0">
 <tr><td></td></tr>
 <tr><td colspan="2"><br><h2>Variables</h2></td></tr>
-<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="terrain__chantier_8php.html#beea5db7af13b1bdd70c46e49f512b26">$joueur</a> = recupperso($_SESSION['ID'])</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="terrain__chantier_8php.html#beea5db7af13b1bdd70c46e49f512b26">$joueur</a> = new <a class="el" href="classperso.html">perso</a>($_SESSION['ID'])</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="terrain__chantier_8php.html#6e88dcb746884d18f6c89eb9b9c14a42">$position</a> = convert_in_pos($joueur['x'], $joueur['y'])</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="terrain__chantier_8php.html#6e88dcb746884d18f6c89eb9b9c14a42">$position</a> = convert_in_pos($joueur-&gt;get_x(), $joueur-&gt;get_y())</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="terrain__chantier_8php.html#3cd2ddf362a14a21c6d4166c35dfbd48">$verif_ville</a> = verif_ville($joueur['x'], $joueur['y'])</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="terrain__chantier_8php.html#3cd2ddf362a14a21c6d4166c35dfbd48">$verif_ville</a> = verif_ville($joueur-&gt;get_x(), $joueur-&gt;get_y())</td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="terrain__chantier_8php.html#19afe5512c8585af83b8156bb7429e5f">$W_requete</a> = 'SELECT * FROM <a class="el" href="classmap.html">map</a> WHERE ID =\''.sSQL($position).'\''</td></tr>
 
@@ -33,7 +33,7 @@
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="terrain__chantier_8php.html#59eabebcf9db04fe004af49fb94e6e79">$W_row</a> = $<a class="el" href="classdb.html">db</a>-&gt;read_array($W_req)</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="terrain__chantier_8php.html#be2d79bb4aa8b8243d81c67fdd50511f">$R</a> = get_royaume_info($joueur['race'], $W_row['royaume'])</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="terrain__chantier_8php.html#be2d79bb4aa8b8243d81c67fdd50511f">$R</a> = get_royaume_info($joueur-&gt;get_race(), $W_row['<a class="el" href="classroyaume.html">royaume</a>'])</td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="terrain__chantier_8php.html#dc5bfc941d40883a35083b4167529fec">$_SESSION</a> ['position'] = $position</td></tr>
 
@@ -59,7 +59,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$joueur = recupperso($_SESSION['ID'])          </td>
+          <td class="memname">$joueur = new <a class="el" href="classperso.html">perso</a>($_SESSION['ID'])          </td>
         </tr>
       </table>
 </div>
@@ -74,7 +74,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$position = convert_in_pos($joueur['x'], $joueur['y'])          </td>
+          <td class="memname">$position = convert_in_pos($joueur-&gt;get_x(), $joueur-&gt;get_y())          </td>
         </tr>
       </table>
 </div>
@@ -89,7 +89,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$R = get_royaume_info($joueur['race'], $W_row['royaume'])          </td>
+          <td class="memname">$R = get_royaume_info($joueur-&gt;get_race(), $W_row['<a class="el" href="classroyaume.html">royaume</a>'])          </td>
         </tr>
       </table>
 </div>
@@ -104,7 +104,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$verif_ville = verif_ville($joueur['x'], $joueur['y'])          </td>
+          <td class="memname">$verif_ville = verif_ville($joueur-&gt;get_x(), $joueur-&gt;get_y())          </td>
         </tr>
       </table>
 </div>
@@ -160,7 +160,7 @@
 </div>
 </div><p>
 </div>
-<hr size="1"><address style="text-align: right;"><small>Généré le Fri May 8 12:45:36 2009 pour Starshine Online par&nbsp;
+<hr size="1"><address style="text-align: right;"><small>Généré le Thu Sep 3 23:11:19 2009 pour Starshine Online par&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.6 </small></address>
 </body>

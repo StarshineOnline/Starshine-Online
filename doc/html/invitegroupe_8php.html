@@ -21,22 +21,18 @@
 <h1>Référence du fichier invitegroupe.php</h1><table border="0" cellpadding="0" cellspacing="0">
 <tr><td></td></tr>
 <tr><td colspan="2"><br><h2>Variables</h2></td></tr>
-<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="invitegroupe_8php.html#20f940ecc4a1340781f167fb69a76622">$W_ID</a> = $_GET['ID']</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="invitegroupe_8php.html#beea5db7af13b1bdd70c46e49f512b26">$joueur</a> = new <a class="el" href="classperso.html">perso</a>($_SESSION['ID'])</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="invitegroupe_8php.html#19afe5512c8585af83b8156bb7429e5f">$W_requete</a> = 'SELECT * FROM perso WHERE ID = \''.$_SESSION['ID'].'\''</td></tr>
-
-<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="invitegroupe_8php.html#63a7a283ea5dee8af1e2d5a3435bf370">$req</a> = $<a class="el" href="classdb.html">db</a>-&gt;query($W_requete)</td></tr>
-
-<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="invitegroupe_8php.html#a1d731aa570613e5bcff831bb10e9b87">$row</a> = $<a class="el" href="classdb.html">db</a>-&gt;read_array($req)</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="invitegroupe_8php.html#648bcc9981df7cceb4b931a80064a6c5">$perso</a> = new <a class="el" href="classperso.html">perso</a>($_GET['ID'])</td></tr>
 
 </table>
 <hr><h2>Documentation des variables</h2>
-<a class="anchor" name="63a7a283ea5dee8af1e2d5a3435bf370"></a><!-- doxytag: member="invitegroupe.php::$req" ref="63a7a283ea5dee8af1e2d5a3435bf370" args="" -->
+<a class="anchor" name="beea5db7af13b1bdd70c46e49f512b26"></a><!-- doxytag: member="invitegroupe.php::$joueur" ref="beea5db7af13b1bdd70c46e49f512b26" args="" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$req = $<a class="el" href="classdb.html">db</a>-&gt;query($W_requete)          </td>
+          <td class="memname">$joueur = new <a class="el" href="classperso.html">perso</a>($_SESSION['ID'])          </td>
         </tr>
       </table>
 </div>
@@ -46,42 +42,12 @@
 
 </div>
 </div><p>
-<a class="anchor" name="a1d731aa570613e5bcff831bb10e9b87"></a><!-- doxytag: member="invitegroupe.php::$row" ref="a1d731aa570613e5bcff831bb10e9b87" args="" -->
+<a class="anchor" name="648bcc9981df7cceb4b931a80064a6c5"></a><!-- doxytag: member="invitegroupe.php::$perso" ref="648bcc9981df7cceb4b931a80064a6c5" args="" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$row = $<a class="el" href="classdb.html">db</a>-&gt;read_array($req)          </td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>
-
-</div>
-</div><p>
-<a class="anchor" name="20f940ecc4a1340781f167fb69a76622"></a><!-- doxytag: member="invitegroupe.php::$W_ID" ref="20f940ecc4a1340781f167fb69a76622" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">$W_ID = $_GET['ID']          </td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>
-
-</div>
-</div><p>
-<a class="anchor" name="19afe5512c8585af83b8156bb7429e5f"></a><!-- doxytag: member="invitegroupe.php::$W_requete" ref="19afe5512c8585af83b8156bb7429e5f" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">$W_requete = 'SELECT * FROM perso WHERE ID = \''.$_SESSION['ID'].'\''          </td>
+          <td class="memname">$<a class="el" href="classperso.html">perso</a> = new <a class="el" href="classperso.html">perso</a>($_GET['ID'])          </td>
         </tr>
       </table>
 </div>
@@ -92,7 +58,7 @@
 </div>
 </div><p>
 </div>
-<hr size="1"><address style="text-align: right;"><small>Généré le Fri May 8 12:45:36 2009 pour Starshine Online par&nbsp;
+<hr size="1"><address style="text-align: right;"><small>Généré le Thu Sep 3 23:11:18 2009 pour Starshine Online par&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.6 </small></address>
 </body>

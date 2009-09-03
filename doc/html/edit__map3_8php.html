@@ -1,6 +1,6 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
-<title>Starshine Online: Référence du fichier trunk/edit_map3.php</title>
+<title>Starshine Online: Référence du fichier trunk/admin/edit_map3.php</title>
 <link href="doxygen.css" rel="stylesheet" type="text/css">
 <link href="tabs.css" rel="stylesheet" type="text/css">
 </head><body>
@@ -14,22 +14,22 @@
       <li><a href="dirs.html"><span>Répertoires</span></a></li>
     </ul>
   </div>
-  <div class="navpath"><a class="el" href="dir_72030663e0f00126986f0653002ad98d.html">trunk</a>
+  <div class="navpath"><a class="el" href="dir_72030663e0f00126986f0653002ad98d.html">trunk</a>&nbsp;&raquo&nbsp;<a class="el" href="dir_b6f6c9a278ee5699522198f90537aaa3.html">admin</a>
   </div>
 </div>
 <div class="contents">
 <h1>Référence du fichier edit_map3.php</h1><table border="0" cellpadding="0" cellspacing="0">
 <tr><td></td></tr>
 <tr><td colspan="2"><br><h2>Variables</h2></td></tr>
-<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="roi_2index_8php.html#1c12d30d2681081f13297744af1014a6">else</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="edit__map3_8php.html#c024139f4a035d140808dd8f04f0643c">$xmin</a> = 1</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="roi_2index_8php.html#c3eceeb81f31105aa439f443d8f5edb8">else</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="edit__map3_8php.html#c024139f4a035d140808dd8f04f0643c">$xmin</a> = 1</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="roi_2index_8php.html#1c12d30d2681081f13297744af1014a6">else</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="edit__map3_8php.html#c9325477220ecd8bd454e3e9a0d14bc0">$ymin</a> = 1</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="roi_2index_8php.html#c3eceeb81f31105aa439f443d8f5edb8">else</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="edit__map3_8php.html#c9325477220ecd8bd454e3e9a0d14bc0">$ymin</a> = 1</td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="edit__map3_8php.html#6ada433d5a1d814c4c4ad7c29aaf88a7">$xmax</a> = $xmin + 15</td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="edit__map3_8php.html#1443f20f1ed7a3b93e67f797e4916e4d">$ymax</a> = $ymin + 15</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="edit__map3_8php.html#1ea21bf4b1af1ebda1b8c63b0e364ce9">$requete</a> = 'SELECT * FROM <a class="el" href="classmap.html">map</a> WHERE (((FLOOR(ID / '.$G_ligne.') &gt;= '.$ymin.') AND (FLOOR(ID / '.$G_ligne.') &lt;= '.$ymax.')) AND (((ID - (FLOOR(ID / '.$G_colonne.') * 1000)) &gt;= '.$xmin.') AND ((ID - (FLOOR(ID / '.$G_colonne.') * 1000)) &lt;= '.$xmax.'))) ORDER BY ID'</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="edit__map3_8php.html#1ea21bf4b1af1ebda1b8c63b0e364ce9">$requete</a> = 'SELECT * FROM <a class="el" href="classmap.html">map</a> WHERE (((FLOOR(id / '.$G_ligne.') &gt;= '.$ymin.') AND (FLOOR(id / '.$G_ligne.') &lt;= '.$ymax.')) AND (((id - (FLOOR(id / '.$G_colonne.') * 1000)) &gt;= '.$xmin.') AND ((id - (FLOOR(id / '.$G_colonne.') * 1000)) &lt;= '.$xmax.'))) ORDER BY id'</td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="edit__map3_8php.html#63a7a283ea5dee8af1e2d5a3435bf370">$req</a> = $<a class="el" href="classdb.html">db</a>-&gt;query($requete)</td></tr>
 
@@ -95,7 +95,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$requete = 'SELECT * FROM <a class="el" href="classmap.html">map</a> WHERE (((FLOOR(ID / '.$G_ligne.') &gt;= '.$ymin.') AND (FLOOR(ID / '.$G_ligne.') &lt;= '.$ymax.')) AND (((ID - (FLOOR(ID / '.$G_colonne.') * 1000)) &gt;= '.$xmin.') AND ((ID - (FLOOR(ID / '.$G_colonne.') * 1000)) &lt;= '.$xmax.'))) ORDER BY ID'          </td>
+          <td class="memname">$requete = 'SELECT * FROM <a class="el" href="classmap.html">map</a> WHERE (((FLOOR(id / '.$G_ligne.') &gt;= '.$ymin.') AND (FLOOR(id / '.$G_ligne.') &lt;= '.$ymax.')) AND (((id - (FLOOR(id / '.$G_colonne.') * 1000)) &gt;= '.$xmin.') AND ((id - (FLOOR(id / '.$G_colonne.') * 1000)) &lt;= '.$xmax.'))) ORDER BY id'          </td>
         </tr>
       </table>
 </div>
@@ -140,7 +140,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="roi_2index_8php.html#1c12d30d2681081f13297744af1014a6">else</a> $xmin = 1          </td>
+          <td class="memname"><a class="el" href="roi_2index_8php.html#c3eceeb81f31105aa439f443d8f5edb8">else</a> $xmin = 1          </td>
         </tr>
       </table>
 </div>
@@ -185,7 +185,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="roi_2index_8php.html#1c12d30d2681081f13297744af1014a6">else</a> $ymin = 1          </td>
+          <td class="memname"><a class="el" href="roi_2index_8php.html#c3eceeb81f31105aa439f443d8f5edb8">else</a> $ymin = 1          </td>
         </tr>
       </table>
 </div>
@@ -211,7 +211,7 @@
 </div>
 </div><p>
 </div>
-<hr size="1"><address style="text-align: right;"><small>Généré le Fri May 8 12:45:35 2009 pour Starshine Online par&nbsp;
+<hr size="1"><address style="text-align: right;"><small>Généré le Thu Sep 3 23:10:59 2009 pour Starshine Online par&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.6 </small></address>
 </body>

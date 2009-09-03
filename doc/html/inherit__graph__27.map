@@ -1,6 +1,2 @@
-<area shape="rect" href="$class_objet.html" title="Classe abstraite représentant un objet." alt="" coords="7,112,60,141">
-<area shape="rect" href="$class_accessoire.html" title="Accessoire" alt="" coords="121,5,209,35">
-<area shape="rect" href="$class_arme.html" title="Arme" alt="" coords="139,59,192,88">
-<area shape="rect" href="$class_armure.html" title="Armure" alt="" coords="132,112,199,141">
-<area shape="rect" href="$class_objet_royaume.html" title="ObjetRoyaume" alt="" coords="109,165,221,195">
-<area shape="rect" href="$class_objets.html" title="Objets" alt="" coords="135,219,196,248">
+<area shape="rect" href="$classentite.html" title="Description of entite." alt="" coords="5,5,61,35">
+<area shape="rect" href="$classperso.html" title="perso" alt="" coords="109,5,165,35">

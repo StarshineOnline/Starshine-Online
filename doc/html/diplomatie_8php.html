@@ -145,7 +145,7 @@
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="diplomatie_8php.html#83018d9153d17d91fbcf3bc10158d34f">$i</a> = 0</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="viewarene2_8php.html#223fe6cddffc1406cf93390144f0f6f7">while</a>($i&lt; 12)&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="diplomatie_8php.html#4850f67a56fe57d122a8900d7307b0b1">$requete</a> = &quot;SELECT * FROM diplomatie&quot;</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="viewarene2_8php.html#223fe6cddffc1406cf93390144f0f6f7">while</a>($i&lt; 12)&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="diplomatie_8php.html#4850f67a56fe57d122a8900d7307b0b1">$requete</a> = &quot;SELECT * FROM <a class="el" href="classdiplomatie.html">diplomatie</a>&quot;</td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="diplomatie_8php.html#63a7a283ea5dee8af1e2d5a3435bf370">$req</a> = $<a class="el" href="classdb.html">db</a>-&gt;query($requete)</td></tr>
 
@@ -153,7 +153,7 @@
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="diplomatie_8php.html#09d26ae58fba5b6ca0f68e8b437613b9">while</a> ($row=$<a class="el" href="classdb.html">db</a>-&gt;read_field($req))</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="diplomatie_8php.html#6c4e9688beb938aab8f931e9fd7dc86e">foreach</a> ($fields as $field)</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="diplomatie_8php.html#3c9f44c3103d6ebaca6a2dac4d66637f">foreach</a> ($fields as $field) = &quot;SELECT a.id as id, a.rechargement, c.id as bourg_id FROM `<a class="el" href="classconstruction.html">construction</a>` as a LEFT JOIN <a class="el" href="classconstruction.html">construction</a> as c ON a.rechargement = c.id WHERE <a class="el" href="action__modif__t_8php.html#7aead736a07eaf25623ad7bfa1f0ee2d">a.type</a> ='<a class="el" href="classmine.html">mine</a>'&quot;</td></tr>
 
 </table>
 <hr><h2>Documentation des variables</h2>
@@ -162,7 +162,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$diplomatie[127][4] = 'Non'          </td>
+          <td class="memname">$<a class="el" href="classdiplomatie.html">diplomatie</a>[127][4] = 'Non'          </td>
         </tr>
       </table>
 </div>
@@ -177,7 +177,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$diplomatie[10][4] = 'Oui'          </td>
+          <td class="memname">$<a class="el" href="classdiplomatie.html">diplomatie</a>[10][4] = 'Oui'          </td>
         </tr>
       </table>
 </div>
@@ -192,7 +192,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$diplomatie[9][4] = 'Oui'          </td>
+          <td class="memname">$<a class="el" href="classdiplomatie.html">diplomatie</a>[9][4] = 'Oui'          </td>
         </tr>
       </table>
 </div>
@@ -207,7 +207,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$diplomatie[8][4] = 'Oui'          </td>
+          <td class="memname">$<a class="el" href="classdiplomatie.html">diplomatie</a>[8][4] = 'Oui'          </td>
         </tr>
       </table>
 </div>
@@ -222,7 +222,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$diplomatie[7][4] = 'Oui'          </td>
+          <td class="memname">$<a class="el" href="classdiplomatie.html">diplomatie</a>[7][4] = 'Oui'          </td>
         </tr>
       </table>
 </div>
@@ -237,7 +237,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$diplomatie[6][4] = 'Non'          </td>
+          <td class="memname">$<a class="el" href="classdiplomatie.html">diplomatie</a>[6][4] = 'Non'          </td>
         </tr>
       </table>
 </div>
@@ -252,7 +252,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$diplomatie[5][4] = 'Non'          </td>
+          <td class="memname">$<a class="el" href="classdiplomatie.html">diplomatie</a>[5][4] = 'Non'          </td>
         </tr>
       </table>
 </div>
@@ -267,7 +267,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$diplomatie[4][4] = 'Non'          </td>
+          <td class="memname">$<a class="el" href="classdiplomatie.html">diplomatie</a>[4][4] = 'Non'          </td>
         </tr>
       </table>
 </div>
@@ -282,7 +282,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$diplomatie[3][4] = 'Non'          </td>
+          <td class="memname">$<a class="el" href="classdiplomatie.html">diplomatie</a>[3][4] = 'Non'          </td>
         </tr>
       </table>
 </div>
@@ -297,7 +297,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$diplomatie[2][4] = 'Non'          </td>
+          <td class="memname">$<a class="el" href="classdiplomatie.html">diplomatie</a>[2][4] = 'Non'          </td>
         </tr>
       </table>
 </div>
@@ -312,7 +312,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$diplomatie[1][4] = 'Non'          </td>
+          <td class="memname">$<a class="el" href="classdiplomatie.html">diplomatie</a>[1][4] = 'Non'          </td>
         </tr>
       </table>
 </div>
@@ -327,7 +327,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$diplomatie[0][4] = 'Non'          </td>
+          <td class="memname">$<a class="el" href="classdiplomatie.html">diplomatie</a>[0][4] = 'Non'          </td>
         </tr>
       </table>
 </div>
@@ -342,7 +342,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$diplomatie[127][3] = 'Oui'          </td>
+          <td class="memname">$<a class="el" href="classdiplomatie.html">diplomatie</a>[127][3] = 'Oui'          </td>
         </tr>
       </table>
 </div>
@@ -357,7 +357,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$diplomatie[10][3] = 'Non'          </td>
+          <td class="memname">$<a class="el" href="classdiplomatie.html">diplomatie</a>[10][3] = 'Non'          </td>
         </tr>
       </table>
 </div>
@@ -372,7 +372,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$diplomatie[9][3] = 'Non'          </td>
+          <td class="memname">$<a class="el" href="classdiplomatie.html">diplomatie</a>[9][3] = 'Non'          </td>
         </tr>
       </table>
 </div>
@@ -387,7 +387,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$diplomatie[8][3] = 'Non'          </td>
+          <td class="memname">$<a class="el" href="classdiplomatie.html">diplomatie</a>[8][3] = 'Non'          </td>
         </tr>
       </table>
 </div>
@@ -402,7 +402,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$diplomatie[7][3] = 'Non'          </td>
+          <td class="memname">$<a class="el" href="classdiplomatie.html">diplomatie</a>[7][3] = 'Non'          </td>
         </tr>
       </table>
 </div>
@@ -417,7 +417,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$diplomatie[6][3] = 'Oui'          </td>
+          <td class="memname">$<a class="el" href="classdiplomatie.html">diplomatie</a>[6][3] = 'Oui'          </td>
         </tr>
       </table>
 </div>
@@ -432,7 +432,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$diplomatie[5][3] = 'Oui'          </td>
+          <td class="memname">$<a class="el" href="classdiplomatie.html">diplomatie</a>[5][3] = 'Oui'          </td>
         </tr>
       </table>
 </div>
@@ -447,7 +447,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$diplomatie[4][3] = 'Oui'          </td>
+          <td class="memname">$<a class="el" href="classdiplomatie.html">diplomatie</a>[4][3] = 'Oui'          </td>
         </tr>
       </table>
 </div>
@@ -462,7 +462,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$diplomatie[3][3] = 'Oui'          </td>
+          <td class="memname">$<a class="el" href="classdiplomatie.html">diplomatie</a>[3][3] = 'Oui'          </td>
         </tr>
       </table>
 </div>
@@ -477,7 +477,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$diplomatie[2][3] = 'Oui'          </td>
+          <td class="memname">$<a class="el" href="classdiplomatie.html">diplomatie</a>[2][3] = 'Oui'          </td>
         </tr>
       </table>
 </div>
@@ -492,7 +492,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$diplomatie[1][3] = 'Oui'          </td>
+          <td class="memname">$<a class="el" href="classdiplomatie.html">diplomatie</a>[1][3] = 'Oui'          </td>
         </tr>
       </table>
 </div>
@@ -507,7 +507,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$diplomatie[0][3] = 'Oui'          </td>
+          <td class="memname">$<a class="el" href="classdiplomatie.html">diplomatie</a>[0][3] = 'Oui'          </td>
         </tr>
       </table>
 </div>
@@ -522,7 +522,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$diplomatie[127][2] = 'Oui'          </td>
+          <td class="memname">$<a class="el" href="classdiplomatie.html">diplomatie</a>[127][2] = 'Oui'          </td>
         </tr>
       </table>
 </div>
@@ -537,7 +537,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$diplomatie[10][2] = 'Non'          </td>
+          <td class="memname">$<a class="el" href="classdiplomatie.html">diplomatie</a>[10][2] = 'Non'          </td>
         </tr>
       </table>
 </div>
@@ -552,7 +552,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$diplomatie[9][2] = 'Non'          </td>
+          <td class="memname">$<a class="el" href="classdiplomatie.html">diplomatie</a>[9][2] = 'Non'          </td>
         </tr>
       </table>
 </div>
@@ -567,7 +567,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$diplomatie[8][2] = 'Non'          </td>
+          <td class="memname">$<a class="el" href="classdiplomatie.html">diplomatie</a>[8][2] = 'Non'          </td>
         </tr>
       </table>
 </div>
@@ -582,7 +582,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$diplomatie[7][2] = 'Non'          </td>
+          <td class="memname">$<a class="el" href="classdiplomatie.html">diplomatie</a>[7][2] = 'Non'          </td>
         </tr>
       </table>
 </div>
@@ -597,7 +597,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$diplomatie[6][2] = 'Non'          </td>
+          <td class="memname">$<a class="el" href="classdiplomatie.html">diplomatie</a>[6][2] = 'Non'          </td>
         </tr>
       </table>
 </div>
@@ -612,7 +612,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$diplomatie[5][2] = 'Non'          </td>
+          <td class="memname">$<a class="el" href="classdiplomatie.html">diplomatie</a>[5][2] = 'Non'          </td>
         </tr>
       </table>
 </div>
@@ -627,7 +627,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$diplomatie[4][2] = 'Non'          </td>
+          <td class="memname">$<a class="el" href="classdiplomatie.html">diplomatie</a>[4][2] = 'Non'          </td>
         </tr>
       </table>
 </div>
@@ -642,7 +642,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$diplomatie[3][2] = 'Oui'          </td>
+          <td class="memname">$<a class="el" href="classdiplomatie.html">diplomatie</a>[3][2] = 'Oui'          </td>
         </tr>
       </table>
 </div>
@@ -657,7 +657,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$diplomatie[2][2] = 'Oui'          </td>
+          <td class="memname">$<a class="el" href="classdiplomatie.html">diplomatie</a>[2][2] = 'Oui'          </td>
         </tr>
       </table>
 </div>
@@ -672,7 +672,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$diplomatie[1][2] = 'Oui'          </td>
+          <td class="memname">$<a class="el" href="classdiplomatie.html">diplomatie</a>[1][2] = 'Oui'          </td>
         </tr>
       </table>
 </div>
@@ -687,7 +687,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$diplomatie[0][2] = 'Oui'          </td>
+          <td class="memname">$<a class="el" href="classdiplomatie.html">diplomatie</a>[0][2] = 'Oui'          </td>
         </tr>
       </table>
 </div>
@@ -702,7 +702,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$diplomatie[127][1] = 'Minime'          </td>
+          <td class="memname">$<a class="el" href="classdiplomatie.html">diplomatie</a>[127][1] = 'Minime'          </td>
         </tr>
       </table>
 </div>
@@ -717,7 +717,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$diplomatie[10][1] = 'Aucune'          </td>
+          <td class="memname">$<a class="el" href="classdiplomatie.html">diplomatie</a>[10][1] = 'Aucune'          </td>
         </tr>
       </table>
 </div>
@@ -732,7 +732,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$diplomatie[9][1] = 'Aucune'          </td>
+          <td class="memname">$<a class="el" href="classdiplomatie.html">diplomatie</a>[9][1] = 'Aucune'          </td>
         </tr>
       </table>
 </div>
@@ -747,7 +747,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$diplomatie[8][1] = 'Aucune'          </td>
+          <td class="memname">$<a class="el" href="classdiplomatie.html">diplomatie</a>[8][1] = 'Aucune'          </td>
         </tr>
       </table>
 </div>
@@ -762,7 +762,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$diplomatie[7][1] = 'Aucune'          </td>
+          <td class="memname">$<a class="el" href="classdiplomatie.html">diplomatie</a>[7][1] = 'Aucune'          </td>
         </tr>
       </table>
 </div>
@@ -777,7 +777,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$diplomatie[6][1] = 'Très Excessive'          </td>
+          <td class="memname">$<a class="el" href="classdiplomatie.html">diplomatie</a>[6][1] = 'Très Excessive'          </td>
         </tr>
       </table>
 </div>
@@ -792,7 +792,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$diplomatie[5][1] = 'Excessive'          </td>
+          <td class="memname">$<a class="el" href="classdiplomatie.html">diplomatie</a>[5][1] = 'Excessive'          </td>
         </tr>
       </table>
 </div>
@@ -807,7 +807,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$diplomatie[4][1] = 'Très Forte'          </td>
+          <td class="memname">$<a class="el" href="classdiplomatie.html">diplomatie</a>[4][1] = 'Très Forte'          </td>
         </tr>
       </table>
 </div>
@@ -822,7 +822,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$diplomatie[3][1] = 'Forte'          </td>
+          <td class="memname">$<a class="el" href="classdiplomatie.html">diplomatie</a>[3][1] = 'Forte'          </td>
         </tr>
       </table>
 </div>
@@ -837,7 +837,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$diplomatie[2][1] = 'Normale'          </td>
+          <td class="memname">$<a class="el" href="classdiplomatie.html">diplomatie</a>[2][1] = 'Normale'          </td>
         </tr>
       </table>
 </div>
@@ -852,7 +852,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$diplomatie[1][1] = 'Faible'          </td>
+          <td class="memname">$<a class="el" href="classdiplomatie.html">diplomatie</a>[1][1] = 'Faible'          </td>
         </tr>
       </table>
 </div>
@@ -867,7 +867,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$diplomatie[0][1] = 'Très Faible'          </td>
+          <td class="memname">$<a class="el" href="classdiplomatie.html">diplomatie</a>[0][1] = 'Très Faible'          </td>
         </tr>
       </table>
 </div>
@@ -882,7 +882,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$diplomatie[127][0] = 'X'          </td>
+          <td class="memname">$<a class="el" href="classdiplomatie.html">diplomatie</a>[127][0] = 'X'          </td>
         </tr>
       </table>
 </div>
@@ -897,7 +897,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$diplomatie[10][0] = 'Ennemis eternels'          </td>
+          <td class="memname">$<a class="el" href="classdiplomatie.html">diplomatie</a>[10][0] = 'Ennemis eternels'          </td>
         </tr>
       </table>
 </div>
@@ -912,7 +912,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$diplomatie[9][0] = 'Ennemis'          </td>
+          <td class="memname">$<a class="el" href="classdiplomatie.html">diplomatie</a>[9][0] = 'Ennemis'          </td>
         </tr>
       </table>
 </div>
@@ -927,7 +927,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$diplomatie[8][0] = 'Guerre durable'          </td>
+          <td class="memname">$<a class="el" href="classdiplomatie.html">diplomatie</a>[8][0] = 'Guerre durable'          </td>
         </tr>
       </table>
 </div>
@@ -942,7 +942,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$diplomatie[7][0] = 'Guerre'          </td>
+          <td class="memname">$<a class="el" href="classdiplomatie.html">diplomatie</a>[7][0] = 'Guerre'          </td>
         </tr>
       </table>
 </div>
@@ -957,7 +957,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$diplomatie[6][0] = 'Mauvais termes'          </td>
+          <td class="memname">$<a class="el" href="classdiplomatie.html">diplomatie</a>[6][0] = 'Mauvais termes'          </td>
         </tr>
       </table>
 </div>
@@ -972,7 +972,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$diplomatie[5][0] = 'Neutre'          </td>
+          <td class="memname">$<a class="el" href="classdiplomatie.html">diplomatie</a>[5][0] = 'Neutre'          </td>
         </tr>
       </table>
 </div>
@@ -987,7 +987,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$diplomatie[4][0] = 'En bons termes'          </td>
+          <td class="memname">$<a class="el" href="classdiplomatie.html">diplomatie</a>[4][0] = 'En bons termes'          </td>
         </tr>
       </table>
 </div>
@@ -1002,7 +1002,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$diplomatie[3][0] = 'Paix'          </td>
+          <td class="memname">$<a class="el" href="classdiplomatie.html">diplomatie</a>[3][0] = 'Paix'          </td>
         </tr>
       </table>
 </div>
@@ -1017,7 +1017,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$diplomatie[2][0] = 'Paix durable'          </td>
+          <td class="memname">$<a class="el" href="classdiplomatie.html">diplomatie</a>[2][0] = 'Paix durable'          </td>
         </tr>
       </table>
 </div>
@@ -1032,7 +1032,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$diplomatie[1][0] = 'Alliance'          </td>
+          <td class="memname">$<a class="el" href="classdiplomatie.html">diplomatie</a>[1][0] = 'Alliance'          </td>
         </tr>
       </table>
 </div>
@@ -1047,7 +1047,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$diplomatie[0][0] = 'Alliance fraternelle'          </td>
+          <td class="memname">$<a class="el" href="classdiplomatie.html">diplomatie</a>[0][0] = 'Alliance fraternelle'          </td>
         </tr>
       </table>
 </div>
@@ -1062,7 +1062,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$diplomatie = array()          </td>
+          <td class="memname">$<a class="el" href="classdiplomatie.html">diplomatie</a> = array()          </td>
         </tr>
       </table>
 </div>
@@ -1122,7 +1122,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="viewarene2_8php.html#223fe6cddffc1406cf93390144f0f6f7">while</a> ($i&lt; 12) $requete = &quot;SELECT * FROM diplomatie&quot;          </td>
+          <td class="memname"><a class="el" href="viewarene2_8php.html#223fe6cddffc1406cf93390144f0f6f7">while</a> ($i&lt; 12) $requete = &quot;SELECT * FROM <a class="el" href="classdiplomatie.html">diplomatie</a>&quot;          </td>
         </tr>
       </table>
 </div>
@@ -1132,12 +1132,12 @@
 
 </div>
 </div><p>
-<a class="anchor" name="6c4e9688beb938aab8f931e9fd7dc86e"></a><!-- doxytag: member="diplomatie.php::foreach" ref="6c4e9688beb938aab8f931e9fd7dc86e" args="($fields as $field)" -->
+<a class="anchor" name="3c9f44c3103d6ebaca6a2dac4d66637f"></a><!-- doxytag: member="diplomatie.php::foreach" ref="3c9f44c3103d6ebaca6a2dac4d66637f" args="($fields as $field)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="viewarene2_8php.html#5b12908e955b1d62c5d4a94b8595d5c6">foreach</a>($fields as $field)          </td>
+          <td class="memname"><a class="el" href="viewarene2_8php.html#5b12908e955b1d62c5d4a94b8595d5c6">foreach</a> = &quot;SELECT a.id as id, a.rechargement, c.id as bourg_id FROM `<a class="el" href="classconstruction.html">construction</a>` as a LEFT JOIN <a class="el" href="classconstruction.html">construction</a> as c ON a.rechargement = c.id WHERE <a class="el" href="action__modif__t_8php.html#7aead736a07eaf25623ad7bfa1f0ee2d">a.type</a> ='<a class="el" href="classmine.html">mine</a>'&quot;          </td>
         </tr>
       </table>
 </div>
@@ -1163,7 +1163,7 @@
 </div>
 </div><p>
 </div>
-<hr size="1"><address style="text-align: right;"><small>Généré le Fri May 8 12:45:35 2009 pour Starshine Online par&nbsp;
+<hr size="1"><address style="text-align: right;"><small>Généré le Thu Sep 3 23:11:02 2009 pour Starshine Online par&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.6 </small></address>
 </body>

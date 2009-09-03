@@ -21,17 +21,17 @@
 <h1>Référence du fichier haut_roi.php</h1><table border="0" cellpadding="0" cellspacing="0">
 <tr><td></td></tr>
 <tr><td colspan="2"><br><h2>Variables</h2></td></tr>
-<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="haut__roi_8php.html#b37f7c32f41c3c61ed940887453767f4">$root</a> = '../'</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="haut__roi_8php.html#beea5db7af13b1bdd70c46e49f512b26">$joueur</a> = new <a class="el" href="classperso.html">perso</a>($_SESSION['ID'])</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="haut__roi_8php.html#beea5db7af13b1bdd70c46e49f512b26">$joueur</a> = recupperso($_SESSION['ID'])</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="haut__roi_8php.html#7225716df4fca4e47eb3860bd9587a1a">$royaume</a> = new <a class="el" href="classroyaume.html">royaume</a>($Trace[$joueur-&gt;get_race()]['numrace'])</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="haut__roi_8php.html#be2d79bb4aa8b8243d81c67fdd50511f">$R</a> = get_royaume_info($joueur['race'], $Trace[$joueur['race']]['numrace'])</td></tr>
-
-<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="haut__roi_8php.html#dc5bfc941d40883a35083b4167529fec">$_SESSION</a> ['position'] = convert_in_pos($joueur['x'], $joueur['y'])</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="haut__roi_8php.html#dc5bfc941d40883a35083b4167529fec">$_SESSION</a> ['position'] = convert_in_pos($joueur-&gt;get_x(), $joueur-&gt;get_y())</td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="haut__roi_8php.html#3bdc395fa40de5f822d4230cf6e5b387">$W_distance</a> = detection_distance($W_case,$_SESSION[&quot;position&quot;])</td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="haut__roi_8php.html#5931357a80d291a4cd7d80833542af80">$W_coord</a> = convert_in_coord($W_case)</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="haut__roi_8php.html#830cf70d25fefacddcf4c6bc3fd7a0e0">$check</a> = false</td></tr>
 
 </table>
 <hr><h2>Documentation des variables</h2>
@@ -40,7 +40,22 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$_SESSION['position'] = convert_in_pos($joueur['x'], $joueur['y'])          </td>
+          <td class="memname">$_SESSION['position'] = convert_in_pos($joueur-&gt;get_x(), $joueur-&gt;get_y())          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="830cf70d25fefacddcf4c6bc3fd7a0e0"></a><!-- doxytag: member="haut_roi.php::$check" ref="830cf70d25fefacddcf4c6bc3fd7a0e0" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">$check = false          </td>
         </tr>
       </table>
 </div>
@@ -55,7 +70,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$joueur = recupperso($_SESSION['ID'])          </td>
+          <td class="memname">$joueur = new <a class="el" href="classperso.html">perso</a>($_SESSION['ID'])          </td>
         </tr>
       </table>
 </div>
@@ -65,27 +80,12 @@
 
 </div>
 </div><p>
-<a class="anchor" name="be2d79bb4aa8b8243d81c67fdd50511f"></a><!-- doxytag: member="haut_roi.php::$R" ref="be2d79bb4aa8b8243d81c67fdd50511f" args="" -->
+<a class="anchor" name="7225716df4fca4e47eb3860bd9587a1a"></a><!-- doxytag: member="haut_roi.php::$royaume" ref="7225716df4fca4e47eb3860bd9587a1a" args="" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$R = get_royaume_info($joueur['race'], $Trace[$joueur['race']]['numrace'])          </td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>
-
-</div>
-</div><p>
-<a class="anchor" name="b37f7c32f41c3c61ed940887453767f4"></a><!-- doxytag: member="haut_roi.php::$root" ref="b37f7c32f41c3c61ed940887453767f4" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">$root = '../'          </td>
+          <td class="memname">$<a class="el" href="classroyaume.html">royaume</a> = new <a class="el" href="classroyaume.html">royaume</a>($Trace[$joueur-&gt;get_race()]['numrace'])          </td>
         </tr>
       </table>
 </div>
@@ -126,7 +126,7 @@
 </div>
 </div><p>
 </div>
-<hr size="1"><address style="text-align: right;"><small>Généré le Fri May 8 12:45:36 2009 pour Starshine Online par&nbsp;
+<hr size="1"><address style="text-align: right;"><small>Généré le Thu Sep 3 23:11:18 2009 pour Starshine Online par&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.6 </small></address>
 </body>

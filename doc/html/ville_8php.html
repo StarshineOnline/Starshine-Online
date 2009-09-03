@@ -21,66 +21,28 @@
 <h1>Référence du fichier ville.php</h1><table border="0" cellpadding="0" cellspacing="0">
 <tr><td></td></tr>
 <tr><td colspan="2"><br><h2>Variables</h2></td></tr>
-<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="ville_8php.html#beea5db7af13b1bdd70c46e49f512b26">$joueur</a> = recupperso($_SESSION['ID'])</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="ville_8php.html#beea5db7af13b1bdd70c46e49f512b26">$joueur</a> = new <a class="el" href="classperso.html">perso</a>($_SESSION['ID'])</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="ville_8php.html#6e88dcb746884d18f6c89eb9b9c14a42">$position</a> = convert_in_pos($joueur['x'], $joueur['y'])</td></tr>
-
-<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="ville_8php.html#3cd2ddf362a14a21c6d4166c35dfbd48">$verif_ville</a> = verif_ville($joueur['x'], $joueur['y'])</td></tr>
-
-<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="ville_8php.html#348857e01ece8eec9741a8aac278b4b7">$W_case</a> = $_GET['poscase']</td></tr>
-
-<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="ville_8php.html#19afe5512c8585af83b8156bb7429e5f">$W_requete</a> = 'SELECT * FROM <a class="el" href="classmap.html">map</a> WHERE ID =\''.sSQL($W_case).'\''</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="ville_8php.html#19afe5512c8585af83b8156bb7429e5f">$W_requete</a> = 'SELECT * FROM <a class="el" href="classmap.html">map</a> WHERE ID =\''.sSQL($joueur-&gt;get_pos()).'\''</td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="ville_8php.html#cb6559abdb149d5869a9dbeff98cf9bd">$W_req</a> = $<a class="el" href="classdb.html">db</a>-&gt;query($W_requete)</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="ville_8php.html#59eabebcf9db04fe004af49fb94e6e79">$W_row</a> = $<a class="el" href="classdb.html">db</a>-&gt;read_array($W_req)</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="ville_8php.html#59eabebcf9db04fe004af49fb94e6e79">$W_row</a> = $<a class="el" href="classdb.html">db</a>-&gt;read_assoc($W_req)</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="ville_8php.html#be2d79bb4aa8b8243d81c67fdd50511f">$R</a> = get_royaume_info($joueur['race'], $W_row['royaume'])</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="ville_8php.html#be2d79bb4aa8b8243d81c67fdd50511f">$R</a> = new <a class="el" href="classroyaume.html">royaume</a>($W_row['<a class="el" href="classroyaume.html">royaume</a>'])</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="ville_8php.html#dc5bfc941d40883a35083b4167529fec">$_SESSION</a> ['position'] = $position</td></tr>
-
-<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="ville_8php.html#3bdc395fa40de5f822d4230cf6e5b387">$W_distance</a> = detection_distance($W_case,$_SESSION[&quot;position&quot;])</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="ville_8php.html#3bdc395fa40de5f822d4230cf6e5b387">$W_distance</a> = detection_distance($W_case, $joueur-&gt;get_pos())</td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="ville_8php.html#5931357a80d291a4cd7d80833542af80">$W_coord</a> = convert_in_coord($W_case)</td></tr>
 
 </table>
 <hr><h2>Documentation des variables</h2>
-<a class="anchor" name="dc5bfc941d40883a35083b4167529fec"></a><!-- doxytag: member="ville.php::$_SESSION" ref="dc5bfc941d40883a35083b4167529fec" args="['position']" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">$_SESSION['position'] = $position          </td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>
-
-</div>
-</div><p>
 <a class="anchor" name="beea5db7af13b1bdd70c46e49f512b26"></a><!-- doxytag: member="ville.php::$joueur" ref="beea5db7af13b1bdd70c46e49f512b26" args="" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$joueur = recupperso($_SESSION['ID'])          </td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>
-
-</div>
-</div><p>
-<a class="anchor" name="6e88dcb746884d18f6c89eb9b9c14a42"></a><!-- doxytag: member="ville.php::$position" ref="6e88dcb746884d18f6c89eb9b9c14a42" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">$position = convert_in_pos($joueur['x'], $joueur['y'])          </td>
+          <td class="memname">$joueur = new <a class="el" href="classperso.html">perso</a>($_SESSION['ID'])          </td>
         </tr>
       </table>
 </div>
@@ -95,37 +57,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$R = get_royaume_info($joueur['race'], $W_row['royaume'])          </td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>
-
-</div>
-</div><p>
-<a class="anchor" name="3cd2ddf362a14a21c6d4166c35dfbd48"></a><!-- doxytag: member="ville.php::$verif_ville" ref="3cd2ddf362a14a21c6d4166c35dfbd48" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">$verif_ville = verif_ville($joueur['x'], $joueur['y'])          </td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>
-
-</div>
-</div><p>
-<a class="anchor" name="348857e01ece8eec9741a8aac278b4b7"></a><!-- doxytag: member="ville.php::$W_case" ref="348857e01ece8eec9741a8aac278b4b7" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">$W_case = $_GET['poscase']          </td>
+          <td class="memname">$R = new <a class="el" href="classroyaume.html">royaume</a>($W_row['<a class="el" href="classroyaume.html">royaume</a>'])          </td>
         </tr>
       </table>
 </div>
@@ -155,7 +87,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$W_distance = detection_distance($W_case,$_SESSION[&quot;position&quot;])          </td>
+          <td class="memname">$W_distance = detection_distance($W_case, $joueur-&gt;get_pos())          </td>
         </tr>
       </table>
 </div>
@@ -185,7 +117,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$W_requete = 'SELECT * FROM <a class="el" href="classmap.html">map</a> WHERE ID =\''.sSQL($W_case).'\''          </td>
+          <td class="memname">$W_requete = 'SELECT * FROM <a class="el" href="classmap.html">map</a> WHERE ID =\''.sSQL($joueur-&gt;get_pos()).'\''          </td>
         </tr>
       </table>
 </div>
@@ -200,7 +132,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$W_row = $<a class="el" href="classdb.html">db</a>-&gt;read_array($W_req)          </td>
+          <td class="memname">$W_row = $<a class="el" href="classdb.html">db</a>-&gt;read_assoc($W_req)          </td>
         </tr>
       </table>
 </div>
@@ -211,7 +143,7 @@
 </div>
 </div><p>
 </div>
-<hr size="1"><address style="text-align: right;"><small>Généré le Fri May 8 12:45:36 2009 pour Starshine Online par&nbsp;
+<hr size="1"><address style="text-align: right;"><small>Généré le Thu Sep 3 23:11:19 2009 pour Starshine Online par&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.6 </small></address>
 </body>

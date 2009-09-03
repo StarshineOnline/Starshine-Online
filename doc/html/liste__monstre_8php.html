@@ -23,11 +23,11 @@
 <tr><td colspan="2"><br><h2>Variables</h2></td></tr>
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="liste__monstre_8php.html#ab50d97eed7abd779caf1f2de48c1c5f">$tab</a> = array('', 'Plaine', 'Forêt', 'Désert', 'Glace', 'Eau', 'Montagne', 'Marais', 'Route', '', '', 'Terre maudite')</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="roi_2index_8php.html#1c12d30d2681081f13297744af1014a6">else</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="liste__monstre_8php.html#65007153a2861a4a1f1852090cff35a5">$terrain</a> = 1</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="roi_2index_8php.html#c3eceeb81f31105aa439f443d8f5edb8">else</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="liste__monstre_8php.html#65007153a2861a4a1f1852090cff35a5">$terrain</a> = 1</td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="viewarene2_8php.html#5b12908e955b1d62c5d4a94b8595d5c6">foreach</a>($tab as $key=&gt; $t)&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="liste__monstre_8php.html#670ebdc753c9b7251200aa5920449517">$i</a> = 0</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="liste__monstre_8php.html#1ea21bf4b1af1ebda1b8c63b0e364ce9">$requete</a> = &quot;SELECT lib, <a class="el" href="classterrain.html">terrain</a>, nom, level FROM monstre WHERE affiche = 'y' AND (<a class="el" href="classterrain.html">terrain</a> = '&quot;.$terrain.&quot;' OR <a class="el" href="classterrain.html">terrain</a> LIKE '&quot;.$terrain.&quot;;%' OR <a class="el" href="classterrain.html">terrain</a> LIKE '%;&quot;.$terrain.&quot;' OR <a class="el" href="classterrain.html">terrain</a> LIKE '%;&quot;.$terrain.&quot;;%') ORDER BY level ASC, xp ASC&quot;</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="liste__monstre_8php.html#1ea21bf4b1af1ebda1b8c63b0e364ce9">$requete</a> = &quot;SELECT lib, <a class="el" href="classterrain.html">terrain</a>, nom, level FROM <a class="el" href="classmonstre.html">monstre</a> WHERE affiche = 'y' AND (<a class="el" href="classterrain.html">terrain</a> = '&quot;.$terrain.&quot;' OR <a class="el" href="classterrain.html">terrain</a> LIKE '&quot;.$terrain.&quot;;%' OR <a class="el" href="classterrain.html">terrain</a> LIKE '%;&quot;.$terrain.&quot;' OR <a class="el" href="classterrain.html">terrain</a> LIKE '%;&quot;.$terrain.&quot;;%') ORDER BY level ASC, xp ASC&quot;</td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="liste__monstre_8php.html#63a7a283ea5dee8af1e2d5a3435bf370">$req</a> = $<a class="el" href="classdb.html">db</a>-&gt;query($requete)</td></tr>
 
@@ -70,7 +70,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$requete = &quot;SELECT lib, <a class="el" href="classterrain.html">terrain</a>, nom, level FROM monstre WHERE affiche = 'y' AND (<a class="el" href="classterrain.html">terrain</a> = '&quot;.$terrain.&quot;' OR <a class="el" href="classterrain.html">terrain</a> LIKE '&quot;.$terrain.&quot;;%' OR <a class="el" href="classterrain.html">terrain</a> LIKE '%;&quot;.$terrain.&quot;' OR <a class="el" href="classterrain.html">terrain</a> LIKE '%;&quot;.$terrain.&quot;;%') ORDER BY level ASC, xp ASC&quot;          </td>
+          <td class="memname">$requete = &quot;SELECT lib, <a class="el" href="classterrain.html">terrain</a>, nom, level FROM <a class="el" href="classmonstre.html">monstre</a> WHERE affiche = 'y' AND (<a class="el" href="classterrain.html">terrain</a> = '&quot;.$terrain.&quot;' OR <a class="el" href="classterrain.html">terrain</a> LIKE '&quot;.$terrain.&quot;;%' OR <a class="el" href="classterrain.html">terrain</a> LIKE '%;&quot;.$terrain.&quot;' OR <a class="el" href="classterrain.html">terrain</a> LIKE '%;&quot;.$terrain.&quot;;%') ORDER BY level ASC, xp ASC&quot;          </td>
         </tr>
       </table>
 </div>
@@ -100,7 +100,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="roi_2index_8php.html#1c12d30d2681081f13297744af1014a6">else</a> $<a class="el" href="classterrain.html">terrain</a> = 1          </td>
+          <td class="memname"><a class="el" href="roi_2index_8php.html#c3eceeb81f31105aa439f443d8f5edb8">else</a> $<a class="el" href="classterrain.html">terrain</a> = 1          </td>
         </tr>
       </table>
 </div>
@@ -126,7 +126,7 @@
 </div>
 </div><p>
 </div>
-<hr size="1"><address style="text-align: right;"><small>Généré le Fri May 8 12:45:36 2009 pour Starshine Online par&nbsp;
+<hr size="1"><address style="text-align: right;"><small>Généré le Thu Sep 3 23:11:18 2009 pour Starshine Online par&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.6 </small></address>
 </body>

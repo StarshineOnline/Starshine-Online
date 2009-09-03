@@ -1,3 +1,4 @@
-<area shape="rect" href="$classdb.html#8836c445031e3b5149b39fb814ea2490" title="db::read_assoc" alt="" coords="216,5,331,35">
-<area shape="rect" href="$base_8inc_8php.html#b0376d84c6454b4235c20bebe7ed434e" title="Renvoi la liste des ressource produite par ce terrain." alt="" coords="209,59,337,88">
-<area shape="rect" href="$base_8inc_8php.html#ff0f0cb3f9fda6833cb3e553262ea9b9" title="Renvoi le type de terrain, et le type de terrain affichable." alt="" coords="227,112,320,141">
+<area shape="rect" href="$classconstruction.html#d5e6586d34292ced0c6b7993e87344f0" title="Retourne la valeur de l&#39;attribut &#160;public." alt="" coords="209,5,348,35">
+<area shape="rect" href="$classconstruction.html#5db652dae4d2e89b138689d28d7cb078" title="Retourne la valeur de l&#39;attribut &#160;public." alt="" coords="209,59,348,88">
+<area shape="rect" href="$base_8inc_8php.html#b0376d84c6454b4235c20bebe7ed434e" title="Renvoi la liste des ressource produite par ce terrain." alt="" coords="215,112,343,141">
+<area shape="rect" href="$base_8inc_8php.html#ff0f0cb3f9fda6833cb3e553262ea9b9" title="Renvoi le type de terrain, et le type de terrain affichable." alt="" coords="232,165,325,195">

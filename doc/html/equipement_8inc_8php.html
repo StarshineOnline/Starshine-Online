@@ -21,11 +21,7 @@
 <h1>Référence du fichier equipement.inc.php</h1><table border="0" cellpadding="0" cellspacing="0">
 <tr><td></td></tr>
 <tr><td colspan="2"><br><h2>Fonctions</h2></td></tr>
-<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="equipement_8inc_8php.html#a2dc746737e17205338eaa6a9fb477a9">recherche_objet</a> ($joueur, $id_objet)</td></tr>
-
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="equipement_8inc_8php.html#cf0c54237b44b383e14a26576197fe9e">recherche_nb_objet</a> ($joueur, $id_objet)</td></tr>
-
-<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="equipement_8inc_8php.html#bd4c46ed0ff7d4a615ef33fd2076abed">supprime_objet</a> ($joueur, $id_objet, $nombre)</td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="equipement_8inc_8php.html#100ac4065e5a4228780ac85b43d1dda5">decompose_objet</a> ($objet)</td></tr>
 
@@ -41,11 +37,9 @@
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="equipement_8inc_8php.html#7819f0d89772aa351963ada3978870a5">equip_objet</a> ($objet, $joueur)</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="equipement_8inc_8php.html#e5b461c4af02282d38e99ef4d385ca1b">desequip</a> ($<a class="el" href="action__modif__t_8php.html#7aead736a07eaf25623ad7bfa1f0ee2d">type</a>, $joueur)</td></tr>
-
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="equipement_8inc_8php.html#febb5679b1dafc60c4299c0bc9b35ef2">recup_echange</a> ($id_echange)</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="equipement_8inc_8php.html#54c7a835fd3ae934ccf34aeb0efa7539">recup_echange_perso</a> ($joueur, $receveur)</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="equipement_8inc_8php.html#de35de4c0ada2360710eb3cc2f5cbc70">recup_echange_perso</a> ($joueur_id, $receveur)</td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="equipement_8inc_8php.html#9c8ebb28f4dae1fed9cc89390d0ab6ef">recup_tout_echange_perso</a> ($joueur_id, $tri= 'id_echange DESC')</td></tr>
 
@@ -90,15 +84,6 @@
 
 <p>
 
-<p>
-<div class="dynheader">
-Voici le graphe d'appel pour cette fonction :</div>
-<div class="dynsection">
-<p><center><img src="equipement_8inc_8php_d9e1714a49f4cb1043476151823c4482_cgraph.png" border="0" usemap="#equipement_8inc_8php_d9e1714a49f4cb1043476151823c4482_cgraph_map" alt=""></center>
-<map name="equipement_8inc_8php_d9e1714a49f4cb1043476151823c4482_cgraph_map">
-<area shape="rect" href="equipement_8inc_8php.html#bd4c46ed0ff7d4a615ef33fd2076abed" title="supprime_objet" alt="" coords="220,5,337,35"><area shape="rect" href="equipement_8inc_8php.html#a2dc746737e17205338eaa6a9fb477a9" title="recherche_objet" alt="" coords="387,5,507,35"><area shape="rect" href="equipement_8inc_8php.html#100ac4065e5a4228780ac85b43d1dda5" title="decompose_objet" alt="" coords="556,5,687,35"></map>
-</div>
-
 </div>
 </div><p>
 <a class="anchor" name="100ac4065e5a4228780ac85b43d1dda5"></a><!-- doxytag: member="equipement.inc.php::decompose_objet" ref="100ac4065e5a4228780ac85b43d1dda5" args="($objet)" -->
@@ -125,7 +110,7 @@ Voici le graphe d'appel pour cette fonction :</div>
 <div class="dynsection">
 <p><center><img src="equipement_8inc_8php_100ac4065e5a4228780ac85b43d1dda5_icgraph.png" border="0" usemap="#equipement_8inc_8php_100ac4065e5a4228780ac85b43d1dda5_icgraph_map" alt=""></center>
 <map name="equipement_8inc_8php_100ac4065e5a4228780ac85b43d1dda5_icgraph_map">
-<area shape="rect" href="equipement_8inc_8php.html#c3cae32fd35c5c3d572117d38671a59b" title="description_objet" alt="" coords="195,5,323,35"><area shape="rect" href="equipement_8inc_8php.html#7819f0d89772aa351963ada3978870a5" title="equip_objet" alt="" coords="413,5,507,35"><area shape="rect" href="equipement_8inc_8php.html#55119092ee02830738f54f2fc9f5fd7c" title="nom_objet" alt="" coords="215,321,303,351"><area shape="rect" href="base_8inc_8php.html#88fdf6e237810847b63a013e59daaddc" title="Fonction gérant l&#39;acquisition d&#39;un objet par un personnage." alt="" coords="211,215,307,244"><area shape="rect" href="equipement_8inc_8php.html#cf0c54237b44b383e14a26576197fe9e" title="recherche_nb_objet" alt="" coords="187,375,331,404"><area shape="rect" href="equipement_8inc_8php.html#a2dc746737e17205338eaa6a9fb477a9" title="recherche_objet" alt="" coords="199,268,319,297"><area shape="rect" href="base_8inc_8php.html#0c244be4e4bf4a7a5ac3d33caec4fe48" title="Fonction permettant de récupérer les infos des perso, et de les renvoyer." alt="" coords="213,109,304,139"><area shape="rect" href="equipement_8inc_8php.html#eb5d170da1e7ccdccc8ce037c705f8da" title="verif_echange_joueur" alt="" coords="383,163,537,192"><area shape="rect" href="quete_8inc_8php.html#855ac234e25aa8926c3bc594fdb0fdf4" title="fin_quete" alt="" coords="421,216,499,245"><area shape="rect" href="quete_8inc_8php.html#4bcfd3fff97b506404ded6239d5fb77d" title="verif_action" alt="" coords="625,215,719,244"><area shape="rect" href="quete_8inc_8php.html#414058c10339ae946e604bb594954b49" title="verif_inventaire" alt="" coords="615,268,729,297"><area shape="rect" href="equipement_8inc_8php.html#bd4c46ed0ff7d4a615ef33fd2076abed" title="supprime_objet" alt="" coords="401,321,519,351"><area shape="rect" href="equipement_8inc_8php.html#d9e1714a49f4cb1043476151823c4482" title="check_utilisation_objet" alt="" coords="591,321,753,351"><area shape="rect" href="security_8inc_8php.html#48c4fb90180f16ba2648898fc277710a" title="check_undead_players" alt="" coords="379,109,541,139"><area shape="rect" href="equipement_8inc_8php.html#ea0a0acf3578fc049036e57155c05d6d" title="echange_objet_ajout" alt="" coords="597,161,747,191"><area shape="rect" href="equipement_8inc_8php.html#29f8f46cb1bf45fdb0d94f39bade0524" title="verif_echange" alt="" coords="619,108,725,137"></map>
+<area shape="rect" href="equipement_8inc_8php.html#c3cae32fd35c5c3d572117d38671a59b" title="description_objet" alt="" coords="205,5,333,35"><area shape="rect" href="equipement_8inc_8php.html#7819f0d89772aa351963ada3978870a5" title="equip_objet" alt="" coords="435,404,528,433"><area shape="rect" href="classperso.html#972f3d33dd1ed1dc5d1d562ac351657a" title="perso::equip_objet" alt="" coords="201,112,337,141"><area shape="rect" href="classperso.html#94a27bdb23e16947e0414446d94ab840" title="perso::get_arme" alt="" coords="209,59,329,88"><area shape="rect" href="classperso.html#ce027c3842bba1a612944cdada4d0fca" title="perso::get_armure" alt="" coords="203,165,336,195"><area shape="rect" href="classperso.html#11dc1459070d174cf36fba8d62c2e5ec" title="perso::get_bouclier" alt="" coords="199,272,340,301"><area shape="rect" href="equipement_8inc_8php.html#55119092ee02830738f54f2fc9f5fd7c" title="nom_objet" alt="" coords="225,325,313,355"><area shape="rect" href="base_8inc_8php.html#88fdf6e237810847b63a013e59daaddc" title="Fonction gérant l&#39;acquisition d&#39;un objet par un personnage." alt="" coords="221,379,317,408"><area shape="rect" href="classinventaire.html#3edb07744682fbcebb14d59f7d62e851" title="inventaire::prend_objet" alt="" coords="188,432,351,461"><area shape="rect" href="equipement_8inc_8php.html#cf0c54237b44b383e14a26576197fe9e" title="recherche_nb_objet" alt="" coords="197,485,341,515"><area shape="rect" href="classperso.html#9b0363f23403c25deffd3cec7ccf39a3" title="perso::recherche_objet" alt="" coords="188,589,351,619"><area shape="rect" href="base_8inc_8php.html#0c244be4e4bf4a7a5ac3d33caec4fe48" title="Fonction permettant de récupérer les infos des perso, et de les renvoyer." alt="" coords="224,219,315,248"><area shape="rect" href="equipement_8inc_8php.html#eb5d170da1e7ccdccc8ce037c705f8da" title="verif_echange_joueur" alt="" coords="192,643,347,672"><area shape="rect" href="classperso.html#1fefedd46be90c5c841f0bda7b0cfc44" title="perso::get_arme_degat" alt="" coords="400,5,563,35"><area shape="rect" href="classperso.html#332861352cd3f63880184e4292b381d0" title="perso::get_arme_type" alt="" coords="404,59,559,88"><area shape="rect" href="classperso.html#5d0866e538cacdcd4876f31ebe181ba0" title="perso::get_distance_tir" alt="" coords="400,112,563,141"><area shape="rect" href="classperso.html#c245ff7485b3378c75b8bd5426ba6955" title="perso::get_pm" alt="" coords="427,219,536,248"><area shape="rect" href="classperso.html#3787e91d00a0d7c8d36db30ebc93e235" title="perso::get_pp" alt="" coords="428,165,535,195"><area shape="rect" href="classperso.html#fd7b0565371277e3e81e0df97586c585" title="perso::supprime_objet" alt="" coords="401,589,561,619"><area shape="rect" href="equipement_8inc_8php.html#ea0a0acf3578fc049036e57155c05d6d" title="echange_objet_ajout" alt="" coords="407,696,556,725"><area shape="rect" href="equipement_8inc_8php.html#29f8f46cb1bf45fdb0d94f39bade0524" title="verif_echange" alt="" coords="428,643,535,672"></map>
 </div>
 
 </div>
@@ -154,45 +139,7 @@ Voici le graphe d'appel pour cette fonction :</div>
 <div class="dynsection">
 <p><center><img src="equipement_8inc_8php_c3cae32fd35c5c3d572117d38671a59b_cgraph.png" border="0" usemap="#equipement_8inc_8php_c3cae32fd35c5c3d572117d38671a59b_cgraph_map" alt=""></center>
 <map name="equipement_8inc_8php_c3cae32fd35c5c3d572117d38671a59b_cgraph_map">
-<area shape="rect" href="equipement_8inc_8php.html#100ac4065e5a4228780ac85b43d1dda5" title="decompose_objet" alt="" coords="185,5,316,35"><area shape="rect" href="base_8inc_8php.html#b765e14b3f021d8f4f26d33e13a4a156" title="Formate les descriptions." alt="" coords="205,59,296,88"><area shape="rect" href="traduction_8inc_8php.html#422fcd90e4a8e80276c9df8ab8166dc7" title="pluriel" alt="" coords="220,112,281,141"><area shape="rect" href="traduction_8inc_8php.html#7ad5acd3288a040b3757c08d96081d31" title="traduit" alt="" coords="220,165,281,195"></map>
-</div>
-
-</div>
-</div><p>
-<a class="anchor" name="e5b461c4af02282d38e99ef4d385ca1b"></a><!-- doxytag: member="equipement.inc.php::desequip" ref="e5b461c4af02282d38e99ef4d385ca1b" args="($type, $joueur)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">desequip           </td>
-          <td>(</td>
-          <td class="paramtype">$&nbsp;</td>
-          <td class="paramname"> <em>type</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">$&nbsp;</td>
-          <td class="paramname"> <em>joueur</em></td><td>&nbsp;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td><td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>
-
-<p>
-<div class="dynheader">
-Voici le graphe d'appel pour cette fonction :</div>
-<div class="dynsection">
-<p><center><img src="equipement_8inc_8php_e5b461c4af02282d38e99ef4d385ca1b_icgraph.png" border="0" usemap="#equipement_8inc_8php_e5b461c4af02282d38e99ef4d385ca1b_icgraph_map" alt=""></center>
-<map name="equipement_8inc_8php_e5b461c4af02282d38e99ef4d385ca1b_icgraph_map">
-<area shape="rect" href="equipement_8inc_8php.html#7819f0d89772aa351963ada3978870a5" title="equip_objet" alt="" coords="128,5,216,32"></map>
+<area shape="rect" href="equipement_8inc_8php.html#100ac4065e5a4228780ac85b43d1dda5" title="decompose_objet" alt="" coords="185,5,316,35"><area shape="rect" href="base_8inc_8php.html#d2505a709175e73ba8054e8c965c2b98" title="Formate les descriptions." alt="" coords="205,59,296,88"><area shape="rect" href="traduction_8inc_8php.html#422fcd90e4a8e80276c9df8ab8166dc7" title="pluriel" alt="" coords="220,112,281,141"><area shape="rect" href="traduction_8inc_8php.html#7ad5acd3288a040b3757c08d96081d31" title="traduit" alt="" coords="220,165,281,195"></map>
 </div>
 
 </div>
@@ -242,7 +189,7 @@ Voici le graphe d'appel pour cette fonction :</div>
 <div class="dynsection">
 <p><center><img src="equipement_8inc_8php_ea0a0acf3578fc049036e57155c05d6d_cgraph.png" border="0" usemap="#equipement_8inc_8php_ea0a0acf3578fc049036e57155c05d6d_cgraph_map" alt=""></center>
 <map name="equipement_8inc_8php_ea0a0acf3578fc049036e57155c05d6d_cgraph_map">
-<area shape="rect" href="equipement_8inc_8php.html#eb5d170da1e7ccdccc8ce037c705f8da" title="verif_echange_joueur" alt="" coords="203,55,357,84"><area shape="rect" href="equipement_8inc_8php.html#100ac4065e5a4228780ac85b43d1dda5" title="decompose_objet" alt="" coords="609,29,740,59"><area shape="rect" href="equipement_8inc_8php.html#97116cb44273775bc417b31207bc8af1" title="echange_objet_suppr" alt="" coords="405,28,560,57"><area shape="rect" href="equipement_8inc_8php.html#febb5679b1dafc60c4299c0bc9b35ef2" title="recup_echange" alt="" coords="425,81,540,111"><area shape="rect" href="base_8inc_8php.html#0c244be4e4bf4a7a5ac3d33caec4fe48" title="Fonction permettant de récupérer les infos des perso, et de les renvoyer." alt="" coords="437,135,528,164"><area shape="rect" href="equipement_8inc_8php.html#6650a744ac48ff6b2775a241e8439a8f" title="enchant" alt="" coords="640,108,709,137"><area shape="rect" href="time_8inc_8php.html#a8bcd4bada1265a01208f21148f60c5e" title="Indique quel est le moment de la journée (matin, journée, soir ou nuit)." alt="" coords="623,161,727,191"><area shape="rect" href="time_8inc_8php.html#5dc4d8d9e53a8d1d65edcab9cd1dacb9" title="Renvoie l&#39;heure (uniquement) qu&#39;il est dans le jeu." alt="" coords="824,135,909,164"><area shape="rect" href="base_8inc_8php.html#c3a04c3bc3e42c54d90b1c14e9061214" title="Fonction permettant de récupérer les infos essentielles du perso (nom, race, classe..." alt="" coords="791,188,943,217"></map>
+<area shape="rect" href="equipement_8inc_8php.html#eb5d170da1e7ccdccc8ce037c705f8da" title="verif_echange_joueur" alt="" coords="203,59,357,88"><area shape="rect" href="equipement_8inc_8php.html#100ac4065e5a4228780ac85b43d1dda5" title="decompose_objet" alt="" coords="417,5,548,35"><area shape="rect" href="equipement_8inc_8php.html#97116cb44273775bc417b31207bc8af1" title="echange_objet_suppr" alt="" coords="405,59,560,88"><area shape="rect" href="equipement_8inc_8php.html#febb5679b1dafc60c4299c0bc9b35ef2" title="recup_echange" alt="" coords="425,112,540,141"></map>
 </div>
 
 </div>
@@ -309,7 +256,7 @@ Voici le graphe d'appel pour cette fonction :</div>
 <div class="dynsection">
 <p><center><img src="equipement_8inc_8php_6650a744ac48ff6b2775a241e8439a8f_icgraph.png" border="0" usemap="#equipement_8inc_8php_6650a744ac48ff6b2775a241e8439a8f_icgraph_map" alt=""></center>
 <map name="equipement_8inc_8php_6650a744ac48ff6b2775a241e8439a8f_icgraph_map">
-<area shape="rect" href="base_8inc_8php.html#0c244be4e4bf4a7a5ac3d33caec4fe48" title="Fonction permettant de récupérer les infos des perso, et de les renvoyer." alt="" coords="127,85,217,115"><area shape="rect" href="security_8inc_8php.html#48c4fb90180f16ba2648898fc277710a" title="check_undead_players" alt="" coords="267,5,429,35"><area shape="rect" href="equipement_8inc_8php.html#7819f0d89772aa351963ada3978870a5" title="equip_objet" alt="" coords="301,59,395,88"><area shape="rect" href="quete_8inc_8php.html#4bcfd3fff97b506404ded6239d5fb77d" title="verif_action" alt="" coords="301,112,395,141"><area shape="rect" href="equipement_8inc_8php.html#eb5d170da1e7ccdccc8ce037c705f8da" title="verif_echange_joueur" alt="" coords="271,165,425,195"><area shape="rect" href="equipement_8inc_8php.html#ea0a0acf3578fc049036e57155c05d6d" title="echange_objet_ajout" alt="" coords="477,139,627,168"><area shape="rect" href="equipement_8inc_8php.html#29f8f46cb1bf45fdb0d94f39bade0524" title="verif_echange" alt="" coords="499,192,605,221"></map>
+<area shape="rect" href="classperso.html#ce027c3842bba1a612944cdada4d0fca" title="perso::get_armure" alt="" coords="127,59,260,88"><area shape="rect" href="base_8inc_8php.html#0c244be4e4bf4a7a5ac3d33caec4fe48" title="Fonction permettant de récupérer les infos des perso, et de les renvoyer." alt="" coords="148,112,239,141"><area shape="rect" href="classperso.html#c245ff7485b3378c75b8bd5426ba6955" title="perso::get_pm" alt="" coords="311,5,420,35"><area shape="rect" href="classperso.html#3787e91d00a0d7c8d36db30ebc93e235" title="perso::get_pp" alt="" coords="312,59,419,88"><area shape="rect" href="equipement_8inc_8php.html#7819f0d89772aa351963ada3978870a5" title="equip_objet" alt="" coords="319,112,412,141"></map>
 </div>
 
 </div>
@@ -367,7 +314,7 @@ Voici le graphe d'appel pour cette fonction :</div>
 <div class="dynsection">
 <p><center><img src="equipement_8inc_8php_7819f0d89772aa351963ada3978870a5_cgraph.png" border="0" usemap="#equipement_8inc_8php_7819f0d89772aa351963ada3978870a5_cgraph_map" alt=""></center>
 <map name="equipement_8inc_8php_7819f0d89772aa351963ada3978870a5_cgraph_map">
-<area shape="rect" href="equipement_8inc_8php.html#100ac4065e5a4228780ac85b43d1dda5" title="decompose_objet" alt="" coords="292,5,423,35"><area shape="rect" href="equipement_8inc_8php.html#e5b461c4af02282d38e99ef4d385ca1b" title="desequip" alt="" coords="157,44,235,73"><area shape="rect" href="base_8inc_8php.html#0c244be4e4bf4a7a5ac3d33caec4fe48" title="Fonction permettant de récupérer les infos des perso, et de les renvoyer." alt="" coords="151,97,241,127"><area shape="rect" href="equipement_8inc_8php.html#6650a744ac48ff6b2775a241e8439a8f" title="enchant" alt="" coords="323,84,392,113"><area shape="rect" href="time_8inc_8php.html#a8bcd4bada1265a01208f21148f60c5e" title="Indique quel est le moment de la journée (matin, journée, soir ou nuit)." alt="" coords="305,137,409,167"><area shape="rect" href="time_8inc_8php.html#5dc4d8d9e53a8d1d65edcab9cd1dacb9" title="Renvoie l&#39;heure (uniquement) qu&#39;il est dans le jeu." alt="" coords="507,111,592,140"><area shape="rect" href="base_8inc_8php.html#c3a04c3bc3e42c54d90b1c14e9061214" title="Fonction permettant de récupérer les infos essentielles du perso (nom, race, classe..." alt="" coords="473,164,625,193"></map>
+<area shape="rect" href="equipement_8inc_8php.html#100ac4065e5a4228780ac85b43d1dda5" title="decompose_objet" alt="" coords="292,5,423,35"><area shape="rect" href="base_8inc_8php.html#0c244be4e4bf4a7a5ac3d33caec4fe48" title="Fonction permettant de récupérer les infos des perso, et de les renvoyer." alt="" coords="151,59,241,88"><area shape="rect" href="equipement_8inc_8php.html#6650a744ac48ff6b2775a241e8439a8f" title="enchant" alt="" coords="323,59,392,88"><area shape="rect" href="time_8inc_8php.html#a8bcd4bada1265a01208f21148f60c5e" title="Indique quel est le moment de la journée (matin, journée, soir ou nuit)." alt="" coords="305,112,409,141"><area shape="rect" href="time_8inc_8php.html#5dc4d8d9e53a8d1d65edcab9cd1dacb9" title="Renvoie l&#39;heure (uniquement) qu&#39;il est dans le jeu." alt="" coords="472,112,557,141"></map>
 </div>
 
 </div>
@@ -439,53 +386,6 @@ Voici le graphe d'appel pour cette fonction :</div>
 
 </div>
 </div><p>
-<a class="anchor" name="a2dc746737e17205338eaa6a9fb477a9"></a><!-- doxytag: member="equipement.inc.php::recherche_objet" ref="a2dc746737e17205338eaa6a9fb477a9" args="($joueur, $id_objet)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">recherche_objet           </td>
-          <td>(</td>
-          <td class="paramtype">$&nbsp;</td>
-          <td class="paramname"> <em>joueur</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">$&nbsp;</td>
-          <td class="paramname"> <em>id_objet</em></td><td>&nbsp;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td><td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>
-
-<p>
-<div class="dynheader">
-Voici le graphe d'appel pour cette fonction :</div>
-<div class="dynsection">
-<p><center><img src="equipement_8inc_8php_a2dc746737e17205338eaa6a9fb477a9_cgraph.png" border="0" usemap="#equipement_8inc_8php_a2dc746737e17205338eaa6a9fb477a9_cgraph_map" alt=""></center>
-<map name="equipement_8inc_8php_a2dc746737e17205338eaa6a9fb477a9_cgraph_map">
-<area shape="rect" href="equipement_8inc_8php.html#100ac4065e5a4228780ac85b43d1dda5" title="decompose_objet" alt="" coords="169,5,292,32"></map>
-</div>
-
-<p>
-<div class="dynheader">
-Voici le graphe d'appel pour cette fonction :</div>
-<div class="dynsection">
-<p><center><img src="equipement_8inc_8php_a2dc746737e17205338eaa6a9fb477a9_icgraph.png" border="0" usemap="#equipement_8inc_8php_a2dc746737e17205338eaa6a9fb477a9_icgraph_map" alt=""></center>
-<map name="equipement_8inc_8php_a2dc746737e17205338eaa6a9fb477a9_icgraph_map">
-<area shape="rect" href="equipement_8inc_8php.html#bd4c46ed0ff7d4a615ef33fd2076abed" title="supprime_objet" alt="" coords="175,5,292,35"><area shape="rect" href="quete_8inc_8php.html#414058c10339ae946e604bb594954b49" title="verif_inventaire" alt="" coords="176,59,291,88"><area shape="rect" href="equipement_8inc_8php.html#d9e1714a49f4cb1043476151823c4482" title="check_utilisation_objet" alt="" coords="343,5,505,35"></map>
-</div>
-
-</div>
-</div><p>
 <a class="anchor" name="3eb880661400bcd461f7b91416a9bc99"></a><!-- doxytag: member="equipement.inc.php::recompose_objet" ref="3eb880661400bcd461f7b91416a9bc99" args="($objet)" -->
 <div class="memitem">
 <div class="memproto">
@@ -535,7 +435,7 @@ Voici le graphe d'appel pour cette fonction :</div>
 
 </div>
 </div><p>
-<a class="anchor" name="54c7a835fd3ae934ccf34aeb0efa7539"></a><!-- doxytag: member="equipement.inc.php::recup_echange_perso" ref="54c7a835fd3ae934ccf34aeb0efa7539" args="($joueur, $receveur)" -->
+<a class="anchor" name="de35de4c0ada2360710eb3cc2f5cbc70"></a><!-- doxytag: member="equipement.inc.php::recup_echange_perso" ref="de35de4c0ada2360710eb3cc2f5cbc70" args="($joueur_id, $receveur)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -543,7 +443,7 @@ Voici le graphe d'appel pour cette fonction :</div>
           <td class="memname">recup_echange_perso           </td>
           <td>(</td>
           <td class="paramtype">$&nbsp;</td>
-          <td class="paramname"> <em>joueur</em>, </td>
+          <td class="paramname"> <em>joueur_id</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -622,59 +522,6 @@ Voici le graphe d'appel pour cette fonction :</div>
 
 </div>
 </div><p>
-<a class="anchor" name="bd4c46ed0ff7d4a615ef33fd2076abed"></a><!-- doxytag: member="equipement.inc.php::supprime_objet" ref="bd4c46ed0ff7d4a615ef33fd2076abed" args="($joueur, $id_objet, $nombre)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">supprime_objet           </td>
-          <td>(</td>
-          <td class="paramtype">$&nbsp;</td>
-          <td class="paramname"> <em>joueur</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">$&nbsp;</td>
-          <td class="paramname"> <em>id_objet</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">$&nbsp;</td>
-          <td class="paramname"> <em>nombre</em></td><td>&nbsp;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td><td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>
-
-<p>
-<div class="dynheader">
-Voici le graphe d'appel pour cette fonction :</div>
-<div class="dynsection">
-<p><center><img src="equipement_8inc_8php_bd4c46ed0ff7d4a615ef33fd2076abed_cgraph.png" border="0" usemap="#equipement_8inc_8php_bd4c46ed0ff7d4a615ef33fd2076abed_cgraph_map" alt=""></center>
-<map name="equipement_8inc_8php_bd4c46ed0ff7d4a615ef33fd2076abed_cgraph_map">
-<area shape="rect" href="equipement_8inc_8php.html#a2dc746737e17205338eaa6a9fb477a9" title="recherche_objet" alt="" coords="164,5,276,32"><area shape="rect" href="equipement_8inc_8php.html#100ac4065e5a4228780ac85b43d1dda5" title="decompose_objet" alt="" coords="327,5,449,32"></map>
-</div>
-
-<p>
-<div class="dynheader">
-Voici le graphe d'appel pour cette fonction :</div>
-<div class="dynsection">
-<p><center><img src="equipement_8inc_8php_bd4c46ed0ff7d4a615ef33fd2076abed_icgraph.png" border="0" usemap="#equipement_8inc_8php_bd4c46ed0ff7d4a615ef33fd2076abed_icgraph_map" alt=""></center>
-<map name="equipement_8inc_8php_bd4c46ed0ff7d4a615ef33fd2076abed_icgraph_map">
-<area shape="rect" href="equipement_8inc_8php.html#d9e1714a49f4cb1043476151823c4482" title="check_utilisation_objet" alt="" coords="175,5,337,35"></map>
-</div>
-
-</div>
-</div><p>
 <a class="anchor" name="29f8f46cb1bf45fdb0d94f39bade0524"></a><!-- doxytag: member="equipement.inc.php::verif_echange" ref="29f8f46cb1bf45fdb0d94f39bade0524" args="($id_echange, $id_j1, $id_j2)" -->
 <div class="memitem">
 <div class="memproto">
@@ -714,7 +561,7 @@ Voici le graphe d'appel pour cette fonction :</div>
 <div class="dynsection">
 <p><center><img src="equipement_8inc_8php_29f8f46cb1bf45fdb0d94f39bade0524_cgraph.png" border="0" usemap="#equipement_8inc_8php_29f8f46cb1bf45fdb0d94f39bade0524_cgraph_map" alt=""></center>
 <map name="equipement_8inc_8php_29f8f46cb1bf45fdb0d94f39bade0524_cgraph_map">
-<area shape="rect" href="equipement_8inc_8php.html#eb5d170da1e7ccdccc8ce037c705f8da" title="verif_echange_joueur" alt="" coords="163,55,317,84"><area shape="rect" href="equipement_8inc_8php.html#100ac4065e5a4228780ac85b43d1dda5" title="decompose_objet" alt="" coords="569,29,700,59"><area shape="rect" href="equipement_8inc_8php.html#97116cb44273775bc417b31207bc8af1" title="echange_objet_suppr" alt="" coords="365,28,520,57"><area shape="rect" href="equipement_8inc_8php.html#febb5679b1dafc60c4299c0bc9b35ef2" title="recup_echange" alt="" coords="385,81,500,111"><area shape="rect" href="base_8inc_8php.html#0c244be4e4bf4a7a5ac3d33caec4fe48" title="Fonction permettant de récupérer les infos des perso, et de les renvoyer." alt="" coords="397,135,488,164"><area shape="rect" href="equipement_8inc_8php.html#6650a744ac48ff6b2775a241e8439a8f" title="enchant" alt="" coords="600,108,669,137"><area shape="rect" href="time_8inc_8php.html#a8bcd4bada1265a01208f21148f60c5e" title="Indique quel est le moment de la journée (matin, journée, soir ou nuit)." alt="" coords="583,161,687,191"><area shape="rect" href="time_8inc_8php.html#5dc4d8d9e53a8d1d65edcab9cd1dacb9" title="Renvoie l&#39;heure (uniquement) qu&#39;il est dans le jeu." alt="" coords="784,135,869,164"><area shape="rect" href="base_8inc_8php.html#c3a04c3bc3e42c54d90b1c14e9061214" title="Fonction permettant de récupérer les infos essentielles du perso (nom, race, classe..." alt="" coords="751,188,903,217"></map>
+<area shape="rect" href="equipement_8inc_8php.html#eb5d170da1e7ccdccc8ce037c705f8da" title="verif_echange_joueur" alt="" coords="163,59,317,88"><area shape="rect" href="equipement_8inc_8php.html#100ac4065e5a4228780ac85b43d1dda5" title="decompose_objet" alt="" coords="377,5,508,35"><area shape="rect" href="equipement_8inc_8php.html#97116cb44273775bc417b31207bc8af1" title="echange_objet_suppr" alt="" coords="365,59,520,88"><area shape="rect" href="equipement_8inc_8php.html#febb5679b1dafc60c4299c0bc9b35ef2" title="recup_echange" alt="" coords="385,112,500,141"></map>
 </div>
 
 </div>
@@ -764,7 +611,7 @@ Voici le graphe d'appel pour cette fonction :</div>
 <div class="dynsection">
 <p><center><img src="equipement_8inc_8php_eb5d170da1e7ccdccc8ce037c705f8da_cgraph.png" border="0" usemap="#equipement_8inc_8php_eb5d170da1e7ccdccc8ce037c705f8da_cgraph_map" alt=""></center>
 <map name="equipement_8inc_8php_eb5d170da1e7ccdccc8ce037c705f8da_cgraph_map">
-<area shape="rect" href="equipement_8inc_8php.html#100ac4065e5a4228780ac85b43d1dda5" title="decompose_objet" alt="" coords="412,29,543,59"><area shape="rect" href="equipement_8inc_8php.html#97116cb44273775bc417b31207bc8af1" title="echange_objet_suppr" alt="" coords="208,28,363,57"><area shape="rect" href="equipement_8inc_8php.html#febb5679b1dafc60c4299c0bc9b35ef2" title="recup_echange" alt="" coords="228,81,343,111"><area shape="rect" href="base_8inc_8php.html#0c244be4e4bf4a7a5ac3d33caec4fe48" title="Fonction permettant de récupérer les infos des perso, et de les renvoyer." alt="" coords="240,135,331,164"><area shape="rect" href="equipement_8inc_8php.html#6650a744ac48ff6b2775a241e8439a8f" title="enchant" alt="" coords="443,108,512,137"><area shape="rect" href="time_8inc_8php.html#a8bcd4bada1265a01208f21148f60c5e" title="Indique quel est le moment de la journée (matin, journée, soir ou nuit)." alt="" coords="425,161,529,191"><area shape="rect" href="time_8inc_8php.html#5dc4d8d9e53a8d1d65edcab9cd1dacb9" title="Renvoie l&#39;heure (uniquement) qu&#39;il est dans le jeu." alt="" coords="627,135,712,164"><area shape="rect" href="base_8inc_8php.html#c3a04c3bc3e42c54d90b1c14e9061214" title="Fonction permettant de récupérer les infos essentielles du perso (nom, race, classe..." alt="" coords="593,188,745,217"></map>
+<area shape="rect" href="equipement_8inc_8php.html#100ac4065e5a4228780ac85b43d1dda5" title="decompose_objet" alt="" coords="220,5,351,35"><area shape="rect" href="equipement_8inc_8php.html#97116cb44273775bc417b31207bc8af1" title="echange_objet_suppr" alt="" coords="208,59,363,88"><area shape="rect" href="equipement_8inc_8php.html#febb5679b1dafc60c4299c0bc9b35ef2" title="recup_echange" alt="" coords="228,112,343,141"></map>
 </div>
 
 <p>
@@ -779,7 +626,7 @@ Voici le graphe d'appel pour cette fonction :</div>
 </div>
 </div><p>
 </div>
-<hr size="1"><address style="text-align: right;"><small>Généré le Fri May 8 12:45:35 2009 pour Starshine Online par&nbsp;
+<hr size="1"><address style="text-align: right;"><small>Généré le Thu Sep 3 23:11:14 2009 pour Starshine Online par&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.6 </small></address>
 </body>

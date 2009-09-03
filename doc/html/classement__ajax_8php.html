@@ -49,7 +49,7 @@
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classement__ajax_8php.html#8e63f193539729499be963995274755a">$tab_classement</a> ['melee']['nom'] = 'Les meilleurs combattants'</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classement__ajax_8php.html#491b2464912ed6529ceee60591e92a03">$tab_classement</a> ['melee']['champ'] = 'Mélée'</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classement__ajax_8php.html#491b2464912ed6529ceee60591e92a03">$tab_classement</a> ['melee']['champ'] = 'Mêlée'</td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classement__ajax_8php.html#152a9a63581ba4a79a376b9962a06e5c">$tab_classement</a> ['melee']['affiche'] = true</td></tr>
 
@@ -151,20 +151,20 @@
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classement__ajax_8php.html#ce37bfb78f18bef013f34d26974a6b84">$tab_classement</a> ['survie']['affiche_niveau'] = false</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classement__ajax_8php.html#beea5db7af13b1bdd70c46e49f512b26">$joueur</a> = recupperso($_SESSION['ID'])</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classement__ajax_8php.html#beea5db7af13b1bdd70c46e49f512b26">$joueur</a> = new <a class="el" href="classperso.html">perso</a>($_SESSION['ID'])</td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classement__ajax_8php.html#6f16db779ef3ccea921b277b5dc245d1">$j</a> = 26</td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classement__ajax_8php.html#9dc43420569704ab7dc8ccd844da8127">$ord</a> = strcmp($tri, 'architecture, forge, alchimie') ? $tri : 'ROUND(SQRT(alchimie + forge + architecture))'</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classement__ajax_8php.html#1ea21bf4b1af1ebda1b8c63b0e364ce9">$requete</a> = &quot;SELECT ID, nom, &quot;.sSQL($tri).&quot;, level, race, classe, cache_stat, cache_classe FROM perso WHERE statut = 'actif' AND &quot;.$where.&quot; ORDER BY &quot;.$ord.&quot; DESC, nom ASC LIMIT $inf, $j&quot;</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classement__ajax_8php.html#2cb0c11e1311e9cac869cce6a7194474">$tri</a> = strcmp($tri, 'architecture, forge, alchimie') ? $tri : 'ROUND(SQRT(alchimie + forge + architecture) * 10) as craft'</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classement__ajax_8php.html#1ea21bf4b1af1ebda1b8c63b0e364ce9">$requete</a> = &quot;SELECT id, nom, &quot;.sSQL($tri).&quot;, level, race, classe, cache_stat, cache_classe FROM <a class="el" href="classperso.html">perso</a> WHERE statut = 'actif' AND &quot;.$where.&quot; ORDER BY &quot;.$ord.&quot; DESC, nom ASC LIMIT $inf, $j&quot;</td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classement__ajax_8php.html#63a7a283ea5dee8af1e2d5a3435bf370">$req</a> = $<a class="el" href="classdb.html">db</a>-&gt;query($requete)</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classement__ajax_8php.html#2cb0c11e1311e9cac869cce6a7194474">$tri</a> = !strcmp('architecture, forge, alchimie', $tri) ? 'craft' : $tri</td></tr>
-
-<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="ville__bas_8php.html#e090d03ba817b92f272d5f9e1e3cf724">if</a>($tab_classement[$tri]['affiche']) <br>
-<a class="el" href="ville__bas_8php.html#e090d03ba817b92f272d5f9e1e3cf724">if</a>($tab_classement[$tri]['affiche_niveau'])&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classement__ajax_8php.html#b70ee7529112adea60f93b8a3c2fb4a2">$z</a> = 0</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="viewarene2_8php.html#898248c6f0772cc779881fffc50ca91a">if</a>($tab_classement[$tri]['affiche']) <br>
+<a class="el" href="viewarene2_8php.html#898248c6f0772cc779881fffc50ca91a">if</a>($tab_classement[$tri]['affiche_niveau'])&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classement__ajax_8php.html#b70ee7529112adea60f93b8a3c2fb4a2">$z</a> = 0</td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classement__ajax_8php.html#77b973d137fb33212e018b042df6e3e7">$y</a> = $inf</td></tr>
 
@@ -190,7 +190,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$joueur = recupperso($_SESSION['ID'])          </td>
+          <td class="memname">$joueur = new <a class="el" href="classperso.html">perso</a>($_SESSION['ID'])          </td>
         </tr>
       </table>
 </div>
@@ -235,7 +235,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$requete = &quot;SELECT ID, nom, &quot;.sSQL($tri).&quot;, level, race, classe, cache_stat, cache_classe FROM perso WHERE statut = 'actif' AND &quot;.$where.&quot; ORDER BY &quot;.$ord.&quot; DESC, nom ASC LIMIT $inf, $j&quot;          </td>
+          <td class="memname">$requete = &quot;SELECT id, nom, &quot;.sSQL($tri).&quot;, level, race, classe, cache_stat, cache_classe FROM <a class="el" href="classperso.html">perso</a> WHERE statut = 'actif' AND &quot;.$where.&quot; ORDER BY &quot;.$ord.&quot; DESC, nom ASC LIMIT $inf, $j&quot;          </td>
         </tr>
       </table>
 </div>
@@ -1000,7 +1000,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$tab_classement['melee']['champ'] = 'Mélée'          </td>
+          <td class="memname">$tab_classement['melee']['champ'] = 'Mêlée'          </td>
         </tr>
       </table>
 </div>
@@ -1225,7 +1225,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$tri = !strcmp('architecture, forge, alchimie', $tri) ? 'craft' : $tri          </td>
+          <td class="memname">$tri = strcmp($tri, 'architecture, forge, alchimie') ? $tri : 'ROUND(SQRT(alchimie + forge + architecture) * 10) as craft'          </td>
         </tr>
       </table>
 </div>
@@ -1255,7 +1255,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="ville__bas_8php.html#e090d03ba817b92f272d5f9e1e3cf724">if</a> ($tab_classement[$tri]['affiche']) <a class="el" href="ville__bas_8php.html#e090d03ba817b92f272d5f9e1e3cf724">if</a> ($tab_classement[$tri]['affiche_niveau']) $z = 0          </td>
+          <td class="memname"><a class="el" href="viewarene2_8php.html#898248c6f0772cc779881fffc50ca91a">if</a> ($tab_classement[$tri]['affiche']) <a class="el" href="viewarene2_8php.html#898248c6f0772cc779881fffc50ca91a">if</a> ($tab_classement[$tri]['affiche_niveau']) $z = 0          </td>
         </tr>
       </table>
 </div>
@@ -1266,7 +1266,7 @@
 </div>
 </div><p>
 </div>
-<hr size="1"><address style="text-align: right;"><small>Généré le Fri May 8 12:45:35 2009 pour Starshine Online par&nbsp;
+<hr size="1"><address style="text-align: right;"><small>Généré le Thu Sep 3 23:11:02 2009 pour Starshine Online par&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.6 </small></address>
 </body>

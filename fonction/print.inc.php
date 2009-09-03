@@ -205,6 +205,7 @@ function affiche_construction_visu($joueur, $W_row, $position="")
 }
 
 function print_montee_comp($nom, $valeur, $comp) {
+	global $Gtrad;
 	echo "&nbsp;&nbsp;<span class=\"augcomp\"><strong>$nom</strong> est maintenant à $valeur en $Gtrad[$comp]</span><br />";
 }
 

@@ -1,4 +1,8 @@
-<area shape="rect" href="$classart__critique.html" title="{art_critique\n|+ $critique\l|+ __construct()\l+ fin_round()\l+ calcul_mult_critique()\l}" alt="" coords="5,940,173,1065">
-<area shape="rect" href="$classmaitrise__bouclier.html" title="{maitrise_bouclier\n||+ __construct()\l+ calcul_bloquage()\l+ fin_round()\l+ factory()\l}" alt="" coords="197,931,341,1075">
-<area shape="rect" href="$classmaitrise__dague.html" title="{maitrise_dague\n||+ __construct()\l+ debut_round()\l+ fin_round()\l+ factory()\l}" alt="" coords="365,931,485,1075">
-<area shape="rect" href="$classeffect.html" title="Classe de base pour la gestion des effets en combat." alt="" coords="172,5,367,728">
+<area shape="rect" href="$classart__critique.html" title="{art_critique\n|+ $critique\l|+ __construct()\l+ fin_round()\l+ calcul_mult_critique()\l}" alt="" coords="5,1145,173,1271">
+<area shape="rect" href="$classmaitrise__arc.html" title="{maitrise_arc\n||+ __construct()\l+ debut_round()\l+ fin_round()\l+ factory()\l}" alt="" coords="197,1136,317,1280">
+<area shape="rect" href="$classmaitrise__bouclier.html" title="{maitrise_bouclier\n||+ __construct()\l+ calcul_bloquage()\l+ fin_round()\l+ factory()\l}" alt="" coords="341,1136,485,1280">
+<area shape="rect" href="$classmaitrise__critique.html" title="{maitrise_critique\n||+ __construct()\l+ calcul_critique()\l+ fin_round()\l+ factory()\l}" alt="" coords="509,1136,640,1280">
+<area shape="rect" href="$classmaitrise__dague.html" title="{maitrise_dague\n||+ __construct()\l+ debut_round()\l+ fin_round()\l+ factory()\l}" alt="" coords="664,1136,784,1280">
+<area shape="rect" href="$classmaitrise__epee.html" title="{maitrise_epee\n||+ __construct()\l+ debut_round()\l+ fin_round()\l+ factory()\l}" alt="" coords="808,1136,928,1280">
+<area shape="rect" href="$classmaitrise__hache.html" title="{maitrise_hache\n||+ __construct()\l+ debut_round()\l+ fin_round()\l+ factory()\l}" alt="" coords="952,1136,1072,1280">
+<area shape="rect" href="$classeffect.html" title="Classe de base pour la gestion des effets en combat." alt="" coords="471,5,679,933">

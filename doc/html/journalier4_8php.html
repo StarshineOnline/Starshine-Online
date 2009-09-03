@@ -31,11 +31,11 @@
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="journalier4_8php.html#90495ba52b30420e55824e8e1881b74a">$ressources</a> = array()</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="journalier4_8php.html#1ea21bf4b1af1ebda1b8c63b0e364ce9">$requete</a> = &quot;SELECT royaume.race as race, info, FLOOR(COUNT(*) / 10) as tot, COUNT(*) as tot_terrain FROM `<a class="el" href="classmap.html">map</a>` LEFT JOIN royaume ON map.royaume = royaume.id WHERE royaume &lt;&gt; 0 GROUP BY info, royaume&quot;</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="journalier4_8php.html#1ea21bf4b1af1ebda1b8c63b0e364ce9">$requete</a> = &quot;SELECT royaume.race as race, info, FLOOR(COUNT(*) / 10) as tot, COUNT(*) as tot_terrain FROM `<a class="el" href="classmap.html">map</a>` LEFT JOIN <a class="el" href="classroyaume.html">royaume</a> ON map.royaume = royaume.id WHERE <a class="el" href="classroyaume.html">royaume</a> &lt;&gt; 0 GROUP BY info, <a class="el" href="classroyaume.html">royaume</a>&quot;</td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="journalier4_8php.html#63a7a283ea5dee8af1e2d5a3435bf370">$req</a> = $<a class="el" href="classdb.html">db</a>-&gt;query($requete)</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="journalier4_8php.html#83018d9153d17d91fbcf3bc10158d34f">$i</a> = 0</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="viewarene2_8php.html#223fe6cddffc1406cf93390144f0f6f7">while</a>($row=$<a class="el" href="classdb.html">db</a>-&gt;read_assoc($req))&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="journalier4_8php.html#accaacd8ac3a8904245ce123c1ce6f98">$i</a> = 0</td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="journalier4_8php.html#a60b0284e0dfa2463495481cf11e3cf4">$key</a> = array_keys($ressources)</td></tr>
 
@@ -47,7 +47,7 @@ $key=&gt; $value)&nbsp;</td><td class="memItemRight" valign="bottom"><a class="e
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="journalier4_8php.html#a1d731aa570613e5bcff831bb10e9b87">$row</a> = $<a class="el" href="classdb.html">db</a>-&gt;read_assoc($req)</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="roi_2index_8php.html#1c12d30d2681081f13297744af1014a6">else</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="journalier4_8php.html#8c594029b72697a2f45805ee6f0f67e1">$food_necessaire</a> = 0</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="roi_2index_8php.html#c3eceeb81f31105aa439f443d8f5edb8">else</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="journalier4_8php.html#8c594029b72697a2f45805ee6f0f67e1">$food_necessaire</a> = 0</td></tr>
 
 </table>
 <hr><h2>Documentation des variables</h2>
@@ -116,7 +116,7 @@ $key=&gt; $value)&nbsp;</td><td class="memItemRight" valign="bottom"><a class="e
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="roi_2index_8php.html#1c12d30d2681081f13297744af1014a6">else</a> $food_necessaire = 0          </td>
+          <td class="memname"><a class="el" href="roi_2index_8php.html#c3eceeb81f31105aa439f443d8f5edb8">else</a> $food_necessaire = 0          </td>
         </tr>
       </table>
 </div>
@@ -141,12 +141,12 @@ $key=&gt; $value)&nbsp;</td><td class="memItemRight" valign="bottom"><a class="e
 
 </div>
 </div><p>
-<a class="anchor" name="83018d9153d17d91fbcf3bc10158d34f"></a><!-- doxytag: member="journalier4.php::$i" ref="83018d9153d17d91fbcf3bc10158d34f" args="" -->
+<a class="anchor" name="accaacd8ac3a8904245ce123c1ce6f98"></a><!-- doxytag: member="journalier4.php::$i" ref="accaacd8ac3a8904245ce123c1ce6f98" args="" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$i = 0          </td>
+          <td class="memname"><a class="el" href="viewarene2_8php.html#223fe6cddffc1406cf93390144f0f6f7">while</a> ($row=$<a class="el" href="classdb.html">db</a>-&gt;read_assoc($req)) $i = 0          </td>
         </tr>
       </table>
 </div>
@@ -206,7 +206,7 @@ $key=&gt; $value)&nbsp;</td><td class="memItemRight" valign="bottom"><a class="e
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$requete = &quot;SELECT royaume.race as race, info, FLOOR(COUNT(*) / 10) as tot, COUNT(*) as tot_terrain FROM `<a class="el" href="classmap.html">map</a>` LEFT JOIN royaume ON map.royaume = royaume.id WHERE royaume &lt;&gt; 0 GROUP BY info, royaume&quot;          </td>
+          <td class="memname">$requete = &quot;SELECT royaume.race as race, info, FLOOR(COUNT(*) / 10) as tot, COUNT(*) as tot_terrain FROM `<a class="el" href="classmap.html">map</a>` LEFT JOIN <a class="el" href="classroyaume.html">royaume</a> ON map.royaume = royaume.id WHERE <a class="el" href="classroyaume.html">royaume</a> &lt;&gt; 0 GROUP BY info, <a class="el" href="classroyaume.html">royaume</a>&quot;          </td>
         </tr>
       </table>
 </div>
@@ -247,7 +247,7 @@ $key=&gt; $value)&nbsp;</td><td class="memItemRight" valign="bottom"><a class="e
 </div>
 </div><p>
 </div>
-<hr size="1"><address style="text-align: right;"><small>Généré le Fri May 8 12:45:36 2009 pour Starshine Online par&nbsp;
+<hr size="1"><address style="text-align: right;"><small>Généré le Thu Sep 3 23:11:18 2009 pour Starshine Online par&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.6 </small></address>
 </body>

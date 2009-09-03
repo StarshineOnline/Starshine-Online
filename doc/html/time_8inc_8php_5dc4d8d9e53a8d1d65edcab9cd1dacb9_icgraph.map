@@ -1,10 +1,5 @@
 <area shape="rect" href="$time_8inc_8php.html#a8bcd4bada1265a01208f21148f60c5e" title="Indique quel est le moment de la journée (matin, journée, soir ou nuit)." alt="" coords="139,59,243,88">
-<area shape="rect" href="$attaque_8inc_8php.html#2791684fa0ff34996044148c598a2d64" title="attaque" alt="" coords="304,5,371,35">
-<area shape="rect" href="$action_8inc_8php.html#eac6f598954a3952c8dbbaed9d6ea370" title="Lance un sort lors d&#39;un combat." alt="" coords="295,59,380,88">
+<area shape="rect" href="$attaque_8inc_8php.html#42dab79689e776293edfdd6a1938f3ca" title="Ca serait bien si dans cette fonction on se limitait à appliquer les effets, lancer..." alt="" coords="304,5,371,35">
+<area shape="rect" href="$action_8inc_8php.html#de8488be9c61e8ae3aa296f8edac0d9f" title="Lance un sort lors d&#39;un combat." alt="" coords="295,59,380,88">
 <area shape="rect" href="$base_8inc_8php.html#0c244be4e4bf4a7a5ac3d33caec4fe48" title="Fonction permettant de récupérer les infos des perso, et de les renvoyer." alt="" coords="292,112,383,141">
-<area shape="rect" href="$security_8inc_8php.html#48c4fb90180f16ba2648898fc277710a" title="check_undead_players" alt="" coords="432,32,595,61">
-<area shape="rect" href="$equipement_8inc_8php.html#7819f0d89772aa351963ada3978870a5" title="equip_objet" alt="" coords="467,85,560,115">
-<area shape="rect" href="$quete_8inc_8php.html#4bcfd3fff97b506404ded6239d5fb77d" title="verif_action" alt="" coords="467,139,560,168">
-<area shape="rect" href="$equipement_8inc_8php.html#eb5d170da1e7ccdccc8ce037c705f8da" title="verif_echange_joueur" alt="" coords="436,192,591,221">
-<area shape="rect" href="$equipement_8inc_8php.html#ea0a0acf3578fc049036e57155c05d6d" title="echange_objet_ajout" alt="" coords="643,165,792,195">
-<area shape="rect" href="$equipement_8inc_8php.html#29f8f46cb1bf45fdb0d94f39bade0524" title="verif_echange" alt="" coords="664,219,771,248">
+<area shape="rect" href="$equipement_8inc_8php.html#7819f0d89772aa351963ada3978870a5" title="equip_objet" alt="" coords="433,112,527,141">

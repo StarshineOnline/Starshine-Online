@@ -25,14 +25,21 @@
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="jeu2_8php.html#6a598773e35ce39dbde3e34ec448a462">$interface_v2</a> = true</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="jeu2_8php.html#dc5bfc941d40883a35083b4167529fec">$_SESSION</a> ['position'] = convert_in_pos($joueur['x'], $joueur['y'])</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="jeu2_8php.html#dc5bfc941d40883a35083b4167529fec">$_SESSION</a> ['position'] = convert_in_pos($joueur-&gt;get_x(), $joueur-&gt;get_y())</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="ville__bas_8php.html#e090d03ba817b92f272d5f9e1e3cf724">if</a>(is_donjon($joueur['x'], <br>
-$joueur['y']))&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="jeu2_8php.html#5be84ee6ca5978531539b945d5f4f43a">else</a></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&lt;/div &gt;&lt; divid='communaute_menu'style='display:none;'&gt;<br>
+&lt; spanclass='menu'&gt;&lt; ahref=&quot;http:<br>
+&lt;/div&gt;&lt;divid='menu_deco'&gt;<br>
+&lt;spanclass=&quot;fermer&quot;title='Sedéconnecter'onclick=&quot;if(confirm('Voulezvousdéconnecter?')){document.location.href='index.php?deco=ok';};&quot;&gt; &amp;&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="jeu2_8php.html#ac7a754e2327c1847ed514ab47657c01">nbsp</a></td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="jeu2_8php.html#67109aba0fb28246abc057ae20a7b723">$case</a> = convert_in_pos($joueur['x'], $joueur['y'])</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&lt;/span &gt;&lt;/div &gt;&lt;/div &gt;&lt; divid='contenu_back'&gt;<br>
+&lt; divid=&quot;contenu_jeu&quot;&gt;&lt; divid=&quot;centre&quot;&gt;<br>
+ if(is_donjon($joueur-&gt;get_x(), <br>
+$joueur-&gt;get_y()))&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="jeu2_8php.html#47c864dda6f017be8e69fb1d4fd1b372">else</a></td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="roi_2index_8php.html#1c12d30d2681081f13297744af1014a6">else</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="jeu2_8php.html#36fae1c9b05198f0e26e1c22d4f2d2c6">$page_info</a> = 'informationcase.php'</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="jeu2_8php.html#67109aba0fb28246abc057ae20a7b723">$case</a> = convert_in_pos($joueur-&gt;get_x(), $joueur-&gt;get_y())</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="roi_2index_8php.html#c3eceeb81f31105aa439f443d8f5edb8">else</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="jeu2_8php.html#36fae1c9b05198f0e26e1c22d4f2d2c6">$page_info</a> = 'informationcase.php'</td></tr>
 
 </table>
 <hr><h2>Documentation des variables</h2>
@@ -41,7 +48,7 @@ $joueur['y']))&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" 
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$_SESSION['position'] = convert_in_pos($joueur['x'], $joueur['y'])          </td>
+          <td class="memname">$_SESSION['position'] = convert_in_pos($joueur-&gt;get_x(), $joueur-&gt;get_y())          </td>
         </tr>
       </table>
 </div>
@@ -56,7 +63,7 @@ $joueur['y']))&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" 
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$case = convert_in_pos($joueur['x'], $joueur['y'])          </td>
+          <td class="memname">$case = convert_in_pos($joueur-&gt;get_x(), $joueur-&gt;get_y())          </td>
         </tr>
       </table>
 </div>
@@ -101,7 +108,7 @@ $joueur['y']))&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" 
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="roi_2index_8php.html#1c12d30d2681081f13297744af1014a6">else</a> $page_info = 'informationcase.php'          </td>
+          <td class="memname"><a class="el" href="roi_2index_8php.html#c3eceeb81f31105aa439f443d8f5edb8">else</a> $page_info = 'informationcase.php'          </td>
         </tr>
       </table>
 </div>
@@ -111,12 +118,27 @@ $joueur['y']))&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" 
 
 </div>
 </div><p>
-<a class="anchor" name="5be84ee6ca5978531539b945d5f4f43a"></a><!-- doxytag: member="jeu2.php::else" ref="5be84ee6ca5978531539b945d5f4f43a" args="" -->
+<a class="anchor" name="47c864dda6f017be8e69fb1d4fd1b372"></a><!-- doxytag: member="jeu2.php::else" ref="47c864dda6f017be8e69fb1d4fd1b372" args="" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="ville__bas_8php.html#e090d03ba817b92f272d5f9e1e3cf724">if</a> (is_donjon($joueur['x'], $joueur['y'])) <a class="el" href="roi_2index_8php.html#1c12d30d2681081f13297744af1014a6">else</a>          </td>
+          <td class="memname">&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;divid='contenu_back'&gt;&lt;divid=&quot;contenu_jeu&quot;&gt;&lt;divid=&quot;centre&quot;&gt; if (is_donjon($joueur-&gt;get_x(), $joueur-&gt;get_y())) <a class="el" href="roi_2index_8php.html#c3eceeb81f31105aa439f443d8f5edb8">else</a>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="ac7a754e2327c1847ed514ab47657c01"></a><!-- doxytag: member="jeu2.php::nbsp" ref="ac7a754e2327c1847ed514ab47657c01" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">&lt;/div&gt;&lt;divid='communaute_menu'style='display:none;'&gt;&lt;spanclass='menu'&gt;&lt;ahref=&quot;http:&lt;/div&gt;&lt;divid='menu_deco'&gt;&lt;spanclass=&quot;fermer&quot;title='Sedéconnecter'onclick=&quot;if(confirm('Voulezvousdéconnecter?')){document.location.href='index.php?deco=ok';};&quot;&gt; &amp; nbsp          </td>
         </tr>
       </table>
 </div>
@@ -127,7 +149,7 @@ $joueur['y']))&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" 
 </div>
 </div><p>
 </div>
-<hr size="1"><address style="text-align: right;"><small>Généré le Fri May 8 12:45:36 2009 pour Starshine Online par&nbsp;
+<hr size="1"><address style="text-align: right;"><small>Généré le Thu Sep 3 23:11:18 2009 pour Starshine Online par&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.6 </small></address>
 </body>

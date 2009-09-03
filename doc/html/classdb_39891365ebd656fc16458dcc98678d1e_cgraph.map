@@ -1,5 +1,6 @@
-<area shape="rect" href="$classdb.html#d722af34cba17c7294fe08359bd0563c" title="Constructeur." alt="" coords="168,5,229,35">
-<area shape="rect" href="$classdb.html#bc2045ceaf9d92bc20fd388518535a9b" title="db::num_rows" alt="" coords="144,59,253,88">
-<area shape="rect" href="$classdb.html#aa415dd5b6a335d68c521e7e45330071" title="check_query" alt="" coords="133,112,264,141">
-<area shape="rect" href="$classdb.html#243ee94521cf6de348caf1cfb35851d9" title="db::unlock" alt="" coords="155,165,243,195">
-<area shape="rect" href="$classdb.html#72ff0f699c332046066be4ae10fe0eda" title="db::read_array" alt="" coords="313,165,423,195">
+<area shape="rect" href="$classdb.html#6f1bd77d46edff27d64b9c659081c76c" title="db::backtrace" alt="" coords="147,5,251,35">
+<area shape="rect" href="$classdb.html#d722af34cba17c7294fe08359bd0563c" title="Constructeur." alt="" coords="168,59,229,88">
+<area shape="rect" href="$classdb.html#bc2045ceaf9d92bc20fd388518535a9b" title="db::num_rows" alt="" coords="144,112,253,141">
+<area shape="rect" href="$classdb.html#aa415dd5b6a335d68c521e7e45330071" title="check_query" alt="" coords="133,165,264,195">
+<area shape="rect" href="$classdb.html#243ee94521cf6de348caf1cfb35851d9" title="db::unlock" alt="" coords="155,219,243,248">
+<area shape="rect" href="$classdb.html#72ff0f699c332046066be4ae10fe0eda" title="db::read_array" alt="" coords="313,219,423,248">

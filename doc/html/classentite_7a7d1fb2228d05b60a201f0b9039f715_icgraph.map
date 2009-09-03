@@ -1,0 +1,7 @@
+<area shape="rect" href="$classperso.html#13e4200dce0d9bbc71307d1372be59c0" title="perso::get_buff" alt="" coords="192,31,307,60">
+<area shape="rect" href="$classentite.html#ed45d22bb625cd6260cbd735c62b8ae6" title="entite::get_buff" alt="" coords="193,84,305,113">
+<area shape="rect" href="$classentite.html#c46be739e21731b8e7ab9c562b91f3ef" title="entite::is_competence" alt="" coords="172,137,327,167">
+<area shape="rect" href="$classperso.html#0718779365c785212342c0333280df9e" title="Permet de savoir si le joueur est sous le debuff nom." alt="" coords="377,163,497,192">
+<area shape="rect" href="$classperso.html#8794b2c42be879fe34bf7ede0b63a92b" title="perso::add_buff" alt="" coords="379,5,496,35">
+<area shape="rect" href="$classperso.html#a363118494c1a806dc710d643f06bb5e" title="perso::check_perso" alt="" coords="548,109,689,139">
+<area shape="rect" href="$classperso.html#237ae0e2d3fe5a66260a2a693d0daa42" title="Permet de savoir si le joueur est sous le buff nom." alt="" coords="384,109,491,139">

@@ -29,7 +29,9 @@
 <a href="classinventaire-members.html">Liste de tous les membres</a><table border="0" cellpadding="0" cellspacing="0">
 <tr><td></td></tr>
 <tr><td colspan="2"><br><h2>Fonctions membres publiques</h2></td></tr>
-<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classinventaire.html#a64c0e9847060af1e14e8c2c34e89720">inventaire</a> ($res=0)</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classinventaire.html#2a4edf9eaee627e5359f3f06bf6c685e">__construct</a> ($<a class="el" href="classinventaire.html">inventaire</a>, $inventaire_slot)</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classinventaire.html#3edb07744682fbcebb14d59f7d62e851">prend_objet</a> ($id_objet)</td></tr>
 
 <tr><td colspan="2"><br><h2>Attributs publics</h2></td></tr>
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classinventaire.html#53ce8e8d12839e67a14eb38b0469df51">$cape</a></td></tr>
@@ -50,17 +52,51 @@
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classinventaire.html#a4f25861a175d646acfc4542346dd72b">$chaussure</a></td></tr>
 
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classinventaire.html#8b1acc2dd6819cb01868414a9df476cc">$liste</a></td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classinventaire.html#e59dda2aedd3f17cafebf93cca9faf60">$slot_liste</a></td></tr>
+
 </table>
-<hr><h2>Documentation des fonctions membres</h2>
-<a class="anchor" name="a64c0e9847060af1e14e8c2c34e89720"></a><!-- doxytag: member="inventaire::inventaire" ref="a64c0e9847060af1e14e8c2c34e89720" args="($res=0)" -->
+<hr><h2>Documentation des constructeurs et destructeur</h2>
+<a class="anchor" name="2a4edf9eaee627e5359f3f06bf6c685e"></a><!-- doxytag: member="inventaire::__construct" ref="2a4edf9eaee627e5359f3f06bf6c685e" args="($inventaire, $inventaire_slot)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">inventaire::inventaire           </td>
+          <td class="memname">inventaire::__construct           </td>
           <td>(</td>
           <td class="paramtype">$&nbsp;</td>
-          <td class="paramname"> <em>res</em> = <code>0</code>          </td>
+          <td class="paramname"> <em>inventaire</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">$&nbsp;</td>
+          <td class="paramname"> <em>inventaire_slot</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<hr><h2>Documentation des fonctions membres</h2>
+<a class="anchor" name="3edb07744682fbcebb14d59f7d62e851"></a><!-- doxytag: member="inventaire::prend_objet" ref="3edb07744682fbcebb14d59f7d62e851" args="($id_objet)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">inventaire::prend_objet           </td>
+          <td>(</td>
+          <td class="paramtype">$&nbsp;</td>
+          <td class="paramname"> <em>id_objet</em>          </td>
           <td>&nbsp;)&nbsp;</td>
           <td></td>
         </tr>
@@ -69,6 +105,15 @@
 <div class="memdoc">
 
 <p>
+
+<p>
+<div class="dynheader">
+Voici le graphe d'appel pour cette fonction :</div>
+<div class="dynsection">
+<p><center><img src="classinventaire_3edb07744682fbcebb14d59f7d62e851_cgraph.png" border="0" usemap="#classinventaire_3edb07744682fbcebb14d59f7d62e851_cgraph_map" alt=""></center>
+<map name="classinventaire_3edb07744682fbcebb14d59f7d62e851_cgraph_map">
+<area shape="rect" href="equipement_8inc_8php.html#100ac4065e5a4228780ac85b43d1dda5" title="decompose_objet" alt="" coords="220,5,351,35"></map>
+</div>
 
 </div>
 </div><p>
@@ -208,8 +253,38 @@
 
 </div>
 </div><p>
+<a class="anchor" name="8b1acc2dd6819cb01868414a9df476cc"></a><!-- doxytag: member="inventaire::$liste" ref="8b1acc2dd6819cb01868414a9df476cc" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">inventaire::$liste          </td>
+        </tr>
+      </table>
 </div>
-<hr size="1"><address style="text-align: right;"><small>Généré le Fri May 8 12:45:39 2009 pour Starshine Online par&nbsp;
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="e59dda2aedd3f17cafebf93cca9faf60"></a><!-- doxytag: member="inventaire::$slot_liste" ref="e59dda2aedd3f17cafebf93cca9faf60" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">inventaire::$slot_liste          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+</div>
+<hr size="1"><address style="text-align: right;"><small>Généré le Thu Sep 3 23:12:20 2009 pour Starshine Online par&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.6 </small></address>
 </body>

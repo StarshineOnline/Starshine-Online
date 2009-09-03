@@ -21,11 +21,11 @@
 <h1>Référence du fichier personnage.php</h1><table border="0" cellpadding="0" cellspacing="0">
 <tr><td></td></tr>
 <tr><td colspan="2"><br><h2>Variables</h2></td></tr>
-<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="personnage_8php.html#beea5db7af13b1bdd70c46e49f512b26">$joueur</a> = recupperso($joueur_id)</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="personnage_8php.html#beea5db7af13b1bdd70c46e49f512b26">$joueur</a> = new <a class="el" href="classperso.html">perso</a>($joueur_id)</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="personnage_8php.html#72808136e2fb9a7c39639e85a36c4d75">$de_degat</a> = de_degat($joueur['force'], 0)</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="personnage_8php.html#72808136e2fb9a7c39639e85a36c4d75">$de_degat</a> = de_degat($joueur-&gt;get_forcex(), 0)</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="personnage_8php.html#3f0afd3703fc38f54ec3736c7f1863d0">$de_degat_arme</a> = de_degat($joueur['force'], $joueur['arme_degat'])</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="personnage_8php.html#3f0afd3703fc38f54ec3736c7f1863d0">$de_degat_arme</a> = de_degat($joueur-&gt;get_forcex(), $joueur-&gt;get_arme_degat())</td></tr>
 
 </table>
 <hr><h2>Documentation des variables</h2>
@@ -34,7 +34,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$de_degat = de_degat($joueur['force'], 0)          </td>
+          <td class="memname">$de_degat = de_degat($joueur-&gt;get_forcex(), 0)          </td>
         </tr>
       </table>
 </div>
@@ -49,7 +49,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$de_degat_arme = de_degat($joueur['force'], $joueur['arme_degat'])          </td>
+          <td class="memname">$de_degat_arme = de_degat($joueur-&gt;get_forcex(), $joueur-&gt;get_arme_degat())          </td>
         </tr>
       </table>
 </div>
@@ -64,7 +64,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$joueur = recupperso($joueur_id)          </td>
+          <td class="memname">$joueur = new <a class="el" href="classperso.html">perso</a>($joueur_id)          </td>
         </tr>
       </table>
 </div>
@@ -75,7 +75,7 @@
 </div>
 </div><p>
 </div>
-<hr size="1"><address style="text-align: right;"><small>Généré le Fri May 8 12:45:36 2009 pour Starshine Online par&nbsp;
+<hr size="1"><address style="text-align: right;"><small>Généré le Thu Sep 3 23:11:18 2009 pour Starshine Online par&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.6 </small></address>
 </body>

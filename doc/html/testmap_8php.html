@@ -21,79 +21,20 @@
 <h1>Référence du fichier testmap.php</h1><table border="0" cellpadding="0" cellspacing="0">
 <tr><td></td></tr>
 <tr><td colspan="2"><br><h2>Variables</h2></td></tr>
-<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="testmap_8php.html#8c6df57bd38c86e700ec4ab36ad8a30a">$coord</a> ['x'] = '1'</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="testmap_8php.html#6a598773e35ce39dbde3e34ec448a462">$interface_v2</a> = true</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="testmap_8php.html#fc13a2edebe36034d9fc149f1b9ee90c">$coord</a> ['y'] = '1'</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="testmap_8php.html#cdcfcd6e65900bdadd894106750cf520">$map</a> = new <a class="el" href="classmap.html">map</a>(95, 95, 95)</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="testmap_8php.html#ab44fe5ef659458634f0527cf45c59d2">$coord_joueur</a> ['y'] = '50'</td></tr>
-
-<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="testmap_8php.html#14fc638b9ca3dfd7f353acb3251f1e4e">$coord_joueur</a> ['x'] = '50'</td></tr>
-
-<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="testmap_8php.html#4b2a4547bbd9a45f163adccfe8b45980">$xmin</a> = 1</td></tr>
-
-<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="testmap_8php.html#6ada433d5a1d814c4c4ad7c29aaf88a7">$xmax</a> = 190</td></tr>
-
-<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="testmap_8php.html#7e30a161a1e1199d07c180857926eaa3">$ymin</a> = 1</td></tr>
-
-<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="testmap_8php.html#1443f20f1ed7a3b93e67f797e4916e4d">$ymax</a> = 190</td></tr>
-
-<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="testmap_8php.html#1ea21bf4b1af1ebda1b8c63b0e364ce9">$requete</a> = 'SELECT * FROM <a class="el" href="classmap.html">map</a> WHERE (((FLOOR(ID / '.$G_ligne.') &gt;= '.$ymin.') AND (FLOOR(ID / '.$G_ligne.') &lt;= '.$ymax.')) AND (((ID - (FLOOR(ID / '.$G_colonne.') * 1000)) &gt;= '.$xmin.') AND ((ID - (FLOOR(ID / '.$G_colonne.') * 1000)) &lt;= '.$xmax.'))) ORDER BY ID'</td></tr>
-
-<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="testmap_8php.html#63a7a283ea5dee8af1e2d5a3435bf370">$req</a> = $<a class="el" href="classdb.html">db</a>-&gt;query($requete)</td></tr>
-
-<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="testmap_8php.html#85b4e72383deba9cf0f66a204bc99eaa">$requete_joueurs</a> = 'SELECT ID, nom, level, race, x, y, classe, hp FROM perso WHERE statut = \'actif\' ORDER BY y ASC, x ASC, dernier_connexion DESC'</td></tr>
-
-<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="testmap_8php.html#a3839e976cc3dfcf97eb2d8bd3df4e13">$req_joueurs</a> = $<a class="el" href="classdb.html">db</a>-&gt;query($requete_joueurs)</td></tr>
-
-<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="testmap_8php.html#b43036f32f48ca3bf16dee751a027a46">$requete_drapeaux</a> = 'SELECT x, y, hp, <a class="el" href="action__modif__t_8php.html#7aead736a07eaf25623ad7bfa1f0ee2d">type</a>, nom, royaume, debut_placement, fin_placement FROM <a class="el" href="classplacement.html">placement</a> WHERE (((x &gt;= '.$xmin.') AND (x &lt;= '.$xmax.')) AND ((y &gt;= '.$ymin.') AND (y &lt;= '.$ymax.'))) ORDER BY y ASC, x ASC'</td></tr>
-
-<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="testmap_8php.html#962800dbb02051a261027cae77d70d84">$req_drapeaux</a> = $<a class="el" href="classdb.html">db</a>-&gt;query($requete_drapeaux)</td></tr>
-
-<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="testmap_8php.html#253ece263f13471e6888f9e6e1425e0b">$requete_batiment</a> = 'SELECT x, y, royaume, nom, id_batiment, image, hp FROM <a class="el" href="classconstruction.html">construction</a> WHERE (((x &gt;= '.$xmin.') AND (x &lt;= '.$xmax.')) AND ((y &gt;= '.$ymin.') AND (y &lt;= '.$ymax.'))) ORDER BY y ASC, x ASC'</td></tr>
-
-<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="testmap_8php.html#9b89e7fb0f356c509a37403acc5f7db1">$req_batiment</a> = $<a class="el" href="classdb.html">db</a>-&gt;query($requete_batiment)</td></tr>
-
-<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="viewarene2_8php.html#9cbfe95d61703a84674cecf0f4ff8370">for</a>($i=$xmin;$i&lt;=$xmax;$i++)&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="testmap_8php.html#12eae118bc9476e8e14753d89bd400b1">$x</a> = 0</td></tr>
-
-<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="testmap_8php.html#77b973d137fb33212e018b042df6e3e7">$y</a> = 0</td></tr>
-
-<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="viewarene2_8php.html#223fe6cddffc1406cf93390144f0f6f7">while</a>($row_joueurs=$<a class="el" href="classdb.html">db</a>-&gt;<br>
-read_assoc($req_joueurs)) <br>
-<a class="el" href="viewarene2_8php.html#223fe6cddffc1406cf93390144f0f6f7">while</a>($row_drapeaux=$<a class="el" href="classdb.html">db</a>-&gt;<br>
-read_assoc($req_drapeaux)) <br>
-<a class="el" href="viewarene2_8php.html#223fe6cddffc1406cf93390144f0f6f7">while</a>($row_batiment=$<a class="el" href="classdb.html">db</a>-&gt;<br>
-read_assoc($req_batiment))&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="testmap_8php.html#7bdb1f2fb6798ff8f1606750050aeb70">$index</a> = 0</td></tr>
-
-<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="testmap_8php.html#671b18d42d08e58617f97202295ebd5e">$index_pnj</a> = 0</td></tr>
-
-<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="testmap_8php.html#87e0802a923e3726cf7ca949e4a8aa65">$index_m</a> = 0</td></tr>
-
-<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="testmap_8php.html#50e99b67081b0abec903a816c27faab7">$index_d</a> = 0</td></tr>
-
-<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="testmap_8php.html#c09023f20a45aa2c0da83454f5ad354c">$index_b</a> = 0</td></tr>
-
-<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="testmap_8php.html#6e745d40e9df8b5cc8a1761b88713dc5">$x_joueurs</a> = $row_j[$index]['x']</td></tr>
-
-<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="testmap_8php.html#4e9f7fae219ddc10f7fdb429bcb33e40">$y_joueurs</a> = $row_j[$index]['y']</td></tr>
-
-<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="testmap_8php.html#bd35a930ffabc639f7749c396495f774">$x_drapeaux</a> = $row_d[$index]['x']</td></tr>
-
-<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="testmap_8php.html#c8c1bff92e5c34404a98b6d76784df4b">$y_drapeaux</a> = $row_d[$index]['y']</td></tr>
-
-<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="testmap_8php.html#e96a98898f6c7002a260bd08583f4457">$x_batiment</a> = $row_b[$index]['x']</td></tr>
-
-<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="testmap_8php.html#dbd76b08838b8a6bf27e19fa9f3ce2a5">$y_batiment</a> = $row_b[$index]['y']</td></tr>
-
-<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="testmap_8php.html#4820d696737bb1b850dbb7bd14c59a90">$roy</a> = 0</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">$<a class="el" href="classmap.html">map</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="testmap_8php.html#e153758c34eba4b92a77690a8eb74438">onclick_status</a> = false</td></tr>
 
 </table>
 <hr><h2>Documentation des variables</h2>
-<a class="anchor" name="fc13a2edebe36034d9fc149f1b9ee90c"></a><!-- doxytag: member="testmap.php::$coord" ref="fc13a2edebe36034d9fc149f1b9ee90c" args="['y']" -->
+<a class="anchor" name="6a598773e35ce39dbde3e34ec448a462"></a><!-- doxytag: member="testmap.php::$interface_v2" ref="6a598773e35ce39dbde3e34ec448a462" args="" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$coord['y'] = '1'          </td>
+          <td class="memname">$interface_v2 = true          </td>
         </tr>
       </table>
 </div>
@@ -103,12 +44,12 @@ read_assoc($req_batiment))&nbsp;</td><td class="memItemRight" valign="bottom"><a
 
 </div>
 </div><p>
-<a class="anchor" name="8c6df57bd38c86e700ec4ab36ad8a30a"></a><!-- doxytag: member="testmap.php::$coord" ref="8c6df57bd38c86e700ec4ab36ad8a30a" args="['x']" -->
+<a class="anchor" name="cdcfcd6e65900bdadd894106750cf520"></a><!-- doxytag: member="testmap.php::$map" ref="cdcfcd6e65900bdadd894106750cf520" args="" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$coord['x'] = '1'          </td>
+          <td class="memname">$<a class="el" href="classmap.html">map</a> = new <a class="el" href="classmap.html">map</a>(95, 95, 95)          </td>
         </tr>
       </table>
 </div>
@@ -118,417 +59,12 @@ read_assoc($req_batiment))&nbsp;</td><td class="memItemRight" valign="bottom"><a
 
 </div>
 </div><p>
-<a class="anchor" name="14fc638b9ca3dfd7f353acb3251f1e4e"></a><!-- doxytag: member="testmap.php::$coord_joueur" ref="14fc638b9ca3dfd7f353acb3251f1e4e" args="['x']" -->
+<a class="anchor" name="e153758c34eba4b92a77690a8eb74438"></a><!-- doxytag: member="testmap.php::onclick_status" ref="e153758c34eba4b92a77690a8eb74438" args="" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$coord_joueur['x'] = '50'          </td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>
-
-</div>
-</div><p>
-<a class="anchor" name="ab44fe5ef659458634f0527cf45c59d2"></a><!-- doxytag: member="testmap.php::$coord_joueur" ref="ab44fe5ef659458634f0527cf45c59d2" args="['y']" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">$coord_joueur['y'] = '50'          </td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>
-
-</div>
-</div><p>
-<a class="anchor" name="7bdb1f2fb6798ff8f1606750050aeb70"></a><!-- doxytag: member="testmap.php::$index" ref="7bdb1f2fb6798ff8f1606750050aeb70" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="viewarene2_8php.html#223fe6cddffc1406cf93390144f0f6f7">while</a> ($row_joueurs=$<a class="el" href="classdb.html">db</a>-&gt;read_assoc($req_joueurs)) <a class="el" href="viewarene2_8php.html#223fe6cddffc1406cf93390144f0f6f7">while</a> ($row_drapeaux=$<a class="el" href="classdb.html">db</a>-&gt;read_assoc($req_drapeaux)) <a class="el" href="viewarene2_8php.html#223fe6cddffc1406cf93390144f0f6f7">while</a> ($row_batiment=$<a class="el" href="classdb.html">db</a>-&gt;read_assoc($req_batiment)) $index = 0          </td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>
-
-</div>
-</div><p>
-<a class="anchor" name="c09023f20a45aa2c0da83454f5ad354c"></a><!-- doxytag: member="testmap.php::$index_b" ref="c09023f20a45aa2c0da83454f5ad354c" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">$index_b = 0          </td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>
-
-</div>
-</div><p>
-<a class="anchor" name="50e99b67081b0abec903a816c27faab7"></a><!-- doxytag: member="testmap.php::$index_d" ref="50e99b67081b0abec903a816c27faab7" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">$index_d = 0          </td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>
-
-</div>
-</div><p>
-<a class="anchor" name="87e0802a923e3726cf7ca949e4a8aa65"></a><!-- doxytag: member="testmap.php::$index_m" ref="87e0802a923e3726cf7ca949e4a8aa65" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">$index_m = 0          </td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>
-
-</div>
-</div><p>
-<a class="anchor" name="671b18d42d08e58617f97202295ebd5e"></a><!-- doxytag: member="testmap.php::$index_pnj" ref="671b18d42d08e58617f97202295ebd5e" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">$index_pnj = 0          </td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>
-
-</div>
-</div><p>
-<a class="anchor" name="63a7a283ea5dee8af1e2d5a3435bf370"></a><!-- doxytag: member="testmap.php::$req" ref="63a7a283ea5dee8af1e2d5a3435bf370" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">$req = $<a class="el" href="classdb.html">db</a>-&gt;query($requete)          </td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>
-
-</div>
-</div><p>
-<a class="anchor" name="9b89e7fb0f356c509a37403acc5f7db1"></a><!-- doxytag: member="testmap.php::$req_batiment" ref="9b89e7fb0f356c509a37403acc5f7db1" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">$req_batiment = $<a class="el" href="classdb.html">db</a>-&gt;query($requete_batiment)          </td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>
-
-</div>
-</div><p>
-<a class="anchor" name="962800dbb02051a261027cae77d70d84"></a><!-- doxytag: member="testmap.php::$req_drapeaux" ref="962800dbb02051a261027cae77d70d84" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">$req_drapeaux = $<a class="el" href="classdb.html">db</a>-&gt;query($requete_drapeaux)          </td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>
-
-</div>
-</div><p>
-<a class="anchor" name="a3839e976cc3dfcf97eb2d8bd3df4e13"></a><!-- doxytag: member="testmap.php::$req_joueurs" ref="a3839e976cc3dfcf97eb2d8bd3df4e13" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">$req_joueurs = $<a class="el" href="classdb.html">db</a>-&gt;query($requete_joueurs)          </td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>
-
-</div>
-</div><p>
-<a class="anchor" name="1ea21bf4b1af1ebda1b8c63b0e364ce9"></a><!-- doxytag: member="testmap.php::$requete" ref="1ea21bf4b1af1ebda1b8c63b0e364ce9" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">$requete = 'SELECT * FROM <a class="el" href="classmap.html">map</a> WHERE (((FLOOR(ID / '.$G_ligne.') &gt;= '.$ymin.') AND (FLOOR(ID / '.$G_ligne.') &lt;= '.$ymax.')) AND (((ID - (FLOOR(ID / '.$G_colonne.') * 1000)) &gt;= '.$xmin.') AND ((ID - (FLOOR(ID / '.$G_colonne.') * 1000)) &lt;= '.$xmax.'))) ORDER BY ID'          </td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>
-
-</div>
-</div><p>
-<a class="anchor" name="253ece263f13471e6888f9e6e1425e0b"></a><!-- doxytag: member="testmap.php::$requete_batiment" ref="253ece263f13471e6888f9e6e1425e0b" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">$requete_batiment = 'SELECT x, y, royaume, nom, id_batiment, image, hp FROM <a class="el" href="classconstruction.html">construction</a> WHERE (((x &gt;= '.$xmin.') AND (x &lt;= '.$xmax.')) AND ((y &gt;= '.$ymin.') AND (y &lt;= '.$ymax.'))) ORDER BY y ASC, x ASC'          </td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>
-
-</div>
-</div><p>
-<a class="anchor" name="b43036f32f48ca3bf16dee751a027a46"></a><!-- doxytag: member="testmap.php::$requete_drapeaux" ref="b43036f32f48ca3bf16dee751a027a46" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">$requete_drapeaux = 'SELECT x, y, hp, <a class="el" href="action__modif__t_8php.html#7aead736a07eaf25623ad7bfa1f0ee2d">type</a>, nom, royaume, debut_placement, fin_placement FROM <a class="el" href="classplacement.html">placement</a> WHERE (((x &gt;= '.$xmin.') AND (x &lt;= '.$xmax.')) AND ((y &gt;= '.$ymin.') AND (y &lt;= '.$ymax.'))) ORDER BY y ASC, x ASC'          </td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>
-
-</div>
-</div><p>
-<a class="anchor" name="85b4e72383deba9cf0f66a204bc99eaa"></a><!-- doxytag: member="testmap.php::$requete_joueurs" ref="85b4e72383deba9cf0f66a204bc99eaa" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">$requete_joueurs = 'SELECT ID, nom, level, race, x, y, classe, hp FROM perso WHERE statut = \'actif\' ORDER BY y ASC, x ASC, dernier_connexion DESC'          </td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>
-
-</div>
-</div><p>
-<a class="anchor" name="4820d696737bb1b850dbb7bd14c59a90"></a><!-- doxytag: member="testmap.php::$roy" ref="4820d696737bb1b850dbb7bd14c59a90" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">$roy = 0          </td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>
-
-</div>
-</div><p>
-<a class="anchor" name="12eae118bc9476e8e14753d89bd400b1"></a><!-- doxytag: member="testmap.php::$x" ref="12eae118bc9476e8e14753d89bd400b1" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="viewarene2_8php.html#9cbfe95d61703a84674cecf0f4ff8370">for</a> ($i=$xmin;$i&lt;=$xmax;$i++) $x = 0          </td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>
-
-</div>
-</div><p>
-<a class="anchor" name="e96a98898f6c7002a260bd08583f4457"></a><!-- doxytag: member="testmap.php::$x_batiment" ref="e96a98898f6c7002a260bd08583f4457" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">$x_batiment = $row_b[$index]['x']          </td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>
-
-</div>
-</div><p>
-<a class="anchor" name="bd35a930ffabc639f7749c396495f774"></a><!-- doxytag: member="testmap.php::$x_drapeaux" ref="bd35a930ffabc639f7749c396495f774" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">$x_drapeaux = $row_d[$index]['x']          </td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>
-
-</div>
-</div><p>
-<a class="anchor" name="6e745d40e9df8b5cc8a1761b88713dc5"></a><!-- doxytag: member="testmap.php::$x_joueurs" ref="6e745d40e9df8b5cc8a1761b88713dc5" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">$x_joueurs = $row_j[$index]['x']          </td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>
-
-</div>
-</div><p>
-<a class="anchor" name="6ada433d5a1d814c4c4ad7c29aaf88a7"></a><!-- doxytag: member="testmap.php::$xmax" ref="6ada433d5a1d814c4c4ad7c29aaf88a7" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">$xmax = 190          </td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>
-
-</div>
-</div><p>
-<a class="anchor" name="4b2a4547bbd9a45f163adccfe8b45980"></a><!-- doxytag: member="testmap.php::$xmin" ref="4b2a4547bbd9a45f163adccfe8b45980" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">$xmin = 1          </td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>
-
-</div>
-</div><p>
-<a class="anchor" name="77b973d137fb33212e018b042df6e3e7"></a><!-- doxytag: member="testmap.php::$y" ref="77b973d137fb33212e018b042df6e3e7" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">$y = 0          </td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>
-
-</div>
-</div><p>
-<a class="anchor" name="dbd76b08838b8a6bf27e19fa9f3ce2a5"></a><!-- doxytag: member="testmap.php::$y_batiment" ref="dbd76b08838b8a6bf27e19fa9f3ce2a5" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">$y_batiment = $row_b[$index]['y']          </td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>
-
-</div>
-</div><p>
-<a class="anchor" name="c8c1bff92e5c34404a98b6d76784df4b"></a><!-- doxytag: member="testmap.php::$y_drapeaux" ref="c8c1bff92e5c34404a98b6d76784df4b" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">$y_drapeaux = $row_d[$index]['y']          </td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>
-
-</div>
-</div><p>
-<a class="anchor" name="4e9f7fae219ddc10f7fdb429bcb33e40"></a><!-- doxytag: member="testmap.php::$y_joueurs" ref="4e9f7fae219ddc10f7fdb429bcb33e40" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">$y_joueurs = $row_j[$index]['y']          </td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>
-
-</div>
-</div><p>
-<a class="anchor" name="1443f20f1ed7a3b93e67f797e4916e4d"></a><!-- doxytag: member="testmap.php::$ymax" ref="1443f20f1ed7a3b93e67f797e4916e4d" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">$ymax = 190          </td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>
-
-</div>
-</div><p>
-<a class="anchor" name="7e30a161a1e1199d07c180857926eaa3"></a><!-- doxytag: member="testmap.php::$ymin" ref="7e30a161a1e1199d07c180857926eaa3" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">$ymin = 1          </td>
+          <td class="memname">$<a class="el" href="classmap.html">map</a> <a class="el" href="testmap_8php.html#e153758c34eba4b92a77690a8eb74438">onclick_status</a> = false          </td>
         </tr>
       </table>
 </div>
@@ -539,7 +75,7 @@ read_assoc($req_batiment))&nbsp;</td><td class="memItemRight" valign="bottom"><a
 </div>
 </div><p>
 </div>
-<hr size="1"><address style="text-align: right;"><small>Généré le Fri May 8 12:45:36 2009 pour Starshine Online par&nbsp;
+<hr size="1"><address style="text-align: right;"><small>Généré le Thu Sep 3 23:11:19 2009 pour Starshine Online par&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.6 </small></address>
 </body>

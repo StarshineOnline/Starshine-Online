@@ -29,14 +29,14 @@ Graphe d'héritage de maitrise_dague:</div>
 <div class="dynsection">
 <p><center><img src="classmaitrise__dague__inherit__graph.png" border="0" usemap="#maitrise__dague__inherit__map" alt="Inheritance graph"></center>
 <map name="maitrise__dague__inherit__map">
-<area shape="rect" href="classcompetence.html" title="Compétence : c&#39;est un effet qui peut s&#39;améliorer." alt="" coords="45,776,160,883"><area shape="rect" href="classeffect.html" title="Classe de base pour la gestion des effets en combat." alt="" coords="5,5,200,728"></map>
+<area shape="rect" href="classcompetence.html" title="Compétence : c&#39;est un effet qui peut s&#39;améliorer." alt="" coords="52,981,167,1088"><area shape="rect" href="classeffect.html" title="Classe de base pour la gestion des effets en combat." alt="" coords="5,5,213,933"></map>
 <center><font size="2">[<a href="graph_legend.html">légende</a>]</font></center></div>
 <div class="dynheader">
 Graphe de collaboration de maitrise_dague:</div>
 <div class="dynsection">
 <p><center><img src="classmaitrise__dague__coll__graph.png" border="0" usemap="#maitrise__dague__coll__map" alt="Collaboration graph"></center>
 <map name="maitrise__dague__coll__map">
-<area shape="rect" href="classcompetence.html" title="Compétence : c&#39;est un effet qui peut s&#39;améliorer." alt="" coords="45,776,160,883"><area shape="rect" href="classeffect.html" title="Classe de base pour la gestion des effets en combat." alt="" coords="5,5,200,728"></map>
+<area shape="rect" href="classcompetence.html" title="Compétence : c&#39;est un effet qui peut s&#39;améliorer." alt="" coords="52,981,167,1088"><area shape="rect" href="classeffect.html" title="Classe de base pour la gestion des effets en combat." alt="" coords="5,5,213,933"></map>
 <center><font size="2">[<a href="graph_legend.html">légende</a>]</font></center></div>
 
 <p>
@@ -53,8 +53,9 @@ Graphe de collaboration de maitrise_dague:</div>
 
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Action a effectuer en fin de round.  <a href="#7f0a0b02f95cda54f951b2b162dbc8a3"></a><br></td></tr>
 <tr><td colspan="2"><br><h2>Fonctions membres publiques statiques</h2></td></tr>
-<tr><td class="memItemLeft" nowrap align="right" valign="top">static&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmaitrise__dague.html#d15e27e71115314c825778e194ea8fae">factory</a> (&amp;$effects, &amp;$actif, &amp;$passif)</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">static&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmaitrise__dague.html#3837420dbec871a1d4e1e9e51f44dd59">factory</a> (&amp;$effects, &amp;$actif, &amp;$passif, $acteur= '')</td></tr>
 
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Crée l'effet.  <a href="#3837420dbec871a1d4e1e9e51f44dd59"></a><br></td></tr>
 </table>
 <hr><h2>Documentation des constructeurs et destructeur</h2>
 <a class="anchor" name="8049aa783151930b2b338a8e09e37306"></a><!-- doxytag: member="maitrise_dague::__construct" ref="8049aa783151930b2b338a8e09e37306" args="($aPrintUp=false)" -->
@@ -87,7 +88,7 @@ Constructeur.
 </div>
 </div><p>
 <hr><h2>Documentation des fonctions membres</h2>
-<a class="anchor" name="d15e27e71115314c825778e194ea8fae"></a><!-- doxytag: member="maitrise_dague::factory" ref="d15e27e71115314c825778e194ea8fae" args="(&amp;$effects, &amp;$actif, &amp;$passif)" -->
+<a class="anchor" name="3837420dbec871a1d4e1e9e51f44dd59"></a><!-- doxytag: member="maitrise_dague::factory" ref="3837420dbec871a1d4e1e9e51f44dd59" args="(&amp;$effects, &amp;$actif, &amp;$passif, $acteur= '')" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -107,7 +108,13 @@ Constructeur.
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">&amp;$&nbsp;</td>
-          <td class="paramname"> <em>passif</em></td><td>&nbsp;</td>
+          <td class="paramname"> <em>passif</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">$&nbsp;</td>
+          <td class="paramname"> <em>acteur</em> = <code>''</code></td><td>&nbsp;</td>
         </tr>
         <tr>
           <td></td>
@@ -119,6 +126,27 @@ Constructeur.
 <div class="memdoc">
 
 <p>
+Crée l'effet. 
+<p>
+<dl compact><dt><b>Paramètres:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>$effects</em>&nbsp;</td><td>Tableau des effets. </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>$actif</em>&nbsp;</td><td><a class="el" href="class_personnage.html" title="Class Personnage.">Personnage</a> actif lors de l'action. </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>$passif</em>&nbsp;</td><td><a class="el" href="class_personnage.html" title="Class Personnage.">Personnage</a> passif lors de l'action. </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>$acteur</em>&nbsp;</td><td>Indique si le personnage à l'origine de l'effet est l'attaquant ("attaquant") ou le défenseur. </td></tr>
+  </table>
+</dl>
+
+<p>Réimplémentée à partir de <a class="el" href="classeffect.html#05ca7643c1f1e3147b23067edcd525c4">effect</a>.</p>
+
+<p>
+<div class="dynheader">
+Voici le graphe d'appel pour cette fonction :</div>
+<div class="dynsection">
+<p><center><img src="classmaitrise__dague_3837420dbec871a1d4e1e9e51f44dd59_icgraph.png" border="0" usemap="#classmaitrise__dague_3837420dbec871a1d4e1e9e51f44dd59_icgraph_map" alt=""></center>
+<map name="classmaitrise__dague_3837420dbec871a1d4e1e9e51f44dd59_icgraph_map">
+<area shape="rect" href="classeffect.html#e92caf54fb05775b45a62b1e782afd0d" title="Crée le tableau des effets." alt="" coords="221,5,379,35"></map>
+</div>
 
 </div>
 </div><p>
@@ -204,13 +232,13 @@ Voici le graphe d'appel pour cette fonction :</div>
 <div class="dynsection">
 <p><center><img src="classmaitrise__dague_7f0a0b02f95cda54f951b2b162dbc8a3_cgraph.png" border="0" usemap="#classmaitrise__dague_7f0a0b02f95cda54f951b2b162dbc8a3_cgraph_map" alt=""></center>
 <map name="classmaitrise__dague_7f0a0b02f95cda54f951b2b162dbc8a3_cgraph_map">
-<area shape="rect" href="classcompetence.html#133f24d03a1417764b5b94f0c7c421ab" title="competence::test_montee" alt="" coords="239,5,417,35"><area shape="rect" href="base_8inc_8php.html#19a8179130215d05ff50b9e72f2c46d3" title="Permet de savoir si lors d&#39;une action la compétence augmente de 1." alt="" coords="468,5,655,35"></map>
+<area shape="rect" href="classcompetence.html#133f24d03a1417764b5b94f0c7c421ab" title="competence::test_montee" alt="" coords="239,5,417,35"><area shape="rect" href="base_8inc_8php.html#19a8179130215d05ff50b9e72f2c46d3" title="Permet de savoir si lors d&#39;une action la compétence augmente de 1." alt="" coords="468,5,655,35"><area shape="rect" href="print_8inc_8php.html#90fce48a5722cb80e12ead8780662585" title="print_montee_comp" alt="" coords="705,5,849,35"></map>
 </div>
 
 </div>
 </div><p>
 </div>
-<hr size="1"><address style="text-align: right;"><small>Généré le Fri May 8 12:45:39 2009 pour Starshine Online par&nbsp;
+<hr size="1"><address style="text-align: right;"><small>Généré le Thu Sep 3 23:12:27 2009 pour Starshine Online par&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.6 </small></address>
 </body>

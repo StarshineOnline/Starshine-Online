@@ -1,6 +1,6 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
-<title>Starshine Online: Référence du fichier trunk/carte_roy.php</title>
+<title>Starshine Online: Référence du fichier trunk/roi/carte_roy.php</title>
 <link href="doxygen.css" rel="stylesheet" type="text/css">
 <link href="tabs.css" rel="stylesheet" type="text/css">
 </head><body>
@@ -14,7 +14,7 @@
       <li><a href="dirs.html"><span>Répertoires</span></a></li>
     </ul>
   </div>
-  <div class="navpath"><a class="el" href="dir_72030663e0f00126986f0653002ad98d.html">trunk</a>
+  <div class="navpath"><a class="el" href="dir_72030663e0f00126986f0653002ad98d.html">trunk</a>&nbsp;&raquo&nbsp;<a class="el" href="dir_7f4fe0632d45c90f93345ace9e6e77d1.html">roi</a>
   </div>
 </div>
 <div class="contents">
@@ -23,11 +23,11 @@
 <tr><td colspan="2"><br><h2>Variables</h2></td></tr>
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="carte__roy_8php.html#a720998827fe9e92a5fe573a62edc0b8">$connexion</a> = true</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="carte__roy_8php.html#76ab3ebd57a683f3311610e54344306f">$im</a> = imagecreatefrompng('image/carte.png')</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="carte__roy_8php.html#76ab3ebd57a683f3311610e54344306f">$im</a> = imagecreatefrompng('../image/carte.png')</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="carte__roy_8php.html#beea5db7af13b1bdd70c46e49f512b26">$joueur</a> = recupperso($_SESSION['ID'])</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="carte__roy_8php.html#beea5db7af13b1bdd70c46e49f512b26">$joueur</a> = new <a class="el" href="classperso.html">perso</a>($_SESSION['ID'])</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="carte__roy_8php.html#1ea21bf4b1af1ebda1b8c63b0e364ce9">$requete</a> = &quot;SELECT x, y, count( * ) AS count FROM perso WHERE race = '&quot;.$joueur['race'].&quot;' GROUP BY x, y&quot;</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="carte__roy_8php.html#1ea21bf4b1af1ebda1b8c63b0e364ce9">$requete</a> = &quot;SELECT x, y, count( * ) AS count FROM <a class="el" href="classperso.html">perso</a> WHERE race = '&quot;.$joueur-&gt;get_race().&quot;' AND statut = 'actif' GROUP BY x, y&quot;</td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="carte__roy_8php.html#63a7a283ea5dee8af1e2d5a3435bf370">$req</a> = $<a class="el" href="classdb.html">db</a>-&gt;query($requete)</td></tr>
 
@@ -138,7 +138,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$im = imagecreatefrompng('image/carte.png')          </td>
+          <td class="memname">$im = imagecreatefrompng('../image/carte.png')          </td>
         </tr>
       </table>
 </div>
@@ -153,7 +153,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$joueur = recupperso($_SESSION['ID'])          </td>
+          <td class="memname">$joueur = new <a class="el" href="classperso.html">perso</a>($_SESSION['ID'])          </td>
         </tr>
       </table>
 </div>
@@ -183,7 +183,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$requete = &quot;SELECT x, y, count( * ) AS count FROM perso WHERE race = '&quot;.$joueur['race'].&quot;' GROUP BY x, y&quot;          </td>
+          <td class="memname">$requete = &quot;SELECT x, y, count( * ) AS count FROM <a class="el" href="classperso.html">perso</a> WHERE race = '&quot;.$joueur-&gt;get_race().&quot;' AND statut = 'actif' GROUP BY x, y&quot;          </td>
         </tr>
       </table>
 </div>
@@ -194,7 +194,7 @@
 </div>
 </div><p>
 </div>
-<hr size="1"><address style="text-align: right;"><small>Généré le Fri May 8 12:45:34 2009 pour Starshine Online par&nbsp;
+<hr size="1"><address style="text-align: right;"><small>Généré le Thu Sep 3 23:11:18 2009 pour Starshine Online par&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.6 </small></address>
 </body>

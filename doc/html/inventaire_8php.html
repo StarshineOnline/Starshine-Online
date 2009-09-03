@@ -21,25 +21,23 @@
 <h1>Référence du fichier inventaire.php</h1><table border="0" cellpadding="0" cellspacing="0">
 <tr><td></td></tr>
 <tr><td colspan="2"><br><h2>Variables</h2></td></tr>
-<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="roi_2index_8php.html#1c12d30d2681081f13297744af1014a6">else</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="inventaire_8php.html#247bfef6d462e0d2eaab6c21d904456c">$filtre_url</a> = ''</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="roi_2index_8php.html#c3eceeb81f31105aa439f443d8f5edb8">else</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="inventaire_8php.html#247bfef6d462e0d2eaab6c21d904456c">$filtre_url</a> = ''</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="inventaire_8php.html#348857e01ece8eec9741a8aac278b4b7">$W_case</a> = 1000 * $joueur['y'] + $joueur['x']</td></tr>
-
-<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="inventaire_8php.html#19afe5512c8585af83b8156bb7429e5f">$W_requete</a> = 'SELECT * FROM <a class="el" href="classmap.html">map</a> WHERE ID ='.$W_case</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="inventaire_8php.html#19afe5512c8585af83b8156bb7429e5f">$W_requete</a> = 'SELECT <a class="el" href="classroyaume.html">royaume</a>, <a class="el" href="action__modif__t_8php.html#7aead736a07eaf25623ad7bfa1f0ee2d">type</a> FROM <a class="el" href="classmap.html">map</a> WHERE ID =\''.sSQL($joueur-&gt;get_pos()).'\''</td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="inventaire_8php.html#cb6559abdb149d5869a9dbeff98cf9bd">$W_req</a> = $<a class="el" href="classdb.html">db</a>-&gt;query($W_requete)</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="inventaire_8php.html#59eabebcf9db04fe004af49fb94e6e79">$W_row</a> = $<a class="el" href="classdb.html">db</a>-&gt;read_array($W_req)</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="inventaire_8php.html#59eabebcf9db04fe004af49fb94e6e79">$W_row</a> = $<a class="el" href="classdb.html">db</a>-&gt;read_assoc($W_req)</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="inventaire_8php.html#be2d79bb4aa8b8243d81c67fdd50511f">$R</a> = get_royaume_info($joueur['race'], $W_row['royaume'])</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="inventaire_8php.html#be2d79bb4aa8b8243d81c67fdd50511f">$R</a> = new <a class="el" href="classroyaume.html">royaume</a>($W_row['<a class="el" href="classroyaume.html">royaume</a>'])</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="ville__bas_8php.html#e090d03ba817b92f272d5f9e1e3cf724">if</a>(!$visu AND isset($_GET['action']))&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="inventaire_8php.html#7666547e66047bf0314bc0296e3febe7">$joueur</a> = recupperso($joueur_id)</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="viewarene2_8php.html#898248c6f0772cc779881fffc50ca91a">if</a>(!$visu AND isset($_GET['action']))&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="inventaire_8php.html#7666547e66047bf0314bc0296e3febe7">$joueur</a> = new <a class="el" href="classperso.html">perso</a>($joueur_id)</td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="inventaire_8php.html#b2a71f9db262e8a1c0b2786ecc9e9d22">$tab_loc</a> = array()</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="inventaire_8php.html#b6e59f146628270cb39c09a739b68da9">$tab_loc</a> [0]['loc'] = 'accessoire'</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="inventaire_8php.html#b6e59f146628270cb39c09a739b68da9">$tab_loc</a> [0]['loc'] = '<a class="el" href="classaccessoire.html">accessoire</a>'</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="inventaire_8php.html#d1f43fbee5c87a6c410eccf1b5817afd">$tab_loc</a> [0]['<a class="el" href="action__modif__t_8php.html#7aead736a07eaf25623ad7bfa1f0ee2d">type</a>'] = 'accessoire'</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="inventaire_8php.html#d1f43fbee5c87a6c410eccf1b5817afd">$tab_loc</a> [0]['<a class="el" href="action__modif__t_8php.html#7aead736a07eaf25623ad7bfa1f0ee2d">type</a>'] = '<a class="el" href="classaccessoire.html">accessoire</a>'</td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="inventaire_8php.html#eb0745c94d537ecd0a1a5a2ce17a18b2">$tab_loc</a> [1]['loc'] = 'tete'</td></tr>
 
@@ -138,7 +136,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="roi_2index_8php.html#1c12d30d2681081f13297744af1014a6">else</a> $filtre_url = ''          </td>
+          <td class="memname"><a class="el" href="roi_2index_8php.html#c3eceeb81f31105aa439f443d8f5edb8">else</a> $filtre_url = ''          </td>
         </tr>
       </table>
 </div>
@@ -153,7 +151,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="ville__bas_8php.html#e090d03ba817b92f272d5f9e1e3cf724">if</a> (!$visu AND isset($_GET['action'])) $joueur = recupperso($joueur_id)          </td>
+          <td class="memname"><a class="el" href="viewarene2_8php.html#898248c6f0772cc779881fffc50ca91a">if</a> (!$visu AND isset($_GET['action'])) $joueur = new <a class="el" href="classperso.html">perso</a>($joueur_id)          </td>
         </tr>
       </table>
 </div>
@@ -168,7 +166,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$R = get_royaume_info($joueur['race'], $W_row['royaume'])          </td>
+          <td class="memname">$R = new <a class="el" href="classroyaume.html">royaume</a>($W_row['<a class="el" href="classroyaume.html">royaume</a>'])          </td>
         </tr>
       </table>
 </div>
@@ -603,7 +601,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$tab_loc[0]['<a class="el" href="action__modif__t_8php.html#7aead736a07eaf25623ad7bfa1f0ee2d">type</a>'] = 'accessoire'          </td>
+          <td class="memname">$tab_loc[0]['<a class="el" href="action__modif__t_8php.html#7aead736a07eaf25623ad7bfa1f0ee2d">type</a>'] = '<a class="el" href="classaccessoire.html">accessoire</a>'          </td>
         </tr>
       </table>
 </div>
@@ -618,7 +616,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$tab_loc[0]['loc'] = 'accessoire'          </td>
+          <td class="memname">$tab_loc[0]['loc'] = '<a class="el" href="classaccessoire.html">accessoire</a>'          </td>
         </tr>
       </table>
 </div>
@@ -634,21 +632,6 @@
       <table class="memname">
         <tr>
           <td class="memname">$tab_loc = array()          </td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>
-
-</div>
-</div><p>
-<a class="anchor" name="348857e01ece8eec9741a8aac278b4b7"></a><!-- doxytag: member="inventaire.php::$W_case" ref="348857e01ece8eec9741a8aac278b4b7" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">$W_case = 1000 * $joueur['y'] + $joueur['x']          </td>
         </tr>
       </table>
 </div>
@@ -678,7 +661,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$W_requete = 'SELECT * FROM <a class="el" href="classmap.html">map</a> WHERE ID ='.$W_case          </td>
+          <td class="memname">$W_requete = 'SELECT <a class="el" href="classroyaume.html">royaume</a>, <a class="el" href="action__modif__t_8php.html#7aead736a07eaf25623ad7bfa1f0ee2d">type</a> FROM <a class="el" href="classmap.html">map</a> WHERE ID =\''.sSQL($joueur-&gt;get_pos()).'\''          </td>
         </tr>
       </table>
 </div>
@@ -693,7 +676,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$W_row = $<a class="el" href="classdb.html">db</a>-&gt;read_array($W_req)          </td>
+          <td class="memname">$W_row = $<a class="el" href="classdb.html">db</a>-&gt;read_assoc($W_req)          </td>
         </tr>
       </table>
 </div>
@@ -704,7 +687,7 @@
 </div>
 </div><p>
 </div>
-<hr size="1"><address style="text-align: right;"><small>Généré le Fri May 8 12:45:36 2009 pour Starshine Online par&nbsp;
+<hr size="1"><address style="text-align: right;"><small>Généré le Thu Sep 3 23:11:18 2009 pour Starshine Online par&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.6 </small></address>
 </body>

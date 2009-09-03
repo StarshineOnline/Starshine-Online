@@ -25,8 +25,8 @@
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="viewarene2_8php.html#676d5318e23377117551e5ead156fdf7">$arene_masters</a> = array('irulan', 'azeroth', 'mylok','minus')</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="ville__bas_8php.html#e090d03ba817b92f272d5f9e1e3cf724">if</a>(in_array(strtolower($viewer['nom']), <br>
-$arene_masters)) <a class="el" href="roi_2index_8php.html#1c12d30d2681081f13297744af1014a6">else</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="viewarene2_8php.html#02da621901b8a695f9979c4b6878435e">$admin</a> = false</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="viewarene2_8php.html#898248c6f0772cc779881fffc50ca91a">if</a>(in_array(strtolower($viewer['nom']), <br>
+$arene_masters)) <a class="el" href="roi_2index_8php.html#c3eceeb81f31105aa439f443d8f5edb8">else</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="viewarene2_8php.html#02da621901b8a695f9979c4b6878435e">$admin</a> = false</td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="viewarene2_8php.html#1ea21bf4b1af1ebda1b8c63b0e364ce9">$requete</a> = &quot;SELECT id FROM arenes_joueurs WHERE id = &quot;.$_SESSION['ID']</td></tr>
 
@@ -40,7 +40,7 @@ $arene_masters)) <a class="el" href="roi_2index_8php.html#1c12d30d2681081f132977
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="viewarene2_8php.html#fc13a2edebe36034d9fc149f1b9ee90c">$coord</a> ['y'] = $ymin + round(($ymax - $ymin) / 2)</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="viewarene2_8php.html#9cbfe95d61703a84674cecf0f4ff8370">for</a> ($i=$xmin;$i&lt;=$xmax;$i++) = &quot;SELECT COUNT(*)AS tot, ceil(x/10) as cx, ceil(y/10) as cy FROM journal WHERE DAY(time )=DAY(CURDATE())AND MONTH(time )=MONTH(CURDATE())AND YEAR(time )=YEAR(CURDATE())AND action ='attaque' AND x &lt;&gt; 0 AND y &lt;&gt; 0 GROUP BY cx, cy ORDER BY tot DESC&quot;</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="viewarene2_8php.html#9cbfe95d61703a84674cecf0f4ff8370">for</a> ($i=$xmin;$i&lt;=$xmax;$i++) = &quot;SELECT COUNT(*) AS tot, ceil(x/10) as cx, ceil(y/10) as cy FROM journal WHERE DAY(time )=DAY(CURDATE())AND MONTH(time )=MONTH(CURDATE())AND YEAR(time )=YEAR(CURDATE())AND action ='attaque' AND x &lt;&gt; 0 AND y &lt;&gt; 0 GROUP BY cx, cy ORDER BY tot DESC&quot;</td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="viewarene2_8php.html#f3a16c5f0dd7a74cf9acf6a49fff73a7">$x</a> = 0</td></tr>
 
@@ -75,7 +75,7 @@ $arene_masters)) <a class="el" href="roi_2index_8php.html#1c12d30d2681081f132977
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="ville__bas_8php.html#e090d03ba817b92f272d5f9e1e3cf724">if</a> (in_array(strtolower($viewer['nom']), $arene_masters)) <a class="el" href="roi_2index_8php.html#1c12d30d2681081f13297744af1014a6">else</a> $admin = false          </td>
+          <td class="memname"><a class="el" href="viewarene2_8php.html#898248c6f0772cc779881fffc50ca91a">if</a> (in_array(strtolower($viewer['nom']), $arene_masters)) <a class="el" href="roi_2index_8php.html#c3eceeb81f31105aa439f443d8f5edb8">else</a> $admin = false          </td>
         </tr>
       </table>
 </div>
@@ -360,7 +360,7 @@ $arene_masters)) <a class="el" href="roi_2index_8php.html#1c12d30d2681081f132977
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="viewarene2_8php.html#9cbfe95d61703a84674cecf0f4ff8370">for</a> = &quot;SELECT COUNT(*)AS tot, ceil(x/10) as cx, ceil(y/10) as cy FROM journal WHERE DAY(time )=DAY(CURDATE())AND MONTH(time )=MONTH(CURDATE())AND YEAR(time )=YEAR(CURDATE())AND action ='attaque' AND x &lt;&gt; 0 AND y &lt;&gt; 0 GROUP BY cx, cy ORDER BY tot DESC&quot;          </td>
+          <td class="memname"><a class="el" href="viewarene2_8php.html#9cbfe95d61703a84674cecf0f4ff8370">for</a> = &quot;SELECT COUNT(*) AS tot, ceil(x/10) as cx, ceil(y/10) as cy FROM journal WHERE DAY(time )=DAY(CURDATE())AND MONTH(time )=MONTH(CURDATE())AND YEAR(time )=YEAR(CURDATE())AND action ='attaque' AND x &lt;&gt; 0 AND y &lt;&gt; 0 GROUP BY cx, cy ORDER BY tot DESC&quot;          </td>
         </tr>
       </table>
 </div>
@@ -390,7 +390,7 @@ $arene_masters)) <a class="el" href="roi_2index_8php.html#1c12d30d2681081f132977
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="ville__bas_8php.html#e090d03ba817b92f272d5f9e1e3cf724">if</a>($<a class="el" href="classdb.html">db</a>-&gt;num_rows &gt; 0)          </td>
+          <td class="memname"><a class="el" href="viewarene2_8php.html#898248c6f0772cc779881fffc50ca91a">if</a>($<a class="el" href="classdb.html">db</a>-&gt;num_rows &gt; 0)          </td>
         </tr>
       </table>
 </div>
@@ -416,7 +416,7 @@ $arene_masters)) <a class="el" href="roi_2index_8php.html#1c12d30d2681081f132977
 </div>
 </div><p>
 </div>
-<hr size="1"><address style="text-align: right;"><small>Généré le Fri May 8 12:45:36 2009 pour Starshine Online par&nbsp;
+<hr size="1"><address style="text-align: right;"><small>Généré le Thu Sep 3 23:11:19 2009 pour Starshine Online par&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.6 </small></address>
 </body>

@@ -1,2 +1,4 @@
 <area shape="rect" href="$classbourg.html#9acba506f50e1119396c7fb9314f5f85" title="bourg::get_mines" alt="" coords="228,5,359,35">
 <area shape="rect" href="$classbourg.html#b73aea718ea501f81681d1cce10bd374" title="bourg::get_placements" alt="" coords="212,59,375,88">
+<area shape="rect" href="$classplacement.html#c719916d812df2e5f5f9586e8bfb8144" title="Supprime de la base de donnée &#160;static." alt="" coords="432,32,563,61">
+<area shape="rect" href="$classconstruction.html#7867d46c1517b63ea44489059342faf9" title="Retourne la valeur de l&#39;attribut &#160;public." alt="" coords="425,85,569,115">

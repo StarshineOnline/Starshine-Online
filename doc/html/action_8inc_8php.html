@@ -23,18 +23,20 @@
 <table border="0" cellpadding="0" cellspacing="0">
 <tr><td></td></tr>
 <tr><td colspan="2"><br><h2>Fonctions</h2></td></tr>
-<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="action_8inc_8php.html#6a794cf834a35c926819c59bf3193219">script_action</a> ($joueur, $ennemi, $mode)</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="action_8inc_8php.html#fab8ed8f21d2300e7050803fd135bc35">script_action</a> ($joueur, $ennemi, $mode, &amp;$effects)</td></tr>
 
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Renvoie l'action a effectuer, si le personnage peut en faire une.  <a href="#6a794cf834a35c926819c59bf3193219"></a><br></td></tr>
-<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="action_8inc_8php.html#041c268eaf24380770a3922a7c3e55bc">sub_script_action</a> ($joueur, $ennemi, $mode)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Renvoie l'action a effectuer, si le personnage peut en faire une.  <a href="#fab8ed8f21d2300e7050803fd135bc35"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="action_8inc_8php.html#0e3e3226a83e9a4a2de6e8ada6a62fdb">get_array_condition</a> ($valeur)</td></tr>
 
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Détermine l'action a effectuer, si on peut.  <a href="#041c268eaf24380770a3922a7c3e55bc"></a><br></td></tr>
-<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="action_8inc_8php.html#eac6f598954a3952c8dbbaed9d6ea370">lance_sort</a> ($id, $acteur)</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="action_8inc_8php.html#6c1df0e9cad506668d18af71399721e6">sub_script_action</a> ($joueur, $ennemi, $mode, &amp;$effects)</td></tr>
 
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Lance un sort lors d'un combat.  <a href="#eac6f598954a3952c8dbbaed9d6ea370"></a><br></td></tr>
-<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="action_8inc_8php.html#09b6dc45f599376a3695ec53bbb1d461">lance_comp</a> ($id, $acteur)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Détermine l'action a effectuer, si on peut.  <a href="#6c1df0e9cad506668d18af71399721e6"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="action_8inc_8php.html#de8488be9c61e8ae3aa296f8edac0d9f">lance_sort</a> ($id, $acteur, &amp;$effects)</td></tr>
 
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Utilise une compétence.  <a href="#09b6dc45f599376a3695ec53bbb1d461"></a><br></td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Lance un sort lors d'un combat.  <a href="#de8488be9c61e8ae3aa296f8edac0d9f"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="action_8inc_8php.html#03d5a809119b3b4bacc24f59ae41a5f8">lance_comp</a> ($id, $acteur, &amp;$effects)</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Utilise une compétence.  <a href="#03d5a809119b3b4bacc24f59ae41a5f8"></a><br></td></tr>
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="action_8inc_8php.html#fa6728855931f0feb1a5ee09e5a97c08">critique_magique</a> ($attaquant, $defenseur)</td></tr>
 
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Regarde s'il y a un critique magique.  <a href="#fa6728855931f0feb1a5ee09e5a97c08"></a><br></td></tr>
@@ -92,7 +94,7 @@ Voici le graphe d'appel pour cette fonction :</div>
 <div class="dynsection">
 <p><center><img src="action_8inc_8php_fa6728855931f0feb1a5ee09e5a97c08_icgraph.png" border="0" usemap="#action_8inc_8php_fa6728855931f0feb1a5ee09e5a97c08_icgraph_map" alt=""></center>
 <map name="action_8inc_8php_fa6728855931f0feb1a5ee09e5a97c08_icgraph_map">
-<area shape="rect" href="attaque_8inc_8php.html#02093b30ac133fbc3bb0c5d4d9ccaeab" title="degat_magique" alt="" coords="173,5,283,32"><area shape="rect" href="action_8inc_8php.html#eac6f598954a3952c8dbbaed9d6ea370" title="Lance un sort lors d&#39;un combat." alt="" coords="332,31,412,57"></map>
+<area shape="rect" href="attaque_8inc_8php.html#02093b30ac133fbc3bb0c5d4d9ccaeab" title="degat_magique" alt="" coords="185,5,300,35"><area shape="rect" href="action_8inc_8php.html#de8488be9c61e8ae3aa296f8edac0d9f" title="Lance un sort lors d&#39;un combat." alt="" coords="349,32,435,61"></map>
 </div>
 
 </div>
@@ -147,7 +149,36 @@ Voici le graphe d'appel pour cette fonction :</div>
 <div class="dynsection">
 <p><center><img src="action_8inc_8php_2a9c1e5a32314f87eec36f89a72a9a2e_icgraph.png" border="0" usemap="#action_8inc_8php_2a9c1e5a32314f87eec36f89a72a9a2e_icgraph_map" alt=""></center>
 <map name="action_8inc_8php_2a9c1e5a32314f87eec36f89a72a9a2e_icgraph_map">
-<area shape="rect" href="attaque_8inc_8php.html#02093b30ac133fbc3bb0c5d4d9ccaeab" title="degat_magique" alt="" coords="157,5,267,32"><area shape="rect" href="action_8inc_8php.html#eac6f598954a3952c8dbbaed9d6ea370" title="Lance un sort lors d&#39;un combat." alt="" coords="316,31,396,57"></map>
+<area shape="rect" href="attaque_8inc_8php.html#02093b30ac133fbc3bb0c5d4d9ccaeab" title="degat_magique" alt="" coords="164,5,279,35"><area shape="rect" href="action_8inc_8php.html#de8488be9c61e8ae3aa296f8edac0d9f" title="Lance un sort lors d&#39;un combat." alt="" coords="328,32,413,61"></map>
+</div>
+
+</div>
+</div><p>
+<a class="anchor" name="0e3e3226a83e9a4a2de6e8ada6a62fdb"></a><!-- doxytag: member="action.inc.php::get_array_condition" ref="0e3e3226a83e9a4a2de6e8ada6a62fdb" args="($valeur)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">get_array_condition           </td>
+          <td>(</td>
+          <td class="paramtype">$&nbsp;</td>
+          <td class="paramname"> <em>valeur</em>          </td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+<p>
+<div class="dynheader">
+Voici le graphe d'appel pour cette fonction :</div>
+<div class="dynsection">
+<p><center><img src="action_8inc_8php_0e3e3226a83e9a4a2de6e8ada6a62fdb_icgraph.png" border="0" usemap="#action_8inc_8php_0e3e3226a83e9a4a2de6e8ada6a62fdb_icgraph_map" alt=""></center>
+<map name="action_8inc_8php_0e3e3226a83e9a4a2de6e8ada6a62fdb_icgraph_map">
+<area shape="rect" href="action_8inc_8php.html#6c1df0e9cad506668d18af71399721e6" title="Détermine l&#39;action a effectuer, si on peut." alt="" coords="199,5,329,35"><area shape="rect" href="action_8inc_8php.html#fab8ed8f21d2300e7050803fd135bc35" title="Renvoie l&#39;action a effectuer, si le personnage peut en faire une." alt="" coords="379,5,480,35"></map>
 </div>
 
 </div>
@@ -184,7 +215,7 @@ Voici le graphe d'appel pour cette fonction :</div>
 
 </div>
 </div><p>
-<a class="anchor" name="09b6dc45f599376a3695ec53bbb1d461"></a><!-- doxytag: member="action.inc.php::lance_comp" ref="09b6dc45f599376a3695ec53bbb1d461" args="($id, $acteur)" -->
+<a class="anchor" name="03d5a809119b3b4bacc24f59ae41a5f8"></a><!-- doxytag: member="action.inc.php::lance_comp" ref="03d5a809119b3b4bacc24f59ae41a5f8" args="($id, $acteur, &amp;$effects)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -198,7 +229,13 @@ Voici le graphe d'appel pour cette fonction :</div>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">$&nbsp;</td>
-          <td class="paramname"> <em>acteur</em></td><td>&nbsp;</td>
+          <td class="paramname"> <em>acteur</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&amp;$&nbsp;</td>
+          <td class="paramname"> <em>effects</em></td><td>&nbsp;</td>
         </tr>
         <tr>
           <td></td>
@@ -224,14 +261,14 @@ return Compétence associée à la compétence.
 <div class="dynheader">
 Voici le graphe d'appel pour cette fonction :</div>
 <div class="dynsection">
-<p><center><img src="action_8inc_8php_09b6dc45f599376a3695ec53bbb1d461_cgraph.png" border="0" usemap="#action_8inc_8php_09b6dc45f599376a3695ec53bbb1d461_cgraph_map" alt=""></center>
-<map name="action_8inc_8php_09b6dc45f599376a3695ec53bbb1d461_cgraph_map">
-<area shape="rect" href="base_8inc_8php.html#19a8179130215d05ff50b9e72f2c46d3" title="Permet de savoir si lors d&#39;une action la compétence augmente de 1." alt="" coords="151,5,337,35"></map>
+<p><center><img src="action_8inc_8php_03d5a809119b3b4bacc24f59ae41a5f8_cgraph.png" border="0" usemap="#action_8inc_8php_03d5a809119b3b4bacc24f59ae41a5f8_cgraph_map" alt=""></center>
+<map name="action_8inc_8php_03d5a809119b3b4bacc24f59ae41a5f8_cgraph_map">
+<area shape="rect" href="base_8inc_8php.html#19a8179130215d05ff50b9e72f2c46d3" title="Permet de savoir si lors d&#39;une action la compétence augmente de 1." alt="" coords="151,5,337,35"><area shape="rect" href="print_8inc_8php.html#90fce48a5722cb80e12ead8780662585" title="print_montee_comp" alt="" coords="388,5,532,35"></map>
 </div>
 
 </div>
 </div><p>
-<a class="anchor" name="eac6f598954a3952c8dbbaed9d6ea370"></a><!-- doxytag: member="action.inc.php::lance_sort" ref="eac6f598954a3952c8dbbaed9d6ea370" args="($id, $acteur)" -->
+<a class="anchor" name="de8488be9c61e8ae3aa296f8edac0d9f"></a><!-- doxytag: member="action.inc.php::lance_sort" ref="de8488be9c61e8ae3aa296f8edac0d9f" args="($id, $acteur, &amp;$effects)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -245,7 +282,13 @@ Voici le graphe d'appel pour cette fonction :</div>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">$&nbsp;</td>
-          <td class="paramname"> <em>acteur</em></td><td>&nbsp;</td>
+          <td class="paramname"> <em>acteur</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&amp;$&nbsp;</td>
+          <td class="paramname"> <em>effects</em></td><td>&nbsp;</td>
         </tr>
         <tr>
           <td></td>
@@ -263,7 +306,8 @@ Effectuer les jets de lancer et toucher, plus éventuellement le troisième jet 
 <dl compact><dt><b>Paramètres:</b></dt><dd>
   <table border="0" cellspacing="2" cellpadding="0">
     <tr><td valign="top"></td><td valign="top"><em>$id</em>&nbsp;</td><td>ID du sort. </td></tr>
-    <tr><td valign="top"></td><td valign="top"><em>$acteur</em>&nbsp;</td><td>indique si l'acteur de l'action est l'attaquant ('attaquant') ou le défenseur.</td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>$acteur</em>&nbsp;</td><td>indique si l'acteur de l'action est l'attaquant ('attaquant') ou le défenseur. </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>$effects</em>&nbsp;</td><td>liste des effets.</td></tr>
   </table>
 </dl>
 return Compétence de magie associée au sort. 
@@ -271,14 +315,14 @@ return Compétence de magie associée au sort.
 <div class="dynheader">
 Voici le graphe d'appel pour cette fonction :</div>
 <div class="dynsection">
-<p><center><img src="action_8inc_8php_eac6f598954a3952c8dbbaed9d6ea370_cgraph.png" border="0" usemap="#action_8inc_8php_eac6f598954a3952c8dbbaed9d6ea370_cgraph_map" alt=""></center>
-<map name="action_8inc_8php_eac6f598954a3952c8dbbaed9d6ea370_cgraph_map">
-<area shape="rect" href="base_8inc_8php.html#19a8179130215d05ff50b9e72f2c46d3" title="Permet de savoir si lors d&#39;une action la compétence augmente de 1." alt="" coords="140,5,327,35"><area shape="rect" href="base_8inc_8php.html#2c272fe9cfde5f7c8117d8571c49c40d" title="Calcul le pourcentage de dégâts absorbé en fonction de la PP." alt="" coords="413,53,493,83"><area shape="rect" href="action_8inc_8php.html#fa6728855931f0feb1a5ee09e5a97c08" title="Regarde s&#39;il y a un critique magique." alt="" coords="389,107,517,136"><area shape="rect" href="action_8inc_8php.html#2a9c1e5a32314f87eec36f89a72a9a2e" title="Ajuste les dégâts en cas de critique." alt="" coords="399,213,508,243"><area shape="rect" href="attaque_8inc_8php.html#02093b30ac133fbc3bb0c5d4d9ccaeab" title="degat_magique" alt="" coords="176,160,291,189"><area shape="rect" href="time_8inc_8php.html#a8bcd4bada1265a01208f21148f60c5e" title="Indique quel est le moment de la journée (matin, journée, soir ou nuit)." alt="" coords="181,265,285,295"><area shape="rect" href="comp_8class_8php.html#6629c09106d50d1c7d8d03c48d370436" title="sort_effects" alt="" coords="188,319,279,348"><area shape="rect" href="base_8inc_8php.html#19ea8bf3556dd8b7bc94c142cc8c0542" title="Fonction permettant de calculer les dés de dégat en fonction de la force et de..." alt="" coords="415,160,492,189"><area shape="rect" href="time_8inc_8php.html#5dc4d8d9e53a8d1d65edcab9cd1dacb9" title="Renvoie l&#39;heure (uniquement) qu&#39;il est dans le jeu." alt="" coords="411,267,496,296"><area shape="rect" href="base_8inc_8php.html#c3a04c3bc3e42c54d90b1c14e9061214" title="Fonction permettant de récupérer les infos essentielles du perso (nom, race, classe..." alt="" coords="377,320,529,349"></map>
+<p><center><img src="action_8inc_8php_de8488be9c61e8ae3aa296f8edac0d9f_cgraph.png" border="0" usemap="#action_8inc_8php_de8488be9c61e8ae3aa296f8edac0d9f_cgraph_map" alt=""></center>
+<map name="action_8inc_8php_de8488be9c61e8ae3aa296f8edac0d9f_cgraph_map">
+<area shape="rect" href="base_8inc_8php.html#2c272fe9cfde5f7c8117d8571c49c40d" title="Calcul le pourcentage de dégâts absorbé en fonction de la PP." alt="" coords="329,5,409,35"><area shape="rect" href="action_8inc_8php.html#fa6728855931f0feb1a5ee09e5a97c08" title="Regarde s&#39;il y a un critique magique." alt="" coords="305,59,433,88"><area shape="rect" href="action_8inc_8php.html#2a9c1e5a32314f87eec36f89a72a9a2e" title="Ajuste les dégâts en cas de critique." alt="" coords="315,165,424,195"><area shape="rect" href="attaque_8inc_8php.html#02093b30ac133fbc3bb0c5d4d9ccaeab" title="degat_magique" alt="" coords="140,112,255,141"><area shape="rect" href="time_8inc_8php.html#a8bcd4bada1265a01208f21148f60c5e" title="Indique quel est le moment de la journée (matin, journée, soir ou nuit)." alt="" coords="145,217,249,247"><area shape="rect" href="base_8inc_8php.html#19ea8bf3556dd8b7bc94c142cc8c0542" title="Fonction permettant de calculer les dés de dégat en fonction de la force et de..." alt="" coords="331,112,408,141"><area shape="rect" href="time_8inc_8php.html#5dc4d8d9e53a8d1d65edcab9cd1dacb9" title="Renvoie l&#39;heure (uniquement) qu&#39;il est dans le jeu." alt="" coords="327,219,412,248"></map>
 </div>
 
 </div>
 </div><p>
-<a class="anchor" name="6a794cf834a35c926819c59bf3193219"></a><!-- doxytag: member="action.inc.php::script_action" ref="6a794cf834a35c926819c59bf3193219" args="($joueur, $ennemi, $mode)" -->
+<a class="anchor" name="fab8ed8f21d2300e7050803fd135bc35"></a><!-- doxytag: member="action.inc.php::script_action" ref="fab8ed8f21d2300e7050803fd135bc35" args="($joueur, $ennemi, $mode, &amp;$effects)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -298,7 +342,13 @@ Voici le graphe d'appel pour cette fonction :</div>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">$&nbsp;</td>
-          <td class="paramname"> <em>mode</em></td><td>&nbsp;</td>
+          <td class="paramname"> <em>mode</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&amp;$&nbsp;</td>
+          <td class="paramname"> <em>effects</em></td><td>&nbsp;</td>
         </tr>
         <tr>
           <td></td>
@@ -312,12 +362,13 @@ Voici le graphe d'appel pour cette fonction :</div>
 <p>
 Renvoie l'action a effectuer, si le personnage peut en faire une. 
 <p>
-Récupère l'action à effectuer à l'aide à l'aide de la fonction <a class="el" href="action_8inc_8php.html#041c268eaf24380770a3922a7c3e55bc" title="Détermine l&#39;action a effectuer, si on peut.">sub_script_action()</a>, vérifie si une dissimulation ne l'empêche pas et si c'est le cas renvoie cette action.<p>
+Récupère l'action à effectuer à l'aide à l'aide de la fonction <a class="el" href="action_8inc_8php.html#6c1df0e9cad506668d18af71399721e6" title="Détermine l&#39;action a effectuer, si on peut.">sub_script_action()</a>, vérifie si une dissimulation ne l'empêche pas et si c'est le cas renvoie cette action.<p>
 <dl compact><dt><b>Paramètres:</b></dt><dd>
   <table border="0" cellspacing="2" cellpadding="0">
     <tr><td valign="top"></td><td valign="top"><em>$joueur</em>&nbsp;</td><td>Pesonnage du joueur. </td></tr>
     <tr><td valign="top"></td><td valign="top"><em>$ennemi</em>&nbsp;</td><td>Adversaire. </td></tr>
-    <tr><td valign="top"></td><td valign="top"><em>$mode</em>&nbsp;</td><td>Indique si le personnage attaque ("attaquant") ou défend.</td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>$mode</em>&nbsp;</td><td>Indique si le personnage attaque ("attaquant") ou défend. </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>$effects</em>&nbsp;</td><td>liste des effets.</td></tr>
   </table>
 </dl>
 <dl class="return" compact><dt><b>Renvoie:</b></dt><dd>[0] Type d'action : "lance_sort" pour un sort, "lance_comp" pour une compétence, "attaque" pour une attaque simple, "" si le personnage ne peut pas effectuer d'action <p>
@@ -328,14 +379,14 @@ Récupère l'action à effectuer à l'aide à l'aide de la fonction <a class="el
 <div class="dynheader">
 Voici le graphe d'appel pour cette fonction :</div>
 <div class="dynsection">
-<p><center><img src="action_8inc_8php_6a794cf834a35c926819c59bf3193219_cgraph.png" border="0" usemap="#action_8inc_8php_6a794cf834a35c926819c59bf3193219_cgraph_map" alt=""></center>
-<map name="action_8inc_8php_6a794cf834a35c926819c59bf3193219_cgraph_map">
-<area shape="rect" href="action_8inc_8php.html#041c268eaf24380770a3922a7c3e55bc" title="Détermine l&#39;action a effectuer, si on peut." alt="" coords="151,5,273,32"></map>
+<p><center><img src="action_8inc_8php_fab8ed8f21d2300e7050803fd135bc35_cgraph.png" border="0" usemap="#action_8inc_8php_fab8ed8f21d2300e7050803fd135bc35_cgraph_map" alt=""></center>
+<map name="action_8inc_8php_fab8ed8f21d2300e7050803fd135bc35_cgraph_map">
+<area shape="rect" href="action_8inc_8php.html#6c1df0e9cad506668d18af71399721e6" title="Détermine l&#39;action a effectuer, si on peut." alt="" coords="156,5,287,35"><area shape="rect" href="action_8inc_8php.html#0e3e3226a83e9a4a2de6e8ada6a62fdb" title="get_array_condition" alt="" coords="336,5,480,35"></map>
 </div>
 
 </div>
 </div><p>
-<a class="anchor" name="041c268eaf24380770a3922a7c3e55bc"></a><!-- doxytag: member="action.inc.php::sub_script_action" ref="041c268eaf24380770a3922a7c3e55bc" args="($joueur, $ennemi, $mode)" -->
+<a class="anchor" name="6c1df0e9cad506668d18af71399721e6"></a><!-- doxytag: member="action.inc.php::sub_script_action" ref="6c1df0e9cad506668d18af71399721e6" args="($joueur, $ennemi, $mode, &amp;$effects)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -355,7 +406,13 @@ Voici le graphe d'appel pour cette fonction :</div>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">$&nbsp;</td>
-          <td class="paramname"> <em>mode</em></td><td>&nbsp;</td>
+          <td class="paramname"> <em>mode</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&amp;$&nbsp;</td>
+          <td class="paramname"> <em>effects</em></td><td>&nbsp;</td>
         </tr>
         <tr>
           <td></td>
@@ -374,7 +431,8 @@ Commence par vérifier si le personnage peut effectuer une action en fonction de
   <table border="0" cellspacing="2" cellpadding="0">
     <tr><td valign="top"></td><td valign="top"><em>$joueur</em>&nbsp;</td><td>Pesonnage du joueur. </td></tr>
     <tr><td valign="top"></td><td valign="top"><em>$ennemi</em>&nbsp;</td><td>Adversaire. </td></tr>
-    <tr><td valign="top"></td><td valign="top"><em>$mode</em>&nbsp;</td><td>Indique si le personnage attaque ("attaquant") ou défend.</td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>$mode</em>&nbsp;</td><td>Indique si le personnage attaque ("attaquant") ou défend. </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>$effects</em>&nbsp;</td><td>liste des effets.</td></tr>
   </table>
 </dl>
 <dl class="return" compact><dt><b>Renvoie:</b></dt><dd>[0] Type d'action : "lance_sort" pour un sort, "lance_comp" pour une compétence, "attaque" pour une attaque simple, "" si le personnage ne peut pas effectuer d'action <p>
@@ -385,15 +443,24 @@ Commence par vérifier si le personnage peut effectuer une action en fonction de
 <div class="dynheader">
 Voici le graphe d'appel pour cette fonction :</div>
 <div class="dynsection">
-<p><center><img src="action_8inc_8php_041c268eaf24380770a3922a7c3e55bc_icgraph.png" border="0" usemap="#action_8inc_8php_041c268eaf24380770a3922a7c3e55bc_icgraph_map" alt=""></center>
-<map name="action_8inc_8php_041c268eaf24380770a3922a7c3e55bc_icgraph_map">
-<area shape="rect" href="action_8inc_8php.html#6a794cf834a35c926819c59bf3193219" title="Renvoie l&#39;action a effectuer, si le personnage peut en faire une." alt="" coords="179,5,275,32"></map>
+<p><center><img src="action_8inc_8php_6c1df0e9cad506668d18af71399721e6_cgraph.png" border="0" usemap="#action_8inc_8php_6c1df0e9cad506668d18af71399721e6_cgraph_map" alt=""></center>
+<map name="action_8inc_8php_6c1df0e9cad506668d18af71399721e6_cgraph_map">
+<area shape="rect" href="action_8inc_8php.html#0e3e3226a83e9a4a2de6e8ada6a62fdb" title="get_array_condition" alt="" coords="187,5,331,35"></map>
+</div>
+
+<p>
+<div class="dynheader">
+Voici le graphe d'appel pour cette fonction :</div>
+<div class="dynsection">
+<p><center><img src="action_8inc_8php_6c1df0e9cad506668d18af71399721e6_icgraph.png" border="0" usemap="#action_8inc_8php_6c1df0e9cad506668d18af71399721e6_icgraph_map" alt=""></center>
+<map name="action_8inc_8php_6c1df0e9cad506668d18af71399721e6_icgraph_map">
+<area shape="rect" href="action_8inc_8php.html#fab8ed8f21d2300e7050803fd135bc35" title="Renvoie l&#39;action a effectuer, si le personnage peut en faire une." alt="" coords="187,5,288,35"></map>
 </div>
 
 </div>
 </div><p>
 </div>
-<hr size="1"><address style="text-align: right;"><small>Généré le Fri May 8 12:45:35 2009 pour Starshine Online par&nbsp;
+<hr size="1"><address style="text-align: right;"><small>Généré le Thu Sep 3 23:11:05 2009 pour Starshine Online par&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.6 </small></address>
 </body>

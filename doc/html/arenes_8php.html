@@ -23,12 +23,12 @@
 <tr><td colspan="2"><br><h2>Variables</h2></td></tr>
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="arenes_8php.html#a720998827fe9e92a5fe573a62edc0b8">$connexion</a> = true</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="arenes_8php.html#beea5db7af13b1bdd70c46e49f512b26">$joueur</a> = recupperso($_SESSION['ID'])</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="arenes_8php.html#beea5db7af13b1bdd70c46e49f512b26">$joueur</a> = new <a class="el" href="classperso.html">perso</a>($_SESSION['ID'])</td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="arenes_8php.html#676d5318e23377117551e5ead156fdf7">$arene_masters</a> = array('Irulan', 'Azeroth')</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="ville__bas_8php.html#e090d03ba817b92f272d5f9e1e3cf724">if</a>(isset($_REQUEST['teleport_in'])) <br>
-<a class="el" href="ville__bas_8php.html#e090d03ba817b92f272d5f9e1e3cf724">if</a>(isset($_REQUEST['remove']))&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="arenes_8php.html#b3e4bd82c6a6334cece3d8b1e1f549fb">$requete_arene</a> = &quot;select * from arenes&quot;</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="viewarene2_8php.html#898248c6f0772cc779881fffc50ca91a">if</a>(isset($_REQUEST['teleport_in'])) <br>
+<a class="el" href="viewarene2_8php.html#898248c6f0772cc779881fffc50ca91a">if</a>(isset($_REQUEST['remove']))&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="arenes_8php.html#b3e4bd82c6a6334cece3d8b1e1f549fb">$requete_arene</a> = &quot;select * from arenes&quot;</td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="arenes_8php.html#63a7a283ea5dee8af1e2d5a3435bf370">$req</a> = $<a class="el" href="classdb.html">db</a>-&gt;query($requete_arene)</td></tr>
 
@@ -69,7 +69,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$joueur = recupperso($_SESSION['ID'])          </td>
+          <td class="memname">$joueur = new <a class="el" href="classperso.html">perso</a>($_SESSION['ID'])          </td>
         </tr>
       </table>
 </div>
@@ -99,7 +99,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="ville__bas_8php.html#e090d03ba817b92f272d5f9e1e3cf724">if</a> ($<a class="el" href="classdb.html">db</a>-&gt;num_rows &gt; 0) $requete_arene = &quot;select * from arenes&quot;          </td>
+          <td class="memname"><a class="el" href="viewarene2_8php.html#898248c6f0772cc779881fffc50ca91a">if</a> ($<a class="el" href="classdb.html">db</a>-&gt;num_rows &gt; 0) $requete_arene = &quot;select * from arenes&quot;          </td>
         </tr>
       </table>
 </div>
@@ -110,7 +110,7 @@
 </div>
 </div><p>
 </div>
-<hr size="1"><address style="text-align: right;"><small>Généré le Fri May 8 12:45:34 2009 pour Starshine Online par&nbsp;
+<hr size="1"><address style="text-align: right;"><small>Généré le Thu Sep 3 23:10:59 2009 pour Starshine Online par&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.6 </small></address>
 </body>

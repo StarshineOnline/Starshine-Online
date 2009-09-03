@@ -103,7 +103,7 @@
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classement__groupe__ajax_8php.html#1d9267881833a0331bec9cf70a511584">$tab_classement</a> ['mp_max']['affiche_niveau'] = false</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classement__groupe__ajax_8php.html#beea5db7af13b1bdd70c46e49f512b26">$joueur</a> = recupperso($_SESSION['ID'])</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classement__groupe__ajax_8php.html#beea5db7af13b1bdd70c46e49f512b26">$joueur</a> = new <a class="el" href="classperso.html">perso</a>($_SESSION['ID'])</td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classement__groupe__ajax_8php.html#83018d9153d17d91fbcf3bc10158d34f">$i</a> = 0</td></tr>
 
@@ -117,7 +117,7 @@
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classement__groupe__ajax_8php.html#6f16db779ef3ccea921b277b5dc245d1">$j</a> = 26</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classement__groupe__ajax_8php.html#1ea21bf4b1af1ebda1b8c63b0e364ce9">$requete</a> = &quot;SELECT groupe.id AS groupe_id, groupe.nom AS groupe_nom, SUM(perso.&quot;.sSQL($tri).&quot;) as somme, COUNT(*) as tot FROM `<a class="el" href="classgroupe.html">groupe</a>` LEFT JOIN groupe_joueur ON groupe.id = groupe_joueur.id_groupe LEFT JOIN perso ON groupe_joueur.id_joueur = perso.ID WHERE perso.statut = 'actif' GROUP BY groupe.id ORDER BY somme DESC LIMIT $inf, $j&quot;</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classement__groupe__ajax_8php.html#1ea21bf4b1af1ebda1b8c63b0e364ce9">$requete</a> = &quot;SELECT groupe.id AS groupe_id, groupe.nom AS groupe_nom, SUM(perso.&quot;.sSQL($tri).&quot;) as somme, COUNT(*) as tot FROM `<a class="el" href="classgroupe.html">groupe</a>` LEFT JOIN <a class="el" href="classgroupe__joueur.html">groupe_joueur</a> ON groupe.id = groupe_joueur.id_groupe LEFT JOIN <a class="el" href="classperso.html">perso</a> ON groupe_joueur.id_joueur = perso.ID WHERE perso.statut = 'actif' GROUP BY groupe.id ORDER BY somme DESC LIMIT $inf, $j&quot;</td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classement__groupe__ajax_8php.html#63a7a283ea5dee8af1e2d5a3435bf370">$req</a> = $<a class="el" href="classdb.html">db</a>-&gt;query($requete)</td></tr>
 
@@ -177,7 +177,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$joueur = recupperso($_SESSION['ID'])          </td>
+          <td class="memname">$joueur = new <a class="el" href="classperso.html">perso</a>($_SESSION['ID'])          </td>
         </tr>
       </table>
 </div>
@@ -222,7 +222,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$requete = &quot;SELECT groupe.id AS groupe_id, groupe.nom AS groupe_nom, SUM(perso.&quot;.sSQL($tri).&quot;) as somme, COUNT(*) as tot FROM `<a class="el" href="classgroupe.html">groupe</a>` LEFT JOIN groupe_joueur ON groupe.id = groupe_joueur.id_groupe LEFT JOIN perso ON groupe_joueur.id_joueur = perso.ID WHERE perso.statut = 'actif' GROUP BY groupe.id ORDER BY somme DESC LIMIT $inf, $j&quot;          </td>
+          <td class="memname">$requete = &quot;SELECT groupe.id AS groupe_id, groupe.nom AS groupe_nom, SUM(perso.&quot;.sSQL($tri).&quot;) as somme, COUNT(*) as tot FROM `<a class="el" href="classgroupe.html">groupe</a>` LEFT JOIN <a class="el" href="classgroupe__joueur.html">groupe_joueur</a> ON groupe.id = groupe_joueur.id_groupe LEFT JOIN <a class="el" href="classperso.html">perso</a> ON groupe_joueur.id_joueur = perso.ID WHERE perso.statut = 'actif' GROUP BY groupe.id ORDER BY somme DESC LIMIT $inf, $j&quot;          </td>
         </tr>
       </table>
 </div>
@@ -908,7 +908,7 @@
 </div>
 </div><p>
 </div>
-<hr size="1"><address style="text-align: right;"><small>Généré le Fri May 8 12:45:35 2009 pour Starshine Online par&nbsp;
+<hr size="1"><address style="text-align: right;"><small>Généré le Thu Sep 3 23:11:02 2009 pour Starshine Online par&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.6 </small></address>
 </body>

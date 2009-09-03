@@ -1,5 +1,6 @@
 <area shape="rect" href="$groupe_8inc_8php.html#6eb055521201dd4e2a62ef5ed51d610c" title="groupe_trouve_joueur" alt="" coords="129,5,287,35">
-<area shape="rect" href="$groupe_8inc_8php.html#6ff2d5a26752095e92a2ff4b43cf625f" title="recupgroupe" alt="" coords="159,59,257,88">
-<area shape="rect" href="$base_8inc_8php.html#2d3292ed5dd5c93b9a42992691cee8aa" title="Calcule la distance &quot;pythagoriciene&quot; entre deux personnages." alt="" coords="336,32,515,61">
-<area shape="rect" href="$base_8inc_8php.html#de6991be5ce13525640bddfc5ea407c8" title="Convertion des coordonnés de deux nombre en un nombre." alt="" coords="368,85,483,115">
-<area shape="rect" href="$base_8inc_8php.html#9a2308f261df8d4bbdcede4c1daa5050" title="Convertion de la position d&#39;un nombre en deux nombres." alt="" coords="564,32,692,61">
+<area shape="rect" href="$base_8inc_8php.html#bdebed81a12acc10788ddb1133ae76e7" title="Lance un buff sur un personnage ou un monstre." alt="" coords="165,59,251,88">
+<area shape="rect" href="$groupe_8inc_8php.html#6ff2d5a26752095e92a2ff4b43cf625f" title="recupgroupe" alt="" coords="159,112,257,141">
+<area shape="rect" href="$base_8inc_8php.html#2d3292ed5dd5c93b9a42992691cee8aa" title="Calcule la distance &quot;pythagoriciene&quot; entre deux personnages." alt="" coords="336,85,515,115">
+<area shape="rect" href="$base_8inc_8php.html#de6991be5ce13525640bddfc5ea407c8" title="Convertion des coordonnés de deux nombre en un nombre." alt="" coords="368,139,483,168">
+<area shape="rect" href="$base_8inc_8php.html#9a2308f261df8d4bbdcede4c1daa5050" title="Convertion de la position d&#39;un nombre en deux nombres." alt="" coords="564,85,692,115">
