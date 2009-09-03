@@ -7,14 +7,14 @@ include_once(root.'inc/ressource.inc.php');
 
 function ressource($nom)
 {
-	$ressource['Pierre'] = 17;
-	$ressource['Bois'] = 18;
-	$ressource['Eau'] = 19;
-	$ressource['Sable'] = 20;
-	$ressource['Charbon'] = 21;
-	$ressource['Essence Magique'] = 22;
-	$ressource['Star'] = 23;
-	$ressource['Nourriture'] = 24;
+	$ressource['Pierre'] = 18;
+	$ressource['Bois'] = 19;
+	$ressource['Eau'] = 20;
+	$ressource['Sable'] = 21;
+	$ressource['Charbon'] = 22;
+	$ressource['Essence Magique'] = 23;
+	$ressource['Star'] = 24;
+	$ressource['Nourriture'] = 25;
 	return $ressource[$nom];
 }
 if($joueur->get_rang_royaume() != 6)
@@ -76,14 +76,14 @@ else
 	$row = $db->read_assoc($req);
 	$explode_stat = explode(';', $row[$royaume->get_race()]);
 	
-	$hier['Pierre'] = $explode_stat[17];
-	$hier['Bois'] = $explode_stat[18];
-	$hier['Eau'] = $explode_stat[19];
-	$hier['Sable'] = $explode_stat[20];
-	$hier['Charbon'] = $explode_stat[21];
-	$hier['Essence Magique'] = $explode_stat[22];
-	$hier['Star'] = $explode_stat[23];
-	$hier['Nourriture'] = $explode_stat[24];
+	$hier['Pierre'] = $explode_stat[18];
+	$hier['Bois'] = $explode_stat[19];
+	$hier['Eau'] = $explode_stat[20];
+	$hier['Sable'] = $explode_stat[21];
+	$hier['Charbon'] = $explode_stat[22];
+	$hier['Essence Magique'] = $explode_stat[23];
+	$hier['Star'] = $explode_stat[24];
+	$hier['Nourriture'] = $explode_stat[25];
 	
 	$requete = "SELECT info, FLOOR(COUNT(*) / 10) as tot, COUNT(*) as tot_terrain FROM `map` WHERE royaume = ".$royaume->get_id()." GROUP BY info";
 	$req = $db->query($requete);
@@ -152,7 +152,7 @@ else
 				case 8 :
 					$ress_final = array('Essence Magique' => $batiment[$row['id_batiment']]['bonus1'] * $ress_terrain['Essence Magique']);
 				break;
-			}
+			}			
 		}
 		else
 		{
@@ -161,6 +161,7 @@ else
 			{
 				$ress_final[$key] = $batiment[$row['id_batiment']]['bonus1'] * $value;
 			}
+
 		}
 		foreach($ress_final as $key => $value)
 		{
@@ -168,7 +169,6 @@ else
 			$ress_mine_terrain[$key_terr][$key] +=  $res * $ressources[$key_terr];
 		}
 	}
-
 	$liste_ressources = array();
 	$liste_ressources[] = 'Pierre';
 	$liste_ressources[] = 'Bois';
@@ -194,12 +194,14 @@ else
 	{
 		if ($type_ressource == 'Essence Magique')
 		{$class_ressource='essence';}else{	$class_ressource = strtolower($type_ressource);}
+	 if(empty($ressource_mine_final[$type_ressource])){$ressource_mine_final[$type_ressource] = 0;}
 	?>
+	
 	<li class='<?php echo $class; ?>' onclick="affichePopUp('ressources.php?ress=<?php echo $type_ressource; ?>');">
 		<span class='ressource_nom'><span class='<?php echo $class_ressource; ?>'></span><?php echo $type_ressource; ?></span>
 		<span class='ressource_gains'><?php echo $hier[$type_ressource]; ?></span>
 		<span class='ressource_case'><?php echo $ressource_final[$type_ressource]; ?></span>
-		<span class='ressource_mines'><?php echo $ressource_mine_final[$type_ressource]; ?></span>
+		<span class='ressource_mines'><?php  echo $ressource_mine_final[$type_ressource]; ?></span>
 		<span class='ressource_total'><?php echo ($ressource_mine_final[$type_ressource] + $ressource_final[$type_ressource]); ?></span>
 	</li>
 	<?php

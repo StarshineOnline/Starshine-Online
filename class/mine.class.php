@@ -11,7 +11,7 @@ class mine extends construction
 	function get_ressources()
 	{
 		global $db;
-		$requete = "SELECT info FROM map WHERE ID = ".convert_in_pos($this->x, $this->y)."";
+		$requete = "SELECT info FROM map WHERE ID = ".convert_in_pos($this->get_x(), $this->get_y())."";
 		$req = $db->query($requete);
 		$row = $db->read_assoc($req);
 		$terrain = type_terrain($row['info']);

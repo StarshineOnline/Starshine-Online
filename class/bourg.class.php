@@ -32,7 +32,7 @@ class bourg extends construction
 		$i = 0;
 		while($row_m = $db->read_assoc($req_m))
 		{
-			$this->mines[$i] = new mine($row_m);
+			$this->mines[$i] = new mine($row_m[id]);
 			if($ressource) $this->mines[$i]->get_ressources();
 			$i++;
 		}

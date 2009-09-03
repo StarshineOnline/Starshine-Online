@@ -45,8 +45,16 @@ else if(array_key_exists('id', $_GET))
 			<?php
 				foreach($bourg->mines as $mine)
 				{
+					$overlib = '';
 					$mine->get_evolution();
-					$overlib = 'Pierre : '.$mine->ressources['Pierre'].'<br />Bois : '.$mine->ressources['Bois'].'<br />Eau : '.$mine->ressources['Eau'].'<br />Sable : '.$mine->ressources['Sable'].'<br />Nourriture : '.$mine->ressources['Nourriture'].'<br />Charbon : '.$mine->ressources['Charbon'].'<br />Essence Magique : '.$mine->ressources['Essence Magique'].'<br />Star : '.$mine->ressources['Star'];
+					if(!empty($mine->ressources['Pierre'])) 		{$overlib .= 'Pierre : '.$mine->ressources['Pierre'].'<br />';}
+					if(!empty($mine->ressources['Bois'])) 			{$overlib .= 'Bois : '.$mine->ressources['Bois'].'<br />';}
+					if(!empty($mine->ressources['Eau'])) 			{$overlib .= 'Eau : '.$mine->ressources['Eau'].'<br />';}
+					if(!empty($mine->ressources['Sable'])) 			{$overlib .= 'Sable : '.$mine->ressources['Sable'].'<br />';}
+					if(!empty($mine->ressources['Nourriture'])) 	{$overlib .= 'Nourriture : '.$mine->ressources['Nourriture'].'<br />';}
+					if(!empty($mine->ressources['Charbon'])) 		{$overlib .= 'Charbon : '.$mine->ressources['Charbon'].'<br />';}
+					if(!empty($mine->ressources['Essence Magique'])){$overlib .= 'Essence Magique : '.$mine->ressources['Essence Magique'].'<br />';}
+					if(!empty($mine->ressources['Star'])) 			{$overlib .= 'Star : '.$mine->ressources['Star'].'<br />';}
 					if($mine->evolution['cout'] != '') $evolution = ' <a onclick="envoiInfo(\'mine.php?mine='.$mine->get_id().'&amp;up\', \'info_mine\');$(\'info_mine\').show();" title="Evoluer ('.$mine->evolution['cout'].' stars)">Up</a>';
 					else $evolution = '';
 					echo '

@@ -8,7 +8,6 @@ if($joueur->get_rang_royaume() != 6)
 	else if($_GET['direction'] == 'diplomatie')
 	{
 		$diplo = unserialize($royaume->get_diplo_time());
-		print_r($diplo);
 		$req = $db->query("SELECT * FROM diplomatie WHERE race = '".$joueur->get_race()."'");
 		$row = $db->read_assoc($req);
 		if($_GET['action'] == 'valid')
