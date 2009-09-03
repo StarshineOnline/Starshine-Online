@@ -129,6 +129,7 @@ class entite
 				$this->arme_degat = 0;
 				$this->level = $objet->get_level();
 				$this->rang_royaume = 0;
+				$this->espece = $objet->get_type();
 			break;
 			case 'batiment' :
 				$this->coef_carac = $objet->coef;
@@ -166,6 +167,7 @@ class entite
 				$this->enchantement = array();
 				$this->arme_degat = 0;
 				$this->level = 1;
+				$this->espece = 'batiment';
 			break;
 			case 'siege' :
 				$this->coef_carac = $objet->coef;
@@ -203,6 +205,7 @@ class entite
 				$this->enchantement = array();
 				$this->arme_degat = $objet->arme_degat;
 				$this->level = 1;
+				$this->espece = 'siege';
 			break;
 			case 'ville' :
 				$this->coef_carac = $objet->coef;
@@ -240,6 +243,7 @@ class entite
 				$this->enchantement = array();
 				$this->arme_degat = $objet->arme_degat;
 				$this->level = 1;
+				$this->espece = 'ville';
 			break;
 		}
 	}
@@ -561,6 +565,11 @@ class entite
 	function get_pos()
 	{
 		return convert_in_pos($this->x, $this->y);
+	}
+
+	function get_espece()
+	{
+		return $this->espece;
 	}
 }
 ?>
