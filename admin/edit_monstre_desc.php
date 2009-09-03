@@ -1,6 +1,6 @@
 <?php
-if (file_exists('root.php'))
-  include_once('root.php');
+if (file_exists('../root.php'))
+  include_once('../root.php');
 
 $textures = false;
 include_once(root.'haut.php');
@@ -13,7 +13,7 @@ if ($G_maintenance)
 }
 else
 {
-	include_once(root.'menu_admin.php');
+	include_once(root.'admin/menu_admin.php');
 	if(array_key_exists('id_monstre', $_GET)) $id_monstre = $_GET['id_monstre'];
 	else $id_monstre = $_POST['id_monstre'];
 	$requete = "SELECT id, nom, description FROM monstre WHERE id = ".$id_monstre;

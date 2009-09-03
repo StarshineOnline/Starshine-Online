@@ -1,11 +1,11 @@
 <?php
 if (file_exists('../root.php'))
   include_once('../root.php');
-?><?php
+
 $textures = false;
-include_once(root.'../haut.php');
+include_once(root.'haut.php');
 setlocale(LC_ALL, 'fr_FR');
-include_once(root.'../haut_site.php');
+include_once(root.'haut_site.php');
 if ($G_maintenance)
 {
 	echo 'Starshine-online est actuellement en cours de mis à jour.<br />
@@ -13,14 +13,14 @@ if ($G_maintenance)
 }
 else
 {
-	include ("../jpgraph/src/jpgraph.php");
-	include ("../jpgraph/src/jpgraph_pie.php");
-	include ("../jpgraph/src/jpgraph_pie3d.php");
-	include ("../jpgraph/src/jpgraph_line.php");
-	include ("../jpgraph/src/jpgraph_bar.php");
-	include ("../jpgraph/src/jpgraph_scatter.php");
-	include ("../jpgraph/src/jpgraph_regstat.php");
-	include_once(root.'menu_admin.php');
+	include (root."../jpgraph/src/jpgraph.php");
+	include (root."../jpgraph/src/jpgraph_pie.php");
+	include (root."../jpgraph/src/jpgraph_pie3d.php");
+	include (root."../jpgraph/src/jpgraph_line.php");
+	include (root."../jpgraph/src/jpgraph_bar.php");
+	include (root."../jpgraph/src/jpgraph_scatter.php");
+	include (root."../jpgraph/src/jpgraph_regstat.php");
+	include_once(root.'admin/menu_admin.php');
 	?>
 	<div id="contenu">
 	<div id="centre3">
@@ -91,6 +91,6 @@ else
 	?>
 	<img src="image/test_admin.jpg" />
 	<?php
-	include_once(root.'../bas.php');
+	include_once(root.'bas.php');
 }
 ?>

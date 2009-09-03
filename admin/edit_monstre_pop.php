@@ -13,7 +13,7 @@ if ($G_maintenance)
 }
 else
 {
-	include_once(root.'menu_admin.php');
+	include_once(root.'admin/menu_admin.php');
 	if(array_key_exists('id_monstre', $_GET)) $id_monstre = $_GET['id_monstre'];
 	else $id_monstre = $_POST['id_monstre'];
 	$monstre = recupmonstre($id_monstre, false);

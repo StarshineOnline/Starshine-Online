@@ -1,7 +1,7 @@
 <?php
 if (file_exists('../root.php'))
   include_once('../root.php');
-?><?php
+
 $textures = false;
 include_once(root.'haut.php');
 setlocale(LC_ALL, 'fr_FR');
@@ -62,6 +62,6 @@ else
 	?>
 		</div>
 	<?php
-	include_once(root.'../bas.php');
+	include_once(root.'bas.php');
 
 ?>

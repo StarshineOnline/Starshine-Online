@@ -1,7 +1,7 @@
 <?php
 if (file_exists('root.php'))
   include_once('root.php');
-?><?php
+
 $textures = false;
 include_once(root.'haut.php');
 setlocale(LC_ALL, 'fr_FR');
@@ -13,7 +13,7 @@ if ($G_maintenance)
 }
 else
 {
-	include_once(root.'menu_admin.php');
+	include_once(root.'admin/menu_admin.php');
 	$id_monstre = $_GET['id_monstre'];
 	$monstre = recupmonstre($id_monstre, false);
 	?>

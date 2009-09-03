@@ -1,12 +1,12 @@
 <?php
-if (file_exists('root.php'))
-  include_once('root.php');
+if (file_exists('../root.php'))
+  include_once('../root.php');
 
 $textures = false;
 include_once(root.'haut.php');
 setlocale(LC_ALL, 'fr_FR');
 include_once(root.'haut_site.php');
-include_once(root.'menu_admin.php');
+include_once(root.'admin/menu_admin.php');
 
 $requete = "SELECT * FROM donjon";
 $req = $db->query($requete);

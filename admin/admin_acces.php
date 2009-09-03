@@ -3,9 +3,9 @@ if (file_exists('../root.php'))
   include_once('../root.php');
 
 $textures = false;
-include_once(root.'../haut.php');
+include_once(root.'haut.php');
 setlocale(LC_ALL, 'fr_FR');
-include_once(root.'../haut_site.php');
+include_once(root.'haut_site.php');
 if ($G_maintenance)
 {
 	echo 'Starshine-online est actuellement en cours de mis ? jour.<br />
@@ -13,7 +13,7 @@ if ($G_maintenance)
 }
 else
 {
-	include_once(root.'menu_admin.php');
+	include_once(root.'admin/menu_admin.php');
 	?>
 	<div id="contenu">
 	<div id="centre3">
@@ -44,6 +44,6 @@ else
 		<input type="submit" value="Créer" />
 	</form>
 	<?php
-	include_once(root.'../bas.php');
+	include_once(root.'bas.php');
 }
 ?>
