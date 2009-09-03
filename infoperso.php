@@ -128,7 +128,7 @@ if($joueur->get_groupe() != 0)
 		{
 			$membre->poscase = calcul_distance(convert_in_pos($membre->get_x(), $membre->get_y()), convert_in_pos($joueur->get_x(), $joueur->get_y()));
 			$membre->pospita = calcul_distance_pytagore(convert_in_pos($membre->get_x(),$membre->get_y()), convert_in_pos($joueur->get_x(), $joueur->get_y()));
-			$overlib = "<ul><li class='overlib_titres'>".ucwords($membre->get_grade()->get_nom())." ".ucwords($membre->get_nom())."</li><li>".ucwords($membre->get_race())." - ".ucwords($membre->get_classe())." (Niv.".$membre->get_level().")</li><li>HP : ".$membre->get_hp()." / ".$membre->get_hp_max()."</li><li>MP : ".$membre->get_mp()." / ".$membre->get_mp_max()."</li><li>Posisiton : x:".$membre->get_x().", y:".$membre->get_y()."</li><li>Distance : ".$membre->poscase." - Pytagorienne : ".$membre->pospita."</li>";
+			$overlib = "<ul><li class='overlib_titres'>".ucwords($membre->get_grade()->get_nom())." ".ucwords($membre->get_nom())."</li><li>".ucwords($membre->get_race())." - ".ucwords($membre->get_classe())." (Niv.".$membre->get_level().")</li><li>HP : ".$membre->get_hp()." / ".floor($membre->get_hp_max())."</li><li>MP : ".$membre->get_mp()." / ".floor($membre->get_mp_max())."</li><li>Posisiton : x:".$membre->get_x().", y:".$membre->get_y()."</li><li>Distance : ".$membre->poscase." - Pytagorienne : ".$membre->pospita."</li>";
 			{//-- Récupération des buffs
 				$overlib .= "<li>";
 				foreach($membre->get_buff() as $buff)
@@ -161,7 +161,6 @@ if($joueur->get_groupe() != 0)
 				   <span class='joueur_groupe_barre_hp'>".genere_image_hp_groupe($membre)."</span>
 				   <span class='joueur_groupe_barre_mp'>".genere_image_mp_groupe($membre)."</span>";
 			if ($membre->get_hp() <= 0) { echo "<span class='joueur_groupe_mort'></span>"; } 
-			
 			echo " <div class='spacer'></div>
 				  </li>";
 		}

@@ -152,14 +152,12 @@ if (isset($_GET['ID']))
 						if ($augmentation[1] == 1)
 						{
 							$joueur->set_incantation($augmentation[0]);
-							echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant à '.$joueur->get_incantation().' en incantation</span><br />';
 						}
 						$difficulte_sort = diff_sort($sort->get_difficulte(), $joueur, 'sort_vie', $sortpa_base, $sortmp_base);
 						$augmentation = augmentation_competence('sort_vie', $joueur, $difficulte_sort);
 						if ($augmentation[1] == 1)
 						{
 							$joueur->set_sort_vie($augmentation[0]);
-							echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant à '.$joueur->get_sort_vie().' en '.$Gtrad['sort_vie'].'</span><br />';
 						}
 						//sauve_sans_bonus_ignorables($joueur, array('mp', 'pa', 'incantation', 'sort_vie'));
 						$joueur->sauver();
@@ -194,14 +192,12 @@ if (isset($_GET['ID']))
 							if ($augmentation[1] == 1)
 							{
 								$joueur->set_incantation($augmentation[0]);
-								echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant à '.$joueur->get_incantation().' en incantation</span><br />';
 							}
 							$difficulte_sort = diff_sort($sort->get_difficulte(), $joueur, 'sort_mort', $sortpa_base, $sorthp);
 							$augmentation = augmentation_competence('sort_mort', $joueur, $difficulte_sort);
 							if ($augmentation[1] == 1)
 							{
 								$joueur->set_sort_mort($augmentation[0]);
-								echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant à '.$joueur->get_sort_mort().' en '.$Gtrad['sort_mort'].'</span><br />';
 							}
 							//sauve_sans_bonus_ignorables($joueur, array('mp', 'pa', 'incantation', 'sort_mort'));
 							$joueur->sauver();
@@ -225,14 +221,12 @@ if (isset($_GET['ID']))
 						if ($augmentation[1] == 1)
 						{
 							$joueur->set_incantation($augmentation[0]);
-							echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant à '.$joueur->get_incantation().' en incantation</span><br />';
 						}	
 						$difficulte_sort = diff_sort($sort->get_difficulte(), $joueur, 'sort_element', $sortpa_base, $sortmp_base);
 						$augmentation = augmentation_competence('sort_element', $joueur, $difficulte_sort);
 						if ($augmentation[1] == 1)
 						{
 							$joueur->set_sort_element($augmentation[0]);
-							echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant à '.$joueur->get_sort_element().' en '.$Gtrad['sort_element'].'</span><br />';
 						}
 						//sauve_sans_bonus_ignorables($joueur, array('mp', 'pa', 'incantation', 'sort_element', 'x', 'y'));
 						$joueur->sauver();
@@ -259,14 +253,12 @@ if (isset($_GET['ID']))
 						if ($augmentation[1] == 1)
 						{
 							$joueur->set_incantation($augmentation[0]);
-							echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant à '.$joueur->get_incantation().' en incantation</span><br />';
 						}
 						$difficulte_sort = diff_sort($sort->get_difficulte(), $joueur, $sort->get_comp_assoc(), $sortpa_base, 1);
 						$augmentation = augmentation_competence($sort->get_comp_assoc(), $joueur, $difficulte_sort);
 						if ($augmentation[1] == 1)
 						{
 							$joueur->set_comp($sort->get_comp_assoc(), $augmentation[0]);
-							echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant à '.$joueur->get_comp($sort->get_comp_assoc()).' en '.$Gtrad[$sort->get_comp_assoc()].'</span><br />';
 						}
 						//Mis à jour du joueur
 						//sauve_sans_bonus_ignorables($joueur, array('mp', 'pa', 'incantation', $row['comp_assoc']));
@@ -314,14 +306,12 @@ if (isset($_GET['ID']))
 						if ($augmentation[1] == 1)
 						{
 							$joueur->set_incantation($augmentation[0]);
-							echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant à '.$joueur->get_incantation().' en incantation</span><br />';
 						}	
 						$difficulte_sort = diff_sort($sort->get_difficulte(), $joueur, $sort->get_comp_assoc(), $sortpa_base, $sortmp_base);
 						$augmentation = augmentation_competence($sort->get_comp_assoc(), $joueur, $difficulte_sort);
 						if ($augmentation[1] == 1)
 						{
 							$joueur->set_comp($sort->get_comp_assoc(), $augmentation[0]);
-							echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant à '.$joueur->get_comp($sort->get_comp_assoc()).' en '.$Gtrad[$sort->get_comp_assoc()].'</span><br />';
 						}
 						//Mis à jour du joueur
 						//sauve_sans_bonus_ignorables($joueur, array('mp', 'pa', 'incantation', $row['comp_assoc']));
@@ -401,14 +391,12 @@ if (isset($_GET['ID']))
 					if ($augmentation[1] == 1)
 					{
 						$joueur->set_incantation($augmentation[0]);
-						echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant à '.$joueur->get_incantation().' en incantation</span><br />';
 					}	
 					$difficulte_sort = diff_sort($sort->get_difficulte(), $joueur, $sort->get_comp_assoc(), $sortpa_base, $sortmp_base);
 					$augmentation = augmentation_competence($sort->get_comp_assoc(), $joueur, $difficulte_sort);
 					if ($augmentation[1] == 1)
 					{
 						$joueur->set_comp_assoc($sort->get_comp_assoc(), $augmentation[0]);
-						echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant à '.$joueur->get_comp($sort->get_comp_assoc()).' en '.$Gtrad[$sort->get_comp_assoc()].'</span><br />';
 					}
 					//Mise à jour du joueur
 					$joueur->sauver();
@@ -449,14 +437,12 @@ if (isset($_GET['ID']))
 						if ($augmentation[1] == 1)
 						{
 							$joueur->set_incantation($augmentation[0]);
-							echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant à '.$joueur->get_incantation().' en incantation</span><br />';
 						}
 						$difficulte_sort = diff_sort($sort->get_difficulte(), $joueur, $sort->get_comp_assoc(), $sortpa_base, $sortmp_base);
 						$augmentation = augmentation_competence($sort->get_comp_assoc(), $joueur, $difficulte_sort);
 						if ($augmentation[1] == 1)
 						{
 							$joueur->set_comp_assoc($sort->get_comp_assoc(), $augmentation[0]);
-							echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant à '.$joueur->get_comp($sort->get_comp_assoc()).' en '.$Gtrad[$sort->get_comp_assoc()].'</span><br />';
 						}
 						//-- Mise à jour du joueur
 						$joueur->sauver();
@@ -492,14 +478,12 @@ if (isset($_GET['ID']))
 							if ($augmentation[1] == 1)
 							{
 								$joueur->set_incantation($augmentation[0]);
-								echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant à '.$joueur->get_incantation().' en incantation</span><br />';
 							}
 							$difficulte_sort = diff_sort($sort->get_difficulte(), $joueur, $sort->get_comp_assoc(), $sortpa_base, $sortmp_base);
 							$augmentation = augmentation_competence($sort->get_comp_assoc(), $joueur, $difficulte_sort);
 							if ($augmentation[1] == 1)
 							{
 								$joueur->set_comp_assoc($sort->get_comp_assoc(), $augmentation[0]);
-								echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant à '.$joueur->get_comp($sort->get_comp_assoc()).' en '.$Gtrad[$sort->get_comp_assoc()].'</span><br />';
 							}
 							//-- Mise à jour du joueur
 							$joueur->sauver();
@@ -548,14 +532,12 @@ if (isset($_GET['ID']))
 					if ($augmentation[1] == 1)
 					{
 						$joueur->set_incantation($augmentation[0]);
-						echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant à '.$joueur->get_incantation().' en incantation</span><br />';
 					}
 					$difficulte_sort = diff_sort($sort->get_difficulte(), $joueur, $sort->get_comp_assoc(), $sortpa_base, $sortmp_base);
 					$augmentation = augmentation_competence($sort->get_comp_assoc(), $joueur, $difficulte_sort);
 					if ($augmentation[1] == 1)
 					{
 						$joueur->set_comp($sort->get_comp_assoc(), $augmentation[0]);
-						echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant à '.$joueur->get_comp($sort->get_comp_assoc()).' en '.$Gtrad[$sort->get_comp_assoc()].'</span><br />';
 					}
 					//Mis à jour du joueur
 					//sauve_sans_bonus_ignorables($joueur, array('mp', 'pa', 'incantation', $sort->get_comp_assoc()));
@@ -634,14 +616,12 @@ if (isset($_GET['ID']))
 					if ($augmentation[1] == 1)
 					{
 						$joueur->set_incantation($augmentation[0]);
-						echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant à '.$joueur->get_incantation().' en incantation</span><br />';
 					}
 					$difficulte_sort = diff_sort($sort->get_difficulte(), $joueur, $sort->get_comp_assoc(), $sortpa_base, $sortmp_base);
 					$augmentation = augmentation_competence($sort->get_comp_assoc(), $joueur, $difficulte_sort);
 					if ($augmentation[1] == 1)
 					{
 						$joueur->set_comp($sort->get_comp_assoc(), $augmentation[0]);
-						echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant à '.$joueur->get_comp($sort->get_comp_assoc()).' en '.$Gtrad[$sort->get_comp_assoc()].'</span><br />';
 					}
 					//Mis à jour du joueur
 					//sauve_sans_bonus_ignorables($joueur, array('mp', 'pa', 'incantation', $row['comp_assoc']));
@@ -679,14 +659,12 @@ if (isset($_GET['ID']))
 							if ($augmentation[1] == 1)
 							{
 								$joueur->set_incantation($augmentation[0]);
-								echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant à '.$joueur->get_incantation().' en incantation</span><br />';
 							}
 							$difficulte_sort = diff_sort($sort->get_difficulte(), $joueur, $sort->get_comp_assoc(), $sortpa_base, $sortmp_base);
 							$augmentation = augmentation_competence($sort->get_comp_assoc(), $joueur, $difficulte_sort);
 							if ($augmentation[1] == 1)
 							{
 								$joueur->set_comp($sort->get_comp_assoc(), $augmentation[0]);
-								echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant à '.$joueur->get_comp($sort->get_comp_assoc()).' en '.$Gtrad[$sort->get_comp_assoc()].'</span><br />';
 							}
 							//Mis à jour du joueur
 							//sauve_sans_bonus_ignorables($joueur, array('mp', 'pa', 'incantation', $row['comp_assoc']));

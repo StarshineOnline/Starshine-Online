@@ -2472,11 +2472,11 @@ function genere_image_mp($joueur)
 function genere_image_hp_groupe($joueur)
 {
 	//Barre HP
-	$ratio_hp = floor(10 * ($joueur->get_hp() / $joueur->get_hp_max()));
+	$ratio_hp = floor(10 * ($joueur->get_hp() / floor($joueur->get_hp_max())));
 	if($ratio_hp > 10) $ratio_hp = 10;
 	if($ratio_hp < 0) $ratio_hp = 0;
 	$barre_vie = 'image/barre/g_vie'.$ratio_hp.'.png';
-	return '<img src="'.$barre_vie.'" alt="HP = '.$joueur->get_hp().' / '.$joueur->get_hp_max().'" title="HP = '.$joueur->get_hp().' / '.$joueur->get_hp_max().'" style="height : 5px; width : 100px;" />';
+	return '<img src="'.$barre_vie.'" alt="HP = '.$joueur->get_hp().' / '.floor($joueur->get_hp_max()).'" title="HP = '.$joueur->get_hp().' / '.floor($joueur->get_hp_max()).'" style="height : 5px; width : 100px;" />';
 }
 
 /**
@@ -2489,11 +2489,11 @@ function genere_image_hp_groupe($joueur)
 function genere_image_mp_groupe($joueur)
 {
 	//Barre MP
-	$ratio_mp = floor(10 * ($joueur->get_mp() / $joueur->get_mp_max()));
+	$ratio_mp = floor(10 * ($joueur->get_mp() / floor($joueur->get_mp_max())));
 	if($ratio_mp > 10) $ratio_mp = 10;
 	if($ratio_mp < 0) $ratio_mp = 0;
 	$barre_mp = 'image/barre/g_mp'.$ratio_mp.'.png';
-	return '<img src="'.$barre_mp.'" alt="MP = '.$joueur->get_mp().' / '.$joueur->get_mp_max().'" title="MP = '.$joueur->get_mp().' / '.$joueur->get_mp_max().'" style="height : 5px; width : 100px;" />';
+	return '<img src="'.$barre_mp.'" alt="MP = '.$joueur->get_mp().' / '.floor($joueur->get_mp_max()).'" title="MP = '.$joueur->get_mp().' / '.floor($joueur->get_mp_max()).'" style="height : 5px; width : 100px;" />';
 }
 
 /**
