@@ -885,7 +885,7 @@ else
 							}
 							if($tirage == 1)
 							{
-								$type = '';
+								$type_obj = '';
 								//Nom de l'objet
 								switch($objet[0])
 								{
@@ -951,7 +951,7 @@ else
 										$row = $db->read_row($req);
 										$objet_nom = $row[0];
 										$objet = 'o'.$id_objet;
-										$type = 'quete';
+										$type_obj = 'quete';
 									break;
 									case 'l' :
 										$id_objet = mb_substr($objet, 1);
@@ -963,7 +963,7 @@ else
 								}
 								echo 'Vous fouillez le corps du monstre et découvrez "'.$objet_nom.'" !<br />';
 								//Si le joueur a un groupe
-								if($attaquant->get_groupe() > 0 AND $type != 'quete')
+								if($attaquant->get_groupe() > 0 AND $type_obj != 'quete')
 								{
 									//Répartition en fonction du mode de distribution
 									switch($groupe->get_partage())
@@ -1015,7 +1015,7 @@ else
 								$db->query($requete);
 								if($objet[0] != 'r')
 								{
-									if($type == 'quete')
+									if($type_obj == 'quete')
 									{
 										verif_action('L'.$id_objet, $gagnant, 's');
 										$gagnant->prend_objet($objet);
@@ -1096,10 +1096,14 @@ else
 				$joueur->sauver();
 			}
 			//Sinon c'est une arme de siège, et il faut modifier son rechargement
-			else
+			elseif ($type == 'siege' OR $type == 'ville')
 			{
 				//$map_siege->set_rechargement(time() + $siege->get_bonus3());
 				$map_siege->sauver();
+			}
+			else
+			{
+				echo "<b>Error: </b> type is [$type] !<br/>";
 			}
 
 			//Mise dans les journaux si attaque pvp

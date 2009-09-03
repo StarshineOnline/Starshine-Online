@@ -49,10 +49,13 @@ class entite
 	private $rang_royaume;
 	private $espece;
 
-	function __construct($type, $objet)
+	private $objet_ref;
+
+	function __construct($type, &$objet)
 	{
 		$this->objet_effet = array();
 		$this->type = $type;
+		$this->objet_ref = &$objet;
 		switch($type)
 		{
 			case 'joueur' :
@@ -570,6 +573,12 @@ class entite
 	function get_espece()
 	{
 		return $this->espece;
+	}
+
+	function get_groupe()
+	{
+		if ($this->type == 'joueur') return $this->objet_ref->get_groupe();
+		else return null;
 	}
 }
 ?>
