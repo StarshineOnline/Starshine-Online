@@ -155,7 +155,7 @@ function attaque($acteur = 'attaquant', $competence, &$effects)
 				$degat = $effect->calcul_degats($actif, $passif, $degat);
       /* ~Degats */
 
-      if($passif->bouclier)
+      if($passif->bouclier())
 				{
 					//Si c'est une flèche rapide, on ignore le blocage
 					if(array_key_exists('fleche_rapide', $actif->etat))
@@ -163,22 +163,23 @@ function attaque($acteur = 'attaquant', $competence, &$effects)
 						}
 					else
 						{
-							if(array_key_exists('blocage', $passif['enchantement'])) $enchantement_blocage = 1 + ($passif['enchantement']['blocage']['effet'] / 100); else $enchantement_blocage = 1;
+							$p_e = $passif->get_enchantement();
+							if(array_key_exists('blocage', $p_e)) $enchantement_blocage = 1 + ($p_e['blocage']['effet'] / 100); else $enchantement_blocage = 1;
 							if($actif->is_buff('buff_bouclier_sacre')) $buff_blocage = 1 + ($actif->get_buff('buff_bouclier_sacre', 'effet') / 100); else $buff_blocage = 1;
 							if(array_key_exists('benediction', $passif->etat)) $buff_bene_blocage = 1 + (($passif->etat['benediction']['effet'] * $G_buff['bene_bouclier']) / 100); else $buff_bene_blocage = 1;
 							if(array_key_exists('a_c_bloque', $actif->etat)) $augmentation_chance_bloque = 1 + ($actif->etat['a_c_bloque']['effet'] / 100); else $augmentation_chance_bloque = 1;
 							if(array_key_exists('b_c_bloque', $actif->etat)) $baisse_chance_bloque = 1 + ($actif->etat['b_c_bloque']['effet'] / 100); else $baisse_chance_bloque = 1;
-							$passif['potentiel_bloquer'] = floor($passif['blocage'] * (pow($passif['dexterite'], 2) / 100) * $enchantement_blocage * $buff_bene_blocage * $buff_blocage * $augmentation_chance_bloque / ($baisse_chance_bloque));
+							$passif->potentiel_bloquer = floor($passif->get_blocage() * (pow($passif->get_dexterite(), 2) / 100) * $enchantement_blocage * $buff_bene_blocage * $buff_blocage * $augmentation_chance_bloque / ($baisse_chance_bloque));
 
 							/* Application des effets de blocage */
 							foreach ($effects as $effect)
 								$effect->calcul_bloquage($actif, $passif);
 							/* ~Blocage */
 
-							$blocage = rand(0, $passif['potentiel_bloquer']);
+							$blocage = rand(0, $passif->potentiel_bloquer);
 							echo '
 				<div id="debug'.$debugs.'" class="debug">
-					Potentiel bloquer défenseur : '.$passif['potentiel_bloquer'].'<br />
+					Potentiel bloquer défenseur : '.$passif->potentiel_bloquer.'<br />
 					Attaque : '.$attaque.'<br />
 					Résultat => '.$blocage.' VS '.$attaque.'<br />
 				</div>';
@@ -186,7 +187,7 @@ function attaque($acteur = 'attaquant', $competence, &$effects)
 							//Si le joueur bloque
 							if ($attaque <= $blocage)
 								{
-									$degat_bloque = $passif['bouclier_degat'];
+									$degat_bloque = $passif->bouclier()->degat;
 									if(array_key_exists('bouclier_terre', $actif->buff)) $degat_bloque += $actif->buff['bouclier_terre']['effet'];
 
 									/* Application des degats bloques */
@@ -226,6 +227,8 @@ function attaque($acteur = 'attaquant', $competence, &$effects)
 
 								}
 						}
+					$diff_blocage = 2.5 * $G_round_total / 5;
+					$augmentation['passif']['comp'][] = array('blocage', $diff_blocage);
 				}
       //Posture défensive
       if($passif->etat['posture']['type'] == 'posture_defense') $buff_posture_defense = $passif->etat['posture']['effet']; else $buff_posture_defense = 0;
@@ -441,11 +444,6 @@ function attaque($acteur = 'attaquant', $competence, &$effects)
 	$diff_esquive = 2.7 * $G_round_total / 5;
 	$augmentation['actif']['comp'][] = array($competence, $diff_att);
 	$augmentation['passif']['comp'][] = array('esquive', $diff_esquive);
-	if($passif->bouclier AND ($attaque > $defense))
-    {
-		$diff_blocage = 2.5 * $G_round_total / 5;
-		$augmentation['passif']['comp'][] = array('blocage', $diff_blocage);
-    }
 
 	/* Ici on va enregistrer les etats précédents */
 	// Enregistre si on a esquivé ou non

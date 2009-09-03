@@ -2844,6 +2844,25 @@ class perso extends entite
 		return $this->arme;
 	}
 
+	private $bouclier;
+	function get_bouclier()
+	{
+		if(!isset($this->bouclier))
+		{
+			global $db;
+			$bouclier = $this->inventaire()->main_gauche;
+			if($bouclier != '')
+			{
+				$arme_g = decompose_objet($bouclier);
+				$requete = "SELECT * FROM arme WHERE id = ".$arme_g['id_objet'];
+				$req = $db->query($requete);
+				$this->bouclier = $db->read_object($req);
+			}
+			else $this->bouclier = false;
+		}
+		return $this->bouclier;
+	}
+
 	function get_distance_tir()
 	{
 		if(!isset($this->distance_tir))

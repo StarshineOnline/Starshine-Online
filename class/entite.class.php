@@ -29,6 +29,7 @@ class entite
 	private $distance_tir;
 	private $esquive;
 	private $distance;
+	private $blocage;
 	private $melee;
 	private $incantation;
 	private $sort_mort;
@@ -50,6 +51,8 @@ class entite
 	private $espece;
 
 	private $objet_ref;
+
+	public $potentiel_bloquer;
 
 	function __construct($type, &$objet)
 	{
@@ -96,6 +99,7 @@ class entite
 				$this->rang_royaume = $objet->get_rang_royaume();
 				$this->rang = $objet->get_grade()->get_rang();
 				$this->espece = 'humainoïde';
+				$this->blocage = $objet->get_blocage();
 			break;
 			case 'monstre' :
 				$this->action = $objet->get_action();
@@ -580,5 +584,23 @@ class entite
 		if ($this->type == 'joueur') return $this->objet_ref->get_groupe();
 		else return null;
 	}
+
+	function dump() { echo '<pre>'; var_dump($this); echo '</pre>'; }
+
+	function bouclier()
+	{
+		switch($this->type)
+		{
+			case 'joueur' :
+				//$this->dump();
+				return $this->objet_ref->get_bouclier();
+				break;
+			case 'monstre' : 
+				break;
+		}
+		return false;
+	}
+
+	function get_blocage() { return $this->blocage; }
 }
 ?>

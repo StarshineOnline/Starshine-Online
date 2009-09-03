@@ -2,6 +2,8 @@
 if (file_exists('../root.php'))
   include_once('../root.php');
 
+function my_dump($o) { echo '<pre>'; var_dump($o); echo '</pre>'; }
+
 
 function print_mess_bar()
 {
@@ -202,7 +204,7 @@ function affiche_construction_visu($joueur, $W_row, $position="")
 }
 
 function print_montee_comp($nom, $valeur, $comp) {
-	echo "&nbsp;&nbsp;<span class=\"augcomp\"><strong>$nom</strong> est maintenant à $valeur en $Gtrad[$comp]</span>";
+	echo "&nbsp;&nbsp;<span class=\"augcomp\"><strong>$nom</strong> est maintenant à $valeur en $Gtrad[$comp]</span><br />";
 }
 
 ?>
