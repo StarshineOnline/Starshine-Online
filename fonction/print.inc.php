@@ -190,6 +190,7 @@ function affiche_perso_visu($joueur, $W_row, $position="")
 
 function affiche_construction_visu($joueur, $W_row, $position="")
 {
+	global $Gtrad;
 	echo '<li style="clear:both;">
 	';
 

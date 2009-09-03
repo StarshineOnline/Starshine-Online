@@ -287,15 +287,15 @@ function attaque($acteur = 'attaquant', $competence, &$effects)
       $actif_chance_critique = ceil(pow($actif->get_dexterite(), 1.5) * 10);
 
       //Buff du critique
-      if($actif->is_buff('buff_critique')) $actif_chance_critique *= 1 + (($actif->get_buff('buff_critique', 'effet')) / 100);
-      if($actif->is_buff('buff_cri_rage')) $actif_chance_critique *= 1 + (($actif->get_buff('buff_cri_rage', 'effet')) / 100);
-      if(array_key_exists('benediction', $actif->etat)) $actif_chance_critique *= 1 + (($actif->etat['benediction']['effet'] * $G_buff['bene_critique']) / 100);;
-      if(array_key_exists('tir_vise', $actif->etat)) $actif_chance_critique *= 1 + (($actif->etat['tir_vise']['effet'] * 5) / 100);
-      if(array_key_exists('berzeker', $actif->etat)) $actif_chance_critique *= 1 + (($actif->etat['berzeker']['effet'] * $G_buff['berz_critique']) / 100);
-      if(array_key_exists('coup_sournois', $actif->etat)) $actif_chance_critique *= 1 + (($actif->etat['coup_sournois']['effet']) / 100);
-      if(array_key_exists('fleche_sanglante', $actif->etat)) $actif_chance_critique *= 1 + (($actif->etat['fleche_sanglante']['effet']) / 100);
-      if(array_key_exists('a_critique', $actif->etat)) $actif_chance_critique *= 1 + (($actif->etat['a_critique']['effet']) / 100);
-      if(array_key_exists('b_critique', $actif->etat)) $actif_chance_critique /= 1 + (($actif->etat['b_critique']['effet']) / 100);
+      if($actif->is_buff('buff_critique', true)) $actif_chance_critique *= 1 + (($actif->get_buff('buff_critique', 'effet', true)) / 100);
+      if($actif->is_buff('buff_cri_rage', true)) $actif_chance_critique *= 1 + (($actif->get_buff('buff_cri_rage', 'effet')) / 100);
+      if($actif->is_buff('benediction', true)) $actif_chance_critique *= 1 + (($actif->etat['benediction']['effet'] * $G_buff['bene_critique']) / 100);;
+      if($actif->is_buff('tir_vise', true)) $actif_chance_critique *= 1 + (($actif->etat['tir_vise']['effet'] * 5) / 100);
+      if($actif->is_buff('berzeker', true)) $actif_chance_critique *= 1 + (($actif->etat['berzeker']['effet'] * $G_buff['berz_critique']) / 100);
+      if($actif->is_buff('coup_sournois', true)) $actif_chance_critique *= 1 + (($actif->etat['coup_sournois']['effet']) / 100);
+      if($actif->is_buff('fleche_sanglante', true)) $actif_chance_critique *= 1 + (($actif->etat['fleche_sanglante']['effet']) / 100);
+      if($actif->is_buff('a_critique', true)) $actif_chance_critique *= 1 + (($actif->etat['a_critique']['effet']) / 100);
+      if($actif->is_buff('b_critique', true)) $actif_chance_critique /= 1 + (($actif->etat['b_critique']['effet']) / 100);
       //Elfe des bois
       if($actif->get_race() == 'elfebois') $actif_chance_critique *= 1.15;
       if(array_key_exists('coup_mortel', $actif->etat))
@@ -382,13 +382,13 @@ function attaque($acteur = 'attaquant', $competence, &$effects)
 					echo '&nbsp;&nbsp;<strong>'.$passif->get_nom().'</strong> est étourdit par la flêche !<br />';
 					$passif->etat['etourdit']['duree'] = 2;
 				}
-      if($actif->is_buff('buff_rage_vampirique'))
+      if($actif->is_buff('buff_rage_vampirique', true))
 				{
 					$buff_rage_vampirique = $actif->get_buff('buff_rage_vampirique', 'effet') / 100;
 					$effet = round($degat * $buff_rage_vampirique);
-					if(($actif['hp'] + $effet) > $actif['hp_max'])
+					if(($actif->get_hp() + $effet) > $actif->get_hp_max())
 						{
-							$effet = $actif['hp_max'] - $actif['hp'];
+							$effet = $actif->get_hp_max() - $actif->get_hp();
 						}
 					// Augmentation du nombre de HP récupérable par récupération
 					if(array_key_exists('recuperation', $actif->etat)) $actif->etat['recuperation']['hp_max'] += $effet;
@@ -396,15 +396,15 @@ function attaque($acteur = 'attaquant', $competence, &$effects)
 					if($effet > 0) echo '&nbsp;&nbsp;<span class="soin">'.$actif->get_nom().' gagne '.$effet.' HP par la rage vampirique</span><br />';
 				}
       //Epines
-      if($actif->is_buff('buff_epine'))
+      if($actif->is_buff('buff_epine', true))
 				{
 					$buff_epine = $actif->get_buff('buff_epine', 'effet') / 100;
 					$effet = round($degat * $buff_epine);
 					$actif->set_hp($actif->get_hp() - $effet);
-					if($effet > 0) echo '&nbsp;&nbsp;<span class="degat">'.$passif->get_nom().' renvoi '.$effet.' dégats grâce a Armure en épine</span><br />';
+					if($effet > 0) echo '&nbsp;&nbsp;<span class="degat">'.$passif->get_nom().' renvoi '.$effet.' dégats grâce à l\' Armure en épine</span><br />';
 				}
       //Armure de glace
-      if($actif->is_buff('buff_armure_glace'))
+      if($actif->is_buff('buff_armure_glace', true))
 				{
 					$chance = $actif->get_buff('buff_armure_glace', 'effet');
 					$de1 = rand(0, $chance);
