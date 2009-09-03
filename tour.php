@@ -12,12 +12,6 @@ $joueur->check_perso();
 
 //Vérifie si le perso est mort
 verif_mort($joueur, 1);
-
-$W_case = $_GET['poscase'];
-$W_req = $db->query('SELECT * FROM map WHERE ID =\''.sSQL($W_case).'\'');
-$W_row = $db->read_array($W_req);
-$R = new royaume($W_row['royaume']);
-
 $_SESSION['position'] = convert_in_pos($joueur->get_x(), $joueur->get_y());
 
 //Informations sur le batiment
@@ -28,13 +22,11 @@ $batiment = new batiment($construction->get_id_batiment());
 		<h2><?php echo $batiment->get_nom(); ?></h2>
 <?php
 
-$W_distance = detection_distance($W_case, $_SESSION["position"]);
 
-$W_coord = convert_in_coord($W_case);
-
-if($W_coord->x == 0 AND $W_coord->y == 0)
+echo $W_distance;
+if($joueur->get_x() == $construction->get_x() AND $joueur->get_y() == $construction->get_y())
 {
-	echo 'Position - X : '.$batiment->get_x().' - Y : '.$batiment->get_y().'<br />';
+	echo 'Position - X : '.$construction->get_x().' - Y : '.$construction->get_y().'<br />';
 	echo 'Distance de vue : '.$batiment->get_bonus4().' cases.<br />';
 	echo '<h3>Joueurs en visu</h3>';
 	$joueurs = list_joueurs_visu($joueur, $batiment->get_bonus4());
