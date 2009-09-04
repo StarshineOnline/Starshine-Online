@@ -489,8 +489,8 @@ function lance_sort($id, $acteur, &$effects)
 	$potentiel_magique = floor($actif->get_incantation() + 1.9 * $actif->$get());
 	if($passif->is_buff('batiment_incantation')) $potentiel_magique *= 1 + (($passif->get_buff('batiment_incantation', 'effet') / 100));
 	if($actif->is_buff('buff_meditation')) $potentiel_magique *= 1 + (($actif->get_buff('buff_meditation', 'effet') / 100));
-	if(array_key_exists('lien_sylvestre', $actif->etat)) $potentiel_magique /= 1 + (($actif->etat['lien_sylvestre']['effet2']) / 100);
-	if(array_key_exists('fleche_debilitante', $actif->etat)) $potentiel_magique /= 1 + ($actif->etat['fleche_debilitante']['effet'] / 100);
+	if($actif->is_buff('lien_sylvestre')) $potentiel_magique /= 1 + (($actif->etat['lien_sylvestre']['effet2']) / 100);
+	if($actif->is_buff('fleche_debilitante')) $potentiel_magique /= 1 + ($actif->etat['fleche_debilitante']['effet'] / 100);
 	if($actif->etat['posture']['type'] == 'posture_feu') $potentiel_magique *= 1 + (($actif->etat['posture']['effet']) / 100);
 	if($actif->get_arme_type() == 'baton') $potentiel_magique_arme = $potentiel_magique * (1 + ($actif->arme_var1 / 100));
 	else $potentiel_magique_arme = $potentiel_magique;
@@ -712,7 +712,7 @@ function lance_sort($id, $acteur, &$effects)
 					$passif->set_hp($passif->get_hp() - $degat);
 					$actif->set_hp($actif->get_hp() + $drain);
 					// On vérifie que le personnage n'a pas plus de HP que son maximum
-					if($actif->get_hp() > $actif->get_hp_max()) $actif->set_hp($actif->get_hp_max());
+					if($actif->get_hp() > floor($actif->get_hp_max())) $actif->set_hp($actif->get_hp_max());
 				break;
 				case 'vortex_vie' :
 					$bonus = $actif->get_buff('buff_surpuissance', 'effet');
@@ -725,7 +725,7 @@ function lance_sort($id, $acteur, &$effects)
 					$passif->set_hp($passif->get_hp() - $degat);
 					$actif->set_hp($actif->get_hp() + $drain);
 					// On vérifie que le personnage n'a pas plus de HP que son maximum
-					if($actif->get_hp() > $actif->get_hp_max()) $actif->set_hp($actif->get_hp_max());
+					if($actif->get_hp() > floor($actif->get_hp_max())) $actif->set_hp($actif->get_hp_max());
 				break;
 				case 'vortex_mana' :
 					$bonus = $actif->get_buff('buff_surpuissance', 'effet');
