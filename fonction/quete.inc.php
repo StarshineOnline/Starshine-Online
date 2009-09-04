@@ -17,7 +17,7 @@ function verif_quete($id_quete, $id_quete_joueur, $joueur)
 	while(($i < count($objectif) AND $valid))
 	{
 		if($liste_quete[$id_quete_joueur]['objectif'][$i]->nombre < $objectif[$i]->nombre)
-		{		
+		{
 			$valid = false;
 		}
 		$i++;
@@ -74,7 +74,11 @@ function verif_action($type_cible, $joueur, $mode)
 								$check = true;
 							}
 						}
-						if($check) $liste_quete[$i]['objectif'][$j]->nombre++;
+						if($check)
+						{
+							$liste_quete[$i]['objectif'][$j]->nombre++;
+							$joueur->set_quete(serialize($liste_quete));
+						}
 						if($liste_quete[$i]['objectif'][$j]->nombre >= $row['objectif'][$j]->nombre)
 						{
 							$liste_quete[$i]['objectif'][$j]->nombre = $row['objectif'][$j]->nombre;
