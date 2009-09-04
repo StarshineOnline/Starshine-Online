@@ -321,7 +321,7 @@ class entite
 	}
 	function set_comp($valeur)
 	{
-		$this->comp = valeur;
+		$this->comp = $valeur;
 	}
 	function get_x()
 	{

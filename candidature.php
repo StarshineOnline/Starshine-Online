@@ -12,48 +12,90 @@ $joueur->check_perso();
 
 //Vérifie si le perso est mort
 verif_mort($joueur, 1);
-$W_requete = 'SELECT * FROM map WHERE ID =\''.sSQL($joueur->get_pos()).'\'';
+
+$W_requete = 'SELECT royaume, type FROM map WHERE id =\''.sSQL($joueur->get_pos()).'\'';
 $W_req = $db->query($W_requete);
 $W_row = $db->read_assoc($W_req);
 $R = new royaume($W_row['royaume']);
+$R->get_diplo($joueur->get_race());
 ?>
-		<h2><?php if(!array_key_exists('fort', $_GET)) return_ville('<img src="image/ville.gif" alt="Retour en ville" title="Retour en ville" />', $W_case); ?> Candidature</h2>
+		<h2 class="ville_titre"><?php echo '<a href="ville.php" onclick="return envoiInfo(this.href,\'centre\')">';?><?php echo $R->get_nom();?></a> - <?php echo '<a href="vie_royaume.php" onclick="return envoiInfo(this.href,\'carte\')">';?> Vie du royaume </a></h2>
 <?php
-if($W_row('type') == 1)
+if($W_row['type'] == 1)
 {
-	if($joueur->get_honneur() >= $R->honneur_candidat())
+	if(array_key_exists('type', $_POST))
 	{
-		if(isset($_GET['action']))
+		$election = elections::get_prochain_election($Trace[$joueur->get_race()]['numrace']);
+		$candidats = candidat::create(array('id_perso', 'id_election'), array($joueur->get_id(), $election[0]->get_id()));
+		//On vérifie qu'il n'est pas déjà candidat
+		if(count($candidats) == 0)
 		{
-			switch ($_GET['action'])
+			$candidat = new candidat();
+			$candidat->set_id_perso($joueur->get_id());
+			$candidat->set_nom($joueur->get_nom());
+			$candidat->set_royaume($Trace[$joueur->get_race()]['numrace']);
+			$candidat->set_id_election($election[0]->get_id());
+			$candidat->set_duree($_POST['duree']);
+			$candidat->set_type($_POST['type']);
+			$candidat->set_programme($_POST['programme']);
+			$save = true;
+			if($_POST['ministre_economie'] != '')
 			{
-				case 'oui' :
-					$date = date_prochain_mandat();
-					$requete = "SELECT * FROM candidat WHERE id_perso = ".$joueur->get_id()." AND date = '".$date."'";
-					$db->query($requete);
-					if($db->num_rows > 0)
-					{
-						echo 'Vous êtes déjà candidat !';
-					}
-					else
-					{
-						$requete = "INSERT INTO candidat ( `id` , `id_perso` , `date` , `royaume` , `programme`, `nom` ) VALUES('', ".$joueur->get_id().", '".$date."', ".$R['ID'].", '', '".$joueur->get_nom()."')";
-						if($db->query($requete))
-						{
-							echo 'Votre candidature pour le poste de roi a bien été prise en compte';
-						}
-					}
-				break;
+				$economie = perso::create('nom', $_POST['ministre_economie']);
+				if(count($economie) == 1) $candidat->set_id_ministre_economie($economie[0]->get_id());
+				else
+				{
+					echo '<h5>Ministre de l\'économie introuvable !</h5>';
+					$save = false;
+				}
+			}
+			if($_POST['ministre_militaire'] != '')
+			{
+				$militaire = perso::create('nom', $_POST['ministre_militaire']);
+				if(count($militaire) == 1) $candidat->set_id_ministre_militaire($militaire[0]->get_id());
+				else
+				{
+					echo '<h5>Ministre militaire introuvable !</h5>';
+					$save = false;
+				}
+			}
+			if($save)
+			{
+				echo '<h6>Candidature acceptée</h6>';
+				$candidat->sauver();
 			}
 		}
 		else
 		{
-	?>
-	Voulez vous devenir roi ?<br />
-	Si oui, cliquez sur oui et votre candidature pour le poste de roi sera pris en compte.<br />
-	<a href="candidature.php?action=oui&amp;poscase=<?php echo $W_case; ?>" onclick="return envoiInfo(this.href, 'carte')">Oui</a>, <?php return_ville('Non', $W_case); ?>
-	<?php
+			echo '<h5>Vous êtes déjà candidat !</h5>';
 		}
+	}
+	else
+	{
+	?>
+	<h2>Candidature</h2>
+	<form action="candidature.php" id="formCandidature" onsubmit="new Ajax.Updater('carte','candidature.php',{asynchronous:true,parameters:$('formCandidature').serialize(this)}); return false;">
+		Programme électoral :<br />
+		<textarea style="width : 300px; height : 200px;" name="programme"></textarea><br />
+		<br />
+		Ministre militaire : <input type="text" name="ministre_militaire" id="ministre_militaire" /><br />
+		Ministre économie : <input type="text" name="ministre_economie" id="ministre_economie" /><br />
+		Type de la prochaine élection
+		<select name="type" id="type">
+			<option value="universel">Universelle</option>
+			<option value="nomination">Nomination</option>
+		</select><br />
+		Durée de votre mandat : 
+		<select name="duree" id="duree">
+			<option value="1">1 mois</option>
+			<option value="2">2 mois</option>
+			<option value="3">3 mois</option>
+			<option value="6">6 mois</option>
+			<option value="12">1 an</option>
+		</select>
+		<input type="submit" value="Me présenter à la prochaine élection" />
+	</form>
+	<?php
 	}	
 }
 ?>

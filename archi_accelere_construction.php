@@ -14,7 +14,8 @@ if($joueur->get_pa() >= 30)
 	$req = $db->query($requete);
 	$row = $db->read_assoc($req);
 
-	if ($row['fin_placement'] < time()) {
+	if ($row['fin_placement'] < time())
+	{
 		security_block(BAD_ENTRY, "Construction déjà finie !");
 	}
 	

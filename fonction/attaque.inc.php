@@ -396,17 +396,17 @@ function attaque($acteur = 'attaquant', $competence, &$effects)
 					if($effet > 0) echo '&nbsp;&nbsp;<span class="soin">'.$actif->get_nom().' gagne '.$effet.' HP par la rage vampirique</span><br />';
 				}
       //Epines
-      if($actif->is_buff('buff_epine', true))
+      if($passif->is_buff('buff_epine', true))
 				{
-					$buff_epine = $actif->get_buff('buff_epine', 'effet') / 100;
+					$buff_epine = $passif->get_buff('buff_epine', 'effet') / 100;
 					$effet = round($degat * $buff_epine);
 					$actif->set_hp($actif->get_hp() - $effet);
 					if($effet > 0) echo '&nbsp;&nbsp;<span class="degat">'.$passif->get_nom().' renvoi '.$effet.' dégats grâce à l\' Armure en épine</span><br />';
 				}
       //Armure de glace
-      if($actif->is_buff('buff_armure_glace', true))
+      if($passif->is_buff('buff_armure_glace', true))
 				{
-					$chance = $actif->get_buff('buff_armure_glace', 'effet');
+					$chance = $passif->get_buff('buff_armure_glace', 'effet');
 					$de1 = rand(0, $chance);
 					$de2 = rand(0, 100);
 					if($de1 > $de2)
