@@ -3,7 +3,7 @@ if (file_exists('../root.php'))
   include_once('../root.php');
 
 include_once(root.'haut_roi.php');
-include_once(root.'../class/map.class.php');
+include_once(root.'class/map.class.php');
 
 //-- Récupération de la position X, Y du joueur.
 if($joueur->get_rang_royaume() != 6)

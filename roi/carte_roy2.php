@@ -5,7 +5,7 @@ if (file_exists('../root.php'))
 // Votre fonction de vérification des accès à l'image
 	include_once(root.'roi/carte_roy.php');
 	// Emplacement de l'image
-	$gs_dirImage = "../image/cart/";
+	$gs_dirImage = root."image/cart/";
 	$ls_image = $gs_dirImage.'carte_roy_'.$joueur->get_race().'.png';
 	
 	if($joueur->get_rang_royaume() != 6)

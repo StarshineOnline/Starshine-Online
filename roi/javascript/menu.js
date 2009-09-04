@@ -130,4 +130,17 @@ function texte_update(message,action)
 	}
 	new Ajax.Request('./ajax/gestion_royaume_update.php',{method:'post',parameters:'message='+message+'&action='+action,onLoading:Loadchargement,onComplete:Affiche_texte});
 }
-
+function select_groupe(groupeid)
+{
+	if ($('groupe_'+groupeid).value == 0)
+	{
+		$('ligroupe_'+groupeid).addClassName('select');
+		$('groupe_'+groupeid).value = 1;
+	}
+	else
+	{
+		$('ligroupe_'+groupeid).removeClassName('select');
+	
+		$('groupe_'+groupeid).value = 0;
+	}
+}

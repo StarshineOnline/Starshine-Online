@@ -58,6 +58,34 @@ if($joueur->get_grade()->get_id() == 6)
 		new Draggable('popup', {handle: 'popup_menu'});
 	}
 	</script>
+	<?php
+	echo "<script type='text/javascript'>
+			// <![CDATA[\n";
+	{ // Validation d'une bataille
+	echo "		
+	function validation_bataille()
+	{		
+		data = 'nom=' + $('nom').value + '&description=' + $('description').value + '&x=' + $('x').value + '&y=' + $('y').value + '&new2' ";
+		$requete = "SELECT groupe.id as groupeid, groupe.nom as groupenom, groupe_joueur.id_joueur, perso.nom, perso.race FROM groupe LEFT JOIN groupe_joueur ON groupe.id = groupe_joueur.id_groupe LEFT JOIN perso ON groupe_joueur.id_joueur = perso.ID WHERE groupe_joueur.leader = 'y' AND perso.race = '".$joueur->get_race()."'";
+		$req = $db->query($requete);
+		while($row = $db->read_assoc($req))
+		{
+			echo "
+			if ($('groupe_".$row['groupeid']."').value == 1)
+			{
+				data = data+'&groupe_".$row['groupeid']."=1'
+			}
+			
+			";
+		}
+		 
+		echo "envoiInfo('gestion_bataille_new.php?'+data, 'message_confirm');
+	}
+	";
+	}
+	echo "	// ]]>
+		  </script>";
+?>
 </head>
 <body>
 <div id="conteneur_back">

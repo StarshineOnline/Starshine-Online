@@ -43,85 +43,53 @@ function affiche_map($bataille)
 	print_r($bataille->reperes);
 	if(array_key_exists('action', $bataille->reperes)) $map->set_repere($bataille->reperes['action']);
 	if(array_key_exists('batiment', $bataille->reperes)) $map->set_batiment_ennemi($bataille->reperes['batiment']);
-	$map->set_onclick("affichePopUp('gestion_bataille.php?id_bataille=".$bataille->id."&amp;case=%%ID%%&amp;info_case');");
+	$map->set_onclick("affichePopUp('gestion_bataille.php?id_bataille=".$bataille->id."&amp;case=%%id%%&amp;info_case');");
 	$map->quadrillage = true;
+	$map->onclick_status = true;	
 	$map->affiche();
 }
 
 if($joueur->get_rang_royaume() != 6)
 	echo '<p>Cheater</p>';
 //Nouvelle bataille
-else if(array_key_exists('new', $_GET))
-{
-	include_once(root.'roi/gestion_bataille_menu.php');
-	?>
-	<div style='clear:both'>
-	<div style='float:left;'>
-	Nom : <input type="text" name="nom" id="nom" /><br />
-	Description :<br />
-	<textarea name="description" id="description"></textarea><br />
-	</div>
-	<?php
-$requete = "SELECT groupe.id as groupeid, groupe.nom as groupenom, groupe_joueur.id_joueur, perso.nom, perso.race FROM groupe LEFT JOIN groupe_joueur ON groupe.id = groupe_joueur.id_groupe LEFT JOIN perso ON groupe_joueur.id_joueur = perso.ID WHERE groupe_joueur.leader = 'y' AND perso.race = '".$joueur->get_race()."'";
-$req = $db->query($requete);
-echo "<ul>";
-while($row = $db->read_assoc($req))
-{
-	if($row['groupenom'] == '') $row['groupenom'] = '-----';
-	?>
-	<li id="groupe_<?php echo $row['groupeid']; ?>" onclick="refresh('infos_groupe.php?id_groupe=<?php echo $row['groupeid']; ?>', 'infos_groupe');"><?php echo $row['groupeid'].' - '.$row['groupenom']; ?></li>
-	<?php
-}
-?>
-</ul>
-	
-	<?php
-	$x = $Trace[$royaume->get_race()]['spawn_x'];
-	$y = $Trace[$royaume->get_race()]['spawn_y'];
-	$map = new map($x, $y, 8, '../', false, 'low');
-	$map->set_onclick("envoiInfo('gestion_bataille.php?valide_choix_bataille&amp;case=%%ID%%', 'valide_choix_bataille');");
-	$map->quadrillage = true;
-	echo "<div id='choix_bataille' style='float : right;'>";
-	?>
-		<div id="move_map_menu">
-		<a href="gestion_bataille.php?move_map&x=<?php echo $x; ?>&y=<?php echo ($y - 10); ?>" onclick="return envoiInfo(this.href, 'choix_bataille');">Haut</a>
-		<a href="gestion_bataille.php?move_map&x=<?php echo $x; ?>&y=<?php echo ($y + 10); ?>" onclick="return envoiInfo(this.href, 'choix_bataille');">Bas</a>
-		<a href="gestion_bataille.php?move_map&x=<?php echo ($x - 10); ?>&y=<?php echo $y; ?>" onclick="return envoiInfo(this.href, 'choix_bataille');">Gauche</a>
-		<a href="gestion_bataille.php?move_map&x=<?php echo ($x + 10); ?>&y=<?php echo $y; ?>" onclick="return envoiInfo(this.href, 'choix_bataille');">Droite</a><br />
-		X : <input type="text" id="go_x" style="width : 30px;" /> / Y : <input type="text" id="go_y" style="width : 30px;" /> <input type="button" onclick="envoiInfo('gestion_bataille.php?move_map&x=' + $('go_x').value + '&y=' + $('go_y').value, 'choix_bataille');" value="Go !" /><br />
-		<div id="valide_choix_bataille"></div>
-		</div>
-	<?php	
-	$map->affiche();
-	?>
-	</div>
-	</div>
-	<div style="clear : both;"></div>
-	<input type="button" onclick="description = $('description').value.replace(new RegExp('\n', 'gi'), '[br]'); envoiInfoPost('gestion_bataille.php?nom=' + $('nom').value + '&amp;description=' + description + '&amp;x=' + $('x').value + '&amp;y=' + $('y').value + '&amp;new2', 'conteneur');" value="Créer cette bataille" />
-	</div>
-	<?php
-}
 elseif(array_key_exists('move_map', $_GET))
 {
+	echo "<div style='float:left;'>";
 	if(array_key_exists('x', $_GET)) $x = $_GET['x'];
 	else $x = $Trace[$royaume->get_race()]['spawn_x'];
 	if(array_key_exists('y', $_GET)) $y = $_GET['y'];
 	else $y = $Trace[$royaume->get_race()]['spawn_y'];
 	$map = new map($x, $y, 8, '../', false, 'low');
-	$map->set_onclick("envoiInfo('gestion_bataille.php?valide_choix_bataille&amp;case=%%ID%%', 'valide_choix_bataille');");
-	$map->quadrillage = true;
-	?>
-		<div id="move_map_menu">
-		<a href="gestion_bataille.php?move_map&x=<?php echo $x; ?>&y=<?php echo ($y - 10); ?>" onclick="return envoiInfo(this.href, 'choix_bataille');">Haut</a>
-		<a href="gestion_bataille.php?move_map&x=<?php echo $x; ?>&y=<?php echo ($y + 10); ?>" onclick="return envoiInfo(this.href, 'choix_bataille');">Bas</a>
-		<a href="gestion_bataille.php?move_map&x=<?php echo ($x - 10); ?>&y=<?php echo $y; ?>" onclick="return envoiInfo(this.href, 'choix_bataille');">Gauche</a>
-		<a href="gestion_bataille.php?move_map&x=<?php echo ($x + 10); ?>&y=<?php echo $y; ?>" onclick="return envoiInfo(this.href, 'choix_bataille');">Droite</a><br />
-		X : <input type="text" id="go_x" style="width : 30px;" /> / Y : <input type="text" id="go_y" style="width : 30px;" /> <input type="button" onclick="envoiInfo('gestion_bataille.php?move_map&x=' + $('go_x').value + '&y=' + $('go_y').value, 'choix_bataille');" value="Go !" /><br />
-		<div id="valide_choix_bataille"></div>
-		</div>
+	$map->set_onclick("envoiInfo('gestion_bataille.php?valide_choix_bataille&amp;case=%%id%%', 'valide_choix_bataille');");
+	$map->onclick_status = true;	
 	
-	<?php
 	$map->affiche();
+	echo "
+	</div>
+	<div id='rose'>
+	   <a id='rose_div_hg'></a>
+	   <a id='rose_div_h' href='gestion_bataille.php?move_map&x=$x&y=".($y - 10)."' onclick=\"return envoiInfo(this.href, 'choix_bataille');\"></a>
+	   <a id='rose_div_hd'></a>
+	   <a id='rose_div_cg'  href='gestion_bataille.php?move_map&x=".($x - 10)."&y=$y' onclick=\"return envoiInfo(this.href, 'choix_bataille');\"></a>
+	   <a id='rose_div_c'></a>
+	   <a id='rose_div_cd' href='gestion_bataille.php?move_map&x=".($x + 10)."&y=$y' onclick=\"return envoiInfo(this.href, 'choix_bataille');\"></a>
+	   <a id='rose_div_bg'></a>
+	   <a id='rose_div_b' href='gestion_bataille.php?move_map&x=".$x."&y=".($y + 10)."' onclick=\"return envoiInfo(this.href, 'choix_bataille');\"></a>
+	   <a id='rose_div_bd'></a>
+	</div>	";
+	
+	?>
+		<div id="move_map_menu" style='margin-top:8px;'>
+
+
+		<span style='float:left;margin-left:5px;width : 20px;'>X :</span><input type="text" id="go_x" style="width : 50px;" />
+		<span style='float:left;margin-left:5px;width : 20px;'>Y :</span><input type="text" id="go_y" style="width : 50px;" />
+		<input type="button" onclick="envoiInfo('gestion_bataille.php?move_map&x=' + $('go_x').value + '&y=' + $('go_y').value, 'choix_bataille');" value="Go !" style="width : 30px;" /><br />
+
+		<div id="valide_choix_bataille" style='clear:both;'></div>
+		</div>
+		<?php
+
 }
 elseif(array_key_exists('valide_choix_bataille', $_GET))
 {
@@ -130,22 +98,6 @@ elseif(array_key_exists('valide_choix_bataille', $_GET))
 	Vous avez séléctionné X : <?php echo $coord['x']; ?> / Y : <?php echo $coord['y']; ?> comme centre de la bataille.
 	<input type="hidden" name="x" id="x" value="<?php echo $coord['x']; ?>" />
 	<input type="hidden" name="y" id="y" value="<?php echo $coord['y']; ?>" />
-	<?php
-}
-//Nouvelle bataille etape 2 => Création
-elseif(array_key_exists('new2', $_GET))
-{
-	include_once(root.'roi/gestion_bataille_menu.php');
-	$bataille = new bataille();
-	$bataille->nom = $_GET['nom'];
-	$bataille->description = $_GET['description'];
-	$bataille->id_royaume = $royaume->get_id();
-	$bataille->etat = 0;
-	$bataille->x = $_GET['x'];
-	$bataille->y = $_GET['y'];
-	$bataille->sauver();
-	?>
-	Bataille créée avec succès<br />
 	<?php
 }
 //Refresh de la carte de la bataille
