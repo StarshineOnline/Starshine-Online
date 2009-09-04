@@ -601,6 +601,12 @@ class entite
 		return false;
 	}
 
+	function get_inventaire()
+	{
+		if ($this->type == 'joueur') return $this->objet_ref->get_inventaire();
+		return null;
+	}
+
 	function get_blocage() { return $this->blocage; }
 }
 ?>
