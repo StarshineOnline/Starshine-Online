@@ -725,7 +725,7 @@ function lance_sort($id, $acteur, &$effects)
 					$passif->set_hp($passif->get_hp() - $degat);
 					$actif->set_hp($actif->get_hp() + $drain);
 					// On vérifie que le personnage n'a pas plus de HP que son maximum
-					if($actif->get_hp() > $actif->get_hp_max()) $actif->set_hp($actif->get_hp_max());
+					if($actif->get_hp() > floor($actif->get_hp_max())) $actif->set_hp($actif->get_hp_max());
 				break;
 				case 'vortex_mana' :
 					$bonus = $actif->get_buff('buff_surpuissance', 'effet');

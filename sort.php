@@ -284,7 +284,7 @@ if (isset($_GET['ID']))
 								$db->query($requete);
 								
 							}
-							else
+							else if($cible->get_id() != $joueur->get_id())
 							{
 								$requete = "INSERT INTO journal(id_perso, action, actif, passif, time, valeur, valeur2, x, y) VALUES(".$cible->get_id().", 'rbuff', '".$cible->get_nom()."', '".$joueur->get_nom()."', NOW(), '".$sort->get_nom()."', 0, ".$joueur->get_x().", ".$joueur->get_y().")";
 								$db->query($requete);
