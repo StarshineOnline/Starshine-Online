@@ -68,7 +68,7 @@ if($W_distance == 0)
 			break;
 			case 'achat_recette' :
 				$recette = new craft_recette($_GET['id']);
-				$taxe = ceil($recette->prix * $R->get_taxe() / 100);
+				$taxe = ceil($recette->prix * $R->get_taxe_diplo($joueur->get_race()) / 100);
 				$cout = $recette->prix + $taxe;
 				if ($joueur->get_star() >= $cout)
 				{
@@ -169,7 +169,7 @@ if($W_distance == 0)
 					$actuel = $R->get_alchimie() - $min;
 					$pourcent = round((($actuel / $total) * 100), 2);
 					echo $pourcent.'% du déblocage de la prochaine recette !<br />';
-					if($R->diplo == 127)
+					if($R->diplo($joueur->get_race()) == 127)
 						{
 				?>
 				<a href="alchimiste.php?action=recherche" onclick="return envoiInfo(this.href, 'carte');">Faire des recherches en alchimie (10 PA)</a>
@@ -206,7 +206,7 @@ if($W_distance == 0)
 		$req = $db->query($requete);
 		while($row = $db->read_array($req))
 		{
-			$taxe = ceil($row['prix'] * $R->get_taxe() / 100);
+			$taxe = ceil($row['prix'] * $R->get_taxe_diplo($joueur->get_race()) / 100);
 			$cout = $row['prix'] + $taxe;
 			$couleur = $color;
 			if($row['forcex'] > $joueur->get_force() OR $row['melee'] > $joueur->get_melee() OR $cout > $joueur->get_star() OR $row['distance'] > $joueur->get_distance()) $couleur = 3;
@@ -251,7 +251,7 @@ if($W_distance == 0)
 		$req = $db->query($requete);
 		while($row = $db->read_array($req))
 		{
-			$taxe = ceil($row['prix'] * $R->get_taxe() / 100);
+			$taxe = ceil($row['prix'] * $R->get_taxe_diplo($joueur->get_race()) / 100);
 			$cout = $row['prix'] + $taxe;
 			$couleur = $color;
 			if($cout > $joueur->get_star()) $couleur = 3;

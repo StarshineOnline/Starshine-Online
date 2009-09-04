@@ -50,7 +50,7 @@ if($W_distance < 4)
 	?>
 	
 	<h4><span class='titre_info'><?php echo $R->get_nom(); ?></span></h4>
-	<strong><?php echo $Gtrad[$R->get_race()]; ?></strong> - <?php echo $Gtrad['diplo'.$R->get_diplo($joueur->get_race())]; ?> - Taxe : <?php echo $R->get_taxe(); ?>%<br />
+	<strong><?php echo $Gtrad[$R->get_race()]; ?></strong> - <?php echo $Gtrad['diplo'.$R->get_diplo($joueur->get_race())]; ?> - Taxe : <?php echo $R->get_taxe_diplo($joueur->get_race()); ?>%<br />
 	<strong><?php echo $type_terrain[1]; ?></strong> - <?php echo $coutpa; ?> PA de déplacement <span class="xsmall">(en diagonale = <?php echo $coutpa_diagonale; ?> PA)</span>
 	
 	<?php

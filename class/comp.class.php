@@ -526,21 +526,28 @@ class magnetique extends effect {
 		{
 			$nb_buff_suppr = rand(1, $this->nb);
 			//echo $nb_buff_suppr.'<br />';
-			for($i = 0; $i < $nb_buff_suppr; $i++) {
+			$passif_buff = $passif->get_buff();
+			for($i = 0; $i < $nb_buff_suppr; $i++)
+			{
 				// BD: on doit ne prendre que les vrais
 				$keys = array();
-				foreach ($passif['buff'] as $nbuff => $buff) {
-					if (isset($buff['id'])) {
+				foreach ($passif_buff as $nbuff => $buff)
+				{
+					//Pourquoi ce if ?
+					/*if (isset($buff['id']))
+					{*/
 						// Voir si on peut enlever un debuff
 						//if ($buff['debuff'] == 1) continue;
 						$keys[] = $nbuff;
-					}
+					//}
 				}
 				$count = count($keys);
 				//echo $count.'<br />';
-				if($count > 0) {
+				if($count > 0)
+				{
 					$rand = rand(0, ($count - 1));
-					if ($passif['buff'][$keys[$rand]]['id'] == '') {
+					if ($passif_buff[$keys[$rand]]['id'] == '')
+					{
 						// Ne doit pas arriver, mais arrive parfois
 						error_log('On ne va pas reussir a supprimer le buff');
 						error_log('Buffs: '.print_r($passif['buff'], true));
@@ -551,14 +558,12 @@ class magnetique extends effect {
 													.'mais une erreur est survenue. Pr&eacute;venez un '
 													.'administrateur. (Irulan si possible)');
 					}
-					else {
+					else
+					{
 						global $db;
-						$this->message($this->titre.' supprime le buff '.
-													 $passif['buff'][$keys[$rand]]['nom']);
-						$requete = "DELETE FROM buff WHERE id = ".
-							$passif['buff'][$keys[$rand]]['id'];
-						$db->query($requete);
-						unset($passif['buff'][$keys[$rand]]);
+						$this->message($this->titre.' supprime le buff '.$passif_buff[$keys[$rand]]->get_nom());
+						$passif_buff[$keys[$rand]]->supprimer();
+						unset($passif_buff[$keys[$rand]]);
 					}
 				}
 				else {
@@ -566,7 +571,8 @@ class magnetique extends effect {
 				}
 			}
 		}
-		else {
+		else
+		{
 			$this->message($this->titre.' ne supprime pas de buff');
 		}
 	}

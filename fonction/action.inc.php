@@ -1058,7 +1058,7 @@ function lance_comp($id, $acteur, &$effects)
 			if($actif->get_arme_type() == 'arc' AND array_key_exists('maitrise_arc', $actif->competence)) $maitrise_arc = 1 + ($actif->competences['maitrise_arc'] / 1000); else $maitrise_arc = 1;
 			if($maitrise_arc != 1)
 			{
-				$augmentation = augmentation_competence('maitrise_arc', $actif, 5);
+				$augmentation['actif']['comp_perso'][] = array('maitrise_arc', $actif, 5);
 			}
 		break;
 		case 'fleche_etourdissante' :

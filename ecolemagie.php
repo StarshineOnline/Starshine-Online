@@ -122,7 +122,7 @@ if($W_row['type'] == 1)
 			$req = $db->query($requete);
 			while($row = $db->read_array($req))
 			{
-				$taxe = ceil($row['prix'] * $R->get_taxe() / 100);
+				$taxe = ceil($row['prix'] * $R->get_taxe_diplo($joueur->get_race()) / 100);
 				$cout = $row['prix'] + $taxe;
 				$inc = ($row['incantation'] * $joueur->get_facteur_magie());
 				$comp = round($row['comp_requis'] * $joueur->get_facteur_magie() * (1 - (($Trace[$joueur->get_race()]['affinite_'.$row['comp_assoc']] - 5) / 10)));
@@ -191,7 +191,7 @@ if($W_row['type'] == 1)
 	}
 	elseif(array_key_exists('app', $_GET))
 	{
-		$taxe = ceil($cout_app * $R->get_taxe() / 100);
+		$taxe = ceil($cout_app * $R->get_taxe_diplo($joueur->get_race()) / 100);
 		$cout = $cout_app + $taxe;
 		if($joueur->get_star() >= $cout)
 		{
@@ -222,7 +222,7 @@ if($W_row['type'] == 1)
 		<div class="ville_test">
 			<ul class="ville">
 			<?php
-			$taxe = ceil($cout_app * $R->get_taxe() / 100);
+			$taxe = ceil($cout_app * $R->get_taxe_diplo($joueur->get_race()) / 100);
 			$cout = $cout_app + $taxe;
 			if($joueur->get_sort_vie() == 0)
 			{

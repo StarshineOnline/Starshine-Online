@@ -182,7 +182,7 @@ class craft_recette
 					$requete = "SELECT pa, mp, prix FROM craft_instrument WHERE type = '".$key."' AND requis = 0";
 					$req = $db->query($requete);
 					$row = $db->read_assoc($req);
-					$taxe = 1 + ($R->get_taxe() / 100);
+					$taxe = 1 + ($R->get_taxe_diplo($joueur->get_race()) / 100);
 					$prix = round($row['prix'] * $taxe / 100);
 					$types[$key]['pa'] = $row['pa'];
 					$types[$key]['mp'] = $row['mp'];

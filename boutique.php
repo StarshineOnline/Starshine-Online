@@ -63,7 +63,7 @@ if($W_row['type'] == 1)
 						$requete = "SELECT id, prix FROM arme WHERE id = ".sSQL($_GET['id']);
 						$req = $db->query($requete);
 						$row = $db->read_array($req);
-						$taxe = ceil($row['prix'] * $R->get_taxe() / 100);
+						$taxe = ceil($row['prix'] * $R->get_taxe_diplo($joueur->get_race()) / 100);
 						$cout = $row['prix'] + $taxe;
 						if ($joueur->get_star() >= $cout)
 						{
@@ -95,7 +95,7 @@ if($W_row['type'] == 1)
 						$requete = "SELECT id, prix, type FROM armure WHERE id = ".sSQL($_GET['id']);
 						$req = $db->query($requete);
 						$row = $db->read_array($req);
-						$taxe = ceil($row['prix'] * $R->get_taxe() / 100);
+						$taxe = ceil($row['prix'] * $R->get_taxe_diplo($joueur->get_race()) / 100);
 						$cout = $row['prix'] + $taxe;
 						if ($joueur->get_star() >= $cout)
 						{
@@ -211,7 +211,7 @@ if($W_row['type'] == 1)
 		$req = $db->query($requete);
 		while($row = $db->read_array($req))
 		{
-			$taxe = ceil($row['prix'] * $R->get_taxe() / 100);
+			$taxe = ceil($row['prix'] * $R->get_taxe_diplo($joueur->get_race()) / 100);
 			$cout = $row['prix'] + $taxe;
 			$couleur = $color;
 			$mains = explode(';', $row['mains']);
@@ -342,7 +342,7 @@ if($W_row['type'] == 1)
 		
 		while($row = $db->read_array($req))
 		{
-			$taxe = ceil($row['prix'] * $R->get_taxe() / 100);
+			$taxe = ceil($row['prix'] * $R->get_taxe_diplo($joueur->get_race()) / 100);
 			$cout = $row['prix'] + $taxe;
 			$couleur = $color;
 			if($row['forcex'] > $joueur->get_force() OR $cout > $joueur->get_star()) $couleur = 3;

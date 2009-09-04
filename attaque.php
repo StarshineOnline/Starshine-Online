@@ -589,15 +589,6 @@ else
 			{
 				$joueur->set_survie($augmentation[0]);
 			}
-			if($joueur->is_competence('survie_humanoide'))
-			{
-				//Augmentation des compétences liées
-				$augmentation = augmentation_competence('survie_humanoide', $joueur, 4);
-				if($augmentation[1] == 1)
-				{
-					$joueur->set_comp('survie_humanoide', $augmentation[0]);
-				}
-			}
 			//Cartouche de fin de combat
 			echo ' 
 			<div id="combat_cartouche">
@@ -613,6 +604,15 @@ else
 
 			if($type == 'joueur')
 			{
+				if($joueur->is_competence('survie_humanoide'))
+				{
+					//Augmentation des compétences liées
+					$augmentation = augmentation_competence('survie_humanoide', $joueur, 4);
+					if($augmentation[1] == 1)
+					{
+						$joueur->set_comp('survie_humanoide', $augmentation[0]);
+					}
+				}
 				$gains = false;
 				$coef = 1;
 				//L'attaquant est mort !
@@ -842,7 +842,7 @@ else
 					if($attaquant->is_buff('recherche_precieux')) $star = $star * (1 + ($attaquant->get_buff('recherche_precieux', 'effet') / 100));
 					$star = ceil($star);
 					$R = new royaume($Trace[$joueur->get_race]['numrace']);
-					$taxe = floor($star * $R->get_taxe() / 100);
+					$taxe = floor($star * $R->get_taxe_diplo($joueur->get_race()) / 100);
 					$star = $star - $taxe;
 					//Récupération de la taxe
 					if($taxe > 0)

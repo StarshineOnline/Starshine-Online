@@ -34,7 +34,7 @@ if($W_row['type'] == 1)
 				$requete = "SELECT id, prix FROM accessoire WHERE id = ".sSQL($_GET['id']);
 				$req = $db->query($requete);
 				$row = $db->read_array($req);
-				$taxe = ceil($row['prix'] * $R->get_taxe() / 100);
+				$taxe = ceil($row['prix'] * $R->get_taxe_diplo($joueur->get_race()) / 100);
 				$cout = $row['prix'] + $taxe;
 				if ($joueur->get_star() >= $cout)
 				{
@@ -124,7 +124,7 @@ if($W_row['type'] == 1)
 		$req = $db->query($requete);
 		while($row = $db->read_array($req))
 		{
-			$taxe = ceil($row['prix'] * $R->get_taxe() / 100);
+			$taxe = ceil($row['prix'] * $R->get_taxe_diplo($joueur->get_race()) / 100);
 			$cout = $row['prix'] + $taxe;
 			$couleur = $color;
 			if($row['puissance'] > $joueur->get_puissance()) $couleur = 3;

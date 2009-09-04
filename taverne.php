@@ -42,7 +42,7 @@ if($joueur->get_race() == $R->get_race())
 				$requete = "SELECT * FROM taverne WHERE id = ".sSQL($_GET['id']);
 				$req_taverne = $db->query($requete);
 				$row_taverne = $db->read_array($req_taverne);
-				$taxe = ceil($row_taverne['star'] * $R->get_taxe() / 100);
+				$taxe = ceil($row_taverne['star'] * $R->get_taxe_diplo($joueur->get_race()) / 100);
 				$cout = $row_taverne['star'] + $taxe;
 				if ($joueur->get_star() >= $cout)
 				{
@@ -355,7 +355,7 @@ if($joueur->get_race() == $R->get_race())
 		$req = $db->query($requete);
 		while($row = $db->read_array($req))
 		{
-			$taxe = ceil($row['star'] * $R->get_taxe() / 100);
+			$taxe = ceil($row['star'] * $R->get_taxe_diplo($joueur->get_race()) / 100);
 			$cout = $row['star'] + $taxe;
 			if(array_key_exists('fort', $_GET)) $fort = '&amp;fort=ok'; else $fort = '';
 			//On vérifie le sexe du joueur

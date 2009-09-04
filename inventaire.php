@@ -73,7 +73,7 @@ if(!$visu AND isset($_GET['action']))
 					$requete = "SELECT *, batiment.id AS batiment_id, batiment.nom AS batiment_nom  FROM objet_royaume RIGHT JOIN batiment ON batiment.id = objet_royaume.id_batiment WHERE objet_royaume.id = ".sSQL($_GET['id_objet']);
 					$req = $db->query($requete);
 					$row = $db->read_assoc($req);
-					if($R->diplo == 127 OR $_GET['type'] == 'arme_de_siege')
+					if($R->get_diplo($joueur->get_race()) == 127 OR $_GET['type'] == 'arme_de_siege')
 					{
 						//On vérifie si ya pas déjà un batiment en construction
 						$requete = "SELECT id FROM placement WHERE x = ".$joueur->get_x()." AND y = ".$joueur->get_y();
@@ -524,8 +524,8 @@ if(!$visu AND isset($_GET['action']))
 				<h2>Inventaire</h2>
 			<div style="font-size : 0.9em;">
 				<form method="get" name="formulaire" action="javascript:envoiInfo(\'inventaire.php\', \'information\');">
-					Mettre en vente à l\'hotel des ventes pour <input type="text" name="prix" value="'.$prix.'" onchange="formulaire.comm.value = formulaire.prix.value * '.($R->get_taxe() / 100).';" onkeyup="formulaire.comm.value = formulaire.prix.value * '.($R->get_taxe() / 100).';" /> Stars<br />
-					Taxe : <input type="text" name="comm" value="'.($prix * $R->get_taxe() / 100).'" disabled="true" /><br />
+					Mettre en vente à l\'hotel des ventes pour <input type="text" name="prix" value="'.$prix.'" onchange="formulaire.comm.value = formulaire.prix.value * '.($R->get_taxe_diplo($joueur->get_race()) / 100).';" onkeyup="formulaire.comm.value = formulaire.prix.value * '.($R->get_taxe_diplo($joueur->get_race()) / 100).';" /> Stars<br />
+					Taxe : <input type="text" name="comm" value="'.($prix * $R->get_taxe_diplo($joueur->get_race()) / 100).'" disabled="true" /><br />
 					Maximum = '.$prixmax.' stars.<br />
 					<input type="hidden" name="action" value="ventehotel2" />
 					<input type="button" name="btnSubmit" value="Mettre en vente" onclick="javascript:envoiInfo(\'inventaire.php?action=ventehotel2&amp;key_slot='.$_GET['key_slot'].'&amp;prix=\' + formulaire.prix.value + \'&amp;max='.$prixmax.'&amp;comm=\' + formulaire.comm.value, \'information\');" />

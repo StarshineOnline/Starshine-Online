@@ -53,7 +53,7 @@ if($joueur->get_race() == $R->get_race())
 					$row_diplo = $db->read_row($req_diplo);
 					if($row_diplo[0] == 127) $row_diplo[0] = -1;
 					$cout = ceil(pow(1.6, ($row_diplo[0] + 1)));
-					$taxe = ceil($cout * $R->get_taxe() / 100);
+					$taxe = ceil($cout * $R->get_taxe_diplo($joueur->get_race()) / 100);
 					echo 'Cela vous coutera '.($cout+$taxe).' stars.<br />';
 					?>
 					<form method="post" id="formMessage" action="poste.php?action=envoi&amp;cout=<?php echo $cout; ?>&amp;ID=<?php echo $row['ID']; ?>">
@@ -74,7 +74,7 @@ if($joueur->get_race() == $R->get_race())
 			case 'envoi' :
 				$W_ID = sSQL($_GET['ID']);
 				$cout = sSQL($_GET['cout']);
-				$taxe = ceil(sSQL($_GET['cout'] * $R->get_taxe() / 100));
+				$taxe = ceil(sSQL($_GET['cout'] * $R->get_taxe_diplo($joueur->get_race()) / 100));
 				$cout = sSQL($_GET['cout']) + $taxe;
 				if($cout <= $joueur->get_star())
 				{

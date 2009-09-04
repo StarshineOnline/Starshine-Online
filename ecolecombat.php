@@ -126,7 +126,7 @@ if($W_row['type'] == 1)
 			{
 				if($row['requis'] != '999')
 				{
-					$taxe = ceil($row['prix'] * $R->get_taxe() / 100);
+					$taxe = ceil($row['prix'] * $R->get_taxe_diplo($joueur->get_race()) / 100);
 					$cout = $row['prix'] + $taxe;
 					$couleur = $color;
 					if($row['carac_assoc'] != '')
@@ -192,7 +192,7 @@ if($W_row['type'] == 1)
 	}
 	elseif(array_key_exists('app', $_GET))
 	{
-		$taxe = ceil($cout_app * $R->get_taxe() / 100);
+		$taxe = ceil($cout_app * $R->get_taxe_diplo($joueur->get_race()) / 100);
 		$cout = $cout_app + $taxe;
 		if($joueur->get_star() >= $cout)
 		{
@@ -226,7 +226,7 @@ if($W_row['type'] == 1)
 		<div class="ville_test">
 			<ul class="ville">
 			<?php
-			$taxe = ceil($cout_app * $R->get_taxe() / 100);
+			$taxe = ceil($cout_app * $R->get_taxe_diplo($joueur->get_race()) / 100);
 			$cout = $cout_app + $taxe;
 			?>
 				<li>

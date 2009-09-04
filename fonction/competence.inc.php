@@ -89,7 +89,7 @@ function apprend_competence($ecole, $id_competence, &$joueur, $R, $grimoire)
 	}
     else
     {
-		$taxe = ceil($row['prix'] * $R->get_taxe() / 100);
+		$taxe = ceil($row['prix'] * $R->get_taxe_diplo($joueur->get_race()) / 100);
 		$cout = $row['prix'] + $taxe;
     }
 	if ($joueur->get_star() >= $cout)
@@ -169,7 +169,7 @@ function apprend_sort($ecole, $id_sort, &$joueur, $R, $grimoire)
 	}
     else
     {
-		$taxe = ceil($row['prix'] * $R->get_taxe() / 100);
+		$taxe = ceil($row['prix'] * $R->get_taxe_diplo($joueur->get_race()) / 100);
 		$cout = $row['prix'] + $taxe;
     }
 	if ($joueur->get_star() >= $cout)

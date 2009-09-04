@@ -1018,6 +1018,54 @@ class royaume
 		return $this->diplos;
 	}
 
+	function get_taxe_diplo($race_joueur)
+	{
+		//Calcul de la taxe
+		switch($this->get_diplo($race_joueur))
+		{
+			case 127 : // même royaume
+				$this->taxe = floor($this->taxe / 4);
+			break;
+			case 0 : // Alliance fraternelle
+				$this->taxe = ceil($this->taxe / 4);
+			break;
+			case 1 : // Alliance
+				$this->taxe = floor($this->taxe / 3);
+			break;
+			case 2 : // Paix durable
+				$this->taxe = ceil($this->taxe / 3);
+			break;
+			case 3 : // Paix
+				$this->taxe = floor($this->taxe / 2);
+			break;
+			case 4 : // En bons termes
+				$this->taxe = ceil($this->taxe / 2);
+			break;
+			case 5 : // Neutre
+				$this->taxe = ceil($this->taxe / 1.5);
+			break;
+			case 6 : // Mauvais termes
+				$this->taxe = ceil($this->taxe / 1);
+			break;
+			case 7 : // Guerre
+				$this->taxe = 0;
+			break;
+			case 8 : // Guerre durable
+				$this->taxe = 0;
+			break;
+			case 9 : // Ennemis
+				$this->taxe = 0;
+			break;
+			case 10 : // Ennemis eternels
+				$this->taxe = 0;
+			break;
+			case 11 : // ?
+				$this->taxe = 0;
+			break;
+		}
+		return $this->taxe;
+	}
+
 	function change_diplo($royaume, $changement = '+')
 	{
 		if($this->diplo_time[$royaume->get_nom()] > time()) return false;

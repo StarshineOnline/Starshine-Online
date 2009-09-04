@@ -2455,7 +2455,7 @@ class perso extends entite
 		return array_key_exists($nom, $this->comp_perso);
 	}
 
-	function get_buff($nom = false, $champ = false, $type = false)
+	function get_buff($nom = false, $champ = false, $type = true)
 	{
 		if(!$nom)
 		{
@@ -2468,7 +2468,7 @@ class perso extends entite
 			if(!$type)
 			{
 				$get = 'get_'.$champ;
-				return $this->buff->$get();
+				return $this->buff[0]->$get();
 			}
 			else
 				foreach($this->buff as $buff)
@@ -2851,12 +2851,13 @@ class perso extends entite
 		{
 			global $db;
 			$bouclier = $this->inventaire()->main_gauche;
-			if($bouclier != '')
+			if($bouclier != '' AND $bouclier != 'lock')
 			{
 				$arme_g = decompose_objet($bouclier);
 				$requete = "SELECT * FROM arme WHERE id = ".$arme_g['id_objet'];
 				$req = $db->query($requete);
 				$this->bouclier = $db->read_object($req);
+				if($this->bouclier->type != 'bouclier') $this->bouclier = false;
 			}
 			else $this->bouclier = false;
 		}

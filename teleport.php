@@ -34,7 +34,7 @@ $R->get_diplo($joueur->get_race());
 			else
 			{
 				$cout = ($P_distance * 10);
-				$taxe = ceil($cout * $R->get_taxe() / 100);
+				$taxe = ceil($cout * $R->get_taxe_diplo($joueur->get_race()) / 100);
 				$cout = $cout + $taxe;
 			}
 			if(($joueur->get_star() >= $cout) AND ($joueur->get_pa() >= 5))
@@ -67,7 +67,7 @@ $R->get_diplo($joueur->get_race());
 			$row = $db->read_array($req);
 			$P_distance = calcul_distance(convert_in_pos($row['x'], $row['y']), $joueur->get_pos());
 			$cout = ($P_distance * 7);
-			$taxe = ceil($cout * $R->get_taxe() / 100);
+			$taxe = ceil($cout * $R->get_taxe_diplo($joueur->get_race()) / 100);
 			$cout = $cout + $taxe;
 			if(($joueur->get_star() >= $cout) AND ($joueur->get_pa() >= 5))
 			{
@@ -131,7 +131,7 @@ $R->get_diplo($joueur->get_race());
 				$row_diplo = $db->read_row($req_diplo);
 				$distance = calcul_distance(convert_in_pos($row['posx'], $row['posy']), $joueur->get_pos());
 				$cout =  $distance * 10;
-				$cout = ceil(($cout * $R->get_taxe() / 100) + $cout);
+				$cout = ceil(($cout * $R->get_taxe_diplo($joueur->get_race()) / 100) + $cout);
 			}
 			else
 			{
@@ -162,7 +162,7 @@ $R->get_diplo($joueur->get_race());
 	    {
 		    $distance = calcul_distance(convert_in_pos($row['x'], $row['y']), $joueur->get_pos());
 		    $cout =  $distance * 7;
-		    $cout = ceil(($cout * $R->get_taxe() / 100) + $cout);
+		    $cout = ceil(($cout * $R->get_taxe_diplo($joueur->get_race()) / 100) + $cout);
 		    echo '<li><a href="teleport.php?poscase='.$W_case.'&amp;id_bourg='.$row['id'].'" onclick="if(confirm(\'Voulez vous vous téléporter sur ce bourg - '.$cout.' Stars et 5 PA)\')) return envoiInfo(this.href, \'centre\'); else return false;">Téléportation sur le bourg (X : '.$row['x'].' / Y : '.$row['y'].')</a> ('.$cout.' Stars et 5 PA)</li>';
 	    }
 	}
