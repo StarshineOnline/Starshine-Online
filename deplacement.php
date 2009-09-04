@@ -164,7 +164,7 @@ if (isset($_GET['deplacement']))
 			//Si debuff blizard
 			if($joueur->is_debuff('blizzard'))
 			{
-				$joueur->set_hp($joueur->get_hp() - round(($joueur->get_debuff('blizzard', 'effet') / 100) * $joueur->get_hp_max()));
+				$joueur->set_hp($joueur->get_hp() - round(($joueur->get_debuff('blizzard', 'effet') / 100) * $joueur->get_hp_maximum()));
 			}
 			//Déplacement du joueur
 			$joueur->set_pa($joueur->get_pa() - $coutpa);
@@ -181,7 +181,7 @@ if (isset($_GET['deplacement']))
 					$row = $db->read_row($req);
 					$_SESSION['attaque_donjon'] = 'ok';
 					?>
-					<img src="image/pixel.gif" onLoad="envoiInfo('attaque_monstre.php?ID=<?php echo $row[0]; ?>&poscase=<?php echo $W_pos; ?>', 'information'); javascript:alert('Un monstre vous attaque sauvagement !');" />
+					<img src="image/pixel.gif" onLoad="envoiInfo('attaque.php?id=<?php echo $row[0]; ?>&type=monstre', 'information'); javascript:alert('Un monstre vous attaque sauvagement !');" />
 					<?php
 				}
 			}

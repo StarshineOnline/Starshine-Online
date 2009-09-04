@@ -288,10 +288,10 @@ if($joueur->get_race() == $R->get_race())
 							$joueur->set_pa($joueur->get_pa() - $row_taverne['pa']);
 							if(!$bloque_regen)
 							{
-								$joueur->set_hp($joueur->get_hp() + $row_taverne['hp'] + floor($row_taverne['hp_pc'] * $joueur->get_hp_max() / 100));
-								if ($joueur->get_hp() > $joueur->get_hp_max()) $joueur->set_hp(floor($joueur->get_hp_max()));
-								$joueur->set_mp($joueur->get_mp() + $row_taverne['mp'] + floor($row_taverne['mp_pc'] * $joueur->get_mp_max() / 100));
-								if ($joueur->get_mp() > $joueur->get_mp_max()) $joueur->set_mp(floor($joueur->get_mp_max()));
+								$joueur->set_hp($joueur->get_hp() + $row_taverne['hp'] + floor($row_taverne['hp_pc'] * $joueur->get_hp_maximum() / 100));
+								if ($joueur->get_hp() > $joueur->get_hp_maximum()) $joueur->set_hp(floor($joueur->get_hp_maximum()));
+								$joueur->set_mp($joueur->get_mp() + $row_taverne['mp'] + floor($row_taverne['mp_pc'] * $joueur->get_mp_maximum() / 100));
+								if ($joueur->get_mp() > $joueur->get_mp_maximum()) $joueur->set_mp(floor($joueur->get_mp_maximum()));
 							}
 							$joueur->sauver();
 							//Récupération de la taxe
@@ -377,10 +377,10 @@ if($joueur->get_race() == $R->get_race())
 				<?php echo ($row['honneur'] + ceil($joueur->get_honneur() * $row['honneur_pc'] / 100)); ?>
 			</td>
 			<td onmouseover="<?php echo make_overlib('Vous regagnerez '.$row['hp'].' + '.$row['hp_pc'].'% HP'); ?>" onmouseout="nd();">
-				<?php echo ($row['hp'] + ceil($joueur->get_hp_max() * $row['hp_pc'] / 100)); ?>
+				<?php echo ($row['hp'] + ceil($joueur->get_hp_maximum() * $row['hp_pc'] / 100)); ?>
 			</td>
 			<td onmouseover="<?php echo make_overlib('Vous regagnerez '.$row['mp'].' + '.$row['mp_pc'].'% MP'); ?>" onmouseout="nd();">
-				<?php echo ($row['mp'] + ceil($joueur->get_mp_max() * $row['mp_pc'] / 100)); ?>
+				<?php echo ($row['mp'] + ceil($joueur->get_mp_maximum() * $row['mp_pc'] / 100)); ?>
 			</td>
 			<td>
 				<a href="taverne.php?action=achat&amp;id=<?php echo $row['ID'].$fort; ?>" onclick="return envoiInfo(this.href, 'carte')"><span class="achat">Achat</span></a>

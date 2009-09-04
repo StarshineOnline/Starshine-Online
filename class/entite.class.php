@@ -70,7 +70,7 @@ class entite
 				$this->x = $objet->get_x();
 				$this->y = $objet->get_y();
 				$this->hp = $objet->get_hp();
-				$this->hp_max = $objet->get_hp_max();
+				$this->hp_max = $objet->get_hp_maximum();
 				$this->reserve = $objet->get_reserve();
 				$this->pa = $objet->get_pa();
 				$this->nom = $objet->get_nom();
@@ -116,7 +116,7 @@ class entite
 				$this->race = 'neutre';
 				$this->pp = $objet->get_pp();
 				$this->pm = $objet->get_pm();
-				$this->distance_tir = 1;
+				$this->distance_tir = 0;
 				$this->esquive = $objet->get_esquive();
 				$this->distance = $objet->get_melee();
 				$this->melee = $objet->get_melee();

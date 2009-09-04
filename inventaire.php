@@ -238,7 +238,7 @@ if(!$visu AND isset($_GET['action']))
 							$req = $db->query($requete);
 							$row = $db->read_assoc($req);
 							$joueur->set_hp($joueur->get_hp() + $row['effet']);
-							if($joueur->get_hp() > floor($joueur->get_hp_max())) $joueur->set_hp(floor($joueur->get_hp_max()));
+							if($joueur->get_hp() > floor($joueur->get_hp_maximum())) $joueur->set_hp(floor($joueur->get_hp_maximum()));
 							echo 'Vous utilisez une '.$row['nom'].' elle vous redonne '.$row['effet'].' points de vie<br />';
 							?>
 							<img src="image/pixel.gif" onLoad="envoiInfo('infoperso.php?javascript=oui', 'perso');" />

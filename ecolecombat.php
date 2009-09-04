@@ -225,10 +225,6 @@ if($W_row['type'] == 1)
 		?>
 		<div class="ville_test">
 			<ul class="ville">
-			<?php
-			$taxe = ceil($cout_app * $R->get_taxe_diplo($joueur->get_race()) / 100);
-			$cout = $cout_app + $taxe;
-			?>
 				<li>
 					<a href="ecolecombat.php?ecole=comp_jeu&amp;poscase=<?php echo $_GET['poscase']; ?>" onclick="return envoiInfo(this.href, 'carte')">Compétences hors combat</a>
 				</li>
@@ -237,8 +233,6 @@ if($W_row['type'] == 1)
 				</li>
 			</ul>
 			</div>
-
-			
 			<?php
 		}
 }

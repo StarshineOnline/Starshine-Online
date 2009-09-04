@@ -1233,7 +1233,7 @@ function check_perso($joueur)
 			$time = time();
 			$nb_maj = floor($temps_maj / $temps_hp);
 			$hp_gagne = $nb_maj * (sqrt($joueur->get_vie()) * 2.7);
-			$joueur->set_hp_max($joueur->get_hp_max() + $hp_gagne);
+			$joueur->set_hp_max($joueur->get_hp_maximum() + $hp_gagne);
 			$joueur->set_maj_hp($joueur->get_maj_hp() + $nb_maj * $temps_hp);
 			$modif = true;
 		}
@@ -1245,7 +1245,7 @@ function check_perso($joueur)
 			$time = time();
 			$nb_maj = floor($temps_maj / $temps_mp);
 			$mp_gagne = $nb_maj * (($joueur->get_energie() - 3) / 4);
-			$joueur->set_mp_max($joueur->get_mp_max() + $mp_gagne);
+			$joueur->set_mp_max($joueur->get_mp_maximum() + $mp_gagne);
 			$joueur->set_maj_mp($joueur->get_maj_mp() + $nb_maj * $temps_mp);
 			$modif = true;
 		}
@@ -1306,8 +1306,8 @@ function check_perso($joueur)
 				}
 			}*/
 			// Calcul des HP et MP récupérés
-			$hp_gagne = $nb_regen * (floor($joueur->get_hp_max() * $regen_hp) + $bonus_accessoire);
-			$mp_gagne = $nb_regen * (floor($joueur->get_mp_max() * $regen_mp) + $bonus_accessoire_mp);
+			$hp_gagne = $nb_regen * (floor($joueur->get_hp_maximum() * $regen_hp) + $bonus_accessoire);
+			$mp_gagne = $nb_regen * (floor($joueur->get_mp_maximum() * $regen_mp) + $bonus_accessoire_mp);
 			//DéBuff lente agonie
 			if($joueur->is_debuff('lente_agonie'))
 			{
@@ -1365,10 +1365,10 @@ function check_perso($joueur)
 			}
 			// Mise à jour des HP
 			$joueur->set_hp($joueur->get_hp() + $hp_gagne);
-			if ($joueur->get_hp() > $joueur->get_hp_max()) $joueur->set_hp(floor($joueur->get_hp_max()));
+			if ($joueur->get_hp() > $joueur->get_hp_maximum()) $joueur->set_hp(floor($joueur->get_hp_maximum()));
 			// Mise à jour des MP
 			$joueur->set_mp($joueur->get_mp() + $mp_gagne);
-			if ($joueur->get_mp() > $joueur->get_mp_max()) $joueur->set_mp(floor($joueur->get_mp_max()));
+			if ($joueur->get_mp() > $joueur->get_mp_maximum()) $joueur->set_mp(floor($joueur->get_mp_maximum()));
 			$joueur->set_regen_hp($joueur->get_regen_hp() + ($nb_regen * ($G_temps_regen_hp - $bonus_regen)));
 			$modif = true;
 		}
@@ -2363,8 +2363,8 @@ function verif_mort($pourcent, $var, $duree_debuff=0, $multiplicateur_mouvement=
 			$pourcent = $row_b['rez'];
 		}
 		$pourcent += $bonus;
-		$joueur->set_hp($joueur->get_hp_max() * $pourcent / 100);
-		$joueur->set_mp($joueur->get_mp_max() * $pourcent / 100);
+		$joueur->set_hp($joueur->get_hp_maximum() * $pourcent / 100);
+		$joueur->set_mp($joueur->get_mp_maximum() * $pourcent / 100);
 		
 		$joueur->set_regen_hp(time());
 
@@ -2438,7 +2438,7 @@ function genere_image_buff_duree($buff)
 function genere_image_hp($joueur)
 {
 	//Barre HP
-	$ratio_hp = floor(10 * ($joueur->get_hp() / floor($joueur->get_hp_max())));
+	$ratio_hp = floor(10 * ($joueur->get_hp() / floor($joueur->get_hp_maximum())));
 	if($ratio_hp > 10) $ratio_hp = 10;
 	if($ratio_hp < 0) $ratio_hp = 0;
 	$barre_vie = './image/barre/vie'.$ratio_hp.'.png';
@@ -2455,7 +2455,7 @@ function genere_image_hp($joueur)
 function genere_image_mp($joueur)
 {
 	//Barre MP
-	$ratio_mp = floor(10 * ($joueur->get_mp() / floor($joueur->get_mp_max())));
+	$ratio_mp = floor(10 * ($joueur->get_mp() / floor($joueur->get_mp_maximum())));
 	if($ratio_mp > 10) $ratio_mp = 10;
 	if($ratio_mp < 0) $ratio_mp = 0;
 	$barre_mp = './image/barre/mp'.$ratio_mp.'.png';
@@ -2472,11 +2472,11 @@ function genere_image_mp($joueur)
 function genere_image_hp_groupe($joueur)
 {
 	//Barre HP
-	$ratio_hp = floor(10 * ($joueur->get_hp() / floor($joueur->get_hp_max())));
+	$ratio_hp = floor(10 * ($joueur->get_hp() / floor($joueur->get_hp_maximum())));
 	if($ratio_hp > 10) $ratio_hp = 10;
 	if($ratio_hp < 0) $ratio_hp = 0;
 	$barre_vie = 'image/barre/g_vie'.$ratio_hp.'.png';
-	return '<img src="'.$barre_vie.'" alt="HP = '.$joueur->get_hp().' / '.floor($joueur->get_hp_max()).'" title="HP = '.$joueur->get_hp().' / '.floor($joueur->get_hp_max()).'" style="height : 5px; width : 100px;" />';
+	return '<img src="'.$barre_vie.'" alt="HP = '.$joueur->get_hp().' / '.floor($joueur->get_hp_maximum()).'" title="HP = '.$joueur->get_hp().' / '.floor($joueur->get_hp_maximum()).'" style="height : 5px; width : 100px;" />';
 }
 
 /**
@@ -2489,11 +2489,11 @@ function genere_image_hp_groupe($joueur)
 function genere_image_mp_groupe($joueur)
 {
 	//Barre MP
-	$ratio_mp = floor(10 * ($joueur->get_mp() / floor($joueur->get_mp_max())));
+	$ratio_mp = floor(10 * ($joueur->get_mp() / floor($joueur->get_mp_maximum())));
 	if($ratio_mp > 10) $ratio_mp = 10;
 	if($ratio_mp < 0) $ratio_mp = 0;
 	$barre_mp = 'image/barre/g_mp'.$ratio_mp.'.png';
-	return '<img src="'.$barre_mp.'" alt="MP = '.$joueur->get_mp().' / '.floor($joueur->get_mp_max()).'" title="MP = '.$joueur->get_mp().' / '.floor($joueur->get_mp_max()).'" style="height : 5px; width : 100px;" />';
+	return '<img src="'.$barre_mp.'" alt="MP = '.$joueur->get_mp().' / '.floor($joueur->get_mp_maximum()).'" title="MP = '.$joueur->get_mp().' / '.floor($joueur->get_mp_maximum()).'" style="height : 5px; width : 100px;" />';
 }
 
 /**

@@ -32,8 +32,8 @@ if (file_exists('root.php'))
 	include_once(root."deplacementjeu.php");
 
 	echo " <div id='joueur_PA' style='background:transparent url(".genere_image_pa($joueur).") center;' title='PA'>".$joueur->get_pa()." / $G_PA_max</div>";
-	echo " <div id='joueur_HP' style='background:transparent url(".genere_image_hp($joueur).") center;' title='HP'>".$joueur->get_hp()." / ".floor($joueur->get_hp_max())."</div>";
-	echo " <div id='joueur_MP' style='background:transparent url(".genere_image_mp($joueur).") center;' title='MP'>".$joueur->get_mp()." / ".floor($joueur->get_mp_max())."</div>";
+	echo " <div id='joueur_HP' style='background:transparent url(".genere_image_hp($joueur).") center;' title='HP'>".$joueur->get_hp()." / ".floor($joueur->get_hp_maximum())."</div>";
+	echo " <div id='joueur_MP' style='background:transparent url(".genere_image_mp($joueur).") center;' title='MP'>".$joueur->get_mp()." / ".floor($joueur->get_mp_maximum())."</div>";
 	echo " <div id='joueur_XP' style='background:transparent url(".genere_image_exp($joueur->get_exp(), prochain_level($joueur->get_level()), progression_level(level_courant($joueur->get_exp()))).") center;' title='".progression_level(level_courant($joueur->get_exp()))." % (".number_format($joueur->get_exp(), 0, ",", ".")." / ".number_format(prochain_level($joueur->get_level()), 0, ",", ".").")'></div>";
 	echo " <div id='joueur_PO' title='Vos stars'>".$joueur->get_star()."</div>";
 	echo ' <div id="joueur_PH" title="Votre honneur : '.$joueur->get_honneur().' / Votre réputation : '.$joueur->get_reputation().'">'.$joueur->get_honneur().'</div>';
@@ -128,7 +128,7 @@ if($joueur->get_groupe() != 0)
 		{
 			$membre->poscase = calcul_distance(convert_in_pos($membre->get_x(), $membre->get_y()), convert_in_pos($joueur->get_x(), $joueur->get_y()));
 			$membre->pospita = calcul_distance_pytagore(convert_in_pos($membre->get_x(),$membre->get_y()), convert_in_pos($joueur->get_x(), $joueur->get_y()));
-			$overlib = "<ul><li class='overlib_titres'>".ucwords($membre->get_grade()->get_nom())." ".ucwords($membre->get_nom())."</li><li>".ucwords($membre->get_race())." - ".ucwords($membre->get_classe())." (Niv.".$membre->get_level().")</li><li>HP : ".$membre->get_hp()." / ".floor($membre->get_hp_max())."</li><li>MP : ".$membre->get_mp()." / ".floor($membre->get_mp_max())."</li><li>Posisiton : x:".$membre->get_x().", y:".$membre->get_y()."</li><li>Distance : ".$membre->poscase." - Pytagorienne : ".$membre->pospita."</li>";
+			$overlib = "<ul><li class='overlib_titres'>".ucwords($membre->get_grade()->get_nom())." ".ucwords($membre->get_nom())."</li><li>".ucwords($membre->get_race())." - ".ucwords($membre->get_classe())." (Niv.".$membre->get_level().")</li><li>HP : ".$membre->get_hp()." / ".floor($membre->get_hp_maximum())."</li><li>MP : ".$membre->get_mp()." / ".floor($membre->get_mp_maximum())."</li><li>Posisiton : x:".$membre->get_x().", y:".$membre->get_y()."</li><li>Distance : ".$membre->poscase." - Pytagorienne : ".$membre->pospita."</li>";
 			{//-- Récupération des buffs
 				$overlib .= "<li>";
 				foreach($membre->get_buff() as $buff)

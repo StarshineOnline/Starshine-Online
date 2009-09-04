@@ -2821,6 +2821,24 @@ class perso extends entite
 		$this->set_forcex($force); 
 	}
 
+	//Récupération des HP max après bonus, famine etc
+	function get_hp_maximum()
+	{
+		$this->hp_maximum = floor($this->hp_max);
+		//Famine
+		if($this->is_buff('famine')) $this->hp_maximum = $this->hp_maximum - ($this->hp_maximum * ($this->get_buff('famine', 'effet') / 100));
+		return $this->hp_maximum;
+	}
+
+	//Récupération des MP max après bonus, famine etc
+	function get_mp_maximum()
+	{
+		$this->mp_maximum = floor($this->mp_max);
+		//Famine
+		if($this->is_buff('famine')) $this->mp_maximum = $this->mp_maximum - ($this->mp_maximum * ($this->get_buff('famine', 'effet') / 100));
+		return $this->mp_maximum;
+	}
+
 	function inventaire()
 	{
 		return unserialize($this->inventaire);
@@ -2980,7 +2998,7 @@ class perso extends entite
 				$time = time();
 				$nb_maj = floor($temps_maj / $temps_hp);
 				$hp_gagne = $nb_maj * (sqrt($this->get_vie()) * 2.7);
-				$this->set_hp_max($this->get_hp_max() + $hp_gagne);
+				$this->set_hp_max($this->get_hp_maximum() + $hp_gagne);
 				$this->set_maj_hp($this->get_maj_hp() + $nb_maj * $temps_hp);
 				$modif = true;
 			}
@@ -2992,7 +3010,7 @@ class perso extends entite
 				$time = time();
 				$nb_maj = floor($temps_maj / $temps_mp);
 				$mp_gagne = $nb_maj * (($this->get_energie() - 3) / 4);
-				$this->set_mp_max($this->get_mp_max() + $mp_gagne);
+				$this->set_mp_max($this->get_mp_maximum() + $mp_gagne);
 				$this->set_maj_mp($this->get_maj_mp() + $nb_maj * $temps_mp);
 				$modif = true;
 			}
@@ -3053,8 +3071,8 @@ class perso extends entite
 					}
 				}*/
 				// Calcul des HP et MP récupérés
-				$hp_gagne = $nb_regen * (floor($this->get_hp_max() * $regen_hp) + $bonus_accessoire);
-				$mp_gagne = $nb_regen * (floor($this->get_mp_max() * $regen_mp) + $bonus_accessoire_mp);
+				$hp_gagne = $nb_regen * (floor($this->get_hp_maximum() * $regen_hp) + $bonus_accessoire);
+				$mp_gagne = $nb_regen * (floor($this->get_mp_maximum() * $regen_mp) + $bonus_accessoire_mp);
 				//DéBuff lente agonie
 				if($this->is_debuff('lente_agonie'))
 				{
@@ -3112,10 +3130,10 @@ class perso extends entite
 				}
 				// Mise à jour des HP
 				$this->set_hp($this->get_hp() + $hp_gagne);
-				if ($this->get_hp() > $this->get_hp_max()) $this->set_hp(floor($this->get_hp_max()));
+				if ($this->get_hp() > $this->get_hp_maximum()) $this->set_hp(floor($this->get_hp_maximum()));
 				// Mise à jour des MP
 				$this->set_mp($this->get_mp() + $mp_gagne);
-				if ($this->get_mp() > $this->get_mp_max()) $this->set_mp(floor($this->get_mp_max()));
+				if ($this->get_mp() > $this->get_mp_maximum()) $this->set_mp(floor($this->get_mp_maximum()));
 				$this->set_regen_hp($this->get_regen_hp() + ($nb_regen * ($G_temps_regen_hp - $bonus_regen)));
 			}
 			//Calcul des PA du joueur

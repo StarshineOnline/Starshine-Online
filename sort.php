@@ -86,7 +86,7 @@ if (isset($_GET['ID']))
 					{
 						if($cible->get_hp() > 0)
 						{
-							if($cible->get_hp() < floor($cible->get_hp_max()))
+							if($cible->get_hp() < floor($cible->get_hp_maximum()))
 							{
 								$action = true;
 								$de_degat_sort = de_soin($joueur->get_comp($sort->get_carac_assoc()), $sort->get_effet());
@@ -113,7 +113,7 @@ if (isset($_GET['ID']))
 									$soin += rand(1, $de_degat_sort[$i]);
 									$i++;
 								}
-								if($soin > (floor($cible->get_hp_max()) - $cible->get_hp())) $soin = floor($cible->get_hp_max()) - $cible->get_hp();
+								if($soin > (floor($cible->get_hp_maximum()) - $cible->get_hp())) $soin = floor($cible->get_hp_maximum()) - $cible->get_hp();
 								echo 'Vous soignez '.$cible->get_nom().' de '.$soin.' HP<br />';
 								$soin_total += $soin;
 								
@@ -180,7 +180,7 @@ if (isset($_GET['ID']))
 					{
 						$sorthp = $sort->get_effet();
 						$sortmp = $sort->get_effet2();
-						if($sortmp > (floor($joueur->get_mp_max()) - $joueur->get_mp())) $sortmp = floor($joueur->get_mp_max()) - $joueur->get_mp();
+						if($sortmp > (floor($joueur->get_mp_maximum()) - $joueur->get_mp())) $sortmp = floor($joueur->get_mp_maximum()) - $joueur->get_mp();
 						echo 'Vous utilisez '.$sorthp.' HP pour convertir en '.$sortmp.' MP<br />';
 						$joueur->set_pa($joueur->get_pa() - $sortpa);
 						$joueur->set_mp($joueur->get_mp() + $sortmp);
@@ -246,7 +246,7 @@ if (isset($_GET['ID']))
 						lance_buff($sort->get_type(), $joueur->get_id(), 1, 0, $sort->get_duree(), $sort->get_nom(), 'Vous ne pouvez plus attaquer ni lancer le sort repos du sage', 'perso', 1, 0, 0, 0);
 						$joueur->set_pa($joueur->get_pa() - $sortpa);
 						$joueur->set_mp($joueur->get_mp() + $sort->get_effet());
-						if($joueur->get_mp() > $joueur->get_mp_max()) $joueur->set_mp($joueur->get_mp_max());
+						if($joueur->get_mp() > $joueur->get_mp_maximum()) $joueur->set_mp($joueur->get_mp_maximum());
 						//Augmentation des compétences
 						$difficulte_sort = diff_sort($sort->get_difficulte(), $joueur, 'incantation', $sortpa_base, 1);
 						$augmentation = augmentation_competence('incantation', $joueur, $difficulte_sort);
@@ -371,7 +371,7 @@ if (isset($_GET['ID']))
 									else
 									{
 										//Réduction des mp de la cible
-										$cible->set_mp($cible->get_mp() - ($cible->get_mp_max() * $sort->get_effet() / 100));
+										$cible->set_mp($cible->get_mp() - ($cible->get_mp_maximum() * $sort->get_effet() / 100));
 										if($cible->get_mp() < 0) $cible->set_mp(0);
 										$cible->sauver();
 									}
