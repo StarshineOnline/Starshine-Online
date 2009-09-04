@@ -61,7 +61,7 @@ class db
 	{
 	  $this->lockname = null;
 	  $this->locked = false;
-		$this->lnk = @mysql_connect($cfg["sql"]["host"].":".$cfg["sql"]["port"], $cfg["sql"]["user"], $cfg["sql"]["pass"], true, MYSQL_CLIENT_COMPRESS) or die("Le serveur de données est en cours de mise à jour ...<br />Merci de revenir dans quelques minutes ...");
+		$this->lnk = @mysql_connect($cfg["sql"]["host"].":".$cfg["sql"]["port"], $cfg["sql"]["user"], $cfg["sql"]["pass"], true) or die("Le serveur de données est en cours de mise à jour ...<br />Merci de revenir dans quelques minutes ...");
 		@mysql_select_db($cfg["sql"]["db"], $this->lnk) or die("La base de données est en cours de mise à jour ...<br />Merci de revenir dans quelques minutes ...");
 
 		// initialisation des variables par défaut
