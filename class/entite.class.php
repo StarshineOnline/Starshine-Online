@@ -71,6 +71,7 @@ class entite
 					case 'dague':
 					case 'hache':
 					case 'baton':
+					case '': /* main nues */
 						$this->comp_combat = 'melee';
 						break;
 					case 'arc':
