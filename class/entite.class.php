@@ -65,7 +65,23 @@ class entite
 				$this->id = $objet->get_id();
 				$this->action = $objet->action_do;
 				$this->arme_type = $objet->get_arme_type();
-				$this->comp_combat = 'melee';
+				switch ($this->arme_type)
+					{
+					case 'epee':
+					case 'dague':
+					case 'hache':
+					case 'baton':
+						$this->comp_combat = 'melee';
+						break;
+					case 'arc':
+						$this->comp_combat = 'distance';
+						break;
+					case 'bouclier':
+						$this->comp_combat = 'blocage';
+						break;
+					default:
+						die("Invalid arme_type ($this->arme_type) !!");
+					}
 				$this->comp = $objet->get_comp();
 				$this->x = $objet->get_x();
 				$this->y = $objet->get_y();

@@ -229,6 +229,9 @@ function attaque($acteur = 'attaquant', $competence, &$effects)
 						}
 					$diff_blocage = 2.5 * $G_round_total / 5;
 					$augmentation['passif']['comp'][] = array('blocage', $diff_blocage);
+					if($passif->is_competence('maitrise_bouclier'))
+						$augmentation['passif']['comp_perso'][] =
+							array('maitrise_bouclier', 6);
 				}
       //Posture défensive
       if($passif->etat['posture']['type'] == 'posture_defense') $buff_posture_defense = $passif->etat['posture']['effet']; else $buff_posture_defense = 0;
@@ -435,15 +438,21 @@ function attaque($acteur = 'attaquant', $competence, &$effects)
     {
       unset($actif->etat['dissimulation']);
     }
+
+	//Augmentation des compétences de base
+	$diff_att = 3.2 * $G_round_total / 5;
+	$augmentation['actif']['comp'][] = array($competence, $diff_att);
+	$diff_esquive = 2.7 * $G_round_total / 5;
+	$augmentation['passif']['comp'][] = array('esquive', $diff_esquive);
+
 	//Augmentation des compétences liées
 	if($actif->is_competence('art_critique') && $critique)
-	{
 		$augmentation['actif']['comp_perso'][] = array('art_critique', 2.5);
-    }
-	$diff_att = 3.2 * $G_round_total / 5;
-	$diff_esquive = 2.7 * $G_round_total / 5;
-	$augmentation['actif']['comp'][] = array($competence, $diff_att);
-	$augmentation['passif']['comp'][] = array('esquive', $diff_esquive);
+	if($actif->is_competence('maitrise_critique') && $critique)
+		$augmentation['actif']['comp_perso'][] = array('maitrise_critique', 2);
+	$arme = $actif->get_arme_type();
+	if($actif->is_competence("maitrise_$arme"))
+		$augmentation['actif']['comp_perso'][] = array("maitrise_$arme", 6);
 
 	/* Ici on va enregistrer les etats précédents */
 	// Enregistre si on a esquivé ou non
