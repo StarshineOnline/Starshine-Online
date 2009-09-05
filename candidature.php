@@ -41,7 +41,7 @@ if($W_row['type'] == 1)
 			$save = true;
 			if($_POST['ministre_economie'] != '')
 			{
-				$economie = perso::create('nom', $_POST['ministre_economie']);
+				$economie = perso::create(array('nom', 'race'), array($_POST['ministre_economie'], $joueur->get_race()));
 				if(count($economie) == 1) $candidat->set_id_ministre_economie($economie[0]->get_id());
 				else
 				{
@@ -51,7 +51,7 @@ if($W_row['type'] == 1)
 			}
 			if($_POST['ministre_militaire'] != '')
 			{
-				$militaire = perso::create('nom', $_POST['ministre_militaire']);
+				$militaire = perso::create(array('nom', 'race'), array($_POST['ministre_militaire'], $joueur->get_race()));
 				if(count($militaire) == 1) $candidat->set_id_ministre_militaire($militaire[0]->get_id());
 				else
 				{

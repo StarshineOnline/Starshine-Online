@@ -136,7 +136,7 @@ if (isset($_GET['deplacement']))
 	{
 		if($donjon) $W_pos = convertd_in_pos($coord['x'], $coord['y']);
 		else $W_pos = convert_in_pos($coord['x'], $coord['y']);
-		$W_requete = 'SELECT * FROM map WHERE ID ='.$W_pos;
+		$W_requete = 'SELECT * FROM map WHERE id ='.$W_pos;
 		$W_req = $db->query($W_requete);
 		$W_row = $db->read_array($W_req);
 		$num_rows = $db->num_rows;

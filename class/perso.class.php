@@ -2482,17 +2482,30 @@ class perso extends entite
 		}
 	}
 
-	function get_debuff($nom = false, $champ = false)
+	function get_debuff($nom = false, $champ = false, $type = true)
 	{
 		if(!$nom)
 		{
-			$this->debuff = buff::create(array('id_perso', 'debuff'), array($this->id, 1));
+			$this->debuff = buff::create(array('id_perso', 'debuff'), array($this->id, 1), 'id ASC', 'type');
 			return $this->debuff;
 		}
 		else
 		{
 			if(!isset($this->debuff)) $this->get_debuff();
-			return $this->debuff[$nom][$champ];
+			if(!$type)
+			{
+				$get = 'get_'.$champ;
+				return $this->debuff[0]->$get();
+			}
+			else
+				foreach($this->debuff as $buff)
+				{
+					if($buff->get_type() == $nom)
+					{
+						$get = 'get_'.$champ;
+						return $buff->$get();
+					}
+				}
 		}
 	}
 
@@ -2502,7 +2515,7 @@ class perso extends entite
 	 * @param $type si le nom est le type du buff
 	 * @return true si le perso est sous le buff false sinon.
  	*/
-	function is_buff($nom = '', $type = false)
+	function is_buff($nom = '', $type = true)
 	{
 		if(!isset($this->buff)) $this->get_buff();
 		$buffe = false;
@@ -2538,36 +2551,34 @@ class perso extends entite
 	 * @param $type si le nom est le type du debuff
 	 * @return true si le perso est sous le debuff false sinon.
  	*/
-	function is_debuff($nom = '', $type = false)
+	function is_debuff($nom = '', $type = true)
 	{
 		if(!isset($this->debuff)) $this->get_debuff();
-		$debuffe = false;
-		
+		$buffe = false;
+
 		if(is_array($this->debuff))
 		{
-			$tmp = $this->debuff;
-			while(current($tmp) && !$debuffe)
+			if(!empty($nom))
 			{
-				if(!empty($nom))
+				foreach($this->debuff as $key => $debuff)
 				{
 					if($type)
 					{
-						if(strcmp(current($tmp)->get_type(), $nom) == 0)
-							$debuffe = true;
+						if($key == $nom) $buffe = true;
 					}
-					else if(strcmp(current($tmp)->get_nom(), $nom) == 0)
-						$debuffe = true;
-				
-					next($tmp);
+					else if($debuff->get_nom() ==  $nom)
+					{
+						$buffe = true;
+					}
 				}
-				else
-					$debuffe = (count($this->debuff) > 0);
 			}
+			else
+				$buffe = (count($this->debuff) > 0);
 		}
 		else
-			$debuffe = false;
+			$buffe = false;
 
-		return $debuffe;
+		return $buffe;
 	}
 
 	function add_buff($nom, $effet)
@@ -2826,7 +2837,7 @@ class perso extends entite
 	{
 		$this->hp_maximum = floor($this->hp_max);
 		//Famine
-		if($this->is_buff('famine')) $this->hp_maximum = $this->hp_maximum - ($this->hp_maximum * ($this->get_buff('famine', 'effet') / 100));
+		if($this->is_debuff('famine')) $this->hp_maximum = $this->hp_maximum - ($this->hp_maximum * ($this->get_debuff('famine', 'effet') / 100));
 		return $this->hp_maximum;
 	}
 
@@ -2835,7 +2846,7 @@ class perso extends entite
 	{
 		$this->mp_maximum = floor($this->mp_max);
 		//Famine
-		if($this->is_buff('famine')) $this->mp_maximum = $this->mp_maximum - ($this->mp_maximum * ($this->get_buff('famine', 'effet') / 100));
+		if($this->is_debuff('famine')) $this->mp_maximum = $this->mp_maximum - ($this->mp_maximum * ($this->get_debuff('famine', 'effet') / 100));
 		return $this->mp_maximum;
 	}
 

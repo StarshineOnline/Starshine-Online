@@ -73,13 +73,13 @@ class entite
 					case 'baton':
 					case '': /* main nues */
 						$this->comp_combat = 'melee';
-						break;
+					break;
 					case 'arc':
 						$this->comp_combat = 'distance';
-						break;
+					break;
 					case 'bouclier':
 						$this->comp_combat = 'blocage';
-						break;
+					break;
 					default:
 						die("Invalid arme_type ($this->arme_type) !!");
 					}
