@@ -2892,13 +2892,13 @@ class perso extends entite
 	{
 		$valid = true;
 		//Vérifie si le joueur n'a pas déjà pris la quète.
-		if($joueur->get_quete() != '')
+		if($this->get_quete() != '')
 		{
-			foreach($joueur->get_liste_quete() as $quest)
+			foreach($this->get_liste_quete() as $quest)
 			{
 				if($quest['id_quete'] == $_GET['id']) $valid = false;
 			}
-			$numero_quete = (count($joueur->liste_quete));
+			$numero_quete = (count($this->liste_quete));
 		}
 		else
 		{
@@ -2911,13 +2911,13 @@ class perso extends entite
 			$i = 0;
 			while($i < $count)
 			{
-				$joueur->liste_quete[$numero_quete]['objectif'][$i]->cible = $quete[$i]->cible;
-				$joueur->liste_quete[$numero_quete]['objectif'][$i]->requis = $quete[$i]->requis;
-				$joueur->liste_quete[$numero_quete]['objectif'][$i]->nombre = 0;
-				$joueur->liste_quete[$numero_quete]['id_quete'] = $row['id'];
+				$this->liste_quete[$numero_quete]['objectif'][$i]->cible = $quete[$i]->cible;
+				$this->liste_quete[$numero_quete]['objectif'][$i]->requis = $quete[$i]->requis;
+				$this->liste_quete[$numero_quete]['objectif'][$i]->nombre = 0;
+				$this->liste_quete[$numero_quete]['id_quete'] = $row['id'];
 				$i++;
 			}
-			$joueur->set_quete(serialize($joueur->liste_quete));
+			$this->set_quete(serialize($this->liste_quete));
 			return true;
 		}
 		else
@@ -2999,7 +2999,7 @@ class perso extends entite
 
 			// Gemme du troll
 			if (array_key_exists('regeneration', $this->get_enchantement())) {
-				//$bonus_regen = $joueur->get_enchantement()['regeneration']['effet'] * 60;
+				//$bonus_regen = $this->get_enchantement()['regeneration']['effet'] * 60;
 				if ($G_temps_regen_hp <= $bonus_regen) {
 					$bonus_regen = $G_temps_regen_hp - 1;
 				}
@@ -3035,10 +3035,10 @@ class perso extends entite
 				if($this->get_race() == 'troll') $regen_hp = $regen_hp * 1.2;
 				if($this->get_race() == 'elfehaut') $regen_mp = $regen_mp * 1.1;
 				// Accessoires
-				//if($joueur['accessoire']['id'] != '0' AND $joueur['accessoire']['type'] == 'regen_hp') $bonus_accessoire = $joueur['accessoire']['effet']; else $bonus_accessoire = 0;
-				//if($joueur['accessoire']['id'] != '0' AND $joueur['accessoire']['type'] == 'regen_mp') $bonus_accessoire_mp = $joueur['accessoire']['effet']; else $bonus_accessoire_mp = 0;
+				//if($this['accessoire']['id'] != '0' AND $this['accessoire']['type'] == 'regen_hp') $bonus_accessoire = $this['accessoire']['effet']; else $bonus_accessoire = 0;
+				//if($this['accessoire']['id'] != '0' AND $this['accessoire']['type'] == 'regen_mp') $bonus_accessoire_mp = $this['accessoire']['effet']; else $bonus_accessoire_mp = 0;
 				// Effets magiques des objets
-				/*foreach($joueur['objet_effet'] as $effet)
+				/*foreach($this['objet_effet'] as $effet)
 				{
 					switch($effet['id'])
 					{
@@ -3059,7 +3059,7 @@ class perso extends entite
 					// Le débuff a-t-il été lancé après la dernière régénération ?
 					if($this->get_buff('lente_agonie', 'effet2') > $this->get_regen_hp())
 					{
-						$regen_cherche = $this->get_regen_hp() + (($G_temps_regen_hp - $bonus_regen) * floor(($this->get_buff('lente_agonie', 'effet2') - $joueur->get_regen_hp()) / $G_temps_regen_hp));
+						$regen_cherche = $this->get_regen_hp() + (($G_temps_regen_hp - $bonus_regen) * floor(($this->get_buff('lente_agonie', 'effet2') - $this->get_regen_hp()) / $G_temps_regen_hp));
 					}
 					else $regen_cherche = $this->get_regen_hp();
 					// Le débuff s'est-il arrêté entre temps ?
@@ -3079,11 +3079,11 @@ class perso extends entite
 					// On diminue le nombre de régénération pendant lesquels la maladie est active ou supprime s'il n'y en  plus
 					if($this->get_buff('regen_negative', 'effet') > 1)
 					{
-						$requete = "UPDATE buff SET effet = ".($joueur['debuff']['regen_negative']['effet'] - 1)." WHERE id = ".$joueur['debuff']['regen_negative']['id'];
+						$requete = "UPDATE buff SET effet = ".($this->get_buff('regen_negative', 'effet') - 1)." WHERE id = ".$this->get_buff('regen_negative', 'id');
 					}
 					else
 					{
-						$requete = "DELETE FROM buff WHERE id = ".$joueur['debuff']['regen_negative']['id'];
+						$requete = "DELETE FROM buff WHERE id = ".$this->get_buff('regen_negative', 'id');
 					}
 					$db->query($requete);
 				}
@@ -3095,11 +3095,11 @@ class perso extends entite
 					// On diminue le nombre de régénération pendant lesquels la maladie est active ou supprime s'il n'y en  plus
 					if($this['debuff']['high_regen']['effet'] > 1)
 					{
-						$requete = "UPDATE buff SET effet = ".($joueur['debuff']['high_regen']['effet'] - 1)." WHERE id = ".$joueur['debuff']['high_regen']['id'];
+						$requete = "UPDATE buff SET effet = ".($this->get_buff('high_regen', 'effet') - 1)." WHERE id = ".$this->get_buff('high_regen', 'id');
 					}
 					else
 					{
-						$requete = "DELETE FROM buff WHERE id = ".$joueur['debuff']['high_regen']['id'];
+						$requete = "DELETE FROM buff WHERE id = ".$this->get_buff('high_regen', 'id');
 					}
 					$db->query($requete);
 				}
