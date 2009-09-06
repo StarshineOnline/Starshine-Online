@@ -2459,7 +2459,7 @@ class perso extends entite
 	{
 		if(!$nom)
 		{
-			$this->buff = buff::create(array('id_perso', 'debuff'), array($this->id, 0), 'id ASC', 'type');
+			$this->buff = buff::create(id_perso, $this->id, 'id ASC', 'type');
 			return $this->buff;
 		}
 		else
@@ -2472,33 +2472,6 @@ class perso extends entite
 			}
 			else
 				foreach($this->buff as $buff)
-				{
-					if($buff->get_type() == $nom)
-					{
-						$get = 'get_'.$champ;
-						return $buff->$get();
-					}
-				}
-		}
-	}
-
-	function get_debuff($nom = false, $champ = false, $type = true)
-	{
-		if(!$nom)
-		{
-			$this->debuff = buff::create(array('id_perso', 'debuff'), array($this->id, 1), 'id ASC', 'type');
-			return $this->debuff;
-		}
-		else
-		{
-			if(!isset($this->debuff)) $this->get_debuff();
-			if(!$type)
-			{
-				$get = 'get_'.$champ;
-				return $this->debuff[0]->$get();
-			}
-			else
-				foreach($this->debuff as $buff)
 				{
 					if($buff->get_type() == $nom)
 					{
@@ -2545,42 +2518,6 @@ class perso extends entite
 		return $buffe;
 	}
 	
-	/**
-	 * Permet de savoir si le joueur est sous le debuff nom
-	 * @param $nom le nom du debuff
-	 * @param $type si le nom est le type du debuff
-	 * @return true si le perso est sous le debuff false sinon.
- 	*/
-	function is_debuff($nom = '', $type = true)
-	{
-		if(!isset($this->debuff)) $this->get_debuff();
-		$buffe = false;
-
-		if(is_array($this->debuff))
-		{
-			if(!empty($nom))
-			{
-				foreach($this->debuff as $key => $debuff)
-				{
-					if($type)
-					{
-						if($key == $nom) $buffe = true;
-					}
-					else if($debuff->get_nom() ==  $nom)
-					{
-						$buffe = true;
-					}
-				}
-			}
-			else
-				$buffe = (count($this->debuff) > 0);
-		}
-		else
-			$buffe = false;
-
-		return $buffe;
-	}
-
 	function add_buff($nom, $effet)
 	{
 		if(!isset($this->buff)) $this->get_buff();
@@ -2749,10 +2686,42 @@ class perso extends entite
 					// Gemmes
 					if($partie_d['enchantement'] > 0)
 					{
-						$R_perso = enchant($partie_d['enchantement'], $R_perso);
+						$this->enchant = enchant($partie_d['enchantement'], $this);
 					}
 				}
 			}
+			$this->pp_base = $this->pp;
+			$this->pm_base = $this->pm;
+			//Bonus raciaux
+			if($this->get_race() == 'nain') $this->pm = round(($this->pm + 10) * 1.1);
+			if($this->get_race() == 'barbare') $this->pp = round(($this->pp + 10) * 1.3);
+			if($this->get_race() == 'scavenger')
+			{
+				$this->pp = round($this->pp * 1.15);
+				$this->pm = round($this->pm * 1.05);
+			}
+			if($this->get_race == 'mortvivant' AND moment_jour() == 'Soir')
+			{
+				$this->pp = round($this->pp * 1.15);
+				$this->pm = round($this->pm * 1.15);
+			}
+
+			//Effets des enchantements
+			if (isset($this->enchantement['pourcent_pm'])) $this->pm += floor($this->pm * $this->enchantement['pourcent_pm']['effet'] / 100);
+			if (isset($this->enchantement['pourcent_pp']))	$this->pp += floor($this->pp * $this->enchantement['pourcent_pp']['effet'] / 100);
+
+			//Buffs
+			if($this->is_buff('buff_bouclier')) $this->pp = round($this->pp * (1 + ($this->get_buff('buff_bouclier', 'effet') / 100)));
+			if($this->is_buff('buff_barriere')) $this->pm = round($this->pm * (1 + ($this->get_buff('buff_barriere', 'effet') / 100)));
+			if($this->is_buff('buff_forteresse'))
+			{
+				$this->pp = round($this->pp * (1 + (($this->get_buff['buff_forteresse']['effet']) / 100)));
+				$this->pm = round($this->pm * (1 + (($this->get_buff['buff_forteresse']['effet2']) / 100)));
+			}
+			if($this->is_buff('buff_cri_protecteur')) $this->pp = round($this->pp * (1 + ($this->get_buff('buff_cri_protecteur', 'effet') / 100)));
+			if($this->is_buff('debuff_desespoir')) $this->pm = round($this->pm / (1 + (($this->get_buff('debuff_desespoir', 'effet')) / 100)));
+			//Maladie suppr_defense
+			if($this->is_buff('suppr_defense')) $this->pp = 0;
 		}
 		return $this->armure;
 	}
@@ -2837,7 +2806,7 @@ class perso extends entite
 	{
 		$this->hp_maximum = floor($this->hp_max);
 		//Famine
-		if($this->is_debuff('famine')) $this->hp_maximum = $this->hp_maximum - ($this->hp_maximum * ($this->get_debuff('famine', 'effet') / 100));
+		if($this->is_buff('famine')) $this->hp_maximum = $this->hp_maximum - ($this->hp_maximum * ($this->get_buff('famine', 'effet') / 100));
 		return $this->hp_maximum;
 	}
 
@@ -2846,7 +2815,7 @@ class perso extends entite
 	{
 		$this->mp_maximum = floor($this->mp_max);
 		//Famine
-		if($this->is_debuff('famine')) $this->mp_maximum = $this->mp_maximum - ($this->mp_maximum * ($this->get_debuff('famine', 'effet') / 100));
+		if($this->is_buff('famine')) $this->mp_maximum = $this->mp_maximum - ($this->mp_maximum * ($this->get_buff('famine', 'effet') / 100));
 		return $this->mp_maximum;
 	}
 
@@ -3085,30 +3054,30 @@ class perso extends entite
 				$hp_gagne = $nb_regen * (floor($this->get_hp_maximum() * $regen_hp) + $bonus_accessoire);
 				$mp_gagne = $nb_regen * (floor($this->get_mp_maximum() * $regen_mp) + $bonus_accessoire_mp);
 				//DéBuff lente agonie
-				if($this->is_debuff('lente_agonie'))
+				if($this->is_buff('lente_agonie'))
 				{
 					// Le débuff a-t-il été lancé après la dernière régénération ?
-					if($this->get_debuff('lente_agonie', 'effet2') > $this->get_regen_hp())
+					if($this->get_buff('lente_agonie', 'effet2') > $this->get_regen_hp())
 					{
-						$regen_cherche = $this->get_regen_hp() + (($G_temps_regen_hp - $bonus_regen) * floor(($this->get_debuff('lente_agonie', 'effet2') - $joueur->get_regen_hp()) / $G_temps_regen_hp));
+						$regen_cherche = $this->get_regen_hp() + (($G_temps_regen_hp - $bonus_regen) * floor(($this->get_buff('lente_agonie', 'effet2') - $joueur->get_regen_hp()) / $G_temps_regen_hp));
 					}
 					else $regen_cherche = $this->get_regen_hp();
 					// Le débuff s'est-il arrêté entre temps ?
-					if($this->get_debuff('lente_agonie', 'fin') > time()) $fin = time();
-					else $fin = $this->get_debuff('lente_agonie', 'fin');
+					if($this->get_buff('lente_agonie', 'fin') > time()) $fin = time();
+					else $fin = $this->get_buff('lente_agonie', 'fin');
 					// On calcule le nombre de régénération pour lesquels le débuff doit être pris en compte 
 					$nb_regen_avec_buff = floor(($fin - $regen_cherche) / ($G_temps_regen_hp - $bonus_regen));
 					// Calcul du malus
-					$malus_agonie = ((1 - ($nb_regen_avec_buff / $nb_regen)) - (($nb_regen_avec_buff / $nb_regen) * $this->get_debuff('lente_agonie', 'effet')));
+					$malus_agonie = ((1 - ($nb_regen_avec_buff / $nb_regen)) - (($nb_regen_avec_buff / $nb_regen) * $this->get_buff('lente_agonie', 'effet')));
 					$hp_gagne = $hp_gagne * $malus_agonie;
 				}
 				//Maladie regen negative
-				if($this->is_debuff('regen_negative') AND !$this->is_debuff('lente_agonie'))
+				if($this->is_buff('regen_negative') AND !$this->is_buff('lente_agonie'))
 				{
 					$hp_gagne = $hp_gagne * -1;
 					$mp_gagne = $mp_gagne * -1;
 					// On diminue le nombre de régénération pendant lesquels la maladie est active ou supprime s'il n'y en  plus
-					if($this->get_debuff('regen_negative', 'effet') > 1)
+					if($this->get_buff('regen_negative', 'effet') > 1)
 					{
 						$requete = "UPDATE buff SET effet = ".($joueur['debuff']['regen_negative']['effet'] - 1)." WHERE id = ".$joueur['debuff']['regen_negative']['id'];
 					}
@@ -3119,7 +3088,7 @@ class perso extends entite
 					$db->query($requete);
 				}
 				//Maladie high regen
-				if($this->is_debuff('high_regen'))
+				if($this->is_buff('high_regen'))
 				{
 					$hp_gagne = $hp_gagne * 3;
 					$mp_gagne = $mp_gagne * 3;
@@ -3135,7 +3104,7 @@ class perso extends entite
 					$db->query($requete);
 				}
 				//Maladie mort_regen
-				if($this->is_debuff('high_regen') AND $hp_gagne != 0 AND $mp_gagne != 0)
+				if($this->is_buff('high_regen') AND $hp_gagne != 0 AND $mp_gagne != 0)
 				{
 					$hp_gagne = $this->get_hp();
 				}

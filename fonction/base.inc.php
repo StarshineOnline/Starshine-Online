@@ -573,13 +573,13 @@ function cout_pa2($coutpa, $joueur, $case, $diagonale)
 	
 	if ($diagonale) $coutpa++;
 	//Mal de rez
-	if($joueur->is_debuff('debuff_rez', true))
+	if($joueur->is_buff('debuff_rez'))
 	{
-		$coutpa = $coutpa * $joueur->get_debuff('debuff_rez', 'effet');
+		$coutpa = $coutpa * $joueur->get_buff('debuff_rez', 'effet');
 	}
 	//Maladies
-	if($joueur->is_debuff('cout_deplacement')) $coutpa = ceil($coutpa / $joueur->get_debuff('cout_deplacement', 'effet'));
-	if($joueur->is_debuff('plus_cout_deplacement')) $coutpa = ceil($coutpa * $joueur->get_debuff('plus_cout_deplacement', 'effet'));
+	if($joueur->is_buff('cout_deplacement')) $coutpa = ceil($coutpa / $joueur->get_buff('cout_deplacement', 'effet'));
+	if($joueur->is_buff('plus_cout_deplacement')) $coutpa = ceil($coutpa * $joueur->get_buff('plus_cout_deplacement', 'effet'));
 	//Bâtiment qui augmente le coût de PA
 	if($batiment = batiment_map($case->get_x(), $case->get_y()))
 	{
@@ -1309,25 +1309,25 @@ function check_perso($joueur)
 			$hp_gagne = $nb_regen * (floor($joueur->get_hp_maximum() * $regen_hp) + $bonus_accessoire);
 			$mp_gagne = $nb_regen * (floor($joueur->get_mp_maximum() * $regen_mp) + $bonus_accessoire_mp);
 			//DéBuff lente agonie
-			if($joueur->is_debuff('lente_agonie'))
+			if($joueur->is_buff('lente_agonie'))
 			{
 				// Le débuff a-t-il été lancé après la dernière régénération ?
-				if($joueur->get_debuff('lente_agonie', 'effet2') > $joueur->get_regen_hp())
+				if($joueur->get_buff('lente_agonie', 'effet2') > $joueur->get_regen_hp())
 				{
-					$regen_cherche = $joueur->get_regen_hp() + (($G_temps_regen_hp - $bonus_regen) * floor(($joueur->get_debuff('lente_agonie', 'effet2') - $joueur->get_regen_hp()) / $G_temps_regen_hp));
+					$regen_cherche = $joueur->get_regen_hp() + (($G_temps_regen_hp - $bonus_regen) * floor(($joueur->get_buff('lente_agonie', 'effet2') - $joueur->get_regen_hp()) / $G_temps_regen_hp));
 				}
 				else $regen_cherche = $joueur->get_regen_hp();
 				// Le débuff s'est-il arrêté entre temps ?
-				if($joueur->get_debuff('lente_agonie', 'fin') > time()) $fin = time();
-				else $fin = $joueur->get_debuff('lente_agonie', 'fin');
+				if($joueur->get_buff('lente_agonie', 'fin') > time()) $fin = time();
+				else $fin = $joueur->get_buff('lente_agonie', 'fin');
 				// On calcule le nombre de régénération pour lesquels le débuff doit être pris en compte 
 				$nb_regen_avec_buff = floor(($fin - $regen_cherche) / ($G_temps_regen_hp - $bonus_regen));
 				// Calcul du malus
-				$malus_agonie = ((1 - ($nb_regen_avec_buff / $nb_regen)) - (($nb_regen_avec_buff / $nb_regen) * $joueur->get_debuff('lente_agonie', 'effet')));
+				$malus_agonie = ((1 - ($nb_regen_avec_buff / $nb_regen)) - (($nb_regen_avec_buff / $nb_regen) * $joueur->get_buff('lente_agonie', 'effet')));
 				$hp_gagne = $hp_gagne * $malus_agonie;
 			}
 			//Maladie regen negative
-			if($joueur->is_debuff('regen_negative') AND !$joueur->is_debuff('lente_agonie'))
+			if($joueur->is_buff('regen_negative') AND !$joueur->is_buff('lente_agonie'))
 			{
 				$hp_gagne = $hp_gagne * -1;
 				$mp_gagne = $mp_gagne * -1;
@@ -1343,7 +1343,7 @@ function check_perso($joueur)
 				$db->query($requete);
 			}
 			//Maladie high regen
-			if($joueur->is_debuff('high_regen'))
+			if($joueur->is_buff('high_regen'))
 			{
 				$hp_gagne = $hp_gagne * 3;
 				$mp_gagne = $mp_gagne * 3;
@@ -1359,7 +1359,7 @@ function check_perso($joueur)
 				$db->query($requete);
 			}
 			//Maladie mort_regen
-			if($joueur->is_debuff('high_regen') AND $hp_gagne != 0 AND $mp_gagne != 0)
+			if($joueur->is_buff('high_regen') AND $hp_gagne != 0 AND $mp_gagne != 0)
 			{
 				$hp_gagne = $joueur->get_hp();
 			}

@@ -256,13 +256,16 @@ if(!$visu AND isset($_GET['action']))
 						$objet = decompose_objet($joueur->get_inventaire_slot_partie($_GET['key_slot']));
 						if(check_utilisation_objet($joueur, $objet))
 						{
-							foreach($joueur->get_debuff() as $debuff)
+							foreach($joueur->get_buff() as $buff)
 							{
-								if($debuff->get_supprimable() == 1) { $debuff_tab[count($debuff_tab)] = $debuff->get_id(); };
+								if($buff->get_debuff() == 1)
+								{
+									if($buff->get_supprimable() == 1) { $buff_tab[count($buff_tab)] = $buff->get_id(); };
+								}
 							}
-							if(count($debuff_tab) > 0)
+							if(count($buff_tab) > 0)
 							{
-								$db->query("DELETE FROM buff WHERE id=".$debuff_tab[rand(0, count($debuff_tab)-1)].";");
+								$db->query("DELETE FROM buff WHERE id=".$buff_tab[rand(0, count($buff_tab)-1)].";");
 								echo '<h6>Une malédiction a été correctement supprimée</h6>';
 							}
 							else echo '<h5>Vous n\'avez pas de malédiction a supprimer</h5>';

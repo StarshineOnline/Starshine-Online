@@ -9,7 +9,7 @@ $perso = new perso($_GET['ID']);
 //Si il n'est pas groupé, création du groupe
 if(!$joueur->is_groupe())
 {
-	if(!$joueur->is_debuff('Dépression'))
+	if(!$joueur->is_buff('debuff_groupe'))
 	{
 		$groupe = new groupe('', 'r', $joueur->get_id(), 'groupe_'.$joueur->get_id());
 		$groupe->sauver();
@@ -38,7 +38,7 @@ if (isset($groupe_joueur) && $groupe_joueur->is_leader())
 		if ($perso->get_groupe() == 0)
 		{
 			//Vérifie qu'il n'est pas déprimmé
-			if($perso->is_debuff('debuff_groupe', true))
+			if($perso->is_buff('debuff_groupe', true))
 			{
 				echo 'Ce joueur est déprimé, il ne vous voit même pas!';
 			}

@@ -1024,46 +1024,46 @@ class royaume
 		switch($this->get_diplo($race_joueur))
 		{
 			case 127 : // même royaume
-				$this->taxe = floor($this->taxe / 4);
+				$this->taxe_diplo = floor($this->taxe / 4);
 			break;
 			case 0 : // Alliance fraternelle
-				$this->taxe = ceil($this->taxe / 4);
+				$this->taxe_diplo = ceil($this->taxe / 4);
 			break;
 			case 1 : // Alliance
-				$this->taxe = floor($this->taxe / 3);
+				$this->taxe_diplo = floor($this->taxe / 3);
 			break;
 			case 2 : // Paix durable
-				$this->taxe = ceil($this->taxe / 3);
+				$this->taxe_diplo = ceil($this->taxe / 3);
 			break;
 			case 3 : // Paix
-				$this->taxe = floor($this->taxe / 2);
+				$this->taxe_diplo = floor($this->taxe / 2);
 			break;
 			case 4 : // En bons termes
-				$this->taxe = ceil($this->taxe / 2);
+				$this->taxe_diplo = ceil($this->taxe / 2);
 			break;
 			case 5 : // Neutre
-				$this->taxe = ceil($this->taxe / 1.5);
+				$this->taxe_diplo = ceil($this->taxe / 1.5);
 			break;
 			case 6 : // Mauvais termes
-				$this->taxe = ceil($this->taxe / 1);
+				$this->taxe_diplo = ceil($this->taxe / 1);
 			break;
 			case 7 : // Guerre
-				$this->taxe = 0;
+				$this->taxe_diplo = 0;
 			break;
 			case 8 : // Guerre durable
-				$this->taxe = 0;
+				$this->taxe_diplo = 0;
 			break;
 			case 9 : // Ennemis
-				$this->taxe = 0;
+				$this->taxe_diplo = 0;
 			break;
 			case 10 : // Ennemis eternels
-				$this->taxe = 0;
+				$this->taxe_diplo = 0;
 			break;
 			case 11 : // ?
-				$this->taxe = 0;
+				$this->taxe_diplo = 0;
 			break;
 		}
-		return $this->taxe;
+		return $this->taxe_diplo;
 	}
 
 	function change_diplo($royaume, $changement = '+')

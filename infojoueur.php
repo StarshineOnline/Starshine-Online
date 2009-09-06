@@ -86,12 +86,12 @@ if ($perso->get_id() != $joueur->get_id())
 {
 	$pa_attaque = $G_PA_attaque_joueur;
 	if($joueur->get_race() == $perso->get_race()) $pa_attaque += 3;
-	if($joueur->is_debuff('cout_attaque')) $pa_attaque = ceil($pa_attaque / $joueur->get_debuff('cout_attaque', 'effet'));
-	if($joueur->is_debuff('plus_cout_attaque')) $pa_attaque = $pa_attaque * $joueur->get_debuff('plus_cout_attaque', 'effet');
+	if($joueur->is_buff('cout_attaque')) $pa_attaque = ceil($pa_attaque / $joueur->get_buff('cout_attaque', 'effet'));
+	if($joueur->is_buff('plus_cout_attaque')) $pa_attaque = $pa_attaque * $joueur->get_buff('plus_cout_attaque', 'effet');
 	if($joueur->is_buff('buff_rapidite')) $reduction_pa = $joueur->get_buff('buff_rapidite', 'effet'); else $reduction_pa = 0;
-	if($joueur->is_debuff('debuff_ralentissement')) $reduction_pa -= $joueur->get_debuff('debuff_ralentissement', 'effet');
+	if($joueur->is_buff('debuff_ralentissement')) $reduction_pa -= $joueur->get_buff('debuff_ralentissement', 'effet');
 	echo '<tr><td><img src="image/message.png" title="Envoyer un message" /></td><td><a href="envoimessage.php?id_type=p'.$W_ID.'" onclick="return envoiInfo(this.href, \'information\')">Envoyer un message</a></td></tr>';
-	if($perso->get_hp() > 0 AND !$joueur->is_debuff('repos_sage') OR !$joueur->is_debuff('bloque_attaque')) echo '<tr><td><img src="image/interface/attaquer.png" alt="Combattre" style="vertical-align : middle;" /></td><td><a href="attaque.php?id_joueur='.$W_ID.'&amp;type=joueur" onclick="return envoiInfo(this.href, \'information\')"> Attaquer</a><span class="xsmall"> ('.($pa_attaque - $reduction_pa).' PA)</span></td></tr>';
+	if($perso->get_hp() > 0 AND !$joueur->is_buff('repos_sage') OR !$joueur->is_buff('bloque_attaque')) echo '<tr><td><img src="image/interface/attaquer.png" alt="Combattre" style="vertical-align : middle;" /></td><td><a href="attaque.php?id_joueur='.$W_ID.'&amp;type=joueur" onclick="return envoiInfo(this.href, \'information\')"> Attaquer</a><span class="xsmall"> ('.($pa_attaque - $reduction_pa).' PA)</span></td></tr>';
 }
 if($joueur->get_sort_jeu() != '')
 {
@@ -103,7 +103,7 @@ if($joueur->get_sort_jeu() != '')
 
 if (($W_distance < 2) AND ($perso->get_id() != $joueur->get_id()) AND ($perso->get_groupe() != $joueur->get_groupe() OR $joueur->get_groupe() == '' OR $joueur->get_groupe() == 0))
 {
-	if($joueur->is_debuff('debuff_groupe', true)) 
+	if($joueur->is_buff('debuff_groupe', true)) 
 		echo '<tr><td><img src="image/interface/demande_groupe.png" alt="Inviter ce joueur dans votre groupe" title="Inviter ce joueur dans votre groupe" style="vertical-align : middle;" /></td><td>Vous êtes trop déprimé pour pouvoir grouper.</td></tr>';
 	else
 		echo('<tr><td><img src="image/interface/demande_groupe.png" alt="Inviter ce joueur dans votre groupe" title="Inviter ce joueur dans votre groupe" style="vertical-align : middle;" /></td><td><a href="invitegroupe.php?ID='.$perso->get_id().'" onclick="return envoiInfo(this.href, \'information\')"> Inviter ce joueur dans votre groupe</a></td></tr>');
@@ -134,19 +134,25 @@ echo '</table>';
 //Affichage des buffs du joueur
 if($joueur->get_groupe() == $perso->get_groupe() && $joueur->get_groupe() != 0 && $joueur->get_groupe() != '')
 {
-	if (count($perso->get_buff()) != 0 || count($perso->get_debuff()) != 0)
+	if (count($perso->get_buff()) != 0 || count($perso->get_buff()) != 0)
 	{
 		echo '<h4><span class="titre_info">Buffs / Debuffs</span></h4>';
 		//Listing des buffs
 		foreach($perso->get_buff() as $buff)
 		{
-			echo '<img src="image/buff/'.$buff->get_type().'_p.png" alt="'.$buff->get_type().'" ondblclick="if(confirm(\'Voulez vous supprimer '.$buff->get_nom().' ?\')) envoiInfo(\'suppbuff.php?id='.$buff->get_id().'\', \'perso\');" onmouseover="'.make_overlib('<strong>'.$buff->get_nom().'</strong><br />'.description($buff->get_description(), $buff).'<br />Durée '.transform_sec_temp($buff->get_fin() - time())).'" onmouseout="return nd();" />';
+			if($buff->get_debuff() == 0)
+			{
+				echo '<img src="image/buff/'.$buff->get_type().'_p.png" alt="'.$buff->get_type().'" ondblclick="if(confirm(\'Voulez vous supprimer '.$buff->get_nom().' ?\')) envoiInfo(\'suppbuff.php?id='.$buff->get_id().'\', \'perso\');" onmouseover="'.make_overlib('<strong>'.$buff->get_nom().'</strong><br />'.description($buff->get_description(), $buff).'<br />Durée '.transform_sec_temp($buff->get_fin() - time())).'" onmouseout="return nd();" />';
+			}
 		}
-		if(count($perso->get_debuff()) > 0) echo '<br />';
+		if(count($perso->get_buff()) > 0) echo '<br />';
 		//Listing des debuffs
-		foreach($perso->get_debuff() as $buff)
+		foreach($perso->get_buff() as $buff)
 		{
-			echo '<img src="image/buff/'.$buff->get_type().'_p.png" alt="'.$buff->get_type().'" onmouseover="'.make_overlib('<strong>'.$buff->get_nom().'</strong><br />'.description($buff->get_description(), $buff).'<br />Durée '.transform_sec_temp($buff->get_fin() - time())).'" onmouseout="return nd();" />';
+			if($buff->get_debuff() == 1)
+			{
+				echo '<img src="image/buff/'.$buff->get_type().'_p.png" alt="'.$buff->get_type().'" onmouseover="'.make_overlib('<strong>'.$buff->get_nom().'</strong><br />'.description($buff->get_description(), $buff).'<br />Durée '.transform_sec_temp($buff->get_fin() - time())).'" onmouseout="return nd();" />';
+			}
 		}
 	}
 }

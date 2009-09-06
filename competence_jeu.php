@@ -120,13 +120,13 @@ if (isset($_GET['ID']))
 				}
 			break;
 			case 'repos_interieur' :
-				if($joueur->is_debuff('repos_interieur', true) AND $joueur->get_buff('repos_interieur', 'effet', true) >= 10)
+				if($joueur->is_buff('repos_interieur', true) AND $joueur->get_buff('repos_interieur', 'effet', true) >= 10)
 				{
 					echo 'Vous avez trop utilisé repos intérieur pour le moment !';
 				}
 				else
 				{
-					if($joueur->is_debuff('repos_interieur', true)) $effet = $joueur->get_buff('repos_interieur', 'effet', true) + 1;
+					if($joueur->is_buff('repos_interieur', true)) $effet = $joueur->get_buff('repos_interieur', 'effet', true) + 1;
 					else $effet = 1;
 					$joueur->set_pa($joueur->get_pa() + 2);
 					$joueur->set_mp($joueur->get_mp() - $sortmp);

@@ -240,7 +240,7 @@ if (isset($_GET['ID']))
 				break;
 				case 'repos_sage' :
 					//On vérifie qu'il a pas déjà le debuff
-					if(!$joueur->is_debuff('repos_sage', true))
+					if(!$joueur->is_buff('repos_sage', true))
 					{
 						//Mis en place du debuff
 						lance_buff($sort->get_type(), $joueur->get_id(), 1, 0, $sort->get_duree(), $sort->get_nom(), 'Vous ne pouvez plus attaquer ni lancer le sort repos du sage', 'perso', 1, 0, 0, 0);
@@ -364,7 +364,7 @@ if (isset($_GET['ID']))
 								//Suppression de MP pour orage magnétique
 								if($sort->get_type() == 'orage_magnetique')
 								{
-									if($cible->is_debuff('orage_magnetique', true))
+									if($cible->is_buff('orage_magnetique', true))
 									{
 										echo $cible->get_nom().' est déjà sous cet effet.<br />';
 									}
@@ -410,10 +410,13 @@ if (isset($_GET['ID']))
 						$debuff_tab = array();
 						foreach($cible_s->get_debuff() as $debuff)
 						{
-							if($debuff->is_supprimable())
+							if($debuff->get_debuff() == 1)
 							{
-								$debuff_tab[] = $debuff->get_id();
-							};
+								if($debuff->is_supprimable())
+								{
+									$debuff_tab[] = $debuff->get_id();
+								}
+							}
 						}
 						if(count($debuff_tab) > 0)
 						{
@@ -457,7 +460,10 @@ if (isset($_GET['ID']))
 						$debuff_tab = array();
 						foreach($joueur->get_debuff() as $debuff)
 						{
-							if($debuff->is_supprimable()) { $debuff_tab[count($debuff_tab)] = $debuff->get_id(); };
+							if($debuff->get_debuff() == 1)
+							{
+								if($debuff->is_supprimable()) { $debuff_tab[count($debuff_tab)] = $debuff->get_id(); };
+							}
 						}	
 						if(count($debuff_tab) > 0)
 						{	

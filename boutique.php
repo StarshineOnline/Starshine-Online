@@ -258,19 +258,14 @@ if($W_row['type'] == 1)
 	$check = true;
 	foreach($types[$type] as $typ)
 	{
-		if($typ[1] != 'var1')
-		{
-			$accesseur = "get_$typ[1]";
-			echo '
-				<td>
-					<span class="'.over_price($row[$typ[1]], $joueur->{$accesseur}()).'">'.$row[$typ[1]].'</span>
-				</td>';
-			if (over_price($row[$typ[1]], $joueur->{$accesseur}()) == 'achat_over') $check = false;
-		}
+		echo '
+			<td>
+				<span>'.$row[$typ[1]].'</span>
+			</td>';
 	}
 	?>
 			<td>
-				<span class="<?php echo over_price($cout, $joueur->get_star()); ?>"><?php echo $cout; ?></span>
+				<span class="<?php echo over_price($cout, $joueur->get_star()); ?>"><?php echo $cout ?></span>
 			</td>
 			<td>
 			
@@ -279,7 +274,7 @@ if($W_row['type'] == 1)
 			if (over_price($cout, $joueur->get_star()) == 'achat_normal' AND over_price($coef, $coef_joueur) == 'achat_normal' AND $check AND over_price($cout, $joueur->get_star())== 'achat_normal')
 			{
 			?>
-				<a href="boutique.php?action=achat&amp;type=arme&amp;id=<?php echo $row['id']; ?>&amp;poscase=<?php echo $_GET['poscase']; ?>" onclick="return envoiInfo(this.href, 'carte')"><span class="achat">Achat</span></a>
+				<a href="boutique.php?action=achat&amp;type=arme&amp;id=<?php echo $row['id']; ?>" onclick="return envoiInfo(this.href, 'carte')"><span class="achat">Achat</span></a>
 			<?php
 			}
 			?>
@@ -298,7 +293,7 @@ if($W_row['type'] == 1)
 	}
 	else
 	{
-		$url2 = 'boutique.php?type=armure&amp;poscase='.$W_case.'&amp;order='.$_GET['order'];
+		$url2 = 'boutique.php?type=armure&amp;order='.$_GET['order'];
 	?>
 
 		
@@ -381,7 +376,7 @@ if($W_row['type'] == 1)
 				if (over_price($cout, $joueur->get_star()) == 'achat_normal' AND over_price($row['forcex'], $joueur->get_force()) == 'achat_normal')
 				{
 				?>	
-				<a href="boutique.php?action=achat&amp;type=armure&amp;id=<?php echo $row['id']; ?>&amp;poscase=<?php echo $_GET['poscase']; ?>" onclick="return envoiInfo(this.href, 'carte')"><span class="achat">Achat</span></a>
+				<a href="boutique.php?action=achat&amp;type=armure&amp;id=<?php echo $row['id']; ?>" onclick="return envoiInfo(this.href, 'carte')"><span class="achat">Achat</span></a>
 				<?php 
 				}
 				?>

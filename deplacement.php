@@ -147,7 +147,7 @@ if (isset($_GET['deplacement']))
 		$case = new map_case(convert_in_pos($joueur->get_x(), $joueur->get_y()));
 		$coutpa = cout_pa2($coutpa, $joueur, $case, $diagonale);
 		//Si le joueur a un buff ou débuff qui l'empèche de bouger
-		if($joueur->is_buff('buff_forteresse') OR $joueur->is_buff('buff_position') OR $joueur->is_debuff('debuff_enracinement') OR $joueur->is_debuff('bloque_deplacement'))
+		if($joueur->is_buff('buff_forteresse') OR $joueur->is_buff('buff_position') OR $joueur->is_buff('debuff_enracinement') OR $joueur->is_buff('bloque_deplacement'))
 		{
 			$peu_bouger = false;
 			$cause = 'Un buff vous empèche de bouger';
@@ -162,9 +162,9 @@ if (isset($_GET['deplacement']))
 		if (($joueur->get_pa() >= $coutpa) AND ($coutpa_base < 50) AND $peu_bouger)
 		{
 			//Si debuff blizard
-			if($joueur->is_debuff('blizzard'))
+			if($joueur->is_buff('blizzard'))
 			{
-				$joueur->set_hp($joueur->get_hp() - round(($joueur->get_debuff('blizzard', 'effet') / 100) * $joueur->get_hp_maximum()));
+				$joueur->set_hp($joueur->get_hp() - round(($joueur->get_buff('blizzard', 'effet') / 100) * $joueur->get_hp_maximum()));
 			}
 			//Déplacement du joueur
 			$joueur->set_pa($joueur->get_pa() - $coutpa);

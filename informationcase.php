@@ -11,7 +11,7 @@ include_once(root.'inc/fp.php');
 //Récupération des informations du personnage
 $joueur = new perso($_SESSION['ID']);
 if ($joueur->is_buff('buff_rapidite')) $reduction_pa = $joueur->get_buff('buff_rapidite', 'effet'); else $reduction_pa = 0;
-if ($joueur->is_debuff('debuff_ralentissement')) $reduction_pa -= $joueur->get_debuff('debuff_ralentissement', 'effet');
+if ($joueur->is_buff('debuff_ralentissement')) $reduction_pa -= $joueur->get_buff('debuff_ralentissement', 'effet');
 
 //Case et coordonnées de la case
 $W_case = $_GET['case'];
@@ -163,7 +163,7 @@ if($W_distance < 4)
 			echo '<span onmousemove="return '.make_overlib(transform_sec_temp($W_row['fin_placement'] - time()).' avant fin de construction').'" onmouseout="return nd();">'.$row_b['nom'].' '.$Gtrad[$R->get_race()].'</span> - HP : '.$W_row['hp'];
 			if($joueur->get_race() != $R->get_race())
 			{
-				if(!array_key_exists('repos_sage', $joueur->get_debuff()))
+				if(!array_key_exists('repos_sage', $joueur->get_buff()))
 				{
 					echo ' <a href="attaque.php?id_batiment='.$W_row['id'].'&amp;type=batiment&amp;table=placement" onclick="return envoiInfo(this.href, \'information\')"><img src="image/interface/attaquer.png" alt="Combattre" style="vertical-align : middle;" /> Attaquer <span class="xsmall">('.($G_PA_attaque_batiment - $reduction_pa).' PA)</a>';
 				}
@@ -211,8 +211,8 @@ if($W_distance < 4)
 	}
 	
 	$pa_attaque = $G_PA_attaque_monstre;
-	if(array_key_exists('cout_attaque', $joueur->get_debuff())) $pa_attaque = ceil($pa_attaque / $joueur->get_debuff('cout_attaque', 'effet'));
-	if(array_key_exists('plus_cout_attaque', $joueur->get_debuff())) $pa_attaque = $pa_attaque * $joueur->get_debuff('plus_cout_attaque', 'effet');
+	if(array_key_exists('cout_attaque', $joueur->get_buff())) $pa_attaque = ceil($pa_attaque / $joueur->get_buff('cout_attaque', 'effet'));
+	if(array_key_exists('plus_cout_attaque', $joueur->get_buff())) $pa_attaque = $pa_attaque * $joueur->get_buff('plus_cout_attaque', 'effet');
 	
 	$W_requete = 'SELECT id, nom, type, hp, level FROM map_monstre WHERE (x = '.$case->get_x().') AND (y = '.$case->get_y().') ORDER BY level ASC, nom ASC, id ASC';
 	$W_query = $db->query($W_requete);
@@ -247,7 +247,7 @@ if($W_distance < 4)
 			<li style="clear:both;"><img src="image/monstre/'.$image.'" alt="'.$W2_row['nom'].'" style="vertical-align : middle;height:21px;float:left;width:21px;" /><span style="color : '.$color.'; font-weight : '.$strong.';float:left;width:325px;margin-left:15px;">'.$W_nom.'</span>
 			
 				<span style="float:left;">';
-				if(!array_key_exists('repos_sage', $joueur->get_debuff()) OR !array_key_exists('bloque_attaque', $joueur->get_debuff())) echo '
+				if(!$joueur->is_buff('repos_sage') OR !$joueur->is_buff('bloque_attaque')) echo '
 				<a href="attaque.php?id_monstre='.$W_ID.'&type=monstre" onclick="return envoiInfo(this.href, \'information\')"><img src="image/interface/attaquer.png" alt="Combattre" title="Attaquez ce monstez ('.($pa_attaque - $reduction_pa).' PA)" style="vertical-align : middle;" /></a>';
 				echo ' <a href="info_monstre.php?ID='.$W_ID.'&poscase='.$W_case.'" onclick="return envoiInfo(this.href, \'information\')"><img src="image/icone/mobinfo.png" alt="Voir informations sur le monstre" title="Voir informations sur le monstre" style="vertical-align : middle;" /></a>';
 				if($joueur->get_sort_jeu() != '') echo ' <a href="sort.php?poscase='.$W_case.'&amp;id_monstre='.$W_ID.'&amp;type=monstre" onclick="return envoiInfo(this.href, \'information\')"><img src="image/sort_hc_icone.png" title="Lancer un sort" alt="Lancer un sort" style="vertical-align : middle;" /></a>';

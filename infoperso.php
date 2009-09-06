@@ -55,15 +55,18 @@ if (file_exists('root.php'))
 		{
 			foreach($joueur->get_buff() as $buff)
 			{//-- Listing des buffs
-				$overlib = str_replace("'", "\'", trim("<ul><li class='overlib_titres'>".$buff->get_nom()."</li><li>".description($buff->get_description(), $buff)."</li><li>Durée ".transform_sec_temp($buff->get_fin() - time())."</li><li class='overlib_infos'>(double-cliquer pour annuler ce buff)</li></ul>"));
-				echo "<li class='buff'>
-					   <img src='image/buff/".$buff->get_type()."_p.png' 
-							alt='".$buff->get_type()."'
-							ondblclick=\"cancelBuff('".$buff->get_id()."', '".$buff->get_nom()."');\"
-							onmouseover=\"return overlib('$overlib', BGCLASS, 'overlib', BGCOLOR, '', FGCOLOR, '');\"
-							onmouseout=\"return nd();\"  />
-					   ".genere_image_buff_duree($buff)."
-					  </li>";
+				if($buff->get_debuff() == 0)
+				{
+					$overlib = str_replace("'", "\'", trim("<ul><li class='overlib_titres'>".$buff->get_nom()."</li><li>".description($buff->get_description(), $buff)."</li><li>Durée ".transform_sec_temp($buff->get_fin() - time())."</li><li class='overlib_infos'>(double-cliquer pour annuler ce buff)</li></ul>"));
+					echo "<li class='buff'>
+						   <img src='image/buff/".$buff->get_type()."_p.png'
+								alt='".$buff->get_type()."'
+								ondblclick=\"cancelBuff('".$buff->get_id()."', '".$buff->get_nom()."');\"
+								onmouseover=\"return overlib('$overlib', BGCLASS, 'overlib', BGCOLOR, '', FGCOLOR, '');\"
+								onmouseout=\"return nd();\"  />
+						   ".genere_image_buff_duree($buff)."
+						  </li>";
+				}
 			}
 		}
 		if(count($joueur->get_buff()) < ($joueur->get_grade()->get_rang() + 2) )
@@ -92,19 +95,22 @@ if (file_exists('root.php'))
 		</div>
 		<br />
 		<div id='debuff_list'>";
-		if(is_array($joueur->get_debuff()))
+		if(is_array($joueur->get_buff()))
 		{
 			echo "<ul>";
-			foreach($joueur->get_debuff() as $buff)
-			{//-- Listing des buffs
-				$overlib = str_replace("'", "\'", trim("<ul><li class='overlib_titres'>".$buff->get_nom()."</li><li>".description($buff->get_description(), $buff)."</li><li>Durée ".transform_sec_temp($buff->get_fin() - time())."</li></ul>"));
-				echo "<li class='buff'>
-					   <img src='image/buff/".$buff->get_type()."_p.png' 
-							alt='".$buff->get_type()."'
-							onmouseover=\"return overlib('$overlib', BGCLASS, 'overlib', BGCOLOR, '', FGCOLOR, '');\"
-							onmouseout=\"return nd();\"  />
-					   ".genere_image_buff_duree($buff)."
-					  </li>";
+			foreach($joueur->get_buff() as $buff)
+			{//-- Listing des debuffs
+				if($buff->get_debuff() == 1)
+				{
+					$overlib = str_replace("'", "\'", trim("<ul><li class='overlib_titres'>".$buff->get_nom()."</li><li>".description($buff->get_description(), $buff)."</li><li>Durée ".transform_sec_temp($buff->get_fin() - time())."</li></ul>"));
+					echo "<li class='buff'>
+						   <img src='image/buff/".$buff->get_type()."_p.png'
+								alt='".$buff->get_type()."'
+								onmouseover=\"return overlib('$overlib', BGCLASS, 'overlib', BGCOLOR, '', FGCOLOR, '');\"
+								onmouseout=\"return nd();\"  />
+						   ".genere_image_buff_duree($buff)."
+						  </li>";
+				}
 			}
 		echo " </ul>";
 		}
@@ -133,11 +139,17 @@ if($joueur->get_groupe() != 0)
 				$overlib .= "<li>";
 				foreach($membre->get_buff() as $buff)
 				{
-					$overlib .= "<img src='image/buff/".$buff->get_type()."_p.png' style='margin:0px 2px;' alt='".$buff->get_type()."' />";
+					if($buff->get_debuff() == 0)
+					{
+						$overlib .= "<img src='image/buff/".$buff->get_type()."_p.png' style='margin:0px 2px;' alt='".$buff->get_type()."' />";
+					}
 				}
-				foreach($membre->get_debuff() as $debuff)
+				foreach($membre->get_buff() as $debuff)
 				{
-					$overlib .= "<img src='image/buff/".$debuff->get_type()."_p.png' style='margin:0px 2px;' alt='".$debuff->get_type()."' />";
+					if($debuff->get_debuff() == 1)
+					{
+						$overlib .= "<img src='image/buff/".$debuff->get_type()."_p.png' style='margin:0px 2px;' alt='".$debuff->get_type()."' />";
+					}
 				}
 				$overlib .= "</li>";
 			}
