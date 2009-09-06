@@ -19,7 +19,7 @@ NULL , 'Festin', 'famine', '', '10'
 ALTER TABLE `point_victoire_action` ADD `type_buff` VARCHAR( 50 ) NOT NULL ,
 ADD `effet` MEDIUMINT UNSIGNED NOT NULL ,
 ADD `description` TEXT NOT NULL ;
-INSERT INTO `starshine_raz`.`point_victoire_action` (
+INSERT INTO `point_victoire_action` (
 `id` ,
 `nom` ,
 `type` ,

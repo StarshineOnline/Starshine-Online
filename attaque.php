@@ -352,6 +352,10 @@ else
 						$joueur_defenseur = augmentation_competences($augmentations['actif'], $joueur_defenseur);
 						$joueur = augmentation_competences($augmentations['passif'], $joueur);
 					}
+					// Mise à jour de l'entité pour refleter les up
+					$attaquant->maj_comp();
+					$defenseur->maj_comp();
+
 					if($mode == 'defenseur')
 					{
 						//Perte de HP par le poison
@@ -444,18 +448,6 @@ else
 					//Update de la base de donnée.
 					//Correction des bonus ignorables
 					corrige_bonus_ignorables($attaquant, $defenseur, $mode, $args, $args_def);
-
-					// Mets a jour les entites
-					/*$attaquant = new entite('joueur', $joueur);
-					switch($type)
-					{
-					case 'joueur' :
-						$defenseur = new entite('joueur', $joueur_defenseur);
-						break;
-					case 'monstre' :
-						$defenseur = new entite('monstre', $joueur_defenseur);
-						break;
-					}*/
 
 					?>
 					</div>

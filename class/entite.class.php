@@ -625,5 +625,25 @@ class entite
 	}
 
 	function get_blocage() { return $this->blocage; }
+
+	function maj_comp() 
+	{
+		if ($this->type == 'joueur' || $this->type == 'monstre')
+		{
+			$this->esquive = $this->objet_ref->get_esquive();
+			$this->melee = $this->objet_ref->get_melee();
+			$this->distance = $this->objet_ref->get_melee();
+			$this->incantation = $this->objet_ref->get_incantation();
+			$this->sort_mort = $this->objet_ref->get_sort_mort();
+			$this->sort_vie = $this->objet_ref->get_sort_vie();
+			$this->sort_element = $this->objet_ref->get_sort_element();
+		}
+		if ($this->type == 'joueur')
+		{
+			$this->comp = $this->objet_ref->get_comp();
+			$this->distance = $this->objet_ref->get_distance();
+		}
+	}
+
 }
 ?>
