@@ -227,13 +227,13 @@ function affiche_quetes($fournisseur, $joueur)
 			$count = count($requis);
 			while($check AND $i < $count)
 			{
-				if(!in_array($requis[$i], $quete_fini)) $check = false;
+				if($requis[$i] != '' && !in_array($requis[$i], $quete_fini)) $check = false;
 				$i++;
 			}
 			if($check)
 			{
 		$return[0] .= '<li>
-		<a href="bureau_quete.php?action=description&amp;id='.$row['idq'].'&amp;poscase='.$_GET['poscase'].'" onclick="return envoiInfo(this.href, \'carte\')">'.$row['nom'].'</a> <span class="small">(Niv. '.$row['lvl_joueur'].')</span>
+		<a href="bureau_quete.php?action=description&amp;id='.$row['idq'].'" onclick="return envoiInfo(this.href, \'carte\')">'.$row['nom'].'</a> <span class="small">(Niv. '.$row['lvl_joueur'].')</span>
 	</li>';
 			}
 		}

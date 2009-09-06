@@ -82,7 +82,7 @@ if($joueur->get_race() == $R->get_race())
 			break;
 			//Prise de la quète
 			case 'prendre' :
-				if($joueur->prend_quete($quete))
+				if($joueur->prend_quete($row['id']))
 				{
 					echo 'Merci de votre aide !<br />';
 					if($row['fournisseur'] == '') $link = 'bureau_quete';

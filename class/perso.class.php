@@ -2890,7 +2890,11 @@ class perso extends entite
 
 	function prend_quete($quete)
 	{
+		global $db;
 		$valid = true;
+		$requete = "SELECT id, objectif FROM quete WHERE id = ".$quete;
+		$req = $db->query($requete);
+		$row = $db->read_assoc($req);
 		//Vérifie si le joueur n'a pas déjà pris la quète.
 		if($this->get_quete() != '')
 		{
@@ -2918,6 +2922,7 @@ class perso extends entite
 				$i++;
 			}
 			$this->set_quete(serialize($this->liste_quete));
+			$this->sauver();
 			return true;
 		}
 		else
