@@ -101,6 +101,20 @@ $W_distance = detection_distance($W_case, convert_in_pos($attaquant->get_x(), $a
 <fieldset>
 	<legend>Combat VS <?php echo $defenseur->get_nom(); ?></legend>
 <?php
+if(is_donjon($attaquant->get_x(), $attaquant->get_y()))
+{
+	$round_total = 20;
+	$attaquant->set_reserve($attaquant->get_reserve() * 2);
+	$defenseur->set_reserve($defenseur->get_reserve() * 2);
+	//Un monstre attaque pas de pa pour attaquer
+	if(array_key_exists('attaque_donjon', $_SESSION) AND $_SESSION['attaque_donjon'] == 'ok')
+	{
+		$pa_attaque = $reduction_pa;
+		unset($_SESSION['attaque_donjon']);
+		$W_distance--;
+		if($W_distance < 0 ) $W_distance = 0;
+	}
+}
 if($W_distance > $attaquant->get_distance_tir())
 {
 	echo '<h5>Vous êtes trop loin pour l\'attaquer !</h5>';

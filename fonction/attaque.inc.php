@@ -188,7 +188,7 @@ function attaque($acteur = 'attaquant', $competence, &$effects)
 							if ($attaque <= $blocage)
 								{
 									$degat_bloque = $passif->bouclier()->degat;
-									if(array_key_exists('bouclier_terre', $actif->buff)) $degat_bloque += $actif->buff['bouclier_terre']['effet'];
+									if($passif->is_buff('bouclier_terre')) $degat_bloque += $passif->get_buff('bouclier_terre', 'effet');
 
 									/* Application des degats bloques */
 									foreach ($effects as $effect)
@@ -198,15 +198,15 @@ function attaque($acteur = 'attaquant', $competence, &$effects)
 									$degat = $degat - $degat_bloque;
 									if($degat < 0) $degat = 0;
 									echo '&nbsp;&nbsp;<span class="manque">'.$passif->get_nom().' bloque le coup et absorbe '.$degat_bloque.' dégats</span><br />';
-									if(array_key_exists('bouclier_feu', $actif->buff))
+									if($passif->is_buff('bouclier_feu'))
 										{
-											$degats = $actif->buff['bouclier_feu']['effet'];
+											$degats = $passif->get_buff('bouclier_feu', 'effet');
 											$actif['hp'] -= $degats;
 											echo '&nbsp;&nbsp;<span class="degat">'.$passif->get_nom().' inflige '.$degats.' dégats grâce au bouclier de feu</span><br />';
 										}
-									if(array_key_exists('bouclier_eau', $actif->buff))
+									if($passif->is_buff('bouclier_eau'))
 										{
-											$chances = $actif->buff['bouclier_eau']['effet'] * 2;
+											$chances = $passif->get_buff('bouclier_eau', 'effet') * 2;
 											$diffi = 100;
 											$att = rand(0, $chances);
 											$def = rand(0, $diffi);
@@ -214,7 +214,7 @@ function attaque($acteur = 'attaquant', $competence, &$effects)
 												{
 													echo '&nbsp;&nbsp;<span class="degat">'.$passif->get_nom().' bloque et glace '.$actif->get_nom().'</span><br />';
 													$actif->etat['paralysie']['effet'] = 1;
-													$actif->etat['paralysie']['duree'] = ($actif->buff['bouclier_eau']['effet2'] + 1);
+													$actif->etat['paralysie']['duree'] = ($actif->get_buff('bouclier_eau', 'effet2') + 1);
 												}
 										}
 									
@@ -240,7 +240,7 @@ function attaque($acteur = 'attaquant', $competence, &$effects)
       //Diminution des dégats grâce à l'armure
       if(array_key_exists('benediction', $passif->etat)) $buff_bene_bouclier = 1 + (($passif->etat['benediction']['effet'] * $G_buff['bene_bouclier']) / 100); else $buff_bene_bouclier = 1;
       if(array_key_exists('berzeker', $passif->etat)) $buff_berz_bouclier = 1 + (($passif->etat['berzeker']['effet'] * $G_buff['berz_bouclier']) / 100); else $buff_berz_bouclier = 1;
-      if(array_key_exists('batiment_pp', $actif->buff)) $buff_batiment_bouclier = 1 + (($actif->buff['batiment_pp']['effet']) / 100); else $buff_batiment_bouclier = 1;
+      if(array_key_exists('batiment_pp', $actif->etat)) $buff_batiment_bouclier = 1 + (($actif->etat['batiment_pp']['effet']) / 100); else $buff_batiment_bouclier = 1;
       if(array_key_exists('acide', $passif->etat)) $debuff_acide = 1 + (($passif->etat['acide']['effet2']) / 100); else $debuff_acide = 1;
       if($passif->etat['posture']['type'] == 'posture_pierre') $aura_pierre = 1 + (($passif->etat['posture']['effet']) / 100); else $aura_pierre = 1;
       //Chance de transpercer l'armure
@@ -292,13 +292,13 @@ function attaque($acteur = 'attaquant', $competence, &$effects)
       //Buff du critique
       if($actif->is_buff('buff_critique', true)) $actif_chance_critique *= 1 + (($actif->get_buff('buff_critique', 'effet', true)) / 100);
       if($actif->is_buff('buff_cri_rage', true)) $actif_chance_critique *= 1 + (($actif->get_buff('buff_cri_rage', 'effet')) / 100);
-      if($actif->is_buff('benediction', true)) $actif_chance_critique *= 1 + (($actif->etat['benediction']['effet'] * $G_buff['bene_critique']) / 100);;
-      if($actif->is_buff('tir_vise', true)) $actif_chance_critique *= 1 + (($actif->etat['tir_vise']['effet'] * 5) / 100);
-      if($actif->is_buff('berzeker', true)) $actif_chance_critique *= 1 + (($actif->etat['berzeker']['effet'] * $G_buff['berz_critique']) / 100);
-      if($actif->is_buff('coup_sournois', true)) $actif_chance_critique *= 1 + (($actif->etat['coup_sournois']['effet']) / 100);
-      if($actif->is_buff('fleche_sanglante', true)) $actif_chance_critique *= 1 + (($actif->etat['fleche_sanglante']['effet']) / 100);
-      if($actif->is_buff('a_critique', true)) $actif_chance_critique *= 1 + (($actif->etat['a_critique']['effet']) / 100);
-      if($actif->is_buff('b_critique', true)) $actif_chance_critique /= 1 + (($actif->etat['b_critique']['effet']) / 100);
+      if(array_key_exists('benediction', $passif->etat)) $actif_chance_critique *= 1 + (($actif->etat['benediction']['effet'] * $G_buff['bene_critique']) / 100);;
+      if(array_key_exists('tir_vise', $passif->etat)) $actif_chance_critique *= 1 + (($actif->etat['tir_vise']['effet'] * 5) / 100);
+      if(array_key_exists('berzeker', $passif->etat)) $actif_chance_critique *= 1 + (($actif->etat['berzeker']['effet'] * $G_buff['berz_critique']) / 100);
+      if(array_key_exists('coup_sournois', $passif->etat)) $actif_chance_critique *= 1 + (($actif->etat['coup_sournois']['effet']) / 100);
+      if(array_key_exists('fleche_sanglante', $passif->etat)) $actif_chance_critique *= 1 + (($actif->etat['fleche_sanglante']['effet']) / 100);
+      if(array_key_exists('a_critique', $passif->etat)) $actif_chance_critique *= 1 + (($actif->etat['a_critique']['effet']) / 100);
+      if(array_key_exists('b_critique', $passif->etat)) $actif_chance_critique /= 1 + (($actif->etat['b_critique']['effet']) / 100);
       //Elfe des bois
       if($actif->get_race() == 'elfebois') $actif_chance_critique *= 1.15;
       if(array_key_exists('coup_mortel', $actif->etat))
