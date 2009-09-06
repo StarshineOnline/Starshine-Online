@@ -116,10 +116,15 @@ function degroup($ID_joueur, $ID_groupe)
 		{
 			$requete = "UPDATE groupe_joueur SET leader = 'y' WHERE id = ".$groupe['membre'][1]['id'];
 			$db->query($requete);
+			
+			$requete = 'UPDATE invitation SET inviteur = '.$groupe['membre'][1]['id'].' WHERE inviteur = '.$ID_joueur;
+			$db->query($requete);
 		}
+		
 		//On supprime le joueur du groupe
 		$requete = 'DELETE FROM groupe_joueur WHERE id_joueur = '.$ID_joueur;
 		$db->query($requete);
+		
 		$requete = 'UPDATE perso SET groupe = 0 WHERE ID = '.$ID_joueur;
 		$db->query($requete);
 		//Modif du prochain loot si mode par tour

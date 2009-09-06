@@ -169,7 +169,7 @@ if($W_distance == 0)
 					$actuel = $R->get_alchimie() - $min;
 					$pourcent = round((($actuel / $total) * 100), 2);
 					echo $pourcent.'% du déblocage de la prochaine recette !<br />';
-					if($R->diplo($joueur->get_race()) == 127)
+					if($R->get_diplo($joueur->get_race()) == 127)
 						{
 				?>
 				<a href="alchimiste.php?action=recherche" onclick="return envoiInfo(this.href, 'carte');">Faire des recherches en alchimie (10 PA)</a>

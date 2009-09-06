@@ -168,7 +168,7 @@ if (isset($_GET['ID']))
 						}
 						else
 						{
-							$requete = "INSERT INTO journal(id_perso, action, actif, passif, time, valeur, valeur2, x, y) VALUES(".$joueur->get_id().", 'soin', '".$joueur->get_nom()."', '".$joueur->get_nom()."', NOW(), ".$soin_total.", 0, ".$joueur->get_x().", ".$joueur->get_y().")";
+							$requete = "INSERT INTO journal(id_perso, action, actif, passif, time, valeur, valeur2, x, y) VALUES(".$joueur->get_id().", 'soin', '".$joueur->get_nom()."', '".$cible->get_nom()."', NOW(), ".$soin_total.", 0, ".$joueur->get_x().", ".$joueur->get_y().")";
 						}
 						$db->query($requete);
 					}
@@ -700,7 +700,6 @@ else
 		{
 			case 'favoris' :
 				$requete = "INSERT INTO sort_favoris(id_sort, id_perso) VALUES(".sSQL($_GET['id']).", ".$joueur->get_id().")";
-				echo $requete;
 				$db->query($requete);
 			break;
 			case 'delfavoris' :
