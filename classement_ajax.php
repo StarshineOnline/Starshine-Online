@@ -107,7 +107,9 @@ if (file_exists('root.php'))
 	if($i === 'moi')
 	{
 		if(!strcmp($tri, 'architecture, forge, alchimie'))
-			$requete = "SELECT COUNT(*) FROM perso WHERE ROUND(SQRT(alchimie + forge + architecture)) > ".$joueur->get_artisanat()." AND statut = 'actif' AND ".$where;
+		{
+			$requete = "SELECT COUNT(*) FROM perso WHERE ROUND(SQRT((alchimie + forge + architecture) * 10)) > ".$joueur->get_artisanat()." AND statut = 'actif' AND ".$where;
+		}
 		else
 		{
 			$get = 'get_'.$tri;
@@ -132,13 +134,13 @@ if (file_exists('root.php'))
 	}
 	if($k < 0) $k = 0;
 	$j = 26;
-	$ord = strcmp($tri, 'architecture, forge, alchimie') ? $tri : 'ROUND(SQRT(alchimie + forge + architecture))';
-	$tri = strcmp($tri, 'architecture, forge, alchimie') ? $tri : 'ROUND(SQRT(alchimie + forge + architecture) * 10) as craft';
+	$ord = strcmp($tri, 'architecture, forge, alchimie') ? $tri : 'ROUND(SQRT((alchimie + forge + architecture) * 10))';
+	$tri = strcmp($tri, 'architecture, forge, alchimie') ? $tri : 'ROUND(SQRT((alchimie + forge + architecture) * 10)) as craft';
 	$requete = "SELECT id, nom, ".sSQL($tri).", level, race, classe, cache_stat, cache_classe FROM perso WHERE statut = 'actif' AND ".$where." ORDER BY ".$ord." DESC, nom ASC LIMIT $inf, $j";
 	//echo $requete;
 	//echo 'inf : '.$inf.' j : '.$j.' k : '.$k.' sup : '.$sup.' '.$requete.'<br />';
 	$req = $db->query($requete);
-	$tri = !strcmp('architecture, forge, alchimie', $tri) ? 'craft' : $tri;
+	$tri = !strcmp('ROUND(SQRT((alchimie + forge + architecture) * 10)) as craft', $tri) ? 'craft' : $tri;
 ?>
 		<input type="hidden" id="tri" value="<?php echo $tri; ?>" />
 		<input type="hidden" id="i" value="<?php echo $i; ?>" />

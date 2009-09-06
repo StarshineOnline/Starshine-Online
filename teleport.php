@@ -49,7 +49,7 @@ $R->get_diplo($joueur->get_race());
 				{
 					$R->set_star($R->get_star() + $taxe);
 					$R->sauver();
-					$requete = "UPDATE argent_royaume SET teleport = teleport + ".$taxe." WHERE race = '".$R['race']."'";
+					$requete = "UPDATE argent_royaume SET teleport = teleport + ".$taxe." WHERE race = '".$R->get_race()."'";
 					$db->query($requete);
 				}
 				header("Location: deplacement.php");
