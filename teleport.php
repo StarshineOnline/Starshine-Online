@@ -47,7 +47,7 @@ $R->get_diplo($joueur->get_race());
 				//Récupération de la taxe
 				if($taxe > 0)
 				{
-					$R->set_star($R->ger_star() + $taxe);
+					$R->set_star($R->get_star() + $taxe);
 					$R->sauver();
 					$requete = "UPDATE argent_royaume SET teleport = teleport + ".$taxe." WHERE race = '".$R['race']."'";
 					$db->query($requete);
