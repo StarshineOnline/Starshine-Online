@@ -407,6 +407,7 @@ $req = $db->query($requete);
 					<option value="477" class="baseRow2">tex_montneige11</option>
 					<option value="478" class="baseRow1">tex_montneige3</option>	
 					<option value="479" class="baseRow2">tex_montneige4</option>	
+					<option value="480" class="baseRow2">jointuretex_montneige3</option>	
 					
 				</optgroup>
 
@@ -707,8 +708,21 @@ $req = $db->query($requete);
 					<option value="910" class="baseRow1">Liaison Route pavée Herbe-TM</option>	
 					<option value="911" class="baseRow2">Liaison desert-route pavéeEO </option>					
 					<option value="912" class="baseRow1">Liaison Route pavée Herbe-TM</option>	
-					
-					
+					<option value="913" class="baseRow2">tex_routeterremauditeherbebd</option>					
+					<option value="914" class="baseRow1">tex_routeterremauditeherbebg</option>	
+					<option value="915" class="baseRow2">tex_routeterremauditeherbehd</option>					
+					<option value="916" class="baseRow1">tex_routeterremauditeherbehg</option>	
+					<option value="913" class="baseRow2">tex_routeterremauditeherbebd</option>					
+					<option value="914" class="baseRow1">tex_routeterremauditeherbebg</option>	
+					<option value="915" class="baseRow2">tex_routeterremauditeherbehd</option>					
+					<option value="916" class="baseRow1">tex_routeterremauditeherbehg</option>	
+					<option value="917" class="baseRow2">jonction_foret_herbe_hd</option>					
+					<option value="918" class="baseRow1">jonction_foret_herbe_hori</option>	
+					<option value="919" class="baseRow2">jonction_foret_herbe_verti</option>					
+					<option value="920" class="baseRow1">tex_cheminplaineforethd</option>	
+					<option value="921" class="baseRow2">tex_cheminplaineforethd</option>					
+					<option value="922" class="baseRow1">tex_cheminplaineforetvertijonctionbd</option>	
+
 				</optgroup>
 				<optgroup label="Capitale">
 					<option value="1001" class="baseRow1">Ville humaine</option>

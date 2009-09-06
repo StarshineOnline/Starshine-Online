@@ -648,7 +648,7 @@
 }
 .tex425
 {
-	background: url('../image/texture/neigeherbe/tex_neigeherbeso.png') no-repeat;
+	background: url('../image/texture/neigeherbe/tex_neigeherbesoinso.png') no-repeat;
 }
 .tex426
 {
@@ -866,6 +866,12 @@
 {
 	background: url('../image/texture/textbanquise/tex_montneige4.png') no-repeat;
 }
+.tex480
+{
+	background: url('../image/texture/textbanquise/jointuretex_montneige3.png') no-repeat;
+}
+
+
 
 
 /* Eau */
@@ -1398,8 +1404,6 @@
 {
 	background: url('../image/texture/route/tex_pontherbeneigeo.png') no-repeat;
 }
-.tex845
-texture/route/
 .tex846
 {
 	background: url('../image/texture/route/route/tex_pontherbeneiges.png') no-repeat;
@@ -1670,6 +1674,48 @@ texture/route/
 {
 	background: url('../image/texture/route/tex_routeherbeterremaudites.png') no-repeat;
 }
+.tex913
+{
+	background: url('../image/texture/route/tex_routeterremauditeherbebd.png') no-repeat;
+}
+.tex914
+{
+	background: url('../image/texture/route/tex_routeterremauditeherbebg.png') no-repeat;
+}
+.tex915
+{
+	background: url('../image/texture/route/tex_routeterremauditeherbehd.png') no-repeat;
+}
+.tex916
+{
+	background: url('../image/texture/route/tex_routeterremauditeherbehg.png') no-repeat;
+}
+
+.tex917
+{
+	background: url('../image/texture/route/jonction_foret_herbe_hd.png') no-repeat;
+}
+.tex918
+{
+	background: url('../image/texture/route/jonction_foret herbe_hori.png') no-repeat;
+}
+.tex919
+{
+	background: url('../image/texture/route/jonction_foret_herbe_verti.png') no-repeat;
+}
+.tex920
+{
+	background: url('../image/texture/route/tex_cheminplaineforethd.png') no-repeat;
+}
+.tex921
+{
+	background: url('../image/texture/route/tex_cheminplaineforetverti.png') no-repeat;
+}
+.tex922
+{
+	background: url('../image/texture/route/tex_cheminplaineforetvertijonctionbd.png') no-repeat;
+}
+
 
 .tex6
 {
