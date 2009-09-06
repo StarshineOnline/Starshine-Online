@@ -987,7 +987,7 @@ else
 											echo 'Répartition des objets par tour.<br />';
 											$gagnant = new perso($groupe->get_prochain_loot());
 											//Changement du prochain loot
-											$j_g = groupe_trouve_joueur($groupe->get_prochain_loot(), $groupe);
+											$j_g = $groupe->trouve_position_joueur($groupe->get_prochain_loot());
 											//Si c'est pas le dernier alors suivant
 											if((count($groupe->membre) - 1) != $j_g)
 											{

@@ -17,7 +17,13 @@ window.onload = function()
 }
 </script>
 <?php
-$joueur = new perso($_SESSION['ID']);
+if(array_key_exists('ID', $_SESSION) && !empty($_SESSION['ID']))
+	$joueur = new perso($_SESSION['ID']);
+else
+{
+	echo 'Vous êtes déconnecté, veuillez vous reconnecter.';
+	exit();
+}
 
 //Si c'est pour entrer dans un donjon
 if(array_key_exists('donjon_id', $_GET))
