@@ -27,6 +27,7 @@ switch($type)
 		$joueur_defenseur->set_hp($map_monstre->get_hp());
 		$joueur_defenseur->x = $map_monstre->get_x();
 		$joueur_defenseur->y = $map_monstre->get_y();
+		$joueur_defenseur->buff = $map_monstre->get_buff();
 		$attaquant = new entite('joueur', $joueur);
 		$defenseur = new entite('monstre', $joueur_defenseur);
 	break;

@@ -434,4 +434,67 @@ class map_monstre
 		$this->mort_naturelle = $mort_naturelle;
 		$this->champs_modif[] = 'mort_naturelle';
 	}
+	//fonction
+	function get_buff($nom = false, $champ = false, $type = true)
+	{
+		if(!$nom)
+		{
+			$this->buff = buff_monstre::create(id_monstre, $this->id, 'id ASC', 'type');
+			return $this->buff;
+		}
+		else
+		{
+			if(!isset($this->buff)) $this->get_buff();
+			if(!$type)
+			{
+				$get = 'get_'.$champ;
+				return $this->buff[0]->$get();
+			}
+			else
+				foreach($this->buff as $buff)
+				{
+					if($buff->get_type() == $nom)
+					{
+						$get = 'get_'.$champ;
+						return $buff->$get();
+					}
+				}
+		}
+	}
+
+	/**
+	 * Permet de savoir si le joueur est sous le buff nom
+	 * @param $nom le nom du buff
+	 * @param $type si le nom est le type du buff
+	 * @return true si le perso est sous le buff false sinon.
+ 	*/
+	function is_buff($nom = '', $type = true)
+	{
+		if(!isset($this->buff)) $this->get_buff();
+		$buffe = false;
+
+		if(is_array($this->buff))
+		{
+			if(!empty($nom))
+			{
+				foreach($this->buff as $key => $buff)
+				{
+					if($type)
+					{
+						if($key == $nom) $buffe = true;
+					}
+					else if($buff->get_nom() ==  $nom)
+					{
+						$buffe = true;
+					}
+				}
+			}
+			else
+				$buffe = (count($this->buff) > 0);
+		}
+		else
+			$buffe = false;
+
+		return $buffe;
+	}
 }

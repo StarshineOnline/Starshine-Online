@@ -2715,8 +2715,8 @@ class perso extends entite
 			if($this->is_buff('buff_barriere')) $this->pm = round($this->pm * (1 + ($this->get_buff('buff_barriere', 'effet') / 100)));
 			if($this->is_buff('buff_forteresse'))
 			{
-				$this->pp = round($this->pp * (1 + (($this->get_buff['buff_forteresse']['effet']) / 100)));
-				$this->pm = round($this->pm * (1 + (($this->get_buff['buff_forteresse']['effet2']) / 100)));
+				$this->pp = round($this->pp * (1 + (($this->get_buff('buff_forteresse', 'effet')) / 100)));
+				$this->pm = round($this->pm * (1 + (($this->get_buff('buff_forteresse', 'effet2')) / 100)));
 			}
 			if($this->is_buff('buff_cri_protecteur')) $this->pp = round($this->pp * (1 + ($this->get_buff('buff_cri_protecteur', 'effet') / 100)));
 			if($this->is_buff('debuff_desespoir')) $this->pm = round($this->pm / (1 + (($this->get_buff('debuff_desespoir', 'effet')) / 100)));

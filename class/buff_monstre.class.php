@@ -231,7 +231,7 @@ class buff_monstre
 			while($row = $db->read_assoc($req))
 			{
 				if(!$keys) $return[] = new buff_monstre($row);
-				else $return[$row[$keys]][] = new buff_monstre($row);
+				else $return[$row[$keys]] = new buff_monstre($row);
 			}
 		}
 		else $return = array();

@@ -46,7 +46,6 @@ if($joueur->get_pa() >= 30)
 			if ($augmentation[1] == 1)
 			{
 				$joueur->set_architecture($augmentation[0]);
-				echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant à '.$joueur->get_architecture().' en architecture</span><br />';
 			}
 			echo '<h6>La construction a été accélérée de '.transform_sec_temp($secondes).'</h6>';
 			echo '<a href="archi_accelere_construction.php?id_construction='.$_GET['id_construction'].'" onclick="return envoiInfo(this.href, \'information\');">Accélérer de nouveau</a>';

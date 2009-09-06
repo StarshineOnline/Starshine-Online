@@ -77,34 +77,34 @@ function attaque($acteur = 'attaquant', $competence, &$effects)
 	</div>';
   $debugs++;
 
-  if ($attaque > $defense)
-    {
-      //Si c'est un coup de bouclier, infliger les dégats du bouclier et teste d'étourdissement
-      if($actif->etat['coup_bouclier'] > 0)
-				{
-					$degat = $actif['bouclier_degat'];
-					$att = $actif['force'] + $actif['bouclier_degat'];
-					$def = $passif['vie'] + round($passif['PP'] / 100);
-					$atta = rand(0, $att);
-					$defe = rand(0, $def);
-					echo "<div id=\"debug${debugs}\" class=\"debug\">".
-						"Potentiel étourdir attaquant : $att<br />".
-						"Potentiel resister défenseur : $def<br />".
-						"Résultat => Attaquant : $atta | Défenseur : $defe".
-						"<br /></div>";
-					//aff_var($actif->etat['coup_bouclier']);
-					$debug++;
-					//Hop ca étourdit
-					if($atta > $defe)
-						{
-							$passif->etat['etourdit']['effet'] = $actif->etat['coup_bouclier']['effet'];
-							$passif->etat['etourdit']['duree'] = $actif->etat['coup_bouclier']['effet2'];
-							echo '&nbsp;&nbsp;Le coup de bouclier étourdit '.$passif->get_nom().' pour '.$passif->etat['etourdit']['duree'].' !<br />';
-						}
-				}
-      //sinon
-      else
-				{
+	if ($attaque > $defense)
+	{
+		//Si c'est un coup de bouclier, infliger les dégats du bouclier et teste d'étourdissement
+		if($actif->etat['coup_bouclier']['effet'] > 0)
+		{
+			$degat = $actif['bouclier_degat'];
+			$att = $actif['force'] + $actif['bouclier_degat'];
+			$def = $passif['vie'] + round($passif['PP'] / 100);
+			$atta = rand(0, $att);
+			$defe = rand(0, $def);
+			echo "<div id=\"debug".$debugs."\" class=\"debug\">".
+				"Potentiel étourdir attaquant : $att<br />".
+				"Potentiel resister défenseur : $def<br />".
+				"Résultat => Attaquant : $atta | Défenseur : $defe".
+				"<br /></div>";
+			//aff_var($actif->etat['coup_bouclier']);
+			$debug++;
+			//Hop ca étourdit
+			if($atta > $defe)
+			{
+				$passif->etat['etourdit']['effet'] = $actif->etat['coup_bouclier']['effet'];
+				$passif->etat['etourdit']['duree'] = $actif->etat['coup_bouclier']['effet2'];
+				echo '&nbsp;&nbsp;Le coup de bouclier étourdit '.$passif->get_nom().' pour '.$passif->etat['etourdit']['duree'].' !<br />';
+			}
+		}
+		//sinon
+		else
+		{
 					if(array_key_exists('tir_vise', $actif->etat)) $buff_vise_degat = $actif->etat['tir_vise']['effet'] + 1; else $buff_vise_degat = 1;
 					if($actif->etat['posture']['type'] == 'posture_degat') $buff_posture_degat = $actif->etat['posture']['effet']; else $buff_posture_degat = 0;
 					$arme_degat = ($actif->get_arme_degat() + $buff_posture_degat) * $buff_vise_degat;
