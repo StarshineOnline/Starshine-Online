@@ -454,6 +454,17 @@ class entite
 				}
 		}
 	}
+	function get_buff_only()
+	{
+		$buffs = array();
+		foreach($this->get_buff() as $buff)
+		{
+			if($buff->get_debuff() == 0)
+				$buffs[] = $buff; 
+		}
+		
+		return $buffs;
+	}
 	function get_etat()
 	{
 		return $this->etat;

@@ -788,9 +788,9 @@ if(date("N") == 1)
 		}
 	}
 }
-/*
+
 $mail_send = getenv('SSO_MAIL');
 if ($mail_send == null || $mail_send == '') $mail_send = 'starshineonline@gmail.com';
 mail($mail_send, 'Starshine - Script journalier du '.$date, $mail);
-*/
+
 ?>
