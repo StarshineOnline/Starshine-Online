@@ -74,7 +74,7 @@ $requete = "UPDATE perso SET honneur = ROUND(honneur / 1.03) WHERE honneur > rep
 $db->query($requete);
 
 //Point de crime -1
-$requete = "UPDATE perso SET crime = crime -1 WHERE crime > 0";
+$requete = "UPDATE perso SET crime = IF(crime - 1 < 0, 0, crime -1)";
 $db->query($requete);
 
 //Vérification si batiments fini de construire
