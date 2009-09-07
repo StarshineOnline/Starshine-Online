@@ -136,41 +136,49 @@ if(array_key_exists('valid_etape', $_GET))
 		case 'finalisation' :
 			//Finalisation de l'échange donc vérifications
 			//Les joueurs doivent être a moins d'une case l'un de l'autre
-			$j1 = recupperso($j1->get_id());
-			$j2 = recupperso($j2->get_id());
-			$pos1 = convert_in_pos($j1['x'], $j1['y']);
-			$pos2 = convert_in_pos($j2['x'], $j2['y']);
+			$pos1 = convert_in_pos($j1->get_x(), $j1->get_y());
+			$pos2 = convert_in_pos($j2->get_x(), $j1->get_y());
 			if(detection_distance($pos1, $pos2) > 1)
 			{
-				echo '<h6>Vous êtes trop loin pour finaliser cet échange</h6>';
+				echo '<h5>Vous êtes trop loin pour finaliser cet échange</h5>';
 			}
 			//Vérification que les joueurs ont bien les objets dans leur inventaire
 			else
 			{
+				echo "<pre>";
+				print_r($echange);
+				echo "</pre>";
 				if(verif_echange($_GET['id_echange'], $j1->get_id(), $j2->get_id()))
 				{
 					$check = true;
 					//Vérification qu'ils ont bien assez de place
-					if($G_place_inventaire - count($j1['inventaire_slot']) < ($nb_objet['j2'] - $nb_objet['j1']))
+					if($G_place_inventaire - count($j1->get_inventaire_slot_partie()) < ($nb_objet['j2'] - $nb_objet['j1']))
 					{
 						$check = false;
 						echo '<h5>'.$j1->get_nom().' n\'a pas assez de place dans son inventaire</h5>';
 					}
-					if($G_place_inventaire - count($j2['inventaire_slot']) < ($nb_objet['j1'] - $nb_objet['j2']))
+					if($G_place_inventaire - count($j2->get_inventaire_slot_partie()) < ($nb_objet['j1'] - $nb_objet['j2']))
 					{
 						$check = false;
 						echo '<h5>'.$j2->get_nom().' n\'a pas assez de place dans son inventaire</h5>';
 					}
+					
 					if($check)
 					{
+						
 						//On supprime tous les objets
 						$i = 0;
 						$count = count($echange['objet']);
 						while($i < $count)
 						{
-							if($j1->get_id() == $echange['objet'][$i]['id_j']) $j = 'j1'; else $j = 'j2';
-							supprime_objet($$j, $echange['objet'][$i]['objet'], 1);
-							$$j = recupperso($echange['objet'][$i]['id_j']);
+							if($j1->get_id() == $echange['objet'][$i]['id_j'])
+							{
+								$j1->supprime_objet($echange['objet'][$i]['objet'], 1);
+							} 
+							else
+							{
+								$j2->supprime_objet($echange['objet'][$i]['objet'], 1);
+							}
 							$i++;
 						}
 						//On donne tous les objets
@@ -178,16 +186,22 @@ if(array_key_exists('valid_etape', $_GET))
 						$count = count($echange['objet']);
 						while($i < $count)
 						{
-							if($j1->get_id() == $echange['objet'][$i]['id_j']) $j = 'j2'; else $j = 'j1';
-							prend_objet($echange['objet'][$i]['objet'], $$j);
-							$$j = recupperso(${$j}['ID']);
+							if($j1->get_id() == $echange['objet'][$i]['id_j'])
+							{
+								$j2->prend_objet($echange['objet'][$i]['objet']);
+							} 
+							else 
+							{
+								$j1->prend_objet($echange['objet'][$i]['objet']);
+							}
 							$i++;
 						}
 						//On échange les stars
-						$star['j1'] = intval($echange['star'][$j1->get_id()]['objet']);
-						$star['j2'] = intval($echange['star'][$j2->get_id()]['objet']);
-						$j1star = $star['j1'] - $star['j2'];
-						$j2star = $star['j2'] - $star['j1'];
+						
+						$j1->set_star(intval($echange['star'][$j1->get_id()]['objet']));
+						$j2->set_star(intval($echange['star'][$j2->get_id()]['objet']));
+						$j1star = $j1->get_star() - $j2->get_star();
+						$j2star = $j2->get_star() - $j1->get_star();
 						$requete = "UPDATE perso SET star = star - ".$j1star." WHERE ID = ".$j1->get_id();
 						$db->query($requete);
 						$requete = "UPDATE perso SET star = star - ".$j2star." WHERE ID = ".$j2->get_id();
@@ -204,11 +218,14 @@ if(array_key_exists('valid_etape', $_GET))
 							unset($echange);
 						}
 					}
+					
+					
 				}
 				else
 				{
 					echo '<h5>Il manque un ou plusieurs objets a un joueur pour finaliser l\'échange</h5>';
 				}
+				
 			}
 		break;
 	}

@@ -3,7 +3,7 @@ html 								{width:100%;height:100%;}
 body 								{margin:0;padding:0;background:#7e909c url('../../image/v2/bg_site.png') repeat-x;width:100%;height:100%;font: 13px "Helvetica Neue", Helvetica, Arial, Geneva, sans-serif;}
 #top								{display : block;width: 1000px;margin: 0 auto;z-index :5;}
 
-#conteneur 							{width:985px;margin:auto;min-height: 100%;}
+#conteneur 							{width:985px;margin:auto;min-height: 1px;}
 #conteneur_back 					{z-index :2;width: 1000px;margin: 0 auto;background:transparent url('../../image/interface/global2.png') repeat-y center;min-height: 100%;}
 #bas								{clear: both; width: 1000px;margin: 0 auto;text-align: center;font-size: 9px;}
 #centre								{margin-top : 3px;margin-left : 7px;float : left;	height : 100%;	z-index :3;}
@@ -70,7 +70,7 @@ body 								{margin:0;padding:0;background:#7e909c url('../../image/v2/bg_site.
 .star								{text-align:right;margin-right:20px;background:transparent url('../../image/icone/ressources_star.png') no-repeat;display:block;line-height: 30px;height:30px;width:30px;float:left;}
 .food								{text-align:right;margin-right:20px;background:transparent url('../../image/icone/ressources_nourriture.png') no-repeat;display:block;line-height: 30px;height:30px;width:30px;float:left;}
 
-#diplomatie fieldset				{-moz-border-radius: 10px;}
+#diplomatie fieldset				{-moz-border-radius: 10px; -webkit-border-radius:10px;}
 #diplomatie ul li 					{clear:both;height:30px;line-height: 30px;-moz-border-radius: 10px; -webkit-border-radius:10px;}
 #diplomatie ul li:hover			    {background-color:#C5D4EF;-moz-border-radius: 10px; -webkit-border-radius:10px;}
 #diplomatie .drapeau				{float:left;width:200px;}
@@ -78,28 +78,28 @@ body 								{margin:0;padding:0;background:#7e909c url('../../image/v2/bg_site.
 #diplomatie .liens					{float:left;width:200px;}
 #diplomatie .nom					{float:left;width:200px;}
 
-#construction fieldset				{-moz-border-radius: 10px;}
+#construction fieldset				{-moz-border-radius: 10px -webkit-border-radius:10px;;}
 #construction ul li 				{clear:both;height:30px;line-height: 30px;-moz-border-radius: 10px; -webkit-border-radius:10px;}
 #construction ul li:hover		    {background-color:#C5D4EF;-moz-border-radius: 10px;}
 #construction .nom					{float:left;width:200px;}
 
-#mine fieldset						{-moz-border-radius: 10px;float:left;width:280px;}
+#mine fieldset						{-moz-border-radius: 10px; -webkit-border-radius:10px;float:left;width:280px;}
 #mine fieldset:hover				{background-color:#C5D4EF;}
 #mine ul li 						{clear:both;height:20px;line-height: 20px;-moz-border-radius: 10px; -webkit-border-radius:10px;}
 
-#infos	fieldset					{-moz-border-radius: 10px;}
+#infos	fieldset					{-moz-border-radius: 10px; -webkit-border-radius:10px;}
 #infos .nom							{float:left;width:155px;}
 #infos .position					{float:left;width:70px;}
 #infos .supprimer					{float:left;width:20px;}
 
-#telephone fieldset					{-moz-border-radius: 10px;}
+#telephone fieldset					{-moz-border-radius: 10px; -webkit-border-radius:10px;}
 #telephone ul li 					{clear:both;height:30px;line-height: 30px;-moz-border-radius: 10px; -webkit-border-radius:10px;}
 #telephone ul li:hover			    {background-color:#C5D4EF;-moz-border-radius: 10px;}
 #telephone .roi						{float:left;width:450px;}
 #telephone .nom						{float:left;width:450px;}
 
 
-#criminel fieldset					{-moz-border-radius: 10px;}
+#criminel fieldset					{-moz-border-radius: 10px; -webkit-border-radius:10px;}
 #criminel ul li 					{clear:both;height:21px;line-height: 21px;-moz-border-radius: 10px; -webkit-border-radius:10px;}
 #criminel ul li:hover			    {background-color:#C5D4EF;-moz-border-radius: 10px;}
 #criminel .nom					    {float:left;width:150px;text-indent: 5px;}
@@ -107,31 +107,31 @@ body 								{margin:0;padding:0;background:#7e909c url('../../image/v2/bg_site.
 #criminel .amende				    {float:left;width:150px;text-align: right;}
 
 
-#stats fieldset						{width:168px;float:left;-moz-border-radius: 10px;}
+#stats fieldset						{width:168px;float:left;-moz-border-radius: 10px; -webkit-border-radius:10px;}
 #stats ul li 						{clear:both;height:21px;line-height: 21px;-moz-border-radius: 10px; -webkit-border-radius:10px;}
 #stats ul li:hover					{background-color:#C5D4EF;-moz-border-radius: 10px;}
 #stats .nom							{float:left;width:95px;text-indent: 5px;}
 #stats .stats						{float:left;width:60px;text-align: right;}
 
-#propagande fieldset				{-moz-border-radius: 10px;}
-#motk fieldset						{-moz-border-radius: 10px;}
+#propagande fieldset				{-moz-border-radius: 10px; -webkit-border-radius:10px;}
+#motk fieldset						{-moz-border-radius: 10px; -webkit-border-radius:10px;}
 
-#bourse fieldset					{-moz-border-radius: 10px;}
+#bourse fieldset					{-moz-border-radius: 10px; -webkit-border-radius:10px;}
 #bourse ul li 						{clear:both;height:30px;line-height: 30px;-moz-border-radius: 10px; -webkit-border-radius:10px;}
-#bourse ul li:hover					{background-color:#C5D4EF;-moz-border-radius: 10px;}
+#bourse ul li:hover					{background-color:#C5D4EF;-moz-border-radius: 10px; -webkit-border-radius:10px;}
 .ressourse							{display:block;float: left;width:120px;text-align: left;}
 .nombre								{display:block;float: left;width:70px;text-align: right;}
 .prix								{display:block;float: left;width:110px;text-align: right;}
 .finvente							{display:block;float: left;width:135px;text-align: right;}
 .haut								{background : #EEE !important;line-height: 19px !important;height:19px !important;padding-left:6px !important;padding-right:6px !important;}
-#bourse .moitie						{width:460px;float:left;}
+#bourse .moitie						{width:459px;float:left;}
 .acheteur							{background:transparent url('../../image/icone/smile.png') no-repeat 0px;height:30px;display:block;margin-left:440px;width:16px;}
 
 
 
 #boutique							{margin-left:24px;}
-#boutique ul li 					{clear:both;height:21px;line-height: 21px;-moz-border-radius: 10px;}
-#boutique ul li:hover				{background-color:#C5D4EF;-moz-border-radius: 10px;}
+#boutique ul li 					{clear:both;height:21px;line-height: 21px;-moz-border-radius: 10px;-webkit-border-radius:10px;}
+#boutique ul li:hover				{background-color:#C5D4EF;-moz-border-radius: 10px; -webkit-border-radius:10px;}
 #boutique input						{border : 1px solid #999;width:30px;background: transparent;-moz-border-radius: 5px; -webkit-border-radius:5px;text-align: center;}
 .boutique_nom						{display:block;float: left;width:100px;margin-left:25px;}
 .boutique_nom a						{color:#222;text-decoration: none;}
@@ -145,7 +145,7 @@ body 								{margin:0;padding:0;background:#7e909c url('../../image/v2/bg_site.
 .boutique_nombre					{display:block;float: left;width:70px;text-align: right;}
 
 #quete								{margin-left:24px;}
-#quete ul li 						{clear:both;height:21px;line-height: 21px;-moz-border-radius: 10px;}
+#quete ul li 						{clear:both;height:21px;line-height: 21px;-moz-border-radius: 10px; -webkit-border-radius:10px;}
 #quete ul li:hover					{background-color:#C5D4EF;-moz-border-radius: 10px; -webkit-border-radius:10px;}
 #quete input						{border : 1px solid #999;width:30px;background: transparent;-moz-border-radius: 5px; -webkit-border-radius:5px;text-align: center;}
 .quete_nom							{display:block;float: left;width:180px;margin-left:25px;}
@@ -161,7 +161,7 @@ body 								{margin:0;padding:0;background:#7e909c url('../../image/v2/bg_site.
 #ressource								{margin-left:24px;}
 #ressource ul li 						{clear:both;height:21px;line-height: 30px;height: 30px; -moz-border-radius: 10px; -webkit-border-radius:10px;}
 #ressource ul li:hover					{background-color:#C5D4EF;-moz-border-radius: 10px;}
-#ressource input						{border : 1px solid #999;width:30px;background: transparent;-moz-border-radius: 5px;text-align: center;}
+#ressource input						{border : 1px solid #999;width:30px;background: transparent;-moz-border-radius: 5px;-webkit-border-radius : 5px;text-align: center;}
 .ressource_nom							{display:block;float: left;width:230px;margin-left:25px;}
 .ressource_gains						{display:block;float: left;width:150px;text-align: right;}
 .ressource_case							{display:block;float: left;width:150px;text-align: right;}
@@ -179,12 +179,12 @@ body 								{margin:0;padding:0;background:#7e909c url('../../image/v2/bg_site.
 #bataille_new ul li:hover			{background-color:#C5D4EF;-moz-border-radius: 10px;}
 #bataille_new fieldset 				{-moz-border-radius: 10px;}
 #bataille_new label					{float:left;width:100px;}
-#bataille_new input 				{float:left;border : 1px solid #CCC;-moz-border-radius: 5px;width:310px;}
-#bataille_new textarea 				{float:left;border : 1px solid #CCC;-moz-border-radius: 5px;width:310px;}
-#bataille_new select 				{float:left;border : 1px solid #CCC;-moz-border-radius: 5px;width:310px;}
+#bataille_new input 				{float:left;border : 1px solid #CCC;-moz-border-radius: 5px; -webkit-border-radius:5px;width:310px;}
+#bataille_new textarea 				{float:left;border : 1px solid #CCC;-moz-border-radius: 5px;-webkit-border-radius:5px;width:310px;}
+#bataille_new select 				{float:left;border : 1px solid #CCC;-moz-border-radius: 5px;-webkit-border-radius:5px;width:310px;}
 #bataille_new .select				{background-image : url('../../image/icone/valider.png') ;background-position:right center;background-repeat:no-repeat;}
 
-#move_map_menu input 				{float:left;border : 1px solid #CCC;-moz-border-radius: 5px;width:310px;}
+#move_map_menu input 				{float:left;border : 1px solid #CCC;-moz-border-radius: 5px;-webkit-border-radius:5px;width:310px;}
 
 #choix_bataille						{float:left;margin-left:30px;}
 #rose 								{float:left;margin-left:5px;}

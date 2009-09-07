@@ -634,9 +634,12 @@ function verif_echange_joueur($id_echange, $id_joueur, $id_objet = 0, $type_obje
 	if($id_objet !== 0 && $type_objet == 'objet') $echange['objet'][] = array('id_j' => $id_joueur, 'objet' => $id_objet);
 	$echange_objets = array();
 	$invent_objets = array();
-	foreach($echange['objet'] as $objet)
+	if ($echange['objet'])
 	{
-		if($objet['id_j'] == $id_joueur) $echange_objets[$objet['objet']]++;
+		foreach($echange['objet'] as $objet)
+		{
+			if($objet['id_j'] == $id_joueur) $echange_objets[$objet['objet']]++;
+		}
 	}
 	if($joueur->get_inventaire_slot() != '')
 	{
