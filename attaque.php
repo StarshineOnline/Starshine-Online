@@ -187,6 +187,7 @@ else
 	$defenseur->etat = array();
 	$debugs = 0;
 	if($type == 'joueur') $pa_attaque = $G_PA_attaque_joueur;
+	elseif($type == 'batiment') $pa_attaque = $G_PA_attaque_batiment;
 	else $pa_attaque = $G_PA_attaque_monstre;
 	if($attaquant->get_race() == $defenseur->get_race()) $pa_attaque += 3;
 	if($attaquant->get_race() == 'orc' OR $defenseur->get_race() == 'orc') $round_total += 1;
