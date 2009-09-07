@@ -403,7 +403,7 @@ class groupe
 		$membres = $this->get_membre();
 		$nb_membre = count($membres);
 		
-		return ($G_nb_joueur_groupe - $nb_invitation - $nb_membre);
+		return ($G_nb_joueur_groupe - $nb_invitation - $nb_membre + 1);
 	}
 }
 ?>
