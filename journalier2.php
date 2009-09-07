@@ -74,7 +74,7 @@ $requete = "UPDATE perso SET honneur = ROUND(honneur / 1.03) WHERE honneur > rep
 $db->query($requete);
 
 //Point de crime -1
-$requete = "UPDATE perso SET crime = IF(crime - 1 < 0, 0, crime -1)";
+$requete = "UPDATE perso SET crime = IF(crime - 1 < 0, 0, crime -1) WHERE crime > 0";
 $db->query($requete);
 
 //Vérification si batiments fini de construire
@@ -505,7 +505,14 @@ while($i < count($tableau_race))
 	$tableau_races[$keys[$i]] = implode(';', $tableau_race[$keys[$i]]);
 	$i++;
 }
-$requete = "INSERT INTO `stat_jeu` ( `id` , `date` , `barbare` , `elfebois` , `elfehaut` , `humain` , `humainnoir` , `nain` , `orc` , `scavenger` , `troll` , `vampire` , `mortvivant`, `niveau_moyen`, `nombre_joueur`, `nombre_monstre` ) VALUES (NULL , '".$date."', '".$tableau_races['barbare']."', '".$tableau_races['elfebois']."', '".$tableau_races['elfehaut']."', '".$tableau_races['humain']."', '".$tableau_races['humainnoir']."', '".$tableau_races['nain']."', '".$tableau_races['orc']."', '".$tableau_races['scavenger']."', '".$tableau_races['troll']."', '".$tableau_races['vampire']."', '".$tableau_races['mortvivant']."', ".$niveau_moyen.", ".$nbr_perso.", ".$nbr_monstre.");";
+
+//Non modification de la nourriture
+$requete = "SELECT `food` FROM `stat_jeu` WHERE `id` IN (SELECT MAX(id) FROM `stat_jeu`)";
+$req = $db->query($requete);
+$row = $db->read_row($req);
+$nourriture = $row[0];
+
+$requete = "INSERT INTO `stat_jeu` ( `id` , `date` , `barbare` , `elfebois` , `elfehaut` , `humain` , `humainnoir` , `nain` , `orc` , `scavenger` , `troll` , `vampire` , `mortvivant`, `niveau_moyen`, `nombre_joueur`, `nombre_monstre`, `food` ) VALUES (NULL , '".$date."', '".$tableau_races['barbare']."', '".$tableau_races['elfebois']."', '".$tableau_races['elfehaut']."', '".$tableau_races['humain']."', '".$tableau_races['humainnoir']."', '".$tableau_races['nain']."', '".$tableau_races['orc']."', '".$tableau_races['scavenger']."', '".$tableau_races['troll']."', '".$tableau_races['vampire']."', '".$tableau_races['mortvivant']."', ".$niveau_moyen.", ".$nbr_perso.", ".$nbr_monstre.", ".$nourriture.");";
 $req = $db->query($requete);
 
 $mail .= "\nStars pour les nouveaux joueurs\n\n";
@@ -781,9 +788,9 @@ if(date("N") == 1)
 		}
 	}
 }
-
+/*
 $mail_send = getenv('SSO_MAIL');
 if ($mail_send == null || $mail_send == '') $mail_send = 'starshineonline@gmail.com';
 mail($mail_send, 'Starshine - Script journalier du '.$date, $mail);
-
+*/
 ?>
