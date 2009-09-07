@@ -120,21 +120,19 @@ if (isset($_GET['ID']))
 				}
 			break;
 			case 'repos_interieur' :
-				if($joueur->is_buff('repos_interieur', true) AND $joueur->get_buff('repos_interieur', 'effet', true) >= 10)
+				if($joueur->is_buff('repos_interieur') AND $joueur->get_buff('repos_interieur', 'effet') >= 10)
 				{
 					echo 'Vous avez trop utilisé repos intérieur pour le moment !';
 				}
 				else
 				{
-					if($joueur->is_buff('repos_interieur', true)) $effet = $joueur->get_buff('repos_interieur', 'effet', true) + 1;
+					if($joueur->is_buff('repos_interieur')) $effet = $joueur->get_buff('repos_interieur', 'effet') + 1;
 					else $effet = 1;
-					$joueur->set_pa($joueur->get_pa() + 2);
-					$joueur->set_mp($joueur->get_mp() - $sortmp);
 					if(lance_buff('repos_interieur', $joueur->get_id(), $effet, 0, (60 * 60 * 24), $row['nom'], description($row['description'].'<br /> Utilisation '.$effet.' / 10', $row), 'perso', 1, 0, 0, 0))
 					{
-						//Mis à jour du joueur
-						$requete = "UPDATE perso SET mp = '".$joueur->get_mp()."', pa = '".$joueur->get_pa()."' WHERE ID = '".$_SESSION['ID']."'";
-						$req = $db->query($requete);
+						$joueur->set_pa($joueur->get_pa() + 2);
+						$joueur->set_mp($joueur->get_mp() - $sortmp);
+						$joueur->sauver();
 						echo '<a href="competence_jeu.php?ID='.$_GET['ID'].'" onclick="return envoiInfo(this.href, \'information\')">Utilisez a nouveau cette compétence</a>';
 					}
 				}

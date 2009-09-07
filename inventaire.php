@@ -862,12 +862,11 @@ if(!$visu AND isset($_GET['action']))
 				if ($augmentation[1] == 1)
 				{
 					$joueur->set_forge($augmentation[0]);
-					echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant à '.$joueur->get_forge().' en Forge</span><br />';
 					$joueur->sauver();
 				}
 				$objet_r = recompose_objet($objet);
 				$joueur->set_inventaire_slot_partie($objet_r, $_GET['key_slot2']);
-				$joueur->set_inventaire_slot(serialize($joueur->get_inventaire_slot()));
+				$joueur->set_inventaire_slot(serialize($joueur->get_inventaire_slot_partie(false, true)));
 				$joueur->set_pa($joueur->get_pa() - 20);
 				$joueur->sauver();
 				if($gemme_casse) $joueur->supprime_objet($joueur->get_inventaire_slot_partie($_GET['key_slot']), 1);

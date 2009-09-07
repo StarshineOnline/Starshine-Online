@@ -134,7 +134,7 @@ echo '</table>';
 //Affichage des buffs du joueur
 if($joueur->get_groupe() == $perso->get_groupe() && $joueur->get_groupe() != 0 && $joueur->get_groupe() != '')
 {
-	if (count($perso->get_buff()) != 0 || count($perso->get_buff()) != 0)
+	if (count($perso->get_buff()) != 0 || $perso->get_nb_buff() != 0)
 	{
 		echo '<h4><span class="titre_info">Buffs / Debuffs</span></h4>';
 		//Listing des buffs

@@ -2459,7 +2459,7 @@ class perso extends entite
 	{
 		if(!$nom)
 		{
-			$this->buff = buff::create(id_perso, $this->id, 'id ASC', 'type');
+			$this->buff = buff::create('id_perso', $this->id, 'id ASC', 'type');
 			return $this->buff;
 		}
 		else
@@ -2482,6 +2482,10 @@ class perso extends entite
 		}
 	}
 
+	function get_nb_buff($debuff = 0)
+	{
+		$this->buff = buff::create(array('id_perso', 'debuff'), array($this->id, $debuff), 'id ASC', 'type');
+	}
 	/**
 	 * Permet de savoir si le joueur est sous le buff nom
 	 * @param $nom le nom du buff

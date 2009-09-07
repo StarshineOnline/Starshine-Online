@@ -20,7 +20,8 @@ class competence extends effect
     $this->print_up = $aPrintUp;
   }
 
-  function test_montee(&$acteur, $diff) {
+  function test_montee(&$acteur, $diff)
+  {
     global $Gtrad;
     global $db;
     $augmentation = augmentation_competence($this->nom, $acteur, $diff);
@@ -105,7 +106,7 @@ class botte extends comp_combat
       $de = rand(1, 100);
       $this->debug("Evasion: $de doit être inférieur à $chance");
       if ($de <= $chance) {
-        $this->message($passif['nom'].'esquive totalement la botte');
+        $this->message($passif->get_nom().'esquive totalement la botte');
         return false;
       }
     }
@@ -134,7 +135,7 @@ class maitrise_bouclier extends competence
 
   function calcul_bloquage(&$actif, &$passif) {
     $this->used = true;
-    $passif['potentiel_bloquer'] *=
+    $passif->potentiel_bloquer *=
       1 + ($passif['competences']['maitrise_bouclier'] / 1000);
     $passif['maitrise_bouclier'] = $passif['competences']['maitrise_bouclier'];
   }
@@ -160,7 +161,7 @@ class maitrise_dague extends competence
 
   function debut_round(&$actif, &$passif) {
     $this->used = true;
-    $actif['potentiel_toucher'] *=
+    $actif->potentiel_toucher *=
       1 + ($actif['competences']['maitrise_dague'] / 1000);
     $actif['maitrise_dague'] = $actif['competences']['maitrise_dague'];
   }
@@ -186,7 +187,7 @@ class maitrise_epee extends competence
 
   function debut_round(&$actif, &$passif) {
     $this->used = true;
-    $actif['potentiel_toucher'] *=
+    $actif->potentiel_toucher *=
       1 + ($actif['competences']['maitrise_epee'] / 1000);
     $actif['maitrise_epee'] = $actif['competences']['maitrise_epee'];
   }
@@ -237,7 +238,7 @@ class maitrise_arc extends competence
 
   function debut_round(&$actif, &$passif) {
     $this->used = true;
-    $actif['potentiel_toucher'] *=
+    $actif->potentiel_toucher *=
       1 + ($actif['competences']['maitrise_arc'] / 1000);
     $actif['maitrise_arc'] = $actif['competences']['maitrise_arc'];
   }
@@ -308,9 +309,9 @@ class preparation extends comp_combat
 	}
 
   function debut_round(&$actif, &$passif) {
-    //echo 'potentiel_parer: '.$passif['potentiel_parer'];
-		$passif['potentiel_parer'] *= $this->effet;
-    //echo ' -> '.$passif['potentiel_parer'];
+    //echo 'potentiel_parer: '.$passif->potentiel_parer;
+		$passif->potentiel_parer *= $this->effet;
+    //echo ' -> '.$passif->potentiel_parer;
 	}
 }
 
@@ -356,9 +357,9 @@ class botte_crabe extends botte
 			$this->debug("Chance de desarmer : $test doit être inférieur à ".
 									 $this->effet);
 			if ($res < $this->effet) {
-				$passif['etat']['desarme']['effet'] = true;
-				$passif['etat']['desarme']['duree'] = $this->effet2;
-				echo "La botte désarme ".$passif['nom'].'<br/>';
+				$passif->etat['desarme']['effet'] = true;
+				$passif->etat['desarme']['duree'] = $this->effet2;
+				echo "La botte désarme ".$passif->get_nom().'<br/>';
 			}
 		}
 	}
@@ -374,7 +375,7 @@ class botte_aigle extends botte
 
   function debut_round(&$actif, &$passif) {
 		if ($this->canUse($actif))
-			$actif['potentiel_toucher'] *= $this->effect;
+			$actif->potentiel_toucher *= $this->effect;
 	}
 }
 
@@ -388,7 +389,7 @@ class botte_chat extends botte
 
   function debut_round(&$actif, &$passif) {
 		if ($this->canUse($actif))
-			$passif['potentiel_parer'] *= $this->effet;
+			$passif->potentiel_parer *= $this->effet;
 	}
 }
 
@@ -419,17 +420,17 @@ class botte_ours extends botte
 		
 	function etourdit($actif, $passif) {
 		global $debugs;
-	  $pot_et = $actif['force'];
-		$pot_res = $passif['vie'] + $passif['PP_effective'] / 100;
+	  $pot_et = $actif->get_force();
+		$pot_res = $passif->get_vie() + $passif['PP_effective'] / 100;
 		switch ($this->level) {
 		case 1:
-			$pot_et += $actif['esquive'] / 80;
+			$pot_et += $actif->get_esquive() / 80;
 			break;
 		case 2:
-			$pot_et += $actif['esquive'] / 70;
+			$pot_et += $actif->get_esquive() / 70;
 			break;
 		case 3:
-			$pot_et += $actif['esquive'] / 60;
+			$pot_et += $actif->get_esquive() / 60;
 			break;
 		default:
 			die('bad level');
@@ -446,9 +447,9 @@ class botte_ours extends botte
   function inflige_degats(&$actif, &$passif, $degats) {
 		if ($this->canUse($actif)) {
 			if ($this->etourdit($actif, $passif)) {
-				$passif['etat']['etourdit']['effet'] = true;
-				$passif['etat']['etourdit']['duree'] = 1;
-				echo "La botte étourdit ".$passif['nom'].'<br/>';
+				$passif->etat['etourdit']['effet'] = true;
+				$passif->etat['etourdit']['duree'] = 1;
+				echo "La botte étourdit ".$passif->get_nom().'<br/>';
 			}
 		}
 	}
@@ -470,8 +471,8 @@ class fleche_poison extends comp_combat {
 	}
 
   function inflige_degats(&$actif, &$passif, $degats) {
-    $pot_att = $actif['force'] + $this->effet;
-    $pot_def = $passif['volonte'];
+    $pot_att = $actif->get_force() + $this->effet;
+    $pot_def = $passif->get_volonte();
     $de_att = rand(0, $pot_att);
     $de_deff = rand(0, $pot_def);
     $this->debug("Poison: dé de $pot_att doi être supérieur à dé de $pot_def");
@@ -485,10 +486,10 @@ class fleche_poison extends comp_combat {
 
   function fin_round(&$actif, &$passif) {
 		if ($this->poison) {
-      $this->hit('<strong>'.$passif['nom'].'</strong> est empoisonné pour '.
+      $this->hit('<strong>'.$passif->get_nom().'</strong> est empoisonné pour '.
                  $this->duree.' tours !');
-			$passif['etat']['empoisonne']['effet'] = $this->effet2;
-			$passif['etat']['empoisonne']['duree'] = $this->duree;
+			$passif->etat['empoisonne']['effet'] = $this->effet2;
+			$passif->etat['empoisonne']['duree'] = $this->duree;
 		}
 	}
 }
@@ -607,9 +608,9 @@ class fleche_sable extends comp_combat {
 	}
 
 	function calcul_degats(&$actif, &$passif, $degats) {
-    $passif['etat']['fleche_sable']['effet'] = $this->effet2;
-    $passif['etat']['fleche_sable']['duree'] = $this->duree;
-    $this->notice($passif['nom'].' est ensablé pour '.$this->duree.' rounds');
+    $passif->etat['fleche_sable']['effet'] = $this->effet2;
+    $passif->etat['fleche_sable']['duree'] = $this->duree;
+    $this->notice($passif->get_nom().' est ensablé pour '.$this->duree.' rounds');
 		return $degats - $this->effet;
 	}
   

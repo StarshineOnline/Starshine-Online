@@ -541,7 +541,7 @@ function lance_sort($id, $acteur, &$effects)
 
 			if(array_key_exists('bouclier_protecteur', $passif->etat)) $pm = $pm + ($passif->etat['bouclier_protecteur']->get_effet() * $passif['bouclier_degat']);
 			if($passif->is_buff('batiment_pm')) $buff_batiment_barriere = 1 + (($passif->get_buff('batiment_pm', 'effet') / 100)); else $buff_batiment_barriere = 1;
-			if($passif->etat['posture']['type'] == 'posture_glace') $aura_glace = 1 + (($passif->etat['posture']->get_effet()) / 100); else $aura_glace = 1;
+			if($passif->etat['posture']['type'] == 'posture_glace') $aura_glace = 1 + (($passif->etat['posture']['effet']) / 100); else $aura_glace = 1;
 			//Corrompu la nuit
 			if($actif->get_race() == 'humainnoir' AND moment_jour() == 'Nuit') $bonus_race = 1.1; else $bonus_race = 1;
 			$PM = $pm * $bonus_race * $aura_glace * $buff_batiment_barriere;
