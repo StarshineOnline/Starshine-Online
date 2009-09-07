@@ -60,7 +60,7 @@ $R->get_diplo($joueur->get_race());
 	if(array_key_exists('id_bourg', $_GET))
 	{
 		$W_distance = detection_distance($W_case, $_SESSION['position']);
-		if($W_distance == 0)
+		if($W_distance != 0)
 		{
 			$requete = "SELECT id, x, y FROM construction WHERE id = ".sSQL($_GET['id_bourg']);
 			$req = $db->query($requete);
@@ -71,17 +71,17 @@ $R->get_diplo($joueur->get_race());
 			$cout = $cout + $taxe;
 			if(($joueur->get_star() >= $cout) AND ($joueur->get_pa() >= 5))
 			{
-				$joueur->set_x($row['posx']);
-				$joueur->set_y($row['posy']);
+				$joueur->set_x($row['x']);
+				$joueur->set_y($row['y']);
 				$joueur->set_star($joueur->get_star() - $cout);
 				$joueur->set_pa($joueur->get_pa() - 5);
 				$joueur->sauver();
 				//Récupération de la taxe
 				if($taxe > 0)
 				{
-					$R->set_star($R->ger_star() + $taxe);
+					$R->set_star($R->get_star() + $taxe);
 					$R->sauver();
-					$requete = "UPDATE argent_royaume SET teleport = teleport + ".$taxe." WHERE race = '".$R['race']."'";
+					$requete = "UPDATE argent_royaume SET teleport = teleport + ".$taxe." WHERE race = '".$R->get_race()."'";
 					$db->query($requete);
 				}
 				header("Location: deplacement.php");
