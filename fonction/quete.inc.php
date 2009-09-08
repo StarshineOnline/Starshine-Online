@@ -330,7 +330,7 @@ function verif_inventaire($id_quete, $joueur)
 		{
 			$cible = substr($row['objectif'][$i]->cible, 1);
 			echo $cible;
-			if(!recherche_objet($joueur, $cible)) $check = false;
+			if(!$joueur->recherche_objet($cible)) $check = false;
 			$i++;
 		}
 		if($check)
