@@ -42,16 +42,16 @@ else
 		include_once(root.'inc/race.inc.php');
 		include_once(root.'inc/classe.inc.php');
 		
-		echo '
-		<h3>Bienvenue dans Starshine-Online</h3>
-		<div style="padding:5px">
-			Vous venez de créer un '.$Gtrad[$race].' '.$classe.' du nom de '.$pseudo.'<br />';
-			?>
+		echo 
+		'<h3>Bienvenue dans Starshine-Online</h3>'.
+		'<div style="padding:5px">'.
+		'	Vous venez de créer un '.$Gtrad[$race].' '.$classe.' du nom de '.$pseudo.'<br />';
+?>
 			N'hésitez pas à aller voir régulièrement les informations fournies dans votre forum de race, et de lire le message de votre roi.<br />
 			Bon jeu !<br />
 		</div>
 		<br />
-		<?php
+<?php
 		$joueur = new perso();
 		$caracteristiques = $Trace[$race];
 		if ($classe == 'combattant')
@@ -89,6 +89,18 @@ else
 		$joueur->set_sort_combat($sort_combat);
 		$joueur->set_comp_combat($comp_combat);
 		$joueur->set_rang_royaume(7);
+		// Pas oublier les bases
+		$joueur->set_melee(1);
+		$joueur->set_distance(1);
+		$joueur->set_esquive(1);
+		$joueur->set_blocage(1);
+		$joueur->set_incantation(1);
+		$joueur->set_identification(1);
+		$joueur->set_craft(1);
+		$joueur->set_alchimie(1);
+		$joueur->set_architecture(1);
+		$joueur->set_forge(1);
+		$joueur->set_survie(1);
 		
 		if($classe == 'combattant')
 		{
