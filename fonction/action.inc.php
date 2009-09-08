@@ -815,7 +815,14 @@ function lance_sort($id, $acteur, &$effects)
 					if (array_key_exists('bouclier_protecteur', $passif->etat)) $pm = $pm + ($passif->etat['bouclier_protecteur']['effet'] * $passif['bouclier_degat']);
 					$pm = pow($passif->get_volonte(), 1.83) * sqrt($pm) * 3;
 					// Bottes en peau de Basilic, quick'n dirty
-					if ($passif->get_type() == 'joueur' && $passif->get_inventaire()->chaussure == "p112") $pm *= 2;
+					if ($passif->get_type() == 'joueur')
+					{
+						$inventaire = $passif->get_inventaire();
+						if (is_string($inventaire)) // Parfois? sérialisé, on déserialise
+							$inventaire = unserialize($inventaire);
+						if ($inventaire->chaussure == "p112")
+							$pm *= 2;
+			    }
 					// Lancer des dés
 					$att = rand(0, $sm);
 					$def = rand(0, $pm);
