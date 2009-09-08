@@ -3,6 +3,8 @@ if (file_exists('../root.php'))
   include_once('../root.php');
 
 $textures = false;
+$admin = true;
+
 include_once(root.'haut.php');
 setlocale(LC_ALL, 'fr_FR');
 include_once(root.'haut_site.php');

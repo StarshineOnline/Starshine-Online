@@ -3,10 +3,10 @@ if (file_exists('../root.php'))
   include_once('../root.php');
 
 $textures = false;
+$admin = true;
 include_once(root.'haut.php');
 setlocale(LC_ALL, 'fr_FR');
 ?>
-<link rel="stylesheet" type="text/css" media="screen,projection" title="Normal" href="<?php echo root; ?>css/index.css" />
 <div id="site"><?php
 if ($G_maintenance)
 {
@@ -44,7 +44,7 @@ else
 			$req = $db->query($requete);
 			while($row = $db->read_assoc($req))
 			{
-				$joueur = recupperso($row['id_perso']);
+				$joueur = new perso($row['id_perso']);
 				?>
 			<tr>
 				<td>

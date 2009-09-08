@@ -1,6 +1,7 @@
 <?php
 if (file_exists('../root.php'))
   include_once('../root.php');
+$admin = true;
 
 
 include_once(root.'haut.php');

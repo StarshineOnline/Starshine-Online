@@ -7,7 +7,7 @@ if ($maintenance)
 }
 else
 {
-	include_once(root.'inc/verif_log_admin.inc.php');
+	//include_once(root.'inc/verif_log_admin.inc.php');
 	
 	$i = 0; // Avec un index, on pourra réordonner tranquille
 	$menu = array();

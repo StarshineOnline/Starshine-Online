@@ -1,6 +1,7 @@
 <?php // -*- tab-width:	 2 -*-
 if (file_exists('../root.php'))
   include_once('../root.php');
+$admin = true;
 
 $textures = false;
 include_once(root.'haut.php');

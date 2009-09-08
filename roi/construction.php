@@ -102,6 +102,7 @@ else if(!array_key_exists('direction', $_GET))
 }
 elseif($_GET['direction'] == 'suppr_construction')
 {
+	$construction = new construction($_GET['id']);
 	$requete = "SELECT type, royaume FROM construction WHERE id = ".sSQL($_GET['id']);
 	$req = $db->query($requete);
 	$row = $db->read_row($req);

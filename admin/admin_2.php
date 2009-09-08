@@ -3,6 +3,7 @@ if (file_exists('../root.php'))
   include_once('../root.php');
 
 $textures = false;
+$admin = true;
 include_once(root.'haut.php');
 setlocale(LC_ALL, 'fr_FR');
 include_once(root.'haut_site.php');
@@ -50,8 +51,8 @@ else
 			$keysj = array_keys($ips[$keys[$i]]);
 			while($j < $countj)
 			{
-				$perso = recupperso($keysj[$j]);
-				echo '<li><a href="admin_joueur.php?direction=info_joueur&amp;id='.$perso['ID'].'">'.$perso['nom'].'</a> <span class="xsmall">('.$ips[$keys[$i]][$keysj[$j]].' connexion)</span></li>';
+				$perso = new perso($keysj[$j]);
+				echo '<li><a href="admin_joueur.php?direction=info_joueur&amp;id='.$perso->get_id().'">'.$perso->get_nom().'</a> <span class="xsmall">('.$ips[$keys[$i]][$keysj[$j]].' connexion)</span></li>';
 				$j++;
 			}
 			echo '</ul>';
