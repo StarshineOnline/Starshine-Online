@@ -145,9 +145,6 @@ if(array_key_exists('valid_etape', $_GET))
 			//Vérification que les joueurs ont bien les objets dans leur inventaire
 			else
 			{
-				echo "<pre>";
-				print_r($echange);
-				echo "</pre>";
 				if(verif_echange($_GET['id_echange'], $j1->get_id(), $j2->get_id()))
 				{
 					$check = true;
