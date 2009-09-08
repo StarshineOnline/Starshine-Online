@@ -346,7 +346,7 @@ if($joueur->get_rang_royaume() != 6)
 	}
 	elseif($_GET['direction'] == 'carte')
 	{
-		echo '<img src="carte_roy2.php?url='.$joueur->get_race().'" style="width:600px;margin-left:170px;" />';
+		echo '<img src="carte_roy2.php" style="width:600px;margin-left:170px;" />';
 	
 	}
 	elseif($_GET['direction'] == 'stats')

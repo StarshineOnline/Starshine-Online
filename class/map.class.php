@@ -227,7 +227,7 @@ class map
 					}
 					else $onclick = $this->onclick;
 					echo " 		onclick=\"".$onclick."\" 
-						   >".$repere."</div>
+						   ><span id='pos_".$MAPTAB[$x_map][$y_map]["id"]."'>".$repere."</span></div>
 						  </li>";	
 					
 					$case++;

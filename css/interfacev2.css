@@ -21,6 +21,7 @@ body {margin:0;padding:0;background:#7e909c url('../image/v2/bg_site.png') repea
 #perso_menu .select {background:transparent url('../image/v2/bouton_selected.png') repeat-x;font-style:normal;font-weight: bold;}
 
 
+.pos_over	{ background:transparent url('../image/interface/2.png') center; display:block;-moz-border-radius:5px;-webkit-border-radius :5px; height:58px !important;width:58px !important; }
 
 
 #perso_contenu{margin:auto;min-height:110px;padding:5px;}
