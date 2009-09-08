@@ -1070,8 +1070,8 @@ function lance_comp($id, $acteur, &$effects)
 			echo '&nbsp;&nbsp;<strong>'.$actif->get_nom().'</strong> utilise une flêche étourdissante !<br />';
 			$actif->degat_moins = $row['effet'];
 			// On regarde si l'adversaire est étourdit
-			$de_att = rand(0, (($actif['force'] + $actif['dexterite']) / 2));
-			$de_deff = rand(0, $passif['vie']);
+			$de_att = rand(0, (($actif->get_force() + $actif->get_dexterite()) / 2));
+			$de_deff = rand(0, $passif->get_vie());
 			if($de_att > $de_deff)
 			{
 				$actif->etat['fleche_etourdit']['effet'] = $row['effet'];
