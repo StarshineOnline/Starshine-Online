@@ -656,5 +656,13 @@ class entite
 		}
 	}
 
+	function get_exp()
+	  {
+	    if ($this->type == 'joueur')
+	      return $this->objet_ref->get_exp();
+	    else
+	      return 0;
+	  }
+
 }
 ?>
