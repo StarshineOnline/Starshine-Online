@@ -362,7 +362,7 @@ class empoisonne extends effect {
 
   function fin_round(&$actif, &$passif)
   {
-		$this->hit($actif['nom'].' perd '.$this->vigueur.' HP à cause du poison');
+		$this->hit($actif->get_nom().' perd '.$this->vigueur.' HP à cause du poison');
 		$actif->set_hp($actif->get_hp() - $this->vigueur);
 		$actif->etat['empoisonne']['effet'] -= 1;
 		if ($actif->etat['empoisonne']['effet'] < 1)
