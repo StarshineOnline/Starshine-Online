@@ -6,8 +6,10 @@ include_once(root.'inc/fp.php');
 if(isset($_SESSION['nom']))
 {
 }
-elseif(!array_key_exists('log', $_POST) && !strpos($_SERVER['SCRIPT_NAME'], '/index.php'))
+elseif(!array_key_exists('log', $_POST) && strpos($_SERVER['SCRIPT_NAME'], '/index.php') === false) // === car 0 == false
 {
+  $s = strpos($_SERVER['SCRIPT_NAME'], '/index.php');
+  header("X-strpos: $s");
 	header("Location: index.php");
 }
 
