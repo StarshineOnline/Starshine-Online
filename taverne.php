@@ -66,7 +66,7 @@ if($joueur->get_race() == $R->get_race())
 							if($de <= 2)
 							{
 								$debuff = true;
-								$texte = 'une affaire moyenne et vite expédiée. Vous avez l\'impression que vous avez fait la pire performance de votre vie. La fille de joie le pense aussi et vous chasse illico de la taverne, ou vous ne remettrez probablement pas les pieds pendant un moment. Vou sortez tout penaud en courant le plus vite possible pour ne plus entendre les rires de moqueries que s\'échangent les filles en vous montrant du doigt.';
+								$texte = 'Une affaire moyenne et vite expédiée. Vous avez l\'impression que vous avez fait la pire performance de votre vie. La fille de joie le pense aussi et vous chasse illico de la taverne, d\'où vous ne remettrez probablement pas les pieds pendant un moment. Vous sortez tout penaud en courant le plus vite possible pour ne plus entendre les rires et moqueries que s\'échangent les filles en vous montrant du doigt.';
 							}
 							elseif($de <= 5)
 							{
@@ -74,7 +74,7 @@ if($joueur->get_race() == $R->get_race())
 								{
 									$debuff = true;
 								}
-								$texte = 'vous avez été mauvais. Très mauvais même. Vous sortez de la chambre le moral à Zero. Vous ne reviendrez pas de sitôt, comme vous l\'a fait comprendre la fille en s\'endormant en plein milieu de l\'acte.';
+								$texte = 'Vous avez été mauvais. Très mauvais même. Vous sortez de la chambre le moral à zéro. Vous ne reviendrez pas de sitôt, comme vous l\'a fait comprendre la fille en s\'endormant en plein milieu de l\'acte.';
 							}
 							elseif($de <= 10)
 							{
@@ -82,11 +82,11 @@ if($joueur->get_race() == $R->get_race())
 								{
 									$debuff = true;
 								}
-								$texte = 'Une prestation moyenne. C\'est sur, vous avez connu mieux. C\'est peut être ce que vous avez mangé la veille qui vous a rendu si patraque. Une chose est sur, il faut vous changer les idées ailleurs qu\'ici, et ne plus y remettre les pieds pendant un moment.';
+								$texte = 'Une prestation moyenne. C\'est sur, vous avez connu mieux. C\'est peut être ce que vous avez mangé la veille qui vous a rendu si patraque. Une chose est sûre, il faut vous changer les idées ailleurs qu\'ici, et ne plus y remettre les pieds pendant un moment.';
 							}
 							elseif($de <= 14)
 							{
-								$texte = 'une performance comme les autres. Une chose est sur, la fille de joie vous a déja oublié sitôt sortit de cet endroit.';
+								$texte = 'Une performance comme les autres. Une chose est sûre, la fille de joie vous a déja oublié sitôt sortit de cet endroit.';
 							}
 							elseif($de <= 17)
 							{
@@ -94,7 +94,7 @@ if($joueur->get_race() == $R->get_race())
 								{
 									$buff = true;
 								}
-								$texte = 'une bonne performance. Vous sortez de la chambre un petit sourire aux lèvres. Une chose est sur, cet endroit été convivial. Vous reviendrez.';
+								$texte = 'Une bonne performance. Vous sortez de la chambre un petit sourire aux lèvres. Une chose est sûre, cet endroit était convivial. Vous reviendrez.';
 							}
 							elseif($de <= 19)
 							{
@@ -102,7 +102,7 @@ if($joueur->get_race() == $R->get_race())
 								{
 									$buff = true;
 								}
-								$texte = 'Vous sortez de la pièce heureux de votre performance. Vous étiez en forme, c\'est une certitude. Vous laisserez d\'heureux souvenirs à la fille que vous avez cotoyé, cette nuit oubliable restera gravée dans votre mémoire.';
+								$texte = 'Vous sortez de la pièce heureux de votre performance. Vous étiez en forme, c\'est une certitude. Vous laisserez d\'heureux souvenirs à la fille que vous avez cotoyé, cette nuit inoubliable restera gravée dans votre mémoire.';
 							}
 							elseif($de <= 21)
 							{
@@ -110,7 +110,7 @@ if($joueur->get_race() == $R->get_race())
 								{
 									$buff = true;
 								}
-								$texte = 'Une performance exceptionelle. Vous ne savez pas pourquoi, mais vous étiez dans une forme olympique. Ce fut toride et bestial. Vous vous sentez ragaillardi, et fermez la porte doucement, pour ne pas réveiller la fille de joie qui s\'est endormie aussitôt après l\'acte, tellement vus l\'avez épuisée. Un petit sourire orne le coin de vos lèvres quand vous l\'avez vu discrètement noter votre nom dans son carnet des personnes à recontacter à l\'avenir.';
+								$texte = 'Une performance exceptionelle. Vous ne savez pas pourquoi, mais vous étiez dans une forme olympique. Ce fut toride et bestial. Vous vous sentez ragaillardi, et fermez la porte doucement, pour ne pas réveiller la fille de joie qui s\'est endormie aussitôt après l\'acte, tellement vus l\'avez épuisée. Un petit sourire orne le coin de vos lèvres quand vous l\'avez vu discrètement noter votre nom dans son carnet des personnes à recontacter.';
 							}
 							else
 							{
@@ -118,7 +118,7 @@ if($joueur->get_race() == $R->get_race())
 								{
 									$buff = true;
 								}
-								$texte = 'Magnifique est un qualiquatif trop pauvre pour qualifier votre performance. Vous avez été tellement bon que la personne à qui vous avez fait l\'honneur de votre présence a eu une extinction de voie à force de criez votre nom. De plus, fait marquant, au milieu de l\'affaire, elle est partit et a appelée toute ses copines qui ont quitté leur chambre, laissant leurs clients sur la paille, pour venir profiter de votre journée de grâce. Ce n\'est donc pas moins que la taverne entière (tout sexe confondu) que vous avez honorées à la fois (sans payer plus cher). Une chose est sure, vous avez rendu des gens heureux aujourd\'hui.';
+								$texte = 'Magnifique est un qualiquatif trop pauvre pour qualifier votre performance. Vous avez été tellement bon que la personne à qui vous avez fait l\'honneur de votre présence a eu une extinction de voix à force de crier votre nom. De plus, fait marquant, au milieu de l\'affaire, elle est partie et a appelée toute ses copines qui ont quitté leur chambre, laissant leurs clients sur la paille, pour venir profiter de votre journée de grâce. Ce n\'est donc pas moins que la taverne entière (tout sexe confondu) que vous avez honoré (sans payer plus cher). Une chose est sûre, vous avez rendu des gens heureux aujourd\'hui.';
 							}
 
 							//lancement du buff ou debuff
@@ -163,8 +163,8 @@ if($joueur->get_race() == $R->get_race())
 								$liste_maladie[0]['nom'] = 'Crise cardiaque';
 								$liste_maladie[0]['description'] = '
 								En sortant de la taverne, vous vous sentez faibles. Très faibles.<br />
-								Vous vous appercevez trop tard que vous vous êtes trop démeunés.<br />
-								Vous vous écroulez par terre, et n\'arrivez plus à respirez.<br />
+								Vous vous appercevez trop tard que vous vous êtes trop démenés.<br />
+								Vous vous écroulez par terre, et n\'arrivez plus à respirer.<br />
 								Vous mourrez seul et abandonnés de tous.';
 								$liste_maladie[0]['effets'] = 'mort';
 								$liste_maladie[1]['nom'] = 'Lumbago';
@@ -185,12 +185,12 @@ if($joueur->get_race() == $R->get_race())
 								$liste_maladie[3]['nom'] = 'Vulnérabilité';
 								$liste_maladie[4]['description'] = '
 								En sortant de la taverne, vous vous sentez fragiles, très fragiles.<br />
-								La fille que vous avez honoré pour a certainement refilé une maladie.<br />
+								La fille que vous avez honoré vous a certainement refilé une maladie.<br />
 								Les prochains combats vont être difficiles.';
 								$liste_maladie[4]['effets'] = 'suppr_defense-12';
 								$liste_maladie[4]['nom'] = 'Dernier sursaut';
 								$liste_maladie[5]['description'] = '
-								En sortant de la taverne, vous vous sentez revivre, vous vous sentez forts, très forts, trop forts.<br />
+								En sortant de la taverne, vous vous sentez revivre, vous vous sentez fort, très fort, trop fort.<br />
 								Vous pensez qu\'il faut vite profiter de cet état de grace car le retour du baton va être violent.';
 								$liste_maladie[5]['effets'] = 'cout_deplacement-2;cout_attaque-2;mort_regen';
 								$liste_maladie[5]['nom'] = 'Grosse fatigue';
@@ -201,7 +201,7 @@ if($joueur->get_race() == $R->get_race())
 								$liste_maladie[7]['nom'] = 'Foulure de la cheville';
 								$liste_maladie[7]['description'] = '
 								En sortant de la taverne, vous appercevez que vous avez des difficultées à marcher.<br />
-								Vous avez du vous foulet la cheville pendant l\'acte.<br />
+								Vous avez du vous fouler la cheville pendant l\'acte.<br />
 								Decidement, mauvaise journée.';
 								$liste_maladie[7]['effets'] = 'plus_cout_deplacement-2;cout_attaque-2';
 								$liste_maladie[8]['nom'] = 'Hémoragie';
@@ -353,15 +353,17 @@ if($joueur->get_race() == $R->get_race())
 		$color = 1;
 		$requete = "SELECT * FROM taverne";
 		$req = $db->query($requete);
+		$champ = 'nom';
+		if($joueur->get_bonus_shine(12) !== false)
+		{
+			if($joueur->get_bonus_shine(12)->get_valeur() == 2)
+				$champ = 'nom_f';
+		}
 		while($row = $db->read_array($req))
 		{
 			$taxe = ceil($row['star'] * $R->get_taxe_diplo($joueur->get_race()) / 100);
 			$cout = $row['star'] + $taxe;
 			if(array_key_exists('fort', $_GET)) $fort = '&amp;fort=ok'; else $fort = '';
-			//On vérifie le sexe du joueur
-//			$joueur->get_bonus() = recup_bonus_total($joueur->get_id());
-//			if(array_key_exists(12, $joueur->get_bonus()) AND $joueur->get_bonus(12)->valeur == 2) $champ = 'nom_f';
-			$champ = 'nom';
 		?>
 		<tr class="element trcolor<?php echo $color; ?>">
 			<td>

@@ -3415,5 +3415,24 @@ class perso extends entite
 		}
 		else return false;
 	}
+	
+	function get_bonus_shine($id_bonus = false)
+	{
+		if(!$id_bonus)
+		{
+			$this->bonus_shine = bonus_perso::create(array('id_perso'), array($this->id));
+			return $this->bonus_shine;
+		}
+		else
+		{
+			if(!isset($this->bonus_shine)) $this->get_bonus_shine();
+			foreach($this->bonus_shine as $bonus)
+			{
+				if($bonus->get_id_bonus() == $id_bonus)
+					return $bonus;						
+			}
+		}
+		return false;
+	}
 }
 ?>

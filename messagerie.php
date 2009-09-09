@@ -3,6 +3,11 @@ if (file_exists('root.php'))
   include_once('root.php');
 
 include_once(root.'inc/fp.php');
+if(!array_key_exists('ID', $_SESSION) || empty($_SESSION['ID']))
+{
+	echo 'Vous êtes déconnecté, veuillez vous reconnecter.';
+	exit();
+}
 $joueur = new perso($_SESSION['ID']);
 $messagerie = new messagerie($joueur->get_id());
 $non_lu = $messagerie->get_non_lu();

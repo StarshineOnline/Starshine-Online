@@ -117,6 +117,7 @@ class entite
 				$this->rang = $objet->get_grade()->get_rang();
 				$this->espece = 'humainoïde';
 				$this->blocage = $objet->get_blocage();
+				$this->star = $objet->get_star();
 			break;
 			case 'monstre' :
 				$this->action = $objet->get_action();
@@ -153,6 +154,7 @@ class entite
 				$this->arme_degat = 0;
 				$this->level = $objet->get_level();
 				$this->rang_royaume = 0;
+				$this->star = $objet->get_star();
 				$this->espece = $objet->get_type();
 			break;
 			case 'batiment' :
@@ -657,12 +659,20 @@ class entite
 	}
 
 	function get_exp()
-	  {
-	    if ($this->type == 'joueur')
-	      return $this->objet_ref->get_exp();
-	    else
-	      return 0;
-	  }
+	{
+		if($this->type == 'joueur')
+			return $this->objet_ref->get_exp();
+		else
+			return 0;
+	}
+
+	function get_star()
+	{
+		if(isset($this->star))
+			return $this->star;
+		else
+			return 0;
+	}
 
 }
 ?>

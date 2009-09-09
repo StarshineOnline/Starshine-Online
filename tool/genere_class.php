@@ -4,7 +4,7 @@
  * Version : 1.2
  * Description : permet de générer une class associée a une table MySQL
  */
-$root = '';
+$root = '../';
 include($root.'class/db.class.php');
 include($root.'connect.php');
 
@@ -297,7 +297,7 @@ class $table extends ${table}_db {
 
 
 	//Inclusion des fonctions spécifiques
-	$filename= 'class/'.$table.'.class.php';
+	$filename= $root.'class/'.$table.'.class.php';
 	$new_file = ob_get_contents();
 	if(file_exists($filename))
 	{
