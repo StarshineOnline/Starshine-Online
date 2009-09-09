@@ -42,9 +42,12 @@ foreach ($ts as $tt => $tn)
 		$quetes = unserialize($joueur->get_quete());
 		foreach($quetes as $quete)
 		{
-			$quete_id[] = $quete['id_quete'];
-			$quest[$quete['id_quete']] = $i;
-			$i++;
+			if ($quete['id_quete']!='')
+			{
+				$quete_id[] = $quete['id_quete'];
+				$quest[$quete['id_quete']] = $i;
+				$i++;
+			}
 		}
 		if (array_key_exists('filter', $_GET))
 		{ // On récupère les ID des monstres possibles suivant ce filtre

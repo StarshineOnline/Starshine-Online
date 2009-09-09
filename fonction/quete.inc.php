@@ -196,7 +196,11 @@ function affiche_quetes($fournisseur, $joueur)
 	{
 		foreach($liste_quete as $quete)
 		{
-			$quetes[] = $quete['id_quete'];
+			if ($quete['id_quete']!='')
+			{
+				$quetes[] = $quete['id_quete'];
+			}
+		
 		}
 		if(count($quetes) > 0) $notin = "AND quete.id NOT IN (".implode(',', $quetes).")";
 		else $notin = '';
