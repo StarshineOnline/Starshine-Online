@@ -254,12 +254,12 @@ else
 				<input type="button" value="valider" onclick="document.location = \'admin_joueur.php?id='.$_GET['id'].'&amp;direction=objet2&amp;id_objet=\' + document.getElementById(\'id_objet\').value + \'&amp;nombre=\' + document.getElementById(\'nombre\').value" />';
 			break;
 			case 'objet2' :
-				$joueur = recupperso($_GET['id']);
+				$joueur = new perso($_GET['id']);
 				$i = 0;
 				while($i < $_GET['nombre'])
 				{
-					prend_objet($_GET['id_objet'], $joueur);
-					$joueur = recupperso($_GET['id']);
+					$joueur->prend_objet($_GET['id_objet']);
+
 					$i++;
 				}
 				?>
@@ -289,7 +289,7 @@ else
 				$db->query($requete);
 			break;
 			case 'journal' :
-				$joueur = recupperso($_GET['id']);
+				$joueur = new perso($_GET['id']);
 				$requete = "SELECT COUNT(*) FROM journal WHERE id_perso = ".$joueur->get_id();
 				$req = $db->query($requete);
 				$row = $db->read_row($req);
@@ -306,7 +306,7 @@ else
 				<?php
 			break;
 			case 'messagerie';
-				$joueur = recupperso($_GET['id']);			
+				$joueur = new perso($_GET['id']);			
 				$requete = "SELECT * FROM message WHERE id_dest = ".$joueur->get_id()." OR id_envoi = ".$joueur->get_id()." ORDER BY date DESC";
 				$req = $db->query($requete);	
 				?>
@@ -378,8 +378,8 @@ else
 				<input type="button" value="valider" onclick="document.location = \'admin_joueur.php?id='.$_GET['id'].'&amp;direction=arme2&amp;id_arme=\' + document.getElementById(\'id_arme\').value" />';
 			break;
 			case 'arme2' :
-				$joueur = recupperso($_GET['id']);
-				equip_objet($_GET['id_arme'], $joueur);
+				$joueur = new perso($_GET['id']);
+				$joueur->equip_objet($_GET['id_arme']);
 				echo $G_erreur;
 				?>
 				<a href="admin_joueur.php?direction=info_joueur&amp;id=<?php echo $_GET['id']; ?>">Revenir à sa feuille de personnage</a>
@@ -398,8 +398,8 @@ else
 				<input type="button" value="valider" onclick="document.location = \'admin_joueur.php?id='.$_GET['id'].'&amp;direction=armure2&amp;id_armure=\' + document.getElementById(\'id_armure\').value" />';
 			break;
 			case 'armure2' :
-				$joueur = recupperso($_GET['id']);
-				equip_objet($_GET['id_armure'], $joueur);
+				$joueur = new perso($_GET['id']);
+				$joueur->equip_objet($_GET['id_armure']);
 				echo $G_erreur;
 				?>
 				<a href="admin_joueur.php?direction=info_joueur&amp;id=<?php echo $_GET['id']; ?>">Revenir à sa feuille de personnage</a>
@@ -418,8 +418,8 @@ else
 				<input type="button" value="valider" onclick="document.location = \'admin_joueur.php?id='.$_GET['id'].'&amp;direction=accessoire2&amp;id_accessoire=\' + document.getElementById(\'id_accessoire\').value" />';
 			break;
 			case 'accessoire2' :
-				$joueur = recupperso($_GET['id']);
-				prend_objet($_GET['id_accessoire'], $joueur);
+				$joueur = new perso($_GET['id']);
+				$joueur->prend_objet($_GET['id_accessoire']);
 				echo $G_erreur;
 				?>
 				<a href="admin_joueur.php?direction=info_joueur&amp;id=<?php echo $_GET['id']; ?>">Revenir à sa feuille de personnage</a>
@@ -439,12 +439,11 @@ else
 				<input type="button" value="valider" onclick="document.location = \'admin_joueur.php?id='.$_GET['id'].'&amp;direction=recette2&amp;id_recette=\' + document.getElementById(\'id_recette\').value + \'&amp;nombre=\' + document.getElementById(\'nombre\').value" />';
 			break;
 			case 'recette2' :
-				$joueur = recupperso($_GET['id']);
+				$joueur = new perso($_GET['id']);
 				$i = 0;
 				while($i < $_GET['nombre'])
 				{
-					prend_recette($_GET['id_recette'], $joueur);
-					$joueur = recupperso($_GET['id']);
+					$joueur->prend_recette($_GET['id_recette']);
 					$i++;
 				}
 				?>
@@ -452,12 +451,12 @@ else
 				<?php
 			break;
 			case 'quete' :
-				$joueur = recupperso($_GET['id']);
-				if($joueur['quete'] != '')
+				$joueur = new perso($_GET['id']);
+				if($joueur->get_quete() != '')
 				{
 					$i = 0;
 					$quete_id = array();
-					foreach($joueur['quete'] as $quete)
+					foreach($joueur->get_quete() as $quete)
 					{
 						$quete_id[] = $quete['id_quete'];
 						$quest[$quete['id_quete']] = $i;
@@ -517,7 +516,7 @@ else
 				}
 			break;
 			case 'inventaire' :
-				$joueur = recupperso($_GET['id']);
+				$joueur = new perso($_GET['id']);
 $tab_loc = array();
 $tab_loc[0]['loc'] = 'main_droite';
 $tab_loc[0]['type'] = 'arme';
@@ -570,13 +569,13 @@ foreach($tab_loc as $loc)
 	</td>
 	<td>
 		<?php
-		if($joueur['inventaire']->$loc['loc'] != '')
+		if($joueur->get_inventaire()->$loc['loc'] != '')
 		{
-			$objet = decompose_objet($joueur['inventaire']->$loc['loc']);
+			$objet = decompose_objet($joueur->get_inventaire()->$loc['loc']);
 			switch($loc['type'])
 			{
 				case 'arme' :
-					if($joueur['inventaire']->$loc['loc'] != 'lock')
+					if($joueur->get_inventaire()->$loc['loc'] != 'lock')
 					{
 						$requete = "SELECT * FROM `arme` WHERE id = ".$objet['id_objet'];
 						$sqlQuery = $db->query($requete);
@@ -615,7 +614,7 @@ foreach($tab_loc as $loc)
 	</td>
 	<td>
 		<?php
-		if($joueur['inventaire']->$loc['loc'] != '' AND $joueur['inventaire']->$loc['loc'] != 'lock')
+		if($joueur->get_inventaire()->$loc['loc'] != '' AND $joueur->get_inventaire()->$loc['loc'] != 'lock')
 		{
 			switch($loc['type'])
 			{
@@ -639,7 +638,7 @@ foreach($tab_loc as $loc)
 	</td>
 	<td>
 		<?php
-		if($joueur['inventaire']->$loc['loc'] != '' AND $joueur['inventaire']->$loc['loc'] != 'lock')
+		if($joueur->get_inventaire()->$loc['loc'] != '' AND $joueur->get_inventaire()->$loc['loc'] != 'lock')
 		{
 		?>
 			<a href="inventaire.php?action=desequip&amp;partie=<?php echo $loc['loc']; ?>" onclick="return envoiInfo(this.href, 'centre');">Désequiper</a>
@@ -662,9 +661,9 @@ foreach($tab_loc as $loc)
 </tr>
 <?php
 $i = 0;
-if($joueur['inventaire_slot'] != '')
+if($joueur->get_inventaire_slot() != '')
 {
-	foreach($joueur['inventaire_slot'] as $invent)
+	foreach($joueur->get_inventaire_slot() as $invent)
 	{
 		if($invent !== 0 AND $invent != '')
 		{
@@ -774,8 +773,8 @@ if($joueur['inventaire_slot'] != '')
 <?php
 			break;
 			case 'supp_objet' :
-				$joueur = recupperso($_GET['id']);
-				supprime_objet($joueur, $_GET['id_objet'], 1);
+				$joueur = new perso($_GET['id']);
+				$joueur->supprime_objet($_GET['id_objet'], 1);
 				echo 'Objet bien supprimer<br />';
 				echo '<a href="admin_joueur.php?direction=inventaire&amp;id='.$joueur->get_id().'">Retour à l\'inventaire</a> | <a href="admin_joueur.php?direction=info_joueur&amp;id='.$joueur->get_id().'">Retour au personnage</a>';
 			break;
