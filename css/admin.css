@@ -1,6 +1,43 @@
 body {}
 #menuindex {float:left;width:200px;margin-right:15px;}
 #contenu {float:left;}
+#rosedesvents   { width:75px; height:75px;position:absolute; left:13px; top:13px; z-index:200; }
+#rose_div_hg 	{ background:transparent url('./../image/rosedesvent/nordouest.png') center; width:25px; height:25px; cursor:pointer; float:left; }
+#rose_div_hg:hover 		{ background-position:top; }
+#rose_div_hg:active 	{ background-position:bottom; }
+
+#rose_div_h 	{ background:transparent url('./../image/rosedesvent/nord.png') center; width:25px; height:25px; cursor:pointer; float:left; }
+#rose_div_h:hover 		{ background-position:top; }
+#rose_div_h:active 	{ background-position:bottom; }
+
+#rose_div_hd 	{ background:transparent url('./../image/rosedesvent/nordest.png') center; width:25px; height:25px; cursor:pointer; float:left; }
+#rose_div_hd:hover 		{ background-position:top; }
+#rose_div_hd:active 	{ background-position:bottom; }
+
+#rose_div_cg 	{ background:transparent url('./../image/rosedesvent/ouest.png') center; width:25px; height:25px; cursor:pointer; float:left; clear:both; }
+#rose_div_cg:hover 		{ background-position:top; }
+#rose_div_cg:active 	{ background-position:bottom; }
+
+#rose_div_c 	{ background:transparent url('../../image/rosedesvent/rafraichir.png') center; width:25px; height:25px; cursor:pointer; float:left; }
+#rose_div_c:hover 		{ background-position:top; }
+#rose_div_c:active 	{ background-position:bottom; }
+
+#rose_div_cd 	{ background:transparent url('./../image/rosedesvent/est.png') center; width:25px; height:25px; cursor:pointer; float:left;  }
+#rose_div_cd:hover 		{ background-position:top; }
+#rose_div_cd:active 	{ background-position:bottom; }
+
+#rose_div_bg 	{ background:transparent url('./../image/rosedesvent/sudouest.png') center; width:25px; height:25px; cursor:pointer; float:left; clear:both; }
+#rose_div_bg:hover 		{ background-position:top; }
+#rose_div_bg:active 	{ background-position:bottom; }
+
+#rose_div_b 	{ background:transparent url('../../image/rosedesvent/sud.png') center; width:25px; height:25px; cursor:pointer; float:left; }
+#rose_div_b:hover 		{ background-position:top; }
+#rose_div_b:active 	{ background-position:bottom; }
+
+#rose_div_bd 	{ background:transparent url('./../image/rosedesvent/sudest.png') center; width:25px; height:25px; cursor:pointer; float:left; }
+#rose_div_bd:hover 		{ background-position:top; }
+#rose_div_bd:active 	{ background-position:bottom; }
+
 #editcarte
 {
 	width : 100%;
