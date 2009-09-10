@@ -23,6 +23,7 @@ $map->onclick_status = true;
 $map->get_monstre($level);
 
 if(isset($_GET['cache_monstre'])) $map->change_cache_monstre();
+if(isset($_GET['affiche_royaume'])) $map->change_affiche_royaume();
 
 $map->affiche();
 ?>

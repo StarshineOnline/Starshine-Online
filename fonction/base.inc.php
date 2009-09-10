@@ -560,7 +560,7 @@ function cout_pa($info, $race)
 function cout_pa2($coutpa, $joueur, $case, $diagonale)
 {
 	global $Trace;
-	//Si on est sur son royaume => Cout en PA réduit de 1, minimum 1
+	//Si on est sur son royaume => Cout en PA réduit de 1, minimum 2
 	if($case->get_royaume() == $Trace[$joueur->get_race()]['numrace'])
 	{
 		if($coutpa > 2) $coutpa -= 1;

@@ -17,6 +17,7 @@ class map
 	public $quadrillage;
 	public $cache_monstre;
 	public $onclick_status;
+	private $affiche_royaume;
 
 	function __construct($x, $y, $champ_vision = 3, $root = '', $donjon = false, $resolution = 'high')
 	{
@@ -29,6 +30,7 @@ class map
 		$this->onclick = "envoiInfo('informationcase.php?case=%%id%%', 'information');";
 		$this->onclick_status = false;
 		$this->cache_monstre = false;
+		$this->affiche_royaume = false;
 		
 		$this->case_affiche = ($this->champ_vision * 2) + 1;
 
@@ -74,6 +76,7 @@ class map
 			$ymax = $this->ymax;
 		}
 		$total_cases = ($this->xmax - $this->xmin + 1) * ($this->ymax - $this->ymin + 1);
+		$this->nb_cases = $total_cases;
 		$RqMap = $db->query("SELECT ID,decor,royaume FROM map 
 						 WHERE ( (FLOOR(id / 1000) >= $ymin) AND (FLOOR(id / 1000) <= $ymax) ) 
 						 AND ( ((id - (FLOOR(id / 1000) * 1000) ) >= $xmin) AND ((id - (FLOOR(id / 1000) * 1000)) <= $xmax) ) 
@@ -113,7 +116,7 @@ class map
 		echo '<div class="div_map" style="width : '.round(20 + ($taille_cellule * $this->case_affiche)).'px;height:'.round(20 + ($taille_cellule * $this->case_affiche)).'px;">';
 		{//-- Affichage du bord haut (bh) de la map
 			echo "<ul id='".$classe_css['map_bord_haut']."'>
-				   <li id='".$classe_css['map_bord_haut_gauche']."'";if (!empty($class_css['resolution'])) {echo "class='".$class_css['resolution']."'";} echo "onclick=\"switch_map(".$total_cases.");\">&nbsp;</li>";
+				   <li id='".$classe_css['map_bord_haut_gauche']."'";if (!empty($class_css['resolution'])) {echo "class='".$class_css['resolution']."'";} echo "onclick=\"javascript:affiche_royaume=!affiche_royaume;deplacement('centre', cache_monstre, affiche_royaume);\">&nbsp;</li>";
 			for ($bh = $this->xmin; $bh <= $this->xmax; $bh++)
 			{
 				if($bh == $this->x) { $class_x = "id='bord_haut_x' "; } else { $class_x = ""; }; //-- Pour mettre en valeur la position X ou se trouve le joueur
@@ -209,7 +212,7 @@ class map
 					else $tex_resolution = '';
 					if(is_array($MAPTAB[$x_map][$y_map])) { $class_map = "decor tex".$tex_resolution.$MAPTAB[$x_map][$y_map]["decor"]; } else { $class_map = "decor texblack"; };
 
-					if($this->quadrillage == true) $taille_border = 1;
+					if($this->affiche_royaume) $taille_border = 1;
 					else $taille_border = 0;
 					$border = "border:".$taille_border."px solid ".$Gcouleurs[$MAPTAB[$x_map][$y_map]['royaume']].";";
 					echo "<li class='$class_map ".$class_css['resolution']."'>
@@ -578,6 +581,13 @@ class map
 	function change_cache_monstre()
 	{
 		$this->cache_monstre = !$this->cache_monstre;
+	}
+	
+	function change_affiche_royaume()
+	{
+		global $Gcouleurs;
+		
+		$this->affiche_royaume = !$this->affiche_royaume;
 	}
 }
 ?>

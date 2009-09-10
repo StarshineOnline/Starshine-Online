@@ -216,13 +216,19 @@ function AfficheCarte(map)
 	$('loading').hide();
 }
 
-function deplacement(direction, cache)
+function deplacement(direction, cache, royaume)
 {
 	if(cache != 'undefined' && cache)
 		cache = '&cache_monstre';
 	else
 		cache = '';
-	new Ajax.Request('./deplacement.php',{method:'get',parameters:'deplacement='+direction+cache,onLoading:Loadchargement,onComplete:AfficheCarte});
+		
+	if(royaume != 'undefined' && royaume)
+		royaume = '&affiche_royaume';
+	else
+		royaume = '';
+	
+	new Ajax.Request('./deplacement.php',{method:'get',parameters:'deplacement='+direction+cache+royaume,onLoading:Loadchargement,onComplete:AfficheCarte});
 }
 
 function affiche_info(id_case)
@@ -363,3 +369,4 @@ function showChat(url) {
 }
 
 var cache_monstre;
+var affiche_royaume = false;
