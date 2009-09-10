@@ -189,7 +189,6 @@ if(!$visu AND isset($_GET['action']))
 							if ($augmentation[1] == 1)
 							{
 								$joueur->set_comp('identification', $augmentation[0]);
-								echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant à '.$joueur->get_identification().' en identification</span><br />';
 								$joueur->sauver();
 							}
 							//echo $id_objet;
@@ -699,7 +698,6 @@ if(!$visu AND isset($_GET['action']))
 					if ($augmentation[1] == 1)
 					{
 						$joueur->set_forge($augmentation[0]);
-						echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant à '.$joueur->get_forge().' en Forge</span><br />';
 						$joueur->sauver();
 					}
 					$objet_r = recompose_objet($objet);
