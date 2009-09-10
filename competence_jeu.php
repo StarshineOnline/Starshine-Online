@@ -126,10 +126,10 @@ if (isset($_GET['ID']))
 				}
 				else
 				{
-					echo '$joueur->get_buff(\'repos_interieur\', \'effet\') => '.$joueur->get_buff('repos_interieur', 'effet').'<br />';
+					//echo '$joueur->get_buff(\'repos_interieur\', \'effet\') => '.$joueur->get_buff('repos_interieur', 'effet').'<br />';
 					if($joueur->is_buff('repos_interieur')) $effet = $joueur->get_buff('repos_interieur', 'effet') + 1;
 					else $effet = 1;
-					echo '$effet => '.$effet.'<br />';
+					//echo '$effet => '.$effet.'<br />';
 					if(lance_buff('repos_interieur', $joueur->get_id(), $effet, 0, (60 * 60 * 24), $row['nom'], description($row['description'].'<br /> Utilisation '.$effet.' / 10', $row), 'perso', 1, 0, 0, 0))
 					{
 						echo 'Le buff a été envoyé<br />';

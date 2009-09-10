@@ -183,7 +183,7 @@ if(!$visu AND isset($_GET['action']))
 						//echo $joueur->get_inventaire_slot()[$i];
 						$stack = explode('x', $joueur->get_inventaire_slot_partie($i));
 						$id_objet = $stack[0];
-						if(mb_substr($joueur->get_inventaire_slot_array($i), 0, 1) == 'h')
+						if(mb_substr($joueur->get_inventaire_slot_partie($i), 0, 1) == 'h')
 						{
 							$augmentation = augmentation_competence('identification', $joueur, 3);
 							if ($augmentation[1] == 1)
