@@ -103,7 +103,7 @@ function enchant($gemme_id, $var)
 		switch($enchants[$i])
 		{
 		case 'degat' :
-			$var->get_arme_degat() += $effets[$i];
+			$var->set_degat_arme($var->get_arme_degat() + $effets[$i]);
 			break;
 		case 'critique' :
 			$var['enchantement'][$enchants[$i]]['effet'] = $effets[$i];
