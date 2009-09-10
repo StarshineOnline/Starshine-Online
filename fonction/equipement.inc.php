@@ -91,6 +91,7 @@ function decompose_objet($objet)
 function enchant($gemme_id, $var)
 {
 	global $db;
+
 	$requete = "SELECT * FROM gemme WHERE id = ".$gemme_id;
 	$req = $db->query($requete);
 	$row = $db->read_assoc($req);
@@ -102,30 +103,30 @@ function enchant($gemme_id, $var)
 		switch($enchants[$i])
 		{
 		case 'degat' :
-			$var['arme_degat'] += $effets[$i];
+			$var->get_arme_degat() += $effets[$i];
 			break;
 		case 'critique' :
 			$var['enchantement'][$enchants[$i]]['effet'] = $effets[$i];
 			$var['enchantement'][$enchants[$i]]['type'] = $enchants[$i];
 			break;
 		case 'hp' :
-			$var['hp_max'] += $effets[$i];
+			$var->set_hp_max($var->get_hp_maximum() + $effets[$i]);
 			break;
 		case 'mp' :
-			$var['mp_max'] += $effets[$i];
+			$var->set_mp_maximum( $var->get_mp_maximum() + $effets[$i]);
 			break;
 		case 'reserve' :
 			$var['reserve'] += $effets[$i];
 			break;
 		case 'pp' :
-			$var['PP'] += $effets[$i];
+			$var->set_pp($var->get_pp() + $effets[$i]);
 			break;
 			/* On ne peut pas le faire comme ca car le matos est pas charge en entier
 		case 'pourcent_pp' :
 			$var['PP'] = $var['PP'] + ceil($var['PP'] * $effets[$i] / 100);
 			break; */
 		case 'pm' :
-			$var['PM'] += $effets[$i];
+			$var->set_pm($var->get_pm() + $effets[$i]);
 			break;
 			/* On ne peut pas le faire comme ca car le matos est pas charge en entier
 		case 'pourcent_pm' :

@@ -123,7 +123,7 @@ class vente_terrain
 	{
 		global $Trace, $db;
 		//On v�rifie qu'il a assez de star
-		if($joueur['star'] < $this->prochain_prix())
+		if($joueur->get_star() < $this->prochain_prix())
 		{
 			$this->erreur = 'star';
 			return false;

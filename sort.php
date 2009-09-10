@@ -22,7 +22,7 @@ switch($type_cible)
 		else
 			$perso = new perso($joueur->get_id());
 			
-		$perso->check_perso();
+		$perso->check_perso(false);
 		$cible = $perso;
 		break;
 	case 'monstre':

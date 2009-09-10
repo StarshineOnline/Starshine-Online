@@ -2971,7 +2971,7 @@ class perso extends entite
 		return $this->action;
 	}
 
-	function check_perso()
+	function check_perso($last_action = true)
 	{
 		$modif = false;	 // Indique si le personnage a été modifié.
 		global $db, $G_temps_regen_hp, $G_temps_maj_hp, $G_temps_maj_mp, $G_temps_PA, $G_PA_max, $G_pourcent_regen_hp, $G_pourcent_regen_mp;
@@ -3125,21 +3125,25 @@ class perso extends entite
 				if ($this->get_mp() > $this->get_mp_maximum()) $this->set_mp(floor($this->get_mp_maximum()));
 				$this->set_regen_hp($this->get_regen_hp() + ($nb_regen * ($G_temps_regen_hp - $bonus_regen)));
 			}
-			//Calcul des PA du joueur
-			$time = time();
-			$temps_pa = $G_temps_PA;
-			// Nombre de PA à ajouter 
-			$panew = floor(($time - $this->get_dernieraction()) / $temps_pa);
-			if($panew < 0) $panew = 0;
-			$prochain = ($this->get_dernieraction() + $temps_pa) - $time;
-			if ($prochain < 0) $prochain = 0;
-			// Mise à jour des PA
-			$this->set_pa($this->get_pa() + $panew);
-			if ($this->get_pa() > $G_PA_max) $this->set_pa($G_PA_max);
-			// Calcul du moment où a eu lieu le dernier gain de PA
-			$j_d_a = (floor($time / $temps_pa)) * $temps_pa;
-			if($j_d_a > $this->get_dernieraction()) $this->set_dernieraction($j_d_a);
-
+			
+			if($last_action)
+			{
+				//Calcul des PA du joueur
+				$time = time();
+				$temps_pa = $G_temps_PA;
+				// Nombre de PA à ajouter 
+				$panew = floor(($time - $this->get_dernieraction()) / $temps_pa);
+				if($panew < 0) $panew = 0;
+				$prochain = ($this->get_dernieraction() + $temps_pa) - $time;
+				if ($prochain < 0) $prochain = 0;
+				// Mise à jour des PA
+				$this->set_pa($this->get_pa() + $panew);
+				if ($this->get_pa() > $G_PA_max) $this->set_pa($G_PA_max);
+				// Calcul du moment où a eu lieu le dernier gain de PA
+				$j_d_a = (floor($time / $temps_pa)) * $temps_pa;
+				if($j_d_a > $this->get_dernieraction()) $this->set_dernieraction($j_d_a);
+			}
+			
 			// Mise-à-jour du personnage dans la base de donnée
 			$this->sauver();
 		} // if($this->get_hp() > 0)
