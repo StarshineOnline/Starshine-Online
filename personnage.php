@@ -299,7 +299,7 @@ echo '
 			Réserve de mana
 		</td>
 		<td>
-			<span onmouseover="return '.make_overlib('Réserve de base : '.$joueur->get_reserve(true)).'" onmouseout="return nd();">'.$joueur->get_reserve().'</span>
+			<span onmouseover="return '.make_overlib('Réserve de base : '.$joueur->get_reserve(true)).'" onmouseout="return nd();">'.$joueur->get_reserve_bonus().'</span>
 		</td>
 	</tr>
 	<tr class="trcolor2">

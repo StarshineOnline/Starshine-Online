@@ -88,7 +88,7 @@ class entite
 				$this->y = $objet->get_y();
 				$this->hp = $objet->get_hp();
 				$this->hp_max = $objet->get_hp_maximum();
-				$this->reserve = $objet->get_reserve();
+				$this->reserve = $objet->get_reserve_bonus();
 				$this->pa = $objet->get_pa();
 				$this->nom = $objet->get_nom();
 				$this->race = $objet->get_race();

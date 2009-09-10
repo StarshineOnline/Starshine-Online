@@ -1,0 +1,11 @@
+UPDATE batiment SET pm = 500 WHERE type = 'mine' AND pm = 170;
+UPDATE batiment SET pm =400 WHERE TYPE = 'mine' AND pm =160;
+UPDATE batiment SET pm =300 WHERE TYPE = 'mine' AND pm =150;
+UPDATE `batiment` SET `PM` = '100' WHERE `batiment`.`id` =5 LIMIT 1 ;
+UPDATE `batiment` SET `PP` = '150' WHERE `batiment`.`id` =21 LIMIT 1 ;
+UPDATE `batiment` SET `PM` = '200' WHERE `batiment`.`id` =22 LIMIT 1 ;
+UPDATE `batiment` SET `PM` = '300' WHERE `batiment`.`id` =23 LIMIT 1 ;
+UPDATE `batiment` SET `hp` = '600' WHERE `batiment`.`id` =13 LIMIT 1 ;
+UPDATE `batiment` SET `hp` = '1000' WHERE `batiment`.`id` =14 LIMIT 1 ;
+UPDATE `batiment` SET `hp` = '1500' WHERE `batiment`.`id` =15 LIMIT 1 ;
+UPDATE `batiment` SET `hp` = '3000' WHERE `batiment`.`id` =16 LIMIT 1 ;

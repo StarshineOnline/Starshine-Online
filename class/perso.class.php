@@ -2823,6 +2823,34 @@ class perso extends entite
 		return $this->mp_maximum;
 	}
 
+	function get_reserve_bonus($force = false)
+	{
+		if(!isset($this->reserve_bonus) OR $force)
+		{
+			$this->reserve_bonus = $this->get_reserve();
+			if($this->is_buff('inspiration')) $this->reserve_bonus = $this->reserve_bonus + $this->get_buff('inspiration', 'effet');
+			if($this->race == 'vampire')
+			{
+				$this->reserve_bonus += 2;
+				if(moment_jour() == 'Nuit')
+				{
+					$this->reserve_bonus += 3;
+				}
+				//Malus Vampire 2
+				elseif(moment_jour() == 'Journee')
+				{
+					$this->reserve_bonus -= 1;
+				}
+			}
+			//Bonus Haut Elfe
+			if($this->race == 'elfehaut' AND moment_jour() == 'Nuit')
+			{
+				$this->reserve_bonus += 2;
+			}
+		}
+		return $this->reserve_bonus;
+	}
+
 	function inventaire()
 	{
 		return unserialize($this->inventaire);

@@ -812,7 +812,7 @@ else
 				else
 				{
 					$gains_xp = true;
-					if($degat_defense > 0) $coef = 0.5 * ($degat_defense) / $joueur_defenseur->get_hp();
+					if($degat_defense > 0) $coef = 0.5 * ($degat_defense) / $joueur_defenseur->hp_max;
 				}
 				if($gains_xp)
 				{
