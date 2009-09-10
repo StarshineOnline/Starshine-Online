@@ -259,6 +259,7 @@ $req = $db->query($requete);
 					<option value="182" class="baseRow1">jointure_herbed_neigeg_montagneh</option>
 					<option value="183" class="baseRow1">tex_herbeenmouvement3</option>
 					<option value="184" class="baseRow1">tex_herbebuisson2</option>
+					<option value="185" class="baseRow1">hautherbecentrefleur2</option>
 					
 				</optgroup>
 				<optgroup label="Foret">
@@ -409,6 +410,7 @@ $req = $db->query($requete);
 					<option value="478" class="baseRow1">tex_montneige3</option>	
 					<option value="479" class="baseRow2">tex_montneige4</option>	
 					<option value="480" class="baseRow2">jointuretex_montneige3</option>	
+					<option value="481" class="baseRow2">jointuretex_montneigeherbehd</option>	
 					
 				</optgroup>
 
@@ -439,6 +441,8 @@ $req = $db->query($requete);
 					<option value="525" class="baseRow1">tex_eaubanquise1</option>
 					<option value="526" class="baseRow1">tex_eaubanquise2</option>
 					<option value="527" class="baseRow1">tex_lacSpiralJetty</option>
+					<option value="528" class="baseRow1">jointure_embouchure_diag_lac_riviere</option>
+					
 				</optgroup>
 
 				<optgroup label="Terre Maudite">
@@ -521,6 +525,9 @@ $req = $db->query($requete);
 					<option value="620" class="baseRow1">Centre12</option>
 					<option value="621" class="baseRow2">Centre</option>
 					<option value="622" class="baseRow1">Centre12</option>
+					<option value="623" class="baseRow1">tex_montcentre2</option>
+					<option value="624" class="baseRow1">tex_montcentre2c</option>
+					<option value="625" class="baseRow1">tex_montcentre2perif</option>
 					
 				</optgroup>
 				
@@ -723,7 +730,10 @@ $req = $db->query($requete);
 					<option value="920" class="baseRow1">tex_cheminplaineforethd</option>	
 					<option value="921" class="baseRow2">tex_cheminplaineforethd</option>					
 					<option value="922" class="baseRow1">tex_cheminplaineforetvertijonctionbd</option>	
-
+					<option value="923" class="baseRow1">tex_desertmyriandre</option>	
+					<option value="924" class="baseRow1">tex_pontpavens2</option>	
+					<option value="925" class="baseRow1">jonction_foret_herbe_hori</option>	
+					
 				</optgroup>
 				<optgroup label="Capitale">
 					<option value="1001" class="baseRow1">Ville humaine</option>

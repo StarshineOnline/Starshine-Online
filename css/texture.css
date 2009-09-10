@@ -338,6 +338,13 @@
 {
 	background: url('../image/texture/textureherbe/tex_herbebuisson2.png') no-repeat;
 }
+
+.tex185
+{
+	background: url('../image/texture/textureherbe/hautherbecentrefleur2.png') no-repeat;
+}
+
+
 /* Foret */
 .tex2
 {
@@ -870,6 +877,10 @@
 {
 	background: url('../image/texture/textbanquise/jointuretex_montneige3.png') no-repeat;
 }
+.tex481
+{
+	background: url('../image/texture/textbanquise/jointuretex_montneigeherbehd.png') no-repeat;
+}
 
 
 
@@ -979,6 +990,11 @@
 {
 	background: url('../image/texture/texturelac/tex_lacspiraljetty.png') no-repeat;
 }
+.tex528
+{
+	background: url('../image/texture/texturelac/jointure_embouchure_diag_lac_riviere.png') no-repeat;
+}
+
 /* Montagne */
 .tex601
 {
@@ -1068,6 +1084,19 @@
 {
 	background: url('../image/texture/textmontagne/tex_montacteon2.gif') no-repeat;
 }
+.tex623
+{
+	background: url('../image/texture/neige_herbe/tex_montcentre2.png') no-repeat;
+}
+.tex624
+{
+	background: url('../image/texture/neige_herbe/tex_montcentre2c.png') no-repeat;
+}
+.tex625
+{
+	background: url('../image/texture/neige_herbe/tex_montcentre2perif.png') no-repeat;
+}
+
 /* Marais */
 .tex701
 {
@@ -1715,7 +1744,18 @@
 {
 	background: url('../image/texture/route/tex_cheminplaineforetvertijonctionbd.png') no-repeat;
 }
-
+.tex923
+{
+	background: url('../image/texture/route/tex_desertmyriandre.png') no-repeat;
+}
+.tex924
+{
+	background: url('../image/texture/route/tex_pontpavens2.png') no-repeat;
+}
+.tex925
+{
+	background: url('../image/texture/route/jonction_foret_herbe_hori.png') no-repeat;
+}
 
 .tex6
 {
