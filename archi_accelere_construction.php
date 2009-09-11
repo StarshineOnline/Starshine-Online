@@ -25,7 +25,7 @@ if($joueur->get_pa() >= 30)
 	if($distance == 0)
 	{
 		//Seconde supprimées du décompte
-		$secondes_max = floor(($row['fin_placement'] - $row['debut_placement']) * sqrt($joueur->get_architecture()) / 100);
+		$secondes_max = floor(($row['fin_placement'] - $row['debut_placement']) * (sqrt($joueur->get_architecture()) / 100));
 
 		// Gemme de fabrique : augmente de effet % le max possible
 		if ($joueur->is_enchantement('forge'))
