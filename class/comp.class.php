@@ -547,7 +547,7 @@ class magnetique extends effect {
 				if($count > 0)
 				{
 					$rand = rand(0, ($count - 1));
-					if ($passif_buff[$keys[$rand]]['id'] == '')
+					if ($passif_buff[$keys[$rand]]->get_id() == '')
 					{
 						// Ne doit pas arriver, mais arrive parfois
 						error_log('On ne va pas reussir a supprimer le buff');

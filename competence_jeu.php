@@ -80,7 +80,7 @@ if (isset($_GET['ID']))
 					foreach($groupe_joueur->get_membre() as $membre)
 					{
 						//On peut agir avec les membres du groupe si ils sont a 7 ou moins de distance
-						if($membre->distance($joueur) <= 7) $cibles[] = $membre->get_id_joueur();
+						if($membre->get_distance_pytagore($joueur) <= 7) $cibles[] = $membre->get_id_joueur();
 					}
 				}
 				else
