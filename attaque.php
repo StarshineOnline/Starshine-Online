@@ -1106,7 +1106,7 @@ else
 			//Sinon c'est une arme de siège, et il faut modifier son rechargement
 			elseif ($type == 'siege' OR $type == 'ville')
 			{
-				//$map_siege->set_rechargement(time() + $siege->get_bonus3());
+				$map_siege->set_rechargement(time() + $siege->get_bonus3());
 				$map_siege->sauver();
 			}
 			else
