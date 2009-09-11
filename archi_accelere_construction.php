@@ -10,7 +10,7 @@ check_undead_players();
 if($joueur->get_pa() >= 30)
 {
 	//On recherche les informations sur ce placement
-	$requete = 'SELECT * FROM placement WHERE id = '.sSQL($_GET['id_construction']);
+	$requete = 'SELECT x, y, fin_placement, debut_placement FROM placement WHERE id = '.sSQL($_GET['id_construction']);
 	$req = $db->query($requete);
 	$row = $db->read_assoc($req);
 

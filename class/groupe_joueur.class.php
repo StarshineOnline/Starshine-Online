@@ -306,5 +306,10 @@ class groupe_joueur
 	{
 		return $joueur->get_distance_joueur(new perso($this->id_joueur));
 	}
+
+	function get_distance_pytagore($joueur)
+	{
+		return $joueur->get_distance_pytagore(new perso($this->id_joueur));
+	}
 }
 ?>

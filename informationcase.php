@@ -153,7 +153,7 @@ if($W_distance < 4)
 	{
 		echo '
 		<h4><span class="titre_info">En construction</span></h4>';
-		while($W_row = $db->read_array($W_query))
+		while($W_row = $db->read_assoc($W_query))
 		{
 			//Recherche du batiment
 			$requete = "SELECT * FROM batiment WHERE id = ".$W_row['id_batiment'];
