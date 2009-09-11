@@ -177,7 +177,7 @@ if(!$visu AND isset($_GET['action']))
 				case 'identification' :
 					$fin = false;
 					$i = 0;
-					$count = count($joueur->get_inventaire_slot());
+					$count = count($joueur->get_inventaire_slot_partie());
 					while(!$fin AND $i < $count)
 					{
 						//echo $joueur->get_inventaire_slot()[$i];
@@ -224,6 +224,7 @@ if(!$visu AND isset($_GET['action']))
 							*/
 							$fin = true;
 						}
+
 						$i++;
 					}
 				break;
