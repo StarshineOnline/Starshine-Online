@@ -85,7 +85,7 @@ while($row_batiment = $db->read_assoc($req_batiment)) $row_b[] = $row_batiment;
 
 while($row = $db->read_array($req)) {
   $square = $doc->createElement("square");
-  $coord = convert_in_coord($row['ID']);
+  $coord = convert_in_coord($row['id']);
   // Square
   cpyToAttr($square, $coord, array('x', 'y'));
   cpyToAttr($square, $row, array('decor', 'royaume', 'type'));
@@ -94,13 +94,13 @@ while($row = $db->read_array($req)) {
   if ($coord_joueur['x'] == $coord['x'] && $coord_joueur['y'] == $coord['y']) {
     for ($i = 0; $i < count($row_j); $i++) {
       if ($_SESSION['ID'] == $row_j[$i]['ID']) {
-	$pc = $doc->createElement('pc');
+        $pc = $doc->createElement('pc');
         cpyToAttr($pc, $row_j[$i], 
-		  array('nom', 'race', 'classe', 'level','melee', 'distance',
-			'esquive', 'blocage', 'exp', 'incantation', 'sort_vie',
-			'sort_element', 'sort_mort', 'craft', 'honneur'));
-	$pc->setAttribute('image',$row_j[$i]['race'].'_'.
-			  $Tclasse[$row_j[$i]['classe']]['type']);
+                  array('nom', 'race', 'classe', 'level','melee', 'distance',
+                        'esquive', 'blocage', 'exp', 'incantation', 'sort_vie',
+                        'sort_element', 'sort_mort', 'craft', 'honneur'));
+        $pc->setAttribute('image',$row_j[$i]['race'].'_'.
+                          $Tclasse[$row_j[$i]['classe']]['type']);
         $pc->setAttribute('mort', (($row_j[$i]['hp'] < 0) ? 'true' : 'false'));
         $square->appendChild($pc);
       }
@@ -111,10 +111,10 @@ while($row = $db->read_array($req)) {
   if (!isset($_REQUEST['npc']) || $_REQUEST['npc']) {
     for ($i = 0; $i < count($row_pnj); $i++) {
       if ($row_pnj[$i]['x'] == $coord['x'] && 
-	  $row_pnj[$i]['y'] == $coord['y']) {
-	$pnj = $doc->createElement('npc');
-	cpyToAttr($pnj, $row_pnj[$i], array('nom', 'image'));
-	$square->appendChild($pnj);
+          $row_pnj[$i]['y'] == $coord['y']) {
+        $pnj = $doc->createElement('npc');
+        cpyToAttr($pnj, $row_pnj[$i], array('nom', 'image'));
+        $square->appendChild($pnj);
       }
     }
   }
@@ -128,23 +128,23 @@ while($row = $db->read_array($req)) {
 	$pc = $doc->createElement('pc');
 	cpyToAttr($pc, $row_j[$i], array('nom', 'race'));
 	if (!check_affiche_bonus($row_j[$i]['cache_classe'], $row_j[$i],
-				 $joueur)) {
+                           $joueur)) {
 	  $pc->setAttribute('image', $row_j[$i]['race'].'_combattant');
 	  cpyToAttr($pc, $row_j[$i], 'classe');
 	}
 	else {
 	  $pc->setAttribute('image', $row_j[$i]['race'].'_'.
-			    $Tclasse[$row_j[$i]['classe']]['type']);
+                      $Tclasse[$row_j[$i]['classe']]['type']);
 	}
 	if (!check_affiche_bonus($row_j[$i]['cache_niveau'], $row_j[$i],
-				 $joueur))
+                           $joueur))
 	  cpyToAttr($pc, $row_j[$i], 'level');
 	if (!check_affiche_bonus($row_j[$i]['cache_stat'], $row_j[$i],
-				 $joueur))
+                           $joueur))
 	  cpyToAttr($pc, $row_j[$i],
-		    array('melee', 'distance', 'esquive', 'blocage',
-			  'incantation', 'sort_vie', 'sort_element',
-			  'sort_mort', 'craft', 'honneur', 'exp'));
+              array('melee', 'distance', 'esquive', 'blocage',
+                    'incantation', 'sort_vie', 'sort_element',
+                    'sort_mort', 'craft', 'honneur', 'exp'));
 	$pc->setAttribute('mort', (($row_j[$i]['hp'] < 0) ? 'true' : 'false'));
 	$square->appendChild($pc);
       }
@@ -155,10 +155,10 @@ while($row = $db->read_array($req)) {
   if (!isset($_REQUEST['buildings']) || $_REQUEST['buildings']) {
     for ($i = 0; $i < count($row_b); $i++) {
       if ($row_b[$i]['x'] == $coord['x'] && $row_b[$i]['y'] == $coord['y']) {
-	$building = $doc->createElement('building');
-	cpyToAttr($building, $row_b[$i], array('nom', 'royaume', 'hp'));
-	$building->setAttribute('image', $row_b[$i]['image'].'_04');
-	$square->appendChild($building);
+        $building = $doc->createElement('building');
+        cpyToAttr($building, $row_b[$i], array('nom', 'royaume', 'hp'));
+        $building->setAttribute('image', $row_b[$i]['image'].'_04');
+        $square->appendChild($building);
       }
     }
   }
@@ -167,23 +167,23 @@ while($row = $db->read_array($req)) {
   if (!isset($_REQUEST['flags']) || $_REQUEST['flags']) {
     for ($i = 0; $i < count($row_d); $i++) {
       if ($row_d[$i]['x'] == $coord['x'] && $row_d[$i]['y'] == $coord['y']) {
-	$temps_passe = time() - $row_d[$i]['debut_placement'];
-	$temps_total = $row_d[$i]['fin_placement'] -
-	  $row_d[$i]['debut_placement'];
-	$ratio_temps = ceil(3 * $temps_passe / $temps_total);
-	if($row_d[$i]['type'] == 'drapeau') {
-	  $row_d[$i]['image'] = 'drapeau_'.$row_d[$i]['royaume'];
-	}
-	else {
-	  $row_d[$i]['image'] = $row_d[$i]['image'].'_0'.$ratio_temps;
-	}
-	$flag = $doc->createElement('flag');
-	cpyToAttr($flag, $row_d[$i], array('type', 'nom', 'royaume', 'image',
-					   'fin_placement'));
-	$flag->setAttribute('restant',
-			    strftime('%H:%M:%S',
-				   $row_d[$i]['fin_placement'] - time()));
-	$square->appendChild($flag);
+        $temps_passe = time() - $row_d[$i]['debut_placement'];
+        $temps_total = $row_d[$i]['fin_placement'] -
+          $row_d[$i]['debut_placement'];
+        $ratio_temps = ceil(3 * $temps_passe / $temps_total);
+        if($row_d[$i]['type'] == 'drapeau') {
+          $row_d[$i]['image'] = 'drapeau_'.$row_d[$i]['royaume'];
+        }
+        else {
+          $row_d[$i]['image'] = $row_d[$i]['image'].'_0'.$ratio_temps;
+        }
+        $flag = $doc->createElement('flag');
+        cpyToAttr($flag, $row_d[$i], array('type', 'nom', 'royaume', 'image',
+                                           'fin_placement'));
+        $flag->setAttribute('restant',
+                            strftime('%H:%M:%S',
+                                     $row_d[$i]['fin_placement'] - time()));
+        $square->appendChild($flag);
       }
     }
   }
@@ -192,9 +192,9 @@ while($row = $db->read_array($req)) {
   if (!isset($_REQUEST['monsters']) || $_REQUEST['monsters']) {
     for ($i = 0; $i < count($row_m); $i++) {
       if ($row_m[$i]['x'] == $coord['x'] && $row_m[$i]['y'] == $coord['y']) {
-	$monster = $doc->createElement('monster');
-	cpyToAttr($monster, $row_m[$i], array('nom', 'lib'));
-	$square->appendChild($monster);
+        $monster = $doc->createElement('monster');
+        cpyToAttr($monster, $row_m[$i], array('nom', 'lib'));
+        $square->appendChild($monster);
       }
     }
   }
