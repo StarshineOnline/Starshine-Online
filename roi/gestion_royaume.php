@@ -744,6 +744,9 @@ if($joueur->get_rang_royaume() != 6)
 			case 'charbon' :
 			$ressource = $royaume->get_charbon(); 
 			break;
+			case 'food' :
+			$ressource = $royaume->get_food(); 
+			break;
 		
 		
 		}
