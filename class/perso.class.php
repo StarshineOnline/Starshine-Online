@@ -3130,7 +3130,7 @@ class perso extends entite
 					$hp_gagne = $hp_gagne * 3;
 					$mp_gagne = $mp_gagne * 3;
 					// On diminue le nombre de régénération pendant lesquels la maladie est active ou supprime s'il n'y en  plus
-					if($this['debuff']['high_regen']['effet'] > 1)
+					if($this->get_buff('high_regen', 'effet') > 1)
 					{
 						$requete = "UPDATE buff SET effet = ".($this->get_buff('high_regen', 'effet') - 1)." WHERE id = ".$this->get_buff('high_regen', 'id');
 					}

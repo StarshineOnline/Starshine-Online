@@ -13,7 +13,7 @@ $joueur->check_perso();
 //Vérifie si le perso est mort
 verif_mort($joueur, 1);
 
-$W_requete = 'SELECT royaume, type FROM map WHERE ID =\''.sSQL($joueur->get_pos()).'\'';
+$W_requete = 'SELECT royaume, type FROM map WHERE id =\''.sSQL($joueur->get_pos()).'\'';
 $W_req = $db->query($W_requete);
 $W_row = $db->read_assoc($W_req);
 $R = new royaume($W_row['royaume']);
@@ -37,7 +37,7 @@ if($W_row['type'] == 1)
 			</li>
 			<?php
 		}
-		if($is_election && date("d") >= 15)
+		if($is_election && date("d") >= 13)
 		{
 			?>
 			<li>
