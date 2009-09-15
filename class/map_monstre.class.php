@@ -497,4 +497,9 @@ class map_monstre
 
 		return $buffe;
 	}
+	
+	function get_pos()
+	{
+		return convert_in_pos($this->x, $this->y);
+	}
 }
