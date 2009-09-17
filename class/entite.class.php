@@ -212,7 +212,7 @@ class entite
 				$this->race = 'neutre';
 				$this->pp = $objet->get_pp();
 				$this->pm = $objet->get_pm();
-				$this->distance_tir = 1;
+				$this->distance_tir = $objet->get_bonus4();
 				$this->esquive = $this->facteur * ceil($this->coef_carac * $objet->get_carac());
 				$this->distance = $objet->get_bonus4();
 				$this->melee = $objet->get_bonus5() * $objet->bonus_architecture;
