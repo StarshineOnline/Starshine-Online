@@ -31,7 +31,8 @@ $R->get_diplo($joueur->get_race());
 			echo $return[0];
 		}
 		?></span></div><br /><?php
-if($joueur->get_race() == $R->get_race() || $R->get_diplo() <= 5)
+if ($joueur->get_race() == $R->get_race() ||
+		$R->get_diplo($joueur->get_race()) <= 5)
 {
 	if(isset($_GET['action']))
 	{
@@ -134,7 +135,7 @@ if($joueur->get_race() == $R->get_race() || $R->get_diplo() <= 5)
 								$requete = "SELECT * FROM sort_jeu WHERE id = ".$sort;
 								$req = $db->query($requete);
 								$row = $db->read_assoc($req);
-								lance_buff($row['type'], $joueur->get_id(), $row['effet'], $row['effet2'], $row['duree'], $row['nom'], description($row['description'], $row), 'perso', 0, 0, $joueur['rang_grade']);
+								lance_buff($row['type'], $joueur->get_id(), $row['effet'], $row['effet2'], $row['duree'], $row['nom'], description($row['description'], $row), 'perso', 0, 0, $joueur->get_grade()->get_rang());
 								$texte .= '<br />En plus, vous recevez le buff : '.$row['nom'].' !!!';
 							}
 							elseif($debuff)
