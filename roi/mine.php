@@ -223,6 +223,7 @@ elseif(array_key_exists('add', $_GET))
 			$placement->set_nom($row['nom']);
 			$placement->set_rez($_GET['bourg']);
 			$placement->set_type('mine');
+			$placement->set_debut_placement(time()); // Sans ća l'acceleration est trop forte
 			$placement->set_fin_placement($time);
 			$placement->sauver();
 			

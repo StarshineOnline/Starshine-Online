@@ -24,6 +24,9 @@ if($joueur->get_pa() >= 30)
 	//Si il est sur la case
 	if($distance == 0)
 	{
+		if ($row['debut_placement'] == 0)
+			security_block(BAD_ENTRY, "Erreur de paramètre");
+
 		//Seconde supprimées du décompte
 		$secondes_max = floor(($row['fin_placement'] - $row['debut_placement']) * (sqrt($joueur->get_architecture()) / 100));
 
@@ -32,7 +35,6 @@ if($joueur->get_pa() >= 30)
 		{
 			$secondes_max += floor($joueur->get_enchantement('forge', 'effet') / 100 * $secondes_max);
 		}
-
 		$secondes_min = round($secondes_max / 2);
 		$secondes = round(rand($secondes_min, $secondes_max));
 		//On met à jour le placement
