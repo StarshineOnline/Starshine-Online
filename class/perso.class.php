@@ -1188,9 +1188,12 @@ class perso extends entite
 	* @param none
 	* @return mediumint(9) $melee valeur de l'attribut melee
 	*/
-	function get_melee()
+	function get_melee($base = false)
 	{
-		return $this->melee;
+		if ($base)
+			return $this->melee;
+		else
+			return $this->melee + $this->get_bonus_permanents('melee');
 	}
 
 	/**
@@ -1199,9 +1202,12 @@ class perso extends entite
 	* @param none
 	* @return mediumint(9) $distance valeur de l'attribut distance
 	*/
-	function get_distance()
+	function get_distance($base = false)
 	{
-		return $this->distance;
+		if ($base)
+			return $this->distance;
+		else
+			return $this->distance + $this->get_bonus_permanents('distance');
 	}
 
 	/**
@@ -1210,9 +1216,12 @@ class perso extends entite
 	* @param none
 	* @return mediumint(9) $esquive valeur de l'attribut esquive
 	*/
-	function get_esquive()
+	function get_esquive($base = false)
 	{
-		return $this->esquive;
+		if ($base)
+			return $this->esquive;
+		else
+			return $this->esquive + $this->get_bonus_permanents('esquive');
 	}
 
 	/**
@@ -1221,9 +1230,12 @@ class perso extends entite
 	* @param none
 	* @return mediumint(8) $blocage valeur de l'attribut blocage
 	*/
-	function get_blocage()
+	function get_blocage($base = false)
 	{
-		return $this->blocage;
+		if ($base)
+			return $this->blocage;
+		else
+			return $this->blocage + $this->get_bonus_permanents('blocage');
 	}
 
 	/**
@@ -1232,9 +1244,12 @@ class perso extends entite
 	* @param none
 	* @return mediumint(9) $incantation valeur de l'attribut incantation
 	*/
-	function get_incantation()
+	function get_incantation($base = false)
 	{
-		return $this->incantation;
+		if ($base)
+			return $this->incantation;
+		else
+			return $this->incantation + $this->get_bonus_permanents('incantation');
 	}
 
 	/**
@@ -1243,9 +1258,12 @@ class perso extends entite
 	* @param none
 	* @return mediumint(9) $sort_vie valeur de l'attribut sort_vie
 	*/
-	function get_sort_vie()
+	function get_sort_vie($base = false)
 	{
-		return $this->sort_vie;
+		if ($base)
+			return $this->sort_vie;
+		else
+			return $this->sort_vie + $this->get_bonus_permanents('sort_vie');
 	}
 
 	/**
@@ -1254,9 +1272,12 @@ class perso extends entite
 	* @param none
 	* @return int(11) $sort_element valeur de l'attribut sort_element
 	*/
-	function get_sort_element()
+	function get_sort_element($base = false)
 	{
-		return $this->sort_element;
+		if ($base)
+			return $this->sort_element;
+		else
+			return $this->sort_element + $this->get_bonus_permanents('sort_element');
 	}
 
 	/**
@@ -1265,9 +1286,12 @@ class perso extends entite
 	* @param none
 	* @return int(11) $sort_mort valeur de l'attribut sort_mort
 	*/
-	function get_sort_mort()
+	function get_sort_mort($base = false)
 	{
-		return $this->sort_mort;
+		if ($base)
+			return $this->sort_mort;
+		else
+			return $this->sort_mort + $this->get_bonus_permanents('sort_mort');
 	}
 
 	/**
@@ -1276,9 +1300,12 @@ class perso extends entite
 	* @param none
 	* @return mediumint(8) $identification valeur de l'attribut identification
 	*/
-	function get_identification()
+	function get_identification($base = false)
 	{
-		return $this->identification;
+		if ($base)
+			return $this->identification;
+		else
+			return $this->identification + $this->get_bonus_permanents('identification');
 	}
 
 	/**
@@ -1287,9 +1314,12 @@ class perso extends entite
 	* @param none
 	* @return int(10) $craft valeur de l'attribut craft
 	*/
-	function get_craft()
+	function get_craft($base = false)
 	{
-		return $this->craft;
+		if ($base)
+			return $this->craft;
+		else
+			return $this->craft + $this->get_bonus_permanents('craft');
 	}
 
 	/**
@@ -1298,9 +1328,12 @@ class perso extends entite
 	* @param none
 	* @return mediumint(8) $alchimie valeur de l'attribut alchimie
 	*/
-	function get_alchimie()
+	function get_alchimie($base = false)
 	{
-		return $this->alchimie;
+		if ($base)
+			return $this->alchimie;
+		else
+			return $this->alchimie + $this->get_bonus_permanents('alchimie');
 	}
 
 	/**
@@ -1309,9 +1342,12 @@ class perso extends entite
 	* @param none
 	* @return mediumint(8) $architecture valeur de l'attribut architecture
 	*/
-	function get_architecture()
+	function get_architecture($base = false)
 	{
-		return $this->architecture;
+		if ($base)
+			return $this->architecture;
+		else
+			return $this->architecture + $this->get_bonus_permanents('architecture');
 	}
 
 	/**
@@ -1320,9 +1356,12 @@ class perso extends entite
 	* @param none
 	* @return mediumint(8) $forge valeur de l'attribut forge
 	*/
-	function get_forge()
+	function get_forge($base = false)
 	{
-		return $this->forge;
+		if ($base)
+			return $this->forge;
+		else
+			return $this->forge + $this->get_bonus_permanents('forge');
 	}
 
 	/**
@@ -2420,11 +2459,11 @@ class perso extends entite
 	}
 //fonction
 
-	function get_comp($comp_assoc = '')
+	function get_comp($comp_assoc = '', $base = false)
 	{
 		$get = 'get_'.$comp_assoc;
-		if(method_exists($this, $get)) return $this->$get();
-		else return $this->get_competence($comp_assoc);
+		if(method_exists($this, $get)) return $this->$get($base);
+		else return $this->get_competence($comp_assoc, false, $base);
 	}
 
 	function set_comp($comp_assoc = '', $valeur = '')
@@ -2537,14 +2576,15 @@ class perso extends entite
 		return $this->grade;
 	}
 
+	private $enchantement = array();
 	function get_enchantement()
 	{
-		return array();
+		return $this->enchantement;
 	}
 
 	function is_enchantement()
 	{
-		return false;
+		return (count($this->enchantement) != 0);
 	}
 
 	/**
@@ -2578,7 +2618,7 @@ class perso extends entite
 		return $competence;
 	}
 
-	function get_competence($nom = false, $champ = false)
+	function get_competence($nom = false, $champ = false, $base = false)
 	{
 		if(!$nom)
 		{
@@ -2587,13 +2627,16 @@ class perso extends entite
 		}
 		else
 		{
+			if ($base) $bonus = 0;
+			else $bonus = $this->get_bonus_permanents($nom);
 			if(!isset($this->competences)) $this->get_competence();
 			if($champ)
 			{
 				$get = 'get_'.$champ;
-				return $this->competences[$nom]->$get();
+				return $this->competences[$nom]->$get() + $bonus;
 			}
-			elseif(is_object($this->competences[$nom])) return $this->competences[$nom]->get_valeur();
+			elseif(is_object($this->competences[$nom]))
+				return $this->competences[$nom]->get_valeur() + $bonus;
 			else return false;
 		}
 	}
@@ -3447,7 +3490,23 @@ class perso extends entite
 		}
 		else return false;
 	}
-	
+
+	private $bonus_permanents = array();
+	function get_bonus_permanents($bonus)
+	{
+		if (array_key_exists($bonus, $this->bonus_permanents))
+			return $this->bonus_permanents[$bonus];
+		return 0;
+	}
+
+	function add_bonus_permanents($bonus, $value)
+	{
+		if (array_key_exists($bonus, $this->bonus_permanents))
+			$this->bonus_permanents[$bonus] += $value;
+		else
+			$this->bonus_permanents[$bonus] = $value;
+	}
+
 	function get_bonus_shine($id_bonus = false)
 	{
 		if(!$id_bonus)
@@ -3466,5 +3525,6 @@ class perso extends entite
 		}
 		return false;
 	}
+
 }
 ?>

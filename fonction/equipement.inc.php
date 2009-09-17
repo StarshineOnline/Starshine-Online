@@ -143,20 +143,17 @@ function enchant($gemme_id, $var)
 		case 'melee' : 
 		case 'distance' :
     case 'incantation' :
-			$var[$enchants[$i]] += $effets[$i];
-			if (!isset($var['bonus_ignorables'][$enchants[$i]])) {
-				$var['bonus_ignorables'][$enchants[$i]] = 0;
-			}
-			$var['bonus_ignorables'][$enchants[$i]] += $effets[$i];
+			$var->add_bonus_permanents($enchants[$i], $effets[$i]);
 			break;
     default: /* gemmes ayant un effect ponctuel */
-			if (isset($var['enchantement'][$enchants[$i]])) {
-				$var['enchantement'][$enchants[$i]]['gemme_id'] .= ';'.$gemme_id;
-				$var['enchantement'][$enchants[$i]]['effet'] += $effets[$i];
+			$enchantements = $var->get_enchantement();
+			if (isset($enchantements[$enchants[$i]])) {
+				$enchantements[$enchants[$i]]['gemme_id'] .= ';'.$gemme_id;
+				$enchantements[$enchants[$i]]['effet'] += $effets[$i];
 			}
 			else {
-				$var['enchantement'][$enchants[$i]]['gemme_id'] = $gemme_id; // pour la stack d'effets
-				$var['enchantement'][$enchants[$i]]['effet'] = $effets[$i]; // pour utilisation classique
+				$enchantements[$enchants[$i]]['gemme_id'] = $gemme_id; // pour la stack d'effets
+				$enchantements[$enchants[$i]]['effet'] = $effets[$i]; // pour utilisation classique
 			}
 		}
 		$i++;

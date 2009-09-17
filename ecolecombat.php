@@ -132,10 +132,10 @@ if($W_row['type'] == 1)
 					if($row['carac_assoc'] != '')
 					{
 						$get_carac = 'get_'.$row['carac_assoc'];
-						$carac_joueur = $joueur->$get_carac();
+						$carac_joueur = $joueur->$get_carac(true);
 					}
 					$get_comp = 'get_'.$row['comp_assoc'];
-					$comp_joueur = $joueur->$get_comp();
+					$comp_joueur = $joueur->$get_comp(true);
 					if (isset($joueur->bonus_ignorables)) {
 						if (isset($joueur->bonus_ignorables[$row['carac_assoc']]))
 							$carac_joueur -= $joueur->bonus_ignorables[$row['carac_assoc']];

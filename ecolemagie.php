@@ -114,7 +114,7 @@ if($W_row['type'] == 1)
 			}
 			else $_GET['part'] = 'all';
 			$get = 'get_'.$ecole;
-			$sortt_j = explode(';', $joueur->$get());
+			$sortt_j = explode(';', $joueur->$get(true));
 			$sort_j = '('.implode(', ', $sortt_j).')';
 			if(array_key_exists('hide', $_GET) AND $_GET['hide'] == 'yes') $where .= " AND id NOT IN ".$sort_j;
 			$requete = "SELECT * FROM ".$ecole." WHERE ".$where." ORDER BY".$ordre;
@@ -129,15 +129,9 @@ if($W_row['type'] == 1)
 				//echo $row['pa'].' '.$joueur->get_facteur_magie();
 				$sortpa = ($row['pa'] * $joueur->get_facteur_magie());
 				$couleur = $color;
-				$inc_joueur = $joueur->get_incantation();
+				$inc_joueur = $joueur->get_incantation(true);
 				$get = 'get_'.$row['comp_assoc'];
-				$comp_joueur = $joueur->$get();
-				if (isset($joueur->bonus_ignorables)) {
-					if (isset($joueur->bonus_ignorables['incantation']))
-						$inc_joueur -= $joueur->bonus_ignorables['incantation'];
-					if (isset($joueur->bonus_ignorables[$row['comp_assoc']]))
-						$comp_joueur -= $joueur->bonus_ignorables[$row['comp_assoc']];
-				}
+				$comp_joueur = $joueur->$get(true);
 				if($comp > $comp_joueur OR $cout > $joueur->get_star() OR $inc > $inc_joueur) $couleur = 3;
 				if(in_array($row['id'], $sortt_j)) $couleur = 5;
 				$row['cible2'] = $G_cibles[$row['cible']];
