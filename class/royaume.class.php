@@ -981,47 +981,36 @@ class royaume
 //fonction
 	function get_diplo($race_joueur)
 	{
-		global $db;
-		if(!isset($this->diplo))
+		if (!isset($this->diplos))
 		{
-			if($this->id != 0)
-			{
-				//Sélection de la diplomatie et des taxes
-				$requete_diplo = "SELECT ".$this->race." FROM diplomatie WHERE race = '".$race_joueur."'";
-				$req_diplo = $db->query($requete_diplo);
-				$row_diplo = $db->read_row($req_diplo);
-				$this->diplo['taxe_base'] = $this->taxe;
-				
-				$this->diplo['taxe'] = taux_taxe($this->taxe, $row_diplo[0]);
-			
-				$this->diplo['diplo'] = $row_diplo[0];
-				$this->diplo = $row_diplo[0];
-			}
+			$this->get_diplos();
 		}
-		return $this->diplo;
+		return $this->diplos[$race_joueur];
 	}
 
 	function get_diplos()
 	{
 		global $db;
-		if(!isset($this->diplos))
+		if (!isset($this->diplos))
 		{
 			if($this->id != 0)
 			{
 				//Sélection de la diplomatie
-				$requete_diplo = "SELECT ".$this->race." FROM diplomatie";
+				$requete_diplo = "SELECT * FROM diplomatie where race = '$this->race'";
 				$req_diplo = $db->query($requete_diplo);
 				$this->diplos = $db->read_assoc($req_diplo);
 			}
-			$this->diplos = false;
+			else
+				$this->diplos = false;
 		}
 		return $this->diplos;
 	}
 
 	function get_taxe_diplo($race_joueur)
 	{
+		$diplo = $this->get_diplo($race_joueur);
 		//Calcul de la taxe
-		switch($this->get_diplo($race_joueur))
+		switch($diplo)
 		{
 			case 127 : // même royaume
 				$this->taxe_diplo = floor($this->taxe / 4);
@@ -1227,6 +1216,14 @@ class royaume
 		if(!isset($this->motk)) $this->get_motk();
 		$this->motk->set_propagande($texte);
 		$this->motk->sauver();
+	}
+
+	function gain_star($star, $source)
+	{
+		$this->set_star($this->star + $star);
+		$requete = "UPDATE argent_royaume SET $source = $source + $star WHERE race = '$race'";
+		global $db;
+		$db->query($requete);
 	}
 }
 ?>

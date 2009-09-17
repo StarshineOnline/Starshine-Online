@@ -126,6 +126,7 @@ elseif($attaquant->get_hp() <= 0 OR $defenseur->get_hp() <= 0)
 }
 else
 {
+	$R = new royaume($Trace[$joueur->get_race()]['numrace']);
 	if($type == 'joueur')
 	{
 		//Récupération si la case est une ville et diplomatie
@@ -545,7 +546,7 @@ else
 						//On a downgrade un batiment, on gagne des points de victoire
 						if($return > 0)
 						{
-							$royaume_attaquant = new royaume($Trace[$joueur->get_race]['numrace']);
+							$royaume_attaquant = new royaume($Trace[$joueur->get_race()]['numrace']);
 							$royaume_attaquant->add_point_victoire($return);
 							$royaume_attaquant->sauver();
 							echo '<h6>Une construction a été détruire ! Votre royaume gagne '.$return .' points de victoire.</h6><br />';
@@ -559,7 +560,7 @@ else
 						{
 							$time = time() + 3600 * 24 * 31;
 							$map_royaume->set_fin_raz_capitale($time);
-							$royaume_attaquant = new royaume($Trace[$joueur->get_race]['numrace']);
+							$royaume_attaquant = new royaume($Trace[$joueur->get_race()]['numrace']);
 							$royaume_attaquant->add_point_victoire(100);
 							$royaume_attaquant->sauver();
 							echo '<h6>La capitale est détruite ! Votre royaume gagne 100 points de victoire.</h6><br />';
@@ -849,15 +850,13 @@ else
 					if($attaquant->get_race() == 'nain') $star = floor($star * 1.1);
 					if($attaquant->is_buff('recherche_precieux')) $star = $star * (1 + ($attaquant->get_buff('recherche_precieux', 'effet') / 100));
 					$star = ceil($star);
-					$R = new royaume($Trace[$joueur->get_race]['numrace']);
 					$taxe = floor($star * $R->get_taxe_diplo($joueur->get_race()) / 100);
 					$star = $star - $taxe;
 					//Récupération de la taxe
 					if($taxe > 0)
 					{
-						$R->set_star($R->get_star() + $taxe);
-						$requete = "UPDATE argent_royaume SET monstre = monstre + ".$taxe." WHERE race = '".$R->get_race()."'";
-						$db->query($requete);
+						$R->gain_star($taxe, 'monstre');
+						$R->sauver();
 					}
 				}
 
