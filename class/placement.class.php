@@ -136,6 +136,8 @@ class placement
 			$this->point_victoire = $point_victoire;
 			$this->id = $id;
 		}
+		// Garde-fou
+		if ($this->debut_placement == 0) $this->debut_placement = time();
 	}
 
 	/**
