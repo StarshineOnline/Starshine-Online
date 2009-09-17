@@ -3,11 +3,11 @@ if (file_exists('root.php'))
   include_once('root.php');
 
 {//-- Initialisation
-	require_once('inc/fp.php');
+	require_once(root.'inc/fp.php');
 	if(!isset($joueur)) { $joueur = new perso($_SESSION["ID"]); }; 		//-- Récupération du tableau contenant toutes les informations relatives au joueur
 	$joueur = check_perso($joueur);
 	echo '<div id="perso_contenu">';
-	require_once("levelup.php"); 				//-- Dans le cas ou le joueur a pris un level on traite son level up.
+	require_once(root."levelup.php"); 				//-- Dans le cas ou le joueur a pris un level on traite son level up.
 }
 {//-- Javascript
 	echo "<script type='text/javascript'>
@@ -50,7 +50,7 @@ if (file_exists('root.php'))
 	";
 	echo " <div id='buff_list'>
 			<ul>";
-		//print_r($joueur->get_buff());
+	//my_dump($joueur->get_buff());
 		if(is_array($joueur->get_buff()))
 		{
 			foreach($joueur->get_buff() as $buff)
@@ -69,9 +69,9 @@ if (file_exists('root.php'))
 				}
 			}
 		}
-		if(count($joueur->get_buff()) < ($joueur->get_grade()->get_rang() + 2) )
+		if($joueur->get_nb_buff() < ($joueur->get_grade()->get_rang() + 2) )
 		{
-			$case_buff_dispo = ($joueur->get_grade()->get_rang() + 2) - count($joueur->get_buff());
+			$case_buff_dispo = ($joueur->get_grade()->get_rang() + 2) - $joueur->get_nb_buff();
 			for($b = 0; $b < $case_buff_dispo; $b++)
 			{
 				echo "<li class='buff_dispo' title='vous pouvez encore recevoir $case_buff_dispo buffs'>&nbsp;</li>";

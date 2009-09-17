@@ -406,9 +406,8 @@ if (isset($_GET['ID']))
 					//-- Suppression d'un debuff au hasard
 					foreach($cibles as $cible)
 					{
-						$cible_s = new perso($cible);
 						$debuff_tab = array();
-						foreach($cible_s->get_debuff() as $debuff)
+						foreach($cible->get_buff() as $debuff)
 						{
 							if($debuff->get_debuff() == 1)
 							{
@@ -426,7 +425,7 @@ if (isset($_GET['ID']))
 						}
 						else
 						{
-							echo "Impossible de lancer de lancer le sort. ".addslashes($cible_s->get_nom())." n&apos;a aucun debuff.<br/>";
+							echo "Impossible de lancer de lancer le sort. ".addslashes($cible->get_nom())." n&apos;a aucun debuff.<br/>";
 						};
 					}
 					if($check)

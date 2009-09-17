@@ -129,7 +129,7 @@ if ($joueur->get_race() == $R->get_race() ||
 								$liste_buff = array(82, 83, 80, 86, 20, 51);
 								//Tirage au sort de quel buff lancer
 								$total_buff = count($liste_buff);
-								$tirage = rand(0, $total_buff);
+								$tirage = rand(0, $total_buff - 1);
 								$sort = $liste_buff[$tirage];
 								//On cherche le buff dans la bdd
 								$requete = "SELECT * FROM sort_jeu WHERE id = ".$sort;
@@ -226,7 +226,7 @@ if ($joueur->get_race() == $R->get_race() ||
 									switch($effet_explode[0])
 									{
 										case 'mort' :
-											$joueur ['hp'] = 0;
+											$joueur->set_hp(0);
 											$bloque_regen = true;
 										break;
 										case 'bloque_deplacement' :

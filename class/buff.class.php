@@ -563,7 +563,7 @@ class buff
 	 */
 	function is_supprimable()
 	{
-		return $this->supprimable == 0;
+		return $this->supprimable != 0;
 	}
 }
 
