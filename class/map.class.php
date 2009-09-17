@@ -17,6 +17,8 @@ class map
 	public $quadrillage;
 	public $cache_monstre;
 	public $onclick_status;
+	public $show_royaume_button;
+	public $affiche_terrain;
 	private $affiche_royaume;
 
 	function __construct($x, $y, $champ_vision = 3, $root = '', $donjon = false, $resolution = 'high')
@@ -34,6 +36,9 @@ class map
 		
 		$this->case_affiche = ($this->champ_vision * 2) + 1;
 
+		$this->affiche_terrain = false;
+
+		$this->show_royaume_button = "javascript:affiche_royaume=!affiche_royaume;deplacement('centre', cache_monstre, affiche_royaume);";
 
 		if(!$this->donjon)
 		{
@@ -77,16 +82,18 @@ class map
 		}
 		$total_cases = ($this->xmax - $this->xmin + 1) * ($this->ymax - $this->ymin + 1);
 		$this->nb_cases = $total_cases;
-		$RqMap = $db->query("SELECT ID,decor,royaume FROM map 
+		$RqMapTxt = "SELECT ID,decor,royaume,info FROM map 
 						 WHERE ( (FLOOR(id / 1000) >= $ymin) AND (FLOOR(id / 1000) <= $ymax) ) 
 						 AND ( ((id - (FLOOR(id / 1000) * 1000) ) >= $xmin) AND ((id - (FLOOR(id / 1000) * 1000)) <= $xmax) ) 
-						 ORDER BY id;");
+						 ORDER BY id;";
+		$RqMap = $db->query($RqMapTxt);
 		while($objMap = $db->read_object($RqMap))
 		{
 			$coord = convert_in_coord($objMap->ID);
 			$MAPTAB[$coord['x']][$coord['y']]["id"] = $objMap->ID;
 			$MAPTAB[$coord['x']][$coord['y']]["decor"] = $objMap->decor;
 			$MAPTAB[$coord['x']][$coord['y']]["royaume"] = $objMap->royaume;
+			$MAPTAB[$coord['x']][$coord['y']]["type"] = $objMap->info;
 		}
 		$classe_css = array();
 		if(!$this->donjon)
@@ -116,7 +123,7 @@ class map
 		echo '<div class="div_map" style="width : '.round(20 + ($taille_cellule * $this->case_affiche)).'px;height:'.round(20 + ($taille_cellule * $this->case_affiche)).'px;">';
 		{//-- Affichage du bord haut (bh) de la map
 			echo "<ul id='".$classe_css['map_bord_haut']."'>
-				   <li id='".$classe_css['map_bord_haut_gauche']."'";if (!empty($class_css['resolution'])) {echo "class='".$class_css['resolution']."'";} echo "onclick=\"javascript:affiche_royaume=!affiche_royaume;deplacement('centre', cache_monstre, affiche_royaume);\">&nbsp;</li>";
+				   <li id='".$classe_css['map_bord_haut_gauche']."'";if (!empty($class_css['resolution'])) {echo "class='".$class_css['resolution']."'";} echo "onclick=\"$this->show_royaume_button\">&nbsp;</li>";
 			for ($bh = $this->xmin; $bh <= $this->xmax; $bh++)
 			{
 				if($bh == $this->x) { $class_x = "id='bord_haut_x' "; } else { $class_x = ""; }; //-- Pour mettre en valeur la position X ou se trouve le joueur
@@ -175,9 +182,29 @@ class map
 						|| (count($this->map[$x_map][$y_map]["PNJ"]) > 0)
 						|| (count($this->map[$x_map][$y_map]["Joueurs"]) > 0)
 						|| (count($this->map[$x_map][$y_map]["Monstres"]) > 0)
-						|| (count($this->map[$x_map][$y_map]["Drapeaux"]) > 0) )
+						|| (count($this->map[$x_map][$y_map]["Drapeaux"]) > 0)
+						|| $this->affiche_terrain)
 					{
 						$overlib = "<ul>";
+
+						if ($this->affiche_terrain)
+						{
+							$type_terrain = type_terrain($MAPTAB[$x_map][$y_map]["type"]);
+							$ressources_terrain = '';
+							$ressource_array = ressource_terrain($type_terrain[1]);
+							//my_dump($ressource_array);
+							if (is_array($ressource_array))
+								foreach ($ressource_array as $ress => $val)
+									if ($val > 0) {
+										if (strlen($ressources_terrain))
+											$ressources_terrain .= ', ';
+										else 
+											$ressources_terrain = '<br />';
+										$ressources_terrain .= "$ress:&nbsp;$val";
+									}
+							$overlib .= "<li class='overlib_batiments'><span>Terrain</span>&nbsp;-&nbsp;$type_terrain[1]$ressources_terrain</li>";
+						}
+
 						for($i = 0; $i < count($this->map[$x_map][$y_map]["Reperes"]); $i++) 			{ $overlib .= "<li class='overlib_batiments'><span>Mission</span>&nbsp;-&nbsp;".$this->map[$x_map][$y_map]["Reperes"][$i]["nom"]."</li>"; }
 						for($i = 0; $i < count($this->map[$x_map][$y_map]["Batiments"]); $i++)			{ $overlib .= "<li class='overlib_batiments'><span>Batiment</span>&nbsp;-&nbsp;".$this->map[$x_map][$y_map]["Batiments"][$i]["nom"]."</li>"; }
 						for($i = 0; $i < count($this->map[$x_map][$y_map]["Batiments_ennemi"]); $i++) 	{ $overlib .= "<li class='overlib_batiments'><span>Batiment ennemi</span>&nbsp;-&nbsp;".$this->map[$x_map][$y_map]["Batiments_ennemi"][$i]["nom"]."</li>"; }
@@ -199,6 +226,7 @@ class map
 							$overlib .= "<li class='overlib_monstres'><span>Monstre</span>&nbsp;-&nbsp;".$this->map[$x_map][$y_map]["Monstres"][$i]["nom"]." x".$this->map[$x_map][$y_map]["Monstres"][$i]["tot"].$hp."</li>";
 						}
 						for($i = 0; $i < count($this->map[$x_map][$y_map]["Drapeaux"]); $i++)			{ $overlib .= "<li class='overlib_batiments'><span>Construction</span>&nbsp;-&nbsp;".ucwords($this->map[$x_map][$y_map]["Drapeaux"][$i]["nom"])."</li>"; }
+
 						$overlib .= "</ul>";
 						$overlib = str_replace("'", "\'", trim($overlib));
 					}
@@ -541,7 +569,7 @@ class map
 				
 				if(file_exists($image.$batiment->get_image()."_04.png")) 		{ $image .= $batiment->get_image()."_04.png"; }
 				elseif(file_exists($image.$batiment->get_image()."_04.gif")) 	{ $image .= $batiment->get_image()."_04.gif"; }
-				else 														{ $image = ""; } //-- Si aucun des fichiers n'existe autant rien mettre...
+				else { $image = ""; } //-- Si aucun des fichiers n'existe autant rien mettre...
 			}
 			$this->map[$batiment->get_x()][$batiment->get_y()]["Batiments"][$batimat]["image"] = $image;
 		}
@@ -588,6 +616,11 @@ class map
 		global $Gcouleurs;
 		
 		$this->affiche_royaume = !$this->affiche_royaume;
+	}
+
+	function set_affiche_royaume($val)
+	{
+		$this->affiche_royaume = $val;
 	}
 }
 ?>

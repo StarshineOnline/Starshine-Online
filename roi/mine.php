@@ -33,6 +33,13 @@ else if(array_key_exists('id', $_GET))
 	$map->quadrillage = true;
 	$map->set_batiment_objet($batiments);
 	$map->onclick_status = true;
+	$map->affiche_terrain = true;
+	$map->set_affiche_royaume($_GET['R'] == 1);
+	if ($_GET['R'] == 1)
+		$royaume = '&R=0';
+	else
+		$royaume = '&R=1';
+	$map->show_royaume_button = "envoiInfo('mine.php?id=$_GET[id]$royaume', 'contenu_jeu');";
 	$map->set_onclick("affichePopUp('mine.php?case=%%id%%&amp;id_bourg=".$bourg->get_id()."');");
 	$map->affiche();
 	?>
