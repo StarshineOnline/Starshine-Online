@@ -2583,6 +2583,7 @@ class perso extends entite
 		return $this->grade;
 	}
 
+	public $enchantement = array();
 	function get_enchantement()
 	{
 		return $this->enchantement;
