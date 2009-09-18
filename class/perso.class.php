@@ -2577,14 +2577,12 @@ class perso extends entite
 		$this->buff[] = $buff;
 	}
 
-	private $grade;
 	function get_grade()
 	{
 		if(!isset($this->grade)) $this->grade = new grade($this->rang_royaume);
 		return $this->grade;
 	}
 
-	private $enchantement = array();
 	function get_enchantement()
 	{
 		return $this->enchantement;
@@ -2626,7 +2624,6 @@ class perso extends entite
 		return $competence;
 	}
 
-	private $competences;
 	function get_competence($nom = false, $champ = false, $base = false)
 	{
 		if(!$nom)
@@ -2690,14 +2687,12 @@ class perso extends entite
 		return round(sqrt(($this->architecture + $this->forge + $this->alchimie) * 10));
 	}
 
-	private $inventaire_array;
 	function get_inventaire_partie($partie)
 	{
 		if(!isset($this->inventaire_array)) $this->inventaire_array = unserialize($this->get_inventaire());
 		return $this->inventaire_array->$partie;
 	}
 
-	private $inventaire_slot_array;
 	function get_inventaire_slot_partie($partie = false, $force = false)
 	{
 		if(!isset($this->inventaire_slot_array) OR !$force) $this->inventaire_slot_array = unserialize($this->get_inventaire_slot());
@@ -2710,12 +2705,6 @@ class perso extends entite
 		$this->inventaire_slot_array[$partie] = $objet;
 	}
 
-	private $pp;
-	private $pm;
-	private $pp_base;
-	private $pm_base;
-	private $enchant;
-	private $armure;
 	function get_armure()
 	{
 		global $db;
@@ -2810,7 +2799,6 @@ class perso extends entite
 		else return $this->pp_base;
 	}
 
-	private $reserve;
 	function get_reserve($base = false)
 	{
 		if (!isset($this->reserve))
@@ -2819,28 +2807,24 @@ class perso extends entite
 		else return $this->reserve;
 	}
 
-	private $coef_melee;
 	function get_coef_melee()
 	{
 		if(!isset($this->coef_melee)) $this->coef_melee = $this->forcex * $this->melee;
 		return $this->coef_melee;
 	}
 
-	private $coef_incantation;
 	function get_coef_incantation()
 	{
 		if(!isset($this->coef_incantation)) $this->coef_incantation = $this->puissance * $this->incantation;
 		return $this->coef_incantation;
 	}
 
-	private $coef_distance;
 	function get_coef_distance()
 	{
 		if(!isset($this->coef_distance)) $this->coef_distance = round(($this->forcex + $this->dexterite) / 2) * $this->distance;
 		return $this->coef_distance;
 	}
 
-	private $coef_blocage;
 	function get_coef_blocage()
 	{
 		if(!isset($this->coef_blocage)) $this->coef_blocage = round(($this->forcex + $this->dexterite) / 2) * $this->blocage;
@@ -2873,7 +2857,6 @@ class perso extends entite
 	}
 
 	//Récupération des HP max après bonus, famine etc
-	private $hp_maximum;
 	function get_hp_maximum()
 	{
 		$this->hp_maximum = floor($this->hp_max);
@@ -2883,7 +2866,6 @@ class perso extends entite
 	}
 
 	//Récupération des MP max après bonus, famine etc
-	private $mp_maximum;
 	function get_mp_maximum()
 	{
 		$this->mp_maximum = floor($this->mp_max);
@@ -2892,7 +2874,6 @@ class perso extends entite
 		return $this->mp_maximum;
 	}
 
-	private $reserve_bonus;
 	function get_reserve_bonus($force = false)
 	{
 		if(!isset($this->reserve_bonus) OR $force)
@@ -2909,7 +2890,6 @@ class perso extends entite
 		return unserialize($this->inventaire);
 	}
 
-	private $arme;
 	function get_arme()
 	{
 		if(!isset($this->arme))
@@ -2928,7 +2908,6 @@ class perso extends entite
 		return $this->arme;
 	}
 
-	private $bouclier;
 	function get_bouclier()
 	{
 		if(!isset($this->bouclier))
@@ -2968,7 +2947,6 @@ class perso extends entite
 		return $this->arme->type;
 	}
 
-	private $liste_quete;
 	function get_liste_quete()
 	{
 		$this->liste_quete = unserialize($this->quete);
@@ -3035,7 +3013,6 @@ class perso extends entite
 		return !empty($this->groupe);
 	}
 
-	private $action;
 	public $action_do;
 	function recupaction($type_action)
 	{
