@@ -667,6 +667,8 @@ class perso extends entite
 			$this->beta = $beta;
 			$this->id = $id;
 		}
+
+		$this->applique_bonus();
 	}
 
 	/**
@@ -2795,8 +2797,10 @@ class perso extends entite
 
 	function get_reserve($base = false)
 	{
-		if(!isset($this->reserve)) $this->reserve = ceil(2.1 * ($this->energie + floor(($this->energie - 8) / 2)));
-		return $this->reserve;
+		if (!isset($this->reserve))
+			$this->reserve = ceil(2.1 * ($this->energie + floor(($this->energie - 8) / 2)));
+		if (!$base) return $this->reserve + $this->get_bonus_permanents('reserve');
+		else return $this->reserve;
 	}
 
 	function get_coef_melee()
@@ -3524,6 +3528,41 @@ class perso extends entite
 			}
 		}
 		return false;
+	}
+
+	/**
+   * Cette fonction permet d'appliquer a la construction les bonus
+   * permanents tels les carac des vampires ou d'items
+   */
+	function applique_bonus()
+	{
+		// Bonus raciaux
+		switch ($this->race)
+		{
+		case 'vampire':
+			$this->add_bonus_permanents('reserve', 2);
+			if (moment_jour() == 'Nuit')
+			{
+				$this->add_bonus_permanents('reserve', 3);
+				$this->add_bonus_permanents('dexterite', 2);
+				$this->add_bonus_permanents('volonte', 2);
+			}
+			elseif (moment_jour() == 'Journee')
+			{
+				$this->add_bonus_permanents('reserve', -1);
+				$this->add_bonus_permanents('dexterite', -1);
+				$this->add_bonus_permanents('volonte', -1);
+			}
+			break;
+		case 'elfehaut':
+			if (moment_jour() == 'Nuit')
+			{
+				$this->add_bonus_permanents('reserve', 2);
+				$this->add_bonus_permanents('dexterite', 1);
+				$this->add_bonus_permanents('volonte', 1);				
+			}
+			break;
+		}
 	}
 
 }
