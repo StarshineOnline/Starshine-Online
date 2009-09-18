@@ -1074,7 +1074,7 @@ else
 			}
 			elseif($type == 'batiment')
 			{
-				if($defenseur->get_hp <= 0)
+				if($defenseur->get_hp() <= 0)
 				{
 					//On supprime un bourg au compteur
 					if($defenseur->get_type() == 'bourg')

@@ -49,6 +49,7 @@ class entite
 	private $type;
 	private $rang_royaume;
 	private $espece;
+	private $point_victoire;
 
 	private $objet_ref;
 
@@ -118,6 +119,7 @@ class entite
 				$this->espece = 'humainoïde';
 				$this->blocage = $objet->get_blocage();
 				$this->star = $objet->get_star();
+				$this->point_victoire = 0;
 			break;
 			case 'monstre' :
 				$this->action = $objet->get_action();
@@ -156,6 +158,7 @@ class entite
 				$this->rang_royaume = 0;
 				$this->star = $objet->get_star();
 				$this->espece = $objet->get_type();
+				$this->point_victoire = 0;
 			break;
 			case 'batiment' :
 				$this->coef_carac = $objet->coef;
@@ -194,6 +197,7 @@ class entite
 				$this->arme_degat = 0;
 				$this->level = 1;
 				$this->espece = 'batiment';
+				$this->point_victoire = $objet->get_point_victoire();
 			break;
 			case 'siege' :
 				$this->coef_carac = $objet->coef;
@@ -232,6 +236,7 @@ class entite
 				$this->arme_degat = $objet->arme_degat;
 				$this->level = 1;
 				$this->espece = 'siege';
+				$this->point_victoire = 0;
 			break;
 			case 'ville' :
 				$this->coef_carac = $objet->coef;
@@ -270,6 +275,7 @@ class entite
 				$this->arme_degat = $objet->arme_degat;
 				$this->level = 1;
 				$this->espece = 'ville';
+				$this->point_victoire = $objet->get_point_victoire();
 			break;
 		}
 	}
@@ -672,6 +678,17 @@ class entite
 			return $this->star;
 		else
 			return 0;
+	}
+
+	function get_point_victoire()
+	{
+		return $this->point_victoire;
+	}
+
+	function supprimer()
+	{
+		if ($this->type == 'batiment')
+			$this->objet_ref->supprimer();
 	}
 
 }
