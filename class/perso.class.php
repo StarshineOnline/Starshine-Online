@@ -428,6 +428,11 @@ class perso extends entite
 	private $beta;
 
 	
+	private $champs_modif;
+	public $poscase;
+	public $pospita;
+	public $share_xp;
+
 	/**
 	* @access public
 
@@ -2572,6 +2577,7 @@ class perso extends entite
 		$this->buff[] = $buff;
 	}
 
+	private $grade;
 	function get_grade()
 	{
 		if(!isset($this->grade)) $this->grade = new grade($this->rang_royaume);
@@ -2620,6 +2626,7 @@ class perso extends entite
 		return $competence;
 	}
 
+	private $competences;
 	function get_competence($nom = false, $champ = false, $base = false)
 	{
 		if(!$nom)
@@ -2683,12 +2690,14 @@ class perso extends entite
 		return round(sqrt(($this->architecture + $this->forge + $this->alchimie) * 10));
 	}
 
+	private $inventaire_array;
 	function get_inventaire_partie($partie)
 	{
 		if(!isset($this->inventaire_array)) $this->inventaire_array = unserialize($this->get_inventaire());
 		return $this->inventaire_array->$partie;
 	}
 
+	private $inventaire_slot_array;
 	function get_inventaire_slot_partie($partie = false, $force = false)
 	{
 		if(!isset($this->inventaire_slot_array) OR !$force) $this->inventaire_slot_array = unserialize($this->get_inventaire_slot());
@@ -2701,6 +2710,12 @@ class perso extends entite
 		$this->inventaire_slot_array[$partie] = $objet;
 	}
 
+	private $pp;
+	private $pm;
+	private $pp_base;
+	private $pm_base;
+	private $enchant;
+	private $armure;
 	function get_armure()
 	{
 		global $db;
@@ -2749,7 +2764,7 @@ class perso extends entite
 				$this->pp = round($this->pp * 1.15);
 				$this->pm = round($this->pm * 1.05);
 			}
-			if($this->get_race == 'mortvivant' AND moment_jour() == 'Soir')
+			if($this->get_race() == 'mortvivant' AND moment_jour() == 'Soir')
 			{
 				$this->pp = round($this->pp * 1.15);
 				$this->pm = round($this->pm * 1.15);
@@ -2772,7 +2787,7 @@ class perso extends entite
 			//Maladie suppr_defense
 			if($this->is_buff('suppr_defense')) $this->pp = 0;
 		}
-		return $this->armure;
+		$this->armure=true;
 	}
 
 	function get_pm($base = false)
@@ -2795,6 +2810,7 @@ class perso extends entite
 		else return $this->pp_base;
 	}
 
+	private $reserve;
 	function get_reserve($base = false)
 	{
 		if (!isset($this->reserve))
@@ -2803,24 +2819,28 @@ class perso extends entite
 		else return $this->reserve;
 	}
 
+	private $coef_melee;
 	function get_coef_melee()
 	{
 		if(!isset($this->coef_melee)) $this->coef_melee = $this->forcex * $this->melee;
 		return $this->coef_melee;
 	}
 
+	private $coef_incantation;
 	function get_coef_incantation()
 	{
 		if(!isset($this->coef_incantation)) $this->coef_incantation = $this->puissance * $this->incantation;
 		return $this->coef_incantation;
 	}
 
+	private $coef_distance;
 	function get_coef_distance()
 	{
 		if(!isset($this->coef_distance)) $this->coef_distance = round(($this->forcex + $this->dexterite) / 2) * $this->distance;
 		return $this->coef_distance;
 	}
 
+	private $coef_blocage;
 	function get_coef_blocage()
 	{
 		if(!isset($this->coef_blocage)) $this->coef_blocage = round(($this->forcex + $this->dexterite) / 2) * $this->blocage;
@@ -2853,6 +2873,7 @@ class perso extends entite
 	}
 
 	//Récupération des HP max après bonus, famine etc
+	private $hp_maximum;
 	function get_hp_maximum()
 	{
 		$this->hp_maximum = floor($this->hp_max);
@@ -2862,6 +2883,7 @@ class perso extends entite
 	}
 
 	//Récupération des MP max après bonus, famine etc
+	private $mp_maximum;
 	function get_mp_maximum()
 	{
 		$this->mp_maximum = floor($this->mp_max);
@@ -2870,30 +2892,14 @@ class perso extends entite
 		return $this->mp_maximum;
 	}
 
+	private $reserve_bonus;
 	function get_reserve_bonus($force = false)
 	{
 		if(!isset($this->reserve_bonus) OR $force)
 		{
 			$this->reserve_bonus = $this->get_reserve();
 			if($this->is_buff('inspiration')) $this->reserve_bonus = $this->reserve_bonus + $this->get_buff('inspiration', 'effet');
-			if($this->race == 'vampire')
-			{
-				$this->reserve_bonus += 2;
-				if(moment_jour() == 'Nuit')
-				{
-					$this->reserve_bonus += 3;
-				}
-				//Malus Vampire 2
-				elseif(moment_jour() == 'Journee')
-				{
-					$this->reserve_bonus -= 1;
-				}
-			}
-			//Bonus Haut Elfe
-			if($this->race == 'elfehaut' AND moment_jour() == 'Nuit')
-			{
-				$this->reserve_bonus += 2;
-			}
+			// Les bonus raciaux sont comptés dans les bonus perm
 		}
 		return $this->reserve_bonus;
 	}
@@ -2903,6 +2909,7 @@ class perso extends entite
 		return unserialize($this->inventaire);
 	}
 
+	private $arme;
 	function get_arme()
 	{
 		if(!isset($this->arme))
@@ -2961,6 +2968,7 @@ class perso extends entite
 		return $this->arme->type;
 	}
 
+	private $liste_quete;
 	function get_liste_quete()
 	{
 		$this->liste_quete = unserialize($this->quete);
@@ -3027,6 +3035,8 @@ class perso extends entite
 		return !empty($this->groupe);
 	}
 
+	private $action;
+	public $action_do;
 	function recupaction($type_action)
 	{
 		global $db;
@@ -3564,6 +3574,10 @@ class perso extends entite
 			break;
 		}
 	}
+
+	/** on ne m'aura plus avec les machins déclarés depuis dehors */
+	//function __get($name) { $debug = debug_backtrace(); die('fuck: '.$debug[0]['file'].' line '.$debug[0]['line']); }
+	//function __set($name, $value) { $debug = debug_backtrace(); die('fuck: '.$debug[0]['file'].' line '.$debug[0]['line']); }
 
 }
 ?>

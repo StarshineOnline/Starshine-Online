@@ -652,7 +652,9 @@ else
 						//Si on tape un joueur de son groupe xp = 0
 						foreach($groupe->membre_joueur as $membre_id)
 						{
-							if($membre_id->get_id() == $passif->get_id()) $xp = 0;
+							if($membre_id->get_id() == $passif->get_id()) {
+								$xp = 0;
+							}
 						}
 					}
 					//Joueur solo
