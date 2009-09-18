@@ -674,7 +674,7 @@ else
 						$groupe->membre_joueur[0]->set_reputation($attaquant->get_reputation());
 					}
 					$G_range_level = ceil($passif->get_level() * 0.5);
-					$xp = $xp * (1 + (($actif->get_level() - $passif->get_level()) / $G_range_level));
+					$xp = $xp * (1 + (($passif->get_level() - $actif->get_level()) / $G_range_level));
 					if($xp < 0) $xp = 0;
 					//Si il est en groupe réduction de l'xp gagné par rapport au niveau du groupe
 					if($actif->get_groupe() > 0)

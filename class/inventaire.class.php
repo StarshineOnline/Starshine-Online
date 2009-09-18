@@ -48,9 +48,10 @@ class inventaire
 		$i = 0;
 		while(($i < $G_place_inventaire) AND !$trouver)
 		{
-			$objet_i = decompose_objet($liste_slot[$i]);
+			$objet_i = decompose_objet($this->slot_liste[$i]);
+			//echo '$objet_i[\'sans_stack\'] => '.$objet_i['sans_stack'].'  / $objet_d[\'sans_stack\'] => '.$objet_d['sans_stack'].' / intval($objet_i[\'stack\']) => '.intval($objet_i['stack']).' / $row[\'stack\'] => '.$row['stack'];
 			// Comparaison de la description ('sans_stack') et du nombre d'objet empilé par rapport au maximum
-			if($objet_i['sans_stack'] == $objet_d['sans_stack'] AND intval($objet_i['stack']) < $row['stack'])
+			if($objet_i['sans_stack'] == $objet_d['sans_stack'] AND intval($objet_i['stack']) > 0 AND intval($objet_i['stack']) < $row['stack'])
 			{
 				$trouver = true;
 				$stack = true;

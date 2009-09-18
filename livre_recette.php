@@ -26,7 +26,7 @@ if(array_key_exists('action', $_GET))
 			<?php
 			foreach($recette->recipients as $recipient)
 			{
-				$joueur_recipient = recherche_objet($joueur, 'o'.$recipient->id_objet);
+				$joueur_recipient = $joueur->recherche_objet('o'.$recipient->id_objet);
 				if($joueur_recipient[0] > 0)
 				{
 				?>
@@ -59,11 +59,10 @@ if(array_key_exists('action', $_GET))
 			{
 				if($mp_total <= $joueur->get_mp())
 				{
-					if($star_total <= $joueur['star'])
+					if($star_total <= $joueur->get_star())
 					{
 						//On utilise le recipient
-						supprime_objet($joueur, 'o'.$recipient->id_objet, 1);
-						$joueur = new perso($_SESSION['ID']);;
+						$joueur->supprime_objet('o'.$recipient->id_objet, 1);
 						//alchiming
 						$player = rand(0, $joueur->get_alchimie());
 						$thing = rand(0, $recette->difficulte);
@@ -81,7 +80,7 @@ if(array_key_exists('action', $_GET))
 								while($j > 0)
 								{
 									//echo 'prend objet' . $objets[0];
-									$joueur = prend_objet($objets[0], $joueur);
+									$joueur->prend_objet($objets[0]);
 									//echo $G_erreur;
 									$j--;
 								}
@@ -101,9 +100,8 @@ if(array_key_exists('action', $_GET))
 							//Suppression des objets de l'inventaire
 							if($reussie OR ($rand < 50))
 							{
-								supprime_objet($joueur, 'o'.$ingredient->id_ingredient, $ingredient->nombre);
+								$joueur->supprime_objet('o'.$ingredient->id_ingredient, $ingredient->nombre);
 							}
-							$joueur = new perso($_SESSION['ID']);;
 						}
 						$difficulte = 3 * 2.65 / sqrt($pa_total);
 						$augmentation = augmentation_competence('alchimie', $joueur, $difficulte);
@@ -112,9 +110,9 @@ if(array_key_exists('action', $_GET))
 							$joueur->set_alchimie($augmentation[0]);
 							echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant à '.$joueur->get_alchimie().' en alchimie</span><br />';
 						}
-						$joueur->set_pa($pa_total);
-						$joueur->set_mp($mp_total);
-						$joueur->set_star($star_total);
+						$joueur->set_pa($joueur->get_pa() - $pa_total);
+						$joueur->set_mp($joueur->get_mp() - $mp_total);
+						$joueur->set_star($joueur->get_star() - $star_total);
 						$joueur->sauver();
 					}
 					else
