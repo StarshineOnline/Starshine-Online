@@ -189,7 +189,8 @@ function date_sso()
 */
 function moment_jour()
 {
-	global $joueur;
+	//Bug des arênes mis en commentaire
+	/*global $joueur;
 	if (isset($joueur) && $joueur != null)
 	{
 		$x = $joueur->get_x();
@@ -212,7 +213,7 @@ function moment_jour()
 			$moment = $heure_donj['heure'];
 			if ($moment != null) return $moment;
 		}
-	}
+	}*/
 	$heure = heure_sso();
 	if($heure > 5 AND $heure < 10) $moment = 'Matin';
 	elseif($heure > 9 AND $heure < 16) $moment = 'Journee';
