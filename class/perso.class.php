@@ -920,9 +920,12 @@ class perso extends entite
 	* @param none
 	* @return mediumint(9) $dexterite valeur de l'attribut dexterite
 	*/
-	function get_dexterite()
+	function get_dexterite($base = false)
 	{
-		return $this->dexterite;
+		if ($base)
+			return $this->dexterite;
+		else
+			return $this->dexterite + $this->get_bonus_permanents('dexterite');
 	}
 
 	/**
@@ -942,9 +945,12 @@ class perso extends entite
 	* @param none
 	* @return mediumint(9) $volonte valeur de l'attribut volonte
 	*/
-	function get_volonte()
+	function get_volonte($base = false)
 	{
-		return $this->volonte;
+		if ($base)
+			return $this->volonte;
+		else
+			return $this->volonte + $this->get_bonus_permanents('volonte');
 	}
 
 	/**
@@ -2936,7 +2942,10 @@ class perso extends entite
 			if(!isset($this->arme)) $this->get_arme();
 			if($this->arme)
 			{
-				return $this->arme->distance_tir;
+				$arme = $this->arme->distance_tir;
+				if($this->is_buff('longue_portee')) $bonus = $this->get_buff('longue_portee', 'effet');
+				else $bonus = 0;
+				return ($arme + $bonus);
 			}
 			return 0;
 		}

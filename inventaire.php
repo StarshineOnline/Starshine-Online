@@ -204,7 +204,7 @@ if(!$visu AND isset($_GET['action']))
 								//On remplace la gemme par celle identifiée
 								$gemme = mb_substr($joueur->get_inventaire_slot_partie($i), 1);
 								$joueur->set_inventaire_slot_partie($gemme, $i);
-								$joueur->set_inventaire_slot(serialize($joueur->get_inventaire_slot_partie()));
+								$joueur->set_inventaire_slot(serialize($joueur->get_inventaire_slot_partie(false, true)));
 								$joueur->sauver();
 								echo 'Identification réussie !<br />Votre gemme est une '.$row['nom'];
 								mail('masterob1@free.fr', 'Starshine Test - Identification réussie', $joueur->get_nom().' a identifié '.$row['nom']);

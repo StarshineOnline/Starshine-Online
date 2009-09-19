@@ -201,7 +201,7 @@ function attaque($acteur = 'attaquant', $competence, &$effects)
 									if($passif->is_buff('bouclier_feu'))
 										{
 											$degats = $passif->get_buff('bouclier_feu', 'effet');
-											$actif['hp'] -= $degats;
+											$actif->set_hp($actif->get_hp() - $degats);
 											echo '&nbsp;&nbsp;<span class="degat">'.$passif->get_nom().' inflige '.$degats.' dégats grâce au bouclier de feu</span><br />';
 										}
 									if($passif->is_buff('bouclier_eau'))

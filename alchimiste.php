@@ -117,7 +117,6 @@ if($W_distance == 0)
 					if ($augmentation[1] == 1)
 					{
 						$joueur->set_alchimie($augmentation[0]);
-						echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant à '.$joueur->get_alchimie().' en alchimie</span><br />';
 					}
 					$joueur->sauver();
 				}

@@ -690,8 +690,8 @@ function check_utilisation_objet($joueur, $objet)
 	{
 		if($joueur->get_mp() >= $row_o['pm'])
 		{
-			supprime_objet($joueur, $id_objet, 1);
-			$id_objet = mb_substr($id_objet, 1);
+			$joueur->supprime_objet($id_objet, 1);
+			//$id_objet = mb_substr($id_objet, 1);
 			return true;
 		}
 		else echo '<h5>Vous n\'avez pas assez de MP</h5>';
