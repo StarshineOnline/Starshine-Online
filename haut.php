@@ -58,13 +58,13 @@ if(!isset($root)) $root = '';
 //check_undead_players();
 if (isset($site) && $site)
 {
-	print_head("css:./css/site.css~./css/lightbox.css;script:./javascript/fonction.js~./javascript/overlib/overlib.js~./javascript/scriptaculous/prototype.js~./javascript/scriptaculous/scriptaculous.js?load=effects,builder~./javascript/scriptaculous/lightbox.js~./javascript/scriptaculous/prototip.js;title:StarShine, le jeu qu'il tient ses plannings !");
+	print_head("css:./css/site.css~./css/lightbox.css;script:./javascript/jquery/jquery-1.3.2.min.js~./javascript/fonction.js~./javascript/overlib/overlib.js;title:StarShine, le jeu qu'il tient ses plannings !");
 }
 else
 {
 	if ($interface_v2)
 	{
-		print_head("css:./css/texture.css~./css/texture_low.css~./css/interfacev2.css~./css/prototip.css;script:./javascript/fonction.js~./javascript/overlib/overlib.js~./javascript/scriptaculous/prototype.js~./javascript/scriptaculous/scriptaculous.js?load=effects,builder,dragdrop~./javascript/scriptaculous/prototip.js;title:StarShine, le jeu qu'il tient ses plannings !");
+		print_head("css:./css/texture.css~./css/texture_low.css~./css/interfacev2.css~./css/prototip.css;script:./javascript/jquery/jquery-1.3.2.min.js~./javascript/fonction.js~./javascript/overlib/overlib.js;title:StarShine, le jeu qu'il tient ses plannings !");
 	}
 	elseif($interface_3D)
 	{
