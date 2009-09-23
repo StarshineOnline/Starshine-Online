@@ -898,9 +898,12 @@ class perso extends entite
 	* @param none
 	* @return mediumint(9) $vie valeur de l'attribut vie
 	*/
-	function get_vie()
+	function get_vie($base = false)
 	{
-		return $this->vie;
+		if ($base)
+			return $this->vie;
+		else
+			return $this->vie + $this->get_bonus_permanents('vie');
 	}
 
 	/**
@@ -909,9 +912,12 @@ class perso extends entite
 	* @param none
 	* @return mediumint(9) $forcex valeur de l'attribut forcex
 	*/
-	function get_forcex()
+	function get_forcex($base = false)
 	{
-		return $this->forcex;
+		if ($base)
+			return $this->forcex;
+		else
+			return $this->forcex + $this->get_bonus_permanents('forcex');
 	}
 
 	/**
@@ -934,9 +940,12 @@ class perso extends entite
 	* @param none
 	* @return mediumint(9) $puissance valeur de l'attribut puissance
 	*/
-	function get_puissance()
+	function get_puissance($base = false)
 	{
-		return $this->puissance;
+		if ($base)
+			return $this->puissance;
+    else
+      return $this->puissance + $this->get_bonus_permanents('puissance');
 	}
 
 	/**
@@ -959,9 +968,12 @@ class perso extends entite
 	* @param none
 	* @return mediumint(9) $energie valeur de l'attribut energie
 	*/
-	function get_energie()
+	function get_energie($base = false)
 	{
-		return $this->energie;
+		if ($base)
+			return $this->energie;
+    else
+      return $this->energie + $this->get_bonus_permanents('energie');
 	}
 
 	/**
@@ -2583,6 +2595,7 @@ class perso extends entite
 		$this->buff[] = $buff;
 	}
 
+	public $grade;
 	function get_grade()
 	{
 		if(!isset($this->grade)) $this->grade = new grade($this->rang_royaume);
@@ -2631,6 +2644,7 @@ class perso extends entite
 		return $competence;
 	}
 
+	public $competences;
 	function get_competence($nom = false, $champ = false, $base = false)
 	{
 		if(!$nom)
@@ -2694,12 +2708,14 @@ class perso extends entite
 		return round(sqrt(($this->architecture + $this->forge + $this->alchimie) * 10));
 	}
 
+	public $inventaire_array;
 	function get_inventaire_partie($partie)
 	{
 		if(!isset($this->inventaire_array)) $this->inventaire_array = unserialize($this->get_inventaire());
 		return $this->inventaire_array->$partie;
 	}
 
+	public $inventaire_slot_array;
 	function get_inventaire_slot_partie($partie = false, $force = false)
 	{
 		if(!isset($this->inventaire_slot_array) OR !$force) $this->inventaire_slot_array = unserialize($this->get_inventaire_slot());
@@ -2712,6 +2728,12 @@ class perso extends entite
 		$this->inventaire_slot_array[$partie] = $objet;
 	}
 
+	public $pp;
+	public $pm;
+	public $pp_base;
+	public $pm_base;
+	public $enchant;
+	public $armure;
 	function get_armure()
 	{
 		global $db;
@@ -2806,6 +2828,7 @@ class perso extends entite
 		else return $this->pp_base;
 	}
 
+	public $reserve;
 	function get_reserve($base = false)
 	{
 		if (!isset($this->reserve))
@@ -2814,24 +2837,31 @@ class perso extends entite
 		else return $this->reserve;
 	}
 
+	public $coef_melee;
 	function get_coef_melee()
 	{
-		if(!isset($this->coef_melee)) $this->coef_melee = $this->forcex * $this->melee;
+		if(!isset($this->coef_melee))
+			$this->coef_melee = $this->forcex * $this->get_melee();
 		return $this->coef_melee;
 	}
 
+	public $coef_incantation;
 	function get_coef_incantation()
 	{
-		if(!isset($this->coef_incantation)) $this->coef_incantation = $this->puissance * $this->incantation;
+		if(!isset($this->coef_incantation))
+			$this->coef_incantation = $this->get_puissance() * $this->get_incantation();
 		return $this->coef_incantation;
 	}
 
+	public $coef_distance;
 	function get_coef_distance()
 	{
-		if(!isset($this->coef_distance)) $this->coef_distance = round(($this->forcex + $this->dexterite) / 2) * $this->distance;
+		if(!isset($this->coef_distance))
+			$this->coef_distance = round(($this->get_forcex() + $this->get_dexterite()) / 2) * $this->get_distance();
 		return $this->coef_distance;
 	}
 
+	public $coef_blocage;
 	function get_coef_blocage()
 	{
 		if(!isset($this->coef_blocage)) $this->coef_blocage = round(($this->forcex + $this->dexterite) / 2) * $this->blocage;
@@ -2864,6 +2894,7 @@ class perso extends entite
 	}
 
 	//Récupération des HP max après bonus, famine etc
+	public $hp_maximum;
 	function get_hp_maximum()
 	{
 		$this->hp_maximum = floor($this->hp_max);
@@ -2873,6 +2904,7 @@ class perso extends entite
 	}
 
 	//Récupération des MP max après bonus, famine etc
+	public $mp_maximum;
 	function get_mp_maximum()
 	{
 		$this->mp_maximum = floor($this->mp_max);
@@ -2881,6 +2913,7 @@ class perso extends entite
 		return $this->mp_maximum;
 	}
 
+	public $reserve_bonus;
 	function get_reserve_bonus($force = false)
 	{
 		if(!isset($this->reserve_bonus) OR $force)
@@ -2897,6 +2930,7 @@ class perso extends entite
 		return unserialize($this->inventaire);
 	}
 
+	public $arme;
 	function get_arme()
 	{
 		if(!isset($this->arme))
@@ -2915,6 +2949,7 @@ class perso extends entite
 		return $this->arme;
 	}
 
+	public $bouclier;
 	function get_bouclier()
 	{
 		if(!isset($this->bouclier))
@@ -2957,6 +2992,7 @@ class perso extends entite
 		return $this->arme->type;
 	}
 
+	public $liste_quete;
 	function get_liste_quete()
 	{
 		$this->liste_quete = unserialize($this->quete);
@@ -3023,6 +3059,7 @@ class perso extends entite
 		return !empty($this->groupe);
 	}
 
+	public $action;
 	public $action_do;
 	function recupaction($type_action)
 	{
@@ -3258,11 +3295,12 @@ class perso extends entite
 	{
 		global $db;
 		$i = $nombre;
-		$inventaire = $this->get_inventaire_slot_partie();
 		while($i > 0)
 		{
 			$objet = $this->recherche_objet($id_objet);
 			//Vérification si objet "stacké"
+			//print_r($objet);
+			$inventaire = $this->get_inventaire_slot_partie();
 			$stack = explode('x', $inventaire[$objet[1]]);
 			if($stack[1] > 1) $inventaire[$objet[1]] = $stack[0].'x'.($stack[1] - 1);
 			else array_splice($inventaire, $objet[1], 1);
@@ -3560,6 +3598,8 @@ class perso extends entite
 			break;
 		}
 	}
+
+	function add_pa($add_pa) { $this->set_pa($this->pa + $add_pa); }
 
 	/** on ne m'aura plus avec les machins déclarés depuis dehors */
 	//function __get($name) { $debug = debug_backtrace(); die('fuck: '.$debug[0]['file'].' line '.$debug[0]['line']); }

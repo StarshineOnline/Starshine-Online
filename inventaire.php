@@ -72,6 +72,10 @@ if(!$visu AND isset($_GET['action']))
 					//Cherche infos sur l'objet
 					$requete = "SELECT *, batiment.id AS batiment_id, batiment.nom AS batiment_nom  FROM objet_royaume RIGHT JOIN batiment ON batiment.id = objet_royaume.id_batiment WHERE objet_royaume.id = ".sSQL($_GET['id_objet']);
 					$req = $db->query($requete);
+					if (mysql_num_rows($req) == 0)
+					{
+						die('<h5>Erreur SQL</h5>');
+					}
 					$row = $db->read_assoc($req);
 					if($R->get_diplo($joueur->get_race()) == 127 OR $_GET['type'] == 'arme_de_siege')
 					{
@@ -177,6 +181,19 @@ if(!$visu AND isset($_GET['action']))
 				case 'identification' :
 					$fin = false;
 					$i = 0;
+					$materiel = $joueur->recherche_objet('o2');
+					my_dump($materiel);
+					if ($materiel == false) {
+						echo '<h5>Vous n\'avez pas de materiel d\'identification</h5>';
+						$fin = true;
+					}
+					elseif ($joueur->get_pa() < 10) {
+						echo '<h5>Vous n\'avez pas assez de points d\'action</h5>';
+						$fin = true;
+					}
+					else {
+						$joueur->add_pa(-10); /* pas oublier que ca coute 10 PA */
+					}
 					$count = count($joueur->get_inventaire_slot_partie());
 					while(!$fin AND $i < $count)
 					{
@@ -189,7 +206,6 @@ if(!$visu AND isset($_GET['action']))
 							if ($augmentation[1] == 1)
 							{
 								$joueur->set_comp('identification', $augmentation[0]);
-								$joueur->sauver();
 							}
 							//echo $id_objet;
 							$requete = "SELECT * FROM gemme WHERE id = ".mb_substr($id_objet, 2);
@@ -205,7 +221,6 @@ if(!$visu AND isset($_GET['action']))
 								$gemme = mb_substr($joueur->get_inventaire_slot_partie($i), 1);
 								$joueur->set_inventaire_slot_partie($gemme, $i);
 								$joueur->set_inventaire_slot(serialize($joueur->get_inventaire_slot_partie(false, true)));
-								$joueur->sauver();
 								echo 'Identification réussie !<br />Votre gemme est une '.$row['nom'];
 								mail('masterob1@free.fr', 'Starshine Test - Identification réussie', $joueur->get_nom().' a identifié '.$row['nom']);
 							}
@@ -214,21 +229,12 @@ if(!$visu AND isset($_GET['action']))
 								echo '<h5>L\'identification n\'a pas marché...</h5>';
 							}
 							//On supprime l'objet de l'inventaire
-							//Vérification si objet "stacké"
-							/* A FAIRE */
-							/*
-							$stack = explode('x', $joueur->get_inventaire_slot_partie($_GET['key_slot']));
-							if($stack[1] > 1) $joueur->get_inventaire_slot_partie()[$_GET['key_slot']] = $stack[0].'x'.($stack[1] - 1);
-							else array_splice($joueur->get_inventaire_slot_partie(), $_GET['key_slot'], 1);
-							$inventaire_slot = serialize($joueur->get_inventaire_slot());
-							$requete = "UPDATE perso SET inventaire_slot = '".$inventaire_slot."', identification = ".$joueur['identification']." WHERE ID = ".$joueur->get_id();
-							$req = $db->query($requete);
-							*/
+							$joueur->supprime_objet('o2', 1);
 							$fin = true;
 						}
-
 						$i++;
 					}
+					$joueur->sauver(); /* On sauve a la fin pour les PA */
 				break;
 				case 'potion_vie' :
 					if($joueur->get_hp() > 0)

@@ -197,10 +197,10 @@ else
 	if($attaquant->is_buff('plus_cout_attaque')) $pa_attaque = $pa_attaque * $attaquant->get_buff('plus_cout_attaque', 'effet');
 	if($attaquant->is_buff('buff_rapidite')) $reduction_pa = $attaquant->get_buff('buff_rapidite', 'effet'); else $reduction_pa = 0;
 	if($attaquant->is_buff('debuff_ralentissement')) $reduction_pa -= $attaquant->get_buff('debuff_ralentissement', 'effet');
-	if($attaquant->is_buff('engloutissement')) $attaquant->set_dexterite($attaquant->get_dexterite - $attaquant->get_buff('engloutissement', 'effet'));
-	if($attaquant->is_buff('deluge')) $attaquant->set_volonte($attaquant->get_colonte - $attaquant->get_buff('deluge', 'effet'));
-	if($defenseur->is_buff('engloutissement')) $defenseur->set_dexterite($defenseur->get_dexterite() - $defenseur->get_buff('engloutissement', 'effet'));
-	if($defenseur->is_buff('deluge')) $defenseur->set_volonte($defenseur->get_volonte - $defenseur->get_buff('deluge', 'effet'));
+	if($attaquant->is_buff('engloutissement')) $attaquant->set_dexterite($attaquant->get_dexterite(true) - $attaquant->get_buff('engloutissement', 'effet'));
+	if($attaquant->is_buff('deluge')) $attaquant->set_volonte($attaquant->get_volonte(true) - $attaquant->get_buff('deluge', 'effet'));
+	if($defenseur->is_buff('engloutissement')) $defenseur->set_dexterite($defenseur->get_dexterite(true) - $defenseur->get_buff('engloutissement', 'effet'));
+	if($defenseur->is_buff('deluge')) $defenseur->set_volonte($defenseur->get_volonte(true) - $defenseur->get_buff('deluge', 'effet'));
 	$pa_attaque = $pa_attaque - $reduction_pa;
 	if($pa_attaque <= 0) $pa_attaque = 1;
 
