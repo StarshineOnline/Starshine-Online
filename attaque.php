@@ -1087,7 +1087,7 @@ else
 					$point_victoire = $defenseur->get_point_victoire();
 					$R->add_point_victoire($point_victoire);
 					//On efface le batiment
-					$defenseur->supprimer();
+					$map_batiment->supprimer();
 				}
 			}
 
