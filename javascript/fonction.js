@@ -208,7 +208,7 @@ function Loadchargement()
 }
 function Hidechargement()
 {
-	$('loading').hide();	
+	$('loading').hide();
 }
 function AfficheCarte(map)
 {
@@ -245,9 +245,10 @@ function refresh(page,position)
 }
 
 function envoiInfo(page,position)
-{	
-	function Affiche(requete){$(position).innerHTML = requete.responseText; Hidechargement(); nd();}
-	new Ajax.Request(page,{method:'get',onLoading:Loadchargement,onComplete:Affiche});
+{
+	//alert('@' + position + '@');
+	//function Affiche(requete){$(position).innerHTML = requete.responseText; Hidechargement(); nd();}
+	$('#' + position).load(page);
 	return false;
 }
 
@@ -370,3 +371,16 @@ function showChat(url) {
 
 var cache_monstre;
 var affiche_royaume = false;
+
+$(document).ready(function()
+{
+	$("#loading").ajaxStart(function()
+	{
+		$(this).show();
+	});
+
+	$("#loading").ajaxStop(function()
+	{
+		$(this).hide();
+	});
+});
