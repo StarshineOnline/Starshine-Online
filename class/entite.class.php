@@ -685,11 +685,5 @@ class entite
 		return $this->point_victoire;
 	}
 
-	function supprimer()
-	{
-		if ($this->type == 'batiment')
-			$this->objet_ref->supprimer();
-	}
-
 }
 ?>
