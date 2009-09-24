@@ -18,13 +18,14 @@ $verif_ville = verif_ville($joueur->get_x(), $joueur->get_y());
 $W_requete = 'SELECT * FROM map WHERE ID =\''.sSQL($position).'\'';
 $W_req = $db->query($W_requete);
 $W_row = $db->read_array($W_req);
-$R = get_royaume_info($joueur->get_race(), $W_row['royaume']);
+$R = new royaume($W_row['royaume']);
+//$R = get_royaume_info($joueur->get_race(), $W_row['royaume']);
 $_SESSION['position'] = $position;
 include_once(root.'ville_bas.php');
 	?>
 <div class="ville_test">
 	<?php
-	if($verif_ville AND $R['diplo'] == 127)
+	if($verif_ville AND $R->get_diplo($joueur->get_race()) == 127)
 	{
 		if(array_key_exists('id_construction', $_GET))
 		{
@@ -142,7 +143,7 @@ include_once(root.'ville_bas.php');
 						$req_i = $db->query($requete);
 						if($db->num_rows > 0)
 						{
-							$taxe = 1 + ($R['taxe'] / 100);
+							$taxe = 1 + ($R->get_taxe_diplo($joueur->get_race()) / 100);
 							while($row_i = $db->read_assoc($req_i))
 							{
 								$prix = round($row_i['prix'] * $taxe);
@@ -157,7 +158,7 @@ include_once(root.'ville_bas.php');
 					else $not_in = '';
 					$requete = "SELECT id, nom, prix FROM craft_instrument WHERE requis = 0".$not_in;
 					$req = $db->query($requete);
-					$taxe = 1 + ($R['taxe'] / 100);
+					$taxe = 1 + ($R->get_taxe_diplo($joueur->get_race()) / 100);
 					while($row = $db->read_assoc($req))
 					{
 						$prix = round($row['prix'] * $taxe);
@@ -217,9 +218,9 @@ include_once(root.'ville_bas.php');
 						//On supprime les stars du joueur
 						$requete = "UPDATE perso SET star = star - ".$cout_total." WHERE ID = ".$joueur->get_id();
 						$db->query($requete);
-						$taxe = floor(($chantier->star_point * $batiment->point_structure) * $R['taxe'] / 100);
+						$taxe = floor(($chantier->star_point * $batiment->point_structure) * $R->get_taxe_diplo($joueur->get_race()) / 100);
 						//On donne les stars au royaume
-						$requete = "UPDATE royaume SET star = star + ".$taxe." WHERE ID = ".$R['ID'];
+						$requete = "UPDATE royaume SET star = star + ".$taxe." WHERE ID = ".$R->get_id();
 						$db->query($requete);
 					}
 					else echo '<h5>Vous n\'avez pas assez de place</h5>';
@@ -249,9 +250,9 @@ include_once(root.'ville_bas.php');
 						//On supprime les stars du joueur
 						$requete = "UPDATE perso SET star = star - ".$cout_total." WHERE ID = ".$joueur->get_id();
 						$db->query($requete);
-						$taxe = floor(($chantier->star_point * $batiment->point_structure) * $R['taxe'] / 100);
+						$taxe = floor(($chantier->star_point * $batiment->point_structure) * $R->get_taxe_diplo($joueur->get_race()) / 100);
 						//On donne les stars au royaume
-						$requete = "UPDATE royaume SET star = star + ".$taxe." WHERE ID = ".$R['ID'];
+						$requete = "UPDATE royaume SET star = star + ".$taxe." WHERE ID = ".$R->get_id();
 						$db->query($requete);
 						echo '<h6>Le chantier a commencé !</h6>
 						<a href="ville.php" onclick="return envoiInfo(this.href, \'carte\');">Retour à la ville</a>';
@@ -264,7 +265,7 @@ include_once(root.'ville_bas.php');
 		elseif(array_key_exists('achat', $_GET))
 		{
 			$instrument = new craft_instrument($_GET['achat']);
-			$taxe = round($R['taxe'] * $instrument->prix / 100);
+			$taxe = round($R->get_taxe_diplo($joueur->get_race()) * $instrument->prix / 100);
 			$prix = $instrument->prix + $taxe;
 			if($prix > 0)
 			{
@@ -279,7 +280,7 @@ include_once(root.'ville_bas.php');
 					$requete = "UPDATE perso SET star = star - ".$prix." WHERE ID = ".$joueur->get_id();
 					$db->query($requete);
 					//On donne les stars au royaume
-					$requete = "UPDATE royaume SET star = star + ".$taxe." WHERE ID = ".$R['ID'];
+					$requete = "UPDATE royaume SET star = star + ".$taxe." WHERE ID = ".$R->get_id();
 					$db->query($requete);
 				}
 				else echo '<h5>Vous n\'avez pas assez de stars</h5>';
@@ -288,7 +289,7 @@ include_once(root.'ville_bas.php');
 		elseif(array_key_exists('upgrade_instrument', $_GET))
 		{
 			$instrument = new craft_instrument($_GET['upgrade_instrument']);
-			$taxe = round($R['taxe'] * $instrument->prix / 100);
+			$taxe = round($R->get_taxe_diplo($joueur->get_race()) * $instrument->prix / 100);
 			$prix = $instrument->prix + $taxe;
 			if($prix > 0)
 			{
@@ -304,7 +305,7 @@ include_once(root.'ville_bas.php');
 					$requete = "UPDATE perso SET star = star - ".$prix." WHERE ID = ".$joueur->get_id();
 					$db->query($requete);
 					//On donne les stars au royaume
-					$requete = "UPDATE royaume SET star = star + ".$taxe." WHERE ID = ".$R['ID'];
+					$requete = "UPDATE royaume SET star = star + ".$taxe." WHERE ID = ".$R->get_id();
 					$db->query($requete);
 				}
 				else echo '<h5>Vous n\'avez pas assez de stars</h5>';
@@ -369,5 +370,7 @@ include_once(root.'ville_bas.php');
 			<?php
 		}
 	}
+	else
+		echo 'Ce n\'est pas votre royaume.';
 	?>
 </div>

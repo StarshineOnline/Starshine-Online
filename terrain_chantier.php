@@ -18,7 +18,8 @@ $verif_ville = verif_ville($joueur->get_x(), $joueur->get_y());
 $W_requete = 'SELECT * FROM map WHERE ID =\''.sSQL($position).'\'';
 $W_req = $db->query($W_requete);
 $W_row = $db->read_array($W_req);
-$R = get_royaume_info($joueur->get_race(), $W_row['royaume']);
+$R = new royaume($W_row['royaume']);
+//$R = get_royaume_info($joueur->get_race(), $W_row['royaume']);
 $_SESSION['position'] = $position;
 ?>
 	<?php 
@@ -26,7 +27,7 @@ $_SESSION['position'] = $position;
 	?>
 	<div class="ville_test">
 	<?php
-	if($verif_ville AND $R['diplo'] == 127)
+	if($verif_ville AND $R->get_diplo($joueur->get_race()) == 127)
 	{
 		if(array_key_exists('id_chantier', $_GET))
 		{
@@ -37,7 +38,7 @@ $_SESSION['position'] = $position;
 				$batiment = $chantier->get_batiment();
 				//dé d'Architecture
 				$de_architecture = rand(1, $joueur['architecture']);
-				$taxe = floor(($chantier->star_point * $de_architecture) * $R['taxe'] / 100);
+				$taxe = floor(($chantier->star_point * $de_architecture) * $R->get_taxe_diplo($joueur->get_race()) / 100);
 				$stars = ($chantier->star_point * $de_architecture) - $taxe;
 				echo 'Vous aidez à construire le batiment pour '.$de_architecture.' points de structure.<br />
 				Et vous recevez '.$stars.' stars<br />';
@@ -98,13 +99,13 @@ $_SESSION['position'] = $position;
 		else
 		{
 			echo 'Liste des chantiers disponibles :<br />';
-			$requete = "SELECT terrain_chantier.id as id, id_terrain, id_batiment, point, star_point FROM terrain_chantier LEFT JOIN terrain ON terrain.id = terrain_chantier.id_terrain LEFT JOIN perso ON terrain.id_joueur = perso.ID WHERE perso.race = '".$R['race']."' ORDER BY star_point DESC";
+			$requete = "SELECT terrain_chantier.id as id, id_terrain, id_batiment, point, star_point FROM terrain_chantier LEFT JOIN terrain ON terrain.id = terrain_chantier.id_terrain LEFT JOIN perso ON terrain.id_joueur = perso.ID WHERE perso.race = '".$R->get_race()."' ORDER BY star_point DESC";
 			$req = $db->query($requete);
 			while($row = $db->read_assoc($req))
 			{
 				$chantier = new terrain_chantier($row);
 				$batiment = $chantier->get_batiment();
-				$taxe = floor(($chantier->star_point * 100) * $R['taxe'] / 100);
+				$taxe = floor(($chantier->star_point * 100) * $R->get_taxe_diplo($joueur->get_race()) / 100);
 				$prix = ($chantier->star_point * 100) - $taxe;
 				echo ucwords($batiment->type).' ('.$prix.' stars par 100 point) => '.$chantier->point.' / '.$batiment->point_structure.' <a href="terrain_chantier.php?id_chantier='.$chantier->id.'" onclick="return envoiInfo(this.href, \'carte\');">Construire (10 PA)</a><br />';
 			}
