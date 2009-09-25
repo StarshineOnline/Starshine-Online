@@ -621,6 +621,12 @@ class entite
 		else return null;
 	}
 
+	function get_honneur()
+	{
+		if($this->type == 'joueur') return $this->objet_ref->get_honneur();
+		else return null;
+	}
+
 	function dump() { echo '<pre>'; var_dump($this); echo '</pre>'; }
 
 	function bouclier()
