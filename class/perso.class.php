@@ -2992,7 +2992,6 @@ class perso extends entite
 		return $this->arme->type;
 	}
 
-	public $liste_quete;
 	function get_liste_quete()
 	{
 		$this->liste_quete = unserialize($this->quete);

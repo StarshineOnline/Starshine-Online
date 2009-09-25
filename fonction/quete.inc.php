@@ -35,7 +35,7 @@ function verif_action($type_cible, $joueur, $mode)
 	if($liste_quete != '')
 	{
 		$echo = '';
-		while($i < $count)
+		while($i < $count && array_key_exists($liste_quete[$i], 'id_quete'))
 		{
 			$requete = "SELECT id, nom, objectif, honneur, star, exp, reward, mode FROM quete WHERE id = ".$liste_quete[$i]['id_quete'];
 			$req = $db->query($requete);
