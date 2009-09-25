@@ -210,11 +210,12 @@ function attaque($acteur = 'attaquant', $competence, &$effects)
 											$diffi = 100;
 											$att = rand(0, $chances);
 											$def = rand(0, $diffi);
+											print_debug("Potentiel glacer: $chances<br />Résultat => $att vs $def");
 											if($att > $def)
 												{
 													echo '&nbsp;&nbsp;<span class="degat">'.$passif->get_nom().' bloque et glace '.$actif->get_nom().'</span><br />';
 													$actif->etat['paralysie']['effet'] = 1;
-													$actif->etat['paralysie']['duree'] = ($actif->get_buff('bouclier_eau', 'effet2') + 1);
+													$actif->etat['paralysie']['duree'] = ($passif->get_buff('bouclier_eau', 'effet2') + 1);
 												}
 										}
 									

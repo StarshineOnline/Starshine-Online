@@ -210,4 +210,10 @@ function print_montee_comp($nom, $valeur, $comp) {
 	echo "&nbsp;&nbsp;<span class=\"augcomp\"><strong>$nom</strong> est maintenant à $valeur en $Gtrad[$comp]</span><br />";
 }
 
+function print_debug($msg) {
+	global $debug;
+	echo '<div id="debug'.$debugs.'" class="debug">'.$msg.'</div>';
+	$debugs++;
+}
+
 ?>
