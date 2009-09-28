@@ -1,22 +1,3 @@
-function hideMenu()
-{
-	for(i = 1; i < 5; i++)
-	{
-		$('smenu' + i).fade({ duration: 0.2 })
-	}
-}
-	
-function showMenu(id)
-{
-	new Effect.toggle('smenu' + id, 'appear', { duration: 0.2 })
-	for(i = 1; i < 5; i++)
-	{
-		if(i != id)
-		{
-			$('smenu' + i).fade({ duration: 0.2 })
-		}
-	}
-}
 function enchere()
 {
 	if(confirm('Voullez vous mettre ' + $('nbr').value + ' ' + $('ressource_vente').value + ' en vente à ' + $('prix').value + ' stars ?')) {envoiInfo('gestion_royaume.php?direction=bourse_ressource&ressource=' + $('ressource_vente').value + '&prix=' + $('prix').value + '&nombre=' + $('nbr').value, 'message_confirm'); envoiInfo('gestion_royaume.php?direction=bourse', 'contenu_jeu'); } else {return false;}
@@ -55,34 +36,27 @@ function refresh(page, position)
 }
 function menu_change(input_name)
 {
-	if ($('menu_encours').value=='')
+	if ($('#menu_encours').val() =='')
 	{
-		$('menu_encours').value= input_name;
-		$(input_name).addClassName('select');
-		$(input_name+'_menu').show();
+		$('#menu_encours').val(input_name) ;
+		$('#'+input_name).addClass('select');
+		$('#'+input_name+'_menu').show();
 	}
 	else
 	{
-		var tmp = $('menu_encours').value;
-		$(tmp+'_menu').hide();
-		$(tmp).removeClassName('select');
-		$('menu_encours').value= input_name;
-		$(input_name).addClassName('select');
-		$(input_name+'_menu').show();
+		var tmp = $('#menu_encours').val();
+		$('#'+tmp+'_menu').hide();
+		$('#'+tmp).removeClass('select');
+		$('#menu_encours').val(input_name);
+		$('#'+input_name).addClass('select');
+		$('#'+input_name+'_menu').show();
 	}
-	$('message_confirm').innerHTML = '';
+	$('#message_confirm').innerHTML = '';
 
 }
 function affiche_page(page)
 {
-	function affiche(contenu)
-	{
-		$('loading').hide();
-		$('contenu_jeu').innerHTML = contenu.responseText;
-	}
-	new Ajax.Request(page,{method:'get',onLoading:Loadchargement,onComplete:affiche});
-	$('message_confirm').innerHTML = '';
-	
+	$('#contenu_jeu').load(page);
 }
 
 function affiche_bataille(page,action)
@@ -144,3 +118,16 @@ function select_groupe(groupeid)
 		$('groupe_'+groupeid).value = 0;
 	}
 }
+$(document).ready(function()
+{
+	$("#loading").ajaxStart(function()
+	{
+		$(this).show();
+	});
+
+	$("#loading").ajaxStop(function()
+	{
+		$(this).hide();
+	});
+});
+

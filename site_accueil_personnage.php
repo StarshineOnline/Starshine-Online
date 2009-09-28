@@ -36,7 +36,7 @@ $propagande[$race] = $propa;
 
 
 echo "<h3>".$Gtrad[$race]." - ".$classe."</h3>
-		<div style='padding:5px'>
+		<div class='personnage_box'>
 			<strong>Stars au début du jeu :</strong> ".$stars[$race]."<br />
 			<br />
 			<strong>Passif :</strong><br />
@@ -73,8 +73,10 @@ echo "<h3>".$Gtrad[$race]." - ".$classe."</h3>
 			Magie de la Vie : ".$Gtrad['affinite'.$Trace[$race]['affinite_sort_vie']]."<br />
 			Magie de la Mort : ".$Gtrad['affinite'.$Trace[$race]['affinite_sort_mort']]."<br />
 			Magie Elementaire : ".$Gtrad['affinite'.$Trace[$race]['affinite_sort_element']]."<br />
-			<p style='clear:both'>
-			<br /><strong>Propagande Royale :</strong><br />
+			</div>
+			<div class='personnage_roi'>
+			<p>
+			<strong>Propagande Royale :</strong><br />
 			".$propagande[$race]."
 			</p>
 			</div>";

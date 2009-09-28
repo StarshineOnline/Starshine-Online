@@ -9,84 +9,79 @@ include_once(root.'haut.php');
 <script type="text/javascript">
 function menu_change(input_name)
 {
-	if ($('menu_encours').value=='')
+	if ($('#menu_encours').val()=='')
 	{
-		$('menu_encours').value= input_name;
-		$(input_name+'_menu').addClassName('selected');
-		$(input_name+'_box').show();
+		$('#menu_encours').val(input_name);
+		$('#'+input_name+'_menu').addClass('selected');
+		$('#'+input_name+'_box').show();
 	}
 	else
 	{
-		var tmp = $('menu_encours').value;
-		$(tmp+'_box').hide();
-		$(tmp+'_menu').removeClassName('selected');
-		$('menu_encours').value= input_name;
-		$(input_name+'_menu').addClassName('selected');
-		$(input_name+'_box').show();
-		if ($('perso_selected_id').value != '')
+		var tmp = $('#menu_encours').val();
+		$('#'+tmp+'_box').hide();
+		$('#'+tmp+'_menu').removeClass('selected');
+		$('#menu_encours').val(input_name);
+		$('#'+input_name+'_menu').addClass('selected');
+		$('#'+input_name+'_box').show();
+		if ($('#perso_selected_id').val() != '')
 		{
-			$($('perso_selected_id').value).className ='';
-			$('personnage').hide();
+			$($('#perso_selected_id').val()).className ='';
+			$('#personnage').hide();
 		}		
 	}
 }
 function Chargement()
 {
-	$('loading_sso').show();
-	$('accueil').setAttribute('style','cursor:progress !important;')
+	$('#loading_sso').show();
+	$('#accueil').setAttribute('style','cursor:progress !important;')
 }
 function race(input_race,input_classe)
 {
-	function Affiche(requete)
+	if ($('#perso_selected_id').val() != '')
 	{
-		$('personnage').show();
-		$('personnage').innerHTML = requete.responseText;
-		$('loading_sso').hide();
-		$('accueil').setAttribute('style','cursor:normal;')
-		
+		$($('#perso_selected_id').val()).className ='';			
 	}
-	if ($('perso_selected_id').value != '')
-	{
-		$($('perso_selected_id').value).className ='';			
-	}
-	$(input_race+'_'+input_classe).className = 'perso_selected';
-	$('perso_selected_id').value = input_race+'_'+input_classe;
-	new Ajax.Request('./site_accueil_personnage.php',{method:'get',parameters:'race='+input_race+'&classe='+input_classe,onLoading:Chargement,onComplete:Affiche});
+	$('#'+input_race+'_'+input_classe).className = 'perso_selected';
+	$('#perso_selected_id').val(input_race+'_'+input_classe);
+	$('#personnage').show();	
+	$('#personnage').load('./site_accueil_personnage.php?race='+input_race+'&classe='+input_classe);
 }
 function validation_perso()
 {
 	function Afficheperso(requete)
 	{
-		$('loading_sso').hide();
-		$('accueil').setAttribute('style','cursor:normal;');
+		$('#loading_sso').hide();
+		$('#accueil').setAttribute('style','cursor:normal;');
 		menu_change('presentation');
-		$('personnage').show();
-		$('personnage').innerHTML = requete.responseText;
+		$('#personnage').show();
+		$('#personnage').innerHTML = requete.responseText;
 	}
 
-	if ($('creat_nom').value == '')
+	if ($('#creat_nom').val() == '')
 	{
-		$('creat_erreur').innerHTML = 'Vous avez laisser un champ libre, ou vos mots de passe ne correspondent pas';
-		$('creat_nom').setAttribute('style','border: 1px solid #CC0033;');
-		$('creat_erreur').show();
+		$('#creat_erreur').innerHTML = 'Vous avez laisser un champ libre, ou vos mots de passe ne correspondent pas';
+		$('#creat_nom').setAttribute('style','border: 1px solid #CC0033;');
+		$('#creat_erreur').show();
 	}
 
-	if (($('creat_pass').value != $('creat_pass2').value) || ($('creat_pass2').value=='') || ($('creat_pass2').value==''))
+	if (($('#creat_pass').val() != $('#creat_pass2').val()) || ($('#creat_pass2').val()=='') || ($('creat_pass2').val()==''))
 	{
-		$('creat_erreur').innerHTML = 'Vous avez laisser un champ libre, ou vos mots de passe ne correspondent pas';
-		$('creat_pass').setAttribute('style','border: 1px solid #CC0033;');	
-		$('creat_pass2').setAttribute('style','border: 1px solid #CC0033;');			
-		$('creat_erreur').show();
+		$('#creat_erreur').innerHTML = 'Vous avez laisser un champ libre, ou vos mots de passe ne correspondent pas';
+		$('#creat_pass').setAttribute('style','border: 1px solid #CC0033;');	
+		$('#creat_pass2').setAttribute('style','border: 1px solid #CC0033;');			
+		$('#creat_erreur').show();
 	}
-	if ($('perso_selected_id').value == '')
+	if ($('#perso_selected_id').val() == '')
 	{
-		$('creat_erreur').innerHTML = "Vous n'avez pas sélectionnez de personnage.";
-		$('creat_erreur').show();
+		$('#creat_erreur').innerHTML = "Vous n'avez pas sélectionnez de personnage.";
+		$('#creat_erreur').show();
 	}	
-	if (($('perso_selected_id').value != '') && ($('creat_pass').value == $('creat_pass2').value) && ($('creat_pass2').value!='') && ($('creat_pass2').value!='') && ($('creat_nom').value != ''))
+	if (($('#perso_selected_id').val() != '') && ($('#creat_pass').val() == $('#creat_pass2').val()) && ($('#creat_pass2').val()!='') && ($('#creat_pass2').val()!='') && ($('#creat_nom').val() != ''))
 	{
-		var perso = $('perso_selected_id').value.split('_');
-		new Ajax.Request('./site_accueil_creation.php',{method:'get',parameters:'race='+perso[0]+'&classe='+perso[1]+'&pseudo='+$('creat_nom').value+'&mdp='+$('creat_pass').value,onLoading:Chargement,onComplete:Afficheperso});
+		var tmp = $('#perso_selected_id').val();
+		var perso = tmp.split('_');
+
+		$('#personnage').load('./site_accueil_creation.php?race='+perso[0]+'&classe='+perso[1]+'&pseudo='+$('#creat_nom').val()+'&mdp='+$('#creat_pass').val());
 	}
 }
 function affichePopUpErreur(erreur)
@@ -99,6 +94,21 @@ function fermePopUpErreur()
 	Effect.DropOut('popup_erreur', { duration: 0.5, direction : top });
 	$('popup_erreur_content').innerHTML = '';
 }
+
+$(document).ready(function()
+{
+	$("#loading").ajaxStart(function()
+	{
+		$(this).show();
+	});
+
+	$("#loading").ajaxStop(function()
+	{
+		$(this).hide();
+	});
+});
+
+
 <?php
 if($erreur_login != '')
 {
@@ -119,21 +129,15 @@ window.onload = function()
 	</div>
 </div>
 <div id='accueil'>
-	<div class='logo'></div>
 	<div id='loading_sso' style='display:none;'></div>	
 	<div id='test'>
-	<div id='menu_accueil'>
-	<ul>
-		<li id='presentation_menu' class='selected' onclick="menu_change('presentation');">Présentation</li>
-		<li id='screenshot_menu' onclick="menu_change('screenshot');">ScreenShots</li>
-		<li id='news_menu' onclick="menu_change('news');">News</li>
-		<li id='creation_menu' onclick="menu_change('creation');">Création d'un compte</li>
-	</ul>
-	</div>
 	<div class='box'>
 		<input type='hidden' id='menu_encours' value='presentation' />
 		<div id='presentation_box'>
-			<p>    Bienvenue dans le monde de Starshine-Online.
+					<span class='logo'></span> 
+			<p>
+
+			Bienvenue dans le monde de Starshine-Online.
 Pour l'instant au stade de la bêta (c'est à dire en phase d'équilibrage et d'amélioration du monde), Starshine-Online sera un jeu de rôle massivement multijoueur (MMORPG) en tour par tour.<br />
 <br />
 Il vous permettra d'incarner un grand héros de l'univers Starshine, peuplé de nombreuses créatures et d'autres héros ennemis prêts à tout pour détruire votre peuple.<br />
@@ -204,14 +208,14 @@ N'oubliez pas de reporter les bugs et problèmes, et d'apporter vos suggestions 
 
 <form action="" method="POST">
 		<p id='creat_erreur' style='color:#CC0033; display : none;'>&nbsp;</p>
-		<div style='width:35%;float:left;'>
+		<div style='width:165px;float:left;'>
 			<span class='creation_text'>Quel sera votre nom ?</span><input type="text" name="nom" id='creat_nom' /><br />
 			<span class='creation_text'>Indiquer un mot de passe :</span><input type="password" name="password" id='creat_pass' /><br />
 			<span class='creation_text'>Confirmer votre mot de passe :</span>
 			<input type="password" name="password2" id='creat_pass2' />
 			<span onclick="validation_perso();" id="bouton_creer">Créer</span>
 		</div>
-		<div style='width:65%;float:left;'>
+		<div style='width:335px;float:left;'>
 		<?php
 		$i=0;
 		while($objRace = $db->read_object($RqRace))
@@ -245,10 +249,10 @@ N'oubliez pas de reporter les bugs et problèmes, et d'apporter vos suggestions 
 			?>
 			<form action="index.php" method="post">
 			<div>
-			ID : <input type="text" name="nom" size="10" class="input" />
-			Pass : <input type="password" name="password" size="10" class="input" />
-			Auto Login <input type="checkbox" name="auto_login" value="Ok" />
-			<input type="submit" name="log" value="Connexion" class="input" />
+			<input type="text" name="nom" size="10" class="login_nom" />
+			<input type="password" name="password" size="10" class="login_mdp" />
+			<input type="checkbox" name="auto_login" val()="Ok" class="login_auto" />
+			<input type="submit" name="log" val()="Connexion" class="login_connexion" />
 			</div>
 			</form>
 			<?php
@@ -259,16 +263,24 @@ N'oubliez pas de reporter les bugs et problèmes, et d'apporter vos suggestions 
 			}
 			?>	
 	</div>		
+	<div id='menu_accueil'>
+	<ul>
+		<li id='presentation_menu' class='selected' onclick="menu_change('presentation');"></li>
+		<li id='screenshot_menu' onclick="menu_change('screenshot');"></li>
+		<li id='news_menu' onclick="menu_change('news');"></li>
+		<li id='creation_menu' onclick="menu_change('creation');"></li>
+	</ul>
+	</div>
 
 	<div id='personnage' style='display:none'>
 
 	
 	</div>
-		<fieldset id='liens'>
-		<legend>Liens d'aide au jeu</legend>
-	 <a href='http://wiki.starshine-online.com/'>Comprendre Starshine</a> <a href='http://bug.starshine-online.com/'>Signaler un Bug</a> <a href='http://forum.starshine-online.com/'>Le Forum
-	 </a>
-	</fieldset>
+		<div id='liens'>
+
+	 <p>Liens d'aide au jeu : <a href='http://wiki.starshine-online.com/'>Comprendre Starshine</a> <a href='http://bug.starshine-online.com/'>Signaler un Bug</a> <a href='http://forum.starshine-online.com/'>Le Forum
+	 </a></p>
+	</div>
 
 	<div id='accueil_pub'>
 	<script type="text/javascript"><!--

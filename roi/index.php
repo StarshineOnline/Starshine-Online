@@ -45,18 +45,12 @@ if($joueur->get_grade()->get_id() == 6)
 	<link href="../css/interfacev2.css" rel="stylesheet" type="text/css" />
 	<link href="../css/prototip.css" rel="stylesheet" type="text/css" />
 	<link href="css/roi.css" rel="stylesheet" type="text/css" />
-	<script src="../javascript/scriptaculous/prototype.js" type="text/javascript"></script>
-	<script src="../javascript/scriptaculous/scriptaculous.js" type="text/javascript"></script>
-	<script src="../javascript/scriptaculous/prototip.js" type="text/javascript"></script>
+	<script src="../javascript//jquery/jquery-1.3.2.min.js" type="text/javascript"></script>
 	<script src="../javascript/fonction.js" type="text/javascript"></script>
 	<script src="../javascript/overlib/overlib.js" type="text/javascript"></script>
 	<script src="javascript/menu.js" type="text/javascript"></script>
 	<meta http-equiv='content-type' content='text/html; charset=utf-8' />	
 	<script type="text/javascript">
-	window.onload = function()
-	{
-		new Draggable('popup', {handle: 'popup_menu'});
-	}
 	</script>
 	<?php
 	echo "<script type='text/javascript'>
