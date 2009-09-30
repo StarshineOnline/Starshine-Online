@@ -293,13 +293,13 @@ function attaque($acteur = 'attaquant', $competence, &$effects)
       //Buff du critique
       if($actif->is_buff('buff_critique', true)) $actif_chance_critique *= 1 + (($actif->get_buff('buff_critique', 'effet', true)) / 100);
       if($actif->is_buff('buff_cri_rage', true)) $actif_chance_critique *= 1 + (($actif->get_buff('buff_cri_rage', 'effet')) / 100);
-      if(array_key_exists('benediction', $passif->etat)) $actif_chance_critique *= 1 + (($actif->etat['benediction']['effet'] * $G_buff['bene_critique']) / 100);;
-      if(array_key_exists('tir_vise', $passif->etat)) $actif_chance_critique *= 1 + (($actif->etat['tir_vise']['effet'] * 5) / 100);
-      if(array_key_exists('berzeker', $passif->etat)) $actif_chance_critique *= 1 + (($actif->etat['berzeker']['effet'] * $G_buff['berz_critique']) / 100);
-      if(array_key_exists('coup_sournois', $passif->etat)) $actif_chance_critique *= 1 + (($actif->etat['coup_sournois']['effet']) / 100);
-      if(array_key_exists('fleche_sanglante', $passif->etat)) $actif_chance_critique *= 1 + (($actif->etat['fleche_sanglante']['effet']) / 100);
-      if(array_key_exists('a_critique', $passif->etat)) $actif_chance_critique *= 1 + (($actif->etat['a_critique']['effet']) / 100);
-      if(array_key_exists('b_critique', $passif->etat)) $actif_chance_critique /= 1 + (($actif->etat['b_critique']['effet']) / 100);
+      if(array_key_exists('benediction', $actif->etat)) $actif_chance_critique *= 1 + (($actif->etat['benediction']['effet'] * $G_buff['bene_critique']) / 100);;
+      if(array_key_exists('tir_vise', $actif->etat)) $actif_chance_critique *= 1 + (($actif->etat['tir_vise']['effet'] * 5) / 100);
+      if(array_key_exists('berzeker', $actif->etat)) $actif_chance_critique *= 1 + (($actif->etat['berzeker']['effet'] * $G_buff['berz_critique']) / 100);
+      if(array_key_exists('coup_sournois', $actif->etat)) $actif_chance_critique *= 1 + (($actif->etat['coup_sournois']['effet']) / 100);
+      if(array_key_exists('fleche_sanglante', $actif->etat)) $actif_chance_critique *= 1 + (($actif->etat['fleche_sanglante']['effet']) / 100);
+      if(array_key_exists('a_critique', $actif->etat)) $actif_chance_critique *= 1 + (($actif->etat['a_critique']['effet']) / 100);
+      if(array_key_exists('b_critique', $actif->etat)) $actif_chance_critique /= 1 + (($actif->etat['b_critique']['effet']) / 100);
       //Elfe des bois
       if($actif->get_race() == 'elfebois') $actif_chance_critique *= 1.15;
       if(array_key_exists('coup_mortel', $actif->etat))
