@@ -1020,7 +1020,7 @@ foreach($tab_loc as $loc)
 				case 'arme' :
 					if($loc['loc'] == 'main_droite')
 					{
-						echo '<br />Dégats : '.$joueur->get_arme_degat();
+						echo '<br />Dégats : '.$joueur->get_arme_degat('droite');
 					}
 					else
 					{

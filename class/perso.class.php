@@ -2677,30 +2677,20 @@ class perso extends entite
 		}
 	}
 
-	function get_arme_degat($main = 'droite')
+	/**
+   * La plupart du temps on s'en fiche, de la main, on veut les degats
+   * donc si $main == false : cumul, si $main == 'droite' || 'gauche' : detail
+   */
+	function get_arme_degat($main = false)
 	{
-		if($this->get_arme())
-		{
-			return $this->arme->degat;
-			// Effets magiques
-			/*if($row['effet'] != '')
-			{
-				$effet = explode(';', $row['effet']);
-				foreach($effet as $eff)
-				{
-					$explode = explode('-', $eff);
-					$R_perso['objet_effet'][$objet_effet_id]['id'] = $explode[0];
-					$R_perso['objet_effet'][$objet_effet_id]['effet'] = $explode[1];
-					$objet_effet_id++;
-				}
-			}
-			// Gemmes
-			if($arme_d['enchantement'] > 0)
-			{
-				$R_perso = enchant($arme_d['enchantement'], $R_perso);
-			}*/
-		}
-		else return 0;
+		$degats = 0;
+		if ($main == false || $main == 'droite')
+			if ($this->get_arme())
+				$degats += $this->arme->degat;
+		if ($main == false || $main == 'gauche')
+			if ($this->get_arme_gauche())
+				$degats += $this->arme_gauche->degat;
+		return $degats;
 	}
 
 	function get_artisanat()
@@ -2947,6 +2937,27 @@ class perso extends entite
 			else $this->arme = false;
 		}
 		return $this->arme;
+	}
+
+	public $arme_gauche;
+	function get_arme_gauche()
+	{
+		if(!isset($this->arme_gauche))
+		{
+			global $db;
+			$arme = $this->inventaire()->main_gauche;
+			if($arme != '' && $arme != 'lock')
+			{
+				$arme_d = decompose_objet($arme);
+				$requete = "SELECT * FROM arme WHERE id = ".$arme_d['id_objet'];
+				$req = $db->query($requete);
+				$this->arme_gauche = $db->read_object($req);
+				if($this->arme_gauche->type == 'bouclier')
+					$this->arme_gauche = false;
+			}
+			else $this->arme_gauche = false;
+		}
+		return $this->arme_gauche;
 	}
 
 	public $bouclier;
