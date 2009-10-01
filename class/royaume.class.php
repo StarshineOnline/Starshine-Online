@@ -1221,7 +1221,7 @@ class royaume
 	function gain_star($star, $source)
 	{
 		$this->set_star($this->star + $star);
-		$requete = "UPDATE argent_royaume SET $source = $source + $star WHERE race = '$race'";
+		$requete = "UPDATE argent_royaume SET $source = $source + $star WHERE race = '$this->race'";
 		global $db;
 		$db->query($requete);
 	}
