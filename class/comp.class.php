@@ -136,8 +136,8 @@ class maitrise_bouclier extends competence
   function calcul_bloquage(&$actif, &$passif) {
     $this->used = true;
     $passif->potentiel_bloquer *=
-      1 + ($passif['competences']['maitrise_bouclier'] / 1000);
-    $passif['maitrise_bouclier'] = $passif['competences']['maitrise_bouclier'];
+      1 + ($passif->get_competence('maitrise_bouclier')->get_valeur() / 1000);
+    //$passif['maitrise_bouclier'] = $passif['competences']['maitrise_bouclier'];
   }
 
   function fin_round(&$actif, &$passif) {
@@ -162,8 +162,8 @@ class maitrise_dague extends competence
   function debut_round(&$actif, &$passif) {
     $this->used = true;
     $actif->potentiel_toucher *=
-      1 + ($actif['competences']['maitrise_dague'] / 1000);
-    $actif['maitrise_dague'] = $actif['competences']['maitrise_dague'];
+      1 + ($actif->get_competence('maitrise_dague')->get_valeur() / 1000);
+    //$actif['maitrise_dague'] = $actif['competences']['maitrise_dague'];
   }
 
   function fin_round(&$actif, &$passif) {
@@ -188,8 +188,8 @@ class maitrise_epee extends competence
   function debut_round(&$actif, &$passif) {
     $this->used = true;
     $actif->potentiel_toucher *=
-      1 + ($actif['competences']['maitrise_epee'] / 1000);
-    $actif['maitrise_epee'] = $actif['competences']['maitrise_epee'];
+      1 + ($actif->get_competence('maitrise_epee')->get_valeur() / 1000);
+    //$actif['maitrise_epee'] = $actif['competences']['maitrise_epee'];
   }
 
   function fin_round(&$actif, &$passif) {
@@ -213,8 +213,9 @@ class maitrise_hache extends competence
 
   function debut_round(&$actif, &$passif) {
     $this->used = true;
-    $actif->potentiel_toucher *= 1 + ($actif['competences']['maitrise_hache'] / 1000);
-    $actif['maitrise_hache'] = $actif['competences']['maitrise_hache'];
+    $actif->potentiel_toucher *=
+			1 + ($actif->get_competence('maitrise_hache')->get_valeur() / 1000);
+    //$actif['maitrise_hache'] = $actif['competences']['maitrise_hache'];
   }
 
   function fin_round(&$actif, &$passif) {
@@ -239,8 +240,8 @@ class maitrise_arc extends competence
   function debut_round(&$actif, &$passif) {
     $this->used = true;
     $actif->potentiel_toucher *=
-      1 + ($actif['competences']['maitrise_arc'] / 1000);
-    $actif['maitrise_arc'] = $actif['competences']['maitrise_arc'];
+      1 + ($actif->get_competence('maitrise_arc')->get_valeur() / 1000);
+    //$actif['maitrise_arc'] = $actif['competences']['maitrise_arc'];
   }
 
   function fin_round(&$actif, &$passif) {
@@ -265,8 +266,8 @@ class maitrise_critique extends competence
   function calcul_critique(&$actif, &$passif, $chance_critique) {
     $this->used = true;
     $chance_critique *=
-      1 + ($actif['competences']['maitrise_critique'] / 1000);
-    $actif['maitrise_critique'] = $actif['competences']['maitrise_critique'];
+      1 + ($actif->get_competence('maitrise_critique')->get_valeur() / 1000);
+    //$actif['maitrise_critique'] = $actif['competences']['maitrise_critique'];
     return $chance_critique;
   }
 
@@ -296,7 +297,7 @@ class art_critique extends competence
 
   function calcul_mult_critique(&$actif, &$passif, $mult) {
     $this->critique = true;
-    return $mult + $actif['competences']['art_critique'];
+    return $mult + $actif->get_competence('art_critique')->get_valeur();
   }
 }
 

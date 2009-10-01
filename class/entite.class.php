@@ -50,6 +50,7 @@ class entite
 	private $rang_royaume;
 	private $espece;
 	private $point_victoire;
+	private $competence = array();
 
 	private $objet_ref;
 
@@ -85,6 +86,7 @@ class entite
 						die("Invalid arme_type ($this->arme_type) !!");
 					}
 				$this->comp = $objet->get_comp();
+				$this->competence = $objet->get_comp_perso();
 				$this->x = $objet->get_x();
 				$this->y = $objet->get_y();
 				$this->hp = $objet->get_hp();
@@ -581,19 +583,16 @@ class entite
 		{
 			if(!empty($nom))
 			{
-				$tmp = $this->buff;
-				while(current($tmp) && !$buffe)
+				foreach($this->competence as $key => $comp)
 				{
 					if($type)
 					{
-						if(strcmp(current($tmp)->get_type(), $nom) == 0)
-							$buffe = true;
+						if($key == $nom) $buffe = true;
 					}
-					else if(strcmp(current($tmp)->get_nom(), $nom) == 0)
+					else if($comp->get_competence() == $nom)
 					{
 						$buffe = true;
 					}
-					next($tmp);
 				}
 			}
 			else
@@ -603,6 +602,29 @@ class entite
 			$buffe = false;
 
 		return $buffe;
+	}
+
+	function get_competence($nom)
+	{
+		$buffe = false;
+		if(is_array($this->competence))
+		{
+			if(!empty($nom))
+			{
+				foreach($this->competence as $key => $comp)
+				{
+					if($type)
+					{
+						return $comp;
+					}
+					else if($comp->get_competence() == $nom)
+					{
+						return $comp;
+					}
+				}
+			}
+		}
+		return null;
 	}
 	
 	function get_pos()

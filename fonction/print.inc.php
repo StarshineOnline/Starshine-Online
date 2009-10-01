@@ -211,7 +211,7 @@ function print_montee_comp($nom, $valeur, $comp) {
 }
 
 function print_debug($msg) {
-	global $debug;
+	global $debugs;
 	echo '<div id="debug'.$debugs.'" class="debug">'.$msg.'</div>';
 	$debugs++;
 }
