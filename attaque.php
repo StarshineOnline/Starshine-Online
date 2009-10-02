@@ -95,7 +95,8 @@ switch($type)
 		$defenseur = new entite('ville', $joueur_defenseur);
 	break;
 }
-
+// round_total sera modifié ensuite au besoin, mais on doit le seter au début
+$round_total = $G_round_total;
 $W_case = convert_in_pos($defenseur->get_x(), $defenseur->get_y());
 $W_distance = detection_distance($W_case, convert_in_pos($attaquant->get_x(), $attaquant->get_y()));
 ?>
@@ -107,6 +108,8 @@ if(is_donjon($attaquant->get_x(), $attaquant->get_y()))
 	$round_total = 20;
 	$attaquant->set_reserve($attaquant->get_reserve() * 2);
 	$defenseur->set_reserve($defenseur->get_reserve() * 2);
+	$W_case = convertd_in_pos($defenseur->get_x(), $defenseur->get_y());
+	$W_distance = detection_distance($W_case, convertd_in_pos($attaquant->get_x(), $attaquant->get_y()));
 	//Un monstre attaque pas de pa pour attaquer
 	if(array_key_exists('attaque_donjon', $_SESSION) AND $_SESSION['attaque_donjon'] == 'ok')
 	{
@@ -182,7 +185,6 @@ else
 		}
 	} //fin $type = 'joueur'
 	if($type == 'siege' OR $type == 'ville') $round_total = 1;
-	else $round_total = $G_round_total;
 	$round = 1;
 	$attaquant->etat = array();
 	$defenseur->etat = array();

@@ -181,7 +181,7 @@ if (isset($_GET['deplacement']))
 					$row = $db->read_row($req);
 					$_SESSION['attaque_donjon'] = 'ok';
 					?>
-					<img src="image/pixel.gif" onLoad="envoiInfo('attaque.php?id=<?php echo $row[0]; ?>&type=monstre', 'information'); javascript:alert('Un monstre vous attaque sauvagement !');" />
+					<img src="image/pixel.gif" onLoad="envoiInfo('attaque.php?id_monstre=<?php echo $row[0]; ?>&type=monstre', 'information'); javascript:alert('Un monstre vous attaque sauvagement !');" />
 					<?php
 				}
 			}
