@@ -643,6 +643,12 @@ class entite
 		else return null;
 	}
 
+	function get_liste_quete()
+	{
+		if ($this->type == 'joueur') return $this->objet_ref->get_liste_quete();
+		else return null;
+	}
+
 	function get_honneur()
 	{
 		if($this->type == 'joueur') return $this->objet_ref->get_honneur();
