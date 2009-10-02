@@ -37,6 +37,13 @@ function verif_action($type_cible, $joueur, $mode)
 		$echo = '';
 		while($i < $count && array_key_exists('id_quete', $liste_quete[$i]))
 		{
+			if ($liste_quete[$i]['id_quete'] == '') {
+				mail('irulan@geekwu.org', '[Starshine-Online] bug', $joueur->get_nom().
+						 " a une quete invalide dans sa liste\n".
+						 print_r($liste_quete, true));
+				$i++;
+				continue;
+			}
 			$requete = "SELECT id, nom, objectif, honneur, star, exp, reward, mode FROM quete WHERE id = ".$liste_quete[$i]['id_quete'];
 			$req = $db->query($requete);
 			$row = $db->read_array($req);
