@@ -182,7 +182,7 @@ if(!$visu AND isset($_GET['action']))
 					$fin = false;
 					$i = 0;
 					$materiel = $joueur->recherche_objet('o2');
-					my_dump($materiel);
+					//my_dump($materiel);
 					if ($materiel == false) {
 						echo '<h5>Vous n\'avez pas de materiel d\'identification</h5>';
 						$fin = true;
