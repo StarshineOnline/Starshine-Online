@@ -20,6 +20,7 @@ $map = new map($x, $y, 3, '', true);
 $map->get_pnj();
 $map->get_joueur($objXY->race);
 $map->get_monstre($level);
+$map->onclick_status = true;
 
 $map->affiche();
 ?>
