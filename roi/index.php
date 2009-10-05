@@ -1,12 +1,13 @@
 <?php
 if (file_exists('../root.php'))
   include_once('../root.php');
-?><?php
+
 //Connexion obligatoire
 $connexion = true;
 //Inclusion du haut du document html
 include_once(root.'inc/fp.php');
 
+global $joueur;
 $joueur = new perso($_SESSION['ID']);
 if($joueur->get_grade()->get_id() == 6)
 {
