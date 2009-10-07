@@ -12,7 +12,6 @@ include_once(root.'haut.php');
 <script type="text/javascript">
 window.onload = function()
 {
-	new Draggable('popup', {handle: 'popup_menu'});
 	<?php if($_COOKIE['dernier_affichage_popup'] < (time() - 3600)) echo 'affichePopUp(\'message_accueil.php\');'; ?>
 }
 </script>

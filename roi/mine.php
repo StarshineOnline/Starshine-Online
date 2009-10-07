@@ -189,7 +189,7 @@ elseif(array_key_exists('case', $_GET))
 						}
 						?>
 						</select>
-						<input type="button" onclick="envoiInfo('mine.php?bourg=<?php echo $_GET['id_bourg']; ?>&amp;x=<?php echo $coord['x']; ?>&amp;y=<?php echo $coord['y']; ?>&amp;add=' + $('type_mine').value, 'popup_content');" value="Valider" />
+						<input type="button" onclick="envoiInfo('mine.php?bourg=<?php echo $_GET['id_bourg']; ?>&amp;x=<?php echo $coord['x']; ?>&amp;y=<?php echo $coord['y']; ?>&amp;add=' + $('#type_mine').val(), 'popup_content');" value="Valider" />
 						<?php
 					}
 				}

@@ -1,115 +1,9 @@
-/**
-* Permet d'envoyer des données en GET ou POST en utilisant les XmlHttpRequest
-*/
-function sendData(data, page, div, method)
-{
-    if(document.all && !window.opera)
-    {
-        //Internet Explorer
-        var XhrObj = new ActiveXObject("Microsoft.XMLHTTP") ;
-    }//fin if
-    else
-    {
-        //Mozilla
-        var XhrObj = new XMLHttpRequest();
-    }//fin else
-    
-    //définition de l'endroit d'affichage:
-    var content = document.getElementById(div);
-    
-    //si on envoie par la méthode GET:
-    if(method == "GET")
-    {
-        if(data == 'null')
-        {
-            //Ouverture du fichier sélectionné:
-            XhrObj.open("GET", page);
-        }//fin if
-        else
-        {
-            //Ouverture du fichier en methode GET
-            XhrObj.open("GET", page+"?"+data);
-        }//fin else
-    }//fin if
-    else if(method == "POST")
-    {
-        //Ouverture du fichier en methode POST
-        XhrObj.open("POST", page);
-    }//fin elseif
-
-    //Ok pour la page cible
-    XhrObj.onreadystatechange = function()
-    {
-        if (XhrObj.readyState == 4 && XhrObj.status == 200)
-            content.innerHTML = XhrObj.responseText ;
-    }    
-
-    if(method == "GET")
-    {
-        XhrObj.send(null);
-    }//fin if
-    else if(method == "POST")
-    {
-        XhrObj.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
-        XhrObj.send(data);
-    }//fin elseif
-}//fin fonction SendData
-
 function envoiInfoPost(page,position)
 {
 	function Affiche(requete){$(position).innerHTML = requete.responseText; Hidechargement();}
 	new Ajax.Request(page,{method:'get',onLoading:Loadchargement,onComplete:Affiche});
 }
 
-function envoiInfoPostData(page, div, data)
-{
-    sendData(data, page, div, 'POST')
-}
-
-/**
-* Permet d'afficher une info bulle au passage d'une case
-*/
-function afficheInfo(id, display, evt, xml)
-{
-	if(document.all) // IE
-	{
-		x = evt.x + document.body.scrollLeft;
-		y = evt.y + document.body.scrollTop;
-		dwidth = document.body.clientWidth;
-		dheight = document.body.clientHeight;
-	}
-	else // FF
-	{
-		x = evt.pageX;
-		y = evt.pageY;
-		dwidth = document.width;
-		dheight = document.height;
-	}
-
-	if(xml == 'centre')
-	{
-	}
-
-	element = document.getElementById(id);
-
-	//ehg = parseInt(element.style.top);
-	ewidth = parseInt(element.style.width);
-	eheight = parseInt(element.clientHeight);
-	if((x + ewidth) > dwidth)
-	{
-		x = x - ewidth - 15;
-	}
-	else x += 10;
-	if(((y + eheight) > dheight) && y > 100)
-	{
-		y = y - eheight - 15;
-	}
-	else y += 10;
-	element.style.top 	= y + "px";
-	element.style.left 	= x + "px";
-
-	element.style.display = display;
-}
 
 function montre(id)
 {
@@ -202,19 +96,7 @@ function checkCase()
 
 
 // Déplacement sur la carte
-function Loadchargement()
-{
-	$('loading').show();
-}
-function Hidechargement()
-{
-	$('loading').hide();
-}
-function AfficheCarte(map)
-{
-	$('centre').innerHTML = map.responseText;
-	$('loading').hide();
-}
+
 
 function deplacement(direction, cache, royaume)
 {
@@ -228,26 +110,23 @@ function deplacement(direction, cache, royaume)
 	else
 		royaume = '';
 	
-	new Ajax.Request('./deplacement.php',{method:'get',parameters:'deplacement='+direction+cache+royaume,onLoading:Loadchargement,onComplete:AfficheCarte});
+	$('#centre').load('./deplacement.php?deplacement='+direction+cache+royaume);
 }
 
 function affiche_info(id_case)
 {	
-	function Chargement(){$('loading_information').show();}
-	function Affiche(requete){$('information').innerHTML = requete.responseText;$('loading_information').hide();}
-	new Ajax.Request('./informationcase.php',{method:'get',parameters:'case='+id_case,onLoading:Chargement,onComplete:Affiche});
+  $('information').load('./informationcase.php?case='+id_case);
+
 }
 
 function refresh(page,position)
 {	
-	function Affiche(requete){$(position).innerHTML = requete.responseText;}
-	new Ajax.Request(page,{method:'get',parameters:'javascript=oui',onComplete:Affiche});
+	$('#' + position).load(page);
+	return false;
 }
 
 function envoiInfo(page,position)
 {
-	//alert('@' + position + '@');
-	//function Affiche(requete){$(position).innerHTML = requete.responseText; Hidechargement(); nd();}
 	$('#' + position).load(page);
 	return false;
 }
@@ -273,40 +152,36 @@ function envoiFormulaireGET(formulaire, position)
 	return false;
 }
 
-function affichePopUp(input_name,input_get)
+function affichePopUp(input_name)
 {
-	function AffichePopup(resultat)
-	{
-		$('popup').show();
-		$('popup_content').innerHTML = resultat.responseText;
-		Hidechargement();
-	}
-	new Ajax.Request(input_name,{method:'get',parameters:input_get,onLoading:Loadchargement,onComplete:AffichePopup});
+	$('#popup').show();
+	$('#popup_content').load(input_name);
 }
 function fermePopUp()
 {
-	Effect.DropOut('popup', { duration: 0.5 });
-	$('popup_content').innerHTML = '';
+	$('#popup').hide();
+	$('#popup_content').innerHTML = '';
 }
 function menu_change(input_name)
 {
-	if ($('menu_encours').value=='')
+	if ($('#menu_encours').val() =='')
 	{
-		$('menu_encours').value= input_name;
-		$(input_name).addClassName('select');
-		$(input_name+'_menu').show();
+		$('#menu_encours').val(input_name) ;
+		$('#'+input_name).addClass('select');
+		$('#'+input_name+'_menu').show();
 	}
 	else
 	{
-		var tmp = $('menu_encours').value;
-		$(tmp+'_menu').hide();
-		$(tmp).removeClassName('select');
-		$('menu_encours').value= input_name;
-		$(input_name).addClassName('select');
-		$(input_name+'_menu').show();
+		var tmp = $('#menu_encours').val();
+		$('#'+tmp+'_menu').hide();
+		$('#'+tmp).removeClass('select');
+		$('#menu_encours').val(input_name);
+		$('#'+input_name).addClass('select');
+		$('#'+input_name+'_menu').show();
 	}
-}
+	$('#message_confirm').innerHTML = '';
 
+}
 
 function adresse(tri, i, race)
 {
