@@ -141,6 +141,9 @@ include_once(root.'inc/fp.php');
 						{
 							require('connect_forum.php');
 							$perso = recupperso($_SESSION['ID']);
+							$groupe = recupgroupe($_SESSION['ID']);
+							if($groupe !== null)
+								degroup($perso['id'], $groupe['id']);
 							$requete = "INSERT INTO punbbbans VALUES('', '".$perso['nom']."', NULL, NULL, NULL, NULL, 0)";
 							if($db_forum->query($requete)) echo 'Votre personnage est bien supprimé';
 							unset($_COOKIE['nom']);
