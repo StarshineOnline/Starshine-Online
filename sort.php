@@ -517,10 +517,13 @@ if (isset($_GET['ID']))
 						{
 							echo 'Le sort '.$sort->get_nom().' a été lancé avec succès sur '.$cible->get_nom().'<br />';
 							//Insertion du debuff dans les journaux des 2 joueurs
-							$requete = "INSERT INTO journal VALUES(NULL,  ".$joueur->get_id().", 'debuff', '".$joueur->get_nom()."', '".$cible->get_nom()."', NOW(), '".$sort->get_nom()."', 0, ".$joueur->get_x().", ".$joueur->get_y().")";
-							$db->query($requete);
-							$requete = "INSERT INTO journal VALUES(NULL,  ".$cible->get_id().", 'rdebuff', '".$cible->get_nom()."', '".$joueur->get_nom()."', NOW(), '".$sort->get_nom()."', 0, ".$joueur->get_x().", ".$joueur->get_y().")";
-							$db->query($requete);
+							if($type_cible != 'monstre')
+							{
+								$requete = "INSERT INTO journal VALUES(NULL,  ".$joueur->get_id().", 'debuff', '".$joueur->get_nom()."', '".$cible->get_nom()."', NOW(), '".$sort->get_nom()."', 0, ".$joueur->get_x().", ".$joueur->get_y().")";
+								$db->query($requete);
+								$requete = "INSERT INTO journal VALUES(NULL,  ".$cible->get_id().", 'rdebuff', '".$cible->get_nom()."', '".$joueur->get_nom()."', NOW(), '".$sort->get_nom()."', 0, ".$joueur->get_x().", ".$joueur->get_y().")";
+								$db->query($requete);
+							}
 						}
 						else
 						{
