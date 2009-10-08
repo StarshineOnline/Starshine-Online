@@ -30,6 +30,7 @@ switch($type)
 		$joueur_defenseur->buff = $map_monstre->get_buff();
 		$attaquant = new entite('joueur', $joueur);
 		$defenseur = new entite('monstre', $joueur_defenseur);
+		$diff_lvl = abs($attaquant->get_level() - $defenseur->get_level());
 	break;
 	case 'batiment' :
 		$joueur = new perso($_SESSION['ID']);
@@ -1132,7 +1133,8 @@ else
 					$requete = "INSERT INTO journal VALUES('', ".$joueur_defenseur->get_id().", 'mort', '".$joueur_defenseur->get_nom()."', '".$joueur->get_nom()."', NOW(), 0, 0, ".$joueur_defenseur->get_x().", ".$joueur_defenseur->get_y().")";
 					$db->query($requete);
 				}
-				elseif($attaquant->get_hp() <= 0)
+				
+				if($attaquant->get_hp() <= 0)
 				{
 					$requete = "INSERT INTO journal VALUES('', ".$joueur->get_id().", 'mort', '".$joueur->get_nom()."', '".$joueur_defenseur->get_nom()."', NOW(), 0, 0, ".$joueur_defenseur->get_x().", ".$joueur_defenseur->get_y().")";
 					$db->query($requete);
@@ -1144,6 +1146,13 @@ else
 		else
 		{
 			echo 'Vous êtes mort !<img src="image/pixel.gif" onload="window.location.reload();" />';
+			/* Crade */
+			if($type == 'monstre')
+			{
+				$coeff = 1 - ($diff_level * 0.02);
+				$joueur->set_honneur($joueur->get_honneur() * $coeff);
+				$joueur->sauver();
+			}
 		}
 	}
 	else
