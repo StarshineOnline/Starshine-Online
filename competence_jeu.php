@@ -143,9 +143,12 @@ if (isset($_GET['ID']))
 			case "esprit_libre" :
 					//-- Suppression d'un debuff au hasard
 					$debuff_tab = array();
-					foreach($joueur["debuff"] as $debuff)
+					foreach($joueur->get_buff() as $debuff)
 					{
-						if($debuff["supprimable"] == 1) { $debuff_tab[count($debuff_tab)] = $debuff["id"]; };
+						if($debuff->get_debuff() == 1) 
+						{ 
+							$debuff_tab[] = $debuff->get_id(); 
+						};
 					}
 					if(count($debuff_tab) > 0)
 					{
