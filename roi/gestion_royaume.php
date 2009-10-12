@@ -667,7 +667,7 @@ if($joueur->get_rang_royaume() != 6)
 				<span class='boutique_charbon' title='Cout en charbon'"; if ($royaume->get_charbon()<$row['charbon']){echo " style='font-style: italic;color:#BF0008;'";} echo ">".$row['charbon']."</span>
 				<span class='boutique_essence' title='Cout en Essence magique'"; if ($royaume->get_essence()<$row['essence']){echo " style='font-style: italic;color:#BF0008;'";} echo ">".$row['essence']."</span>
 				<span class='boutique_nombre'><input type='text' id='nbr$i' value='0' /></span>
-				<span class='boutique_nom'><a href='#' onclick=\"royaume_update('".$row['oid']."',$('nbr".$i."').value, 'update_objet_royaume')\">Acheter</a></span>
+				<span class='boutique_nom'><a href='#' onclick=\"royaume_update('".$row['oid']."',$('#nbr".$i."').val(), 'update_objet_royaume')\">Acheter</a></span>
 				</li>";
 				if ($boutique_class == 't1'){$boutique_class = 't2';}else{$boutique_class = 't1';}
 			$i++;

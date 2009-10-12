@@ -19,13 +19,13 @@ $W_distance = detection_distance($W_case,$_SESSION["position"]);
 $W_coord = convert_in_coord($W_case);
 
 
-if (isset($_POST['action']))
+if (isset($_GET['action']))
 {
-	switch($_POST['action'])
+	switch($_GET['action'])
 	{
 		case "update_objet_royaume":
-			$requete = "SELECT * FROM objet_royaume WHERE id = ".sSQL($_POST['id']);
-			$nombre = $_POST['nbr'];
+			$requete = "SELECT * FROM objet_royaume WHERE id = ".sSQL($_GET['id']);
+			$nombre = $_GET['nbr'];
 			$req = $db->query($requete);
 			$row = $db->read_assoc($req);
 			$check = true;
@@ -80,7 +80,7 @@ if (isset($_POST['action']))
 			}
 		break;
 		case 'update_motk':		
-			$message = addslashes($_POST['message']);
+			$message = addslashes($_GET['message']);
 			if ($message != '')
 			{
 				$requete = "UPDATE motk SET message = '".$message."', date = ".time()." WHERE id_royaume = ".$R->get_id();

@@ -29,11 +29,6 @@ function deplacement(direction)
 
 	new Ajax.Request('./deplacement.php',{method:'get',parameters:'deplacement='+direction,onLoading:Loadchargement,onComplete:AfficheCarte});
 }
-function refresh(page, position)
-{
-	function Affiche(requete){$(position).innerHTML = requete.responseText; Hidechargement()}
-	new Ajax.Request(page,{method:'get',onLoading:Loadchargement,onComplete:Affiche});
-}
 function menu_change(input_name)
 {
 	if ($('#menu_encours').val() =='')
@@ -74,14 +69,10 @@ function affiche_bataille(page,action)
 
 function royaume_update(id,nbr,action)
 {
-	function Affiche_Royaume(text)
-	{
-		$('loading').hide();	
-		refresh('gestion_royaume.php?direction=boutique','contenu_jeu');
-		refresh('perso_contenu.php','perso_contenu');			
-		$('message_confirm').innerHTML = text.responseText;
-	}
-	new Ajax.Request('./ajax/gestion_royaume_update.php',{method:'post',parameters:'id='+id+'&nbr='+nbr+'&action='+action,onLoading:Loadchargement,onComplete:Affiche_Royaume});
+	$('#message_confirm').load('./ajax/gestion_royaume_update.php?id='+id+'&nbr='+nbr+'&action='+action);
+	refresh('gestion_royaume.php?direction=boutique','contenu_jeu');
+	refresh('perso_contenu.php','perso_contenu');			
+
 }
 
 function minimap(x,y)
