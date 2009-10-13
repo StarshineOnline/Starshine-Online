@@ -135,9 +135,9 @@ if($joueur->get_rang_royaume() != 6)
 		<li class="'.$diplo_class.'">
 		<span class="drapeau"><img src="../image/g_etendard/g_etendard_'.$Trace[$keys[$i]]['numrace'].'.png" style="vertical-align : middle;height:30px;">'.$Gtrad[$keys[$i]].'</span>
 		<span class="diplo"><img src="'.$image_diplo.'" style="vertical-align : middle;height:25px;"> '.$Gtrad['diplo'.$row[$keys[$i]]].' </span>
-		<span class="liens" style="cursor:pointer;"><a style="font-size : 0.8em;" onclick="affichePopUp(\'gestion_royaume.php\',\'direction=diplomatie_modif&amp;race='.$keys[$i].'\');"><span class="xsmall">'.$show.'</span></a></span>
+		<span class="liens" style="cursor:pointer;"><a style="font-size : 0.8em;" onclick="affichePopUp(\'gestion_royaume.php?direction=diplomatie_modif&amp;race='.$keys[$i].'\');"><span class="xsmall">'.$show.'</span></a></span>
 		<span class="nom"><img src="../image/personnage/'.$roi->get_race().'/'.$roi->get_race().'_'.$Tclasse[$roi->get_classe()]["type"].'.png" alt="'.$roi->get_race().'" title="'.$roi->get_race().'" style="vertical-align: middle;float:left;height:28px;padding-right:15px;" />'.$roi->get_nom().'</span>
-		<span style="cursor:pointer;" onclick="affichePopUp(\'telephone.php\',\'id_dest='.$roi->get_id().'\');"><img src="../image/interface/message.png" alt="Envoyer un message" title="Envoyer un message"></span>
+		<span style="cursor:pointer;" onclick="affichePopUp(\'telephone.php?id_dest='.$roi->get_id().'\');"><img src="../image/interface/message.png" alt="Envoyer un message" title="Envoyer un message"></span>
 		
 		</li>';
 			}
@@ -177,11 +177,11 @@ if($joueur->get_rang_royaume() != 6)
 			Ces stars seront prise dès l'envoi de la demande.</span>
 			<input type="text" value="0" name="star" id="star" />
 				<?php
-				$href_star = "' + $('star').value";
+				$href_star = "' + $('#star').val()";
 			}
 			else $href_star = "0'";
 			?>
-			<input type="button" onclick="envoiInfo('gestion_royaume.php?direction=diplomatie&amp;action=valid&amp;race=<?php echo $_GET['race']; ?>&amp;diplo=' + $('diplo').value + '&amp;star=<?php echo $href_star; ?>, 'contenu_jeu');$('popup').hide();" value="Effectuer le changement diplomatique">
+			<input type="button" onclick="envoiInfo('gestion_royaume.php?direction=diplomatie&amp;action=valid&amp;race=<?php echo $_GET['race']; ?>&amp;diplo=' + $('#diplo').val() + '&amp;star=<?php echo $href_star; ?>, 'contenu_jeu');$('#popup').hide();" value="Effectuer le changement diplomatique">
 			<?php
 	}	
 	elseif($_GET['direction'] == 'diplomatie_demande')
@@ -346,6 +346,7 @@ if($joueur->get_rang_royaume() != 6)
 	}
 	elseif($_GET['direction'] == 'carte')
 	{
+		include('carte_roy.php');
 		echo '<img src="carte_roy2.php" style="width:600px;margin-left:170px;" />';
 	
 	}
@@ -577,7 +578,7 @@ if($joueur->get_rang_royaume() != 6)
     	<br />
     	 Montant de l'amende (max : <?php echo $amende_max; ?>) <input type="text" name="montant" id="montant" value='<?php echo $amende['montant'];?>' /><br />
     	 <br />
-    	 <input type="submit" value="Valider cette amende" onclick="envoiInfo('gestion_royaume.php?direction=gestion_criminel2&amp;id=<?php echo $joueur->get_id(); ?>&amp;acces_ville=' + $('acces_ville').checked + '&amp;spawn_ville=' + $('spawn_ville').checked + '&amp;statut=' + $('statut').value + '&amp;montant=' + $('montant').value, 'message_confirm');$('popup').hide();envoiInfo('gestion_royaume.php?direction=criminel','contenu_jeu');" />
+    	 <input type="submit" value="Valider cette amende" onclick="envoiInfo('gestion_royaume.php?direction=gestion_criminel2&amp;id=<?php echo $joueur->get_id(); ?>&amp;acces_ville=' + $('#acces_ville').checked + '&amp;spawn_ville=' + $('#spawn_ville').checked + '&amp;statut=' + $('#statut').val() + '&amp;montant=' + $('#montant').val(), 'message_confirm');$('#popup').hide();envoiInfo('gestion_royaume.php?direction=criminel','contenu_jeu');" />
 	       <?php
 	    
 	}
@@ -801,7 +802,7 @@ if($joueur->get_rang_royaume() != 6)
 				Prix total : <input type="text" name="prix" id="prix" value="0" /><br />
 				<input type="button" onclick="enchere();" value="Valider" /><br />
 			</div>
-			<a href="" onclick="Effect.toggle('ajout_ressource', 'slide'); return false;">Mettre des ressources aux enchères</a>
+			<a onclick="$('#ajout_ressource').slideToggle('slow');">Mettre des ressources aux enchères</a>
 		</div>
 		<div class='bourse_cours'>
 			<div id="cout_ressource" style="position : relative; right : 0px; display : none; z-index : 10;">
@@ -816,7 +817,7 @@ if($joueur->get_rang_royaume() != 6)
 				?>
 				</ul>
 			</div>
-			<a href="" onclick="Effect.toggle('cout_ressource', 'slide'); return false;">Cours des ressources</a>
+			<a onclick="$('#cout_ressource').slideToggle('slow');">Cours des ressources</a>
 		</div>
 		<fieldset>
 		<legend>Enchères en cours</legend>

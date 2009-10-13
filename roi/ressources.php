@@ -89,12 +89,9 @@ else
 	$req = $db->query($requete);
 	while($row = $db->read_assoc($req))
 	{
-		if($row['tot'] > 0)
-		{
 			$typeterrain = type_terrain($row['info']);
 			$ressources[$typeterrain[1]] = $row['tot'];
 			$terrain_ress[$typeterrain[1]] = $row['tot_terrain'];
-		}
 	}
 	//Ressource normale
 	foreach($ress as $key_terr => $terr)
@@ -210,7 +207,7 @@ else
 	
 	?>
 	</ul></div>
-	<h3>Vous contrôllez</h3>
+	<h3>Vous contrôllez </h3>
 	<ul>
 	<?php
 	foreach($terrain_ress as $terrain => $total)

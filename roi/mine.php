@@ -189,7 +189,7 @@ elseif(array_key_exists('case', $_GET))
 						}
 						?>
 						</select>
-						<input type="button" onclick="envoiInfo('mine.php?bourg=<?php echo $_GET['id_bourg']; ?>&amp;x=<?php echo $coord['x']; ?>&amp;y=<?php echo $coord['y']; ?>&amp;add=' + $('#type_mine').val(), 'popup_content');" value="Valider" />
+						<input type="button" onclick="envoiInfo('mine.php?bourg=<?php echo $_GET['id_bourg']; ?>&amp;x=<?php echo $coord['x']; ?>&amp;y=<?php echo $coord['y']; ?>&amp;add=' + $('#type_mine').val(), 'popup_content');refresh('mine.php?id=<?php echo $bourg->get_id();?>','contenu_jeu');$('#popup').hide();" value="Valider" />
 						<?php
 					}
 				}
@@ -249,10 +249,10 @@ elseif(array_key_exists('up', $_GET))
 {
 	$mine = new mine($_GET['mine']);
 	$mine->get_evolution();
-
-
+	echo $mine->evolution['cond1']."<br />";
+	echo (time() - $mine->get_date_construction());
 	//On vérifie si on a assez de stars
-	if($royaume->get_star() >= $mine->evolution['cout'])
+/*	if(($royaume->get_star() >= $mine->evolution['cout']) AND ($mine->evolution['cond1'] < (time() - $mine->get_date_construction())) )
 	{
 		$mine->hp = round(($mine->hp / $mine->get_hp_max()) * $mine->evolution['hp']);
 		$mine->id_batiment = $mine->evolution['id'];
@@ -267,7 +267,7 @@ elseif(array_key_exists('up', $_GET))
 	else
 	{
 		echo 'Vous n\'avez pas assez de stars';
-	}
+	}*/
 }
 elseif(array_key_exists('suppr', $_GET))
 {

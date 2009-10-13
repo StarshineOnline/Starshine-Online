@@ -28,7 +28,7 @@ else
 	if (empty($message)){$message = "Aucune propagande pour l'instant";}
 	echo "<fieldset>";
 	echo "<legend>Propagande actuelle</legend>
-	<div id='message_propagande' onclick=\"$('message_propagande_edit').show();$('message_propagande').hide();\">
+	<div id='message_propagande' onclick=\"$('#message_propagande_edit').show();$('#message_propagande').hide();\">
 	".$message."
 	</div>";
 	?>

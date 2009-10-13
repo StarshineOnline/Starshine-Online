@@ -37,7 +37,7 @@ else
 			}
 		?>
 		</select>
-		<input type="button" onclick="envoiInfo('taxe.php?direction=taxe&amp;action=valid&amp;taux=' + $('taux').value, 'contenu_jeu')" value="Ok" />
+		<input type="button" onclick="envoiInfo('taxe.php?direction=taxe&amp;action=valid&amp;taux=' + $('#taux').val(), 'contenu_jeu')" value="Ok" />
 	</form>
 	<?php
 	}

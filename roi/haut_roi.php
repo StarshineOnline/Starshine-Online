@@ -7,8 +7,9 @@ include_once(root.'haut_ajax.php');
 
 $joueur = new perso($_SESSION['ID']);
 
-check_perso($joueur);
-
+$joueur->check_perso();
+$case = new map_case();
+$case->check_case('all');
 //Véifie si le perso est mort
 verif_mort($joueur, 1);
 
