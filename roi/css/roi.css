@@ -52,6 +52,10 @@ body 								{margin:0;padding:0;background:#7e909c url('../../image/v2/bg_site.
 #menu_details .menu:hover 			{background:transparent url('../../image/v2/bouton_hover.png') no-repeat left;padding-top:1px;}
 #menu_deco 							{float : right; cursor : pointer; margin-right : 9px; line-height : 20px; font-size : 0.9em;}
 
+.select_repere 						{border:1px solid red;
+display:block;
+height:16px;
+width:16px;}
 
 
 #contenu_back 						{margin:0;padding:0;overflow: auto;}

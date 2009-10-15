@@ -36,7 +36,7 @@ $propagande[$race] = $propa;
 
 
 echo "<h3>".$Gtrad[$race]." - ".$classe."</h3>
-		<div class='personnage_box'>
+		<div id='personnage_box' class='personnage_box'>
 			<strong>Stars au début du jeu :</strong> ".$stars[$race]."<br />
 			<br />
 			<strong>Passif :</strong><br />

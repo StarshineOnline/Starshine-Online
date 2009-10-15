@@ -599,11 +599,11 @@ if($joueur->get_rang_royaume() != 6)
 	        	$req_test = $db->query("SELECT * FROM amende WHERE id_joueur = ".$joueur->get_id()."");
 	        	if ($db->num_rows>0)
 	        	{
-		        	$requete = "UPDATE amende SET montant = ".sSQL($_GET['montant'])."
+		        	$requete = "UPDATE amende SET montant = '".sSQL($_GET['montant'])."'
 		        								AND acces_ville = '".$acces_ville."'
 		        								AND respawn_ville = '".$spawn_ville."'
 		        								AND statut = '".sSQL($_GET['statut'])."'
-		        								WHERE id_joueur = ".$joueur->get_id()."')";
+		        								WHERE id_joueur = '".$joueur->get_id()."'";
 		        	if($db->query($requete))
 		        	{
 		            	$amende = recup_amende($joueur->get_id());

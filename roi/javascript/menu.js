@@ -26,13 +26,13 @@ function menu_change(input_name)
 		$('#'+input_name).addClass('select');
 		$('#'+input_name+'_menu').show();
 	}
-	$('#message_confirm').innerHTML = '';
+	$('#message_confirm').text('');
 	
 
 }
 function affiche_page(page)
 {
-	$('#message_confirm').innerHTML = '';
+	$('#message_confirm').text('');
 	$('#contenu_jeu').load(page);
 	
 }
@@ -40,7 +40,7 @@ function affiche_page(page)
 function affiche_bataille(page,action)
 {
 	$('#contenu_jeu').load(page+'?'+action);
-	$('#message_confirm').innerHTML = '';
+	$('#message_confirm').text('');
 }
 
 function royaume_update(id,nbr,action)
@@ -61,6 +61,22 @@ function texte_update(message,action)
 	refresh('propagande.php','contenu_jeu');
 	
 }
+function repere_bataille(input_id)
+{
+	if ($('#case_old').val() == '')
+	{
+		$('#case_old').val(input_id);
+		$('#pos_'+input_id).addClass('select_repere');
+	}
+	else
+	{
+		$('#pos_'+$('#case_old').val()).removeClass('select_repere');	
+		$('#case_old').val(input_id);
+		$('#pos_'+input_id).addClass('select_repere');
+	}
+	
+}
+
 function select_groupe(groupeid)
 {
 	if ($('#groupe_'+groupeid).val() == 0)

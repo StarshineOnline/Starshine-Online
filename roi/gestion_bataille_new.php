@@ -38,46 +38,48 @@ else
 {
 	echo "
 	<div id='bataille_new'>
+	<input type='hidden' name='case_old' id='case_old' value='' />
+
 	<fieldset>
 	<legend>Information</legend>
 	<label>Nom : </label><span><input type='text' name='nom' id='nom' /></span>
 	<label>Description : </label><span><textarea name='description' id='description'></textarea></span>
 	<label>Action</label><span>";
 	
-$requete = "SELECT  id,	nom, description FROM bataille_repere_type";
-$req = $db->query($requete);
-echo "<select>";
-while($row = $db->read_assoc($req))
-{
-	echo "<option value='".$row['id']."'>".$row['nom']."</option>";
-}
-echo "</select></span>
+	$requete = "SELECT  id,	nom, description FROM bataille_repere_type";
+	$req = $db->query($requete);
+	echo "<select>";
+	while($row = $db->read_assoc($req))
+	{
+		echo "<option value='".$row['id']."'>".$row['nom']."</option>";
+	}
+	echo "</select></span>
+		
+		</fieldset>";
+		
+	$requete = "SELECT groupe.id as groupeid, groupe.nom as groupenom, groupe_joueur.id_joueur, perso.nom, perso.race FROM groupe LEFT JOIN groupe_joueur ON groupe.id = groupe_joueur.id_groupe LEFT JOIN perso ON groupe_joueur.id_joueur = perso.ID WHERE groupe_joueur.leader = 'y' AND perso.race = '".$joueur->get_race()."'";
+	$req = $db->query($requete);
+	echo "<fieldset>
+	<legend>Groupe Disponible</legend>
+	<ul>";
+	$class_groupe = 't1';
+	while($row = $db->read_assoc($req))
+	{
+		if($row['groupenom'] == '') $row['groupenom'] = '-----';
+		echo "<li id='ligroupe_".$row['groupeid']."' class='$class_groupe' onclick=\"select_groupe('".$row['groupeid']."')\">".$row['groupenom']."</li>";
+		echo "<input type='hidden' id='groupe_".$row['groupeid']."' name='groupe_".$row['groupeid']."' value='0' />";
+		if ($class_groupe == 't1'){$class_groupe = 't2';}else{$class_groupe = 't1';}	    
 	
-	</fieldset>";
-	
-$requete = "SELECT groupe.id as groupeid, groupe.nom as groupenom, groupe_joueur.id_joueur, perso.nom, perso.race FROM groupe LEFT JOIN groupe_joueur ON groupe.id = groupe_joueur.id_groupe LEFT JOIN perso ON groupe_joueur.id_joueur = perso.ID WHERE groupe_joueur.leader = 'y' AND perso.race = '".$joueur->get_race()."'";
-$req = $db->query($requete);
-echo "<fieldset>
-<legend>Groupe Disponible</legend>
-<ul>";
-$class_groupe = 't1';
-while($row = $db->read_assoc($req))
-{
-	if($row['groupenom'] == '') $row['groupenom'] = '-----';
-	echo "<li id='ligroupe_".$row['groupeid']."' class='$class_groupe' onclick=\"select_groupe('".$row['groupeid']."')\">".$row['groupenom']."</li>";
-	echo "<input type='hidden' id='groupe_".$row['groupeid']."' name='groupe_".$row['groupeid']."' value='0' />";
-	if ($class_groupe == 't1'){$class_groupe = 't2';}else{$class_groupe = 't1';}	    
-
-}
-echo "</ul>";
-echo "</fieldset>
-</div>";
+	}
+	echo "</ul>";
+	echo "</fieldset>
+	</div>";
 	$x = $Trace[$royaume->get_race()]['spawn_x'];
 	$y = $Trace[$royaume->get_race()]['spawn_y'];
 	$map = new map($x, $y, 8, '../', false, 'low');
 	$map->onclick_status = true;
 	
-	$map->set_onclick("envoiInfo('gestion_bataille.php?valide_choix_bataille&amp;case=%%id%%', 'valide_choix_bataille');");
+	$map->set_onclick("envoiInfo('gestion_bataille.php?valide_choix_bataille&amp;case=%%id%%', 'valide_choix_bataille');repere_bataille('%%id%%');");
 	$map->quadrillage = true;
 	echo "<div id='choix_bataille'>";
 	echo "<div style='float:left;'>";

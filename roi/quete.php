@@ -98,7 +98,7 @@ elseif($_GET['action'] == 'voir')
 	</ul>
 	<h3>Cout pour le royaume : <?php echo $row['star_royaume']; ?> stars</h3>
 	<br />
-	<a onclick="envoiInfo('quete.php?direction=quete&amp;action=achat&amp;id=<?php echo $row['id']; ?>','message_confirm');envoiInfo('quete.php','contenu_jeu');refresh('perso_contenu.php','perso_contenu');$('popup').hide();">Acheter cette quète</a><br />
+	<a onclick="envoiInfo('quete.php?direction=quete&amp;action=achat&amp;id=<?php echo $row['id']; ?>','message_confirm');envoiInfo('quete.php','contenu_jeu');refresh('perso_contenu.php','perso_contenu');$('#popup').hide();">Acheter cette quète</a><br />
 	<br />
 	<?php
 }
@@ -134,7 +134,7 @@ else
 			<span class='quete_star'>".$quete->star."</span>
 			<span class='quete_exp'>".$quete->exp."</span>
 			<span class='quete_honneur'>".$quete->honneur."</span>
-			<span class='quete_achat'><a onclick=\"affichePopUp('quete.php','".$href."');\" id='quete_".$quete->id."'>Détails de la quète</a></span>
+			<span class='quete_achat'><a onclick=\"affichePopUp('quete.php?".$href."');\" id='quete_".$quete->id."'>Détails de la quète</a></span>
 		</li>";
 		if ($class == 't1'){$class = 't2';}else{$class = 't1';}		
 	}

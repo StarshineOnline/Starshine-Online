@@ -60,13 +60,13 @@ if($joueur->get_grade()->get_id() == 6)
 	echo "		
 	function validation_bataille()
 	{		
-		data = 'nom=' + $('nom').value + '&description=' + $('description').value + '&x=' + $('x').value + '&y=' + $('y').value + '&new2' ";
+		data = 'nom=' + $('#nom').val() + '&description=' + $('#description').val() + '&x=' + $('#x').val() + '&y=' + $('#y').val() + '&new2' ";
 		$requete = "SELECT groupe.id as groupeid, groupe.nom as groupenom, groupe_joueur.id_joueur, perso.nom, perso.race FROM groupe LEFT JOIN groupe_joueur ON groupe.id = groupe_joueur.id_groupe LEFT JOIN perso ON groupe_joueur.id_joueur = perso.ID WHERE groupe_joueur.leader = 'y' AND perso.race = '".$joueur->get_race()."'";
 		$req = $db->query($requete);
 		while($row = $db->read_assoc($req))
 		{
 			echo "
-			if ($('groupe_".$row['groupeid']."').value == 1)
+			if ($('#groupe_".$row['groupeid']."').val() == 1)
 			{
 				data = data+'&groupe_".$row['groupeid']."=1'
 			}

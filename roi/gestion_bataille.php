@@ -60,7 +60,7 @@ elseif(array_key_exists('move_map', $_GET))
 	if(array_key_exists('y', $_GET)) $y = $_GET['y'];
 	else $y = $Trace[$royaume->get_race()]['spawn_y'];
 	$map = new map($x, $y, 8, '../', false, 'low');
-	$map->set_onclick("envoiInfo('gestion_bataille.php?valide_choix_bataille&amp;case=%%id%%', 'valide_choix_bataille');");
+	$map->set_onclick("envoiInfo('gestion_bataille.php?valide_choix_bataille&amp;case=%%id%%', 'valide_choix_bataille');repere_bataille('%%id%%');");
 	$map->onclick_status = true;	
 	
 	$map->affiche();
@@ -94,11 +94,15 @@ elseif(array_key_exists('move_map', $_GET))
 elseif(array_key_exists('valide_choix_bataille', $_GET))
 {
 	$coord = convert_in_coord($_GET['case']);
-	?>
-	Vous avez séléctionné X : <?php echo $coord['x']; ?> / Y : <?php echo $coord['y']; ?> comme centre de la bataille.
-	<input type="hidden" name="x" id="x" value="<?php echo $coord['x']; ?>" />
-	<input type="hidden" name="y" id="y" value="<?php echo $coord['y']; ?>" />
-	<?php
+	
+	echo "Vous avez séléctionné X :".$coord['x']."/ Y :".$coord['y']." comme centre de la bataille.
+	<input type='hidden' name='x' id='x' value='".$coord['x']."' />
+	<input type='hidden' name='y' id='y' value='".$coord['y']."' />
+	
+	<input type='hidden' name='case' id='case' value='".$_GET['case']."' />";
+
+	
+
 }
 //Refresh de la carte de la bataille
 elseif(array_key_exists('refresh_bataille', $_GET))

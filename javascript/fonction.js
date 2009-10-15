@@ -160,7 +160,7 @@ function affichePopUp(input_name)
 function fermePopUp()
 {
 	$('#popup').hide();
-	$('#popup_content').innerHTML = '';
+	$('#popup_content').text('');
 }
 function menu_change(input_name)
 {
@@ -179,7 +179,7 @@ function menu_change(input_name)
 		$('#'+input_name).addClass('select');
 		$('#'+input_name+'_menu').show();
 	}
-	$('#message_confirm').innerHTML = '';
+	$('#message_confirm').text('');
 
 }
 

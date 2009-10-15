@@ -1,195 +1,184 @@
-body {margin:0;padding:0;color:#222;background:#000 url('./../image/site/essai_intro_sso_20sept09g.jpg') no-repeat 50% 0%;}
-img {border : 0px;}
-a {color:#FFF;}
-#accueil {width:1024px;margin: auto;	font: 13px "Helvetica Neue", Helvetica, Arial, Geneva, sans-serif;}
+body 								{ margin:0; padding:0; color:#222; background:#000 url(./../image/site/essai_intro_sso_20sept09g.jpg) no-repeat 50% 0; }
+img 								{ border:0; }
+a 									{ color:#FFF; }
 
-#accueil .box {height:357px;padding:10px;position : absolute;width:530px;background:transparent url('./../image/site/cadrecentrepagesso.png') no-repeat scroll 0 0;color:#e2d1aa;overflow: auto;text-align: justify;}
-#presentation_box {padding-left:5px;width:503px;}
-#news_box h2 {font-size : 1.2em; margin : 0; padding : 0; margin-bottom : 3px;}
-#news_box h2 a {color:#EEE;}
-#news_box a {color : #DDD;}
-#news_box .comms {font-size : 0.9em;}
-.news {font-size: 11px; margin-bottom : 10px; padding-bottom : 5px; border-bottom : 1px dotted #EEE;}
+/*-- Placement ----------------------------------------------------------*/
 
-#screenshot_box ul {padding : 0; margin : 0;}
-#screenshot_box ul li {list-style-type : none; float : left; width : 175px; text-align : center; height : 90px; line-height : 75px; vertical-align : middle;}
-#screenshot_box ul li img {vertical-align : middle;}
+#accueil 							{ width:1024px; margin:auto; font:13px "Helvetica Neue", Helvetica, Arial, Geneva, sans-serif; }
+#accueil .box 						{ height:357px; padding:10px; position:absolute; width:530px; background:transparent url(./../image/site/cadrecentrepagesso.png) no-repeat scroll 0 0; color:#e2d1aa; overflow:auto; text-align:justify; }
+#presentation_box 					{ padding-left:5px; width:503px; }
+#news_box h2 						{ font-size:1.2em; margin:0; padding:0; margin-bottom:3px; }
+#news_box h2 a 						{ color:#EEE; }
+#news_box a 						{ color:#DDD; }
+#news_box .comms 					{ font-size:.9em; }
+.news 								{ font-size:11px; margin-bottom:10px; padding-bottom:5px; border-bottom:1px dotted #EEE; }
+#screenshot_box ul 					{ padding:0; margin:0; }
+#screenshot_box ul li 				{ list-style-type:none; float:left; width:175px; text-align:center; height:90px; line-height:75px; vertical-align:middle; }
+#screenshot_box ul li img 			{ vertical-align:middle; }
+.creation_text 						{ float:left; display:block; width:200px; }
+#login 								{ padding:3px 10px 0; margin-left:71px; width:530px; position:absolute; background:transparent url(./../image/site/cadrehautpagesso.png) no-repeat scroll 0 0; color:#EEE; height:75px; font-size:11px; top:0; }
+#login_ok 							{ color:#E2D1AA;padding:21px 95px 0; margin-left:71px; width:530px; position:absolute; background:transparent url(./../image/site/cadrehautpagesso1.png) no-repeat scroll 0 0; color:#EEE; height:75px; font-size:11px; top:0; }
+#login_ok a 						{ color:#E2D1AA;text-decoration: none;}
+.login_nom 							{ background-color:#000000; border:0 none; color:white; float:left; height:13px; margin-left:52px; margin-top:19px; text-align:left; width:81px; }
+.login_mdp 							{ background-color:#000000; border:0 none; color:white; float:left; height:13px; margin-left:54px; margin-top:19px; text-align:left; width:80px; }
+.login_auto 						{ background-color:#000000; border:0 none; color:white; float:left; height:13px; margin-left:76px; margin-top:19px; text-align:left; width:14px; }
+.login_connexion 					{ background-color:#000000; border:0 none; color:white; float:left; height:16px; margin-left:13px; margin-top:19px; text-align:left; width:62px; }
+#login a 							{ color:#EEE; font-size:13px; }
+#login #deco 						{ float:right; cursor:pointer; }
+#carac 								{ float:left; width:150px; padding:0; margin:0; }
+#carac li 							{ list-style-type:none; cursor:default; }
+#carac li span 						{ width:75px; float:left; }
+#loading_sso 						{ background:transparent url(./../image/v2/ajax-activity-loader.gif); height:32px; width:32px; position:absolute; top:0; margin-left:830px; }
+#creation_box 						{ padding:5px; width:500px; }
+#creation_box input 				{ border:1px solid #CCC; }
+#personnage 						{ background:transparent url(./../image/site/cadredroitpersoedb.png) no-repeat scroll 0 0; color:#E2D1AA; margin-left:566px; position:absolute; text-align:justify; top:0; width:401px; }
+#personnage h3 						{ text-transform:capitalize; padding-left:9px; padding-top:9px; }
+#personnage .personnage_box 		{ height:146px; margin-left:41px; padding-top:20px; width:354px; }
+#personnage .personnage_roi 		{ background:transparent url(./../image/site/cadredroitpropaedb.png) no-repeat scroll 0 0; height:367px; margin-left:12px; margin-top:77px; padding-left:33px; padding-right:10px; padding-top:6px; width:363px; }
+#personnage .personnage_roi p 		{ height:340px; overflow:auto; }
+.perso_selected 					{ background-color:#CCC; -webkit-border-radius:10px; -moz-border-radius:10px; }
 
-.creation_text {float:left;display:block;width:200px;}
-#login {padding:3px 10px 0px 10px;margin-left:71px;width:530px;position:absolute;background:transparent url('./../image/site/cadrehautpagesso.png') no-repeat scroll 0 0;color:#EEE;height:75px;font-size: 11px;top:0;}
-.login_nom {background-color:#000000; border:0 none; color:white; float:left; height:13px; margin-left:52px; margin-top:19px; text-align:left; width:83px;} 
-.login_mdp	{background-color:#000000;
-border:0 none;
-color:white;
-float:left;
-height:13px;
-margin-left:52px;
-margin-top:19px;
-text-align:left;
-width:83px;}
-.login_auto {background-color:#000000;
-border:0 none;
-color:white;
-float:left;
-height:13px;
-margin-left:75px;
-margin-top:19px;
-text-align:left;
-width:14px;}
-.login_connexion {background-color:#000000;
-border:0 none;
-color:white;
-float:left;
-height:16px;
-margin-left:13px;
-margin-top:19px;
-text-align:left;
-width:62px;}
+/*-- Menu ----------------------------------------------------------*/
 
+#menu_accueil 						{ background:transparent url(./../image/site/cadrecentreboutonsso.png) repeat scroll 0 0; color:#FFFFFF; height:34px; margin:0 0 0 49px; position:absolute; top:446px; width:534px; }
+#menu_accueil ul li 				{ list-style:none; cursor:pointer; float:left; }
+#presentation_menu 					{ height:29px; margin-left:-33px; margin-top:-10px; position:absolute; width:129px; }
+#presentation_menu:hover 			{ background:url(./../image/site/boutonbiso.png) no-repeat; cursor:pointer; }
+#presentation_menu:active 			{ background:url(./../image/site/boutonpresentation.png) no-repeat; cursor:pointer; height:33px; margin-left:-36px; margin-top:-13px; }
+#screenshot_menu 					{ height:29px; margin-left:98px; margin-top:-10px; position:absolute; width:129px; }
+#screenshot_menu:hover 				{ background:url(./../image/site/boutonbiso.png) no-repeat; cursor:pointer; }
+#screenshot_menu:active 			{ background:url(./../image/site/boutonscreenshot.png) no-repeat; cursor:pointer; height:33px; margin-left:96px; margin-top:-12px; }
+#news_menu 							{ height:29px; margin-left:230px; margin-top:-10px; position:absolute; width:129px; }
+#news_menu:hover 					{ background:url(./../image/site/boutonbiso.png) no-repeat; cursor:pointer; }
+#news_menu:active 					{ background:url(./../image/site/boutonnews.png) no-repeat; cursor:pointer; height:33px; margin-left:227px; margin-top:-13px; }
+#creation_menu 						{ height:29px; margin-left:361px; margin-top:-10px; position:absolute; width:129px; }
+#creation_menu:hover 				{ background:url(./../image/site/boutonbiso.png) no-repeat; cursor:pointer; }
+#creation_menu:active 				{ background:url(./../image/site/boutoncreationcompte.png) no-repeat; cursor:pointer; height:33px; margin-left:359px; margin-top:-13px; }
 
+/*-- Vrac ----------------------------------------------------------*/
 
-#login a {color : #EEE; font-size : 13px;}
-#login #deco {float : right; cursor : pointer;}
+#test 								{ margin-left:50px; position:absolute; top:74px; z-index:5; height:18px; }
+#liens								{ background:transparent url(./../image/site/cadrebasboutonsso.png) no-repeat scroll 0 0; border:medium none; color:#EEEEEE; height:60px; margin-left:83px; overflow:auto; position:absolute; text-align:justify; top:477px; width:480px; }
+#liens p 							{ color:#957D47; font-size:12px; padding:16px 0 0 20px; text-align:justify; }
+#liens a 							{ color:#FFF; padding-left:10px; padding-right:10px; text-decoration:none; }
+#liens a:hover 						{ text-decoration:underline; }
+#accueil_pub 						{ background:transparent url(./../image/site/cadrebasbandeaupub.png) no-repeat scroll 0 0; height:84px; margin-left:95px; padding-top:19px; position:absolute; top:529px; width:455px; }
+.logo 								{ background:url(./../image/site/logosso.png) no-repeat; height:116px; width:311px; margin-left:100px; display:block; }
+#header 							{ background-color:#c6d9f5; min-height:120px; margin:0; padding:0; }
+#header_logo 						{ width:1000px; margin:auto; background:transparent url(./../image/v2/site_haut.png) no-repeat left; min-height:120px; }
+#header_logo ul 					{ margin:0; padding:0; list-style-type:none; height:20px; text-align:center; top:101px; position:relative; }
+#header_logo ul li 					{ padding-left:5px; padding-right:5px; cursor:pointer; width:100px; background:transparent url(./../image/v2/contenu_fond.png); border-left:1px solid #777; border-right:1px solid #777; border-top:1px solid #777; margin-left:5px; margin-right:5px; font-style:italic; -moz-border-radius-topleft:12px; -moz-border-radius-topright:12px; -webkit-border-top-right-radius:12px; -webkit-border-top-left-radius:12px; }
+#header_logo .menu 					{ float:left; }
+#header_logo .select 				{ background:transparent url(./../image/v2/bouton_selected.png) repeat-x; border-bottom:1px solid transparent; font-style:normal; font-weight:bold; }
+#menu 								{ min-height:20px; border-bottom:1px solid #888; border-top:1px solid #888; margin:0; padding:0; background:transparent url(./../image/v2/bouton_fond.png) repeat-x; }
+#menu_details 						{ width:1000px; margin:auto; }
+#menu_details .menu 				{ width:120px; display:block; float:left; cursor:pointer; text-align:center; border-left:1px solid #CCC; border-rightr:1px solid #CCC; }
+#menu_details .menu:hover 			{ background:transparent url(./../image/v2/bouton_hover.png) no-repeat left; padding-top:1px; }
+#contenu_back 						{ background:transparent url(./../image/v2/bg_site.png) repeat-x; margin:0; padding:0; overflow:auto; height:700px; }
+#contenu 							{ width:1000px; margin:auto; height:700px; }
+#news 								{ width:830px; float:left; }
+#news h2 							{ background-color:#CCC; margin:0; padding:0; font-size:13px; text-align:center; margin-top:5px; -moz-border-radius:5px; }
+#news h2 a 							{ color:#000; text-decoration:none; }
+#news .box 							{ background:transparent url(./../image/v2/contenu_fond.png); -moz-border-radius-bottomleft:8px; -moz-border-radius-bottomright:8px; -webkit-border-radius:8px; margin:-3px 10px 10px; padding:5px; }
+#contenu .pub 						{ width:120px; padding:7px; float:left; }
+#bouton_creer 						{ border:1px solid grey; color:#EEE; background-color:black; width:142px; display:block; text-align:center; font-weight:bold; margin-top:3px; padding:2px 0; cursor:pointer; }
+#aide_inscription 					{ clear:both; font-size:.9em; }
+#popup_erreur 						{ left:50%; margin:auto; position:absolute; top:0; z-index:99!important; -moz-border-radius:12px; background:transparent url(./../image/v2/box_accueil.png) repeat scroll 0 0; color:#EEE; }
+#popup_erreur a 					{ color:#EEE; }
+#popup_erreur_menu 					{ cursor:move; background:transparent url(./../image/v2/bouton_fond.png) repeat-x scroll 0 0; }
+#popup_erreur_content 				{ padding:5px; text-align:justify; width:98%; }
+#popup_erreur_marge 				{ min-height:50px; margin:auto; width:200px; }
+.fermer 							{ background:transparent url(./../image/interface/rouge.png) no-repeat top left; display:block; height:16px; width:16px; cursor:pointer!important; }
+.perso_cadre						{ width:306px;float:left;background-color:#000;-moz-border-radius : 10px;margin-left:14px;padding-left:15px;}
+.perso_espacement					{ width: 17px; float: left; height: 1px;display:block;}
 
-#carac {float:left;width:150px; padding : 0; margin : 0;}
-#carac li {list-style-type : none; cursor : default;}
-#carac li span {width : 75px; float : left;}
-
-#loading_sso {background:transparent url('./../image/v2/ajax-activity-loader.gif');height:32px;width: 32px;position: absolute;top:0px;margin-left:830px;}
-
-#creation_box {padding:5px;
-width:500px;}
-#creation_box input {border : 1px solid #CCC;}
-
-#personnage {background:transparent url(./../image/site/cadredroitpersoedb.png) no-repeat scroll 0 0;
-color:#E2D1AA;
-margin-left:566px;
-position:absolute;
-text-align:justify;
-top:0;
-width:401px;}
-#personnage h3 {text-transform:capitalize;padding-left:9px;
-padding-top:9px;}
-#personnage .personnage_box {height:146px;
-margin-left:41px;
-padding-top:20px;
-width:354px;}
-#personnage .personnage_roi {background:transparent url(./../image/site/cadredroitpropaedb.png) no-repeat scroll 0 0;
-height:367px;
-margin-left:12px;
-margin-top:77px;
-padding-left:33px;
-padding-right:10px;
-padding-top:6px;
-width:363px;}
-#personnage .personnage_roi p {height:340px;
-overflow:auto;}
-.perso_selected{background-color:#CCC;-webkit-border-radius:10px;-moz-border-radius: 10px;}
-
-
-#menu_accueil {background:transparent url(./../image/site/cadrecentreboutonsso.png) repeat scroll 0 0;
-color:#FFFFFF;
-height:34px;
-margin:0 0 0 49px;
-position:absolute;
-top:446px;
-width:534px;}
-#menu_accueil ul li {list-style: none;cursor: pointer;float:left;}
-#presentation_menu 	{height:29px;
-margin-left:-33px;
-margin-top:-10px;
-position:absolute;
-width:129px;}
-#presentation_menu:hover 	{  background:   url('./../image/site/boutonbiso.png') no-repeat;
-  cursor: pointer;}
+/*-- Perso ----------------------------------------------------------*/
 
 
-#screenshot_menu 	{height:29px;
-margin-left:98px;
-margin-top:-10px;
-position:absolute;
-width:129px;}
-#screenshot_menu:hover 	{  background:   url('./../image/site/boutonbiso.png') no-repeat;
-  cursor: pointer;}
-#news_menu 	{height:29px;
-margin-left:230px;
-margin-top:-10px;
-position:absolute;
-width:129px;}
-#news_menu:hover 	{  background:   url('./../image/site/boutonbiso.png') no-repeat;
-  cursor: pointer;}
-#creation_menu 	{height:29px;
-margin-left:361px;
-margin-top:-10px;
-position:absolute;
-width:129px;}
-#creation_menu:hover 	{  background:   url('./../image/site/boutonbiso.png') no-repeat;
-  cursor: pointer;}  
+.barbare_guerrier 	{background:transparent url('./../image/personnage/barbare/barbare_guerrier.png') no-repeat center center;width:43px;height:40px;display:block;float:left;cursor:pointer;}
+.barbare_guerrier:hover 	{background:transparent url('./../image/site/barbare_guerrier_hover.png') no-repeat center center;width:43px;height:43px;display:block;float:left;cursor:pointer;}
+.barbare_guerrier:active 	{background:transparent url('./../image/site/barbare_guerrier_active.png') no-repeat center center;width:43px;height:43px;display:block;float:left;cursor:pointer;}
 
-#test {margin-left:50px;position:absolute;top:74px; z-index : 5; height : 18px;}
+.barbare_mage		{background:transparent url('./../image/personnage/barbare/barbare_mage.png') no-repeat center center; width:43px;height:43px;display:block;float:left;cursor:pointer;}
+.barbare_mage:hover		{background:transparent url('./../image/site/barbare_mage_hover.png') no-repeat center center; width:43px;height:43px;display:block;float:left;cursor:pointer;}
+.barbare_mage:active		{background:transparent url('./../image/site/barbare_mage_active.png') no-repeat center center; width:43px;height:43px;display:block;float:left;cursor:pointer;}
 
-#liens {background:transparent url(./../image/site/cadrebasboutonsso.png) no-repeat scroll 0 0;
-border:medium none;
-color:#EEEEEE;
-height:60px;
-margin-left:83px;
-overflow:auto;
-position:absolute;
-text-align:justify;
-top:477px;
-width:480px;}
-#liens p {color:#957D47;
-font-size:12px;
-padding:16px 0 0 20px;
-text-align:justify;}
+.humainnoir_guerrier 	{background:transparent url('./../image/personnage/humainnoir/humainnoir_guerrier.png') no-repeat center center;width:43px;height:40px;display:block;float:left;cursor:pointer;}
+.humainnoir_guerrier:hover 	{background:transparent url('./../image/site/humainnoir_guerrier_hover.png') no-repeat center center;width:43px;height:43px;display:block;float:left;cursor:pointer;}
+.humainnoir_guerrier:active 	{background:transparent url('./../image/site/humainnoir_guerrier_active.png') no-repeat center center;width:43px;height:43px;display:block;float:left;cursor:pointer;}
 
-#liens a {color:#FFF;padding-left:10px;padding-right:10px;text-decoration: none;}
-#liens a:hover {text-decoration: underline;}
-#accueil_pub {background:transparent url(./../image/site/cadrebasbandeaupub.png) no-repeat scroll 0 0;
-height:84px;
-margin-left:95px;
-padding-top:19px;
-position:absolute;
-top:529px;
-width:455px;}
+.humainnoir_mage		{background:transparent url('./../image/personnage/humainnoir/humainnoir_mage.png') no-repeat center center; width:43px;height:43px;display:block;float:left;cursor:pointer;}
+.humainnoir_mage:hover		{background:transparent url('./../image/site/humainnoir_mage_hover.png') no-repeat center center; width:43px;height:43px;display:block;float:left;cursor:pointer;}
+.humainnoir_mage:active		{background:transparent url('./../image/site/humainnoir_mage_active.png') no-repeat center center; width:43px;height:43px;display:block;float:left;cursor:pointer;}
 
-.logo {  background:   url('./../image/site/logosso.png') no-repeat;
-  height: 116px; 
-  width: 311px;
-  margin-left: 100px;
-	display:block; }
+.elfehaut_guerrier 	{background:transparent url('./../image/personnage/elfehaut/elfehaut_guerrier.png') no-repeat center center;width:43px;height:40px;display:block;float:left;cursor:pointer;}
+.elfehaut_guerrier:hover 	{background:transparent url('./../image/site/elfehaut_guerrier_hover.png') no-repeat center center;width:43px;height:43px;display:block;float:left;cursor:pointer;}
+.elfehaut_guerrier:active 	{background:transparent url('./../image/site/elfehaut_guerrier_active.png') no-repeat center center;width:43px;height:43px;display:block;float:left;cursor:pointer;}
 
-#header {background-color:#c6d9f5;min-height: 120px;margin:0;padding:0;}
-#header_logo {width:1000px;margin:auto;background:transparent url('./../image/v2/site_haut.png') no-repeat left;min-height:120px;}
-#header_logo ul {margin:0;padding:0;list-style-type: none;height:20px;text-align: center;top:101px;position: relative;}
-#header_logo ul li {padding-left:5px;padding-right:5px;cursor: pointer;width:100px;background:transparent url('./../image/v2/contenu_fond.png');border-left : 1px solid #777;border-right : 1px solid #777;border-top : 1px solid #777;margin-left:5px;margin-right:5px;font-style: italic;-moz-border-radius-topleft: 12px;-moz-border-radius-topright: 12px;-webkit-border-top-right-radius : 12px;-webkit-border-top-left-radius : 12px;}
-#header_logo .menu {float:left;}
-#header_logo .select {background:transparent url('./../image/v2/bouton_selected.png') repeat-x;border-bottom:1px solid transparent;font-style:normal;font-weight: bold;}
+.elfehaut_mage		{background:transparent url('./../image/personnage/elfehaut/elfehaut_mage.png') no-repeat center center; width:43px;height:43px;display:block;float:left;cursor:pointer;}
+.elfehaut_mage:hover		{background:transparent url('./../image/site/elfehaut_mage_hover.png') no-repeat center center; width:43px;height:43px;display:block;float:left;cursor:pointer;}
+.elfehaut_mage:active		{background:transparent url('./../image/site/elfehaut_mage_active.png') no-repeat center center; width:43px;height:43px;display:block;float:left;cursor:pointer;}
 
+.troll_guerrier 	{background:transparent url('./../image/personnage/troll/troll_guerrier.png') no-repeat center center;width:43px;height:40px;display:block;float:left;cursor:pointer;}
+.troll_guerrier:hover 	{background:transparent url('./../image/site/troll_guerrier_hover.png') no-repeat center center;width:43px;height:43px;display:block;float:left;cursor:pointer;}
+.troll_guerrier:active 	{background:transparent url('./../image/site/troll_guerrier_active.png') no-repeat center center;width:43px;height:43px;display:block;float:left;cursor:pointer;}
 
-#menu {min-height: 20px;border-bottom: 1px solid #888;border-top: 1px solid #888;margin:0;padding:0;background:transparent url('./../image/v2/bouton_fond.png') repeat-x;}
-#menu_details {width:1000px;margin:auto;}
-#menu_details .menu {width:120px;display:block;float:left;cursor:pointer;text-align: center;border-left : 1px solid #CCC;border-rightr : 1px solid #CCC;}
-#menu_details .menu:hover {background:transparent url('./../image/v2/bouton_hover.png') no-repeat left;padding-top:1px;}
+.troll_mage		{background:transparent url('./../image/personnage/troll/troll_mage.png') no-repeat center center; width:43px;height:43px;display:block;float:left;cursor:pointer;}
+.troll_mage:hover		{background:transparent url('./../image/site/troll_mage_hover.png') no-repeat center center; width:43px;height:43px;display:block;float:left;cursor:pointer;}
+.troll_mage:active		{background:transparent url('./../image/site/troll_mage_active.png') no-repeat center center; width:43px;height:43px;display:block;float:left;cursor:pointer;}
 
-#contenu_back {background:transparent url('./../image/v2/bg_site.png') repeat-x;margin:0;padding:0;overflow: auto;height: 700px;}
-#contenu {width:1000px;margin: auto;height: 700px;}
-#news {width:830px;float:left;}
+.humain_guerrier 	{background:transparent url('./../image/personnage/humain/humain_guerrier.png') no-repeat center center;width:43px;height:40px;display:block;float:left;cursor:pointer;}
+.humain_guerrier:hover 	{background:transparent url('./../image/site/humain_guerrier_hover.png') no-repeat center center;width:43px;height:43px;display:block;float:left;cursor:pointer;}
+.humain_guerrier:active 	{background:transparent url('./../image/site/humain_guerrier_active.png') no-repeat center center;width:43px;height:43px;display:block;float:left;cursor:pointer;}
 
-#news h2 {background-color: #CCC; margin:0;padding:0;font-size: 13px;text-align: center;margin-top: 5px;-moz-border-radius: 5px;}
-#news h2 a {color:#000;text-decoration: none;}
-#news .box {background:transparent url('./../image/v2/contenu_fond.png');-moz-border-radius-bottomleft: 8px;-moz-border-radius-bottomright: 8px; -webkit-border-radius:8px;margin:-3px 10px 10px 10px;padding:5px;}
-#contenu .pub {width:120px;padding:7px;float:left;} 
+.humain_mage		{background:transparent url('./../image/personnage/humain/humain_mage.png') no-repeat center center; width:43px;height:43px;display:block;float:left;cursor:pointer;}
+.humain_mage:hover		{background:transparent url('./../image/site/humain_mage_hover.png') no-repeat center center; width:43px;height:43px;display:block;float:left;cursor:pointer;}
+.humain_mage:active		{background:transparent url('./../image/site/humain_mage_active.png') no-repeat center center; width:43px;height:43px;display:block;float:left;cursor:pointer;}
 
-#bouton_creer {border : 1px solid grey; color : #EEE; background-color : black; width : 142px; display : block; text-align : center; font-weight : bold; margin-top : 3px; padding : 2px 0 2px 0; cursor : pointer;}
-#aide_inscription {clear : both; font-size : 0.9em;}
+.mortvivant_guerrier 	{background:transparent url('./../image/personnage/mortvivant/mortvivant_guerrier.png') no-repeat center center;width:43px;height:40px;display:block;float:left;cursor:pointer;}
+.mortvivant_guerrier:hover 	{background:transparent url('./../image/site/mortvivant_guerrier_hover.png') no-repeat center center;width:43px;height:43px;display:block;float:left;cursor:pointer;}
+.mortvivant_guerrier:active 	{background:transparent url('./../image/site/mortvivant_guerrier_active.png') no-repeat center center;width:43px;height:43px;display:block;float:left;cursor:pointer;}
 
-#bas {}
-#bas_contenu {}
+.mortvivant_mage		{background:transparent url('./../image/personnage/mortvivant/mortvivant_mage.png') no-repeat center center; width:43px;height:43px;display:block;float:left;cursor:pointer;}
+.mortvivant_mage:hover		{background:transparent url('./../image/site/mortvivant_mage_hover.png') no-repeat center center; width:43px;height:43px;display:block;float:left;cursor:pointer;}
+.mortvivant_mage:active		{background:transparent url('./../image/site/mortvivant_mage_active.png') no-repeat center center; width:43px;height:43px;display:block;float:left;cursor:pointer;}
 
-#popup_erreur {left : 50%;margin : auto;position:absolute;top:0px;z-index:99 !important;  -moz-border-radius: 12px;background:transparent url(./../image/v2/box_accueil.png) repeat scroll 0 0;color:#EEE;}
-#popup_erreur a {color:#EEE;}
-#popup_erreur_menu {cursor:move ;background:transparent url(./../image/v2/bouton_fond.png) repeat-x scroll 0 0;}
-#popup_erreur_content {padding:5px;text-align:justify;width:98%;}
-#popup_erreur_marge {min-height:50px;margin:auto;width:200px;}
-.fermer {background:transparent url('./../image/interface/rouge.png') no-repeat top left;display:block;height:16px;width:16px;cursor: pointer !important;}
+.orc_guerrier 	{background:transparent url('./../image/personnage/orc/orc_guerrier.png') no-repeat center center;width:43px;height:40px;display:block;float:left;cursor:pointer;}
+.orc_guerrier:hover 	{background:transparent url('./../image/site/orc_guerrier_hover.png') no-repeat center center;width:43px;height:43px;display:block;float:left;cursor:pointer;}
+.orc_guerrier:active 	{background:transparent url('./../image/site/orc_guerrier_active.png') no-repeat center center;width:43px;height:43px;display:block;float:left;cursor:pointer;}
+
+.orc_mage		{background:transparent url('./../image/personnage/orc/orc_mage.png') no-repeat center center; width:43px;height:43px;display:block;float:left;cursor:pointer;}
+.orc_mage:hover		{background:transparent url('./../image/site/orc_mage_hover.png') no-repeat center center; width:43px;height:43px;display:block;float:left;cursor:pointer;}
+.orc_mage:active		{background:transparent url('./../image/site/orc_mage_active.png') no-repeat center center; width:43px;height:43px;display:block;float:left;cursor:pointer;}
+
+.scavenger_guerrier 	{background:transparent url('./../image/personnage/scavenger/scavenger_guerrier.png') no-repeat center center;width:43px;height:40px;display:block;float:left;cursor:pointer;}
+.scavenger_guerrier:hover 	{background:transparent url('./../image/site/scavenger_guerrier_hover.png') no-repeat center center;width:43px;height:43px;display:block;float:left;cursor:pointer;}
+.scavenger_guerrier:active 	{background:transparent url('./../image/site/scavenger_guerrier_active.png') no-repeat center center;width:43px;height:43px;display:block;float:left;cursor:pointer;}
+
+.scavenger_mage		{background:transparent url('./../image/personnage/scavenger/scavenger_mage.png') no-repeat center center; width:43px;height:43px;display:block;float:left;cursor:pointer;}
+.scavenger_mage:hover		{background:transparent url('./../image/site/scavenger_mage_hover.png') no-repeat center center; width:43px;height:43px;display:block;float:left;cursor:pointer;}
+.scavenger_mage:active		{background:transparent url('./../image/site/scavenger_mage_active.png') no-repeat center center; width:43px;height:43px;display:block;float:left;cursor:pointer;}
+
+.vampire_guerrier 	{background:transparent url('./../image/personnage/vampire/vampire_guerrier.png') no-repeat center center;width:43px;height:40px;display:block;float:left;cursor:pointer;}
+.vampire_guerrier:hover 	{background:transparent url('./../image/site/vampire_guerrier_hover.png') no-repeat center center;width:43px;height:43px;display:block;float:left;cursor:pointer;}
+.vampire_guerrier:active 	{background:transparent url('./../image/site/vampire_guerrier_active.png') no-repeat center center;width:43px;height:43px;display:block;float:left;cursor:pointer;}
+
+.vampire_mage		{background:transparent url('./../image/personnage/vampire/vampire_mage.png') no-repeat center center; width:43px;height:43px;display:block;float:left;cursor:pointer;}
+.vampire_mage:hover		{background:transparent url('./../image/site/vampire_mage_hover.png') no-repeat center center; width:43px;height:43px;display:block;float:left;cursor:pointer;}
+.vampire_mage:active		{background:transparent url('./../image/site/vampire_mage_active.png') no-repeat center center; width:43px;height:43px;display:block;float:left;cursor:pointer;}
+
+.nain_guerrier 	{background:transparent url('./../image/personnage/nain/nain_guerrier.png') no-repeat center center;width:43px;height:40px;display:block;float:left;cursor:pointer;}
+.nain_guerrier:hover 	{background:transparent url('./../image/site/nain_guerrier_hover.png') no-repeat center center;width:43px;height:43px;display:block;float:left;cursor:pointer;}
+.nain_guerrier:active 	{background:transparent url('./../image/site/nain_guerrier_active.png') no-repeat center center;width:43px;height:43px;display:block;float:left;cursor:pointer;}
+
+.nain_mage		{background:transparent url('./../image/personnage/nain/nain_mage.png') no-repeat center center; width:43px;height:43px;display:block;float:left;cursor:pointer;}
+.nain_mage:hover		{background:transparent url('./../image/site/nain_mage_hover.png') no-repeat center center; width:43px;height:43px;display:block;float:left;cursor:pointer;}
+.nain_mage:active		{background:transparent url('./../image/site/nain_mage_active.png') no-repeat center center; width:43px;height:43px;display:block;float:left;cursor:pointer;}
+
+.elfebois_guerrier 	{background:transparent url('./../image/personnage/elfebois/elfebois_guerrier.png') no-repeat center center;width:43px;height:40px;display:block;float:left;cursor:pointer;}
+.elfebois_guerrier:hover 	{background:transparent url('./../image/site/elfebois_guerrier_hover.png') no-repeat center center;width:43px;height:43px;display:block;float:left;cursor:pointer;}
+.elfebois_guerrier:active 	{background:transparent url('./../image/site/elfebois_guerrier_active.png') no-repeat center center;width:43px;height:43px;display:block;float:left;cursor:pointer;}
+
+.elfebois_mage		{background:transparent url('./../image/personnage/elfebois/elfebois_mage.png') no-repeat center center; width:43px;height:43px;display:block;float:left;cursor:pointer;}
+.elfebois_mage:hover		{background:transparent url('./../image/site/elfebois_mage_hover.png') no-repeat center center; width:43px;height:43px;display:block;float:left;cursor:pointer;}
+.elfebois_mage:active		{background:transparent url('./../image/site/elfebois_mage_active.png') no-repeat center center; width:43px;height:43px;display:block;float:left;cursor:pointer;}
