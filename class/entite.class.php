@@ -696,6 +696,7 @@ class entite
 			$this->sort_mort = $this->objet_ref->get_sort_mort();
 			$this->sort_vie = $this->objet_ref->get_sort_vie();
 			$this->sort_element = $this->objet_ref->get_sort_element();
+			$this->competence = $this->objet_ref->get_comp_perso();
 		}
 		if ($this->type == 'joueur')
 		{
