@@ -114,7 +114,7 @@ if(is_donjon($attaquant->get_x(), $attaquant->get_y()))
 	//Un monstre attaque pas de pa pour attaquer
 	if(array_key_exists('attaque_donjon', $_SESSION) AND $_SESSION['attaque_donjon'] == 'ok')
 	{
-		$pa_attaque = $reduction_pa;
+		$no_pa_attaque = true;
 		unset($_SESSION['attaque_donjon']);
 		$W_distance--;
 		if($W_distance < 0 ) $W_distance = 0;
@@ -206,6 +206,8 @@ else
 	if($defenseur->is_buff('deluge')) $defenseur->set_volonte($defenseur->get_volonte(true) - $defenseur->get_buff('deluge', 'effet'));
 	$pa_attaque = $pa_attaque - $reduction_pa;
 	if($pa_attaque <= 0) $pa_attaque = 1;
+	if (isset($no_pa_attaque) && $no_pa_attaque == true)
+		$pa_attaque = 0;
 
 	$joueur_true = false;
 	$siege_true = false;
