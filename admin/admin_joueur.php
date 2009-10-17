@@ -158,7 +158,8 @@ else
 							<li><a href="admin_joueur.php?direction=deban&amp;id=<?php echo $_GET['id']; ?>">Débanir</a></li>
 						<?php
 						}
-						if ($_SESSION['admin_nom'] == 'admin')
+						if ($_SESSION['admin_nom'] == 'admin' ||
+								$_SESSION['admin_db_auth'] == 'admin')
 						{
 						?>
 						<li><a href="admin_joueur.php?direction=objet&amp;id=<?php echo $_GET['id']; ?>">Donner un objet</a> | <a href="admin_joueur.php?direction=recette&amp;id=<?php echo $_GET['id']; ?>">Donner une recette</a> | <a href="admin_joueur.php?direction=arme&amp;id=<?php echo $_GET['id']; ?>">Donner une arme</a></li> | <a href="admin_joueur.php?direction=armure&amp;id=<?php echo $_GET['id']; ?>">Donner une armure</a> | <a href="admin_joueur.php?direction=accessoire&amp;id=<?php echo $_GET['id']; ?>">Donner un accessoire</a></li>
