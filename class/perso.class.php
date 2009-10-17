@@ -2933,6 +2933,12 @@ class perso extends entite
 				$requete = "SELECT * FROM arme WHERE id = ".$arme_d['id_objet'];
 				$req = $db->query($requete);
 				$this->arme = $db->read_object($req);
+				if ($arme_d['enchantement'] != null)
+				{
+					$gemme = new gemme_enchassee($arme_d['enchantement']);
+					if ($gemme->enchantement_type == 'degat')
+						$this->arme->degat += $gemme->enchantement_effet;
+				}
 			}
 			else $this->arme = false;
 		}
@@ -2954,6 +2960,12 @@ class perso extends entite
 				$this->arme_gauche = $db->read_object($req);
 				if($this->arme_gauche->type == 'bouclier')
 					$this->arme_gauche = false;
+				else if ($arme_d['enchantement'] != null)
+				{
+					$gemme = new gemme_enchassee($arme_d['enchantement']);
+					if ($gemme->enchantement_type == 'degat')
+						$this->arme_gauche->degat += $gemme->enchantement_effet;
+				}
 			}
 			else $this->arme_gauche = false;
 		}
