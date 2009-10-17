@@ -55,8 +55,8 @@ class gemme_enchassee extends effect
 	}
 
 	/**
-	 * Les gemmes d'arme (degat) de pp, pp_pourcent, pm, pm_pourcent, competence
-	 * sont gerees directement dans enchant(fonction/equipement.inc.php)
+	 * Les gemmes d'arme (degat/reduction) de pp, pp_pourcent, pm, pm_pourcent,
+   * et  competence sont gerees directement ailleurs
    * les autres (default:) posent une valeur [type]=id dans le tableau
    * des enchantement
    *
@@ -135,13 +135,6 @@ class gemme_enchassee extends effect
       }
     }
 		return $degats;
-	}
-
-	// Gemme de roc
-	function calcul_bloquage_reduction(&$actif, &$passif, $reduction) {
-		if ($this->enchantement_type == 'bouclier')
-			$reduction += $this->enchantement_effet;
-		return $reduction;
 	}
 
 	// Gemme de l'epervier

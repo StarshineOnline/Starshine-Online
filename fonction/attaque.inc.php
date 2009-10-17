@@ -1,7 +1,7 @@
-<?php
+<?php //  -*- tab-width:2  -*-
 if (file_exists('../root.php'))
   include_once('../root.php');
-?><?php  //  -*- tab-width:2  -*-
+
 /**
  * @file attaque.inc.php
  *  

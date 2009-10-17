@@ -1025,7 +1025,7 @@ foreach($tab_loc as $loc)
 					else
 					{
 						if($row['type'] == 'dague')	echo '<br />Dégats : '.$joueur->get_arme_degat('gauche');
-						else echo '<br />Dégats absorbés : '.$row['degat'];
+						else echo '<br />Dégats absorbés : '.$joueur->get_bouclier()->degat;
 					}
 				break;
 				case 'armure' :
