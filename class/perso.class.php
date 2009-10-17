@@ -2976,9 +2976,8 @@ class perso extends entite
 				if($this->bouclier->type != 'bouclier') $this->bouclier = false;
 				else if ($arme_g['enchantement'] != null)
 				{
-					//my_dump($arme_g);
 					$gemme = new gemme_enchassee($arme_g['enchantement']);
-					if ($gemme->enchantement_type == 'roc')
+					if ($gemme->enchantement_type == 'bouclier')
 						$this->bouclier->degat += $gemme->enchantement_effet;
 				}
 			}
