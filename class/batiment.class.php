@@ -893,4 +893,11 @@ class batiment
 		else 														{ $image = ""; } //-- Si aucun des fichiers n'existe autant rien mettre...
 		return $image;
 	}*/
+
+	function get_suivant()
+	{
+		if ($this->type == 'mine')
+			return $this->bonus7;
+		return 0;
+	}
 }
