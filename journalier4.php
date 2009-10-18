@@ -201,6 +201,8 @@ foreach($tab_royaume as $race => $royaume)
 	//echo $royaume['race'].' '.$royaume['food_necessaire'].'<br />';
 	//Si ya assez de food
 	$mail .= "Race : ".$race." - Nécessaire : ".$royaume['food_necessaire']." / Possède : ".$royaume['food']."\n";
+	//$royaume['food'] = 0; //-- test --
+	//$royaume['food_necessaire'] = 1000; //-- test --
 	if($royaume['food_necessaire'] < $royaume['food'])
 	{
 		$requete = "UPDATE royaume SET food = food - ".$royaume['food_necessaire']." WHERE id = ".$royaume['id'];
@@ -214,7 +216,7 @@ foreach($tab_royaume as $race => $royaume)
 		$ratio = $royaume['food_doit'] / $royaume['food_necessaire'];
 		$debuff = ceil($ratio * 9) - 1;
 		if($debuff > 6) $debuff = 6;
-		elseif($debuff > 0)
+		if($debuff > 0)
 		{
 			$persos = array();
 			$requete = "SELECT id FROM perso WHERE race = '".$race."' AND statut = 'actif'";
@@ -223,6 +225,8 @@ foreach($tab_royaume as $race => $royaume)
 			{
 				$persos[$row['id']] = $row['id'];
 			}
+			if (count($persos) == 0)
+				continue;
 			$perso_implode = implode(',', $persos);
 			//On sélectionne les buffs à modifier
 			$ids_buff = array();
@@ -264,6 +268,9 @@ foreach($tab_royaume as $race => $royaume)
 	$db->query($requete);
 }
 
-mail('starshineonline@gmail.com', 'Starshine - Script journalier 4 du '.$date, $mail);
+$mail_send = getenv('SSO_MAIL');
+if ($mail_send == null || $mail_send == '')
+		 $mail_send = 'starshineonline@gmail.com';
+mail($mail_send, 'Starshine - Script journalier 4 du '.$date, $mail);
 
 ?>
