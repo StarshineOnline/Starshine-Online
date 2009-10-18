@@ -277,7 +277,7 @@ if (isset($_GET['ID']))
 				case 'buff_critique' : case 'buff_evasion' : case 'buff_bouclier' : case 'buff_sacrifice' : case 'buff_inspiration' : case 'buff_force' : case 'buff_armure_glace' : case 'buff_barriere' : case 'buff_bouclier_sacre' : case 'buff_colere' : case 'buff_epine' : case 'buff_meditation' : case 'buff_rage_vampirique' : case 'buff_rapidite' : case 'buff_concentration' : case 'buff_furie_magique' : case 'buff_surpuissance' : case 'bouclier_feu' : case 'bouclier_terre' : case 'bouclier_eau' : case 'bulle_sanctuaire' :
 					//Mis en place du buff
 					$cible = new perso($_GET['id_joueur']);
-					if(lance_buff($row['type'], $_GET['id_joueur'], $row['effet'], $row['effet2'], $row['duree'], $row['nom'], description($row['description'], $row), 'perso', 0, count($cible->get_buff()), $cible['rang_grade']))
+					if(lance_buff($row['type'], $_GET['id_joueur'], $row['effet'], $row['effet2'], $row['duree'], $row['nom'], description($row['description'], $row), 'perso', 0, $cible->get_nb_buff(), $cible['rang_grade']))
 					{
 						$joueur->set_pa($joueur->get_pa() - $sortpa);
 						$joueur->set_mp($joueur->get_mp() - $sortmp);
