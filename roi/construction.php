@@ -79,51 +79,32 @@ else if(!array_key_exists('direction', $_GET))
 			<li class='$boutique_class'  onclick=\"minimap(".$construction->get_x().",".$construction->get_y().")\">
 				<span style='display:block;width:320px;float:left;'>
 					<img src='../image/batiment_low/".$construction->get_image()."_04.png' style='vertical-align : top;' title='".$construction->get_nom()."' /> ".$construction->get_nom();
-					$batiment = new batiment($construction->get_id_batiment());
-					if($construction->get_type() == 'bourg')
-					{
-						//On peut l'upragder
-						if($batiment->get_nom() != 'Bourg')
-						{
-							$batiment_suivant = new batiment($construction->get_id_batiment()+1);
-							
-							if ($batiment->get_cond1() < (time() - $construction->get_date_construction()))
-							{
-								echo ' - <a href="construction.php?direction=up_construction&amp;id='.$row['id'].'" onclick="if(confirm(\'Voulez vous upgrader ce '.$construction->get_nom().' ?\')) return envoiInfo(this.href, \'message_confirm\'); else return false;">Upgrader - '.$batiment_suivant->get_cout().' stars</a>';
-							}
-							else
-							{
-								$tmp = transform_sec_temp($batiment_suivant->get_cond1() - (time() - $construction->get_date_construction()));
-								echo "<span style='font-style: italic ;font-size:8pt;'> - update possible dans $tmp</span>";
-							}
-						}
-					}
-					if($construction->get_type() == 'mine')
-					{
-						//On peut l'upragder
-						if($batiment->get_suivant())
-						{
-							$batiment_suivant = new batiment($batiment->get_suivant());
-							
-							if ($batiment->get_cond1() < (time() - $construction->get_date_construction()))
-							{
-								echo ' - <a href="construction.php?direction=up_construction&amp;id='.$row['id'].'" onclick="if(confirm(\'Voulez vous upgrader ce '.$construction->get_nom().' ?\')) return envoiInfo(this.href, \'message_confirm\'); else return false;">Upgrader - '.$batiment_suivant->get_cout().' stars</a>';
-							}
-							else
-							{
-								$tmp = transform_sec_temp($batiment_suivant->get_cond1() - (time() - $construction->get_date_construction()));
-								echo "<span style='font-style: italic ;font-size:8pt;'> - update possible dans $tmp</span>";
-							}
-						}
-					}
-				echo "</span>";
+			$batiment = new batiment($construction->get_id_batiment());
+			
+			//On peut l'upragder si il y a un suivant
+			if($batiment->get_suivant())
+			{
+				$batiment_suivant = new batiment($batiment->get_suivant());
 				
+				if ($batiment->get_cond1() < (time() - $construction->get_date_construction()))
+				{
+					echo ' - <a href="construction.php?direction=up_construction&amp;id='.$row['id'].'" onclick="if(confirm(\'Voulez vous upgrader ce '.$construction->get_nom().' ?\')) return envoiInfo(this.href, \'message_confirm\'); else return false;">Upgrader - '.$batiment_suivant->get_cout().' stars</a>';
+				}
+				else
+				{
+					$tmp = transform_sec_temp($batiment_suivant->get_cond1() - (time() - $construction->get_date_construction()));
+					echo "<span style='font-style: italic ;font-size:8pt;'> - update possible dans $tmp</span>";
+				}
+			}
+			echo "</span>";
 				
-				echo "<span style='display:block;width:100px;float:left;'> X : ".$construction->get_x()." - Y : ".$construction->get_y()."</span>";
-				$longueur = round(100 * ($construction->get_hp() / $batiment->get_hp()), 2);
-				echo "<img style='display:block;width:100px;float:left;height:6px;padding-top:5px;' src='genere_barre_hp.php?longueur=".$longueur."' alt='".$construction->get_hp()." / ".$batiment->get_hp()."' title='".$construction->get_hp()." / ".$batiment->get_hp()."'>";
-
-				echo "<span style='display:block;width:30px;float:left;cursor:pointer;padding-left:4px;'>
+			//my_dump($batiment);
+			//my_dump($construction);
+			echo "<span style='display:block;width:100px;float:left;'> X : ".$construction->get_x()." - Y : ".$construction->get_y()."</span>";
+			$longueur = round(100 * ($construction->get_hp() / $batiment->get_hp()), 2);
+			echo "<img style='display:block;width:100px;float:left;height:6px;padding-top:5px;' src='genere_barre_hp.php?longueur=".$longueur."' alt='".$construction->get_hp()." / ".$batiment->get_hp()."' title='".$construction->get_hp()." / ".$batiment->get_hp()."'>";
+			
+			echo "<span style='display:block;width:30px;float:left;cursor:pointer;padding-left:4px;'>
 					<a onclick=\"if(confirm('Voulez vous supprimer ce ".$construction->get_nom()." ?')) {return envoiInfo('construction.php?direction=suppr_construction&amp;id=".$construction->get_id()."', 'message_confirm');envoiInfo('construction.php','contenu_jeu');} else {return false;}\"><img src='../image/interface/croix_quitte.png'</a>
 				</span>
 			</li>";

@@ -117,6 +117,12 @@ class batiment
 
 	/**
     * @access private
+    * @var int(11)
+    */
+	private $upgrade;
+
+	/**
+    * @access private
     * @var tinyint(3)
     */
 	private $augmentation_pa;
@@ -162,23 +168,24 @@ class batiment
 	* @param mediumint(9) bonus5 attribut
 	* @param mediumint(9) bonus6 attribut
 	* @param mediumint(9) bonus7 attribut
+	* @param int(11) upgrade attribut
 	* @param tinyint(3) augmentation_pa attribut
 	* @param int(10) temps_construction attribut
 	* @param varchar(50) image attribut
 	* @param tinyint(3) point_victoire attribut
 	* @return none
 	*/
-	function __construct($id = 0, $nom = '', $description = '', $type = '', $cout = '', $entretien = '', $cond1 = '', $cond2 = '', $hp = '', $PP = '', $PM = '', $carac = '', $bonus1 = '', $bonus2 = '', $bonus3 = '', $bonus4 = '', $bonus5 = '', $bonus6 = '', $bonus7 = '', $augmentation_pa = '', $temps_construction = '', $image = '', $point_victoire = '')
+	function __construct($id = 0, $nom = '', $description = '', $type = '', $cout = '', $entretien = '', $cond1 = '', $cond2 = '', $hp = '', $PP = '', $PM = '', $carac = '', $bonus1 = '', $bonus2 = '', $bonus3 = '', $bonus4 = '', $bonus5 = '', $bonus6 = '', $bonus7 = '', $upgrade = '', $augmentation_pa = '', $temps_construction = '', $image = '', $point_victoire = '')
 	{
 		global $db;
 		//Verification nombre et du type d'argument pour construire l'etat adequat.
 		if( (func_num_args() == 1) && is_numeric($id) )
 		{
-			$requeteSQL = $db->query("SELECT nom, description, type, cout, entretien, cond1, cond2, hp, PP, PM, carac, bonus1, bonus2, bonus3, bonus4, bonus5, bonus6, bonus7, augmentation_pa, temps_construction, image, point_victoire FROM batiment WHERE id = ".$id);
+			$requeteSQL = $db->query("SELECT nom, description, type, cout, entretien, cond1, cond2, hp, PP, PM, carac, bonus1, bonus2, bonus3, bonus4, bonus5, bonus6, bonus7, upgrade, augmentation_pa, temps_construction, image, point_victoire FROM batiment WHERE id = ".$id);
 			//Si le thread est dans la base, on le charge sinon on crée un thread vide.
 			if( $db->num_rows($requeteSQL) > 0 )
 			{
-				list($this->nom, $this->description, $this->type, $this->cout, $this->entretien, $this->cond1, $this->cond2, $this->hp, $this->PP, $this->PM, $this->carac, $this->bonus1, $this->bonus2, $this->bonus3, $this->bonus4, $this->bonus5, $this->bonus6, $this->bonus7, $this->augmentation_pa, $this->temps_construction, $this->image, $this->point_victoire) = $db->read_array($requeteSQL);
+				list($this->nom, $this->description, $this->type, $this->cout, $this->entretien, $this->cond1, $this->cond2, $this->hp, $this->PP, $this->PM, $this->carac, $this->bonus1, $this->bonus2, $this->bonus3, $this->bonus4, $this->bonus5, $this->bonus6, $this->bonus7, $this->upgrade, $this->augmentation_pa, $this->temps_construction, $this->image, $this->point_victoire) = $db->read_array($requeteSQL);
 			}
 			else $this->__construct();
 			$this->id = $id;
@@ -204,6 +211,7 @@ class batiment
 			$this->bonus5 = $id['bonus5'];
 			$this->bonus6 = $id['bonus6'];
 			$this->bonus7 = $id['bonus7'];
+			$this->upgrade = $id['upgrade'];
 			$this->augmentation_pa = $id['augmentation_pa'];
 			$this->temps_construction = $id['temps_construction'];
 			$this->image = $id['image'];
@@ -229,6 +237,7 @@ class batiment
 			$this->bonus5 = $bonus5;
 			$this->bonus6 = $bonus6;
 			$this->bonus7 = $bonus7;
+			$this->upgrade = $upgrade;
 			$this->augmentation_pa = $augmentation_pa;
 			$this->temps_construction = $temps_construction;
 			$this->image = $image;
@@ -250,7 +259,7 @@ class batiment
 		{
 			if(count($this->champs_modif) > 0)
 			{
-				if($force) $champs = 'nom = "'.mysql_escape_string($this->nom).'", description = "'.mysql_escape_string($this->description).'", type = "'.mysql_escape_string($this->type).'", cout = "'.mysql_escape_string($this->cout).'", entretien = "'.mysql_escape_string($this->entretien).'", cond1 = "'.mysql_escape_string($this->cond1).'", cond2 = "'.mysql_escape_string($this->cond2).'", hp = "'.mysql_escape_string($this->hp).'", PP = "'.mysql_escape_string($this->PP).'", PM = "'.mysql_escape_string($this->PM).'", carac = "'.mysql_escape_string($this->carac).'", bonus1 = "'.mysql_escape_string($this->bonus1).'", bonus2 = "'.mysql_escape_string($this->bonus2).'", bonus3 = "'.mysql_escape_string($this->bonus3).'", bonus4 = "'.mysql_escape_string($this->bonus4).'", bonus5 = "'.mysql_escape_string($this->bonus5).'", bonus6 = "'.mysql_escape_string($this->bonus6).'", bonus7 = "'.mysql_escape_string($this->bonus7).'", augmentation_pa = "'.mysql_escape_string($this->augmentation_pa).'", temps_construction = "'.mysql_escape_string($this->temps_construction).'", image = "'.mysql_escape_string($this->image).'", point_victoire = "'.mysql_escape_string($this->point_victoire).'"';
+				if($force) $champs = 'nom = "'.mysql_escape_string($this->nom).'", description = "'.mysql_escape_string($this->description).'", type = "'.mysql_escape_string($this->type).'", cout = "'.mysql_escape_string($this->cout).'", entretien = "'.mysql_escape_string($this->entretien).'", cond1 = "'.mysql_escape_string($this->cond1).'", cond2 = "'.mysql_escape_string($this->cond2).'", hp = "'.mysql_escape_string($this->hp).'", PP = "'.mysql_escape_string($this->PP).'", PM = "'.mysql_escape_string($this->PM).'", carac = "'.mysql_escape_string($this->carac).'", bonus1 = "'.mysql_escape_string($this->bonus1).'", bonus2 = "'.mysql_escape_string($this->bonus2).'", bonus3 = "'.mysql_escape_string($this->bonus3).'", bonus4 = "'.mysql_escape_string($this->bonus4).'", bonus5 = "'.mysql_escape_string($this->bonus5).'", bonus6 = "'.mysql_escape_string($this->bonus6).'", bonus7 = "'.mysql_escape_string($this->bonus7).'", upgrade = "'.mysql_escape_string($this->upgrade).'", augmentation_pa = "'.mysql_escape_string($this->augmentation_pa).'", temps_construction = "'.mysql_escape_string($this->temps_construction).'", image = "'.mysql_escape_string($this->image).'", point_victoire = "'.mysql_escape_string($this->point_victoire).'"';
 				else
 				{
 					$champs = '';
@@ -269,8 +278,8 @@ class batiment
 		}
 		else
 		{
-			$requete = 'INSERT INTO batiment (nom, description, type, cout, entretien, cond1, cond2, hp, PP, PM, carac, bonus1, bonus2, bonus3, bonus4, bonus5, bonus6, bonus7, augmentation_pa, temps_construction, image, point_victoire) VALUES(';
-			$requete .= '"'.mysql_escape_string($this->nom).'", "'.mysql_escape_string($this->description).'", "'.mysql_escape_string($this->type).'", "'.mysql_escape_string($this->cout).'", "'.mysql_escape_string($this->entretien).'", "'.mysql_escape_string($this->cond1).'", "'.mysql_escape_string($this->cond2).'", "'.mysql_escape_string($this->hp).'", "'.mysql_escape_string($this->PP).'", "'.mysql_escape_string($this->PM).'", "'.mysql_escape_string($this->carac).'", "'.mysql_escape_string($this->bonus1).'", "'.mysql_escape_string($this->bonus2).'", "'.mysql_escape_string($this->bonus3).'", "'.mysql_escape_string($this->bonus4).'", "'.mysql_escape_string($this->bonus5).'", "'.mysql_escape_string($this->bonus6).'", "'.mysql_escape_string($this->bonus7).'", "'.mysql_escape_string($this->augmentation_pa).'", "'.mysql_escape_string($this->temps_construction).'", "'.mysql_escape_string($this->image).'", "'.mysql_escape_string($this->point_victoire).'")';
+			$requete = 'INSERT INTO batiment (nom, description, type, cout, entretien, cond1, cond2, hp, PP, PM, carac, bonus1, bonus2, bonus3, bonus4, bonus5, bonus6, bonus7, upgrade, augmentation_pa, temps_construction, image, point_victoire) VALUES(';
+			$requete .= '"'.mysql_escape_string($this->nom).'", "'.mysql_escape_string($this->description).'", "'.mysql_escape_string($this->type).'", "'.mysql_escape_string($this->cout).'", "'.mysql_escape_string($this->entretien).'", "'.mysql_escape_string($this->cond1).'", "'.mysql_escape_string($this->cond2).'", "'.mysql_escape_string($this->hp).'", "'.mysql_escape_string($this->PP).'", "'.mysql_escape_string($this->PM).'", "'.mysql_escape_string($this->carac).'", "'.mysql_escape_string($this->bonus1).'", "'.mysql_escape_string($this->bonus2).'", "'.mysql_escape_string($this->bonus3).'", "'.mysql_escape_string($this->bonus4).'", "'.mysql_escape_string($this->bonus5).'", "'.mysql_escape_string($this->bonus6).'", "'.mysql_escape_string($this->bonus7).'", "'.mysql_escape_string($this->upgrade).'", "'.mysql_escape_string($this->augmentation_pa).'", "'.mysql_escape_string($this->temps_construction).'", "'.mysql_escape_string($this->image).'", "'.mysql_escape_string($this->point_victoire).'")';
 			$db->query($requete);
 			//Récuperation du dernier ID inséré.
 			$this->id = $db->last_insert_id();
@@ -329,14 +338,14 @@ class batiment
 			}
 		}
 
-		$requete = "SELECT id, nom, description, type, cout, entretien, cond1, cond2, hp, PP, PM, carac, bonus1, bonus2, bonus3, bonus4, bonus5, bonus6, bonus7, augmentation_pa, temps_construction, image, point_victoire FROM batiment WHERE ".$where." ORDER BY ".$ordre;
+		$requete = "SELECT id, nom, description, type, cout, entretien, cond1, cond2, hp, PP, PM, carac, bonus1, bonus2, bonus3, bonus4, bonus5, bonus6, bonus7, upgrade, augmentation_pa, temps_construction, image, point_victoire FROM batiment WHERE ".$where." ORDER BY ".$ordre;
 		$req = $db->query($requete);
 		if($db->num_rows($req) > 0)
 		{
 			while($row = $db->read_assoc($req))
 			{
 				if(!$keys) $return[] = new batiment($row);
-				else $return[$row[$keys]][] = new batiment($row);
+				else $return[$row[$keys]] = new batiment($row);
 			}
 		}
 		else $return = array();
@@ -351,7 +360,7 @@ class batiment
 	*/
 	function __toString()
 	{
-		return 'id = '.$this->id.', nom = '.$this->nom.', description = '.$this->description.', type = '.$this->type.', cout = '.$this->cout.', entretien = '.$this->entretien.', cond1 = '.$this->cond1.', cond2 = '.$this->cond2.', hp = '.$this->hp.', PP = '.$this->PP.', PM = '.$this->PM.', carac = '.$this->carac.', bonus1 = '.$this->bonus1.', bonus2 = '.$this->bonus2.', bonus3 = '.$this->bonus3.', bonus4 = '.$this->bonus4.', bonus5 = '.$this->bonus5.', bonus6 = '.$this->bonus6.', bonus7 = '.$this->bonus7.', augmentation_pa = '.$this->augmentation_pa.', temps_construction = '.$this->temps_construction.', image = '.$this->image.', point_victoire = '.$this->point_victoire;
+		return 'id = '.$this->id.', nom = '.$this->nom.', description = '.$this->description.', type = '.$this->type.', cout = '.$this->cout.', entretien = '.$this->entretien.', cond1 = '.$this->cond1.', cond2 = '.$this->cond2.', hp = '.$this->hp.', PP = '.$this->PP.', PM = '.$this->PM.', carac = '.$this->carac.', bonus1 = '.$this->bonus1.', bonus2 = '.$this->bonus2.', bonus3 = '.$this->bonus3.', bonus4 = '.$this->bonus4.', bonus5 = '.$this->bonus5.', bonus6 = '.$this->bonus6.', bonus7 = '.$this->bonus7.', upgrade = '.$this->upgrade.', augmentation_pa = '.$this->augmentation_pa.', temps_construction = '.$this->temps_construction.', image = '.$this->image.', point_victoire = '.$this->point_victoire;
 	}
 	
 	/**
@@ -561,6 +570,17 @@ class batiment
 	function get_bonus7()
 	{
 		return $this->bonus7;
+	}
+
+	/**
+	* Retourne la valeur de l'attribut
+	* @access public
+	* @param none
+	* @return int(11) $upgrade valeur de l'attribut upgrade
+	*/
+	function get_upgrade()
+	{
+		return $this->upgrade;
 	}
 
 	/**
@@ -838,6 +858,18 @@ class batiment
 	/**
 	* Modifie la valeur de l'attribut
 	* @access public
+	* @param int(11) $upgrade valeur de l'attribut
+	* @return none
+	*/
+	function set_upgrade($upgrade)
+	{
+		$this->upgrade = $upgrade;
+		$this->champs_modif[] = 'upgrade';
+	}
+
+	/**
+	* Modifie la valeur de l'attribut
+	* @access public
 	* @param tinyint(3) $augmentation_pa valeur de l'attribut
 	* @return none
 	*/
@@ -882,7 +914,8 @@ class batiment
 		$this->point_victoire = $point_victoire;
 		$this->champs_modif[] = 'point_victoire';
 	}
-	//fonction
+
+//fonction
 	/*function get_image($root, $resolution = 'high')
 	{
 		if($resolution != 'high') $image = $root."image/batiment_low/";
@@ -896,8 +929,6 @@ class batiment
 
 	function get_suivant()
 	{
-		if ($this->type == 'mine')
-			return $this->bonus7;
-		return 0;
+		return $this->upgrade;
 	}
 }
