@@ -27,7 +27,7 @@ Pour l'instant au stade de la bêta (c'est à dire en phase d'équilibrage et d'
 <br />
 Il vous permettra d'incarner un grand héros de l'univers Starshine, peuplé de nombreuses créatures et d'autres héros ennemis prêts à tout pour détruire votre peuple.<br />
 <br /><br />
-Il est recommandé d'utiliser un navigateur dernière génération pour jouer à Starshine, nous vous conseillons Firefox, un navigateur libre.<br />
+Il est recommandé d'utiliser un navigateur dernière génération pour jouer à Starshine, nous vous conseillons Firefox, un navigateur libre.
 N'oubliez pas de reporter les bugs et problèmes, et d'apporter vos suggestions sur le forum.</p>
 
 		</div>

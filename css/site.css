@@ -6,7 +6,7 @@ a:hover								{color:#CCF2FF;}
 
 #accueil 							{ width:1024px; margin:auto; font:12px "Helvetica Neue", Helvetica, Arial, Geneva, sans-serif; }
 #accueil .box 						{ height:357px; padding:10px; position:absolute; width:530px; background:transparent url(./../image/site/cadrecentrepagesso.png) no-repeat scroll 0 0; color:#e2d1aa; overflow:auto; text-align:justify; }
-#presentation_box 					{ padding-left:5px; width:503px; }
+#presentation_box 					{ padding-left:5px; width:503px; padding-top: 5px; }
 #news_box h2 						{ font-size:1.2em; margin:0; padding:0; margin-bottom:3px; }
 #news_box h2 a 						{ color:#EEE; }
 #news_box a 						{ color:#DDD; }
@@ -33,7 +33,7 @@ a:hover								{color:#CCF2FF;}
 #creation_box 						{ padding:5px; width:500px; }
 #creation_box input 				{ border:1px solid #CCC; }
 #personnage 						{ background:transparent url(./../image/site/cadredroitpersoedb.png) no-repeat scroll 0 0; color:#E2D1AA; margin-left:566px; position:absolute; text-align:justify; top:0; width:401px; }
-#personnage h3 						{ text-transform:capitalize; padding-left:9px; padding-top:9px; }
+#personnage h3 						{ text-transform:capitalize; padding-left:22px; padding-top:13px; font-size: 12px; }
 #personnage .personnage_box 		{ height:146px; margin-left:41px; padding-top:20px; width:354px; }
 #personnage .personnage_roi 		{ background:transparent url(./../image/site/cadredroitpropaedb.png) no-repeat scroll 0 0; height:367px; margin-left:12px; margin-top:77px; padding-left:33px; padding-right:10px; padding-top:6px; width:363px; }
 #personnage .personnage_roi p 		{ height:340px; overflow:auto; }
@@ -65,6 +65,7 @@ a:hover								{color:#CCF2FF;}
 #liens a:hover 						{ text-decoration:underline; }
 #accueil_pub 						{ background:transparent url(./../image/site/cadrebasbandeaupub.png) no-repeat scroll 0 0; height:84px; margin-left:95px; padding-top:19px; position:absolute; top:529px; width:455px; }
 .logo 								{ background:url(./../image/site/logosso.png) no-repeat; height:116px; width:311px; margin-left:100px; display:block; }
+#presentation_box span.logo { padding-bottom: 10px; }
 #header 							{ background-color:#c6d9f5; min-height:120px; margin:0; padding:0; }
 #header_logo 						{ width:1000px; margin:auto; background:transparent url(./../image/v2/site_haut.png) no-repeat left; min-height:120px; }
 #header_logo ul 					{ margin:0; padding:0; list-style-type:none; height:20px; text-align:center; top:101px; position:relative; }
