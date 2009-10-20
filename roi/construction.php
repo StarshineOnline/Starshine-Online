@@ -134,8 +134,10 @@ elseif($_GET['direction'] == 'suppr_construction')
 elseif($_GET['direction'] == 'up_construction')
 {
 	$construction = new construction(sSQL($_GET['id']));
-	$batiment = new batiment($construction->get_id_batiment()+1);
-	if($royaume->get_star() >= $batiment->get_cout() && $batiment->get_cond1() < (time() - $construction->get_date_construction()))
+	$ancien_batiment = new batiment($construction->get_id_batiment());
+	$batiment = new batiment($ancien_batiment->get_suivant());
+	if($ancien_batiment->get_suivant() && $royaume->get_star() >= $batiment->get_cout() &&
+		 $batiment->get_cond1() < (time() - $construction->get_date_construction()))
 	{
 		
 		//On supprime l'ancienne construction
