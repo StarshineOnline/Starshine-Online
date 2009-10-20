@@ -49,6 +49,64 @@ N'oubliez pas de reporter les bugs et problèmes, et d'apporter vos suggestions 
 		if(!file_exists('connect_forum.php'))
 		{
 			echo "Le fichier de connexion au forum n'est pas présent sur le serveur";
+			echo "<div class='news'>
+			<h2>Qqdf qdsf qsdf  qdsf qdsf </h2>
+			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf 
+			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf 
+			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf 
+			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf 
+			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf 
+			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf 
+			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf 
+			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf 
+			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf 
+			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf 
+			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf 
+			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf 
+			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf 
+			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf 
+			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf 
+			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf 
+			</div>";
+			echo "<div class='news'>
+			<h2>Qqdf qdsf qsdf  qdsf qdsf </h2>
+			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf 
+			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf 
+			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf 
+			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf 
+			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf 
+			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf 
+			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf 
+			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf 
+			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf 
+			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf 
+			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf 
+			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf 
+			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf 
+			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf 
+			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf 
+			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf 
+			</div>";
+			echo "<div class='news'>
+			<h2>Qqdf qdsf qsdf  qdsf qdsf </h2>
+			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf 
+			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf 
+			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf 
+			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf 
+			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf 
+			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf 
+			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf 
+			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf 
+			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf 
+			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf 
+			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf 
+			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf 
+			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf 
+			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf 
+			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf 
+			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf 
+			</div>";
+			
 		}
 		else
 		{
@@ -82,6 +140,7 @@ N'oubliez pas de reporter les bugs et problèmes, et d'apporter vos suggestions 
 				</div>';
 				echo $message;
 				$i++;
+				
 			}
 		}
 		?>

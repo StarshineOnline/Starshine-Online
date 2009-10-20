@@ -41,7 +41,7 @@ echo "<h3>".$Gtrad[$race]." - ".$classe."</h3>
 			<br />
 			<strong>Passif :</strong><br />
 			".$Trace[$race]['passif']."<br />
-			<ul id='carac'>
+			<ul class='carac'>
 				<li><strong>Caractéristiques :</strong></li>
 				<li title='Caractérise vos points de vie.'>
 					<span>Vie</span>
@@ -68,11 +68,12 @@ echo "<h3>".$Gtrad[$race]." - ".$classe."</h3>
 					<span>".$Trace[$race]['energie']."</span>
 				</li>
 			</ul>
-
-			<strong>Affinités magiques :</strong><br />
-			Magie de la Vie : ".$Gtrad['affinite'.$Trace[$race]['affinite_sort_vie']]."<br />
-			Magie de la Mort : ".$Gtrad['affinite'.$Trace[$race]['affinite_sort_mort']]."<br />
-			Magie Elementaire : ".$Gtrad['affinite'.$Trace[$race]['affinite_sort_element']]."<br />
+			<ul class='carac'>			
+			<li><strong>Affinités magiques :</strong></li>
+			<li>Magie de la Vie : ".$Gtrad['affinite'.$Trace[$race]['affinite_sort_vie']]."</li>
+			<li>Magie de la Mort : ".$Gtrad['affinite'.$Trace[$race]['affinite_sort_mort']]."</li>
+			<li>Magie Elementaire : ".$Gtrad['affinite'.$Trace[$race]['affinite_sort_element']]."</li>
+			</ul>
 			</div>
 			<div class='personnage_roi'>
 			<p>
