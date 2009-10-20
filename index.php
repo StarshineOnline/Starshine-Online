@@ -130,12 +130,13 @@ N'oubliez pas de reporter les bugs et problèmes, et d'apporter vos suggestions 
 			{
 			?>
 				<div id='login'>			
-				<form action="index.php" method="post">
+				<form id='login_form' action="index.php" method="post">
 				<div>
 				<input type="text" name="nom" size="10" class="login_nom" />
 				<input type="password" name="password" size="10" class="login_mdp" />
 				<input type="checkbox" name="auto_login" value="Ok" class="login_auto" />
-				<input type="submit" name="log" value="Connexion" class="login_connexion" />
+				<input type='hidden' name='log' />
+				<span class='login_connexion' onclick="$('#login_form').submit();"> </span>
 				</div>
 				</form>
 				</div>		

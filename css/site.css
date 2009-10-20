@@ -1,10 +1,10 @@
 body 								{ margin:0; padding:0; color:#222; background:#000 url(./../image/site/essai_intro_sso_20sept09g.jpg) no-repeat 50% 0; }
 img 								{ border:0; }
-a 									{ color:#FFF; }
-
+a 									{ color:#E2D1AA; }
+a:hover								{color:#CCF2FF;}
 /*-- Placement ----------------------------------------------------------*/
 
-#accueil 							{ width:1024px; margin:auto; font:13px "Helvetica Neue", Helvetica, Arial, Geneva, sans-serif; }
+#accueil 							{ width:1024px; margin:auto; font:12px "Helvetica Neue", Helvetica, Arial, Geneva, sans-serif; }
 #accueil .box 						{ height:357px; padding:10px; position:absolute; width:530px; background:transparent url(./../image/site/cadrecentrepagesso.png) no-repeat scroll 0 0; color:#e2d1aa; overflow:auto; text-align:justify; }
 #presentation_box 					{ padding-left:5px; width:503px; }
 #news_box h2 						{ font-size:1.2em; margin:0; padding:0; margin-bottom:3px; }
@@ -22,7 +22,8 @@ a 									{ color:#FFF; }
 .login_nom 							{ background-color:#000000; border:0 none; color:white; float:left; height:13px; margin-left:52px; margin-top:19px; text-align:left; width:81px; }
 .login_mdp 							{ background-color:#000000; border:0 none; color:white; float:left; height:13px; margin-left:54px; margin-top:19px; text-align:left; width:80px; }
 .login_auto 						{ background-color:#000000; border:0 none; color:white; float:left; height:13px; margin-left:76px; margin-top:19px; text-align:left; width:14px; }
-.login_connexion 					{ background-color:#000000; border:0 none; color:white; float:left; height:16px; margin-left:13px; margin-top:19px; text-align:left; width:62px; }
+.login_connexion 					{ cursor:pointer;display:block;float:left; height:16px; margin-left:13px; margin-top:19px; text-align:left; width:62px; }
+.login_connexion:hover				{ background:transparent url(./../image/site/boutonconnexion.png) no-repeat scroll -3px;}
 #login a 							{ color:#EEE; font-size:13px; }
 #login #deco 						{ float:right; cursor:pointer; }
 #carac 								{ float:left; width:150px; padding:0; margin:0; }
@@ -60,7 +61,7 @@ a 									{ color:#FFF; }
 #test 								{ margin-left:50px; position:absolute; top:74px; z-index:5; height:18px; }
 #liens								{ background:transparent url(./../image/site/cadrebasboutonsso.png) no-repeat scroll 0 0; border:medium none; color:#EEEEEE; height:60px; margin-left:83px; overflow:auto; position:absolute; text-align:justify; top:477px; width:480px; }
 #liens p 							{ color:#957D47; font-size:12px; padding:16px 0 0 20px; text-align:justify; }
-#liens a 							{ color:#FFF; padding-left:10px; padding-right:10px; text-decoration:none; }
+#liens a 							{ color:#957D47; padding-left:10px; padding-right:10px; text-decoration:none; }
 #liens a:hover 						{ text-decoration:underline; }
 #accueil_pub 						{ background:transparent url(./../image/site/cadrebasbandeaupub.png) no-repeat scroll 0 0; height:84px; margin-left:95px; padding-top:19px; position:absolute; top:529px; width:455px; }
 .logo 								{ background:url(./../image/site/logosso.png) no-repeat; height:116px; width:311px; margin-left:100px; display:block; }
@@ -89,7 +90,7 @@ a 									{ color:#FFF; }
 #popup_erreur_content 				{ padding:5px; text-align:justify; width:98%; }
 #popup_erreur_marge 				{ min-height:50px; margin:auto; width:200px; }
 .fermer 							{ background:transparent url(./../image/interface/rouge.png) no-repeat top left; display:block; height:16px; width:16px; cursor:pointer!important; }
-.perso_cadre						{ width:306px;float:left;background-color:#000;-moz-border-radius : 10px;margin-left:14px;padding-left:15px;}
+.perso_cadre						{ width:306px;float:left;background-color:#c3beff;-moz-border-radius : 10px;margin-left:14px;padding-left:15px;}
 .perso_espacement					{ width: 17px; float: left; height: 1px;display:block;}
 
 /*-- Perso ----------------------------------------------------------*/
