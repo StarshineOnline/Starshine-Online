@@ -34,7 +34,7 @@ a:hover								{color:#CCF2FF;}
 .carac li span 						{ width:75px; float:left; }
 #loading_sso 						{ background:transparent url(./../image/v2/ajax-activity-loader.gif); height:32px; width:32px; position:absolute; top:0; margin-left:830px; }
 #creation_box 						{ padding:5px; width:500px; }
-#creation_box input 				{ border:0; margin-left:4px;margin-top:7px;width:138px;}
+#creation_box input 				{ border:0; margin-left:5px;margin-top:6px;width:138px;}
 #personnage 						{ background:transparent url(./../image/site/cadredroitpersoedb.png) no-repeat scroll 0 0; color:#E2D1AA; margin-left:566px; position:absolute; text-align:justify; top:0; width:401px; }
 #personnage h3 						{ text-transform:capitalize; padding-left:22px; padding-top:13px; font-size: 12px; }
 #personnage .personnage_box 		{ height:146px; margin-left:41px; padding-top:20px; width:354px; }
@@ -66,7 +66,7 @@ a:hover								{color:#CCF2FF;}
 #liens p 							{ color:#957D47; font-size:12px; padding:16px 0 0 20px; text-align:justify; }
 #liens a 							{ color:#957D47; padding-left:10px; padding-right:10px; text-decoration:none; }
 #liens a:hover 						{ text-decoration:underline; }
-#accueil_pub 						{ background:transparent url(./../image/site/cadrebasbandeaupub2.png) no-repeat scroll 0 0; height:84px; margin-left:95px; padding-top:19px; position:absolute; top:529px; width:455px; }
+#accueil_pub 						{ background:transparent url(./../image/site/cadrebasbandeaupub.png) no-repeat scroll 0 0; height:84px; margin-left:95px; padding-top:19px; position:absolute; top:529px; width:455px; }
 .logo 								{ background:url(./../image/site/logosso.png) no-repeat; height:116px; width:311px; margin-left:100px; display:block; }
 #presentation_box span.logo 		{ padding-bottom: 15px; }
 #menu 								{ min-height:20px; border-bottom:1px solid #888; border-top:1px solid #888; margin:0; padding:0; background:transparent url(./../image/v2/bouton_fond.png) repeat-x; }
