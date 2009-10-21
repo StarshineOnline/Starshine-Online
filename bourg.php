@@ -66,7 +66,9 @@ if($bourg->get_x() == $joueur->get_x() AND $bourg->get_y() == $joueur->get_y() A
 		</li>
 <?php
 	}
-	if($batiment->get_bonus7() == 1 AND $joueur->get_rang_royaume() == 6)
+	if($batiment->get_bonus7() == 1 AND ($joueur->get_rang_royaume() == 6 ||
+																			 $R->get_ministre_economie() == $joueur->get_id() ||
+																			 $R->get_ministre_militaire() == $joueur->get_id() ))
 	{
 ?>
 		<li>

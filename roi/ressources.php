@@ -65,7 +65,6 @@ else if(array_key_exists('ress', $_GET))
 	$graph->drawTitle(50,22,$_GET['ress'].' dans la semaine',50,50,50,585);
 	$graph->Render('../image/'.$royaume->get_race().'_'.$_GET['ress'].'.png');
 	?>
-	<a href="ressources.php" onclick="return envoiInfo(this.href, 'conteneur');">Retour au tableau des ressources</a>
 	<img src="../image/<?php echo $royaume->get_race(); ?>_<?php echo $_GET['ress']; ?>.png" />
 	<?php
 }

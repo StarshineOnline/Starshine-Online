@@ -175,7 +175,9 @@ if($W_row['type'] == 1)
 										<a href="vente_terrain.php" onclick="return envoiInfo(this.href, 'carte')">Vente de terrain</a>
 									</li>
 							<?php
-										if($joueur->get_rang_royaume() == 6)
+										if($joueur->get_rang_royaume() == 6 ||
+											 $R->get_ministre_economie() == $joueur->get_id() ||
+											 $R->get_ministre_militaire() == $joueur->get_id() )
 										{
 							?>
 									<li>

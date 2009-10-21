@@ -8,8 +8,8 @@ a:hover								{color:#CCF2FF;}
 #accueil #test 						{ height:351px; padding:10px; position:absolute; width:530px; background:transparent url(./../image/site/cadrecentrepagesso.png) no-repeat scroll 0 0; color:#e2d1aa;  text-align:justify; }
 
 #accueil .box 						{ height:342px;overflow:auto;padding:5px;width:505px;}
-#presentation_box 					{ width:495px; padding-top: 15px; height:327px; /* 342 - 15 */ }
-#presentation_box p { padding-right: 5px; }
+#presentation_box 					{ width:495px; padding-top: 10px; height:327px; /* 342 - 15 */ }
+#presentation_box p { padding-right: 5px; padding-left: 7px; }
 #news_box h2 						{ font-size:1.2em; margin:0; padding:0; margin-bottom:3px; }
 #news_box h2 a 						{ color:#EEE; }
 #news_box a 						{ color:#DDD; }
@@ -36,8 +36,9 @@ a:hover								{color:#CCF2FF;}
 #creation_box 						{ padding:5px; width:500px; }
 #creation_box input 				{ border:0; margin-left:5px;margin-top:6px;width:138px;}
 #personnage 						{ background:transparent url(./../image/site/cadredroitpersoedb.png) no-repeat scroll 0 0; color:#E2D1AA; margin-left:566px; position:absolute; text-align:justify; top:0; width:401px; }
-#personnage h3 						{ text-transform:capitalize; padding-left:22px; padding-top:13px; font-size: 12px; }
-#personnage .personnage_box 		{ height:146px; margin-left:41px; padding-top:20px; width:354px; }
+/*#personnage h3 						{ text-transform:capitalize; padding-left:24px; padding-top:13px; font-size: 12px; }*/
+#personnage h3 						{ text-transform:capitalize; padding-top:13px; text-align: center; width: 168px; font-size: 12px; margin-left: 6px; }
+#personnage .personnage_box 		{ height:140px; margin-left:41px; padding-top:26px; width:354px; padding-left: 5px; }
 #personnage .personnage_roi 		{ background:transparent url(./../image/site/cadredroitpropaedb.png) no-repeat scroll 0 0; height:367px; margin-left:12px; margin-top:86px; padding-left:33px; padding-right:10px; padding-top:6px; width:363px; }
 #personnage .personnage_roi p 		{ height:340px; overflow:auto; padding-right: 5px }
 .perso_selected 					{ background-color:#CCC; -webkit-border-radius:10px; -moz-border-radius:10px; }
@@ -62,13 +63,24 @@ a:hover								{color:#CCF2FF;}
 /*-- Vrac ----------------------------------------------------------*/
 
 #test 								{ margin-left:50px; position:absolute; top:74px; z-index:5; height:18px; }
-#liens								{ background:transparent url(./../image/site/cadrebasboutonsso.png) no-repeat scroll 0 0; border:medium none; color:#EEEEEE; height:60px; margin-left:83px; overflow:auto; position:absolute; text-align:justify; top:477px; width:480px; }
+#liens								{ background:transparent url(./../image/site/cadrebasboutonsso.png) no-repeat scroll 0 0; border:medium none; color:#EEEEEE; height:60px; margin-left:79px; overflow:auto; position:absolute; text-align:justify; top:477px; width:480px; margin-top: 1px; }
 #liens p 							{ color:#957D47; font-size:12px; padding:16px 0 0 20px; text-align:justify; }
 #liens a 							{ color:#957D47; padding-left:10px; padding-right:10px; text-decoration:none; }
-#liens a:hover 						{ text-decoration:underline; }
-#accueil_pub 						{ background:transparent url(./../image/site/cadrebasbandeaupub.png) no-repeat scroll 0 0; height:84px; margin-left:81px; padding-top:19px; position:absolute; top:529px; width:483px; }
+#liens a:hover 				{ color:#CCF2FF; text-decoration:underline; }
+#accueil_pub {
+-moz-background-clip:border;
+-moz-background-inline-policy:continuous;
+-moz-background-origin:padding;
+background:transparent url(./../image/site/cadrebasbandeaupub.png) no-repeat scroll 0 0;
+height:84px;
+padding-left: 7px;
+margin-left:76px;
+padding-top:19px;
+position:absolute;
+top:529px;
+width:483px; }
 .logo 								{ background:url(./../image/site/logosso.png) no-repeat; height:116px; width:311px; margin-left:100px; display:block; }
-#presentation_box span.logo 		{ padding-bottom: 15px; }
+#presentation_box span.logo 		{ padding-bottom: 10px; }
 #menu 								{ min-height:20px; border-bottom:1px solid #888; border-top:1px solid #888; margin:0; padding:0; background:transparent url(./../image/v2/bouton_fond.png) repeat-x; }
 #menu_details 						{ width:1000px; margin:auto; }
 #menu_details .menu 				{ width:120px; display:block; float:left; cursor:pointer; text-align:center; border-left:1px solid #CCC; border-right:1px solid #CCC; }
@@ -85,7 +97,7 @@ a:hover								{color:#CCF2FF;}
 
 .illu								{ float:left;background:transparent url(./../image/site/input_illu.png) no-repeat center;display:block;height:31px;width:150px;}
 
-#aide_inscription 					{ clear:both; font-size:.9em;padding-top:15px; }
+#aide_inscription 					{ clear:both; font-size:.9em;padding-top:15px; margin-left: 0px; padding-left: 0px; border-left: 0px; padding-right: 10px; }
 #popup_erreur 						{ left:50%; margin:auto; position:absolute; top:0; z-index:99!important; -moz-border-radius:12px;-webkit-border-radius:12px; background:transparent url(./../image/v2/box_accueil.png) repeat scroll 0 0; color:#EEE; }
 #popup_erreur a 					{ color:#EEE; }
 #popup_erreur_menu 					{ cursor:move; background:transparent url(./../image/v2/bouton_fond.png) repeat-x scroll 0 0; }

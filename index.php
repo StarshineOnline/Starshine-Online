@@ -174,7 +174,7 @@ N'oubliez pas de reporter les bugs et problèmes, et d'apporter vos suggestions 
 		<input type='hidden' id='perso_selected_id' />
 		</div>
 			<div id="aide_inscription">
-			Avant de créer un personnage, vous pouvez consulter <a href="http://wiki.starshine-online.com">l'aide de jeu</a>, pour mieux choisir votre personnage<br />
+			Avant de créer un personnage, vous pouvez consulter <a href="http://wiki.starshine-online.com">l'aide de jeu</a>, pour mieux choisir votre personnage.<br />
 			N'hésitez pas à faire le tour des races pour en voir toutes les différences, et à passer votre curseur sur les attributs (force, dextérité, etc) pour avoir des détails sur leur fonctionnement.<br />
 			Pour un équilibrage du jeu, les peuples ayant le moins de joueurs recoivent plus de stars à la création du personnage.<br />
 			<strong>Un compte sur le forum sera créé automatiquement avec vos informations du jeu.</strong>
