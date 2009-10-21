@@ -311,6 +311,10 @@ else
 						echo $defenseur->get_nom().' s\'approche<br />';
 						$action[0] = '';
 					}
+					elseif (($mode == 'defenseur') && ($type == 'batiment'))
+					{
+						$action[0] = '';
+					}
 					else
 					{
 						${$mode}->get_action();
@@ -484,6 +488,7 @@ else
 			</table>
 					<?php
 				}
+					if ($siege_true) break;
 			}
 			$attaque_hp_apres = $attaquant->get_hp();
 			$defense_hp_apres = $defenseur->get_hp();
