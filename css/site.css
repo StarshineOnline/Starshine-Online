@@ -66,7 +66,7 @@ a:hover								{color:#CCF2FF;}
 #liens p 							{ color:#957D47; font-size:12px; padding:16px 0 0 20px; text-align:justify; }
 #liens a 							{ color:#957D47; padding-left:10px; padding-right:10px; text-decoration:none; }
 #liens a:hover 						{ text-decoration:underline; }
-#accueil_pub 						{ background:transparent url(./../image/site/cadrebasbandeaupub.png) no-repeat scroll 0 0; height:84px; margin-left:95px; padding-top:19px; position:absolute; top:529px; width:455px; }
+#accueil_pub 						{ background:transparent url(./../image/site/cadrebasbandeaupub.png) no-repeat scroll 0 0; height:84px; margin-left:81px; padding-top:19px; position:absolute; top:529px; width:483px; }
 .logo 								{ background:url(./../image/site/logosso.png) no-repeat; height:116px; width:311px; margin-left:100px; display:block; }
 #presentation_box span.logo 		{ padding-bottom: 15px; }
 #menu 								{ min-height:20px; border-bottom:1px solid #888; border-top:1px solid #888; margin:0; padding:0; background:transparent url(./../image/v2/bouton_fond.png) repeat-x; }
