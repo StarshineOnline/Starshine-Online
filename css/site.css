@@ -8,7 +8,7 @@ a:hover								{color:#CCF2FF;}
 #accueil #test 						{ height:351px; padding:10px; position:absolute; width:530px; background:transparent url(./../image/site/cadrecentrepagesso.png) no-repeat scroll 0 0; color:#e2d1aa;  text-align:justify; }
 
 #accueil .box 						{ height:342px;overflow:auto;padding:5px;width:505px;}
-#presentation_box 					{ width:503px; padding-top: 5px; }
+#presentation_box 					{ width:503px; padding-top: 15px; }
 #news_box h2 						{ font-size:1.2em; margin:0; padding:0; margin-bottom:3px; }
 #news_box h2 a 						{ color:#EEE; }
 #news_box a 						{ color:#DDD; }
@@ -67,7 +67,7 @@ a:hover								{color:#CCF2FF;}
 #liens a:hover 						{ text-decoration:underline; }
 #accueil_pub 						{ background:transparent url(./../image/site/cadrebasbandeaupub2.png) no-repeat scroll 0 0; height:84px; margin-left:95px; padding-top:19px; position:absolute; top:529px; width:455px; }
 .logo 								{ background:url(./../image/site/logosso.png) no-repeat; height:116px; width:311px; margin-left:100px; display:block; }
-#presentation_box span.logo { padding-bottom: 10px; }
+#presentation_box span.logo 		{ padding-bottom: 15px; }
 #header 							{ background-color:#c6d9f5; min-height:120px; margin:0; padding:0; }
 #header_logo 						{ width:1000px; margin:auto; background:transparent url(./../image/v2/site_haut.png) no-repeat left; min-height:120px; }
 #header_logo ul 					{ margin:0; padding:0; list-style-type:none; height:20px; text-align:center; top:101px; position:relative; }
