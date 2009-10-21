@@ -148,11 +148,11 @@ N'oubliez pas de reporter les bugs et problèmes, et d'apporter vos suggestions 
 		<div id='creation_box' style='display:none;'>
 		<p id='creat_erreur' style='color:#FF0022; display : none;'>&nbsp;</p>
 		<div style='width:165px;float:left;'>
-			<span class='creation_text'>Quel sera votre nom ?</span><input type="text" name="nom" id='creat_nom' /><br />
-			<span class='creation_text'>Indiquer un mot de passe :</span><input type="password" name="password" id='creat_pass' /><br />
+			<span class='creation_text'>Quel sera votre nom ?</span><span class='illu'><input type="text" name="nom" id='creat_nom' /></span><br />
+			<span class='creation_text'>Indiquer un mot de passe :</span><span class='illu'><input type="password" name="password" id='creat_pass' /></span><br />
 			<span class='creation_text'>Confirmer votre mot de passe :</span>
-			<input type="password" name="password2" id='creat_pass2' />
-			<span onclick="validation_perso();" id="bouton_creer">Créer</span>
+			<span class='illu'><input type="password" name="password2" id='creat_pass2' /></span>
+			<span onclick="validation_perso();" id="bouton_creer"> </span>
 		</div>
 		<div class='perso_cadre'>
 		<?php

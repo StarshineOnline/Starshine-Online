@@ -34,7 +34,7 @@ a:hover								{color:#CCF2FF;}
 .carac li span 						{ width:75px; float:left; }
 #loading_sso 						{ background:transparent url(./../image/v2/ajax-activity-loader.gif); height:32px; width:32px; position:absolute; top:0; margin-left:830px; }
 #creation_box 						{ padding:5px; width:500px; }
-#creation_box input 				{ border:1px solid #CCC; }
+#creation_box input 				{ border:0; margin-left:4px;margin-top:7px;width:138px;}
 #personnage 						{ background:transparent url(./../image/site/cadredroitpersoedb.png) no-repeat scroll 0 0; color:#E2D1AA; margin-left:566px; position:absolute; text-align:justify; top:0; width:401px; }
 #personnage h3 						{ text-transform:capitalize; padding-left:22px; padding-top:13px; font-size: 12px; }
 #personnage .personnage_box 		{ height:146px; margin-left:41px; padding-top:20px; width:354px; }
@@ -86,8 +86,12 @@ a:hover								{color:#CCF2FF;}
 #news h2 a 							{ color:#000; text-decoration:none; }
 #news .box 							{ background:transparent url(./../image/v2/contenu_fond.png); -moz-border-radius-bottomleft:8px; -moz-border-radius-bottomright:8px; -webkit-border-radius:8px; margin:-3px 10px 10px; padding:5px; }
 #contenu .pub 						{ width:120px; padding:7px; float:left; }
-#bouton_creer 						{ border:1px solid grey; color:#EEE; background-color:black; width:142px; display:block; text-align:center; font-weight:bold; margin-top:3px; padding:2px 0; cursor:pointer; }
-#aide_inscription 					{ clear:both; font-size:.9em; }
+#bouton_creer 						{ float:left;background:transparent url(./../image/site/boutoncreer.png) no-repeat center; width:136px; display:block; text-align:center; font-weight:bold; margin-top:3px; padding:2px 0; cursor:pointer;height:26px;margin-left:6px; }
+#bouton_creer:hover 				{ background:transparent url(./../image/site/boutoncreerclick.png) no-repeat center; }
+
+.illu								{ float:left;background:transparent url(./../image/site/input_illu.png) no-repeat center;display:block;height:31px;width:150px;}
+
+#aide_inscription 					{ clear:both; font-size:.9em;padding-top:15px; }
 #popup_erreur 						{ left:50%; margin:auto; position:absolute; top:0; z-index:99!important; -moz-border-radius:12px; background:transparent url(./../image/v2/box_accueil.png) repeat scroll 0 0; color:#EEE; }
 #popup_erreur a 					{ color:#EEE; }
 #popup_erreur_menu 					{ cursor:move; background:transparent url(./../image/v2/bouton_fond.png) repeat-x scroll 0 0; }
