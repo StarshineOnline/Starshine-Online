@@ -47,7 +47,7 @@ if(isset($_POST['message']))
 			if($type == 'r')
 			{
 				?>
-				<img src="image/pixel.gif" onload="envoiInfo('messagerie.php?id_thread=<?php echo $thread->id_thread; ?>', 'information');" />
+messagerie.php?id_thread=<?php echo $thread->id_thread; ?>
 				<?php
 			}
 			else echo '<h6>Message transmis avec succès</h6>';

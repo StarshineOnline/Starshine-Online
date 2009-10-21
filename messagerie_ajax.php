@@ -48,7 +48,7 @@ if(!array_key_exists('action', $_GET))
 		<form method="post" id="formMessage" action="envoimessage.php?id_type=r<?php echo $messagerie->thread->id_thread; ?>">
 		<textarea name="message" id="message" cols="53" rows="7"></textarea>
 		<br />
-		<input type="button" onclick="envoiFormulaire('formMessage', 'information');" value="Envoyer" />
+		<input type="button" onclick="envoiFormulaire('envoimessage.php?id_type=r<?php echo $messagerie->thread->id_thread; ?>', 'information');" value="Envoyer" />
 		
 		</form>
 	<?php
