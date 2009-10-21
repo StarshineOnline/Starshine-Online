@@ -8,7 +8,8 @@ a:hover								{color:#CCF2FF;}
 #accueil #test 						{ height:351px; padding:10px; position:absolute; width:530px; background:transparent url(./../image/site/cadrecentrepagesso.png) no-repeat scroll 0 0; color:#e2d1aa;  text-align:justify; }
 
 #accueil .box 						{ height:342px;overflow:auto;padding:5px;width:505px;}
-#presentation_box 					{ width:503px; padding-top: 15px; }
+#presentation_box 					{ width:495px; padding-top: 15px; height:327px; /* 342 - 15 */ }
+#presentation_box p { padding-right: 5px; }
 #news_box h2 						{ font-size:1.2em; margin:0; padding:0; margin-bottom:3px; }
 #news_box h2 a 						{ color:#EEE; }
 #news_box a 						{ color:#DDD; }
@@ -38,7 +39,7 @@ a:hover								{color:#CCF2FF;}
 #personnage h3 						{ text-transform:capitalize; padding-left:22px; padding-top:13px; font-size: 12px; }
 #personnage .personnage_box 		{ height:146px; margin-left:41px; padding-top:20px; width:354px; }
 #personnage .personnage_roi 		{ background:transparent url(./../image/site/cadredroitpropaedb.png) no-repeat scroll 0 0; height:367px; margin-left:12px; margin-top:86px; padding-left:33px; padding-right:10px; padding-top:6px; width:363px; }
-#personnage .personnage_roi p 		{ height:340px; overflow:auto; }
+#personnage .personnage_roi p 		{ height:340px; overflow:auto; padding-right: 5px }
 .perso_selected 					{ background-color:#CCC; -webkit-border-radius:10px; -moz-border-radius:10px; }
 
 /*-- Menu ----------------------------------------------------------*/
@@ -76,7 +77,7 @@ a:hover								{color:#CCF2FF;}
 #header_logo .select 				{ background:transparent url(./../image/v2/bouton_selected.png) repeat-x; border-bottom:1px solid transparent; font-style:normal; font-weight:bold; }
 #menu 								{ min-height:20px; border-bottom:1px solid #888; border-top:1px solid #888; margin:0; padding:0; background:transparent url(./../image/v2/bouton_fond.png) repeat-x; }
 #menu_details 						{ width:1000px; margin:auto; }
-#menu_details .menu 				{ width:120px; display:block; float:left; cursor:pointer; text-align:center; border-left:1px solid #CCC; border-rightr:1px solid #CCC; }
+#menu_details .menu 				{ width:120px; display:block; float:left; cursor:pointer; text-align:center; border-left:1px solid #CCC; border-right:1px solid #CCC; }
 #menu_details .menu:hover 			{ background:transparent url(./../image/v2/bouton_hover.png) no-repeat left; padding-top:1px; }
 #contenu_back 						{ background:transparent url(./../image/v2/bg_site.png) repeat-x; margin:0; padding:0; overflow:auto; height:700px; }
 #contenu 							{ width:1000px; margin:auto; height:700px; }
