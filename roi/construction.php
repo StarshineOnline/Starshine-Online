@@ -155,6 +155,8 @@ elseif($_GET['direction'] == 'up_construction')
 		$construction_bourg->set_rez(0);
 		$construction_bourg->set_image($batiment->get_image());
 		$construction_bourg->set_date_construction(time());
+		$construction_bourg->set_rechargement($construction->get_rechargement());
+		
 		$construction_bourg->set_point_victoire($batiment->get_point_victoire());
 		$construction_bourg->sauver();
 		

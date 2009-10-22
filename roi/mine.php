@@ -62,7 +62,6 @@ else if(array_key_exists('id', $_GET))
 					if(!empty($mine->ressources['Charbon'])) 		{$overlib .= 'Charbon : '.$mine->ressources['Charbon'].'<br />';}
 					if(!empty($mine->ressources['Essence Magique'])){$overlib .= 'Essence Magique : '.$mine->ressources['Essence Magique'].'<br />';}
 					if(!empty($mine->ressources['Star'])) 			{$overlib .= 'Star : '.$mine->ressources['Star'].'<br />';}
-					if($mine->evolution['cout'] != '') $evolution = ' <a onclick="envoiInfo(\'mine.php?mine='.$mine->get_id().'&amp;up\', \'info_mine\');$(\'info_mine\').show();" title="Evoluer ('.$mine->evolution['cout'].' stars)">Up</a>';
 					else $evolution = '';
 					echo '
 					<li onmouseover="'.make_overlib($overlib).'" onmouseout="return nd();">

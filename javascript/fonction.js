@@ -140,7 +140,7 @@ function envoiInfoJS(page, position)
 
 function envoiFormulaire(formulaire, position)
 {
-	$.ajax({type:'post',url:formulaire,data:'message='+$('#message').val(),success:function(html){
+	$.ajax({type:'post',url:formulaire,data:'message='+$('#message').val()+'&titre='+$('#titre').val(),success:function(html){
     $('#'+position).load(html);}});
 
 }

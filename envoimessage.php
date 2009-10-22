@@ -46,24 +46,16 @@ if(isset($_POST['message']))
 			$messagerie->envoi_message($id_thread, $id_dest, $titre, $message, $id_groupe);
 			if($type == 'r')
 			{
-				?>
-messagerie.php?id_thread=<?php echo $thread->id_thread; ?>
-				<?php
+
+				echo "messagerie.php?id_thread=".$thread->id_thread;
+
 			}
-			else echo '<h6>Message transmis avec succès</h6>';
 		}
-		else
-		{
-			echo '<h5>Vous n\'avez pas saisi de message</h5>';
-			$erreur = true;
-		}
+
 	}
-	else
-	{
-		echo '<h5>Vous n\'avez pas saisi de titre</h5>';
-		$erreur = true;
-	}
-	if($type != 'r') echo '<a href="messagerie.php" onclick="return envoiInfo(this.href, \'information\');">Retour à la messagerie</a><br />';
+
+	if($type != 'r') echo "messagerie.php";
+
 }
 else
 {
@@ -86,7 +78,7 @@ else
 		Message :<br />
 		<textarea name="message" id="message" cols="45" rows="12"></textarea><br />
 		<br />
-		<input type="button" onclick="envoiFormulaire('formMessage', 'information');" name="btnSubmit" value="Envoyer" />
+		<input type="button" onclick="envoiFormulaire('envoimessage.php?id_type=<?php echo $id_type; ?>', 'information');" name="btnSubmit" value="Envoyer" />
 	</form>
 </fieldset>
 <?php
