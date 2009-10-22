@@ -37,12 +37,12 @@ $joueur->check_perso();
 			}
 			$actionexplode = explode(';', recupaction($id_action));
 			$i = 1;
-			while($i <= $_POST['r'])
+			while($i <= $_GET['r'])
 			{
-				$final = $_POST['final'.$i];
+				$final = $_GET['final'.$i];
 				$action = '#09='.$i.'@';
 				$typefinal = $final[0];
-				$action_nom = sSQL($_POST['action_nom']);
+				$action_nom = sSQL($_GET['action_nom']);
 				$numfinal = mb_substr($final, 1, strlen($final));
 				if($final == 'attaque') $a_final = '!';
 				elseif($typefinal == 's') $a_final = '~'.$numfinal;

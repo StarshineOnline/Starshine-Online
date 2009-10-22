@@ -394,7 +394,6 @@ if(array_key_exists('from', $_GET) && $_GET['id_action'] != '')
 	else
 	{
 		$dataJS = '';
-		echo '<div class="information_case">';
 		echo '<form action="actions.php" method="POST">';
 		echo 'Nom du script : <input type="text" name="action_nom" id="action_nom" value="'. $action_t['nom'].'" /><br />';
 		echo '<table>';
@@ -434,18 +433,17 @@ if(array_key_exists('from', $_GET) && $_GET['id_action'] != '')
 			</select>
 			</td></tr>
 			<?php
-			$dataJS .= "final".$i."=' + document.getElementById('final".$i."').value + '&amp;";
+			$dataJS .= "&amp;final".$i."=' + document.getElementById('final".$i."').value + '&amp;";
 		}
-		$dataJS .= "r=".($i - 1)."&amp;action_nom=' + document.getElementById('action_nom').value + '";
+		$dataJS .= "r=".($i - 1)."&amp;action_nom=' + encodeURIComponent($('#action_nom').val()) + '";
 	echo '</table>';
 	?>
 	</form>
-	<input type="button" name="valid" value="Ok" onclick="envoiInfoPostData('actions.php?mode=s&amp;id_action=<?php echo $id_action; ?>&amp;valid=ok', 'information', '<?php echo $dataJS; ?>');" />
+	<input type="button" name="valid" value="Ok" onclick="envoiInfo('actions.php?mode=s&amp;id_action=<?php echo $id_action; ?>&amp;valid=ok<?php echo $dataJS; ?>', 'information');" />
 	<?php
 		//echo $dataJS;
 		/*&amp;r=<?php echo $i; ?>&amp;final=' + document.getElementById('final<?php echo $i; ?>').value + '*/
 	}
-echo '</div>';
 
 ?>
 	</fieldset>
