@@ -77,7 +77,7 @@ function recurse_createResize($src,$dst)
     @mkdir($dst);
     while(false !== ( $file = readdir($dir)) ) 
 	{
-        if (( $file != '.' ) && ( $file != '..' )) 
+        if (( $file != '.' ) && ( $file != '..' ) && ( $file != '.svn' )) 
 		{
             if ( is_dir($src . '/' . $file) ) 
 			{
