@@ -431,13 +431,15 @@ class map
 		}
 	}
 
-	function get_batiment()
+	function get_batiment($royaume)
 	{
 		global $db;
+		if (!empty($royaume)){$filter = 'AND construction.royaume = '.$royaume; }
 		$RqBatiments = $db->query("SELECT construction.x, construction.y, construction.hp, construction.royaume, construction.nom, construction.id_batiment, batiment.image 
 							FROM construction, batiment 
 							WHERE ( ( (construction.x >= ".$this->xmin.") AND (construction.x <= ".$this->xmax.") ) AND ( (construction.y >= ".$this->ymin.") AND (construction.y <= ".$this->ymax.") ) ) 
 							AND batiment.id = construction.id_batiment 
+							$filter
 							ORDER BY construction.y ASC, construction.x ASC;");
 		if($db->num_rows($RqBatiments) > 0)
 		{

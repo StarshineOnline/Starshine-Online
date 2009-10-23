@@ -12,7 +12,7 @@ $royaume = new royaume($Trace[$joueur->get_race()]['numrace']);
 
 $map = new map($_GET['x'], $_GET['y'], 8, '../', false, 'low');
 $map->get_drapeau();
-$map->get_batiment();
+$map->get_batiment($royaume->get_id());
 $map->quadrillage = true;
 $map->onclick_status = false;
 $map->affiche();
