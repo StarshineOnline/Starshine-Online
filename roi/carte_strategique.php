@@ -6,8 +6,8 @@ include_once(root.'haut_roi.php');
 include_once(root.'class/map.class.php');
 
 //-- Récupération de la position X, Y du joueur.
-if($joueur->get_rang_royaume() != 6)
-	echo '<p>Cheater</p>';
+if($joueur->get_rang_royaume() != 6 AND $joueur->get_id() != $royaume->get_ministre_militaire())
+	echo '<p>Cette page vous est interdit</p>';
 else if(!array_key_exists('poscase', $_GET))
 {
 	$RqXY = $db->query("SELECT x, y FROM perso WHERE ID=".$joueur->get_id().";");

@@ -6,8 +6,8 @@ require('haut_roi.php');
 
 //check_case('all');
 
-if($joueur->get_rang_royaume() != 6)
-	echo '<p>Cheater</p>';
+if($joueur->get_rang_royaume() != 6 AND $joueur->get_id() != $royaume->get_ministre_militaire())
+	echo '<p>Cette page vous est interdit</p>';
 else if(!array_key_exists('direction', $_GET))
 {
 	echo "<div id='affiche_minimap' style='float:right;'>";

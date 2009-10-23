@@ -8,8 +8,8 @@ include_once(root.'class/bourg.class.php');
 include_once(root.'class/mine.class.php');
 include_once(root.'class/placement.class.php');
 
-if($joueur->get_rang_royaume() != 6)
-	echo '<p>Cheater</p>';
+if($joueur->get_rang_royaume() != 6 AND $joueur->get_id() != $royaume->get_ministre_economie())
+	echo '<p>Cette page vous est interdit</p>';
 else if(array_key_exists('id', $_GET))
 {
 	$bourg = new bourg($_GET['id']);

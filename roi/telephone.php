@@ -4,7 +4,7 @@ if (file_exists('../root.php'))
 ?><?php
 require('haut_roi.php');
 if($joueur->get_rang_royaume() != 6)
-	echo '<p>Cheater</p>';
+	echo '<p>Cette page vous est interdit</p>';
 else if(array_key_exists('message', $_GET))
 {
 	$erreur = false;

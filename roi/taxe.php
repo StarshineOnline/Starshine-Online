@@ -5,7 +5,7 @@ if (file_exists('../root.php'))
 require('haut_roi.php');
 
 $duree = (60 * 60 * 24) * 7;
-if($joueur->get_rang_royaume() != 6)
+if($joueur->get_rang_royaume() != 6 AND $joueur->get_id() != $royaume->get_ministre_economie())
 	echo '<p>Cheater</p>';
 else if((time() - $duree) < $royaume->get_taxe_time())
 {

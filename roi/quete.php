@@ -7,7 +7,7 @@ require('haut_roi.php');
 ?>
 <?php
 if($joueur->get_rang_royaume() != 6)
-	echo '<p>Cheater</p>';
+	echo '<p>Cette page vous est interdit</p>';
 else if($_GET['action'] == 'achat')
 {
 	//Récupère les informations sur la quète

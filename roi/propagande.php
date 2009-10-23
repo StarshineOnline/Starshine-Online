@@ -6,7 +6,7 @@ require('haut_roi.php');
 include_once(root.'fonction/messagerie.inc.php');
 
 if($joueur->get_rang_royaume() != 6)
-	echo '<p>Cheater</p>';
+	echo '<p>Cette page vous est interdit</p>';
 elseif(array_key_exists('message', $_GET))
 {
 	if ($_GET['message'] != '')

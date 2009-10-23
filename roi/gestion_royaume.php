@@ -3,7 +3,7 @@ if (file_exists('../root.php'))
   include_once('../root.php');
 
 require('haut_roi.php');
-if($joueur->get_rang_royaume() != 6)
+if($joueur->get_rang_royaume() != 6 AND $joueur->get_id() != $royaume->get_ministre_economie() AND $joueur->get_id() != $royaume->get_ministre_militaire())
 	echo '<p>Cheater</p>';
 	else if($_GET['direction'] == 'diplomatie')
 	{
@@ -154,6 +154,8 @@ if($joueur->get_rang_royaume() != 6)
 	}
 	elseif($_GET['direction'] == 'diplomatie_modif')
 	{
+			if ($joueur->get_rang_royaume() == 6)
+			{
 			?>
 			<h3>Modification de la diplomatie avec <?php echo $Gtrad[$_GET['race']]; ?></h3>
 			Changer votre diplomatie pour :<br />
@@ -183,6 +185,11 @@ if($joueur->get_rang_royaume() != 6)
 			?>
 			<input type="button" onclick="envoiInfo('gestion_royaume.php?direction=diplomatie&amp;action=valid&amp;race=<?php echo $_GET['race']; ?>&amp;diplo=' + $('#diplo').val() + '&amp;star=<?php echo $href_star; ?>, 'contenu_jeu');$('#popup').hide();" value="Effectuer le changement diplomatique">
 			<?php
+			}
+			else
+			{
+				echo "Il faut être roi pour pouvoir changer la diplomatie de votre peuple";
+			}
 	}	
 	elseif($_GET['direction'] == 'diplomatie_demande')
 	{
@@ -242,7 +249,7 @@ if($joueur->get_rang_royaume() != 6)
 	        $db->query($requete);
 	    }
 	}
-	elseif($_GET['direction'] == 'construction')
+	elseif($_GET['direction'] == 'construction'  AND ($joueur->get_rang_royaume() == 6 OR $joueur->get_id() == $royaume->get_ministre_economie()))
 	{
 	    $requete = "SELECT *, construction_ville.id as id_const FROM construction_ville LEFT JOIN batiment_ville ON construction_ville.id_batiment = batiment_ville.id WHERE id_royaume = ".$royaume->get_id();
 	    $req = $db->query($requete);
@@ -271,7 +278,7 @@ if($joueur->get_rang_royaume() != 6)
 	    </fieldset>
 	    </div>';
 	}
-	elseif($_GET['direction'] == 'reactif')
+	elseif($_GET['direction'] == 'reactif' AND ($joueur->get_rang_royaume() == 6 OR $joueur->get_id() == $royaume->get_ministre_economie()))
 	{
 	    $id_batiment = $_GET['batiment'];
 	    $requete = "SELECT * FROM construction_ville WHERE id = ".$id_batiment;
@@ -289,7 +296,7 @@ if($joueur->get_rang_royaume() != 6)
 	        echo 'Vous n\'avez pas assez de stars pour réactiver cette construction !';
 	    }
 	}
-	elseif($_GET['direction'] == 'amelioration')
+	elseif($_GET['direction'] == 'amelioration' AND ($joueur->get_rang_royaume() == 6 OR $joueur->get_id() == $royaume->get_ministre_economie()))
 	{
 	    $type = $_GET['batiment'];
 	    $action = $_GET['action'];
@@ -344,7 +351,7 @@ if($joueur->get_rang_royaume() != 6)
 	        break;
 	    }
 	}
-	elseif($_GET['direction'] == 'carte')
+	elseif($_GET['direction'] == 'carte' AND ($joueur->get_rang_royaume() == 6 OR $joueur->get_id() == $royaume->get_ministre_militaire()))
 	{
 		include('carte_roy.php');
 		echo '<img src="carte_roy2.php" style="width:600px;margin-left:170px;" />';
@@ -632,7 +639,7 @@ if($joueur->get_rang_royaume() != 6)
 	elseif($_GET['direction'] == 'achat_militaire')
 	{
 	}
-	elseif($_GET['direction'] == 'boutique')
+	elseif($_GET['direction'] == 'boutique' AND ($joueur->get_rang_royaume() == 6 OR $joueur->get_id() == $royaume->get_ministre_militaire()))
 	{
 		echo "
 		<div id='boutique'>
@@ -677,7 +684,7 @@ if($joueur->get_rang_royaume() != 6)
 		</ul>
 		</div>";
 	}
-	elseif($_GET['direction'] == 'bourse_enchere')
+	elseif($_GET['direction'] == 'bourse_enchere' AND ($joueur->get_rang_royaume() == 6 OR $joueur->get_id() == $royaume->get_ministre_economie()))
 	{
 		require_once(root.'class/bourse_royaume.class.php');
 		require_once(root.'class/bourse.class.php');
@@ -720,7 +727,7 @@ if($joueur->get_rang_royaume() != 6)
 			}
 		}
 	}
-	elseif($_GET['direction'] == 'bourse_ressource')
+	elseif($_GET['direction'] == 'bourse_ressource' AND ($joueur->get_rang_royaume() == 6 OR $joueur->get_id() == $royaume->get_ministre_economie()))
 	{
 		require_once(root.'class/bourse_royaume.class.php');
 		require_once(root.'class/bourse.class.php');
@@ -777,7 +784,7 @@ if($joueur->get_rang_royaume() != 6)
 			<?php
 		}
 	}
-	elseif($_GET['direction'] == 'bourse')
+	elseif($_GET['direction'] == 'bourse' AND ($joueur->get_rang_royaume() == 6 OR $joueur->get_id() == $royaume->get_ministre_economie()))
 	{
 		require_once(root.'class/bourse_royaume.class.php');
 		require_once(root.'class/bourse.class.php');

@@ -5,7 +5,7 @@
 	$joueur = new perso($_SESSION['ID']);
 	// Emplacement de l'image
 	if($joueur->get_rang_royaume() != 6)
-		echo '<p>Cheater</p>';
+		echo '<p>Cette page vous est interdit</p>';
 	else
 	{
 

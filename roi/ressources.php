@@ -17,7 +17,7 @@ function ressource($nom)
 	$ressource['Nourriture'] = 25;
 	return $ressource[$nom];
 }
-if($joueur->get_rang_royaume() != 6)
+if($joueur->get_rang_royaume() != 6 AND $joueur->get_id() != $royaume->get_ministre_economie())
 	echo '<p>Cheater</p>';
 else if(array_key_exists('ress', $_GET))
 {
