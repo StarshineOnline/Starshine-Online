@@ -139,26 +139,13 @@ elseif($_GET['direction'] == 'up_construction')
 	if($ancien_batiment->get_suivant() && $royaume->get_star() >= $batiment->get_cout() &&
 		 $batiment->get_cond1() < (time() - $construction->get_date_construction()))
 	{
-		
-		//On supprime l'ancienne construction
-		$requete = "DELETE FROM construction WHERE id = ".sSQL($_GET['id']);
-		$db->query($requete);
-		//On place le nouveau
-		$construction_bourg = new construction();
-		$construction_bourg->set_id_batiment($batiment->get_id());
-		$construction_bourg->set_x($construction->get_x());
-		$construction_bourg->set_y($construction->get_y());
-		$construction_bourg->set_royaume($construction->get_royaume());
-		$construction_bourg->set_hp($batiment->get_hp());
-		$construction_bourg->set_nom($batiment->get_nom());
-		$construction_bourg->set_type($construction->get_type());
-		$construction_bourg->set_rez(0);
-		$construction_bourg->set_image($batiment->get_image());
-		$construction_bourg->set_date_construction(time());
-		$construction_bourg->set_rechargement($construction->get_rechargement());
-		
-		$construction_bourg->set_point_victoire($batiment->get_point_victoire());
-		$construction_bourg->sauver();
+		// On modifie la contruction
+		$construction->set_id_batiment($batiment->get_id());
+		$construction->set_nom($batiment->get_nom());
+		$construction->set_image($batiment->get_image());
+		$construction->set_date_construction(time());
+		$construction->set_point_victoire($batiment->get_point_victoire());
+		$construction->sauver();
 		
 		$royaume->set_star($royaume->get_star() - $batiment->get_cout());
 		$royaume->sauver();
