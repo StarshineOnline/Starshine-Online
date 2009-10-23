@@ -431,7 +431,7 @@ class map
 		}
 	}
 
-	function get_batiment($royaume)
+	function get_batiment($royaume='')
 	{
 		global $db;
 		if (!empty($royaume)){$filter = 'AND construction.royaume = '.$royaume; }
