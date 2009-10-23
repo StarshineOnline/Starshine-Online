@@ -102,6 +102,6 @@ function recurse_createResize($src,$dst)
 } 
 
 /* utilisation : */
-recurse_createResize('../../image/', '../../image/');
+recurse_createResize('../../image/texture/', '../../image/texture_test/');
 
 ?>
