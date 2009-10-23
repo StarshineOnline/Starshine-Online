@@ -9,6 +9,8 @@ include_once(root.'inc/fp.php');
 
 global $joueur;
 $joueur = new perso($_SESSION['ID']);
+$royaume = new royaume($Trace[$joueur->get_race()]['numrace']);
+
 if($joueur->get_grade()->get_id() == 6 OR $joueur->get_id() == $royaume->get_ministre_economie() OR $joueur->get_id() == $royaume->get_ministre_militaire())
 {
 	$date_hier = date("Y-m-d", mktime(0, 0, 0, date("m") , date("d") - 2, date("Y")));
@@ -18,7 +20,6 @@ if($joueur->get_grade()->get_id() == 6 OR $joueur->get_id() == $royaume->get_min
 	if($row['nombre_joueur'] != 0) $food_necessaire = $row['food'] / $row['nombre_joueur'];
 	else $food_necessaire = 0;
 	
-	$royaume = new royaume($Trace[$joueur->get_race()]['numrace']);
 	
 	//Vérifie si le perso est mort
 	verif_mort($joueur, 1);
