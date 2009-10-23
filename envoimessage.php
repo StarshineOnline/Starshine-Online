@@ -13,11 +13,11 @@ $joueur = new perso($_SESSION['ID']);
 normalize_entry_charset(array('titre', 'message'));
 
 //Envoi du message
-if(isset($_POST['message']))
+if(isset($_GET['message']))
 {
 	$erreur = false;
-	$titre = addslashes($_POST['titre']);
-	$message = addslashes($_POST['message']);
+	$titre = addslashes($_GET['titre']);
+	$message = addslashes($_GET['message']);
 	if (empty($titre)){$titre = 'Sans titre';}
 	if($titre != '')
 	{
@@ -46,15 +46,31 @@ if(isset($_POST['message']))
 			$messagerie->envoi_message($id_thread, $id_dest, $titre, $message, $id_groupe);
 			if($type == 'r')
 			{
+				echo "<script type='text/javascript'>
+						// <![CDATA[\n";
+				{//-- envoiInfo
+					echo "envoiInfo('messagerie.php?id_thread=".$thread->id_thread."', 'information');";
+				}
+				echo "	// ]]>
+					  </script>";
 
-				echo "messagerie.php?id_thread=".$thread->id_thread;
 
 			}
 		}
 
 	}
 
-	if($type != 'r') echo "messagerie.php";
+	if($type != 'r') 
+	{
+				echo "<script type='text/javascript'>
+						// <![CDATA[\n";
+				{//-- envoiInfo
+					echo "envoiInfo('messagerie.php', 'information');";
+				}
+				echo "	// ]]>
+					  </script>";
+	
+	};
 
 }
 else
@@ -78,7 +94,7 @@ else
 		Message :<br />
 		<textarea name="message" id="message" cols="45" rows="12"></textarea><br />
 		<br />
-		<input type="button" onclick="envoiFormulaire('envoimessage.php?id_type=<?php echo $id_type; ?>', 'information');" name="btnSubmit" value="Envoyer" />
+		<input type="button" onclick="envoiInfo('envoimessage.php?id_type=<?php echo $id_type; ?>&titre='+encodeURIComponent($('#titre').val())+'&message='+encodeURIComponent($('#message').val()), 'information');" name="btnSubmit" value="Envoyer" />
 	</form>
 </fieldset>
 <?php

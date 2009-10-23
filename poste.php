@@ -61,7 +61,7 @@ if($joueur->get_race() == $R->get_race())
 						<input type="text" name="titre" id="titre" size="30" /><br />
 						Message :<br />
 						<textarea name="message" id="message" cols="30" rows="6"></textarea><br />
-						<input type="button" onclick="envoiFormulaire('formMessage', 'carte');" value="Envoyer !" />
+						<input type="button" onclick="envoiInfo('poste.php?action=envoi&cout=<?php echo $cout; ?>&ID=<?php echo $row['ID']; ?>&titre='+encodeURIComponent($('#titre').val())+'&message='+encodeURIComponent($('#message').val()), 'carte');" value="Envoyer !" />
 					</form>
 					<?php
 				}
