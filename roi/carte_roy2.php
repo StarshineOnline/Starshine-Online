@@ -4,7 +4,7 @@
 	include_once(root.'inc/fp.php');
 	$joueur = new perso($_SESSION['ID']);
 	// Emplacement de l'image
-	if($joueur->get_rang_royaume() != 6)
+	if($joueur->get_rang_royaume() != 6 AND $joueur->get_id() != $royaume->get_ministre_militaire())
 		echo '<p>Cette page vous est interdit</p>';
 	else
 	{

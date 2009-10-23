@@ -21,7 +21,9 @@ $min_habitants = @min($habitants);
 if($min_habitants > 0) $ratio = $habitants[$royaume->get_race()] / $min_habitants;
 if($joueur->get_rang_royaume() != 6 AND $joueur->get_id() != $royaume->get_ministre_economie())
 	echo '<p>Cette page vous est interdit</p>';
-else if($ratio < 1) $ratio = 1;
+else 
+{
+if($ratio < 1) $ratio = 1;
 echo '
 <table>
 	<tr>
@@ -189,5 +191,5 @@ echo '
 <tr>
 	<td><h6>TOTAL</h6></td><td><h6> +'.$total_total.'</h6></td><td><h6> '.round(($total_total / $jours), 2).' / jour</h6></td>
 </tr>';
-
+}
 ?>
