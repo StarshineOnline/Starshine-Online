@@ -150,13 +150,13 @@ elseif($_GET['direction'] == 'up_construction')
 		$royaume->set_star($royaume->get_star() - $batiment->get_cout());
 		$royaume->sauver();
 		echo '<h6>La construction a été correctement upgradée</h6>';
-
+		/*
 		//On migre les anciens extracteurs vers le nouveau bourg
 		$requete = "UPDATE construction SET rechargement = ".$construction_bourg->get_id()." WHERE type = 'mine' AND rechargement = ".sSQL($_GET['id']);
 		$db->query($requete);
 		$requete = "UPDATE placement SET rez = ".$construction_bourg->get_id()." WHERE type = 'mine' AND rez = ".sSQL($_GET['id']);
 		$db->query($requete);
-			
+			*/
 	}
 	else
 	{
