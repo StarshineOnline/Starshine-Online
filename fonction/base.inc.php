@@ -1529,6 +1529,7 @@ function recupbatiment($ID, $table)
 		$distance = calcul_distance(convert_in_pos($Trace[$row_r['race']]['spawn_x'], $Trace[$row_r['race']]['spawn_y']), convert_in_pos($row_p['x'], $row_p['y']));
 		$temps_total = $row_p['fin_placement'] - $row_p['debut_placement'];
 		$temps_restant = time() - $row_p['debut_placement'];
+		if ($temps_total == 0){$temps_total=1;}
 		$coeff = $temps_restant / $temps_total;
 	}
 
@@ -2257,7 +2258,6 @@ function verif_mort($pourcent, $var, $duree_debuff=0, $multiplicateur_mouvement=
 	if ($joueur->get_hp() <= 0)
 	{
 		//Recherche du fort le plus proche
-		echo $joueur->get_race();
 		$requete = "SELECT *, (ABS(".$joueur->get_x()." - cast(x as signed integer)) + ABS(".$joueur->get_y()." - cast(y as signed integer))) AS plop FROM `construction` WHERE rez > 0 AND type = 'fort' AND royaume = ".$Trace[$joueur->get_race()]['numrace']." ORDER BY plop ASC";
 		$req_b = $db->query($requete);
 		$bat = $db->num_rows;
@@ -2280,16 +2280,18 @@ function verif_mort($pourcent, $var, $duree_debuff=0, $multiplicateur_mouvement=
 		if($var == 1)
 		{ // Page de résurection
 			?>
-			<div id="presentation">
-				<h2 class="ville_titre">Vous êtes mort</h2>
-				<div class="ville_test">
-					Position de votre cadavre : <?php echo 'X - '.$joueur->get_x().' / Y - '.$joueur->get_y(); ?>
-				</div>
-				<p>
-				</p>
-				<div class="ville_test">
+<div id="conteneur_back">
+<div id="conteneur" style='margin-top:-16px;'>
+
+<div id='perso' style='padding:15px;min-height:80px;'>
+<h2 class="ville_titre">Vous êtes mort</h2>
+Votre dernier souvenir est l'endroit où vous êtes mort <?php echo 'x : '.$joueur->get_x().' / y : '.$joueur->get_y(); ?>
+</div>
+<div id='menu'></div>
+<div id='mort'>
+<fieldset>
 					Que voulez vous faire ?
-					<ul class="ville">
+					<ul>
 					<?php
 					//Supprime les Rez plus valident
 					$requete = "DELETE FROM rez WHERE TIMESTAMPDIFF(MINUTE , time, NOW()) > 1440";
@@ -2318,10 +2320,10 @@ function verif_mort($pourcent, $var, $duree_debuff=0, $multiplicateur_mouvement=
 						<li><a href="index.php?deco=ok">Vous déconnecter</a></li>
 						<li>Vous pouvez attendre qu&rsquo;un autre joueur vous ressucite</li>
 					</ul>
-				</div>
-				<p>
-				</p>
-				<div class="ville_test">
+					<a href="index.php">Index du jeu</a> - <a href="http://forum.starshine-online.com">Accéder au forum</a>  - <a href="http://www.starshine-online.com/tigase/">Accéder au Tchat</a>
+
+</fieldset>
+<fieldset>
 					Vos dernières actions :
 					<ul>
 					<?php
@@ -2333,13 +2335,9 @@ function verif_mort($pourcent, $var, $duree_debuff=0, $multiplicateur_mouvement=
 					}
 					?>
 					</ul>
-				</div>
-				<p>
-				</p>
-				<div class="ville_test">
-					<a href="index.php">Index du jeu</a> - <a href="http://forum.starshine-online.com">Accéder au forum</a>
-				</div>
-			</div>
+
+			</fieldset></div>
+			</div></div>
 			<?php
 			exit();
 		}
