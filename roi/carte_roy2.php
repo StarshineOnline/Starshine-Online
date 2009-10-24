@@ -3,6 +3,8 @@
   	include_once('../root.php');
 	include_once(root.'inc/fp.php');
 	$joueur = new perso($_SESSION['ID']);
+	$royaume = new royaume($Trace[$joueur->get_race()]['numrace']);
+
 	// Emplacement de l'image
 	if($joueur->get_rang_royaume() != 6 AND $joueur->get_id() != $royaume->get_ministre_militaire())
 		echo '<p>Cette page vous est interdit</p>';

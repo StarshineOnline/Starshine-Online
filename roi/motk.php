@@ -11,8 +11,8 @@ elseif(array_key_exists('message', $_GET))
 {
 	if ($_GET['message'] != '')
 	{
-		$royaume->set_propagande(sSQL($_GET['message']));
-		echo '<h6>Propagande bien modifiée !</h6>';
+		$royaume->set_motk(sSQL($_GET['message']));
+		echo '<h6>Message du roi bien modifié !</h6>';
 	}
 	else
 	{
