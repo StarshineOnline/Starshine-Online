@@ -76,7 +76,7 @@ if($R->get_diplo($joueur->get_race()) < 6 OR $R->get_diplo($joueur->get_race()) 
 					?>
 				</ul>
 				<br />
-				<a href="bureau_quete.php?action=prendre&amp;id=<?php echo $_GET['id']; ?>&amp;poscase=<?php echo $_GET['poscase']; ?>" onclick="return envoiInfo(this.href, 'carte')">Prendre cette quête</a><br />
+				<a href="bureau_quete.php?action=prendre&amp;id=<?php echo $_GET['id']; ?>" onclick="return envoiInfo(this.href, 'carte')">Prendre cette quête</a><br />
 				</div>
 			<?php
 			break;
@@ -88,11 +88,12 @@ if($R->get_diplo($joueur->get_race()) < 6 OR $R->get_diplo($joueur->get_race()) 
 					if($row['fournisseur'] == '') $link = 'bureau_quete';
 					elseif($row['fournisseur'] == 'ecole_combat') $link = 'ecolecombat';
 					elseif($row['fournisseur'] == 'boutique') $link = 'alchimiste';
+					elseif($row['fournisseur'] == 'magasin') $link = 'alchimiste';
 					else $link = $row['fournisseur'];
 				}
 				else echo $G_erreur.'<br />';
 				?>
-				<a href="<?php echo $link; ?>.php?poscase=<?php echo $_GET['poscase']; ?>" onclick="return envoiInfo(this.href, 'carte')">Revenir en arrière</a>
+				<a href="<?php echo $link; ?>.php" onclick="return envoiInfo(this.href, 'carte')">Revenir en arrière</a>
 				<?php
 			break;
 		}

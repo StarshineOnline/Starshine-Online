@@ -100,7 +100,7 @@ foreach ($ts as $tt => $tn)
 					$i++;
 				}
 				echo '<tr>
-				<td width="40%" onclick="$(\'liste_quete\').style.height = \'100px\'; envoiInfo(\'desc_quete.php?id_quete='.$row['id'].'&amp;quete_joueur='.$quest[$row['id']].'\', \'desc_quete\');">
+				<td width="40%" onclick="$(\'#liste_quete\').height(\'100px\'); envoiInfo(\'desc_quete.php?id_quete='.$row['id'].'&amp;quete_joueur='.$quest[$row['id']].'\', \'desc_quete\');">
 					<span class="small" style="cursor : pointer;">'.$row['nom'].'
 				</td>
 				<td width="10%">

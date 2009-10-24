@@ -4,7 +4,6 @@ if (file_exists('../root.php'))
 
 include_once(root.'haut_roi.php');
 include_once(root.'class/map.class.php');
-$royaume = new royaume($Trace[$joueur->get_race()]['numrace']);
 
 //-- Récupération de la position X, Y du joueur.
 if($joueur->get_rang_royaume() != 6 AND $joueur->get_id() != $royaume->get_ministre_militaire())
