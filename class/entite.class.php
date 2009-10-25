@@ -55,6 +55,7 @@ class entite
 	private $objet_ref;
 
 	public $potentiel_bloquer;
+	private $malus_hache = 1;
 
 	function __construct($type, &$objet)
 	{
@@ -69,9 +70,19 @@ class entite
 				$this->arme_type = $objet->get_arme_type();
 				switch ($this->arme_type)
 					{
+					case 'hache':
+						/* On calcule le malus d'esquive de la hache */
+						$hache = $objet->get_arme();
+						if ($hache->mains == 'main_droite') {
+							/* Hache à 1 main : 5% */
+							$this->malus_hache = 0.95;
+						}
+						else {
+							/* Hache à 2 mains : 15% */
+							$this->malus_hache = 0.85;
+						}
 					case 'epee':
 					case 'dague':
-					case 'hache':
 					case 'baton':
 					case '': /* main nues */
 						$this->comp_combat = 'melee';
@@ -541,6 +552,8 @@ class entite
 	{
 		if(!$esquive) $this->potentiel_parer = round($this->get_esquive() + ($this->get_esquive() * ((pow($this->get_dexterite(), 2)) / 1000)));
 		else $this->potentiel_parer = round($esquive + ($esquive * ((pow($this->get_dexterite(), 2)) / 1000)));
+		if ($this->arme_type == 'hache') 
+			$this->potentiel_parer *= $this->malus_hache;
 		return $this->potentiel_parer;
 	}
 	function set_potentiel_parer($valeur)
@@ -677,10 +690,12 @@ class entite
 		return false;
 	}
 
+	private $saved_inventaire = null;
 	function get_inventaire()
 	{
-		if ($this->type == 'joueur') return $this->objet_ref->get_inventaire();
-		return null;
+		if ($this->type == 'joueur' && $this->saved_inventaire == null)
+			$this->saved_inventaire = $this->objet_ref->get_inventaire();
+		return $this->saved_inventaire;
 	}
 
 	function get_blocage() { return $this->blocage; }
