@@ -42,7 +42,7 @@ if(isset($_GET['message']))
 			{
 				$id_dest = $id;
 			}
-			$messagerie = new messagerie($joueur->get_id());
+			$messagerie = new messagerie($joueur->get_id(), $joueur->get_groupe());
 			$messagerie->envoi_message($id_thread, $id_dest, $titre, $message, $id_groupe);
 			if($type == 'r')
 			{

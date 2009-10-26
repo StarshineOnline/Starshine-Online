@@ -5,15 +5,22 @@ if (file_exists('../root.php'))
 class messagerie
 {
 	public $id_perso;
+	public $id_groupe_perso;
 	
 	/**	
 	    *  	Constructeur permettant la cr?ation d'un objet pour la gestion de messagerie d'un perso.
 	**/
-	function __construct($id_perso = -1)
+	function __construct($id_perso = -1, $id_groupe = -1)
 	{
 		if($id_perso >= 0)
 		{
 			$this->id_perso = $id_perso;
+			$this->id_groupe_perso = $id_groupe;
+			if ($id_groupe == -1)
+			{
+				$joueur = new perso($id_perso);
+				$this->id_groupe_perso = $joueur->get_groupe();
+			}
 		}
 		else return false;
 	}
@@ -105,6 +112,13 @@ class messagerie
 		if($id_thread != 0)
 		{
 			$this->thread = new messagerie_thread($id_thread);
+			// check droits
+			if ($this->thread->id_dest != $this->id_perso &&
+					$this->thread->id_auteur != $this->id_perso &&
+					($this->thread->id_groupe == 0 ||
+					 $this->thread->id_groupe != $this->id_groupe_perso) &&
+					$this->id_perso != 0 /* magic id */)
+				security_block(URL_MANIPULATION);
 			if($numero_page == 'last')
 			{
 			    $numero_message = $this->thread->get_numero_dernier_message($this->id_perso);

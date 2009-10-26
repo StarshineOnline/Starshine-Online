@@ -19,7 +19,7 @@ if(!array_key_exists('action', $_GET))
 			$page = $_GET['page'];
 		}
 		else $page = 'last';
-		$messagerie = new messagerie($joueur->get_id());
+		$messagerie = new messagerie($joueur->get_id(), $joueur->get_groupe());
 		$messagerie->get_thread($id_thread, 'all', 'ASC', $page, 10);
 		$messagerie->thread->get_titre();
 		echo '<h3 style="text-align : center;">'.htmlspecialchars(stripslashes($messagerie->thread->titre)).' / <a href="envoimessage.php?id_type=r'.$messagerie->thread->id_thread.'" onclick="return envoiInfo(this.href, \'information\')">Répondre</a></h3>';
@@ -84,7 +84,7 @@ else
 	{
 		echo "<div id='messagerie_liste'>";
 		$groupe = new groupe($joueur->get_groupe(), '');
-		$messagerie = new messagerie($joueur->get_id());
+		$messagerie = new messagerie($joueur->get_id(), $joueur->get_groupe());
 		$messagerie->get_threads($type_thread, 'ASC', true, 1);
 		
 		//Affichage des messages

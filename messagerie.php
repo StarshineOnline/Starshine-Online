@@ -9,7 +9,7 @@ if(!array_key_exists('ID', $_SESSION) || empty($_SESSION['ID']))
 	exit();
 }
 $joueur = new perso($_SESSION['ID']);
-$messagerie = new messagerie($joueur->get_id());
+$messagerie = new messagerie($joueur->get_id(), $joueur->get_groupe());
 $non_lu = $messagerie->get_non_lu();
 if (!isset($_GET['id_thread']) AND !array_key_exists('action', $_GET))
 {

@@ -1,12 +1,12 @@
 <?php
 if (file_exists('root.php'))
   include_once('root.php');
-?><?php
+
 if(array_key_exists('javascript', $_GET))
 {
 	include_once(root.'inc/fp.php');
 	$joueur = new perso($_SESSION['ID']);
-	$messagerie = new messagerie($joueur->get_id());
+	$messagerie = new messagerie($joueur->get_id(), $joueur->get_groupe());
 	$non_lu = $messagerie->get_non_lu();
 }
 ?>
