@@ -241,6 +241,8 @@ function type_terrain($info)
 	$typeterrain[7][1] = 'Marais';
 	$typeterrain[8][0] = 'route';
 	$typeterrain[8][1] = 'Route';
+	$typeterrain[9][0] = 'route';
+	$typeterrain[9][1] = 'Route';
 	$typeterrain[10][0] = 'objet';
 	$typeterrain[10][1] = 'Bâtiment';
 	$typeterrain[11][0] = 'terre_maudite';
