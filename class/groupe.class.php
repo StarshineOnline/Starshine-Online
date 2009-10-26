@@ -397,9 +397,9 @@ class groupe
 	function get_place_libre()
 	{
 		global $db, $G_nb_joueur_groupe;
-		$invitations = invitation::create('inviteur', $this->get_id());
+		$invitations = invitation::create('groupe', $this->get_id());
 		$nb_invitation = count($invitations);
-	
+		
 		$membres = $this->get_membre();
 		$nb_membre = count($membres);
 		

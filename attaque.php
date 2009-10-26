@@ -740,8 +740,10 @@ else
 						$facteur_honneur = ($row_diplo[0] * 0.2) - 0.8;
 						if ($facteur_honneur < 0) $facteur_honneur = 0;
 						//XP Final
-						$xp_gagne = floor(($xp * $facteur_xp) * $membre->share_xp / $groupe->get_share_xp($joueur->get_pos()));
-						$honneur_gagne = floor(($honneur * $facteur_honneur) * $membre->share_xp / $groupe->get_share_xp($joueur->get_pos()));
+						$partage = $groupe->get_share_xp($joueur->get_pos());
+						$partage = $partage == 0 ? $partage : $partage;
+						$xp_gagne = floor(($xp * $facteur_xp) * $membre->share_xp / $partage);
+						$honneur_gagne = floor(($honneur * $facteur_honneur) * $membre->share_xp / $partage);
 						//Buff moral
 						if($membre->is_buff('moral')) $honneur_gagne = $honneur_gagne * (1 + ($membre->get_buff('moral', 'effet') / 100));
 						$reputation_gagne = floor($honneur_gagne / 10);
