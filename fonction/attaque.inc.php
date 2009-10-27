@@ -20,7 +20,7 @@ include_once(root.$root.'class/gemmes.class.php');
  */
 function attaque($acteur = 'attaquant', $competence, &$effects)
 {
-  global $attaquant, $defenseur, $debugs, $G_buff, $G_debuff, $ups, $Gtrad, $G_round_total, $db;
+  global $attaquant, $defenseur, $G_buff, $G_debuff, $ups, $Gtrad, $G_round_total, $db;
   $augmentation = array('actif' => array('comp' => array(), 'comp_perso' => array()), 'passif' => array('comp' => array(), 'comp_perso' => array()));
   $ups = array();
 
@@ -69,14 +69,10 @@ function attaque($acteur = 'attaquant', $competence, &$effects)
   //Test d'esquive
   $attaque = rand(0, $actif->potentiel_toucher);
   $defense = rand(0, $passif->potentiel_parer);
-  echo '
-	<div id="debug'.$debugs.'" class="debug">
-		Potentiel toucher attaquant : '.$actif->potentiel_toucher.'<br />
-		Potentiel parer défenseur : '.$passif->potentiel_parer.'<br />
-		Résultat => Attaquant : '.$attaque.' | Défense '.$defense.'<br />
-	</div>';
-  $debugs++;
-
+  print_debug('Potentiel toucher attaquant : '.$actif->potentiel_toucher.
+							'<br />Potentiel parer défenseur : '.$passif->potentiel_parer.
+							'<br />Résultat => Attaquant : '.$attaque.' | Défense '.
+							$defense.'<br />');
 	if ($attaque > $defense)
 	{
 		//Si c'est un coup de bouclier, infliger les dégats du bouclier et teste d'étourdissement
@@ -87,13 +83,10 @@ function attaque($acteur = 'attaquant', $competence, &$effects)
 			$def = $passif['vie'] + round($passif['PP'] / 100);
 			$atta = rand(0, $att);
 			$defe = rand(0, $def);
-			echo "<div id=\"debug".$debugs."\" class=\"debug\">".
-				"Potentiel étourdir attaquant : $att<br />".
+			print_debug("Potentiel étourdir attaquant : $att<br />".
 				"Potentiel resister défenseur : $def<br />".
-				"Résultat => Attaquant : $atta | Défenseur : $defe".
-				"<br /></div>";
+				"Résultat => Attaquant : $atta | Défenseur : $defe <br />");
 			//aff_var($actif->etat['coup_bouclier']);
-			$debug++;
 			//Hop ca étourdit
 			if($atta > $defe)
 			{
@@ -118,17 +111,15 @@ function attaque($acteur = 'attaquant', $competence, &$effects)
 					$de_degat = de_degat($actif->get_force(), $arme_degat);
 					$degat = 0;
 					$i = 0;
-					echo '
-			<div id="debug'.$debugs.'" class="debug">';
+					$dbg_msg = '';
 					while($i < count($de_degat))
 						{
 							$de = rand(1, $de_degat[$i]);
 							$degat += $de;
-							echo 'Max : '.$de_degat[$i].' - Dé : '.$de.'<br />';
+							$dbg_msg .= 'Max : '.$de_degat[$i].' - Dé : '.$de.'<br />';
 							$i++;
 						}
-					echo '</div>';
-					$debugs++;
+					print_debug($dbg_msg);
 				}
       if($passif->type2 == 'batiment' AND $actif->get_race() == 'barbare') $degat = floor($degat * 1.4);
       $degat = $degat + $actif->degat_sup - $actif->degat_moins;
@@ -177,13 +168,10 @@ function attaque($acteur = 'attaquant', $competence, &$effects)
 							/* ~Blocage */
 
 							$blocage = rand(0, $passif->potentiel_bloquer);
-							echo '
-				<div id="debug'.$debugs.'" class="debug">
-					Potentiel bloquer défenseur : '.$passif->potentiel_bloquer.'<br />
-					Attaque : '.$attaque.'<br />
-					Résultat => '.$blocage.' VS '.$attaque.'<br />
-				</div>';
-							$debugs++;
+							print_debug('Potentiel bloquer défenseur : '.
+													$passif->potentiel_bloquer.'<br />Attaque : '.
+													$attaque.'<br />Résultat => '.$blocage.' VS '.
+													$attaque.'<br />');
 							//Si le joueur bloque
 							if ($attaque <= $blocage)
 								{
@@ -319,12 +307,9 @@ function attaque($acteur = 'attaquant', $competence, &$effects)
       $chance = rand(0, 10000);
 
       $critique = false;
-      echo '
-		<div id="debug'.$debugs.'" class="debug">
-			Potentiel critique attaquant : '.$actif_chance_critique.' / 10000<br />
-			Résultat => '.$chance.' doit être inférieur au Potentiel critique<br />
-		</div>';
-      $debugs++;
+			print_debug('Potentiel critique attaquant : '.$actif_chance_critique.
+									' / 10000<br />Résultat => '.$chance.
+									' doit être inférieur au Potentiel critique<br />');
       if($chance < $actif_chance_critique)
 				{
 					echo '&nbsp;&nbsp;<span class="coupcritique">COUP CRITIQUE !</span><br />';
@@ -366,7 +351,7 @@ function attaque($acteur = 'attaquant', $competence, &$effects)
 							$effect->calcul_mult_critique($actif, $passif, $multiplicateur);
 					/* ~multiplicateur critique */
 
-					echo "<div id=\"debug$debugs\" class=\"debug\">Dégats de base : $degat, multiplicateur : ".$multiplicateur."<br /></div>";
+					print_debug("Dégats de base : $degat, multiplicateur : $multiplicateur<br />");
 					$degat = round($degat * $multiplicateur);
 					$degat_avant = round($degat_avant * $multiplicateur);
 					$critique = true;
@@ -481,9 +466,7 @@ function attaque($acteur = 'attaquant', $competence, &$effects)
 
 function degat_magique($carac, $degat, $actif, $passif)
 {
-  global $debugs;
-  echo '<div id="debug'.$debugs.'" class="debug">';
-  
+	$dbg_msg = '';
   if (isset($actif->enchantement) &&
       isset($actif->enchantement['degat_magie'])) {
     global $db;
@@ -492,8 +475,8 @@ function degat_magique($carac, $degat, $actif, $passif)
     $req = $db->query($requete);
     $row = $db->read_assoc($req);
     $degat += $row['enchantement_effet'];
-    echo "La ".$row['nom'].' augmente les dégats de '.
-      $row['enchantement_effet'].' <br/>';
+    $dbg_msg .= "La ".$row['nom'].' augmente les dégats de '.
+			$row['enchantement_effet'].'<br />');
   }
 
   $de_degat = de_degat($carac, $degat);
@@ -503,11 +486,10 @@ function degat_magique($carac, $degat, $actif, $passif)
     {
       $de = rand(1, $de_degat[$i]);
       $degat += $de;
-      echo 'Max : '.$de_degat[$i].' - Dé : '.$de.'<br />';
+      $dbg_msg .= 'Max : '.$de_degat[$i].' - Dé : '.$de.'<br />';
       $i++;
     }
-  $debugs++;
-  echo '</div>';
+  print_debug($dbg_msg);
   if(critique_magique($actif, $passif))
     {
       $degat = degat_critique($actif, $passif, $degat);
@@ -516,10 +498,8 @@ function degat_magique($carac, $degat, $actif, $passif)
   $reduction = calcul_pp(($passif->get_pm() * $passif->get_puissance()) / 12);
   $degat_avant = $degat;
   $degat = round($degat * $reduction);
-  echo '<div id="debug'.$debugs.'" class="debug">';
-  echo '(Réduction de '.($degat_avant - $degat).' dégats par la PM)<br />';
-  echo '</div>';
-  $debugs++;
+  print_debug('(Réduction de '.($degat_avant - $degat).
+						 ' dégats par la PM)<br />');
   return $degat;
 }
 ?>
