@@ -476,7 +476,7 @@ function degat_magique($carac, $degat, $actif, $passif)
     $row = $db->read_assoc($req);
     $degat += $row['enchantement_effet'];
     $dbg_msg .= "La ".$row['nom'].' augmente les dégats de '.
-			$row['enchantement_effet'].'<br />');
+			$row['enchantement_effet'].'<br />';
   }
 
   $de_degat = de_degat($carac, $degat);
