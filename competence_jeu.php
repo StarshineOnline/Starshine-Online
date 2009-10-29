@@ -145,7 +145,7 @@ if (isset($_GET['ID']))
 					$debuff_tab = array();
 					foreach($joueur->get_buff() as $debuff)
 					{
-						if($debuff->get_debuff() == 1) 
+						if($debuff->get_debuff() == 1 && $debuff->get_supprimable()) 
 						{ 
 							$debuff_tab[] = $debuff->get_id(); 
 						};
