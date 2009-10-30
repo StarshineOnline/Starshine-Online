@@ -106,9 +106,13 @@ if($W_row['type'] == 1)
                 	</td>
                 </tr>
                 <?
+						$requete = "SELECT rang from grade WHERE id = ".$joueur->get_rang_royaume();
+						$req = $db->query($requete);
+						$row = $db->read_assoc($req);
+						$rang = $row['rang'];
+						if ($rang == null) $rang = 0;
                 
-                
-                $requete = "SELECT *, depot_royaume.id AS id_depot FROM depot_royaume LEFT JOIN objet_royaume ON depot_royaume.id_objet = objet_royaume.id WHERE grade <= ".$joueur->get_rang_royaume()." AND id_objet != '1' AND id_royaume = ".$R->get_id()." ORDER BY nom ASC";
+                $requete = "SELECT objet_royaume.*, depot_royaume.id AS id_depot FROM depot_royaume, objet_royaume WHERE depot_royaume.id_objet = objet_royaume.id AND objet_royaume.grade <= $rang AND id_objet != '1' AND id_royaume = ".$R->get_id()." ORDER BY objet_royaume.nom ASC";
                 $req = $db->query($requete);
     
                 while($row = $db->read_assoc($req))
