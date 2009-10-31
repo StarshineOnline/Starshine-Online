@@ -96,6 +96,9 @@ else
 	$menu[$i]['url'] = 'admin_jabber.php';
 	$menu[$i++]['acces'] = 'admin';
 
+	$menu[$i]['nom'] = 'Debuff Cacophonie';
+	$menu[$i]['url'] = 'debuff_race.php';
+	$menu[$i++]['acces'] = 'modo';	
 	}
 	?>
 	
