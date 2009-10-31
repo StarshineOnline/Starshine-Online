@@ -746,6 +746,7 @@ else
 						$honneur_gagne = floor(($honneur * $facteur_honneur) * $membre->share_xp / $partage);
 						//Buff moral
 						if($membre->is_buff('moral')) $honneur_gagne = $honneur_gagne * (1 + ($membre->get_buff('moral', 'effet') / 100));
+						if($membre->id_debuff('cacophonie')) $honneur_gagne = $honneur_gagne * (1 - ($mambre->get_buff('cacophonie', 'effet') / 100));
 						$reputation_gagne = floor($honneur_gagne / 10);
 						$membre->set_star($membre->get_star() + $star);
 						$membre->set_exp($membre->get_exp() + $xp_gagne);
