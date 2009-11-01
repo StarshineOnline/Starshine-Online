@@ -774,7 +774,7 @@ else
 						if ($facteur_honneur < 0) $facteur_honneur = 0;
 						//XP Final
 						$partage = $groupe->get_share_xp($joueur->get_pos());
-						$partage = $partage == 0 ? $partage : $partage;
+						$partage = $partage == 0 ? 1 : $partage;
 						$xp_gagne = floor(($xp * $facteur_xp) * $membre->share_xp / $partage);
 						$honneur_gagne = floor(($honneur * $facteur_honneur) * $membre->share_xp / $partage);
 						//Buff moral

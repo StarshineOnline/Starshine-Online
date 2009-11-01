@@ -15,13 +15,13 @@ if($carte == 'royaume')
 elseif($carte == 'ou')
 {
     ?>
-<img src="image/carte3d.jpg" />
+<img src="image/carte3d.png" />
     <?php
 }
 elseif($carte == '3d')
 {
     ?>
-<img src="image/carte3d.jpg" />
+<img src="image/carte3d.png" />
     <?php
 }
 elseif($carte == 'densite')
