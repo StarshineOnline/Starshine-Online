@@ -1,7 +1,7 @@
 <?php
 if (file_exists('root.php'))
   include_once('root.php');
-?><?php
+
 include_once(root.'haut.php');
 
 $joueur = new perso($_SESSION['ID']);

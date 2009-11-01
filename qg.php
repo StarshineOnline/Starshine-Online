@@ -1,4 +1,4 @@
-<?php
+<?php // -*- tab-width:2 -*- 
 if (file_exists('root.php'))
   include_once('root.php');
 
@@ -49,11 +49,11 @@ if($W_row['type'] == 1)
 						{
 							if(!array_key_exists('id', $_GET))
 							{
-								$requete = "SELECT *, depot_royaume.id AS id_depot FROM depot_royaume LEFT JOIN objet_royaume ON depot_royaume.id_objet = objet_royaume.id WHERE grade <= ".$joueur->get_rang_royaume()." AND id_royaume = ".$R->get_id()." AND id_objet=1";
+								$requete = "SELECT *, depot_royaume.id AS id_depot FROM depot_royaume LEFT JOIN objet_royaume ON depot_royaume.id_objet = objet_royaume.id WHERE id_royaume = ".$R->get_id()." AND id_objet=1";
 							}
 							else
 							{
-								$requete = "SELECT *, id as id_depot FROM depot_royaume WHERE id = ".sSQL($_GET['id']);
+								$requete = "SELECT depot_royaume.*, depot_royaume.id as id_depot FROM depot_royaume, grade, objet_royaume WHERE depot_royaume.id = ".sSQL($_GET['id'])." AND grade.id = ".$joueur->get_rang_royaume()." AND objet_royaume.grade <= grade.rang AND depot_royaume.id_objet = objet_royaume.id";
 							}
 							$req = $db->query($requete);
 							$row = $db->read_array($req);
@@ -90,7 +90,7 @@ if($W_row['type'] == 1)
                     </td>
                 </tr>
                 <?php
-                 $requete = "SELECT *, depot_royaume.id AS id_depot FROM depot_royaume LEFT JOIN objet_royaume ON depot_royaume.id_objet = objet_royaume.id WHERE grade <= ".$joueur->get_rang_royaume()." AND id_objet = '1' AND id_royaume = ".$R->get_id();
+                 $requete = "SELECT objet_royaume.*, depot_royaume.id_objet, depot_royaume.id AS id_depot FROM depot_royaume, objet_royaume WHERE depot_royaume.id_objet = objet_royaume.id AND id_objet = '1' AND id_royaume = ".$R->get_id();
                 $req = $db->query($requete);
 
                 ?>
@@ -106,13 +106,7 @@ if($W_row['type'] == 1)
                 	</td>
                 </tr>
                 <?php
-						$requete = "SELECT rang from grade WHERE id = ".$joueur->get_rang_royaume();
-						$req = $db->query($requete);
-						$row = $db->read_assoc($req);
-						$rang = $row['rang'];
-						if ($rang == null) $rang = 0;
-                
-                $requete = "SELECT objet_royaume.*, depot_royaume.id AS id_depot FROM depot_royaume, objet_royaume WHERE depot_royaume.id_objet = objet_royaume.id AND objet_royaume.grade <= $rang AND id_objet != '1' AND id_royaume = ".$R->get_id()." ORDER BY objet_royaume.nom ASC";
+                $requete = "SELECT objet_royaume.*, depot_royaume.id_objet, depot_royaume.id AS id_depot FROM depot_royaume, objet_royaume, grade WHERE depot_royaume.id_objet = objet_royaume.id AND objet_royaume.grade <= grade.rang AND id_objet != '1' AND id_royaume = ".$R->get_id()." AND grade.id = ".$joueur->get_rang_royaume()." ORDER BY objet_royaume.nom ASC";
                 $req = $db->query($requete);
     
                 while($row = $db->read_assoc($req))

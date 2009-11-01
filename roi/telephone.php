@@ -13,10 +13,13 @@ else if(array_key_exists('message', $_GET))
 	if (empty($titre)){$titre = 'Sans titre';}
 	if($titre != '')
 	{
-		if ($message != '')
+		if ($_GET['id_destinataire'] == 0)
+		{
+			echo '<h5>Vous n\'avez pas saisi de destinataire</h5>';
+		}
+		elseif ($message != '')
 		{
 			$id_groupe = 0;
-			$id_dest = 0;
 			$id_thread = 0;
 			$id_dest = $_GET['id_destinataire'];
 			$messagerie = new messagerie($joueur->get_id(), $joueur->get_groupe());

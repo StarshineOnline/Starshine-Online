@@ -591,8 +591,39 @@ else
 
 			//Calculs liés à la survie, fiabilité de l'estimation de HP etc.
 			$survie = $joueur->get_survie();
-			if($survie <= 0) $survie = 1;
-			if($joueur->is_competence('survie_humanoide')) $survie += $joueur->get_competence('survie_humanoide');
+			if ($survie <= 0) $survie = 1;
+
+			// Survies specialisees
+			
+			$survies_a_monter = array();
+			if ($type == 'monstre')
+			{
+				if ($joueur_defenseur->get_type() == 'humanoide')
+				{
+					if ($joueur->is_competence('survie_humanoide'))
+						$survie += $joueur->get_competence('survie_humanoide');
+					$survies_a_monter[] = 'survie_humanoide';
+				}
+				elseif ($joueur_defenseur->get_type() == 'magique')
+				{
+					if ($joueur->is_competence('survie_magique'))
+						$survie += $joueur->get_competence('survie_magique');
+					$survies_a_monter[] = 'survie_magique';
+				}
+				elseif ($joueur_defenseur->get_type() == 'bete')
+				{
+					if ($joueur->is_competence('survie_bete'))
+						$survie += $joueur->get_competence('survie_bete');
+					$survies_a_monter[] = 'survie_bete';
+				}
+			}
+			if ($type == 'joueur')
+			{
+				$survies_a_monter[] = 'survie_humanoide';
+				if ($joueur->is_competence('survie_humanoide'))
+					$survie += $joueur->get_competence('survie_humanoide');
+			}
+
 			$nbr_barre_total = ceil($survie / $defenseur->get_level());
 			if($nbr_barre_total > 100) $nbr_barre_total = 100;
 			$nbr_barre = round(($defenseur->get_hp() / $defenseur->get_hp_max()) * $nbr_barre_total);
@@ -608,6 +639,17 @@ else
 			{
 				$joueur->set_survie($augmentation[0]);
 			}
+
+			foreach ($survies_a_monter as $survie_test)
+			{
+				if ($joueur->is_competence($survie_test))
+				{
+					$augmentation = augmentation_competence($survie_test, $joueur, 4);
+					if ($augmentation[1] == 1)
+						$joueur->set_comp($survie_test, $augmentation[0]);
+				}
+			}
+
 			//Cartouche de fin de combat
 			echo ' 
 			<div id="combat_cartouche">
@@ -623,15 +665,6 @@ else
 
 			if($type == 'joueur')
 			{
-				if($joueur->is_competence('survie_humanoide'))
-				{
-					//Augmentation des compétences liées
-					$augmentation = augmentation_competence('survie_humanoide', $joueur, 4);
-					if($augmentation[1] == 1)
-					{
-						$joueur->set_comp('survie_humanoide', $augmentation[0]);
-					}
-				}
 				$gains = false;
 				$coef = 1;
 				//L'attaquant est mort !
