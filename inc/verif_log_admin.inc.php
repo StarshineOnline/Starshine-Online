@@ -22,7 +22,7 @@ if (file_exists('../root.php'))
 			$R['statut'] = $_SESSION['admin_db_auth'];
   }
 	//Vérification du login mdp
-	elseif(array_key_exists('admin_nom', $_SESSION))
+	elseif(is_array($_SESSION) && array_key_exists('admin_nom', $_SESSION))
 	{
 		//Vérification du nom et du mot de passe
 		if($_SESSION['admin_nom'] == 'admin' AND sha1(md5($_SESSION['admin_pass'])) == 'c6fbe6c72d199b0353c23d8a0d4cb61cd3ac2f87')
