@@ -19,7 +19,7 @@ else
 	include_once(root.'fonction/base.inc.php');
 	
 	
-	if(array_key_exists($_GET, 'debuff'))
+	if(array_key_exists('debuff', $_GET))
 	{
 		$requete = 'SELECT race FROM royaume WHERE race != "Neutre"';
 		$req = $db->query($requete);
@@ -46,12 +46,11 @@ else
 	<form action="#" method="get" name="buff">
 		<select name="debuff" size="3">
 			<?php
-				$requete = 'SELECT id, nom FROM buff';
+				$requete = 'SELECT id, nom FROM sort_jeu ORDER BY nom';
 				$req = $db->query($requete);
 				while($row = $db->read_array($req))
-				{
 					echo '<option value="',$row['id'],'">',$row['nom'],'</option>';
-				}
+
 				//debuffs spéciaux
 				echo '<option value="cacophonie">Cacophonie</option>';
 			?>

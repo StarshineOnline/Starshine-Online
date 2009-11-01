@@ -284,7 +284,7 @@ if (isset($_GET['ID']))
 								$db->query($requete);
 								
 							}
-							else if($cible->get_id() != $joueur->get_id())
+							else if(($cible->get_id() != $joueur->get_id()) && $type_cible != 'monstre')
 							{
 								$requete = "INSERT INTO journal(id_perso, action, actif, passif, time, valeur, valeur2, x, y) VALUES(".$cible->get_id().", 'rbuff', '".$cible->get_nom()."', '".$joueur->get_nom()."', NOW(), '".$sort->get_nom()."', 0, ".$joueur->get_x().", ".$joueur->get_y().")";
 								$db->query($requete);
@@ -348,14 +348,17 @@ if (isset($_GET['ID']))
 							if ($attaque > $defense)
 							{
 								//Mis en place du debuff pour tous
-								if(lance_buff($sort->get_type(), $cible->get_id(), $sort->get_effet(), $sort->get_effet2(), $sort->get_duree(), $sort->get_nom(), description($sort->get_description(),$sort), 'perso', 1, 0, 0))
+								if(lance_buff($sort->get_type(), $cible->get_id(), $sort->get_effet(), $sort->get_effet2(), $sort->get_duree(), $sort->get_nom(), description($sort->get_description(),$sort), $type_cible == 'monstre' ? 'monstre' : 'perso', 1, 0, 0))
 								{
 									echo 'Le sort '.$sort->get_nom().' a été lancé avec succès sur '.$cible->get_nom().'<br />';
 									//Insertion du debuff dans les journaux des 2 joueurs
-									$requete = "INSERT INTO journal(id_perso, action, actif, passif, time, valeur, valeur2, x, y) VALUES(".$joueur->get_id().", 'debuff', '".$joueur->get_nom()."', '".$cible->get_nom()."', NOW(), '".$sort->get_nom()."', 0, ".$joueur->get_x().", ".$joueur->get_y().")";
-									$db->query($requete);
-									$requete = "INSERT INTO journal(id_perso, action, actif, passif, time, valeur, valeur2, x, y) VALUES(".$cible->get_id().", 'rdebuff', '".$cible->get_nom()."', '".$joueur->get_nom()."', NOW(), '".$sort->get_nom()."', 0, ".$joueur->get_x().", ".$joueur->get_y().")";
-									$db->query($requete);
+									if($type_cible != 'monstre')
+									{
+										$requete = "INSERT INTO journal(id_perso, action, actif, passif, time, valeur, valeur2, x, y) VALUES(".$joueur->get_id().", 'debuff', '".$joueur->get_nom()."', '".$cible->get_nom()."', NOW(), '".$sort->get_nom()."', 0, ".$joueur->get_x().", ".$joueur->get_y().")";
+										$db->query($requete);
+										$requete = "INSERT INTO journal(id_perso, action, actif, passif, time, valeur, valeur2, x, y) VALUES(".$cible->get_id().", 'rdebuff', '".$cible->get_nom()."', '".$joueur->get_nom()."', NOW(), '".$sort->get_nom()."', 0, ".$joueur->get_x().", ".$joueur->get_y().")";
+										$db->query($requete);
+									}
 								}
 								else
 								{
@@ -513,7 +516,7 @@ if (isset($_GET['ID']))
 						$duree = $sort->get_duree();
 						if($joueur->is_buff('souffrance_extenuante', true)) $duree = $duree * $joueur->get_buff('buff_souffrance_extenuante','effet');
 						//Mis en place du debuff
-						if(lance_buff($sort->get_type(), $cible->get_id(), $sort->get_effet(), $sort->get_effet2(), $duree, $sort->get_nom(), description($sort->get_description(), $sort), 'perso', 1, 0, 0))
+						if(lance_buff($sort->get_type(), $cible->get_id(), $sort->get_effet(), $sort->get_effet2(), $duree, $sort->get_nom(), description($sort->get_description(), $sort), $type_cible == 'monstre' ? 'monstre' : 'perso', 1, 0, 0))
 						{
 							echo 'Le sort '.$sort->get_nom().' a été lancé avec succès sur '.$cible->get_nom().'<br />';
 							//Insertion du debuff dans les journaux des 2 joueurs
@@ -593,7 +596,7 @@ if (isset($_GET['ID']))
 								$duree = $sort->get_duree();
 								if($joueur->is_buff('souffrance_extenuante', true)) $duree = $duree * $joueur->get_buff('souffrance_extenuante','effet');
 								//Mis en place du debuff
-								if(lance_buff($sort->get_type(), $cible->get_id(), $sort->get_effet(), $sort->get_effet2(), $duree, $sort->get_nom(), description($sort->get_description(), $sort), 'perso', 1, 0, 0))
+								if(lance_buff($sort->get_type(), $cible->get_id(), $sort->get_effet(), $sort->get_effet2(), $duree, $sort->get_nom(), description($sort->get_description(), $sort), $type_cible == 'monstre' ? 'monstre' : 'perso', 1, 0, 0))
 								{
 									echo 'Le sort '.$sort->get_nom().' a été lancé avec succès sur '.$cible->get_nom().'<br />';
 									//Insertion du debuff dans les journaux des 2 joueurs
