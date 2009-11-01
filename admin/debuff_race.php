@@ -25,7 +25,7 @@ else
 		$requete = 'SELECT id FROM perso WHERE race = "'.$race['race'].'"';
 		$req2 = $db->query($requete);
 		while($row = $db->read_array($req2))
-			lance_buff('cacophonie', $row['id'], '0', '0', 2678400, 'Cacophonie', 'Que de bruit! Vous gagnez 10% d\'honneur en moins.', 'perso', 1, 0, 0, 0);
+			lance_buff('cacophonie', $row['id'], '10', '0', 2678400, 'Cacophonie', 'Que de bruit! Vous gagnez 10% d\'honneur en moins.', 'perso', 1, 0, 0, 0);
 	}
 }
 ?>

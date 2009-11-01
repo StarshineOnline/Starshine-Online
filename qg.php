@@ -105,7 +105,7 @@ if($W_row['type'] == 1)
                 	 <a href="" onclick="return envoiInfo('qg.php?direction=prendre&amp;id_objet=1&amp;nbr=' + document.getElementById('nbr<?php echo $i; ?>').value, 'carte')">Prendre</a>
                 	</td>
                 </tr>
-                <?
+                <?php
 						$requete = "SELECT rang from grade WHERE id = ".$joueur->get_rang_royaume();
 						$req = $db->query($requete);
 						$row = $db->read_assoc($req);

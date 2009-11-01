@@ -98,7 +98,7 @@ else
 
 	$menu[$i]['nom'] = 'Debuff Cacophonie';
 	$menu[$i]['url'] = 'debuff_race.php';
-	$menu[$i++]['acces'] = 'modo';	
+	$menu[$i++]['acces'] = '';	
 	}
 	?>
 	
