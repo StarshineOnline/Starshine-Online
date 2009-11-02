@@ -347,7 +347,7 @@ class entite
 	}
 	function get_bouclier_type()
 	{
-		return $this->arme_type;
+		return $this->bouclier() ? 'bouclier' : '';
 	}
 	function get_comp_combat()
 	{

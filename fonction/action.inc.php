@@ -109,13 +109,6 @@ function sub_script_action($joueur, $ennemi, $mode, &$effects)
 		$effectue[0] = 'attaque';
 		return $effectue;
 	}
-	/*
-	elseif($ennemi->etat['dissimulation'] > 0)
-	{
-		echo $ennemi['nom'].' est caché, '.$joueur->get_nom().' ne peut pas attaquer<br />';
-		return '';
-	}
-*/
 	else
 	{
 	  //var_dump($joueur->etat['glacer']);
@@ -1136,7 +1129,7 @@ function lance_comp($id, $acteur, &$effects)
 			echo '&nbsp;&nbsp;<strong>'.$actif->get_nom().'</strong> donne un coup de bouclier !<br />';
 			$actif->etat['coup_bouclier']['effet'] = $row['effet'];
 			$actif->etat['coup_bouclier']['effet2'] = $row['duree'];
-			$actif->etat['coup_bouclier']['duree'] = 0;
+			$actif->etat['coup_bouclier']['duree'] = 1;
 			$comp_attaque = true;
 		break;
 		case 'slam' :
