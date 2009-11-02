@@ -78,9 +78,9 @@ function attaque($acteur = 'attaquant', $competence, &$effects)
 		//Si c'est un coup de bouclier, infliger les dégats du bouclier et teste d'étourdissement
 		if($actif->etat['coup_bouclier']['effet'] > 0)
 		{
-			$degat = $actif['bouclier_degat'];
-			$att = $actif['force'] + $actif['bouclier_degat'];
-			$def = $passif['vie'] + round($passif['PP'] / 100);
+			$degat = $actif->get_bouclier_degat();
+			$att = $actif->get_bouclier_degat() + $actif->get_force();
+			$def = $passif->get_vie() + round($passif->get_pp() / 100);
 			$atta = rand(0, $att);
 			$defe = rand(0, $def);
 			print_debug("Potentiel étourdir attaquant : $att<br />".

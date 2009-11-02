@@ -45,6 +45,7 @@ class entite
 	private $dexterite;
 	private $enchantement;
 	private $arme_degat;
+	private $bouclier_degat = 0;
 	private $level;
 	private $type;
 	private $rang_royaume;
@@ -126,6 +127,8 @@ class entite
 				$this->dexterite = $objet->get_dexterite();
 				$this->enchantement = array();
 				$this->arme_degat = $objet->get_arme_degat();
+				if ($objet->get_bouclier())
+					$this->bouclier_degat = $objet->get_bouclier()->degat;
 				$this->level = $objet->get_level();
 				$this->rang_royaume = $objet->get_rang_royaume();
 				$this->rang = $objet->get_grade()->get_rang();
@@ -521,6 +524,10 @@ class entite
 	function get_arme_degat()
 	{
 		return $this->arme_degat;
+	}
+	function get_bouclier_degat()
+	{
+		return $this->bouclier_degat;
 	}
 	function get_level()
 	{
