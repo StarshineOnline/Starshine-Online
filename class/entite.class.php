@@ -748,5 +748,11 @@ class entite
 		return $this->point_victoire;
 	}
 
+	function set_pa($new_pa)
+	{
+		if($this->type == 'joueur')
+			$this->objet_ref->set_pa($new_pa);
+	}
+
 }
 ?>

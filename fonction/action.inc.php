@@ -619,12 +619,8 @@ function lance_sort($id, $acteur, &$effects)
 					$cap = $row['effet2'];
 					$de = rand(0, 100);
 					// Affichage des informations de debug
-					echo '
-					<div id="debug'.$debugs.'" class="debug">
-						1d100 doit être inférieur a '.$row['effet2'].'<br />
-						Résultat => '.$de.' doit être inférieur a '.$row['effet2'].'<br />
-					</div>';
-					$debugs++;
+					print_debug('1d100 doit être inférieur a '.$row['effet2'].'<br />
+						Résultat => '.$de.' doit être inférieur a '.$row['effet2'].'<br />');
 					if($de < $cap)
 					{
 						echo '&nbsp;&nbsp;<strong>'.$actif->get_nom().'</strong> gagne 1 PA<br />';
