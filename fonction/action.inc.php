@@ -532,7 +532,7 @@ function lance_sort($id, $acteur, &$effects)
 				$pm = $effect->calcul_pm($actif, $passif, $pm);
 			/* ~PM */
 
-			if(array_key_exists('bouclier_protecteur', $passif->etat)) $pm = $pm + ($passif->etat['bouclier_protecteur']->get_effet() * $passif['bouclier_degat']);
+			if(array_key_exists('bouclier_protecteur', $passif->etat)) $pm = $pm + ($passif->etat['bouclier_protecteur']['effet'] * $passif->get_bouclier_degat());
 			if($passif->is_buff('batiment_pm')) $buff_batiment_barriere = 1 + (($passif->get_buff('batiment_pm', 'effet') / 100)); else $buff_batiment_barriere = 1;
 			if($passif->etat['posture']['type'] == 'posture_glace') $aura_glace = 1 + (($passif->etat['posture']['effet']) / 100); else $aura_glace = 1;
 			//Corrompu la nuit
@@ -805,7 +805,7 @@ function lance_sort($id, $acteur, &$effects)
 					$sm = ($actif->get_volonte() * $actif->get_sort_mort());
 					// Calcul du potentiel résister
 					$pm = $passif->get_pm();
-					if (array_key_exists('bouclier_protecteur', $passif->etat)) $pm = $pm + ($passif->etat['bouclier_protecteur']['effet'] * $passif['bouclier_degat']);
+					if (array_key_exists('bouclier_protecteur', $passif->etat)) $pm = $pm + ($passif->etat['bouclier_protecteur']['effet'] * $passif->get_bouclier_degat());
 					$pm = pow($passif->get_volonte(), 1.83) * sqrt($pm) * 3;
 					// Bottes en peau de Basilic, quick'n dirty
 					if ($passif->get_type() == 'joueur')
@@ -838,7 +838,7 @@ function lance_sort($id, $acteur, &$effects)
 					
 					// Calcul du potentiel résister
 					$pm = $passif->get_pm();
-					if (array_key_exists('bouclier_protecteur', $passif->etat)) $pm = $pm + ($passif->etat['bouclier_protecteur']['effet'] * $passif['bouclier_degat']);
+					if (array_key_exists('bouclier_protecteur', $passif->etat)) $pm = $pm + ($passif->etat['bouclier_protecteur']['effet'] * $passif->get_bouclier_degat());
 					$pm = $passif->get_volonte() * $pm;
 					// Lancer des dés
 					$att = rand(0, $sm);
