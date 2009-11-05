@@ -136,6 +136,7 @@ class entite
 				$this->blocage = $objet->get_blocage();
 				$this->star = $objet->get_star();
 				$this->point_victoire = 0;
+				$this->honneur = $objet->get_honneur();
 			break;
 			case 'monstre' :
 				$this->action = $objet->get_action();

@@ -140,11 +140,11 @@ include_once(root.'inc/fp.php');
 						if($db->query($requete))
 						{
 							require('connect_forum.php');
-							$perso = recupperso($_SESSION['ID']);
-							$groupe = recupgroupe($_SESSION['ID']);
-							if($groupe !== null)
-								degroup($perso['id'], $groupe['id']);
-							$requete = "INSERT INTO punbbbans VALUES('', '".$perso['nom']."', NULL, NULL, NULL, NULL, 0)";
+							$perso = new perso($_SESSION['ID']);
+							$groupe = $perso->get_groupe();
+							if($groupe !== null || $groupe != 0)
+								degroup($perso->get_id(), $groupe->get_id());
+							$requete = "INSERT INTO punbbbans VALUES('', '".$perso->get_nom()."', NULL, NULL, NULL, NULL, 0)";
 							if($db_forum->query($requete)) echo 'Votre personnage est bien supprimé';
 							unset($_COOKIE['nom']);
 							unset($_SESSION['nom']);

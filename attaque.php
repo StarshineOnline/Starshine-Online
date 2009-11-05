@@ -691,7 +691,7 @@ else
 					if($actif->get_groupe() > 0)
 					{
 						$groupe = new groupe($actif->get_groupe());
-						$groupe->get_share_xp($joueur->get_pos());
+						$groupe->get_share_xp($actif->get_pos());
 						//Si on tape un joueur de son groupe xp = 0
 						foreach($groupe->membre_joueur as $membre_id)
 						{
@@ -708,13 +708,16 @@ else
 						$groupe->somme_groupe = $actif->get_level();
 						$groupe->set_share_xp(100);
 						$groupe->membre_joueur[0] = new perso();
-						$groupe->membre_joueur[0]->set_id($attaquant->get_id());
+						$groupe->membre_joueur[0]->set_x($actif->get_x());
+						$groupe->membre_joueur[0]->set_y($actif->get_y());
+						$groupe->membre_joueur[0]->set_id($actif->get_id());
 						$groupe->membre_joueur[0]->share_xp = 100;
-						$groupe->membre_joueur[0]->set_level($attaquant->get_level());
-						$groupe->membre_joueur[0]->set_exp($attaquant->get_exp());
-						$groupe->membre_joueur[0]->set_star($attaquant->get_star());
-						$groupe->membre_joueur[0]->set_honneur($attaquant->get_honneur());
-						$groupe->membre_joueur[0]->set_reputation($attaquant->get_reputation());
+						$groupe->membre_joueur[0]->set_race($actif->get_race());
+						$groupe->membre_joueur[0]->set_level($actif->get_level());
+						$groupe->membre_joueur[0]->set_exp($actif->get_exp());
+						$groupe->membre_joueur[0]->set_star($actif->get_star());
+						$groupe->membre_joueur[0]->set_honneur($actif->get_honneur());
+						$groupe->membre_joueur[0]->set_reputation($actif->get_reputation());
 					}
 					$G_range_level = ceil($passif->get_level() * 0.5);
 					$xp = $xp * (1 + (($passif->get_level() - $actif->get_level()) / $G_range_level));
@@ -773,7 +776,7 @@ else
 						$facteur_honneur = ($row_diplo[0] * 0.2) - 0.8;
 						if ($facteur_honneur < 0) $facteur_honneur = 0;
 						//XP Final
-						$partage = $groupe->get_share_xp($joueur->get_pos());
+						$partage = $groupe->get_share_xp($actif->get_pos());
 						$partage = $partage == 0 ? 1 : $partage;
 						$xp_gagne = floor(($xp * $facteur_xp) * $membre->share_xp / $partage);
 						$honneur_gagne = floor(($honneur * $facteur_honneur) * $membre->share_xp / $partage);
@@ -1165,23 +1168,23 @@ else
 			if($type == 'joueur')
 			{
 				//Insertion de l'attaque dans les journaux des 2 joueurs
-				$requete = "INSERT INTO journal VALUES('', ".$joueur->get_id().", 'attaque', '".$joueur->get_nom()."', '".$defenseur->get_nom()."', NOW(), ".($defense_hp_avant - $defense_hp_apres).", ".($attaque_hp_avant - $attaque_hp_apres).", ".$joueur_defenseur->get_x().", ".$joueur_defenseur->get_y().")";
+				$requete = "INSERT INTO journal VALUES(NULL, ".$joueur->get_id().", 'attaque', '".$joueur->get_nom()."', '".$defenseur->get_nom()."', NOW(), ".($defense_hp_avant - $defense_hp_apres).", ".($attaque_hp_avant - $attaque_hp_apres).", ".$joueur_defenseur->get_x().", ".$joueur_defenseur->get_y().")";
 				$db->query($requete);
-				$requete = "INSERT INTO journal VALUES('', ".$joueur_defenseur->get_id().", 'defense', '".$joueur_defenseur->get_nom()."', '".$joueur->get_nom()."', NOW(), ".($defense_hp_avant - $defense_hp_apres).", ".($attaque_hp_avant - $attaque_hp_apres).", ".$joueur_defenseur->get_x().", ".$joueur_defenseur->get_y().")";
+				$requete = "INSERT INTO journal VALUES(NULL, ".$joueur_defenseur->get_id().", 'defense', '".$joueur_defenseur->get_nom()."', '".$joueur->get_nom()."', NOW(), ".($defense_hp_avant - $defense_hp_apres).", ".($attaque_hp_avant - $attaque_hp_apres).", ".$joueur_defenseur->get_x().", ".$joueur_defenseur->get_y().")";
 				$db->query($requete);
 				if($defenseur->get_hp() <= 0)
 				{
-					$requete = "INSERT INTO journal VALUES('', ".$joueur->get_id().", 'tue', '".$joueur->get_nom()."', '".$joueur_defenseur->get_nom()."', NOW(), 0, 0, ".$joueur_defenseur->get_x().", ".$joueur_defenseur->get_y().")";
+					$requete = "INSERT INTO journal VALUES(NULL, ".$joueur->get_id().", 'tue', '".$joueur->get_nom()."', '".$joueur_defenseur->get_nom()."', NOW(), 0, 0, ".$joueur_defenseur->get_x().", ".$joueur_defenseur->get_y().")";
 					$db->query($requete);
-					$requete = "INSERT INTO journal VALUES('', ".$joueur_defenseur->get_id().", 'mort', '".$joueur_defenseur->get_nom()."', '".$joueur->get_nom()."', NOW(), 0, 0, ".$joueur_defenseur->get_x().", ".$joueur_defenseur->get_y().")";
+					$requete = "INSERT INTO journal VALUES(NULL, ".$joueur_defenseur->get_id().", 'mort', '".$joueur_defenseur->get_nom()."', '".$joueur->get_nom()."', NOW(), 0, 0, ".$joueur_defenseur->get_x().", ".$joueur_defenseur->get_y().")";
 					$db->query($requete);
 				}
 				
 				if($attaquant->get_hp() <= 0)
 				{
-					$requete = "INSERT INTO journal VALUES('', ".$joueur->get_id().", 'mort', '".$joueur->get_nom()."', '".$joueur_defenseur->get_nom()."', NOW(), 0, 0, ".$joueur_defenseur->get_x().", ".$joueur_defenseur->get_y().")";
+					$requete = "INSERT INTO journal VALUES(NULL, ".$joueur->get_id().", 'mort', '".$joueur->get_nom()."', '".$joueur_defenseur->get_nom()."', NOW(), 0, 0, ".$joueur_defenseur->get_x().", ".$joueur_defenseur->get_y().")";
 					$db->query($requete);
-					$requete = "INSERT INTO journal VALUES('', ".$joueur_defenseur->get_id().", 'tue', '".$joueur_defenseur->get_nom()."', '".$joueur->get_nom()."', NOW(), 0, 0, ".$joueur_defenseur->get_x().", ".$joueur_defenseur->get_y().")";
+					$requete = "INSERT INTO journal VALUES(NULL, ".$joueur_defenseur->get_id().", 'tue', '".$joueur_defenseur->get_nom()."', '".$joueur->get_nom()."', NOW(), 0, 0, ".$joueur_defenseur->get_x().", ".$joueur_defenseur->get_y().")";
 					$db->query($requete);
 				}
 			}
