@@ -840,12 +840,12 @@ else
 						echo '<strong>Tu ne fait que retarder l\'inévitable, Le maître saura te faire payer ton insolence !</strong>';
 					}
 					//Si c'est Finrwirr on fait pop le gros monstre
-					/*if($defenseur['type'] == 75)
+					if($defenseur['type'] == 75)
 					{
 						$requete = "INSERT INTO map_monstre VALUES(NULL, '116','24','209','10000', 8, '".addslashes('Adenaïos le nécromant')."','adennaios', ".(time() + 2678400).")";
 						$db->query($requete);
 						echo '<strong>Aaaargh VAINCU, JE SUIS VAINCU, comment est ce possible !!! Maître !! Maître venez à moi, vengez votre plus fidèle serviteur !!!</strong>';
-					}*/
+					}
 					//Si c'est un draconide
 					if($map_monstre->get_type() == 125 OR $map_monstre->get_type() == 126)
 					{
