@@ -460,24 +460,31 @@ if (isset($_GET['ID']))
 					if($joueur->is_buff())
 					{
 						$debuff_tab = array();
-						foreach($joueur->get_debuff() as $debuff)
+						$buff_tab = array();
+						foreach($joueur->get_buff() as $buff)
 						{
-							if($debuff->get_debuff() == 1)
+							if($buff->get_debuff() == 1)
 							{
-								if($debuff->is_supprimable()) { $debuff_tab[count($debuff_tab)] = $debuff->get_id(); };
+								if($buff->is_supprimable()) { $debuff_tab[] = $buff->get_id(); }
+							}
+							else
+							{
+								if($buff->is_supprimable()) { $buff_tab[] = $buff->get_id(); }
 							}
 						}	
-						if(count($debuff_tab) > 0)
+						if(count($debuff_tab) == 0)
+						{
+							echo "Impossible de lancer le sort. Vous n&apos;avez aucun debuff.<br/>";
+						}
+						elseif (count($buff_tab) == 0)
+						{
+							echo "Impossible de lancer de lancer le sort. Vous n&apos;avez aucun buff.<br/>";
+						}
+						else
 						{	
 							$joueur->set_pa($joueur->get_pa() - $sortpa);
 							$joueur->set_mp($joueur->get_mp() - $sortmp);
-							
-							$buff_tab = array();
-							foreach($joueur->get_buff() as $buff)
-							{
-								$buff_tab[count($buff_tab)] = $buff->get_id();
-							}
-							
+
 							$db->query("DELETE FROM buff WHERE id=".$buff_tab[rand(0, count($buff_tab)-1)].";");
 							$db->query("DELETE FROM buff WHERE id=".$debuff_tab[rand(0, count($debuff_tab)-1)].";");
 							//-- Augmentation des compétences
@@ -496,7 +503,6 @@ if (isset($_GET['ID']))
 							//-- Mise à jour du joueur
 							$joueur->sauver();
 						}
-						else { echo "Impossible de lancer le sort. Vous n&apos;avez aucun debuff.<br/>"; };
 					}
 					else { echo "Impossible de lancer de lancer le sort. Vous n&apos;avez aucun buff.<br/>"; };
 					$groupe_href = '&amp;type='.$type_cible.'&amp;id_'.$type_cible.'='.$cible->get_id();
