@@ -840,7 +840,7 @@ else
 						echo '<strong>Tu ne fait que retarder l\'inévitable, Le maître saura te faire payer ton insolence !</strong>';
 					}
 					//Si c'est Finrwirr on fait pop le gros monstre
-					if($defenseur['type'] == 75)
+					if($defenseur->get_type() == 75)
 					{
 						$requete = "INSERT INTO map_monstre VALUES(NULL, '116','24','209','10000', 8, '".addslashes('Adenaïos le nécromant')."','adennaios', ".(time() + 2678400).")";
 						$db->query($requete);
