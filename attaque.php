@@ -825,41 +825,9 @@ else
 					//On efface le monstre
 					$requete = "DELETE FROM map_monstre WHERE id = '".$map_monstre->get_id()."'";
 					$req = $db->query($requete);
-					//Si c'est Devorsis on fait pop le fossoyeur
-					if($map_monstre->get_type() == 64)
-					{
-						$requete = "INSERT INTO map_monstre VALUES(NULL, '65','3','212','4800', 6, '".addslashes('Le Fossoyeur')."','fossoyeur', ".(time() + 2678400).")";
-						$db->query($requete);
-						echo '<strong>Rha, tu me détruis aujourdhui mais le fossoyeur saura saisir ton âme... tu es déja mort !</strong>';
-					}
-					//Si c'est le fossoyeur on fait pop finwir
-					if($map_monstre->get_type() == 65)
-					{
-						$requete = "INSERT INTO map_monstre VALUES(NULL, '75','24','209','8000', 7, '".addslashes('Finrwirr le serviteur')."','finrwirr', ".(time() + 2678400).")";
-						$db->query($requete);
-						echo '<strong>Tu ne fait que retarder l\'inévitable, Le maître saura te faire payer ton insolence !</strong>';
-					}
-					//Si c'est Finrwirr on fait pop le gros monstre
-					if($defenseur->get_type() == 75)
-					{
-						$requete = "INSERT INTO map_monstre VALUES(NULL, '116','24','209','10000', 8, '".addslashes('Adenaïos le nécromant')."','adennaios', ".(time() + 2678400).")";
-						$db->query($requete);
-						echo '<strong>Aaaargh VAINCU, JE SUIS VAINCU, comment est ce possible !!! Maître !! Maître venez à moi, vengez votre plus fidèle serviteur !!!</strong>';
-					}
-					//Si c'est un draconide
-					if($map_monstre->get_type() == 125 OR $map_monstre->get_type() == 126)
-					{
-						//Si les 2 sont morts, on fait pop le roi gobelin
-						$requete = "SELECT type FROM map_monstre WHERE type = 125 OR type = 126";
-						$req_d = $db->query($requete);
-						//Si il n'est pas là on le fait pop
-						if($db->num_rows($req_d) == 0)
-						{
-							$requete = "INSERT INTO map_monstre VALUES(NULL,'123','44','293','5800', 18, 'Roi Goblin','roi_goblin', ".(time() + 2678400).")";
-							$db->query($requete);
-							echo '<strong>Un bruit de mécanisme eveil votre attention, mais il vous est impossible de savoir d\'où provient ce son.</strong>';
-						}
-					}
+					
+					// On gere les monstres de donjon
+					kill_monstre_de_donjon($map_monstre);
 				}
 				else
 				{

@@ -67,6 +67,9 @@ include_once(root.$root.'fonction/equipement.inc.php');
 //Inclusion du fichier contenant les fonctions de gestion des réponses
 include_once(root.$root.'fonction/reponses.inc.php');
 
+//Inclusion du fichier contenant les fonctions de gestion des donjons
+include_once(root.$root.'fonction/donjon.php');
+
 //Inclusion du fichier contenant les fonctions de securité
 include_once(root.$root.'fonction/security.inc.php');
 
