@@ -249,6 +249,7 @@ var affiche_royaume = false;
 
 $(document).ready(function()
 {
+	$("#popup").draggable();
 	$("#loading").ajaxStart(function()
 	{
 		$(this).show();
