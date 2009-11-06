@@ -159,7 +159,7 @@ function affichePopUp(input_name)
 }
 function fermePopUp()
 {
-	$('#popup').hide();
+	$('#popup').hide("fold", {}, 1000);
 	$('#popup_content').text('');
 }
 function menu_change(input_name)
