@@ -809,25 +809,42 @@ else
 					$diff_level = abs($attaquant->get_level() - $defenseur->get_level());
 					//Perde d'honneur
 					$coeff = 1 - ($diff_level * 0.02);
-					//Si c'est Dévorsis
-					if($defenseur->get_id() == 61)
-					{
-						$gain_hp = floor($attaquant['hp_max'] * 0.1);
-						$map_monstre->set($defenseur->get_hp() + $gain_hp);
-						$map_monstre->sauver();
-						echo 'Dévorsis regagne '.$gain_hp.' HP en vous tuant.<br />';
-					}
+
 					$gains_xp = true;
 					$coef = 1;
 					$gains_drop = true;
 					$gains_star = true;
-
-					//On efface le monstre
-					$requete = "DELETE FROM map_monstre WHERE id = '".$map_monstre->get_id()."'";
-					$req = $db->query($requete);
 					
 					// On gere les monstres de donjon
-					kill_monstre_de_donjon($map_monstre);
+					$map_monstre->kill_monstre_de_donjon();
+
+					//On efface le monstre
+					$map_monstre->supprimer();
+				}
+				elseif ($attaquant->get_hp() <= 0) //L'attaquant est mort !
+				{
+					$coeff = 0.5;
+					//Différence de level
+					$diff_level = abs($attaquant->get_level() - $defenseur->get_level());
+					//Perde d'honneur
+					$coeff = 1 - ($diff_level * 0.02);
+					if ($coeff != 0)
+					{
+						echo 'Vous perdez '.
+							($joueur->get_honneur() - $joueur->get_honneur() * $coeff).
+							' honneur en mourrant.<br />';
+						$joueur->set_honneur($joueur->get_honneur() * $coeff);
+						$joueur->sauver();
+					}
+
+					//Si c'est Dévorsis
+					if($defenseur->get_id() == 61)
+					{
+						$gain_hp = floor($attaquant->get_hp_max() * 0.1);
+						$map_monstre->set($defenseur->get_hp() + $gain_hp);
+						$map_monstre->sauver();
+						echo 'Dévorsis regagne '.$gain_hp.' HP en vous tuant.<br />';
+					}
 				}
 				else
 				{
@@ -1159,14 +1176,7 @@ else
 		}
 		else
 		{
-			echo 'Vous êtes mort !<img src="image/pixel.gif" onload="window.location.reload();" />';
-			/* Crade */
-			if($type == 'monstre')
-			{
-				$coeff = 1 - ($diff_level * 0.02);
-				$joueur->set_honneur($joueur->get_honneur() * $coeff);
-				$joueur->sauver();
-			}
+			echo "Vous êtes mort !<img src=\"image/pixel.gif\" onload=\"window.location.reload();\" />\n";
 		}
 	}
 	else
