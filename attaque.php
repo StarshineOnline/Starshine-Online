@@ -828,7 +828,7 @@ else
 					$diff_level = abs($attaquant->get_level() - $defenseur->get_level());
 					//Perde d'honneur
 					$coeff = 1 - ($diff_level * 0.02);
-					if ($coeff != 0)
+					if ($coeff != 1)
 					{
 						echo 'Vous perdez '.
 							($joueur->get_honneur() - $joueur->get_honneur() * $coeff).
