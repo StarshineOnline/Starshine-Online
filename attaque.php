@@ -917,10 +917,12 @@ else
 							{
 								$check = false;
 								$i_quete = 0;
-								$count_quete = count($attaquant->get_liste_quete());
+								$liste_quete = $attaquant->get_liste_quete();
+								$count_quete = count($liste_quete);
 								while(!$check AND $i_quete < $count_quete)
 								{
-									if($attaquant->liste_quete[$i_quete]['id_quete'] == $share[1]) $check = true;
+									if($liste_quete[$i_quete]['id_quete'] == $share[1])
+										$check = true;
 									$i_quete++;
 								}
 								if($check) $tirage = 1;
