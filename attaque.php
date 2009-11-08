@@ -817,9 +817,6 @@ else
 					
 					// On gere les monstres de donjon
 					$map_monstre->kill_monstre_de_donjon();
-
-					//On efface le monstre
-					$map_monstre->supprimer();
 				}
 				elseif ($attaquant->get_hp() <= 0) //L'attaquant est mort !
 				{
