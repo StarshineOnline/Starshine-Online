@@ -32,7 +32,7 @@ $R->get_diplo($joueur->get_race());
 		}
 		?></span></div><br /><?php
 if ($joueur->get_race() == $R->get_race() ||
-		$R->get_diplo($joueur->get_race()) <= 5)
+		$R->get_diplo($joueur->get_race()) <= 6)
 {
 	if(isset($_GET['action']))
 	{

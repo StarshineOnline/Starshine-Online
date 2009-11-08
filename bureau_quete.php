@@ -25,7 +25,7 @@ $R->get_diplo($joueur->get_race());
 		<div class="ville_test">
 		<p>Voici les différentes Quêtes disponibles :</p>
 <?php
-if($R->get_diplo($joueur->get_race()) < 6 OR $R->get_diplo($joueur->get_race()) == 127)
+if($R->get_diplo($joueur->get_race()) <= 6 OR $R->get_diplo($joueur->get_race()) == 127)
 {
 	if(isset($_GET['action']))
 	{

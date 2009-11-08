@@ -17,6 +17,13 @@ $R = new royaume($W_row['royaume']);
 $R->get_diplo($joueur->get_race());
 $mois = 60 * 60 * 24 * 31;
 
+if ($joueur->get_race() != $R->get_race() &&
+		$R->get_diplo($joueur->get_race()) > 6)
+{
+	echo "<h5>Impossible de commercer avec un tel niveau de diplomatie</h5>";
+	exit (0);
+}
+
 if($W_row['type'] == 1)
 {//-- On verifie que le joueur est bien sur la ville ($W_distance)
 	echo "<script type='text/javascript'>return nd();</script>";

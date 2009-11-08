@@ -19,6 +19,13 @@ $W_req = $db->query($W_requete);
 $W_row = $db->read_assoc($W_req);
 $R = new royaume($W_row['royaume']);
 
+if ($joueur->get_race() != $R->get_race() &&
+		$R->get_diplo($joueur->get_race()) > 6)
+{
+	echo "<h5>Impossible de commercer avec un tel niveau de diplomatie</h5>";
+	exit (0);
+}
+
 ?>
 <h2 class="ville_titre"><?php echo '<a href="ville.php" onclick="return envoiInfo(this.href, \'centre\')">';?><?php echo $R->get_nom();?></a> - <?php echo '<a href="ecolemagie.php?poscase='.$W_case.'" onclick="return envoiInfo(this.href, \'carte\')">';?> Ecole de Magie </a></h2>
 		<?php include_once(root.'ville_bas.php');?>

@@ -18,6 +18,13 @@ $W_row = $db->read_assoc($W_req);
 $R = new royaume($W_row['royaume']);
 $R->get_diplo($joueur->get_race());
 
+if ($joueur->get_race() != $R->get_race() &&
+		$R->get_diplo($joueur->get_race()) > 6)
+{
+	echo "<h5>Impossible de commercer avec un tel niveau de diplomatie</h5>";
+	exit (0);
+}
+
 if(array_key_exists('fort', $_GET)) $fort = '&amp;fort=ok'; else $fort = '';
 ?>
    <h2 class="ville_titre"><?php echo '<a href="ville.php?poscase='.$W_case.'" onclick="return envoiInfo(this.href, \'centre\')">';?><?php echo $R->get_nom();?></a> - <?php echo '<a href="enchanteur.php?poscase='.$W_case.'" onclick="return envoiInfo(this.href, \'carte\')">';?> Enchanteur </a></h2>

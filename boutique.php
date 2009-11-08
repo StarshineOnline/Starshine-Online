@@ -19,24 +19,30 @@ $W_row = $db->read_assoc($W_req);
 $R = new royaume($W_row['royaume']);
 $R->get_diplo($joueur->get_race());
 
-if(!isset($_GET['type'])) $_GET['type'] = 'arme';
+
+if ($joueur->get_race() != $R->get_race() &&
+		$R->get_diplo($joueur->get_race()) > 6)
+{
+	echo "<h5>Impossible de commercer avec un tel niveau de diplomatie</h5>";
+	exit (0);
+}
+
+	if(!isset($_GET['type'])) $_GET['type'] = 'arme';
 
 		?>
 		<h2 class="ville_titre"><?php echo '<a href="ville.php?poscase='.$W_case.'" onclick="return envoiInfo(this.href,\'centre\')">';?><?php echo $R->get_nom();?></a> - <?php echo '<a href="boutique.php?poscase='.$W_case.'" onclick="return envoiInfo(this.href,\'carte\')">';?> Marchand d'<?php echo $_GET['type']; ?>s </a></h2>
-		<?php
-		if($_GET['type'] == 'armure')
-		{
-			$url = 'boutique.php?type=arme&amp;poscase='.$W_case.'&amp;order=';
-			$batiment = 'armurerie';
-
-		}
-		else
-		{
-			$url = 'boutique.php?type=armure&amp;poscase='.$W_case.'&amp;order=';
-			$batiment = 'forgeron';
-		}
-		?>
 <?php
+	if($_GET['type'] == 'armure')
+	{
+		$url = 'boutique.php?type=arme&amp;poscase='.$W_case.'&amp;order=';
+		$batiment = 'armurerie';
+	}
+	else
+	{
+	  $url = 'boutique.php?type=armure&amp;poscase='.$W_case.'&amp;order=';
+		$batiment = 'forgeron';
+	}
+
 //Uniquement si le joueur se trouve sur une case de ville
 if($W_row['type'] == 1)
 {

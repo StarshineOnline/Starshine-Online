@@ -20,6 +20,13 @@ $W_row = $db->read_array($W_req);
 $R = new royaume($W_row['royaume']);
 $R->get_diplo($joueur->get_race());
 
+if ($joueur->get_race() != $R->get_race() &&
+		$R->get_diplo($joueur->get_race()) > 6)
+{
+	echo "<h5>Impossible de commercer avec un tel niveau de diplomatie</h5>";
+	exit (0);
+}
+
 if(array_key_exists('fort', $_GET)) $fort = '&amp;fort=ok'; else $fort = '';
 ?>
     	<h2 class="ville_titre"><?php if(!array_key_exists('fort', $_GET)) return_ville('<a href="ville.php?poscase='.$pos.'" onclick="return envoiInfo(this.href, \'centre\')">'.$R->get_nom().'</a> - ', $pos); ?> <?php echo '<a href="taverne.php?poscase='.$pos.'" onclick="return envoiInfo(this.href,\'carte\')">';?> Alchimiste </a></h2>
