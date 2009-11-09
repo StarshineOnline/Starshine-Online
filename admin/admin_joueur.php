@@ -457,7 +457,10 @@ else
 				{
 					$i = 0;
 					$quete_id = array();
-					foreach($joueur->get_quete() as $quete)
+					$qlist = $joueur->get_quete();
+					if (is_string($qlist))
+						$qlist = unserialize($qlist);
+					foreach($qlist as $quete)
 					{
 						$quete_id[] = $quete['id_quete'];
 						$quest[$quete['id_quete']] = $i;
