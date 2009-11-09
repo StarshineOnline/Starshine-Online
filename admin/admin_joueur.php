@@ -477,7 +477,7 @@ else
 							$objectif = unserialize($row['objectif']);
 							echo '
 							<li onmousemove="afficheInfo(\'info_'.$i.'\', \'block\', event, \'xmlhttprequest\');" onmouseout="afficheInfo(\'info_'.$i.'\', \'none\', event );">
-								<h3 style="margin : 0px; padding : 0px; display : inline;">'.$row['nom'].'</h3> '.$joueur['quete'][$quest[$row['id']]]['objectif'][0]->nombre.' / '.$objectif[0]->nombre.'
+								<h3 style="margin : 0px; padding : 0px; display : inline;">'.$row['nom'].'</h3> '.$qlist[$quest[$row['id']]]['objectif'][0]->nombre.' / '.$objectif[0]->nombre.'
 								<div style="display: none; z-index: 2; position : absolute; background-color:#ffffff; border: 1px solid #000000; font-size:12px; width: 200px; padding: 5px;" id="info_'.$i.'">
 									<h3 style="margin : 0px; padding : 0px;margin-bottom : 3px;"">'.$row['nom'].'</h3>
 									<span style="font-style : italic;">Niveau conseillé '.$row['lvl_joueur'].'</span><br />
