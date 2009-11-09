@@ -700,7 +700,10 @@ if (isset($_GET['ID']))
 				break;				
 			}
 		}
-		echo '<br /><a href="sort.php?type='.$type_cible.'&amp;id_'.$type_cible.'='.$cible->get_id().'" onclick="return envoiInfo(this.href, \'information\');">Revenir au livre de sort</a>';
+		if($groupe)
+			$cible = $joueur;
+		else
+			echo '<br /><a href="sort.php?type='.$type_cible.'&amp;id_'.$type_cible.'='.$cible->get_id().'" onclick="return envoiInfo(this.href, \'information\');">Revenir au livre de sort</a>';
 	}
 }
 else
