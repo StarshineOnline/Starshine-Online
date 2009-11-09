@@ -56,6 +56,7 @@ class map_monstre
     */
 	private $mort_naturelle;
 
+	public $nonexistant = false;
 	
 	/**
 	* @access public
@@ -83,7 +84,11 @@ class map_monstre
 			{
 				list($this->type, $this->x, $this->y, $this->hp, $this->level, $this->nom, $this->lib, $this->mort_naturelle) = $db->read_array($requeteSQL);
 			}
-			else $this->__construct();
+			else
+			{
+				$this->__construct();
+				$this->nonexistant = true;
+			}
 			$this->id = $id;
 		}
 		elseif( (func_num_args() == 1) && is_array($id) )

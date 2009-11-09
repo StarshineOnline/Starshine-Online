@@ -21,6 +21,11 @@ switch($type)
 	case 'monstre' :
 		$joueur = new perso($_SESSION['ID']);
 		$map_monstre = new map_monstre($_GET['id_monstre']);
+		if ($map_monstre->nonexistant)
+		{
+			echo '<h5>Ce monstre est déjà au paradis des monstres</h5>';
+			exit (0);
+		}
 		$joueur->action_do = $joueur->recupaction('attaque');
 		$joueur_defenseur = new monstre($map_monstre->get_type());
 		$joueur_defenseur->hp_max = $joueur_defenseur->get_hp();
