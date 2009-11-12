@@ -254,10 +254,15 @@ class revolution
 	static function is_mois_revolution($id_royaume)
 	{
 		$revolution = revolution::get_prochain_revolution($id_royaume);
-		$rev = $revolution[0];
-		$explode_date = explode('-', $rev->get_date());
-		if($explode_date[0] == date('Y') && $explode_date[1] == date('m', mktime(0, 0, 0, date("m") + 1 , date("d"), date("Y")))) return true;
-		else return false;
+		if(!empty($revolution))
+		{
+			$rev = $revolution[0];
+			$explode_date = explode('-', $rev->get_date());
+			if($explode_date[0] == date('Y') && $explode_date[1] == date('m', mktime(0, 0, 0, date("m") + 1 , date("d"), date("Y")))) return true;
+			else return false;
+		}
+		else
+			return false;
 	}
 
 }
