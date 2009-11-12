@@ -108,7 +108,7 @@ if($W_row['type'] == 1)
 				</td>
 			</tr>
 		<?php
-		$requete = "SELECT * FROM perso RIGHT JOIN amende ON amende.id_joueur = perso.ID WHERE perso.amende > 0 AND amende.statut = 'criminel' AND race = '".$R->get_race()."'";
+		$requete = "SELECT * FROM perso RIGHT JOIN amende ON amende.id_joueur = perso.id WHERE perso.amende > 0 AND amende.statut = 'criminel' AND race = '".$R->get_race()."'";
 		$req = $db->query($requete);
 		while($row = $db->read_assoc($req))
 		{

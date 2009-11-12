@@ -497,7 +497,7 @@ if($joueur->get_rang_royaume() != 6 AND $joueur->get_id() != $royaume->get_minis
 	{
 		echo "<div id='criminel'>";
 	    //Sélection de tous les joueurs ayant des points de crime
-	    $requete = "SELECT * FROM perso WHERE crime > 0 AND race = '".$royaume->get_race()."' AND statut = 'actif' ORDER BY crime DESC";
+	    $requete = "SELECT * FROM perso RIGHT JOIN amende ON amende.id_joueur = perso.id WHERE (crime > 0 OR amende.montant > 0) AND race = '".$royaume->get_race()."' AND perso.statut = 'actif' ORDER BY crime DESC";
 	    $req = $db->query($requete);
 	    ?>
 	    <fieldset>	    	    	    	    

@@ -2295,7 +2295,7 @@ Votre dernier souvenir est l'endroit où vous êtes mort <?php echo 'x : '.$joue
 					Que voulez vous faire ?
 					<ul>
 					<?php
-					//Supprime les Rez plus valident
+					//Supprime les Rez plus valides
 					$requete = "DELETE FROM rez WHERE TIMESTAMPDIFF(MINUTE , time, NOW()) > 1440";
 					//$db->query($requete);
 					// Liste des rez
