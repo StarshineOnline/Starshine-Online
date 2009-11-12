@@ -170,14 +170,29 @@ function is_donjon($x, $y)
 function nb_bourg($id_royaume)
 {
 	global $db;
-	$bourgs = 0;
+
 	//Nombre de bourg déjà construits
-	$requete = "SELECT bourg FROM royaume WHERE ID = ".$id_royaume;
+	$requete_construction = "SELECT count(id) cpt from construction where id_batiment in (10,11,12) and royaume = ".$id_royaume;
+	//Nombre de bourgs en construction
+	$requete_placement = "SELECT count(id) cpt from placement where type = 'bourg' and royaume = ".$id_royaume;
+	//Nombre de bourgs dans le qg
+	$requete_qg = "SELECT count(d.id) cpt from depot_royaume d, objet_royaume o where o.id = d.id_objet and o.type = 'bourg' and d.id_royaume = ".$id_royaume;
+	// On aggrege ca
+	$requete = "SELECT sum(cpt) from ( $requete_construction UNION ALL $requete_placement UNION ALL $requete_qg ) agg";
 	$req = $db->query($requete);
 	$row = $db->read_row($req);
 	$bourgs = $row[0];
-	//Nombre de bourgs en construction
-	//Nombre de bourgs dans le qg
+	//nombre de bourgs dans les sacs
+	//trouver les sacs avec des bourgs dedans
+	$requete = "select p.id from perso p, royaume r where inventaire_slot like '%\"r10\"%' and p.race = r.race and r.id = ".$id_royaume;
+	$req = $db->query($requete);
+  while ($row = $db->read_row($req)) {
+		$perso = new perso($row[0]);
+		$inv = $perso->get_inventaire_slot_partie();
+		foreach ($inv as $item)
+			if ($item == "r10")
+				$bourgs++;
+	}
 	return $bourgs;
 }
 
