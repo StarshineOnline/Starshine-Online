@@ -289,7 +289,11 @@ $this-><?php echo $champ_reference; ?> = $<?php echo $champ_reference; ?>;
 
 class $table extends ${table}_db {
   function __construct($liste_arguments) {
-    parent::__construct($liste_arguments_names);
+    if( (func_num_args() == 1) && (
+         is_numeric($champ_reference) || is_array($champ_reference)))
+      parent::__construct($champ_reference);
+    else
+      parent::__construct($liste_arguments_names);
   }
 
 ";

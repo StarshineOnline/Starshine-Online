@@ -163,7 +163,6 @@ class maitrise_dague extends competence
     $this->used = true;
     $actif->potentiel_toucher *=
       1 + ($actif->get_competence('maitrise_dague')->get_valeur() / 1000);
-    //$actif['maitrise_dague'] = $actif['competences']['maitrise_dague'];
   }
 
   function fin_round(&$actif, &$passif) {
