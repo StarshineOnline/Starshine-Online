@@ -527,9 +527,16 @@ class map_monstre
 			break;
 			
 		case 75: //Si c'est Finrwirr on fait pop le gros monstre
-			$requete = "INSERT INTO map_monstre VALUES(NULL, '116','24','209','10000', 8, '".addslashes('Adenaïos le nécromant')."','adennaios', ".(time() + 2678400).")";
-			$db->query($requete);
 			echo '<strong>Aaaargh VAINCU, JE SUIS VAINCU, comment est ce possible !!! Maître !! Maître venez à moi, vengez votre plus fidèle serviteur !!!</strong>';
+			if (false) // Si le gros monstre n'a pas ete vaincu
+			{
+				$requete = "INSERT INTO map_monstre VALUES(NULL, '116','24','209','10000', 8, '".addslashes('Adenaïos le nécromant')."','adennaios', ".(time() + 2678400).")";
+				$db->query($requete);
+			}
+			else
+			{
+				echo '<br/><em>Seul le silence répond à cet appel, Adenaïos le nécromant a déjà été vaincu ...</em>';
+			}
 			break;
 			
 		case 125:	//Si c'est un draconide
