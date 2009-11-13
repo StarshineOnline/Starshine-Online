@@ -151,12 +151,12 @@ $bonus = recup_bonus($joueur->get_id());
 						{
 						?>
 						<form action="configure_point_sso.php" method="get" id="formSexe">
-							<select name="sexe">
+							<select name="sexe" id='sexe'>
 								<option value="1">Masculin</option>
 								<option value="2">Feminin</option>
 							</select>
-							<input type="hidden" value="<?php echo $id; ?>" name="id" />
-							<input type="button" value="Valider" onclick="envoiFormulaireGET('formSexe', 'popup_content');" />
+							<input type="hidden" value="<?php echo $id; ?>" name="id" id='id_sexe' />
+							<input type="button" value="Valider" onclick="envoiInfo('configure_point_sso.php?css=' + $('#sexe').val()+'&amp;id='+$('#id_sexe').val(), 'popup_content');envoiInfo('configure_point_sso.php', 'popup_content');" />
 						</form>
 						<?php
 						}
@@ -170,9 +170,9 @@ $bonus = recup_bonus($joueur->get_id());
 					case 16 :
 						?>
 						<form action="configure_point_sso.php" method="get" id="formDesc">
-							<textarea name="description"><?php echo $bonus_total[$id]['valeur']; ?></textarea>
-							<input type="hidden" value="<?php echo $id; ?>" name="id" />
-							<input type="button" value="Valider" onclick="envoiFormulaireGET('formDesc', 'popup_content');" />
+							<textarea id='description' name="description"><?php echo $bonus_total[$id]['valeur']; ?></textarea>
+							<input type="hidden" value="<?php echo $id; ?>" name="id" id='id_desc'/>
+							<input type="button" value="Valider" onclick="envoiInfo('configure_point_sso.php?css=' + $('#description').val()+'&amp;id='+$('#id_desc').val(), 'popup_content');envoiInfo('configure_point_sso.php', 'popup_content');" />
 						</form>
 						<?php
 					break;
@@ -193,9 +193,9 @@ $bonus = recup_bonus($joueur->get_id());
 					case 27 :
 						?>
 						<form action="configure_point_sso.php" method="get" id="formCSS">
-							<textarea name="css"><?php echo $bonus_total[$id]['valeur']; ?></textarea>
-							<input type="hidden" value="<?php echo $id; ?>" name="id" />
-							<input type="button" value="Valider" onclick="envoiFormulaireGET('formCSS', 'popup_content');" />
+							<textarea id='css' name="css"><?php echo $bonus_total[$id]['valeur']; ?></textarea>
+							<input type="hidden" value="<?php echo $id; ?>" name="id" id='id_css' />
+							<input type="button" value="Valider" onclick="envoiInfo('configure_point_sso.php?css=' + $('#css').val()+'&amp;id='+$('#id_css').val(), 'popup_content');envoiInfo('configure_point_sso.php', 'popup_content');" />
 						</form>
 						<?php
 					break;
@@ -206,13 +206,13 @@ $bonus = recup_bonus($joueur->get_id());
 			{
 				?>
 				<form action="configure_point_sso.php" method="get" id="formModif">
-					<select name="etat">
+					<select name="etat" id='etat'>
 						<option value="0" <?php if($bonus[$id] == 0) echo 'selected="selected"'; ?>>Afficher a tout le monde</option>
 						<option value="1" <?php if($bonus[$id] == 1) echo 'selected="selected"'; ?>>Afficher aux joueurs de votre race</option>
 						<option value="2" <?php if($bonus[$id] == 2) echo 'selected="selected"'; ?>>Afficher a personne</option>
 					</select>
-					<input type="hidden" value="<?php echo $id; ?>" name="id" />
-					<input type="button" value="Valider" onclick="envoiFormulaireGET('formModif', 'popup_content');" />
+					<input type="hidden" value="<?php echo $id; ?>" name="id" id='id_etat' />
+					<input type="button" value="Valider" onclick="envoiInfo('configure_point_sso.php?etat=' + $('#etat').val()+'&amp;id='+$('#id_etat').val(), 'popup_content');envoiInfo('configure_point_sso.php', 'popup_content');" />
 				</form>
 				<?php
 			}
