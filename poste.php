@@ -86,10 +86,10 @@ if($joueur->get_race() == $R->get_race())
 				$cout = sSQL($_GET['cout']) + $taxe;
 				if($cout <= $joueur->get_star())
 				{
-					$titre = addslashes(sSQL($_POST['titre']));
+					$titre = addslashes(sSQL($_GET['titre']));
 					if($titre != '')
 					{
-						$message = sSQL($_POST['message']);
+						$message = sSQL($_GET['message']);
 						if ($message != '')
 						{
 							$id_groupe = 0;

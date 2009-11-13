@@ -195,7 +195,7 @@ N'oubliez pas de reporter les bugs et problèmes, et d'apporter vos suggestions 
 				<input type="password" name="password" size="10" class="login_mdp" />
 				<input type="checkbox" name="auto_login" value="Ok" class="login_auto" />
 				<input type='hidden' name='log' />
-				<span class='login_connexion' onclick="$('#login_form').submit();"> </span>
+				<a class='login_connexion' onclick="$('#login_form').submit();"> </a>
 				</div>
 				</form>
 				</div>		

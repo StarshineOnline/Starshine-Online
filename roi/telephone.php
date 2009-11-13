@@ -3,7 +3,7 @@ if (file_exists('../root.php'))
   include_once('../root.php');
 ?><?php
 require('haut_roi.php');
-if($joueur->get_rang_royaume() != 6)
+if($joueur->get_rang_royaume() != 6  AND $joueur->get_id() != $royaume->get_ministre_economie() AND $joueur->get_id() != $royaume->get_ministre_militaire())
 	echo '<p>Cette page vous est interdit</p>';
 else if(array_key_exists('message', $_GET))
 {
@@ -51,7 +51,7 @@ elseif(array_key_exists('id_dest', $_GET))
 		<textarea name="message" id="message" cols="45" rows="12"></textarea><br />
 		<br />
 		<input type="hidden" name="id_destinataire" id="id_destinataire" value="<?php echo $_GET['id_dest']; ?>" />
-		<input type="button" onclick="envoiInfo('telephone.php?message=' + $('message').value + '&amp;titre=' + $('titre').value + '&amp;id_destinataire=' + $('id_destinataire').value, 'message_confirm');$('popup').hide();" name="btnSubmit" value="Envoyer" />
+		<input type="button" onclick="envoiInfo('telephone.php?message=' + $('#message').val() + '&amp;titre=' + $('#titre').val() + '&amp;id_destinataire=' + $('#id_destinataire').val(), 'message_confirm');fermePopUp();" name="btnSubmit" value="Envoyer" />
 	</form>
 </fieldset>
 <?php

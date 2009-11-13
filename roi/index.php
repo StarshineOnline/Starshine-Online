@@ -48,6 +48,7 @@ if($joueur->get_grade()->get_id() == 6 OR $joueur->get_id() == $royaume->get_min
 	<link href="../css/prototip.css" rel="stylesheet" type="text/css" />
 	<link href="css/roi.css" rel="stylesheet" type="text/css" />
 	<script src="../javascript//jquery/jquery-1.3.2.min.js" type="text/javascript"></script>
+	<script src="../javascript//jquery/jquery-ui-1.7.2.custom.min.js" type="text/javascript"></script>	
 	<script src="../javascript/fonction.js" type="text/javascript"></script>
 	<script src="../javascript/overlib/overlib.js" type="text/javascript"></script>
 	<script src="javascript/menu.js" type="text/javascript"></script>
