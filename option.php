@@ -14,11 +14,11 @@ include_once(root.'inc/fp.php');
 				switch($_GET['action'])
 				{
 					case 'mdp' :
-						if(array_key_exists('ancien_pass', $_POST))
+						if(array_key_exists('ancien_pass', $_GET))
 						{
-							$ancien_pass = $_POST['ancien_pass'];
-							$new_pass = $_POST['new_pass'];
-							$new_pass2 = $_POST['new_pass2'];
+							$ancien_pass = $_GET['ancien_pass'];
+							$new_pass = $_GET['new_pass'];
+							$new_pass2 = $_GET['new_pass2'];
 							if($new_pass != $new_pass2)
 							{
 								?>
@@ -57,12 +57,12 @@ include_once(root.'inc/fp.php');
 						?>
 						<form method="post" action="option.php?action=mdp" id="formMDP">
 							<strong>Veuillez indiquez votre mot de passe actuel :</strong><br />
-							<input type="password" name="ancien_pass" /><br />
+							<input type="password" id='ancien_pass' name="ancien_pass" /><br />
 							<strong>Veuillez indiquez votre NOUVEAU mot de passe :</strong><br />
-							<input type="password" name="new_pass" /><br />
+							<input type="password" id='new_pass' name="new_pass" /><br />
 							<strong>Veuillez retappez votre NOUVEAU mot de passe :</strong><br />
-							<input type="password" name="new_pass2" /><br />
-							<input type="button" value="Modifier votre mot de passe jeu" onclick="envoiFormulaire('formMDP', 'popup_content');" />
+							<input type="password" id='new_pass2' name="new_pass2" /><br />
+							<input type="button" value="Modifier votre mot de passe jeu" onclick="envoiInfo('poste.php?ancien_pass=' + $('#ancien_pass').val()+'&amp;new_pass=' + $('#new_pass').val()+'&amp;new_pass2=' + $('#new_pass2').val(), 'popup_content');" />
 						</form>
 						<?php
 						}
