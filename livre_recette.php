@@ -36,11 +36,12 @@ if(array_key_exists('action', $_GET))
 			}
 			?>
 			</select>
-			<input type="button" value="Créer" onclick="envoiInfo('livre_recette.php?action=fabrique_final&amp;id_recette=<?php echo $recette->id; ?>&amp;id_recipient=' + $('id_recipient').value, 'information');" />
+			<input type="button" value="Créer" onclick="envoiInfo('livre_recette.php?action=fabrique_final&amp;id_recette=<?php echo $recette->id; ?>&amp;id_recipient=' + $('#id_recipient').val(), 'information');" />
 			<?php
 		break;
 		case 'fabrique_final' :
 			$recette = new craft_recette($_GET['id_recette']);
+      echo $_GET['id_recipient'];
 			$recipient = new craft_recette_recipient($_GET['id_recipient']);
 			$types = $recette->get_info_joueur($joueur, $R);
 			$recette->get_ingredients();
@@ -108,10 +109,9 @@ if(array_key_exists('action', $_GET))
 						if ($augmentation[1] == 1)
 						{
 							$joueur->set_alchimie($augmentation[0]);
-							echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant à '.$joueur->get_alchimie().' en alchimie</span><br />';
 						}
-						$joueur->set_pa($joueur->get_pa() - $pa_total);
-						$joueur->set_mp($joueur->get_mp() - $mp_total);
+						$joueur->add_pa(-$pa_total);
+						$joueur->add_mp(-$mp_total);
 						$joueur->set_star($joueur->get_star() - $star_total);
 						$joueur->sauver();
 					}
@@ -247,7 +247,7 @@ while($row = $db->read_assoc($req))
 	$echo = ob_get_contents();
 	ob_end_clean();
 	?>
-	<h3><span onclick="$('recette<?php echo $row['id_recette']; ?>').toggle();"><?php echo $recette->nom.'</span> '.$lien; ?></h3>
+	<h3><span onclick="$('#recette<?php echo $row['id_recette']; ?>').toggle();"><?php echo $recette->nom.'</span> '.$lien; ?></h3>
 	<?php
 	echo $echo;
 }

@@ -3323,12 +3323,12 @@ class perso extends entite
 	{
 		global $db;
 		$i = $nombre;
+    $inventaire = $this->get_inventaire_slot_partie();
 		while($i > 0)
 		{
 			$objet = $this->recherche_objet($id_objet);
 			//Vérification si objet "stacké"
 			//print_r($objet);
-			$inventaire = $this->get_inventaire_slot_partie();
 			$stack = explode('x', $inventaire[$objet[1]]);
 			if($stack[1] > 1) $inventaire[$objet[1]] = $stack[0].'x'.($stack[1] - 1);
 			else array_splice($inventaire, $objet[1], 1);
@@ -3627,7 +3627,12 @@ class perso extends entite
 		}
 	}
 
-	function add_pa($add_pa) { $this->set_pa($this->pa + $add_pa); }
+	function add_pa($add_pa)
+  {
+    $this->set_pa($this->pa + $add_pa);
+    if ($this->pa < 0)
+      $this->pa = 0;
+  }
 
   function add_hp($add_hp) 
   {
