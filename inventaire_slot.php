@@ -1,7 +1,7 @@
-<?php
+<?php // -*- tab-width:	 2 -*-
 if (file_exists('root.php'))
   include_once('root.php');
-?><?php // -*- tab-width:	 2 -*-
+
 	if (isset($_GET['javascript']))
 	{
 		include_once(root.'inc/fp.php');

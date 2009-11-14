@@ -1,7 +1,7 @@
-<?php
+<?php //	 -*- tab-width:	 2 -*-
 if (file_exists('root.php'))
   include_once('root.php');
-?><?php //	 -*- tab-width:	 2 -*-
+
 //Affiche et gère l'inventaire du personnage
 
 //Inclusion des fichiers indispensables
@@ -245,15 +245,25 @@ if(!$visu AND isset($_GET['action']))
 							$requete = "SELECT effet, nom, pa, mp FROM objet WHERE id = ".$objet['id_objet'];
 							$req = $db->query($requete);
 							$row = $db->read_assoc($req);
-							$joueur->set_hp($joueur->get_hp() + $row['effet']);
-							if($joueur->get_hp() > floor($joueur->get_hp_maximum())) $joueur->set_hp(floor($joueur->get_hp_maximum()));
-							echo 'Vous utilisez une '.$row['nom'].' elle vous redonne '.$row['effet'].' points de vie<br />';
+              if ($row['pa'] > $joueur->get_pa())
+              {
+                echo '<h5>Vous n\'avez pas assez de PA</h5>';
+              }
+              elseif ($row['mp'] > $joueur->get_mp())
+              {
+                echo '<h5>Vous n\'avez pas assez de MP</h5>';
+              }
+              else
+              {
+                echo 'Vous utilisez une '.$row['nom'].' elle vous redonne '.$row['effet'].' points de vie<br />';
 							?>
 							<img src="image/pixel.gif" onLoad="envoiInfo('infoperso.php?javascript=oui', 'perso');" />
 							<?php
-							$mp = max(0, ($joueur['mp'] - $row['mp']));
-							$requete = "UPDATE perso SET hp = ".$joueur->get_hp().", pa = pa - ".$row['pa'].", mp = mp - ".$mp." WHERE ID = ".$joueur->get_id();
-							$db->query($requete);
+                $joueur->add_hp($row['effet']);
+                $joueur->add_mp(-$row['mp']);
+                $joueur->add_pa(-$row['pa']);
+                $joueur->sauver();
+              }
 						}
 					}
 					else echo 'Vous êtes mort !';

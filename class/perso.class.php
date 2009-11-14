@@ -3629,6 +3629,24 @@ class perso extends entite
 
 	function add_pa($add_pa) { $this->set_pa($this->pa + $add_pa); }
 
+  function add_hp($add_hp) 
+  {
+    $this->set_hp($this->hp + $add_hp);
+    if ($this->hp > $this->get_hp_maximum())
+      $this->hp = floor($this->get_hp_maximum());
+    if ($this->hp < 0)
+      $this->hp = 0;
+  }
+
+  function add_mp($add_mp) 
+  {
+    $this->set_mp($this->mp + $add_mp);
+    if ($this->mp > $this->get_mp_maximum())
+      $this->mp = floor($this->get_mp_maximum());
+    if ($this->mp < 0)
+      $this->mp = 0;
+  }
+
 	/** on ne m'aura plus avec les machins déclarés depuis dehors */
 	//function __get($name) { $debug = debug_backtrace(); die('fuck: '.$debug[0]['file'].' line '.$debug[0]['line']); }
 	//function __set($name, $value) { $debug = debug_backtrace(); die('fuck: '.$debug[0]['file'].' line '.$debug[0]['line']); }
