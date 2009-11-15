@@ -514,9 +514,17 @@ class entite
 	{
 		return $this->volonte;
 	}
+	function set_volonte($volonte)
+	{
+		$this->volonte = max(0, $volonte);
+	}
 	function get_dexterite()
 	{
 		return $this->dexterite;
+	}
+	function set_dexterite($dexterite)
+	{
+		$this->dexterite = max(0, $dexterite);
 	}
 	function get_enchantement()
 	{
