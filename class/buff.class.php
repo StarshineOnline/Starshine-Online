@@ -48,7 +48,7 @@ class buff_actif extends effect
 
   function debut_round(&$actif, &$passif) {
 		if (in_array($this->type, self::$esquive_buff))
-			$passif->potentiel_parer = $passif->get_potentiel_parer() * (1 + ($this->buff->get_effet() / 100));
+			$passif->potentiel_parer *= (1 + ($this->buff->get_effet() / 100));
 	}
 }
 
