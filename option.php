@@ -62,7 +62,7 @@ include_once(root.'inc/fp.php');
 							<input type="password" id='new_pass' name="new_pass" /><br />
 							<strong>Veuillez retappez votre NOUVEAU mot de passe :</strong><br />
 							<input type="password" id='new_pass2' name="new_pass2" /><br />
-							<input type="button" value="Modifier votre mot de passe jeu" onclick="envoiInfo('poste.php?ancien_pass=' + $('#ancien_pass').val()+'&amp;new_pass=' + $('#new_pass').val()+'&amp;new_pass2=' + $('#new_pass2').val(), 'popup_content');" />
+							<input type="button" value="Modifier votre mot de passe jeu" onclick="envoiInfo('option.php?action=mdp&ancien_pass=' + $('#ancien_pass').val()+'&amp;new_pass=' + $('#new_pass').val()+'&amp;new_pass2=' + $('#new_pass2').val(), 'popup_content');" />
 						</form>
 						<?php
 						}
@@ -172,9 +172,9 @@ include_once(root.'inc/fp.php');
 			</div>
 			<div class"news">
 				<h3>Mot de passe</h3>
-				<strong>Attention il vous faudra &eacute;galement changer votre mot de passe sur le forum!</strong><br />
+				<strong>Attention cela change &eacute;galement votre mot de passe sur le forum!</strong><br />
 				<ul>
-					<li><a href="option.php?action=mdp" onclick="return envoiInfo(this.href, 'popup_content');">Modifier votre mot de passe JEU</a></li>
+					<li><a href="option.php?action=mdp" onclick="return envoiInfo(this.href, 'popup_content');">Modifier votre mot de passe</a></li>
 				</ul>
 			</div>
 			<div class"news">
