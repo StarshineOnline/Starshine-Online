@@ -216,4 +216,17 @@ function print_debug($msg) {
 	$debugs++;
 }
 
+function my_log($log)
+{
+	global $logfile;
+	if (!isset($logfile))
+	{
+		$logfile = fopen("/tmp/sso_log", 'a+');
+	}
+	if (is_string($log))
+		fwrite($logfile, "$log\n");
+	else
+		fwrite($logfile, print_r($log, true));
+}
+
 ?>

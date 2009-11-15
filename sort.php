@@ -330,10 +330,10 @@ if (isset($_GET['ID']))
 				break;
 				case 'engloutissement' : case 'deluge' : case 'blizzard' : case 'orage_magnetique' :
 					//Récupération de tous les joueurs de la case
-					/*$requete = "SELECT ID FROM perso WHERE x = ".$joueur->get_x()." AND y = ".$joueur->get_y()." AND statut = 'actif'";
-					$req_j = $db->query($requete);
-					$cibles = array();*/
-					$cibles = perso::create(array('x', 'y'), array($joueur->get_x(), $joueur->get_y()), 'id ASC', false, 'statut = \'actif\'');
+					$cibles = perso::create(array('x', 'y', 'statut'),
+																	array($joueur->get_x(), $joueur->get_y(),
+																				'actif'),
+																	'id ASC', false, false);
 					foreach($cibles as $cible)
 					{
 						//Si c'est pas le joueur
