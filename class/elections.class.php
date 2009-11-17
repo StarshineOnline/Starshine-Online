@@ -296,7 +296,7 @@ class elections
 	{
 		$elections = elections::get_prochain_election($id_royaume);
 		$explode_date = explode('-', $elections[0]->get_date());
-		if($explode_date[0] == date('Y') && $explode_date[1] == date('m', mktime(0, 0, 0, date("m") + 1 , date("d"), date("Y")))) return true;
+		if($explode_date[0] == date('Y') && $explode_date[1] == date('m', mktime(0, 0, 0, date("m") , date("d"), date("Y")))) return true;
 		else return false;
 	}
 }
