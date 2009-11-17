@@ -8,7 +8,6 @@ $connexion = true;
 include_once(root.'haut_ajax.php');
 
 $joueur = new perso($_SESSION['ID']);
-$joueur->check_perso();
 ?>
 	<fieldset>
 		<legend>Script de combat</legend>
@@ -76,13 +75,14 @@ $joueur->check_perso();
 			$requete = "SELECT action, mode FROM action_perso WHERE id = ".sSQL($_GET['id_action']);
 			$req = $db->query($requete);
 			$row = $db->read_assoc($req);
-			$requete = "INSERT INTO action_perso VALUES('', ".$joueur->get_id().", '".sSQL($_GET['nom_copie'])."', '".$row['action']."', '".$row['mode']."')";
+			$requete = "INSERT INTO action_perso VALUES(null, ".$joueur->get_id().", '".sSQL($_GET['nom_copie'])."', '".$row['action']."', '".$row['mode']."')";
 			//echo $requete;
 			if($db->query($requete))
 			{
 				echo '<h6>Script dupliqué.</h6>';
 			}
 		}
+		$joueur->check_perso();
 		$script_attaque = recupaction_all($joueur->get_action_a());
 		$script_defense = recupaction_all($joueur->get_action_d());
 		?>

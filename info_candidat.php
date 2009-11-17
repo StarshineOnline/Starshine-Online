@@ -30,6 +30,6 @@ if($W_row['type'] == 1)
 	<br />
 	<h3>Programme :</h3>
 	<?php
-	echo $candidat->get_programme();
+	echo stripslashes($candidat->get_programme());
 }
 ?>
