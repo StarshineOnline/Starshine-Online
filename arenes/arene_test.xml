@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="arene.xsl"?>
+<arene>
+  <name>Test</name>
+  <origin x="120" y="15"/>
+  <base>http://www.starshine-online.com/</base>
+  <cases>
+    <case type="202" x="120" y="15"/>
+    <case type="202" x="121" y="15"/>
+    <case type="202" x="122" y="15"/>
+    <case type="202" x="123" y="15"/>
+    <case type="202" x="124" y="15"/>
+    <case type="202" x="125" y="15"/>
+    <case type="202" x="126" y="15"/>
+    <case type="206" x="120" y="16"/>
+    <case type="212" x="121" y="16"/>
+    <case type="202" x="122" y="16"/>
+    <case type="202" x="123" y="16"/>
+    <case type="202" x="124" y="16"/>
+    <case type="202" x="125" y="16"/>
+    <case type="202" x="126" y="16"/>
+    <case type="1053" x="120" y="17"/>
+    <case type="204" x="121" y="17"/>
+    <case type="202" x="122" y="17"/>
+    <case type="202" x="123" y="17"/>
+    <case type="202" x="124" y="17"/>
+    <case type="202" x="125" y="17"/>
+    <case type="202" x="126" y="17"/>
+    <case type="1056" x="120" y="18"/>
+    <case type="204" x="121" y="18"/>
+    <case type="202" x="122" y="18"/>
+    <case type="202" x="123" y="18"/>
+    <case type="202" x="124" y="18"/>
+    <case type="202" x="125" y="18"/>
+    <case type="202" x="126" y="18"/>
+    <case type="203" x="120" y="19"/>
+    <case type="211" x="121" y="19"/>
+    <case type="202" x="122" y="19"/>
+    <case type="202" x="123" y="19"/>
+    <case type="202" x="124" y="19"/>
+    <case type="202" x="125" y="19"/>
+    <case type="202" x="126" y="19"/>
+    <case type="204" x="120" y="20"/>
+    <case type="202" x="121" y="20"/>
+    <case type="202" x="122" y="20"/>
+    <case type="202" x="123" y="20"/>
+    <case type="202" x="124" y="20"/>
+    <case type="202" x="125" y="20"/>
+    <case type="202" x="126" y="20"/>
+  </cases>
+  <joueurs>
+    <joueur id="" x="123" y="18" nom="Valkrysseur le Precheur" race="elfebois" lvl="28" classe="paladin+" image="elfebois_champion"/>
+    <joueur id="" x="121" y="18" nom="Alarch" race="elfebois" lvl="1" classe="combattant" image="elfebois_guerrier"/>
+    <joueur id="" x="125" y="17" nom="Yruade" race="elfebois" lvl="1" classe="combattant" image="elfebois_guerrier"/>
+    <joueur id="" x="124" y="15" nom="Alapecheauxmoulesdefilles" race="elfebois" lvl="1" classe="magicien" image="elfebois_mage"/>
+    <joueur id="" x="120" y="19" nom="eraze" race="elfebois" lvl="1" classe="combattant" image="elfebois_guerrier"/>
+    <joueur id="" x="121" y="18" nom="Sosh" race="elfebois" lvl="1" classe="combattant" image="elfebois_guerrier"/>
+    <joueur id="" x="120" y="19" nom="Gabriel" race="elfebois" lvl="3" classe="combattant" image="elfebois_guerrier"/>
+    <joueur id="" x="121" y="19" nom="loup21" race="elfebois" lvl="1" classe="combattant" image="elfebois_guerrier"/>
+    <joueur id="" x="120" y="18" nom="astyanax" race="elfebois" lvl="1" classe="combattant" image="elfebois_guerrier"/>
+    <joueur id="" x="120" y="18" nom="Biemi" race="elfebois" lvl="1" classe="magicien" image="elfebois_mage"/>
+    <joueur id="" x="120" y="17" nom="youpi" race="elfebois" lvl="15" classe="prêtre" image="elfebois_archimage"/>
+  </joueurs>
+</arene>
