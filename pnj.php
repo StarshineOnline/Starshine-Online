@@ -91,8 +91,12 @@ if(eregi("\[prendquete:([^[]*)\]", $message, $regs))
 //validation inventaire
 if(eregi("\[verifinventaire:([^[]*)\]", $message, $regs))
 {
-	verif_inventaire($regs[1], $joueur);
-	$message = eregi_replace("\[verifinventaire:([^[]*)\]", "", $message);
+	if (verif_inventaire($regs[1], $joueur) == false) {
+		$message = "<h5>Tu te moques de moi, mon bonhomme ?</h5>";
+	}
+	else {
+		$message = eregi_replace("\[verifinventaire:([^[]*)\]", "", $message);
+	}
 }
 echo '<ul>'.$message.'</ul>';
 ?>

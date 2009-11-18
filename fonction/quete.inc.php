@@ -340,8 +340,10 @@ function verif_inventaire($id_quete, $joueur)
 		while($i < $count AND $check)
 		{
 			$cible = substr($row['objectif'][$i]->cible, 1);
-			echo $cible;
-			if(!$joueur->recherche_objet($cible)) $check = false;
+			if(!$joueur->recherche_objet($cible)) {
+				$check = false;
+				echo "Il vous manque l'objet $cible.<br />";
+			}
 			$i++;
 		}
 		if($check)
@@ -357,6 +359,7 @@ function verif_inventaire($id_quete, $joueur)
 			fin_quete($joueur, $id_quete_joueur, $id_quete);
 		}
 	}
+	return $check;
 }
 
 //Supprime une quète, renvoi le joueur après suppression

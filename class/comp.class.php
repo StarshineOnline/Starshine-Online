@@ -1,7 +1,7 @@
-<?php
+<?php //  -*- tab-width:2; intent-tabs-mode:nil;  -*-
 if (file_exists('../root.php'))
   include_once('../root.php');
-?><?php //  -*- tab-width:2; intent-tabs-mode:nil;  -*-
+
 /**
  * @file comp.class.php
  */
@@ -309,9 +309,7 @@ class preparation extends comp_combat
 	}
 
   function debut_round(&$actif, &$passif) {
-    //echo 'potentiel_parer: '.$passif->potentiel_parer;
 		$passif->potentiel_parer *= $this->effet;
-    //echo ' -> '.$passif->potentiel_parer;
 	}
 }
 
@@ -324,7 +322,6 @@ class precision_chirurgicale extends comp_combat
 	}
 
   function calcul_critique(&$actif, &$passif, $chance) {
-		//echo "Chance : $chance -> ".($chance * $this->effet);
 		return $chance * $this->effet;
 	}
 }
