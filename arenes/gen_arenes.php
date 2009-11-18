@@ -19,10 +19,27 @@ function make_attr(&$xml, &$element, $name, $value)
 	$element->appendChild($attr);
 }
 
-function gen_arene($x, $y, $size, $nom)
+function create_joueur(&$xml, $row)
+{
+	global $Tclasse2;
+
+	$joueur = $xml->createElement('joueur');
+	make_attr($xml, $joueur, 'id', $row['ID']);
+	make_attr($xml, $joueur, 'x', $row['x']);
+	make_attr($xml, $joueur, 'y', $row['y']);
+	make_attr($xml, $joueur, 'nom', $row['nom']);
+	make_attr($xml, $joueur, 'race', $row['race']);
+	make_attr($xml, $joueur, 'lvl', $row['level']);
+	make_attr($xml, $joueur, 'classe', $row['classe']);
+	$image = $row['race'].'_'.$Tclasse2[$row['classe']]['type'];
+	make_attr($xml, $joueur, 'image', $image);
+	if ($row['hp'] <= 0) 	make_attr($xml, $joueur, 'mort', 1);
+	return $joueur;
+}
+
+function gen_arene($x, $y, $size, $nom, $import = false, $make_import = false)
 {
 	global $db;
-	global $Tclasse2;
 
 	$xml = new DOMDocument("1.0", "UTF-8");
 	$xml->formatOutput = true;
@@ -30,7 +47,7 @@ function gen_arene($x, $y, $size, $nom)
 																						'type="text/xsl" href="arene.xsl"');
 	$xml->appendChild($xslt);
 	$root = $xml->createElement('arene');
-	$xml-> appendChild($root);
+	$xml->appendChild($root);
 	$root->appendChild($xml->createElement('name', $nom));
 	$origin = $xml->createElement('origin');
 	make_attr($xml, $origin, 'x', $x);
@@ -39,21 +56,42 @@ function gen_arene($x, $y, $size, $nom)
 	$root->appendChild($origin);
 	$root->appendChild($xml->createElement('base',
 																				 'http://www.starshine-online.com/'));
-	$cases = $xml->createElement('cases');
-	$root->appendChild($cases);
 
-	$q = "select decor, FLOOR(id / 1000) y, (id - (FLOOR(id / 1000) * 1000)) x".
-		" from map where ((FLOOR(id / 1000) >= $y) AND ".
-		"(FLOOR(id / 1000) < ($y + $size))) AND ".
-		"(((id - (FLOOR(id / 1000) * 1000)) >= $x) AND ".
-		"((id - (FLOOR(id / 1000) * 1000)) < ($x + $size))) ORDER BY id;";
-	$req = $db->query($q);
-	while ($row = $db->read_assoc($req)) {
-		$case = $xml->createElement('case');
-		make_attr($xml, $case, 'type', $row['decor']);
-		make_attr($xml, $case, 'x', $row['x']);
-		make_attr($xml, $case, 'y', $row['y']);
-		$cases->appendChild($case);
+	if ($import !== false && $make_import == false) {
+		$xml2 = new DOMDocument("1.0", "UTF-8");
+		$xml2->load($import);
+
+		$copy = $xml2->getElementsByTagName('cases')->item(0);
+		$cases = $xml->importNode($copy, true);
+		$root->appendChild($cases);
+	}
+	if ($import === false || $make_import == true) {
+		$cases = $xml->createElement('cases');
+		$root->appendChild($cases);
+		
+		$q = "select decor, FLOOR(id / 1000) y, (id - (FLOOR(id / 1000) * 1000))".
+			" x from map where ((FLOOR(id / 1000) >= $y) AND ".
+			"(FLOOR(id / 1000) < ($y + $size))) AND ".
+			"(((id - (FLOOR(id / 1000) * 1000)) >= $x) AND ".
+			"((id - (FLOOR(id / 1000) * 1000)) < ($x + $size))) ORDER BY id;";
+		$req = $db->query($q);
+		while ($row = $db->read_assoc($req)) {
+			$case = $xml->createElement('case');
+			make_attr($xml, $case, 'type', $row['decor']);
+			make_attr($xml, $case, 'x', $row['x']);
+			make_attr($xml, $case, 'y', $row['y']);
+			$cases->appendChild($case);
+		}
+
+		if ($make_import) {
+			$xml2 = new DOMDocument("1.0", "UTF-8");
+			$copy = $xml2->importNode($cases, true);
+			$xml2->appendChild($copy);
+
+			$file = fopen($import, "w+");
+			fwrite($file, $xml2->saveXML());
+			fclose($file);
+		}
 	}
 
 	$joueurs = $xml->createElement('joueurs');
@@ -63,20 +101,15 @@ function gen_arene($x, $y, $size, $nom)
 		"and y < ($y + $size)";
 	$req = $db->query($q);
 	while ($row = $db->read_assoc($req)) {
-		$joueur = $xml->createElement('joueur');
-		make_attr($xml, $joueur, 'id', $row['id']);
-		make_attr($xml, $joueur, 'x', $row['x']);
-		make_attr($xml, $joueur, 'y', $row['y']);
-		make_attr($xml, $joueur, 'nom', $row['nom']);
-		make_attr($xml, $joueur, 'race', $row['race']);
-		make_attr($xml, $joueur, 'lvl', $row['level']);
-		make_attr($xml, $joueur, 'classe', $row['classe']);
-		$image = $row[race].'_'.$Tclasse2[$row['classe']]['type'];
-		make_attr($xml, $joueur, 'image', $image);
+		$joueur = create_joueur($xml, $row);
 		$joueurs->appendChild($joueur);
 	}
 
-
+	$mirwen = array('nom' => 'Mirwen', 'race' => 'mortvivant', 'hp' => 0,
+									'x' => $x, 'y' => $y, 'level' => 1, 'classe' => 'clerc');
+	$punching_ball = create_joueur($xml, $mirwen);
+	$joueurs->appendChild($punching_ball);
+	
 	return $xml->saveXML();
 }
 

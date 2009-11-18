@@ -83,11 +83,14 @@
 								<xsl:attribute name="onmouseover">
 									<!-- We have to not make new lines -->
 									<![CDATA[return overlib('<ul>]]><xsl:for-each
-									select="//joueur[@y=$row][@x=$col]"><![CDATA[<li class="overlib_joueurs"><span>]]><xsl:value-of
-									select="@classe"/><![CDATA[</span>]]><xsl:value-of
+									select="//joueur[@y=$row][@x=$col]"
+									><![CDATA[<li class="overlib_joueurs"><span>]]><xsl:value-of
+									select="@classe"/><![CDATA[</span> ]]><xsl:value-of
 									select="@race"/> - Niv. <xsl:value-of
-									select="@lvl"/><![CDATA[</li>]]><xsl:value-of
-									select="@nom"/></xsl:for-each><![CDATA[</ul>', BGCLASS, 'overlib', BGCOLOR, '', FGCOLOR, '');]]>
+									select="@lvl"/><![CDATA[</li>]]><xsl:if test="@mort"
+									><![CDATA[<span class="mort">]]></xsl:if><xsl:value-of
+									select="@nom"/><xsl:if test="@mort"
+									><![CDATA[</span>]]></xsl:if></xsl:for-each><![CDATA[</ul>', BGCLASS, 'overlib', BGCOLOR, '', FGCOLOR, '');]]>
 								</xsl:attribute>
 							</div>
 						</xsl:if>
