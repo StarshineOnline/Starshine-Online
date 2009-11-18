@@ -535,7 +535,7 @@ if($joueur->get_rang_royaume() != 6 AND $joueur->get_id() != $royaume->get_minis
 	    		if($amende != 0)
 	    		{
 	        		?>
-	        		/ <span onclick="affichePopUp('gestion_royaume.php?direction=suppr_criminel&amp;id=<?php echo $row['id']; ?>')">Supprimer</a>
+	        		/ <span onclick="affichePopUp('gestion_royaume.php?direction=suppr_criminel&amp;id=<?php echo $row['id_joueur']; ?>')">Supprimer</a>
 	        		<?php
 	    		}
 	    		?>
@@ -551,11 +551,11 @@ if($joueur->get_rang_royaume() != 6 AND $joueur->get_id() != $royaume->get_minis
 	}
 	elseif($_GET['direction'] == 'suppr_criminel')
 	{
-	    $amende = recup_amende($_GET['id']);
+	   	$joueur = new perso($_GET['id']);
+		$joueur->set_amende('0');
+		$joueur->sauver();
 		//On supprime l'amende du joueur
-		$requete = "UPDATE perso SET amende = 0 WHERE ID = ".sSQL($_GET['id']);
-		$db->query($requete);
-		$requete = "DELETE FROM amende WHERE id = ".$amende['id'];
+		$requete = "DELETE FROM amende WHERE id_joueur = ".$joueur->get_id();
 		$db->query($requete);
 		echo 'Amende bien supprimée.';
 	}
