@@ -35,6 +35,7 @@ function gen_arene($x, $y, $size, $nom)
 	$origin = $xml->createElement('origin');
 	make_attr($xml, $origin, 'x', $x);
 	make_attr($xml, $origin, 'y', $y);
+	make_attr($xml, $origin, 'size', $size);
 	$root->appendChild($origin);
 	$root->appendChild($xml->createElement('base',
 																				 'http://www.starshine-online.com/'));
@@ -45,7 +46,7 @@ function gen_arene($x, $y, $size, $nom)
 		" from map where ((FLOOR(id / 1000) >= $y) AND ".
 		"(FLOOR(id / 1000) < ($y + $size))) AND ".
 		"(((id - (FLOOR(id / 1000) * 1000)) >= $x) AND ".
-		"((id - (FLOOR(id / 1000) * 1000)) <= ($x + $size))) ORDER BY id;";
+		"((id - (FLOOR(id / 1000) * 1000)) < ($x + $size))) ORDER BY id;";
 	$req = $db->query($q);
 	while ($row = $db->read_assoc($req)) {
 		$case = $xml->createElement('case');
@@ -79,4 +80,4 @@ function gen_arene($x, $y, $size, $nom)
 	return $xml->saveXML();
 }
 
-echo gen_arene(120, 15, 6, 'Test');
+echo gen_arene(120, 15, 8, 'Test-big');

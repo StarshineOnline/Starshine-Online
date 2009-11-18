@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?><!-- -*- mode: nxml -*- -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 	<xsl:key match="//case" use="@y" name="les_cases"/>
+	<xsl:key match="//case" use="@x" name="cols"/>
 	<xsl:template	match="/arene">
 		<html>
 			<head>
@@ -20,23 +21,34 @@
 
 			</head>
 			<body>
-				<div class="div_map" style="width : 445px;height:445px;">
+				<xsl:variable name="size">
+					<xsl:value-of select="//origin[@size]"/>
+				</xsl:variable>
+				<div class="div_map">
+					<xsl:attribute name="style"><xsl:call-template name="size_px">
+						<xsl:with-param name="size_cells" select="//origin/@size" />
+					</xsl:call-template></xsl:attribute>
 					<xsl:apply-templates />
 				</div>
 			</body>
 		</html>
 	</xsl:template>
-	<xsl:template match="name" />
+	<xsl:template name="size_px">
+		<xsl:param name="size_cells" />width: <xsl:value-of
+		select="(($size_cells*60)+20+5)" />px; height:<xsl:value-of
+		select="(($size_cells*60)+20+5)" />px; </xsl:template>
+		<xsl:template match="name" />
 	<xsl:template name="top">
 		<ul id="map_bord_haut">
 			<li id="map_bord_haut_gauche" />
-			<xsl:variable name="xorg" select="//origin[@x]"/>
-			<xsl:for-each select="//case[@x=1]">
+			<xsl:variable name="xorg" select="//origin/@x"/>
+			<xsl:for-each select="//case[@x=$xorg]">
 				<li>
 					<xsl:value-of select="@y"/>
 				</li>
 			</xsl:for-each>
 		</ul>
+
 	</xsl:template>
 	<xsl:template match="base">
 			<xsl:variable name="base" select="value"/>
