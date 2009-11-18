@@ -74,7 +74,7 @@ if($W_row['type'] == 1)
 	{
 	?>
 	<h2>Candidature</h2>
-	<form action="candidature.php" id="formCandidature" onsubmit="new Ajax.Updater('carte','candidature.php',{asynchronous:true,parameters:$('formCandidature').serialize(this)}); return false;">
+	<form method="post" action="candidature.php" id="formCandidature">
 		Programme électoral :<br />
 		<textarea style="width : 300px; height : 200px;" name="programme"></textarea><br />
 		<br />
