@@ -41,10 +41,11 @@
 	<xsl:template name="top">
 		<ul id="map_bord_haut">
 			<li id="map_bord_haut_gauche" />
+			<xsl:variable name="yorg" select="//origin/@y"/>
 			<xsl:variable name="xorg" select="//origin/@x"/>
-			<xsl:for-each select="//case[@x=$xorg]">
+			<xsl:for-each select="//case[@y=(//origin/@y)]">
 				<li>
-					<xsl:value-of select="@y"/>
+					<xsl:value-of select="@x"/>
 				</li>
 			</xsl:for-each>
 		</ul>
