@@ -85,13 +85,14 @@
 									<!-- We have to not make new lines -->
 									<![CDATA[return overlib('<ul>]]><xsl:for-each
 									select="//joueur[@y=$row][@x=$col]"
-									><![CDATA[<li class="overlib_joueurs"><span>]]><xsl:value-of
-									select="@classe"/><![CDATA[</span> ]]><xsl:value-of
+									><![CDATA[<li class="overlib_joueurs"><span]]><xsl:if
+									test="@mort"><![CDATA[ class="mort"]]></xsl:if
+									><![CDATA[>]]><xsl:value-of select="@nom"
+									/><![CDATA[</span> ]]><xsl:value-of
 									select="@race"/> - Niv. <xsl:value-of
-									select="@lvl"/><![CDATA[</li>]]><xsl:if test="@mort"
-									><![CDATA[<span class="mort">]]></xsl:if><xsl:value-of
-									select="@nom"/><xsl:if test="@mort"
-									><![CDATA[</span>]]></xsl:if></xsl:for-each><![CDATA[</ul>', BGCLASS, 'overlib', BGCOLOR, '', FGCOLOR, '');]]>
+									select="@lvl"/> - <xsl:value-of	select="@classe"
+									/><![CDATA[</li>]]></xsl:for-each
+									><![CDATA[</ul>', BGCLASS, 'overlib', BGCOLOR, '', FGCOLOR, '');]]>
 								</xsl:attribute>
 							</div>
 						</xsl:if>
@@ -99,7 +100,6 @@
 				</xsl:for-each>
 			</ul>
 		</xsl:for-each>
-
 			<!--
 		<xsl:for-each select="case">
 			<![CDATA[<li class="decor tex]]><xsl:value-of select="@type" /><![CDATA[">]]>
