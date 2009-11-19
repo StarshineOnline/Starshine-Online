@@ -656,6 +656,7 @@ function verif_echange_joueur($id_echange, $id_joueur, $id_objet = 0, $type_obje
 	//Vérification des stars
 	if($type_objet == 'star')
 	{
+		if ($id_objet < 0) { security_block(BAD_ENTRY, "$id_objet < 0"); }
 		//Si il a assez de stars	
 		if($joueur->get_star() >= $id_objet)
 		{
