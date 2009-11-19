@@ -547,19 +547,15 @@ class entite
 		$grade = grade::create(array('rang'), array($this->rang_royaume));
 		return $grade[0];
 	}
-	public $potentiel_toucher = -1;
 	function get_potentiel_toucher()
 	{
-		if ($this->potentiel_toucher == -1)
+		if($this->get_arme_type() == 'arc')
 		{
-			if($this->get_arme_type() == 'arc')
-			{
-				$this->potentiel_toucher = round($this->get_distance() + ($this->get_distance() * ((pow($this->get_dexterite(), 2)) / 1000)));
-			}
-			else
-			{
-				$this->potentiel_toucher = round($this->get_melee() + ($this->get_melee() * ((pow($this->get_dexterite(), 2)) / 1000)));
-			}
+			$this->potentiel_toucher = round($this->get_distance() + ($this->get_distance() * ((pow($this->get_dexterite(), 2)) / 1000)));
+		}
+		else
+		{
+			$this->potentiel_toucher = round($this->get_melee() + ($this->get_melee() * ((pow($this->get_dexterite(), 2)) / 1000)));
 		}
 		return $this->potentiel_toucher;
 	}
