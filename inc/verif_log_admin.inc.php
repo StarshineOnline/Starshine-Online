@@ -44,14 +44,15 @@ if (file_exists('../root.php'))
 	}
 	if(!$verif)
 	{
-		echo 'Veuillez vous connecter pour accéder à l\'administration.';
 		//Formulaire de login
 		?>
-		<form action="admin_index.php" method="post">
-			Login : <input type="text" name="nom_admin" /><br />
-			Pass : <input type="password" name="pass" /><br />
+		<div class='boite_co'>
+		<form action="index.php" method="post">
+			<p><span>Login : </span><input type="text" name="nom_admin" /></p>
+			<p><span>Pass : </span><input type="password" name="pass" /></p>
 			<input type="submit" value="Ok" />
 		</form>
+		</div>
 		<?php
 		exit();
 	}

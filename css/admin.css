@@ -38,6 +38,10 @@ body {}
 #rose_div_bd:hover 		{ background-position:top; }
 #rose_div_bd:active 	{ background-position:bottom; }
 
+.boite_co {width:300px;height:60px;margin:auto;margin-top:100px;background-color:#E7CF98;padding:5px;-moz-border-radius:12px;-webkit-border-radius:12px;}
+.boite_co span {float:left;width:60px;}
+.boite_co input {float:left;border:1px solid #CCC;}
+.boite_co p {clear:both;}
 #editcarte
 {
 	width : 100%;
