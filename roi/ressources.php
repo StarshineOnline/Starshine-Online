@@ -88,9 +88,10 @@ else
 	$req = $db->query($requete);
 	while($row = $db->read_assoc($req))
 	{
+
 			$typeterrain = type_terrain($row['info']);
-			$ressources[$typeterrain[1]] = $row['tot'];
-			$terrain_ress[$typeterrain[1]] = $row['tot_terrain'];
+			$ressources[$typeterrain[1]] += $row['tot'];
+			$terrain_ress[$typeterrain[1]] += $row['tot_terrain'];
 	}
 	//Ressource normale
 	foreach($ress as $key_terr => $terr)

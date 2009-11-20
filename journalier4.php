@@ -42,8 +42,8 @@ while($row = $db->read_assoc($req))
 	if($row['tot'] > 0)
 	{
 		$typeterrain = type_terrain($row['info']);
-		$ressources[$row['race']][$typeterrain[1]] = $row['tot'];
-		$terrain[$row['race']][$typeterrain[1]] = $row['tot_terrain'];
+		$ressources[$row['race']][$typeterrain[1]] += $row['tot'];
+		$terrain[$row['race']][$typeterrain[1]] += $row['tot_terrain'];
 	}
 }
 
