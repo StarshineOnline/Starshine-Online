@@ -371,8 +371,14 @@ class map
 				}
 				{//-- Vérification que l'image de classe existe ($Tclasse est contenue dans ./inc/classe.inc.php)
 					$classe = $this->map[$objJoueurs->x][$objJoueurs->y]["Joueurs"][$joueurs]["classe"];
-					
-					$image = $this->root."image/personnage/".$objJoueurs->race."/".$objJoueurs->race;
+					if($this->resolution == 'low')
+					{
+						$image = $this->root."image/personnage_low/".$objJoueurs->race."/".$objJoueurs->race;
+					}
+					else
+					{
+						$image = $this->root."image/personnage/".$objJoueurs->race."/".$objJoueurs->race;
+					}
 					if(file_exists($image."_".$Tclasse[$classe]["type"].".png")) 		{ $image .= "_".$Tclasse[$classe]["type"].".png"; }
 					elseif(file_exists($image."_".$Tclasse[$classe]["type"].".gif")) 	{ $image .= "_".$Tclasse[$classe]["type"].".gif"; }
 					elseif(file_exists($image.".png")) 									{ $image .= ".png"; }

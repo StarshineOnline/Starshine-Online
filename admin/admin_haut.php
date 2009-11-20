@@ -1,6 +1,6 @@
 <?php
-if (file_exists('root.php'))
-  include_once('root.php');
+if (file_exists('../root.php'))
+  include_once('../root.php');
 
 include_once(root.'inc/fp.php');
 if(isset($_SESSION['nom']) || $admin)
@@ -35,16 +35,6 @@ if((isset($_POST['log']) OR isset($_COOKIE['nom'])) AND !array_key_exists('nom',
 	}
 	if(isset($_POST['auto_login']) && $_POST['auto_login'] == 'Ok') $autologin = true; else $autologin = false;
 	$check = $identification->connexion($nom, $password, $autologin);
-	if($check)
-	{
-		?>
-		<script language="javascript" type="text/javascript">
-		<!--
-		window.location.replace("jeu2.php");
-		-->
-		</script>
-		<?php
-	}
 }
 //Déconnexion du joueur
 if (isset($_GET['deco']) AND !isset($_POST['log']))
