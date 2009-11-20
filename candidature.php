@@ -21,7 +21,12 @@ $R->get_diplo($joueur->get_race());
 ?>
 		<h2 class="ville_titre"><?php echo '<a href="ville.php" onclick="return envoiInfo(this.href,\'centre\')">';?><?php echo $R->get_nom();?></a> - <?php echo '<a href="vie_royaume.php" onclick="return envoiInfo(this.href,\'carte\')">';?> Vie du royaume </a></h2>
 <?php
-if($W_row['type'] == 1)
+$check = false;
+if( $W_row['type'] == 1 )
+  $check = true;
+elseif( $batiment = verif_batiment($joueur->get_x(), $joueur->get_y(), $Trace[$joueur->get_race()]['numrace']) )
+  $check = $batiment['type'] == 'bourg';
+if( $check )
 {
 	if(array_key_exists('type', $_POST))
 	{

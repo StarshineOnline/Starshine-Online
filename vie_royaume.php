@@ -39,11 +39,23 @@ if($W_row['type'] == 1)
 		}
 		if($is_election && date("d") >= 13)
 		{
-			?>
-			<li>
-				<a href="vote_roi.php" onclick="return envoiInfo(this.href, 'carte')">Vote</a>
-			</li>
+      $elections = new elections::get_prochain_election( $R->get_id() );
+		  if( $elections->get_type() == 'universel' )
+		  {
+  			?>
+  			<li>
+  				<a href="vote_roi.php" onclick="return envoiInfo(this.href, 'carte')">Vote</a>
+  			</li>
 			<?php
+      }
+      elseif( $joueur->get_grade()->get_id() == 6 )
+      {
+  			?>
+  			<li>
+  				<a href="vote_roi.php" onclick="return envoiInfo(this.href, 'carte')">Nomination</a>
+  			</li>
+			<?php
+      }
 		}
 		//Pas d'élection prévue prochainement, on peut renverser le pouvoir
 		if(!$is_election)

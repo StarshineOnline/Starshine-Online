@@ -50,7 +50,7 @@ if($bourg->get_x() == $joueur->get_x() AND $bourg->get_y() == $joueur->get_y() A
 			<a href="bureau_quete.php" onclick="return envoiInfo(this.href, 'carte')">Bureau des quètes</a>
 		</li>
 <?php
-	if(date("d") >= 5 AND date("d") < 20)
+	if(date("d") >= 5 AND date("d") < 15)
 	{
 ?>
 		<li>
@@ -58,13 +58,25 @@ if($bourg->get_x() == $joueur->get_x() AND $bourg->get_y() == $joueur->get_y() A
 		</li>
 <?php
 	}
-	if(date("d") >= 20)
+	if(date("d") >= 15)
 	{
-?>
-		<li>
-			<a href="vote_roi.php?poscase=<?php echo $joueur->get_pos(); ?>&amp;fort=ok" onclick="return envoiInfo(this.href, 'carte')">Vote</a>
-		</li>
-<?php
+    $elections = elections::get_prochain_election($R->get_id(), true);
+    if( $elections[0]->get_type() == 'universel' )
+		{
+    ?>
+  		<li>
+  			<a href="vote_roi.php?poscase=<?php echo $joueur->get_pos(); ?>&amp;fort=ok" onclick="return envoiInfo(this.href, 'carte')">Vote</a>
+  		</li>
+    <?php
+    }
+    elseif( $joueur->get_grade()->get_id() == 6 )
+    {
+    ?>
+  		<li>
+  			<a href="vote_roi.php?poscase=<?php echo $joueur->get_pos(); ?>&amp;fort=ok" onclick="return envoiInfo(this.href, 'carte')">Nomination</a>
+  		</li>
+    <?php
+    }
 	}
 	if($batiment->get_bonus7() == 1 AND ($joueur->get_rang_royaume() == 6 ||
 																			 $R->get_ministre_economie() == $joueur->get_id() ||

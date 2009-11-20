@@ -294,7 +294,7 @@ class elections
 
 	static function is_mois_election($id_royaume)
 	{
-		$elections = elections::get_prochain_election($id_royaume);
+		$elections = elections::get_prochain_election($id_royaume, true);
 		$explode_date = explode('-', $elections[0]->get_date());
 		if($explode_date[0] == date('Y') && $explode_date[1] == date('m', mktime(0, 0, 0, date("m")+1 , date("d"), date("Y")))) return true;
 		else return false;
