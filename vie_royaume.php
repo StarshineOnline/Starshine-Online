@@ -39,8 +39,8 @@ if($W_row['type'] == 1)
 		}
 		if($is_election && date("d") >= 13)
 		{
-      $elections = new elections::get_prochain_election( $R->get_id() );
-		  if( $elections->get_type() == 'universel' )
+      $elections = elections::get_prochain_election($R->get_id(), true);
+		  if( $elections[0]->get_type() == 'universel' )
 		  {
   			?>
   			<li>
