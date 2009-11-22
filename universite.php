@@ -207,8 +207,7 @@ if($W_row['type'] == 1)
 					$joueur->set_comp_jeu(implode(';', $comp_jeu));
 					$joueur->set_classe_id($_GET['id']);
 					$joueur->set_classe(strtolower($nom));
-					$requete = "UPDATE perso SET classe = '".strtolower($nom)."', classe_id = '".sSQL($_GET['id'])."', comp_combat = '".$joueur->get_comp_combat()."', comp_jeu = '".$joueur->get_comp_jeu()."' ".$and." WHERE ID = ".$_SESSION['ID'];
-					$req = $db->query($requete);
+					$joueur->sauver();
 					echo 'Félicitations vous suivez maintenant la voie du '.strtolower($nom).'<br />';
 				}
 			break;

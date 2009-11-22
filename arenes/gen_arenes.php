@@ -42,7 +42,7 @@ function gen_arene($x, $y, $size, $nom, $import = false, $make_import = false)
 	global $db;
 
 	$xml = new DOMDocument("1.0", "UTF-8");
-	$xml->formatOutput = true;
+	//$xml->formatOutput = true;
 	$xslt = $xml->createProcessingInstruction('xml-stylesheet',
 																						'type="text/xsl" href="arene.xsl"');
 	$xml->appendChild($xslt);
@@ -106,11 +106,11 @@ function gen_arene($x, $y, $size, $nom, $import = false, $make_import = false)
 	}
 
 	$mirwen = array('nom' => 'Mirwen', 'race' => 'mortvivant', 'hp' => 0,
-									'x' => $x, 'y' => $y, 'level' => 1, 'classe' => 'clerc');
+									'x' => $x, 'y' => $y, 'level' => 8, 'classe' => 'clerc');
 	$punching_ball = create_joueur($xml, $mirwen);
 	$joueurs->appendChild($punching_ball);
 	
 	return $xml->saveXML();
 }
 
-echo gen_arene(120, 15, 8, 'Test-big');
+echo gen_arene(117, 15, 8, 'Test-big');
