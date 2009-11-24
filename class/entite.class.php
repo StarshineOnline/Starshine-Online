@@ -763,5 +763,11 @@ class entite
 			$this->objet_ref->set_pa($new_pa);
 	}
 
+	function get_arme()
+	{
+		if ($this->type == 'joueur')
+			return $this->objet_ref->get_arme();
+	}
+
 }
 ?>

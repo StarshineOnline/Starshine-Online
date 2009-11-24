@@ -2939,6 +2939,23 @@ class perso extends entite
 					if ($gemme->enchantement_type == 'degat')
 						$this->arme->degat += $gemme->enchantement_effet;
 				}
+        if ($this->arme->effet)
+        {
+          $effets = split(';', $this->arme->effet);
+          foreach ($effets as $effet)
+          {
+            $d_effet = split('-', $effet);
+            switch ($d_effet[0])
+            { // TODO: les autres, c'est quoi donc ?
+              case 5:
+                $this->add_bonus_permanents('volonte', $d_effet[1]);
+                break;
+              default:
+                break;
+            }
+          }
+        }
+        //my_dump($this->arme);
 			}
 			else $this->arme = false;
 		}
@@ -3108,8 +3125,16 @@ class perso extends entite
 		return $this->action;
 	}
 
+  function check_materiel()
+  {
+    $this->get_arme();
+    $this->get_arme_gauche();
+    $this->get_armure();
+  }
+
 	function check_perso($last_action = true)
 	{
+    $this->check_materiel();
 		$modif = false;	 // Indique si le personnage a été modifié.
 		global $db, $G_temps_regen_hp, $G_temps_maj_hp, $G_temps_maj_mp, $G_temps_PA, $G_PA_max, $G_pourcent_regen_hp, $G_pourcent_regen_mp;
 		// On vérifie que le personnage est vivant
