@@ -35,8 +35,8 @@
 	</xsl:template>
 	<xsl:template name="size_px">
 		<xsl:param name="size_cells" />width: <xsl:value-of
-		select="(($size_cells*60)+20+5)" />px; height:<xsl:value-of
-		select="(($size_cells*60)+20+5)" />px; </xsl:template>
+		select="(($size_cells*60))" />px; height:<xsl:value-of
+		select="(($size_cells*60))" />px; </xsl:template>
 		<xsl:template match="name" />
 	<xsl:template name="top">
 		<ul id="map_bord_haut">
@@ -55,12 +55,12 @@
 			<xsl:variable name="base" select="value"/>
 	</xsl:template>
 	<xsl:template match="cases">
-		<xsl:call-template name="top" />
+<!--		<xsl:call-template name="top" /> -->
 		<xsl:for-each
 				select="//case[generate-id()=generate-id(key('les_cases',@y)[1])]">
 			<xsl:variable name="row" select="@y"/>
 			<ul class="map">
-				<li class="map_bord_gauche"><xsl:value-of select="$row"/></li>
+<!--				<li class="map_bord_gauche"><xsl:value-of select="$row"/></li> -->
 				<xsl:for-each select="//case[@y=$row]">
 					<xsl:variable name="col" select="@x"/>
 					<li>
