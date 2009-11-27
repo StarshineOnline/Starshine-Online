@@ -1,0 +1,12 @@
+/* CSS Document */
+
+#gradin {
+          background: url(../image/arene.png) no-repeat;
+          position: absolute;
+          left: 50%;
+          top: 50%;
+          margin-top: -456px;
+          margin-left: -470px;           
+          height: 912px;         
+          width: 940px;
+}
