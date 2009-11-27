@@ -79,7 +79,7 @@ class elections
 		{
 			if(count($this->champs_modif) > 0)
 			{
-				if($force) $champs = 'id_royaume = '.$this->id_royaume.', date = '.$this->date.', type = '.$this->type.'';
+				if($force) $champs = 'id_royaume = '.$this->id_royaume.', date = '.$this->date.", type = '".$this->type."'";
 				else
 				{
 					$champs = '';
@@ -99,7 +99,7 @@ class elections
 		else
 		{
 			$requete = 'INSERT INTO elections (id_royaume, date, type) VALUES(';
-			$requete .= ''.$this->id_royaume.', '.$this->date.', '.$this->type.')';
+			$requete .= ''.$this->id_royaume.", '".$this->date."', '".$this->type."')";
 			$db->query($requete);
 			//Récuperation du dernier ID inséré.
 			$this->id = $db->last_insert_id();
