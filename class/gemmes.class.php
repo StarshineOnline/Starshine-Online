@@ -121,7 +121,6 @@ class gemme_enchassee extends effect
 											$this->nom, true);
 			}
 		}
-
 		return $degats;
 	}
 

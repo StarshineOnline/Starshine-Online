@@ -775,10 +775,9 @@ class entite
 
   function add_hp($add_hp) 
 	{
-		if ($this->type == 'joueur')
-			$this->objet_ref->add_hp($add_hp);
-		else
-			$this->hp += $add_hp;
+		$this->hp += $add_hp;
+		if ($this->hp > $this->hp_max)
+			$this->hp = $this->hp_max;
 	}
 
 }
