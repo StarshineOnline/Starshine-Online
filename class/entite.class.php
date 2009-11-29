@@ -66,6 +66,10 @@ class entite
 		switch($type)
 		{
 			case 'joueur' :
+				$objet->check_materiel();
+
+				//my_dump($objet->get_enchantement());
+
 				$this->id = $objet->get_id();
 				$this->action = $objet->action_do;
 				$this->arme_type = $objet->get_arme_type();
@@ -125,7 +129,7 @@ class entite
 				$this->vie = $objet->get_vie();
 				$this->volonte = $objet->get_volonte();
 				$this->dexterite = $objet->get_dexterite();
-				$this->enchantement = array();
+				$this->enchantement = $objet->get_enchantement();
 				$this->arme_degat = $objet->get_arme_degat();
 				if ($objet->get_bouclier())
 					$this->bouclier_degat = $objet->get_bouclier()->degat;
@@ -767,6 +771,14 @@ class entite
 	{
 		if ($this->type == 'joueur')
 			return $this->objet_ref->get_arme();
+	}
+
+  function add_hp($add_hp) 
+	{
+		if ($this->type == 'joueur')
+			$this->objet_ref->add_hp($add_hp);
+		else
+			$this->hp += $add_hp;
 	}
 
 }

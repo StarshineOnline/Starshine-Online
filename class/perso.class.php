@@ -2603,14 +2603,27 @@ class perso extends entite
 	}
 
 	public $enchantement = array();
-	function get_enchantement()
+	function get_enchantement($nom = false, $key = false)
 	{
-		return $this->enchantement;
+		if ($nom === false)
+			return $this->enchantement;
+		else if (array_key_exists($nom, $this->enchantement))
+		{
+			if ($key === false)
+				return $this->enchantement[$nom];
+			else
+				return $this->enchantement[$nom][$key];
+		}
+		else
+			return false;
 	}
 
-	function is_enchantement()
+	function is_enchantement($nom = false)
 	{
-		return (count($this->enchantement) != 0);
+		if ($nom === false)
+			return (count($this->enchantement) != 0);
+		else
+			return array_key_exists($nom, $this->enchantement);
 	}
 
 	/**
@@ -2938,6 +2951,8 @@ class perso extends entite
 					$gemme = new gemme_enchassee($arme_d['enchantement']);
 					if ($gemme->enchantement_type == 'degat')
 						$this->arme->degat += $gemme->enchantement_effet;
+					$this->register_gemme_enchantement($gemme);
+					//my_dump($this->enchantement);
 				}
         if ($this->arme->effet)
         {
@@ -2982,6 +2997,8 @@ class perso extends entite
 					$gemme = new gemme_enchassee($arme_d['enchantement']);
 					if ($gemme->enchantement_type == 'degat')
 						$this->arme_gauche->degat += $gemme->enchantement_effet;
+					$this->register_gemme_enchantement($gemme);
+					//my_dump($this->enchantement);
 				}
 			}
 			else $this->arme_gauche = false;
@@ -3008,11 +3025,62 @@ class perso extends entite
 					$gemme = new gemme_enchassee($arme_g['enchantement']);
 					if ($gemme->enchantement_type == 'bouclier')
 						$this->bouclier->degat += $gemme->enchantement_effet;
+					$this->register_gemme_enchantement($gemme);
+					//my_dump($this->enchantement);
 				}
 			}
 			else $this->bouclier = false;
 		}
 		return $this->bouclier;
+	}
+
+	public $accessoire;
+	function get_accessoire()
+	{
+		if(!isset($this->accessoire))
+		{
+			global $db;
+			$accessoire = $this->inventaire()->accessoire;
+			if($accessoire != '' AND $accessoire != 'lock')
+			{
+				$acc = decompose_objet($accessoire);
+				$q = "SELECT * FROM $acc[table_categorie] WHERE id = $acc[id_objet]";
+				$req = $db->query($q);
+				$this->accessoire = $db->read_object($req);
+				if ($acc['enchantement'] != null)
+				{
+					$gemme = new gemme_enchassee($acc['enchantement']);
+					$this->register_gemme_enchantement($gemme);
+					//my_dump($this->enchantement);
+				}
+			}
+			else $this->accessoire = false;
+		}
+		return $this->accessoire;
+	}
+
+	function register_gemme_enchantement($gemme)
+	{
+		switch ($gemme->enchantement_type)
+		{
+		case 'esquive' : /* gemmes de compétence: bonus ignoré à la montée */
+		case 'melee' : 
+		case 'distance' :
+		case 'incantation' :
+			$this->add_bonus_permanents($gemme->enchantement_type,
+																	$gemme->enchantement_effet);
+			break;
+		}
+		if (isset($this->enchantement[$gemme->type]))
+		{
+			$this->enchantement[$gemme->enchantement_type]['gemme_id']
+				.= ";$gemme->id";
+			$this->enchantement[$gemme->enchantement_type]['effet'] +=
+				$gemme->enchantement_effet;
+		}
+		else
+			$this->enchantement[$gemme->enchantement_type] =
+				array('gemme_id' => $gemme->id, 'effet' => $gemme->enchantement_effet);
 	}
 
 	function get_distance_tir()
@@ -3129,7 +3197,9 @@ class perso extends entite
   {
     $this->get_arme();
     $this->get_arme_gauche();
+    $this->get_bouclier();
     $this->get_armure();
+    $this->get_accessoire();
   }
 
 	function check_perso($last_action = true)
@@ -3170,7 +3240,7 @@ class perso extends entite
 
 			// Gemme du troll
 			if (array_key_exists('regeneration', $this->get_enchantement())) {
-				//$bonus_regen = $this->get_enchantement()['regeneration']['effet'] * 60;
+				$bonus_regen = $this->get_enchantement('regeneration', 'effet') * 60;
 				if ($G_temps_regen_hp <= $bonus_regen) {
 					$bonus_regen = $G_temps_regen_hp - 1;
 				}

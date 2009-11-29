@@ -12,6 +12,7 @@ include_once(root.'class/effect.class.php');
 class gemme_enchassee extends effect
 {
 
+	var $id;
 	var $enchantement_type;
 	var $enchantement_effet;
 	var $enchantement_effet2;
@@ -21,7 +22,7 @@ class gemme_enchassee extends effect
   function __construct($aNom) {
     parent::__construct("Gemme $aNom");
     
-    $query = 'select enchantement_type, enchantement_effet, enchantement_effet2, nom from gemme where ';
+    $query = 'select id, enchantement_type, enchantement_effet, enchantement_effet2, nom from gemme where ';
     if (is_numeric($aNom)) {
       $query .= "id = $aNom";
     }
@@ -48,6 +49,7 @@ class gemme_enchassee extends effect
 		$this->enchantement_effet = $row['enchantement_effet'];
 		$this->enchantement_effet2 = $row['enchantement_effet2'];
 		$this->nom = $row['nom'];
+		$this->id = $row['id'];
 
 		$this->poison = 0;
 
@@ -66,6 +68,9 @@ class gemme_enchassee extends effect
     $actives = array('vampire', 'poison', 'divine');
     $passives = array('bouclier', 'bouclier_epine', 'blocage',
                       'parade', 'evasion', 'divine');
+
+		//my_dump($actif->get_enchantement());
+
     foreach ($actif->get_enchantement() as $type => $enchant) {
       if (isset($enchant['gemme_id']) and in_array($type, $actives)) {
 				$gems = explode(';', $enchant['gemme_id']);
@@ -87,14 +92,15 @@ class gemme_enchassee extends effect
   function inflige_degats(&$actif, &$passif, $degats) {
 
     // Test du poison
-		if ($this->enchantement_type == 'poison' && $passif['type2'] != 'batiment') {
+		if ($this->enchantement_type == 'poison' &&
+				$passif->get_type() != 'batiment') {
 			$de = rand(1, 100);
 			$this->debug('poison: d100 doit être inférieur à '.$this->enchantement_effet.": $de");
 			if ($de <= $this->enchantement_effet) {
-				$this->hit($passif['nom'].' est empoisonné par '.$this->nom);
+				$this->hit($passif->get_nom().' est empoisonné par '.$this->nom);
 				$this->poison = $this->enchantement_effet2;
-				$passif['etat']['poison_lent']['effet'] = $this->enchantement_effet2;
-				$passif['etat']['poison_lent']['duree'] = 5;
+				$passif->etat['poison_lent']['effet'] = $this->enchantement_effet2;
+				$passif->etat['poison_lent']['duree'] = 5;
 			}
 		}
 
@@ -105,13 +111,14 @@ class gemme_enchassee extends effect
 			$this->debug("vampire: d100 doit être inférieur à 30: $de");
 			if ($de <= 30) {
 				$gain = min($this->enchantement_effet, $degats);
-				if (($actif['hp'] + $gain) > $actif['hp_max'])
-					$gain = $actif['hp_max'] - $actif['hp'];
-				if ($passif['type2'] == 'batiment') 
+				if (($actif->get_hp() + $gain) > $actif->get_hp_max())
+					$gain = $actif->get_hp_max() - $actif->get_hp();
+				if ($passif->get_type() == 'batiment')
 					$gain = 0;
-				$actif['hp'] += $gain;
+				$actif->add_hp($gain);
 				if ($gain > 0) 
-					$this->heal($actif['nom'].' gagne '.$gain.' HP par sa '.$this->nom, true);
+					$this->heal($actif->get_nom().' gagne '.$gain.' HP par sa '.
+											$this->nom, true);
 			}
 		}
 
@@ -121,15 +128,16 @@ class gemme_enchassee extends effect
 	// Gemme d'epine
 	function applique_bloquage(&$actif, &$passif, $degats) {
 		if ($this->enchantement_type == 'bouclier_epine') {
-			$actif['hp'] -= $this->enchantement_effet;
-			$this->hit($actif['nom'].' perd '.$this->enchantement_effet.
-								 ' HP par l\'épine du bouclier de '.$passif['nom'], true);
+			$actif->add_hp(-$this->enchantement_effet);
+			$this->hit($actif->get_nom().' perd '.$this->enchantement_effet.
+								 ' HP par la '.$this->nom.' du bouclier de '.
+								 $passif->get_nom(), true);
 		}
-    if ($this->enchantement_type == 'parade') {
+    if ($this->enchantement_type == 'parade_totale') {
 			$de = rand(1, 100);
-			$this->debug("parade: d100 doit être inférieur à $this->enchantement_effet: $de");
+			$this->debug("parade totale: d100 doit être inférieur à $this->enchantement_effet: $de");
       if ($de <= $this->enchantement_effet) {
-        $this->message('La '.$this->nom.' de <strong>'.$passif['nom'].
+        $this->message('La '.$this->nom.' de <strong>'.$passif->get_nom().
                        '</strong> pare totalement le coup');
         $degats = 0;
       }
@@ -140,8 +148,8 @@ class gemme_enchassee extends effect
 	// Gemme de l'epervier
 	function calcul_bloquage(&$actif, &$passif) {
 		if ($this->enchantement_type == 'parade') {
-			$passif['potentiel_bloquer'] +=
-				floor($passif['potentiel_bloquer'] * $this->enchantement_effet / 100);
+			$passif->potentiel_bloquer +=
+				floor($passif->potentiel_bloquer * $this->enchantement_effet / 100);
 		}
 	}
 

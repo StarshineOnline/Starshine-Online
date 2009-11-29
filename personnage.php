@@ -23,7 +23,6 @@ else
 }
 $joueur = new perso($joueur_id);
 $joueur->check_perso();
-$joueur = new perso($joueur_id);
 $de_degat = de_degat($joueur->get_forcex(), 0);
 $de_degat_arme = de_degat($joueur->get_forcex(), $joueur->get_arme_degat());
 

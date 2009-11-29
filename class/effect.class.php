@@ -391,8 +391,9 @@ class poison_lent extends effect {
 
   function fin_round(&$actif, &$passif)
   {
-		$this->hit($actif['nom'].' perd '.$this->vigueur.' HP à cause du poison');
-		$actif['hp'] -= $this->vigueur;
+		$this->hit($actif->get_nom().' perd '.$this->vigueur.
+							 ' HP à cause du poison');
+		$actif->add_hp(-$this->vigueur);
 		if ($actif->etat['poison_lent']['duree'] < 1)
 			unset($actif->etat['poison_lent']);
 	}
@@ -416,12 +417,12 @@ class ensable extends effect {
 	}
 
   function debut_round(&$actif, &$passif) {
-    $this->debug($actif['nom'].' est ensablé');
+    $this->debug($actif->get_nom().' est ensablé');
     $actif['potentiel_toucher'] /= 1 + ($this->effet / 100);
 	}
 
 	function calcul_attaque_magique(&$actif, &$passif, $att) {
-    $this->debug($actif['nom'].' est ensablé');
+    $this->debug($actif->get_nom().' est ensablé');
     return $att / (1 + ($this->effet / 100));
   }
 
