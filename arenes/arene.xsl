@@ -10,6 +10,7 @@
 				<link href="http://www.starshine-online.com/css/texture.css" rel="stylesheet" type="text/css" />
 				<link href="http://www.starshine-online.com/css/texture_low.css" rel="stylesheet" type="text/css" />
 				<link href="http://www.starshine-online.com/css/interfacev2.css" rel="stylesheet" type="text/css" />
+				<link href="http://www.starshine-online.com/arenes/arenes.css" rel="stylesheet" type="text/css" />
 				<script type="text/javascript"
 								src="http://www.starshine-online.com/javascript/jquery/jquery-1.3.2.min.js" />
 				<script type="text/javascript"
@@ -24,11 +25,13 @@
 				<xsl:variable name="size">
 					<xsl:value-of select="//origin[@size]"/>
 				</xsl:variable>
-				<div class="div_map">
-					<xsl:attribute name="style"><xsl:call-template name="size_px">
-						<xsl:with-param name="size_cells" select="//origin/@size" />
-					</xsl:call-template></xsl:attribute>
-					<xsl:apply-templates />
+				<div id="gradin">
+					<div class="div_map">
+						<xsl:attribute name="style"><xsl:call-template name="size_px">
+							<xsl:with-param name="size_cells" select="//origin/@size" />
+						</xsl:call-template></xsl:attribute>
+						<xsl:apply-templates />
+					</div>
 				</div>
 			</body>
 		</html>

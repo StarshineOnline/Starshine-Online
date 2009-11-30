@@ -78,6 +78,7 @@ function gen_arene($x, $y, $size, $nom, $import = false, $make_import = false)
 		while ($row = $db->read_assoc($req)) {
 			$case = $xml->createElement('case');
 			make_attr($xml, $case, 'type', $row['decor']);
+			//make_attr($xml, $case, 'type', 1501);
 			make_attr($xml, $case, 'x', $row['x']);
 			make_attr($xml, $case, 'y', $row['y']);
 			$cases->appendChild($case);
@@ -113,4 +114,4 @@ function gen_arene($x, $y, $size, $nom, $import = false, $make_import = false)
 	return $xml->saveXML();
 }
 
-echo gen_arene(117, 15, 8, 'Test-big');
+echo gen_arene(117, 15, 10, 'Test-donjon');
