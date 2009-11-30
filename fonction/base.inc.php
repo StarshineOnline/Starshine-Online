@@ -1196,13 +1196,17 @@ function check_affiche_bonus($bonus, $joueur, $perso)
 		case 1 :
 			if(is_array($perso)) $perso_race = $perso['race'];
 			else $perso_race = $perso->get_race();
-			if($joueur->get_race() == $perso_race) return true;
+			if(is_array($joueur)) $joueur_race = $joueur['race'];
+			else $joueur_race = $joueur->get_race();
+			if($joueur_race == $perso_race) return true;
 			else return false;
 		break;
 		case 2 :
 			if(is_array($perso)) $perso_id = $perso['id'];
 			else $perso_id = $perso->get_id();
-			if($joueur->get_id() == $perso_id) return true;
+			if(is_array($joueur)) $joueur_id = $joueur['id'];
+			else $joueur_id = $joueur->get_id();
+			if($joueur_id == $perso_id) return true;
 			else return false;
 		break;
 	}
