@@ -2771,7 +2771,10 @@ class perso extends entite
 					// Gemmes
 					if($partie_d['enchantement'] > 0)
 					{
-						$this->enchant = enchant($partie_d['enchantement'], $this);
+						$gemme = new gemme_enchassee($partie_d['enchantement']);
+						$this->register_gemme_enchantement($gemme);
+          //my_dump($this->enchantement);
+					//$this->enchant = enchant($partie_d['enchantement'], $this);
 					}
 				}
 			}
@@ -3063,7 +3066,25 @@ class perso extends entite
 	{
 		switch ($gemme->enchantement_type)
 		{
-		case 'esquive' : /* gemmes de compétence: bonus ignoré à la montée */
+		case 'hp' :
+      $this->hp_max += $gemme->enchantement_effet;
+      break;
+    case 'mp' :
+			$this->mp_max += $gemme->enchantement_effet;
+      break;
+    case 'reserve' :
+      $this->reserve += $gemme->enchantement_effet;
+      break;
+    case 'pp' :
+      $this->pp += $gemme->enchantement_effet;
+      break;
+    case 'pm' :
+      $this->pm += $gemme->enchantement_effet;
+      break;
+		case 'portee' :
+		case 'star' :
+		/* gemmes de compétence: bonus ignoré à la montée */
+		case 'esquive' :
 		case 'melee' : 
 		case 'distance' :
 		case 'incantation' :
@@ -3085,19 +3106,16 @@ class perso extends entite
 
 	function get_distance_tir()
 	{
-		if(!isset($this->distance_tir))
+		$arme = $this->inventaire()->main_droite;
+		if(!isset($this->arme)) $this->get_arme();
+		if($this->arme)
 		{
-			$arme = $this->inventaire()->main_droite;
-			if(!isset($this->arme)) $this->get_arme();
-			if($this->arme)
-			{
-				$arme = $this->arme->distance_tir;
-				if($this->is_buff('longue_portee')) $bonus = $this->get_buff('longue_portee', 'effet');
-				else $bonus = 0;
-				return ($arme + $bonus);
-			}
-			return 0;
+			$arme = $this->arme->distance_tir;
+			if($this->is_buff('longue_portee')) $bonus = $this->get_buff('longue_portee', 'effet');
+			else $bonus = 0;
+			return ($arme + $bonus + $this->get_bonus_permanents('portee'));
 		}
+		return 0;
 	}
 
 	function get_arme_type()
