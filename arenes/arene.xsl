@@ -19,7 +19,7 @@
 								src="http://www.starshine-online.com/javascript/fonction.js" />
 				<script type="text/javascript"
 								src="http://www.starshine-online.com/javascript/overlib/overlib.js" />
-
+				<script type="text/javascript" src="arene_poll.js" />
 			</head>
 			<body>
 				<xsl:variable name="size">
@@ -33,6 +33,7 @@
 						<xsl:apply-templates />
 					</div>
 				</div>
+				<script type="text/javascript">do_poll();</script>
 			</body>
 		</html>
 	</xsl:template>
@@ -103,11 +104,5 @@
 				</xsl:for-each>
 			</ul>
 		</xsl:for-each>
-			<!--
-		<xsl:for-each select="case">
-			<![CDATA[<li class="decor tex]]><xsl:value-of select="@type" /><![CDATA[">]]>
-			<xsl:text>&lt;/li&gt;</xsl:text>
-		</xsl:for-each>
-		-->
 	</xsl:template>
 </xsl:stylesheet>

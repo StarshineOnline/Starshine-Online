@@ -56,6 +56,7 @@ function gen_arene($x, $y, $size, $nom, $import = false, $make_import = false)
 	$root->appendChild($origin);
 	$root->appendChild($xml->createElement('base',
 																				 'http://www.starshine-online.com/'));
+	$root->appendChild($xml->createElement('date', date(DATE_RFC1123)));
 
 	if ($import !== false && $make_import == false) {
 		$xml2 = new DOMDocument("1.0", "UTF-8");
