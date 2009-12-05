@@ -140,9 +140,10 @@ function envoiInfoJS(page, position)
 
 function envoiFormulaire(formulaire, position)
 {
-	$.ajax({type:'post',url:formulaire,data:'message='+$('#message').val()+'&titre='+$('#titre').val(),success:function(html){
-    $('#'+position).load(html);}});
-
+  formul = $('#' + formulaire);
+  $.ajax({type:'post',url:formul.attr("action"),data:formul.serialize(),success:function(html){
+    $('#'+position).html(html);}});
+  return false;
 }
 
 function envoiFormulaireGET(formulaire, position)

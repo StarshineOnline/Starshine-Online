@@ -29,7 +29,7 @@ if($W_row['type'] == 1)
 	if($R->get_diplo($joueur->get_race()) == 127)
 	{
 		$is_election = elections::is_mois_election($R->get_id());
-		if($is_election && date("d") >= 5 && date("d") < 15)
+		if($is_election /*&& date("d") >= 5 && date("d") < 15*/)
 		{
 			?>
 			<li>
@@ -37,7 +37,7 @@ if($W_row['type'] == 1)
 			</li>
 			<?php
 		}
-		if($is_election && date("d") >= 13)
+		if($is_election && date("d") >= 15)
 		{
       $elections = elections::get_prochain_election($R->get_id(), true);
 		  if( $elections[0]->get_type() == 'universel' )

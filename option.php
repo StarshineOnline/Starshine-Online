@@ -14,11 +14,11 @@ include_once(root.'inc/fp.php');
 				switch($_GET['action'])
 				{
 					case 'mdp' :
-						if(array_key_exists('ancien_pass', $_GET))
+						if(array_key_exists('ancien_pass', $_POST))
 						{
-							$ancien_pass = $_GET['ancien_pass'];
-							$new_pass = $_GET['new_pass'];
-							$new_pass2 = $_GET['new_pass2'];
+							$ancien_pass = $_POST['ancien_pass'];
+							$new_pass = $_POST['new_pass'];
+							$new_pass2 = $_POST['new_pass2'];
 							if($new_pass != $new_pass2)
 							{
 								?>
@@ -62,13 +62,12 @@ include_once(root.'inc/fp.php');
 							<input type="password" id='new_pass' name="new_pass" /><br />
 							<strong>Veuillez retappez votre NOUVEAU mot de passe :</strong><br />
 							<input type="password" id='new_pass2' name="new_pass2" /><br />
-							<input type="button" value="Modifier votre mot de passe jeu" onclick="envoiInfo('option.php?action=mdp&ancien_pass=' + $('#ancien_pass').val()+'&amp;new_pass=' + $('#new_pass').val()+'&amp;new_pass2=' + $('#new_pass2').val(), 'popup_content');" />
+							<input type="submit" value="Modifier votre mot de passe jeu" onclick="return envoiFormulaire('formMDP', 'popup_content');" />
 						</form>
 						<?php
 						}
 					break;
 					case 'journal' :
-						echo 'Elements que vous ne voulez pas voir apparaitre dans votre journal des actions :';
 						$liste_options = array('soin', 'gsoin', 'buff', 'gbuff',  'degat', 'kill', 'quete', 'loot');
 						$liste_options_nom = array('Soins', 'Soins de groupe', 'Buffs', 'Buffs de groupe', 'Dégats', 'Kills', 'Quètes', 'Loots');
 						$options = recup_option($_SESSION['ID']);
@@ -116,6 +115,7 @@ include_once(root.'inc/fp.php');
 							echo '<h6>Filtre du journal modifié avec succès</h6>';
 						}
 						?>
+						Elements que vous ne voulez pas voir apparaitre dans votre journal des actions :
 						<form method="post" action="option.php?action=journal" id="formJournal">
 							<ul>
 								<?php
@@ -131,7 +131,8 @@ include_once(root.'inc/fp.php');
 								}
 								?>
 							</ul>
-							<input type="button" value="Valider" name="submit" onclick="envoiFormulaire('formJournal', 'popup_content');" />
+							<input type="hidden" name="submit" />
+							<input type="submit" value="Valider" onclick="return envoiFormulaire('formJournal', 'popup_content');" />
 						</form>
 						<?php
 					break;

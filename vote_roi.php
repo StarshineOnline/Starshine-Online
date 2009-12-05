@@ -31,21 +31,25 @@ elseif( $batiment = verif_batiment($joueur->get_x(), $joueur->get_y(), $Trace[$j
   $check = $batiment['type'] == 'bourg';
 if( $check )
 {
+	$roi = $joueur->get_grade()->get_id() == 6;
+  $is_election = elections::is_mois_election($R->get_id(), $roi);
 	if(isset($_GET['action']))
 	{
 		switch ($_GET['action'])
 		{
 			case 'vote' :
-			  $roi = $joueur->get_grade()->get_id() == 6;
-				$elections = elections::get_prochain_election($R->get_id(), $roi);
-      	if( count($elections) )
+      	if( $is_election && date("d") >= 15 )
       	{
+				  $elections = elections::get_prochain_election($R->get_id(), $roi);
   				$prochain_election = $elections[0];
   				$requete = "SELECT id FROM vote WHERE id_perso = ".$joueur->get_id()." AND id_election = ".$prochain_election->get_id();
   				$db->query($requete);
   				if($db->num_rows > 0)
   				{
-  					echo '<h5>Vous avez déjà voté !</h5>';
+            if( $prochain_election->get_type() == 'universel' )
+              echo '<h5>Vous avez déjà voté !</h5>';
+  					else
+              echo "<h5>Vous avez déjà nommé quelqu'un !</h5>";  					 
   				}
   				else
   				{
@@ -55,32 +59,36 @@ if( $check )
   					$requete = "INSERT INTO vote ( `id` , `id_perso`, `id_candidat`, `id_election`) VALUES('', ".$joueur->get_id().", ".$candidat->get_id_perso().", ".$prochain_election->get_id().")";
   					if($db->query($requete))
   					{
-  						echo 'Votre vote a bien été pris en compte';
+              if( $prochain_election->get_type() == 'universel' )
+  						  echo 'Votre vote a bien été pris en compte';
+  						else
+  						  echo 'Votre nomination a bien été prise en compte';
   					}
   				}
 				}
         else
         {
-    			echo "<h5>Vous n'avez pas d'élections de prévu !</h5>";
+    			echo "<h5>Vous n'avez pas d'élection de prévu !</h5>";
         }
 			break;
 		}
 	}
 	else
 	{
-  	$roi = $joueur->get_grade()->get_id() == 6;
-  	$elections = elections::get_prochain_election($R->get_id(), $roi);
-  	if( count($elections) )
+  	if( $is_election )
   	{
+  	  $elections = elections::get_prochain_election($R->get_id(), $roi);
       $prochain_election = $elections[0];
       if( $prochain_election->get_type() == 'universel' )
       {
+        $label_btn = "Voter !";
       	?>
       	Pour qui allez vous voter ?<br />
       	<?php
       }
       else
       {
+        $label_btn = "Nommer !";
       	?>
       	Qui allez vous nommer ?<br />
       	<?php
@@ -106,7 +114,7 @@ if( $check )
     		include('info_candidat.php');
     		?>
     	</div>
-    	<input type="button" onclick="envoiInfo('vote_roi.php?action=vote&id_candidat=' + document.getElementById('id_candidat').value, 'carte');" value="Voter !">
+    	<input type="button" onclick="envoiInfo('vote_roi.php?action=vote&id_candidat=' + document.getElementById('id_candidat').value, 'carte');" value="<?php echo $label_btn; ?>">
     	<?php
     		//echo $url;
     }
