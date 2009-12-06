@@ -1,42 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?><!-- -*- mode: nxml -*- -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
-	<xsl:output method="html" version="4.0" encoding="utf-8" indent="yes"/>
+	<xsl:output method="html" version="4.0"
+							encoding="utf-8" indent="yes"/>
 	<xsl:key match="//case" use="@y" name="les_cases"/>
 	<xsl:key match="//case" use="@x" name="cols"/>
 	<xsl:template	match="/arene">
-		<html>
-			<head>
-				<title>Arene <xsl:value-of select="name" /></title>
-				<link rel="icon" type="image/png" href="http://www.starshine-online.com/image/favicon.png" />
-				<link href="http://www.starshine-online.com/css/texture.css" rel="stylesheet" type="text/css" />
-				<link href="http://www.starshine-online.com/css/texture_low.css" rel="stylesheet" type="text/css" />
-				<link href="http://www.starshine-online.com/css/interfacev2.css" rel="stylesheet" type="text/css" />
-				<link href="http://www.starshine-online.com/arenes/arenes.css" rel="stylesheet" type="text/css" />
-				<script type="text/javascript"
-								src="http://www.starshine-online.com/javascript/jquery/jquery-1.3.2.min.js" />
-				<script type="text/javascript"
-								src="http://www.starshine-online.com/javascript/jquery/jquery-ui-1.7.2.custom.min.js" />
-				<script type="text/javascript"
-								src="http://www.starshine-online.com/javascript/fonction.js" />
-				<script type="text/javascript"
-								src="http://www.starshine-online.com/javascript/overlib/overlib.js" />
-				<script type="text/javascript" src="arene_poll.js" />
-			</head>
-			<body>
-				<xsl:variable name="size">
-					<xsl:value-of select="//origin[@size]"/>
-				</xsl:variable>
-				<div id="gradin">
-					<div class="div_map" id="div_map">
-						<xsl:attribute name="style"><xsl:call-template name="size_px">
-							<xsl:with-param name="size_cells" select="//origin/@size" />
-						</xsl:call-template></xsl:attribute>
-						<xsl:apply-templates />
-					</div>
-				</div>
-				<script type="text/javascript">begin_poll();</script>
-			</body>
-		</html>
+		<div class="div_map" id="div_map">
+			<xsl:attribute name="style"><xsl:call-template name="size_px">
+				<xsl:with-param name="size_cells" select="//origin/@size" />
+			</xsl:call-template></xsl:attribute>
+			<xsl:apply-templates />
+		</div>
 	</xsl:template>
 	<xsl:template name="size_px">
 		<xsl:param name="size_cells" />width: <xsl:value-of
