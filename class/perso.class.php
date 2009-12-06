@@ -3056,6 +3056,17 @@ class perso extends entite
 					$this->register_gemme_enchantement($gemme);
 					//my_dump($this->enchantement);
 				}
+				switch ($this->accessoire->type) {
+				case 'rm':
+					$this->add_bonus_permanents('reserve', $this->accessoire->effet);
+					break;
+				case 'chance_debuff':
+				case 'buff':
+				case 'fabrication':
+					$this->add_bonus_permanents($this->accessoire->type,
+																			$this->accessoire->effet);
+					break;
+				}
 			}
 			else $this->accessoire = false;
 		}
