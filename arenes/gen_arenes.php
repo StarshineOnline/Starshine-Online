@@ -9,9 +9,6 @@ include_once(root.'inc/traduction.inc.php');
 include_once(root.'inc/classe.inc.php');
 include_once(root.'connect.php');
 
-global $Tclasse2;
-$Tclasse2 = $Tclasse;
-
 function make_attr(&$xml, &$element, $name, $value)
 {
 	$attr = $xml->createAttribute($name);
@@ -21,17 +18,17 @@ function make_attr(&$xml, &$element, $name, $value)
 
 function create_joueur(&$xml, $row)
 {
-	global $Tclasse2;
+	global $Tclasse;
 
 	$joueur = $xml->createElement('joueur');
-	make_attr($xml, $joueur, 'id', $row['ID']);
+	make_attr($xml, $joueur, 'id', $row['id']);
 	make_attr($xml, $joueur, 'x', $row['x']);
 	make_attr($xml, $joueur, 'y', $row['y']);
 	make_attr($xml, $joueur, 'nom', $row['nom']);
 	make_attr($xml, $joueur, 'race', $row['race']);
 	make_attr($xml, $joueur, 'lvl', $row['level']);
 	make_attr($xml, $joueur, 'classe', $row['classe']);
-	$image = $row['race'].'_'.$Tclasse2[$row['classe']]['type'];
+	$image = $row['race'].'_'.$Tclasse[$row['classe']]['type'];
 	make_attr($xml, $joueur, 'image', $image);
 	if ($row['hp'] <= 0) 	make_attr($xml, $joueur, 'mort', 1);
 	return $joueur;
@@ -107,12 +104,14 @@ function gen_arene($x, $y, $size, $nom, $import = false, $make_import = false)
 		$joueurs->appendChild($joueur);
 	}
 
+	/*
 	$mirwen = array('nom' => 'Mirwen', 'race' => 'mortvivant', 'hp' => 0,
 									'x' => $x, 'y' => $y, 'level' => 8, 'classe' => 'clerc');
 	$punching_ball = create_joueur($xml, $mirwen);
 	$joueurs->appendChild($punching_ball);
+	*/
 	
 	return $xml->saveXML();
 }
 
-echo gen_arene(117, 15, 10, 'Test-donjon');
+//echo gen_arene(117, 15, 10, 'Test-donjon');

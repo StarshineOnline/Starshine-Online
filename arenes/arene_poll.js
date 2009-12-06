@@ -3,12 +3,13 @@
 var t;
 var xsl;
 var xsltProcessor;
+var time = 2000;
 
 function begin_poll()
 {
 	$.ajax({
 		type: "GET",
-		url: "arene_field.xsl",
+		url: "arene.xsl",
 		success: function(msg) {
 			try {
 				xsltProcessor = new XSLTProcessor();
@@ -30,6 +31,7 @@ function do_poll()
 			do_xsl(msg);
 		}
 	});
+	t = setTimeout("do_poll()", time);
 }
 
 function do_xsl(msg)
@@ -38,8 +40,8 @@ function do_xsl(msg)
 		var resultDocument = xsltProcessor.transformToDocument(msg);
 		var contents = resultDocument.getElementById("div_map").innerHTML;
 		$("div.div_map").html(contents);
-		t = setTimeout("do_poll()", 3000);
 	} catch (e) {
 		alert('Pas de refresh auto possible: processing XSL' + e);
+		time = time * 10;
 	}
 }

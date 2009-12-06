@@ -56,6 +56,7 @@
 		</ul>
 
 	</xsl:template>
+	<xsl:template match="date"/>
 	<xsl:template match="base">
 			<xsl:variable name="base" select="value"/>
 	</xsl:template>

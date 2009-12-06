@@ -199,6 +199,8 @@ $W_pos = convert_in_pos($coord['x'], $coord['y']);
 if($donjon)
 {
 	include_once(root.'donjon.php');
+	if ($peu_bouger)
+		$joueur->trigger_arene();
 }
 else include_once(root.'map2.php');
 if(!$peu_bouger AND $cause != '') echo '<img src="image/pixel.gif" onLoad="alert(\''.$cause.'\');" />';

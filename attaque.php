@@ -675,6 +675,7 @@ else
 				//L'attaquant est mort !
 				if ($attaquant->get_hp() <= 0)
 				{
+					$joueur->trigger_arene();
 					$actif = $joueur_defenseur;
 					$passif = $joueur;
 					$gains = true;
@@ -682,6 +683,7 @@ else
 				//Le défenseur est mort !
 				if ($defenseur->get_hp() <= 0)
 				{
+					$joueur->trigger_arene();
 					$actif = $joueur;
 					$passif = $joueur_defenseur;
 					$gains = true;

@@ -3777,6 +3777,34 @@ class perso extends entite
       $this->mp = 0;
   }
 
+	function in_arene()
+	{
+		if ($this->x < 190 && $this->y < 190)
+			return false;
+		global $db;
+		$q = "select * from arenes where x <= $this->x and $this->x < x + size ".
+			"and y <= $this->y and $this->y < y + size";
+		$req = $db->query($q);
+		if ($row = $db->read_object($req)) {
+			return $row;
+		}
+		return false;
+	}
+
+	function trigger_arene()
+	{
+		$arene = $this->in_arene();
+		if ($arene != false)
+		{
+			require_once(root.'arenes/gen_arenes.php');
+			$arene_xml = gen_arene($arene->x, $arene->y, $arene->size, $arene->nom);
+			$arene_file = fopen(root.'arenes/'.$arene->file.'tmp', 'w+');
+			fwrite($arene_file, $arene_xml);
+			fclose($arene_file);
+			rename(root.'arenes/'.$arene->file.'tmp', root.'arenes/'.$arene->file);
+		}
+	}
+
 	/** on ne m'aura plus avec les machins déclarés depuis dehors */
 	//function __get($name) { $debug = debug_backtrace(); die('fuck: '.$debug[0]['file'].' line '.$debug[0]['line']); }
 	//function __set($name, $value) { $debug = debug_backtrace(); die('fuck: '.$debug[0]['file'].' line '.$debug[0]['line']); }

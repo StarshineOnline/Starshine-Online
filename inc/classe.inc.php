@@ -1,7 +1,6 @@
 <?php
 if (file_exists('../root.php'))
   include_once('../root.php');
-?><?php
 
 $Tmaxcomp['melee'] = 100;
 $Tmaxcomp['esquive'] = 100;
