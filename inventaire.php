@@ -661,7 +661,7 @@ if(!$visu AND isset($_GET['action']))
 			$chance_reussite1 = pourcent_reussite($craft, 10);
 			$chance_reussite2 = pourcent_reussite($craft, 30);
 			$chance_reussite3 = pourcent_reussite($craft, 100);
-			echo 'Quel niveau d\'enchassement voulez vous ?
+			echo 'Quel niveau d\'enchâssement voulez vous ?
 			<ul>
 				<li><a href="inventaire.php?action=slot2&amp;key_slot='.$_GET['key_slot'].'&amp;niveau=1'.$filtre_url.'" onclick="return envoiInfo(this.href, \'information\');">Niveau 1</a> <span class="small">('.$chance_reussite1.'% de chances de réussite)</span></li>
 				<li><a href="inventaire.php?action=slot2&amp;key_slot='.$_GET['key_slot'].'&amp;niveau=2'.$filtre_url.'" onclick="return envoiInfo(this.href, \'information\');">Niveau 2</a> <span class="small">('.$chance_reussite2.'% de chances de réussite)</span></li>
@@ -710,7 +710,7 @@ if(!$visu AND isset($_GET['action']))
 					else
 					{
 						//Craft échec
-						echo 'Echec... L\'objet ne pourra plus être enchassable<br />';
+						echo 'Echec... L\'objet ne pourra plus être enchâssable<br />';
 						$objet['slot'] = 0;
 					}
 					$augmentation = augmentation_competence('forge', $joueur, 2);
@@ -773,7 +773,7 @@ if(!$visu AND isset($_GET['action']))
 				$craft += round($joueur->enchantement['forge']['effet'] / 100 * $craft);
 			}
 
-			echo 'Dans quel objet voulez vous enchasser cette gemme de niveau '.$row['niveau'].' ?
+			echo 'Dans quel objet voulez vous enchâsser cette gemme de niveau '.$row['niveau'].' ?
 			<ul>';
 			//Recherche des objets pour enchassement possible
 			$i = 0;
@@ -790,6 +790,11 @@ if(!$visu AND isset($_GET['action']))
 						elseif($objet_i['categorie'] == 'm') $table = 'accessoire';
 						elseif($objet_i['categorie'] == 'o') $table = 'objet';
 						elseif($objet_i['categorie'] == 'g') $table = 'gemme';
+						else {
+							print_debug("table introuvable pour $objet_i[categorie]");
+							$i++;
+							continue;
+						}
 						$requete = "SELECT type FROM ".$table." WHERE id = ".$objet_i['id_objet'];
 						$req_i = $db->query($requete);
 						$row_i = $db->read_row($req_i);
