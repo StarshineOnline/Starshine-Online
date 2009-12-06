@@ -3092,7 +3092,7 @@ class perso extends entite
 																	$gemme->enchantement_effet);
 			break;
 		}
-		if (isset($this->enchantement[$gemme->type]))
+		if (array_key_exists($gemme->enchantement_type, $this->enchantement))
 		{
 			$this->enchantement[$gemme->enchantement_type]['gemme_id']
 				.= ";$gemme->id";
@@ -3260,7 +3260,7 @@ class perso extends entite
 			if (array_key_exists('regeneration', $this->get_enchantement())) {
 				$bonus_regen = $this->get_enchantement('regeneration', 'effet') * 60;
 				if ($G_temps_regen_hp <= $bonus_regen) {
-					$bonus_regen = $G_temps_regen_hp - 1;
+					$bonus_regen = $G_temps_regen_hp - 3600; // 1h min de regen
 				}
 			} else $bonus_regen = 0;
 

@@ -76,7 +76,9 @@ include_once(root.$root.'fonction/print.inc.php');
 function __autoload($class_name)
 {
 	global $root;
-	require_once(root.'class/'.$class_name .'.class.php');
+	$file = root.'class/'.$class_name.'.class.php';
+	if (file_exists($file))
+		require_once($file);
 }
 
 ?>

@@ -117,11 +117,12 @@ class effect
     }
 
     /*
-     * Effets temporaires persistants
+     * Etats
      */
     empoisonne::factory($effects, $actif, $passif, $acteur);
     poison_lent::factory($effects, $actif, $passif, $acteur);
     ensable::factory($effects, $actif, $passif, $acteur);
+		tellurique::factory($effects, $actif, $passif, $acteur);
     /*
      * Compétences passives
      */
@@ -234,15 +235,16 @@ class effect
    */ 
   function calcul_degats(&$actif, &$passif, $degats) { return $degats; }
   /**
-   * Modifie les dégâts des sorts
+   * Modifie le bonos aux dégâts des sorts
    * 
    * @param  $actif     Personnage actif lors de l'action.
    * @param  $passif    Personnage passif lors de l'action.
-   * @param  $degats    Dégâts avant modification.
+   * @param  $degats    Bonus dégâts avant modification.
+   * @param  $type      Type de sort.
    * 
-   * @return    Dégâts après modification.              
+   * @return    Bonus dégâts après modification.
    */ 
-  function calcul_degats_magiques(&$actif, &$passif, $degats) { return $degats; }
+  function calcul_degats_magiques(&$actif, &$passif, $degats, $type) { return $degats; }
   /**
    * Effectue les modifications concernant le blocage (potentiel blocage, maitrise du bouclier)
    * 
@@ -347,6 +349,25 @@ function sort_effects(array& $effects) {
   usort($effects, array('effect', 'compare_effects'));
 }
 
+class etat extends effect {
+	var $effet;
+
+  function __construct($effet, $nom) {
+    parent::__construct($nom);
+		$this->effet = $effet;
+	}
+	
+  function fin_round(&$actif, &$passif)
+  {
+		if ($actif->etat[$this->nom]['duree'] < 1) {
+			unset($actif->etat[$this->nom]);
+		}
+	}
+}
+
+/**
+ * empoisonné
+ */
 class empoisonne extends effect {
 	var $vigueur;
 
@@ -402,12 +423,10 @@ class poison_lent extends effect {
 /**
  * Ensablé : sous l'effet de flèche de sable
  */
-class ensable extends effect {
-	var $effet;
+class ensable extends etat {
 
   function __construct($aEffet) {
-    parent::__construct('fleche_sable');
-		$this->effet = $aEffet;
+    parent::__construct($aEffet, 'fleche_sable');
 	}
 
 	static function factory(&$effects, &$actif, &$passif, $acteur = '') {
@@ -418,18 +437,43 @@ class ensable extends effect {
 
   function debut_round(&$actif, &$passif) {
     $this->debug($actif->get_nom().' est ensablé');
-    $actif['potentiel_toucher'] /= 1 + ($this->effet / 100);
+    $actif->potentiel_toucher /= 1 + ($this->effet / 100);
 	}
 
 	function calcul_attaque_magique(&$actif, &$passif, $att) {
     $this->debug($actif->get_nom().' est ensablé');
     return $att / (1 + ($this->effet / 100));
   }
+}
 
-  function fin_round(&$actif, &$passif)
-  {
-		if ($actif->etat['fleche_sable']['duree'] < 1)
-			unset($actif->etat['fleche_sable']);
+/**
+ * Tellurique: est sous l'effet de frappe tellurique
+ */
+class tellurique extends etat {
+
+  function __construct($aEffet) {
+    parent::__construct($aEffet, 'Tellurique');
+	}
+
+	static function factory(&$effects, &$actif, &$passif, $acteur = '') {
+		if (array_key_exists('tellurique', $actif->etat)) {
+			$effects[] = new tellurique($actif->etat['tellurique']['effet']);
+		}
+	}
+
+  function calcul_degats_magiques(&$actif, &$passif, $degats, $type) {
+		switch ($type) {
+		case 'degat_feu':
+		case 'degat_froid':
+		case 'degat_vent':
+		case 'degat_terre':
+		case 'lapidation':
+		case 'globe_foudre':
+		case 'embrasement':
+		case 'sphere_glace':
+			$degats += $this->effet;
+		}
+		return $degats;
 	}
 }
 
