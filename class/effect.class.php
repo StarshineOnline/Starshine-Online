@@ -452,7 +452,7 @@ class ensable extends etat {
 class tellurique extends etat {
 
   function __construct($aEffet) {
-    parent::__construct($aEffet, 'Tellurique');
+    parent::__construct($aEffet, 'tellurique');
 	}
 
 	static function factory(&$effects, &$actif, &$passif, $acteur = '') {

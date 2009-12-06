@@ -3072,9 +3072,6 @@ class perso extends entite
     case 'mp' :
 			$this->mp_max += $gemme->enchantement_effet;
       break;
-    case 'reserve' :
-      $this->reserve += $gemme->enchantement_effet;
-      break;
     case 'pp' :
       $this->pp += $gemme->enchantement_effet;
       break;
@@ -3083,6 +3080,7 @@ class perso extends entite
       break;
 		case 'portee' :
 		case 'star' :
+    case 'reserve' :
 		/* gemmes de compétence: bonus ignoré à la montée */
 		case 'esquive' :
 		case 'melee' : 
