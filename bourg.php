@@ -50,7 +50,8 @@ if($bourg->get_x() == $joueur->get_x() AND $bourg->get_y() == $joueur->get_y() A
 			<a href="bureau_quete.php" onclick="return envoiInfo(this.href, 'carte')">Bureau des quètes</a>
 		</li>
 <?php
-	if(date("d") >= 5 AND date("d") < 15)
+  $is_election = elections::is_mois_election($R->get_id());
+	if($is_election && date("d") >= 5 AND date("d") < 15)
 	{
 ?>
 		<li>
@@ -58,7 +59,7 @@ if($bourg->get_x() == $joueur->get_x() AND $bourg->get_y() == $joueur->get_y() A
 		</li>
 <?php
 	}
-	if(date("d") >= 15)
+	if($is_election && date("d") >= 15)
 	{
     $elections = elections::get_prochain_election($R->get_id(), true);
     if( $elections[0]->get_type() == 'universel' )

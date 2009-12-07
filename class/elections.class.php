@@ -298,7 +298,8 @@ class elections
 		if( !count($elections) )
 		  return false;
 		$explode_date = explode('-', $elections[0]->get_date());
-		if($explode_date[0] == date('Y') && $explode_date[1] == date('m', mktime(0, 0, 0, date("m")+1 , date("d"), date("Y")))) return true;
+		$date_ref = mktime(0, 0, 0, date("m")+1 , date("d"), date("Y"));
+		if($explode_date[0] == date('Y', $date_ref) && $explode_date[1] == date('m', $date_ref)) return true;
 		else return false;
 	}
 }

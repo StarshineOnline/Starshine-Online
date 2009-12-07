@@ -29,7 +29,7 @@ if($W_row['type'] == 1)
 	if($R->get_diplo($joueur->get_race()) == 127)
 	{
 		$is_election = elections::is_mois_election($R->get_id());
-		if($is_election /*&& date("d") >= 5 && date("d") < 15*/)
+		if($is_election && date("d") >= 5 && date("d") < 15)
 		{
 			?>
 			<li>

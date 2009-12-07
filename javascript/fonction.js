@@ -141,16 +141,11 @@ function envoiInfoJS(page, position)
 function envoiFormulaire(formulaire, position)
 {
   formul = $('#' + formulaire);
-  $.ajax({type:'post',url:formul.attr("action"),data:formul.serialize(),success:function(html){
+  alert( formul.serialize() );
+  alert( $("#truc").attr("value") )
+  $.ajax({type:formul.attr("method"),url:formul.attr("action"),data:formul.serialize(),success:function(html){
     $('#'+position).html(html);}});
   return false;
-}
-
-function envoiFormulaireGET(formulaire, position)
-{
-	function Affiche(requete){$(position).innerHTML = requete.responseText; Hidechargement(); nd();}
-	$(formulaire).request({method:'get',onLoading:Loadchargement,onComplete:Affiche});
-	return false;
 }
 
 function affichePopUp(input_name)

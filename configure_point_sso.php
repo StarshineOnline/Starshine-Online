@@ -46,10 +46,10 @@ $bonus = recup_bonus($joueur->get_id());
 				$bonus = recup_bonus($joueur->get_id());
 			}
 			//Changement de description
-			if(array_key_exists('description', $_GET))
+			if(array_key_exists('description', $_POST))
 			{
 				$bonus_total = recup_bonus_total($joueur->get_id());
-				$requete = "UPDATE bonus_perso SET valeur = '".sSQL(htmlspecialchars($_GET['description']))."' WHERE id_bonus_perso = ".$bonus_total[$id]['id_bonus_perso'];
+				$requete = "UPDATE bonus_perso SET valeur = '".sSQL(htmlspecialchars($_POST['description']))."' WHERE id_bonus_perso = ".$bonus_total[$id]['id_bonus_perso'];
 				$db->query($requete);
 				$bonus = recup_bonus($joueur->get_id());
 			}
@@ -169,10 +169,10 @@ $bonus = recup_bonus($joueur->get_id());
 					//Description
 					case 16 :
 						?>
-						<form action="configure_point_sso.php" method="get" id="formDesc">
+						<form action="configure_point_sso.php" method="post" id="formDesc">
 							<textarea id='description' name="description"><?php echo $bonus_total[$id]['valeur']; ?></textarea>
 							<input type="hidden" value="<?php echo $id; ?>" name="id" id='id_desc'/>
-							<input type="button" value="Valider" onclick="envoiInfo('configure_point_sso.php?css=' + $('#description').val()+'&amp;id='+$('#id_desc').val(), 'popup_content');envoiInfo('configure_point_sso.php', 'popup_content');" />
+							<input type="submit" value="Valider" onclick="return envoiFormulaire('formDesc', 'popup_content');" />
 						</form>
 						<?php
 					break;
@@ -181,11 +181,11 @@ $bonus = recup_bonus($joueur->get_id());
 						?>
 						Poids maximum du fichier : 20ko<br />
 						Dimensions maximums du fichier : 80px * 80px<br />
-						<form action="configure_point_sso.php" method="POST" enctype="multipart/form-data" id="formAvatar">
-							<input type="hidden" name="MAX_FILE_SIZE"  VALUE="20240">
-							<input type="file" name="nom_du_fichier">
+						<form action="configure_point_sso.php" method="post" enctype="multipart/form-data" id="formAvatar">
+							<input type="hidden" name="MAX_FILE_SIZE"  VALUE="20240" />
+							<input type="file" name="nom_du_fichier" id="truc" />
 							<input type="hidden" value="<?php echo $id; ?>" name="id" />
-							<input type="button" value="Envoyer" onclick="envoiFormulaire('formAvatar', 'popup_content');">
+							<input type="submit" value="Envoyer" onclick="return envoiFormulaire('formAvatar', 'popup_content');">
 						</form>
 						<?php
 					break;

@@ -128,13 +128,8 @@ while($row_l = $db->read_assoc($req_l))
 			}
 			$texte = '<strong style="color : '.$color.'">'.$row['nom'].'</strong><br />';
 			if(!$possede) $texte.= '<span class="xsmall">'.$row['point'].' point(s)</span><br />';
-			$texte .= '
-					<a href="point_sso.php?action=prend&amp;id='.$row['id_bonus'].'&amp;categorie='.$categorie.'" onclick="if(confirm(\'Voulez vous vraiment prendre le bonus ~'.$row['nom'].'~ pour '.$row['point'].' points ? \')) return envoiInfo(this.href, \'information\'); else return false;"><img src="image/niveau/'.$image.'.png" onmousemove="afficheInfo(\'cadre_'.$row['id_bonus'].'\', \'block\', event, \'centre\');" onmouseout="afficheInfo(\'cadre_'.$row['id_bonus'].'\', \'none\', event, \'centre\');" alt="cadre"></a>
-					<div style="color : #fff; text-align : left; display: none; z-index: 2; position: absolute; top: 250px; right: 150px; background-color : #555; border: 1px solid #000000; font-size:12px; width: 250px; padding: 5px;" id="cadre_'.$row['id_bonus'].'">
-						<strong>'.$row['nom'].'</strong><br />
-						'.$row['description'].'<br />
-						Requis : '.$Gtrad[$row['competence_requis']].' '.$row['valeur_requis'].'
-					</div>';
+			$overlib = '<strong>'.$row['nom'].'</strong><br />'.addcslashes($row['description'], "'").'<br />Requis : '.$Gtrad[$row['competence_requis']].' '.$row['valeur_requis'];
+			$texte .= '<a href="point_sso.php?action=prend&amp;id='.$row['id_bonus'].'&amp;categorie='.$categorie.'" onclick="if(confirm(\'Voulez vous vraiment prendre le bonus ~'.$row['nom'].'~ pour '.$row['point'].' points ? \')) return envoiInfo(this.href, \'information\'); else return false;"><img src="image/niveau/'.$image.'.png" onmouseover="return overlib(\''.$overlib.'\', BGCLASS, \'overlib\', BGCOLOR, \'\', FGCOLOR, \'\');" onmouseout="return nd();" alt="cadre"></a>';
 			//print_r($row);
 			if($row_l['tot'] > 1)
 			{
