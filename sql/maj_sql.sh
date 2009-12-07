@@ -3,10 +3,8 @@
 # Ce script permet de mettre à jour la base de données d'un serveur de dev
 # pour les tables statiques (competences, sorts, items ...)
 
-username="bastounet"
+username="bastien"
 host="www.starshine-online.com"
-sql_log="-u root"
-bdd="starshine"
 
 if [ -f maj_sql.local ] ; then
     # Permet de changer la configuration dans un fichier non ajouté dans le svn
@@ -29,14 +27,13 @@ if [ -x /usr/bin/ssh-agent ]; then
 fi
 
 ssh $username@$host ./dumpstatic.sh stdout > dumpstatic.sql
-#scp $username@$host:maj.sql .
-#iconv -f ISO-8859-1 -t UTF-8 maj.sql | sed s/=latin1/=utf8/g > maj_utf8.sql || exit 1
-#mysql $sql_log $bdd -e 'source maj_utf8.sql'
-#rm maj.sql maj_utf8.sql
-mysql $sql_log $bdd -e 'source dumpstatic.sql'
-#rm maj.sql
-mysql $sql_log $bdd -e 'source update_comp.sql'
-php update_comp.php
+
+USER=`cat ../connect.php | grep \'user\' | cut -d\" -f4`
+BASE=`cat ../connect.php | grep \'db\' | cut -d\" -f4`
+PASSWORD=`cat ../connect.php | grep \'pass\' | cut -d\" -f4`
+HOST=`cat ../connect.php | grep \'host\' | cut -d\" -f4`
+
+mysql -u $USER -p$PASSWORD $BASE -e 'source dumpstatic.sql'
 
 echo done
 

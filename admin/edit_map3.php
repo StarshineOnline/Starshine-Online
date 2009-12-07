@@ -525,9 +525,27 @@ $req = $db->query($requete);
 					<option value="620" class="baseRow1">Centre12</option>
 					<option value="621" class="baseRow2">Centre</option>
 					<option value="622" class="baseRow1">Centre12</option>
-					<option value="623" class="baseRow1">tex_montcentre2</option>
+					<option value="623" class="baseRow2">tex_montcentre2</option>
 					<option value="624" class="baseRow1">tex_montcentre2c</option>
-					<option value="625" class="baseRow1">tex_montcentre2perif</option>
+					<option value="625" class="baseRow2">tex_montcentre2perif</option>
+
+					<option value="626" class="baseRow1">mont2bas</option>
+					<option value="627" class="baseRow2">mont2basdroit</option>
+					<option value="628" class="baseRow1">mont2droit</option>
+					<option value="629" class="baseRow2">mont2gauche</option>
+					<option value="630" class="baseRow1">mont2hautdroit</option>
+					<option value="631" class="baseRow2">mont2hautgauche</option>
+					<option value="632" class="baseRow1">mont2hautmilieu</option>
+					<option value="633" class="baseRow2">mont3hautgauche</option>
+					<option value="634" class="baseRow1">piquebas</option>
+					<option value="635" class="baseRow2">piquebasdroit</option>
+					<option value="636" class="baseRow1">piquebasgauche</option>
+					<option value="637" class="baseRow2">piquecentredroit</option>
+					<option value="638" class="baseRow1">piquecentregauche</option>
+					<option value="639" class="baseRow2">piquedroit</option>
+					<option value="640" class="baseRow1">piquegauche</option>
+					<option value="641" class="baseRow2">piquehaut</option>
+					<option value="642" class="baseRow1">piquehaut2</option>
 					
 				</optgroup>
 				
