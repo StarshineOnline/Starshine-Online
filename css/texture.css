@@ -1097,6 +1097,93 @@
 	background: url('../image/texture/neige_herbe/tex_montcentre2perif.png') no-repeat;
 }
 
+.tex626
+{
+	background: url('../image/texture/mont2bas.png') no-repeat;
+}
+
+.tex627
+{
+	background: url('../image/texture/mont2basdroit.png') no-repeat;
+}
+
+.tex628
+{
+	background: url('../image/texture/mont2droit.png') no-repeat;
+}
+
+.tex629
+{
+	background: url('../image/texture/mont2gauche.png') no-repeat;
+}
+
+.tex630
+{
+	background: url('../image/texture/mont2hautdroit.png') no-repeat;
+}
+
+.tex631
+{
+	background: url('../image/texture/mont2hautgauche.png') no-repeat;
+}
+
+.tex632
+{
+	background: url('../image/texture/mont2hautmilieu.png') no-repeat;
+}
+
+.tex633
+{
+	background: url('../image/texture/mont3hautgauche.png') no-repeat;
+}
+
+.tex634
+{
+	background: url('../image/texture/piquebas.png') no-repeat;
+}
+
+.tex635
+{
+	background: url('../image/texture/piquebasdroit.png') no-repeat;
+}
+
+.tex636
+{
+	background: url('../image/texture/piquebasgauche.png') no-repeat;
+}
+
+.tex637
+{
+	background: url('../image/texture/piquecentredroit.png') no-repeat;
+}
+
+.tex638
+{
+	background: url('../image/texture/piquecentregauche.png') no-repeat;
+}
+
+.tex639
+{
+	background: url('../image/texture/piquedroit.png') no-repeat;
+}
+
+.tex640
+{
+	background: url('../image/texture/piquegauche.png') no-repeat;
+}
+
+.tex641
+{
+	background: url('../image/texture/piquehaut.png') no-repeat;
+}
+
+.tex642
+{
+	background: url('../image/texture/piquehaut2.png') no-repeat;
+}
+
+
+
 /* Marais */
 .tex701
 {
