@@ -6,7 +6,7 @@ body {
 }
 
 #gradin {
-          background: url(../image/arene.png) no-repeat;
+/*          background: url(../image/arene.png) no-repeat;*/
           position: absolute;
           left: 50%;
           margin-left: -470px;           

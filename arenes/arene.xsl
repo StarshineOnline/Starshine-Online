@@ -7,19 +7,69 @@
 		<html>
 			<head>
 				<title>Arene <xsl:value-of select="name" /></title>
-				<link rel="icon" type="image/png" href="http://www.starshine-online.com/image/favicon.png" />
-				<link href="http://www.starshine-online.com/css/texture.css" rel="stylesheet" type="text/css" />
-				<link href="http://www.starshine-online.com/css/texture_low.css" rel="stylesheet" type="text/css" />
-				<link href="http://www.starshine-online.com/css/interfacev2.css" rel="stylesheet" type="text/css" />
-				<link href="http://www.starshine-online.com/arenes/arenes.css" rel="stylesheet" type="text/css" />
-				<script type="text/javascript"
-								src="http://www.starshine-online.com/javascript/jquery/jquery-1.3.2.min.js" />
-				<script type="text/javascript"
-								src="http://www.starshine-online.com/javascript/jquery/jquery-ui-1.7.2.custom.min.js" />
-				<script type="text/javascript"
-								src="http://www.starshine-online.com/javascript/fonction.js" />
-				<script type="text/javascript"
-								src="http://www.starshine-online.com/javascript/overlib/overlib.js" />
+				<link rel="icon" type="image/png">
+					<xsl:attribute name="href">
+            <xsl:call-template name="make_url">
+              <xsl:with-param name="path" >image/favicon.png</xsl:with-param>
+						</xsl:call-template>
+					</xsl:attribute>
+				</link>
+				<link rel="stylesheet" type="text/css" >
+					<xsl:attribute name="href">
+            <xsl:call-template name="make_url">
+              <xsl:with-param name="path" >css/texture.css</xsl:with-param>
+						</xsl:call-template>
+					</xsl:attribute>
+				</link>
+				<link rel="stylesheet" type="text/css" >
+          <xsl:attribute name="href">
+            <xsl:call-template name="make_url">
+              <xsl:with-param name="path" >css/texture_low.css</xsl:with-param>
+						</xsl:call-template>
+					</xsl:attribute>
+				</link>
+				<link rel="stylesheet" type="text/css" >         
+					<xsl:attribute name="href">
+            <xsl:call-template name="make_url">
+              <xsl:with-param name="path" >css/interfacev2.css</xsl:with-param>
+						</xsl:call-template>
+					</xsl:attribute>
+				</link>
+				<link rel="stylesheet" type="text/css" >
+					<xsl:attribute name="href">
+						<xsl:call-template name="make_url">
+							<xsl:with-param name="path" >arenes/arenes.css</xsl:with-param>
+						</xsl:call-template>
+					</xsl:attribute>
+				</link>
+				<script type="text/javascript">
+					<xsl:attribute name="src">
+						<xsl:call-template name="make_url">
+							<xsl:with-param name="path" >javascript/jquery/jquery-1.3.2.min.js</xsl:with-param>
+						</xsl:call-template>
+					</xsl:attribute>
+				</script>
+				<script type="text/javascript">
+					<xsl:attribute name="src">
+            <xsl:call-template name="make_url">
+              <xsl:with-param name="path" >javascript/jquery/jquery-ui-1.7.2.custom.min.js</xsl:with-param>
+						</xsl:call-template>
+					</xsl:attribute>
+				</script>
+				<script type="text/javascript">
+          <xsl:attribute name="src">
+            <xsl:call-template name="make_url">
+              <xsl:with-param name="path" >javascript/fonction.js</xsl:with-param>
+						</xsl:call-template>
+					</xsl:attribute>
+				</script>
+				<script type="text/javascript">
+          <xsl:attribute name="src">
+            <xsl:call-template name="make_url">
+              <xsl:with-param name="path" >javascript/overlib/overlib.js</xsl:with-param>
+						</xsl:call-template>
+					</xsl:attribute>
+				</script>
 				<script type="text/javascript" src="arene_poll.js" />
 			</head>
 			<body>
@@ -37,6 +87,10 @@
 				<script type="text/javascript">begin_poll();</script>
 			</body>
 		</html>
+	</xsl:template>
+	<xsl:template name="make_url">
+		<xsl:param name="path" />
+		<xsl:value-of select="//base" /><xsl:value-of select="$path" />
 	</xsl:template>
 	<xsl:template name="size_px">
 		<xsl:param name="size_cells" />width: <xsl:value-of
