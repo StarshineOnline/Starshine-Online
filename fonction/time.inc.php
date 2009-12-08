@@ -189,8 +189,7 @@ function date_sso()
 */
 function moment_jour()
 {
-	//Bug des arênes mis en commentaire
-	/*global $joueur;
+	global $joueur, $db;
 	if (isset($joueur) && $joueur != null)
 	{
 		$x = $joueur->get_x();
@@ -198,13 +197,17 @@ function moment_jour()
 	}
 	else
 	{
-		$joueur = new perso($_SESSION['ID']);
-		$x = $joueur->get_x();
-		$y = $joueur->get_y();
+	  // On ne peut pas créer d'objet perso car cette fonction est appelée dans son constructeur
+    $requete = "SELECT x,y FROM perso WHERE id =".$_SESSION['ID'];
+    $req = $db->query($requete);
+  	if( $row = $db->read_assoc($req) )
+  	{
+		  $x = $row["x"];
+		  $y = $row["y"];
+  	}
 	}
 	if ($x >= 300)
 	{
-		global $db;
 		$requete = "select heure from arenes where xmin <= $x and $x <= xmax and ymin <= $y and $y <= ymax";
 		$req = $db->query($requete);
 		if ($db->num_rows > 0)
@@ -213,7 +216,7 @@ function moment_jour()
 			$moment = $heure_donj['heure'];
 			if ($moment != null) return $moment;
 		}
-	}*/
+	}
 	$heure = heure_sso();
 	if($heure > 5 AND $heure < 10) $moment = 'Matin';
 	elseif($heure > 9 AND $heure < 16) $moment = 'Journee';
