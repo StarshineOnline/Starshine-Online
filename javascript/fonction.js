@@ -141,8 +141,6 @@ function envoiInfoJS(page, position)
 function envoiFormulaire(formulaire, position)
 {
   formul = $('#' + formulaire);
-  alert( formul.serialize() );
-  alert( $("#truc").attr("value") )
   $.ajax({type:formul.attr("method"),url:formul.attr("action"),data:formul.serialize(),success:function(html){
     $('#'+position).html(html);}});
   return false;
