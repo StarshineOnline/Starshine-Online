@@ -28,8 +28,6 @@ while($row = $db->read_assoc($req))
 	$xmax = $row['xmax'];
 	$ymin = $row['ymin'];
 	$ymax = $row['ymax'];
-	$coord['x'] = $xmin + round(($xmax - $xmin) / 2);
-	$coord['y'] = $ymin + round(($ymax - $ymin) / 2);
 
 	$requete_joueurs = 'SELECT ID, nom, level, race, x, y, classe, hp, hp_max, mp, pa FROM perso WHERE statut = \'actif\' AND (x <= '.$xmax.' AND x >= '.$xmin.') AND (y <= '.$ymax.' AND y >= '.$ymin.') ORDER BY y ASC, x ASC, dernier_connexion DESC';
 	$req_joueurs = $db->query($requete_joueurs);

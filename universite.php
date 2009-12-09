@@ -188,7 +188,7 @@ if($W_row['type'] == 1)
 					$newi = 0;
 					while($newi < count($new))
 					{
-						$requete = "INSERT INTO comp_perso VALUES('', '1', '".$new[$newi]."', 1, ".$_SESSION['ID'].")";
+						$requete = "INSERT INTO comp_perso VALUES(null, '1', '".$new[$newi]."', 1, ".$_SESSION['ID'].")";
 						$req = $db->query($requete);
 						$newi++;
 					}

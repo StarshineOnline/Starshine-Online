@@ -3308,6 +3308,9 @@ class perso extends entite
 				// Accessoires
 				//if($this['accessoire']['id'] != '0' AND $this['accessoire']['type'] == 'regen_hp') $bonus_accessoire = $this['accessoire']['effet']; else $bonus_accessoire = 0;
 				//if($this['accessoire']['id'] != '0' AND $this['accessoire']['type'] == 'regen_mp') $bonus_accessoire_mp = $this['accessoire']['effet']; else $bonus_accessoire_mp = 0;
+				$accessoire = $this->get_accessoire();
+				if($accessoire !== false && $accessoire->type == 'regen_hp')
+					$bonus_accessoire = $accessoire->effet;
 				// Effets magiques des objets
 				/*foreach($this['objet_effet'] as $effet)
 				{
