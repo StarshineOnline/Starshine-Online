@@ -1083,7 +1083,10 @@ class monstre
 
 	function get_buff()
 	{
-		return array();
+		if(isset($this->buff))
+			return $this->buff;
+		else
+			return false;
 	}
 	
 	function set_comp($comp_assoc = '', $valeur = '')

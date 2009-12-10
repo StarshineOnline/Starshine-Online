@@ -457,6 +457,7 @@ class entite
 	{
 		return $this->sort_element;
 	}
+	
 	function get_buff($nom = false, $champ = false, $type = false)
 	{
 		if(!$nom)
@@ -483,6 +484,7 @@ class entite
 				}
 		}
 	}
+	
 	function get_buff_only()
 	{
 		$buffs = array();
