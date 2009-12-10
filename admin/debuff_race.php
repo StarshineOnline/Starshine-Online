@@ -34,8 +34,9 @@ else
 					case 'cacophonie':
 						lance_buff('cacophonie', $row['id'], '10', '0', 2678400, 'Cacophonie', 'Que de bruit! Vous gagnez 10% d\'honneur en moins.', 'perso', 1, 0, 0, 0);
 					default:
-						$buff = buff::create('id', $GET['debuff']);
-						lance_buff($buff->get_type(), $row['id'], $buff->get_effet(), $buff->get_effet2(), $buff->get_duree(), $buff->get_nom(), description($buff->get_description(), $buff), 'perso', $buff->get_debuff(), 0, 0, 0);
+						$buff = sort_jeu::create(array('id'), array($_GET['debuff']));
+						$buff = $buff[0];
+						lance_buff($buff->get_type(), $row['id'], $buff->get_effet(), $buff->get_effet2(), $buff->get_duree(), $buff->get_nom(), description($buff->get_description(), $buff), 'perso', 1, 0, 0, 0);
 				}
 			}
 		}

@@ -125,7 +125,12 @@ if(is_donjon($attaquant->get_x(), $attaquant->get_y()))
 		if($W_distance < 0 ) $W_distance = 0;
 	}
 }
-if($W_distance > $attaquant->get_distance_tir())
+
+if($joueur->get_buff('repos_sage') && !$no_pa_attaque)
+{
+	echo '<h5>Vous êtes sous repos du sage, vous ne pouvez pas attaquer.</h5>';
+}
+else if($W_distance > $attaquant->get_distance_tir())
 {
 	echo '<h5>Vous êtes trop loin pour l\'attaquer !</h5>';
 }

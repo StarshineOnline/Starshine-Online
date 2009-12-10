@@ -2537,11 +2537,16 @@ class perso extends entite
 			else
 				foreach($this->buff as $buff)
 				{
-					if($buff->get_type() == $nom)
+					if($champ)
 					{
-						$get = 'get_'.$champ;
-						return $buff->$get();
+						if($buff->get_type() == $nom)
+						{
+							$get = 'get_'.$champ;
+							return $buff->$get();
+						}
 					}
+					else
+						return $buff;
 				}
 		}
 	}
@@ -3309,8 +3314,20 @@ class perso extends entite
 				//if($this['accessoire']['id'] != '0' AND $this['accessoire']['type'] == 'regen_hp') $bonus_accessoire = $this['accessoire']['effet']; else $bonus_accessoire = 0;
 				//if($this['accessoire']['id'] != '0' AND $this['accessoire']['type'] == 'regen_mp') $bonus_accessoire_mp = $this['accessoire']['effet']; else $bonus_accessoire_mp = 0;
 				$accessoire = $this->get_accessoire();
-				if($accessoire !== false && $accessoire->type == 'regen_hp')
-					$bonus_accessoire = $accessoire->effet;
+				if($accessoire !== false)
+				{
+					switch($accessoire->type)
+					{
+						case 'regen_hp':
+							$bonus_accessoire = $accessoire->effet;
+							break;
+						case 'regen_mp':
+							$bonus_accessoire_mp = $accessoire->effet;
+							break;
+						default:
+							break;
+					}
+				}
 				// Effets magiques des objets
 				/*foreach($this['objet_effet'] as $effet)
 				{

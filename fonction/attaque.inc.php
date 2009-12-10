@@ -377,7 +377,7 @@ function attaque($acteur = 'attaquant', $competence, &$effects)
 					$effet = round($degat * $buff_rage_vampirique);
 					if(($actif->get_hp() + $effet) > $actif->get_hp_max())
 						{
-							$effet = $actif->get_hp_max() - $actif->get_hp();
+							$effet = floor($actif->get_hp_max() - $actif->get_hp());
 						}
 					// Augmentation du nombre de HP récupérable par récupération
 					if(array_key_exists('recuperation', $actif->etat)) $actif->etat['recuperation']['hp_max'] += $effet;
