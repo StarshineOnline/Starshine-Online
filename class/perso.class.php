@@ -2549,6 +2549,7 @@ class perso extends entite
 						return $buff;
 				}
 		}
+		return false;
 	}
 
 	function get_nb_buff($debuff = 0)
