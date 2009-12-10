@@ -126,7 +126,7 @@ if(is_donjon($attaquant->get_x(), $attaquant->get_y()))
 	}
 }
 
-if($joueur->get_buff('repos_sage') && !$no_pa_attaque)
+if($joueur->is_buff('repos_sage') && !$no_pa_attaque)
 {
 	echo '<h5>Vous êtes sous repos du sage, vous ne pouvez pas attaquer.</h5>';
 }
