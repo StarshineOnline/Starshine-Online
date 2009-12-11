@@ -117,6 +117,8 @@ if(array_key_exists('valid_etape', $_GET))
 			}
 		break;
 		case 'proposition' :
+			if($j1->get_id() == $joueur->get_id())
+				break;
 			//Ajout des stars dans la bdd
 			if(echange_objet_ajout($_GET['star'], 'star', $echange['id_echange'], $joueur->get_id()))
 			{
