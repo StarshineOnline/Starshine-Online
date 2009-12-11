@@ -37,7 +37,7 @@ $_SESSION['position'] = $position;
 				$chantier = new terrain_chantier($_GET['id_chantier']);
 				$batiment = $chantier->get_batiment();
 				//dé d'Architecture
-				$de_architecture = rand(1, $joueur['architecture']);
+				$de_architecture = rand(1, $joueur->get_architecture());
 				$taxe = floor(($chantier->star_point * $de_architecture) * $R->get_taxe_diplo($joueur->get_race()) / 100);
 				$stars = ($chantier->star_point * $de_architecture) - $taxe;
 				echo 'Vous aidez à construire le batiment pour '.$de_architecture.' points de structure.<br />
@@ -52,8 +52,9 @@ $_SESSION['position'] = $position;
 					$db->query($requete);
 				}
 				//Gain de stars et Suppression des PA
-				$requete = "UPDATE perso SET star = star + ".$stars.", pa = pa - 10 WHERE ID = ".$joueur->get_id();
-				$db->query($requete);
+                $joueur->set_star($joueur->get_star() + $stars);
+                $joueur->set_pa($joueur->get_pa() - 10);
+                $joueur->sauver();
 				$delete = false;
 				//Fin de la construction ?
 				if(($chantier->point + $de_architecture) >= $batiment->point_structure)

@@ -182,7 +182,7 @@ include_once(root.'ville_bas.php');
 			<?php echo $batiment->point_structure; ?>  sont nécessaire à l'amélioration de ce batiment.<br />
 			<br />
 			Combien voulez vous rémunérer chaque point de structure construit ?<br />
-			<input type="text" id="star_point" nom="star_point" value="10" onkeyup="$('total').value = $('star_point').value * <?php echo $batiment->point_structure; ?>;" /> stars par points <input type="button" value="valider" onclick="envoiInfo('terrain.php?upgrade=<?php echo $batiment->id; ?>&amp;star_point=' + $('star_point').value, 'carte');"/><br />
+			<input type="text" id="star_point" nom="star_point" value="10" onkeyup="$('#total').val($('#star_point').val() * <?php echo $batiment->point_structure; ?>);" /> stars par points <input type="button" value="valider" onclick="envoiInfo('terrain.php?upgrade=<?php echo $batiment->id; ?>&amp;star_point=' + $('#star_point').val(), 'carte');"/><br />
 			Total : <input type="text" value="<?php echo ($batiment->point_structure * 10); ?>" id="total" />
 			<?php
 		}
@@ -237,7 +237,7 @@ include_once(root.'ville_bas.php');
 			$cout_total = $batiment->point_structure * $star_point;
 			if($cout_total > 0)
 			{
-				if($joueur['star'] >= $cout_total)
+				if($joueur->get_star() >= $cout_total)
 				{
 					if($batiment->nb_case <= $terrain->place_restante())
 					{
@@ -248,8 +248,8 @@ include_once(root.'ville_bas.php');
 						$chantier->star_point = $star_point;
 						$chantier->sauver();
 						//On supprime les stars du joueur
-						$requete = "UPDATE perso SET star = star - ".$cout_total." WHERE ID = ".$joueur->get_id();
-						$db->query($requete);
+                        $joueur->set_star($joueur->get_star() - $cout_total);
+                        $joueur->sauver();
 						$taxe = floor(($chantier->star_point * $batiment->point_structure) * $R->get_taxe_diplo($joueur->get_race()) / 100);
 						//On donne les stars au royaume
 						$requete = "UPDATE royaume SET star = star + ".$taxe." WHERE ID = ".$R->get_id();
@@ -362,8 +362,8 @@ include_once(root.'ville_bas.php');
 				?>
 				</select><br />
 				Combien voulez vous rémunérer chaque point de structure construit ?<br />
-				<input type="text" id="star_point" nom="star_point" value="10" onkeyup="$('total').value = $('star_point').value * <?php echo $batiment->point_structure; ?>;" /> stars par points<br />
-				<input type="button" value="Valider" onclick="envoiInfo('terrain.php?construire=' + $('construction').value + '&amp;star_point=' + $('star_point').value, 'carte');" />
+				<input type="text" id="star_point" nom="star_point" value="10" onkeyup="$('total').val($('#star_point').val() * <?php echo $batiment->point_structure; ?>);" /> stars par points<br />
+				<input type="button" value="Valider" onclick="envoiInfo('terrain.php?construire=' + $('#construction').val() + '&amp;star_point=' + $('#star_point').val(), 'carte');" />
 				<?php
 			}
 			?>
