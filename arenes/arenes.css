@@ -1,20 +1,51 @@
 /* CSS Document */
 
 body { 
-       background: #bed0e6;
+       background: #c7d6ea;
        background-image: none;
 }
 
-#gradin {
-/*          background: url(../image/arene.png) no-repeat;*/
+div.gradin {
           position: absolute;
           left: 50%;
-          margin-left: -470px;           
-          height: 830px;
-          width: 835px;
+          top: 0px;
+          z-index: 10;
+}
+
+#haut {
+        background: url(../image/arenehaut.png) no-repeat;
+        margin-left: -341px;
+        width: 651px;
+        height: 105px;
+}
+
+#bas {
+       background: url(../image/arenebas.png) no-repeat;
+       margin-left: -341px;
+       margin-top: 676px;
+       width: 651px;
+       height: 119px;
+}
+
+#droite {
+          background: url(../image/arenedroit.png) no-repeat;
+          margin-left: 220px;
+          width: 140px;
+          height: 795px;
+}
+
+#gauche {
+          background: url(../image/arenegauche.png) no-repeat;
+          margin-left: -470px;
+          width: 129px;
+          height: 795px;
 }
 
 div.div_map {
-              margin-top: 111px;
-              margin-left: 108px;
+              position: absolute;
+              left: 50%;
+              margin-top: 88px;
+              margin-left: -362px;
+              z-index: 1;
+              position: relative;
 }

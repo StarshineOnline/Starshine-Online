@@ -84,11 +84,24 @@ if ($direction == 'phase2')
 			}
 		}
 	}
+	if (array_key_exists('arene', $_GET)) 
+	{
+		require_once(root.'arenes/gen_arenes.php');
+		$requete = "SELECT * from arenes where nom = '$_GET[arene]'";
+		$req = $db->query($requete);
+		if ($arene = $db->read_object($req)) {
+			$arene_xml = gen_arene($arene->x, $arene->y, $arene->size, $arene->nom);
+			$arene_file = fopen(root.'arenes/'.$arene->file.'tmp', 'w+');
+			fwrite($arene_file, $arene_xml);
+			fclose($arene_file);
+			rename(root.'arenes/'.$arene->file.'tmp', root.'arenes/'.$arene->file);
+		}
+	}
 }
 
 ?>
 
-<form action="edit_donjon2.php" name="formulaire" method="POST">
+<form action="edit_donjon2.php<?php if(array_key_exists('arene', $_GET)) echo '?arene='.$_GET['arene'] ?>" name="formulaire" method="POST">
 <?php
 echo 'xmin : '.$xmin.' xmax : '.$xmax.' ymin : '.$ymin.' ymax : '.$ymax;
 //Requète pour l'affichage de la map
@@ -268,6 +281,9 @@ echo 'xmin : '.$xmin.' xmax : '.$xmax.' ymin : '.$ymin.' ymax : '.$ymax;
 					<option value="1627" class="baseRow1">Mur Donjon gobelin 12</option>
 					<option value="1628" class="baseRow1">Mur Donjon gobelin 13</option>
 				</optgroup>
+
+<?php if(array_key_exists('arene', $_GET)) include_once('terrain.inc.html'); ?>
+
 		</select>
 		<table>
 		<tr>

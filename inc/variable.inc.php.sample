@@ -4,6 +4,8 @@
    * Définitions des constantes.
    */  
 
+define('BASE', 'http://www.starshine-online.com/');
+
   /// Version actuelle
 	$G_version = '0.7 beta';
 	/// Révision actuelle

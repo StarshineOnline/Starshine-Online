@@ -9,6 +9,9 @@ include_once(root.'inc/traduction.inc.php');
 include_once(root.'inc/classe.inc.php');
 include_once(root.'connect.php');
 
+// defines BASE
+include_once(root.'inc/variable.inc.php');
+
 function make_attr(&$xml, &$element, $name, $value)
 {
 	$attr = $xml->createAttribute($name);
@@ -51,8 +54,7 @@ function gen_arene($x, $y, $size, $nom, $import = false, $make_import = false)
 	make_attr($xml, $origin, 'y', $y);
 	make_attr($xml, $origin, 'size', $size);
 	$root->appendChild($origin);
-	$root->appendChild($xml->createElement('base',
-																				 'http://www.starshine-online.com/'));
+	$root->appendChild($xml->createElement('base', BASE));
 	$root->appendChild($xml->createElement('date', date(DATE_RFC1123)));
 
 	if ($import !== false && $make_import == false) {
@@ -112,6 +114,19 @@ function gen_arene($x, $y, $size, $nom, $import = false, $make_import = false)
 	*/
 	
 	return $xml->saveXML();
+}
+
+function gen_all() {
+	global $db;
+	$q = "select * from arenes";
+	$req = $db->query($q);
+	while ($arene = $db->read_object($req)) {
+		$arene_xml = gen_arene($arene->x, $arene->y, $arene->size, $arene->nom);
+		$arene_file = fopen(root.'arenes/'.$arene->file.'tmp', 'w+');
+		fwrite($arene_file, $arene_xml);
+		fclose($arene_file);
+		rename(root.'arenes/'.$arene->file.'tmp', root.'arenes/'.$arene->file);
+	}
 }
 
 //echo gen_arene(117, 15, 10, 'Test-donjon');

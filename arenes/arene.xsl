@@ -76,13 +76,15 @@
 				<xsl:variable name="size">
 					<xsl:value-of select="//origin[@size]"/>
 				</xsl:variable>
-				<div id="gradin">
-					<div class="div_map" id="div_map">
-						<xsl:attribute name="style"><xsl:call-template name="size_px">
-							<xsl:with-param name="size_cells" select="//origin/@size" />
-						</xsl:call-template></xsl:attribute>
-						<xsl:apply-templates />
-					</div>
+				<div class="gradin" id="gauche" />
+				<div class="gradin" id="droite" />
+				<div class="gradin" id="bas" />
+				<div class="gradin" id="haut" />
+				<div class="div_map" id="div_map">
+					<xsl:attribute name="style"><xsl:call-template name="size_px">
+						<xsl:with-param name="size_cells" select="//origin/@size" />
+					</xsl:call-template></xsl:attribute>
+					<xsl:apply-templates />
 				</div>
 				<script type="text/javascript">begin_poll();</script>
 			</body>
