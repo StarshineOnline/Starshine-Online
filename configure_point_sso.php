@@ -52,6 +52,7 @@ $bonus = recup_bonus($joueur->get_id());
 				$requete = "UPDATE bonus_perso SET valeur = '".sSQL(htmlspecialchars($_POST['description']))."' WHERE id_bonus_perso = ".$bonus_total[$id]['id_bonus_perso'];
 				$db->query($requete);
 				$bonus = recup_bonus($joueur->get_id());
+				echo '<h6>Votre description a bien été modifié !</h6>';
 			}
 			//Changement de css
 			if(array_key_exists('css', $_GET))
@@ -60,6 +61,7 @@ $bonus = recup_bonus($joueur->get_id());
 				$requete = "UPDATE bonus_perso SET valeur = '".sSQL(htmlspecialchars($_GET['css']))."' WHERE id_bonus_perso = ".$bonus_total[$id]['id_bonus_perso'];
 				$db->query($requete);
 				$bonus = recup_bonus($joueur->get_id());
+				echo '<h6>Votre css a bien été modifié !</h6>';
 			}
 			//Avatar
 			if(array_key_exists('nom_du_fichier', $_FILES))
@@ -129,6 +131,7 @@ $bonus = recup_bonus($joueur->get_id());
 						}
 					}
 				}
+				echo '<h6>Votre avatar a bien été modifié !</h6>';
 			}
 			$requete = "SELECT * FROM bonus WHERE id_bonus = ".sSQL($id);
 			$req = $db->query($requete);
@@ -183,9 +186,9 @@ $bonus = recup_bonus($joueur->get_id());
 						Dimensions maximums du fichier : 80px * 80px<br />
 						<form action="configure_point_sso.php" method="post" enctype="multipart/form-data" id="formAvatar">
 							<input type="hidden" name="MAX_FILE_SIZE"  VALUE="20240" />
-							<input type="file" name="nom_du_fichier" id="truc" />
+							<input type="file" name="nom_du_fichier" id="fileUpload" />
 							<input type="hidden" value="<?php echo $id; ?>" name="id" />
-							<input type="submit" value="Envoyer" onclick="return envoiFormulaire('formAvatar', 'popup_content');">
+							<input type="submit" value="Envoyer" onclick="return envoiFichier('formAvatar', 'popup_content');">
 						</form>
 						<?php
 					break;

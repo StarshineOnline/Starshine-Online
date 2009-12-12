@@ -146,6 +146,17 @@ function envoiFormulaire(formulaire, position)
   return false;
 }
 
+// La balise input qui sert à choisir le fichier doit avoir l'id "fileUpload"
+function envoiFichier(formulaire, position)
+{
+  formul = $('#' + formulaire);
+  // Chargement du script permettant l'envoi de fichier
+  jQuery.getScript("./javascript/jquery/fileupload.js", function()
+    { jQuery.ajaxFileUpload({url:formul.attr("action"),data:formul.serialize(), fileElementId:"fileUpload", dataType:"html",secureuri:false,success:function(html){
+        $('#'+position).html(html); }}); });
+  return false;
+}
+
 function affichePopUp(input_name)
 {
 	$('#popup').show();

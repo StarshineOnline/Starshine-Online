@@ -214,6 +214,7 @@ body { margin:0; padding:0; background:#7e909c url(../image/v2/bg_site.png) repe
 .diplo_8 { background-color:; }
 .diplo_9 { background-color:; }
 .diplo_10 { background-color:; }
+textarea#css, textarea#description { width: 500px; height:150px; }
 
 /***************************************************
   Info Perso
