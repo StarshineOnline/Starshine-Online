@@ -118,9 +118,11 @@ function affiche_perso_visu($joueur, $W_row, $position="")
 	global $Gtrad;
 	
 	$mybonus = recup_bonus($_SESSION['ID']);
-	echo '<li style="clear:both;">
-	';
+	echo '<li style="clear:both;">';
 	$W_ID = $W_row['id'];
+	if ($W_ID == null) $W_ID = $W_row['ID'];
+	if ($W_ID == null) continue;
+	
 	$perso = new perso($W_ID);
 	
 	$bonus = recup_bonus($W_ID);
