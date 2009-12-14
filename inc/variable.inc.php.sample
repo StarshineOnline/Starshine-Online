@@ -164,5 +164,9 @@ define('BASE', 'http://www.starshine-online.com/');
 				 'colonnels' => array(1,6,10),
 				 'généraux' => array(1,6),
 				 'militaires' => array(1,2,3,5,6,8,9,10));
+				 
+				 
+  /// id d'utilisateur du forum à utiliser pour les posts automatiques
+  $G_id_forum = 2;
 
 ?>

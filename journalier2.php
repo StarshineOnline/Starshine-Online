@@ -585,16 +585,18 @@ $groupe['vampire'][2] = 37;
 //On regarde si une élection a lieu
 $requete = "SELECT id, id_royaume, type FROM elections WHERE date = '".date("Y-m-d", time())."'";
 $req = $db->query($requete);
+$elections = Array();
 //S'il y a une élection de prévue
 if($db->num_rows > 0)
 {
-	require('connect_forum.php');
+	require_once(root.'fonction/forum.inc.php');
 	while($row = $db->read_assoc($req))
 	{
 		$requete = "SELECT race FROM royaume WHERE id = ".$row['id_royaume'];
 		$req_n = $db->query($requete);
 		$row_n = $db->read_assoc($req_n);
 		$race = $row_n['race'];
+		$royaumes[ $row['id_royaume'] ]["race"] = $race;
 		if( $row["type"] == "nomination" )
 		{
 		  $requete = "SELECT id FROM perso WHERE rang_royaume = 6 AND race = '$race'";
@@ -602,23 +604,24 @@ if($db->num_rows > 0)
 		  $row_r = $db->read_assoc($req_r);
 		  $id_roi = $row_r["id"];
     }
-		//Suppression de l'ancien roi
-		$requete = "UPDATE punbbusers SET group_id = ".$groupe[$race][2]." WHERE group_id = ".$groupe[$race][1];
-		$db_forum->query($requete);
-		$requete = "UPDATE perso SET rang_royaume = 7 WHERE rang_royaume = 6 AND race = '$race'";
-		$db->query($requete);
-		//Groupe forum
 		$data = array();
 		$legend = array();
 		$label = array();
 		if( $row["type"] == "nomination" )
 		  $requete = "SELECT * FROM vote WHERE id_election = ".$row['id']." AND id_perso = $id_roi";
 		else
-		  $requete = "SELECT *, COUNT(*) as count FROM vote WHERE id_election = ".$row['id']." GROUP BY id_candidat ORDER BY count DESC";
+		  $requete = "SELECT vote.id_candidat, COUNT(*) as count, perso.honneur FROM vote, perso WHERE id_election = ".$row['id']." AND perso.id = vote.id_candidat GROUP BY id_candidat ORDER BY count DESC, honneur DESC";
 		$req_v = $db->query($requete);
 		$i = 0;
 		if($db->num_rows > 0)
 		{
+  		//Suppression de l'ancien roi
+  		$requete = "UPDATE punbbusers SET group_id = ".$groupe[$race][2]." WHERE group_id = ".$groupe[$race][1];
+  		$db_forum->query($requete);
+		  //Groupe forum
+  		$requete = "UPDATE perso SET rang_royaume = 7 WHERE rang_royaume = 6 AND race = '$race'";
+  		$db->query($requete);
+  		// Résultat des votes
 			while($row_v = $db->read_assoc($req_v))
 			{
 				$requete = "SELECT * FROM candidat WHERE id_perso = ".$row_v['id_candidat']." AND id_election = ".$row['id'];
@@ -633,11 +636,11 @@ if($db->num_rows > 0)
 					$db_forum->query($requete);
 
 					//Prochaine élection
-					if($row_c['duree'] == 1 && date('d') > 12) $date_e = date("Y-m-d", mktime(0, 0, 0, date("m") + 2, 1, date("Y")));
-					else $date_e = date("Y-m-d", mktime(0, 0, 0, date("m") + $row_c['duree'], 1, date("Y")));
+					if($row_c['duree'] == 1 && date('d') > 12) $date_e = mktime(0, 0, 0, date("m") + 2, 1, date("Y"));
+					else $date_e = mktime(0, 0, 0, date("m") + $row_c['duree'], 1, date("Y"));
 					$election = new elections();
 					$election->set_id_royaume($row['id_royaume']);
-					$election->set_date($date_e);
+					$election->set_date( date("Y-m-d", $date_e) );
 					$election->set_type($row_c['type']);
 					$election->sauver();
 					// Ministres
@@ -645,6 +648,10 @@ if($db->num_rows > 0)
 					$royaume->set_ministre_economie( $row_c["id_ministre_economie"] );
 					$royaume->set_ministre_militaire( $row_c["id_ministre_militaire"] );
 					$royaume->sauver();
+					
+					// Message du forum
+					$elections[ $row['id_royaume'] ]["prochain"] = "Prochaine ".($row_c['type']=="universel" ? "élection" : "nomination")
+            ." le ".date("d / m / Y", $date_e).".";
 				}
 				$data[] = $row_v['count'];
 				$legend[] = $row_c['nom'].'('.$row_v['count'].')';
@@ -674,18 +681,45 @@ if($db->num_rows > 0)
   			$graph->drawTitle(50,22,'Elections du roi '.$Gtrad[$race].' du '.$date ,50,50,50,585);
   
   			$graph->Render('image/election_'.$race.'.png');
+  			
+				// Message du forum
+				$elections[ $row['id_royaume'] ]["resultat"] = "[img]http://www.starshine-online.com/image/election_$race.png[/img]";
+      }
+      else
+      {
+				// Message du forum
+				$elections[ $row['id_royaume'] ]["resultat"] = "Nomination ".creer_cdn($row_c['nom']).".";
       }
 		}
+  	else // pas de votant
+  	{
+      // On garde le roi et les ministres et on crée une nouvelle élection universelle pour le mois prochain
+			$date_e = mktime(0, 0, 0, date("m") + 1, 1, date("Y"));
+			$election = new elections();
+			$election->set_id_royaume($row['id_royaume']);
+			$election->set_date( date("Y-m-d", $date_e) );
+			$election->set_type("universel");
+			$election->sauver();
+			
+			// Récupération du nom du roi
+      $requete = "SELECT nom FROM perso WHERE rang_royaume = 6 AND race = '$race'";
+		  $req_r = $db->query($requete);
+		  $row_r = $db->read_assoc($req_r);
+		  $nom_roi = $row_r["nom"];
+			// Message du forum
+			$elections[ $row['id_royaume'] ]["resultat"] = "$nom_roi reconduit pour un mois, suffrage universel.";
+			$elections[ $row['id_royaume'] ]["prochain"] = "Prochaine élection le ".date("d / m / Y", $date_e).".";
+    }
 	}
 }
 
 //On regarde si une révolution a lieu
 $requete = "SELECT id, id_royaume FROM revolution WHERE date = ".date("Y-m-d", time());
 $req = $db->query($requete);
-//Si ya une élection de prévue
+//S'il y a une révolution de prévue
 if($db->num_rows > 0)
 {
-	require('connect_forum.php');
+	require_once(root.'fonction/forum.inc.php');
 	while($row = $db->read_assoc($req))
 	{
 		$requete = "SELECT race FROM royaume WHERE id = ".$row['id_royaume'];
@@ -757,6 +791,41 @@ if($db->num_rows > 0)
 			}
 		}
 	}
+}
+
+// Annonce sur le forum s'il y a eu des élections
+if( count($elections) )
+{
+	// Début du message
+	$msg_elec = "[i]Voici le résultat des élections ".creer_cdn(nom_mois_prec())." pour chaque royaume :[/i]\n\n";
+	$msg_elec .= "(CTRL + F5 pour ceux qui ne voient pas les bonnes images)";
+	// On parcours les royaume et donne l'évolution pour chacun
+	$requete = "SELECT id,race FROM royaume WHERE race NOT LIKE ''";
+	$req = $db->query($requete);
+	while( $row = $db->read_assoc($req) )
+	{
+    $msg_elec .= "\n\n[b]".$Gtrad[ $row["race"] ]."[/b]\n";
+    // Est-ce qu'il y a eut une élection ?
+    if( array_key_exists($row["id"], $elections) )
+    {
+      $msg_elec .= $elections[$row["id"]]["resultat"]."\n".$elections[$row["id"]]["prochain"];
+    }
+    else // Pas de changement => on rappelle le roi et la date de la prochaine élection
+    {
+			// Récupération du nom du roi
+      $requete = "SELECT nom FROM perso WHERE rang_royaume = 6 AND race = '".$row["race"]."'";
+		  $req_r = $db->query($requete);
+		  $row_r = $db->read_assoc($req_r);
+      $msg_elec .= "Mandat de ".$row_r["nom"]." non terminé.\n";
+      // Récupération de la prochaine élection
+      $prochaine = elections::get_prochain_election( $row["id"] );
+      $date_e = explode('-', $prochaine[0]->get_date());
+      $msg_elec .= "Prohaine ".($prochaine[0]->get_type()=="universel" ? "élection" : "nomination").
+        " le ".$date_e[2]." / ".$date_e[1]." / ".$date_e[0].".";
+    }
+  }
+  // Création de l'annonce
+  creer_annonce("Élections pour le mois ".creer_cdn(nom_mois()), $msg_elec);
 }
 
 //Fin des enchères
