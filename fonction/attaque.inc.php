@@ -368,7 +368,7 @@ function attaque($acteur = 'attaquant', $competence, &$effects)
       //Si flêche étourdissante
       if($actif->etat['fleche_etourdit'] > 0)
 				{
-					echo '&nbsp;&nbsp;<strong>'.$passif->get_nom().'</strong> est étourdit par la flêche !<br />';
+					echo '&nbsp;&nbsp;<strong>'.$passif->get_nom().'</strong> est étourdi par la flêche !<br />';
 					$passif->etat['etourdit']['duree'] = 2;
 				}
       if($actif->is_buff('buff_rage_vampirique', true))
