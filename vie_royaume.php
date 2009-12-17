@@ -60,11 +60,24 @@ if($W_row['type'] == 1)
 		//Pas d'élection prévue prochainement, on peut renverser le pouvoir
 		if(!$is_election)
 		{
-			?>
-			<li>
-				<a href="revolution.php" onclick="return envoiInfo(this.href, 'carte')">Déclencher une révolution</a>
-			</li>
-			<?php
+		  //Si il y a une révolution en cours
+		  $is_revolution = revolution::is_mois_revolution($R->get_id());
+		  if( $is_revolution )
+      {
+			  ?>
+  			<li>
+  				<a href="revolution.php" onclick="return envoiInfo(this.href, 'carte')">Voter pour ou contre une révolution</a>
+  			</li>
+  			<?php
+      }
+      else
+		  {
+			  ?>
+  			<li>
+  				<a href="revolution.php" onclick="return envoiInfo(this.href, 'carte')">Déclencher une révolution</a>
+  			</li>
+  			<?php
+      }
 		}
 	}
 }

@@ -100,7 +100,6 @@ function nom_mois($mois=0)
     $mois = date("m");
   $noms = Array("Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", 
     "Septembre", "Octobre", "Novembre", "Décembre");
-  print_r($mois);
   return $noms[$mois-1];
 }
 

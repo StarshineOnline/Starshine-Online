@@ -683,7 +683,7 @@ if($db->num_rows > 0)
   			$graph->Render('image/election_'.$race.'.png');
   			
 				// Message du forum
-				$elections[ $row['id_royaume'] ]["resultat"] = "[img]http://www.starshine-online.com/image/election_$race.png[/img]";
+				$elections[ $row['id_royaume'] ]["resultat"] = "[img]".BASE."image/election_$race.png[/img]";
       }
       else
       {
@@ -714,7 +714,7 @@ if($db->num_rows > 0)
 }
 
 //On regarde si une révolution a lieu
-$requete = "SELECT id, id_royaume FROM revolution WHERE date = ".date("Y-m-d", time());
+$requete = "SELECT id, id_royaume FROM revolution WHERE date = '".date("Y-m-d", time())."'";
 $req = $db->query($requete);
 //S'il y a une révolution de prévue
 if($db->num_rows > 0)
@@ -724,7 +724,7 @@ if($db->num_rows > 0)
 	{
 		$requete = "SELECT race FROM royaume WHERE id = ".$row['id_royaume'];
 		$req_n = $db->query($requete);
-		$row_n = $db->read_assoc($req);
+		$row_n = $db->read_assoc($req_n);
 		$race = $row_n['race'];
 		$data = array();
 		$legend = array();
@@ -734,18 +734,19 @@ if($db->num_rows > 0)
 		$i = 0;
 		if($db->num_rows > 0)
 		{
+		  $pour = $contre = 0;
 			while($row_v = $db->read_assoc($req_v))
 			{
 				if($row_v['pour'] == 1)
 				{
-					$pour = $row['count'];
+					$pour = $row_v['count'];
 					$data[] = $row_v['count'];
 					$legend[] = 'Pour ('.$row_v['count'].')';
 					$label[] = 'Pour ('.$row_v['count'].")\n%.1f%%";
 				}
 				else
 				{
-					$contre = $row['count'];
+					$contre = $row_v['count'];
 					$data[] = $row_v['count'];
 					$legend[] = 'Contre ('.$row_v['count'].')';
 					$label[] = 'Contre ('.$row_v['count'].")\n%.1f%%";
@@ -771,6 +772,9 @@ if($db->num_rows > 0)
 			$graph->drawTitle(50,22,'Révolution du peuple '.$Gtrad[$race].' du '.$date ,50,50,50,585);
 
 			$graph->Render('image/revolution_'.$race.'_'.date("Y-m-d").'.png');
+			
+			// Message du forum
+			$elections[ $row['id_royaume'] ]["resultat"] = "[img]".BASE."image/revolution_$race"."_".date("Y-m-d").".png[/img]\n";
 
 			//On met en route la révolution si pour > contre
 			if($pour > $contre)
@@ -780,15 +784,37 @@ if($db->num_rows > 0)
 				$db_forum->query($requete);
 				$requete = "UPDATE perso SET rang_royaume = 7 WHERE rang_royaume = 6 AND race = '".$race."'";
 				$db->query($requete);
+				// Supression des ministres
+				$royaume = new royaume( $row['id_royaume'] );
+				$royaume->set_ministre_economie( 0 );
+				$royaume->set_ministre_militaire( 0 );
+				$royaume->sauver();
 				//Mis en route de nouvelles élections pour le mois suivant
-				if(date('d') > 12) $date_e = date("Y-m-d", mktime(0, 0, 0, date("m") + 2, 1, date("Y")));
-				else $date_e = date("Y-m-d", mktime(0, 0, 0, date("m") + 1, 1, date("Y")));
+				if(date('d') > 12) $date_e = mktime(0, 0, 0, date("m") + 2, 1, date("Y"));
+				else $date_e = mktime(0, 0, 0, date("m") + 1, 1, date("Y"));
 				$election = new elections();
 				$election->set_id_royaume($row['id_royaume']);
-				$election->set_date($date_e);
+				$election->set_date( date("Y-m-d", $date_e) );
 				$election->set_type('universel');
 				$election->sauver();
+  			// Message du forum
+  			$elections[ $row['id_royaume'] ]["resultat"] .= "Le roi et ses ministres ont été destitués";
+			  $elections[ $row['id_royaume'] ]["prochain"] = "Prochaine élection le ".date("d / m / Y", $date_e).".";
 			}
+			else
+			{
+    		// Récupération du nom du roi
+        $requete = "SELECT nom FROM perso WHERE rang_royaume = 6 AND race = '$race'";
+    	  $req_r = $db->query($requete);
+    	  $row_r = $db->read_assoc($req_r);
+    	  $nom_roi = $row_r["nom"];
+  			$elections[ $row['id_royaume'] ]["resultat"] .= "$nom_roi reste roi.";
+  			// Récupération de la date de la prochaine élection
+        $prochaine = elections::get_prochain_election($row["id_royaume"], true);
+        $date_e = explode('-', $prochaine[0]->get_date());
+        $elections[ $row['id_royaume'] ]["prochain"] = "Prohaine ".($prochaine[0]->get_type()=="universel" ? "élection" : "nomination").
+          " le ".$date_e[2]." / ".$date_e[1]." / ".$date_e[0].".";
+      }
 		}
 	}
 }
@@ -818,7 +844,7 @@ if( count($elections) )
 		  $row_r = $db->read_assoc($req_r);
       $msg_elec .= "Mandat de ".$row_r["nom"]." non terminé.\n";
       // Récupération de la prochaine élection
-      $prochaine = elections::get_prochain_election( $row["id"] );
+      $prochaine = elections::get_prochain_election($row["id"], true);
       $date_e = explode('-', $prochaine[0]->get_date());
       $msg_elec .= "Prohaine ".($prochaine[0]->get_type()=="universel" ? "élection" : "nomination").
         " le ".$date_e[2]." / ".$date_e[1]." / ".$date_e[0].".";
