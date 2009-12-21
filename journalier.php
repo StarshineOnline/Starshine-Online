@@ -46,6 +46,17 @@ while($row = $db->read_assoc($req))
 $nbr_perso = 750;
 $level_moyen = 6;*/
 
+$arenes = array();
+$requete = "SELECT * FROM arenes";
+$req = $db->query($requete);
+while($row = $db->read_array($req))
+{
+	for ($x = $row['x']; $x <= $row['x'] + $row['size']; $x++)
+		for ($y = $row['y']; $y <= $row['y'] + $row['size']; $x++)
+			$arenes[] = convert_in_pos($x, $y);
+}
+
+
 //Sélection des monstres
 $requete = "SELECT * FROM monstre ORDER BY level";
 $req = $db->query($requete);
@@ -110,6 +121,9 @@ while($row = $db->read_array($req))
 		$req2 = $db->query($requete);
 		while($row2 = $db->read_array($req2))
 		{
+			if (in_array($row2['id'], $arenes))
+				continue; // On ne fait pas poper dans les arenes
+
 			//echo $row2['id'].' '.$row2['info'].' ';
 			if (($row2['info'] === '') OR ($row2['info'] === '0')) $row2['info'] = 1;
 			if (in_array($row2['info'], $terrain))
