@@ -190,7 +190,7 @@ $this-><?php echo $champ_reference; ?> = $<?php echo $champ_reference; ?>;
 	}
 
 	/**
-	* Supprime de la base de donnée
+	* Crée un tableau d'objets respectant certains critères
 	* @access static
 	* @param array|string $champs champs servant a trouver les résultats
 	* @param array|string $valeurs valeurs servant a trouver les résultats
