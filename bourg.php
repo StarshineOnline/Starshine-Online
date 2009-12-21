@@ -87,12 +87,12 @@ if($bourg->get_x() == $joueur->get_x() AND $bourg->get_y() == $joueur->get_y() A
 		<li>
 			<a href="roi/">Gestion du royaume</a>
 		</li>
-    <li>
-      <a href="teleport.php" onclick="return envoiInfo(this.href, 'carte')">Pierre de Téléportation</a>
-    </li>
 <?php
 	}
 }
 ?>
+    <li>
+      <a href="teleport.php" onclick="return envoiInfo(this.href, 'carte')">Pierre de Téléportation</a>
+    </li>
 	</ul>
 	</div>

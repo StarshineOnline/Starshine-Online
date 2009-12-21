@@ -25,9 +25,20 @@ if ($joueur->get_race() != $R->get_race() &&
 	exit (0);
 }
 
+$batiment_ok = false;
+if ($W_row['type'] != 1)
+{  
+  $W_requete_bat = 'SELECT royaume, type FROM construction WHERE x = '.
+    $joueur->get_x().' and y = '.$joueur->get_y(); 
+	$W_req_bat = $db->query($W_requete_bat);
+	$W_row_bat = $db->read_assoc($W_req_bat);
+	if ($W_row_bat && $W_row_bat['type'] == 'bourg')
+		$batiment_ok = true;
+}
+
 	if(array_key_exists('id', $_GET))
 	{
-		if($W_row['type'] == 1)
+		if($W_row['type'] == 1 || $batiment_ok)
 		{
 			$requete = 'SELECT * FROM teleport WHERE ID = '.sSQL($_GET['id']);
 			$req = $db->query($requete);
