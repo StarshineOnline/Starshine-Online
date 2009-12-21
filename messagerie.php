@@ -30,7 +30,7 @@ elseif(array_key_exists('action', $_GET))
 ?>
 <fieldset>
 <legend>Messagerie <?php echo $titre_messagerie; ?></legend>
-<div id="messagerie_onglet" style="text-align : center;">
+<div id="messagerie_onglet">
 	<?php
 	include_once(root.'messagerie_menu_onglet.php');
 	?>

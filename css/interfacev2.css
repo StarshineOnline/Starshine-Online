@@ -193,6 +193,11 @@ body { margin:0; padding:0; background:#7e909c url(../image/v2/bg_site.png) repe
 .message_prev:hover { background-position:bottom!important; }
 .message_next { background:transparent url(./../image/interface/next_20.png) no-repeat scroll top; height:20px; width:20px; display:block; float:right; }
 .message_next:hover { background-position:bottom!important; }
+.bulle_message {	border-width: 16px 8px 8px 8px;	-webkit-border-image: url('./../image/interface/bulle_message.png') 16 8 8 8;-moz-border-image: url('./../image/interface/bulle_message.png') 16 8 8 8;}
+.bulle_message_me {	border-width: 16px 8px 8px 8px;	-webkit-border-image: url('./../image/interface/bulle_message_me.png') 16 8 8 8;-moz-border-image: url('./../image/interface/bulle_message_me.png') 16 8 8 8;}
+.bulle_message_new {	border-width: 16px 8px 8px 8px;	-webkit-border-image: url('./../image/interface/bulle_message_new.png') 16 8 8 8;-moz-border-image: url('./../image/interface/bulle_message_new.png') 16 8 8 8;}
+.pages {text-align: center;line-height:19px;margin-left:185px;}
+.pagination {background-color: #eee;-moz-border-radius:10px; -webkit-border-radius:10px;}
 #conteneur_test { height:100%; width:100%; z-index:99999; cursor:wait; position:absolute; }
 .infoperso { vertical-align:top; float:left; padding:2px; margin:2px; height:75px; -moz-border-radius:10px; -webkit-border-radius:10px; background-color:#91AEF2; border:1px solid #555555; vertical-align:top; }
 #info_case ul li { height:20px; }
@@ -228,26 +233,31 @@ textarea#css, textarea#description { width: 500px; height:150px; }
 #bestiaire ul li:hover { background:transparent url(../image/interface/1.png) center; }
 #bestiaire ul li span { display:block; float:left; margin:1px; height:40px; }
 #bestiaire ul li img { height:30px; }
+#messagerie_onglet a {border : 1px solid #CCC;background:#EEE3C5;display:block;float:left;width:80px;height:20px;line-height: 20px;text-indent: 5px; -moz-border-radius:10px; -webkit-border-radius:10px; }
+#messagerie_onglet a:hover {background-color: #E6CD93;}
 #messagerie_liste { }
-#messagerie_liste ul li { float:left; border-top:1px dotted #D7BF88; }
-#messagerie_liste ul li:hover { background:transparent url(../image/interface/1.png) center; -moz-border-radius:2px; -webkit-border-radius:2px; }
-#messagerie_liste .titre { float:left; display:block; width:225px; padding-left:10px; }
+#messagerie_liste ul li { float:left;cursor: pointer; }
+#messagerie_liste .head:hover {background:none !important;cursor:default !important;}
+#messagerie_liste ul li:hover { background:transparent url(../image/interface/1.png) center; -moz-border-radius:5px; -webkit-border-radius:5px; }
+#messagerie_liste .t1 {background:#CCC; -moz-border-radius:5px; -webkit-border-radius:5px; }
+#messagerie_liste .titre { float:left; display:block; width:190px; padding-left:10px; }
+#messagerie_liste .msg { float:left; display:block; width:35px; text-align: right;padding-right:10px;}
 #messagerie_liste .par { float:left; display:block; width:100px; }
-#messagerie_liste .date { float:left; display:block; width:100px; }
+#messagerie_liste .date { float:left; display:block; width:90px; }
 #combat_cartouche { clear:both; background-color:#DDDDDD; padding:9px; -moz-border-radius:12px; -webkit-border-radius:12px; min-height:70px; }
 .infoperso td { font-size:10px; margin:0; padding:0; }
 .roseeticone { float:left; padding:4px; margin:5px; }
 #carte h2 { padding-left:25px; color:#000; line-height:25px; font-size:1.4em; border-top:1px solid; border-bottom:1px solid; border-color:#888; font-family:"Trebuchet MS", Times, serif; font-variant:small-caps; text-align:center; margin-top:5px; margin-bottom:8px; padding:0; background-color:#D8AB41; }
-#information h2 { padding-left:25px; line-height:25px; font-size:1.4em; font-family:"Trebuchet MS", Times, serif; font-variant:small-caps; text-align:center; margin-top:5px; margin-bottom:8px; height:40px; padding:0; background-color:#D8AB41; border-bottom:1px solid #888888; border-color:#888888; border-top:1px solid #888888; color:#000000; }
+#information h2 { padding-left:25px; line-height:25px; font-size:1.4em; font-family:"Trebuchet MS", Times, serif; font-variant:small-caps; text-align:center; margin-top:5px; margin-bottom:8px; padding:0; background-color:#D8AB41; border-bottom:1px solid #888888; border-color:#888888; border-top:1px solid #888888; color:#000000; }
 h3.old { border-top:1px solid; border-bottom:1px solid; border-color:#888; margin-top:10px; margin-bottom:5px; padding-left:10px; background-color:#91AEF2; font-family:"Trebuchet MS", Times, serif; font-variant:small-caps; }
 
 /***************************************************
   Messagerie
  ***************************************************/
-div.message_complet { clear:both; width:100%; border-top:1px solid #E7CF98; }
+div.message_complet { clear:both; width:100%; }
 div.message_action { float:right; font-size:.8em; }
 div.spacer { clear:both; }
-.messagerie { margin-top:0; margin-bottom:0; font-variant:normal; font-weight:normal; background-color:#E7CF98; padding:0 6px 3px; -moz-border-radius-bottomright:10px; -webkit-border-bottom-right-radius:10px; float:left; }
+.messagerie { margin-top:0; margin-bottom:0; font-variant:normal; font-weight:normal; background-color:#E7CF98; padding:0 6px 3px; -moz-border-radius:10px; -webkit-border-radius:10px; float:left; }
 .fav_on { background:transparent url(./../image/messagerie_fav_on.png) no-repeat scroll left center; height:14px; width:16px; display:block; float:left; }
 .fav_off { background:transparent url(./../image/messagerie_fav_off.png) no-repeat scroll left center; height:14px; width:16px; display:block; float:left; }
 .del { background:transparent url(./../image/messagerie_del.png) no-repeat scroll top; height:16px; width:16px; display:block; }

@@ -49,8 +49,7 @@ function message_affiche($message, $joueur_id, $thread_title = '')
 			$style = 'style="background: transparent url('.$fichier.') no-repeat left;padding-left:42px;"';
 		}
 	}
-	if ($message->etat=='non_lu'){$div_nonlu = '<div style="background:transparent url(./../image/v2/box_accueil2.png);">';$divfin_nonlu = '</div>';}
-	
+		/*
 		if($message->etat != 'important' && $message->etat != 'masque') 
 		{
 			$fav = '<a href="message_change_etat.php?id_message='.$message->id_message.'&amp;etat=important" onclick="return envoiInfo(this.href, \'message'.$message->id_message.'\')" title="Mettre en favoris"><span class="fav_off"></span></a><a href="message_change_etat.php?id_message='.$message->id_message.'&amp;etat=masque" onclick="return envoiInfo(this.href, \'message'.$message->id_message.'\')" title="Masquer"><span class="msg_cache"></span></a>';
@@ -63,19 +62,22 @@ function message_affiche($message, $joueur_id, $thread_title = '')
 		else 
 		{
 			$fav = '<a href="message_change_etat.php?id_message='.$message->id_message.'&amp;etat=lu" onclick="return envoiInfo(this.href, \'message'.$message->id_message.'\')" title="Mettre en favoris"><span class="fav_on"></span></a>';
-		}	
-		if($joueur_id == $message->id_auteur) $del =  '<a href="message_change_etat.php?id_message='.$message->id_message.'&amp;etat=del" onclick="if(confirm(\'Voulez vous supprimer votre message ?\')) return envoiInfo(this.href, \'message'.$message->id_message.'\'); else return false;" title="Supprimer"><span class="del"></span></a>';
-		$message_affiche = $div_nonlu.'
-		<span class="messagerie" onclick="$(\'mess'.$message->id_message.'\').toggle();">
+		}
+		*/	
+		if($joueur_id == $message->id_auteur) {$del =  '<a href="message_change_etat.php?id_message='.$message->id_message.'&amp;etat=del" onclick="if(confirm(\'Voulez vous supprimer votre message ?\')) return envoiInfo(this.href, \'message'.$message->id_message.'\'); else return false;" title="Supprimer"><span class="del"></span></a>';$style_me='style="float:right !important;"';}
+		if($joueur_id == $message->id_auteur) {$class_message = 'bulle_message_me';}elseif($message->etat=='non_lu'){$class_message = 'bulle_message_new';} else{$class_message = 'bulle_message';}
+
+		$message_affiche = '
+		<span class="messagerie" '.$style_me.'>
 			<span class="auteur" '.$style.'>'.$message->nom_auteur.'</span>
 			<span class="date">'.$date.'</span>
 		</span>
 		<span style="float:right">'.$fav.'</span>
-		<p id="mess'.$message->id_message.'" style="clear:both;padding:2px;'.$masque.'" >'.$message_texte.'</p>
+		<p id="mess'.$message->id_message.'" class="'.$class_message.'" style="clear:both;padding:2px;'.$masque.'" >'.$message_texte.'</p>
 		<div class="message_action">
 		'.$del.'
 	</div>
-	<div class="spacer"></div>'.$divfin_nonlu;
+	<div class="spacer"></div>';
 	
 	return $message_affiche;
 }
