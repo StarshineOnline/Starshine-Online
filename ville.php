@@ -230,6 +230,9 @@ if($W_row['type'] == 1)
 				<li>
 					<a href="poste.php" onclick="return envoiInfo(this.href, 'carte')">Poste</a>
 				</li>
+					<li>
+						<a href="show_arenes.php" onclick="return envoiInfo(this.href, 'carte')">Arènes</a>
+					</li>
 <?php
 		if($R->get_diplo($joueur->get_race()) == 127)
 		{

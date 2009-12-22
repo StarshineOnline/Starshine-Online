@@ -66,7 +66,7 @@ if (isset($_REQUEST['remove']))
 <form action="arenes.php" method="get">
 <select name="teleport_in">
 <?php
-$requete_arene = "select * from arenes";
+$requete_arene = "select * from arenes where open = 1";
 $req = $db->query($requete_arene);
 if ($db->num_rows > 0) {
   while ($R_arene = $db->read_assoc($req)) {
