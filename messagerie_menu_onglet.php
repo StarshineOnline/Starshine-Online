@@ -13,8 +13,13 @@ if(array_key_exists('javascript', $_GET))
 
 if ($joueur->get_groupe()!='0')
 {
+	if ($non_lu['groupe']>0){echo "<strong>";}
 	echo "<a href='messagerie.php' onclick='return envoiInfo(this.href, \"information\"); return false;'>Groupe (".$non_lu['groupe'].")</a> ";
+	if ($non_lu['groupe']>0){echo "</strong>";}
+
 }
+if ($non_lu['perso']>0){echo "<strong>";}
 echo "<a href='messagerie.php?action=perso' onclick='envoiInfo(this.href, \"information\"); return false;'>Perso (".$non_lu['perso'].")</a>";
+if ($non_lu['perso']>0){echo "</strong>";}
 
 ?>

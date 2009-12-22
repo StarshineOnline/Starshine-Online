@@ -156,9 +156,8 @@ else
 				}
 				else */$options = '';
 				?>
-				<li id="thread_<?php echo $thread->id_thread; ?>" class="<?php echo $class;?>" onclick="envoiInfo('messagerie.php?id_thread=<?php echo $thread->id_thread; ?>', 'information');">
+				<li <?php if($thread_non_lu>0) {echo "style='font-weight: bold;' ";} ?> id="thread_<?php echo $thread->id_thread; ?>" class="<?php echo $class;?>" onclick="envoiInfo('messagerie.php?id_thread=<?php echo $thread->id_thread; ?>', 'information');">
 					<span class='titre'>
-				<?php echo $texte_thread_non_lu; ?>
 
 				<?php
 				//Si le titre est trop long je le coupe pour que ça casse pas ma mise en page qui déchire ta soeur en deux
@@ -170,6 +169,8 @@ else
 	
 				?>
 				<?php echo $titre; ?>
+				<?php echo $texte_thread_non_lu; ?>
+
 					</span>
 					<span class='msg'>
 					<?php echo $message_total; ?>
