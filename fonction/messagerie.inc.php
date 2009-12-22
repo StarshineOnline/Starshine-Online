@@ -41,7 +41,7 @@ function message_affiche($message, $joueur_id, $thread_title = '')
 	$message_texte = transform_texte($message->message);
 	$bonus = recup_bonus($message->id_auteur);
 	$bonus_total = recup_bonus_total($message->id_auteur);
-	if(array_key_exists(19, $bonus))
+/*	if(array_key_exists(19, $bonus))
 	{
 		$fichier = 'image/avatar/'.$bonus_total[19]['valeur'];
 		if(is_file($fichier))
@@ -49,6 +49,7 @@ function message_affiche($message, $joueur_id, $thread_title = '')
 			$style = 'style="background: transparent url('.$fichier.') no-repeat left;padding-left:42px;"';
 		}
 	}
+	/*
 		/*
 		if($message->etat != 'important' && $message->etat != 'masque') 
 		{

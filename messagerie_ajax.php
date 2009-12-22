@@ -4,10 +4,18 @@ if (file_exists('root.php'))
 
 if(array_key_exists('javascript', $_GET)) include_once(root.'inc/fp.php');
 include_once(root.'fonction/messagerie.inc.php');
+$joueur = new perso($_SESSION['ID']);
 
 if (!isset($_GET['id_thread']) AND !array_key_exists('action', $_GET))
 {
-	$_GET['action'] = 'groupe';
+	if ($joueur->get_groupe()=='0')
+	{
+		$_GET['action'] = 'perso';
+	}
+	else
+	{
+		$_GET['action'] = 'groupe';
+	}
 }
 if(!array_key_exists('action', $_GET))
 {
