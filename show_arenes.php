@@ -30,20 +30,25 @@ if (verif_ville($joueur->get_x(), $joueur->get_y())) {
 echo '<a href="show_arenes.php?poscase='.$W_case.'" onclick="return envoiInfo(this.href, \'carte\')"> Arènes </a></h2>';
 include_once(root.'ville_bas.php');
 
+echo '<table style="width: 100%;"><tbody><tr style="width: 100%; vertical-align: top;"><td class="ville_test">';
+
 $requete = "select nom from arenes where open = 1";
 $req = $db->query($requete);
 $found = false;
 while ($arene = $db->read_object($req)) {
 	if (!$found)
-		echo '<strong>Les arènes suivantes sont ouvertes : </strong><br />';
+		echo '<p class="ville_haut">Les arènes suivantes sont ouvertes :</p><ul class="ville">';
 	$nom = $arene->nom;
-	echo "<a href=\"show_arenes2.php?nom=${nom}\">${nom}</a><br />\n";
+	echo "\n<li><a href=\"show_arenes2.php?nom=${nom}\">${nom}</a></li>";
 	$found = true;
 }
 
 if (!$found) {
 	echo "<h5>Toutes les arènes sont fermées</h5>";
+} else {
+	echo "\n</ul>";
 }
 
+echo '</td></tr></tbody></table>';
 
 ?>

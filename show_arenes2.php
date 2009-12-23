@@ -61,11 +61,12 @@ body {
  border: 0 none;
  overflow-x: hidden;
  overflow-y: hidden;
+ height: 100%;
 }
 
 object {
  width: 100%;
- height: 795px;
+ height: 800px;
 }
 </style>
 </head>
