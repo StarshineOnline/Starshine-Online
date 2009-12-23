@@ -2769,10 +2769,8 @@ class perso extends entite
 						foreach($effet as $eff)
 						{
 							$explode = explode('-', $eff);
-							$R_perso['objet_effet'][$objet_effet_id]['id'] = $explode[0];
-							$R_perso['objet_effet'][$objet_effet_id]['effet'] = $explode[1];
+							$this->register_item_effet($explode[0], $explode[1]);
 						}
-						$objet_effet_id++;
 					}
 					// Gemmes
 					if($partie_d['enchantement'] > 0)
@@ -2818,6 +2816,21 @@ class perso extends entite
 			if($this->is_buff('suppr_defense')) $this->pp = 0;
 		}
 		$this->armure=true;
+	}
+
+	function register_item_effet($id, $effet)
+	{
+		switch ($id)
+			{ // TODO: les autres, c'est quoi donc ?
+			case 5:
+				$this->add_bonus_permanents('volonte', $effet);
+				break;
+			case 7:
+				$this->add_bonus_permanents('dexterite', $effet);
+				break;
+			default:
+				break;
+			}
 	}
 
 	function get_pm($base = false)
@@ -2972,14 +2985,7 @@ class perso extends entite
           foreach ($effets as $effet)
           {
             $d_effet = split('-', $effet);
-            switch ($d_effet[0])
-            { // TODO: les autres, c'est quoi donc ?
-              case 5:
-                $this->add_bonus_permanents('volonte', $d_effet[1]);
-                break;
-              default:
-                break;
-            }
+						$this->register_item_effet($d_effet[0], $d_effet[1]);
           }
         }
         //my_dump($this->arme);
