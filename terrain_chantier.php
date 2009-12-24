@@ -46,15 +46,12 @@ $_SESSION['position'] = $position;
 				$augmentation = augmentation_competence('architecture', $joueur, 2);
 				if ($augmentation[1] == 1)
 				{
-					$joueur['architecture'] = $augmentation[0];
-					echo '&nbsp;&nbsp;<span class="augcomp">Vous êtes maintenant à '.$joueur['architecture'].' en architecture</span><br />';
-					$requete = "UPDATE perso SET architecture = ".$joueur['architecture']." WHERE ID = ".$joueur->get_id();
-					$db->query($requete);
+					$joueur->set_architecture($augmentation[0]);
 				}
 				//Gain de stars et Suppression des PA
-                $joueur->set_star($joueur->get_star() + $stars);
-                $joueur->set_pa($joueur->get_pa() - 10);
-                $joueur->sauver();
+        $joueur->set_star($joueur->get_star() + $stars);
+        $joueur->set_pa($joueur->get_pa() - 10);
+        $joueur->sauver();
 				$delete = false;
 				//Fin de la construction ?
 				if(($chantier->point + $de_architecture) >= $batiment->point_structure)

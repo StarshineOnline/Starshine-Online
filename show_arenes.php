@@ -10,6 +10,21 @@ $joueur->check_perso();
 
 //Vérifie si le perso est mort
 verif_mort($joueur, 1);
+
+if (array_key_exists('nom_arene', $_GET)) {
+	$requete = "select file from arenes where open = 1 and nom = '".
+		sSQL($_GET['nom_arene']).'\'';
+	$req = $db->query($requete);
+	if ($arene = $db->read_object($req)) {
+    header('Location: arenes/'.$arene->file);
+    exit (0);
+	}
+	else {
+    echo "<h5>Arène invalide</h5>";
+    exit (0);
+	}
+}
+
 $W_requete = 'SELECT royaume, type FROM map WHERE ID =\''.sSQL($joueur->get_pos()).'\'';
 $W_req = $db->query($W_requete);
 $W_row = $db->read_assoc($W_req);
@@ -39,7 +54,7 @@ while ($arene = $db->read_object($req)) {
 	if (!$found)
 		echo '<p class="ville_haut">Les arènes suivantes sont ouvertes :</p><ul class="ville">';
 	$nom = $arene->nom;
-	echo "\n<li><a href=\"show_arenes2.php?nom=${nom}\">${nom}</a></li>";
+	echo "\n<li><a href=\"show_arenes.php?nom_arene=${nom}\">${nom}</a></li>";
 	$found = true;
 }
 

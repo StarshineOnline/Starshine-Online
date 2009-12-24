@@ -195,7 +195,7 @@ include_once(root.'ville_bas.php');
 			$cout_total = $batiment->point_structure * $star_point;
 			if($cout_total > 0)
 			{
-				if($joueur['star'] >= $cout_total)
+				if($joueur->get_star() >= $cout_total)
 				{
 					if($batiment->type != 'agrandissement')
 					{
@@ -216,8 +216,8 @@ include_once(root.'ville_bas.php');
 						if($batiment->type != 'agrandissement') $chantier->upgrade_id_construction = $row['id'];
 						$chantier->sauver();
 						//On supprime les stars du joueur
-						$requete = "UPDATE perso SET star = star - ".$cout_total." WHERE ID = ".$joueur->get_id();
-						$db->query($requete);
+						$joueur->add_star(-$cout_total);
+						$joueur->sauver();
 						$taxe = floor(($chantier->star_point * $batiment->point_structure) * $R->get_taxe_diplo($joueur->get_race()) / 100);
 						//On donne les stars au royaume
 						$requete = "UPDATE royaume SET star = star + ".$taxe." WHERE ID = ".$R->get_id();

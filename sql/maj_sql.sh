@@ -33,7 +33,14 @@ BASE=`cat ../connect.php | grep \'db\' | cut -d\" -f4`
 PASSWORD=`cat ../connect.php | grep \'pass\' | cut -d\" -f4`
 HOST=`cat ../connect.php | grep \'host\' | cut -d\" -f4`
 
-mysql -u $USER -p$PASSWORD $BASE -e 'source dumpstatic.sql'
+if [ ! -z $PASSWORD ]; then
+    pass="-p$PASSWORD"
+fi
+if [ ! -z $HOST ]; then
+    conn="-h $HOST"
+fi
+
+mysql -u $USER $pass $conn $BASE -e 'source dumpstatic.sql'
 
 echo done
 

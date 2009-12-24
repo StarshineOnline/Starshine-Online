@@ -3786,6 +3786,13 @@ class perso extends entite
       $this->pa = 0;
   }
 
+	function add_star($add_star)
+  {
+    $this->set_star($this->star + $add_star);
+    if ($this->star < 0)
+      $this->star = 0;
+  }
+
   function add_hp($add_hp) 
   {
     $this->set_hp($this->hp + $add_hp);
