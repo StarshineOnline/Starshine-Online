@@ -147,7 +147,6 @@ else
 				</td>
 				<td colspan="3">
 					<ul>
-            <li><a href="admin_joueur.php?direction=titre&amp;id=<?php echo $_GET['id']; ?>">Banir</a></li>
 						<?php if($row['statut'] != 'ban')
 						{
 							?><li><a href="admin_joueur.php?direction=ban&amp;id=<?php echo $_GET['id']; ?>">Banir</a></li>
