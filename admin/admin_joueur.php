@@ -147,6 +147,7 @@ else
 				</td>
 				<td colspan="3">
 					<ul>
+            <li><a href="admin_joueur.php?direction=titre&amp;id=<?php echo $_GET['id']; ?>">Banir</a></li>
 						<?php if($row['statut'] != 'ban')
 						{
 							?><li><a href="admin_joueur.php?direction=ban&amp;id=<?php echo $_GET['id']; ?>">Banir</a></li>
@@ -162,7 +163,7 @@ else
 								$_SESSION['admin_db_auth'] == 'admin')
 						{
 						?>
-						<li><a href="admin_joueur.php?direction=objet&amp;id=<?php echo $_GET['id']; ?>">Donner un objet</a> | <a href="admin_joueur.php?direction=recette&amp;id=<?php echo $_GET['id']; ?>">Donner une recette</a> | <a href="admin_joueur.php?direction=arme&amp;id=<?php echo $_GET['id']; ?>">Donner une arme</a></li> | <a href="admin_joueur.php?direction=armure&amp;id=<?php echo $_GET['id']; ?>">Donner une armure</a> | <a href="admin_joueur.php?direction=accessoire&amp;id=<?php echo $_GET['id']; ?>">Donner un accessoire</a></li>
+						<li><a href="admin_joueur.php?direction=objet&amp;id=<?php echo $_GET['id']; ?>">Donner un objet</a> | <a href="admin_joueur.php?direction=recette&amp;id=<?php echo $_GET['id']; ?>">Donner une recette</a> | <a href="admin_joueur.php?direction=arme&amp;id=<?php echo $_GET['id']; ?>">Donner une arme</a></li> | <a href="admin_joueur.php?direction=armure&amp;id=<?php echo $_GET['id']; ?>">Donner une armure</a> | <a href="admin_joueur.php?direction=accessoire&amp;id=<?php echo $_GET['id']; ?>">Donner un accessoire</a> | <a href="admin_joueur.php?direction=titre&amp;id=<?php echo $_GET['id']; ?>">Donner un titre</a></li>
 						<li><a href="admin_joueur.php?direction=quete&amp;id=<?php echo $_GET['id']; ?>">Quêtes</a> - <a href="admin_joueur.php?direction=inventaire&amp;id=<?php echo $_GET['id']; ?>">Inventaire</a> - <a href="admin_joueur.php?direction=journal&amp;id=<?php echo $_GET['id']; ?>">Voir le journal des actions</a> | <a href="admin_joueur.php?direction=messagerie&amp;id=<?php echo $_GET['id']; ?>">Voir la messagerie</a></li>
 						<?php
 						}
@@ -193,6 +194,26 @@ else
 				</form>
 				<?php
 			break;
+      case 'titredel':
+      case 'titreplus':
+      case 'titre2':
+        if (isset($_POST['val']))
+          $db->query("insert into titre_honorifique values (null, $_GET[id], '$_POST[val]', 1)");
+        if (isset($_GET['idtd']))
+          $db->query("delete from titre_honorifique where id = $_GET[idtd]");
+        if (isset($_GET['idtp']))
+          $db->query("update titre_honorifique set niveau = niveau + 1 where id = $_GET[idtp]");
+        // pas de break: on va afficher
+      case 'titre' :
+        echo 'Titres déjà donnés:<ul>';
+				$id = $_GET['id'];
+				$requete = "SELECT titre,niveau,id FROM titre_honorifique WHERE id_perso = ".$id;
+				$req = $db->query($requete);
+				while ($row = $db->read_assoc($req)) {
+          echo "<li>$row[titre] niveau $row[niveau] <a href=\"?direction=titreplus&amp;id=$id&amp;idtp=$row[id]\">(monter)</a> <a href=\"?direction=titredel&amp;id=$id&amp;idtd=$row[id]\">(supprimer)</a></li>\n";
+        }
+        echo '</ul><form method="post" action="admin_joueur.php?direction=titre2&amp;id='.$id.'"><input type="text" name="val" /><input type="submit" value="nouveau" /></form>';
+        break;
 			case 'ban2' :
 				$id = $_GET['id'];
 				$requete = "SELECT ID, nom FROM perso WHERE ID = ".$id;
