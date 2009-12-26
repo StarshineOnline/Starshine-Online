@@ -1180,9 +1180,12 @@ class perso extends entite
 	* @param none
 	* @return float $hp_max valeur de l'attribut hp_max
 	*/
-	function get_hp_max()
+	function get_hp_max($base = false)
 	{
-		return $this->hp_max;
+		if ($base)
+			return $this->hp_max;
+		else
+			return $this->hp_max + $this->get_bonus_permanents('hp_max');
 	}
 
 	/**
@@ -1202,9 +1205,12 @@ class perso extends entite
 	* @param none
 	* @return float $mp_max valeur de l'attribut mp_max
 	*/
-	function get_mp_max()
+	function get_mp_max($base = false)
 	{
-		return $this->mp_max;
+		if ($base)
+			return $this->mp_max;
+		else
+			return $this->mp_max + $this->get_bonus_permanents('mp_max');
 	}
 
 	/**
@@ -2922,7 +2928,7 @@ class perso extends entite
 	public $hp_maximum;
 	function get_hp_maximum()
 	{
-		$this->hp_maximum = floor($this->hp_max);
+		$this->hp_maximum = floor($this->get_hp_max());
 		//Famine
 		if($this->is_buff('famine')) $this->hp_maximum = $this->hp_maximum - ($this->hp_maximum * ($this->get_buff('famine', 'effet') / 100));
 		return $this->hp_maximum;
@@ -2932,7 +2938,7 @@ class perso extends entite
 	public $mp_maximum;
 	function get_mp_maximum()
 	{
-		$this->mp_maximum = floor($this->mp_max);
+		$this->mp_maximum = floor($this->get_mp_max());
 		//Famine
 		if($this->is_buff('famine')) $this->mp_maximum = $this->mp_maximum - ($this->mp_maximum * ($this->get_buff('famine', 'effet') / 100));
 		return $this->mp_maximum;
@@ -3093,10 +3099,10 @@ class perso extends entite
 		switch ($gemme->enchantement_type)
 		{
 		case 'hp' :
-      $this->hp_max += $gemme->enchantement_effet;
+			$this->add_bonus_permanents('hp_max', $gemme->enchantement_effet);
       break;
     case 'mp' :
-			$this->mp_max += $gemme->enchantement_effet;
+			$this->add_bonus_permanents('mp_max', $gemme->enchantement_effet);
       break;
     case 'pp' :
       $this->pp += $gemme->enchantement_effet;
@@ -3261,7 +3267,7 @@ class perso extends entite
 				$time = time();
 				$nb_maj = floor($temps_maj / $temps_hp);
 				$hp_gagne = $nb_maj * (sqrt($this->get_vie()) * 2.7);
-				$this->set_hp_max($this->get_hp_max() + $hp_gagne);
+				$this->set_hp_max($this->get_hp_max(true) + $hp_gagne);
 				$this->set_maj_hp($this->get_maj_hp() + $nb_maj * $temps_hp);
 				$modif = true;
 			}
@@ -3273,7 +3279,7 @@ class perso extends entite
 				$time = time();
 				$nb_maj = floor($temps_maj / $temps_mp);
 				$mp_gagne = $nb_maj * (($this->get_energie() - 3) / 4);
-				$this->set_mp_max($this->get_mp_max() + $mp_gagne);
+				$this->set_mp_max($this->get_mp_max(true) + $mp_gagne);
 				$this->set_maj_mp($this->get_maj_mp() + $nb_maj * $temps_mp);
 				$modif = true;
 			}
