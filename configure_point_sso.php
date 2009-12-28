@@ -1,7 +1,7 @@
 <?php
 if (file_exists('root.php'))
   include_once('root.php');
-?><?php
+
 include_once(root.'inc/fp.php');
 $joueur = new perso($_SESSION['ID']);
 $bonus = recup_bonus($joueur->get_id());
@@ -110,8 +110,8 @@ $bonus = recup_bonus($joueur->get_id());
 						exit("Le fichier n'est pas une image");
 					}
 					//Récupère le type
-					$nom_fichier = $chemin_destination.$joueur->get_id().$type;
-					if(move_uploaded_file($_FILES['nom_du_fichier']['tmp_name'], $chemin_destination.$joueur->get_id().$type))
+					$nom_fichier = root.$chemin_destination.$joueur->get_id().$type;
+					if(move_uploaded_file($_FILES['nom_du_fichier']['tmp_name'], $nom_fichier))
 					{
 						//On vérifie la taille de l'image
 						$size = getimagesize($nom_fichier);
