@@ -41,9 +41,7 @@ else if(array_key_exists('message', $_GET))
 elseif(array_key_exists('id_dest', $_GET))
 {
 ?>
-<fieldset>
-	<legend>Envoi d'un message</legend>
-	<div class="information_case">
+
 	<form method="post" action="telephone.php?id_type=<?php echo $id_type; ?>" id="formMessage">
 		Titre du message :<br />
 		<input type="text" name="titre" id="titre" size="30" value=""/><br />
@@ -51,9 +49,9 @@ elseif(array_key_exists('id_dest', $_GET))
 		<textarea name="message" id="message" cols="45" rows="12"></textarea><br />
 		<br />
 		<input type="hidden" name="id_destinataire" id="id_destinataire" value="<?php echo $_GET['id_dest']; ?>" />
-		<input type="button" onclick="envoiInfo('telephone.php?message=' + $('#message').val() + '&amp;titre=' + $('#titre').val() + '&amp;id_destinataire=' + $('#id_destinataire').val(), 'message_confirm');fermePopUp();" name="btnSubmit" value="Envoyer" />
+		<input type="button" onclick="envoiInfo('telephone.php?message=' + encodeURIComponent($('#message').val()) + '&amp;titre=' + encodeURIComponent($('#titre').val()) + '&amp;id_destinataire=' + $('#id_destinataire').val(), 'message_confirm');fermePopUp();" name="btnSubmit" value="Envoyer" />
 	</form>
-</fieldset>
+
 <?php
 }
 ?>

@@ -160,8 +160,12 @@ function affiche_perso_visu($joueur, $W_row, $position="")
 	if(array_key_exists(6, $bonus) AND !check_affiche_bonus($bonus[6], $joueur, $perso)) $chaine_nom = $perso->get_nom();
 	else $chaine_nom = $W_row['gnom'].' '.$perso->get_nom();
 	$echo = $Gtrad['diplo'.$diplo].' => XP : '.($facteur_xp * 100).'% - Honneur : '.($facteur_honneur * 100).'%';
-
-	echo '<img src="image/personnage/'.$perso->get_race().'/'.$perso->get_race().'_'.$Tclasse[$perso->get_classe()]["type"].'.png" alt="'.$perso->get_race().'" title="'.$perso->get_race().'" style="vertical-align: middle;height:21px;float:left;width:21px;" /><span style="font-weight : bold;float:left;width:325px;margin-left:15px;"><a href="infojoueur.php?ID='.$perso->get_id().'&poscase='.$perso->get_case().'" onclick="return envoiInfo(this.href, \'information\');" onclick="return nd();" onmouseover="return '.make_overlib($echo).'" onmouseout="return nd();">';
+	
+	if($perso->get_cache_classe() == 2)	{  echo '<img src="image/personnage/'.$perso->get_race().'/'.$perso->get_race().'_guerrier.png" alt="'.$perso->get_race().'" title="'.$perso->get_race().'" style="vertical-align: middle;height:21px;float:left;width:21px;" />';  }
+	elseif($perso->get_cache_classe() == 1 && $joueur->get_race() != $perso->get_race()) { echo '<img src="image/personnage/'.$perso->get_race().'/'.$perso->get_race().'_guerrier.png" alt="'.$perso->get_race().'" title="'.$perso->get_race().'" style="vertical-align: middle;height:21px;float:left;width:21px;" />'; }
+	else { echo '<img src="image/personnage/'.$perso->get_race().'/'.$perso->get_race().'_'.$Tclasse[$perso->get_classe()]["type"].'.png" alt="'.$perso->get_race().'" title="'.$perso->get_race().'" style="vertical-align: middle;height:21px;float:left;width:21px;" />';}
+	
+	echo '<span style="font-weight : bold;float:left;width:325px;margin-left:15px;"><a href="infojoueur.php?ID='.$perso->get_id().'&poscase='.$perso->get_case().'" onclick="return envoiInfo(this.href, \'information\');" onclick="return nd();" onmouseover="return '.make_overlib($echo).'" onmouseout="return nd();">';
 			
 	if ($perso->get_hp() <= 0)
 	{
