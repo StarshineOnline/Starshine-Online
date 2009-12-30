@@ -176,6 +176,7 @@ li
 	border : 2px solid #FFF;
 	-moz-border-radius : 13px;
 	-webkit-border-radius :13px;
+	border-radius: 13px;
 }
 
 .milieusousmenu a, .hautsousmenu a
@@ -247,6 +248,7 @@ MILIEU
 	border : 2px solid #FFF;
 	-moz-border-radius : 13px;
 	-webkit-border-radius :13px;
+	border-radius: 13px;
 }
 
 

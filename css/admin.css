@@ -38,7 +38,17 @@ body {}
 #rose_div_bd:hover 		{ background-position:top; }
 #rose_div_bd:active 	{ background-position:bottom; }
 
-.boite_co {width:300px;height:60px;margin:auto;margin-top:100px;background-color:#E7CF98;padding:5px;-moz-border-radius:12px;-webkit-border-radius:12px;}
+.boite_co {
+	width:300px;
+	height:60px;
+	margin:auto;
+	margin-top:100px;
+	background-color:#E7CF98;
+	padding:5px;
+	-moz-border-radius:12px;
+	-webkit-border-radius:12px;
+	border-radius: 12px;
+}
 .boite_co span {float:left;width:60px;}
 .boite_co input {float:left;border:1px solid #CCC;}
 .boite_co p {clear:both;}
@@ -62,6 +72,7 @@ body {}
 	height : 75px;
 	-moz-border-radius : 10px;
 	-webkit-border-radius :10px;
+	border-radius: 10px;
 	background-color:#91AEF2;
 	border:1px solid #555555;
 	vertical-align:top;
@@ -274,6 +285,7 @@ ol.tuto, ol.tuto li
 	border-color : #FFF;
 	-moz-border-radius : 13px;
 	-webkit-border-radius :13px;
+	border-radius: 13px;
 }
 .information_case h4
 {
@@ -314,6 +326,7 @@ ol.tuto, ol.tuto li
 	border-color : #444;
 	-moz-border-radius : 5px;
 	-webkit-border-radius :5px;
+	border-radius: 5px;
 }
 .echange
 {
@@ -325,6 +338,7 @@ ol.tuto, ol.tuto li
 	border-color : #FFF;
 	-moz-border-radius : 13px;
 	-webkit-border-radius :13px;
+	border-radius: 13px;
 }
 #liste_quete 
 {
@@ -350,6 +364,7 @@ ol.tuto, ol.tuto li
 	border-color : #FFF;
 	-moz-border-radius : 7px;
 	-webkit-border-radius : 7px;
+	border-radius: 7px;
 }
 
 .description_quete
@@ -392,6 +407,7 @@ height:05px;
 	border-color : #888;
 	-moz-border-radius : 5px;
 	-webkit-border-radius : 5px;
+	border-radius: 5px;
 	margin-bottom : 5px;
 	font-family:"Trebuchet MS",Times,serif;
 }
@@ -558,6 +574,7 @@ select.baseJumpbox optgroup
 	background-color : #D4DAE2;
 	-moz-border-radius : 9px;
 	-webkit-border-radius : 9px;
+	border-radius: 9px;
 	padding : 5px;
 	border : 1px solid #FFF;
 }
@@ -570,6 +587,7 @@ vertical-align : top;
 background-image:url('../image/interface1.png');
 -moz-border-radius : 9px;
 -webkit-border-radius : 9px;
+border-radius: 9px;
 color : #222;
 border : 1px solid #FFF;
 }
@@ -595,6 +613,7 @@ border : 1px solid #FFF;
 	padding: 5px;
 	-moz-border-radius : 5px;
 	-webkit-border-radius : 5px;
+	border-radius: 5px;
 }
 .bord_carte_haut_gauche {
 	border-top : 2px solid #888;
@@ -602,6 +621,7 @@ border : 1px solid #FFF;
 	background : #D8AB41;
 	-moz-border-radius-topleft : 9px;
 	-webkit-border-top-left-radius : 9px;
+	border-top-left-radius: 9px;
 	background:transparent url('../image/royaume_icone.png') center;
 }
 .bord_carte_haut 
@@ -653,6 +673,7 @@ ul.ville li:hover
 	border-color : #FFF;
 	-moz-border-radius : 7px;
 	-webkit-border-radius : 7px;
+	border-radius: 7px;
 }
 .ville_test a 
 {
@@ -817,6 +838,7 @@ ul.onglet-hotel li
 	border-color : #555;
 	-moz-border-radius : 10px;
 	-webkit-border-radius : 10px;
+	border-radius: 10px;
 	background-color : #91AEF2;
 	padding: 4px;
 }
