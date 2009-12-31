@@ -37,3 +37,9 @@ UPDATE `sort_jeu` SET `pa` = '45' WHERE `sort_jeu`.`id` =92 LIMIT 1 ;
 UPDATE `sort_jeu` SET `pa` = '45', `effet` = '10' WHERE `sort_jeu`.`id` =99 LIMIT 1 ;
 UPDATE `sort_jeu` SET `pa` = '45', `effet` = '15' WHERE `sort_jeu`.`id` =100 LIMIT 1 ;
 UPDATE `sort_jeu` SET `pa` = '45', `effet` = '20' WHERE `sort_jeu`.`id` =101 LIMIT 1 ;
+
+UPDATE `comp_jeu` SET `description` = '[Groupe] Pendant 48 heures, augmente l''or récupéré sur les monstre de +%effet% %' WHERE `comp_jeu`.`id` =48 LIMIT 1 ;
+UPDATE `comp_jeu` SET `description` = '[Groupe] Pendant 48 heures, augmente l''or récupéré sur les monstre de +%effet% %' WHERE `comp_jeu`.`id` =49 LIMIT 1 ;
+UPDATE `comp_jeu` SET `description` = '[Groupe] Pendant 48 heures, augmente l''or récupéré sur les monstre de +%effet% %' WHERE `comp_jeu`.`id` =50 LIMIT 1 ;
+UPDATE `comp_jeu` SET `description` = '[Groupe] Pendant 48 heures, augmente l''or récupéré sur les monstre de +%effet% %' WHERE `comp_jeu`.`id` =77 LIMIT 1 ;
+UPDATE `comp_jeu` SET `description` = '[Groupe] Pendant 48 heures, augmente l''or récupéré sur les monstre de +%effet% %' WHERE `comp_jeu`.`id` =78 LIMIT 1 ;
