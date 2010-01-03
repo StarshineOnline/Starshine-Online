@@ -52,8 +52,9 @@ $req = $db->query($requete);
 while($row = $db->read_array($req))
 {
 	for ($x = $row['x']; $x <= $row['x'] + $row['size']; $x++)
-		for ($y = $row['y']; $y <= $row['y'] + $row['size']; $x++)
+		for ($y = $row['y']; $y <= $row['y'] + $row['size']; $y++) {
 			$arenes[] = convert_in_pos($x, $y);
+		}
 }
 
 
@@ -62,10 +63,10 @@ $requete = "SELECT * FROM monstre ORDER BY level";
 $req = $db->query($requete);
 $insert = 'INSERT INTO map_monstre VALUES';
 $check_virgule = false;
+$total_monstre = 0;
 while($row = $db->read_array($req))
 {
 	$tot_monstre = 0;
-	$total_monstre = 0;
 	//Génération de monstres sur la carte dont l'identifiant est generation_id
 	$id = $row['id'];
 	//Selectionne les informations du monstres
@@ -160,20 +161,25 @@ while($row = $db->read_array($req))
 						if(($total_monstre % 500) == 0)
 						{
 							$db->query($insert);
+							echo "insert done\n";
 							//echo $insert.'<br /><br /><br /><br />';
 							$insert = 'INSERT INTO map_monstre VALUES';
 							$check_virgule = false;
+							$total_monstre = 0;
 						}
 					}
 				}
 			}
 		}
 	}
-	$mail .= $nom." : ".$tot_monstre." - Up : ".$up." / Down : ".$down." / Ratio : ".$ratio."\n";
+	$next_line = $nom." : ".$tot_monstre." - Up : ".$up." / Down : ".$down." / Ratio : ".$ratio."\n";
+	echo $next_line;
+	$mail .= $next_line;
 }
 
 $db->query($insert);
 //echo $insert.'<br /><br /><br /><br />';
+echo "insert done\n";
 
 //Si le premier du mois, pop des boss de donjons
 if(date("j") == 1)

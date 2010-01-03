@@ -1,7 +1,7 @@
 <?php
 if (file_exists('root.php'))
   include_once('root.php');
-?><?php
+
 //JOURNALIER STATISTIQUES ET AUTRES //
 /*if (isset($_SERVER['REMOTE_ADDR']) &&
 	$_SERVER['REMOTE_ADDR']	!= "127.0.0.1" &&
@@ -227,6 +227,9 @@ foreach($royaumes as $royaume)
 		$royaume['stars'] = 0;
 	}
 	$requete = "UPDATE royaume SET star = ".$royaume['stars']." WHERE id = ".$royaume['id'];
+
+	echo $requete."\n";
+
 	$db->query($requete);
 }
 echo 'Création des images statistiques<br />';
