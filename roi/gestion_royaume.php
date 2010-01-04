@@ -263,7 +263,7 @@ if($joueur->get_rang_royaume() != 6 AND $joueur->get_id() != $royaume->get_minis
 	        if($row['statut'] == 'actif')
 	        {
 	        
-	       echo "<li class='$construc_class'><span class='nom'>".$row['nom']; ?></span><span class="small" style='float:left;width:100px;'> entretien : <?php echo $row['entretien']; ?></span><span style='float:left;width:100px;'> <a href="gestion_royaume.php?direction=amelioration&amp;action=list&amp;batiment=<?php echo $row['type']; ?>" onclick="return envoiInfo(this.href, 'contenu_jeu')">Améliorer</a></li>
+	       echo "<li class='$construc_class'><span class='nom'>".$row['nom']; ?></span><span class="small" style='float:left;width:100px;'> entretien : <?php echo $row['entretien']; ?></span><span style='float:left;width:100px;'> <a href="gestion_royaume.php?direction=amelioration&amp;action=list&amp;batiment=<?php echo $row['type']; ?>" onclick="return envoiInfo(this.href, 'contenu_jeu')">Améliorer</a><span>HP : <?php echo $row['hp']; ?></span></li>
 	        <?php
 	    	}
 	    	else
