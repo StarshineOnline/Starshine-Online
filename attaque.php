@@ -92,7 +92,7 @@ switch($type)
     /* Bastien: 15 c'est un bourg, 16 bourg + 1 */
 		$joueur_defenseur->set_carac(16 + $map_royaume->get_level_mur());
 		$joueur_defenseur->coef = 1;
-		$joueur_defenseur->hp_max = 20000;
+		$joueur_defenseur->hp_max = 30000;
 		$joueur_defenseur->set_hp($map_royaume->get_capitale_hp());
 		$joueur_defenseur->set_pp($map_royaume->get_pp());
 		$coord = convert_in_coord($_GET['id_ville']);
@@ -548,7 +548,7 @@ else
 				{
 					$rand = rand(1, 100);
 					//Premier cas, on supprime les ressources
-					if($rand > 50)
+					if($rand >= 50)
 					{
 						$suppr_hp = false;
 						$map_royaume->supprime_ressources($degat_defense / 100);
@@ -580,6 +580,7 @@ else
 					}
 					else
 					{
+						echo '<h6>Le coeur même de la ville est attaqué</h6>';
 						$map_royaume->set_capitale_hp($defenseur->get_hp());
 						//Si la capitale n'a plus de vie, on met le royaume en raz
 						if($map_royaume->get_capitale_hp() < 0)

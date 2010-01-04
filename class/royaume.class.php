@@ -1159,7 +1159,7 @@ class royaume
 
 	function verif_hp()
 	{
-		if($this->hp <= 0 && $this->fin_raz_capitale < time())
+		if($this->capitale_hp <= 0 && $this->fin_raz_capitale < time())
 		{
 			$this->set_capitale_hp(30000);
 			$this->sauver();

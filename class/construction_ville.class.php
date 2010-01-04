@@ -342,35 +342,40 @@ class construction_ville
 	//fonction
 	function get_batiment_level($level)
 	{
-		$batiment = batiment_ville::create('id', $this->id_batiment);
-		$batiment_level = batiment_ville::create(array('type', 'level'), array($this->type, $level));
-		if(count($batiment_level) > 0) return $batiment_level[0];
+    global $db;
+    $query = "select * from batiment_ville where level = $level and type = ".
+      "(select type from batiment_ville where id = $this->id_batiment )";
+    $res = $db->query($query);
+    if ($res && $db->num_rows($res))
+      return new batiment_ville($db->read_array($res));
 		else return false;
 	}
 
 	function get_batiment_inferieur()
 	{
-		if($this->level > 1) return $this->get_batiment_level($this->level - 1);
+		if($this->get_level() > 1)
+      return $this->get_batiment_level($this->get_level() - 1);
 		else return false;
 	}
 
 	function get_batiment_superieur()
 	{
-		return $this->get_batiment_level($this->level - 1);
+		return $this->get_batiment_level($this->get_level() + 1);
 	}
 
 	function suppr_hp($degat)
 	{
 		$this->set_hp($this->hp - $degat);
 		//La construction n'a plus de vie, soit on la réduit d'un rang, soit on la rend inactive
-		if($this->hp < 0)
+		if($this->hp <= 0)
 		{
 			//Réduction de level
-			if($this->level > 1)
+			if($this->get_level() > 1)
 			{
 				$batiment = $this->get_batiment_inferieur();
 				$this->set_id_batiment($batiment->get_id());
-				$this->set_hp($batiment->get_hp());
+				$this->set_hp($batiment->get_hp() + $this->hp);
+        $this->level = $batiment->get_level();
 				$return = ($batiment->get_level() * $batiment->get_level());
 			}
 			else
@@ -383,5 +388,19 @@ class construction_ville
 		$this->sauver();
 		return $return;
 	}
+
+  function get_level()
+  {
+    if (!isset($this->level))
+    {
+      global $db;
+			$requete = 'SELECT level from batiment_ville WHERE id = '.
+        $this->id_batiment;
+			$db->query($requete);
+      if ($row = $db->read_assoc($req))
+        $this->level = $row['level'];
+    }
+    return $this->level;
+  }
 }
 ?>
