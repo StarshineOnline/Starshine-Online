@@ -558,15 +558,16 @@ else
 				//Sinon on attaque les batiments ou la ville
 				if($suppr_hp)
 				{
+          print_debug("Les infrastructures sont touchées<br/>");
 					$map_royaume->get_constructions_ville(true);
 					$count = count($map_royaume->constructions_ville);
 					//Si on peut détruire des bâtiments en ville
 					if($count > 0)
 					{
-						$rand = rand(1, $count);
+						$rand = rand(0, $count - 1);
 						//On attaque la construction $rand du tableau
 						$construction_ville = new construction_ville($map_royaume->constructions_ville[$rand]['id']);
-						$return = $construction_ville->suppr_hp($degat_defenseur);
+						$return = $construction_ville->suppr_hp($degat_defense);
 						echo '<h6>Attaque d\'un batiment en ville</h6>';
 						//On a downgrade un batiment, on gagne des points de victoire
 						if($return > 0)
