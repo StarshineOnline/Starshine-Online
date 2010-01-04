@@ -1180,6 +1180,7 @@ class royaume
 		return $this->constructions_ville;
 	}
 
+  private $level_mur;
 	function get_pp()
 	{
 		global $db;
@@ -1189,8 +1190,14 @@ class royaume
 		if($row['statut'] == 'actif')
 		{
 			$this->pp = 150 * ($row['level'] * $row['level']) + 50 * $row['level'];
+      $this->level_mur = $row['level'];
 		}
-		else $this->pp = 100;
+		else
+    {
+      $this->pp = 100;
+      print_debug("Le niveau du mur est réduit à 0 car il est détruit<br/>");
+      $this->level_mur = 0;
+    }
 		return $this->pp;
 	}
 
@@ -1225,5 +1232,15 @@ class royaume
 		global $db;
 		$db->query($requete);
 	}
+
+  function get_level_mur()
+  {
+    if (!isset($this->level_mur))
+    {
+      $this->get_pp();
+    }
+    print_debug("Le mur est à $this->level_mur <br/>");
+    return $this->level_mur;
+  }
 }
 ?>

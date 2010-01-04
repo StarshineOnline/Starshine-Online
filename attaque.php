@@ -89,6 +89,8 @@ switch($type)
 		$siege->x = $map_siege->get_x();
 		$siege->y = $map_siege->get_y();
 		$joueur_defenseur = new batiment();
+    /* Bastien: 15 c'est un bourg, 16 bourg + 1 */
+		$joueur_defenseur->set_carac(16 + $map_royaume->get_level_mur());
 		$joueur_defenseur->coef = 1;
 		$joueur_defenseur->hp_max = 20000;
 		$joueur_defenseur->set_hp($map_royaume->get_capitale_hp());

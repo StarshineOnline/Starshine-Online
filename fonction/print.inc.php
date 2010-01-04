@@ -218,6 +218,8 @@ function print_montee_comp($nom, $valeur, $comp) {
 
 function print_debug($msg) {
 	global $debugs;
+  if (!isset($debugs))
+    $debugs = 0;
 	echo '<div id="debug'.$debugs.'" class="debug">'.$msg.'</div>';
 	$debugs++;
 }
