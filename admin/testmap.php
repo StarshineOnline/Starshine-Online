@@ -3,11 +3,11 @@ if (file_exists('../root.php'))
   include_once('../root.php');
 $admin =true;
 include_once(root.'haut.php');
-//include_once(root.'inc/verif_log_admin.inc.php');
+include_once(root.'inc/verif_log_admin.inc.php');
 ?>
 <a href="admin_2.php">Revenir à l'administration</a>
 <?php
-$map = new map(95, 95, 95);
+$map = new map(95, 95, 95,'../');
 
 $map->get_pnj();
 $map->get_joueur('neutre');
