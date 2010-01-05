@@ -1,17 +1,31 @@
 <?php
-if (file_exists('root.php'))
-  include_once('root.php');
+if (file_exists('../root.php'))
+  include_once('../root.php');
 
-//Connexion obligatoire
-$connexion = true;
-//Inclusion du haut du document html
+$textures = false;
+$admin = true;
+
 include_once(root.'haut.php');
+setlocale(LC_ALL, 'fr_FR');
+include_once(root.'haut_site.php');
+if ($G_maintenance)
+{
+	echo 'Starshine-online est actuellement en cours de mis à jour.<br />
+	le forum est toujours disponible <a href="punbb/">ici - Forum</a>';
+  exit(0);
+}
+include_once(root.'admin/menu_admin.php');
+
+/*
+ CREATE TABLE `arenes_joueurs` (
+`x` INT NOT NULL ,
+`y` INT NOT NULL ,
+`id` INT NOT NULL ,
+PRIMARY KEY ( `x` , `y` , `id` )
+) ENGINE = MYISAM COMMENT = 'Position des joueurs avant TP arène' 
+ */
 
 $joueur = new perso($_SESSION['ID']);
-
-$arene_masters = array('Irulan', 'Azeroth');
-if (!in_array($joueur->get_nom(), $arene_masters))
-     die("Vous n'êtes pas arène master");
 
 if (isset($_REQUEST['teleport_in'])) {
   $arene = $_REQUEST['teleport_in'];

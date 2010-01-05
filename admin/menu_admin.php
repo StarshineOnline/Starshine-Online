@@ -92,6 +92,10 @@ else
 	$menu[$i]['url'] = 'view_donjon.php';
 	$menu[$i++]['acces'] = 'admin';
 
+	$menu[$i]['nom'] = 'Arènes';
+	$menu[$i]['url'] = 'arenes.php';
+	$menu[$i++]['acces'] = '';
+
 	$menu[$i]['nom'] = 'Jabber / Admin';
 	$menu[$i]['url'] = 'admin_jabber.php';
 	$menu[$i++]['acces'] = 'admin';
