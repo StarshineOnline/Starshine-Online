@@ -396,7 +396,7 @@ class construction_ville
       global $db;
 			$requete = 'SELECT level from batiment_ville WHERE id = '.
         $this->id_batiment;
-			$db->query($requete);
+			$req = $db->query($requete);
       if ($row = $db->read_assoc($req))
         $this->level = $row['level'];
     }
