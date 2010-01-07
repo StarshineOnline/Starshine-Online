@@ -251,7 +251,7 @@ if($joueur->get_rang_royaume() != 6 AND $joueur->get_id() != $royaume->get_minis
 	}
 	elseif($_GET['direction'] == 'construction'  AND ($joueur->get_rang_royaume() == 6 OR $joueur->get_id() == $royaume->get_ministre_economie()))
 	{
-	    $requete = "SELECT *, construction_ville.id as id_const FROM construction_ville LEFT JOIN batiment_ville ON construction_ville.id_batiment = batiment_ville.id WHERE id_royaume = ".$royaume->get_id();
+	    $requete = "SELECT *, construction_ville.id as id_const, construction_ville.hp as cur_hp FROM construction_ville LEFT JOIN batiment_ville ON construction_ville.id_batiment = batiment_ville.id WHERE id_royaume = ".$royaume->get_id();
 	    $req = $db->query($requete);
 	    echo '
 	    <div id="construction">
@@ -263,7 +263,7 @@ if($joueur->get_rang_royaume() != 6 AND $joueur->get_id() != $royaume->get_minis
 	        if($row['statut'] == 'actif')
 	        {
 	        
-	       echo "<li class='$construc_class'><span class='nom'>".$row['nom']; ?></span><span class="small" style='float:left;width:100px;'> entretien : <?php echo $row['entretien']; ?></span><span style='float:left;width:100px;'> <a href="gestion_royaume.php?direction=amelioration&amp;action=list&amp;batiment=<?php echo $row['type']; ?>" onclick="return envoiInfo(this.href, 'contenu_jeu')">Améliorer</a><span>HP : <?php echo $row['hp']; ?></span></li>
+	       echo "<li class='$construc_class'><span class='nom'>".$row['nom']; ?></span><span class="small" style='float:left;width:100px;'> entretien : <?php echo $row['entretien']; ?></span><span style='float:left;width:200px;'> <a href="gestion_royaume.php?direction=amelioration&amp;action=list&amp;batiment=<?php echo $row['type']; ?>" onclick="return envoiInfo(this.href, 'contenu_jeu')">Améliorer</a> <span>HP : <?php echo $row['cur_hp']; ?></span></li>
 	        <?php
 	    	}
 	    	else
