@@ -375,12 +375,14 @@ class construction_ville
 				$batiment = $this->get_batiment_inferieur();
 				$this->set_id_batiment($batiment->get_id());
 				$this->set_hp($batiment->get_hp() + $this->hp);
-        $this->level = $batiment->get_level();
+				$this->level = $batiment->get_level();
+				//Points de victoire
 				$return = ($batiment->get_level() * $batiment->get_level());
 			}
 			else
 			{
 				$this->set_statut('inactif');
+				//Points de victoire
 				$return = 1;
 			}
 		}

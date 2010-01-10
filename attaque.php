@@ -558,7 +558,7 @@ else
 				//Sinon on attaque les batiments ou la ville
 				if($suppr_hp)
 				{
-          print_debug("Les infrastructures sont touchées<br/>");
+					print_debug("Les infrastructures sont touchées<br/>");
 					$map_royaume->get_constructions_ville(true);
 					$count = count($map_royaume->constructions_ville);
 					//Si on peut détruire des bâtiments en ville
@@ -575,7 +575,7 @@ else
 							$royaume_attaquant = new royaume($Trace[$joueur->get_race()]['numrace']);
 							$royaume_attaquant->add_point_victoire($return);
 							$royaume_attaquant->sauver();
-							echo '<h6>Une construction a été détruire ! Votre royaume gagne '.$return .' points de victoire.</h6><br />';
+							echo '<h6>Une construction a été détruite ! Votre royaume gagne '.$return .' points de victoire.</h6><br />';
 						}
 					}
 					else
