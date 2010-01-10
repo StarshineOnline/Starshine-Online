@@ -761,26 +761,35 @@ if($joueur->get_rang_royaume() != 6 AND $joueur->get_id() != $royaume->get_minis
 
 		$nombre = $_GET['nombre'];
 		$prix = $_GET['prix'];
-		//On vérifie que le royaume a assez de cette ressource
-		if($ressource >= $nombre)
+		if($nombre > 0 AND $prix > 0)
 		{
-			$enchere->id_royaume = $royaume->get_id();
-			$enchere->ressource = $_GET['ressource'];
-			$enchere->nombre = $nombre;
-			$enchere->prix = $prix;
-			//7 jours plus tard
-			$time = time() + 7 * (24 * 60 * 60);
-			$enchere->fin_vente = date("Y-m-d H:i:s", $time);
-			$enchere->sauver();
-			//On enlève les ressources au royaume
-			$requete = "UPDATE royaume SET ".$_GET['ressource']." = ".$_GET['ressource']." - ".$nombre." WHERE ID = ".$royaume->get_id();
-			$db->query($requete);
-			echo "<h6>Votre ressource a bien été mise en vente</h6>";
+			//On vérifie que le royaume a assez de cette ressource
+			if($ressource >= $nombre)
+			{
+				$enchere->id_royaume = $royaume->get_id();
+				$enchere->ressource = $_GET['ressource'];
+				$enchere->nombre = $nombre;
+				$enchere->prix = $prix;
+				//7 jours plus tard
+				$time = time() + 7 * (24 * 60 * 60);
+				$enchere->fin_vente = date("Y-m-d H:i:s", $time);
+				$enchere->sauver();
+				//On enlève les ressources au royaume
+				$requete = "UPDATE royaume SET ".$_GET['ressource']." = ".$_GET['ressource']." - ".$nombre." WHERE ID = ".$royaume->get_id();
+				$db->query($requete);
+				echo "<h6>Votre ressource a bien été mise en vente</h6>";
+			}
+			else
+			{
+				?>
+				<h5>Vous n'avez pas assez de <?php echo $_GET['ressource']; ?> !</h5>
+				<?php
+			}
 		}
 		else
 		{
 			?>
-			<h5>Vous n'avez pas assez de <?php echo $_GET['ressource']; ?> !</h5>
+			<h5>Merci d'entrer une valeur positive !</h5>
 			<?php
 		}
 	}

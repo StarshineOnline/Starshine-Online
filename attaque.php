@@ -541,60 +541,63 @@ else
 			}
 			elseif($type == 'ville')
 			{
-				//hasard pour différente actions de destruction sur la ville.
-				//Si il y a assez de ressources en ville
-				$suppr_hp = true;
-				if($map_royaume->total_ressources() > 1000)
+				if($degat_defense > 0)
 				{
-					$rand = rand(1, 100);
-					//Premier cas, on supprime les ressources
-					if($rand >= 50)
+					//hasard pour différente actions de destruction sur la ville.
+					//Si il y a assez de ressources en ville
+					$suppr_hp = true;
+					if($map_royaume->total_ressources() > 1000)
 					{
-						$suppr_hp = false;
-						$map_royaume->supprime_ressources($degat_defense / 100);
-						echo '<h6>L\'attaque détruit des ressources au royaume '.$Gtrad[$map_royaume->get_race()].'</h6><br />';
-					}
-				}
-				//Sinon on attaque les batiments ou la ville
-				if($suppr_hp)
-				{
-					print_debug("Les infrastructures sont touchées<br/>");
-					$map_royaume->get_constructions_ville(true);
-					$count = count($map_royaume->constructions_ville);
-					//Si on peut détruire des bâtiments en ville
-					if($count > 0)
-					{
-						$rand = rand(0, $count - 1);
-						//On attaque la construction $rand du tableau
-						$construction_ville = new construction_ville($map_royaume->constructions_ville[$rand]['id']);
-						$return = $construction_ville->suppr_hp($degat_defense);
-						echo '<h6>Attaque d\'un batiment en ville</h6>';
-						//On a downgrade un batiment, on gagne des points de victoire
-						if($return > 0)
+						$rand = rand(1, 100);
+						//Premier cas, on supprime les ressources
+						if($rand >= 50)
 						{
-							$royaume_attaquant = new royaume($Trace[$joueur->get_race()]['numrace']);
-							$royaume_attaquant->add_point_victoire($return);
-							$royaume_attaquant->sauver();
-							echo '<h6>Une construction a été détruite ! Votre royaume gagne '.$return .' points de victoire.</h6><br />';
+							$suppr_hp = false;
+							$map_royaume->supprime_ressources($degat_defense / 100);
+							echo '<h6>L\'attaque détruit des ressources au royaume '.$Gtrad[$map_royaume->get_race()].'</h6><br />';
 						}
 					}
-					else
+					//Sinon on attaque les batiments ou la ville
+					if($suppr_hp)
 					{
-						echo '<h6>Le coeur même de la ville est attaqué</h6>';
-						$map_royaume->set_capitale_hp($defenseur->get_hp());
-						//Si la capitale n'a plus de vie, on met le royaume en raz
-						if($map_royaume->get_capitale_hp() < 0)
+						print_debug("Les infrastructures sont touchées<br/>");
+						$map_royaume->get_constructions_ville(true);
+						$count = count($map_royaume->constructions_ville);
+						//Si on peut détruire des bâtiments en ville
+						if($count > 0)
 						{
-							$time = time() + 3600 * 24 * 31;
-							$map_royaume->set_fin_raz_capitale($time);
-							$royaume_attaquant = new royaume($Trace[$joueur->get_race()]['numrace']);
-							$royaume_attaquant->add_point_victoire(100);
-							$royaume_attaquant->sauver();
-							echo '<h6>La capitale est détruite ! Votre royaume gagne 100 points de victoire.</h6><br />';
+							$rand = rand(0, $count - 1);
+							//On attaque la construction $rand du tableau
+							$construction_ville = new construction_ville($map_royaume->constructions_ville[$rand]['id']);
+							$return = $construction_ville->suppr_hp($degat_defense);
+							echo '<h6>Attaque d\'un batiment en ville</h6>';
+							//On a downgrade un batiment, on gagne des points de victoire
+							if($return > 0)
+							{
+								$royaume_attaquant = new royaume($Trace[$joueur->get_race()]['numrace']);
+								$royaume_attaquant->add_point_victoire($return);
+								$royaume_attaquant->sauver();
+								echo '<h6>Une construction a été détruite ! Votre royaume gagne '.$return .' points de victoire.</h6><br />';
+							}
+						}
+						else
+						{
+							echo '<h6>Le coeur même de la ville est attaqué</h6>';
+							$map_royaume->set_capitale_hp($defenseur->get_hp());
+							//Si la capitale n'a plus de vie, on met le royaume en raz
+							if($map_royaume->get_capitale_hp() < 0)
+							{
+								$time = time() + 3600 * 24 * 31;
+								$map_royaume->set_fin_raz_capitale($time);
+								$royaume_attaquant = new royaume($Trace[$joueur->get_race()]['numrace']);
+								$royaume_attaquant->add_point_victoire(100);
+								$royaume_attaquant->sauver();
+								echo '<h6>La capitale est détruite ! Votre royaume gagne 100 points de victoire.</h6><br />';
+							}
 						}
 					}
+					$map_royaume->sauver();
 				}
-				$map_royaume->sauver();
 			}
 			//Fin du combat
 			if($mode == 'attaquant')

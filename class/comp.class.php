@@ -535,7 +535,7 @@ class magnetique extends effect {
 					/*if (isset($buff['id']))
 					{*/
 						// Voir si on peut enlever un debuff
-						//if ($buff['debuff'] == 1) continue;
+						if ($buff->get_debuff() == 1) continue;
 						$keys[] = $nbuff;
 					//}
 				}

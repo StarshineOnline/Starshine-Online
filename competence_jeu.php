@@ -154,6 +154,7 @@ if (isset($_GET['ID']))
 					{
 						$joueur->set_pa($joueur->get_pa() - $sortpa);
 						$joueur->set_mp($joueur->get_mp() - $sortmp);
+						$joueur->sauver();
 					
 						$db->query("DELETE FROM buff WHERE id=".$debuff_tab[rand(0, count($debuff_tab)-1)].";");
 					}

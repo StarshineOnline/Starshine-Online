@@ -1420,6 +1420,8 @@ function get_etats()
 	$etats['derniere_chance']['id'] = 'derniere_chance';
 	$etats['bouclier_protecteur']['nom'] = 'Bouclier Protecteur';
 	$etats['bouclier_protecteur']['id'] = 'bouclier_protecteur';
+	$etats['embraser']['nom'] = 'Embraser';
+	$etats['embraser']['id'] = 'embraser';
 	return $etats;
 }
 ?>
