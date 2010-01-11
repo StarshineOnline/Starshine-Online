@@ -25,7 +25,10 @@ PRIMARY KEY ( `x` , `y` , `id` )
 ) ENGINE = MYISAM COMMENT = 'Position des joueurs avant TP arène' 
  */
 
-$joueur = new perso($_SESSION['ID']);
+$admin_nom = $_SESSION['admin_nom'];
+if ($admin_nom == '') {
+	$admin_nom = 'admin';
+}
 
 if (isset($_REQUEST['teleport_in'])) {
   $arene = $_REQUEST['teleport_in'];
@@ -40,7 +43,7 @@ if (isset($_REQUEST['teleport_in'])) {
   $x = $R_perso['x'];
   $y = $R_perso['y'];
   $id = $R_perso['ID'];
-  $requete_arene = "select * from arenes where nom = '$arene'";
+  $requete_arene = "select x as xmin, y as ymin, x + size as xmax, y + size as ymax from arenes where nom = '$arene'";
   $req = $db->query($requete_arene);
   if ($db->num_rows > 0)
     $R_arene = $db->read_assoc($req);
@@ -52,7 +55,7 @@ if (isset($_REQUEST['teleport_in'])) {
   $req = $db->query($requete_arenes_perso);
   $requete_perso = "update perso set x=$nx, y=$ny where id = $id";
   $req = $db->query($requete_perso);
-  $requete_journal = "INSERT INTO journal VALUES('', $id, 'teleport', '".$joueur->get_nom()."', '".$R_perso['nom']."', NOW(), '$arene', 0, ".$joueur->get_x().", ".$joueur->get_y().")";
+  $requete_journal = "INSERT INTO journal VALUES('', $id, 'teleport', '".$admin_nom."', '".$R_perso['nom']."', NOW(), '$arene', 0, 0, 0)";
   $req = $db->query($requete_journal);
 }
 
@@ -71,13 +74,28 @@ if (isset($_REQUEST['remove']))
   $req = $db->query($requete_perso);
   $requete_arenes_perso = "delete from arenes_joueurs where id = '$id'";
   $db->query($requete_arenes_perso);
-  $requete_journal = "INSERT INTO journal VALUES('', $id, 'teleport', '".$joueur->get_nom()."', '".$R_perso['nom']."', NOW(), 'jeu', 0, ".$joueur->get_x().", ".$joueur->get_y().")";
+  $requete_journal = "INSERT INTO journal VALUES('', $id, 'teleport', '".$admin_nom."', '".$R_perso['nom']."', NOW(), 'jeu', 0, 0, 0)";
   $req = $db->query($requete_journal);
+}
+
+if (isset($_REQUEST['close']))
+{
+  $requete_arenes_action = "update arenes set open = 0 where nom = '".
+		sSQL($_REQUEST['close'])."'";
+	$req = $db->query($requete_arenes_action);
+}
+
+if (isset($_REQUEST['open']))
+{
+  $requete_arenes_action = "update arenes set open = 1 where nom = '".
+		sSQL($_REQUEST['open'])."'";
+	$req = $db->query($requete_arenes_action);
 }
 
 ?>
 
-<form action="arenes.php" method="get">
+<p>Ajouter un joueur dans une ar&egrave;ne :</p>
+<form action="arenes.php" method="get"><p>
 <select name="teleport_in">
 <?php
 $requete_arene = "select * from arenes where open = 1";
@@ -91,6 +109,7 @@ if ($db->num_rows > 0) {
 </select>
 <input name="player" type="text" />
 <input type="submit" />
+</p>
 </form>
 <p>Retirer un joueur d&rsquo;une ar&egrave;ne : <br />
 <?php
@@ -106,3 +125,24 @@ if ($db->num_rows > 0)
 }
 ?>
 </p>
+<p>Arènes :
+<table><tr><th>nom</th><th>ouverture</th><th>action</th></tr>
+<?php
+$requete_arene = "select * from arenes";
+$req = $db->query($requete_arene);
+if ($db->num_rows > 0) {
+  while ($R_arene = $db->read_assoc($req)) {
+		if ($R_arene['open'] == 1) {
+			$open = 'oui';
+			$act = '<a href="?close='.$R_arene['nom'].'">fermer</a>';
+		}
+		else {
+			$open = 'non';
+			$act = '<a href="?open='.$R_arene['nom'].'">ouvrir</a>';
+		}
+    echo "<tr><td>$R_arene[nom]</td><td>$open</td><td>$act</td></tr>\n";
+  }
+}
+?>
+</p>
+
