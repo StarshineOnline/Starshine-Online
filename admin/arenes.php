@@ -53,7 +53,9 @@ if (isset($_REQUEST['teleport_in'])) {
   $ny = $R_arene['ymin'] + round(($R_arene['ymax'] - $R_arene['ymin']) / 2);
   $requete_arenes_perso = "insert into arenes_joueurs value($x, $y, $id)";
   $req = $db->query($requete_arenes_perso);
-  $requete_perso = "update perso set x=$nx, y=$ny where id = $id";
+  if (array_key_exists('full', $_REQUEST))
+    $fullish = ", hp=hp_max, mp=mp_max, pa=$G_PA_max";
+  $requete_perso = "update perso set x=$nx, y=$ny $fullish where id = $id";
   $req = $db->query($requete_perso);
   $requete_journal = "INSERT INTO journal VALUES('', $id, 'teleport', '".$admin_nom."', '".$R_perso['nom']."', NOW(), '$arene', 0, 0, 0)";
   $req = $db->query($requete_journal);
@@ -108,6 +110,7 @@ if ($db->num_rows > 0) {
 ?>
 </select>
 <input name="player" type="text" />
+<label>Full HP/MP/PA<input name="full" type="checkbox" /></label>
 <input type="submit" />
 </p>
 </form>
