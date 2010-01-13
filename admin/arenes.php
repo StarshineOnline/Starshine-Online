@@ -74,6 +74,8 @@ if (isset($_REQUEST['remove']))
   $id = $R_arene['id'];
   $requete_perso = "update perso set x=$nx, y=$ny where id = $id";
   $req = $db->query($requete_perso);
+  $requete_perso = "update perso set hp=1 where id = $id and hp < 1";
+  $req = $db->query($requete_perso);
   $requete_arenes_perso = "delete from arenes_joueurs where id = '$id'";
   $db->query($requete_arenes_perso);
   $requete_journal = "INSERT INTO journal VALUES('', $id, 'teleport', '".$admin_nom."', '".$R_perso['nom']."', NOW(), 'jeu', 0, 0, 0)";
