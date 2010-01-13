@@ -782,5 +782,12 @@ class entite
 			$this->hp = $this->hp_max;
 	}
 
+	function in_arene($filter = '')
+	{
+		if ($this->type == 'joueur')
+			return $this->objet_ref->in_arene($filter);
+		return false;
+	}
+
 }
 ?>

@@ -111,7 +111,8 @@ $W_distance = detection_distance($W_case, convert_in_pos($attaquant->get_x(), $a
 <fieldset>
 	<legend>Combat VS <?php echo $defenseur->get_nom(); ?></legend>
 <?php
-if(is_donjon($attaquant->get_x(), $attaquant->get_y()))
+if(is_donjon($attaquant->get_x(), $attaquant->get_y())
+	 && ($attaquant->in_arene('and donj = 0') == false))
 {
 	$round_total = 20;
 	$attaquant->set_reserve($attaquant->get_reserve() * 2);

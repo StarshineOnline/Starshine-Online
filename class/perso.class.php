@@ -3819,13 +3819,13 @@ class perso extends entite
 	  $db->query($requete);
   }
 
-	function in_arene()
+	function in_arene($filter = '')
 	{
 		if ($this->x < 190 && $this->y < 190)
 			return false;
 		global $db;
 		$q = "select * from arenes where x <= $this->x and $this->x < x + size ".
-			"and y <= $this->y and $this->y < y + size";
+			"and y <= $this->y and $this->y < y + size $filter";
 		$req = $db->query($q);
 		if ($row = $db->read_object($req)) {
 			return $row;
