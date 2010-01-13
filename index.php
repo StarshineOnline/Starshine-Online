@@ -191,11 +191,11 @@ N'oubliez pas de reporter les bugs et problèmes, et d'apporter vos suggestions 
 				<div id='login'>			
 				<form id='login_form' action="index.php" method="post">
 				<div>
-				<input type="text" name="nom" size="10" class="login_nom" />
-				<input type="password" name="password" size="10" class="login_mdp" />
+				<input type="text" name="nom" size="10" class="login_nom" tabindex="1" />
+				<input type="password" name="password" size="10" class="login_mdp" tabindex="2" />
 				<input type="checkbox" name="auto_login" value="Ok" class="login_auto" />
 				<input type='hidden' name='log' />
-				<a class='login_connexion' onclick="$('#login_form').submit();"> </a>
+				<a class='login_connexion' onclick="$('#login_form').submit();" tabindex="3"> </a>
 				</div>
 				</form>
 				</div>		

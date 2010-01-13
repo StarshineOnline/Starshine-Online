@@ -220,11 +220,16 @@ else
 	if($pa_attaque <= 0) $pa_attaque = 1;
 	if (isset($no_pa_attaque) && $no_pa_attaque == true)
 		$pa_attaque = 0;
+	if($type == 'siege' OR $type == 'ville')
+	{
+		$pa_attaque = 10;
+		if($attaquant->is_buff('debuff_rez')) $pa_attaque *= 2;
+	}
 
 	$joueur_true = false;
 	$siege_true = false;
 	if ($type == 'joueur' OR $type == 'monstre' OR $type == 'batiment') if($attaquant->get_pa() >= $pa_attaque) $joueur_true = true;
-	if($type == 'siege' OR $type == 'ville') if ($map_siege->get_rechargement() <= time()) $siege_true = true;
+	if($type == 'siege' OR $type == 'ville') if ($map_siege->get_rechargement() <= time()) if($attaquant->get_pa() >= $pa_attaque) $siege_true = true;
 	//Vérifie si l'attaquant a assez de points d'actions pour attaquer ou si l'arme de siege a assez de rechargement
 	if ($joueur_true OR $siege_true)
 	{
@@ -694,6 +699,8 @@ else
 					$actif = $joueur_defenseur;
 					$passif = $joueur;
 					$gains = true;
+					//On supprime toutes les rez
+					$joueur->supprime_rez();
 				}
 				//Le défenseur est mort !
 				if ($defenseur->get_hp() <= 0)
@@ -702,6 +709,7 @@ else
 					$actif = $joueur;
 					$passif = $joueur_defenseur;
 					$gains = true;
+					$joueur_defenseur->supprime_rez();
 				}
 
 				if($gains)

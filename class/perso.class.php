@@ -3812,6 +3812,13 @@ class perso extends entite
       $this->mp = 0;
   }
 
+  function supprime_rez()
+  {
+	  global $db;
+	  $requete = "DELETE FROM rez WHERE id_rez = ".$this->id;
+	  $db->query($requete);
+  }
+
 	function in_arene()
 	{
 		if ($this->x < 190 && $this->y < 190)
