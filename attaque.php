@@ -810,6 +810,7 @@ else
 						$partage = $groupe->get_share_xp($actif->get_pos());
 						$partage = $partage == 0 ? 1 : $partage;
 						$xp_gagne = floor(($xp * $facteur_xp) * $membre->share_xp / $partage);
+						if($xp_gagne < 0) $xp_gagne = 0;
 						$honneur_gagne = floor(($honneur * $facteur_honneur) * $membre->share_xp / $partage);
 						//Buff moral
 						if($membre->is_buff('moral')) $honneur_gagne = floor( $honneur_gagne * (1 + ($membre->get_buff('moral', 'effet') / 100)) );

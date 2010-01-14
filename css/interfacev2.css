@@ -1,4 +1,5 @@
 /*-- Global site --------------------------------------------------*/
+/*-- Global site --------------------------------------------------*/
 html { width:100%; height:100%; }
 body { margin:0; padding:0; background:#7e909c url(../image/v2/bg_site.png) repeat-x; width:100%; height:100%; font:13px "Helvetica Neue", Helvetica, Arial, Geneva, sans-serif; }
 #top { display:block; width:1000px; margin:0 auto; z-index:5; }
@@ -182,6 +183,12 @@ body { margin:0; padding:0; background:#7e909c url(../image/v2/bg_site.png) repe
 .slot { float:right; margin-top:0; width:11px; height:16px; background:transparent url(../image/groupes/vert.png) center left no-repeat; text-align:center; line-height:15px; color:black; font-size:6pt; }
 .noslot { float:right; margin-top:0; width:11px; height:16px; background:transparent url(../image/groupes/noir.png) center left no-repeat; }
 .enchantement { float:right; margin-top:0; width:11px; height:16px; background:transparent url(../image/groupes/bleu.png) center left no-repeat; }
+
+/*-- Poste -------------------------------------------------*/
+#suggestion {position: absolute;	float: right !important; border: 1px solid grey; display: none;}
+#suggestion:hover {	border: 1px solid transparent;}
+#suggestion li {background-color: #E7CF98 !important;color: black;border: 1px solid #7e909c;cursor: pointer;}
+#suggestion li:hover {border: 1px solid #63A4EB;color:#63A4EB;border-radius: 10px;-moz-border-radius:10px;-webkit-border-radius:10px;}
 
 /***************************************************
   Vrac

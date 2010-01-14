@@ -65,7 +65,7 @@ class active_effect extends effect
       $requete = "select * from $aTable where type = '$aNom'";
       if ($aLevel != null) $requete .= " and level = '$aLevel'";
       //echo "<small>$requete</small><br />";
-      $db->query($requete);
+      $req = $db->query($requete);
       if ($db->num_rows < 0) throw new Exception("Cannot find $sNom");
       $row = $db->read_assoc($req);
       if (isset($row['effet'])) $this->effet = $row['effet'];

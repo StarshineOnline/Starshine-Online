@@ -265,3 +265,30 @@ $(document).ready(function()
 		$(this).hide();
 	});
 });
+
+function remplir(destination, valeur, source)
+{
+	$('#'+destination).val(valeur);
+	$('#'+source).hide();
+}
+
+function suggestion(valeur, cible)
+{
+	if(valeur.length == 0)
+	{
+		$('#'+cible).hide();
+	}
+	else
+	{
+		$.post("poste_pseudo.php", {queryString: ""+escape(valeur)+""}, 
+		function(data)
+		{
+     	 	if(data.length >0) 
+        	{
+        		var tmp = document.getElementById(cible);
+	        	tmp.innerHTML = data;
+	        	tmp.style.display = 'inline';
+			}
+        });
+	}
+}
