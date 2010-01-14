@@ -14,9 +14,13 @@ require('class/map.class.php');
 	$level = $objXY->level;
 }
 
-$map = new map($x, $y, 3, '', true);
+$visu = 3;
+$map = new map($x, $y, $visu, '', true);
 //if(is_array($MAPTAB[$x_map][$y_map])) { $class_map = "decor tex".$MAPTAB[$x_map][$y_map]["decor"]; } else { $class_map = "texblack"; };
 
+if (is_object($joueur) && $joueur->in_arene()) {
+	$map->arene = true;
+}
 $map->get_pnj();
 $map->get_joueur($objXY->race);
 $map->get_monstre($level);

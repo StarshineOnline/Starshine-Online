@@ -19,6 +19,7 @@ class map
 	public $onclick_status;
 	public $show_royaume_button;
 	public $affiche_terrain;
+	public $arene = false;
 	private $affiche_royaume;
 
 	function __construct($x, $y, $champ_vision = 3, $root = '', $donjon = false, $resolution = 'high')
@@ -66,7 +67,7 @@ class map
 	{
 		global $db;
 		global $Gcouleurs;
-		if($this->donjon)
+		if($this->donjon && !$this->arene)
 		{
 			$xmin = $this->xmin + 1;
 			$xmax = $this->xmax - 1;
