@@ -27,8 +27,7 @@ if ($joueur->get_race() != $R->get_race() &&
 }
 
 ?>
-<fieldset>
-<legend><?php echo '<a href="ville.php" onclick="return envoiInfo(this.href, \'centre\')">';?><?php echo $R->get_nom();?></a> > <?php echo '<a href="ecolemagie.php" onclick="return envoiInfo(this.href, \'carte\')">';?> Ecole de Magie </a></legend>
+<h2 class="ville_titre"><?php echo '<a href="ville.php" onclick="return envoiInfo(this.href, \'centre\')">';?><?php echo $R->get_nom();?></a> - <?php echo '<a href="ecolemagie.php?poscase='.$W_case.'" onclick="return envoiInfo(this.href, \'carte\')">';?> Ecole de Magie </a></h2>
 		<?php include_once(root.'ville_bas.php');?>
 <?php
 $cout_app = 500;
@@ -263,6 +262,5 @@ if($W_row['type'] == 1)
 			<?php
 		}
 }
-echo "</fieldset>";
 refresh_perso();
 ?>

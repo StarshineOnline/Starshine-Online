@@ -24,15 +24,15 @@ $batiment = new batiment($construction->get_id_batiment());
 
 ?>
 	<div id="carte">
-		<fieldset>
+	
 <?php
 //Distance + royaume
 if($joueur->get_x() == $construction->get_x() AND $joueur->get_y() == $construction->get_y() AND $joueur->get_race() == $R->get_race())
 {
-	
-	 echo "<legend>".$batiment->get_nom()."</legend>"; 
-	echo "<ul>";
-
+	?>
+			<h2><?php echo $batiment->get_nom(); ?></h2>
+	<ul class="ville">
+	<?php
 	if($batiment->get_bonus7() == 1)
 	{
 	?>
@@ -58,7 +58,7 @@ if($joueur->get_x() == $construction->get_x() AND $joueur->get_y() == $construct
 		</li>
 <?php
 	//Si il est roi
-	if($joueur->get_rang_royaume() == 6 AND $batiment->get_id() !=1)
+	if($joueur->get_rang_royaume() == 6)
 	{
 ?>
 		<li>
@@ -69,5 +69,4 @@ if($joueur->get_x() == $construction->get_x() AND $joueur->get_y() == $construct
 }
 ?>
 	</ul>
-	</fieldset>
 	</div>

@@ -14,6 +14,7 @@ require('class/map.class.php');
 	$level = $objXY->level;
 }
 $map = new map($x, $y);
+
 $map->get_pnj();
 $map->get_joueur($objXY->race);
 $map->get_drapeau();

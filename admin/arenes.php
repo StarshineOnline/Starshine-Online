@@ -98,7 +98,7 @@ if (isset($_REQUEST['open']))
 
 ?>
 
-<p>Ajouter un joueur dans une ar&egrave;ne :</p>
+<h3>Ajouter un joueur dans une ar&egrave;ne :</h3>
 <form action="arenes.php" method="get"><p>
 <select name="teleport_in">
 <?php
@@ -116,7 +116,8 @@ if ($db->num_rows > 0) {
 <input type="submit" />
 </p>
 </form>
-<p>Retirer un joueur d&rsquo;une ar&egrave;ne : <br />
+<h3>Joueurs en ar&egrave;ne :</h3>
+<table><tr><th>nom</th><th>arene</th><th>action</th></tr>
 <?php
 $requete_arene = "select * from arenes_joueurs";
 $req = $db->query($requete_arene);
@@ -124,13 +125,16 @@ if ($db->num_rows > 0)
 {
 	while ($R_arene = $db->read_assoc($req))
 	{
-		$p = recupperso_essentiel($R_arene['id'], 'ID, nom');
-		echo '<a href="arenes.php?remove='.$R_arene['id'].'">'.$p['nom']."</a><br />\n";
+		//$p = recupperso_essentiel($R_arene['id'], 'ID, nom');
+    $p = new perso($R_arene['id']);
+		$a = $p->in_arene();
+    echo '<tr><td>'.$p->get_nom().'</td><td>'.$a->nom.'</td><td>'.
+      '<a href="arenes.php?remove='.$R_arene['id'].'">Retiter</td></tr>';
 	}
 }
 ?>
-</p>
-<p>Arènes :
+</table>
+<h3>Arènes :</h3>
 <table><tr><th>nom</th><th>ouverture</th><th>action</th></tr>
 <?php
 $requete_arene = "select * from arenes";
@@ -149,5 +153,4 @@ if ($db->num_rows > 0) {
   }
 }
 ?>
-</p>
 

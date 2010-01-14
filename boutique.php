@@ -13,7 +13,7 @@ $joueur->check_perso();
 //Vérifie si le perso est mort
 verif_mort($joueur, 1);
 
-$W_requete = 'SELECT royaume, type FROM map WHERE id ='.$joueur->get_pos().'';
+$W_requete = 'SELECT royaume, type FROM map WHERE id =\''.sSQL($joueur->get_pos()).'\'';
 $W_req = $db->query($W_requete);
 $W_row = $db->read_assoc($W_req);
 $R = new royaume($W_row['royaume']);
@@ -30,17 +30,16 @@ if ($joueur->get_race() != $R->get_race() &&
 	if(!isset($_GET['type'])) $_GET['type'] = 'arme';
 
 		?>
-		<fieldset>
-		<legend><?php echo '<a href="ville.php" onclick="return envoiInfo(this.href,\'centre\')">';?><?php echo $R->get_nom();?></a> > <?php echo '<a href="boutique.php" onclick="return envoiInfo(this.href,\'carte\')">';?> Marchand d'<?php echo $_GET['type']; ?>s </a></legend>
+		<h2 class="ville_titre"><?php echo '<a href="ville.php?poscase='.$W_case.'" onclick="return envoiInfo(this.href,\'centre\')">';?><?php echo $R->get_nom();?></a> - <?php echo '<a href="boutique.php?poscase='.$W_case.'" onclick="return envoiInfo(this.href,\'carte\')">';?> Marchand d'<?php echo $_GET['type']; ?>s </a></h2>
 <?php
 	if($_GET['type'] == 'armure')
 	{
-		$url = 'boutique.php?type=arme&amp;order=';
+		$url = 'boutique.php?type=arme&amp;poscase='.$W_case.'&amp;order=';
 		$batiment = 'armurerie';
 	}
 	else
 	{
-	  $url = 'boutique.php?type=armure&amp;order=';
+	  $url = 'boutique.php?type=armure&amp;poscase='.$W_case.'&amp;order=';
 		$batiment = 'forgeron';
 	}
 
@@ -146,15 +145,13 @@ if($W_row['type'] == 1)
 		$i++;
 	}
 	//Affichage du menu de séléction et de tri
-	$url = 'boutique.php?type='.$_GET['type'].'&amp;order=';
-	/*
+	$url = 'boutique.php?type='.$_GET['type'].'&amp;poscase='.$W_case.'&amp;order=';
 	?>
 	
 	Trier par :	<a href="<?php echo $url; ?>prix" onclick="return envoiInfo(this.href, 'carte')">Prix</a> :: <a href="<?php echo $url; ?>type" onclick="return envoiInfo(this.href, 'carte')">Type</a> :: <a href="<?php echo $url; if($_GET['type'] == 'arme') echo 'degat'; else echo 'pp'; ?>" onclick="return envoiInfo(this.href, 'carte')">Effets</a> :: <a href="<?php echo $url; ?>forcex" onclick="return envoiInfo(this.href, 'carte')">Force</a><br />
 	<br />
 	
 	<?php
-	*/
 	//Affichage du magasin des armes
 	if($_GET['type'] == 'arme')
 	{
@@ -173,42 +170,40 @@ if($W_row['type'] == 1)
 
 		<p class="ville_haut"><a href="<?php echo $url2; ?>&amp;part=arc" onclick="return envoiInfo(this.href, 'carte')">Arc</a> - <a href="<?php echo $url2; ?>&amp;part=dague" onclick="return envoiInfo(this.href, 'carte')">Dague</a> - <a href="<?php echo $url2; ?>&amp;part=epee" onclick="return envoiInfo(this.href, 'carte')">Epée</a> - <a href="<?php echo $url2; ?>&amp;part=hache" onclick="return envoiInfo(this.href, 'carte')">Hache</a> - <a href="<?php echo $url2; ?>&amp;part=bouclier" onclick="return envoiInfo(this.href, 'carte')">Bouclier</a> - <a href="<?php echo $url2; ?>&amp;part=baton" onclick="return envoiInfo(this.href, 'carte')">Baton</a></p>
 
-		<ul id='boutique'>
-
-		<li class='head'>
-			<span class='image'></span>
-			<?php
-			if(!$types[$type]){$class='style="width:44% !important;"';}else{$class='';}
-			?>
-
-			<span class='nom' <?php echo $class;?>>
+		
+		<table class="marchand" cellspacing="0px">
+		<tr class="header trcolor2">
+			<td>
 				Nom
-			</span>
-			<span class='mains'>
+			</td>
+			<td>
+				Type
+			</td>
+			<td>
 				Mains
-			</span>
-			<span class='degats'>
+			</td>
+			<td>
 				Dégats
-			</span>
-			<span class='coef'>
-				<span onClick="return nd();" onmouseover="return <?php echo make_overlib('Coéf Arc = '.$joueur->get_coef_distance().'<br />Coéf Mélée = '.$joueur->get_coef_melee().'<br />Coéf Incantation = '.$joueur->get_coef_incantation()).'<br />Coéf Blocage = '.$joueur->get_blocage; ?>" onmouseout="return nd();">Coéf.</span>
-			</span>
+			</td>
+			<td>
+				<span onClick="return nd();" onmouseover="return <?php echo make_overlib('Coéf Arc = '.$joueur->get_coef_distance().'<br />Coéf Mélée = '.$joueur->get_coef_melee().'<br />Coéf Incantation = '.$joueur->get_coef_incantation()); ?>" onmouseout="return nd();">Coéf.</span>
+			</td>
 	<?php
 	foreach($types[$type] as $typ)
 	{
 		echo '
-			<span class="coef_type">';
-			if ($typ[0] == 'Bonus Cast'){echo 'Bonus';}else {echo $typ[0];}
-			echo '</span>';
+			<td>
+				'.$typ[0].'
+			</td>';
 	}
 	?>
-			<span class='stars'>
+			<td>
 				Stars
-			</span>
-			<span class='achat'>
+			</td>
+			<td>
 				Achat
-			</span>
-		</li>
+			</td>
+		</tr>
 		
 		<?php
 		
@@ -247,44 +242,38 @@ if($W_row['type'] == 1)
 			else
 				$echo = 'Rien n\'est équipé';
 		?>
-		<li class="element trcolor<?php echo $couleur; ?>">
-	
-		<span class='image'>	
-		<?php echo '<img src="image/arme/arme'.$row['id'].'.png" style="height:24px;" />'; 		
-		
-			if(!$types[$type]){$class='style="width:44% !important;"';}else{$class='';}
-			?>
-			</span>
-			
-			<span class='nom' <?php echo $class;?> onmouseover="return <?php echo make_overlib(addslashes($echo)); ?>" onClick="return nd();" onmouseout="nd();">
-				
+		<tr class="element trcolor<?php echo $couleur; ?>">
+			<td onmouseover="return <?php echo make_overlib(addslashes($echo)); ?>" onClick="return nd();" onmouseout="nd();">
 				<?php echo $row['nom']; ?>
-			</span>
-			<span class='mains'>
+			</td>
+			<td>
+				<?php echo $row['type']; ?>
+			</td>
+			<td>
 				<?php
 				echo count(explode(';', $row['mains']));
 				?>
-			</span>
-			<span class='degats'>
+			</td>
+			<td>
 				<?php echo $row['degat']; ?>
-			</span>
-			<span class='coef'>
-				<span class="<?php echo over_price($coef, $coef_joueur); ?>"><?php echo ($coef); ?></span>
-			</span>
+			</td>
+			<td>
+				<span class="<?php echo over_price($coef, $coef_joueur); ?>"><?php echo ($coef); ?>
+			</td>
 	<?php
 	$check = true;
 	foreach($types[$type] as $typ)
 	{
 		echo '
-			<span class="coef_type">
+			<td>
 				<span>'.$row[$typ[1]].'</span>
-			</span>';
+			</td>';
 	}
 	?>
-			<span class='stars'>
+			<td>
 				<span class="<?php echo over_price($cout, $joueur->get_star()); ?>"><?php echo $cout ?></span>
-			</span>
-			<span class='achat'>
+			</td>
+			<td>
 			
 			<?php 
 
@@ -295,16 +284,15 @@ if($W_row['type'] == 1)
 			<?php
 			}
 			?>
-			</span>
-		</li>
+			</td>
+		</tr>
 		<?php
 			if($color == 1) $color = 2; else $color = 1;
 		}
 		
 		?>
 		
-	
-	
+		</table>
 		</div>
 
 <?php
@@ -318,30 +306,30 @@ if($W_row['type'] == 1)
 
 		<p class="ville_haut"><a href="<?php echo $url2; ?>&amp;part=ceinture" onclick="return envoiInfo(this.href, 'carte')">Ceinture</a> - <a href="<?php echo $url2; ?>&amp;part=chaussure" onclick="return envoiInfo(this.href, 'carte')">Chaussure</a> - <a href="<?php echo $url2; ?>&amp;part=jambe" onclick="return envoiInfo(this.href, 'carte')">Jambe</a> - <a href="<?php echo $url2; ?>&amp;part=main" onclick="return envoiInfo(this.href, 'carte')">Main</a> - <a href="<?php echo $url2; ?>&amp;part=tete" onclick="return envoiInfo(this.href, 'carte')">Tête</a> - <a href="<?php echo $url2; ?>&amp;part=torse" onclick="return envoiInfo(this.href, 'carte')">Torse</a><br />
 		<a href="<?php echo $url2; ?>&amp;part=cou" onclick="return envoiInfo(this.href, 'carte')">Cou</a> - <a href="<?php echo $url2; ?>&amp;part=dos" onclick="return envoiInfo(this.href, 'carte')">Dos</a> - <a href="<?php echo $url2; ?>&amp;part=doigt" onclick="return envoiInfo(this.href, 'carte')">Doigt</a></p><br />
-		<ul>
-		<li>
-			<span>
+		<table class="marchand" cellspacing="0px">
+		<tr class="header trcolor2">
+			<td>
 				Nom
-			</span>
-			<span>
+			</td>
+			<td>
 				Type
-			</span>
-			<span>
+			</td>
+			<td>
 				PP
-			</span>
-			<span>
+			</td>
+			<td>
 				PM
-			</span>
-			<span>
+			</td>
+			<td>
 				Force
-			</span>
-			<span>
+			</td>
+			<td>
 				Stars
-			</span>
-			<span>
+			</td>
+			<td>
 				Achat
-			</span>
-		</li>
+			</td>
+		</tr>
 		<?php
 		
 		$color = 1;
@@ -370,26 +358,26 @@ if($W_row['type'] == 1)
 			}
 			else $echo = 'Armure équipée : Aucune';
 		?>
-		<li class="element trcolor<?php echo $couleur; ?>">
-			<span onmouseover="return <?php echo make_overlib($echo); ?>" onClick="return nd();" onmouseout="return nd();">
+		<tr class="element trcolor<?php echo $couleur; ?>">
+			<td onmouseover="return <?php echo make_overlib($echo); ?>" onClick="return nd();" onmouseout="return nd();">
 				<?php echo $row['nom']; ?>
-			</span>
-			<span>
+			</td>
+			<td>
 				<?php echo $row['type']; ?>
-			</span>
-			<span>
+			</td>
+			<td>
 				<?php echo $row['PP']; ?>
-			</span>
-			<span>
+			</td>
+			<td>
 				<?php echo $row['PM']; ?>
-			</span>
-			<span>
+			</td>
+			<td>
 				<span class="<?php echo over_price($row['forcex'], $joueur->get_force()); ?>"><?php echo $row['forcex']; ?></span>
-			</span>
-			<span>
+			</td>
+			<td>
 				<span class="<?php echo over_price($cout, $joueur->get_star()); ?>"><?php echo $cout; ?></span>
-			</span>
-			<span>
+			</td>
+			<td>
 			<?php
 				if (over_price($cout, $joueur->get_star()) == 'achat_normal' AND over_price($row['forcex'], $joueur->get_force()) == 'achat_normal')
 				{
@@ -398,16 +386,16 @@ if($W_row['type'] == 1)
 				<?php 
 				}
 				?>
-			</span>
-		</li>
+			</td>
+		</tr>
 		<?php
 			if($color == 1) $color = 2; else $color = 1;
 		}
 		
 		?>
 		
-		</ul>
-		</fieldset>
+		</table>
+		
 
 <?php
 	}

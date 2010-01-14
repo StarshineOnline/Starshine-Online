@@ -110,6 +110,7 @@ while($row = $db->read_array($req))
 	}
 	if($row['spawn_loc'] != '' OR $row['spawn'] != 0)
 	{
+		echo "HERE: niveau: $niveau - j[n]: ${joueur[$niveau]} \n";
 		$up = ($joueur[$niveau] * 1000) / sqrt($niveau);
 		if($monstre[$niveau]['tot_type'] == 0) $monstre[$niveau]['tot_type'] = 1;
 		$down = $monstre[$niveau]['total'] / $monstre[$niveau]['tot_type'];

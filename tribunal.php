@@ -23,8 +23,7 @@ if ($joueur->get_race() != $R->get_race())
 	exit (0);
 }
 ?>
-<fieldset>
-   	<legend><?php echo '<a href="ville.php?poscase='.$W_case.'" onclick="return envoiInfo(this.href, \'centre\')">';?><?php echo $R->get_nom();?></a> > <?php echo '<a href="tribunal.php?poscase='.$W_case.'" onclick="return envoiInfo(this.href, \'carte\')">';?> Tribunal </a></legend>
+   	<h2 class="ville_titre"><?php echo '<a href="ville.php?poscase='.$W_case.'" onclick="return envoiInfo(this.href, \'centre\')">';?><?php echo $R->get_nom();?></a> - <?php echo '<a href="tribunal.php?poscase='.$W_case.'" onclick="return envoiInfo(this.href, \'carte\')">';?> Tribunal </a></h2>
 		<?php include_once(root.'ville_bas.php');?>
 <?php
 //Affichage des quêtes
@@ -138,4 +137,3 @@ if($W_row['type'] == 1)
 	}
 }
 ?>
-</fieldset>

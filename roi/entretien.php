@@ -25,47 +25,60 @@ else
 {
 if($ratio < 1) $ratio = 1;
 echo '
-<fieldset class="tier">
-<legend>Batiments interne</legend>
-			<ul>';
+<table>
+	<tr>
+		<td style="vertical-align : top; font : normal 12px arial;">
+			<table style="border-spacing : 0;">
+			<tr>
+				<td colspan="2"><h4>ENTRETIEN DES BATIMENTS INTERNES : (en stars / jour)</h4></td>
+			</tr>';
 			$requete = "SELECT *, construction_ville.id as id_const FROM construction_ville RIGHT JOIN batiment_ville ON construction_ville.id_batiment = batiment_ville.id WHERE construction_ville.statut = 'actif' AND id_royaume = ".$royaume->get_id()." ORDER BY entretien DESC";
 			$req = $db->query($requete);
 			while($row = $db->read_assoc($req))
 			{
 				$entretien = ceil($row['entretien'] * $ratio);
-				echo '<li><span class="nom">'.$row['nom'].' :</span><span class="cout">-'.$entretien.'</span></li>';
+				echo '
+				<tr>
+					<td>'.$row['nom'].'</td><td> : -'.$entretien.'</td>
+				</tr>';
 				$royaumes[$row['id_royaume']]['batiments'][$row['id_const']] = $entretien;
 				$royaumes[$row['id_royaume']]['total'] += $entretien;
 			}
 			echo '
-				<li style="border-top:1px dashed #FFF;"><span class="nom">Sous Total</span><span class="cout">-'.$royaumes[$royaume->get_id()]['total'].'</span></li>
-				</ul>';
-				
+				<tr>
+					<td><h5>Sous Total</h5></td><td><h5> -'.$royaumes[$royaume->get_id()]['total'].'</h5></td>
+				</tr>';
 			//PHASE 2, entretien des batiments externes
-			//On récupère les couts d'entretiens
+			//On r�cup�re les couts d'entretiens
 			echo '
-				</fieldset>
-				<fieldset class="tier">
-				<legend>Batiments externe</legend>';
+				<tr>
+					<td colspan="2"><h4>ENTRETIEN DES BATIMENTS EXTERNES : (en stars / jour)</h4></td>
+				</tr>';
 			$requete = "SELECT *, construction.id AS id_const, batiment.nom AS nom_b, construction.x AS x_c, construction.y AS y_c FROM batiment RIGHT JOIN construction ON construction.id_batiment = batiment.id WHERE royaume = ".$royaume->get_id()." ORDER BY entretien DESC";
 			$req = $db->query($requete);
-			echo "<ul>";
 			while($row = $db->read_assoc($req))
 			{
 				$entretien = ceil($row['entretien'] * $ratio);
 				echo '
-				<li><span class="nom">'.$row['nom_b'].' ('.$row['x_c'].' - '.$row['y_c'].') :</span><span class="cout"> -'.$entretien.'</span></li>';
+				<tr>
+					<td>'.$row['nom_b'].' ('.$row['x_c'].' - '.$row['y_c'].')</td><td> : -'.$entretien.'</td>
+				</tr>';
 				$royaumes[$row['royaume']]['total_c'] += $entretien;
 			}
 			echo '
-				<li style="border-top:1px dashed #FFF;"><span class="nom">Sous Total </span><span class="cout">-'.$royaumes[$royaume->get_id()]['total_c'].'</span></li>
-				</ul>
-</fieldset>
-
-
-<fieldset class="tier">
-			<legend>Recette, taxe (hier)</legend>
-			<ul>
+				<tr>
+					<td><h5>Sous Total</h5></td><td><h5> -'.$royaumes[$royaume->get_id()]['total_c'].'</h5></td>
+				</tr>
+				<tr>
+					<td><h5>TOTAL</h5></td><td><h5> -'.($royaumes[$royaume->get_id()]['total_c'] + $royaumes[$royaume->get_id()]['total']).'</h5></td>
+				</tr>
+			</table>
+		</td>
+		<td style="vertical-align : top; font : normal 12px arial;">
+			<table style="border-spacing : 0;">
+			<tr>
+				<td colspan="2"><h4>RECETTES, RECOLTE DES TAXES (hier)</h4></td>
+			</tr>
 			';
 			$sources[2] = 'Hotel des ventes';
 			$sources[3] = 'Taverne';
@@ -92,36 +105,37 @@ echo '
 				if(array_key_exists($i, $sources))
 				{
 					echo '
-					<li><span class="nom">'.$sources[$i].' : </span><span class="cout"> +'.$stats[$i].'</span></li>';
+			<tr>
+				<td>'.$sources[$i].'</td><td> : +'.$stats[$i].'</td>
+			</tr>';
 					$total += $stats[$i];
 				}
 				$i++;
 			}
 			echo '
-			<li style="border-top:1px dashed #FFF;"><span class="nom">TOTAL</span><span class="cout"> +'.$total.'</span></li>';
-			echo "</ul></fieldset>";
+			<tr>
+				<td><h6>TOTAL</h6></td><td><h6> +'.$total.'</h6></td>
+			</tr>';
 			$balance = $total - ($royaumes[$royaume->get_id()]['total_c'] + $royaumes[$royaume->get_id()]['total']);
 			if($balance > 0)
 			{
-				$class='green';
+				$h = 6;
 				$balance = '+ '.$balance;
-			} else $class='red';
+			} else $h = 5;
 			?>
-<fieldset class="tier">
-			<legend>Balance</legend>
-			<ul>
-			<?php
-			echo '<li><span class="nom">Entretiens</span><span class="cout">-'.($royaumes[$royaume->get_id()]['total_c'] + $royaumes[$royaume->get_id()]['total']).'</span><li>
-			<li><span class="nom">Recette</span><span class="cout"> +'.$total.'</span></li>
-			<li style="border-top:1px dashed #FFF;" class='.$class.'><span class="nom">Total</span><span class="cout">'.$balance.'</span></li>';
-			?>
-			</ul>
-			
-</fieldset>			
-			
-	
-		
-<table style='clear:both;'>
+			</table>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<h<?php echo $h; ?>>BALANCE</h<?php echo $h; ?>>
+		</td>
+		<td style="text-align : right;">
+			<h<?php echo $h; ?> style="padding-right : 20px;"> <?php echo $balance; ?></h<?php echo $h; ?>>
+		</td>
+	</tr>
+</table>
+<table>
 <?php
 if(date("G") > 4) $time = mktime(0, 0, 0, date("m") , date("d")-1, date("Y"));
 else $time = mktime(0, 0, 0, date("m") , date("d")-2, date("Y"));

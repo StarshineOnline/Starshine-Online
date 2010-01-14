@@ -23,8 +23,7 @@ $construction = new construction(sSQL($_GET['id_construction']));
 $batiment = new batiment($construction->get_id_batiment());
 ?>
 	<div id="carte">
-	<fieldset>
-		<legend><?php echo $batiment->get_nom(); ?></legend>
+		<h2><?php echo $batiment->get_nom(); ?></h2>
 <?php
 
 if($joueur->get_x() == $construction->get_x() AND $joueur->get_y() == $construction->get_y() AND $joueur->get_race() == $R->get_race())
@@ -50,5 +49,4 @@ if($joueur->get_x() == $construction->get_x() AND $joueur->get_y() == $construct
 }
 ?>
 	</ul>
-	</fieldset>
 	</div>

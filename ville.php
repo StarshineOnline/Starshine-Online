@@ -17,7 +17,6 @@ $W_row = $db->read_assoc($W_req);
 $R = new royaume($W_row['royaume']);
 ?>
 	<div id="carte">
-	<fieldset>
 <?php
 
 $W_distance = detection_distance($W_case, $joueur->get_pos());
@@ -86,25 +85,14 @@ if($W_row['type'] == 1)
 		else $acces_ville = false;
 	}
 	else $acces_ville = false;
-	
-	if($amende)
-	{
-	//Payer l'amende
-	?>
-	<p style='text-align:center;color:#EF3B3B;background-color:#EEE;-moz-border:12px;'>Vous êtes considéré comme criminel par votre royaume.<br />
-	Il vous faut payer une amende de <?php echo $amende['montant']; ?> stars pour ne plus l'être.<br />
-	<a href="" onclick="return envoiInfo('ville.php?direction=paye_amende', 'carte')">Pour payer l'amende, cliquez ici</a></p>
-	<?php
-	}
-
 	//Affichage de la ville uniquement pour les persos qui ne sont pas en guerre, et qui n'ont pas d'amende
 	if(($R->get_diplo($joueur->get_race()) < 7 OR $R->get_diplo($joueur->get_race()) == 127) AND !$acces_ville)
 	{
 		?>
-		<legend><?php echo '<a href="ville.php" onclick="return envoiInfo(this.href,\'centre\')">';?><?php echo $R->get_nom();?></a> </legend>
-					<?php include_once(root.'ville_bas.php');
+		<h2 class="ville_titre"><?php echo '<a href="ville.php" onclick="return envoiInfo(this.href,\'centre\')">';?><?php echo $R->get_nom();?></a> </h2>
+					<?php include_once(root.'ville_bas.php');?>
 
-				
+				<?php
 				if($R->get_id() != 0)
 				{
 					//Récupère tout les royaumes qui peuvent avoir des items dans l'HV
@@ -134,7 +122,9 @@ if($W_row['type'] == 1)
 					}
 				}
 				?>
-							<div class='quartier'>
+				<table style="width : 100%;">
+					<tr style="width : 100%; vertical-align : top;">
+						<td class="ville_test">
 							<p class="ville_haut">
 								Quartier Marchand
 							</p>
@@ -160,11 +150,11 @@ if($W_row['type'] == 1)
 									<a href="hotel.php" onclick="return envoiInfo(this.href, 'carte')">Hôtel des ventes</a>
 								</li>
 							</ul>
-							</div>
 							<?php
 							}
 							?>
-							<div class='quartier'>
+						</td>
+						<td class="ville_test">
 							<p class="ville_haut">Quartier Royal</p>
 							<ul class="ville">							
 									<li>
@@ -201,8 +191,10 @@ if($W_row['type'] == 1)
 						<a href="teleport.php" onclick="return envoiInfo(this.href, 'carte')">Pierre de Téléportation</a>
 					</li>
 			</ul>
-			</div>
-			<div class='quartier'>
+			</td>
+		</tr>
+		<tr style="width : 100%;">
+			<td class="ville_test">
 				<p class="ville_haut">Haut Quartier</p>
 				<ul class="ville">
 					<li>
@@ -228,8 +220,8 @@ if($W_row['type'] == 1)
 		}
 ?>
 				</ul>
-				</div>
-				<div class='quartier'>
+			</td>
+			<td class="ville_test" >
 			<p class="ville_haut">Bas Quartier</p>
 			<ul class="ville">		
 				<li>
@@ -261,16 +253,27 @@ if($W_row['type'] == 1)
 		}
 ?>
 			</ul>
-			</div>
+						</tr>
+					</table>
+
+
 <?php
 	}
 	else
 	{
 		if($R->get_diplo($joueur->get_race()) >= 7 AND $R->get_diplo($joueur->get_race()) != 127)	echo 'Vous êtes en guerre avec ce royaume !';
 	}
+	if($amende)
+	{
+	//Payer l'amende
+	?>
+	Vous êtes considéré comme criminel par votre royaume.<br />
+	Il vous faut payer une amende de <?php echo $amende['montant']; ?> stars pour ne plus l'être.<br />
+	<a href="" onclick="return envoiInfo('ville.php?direction=paye_amende', 'carte')">Pour payer l'amende, cliquez ici</a>
+	<?php
+	}
 }
 ?>
 		</ul>
 	    <img src="image/pixel.gif" onLoad="envoiInfo('menu_carteville.php?javascript=oui&amp;ville=ok', 'carteville');" />
-	    </fieldset>
 	</div>
