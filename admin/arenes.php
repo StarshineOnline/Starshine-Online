@@ -49,8 +49,8 @@ if (isset($_REQUEST['teleport_in'])) {
     $R_arene = $db->read_assoc($req);
   else
     die('arene inconnue');
-  $nx = $R_arene['xmin'] + round(($R_arene['xmax'] - $R_arene['xmin']) / 2);
-  $ny = $R_arene['ymin'] + round(($R_arene['ymax'] - $R_arene['ymin']) / 2);
+  $nx = $R_arene['xmin'] + $_REQUEST['p_x'];
+  $ny = $R_arene['ymin'] + $_REQUEST['p_y'];
   $requete_arenes_perso = "insert into arenes_joueurs value($x, $y, $id)";
   $req = $db->query($requete_arenes_perso);
   if (array_key_exists('full', $_REQUEST))
@@ -106,13 +106,19 @@ $requete_arene = "select * from arenes where open = 1";
 $req = $db->query($requete_arene);
 if ($db->num_rows > 0) {
   while ($R_arene = $db->read_assoc($req)) {
+		$size_a = ceil($R_arene['size'] / 2);
+		if (!isset($size_a1)) $size_a1 = $size_a;
     echo '<option value="'.$R_arene['nom'].'">'.$R_arene['nom']."</option>\n";
   }
 }
 ?>
 </select>
 <input name="player" type="text" />
-<label>Full HP/MP/PA<input name="full" type="checkbox" /></label>
+<label>Full HP/MP/PA <input name="full" type="checkbox" /></label>
+<label>Pos X <input name="p_x" type="text" size="2"
+ value="<?php echo $size_a1; ?>" /></label>
+<label>Pos Y <input name="p_y" type="text" size="2"
+ value="<?php echo $size_a1; ?>" /></label>
 <input type="submit" />
 </p>
 </form>
@@ -129,7 +135,7 @@ if ($db->num_rows > 0)
     $p = new perso($R_arene['id']);
 		$a = $p->in_arene();
     echo '<tr><td>'.$p->get_nom().'</td><td>'.$a->nom.'</td><td>'.
-      '<a href="arenes.php?remove='.$R_arene['id'].'">Retiter</td></tr>';
+      '<a href="arenes.php?remove='.$R_arene['id'].'">Retirer</td></tr>';
 	}
 }
 ?>
