@@ -29,7 +29,8 @@ if ($joueur->get_race() != $R->get_race() &&
 
 if(array_key_exists('fort', $_GET)) $fort = '&amp;fort=ok'; else $fort = '';
 ?>
-    	<h2 class="ville_titre"><?php if(!array_key_exists('fort', $_GET)) return_ville('<a href="ville.php?poscase='.$pos.'" onclick="return envoiInfo(this.href, \'centre\')">'.$R->get_nom().'</a> - ', $pos); ?> <?php echo '<a href="taverne.php?poscase='.$pos.'" onclick="return envoiInfo(this.href,\'carte\')">';?> Alchimiste </a></h2>
+<fieldset>
+    	<legend><?php if(!array_key_exists('fort', $_GET)) return_ville('<a href="ville.php" onclick="return envoiInfo(this.href, \'centre\')">'.$R->get_nom().'</a> > ', $pos); ?> <?php echo '<a href="taverne.php" onclick="return envoiInfo(this.href,\'carte\')">';?> Alchimiste </a></legend>
 				<?php include_once(root.'ville_bas.php');?>
 		<?php
 $W_distance = detection_distance($pos, $joueur->get_pos());
@@ -285,3 +286,4 @@ if($W_distance == 0)
 <?php
 }
 ?>
+</fieldset>

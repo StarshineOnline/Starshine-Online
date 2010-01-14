@@ -23,14 +23,14 @@ if ($joueur->get_race() != $R->get_race() &&
 	echo "<h5>Impossible de commercer avec un tel niveau de diplomatie</h5>";
 	exit (0);
 }
-
+echo "<fieldset>";
 if($W_row['type'] == 1)
 {//-- On verifie que le joueur est bien sur la ville ($W_distance)
 	echo "<script type='text/javascript'>return nd();</script>";
-	echo "<h2 class='ville_titre'>
-		   <a href=\"ville.php\" onclick=\"return envoiInfo(this.href, 'centre');\">".$R->get_nom()."</a> -
+	echo "<legend>
+		   <a href=\"ville.php\" onclick=\"return envoiInfo(this.href, 'centre');\">".$R->get_nom()."</a> >
 		   <a href=\"hotel.php\" onclick=\"return envoiInfo(this.href, 'carte');\"> Hotel des ventes </a>
-		  </h2>";
+		  </legend>";
 	include_once(root."ville_bas.php");
 	{//-- Traitement d'un achat ou d'une recupération
 		if(isset($_GET["action"]))
@@ -349,4 +349,6 @@ if($W_row['type'] == 1)
 	}	
 	echo "</div>";
 }
+echo "</fieldset>";
+
 ?>

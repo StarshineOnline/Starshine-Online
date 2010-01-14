@@ -86,7 +86,7 @@ else if(!array_key_exists('direction', $_GET))
 			{
 				$batiment_suivant = new batiment($batiment->get_suivant());
 				
-				if ($batiment->get_cond1() < (time() - $construction->get_date_construction()))
+				if ($batiment_suivant->get_cond1() < (time() - $construction->get_date_construction()))
 				{
 					echo ' - <a href="construction.php?direction=up_construction&amp;id='.$row['id'].'" onclick="if(confirm(\'Voulez vous upgrader ce '.$construction->get_nom().' ?\')) return envoiInfo(this.href, \'message_confirm\'); else return false;">Upgrader - '.$batiment_suivant->get_cout().' stars</a>';
 				}

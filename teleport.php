@@ -24,7 +24,7 @@ if ($joueur->get_race() != $R->get_race() &&
 	echo "<h5>Impossible de commercer avec un tel niveau de diplomatie</h5>";
 	exit (0);
 }
-
+echo "<fieldset>";
 $batiment_ok = false;
 if ($W_row['type'] != 1)
 {  
@@ -109,7 +109,7 @@ if ($W_row['type'] != 1)
 	}
 	$W_coord = convert_in_coord($W_case);
 	?>
-   	<h2 class="ville_titre"><?php if(!array_key_exists('fort', $_GET)) return_ville( '<a href="ville.php?poscase='.$W_case.'" onclick="return envoiInfo(this.href, \'centre\')">'.$R->get_nom().'</a> - ', $joueur->get_pos()); ?> <?php echo '<a href="teleport.php" onclick="return envoiInfo(this.href, \'carte\')">';?> Pierre de téléportation </a></h2>
+   	<legend><?php if(!array_key_exists('fort', $_GET)) return_ville( '<a href="ville.php" onclick="return envoiInfo(this.href, \'centre\')">'.$R->get_nom().'</a> > ', $joueur->get_pos()); ?> <?php echo '<a href="teleport.php" onclick="return envoiInfo(this.href, \'carte\')">';?> Pierre de téléportation </a></legend>
 		<?php include_once(root.'ville_bas.php');?>
 
 	<div class="ville_test">
@@ -187,3 +187,4 @@ if ($W_row['type'] != 1)
 ?>
 </ul>
 </div>
+</fieldset>

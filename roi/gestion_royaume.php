@@ -497,7 +497,7 @@ if($joueur->get_rang_royaume() != 6 AND $joueur->get_id() != $royaume->get_minis
 	{
 		echo "<div id='criminel'>";
 	    //Sélection de tous les joueurs ayant des points de crime
-	    $requete = "SELECT * FROM perso RIGHT JOIN amende ON amende.id_joueur = perso.id WHERE (crime > 0 OR amende.montant > 0) AND race = '".$royaume->get_race()."' AND perso.statut = 'actif' ORDER BY crime DESC";
+	    $requete = "SELECT * FROM perso WHERE crime > 0 AND race = '".$royaume->get_race()."' AND perso.statut = 'actif' ORDER BY crime DESC";
 	    $req = $db->query($requete);
 	    ?>
 	    <fieldset>	    	    	    	    
@@ -507,17 +507,18 @@ if($joueur->get_rang_royaume() != 6 AND $joueur->get_id() != $royaume->get_minis
 	    	<span class='crime'>Pts de crime</span>
 	    	<span class='amende'>Amende</span>
 	    </li>
+	    
 	    <?php
 	    while($row = $db->read_assoc($req))
 	    {
-	        if($row['amende'] > 0)
-	        {
-	            $requete = "SELECT montant FROM amende WHERE id = ".$row['amende'];
+	            $requete = "SELECT montant FROM amende WHERE id_joueur = ".$row['id'];
 	            $req_a = $db->query($requete);
-	            $row_a = $db->read_row($req_a);
-	            $amende = $row_a[0];
-	        }
-	        else $amende = 0;
+	            if($db->num_rows > 0)
+				{
+	            	$row_a = $db->read_assoc($req_a);
+	            	$amende = $row_a['montant'];
+	            }
+	        	else $amende = 0;
 	        ?>
 	    <li>
 	    	<span class='nom'>
@@ -535,7 +536,7 @@ if($joueur->get_rang_royaume() != 6 AND $joueur->get_id() != $royaume->get_minis
 	    		if($amende != 0)
 	    		{
 	        		?>
-	        		/ <span onclick="affichePopUp('gestion_royaume.php?direction=suppr_criminel&amp;id=<?php echo $row['id_joueur']; ?>')">Supprimer</a>
+	        		/ <span onclick="affichePopUp('gestion_royaume.php?direction=suppr_criminel&amp;id=<?php echo $row['id']; ?>')">Supprimer</a>
 	        		<?php
 	    		}
 	    		?>
@@ -568,16 +569,19 @@ if($joueur->get_rang_royaume() != 6 AND $joueur->get_id() != $royaume->get_minis
 	    $etats = array('normal');
 	    if($joueur->get_crime() > 30) $etats[] = 'bandit';
 	    if($joueur->get_crime() > 60) $etats[] = 'criminel';
-        ?>
-    	<input type="checkbox" name="acces_ville" id="acces_ville" /> Empèche le joueur d'accéder à la ville<br />
-    	<input type="checkbox" name="spawn_ville" id="spawn_ville" <?php if($joueur->get_crime() > 30) echo 'disabled'; ?> /> Empèche de renaître à la ville<br />
+
+        
+    	echo '<input type="checkbox" name="acces_ville" id="acces_ville" ';
+    	if($amende['acces_ville'] == 'y') {echo 'checked="checked"';} 
+    	echo ' /> Empèche le joueur d\'accéder à la ville<br />
+    	<input type="checkbox" name="spawn_ville" id="spawn_ville"'; if($joueur->get_crime() > 30) {echo 'disabled';} if($amende['respawn_ville'] == 'y') {echo 'checked="checked"';}  echo '/> Empèche de renaître à la ville<br />
     	<br />
-    	Statut du personnage <select name="statut" id="statut">
-    	<?php
+    	Statut du personnage <select name="statut" id="statut">';
+    	
     	foreach($etats as $etat)
     	{
         	?>
-        	<option value="<?php echo $etat; ?>"><?php echo $etat; ?></option>
+        	<option value="<?php echo $etat; ?>" <?php if($amende['statut'] == $etat){echo "selected='selected'";}?>><?php echo $etat; ?></option>
         	<?php
     	}
     	?>
@@ -585,15 +589,13 @@ if($joueur->get_rang_royaume() != 6 AND $joueur->get_id() != $royaume->get_minis
     	<br />
     	 Montant de l'amende (max : <?php echo $amende_max; ?>) <input type="text" name="montant" id="montant" value='<?php echo $amende['montant'];?>' /><br />
     	 <br />
-    	 <input type="submit" value="Valider cette amende" onclick="envoiInfo('gestion_royaume.php?direction=gestion_criminel2&amp;id=<?php echo $joueur->get_id(); ?>&amp;acces_ville=' + $('#acces_ville').checked + '&amp;spawn_ville=' + $('#spawn_ville').checked + '&amp;statut=' + $('#statut').val() + '&amp;montant=' + $('#montant').val(), 'message_confirm');$('#popup').hide();envoiInfo('gestion_royaume.php?direction=criminel','contenu_jeu');" />
+    	 <input type="submit" value="Valider cette amende" onclick="envoiInfo('gestion_royaume.php?direction=gestion_criminel2&amp;id=<?php echo $joueur->get_id(); ?>&amp;acces_ville=' + $('#acces_ville').is(':checked') + '&amp;spawn_ville=' + $('#spawn_ville').is(':checked') + '&amp;statut=' + $('#statut').val() + '&amp;montant=' + $('#montant').val(), 'message_confirm');$('#popup').hide();envoiInfo('gestion_royaume.php?direction=criminel','contenu_jeu');" />
 	       <?php
 	    
 	}
 	elseif($_GET['direction'] == 'gestion_criminel2')
 	{
 	    $joueur = new perso($_GET['id']);
-	    //Récupère l'amende
-	    $amende = recup_amende($_GET['id']);
 	    $amende_max = ($joueur->get_crime() * $joueur->get_crime()) * 10;
 	    //Vérification d'usage
 	    if($_GET['montant'] > 0)
@@ -606,10 +608,10 @@ if($joueur->get_rang_royaume() != 6 AND $joueur->get_id() != $royaume->get_minis
 	        	$req_test = $db->query("SELECT * FROM amende WHERE id_joueur = ".$joueur->get_id()."");
 	        	if ($db->num_rows>0)
 	        	{
-		        	$requete = "UPDATE amende SET montant = '".sSQL($_GET['montant'])."'
-		        								AND acces_ville = '".$acces_ville."'
-		        								AND respawn_ville = '".$spawn_ville."'
-		        								AND statut = '".sSQL($_GET['statut'])."'
+		        	$requete = "UPDATE amende SET 	montant = '".sSQL($_GET['montant'])."',
+													acces_ville = '".$acces_ville."',
+		        									respawn_ville = '".$spawn_ville."',
+		        									statut = '".sSQL($_GET['statut'])."'
 		        								WHERE id_joueur = '".$joueur->get_id()."'";
 		        	if($db->query($requete))
 		        	{
@@ -858,7 +860,7 @@ if($joueur->get_rang_royaume() != 6 AND $joueur->get_id() != $royaume->get_minis
 			<span class='nombre'><?php echo $enchere->nombre; ?></span>
 			<span class='prix'><?php echo $enchere->prix.' ('.round(($enchere->prix / $enchere->nombre), 2).' / u)'; ?></span>
 			<span class='finvente'><?php echo $restant; ?></span>
-			<span><a href="gestion_royaume.php?direction=bourse_enchere&amp;id_enchere=<?php echo $enchere->id_bourse_royaume; ?>" onclick="return envoiInfo(this.href, 'message_confirm');envoiInfo('gestion_royaume.php?direction=bourse', 'contenu_jeu')">Enchérir pour <?php echo $prix; ?> stars (<?php echo ($prix / $enchere->nombre); ?> / u)</a></span>
+			<span class='enchere'><a href="gestion_royaume.php?direction=bourse_enchere&amp;id_enchere=<?php echo $enchere->id_bourse_royaume; ?>" onclick="return envoiInfo(this.href, 'message_confirm');envoiInfo('gestion_royaume.php?direction=bourse', 'contenu_jeu')">Enchérir pour <?php echo $prix; ?> stars (<?php echo ($prix / $enchere->nombre); ?> / u)</a></span>
 			</li>
 			<?php
 			if ($class=='t1'){$class='t2';}else{$class='t1';}
@@ -876,7 +878,7 @@ if($joueur->get_rang_royaume() != 6 AND $joueur->get_id() != $royaume->get_minis
 		<li class='haut'>
 			<span class='ressourse'>Ressource</span>
 			<span class='nombre'>Nombre</span>
-			<span class='prix'>Prix actuel</span>
+			<span class='prix_bis'>Prix actuel</span>
 			<span class='finvente'>Fin vente</span>
 		</li>
 		<?php
@@ -890,7 +892,7 @@ if($joueur->get_rang_royaume() != 6 AND $joueur->get_id() != $royaume->get_minis
 			?>			
 			<span class='ressourse'><span class='<?php echo $enchere->ressource; ?>'></span><?php echo $enchere->ressource; ?></span>
 			<span class='nombre'><?php echo $enchere->nombre; ?></span>
-			<span class='prix'><?php echo $enchere->prix.' ('.round(($enchere->prix / $enchere->nombre), 2).' / u)'; ?></span>
+			<span class='prix_bis'><?php echo $enchere->prix.' ('.round(($enchere->prix / $enchere->nombre), 2).' / u)'; ?></span>
 			<span class='finvente'><?php echo $restant; ?></span>
 			</li>
 			<?php
@@ -909,7 +911,7 @@ if($joueur->get_rang_royaume() != 6 AND $joueur->get_id() != $royaume->get_minis
 		<li class='haut'>
 			<span class='ressourse'>Ressource</span>
 			<span class='nombre'>Nombre</span>
-			<span class='prix'>Prix actuel</span>
+			<span class='prix_bis'>Prix actuel</span>
 			<span class='finvente'>Fin vente</span>
 			
 		</li>
@@ -927,7 +929,7 @@ if($joueur->get_rang_royaume() != 6 AND $joueur->get_id() != $royaume->get_minis
 			?>			
 			<span class='ressourse'><span class='<?php echo $enchere->ressource; ?>'></span><?php echo $enchere->ressource; ?></span>
 			<span class='nombre'><?php echo $enchere->nombre; ?></span>
-			<span class='prix'><?php echo $enchere->prix.' ('.round(($enchere->prix / $enchere->nombre), 2).' / u)'; ?></span>
+			<span class='prix_bis'><?php echo $enchere->prix.' ('.round(($enchere->prix / $enchere->nombre), 2).' / u)'; ?></span>
 			<span class='finvente'><?php echo $restant; ?></span>
 			<?php
 			if ($acheteur){echo "<span class='acheteur' title='Il y a un acheteur sur cette offre'></span>";}
@@ -950,7 +952,7 @@ if($joueur->get_rang_royaume() != 6 AND $joueur->get_id() != $royaume->get_minis
 		<li class='haut'>
 			<span class='ressourse'>Ressource</span>
 			<span class='nombre'>Nombre</span>
-			<span class='prix'>Prix actuel</span>
+			<span class='prix_bis'>Prix actuel</span>
 			<span class='finvente'>Fin vente</span>
 		</li>
 		<?php
@@ -962,7 +964,7 @@ if($joueur->get_rang_royaume() != 6 AND $joueur->get_id() != $royaume->get_minis
 			?>			
 			<span class='ressourse'><span class='<?php echo $enchere->ressource; ?>'></span><?php echo $enchere->ressource; ?></span>
 			<span class='nombre'><?php echo $enchere->nombre; ?></span>
-			<span class='prix'><?php echo $enchere->prix.' ('.round(($enchere->prix / $enchere->nombre), 2).' / u)'; ?></span>
+			<span class='prix_bis'><?php echo $enchere->prix;if ($enchere->nombre > 0 ){  echo ' ('.round(($enchere->prix / $enchere->nombre), 2).' / u)';} ?></span>
 			<span class='finvente'><?php echo $enchere->fin_vente; ?></span>
 		</li>
 		<?php
@@ -984,7 +986,7 @@ if($joueur->get_rang_royaume() != 6 AND $joueur->get_id() != $royaume->get_minis
 		<li class='haut'>
 			<span class='ressourse'>Ressource</span>
 			<span class='nombre'>Nombre</span>
-			<span class='prix'>Prix actuel</span>
+			<span class='prix_bis'>Prix actuel</span>
 			<span class='finvente'>Fin vente</span>
 		</li>
 		<?php
@@ -996,7 +998,7 @@ if($joueur->get_rang_royaume() != 6 AND $joueur->get_id() != $royaume->get_minis
 			?>			
 			<span class='ressourse'><span class='<?php echo $enchere->ressource; ?>'></span><?php echo $enchere->ressource; ?></span>
 			<span class='nombre'><?php echo $enchere->nombre; ?></span>
-			<span class='prix'><?php echo $enchere->prix.' ('.round(($enchere->prix / $enchere->nombre), 2).' / u)'; ?></span>
+			<span class='prix_bis'><?php echo $enchere->prix; if ($enchere->nombre > 0 ){ echo ' ('.round(($enchere->prix / $enchere->nombre), 2).' / u)';} ?></span>
 			<span class='finvente'><?php echo $enchere->fin_vente; ?></span>
 		</li>
 		<?php

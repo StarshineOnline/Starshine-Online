@@ -74,7 +74,7 @@ else
 			</td>
 		</tr>
 		</table>
-		<?php if($groupe->get_id_leader() == $joueur->get_id()) echo '<input type="button" onclick="envoiInfo(\'infogroupe.php?id='.$groupe->get_id().'&amp;partage=\' + document.getElementById(\'partage\').value + \'&amp;leader=\' + document.getElementById(\'leader\').value + \'&amp;nom=\' + document.getElementById(\'nom\').value, \'information\');" value="Modifier" />'; ?>
+		<?php if($groupe->get_id_leader() == $joueur->get_id()) echo '<input type="button" onclick="envoiInfo(\'infogroupe.php?id='.$groupe->get_id().'&amp;partage=\' + $(\'#partage\').val() + \'&amp;leader=\' + $(\'#leader\').val() + \'&amp;nom=\' + encodeURIComponent($(\'#nom\').val()), \'information\');" value="Modifier" />'; ?>
 		<br />
 		<?php echo '<a href="degroup.php?ID='.$joueur->get_groupe().'" onclick="if(confirm(\'Voulez vous quitter le groupe ?\')) return envoiInfo(this.href, \'information\'); else return false;">Quitter le groupe actuel</a>'; ?>
 		</div>

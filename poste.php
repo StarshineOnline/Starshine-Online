@@ -11,7 +11,7 @@ $joueur->check_perso();
 //Vérifie si le perso est mort
 verif_mort($joueur, 1);
 
-$W_requete = 'SELECT royaume, type FROM map WHERE ID =\''.sSQL($joueur->get_pos()).'\'';
+$W_requete = 'SELECT royaume, type FROM map WHERE ID ='.$joueur->get_pos().'';
 $W_req = $db->query($W_requete);
 $W_row = $db->read_assoc($W_req);
 $R = new royaume($W_row['royaume']);
@@ -25,7 +25,8 @@ if ($joueur->get_race() != $R->get_race() &&
 }
 
 ?>
-		<h2 class="ville_titre"><?php if(verif_ville($joueur->get_x(), $joueur->get_y())) return_ville( '<a href="ville.php" onclick="return envoiInfo(this.href, \'centre\')">'.$R->get_nom().'</a> -', $joueur->get_pos()); ?> <?php echo '<a href="poste.php?poscase='.$W_case.'" onclick="return envoiInfo(this.href, \'carte\')">';?> Poste </a></h2>
+	<fieldset>
+		<legend><?php if(verif_ville($joueur->get_x(), $joueur->get_y())) return_ville( '<a href="ville.php" onclick="return envoiInfo(this.href, \'centre\')">'.$R->get_nom().'</a> >', $joueur->get_pos()); ?> <?php echo '<a href="poste.php" onclick="return envoiInfo(this.href, \'carte\')">';?> Poste </a></legend>
 		<?php include_once(root.'ville_bas.php');?>
 <?php
 //Affichage des quêtes
@@ -142,3 +143,4 @@ if($joueur->get_race() == $R->get_race())
 	}
 }
 ?>
+</fieldset>

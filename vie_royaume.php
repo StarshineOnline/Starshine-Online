@@ -19,7 +19,8 @@ $W_row = $db->read_assoc($W_req);
 $R = new royaume($W_row['royaume']);
 $R->get_diplo($joueur->get_race());
 ?>
-	<h2 class="ville_titre"><?php echo '<a href="ville.php?poscase='.$W_case.'" onclick="return envoiInfo(this.href,\'centre\')">';?><?php echo $R->get_nom();?></a> - <?php echo '<a href="vie_royaume.php" onclick="return envoiInfo(this.href,\'carte\')">';?> Vie du royaume </a></h2>
+<fieldset>
+	<legend><?php echo '<a href="ville.php" onclick="return envoiInfo(this.href,\'centre\')">';?><?php echo $R->get_nom();?></a> - <?php echo '<a href="vie_royaume.php" onclick="return envoiInfo(this.href,\'carte\')">';?> Vie du royaume </a></legend>
 <?php
 //Uniquement si le joueur se trouve sur une case de ville
 if($W_row['type'] == 1)
@@ -81,4 +82,6 @@ if($W_row['type'] == 1)
 		}
 	}
 }
+
 ?>
+</fieldset>

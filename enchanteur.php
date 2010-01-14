@@ -27,7 +27,8 @@ if ($joueur->get_race() != $R->get_race() &&
 
 if(array_key_exists('fort', $_GET)) $fort = '&amp;fort=ok'; else $fort = '';
 ?>
-   <h2 class="ville_titre"><?php echo '<a href="ville.php?poscase='.$W_case.'" onclick="return envoiInfo(this.href, \'centre\')">';?><?php echo $R->get_nom();?></a> - <?php echo '<a href="enchanteur.php?poscase='.$W_case.'" onclick="return envoiInfo(this.href, \'carte\')">';?> Enchanteur </a></h2>
+<fieldset>
+   <legend><?php echo '<a href="ville.php" onclick="return envoiInfo(this.href, \'centre\')">';?><?php echo $R->get_nom();?></a> > <?php echo '<a href="enchanteur.php" onclick="return envoiInfo(this.href, \'carte\')">';?> Enchanteur </a></legend>
 		<?php include_once(root.'ville_bas.php');?>
 <?php
 if($W_row['type'] == 1)
@@ -172,3 +173,4 @@ if($W_row['type'] == 1)
 <?php
 }
 ?>
+</fieldset>
