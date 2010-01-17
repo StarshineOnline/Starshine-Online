@@ -1,23 +1,11 @@
 <?php
 class perso extends entite
 {
-/**
-    * @access private
-    * @var int(11)
-    */
-	private $id;
-
 	/**
     * @access private
     * @var int(10)
     */
 	private $mort;
-
-	/**
-    * @access private
-    * @var varchar(50)
-    */
-	private $nom;
 
 	/**
     * @access private
@@ -47,55 +35,7 @@ class perso extends entite
     * @access private
     * @var mediumint(9)
     */
-	private $level;
-
-	/**
-    * @access private
-    * @var mediumint(9)
-    */
-	private $rang_royaume;
-
-	/**
-    * @access private
-    * @var mediumint(9)
-    */
-	private $vie;
-
-	/**
-    * @access private
-    * @var mediumint(9)
-    */
 	private $forcex;
-
-	/**
-    * @access private
-    * @var mediumint(9)
-    */
-	private $dexterite;
-
-	/**
-    * @access private
-    * @var mediumint(9)
-    */
-	private $puissance;
-
-	/**
-    * @access private
-    * @var mediumint(9)
-    */
-	private $volonte;
-
-	/**
-    * @access private
-    * @var mediumint(9)
-    */
-	private $energie;
-
-	/**
-    * @access private
-    * @var varchar(20)
-    */
-	private $race;
 
 	/**
     * @access private
@@ -120,12 +60,6 @@ class perso extends entite
     * @var text
     */
 	private $inventaire_slot;
-
-	/**
-    * @access private
-    * @var smallint(6)
-    */
-	private $pa;
 
 	/**
     * @access private
@@ -161,12 +95,6 @@ class perso extends entite
     * @access private
     * @var text
     */
-	private $comp_combat;
-
-	/**
-    * @access private
-    * @var text
-    */
 	private $comp_jeu;
 
 	/**
@@ -177,33 +105,9 @@ class perso extends entite
 
 	/**
     * @access private
-    * @var mediumint(9)
-    */
-	private $x;
-
-	/**
-    * @access private
-    * @var mediumint(9)
-    */
-	private $y;
-
-	/**
-    * @access private
     * @var int(11)
     */
 	private $groupe;
-
-	/**
-    * @access private
-    * @var mediumint(9)
-    */
-	private $hp;
-
-	/**
-    * @access private
-    * @var float
-    */
-	private $hp_max;
 
 	/**
     * @access private
@@ -216,54 +120,6 @@ class perso extends entite
     * @var float
     */
 	private $mp_max;
-
-	/**
-    * @access private
-    * @var mediumint(9)
-    */
-	private $melee;
-
-	/**
-    * @access private
-    * @var mediumint(9)
-    */
-	private $distance;
-
-	/**
-    * @access private
-    * @var mediumint(9)
-    */
-	private $esquive;
-
-	/**
-    * @access private
-    * @var mediumint(8)
-    */
-	private $blocage;
-
-	/**
-    * @access private
-    * @var mediumint(9)
-    */
-	private $incantation;
-
-	/**
-    * @access private
-    * @var mediumint(9)
-    */
-	private $sort_vie;
-
-	/**
-    * @access private
-    * @var int(11)
-    */
-	private $sort_element;
-
-	/**
-    * @access private
-    * @var int(11)
-    */
-	private $sort_mort;
 
 	/**
     * @access private
@@ -792,17 +648,6 @@ class perso extends entite
 	{
 		return 'id = '.$this->id.', mort = '.$this->mort.', nom = '.$this->nom.', password = '.$this->password.', exp = '.$this->exp.', honneur = '.$this->honneur.', reputation = '.$this->reputation.', level = '.$this->level.', rang_royaume = '.$this->rang_royaume.', vie = '.$this->vie.', forcex = '.$this->forcex.', dexterite = '.$this->dexterite.', puissance = '.$this->puissance.', volonte = '.$this->volonte.', energie = '.$this->energie.', race = '.$this->race.', classe = '.$this->classe.', classe_id = '.$this->classe_id.', inventaire = '.$this->inventaire.', inventaire_slot = '.$this->inventaire_slot.', pa = '.$this->pa.', dernieraction = '.$this->dernieraction.', action_a = '.$this->action_a.', action_d = '.$this->action_d.', sort_jeu = '.$this->sort_jeu.', sort_combat = '.$this->sort_combat.', comp_combat = '.$this->comp_combat.', comp_jeu = '.$this->comp_jeu.', star = '.$this->star.', x = '.$this->x.', y = '.$this->y.', groupe = '.$this->groupe.', hp = '.$this->hp.', hp_max = '.$this->hp_max.', mp = '.$this->mp.', mp_max = '.$this->mp_max.', melee = '.$this->melee.', distance = '.$this->distance.', esquive = '.$this->esquive.', blocage = '.$this->blocage.', incantation = '.$this->incantation.', sort_vie = '.$this->sort_vie.', sort_element = '.$this->sort_element.', sort_mort = '.$this->sort_mort.', identification = '.$this->identification.', craft = '.$this->craft.', alchimie = '.$this->alchimie.', architecture = '.$this->architecture.', forge = '.$this->forge.', survie = '.$this->survie.', facteur_magie = '.$this->facteur_magie.', facteur_sort_vie = '.$this->facteur_sort_vie.', facteur_sort_mort = '.$this->facteur_sort_mort.', facteur_sort_element = '.$this->facteur_sort_element.', regen_hp = '.$this->regen_hp.', maj_hp = '.$this->maj_hp.', maj_mp = '.$this->maj_mp.', point_sso = '.$this->point_sso.', quete = '.$this->quete.', quete_fini = '.$this->quete_fini.', dernier_connexion = '.$this->dernier_connexion.', statut = '.$this->statut.', fin_ban = '.$this->fin_ban.', frag = '.$this->frag.', crime = '.$this->crime.', amende = '.$this->amende.', teleport_roi = '.$this->teleport_roi.', cache_classe = '.$this->cache_classe.', cache_stat = '.$this->cache_stat.', cache_niveau = '.$this->cache_niveau.', beta = '.$this->beta;
 	}
-	
-	/**
-	* Retourne la valeur de l'attribut
-	* @access public
-	* @param none
-	* @return int(11) $id valeur de l'attribut id
-	*/
-	function get_id()
-	{
-		return $this->id;
-	}
 
 	/**
 	* Retourne la valeur de l'attribut
@@ -813,17 +658,6 @@ class perso extends entite
 	function get_mort()
 	{
 		return $this->mort;
-	}
-
-	/**
-	* Retourne la valeur de l'attribut
-	* @access public
-	* @param none
-	* @return varchar(50) $nom valeur de l'attribut nom
-	*/
-	function get_nom()
-	{
-		return $this->nom;
 	}
 
 	/**
@@ -868,28 +702,6 @@ class perso extends entite
 	function get_reputation()
 	{
 		return $this->reputation;
-	}
-
-	/**
-	* Retourne la valeur de l'attribut
-	* @access public
-	* @param none
-	* @return mediumint(9) $level valeur de l'attribut level
-	*/
-	function get_level()
-	{
-		return $this->level;
-	}
-
-	/**
-	* Retourne la valeur de l'attribut
-	* @access public
-	* @param none
-	* @return mediumint(9) $rang_royaume valeur de l'attribut rang_royaume
-	*/
-	function get_rang_royaume()
-	{
-		return $this->rang_royaume;
 	}
 
 	/**
@@ -980,17 +792,6 @@ class perso extends entite
 	* Retourne la valeur de l'attribut
 	* @access public
 	* @param none
-	* @return varchar(20) $race valeur de l'attribut race
-	*/
-	function get_race()
-	{
-		return $this->race;
-	}
-
-	/**
-	* Retourne la valeur de l'attribut
-	* @access public
-	* @param none
 	* @return varchar(20) $classe valeur de l'attribut classe
 	*/
 	function get_classe()
@@ -1029,17 +830,6 @@ class perso extends entite
 	function get_inventaire_slot()
 	{
 		return $this->inventaire_slot;
-	}
-
-	/**
-	* Retourne la valeur de l'attribut
-	* @access public
-	* @param none
-	* @return smallint(6) $pa valeur de l'attribut pa
-	*/
-	function get_pa()
-	{
-		return $this->pa;
 	}
 
 	/**
@@ -1101,17 +891,6 @@ class perso extends entite
 	* Retourne la valeur de l'attribut
 	* @access public
 	* @param none
-	* @return text $comp_combat valeur de l'attribut comp_combat
-	*/
-	function get_comp_combat()
-	{
-		return $this->comp_combat;
-	}
-
-	/**
-	* Retourne la valeur de l'attribut
-	* @access public
-	* @param none
 	* @return text $comp_jeu valeur de l'attribut comp_jeu
 	*/
 	function get_comp_jeu()
@@ -1134,44 +913,11 @@ class perso extends entite
 	* Retourne la valeur de l'attribut
 	* @access public
 	* @param none
-	* @return mediumint(9) $x valeur de l'attribut x
-	*/
-	function get_x()
-	{
-		return $this->x;
-	}
-
-	/**
-	* Retourne la valeur de l'attribut
-	* @access public
-	* @param none
-	* @return mediumint(9) $y valeur de l'attribut y
-	*/
-	function get_y()
-	{
-		return $this->y;
-	}
-
-	/**
-	* Retourne la valeur de l'attribut
-	* @access public
-	* @param none
 	* @return int(11) $groupe valeur de l'attribut groupe
 	*/
 	function get_groupe()
 	{
 		return $this->groupe;
-	}
-
-	/**
-	* Retourne la valeur de l'attribut
-	* @access public
-	* @param none
-	* @return mediumint(9) $hp valeur de l'attribut hp
-	*/
-	function get_hp()
-	{
-		return $this->hp;
 	}
 
 	/**
@@ -1635,18 +1381,6 @@ class perso extends entite
 	function get_beta()
 	{
 		return $this->beta;
-	}
-
-	/**
-	* Modifie la valeur de l'attribut
-	* @access public
-	* @param int(11) $id valeur de l'attribut
-	* @return none
-	*/
-	function set_id($id)
-	{
-		$this->id = $id;
-		$this->champs_modif[] = 'id';
 	}
 
 	/**
@@ -2743,8 +2477,6 @@ class perso extends entite
 		$this->inventaire_slot_array[$partie] = $objet;
 	}
 
-	public $pp;
-	public $pm;
 	public $pp_base;
 	public $pm_base;
 	public $enchant;
@@ -2859,7 +2591,6 @@ class perso extends entite
 		else return $this->pp_base;
 	}
 
-	public $reserve;
 	function get_reserve($base = false)
 	{
 		if (!isset($this->reserve))

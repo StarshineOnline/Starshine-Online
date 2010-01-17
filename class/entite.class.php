@@ -11,44 +11,44 @@
  */
 class entite
 {
-	private $id;
+	protected $id;
 	private $action;
 	private $arme_type;
-	private $comp_combat;
+	protected $comp_combat;  ///< Liste des compétences de combat.
 	private $comp;
-	private $x;
-	private $y;
-	private $hp;
-	private $hp_max;
-	private $reserve;
-	private $pa;
-	private $nom;
-	private $race;
-	private $pp;
-	private $pm;
+	protected $x;
+	protected $y;
+	protected $hp;
+	protected $hp_max;
+	public $reserve;  ///< Réesrve de mana.
+	protected $pa;  /// < Nombre de PA.
+	protected $nom;
+	protected $race;  ///< Race de l'entité.
+	public $pp;  ///< Protection physique.
+	public $pm;  ///< Protection magique.
 	private $distance_tir;
-	private $esquive;
-	private $distance;
-	private $blocage;
-	private $melee;
-	private $incantation;
-	private $sort_mort;
-	private $sort_vie;
-	private $sort_element;
+	protected $esquive;  ///< Compétence esquive.
+	protected $distance;  ///< Compétence tir à distance.
+	protected $blocage;  ///< Compétence blocage.
+	protected $melee;  ///< Compétence mêlée.
+	protected $incantation;  ///< Compétence incantation.
+	protected $sort_mort;  ///< Compétence nécromancie.
+	protected $sort_vie;  ///< Compétence magie de la vie.
+	protected $sort_element;  ///< Compétence magie élémentaire.
 	public $buff;
 	public $etat;
-	private $force;
-	private $puissance;
-	private $energie;
-	private $vie;
-	private $volonte;
-	private $dexterite;
+	protected $force;  ///< Caractéristique force.
+	protected $puissance;  ///< Caractéristique puissance.
+	protected $energie;  ///< Caractéristique énergie.
+	protected $vie;  ///< Caractéristique constitution.
+	protected $volonte;  ///< Caractéristique volonté.
+	protected $dexterite;  ///< Caractéristique dextérité.
 	private $enchantement;
 	private $arme_degat;
 	private $bouclier_degat = 0;
-	private $level;
+	protected $level;  ///< Niveau de l'entité.
 	private $type;
-	private $rang_royaume;
+	protected $rang_royaume;  ///< Grade de l'entité au sein de son royaume.
 	private $espece;
 	private $point_victoire;
 	private $competence = array();
@@ -544,6 +544,7 @@ class entite
 	{
 		return $this->bouclier_degat;
 	}
+	/// Renvoie le niveau de l'entité
 	function get_level()
 	{
 		return $this->level;
