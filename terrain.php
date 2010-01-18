@@ -269,19 +269,17 @@ include_once(root.'ville_bas.php');
 			$prix = $instrument->prix + $taxe;
 			if($prix > 0)
 			{
-				if($joueur['star'] >= $prix)
+				if($joueur->get_star() >= $prix)
 				{
 					$laboratoire = new terrain_laboratoire();
 					$laboratoire->id_laboratoire = $_GET['labo'];
 					$laboratoire->id_instrument = $instrument->id;
 					$laboratoire->type = $instrument->type;
 					$laboratoire->sauver();
-					//On supprime les stars du joueur
-					$requete = "UPDATE perso SET star = star - ".$prix." WHERE ID = ".$joueur->get_id();
-					$db->query($requete);
-					//On donne les stars au royaume
-					$requete = "UPDATE royaume SET star = star + ".$taxe." WHERE ID = ".$R->get_id();
-					$db->query($requete);
+					$joueur->set_star($joueur->get_star() - $prix);
+					$joueur->sauver();
+					$R->set_star($R->get_star() + $prix);
+					$R->sauver();
 				}
 				else echo '<h5>Vous n\'avez pas assez de stars</h5>';
 			}
@@ -293,7 +291,7 @@ include_once(root.'ville_bas.php');
 			$prix = $instrument->prix + $taxe;
 			if($prix > 0)
 			{
-				if($joueur['star'] >= $prix)
+				if($joueur->get_star() >= $prix)
 				{
 					$requete = "SELECT id, id_laboratoire, id_instrument, type FROM terrain_laboratoire WHERE type = '".$instrument->type."' AND id_laboratoire = ".$_GET['labo'];
 					$req = $db->query($requete);
@@ -301,12 +299,10 @@ include_once(root.'ville_bas.php');
 					$laboratoire = new terrain_laboratoire($row);
 					$laboratoire->id_instrument = $instrument->id;
 					$laboratoire->sauver();
-					//On supprime les stars du joueur
-					$requete = "UPDATE perso SET star = star - ".$prix." WHERE ID = ".$joueur->get_id();
-					$db->query($requete);
-					//On donne les stars au royaume
-					$requete = "UPDATE royaume SET star = star + ".$taxe." WHERE ID = ".$R->get_id();
-					$db->query($requete);
+					$joueur->set_star($joueur->get_star() - $prix);
+					$joueur->sauver();
+					$R->set_star($R->get_star() + $prix);
+					$R->sauver();
 				}
 				else echo '<h5>Vous n\'avez pas assez de stars</h5>';
 			}

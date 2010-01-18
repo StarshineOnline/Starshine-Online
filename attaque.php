@@ -1176,6 +1176,8 @@ else
 			//Sinon c'est une arme de siège, et il faut modifier son rechargement
 			elseif ($type == 'siege' OR $type == 'ville')
 			{
+				$joueur->set_pa($joueur->get_pa() - $pa_attaque);
+				$joueur->sauver();
 				$map_siege->set_rechargement(time() + $siege->get_bonus3());
 				$map_siege->sauver();
 			}

@@ -254,6 +254,7 @@ var affiche_royaume = false;
 
 $(document).ready(function()
 {
+	$(".login_nom").focus();
 	$("#popup").draggable({ handle: '#popup_menu'});
 	$("#loading").ajaxStart(function()
 	{
