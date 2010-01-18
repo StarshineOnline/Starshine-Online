@@ -30,6 +30,9 @@ if ($admin_nom == '') {
 	$admin_nom = 'admin';
 }
 
+require_once(root.'arenes/gen_arenes.php');
+gen_all();
+
 if (isset($_REQUEST['teleport_in'])) {
   $arene = $_REQUEST['teleport_in'];
   $player = $_REQUEST['player'];

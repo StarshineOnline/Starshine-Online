@@ -37,12 +37,87 @@ function create_joueur(&$xml, $row)
 	return $joueur;
 }
 
+function create_joueur_adm(&$xml, $row)
+{
+	global $Tclasse;
+
+	$joueur = create_joueur($xml, $row);
+	make_attr($xml, $joueur, 'hp', $row['hp']);
+	make_attr($xml, $joueur, 'mp', $row['mp']);
+	make_attr($xml, $joueur, 'hp_max', $row['hp_max']);
+	make_attr($xml, $joueur, 'mp_max', $row['mp_max']);
+	make_attr($xml, $joueur, 'pa', $row['pa']);
+	return $joueur;
+}
+
+function journal(&$xml, $joueurs_id)
+{
+	global $db;
+	
+	$journal = $xml->createElement('journal');
+	if (count($joueurs_id) > 0) {
+		$q = 'select distinct * from journal where id_perso in ('.
+			implode(",", $joueurs_id).') ';
+		$q .= 'and time >= (select min(time) from journal where id_perso in ('.
+			implode(",", $joueurs_id).") and action = 'teleport') ";
+		$q .= "and action in ('attaque', 'soin', 'gsoin', 'buff', 'debuff', ".
+			"'teleport', 'recup', 'tue', 'f_quete', 'loot') ";
+		$q .= 'order by time desc';
+		$req = $db->query($q);
+		while ($row = $db->read_assoc($req)) {
+			$entry = $xml->createElement('log');
+			$journal->appendChild($entry);
+			make_attr($xml, $entry, 'action', $row['action']);
+			make_attr($xml, $entry, 'actif', $row['actif']);
+			make_attr($xml, $entry, 'passif', $row['passif']);
+			make_attr($xml, $entry, 'time', $row['time']);
+			make_attr($xml, $entry, 'valeur', $row['valeur']);
+			make_attr($xml, $entry, 'valeur2', $row['valeur2']);
+			switch($row['action']) {
+			case 'attaque' :
+			case 'defense' :
+				make_attr($xml, $entry, 'class', 'jdegat');
+				break;
+			case 'tue' :
+			case 'mort' :
+			case 'teleport' :
+				make_attr($xml, $entry, 'class', 'jkill');
+				break;
+			case 'soin' :
+			case 'rsoin' :
+			case 'gsoin' :
+			case 'rgsoin' :
+				make_attr($xml, $entry, 'class', 'jgsoin');
+				break;
+			case 'loot' :
+				make_attr($xml, $entry, 'class', 'jloot');
+				break;
+			case 'buff' :
+			case 'rbuff' :
+				make_attr($xml, $entry, 'class', 'jbuff');
+				break;
+			case 'gbuff' :
+			case 'rgbuff' :
+				make_attr($xml, $entry, 'class', 'jgbuff');
+				break;
+			case 'debuff' :
+			case 'rdebuff' :
+				make_attr($xml, $entry, 'class', 'jdebuff');
+				break;
+			}
+		}
+	}
+	return $journal;
+}
+
 function gen_arene($x, $y, $size, $nom, $import = false, $make_import = false)
 {
 	global $db;
 
 	$xml = new DOMDocument("1.0", "UTF-8");
+	$xml_adm = new DOMDocument("1.0", "UTF-8");
 	//$xml->formatOutput = true;
+	$xml_adm->formatOutput = true;
 	$xslt = $xml->createProcessingInstruction('xml-stylesheet',
 																						'type="text/xsl" href="arene.xsl"');
 	$xml->appendChild($xslt);
@@ -95,16 +170,34 @@ function gen_arene($x, $y, $size, $nom, $import = false, $make_import = false)
 		}
 	}
 
+	// Copy current arene to $xml_adm
+	$xslt_adm = $xml_adm->createProcessingInstruction('xml-stylesheet',
+																	'type="text/xsl" href="arene.xsl"');
+	$xml_adm->appendChild($xslt_adm);
+	$root_adm = $xml_adm->importNode($root, true);
+	$xml_adm->appendChild($root_adm);
+	
+
 	$joueurs = $xml->createElement('joueurs');
 	$root->appendChild($joueurs);
+	$joueurs_adm = $xml_adm->createElement('joueurs');
+	$root_adm->appendChild($joueurs_adm);
 
 	$q = "select * from perso where x >= $x and x < ($x + $size) and y >= $y ".
 		"and y < ($y + $size)";
 	$req = $db->query($q);
+	$joueurs_id = array();
 	while ($row = $db->read_assoc($req)) {
 		$joueur = create_joueur($xml, $row);
 		$joueurs->appendChild($joueur);
+
+		$joueur_adm = create_joueur_adm($xml_adm, $row);
+		$joueurs_adm->appendChild($joueur_adm);
+		$joueurs_id[] = $row['id'] + $row['ID']; /* hack débile ! */
 	}
+
+	$journal = journal($xml_adm, $joueurs_id);
+	$joueurs_adm->appendChild($journal);
 
 	/*
 	$mirwen = array('nom' => 'Mirwen', 'race' => 'mortvivant', 'hp' => 0,
@@ -113,19 +206,23 @@ function gen_arene($x, $y, $size, $nom, $import = false, $make_import = false)
 	$joueurs->appendChild($punching_ball);
 	*/
 	
-	return $xml->saveXML();
+	return array($xml->saveXML(), $xml_adm->saveXML());
 }
 
 function gen_all() {
 	global $db;
-	$q = "select * from arenes";
+	$q = "select * from arenes where open = 1";
 	$req = $db->query($q);
 	while ($arene = $db->read_object($req)) {
 		$arene_xml = gen_arene($arene->x, $arene->y, $arene->size, $arene->nom);
 		$arene_file = fopen(root.'arenes/'.$arene->file.'tmp', 'w+');
-		fwrite($arene_file, $arene_xml);
+		fwrite($arene_file, $arene_xml[0]);
 		fclose($arene_file);
 		rename(root.'arenes/'.$arene->file.'tmp', root.'arenes/'.$arene->file);
+		$arene_file = fopen(root.'arenes/admin/'.$arene->file.'tmp', 'w+');
+		fwrite($arene_file, $arene_xml[1]);
+		fclose($arene_file);
+		rename(root.'arenes/admin/'.$arene->file.'tmp', root.'arenes/admin/'.$arene->file);
 	}
 }
 
