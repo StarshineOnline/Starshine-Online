@@ -2560,6 +2560,9 @@ class perso extends entite
 	{
 		switch ($id)
 			{ // TODO: les autres, c'est quoi donc ?
+			case 1:
+				$this->add_bonus_permanents('regen_hp', $effet);
+				break;
 			case 5:
 				$this->add_bonus_permanents('volonte', $effet);
 				break;
@@ -2838,7 +2841,7 @@ class perso extends entite
       break;
 		case 'portee' :
 		case 'star' :
-    case 'reserve' :
+   	    case 'reserve' :
 		/* gemmes de compétence: bonus ignoré à la montée */
 		case 'esquive' :
 		case 'melee' : 
@@ -3067,6 +3070,8 @@ class perso extends entite
 							break;
 					}
 				}
+				$bonus_arme = $this->get_bonus_permanents('regen_hp');
+				$bonus_arme_mp = $this->get_bonus_permanents('regen_mp');
 				// Effets magiques des objets
 				/*foreach($this['objet_effet'] as $effet)
 				{
@@ -3081,8 +3086,8 @@ class perso extends entite
 					}
 				}*/
 				// Calcul des HP et MP récupérés
-				$hp_gagne = $nb_regen * (floor($this->get_hp_maximum() * $regen_hp) + $bonus_accessoire);
-				$mp_gagne = $nb_regen * (floor($this->get_mp_maximum() * $regen_mp) + $bonus_accessoire_mp);
+				$hp_gagne = $nb_regen * (floor($this->get_hp_maximum() * $regen_hp) + $bonus_accessoire + $bonus_arme);
+				$mp_gagne = $nb_regen * (floor($this->get_mp_maximum() * $regen_mp) + $bonus_accessoire_mp + $bonus_arme_mp);
 				//DéBuff lente agonie
 				if($this->is_buff('lente_agonie'))
 				{

@@ -89,10 +89,12 @@ if($bourg->get_x() == $joueur->get_x() AND $bourg->get_y() == $joueur->get_y() A
 		</li>
 <?php
 	}
+?>
+    	<li>
+      		<a href="teleport.php" onclick="return envoiInfo(this.href, 'carte')">Pierre de Téléportation</a>
+    	</li>
+	</ul>
+<?php
 }
 ?>
-    <li>
-      <a href="teleport.php" onclick="return envoiInfo(this.href, 'carte')">Pierre de Téléportation</a>
-    </li>
-	</ul>
 	</div>
