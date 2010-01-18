@@ -138,14 +138,14 @@ include_once(root.'inc/fp.php');
 					break;
 					case 'supp' :
 						$requete = "UPDATE perso SET statut = 'ban', fin_ban = ".(time() + (3600 * 24 * 36500))." WHERE ID = ".$_SESSION['ID'];
+						$perso = new perso($_SESSION['ID']);
 						if($db->query($requete))
 						{
 							require('connect_forum.php');
-							$perso = new perso($_SESSION['ID']);
 							$groupe = $perso->get_groupe();
 							if($groupe !== null || $groupe != 0)
 								degroup($perso->get_id(), $groupe->get_id());
-							$requete = "INSERT INTO punbbbans VALUES('', '".$perso->get_nom()."', NULL, NULL, NULL, NULL, 0)";
+							$requete = "INSERT INTO punbbbans VALUES(NULL, '".$perso->get_nom()."', NULL, NULL, NULL, NULL, 0)";
 							if($db_forum->query($requete)) echo 'Votre personnage est bien supprimé';
 							unset($_COOKIE['nom']);
 							unset($_SESSION['nom']);
