@@ -243,7 +243,7 @@ if ($joueur->get_race() == $R->get_race() ||
 										break;
 										case 'bloque_sort' :
 											$duree = $effet_explode[1] * 60 * 60;
-											lance_buff('bloque_sort', $joueur->get_id(), 1, 0, $duree, $maladie['nom'], description('Vous ne pouvez plus lancer de sorts', array()), 'perso', 1, 0, 0);
+											lance_buff('bloque_sort', $joueur->get_id(), 1, 0, $duree, $maladie['nom'], description('Vous ne pouvez plus lancer de sorts hors des combats.', array()), 'perso', 1, 0, 0);
 										break;
 										case 'suppr_defense' :
 											$duree = $effet_explode[1] * 60 * 60;

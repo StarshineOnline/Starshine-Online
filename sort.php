@@ -39,7 +39,7 @@ switch($type_cible)
 
 if($joueur->get_groupe() != 0) $groupe_joueur = new groupe($joueur->get_groupe());
 
-if (isset($_GET['ID']))
+if (isset($_GET['ID']) && !$joueur->is_buff('bloque_sort'))
 {
 	$sort = new sort_jeu($_GET['ID']);
 	$W_distance = calcul_distance_pytagore($cible->get_pos(), $joueur->get_pos());
@@ -704,6 +704,10 @@ if (isset($_GET['ID']))
 			$cible = $joueur;
 		echo '<br /><a href="sort.php?type='.$type_cible.'&amp;id_'.$type_cible.'='.$cible->get_id().'" onclick="return envoiInfo(this.href, \'information\');">Revenir au livre de sort</a>';
 	}
+}
+elseif($joueur->is_buff('bloque_sort'))
+{
+	echo 'Vous êtes sous vunérabilité, vous ne pouvez plus lancer de sorts hors combat.';
 }
 else
 {
