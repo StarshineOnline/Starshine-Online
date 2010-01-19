@@ -193,9 +193,9 @@ N'oubliez pas de reporter les bugs et problèmes, et d'apporter vos suggestions 
 				<div>
 				<input type="text" name="nom" size="10" class="login_nom" tabindex="1" />
 				<input type="password" name="password" size="10" class="login_mdp" tabindex="2" />
-				<input type="checkbox" name="auto_login" value="Ok" class="login_auto" />
+				<input type="checkbox" name="auto_login" value="Ok" class="login_auto" tabindex="3"/>
 				<input type='hidden' name='log' />
-				<a class='login_connexion' onclick="$('#login_form').submit();" tabindex="3"> </a>
+				<input type='button' class='login_connexion' onclick="$('#login_form').submit();" tabindex="4" />
 				</div>
 				</form>
 				</div>		

@@ -25,7 +25,7 @@ a:hover								{color:#CCF2FF;}
 .login_nom 							{ background-color:#000000; border:0 none; color:white; float:left; height:13px; margin-left:52px; margin-top:19px; text-align:left; width:81px; }
 .login_mdp 							{ background-color:#000000; border:0 none; color:white; float:left; height:13px; margin-left:54px; margin-top:19px; text-align:left; width:80px; }
 .login_auto 						{ background-color:#000000; border:0 none; color:white; float:left; height:13px; margin-left:76px; margin-top:19px; text-align:left; width:14px; }
-.login_connexion 					{ cursor:pointer;display:block;float:left; height:16px; margin-left:13px; margin-top:19px; text-align:left; width:62px; }
+.login_connexion 					{ background:transparent;cursor:pointer;float:left; height:16px; margin-left:13px; margin-top:19px; text-align:left; width:62px; border:none;}
 .login_connexion:hover				{ background:transparent url(./../image/site/boutonconnexion.png) no-repeat scroll -3px;}
 #login a 							{ color:#EEE; font-size:13px; }
 #login #deco 						{ float:right; cursor:pointer; }
