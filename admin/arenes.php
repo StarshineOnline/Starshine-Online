@@ -5,7 +5,7 @@ if (file_exists('../root.php'))
 $textures = false;
 $admin = true;
 
-include_once(root.'haut.php');
+include_once(root.'admin/admin_haut.php');
 setlocale(LC_ALL, 'fr_FR');
 include_once(root.'haut_site.php');
 if ($G_maintenance)
@@ -57,8 +57,10 @@ if (isset($_REQUEST['teleport_in'])) {
   $requete_arenes_perso = "insert into arenes_joueurs value($x, $y, $id)";
   $req = $db->query($requete_arenes_perso);
   if (array_key_exists('full', $_REQUEST))
-    $fullish = ", hp=hp_max, mp=mp_max, pa=$G_PA_max";
-  $requete_perso = "update perso set x=$nx, y=$ny $fullish where id = $id";
+    $fullish = ', hp=floor(hp_max), mp=floor(mp_max)';
+  if (array_key_exists('pa', $_REQUEST) && $_REQUEST['pa'] != '')
+    $pa = ", pa=floor($_REQUEST[pa] * $G_PA_max)";
+  $requete_perso = "update perso set x=$nx, y=$ny $fullish $pa where id = $id";
   $req = $db->query($requete_perso);
   $requete_journal = "INSERT INTO journal VALUES('', $id, 'teleport', '".$admin_nom."', '".$R_perso['nom']."', NOW(), '$arene', 0, 0, 0)";
   $req = $db->query($requete_journal);
@@ -100,7 +102,7 @@ if (isset($_REQUEST['open']))
 }
 
 ?>
-
+<table><tr><td>
 <h3>Ajouter un joueur dans une ar&egrave;ne :</h3>
 <form action="arenes.php" method="get"><p>
 <select name="teleport_in">
@@ -117,7 +119,16 @@ if ($db->num_rows > 0) {
 ?>
 </select>
 <input name="player" type="text" />
-<label>Full HP/MP/PA <input name="full" type="checkbox" /></label>
+<label>Full HP/MP <input name="full" type="checkbox" /></label>
+<label>PA <select name="pa">
+<option selected="selected"></option>
+<option value="0">0%</option>
+<option value="0.2">20%</option>
+<option value="0.4">40%</option>
+<option value="0.6">60%</option>
+<option value="0.7">80%</option>
+<option value="1">100%</option>
+</select></label>
 <label>Pos X <input name="p_x" type="text" size="2"
  value="<?php echo $size_a1; ?>" /></label>
 <label>Pos Y <input name="p_y" type="text" size="2"
@@ -158,8 +169,37 @@ if ($db->num_rows > 0) {
 			$open = 'non';
 			$act = '<a href="?open='.$R_arene['nom'].'">ouvrir</a>';
 		}
+		if ($_SESSION['admin_nom'] == 'admin' OR
+				$_SESSION['admin_db_auth'] == 'admin') {
+			$act .= ' <small><a href="?dump='.$R_arene['nom'].'">dumper</a></small>';
+		}
     echo "<tr><td>$R_arene[nom]</td><td>$open</td><td>$act</td></tr>\n";
   }
 }
-?>
+echo "</table>\n";
 
+if (isset($_REQUEST['dump'])) {
+	
+	$requete_arene = "select * from arenes where nom = '$_REQUEST[dump]'";
+	$req = $db->query($requete_arene);
+  if ($row = $db->read_assoc($req)) {
+		$arenes = array();
+		for ($x = $row['x'] - 1; $x <= $row['x'] + $row['size'] + 1; $x++) {
+			for ($y = $row['y'] - 1; $y <= $row['y'] + $row['size'] + 1; $y++) {
+				$arenes[] = convert_in_pos($x, $y);
+			}
+		}
+		$req = $db->query('select * from map where id in ('.
+											implode(',', $arenes).')');
+		$map = array();
+		while ($m = $db->read_array($req)) {
+			$map[] = '('.implode(',', $m).')';
+		}
+		echo "<pre>insert into map values \n".implode(",\n", $map).';</pre>';
+	}
+}
+
+
+?>
+</td></tr></table>
+</body></html>

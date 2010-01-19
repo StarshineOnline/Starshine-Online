@@ -3577,9 +3577,13 @@ class perso extends entite
 			require_once(root.'arenes/gen_arenes.php');
 			$arene_xml = gen_arene($arene->x, $arene->y, $arene->size, $arene->nom);
 			$arene_file = fopen(root.'arenes/'.$arene->file.'tmp', 'w+');
-			fwrite($arene_file, $arene_xml);
+			fwrite($arene_file, $arene_xml[0]);
 			fclose($arene_file);
 			rename(root.'arenes/'.$arene->file.'tmp', root.'arenes/'.$arene->file);
+			$arene_file = fopen(root.'arenes/admin/'.$arene->file.'tmp', 'w+');
+			fwrite($arene_file, $arene_xml[1]);
+			fclose($arene_file);
+			rename(root.'arenes/admin/'.$arene->file.'tmp', root.'arenes/admin/'.$arene->file);
 		}
 	}
 
