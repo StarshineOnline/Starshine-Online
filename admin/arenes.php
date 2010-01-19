@@ -193,7 +193,7 @@ if (isset($_REQUEST['dump'])) {
 											implode(',', $arenes).')');
 		$map = array();
 		while ($m = $db->read_array($req)) {
-			$map[] = '('.implode(',', $m).')';
+			$map[] = "($m[id], $m[info], $m[decor], $m[royaume], $m[type])";
 		}
 		echo "<pre>insert into map values \n".implode(",\n", $map).';</pre>';
 	}
