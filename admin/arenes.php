@@ -125,6 +125,7 @@ if ($db->num_rows > 0) {
 <option value="0">0%</option>
 <option value="0.2">20%</option>
 <option value="0.4">40%</option>
+<option value="0.5">50%</option>
 <option value="0.6">60%</option>
 <option value="0.7">80%</option>
 <option value="1">100%</option>
