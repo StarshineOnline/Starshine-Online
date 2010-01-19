@@ -144,7 +144,7 @@ else
 				if($thread_non_lu > 0) $texte_thread_non_lu = '('.$thread_non_lu.')';
 				else $texte_thread_non_lu = '';
 				$options = '';
-		/*		if($groupe->get_leader() && $type_thread == 'groupe')
+				if($groupe->get_leader() && $type_thread == 'groupe')
 				{
 					if($thread->important) $important_etat = 0;
 					else $important_etat = 1;
@@ -154,7 +154,7 @@ else
 				{
 					$options .= '<a href="thread_modif.php?id_thread='.$thread->id_thread.'&suppr=1" onclick="if(confirm(\'Si vous supprimez ce message, tous les messages à l\\\'intérieur seront supprimés !\')) return envoiInfo(this.href, \'thread_'.$thread->id_thread.'\'); else return false;" title="Supprimer"><span class="del" style="float : right;"></span></a>';
 				}
-				else */$options = '';
+				else $options = '';
 				?>
 				<li <?php if($thread_non_lu>0) {echo "style='font-weight: bold;' ";} ?> id="thread_<?php echo $thread->id_thread; ?>" class="<?php echo $class;?>" onclick="envoiInfo('messagerie.php?id_thread=<?php echo $thread->id_thread; ?>', 'information');">
 					<span class='titre'>
