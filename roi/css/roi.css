@@ -125,13 +125,23 @@ width:16px;}
 #bourse ul li:hover					{background-color:#C5D4EF;-moz-border-radius: 10px; -webkit-border-radius:10px;}
 .ressourse							{display:block;float: left;width:120px;text-align: left;}
 .nombre								{display:block;float: left;width:70px;text-align: right;}
-.prix								{display:block;float: left;width:110px;text-align: right;}
+.prix								{display:block;float: left;width:200px;text-align: right;font-size: 9pt;}
+.prix_bis							{display:block;float: left;width:110px;text-align: right;font-size: 9pt;}
 .finvente							{display:block;float: left;width:135px;text-align: right;}
+.enchere							{display:block;float: left;width:400px;text-align: right;}
+.enchere a							{color:#222;}
 .haut								{background : #EEE !important;line-height: 19px !important;height:19px !important;padding-left:6px !important;padding-right:6px !important;}
 #bourse .moitie						{width:459px;float:left;}
 .acheteur							{background:transparent url('../../image/icone/smile.png') no-repeat 0px;height:30px;display:block;margin-left:440px;width:16px;}
 
+.tier								{float:left;width:298px;-moz-border-radius: 10px; -webkit-border-radius:10px;}
+.tier legend						{font-size: 9pt;}
+.tier ul li 						{clear:both;}
+.tier .nom							{float:left;width:200px;}
+.tier .cout 						{float:left;width:90px;text-align: right;}
 
+.green								{height:18px;background-color: #53DF73;}
+.red								{height:18px;background-color: #EF5959;}
 
 #boutique							{margin-left:24px;}
 #boutique ul li 					{clear:both;height:21px;line-height: 21px;-moz-border-radius: 10px;-webkit-border-radius:10px;}
