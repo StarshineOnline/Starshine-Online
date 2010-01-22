@@ -256,6 +256,7 @@ $(document).ready(function()
 {
 	$(".login_nom").focus();
 	$("#popup").draggable({ handle: '#popup_menu'});
+	$(".3D").draggable({handle: '#info_case'});
 	$("#loading").ajaxStart(function()
 	{
 		$(this).show();

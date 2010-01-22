@@ -20,7 +20,7 @@ body {margin:0;padding:0;background:#7e909c url('../image/v2/bg_site.png') repea
 #bas{clear: both; width: 1000px;margin: 0 auto;text-align: center;font-size: 9px;}
 #centre{margin-top : 3px;margin-left : 7px;float : left;	height : 100%;	z-index :3;}
 #deplacement{float : left;vertical-align : top;	text-align : right;	width : 50px;	margin-left : 5px;}
-#information{height : 100%;	width : 47%;	float : left;	z-index :1;margin-left: 6px;}
+#information{position: absolute;width : 432px;	float : left;z-index :100000;margin-left: 556px;}
 #information fieldset {
 	-moz-border-radius: 10px;
 	-webkit-border-radius : 10px;

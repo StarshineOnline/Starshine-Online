@@ -6,19 +6,23 @@ if (file_exists('root.php'))
 //Connexion obligatoire
 $connexion = true;
 //Inclusion du haut du document html
-$interface_3D=true;
-
+$interface_3D = true;
 include_once(root.'haut.php');
 ?>
 <script type="text/javascript">
 window.onload = function()
 {
-	new Draggable('popup', {handle: 'popup_menu'});
 	<?php if($_COOKIE['dernier_affichage_popup'] < (time() - 3600)) echo 'affichePopUp(\'message_accueil.php\');'; ?>
 }
 </script>
 <?php
-$joueur = new perso($_SESSION['ID']);
+if(array_key_exists('ID', $_SESSION) && !empty($_SESSION['ID']))
+	$joueur = new perso($_SESSION['ID']);
+else
+{
+	echo 'Vous êtes déconnecté, veuillez vous reconnecter.';
+	exit();
+}
 
 //Si c'est pour entrer dans un donjon
 if(array_key_exists('donjon_id', $_GET))
@@ -53,7 +57,7 @@ if(array_key_exists('donjon_id', $_GET))
 //Vérifie si le perso est mort
 verif_mort($joueur, 1);
 
-check_perso($joueur);
+$joueur->check_perso();
 
 $_SESSION['position'] = convert_in_pos($joueur->get_x(), $joueur->get_y());
 ?>
@@ -84,8 +88,10 @@ $_SESSION['position'] = convert_in_pos($joueur->get_x(), $joueur->get_y());
 	<input type="hidden" id="menu_encours" value="lejeu" />
 	<div id='menu_details'>
 		<div id='lejeu_menu' style='display:none;'><span class='menu' onclick="affichePopUp('diplomatie.php');">Diplomatie</span><span class='menu' onclick="affichePopUp('classement.php');">Classement</span><span class='menu' onclick="affichePopUp('stats2.php?graph=carte_royaume');">Statistiques</span><span class='menu' onclick="affichePopUp('message_accueil.php?affiche=all');">Message d'Accueil</span><span class='menu' onclick="affichePopUp('option.php');">Options</span></div>
-		<div id='starshine_menu' style='display:none;'><span class='menu' onclick="affichePopUp('liste_monstre.php');">Bestiaire</span><span class='menu' onclick="affichePopUp('background.php');">Background</span><span class='menu' onclick="affichePopUp('royaume.php');">Carte</span></div>
-		<div id='communaute_menu' style='display:none;'><span class='menu'><a href="http://forum.starshine-online.com">Forum</a></span><span class='menu'><a href="http://wiki.starshine-online.com/">Wiki</a></span><span class='menu' onclick="affichePopUp('acces_chat.php');">Tchat</span><span class='menu' onclick="affichePopUp('boutique_sso.php');">Boutique SSO</span></div>
+		<div id='starshine_menu' style='display:none;'><span class='menu' onclick="affichePopUp('liste_monstre.php');">Bestiaire</span><span class='menu' onclick="affichePopUp('background.php');">Background</span><span class='menu' onclick="affichePopUp('royaume.php');">Carte</span>
+		<?php //echo "<span class='menu' onclick=\"affichePopUp('beta_test.php');\">Beta</span>"; ?>
+		</div>
+		<div id='communaute_menu' style='display:none;'><span class='menu'><a href="http://forum.starshine-online.com">Forum</a></span><span class='menu'><a href="http://wiki.starshine-online.com/">Wiki</a></span><span class='menu'><a href="http://bug.starshine-online.com/">Signaler un bug</a></span><span class='menu' onclick="affichePopUp('acces_chat.php');">Tchat</span><span class='menu' onclick="affichePopUp('boutique_sso.php');">Boutique SSO</span></div>
 	</div>
 	<div id='menu_deco'>
 		<span class="fermer" title='Se déconnecter' onclick="if(confirm('Voulez vous déconnecter ?')) { document.location.href='index.php?deco=ok'; };">&nbsp;</span>
@@ -104,8 +110,7 @@ $_SESSION['position'] = convert_in_pos($joueur->get_x(), $joueur->get_y());
 		else include_once(root.'map3D.php');
 		?>
 		</div>
-		<?php include_once(root.'menu_carte.php');?>
-		<div id="information">
+		<div id="information" class='3D'>
 				<h2>Information</h2>
 		<?php
 		
