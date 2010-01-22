@@ -198,7 +198,8 @@ else
 				<optgroup label="'.$row['comp_assoc'].'" >';
 				$comp_actuel = $row['comp_assoc'];
 			}
-			if($monstre[$row['comp_assoc']] >= $row['comp_requis'])
+			$fonction = 'get_'.$row['comp_assoc'];
+			if($monstre->$fonction() >= $row['comp_requis'])
 			{
 				echo '<option value="c'.$row['id'].'">Utiliser '.$row['nom'].' ('.$row['mp'].' RÃ©serves)</option>';
 			}
