@@ -78,7 +78,7 @@ else
 ?>
 <fieldset>
 	<legend>Envoi d'un message</legend>
-	<div class="information_case">
+	
 	<form method="post" action="envoimessage.php?id_type=<?php echo $id_type; ?>" id="formMessage">
 		<?php
 		if ($type == 'r')

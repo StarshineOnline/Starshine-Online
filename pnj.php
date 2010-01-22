@@ -15,7 +15,7 @@ $requete = 'SELECT * FROM pnj WHERE id = \''.sSQL($id).'\'';
 $req = $db->query($requete);
 $row = $db->read_assoc($req);
 
-echo '<h2>'.$row['nom'].'</h2>';
+echo '<fieldset><legend>'.$row['nom'].'</legend>';
 $reponses = explode('*****', nl2br($row['texte']));
 $message = eregi_replace("\[ID:([^[]*)\]([^[]*)\[/ID:([^[]*)\]", "<li><a href=\"pnj.php?id=".$id."&amp;reponse=\\1&amp;poscase=".$W_case."\" onclick=\"return envoiInfo(this.href, 'information')\">\\2</a></li>", $reponses[$reponse]);
 //On vérifie si ya une quête pour ce pnj
@@ -99,4 +99,5 @@ if(eregi("\[verifinventaire:([^[]*)\]", $message, $regs))
 	}
 }
 echo '<ul>'.$message.'</ul>';
+echo "</fieldset>";
 ?>

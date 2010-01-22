@@ -1,29 +1,42 @@
 <?php
-//Inclusion des fonctions permettant de gérer le temps
 if (file_exists('root.php'))
   include_once('root.php');
-/*
-function convert_in_coord($pos)
-{
-	$coord['y'] = floor($pos / 1000);
-	$coord['x'] = $pos - ($coord['y'] * 1000);
-	return $coord;
-}
 
-// Convertion des coordonnés en un chiffre
-function convert_in_pos($x, $y)
-{
-	$pos = $y * 1000 + $x;
-	return $pos;
+require('class/map.class.php');
+{//-- Initialisation
+	$MAP = Array();
 }
-function calcul_distance_pytagore($posjoueur1, $posjoueur2)
-{
-	$W_coord_joueur1 = convert_in_coord($posjoueur1);
-	$W_coord_joueur2 = convert_in_coord($posjoueur2);
-	$R_distance = ceil(sqrt(pow(abs($W_coord_joueur1['x'] - $W_coord_joueur2['x']), 2) + pow(abs($W_coord_joueur1['y'] - $W_coord_joueur2['y']), 2)));
-	return $R_distance;
+{//-- Récupération de la position X, Y du joueur et de son level pour la detection des monstres.
+	$RqXY = $db->query("SELECT x, y, level, race FROM perso WHERE ID=".$joueur->get_id().";");
+	$objXY = $db->read_object($RqXY);
+	$x = $objXY->x;
+	$y = $objXY->y;
+	$level = $objXY->level;
 }
-*/
+$map = new map($x, $y);
+$map->get_pnj();
+$map->get_joueur($objXY->race);
+$map->get_drapeau();
+$map->get_batiment();
+$map->onclick_status = true;
+$map->get_monstre($level);
+$map->troisd = true;
+if(isset($_GET['cache_monstre'])) $map->change_cache_monstre();
+if(isset($_GET['affiche_royaume'])) $map->change_affiche_royaume();
+
+$map->affiche();
+
+
+
+
+
+
+
+
+
+
+
+/*
 $Tclasse['combattant']['type'] = 'guerrier';
 $Tclasse['magicien']['type'] = 'mage';
 $Tclasse['voleur']['type'] = 'voleur';
@@ -140,10 +153,11 @@ $Tclasse['grand nécromancien']['type'] = 'archimage';
 					     WHERE ( (FLOOR(ID / $G_ligne) >= $y_min) AND (FLOOR(ID / $G_ligne) <= $y_max) ) 
 					     AND ( ( (ID - (FLOOR(ID / $G_colonne) * $G_colonne)) >= $x_min) AND ( (ID - (FLOOR(ID / $G_colonne) * $G_colonne) ) <= $x_max) )  
 					     ORDER BY ID;");
+					     
 	while($objMap = $db->read_object($RqMap))
 	{
-		$coord = convert_in_coord($objMap->ID);
-		$MAPTAB[$coord['x']][$coord['y']]["ID"] = $objMap->ID;
+		$coord = convert_in_coord($objMap->id);
+		$MAPTAB[$coord['x']][$coord['y']]["ID"] = $objMap->id;
 		$MAPTAB[$coord['x']][$coord['y']]["decor"] = "decor tex".$objMap->decor;
 	}
 }
@@ -239,5 +253,5 @@ echo "<div id='carte_3D'>";
 }
 echo "  </div>";
 
-
+*/
 ?>

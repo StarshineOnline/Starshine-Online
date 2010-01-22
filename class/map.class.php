@@ -13,6 +13,7 @@ class map
 	public $ymin;
 	public $ymax;
 	public $resolution;
+	public $troisd;
 	public $onclick;
 	public $quadrillage;
 	public $cache_monstre;
@@ -22,7 +23,7 @@ class map
 	public $arene = false;
 	private $affiche_royaume;
 
-	function __construct($x, $y, $champ_vision = 3, $root = '', $donjon = false, $resolution = 'high')
+	function __construct($x, $y, $champ_vision = 3, $root = '', $donjon = false, $resolution = 'high', $troisd = false)
 	{
 		$this->x = $x;
 		$this->y = $y;
@@ -34,9 +35,8 @@ class map
 		$this->onclick_status = false;
 		$this->cache_monstre = false;
 		$this->affiche_royaume = false;
-		
 		$this->case_affiche = ($this->champ_vision * 2) + 1;
-
+		$this->troisd = $troisd;
 		$this->affiche_terrain = false;
 
 		$this->show_royaume_button = "javascript:affiche_royaume=!affiche_royaume;deplacement('centre', cache_monstre, affiche_royaume);";
@@ -121,153 +121,334 @@ class map
 			$class_css['resolution_map'] = 'map';
 			$taille_cellule = 60.75;
 		}
-		echo '<div class="div_map" style="width : '.round(20 + ($taille_cellule * $this->case_affiche)).'px;height:'.round(20 + ($taille_cellule * $this->case_affiche)).'px;">';
-		{//-- Affichage du bord haut (bh) de la map
-			echo "<ul id='".$classe_css['map_bord_haut']."'>
-				   <li id='".$classe_css['map_bord_haut_gauche']."'";if (!empty($class_css['resolution'])) {echo "class='".$class_css['resolution']."'";} echo "onclick=\"$this->show_royaume_button\">&nbsp;</li>";
-			for ($bh = $this->xmin; $bh <= $this->xmax; $bh++)
-			{
-				if($bh == $this->x) { $class_x = "id='bord_haut_x' "; } else { $class_x = ""; }; //-- Pour mettre en valeur la position X ou se trouve le joueur
-				echo "<li $class_x ";if (!empty($class_css['resolution'])) {echo "class='".$class_css['resolution']."'";} echo ">$bh</li>";
-			}
-			echo "</ul>";
-		}
-		{//-- Affichage du reste de la map
-			$y_BAK = 0;
-			$Once = false;
-			$case = 0;
-			for($y_map = $this->ymin; $y_map <= $this->ymax; $y_map++)
-			{
+		if ($this->troisd)
+		{
+			echo "<div id='carte_3D'>";
+			//echo "<div><b>Debug :</b><br/>x : $x, y : $y<br/>x_min : $x_min, x_max : $x_max<br/>y_min : $y_min, y_max : $y_max<br/></div>";
+			{//-- MAP
+				$_NB_CASE = 7;
+	
+				$w_box = 100;
+				$h_box = 50;
+				
+				$x_init = 1;
+				$y_init = floor(($h_box / 2) * ($_NB_CASE / 2));
+				
+				$G_ligne = 1000;
+				$G_colonne = 1000;
+
+				$x_pos = $x_init;
+				$y_pos = $y_init;
+				$z_index = 200;
+				$case = 0;
+				for($y_map = $this->ymin; $y_map <= $this->ymax; $y_map++)
+				{
+					if( ($y_map % 2) == 0) { $moins = 1; } else { $moins = 0; };
+					echo "<ul>
+						   <li class='bord_bas' style='top:".$y_pos."px;left:".$x_pos."px;z-index:$z_index;'>$y_map<br/>Y</li>";
+					$z_index --;
+					$x_pos += floor($w_box / 2);
+					$y_pos -= floor($h_box / 2);
+					
+					for($x_map = $this->xmin; $x_map <= $this->xmax; $x_map++)
+					{
+						if( ($x_map == $this->x) && ($y_map == $this->y) && is_array($this->map[$x_map][$y_map]["Joueurs"]))
+						{
+							if(!empty($this->map[$x_map][$y_map]["Joueurs"][0]["image"])) 	{ $background = "background-image : url(".$this->map[$x_map][$y_map]["Joueurs"][0]["image"].") !important;"; };
+						}
+						elseif(is_array($this->map[$x_map][$y_map]["PNJ"]))
+						{//-- Affichage des PNJ ---------------------------------------//
+							if(!empty($this->map[$x_map][$y_map]["PNJ"][0]["image"])) 		{ $background = "background-image : url(".$this->map[$x_map][$y_map]["PNJ"][0]["image"].") !important;"; };
+						}
+						elseif(is_array($this->map[$x_map][$y_map]["Drapeaux"]))
+						{//-- Affichage des Drapeaux ----------------------------------//
+							if(!empty($this->map[$x_map][$y_map]["Drapeaux"][0]["image"])) 	{ $background = "background-image : url(".$this->map[$x_map][$y_map]["Drapeaux"][0]["image"].") !important;"; };
+						}
+						elseif(is_array($this->map[$x_map][$y_map]["Batiments"]))
+						{//-- Affichage des Batiments ---------------------------------//
+							if(!empty($this->map[$x_map][$y_map]["Batiments"][0]["image"])) { $background = "background-image : url(".$this->map[$x_map][$y_map]["Batiments"][0]["image"].") !important;"; };
+						}
+						elseif(is_array($this->map[$x_map][$y_map]["Batiments_ennemi"]))
+						{//-- Affichage des Batiments Ennemis---------------------------------//
+							if(!empty($this->map[$x_map][$y_map]["Batiments_ennemi"][0]["image"])) { $background = "background-image : url(".$this->map[$x_map][$y_map]["Batiments_ennemi"][0]["image"].") !important;"; };
+						}
+						elseif(is_array($this->map[$x_map][$y_map]["Joueurs"]))
+						{//-- Affichage des Joueurs -----------------------------------//
+							if(!empty($this->map[$x_map][$y_map]["Joueurs"][0]["image"])) 	{ $background = "background-image : url(".$this->map[$x_map][$y_map]["Joueurs"][0]["image"].") !important;"; };
+						}
+						elseif(is_array($this->map[$x_map][$y_map]["Monstres"]) && !$this->cache_monstre)
+						{//-- Affichage des Monstres ----------------------------------//
+							if(!empty($this->map[$x_map][$y_map]["Monstres"][0]["image"])) 	{ $background = "background-image : url(".$this->map[$x_map][$y_map]["Monstres"][0]["image"].") !important;"; };
+						}
+						else { $background = ""; }
+						switch(calcul_distance_pytagore(convert_in_pos($this->x, $this->y), convert_in_pos($x_map, $y_map)))
+						{
+							case 0 : $opacity = ""; break;
+							case 1 : $opacity = ""; break;
+							case 2 : $opacity = "opacity:0.9;"; break;
+							case 3 : $opacity = "opacity:0.8;"; break;
+							case 4 : $opacity = "opacity:0.7;"; break;
+							case 5 : $opacity = "opacity:0.5;"; break;
+							case 6 : $opacity = "opacity:0.3;"; break;
+							case 7 : $opacity = "opacity:0.2;"; break;
+							case 8 : $opacity = "opacity:0.1;"; break;
+							default : $opacity = "opacity:0.1;"; break;
+						}
+							if(   (count($this->map[$x_map][$y_map]["Batiments"]) > 0)
+							|| (count($this->map[$x_map][$y_map]["Batiments_ennemi"]) > 0)
+							|| (count($this->map[$x_map][$y_map]["Reperes"]) > 0)
+							|| (count($this->map[$x_map][$y_map]["PNJ"]) > 0)
+							|| (count($this->map[$x_map][$y_map]["Joueurs"]) > 0)
+							|| (count($this->map[$x_map][$y_map]["Monstres"]) > 0)
+							|| (count($this->map[$x_map][$y_map]["Drapeaux"]) > 0)
+							|| $this->affiche_terrain)
+							{
+							$overlib = "<ul>";
+	
+							if ($this->affiche_terrain)
+							{
+								$type_terrain = type_terrain($MAPTAB[$x_map][$y_map]["type"]);
+								$ressources_terrain = '';
+								$ressource_array = ressource_terrain($type_terrain[1]);
+								//my_dump($ressource_array);
+								if (is_array($ressource_array))
+									foreach ($ressource_array as $ress => $val)
+										if ($val > 0) {
+											if (strlen($ressources_terrain))
+												$ressources_terrain .= ', ';
+											else 
+												$ressources_terrain = '<br />';
+											$ressources_terrain .= "$ress:&nbsp;$val";
+										}
+								$overlib .= "<li class='overlib_batiments'><span>Terrain</span>&nbsp;-&nbsp;$type_terrain[1]$ressources_terrain</li>";
+							}
+	
+							for($i = 0; $i < count($this->map[$x_map][$y_map]["Reperes"]); $i++) 			{ $overlib .= "<li class='overlib_batiments'><span>Mission</span>&nbsp;-&nbsp;".$this->map[$x_map][$y_map]["Reperes"][$i]["nom"]."</li>"; }
+							for($i = 0; $i < count($this->map[$x_map][$y_map]["Batiments"]); $i++)			{ $overlib .= "<li class='overlib_batiments'><span>Batiment</span>&nbsp;-&nbsp;".$this->map[$x_map][$y_map]["Batiments"][$i]["nom"]."</li>"; }
+							for($i = 0; $i < count($this->map[$x_map][$y_map]["Batiments_ennemi"]); $i++) 	{ $overlib .= "<li class='overlib_batiments'><span>Batiment ennemi</span>&nbsp;-&nbsp;".$this->map[$x_map][$y_map]["Batiments_ennemi"][$i]["nom"]."</li>"; }
+							for($i = 0; $i < count($this->map[$x_map][$y_map]["PNJ"]); $i++)				{ $overlib .= "<li class='overlib_batiments'><span>PNJ</span>&nbsp;-&nbsp;".ucwords($this->map[$x_map][$y_map]["PNJ"][$i]["nom"])."</li>"; }
+							for($i = 0; $i < count($this->map[$x_map][$y_map]["Joueurs"]); $i++)
+							{
+								if(array_key_exists('hp', $this->map[$x_map][$y_map]["Joueurs"][$i]))
+								{
+									$all = ' HP : '.$this->map[$x_map][$y_map]["Joueurs"][$i]["hp"].' / '.$this->map[$x_map][$y_map]["Joueurs"][$i]["hp_max"].' - MP : '.$this->map[$x_map][$y_map]["Joueurs"][$i]["mp"].' / '.$this->map[$x_map][$y_map]["Joueurs"][$i]["mp_max"].' - PA : '.$this->map[$x_map][$y_map]["Joueurs"][$i]["pa"];
+	
+								}
+								else $all = '';
+								$overlib .= "<li class='overlib_joueurs'><span>".$this->map[$x_map][$y_map]["Joueurs"][$i]["nom"]."</span>&nbsp;-&nbsp;".ucwords($this->map[$x_map][$y_map]["Joueurs"][$i]["race"])." - Niv.".$this->map[$x_map][$y_map]["Joueurs"][$i]["level"].$all."</li>";
+							}
+							for($i = 0; $i < count($this->map[$x_map][$y_map]["Monstres"]); $i++)
+							{
+								if(array_key_exists('hp', $this->map[$x_map][$y_map]["Monstres"][$i])) $hp = ' - HP : '.$this->map[$x_map][$y_map]["Monstres"][$i]['hp'];
+								else $hp = '';
+								$overlib .= "<li class='overlib_monstres'><span>Monstre</span>&nbsp;-&nbsp;".$this->map[$x_map][$y_map]["Monstres"][$i]["nom"]." x".$this->map[$x_map][$y_map]["Monstres"][$i]["tot"].$hp."</li>";
+							}
+							for($i = 0; $i < count($this->map[$x_map][$y_map]["Drapeaux"]); $i++)			{ $overlib .= "<li class='overlib_batiments'><span>Construction</span>&nbsp;-&nbsp;".ucwords($this->map[$x_map][$y_map]["Drapeaux"][$i]["nom"])."</li>"; }
+	
+							$overlib .= "</ul>";
+							$overlib = str_replace("'", "\'", trim($overlib));
+						}
+						else { $overlib = ""; }
+					
+						if(is_array($MAPTAB[$x_map][$y_map])) { $class_map = "decor tex".$MAPTAB[$x_map][$y_map]["decor"]; } else { $class_map = "decor texblack"; };
+						
+						echo "<li class='".$class_map."' style='top:".$y_pos."px;left:".$x_pos."px;z-index:$z_index;'>";
+						echo " <div class='map_contenu' 
+									id='marq$case' 
+									style=\"".$background.$border.$opacity."margin-top:-15px;width:100px;\" ";
+						if(!empty($overlib))
+						{
+							echo "	onmouseover=\"return overlib('$overlib', BGCLASS, 'overlib', BGCOLOR, '', FGCOLOR, '');\" 
+							   		onmouseout=\"return nd();\" ";
+						}
+						if($this->onclick_status)
+						{
+							$onclick = str_replace('%%id%%', $MAPTAB[$x_map][$y_map]['id'], $this->onclick);
+						}
+						else $onclick = $this->onclick;
+						echo " 		onclick=\"".$onclick."\" 
+							   ><span id='pos_".$MAPTAB[$x_map][$y_map]["id"]."'>".$repere."</span></div>
+							  </li>";	
+						
+						echo "</li>";
+						$z_index --;
+						$x_pos += floor($w_box / 2);
+						$y_pos -= floor($h_box / 2);
+						$case ++;
+					}
+					$z_index = 200;
+					$x_init += floor($w_box / 2);	$x_pos = $x_init;
+					$y_init += floor($h_box / 2);	$y_pos = $y_init;
+					echo "</ul>";
+				}	
+				echo "<ul>
+					   <li id='bord_gauche' style='top:".$y_pos."px;left:".$x_pos."px;z-index:$z_index;'></li>";
+				$z_index --;
+				$x_pos += floor($w_box / 2);
+				$y_pos -= floor($h_box / 2);
 				for($x_map = $this->xmin; $x_map <= $this->xmax; $x_map++)
 				{
-					if($x_map == $this->xmin)
-					{
-						if($Once) { echo "</ul>"; } else { $Once = true; };
-						if($y_map == $this->y) { $class_y = "id='bord_haut_y' "; } else { $class_y = ""; }; //-- Pour mettre en valeur la position Y ou se trouve le joueur
-						echo "<ul class='".$class_css['resolution_map']."'>
-					 		   <li $class_y "; if((!empty($class_css['resolution'])) OR (!empty($classe_css['map_bord_gauche']))) { echo "class='".$classe_css['map_bord_gauche']." ".$class_css['resolution']."'";} echo ">".$y_map."</li>"; //-- Bord gauche de la map
-					}
-					if( ($x_map == $this->x) && ($y_map == $this->y) && is_array($this->map[$x_map][$y_map]["Joueurs"]))
-					{
-						if(!empty($this->map[$x_map][$y_map]["Joueurs"][0]["image"])) 	{ $background = "background-image : url(".$this->map[$x_map][$y_map]["Joueurs"][0]["image"].") !important;"; };
-					}
-					elseif(is_array($this->map[$x_map][$y_map]["PNJ"]))
-					{//-- Affichage des PNJ ---------------------------------------//
-						if(!empty($this->map[$x_map][$y_map]["PNJ"][0]["image"])) 		{ $background = "background-image : url(".$this->map[$x_map][$y_map]["PNJ"][0]["image"].") !important;"; };
-					}
-					elseif(is_array($this->map[$x_map][$y_map]["Drapeaux"]))
-					{//-- Affichage des Drapeaux ----------------------------------//
-						if(!empty($this->map[$x_map][$y_map]["Drapeaux"][0]["image"])) 	{ $background = "background-image : url(".$this->map[$x_map][$y_map]["Drapeaux"][0]["image"].") !important;"; };
-					}
-					elseif(is_array($this->map[$x_map][$y_map]["Batiments"]))
-					{//-- Affichage des Batiments ---------------------------------//
-						if(!empty($this->map[$x_map][$y_map]["Batiments"][0]["image"])) { $background = "background-image : url(".$this->map[$x_map][$y_map]["Batiments"][0]["image"].") !important;"; };
-					}
-					elseif(is_array($this->map[$x_map][$y_map]["Batiments_ennemi"]))
-					{//-- Affichage des Batiments Ennemis---------------------------------//
-						if(!empty($this->map[$x_map][$y_map]["Batiments_ennemi"][0]["image"])) { $background = "background-image : url(".$this->map[$x_map][$y_map]["Batiments_ennemi"][0]["image"].") !important;"; };
-					}
-					elseif(is_array($this->map[$x_map][$y_map]["Joueurs"]))
-					{//-- Affichage des Joueurs -----------------------------------//
-						if(!empty($this->map[$x_map][$y_map]["Joueurs"][0]["image"])) 	{ $background = "background-image : url(".$this->map[$x_map][$y_map]["Joueurs"][0]["image"].") !important;"; };
-					}
-					elseif(is_array($this->map[$x_map][$y_map]["Monstres"]) && !$this->cache_monstre)
-					{//-- Affichage des Monstres ----------------------------------//
-						if(!empty($this->map[$x_map][$y_map]["Monstres"][0]["image"])) 	{ $background = "background-image : url(".$this->map[$x_map][$y_map]["Monstres"][0]["image"].") !important;"; };
-					}
-					else { $background = ""; }
-
-					if(   (count($this->map[$x_map][$y_map]["Batiments"]) > 0)
-						|| (count($this->map[$x_map][$y_map]["Batiments_ennemi"]) > 0)
-						|| (count($this->map[$x_map][$y_map]["Reperes"]) > 0)
-						|| (count($this->map[$x_map][$y_map]["PNJ"]) > 0)
-						|| (count($this->map[$x_map][$y_map]["Joueurs"]) > 0)
-						|| (count($this->map[$x_map][$y_map]["Monstres"]) > 0)
-						|| (count($this->map[$x_map][$y_map]["Drapeaux"]) > 0)
-						|| $this->affiche_terrain)
-					{
-						$overlib = "<ul>";
-
-						if ($this->affiche_terrain)
-						{
-							$type_terrain = type_terrain($MAPTAB[$x_map][$y_map]["type"]);
-							$ressources_terrain = '';
-							$ressource_array = ressource_terrain($type_terrain[1]);
-							//my_dump($ressource_array);
-							if (is_array($ressource_array))
-								foreach ($ressource_array as $ress => $val)
-									if ($val > 0) {
-										if (strlen($ressources_terrain))
-											$ressources_terrain .= ', ';
-										else 
-											$ressources_terrain = '<br />';
-										$ressources_terrain .= "$ress:&nbsp;$val";
-									}
-							$overlib .= "<li class='overlib_batiments'><span>Terrain</span>&nbsp;-&nbsp;$type_terrain[1]$ressources_terrain</li>";
-						}
-
-						for($i = 0; $i < count($this->map[$x_map][$y_map]["Reperes"]); $i++) 			{ $overlib .= "<li class='overlib_batiments'><span>Mission</span>&nbsp;-&nbsp;".$this->map[$x_map][$y_map]["Reperes"][$i]["nom"]."</li>"; }
-						for($i = 0; $i < count($this->map[$x_map][$y_map]["Batiments"]); $i++)			{ $overlib .= "<li class='overlib_batiments'><span>Batiment</span>&nbsp;-&nbsp;".$this->map[$x_map][$y_map]["Batiments"][$i]["nom"]."</li>"; }
-						for($i = 0; $i < count($this->map[$x_map][$y_map]["Batiments_ennemi"]); $i++) 	{ $overlib .= "<li class='overlib_batiments'><span>Batiment ennemi</span>&nbsp;-&nbsp;".$this->map[$x_map][$y_map]["Batiments_ennemi"][$i]["nom"]."</li>"; }
-						for($i = 0; $i < count($this->map[$x_map][$y_map]["PNJ"]); $i++)				{ $overlib .= "<li class='overlib_batiments'><span>PNJ</span>&nbsp;-&nbsp;".ucwords($this->map[$x_map][$y_map]["PNJ"][$i]["nom"])."</li>"; }
-						for($i = 0; $i < count($this->map[$x_map][$y_map]["Joueurs"]); $i++)
-						{
-							if(array_key_exists('hp', $this->map[$x_map][$y_map]["Joueurs"][$i]))
-							{
-								$all = ' HP : '.$this->map[$x_map][$y_map]["Joueurs"][$i]["hp"].' / '.$this->map[$x_map][$y_map]["Joueurs"][$i]["hp_max"].' - MP : '.$this->map[$x_map][$y_map]["Joueurs"][$i]["mp"].' / '.$this->map[$x_map][$y_map]["Joueurs"][$i]["mp_max"].' - PA : '.$this->map[$x_map][$y_map]["Joueurs"][$i]["pa"];
-
-							}
-							else $all = '';
-							$overlib .= "<li class='overlib_joueurs'><span>".$this->map[$x_map][$y_map]["Joueurs"][$i]["nom"]."</span>&nbsp;-&nbsp;".ucwords($this->map[$x_map][$y_map]["Joueurs"][$i]["race"])." - Niv.".$this->map[$x_map][$y_map]["Joueurs"][$i]["level"].$all."</li>";
-						}
-						for($i = 0; $i < count($this->map[$x_map][$y_map]["Monstres"]); $i++)
-						{
-							if(array_key_exists('hp', $this->map[$x_map][$y_map]["Monstres"][$i])) $hp = ' - HP : '.$this->map[$x_map][$y_map]["Monstres"][$i]['hp'];
-							else $hp = '';
-							$overlib .= "<li class='overlib_monstres'><span>Monstre</span>&nbsp;-&nbsp;".$this->map[$x_map][$y_map]["Monstres"][$i]["nom"]." x".$this->map[$x_map][$y_map]["Monstres"][$i]["tot"].$hp."</li>";
-						}
-						for($i = 0; $i < count($this->map[$x_map][$y_map]["Drapeaux"]); $i++)			{ $overlib .= "<li class='overlib_batiments'><span>Construction</span>&nbsp;-&nbsp;".ucwords($this->map[$x_map][$y_map]["Drapeaux"][$i]["nom"])."</li>"; }
-
-						$overlib .= "</ul>";
-						$overlib = str_replace("'", "\'", trim($overlib));
-					}
-					else { $overlib = ""; }
-
-					//Repere
-					if(is_array($this->map[$x_map][$y_map]["Reperes"])) $repere = $this->map[$x_map][$y_map]["Reperes"][0]['nom'][0];
-					else $repere = '&nbsp;';
-
-					if($this->resolution == 'low') $tex_resolution = 'l';
-					else $tex_resolution = '';
-					if(is_array($MAPTAB[$x_map][$y_map])) { $class_map = "decor tex".$tex_resolution.$MAPTAB[$x_map][$y_map]["decor"]; } else { $class_map = "decor texblack"; };
-
-					if($this->affiche_royaume) $taille_border = 1;
-					else $taille_border = 0;
-					$border = "border:".$taille_border."px solid ".$Gcouleurs[$MAPTAB[$x_map][$y_map]['royaume']].";";
-					echo "<li class='$class_map ".$class_css['resolution']."'>
-						   <div class='map_contenu ".$class_css['resolution']."' 
-						   		id='marq$case' 
-						   		style='".$background.$border."' ";
-					if(!empty($overlib))
-					{
-						echo "	onmouseover=\"return overlib('$overlib', BGCLASS, 'overlib', BGCOLOR, '', FGCOLOR, '');\" 
-						   		onmouseout=\"return nd();\" ";
-					}
-					if($this->onclick_status)
-					{
-						$onclick = str_replace('%%id%%', $MAPTAB[$x_map][$y_map]['id'], $this->onclick);
-					}
-					else $onclick = $this->onclick;
-					echo " 		onclick=\"".$onclick."\" 
-						   ><span id='pos_".$MAPTAB[$x_map][$y_map]["id"]."'>".$repere."</span></div>
-						  </li>";	
-					
-					$case++;
+					echo " <li class='bord_haut' style='top:".$y_pos."px;left:".$x_pos."px;z-index:$z_index;'>$x_map<br/>X</li>";
+					$z_index --;
+					$x_pos += floor($w_box / 2);
+					$y_pos -= floor($h_box / 2);
 				}
+				echo "</ul>";
 			}
-			echo "</ul>";
+			echo "  </div>";
+		
 		}
-		echo "</div>"; 
+		else
+		{
+			echo '<div class="div_map" style="width : '.round(20 + ($taille_cellule * $this->case_affiche)).'px;height:'.round(20 + ($taille_cellule * $this->case_affiche)).'px;">';
+			{//-- Affichage du bord haut (bh) de la map
+				echo "<ul id='".$classe_css['map_bord_haut']."'>
+					   <li id='".$classe_css['map_bord_haut_gauche']."'";if (!empty($class_css['resolution'])) {echo "class='".$class_css['resolution']."'";} echo "onclick=\"$this->show_royaume_button\">&nbsp;</li>";
+				for ($bh = $this->xmin; $bh <= $this->xmax; $bh++)
+				{
+					if($bh == $this->x) { $class_x = "id='bord_haut_x' "; } else { $class_x = ""; }; //-- Pour mettre en valeur la position X ou se trouve le joueur
+					echo "<li $class_x ";if (!empty($class_css['resolution'])) {echo "class='".$class_css['resolution']."'";} echo ">$bh</li>";
+				}
+				echo "</ul>";
+			}
+			{//-- Affichage du reste de la map
+				$y_BAK = 0;
+				$Once = false;
+				$case = 0;
+				
+				for($y_map = $this->ymin; $y_map <= $this->ymax; $y_map++)
+				{
+					for($x_map = $this->xmin; $x_map <= $this->xmax; $x_map++)
+					{
+						if($x_map == $this->xmin)
+						{
+							if($Once) { echo "</ul>"; } else { $Once = true; };
+							if($y_map == $this->y) { $class_y = "id='bord_haut_y' "; } else { $class_y = ""; }; //-- Pour mettre en valeur la position Y ou se trouve le joueur
+							echo "<ul class='".$class_css['resolution_map']."'>
+						 		   <li $class_y "; if((!empty($class_css['resolution'])) OR (!empty($classe_css['map_bord_gauche']))) { echo "class='".$classe_css['map_bord_gauche']." ".$class_css['resolution']."'";} echo ">".$y_map."</li>"; //-- Bord gauche de la map
+						}
+						if( ($x_map == $this->x) && ($y_map == $this->y) && is_array($this->map[$x_map][$y_map]["Joueurs"]))
+						{
+							if(!empty($this->map[$x_map][$y_map]["Joueurs"][0]["image"])) 	{ $background = "background-image : url(".$this->map[$x_map][$y_map]["Joueurs"][0]["image"].") !important;"; };
+						}
+						elseif(is_array($this->map[$x_map][$y_map]["PNJ"]))
+						{//-- Affichage des PNJ ---------------------------------------//
+							if(!empty($this->map[$x_map][$y_map]["PNJ"][0]["image"])) 		{ $background = "background-image : url(".$this->map[$x_map][$y_map]["PNJ"][0]["image"].") !important;"; };
+						}
+						elseif(is_array($this->map[$x_map][$y_map]["Drapeaux"]))
+						{//-- Affichage des Drapeaux ----------------------------------//
+							if(!empty($this->map[$x_map][$y_map]["Drapeaux"][0]["image"])) 	{ $background = "background-image : url(".$this->map[$x_map][$y_map]["Drapeaux"][0]["image"].") !important;"; };
+						}
+						elseif(is_array($this->map[$x_map][$y_map]["Batiments"]))
+						{//-- Affichage des Batiments ---------------------------------//
+							if(!empty($this->map[$x_map][$y_map]["Batiments"][0]["image"])) { $background = "background-image : url(".$this->map[$x_map][$y_map]["Batiments"][0]["image"].") !important;"; };
+						}
+						elseif(is_array($this->map[$x_map][$y_map]["Batiments_ennemi"]))
+						{//-- Affichage des Batiments Ennemis---------------------------------//
+							if(!empty($this->map[$x_map][$y_map]["Batiments_ennemi"][0]["image"])) { $background = "background-image : url(".$this->map[$x_map][$y_map]["Batiments_ennemi"][0]["image"].") !important;"; };
+						}
+						elseif(is_array($this->map[$x_map][$y_map]["Joueurs"]))
+						{//-- Affichage des Joueurs -----------------------------------//
+							if(!empty($this->map[$x_map][$y_map]["Joueurs"][0]["image"])) 	{ $background = "background-image : url(".$this->map[$x_map][$y_map]["Joueurs"][0]["image"].") !important;"; };
+						}
+						elseif(is_array($this->map[$x_map][$y_map]["Monstres"]) && !$this->cache_monstre)
+						{//-- Affichage des Monstres ----------------------------------//
+							if(!empty($this->map[$x_map][$y_map]["Monstres"][0]["image"])) 	{ $background = "background-image : url(".$this->map[$x_map][$y_map]["Monstres"][0]["image"].") !important;"; };
+						}
+						else { $background = ""; }
+	
+						if(   (count($this->map[$x_map][$y_map]["Batiments"]) > 0)
+							|| (count($this->map[$x_map][$y_map]["Batiments_ennemi"]) > 0)
+							|| (count($this->map[$x_map][$y_map]["Reperes"]) > 0)
+							|| (count($this->map[$x_map][$y_map]["PNJ"]) > 0)
+							|| (count($this->map[$x_map][$y_map]["Joueurs"]) > 0)
+							|| (count($this->map[$x_map][$y_map]["Monstres"]) > 0)
+							|| (count($this->map[$x_map][$y_map]["Drapeaux"]) > 0)
+							|| $this->affiche_terrain)
+						{
+							$overlib = "<ul>";
+	
+							if ($this->affiche_terrain)
+							{
+								$type_terrain = type_terrain($MAPTAB[$x_map][$y_map]["type"]);
+								$ressources_terrain = '';
+								$ressource_array = ressource_terrain($type_terrain[1]);
+								//my_dump($ressource_array);
+								if (is_array($ressource_array))
+									foreach ($ressource_array as $ress => $val)
+										if ($val > 0) {
+											if (strlen($ressources_terrain))
+												$ressources_terrain .= ', ';
+											else 
+												$ressources_terrain = '<br />';
+											$ressources_terrain .= "$ress:&nbsp;$val";
+										}
+								$overlib .= "<li class='overlib_batiments'><span>Terrain</span>&nbsp;-&nbsp;$type_terrain[1]$ressources_terrain</li>";
+							}
+	
+							for($i = 0; $i < count($this->map[$x_map][$y_map]["Reperes"]); $i++) 			{ $overlib .= "<li class='overlib_batiments'><span>Mission</span>&nbsp;-&nbsp;".$this->map[$x_map][$y_map]["Reperes"][$i]["nom"]."</li>"; }
+							for($i = 0; $i < count($this->map[$x_map][$y_map]["Batiments"]); $i++)			{ $overlib .= "<li class='overlib_batiments'><span>Batiment</span>&nbsp;-&nbsp;".$this->map[$x_map][$y_map]["Batiments"][$i]["nom"]."</li>"; }
+							for($i = 0; $i < count($this->map[$x_map][$y_map]["Batiments_ennemi"]); $i++) 	{ $overlib .= "<li class='overlib_batiments'><span>Batiment ennemi</span>&nbsp;-&nbsp;".$this->map[$x_map][$y_map]["Batiments_ennemi"][$i]["nom"]."</li>"; }
+							for($i = 0; $i < count($this->map[$x_map][$y_map]["PNJ"]); $i++)				{ $overlib .= "<li class='overlib_batiments'><span>PNJ</span>&nbsp;-&nbsp;".ucwords($this->map[$x_map][$y_map]["PNJ"][$i]["nom"])."</li>"; }
+							for($i = 0; $i < count($this->map[$x_map][$y_map]["Joueurs"]); $i++)
+							{
+								if(array_key_exists('hp', $this->map[$x_map][$y_map]["Joueurs"][$i]))
+								{
+									$all = ' HP : '.$this->map[$x_map][$y_map]["Joueurs"][$i]["hp"].' / '.$this->map[$x_map][$y_map]["Joueurs"][$i]["hp_max"].' - MP : '.$this->map[$x_map][$y_map]["Joueurs"][$i]["mp"].' / '.$this->map[$x_map][$y_map]["Joueurs"][$i]["mp_max"].' - PA : '.$this->map[$x_map][$y_map]["Joueurs"][$i]["pa"];
+	
+								}
+								else $all = '';
+								$overlib .= "<li class='overlib_joueurs'><span>".$this->map[$x_map][$y_map]["Joueurs"][$i]["nom"]."</span>&nbsp;-&nbsp;".ucwords($this->map[$x_map][$y_map]["Joueurs"][$i]["race"])." - Niv.".$this->map[$x_map][$y_map]["Joueurs"][$i]["level"].$all."</li>";
+							}
+							for($i = 0; $i < count($this->map[$x_map][$y_map]["Monstres"]); $i++)
+							{
+								if(array_key_exists('hp', $this->map[$x_map][$y_map]["Monstres"][$i])) $hp = ' - HP : '.$this->map[$x_map][$y_map]["Monstres"][$i]['hp'];
+								else $hp = '';
+								$overlib .= "<li class='overlib_monstres'><span>Monstre</span>&nbsp;-&nbsp;".$this->map[$x_map][$y_map]["Monstres"][$i]["nom"]." x".$this->map[$x_map][$y_map]["Monstres"][$i]["tot"].$hp."</li>";
+							}
+							for($i = 0; $i < count($this->map[$x_map][$y_map]["Drapeaux"]); $i++)			{ $overlib .= "<li class='overlib_batiments'><span>Construction</span>&nbsp;-&nbsp;".ucwords($this->map[$x_map][$y_map]["Drapeaux"][$i]["nom"])."</li>"; }
+	
+							$overlib .= "</ul>";
+							$overlib = str_replace("'", "\'", trim($overlib));
+						}
+						else { $overlib = ""; }
+	
+						//Repere
+						if(is_array($this->map[$x_map][$y_map]["Reperes"])) $repere = $this->map[$x_map][$y_map]["Reperes"][0]['nom'][0];
+						else $repere = '&nbsp;';
+	
+						if($this->resolution == 'low') $tex_resolution = 'l';
+						else $tex_resolution = '';
+						if(is_array($MAPTAB[$x_map][$y_map])) { $class_map = "decor tex".$tex_resolution.$MAPTAB[$x_map][$y_map]["decor"]; } else { $class_map = "decor texblack"; };
+	
+						if($this->affiche_royaume) $taille_border = 1;
+						else $taille_border = 0;
+						$border = "border:".$taille_border."px solid ".$Gcouleurs[$MAPTAB[$x_map][$y_map]['royaume']].";";
+						echo "<li class='$class_map ".$class_css['resolution']."'>
+							   <div class='map_contenu ".$class_css['resolution']."' 
+							   		id='marq$case' 
+							   		style='".$background.$border."' ";
+						if(!empty($overlib))
+						{
+							echo "	onmouseover=\"return overlib('$overlib', BGCLASS, 'overlib', BGCOLOR, '', FGCOLOR, '');\" 
+							   		onmouseout=\"return nd();\" ";
+						}
+						if($this->onclick_status)
+						{
+							$onclick = str_replace('%%id%%', $MAPTAB[$x_map][$y_map]['id'], $this->onclick);
+						}
+						else $onclick = $this->onclick;
+						echo " 		onclick=\"".$onclick."\" 
+							   ><span id='pos_".$MAPTAB[$x_map][$y_map]["id"]."'>".$repere."</span></div>
+							  </li>";	
+						
+						$case++;
+					}
+				}
+				echo "</ul>";
+			}
+			echo "</div>"; 
+		}
 	}
 
 	function get_pnj()
