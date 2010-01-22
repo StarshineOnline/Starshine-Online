@@ -1,6 +1,6 @@
 <?php
-if (file_exists('root.php'))
-  include_once('root.php');
+if (file_exists('../root.php'))
+  include_once('../root.php');
 $admin = true;
 
 $textures = false;
@@ -16,16 +16,16 @@ else
 {
 	include_once(root.'admin/menu_admin.php');
 	$id_monstre = $_GET['id_monstre'];
-	$monstre = recupmonstre($id_monstre, false);
+	$monstre = new monstre($id_monstre);
 	?>
 	<div id="contenu">
 		<div id="centre3">
 			<div class="titre">
-				Edition des actions de <?php echo $monstre['nom']; ?> - <?php echo $monstre['reserve']; ?> RM - Arme : <?php echo $monstre['arme_type']; ?>
+				Edition des actions de <?php echo $monstre->get_nom(); ?> - <?php echo $monstre->get_reserve(); ?> RM - Arme : <?php echo $monstre->get_arme(); ?>
 			</div>
-			<?php echo $monstre['action_d']; ?>
+			<?php echo $monstre->get_action(); ?>
 			<?php
-		$action_t = $monstre['action_d'];
+		$action_t = $monstre->get_action();
 		$actionexplode = explode(';', $action_t);
 		if (isset($_GET['suppr']))
 		{
@@ -44,8 +44,8 @@ else
 				$i++;
 			}
 			$action = implode(';', $actionexplode);
-			$requete = "UPDATE monstre SET action = '$action' WHERE id = '".$id_monstre."'";
-			$req = $db->query($requete);
+			$monstre->set_action($action);
+			$monstre->sauver();
 		}
 		
 		if (isset($_GET['up']) AND $_GET['up'] >= 1)
@@ -57,8 +57,8 @@ else
 			$actionexplode[$i-1] = $actionexplode_tmp;
 			
 			$action = implode(';', $actionexplode);
-			$requete = "UPDATE monstre SET action = '$action' WHERE id = '".$id_monstre."'";
-			$req = $db->query($requete);
+			$monstre->set_action($action);
+			$monstre->sauver();
 		}
 		//Ajout d'une condition a l'action
 		if(array_key_exists('valid_cond', $_GET))
@@ -117,8 +117,8 @@ else
 			}
 			$actionexplode[count($actionexplode)] = $action_temp;
 			$action = implode(';', $actionexplode);
-			$requete = "UPDATE monstre SET action = '$action' WHERE id = '".$id_monstre."'";
-			$req = $db->query($requete);
+			$monstre->set_action($action);
+			$monstre->sauver();
 			$_SESSION['script'] = array();
 		}
 		
@@ -168,7 +168,7 @@ else
 		<?php
 		
 		$comp_actuel = '';
-		$requete = "SELECT * FROM sort_combat WHERE incantation < ".$monstre['incantation']." ORDER BY comp_assoc ASC, incantation DESC";
+		$requete = "SELECT * FROM sort_combat WHERE incantation < ".$monstre->get_incantation()." ORDER BY comp_assoc ASC, incantation DESC";
 		$req = $db->query($requete);
 		while($row = $db->read_array($req))
 		{
