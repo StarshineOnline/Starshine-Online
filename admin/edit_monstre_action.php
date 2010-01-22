@@ -199,9 +199,9 @@ else
 				$comp_actuel = $row['comp_assoc'];
 			}
 			$fonction = 'get_'.$row['comp_assoc'];
-			if($monstre->$fonction() >= $row['comp_requis'])
+			if(method_exists($monstre, $fonction) && ($monstre->$fonction() >= $row['comp_requis']))
 			{
-				echo '<option value="c'.$row['id'].'">Utiliser '.$row['nom'].' ('.$row['mp'].' RÃ©serves)</option>';
+				echo '<option value="c'.$row['id'].'">Utiliser '.$row['nom'].' ('.$row['mp'].' Réserves)</option>';
 			}
 		}
 		echo '</optgroup>';
