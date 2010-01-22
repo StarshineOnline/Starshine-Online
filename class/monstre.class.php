@@ -1088,6 +1088,11 @@ class monstre
 		else
 			return false;
 	}
+
+	function get_race()
+	{
+		return 'neutre';
+	}
 	
 	function set_comp($comp_assoc = '', $valeur = '')
 	{
