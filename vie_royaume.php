@@ -20,7 +20,7 @@ $R = new royaume($W_row['royaume']);
 $R->get_diplo($joueur->get_race());
 ?>
 <fieldset>
-	<legend><?php echo '<a href="ville.php" onclick="return envoiInfo(this.href,\'centre\')">';?><?php echo $R->get_nom();?></a> - <?php echo '<a href="vie_royaume.php" onclick="return envoiInfo(this.href,\'carte\')">';?> Vie du royaume </a></legend>
+	<legend><?php echo '<a href="ville.php" onclick="return envoiInfo(this.href,\'centre\')">';?><?php echo $R->get_nom();?></a> &gt; <?php echo '<a href="vie_royaume.php" onclick="return envoiInfo(this.href,\'carte\')">';?> Vie du royaume </a></legend>
 <?php
 //Uniquement si le joueur se trouve sur une case de ville
 if($W_row['type'] == 1)
@@ -30,49 +30,54 @@ if($W_row['type'] == 1)
 	if($R->get_diplo($joueur->get_race()) == 127)
 	{
 		$is_election = elections::is_mois_election($R->get_id());
-		if($is_election && date("d") >= 5 && date("d") < 15)
+		if( $is_election )
 		{
-			?>
-			<li>
-				<a href="candidature.php" onclick="return envoiInfo(this.href, 'carte')">Candidature</a>
-			</li>
-			<?php
-		}
-		if($is_election && date("d") >= 15)
-		{
-      $elections = elections::get_prochain_election($R->get_id(), true);
-		  if( $elections[0]->get_type() == 'universel' )
-		  {
+  		if(date("d") >= 5 && date("d") < 15)
+  		{
   			?>
   			<li>
-  				<a href="vote_roi.php" onclick="return envoiInfo(this.href, 'carte')">Vote</a>
+  				<a href="candidature.php" onclick="return envoiInfo(this.href, 'carte')">Candidature</a>
   			</li>
-			<?php
-      }
-      elseif( $joueur->get_grade()->get_id() == 6 )
-      {
-  			?>
-  			<li>
-  				<a href="vote_roi.php" onclick="return envoiInfo(this.href, 'carte')">Nomination</a>
-  			</li>
-			<?php
-      }
-		}
-		//Pas d'élection prévue prochainement, on peut renverser le pouvoir
-		if(!$is_election)
+  			<?php
+  		}
+  		elseif(date("d") >= 15)
+  		{
+        $elections = elections::get_prochain_election($R->get_id(), true);
+  		  if( $elections[0]->get_type() == 'universel' )
+  		  {
+    			?>
+    			<li>
+    				<a href="vote_roi.php" onclick="return envoiInfo(this.href, 'carte')">Vote</a>
+    			</li>
+  			<?php
+        }
+        elseif( $joueur->get_grade()->get_id() == 6 )
+        {
+    			?>
+    			<li>
+    				<a href="vote_roi.php" onclick="return envoiInfo(this.href, 'carte')">Nomination</a>
+    			</li>
+  			<?php
+        }
+  		}
+    }
+		else
 		{
-		  //Si il y a une révolution en cours
+		  //Pas d'élection prévue prochainement, on peut renverser le pouvoir
 		  $is_revolution = revolution::is_mois_revolution($R->get_id());
 		  if( $is_revolution )
       {
+        // Il y a une révolution : on l'indique et propose de voter
 			  ?>
   			<li>
-  				<a href="revolution.php" onclick="return envoiInfo(this.href, 'carte')">Voter pour ou contre une révolution</a>
+  			  <p><b>Une révolution a été déclenchée !</b></p>
+  				<a href="revolution.php" onclick="return envoiInfo(this.href, 'carte')">Voter pour ou contre la révolution</a>
   			</li>
   			<?php
       }
-      else
+      elseif( date("d") <= 20 )
 		  {
+		    // Il n'y a pas de révolution : on propose d'en déclencher une 
 			  ?>
   			<li>
   				<a href="revolution.php" onclick="return envoiInfo(this.href, 'carte')">Déclencher une révolution</a>

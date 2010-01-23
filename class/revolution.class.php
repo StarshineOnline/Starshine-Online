@@ -18,6 +18,9 @@ class revolution
     * @var date
     */
 	private $date;
+	
+	/// Id du personnage ayant déclenché la révolution
+	private $id_perso;
 
 	
 	/**
@@ -28,17 +31,17 @@ class revolution
 	* @param date date attribut
 	* @return none
 	*/
-	function __construct($id = 0, $id_royaume = 0, $date = 0)
+	function __construct($id = 0, $id_royaume = 0, $date = 0, $id_perso = 0)
 	{
 		global $db;
 		//Verification nombre et du type d'argument pour construire l'etat adequat.
 		if( (func_num_args() == 1) && is_numeric($id) )
 		{
-			$requeteSQL = $db->query("SELECT id_royaume, date FROM revolution WHERE id = ".$id);
+			$requeteSQL = $db->query("SELECT id_royaume, date, id_perso FROM revolution WHERE id = ".$id);
 			//Si le thread est dans la base, on le charge sinon on crée un thread vide.
 			if( $db->num_rows($requeteSQL) > 0 )
 			{
-				list($this->id_royaume, $this->date) = $db->read_array($requeteSQL);
+				list($this->id_royaume, $this->date, $this->id_perso) = $db->read_array($requeteSQL);
 			}
 			else $this->__construct();
 			$this->id = $id;
@@ -48,11 +51,13 @@ class revolution
 			$this->id = $id['id'];
 			$this->id_royaume = $id['id_royaume'];
 			$this->date = $id['date'];
+			$this->id_perso = $id['id_perso'];
 			}
 		else
 		{
 			$this->id_royaume = $id_royaume;
 			$this->date = $date;
+			$this->id_perso = $id_perso;
 			$this->id = $id;
 		}
 	}
@@ -70,7 +75,7 @@ class revolution
 		{
 			if(count($this->champs_modif) > 0)
 			{
-				if($force) $champs = 'id_royaume = '.$this->id_royaume.', date = '.$this->date.'';
+				if($force) $champs = 'id_royaume = '.$this->id_royaume.', date = '.$this->date.', id_perso = '.$this->id_perso;
 				else
 				{
 					$champs = '';
@@ -89,8 +94,8 @@ class revolution
 		}
 		else
 		{
-			$requete = 'INSERT INTO revolution (id_royaume, date) VALUES(';
-			$requete .= $this->id_royaume.", '".$this->date."')";
+			$requete = 'INSERT INTO revolution (id_royaume, date, id_perso) VALUES(';
+			$requete .= $this->id_royaume.", '".$this->date."', $this->id_perso)";
 			$db->query($requete);
 			//Récuperation du dernier ID inséré.
 			$this->id = $db->last_insert_id();
@@ -206,6 +211,15 @@ class revolution
 	{
 		return $this->date;
 	}
+	
+	/**
+	 * Retourne l'id du personnage ayant déclenché la révolution
+	 * @return int(10) id
+	 */	 
+	function get_id_perso()
+	{
+		return $this->id_perso;
+	}
 
 	/**
 	* Modifie la valeur de l'attribut
@@ -241,6 +255,16 @@ class revolution
 	{
 		$this->date = $date;
 		$this->champs_modif[] = 'date';
+	}
+	
+	/**
+	 * Modifie l'id du personnage ayant déclenché la révolution
+	 * @return int(10) id
+	 */	 
+	function set_id_perso($id_perso)
+	{
+		$this->id_perso = $id_perso;
+		$this->champs_modif[] = 'id_perso';
 	}
 
 		//fonction

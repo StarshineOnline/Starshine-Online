@@ -19,10 +19,15 @@ $W_row = $db->read_assoc($W_req);
 $R = new royaume($W_row['royaume']);
 $R->get_diplo($joueur->get_race());
 ?>
-	<h2 class="ville_titre"><?php echo '<a href="ville.php?poscase='.$W_case.'" onclick="return envoiInfo(this.href,\'centre\')">';?><?php echo $R->get_nom();?></a> - <?php echo '<a href="vie_royaume.php" onclick="return envoiInfo(this.href,\'carte\')">';?> Vie du royaume </a></h2>
+	<fieldset><legend><?php if(verif_ville($joueur->get_x(), $joueur->get_y())) return_ville( '<a href="ville.php" onclick="return envoiInfo(this.href, \'centre\')">'.$R->get_nom().'</a> > ', $joueur->get_pos()); ?> <?php echo '<a href="revolution.php?poscase='.$W_case.'" onclick="return envoiInfo(this.href,\'carte\')">';?> Révolution </a></legend>
 <?php
-//Uniquement si le joueur se trouve sur une case de ville
-if($W_row['type'] == 1)
+//Uniquement si le joueur se trouve sur une case de ville ou un bourg
+$check = false;
+if( $W_row['type'] == 1 )
+  $check = true;
+elseif( $batiment = verif_batiment($joueur->get_x(), $joueur->get_y(), $Trace[$joueur->get_race()]['numrace']) )
+  $check = $batiment['type'] == 'bourg';
+if( $check )
 {
 	include('ville_bas.php');
 	//Si on est dans notre royaume
@@ -69,6 +74,7 @@ if($W_row['type'] == 1)
 				$revolution = new revolution();
 				$revolution->set_id_royaume($R->get_id());
 				$revolution->set_date(date('Y-m-d', mktime(0, 0, 0, date("m") + 1 , 1, date("Y"))));
+				$revolution->set_id_perso($joueur->get_id());
 				$revolution->sauver();
 				echo '<h6>Une révolution est déclenchée !</h6>';
 			}
@@ -77,3 +83,4 @@ if($W_row['type'] == 1)
 	}
 }
 ?>
+</fieldset>

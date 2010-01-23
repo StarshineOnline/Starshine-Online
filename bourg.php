@@ -50,36 +50,62 @@ if($bourg->get_x() == $joueur->get_x() AND $bourg->get_y() == $joueur->get_y() A
 		<li>
 			<a href="bureau_quete.php" onclick="return envoiInfo(this.href, 'carte')">Bureau des quètes</a>
 		</li>
-<?php
+  <?php
   $is_election = elections::is_mois_election($R->get_id());
-	if($is_election && date("d") >= 5 AND date("d") < 15)
-	{
-?>
-		<li>
-			<a href="candidature.php" onclick="return envoiInfo(this.href, 'carte')">Candidature</a>
-		</li>
-<?php
-	}
-	if($is_election && date("d") >= 15)
-	{
-    $elections = elections::get_prochain_election($R->get_id(), true);
-    if( $elections[0]->get_type() == 'universel' )
-		{
+	if($is_election)
+  {
+    if( date("d") >= 5 AND date("d") < 15 )
+  	{
     ?>
   		<li>
-  			<a href="vote_roi.php?poscase=<?php echo $joueur->get_pos(); ?>&amp;fort=ok" onclick="return envoiInfo(this.href, 'carte')">Vote</a>
+  			<a href="candidature.php" onclick="return envoiInfo(this.href, 'carte')">Candidature</a>
   		</li>
     <?php
-    }
-    elseif( $joueur->get_grade()->get_id() == 6 )
+  	}
+  	elseif( date("d") >= 15 )
+  	{
+      $elections = elections::get_prochain_election($R->get_id(), true);
+      if( $elections[0]->get_type() == 'universel' )
+  		{
+      ?>
+    		<li>
+    			<a href="vote_roi.php?poscase=<?php echo $joueur->get_pos(); ?>&amp;fort=ok" onclick="return envoiInfo(this.href, 'carte')">Vote</a>
+    		</li>
+      <?php
+      }
+      elseif( $joueur->get_grade()->get_id() == 6 )
+      {
+      ?>
+    		<li>
+    			<a href="vote_roi.php?poscase=<?php echo $joueur->get_pos(); ?>&amp;fort=ok" onclick="return envoiInfo(this.href, 'carte')">Nomination</a>
+    		</li>
+      <?php
+      }
+  	}
+  }
+  else
+  {
+	  //Si il y a une révolution en cours
+	  $is_revolution = revolution::is_mois_revolution($R->get_id());
+	  if( $is_revolution )
     {
-    ?>
-  		<li>
-  			<a href="vote_roi.php?poscase=<?php echo $joueur->get_pos(); ?>&amp;fort=ok" onclick="return envoiInfo(this.href, 'carte')">Nomination</a>
-  		</li>
-    <?php
+      // Il y a une révolution : on propose de voter
+		?>
+			<li>
+				<a href="revolution.php" onclick="return envoiInfo(this.href, 'carte')">Voter pour ou contre la révolution</a>
+			</li>
+		<?php
     }
-	}
+    elseif( date("d") <= 20 )
+	  {
+	    // Il n'y a pas de révolution : on propose d'en déclencher une 
+		?>
+			<li>
+				<a href="revolution.php" onclick="return envoiInfo(this.href, 'carte')">Déclencher une révolution</a>
+			</li>
+		<?php
+    }
+  }
 	if($batiment->get_bonus7() == 1 AND ($joueur->get_rang_royaume() == 6 ||
 																			 $R->get_ministre_economie() == $joueur->get_id() ||
 																			 $R->get_ministre_militaire() == $joueur->get_id() ))

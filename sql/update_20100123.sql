@@ -1,0 +1,1 @@
+ALTER TABLE `revolution` ADD `id_perso` INT( 10 ) NOT NULL DEFAULT '0';
