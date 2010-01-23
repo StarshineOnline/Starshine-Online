@@ -1,7 +1,7 @@
 /*-- Global site --------------------------------------------------*/
 html {width:100%;height:100%;}
 body {margin:0;padding:0;background:#7e909c url('../image/v2/bg_site.png') repeat-x;width:100%;height:100%;font: 13px "Helvetica Neue", Helvetica, Arial, Geneva, sans-serif;}
-#top{display : block;width: 1000px;margin: 0 auto;z-index :5;}
+#top{display : block;width: 1300px;margin: 0 auto;z-index :5;}
 
 .poring { z-index:200; margin-top:-50px; width:80px; height:80px; background:transparent url('../image/poring00.gif') center; }
 
@@ -17,12 +17,12 @@ body {margin:0;padding:0;background:#7e909c url('../image/v2/bg_site.png') repea
 #carte_3D #bord_gauche { color:black; background:transparent url('../image/bord_gauche.png') center; font-size:7pt; font-weight:bold; }
 #carte_3D .decor {width:100px;}
 
-#conteneur {width:985px;margin:auto;min-height: 100%;}
-#conteneur_back {z-index :2;width: 1000px;margin: 0 auto;background:transparent url('../image/interface/global2.png') repeat-y center;min-height: 100%;}
-#bas{clear: both; width: 1000px;margin: 0 auto;text-align: center;font-size: 9px;}
+#conteneur {width:1200px;margin:auto;min-height: 100%;}
+#conteneur_back {z-index :2;width: 1200px;margin: 0 auto;background:transparent url('../image/interface/global3.png') repeat-y center;min-height: 100%;}
+#bas{clear: both; width: 1200px;margin: 0 auto;text-align: center;font-size: 9px;}
 #centre{margin-top : 3px;margin-left : 7px;float : left;	height : 100%;	z-index :3;}
 #deplacement{float : left;vertical-align : top;	text-align : right;	width : 50px;	margin-left : 5px;}
-#information{position: absolute;width : 432px;	float : left;z-index :100000;margin-left: 556px;}
+#information{position: absolute;width : 432px;	float : left;z-index :100000;margin-left: 756px;}
 #information fieldset {
 	-moz-border-radius: 10px;
 	-webkit-border-radius : 10px;

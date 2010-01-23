@@ -74,18 +74,11 @@ $_SESSION['position'] = convert_in_pos($joueur->get_x(), $joueur->get_y());
 </div>
 <div id="loading" style='display:none'></div>
 <div id="loading_information" style='display:none'></div>
-	<div id="perso">
 		
 		<?php
 		require_once('deplacementjeu.php');
 		?>
 		
-	</div>
-	<div id='menu'>
-		<?php echo "<div id='menu_date'><img src='image/interface/".moment_jour().".png' alt='".moment_jour()."' title='".moment_jour()." - ".date_sso()."' />".moment_jour();?>
-	</div>
-
-	<input type="hidden" id="menu_encours" value="lejeu" />
 	<div id='menu_details'>
 		<div id='lejeu_menu' style='display:none;'><span class='menu' onclick="affichePopUp('diplomatie.php');">Diplomatie</span><span class='menu' onclick="affichePopUp('classement.php');">Classement</span><span class='menu' onclick="affichePopUp('stats2.php?graph=carte_royaume');">Statistiques</span><span class='menu' onclick="affichePopUp('message_accueil.php?affiche=all');">Message d'Accueil</span><span class='menu' onclick="affichePopUp('option.php');">Options</span></div>
 		<div id='starshine_menu' style='display:none;'><span class='menu' onclick="affichePopUp('liste_monstre.php');">Bestiaire</span><span class='menu' onclick="affichePopUp('background.php');">Background</span><span class='menu' onclick="affichePopUp('royaume.php');">Carte</span>
