@@ -77,7 +77,7 @@ $_SESSION['position'] = convert_in_pos($joueur->get_x(), $joueur->get_y());
 	<div id="perso">
 		
 		<?php
-		require_once('infoperso.php');
+		require_once('deplacementjeu.php');
 		?>
 		
 	</div>

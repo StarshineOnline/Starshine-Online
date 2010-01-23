@@ -98,7 +98,7 @@ function checkCase()
 // Déplacement sur la carte
 
 
-function deplacement(direction, cache, royaume)
+function deplacement(direction, cache, royaume, type)
 {
 	if(cache != 'undefined' && cache)
 		cache = '&cache_monstre';
@@ -109,8 +109,14 @@ function deplacement(direction, cache, royaume)
 		royaume = '&affiche_royaume';
 	else
 		royaume = '';
-	
-	$('#centre').load('./deplacement.php?deplacement='+direction+cache+royaume);
+	if (type == 'troisd')
+	{
+		$('#centre').load('./deplacement3D.php?deplacement='+direction+cache+royaume);
+	}
+	else
+	{
+		$('#centre').load('./deplacement.php?deplacement='+direction+cache+royaume);
+	}
 }
 
 function affiche_info(id_case)

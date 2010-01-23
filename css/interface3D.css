@@ -9,6 +9,8 @@ body {margin:0;padding:0;background:#7e909c url('../image/v2/bg_site.png') repea
 #carte_3D {margin-left:-20px;margin-top:100px;width:800px;}
 #carte_3D ul { position:absolute; list-style-type:none; }
 #carte_3D li { position:absolute; width:100px; height:60px;  }
+#carte_3D li:hover { margin-top:-4px; }
+
 #carte_3D .case { background:transparent url('image/tex_herbe1.png') center; }
 #carte_3D .bord_bas { background:transparent url('../image/bord_bas.png') center; color:black; font-size:7pt; font-weight:bold; height:50px; padding-left:65px; padding-top:10px; text-align:left; width:35px;  }
 #carte_3D .bord_haut { background:transparent url('../image/bord_haut.png') center; color:black; font-size:7pt; font-weight:bold; height:50px; padding-left:28px; padding-top:10px; width:72px; }

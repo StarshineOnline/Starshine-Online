@@ -36,37 +36,44 @@ if (isset($_GET['deplacement']))
 		{
 			case 'haut' :
 				$coord['y'] = $coord['y'] - 1;
+				$coord['x'] = $coord['x'] + 1;
+				$diagonale = true;
+			
 			break;
 			case 'bas' :
-				$coord['y'] = $coord['y'] + 1;
+				$coord['y'] = $coord['y'] - 1;
+				$coord['x'] = $coord['x'] - 1;
+				$diagonale = true;
+
 			break;
 			case 'gauche' :
+				$coord['y'] = $coord['y'] + 1;
 				$coord['x'] = $coord['x'] - 1;
+				$diagonale = true;
+
 			break;
 			case 'droite' :
+				$coord['y'] = $coord['y'] + 1;
 				$coord['x'] = $coord['x'] + 1;
+				$diagonale = true;
+			
 			break;
 			
 			//Diagonale
 			case 'hautgauche' :
 				$coord['y'] = $coord['y'] - 1;
-				$coord['x'] = $coord['x'] - 1;
-				$diagonale = true;
+			
 			break;
 			case 'hautdroite' :
-				$coord['y'] = $coord['y'] - 1;
 				$coord['x'] = $coord['x'] + 1;
-				$diagonale = true;
 			break;
 			case 'basgauche' :
-				$coord['y'] = $coord['y'] + 1;
 				$coord['x'] = $coord['x'] - 1;
-				$diagonale = true;
+			
 			break;
 			case 'basdroite' :
 				$coord['y'] = $coord['y'] + 1;
-				$coord['x'] = $coord['x'] + 1;
-				$diagonale = true;
+			
 			break;		
 		}
 	}
@@ -76,33 +83,6 @@ if (isset($_GET['deplacement']))
 		switch($_GET['deplacement'])
 		{
 			case 'haut' :
-				if ($coord['y'] > 1) $coord['y'] = $coord['y'] - 1;
-				else $mouvement = false;
-			break;
-			case 'bas' :
-				if ($coord['y'] < ($G_ligne - 1)) $coord['y'] = $coord['y'] + 1;
-				else $mouvement = false;
-			break;
-			case 'gauche' :
-				if ($coord['x'] > 1) $coord['x'] = $coord['x'] - 1;
-				else $mouvement = false;
-			break;
-			case 'droite' :
-				if ($coord['x'] < ($G_colonne - 1)) $coord['x'] = $coord['x'] + 1;
-				else $mouvement = false;
-			break;
-			
-			//Diagonale
-			case 'hautgauche' :
-				if (($coord['y'] > 1) AND ($coord['x'] > 1))
-				{
-					$coord['y'] = $coord['y'] - 1;
-					$coord['x'] = $coord['x'] - 1;
-					$diagonale = true;
-				}
-				else $mouvement = false;
-			break;
-			case 'hautdroite' :
 				if (($coord['y'] > 1) AND ($coord['x'] < ($G_colonne - 1)))
 				{
 					$coord['y'] = $coord['y'] - 1;
@@ -110,8 +90,9 @@ if (isset($_GET['deplacement']))
 					$diagonale = true;
 				}
 				else $mouvement = false;
+			
 			break;
-			case 'basgauche' :
+			case 'bas' :
 				if (($coord['y'] < ($G_ligne - 1)) AND ($coord['x'] > 1))
 				{
 					$coord['y'] = $coord['y'] + 1;
@@ -119,8 +100,19 @@ if (isset($_GET['deplacement']))
 					$diagonale = true;
 				}
 				else $mouvement = false;
+			
 			break;
-			case 'basdroite' :
+			case 'gauche' :
+				if (($coord['y'] > 1) AND ($coord['x'] > 1))
+				{
+					$coord['y'] = $coord['y'] - 1;
+					$coord['x'] = $coord['x'] - 1;
+					$diagonale = true;
+				}
+				else $mouvement = false;
+			
+			break;
+			case 'droite' :
 				if (($coord['y'] < ($G_ligne - 1)) AND ($coord['x'] < ($G_colonne - 1)))
 				{
 					$coord['y'] = $coord['y'] + 1;
@@ -128,6 +120,30 @@ if (isset($_GET['deplacement']))
 					$diagonale = true;
 				}
 				else $mouvement = false;
+			
+			break;
+			
+			//Diagonale
+			case 'hautgauche' :
+				if ($coord['y'] > 1) $coord['y'] = $coord['y'] - 1;
+				else $mouvement = false;
+
+
+			break;
+			case 'hautdroite' :
+				if ($coord['x'] < ($G_colonne - 1)) $coord['x'] = $coord['x'] + 1;
+				else $mouvement = false;
+			
+			break;
+			case 'basgauche' :
+				if ($coord['x'] > 1) $coord['x'] = $coord['x'] - 1;
+				else $mouvement = false;
+			
+			break;
+			case 'basdroite' :
+				if ($coord['y'] < ($G_ligne - 1)) $coord['y'] = $coord['y'] + 1;
+				else $mouvement = false;
+			
 			break;		
 		}
 	}
@@ -204,10 +220,8 @@ if($donjon)
 }
 else 
 {
-	include_once(root.'map2.php');
+	include_once(root.'map3D.php');
 }
 if(!$peu_bouger AND $cause != '') echo '<img src="image/pixel.gif" onLoad="alert(\''.$cause.'\');" />';
 ?>
 
-<img src="image/pixel.gif" onLoad="refresh('./menu_carteville.php', 'carteville');" />
-<img src="image/pixel.gif" onLoad="refresh('./infoperso.php', 'perso');" />
