@@ -1,5 +1,4 @@
 /*-- Global site --------------------------------------------------*/
-/*-- Global site --------------------------------------------------*/
 html { width:100%; height:100%; }
 body { margin:0; padding:0; background:#7e909c url(../image/v2/bg_site.png) repeat-x; width:100%; height:100%; font:13px "Helvetica Neue", Helvetica, Arial, Geneva, sans-serif; }
 #top { display:block; width:1000px; margin:0 auto; z-index:5; }
@@ -140,6 +139,11 @@ body { margin:0; padding:0; background:#7e909c url(../image/v2/bg_site.png) repe
 
 /*-- Map --------------------------------------------------------------*/
 #carte { width:445px; height:100%; float:left; margin:0; clear:both; z-index:500; }
+#carte fieldset { border-radius: 10px; -moz-border-radius:10px; -webkit-border-radius:10px; background:transparent url(../image/v2/box_accueil2.png); margin-top:4px; }
+#carte fieldset legend { background:transparent url(../image/v2/bouton_fond.png); border-radius: 10px; -moz-border-radius:10px; -webkit-border-radius:10px; padding-left:10px; padding-right:10px; font-weight:bold; }
+#carte a,.visu a { color:#444; text-decoration:none; }
+#carte a:hover,.visu a:hover { color:#888; text-decoration:none; }
+
 #carte ul { list-style:none; padding:0; margin:0; }
 #map_bord_haut { height:20px!important; cursor:pointer; padding-bottom:0; cursor:default; }
 #map_bord_haut li { float:left; width:60px; height:inherit; line-height:20px; color:white; text-align:center; }
@@ -166,6 +170,7 @@ body { margin:0; padding:0; background:#7e909c url(../image/v2/bg_site.png) repe
 .ville_message { width:100%; text-align:center; }
 .message_rouge { font-weight:bold; color:red; }
 .message_vert { font-weight:bold; color:green; }
+.quartier	{float:left;width:200px;margin:2px;padding:2px;}
 
 /*-- Hotel des ventes -------------------------------------------------*/
 #hotel_liste_type ul { width:100%; }
@@ -177,18 +182,12 @@ body { margin:0; padding:0; background:#7e909c url(../image/v2/bg_site.png) repe
 #hotel_liste .nom { float:left; width:165px; text-align:left!important; clear:both; }
 #hotel_liste .temps { float:left; width:75px; text-align:right!important; font-size:7.5pt; }
 #hotel_liste .prix { float:left; width:75px; text-align:right!important; background-image:url(../image/stars_16.png); background-position:right; background-repeat:no-repeat; padding-right:18px; }
-#hotel_liste .achat { cursor:pointer; float:left; width:60px; text-align:right!important; font-variant:small-caps; font-weight:bold; }
+#hotel_liste .achat { cursor:pointer; float:left; width:60px; text-align:right!important; }
 #hotel_liste .achat:hover { color:#63A4EB; }
 #hotel_liste .achat:active { color:#A062EC; }
 .slot { float:right; margin-top:0; width:11px; height:16px; background:transparent url(../image/groupes/vert.png) center left no-repeat; text-align:center; line-height:15px; color:black; font-size:6pt; }
 .noslot { float:right; margin-top:0; width:11px; height:16px; background:transparent url(../image/groupes/noir.png) center left no-repeat; }
 .enchantement { float:right; margin-top:0; width:11px; height:16px; background:transparent url(../image/groupes/bleu.png) center left no-repeat; }
-
-/*-- Poste -------------------------------------------------*/
-#suggestion {position: absolute;	float: right !important; border: 1px solid grey; display: none;}
-#suggestion:hover {	border: 1px solid transparent;}
-#suggestion li {background-color: #E7CF98 !important;color: black;border: 1px solid #7e909c;cursor: pointer;}
-#suggestion li:hover {border: 1px solid #63A4EB;color:#63A4EB;border-radius: 10px;-moz-border-radius:10px;-webkit-border-radius:10px;}
 
 /***************************************************
   Vrac
@@ -255,6 +254,9 @@ textarea#css, textarea#description { width: 500px; height:150px; }
 #combat_cartouche { clear:both; background-color:#DDDDDD; padding:9px; -moz-border-radius:12px; -webkit-border-radius:12px; border-radius: 12px; min-height:70px; }
 .infoperso td { font-size:10px; margin:0; padding:0; }
 .roseeticone { float:left; padding:4px; margin:5px; }
+#carte h4 { padding:0; margin:3px; border-bottom:1px solid #E7CF98; clear:both; }
+#carte .titre_info { margin-top:0; margin-bottom:0; font-variant:normal; font-weight:normal; background-color:#E7CF98; padding:0 10px; -moz-border-radius-topright:10px; -webkit-border-top-right-radius:10px; border-top-right-radius: 10px; clear:both; }
+
 #carte h2 { padding-left:25px; color:#000; line-height:25px; font-size:1.4em; border-top:1px solid; border-bottom:1px solid; border-color:#888; font-family:"Trebuchet MS", Times, serif; font-variant:small-caps; text-align:center; margin-top:5px; margin-bottom:8px; padding:0; background-color:#D8AB41; }
 #information h2 { padding-left:25px; line-height:25px; font-size:1.4em; font-family:"Trebuchet MS", Times, serif; font-variant:small-caps; text-align:center; margin-top:5px; margin-bottom:8px; padding:0; background-color:#D8AB41; border-bottom:1px solid #888888; border-color:#888888; border-top:1px solid #888888; color:#000000; }
 h3.old { border-top:1px solid; border-bottom:1px solid; border-color:#888; margin-top:10px; margin-bottom:5px; padding-left:10px; background-color:#91AEF2; font-family:"Trebuchet MS", Times, serif; font-variant:small-caps; }
@@ -333,7 +335,7 @@ select.baseJumpbox optgroup { width:200px; color:black; background-color:#ffffff
 ul.ville li { margin-bottom:3px; }
 ul.ville li:hover { font-weight:bold; text-decoration:none; background-color:#91AEF2; }
 .ville_titre a { font-family:"Trebuchet MS", Times, serif; text-decoration:none; font-variant:small-caps; font-size:15px; color:#000; }
-.ville_test { vertical-align:top; color:#000; padding:5px; font-variant:small-caps; font-family:"Trebuchet MS", Times, serif; background-color:#BACCF7; font-weight:bold; border:2px solid; border-color:#FFF; -moz-border-radius:7px; -webkit-border-radius:7px; border-radius: 7px;}
+.ville_test { vertical-align:top; color:#000; padding:5px; }
 .ville_test a { color:#222; font-size:14px; text-decoration:none; }
 .ville_haut { color:#000; background-image:url(../image/forum_h2.gif); padding:3px; font-size:1.1em; font-variant:small-caps; font-family:"Trebuchet MS", Times, serif; font-weight:bold; text-align:center; height:25px; margin-left:-2px; margin-right:-2px; margin-top:-2px; }
 table.marchand,table.inventaire { font-size:.9em; margin:2px; text-align:center; font-weight:normal; width:98%; font-family:Arial; font-variant:normal; }
@@ -341,6 +343,28 @@ table.marchand,table.inventaire { font-size:.9em; margin:2px; text-align:center;
 tr.header { font-weight:bold; text-align:center; }
 tr.element td,table.marchand tr.header td { padding:3px; }
 table.inventaire tr.element td,table.inventaire tr.header td { font-size:.9em; }
+#boutique	{text-align: center;font-size: 9pt;}
+#boutique li 		{clear:both;height:25px;line-height: 25px;}
+#boutique li:hover  { background:transparent url(../image/interface/1.png) center; -moz-border-radius:5px; -webkit-border-radius:5px; border-radius: 5px;}
+#boutique .head {font-size:7pt;border-bottom:1px dashed #EEEEEE;font-weight: bold;}
+#boutique .head:hover {background:none !important;cursor:default !important;}
+#boutique .image 	{float:left;width:9%;height:26px;}
+#boutique .nom 		{float:left;width:35%;}
+#boutique .type 	{float:left;width:9%;}
+#boutique .mains 	{float:left;width:9%;}
+#boutique .degats 	{float:left;width:9%;}
+#boutique .coef 	{float:left;width:9%;}
+#boutique .coef_type 	{float:left;width:9%;}
+#boutique .stars 	{float:left;width:10%;}
+#boutique .achat 	{float:left;width:9%;}
+#boutique .pp 		{float:left;width:10%;}
+#boutique .pm 		{float:left;width:9%;}
+#boutique .force 	{float:left;width:9%;}
+#boutique .nom_hotel 		{float:left;width:44%;}
+#boutique .time 		{float:left;width:35%;}
+#boutique .prix_hotel 	{float:left;width:10%;}
+
+.trcolor2 { background-color:#B4CFEF;border-radius : 5px;-moz-border-radius: 5px;-webkit-border-radius:5px; }
 
 /***************************************************
   Gestion Royaume
@@ -368,11 +392,9 @@ ul.onglet-hotel li { display:inline; }
 /***************************************************
   Tableau
  ***************************************************/
-.trcolor1 { background-color:#91AEF2; }
 .trcolor3 { font-weight:bold; color:#999; font-style:italic; }
 .trcolor5 { font-weight:bold; color:#999; font-style:italic; background-color:#FFF; }
 .trstat { vertical-align:top; border:2px solid; border-color:#555; -moz-border-radius:10px; -webkit-border-radius:10px; border-radius: 10px; background-color:#91AEF2; padding:4px; }
-.achat { font-style:italic; font-weight:bold; }
 .achat_over { color:red; }
 .boite_royaume { float:left; height:60px; width:60px; }
 .marque_royaume { width:55px; height:55px; }

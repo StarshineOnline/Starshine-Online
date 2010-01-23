@@ -15,7 +15,7 @@ $joueur->check_perso();
 //Vérifie si le perso est mort
 verif_mort($joueur, 1);
 
-$W_requete = 'SELECT royaume, type FROM map WHERE ID =\''.sSQL($joueur->get_pos()).'\'';
+$W_requete = 'SELECT royaume, type FROM map WHERE ID ='.$joueur->get_pos().'';
 $W_req = $db->query($W_requete);
 $W_row = $db->read_assoc($W_req);
 $R = new royaume($W_row['royaume']);
@@ -28,7 +28,9 @@ if ($joueur->get_race() != $R->get_race() &&
 	exit (0);
 }
 
-?><h2 class="ville_titre"><?php echo '<a href="ville.php?poscase='.$W_case.'" onclick="return envoiInfo(this.href, \'centre\')">';?><?php echo $R->get_nom();?></a> - <?php echo '<a href="ecolecombat.php?poscase='.$W_case.'" onclick="return envoiInfo(this.href, \'carte\')">';?> Ecole de combat </a></h2>
+?>
+<fieldset>
+<legend><?php echo '<a href="ville.php" onclick="return envoiInfo(this.href, \'centre\')">';?><?php echo $R->get_nom();?></a> > <?php echo '<a href="ecolecombat.php" onclick="return envoiInfo(this.href, \'carte\')">';?> Ecole de combat </a></legend>
 <?php include_once(root.'ville_bas.php');?>
 <?php
 $W_distance = detection_distance($W_case,$_SESSION["position"]);
@@ -243,4 +245,5 @@ if($W_row['type'] == 1)
 			<?php
 		}
 }
+echo "</fieldset>";
 ?>

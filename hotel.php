@@ -23,14 +23,14 @@ if ($joueur->get_race() != $R->get_race() &&
 	echo "<h5>Impossible de commercer avec un tel niveau de diplomatie</h5>";
 	exit (0);
 }
-
+echo "<fieldset>";
 if($W_row['type'] == 1)
 {//-- On verifie que le joueur est bien sur la ville ($W_distance)
 	echo "<script type='text/javascript'>return nd();</script>";
-	echo "<h2 class='ville_titre'>
-		   <a href=\"ville.php\" onclick=\"return envoiInfo(this.href, 'centre');\">".$R->get_nom()."</a> -
+	echo "<legend>
+		   <a href=\"ville.php\" onclick=\"return envoiInfo(this.href, 'centre');\">".$R->get_nom()."</a> >
 		   <a href=\"hotel.php\" onclick=\"return envoiInfo(this.href, 'carte');\"> Hotel des ventes </a>
-		  </h2>";
+		  </legend>";
 	include_once(root."ville_bas.php");
 	{//-- Traitement d'un achat ou d'une recupération
 		if(isset($_GET["action"]))
@@ -84,9 +84,9 @@ if($W_row['type'] == 1)
 		}
 	}
 	echo "<div class='ville_message'>$action_message</div>";
-	echo "<div class='ville_test' style='max-height:500px;overflow-y:auto;'>";
+	echo "<div class='ville_test'>";
 	{//-- Catégories de ventes
-		$url = "onclick=\"envoiInfo('hotel.php?poscase=$W_case&amp;type=";
+		$url = "onclick=\"envoiInfo('hotel.php?type=";
 		$urlfin = "', 'carte');\">";
 		echo " <div class='ville_haut'>
 				<ul id='hotel_liste_type'>
@@ -124,7 +124,7 @@ if($W_row['type'] == 1)
 			case "gemme" :		$abbr = "g";	break;
 			case "accessoire" :	$abbr = "m";	break;
 			case "grimoire" :	$abbr = "l";	break;
-			default	:			$abbr = "";		break;
+			default	:			$abbr = "a";		break;
 		}
 		{//-- Tri
 			if(array_key_exists("tri_champ", $_GET))
@@ -185,7 +185,7 @@ if($W_row['type'] == 1)
 					}
 				}
 			}
-			$class = 1;
+			$class = 'trcolor1';
 			foreach($objet_id_new as $id)
 			{
 				unset($objet_info);
@@ -207,7 +207,7 @@ if($W_row['type'] == 1)
 				else
 				{//-- ou pas
 					$tmp_achat_click = "onclick=\"envoiInfo('hotel.php?action=achat&amp;type=".$type."&partie=".$objet["type"]."&amp;id=".$id_objet."&amp;id_vente=".$objets_tab[$id]["id"]."&amp;id_vendeur=".$objets_tab[$id]["id_vendeur"]."&amp;poscase=".$_GET["poscase"]."', 'carte');\"";
-					$tmp_achat = "Acheter";
+					$tmp_achat = "Achat";
 				}
 				if($objet_info["stack"] > 1) 	{ $tmp_stack = " X ".$objet_info["stack"]; } else { $tmp_stack = ""; };
 				if($objet_info["slot"] > 0) 	
@@ -252,9 +252,9 @@ if($W_row['type'] == 1)
 											if(!empty($tmp_enchantement2)) { $tmp_overlib .= "<li class='overlib_infos'>$tmp_enchantement2</li>"; }
 											$tmp_overlib .= "</ul>";
 											
-											if(in_array("main_droite", $cote_arme) && ($joueur->get_inventaire()->main_droite != "lock") && ($joueur->get_inventaire()->main_droite != ""))
+											if(in_array("main_droite", $cote_arme) && ($joueur->inventaire()->main_droite != "lock") && ($joueur->inventaire()->main_droite != ""))
 											{//-- si elle peut etre porté a droite
-												$main_droite = decompose_objet($joueur->get_inventaire()->main_droite);
+												$main_droite = decompose_objet($joueur->inventaire()->main_droite);
 												$RqArmeDroite = $db->query("SELECT * FROM `arme` WHERE id=".$main_droite["id_objet"].";");
 												$objArmeDroite = $db->read_object($RqArmeDroite);
 												$tmp_overlib .= "<ul style='border-top:1px dotted black; margin:5px 0px;'><li class='overlib_titres'>Arme droite &eacute;quip&eacute;e</li>";
@@ -268,9 +268,9 @@ if($W_row['type'] == 1)
 												$tmp_overlib .= "<li class='overlib_desc_objet'><span>Portée : </span>".$objArmeDroite->distance_tir."</li>";
 												$tmp_overlib .= "</ul>";
 											}
-											if(in_array("main_gauche", $cote_arme) && ($joueur->get_inventaire()->main_gauche != "lock") && ($joueur->get_inventaire()->main_gauche != "") )
+											if(in_array("main_gauche", $cote_arme) && ($joueur->inventaire()->main_gauche != "lock") && ($joueur->inventaire()->main_gauche != "") )
 											{//-- si elle peut etre porté a gauche
-												$main_gauche = decompose_objet($joueur->get_inventaire()->main_gauche);
+												$main_gauche = decompose_objet($joueur->inventaire()->main_gauche);
 												$RqArmeGauche = $db->query("SELECT * FROM `arme` WHERE id=".$main_gauche["id_objet"].";");
 												$objArmeGauche = $db->read_object($RqArmeGauche);
 												$tmp_overlib .= "<ul style='border-top:1px dotted black; margin:5px 0px;'><li class='overlib_titres'>Arme gauche &eacute;quip&eacute;e</li>";
@@ -300,9 +300,10 @@ if($W_row['type'] == 1)
 											if(!empty($tmp_enchantement2)) { $tmp_overlib .= "<li class='overlib_infos'>$tmp_enchantement2</li>"; }
 											$tmp_overlib .= "</ul>";
 											
-											if($joueur->get_inventaire()->$tmp_type != "")
+											
+											if($joueur->inventaire()->$tmp_type != "")
 											{
-												$armure = decompose_objet($joueur->get_inventaire()->$tmp_type);
+												$armure = decompose_objet($joueur->inventaire()->$tmp_type);
 												$RqArmureEquipee = $db->query("SELECT * FROM `armure` WHERE id=".$armure["id_objet"].";");
 												$objArmureEquipee = $db->read_object($RqArmureEquipee);
 												$tmp_overlib .= "<ul style='border-top:1px dotted black; margin:5px 0px;'><li class='overlib_titres'>".ucfirst($objArmureEquipee->type)." &eacute;quip&eacute;</li>";
@@ -323,20 +324,20 @@ if($W_row['type'] == 1)
 					}
 				}
 				if(!empty($tmp_overlib)) { $tmp_overlib = str_replace("'", "\'", trim($tmp_overlib)); $overlib = "onmouseover=\"return overlib('$tmp_overlib', BGCLASS, 'overlib', BGCOLOR, '', FGCOLOR, '', VAUTO);\" onmouseout=\"return nd();\" "; };
-				$objets_liste .= " <li $overlib class='li$class nom'>".$tmp_stack.$tmp_slot.$tmp_enchantement.$tmp_nom."</li>
-								   <li $overlib class='li$class temps'>".transform_min_temp(($objets_tab[$id]["time"] + $mois) - time())."</li>
-								   <li $overlib class='li$class prix'>".number_format($objets_tab[$id]['prix'], 0, ".", " ")."</li>
-								   <li class='li$class achat' $tmp_achat_click>$tmp_achat</li>";
-				if($class == 1) { $class = 2; } else { $class = 1; };
+				$objets_liste .= " <li $overlib class='$class'><span class='nom_hotel'>".$tmp_stack.$tmp_slot.$tmp_enchantement.$tmp_nom."</span>
+								   <span class='time'>".transform_min_temp(($objets_tab[$id]["time"] + $mois) - time())."</span>
+								   <span class='prix_hotel'>".number_format($objets_tab[$id]['prix'], 0, ".", " ")."</span>
+								   <span class='achat' $tmp_achat_click>$tmp_achat</span></li>";
+				if($class =='trcolor1') { $class = 'trcolor2'; } else { $class = 'trcolor1'; };
 			}
 			
-			$url = "onclick=\"envoiInfo('hotel.php?poscase=$W_case&amp;type=$type&amp;tri_champ=";
+			$url = "onclick=\"envoiInfo('hotel.php?type=$type&amp;tri_champ=";
 			$urlfin = "', 'carte');\"";
-			echo "<ul id='hotel_liste'>
-			       <li class='entete nom' 	".$url."objet".$urlfin.">Nom de l&apos;objet"; 	if($ordre["tri_champ"] == "objet") { if($ordre["sens"] == "ASC"){ echo "<img src='./image/asc.png' style='margin-right:-13px;' alt='ASC' />"; } else { echo "<img src='./image/desc.png' style='margin-right:-13px;' alt='DESC' />"; }; }; echo "</li>
-			       <li class='entete temps' ".$url."time".$urlfin.">Tps restant"; 		if($ordre["tri_champ"] == "time") { if($ordre["sens"] == "ASC") { echo "<img src='./image/asc.png' style='margin-right:-13px;' alt='ASC' />"; } else { echo "<img src='./image/desc.png' style='margin-right:-13px;' alt='DESC' />"; }; }; echo "</li>
-			       <li class='entete prix' 	".$url."prix".$urlfin.">Prix"; 					if($ordre["tri_champ"] == "prix") { if($ordre["sens"] == "ASC") { echo "<img src='./image/asc.png' style='margin-right:-13px;' alt='ASC' />"; } else { echo "<img src='./image/desc.png' style='margin-right:-13px;' alt='DESC' />"; }; }; echo "</li>
-			       <li class='entete achat'>&nbsp;</li>
+			echo "<ul id='boutique'>
+			       <li class='head'> <span class='nom_hotel' ".$url."objet".$urlfin.">Nom de l'objet"; 	if($ordre["tri_champ"] == "objet") { if($ordre["sens"] == "ASC"){ echo "<img src='./image/asc.png' style='margin-right:-13px;' alt='ASC' />"; } else { echo "<img src='./image/desc.png' style='margin-right:-13px;' alt='DESC' />"; }; }; echo "</span>
+			       <span class='time' ".$url."time".$urlfin.">Tps restant"; 		if($ordre["tri_champ"] == "time") { if($ordre["sens"] == "ASC") { echo "<img src='./image/asc.png' style='margin-right:-13px;' alt='ASC' />"; } else { echo "<img src='./image/desc.png' style='margin-right:-13px;' alt='DESC' />"; }; }; echo "</span>
+			       <span class='prix_hotel' ".$url."prix".$urlfin.">Prix"; 					if($ordre["tri_champ"] == "prix") { if($ordre["sens"] == "ASC") { echo "<img src='./image/asc.png' style='margin-right:-13px;' alt='ASC' />"; } else { echo "<img src='./image/desc.png' style='margin-right:-13px;' alt='DESC' />"; }; }; echo "</span>
+			       
 			       ".$objets_liste."
 			      </ul>
 			      <div class='spacer'></div>";
@@ -349,4 +350,6 @@ if($W_row['type'] == 1)
 	}	
 	echo "</div>";
 }
+echo "</fieldset>";
+
 ?>

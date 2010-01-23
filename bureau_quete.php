@@ -19,7 +19,8 @@ $R = new royaume($W_row['royaume']);
 $R->get_diplo($joueur->get_race());
 
 ?>
-		<h2 class="ville_titre"><?php if(verif_ville($joueur->get_x(), $joueur->get_y())) return_ville( '<a href="ville.php" onclick="return envoiInfo(this.href, \'centre\')">'.$R->get_nom().'</a> -', $joueur->get_pos()); ?> <?php echo '<a href="bureau_quete.php" onclick="return envoiInfo(this.href,\'carte\')">';?> Bureau des Quêtes </a></h2>
+<fieldset>
+		<legend><?php if(verif_ville($joueur->get_x(), $joueur->get_y())) return_ville( '<a href="ville.php" onclick="return envoiInfo(this.href, \'centre\')">'.$R->get_nom().'</a> >', $joueur->get_pos()); ?> <?php echo '<a href="bureau_quete.php" onclick="return envoiInfo(this.href,\'carte\')">';?> Bureau des Quêtes </a></legend>
  		<?php include_once(root.'ville_bas.php');?>
 
 		<div class="ville_test">
@@ -108,4 +109,4 @@ if($R->get_diplo($joueur->get_race()) <= 6 OR $R->get_diplo($joueur->get_race())
 }
 ?>
 </div>
-
+</fieldset>

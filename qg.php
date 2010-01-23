@@ -17,11 +17,11 @@ $W_req = $db->query($W_requete);
 $W_row = $db->read_assoc($W_req);
 $R = new royaume($W_row['royaume']);
 $R->get_diplo($joueur->get_race());
-
+echo "<fieldset>";
 if($W_row['type'] == 1)
 {
     ?>
-    <h2 class="ville_titre"><?php echo '<a href="ville.php?poscase='.$W_case.'" onclick="return envoiInfo(this.href, \'centre\')">';?><?php echo $R->get_nom();?></a> - <?php echo '<a href="qg.php?poscase='.$W_case.'" onclick="return envoiInfo(this.href, \'carte\')">';?> Quartier Général </a></h2>
+    <legend><?php echo '<a href="ville.php" onclick="return envoiInfo(this.href, \'centre\')">';?><?php echo $R->get_nom();?></a> > <?php echo '<a href="qg.php" onclick="return envoiInfo(this.href, \'carte\')">';?> Quartier Général </a></legend>
 		<?php include_once(root.'ville_bas.php');?>	
 	<div class="ville_test">
     <?php
@@ -141,4 +141,5 @@ if($W_row['type'] == 1)
     <?php
     }
 }
+echo "</fieldset>";
 ?>

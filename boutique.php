@@ -13,7 +13,7 @@ $joueur->check_perso();
 //Vérifie si le perso est mort
 verif_mort($joueur, 1);
 
-$W_requete = 'SELECT royaume, type FROM map WHERE id =\''.sSQL($joueur->get_pos()).'\'';
+$W_requete = 'SELECT royaume, type FROM map WHERE id ='.$joueur->get_pos().'';
 $W_req = $db->query($W_requete);
 $W_row = $db->read_assoc($W_req);
 $R = new royaume($W_row['royaume']);
@@ -30,16 +30,17 @@ if ($joueur->get_race() != $R->get_race() &&
 	if(!isset($_GET['type'])) $_GET['type'] = 'arme';
 
 		?>
-		<h2 class="ville_titre"><?php echo '<a href="ville.php?poscase='.$W_case.'" onclick="return envoiInfo(this.href,\'centre\')">';?><?php echo $R->get_nom();?></a> - <?php echo '<a href="boutique.php?poscase='.$W_case.'" onclick="return envoiInfo(this.href,\'carte\')">';?> Marchand d'<?php echo $_GET['type']; ?>s </a></h2>
+		<fieldset>
+		<legend><?php echo '<a href="ville.php" onclick="return envoiInfo(this.href,\'centre\')">';?><?php echo $R->get_nom();?></a> > <?php echo '<a href="boutique.php" onclick="return envoiInfo(this.href,\'carte\')">';?> Marchand d'<?php echo $_GET['type']; ?>s </a></legend>
 <?php
 	if($_GET['type'] == 'armure')
 	{
-		$url = 'boutique.php?type=arme&amp;poscase='.$W_case.'&amp;order=';
+		$url = 'boutique.php?type=arme&amp;order=';
 		$batiment = 'armurerie';
 	}
 	else
 	{
-	  $url = 'boutique.php?type=armure&amp;poscase='.$W_case.'&amp;order=';
+	  $url = 'boutique.php?type=armure&amp;order=';
 		$batiment = 'forgeron';
 	}
 
@@ -47,7 +48,7 @@ if ($joueur->get_race() != $R->get_race() &&
 if($W_row['type'] == 1)
 {
 	//On recherche le niveau de la construction
-	$requete = "SELECT * FROM construction_ville LEFT JOIN batiment_ville ON construction_ville.id_batiment = batiment_ville.id WHERE batiment_ville.type = '".$batiment."' AND construction_ville.id_royaume = ".$R->get_id();
+	$requete = "SELECT level,statut FROM construction_ville LEFT JOIN batiment_ville ON construction_ville.id_batiment = batiment_ville.id WHERE batiment_ville.type = '".$batiment."' AND construction_ville.id_royaume = ".$R->get_id();
 	$req = $db->query($requete);
 	$row = $db->read_assoc($req);
 	?>
@@ -145,13 +146,15 @@ if($W_row['type'] == 1)
 		$i++;
 	}
 	//Affichage du menu de séléction et de tri
-	$url = 'boutique.php?type='.$_GET['type'].'&amp;poscase='.$W_case.'&amp;order=';
+	$url = 'boutique.php?type='.$_GET['type'].'&amp;order=';
+	/*
 	?>
 	
 	Trier par :	<a href="<?php echo $url; ?>prix" onclick="return envoiInfo(this.href, 'carte')">Prix</a> :: <a href="<?php echo $url; ?>type" onclick="return envoiInfo(this.href, 'carte')">Type</a> :: <a href="<?php echo $url; if($_GET['type'] == 'arme') echo 'degat'; else echo 'pp'; ?>" onclick="return envoiInfo(this.href, 'carte')">Effets</a> :: <a href="<?php echo $url; ?>forcex" onclick="return envoiInfo(this.href, 'carte')">Force</a><br />
 	<br />
 	
 	<?php
+	*/
 	//Affichage du magasin des armes
 	if($_GET['type'] == 'arme')
 	{
@@ -165,45 +168,58 @@ if($W_row['type'] == 1)
 		if($_GET['part'] == 'arc') $type = 'arc';
 		elseif($_GET['part'] == 'baton') $type = 'baton';
 		else $type = 'autre';
-		$url2 = 'boutique.php?type=arme&amp;poscase='.$W_case.'&amp;order='.$_GET['order'];
-	?>
-
-		<p class="ville_haut"><a href="<?php echo $url2; ?>&amp;part=arc" onclick="return envoiInfo(this.href, 'carte')">Arc</a> - <a href="<?php echo $url2; ?>&amp;part=dague" onclick="return envoiInfo(this.href, 'carte')">Dague</a> - <a href="<?php echo $url2; ?>&amp;part=epee" onclick="return envoiInfo(this.href, 'carte')">Epée</a> - <a href="<?php echo $url2; ?>&amp;part=hache" onclick="return envoiInfo(this.href, 'carte')">Hache</a> - <a href="<?php echo $url2; ?>&amp;part=bouclier" onclick="return envoiInfo(this.href, 'carte')">Bouclier</a> - <a href="<?php echo $url2; ?>&amp;part=baton" onclick="return envoiInfo(this.href, 'carte')">Baton</a></p>
-
+		$url2 = 'boutique.php?type=arme&amp;order='.$_GET['order'];
+	
+		echo "
+		<div class='ville_haut'>
+		<ul id='hotel_liste_type'>
+		<li onclick=\"envoiInfo('".$url2."&amp;part=arc', 'carte')\">Arc|</li>
+		<li onclick=\"envoiInfo('".$url2."&amp;part=dague', 'carte')\">Dague|</li>
+		<li onclick=\"envoiInfo('".$url2."&amp;part=epee', 'carte')\">Epée|</li>
+		<li onclick=\"envoiInfo('".$url2."&amp;part=hache', 'carte')\">Hache|</li>
+		<li onclick=\"envoiInfo('".$url2."&amp;part=bouclier', 'carte')\">Bouclier|</li>
+		<li onclick=\"envoiInfo('".$url2."&amp;part=baton', 'carte')\">Baton</li>
 		
-		<table class="marchand" cellspacing="0px">
-		<tr class="header trcolor2">
-			<td>
+		</ul>
+		</div>
+		";
+		?>
+		<ul id='boutique'>
+
+		<li class='head'>
+			<span class='image'></span>
+			<?php
+			if(!$types[$type]){$class='style="width:44% !important;"';}else{$class='';}
+			?>
+
+			<span class='nom' <?php echo $class;?>>
 				Nom
-			</td>
-			<td>
-				Type
-			</td>
-			<td>
+			</span>
+			<span class='mains'>
 				Mains
-			</td>
-			<td>
+			</span>
+			<span class='degats'>
 				Dégats
-			</td>
-			<td>
-				<span onClick="return nd();" onmouseover="return <?php echo make_overlib('Coéf Arc = '.$joueur->get_coef_distance().'<br />Coéf Mélée = '.$joueur->get_coef_melee().'<br />Coéf Incantation = '.$joueur->get_coef_incantation()); ?>" onmouseout="return nd();">Coéf.</span>
-			</td>
+			</span>
+			<span class='coef'>
+				<span onClick="return nd();" onmouseover="return <?php echo make_overlib('Coéf Arc = '.$joueur->get_coef_distance().'<br />Coéf Mélée = '.$joueur->get_coef_melee().'<br />Coéf Incantation = '.$joueur->get_coef_incantation()).'<br />Coéf Blocage = '.$joueur->get_blocage; ?>" onmouseout="return nd();">Coéf.</span>
+			</span>
 	<?php
 	foreach($types[$type] as $typ)
 	{
 		echo '
-			<td>
-				'.$typ[0].'
-			</td>';
+			<span class="coef_type">';
+			if ($typ[0] == 'Bonus Cast'){echo 'Bonus';}else {echo $typ[0];}
+			echo '</span>';
 	}
 	?>
-			<td>
+			<span class='stars'>
 				Stars
-			</td>
-			<td>
+			</span>
+			<span class='achat'>
 				Achat
-			</td>
-		</tr>
+			</span>
+		</li>
 		
 		<?php
 		
@@ -242,38 +258,44 @@ if($W_row['type'] == 1)
 			else
 				$echo = 'Rien n\'est équipé';
 		?>
-		<tr class="element trcolor<?php echo $couleur; ?>">
-			<td onmouseover="return <?php echo make_overlib(addslashes($echo)); ?>" onClick="return nd();" onmouseout="nd();">
+		<li class="element trcolor<?php echo $couleur; ?>">
+	
+		<span class='image'>	
+		<?php echo '<img src="image/arme/arme'.$row['id'].'.png" style="height:24px;" />'; 		
+		
+			if(!$types[$type]){$class='style="width:44% !important;"';}else{$class='';}
+			?>
+			</span>
+			
+			<span class='nom' <?php echo $class;?> onmouseover="return <?php echo make_overlib(addslashes($echo)); ?>" onClick="return nd();" onmouseout="nd();">
+				
 				<?php echo $row['nom']; ?>
-			</td>
-			<td>
-				<?php echo $row['type']; ?>
-			</td>
-			<td>
+			</span>
+			<span class='mains'>
 				<?php
 				echo count(explode(';', $row['mains']));
 				?>
-			</td>
-			<td>
+			</span>
+			<span class='degats'>
 				<?php echo $row['degat']; ?>
-			</td>
-			<td>
-				<span class="<?php echo over_price($coef, $coef_joueur); ?>"><?php echo ($coef); ?>
-			</td>
+			</span>
+			<span class='coef'>
+				<span class="<?php echo over_price($coef, $coef_joueur); ?>"><?php echo ($coef); ?></span>
+			</span>
 	<?php
 	$check = true;
 	foreach($types[$type] as $typ)
 	{
 		echo '
-			<td>
+			<span class="coef_type">
 				<span>'.$row[$typ[1]].'</span>
-			</td>';
+			</span>';
 	}
 	?>
-			<td>
+			<span class='stars'>
 				<span class="<?php echo over_price($cout, $joueur->get_star()); ?>"><?php echo $cout ?></span>
-			</td>
-			<td>
+			</span>
+			<span class='achat'>
 			
 			<?php 
 
@@ -284,15 +306,16 @@ if($W_row['type'] == 1)
 			<?php
 			}
 			?>
-			</td>
-		</tr>
+			</span>
+		</li>
 		<?php
 			if($color == 1) $color = 2; else $color = 1;
 		}
 		
 		?>
 		
-		</table>
+	
+	
 		</div>
 
 <?php
@@ -300,36 +323,52 @@ if($W_row['type'] == 1)
 	else
 	{
 		$url2 = 'boutique.php?type=armure&amp;order='.$_GET['order'];
-	?>
+	
 
 		
+		echo "<div class='ville_haut'>
+		<ul id='hotel_liste_type'>
 
-		<p class="ville_haut"><a href="<?php echo $url2; ?>&amp;part=ceinture" onclick="return envoiInfo(this.href, 'carte')">Ceinture</a> - <a href="<?php echo $url2; ?>&amp;part=chaussure" onclick="return envoiInfo(this.href, 'carte')">Chaussure</a> - <a href="<?php echo $url2; ?>&amp;part=jambe" onclick="return envoiInfo(this.href, 'carte')">Jambe</a> - <a href="<?php echo $url2; ?>&amp;part=main" onclick="return envoiInfo(this.href, 'carte')">Main</a> - <a href="<?php echo $url2; ?>&amp;part=tete" onclick="return envoiInfo(this.href, 'carte')">Tête</a> - <a href="<?php echo $url2; ?>&amp;part=torse" onclick="return envoiInfo(this.href, 'carte')">Torse</a><br />
-		<a href="<?php echo $url2; ?>&amp;part=cou" onclick="return envoiInfo(this.href, 'carte')">Cou</a> - <a href="<?php echo $url2; ?>&amp;part=dos" onclick="return envoiInfo(this.href, 'carte')">Dos</a> - <a href="<?php echo $url2; ?>&amp;part=doigt" onclick="return envoiInfo(this.href, 'carte')">Doigt</a></p><br />
-		<table class="marchand" cellspacing="0px">
-		<tr class="header trcolor2">
-			<td>
+		
+		<li onclick=\"envoiInfo('".$url2."&amp;part=ceinture', 'carte');\">Ceinture|</li>
+		<li onclick=\"envoiInfo('".$url2."&amp;part=chaussure', 'carte');\">Chaussure|</li>
+		<li onclick=\"envoiInfo('".$url2."&amp;part=jambe', 'carte');\">Jambe|</li>
+		<li onclick=\"envoiInfo('".$url2."&amp;part=main', 'carte');\">Main|</li>
+		<li onclick=\"envoiInfo('".$url2."&amp;part=tete', 'carte');\">Tête|</li>
+		<li onclick=\"envoiInfo('".$url2."&amp;part=torse', 'carte');\">Torse|</li>
+		<li onclick=\"envoiInfo('".$url2."&amp;part=cou', 'carte');\">Cou|</li>
+		<li onclick=\"envoiInfo('".$url2."&amp;part=dos', 'carte');\">Dos|</li>
+		<li onclick=\"envoiInfo('".$url2."&amp;part=doigt', 'carte');\">Doigt</li>
+		
+		</ul>		";
+		
+		?>
+		</div>
+		<ul id='boutique'>
+		<li class='head'>
+			<span class='image'>
+				
+			</span>
+		
+			<span class='nom'>
 				Nom
-			</td>
-			<td>
-				Type
-			</td>
-			<td>
+			</span>
+			<span class='pp'>
 				PP
-			</td>
-			<td>
+			</span>
+			<span class='pm'>
 				PM
-			</td>
-			<td>
+			</span>
+			<span class='force'>
 				Force
-			</td>
-			<td>
+			</span>
+			<span class='stars'>
 				Stars
-			</td>
-			<td>
+			</span>
+			<span class='achat'>
 				Achat
-			</td>
-		</tr>
+			</span>
+		</li>
 		<?php
 		
 		$color = 1;
@@ -337,6 +376,10 @@ if($W_row['type'] == 1)
 		if(array_key_exists('part', $_GET))
 		{
 			$where .= " AND type = '".sSQL($_GET['part'])."'";
+		}
+		else
+		{
+			$where .= " AND type = 'ceinture'";
 		}
 		$requete = "SELECT * FROM armure WHERE ".$where." ORDER BY".$ordre;
 		$req = $db->query($requete);
@@ -358,26 +401,28 @@ if($W_row['type'] == 1)
 			}
 			else $echo = 'Armure équipée : Aucune';
 		?>
-		<tr class="element trcolor<?php echo $couleur; ?>">
-			<td onmouseover="return <?php echo make_overlib($echo); ?>" onClick="return nd();" onmouseout="return nd();">
+		<li class="element trcolor<?php echo $couleur; ?>" onmouseover="return <?php echo make_overlib($echo); ?>" onClick="return nd();" onmouseout="return nd();">
+			<span class='image'>
+				<?php echo '<img src="image/armure/'.$row['type'].'/'.$row['type'].''.$row['id'].'.png" style="height:24px;" />'; 	?>	
+
+			</span>
+
+			<span class='nom'>
 				<?php echo $row['nom']; ?>
-			</td>
-			<td>
-				<?php echo $row['type']; ?>
-			</td>
-			<td>
+			</span>
+			<span class='pp'>
 				<?php echo $row['PP']; ?>
-			</td>
-			<td>
+			</span>
+			<span class='pm'>
 				<?php echo $row['PM']; ?>
-			</td>
-			<td>
+			</span>
+			<span class='force'>
 				<span class="<?php echo over_price($row['forcex'], $joueur->get_force()); ?>"><?php echo $row['forcex']; ?></span>
-			</td>
-			<td>
+			</span>
+			<span class='stars'>
 				<span class="<?php echo over_price($cout, $joueur->get_star()); ?>"><?php echo $cout; ?></span>
-			</td>
-			<td>
+			</span>
+			<span class='achat'>
 			<?php
 				if (over_price($cout, $joueur->get_star()) == 'achat_normal' AND over_price($row['forcex'], $joueur->get_force()) == 'achat_normal')
 				{
@@ -386,16 +431,16 @@ if($W_row['type'] == 1)
 				<?php 
 				}
 				?>
-			</td>
-		</tr>
+			</span>
+		</li>
 		<?php
 			if($color == 1) $color = 2; else $color = 1;
 		}
 		
 		?>
 		
-		</table>
-		
+		</ul>
+		</fieldset>
 
 <?php
 	}

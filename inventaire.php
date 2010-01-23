@@ -180,7 +180,6 @@ if(!$visu AND isset($_GET['action']))
 				break;
 				case 'identification' :
 					$fin = false;
-					$identifie = false;
 					$i = 0;
 					$materiel = $joueur->recherche_objet('o2');
 					//my_dump($materiel);
@@ -192,7 +191,9 @@ if(!$visu AND isset($_GET['action']))
 						echo '<h5>Vous n\'avez pas assez de points d\'action</h5>';
 						$fin = true;
 					}
-
+					else {
+						$joueur->add_pa(-10); /* pas oublier que ca coute 10 PA */
+					}
 					$count = count($joueur->get_inventaire_slot_partie());
 					while(!$fin AND $i < $count)
 					{
@@ -230,11 +231,9 @@ if(!$visu AND isset($_GET['action']))
 							//On supprime l'objet de l'inventaire
 							$joueur->supprime_objet('o2', 1);
 							$fin = true;
-							$identifie = true;
 						}
 						$i++;
 					}
-					if($identifie) $joueur->add_pa(-10); /* pas oublier que ca coute 10 PA */
 					$joueur->sauver(); /* On sauve a la fin pour les PA */
 				break;
 				case 'potion_vie' :

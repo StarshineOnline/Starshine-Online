@@ -25,7 +25,8 @@ if ($joueur->get_race() != $R->get_race() &&
 }
 
 ?>
-		<h2 class="ville_titre"><?php if(verif_ville($joueur->get_x(), $joueur->get_y())) return_ville( '<a href="ville.php" onclick="return envoiInfo(this.href, \'centre\')">'.$R->get_nom().'</a> -', $joueur->get_pos()); ?> <?php echo '<a href="poste.php?poscase='.$W_case.'" onclick="return envoiInfo(this.href, \'carte\')">';?> Poste </a></h2>
+<fieldset>
+		<legend><?php if(verif_ville($joueur->get_x(), $joueur->get_y())) return_ville( '<a href="ville.php" onclick="return envoiInfo(this.href, \'centre\')">'.$R->get_nom().'</a> > ', $joueur->get_pos()); ?> <?php echo '<a href="poste.php?poscase='.$W_case.'" onclick="return envoiInfo(this.href, \'carte\')">';?> Poste </a></legend>
 		<?php include_once(root.'ville_bas.php');?>
 <?php
 //Affichage des quêtes
@@ -140,6 +141,7 @@ if($joueur->get_race() == $R->get_race())
 	<br />
 	<input type="button" onclick="javascript:envoiInfo('poste.php?action=select_perso&amp;perso_envoi=' + escape(document.getElementById('perso_envoi').value), 'carte')" value="Sélectionner" />
 	</div>
+	</fieldset>
 	<?php
 	}
 }

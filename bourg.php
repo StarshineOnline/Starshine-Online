@@ -26,7 +26,8 @@ $bourg = new construction($_GET['id_construction']);
 $batiment = new batiment($bourg->get_id_batiment());
 ?>
 	<div id="carte">
-		<h2><?php echo $batiment->get_nom(); ?></h2>
+	<fieldset>
+		<legend><?php echo $batiment->get_nom(); ?></legend>
 <?php
 
 if($bourg->get_x() == $joueur->get_x() AND $bourg->get_y() == $joueur->get_y() AND $joueur->get_race() == $R->get_race())
@@ -97,4 +98,5 @@ if($bourg->get_x() == $joueur->get_x() AND $bourg->get_y() == $joueur->get_y() A
 <?php
 }
 ?>
+</fieldset>
 	</div>
