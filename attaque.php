@@ -292,7 +292,17 @@ else
 				if ($mode == 'attaquant') $mode = 'defenseur';
 				else ($mode = 'attaquant');
 
+				// Effets généraux
 				$effects = effect::general_factory($attaquant, $defenseur, $mode);
+				// Effets permanents des joueurs
+				$joueur->get_effets_permanents($effects, $mode);
+				if($type == 'joueur')
+				{
+					if($mode == 'attaquant')
+						$joueur_defenseur->get_effets_permanents($effects, 'defenseur');
+					else
+						$joueur_defenseur->get_effets_permanents($effects, 'attaquant');
+				}
 
 				if($mode == 'attaquant')
 				{

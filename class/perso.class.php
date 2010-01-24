@@ -2556,7 +2556,7 @@ class perso extends entite
 		$this->armure=true;
 	}
 
-	function register_item_effet($id, $effet)
+	function register_item_effet($id, $effet, $item = null)
 	{
 		switch ($id)
 			{ // TODO: les autres, c'est quoi donc ?
@@ -2569,9 +2569,33 @@ class perso extends entite
 			case 7:
 				$this->add_bonus_permanents('dexterite', $effet);
 				break;
+			case 9:
+				$ep = new effet_vampirisme($effet, $item->nom);
+				if ($item->type == 'hache' || $item->type == 'dague' ||
+						($item->type == 'epee' && eregi('^lame', $item->nom))) {
+					$ep->pos = 'sa';
+				}
+				$this->add_effet_permanent('attaquant', $ep);
+																	 
 			default:
 				break;
 			}
+	}
+
+	private $effet_permanents_attaquant = array();
+	private $effet_permanents_defenseur = array();
+	function add_effet_permanent($mode, $effet)
+	{
+		$effets_mode = "effet_permanents_$mode";
+		array_push($this->$effets_mode, $effet);
+	}
+
+	function get_effets_permanents(&$effets, $mode)
+	{
+		$effets_mode = "effet_permanents_$mode";
+		foreach ($this->$effets_mode as $ep) {
+			array_push($effets, $ep);
+		}
 	}
 
 	function get_pm($base = false)
@@ -2720,7 +2744,7 @@ class perso extends entite
           foreach ($effets as $effet)
           {
             $d_effet = split('-', $effet);
-						$this->register_item_effet($d_effet[0], $d_effet[1]);
+						$this->register_item_effet($d_effet[0], $d_effet[1], $this->arme);
           }
         }
         //my_dump($this->arme);

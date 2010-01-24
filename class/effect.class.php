@@ -477,4 +477,33 @@ class tellurique extends etat {
 	}
 }
 
+class effet_vampirisme extends effect
+{
+	var $effet;
+	var $mode;
+	var $pos = 'son';
+
+  function __construct($aEffet, $aNom) {
+		if ($aNom == null)
+			$aNom = 'effet_vampirisme';
+    parent::__construct($aNom);
+		$this->effet = $aEffet;
+	}
+
+  function inflige_degats(&$actif, &$passif, $degats) {
+		$gain = floor($degats * $this->effet / 100);
+		if (($actif->get_hp() + $gain) > $actif->get_hp_max())
+			$gain = $actif->get_hp_max() - $actif->get_hp();
+		if ($passif->get_type() == 'batiment')
+			$gain = 0;
+		$actif->add_hp($gain);
+		if ($gain > 0)
+			$this->heal($actif->get_nom().' gagne '.$gain.' HP par '.$this->pos.' '.
+									$this->nom, true);
+		else
+			$this->debug($actif->get_nom().' gagne '.$gain.' HP par '.$this->pos.' '.
+									$this->nom);
+	}
+}
+
 ?>
