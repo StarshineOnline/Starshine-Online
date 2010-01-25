@@ -491,7 +491,7 @@ class effet_vampirisme extends effect
 	}
 
   function inflige_degats(&$actif, &$passif, $degats) {
-		$gain = floor($degats * $this->effet / 100);
+		$gain = round($degats * $this->effet / 100);
 		if (($actif->get_hp() + $gain) > $actif->get_hp_max())
 			$gain = $actif->get_hp_max() - $actif->get_hp();
 		if ($passif->get_type() == 'batiment')
