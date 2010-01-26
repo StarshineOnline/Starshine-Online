@@ -158,7 +158,7 @@ function fin_quete($joueur, $id_quete_joueur, $id_quete)
 					$row_r = $db->read_assoc($req_r);
 					$echo .= ' Recette de '.$row_r['nom'].' X '.$reward_nb.', ';
 					//On lui donne la recette
-					$requete = "INSERT INTO perso_recette VALUES('', ".$reward_id_objet.", ".$joueur->get_id().", 0)";
+					$requete = "INSERT INTO perso_recette VALUES(NULL, ".$reward_id_objet.", ".$joueur->get_id().", 0)";
 					$db->query($requete);
 				}
 			break;
@@ -189,7 +189,7 @@ function fin_quete($joueur, $id_quete_joueur, $id_quete)
 	echo $joueur->get_nom().' finit la quête "'.$row['nom'].'", et gagne '.$stars.' stars, '.$echo.' '.$row['exp'].' points d\'expérience et '.$honneur_gagne.' points d\'honneur.<br />';
 	$req = $db->query($requete);
 	//Mis dans le journal
-	$requete = "INSERT INTO journal VALUES('', ".$joueur->get_id().", 'f_quete', '".$joueur->get_nom()."', '', NOW(), '".addslashes($row['nom'])."', 0, 0, 0)";
+	$requete = "INSERT INTO journal VALUES(NULL, ".$joueur->get_id().", 'f_quete', '".$joueur->get_nom()."', '', NOW(), '".addslashes($row['nom'])."', 0, 0, 0)";
 	$db->query($requete);
 }
 

@@ -60,7 +60,12 @@ function attaque($acteur = 'attaquant', $competence, &$effects)
   //Corrompu la journée
   if($actif->get_race() == 'humainnoir' AND moment_jour() == 'Journee') $actif->potentiel_toucher *= 1.1; else $bonus_race = 1;
   if($actif->etat['posture']['type'] == 'posture_touche') $actif->potentiel_toucher *= 1 + (($actif->etat['posture']['effet']) / 100); else $buff_posture_touche = 1;
-
+	
+	//Réctification si c'est un orc
+	$rectif_augm = $actif->get_race() == 'orc' ? 1.1 : 1;
+	if($rectif_augm < 1.1)
+		$rectif_augm = $passif->get_race() == 'orc' ? 1.1 : 1;
+	echo 'augmentation = ',$rectif_augm;
   /* Application des effets de début de round */
   foreach ($effects as $effect) $effect->debut_round($actif, $passif);
   /* ~Debut */
@@ -216,11 +221,11 @@ function attaque($acteur = 'attaquant', $competence, &$effects)
 
 								}
 						}
-					$diff_blocage = 2.5 * $G_round_total / 5;
+					$diff_blocage = (2.5 * $G_round_total / 5) * $rectif_augm;
 					$augmentation['passif']['comp'][] = array('blocage', $diff_blocage);
 					if($passif->is_competence('maitrise_bouclier'))
 						$augmentation['passif']['comp_perso'][] =
-							array('maitrise_bouclier', 6);
+							array('maitrise_bouclier', 6 * $rectif_augm);
 				}
       //Posture défensive
       if($passif->etat['posture']['type'] == 'posture_defense') $buff_posture_defense = $passif->etat['posture']['effet']; else $buff_posture_defense = 0;
@@ -426,19 +431,19 @@ function attaque($acteur = 'attaquant', $competence, &$effects)
     }
 
 	//Augmentation des compétences de base
-	$diff_att = 3.2 * $G_round_total / 5;
+	$diff_att = (3.2 * $G_round_total / 5) * $rectif_augm;
 	$augmentation['actif']['comp'][] = array($competence, $diff_att);
-	$diff_esquive = 2.7 * $G_round_total / 5;
+	$diff_esquive = (2.7 * $G_round_total / 5) * $rectif_augm;
 	$augmentation['passif']['comp'][] = array('esquive', $diff_esquive);
 
 	//Augmentation des compétences liées
 	if($actif->is_competence('art_critique') && $critique)
-		$augmentation['actif']['comp_perso'][] = array('art_critique', 2.5);
+		$augmentation['actif']['comp_perso'][] = array('art_critique', 2.5 * $rectif_augm);
 	if($actif->is_competence('maitrise_critique') && $critique)
-		$augmentation['actif']['comp_perso'][] = array('maitrise_critique', 2);
+		$augmentation['actif']['comp_perso'][] = array('maitrise_critique', 2 * $rectif_augm);
 	$arme = $actif->get_arme_type();
 	if($actif->is_competence("maitrise_$arme"))
-		$augmentation['actif']['comp_perso'][] = array("maitrise_$arme", 6);
+		$augmentation['actif']['comp_perso'][] = array("maitrise_$arme", 6 * $rectif_augm);
 
 	/* Ici on va enregistrer les etats précédents */
 	// Enregistre si on a esquivé ou non

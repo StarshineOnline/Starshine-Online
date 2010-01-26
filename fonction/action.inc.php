@@ -921,8 +921,14 @@ function lance_sort($id, $acteur, &$effects)
 	}
 	//Augmentation des compétences liées
 	$get = 'get_'.$row['comp_assoc'];
-	$augmentation['actif']['comp'][] = array($row['comp_assoc'], (3.3 * sqrt(pow($actif->$get(), 1.3) / ($row['difficulte'] / 4))));
-	$augmentation['actif']['comp'][] = array('incantation', (2.3 * sqrt($actif->get_incantation() / ($row['difficulte'] / 2))));
+	
+	//Réctification si c'est un orc
+	$rectif_augm = $actif->get_race() == 'orc' ? 1.1 : 1;
+	if($rectif_augm < 1.1)
+		$rectif_augm = $passif->get_race() == 'orc' ? 1.1 : 1;
+
+	$augmentation['actif']['comp'][] = array($row['comp_assoc'], $rectif_augm * (3.3 * sqrt(pow($actif->$get(), 1.3) / ($row['difficulte'] / 4))));
+	$augmentation['actif']['comp'][] = array('incantation', $rectif_augm * (2.3 * sqrt($actif->get_incantation() / ($row['difficulte'] / 2))));
 
   /* Application des effets de fin de round */
   foreach ($effects as $effect)
@@ -1053,15 +1059,19 @@ function lance_comp($id, $acteur, &$effects)
 			$actif->etat['tir_vise']['effet'] = $row['effet'];
 			$actif->etat['tir_vise']['duree'] = 2;
 			$comp_attaque = false;
+			//Réctification si c'est un orc
+			$rectif_augm = $actif->get_race() == 'orc' ? 1.1 : 1;
+			if($rectif_augm < 1.1)
+				$rectif_augm = $passif->get_race() == 'orc' ? 1.1 : 1;
 			// Augmentation des compétences
 			//$diff = 3 * $G_round_total / 10;
-			$diff = 3.2 * $G_round_total / 5; // Irulan: soyons cohérents
+			$diff = (3.2 * $G_round_total / 5) * $rectif_augm; // Irulan: soyons cohérents
 			//$diff = 0.0001; // TESTS
 			$augmentation['actif']['comp'][] = array('distance', $diff);
 			if($actif->get_arme_type() == 'arc' AND $actif->is_competence('maitrise_arc')) $maitrise_arc = 1 + ($actif->competences['maitrise_arc'] / 1000); else $maitrise_arc = 1;
 			if($maitrise_arc != 1)
 			{
-				$augmentation['actif']['comp_perso'][] = array('maitrise_arc', $actif, 5);
+				$augmentation['actif']['comp_perso'][] = array('maitrise_arc', $actif, 5 * $rectif_augm);
 			}
 		break;
 		case 'fleche_etourdissante' :
