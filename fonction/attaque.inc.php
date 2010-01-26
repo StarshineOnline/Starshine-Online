@@ -22,6 +22,12 @@ function attaque($acteur = 'attaquant', $competence, &$effects)
 {
   global $attaquant, $defenseur, $G_buff, $G_debuff, $ups, $Gtrad, $G_round_total, $db;
   $augmentation = array('actif' => array('comp' => array(), 'comp_perso' => array()), 'passif' => array('comp' => array(), 'comp_perso' => array()));
+  	//Réctification si c'est un orc
+	$round = is_donjon($actif->get_x(), $actif->get_y()) ? 20 : 10;
+	$rectif_augm = $actif->get_race() == 'orc' ? 2 - ($round / ($round + 1)) : 1;
+	if($rectif_augm == 1)
+		$rectif_augm = $passif->get_race() == 'orc' ? 2 - ($round / ($round + 1)) : 1;
+		
   $ups = array();
 
   if ($acteur == 'attaquant')
@@ -61,11 +67,6 @@ function attaque($acteur = 'attaquant', $competence, &$effects)
   if($actif->get_race() == 'humainnoir' AND moment_jour() == 'Journee') $actif->potentiel_toucher *= 1.1; else $bonus_race = 1;
   if($actif->etat['posture']['type'] == 'posture_touche') $actif->potentiel_toucher *= 1 + (($actif->etat['posture']['effet']) / 100); else $buff_posture_touche = 1;
 	
-	//Réctification si c'est un orc
-	$rectif_augm = $actif->get_race() == 'orc' ? 1.1 : 1;
-	if($rectif_augm < 1.1)
-		$rectif_augm = $passif->get_race() == 'orc' ? 1.1 : 1;
-	echo 'augmentation = ',$rectif_augm;
   /* Application des effets de début de round */
   foreach ($effects as $effect) $effect->debut_round($actif, $passif);
   /* ~Debut */
