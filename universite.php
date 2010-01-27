@@ -166,7 +166,7 @@ if($W_row['type'] == 1)
 					else
 					{
 						$get = 'get_'.$row['competence'];
-						if((method_exists($joueur, $get) && $joueur->$get(false) < $row['requis']) OR (!method_exists($joueur, $get) && $joueur->get_competence($row['competence']) < $row['requis']))
+						if((method_exists($joueur, $get) && $joueur->$get(true) < $row['requis']) OR (!method_exists($joueur, $get) && $joueur->get_competence($row['competence']) < $row['requis']))
 						{
 							echo 'Vous n\'avez pas assez en : '.ucwords($row['competence']).'<br />';
 							$fin = true;
