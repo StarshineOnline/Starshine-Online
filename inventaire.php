@@ -245,25 +245,14 @@ if(!$visu AND isset($_GET['action']))
 							$requete = "SELECT effet, nom, pa, mp FROM objet WHERE id = ".$objet['id_objet'];
 							$req = $db->query($requete);
 							$row = $db->read_assoc($req);
-              if ($row['pa'] > $joueur->get_pa())
-              {
-                echo '<h5>Vous n\'avez pas assez de PA</h5>';
-              }
-              elseif ($row['mp'] > $joueur->get_mp())
-              {
-                echo '<h5>Vous n\'avez pas assez de MP</h5>';
-              }
-              else
-              {
-                echo 'Vous utilisez une '.$row['nom'].' elle vous redonne '.$row['effet'].' points de vie<br />';
+               				echo 'Vous utilisez une '.$row['nom'].' elle vous redonne '.$row['effet'].' points de vie<br />';
 							?>
-							<img src="image/pixel.gif" onLoad="envoiInfo('infoperso.php?javascript=oui', 'perso');" />
-							<?php
-                $joueur->add_hp($row['effet']);
-                $joueur->add_mp(-$row['mp']);
-                $joueur->add_pa(-$row['pa']);
-                $joueur->sauver();
-              }
+								<img src="image/pixel.gif" onLoad="envoiInfo('infoperso.php?javascript=oui', 'perso');" />
+								<?php
+                				$joueur->add_hp($row['effet']);
+                				$joueur->add_mp(-$row['mp']);
+                				$joueur->add_pa(-$row['pa']);
+                				$joueur->sauver();
 						}
 					}
 					else echo 'Vous êtes mort !';
