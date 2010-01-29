@@ -47,16 +47,16 @@ a:hover								{color:#CCF2FF;}
 
 #menu_accueil 						{ background:transparent url(./../image/site/cadrecentreboutonsso.png) repeat scroll 0 0; color:#FFFFFF; height:34px; margin:0 0 0 49px; position:absolute; top:446px; width:534px; }
 #menu_accueil ul li 				{ list-style:none; cursor:pointer; float:left; }
-#presentation_menu 					{ height:29px; margin-left:-33px; margin-top:-10px; position:absolute; width:129px; }
+#presentation_menu 					{ height:29px; margin-left:-34px; margin-top:-10px; position:absolute; width:129px; }
 #presentation_menu:hover 			{ background:url(./../image/site/boutonbisopresentation.png) no-repeat; cursor:pointer; }
 #presentation_menu:active 			{ background:url(./../image/site/boutonpresentation.png) no-repeat; cursor:pointer; height:33px; margin-left:-36px; margin-top:-13px; }
-#screenshot_menu 					{ height:29px; margin-left:98px; margin-top:-10px; position:absolute; width:129px; }
+#screenshot_menu 					{ height:29px; margin-left:99px; margin-top:-10px; position:absolute; width:129px; }
 #screenshot_menu:hover 				{ background:url(./../image/site/boutonbisoscreen.png) no-repeat; cursor:pointer; }
 #screenshot_menu:active 			{ background:url(./../image/site/boutonscreenshot.png) no-repeat; cursor:pointer; height:33px; margin-left:96px; margin-top:-12px; }
-#news_menu 							{ height:29px; margin-left:230px; margin-top:-10px; position:absolute; width:129px; }
+#news_menu 							{ height:29px; margin-left:229px; margin-top:-10px; position:absolute; width:129px; }
 #news_menu:hover 					{ background:url(./../image/site/boutonbisonews.png) no-repeat; cursor:pointer; }
 #news_menu:active 					{ background:url(./../image/site/boutonnews.png) no-repeat; cursor:pointer; height:33px; margin-left:227px; margin-top:-13px; }
-#creation_menu 						{ height:29px; margin-left:361px; margin-top:-10px; position:absolute; width:129px; }
+#creation_menu 						{ height:29px; margin-left:360px; margin-top:-10px; position:absolute; width:129px; }
 #creation_menu:hover 				{ background:url(./../image/site/boutonbisocrea.png) no-repeat; cursor:pointer; }
 #creation_menu:active 				{ background:url(./../image/site/boutoncreationcompte.png) no-repeat; cursor:pointer; height:33px; margin-left:359px; margin-top:-13px; }
 
