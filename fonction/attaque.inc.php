@@ -21,15 +21,6 @@ include_once(root.$root.'class/gemmes.class.php');
 function attaque($acteur = 'attaquant', $competence, &$effects)
 {
   global $attaquant, $defenseur, $G_buff, $G_debuff, $ups, $Gtrad, $G_round_total, $db;
-  $augmentation = array('actif' => array('comp' => array(), 'comp_perso' => array()), 'passif' => array('comp' => array(), 'comp_perso' => array()));
-  	//Réctification si c'est un orc
-	$round = is_donjon($actif->get_x(), $actif->get_y()) ? 20 : 10;
-	$rectif_augm = $actif->get_race() == 'orc' ? 2 - ($round / ($round + 1)) : 1;
-	if($rectif_augm == 1)
-		$rectif_augm = $passif->get_race() == 'orc' ? 2 - ($round / ($round + 1)) : 1;
-		
-  $ups = array();
-
   if ($acteur == 'attaquant')
     {
       $actif = $attaquant;
@@ -40,6 +31,14 @@ function attaque($acteur = 'attaquant', $competence, &$effects)
       $actif = $defenseur;
       $passif = $attaquant;
     }
+  $augmentation = array('actif' => array('comp' => array(), 'comp_perso' => array()), 'passif' => array('comp' => array(), 'comp_perso' => array()));
+  	//Réctification si c'est un orc
+	$round = is_donjon($actif->get_x(), $actif->get_y()) ? 20 : 10;
+	$rectif_augm = $actif->get_race() == 'orc' ? 2 - ($round / ($round + 1)) : 1;
+	if($rectif_augm == 1)
+		$rectif_augm = $passif->get_race() == 'orc' ? 2 - ($round / ($round + 1)) : 1;
+		
+  $ups = array();
 
   //Buff evasion
   if(array_key_exists('benediction', $passif->etat)) $passif->potentiel_parer *= 1 + (($passif->etat['benediction']['effet'] * $G_buff['bene_evasion']) / 100);
