@@ -44,6 +44,7 @@ if(!array_key_exists('action', $_GET))
 		{
 			echo '<span style="height:20px; width:20px; display:block; float:left;"></span>';
 		}
+		$page = ($page == 0) ? 1 : $page;
 		echo '<span class="pages">'.$page.' / '.$page_max.'</span>';
 		if($page < $page_max) echo '<a href="messagerie.php?id_thread='.$messagerie->thread->id_thread.'&amp;page='.($page + 1).'" onclick="return envoiInfo(this.href, \'information\');"><span class="message_next" title="Allez à la page suivante"></span></a>';
 		echo "</p>";
