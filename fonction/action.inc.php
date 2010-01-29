@@ -436,13 +436,6 @@ function sub_script_action($joueur, $ennemi, $mode, &$effects)
 function lance_sort($id, $acteur, &$effects)
 {
 	global $attaquant, $defenseur, $db, $Gtrad, $debugs, $Trace, $G_buff, $G_debuff;
-	$augmentation = array('actif' => array('comp' => array(), 'comp_perso' => array()), 'passif' => array('comp' => array(), 'comp_perso' => array()));
-	//Réctification si c'est un orc
-	$round = is_donjon($actif->get_x(), $actif->get_y()) ? 20 : 10;
-	$rectif_augm = $actif->get_race() == 'orc' ? 2 - ($round / ($round + 1)) : 1;
-	if($rectif_augm == 1)
-		$rectif_augm = $passif->get_race() == 'orc' ? 2 - ($round / ($round + 1)) : 1;
-	
 	// Définition des personnages actif et passif
 	if ($acteur == 'attaquant')
 	{
@@ -454,6 +447,14 @@ function lance_sort($id, $acteur, &$effects)
 		$actif = $defenseur;
 		$passif = $attaquant;
 	}
+
+	$augmentation = array('actif' => array('comp' => array(), 'comp_perso' => array()), 'passif' => array('comp' => array(), 'comp_perso' => array()));
+	//Réctification si c'est un orc
+	$round = is_donjon($actif->get_x(), $actif->get_y()) ? 20 : 10;
+	$rectif_augm = $actif->get_race() == 'orc' ? 2 - ($round / ($round + 1)) : 1;
+	if($rectif_augm == 1)
+		$rectif_augm = $passif->get_race() == 'orc' ? 2 - ($round / ($round + 1)) : 1;
+	
 
   /* Application des effets de début de round */
   foreach ($effects as $effect) $effect->debut_round($actif, $passif);
