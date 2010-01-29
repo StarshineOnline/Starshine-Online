@@ -566,14 +566,16 @@ if (isset($_GET['ID']) && !$joueur->is_buff('bloque_sort'))
 						$perso = new perso($cible->get_id());
 						if($perso->get_groupe() != 0)
 							$groupe_cible = new groupe($perso->get_id());
-							
+						
+						$cibles = array();
 						foreach($groupe_cible->get_membre_joueur() as $cbl)
 							$cibles[] = new entite('joueur', $cbl);
 					}
 					else
 					{
 						$cibles_mob = map_monstre::create(array('x', 'y'), array($cible->get_x(), $cible->get_y()));
-	
+						$cibles = array();
+						
 						foreach($cibles_mob as $cbl)
 						{
 							$monstre = new monstre($cbl->get_type());
@@ -581,11 +583,11 @@ if (isset($_GET['ID']) && !$joueur->is_buff('bloque_sort'))
 							$monstre->set_hp($cbl->get_hp());
 							$monstre->x = $cbl->get_x();
 							$monstre->y = $cbl->get_y();
-							$monstre->set_id($cbl->get_id());
-							$cibles[] = new entite('monstre', $monstre); 
+							$cibles[] = new entite('monstre', $monstre);
+							end($cibles)->set_id($cbl->get_id());
 						}
 					}
-
+					
 					foreach($cibles as $cible)
 					{
 						$distance = calcul_distance_pytagore($joueur->get_pos(), $cible->get_pos());

@@ -2228,6 +2228,7 @@ function lance_buff($type, $id, $effet, $effet2, $duree, $nom, $description, $ty
 		$table = 'buff_monstre';
 		$champ = 'id_monstre';
 	}
+	
 	// Requête SQL
 	$Buff_requete = 'SELECT * FROM '.$table.' WHERE '.$champ.' = '.$id.' AND type = \''.$type.'\'';
 	//echo $Buff_requete;
