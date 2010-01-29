@@ -964,13 +964,6 @@ function lance_sort($id, $acteur, &$effects)
 function lance_comp($id, $acteur, &$effects)
 {
 	global $attaquant, $defenseur, $db, $Gtrad, $debugs, $comp_attaque, $G_round_total, $ups;
-	$augmentation = array('actif' => array('comp' => array(), 'comp_perso' => array()), 'passif' => array('comp' => array(), 'comp_perso' => array()));
-	//Réctification si c'est un orc
-	$round = is_donjon($actif->get_x(), $actif->get_y()) ? 20 : 10;
-	$rectif_augm = $actif->get_race() == 'orc' ? 2 - ($round / ($round + 1)) : 1;
-	if($rectif_augm == 1)
-		$rectif_augm = $passif->get_race() == 'orc' ? 2 - ($round / ($round + 1)) : 1;
-		
 	// Définition des personnages actif et passif
 	if ($acteur == 'attaquant')
 	{
@@ -982,6 +975,13 @@ function lance_comp($id, $acteur, &$effects)
 		$actif = $defenseur;
 		$passif = $attaquant;
 	}
+	$augmentation = array('actif' => array('comp' => array(), 'comp_perso' => array()), 'passif' => array('comp' => array(), 'comp_perso' => array()));
+	//Réctification si c'est un orc
+	$round = is_donjon($actif->get_x(), $actif->get_y()) ? 20 : 10;
+	$rectif_augm = $actif->get_race() == 'orc' ? 2 - ($round / ($round + 1)) : 1;
+	if($rectif_augm == 1)
+		$rectif_augm = $passif->get_race() == 'orc' ? 2 - ($round / ($round + 1)) : 1;
+		
 	//Recherche de la compétence
 	$requete = "SELECT * FROM comp_combat WHERE id = ".$id;
 	$req = $db->query($requete);
