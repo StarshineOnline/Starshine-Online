@@ -50,7 +50,7 @@ a:hover								{color:#CCF2FF;}
 #presentation_menu 					{ height:29px; margin-left:-34px; margin-top:-10px; position:absolute; width:129px; }
 #presentation_menu:hover 			{ background:url(./../image/site/boutonbisopresentation.png) no-repeat; cursor:pointer; }
 #presentation_menu:active 			{ background:url(./../image/site/boutonpresentation.png) no-repeat; cursor:pointer; height:33px; margin-left:-36px; margin-top:-13px; }
-#screenshot_menu 					{ height:29px; margin-left:99px; margin-top:-10px; position:absolute; width:129px; }
+#screenshot_menu 					{ height:29px; margin-left:97px; margin-top:-10px; position:absolute; width:129px; }
 #screenshot_menu:hover 				{ background:url(./../image/site/boutonbisoscreen.png) no-repeat; cursor:pointer; }
 #screenshot_menu:active 			{ background:url(./../image/site/boutonscreenshot.png) no-repeat; cursor:pointer; height:33px; margin-left:96px; margin-top:-12px; }
 #news_menu 							{ height:29px; margin-left:229px; margin-top:-10px; position:absolute; width:129px; }
