@@ -64,8 +64,9 @@ if (file_exists('root.php'))
 	$k = $inf - 25;
 	if($k < 0) $k = 0;
 	$j = 26;
-	$tri = strcmp($tri, 'architecture, forge, alchimie') ? $tri : 'ROUND(SQRT((alchimie + forge + architecture) * 10)) as craft';
-	$requete = "SELECT groupe.id AS groupe_id, groupe.nom AS groupe_nom, SUM(perso.".sSQL($tri).") as somme, COUNT(*) as tot FROM `groupe` LEFT JOIN groupe_joueur ON groupe.id = groupe_joueur.id_groupe LEFT JOIN perso ON groupe_joueur.id_joueur = perso.ID WHERE perso.statut = 'actif' GROUP BY groupe.id ORDER BY somme DESC LIMIT $inf, $j";
+
+	$tri = strcmp($tri, 'architecture, forge, alchimie') ? 	$tri = 'perso.'.sSQL($tri) : 'ROUND(SQRT((perso.alchimie + perso.forge + perso.architecture) * 10))';
+	$requete = "SELECT groupe.id AS groupe_id, groupe.nom AS groupe_nom, SUM(".$tri.") as somme, COUNT(*) as tot FROM `groupe` LEFT JOIN groupe_joueur ON groupe.id = groupe_joueur.id_groupe LEFT JOIN perso ON groupe_joueur.id_joueur = perso.ID WHERE perso.statut = 'actif' GROUP BY groupe.id ORDER BY somme DESC LIMIT $inf, $j";
 	//echo 'inf : '.$inf.' j : '.$j.' k : '.$k.' sup : '.$sup.' '.$requete.'<br />';
 	$req = $db->query($requete);
 
