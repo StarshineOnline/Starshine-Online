@@ -65,7 +65,19 @@ if(array_key_exists('action', $_GET))
 						//On utilise le recipient
 						$joueur->supprime_objet('o'.$recipient->id_objet, 1);
 						//alchiming
-						$player = rand(0, $joueur->get_alchimie());
+						
+						$alchimie = $joueur->get_alchimie();
+						if($joueur->get_race() == 'scavenger') 
+							$alchimie = round($alchimie * 1.45);
+
+						if($joueur->get_accessoire() !== false)
+						{
+							$accessoire = $joueur->get_accessoire();
+							if($accessoire->get_id() != 0 && $accessoire->type == 'fabrication')
+								$alchimie = round($alchimie * (1 + ($accessoire->get_effet() / 100)));
+						}
+						
+						$player = rand(0, $alchimie);
 						$thing = rand(0, $recette->difficulte);
 						echo $joueur->get_alchimie().' / '.$recette->difficulte.' ---- '.$player.' VS '.$thing;
 						//Si la préparation réussie

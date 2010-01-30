@@ -638,8 +638,12 @@ if(!$visu AND isset($_GET['action']))
 		case 'slot' :
 			$craft = $joueur->get_forge();
 			if($joueur->get_race() == 'scavenger') $craft = round($craft * 1.45);
-			//A FAIRE
-			//if($joueur['accessoire']['id'] != '0' AND $joueur['accessoire']['type'] == 'fabrication') $craft = round($craft * (1 + ($joueur['accessoire']['effet'] / 100)));
+			if($joueur->get_accessoire() !== false)
+			{
+				$accessoire = $joueur->get_accessoire();
+				if($accessoire->get_id() != 0 && $accessoire->type == 'fabrication')
+					$craft = round($craft * (1 + ($accessoire->get_effet() / 100)));
+			}
 
 			// Gemme de fabrique : augmente de effet % le craft
 			if (isset($joueur->enchantement) &&
@@ -677,8 +681,12 @@ if(!$visu AND isset($_GET['action']))
 					}
 					$craft = $joueur->get_forge();
 					if($joueur->get_race() == 'scavenger') $craft = round($craft * 1.45);
-					//A FAIRE
-					//if($joueur['accessoire']['id'] != '0' AND $joueur['accessoire']['type'] == 'fabrication') $craft = round($craft * (1 + ($joueur['accessoire']['effet'] / 100)));
+					if($joueur->get_accessoire() !== false)
+					{
+						$accessoire = $joueur->get_accessoire();
+						if($accessoire->get_id() != 0 && $accessoire->type == 'fabrication')
+							$craft = round($craft * (1 + ($accessoire->get_effet() / 100)));
+					}
 
 					// Gemme de fabrique : augmente de effet % le craft
 					if (isset($joueur->enchantement) &&
@@ -753,8 +761,12 @@ if(!$visu AND isset($_GET['action']))
 			}
 			$craft = $joueur->get_forge();
 			if($joueur->get_race() == 'scavenger') $craft = round($craft * 1.45);
-			//A FAIRE
-			//if($joueur['accessoire']['id'] != '0' AND $joueur['accessoire']['type'] == 'fabrication') $craft = round($craft * (1 + ($joueur['accessoire']['effet'] / 100)));
+			if($joueur->get_accessoire() !== false)
+			{
+				$accessoire = $joueur->get_accessoire();
+				if($accessoire->get_id() != 0 && $accessoire->type == 'fabrication')
+					$craft = round($craft * (1 + ($accessoire->get_effet() / 100)));
+			}
 
 			// Gemme de fabrique : augmente de effet % le craft
 			if (isset($joueur->enchantement) &&
@@ -817,8 +829,13 @@ if(!$visu AND isset($_GET['action']))
 			{
 				$craft = $joueur->get_forge();
 				if($joueur->get_race() == 'scavenger') $craft = round($craft * 1.45);
-				//A FAIRE
-				//if($joueur['accessoire']['id'] != '0' AND $joueur['accessoire']['type'] == 'fabrication') $craft = round($craft * (1 + ($joueur['accessoire']['effet'] / 100)));
+				if($joueur->get_accessoire() !== false)
+				{
+					$accessoire = $joueur->get_accessoire();
+					if($accessoire->get_id() != 0 && $accessoire->type == 'fabrication')
+						$craft = round($craft * (1 + ($accessoire->get_effet() / 100)));
+				}				
+
 				$gemme = decompose_objet($joueur->get_inventaire_slot_partie($_GET['key_slot']));
 				$objet = decompose_objet($joueur->get_inventaire_slot_partie($_GET['key_slot2']));
 				switch($_GET['niveau'])

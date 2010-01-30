@@ -11,7 +11,7 @@ global $joueur;
 $joueur = new perso($_SESSION['ID']);
 $royaume = new royaume($Trace[$joueur->get_race()]['numrace']);
 
-if($joueur->get_grade()->get_id() == 6 OR $joueur->get_id() == $royaume->get_ministre_economie() OR $joueur->get_id() == $royaume->get_ministre_militaire())
+if(($joueur->get_race() == $royaume->get_race() && $joueur->get_grade()->get_id() == 6) OR $joueur->get_id() == $royaume->get_ministre_economie() OR $joueur->get_id() == $royaume->get_ministre_militaire())
 {
 	$date_hier = date("Y-m-d", mktime(0, 0, 0, date("m") , date("d") - 2, date("Y")));
 	$requete = "SELECT food, nombre_joueur FROM stat_jeu ORDER BY date DESC";
@@ -27,7 +27,7 @@ if($joueur->get_grade()->get_id() == 6 OR $joueur->get_id() == $royaume->get_min
 	
 	$_SESSION['position'] = convert_in_pos($joueur->get_x(), $joueur->get_y());
 	$check = false;
-	if(verif_ville($joueur->get_x(), $joueur->get_y()))
+	if(verif_ville($joueur->get_x(), $joueur->get_y(), $royaume->get_id()))
 	{
 		$check = true;
 	}

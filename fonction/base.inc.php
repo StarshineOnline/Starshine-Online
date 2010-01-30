@@ -3132,11 +3132,14 @@ function affiche_condition_session($action, $joueur)
  * 
  * @return    true si c'est une ville, false sinon.    
  */
-function verif_ville($x, $y)
+function verif_ville($x, $y, $r = false)
 {
 	global $db;
 	$position = convert_in_pos($x, $y);
-	$W_requete = 'SELECT type FROM map WHERE id = '.$position;
+	if($r === false)
+		$W_requete = 'SELECT type FROM map WHERE id = '.$position;
+	else
+		$W_requete = 'SELECT type FROM map WHERE id = '.$position.' AND royaume = '.$r;
 	$W_req = $db->query($W_requete);
 	$W_row = $db->read_assoc($W_req);
 	//On est en ville
