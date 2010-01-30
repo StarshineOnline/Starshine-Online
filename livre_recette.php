@@ -73,7 +73,7 @@ if(array_key_exists('action', $_GET))
 						if($joueur->get_accessoire() !== false)
 						{
 							$accessoire = $joueur->get_accessoire();
-							if($accessoire->get_id() != 0 && $accessoire->type == 'fabrication')
+							if($accessoire->type == 'fabrication')
 								$alchimie = round($alchimie * (1 + ($accessoire->get_effet() / 100)));
 						}
 						

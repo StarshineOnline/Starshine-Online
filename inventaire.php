@@ -641,7 +641,7 @@ if(!$visu AND isset($_GET['action']))
 			if($joueur->get_accessoire() !== false)
 			{
 				$accessoire = $joueur->get_accessoire();
-				if($accessoire->get_id() != 0 && $accessoire->type == 'fabrication')
+				if($accessoire->type == 'fabrication')
 					$craft = round($craft * (1 + ($accessoire->get_effet() / 100)));
 			}
 
@@ -684,7 +684,7 @@ if(!$visu AND isset($_GET['action']))
 					if($joueur->get_accessoire() !== false)
 					{
 						$accessoire = $joueur->get_accessoire();
-						if($accessoire->get_id() != 0 && $accessoire->type == 'fabrication')
+						if($accessoire->type == 'fabrication')
 							$craft = round($craft * (1 + ($accessoire->get_effet() / 100)));
 					}
 
@@ -764,7 +764,7 @@ if(!$visu AND isset($_GET['action']))
 			if($joueur->get_accessoire() !== false)
 			{
 				$accessoire = $joueur->get_accessoire();
-				if($accessoire->get_id() != 0 && $accessoire->type == 'fabrication')
+				if($accessoire->type == 'fabrication')
 					$craft = round($craft * (1 + ($accessoire->get_effet() / 100)));
 			}
 
@@ -832,7 +832,7 @@ if(!$visu AND isset($_GET['action']))
 				if($joueur->get_accessoire() !== false)
 				{
 					$accessoire = $joueur->get_accessoire();
-					if($accessoire->get_id() != 0 && $accessoire->type == 'fabrication')
+					if($accessoire->type == 'fabrication')
 						$craft = round($craft * (1 + ($accessoire->get_effet() / 100)));
 				}				
 
