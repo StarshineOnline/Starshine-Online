@@ -642,7 +642,7 @@ if(!$visu AND isset($_GET['action']))
 			{
 				$accessoire = $joueur->get_accessoire();
 				if($accessoire->type == 'fabrication')
-					$craft = round($craft * (1 + ($accessoire->get_effet() / 100)));
+					$craft = round($craft * (1 + ($accessoire->effet / 100)));
 			}
 
 			// Gemme de fabrique : augmente de effet % le craft
@@ -685,7 +685,7 @@ if(!$visu AND isset($_GET['action']))
 					{
 						$accessoire = $joueur->get_accessoire();
 						if($accessoire->type == 'fabrication')
-							$craft = round($craft * (1 + ($accessoire->get_effet() / 100)));
+							$craft = round($craft * (1 + ($accessoire->effet / 100)));
 					}
 
 					// Gemme de fabrique : augmente de effet % le craft
@@ -765,7 +765,7 @@ if(!$visu AND isset($_GET['action']))
 			{
 				$accessoire = $joueur->get_accessoire();
 				if($accessoire->type == 'fabrication')
-					$craft = round($craft * (1 + ($accessoire->get_effet() / 100)));
+					$craft = round($craft * (1 + ($accessoire->effet / 100)));
 			}
 
 			// Gemme de fabrique : augmente de effet % le craft
@@ -833,7 +833,7 @@ if(!$visu AND isset($_GET['action']))
 				{
 					$accessoire = $joueur->get_accessoire();
 					if($accessoire->type == 'fabrication')
-						$craft = round($craft * (1 + ($accessoire->get_effet() / 100)));
+						$craft = round($craft * (1 + ($accessoire->effet / 100)));
 				}				
 
 				$gemme = decompose_objet($joueur->get_inventaire_slot_partie($_GET['key_slot']));

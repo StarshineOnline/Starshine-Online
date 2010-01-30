@@ -74,7 +74,7 @@ if(array_key_exists('action', $_GET))
 						{
 							$accessoire = $joueur->get_accessoire();
 							if($accessoire->type == 'fabrication')
-								$alchimie = round($alchimie * (1 + ($accessoire->get_effet() / 100)));
+								$alchimie = round($alchimie * (1 + ($accessoire->effet / 100)));
 						}
 						
 						$player = rand(0, $alchimie);
