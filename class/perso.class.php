@@ -1,6 +1,8 @@
 <?php
 class perso extends entite
 {
+  const table = "perso";  ///< Nom de la table correspondante.
+  
 	/**
     * @access private
     * @var int(10)
@@ -284,7 +286,6 @@ class perso extends entite
 	private $beta;
 
 	
-	private $champs_modif;
 	public $poscase;
 	public $pospita;
 	public $share_xp;
@@ -569,22 +570,6 @@ class perso extends entite
 			$db->query($requete);
 			//Récuperation du dernier ID inséré.
 			$this->id = $db->last_insert_id();
-		}
-	}
-
-	/**
-	* Supprime de la base de donnée
-	* @access public
-	* @param none
-	* @return none
-	*/
-	function supprimer()
-	{
-		global $db;
-		if( $this->id > 0 )
-		{
-			$requete = 'DELETE FROM perso WHERE id = '.$this->id;
-			$db->query($requete);
 		}
 	}
 
@@ -1717,30 +1702,6 @@ class perso extends entite
 	{
 		$this->star = $star;
 		$this->champs_modif[] = 'star';
-	}
-
-	/**
-	* Modifie la valeur de l'attribut
-	* @access public
-	* @param mediumint(9) $x valeur de l'attribut
-	* @return none
-	*/
-	function set_x($x)
-	{
-		$this->x = $x;
-		$this->champs_modif[] = 'x';
-	}
-
-	/**
-	* Modifie la valeur de l'attribut
-	* @access public
-	* @param mediumint(9) $y valeur de l'attribut
-	* @return none
-	*/
-	function set_y($y)
-	{
-		$this->y = $y;
-		$this->champs_modif[] = 'y';
 	}
 
 	/**

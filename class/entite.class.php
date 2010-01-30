@@ -9,20 +9,16 @@
  *
  * @author florian
  */
-class entite
+class entite extends placable
 {
-	protected $id;
 	private $action;
 	private $arme_type;
 	protected $comp_combat;  ///< Liste des compétences de combat.
 	private $comp;
-	protected $x;
-	protected $y;
-	protected $hp;
+	protected $hp;   ///< HP actuels de l'entité
 	protected $hp_max;
 	public $reserve;  ///< Réesrve de mana.
 	protected $pa;  /// < Nombre de PA.
-	protected $nom;
 	protected $race;  ///< Race de l'entité.
 	public $pp;  ///< Protection physique.
 	public $pm;  ///< Protection magique.
@@ -300,6 +296,22 @@ class entite
 			break;
 		}
 	}
+	
+	/// Renvoie la liste des champs pour une insertion dans la base
+	protected function get_liste_champs()
+	{
+    return placable::get_liste_champs().', hp';
+  }
+	/// Renvoie la liste des valeurs des champspour une insertion dans la base
+	protected function get_valeurs_insert()
+	{
+		return placable::get_valeurs_insert().', $this->hp';
+	}
+	/// Renvoie la liste des champs et valeurs pour une mise-à-jour dans la base
+	protected function get_liste_update()
+	{
+		return placable::get_liste_update().', hp = $this->hp';
+	}
 
 	function get_type()
 	{
@@ -326,14 +338,6 @@ class entite
 		return $objet;
 	}
 
-	function get_id()
-	{
-		return $this->id;
-	}
-	function set_id($id)
-	{
-		$this->id = $id;
-	}
 	function get_action()
 	{
 		return $this->action;
@@ -369,14 +373,6 @@ class entite
 	{
 		$this->comp = $valeur;
 	}
-	function get_x()
-	{
-		return $this->x;
-	}
-	function get_y()
-	{
-		return $this->y;
-	}
 	function get_hp()
 	{
 		return $this->hp;
@@ -400,10 +396,6 @@ class entite
 	function get_pa()
 	{
 		return $this->pa;
-	}
-	function get_nom()
-	{
-		return $this->nom;
 	}
 	function get_race()
 	{
