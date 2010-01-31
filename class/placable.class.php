@@ -45,20 +45,6 @@ abstract class placable extends table
 		$this->x = $vals['x'];
 		$this->y = $vals['y'];
   }
-	/**
-	 * Initialise les données membres
-	 * @param int(10) $id    Id de l'élément dans la table
-	 * @param $x int         La coordonnée x du personnage (0 par défaut).
-	 * @param $y int         La coordonnée y du personnage (0 par défaut).
-	 * @param $id int        L'identifiant du personnage (-1 par défaut)
-	 */
-  protected function init_val($id, $nom, $x, $y)
-  {
-    table::init_val($id);
-		$this->nom = $nom;
-		$this->x = $x;
-		$this->y = $y;    
-  }
 	
 	//! Accesseur $nom
 	function get_nom()

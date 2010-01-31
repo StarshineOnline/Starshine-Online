@@ -5,7 +5,7 @@
  */
 abstract class table
 {
-  	const champ_id = 'id';  ///< Nom du champ servant de clé primaire (id).
+  const champ_id = 'id';  ///< Nom du champ servant de clé primaire (id).
   
 	protected $id; ///< id de l'élément dans la table.
 	protected $champs_modif;  ///< Liste des champs modifiés.
@@ -25,10 +25,10 @@ abstract class table
 	 * Charge un élément de la base de donnée
 	 * @param $id    Id (clé primaire) de l'élément dans la table
 	 */
-  protected function charger($id)
+  /*protected function charger($id)
   {
 		global $db;
-		$requete = 'SELECT '.$this->get_liste_champs().' FROM '.$this->table.' WHERE '.$this->champ_id.' = "'.$id.'"';
+		$requete = 'SELECT '.$this->get_liste_champs().' FROM '.static::table.' WHERE '.static::champ_id.' = "'.$id.'"';
 		$req = $db->query($requete);
 		if( $db->num_rows($req) )
 		{
@@ -39,7 +39,7 @@ abstract class table
       $this->__construct();
       $this->id = $id;
     }
-  }	 
+  }*/
 	/**
 	 * Initialise les données membres à l'aide d'un tableau
 	 * @param array $vals    Tableau contenant les valeurs des données.
@@ -47,14 +47,6 @@ abstract class table
   protected function init_tab($vals)
   {
     $this->id = $vals['id'];
-  }
-	/**
-	 * Initialise les données membres
-	 * @param int(10) $id    Id de l'élément dans la table
-	 */
-  protected function init_val($id, $nom, $x, $y)
-  {
-    $this->id = $id;
   }
 	
 	/**
@@ -64,7 +56,7 @@ abstract class table
 	 * @param bool $force    Force la mis à jour de tous les attributs de l'objet 
 	 *                       si true, sinon uniquement ceux qui ont été modifiés.
    */   
-	function sauver($force = false)
+	/*function sauver($force = false)
 	{
 		global $db;
 		if( $this->id > 0 )
@@ -81,19 +73,19 @@ abstract class table
 					}
 					$champs = implode(', ', $champs);
 				}
-				$requete = 'UPDATE '.$this->table.' SET $champs WHERE '.$this->champ_id.' = '.$this->id.'"';
+				$requete = 'UPDATE '.static::table.' SET $champs WHERE '.static::champ_id.' = '.$this->id.'"';
 				$db->query($requete);
 				$this->champs_modif = array();
 			}
 		}
 		else
 		{
-			$requete = 'INSERT INTO '.$this->table.' ('.$this->get_liste_champs().') VALUES('.$this->get_valeurs_insert().')';
+			$requete = 'INSERT INTO '.static::table.' ('.$this->get_liste_champs().') VALUES('.$this->get_valeurs_insert().')';
 			$db->query($requete);
 			//Récuperation du dernier ID inséré.
 			$this->id = $db->last_insert_id();
 		}
-	}
+	}*/
 	/// Renvoie la liste des champs pour une insertion dans la base
 	abstract protected function get_liste_champs();
 	/// Renvoie la liste des valeurs des champspour une insertion dans la base
@@ -102,20 +94,15 @@ abstract class table
 	abstract protected function get_liste_update();
 	
 	/// Supprime l'élément de la base de donnée
-	function supprimer()
+	/*function supprimer()
 	{
 		global $db;
 		if( $this->id > 0 )
 		{
-			$requete = 'DELETE FROM '.$this->table.' WHERE '.$this->champ_id.' = "'.$this->id.'"';
+			$requete = 'DELETE FROM '.static::table.' WHERE '.static::champ_id.' = "'.$this->id.'"';
 			$db->query($requete);
 		}
-	}
-
-	function get_champ_id()
-	{
-		return $this->champ_id;
-	}
+	}*/
 
 	/**
 	* Crée un tableau d'objets respectant certains critères
@@ -127,7 +114,7 @@ abstract class table
 	*                                stockage avec sous tableau en fonction du champ $keys
 	* @return array     Liste d'objets
 	*/
-	static function create($classe, $champs, $valeurs, $ordre = 'id ASC', $keys = false, $where = false)
+	/*static function create($champs, $valeurs, $ordre = 'id ASC', $keys = false, $where = false)
 	{
 		global $db;
 		$return = array();
@@ -154,10 +141,11 @@ abstract class table
 			}
 		}
 
-		$requete = 'SELECT '.$classe->champ_id.', '.$classe->get_liste_champs().' FROM perso WHERE '.$where.' ORDER BY '.$ordre;
+		$requete = 'SELECT '.static::champ_id.', '.$classe->get_liste_champs().' FROM perso WHERE '.$where.' ORDER BY '.$ordre;
 		$req = $db->query($requete);
 		if($db->num_rows($req) > 0)
 		{
+		  $classe = static::table;
 			while($row = $db->read_assoc($req))
 			{
 				if(!$keys) $return[] = new $classe($row);
@@ -166,7 +154,7 @@ abstract class table
 		}
 		else $return = array();
 		return $return;
-	}
+	}*/
 	
 	/// Affiche l'objet sous forme de string
 	function __toString()
