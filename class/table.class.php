@@ -5,7 +5,7 @@
  */
 abstract class table
 {
-  const champ_id = 'id';  ///< Nom du champ servant de clé primaire (id).
+  	const champ_id = 'id';  ///< Nom du champ servant de clé primaire (id).
   
 	protected $id; ///< id de l'élément dans la table.
 	protected $champs_modif;  ///< Liste des champs modifiés.
@@ -46,13 +46,13 @@ abstract class table
 	 */
   protected function init_tab($vals)
   {
-    $this->id = $id['id'];
+    $this->id = $vals['id'];
   }
 	/**
 	 * Initialise les données membres
 	 * @param int(10) $id    Id de l'élément dans la table
 	 */
-  protected function init_val($id)
+  protected function init_val($id, $nom, $x, $y)
   {
     $this->id = $id;
   }
@@ -110,6 +110,11 @@ abstract class table
 			$requete = 'DELETE FROM '.$this->table.' WHERE '.$this->champ_id.' = "'.$this->id.'"';
 			$db->query($requete);
 		}
+	}
+
+	function get_champ_id()
+	{
+		return $this->champ_id;
 	}
 
 	/**
