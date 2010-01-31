@@ -28,7 +28,7 @@ abstract class table
   protected function charger($id)
   {
 		global $db;
-		$requete = 'SELECT '.$this->get_liste_champs().' FROM '.$this::table.' WHERE '.$this::champ_id.' = "'.$id.'"';
+		$requete = 'SELECT '.$this->get_liste_champs().' FROM '.$this->table.' WHERE '.$this->champ_id.' = "'.$id.'"';
 		$req = $db->query($requete);
 		if( $db->num_rows($req) )
 		{
@@ -81,14 +81,14 @@ abstract class table
 					}
 					$champs = implode(', ', $champs);
 				}
-				$requete = 'UPDATE '.$this::table.' SET $champs WHERE '.$this::champ_id.' = '.$this->id.'"';
+				$requete = 'UPDATE '.$this->table.' SET $champs WHERE '.$this->champ_id.' = '.$this->id.'"';
 				$db->query($requete);
 				$this->champs_modif = array();
 			}
 		}
 		else
 		{
-			$requete = 'INSERT INTO '.$this::table.' ('.$this->get_liste_champs().') VALUES('.$this->get_valeurs_insert().')';
+			$requete = 'INSERT INTO '.$this->table.' ('.$this->get_liste_champs().') VALUES('.$this->get_valeurs_insert().')';
 			$db->query($requete);
 			//Récuperation du dernier ID inséré.
 			$this->id = $db->last_insert_id();
@@ -107,7 +107,7 @@ abstract class table
 		global $db;
 		if( $this->id > 0 )
 		{
-			$requete = 'DELETE FROM '.$this::table.' WHERE '.$this::champ_id.' = "'.$this->id.'"';
+			$requete = 'DELETE FROM '.$this->table.' WHERE '.$this->champ_id.' = "'.$this->id.'"';
 			$db->query($requete);
 		}
 	}
@@ -149,7 +149,7 @@ abstract class table
 			}
 		}
 
-		$requete = 'SELECT '.$classe::champ_id.', '.$classe::get_liste_champs().' FROM perso WHERE '.$where.' ORDER BY '.$ordre;
+		$requete = 'SELECT '.$classe->champ_id.', '.$classe->get_liste_champs().' FROM perso WHERE '.$where.' ORDER BY '.$ordre;
 		$req = $db->query($requete);
 		if($db->num_rows($req) > 0)
 		{
