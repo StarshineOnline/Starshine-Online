@@ -11,6 +11,8 @@ define('BASE', 'http://www.starshine-online.com/');
 	/// Révision actuelle
 	$G_revision = 124;
 
+  $G_mailto = 'masterob1@free.fr';
+
 	$G_ligne = 1000;
 	$G_colonne = 1000;
 	$G_ligne_donjon = 1000;

@@ -222,7 +222,9 @@ if(!$visu AND isset($_GET['action']))
 								$joueur->set_inventaire_slot_partie($gemme, $i);
 								$joueur->set_inventaire_slot(serialize($joueur->get_inventaire_slot_partie(false, true)));
 								echo 'Identification réussie !<br />Votre gemme est une '.$row['nom'];
-								mail('masterob1@free.fr', 'Starshine Test - Identification réussie', $joueur->get_nom().' a identifié '.$row['nom']);
+								if (isset($G_mailto)) $mailto = $G_mailto;
+								else $mailto = 'masterob1@free.fr';
+								mail($mailto, 'Starshine Test - Identification réussie', $joueur->get_nom().' a identifié '.$row['nom']);
 							}
 							else
 							{
@@ -622,7 +624,9 @@ if(!$visu AND isset($_GET['action']))
 							$message_mail = $joueur->get_nom()." vend ".nom_objet($objet_id)." (".$objet_id.") pour ".$_GET['prix']." stars. Commission : ".$comm." stars";
 							echo 'Vous mettez en vente '.nom_objet($objet_id).' pour '.$_GET['prix'].' stars. Commission : '.$comm.' stars<br />';
 						}
-						mail('masterob1@free.fr', 'Starshine - Dépot HV', $message_mail);
+						if (isset($G_mailto)) $mailto = $G_mailto;
+						else $mailto = 'masterob1@free.fr';
+						mail($mailto, 'Starshine - Dépot HV', $message_mail);
 					}
 					else
 					{
