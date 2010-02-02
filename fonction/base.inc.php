@@ -2326,21 +2326,21 @@ Votre dernier souvenir est l'endroit où vous êtes mort <?php echo 'x : '.$joue
 						while($row = $db->read_assoc($req))
 						{
 							echo '
-						<li><a href="mort.php?choix=2&amp;rez='.$row['id'].'">Vous faire ressuciter par '.$row['nom_rez'].' ('.($row['pourcent'] + $bonus).'% HP / '.($row['pourcent'] + $bonus).' MP)</li>';
+						<li style="padding-top:5px;padding-bottom:5px;"><a href="mort.php?choix=2&amp;rez='.$row['id'].'">Vous faire ressuciter par '.$row['nom_rez'].' ('.($row['pourcent'] + $bonus).'% HP / '.($row['pourcent'] + $bonus).' MP)</li>';
 						}
 					}
 					// Fort le plus proche (si on le personnage n'est pas dans un donjon)
 					if($bat > 0 AND !is_donjon($joueur->get_x(), $joueur->get_y()))
 					{
 							echo '
-						<li><a href="mort.php?choix=3&amp;rez='.$row_d['id'].'">Revenir dans le fort le plus proche (x : '.$row_b['x'].' / y : '.$row_b['y'].') ('.($row_b['rez'] + $bonus).'% HP / '.($row_b['rez'] + $bonus).'% MP)</li>';
+						<li style="padding-top:5px;padding-bottom:5px;"><a href="mort.php?choix=3&amp;rez='.$row_d['id'].'">Revenir dans le fort le plus proche (x : '.$row_b['x'].' / y : '.$row_b['y'].') ('.($row_b['rez'] + $bonus).'% HP / '.($row_b['rez'] + $bonus).'% MP)</li>';
 					}
 					// Capitale ou refuge des criminels
 					echo '
-						<li><a href="mort.php?choix=1">'.$echo.' ('.(20 + $bonus).'% HP / '.(20 + $bonus).'% MP)</a></li>';
+						<li style="padding-top:5px;padding-bottom:5px;"><a href="mort.php?choix=1">'.$echo.' ('.(20 + $bonus).'% HP / '.(20 + $bonus).'% MP)</a></li>';
 					?>
-						<li><a href="index.php?deco=ok">Vous déconnecter</a></li>
-						<li>Vous pouvez attendre qu&rsquo;un autre joueur vous ressucite</li>
+						<li style="padding-top:5px;padding-bottom:5px;"><a href="index.php?deco=ok">Vous déconnecter</a></li>
+						<li style="padding-top:5px;padding-bottom:5px;">Vous pouvez attendre qu&rsquo;un autre joueur vous ressucite</li>
 					</ul>
 					<a href="index.php">Index du jeu</a> - <a href="http://forum.starshine-online.com">Accéder au forum</a>  - <a href="http://www.starshine-online.com/tigase/">Accéder au Tchat</a>
 
