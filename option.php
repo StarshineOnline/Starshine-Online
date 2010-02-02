@@ -1,8 +1,9 @@
 <?php
 if (file_exists('root.php'))
   include_once('root.php');
-?><?php
+
 include_once(root.'inc/fp.php');
+
 ?>
 		<div class="titre">
 			Options de votre compte
@@ -163,6 +164,14 @@ include_once(root.'inc/fp.php');
 			}
 			else
 			{
+				
+				$q = $db->query("select password from perso where id = $_SESSION[ID]");
+				if($q)
+				{
+					$row = $db->read_row($q);
+					$clef_api = sha1($row[0]);
+				}
+
 			?>
 			<div class"news">
 				<h3>Options du jeu</h3>
@@ -176,6 +185,7 @@ include_once(root.'inc/fp.php');
 				<strong>Attention cela change &eacute;galement votre mot de passe sur le forum!</strong><br />
 				<ul>
 					<li><a href="option.php?action=mdp" onclick="return envoiInfo(this.href, 'popup_content');">Modifier votre mot de passe</a></li>
+					<li>Clef API: <?php echo $clef_api ?></li>
 				</ul>
 			</div>
 			<div class"news">

@@ -2,8 +2,19 @@
 if (file_exists('root.php'))
   include_once('root.php');
 
+$api_login = true;
+$check = false;
+
 //Inclusion du haut du document html
 include_once(root.'haut_ajax.php');
+
+if ($check == false)
+{
+	header('HTTP/1.1 403 Forbidden');
+	echo $erreur_login;
+	exit (0);
+}
+
 header('Content-Type: text/xml; charset=utf-8');
 //header('Content-type: text/plain');
 

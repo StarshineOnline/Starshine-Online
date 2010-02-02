@@ -1,14 +1,14 @@
 <?php
 if (file_exists('../root.php'))
   include_once('../root.php');
-?><?php
+
 class identification
 {
 	function __construct()
 	{
 	}
 	
-	function connexion($nom, $password, $autologin = false)
+	function connexion($nom, $password, $autologin = false, $api = false)
 	{
 		global $db, $erreur_login;
 		$requete = 'SELECT ID, nom, password, dernier_connexion, statut, fin_ban, race, rang_royaume FROM perso WHERE nom = \''.$nom.'\'';
@@ -17,6 +17,9 @@ class identification
 		{
 			$row = $db->read_assoc($req);
 			$password_base = $row['password'];
+			// On utilise le sha1 du md5 pour se logguer en API, histoire de pas
+			// pouvoir crafter de cookie d'auto-login
+			if ($api) $password_base = sha1($row['password']);
 			$ID_base = $row['ID'];
 			//Tout est Ok, on connecte le joueur.
 			if ($password === $password_base)
@@ -31,7 +34,7 @@ class identification
 					else
 					{
 						//Si il n'y a pas de session
-						if(!array_key_exists('nom', $_SESSION))
+						if(!array_key_exists('nom', $_SESSION) && $api == false)
 						{
 							//Insertion dans les logs
 							$requete = "INSERT INTO log_connexion VALUES(NULL, ".$ID_base.", ".time().", '".$_SERVER['REMOTE_ADDR']."', 'Ok')";
