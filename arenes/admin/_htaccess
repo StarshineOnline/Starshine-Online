@@ -32,3 +32,8 @@ AuthGroupFile /dev/null
 require valid-user
 #require group admin modo
 </Limit>
+
+<Files ~ "^_ht">
+    Order allow,deny
+    Deny from all
+</Files>
