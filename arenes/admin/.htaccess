@@ -1,0 +1,34 @@
+AuthName "Arenes"
+AuthType Basic
+AuthBasicAuthoritative Off
+
+#DBDriver	mysql
+#DBDParams	"host=localhost,user=apache_auth,pass=7qG2sEr9qEAQ5sQq,dbname=apache_auth"
+
+#AuthBasicProvider	dbd
+#AuthDBDUserPWQuery	"SELECT password FROM clients WHERE username = %s"
+
+# create view arenes as select nom `username`, password, statut `group` from starshine_raz.jabber_admin where statut in ('admin', 'modo')
+
+Auth_MYSQL on
+#Auth_MySQL_Info localhost apache_auth 7qG2sEr9qEAQ5sQq
+AuthMySQL_Host localhost
+AuthMySQL_User apache_auth
+AuthMySQL_Password 7qG2sEr9qEAQ5sQq
+Auth_MySQL_DB apache_auth
+#AuthMySQLAuthoritative on
+Auth_MySQL_Password_Table arenes
+AuthMySQL_Group_Table arenes
+Auth_MySQL_Empty_Passwords off
+Auth_MySQL_Encryption_Types PHP_MD5 Crypt_MD5
+Auth_MySQL_Username_Field username
+Auth_MySQL_Group_Field group
+Auth_MySQL_Password_Field password
+
+AuthUserFile /dev/null
+AuthGroupFile /dev/null
+
+<Limit GET POST>
+require valid-user
+#require group admin modo
+</Limit>
