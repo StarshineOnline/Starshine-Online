@@ -3,7 +3,7 @@ if (file_exists('../root.php'))
   include_once('../root.php');
 
 //Inclusion du haut du document html
-include(root.'haut_ajax.php');
+include(root.'roi/haut_roi.php');
 
 $joueur = new perso($_SESSION['ID']);
 

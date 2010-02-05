@@ -330,8 +330,8 @@ if($W_row['type'] == 1)
 		<ul id='hotel_liste_type'>
 
 		
-		<li onclick=\"envoiInfo('".$url2."&amp;part=ceinture', 'carte');\">Ceinture|</li>
-		<li onclick=\"envoiInfo('".$url2."&amp;part=chaussure', 'carte');\">Chaussure|</li>
+		<li onclick=\"envoiInfo('".$url2."&amp;part=ceinture', 'carte');\">Taille|</li>
+		<li onclick=\"envoiInfo('".$url2."&amp;part=chaussure', 'carte');\">Pieds|</li>
 		<li onclick=\"envoiInfo('".$url2."&amp;part=jambe', 'carte');\">Jambe|</li>
 		<li onclick=\"envoiInfo('".$url2."&amp;part=main', 'carte');\">Main|</li>
 		<li onclick=\"envoiInfo('".$url2."&amp;part=tete', 'carte');\">Tête|</li>

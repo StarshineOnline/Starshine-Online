@@ -59,6 +59,20 @@ if(!array_key_exists('action', $_GET))
 			</div>
 			<?php
 		}
+		echo "<p class='pagination'>";
+		if($page > 1)
+		{
+			echo '<a href="messagerie.php?id_thread='.$messagerie->thread->id_thread.'&amp;page='.($page - 1).'" onclick="return envoiInfo(this.href, \'information\');"><span class="message_prev" title="Revenir à la page précédente"></span></a>';
+		} 
+		else
+		{
+			echo '<span style="height:20px; width:20px; display:block; float:left;"></span>';
+		}
+		$page = ($page == 0) ? 1 : $page;
+		echo '<span class="pages">'.$page.' / '.$page_max.'</span>';
+		if($page < $page_max) echo '<a href="messagerie.php?id_thread='.$messagerie->thread->id_thread.'&amp;page='.($page + 1).'" onclick="return envoiInfo(this.href, \'information\');"><span class="message_next" title="Allez à la page suivante"></span></a>';
+		echo "</p>";
+		
 		$messagerie->set_thread_lu($id_thread);
 		?>
 		<img src="image/pixel.gif" onLoad="envoiInfo('menu_carteville.php?javascript=oui', 'carteville');" />
@@ -149,7 +163,7 @@ else
 				{
 					if($thread->important) $important_etat = 0;
 					else $important_etat = 1;
-					$options = '<a href="thread_modif?id_thread='.$thread->id_thread.'&important='.$important_etat.'" onclick="return envoiInfo(this.href, \'\');">(i)</a>';
+					//$options = '<a href="thread_modif?id_thread='.$thread->id_thread.'&important='.$important_etat.'" onclick="return envoiInfo(this.href, \'\');">(i)</a>';
 				}
 				if(($groupe->get_leader() && $type_thread == 'groupe') OR ($thread->id_auteur == $joueur->get_id() && !array_key_exists(1, $thread->messages)))
 				{

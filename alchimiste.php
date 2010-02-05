@@ -48,7 +48,7 @@ if($W_distance == 0)
 				$row = $db->read_array($req);
 				$taxe = ceil($row['prix'] * $R->get_taxe / 100);
 				$cout = $row['prix'] + $taxe;
-				if ($joueur->get_star() >= $cout)
+				if ($joueur->get_star() >= $cout AND $joueur->get_star() > 0)
 				{
 					if($joueur->prend_objet('o'.$row['id']))
 					{

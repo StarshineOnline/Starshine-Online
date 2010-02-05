@@ -57,24 +57,27 @@ switch($type)
 		if($_GET['table'] == 'construction') $map_batiment = new construction($_GET['id_batiment']);
 		else $map_batiment = new placement($_GET['id_batiment']);
 		$joueur = new perso($_SESSION['ID']);
-		$siege = new batiment($map_siege->get_id_batiment());
-		$siege->bonus_architecture = 1 + ($joueur->get_architecture() / 100);
-		$siege->hp_max = $siege->get_hp();
-		$siege->set_hp($map_siege->get_hp());
-		$siege->x = $map_siege->get_x();
-		$siege->y = $map_siege->get_y();
-		$joueur_defenseur = new batiment($map_batiment->get_id_batiment());
-		if($_GET['table'] == 'construction') $joueur_defenseur->coef = 1;
-		else $joueur_defenseur->coef = $map_batiment->get_temps_restant() / $map_batiment->get_temps_total();
-		$joueur_defenseur->hp_max = $joueur_defenseur->get_hp();
-		$joueur_defenseur->set_hp($map_batiment->get_hp());
-		$joueur_defenseur->x = $map_batiment->get_x();
-		$joueur_defenseur->y = $map_batiment->get_y();
-		//Si en défense c'est une arme de siège, on applique les dégats 2
-		if($joueur_defenseur->get_type() == 'arme_de_siege') $siege->arme_degat = $siege->get_bonus2();
-		else $siege->arme_degat = $siege->get_bonus1();
-		$attaquant = new entite('siege', $siege);
-		$defenseur = new entite('batiment', $joueur_defenseur);
+		if($joueur->get_pa() >= 10)
+		{
+			$siege = new batiment($map_siege->get_id_batiment());
+			$siege->bonus_architecture = 1 + ($joueur->get_architecture() / 100);
+			$siege->hp_max = $siege->get_hp();
+			$siege->set_hp($map_siege->get_hp());
+			$siege->x = $map_siege->get_x();
+			$siege->y = $map_siege->get_y();
+			$joueur_defenseur = new batiment($map_batiment->get_id_batiment());
+			if($_GET['table'] == 'construction') $joueur_defenseur->coef = 1;
+			else $joueur_defenseur->coef = $map_batiment->get_temps_restant() / $map_batiment->get_temps_total();
+			$joueur_defenseur->hp_max = $joueur_defenseur->get_hp();
+			$joueur_defenseur->set_hp($map_batiment->get_hp());
+			$joueur_defenseur->x = $map_batiment->get_x();
+			$joueur_defenseur->y = $map_batiment->get_y();
+			//Si en défense c'est une arme de siège, on applique les dégats 2
+			if($joueur_defenseur->get_type() == 'arme_de_siege') $siege->arme_degat = $siege->get_bonus2();
+			else $siege->arme_degat = $siege->get_bonus1();
+			$attaquant = new entite('siege', $siege);
+			$defenseur = new entite('batiment', $joueur_defenseur);
+		}
 	break;
 	case 'ville' :
 		$map_siege = new construction($_GET['id_arme_de_siege']);

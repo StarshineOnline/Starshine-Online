@@ -14,7 +14,7 @@ else if(!array_key_exists('direction', $_GET))
 	echo "</div>";
 	echo "<div id='contruction'>";
 	
-	$req = $db->query("SELECT *, placement.royaume AS r FROM placement LEFT JOIN map ON map.id = ((placement.y * 1000) + placement.x) WHERE placement.type = 'drapeau' AND placement.royaume != ".$royaume->get_id()." AND map.royaume = ".$royaume->get_id()."");
+	$req = $db->query("SELECT *, placement.royaume AS r, placement.type FROM placement LEFT JOIN map ON map.id = ((placement.y * 1000) + placement.x) WHERE (placement.type = 'drapeau' OR placement.type = 'arme_de_siege') AND placement.royaume != ".$royaume->get_id()." AND map.royaume = ".$royaume->get_id()."");
 	if ($db->num_rows($req)>0)
 	{
 		echo "<fieldset>";	
@@ -27,9 +27,19 @@ else if(!array_key_exists('direction', $_GET))
 			$tmp = transform_sec_temp($row['fin_placement'] - time())." avant fin de construction";
 			echo "
 			<li class='$boutique_class' onclick=\"minimap(".$row['x'].",".$row['y'].")\" onmousemove=\"".make_overlib($tmp)."\" onmouseout='return nd();'>
-				<span style='display:block;width:40px;float:left;'>
-					<img src='../image/drapeaux/drapeau_".$royaume->get_id().".png' style='width:19px;' alt='Drapeau' />".$row['nom']."
-				</span>
+				<span style='display:block;width:220px;float:left;'>";
+			
+				if ($row['type'] == 'arme_de_siege')
+				{
+					$batiment = new batiment($row['id_batiment']);
+					
+					echo "<img src='../image/batiment/".$batiment->get_image()."_04.png' style='width:19px;vertical-align: top;' alt='".$batiment->get_nom()."' />".$batiment->get_nom();
+				}
+				else
+				{
+					echo "<img src='../image/drapeaux/drapeau_".$royaume->get_id().".png' style='width:19px;vertical-align: top;' alt='Drapeau' />".$row['nom'];
+				}
+				echo "</span>
 				<span style='display:block;width:100px;float:left;'>".$Gtrad[$royaume_req->get_race()]."</span>
 				<span style='display:block;width:100px;float:left;'>X : ".$row['x']." - Y : ".$row['y']."</span>
 				<span style='display:block;width:30px;float:left;cursor:pointer;' onmousemove=\"".make_overlib($tmp)."\" onmouseout='return nd();'><img src='../image/icone/mobinfo.png' alt='Avoir les informations' title='Avoir les informations' /></span>
@@ -105,7 +115,7 @@ else if(!array_key_exists('direction', $_GET))
 			echo "<img style='display:block;width:100px;float:left;height:6px;padding-top:5px;' src='genere_barre_hp.php?longueur=".$longueur."' alt='".$construction->get_hp()." / ".$batiment->get_hp()."' title='".$construction->get_hp()." / ".$batiment->get_hp()."'>";
 			
 			echo "<span style='display:block;width:30px;float:left;cursor:pointer;padding-left:4px;'>
-					<a onclick=\"if(confirm('Voulez vous supprimer ce ".$construction->get_nom()." ?')) {return envoiInfo('construction.php?direction=suppr_construction&amp;id=".$construction->get_id()."', 'message_confirm');envoiInfo('construction.php','contenu_jeu');} else {return false;}\"><img src='../image/interface/croix_quitte.png'</a>
+					<a onclick=\"if(confirm('Voulez vous supprimer ce ".$construction->get_nom()." ?')) {return envoiInfo('construction.php?direction=suppr_construction&amp;id=".$construction->get_id()."', 'message_confirm');} else {return false;};\"><img src='../image/interface/croix_quitte.png'</a>
 				</span>
 			</li>";
 			if ($boutique_class == 't1'){$boutique_class = 't2';}else{$boutique_class = 't1';}									
@@ -124,12 +134,23 @@ elseif($_GET['direction'] == 'suppr_construction')
 	if($db->query($requete))
 	{
 		echo '<h6>La construction a été correctement supprimée.</h6>';
+		
+
+		echo "<script type='text/javascript'>
+			// <![CDATA[\n
+
+			envoiInfo('construction.php','contenu_jeu');
+				// ]]>
+		  </script>";
+		
+		
 		//On supprime un bourg au compteur
 		if($row[0] == 'bourg')
 		{
 			supprime_bourg($row[1]);
 		}
 	}
+	
 }
 elseif($_GET['direction'] == 'up_construction')
 {
@@ -144,6 +165,7 @@ elseif($_GET['direction'] == 'up_construction')
 		$construction->set_nom($batiment->get_nom());
 		$construction->set_image($batiment->get_image());
 		$construction->set_date_construction(time());
+		$construction->set_hp($batiment->get_hp());
 		$construction->set_point_victoire($batiment->get_point_victoire());
 		$construction->sauver();
 		
