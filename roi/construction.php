@@ -18,7 +18,7 @@ else if(!array_key_exists('direction', $_GET))
 	if ($db->num_rows($req)>0)
 	{
 		echo "<fieldset>";	
-		echo "<legend>Liste des drapeaux ennemis sur votre territoire</legend>";
+		echo "<legend>Liste des drapeaux et Armes en Construction sur votre territoire</legend>";
 		$boutique_class = 't1';
 		echo "<ul>";		
 		while($row = $db->read_assoc($req))
@@ -26,7 +26,7 @@ else if(!array_key_exists('direction', $_GET))
 			$royaume_req = new royaume($row['r']);
 			$tmp = transform_sec_temp($row['fin_placement'] - time())." avant fin de construction";
 			echo "
-			<li class='$boutique_class' onclick=\"minimap(".$row['x'].",".$row['y'].")\" onmousemove=\"".make_overlib($tmp)."\" onmouseout='return nd();'>
+			<li class='$boutique_class'>
 				<span style='display:block;width:220px;float:left;'>";
 			
 				if ($row['type'] == 'arme_de_siege')
@@ -42,13 +42,37 @@ else if(!array_key_exists('direction', $_GET))
 				echo "</span>
 				<span style='display:block;width:100px;float:left;'>".$Gtrad[$royaume_req->get_race()]."</span>
 				<span style='display:block;width:100px;float:left;'>X : ".$row['x']." - Y : ".$row['y']."</span>
-				<span style='display:block;width:30px;float:left;cursor:pointer;' onmousemove=\"".make_overlib($tmp)."\" onmouseout='return nd();'><img src='../image/icone/mobinfo.png' alt='Avoir les informations' title='Avoir les informations' /></span>
 			</li>";
 			if ($boutique_class == 't1'){$boutique_class = 't2';}else{$boutique_class = 't1';}			
 		}
 	echo "</ul>";
 	echo "</fieldset>";	
 	}
+	$req = $db->query("SELECT *, construction.royaume AS r, construction.type FROM construction LEFT JOIN map ON map.id = ((construction.y * 1000) + construction.x) WHERE construction.type = 'arme_de_siege' AND construction.royaume != ".$royaume->get_id()." AND map.royaume = ".$royaume->get_id()."");
+	if ($db->num_rows($req)>0)
+	{
+		echo "<fieldset>";	
+		echo "<legend>Liste Armes de sieges sur votre territoire</legend>";
+		$boutique_class = 't1';
+		echo "<ul>";		
+		while($row = $db->read_assoc($req))
+		{			
+			$royaume_req = new royaume($row['r']);
+			echo "
+			<li class='$boutique_class'>
+				<span style='display:block;width:220px;float:left;'>";
+				$batiment = new batiment($row['id_batiment']);
+				echo "<img src='../image/batiment/".$batiment->get_image()."_04.png' style='width:19px;vertical-align: top;' alt='".$batiment->get_nom()."' />".$batiment->get_nom();
+				echo "</span>
+				<span style='display:block;width:100px;float:left;'>".$Gtrad[$royaume_req->get_race()]."</span>
+				<span style='display:block;width:100px;float:left;'>X : ".$row['x']." - Y : ".$row['y']."</span>
+			</li>";
+			if ($boutique_class == 't1'){$boutique_class = 't2';}else{$boutique_class = 't1';}			
+		}
+	echo "</ul>";
+	echo "</fieldset>";	
+	}
+	
 	$req = $db->query("SELECT *, map.royaume AS r FROM placement LEFT JOIN map ON map.id = ((placement.y * 1000) + placement.x) WHERE placement.type = 'drapeau' AND placement.royaume = ".$royaume->get_id()."");
 	if ($db->num_rows($req)>0)
 	{
