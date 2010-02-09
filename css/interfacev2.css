@@ -85,6 +85,7 @@ z-index:1;
 background:transparent url(../image/v2/box_accueil2.png) repeat scroll 0 0;
 margin-top:4px;
 }
+
 #information fieldset legend {
 -moz-background-clip:border;
 -moz-background-inline-policy:continuous;
