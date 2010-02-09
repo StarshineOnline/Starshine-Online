@@ -17,7 +17,7 @@ $W_row = $db->read_assoc($W_req);
 $R = new royaume($W_row['royaume']);
 ?>
 	<div id="carte">
-	<fieldset>
+	<fieldset class='ville_<?php echo $R->get_race(); ?>'>
 <?php
 
 $W_distance = detection_distance($W_case, $joueur->get_pos());
@@ -102,8 +102,7 @@ if($W_row['type'] == 1)
 	{
 		?>
 		<legend><?php echo '<a href="ville.php" onclick="return envoiInfo(this.href,\'centre\')">';?><?php echo $R->get_nom();?></a> </legend>
-					<?php include_once(root.'ville_bas.php');
-
+<?
 				
 				if($R->get_id() != 0)
 				{
@@ -129,61 +128,43 @@ if($W_row['type'] == 1)
 					if($db->num_rows > 0)
 					{
 					?>
-					<span class="small">Dernier objet en vente : <?php echo nom_objet($row['objet']); ?> pour <?php echo $row['prix']; ?> stars !</span>
+					<span class="small" style='margin-left:-70px;'>Dernier objet en vente : <?php echo nom_objet($row['objet']); ?> pour <?php echo $row['prix']; ?> stars !</span>
 					<?php
 					}
 				}
 				?>
-							<div class='quartier'>
-							<p class="ville_haut">
+							<div class='quartier_marchand'>
+							<span class="quartier_marchand_titre">
 								Quartier Marchand
-							</p>
+							</span>
 							<?php
 							//Si ca n'est pas en royaume neutre, on peut acheter
 							if($R->get_id() != 0)
 							{
 								?>
-							<ul class="ville">
-								<li>
-									<a href="boutique.php?type=arme" onclick="return envoiInfo(this.href, 'carte')">Forgeron</a>
-								</li>
-								<li>
-									<a href="boutique.php?type=armure" onclick="return envoiInfo(this.href, 'carte')">Armurerie</a>
-								</li>
-								<li>
-									<a href="enchanteur.php" onclick="return envoiInfo(this.href, 'carte')">Enchanteur</a>
-								</li>
-								<li>
-									<a href="alchimiste.php" onclick="return envoiInfo(this.href, 'carte')">Alchimiste</a>
-								</li>
-								<li>
-									<a href="hotel.php" onclick="return envoiInfo(this.href, 'carte')">Hôtel des ventes</a>
-								</li>
+							<ul>
+								<li onclick="envoiInfo('boutique.php?type=arme', 'carte')">Forgeron</li>
+								<li onclick="envoiInfo('boutique.php?type=arme', 'carte')">Armurerie</li>
+								<li onclick="envoiInfo('enchanteur.php', 'carte')">Enchanteur</li>
+								<li onclick="envoiInfo('alchimiste.php', 'carte')">Alchimiste</li>
+								<li onclick="envoiInfo('hotel.php', 'carte')">Hôtel des ventes</li>
 							</ul>
 							</div>
 							<?php
 							}
 							?>
-							<div class='quartier'>
-							<p class="ville_haut">Quartier Royal</p>
-							<ul class="ville">							
-									<li>
-										<a href="bureau_quete.php" onclick="return envoiInfo(this.href,'carte')">Bureau des quêtes</a>
-									</li>
+							<div class='quartier_royal'>
+							<span class="quartier_royal_titre">Quartier Royal</span>
+							<ul>							
+									<li onclick="envoiInfo('bureau_quete.php', 'carte')">Bureau des quêtes</li>
 							<?php
 									//Si on est dans notre royaume
 									if($R->get_diplo($joueur->get_race()) == 127)
 									{
 							?>
-									<li>
-										<a href="vie_royaume.php" onclick="return envoiInfo(this.href, 'carte')">Vie du royaume</a>
-									</li>
-									<li>
-										<a href="qg.php" onclick="return envoiInfo(this.href, 'carte')">Quartier général</a>
-									</li>
-									<li>
-										<a href="vente_terrain.php" onclick="return envoiInfo(this.href, 'carte')">Vente de terrain</a>
-									</li>
+									<li onclick="envoiInfo('vie_royaume.php', 'carte')">Vie du royaume</li>
+									<li onclick="envoiInfo('qg.php', 'carte')">Quartier général</li>
+									<li onclick="envoiInfo('vente_terrain.php', 'carte')">Vente de terrain</li>
 							<?php
 										if($joueur->get_rang_royaume() == 6 ||
 											 $R->get_ministre_economie() == $joueur->get_id() ||
@@ -197,65 +178,35 @@ if($W_row['type'] == 1)
 										}
 									}
 							?>
-					<li>
-						<a href="teleport.php" onclick="return envoiInfo(this.href, 'carte')">Pierre de Téléportation</a>
-					</li>
+					<li onclick="envoiInfo('teleport.php', 'carte')">Pierre de Téléportation</li>
 			</ul>
 			</div>
-			<div class='quartier'>
-				<p class="ville_haut">Haut Quartier</p>
-				<ul class="ville">
-					<li>
-						<a href="ecolemagie.php" onclick="return envoiInfo(this.href, 'carte')">École de magie</a>
-					</li>
-					<li>
-						<a href="ecolecombat.php" onclick="return envoiInfo(this.href, 'carte')">École de combat</a>
-					</li>
-					<li>
-						<a href="universite.php" onclick="return envoiInfo(this.href, 'carte')">Université</a>
-					</li>
-					<li>
-						<a href="tribunal.php" onclick="return envoiInfo(this.href, 'carte')">Tribunal</a>
-					</li>
-<?php
-		if($R->get_diplo($joueur->get_race()) == 127)
-		{
-/*?>
-					<li>
-						<a href="" onclick="return envoiInfo('maison_lignee.php','carte')">Maison de lignées</a>
-					</li>
-<?php*/
-		}
-?>
+			<div class='quartier_haut'>
+				<span class="quartier_haut_titre">Haut Quartier</span>
+				<ul>
+					<li onclick="envoiInfo('ecolemagie.php', 'carte')">École de magie</li>
+					<li onclick="envoiInfo('ecolecombat.php', 'carte')">École de combat</li>
+					<li onclick="envoiInfo('universite.php', 'carte')">Université</li>
+					<li onclick="envoiInfo('tribunal.php', 'carte')">Tribunal</li>
 				</ul>
-				</div>
-				<div class='quartier'>
-			<p class="ville_haut">Bas Quartier</p>
-			<ul class="ville">		
-				<li>
-					<a href="taverne.php" onclick="return envoiInfo(this.href, 'carte')">Taverne</a>
-				</li>
-				<li>
-					<a href="poste.php" onclick="return envoiInfo(this.href, 'carte')">Poste</a>
-				</li>
-					<li>
-						<a href="show_arenes.php" onclick="return envoiInfo(this.href, 'carte')">Arènes</a>
-					</li>
+			</div>
+			<div class='quartier_bas'>
+			<span class="quartier_bas_titre">Bas Quartier</span>
+			<ul>		
+				<li onclick="envoiInfo('taverne.php', 'carte')">Taverne</li>
+				<li onclick="envoiInfo('poste.php', 'carte')">Poste</li>
+				<li onclick="envoiInfo('show_arenes.php', 'carte')">Arènes</li>
 <?php
 		if($R->get_diplo($joueur->get_race()) == 127)
 		{
 			?>
-				<li>
-					<a href="terrain_chantier.php" onclick="return envoiInfo(this.href, 'carte')">Bâtiments en chantier</a>
-				</li>
+				<li onclick="envoiInfo('terrain_chantier.php', 'carte')">Bâtiments en chantier</li>
 			<?php
 			$terrain = new terrain();
 			if($terrain = $terrain->recoverByIdJoueur($joueur->get_id()))
 			{
 			?>
-					<li>
-						<a href="terrain.php" onclick="return envoiInfo(this.href, 'carte')">Votre terrain</a>
-					</li>
+					<li onclick="envoiInfo('terrain.php', 'carte')">Votre terrain</li>
 			<?php
 			}
 		}

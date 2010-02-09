@@ -199,9 +199,12 @@ body { margin:0; padding:0; background:#7e909c url(../image/v2/bg_site.png) repe
 .message_prev:hover { background-position:bottom!important; }
 .message_next { background:transparent url(./../image/interface/next_20.png) no-repeat scroll top; height:20px; width:20px; display:block; float:right; }
 .message_next:hover { background-position:bottom!important; }
-.bulle_message {	border-width: 16px 8px 8px 8px;	-webkit-border-image: url('./../image/interface/bulle_message.png') 16 8 8 8;-moz-border-image: url('./../image/interface/bulle_message.png') 16 8 8 8;}
+.bulle_message {min-height: 25px;	float:left;width:430px;margin-top:-3px;border-width: 20px 8px 20px 8px;	-webkit-border-image: url('./../image/interface/bulle_message.png') 20 8 20 8;-moz-border-image: url('./../image/interface/bulle_message.png') 20 8 20 8;}
 .bulle_message_me {	border-width: 16px 8px 8px 8px;	-webkit-border-image: url('./../image/interface/bulle_message_me.png') 16 8 8 8;-moz-border-image: url('./../image/interface/bulle_message_me.png') 16 8 8 8;}
-.bulle_message_new {	border-width: 16px 8px 8px 8px;	-webkit-border-image: url('./../image/interface/bulle_message_new.png') 16 8 8 8;-moz-border-image: url('./../image/interface/bulle_message_new.png') 16 8 8 8;}
+.bulle_message_new {min-height: 25px;	float:left;width:430px;margin-top:-3px;border-width: 20px 8px 20px 8px;	-webkit-border-image: url('./../image/interface/bulle_message_new.png') 20 8 20 8;-moz-border-image: url('./../image/interface/bulle_message_new.png') 20 8 20 8;}
+.haut_bulle_gauche{background:transparent url(./../image/interface/bulle_message_haut.png) no-repeat scroll top;display:block;float:left;height:16px;margin-left:21px;margin-top:9px;width:21px;margin-right:7px;}
+.haut_bulle_droite{background:transparent url(./../image/interface/bulle_message_haut_droite.png) no-repeat scroll top;display:block;float:right;height:16px;margin-left:7px;margin-top:9px;width:21px;margin-right:21px;}
+
 .pages {text-align: center;line-height:19px;margin-left:185px;}
 .pagination {background-color: #eee;-moz-border-radius:10px; -webkit-border-radius:10px; border-radius: 10px;}
 #conteneur_test { height:100%; width:100%; z-index:99999; cursor:wait; position:absolute; }
@@ -363,6 +366,41 @@ table.inventaire tr.element td,table.inventaire tr.header td { font-size:.9em; }
 #boutique .nom_hotel 		{float:left;width:44%;}
 #boutique .time 		{float:left;width:35%;}
 #boutique .prix_hotel 	{float:left;width:10%;}
+
+.ville_mortvivant 		{background:transparent url(../image/ville/fondmv1.jpg) center !important;height:397px;width:419px;}
+.ville_barbare 			{background:transparent url(../image/ville/villebarbarebiseau.png) center !important;height:397px;width:419px;}
+.ville_elfebois 		{background:transparent url(../image/ville/villeEDBbiseau.png) center !important;height:397px;width:419px;}
+.ville_elfehaut 		{background:transparent url(../image/ville/villeHEbiseau.png) center !important;height:397px;width:419px;}
+.ville_humain 			{background:transparent url(../image/ville/villehumainbiseau.png) center !important;height:397px;width:419px;}
+.ville_humainnoir 		{background:transparent url(../image/ville/villecorrbiseau.png) center !important;height:397px;width:419px;}
+.ville_nain 			{background:transparent url(../image/ville/villenainbiseau.png) center !important;height:397px;width:419px;}
+.ville_orc 				{background:transparent url(../image/ville/villeorcbiseau.png) center !important;height:397px;width:419px;}
+.ville_scavenger 		{background:transparent url(../image/ville/villescavbiseau.png) center !important;height:397px;width:419px;}
+.ville_troll 			{background:transparent url(../image/ville/villetrollbiseau.png) center !important;height:397px;width:419px;}
+.ville_vampire 			{background:transparent url(../image/ville/villevampirebiseau.png) center !important;height:397px;width:419px;}
+
+
+.quartier_marchand		{background:transparent url(../image/ville/cadrebiseauQM.png) center;padding:6px;margin-left:16px;margin-top:35px;width:138px;height:121px;float:left;}
+.quartier_marchand_titre {font-size:14px;font-variant:small-caps; font-family:"Trebuchet MS", Times, serif; font-weight:bold;background:transparent url(../image/ville/cadretitreQM.png) top;display:block;height:34px;width:148px;margin-left:-4px;margin-top:-2px;line-height:32px;text-indent:15px;}
+.quartier_marchand li {cursor: pointer; background: #AFBDD6;border : 1px solid #666;-moz-border-radius: 6px;-webkit-border-radius:6px; border-radius: 6px;font-size:11px;height:14px;margin:2px;text-align:center;}
+.quartier_marchand li:hover {background: #FFF;}
+
+
+.quartier_royal			{background:transparent url(../image/ville/cadrebiseauQR.png) center;padding:6px;margin-top:19px;margin-left:93px;width:132px;height:138px;float:left;}
+.quartier_royal_titre {font-size:14px;font-variant:small-caps; font-family:"Trebuchet MS", Times, serif; font-weight:bold;background:transparent url(../image/ville/cadretitreQR.png) top;display:block;height:34px;width:134px;margin-left:0px;margin-top:-2px;line-height:32px;text-indent:20px;}
+.quartier_royal li {cursor: pointer;background: #AFBDD6;border : 1px solid #666;-moz-border-radius: 6px;-webkit-border-radius:6px; border-radius: 6px;font-size:11px;height:14px;margin:2px;text-align:center;}
+.quartier_royal li:hover {background: #FFF;}
+
+.quartier_haut			{background:transparent url(../image/ville/cadrebiseauHQ.png) center;padding:6px;margin-top:59px;margin-left:23px;width:116px;height:107px;float:left;}
+.quartier_haut_titre {font-size:14px;font-variant:small-caps; font-family:"Trebuchet MS", Times, serif; font-weight:bold;background:transparent url(../image/ville/cadretitreHQ.png) top;display:block;height:34px;width:114px;margin-left:0px;margin-top:-2px;line-height:33px;text-indent:15px;}
+.quartier_haut li {cursor: pointer;background: #AFBDD6;border : 1px solid #666;-moz-border-radius: 6px;-webkit-border-radius:6px; border-radius: 6px;font-size:11px;height:14px;margin:2px;text-align:center;}
+.quartier_haut li:hover {background: #FFF;}
+
+
+.quartier_bas			{background:transparent url(../image/ville/cadrebiseauBQ.png) center;padding:6px;margin-top:62px;margin-left:103px;width:132px;height:107px;float:left;}
+.quartier_bas_titre {font-size:14px;font-variant:small-caps; font-family:"Trebuchet MS", Times, serif; font-weight:bold;background:transparent url(../image/ville/cadretitreBQ.png) top;display:block;height:34px;width:106px;margin-left:12px;margin-top:-4px;line-height:37px;text-indent:15px;}
+.quartier_bas li {cursor: pointer;background: #AFBDD6;border : 1px solid #666;-moz-border-radius: 6px;-webkit-border-radius:6px; border-radius: 6px;font-size:11px;height:14px;margin:2px;text-align:center;}
+.quartier_bas li:hover {background: #FFF;}
 
 .trcolor2 { background-color:#B4CFEF;border-radius : 5px;-moz-border-radius: 5px;-webkit-border-radius:5px; }
 
