@@ -1,2669 +1,1847 @@
 /* CSS Document */
 
- ....loading....
- 
-html {
-height:100%;
-width:100%;
-}
-body {
--moz-background-clip:border;
--moz-background-inline-policy:continuous;
--moz-background-origin:padding;
--x-system-font:none;
-background:#7E909C url(../image/v2/bg_site.png) repeat-x scroll 0 0;
-font-family:"Helvetica Neue",Helvetica,Arial,Geneva,sans-serif;
-font-size:13px;
-font-size-adjust:none;
-font-stretch:normal;
-font-style:normal;
-font-variant:normal;
-font-weight:normal;
-height:100%;
-line-height:normal;
-margin:0;
-padding:0;
-width:100%;
-}
-#top {
-display:block;
-margin:0 auto;
-width:1000px;
-z-index:5;
-}
-#conteneur {
-margin:auto;
-min-height:100%;
-width:985px;
-}
-#conteneur_back {
--moz-background-clip:border;
--moz-background-inline-policy:continuous;
--moz-background-origin:padding;
-background:transparent url(../image/interface/global2.png) repeat-y scroll center center;
-margin:0 auto;
-min-height:120%;
-width:1000px;
-z-index:2;
-}
-#bas {
-clear:both;
-font-size:9px;
-margin:0 auto;
-text-align:center;
-width:1000px;
-}
-#centre {
-float:left;
-height:100%;
-margin-left:7px;
-margin-top:3px;
-z-index:3;
-}
-#deplacement {
-float:left;
-margin-left:5px;
-text-align:right;
-vertical-align:top;
-width:50px;
-}
-#information {
-float:left;
-height:100%;
-margin-left:6px;
-width:47%;
-z-index:1;
-}
-#information fieldset {
--moz-background-clip:border;
--moz-background-inline-policy:continuous;
--moz-background-origin:padding;
--moz-border-radius-bottomleft:10px;
--moz-border-radius-bottomright:10px;
--moz-border-radius-topleft:10px;
--moz-border-radius-topright:10px;
-background:transparent url(../image/v2/box_accueil2.png) repeat scroll 0 0;
-margin-top:4px;
-}
+/*-- Global site --------------------------------------------------*/
 
-#information fieldset legend {
--moz-background-clip:border;
--moz-background-inline-policy:continuous;
--moz-background-origin:padding;
--moz-border-radius-bottomleft:10px;
--moz-border-radius-bottomright:10px;
--moz-border-radius-topleft:10px;
--moz-border-radius-topright:10px;
-background:transparent url(../image/v2/bouton_fond.png) repeat scroll 0 0;
-font-weight:bold;
-padding-left:10px;
-padding-right:10px;
-}
-#information a, .visu a {
-color:#444444;
-text-decoration:none;
-}
-#information a:hover, .visu a:hover {
-color:#888888;
-text-decoration:none;
-}
-#perso {
-background-color:#C6D9F5;
-margin:0;
-min-height:120px;
-padding:0;
-}
-#perso_menu {
-margin-left:94px;
-margin-top:-15px;
-}
-#perso_menu ul {
-height:17px;
-list-style-type:none;
-margin:0;
-padding:0;
-position:relative;
-text-align:center;
-}
-#perso_menu ul li {
--moz-background-clip:border;
--moz-background-inline-policy:continuous;
--moz-background-origin:padding;
--moz-border-radius-topleft:12px;
--moz-border-radius-topright:12px;
-background:transparent url(../image/v2/box_accueil2.png) repeat scroll 0 0;
-border-left:1px solid #777777;
-border-right:1px solid #777777;
-border-top:1px solid #777777;
-cursor:pointer;
-font-style:italic;
-margin-left:5px;
-margin-right:5px;
-padding-left:5px;
-padding-right:5px;
-width:100px;
-}
-#perso_menu .menu {
-float:left;
-}
-#perso_menu .select {
--moz-background-clip:border;
--moz-background-inline-policy:continuous;
--moz-background-origin:padding;
-background:transparent url(../image/v2/bouton_selected.png) repeat-x scroll 0 0;
-font-style:normal;
-font-weight:bold;
-}
-.pos_over {
--moz-background-clip:border;
--moz-background-inline-policy:continuous;
--moz-background-origin:padding;
--moz-border-radius-bottomleft:5px;
--moz-border-radius-bottomright:5px;
--moz-border-radius-topleft:5px;
--moz-border-radius-topright:5px;
-background:transparent url(../image/interface/2.png) repeat scroll center center;
-display:block;
-height:58px !important;
-width:58px !important;
-}
-#perso_contenu {
-margin:auto;
-min-height:110px;
-padding:5px;
-}
-#contenu_jeu {
-margin:0 auto;
-width:100%;
-}
-#popup {
--moz-background-clip:border;
--moz-background-inline-policy:continuous;
--moz-background-origin:padding;
--moz-border-radius-bottomleft:12px;
--moz-border-radius-bottomright:12px;
--moz-border-radius-topleft:12px;
--moz-border-radius-topright:12px;
-background:transparent url(../image/v2/box_accueil.png) repeat scroll 0 0;
-color:#EEEEEE;
-margin-left:130px;
-position:absolute;
-top:60px;
-z-index:99 !important;
-}
-#popup a {
-color:#EEEEEE;
-}
-#popup_menu {
--moz-background-clip:border;
--moz-background-inline-policy:continuous;
--moz-background-origin:padding;
-background:transparent url(../image/v2/bouton_fond.png) repeat-x scroll 0 0;
-cursor:move;
-}
-#popup_content {
-padding:5px;
-text-align:justify;
-width:98%;
-}
-#popup_marge {
-margin:auto;
-min-height:470px;
-width:800px;
-}
-.fermer {
--moz-background-clip:border;
--moz-background-inline-policy:continuous;
--moz-background-origin:padding;
-background:transparent url(../image/interface/rouge.png) no-repeat scroll left top;
-cursor:pointer !important;
-display:block;
-height:16px;
-width:16px;
-}
-#mask {
-background-image:url(../image/v2/overlay.png);
-height:100%;
-left:0;
-position:absolute;
-top:0;
-width:100%;
-z-index:9999999;
-}
-#header {
-background-color:#C6D9F5;
-margin:0;
-min-height:120px;
-padding:0;
-}
-#header_logo {
--moz-background-clip:border;
--moz-background-inline-policy:continuous;
--moz-background-origin:padding;
-background:transparent url(../image/v2/site_haut.png) no-repeat scroll left center;
-margin:auto;
-min-height:120px;
-width:1000px;
-}
-#header_logo ul {
-height:20px;
-list-style-type:none;
-margin:0;
-padding:0;
-position:relative;
-text-align:center;
-top:101px;
-}
-#header_logo ul li {
--moz-background-clip:border;
--moz-background-inline-policy:continuous;
--moz-background-origin:padding;
--moz-border-radius-topleft:12px;
--moz-border-radius-topright:12px;
-background:transparent url(../image/v2/contenu_fond.png) repeat scroll 0 0;
-border-left:1px solid #777777;
-border-right:1px solid #777777;
-border-top:1px solid #777777;
-cursor:pointer;
-font-style:italic;
-margin-left:5px;
-margin-right:5px;
-padding-left:5px;
-padding-right:5px;
-width:100px;
-}
-#header_logo .menu {
-float:left;
-}
-#header_logo .select {
--moz-background-clip:border;
--moz-background-inline-policy:continuous;
--moz-background-origin:padding;
-background:transparent url(../image/v2/bouton_selected.png) repeat-x scroll 0 0;
-border-bottom:1px solid transparent;
-font-style:normal;
-font-weight:bold;
-}
-#menu {
--moz-background-clip:border;
--moz-background-inline-policy:continuous;
--moz-background-origin:padding;
-background:transparent url(../image/v2/bouton_fond.png) repeat-x scroll 0 0;
-border-bottom:1px solid #888888;
-border-top:1px solid #888888;
-height:20px;
-margin:0;
-padding:0;
-}
-#menu a {
-color:#222222;
-text-decoration:none;
-}
-#menu_date {
-float:left;
-font-size:0.9em;
-height:20px;
-line-height:20px;
-margin-left:9px;
-width:91px;
-}
-#menu_date img {
-height:15px;
-padding-right:8px;
-vertical-align:middle;
-}
-#menu_details {
-float:left;
-font-size:12px;
-margin-top:2px;
-}
-#menu_details .menu {
-border-left:1px solid #CCCCCC;
-cursor:pointer;
-display:block;
-float:left;
-text-align:center;
-width:120px;
-}
-#menu_details .menu:hover {
--moz-background-clip:border;
--moz-background-inline-policy:continuous;
--moz-background-origin:padding;
-background:transparent url(../image/v2/bouton_hover.png) no-repeat scroll left center;
-padding-top:1px;
-}
-#menu_deco {
-cursor:pointer;
-float:right;
-font-size:0.9em;
-line-height:20px;
-margin-right:9px;
-}
-#contenu_back {
-margin:0;
-overflow:auto;
-padding:0;
-}
-#contenu {
-margin:auto;
-min-height:700px;
-width:1000px;
-}
-#news {
-float:left;
-width:830px;
-}
-#mort fieldset {
--moz-border-radius-bottomleft:10px;
--moz-border-radius-bottomright:10px;
--moz-border-radius-topleft:10px;
--moz-border-radius-topright:10px;
-float:left;
-margin:8px;
-width:46%;
-}
-#global {
-border:1px solid red;
-height:100%;
-margin:0 auto;
-position:relative;
-width:960px;
-}
-.spacer {
-border:medium none !important;
-clear:both !important;
-float:none !important;
-font-size:1px !important;
-height:1px !important;
-line-height:1px !important;
-margin:0 0 -1px !important;
-padding:0 !important;
-visibility:hidden !important;
-}
-#menu_jeu {
-float:left;
-margin:0 -5px 0 0;
-width:32px;
-}
-#infos_perso {
--moz-background-clip:border;
--moz-background-inline-policy:continuous;
--moz-background-origin:padding;
-background:transparent url(./../image/fond_infoperso.png) repeat scroll center center;
-float:left;
-height:100px;
-position:relative;
-width:325px;
-}
-#joueur_PA {
--moz-background-clip:border;
--moz-background-inline-policy:continuous;
--moz-background-origin:padding;
-background:green none repeat scroll 0 0;
-color:white;
-font-size:8pt;
-left:105px;
-position:absolute;
-text-align:center;
-top:46px;
-width:125px;
-}
-#joueur_HP {
--moz-background-clip:border;
--moz-background-inline-policy:continuous;
--moz-background-origin:padding;
-background:transparent url(./../image/barre/hp9.png) no-repeat scroll center center;
-color:white;
-font-size:8pt;
-left:105px;
-position:absolute;
-text-align:center;
-top:10px;
-width:125px;
-}
-#joueur_MP {
--moz-background-clip:border;
--moz-background-inline-policy:continuous;
--moz-background-origin:padding;
-background:blue none repeat scroll 0 0;
-color:white;
-font-size:8pt;
-left:105px;
-position:absolute;
-text-align:center;
-top:28px;
-width:125px;
-}
-#joueur_XP {
-height:100px;
-left:0;
-position:absolute;
-top:0;
-width:100px;
-}
-#joueur_PO {
--moz-background-clip:border;
--moz-background-inline-policy:continuous;
--moz-background-origin:padding;
-background:transparent url(./../image/starsv2.png) no-repeat scroll left center;
-font-size:8pt;
-height:24px;
-left:235px;
-line-height:24px;
-padding:0 0 0 24px;
-position:absolute;
-text-align:center;
-top:10px;
-width:50px;
-}
-#joueur_PH {
--moz-background-clip:border;
--moz-background-inline-policy:continuous;
--moz-background-origin:padding;
-background:transparent url(./../image/honneur.png) no-repeat scroll left center;
-font-size:8pt;
-height:24px;
-left:235px;
-line-height:24px;
-padding:0 0 0 24px;
-position:absolute;
-text-align:center;
-top:38px;
-width:50px;
-}
-#joueur_Psso {
--moz-background-clip:border;
--moz-background-inline-policy:continuous;
--moz-background-origin:padding;
-background:transparent url(./../image/pointshine.png) no-repeat scroll left center;
-cursor:pointer;
-height:16px;
-left:85px;
-position:absolute;
-top:0;
-width:16px;
-}
-#joueur_LV {
--moz-background-clip:border;
--moz-background-inline-policy:continuous;
--moz-background-origin:padding;
-background:transparent url(./../image/LV.png) no-repeat scroll left center;
-font-size:8pt;
-font-weight:bold;
-height:24px;
-line-height:24px;
-text-align:center;
-width:24px;
-}
-#joueur_onglets {
-left:88px;
-padding:0 0 0 10px;
-position:absolute;
-top:65px;
-width:225px;
-}
-#joueur_onglets_index, #joueur_onglets_forums, #joueur_onglets_options, #joueur_onglets_exit {
-float:left;
-font-size:0.9em;
-padding-left:5px;
-text-align:left;
-width:250px;
-}
-#joueur_onglets_forums img {
-height:15px;
-}
-#joueur_buffs_nom {
-float:left;
-height:100px;
-margin-left:11px;
-margin-top:-3px;
-position:relative;
-width:283px;
-}
-#joueur_nom {
-cursor:pointer;
-margin-left:55px;
-margin-top:10px;
-position:relative;
-text-align:center;
-width:210px;
-}
-#joueur_type {
-float:left;
-font-size:8pt;
-height:12px;
-position:relative;
-text-align:left;
-width:210px;
-}
-#buff_list {
-margin-left:60px;
-position:relative;
-text-align:center;
-width:210px;
-}
-#debuff_list {
-margin-left:60px;
-position:relative;
-text-align:center;
-width:210px;
-}
-.joueur_groupe_activitenoir, .joueur_groupe_activiterouge, .joueur_groupe_activitebleu, .joueur_groupe_activitevert {
-float:left;
-height:11px;
-margin:2px;
-width:11px;
-}
-.joueur_groupe_activitenoir {
--moz-background-clip:border;
--moz-background-inline-policy:continuous;
--moz-background-origin:padding;
-background:transparent url(../image/groupes/noir.png) repeat scroll center center;
-}
-.joueur_groupe_activiterouge {
--moz-background-clip:border;
--moz-background-inline-policy:continuous;
--moz-background-origin:padding;
-background:transparent url(../image/groupes/rouge.png) repeat scroll center center;
-}
-.joueur_groupe_activitebleu {
--moz-background-clip:border;
--moz-background-inline-policy:continuous;
--moz-background-origin:padding;
-background:transparent url(../image/groupes/bleu.png) repeat scroll center center;
-}
-.joueur_groupe_activitevert {
--moz-background-clip:border;
--moz-background-inline-policy:continuous;
--moz-background-origin:padding;
-background:transparent url(../image/groupes/vert.png) repeat scroll center center;
-}
-#buff_list ul {
-float:left;
-list-style-type:none;
-text-align:center;
-width:210px;
-}
-.buff {
-cursor:pointer;
-float:left;
-height:19px;
-margin:0 2px;
-padding:0;
-position:relative;
-}
-.buff_dispo {
--moz-background-clip:border;
--moz-background-inline-policy:continuous;
--moz-background-origin:padding;
-background:transparent url(../image/buff/buff.png) no-repeat scroll center top;
-float:left;
-height:19px;
-margin:0 2px;
-padding:0;
-position:relative;
-width:16px;
-}
-.buff_nondispo {
--moz-background-clip:border;
--moz-background-inline-policy:continuous;
--moz-background-origin:padding;
-background:transparent url(../image/buff/nobuff.png) no-repeat scroll center top;
-float:left;
-height:19px;
-margin:0 2px;
-padding:0;
-position:relative;
-width:16px;
-}
-.buff_duree_restante {
-bottom:0;
-left:0;
-position:absolute;
-}
-#joueur_groupe {
--moz-background-clip:border;
--moz-background-inline-policy:continuous;
--moz-background-origin:padding;
-background:transparent url(../image/fond_groupe.png) repeat scroll center center;
-float:left;
-height:83px;
-margin-left:30px;
-margin-top:4px;
-width:300px;
-}
-#joueur_groupe_bouton {
-float:left;
-width:50px;
-}
-#joueur_groupe ul {
-float:left;
-width:250px;
-}
-#mail_groupe {
--moz-background-clip:border;
--moz-background-inline-policy:continuous;
--moz-background-origin:padding;
-background:transparent url(../image/message.png) no-repeat scroll center center;
-cursor:pointer;
-height:32px;
-width:32px;
-}
-#info_groupe {
--moz-background-clip:border;
--moz-background-inline-policy:continuous;
--moz-background-origin:padding;
-background:transparent url(../image/interface/information.png) repeat scroll center center;
-cursor:pointer;
-height:21px;
-width:21px;
-}
-#info_groupe:hover {
-background-position:center top;
-}
-#info_groupe:active {
-background-position:center bottom;
-}
-#joueur_groupe li {
-border-bottom:1px dotted #8B94B0;
-cursor:pointer;
-font-size:8pt;
-padding:0 0 2px;
-}
-.joueur_groupe_pseudo {
-float:left;
-line-height:16px;
-width:125px;
-}
-.joueur_groupe_barre_hp {
-float:left;
-height:6px;
-margin:0;
-width:102px;
-}
-.joueur_groupe_barre_mp {
-float:left;
-height:6px;
-margin:1px 0 0;
-width:102px;
-}
-#rosedesvents {
-height:75px;
-left:13px;
-position:absolute;
-top:13px;
-width:75px;
-z-index:1;
-}
-#rose_div_hg {
--moz-background-clip:border;
--moz-background-inline-policy:continuous;
--moz-background-origin:padding;
-background:transparent url(./../image/rosedesvent/nordouest.png) repeat scroll center center;
-cursor:pointer;
-float:left;
-height:25px;
-width:25px;
-}
-#rose_div_hg:hover {
-background-position:center top;
-}
-#rose_div_hg:active {
-background-position:center bottom;
-}
-#rose_div_h {
--moz-background-clip:border;
--moz-background-inline-policy:continuous;
--moz-background-origin:padding;
-background:transparent url(./../image/rosedesvent/nord.png) repeat scroll center center;
-cursor:pointer;
-float:left;
-height:25px;
-width:25px;
-}
-#rose_div_h:hover {
-background-position:center top;
-}
-#rose_div_h:active {
-background-position:center bottom;
-}
-#rose_div_hd {
--moz-background-clip:border;
--moz-background-inline-policy:continuous;
--moz-background-origin:padding;
-background:transparent url(./../image/rosedesvent/nordest.png) repeat scroll center center;
-cursor:pointer;
-float:left;
-height:25px;
-width:25px;
-}
-#rose_div_hd:hover {
-background-position:center top;
-}
-#rose_div_hd:active {
-background-position:center bottom;
-}
-#rose_div_cg {
--moz-background-clip:border;
--moz-background-inline-policy:continuous;
--moz-background-origin:padding;
-background:transparent url(./../image/rosedesvent/ouest.png) repeat scroll center center;
-clear:both;
-cursor:pointer;
-float:left;
-height:25px;
-width:25px;
-}
-#rose_div_cg:hover {
-background-position:center top;
-}
-#rose_div_cg:active {
-background-position:center bottom;
-}
-#rose_div_c {
--moz-background-clip:border;
--moz-background-inline-policy:continuous;
--moz-background-origin:padding;
-background:transparent url(./../image/rosedesvent/rafraichir.png) repeat scroll center center;
-cursor:pointer;
-float:left;
-height:25px;
-width:25px;
-}
-#rose_div_c:hover {
-background-position:center top;
-}
-#rose_div_c:active {
-background-position:center bottom;
-}
-#rose_div_cd {
--moz-background-clip:border;
--moz-background-inline-policy:continuous;
--moz-background-origin:padding;
-background:transparent url(./../image/rosedesvent/est.png) repeat scroll center center;
-cursor:pointer;
-float:left;
-height:25px;
-width:25px;
-}
-#rose_div_cd:hover {
-background-position:center top;
-}
-#rose_div_cd:active {
-background-position:center bottom;
-}
-#rose_div_bg {
--moz-background-clip:border;
--moz-background-inline-policy:continuous;
--moz-background-origin:padding;
-background:transparent url(./../image/rosedesvent/sudouest.png) repeat scroll center center;
-clear:both;
-cursor:pointer;
-float:left;
-height:25px;
-width:25px;
-}
-#rose_div_bg:hover {
-background-position:center top;
-}
-#rose_div_bg:active {
-background-position:center bottom;
-}
-#rose_div_b {
--moz-background-clip:border;
--moz-background-inline-policy:continuous;
--moz-background-origin:padding;
-background:transparent url(./../image/rosedesvent/sud.png) repeat scroll center center;
-cursor:pointer;
-float:left;
-height:25px;
-width:25px;
-}
-#rose_div_b:hover {
-background-position:center top;
-}
-#rose_div_b:active {
-background-position:center bottom;
-}
-#rose_div_bd {
--moz-background-clip:border;
--moz-background-inline-policy:continuous;
--moz-background-origin:padding;
-background:transparent url(./../image/rosedesvent/sudest.png) repeat scroll center center;
-cursor:pointer;
-float:left;
-height:25px;
-width:25px;
-}
-#rose_div_bd:hover {
-background-position:center top;
-}
-#rose_div_bd:active {
-background-position:center bottom;
-}
-.overlib {
--moz-background-clip:border;
--moz-background-inline-policy:continuous;
--moz-background-origin:padding;
--moz-border-radius-bottomleft:5px;
--moz-border-radius-bottomright:5px;
--moz-border-radius-topleft:5px;
--moz-border-radius-topright:5px;
-background:transparent url(../image/interface/1.png) repeat scroll center center;
-border:1px solid #000000;
-min-width:250px;
-}
-.overlib ul {
-clear:both;
-position:relative;
-}
-.overlib_titres {
-color:black;
-font-weight:bold;
-text-align:center;
-}
-.overlib_batiments span {
-color:black;
-font-weight:bold;
-}
-.overlib_joueurs span {
-color:#6633FF;
-font-weight:bold;
-}
-.overlib_monstres span {
-color:#CC3300;
-font-weight:bold;
-}
-.overlib_infos {
-clear:both;
-color:black;
-font-size:7pt;
-font-style:italic;
-margin-top:10px;
-text-align:center;
-}
-.overlib_img_objet {
-background-position:center center;
-background-repeat:no-repeat;
-height:55px;
-left:-5px;
-position:absolute;
-top:-2px;
-width:50px;
-}
-.overlib_nom_objet {
-float:right;
-font-style:italic;
-width:200px;
-}
-.overlib_desc_objet {
-float:right;
-width:200px;
-}
-.overlib_desc_objet span {
-float:left;
-width:75px;
-}
-#carte {
-clear:both;
-float:left;
-height:100%;
-margin:0;
-width:445px;
-z-index:500;
-}
-#carte fieldset {
--moz-background-clip:border;
--moz-background-inline-policy:continuous;
--moz-background-origin:padding;
--moz-border-radius-bottomleft:10px;
--moz-border-radius-bottomright:10px;
--moz-border-radius-topleft:10px;
--moz-border-radius-topright:10px;
-background:transparent url(../image/v2/box_accueil2.png) repeat scroll 0 0;
-margin-top:4px;
-}
-#carte fieldset legend {
--moz-background-clip:border;
--moz-background-inline-policy:continuous;
--moz-background-origin:padding;
--moz-border-radius-bottomleft:10px;
--moz-border-radius-bottomright:10px;
--moz-border-radius-topleft:10px;
--moz-border-radius-topright:10px;
-background:transparent url(../image/v2/bouton_fond.png) repeat scroll 0 0;
-font-weight:bold;
-padding-left:10px;
-padding-right:10px;
-}
-#carte a, .visu a {
-color:#444444;
-text-decoration:none;
-}
-#carte a:hover, .visu a:hover {
-color:#888888;
-text-decoration:none;
-}
-#carte ul {
-list-style-image:none;
-list-style-position:outside;
-list-style-type:none;
-margin:0;
-padding:0;
-}
-#map_bord_haut {
-cursor:default;
-height:20px !important;
-padding-bottom:0;
-}
-#map_bord_haut li {
-color:white;
-float:left;
-height:inherit;
-line-height:20px;
-text-align:center;
-width:60px;
-}
-#map_bord_haut2 li {
-color:white;
-float:left;
-height:inherit;
-line-height:20px;
-text-align:center;
-width:60px;
-}
-#map_bord_haut_gauche {
--moz-background-clip:border !important;
--moz-background-inline-policy:continuous !important;
--moz-background-origin:padding !important;
-background:transparent url(../image/icone/royaume_icone.png) no-repeat scroll center center !important;
-cursor:pointer;
-height:inherit;
-width:20px !important;
-}
-#map_bord_haut_gauche2 {
-height:inherit;
-width:25px !important;
-}
-#map_bord_haut_gauche:hover {
-background-position:center top;
-}
-#map_bord_haut_gauche:active {
-background-position:center bottom;
-}
-#bord_haut_x {
-color:black !important;
-font-weight:bold;
-}
-#bord_haut_y {
-color:black !important;
-font-weight:bold;
-}
-.div_map {
--moz-background-clip:border;
--moz-background-inline-policy:continuous;
--moz-background-origin:padding;
--moz-border-radius-bottomleft:10px;
--moz-border-radius-bottomright:10px;
--moz-border-radius-topleft:10px;
--moz-border-radius-topright:10px;
-background:transparent url(../image/v2/map.png) repeat-x scroll 0 0;
-height:445px;
-}
-.map {
-height:60px;
-padding-bottom:0;
-}
-.mapl {
-height:20px;
-padding-bottom:0;
-}
-.map li, .mapl li {
-cursor:pointer;
-float:left;
-height:inherit;
-width:60px;
-}
-.map_bord_gauche {
-color:white;
-cursor:default !important;
-line-height:60px;
-padding-bottom:0;
-text-align:center;
-width:20px !important;
-}
-.map_bord_gauche2 {
-color:white;
-line-height:60px;
-padding-bottom:0;
-text-align:center;
-width:20px !important;
-}
-.map_contenu {
--moz-background-clip:border;
--moz-background-inline-policy:continuous;
--moz-background-origin:padding;
-background:transparent url(image/pixel.gif) no-repeat scroll center center;
-height:56px;
-margin:2px;
-width:56px;
-}
-.low_resolution {
-font-size:0.8em;
-height:20px !important;
-line-height:20px !important;
-width:20px !important;
-}
-#moment_jour {
--moz-background-clip:border;
--moz-background-inline-policy:continuous;
--moz-background-origin:padding;
-background:transparent url(image/weather/matin5.jpg) no-repeat scroll center bottom;
-height:140px;
-left:0;
-position:absolute;
-top:0;
-width:960px;
-z-index:-1;
-}
-.ville_message {
-text-align:center;
-width:100%;
-}
-.message_rouge {
-color:red;
-font-weight:bold;
-}
-.message_vert {
-color:green;
-font-weight:bold;
-}
-.quartier {
-float:left;
-margin:2px;
-padding:2px;
-width:200px;
-}
-#hotel_liste_type ul {
-width:100%;
-}
-#hotel_liste_type li {
-cursor:pointer;
-display:inline;
-font-size:0.9em;
-}
-#hotel_liste {
-font-variant:normal;
-text-align:left;
-width:100%;
-}
-#hotel_liste .li1 {
-cursor:default;
-float:left;
-font-weight:normal;
-line-height:14pt;
-text-align:center !important;
-}
-#hotel_liste .li2 {
-background-color:#ADC2F5;
-cursor:default;
-float:left;
-font-weight:normal;
-line-height:14pt;
-text-align:center !important;
-}
-#hotel_liste .entete {
-background-image:none !important;
-cursor:pointer;
-font-size:10pt !important;
-font-weight:bold;
-}
-#hotel_liste .nom {
-clear:both;
-float:left;
-text-align:left !important;
-width:165px;
-}
-#hotel_liste .temps {
-float:left;
-font-size:7.5pt;
-text-align:right !important;
-width:75px;
-}
-#hotel_liste .prix {
-background-image:url(../image/stars_16.png);
-background-position:right center;
-background-repeat:no-repeat;
-float:left;
-padding-right:18px;
-text-align:right !important;
-width:75px;
-}
-#hotel_liste .achat {
-cursor:pointer;
-float:left;
-text-align:right !important;
-width:60px;
-}
-#hotel_liste .achat:hover {
-color:#63A4EB;
-}
-#hotel_liste .achat:active {
-color:#A062EC;
-}
-.slot {
--moz-background-clip:border;
--moz-background-inline-policy:continuous;
--moz-background-origin:padding;
-background:transparent url(../image/groupes/vert.png) no-repeat scroll left center;
-color:black;
-float:right;
-font-size:6pt;
-height:16px;
-line-height:15px;
-margin-top:0;
-text-align:center;
-width:11px;
-}
-.noslot {
--moz-background-clip:border;
--moz-background-inline-policy:continuous;
--moz-background-origin:padding;
-background:transparent url(../image/groupes/noir.png) no-repeat scroll left center;
-float:right;
-height:16px;
-margin-top:0;
-width:11px;
-}
-.enchantement {
--moz-background-clip:border;
--moz-background-inline-policy:continuous;
--moz-background-origin:padding;
-background:transparent url(../image/groupes/bleu.png) no-repeat scroll left center;
-float:right;
-height:16px;
-margin-top:0;
-width:11px;
-}
-#loading {
--moz-background-clip:border;
--moz-background-inline-policy:continuous;
--moz-background-origin:padding;
--moz-border-radius-bottomleft:10px;
--moz-border-radius-bottomright:10px;
-background:#E7CF98 url(./../image/ajax-loader-bar.gif) no-repeat scroll left center;
-height:25px;
-margin-left:393px;
-position:absolute;
-top:0;
-width:220px;
-z-index:1;
-}
-#messagerie_menu {
-text-align:center;
-}
-#messagerie_menu span {
-cursor:pointer !important;
-margin:2px;
-padding:2px;
-}
-.message_prev {
--moz-background-clip:border;
--moz-background-inline-policy:continuous;
--moz-background-origin:padding;
-background:transparent url(./../image/interface/previous_20.png) no-repeat scroll center top;
-display:block;
-float:left;
-height:20px;
-width:20px;
-}
-.message_prev:hover {
-background-position:center bottom !important;
-}
-.message_next {
--moz-background-clip:border;
--moz-background-inline-policy:continuous;
--moz-background-origin:padding;
-background:transparent url(./../image/interface/next_20.png) no-repeat scroll center top;
-display:block;
-float:right;
-height:20px;
-width:20px;
-}
-.message_next:hover {
-background-position:center bottom !important;
-}
-.bulle_message {
--moz-border-image:url(./../image/interface/bulle_message.png) 20 8 20 8;
-border-width:20px 8px;
-float:left;
-margin-top:-3px;
-min-height:25px;
-width:430px;
-}
-.bulle_message_me {
--moz-border-image:url(./../image/interface/bulle_message_me.png) 16 8 8 8;
-border-width:16px 8px 8px;
-}
-.bulle_message_new {
--moz-border-image:url(./../image/interface/bulle_message_new.png) 20 8 20 8;
-border-width:20px 8px;
-float:left;
-margin-top:-3px;
-min-height:25px;
-width:430px;
-}
-.haut_bulle_gauche {
--moz-background-clip:border;
--moz-background-inline-policy:continuous;
--moz-background-origin:padding;
-background:transparent url(./../image/interface/bulle_message_haut.png) no-repeat scroll center top;
-display:block;
-float:left;
-height:16px;
-margin-left:21px;
-margin-right:7px;
-margin-top:9px;
-width:21px;
-}
-.haut_bulle_droite {
--moz-background-clip:border;
--moz-background-inline-policy:continuous;
--moz-background-origin:padding;
-background:transparent url(./../image/interface/bulle_message_haut_droite.png) no-repeat scroll center top;
-display:block;
-float:right;
-height:16px;
-margin-left:7px;
-margin-right:21px;
-margin-top:9px;
-width:21px;
-}
-.pages {
-line-height:19px;
-margin-left:185px;
-text-align:center;
-}
-.pagination {
--moz-border-radius-bottomleft:10px;
--moz-border-radius-bottomright:10px;
--moz-border-radius-topleft:10px;
--moz-border-radius-topright:10px;
-background-color:#EEEEEE;
-}
-#conteneur_test {
-cursor:wait;
-height:100%;
-position:absolute;
-width:100%;
-z-index:99999;
-}
-.infoperso {
--moz-border-radius-bottomleft:10px;
--moz-border-radius-bottomright:10px;
--moz-border-radius-topleft:10px;
--moz-border-radius-topright:10px;
-background-color:#91AEF2;
-border:1px solid #555555;
-float:left;
-height:75px;
-margin:2px;
-padding:2px;
-vertical-align:top;
-}
-#info_case ul li {
-height:20px;
-}
-#info_case ul li:hover {
--moz-background-clip:border;
--moz-background-inline-policy:continuous;
--moz-background-origin:padding;
-background:transparent url(./../image/v2/box_accueil2.png) repeat scroll 0 0;
-}
-#info_case h4 {
-border-bottom:1px solid #E7CF98;
-clear:both;
-margin:3px;
-padding:0;
-}
-#info_case h3 {
-text-align:center;
-}
-#info_case .titre_info {
--moz-border-radius-topright:10px;
-background-color:#E7CF98;
-clear:both;
-font-variant:normal;
-font-weight:normal;
-margin-bottom:0;
-margin-top:0;
-padding:0 10px;
-}
-#diplo {
-background-color:#CCCCCC;
-}
-#diplo ul li {
-clear:both;
-}
-#diplo ul li span {
--moz-border-radius-bottomleft:5px;
--moz-border-radius-bottomright:5px;
--moz-border-radius-topleft:5px;
--moz-border-radius-topright:5px;
-display:block;
-float:left;
-height:50px;
-width:50px;
-}
-.diplo_0 {
-}
-.diplo_1 {
-}
-.diplo_2 {
-}
-.diplo_3 {
-}
-.diplo_4 {
-}
-.diplo_5 {
-}
-.diplo_6 {
-}
-.diplo_7 {
-}
-.diplo_8 {
-}
-.diplo_9 {
-}
-.diplo_10 {
-}
-textarea#css, textarea#description {
-height:150px;
-width:500px;
-}
-#inventaire_slot {
--moz-border-radius-bottomleft:9px;
--moz-border-radius-bottomright:9px;
--moz-border-radius-topleft:9px;
--moz-border-radius-topright:9px;
-background-image:url(../image/interface/1.png);
-border:1px solid #FFFFFF;
-color:#222222;
-font-size:11px;
-}
-#inventaire_slot ul li {
-clear:both;
-height:20px;
-padding:2px;
-}
-#inventaire_slot .inventaire_span {
-display:block;
-float:left;
-}
-.mort {
--moz-background-clip:border;
--moz-background-inline-policy:continuous;
--moz-background-origin:padding;
-background:transparent url(./../image/interface/mort.png) no-repeat scroll left center;
-padding-left:20px;
-text-decoration:line-through;
-}
-#bestiaire {
-clear:both;
-}
-#bestiaire ul li {
--moz-background-clip:border;
--moz-background-inline-policy:continuous;
--moz-background-origin:padding;
--moz-border-radius-bottomleft:15px;
--moz-border-radius-bottomright:15px;
--moz-border-radius-topleft:15px;
--moz-border-radius-topright:15px;
-background:transparent url(../image/v2/box_accueil2.png) repeat scroll 0 0;
-height:41px;
-line-height:35px;
-margin:1px;
-text-align:center;
-}
-#bestiaire ul li:hover {
--moz-background-clip:border;
--moz-background-inline-policy:continuous;
--moz-background-origin:padding;
-background:transparent url(../image/interface/1.png) repeat scroll center center;
-}
-#bestiaire ul li span {
-display:block;
-float:left;
-height:40px;
-margin:1px;
-}
-#bestiaire ul li img {
-height:30px;
-}
-#messagerie_onglet a {
--moz-background-clip:border;
--moz-background-inline-policy:continuous;
--moz-background-origin:padding;
--moz-border-radius-bottomleft:10px;
--moz-border-radius-bottomright:10px;
--moz-border-radius-topleft:10px;
--moz-border-radius-topright:10px;
-background:#EEE3B5 none repeat scroll 0 0;
-border:1px solid #CCCCCC;
-display:block;
-float:left;
-height:20px;
-line-height:20px;
-padding-left:3px;
-text-indent:5px;
-width:80px;
-}
-#messagerie_onglet a:hover {
-background-color:#E6CD93;
-}
-#messagerie_liste {
-}
-#messagerie_liste ul li {
-cursor:pointer;
-float:left;
-}
-#messagerie_liste .head {
-border-bottom:1px dashed #EEEEEE;
-}
-#messagerie_liste .head:hover {
--moz-background-clip:border !important;
--moz-background-inline-policy:continuous !important;
--moz-background-origin:padding !important;
-background:transparent none repeat scroll 0 0 !important;
-cursor:default !important;
-}
-#messagerie_liste ul li:hover {
--moz-background-clip:border;
--moz-background-inline-policy:continuous;
--moz-background-origin:padding;
--moz-border-radius-bottomleft:5px;
--moz-border-radius-bottomright:5px;
--moz-border-radius-topleft:5px;
--moz-border-radius-topright:5px;
-background:transparent url(../image/interface/1.png) repeat scroll center center;
-}
-#messagerie_liste .t1 {
--moz-background-clip:border;
--moz-background-inline-policy:continuous;
--moz-background-origin:padding;
--moz-border-radius-bottomleft:5px;
--moz-border-radius-bottomright:5px;
--moz-border-radius-topleft:5px;
--moz-border-radius-topright:5px;
-background:#B4CFEF none repeat scroll 0 0;
-}
-#messagerie_liste .titre {
-display:block;
-float:left;
-padding-left:10px;
-width:190px;
-}
-#messagerie_liste .msg {
-display:block;
-float:left;
-padding-right:10px;
-text-align:right;
-width:35px;
-}
-#messagerie_liste .par {
-display:block;
-float:left;
-width:100px;
-}
-#messagerie_liste .date {
-display:block;
-float:left;
-width:90px;
-}
-#combat_cartouche {
--moz-border-radius-bottomleft:12px;
--moz-border-radius-bottomright:12px;
--moz-border-radius-topleft:12px;
--moz-border-radius-topright:12px;
-background-color:#DDDDDD;
-clear:both;
-min-height:70px;
-padding:9px;
-}
-.infoperso td {
-font-size:10px;
-margin:0;
-padding:0;
-}
-.roseeticone {
-float:left;
-margin:5px;
-padding:4px;
-}
-#carte h4 {
-border-bottom:1px solid #E7CF98;
-clear:both;
-margin:3px;
-padding:0;
-}
-#carte .titre_info {
--moz-border-radius-topright:10px;
-background-color:#E7CF98;
-clear:both;
-font-variant:normal;
-font-weight:normal;
-margin-bottom:0;
-margin-top:0;
-padding:0 10px;
-}
-#carte h2 {
-background-color:#D8AB41;
-border-bottom:1px solid #888888;
-border-color:#888888;
-border-top:1px solid #888888;
-color:#000000;
-font-family:"Trebuchet MS",Times,serif;
-font-size:1.4em;
-font-variant:small-caps;
-line-height:25px;
-margin-bottom:8px;
-margin-top:5px;
-padding:0;
-text-align:center;
-}
-#information h2 {
-background-color:#D8AB41;
-border-bottom:1px solid #888888;
-border-color:#888888;
-border-top:1px solid #888888;
-color:#000000;
-font-family:"Trebuchet MS",Times,serif;
-font-size:1.4em;
-font-variant:small-caps;
-line-height:25px;
-margin-bottom:8px;
-margin-top:5px;
-padding:0;
-text-align:center;
-}
-h3.old {
-background-color:#91AEF2;
-border-bottom:1px solid #888888;
-border-color:#888888;
-border-top:1px solid #888888;
-font-family:"Trebuchet MS",Times,serif;
-font-variant:small-caps;
-margin-bottom:5px;
-margin-top:10px;
-padding-left:10px;
-}
-div.message_complet {
-clear:both;
-width:100%;
-}
-div.message_action {
-float:right;
-font-size:0.8em;
-}
-div.spacer {
-clear:both;
-}
-.messagerie {
--moz-border-radius-bottomleft:10px;
--moz-border-radius-bottomright:10px;
--moz-border-radius-topleft:10px;
--moz-border-radius-topright:10px;
-background-color:#E7CF98;
-float:left;
-font-variant:normal;
-font-weight:normal;
-margin-bottom:0;
-margin-top:0;
-padding:0 6px 3px;
-}
-.fav_on {
--moz-background-clip:border;
--moz-background-inline-policy:continuous;
--moz-background-origin:padding;
-background:transparent url(./../image/messagerie_fav_on.png) no-repeat scroll left center;
-display:block;
-float:left;
-height:14px;
-width:16px;
-}
-.fav_off {
--moz-background-clip:border;
--moz-background-inline-policy:continuous;
--moz-background-origin:padding;
-background:transparent url(./../image/messagerie_fav_off.png) no-repeat scroll left center;
-display:block;
-float:left;
-height:14px;
-width:16px;
-}
-.del {
--moz-background-clip:border;
--moz-background-inline-policy:continuous;
--moz-background-origin:padding;
-background:transparent url(./../image/messagerie_del.png) no-repeat scroll center top;
-display:block;
-height:16px;
-width:16px;
-}
-.del:hover {
-background-position:center bottom !important;
-}
-.msg_cache {
--moz-background-clip:border;
--moz-background-inline-policy:continuous;
--moz-background-origin:padding;
-background:transparent url(./../image/messagerie_cacher.png) no-repeat scroll center top;
-display:block;
-float:left;
-height:16px;
-width:16px;
-}
-.msg_voir {
--moz-background-clip:border;
--moz-background-inline-policy:continuous;
--moz-background-origin:padding;
-background:transparent url(./../image/messagerie_voir.png) no-repeat scroll center top;
-display:block;
-float:left;
-height:16px;
-width:16px;
-}
-h3.messagerie span.auteur {
-display:block;
-font-size:11px;
-font-weight:bold;
-left:0;
-position:absolute;
-text-align:center;
-text-transform:capitalize;
-width:114px;
-}
-h3.messagerie span.titre {
-color:#828387;
-font-weight:normal;
-left:114px;
-position:absolute;
-}
-.messagerie span.date {
-font-size:0.7em;
-font-style:italic;
-}
-h4 {
-margin:0;
-padding:0;
-}
-h5 {
-background-color:#DF3F00;
-border-bottom:1px solid #888888;
-border-color:#888888;
-border-top:1px solid #888888;
-color:#000000;
-font-family:"Trebuchet MS",Times,serif;
-font-size:1em;
-font-variant:small-caps;
-margin:0;
-padding-left:10px;
-}
-h6 {
-background-color:#6EB027;
-border-bottom:1px solid #888888;
-border-color:#888888;
-border-top:1px solid #888888;
-color:#000000;
-font-family:"Trebuchet MS",Times,serif;
-font-size:1em;
-font-variant:small-caps;
-margin:0;
-padding-left:10px;
-}
-img {
-border:0 none;
-margin:0;
-padding:0;
-}
-dl, dt, dd, ul, li {
-list-style-type:none;
-margin:0;
-padding:0;
-}
-ol.tuto, ol.tuto li {
-list-style-type:decimal;
-}
-.rose_a {
-cursor:pointer;
-font-size:0;
-margin:0;
-padding:0;
-width:0;
-}
-.rose_a:hover {
-cursor:pointer;
-font-size:0;
-margin:0;
-padding:0;
-}
-.rose_tr {
-font-size:0;
-height:20px;
-margin:0;
-padding:0;
-}
-.rose_tr td {
-font-size:0;
-margin:0;
-padding:0;
-}
-.rose_div {
-height:25px;
-}
-.brillant {
-background-image:url(../image/forum_h2.gif);
-height:23px;
-padding-top:8px;
-text-align:center;
-}
-.information_case {
--moz-border-radius-bottomleft:13px;
--moz-border-radius-bottomright:13px;
--moz-border-radius-topleft:13px;
--moz-border-radius-topright:13px;
-background-color:#BACCF7;
-border:2px solid #FFFFFF;
-font-family:"Trebuchet MS",Times,serif;
-margin:9px;
-padding:8px;
-}
-.information_case h4 {
-background-color:#D8AB41;
-border-bottom:1px solid #888888;
-border-color:#888888;
-border-top:1px solid #888888;
-margin:0 auto 10px;
-text-align:center;
-width:30%;
-}
-.avatar {
-float:right;
-}
-.jsinformation_case {
-background-color:#FFFFFF;
-border:1px solid #000000;
-display:none;
-font-size:12px;
-padding:5px;
-position:absolute;
-right:150px;
-top:250px;
-width:250px;
-z-index:100;
-}
-.combat {
-border-left:2px solid #999999;
-font-size:12px;
-margin:2px 2px 2px 10px;
-padding:2px;
-}
-.combat:hover {
-background-image:url(../image/interface/1.png);
-}
-.echange {
--moz-border-radius-bottomleft:13px;
--moz-border-radius-bottomright:13px;
--moz-border-radius-topleft:13px;
--moz-border-radius-topright:13px;
-background-color:#BACCF7;
-border:2px solid #FFFFFF;
-font-family:"Trebuchet MS",Times,serif;
-margin:2px;
-padding:2px;
-}
-#liste_quete {
-background-color:#91AEF2;
-border-color:#FFFFFF;
-border-left:2px solid #FFFFFF;
-height:300px;
-margin:0 auto;
-overflow:auto;
-padding-bottom:10px;
-padding-left:9px;
-width:95%;
-}
-.quete_description {
--moz-background-clip:border;
--moz-background-inline-policy:continuous;
--moz-background-origin:padding;
--moz-border-radius-bottomleft:7px;
--moz-border-radius-bottomright:7px;
--moz-border-radius-topleft:7px;
--moz-border-radius-topright:7px;
-background:#BACCF7 none repeat scroll 0 0;
-border:2px solid #FFFFFF;
-color:#333333;
-font-family:"Trebuchet MS",Times,serif;
-height:315px;
-padding:5px;
-}
-.description_quete {
-height:280px;
-overflow:auto;
-}
-.inventaire {
-background-color:#D4DAE2;
-margin:9px;
-}
-#carte h2 {
-color:#000000;
-font-family:"Trebuchet MS",Times,serif;
-font-size:15px;
-font-variant:small-caps;
-text-decoration:none;
-}
-#carte h2 a {
-color:#000000;
-font-family:"Trebuchet MS",Times,serif;
-font-size:15px;
-font-variant:small-caps;
-text-decoration:none;
-}
-.carte_bas {
--moz-background-clip:border;
--moz-background-inline-policy:continuous;
--moz-background-origin:padding;
-background:#000000 none repeat scroll 0 0;
-height:5px;
-}
-#deplacement h4 {
--moz-border-radius-bottomleft:5px;
--moz-border-radius-bottomright:5px;
--moz-border-radius-topleft:5px;
--moz-border-radius-topright:5px;
-background-color:#D4DAE2;
-border:1px solid #888888;
-font-family:"Trebuchet MS",Times,serif;
-margin-bottom:5px;
-text-align:center;
-}
-.rose {
-border:0 none;
-height:50px;
-margin:0;
-padding:0;
-width:50px;
-}
-.decor {
-height:60px;
-margin:0;
-padding:0;
-text-align:center;
-width:60px;
-}
-.decor-edit {
-height:20px;
-margin:0;
-padding:0;
-text-align:center;
-width:20px;
-}
-.infobox {
-background-color:#FFFFFF;
-border:1px solid #000000;
-display:none;
-font-size:12px;
-left:0;
-padding:5px;
-position:absolute;
-top:100px;
-width:300px;
-z-index:2;
-}
-.tabnoir {
--moz-background-clip:border;
--moz-background-inline-policy:continuous;
--moz-background-origin:padding;
-background:transparent url(../image/bord_map.png) repeat scroll 0 0;
-color:#FFFFFF;
-}
-.debug {
-display:none;
-}
-.baseJumpbox {
-height:500px;
-width:250px;
-}
-select.baseJumpbox optgroup {
-background-color:#FFFFFF;
-border:2px solid #735225;
-color:black;
-margin:5px;
-padding:2px;
-width:200px;
-}
-.baseRow1 {
-background-color:#FFF4CC;
-padding-left:2px;
-}
-.baseRow2 {
-background-color:#FFEEAA;
-padding-left:2px;
-}
-.heure {
--moz-border-radius-bottomleft:9px;
--moz-border-radius-bottomright:9px;
--moz-border-radius-topleft:9px;
--moz-border-radius-topright:9px;
-background-color:#D4DAE2;
-border:1px solid #FFFFFF;
-padding:5px;
-text-align:center;
-}
-.inventaire2 {
--moz-border-radius-bottomleft:9px;
--moz-border-radius-bottomright:9px;
--moz-border-radius-topleft:9px;
--moz-border-radius-topright:9px;
-background-image:url(../image/interface/1.png);
-border:1px solid #FFFFFF;
-color:#222222;
-font-size:0.8em;
-text-align:center;
-vertical-align:top;
-width:33%;
-}
-.jsmap {
--moz-border-radius-bottomleft:5px;
--moz-border-radius-bottomright:5px;
--moz-border-radius-topleft:5px;
--moz-border-radius-topright:5px;
-background-image:url(../image/interface/1.png);
-border:1px solid #000000;
-display:none;
-font-size:12px;
-padding:5px;
-position:absolute;
-right:150px;
-text-align:left;
-top:250px;
-width:150px;
-z-index:100;
-}
-.bord_carte_haut_gauche {
--moz-background-clip:border;
--moz-background-inline-policy:continuous;
--moz-background-origin:padding;
--moz-border-radius-topleft:9px;
-background:transparent url(../image/royaume_icone.png) repeat scroll center center;
-border-left:2px solid #888888;
-border-top:2px solid #888888;
-}
-.bord_carte_haut {
--moz-background-clip:border;
--moz-background-inline-policy:continuous;
--moz-background-origin:padding;
-background:#D8AB41 none repeat scroll 0 0;
-border-bottom:1px solid #888888;
-border-top:2px solid #888888;
-text-align:center;
-}
-.bord_carte_gauche {
--moz-background-clip:border;
--moz-background-inline-policy:continuous;
--moz-background-origin:padding;
-background:#D8AB41 none repeat scroll 0 0;
-border-left:2px solid #888888;
-border-right:1px solid #888888;
-text-align:center;
-width:20px;
-}
-ul.ville li {
-margin-bottom:3px;
-}
-ul.ville li:hover {
-background-color:#91AEF2;
-font-weight:bold;
-text-decoration:none;
-}
-.ville_titre a {
-color:#000000;
-font-family:"Trebuchet MS",Times,serif;
-font-size:15px;
-font-variant:small-caps;
-text-decoration:none;
-}
-.ville_test {
-color:#000000;
-padding:5px;
-vertical-align:top;
-}
-.ville_test a {
-color:#222222;
-font-size:14px;
-text-decoration:none;
-}
-.ville_haut {
-background-image:url(../image/forum_h2.gif);
-color:#000000;
-font-family:"Trebuchet MS",Times,serif;
-font-size:1.1em;
-font-variant:small-caps;
-font-weight:bold;
-height:25px;
-margin-left:-2px;
-margin-right:-2px;
-margin-top:-2px;
-padding:3px;
-text-align:center;
-}
-table.marchand, table.inventaire {
-font-family:Arial;
-font-size:0.9em;
-font-variant:normal;
-font-weight:normal;
-margin:2px;
-text-align:center;
-width:98%;
-}
-.texte_normal {
-font-family:Arial;
-font-size:0.9em;
-font-variant:normal;
-font-weight:normal;
-margin:2px;
-width:100%;
-}
-tr.header {
-font-weight:bold;
-text-align:center;
-}
-tr.element td, table.marchand tr.header td {
-padding:3px;
-}
-table.inventaire tr.element td, table.inventaire tr.header td {
-font-size:0.9em;
-}
-#boutique {
-font-size:9pt;
-text-align:center;
-}
-#boutique li {
-clear:both;
-height:25px;
-line-height:25px;
-}
-#boutique li:hover {
--moz-background-clip:border;
--moz-background-inline-policy:continuous;
--moz-background-origin:padding;
--moz-border-radius-bottomleft:5px;
--moz-border-radius-bottomright:5px;
--moz-border-radius-topleft:5px;
--moz-border-radius-topright:5px;
-background:transparent url(../image/interface/1.png) repeat scroll center center;
-}
-#boutique .head {
-border-bottom:1px dashed #EEEEEE;
-font-size:7pt;
-font-weight:bold;
-}
-#boutique .head:hover {
--moz-background-clip:border !important;
--moz-background-inline-policy:continuous !important;
--moz-background-origin:padding !important;
-background:transparent none repeat scroll 0 0 !important;
-cursor:default !important;
-}
-#boutique .image {
-float:left;
-height:26px;
-width:9%;
-}
-#boutique .nom {
-float:left;
-width:35%;
-}
-#boutique .type {
-float:left;
-width:9%;
-}
-#boutique .mains {
-float:left;
-width:9%;
-}
-#boutique .degats {
-float:left;
-width:9%;
-}
-#boutique .coef {
-float:left;
-width:9%;
-}
-#boutique .coef_type {
-float:left;
-width:9%;
-}
-#boutique .stars {
-float:left;
-width:10%;
-}
-#boutique .achat {
-float:left;
-width:9%;
-}
-#boutique .pp {
-float:left;
-width:10%;
-}
-#boutique .pm {
-float:left;
-width:9%;
-}
-#boutique .force {
-float:left;
-width:9%;
-}
-#boutique .nom_hotel {
-float:left;
-width:44%;
-}
-#boutique .time {
-float:left;
-width:35%;
-}
-#boutique .prix_hotel {
-float:left;
-width:10%;
-}
-.ville_mortvivant {
--moz-background-clip:border !important;
--moz-background-inline-policy:continuous !important;
--moz-background-origin:padding !important;
-background:transparent url(../image/ville/fondmv1.jpg) repeat scroll center center !important;
-height:397px;
-width:419px;
-}
-.ville_barbare {
--moz-background-clip:border !important;
--moz-background-inline-policy:continuous !important;
--moz-background-origin:padding !important;
-background:transparent url(../image/ville/villebarbarebiseau.png) repeat scroll center center !important;
-height:397px;
-width:419px;
-}
-.ville_elfebois {
--moz-background-clip:border !important;
--moz-background-inline-policy:continuous !important;
--moz-background-origin:padding !important;
-background:transparent url(../image/ville/villeEDBbiseau.png) repeat scroll center center !important;
-height:397px;
-width:419px;
-}
-.ville_elfehaut {
--moz-background-clip:border !important;
--moz-background-inline-policy:continuous !important;
--moz-background-origin:padding !important;
-background:transparent url(../image/ville/villeHEbiseau.png) repeat scroll center center !important;
-height:397px;
-width:419px;
-}
-.ville_humain {
--moz-background-clip:border !important;
--moz-background-inline-policy:continuous !important;
--moz-background-origin:padding !important;
-background:transparent url(../image/ville/villehumainbiseau.png) repeat scroll center center !important;
-height:397px;
-width:419px;
-}
-.ville_humainnoir {
--moz-background-clip:border !important;
--moz-background-inline-policy:continuous !important;
--moz-background-origin:padding !important;
-background:transparent url(../image/ville/villecorrbiseau.png) repeat scroll center center !important;
-height:397px;
-width:419px;
-}
-.ville_nain {
--moz-background-clip:border !important;
--moz-background-inline-policy:continuous !important;
--moz-background-origin:padding !important;
-background:transparent url(../image/ville/villenainbiseau.png) repeat scroll center center !important;
-height:397px;
-width:419px;
-}
-.ville_orc {
--moz-background-clip:border !important;
--moz-background-inline-policy:continuous !important;
--moz-background-origin:padding !important;
-background:transparent url(../image/ville/villeorcbiseau.png) repeat scroll center center !important;
-height:397px;
-width:419px;
-}
-.ville_scavenger {
--moz-background-clip:border !important;
--moz-background-inline-policy:continuous !important;
--moz-background-origin:padding !important;
-background:transparent url(../image/ville/villescavbiseau.png) repeat scroll center center !important;
-height:397px;
-width:419px;
-}
-.ville_troll {
--moz-background-clip:border !important;
--moz-background-inline-policy:continuous !important;
--moz-background-origin:padding !important;
-background:transparent url(../image/ville/villetrollbiseau.png) repeat scroll center center !important;
-height:397px;
-width:419px;
-}
-.ville_vampire {
--moz-background-clip:border !important;
--moz-background-inline-policy:continuous !important;
--moz-background-origin:padding !important;
-background:transparent url(../image/ville/villevampirebiseau.png) repeat scroll center center !important;
-height:397px;
-width:419px;
-}
-.quartier_marchand {
--moz-background-clip:border;
--moz-background-inline-policy:continuous;
--moz-background-origin:padding;
-background:transparent url(../image/ville/cadrebiseauQM.png) repeat scroll center center;
-float:left;
-height:121px;
-margin-left:16px;
-margin-top:35px;
-padding:6px;
-width:138px;
-}
-.quartier_marchand_titre {
--moz-background-clip:border;
--moz-background-inline-policy:continuous;
--moz-background-origin:padding;
-background:transparent url(../image/ville/cadretitreQM.png) repeat scroll center top;
-display:block;
-font-family:"Trebuchet MS",Times,serif;
-font-size:14px;
-font-variant:small-caps;
-font-weight:bold;
-height:34px;
-line-height:32px;
-margin-left:-4px;
-margin-top:-2px;
-text-indent:15px;
-width:148px;
-color:#463300;
-}
-.quartier_marchand li {
--moz-background-clip:border;
--moz-background-inline-policy:continuous;
--moz-background-origin:padding;
--moz-border-radius-bottomleft:6px;
--moz-border-radius-bottomright:6px;
--moz-border-radius-topleft:6px;
--moz-border-radius-topright:6px;
-background:#bfccdd none repeat scroll 0 0;
-border:1px solid #8d7845;
-cursor:pointer;
-font-size:11px;
-height:14px;
-margin:2px;
-text-align:center;
-color:#3a3a4f;
-}
-.quartier_marchand li:hover {
--moz-background-clip:border;
--moz-background-inline-policy:continuous;
--moz-background-origin:padding;
-background:#FFFFFF none repeat scroll 0 0;
-}
-.quartier_royal {
--moz-background-clip:border;
--moz-background-inline-policy:continuous;
--moz-background-origin:padding;
-background:transparent url(../image/ville/cadrebiseauQR.png) repeat scroll center center;
-float:left;
-height:138px;
-margin-left:93px;
-margin-top:19px;
-padding:6px;
-width:132px;
-}
-.quartier_royal_titre {
--moz-background-clip:border;
--moz-background-inline-policy:continuous;
--moz-background-origin:padding;
-background:transparent url(../image/ville/cadretitreQR.png) repeat scroll center top;
-display:block;
-font-family:"Trebuchet MS",Times,serif;
-font-size:14px;
-font-variant:small-caps;
-font-weight:bold;
-height:34px;
-line-height:32px;
-margin-left:0;
-margin-top:-2px;
-text-indent:17px;
-width:134px;
-color:#463300;
-}
-.quartier_royal li {
--moz-background-clip:border;
--moz-background-inline-policy:continuous;
--moz-background-origin:padding;
--moz-border-radius-bottomleft:6px;
--moz-border-radius-bottomright:6px;
--moz-border-radius-topleft:6px;
--moz-border-radius-topright:6px;
-background:#bfccdd none repeat scroll 0 0;
-border:1px solid #8d7845;
-cursor:pointer;
-font-size:11px;
-height:14px;
-margin:2px;
-text-align:center;
-color:#3a3a4f;
-}
-.quartier_royal li:hover {
--moz-background-clip:border;
--moz-background-inline-policy:continuous;
--moz-background-origin:padding;
-background:#FFFFFF none repeat scroll 0 0;
-}
-.quartier_haut {
--moz-background-clip:border;
--moz-background-inline-policy:continuous;
--moz-background-origin:padding;
-background:transparent url(../image/ville/cadrebiseauHQ.png) repeat scroll center center;
-float:left;
-height:107px;
-margin-left:23px;
-margin-top:59px;
-padding:6px;
-width:116px;
-}
-.quartier_haut_titre {
--moz-background-clip:border;
--moz-background-inline-policy:continuous;
--moz-background-origin:padding;
-background:transparent url(../image/ville/cadretitreHQ.png) repeat scroll center top;
-display:block;
-font-family:"Trebuchet MS",Times,serif;
-font-size:14px;
-font-variant:small-caps;
-font-weight:bold;
-height:34px;
-line-height:35px;
-margin-left:0;
-margin-top:-3px;
-text-indent:13px;
-width:116px;
-color:#463300;
-}
-.quartier_haut li {
--moz-background-clip:border;
--moz-background-inline-policy:continuous;
--moz-background-origin:padding;
--moz-border-radius-bottomleft:6px;
--moz-border-radius-bottomright:6px;
--moz-border-radius-topleft:6px;
--moz-border-radius-topright:6px;
-background:#bfccdd none repeat scroll 0 0;
-border:1px solid #8d7845;
-cursor:pointer;
-font-size:11px;
-height:14px;
-margin:2px;
-text-align:center;
-color:#3a3a4f;
-}
-.quartier_haut li:hover {
--moz-background-clip:border;
--moz-background-inline-policy:continuous;
--moz-background-origin:padding;
-background:#FFFFFF none repeat scroll 0 0;
-}
-.quartier_bas {
--moz-background-clip:border;
--moz-background-inline-policy:continuous;
--moz-background-origin:padding;
-background:transparent url(../image/ville/cadrebiseauBQ.png) repeat scroll center center;
-float:left;
-height:107px;
-margin-left:103px;
-margin-top:62px;
-padding:6px;
-width:132px;
-}
-.quartier_bas_titre {
--moz-background-clip:border;
--moz-background-inline-policy:continuous;
--moz-background-origin:padding;
-background:transparent url(../image/ville/cadretitreBQ.png) repeat scroll center top;
-display:block;
-font-family:"Trebuchet MS",Times,serif;
-font-size:14px;
-font-variant:small-caps;
-font-weight:bold;
-height:34px;
-line-height:38px;
-margin-left:12px;
-margin-top:-4px;
-text-indent:13px;
-width:106px;
-color: #463300;
-}
-.quartier_bas li {
--moz-background-clip:border;
--moz-background-inline-policy:continuous;
--moz-background-origin:padding;
--moz-border-radius-bottomleft:6px;
--moz-border-radius-bottomright:6px;
--moz-border-radius-topleft:6px;
--moz-border-radius-topright:6px;
-background:#bfccdd none repeat scroll 0 0;
-border:1px solid #8d7845;
-cursor:pointer;
-font-size:11px;
-height:14px;
-margin:2px;
-text-align:center;
-color: #3a3a4f;
-}
-.quartier_bas li:hover {
--moz-background-clip:border;
--moz-background-inline-policy:continuous;
--moz-background-origin:padding;
-background:#FFFFFF none repeat scroll 0 0;
-}
-.trcolor2 {
--moz-border-radius-bottomleft:5px;
--moz-border-radius-bottomright:5px;
--moz-border-radius-topleft:5px;
--moz-border-radius-topright:5px;
-background-color:#B4CFEF;
-}
-#gestion-royaume {
-background-color:#BACCF7;
-font-family:"Trebuchet MS",Times,serif;
-font-weight:bold;
-padding:5px;
-vertical-align:top;
-}
-#gestion-royaume h4 {
-background-color:#D8AB41;
-border-bottom:1px solid #888888;
-border-color:#888888;
-border-top:1px solid #888888;
-color:black;
-font-family:"Trebuchet MS",Times,serif;
-font-size:1em;
-font-variant:small-caps;
-margin-bottom:2px;
-margin-top:3px;
-padding-left:15px;
-}
-ul.gestion-royaume {
-margin-left:25px;
-}
-ul.gestion-royaume li {
-color:#444444;
-list-style-type:disc;
-margin-bottom:3px;
-}
-ul.gestion-royaume li:hover {
-background-color:#91AEF2;
-font-weight:bold;
-text-decoration:none;
-}
-ul.gestion-royaume li a {
-color:#444444;
-}
-ul.onglet-hotel {
-}
-ul.onglet-hotel li {
-display:inline;
-}
-#editcarte {
-width:100%;
-}
-.selecteur {
-float:left;
-}
-.mapedit {
-float:left;
-}
-.trcolor3 {
-color:#999999;
-font-style:italic;
-font-weight:bold;
-}
-.trcolor5 {
-background-color:#FFFFFF;
-color:#999999;
-font-style:italic;
-font-weight:bold;
-}
-.trstat {
--moz-border-radius-bottomleft:10px;
--moz-border-radius-bottomright:10px;
--moz-border-radius-topleft:10px;
--moz-border-radius-topright:10px;
-background-color:#91AEF2;
-border:2px solid #555555;
-padding:4px;
-vertical-align:top;
-}
-.achat_over {
-color:red;
-}
-.boite_royaume {
-float:left;
-height:60px;
-width:60px;
-}
-.marque_royaume {
-height:55px;
-width:55px;
-}
-.coupcritique {
-font-weight:bold;
-}
-.degat {
-color:#FF0000;
-}
-.manque {
-color:#0000FF;
-}
-.augcomp {
-color:#FF791C;
-font-weight:bold;
-}
-.reward {
-color:#B8860B;
-}
-.soin {
-color:#336633;
-}
-.jsoin {
-color:#33CC00;
-}
-.jgsoin {
-color:#009900;
-}
-.jbuff {
-color:#3333FF;
-}
-.jgbuff {
-color:#000099;
-}
-.jdebuff {
-color:#9900CC;
-}
-.jdegat {
-color:darkred;
-}
-.jrdegat {
-color:red;
-}
-.jkill {
-color:#666666;
-}
-.jmort {
-color:#333333;
-}
-.jquete {
-color:orange;
-}
-.jloot {
-color:#CC33CC;
-}
-.small {
-font-size:0.9em;
-font-style:italic;
-}
-.xsmall {
-font-size:0.8em;
-font-style:italic;
-}
-.admin {
-width:600px;
-}
-.info_joueur {
-color:#6633FF;
-font-weight:bold;
-}
-.info_monstre {
-color:#CC3300;
-font-weight:bold;
-}
-.admin tr td {
-vertical-align:top;
-}
-.admin tr td ul li {
-margin:0;
-}
-.adminListing {
-border-right:0 none;
-border-top:0 none;
-margin-bottom:10px;
-margin-top:10px;
-}
-.adminListing tr td {
-border-right:1px solid #8D8DB3;
-border-top:1px solid #8D8DB3;
-padding-right:5px;
-text-align:center;
-}
-.adminListing tr td a {
-text-decoration:none;
-}
-tr.tabMonstre td {
-border:1px solid grey;
-padding:2px;
-text-align:center;
-}
-.msgbar {
-width:50px;
-}
+2	
+
+html { width:100%; height:100%; }
+
+3	
+
+body { margin:0; padding:0; background:#7e909c url(../image/v2/bg_site.png) repeat-x; width:100%; height:100%; font:13px "Helvetica Neue", Helvetica, Arial, Geneva, sans-serif; }
+
+4	
+
+#top { display:block; width:1000px; margin:0 auto; z-index:5; }
+
+5	
+
+#conteneur { width:985px; margin:auto; min-height:100%; }
+
+6	
+
+#conteneur_back { z-index:2; width:1000px; margin:0 auto; background:transparent url(../image/interface/global2.png) repeat-y center; min-height:120%; }
+
+7	
+
+#bas { clear:both; width:1000px; margin:0 auto; text-align:center; font-size:9px; }
+
+8	
+
+#centre { margin-top:3px; margin-left:7px; float:left; height:100%; z-index:3; }
+
+9	
+
+#deplacement { float:left; vertical-align:top; text-align:right; width:50px; margin-left:5px; }
+
+10	
+
+#information { height:100%; width:47%; float:left; z-index:1; margin-left:6px; }
+
+11	
+
+#information fieldset { border-radius: 10px; -moz-border-radius:10px; -webkit-border-radius:10px; background:transparent url(../image/v2/box_accueil2.png); margin-top:4px; }
+
+12	
+
+#information fieldset legend { background:transparent url(../image/v2/bouton_fond.png); border-radius: 10px; -moz-border-radius:10px; -webkit-border-radius:10px; padding-left:10px; padding-right:10px; font-weight:bold; }
+
+13	
+
+#information a,.visu a { color:#444; text-decoration:none; }
+
+14	
+
+#information a:hover,.visu a:hover { color:#888; text-decoration:none; }
+
+15	
+
+#perso { background-color:#c6d9f5; min-height:120px; margin:0; padding:0; }
+
+16	
+
+#perso_menu { margin-left:94px; margin-top:-15px; }
+
+17	
+
+#perso_menu ul { margin:0; padding:0; list-style-type:none; height:17px; text-align:center; position:relative; }
+
+18	
+
+#perso_menu ul li { padding-left:5px; padding-right:5px; cursor:pointer; width:100px; background:transparent url(../image/v2/box_accueil2.png); border-left:1px solid #777; border-right:1px solid #777; border-top:1px solid #777; margin-left:5px; margin-right:5px; font-style:italic; -moz-border-radius-topleft:12px; -moz-border-radius-topright:12px; -webkit-border-top-right-radius:12px; -webkit-border-top-left-radius:12px; border-top-left-radius: 12px; border-top-right-radius: 12px;}
+
+19	
+
+#perso_menu .menu { float:left; }
+
+20	
+
+#perso_menu .select { background:transparent url(../image/v2/bouton_selected.png) repeat-x; font-style:normal; font-weight:bold; }
+
+21	
+
+.pos_over { background:transparent url(../image/interface/2.png) center; display:block; -moz-border-radius:5px; -webkit-border-radius:5px; border-radius: 5px; height:58px!important; width:58px!important; }
+
+22	
+
+#perso_contenu { margin:auto; min-height:110px; padding:5px; }
+
+23	
+
+#contenu_jeu { margin:0 auto; width:100%; }
+
+24	
+
+#popup { margin-left:130px; position:absolute; top:60px; z-index:99!important; -moz-border-radius:12px; -webkit-border-radius:12px; border-radius: 12px; background:transparent url(../image/v2/box_accueil.png) repeat scroll 0 0; color:#EEE; }
+
+25	
+
+#popup a { color:#EEE; }
+
+26	
+
+#popup_menu { cursor:move; background:transparent url(../image/v2/bouton_fond.png) repeat-x scroll 0 0; }
+
+27	
+
+#popup_content { padding:5px; text-align:justify; width:98%; }
+
+28	
+
+#popup_marge { min-height:470px; margin:auto; width:800px; }
+
+29	
+
+.fermer { background:transparent url(../image/interface/rouge.png) no-repeat top left; display:block; height:16px; width:16px; cursor:pointer!important; }
+
+30	
+
+#mask { background-image:url(../image/v2/overlay.png); height:100%; left:0; position:absolute; top:0; width:100%; z-index:9999999; }
+
+31	
+
+#header { background-color:#c6d9f5; min-height:120px; margin:0; padding:0; }
+
+32	
+
+#header_logo { width:1000px; margin:auto; background:transparent url(../image/v2/site_haut.png) no-repeat left; min-height:120px; }
+
+33	
+
+#header_logo ul { margin:0; padding:0; list-style-type:none; height:20px; text-align:center; top:101px; position:relative; }
+
+34	
+
+#header_logo ul li { padding-left:5px; padding-right:5px; cursor:pointer; width:100px; background:transparent url(../image/v2/contenu_fond.png); border-left:1px solid #777; border-right:1px solid #777; border-top:1px solid #777; margin-left:5px; margin-right:5px; font-style:italic; -moz-border-radius-topleft:12px; -moz-border-radius-topright:12px; -webkit-border-top-right-radius:12px; -webkit-border-top-left-radius:12px; border-top-left-radius: 12px; border-top-right-radius: 12px;}
+
+35	
+
+#header_logo .menu { float:left; }
+
+36	
+
+#header_logo .select { background:transparent url(../image/v2/bouton_selected.png) repeat-x; border-bottom:1px solid transparent; font-style:normal; font-weight:bold; }
+
+37	
+
+#menu { height:20px; border-bottom:1px solid #888; border-top:1px solid #888; margin:0; padding:0; background:transparent url(../image/v2/bouton_fond.png) repeat-x; }
+
+38	
+
+#menu a { color:#222; text-decoration:none; }
+
+39	
+
+#menu_date { float:left; height:20px; margin-left:9px; width:91px; line-height:20px; font-size:.9em; }
+
+40	
+
+#menu_date img { height:15px; padding-right:8px; vertical-align:middle; }
+
+41	
+
+#menu_details { font-size:12px; float:left; margin-top:2px; }
+
+42	
+
+#menu_details .menu { width:120px; display:block; float:left; cursor:pointer; text-align:center; border-left:1px solid #CCC; border-rightr:1px solid #CCC; }
+
+43	
+
+#menu_details .menu:hover { background:transparent url(../image/v2/bouton_hover.png) no-repeat left; padding-top:1px; }
+
+44	
+
+#menu_deco { float:right; cursor:pointer; margin-right:9px; line-height:20px; font-size:.9em; }
+
+45	
+
+#contenu_back { margin:0; padding:0; overflow:auto; }
+
+46	
+
+#contenu { width:1000px; margin:auto; min-height:700px; }
+
+47	
+
+#news { width:830px; float:left; }
+
+48	
+
+#mort fieldset { -moz-border-radius: 10px;-moz-border-radius: 10px; border-radius: 10px; width:46%;float:left;margin:8px;}
+
+49	
+
+50	
+
+/*-- Basics elements --------------------------------------------------*/
+
+51	
+
+#global { position:relative; margin:0 auto; width:960px; height:100%; border:1px solid red; }
+
+52	
+
+.spacer { clear:both!important; float:none!important; border:none!important; height:1px!important; line-height:1px!important; font-size:1px!important; padding:0!important; margin:0 0 -1px!important; visibility:hidden!important; }
+
+53	
+
+54	
+
+/*-- Menu Jeu ---------------------------------------------------------*/
+
+55	
+
+#menu_jeu { float:left; margin:0 -5px 0 0; width:32px; }
+
+56	
+
+57	
+
+/*-- Infos perso ------------------------------------------------------*/
+
+58	
+
+#infos_perso { float:left; background:transparent url(./../image/fond_infoperso.png) center; width:325px; height:100px; position:relative; }
+
+59	
+
+#joueur_PA { font-size:8pt; color:white; background:green; width:125px; text-align:center; position:absolute; top:46px; left:105px; }
+
+60	
+
+#joueur_HP { font-size:8pt; color:white; background:transparent url(./../image/barre/hp9.png) center no-repeat; width:125px; text-align:center; position:absolute; top:10px; left:105px; }
+
+61	
+
+#joueur_MP { font-size:8pt; color:white; background:blue; width:125px; text-align:center; position:absolute; top:28px; left:105px; }
+
+62	
+
+#joueur_XP { width:100px; height:100px; position:absolute; top:0; left:0; }
+
+63	
+
+#joueur_PO { font-size:8pt; background:transparent url(./../image/starsv2.png) left no-repeat; width:50px; height:24px; line-height:24px; text-align:center; padding:0 0 0 24px; position:absolute; top:10px; left:235px; }
+
+64	
+
+#joueur_PH { font-size:8pt; background:transparent url(./../image/honneur.png) left no-repeat; width:50px; height:24px; line-height:24px; text-align:center; padding:0 0 0 24px; position:absolute; top:38px; left:235px; }
+
+65	
+
+#joueur_Psso { cursor:pointer; background:transparent url(./../image/pointshine.png) left no-repeat; width:16px; height:16px; position:absolute; top:0; left:85px; }
+
+66	
+
+#joueur_LV { width:24px; height:24px; text-align:center; line-height:24px; font-size:8pt; font-weight:bold; background:transparent url(./../image/LV.png) left no-repeat; }
+
+67	
+
+#joueur_onglets { position:absolute; left:88px; top:65px; width:225px; padding:0 0 0 10px; }
+
+68	
+
+#joueur_onglets_index,#joueur_onglets_forums,#joueur_onglets_options,#joueur_onglets_exit { float:left; width:250px; text-align:left; padding-left:5px; font-size:.9em; }
+
+69	
+
+#joueur_onglets_forums img { height:15px; }
+
+70	
+
+#joueur_buffs_nom { position:relative; float:left; height:100px; width:283px; margin-left:11px; margin-top:-3px; }
+
+71	
+
+#joueur_nom { position:relative; margin-left:55px; position:relative; text-align:center; width:210px; margin-top:10px; cursor:pointer; }
+
+72	
+
+#joueur_type { position:relative; width:210px; float:left; text-align:left; font-size:8pt; height:12px; }
+
+73	
+
+#buff_list { position:relative; text-align:center; width:210px; margin-left:60px; }
+
+74	
+
+#debuff_list { position:relative; text-align:center; width:210px; margin-left:60px; }
+
+75	
+
+.joueur_groupe_activitenoir,.joueur_groupe_activiterouge,.joueur_groupe_activitebleu,.joueur_groupe_activitevert { margin:0; float:left; width:11px; height:11px; margin:2px; }
+
+76	
+
+.joueur_groupe_activitenoir { background:transparent url(../image/groupes/noir.png) center; }
+
+77	
+
+.joueur_groupe_activiterouge { background:transparent url(../image/groupes/rouge.png) center; }
+
+78	
+
+.joueur_groupe_activitebleu { background:transparent url(../image/groupes/bleu.png) center; }
+
+79	
+
+.joueur_groupe_activitevert { background:transparent url(../image/groupes/vert.png) center; }
+
+80	
+
+#buff_list ul { float:left; list-style-type:none; text-align:center; width:210px; }
+
+81	
+
+.buff { position:relative; float:left; height:19px; padding:0; margin:0 2px; cursor:pointer; }
+
+82	
+
+.buff_dispo { position:relative; float:left; height:19px; width:16px; padding:0; margin:0 2px; background:transparent url(../image/buff/buff.png) top no-repeat; }
+
+83	
+
+.buff_nondispo { position:relative; float:left; height:19px; width:16px; padding:0; margin:0 2px; background:transparent url(../image/buff/nobuff.png) top no-repeat; }
+
+84	
+
+.buff_duree_restante { position:absolute; bottom:0; left:0; }
+
+85	
+
+#joueur_groupe { width:300px; float:left; background:transparent url(../image/fond_groupe.png) center; margin-left:30px; height:83px; margin-top:4px; }
+
+86	
+
+#joueur_groupe_bouton { width:50px; float:left; }
+
+87	
+
+#joueur_groupe ul { width:250px; float:left; }
+
+88	
+
+#mail_groupe { cursor:pointer; width:32px; height:32px; background:transparent url(../image/message.png) center no-repeat; }
+
+89	
+
+#info_groupe { cursor:pointer; width:21px; height:21px; background:transparent url(../image/interface/information.png) center; }
+
+90	
+
+#info_groupe:hover { background-position:top; }
+
+91	
+
+#info_groupe:active { background-position:bottom; }
+
+92	
+
+#joueur_groupe li { cursor:pointer; font-size:8pt; border-bottom:1px dotted #8b94b0; padding:0 0 2px; }
+
+93	
+
+.joueur_groupe_pseudo { float:left; line-height:16px; width:125px; }
+
+94	
+
+.joueur_groupe_barre_hp { float:left; width:102px; height:6px; margin:0; }
+
+95	
+
+.joueur_groupe_barre_mp { float:left; width:102px; height:6px; margin:1px 0 0; }
+
+96	
+
+97	
+
+/*-- Rose des vents ---------------------------------------------------*/
+
+98	
+
+#rosedesvents { width:75px; height:75px; position:absolute; left:13px; top:13px; z-index:1; }
+
+99	
+
+#rose_div_hg { background:transparent url(./../image/rosedesvent/nordouest.png) center; width:25px; height:25px; cursor:pointer; float:left; }
+
+100	
+
+#rose_div_hg:hover { background-position:top; }
+
+101	
+
+#rose_div_hg:active { background-position:bottom; }
+
+102	
+
+#rose_div_h { background:transparent url(./../image/rosedesvent/nord.png) center; width:25px; height:25px; cursor:pointer; float:left; }
+
+103	
+
+#rose_div_h:hover { background-position:top; }
+
+104	
+
+#rose_div_h:active { background-position:bottom; }
+
+105	
+
+#rose_div_hd { background:transparent url(./../image/rosedesvent/nordest.png) center; width:25px; height:25px; cursor:pointer; float:left; }
+
+106	
+
+#rose_div_hd:hover { background-position:top; }
+
+107	
+
+#rose_div_hd:active { background-position:bottom; }
+
+108	
+
+#rose_div_cg { background:transparent url(./../image/rosedesvent/ouest.png) center; width:25px; height:25px; cursor:pointer; float:left; clear:both; }
+
+109	
+
+#rose_div_cg:hover { background-position:top; }
+
+110	
+
+#rose_div_cg:active { background-position:bottom; }
+
+111	
+
+#rose_div_c { background:transparent url(./../image/rosedesvent/rafraichir.png) center; width:25px; height:25px; cursor:pointer; float:left; }
+
+112	
+
+#rose_div_c:hover { background-position:top; }
+
+113	
+
+#rose_div_c:active { background-position:bottom; }
+
+114	
+
+#rose_div_cd { background:transparent url(./../image/rosedesvent/est.png) center; width:25px; height:25px; cursor:pointer; float:left; }
+
+115	
+
+#rose_div_cd:hover { background-position:top; }
+
+116	
+
+#rose_div_cd:active { background-position:bottom; }
+
+117	
+
+#rose_div_bg { background:transparent url(./../image/rosedesvent/sudouest.png) center; width:25px; height:25px; cursor:pointer; float:left; clear:both; }
+
+118	
+
+#rose_div_bg:hover { background-position:top; }
+
+119	
+
+#rose_div_bg:active { background-position:bottom; }
+
+120	
+
+#rose_div_b { background:transparent url(./../image/rosedesvent/sud.png) center; width:25px; height:25px; cursor:pointer; float:left; }
+
+121	
+
+#rose_div_b:hover { background-position:top; }
+
+122	
+
+#rose_div_b:active { background-position:bottom; }
+
+123	
+
+#rose_div_bd { background:transparent url(./../image/rosedesvent/sudest.png) center; width:25px; height:25px; cursor:pointer; float:left; }
+
+124	
+
+#rose_div_bd:hover { background-position:top; }
+
+125	
+
+#rose_div_bd:active { background-position:bottom; }
+
+126	
+
+127	
+
+/*-- Overlib ----------------------------------------------------------*/
+
+128	
+
+.overlib { background:transparent url(../image/interface/1.png) center; border:1px solid #000000; -moz-border-radius:5px; -webkit-border-radius:5px; border-radius: 5px; min-width:250px; }
+
+129	
+
+.overlib ul { clear:both; position:relative; }
+
+130	
+
+.overlib_titres { text-align:center; font-weight:bold; color:black; }
+
+131	
+
+.overlib_batiments span { font-weight:bold; color:black; }
+
+132	
+
+.overlib_joueurs span { font-weight:bold; color:#6633FF; }
+
+133	
+
+.overlib_monstres span { font-weight:bold; color:#CC3300; }
+
+134	
+
+.overlib_infos { clear:both; font-size:7pt; font-style:italic; color:black; margin-top:10px; text-align:center; }
+
+135	
+
+.overlib_img_objet { position:absolute; left:-5px; top:-2px; width:50px; height:55px; background-position:center center; background-repeat:no-repeat; }
+
+136	
+
+.overlib_nom_objet { float:right; width:200px; font-style:italic; }
+
+137	
+
+.overlib_desc_objet { float:right; width:200px; }
+
+138	
+
+.overlib_desc_objet span { float:left; width:75px; }
+
+139	
+
+140	
+
+/*-- Map --------------------------------------------------------------*/
+
+141	
+
+#carte { width:445px; height:100%; float:left; margin:0; clear:both; z-index:500; }
+
+142	
+
+#carte fieldset { border-radius: 10px; -moz-border-radius:10px; -webkit-border-radius:10px; background:transparent url(../image/v2/box_accueil2.png); margin-top:4px; }
+
+143	
+
+#carte fieldset legend { background:transparent url(../image/v2/bouton_fond.png); border-radius: 10px; -moz-border-radius:10px; -webkit-border-radius:10px; padding-left:10px; padding-right:10px; font-weight:bold; }
+
+144	
+
+#carte a,.visu a { color:#444; text-decoration:none; }
+
+145	
+
+#carte a:hover,.visu a:hover { color:#888; text-decoration:none; }
+
+146	
+
+147	
+
+#carte ul { list-style:none; padding:0; margin:0; }
+
+148	
+
+#map_bord_haut { height:20px!important; cursor:pointer; padding-bottom:0; cursor:default; }
+
+149	
+
+#map_bord_haut li { float:left; width:60px; height:inherit; line-height:20px; color:white; text-align:center; }
+
+150	
+
+#map_bord_haut2 li { float:left; width:60px; height:inherit; line-height:20px; color:white; text-align:center; }
+
+151	
+
+#map_bord_haut_gauche { width:20px!important; height:inherit; background:transparent url(../image/icone/royaume_icone.png) no-repeat scroll center center!important; cursor:pointer; }
+
+152	
+
+#map_bord_haut_gauche2 { width:25px!important; height:inherit; }
+
+153	
+
+#map_bord_haut_gauche:hover { background-position:top; }
+
+154	
+
+#map_bord_haut_gauche:active { background-position:bottom; }
+
+155	
+
+#bord_haut_x { color:black!important; font-weight:bold; }
+
+156	
+
+#bord_haut_y { color:black!important; font-weight:bold; }
+
+157	
+
+.div_map { background:transparent url(../image/v2/map.png) repeat-x; -moz-border-radius:10px; -webkit-border-radius:10px; border-radius: 10px; height:445px; }
+
+158	
+
+.map { height:60px; padding-bottom:0; }
+
+159	
+
+.mapl { height:20px; padding-bottom:0; }
+
+160	
+
+.map li,.mapl li { float:left; width:60px; height:inherit; cursor:pointer; }
+
+161	
+
+.map_bord_gauche { width:20px!important; color:white; line-height:60px; text-align:center; padding-bottom:0; cursor:default!important; }
+
+162	
+
+.map_bord_gauche2 { width:20px!important; color:white; line-height:60px; text-align:center; padding-bottom:0; }
+
+163	
+
+.map_contenu { width:56px; height:56px; margin:2px; background:transparent url(image/pixel.gif) center no-repeat; }
+
+164	
+
+.low_resolution { width:20px!important; height:20px!important; font-size:.8em; line-height:20px!important; }
+
+165	
+
+166	
+
+/*-- Weather ----------------------------------------------------------*/
+
+167	
+
+#moment_jour { position:absolute; top:0; left:0; z-index:-1; width:960px; height:140px; background:transparent url(image/weather/matin5.jpg) bottom center no-repeat; }
+
+168	
+
+169	
+
+/*-- Ville ------------------------------------------------------------*/
+
+170	
+
+.ville_message { width:100%; text-align:center; }
+
+171	
+
+.message_rouge { font-weight:bold; color:red; }
+
+172	
+
+.message_vert { font-weight:bold; color:green; }
+
+173	
+
+.quartier	{float:left;width:200px;margin:2px;padding:2px;}
+
+174	
+
+175	
+
+/*-- Hotel des ventes -------------------------------------------------*/
+
+176	
+
+#hotel_liste_type ul { width:100%; }
+
+177	
+
+#hotel_liste_type li { display:inline; cursor:pointer; font-size:.9em; }
+
+178	
+
+#hotel_liste { width:100%; text-align:left; font-variant:normal; }
+
+179	
+
+#hotel_liste .li1 { cursor:default; float:left; font-weight:normal; text-align:center!important; line-height:14pt; }
+
+180	
+
+#hotel_liste .li2 { cursor:default; float:left; font-weight:normal; text-align:center!important; background-color:#ADC2F5; line-height:14pt; }
+
+181	
+
+#hotel_liste .entete { cursor:pointer; font-size:10pt!important; font-weight:bold; background-image:none!important; }
+
+182	
+
+#hotel_liste .nom { float:left; width:165px; text-align:left!important; clear:both; }
+
+183	
+
+#hotel_liste .temps { float:left; width:75px; text-align:right!important; font-size:7.5pt; }
+
+184	
+
+#hotel_liste .prix { float:left; width:75px; text-align:right!important; background-image:url(../image/stars_16.png); background-position:right; background-repeat:no-repeat; padding-right:18px; }
+
+185	
+
+#hotel_liste .achat { cursor:pointer; float:left; width:60px; text-align:right!important; }
+
+186	
+
+#hotel_liste .achat:hover { color:#63A4EB; }
+
+187	
+
+#hotel_liste .achat:active { color:#A062EC; }
+
+188	
+
+.slot { float:right; margin-top:0; width:11px; height:16px; background:transparent url(../image/groupes/vert.png) center left no-repeat; text-align:center; line-height:15px; color:black; font-size:6pt; }
+
+189	
+
+.noslot { float:right; margin-top:0; width:11px; height:16px; background:transparent url(../image/groupes/noir.png) center left no-repeat; }
+
+190	
+
+.enchantement { float:right; margin-top:0; width:11px; height:16px; background:transparent url(../image/groupes/bleu.png) center left no-repeat; }
+
+191	
+
+192	
+
+/***************************************************
+
+193	
+
+  Vrac
+
+194	
+
+ ***************************************************/
+
+195	
+
+#loading { background:#E7CF98 url(./../image/ajax-loader-bar.gif) no-repeat scroll left center; height:25px; margin-left:393px; position:absolute; top:0; width:220px; -moz-border-radius-bottomleft:10px; -moz-border-radius-bottomright:10px; -webkit-border-bottom-right-radius:10px; -webkit-border-bottom-left-radius:10px; border-bottom-left-radius: 10px; border-bottom-right-radius: 10px; z-index:1; }
+
+196	
+
+#messagerie_menu { text-align:center; }
+
+197	
+
+#messagerie_menu span { padding:2px; margin:2px; cursor:pointer!important; }
+
+198	
+
+.message_prev { background:transparent url(./../image/interface/previous_20.png) no-repeat scroll top; height:20px; width:20px; display:block; float:left; }
+
+199	
+
+.message_prev:hover { background-position:bottom!important; }
+
+200	
+
+.message_next { background:transparent url(./../image/interface/next_20.png) no-repeat scroll top; height:20px; width:20px; display:block; float:right; }
+
+201	
+
+.message_next:hover { background-position:bottom!important; }
+
+202	
+
+.bulle_message {min-height: 25px;	float:left;width:430px;margin-top:-3px;border-width: 20px 8px 20px 8px;	-webkit-border-image: url('./../image/interface/bulle_message.png') 20 8 20 8;-moz-border-image: url('./../image/interface/bulle_message.png') 20 8 20 8;}
+
+203	
+
+.bulle_message_me {	border-width: 16px 8px 8px 8px;	-webkit-border-image: url('./../image/interface/bulle_message_me.png') 16 8 8 8;-moz-border-image: url('./../image/interface/bulle_message_me.png') 16 8 8 8;}
+
+204	
+
+.bulle_message_new {min-height: 25px;	float:left;width:430px;margin-top:-3px;border-width: 20px 8px 20px 8px;	-webkit-border-image: url('./../image/interface/bulle_message_new.png') 20 8 20 8;-moz-border-image: url('./../image/interface/bulle_message_new.png') 20 8 20 8;}
+
+205	
+
+.haut_bulle_gauche{background:transparent url(./../image/interface/bulle_message_haut.png) no-repeat scroll top;display:block;float:left;height:16px;margin-left:21px;margin-top:9px;width:21px;margin-right:7px;}
+
+206	
+
+.haut_bulle_droite{background:transparent url(./../image/interface/bulle_message_haut_droite.png) no-repeat scroll top;display:block;float:right;height:16px;margin-left:7px;margin-top:9px;width:21px;margin-right:21px;}
+
+207	
+
+208	
+
+.pages {text-align: center;line-height:19px;margin-left:185px;}
+
+209	
+
+.pagination {background-color: #eee;-moz-border-radius:10px; -webkit-border-radius:10px; border-radius: 10px;}
+
+210	
+
+#conteneur_test { height:100%; width:100%; z-index:99999; cursor:wait; position:absolute; }
+
+211	
+
+.infoperso { vertical-align:top; float:left; padding:2px; margin:2px; height:75px; -moz-border-radius:10px; -webkit-border-radius:10px; border-radius: 10px; background-color:#91AEF2; border:1px solid #555555; vertical-align:top; }
+
+212	
+
+#info_case ul li { height:20px; }
+
+213	
+
+#info_case ul li:hover { background:transparent url(./../image/v2/box_accueil2.png); }
+
+214	
+
+#info_case h4 { padding:0; margin:3px; border-bottom:1px solid #E7CF98; clear:both; }
+
+215	
+
+#info_case h3 { text-align:center; }
+
+216	
+
+#info_case .titre_info { margin-top:0; margin-bottom:0; font-variant:normal; font-weight:normal; background-color:#E7CF98; padding:0 10px; -moz-border-radius-topright:10px; -webkit-border-top-right-radius:10px; border-top-right-radius: 10px; clear:both; }
+
+217	
+
+#diplo { background-color:#CCC; }
+
+218	
+
+#diplo ul li { clear:both; }
+
+219	
+
+#diplo ul li span { float:left; display:block; width:50px; height:50px; -moz-border-radius:5px; -webkit-border-radius:5px; border-radius: 5px;}
+
+220	
+
+.diplo_0 { background-color:; }
+
+221	
+
+.diplo_1 { background-color:; }
+
+222	
+
+.diplo_2 { background-color:; }
+
+223	
+
+.diplo_3 { background-color:; }
+
+224	
+
+.diplo_4 { background-color:; }
+
+225	
+
+.diplo_5 { background-color:; }
+
+226	
+
+.diplo_6 { background-color:; }
+
+227	
+
+.diplo_7 { background-color:; }
+
+228	
+
+.diplo_8 { background-color:; }
+
+229	
+
+.diplo_9 { background-color:; }
+
+230	
+
+.diplo_10 { background-color:; }
+
+231	
+
+textarea#css, textarea#description { width: 500px; height:150px; }
+
+232	
+
+233	
+
+/***************************************************
+
+234	
+
+  Info Perso
+
+235	
+
+ ***************************************************/
+
+236	
+
+#inventaire_slot { font-size:11px; background-image:url(../image/interface/1.png); -moz-border-radius:9px; -webkit-border-radius:9px; border-radius: 9px; color:#222; border:1px solid #FFF; }
+
+237	
+
+#inventaire_slot ul li { height:20px; clear:both; padding:2px; }
+
+238	
+
+#inventaire_slot .inventaire_span { float:left; display:block; }
+
+239	
+
+.mort { background:transparent url(./../image/interface/mort.png) no-repeat scroll left center; text-decoration:line-through; padding-left:20px; }
+
+240	
+
+#bestiaire { clear:both; }
+
+241	
+
+#bestiaire ul li { height:41px; line-height:35px; text-align:center; background:transparent url(../image/v2/box_accueil2.png) repeat scroll 0 0; -moz-border-radius:15px; -webkit-border-radius:15px; border-radius: 15px; margin:1px; }
+
+242	
+
+#bestiaire ul li:hover { background:transparent url(../image/interface/1.png) center; }
+
+243	
+
+#bestiaire ul li span { display:block; float:left; margin:1px; height:40px; }
+
+244	
+
+#bestiaire ul li img { height:30px; }
+
+245	
+
+#messagerie_onglet a {border : 1px solid #CCC;background:#EEE3B5;display:block;padding-left:3px;float:left;width:80px;height:20px;line-height: 20px;text-indent: 5px; -moz-border-radius:10px; -webkit-border-radius:10px; border-radius: 10px;}
+
+246	
+
+#messagerie_onglet a:hover {background-color: #E6CD93;}
+
+247	
+
+#messagerie_liste { }
+
+248	
+
+#messagerie_liste ul li { float:left;cursor: pointer; }
+
+249	
+
+#messagerie_liste .head {border-bottom:1px dashed #EEEEEE;}
+
+250	
+
+#messagerie_liste .head:hover {background:none !important;cursor:default !important;}
+
+251	
+
+#messagerie_liste ul li:hover { background:transparent url(../image/interface/1.png) center; -moz-border-radius:5px; -webkit-border-radius:5px; border-radius: 5px;}
+
+252	
+
+#messagerie_liste .t1 {background:#B4CFEF; -moz-border-radius:5px; -webkit-border-radius:5px; border-radius: 5px;}
+
+253	
+
+#messagerie_liste .titre { float:left; display:block; width:190px; padding-left:10px; }
+
+254	
+
+#messagerie_liste .msg { float:left; display:block; width:35px; text-align: right;padding-right:10px;}
+
+255	
+
+#messagerie_liste .par { float:left; display:block; width:100px; }
+
+256	
+
+#messagerie_liste .date { float:left; display:block; width:90px; }
+
+257	
+
+#combat_cartouche { clear:both; background-color:#DDDDDD; padding:9px; -moz-border-radius:12px; -webkit-border-radius:12px; border-radius: 12px; min-height:70px; }
+
+258	
+
+.infoperso td { font-size:10px; margin:0; padding:0; }
+
+259	
+
+.roseeticone { float:left; padding:4px; margin:5px; }
+
+260	
+
+#carte h4 { padding:0; margin:3px; border-bottom:1px solid #E7CF98; clear:both; }
+
+261	
+
+#carte .titre_info { margin-top:0; margin-bottom:0; font-variant:normal; font-weight:normal; background-color:#E7CF98; padding:0 10px; -moz-border-radius-topright:10px; -webkit-border-top-right-radius:10px; border-top-right-radius: 10px; clear:both; }
+
+262	
+
+263	
+
+#carte h2 { padding-left:25px; color:#000; line-height:25px; font-size:1.4em; border-top:1px solid; border-bottom:1px solid; border-color:#888; font-family:"Trebuchet MS", Times, serif; font-variant:small-caps; text-align:center; margin-top:5px; margin-bottom:8px; padding:0; background-color:#D8AB41; }
+
+264	
+
+#information h2 { padding-left:25px; line-height:25px; font-size:1.4em; font-family:"Trebuchet MS", Times, serif; font-variant:small-caps; text-align:center; margin-top:5px; margin-bottom:8px; padding:0; background-color:#D8AB41; border-bottom:1px solid #888888; border-color:#888888; border-top:1px solid #888888; color:#000000; }
+
+265	
+
+h3.old { border-top:1px solid; border-bottom:1px solid; border-color:#888; margin-top:10px; margin-bottom:5px; padding-left:10px; background-color:#91AEF2; font-family:"Trebuchet MS", Times, serif; font-variant:small-caps; }
+
+266	
+
+267	
+
+/***************************************************
+
+268	
+
+  Messagerie
+
+269	
+
+ ***************************************************/
+
+270	
+
+div.message_complet { clear:both; width:100%; }
+
+271	
+
+div.message_action { float:right; font-size:.8em; }
+
+272	
+
+div.spacer { clear:both; }
+
+273	
+
+.messagerie { margin-top:0; margin-bottom:0; font-variant:normal; font-weight:normal; background-color:#E7CF98; padding:0 6px 3px; -moz-border-radius:10px; -webkit-border-radius:10px; border-radius: 10px; float:left; }
+
+274	
+
+.fav_on { background:transparent url(./../image/messagerie_fav_on.png) no-repeat scroll left center; height:14px; width:16px; display:block; float:left; }
+
+275	
+
+.fav_off { background:transparent url(./../image/messagerie_fav_off.png) no-repeat scroll left center; height:14px; width:16px; display:block; float:left; }
+
+276	
+
+.del { background:transparent url(./../image/messagerie_del.png) no-repeat scroll top; height:16px; width:16px; display:block; }
+
+277	
+
+.del:hover { background-position:bottom!important; }
+
+278	
+
+.msg_cache { background:transparent url(./../image/messagerie_cacher.png) no-repeat scroll top; height:16px; width:16px; display:block; float:left; }
+
+279	
+
+.msg_voir { background:transparent url(./../image/messagerie_voir.png) no-repeat scroll top; height:16px; width:16px; display:block; float:left; }
+
+280	
+
+h3.messagerie span.auteur { position:absolute; left:0; font-weight:bold; font-size:11px; display:block; width:114px; text-align:center; text-transform:capitalize; }
+
+281	
+
+h3.messagerie span.titre { position:absolute; left:114px; color:#828387; font-weight:normal; }
+
+282	
+
+.messagerie span.date { font-style:italic; font-size:.7em; }
+
+283	
+
+h4 { margin:0; padding:0; }
+
+284	
+
+h5 { color:#000; font-size:1em; border-top:1px solid; border-bottom:1px solid; border-color:#888; font-family:"Trebuchet MS", Times, serif; font-variant:small-caps; background-color:#DF3F00; margin:0; padding-left:10px; }
+
+285	
+
+h6 { color:#000; font-size:1em; border-top:1px solid; border-bottom:1px solid; border-color:#888; font-family:"Trebuchet MS", Times, serif; font-variant:small-caps; background-color:#6EB027; margin:0; padding-left:10px; }
+
+286	
+
+img { border:0 none; padding:0; margin:0; }
+
+287	
+
+dl,dt,dd,ul,li { margin:0; padding:0; list-style-type:none; }
+
+288	
+
+ol.tuto,ol.tuto li { list-style-type:decimal; }
+
+289	
+
+.rose_a { margin:0; padding:0; width:0; cursor:pointer; font-size:0; }
+
+290	
+
+.rose_a:hover { margin:0; padding:0; cursor:pointer; font-size:0; }
+
+291	
+
+.rose_tr { font-size:0; margin:0; padding:0; height:20px; }
+
+292	
+
+.rose_tr td { font-size:0; margin:0; padding:0; }
+
+293	
+
+.rose_div { height:25px; }
+
+294	
+
+.brillant { padding-top:8px; text-align:center; background-image:url(../image/forum_h2.gif); height:23px; }
+
+295	
+
+.information_case { padding:8px; font-family:"Trebuchet MS", Times, serif; background-color:#BACCF7; border:2px solid; margin:9px; border-color:#FFF; -moz-border-radius:13px; -webkit-border-radius:13px; border-radius: 13px;}
+
+296	
+
+.information_case h4 { width:30%; background-color:#D8AB41; border-top:1px solid; border-bottom:1px solid; border-color:#888; text-align:center; margin:0 auto; margin-bottom:10px; }
+
+297	
+
+.avatar { float:right; }
+
+298	
+
+.jsinformation_case { display:none; z-index:100; position:absolute; top:250px; right:150px; background-color:#ffffff; border:1px solid #000000; font-size:12px; width:250px; padding:5px; }
+
+299	
+
+.combat { padding:2px; border-left:2px solid #999; margin:2px 2px 2px 10px; font-size:12px; }
+
+300	
+
+.combat:hover { background-image:url(../image/interface/1.png); }
+
+301	
+
+.echange { padding:2px; font-family:"Trebuchet MS", Times, serif; background-color:#BACCF7; border:2px solid; margin:2px; border-color:#FFF; -moz-border-radius:13px; -webkit-border-radius:13px; border-radius: 13px;}
+
+302	
+
+#liste_quete { border-left:2px solid; border-color:#FFF; padding-left:9px; padding-bottom:10px; overflow:auto; height:300px; background-color:#91AEF2; width:95%; margin:0 auto; }
+
+303	
+
+.quete_description { height:315px; padding-top:10px; padding:5px; color:#333; font-family:"Trebuchet MS", Times, serif; background:#BACCF7; border:2px solid; border-color:#FFF; -moz-border-radius:7px; -webkit-border-radius:7px; border-radius: 7px;}
+
+304	
+
+.description_quete { overflow:auto; height:280px; }
+
+305	
+
+.inventaire { background-color:#D4DAE2; margin:9px; }
+
+306	
+
+#carte h2 { color:#000000; font-family:"Trebuchet MS",Times,serif; font-size:15px; font-variant:small-caps; text-decoration:none; }
+
+307	
+
+#carte h2 a { color:#000000; font-family:"Trebuchet MS",Times,serif; font-size:15px; font-variant:small-caps; text-decoration:none; }
+
+308	
+
+.carte_bas { background:#000; height:5px; }
+
+309	
+
+#deplacement h4 { text-align:center; background-color:#D4DAE2; border:1px solid; border-color:#888; -moz-border-radius:5px; -webkit-border-radius:5px; border-radius: 5px; margin-bottom:5px; font-family:"Trebuchet MS",Times,serif; }
+
+310	
+
+311	
+
+/***************************************************
+
+312	
+
+  Header Menu
+
+313	
+
+ ***************************************************/
+
+314	
+
+.rose { width:50px; height:50px; border:0; margin:0; padding:0; }
+
+315	
+
+.decor { width:60px; height:60px; margin:0; padding:0; text-align:center; }
+
+316	
+
+.decor-edit { width:20px; height:20px; margin:0; padding:0; text-align:center; }
+
+317	
+
+.infobox { display:none; z-index:2; position:absolute; top:100px; left:0; background-color:#ffffff; border:1px solid #000000; font-size:12px; width:300px; padding:5px; }
+
+318	
+
+.tabnoir { background:url(../image/bord_map.png); color:#FFF; }
+
+319	
+
+.debug { display:none; }
+
+320	
+
+.baseJumpbox { width:250px; height:500px; }
+
+321	
+
+select.baseJumpbox optgroup { width:200px; color:black; background-color:#ffffff; margin-bottom:3pt; border:2px solid #735225; padding:2px; margin:5px; }
+
+322	
+
+.baseRow1 { background-color:#fff4cc; padding-left:2px; }
+
+323	
+
+.baseRow2 { background-color:#ffeeaa; padding-left:2px; }
+
+324	
+
+.heure { text-align:center; background-color:#D4DAE2; -moz-border-radius:9px; -webkit-border-radius:9px; border-radius: 9px; padding:5px; border:1px solid #FFF; }
+
+325	
+
+.inventaire2 { width:33%; font-size:.8em; text-align:center; vertical-align:top; background-image:url(../image/interface/1.png); -moz-border-radius:9px; -webkit-border-radius:9px; border-radius: 9px; color:#222; border:1px solid #FFF; }
+
+326	
+
+327	
+
+/***************************************************
+
+328	
+
+  Map
+
+329	
+
+ ***************************************************/
+
+330	
+
+.jsmap { text-align:left; display:none; z-index:100; position:absolute; top:250px; right:150px; background-image:url(../image/interface/1.png); border:1px solid #000000; font-size:12px; width:150px; padding:5px; -moz-border-radius:5px; -webkit-border-radius:5px; border-radius: 5px;}
+
+331	
+
+.bord_carte_haut_gauche { border-top:2px solid #888; border-left:2px solid #888; background:#D8AB41; -moz-border-radius-topleft:9px; -webkit-border-top-left-radius:9px; border-top-left-radius: 9px; background:transparent url(../image/royaume_icone.png) center; }
+
+332	
+
+.bord_carte_haut { text-align:center; border-top:2px solid #888; border-bottom:1px solid #888; background:#D8AB41; }
+
+333	
+
+.bord_carte_gauche { border-left:2px solid #888; border-right:1px solid #888; width:20px; text-align:center; background:#D8AB41; }
+
+334	
+
+335	
+
+/***************************************************
+
+336	
+
+  Ville
+
+337	
+
+ ***************************************************/
+
+338	
+
+ul.ville li { margin-bottom:3px; }
+
+339	
+
+ul.ville li:hover { font-weight:bold; text-decoration:none; background-color:#91AEF2; }
+
+340	
+
+.ville_titre a { font-family:"Trebuchet MS", Times, serif; text-decoration:none; font-variant:small-caps; font-size:15px; color:#000; }
+
+341	
+
+.ville_test { vertical-align:top; color:#000; padding:5px; }
+
+342	
+
+.ville_test a { color:#222; font-size:14px; text-decoration:none; }
+
+343	
+
+.ville_haut { color:#000; background-image:url(../image/forum_h2.gif); padding:3px; font-size:1.1em; font-variant:small-caps; font-family:"Trebuchet MS", Times, serif; font-weight:bold; text-align:center; height:25px; margin-left:-2px; margin-right:-2px; margin-top:-2px; }
+
+344	
+
+table.marchand,table.inventaire { font-size:.9em; margin:2px; text-align:center; font-weight:normal; width:98%; font-family:Arial; font-variant:normal; }
+
+345	
+
+.texte_normal { font-size:.9em; margin:2px; font-weight:normal; width:100%; font-family:Arial; font-variant:normal; }
+
+346	
+
+tr.header { font-weight:bold; text-align:center; }
+
+347	
+
+tr.element td,table.marchand tr.header td { padding:3px; }
+
+348	
+
+table.inventaire tr.element td,table.inventaire tr.header td { font-size:.9em; }
+
+349	
+
+#boutique	{text-align: center;font-size: 9pt;}
+
+350	
+
+#boutique li 		{clear:both;height:25px;line-height: 25px;}
+
+351	
+
+#boutique li:hover  { background:transparent url(../image/interface/1.png) center; -moz-border-radius:5px; -webkit-border-radius:5px; border-radius: 5px;}
+
+352	
+
+#boutique .head {font-size:7pt;border-bottom:1px dashed #EEEEEE;font-weight: bold;}
+
+353	
+
+#boutique .head:hover {background:none !important;cursor:default !important;}
+
+354	
+
+#boutique .image 	{float:left;width:9%;height:26px;}
+
+355	
+
+#boutique .nom 		{float:left;width:35%;}
+
+356	
+
+#boutique .type 	{float:left;width:9%;}
+
+357	
+
+#boutique .mains 	{float:left;width:9%;}
+
+358	
+
+#boutique .degats 	{float:left;width:9%;}
+
+359	
+
+#boutique .coef 	{float:left;width:9%;}
+
+360	
+
+#boutique .coef_type 	{float:left;width:9%;}
+
+361	
+
+#boutique .stars 	{float:left;width:10%;}
+
+362	
+
+#boutique .achat 	{float:left;width:9%;}
+
+363	
+
+#boutique .pp 		{float:left;width:10%;}
+
+364	
+
+#boutique .pm 		{float:left;width:9%;}
+
+365	
+
+#boutique .force 	{float:left;width:9%;}
+
+366	
+
+#boutique .nom_hotel 		{float:left;width:44%;}
+
+367	
+
+#boutique .time 		{float:left;width:35%;}
+
+368	
+
+#boutique .prix_hotel 	{float:left;width:10%;}
+
+369	
+
+370	
+
+.ville_mortvivant 		{background:transparent url(../image/ville/fondmv1.jpg) center !important;height:397px;width:419px;}
+
+371	
+
+.ville_barbare 			{background:transparent url(../image/ville/villebarbarebiseau.png) center !important;height:397px;width:419px;}
+
+372	
+
+.ville_elfebois 		{background:transparent url(../image/ville/villeEDBbiseau.png) center !important;height:397px;width:419px;}
+
+373	
+
+.ville_elfehaut 		{background:transparent url(../image/ville/villeHEbiseau.png) center !important;height:397px;width:419px;}
+
+374	
+
+.ville_humain 			{background:transparent url(../image/ville/villehumainbiseau.png) center !important;height:397px;width:419px;}
+
+375	
+
+.ville_humainnoir 		{background:transparent url(../image/ville/villecorrbiseau.png) center !important;height:397px;width:419px;}
+
+376	
+
+.ville_nain 			{background:transparent url(../image/ville/villenainbiseau.png) center !important;height:397px;width:419px;}
+
+377	
+
+.ville_orc 				{background:transparent url(../image/ville/villeorcbiseau.png) center !important;height:397px;width:419px;}
+
+378	
+
+.ville_scavenger 		{background:transparent url(../image/ville/villescavbiseau.png) center !important;height:397px;width:419px;}
+
+379	
+
+.ville_troll 			{background:transparent url(../image/ville/villetrollbiseau.png) center !important;height:397px;width:419px;}
+
+380	
+
+.ville_vampire 			{background:transparent url(../image/ville/villevampirebiseau.png) center !important;height:397px;width:419px;}
+
+381	
+
+382	
+
+383	
+
+.quartier_marchand		{background:transparent url(../image/ville/cadrebiseauQM.png) center;padding:6px;margin-left:16px;margin-top:35px;width:138px;height:121px;float:left;}
+
+384	
+
+.quartier_marchand_titre {font-size:14px;font-variant:small-caps; font-family:"Trebuchet MS", Times, serif; font-weight:bold;background:transparent url(../image/ville/cadretitreQM.png) top;display:block;height:34px;width:148px;margin-left:-4px;margin-top:-2px;line-height:32px;text-indent:15px;color:#463300;}
+
+385	
+
+.quartier_marchand li {cursor: pointer; background: #AFBDD6;border : 1px solid #666;-moz-border-radius: 6px;-webkit-border-radius:6px; border-radius: 6px;font-size:11px;height:14px;margin:2px;text-align:center;color:#3a3a4f;}
+
+386	
+
+.quartier_marchand li:hover {background: #FFF;}
+
+387	
+
+388	
+
+389	
+
+.quartier_royal			{background:transparent url(../image/ville/cadrebiseauQR.png) center;padding:6px;margin-top:19px;margin-left:93px;width:132px;height:138px;float:left;}
+
+390	
+
+.quartier_royal_titre {font-size:14px;font-variant:small-caps; font-family:"Trebuchet MS", Times, serif; font-weight:bold;background:transparent url(../image/ville/cadretitreQR.png) top;display:block;height:34px;width:134px;margin-left:0px;margin-top:-2px;line-height:32px;text-indent:17px;color:#463300;}
+
+391	
+
+.quartier_royal li {cursor: pointer;background: #bfccdd;border : 1px solid #8d7845;-moz-border-radius: 6px;-webkit-border-radius:6px; border-radius: 6px;font-size:11px;height:14px;margin:2px;text-align:center;color:#3a3a4f;}
+
+392	
+
+.quartier_royal li:hover {background: #FFF;}
+
+393	
+
+394	
+
+.quartier_haut			{background:transparent url(../image/ville/cadrebiseauHQ.png) center;padding:6px;margin-top:59px;margin-left:23px;width:116px;height:107px;float:left;}
+
+395	
+
+.quartier_haut_titre {font-size:14px;font-variant:small-caps; font-family:"Trebuchet MS", Times, serif; font-weight:bold;background:transparent url(../image/ville/cadretitreHQ.png) top;display:block;height:34px;width:114px;margin-left:0px;margin-top:-3px;line-height:35px;text-indent:13px;color:#463300;}
+
+396	
+
+.quartier_haut li {cursor: pointer;background: #bfccdd;border : 1px solid #8d7845;-moz-border-radius: 6px;-webkit-border-radius:6px; border-radius: 6px;font-size:11px;height:14px;margin:2px;text-align:center;color:#3a3a4f;}
+
+397	
+
+.quartier_haut li:hover {background: #FFF;}
+
+398	
+
+399	
+
+400	
+
+.quartier_bas			{background:transparent url(../image/ville/cadrebiseauBQ.png) center;padding:6px;margin-top:62px;margin-left:103px;width:132px;height:107px;float:left;}
+
+401	
+
+.quartier_bas_titre {font-size:14px;font-variant:small-caps; font-family:"Trebuchet MS", Times, serif; font-weight:bold;background:transparent url(../image/ville/cadretitreBQ.png) top;display:block;height:34px;width:106px;margin-left:12px;margin-top:-4px;line-height:38px;text-indent:13px;color: #463300;}
+
+402	
+
+.quartier_bas li {cursor: pointer;background: #bfccdd;border : 1px solid #8d7845;-moz-border-radius: 6px;-webkit-border-radius:6px; border-radius: 6px;font-size:11px;height:14px;margin:2px;text-align:center;color: #3a3a4f;}
+
+403	
+
+.quartier_bas li:hover {background: #FFF;}
+
+404	
+
+405	
+
+.trcolor2 { background-color:#B4CFEF;border-radius : 5px;-moz-border-radius: 5px;-webkit-border-radius:5px; }
+
+406	
+
+407	
+
+/***************************************************
+
+408	
+
+  Gestion Royaume
+
+409	
+
+ ***************************************************/
+
+410	
+
+#gestion-royaume { vertical-align:top; padding:5px; font-family:"Trebuchet MS", Times, serif; background-color:#BACCF7; font-weight:bold; }
+
+411	
+
+#gestion-royaume h4 { border-top:1px solid; border-bottom:1px solid; border-color:#888; margin-top:3px; margin-bottom:2px; padding-left:15px; background-color:#d8ab41; font-family:"Trebuchet MS", Times, serif; font-variant:small-caps; font-size:1em; color:black; }
+
+412	
+
+ul.gestion-royaume { margin-left:25px; }
+
+413	
+
+ul.gestion-royaume li { list-style-type:disc; margin-bottom:3px; color:#444444; }
+
+414	
+
+ul.gestion-royaume li:hover { font-weight:bold; text-decoration:none; background-color:#91AEF2; }
+
+415	
+
+ul.gestion-royaume li a { color:#444444; }
+
+416	
+
+417	
+
+/***************************************************
+
+418	
+
+  Hotel des ventes
+
+419	
+
+ **************************************************/
+
+420	
+
+ul.onglet-hotel { }
+
+421	
+
+ul.onglet-hotel li { display:inline; }
+
+422	
+
+423	
+
+/***************************************************
+
+424	
+
+  Element de droite
+
+425	
+
+ ***************************************************/
+
+426	
+
+#editcarte { width:100%; }
+
+427	
+
+.selecteur { float:left; }
+
+428	
+
+.mapedit { float:left; }
+
+429	
+
+430	
+
+/***************************************************
+
+431	
+
+  Tableau
+
+432	
+
+ ***************************************************/
+
+433	
+
+.trcolor3 { font-weight:bold; color:#999; font-style:italic; }
+
+434	
+
+.trcolor5 { font-weight:bold; color:#999; font-style:italic; background-color:#FFF; }
+
+435	
+
+.trstat { vertical-align:top; border:2px solid; border-color:#555; -moz-border-radius:10px; -webkit-border-radius:10px; border-radius: 10px; background-color:#91AEF2; padding:4px; }
+
+436	
+
+.achat_over { color:red; }
+
+437	
+
+.boite_royaume { float:left; height:60px; width:60px; }
+
+438	
+
+.marque_royaume { width:55px; height:55px; }
+
+439	
+
+440	
+
+/***************************************************
+
+441	
+
+  Journal des Actions
+
+442	
+
+ ***************************************************/
+
+443	
+
+.coupcritique { font-weight:bold; }
+
+444	
+
+.degat { color:#f00; }
+
+445	
+
+.manque { color:#00f; }
+
+446	
+
+.augcomp { color:#ff791c; font-weight:bold; }
+
+447	
+
+.reward { color:#B8860B; }
+
+448	
+
+.soin { color:#363; }
+
+449	
+
+.jsoin { color:#33CC00; }
+
+450	
+
+.jgsoin { color:#009900; }
+
+451	
+
+.jbuff { color:#3333FF; }
+
+452	
+
+.jgbuff { color:#000099; }
+
+453	
+
+.jdebuff { color:#9900CC; }
+
+454	
+
+.jdegat { color:darkred; }
+
+455	
+
+.jrdegat { color:red; }
+
+456	
+
+.jkill { color:#666666; }
+
+457	
+
+.jmort { color:#333333; }
+
+458	
+
+.jquete { color:orange; }
+
+459	
+
+.jloot { color:#CC33CC; }
+
+460	
+
+.small { font-style:italic; font-size:.9em; }
+
+461	
+
+.xsmall { font-style:italic; font-size:.8em; }
+
+462	
+
+463	
+
+/***************************************************
+
+464	
+
+  Rose des vents
+
+465	
+
+ ***************************************************/
+
+466	
+
+.admin { width:600px; }
+
+467	
+
+.info_joueur { color:#6633ff; font-weight:bold; }
+
+468	
+
+.info_monstre { color:#cc3300; font-weight:bold; }
+
+469	
+
+.admin tr td { vertical-align:top; }
+
+470	
+
+.admin tr td ul li { margin:0; }
+
+471	
+
+.adminListing { margin-top:10px; margin-bottom:10px; border-top:0; border-right:0; }
+
+472	
+
+.adminListing tr td { border-top:1px solid #8d8db3; border-right:1px solid #8d8db3; text-align:center; padding-right:5px; }
+
+473	
+
+.adminListing tr td a { text-decoration:none; }
+
+474	
+
+tr.tabMonstre td { border:1px solid grey; text-align:center; padding:2px; }
+
+475	
+
+476	
+
+/**********************************
+
+477	
+
+ Messagerie 
+
+478	
+
+ **********************************/
+
+479	
+
+.msgbar { width:50px; }
