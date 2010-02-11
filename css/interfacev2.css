@@ -380,7 +380,7 @@ table.inventaire tr.element td,table.inventaire tr.header td { font-size:.9em; }
 .ville_vampire 			{background:transparent url(../image/ville/villevampirebiseau.png) center !important;height:397px;width:419px;}
 
 
-.quartier_marchand		{background:transparent url(../image/ville/cadrebiseauQM.png) center;padding:6px;margin-left:16px;margin-top:35px;width:138px;height:121px;float:left;}
+.quartier_marchand		{background:transparent url(../image/ville/cadrebiseauQM.png) center;padding:6px;margin-left:16px;margin-top:20px;width:138px;height:121px;float:left;}
 .quartier_marchand_titre {font-size:14px;font-variant:small-caps; font-family:"Trebuchet MS", Times, serif; font-weight:bold;background:transparent url(../image/ville/cadretitreQM.png) top;display:block;height:34px;width:139px;margin-left:0px;margin-top:-3px;line-height:35px;text-indent:11px;color:#463300;}
 .quartier_marchand li {cursor: pointer; background: #bfccdd;border : 1px solid #8d7845;-moz-border-radius: 6px;-webkit-border-radius:6px; border-radius: 6px;font-size:11px;height:14px;margin:2px;text-align:center;color: #3a3a4f;}
 .quartier_marchand li:hover {background: #FFF;}
