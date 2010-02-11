@@ -128,7 +128,7 @@ if($W_row['type'] == 1)
 					if($db->num_rows > 0)
 					{
 					?>
-					<span class="small" style='margin-left:-70px;'>Dernier objet en vente : <?php echo nom_objet($row['objet']); ?> pour <?php echo $row['prix']; ?> stars !</span>
+					<span class="small" style='margin-left:-145px;'>Dernier objet en vente : <?php echo nom_objet($row['objet']); ?> pour <?php echo $row['prix']; ?> stars !</span>
 					<?php
 					}
 				}
