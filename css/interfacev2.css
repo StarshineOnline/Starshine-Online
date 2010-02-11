@@ -381,25 +381,25 @@ table.inventaire tr.element td,table.inventaire tr.header td { font-size:.9em; }
 
 
 .quartier_marchand		{background:transparent url(../image/ville/cadrebiseauQM.png) center;padding:6px;margin-left:16px;margin-top:35px;width:138px;height:121px;float:left;}
-.quartier_marchand_titre {font-size:14px;font-variant:small-caps; font-family:"Trebuchet MS", Times, serif; font-weight:bold;background:transparent url(../image/ville/cadretitreQM.png) top;display:block;height:34px;width:148px;margin-left:-4px;margin-top:-2px;line-height:32px;text-indent:15px;}
-.quartier_marchand li {cursor: pointer; background: #AFBDD6;border : 1px solid #666;-moz-border-radius: 6px;-webkit-border-radius:6px; border-radius: 6px;font-size:11px;height:14px;margin:2px;text-align:center;}
+.quartier_marchand_titre {font-size:14px;font-variant:small-caps; font-family:"Trebuchet MS", Times, serif; font-weight:bold;background:transparent url(../image/ville/cadretitreQM.png) top;display:block;height:34px;width:114px;margin-left:0px;margin-top:-3px;line-height:35px;text-indent:13px;color:#463300;}
+.quartier_marchand li {cursor: pointer; background: #bfccdd;border : 1px solid #8d7845;-moz-border-radius: 6px;-webkit-border-radius:6px; border-radius: 6px;font-size:11px;height:14px;margin:2px;text-align:center;color: #3a3a4f;}
 .quartier_marchand li:hover {background: #FFF;}
 
 
 .quartier_royal			{background:transparent url(../image/ville/cadrebiseauQR.png) center;padding:6px;margin-top:19px;margin-left:93px;width:132px;height:138px;float:left;}
-.quartier_royal_titre {font-size:14px;font-variant:small-caps; font-family:"Trebuchet MS", Times, serif; font-weight:bold;background:transparent url(../image/ville/cadretitreQR.png) top;display:block;height:34px;width:134px;margin-left:0px;margin-top:-2px;line-height:32px;text-indent:20px;}
-.quartier_royal li {cursor: pointer;background: #AFBDD6;border : 1px solid #666;-moz-border-radius: 6px;-webkit-border-radius:6px; border-radius: 6px;font-size:11px;height:14px;margin:2px;text-align:center;}
+.quartier_royal_titre {font-size:14px;font-variant:small-caps; font-family:"Trebuchet MS", Times, serif; font-weight:bold;background:transparent url(../image/ville/cadretitreQR.png) top;display:block;height:34px;width:134px;margin-left:0px;margin-top:-2px;line-height:32px;text-indent:20px;color:#463300;}
+.quartier_royal li {cursor: pointer;background: #bfccdd;border : 1px solid #8d7845;-moz-border-radius: 6px;-webkit-border-radius:6px; border-radius: 6px;font-size:11px;height:14px;margin:2px;text-align:center;color: #3a3a4f;}
 .quartier_royal li:hover {background: #FFF;}
 
 .quartier_haut			{background:transparent url(../image/ville/cadrebiseauHQ.png) center;padding:6px;margin-top:59px;margin-left:23px;width:116px;height:107px;float:left;}
-.quartier_haut_titre {font-size:14px;font-variant:small-caps; font-family:"Trebuchet MS", Times, serif; font-weight:bold;background:transparent url(../image/ville/cadretitreHQ.png) top;display:block;height:34px;width:114px;margin-left:0px;margin-top:-2px;line-height:33px;text-indent:15px;}
-.quartier_haut li {cursor: pointer;background: #AFBDD6;border : 1px solid #666;-moz-border-radius: 6px;-webkit-border-radius:6px; border-radius: 6px;font-size:11px;height:14px;margin:2px;text-align:center;}
+.quartier_haut_titre {font-size:14px;font-variant:small-caps; font-family:"Trebuchet MS", Times, serif; font-weight:bold;background:transparent url(../image/ville/cadretitreHQ.png) top;display:block;height:34px;width:114px;margin-left:0px;margin-top:-3px;line-height:35px;text-indent:13px;color:#463300;}
+.quartier_haut li {cursor: pointer;background: #bfccdd;border : 1px solid #8d7845;-moz-border-radius: 6px;-webkit-border-radius:6px; border-radius: 6px;font-size:11px;height:14px;margin:2px;text-align:center;color: #3a3a4f;}
 .quartier_haut li:hover {background: #FFF;}
 
 
 .quartier_bas			{background:transparent url(../image/ville/cadrebiseauBQ.png) center;padding:6px;margin-top:62px;margin-left:103px;width:132px;height:107px;float:left;}
-.quartier_bas_titre {font-size:14px;font-variant:small-caps; font-family:"Trebuchet MS", Times, serif; font-weight:bold;background:transparent url(../image/ville/cadretitreBQ.png) top;display:block;height:34px;width:106px;margin-left:12px;margin-top:-4px;line-height:37px;text-indent:15px;}
-.quartier_bas li {cursor: pointer;background: #AFBDD6;border : 1px solid #666;-moz-border-radius: 6px;-webkit-border-radius:6px; border-radius: 6px;font-size:11px;height:14px;margin:2px;text-align:center;}
+.quartier_bas_titre {font-size:14px;font-variant:small-caps; font-family:"Trebuchet MS", Times, serif; font-weight:bold;background:transparent url(../image/ville/cadretitreBQ.png) top;display:block;height:34px;width:106px;margin-left:12px;margin-top:-4px;line-height:38px;text-indent:13px;color:#463300;}
+.quartier_bas li {cursor: pointer;background: #bfccdd;border : 1px solid #8d7845;-moz-border-radius: 6px;-webkit-border-radius:6px; border-radius: 6px;font-size:11px;height:14px;margin:2px;text-align:center;color: #3a3a4f;}
 .quartier_bas li:hover {background: #FFF;}
 
 .trcolor2 { background-color:#B4CFEF;border-radius : 5px;-moz-border-radius: 5px;-webkit-border-radius:5px; }
