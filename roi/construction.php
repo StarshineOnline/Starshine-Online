@@ -59,7 +59,7 @@ else if(!array_key_exists('direction', $_GET))
 		{			
 			$royaume_req = new royaume($row['r']);
 			echo "
-			<li class='$boutique_class'>
+			<li class='$boutique_class'   onclick=\"minimap(".$row['x'].",".$row['y'].")\">
 				<span style='display:block;width:220px;float:left;'>";
 				$batiment = new batiment($row['id_batiment']);
 				echo "<img src='../image/batiment/".$batiment->get_image()."_04.png' style='width:19px;vertical-align: top;' alt='".$batiment->get_nom()."' />".$batiment->get_nom();

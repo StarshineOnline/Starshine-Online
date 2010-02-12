@@ -572,14 +572,17 @@ class map
 		}
 	}
 
-	function get_drapeau()
+	function get_drapeau($royaume='')
 	{
 		global $db;
+		if (!empty($royaume)){$filter = 'AND map.royaume = '.$royaume; }
 		$RqDrapeaux = $db->query("SELECT placement.x, placement.y, placement.type, placement.nom, placement.royaume, royaume.race, placement.debut_placement, placement.fin_placement, batiment.image 
-							      FROM placement, batiment, royaume
+							      FROM placement, batiment, royaume, map
 							      WHERE ( ( (placement.x >= ".$this->xmin.") AND (placement.x <= ".$this->xmax.") ) AND ( (placement.y >= ".$this->ymin.") AND (placement.y <= ".$this->ymax.") ) ) 
 							      AND batiment.id = placement.id_batiment 
 							      AND royaume.id=placement.royaume
+								  AND map.id = ((placement.y * 1000) + placement.x)
+								  $filter
 							      ORDER BY placement.y ASC, placement.x ASC;");
 		if($db->num_rows($RqDrapeaux) > 0)
 		{
@@ -622,11 +625,12 @@ class map
 	function get_batiment($royaume='')
 	{
 		global $db;
-		if (!empty($royaume)){$filter = 'AND construction.royaume = '.$royaume; }
+		if (!empty($royaume)){$filter = 'AND map.royaume = '.$royaume; }
 		$RqBatiments = $db->query("SELECT construction.x, construction.y, construction.hp, construction.royaume, construction.nom, construction.id_batiment, batiment.image 
-							FROM construction, batiment 
+							FROM construction, batiment, map 
 							WHERE ( ( (construction.x >= ".$this->xmin.") AND (construction.x <= ".$this->xmax.") ) AND ( (construction.y >= ".$this->ymin.") AND (construction.y <= ".$this->ymax.") ) ) 
 							AND batiment.id = construction.id_batiment 
+							AND map.id = ((construction.y * 1000) + construction.x)
 							$filter
 							ORDER BY construction.y ASC, construction.x ASC;");
 		if($db->num_rows($RqBatiments) > 0)
