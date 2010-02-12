@@ -262,6 +262,7 @@ function showChat(url) {
 
 var cache_monstre;
 var affiche_royaume = false;
+var show_only = '';
 
 $(document).ready(function()
 {
