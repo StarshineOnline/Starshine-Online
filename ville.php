@@ -102,7 +102,7 @@ if($W_row['type'] == 1)
 	{
 		?>
 		<legend><?php echo '<a href="ville.php" onclick="return envoiInfo(this.href,\'centre\')">';?><?php echo $R->get_nom();?></a> </legend>
-<?
+<?php
 				
 				if($R->get_id() != 0)
 				{

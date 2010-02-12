@@ -111,6 +111,18 @@ class monstre
 
 	/**
     * @access private
+    * @var mediumint(8)
+    */
+	private $dressage;
+
+	/**
+    * @access private
+    * @var varchar(5)
+    */
+	private $sort_dressage;
+
+	/**
+    * @access private
     * @var varchar(10)
     */
 	private $arme;
@@ -197,6 +209,8 @@ class monstre
 	* @param mediumint(8) sort_vie attribut
 	* @param mediumint(8) sort_mort attribut
 	* @param mediumint(8) sort_element attribut
+	* @param mediumint(8) dressage attribut
+	* @param varchar(5) sort_dressage attribut
 	* @param varchar(10) arme attribut
 	* @param text action attribut
 	* @param tinyint(3) level attribut
@@ -210,17 +224,17 @@ class monstre
 	* @param text description attribut
 	* @return none
 	*/
-	function __construct($id = 0, $lib = '', $nom = '', $type = '', $hp = '', $pp = '', $pm = '', $forcex = '', $dexterite = '', $puissance = '', $volonte = '', $energie = '', $melee = '', $esquive = '', $incantation = '', $sort_vie = '', $sort_mort = '', $sort_element = '', $arme = '', $action = '', $level = '', $xp = '', $star = '', $drops = '', $spawn = '', $spawn_loc = '', $terrain = '', $affiche = '', $description = '')
+	function __construct($id = 0, $lib = '', $nom = '', $type = '', $hp = '', $pp = '', $pm = '', $forcex = '', $dexterite = '', $puissance = '', $volonte = '', $energie = '', $melee = '', $esquive = '', $incantation = '', $sort_vie = '', $sort_mort = '', $sort_element = '', $dressage = '', $sort_dressage = '', $arme = '', $action = '', $level = '', $xp = '', $star = '', $drops = '', $spawn = '', $spawn_loc = '', $terrain = '', $affiche = '', $description = '')
 	{
 		global $db;
 		//Verification nombre et du type d'argument pour construire l'etat adequat.
 		if( (func_num_args() == 1) && is_numeric($id) )
 		{
-			$requeteSQL = $db->query("SELECT lib, nom, type, hp, pp, pm, forcex, dexterite, puissance, volonte, energie, melee, esquive, incantation, sort_vie, sort_mort, sort_element, arme, action, level, xp, star, drops, spawn, spawn_loc, terrain, affiche, description FROM monstre WHERE id = ".$id);
+			$requeteSQL = $db->query("SELECT lib, nom, type, hp, pp, pm, forcex, dexterite, puissance, volonte, energie, melee, esquive, incantation, sort_vie, sort_mort, sort_element, dressage, sort_dressage, arme, action, level, xp, star, drops, spawn, spawn_loc, terrain, affiche, description FROM monstre WHERE id = ".$id);
 			//Si le thread est dans la base, on le charge sinon on crée un thread vide.
 			if( $db->num_rows($requeteSQL) > 0 )
 			{
-				list($this->lib, $this->nom, $this->type, $this->hp, $this->pp, $this->pm, $this->forcex, $this->dexterite, $this->puissance, $this->volonte, $this->energie, $this->melee, $this->esquive, $this->incantation, $this->sort_vie, $this->sort_mort, $this->sort_element, $this->arme, $this->action, $this->level, $this->xp, $this->star, $this->drops, $this->spawn, $this->spawn_loc, $this->terrain, $this->affiche, $this->description) = $db->read_array($requeteSQL);
+				list($this->lib, $this->nom, $this->type, $this->hp, $this->pp, $this->pm, $this->forcex, $this->dexterite, $this->puissance, $this->volonte, $this->energie, $this->melee, $this->esquive, $this->incantation, $this->sort_vie, $this->sort_mort, $this->sort_element, $this->dressage, $this->sort_dressage, $this->arme, $this->action, $this->level, $this->xp, $this->star, $this->drops, $this->spawn, $this->spawn_loc, $this->terrain, $this->affiche, $this->description) = $db->read_array($requeteSQL);
 			}
 			else $this->__construct();
 			$this->id = $id;
@@ -245,6 +259,8 @@ class monstre
 			$this->sort_vie = $id['sort_vie'];
 			$this->sort_mort = $id['sort_mort'];
 			$this->sort_element = $id['sort_element'];
+			$this->dressage = $id['dressage'];
+			$this->sort_dressage = $id['sort_dressage'];
 			$this->arme = $id['arme'];
 			$this->action = $id['action'];
 			$this->level = $id['level'];
@@ -276,6 +292,8 @@ class monstre
 			$this->sort_vie = $sort_vie;
 			$this->sort_mort = $sort_mort;
 			$this->sort_element = $sort_element;
+			$this->dressage = $dressage;
+			$this->sort_dressage = $sort_dressage;
 			$this->arme = $arme;
 			$this->action = $action;
 			$this->level = $level;
@@ -304,7 +322,7 @@ class monstre
 		{
 			if(count($this->champs_modif) > 0)
 			{
-				if($force) $champs = 'lib = "'.mysql_escape_string($this->lib).'", nom = "'.mysql_escape_string($this->nom).'", type = "'.mysql_escape_string($this->type).'", hp = "'.mysql_escape_string($this->hp).'", pp = "'.mysql_escape_string($this->pp).'", pm = "'.mysql_escape_string($this->pm).'", forcex = "'.mysql_escape_string($this->forcex).'", dexterite = "'.mysql_escape_string($this->dexterite).'", puissance = "'.mysql_escape_string($this->puissance).'", volonte = "'.mysql_escape_string($this->volonte).'", energie = "'.mysql_escape_string($this->energie).'", melee = "'.mysql_escape_string($this->melee).'", esquive = "'.mysql_escape_string($this->esquive).'", incantation = "'.mysql_escape_string($this->incantation).'", sort_vie = "'.mysql_escape_string($this->sort_vie).'", sort_mort = "'.mysql_escape_string($this->sort_mort).'", sort_element = "'.mysql_escape_string($this->sort_element).'", arme = "'.mysql_escape_string($this->arme).'", action = "'.mysql_escape_string($this->action).'", level = "'.mysql_escape_string($this->level).'", xp = "'.mysql_escape_string($this->xp).'", star = "'.mysql_escape_string($this->star).'", drops = "'.mysql_escape_string($this->drops).'", spawn = "'.mysql_escape_string($this->spawn).'", spawn_loc = "'.mysql_escape_string($this->spawn_loc).'", terrain = "'.mysql_escape_string($this->terrain).'", affiche = "'.mysql_escape_string($this->affiche).'", description = "'.mysql_escape_string($this->description).'"';
+				if($force) $champs = 'lib = "'.mysql_escape_string($this->lib).'", nom = "'.mysql_escape_string($this->nom).'", type = "'.mysql_escape_string($this->type).'", hp = "'.mysql_escape_string($this->hp).'", pp = "'.mysql_escape_string($this->pp).'", pm = "'.mysql_escape_string($this->pm).'", forcex = "'.mysql_escape_string($this->forcex).'", dexterite = "'.mysql_escape_string($this->dexterite).'", puissance = "'.mysql_escape_string($this->puissance).'", volonte = "'.mysql_escape_string($this->volonte).'", energie = "'.mysql_escape_string($this->energie).'", melee = "'.mysql_escape_string($this->melee).'", esquive = "'.mysql_escape_string($this->esquive).'", incantation = "'.mysql_escape_string($this->incantation).'", sort_vie = "'.mysql_escape_string($this->sort_vie).'", sort_mort = "'.mysql_escape_string($this->sort_mort).'", sort_element = "'.mysql_escape_string($this->sort_element).'", dressage = "'.mysql_escape_string($this->dressage).'", sort_dressage = "'.mysql_escape_string($this->sort_dressage).'", arme = "'.mysql_escape_string($this->arme).'", action = "'.mysql_escape_string($this->action).'", level = "'.mysql_escape_string($this->level).'", xp = "'.mysql_escape_string($this->xp).'", star = "'.mysql_escape_string($this->star).'", drops = "'.mysql_escape_string($this->drops).'", spawn = "'.mysql_escape_string($this->spawn).'", spawn_loc = "'.mysql_escape_string($this->spawn_loc).'", terrain = "'.mysql_escape_string($this->terrain).'", affiche = "'.mysql_escape_string($this->affiche).'", description = "'.mysql_escape_string($this->description).'"';
 				else
 				{
 					$champs = '';
@@ -323,8 +341,8 @@ class monstre
 		}
 		else
 		{
-			$requete = 'INSERT INTO monstre (lib, nom, type, hp, pp, pm, forcex, dexterite, puissance, volonte, energie, melee, esquive, incantation, sort_vie, sort_mort, sort_element, arme, action, level, xp, star, drops, spawn, spawn_loc, terrain, affiche, description) VALUES(';
-			$requete .= '"'.mysql_escape_string($this->lib).'", "'.mysql_escape_string($this->nom).'", "'.mysql_escape_string($this->type).'", "'.mysql_escape_string($this->hp).'", "'.mysql_escape_string($this->pp).'", "'.mysql_escape_string($this->pm).'", "'.mysql_escape_string($this->forcex).'", "'.mysql_escape_string($this->dexterite).'", "'.mysql_escape_string($this->puissance).'", "'.mysql_escape_string($this->volonte).'", "'.mysql_escape_string($this->energie).'", "'.mysql_escape_string($this->melee).'", "'.mysql_escape_string($this->esquive).'", "'.mysql_escape_string($this->incantation).'", "'.mysql_escape_string($this->sort_vie).'", "'.mysql_escape_string($this->sort_mort).'", "'.mysql_escape_string($this->sort_element).'", "'.mysql_escape_string($this->arme).'", "'.mysql_escape_string($this->action).'", "'.mysql_escape_string($this->level).'", "'.mysql_escape_string($this->xp).'", "'.mysql_escape_string($this->star).'", "'.mysql_escape_string($this->drops).'", "'.mysql_escape_string($this->spawn).'", "'.mysql_escape_string($this->spawn_loc).'", "'.mysql_escape_string($this->terrain).'", "'.mysql_escape_string($this->affiche).'", "'.mysql_escape_string($this->description).'")';
+			$requete = 'INSERT INTO monstre (lib, nom, type, hp, pp, pm, forcex, dexterite, puissance, volonte, energie, melee, esquive, incantation, sort_vie, sort_mort, sort_element, dressage, sort_dressage, arme, action, level, xp, star, drops, spawn, spawn_loc, terrain, affiche, description) VALUES(';
+			$requete .= '"'.mysql_escape_string($this->lib).'", "'.mysql_escape_string($this->nom).'", "'.mysql_escape_string($this->type).'", "'.mysql_escape_string($this->hp).'", "'.mysql_escape_string($this->pp).'", "'.mysql_escape_string($this->pm).'", "'.mysql_escape_string($this->forcex).'", "'.mysql_escape_string($this->dexterite).'", "'.mysql_escape_string($this->puissance).'", "'.mysql_escape_string($this->volonte).'", "'.mysql_escape_string($this->energie).'", "'.mysql_escape_string($this->melee).'", "'.mysql_escape_string($this->esquive).'", "'.mysql_escape_string($this->incantation).'", "'.mysql_escape_string($this->sort_vie).'", "'.mysql_escape_string($this->sort_mort).'", "'.mysql_escape_string($this->sort_element).'", "'.mysql_escape_string($this->dressage).'", "'.mysql_escape_string($this->sort_dressage).'", "'.mysql_escape_string($this->arme).'", "'.mysql_escape_string($this->action).'", "'.mysql_escape_string($this->level).'", "'.mysql_escape_string($this->xp).'", "'.mysql_escape_string($this->star).'", "'.mysql_escape_string($this->drops).'", "'.mysql_escape_string($this->spawn).'", "'.mysql_escape_string($this->spawn_loc).'", "'.mysql_escape_string($this->terrain).'", "'.mysql_escape_string($this->affiche).'", "'.mysql_escape_string($this->description).'")';
 			$db->query($requete);
 			//Récuperation du dernier ID inséré.
 			$this->id = $db->last_insert_id();
@@ -383,7 +401,7 @@ class monstre
 			}
 		}
 
-		$requete = "SELECT id, lib, nom, type, hp, pp, pm, forcex, dexterite, puissance, volonte, energie, melee, esquive, incantation, sort_vie, sort_mort, sort_element, arme, action, level, xp, star, drops, spawn, spawn_loc, terrain, affiche, description FROM monstre WHERE ".$where." ORDER BY ".$ordre;
+		$requete = "SELECT id, lib, nom, type, hp, pp, pm, forcex, dexterite, puissance, volonte, energie, melee, esquive, incantation, sort_vie, sort_mort, sort_element, dressage, sort_dressage, arme, action, level, xp, star, drops, spawn, spawn_loc, terrain, affiche, description FROM monstre WHERE ".$where." ORDER BY ".$ordre;
 		$req = $db->query($requete);
 		if($db->num_rows($req) > 0)
 		{
@@ -405,7 +423,7 @@ class monstre
 	*/
 	function __toString()
 	{
-		return 'id = '.$this->id.', lib = '.$this->lib.', nom = '.$this->nom.', type = '.$this->type.', hp = '.$this->hp.', pp = '.$this->pp.', pm = '.$this->pm.', forcex = '.$this->forcex.', dexterite = '.$this->dexterite.', puissance = '.$this->puissance.', volonte = '.$this->volonte.', energie = '.$this->energie.', melee = '.$this->melee.', esquive = '.$this->esquive.', incantation = '.$this->incantation.', sort_vie = '.$this->sort_vie.', sort_mort = '.$this->sort_mort.', sort_element = '.$this->sort_element.', arme = '.$this->arme.', action = '.$this->action.', level = '.$this->level.', xp = '.$this->xp.', star = '.$this->star.', drops = '.$this->drops.', spawn = '.$this->spawn.', spawn_loc = '.$this->spawn_loc.', terrain = '.$this->terrain.', affiche = '.$this->affiche.', description = '.$this->description;
+		return 'id = '.$this->id.', lib = '.$this->lib.', nom = '.$this->nom.', type = '.$this->type.', hp = '.$this->hp.', pp = '.$this->pp.', pm = '.$this->pm.', forcex = '.$this->forcex.', dexterite = '.$this->dexterite.', puissance = '.$this->puissance.', volonte = '.$this->volonte.', energie = '.$this->energie.', melee = '.$this->melee.', esquive = '.$this->esquive.', incantation = '.$this->incantation.', sort_vie = '.$this->sort_vie.', sort_mort = '.$this->sort_mort.', sort_element = '.$this->sort_element.', dressage = '.$this->dressage.', sort_dressage = '.$this->sort_dressage.', arme = '.$this->arme.', action = '.$this->action.', level = '.$this->level.', xp = '.$this->xp.', star = '.$this->star.', drops = '.$this->drops.', spawn = '.$this->spawn.', spawn_loc = '.$this->spawn_loc.', terrain = '.$this->terrain.', affiche = '.$this->affiche.', description = '.$this->description;
 	}
 	
 	/**
@@ -604,6 +622,28 @@ class monstre
 	function get_sort_element()
 	{
 		return $this->sort_element;
+	}
+
+	/**
+	* Retourne la valeur de l'attribut
+	* @access public
+	* @param none
+	* @return mediumint(8) $dressage valeur de l'attribut dressage
+	*/
+	function get_dressage()
+	{
+		return $this->dressage;
+	}
+
+	/**
+	* Retourne la valeur de l'attribut
+	* @access public
+	* @param none
+	* @return varchar(5) $sort_dressage valeur de l'attribut sort_dressage
+	*/
+	function get_sort_dressage()
+	{
+		return $this->sort_dressage;
 	}
 
 	/**
@@ -946,6 +986,30 @@ class monstre
 	/**
 	* Modifie la valeur de l'attribut
 	* @access public
+	* @param mediumint(8) $dressage valeur de l'attribut
+	* @return none
+	*/
+	function set_dressage($dressage)
+	{
+		$this->dressage = $dressage;
+		$this->champs_modif[] = 'dressage';
+	}
+
+	/**
+	* Modifie la valeur de l'attribut
+	* @access public
+	* @param varchar(5) $sort_dressage valeur de l'attribut
+	* @return none
+	*/
+	function set_sort_dressage($sort_dressage)
+	{
+		$this->sort_dressage = $sort_dressage;
+		$this->champs_modif[] = 'sort_dressage';
+	}
+
+	/**
+	* Modifie la valeur de l'attribut
+	* @access public
 	* @param varchar(10) $arme valeur de l'attribut
 	* @return none
 	*/
@@ -1099,6 +1163,18 @@ class monstre
 		$set = 'set_'.$comp_assoc;
 		if(method_exists($this, $set)) $this->$set($valeur);
 		else $this->set_competence($comp_assoc, $valeur);
+	}
+
+	function get_infos_sort_dressage()
+	{
+		if($this->sort_dressage[0] == 's')
+		{
+			return new sort_jeu(substr($this->sort_dressage, 1));
+		}
+		else
+		{
+			return new comp_jeu(substr($this->sort_dressage, 1));
+		}
 	}
 }
 ?>

@@ -83,14 +83,15 @@ body { margin:0; padding:0; background:#7e909c url(../image/v2/bg_site.png) repe
 .buff_nondispo { position:relative; float:left; height:19px; width:16px; padding:0; margin:0 2px; background:transparent url(../image/buff/nobuff.png) top no-repeat; }
 .buff_duree_restante { position:absolute; bottom:0; left:0; }
 #joueur_groupe { width:300px; float:left; background:transparent url(../image/fond_groupe.png) center; margin-left:30px; height:83px; margin-top:4px; }
-#joueur_groupe_bouton { width:50px; float:left; }
-#joueur_groupe ul { width:250px; float:left; }
-#mail_groupe { cursor:pointer; width:32px; height:32px; background:transparent url(../image/message.png) center no-repeat; }
-#info_groupe { cursor:pointer; width:21px; height:21px; background:transparent url(../image/interface/information.png) center; }
+#joueur_groupe_bouton { width:35px; float:left; text-align : center;}
+#joueur_groupe ul { width:265px; float:left; }
+#mail_groupe { cursor:pointer; width:32px; height:32px; background:transparent url(../image/message.png) center no-repeat; margin : auto;}
+#info_groupe { cursor:pointer; width:21px; height:21px; background:transparent url(../image/interface/information.png) center; margin : auto; margin-top : 12px; margin-bottom : 7px;}
 #info_groupe:hover { background-position:top; }
 #info_groupe:active { background-position:bottom; }
 #joueur_groupe li { cursor:pointer; font-size:8pt; border-bottom:1px dotted #8b94b0; padding:0 0 2px; }
 .joueur_groupe_pseudo { float:left; line-height:16px; width:125px; }
+.joueur_groupe_ischef { float:left; width:16px; height : 16px; display : block; margin-right : 2px;}
 .joueur_groupe_barre_hp { float:left; width:102px; height:6px; margin:0; }
 .joueur_groupe_barre_mp { float:left; width:102px; height:6px; margin:1px 0 0; }
 

@@ -6,42 +6,98 @@ if (file_exists('root.php'))
 $connexion = true;
 //Inclusion du haut du document html
 include_once(root.'haut_ajax.php');
+//Si attaque via pet, on fait les verifs nécessaires
+$check_pet = false;
+$check_pet_def = false;
+$no_pa_attaque = false;
+$joueur = new perso($_SESSION['ID']);
+if(array_key_exists('pet', $_GET))
+{
+	if($joueur->nb_pet() > 0) $check_pet = true;
+}
 $type = $_GET['type'];
 switch($type)
 {
 	case 'joueur' :
-		$joueur = new perso($_SESSION['ID']);
+		if(!$check_pet)
+		{
+			$joueur = new perso($_SESSION['ID']);
+			$joueur->action_do = $joueur->recupaction('attaque');
+			$attaquant = new entite('joueur', $joueur);
+		}
+		else
+		{
+			$attaquant = new entite('pet', $joueur);
+		}
+		$def = false;
 		$joueur_defenseur = new perso($_GET['id_joueur']);
 		$joueur_defenseur->check_perso();
-		$joueur->action_do = $joueur->recupaction('attaque');
-		$joueur_defenseur->action_do = $joueur_defenseur->recupaction('defense');
-		$attaquant = new entite('joueur', $joueur);
-		$defenseur = new entite('joueur', $joueur_defenseur);
+		//On vérifie que ya pas un buff qui fait défendre par un pet
+		if($joueur_defenseur->is_buff('defense_pet'))
+		{
+			$defense = $joueur_defenseur->get_buff('defense_pet', 'effet');
+			$rand = rand(0, 100);
+			//Défense par le pet
+			if($rand < $defense)
+			{
+				$check_pet_def = true;
+			}
+		}
+		//Si il est en train de dresser un mob, le dressage est arrêté
+		if($joueur_defenseur->is_buff('dressage'))
+		{
+			$buff_def = $joueur_defenseur->get_buff('dressage');
+			$buff_def->supprimer();
+		}
+		if(!$check_pet_def)
+		{
+			$joueur_defenseur->action_do = $joueur_defenseur->recupaction('defense');
+			$defenseur = new entite('joueur', $joueur_defenseur);
+		}
+		else
+		{
+			$defenseur = new entite('pet', $joueur_defenseur);
+		}
 	break;
 	case 'monstre' :
-		$joueur = new perso($_SESSION['ID']);
+		if(!$check_pet)
+		{
+			$joueur = new perso($_SESSION['ID']);
+			$joueur->action_do = $joueur->recupaction('attaque');
+			$attaquant = new entite('joueur', $joueur);
+		}
+		else
+		{
+			$attaquant = new entite('pet', $joueur);
+		}
 		$map_monstre = new map_monstre($_GET['id_monstre']);
 		if ($map_monstre->nonexistant)
 		{
 			echo '<h5>Ce monstre est déjà au paradis des monstres</h5>';
 			exit (0);
 		}
-		$joueur->action_do = $joueur->recupaction('attaque');
 		$joueur_defenseur = new monstre($map_monstre->get_type());
 		$joueur_defenseur->hp_max = $joueur_defenseur->get_hp();
 		$joueur_defenseur->set_hp($map_monstre->get_hp());
 		$joueur_defenseur->x = $map_monstre->get_x();
 		$joueur_defenseur->y = $map_monstre->get_y();
 		$joueur_defenseur->buff = $map_monstre->get_buff();
-		$attaquant = new entite('joueur', $joueur);
 		$defenseur = new entite('monstre', $joueur_defenseur);
-		$diff_lvl = abs($attaquant->get_level() - $defenseur->get_level());
+		$diff_lvl = abs($joueur->get_level() - $defenseur->get_level());
 	break;
 	case 'batiment' :
-		$joueur = new perso($_SESSION['ID']);
+		if(!$check_pet)
+		{
+			$joueur = new perso($_SESSION['ID']);
+			$joueur->action_do = $joueur->recupaction('attaque');
+			$attaquant = new entite('joueur', $joueur);
+		}
+		else
+		{
+			$attaquant = new entite('pet', $joueur);
+		}
 		if($_GET['table'] == 'construction') $map_batiment = new construction($_GET['id_batiment']);
 		else $map_batiment = new placement($_GET['id_batiment']);
-		$joueur->action_do = $joueur->recupaction('attaque');
 		$joueur_defenseur = new batiment($map_batiment->get_id_batiment());
 		if($_GET['table'] == 'construction') $joueur_defenseur->coef = 1;
 		else $joueur_defenseur->coef = $map_batiment->get_temps_restant() / $map_batiment->get_temps_total();
@@ -49,7 +105,6 @@ switch($type)
 		$joueur_defenseur->set_hp($map_batiment->get_hp());
 		$joueur_defenseur->x = $map_batiment->get_x();
 		$joueur_defenseur->y = $map_batiment->get_y();
-		$attaquant = new entite('joueur', $joueur);
 		$defenseur = new entite('batiment', $joueur_defenseur);
 	break;
 	case 'siege' :
@@ -136,6 +191,10 @@ if($joueur->is_buff('repos_sage') && !$no_pa_attaque)
 {
 	echo '<h5>Vous êtes sous repos du sage, vous ne pouvez pas attaquer.</h5>';
 }
+elseif($joueur->is_buff('dressage'))
+{
+	echo '<h5>Vous dressez un monstre, vous ne pouvez pas attaquer.</h5>';
+}
 else if($W_distance > $attaquant->get_distance_tir())
 {
 	echo '<h5>Vous êtes trop loin pour l\'attaquer !</h5>';
@@ -182,7 +241,7 @@ else
 			}
 		}
 		//On vérifie si l'attaquant est sur un batiment offensif
-		$requete = "SELECT id_batiment FROM construction WHERE x = ".$attaquant->get_x()." AND y = ".$attaquant->get_y()." AND royaume = ".$Trace[$attaquant->get_race()]['numrace'];
+		$requete = "SELECT id_batiment FROM construction WHERE x = ".$joueur->get_x()." AND y = ".$attaquant->get_y()." AND royaume = ".$Trace[$attaquant->get_race()]['numrace'];
 		$req = $db->query($requete);
 		if($db->num_rows > 0)
 		{
@@ -232,7 +291,7 @@ else
 
 	$joueur_true = false;
 	$siege_true = false;
-	if ($type == 'joueur' OR $type == 'monstre' OR $type == 'batiment') if($attaquant->get_pa() >= $pa_attaque) $joueur_true = true;
+	if ($type == 'joueur' OR $type == 'monstre' OR $type == 'batiment') if($joueur->get_pa() >= $pa_attaque) $joueur_true = true;
 	if($type == 'siege' OR $type == 'ville') if ($map_siege->get_rechargement() <= time()) if($attaquant->get_pa() >= $pa_attaque) $siege_true = true;
 	//Vérifie si l'attaquant a assez de points d'actions pour attaquer ou si l'arme de siege a assez de rechargement
 	if ($joueur_true OR $siege_true)
@@ -401,13 +460,13 @@ else
 					//Augmentation des compétences liées
 					if($mode == 'attaquant')
 					{
-						$joueur = augmentation_competences($augmentations['actif'], $joueur);
-						$joueur_defenseur = augmentation_competences($augmentations['passif'], $joueur_defenseur);
+						if(!$check_pet) $joueur = augmentation_competences($augmentations['actif'], $joueur);
+						if(!$check_pet_def) $joueur_defenseur = augmentation_competences($augmentations['passif'], $joueur_defenseur);
 					}
 					else
 					{
-						$joueur_defenseur = augmentation_competences($augmentations['actif'], $joueur_defenseur);
-						$joueur = augmentation_competences($augmentations['passif'], $joueur);
+						if(!$check_pet_def) $joueur_defenseur = augmentation_competences($augmentations['actif'], $joueur_defenseur);
+						if(!$check_pet) $joueur = augmentation_competences($augmentations['passif'], $joueur);
 					}
 					// Mise à jour de l'entité pour refleter les up
 					$attaquant->maj_comp();
@@ -530,24 +589,60 @@ else
 			//On donne les bons HP à l'attaque et la défense
 			if($type == 'joueur')
 			{
-				$joueur->set_hp($attaquant->get_hp());
-				$joueur->sauver();
-				$joueur_defenseur->set_hp($defenseur->get_hp());
-				$joueur_defenseur->sauver();
+				if(!$check_pet)
+				{
+					$joueur->set_hp($attaquant->get_hp());
+					$joueur->sauver();
+				}
+				else
+				{
+					$pet = $joueur->get_pet();
+					$pet->set_hp($attaquant->get_hp());
+					$pet->sauver();
+				}
+				if(!$check_pet_def)
+				{
+					$joueur_defenseur->set_hp($defenseur->get_hp());
+					$joueur_defenseur->sauver();
+				}
+				else
+				{
+					$pet_def = $joueur_defenseur->get_pet();
+					$pet_def->set_hp($defenseur->get_hp());
+					$pet_def->sauver();
+				}
 			}
 			if($type == 'monstre')
 			{
 				//echo '<pre>'; var_dump($joueur); echo '</pre>';
-				$joueur->set_hp($attaquant->get_hp());
-				$joueur->sauver();
+				if(!$check_pet)
+				{
+					$joueur->set_hp($attaquant->get_hp());
+					$joueur->sauver();
+				}
+				else
+				{
+					$pet = $joueur->get_pet();
+					$pet->set_hp($attaquant->get_hp());
+					$pet->sauver();
+				}
 				$map_monstre->set_hp($defenseur->get_hp());
 				if($map_monstre->get_hp() > 0) $map_monstre->sauver();
 				else $map_monstre->supprimer();
 			}
 			elseif($type == 'batiment')
 			{
-				$joueur->set_hp($attaquant->get_hp());
-				$joueur->sauver();
+				if(!$check_pet)
+				{
+					$joueur->set_hp($attaquant->get_hp());
+					$joueur->sauver();
+				}
+				else
+				{
+					$pet = $joueur->get_pet();
+					$pet->set_hp($attaquant->get_hp());
+					$pet->sauver();
+				}
 				$map_batiment->set_hp($defenseur->get_hp());
 				if($map_batiment->get_hp() > 0) $map_batiment->sauver();
 				else $map_batiment->supprimer();
@@ -679,6 +774,23 @@ else
 				$joueur->set_survie($augmentation[0]);
 			}
 
+			if($check_pet)
+			{
+				$augmentation = augmentation_competence('dressage', $joueur, 4);
+				if($augmentation[1] == 1)
+				{
+					$joueur->set_dressage($augmentation[0]);
+				}
+			}
+			if($check_pet_def)
+			{
+				$augmentation = augmentation_competence('dressage', $joueur_defenseur, 4);
+				if($augmentation[1] == 1)
+				{
+					$joueur_defenseur->set_dressage($augmentation[0]);
+				}
+			}
+
 			foreach ($survies_a_monter as $survie_test)
 			{
 				if ($joueur->is_competence($survie_test))
@@ -707,7 +819,7 @@ else
 				$gains = false;
 				$coef = 1;
 				//L'attaquant est mort !
-				if ($attaquant->get_hp() <= 0)
+				if (!$check_pet && $attaquant->get_hp() <= 0)
 				{
 					$joueur->trigger_arene();
 					$actif = $joueur_defenseur;
@@ -717,7 +829,7 @@ else
 					$joueur->supprime_rez();
 				}
 				//Le défenseur est mort !
-				if ($defenseur->get_hp() <= 0)
+				if (!$check_pet_def && $defenseur->get_hp() <= 0)
 				{
 					$joueur->trigger_arene();
 					$actif = $joueur;
@@ -867,7 +979,7 @@ else
 					$map_monstre->supprimer();
 
 				}
-				elseif ($attaquant->get_hp() <= 0) //L'attaquant est mort !
+				elseif ($attaquant->get_hp() <= 0 && !$pet) //L'attaquant est mort !
 				{
 					$coeff = 0.5;
 					//Différence de level
@@ -903,8 +1015,8 @@ else
 					if($joueur->get_groupe() == 0)
 					{
 						$groupe = new groupe();
-						$groupe->level_groupe = $attaquant->get_level();
-						$groupe->somme_groupe = $attaquant->get_level();
+						$groupe->level_groupe = $joueur->get_level();
+						$groupe->somme_groupe = $joueur->get_level();
 						$groupe->set_share_xp(100);
 						$groupe->membre_joueur[0] = $joueur;
 						$groupe->membre_joueur[0]->share_xp = 100;
@@ -929,8 +1041,8 @@ else
 					$starmax = $row[1];
 					$starmin = floor($row[1] / 2);
 					$star = rand($starmin, $starmax) * $G_drop_rate;
-					if($attaquant->get_race() == 'nain') $star = floor($star * 1.1);
-					if($attaquant->is_buff('recherche_precieux')) $star = $star * (1 + ($attaquant->get_buff('recherche_precieux', 'effet') / 100));
+					if($joueur->get_race() == 'nain') $star = floor($star * 1.1);
+					if($joueur->is_buff('recherche_precieux')) $star = $star * (1 + ($joueur->get_buff('recherche_precieux', 'effet') / 100));
 					$star = ceil($star);
 					$taxe = floor($star * $R->get_taxe_diplo($joueur->get_race()) / 100);
 					$star = $star - $taxe;
@@ -955,8 +1067,8 @@ else
 							$share = explode('-', $drops[$i]);
 							$objet = $share[0];
 							$taux = ceil($share[1] / $G_drop_rate);
-							if($attaquant->get_race() == 'humain') $taux = floor($taux / 1.3);
-							if($attaquant->is_buff('fouille_gibier')) $taux = floor($taux / (1 + ($attaquant->get_buff('fouille_gibier', 'effet') / 100)));
+							if($joueur->get_race() == 'humain') $taux = floor($taux / 1.3);
+							if($joueur->is_buff('fouille_gibier')) $taux = floor($taux / (1 + ($joueur->get_buff('fouille_gibier', 'effet') / 100)));
 							$tirage = rand(1, $taux);
 							//Si c'est un objet de quête :
 							if($objet[0] == 'q')
@@ -1054,7 +1166,7 @@ else
 								}
 								echo 'Vous fouillez le corps du monstre et découvrez "'.$objet_nom.'" !<br />';
 								//Si le joueur a un groupe
-								if($attaquant->get_groupe() > 0 AND $type_obj != 'quete')
+								if($joueur->get_groupe() > 0 AND $type_obj != 'quete')
 								{
 									//Répartition en fonction du mode de distribution
 									switch($groupe->get_partage())
@@ -1175,9 +1287,10 @@ else
 
 			if ($defenseur->get_hp() > 0)
 			{
-				if($type == 'joueur') echo(' <a href="attaque.php?id_joueur='.$joueur_defenseur->get_id().'&amp;type=joueur" onclick="return envoiInfo(this.href, \'information\')"><img src="image/interface/attaquer.png" alt="Combattre" title="Attaquer la même cible" style="vertical-align : middle;" /></a><br />');
-				elseif($type == 'monstre') echo(' <a href="attaque.php?id_monstre='.$map_monstre->get_id().'&amp;type=monstre" onclick="return envoiInfo(this.href, \'information\')"><img src="image/interface/attaquer.png" alt="Combattre" title="Attaquer la même cible" style="vertical-align : middle;" /></a><br />');
-				elseif($type == 'batiment') echo(' <a href="attaque.php?id_batiment='.$map_batiment->get_id().'&amp;type=batiment&amp;table='.$_GET['table'].'" onclick="return envoiInfo(this.href, \'information\')"><img src="image/interface/attaquer.png" alt="Combattre" title="Attaquer la même cible" style="vertical-align : middle;" /></a><br />');
+				if($pet) $link = '&pet';
+				if($type == 'joueur') echo(' <a href="attaque.php?id_joueur='.$joueur_defenseur->get_id().'&amp;type=joueur&pet" onclick="return envoiInfo(this.href, \'information\')"><img src="image/interface/attaquer.png" alt="Combattre" title="Attaquer la même cible" style="vertical-align : middle;" /></a><br />');
+				elseif($type == 'monstre') echo(' <a href="attaque.php?id_monstre='.$map_monstre->get_id().'&amp;type=monstre&pet" onclick="return envoiInfo(this.href, \'information\')"><img src="image/interface/attaquer.png" alt="Combattre" title="Attaquer la même cible" style="vertical-align : middle;" /></a><br />');
+				elseif($type == 'batiment') echo(' <a href="attaque.php?id_batiment='.$map_batiment->get_id().'&amp;type=batiment&amp;table='.$_GET['table'].'&pet" onclick="return envoiInfo(this.href, \'information\')"><img src="image/interface/attaquer.png" alt="Combattre" title="Attaquer la même cible" style="vertical-align : middle;" /></a><br />');
 			}
 
 			//Suppression des PA si c'est une attaque du joueur

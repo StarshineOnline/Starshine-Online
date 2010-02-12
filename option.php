@@ -63,7 +63,26 @@ include_once(root.'inc/fp.php');
 							<input type="password" id='new_pass' name="new_pass" /><br />
 							<strong>Veuillez retappez votre NOUVEAU mot de passe :</strong><br />
 							<input type="password" id='new_pass2' name="new_pass2" /><br />
-							<input type="submit" value="Modifier votre mot de passe jeu" onclick="return envoiFormulaire('formMDP', 'popup_content');" />
+							<input type="submit" value="Modifier votre mot de passe" onclick="return envoiFormulaire('formMDP', 'popup_content');" />
+						</form>
+						<?php
+						}
+					break;
+					case 'email' :
+						$joueur = new perso($_SESSION['ID']);
+						if(array_key_exists('new_email', $_POST))
+						{
+							$new_email = $_POST['new_email'];
+							$joueur->set_email($new_email);
+							$joueur->sauver();
+							echo '<h6>Votre email a bien été modifié !</h6>';
+						}
+						else
+						{
+						?>
+						<form method="post" action="option.php?action=email" id="formemail">
+							<input type="text" id='new_email' name="new_email" value="<?php echo $joueur->get_email(); ?>" /><br />
+							<input type="submit" value="Modifier votre email" onclick="return envoiFormulaire('formemail', 'popup_content');" />
 						</form>
 						<?php
 						}
@@ -178,6 +197,7 @@ include_once(root.'inc/fp.php');
 				<ul>
 					<li><a href="option.php?action=journal" onclick="return envoiInfo(this.href, 'popup_content');">Filtrer votre journal des actions</a></li>
 					<li><a href="configure_point_sso.php" onclick="return envoiInfo(this.href, 'popup_content');">Configurer vos bonus Shine</a></li>
+					<li><a href="option.php?action=email" onclick="return envoiInfo(this.href, 'popup_content');">Modifier votre email</a></li>
 				</ul>
 			</div>
 			<div class"news">

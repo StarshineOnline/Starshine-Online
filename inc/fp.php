@@ -77,8 +77,7 @@ function __autoload($class_name)
 {
 	global $root;
 	$file = root.'class/'.$class_name.'.class.php';
-	if (file_exists($file))
-		require_once($file);
+	require_once($file);
 }
 
 ?>

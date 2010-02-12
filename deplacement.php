@@ -147,7 +147,7 @@ if (isset($_GET['deplacement']))
 		$case = new map_case(convert_in_pos($coord['x'], $coord['y']));
 		$coutpa = cout_pa2($coutpa, $joueur, $case, $diagonale);
 		//Si le joueur a un buff ou débuff qui l'empèche de bouger
-		if($joueur->is_buff('buff_forteresse') OR $joueur->is_buff('buff_position') OR $joueur->is_buff('debuff_enracinement') OR $joueur->is_buff('bloque_deplacement'))
+		if($joueur->is_buff('buff_forteresse') OR $joueur->is_buff('buff_position') OR $joueur->is_buff('debuff_enracinement') OR $joueur->is_buff('bloque_deplacement') OR $joueur->is_buff('dressage'))
 		{
 			$peu_bouger = false;
 			$cause = 'Un buff vous empèche de bouger';

@@ -124,8 +124,8 @@ if($joueur->get_groupe() != 0)
 
 	echo "<div id='joueur_groupe'>
 			<div id='joueur_groupe_bouton'>
-		   <div id='mail_groupe' title=\"Envoyer un message à l'ensemble du groupe.\" onclick=\"return envoiInfo('envoimessage.php?id_type=g".$groupe->get_id()."', 'information');\"></div>
 		   <div id='info_groupe' title='Voir les informations de mon groupe.' onclick=\"return envoiInfo('infogroupe.php?id=".$groupe->get_id()."', 'information');\"></div>
+		   <div id='mail_groupe' title=\"Envoyer un message à l'ensemble du groupe.\" onclick=\"return envoiInfo('envoimessage.php?id_type=g".$groupe->get_id()."', 'information');\"></div>
 		   </div>";
 	echo " <ul>";
 	foreach($groupe->get_membre_joueur() as $membre)
@@ -164,10 +164,13 @@ if($joueur->get_groupe() != 0)
 			if ($membre->get_hp() <= 0) { $joueur_mort = "Le personnage est mort"; } else { $joueur_mort = ""; };
 			$overlib .= "<li>$joueur_mort<br/>$libelle_activite</li><li class='overlib_infos'>(Cliquer pour plus d'information)</li>";
 			$overlib = str_replace("'", "\'", trim($overlib));
-			
+
+			if($membre->get_id() == $groupe->get_id_leader()) $image = '<img src="image/icone/couronne.png" alt="C" title="Chef de groupe"> ';
+			else $image = ' ';
 			echo "<li onmouseover=\"return overlib('$overlib', BGCLASS, 'overlib', BGCOLOR, '', FGCOLOR, '');\"
 					  onmouseout=\"return nd();\" 
 					  onclick=\"envoiInfo('infojoueur.php?ID=".$membre->get_id()."&amp;poscase=".$membre->poscase."', 'information');\">
+				   <span class='joueur_groupe_ischef'>".$image."</span>
 				   <span class='joueur_groupe_activite$activite_perso'></span>
 				   <span class='joueur_groupe_pseudo'>".ucwords($membre->get_nom())." : </span>
 				   <span class='joueur_groupe_barre_hp'>".genere_image_hp_groupe($membre)."</span>

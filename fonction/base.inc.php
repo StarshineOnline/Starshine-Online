@@ -1253,7 +1253,7 @@ function check_perso($joueur)
 		{
 			$time = time();
 			$nb_maj = floor($temps_maj / $temps_hp);
-			$hp_gagne = $nb_maj * (sqrt($joueur->get_vie()) * 2.7);
+			$hp_gagne = $nb_maj * (pow($joueur->get_vie(), 0.7) * 2.6);
 			$joueur->set_hp_max($joueur->get_hp_maximum() + $hp_gagne);
 			$joueur->set_maj_hp($joueur->get_maj_hp() + $nb_maj * $temps_hp);
 			$modif = true;
@@ -2199,7 +2199,7 @@ function return_gestion_royaume($texte, $poscase)
  * Lance un buff sur un personnage ou un monstre
  * 
  * @param  $type          Nom générique du sort.
- * @param  $id            Id du sort.
+ * @param  $id            Id de la cible.
  * @param  $effet         Effet du buff
  * @param  $effet2        Effet secondaire
  * @param  $duree         Durée du buff

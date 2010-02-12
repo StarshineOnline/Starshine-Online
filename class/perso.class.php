@@ -17,6 +17,12 @@ class perso extends entite
 
 	/**
     * @access private
+    * @var email(100)
+    */
+	private $email;
+
+	/**
+    * @access private
     * @var int(11)
     */
 	private $exp;
@@ -161,6 +167,12 @@ class perso extends entite
 
 	/**
     * @access private
+    * @var mediumint(8)
+    */
+	private $dressage;
+
+	/**
+    * @access private
     * @var double
     */
 	private $facteur_magie;
@@ -283,6 +295,12 @@ class perso extends entite
     * @access private
     * @var tinyint(3)
     */
+	private $max_pet;
+
+	/**
+    * @access private
+    * @var tinyint(3)
+    */
 	private $beta;
 
 	
@@ -297,6 +315,7 @@ class perso extends entite
 	* @param int(10) mort attribut
 	* @param varchar(50) nom attribut
 	* @param varchar(40) password attribut
+	* @param varchar(100) email attribut
 	* @param int(11) exp attribut
 	* @param mediumint(8) honneur attribut
 	* @param int(10) reputation attribut
@@ -363,20 +382,21 @@ class perso extends entite
 	* @param tinyint(3) cache_classe attribut
 	* @param tinyint(3) cache_stat attribut
 	* @param tinyint(3) cache_niveau attribut
+	* @param tinyint(3) max_pet attribut
 	* @param tinyint(3) beta attribut
 	* @return none
 	*/
-	function __construct($id = 0, $mort = 0, $nom = '', $password = '', $exp = 0, $honneur = 0, $reputation = 0, $level = '', $rang_royaume = '', $vie = '', $forcex = '', $dexterite = '', $puissance = '', $volonte = '', $energie = '', $race = '', $classe = '', $classe_id = '', $inventaire = '', $inventaire_slot = '', $pa = '', $dernieraction = '', $action_a = 0, $action_d = 0, $sort_jeu = '', $sort_combat = '', $comp_combat = '', $comp_jeu = '', $star = '', $x = '', $y = '', $groupe = 0, $hp = '', $hp_max = '', $mp = '', $mp_max = '', $melee = '', $distance = '', $esquive = '', $blocage = '', $incantation = '', $sort_vie = '', $sort_element = '', $sort_mort = '', $identification = '', $craft = '', $alchimie = '', $architecture = '', $forge = '', $survie = '', $facteur_magie = '', $facteur_sort_vie = 0, $facteur_sort_mort = 0, $facteur_sort_element = 0, $regen_hp = '', $maj_hp = '', $maj_mp = '', $point_sso = 0, $quete = '', $quete_fini = '', $dernier_connexion = 0, $statut = '', $fin_ban = 0, $frag = 0, $crime = 0, $amende = 0, $teleport_roi = 'false', $cache_classe = 0, $cache_stat = 0, $cache_niveau = 0, $beta = 0)
+	function __construct($id = 0, $mort = 0, $nom = '', $password = '', $email = '', $exp = 0, $honneur = 0, $reputation = 0, $level = '', $rang_royaume = '', $vie = '', $forcex = '', $dexterite = '', $puissance = '', $volonte = '', $energie = '', $race = '', $classe = '', $classe_id = '', $inventaire = '', $inventaire_slot = '', $pa = '', $dernieraction = '', $action_a = 0, $action_d = 0, $sort_jeu = '', $sort_combat = '', $comp_combat = '', $comp_jeu = '', $star = '', $x = '', $y = '', $groupe = 0, $hp = '', $hp_max = '', $mp = '', $mp_max = '', $melee = '', $distance = '', $esquive = '', $blocage = '', $incantation = '', $sort_vie = '', $sort_element = '', $sort_mort = '', $identification = '', $craft = '', $alchimie = '', $architecture = '', $forge = '', $survie = '', $dressage = '', $facteur_magie = '', $facteur_sort_vie = 0, $facteur_sort_mort = 0, $facteur_sort_element = 0, $regen_hp = '', $maj_hp = '', $maj_mp = '', $point_sso = 0, $quete = '', $quete_fini = '', $dernier_connexion = 0, $statut = '', $fin_ban = 0, $frag = 0, $crime = 0, $amende = 0, $teleport_roi = 'false', $cache_classe = 0, $cache_stat = 0, $cache_niveau = 0, $max_pet = 0, $beta = 0)
 	{
 		global $db;
 		//Verification nombre et du type d'argument pour construire l'etat adequat.
 		if( (func_num_args() == 1) && is_numeric($id) )
 		{
-			$requeteSQL = $db->query("SELECT mort, nom, password, exp, honneur, reputation, level, rang_royaume, vie, forcex, dexterite, puissance, volonte, energie, race, classe, classe_id, inventaire, inventaire_slot, pa, dernieraction, action_a, action_d, sort_jeu, sort_combat, comp_combat, comp_jeu, star, x, y, groupe, hp, hp_max, mp, mp_max, melee, distance, esquive, blocage, incantation, sort_vie, sort_element, sort_mort, identification, craft, alchimie, architecture, forge, survie, facteur_magie, facteur_sort_vie, facteur_sort_mort, facteur_sort_element, regen_hp, maj_hp, maj_mp, point_sso, quete, quete_fini, dernier_connexion, statut, fin_ban, frag, crime, amende, teleport_roi, cache_classe, cache_stat, cache_niveau, beta FROM perso WHERE id = ".$id);
+			$requeteSQL = $db->query("SELECT mort, nom, password, email, exp, honneur, reputation, level, rang_royaume, vie, forcex, dexterite, puissance, volonte, energie, race, classe, classe_id, inventaire, inventaire_slot, pa, dernieraction, action_a, action_d, sort_jeu, sort_combat, comp_combat, comp_jeu, star, x, y, groupe, hp, hp_max, mp, mp_max, melee, distance, esquive, blocage, incantation, sort_vie, sort_element, sort_mort, identification, craft, alchimie, architecture, forge, survie, dressage, facteur_magie, facteur_sort_vie, facteur_sort_mort, facteur_sort_element, regen_hp, maj_hp, maj_mp, point_sso, quete, quete_fini, dernier_connexion, statut, fin_ban, frag, crime, amende, teleport_roi, cache_classe, cache_stat, cache_niveau, max_pet, beta FROM perso WHERE id = ".$id);
 			//Si le thread est dans la base, on le charge sinon on crée un thread vide.
 			if( $db->num_rows($requeteSQL) > 0 )
 			{
-				list($this->mort, $this->nom, $this->password, $this->exp, $this->honneur, $this->reputation, $this->level, $this->rang_royaume, $this->vie, $this->forcex, $this->dexterite, $this->puissance, $this->volonte, $this->energie, $this->race, $this->classe, $this->classe_id, $this->inventaire, $this->inventaire_slot, $this->pa, $this->dernieraction, $this->action_a, $this->action_d, $this->sort_jeu, $this->sort_combat, $this->comp_combat, $this->comp_jeu, $this->star, $this->x, $this->y, $this->groupe, $this->hp, $this->hp_max, $this->mp, $this->mp_max, $this->melee, $this->distance, $this->esquive, $this->blocage, $this->incantation, $this->sort_vie, $this->sort_element, $this->sort_mort, $this->identification, $this->craft, $this->alchimie, $this->architecture, $this->forge, $this->survie, $this->facteur_magie, $this->facteur_sort_vie, $this->facteur_sort_mort, $this->facteur_sort_element, $this->regen_hp, $this->maj_hp, $this->maj_mp, $this->point_sso, $this->quete, $this->quete_fini, $this->dernier_connexion, $this->statut, $this->fin_ban, $this->frag, $this->crime, $this->amende, $this->teleport_roi, $this->cache_classe, $this->cache_stat, $this->cache_niveau, $this->beta) = $db->read_array($requeteSQL);
+				list($this->mort, $this->nom, $this->password, $this->email, $this->exp, $this->honneur, $this->reputation, $this->level, $this->rang_royaume, $this->vie, $this->forcex, $this->dexterite, $this->puissance, $this->volonte, $this->energie, $this->race, $this->classe, $this->classe_id, $this->inventaire, $this->inventaire_slot, $this->pa, $this->dernieraction, $this->action_a, $this->action_d, $this->sort_jeu, $this->sort_combat, $this->comp_combat, $this->comp_jeu, $this->star, $this->x, $this->y, $this->groupe, $this->hp, $this->hp_max, $this->mp, $this->mp_max, $this->melee, $this->distance, $this->esquive, $this->blocage, $this->incantation, $this->sort_vie, $this->sort_element, $this->sort_mort, $this->identification, $this->craft, $this->alchimie, $this->architecture, $this->forge, $this->survie, $this->dressage, $this->facteur_magie, $this->facteur_sort_vie, $this->facteur_sort_mort, $this->facteur_sort_element, $this->regen_hp, $this->maj_hp, $this->maj_mp, $this->point_sso, $this->quete, $this->quete_fini, $this->dernier_connexion, $this->statut, $this->fin_ban, $this->frag, $this->crime, $this->amende, $this->teleport_roi, $this->cache_classe, $this->cache_stat, $this->cache_niveau, $this->max_pet, $this->beta) = $db->read_array($requeteSQL);
 			}
 			else $this->__construct();
 			$this->id = $id;
@@ -387,6 +407,7 @@ class perso extends entite
 			$this->mort = $id['mort'];
 			$this->nom = $id['nom'];
 			$this->password = $id['password'];
+			$this->email = $id['email'];
 			$this->exp = $id['exp'];
 			$this->honneur = $id['honneur'];
 			$this->reputation = $id['reputation'];
@@ -433,6 +454,7 @@ class perso extends entite
 			$this->architecture = $id['architecture'];
 			$this->forge = $id['forge'];
 			$this->survie = $id['survie'];
+			$this->dressage = $id['dressage'];
 			$this->facteur_magie = $id['facteur_magie'];
 			$this->facteur_sort_vie = $id['facteur_sort_vie'];
 			$this->facteur_sort_mort = $id['facteur_sort_mort'];
@@ -453,6 +475,7 @@ class perso extends entite
 			$this->cache_classe = $id['cache_classe'];
 			$this->cache_stat = $id['cache_stat'];
 			$this->cache_niveau = $id['cache_niveau'];
+			$this->max_pet = $id['max_pet'];
 			$this->beta = $id['beta'];
 			}
 		else
@@ -460,6 +483,7 @@ class perso extends entite
 			$this->mort = $mort;
 			$this->nom = $nom;
 			$this->password = $password;
+			$this->email = $email;
 			$this->exp = $exp;
 			$this->honneur = $honneur;
 			$this->reputation = $reputation;
@@ -506,6 +530,7 @@ class perso extends entite
 			$this->architecture = $architecture;
 			$this->forge = $forge;
 			$this->survie = $survie;
+			$this->dressage = $dressage;
 			$this->facteur_magie = $facteur_magie;
 			$this->facteur_sort_vie = $facteur_sort_vie;
 			$this->facteur_sort_mort = $facteur_sort_mort;
@@ -526,6 +551,7 @@ class perso extends entite
 			$this->cache_classe = $cache_classe;
 			$this->cache_stat = $cache_stat;
 			$this->cache_niveau = $cache_niveau;
+			$this->max_pet = $max_pet;
 			$this->beta = $beta;
 			$this->id = $id;
 		}
@@ -546,7 +572,7 @@ class perso extends entite
 		{
 			if(count($this->champs_modif) > 0)
 			{
-				if($force) $champs = 'mort = '.$this->mort.', nom = "'.mysql_escape_string($this->nom).'", password = "'.mysql_escape_string($this->password).'", exp = "'.mysql_escape_string($this->exp).'", honneur = "'.mysql_escape_string($this->honneur).'", reputation = "'.mysql_escape_string($this->reputation).'", level = "'.mysql_escape_string($this->level).'", rang_royaume = "'.mysql_escape_string($this->rang_royaume).'", vie = "'.mysql_escape_string($this->vie).'", forcex = "'.mysql_escape_string($this->forcex).'", dexterite = "'.mysql_escape_string($this->dexterite).'", puissance = "'.mysql_escape_string($this->puissance).'", volonte = "'.mysql_escape_string($this->volonte).'", energie = "'.mysql_escape_string($this->energie).'", race = "'.mysql_escape_string($this->race).'", classe = "'.mysql_escape_string($this->classe).'", classe_id = "'.mysql_escape_string($this->classe_id).'", inventaire = "'.mysql_escape_string($this->inventaire).'", inventaire_slot = "'.mysql_escape_string($this->inventaire_slot).'", pa = "'.mysql_escape_string($this->pa).'", dernieraction = "'.mysql_escape_string($this->dernieraction).'", action_a = "'.mysql_escape_string($this->action_a).'", action_d = "'.mysql_escape_string($this->action_d).'", sort_jeu = "'.mysql_escape_string($this->sort_jeu).'", sort_combat = "'.mysql_escape_string($this->sort_combat).'", comp_combat = "'.mysql_escape_string($this->comp_combat).'", comp_jeu = "'.mysql_escape_string($this->comp_jeu).'", star = "'.mysql_escape_string($this->star).'", x = "'.mysql_escape_string($this->x).'", y = "'.mysql_escape_string($this->y).'", groupe = "'.mysql_escape_string($this->groupe).'", hp = "'.mysql_escape_string($this->hp).'", hp_max = "'.mysql_escape_string($this->hp_max).'", mp = "'.mysql_escape_string($this->mp).'", mp_max = "'.mysql_escape_string($this->mp_max).'", melee = "'.mysql_escape_string($this->melee).'", distance = "'.mysql_escape_string($this->distance).'", esquive = "'.mysql_escape_string($this->esquive).'", blocage = "'.mysql_escape_string($this->blocage).'", incantation = "'.mysql_escape_string($this->incantation).'", sort_vie = "'.mysql_escape_string($this->sort_vie).'", sort_element = "'.mysql_escape_string($this->sort_element).'", sort_mort = "'.mysql_escape_string($this->sort_mort).'", identification = "'.mysql_escape_string($this->identification).'", craft = "'.mysql_escape_string($this->craft).'", alchimie = "'.mysql_escape_string($this->alchimie).'", architecture = "'.mysql_escape_string($this->architecture).'", forge = "'.mysql_escape_string($this->forge).'", survie = "'.mysql_escape_string($this->survie).'", facteur_magie = "'.mysql_escape_string($this->facteur_magie).'", facteur_sort_vie = "'.mysql_escape_string($this->facteur_sort_vie).'", facteur_sort_mort = "'.mysql_escape_string($this->facteur_sort_mort).'", facteur_sort_element = "'.mysql_escape_string($this->facteur_sort_element).'", regen_hp = "'.mysql_escape_string($this->regen_hp).'", maj_hp = "'.mysql_escape_string($this->maj_hp).'", maj_mp = "'.mysql_escape_string($this->maj_mp).'", point_sso = "'.mysql_escape_string($this->point_sso).'", quete = "'.mysql_escape_string($this->quete).'", quete_fini = "'.mysql_escape_string($this->quete_fini).'", dernier_connexion = "'.mysql_escape_string($this->dernier_connexion).'", statut = "'.mysql_escape_string($this->statut).'", fin_ban = "'.mysql_escape_string($this->fin_ban).'", frag = "'.mysql_escape_string($this->frag).'", crime = "'.mysql_escape_string($this->crime).'", amende = "'.mysql_escape_string($this->amende).'", teleport_roi = "'.mysql_escape_string($this->teleport_roi).'", cache_classe = "'.mysql_escape_string($this->cache_classe).'", cache_stat = "'.mysql_escape_string($this->cache_stat).'", cache_niveau = "'.mysql_escape_string($this->cache_niveau).'", beta = "'.mysql_escape_string($this->beta).'"';
+				if($force) $champs = 'mort = '.$this->mort.', nom = "'.mysql_escape_string($this->nom).'", password = "'.mysql_escape_string($this->password).'", email = "'.mysql_escape_string($this->email).'", exp = "'.mysql_escape_string($this->exp).'", honneur = "'.mysql_escape_string($this->honneur).'", reputation = "'.mysql_escape_string($this->reputation).'", level = "'.mysql_escape_string($this->level).'", rang_royaume = "'.mysql_escape_string($this->rang_royaume).'", vie = "'.mysql_escape_string($this->vie).'", forcex = "'.mysql_escape_string($this->forcex).'", dexterite = "'.mysql_escape_string($this->dexterite).'", puissance = "'.mysql_escape_string($this->puissance).'", volonte = "'.mysql_escape_string($this->volonte).'", energie = "'.mysql_escape_string($this->energie).'", race = "'.mysql_escape_string($this->race).'", classe = "'.mysql_escape_string($this->classe).'", classe_id = "'.mysql_escape_string($this->classe_id).'", inventaire = "'.mysql_escape_string($this->inventaire).'", inventaire_slot = "'.mysql_escape_string($this->inventaire_slot).'", pa = "'.mysql_escape_string($this->pa).'", dernieraction = "'.mysql_escape_string($this->dernieraction).'", action_a = "'.mysql_escape_string($this->action_a).'", action_d = "'.mysql_escape_string($this->action_d).'", sort_jeu = "'.mysql_escape_string($this->sort_jeu).'", sort_combat = "'.mysql_escape_string($this->sort_combat).'", comp_combat = "'.mysql_escape_string($this->comp_combat).'", comp_jeu = "'.mysql_escape_string($this->comp_jeu).'", star = "'.mysql_escape_string($this->star).'", x = "'.mysql_escape_string($this->x).'", y = "'.mysql_escape_string($this->y).'", groupe = "'.mysql_escape_string($this->groupe).'", hp = "'.mysql_escape_string($this->hp).'", hp_max = "'.mysql_escape_string($this->hp_max).'", mp = "'.mysql_escape_string($this->mp).'", mp_max = "'.mysql_escape_string($this->mp_max).'", melee = "'.mysql_escape_string($this->melee).'", distance = "'.mysql_escape_string($this->distance).'", esquive = "'.mysql_escape_string($this->esquive).'", blocage = "'.mysql_escape_string($this->blocage).'", incantation = "'.mysql_escape_string($this->incantation).'", sort_vie = "'.mysql_escape_string($this->sort_vie).'", sort_element = "'.mysql_escape_string($this->sort_element).'", sort_mort = "'.mysql_escape_string($this->sort_mort).'", identification = "'.mysql_escape_string($this->identification).'", craft = "'.mysql_escape_string($this->craft).'", alchimie = "'.mysql_escape_string($this->alchimie).'", architecture = "'.mysql_escape_string($this->architecture).'", forge = "'.mysql_escape_string($this->forge).'", survie = "'.mysql_escape_string($this->survie).'", dressage = "'.mysql_escape_string($this->dressage).'", facteur_magie = "'.mysql_escape_string($this->facteur_magie).'", facteur_sort_vie = "'.mysql_escape_string($this->facteur_sort_vie).'", facteur_sort_mort = "'.mysql_escape_string($this->facteur_sort_mort).'", facteur_sort_element = "'.mysql_escape_string($this->facteur_sort_element).'", regen_hp = "'.mysql_escape_string($this->regen_hp).'", maj_hp = "'.mysql_escape_string($this->maj_hp).'", maj_mp = "'.mysql_escape_string($this->maj_mp).'", point_sso = "'.mysql_escape_string($this->point_sso).'", quete = "'.mysql_escape_string($this->quete).'", quete_fini = "'.mysql_escape_string($this->quete_fini).'", dernier_connexion = "'.mysql_escape_string($this->dernier_connexion).'", statut = "'.mysql_escape_string($this->statut).'", fin_ban = "'.mysql_escape_string($this->fin_ban).'", frag = "'.mysql_escape_string($this->frag).'", crime = "'.mysql_escape_string($this->crime).'", amende = "'.mysql_escape_string($this->amende).'", teleport_roi = "'.mysql_escape_string($this->teleport_roi).'", cache_classe = "'.mysql_escape_string($this->cache_classe).'", cache_stat = "'.mysql_escape_string($this->cache_stat).'", cache_niveau = "'.mysql_escape_string($this->cache_niveau).'", max_pet = "'.mysql_escape_string($this->max_pet).'", beta = "'.mysql_escape_string($this->beta).'"';
 				else
 				{
 					$champs = '';
@@ -565,8 +591,8 @@ class perso extends entite
 		}
 		else
 		{
-			$requete = 'INSERT INTO perso (mort, nom, password, exp, honneur, reputation, level, rang_royaume, vie, forcex, dexterite, puissance, volonte, energie, race, classe, classe_id, inventaire, inventaire_slot, pa, dernieraction, action_a, action_d, sort_jeu, sort_combat, comp_combat, comp_jeu, star, x, y, groupe, hp, hp_max, mp, mp_max, melee, distance, esquive, blocage, incantation, sort_vie, sort_element, sort_mort, identification, craft, alchimie, architecture, forge, survie, facteur_magie, facteur_sort_vie, facteur_sort_mort, facteur_sort_element, regen_hp, maj_hp, maj_mp, point_sso, quete, quete_fini, dernier_connexion, statut, fin_ban, frag, crime, amende, teleport_roi, cache_classe, cache_stat, cache_niveau, beta) VALUES(';
-			$requete .= ''.$this->mort.', "'.mysql_escape_string($this->nom).'", "'.mysql_escape_string($this->password).'", "'.mysql_escape_string($this->exp).'", "'.mysql_escape_string($this->honneur).'", "'.mysql_escape_string($this->reputation).'", "'.mysql_escape_string($this->level).'", "'.mysql_escape_string($this->rang_royaume).'", "'.mysql_escape_string($this->vie).'", "'.mysql_escape_string($this->forcex).'", "'.mysql_escape_string($this->dexterite).'", "'.mysql_escape_string($this->puissance).'", "'.mysql_escape_string($this->volonte).'", "'.mysql_escape_string($this->energie).'", "'.mysql_escape_string($this->race).'", "'.mysql_escape_string($this->classe).'", "'.mysql_escape_string($this->classe_id).'", "'.mysql_escape_string($this->inventaire).'", "'.mysql_escape_string($this->inventaire_slot).'", "'.mysql_escape_string($this->pa).'", "'.mysql_escape_string($this->dernieraction).'", "'.mysql_escape_string($this->action_a).'", "'.mysql_escape_string($this->action_d).'", "'.mysql_escape_string($this->sort_jeu).'", "'.mysql_escape_string($this->sort_combat).'", "'.mysql_escape_string($this->comp_combat).'", "'.mysql_escape_string($this->comp_jeu).'", "'.mysql_escape_string($this->star).'", "'.mysql_escape_string($this->x).'", "'.mysql_escape_string($this->y).'", "'.mysql_escape_string($this->groupe).'", "'.mysql_escape_string($this->hp).'", "'.mysql_escape_string($this->hp_max).'", "'.mysql_escape_string($this->mp).'", "'.mysql_escape_string($this->mp_max).'", "'.mysql_escape_string($this->melee).'", "'.mysql_escape_string($this->distance).'", "'.mysql_escape_string($this->esquive).'", "'.mysql_escape_string($this->blocage).'", "'.mysql_escape_string($this->incantation).'", "'.mysql_escape_string($this->sort_vie).'", "'.mysql_escape_string($this->sort_element).'", "'.mysql_escape_string($this->sort_mort).'", "'.mysql_escape_string($this->identification).'", "'.mysql_escape_string($this->craft).'", "'.mysql_escape_string($this->alchimie).'", "'.mysql_escape_string($this->architecture).'", "'.mysql_escape_string($this->forge).'", "'.mysql_escape_string($this->survie).'", "'.mysql_escape_string($this->facteur_magie).'", "'.mysql_escape_string($this->facteur_sort_vie).'", "'.mysql_escape_string($this->facteur_sort_mort).'", "'.mysql_escape_string($this->facteur_sort_element).'", "'.mysql_escape_string($this->regen_hp).'", "'.mysql_escape_string($this->maj_hp).'", "'.mysql_escape_string($this->maj_mp).'", "'.mysql_escape_string($this->point_sso).'", "'.mysql_escape_string($this->quete).'", "'.mysql_escape_string($this->quete_fini).'", "'.mysql_escape_string($this->dernier_connexion).'", "'.mysql_escape_string($this->statut).'", "'.mysql_escape_string($this->fin_ban).'", "'.mysql_escape_string($this->frag).'", "'.mysql_escape_string($this->crime).'", "'.mysql_escape_string($this->amende).'", "'.mysql_escape_string($this->teleport_roi).'", "'.mysql_escape_string($this->cache_classe).'", "'.mysql_escape_string($this->cache_stat).'", "'.mysql_escape_string($this->cache_niveau).'", "'.mysql_escape_string($this->beta).'")';
+			$requete = 'INSERT INTO perso (mort, nom, password, email, exp, honneur, reputation, level, rang_royaume, vie, forcex, dexterite, puissance, volonte, energie, race, classe, classe_id, inventaire, inventaire_slot, pa, dernieraction, action_a, action_d, sort_jeu, sort_combat, comp_combat, comp_jeu, star, x, y, groupe, hp, hp_max, mp, mp_max, melee, distance, esquive, blocage, incantation, sort_vie, sort_element, sort_mort, identification, craft, alchimie, architecture, forge, survie, dressage, facteur_magie, facteur_sort_vie, facteur_sort_mort, facteur_sort_element, regen_hp, maj_hp, maj_mp, point_sso, quete, quete_fini, dernier_connexion, statut, fin_ban, frag, crime, amende, teleport_roi, cache_classe, cache_stat, cache_niveau, max_pet, beta) VALUES(';
+			$requete .= ''.$this->mort.', "'.mysql_escape_string($this->nom).'", "'.mysql_escape_string($this->password).'", "'.mysql_escape_string($this->email).'", "'.mysql_escape_string($this->exp).'", "'.mysql_escape_string($this->honneur).'", "'.mysql_escape_string($this->reputation).'", "'.mysql_escape_string($this->level).'", "'.mysql_escape_string($this->rang_royaume).'", "'.mysql_escape_string($this->vie).'", "'.mysql_escape_string($this->forcex).'", "'.mysql_escape_string($this->dexterite).'", "'.mysql_escape_string($this->puissance).'", "'.mysql_escape_string($this->volonte).'", "'.mysql_escape_string($this->energie).'", "'.mysql_escape_string($this->race).'", "'.mysql_escape_string($this->classe).'", "'.mysql_escape_string($this->classe_id).'", "'.mysql_escape_string($this->inventaire).'", "'.mysql_escape_string($this->inventaire_slot).'", "'.mysql_escape_string($this->pa).'", "'.mysql_escape_string($this->dernieraction).'", "'.mysql_escape_string($this->action_a).'", "'.mysql_escape_string($this->action_d).'", "'.mysql_escape_string($this->sort_jeu).'", "'.mysql_escape_string($this->sort_combat).'", "'.mysql_escape_string($this->comp_combat).'", "'.mysql_escape_string($this->comp_jeu).'", "'.mysql_escape_string($this->star).'", "'.mysql_escape_string($this->x).'", "'.mysql_escape_string($this->y).'", "'.mysql_escape_string($this->groupe).'", "'.mysql_escape_string($this->hp).'", "'.mysql_escape_string($this->hp_max).'", "'.mysql_escape_string($this->mp).'", "'.mysql_escape_string($this->mp_max).'", "'.mysql_escape_string($this->melee).'", "'.mysql_escape_string($this->distance).'", "'.mysql_escape_string($this->esquive).'", "'.mysql_escape_string($this->blocage).'", "'.mysql_escape_string($this->incantation).'", "'.mysql_escape_string($this->sort_vie).'", "'.mysql_escape_string($this->sort_element).'", "'.mysql_escape_string($this->sort_mort).'", "'.mysql_escape_string($this->identification).'", "'.mysql_escape_string($this->craft).'", "'.mysql_escape_string($this->alchimie).'", "'.mysql_escape_string($this->architecture).'", "'.mysql_escape_string($this->forge).'", "'.mysql_escape_string($this->survie).'", "'.mysql_escape_string($this->dressage).'", "'.mysql_escape_string($this->facteur_magie).'", "'.mysql_escape_string($this->facteur_sort_vie).'", "'.mysql_escape_string($this->facteur_sort_mort).'", "'.mysql_escape_string($this->facteur_sort_element).'", "'.mysql_escape_string($this->regen_hp).'", "'.mysql_escape_string($this->maj_hp).'", "'.mysql_escape_string($this->maj_mp).'", "'.mysql_escape_string($this->point_sso).'", "'.mysql_escape_string($this->quete).'", "'.mysql_escape_string($this->quete_fini).'", "'.mysql_escape_string($this->dernier_connexion).'", "'.mysql_escape_string($this->statut).'", "'.mysql_escape_string($this->fin_ban).'", "'.mysql_escape_string($this->frag).'", "'.mysql_escape_string($this->crime).'", "'.mysql_escape_string($this->amende).'", "'.mysql_escape_string($this->teleport_roi).'", "'.mysql_escape_string($this->cache_classe).'", "'.mysql_escape_string($this->cache_stat).'", "'.mysql_escape_string($this->cache_niveau).'", "'.mysql_escape_string($this->max_pet).'", "'.mysql_escape_string($this->beta).'")';
 			$db->query($requete);
 			//Récuperation du dernier ID inséré.
 			$this->id = $db->last_insert_id();
@@ -609,7 +635,7 @@ class perso extends entite
 			}
 		}
 
-		$requete = "SELECT id, mort, nom, password, exp, honneur, reputation, level, rang_royaume, vie, forcex, dexterite, puissance, volonte, energie, race, classe, classe_id, inventaire, inventaire_slot, pa, dernieraction, action_a, action_d, sort_jeu, sort_combat, comp_combat, comp_jeu, star, x, y, groupe, hp, hp_max, mp, mp_max, melee, distance, esquive, blocage, incantation, sort_vie, sort_element, sort_mort, identification, craft, alchimie, architecture, forge, survie, facteur_magie, facteur_sort_vie, facteur_sort_mort, facteur_sort_element, regen_hp, maj_hp, maj_mp, point_sso, quete, quete_fini, dernier_connexion, statut, fin_ban, frag, crime, amende, teleport_roi, cache_classe, cache_stat, cache_niveau, beta FROM perso WHERE ".$where." ORDER BY ".$ordre;
+		$requete = "SELECT id, mort, nom, password, email, exp, honneur, reputation, level, rang_royaume, vie, forcex, dexterite, puissance, volonte, energie, race, classe, classe_id, inventaire, inventaire_slot, pa, dernieraction, action_a, action_d, sort_jeu, sort_combat, comp_combat, comp_jeu, star, x, y, groupe, hp, hp_max, mp, mp_max, melee, distance, esquive, blocage, incantation, sort_vie, sort_element, sort_mort, identification, craft, alchimie, architecture, forge, survie, dressage, facteur_magie, facteur_sort_vie, facteur_sort_mort, facteur_sort_element, regen_hp, maj_hp, maj_mp, point_sso, quete, quete_fini, dernier_connexion, statut, fin_ban, frag, crime, amende, teleport_roi, cache_classe, cache_stat, cache_niveau, max_pet, beta FROM perso WHERE ".$where." ORDER BY ".$ordre;
 		$req = $db->query($requete);
 		if($db->num_rows($req) > 0)
 		{
@@ -631,7 +657,7 @@ class perso extends entite
 	*/
 	function __toString()
 	{
-		return 'id = '.$this->id.', mort = '.$this->mort.', nom = '.$this->nom.', password = '.$this->password.', exp = '.$this->exp.', honneur = '.$this->honneur.', reputation = '.$this->reputation.', level = '.$this->level.', rang_royaume = '.$this->rang_royaume.', vie = '.$this->vie.', forcex = '.$this->forcex.', dexterite = '.$this->dexterite.', puissance = '.$this->puissance.', volonte = '.$this->volonte.', energie = '.$this->energie.', race = '.$this->race.', classe = '.$this->classe.', classe_id = '.$this->classe_id.', inventaire = '.$this->inventaire.', inventaire_slot = '.$this->inventaire_slot.', pa = '.$this->pa.', dernieraction = '.$this->dernieraction.', action_a = '.$this->action_a.', action_d = '.$this->action_d.', sort_jeu = '.$this->sort_jeu.', sort_combat = '.$this->sort_combat.', comp_combat = '.$this->comp_combat.', comp_jeu = '.$this->comp_jeu.', star = '.$this->star.', x = '.$this->x.', y = '.$this->y.', groupe = '.$this->groupe.', hp = '.$this->hp.', hp_max = '.$this->hp_max.', mp = '.$this->mp.', mp_max = '.$this->mp_max.', melee = '.$this->melee.', distance = '.$this->distance.', esquive = '.$this->esquive.', blocage = '.$this->blocage.', incantation = '.$this->incantation.', sort_vie = '.$this->sort_vie.', sort_element = '.$this->sort_element.', sort_mort = '.$this->sort_mort.', identification = '.$this->identification.', craft = '.$this->craft.', alchimie = '.$this->alchimie.', architecture = '.$this->architecture.', forge = '.$this->forge.', survie = '.$this->survie.', facteur_magie = '.$this->facteur_magie.', facteur_sort_vie = '.$this->facteur_sort_vie.', facteur_sort_mort = '.$this->facteur_sort_mort.', facteur_sort_element = '.$this->facteur_sort_element.', regen_hp = '.$this->regen_hp.', maj_hp = '.$this->maj_hp.', maj_mp = '.$this->maj_mp.', point_sso = '.$this->point_sso.', quete = '.$this->quete.', quete_fini = '.$this->quete_fini.', dernier_connexion = '.$this->dernier_connexion.', statut = '.$this->statut.', fin_ban = '.$this->fin_ban.', frag = '.$this->frag.', crime = '.$this->crime.', amende = '.$this->amende.', teleport_roi = '.$this->teleport_roi.', cache_classe = '.$this->cache_classe.', cache_stat = '.$this->cache_stat.', cache_niveau = '.$this->cache_niveau.', beta = '.$this->beta;
+		return 'id = '.$this->id.', mort = '.$this->mort.', nom = '.$this->nom.', password = '.$this->password.', email = '.$this->email.', exp = '.$this->exp.', honneur = '.$this->honneur.', reputation = '.$this->reputation.', level = '.$this->level.', rang_royaume = '.$this->rang_royaume.', vie = '.$this->vie.', forcex = '.$this->forcex.', dexterite = '.$this->dexterite.', puissance = '.$this->puissance.', volonte = '.$this->volonte.', energie = '.$this->energie.', race = '.$this->race.', classe = '.$this->classe.', classe_id = '.$this->classe_id.', inventaire = '.$this->inventaire.', inventaire_slot = '.$this->inventaire_slot.', pa = '.$this->pa.', dernieraction = '.$this->dernieraction.', action_a = '.$this->action_a.', action_d = '.$this->action_d.', sort_jeu = '.$this->sort_jeu.', sort_combat = '.$this->sort_combat.', comp_combat = '.$this->comp_combat.', comp_jeu = '.$this->comp_jeu.', star = '.$this->star.', x = '.$this->x.', y = '.$this->y.', groupe = '.$this->groupe.', hp = '.$this->hp.', hp_max = '.$this->hp_max.', mp = '.$this->mp.', mp_max = '.$this->mp_max.', melee = '.$this->melee.', distance = '.$this->distance.', esquive = '.$this->esquive.', blocage = '.$this->blocage.', incantation = '.$this->incantation.', sort_vie = '.$this->sort_vie.', sort_element = '.$this->sort_element.', sort_mort = '.$this->sort_mort.', identification = '.$this->identification.', craft = '.$this->craft.', alchimie = '.$this->alchimie.', architecture = '.$this->architecture.', forge = '.$this->forge.', survie = '.$this->survie.', dressage = '.$this->dressage.', facteur_magie = '.$this->facteur_magie.', facteur_sort_vie = '.$this->facteur_sort_vie.', facteur_sort_mort = '.$this->facteur_sort_mort.', facteur_sort_element = '.$this->facteur_sort_element.', regen_hp = '.$this->regen_hp.', maj_hp = '.$this->maj_hp.', maj_mp = '.$this->maj_mp.', point_sso = '.$this->point_sso.', quete = '.$this->quete.', quete_fini = '.$this->quete_fini.', dernier_connexion = '.$this->dernier_connexion.', statut = '.$this->statut.', fin_ban = '.$this->fin_ban.', frag = '.$this->frag.', crime = '.$this->crime.', amende = '.$this->amende.', teleport_roi = '.$this->teleport_roi.', cache_classe = '.$this->cache_classe.', cache_stat = '.$this->cache_stat.', cache_niveau = '.$this->cache_niveau.', max_pet = '.$this->max_pet.', beta = '.$this->beta;
 	}
 
 	/**
@@ -654,6 +680,17 @@ class perso extends entite
 	function get_password()
 	{
 		return $this->password;
+	}
+
+	/**
+	* Retourne la valeur de l'attribut
+	* @access public
+	* @param none
+	* @return varchar(100) $email valeur de l'attribut email
+	*/
+	function get_email()
+	{
+		return $this->email;
 	}
 
 	/**
@@ -1141,6 +1178,17 @@ class perso extends entite
 	* Retourne la valeur de l'attribut
 	* @access public
 	* @param none
+	* @return mediumint(8) $dressage valeur de l'attribut survie
+	*/
+	function get_dressage()
+	{
+		return $this->dressage;
+	}
+
+	/**
+	* Retourne la valeur de l'attribut
+	* @access public
+	* @param none
 	* @return double $facteur_magie valeur de l'attribut facteur_magie
 	*/
 	function get_facteur_magie()
@@ -1361,6 +1409,17 @@ class perso extends entite
 	* Retourne la valeur de l'attribut
 	* @access public
 	* @param none
+	* @return tinyint(3) $max_pet valeur de l'attribut max_pet
+	*/
+	function get_max_pet()
+	{
+		return $this->max_pet;
+	}
+
+	/**
+	* Retourne la valeur de l'attribut
+	* @access public
+	* @param none
 	* @return tinyint(3) $beta valeur de l'attribut beta
 	*/
 	function get_beta()
@@ -1402,6 +1461,18 @@ class perso extends entite
 	{
 		$this->password = $password;
 		$this->champs_modif[] = 'password';
+	}
+
+	/**
+	* Modifie la valeur de l'attribut
+	* @access public
+	* @param varchar(100) $email valeur de l'attribut
+	* @return none
+	*/
+	function set_email($email)
+	{
+		$this->email = $email;
+		$this->champs_modif[] = 'email';
 	}
 
 	/**
@@ -1935,6 +2006,18 @@ class perso extends entite
 	/**
 	* Modifie la valeur de l'attribut
 	* @access public
+	* @param mediumint(8) $dressage valeur de l'attribut
+	* @return none
+	*/
+	function set_dressage($dressage)
+	{
+		$this->dressage = $dressage;
+		$this->champs_modif[] = 'dressage';
+	}
+
+	/**
+	* Modifie la valeur de l'attribut
+	* @access public
 	* @param double $facteur_magie valeur de l'attribut
 	* @return none
 	*/
@@ -2175,6 +2258,18 @@ class perso extends entite
 	/**
 	* Modifie la valeur de l'attribut
 	* @access public
+	* @param tinyint(3) $max_pet valeur de l'attribut
+	* @return none
+	*/
+	function set_max_pet($max_pet)
+	{
+		$this->max_pet = $max_pet;
+		$this->champs_modif[] = 'max_pet';
+	}
+
+	/**
+	* Modifie la valeur de l'attribut
+	* @access public
 	* @param tinyint(3) $beta valeur de l'attribut
 	* @return none
 	*/
@@ -2247,7 +2342,12 @@ class perso extends entite
 						}
 					}
 					else
-						return $buff;
+					{
+						if($buff->get_type() == $nom)
+						{
+							return $buff;
+						}
+					}
 				}
 		}
 		return false;
@@ -2293,12 +2393,13 @@ class perso extends entite
 		return $buffe;
 	}
 	
-	function add_buff($nom, $effet)
+	function add_buff($nom, $effet, $effet2 = 0)
 	{
 		if(!isset($this->buff)) $this->get_buff();
 		$buff = new buff();
 		$buff->set_type($nom);
 		$buff->set_effet($effet);
+		$buff->set_effet2($effet2);
 		$this->buff[] = $buff;
 	}
 
@@ -3576,5 +3677,140 @@ class perso extends entite
 	//function __get($name) { $debug = debug_backtrace(); die('fuck: '.$debug[0]['file'].' line '.$debug[0]['line']); }
 	//function __set($name, $value) { $debug = debug_backtrace(); die('fuck: '.$debug[0]['file'].' line '.$debug[0]['line']); }
 
+	function get_pets($force = false)
+	{
+		if(!isset($this->pets) OR $force) $this->pets = pet::create(array('id_joueur', 'ecurie'), array($this->id, 0), 'principale DESC');
+		return $this->pets;
+	}
+
+	function get_pet()
+	{
+		if(!isset($this->pet))
+		{
+			$pet = pet::create(array('id_joueur', 'principale', 'ecurie'), array($this->id, 1, 0), 'principale DESC');
+			$this->pet = $pet[0];
+		}
+		return $this->pet;
+	}
+
+	function get_ecurie($force = false)
+	{
+		if(!isset($this->ecurie) OR $force) $this->ecurie = pet::create(array('id_joueur', 'ecurie'), array($this->id, 1), 'principale DESC');
+		return $this->ecurie;
+	}
+
+	function get_ecurie_self($force = false)
+	{
+		if(!isset($this->ecurie_self) OR $force) $this->ecurie_self = pet::create(array('id_joueur', 'ecurie'), array($this->id, 2), 'principale DESC');
+		return $this->ecurie_self;
+	}
+
+	function add_pet($id_monstre, $hp = false)
+	{
+		if($this->nb_pet() >= $this->get_comp('max_pet')) return false;
+		else
+		{
+			$monstre = new monstre($id_monstre);
+			$pet = new pet();
+			$pet->set_id_joueur($this->id);
+			$pet->set_id_monstre($id_monstre);
+			$pet->set_nom($monstre->get_nom());
+			if(!$hp) $pet->set_hp($monstre->get_hp());
+			else $pet->set_hp($hp);
+			$pet->set_mp(0);
+			if(count($this->get_pets()) == 0) $pet->set_principale(1);
+			else $pet->set_principale(0);
+			$pet->sauver();
+			return true;
+		}
+	}
+
+	function nb_pet()
+	{
+		return count($this->get_pets());
+	}
+
+	function nb_pet_ecurie()
+	{
+		return count($this->get_ecurie());
+	}
+
+	function set_pet_principale($pet_id)
+	{
+		global $db;
+		$requete = "UPDATE pet SET principale = 0 WHERE id_joueur = ".$this->id;
+		$db->query($requete);
+		$pet = new pet($pet_id);
+		$pet->set_principale(1);
+		$pet->sauver();
+	}
+
+	function pet_to_ecurie($pet_id, $type_ecurie = 1, $max_ecurie = 10)
+	{
+		$pet = new pet($_GET['d']);
+		if($pet->get_id_joueur() == $this->get_id())
+		{
+			if($this->get_star() >= $pet->get_cout_depot() OR $type_ecurie == 2)
+			{
+				if($this->nb_pet_ecurie() < $max_ecurie)
+				{
+					$pet->set_ecurie($type_ecurie);
+					$pet->set_principale(0);
+					$pet->sauver();
+					if($type_ecurie == 1)
+					{
+						$this->set_star($this->get_star() - $pet->get_cout_depot());
+						$this->sauver();
+					}
+				}
+				else
+				{
+					echo '<h5>L\'écurie ne peut pas prendre plus de vis créatures.</h5>';
+				}
+			}
+			else
+			{
+				echo '<h5>Vous n\'avez pas assez de stars !</h5>';
+			}
+		}
+		else
+		{
+			echo '<h5>Cette créature ne vous appartient pas !</h5>';
+		}
+	}
+
+	function pet_from_ecurie($pet_id)
+	{
+		$pet = new pet($pet_id);
+		if($pet->get_id_joueur() == $this->get_id())
+		{
+			if($this->nb_pet() < $this->get_comp('max_pet'))
+			{
+				$pet->set_ecurie(0);
+				$pet->sauver();
+			}
+			else
+			{
+				echo '<h5>Vous ne pouvez pas prendre plus de créature avec vous.</h5>';
+			}
+		}
+		else
+		{
+			echo '<h5>Cette créature ne vous appartient pas !</h5>';
+		}
+	}
+
+	function max_dresse()
+	{
+		$max = floor(sqrt($this->get_dressage())) - 5;
+		if($max < 1) $max = 1;
+		return $max;
+	}
+
+	function can_dresse($monstre)
+	{
+		if($this->max_dresse() >= $monstre->get_level()) return true;
+		else return false;
+	}
 }
 ?>

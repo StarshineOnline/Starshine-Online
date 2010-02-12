@@ -244,12 +244,17 @@ if($W_distance < 4)
 			if (file_exists('image/monstre/'.$image.'.png')) $image .= '.png';
 			else $image .= '.gif';
 			echo '
-			<li style="clear:both;"><img src="image/monstre/'.$image.'" alt="'.$W2_row['nom'].'" style="vertical-align : middle;height:21px;float:left;width:21px;" /><span style="color : '.$color.'; font-weight : '.$strong.';float:left;width:325px;margin-left:15px;">'.$W_nom.'</span>
+			<li style="clear:both;"><img src="image/monstre/'.$image.'" alt="'.$W2_row['nom'].'" style="vertical-align : middle;height:21px;float:left;width:21px;" /><span style="color : '.$color.'; font-weight : '.$strong.';float:left;width:300px;margin-left:15px;">'.$W_nom.'</span>
 			
 				<span style="float:left;">';
-				if(!$joueur->is_buff('repos_sage') OR !$joueur->is_buff('bloque_attaque')) echo '
-				<a href="attaque.php?id_monstre='.$W_ID.'&type=monstre" onclick="return envoiInfo(this.href, \'information\')"><img src="image/interface/attaquer.png" alt="Combattre" title="Attaquez ce monstez ('.($pa_attaque - $reduction_pa).' PA)" style="vertical-align : middle;" /></a>';
+				if(!$joueur->is_buff('repos_sage') OR !$joueur->is_buff('bloque_attaque'))
+				{
+					echo '
+					<a href="attaque.php?id_monstre='.$W_ID.'&type=monstre" onclick="return envoiInfo(this.href, \'information\')"><img src="image/interface/attaquer.png" alt="Combattre" title="Attaquez ce monstre ('.($pa_attaque - $reduction_pa).' PA)" style="vertical-align : middle;" /></a>';
+					if($joueur->nb_pet() > 0) echo '<a href="attaque.php?id_monstre='.$W_ID.'&type=monstre&pet" onclick="return envoiInfo(this.href, \'information\')">C</a>';
+				}
 				echo ' <a href="info_monstre.php?ID='.$W_ID.'&poscase='.$W_case.'" onclick="return envoiInfo(this.href, \'information\')"><img src="image/icone/mobinfo.png" alt="Voir informations sur le monstre" title="Voir informations sur le monstre" style="vertical-align : middle;" /></a>';
+				echo ' <a href="dressage.php?id='.$W_ID.'" onclick="return envoiInfo(this.href, \'information\')">D</a>';
 				if($joueur->get_sort_jeu() != '') echo ' <a href="sort.php?poscase='.$W_case.'&amp;id_monstre='.$W_ID.'&amp;type=monstre" onclick="return envoiInfo(this.href, \'information\')"><img src="image/sort_hc_icone.png" title="Lancer un sort" alt="Lancer un sort" style="vertical-align : middle;" /></a>';
 			echo '</span>
 				</li>';

@@ -165,6 +165,50 @@ include_once(root.'ville_bas.php');
 						echo '<a href="terrain.php?achat='.$row['id'].'&amp;labo='.$construction->id.'" onclick="return envoiInfo(this.href, \'carte\');">'.$row['nom'].' ('.$prix.' stars)</a><br />';
 					}
 				break;
+				case 'ecurie' :
+					//Le joueur dépose une créature dans l'écurie
+					if(array_key_exists('d', $_GET))
+					{
+						$joueur->pet_to_ecurie($_GET['d'], 2, $batiment->effet);
+					}
+					//Le joueur reprend une créature de l'écurie
+					if(array_key_exists('r', $_GET))
+					{
+						$joueur->pet_from_ecurie($_GET['r']);
+					}
+					$joueur->get_pets(true);
+					$joueur->get_ecurie_self(true);
+					?>
+					<h3>Créatures en ville (<?php echo $joueur->nb_pet_ecurie(); ?> / <?php echo $batiment->effet; ?>)</h3>
+					<ul>
+					<?php
+					foreach($joueur->ecurie_self as $pet)
+					{
+						$pet->get_monstre();
+						?>
+						<li>
+							<?php echo $pet->get_nom(); ?> - <?php echo $pet->monstre->get_nom(); ?> -- HP : <?php echo $pet->get_hp(); ?> / <?php echo $pet->monstre->get_hp(); ?> <a href="terrain.php?id_construction=<?php echo $construction->id; ?>&r=<?php echo $pet->get_id(); ?>" onclick="return envoiInfo(this.href, 'carte');"><img src="image/icone/reprendre.png" alt="Reprendre" title="Reprendre" style="width : 16px; height : 16px; vertical-align : top;" /></a>
+						</li>
+						<?php
+					}
+					?>
+					</ul>
+					<h3>Créatures sur vous (<?php echo $joueur->nb_pet(); ?> / <?php echo $joueur->get_comp('max_pet'); ?>)</h3>
+					<ul>
+					<?php
+					foreach($joueur->pets as $pet)
+					{
+						$pet->get_monstre();
+						?>
+						<li>
+							<?php echo $pet->get_nom(); ?> - <?php echo $pet->monstre->get_nom(); ?> -- HP : <?php echo $pet->get_hp(); ?> / <?php echo $pet->monstre->get_hp(); ?> <a href="terrain.php?id_construction=<?php echo $construction->id; ?>&d=<?php echo $pet->get_id(); ?>" onclick="return envoiInfo(this.href, 'carte');"><img src="image/icone/deposer.png" alt="Déposer" title="Déposer" style="width : 16px; height : 16px; vertical-align : top;" /></a>
+						</li>
+						<?php
+					}
+					?>
+					</ul>
+					<?php
+				break;
 			}
 			$requete = "SELECT id, point_structure FROM terrain_batiment WHERE type = '".$batiment->type."' AND requis = ".$batiment->id;
 			$req = $db->query($requete);

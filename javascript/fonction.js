@@ -98,24 +98,29 @@ function checkCase()
 // Déplacement sur la carte
 
 
-function deplacement(direction, cache, royaume, type)
+function deplacement(direction, cache, royaume, type, show_only)
 {
 	if(cache != 'undefined' && cache)
 		cache = '&cache_monstre';
 	else
 		cache = '';
 		
+	if(show_only != 'undefined' && show_only)
+		show_only = '&show_only=' + show_only;
+	else
+		show_only = '';
+
 	if(royaume != 'undefined' && royaume)
 		royaume = '&affiche_royaume';
 	else
 		royaume = '';
 	if (type == 'troisd')
 	{
-		$('#centre').load('./deplacement3D.php?deplacement='+direction+cache+royaume);
+		$('#centre').load('./deplacement3D.php?deplacement='+direction+cache+royaume+show_only);
 	}
 	else
 	{
-		$('#centre').load('./deplacement.php?deplacement='+direction+cache+royaume);
+		$('#centre').load('./deplacement.php?deplacement='+direction+cache+royaume+show_only);
 	}
 }
 

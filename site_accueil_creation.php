@@ -9,6 +9,7 @@ if ($classe == 'guerrier') $classe = 'combattant';
 if ($classe == 'mage') $classe = 'magicien';
 $pseudo = $_GET['pseudo'];
 $mdp = $_GET['mdp'];
+$email = $_GET['email'];
 
 //Verification sécuritaire
 if(!check_secu($pseudo))
@@ -76,6 +77,7 @@ else
 		
 		$joueur->set_nom(trim($pseudo));
 		$joueur->set_password(md5($mdp));
+		$joueur->set_email($email);
 		$joueur->set_race($race);
 		$joueur->set_level(1);
 		$joueur->set_star($royaume->get_star_nouveau_joueur());
@@ -122,7 +124,7 @@ else
 		$joueur->set_classe($classe);
 		$joueur->set_classe_id($row['id']);
 		echo $joueur->get_classe_id(), '...';
-		$joueur->set_hp(floor(sqrt($joueur->get_vie()) * 70));
+		$joueur->set_hp(floor(sqrt($joueur->get_vie()) * 75));
 		$joueur->set_hp_max($joueur->get_hp());
 		$joueur->set_mp($joueur->get_energie() * $G_facteur_mana);
 		$joueur->set_mp_max($joueur->get_mp());

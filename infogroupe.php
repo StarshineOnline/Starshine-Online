@@ -32,10 +32,11 @@ if($num_joueur !== false)
 ?>
 <fieldset>
 	<legend>Informations sur votre groupe</legend>
-	<ul>
+	<ul id="messagerie_onglet">
 		<li><a href="groupe_info.php?javascript" onclick="return envoiInfo(this.href, 'div_groupe');">Info groupe</a></li>
 		<li><a href="groupe_bataille.php" onclick="return envoiInfo(this.href, 'div_groupe');">Batailles</a></li>
 	</ul>
+	<div class="spacer"></div>
 	<div id="div_groupe">
 		<?php include_once(root.'groupe_info.php'); ?>
 	<div>

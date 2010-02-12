@@ -16,16 +16,12 @@ $req = $db->query($requete);
 $row = $db->read_assoc($req);
 if($row['repete'] == 'y') $repetable = ' - Répétable'; else $repetable = '';
 if($row['mode'] == 's') $mode = 'Solo'; else $mode = 'Groupe';
-echo '
-<h2 style="margin : 0px; padding : 0px;margin-bottom : 3px;"">'.$row['nom'].'</h2>
-<div class="description_quete">
-	<span style="font-style : italic;">Niveau conseillé '.$row['lvl_joueur'].'<br />
-	'.$mode.' '.$repetable.'</span><br />
-	<br /><span class="small">'.nl2br($row['description']).'</span>
-	<h3 style="margin : 0px; padding : 0px; margin-top : 5px;">Objectifs</h3>'; 
+
+	$echo_quete = '';
 	$objectif = unserialize($row['objectif']);
 	$i = 0;
 	$quetes = unserialize($joueur->get_quete());
+	$show_only = array();
 	if(is_array($quetes))
 	{
 		foreach($quetes[$_GET['quete_joueur']]['objectif'] as $objectif_fait)
@@ -44,10 +40,9 @@ echo '
 					case 'M' :
 						$afaire = 'Tuer ';
 						$table = 'monstre';
-						$requete = "SELECT * FROM monstre WHERE id = ".$cible;
-						$req_m = $db->query($requete);
-						$row_m = $db->read_assoc($req_m);
-						$cible_nom = $row_m['nom'];
+						$monstre = new monstre($cible);
+						$cible_nom = $monstre->get_nom();
+						$show_only[] = $monstre->get_id();
 						$total_o = $total;
 					break;
 					case 'J' :
@@ -100,11 +95,21 @@ echo '
 						$total_o = '';
 					break;
 				}
-				echo $afaire.' '.$total_o.' '.$cible_nom.' => '.$total_fait.' / '.$total.'<br />';
+				$echo_quete .= $afaire.' '.$total_o.' '.$cible_nom.' => '.$total_fait.' / '.$total.'<br />';
 			}
 			$i++;
 		}
 	}
+
+$show_only = implode(',', $show_only);
+echo '
+<h2 style="margin : 0px; padding : 0px;margin-bottom : 3px;"">'.$row['nom'].' <a href="" onclick="javascript:show_only=\''.$show_only.'\'; deplacement(\'centre\', cache_monstre, affiche_royaume, \'normal\', show_only); return false;"><img src="image/icone/eye.png" style="vertical-align : -18%;" title="Afficher uniquement les monstres de ce type sur la carte" alt="O" /></a></h2>
+<div class="description_quete">
+	<span style="font-style : italic;">Niveau conseillé '.$row['lvl_joueur'].'<br />
+	'.$mode.' '.$repetable.'</span><br />
+	<br /><span class="small">'.nl2br($row['description']).'</span>
+	<h3 style="margin : 0px; padding : 0px; margin-top : 5px;">Objectifs</h3>';
+	echo $echo_quete;
 	echo '
 	<h3 style="margin : 0px; padding : 0px; margin-top : 5px;">Récompense</h3>
 	<ul>

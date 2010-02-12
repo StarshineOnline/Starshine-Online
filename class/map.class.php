@@ -17,6 +17,7 @@ class map
 	public $onclick;
 	public $quadrillage;
 	public $cache_monstre;
+	public $show_only;
 	public $onclick_status;
 	public $show_royaume_button;
 	public $affiche_terrain;
@@ -39,7 +40,7 @@ class map
 		$this->troisd = $troisd;
 		$this->affiche_terrain = false;
 
-		$this->show_royaume_button = "javascript:affiche_royaume=!affiche_royaume;deplacement('centre', cache_monstre, affiche_royaume);";
+		$this->show_royaume_button = "javascript:affiche_royaume=!affiche_royaume;deplacement('centre', cache_monstre, affiche_royaume, show_only);";
 
 		if(!$this->donjon)
 		{
@@ -692,10 +693,17 @@ class map
 			$group = '';
 			$champs = ', hp';
 		}
-		$RqMonstres = $db->query("SELECT id, x, y, nom, lib ".$champs."
-								  FROM map_monstre 
-								  WHERE ( ( (x >= ".$xmin.") AND (x <= ".$xmax.") ) AND ( (y >= ".$ymin.") AND (y <= ".$ymax.") ) ) 
-								  ".$group." ORDER BY y ASC, x ASC, ABS(level - $level) ASC, level ASC, nom ASC, id ASC;");
+		//On affiche que les monstres d'un certain type
+		if($this->show_only != '')
+		{
+			$show_only = " AND type IN (".$this->show_only.")";
+		}
+		else $show_only = '';
+		$query = "SELECT id, x, y, nom, lib ".$champs."
+								  FROM map_monstre
+								  WHERE ( ( (x >= ".$xmin.") AND (x <= ".$xmax.") ) AND ( (y >= ".$ymin.") AND (y <= ".$ymax.") ) ) ".$show_only."
+								  ".$group." ORDER BY y ASC, x ASC, ABS(level - $level) ASC, level ASC, nom ASC, id ASC;";
+		$RqMonstres = $db->query($query);
 		if($db->num_rows($RqMonstres) > 0)
 		{
 			$monster = 0;
@@ -810,6 +818,11 @@ class map
 		global $Gcouleurs;
 		
 		$this->affiche_royaume = !$this->affiche_royaume;
+	}
+
+	function change_show_only($show_only)
+	{
+		$this->show_only = $show_only;
 	}
 
 	function set_affiche_royaume($val)

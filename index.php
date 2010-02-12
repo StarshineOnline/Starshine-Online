@@ -152,6 +152,7 @@ N'oubliez pas de reporter les bugs et problèmes, et d'apporter vos suggestions 
 			<span class='creation_text'>Indiquer un mot de passe :</span><span class='illu'><input type="password" name="password" id='creat_pass' /></span><br />
 			<span class='creation_text'>Confirmer votre mot de passe :</span>
 			<span class='illu'><input type="password" name="password2" id='creat_pass2' /></span>
+			<span class='creation_text'>Indiquer un email :</span><span class='illu'><input type="text" name="email" id='creat_email' /></span><br />
 			<span onclick="validation_perso();" id="bouton_creer"> </span>
 		</div>
 		<div class='perso_cadre'>

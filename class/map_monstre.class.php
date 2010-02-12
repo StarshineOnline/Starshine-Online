@@ -509,6 +509,11 @@ class map_monstre
 		return convert_in_pos($this->x, $this->y);
 	}
 
+	function get_race()
+	{
+		return 'neutre';
+	}
+
 	function kill_monstre_de_donjon()
 	{
 		global $db;
