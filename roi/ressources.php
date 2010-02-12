@@ -84,13 +84,13 @@ else
 	$hier['Star'] = $explode_stat[24];
 	$hier['Nourriture'] = $explode_stat[25];
 	
-	$requete = "SELECT info, FLOOR(COUNT(*) / 10) as tot, COUNT(*) as tot_terrain FROM `map` WHERE royaume = ".$royaume->get_id()." GROUP BY info";
+	$requete = "SELECT info, COUNT(*) as tot_terrain FROM `map` WHERE royaume = ".$royaume->get_id()." GROUP BY info";
 	$req = $db->query($requete);
 	while($row = $db->read_assoc($req))
 	{
 
 			$typeterrain = type_terrain($row['info']);
-			$ressources[$typeterrain[1]] += $row['tot'];
+			$ressources[$typeterrain[1]] += $row['tot_terrain']/10;
 			$terrain_ress[$typeterrain[1]] += $row['tot_terrain'];
 	}
 	//Ressource normale
@@ -100,11 +100,10 @@ else
 		//print_r($terr);
 		foreach($terr as $key => $res)
 		{
-			$ressource_final[$key] += $res * $ressources[$key_terr];
-			$ress_terrain[$key_terr][$key] +=  $res * $ressources[$key_terr];
+			$ressource_final[$key] += $res * floor($ressources[$key_terr]);
+			$ress_terrain[$key_terr][$key] +=  $res * floor($ressources[$key_terr]);
 		}
 	}
-
 	//Ressource mine
 	//On récupère la liste des batiments de type mine
 	$batiment = array();

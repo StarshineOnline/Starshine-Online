@@ -35,14 +35,14 @@ $date_hier = date("Y-m-d", mktime(0, 0, 0, date("m") , date("d") - 2, date("Y"))
 
 $ressources = array();
 
-$requete = "SELECT royaume.race as race, info, FLOOR(COUNT(*) / 10) as tot, COUNT(*) as tot_terrain FROM `map` LEFT JOIN royaume ON map.royaume = royaume.id WHERE royaume <> 0 GROUP BY info, royaume";
+$requete = "SELECT royaume.race as race, info, COUNT(*) as tot_terrain FROM `map` LEFT JOIN royaume ON map.royaume = royaume.id WHERE royaume <> 0 GROUP BY info, royaume";
 $req = $db->query($requete);
 while($row = $db->read_assoc($req))
 {
 	if($row['tot'] > 0)
 	{
 		$typeterrain = type_terrain($row['info']);
-		$ressources[$row['race']][$typeterrain[1]] += $row['tot'];
+		$ressources[$row['race']][$typeterrain[1]] += $row['tot_terrain']/10;
 		$terrain[$row['race']][$typeterrain[1]] += $row['tot_terrain'];
 	}
 }
@@ -61,8 +61,8 @@ foreach($ressources as $res)
 		$kei = array_keys($ress[utf8_decode($keys[$j])]);
 		foreach($ress[utf8_decode($keys[$j])] as $rr)
 		{
-			$ressource_final[$key[$i]][$kei[$k]] += $rr * $ressources[$key[$i]][$keys[$j]];
-			if($kei[$k] == 'Nourriture') $tot_nou += $rr * $ressources[$key[$i]][$keys[$j]];
+			$ressource_final[$key[$i]][$kei[$k]] += $rr * floor($ressources[$key[$i]][$keys[$j]]);
+			if($kei[$k] == 'Nourriture') $tot_nou += $rr * floor($ressources[$key[$i]][$keys[$j]]);
 			$k++;
 		}
 		$j++;

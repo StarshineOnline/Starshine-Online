@@ -291,18 +291,18 @@ function ressource_terrain($terrain)
 	$ress['Plaine']['Bois'] = 4;
 	$ress['Plaine']['Eau'] = 5;
 	$ress['Plaine']['Sable'] = 2;
-	$ress['Plaine']['Nourriture'] = 8;
+	$ress['Plaine']['Nourriture'] = 6;
 	$ress['Plaine']['Star'] = 0;
-	$ress['Plaine']['Charbon'] = 0;
-	$ress['Plaine']['Essence Magique'] = 0;
+	$ress['Plaine']['Charbon'] = 1;
+	$ress['Plaine']['Essence Magique'] = 1;
 	
 	$ress['Forêt']['Pierre'] = 3;
 	$ress['Forêt']['Bois'] = 8;
 	$ress['Forêt']['Eau'] = 4;
 	$ress['Forêt']['Sable'] = 0;
-	$ress['Forêt']['Nourriture'] = 5;
+	$ress['Forêt']['Nourriture'] = 4;
 	$ress['Forêt']['Star'] = 0;
-	$ress['Forêt']['Charbon'] = 0;
+	$ress['Forêt']['Charbon'] = 1;
 	$ress['Forêt']['Essence Magique'] = 3;
 	
 	$ress['Désert']['Pierre'] = 6;
@@ -348,7 +348,7 @@ function ressource_terrain($terrain)
 	$ress['Glace']['Nourriture'] = 2;
 	$ress['Glace']['Star'] = 0;
 	$ress['Glace']['Charbon'] = 2;
-	$ress['Glace']['Essence Magique'] = 3;
+	$ress['Glace']['Essence Magique'] = 5;
 	
 	$ress['Route']['Pierre'] = 0;
 	$ress['Route']['Bois'] = 0;
