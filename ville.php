@@ -144,7 +144,7 @@ if($W_row['type'] == 1)
 								?>
 							<ul>
 								<li onclick="envoiInfo('boutique.php?type=arme', 'carte')">Forgeron</li>
-								<li onclick="envoiInfo('boutique.php?type=arme', 'carte')">Armurerie</li>
+								<li onclick="envoiInfo('boutique.php?type=armure', 'carte')">Armurerie</li>
 								<li onclick="envoiInfo('enchanteur.php', 'carte')">Enchanteur</li>
 								<li onclick="envoiInfo('alchimiste.php', 'carte')">Alchimiste</li>
 								<li onclick="envoiInfo('hotel.php', 'carte')">Hôtel des ventes</li>
