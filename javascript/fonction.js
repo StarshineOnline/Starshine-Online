@@ -286,6 +286,18 @@ function remplir(destination, valeur, source)
 	$('#'+source).hide();
 }
 
+function findPos(obj)
+{
+	var curleft = obj.offsetLeft || 0;
+	var curtop = obj.offsetTop || 0;
+	while (obj = obj.offsetParent)
+	{
+		curleft += obj.offsetLeft
+		curtop += obj.offsetTop
+	}
+	return {x:curleft,y:curtop};
+}
+
 function suggestion(valeur, cible)
 {
 	if(valeur.length == 0)
@@ -301,8 +313,10 @@ function suggestion(valeur, cible)
         	{
         		var tmp = document.getElementById(cible);
 	        	tmp.innerHTML = data;
-	        	tmp.style.display = 'inline';
+				$('#'+cible).show();
 			}
         });
+		pos = findPos(document.getElementById('perso_envoi'));
+		$('#suggestions').css({top: (pos.y + 12) + "px", left: pos.x + "px"});
 	}
 }

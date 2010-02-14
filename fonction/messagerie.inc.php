@@ -75,10 +75,10 @@ function message_affiche($message, $joueur_id, $thread_title = '')
 			<span class="date">'.$date.'</span>
 		</span>
 		<span style="float:right">'.$fav.'</span>
-		<p id="mess'.$message->id_message.'" class="'.$class_message.'" style="clear:both;padding:2px;'.$masque.'" >'.$message_texte.'</p>
 		<div class="message_action">
 		'.$del.'
-	</div>
+		</div>
+		<p id="mess'.$message->id_message.'" class="'.$class_message.'" style="clear:both;padding:2px;'.$masque.'" >'.$message_texte.'</p>
 	<div class="spacer"></div>';
 	
 	return $message_affiche;

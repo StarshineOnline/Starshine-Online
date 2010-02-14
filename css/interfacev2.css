@@ -406,6 +406,11 @@ table.inventaire tr.element td,table.inventaire tr.header td { font-size:.9em; }
 
 .trcolor2 { background-color:#B4CFEF;border-radius : 5px;-moz-border-radius: 5px;-webkit-border-radius:5px; }
 
+#perso_envoi {width : 200px; padding : 0; margin : 0;}
+#suggestion {display : none; width : 200px;	position: absolute; background-color : white; border : 1px solid black}
+#suggestion ul li {cursor : pointer;}
+#suggestion ul li:hover {background-color:#B4CFEF;}
+
 /***************************************************
   Gestion Royaume
  ***************************************************/

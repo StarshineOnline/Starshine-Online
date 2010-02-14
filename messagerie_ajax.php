@@ -117,7 +117,7 @@ else
 		echo "<div id='messagerie_liste'>";
 		$groupe = new groupe($joueur->get_groupe(), '');
 		$messagerie = new messagerie($joueur->get_id(), $joueur->get_groupe());
-		$messagerie->get_threads($type_thread, 'ASC', true, 1);
+		$messagerie->get_threads($type_thread, 'ASC', false, 1);
 		
 		//Affichage des messages
 		?>
@@ -165,7 +165,7 @@ else
 					else $important_etat = 1;
 					//$options = '<a href="thread_modif?id_thread='.$thread->id_thread.'&important='.$important_etat.'" onclick="return envoiInfo(this.href, \'\');">(i)</a>';
 				}
-				if(($groupe->get_leader() && $type_thread == 'groupe') OR ($thread->id_auteur == $joueur->get_id() && !array_key_exists(1, $thread->messages)))
+				if(($groupe->get_leader() == $joueur->get_id() && $type_thread == 'groupe') OR ($thread->id_auteur == $joueur->get_id() && $message_total <= 1))
 				{
 					$options .= '<a href="thread_modif.php?id_thread='.$thread->id_thread.'&suppr=1" onclick="if(confirm(\'Si vous supprimez ce message, tous les messages à l\\\'intérieur seront supprimés !\')) return envoiInfo(this.href, \'thread_'.$thread->id_thread.'\'); else return false;" title="Supprimer"><span class="del" style="float : right;"></span></a>';
 				}
@@ -176,7 +176,12 @@ else
 
 				<?php
 				//Si le titre est trop long je le coupe pour que ça casse pas ma mise en page qui déchire ta soeur en deux
-				$titre = htmlspecialchars(stripslashes($thread->messages[0]->titre));
+				$titre = htmlspecialchars(stripslashes($thread->titre));
+				if($titre == '')
+				{
+					$thread->get_messages(1, 'ASC');
+					$titre = htmlspecialchars(stripslashes($thread->messages[0]->titre));
+				}
 				if(strlen($titre)>=27) 
 				{
 					$titre = mb_substr($titre,0,27) . "...";

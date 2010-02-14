@@ -56,7 +56,7 @@ class messagerie
 	//Récupération de tous les threads pour ce perso
 	function get_threads($type = 'groupe', $tri_date = 'ASC', $liste_message = false, $nombre_message = 'all')
 	{
-		global $db;
+		global $db, $debut;
 		$this->threads = array();
 		switch($type)
 		{
@@ -68,13 +68,13 @@ class messagerie
 				$where = 'id_dest = '.$this->id_perso.' OR (id_auteur = '.$this->id_perso.' AND id_groupe = 0)';
 			break;
 		}
-		$requete = "SELECT id_thread, id_groupe, id_dest, id_auteur, important, dernier_message FROM messagerie_thread WHERE ".$where." ORDER BY important DESC, dernier_message DESC, id_thread DESC";
+		$requete = "SELECT id_thread, id_groupe, id_dest, id_auteur, important, dernier_message, titre FROM messagerie_thread WHERE ".$where." ORDER BY important DESC, dernier_message DESC, id_thread DESC";
 		//echo $requete;
 		$req = $db->query($requete);
 		$i = 0;
 		while($row = $db->read_assoc($req))
 		{
-			$this->threads[$i] = new messagerie_thread($row['id_thread'], $row['id_groupe'], $row['id_dest'], $row['id_auteur'], $row['important'], $row['dernier_message']);
+			$this->threads[$i] = new messagerie_thread($row['id_thread'], $row['id_groupe'], $row['id_dest'], $row['id_auteur'], $row['important'], $row['dernier_message'], $row['titre']);
 			if($liste_message) $this->threads[$i]->get_messages($nombre_message, $tri_date);
 			$i++;
 		}
@@ -167,7 +167,7 @@ class messagerie
 		{
 			if($roi == 0) $important = 0;
 			else $important = 1;
-			$thread = new messagerie_thread(0, $id_groupe, $id_dest, $this->id_perso, $important, null);
+			$thread = new messagerie_thread(0, $id_groupe, $id_dest, $this->id_perso, $important, null, $titre);
 			$thread->sauver();
 			$id_thread = $thread->id_thread;
 		}
