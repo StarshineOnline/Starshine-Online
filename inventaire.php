@@ -650,9 +650,9 @@ if(!$visu AND isset($_GET['action']))
 			}
 
 			// Gemme de fabrique : augmente de effet % le craft
-			if (isset($joueur->enchantement) &&
-					isset($joueur->enchantement['forge'])) {
-				$craft += round($joueur->enchantement['forge']['effet'] / 100 * $craft);
+			if ($joueur->get_enchantement()!== false &&
+					isset($joueur->is_enchantement('forge'))) {
+				$craft += round($craft * ($joueur->get_enchantement('forge','effet') / 100));
 			}
 
 			$chance_reussite1 = pourcent_reussite($craft, 10);
@@ -693,9 +693,9 @@ if(!$visu AND isset($_GET['action']))
 					}
 
 					// Gemme de fabrique : augmente de effet % le craft
-					if (isset($joueur->enchantement) &&
-							isset($joueur->enchantement['forge'])) {
-						$craft += round($joueur->enchantement['forge']['effet'] / 100 * $craft);
+					if ($joueur->get_enchantement()!== false &&
+							isset($joueur->is_enchantement('forge'))) {
+						$craft += round($craft * ($joueur->get_enchantement('forge','effet') / 100));
 					}
 
 					$craftd = rand(0, $craft);
@@ -773,9 +773,9 @@ if(!$visu AND isset($_GET['action']))
 			}
 
 			// Gemme de fabrique : augmente de effet % le craft
-			if (isset($joueur->enchantement) &&
-					isset($joueur->enchantement['forge'])) {
-				$craft += round($joueur->enchantement['forge']['effet'] / 100 * $craft);
+			if ($joueur->get_enchantement()!== false &&
+					isset($joueur->is_enchantement('forge'))) {
+				$craft += round($craft * ($joueur->get_enchantement('forge','effet') / 100));
 			}
 
 			echo 'Dans quel objet voulez vous enchâsser cette gemme de niveau '.$row['niveau'].' ?
@@ -856,9 +856,9 @@ if(!$visu AND isset($_GET['action']))
 				}
 
 				// Gemme de fabrique : augmente de effet % le craft
-				if (isset($joueur->enchantement) &&
-						isset($joueur->enchantement['forge'])) {
-					$craft += round($joueur->enchantement['forge']['effet'] / 100 * $craft);
+				if ($joueur->get_enchantement()!== false &&
+						isset($joueur->is_enchantement('forge'))) {
+					$craft += round($craft * ($joueur->get_enchantement('forge','effet') / 100));
 				}
 
 				$craftd = rand(0, $craft);

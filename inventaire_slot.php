@@ -94,7 +94,7 @@ if($joueur->get_inventaire_slot() != '')
 			//Filtrage
 			if(array_key_exists('filtre', $_GET)) $filtre = $_GET['filtre']; else $filtre = 'utile';
 			$check = false;
-			$liste_categorie = array('o', 'a', 'p');
+			$liste_categorie = array('o', 'a', 'p', 'l');
 			if((($objet_d['categorie'] == 'o' AND $filtre == 'utile')
 					OR ($objet_d['categorie'] == 'l' AND $filtre == 'utile')
 					OR ($objet_d['categorie'] == 'a' AND $filtre == 'arme')

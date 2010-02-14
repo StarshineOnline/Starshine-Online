@@ -554,13 +554,14 @@ function lance_sort($id, $acteur, &$effects)
 
 			if(array_key_exists('bouclier_protecteur', $passif->etat)) $pm = $pm + ($passif->etat['bouclier_protecteur']['effet'] * $passif->get_bouclier_degat());
 			if($passif->is_buff('batiment_pm')) $buff_batiment_barriere = 1 + (($passif->get_buff('batiment_pm', 'effet') / 100)); else $buff_batiment_barriere = 1;
+			if($passif->is_buff('debuff_desespoir')) $debuff_desespoir = 1 + (($passif->get_buff('debuff_desespoir', 'effet')) / 100); else 	$debuff_desespoir = 1;
 			if($passif->etat['posture']['type'] == 'posture_glace') $aura_glace = 1 + (($passif->etat['posture']['effet']) / 100); else $aura_glace = 1;
 			//Corrompu la nuit
 			if($actif->get_race() == 'humainnoir' AND moment_jour() == 'Nuit') $bonus_race = 1.1; else $bonus_race = 1;
 			$PM = $pm * $bonus_race * $aura_glace * $buff_batiment_barriere;
 			// Calcul des potentiels toucher et parer
 			$potentiel_toucher = round($actif->get_volonte() * $potentiel_magique);
-			$potentiel_parer = round($passif->get_volonte() * $PM);
+			$potentiel_parer = round($passif->get_volonte() * $PM / $debuff_desespoir);
 
 			/* Application des effets de potentiel toucher */
 			foreach ($effects as $effect)
@@ -708,7 +709,7 @@ function lance_sort($id, $acteur, &$effects)
 					if ($passif->get_type() == 'batiment') $drain = 0;
 					else $drain = round($degat * 0.3);
 					// Augmentation du nombre de HP récupérable par récupération
-					if(array_key_exists('recuperation', $actif->etat)) $actif->etat['recuperation']['hp_max'] += $drain;
+					if(array_key_exists('recuperation', $actif->etat) && $actif->etat['recuperation']['hp_recup'] != 0) $actif->etat['recuperation']['hp_max'] += $drain;
 					echo '&nbsp;&nbsp;<span class="degat"><strong>'.$actif->get_nom().'</strong> inflige <strong>'.$degat.'</strong> dégats avec '.$row['nom'].'<br />
 					Et gagne <strong>'.$drain.'</strong> hp grâce au drain</span><br />';
 					$passif->set_hp($passif->get_hp() - $degat);
@@ -721,7 +722,7 @@ function lance_sort($id, $acteur, &$effects)
 					if ($passif->get_type() == 'batiment') $drain = 0;
 					else $drain = round($degat * 0.5);
 					// Augmentation du nombre de HP récupérable par récupération
-					if(array_key_exists('recuperation', $actif->etat)) $actif->etat['recuperation']['hp_max'] += $drain;
+					if(array_key_exists('recuperation', $actif->etat) && $actif->etat['recuperation']['hp_recup'] != 0) $actif->etat['recuperation']['hp_max'] += $drain;
 					echo '&nbsp;&nbsp;<span class="degat"><strong>'.$actif->get_nom().'</strong> inflige <strong>'.$degat.'</strong> dégats avec '.$row['nom'].'<br />
 					Et gagne <strong>'.$drain.'</strong> hp grâce au drain</span><br />';
 					$passif->set_hp($passif->get_hp() - $degat);
@@ -889,6 +890,7 @@ function lance_sort($id, $acteur, &$effects)
 					$actif->etat['recuperation']['effet'] = $row['effet'];
 					$actif->etat['recuperation']['duree'] = 10;
 					$actif->etat['recuperation']['hp_max'] = $actif->get_hp();
+					$actif->etat['recuperation']['hp_recup'] = 0;
 					echo '&nbsp;&nbsp;<strong>'.$actif->get_nom().'</strong> se lance le sort '.$row['nom'].'<br />';
 				break;
 				case 'aura_feu' :

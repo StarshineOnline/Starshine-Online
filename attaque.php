@@ -548,7 +548,10 @@ else
 							}
 							$attaquant->set_hp($attaquant->get_hp() + $effet);
 							if($effet > 0)
+							{
+								$attaquant->etat['recuperation']['hp_recup'] += $effet;
 								echo '&nbsp;&nbsp;<span class="soin">'.$attaquant->get_nom().' gagne '.$effet.' HP par récupération</span><br />';
+							}
 							else
 								print_debug($attaquant->get_nom().' ne peut pas gagner de HP par récupération');
 						}
@@ -560,7 +563,11 @@ else
 								$effet = $defenseur->etat['recuperation']['hp_max'] - $defenseur->get_hp();
 							}
 							$defenseur->set_hp($defenseur->get_hp() + $effet);
-							if($effet > 0) echo '&nbsp;&nbsp;<span class="soin">'.$defenseur->get_nom().' gagne '.$effet.' HP par récupération</span><br />';
+							if($effet > 0)
+							{
+								$defenseur->etat['recuperation']['hp_recup'] += $effet; 
+								echo '&nbsp;&nbsp;<span class="soin">'.$defenseur->get_nom().' gagne '.$effet.' HP par récupération</span><br />';
+							}
 						}
 					}
 
