@@ -41,7 +41,7 @@ NULL , '24', 'survie_bete', '100', 'no'
 );
 
 ALTER TABLE `perso` ADD `dressage` MEDIUMINT UNSIGNED NOT NULL AFTER `survie` ;
-ALTER TABLE `perso` ADD `max_pet` TINYINT UNSIGNED NOT NULL AFTER `cache_niveau`
+ALTER TABLE `perso` ADD `max_pet` TINYINT UNSIGNED NOT NULL AFTER `cache_niveau`;
 ALTER TABLE `monstre` ADD `dressage` MEDIUMINT UNSIGNED NOT NULL AFTER `sort_mort` ;
 
 ALTER TABLE `pet` ADD `ecurie` TINYINT UNSIGNED NOT NULL;
