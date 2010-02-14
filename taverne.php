@@ -14,6 +14,18 @@ verif_mort($joueur, 1);
 $W_requete = 'SELECT royaume, type FROM map WHERE ID =\''.sSQL($joueur->get_pos()).'\'';
 $W_req = $db->query($W_requete);
 $W_row = $db->read_assoc($W_req);
+
+if ($W_row['type'] != 1) // On est pas en ville
+{
+	$X = $joueur->get_x();
+	$Y = $joueur->get_y();
+	$bat_requete = "select c.id from construction c, batiment b where c.id_batiment = b.id and c.x = $X and c.y = $Y and b.bonus7 = 1";
+	$bat_req = $db->query($bat_requete);
+	$bat_row = $db->read_assoc($bat_req);
+	if ($bat_row == false) security_block(URL_MANIPULATION, 'Accès à la taverne depuis les champs');
+}
+
+
 $R = new royaume($W_row['royaume']);
 $R->get_diplo($joueur->get_race());
 ?><fieldset><legend><?php if(verif_ville($joueur->get_x(), $joueur->get_y())) return_ville( '<a href="ville.php" onclick="return envoiInfo(this.href, \'centre\')">'.$R->get_nom().'</a> > ', $joueur->get_pos()); ?> <?php echo '<a href="taverne.php?poscase='.$W_case.'" onclick="return envoiInfo(this.href,\'carte\')">';?> Taverne </a></legend>
