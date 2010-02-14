@@ -39,7 +39,7 @@ if($W_row['type'] == 1)
             	if($nombre > 0)
             	{
                 	$i = 0;
-                	if ($nombre > ($G_place_inventaire - count($joueur->get_inventaire_slot())))
+                	if ($nombre >= ($G_place_inventaire - count($joueur->get_inventaire_slot())))
                 	{
                 		echo 'Plus de place';
                 	}
