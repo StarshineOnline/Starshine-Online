@@ -1122,8 +1122,8 @@ function lance_comp($id, $acteur, &$effects)
 		break;
 		case 'fleche_rapide' :
 			echo '&nbsp;&nbsp;<strong>'.$actif->get_nom().'</strong> utilise '.$row['nom'].' !<br />';
-			$passif->etat['fleche_rapide']['effet'] = $row['effet'];
-			$passif->etat['fleche_rapide']['duree'] = 1;
+			$actif->etat['fleche_rapide']['effet'] = $row['effet'];
+			$actif->etat['fleche_rapide']['duree'] = 1;
 			//On prends en compte la bonne compétence
 			$row['comp_assoc'] = $actif->get_comp_combat();
 			$comp_attaque = true;

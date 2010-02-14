@@ -562,6 +562,7 @@ class magnetique extends effect {
 						$this->message($this->titre.' supprime le buff '.$passif_buff[$keys[$rand]]->get_nom());
 						$passif_buff[$keys[$rand]]->supprimer();
 						unset($passif_buff[$keys[$rand]]);
+						$passif->supprime_buff($keys[$rand]);
 					}
 				}
 				else {

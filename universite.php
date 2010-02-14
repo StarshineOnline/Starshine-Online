@@ -197,15 +197,23 @@ if($W_row['type'] == 1)
 					if($comp_combat[0] == '') $comp_combat = array();
 					$comp_jeu = explode(';', $joueur->get_comp_jeu());
 					if($comp_jeu[0] == '') $comp_jeu = array();
+					$sort_jeu = explode(';', $joueur->get_sort_jeu());
+					if($sort_jeu[0] == '') $sort_jeu = array();
+					$sort_combat = explode(';', $joueur->get_sort_combat());
+					if($sort_combat[0] == '') $sort_combat = array();
 					$requete = "SELECT * FROM classe_comp_permet WHERE id_classe = '".sSQL($_GET['id'])."'";
 					$req = $db->query($requete);
 					while($row = $db->read_assoc($req))
 					{
 						if($row['type'] == 'comp_combat') $comp_combat[] = $row['competence'];
 						if($row['type'] == 'comp_jeu') $comp_jeu[] = $row['competence'];
+						if($row['type'] == 'sort_jeu') $sort_jeu[] = $row['competence'];
+						if($row['type'] == 'sort_combat') $sort_combat[] = $row['competence'];
 					}
 					$joueur->set_comp_combat(implode(';', $comp_combat));
 					$joueur->set_comp_jeu(implode(';', $comp_jeu));
+					$joueur->set_sort_jeu(implode(';', $sort_jeu));
+					$joueur->set_sort_combat(implode(';', $sort_combat));
 					$joueur->set_classe_id($_GET['id']);
 					$joueur->set_classe(strtolower($nom));
 					$joueur->sauver();

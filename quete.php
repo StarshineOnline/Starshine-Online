@@ -93,12 +93,15 @@ foreach ($ts as $tt => $tn)
 				$i = 0;
 				$total = 0;
 				$total_fait = 0;
+				$show_only = array();
 				foreach($quetes[$quest[$row['id']]]['objectif'] as $objectif_fait)
 				{
+					if($objectif_fait->cible[0] == 'M') $show_only[] = mb_substr($objectif_fait->cible, 1);
 					$total_fait += $objectif_fait->nombre;
 					$total += $objectif[$i]->nombre;
 					$i++;
 				}
+				$show_only = implode(';', $show_only);
 				echo '<tr>
 				<td width="40%" onclick="$(\'#liste_quete\').height(\'100px\'); envoiInfo(\'desc_quete.php?id_quete='.$row['id'].'&amp;quete_joueur='.$quest[$row['id']].'\', \'desc_quete\');">
 					<span class="small" style="cursor : pointer;">'.$row['nom'].'
@@ -111,6 +114,9 @@ foreach ($ts as $tt => $tn)
 				</td>
 				<td width="20%">
 					<span class="small" style="cursor : pointer;">'.$total_fait.' / '.$total.'</span>
+				</td>
+				<td width="10%">
+					<span class="small" style="cursor : pointer;"><a href="" onclick="javascript:show_only=\''.$show_only.'\'; deplacement(\'centre\', cache_monstre, affiche_royaume, \'normal\', show_only); return false;"><img src="image/icone/eye_p.png" title="Afficher uniquement les monstres de ce type sur la carte" alt="O" style="vertical-align : middle;" /></a></span>
 				</td>
 				</tr>';
 				?>

@@ -113,6 +113,7 @@ $Gtrad['survie'] = 'Survie';
 $Gtrad['identification'] = 'Identification d\'objets';
 $Gtrad['sort_vie+'] = 'Apprend magie de la vie a';
 $Gtrad['facteur_magie'] = 'Réduction PA des sorts';
+$Gtrad['dressage'] = 'Dressage';
 //@}
 
 

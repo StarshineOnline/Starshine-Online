@@ -530,6 +530,13 @@ class entite extends placable
 		
 		return $buffs;
 	}
+
+	function supprime_buff($id)
+	{
+		if(!isset($this->buff)) $this->get_buff();
+		unset($this->buff[$id]);
+	}
+
 	function get_etat()
 	{
 		return $this->etat;

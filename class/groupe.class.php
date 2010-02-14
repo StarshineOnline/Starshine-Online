@@ -297,19 +297,25 @@ class groupe
  	*/
 	function get_level()
 	{
-		$max = 0;
-		$moyenne = 0;
+		$level_groupe = 0;
+		$somme_groupe = 0;
+		$somme_groupe_carre = 0;
 		$niveau = 0;
+		$i = 0;
 		$membre_groupe = $this->get_membre_joueur();
-		foreach($membre_groupe as $membre);
+		$count = count($membre_groupe);
+		while($i < $count)
 		{
-			$niveau = $membre->get_level();
-			$max = $max < $niveau ? $niveau : $max;
-			$moyenne += $niveau; 	
+			$niveau = $membre_groupe[$i]->get_level();
+			$somme_groupe += $niveau;
+			$somme_groupe_carre += $niveau * $niveau;
+			$group[] = $niveau;
+			$i++;
 		}
 		
-		$this->lvl = $max + ceil(($moyenne / $max) * floor(sqrt($moyenne)));
-		
+		$max_groupe = max($group);
+		$moy_groupe = ($somme_groupe - $max_groupe) / count($group);
+		$this->lvl = $max_groupe + ceil(($somme_groupe_carre) / ($max_groupe * 25)) + 1;
 		return $this->lvl;
 	}
 	

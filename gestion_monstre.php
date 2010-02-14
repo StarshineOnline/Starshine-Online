@@ -93,7 +93,7 @@ else
 			<li style="clear:both;"><img src="image/monstre/'.$image.'" alt="'.$W2_row['nom'].'" style="vertical-align : middle;height:21px;float:left;width:21px;" /><span style="font-weight : '.$strong.';float:left;width:300px;margin-left:15px;">'.$W_nom.'</span>
 
 				<span style="float:left;">';
-				echo ' <a href="dressage.php?id='.$W_ID.'" onclick="return envoiInfo(this.href, \'information\')">D</a>';
+				echo ' <a href="dressage.php?id='.$W_ID.'" onclick="return envoiInfo(this.href, \'information\')"><img src="image/icone/miniconedressage.png" alt="Dressage" title="Dresser cette créature (10 PA)" style="vertical-align : middle;" /></a>';
 			echo '</span>
 			</li>';
 		}
