@@ -500,7 +500,7 @@ function lance_sort($id, $acteur, &$effects)
   {
     $arme = $actif->get_arme();
     $potentiel_magique_arme = $potentiel_magique * (1 + ($arme->var1 / 100));
-    $facteur_degats_arme = $arme->degat;
+    $facteur_degats_arme = 0;
   }
 	else
   {
