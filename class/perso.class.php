@@ -3578,13 +3578,13 @@ class perso extends entite
 		{
 		case 'vampire':
 			$this->add_bonus_permanents('reserve', 2);
-			if (moment_jour() == 'Nuit')
+			if (moment_jour($this->id) == 'Nuit')
 			{
 				$this->add_bonus_permanents('reserve', 3);
 				$this->add_bonus_permanents('dexterite', 2);
 				$this->add_bonus_permanents('volonte', 2);
 			}
-			elseif (moment_jour() == 'Journee')
+			elseif (moment_jour($this->id) == 'Journee')
 			{
 				$this->add_bonus_permanents('reserve', -1);
 				$this->add_bonus_permanents('dexterite', -1);
@@ -3592,7 +3592,7 @@ class perso extends entite
 			}
 			break;
 		case 'elfehaut':
-			if (moment_jour() == 'Nuit')
+			if (moment_jour($this->id) == 'Nuit')
 			{
 				$this->add_bonus_permanents('reserve', 2);
 				$this->add_bonus_permanents('dexterite', 1);

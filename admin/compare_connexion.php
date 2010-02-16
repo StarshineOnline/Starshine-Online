@@ -32,16 +32,18 @@ else
 		Les lignes en gras sont les connexions sur la même IP<br />
 		<br />
 		<?php
-		$id1 = $_GET['id1'];
-		$id2 = $_GET['id2'];
+		$id1 = sSQL($_GET['id1']);
+		$id2 = sSQL($_GET['id2']);
 		//On récupère le listing connexion des 2 joueurs
-		$requete = "SELECT * FROM log_connexion WHERE message = 'Ok' AND id_joueur = ".$id1." ORDER BY time ASC";
+		$requete = 'SELECT log_connexion.* FROM log_connexion INNER JOIN perso ON perso.nom = "'.$id1.
+							'" WHERE message = "Ok" AND log_connexion.id_joueur = perso.id ORDER BY time ASC';
 		$req = $db->query($requete);
 		while($row_log = $db->read_assoc($req))
 		{
 			$tab1[] = $row_log;
 		}
-		$requete = "SELECT * FROM log_connexion WHERE message = 'Ok' AND id_joueur = ".$id2." ORDER BY time ASC";
+		$requete = 'SELECT log_connexion.* FROM log_connexion INNER JOIN perso ON perso.nom = "'.$id2.
+							'" WHERE message = "Ok" AND log_connexion.id_joueur = perso.id ORDER BY time ASC';
 		$req = $db->query($requete);
 		while($row_log = $db->read_assoc($req))
 		{

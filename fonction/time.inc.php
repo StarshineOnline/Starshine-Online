@@ -187,7 +187,7 @@ function date_sso()
  * 
  * @return Moment de la journée.  
 */
-function moment_jour()
+function moment_jour($id_joueur = 0)
 {
 	global $joueur, $db;
 	if (isset($joueur) && $joueur != null)
@@ -197,14 +197,15 @@ function moment_jour()
 	}
 	else
 	{
-	  // On ne peut pas créer d'objet perso car cette fonction est appelée dans son constructeur
-    $requete = "SELECT x,y FROM perso WHERE id =".$_SESSION['ID'];
-    $req = $db->query($requete);
-  	if( $row = $db->read_assoc($req) )
-  	{
-		  $x = $row["x"];
-		  $y = $row["y"];
-  	}
+		// On ne peut pas créer d'objet perso car cette fonction est appelée dans son constructeur
+	  	$id_joueur = empty($id_joueur) ? $_SESSION['ID'] : $id_joueur;
+    	$requete = "SELECT x,y FROM perso WHERE id =".$id_joueur;
+    	$req = $db->query($requete);
+  		if( $row = $db->read_assoc($req) )
+  		{
+			$x = $row["x"];
+		  	$y = $row["y"];
+  		}
 	}
 	if ($x >= 300)
 	{

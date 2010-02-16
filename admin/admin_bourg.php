@@ -47,18 +47,18 @@ else
 			</td>
 		</tr>
 		<?php
-		$requete = "SELECT ID, race, bourg FROM royaume WHERE ID <> 0 ORDER BY ID";
+		$requete = "SELECT id, race, bourg FROM royaume WHERE id <> 0 AND bourg <> 0 ORDER BY id";
 		$req = $db->query($requete);
 		while($row = $db->read_assoc($req))
 		{
 			$royaumes[$row['race']] = $row;
 			//Requète qui compte le nombre de bourg construit pour ce royaume
-			$requete = "SELECT COUNT(*) as tot FROM construction WHERE type = 'bourg' AND royaume = ".$row['ID'];
+			$requete = "SELECT COUNT(*) as tot FROM construction WHERE type = 'bourg' AND royaume = ".$row['id'];
 			//echo $requete;
 			$req_bourg = $db->query($requete);
 			$row_bourg = $db->read_assoc($req_bourg);
 			$royaumes[$row['race']]['bourg_construit'] = $row_bourg['tot'];
-			$requete = "SELECT ID, nom, inventaire_slot FROM perso WHERE race = '".$row['race']."' AND inventaire_slot LIKE '%\"r10\"%'";
+			$requete = "SELECT id, nom, inventaire_slot FROM perso WHERE race = '".$row['race']."' AND inventaire_slot LIKE '%\"r10\"%'";
 			//echo $requete;
 			$req_perso = $db->query($requete);
 			while($row_perso = $db->read_assoc($req_perso))

@@ -154,6 +154,7 @@ else
 		: <select name="type">
 			<option value="arme">Arme</option>
 			<option value="armure">Armure</option>
+			<option value="accessoire">Accessoire</option>
 		</select>
 	</td>
 </tr>
