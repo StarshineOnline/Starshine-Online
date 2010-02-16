@@ -3336,7 +3336,7 @@ class perso extends entite
 			if(!$this->prend_objet($inventaire->$type))
 			{
 				$G_erreur = 'Vous n\'avez plus de place dans votre inventaire<br />';
-				return $false;
+				return false;
 			}
 			else
 			{
