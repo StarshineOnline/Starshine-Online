@@ -46,7 +46,7 @@ if (isset($_GET['action']))
 					while($i < $nombre)
 					{
 						//Achat
-						$requete = "INSERT INTO depot_royaume VALUES ('', ".$row['id'].", ".$R->get_id().")";
+						$requete = "INSERT INTO depot_royaume VALUES (NULL, ".$row['id'].", ".$R->get_id().")";
 						$db->query($requete);
 						//On rajoute un bourg au compteur
 						if($row['type'] == 'bourg')

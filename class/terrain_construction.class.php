@@ -91,6 +91,21 @@ class terrain_construction{
 		return new terrain_batiment($row);
 	}
 
+	function get_id_batiment()
+	{
+		return $this->id_batiment;
+	}
+
+	function set_id_batiment($id_bat)
+	{
+		$this->id_batiment = $id_bat; 
+	}
+	
+	function set_id_terrain($id_ter)
+	{
+		$this->id_terrain = $id_ter;
+	}
+	
 	function get_laboratoire_instrument()
 	{
 		global $db;

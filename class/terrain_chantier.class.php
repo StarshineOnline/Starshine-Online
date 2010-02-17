@@ -100,5 +100,10 @@ class terrain_chantier
 		$row = $db->read_assoc($req);
 		return new terrain_batiment($row);
 	}
+	
+	function get_id_batiment()
+	{
+		return $this->id_batiment;
+	}
 }
 ?>

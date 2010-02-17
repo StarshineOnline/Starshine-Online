@@ -69,14 +69,14 @@ $_SESSION['position'] = $position;
 						if($chantier->upgrade_id_construction == 0)
 						{
 							$construction = new terrain_construction();
-							$construction->id_terrain = $chantier->id_terrain;
-							$construction->id_batiment = $chantier->id_batiment;
+							$construction->set_id_terrain($chantier->id_terrain);
+							$construction->set_id_batiment($chantier->id_batiment);
 							$construction->sauver();
 						}
 						else
 						{
-							$construction = new construction($chantier->upgrade_id_construction);
-							$construction->id_batiment = $chantier->id_batiment;
+							$construction = new terrain_construction($chantier->upgrade_id_construction);
+							$construction->set_id_batiment($chantier->get_id_batiment());
 							$construction->sauver();
 						}
 					}

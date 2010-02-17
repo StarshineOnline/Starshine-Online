@@ -388,7 +388,7 @@ if(!$visu AND isset($_GET['action']))
 			{
 				$objet = $joueur->get_inventaire_slot_partie($_GET['key_slot']);
 				$id = mb_substr($objet, 1, strlen($objet));
-				$requete = "INSERT INTO depot_royaume VALUES ('', ".$id.", ".$R->get_id().")";
+				$requete = "INSERT INTO depot_royaume VALUES (NULL, ".$id.", ".$R->get_id().")";
 				$db->query($requete);
 				//On supprime l'objet de l'inventaire
 				$joueur->supprime_objet($joueur->get_inventaire_slot_partie($_GET['key_slot']), 1);
@@ -651,7 +651,7 @@ if(!$visu AND isset($_GET['action']))
 
 			// Gemme de fabrique : augmente de effet % le craft
 			if ($joueur->get_enchantement()!== false &&
-					isset($joueur->is_enchantement('forge'))) {
+					$joueur->is_enchantement('forge')) {
 				$craft += round($craft * ($joueur->get_enchantement('forge','effet') / 100));
 			}
 
@@ -694,7 +694,7 @@ if(!$visu AND isset($_GET['action']))
 
 					// Gemme de fabrique : augmente de effet % le craft
 					if ($joueur->get_enchantement()!== false &&
-							isset($joueur->is_enchantement('forge'))) {
+							$joueur->is_enchantement('forge')) {
 						$craft += round($craft * ($joueur->get_enchantement('forge','effet') / 100));
 					}
 
@@ -774,7 +774,7 @@ if(!$visu AND isset($_GET['action']))
 
 			// Gemme de fabrique : augmente de effet % le craft
 			if ($joueur->get_enchantement()!== false &&
-					isset($joueur->is_enchantement('forge'))) {
+					$joueur->is_enchantement('forge')) {
 				$craft += round($craft * ($joueur->get_enchantement('forge','effet') / 100));
 			}
 
@@ -857,7 +857,7 @@ if(!$visu AND isset($_GET['action']))
 
 				// Gemme de fabrique : augmente de effet % le craft
 				if ($joueur->get_enchantement()!== false &&
-						isset($joueur->is_enchantement('forge'))) {
+						$joueur->is_enchantement('forge')) {
 					$craft += round($craft * ($joueur->get_enchantement('forge','effet') / 100));
 				}
 

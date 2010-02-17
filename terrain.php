@@ -85,25 +85,26 @@ include_once(root.'ville_bas.php');
 					{
 						if(count($coffre_inventaire) < $batiment->effet)
 						{
-							$item = $joueur['inventaire_slot'][$_GET['depose']];
+							$item = $joueur->get_inventaire_slot_partie($_GET['depose']);
 							$objet = decompose_objet($item);
 							//On le met dans le coffre
 							$coffre->depose_objet($objet);
 							//On supprime l'objet
-							supprime_objet($joueur, $item, 1);
+							$joueur->supprime_objet($item, 1);
+
 							$coffre_inventaire = $coffre->get_coffre_inventaire();
-							$joueur = recupperso($joueur->get_id());
+							$joueur->check_perso();
 						}
 						else echo '<h5>Vous n\'avez pas assez de place dans le coffre</h5>';
 					}
 					if(array_key_exists('prend', $_GET))
 					{
 						$item = $coffre_inventaire[$_GET['prend']];
-						if(prend_objet($item->objet, $joueur))
+						if($joueur->prend_objet($item->objet))
 						{
 							$item->moins();
 							$coffre_inventaire = $coffre->get_coffre_inventaire();
-							$joueur = recupperso($joueur->get_id());
+							$joueur->check_perso();
 						}
 						else echo '<h5>'.$G_erreur.'</h5>';
 					}
@@ -119,7 +120,7 @@ include_once(root.'ville_bas.php');
 					}
 					echo '
 					<h3>Votre inventaire</h3>';
-					foreach($joueur['inventaire_slot'] as $key => $item)
+					foreach($joueur->get_inventaire_slot_partie() as $key => $item)
 					{
 						$objet = decompose_objet($item);
 						$nom = nom_objet($objet['id']);
@@ -246,8 +247,8 @@ include_once(root.'ville_bas.php');
 						$requete = "SELECT id FROM terrain_construction WHERE id_terrain = ".$terrain->id." AND id_batiment = ".$batiment->requis;
 						$req = $db->query($requete);
 						$row = $db->read_assoc($req);
-						$construction = new construction($row['id']);
-						$bat_requis = $construction->get_batiment();
+						$construction = new terrain_construction($row['id']);
+						$bat_requis = new terrain_batiment($construction->get_id_batiment());
 						$nb_case = $batiment->nb_case - $bat_requis->nb_case;
 					}
 					if(($nb_case <= $terrain->place_restante()) OR $batiment->type == 'agrandissement')
