@@ -1193,7 +1193,7 @@ class perso extends entite
 	*/
 	function get_facteur_magie()
 	{
-		return $this->facteur_magie;
+		return round($this->facteur_magie);
 	}
 
 	/**

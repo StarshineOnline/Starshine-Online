@@ -39,7 +39,7 @@ if($return[1] > 0 AND !array_key_exists('fort', $_GET))
 	echo '</span></div><br />';
 }
 
-if($joueur->get_race() == $R->get_race())
+if($joueur->get_race() == $R->get_race() OR $R->get_diplo($joueur->get_race()) < 7)
 {
 	if(isset($_GET['action']))
 	{

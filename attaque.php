@@ -569,6 +569,14 @@ else
 								echo '&nbsp;&nbsp;<span class="soin">'.$defenseur->get_nom().' gagne '.$effet.' HP par récupération</span><br />';
 							}
 						}
+						if($defenseur->etat['fleche_debilitante']['duree'] > 0)
+						{
+							echo '&nbsp;&nbsp;<span class="soin">'.$defenseur->get_nom().' est sous l\'effet de Flêche Débilisante</span><br />';
+						}
+						if($attaquant->etat['fleche_debilitante']['duree'] > 0)
+						{
+							echo '&nbsp;&nbsp;<span class="soin">'.$attaquant->get_nom().' est sous l\'effet de Flêche Débilisante</span><br />';
+						}
 					}
 
 					//Update de la base de donnée.

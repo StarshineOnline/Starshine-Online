@@ -83,7 +83,8 @@ if($W_distance == 0)
 		}
 		echo '</ul>';
 	}
-	$requete = "SELECT map.id as id, nom FROM map LEFT JOIN royaume ON map.royaume = royaume.id WHERE (map.id - (floor(map.id / 1000)) * 1000) >= ".$x_min." AND (map.id - (floor(map.id / 1000)) * 1000) <= ".$x_max." AND floor(map.id / 1000) >= ".$y_min." AND floor(map.id / 1000) <= ".$y_max." AND type = 1";
+	$requete = 'SELECT map.id as id, nom FROM map LEFT JOIN royaume ON map.royaume = royaume.id WHERE (map.id - (floor(map.id / 1000)) * 1000) >= '.$x_min.' AND (map.id - (floor(map.id / 1000)) * 1000) <= '.$x_max.' AND floor(map.id / 1000) >= '.$y_min.' AND floor(map.id / 1000) <= '.$y_max.' AND type = 1 ';
+					//'AND royaume.race != "'.$joueur->get_race().'"';
 	$req_v = $db->query($requete);
 	$row_v = $db->read_assoc($req_v);
 	if($db->num_rows > 0)
