@@ -172,8 +172,13 @@ function fin_quete($joueur, $id_quete_joueur, $id_quete)
 					$liste[] = $row_r;
 				}
 				$count2 = count($liste);
-				$random = floor(rand(0, $count2));
-				$joueur->prend_objet('o'.$liste[$random][0]);
+				$id_objet = 0;
+				while(empty($id_objet))
+				{
+					$random = floor(rand(0, $count2));
+					$id_objet = $liste[$random][0];					
+				}
+				$joueur->prend_objet('o'.$id_objet);
 			break;
 		}
 		$r++;

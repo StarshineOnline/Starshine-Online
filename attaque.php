@@ -1229,7 +1229,7 @@ else
 									$gagnant = new perso($attaquant->get_id());
 								}
 								//Insertion du loot dans le journal du gagnant
-								$requete = "INSERT INTO journal VALUES(NULL, ".$gagnant->get_id().", 'loot', '', '', NOW(), '".mysql_escape_string($objet_nom)."', '', ".$attaquant->get_x().", ".$attaquant->get_y().")";
+								$requete = "INSERT INTO journal VALUES(NULL, ".$gagnant->get_id().", 'loot', '', NULL, NOW(), '".mysql_escape_string($objet_nom)."', '', ".$attaquant->get_x().", ".$attaquant->get_y().")";
 								$db->query($requete);
 								if($objet[0] != 'r')
 								{

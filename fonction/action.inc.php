@@ -888,7 +888,7 @@ function lance_sort($id, $acteur, &$effects)
 				break;
 				case 'recuperation' :
 					$actif->etat['recuperation']['effet'] = $row['effet'];
-					$actif->etat['recuperation']['duree'] = 10;
+					$actif->etat['recuperation']['duree'] = 11;
 					$actif->etat['recuperation']['hp_max'] = $actif->get_hp();
 					$actif->etat['recuperation']['hp_recup'] = 0;
 					echo '&nbsp;&nbsp;<strong>'.$actif->get_nom().'</strong> se lance le sort '.$row['nom'].'<br />';
@@ -1104,20 +1104,26 @@ function lance_comp($id, $acteur, &$effects)
 				$row['nom'].'<br />';
 			$row['comp_assoc'] = $actif->get_comp_combat();
 			$comp_attaque = true;
-      $effects[] = new fleche_magnetique($row['effet2'], $row['effet']);
+      		//$effects[] = new fleche_magnetique($row['effet2'], $row['effet']);
+      		$actif->etat['fleche_magnetique_attaque']['effet'] = $row['effet'];
+      		$actif->etat['fleche_magnetique_attaque']['effet2'] = $row['effet2'];
 		break;
 		case 'fleche_sable' :
 			echo '&nbsp;&nbsp;<strong>'.$actif->get_nom().'</strong> utilise '.$row['nom'].' !<br />';
-      $effects[] =
-        new fleche_sable($row['effet'], $row['effet2'], $row['duree']);
+      		//$effects[] = new fleche_sable($row['effet'], $row['effet2'], $row['duree']);
+      		$actif->etat['fleche_sable_attaque']['effet'] = $row['effet'];
+      		$actif->etat['fleche_sable_attaque']['effet2'] = $row['effet2'];
+      		$actif->etat['fleche_sable_attaque']['duree'] = $row['duree'];
 			//On prends en compte la bonne compétence
 			$row['comp_assoc'] = $actif->get_comp_combat();
 			$comp_attaque = true;
 		break;
 		case 'fleche_poison' :
 			echo '&nbsp;&nbsp;<strong>'.$actif->get_nom().'</strong> utilise '.$row['nom'].' !<br />';
-      $effects[] =
-        new fleche_poison($row['effet'], $row['effet2'], $row['duree']);
+      		//$effects[] = new fleche_poison($row['effet'], $row['effet2'], $row['duree']);
+      		$actif->etat['fleche_poison_attaque']['effet'] = $row['effet'];
+      		$actif->etat['fleche_poison_attaque']['effet2'] = $row['effet2'];
+      		$actif->etat['fleche_poison_attaque']['duree'] = $row['duree'];
 			//On prends en compte la bonne compétence
 			$row['comp_assoc'] = $actif->get_comp_combat();
 			$comp_attaque = true;
@@ -1140,8 +1146,8 @@ function lance_comp($id, $acteur, &$effects)
 		break;
 		case 'fleche_debilitante' :
 			echo '&nbsp;&nbsp;<strong>'.$actif->get_nom().'</strong> utilise '.$row['nom'].' !<br />';
-			$passif->etat['fleche_debilitante']['effet'] = $row['effet'];
-			$passif->etat['fleche_debilitante']['duree'] = 3;
+			$actif->etat['fleche_debilitante_attaque']['effet'] = $row['effet'];
+			$actif->etat['fleche_debilitante_attaque']['duree'] = 3;
 			//On prends en compte la bonne compétence
 			$row['comp_assoc'] = $actif->get_comp_combat();
 			$comp_attaque = true;
