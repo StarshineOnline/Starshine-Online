@@ -61,7 +61,7 @@ function journal(&$xml, $joueurs_id)
 		$q .= 'and time >= (select min(time) from journal where id_perso in ('.
 			implode(",", $joueurs_id).") and action = 'teleport') ";
 		$q .= "and action in ('attaque', 'soin', 'gsoin', 'buff', 'debuff', ".
-			"'teleport', 'recup', 'tue', 'f_quete', 'loot') ";
+			"'teleport', 'recup', 'tue', 'f_quete', 'loot', 'rgbuff') ";
 		$q .= 'order by time desc';
 		$req = $db->query($q);
 		while ($row = $db->read_assoc($req)) {
