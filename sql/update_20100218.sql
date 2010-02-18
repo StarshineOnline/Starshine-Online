@@ -1,0 +1,1 @@
+ALTER TABLE `construction_ville` ADD `date` INT( 10 ) NOT NULL DEFAULT '0';
