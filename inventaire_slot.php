@@ -19,6 +19,7 @@ $i = 0;
 echo "<ul>";
 if($joueur->get_inventaire_slot() != '')
 {
+	$joueur->restack_objet();
 	foreach($joueur->get_inventaire_slot_partie() as $invent)
 	{
 		if($invent !== 0 AND $invent != '')

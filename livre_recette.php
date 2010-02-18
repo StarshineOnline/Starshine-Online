@@ -8,6 +8,7 @@ if (file_exists('root.php'))
 include ('livre.php');
 $case = new map_case(convert_in_pos($joueur->get_x(), $joueur->get_y()));
 $R = new royaume($case->get_royaume());
+$joueur->restack_objet();
 ?>
 <hr>
 <?php

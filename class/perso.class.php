@@ -3294,6 +3294,30 @@ class perso extends entite
 		else return false;
 	}
 
+	function restack_objet()
+	{
+		global $G_place_inventaire;
+		$partie = $this->get_inventaire_slot_partie();
+		$i = 0;
+		$compte_stack = array();
+		$poursuite = true;
+		foreach($partie as $part)
+		{
+			$objet = decompose_objet($part);
+			if(array_key_exists($objet['sans_stack'], $compte_stack))
+				$compte_stack[$objet['sans_stack']] += $objet['stack'];
+			else
+				$compte_stack[$objet['sans_stack']] = $objet['stack'];
+			$this->supprime_objet($objet['sans_stack'], $objet['stack']);
+		}
+
+		foreach($compte_stack as $objet => $valeur)
+		{
+			for($i = 0; $i < $valeur; $i++)
+				$this->prend_objet($objet);
+		}
+	}
+
 	function supprime_objet($id_objet, $nombre)
 	{
 		global $db;
