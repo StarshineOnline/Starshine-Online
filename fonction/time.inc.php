@@ -165,9 +165,12 @@ function date_prochain_mandat()
  * 
  * @return Heure du jeu au format "HH" (sur 24h).  
 */
-function heure_sso()
+function heure_sso($time = 0)
 {
-	$heure = intval(date("H", (time() / 18 * 24)));
+	if ($time == 0) {
+		$time = time();
+	}
+	$heure = intval(date("H", ($time / 18 * 24)));
 	return $heure;
 }
 
@@ -176,9 +179,12 @@ function heure_sso()
  * 
  * @return Heure du jeu au format "HH:MM:SS" (heure sur 24h).  
 */
-function date_sso()
+function date_sso($time = 0)
 {
-	$date = date("H:i:s", (time() / 18 * 24));
+	if ($time == 0) {
+		$time = time();
+	}
+	$date = date("H:i:s", ($time / 18 * 24));
 	return $date;
 }
 
@@ -203,27 +209,54 @@ function moment_jour($id_joueur = 0)
     	$req = $db->query($requete);
   		if( $row = $db->read_assoc($req) )
   		{
-			$x = $row["x"];
+				$x = $row["x"];
 		  	$y = $row["y"];
   		}
 	}
-	if ($x >= 300)
+	$temps = time();
+	if ($x >= 200)
 	{
-		$requete = "select heure from arenes where xmin <= $x and $x <= xmax and ymin <= $y and $y <= ymax";
-		$req = $db->query($requete);
-		if ($db->num_rows > 0)
-		{
-			$heure_donj = $db->read_assoc($req);
-			$moment = $heure_donj['heure'];
-			if ($moment != null) return $moment;
+		$q = "select * from arenes where x <= $x and $x < x + size ".
+			"and y <= $y and $y < y + size $filter";
+		$req = $db->query($q);
+		if ($row = $db->read_object($req)) {
+			$temps += $row->decal;
 		}
 	}
-	$heure = heure_sso();
+	$heure = heure_sso($temps);
 	if($heure > 5 AND $heure < 10) $moment = 'Matin';
 	elseif($heure > 9 AND $heure < 16) $moment = 'Journee';
 	elseif($heure > 15 AND $heure < 20) $moment = 'Soir';
 	else $moment = 'Nuit';
 	return $moment;
+}
+
+/**
+ * Calcule un decalage temporel
+ * @param $moment_voulu le moment de la journée à atteindre
+ * @param $heure l'heure auquel le moment doit être atteint (0 = NOW)
+ * @param $percent_moment l'avancement du moment voulu (0 <= P < 100)
+ * @return le decalage a appliquer
+ */
+function calcul_decal($moment_voulu, $heure = 0, $percent_moment = 0)
+{
+	switch ($moment_voulu) {
+	case 'Matin':
+		$temps_vise = 5 * 3600 + round(($percent_moment / 100) * 5 * 3600);
+		break;
+	case 'Journee':
+		$temps_vise = 9 * 3600 + round(($percent_moment / 100) * 7 * 3600);
+		break;
+	case 'Soir':
+		$temps_vise = 15 * 3600 + round(($percent_moment / 100) * 5 * 3600);
+		break;
+	case 'Nuit':
+		$temps_vise = 20 * 3600 + round(($percent_moment / 100) * 7 * 3600);
+		break;
+	}
+	$heure_visee = $temps_vise / 24 * 18;
+
+	if ($heure == 0) $heure = time();
 }
 
 ?>

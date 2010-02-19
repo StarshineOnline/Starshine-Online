@@ -1,0 +1,1 @@
+ALTER TABLE `arenes` ADD `decal` INT NOT NULL DEFAULT '0';
