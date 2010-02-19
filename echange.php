@@ -8,6 +8,7 @@ include_once(root.'inc/fp.php');
 <legend>Effectuer un échange</legend>
 <?php
 $joueur = new perso($_SESSION['ID']);
+$joueur->restack_objet();
 //Si un identifiant d'echange est passé alors on récupère les infos sur cet échange
 if(array_key_exists('id_echange', $_GET))
 {
@@ -42,7 +43,7 @@ else
 if(array_key_exists('nouvel_echange', $_GET))
 {
 	//On créé l'échange
-	$requete = "INSERT INTO echange(id_j1, id_j2, statut, date_debut, date_fin) VALUES(".$joueur->get_id().", ".$receveur->get_id().", 'creation', ".time().", ".(time() + 100000).")";
+	$requete = "INSERT INTO echange(id_j1, id_j2, statut, date_debut, date_fin, message_j1, message_j2) VALUES(".$joueur->get_id().", ".$receveur->get_id().", 'creation', ".time().", ".(time() + 100000).", '', '')";
 	$db->query($requete);
 	$echange = recup_echange($db->last_insert_id());
 }
@@ -108,7 +109,7 @@ if(array_key_exists('valid_etape', $_GET))
 				$titre = $joueur->get_nom().' vous propose un échange';
 				$message = mysql_escape_string($joueur->get_nom().' vous propose un échange[br]
 				Pour voir ce qu\'il vous propose cliquez ici : [echange:'.$_GET['id_echange'].']');
-				$requete = "INSERT INTO message VALUES('', ".$receveur->get_id().", ".$joueur->get_id().", '".$joueur->get_nom()."', '".$receveur->get_nom()."', '".$titre."', '".$message."', '', '".time()."', 0)";
+				$requete = "INSERT INTO message VALUES(NULL, ".$receveur->get_id().", ".$joueur->get_id().", '".$joueur->get_nom()."', '".$receveur->get_nom()."', '".$titre."', '".$message."', '', '".time()."', 0)";
 				$req = $db->query($requete);
 				//C'est ok
 				echo '<h6>Votre proposition a bien été envoyée</h6>';

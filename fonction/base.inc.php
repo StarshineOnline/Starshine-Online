@@ -1224,7 +1224,7 @@ function check_affiche_bonus($bonus, $joueur, $perso)
 function ajout_bonus($id_bonus, $id_perso)
 {
 	global $db;
-	$requete = "INSERT INTO bonus_perso(id_perso, id_bonus) VALUES(".$id_perso.", ".$id_bonus.")";
+	$requete = "INSERT INTO bonus_perso(id_perso, id_bonus, valeur) VALUES(".$id_perso.", ".$id_bonus.", '')";
 	if($db->query($requete)) return true;
 	else return false;
 }
