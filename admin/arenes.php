@@ -104,9 +104,23 @@ if (isset($_REQUEST['decal']))
 
 if (isset($_REQUEST['calc']))
 {
+  ob_end_clean();
   $t = 0;
   $p = 0;
-  ob_end_clean();
+  if (isset($_REQUEST['perc'])
+      && $_REQUEST['perc'] >= 0 && $_REQUEST['perc'] < 100)
+    $p = $_REQUEST['perc'];
+  if (isset($_REQUEST['heure'])) {
+    if (is_numeric($_REQUEST['heure']))
+      $t = $_REQUEST['heure'];
+    else {
+      $t = strtotime($_REQUEST['heure']);
+      if ($t === false) {
+        echo "Mauvaise heure";
+        $t = 0;
+      } else echo "Heure parsée : ".date('r', $t)."<br/>\n";
+    }
+  }
   echo "Décalage: ".calcul_decal($_REQUEST['moment'], $t, $p);
   exit (0);
 }

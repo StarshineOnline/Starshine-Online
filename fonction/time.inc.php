@@ -254,14 +254,27 @@ function calcul_decal($moment_voulu, $heure = 0, $percent_moment = 0)
 		$temps_vise = 20 * 3600 + round(($percent_moment / 100) * 7 * 3600);
 		break;
 	}
+  $date_visee = date("H:i:s", $temps_vise);
+
+  //echo "date_visee: $date_visee ($heure_visee) <br />";
 
 	if ($heure == 0) $heure = time();
-  $temps_ref = round(($heure % 86400) / 18 * 24);
 
+  // Comme je ne sais pas calculer ca, je vais chercher par dichotomie
+  // Date trouvée en ~16 iterations
+  $tdsso = date_sso($heure + $decal);
+  $step = 57600; // demi-jour SSO
+  while ($tdsso != $date_visee) {
+    if (($tdsso > $date_visee && $step > 0) ||
+        ($tdsso < $date_visee && $step < 0)) {
+      $step *= -1;
+    }
+    $step = round($step / 2);
+    $decal += $step;
+    //echo "step is $step, decal is $decal \n";
+    $tdsso = date_sso($heure + $decal);
+  }
   
-  $decal = $temps_vise - $temps_ref;
-  if ($decal < 0) 
-    $decal += 86400;
   return $decal;
 
 }
