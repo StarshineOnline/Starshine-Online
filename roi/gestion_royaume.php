@@ -284,8 +284,20 @@
   	        if($row['statut'] == 'actif')
   	        {
   	        
-  	       echo "<li class='$construc_class'><span class='nom'>".$row['nom']; ?></span><span class="small" style='float:left;width:100px;'> entretien : <?php echo $row['entretien']; ?></span><span style='float:left;width:200px;'> <a href="gestion_royaume.php?direction=modification&amp;action=list&amp;batiment=<?php echo $row['type']; ?>" onclick="return envoiInfo(this.href, 'contenu_jeu')">Modifier</a> <span>HP : <?php echo $row['cur_hp']; ?></span></li>
-  	        <?php
+  	       echo "<li class='$construc_class'><span class='nom'>".$row['nom']; ?></span><span class="small" style='float:left;width:100px;'> entretien : <?php echo $row['entretien']; ?></span><span style='float:left;width:200px;'> <a href="gestion_royaume.php?direction=modification&amp;action=list&amp;batiment=<?php echo $row['type']; ?>" onclick="return envoiInfo(this.href, 'contenu_jeu')">Modifier</a> </span> <span>HP : <?php echo $row['cur_hp'];?></span>
+  	      <?php
+  	       if( $row['cur_hp'] < $row['max_hp'] )
+  	       {
+             $temps = time() - $row['date'];
+  	         if( $temps >= $G_tps_reparation )
+  	         {
+  	           $cout = $row['cout'] * ($row['max_hp'] - $row['cur_hp']) / $row['max_hp'];
+  	           echo '<span style="float:right;width:200px;"><a href="gestion_royaume.php?direction=reparation&batiment='.$row['id_const'].'"  onclick="return envoiInfo(this.href, \'contenu_jeu\')">Réparer ('.$cout.' stars)</a></span>';
+             }
+  	         else
+  	           echo '<span class="small" style="float:right;width:300px;">(Vous devez attendre '.transform_min_temp($G_tps_reparation-$temps).' pour réparer)';
+           }
+           echo '</li>';
   	    	}
   	    	else
   	    	{
@@ -327,7 +339,7 @@
   	{
   	    $type = $_GET['batiment'];
   	    $action = $_GET['action'];
-  	    $requete = "SELECT *, construction_ville.id AS id_batiment_ville FROM construction_ville LEFT JOIN batiment_ville ON construction_ville.id_batiment = batiment_ville.id WHERE id_royaume = ".$royaume->get_id()." AND batiment_ville.type = '".$type."'";
+  	    $requete = "SELECT *, construction_ville.id AS id_batiment_ville, construction_ville.hp AS cur_hp, batiment_ville.hp AS max_hp FROM construction_ville LEFT JOIN batiment_ville ON construction_ville.id_batiment = batiment_ville.id WHERE id_royaume = ".$royaume->get_id()." AND batiment_ville.type = '".$type."'";
   	    $req = $db->query($requete);
   	    $row = $db->read_assoc($req);
   	    $id_batiment_ville = $row['id_batiment_ville'];
@@ -352,7 +364,9 @@
     	                <?php
     	                $temps = time() - $row['date'];
     	                $temps_requis = ($row2['level'] - $row['level']) * $G_tps_amelioration;
-    	                if( $temps >= $temps_requis )
+    	                if( $row['cur_hp'] < $row['max_hp'] )
+                        echo '<span class="small">(Vous devez réparer le bâtiment avant de l\'améliorer)</span>';
+    	                elseif( $temps >= $temps_requis )
     	                  echo '<a href="gestion_royaume.php?direction=modification&amp;action=ameliore&amp;batiment='.$row2['type'].'&amp;id_batiment='.$row2['id'].'" onclick="return envoiInfo(this.href, \'contenu_jeu\')">Améliorer</a>';
                       else
                         echo '<span class="small">(Vous devez attendre '.transform_min_temp($temps_requis-$temps).')</span>';
@@ -399,10 +413,7 @@
   	                //On paye
   	                $royaume->set_star($royaume->get_star() - $row['cout']);
   	                $royaume->sauver();
-  	                //On ajoute le batiment et on supprime l'ancien
-  	                /*$requete = "DELETE FROM construction_ville WHERE id = ".$id_batiment_ville;
-  	                $db->query($requete);
-  	                $requete = "INSERT INTO construction_ville VALUES ('', ".$royaume->get_id().", ".$id_batiment.", 'actif', '', ".$row['hp'].")";*/
+  	                //On remplace le batiment
   	                $requete = 'UPDATE construction_ville SET id_batiment = '.$id_batiment.', hp = '.$row['hp'].', date = '.time().' WHERE id = '.$id_batiment_ville;
   	                if($db->query($requete))
   	                {
@@ -414,9 +425,58 @@
   	                echo 'Le royaume ne possède pas assez de stars';
   	            }
   	        break;
+  	        case 'reduit':
+  	            // On récupère le nouveau bâtiment
+  	            $id_batiment = $_GET['id_batiment'];
+  	            $requete = "SELECT cout, nom, hp FROM batiment_ville WHERE id = ".$id_batiment;
+  	            $req = $db->query($requete);
+  	            $row = $db->read_assoc($req);
+  	            // On récupère les HP de l'ancien bâtiment
+  	            $requete = "SELECT hp FROM construction_ville WHERE id = ".$id_batiment_ville;
+  	            $req = $db->query($requete);
+  	            $row2 = $db->read_assoc($req);
+  	            // Calcul des HP
+  	            $hp = min($row['hp'], $row2['hp']);
+                //On remplace le batiment
+                $requete = 'UPDATE construction_ville SET id_batiment = '.$id_batiment.', hp = '.$hp.', date = '.time().' WHERE id = '.$id_batiment_ville;
+                if($db->query($requete))
+                {
+                    echo 'Retour à '.$row['nom'].' effectué.';
+                }  	            
+  	         break;
   	    }
   	}
   	break;
+  	
+  case 'reparation':
+  	if( $economie )
+  	{
+  	    // Récupération de informations sur le bâtiment
+  	    $id_batiment = $_GET['batiment'];
+  	    $requete = "SELECT batiment_ville.cout AS cout, construction_ville.hp AS cur_hp, batiment_ville.hp AS max_hp FROM construction_ville LEFT JOIN batiment_ville ON construction_ville.id_batiment = batiment_ville.id WHERE construction_ville.id = ".$id_batiment;
+  	    $req = $db->query($requete);
+  	    $row = $db->read_assoc($req);
+        // Calcul du cout
+        $cout = $row['cout'] * ($row['max_hp'] - $row['cur_hp']) / $row['max_hp'];
+        // On vérifie qu'il a assez de stars
+        if($royaume->get_star() >= $cout)
+        {
+            // On répare
+  	        $requete = 'UPDATE construction_ville SET hp = '.$row['max_hp'].', date = '.time().' WHERE id = '.$id_batiment;
+  	        if( $db->query($requete) )
+  	        {
+              //On paye
+              $royaume->set_star($royaume->get_star() - $cout);
+              $royaume->sauver();
+              echo 'Réparation effectuée.';
+            }
+        }
+        else
+        {
+            echo 'Le royaume ne possède pas assez de stars';
+        }
+  	}
+    break;
   	
   case 'carte':
   	if( $militaire )

@@ -138,10 +138,18 @@ else if(!array_key_exists('direction', $_GET))
 			$longueur = round(100 * ($construction->get_hp() / $batiment->get_hp()), 2);
 			echo "<img style='display:block;width:100px;float:left;height:6px;padding-top:5px;' src='genere_barre_hp.php?longueur=".$longueur."' alt='".$construction->get_hp()." / ".$batiment->get_hp()."' title='".$construction->get_hp()." / ".$batiment->get_hp()."'>";
 			
-			echo "<span style='display:block;width:30px;float:left;cursor:pointer;padding-left:4px;'>
-					<a onclick=\"if(confirm('Voulez vous supprimer ce ".$construction->get_nom()." ?')) {return envoiInfo('construction.php?direction=suppr_construction&amp;id=".$construction->get_id()."', 'message_confirm');} else {return false;};\"><img src='../image/interface/croix_quitte.png'</a>
-				</span>
-			</li>";
+			if( $construction->get_hp() >= $batiment->get_hp() * $G_prct_vie_suppression )
+			{
+  			echo "<span style='display:block;width:30px;float:left;cursor:pointer;padding-left:4px;'>
+  					<a onclick=\"if(confirm('Voulez vous supprimer ce ".$construction->get_nom()." ?')) {return envoiInfo('construction.php?direction=suppr_construction&amp;id=".$construction->get_id()."', 'message_confirm');} else {return false;};\"><img src='../image/interface/croix_quitte.png' alt='suppression' title='Supprimer.'/></a>
+  				</span>";
+      }
+      else
+			{
+  			echo "<span style='display:block;width:30px;float:left;cursor:pointer;padding-left:4px;'>
+  					<img src='../image/interface/croix_quitte_gris.png'/ alt='suppression impossibe' title='Vous ne pouvez pas supprimer un bâtiment qui a moins de ".floor($G_prct_vie_suppression*100)."% de ses HP.'></span>";
+      }
+			echo "</li>";
 			if ($boutique_class == 't1'){$boutique_class = 't2';}else{$boutique_class = 't1';}									
 		}
 		echo "</ul>";
