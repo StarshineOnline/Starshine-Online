@@ -62,7 +62,7 @@ else
 	}
 	elseif($admin)
 	{
-		print_head("css:../css/texture.css~../css/texture_low.css~../css/interfacev2.css~../css/admin.css~../css/prototip.css;script:../javascript/fonction.js~../javascript/overlib/overlib.js~../javascript/scriptaculous/prototype.js~../javascript/scriptaculous/scriptaculous.js~../javascript/scriptaculous/prototip.js;title:StarShine, le jeu qu'il tient ses plannings !");
+		print_head("css:../css/texture.css~../css/texture_low.css~../css/interfacev2.css~../css/admin.css~../css/prototip.css;script:../javascript/fonction.js~../javascript/overlib/overlib.js~../javascript/scriptaculous/prototype.js~../javascript/scriptaculous/scriptaculous.js~../javascript/scriptaculous/prototip.js~../javascript/jquery/jquery-1.4.2.min.js;title:StarShine, le jeu qu'il tient ses plannings !");
 	}
 }
 $fin = getmicrotime();

@@ -1,7 +1,7 @@
 <?php
 if (file_exists('../root.php'))
   include_once('../root.php');
-?><?php
+
 /**
 * @file time.inc.php
 * Fonction relatives au temps / dates / durées
@@ -254,9 +254,16 @@ function calcul_decal($moment_voulu, $heure = 0, $percent_moment = 0)
 		$temps_vise = 20 * 3600 + round(($percent_moment / 100) * 7 * 3600);
 		break;
 	}
-	$heure_visee = $temps_vise / 24 * 18;
 
 	if ($heure == 0) $heure = time();
+  $temps_ref = round(($heure % 86400) / 18 * 24);
+
+  
+  $decal = $temps_vise - $temps_ref;
+  if ($decal < 0) 
+    $decal += 86400;
+  return $decal;
+
 }
 
 ?>

@@ -5,6 +5,8 @@ if (file_exists('../root.php'))
 $textures = false;
 $admin = true;
 
+ob_start();
+
 include_once(root.'admin/admin_haut.php');
 setlocale(LC_ALL, 'fr_FR');
 include_once(root.'haut_site.php');
@@ -31,7 +33,6 @@ if ($admin_nom == '') {
 }
 
 require_once(root.'arenes/gen_arenes.php');
-gen_all();
 
 if (isset($_REQUEST['teleport_in'])) {
   $arene = $_REQUEST['teleport_in'];
@@ -87,11 +88,40 @@ if (isset($_REQUEST['remove']))
   $req = $db->query($requete_journal);
 }
 
+if (isset($_REQUEST['decal']))
+{
+  $t = $_REQUEST['t'];
+  $requete_arenes_action = "update arenes set decal = $t where nom = '".
+		sSQL($_REQUEST['decal'])."'";
+	$req = $db->query($requete_arenes_action);
+  ob_end_clean();
+  $ar = mysql_affected_rows();
+  echo "Recorded lines: $ar \n<br />";
+  echo "Heure courante: ".date_sso(time() + $t);
+  if ($ar < 1) echo $requete_arenes_action;
+  exit (0);
+}
+
+if (isset($_REQUEST['calc']))
+{
+  $t = 0;
+  $p = 0;
+  ob_end_clean();
+  echo "Décalage: ".calcul_decal($_REQUEST['moment'], $t, $p);
+  exit (0);
+}
+
 if (isset($_REQUEST['close']))
 {
   $requete_arenes_action = "update arenes set open = 0 where nom = '".
 		sSQL($_REQUEST['close'])."'";
 	$req = $db->query($requete_arenes_action);
+  $requete_arenes_info = "select file from arenes where nom = '".
+		sSQL($_REQUEST['close'])."'";
+	$req = $db->query($requete_arenes_info);
+  $R_arene = $db->read_assoc($req);
+  unlink(root.'/arenes/'.$R_arene['file']);
+  unlink(root.'/arenes/admin/'.$R_arene['file']);
 }
 
 if (isset($_REQUEST['open']))
@@ -99,6 +129,7 @@ if (isset($_REQUEST['open']))
   $requete_arenes_action = "update arenes set open = 1 where nom = '".
 		sSQL($_REQUEST['open'])."'";
 	$req = $db->query($requete_arenes_action);
+  gen_all();
 }
 
 ?>
@@ -156,10 +187,48 @@ if ($db->num_rows > 0)
 ?>
 </table>
 <h3>Arènes :</h3>
-<table><tr><th>nom</th><th>ouverture</th><th>action</th></tr>
+<script type="text/javascript">
+function chDecal(num, nom) {
+  var dec = $('#d' + num).val();
+  
+  //alert(nom + ': ' + dec);
+
+  $.ajax({
+    type: "POST",
+    url: "arenes.php",
+    data: 'decal=' + nom + '&t=' + dec, 
+    success:function(res){
+      $('#ajax_res').html(res);
+    }
+  });
+  // data: ['decal' : nom, 't': dec],
+
+}
+
+function calcDecal() {
+  var moment = $('#moment_vise').val();
+  var heure = $('#heure_ref').val();
+  var perc = $('#perc').val();
+  
+  //alert(nom + ': ' + dec);
+
+  $.ajax({
+    type: "POST",
+    url: "arenes.php",
+    data: 'calc=1&moment=' + moment + '&heure=' + heure + '&perc=' + perc, 
+    success:function(res){
+      $('#ajax_res').html(res);
+    }
+  });
+  // data: ['decal' : nom, 't': dec],
+
+}
+</script>
+<table><tr><th>nom</th><th>ouverture</th><th>décalage</th><th>action</th></tr>
 <?php
 $requete_arene = "select * from arenes";
 $req = $db->query($requete_arene);
+$a = 0;
 if ($db->num_rows > 0) {
   while ($R_arene = $db->read_assoc($req)) {
 		if ($R_arene['open'] == 1) {
@@ -170,14 +239,19 @@ if ($db->num_rows > 0) {
 			$open = 'non';
 			$act = '<a href="?open='.$R_arene['nom'].'">ouvrir</a>';
 		}
+    $decal = '<input type="text" value="'.$R_arene['decal'].'" id="d'.$a
+      .'" style="font-size: 0.8em; width: 60px;" />'
+      .'<a href="javascript:chDecal('.$a.',\''.$R_arene['nom']
+      .'\');">Décaler</a>';
+    $a++;
 		if ($_SESSION['admin_nom'] == 'admin' OR
 				$_SESSION['admin_db_auth'] == 'admin') {
 			$act .= ' <small><a href="?dump='.$R_arene['nom'].'">dumper</a></small>';
 		}
-    echo "<tr><td>$R_arene[nom]</td><td>$open</td><td>$act</td></tr>\n";
+    echo "<tr><td>$R_arene[nom]</td><td>$open</td><td>$decal</td><td>$act</td></tr>\n";
   }
 }
-echo "</table>\n";
+echo "</table><div id=\"ajax_res\"></div>\n";
 
 if (isset($_REQUEST['dump'])) {
 	
@@ -202,5 +276,18 @@ if (isset($_REQUEST['dump'])) {
 
 
 ?>
+<h3>Calcul de décalage</h3>
+<label for="moment_vise">Moment visé : 
+<select id="moment_vise" style="font-size: 0.8em; width: 60px;">
+<option>Matin</option>
+<option>Journee</option>
+<option>Soir</option>
+<option>Nuit</option>
+</select></label>
+<label for="heure_ref">Heure de référence : 
+<input id="heure_ref" type="text" value="0" style="font-size: 0.8em; width: 60px;" /></label>
+<label for="perc">Pourcent écoulé : 
+<input id="perc" type="text" value="0" style="font-size: 0.8em; width: 60px;" /></label>
+<a href="javascript:calcDecal()">Calculer</a>
 </td></tr></table>
 </body></html>
