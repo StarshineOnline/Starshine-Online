@@ -60,9 +60,13 @@ else
 	{
 		print_head("css:./css/texture3D.css~./css/interface3D.css~./css/prototip.css~./css/site.css;script:./javascript/fonction.js~./javascript/overlib/overlib.js~./javascript/scriptaculous/prototype.js~./javascript/scriptaculous/scriptaculous.js~./javascript/scriptaculous/prototip.js;title:StarShine, le jeu qu'il tient ses plannings !");
 	}
+	elseif($old_admin)
+  { // Le mappeur marche pas avec jquery 1.4
+		print_head("css:../css/texture.css~../css/texture_low.css~../css/interfacev2.css~../css/admin.css~../css/prototip.css;script:../javascript/fonction.js~../javascript/overlib/overlib.js~../javascript/scriptaculous/prototype.js~../javascript/scriptaculous/scriptaculous.js~../javascript/scriptaculous/prototip.js;title:StarShine Admin");
+	}
 	elseif($admin)
 	{
-		print_head("css:../css/texture.css~../css/texture_low.css~../css/interfacev2.css~../css/admin.css~../css/prototip.css;script:../javascript/fonction.js~../javascript/overlib/overlib.js~../javascript/scriptaculous/prototype.js~../javascript/scriptaculous/scriptaculous.js~../javascript/scriptaculous/prototip.js~../javascript/jquery/jquery-1.4.2.min.js;title:StarShine, le jeu qu'il tient ses plannings !");
+		print_head("css:../css/texture.css~../css/texture_low.css~../css/interfacev2.css~../css/admin.css~../css/prototip.css;script:../javascript/jquery/jquery-1.4.2.min.js~../javascript/jquery/jquery-ui-1.7.2.custom.min.js;title:StarShine Admin");
 	}
 }
 $fin = getmicrotime();

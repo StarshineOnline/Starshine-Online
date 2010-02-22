@@ -2,9 +2,9 @@
 if (file_exists('../root.php'))
   include_once('../root.php');
 $admin = true;
+$old_admin = true;
 
-
-include_once(root.'haut.php');
+include_once(root.'admin/admin_haut.php');
 include_once(root.'connect.php');
 
 if (isset($_GET['direction'])) $direction = $_GET['direction'];
@@ -46,6 +46,8 @@ function changeTexture(title)
 {
 	a = eval('$("' + title + '")');
 	b = eval('$("selectText")');
+	//a = $(title);
+	//b = $("#selectText");
 	texture = b.options[b.selectedIndex].value;
 	nomclass = 'decor tex' + texture;
 	a.className = nomclass;
