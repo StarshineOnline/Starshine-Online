@@ -519,7 +519,6 @@ class magnetique extends effect {
 		//chance de débuffer
 		$rand = rand(0, 100);
 		//Le débuff marche
-		echo 'magnetique';
 		$this->message($this->chance.'/ 100 => '.$rand);
 		if($rand <= $this->chance)
 		{
@@ -606,7 +605,7 @@ class fleche_sable extends comp_combat {
     $this->effet2 = $aEffet2;
 	}
 
-	function calcul_degats(&$actif, &$passif, $degats) {
+	function inflige_degats(&$actif, &$passif, $degats) {
     $passif->etat['fleche_sable']['effet'] = $this->effet2;
     $passif->etat['fleche_sable']['duree'] = $this->duree;
     $this->notice($passif->get_nom().' est ensablé pour '.$this->duree.' rounds');

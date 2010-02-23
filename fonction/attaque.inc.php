@@ -399,7 +399,7 @@ function attaque($acteur = 'attaquant', $competence, &$effects)
 		{
 			$passif->etat['fleche_debilitante']['effet'] = $actif->etat['fleche_debilitante_attaque']['effet'];
 			$passif->etat['fleche_debilitante']['duree'] = $actif->etat['fleche_debilitante_attaque']['duree'];
-			unset($actif->etat['fleche_poison_attaque']);						
+			unset($actif->etat['fleche_debilitante_attaque']);						
 		}		
 		if($actif->is_buff('buff_rage_vampirique', true))
 		{
@@ -437,7 +437,7 @@ function attaque($acteur = 'attaquant', $competence, &$effects)
 
 		/* Application des effets de dégats infligés */
 		foreach ($effects as $effect)
-			$effect->inflige_degats($actif, $passif, $degat);
+			$degat = $effect->inflige_degats($actif, $passif, $degat);
 			/* ~Dégats infligés */
 
       	$passif->set_hp($passif->get_hp() - $degat);
