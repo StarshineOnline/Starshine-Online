@@ -686,7 +686,7 @@ class map
 		if($groupe)
 		{
 			$group = ' GROUP BY x, y, lib';
-			$champs = ', COUNT(*) as tot';
+			$champs = ', COUNT(id) as tot';
 		}
 		else
 		{

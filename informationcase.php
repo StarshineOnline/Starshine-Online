@@ -55,7 +55,7 @@ if($W_distance < 4)
 	
 	<?php
 	//Recherche des joueurs sur la case
-	$W_requete = 'SELECT perso.id, perso.nom, race, classe, hp, rang_royaume, grade.nom as gnom FROM perso LEFT JOIN grade ON perso.rang_royaume = grade.id WHERE (x = '.$case->get_x().') AND (y = '.$case->get_y().') AND statut = \'actif\'';
+	$W_requete = 'SELECT perso.id, grade.nom as gnom FROM perso LEFT JOIN grade ON perso.rang_royaume = grade.id WHERE (x = '.$case->get_x().') AND (y = '.$case->get_y().') AND statut = \'actif\'';
 	$W_query = $db->query($W_requete);
 	
 	//Affichage des infos des joueurs

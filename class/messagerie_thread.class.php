@@ -117,8 +117,18 @@ class messagerie_thread
 				if($index_message < 0) $index_message = 0;
 				$limit = ' LIMIT '.$index_message.', '.$message_par_page;
 			}
-			if($etat) $requete = "SELECT messagerie_message.id_message as id_message, id_auteur, messagerie_message.id_dest as id_dest, titre, message, date, messagerie_etat.etat as metat FROM messagerie_message LEFT JOIN messagerie_etat ON messagerie_message.id_message = messagerie_etat.id_message WHERE id_thread = ".$this->id_thread." AND messagerie_etat.id_dest = ".$etat." ORDER BY date ".$tri_date.$limit;
-			else $requete = "SELECT id_message, id_auteur, id_dest, titre, message, date FROM messagerie_message WHERE id_thread = ".$this->id_thread." ORDER BY date ".$tri_date.$limit;
+			if($etat) 
+			{
+				$requete = "SELECT messagerie_message.id_message as id_message, id_auteur, messagerie_message.id_dest as id_dest, " .
+					"titre, message, date, messagerie_etat.etat as metat FROM messagerie_message " .
+					"LEFT JOIN messagerie_etat ON messagerie_message.id_message = messagerie_etat.id_message " .
+					"WHERE id_thread = ".$this->id_thread." AND messagerie_etat.id_dest = ".$etat." ORDER BY date ".$tri_date.$limit;
+			}
+			else 
+			{
+				$requete = "SELECT id_message, id_auteur, id_dest, titre, message, date FROM " .
+					"messagerie_message WHERE id_thread = ".$this->id_thread." ORDER BY date ".$tri_date.$limit;
+			}
 			$req = $db->query($requete);
 			$i = 0;
 			while($row = $db->read_assoc($req))
@@ -140,15 +150,20 @@ class messagerie_thread
 		//$requete = "SELECT id_message FROM messagerie_message WHERE id_thread = ".$this->id_thread.$and_joueur;
 		//echo $requete;
 		//Permet de trouver aussi les messages de groupe
-		$requete = "SELECT messagerie_etat.id_message FROM messagerie_message LEFT JOIN messagerie_etat ON messagerie_message.id_message = messagerie_etat.id_message WHERE id_thread = ".$this->id_thread.$and_joueur." GROUP BY messagerie_etat.id_message";
-		$db->query($requete);
+		$requete = "SELECT id_message_etat as total FROM messagerie_etat " .
+				"LEFT JOIN messagerie_message ON messagerie_message.id_message = messagerie_etat.id_message " .
+				"WHERE messagerie_message.id_thread = ".$this->id_thread.$and_joueur." GROUP BY messagerie_etat.id_message";
+		$req = $db->query($requete);
 		return $db->num_rows;
 	}
 
 	function get_numero_dernier_message($id_joueur)
 	{
 	    global $db;
-	    $requete = "SELECT messagerie_etat.id_message as id_message FROM messagerie_message LEFT JOIN messagerie_etat ON messagerie_message.id_message = messagerie_etat.id_message WHERE id_thread = ".$this->id_thread." AND messagerie_etat.id_dest = ".$id_joueur." AND messagerie_etat.etat <> 'non_lu' GROUP BY messagerie_etat.id_message";
+	    $requete = "SELECT messagerie_etat.id_message as id_message FROM messagerie_etat " .
+	    		"LEFT JOIN messagerie_message ON messagerie_message.id_message = messagerie_etat.id_message " .
+	    		"WHERE id_thread = ".$this->id_thread." AND messagerie_etat.id_dest = ".$id_joueur.
+				" AND messagerie_etat.etat NOT LIKE 'non_lu' GROUP BY messagerie_etat.id_message";
 	    $req = $db->query($requete);
 	    return ($db->num_rows + 1);
 	}

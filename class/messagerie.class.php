@@ -39,17 +39,14 @@ class messagerie
 		global $db;
 		//Initatisation
 		$return = array('total' => 0, 'groupe' => 0, 'perso' => 0);
-		$requete = "SELECT COUNT(*) as tot, groupe FROM messagerie_etat WHERE etat = 'non_lu' AND id_dest = ".$this->id_perso." GROUP BY groupe";
+		$requete = 'SELECT COUNT(id_message_etat) AS perso, SUM(groupe) AS groupe FROM messagerie_etat WHERE etat LIKE "non_lu" AND id_dest = '.$this->id_perso."";
 		$req = $db->query($requete);
+		
 		if($db->num_rows($req) > 0)
-		{
-			while($row = $db->read_assoc($req))
-			{
-				if($row['groupe'] == 0) $return['perso'] += $row['tot'];
-				else $return['groupe'] += $row['tot'];
-				$return['total'] += $row['tot'];
-			}
-		}
+			$return = $db->read_assoc($req);
+		
+		$return['perso'] -= $return['groupe']; 
+		$return['total'] = $return['groupe'] + $return['perso'];
 		return $return;		
 	}
 	
