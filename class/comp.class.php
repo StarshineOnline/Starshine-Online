@@ -505,7 +505,7 @@ class magnetique extends effect {
 		$this->hit = false;
 	}
 
-	function calcul_degats(&$actif, &$passif, $degats) {
+	function inflige_degats(&$actif, &$passif, $degats) {
 		$this->hit = true;
 		return $degats;
 	}
@@ -519,6 +519,7 @@ class magnetique extends effect {
 		//chance de débuffer
 		$rand = rand(0, 100);
 		//Le débuff marche
+		echo 'magnetique';
 		$this->message($this->chance.'/ 100 => '.$rand);
 		if($rand <= $this->chance)
 		{

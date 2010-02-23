@@ -14,7 +14,8 @@ require('class/map.class.php');
 	$level = $objXY->level;
 }
 $map = new map($x, $y);
-if(!empty($joueur->in_arene())) $map->set_arene(true);
+$arene = $joueur->in_arene();
+if(!empty($arene)) $map->set_arene(true);
 $map->get_pnj();
 $map->get_joueur($objXY->race);
 $map->get_drapeau();
