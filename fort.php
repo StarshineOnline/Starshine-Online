@@ -58,7 +58,10 @@ if($joueur->get_x() == $construction->get_x() AND $joueur->get_y() == $construct
 		</li>
 <?php
 	//Si il est roi
-	if($joueur->get_rang_royaume() == 6 AND $batiment->get_id() !=1)
+	if(($joueur->get_rang_royaume() == 6 ||
+			 $R->get_ministre_economie() == $joueur->get_id() ||
+			 $R->get_ministre_militaire() == $joueur->get_id()) AND  
+			 $batiment->get_id() != 1)
 	{
 ?>
 		<li>

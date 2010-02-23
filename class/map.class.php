@@ -808,6 +808,11 @@ class map
 		$this->onclick = $onclick;
 	}
 	
+	function set_arene($arene)
+	{
+		$this->arene = $arene;
+	}
+	
 	function change_cache_monstre()
 	{
 		$this->cache_monstre = !$this->cache_monstre;

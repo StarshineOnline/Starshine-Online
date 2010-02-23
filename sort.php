@@ -564,12 +564,17 @@ if (isset($_GET['ID']) && !$joueur->is_buff('bloque_sort'))
 					if($type_cible == 'joueur')
 					{
 						$perso = new perso($cible->get_id());
-						if($perso->get_groupe() != 0)
-							$groupe_cible = new groupe($perso->get_id());
-						
 						$cibles = array();
-						foreach($groupe_cible->get_membre_joueur() as $cbl)
-							$cibles[] = new entite('joueur', $cbl);
+						
+						if($perso->get_groupe() != 0)
+						{
+							$groupe_cible = new groupe($perso->get_groupe());
+							
+							foreach($groupe_cible->get_membre_joueur() as $cbl)
+								$cibles[] = new entite('joueur', $cbl);
+						}
+						else
+							$cibles[] = new entite('joueur', $perso);
 					}
 					else
 					{

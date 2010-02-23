@@ -19,10 +19,10 @@ if ($W_row['type'] != 1) // On est pas en ville
 {
 	$X = $joueur->get_x();
 	$Y = $joueur->get_y();
-	$bat_requete = "select c.id from construction c, batiment b where c.id_batiment = b.id and c.x = $X and c.y = $Y and b.bonus7 = 1";
+	$bat_requete = "select c.id from construction c, batiment b where c.id_batiment = b.id and c.x = $X and c.y = $Y and b.bonus5 = 1";
 	$bat_req = $db->query($bat_requete);
 	$bat_row = $db->read_assoc($bat_req);
-	if ($bat_row == false) security_block(URL_MANIPULATION, 'Accès à la taverne depuis les champs');
+	if ($bat_row == false) security_block(URL_MANIPULATION, 'Accès à la taverne depuis les champs ');
 }
 
 

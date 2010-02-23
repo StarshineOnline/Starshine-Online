@@ -255,6 +255,7 @@ function attaque($acteur = 'attaquant', $competence, &$effects)
     	if(array_key_exists('fleche_rapide', $actif->etat))
 		{
 			$atta = $actif->etat['fleche_rapide']['effet'];
+			unset($actif->etat['fleche_rapide']);
 			$defe = rand(0, 100);
 			if($defe < $atta)
 			{

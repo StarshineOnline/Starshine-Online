@@ -93,17 +93,16 @@ if( $check )
       	Qui allez vous nommer ?<br />
       	<?php
       }
-    	$requete = "SELECT * FROM candidat WHERE id_election = ".$prochain_election->get_id();
-    	$req = $db->query($requete);
+    	$candidats = candidat::create('id_election', $prochain_election->get_id());
     	?>
-    	<select name="id_candidat" id="id_candidat" onchange="envoiInfo('info_candidat.php?id_candidat=' + $('id_candidat').value, 'info_candidat');">
+    	<select name="id_candidat" id="id_candidat" onchange="envoiInfo('info_candidat.php?id_candidat=' + $('#id_candidat').val(), 'info_candidat');">
     		<?php
     		$i = 0;
-    		while($row = $db->read_assoc($req))
+    		foreach($candidats as $candidat)
     		{
-    			if($i == 0) $_GET['id_candidat'] = $row['id'];
+    			if($i == 0) $_GET['id_candidat'] = $candidat->get_id();
     			?>
-    			<option value="<?php echo $row['id']; ?>"><?php echo $row['nom']; ?> / pour <?php echo $row['duree']; ?> mois / Prochaine élection : <?php echo $row['type']; ?></option>
+    			<option value="<?php echo $candidat->get_id(); ?>"><?php echo $candidat->get_nom(); ?> / pour <?php echo $candidat->get_duree(); ?> mois / Prochaine élection : <?php echo $candidat->get_type(); ?></option>
     			<?php
     			$i++;
     		}

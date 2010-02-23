@@ -689,7 +689,7 @@ function check_utilisation_objet($joueur, $objet)
 	//On vérifie les PA / MP
 	if($joueur->get_pa() >= $row_o['pa'])
 	{
-		if($joueur->get_mp() >= $row_o['pm'])
+		if($joueur->get_mp() >= $row_o['mp'])
 		{
 			$joueur->supprime_objet($id_objet, 1);
 			//$id_objet = mb_substr($id_objet, 1);
