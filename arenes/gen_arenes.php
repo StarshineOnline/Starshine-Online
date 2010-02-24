@@ -50,14 +50,14 @@ function create_joueur_adm(&$xml, $row)
 	return $joueur;
 }
 
-function journal(&$xml, $joueurs_id)
+function journal(&$xml, $joueurs_id, $x, $y, $size)
 {
 	global $db;
 	
 	$journal = $xml->createElement('journal');
 	if (count($joueurs_id) > 0) {
-		$q = 'select distinct * from journal where id_perso in ('.
-			implode(",", $joueurs_id).') ';
+		$q = "select * from journal where x >= $x and x < $x + $size ".
+      "and y >= $y and y < $y + $size ";
 		$q .= 'and time >= (select min(time) from journal where id_perso in ('.
 			implode(",", $joueurs_id).") and action = 'teleport') ";
 		$q .= "and action in ('attaque', 'soin', 'gsoin', 'buff', 'debuff', ".
@@ -196,7 +196,7 @@ function gen_arene($x, $y, $size, $nom, $import = false, $make_import = false)
 		$joueurs_id[] = $row['id'] + $row['ID']; /* hack débile ! */
 	}
 
-	$journal = journal($xml_adm, $joueurs_id);
+	$journal = journal($xml_adm, $joueurs_id, $x, $y, $size);
 	$joueurs_adm->appendChild($journal);
 
 	/*
