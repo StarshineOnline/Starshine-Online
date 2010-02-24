@@ -93,7 +93,8 @@ if (isset($_REQUEST['remove']))
   $ny = $R_arene['y'];
   $id = $R_arene['id'];
   $grp = $R_arene['groupe'];
-  $requete_perso = "update perso set x=$nx, y=$ny, groupe=$grp where id = $id";
+  $now = time();
+  $requete_perso = "update perso set x=$nx, y=$ny, groupe=$grp, dernieraction=$now where id = $id";
   $req = $db->query($requete_perso);
   $requete_perso = "update perso set hp=1 where id = $id and hp < 1";
   $req = $db->query($requete_perso);
