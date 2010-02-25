@@ -194,6 +194,7 @@ if($W_row['type'] == 1)
 			<span class="quartier_bas_titre">Bas Quartier</span>
 			<ul>		
 				<li onclick="envoiInfo('taverne.php', 'carte')">Taverne</li>
+				<li onclick="envoiInfo('ecurie.php', 'carte')">Ecurie</li>
 				<li onclick="envoiInfo('poste.php', 'carte')">Poste</li>
 				<li onclick="envoiInfo('show_arenes.php', 'carte')">Arènes</li>
 <?php

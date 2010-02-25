@@ -139,7 +139,7 @@ $this-><?php echo $champ_reference; ?> = $<?php echo $champ_reference; ?>;
 	* @param bool $force force la mis à jour de tous les attributs de l'objet si true, sinon uniquement ceux qui ont été modifiés
 	* @return none
 	*/
-	function sauver($force = false)
+	function sauver($force = false, $debug = false)
 	{
 		global $db;
 		if( $this-><?php echo $champ_reference; ?> > 0 )
@@ -159,6 +159,7 @@ $this-><?php echo $champ_reference; ?> = $<?php echo $champ_reference; ?>;
 				$requete = 'UPDATE <?php echo $table; ?> SET ';
 				$requete .= $champs;
 				$requete .= ' WHERE <?php echo $champ_reference; ?> = '.$this-><?php echo $champ_reference; ?>;
+				if($debug) echo $requete.';';
 				$db->query($requete);
 				$this->champs_modif = array();
 			}
@@ -167,6 +168,7 @@ $this-><?php echo $champ_reference; ?> = $<?php echo $champ_reference; ?>;
 		{
 			$requete = 'INSERT INTO <?php echo $table; ?> (<?php echo $liste_champs; ?>) VALUES(';
 			$requete .= '<?php echo $liste_attributs_insert; ?>)';
+			if($debug) echo $requete.';';
 			$db->query($requete);
 			//Récuperation du dernier ID inséré.
 			$this-><?php echo $champ_reference; ?> = $db->last_insert_id();
@@ -231,8 +233,8 @@ $this-><?php echo $champ_reference; ?> = $<?php echo $champ_reference; ?>;
 		{
 			while($row = $db->read_assoc($req))
 			{
-				if(!$keys) $return[] = new <?php echo $table; ?>($row);
-				else $return[$row[$keys]] = new <?php echo $table; ?>($row);
+				if(!$keys) $return[] = new <?php echo $table; ?>_db($row);
+				else $return[$row[$keys]] = new <?php echo $table; ?>_db($row);
 			}
 		}
 		else $return = array();
@@ -284,19 +286,19 @@ $this-><?php echo $champ_reference; ?> = $<?php echo $champ_reference; ?>;
 	}
 
 
-		echo "
+		echo '
 }
 
-class $table extends ${table}_db {
-  function __construct($liste_arguments) {
+class'.$table.' extends '.${table}.'_db {
+  function __construct('.$liste_arguments.') {
     if( (func_num_args() == 1) && (
-         is_numeric($champ_reference) || is_array($champ_reference)))
-      parent::__construct($champ_reference);
+         is_numeric($'.$champ_reference.') || is_array($'.$champ_reference.')))
+      parent::__construct($'.$champ_reference.');
     else
-      parent::__construct($liste_arguments_names);
+      parent::__construct('.$liste_arguments_names.');
   }
 
-";
+';
 
 
 

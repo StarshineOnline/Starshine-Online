@@ -3833,7 +3833,8 @@ class perso extends entite
 
 	function can_dresse($monstre)
 	{
-		if($this->max_dresse() >= $monstre->get_level()) return true;
+		$m = new monstre($monstre->get_type());
+		if($this->max_dresse() >= $monstre->get_level() && $m->get_dressage() != 999999) return true;
 		else return false;
 	}
 }

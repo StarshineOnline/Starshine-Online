@@ -53,7 +53,7 @@ if($distance == 0)
 						$buff = $joueur->get_buff('dressage');
 						$buff->set_effet($buff->get_effet() + $rand);
 						$buff->sauver();
-						$augmentation = augmentation_competence('dressage', $joueur, 4);
+						$augmentation = augmentation_competence('dressage', $joueur, 5);
 						if ($augmentation[1] == 1) $joueur->set_dressage($augmentation[0]);
 						$joueur->set_pa($joueur->get_pa() - 10);
 						$joueur->sauver();
@@ -83,6 +83,19 @@ if($distance == 0)
 			if($joueur->can_dresse($monstre))
 			{
 				lance_buff('dressage', $joueur->get_id(), 0, $_GET['id'], 172800, 'Dressage', 'On dresse le monstre', 'perso', 1, count($joueur->get_buff_only()), $joueur->get_grade()->get_rang());
+				?>
+				<h6>Dressage en cours</h6>
+				<br />
+				<a href="dressage.php?id=<?php echo $_GET['id']; ?>" onclick="return envoiInfo(this.href, 'information')">Continuer le dressage</a><br />
+				<br />
+				Le dressage a commencé.<br />
+				Vous pouvez continuer le dressage (10 PA) pour augmenter vos chances de dresser cette créature.<br />
+				Un jour après avoir commencer le dressage, vous pouvez décider de finir le dressage de cette créature et ainsi savoir si il est réussi ou non.<br />
+				Attention, vous ne pouvez plus ni bouger ni attaquer lorsque vous êtes en train de dresser une créature.<br />
+				De plus, si un joueur vous attaque, le dressage sera arrêté.<br />
+				<br />
+				Vous pouvez à tout moment décider d'arrêter le dressage, pour cela rendez vous dans la partie "dressage" du jeu.
+				<?php
 			}
 			else
 			{

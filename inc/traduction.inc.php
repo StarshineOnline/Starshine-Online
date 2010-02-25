@@ -225,9 +225,9 @@ $GPluriels['clerc'] = 'clercs';
 $GPluriels['grand sorcier'] = 'grands sorciers';
 $GPluriels['grand nécromancien'] = 'grands nécromanciens';
 $GPluriels['prêtre'] = 'prêtres';
-$GPluriels['prêtre+'] = 'prêtres+';
-$GPluriels['grand sorcier+'] = 'grands sorciers+';
-$GPluriels['grand nécromancien+'] = 'grands nécromanciens+';
+$GPluriels['sage'] = 'sages';
+$GPluriels['elémentaliste'] = 'elémentalistes';
+$GPluriels['pestimancien'] = 'pestimanciens';
 //@}
 
 function pluriel($mot) {

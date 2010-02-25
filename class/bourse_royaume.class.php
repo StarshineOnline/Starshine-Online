@@ -26,11 +26,11 @@ class bourse_royaume
 		//Verification du nombre et du type d'argument pour construire l'etat adequat.
 		if( (func_num_args() == 1) && is_numeric($id_bourse_royaume) )
 		{
-			$requeteSQL = $db->query('SELECT id_royaume, ressource, nombre, id_royaume_acheteur, prix, fin_vente, actif FROM bourse_royaume WHERE id_bourse_royaume = '.$id_bourse_royaume);
+			$requeteSQL = $db->query('SELECT id_royaume, ressource, nombre, id_royaume_acheteur, prix, fin_vente, actif, UNIX_TIMESTAMP(fin_vente) as fin_vente_timestamp FROM bourse_royaume WHERE id_bourse_royaume = '.$id_bourse_royaume);
 			//Si le thread est dans la base, on le charge sinon on créer un thread vide.
 			if( $db->num_rows($requeteSQL) > 0 )
 			{
-				list($this->id_royaume, $this->ressource, $this->nombre, $this->id_royaume_acheteur, $this->prix, $this->fin_vente, $this->actif) = $db->read_row($requeteSQL);
+				list($this->id_royaume, $this->ressource, $this->nombre, $this->id_royaume_acheteur, $this->prix, $this->fin_vente, $this->actif, $this->fin_vente_timestamp) = $db->read_row($requeteSQL);
 			}
 			else
 				$this->__construct();
@@ -55,7 +55,7 @@ class bourse_royaume
 		if( $this->id_bourse_royaume > 0 )
 		{
 			$requete = 'UPDATE bourse_royaume SET ';
-			$requete .= 'id_royaume = '.$this->id_royaume.', ressource = "'.$this->ressource.'", nombre = '.$this->nombre.', id_royaume_acheteur = '.$this->id_royaume_acheteur.', prix = '.$this->prix.', fin_vente = "'.$this->fin_vente.'", actif = '.$this->actif.'';
+			$requete .= 'id_royaume = '.$this->id_royaume.', ressource = "'.$this->ressource.'", nombre = '.$this->nombre.', id_royaume_acheteur = '.$this->id_royaume_acheteur.', prix = '.$this->prix.', fin_vente = "'.mysql_real_escape_string($this->fin_vente).'", actif = '.$this->actif.'';
 			$requete .= ' WHERE id_bourse_royaume = '.$this->id_bourse_royaume;
 			$db->query($requete);
 		}
@@ -64,7 +64,7 @@ class bourse_royaume
 			$requete = 'INSERT INTO bourse_royaume (id_royaume, ressource, nombre, id_royaume_acheteur, prix, fin_vente, actif) VALUES(';
 			$requete .= $this->id_royaume.', "'.$this->ressource.'", '.$this->nombre.', '.$this->id_royaume_acheteur.', '.$this->prix.', "'.$this->fin_vente.'", '.$this->actif.')';
 			$db->query($requete);
-			//R?cuperation du dernier ID ins?r?.
+			//Récuperation du dernier ID inséré.
 			list($this->id_bourse_royaume) = $db->last_insert_id();
 		}
 	}
@@ -82,12 +82,17 @@ class bourse_royaume
 	
 	function set_fin_vente($fin_vente)
 	{
-		$this->fin_vente = date("Y-m-d h:i:s", $fin_vente);
+		$this->fin_vente = date("Y-m-d H:i:s", $fin_vente);
 	}
 	
 	function get_fin_vente()
 	{
 		return strtotime($this->fin_vente);
+	}
+
+	function get_fin_vente_timestamp()
+	{
+		return $this->fin_vente_timestamp;
 	}
 
 	function __toString()

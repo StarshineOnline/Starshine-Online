@@ -159,30 +159,35 @@ else if(!array_key_exists('direction', $_GET))
 elseif($_GET['direction'] == 'suppr_construction')
 {
 	$construction = new construction($_GET['id']);
-	$requete = "SELECT type, royaume FROM construction WHERE id = ".sSQL($_GET['id']);
-	$req = $db->query($requete);
-	$row = $db->read_row($req);
-	$requete = "DELETE FROM construction WHERE id = ".sSQL($_GET['id']);
-	if($db->query($requete))
+	//On vérifie que c'est le bon royaume
+	if($contruction->get_royaume() == $royaume->get_id())
 	{
-		echo '<h6>La construction a été correctement supprimée.</h6>';
-		
-
-		echo "<script type='text/javascript'>
-			// <![CDATA[\n
-
-			envoiInfo('construction.php','contenu_jeu');
-				// ]]>
-		  </script>";
-		
-		
-		//On supprime un bourg au compteur
-		if($row[0] == 'bourg')
+		$batiment = new batiment($construction->get_id_batiment());
+		//On vérifie que la construction a plus de 10% de ses PV max
+		if($construction->get_hp() > ($batiment->get_hp() * 0.1))
 		{
-			supprime_bourg($row[1]);
+			$requete = "DELETE FROM construction WHERE id = ".sSQL($_GET['id']);
+			if($db->query($requete))
+			{
+				echo '<h6>La construction a été correctement supprimée.</h6>';
+
+
+				echo "<script type='text/javascript'>
+					// <![CDATA[\n
+
+					envoiInfo('construction.php','contenu_jeu');
+						// ]]>
+				  </script>";
+
+
+				//On supprime un bourg au compteur
+				if($row[0] == 'bourg')
+				{
+					supprime_bourg($row[1]);
+				}
+			}
 		}
 	}
-	
 }
 elseif($_GET['direction'] == 'up_construction')
 {

@@ -61,7 +61,7 @@ if (file_exists('../root.php'))
 		require_once(root.'connect_log.php');
 		//On l'enregistre dans les logs
 		$requete = "INSERT INTO log_admin VALUES(NULL, '".$R['statut']."', '".$_SERVER['REMOTE_ADDR']."', ".time().")";
-		$db_log->query($requete);
+		//$db_log->query($requete);
 		
 	}
 ?>

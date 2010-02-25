@@ -33,11 +33,11 @@ INSERT INTO `classe_permet` (
 `new`
 )
 VALUES (
-NULL , '24', 'distance', '200', 'no'
+NULL , '24', 'distance', '300', 'no'
 ), (
-NULL , '24', 'esquive', '150', 'no'
+NULL , '24', 'esquive', '200', 'no'
 ), (
-NULL , '24', 'survie_bete', '100', 'no'
+NULL , '24', 'survie_bete', '100', 'yes'
 );
 
 ALTER TABLE `perso` ADD `dressage` MEDIUMINT UNSIGNED NOT NULL AFTER `survie` ;

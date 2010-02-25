@@ -138,6 +138,11 @@ else
 	$menu[$i++]['acces'] = 'admin';
 	$acces[] = 'admin';
 	
+	$menu[$i]['nom'] = 'Gestion des classes';
+	$menu[$i]['url'] = 'edit_classe.php';
+	$menu[$i++]['acces'] = 'admin';
+	$acces[] = 'admin';
+
 	//Trié par nom et par acces
 	array_multisort($acces, SORT_DESC, $menu);
 	}
