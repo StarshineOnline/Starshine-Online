@@ -66,7 +66,7 @@ if($joueur->is_buff('dressage'))
 	$monstre = new map_monstre($joueur->get_buff('dressage', 'effet2'));
 	?>
 	<a href="dressage.php?id=<?php echo $monstre->get_id(); ?>" onclick="return envoiInfo(this.href, 'information')">Continuez le dressage de "<?php echo $monstre->get_nom(); ?>" <span class="small">(10 PA)</span>.</a><br />
-	<a href="gestion_monstre.php?stop" onclick="if(confirm('Voulez vous arrêtez le dressage ?')) return envoiInfo(this.href, 'information');">Arretez le dressage de "<?php echo $monstre->get_nom(); ?>".</a><br />
+	<a href="gestion_monstre.php?stop" onclick="if(confirm('Voulez vous arrêtez le dressage ?')) return envoiInfo(this.href, 'information'); else return false;">Arretez le dressage de "<?php echo $monstre->get_nom(); ?>".</a><br />
 	<?php
 }
 else
