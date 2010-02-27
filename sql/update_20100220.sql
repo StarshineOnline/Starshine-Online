@@ -204,6 +204,8 @@ UPDATE `classe` SET `nom` = 'Titan' WHERE `classe`.`id` =18 LIMIT 1 ;
 UPDATE `classe` SET `nom` = 'Sniper' WHERE `classe`.`id` =19 LIMIT 1 ;
 UPDATE `classe` SET `nom` = 'Sage' WHERE `classe`.`id` =20 LIMIT 1 ;
 UPDATE `classe` SET `nom` = 'Pestimancien' WHERE `classe`.`id` =21 LIMIT 1 ;
+UPDATE `classe` SET `nom` = 'Elémentaliste' WHERE `classe`.`id` =22 LIMIT 1 ;
+UPDATE `classe` SET `nom` = 'Templier' WHERE `classe`.`id` =21 LIMIT 1 ;
 
 UPDATE monstre SET dressage = level * level * level * 3.5;
 UPDATE monstre SET dressage = 999999 WHERE spawn = 0;

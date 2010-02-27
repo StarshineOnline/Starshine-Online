@@ -165,7 +165,8 @@ if($joueur->get_groupe() != 0)
 			$overlib .= "<li>$joueur_mort<br/>$libelle_activite</li><li class='overlib_infos'>(Cliquer pour plus d'information)</li>";
 			$overlib = str_replace("'", "\'", trim($overlib));
 
-			if($membre->get_id() == $groupe->get_id_leader()) $image = '<img src="image/icone/couronne.png" alt="C" title="Chef de groupe"> ';
+			if($membre->get_hp() <= 0) $image = '<img src="image/interface/mort.png" alt="M" title="Mort" style="margin-left : 1px;"> ';
+			elseif($membre->get_id() == $groupe->get_id_leader()) $image = '<img src="image/icone/couronne.png" alt="C" title="Chef de groupe"> ';
 			else $image = ' ';
 			echo "<li onmouseover=\"return overlib('$overlib', BGCLASS, 'overlib', BGCOLOR, '', FGCOLOR, '');\"
 					  onmouseout=\"return nd();\" 
