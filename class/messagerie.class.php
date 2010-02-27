@@ -44,8 +44,7 @@ class messagerie
 		
 		if($db->num_rows($req) > 0)
 			$return = $db->read_assoc($req);
-
-		if($return['groupe'] === NULL) $return['groupe'] = 0;
+		$return['groupe'] = empty($return['groupe']) ? 0 : $return['groupe']; 
 		$return['perso'] -= $return['groupe']; 
 		$return['total'] = $return['groupe'] + $return['perso'];
 		return $return;		
