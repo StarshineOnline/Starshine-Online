@@ -103,6 +103,7 @@ else
 		$joueur->set_architecture(1);
 		$joueur->set_forge(1);
 		$joueur->set_survie(1);
+		$joueur->set_dressage(1);
 		
 		if($classe == 'combattant')
 		{
