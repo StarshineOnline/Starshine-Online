@@ -202,7 +202,7 @@ elseif($_GET['direction'] == 'up_construction')
 		$construction->set_nom($batiment->get_nom());
 		$construction->set_image($batiment->get_image());
 		$construction->set_date_construction(time());
-		$construction->set_hp($batiment->get_hp());
+		$construction->set_hp($construction->get_hp() + $batiment->get_hp() - $ancien_batiment->get_hp());
 		$construction->set_point_victoire($batiment->get_point_victoire());
 		$construction->sauver();
 		
