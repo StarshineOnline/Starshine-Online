@@ -22,6 +22,7 @@ $Tmaxcomp['architecture'] = 500;
 $Tmaxcomp['craft'] = 500;
 $Tmaxcomp['survie'] = 500;
 $Tmaxcomp['dressage'] = 100;
+$Tmaxcomp['max_pet'] = 1;
 
 $Tclasse['combattant']['type'] = 'guerrier';
 $Tclasse['magicien']['type'] = 'mage';
