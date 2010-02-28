@@ -104,6 +104,7 @@ else
 		$joueur->set_forge(1);
 		$joueur->set_survie(1);
 		$joueur->set_dressage(1);
+		$joueur->set_max_pet(1);
 		
 		if($classe == 'combattant')
 		{
