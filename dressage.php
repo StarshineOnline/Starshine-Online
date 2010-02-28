@@ -82,7 +82,7 @@ if($distance == 0)
 			//On vérifie qu'il a le niveau en dressage requis pour dresser un monstre de ce niveau
 			if($joueur->can_dresse($monstre))
 			{
-				lance_buff('dressage', $joueur->get_id(), 0, $_GET['id'], 172800, 'Dressage', 'On dresse le monstre', 'perso', 1, count($joueur->get_buff_only()), $joueur->get_grade()->get_rang());
+				lance_buff('dressage', $joueur->get_id(), 0, $_GET['id'], 172800, 'Dressage', 'On dresse le monstre', 'perso', 1, count($joueur->get_buff_only()), $joueur->get_grade()->get_rang(), 0);
 				?>
 				<h6>Dressage en cours</h6>
 				<br />
