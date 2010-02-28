@@ -321,7 +321,7 @@ class effect
    * @param  $passif    Personnage passif lors de l'action.
    * @param  $degats    Dégâts infligés.           
    */ 
-  function inflige_degats(&$actif, &$passif, $degats) { }
+  function inflige_degats(&$actif, &$passif, $degats) { return $degats; }
   /**
    * Action a effectuer en fin de round
    * 
