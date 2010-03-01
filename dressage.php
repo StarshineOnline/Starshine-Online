@@ -53,12 +53,12 @@ if($distance == 0)
 						$buff = $joueur->get_buff('dressage');
 						$buff->set_effet($buff->get_effet() + $rand);
 						$buff->sauver();
-						$augmentation = augmentation_competence('dressage', $joueur, 5);
+						$augmentation = augmentation_competence('dressage', $joueur, 4);
 						if ($augmentation[1] == 1) $joueur->set_dressage($augmentation[0]);
 						$joueur->set_pa($joueur->get_pa() - 10);
 						$joueur->sauver();
 						?>
-						Vous tentez de saisir l'animal, mais ce dernier ne vous fait pas encore confiance.<br />
+						Vous apprenez quelques tours a votre animal. Il semble se familiariser de plus en plus à vous.<br />
 						<?php
 						echo '
 						<a href="dressage.php?id='.$_GET['id'].'" onclick="return envoiInfo(this.href, \'information\')">Continuer le dressage</a>';
