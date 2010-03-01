@@ -48,7 +48,7 @@ if(count($pets) > 0)
 			if($pet->monstre->get_sort_dressage() != '')
 			{
 				$sort = $pet->monstre->get_infos_sort_dressage();
-				echo'<a href="gestion_monstre.php?sort='.$pet->get_id().'" onclick="return envoiInfo(this.href, \'information\');">'.$sort->get_nom().'</a><br />';
+				echo'<a href="sort.php?ID='.$sort->get_id().'&lanceur=monstre&id_pet='.$pet->get_id().'" onclick="return envoiInfo(this.href, \'information\');">Ultiliser le sort : '.$sort->get_nom().'</a><br />';
 			}
 			if($pet->get_principale() == 0) echo'<a href="gestion_monstre.php?principale='.$pet->get_id().'" onclick="return envoiInfo(this.href, \'information\');">Définir comme créature principale</a>';
 	}
@@ -65,8 +65,8 @@ if($joueur->is_buff('dressage'))
 	<?php
 	$monstre = new map_monstre($joueur->get_buff('dressage', 'effet2'));
 	?>
-	<a href="dressage.php?id=<?php echo $monstre->get_id(); ?>" onclick="return envoiInfo(this.href, 'information')">Continuez le dressage de "<?php echo $monstre->get_nom(); ?>" <span class="small">(10 PA)</span>.</a><br />
-	<a href="gestion_monstre.php?stop" onclick="if(confirm('Voulez vous arrêtez le dressage ?')) return envoiInfo(this.href, 'information'); else return false;">Arretez le dressage de "<?php echo $monstre->get_nom(); ?>".</a><br />
+	<a href="dressage.php?id=<?php echo $monstre->get_id(); ?>" onclick="return envoiInfo(this.href, 'information')">Continuez le dressage de "<?php echo $monstre->get_nom(); ?>" <span class="small">(10 PA)</span>.</a>
+	<a href="gestion_monstre.php?stop" style="float : right;" onclick="if(confirm('Voulez vous arrêtez le dressage ?')) return envoiInfo(this.href, 'information'); else return false;" title="Arrêter le dressage">x</a><br />
 	<?php
 }
 else

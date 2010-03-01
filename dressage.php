@@ -57,7 +57,10 @@ if($distance == 0)
 						if ($augmentation[1] == 1) $joueur->set_dressage($augmentation[0]);
 						$joueur->set_pa($joueur->get_pa() - 10);
 						$joueur->sauver();
-						echo 'Dressage en cours...<br />
+						?>
+						Vous tentez de saisir l'animal, mais ce dernier ne vous fait pas encore confiance.<br />
+						<?php
+						echo '
 						<a href="dressage.php?id='.$_GET['id'].'" onclick="return envoiInfo(this.href, \'information\')">Continuer le dressage</a>';
 					}
 				}
@@ -82,7 +85,7 @@ if($distance == 0)
 			//On vérifie qu'il a le niveau en dressage requis pour dresser un monstre de ce niveau
 			if($joueur->can_dresse($monstre))
 			{
-				lance_buff('dressage', $joueur->get_id(), 0, $_GET['id'], 172800, 'Dressage', 'On dresse le monstre', 'perso', 1, count($joueur->get_buff_only()), $joueur->get_grade()->get_rang(), 0);
+				lance_buff('dressage', $joueur->get_id(), 0, $_GET['id'], 172800, 'Dressage', 'On dresse le monstre', 'perso', 1, 0, 0, 0);
 				?>
 				<h6>Dressage en cours</h6>
 				<br />

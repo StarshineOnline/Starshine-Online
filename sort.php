@@ -2,29 +2,28 @@
 if (file_exists('root.php'))
   include_once('root.php');
 
-include ('livre.php');
+include(root.'haut_ajax.php');
+
 if(array_key_exists('tri', $_GET)) $tris = $_GET['tri']; else $tris = 'favoris';
 ?>
-<hr>
 <?php
-if(array_key_exists('type', $_GET))
-	$type_cible = $_GET['type'];
-else
-	$type_cible = 'joueur';
-	
+if(array_key_exists('type', $_GET))	$type_cible = $_GET['type'];
+else $type_cible = 'joueur';
+
+if(array_key_exists('lanceur', $_GET)) $type_lanceur = $_GET['lanceur'];
+else $type_lanceur = 'joueur';
+
 $joueur = new perso($_SESSION['ID']);
 
 switch($type_cible)
 {
 	case 'joueur':
-		if(array_key_exists('id_joueur', $_GET))
-			$perso = new perso($_GET['id_joueur']);
-		else
-			$perso = new perso($joueur->get_id());
+		if(array_key_exists('id_joueur', $_GET)) $perso = new perso($_GET['id_joueur']);
+		else $perso = new perso($joueur->get_id());
 			
 		$perso->check_perso(false);
 		$cible = $perso;
-		break;
+	break;
 	case 'monstre':
 		$map_monstre = new map_monstre($_GET['id_monstre']);
 		$monstre = new monstre($map_monstre->get_type());
@@ -37,18 +36,34 @@ switch($type_cible)
 	break;
 }
 
+switch($type_lanceur)
+{
+	case 'joueur':
+		$lanceur = $joueur;
+		$possible_augmentation = true;
+	break;
+	case 'monstre':
+		$lanceur = new pet($_GET['id_pet']);
+		$possible_augmentation = false;
+	break;
+}
+if($type_lanceur == 'joueur') include ('livre.php');
+?>
+<hr>
+<?php
+$lancement = false;
+
 if($joueur->get_groupe() != 0) $groupe_joueur = new groupe($joueur->get_groupe());
 
 if (isset($_GET['ID']) && !$joueur->is_buff('bloque_sort'))
 {
 	$sort = new sort_jeu($_GET['ID']);
 	$W_distance = calcul_distance_pytagore($cible->get_pos(), $joueur->get_pos());
-	if($W_distance > $sort->get_portee())
-		echo 'Vous êtes trop loin pour lancer ce sort !';
+	if($W_distance > $sort->get_portee()) echo 'Vous êtes trop loin pour lancer ce sort !';
 	else
 	{
-
 		if(array_key_exists('groupe', $_GET) AND $_GET['groupe'] == 'yes') $groupe = true; else $groupe = false;
+		//Vérification que c'est un buff de groupe
 		$sortpa_base = $sort->get_pa();
 		$sortmp_base = $sort->get_mp();
 		$sortpa = round($sort->get_pa() * $joueur->get_facteur_magie());
@@ -67,15 +82,11 @@ if (isset($_GET['ID']) && !$joueur->is_buff('bloque_sort'))
 				if($joueur->get_distance_pytagore($membre) <= 7) $cibles[] = $membre;
 			}
 		}
-		else
-			$cibles = array($cible);
+		else $cibles = array($cible);
 
-		if($joueur->get_pa() < $sortpa)
-			echo '<h5>Pas assez de PA</h5>';
-		elseif($joueur->get_mp() < $sortmp)
-			echo '<h5>Pas assez de mana</h5>';
-		elseif($joueur->get_hp() <= 0)
-			echo '<h5>Vous êtes mort</h5>';
+		if($joueur->get_pa() < $sortpa) echo '<h5>Pas assez de PA</h5>';
+		elseif($lanceur->get_mp() < $sortmp) echo '<h5>Pas assez de mana</h5>';
+		elseif($lanceur->get_hp() <= 0) echo '<h5>Vous êtes mort</h5>';
 		else
 		{
 			switch($sort->get_type())
@@ -143,24 +154,9 @@ if (isset($_GET['ID']) && !$joueur->is_buff('bloque_sort'))
 							echo $cible->get_nom().' est mort.<br />';
 						}
 					}	
-					$joueur->set_pa($joueur->get_pa() - $sortpa);
-					$joueur->set_mp($joueur->get_mp() - $sortmp);
 					if($action)
 					{
-						$difficulte_sort = diff_sort($sort->get_difficulte(), $joueur, 'incantation', $sortpa_base, $sortmp_base);
-						$augmentation = augmentation_competence('incantation', $joueur, $difficulte_sort);
-						if ($augmentation[1] == 1)
-						{
-							$joueur->set_incantation($augmentation[0]);
-						}
-						$difficulte_sort = diff_sort($sort->get_difficulte(), $joueur, 'sort_vie', $sortpa_base, $sortmp_base);
-						$augmentation = augmentation_competence('sort_vie', $joueur, $difficulte_sort);
-						if ($augmentation[1] == 1)
-						{
-							$joueur->set_sort_vie($augmentation[0]);
-						}
-						//sauve_sans_bonus_ignorables($joueur, array('mp', 'pa', 'incantation', 'sort_vie'));
-						$joueur->sauver();
+						$lancement = true;
 						//Insertion du soin de groupe dans le journal du lanceur
 						if($groupe)
 						{
@@ -175,32 +171,43 @@ if (isset($_GET['ID']) && !$joueur->is_buff('bloque_sort'))
 					if($groupe) $groupe_href = '&amp;groupe=yes'; else $groupe_href = '&amp;type='.$type_cible.'&amp;id_'.$type_cible.'='.$cible->get_id();
 					echo '<a href="sort.php?ID='.$_GET['ID'].$groupe_href.'" onclick="return envoiInfo(this.href, \'information\')">Utiliser de nouveau ce sort</a>';
 				break;
+				case 'balance' :
+					$nbr_membre = 0;
+					$total_pourcent = 0;
+					foreach($cibles as $cible)
+					{
+						if($cible->get_hp() > 0)
+						{
+							$total_pourcent += $cible->get_hp() / $cible->get_hp_max();
+							$nbr_membre++;
+						}
+					}
+					$pourcent = $total_pourcent / $nbr_membre;
+					foreach($cibles as $cible)
+					{
+						if($cible->get_hp() > 0)
+						{
+							$cible->set_hp(floor($cible->get_hp() * $pourcent));
+							$cible->sauver();
+						}
+						else
+						{
+							echo $cible->get_nom().' est mort.<br />';
+						}
+					}
+					$lancement = true;
+				break;
 				case 'body_to_mind' :
 					if($joueur->get_hp() > $sort->get_effet())
 					{
 						$sorthp = $sort->get_effet();
-						$sortmp = $sort->get_effet2();
+						$sortmp = $sort->get_effet2() * -1;
 						if($sortmp > (floor($joueur->get_mp_maximum()) - $joueur->get_mp())) $sortmp = floor($joueur->get_mp_maximum()) - $joueur->get_mp();
 						echo 'Vous utilisez '.$sorthp.' HP pour convertir en '.$sortmp.' MP<br />';
-						$joueur->set_pa($joueur->get_pa() - $sortpa);
-						$joueur->set_mp($joueur->get_mp() + $sortmp);
 						$joueur->set_hp($joueur->get_hp() - $sorthp);
 						if($sortmp > 0)
 						{
-							$difficulte_sort = diff_sort($sort->get_difficulte(), $joueur, 'incantation', $sortpa_base, $sorthp);
-							$augmentation = augmentation_competence('incantation', $joueur, $difficulte_sort);
-							if ($augmentation[1] == 1)
-							{
-								$joueur->set_incantation($augmentation[0]);
-							}
-							$difficulte_sort = diff_sort($sort->get_difficulte(), $joueur, 'sort_mort', $sortpa_base, $sorthp);
-							$augmentation = augmentation_competence('sort_mort', $joueur, $difficulte_sort);
-							if ($augmentation[1] == 1)
-							{
-								$joueur->set_sort_mort($augmentation[0]);
-							}
-							//sauve_sans_bonus_ignorables($joueur, array('mp', 'pa', 'incantation', 'sort_mort'));
-							$joueur->sauver();
+							$lancement = true;
 						}
 						echo '<a href="sort.php?ID='.$_GET['ID'].'" onclick="return envoiInfo(this.href, \'information\')">Utiliser de nouveau ce sort</a>';
 					}
@@ -212,26 +219,15 @@ if (isset($_GET['ID']) && !$joueur->is_buff('bloque_sort'))
 				case 'teleport' :
 					if($joueur->get_hp() > 0)
 					{
-						$joueur->set_x($Trace[$joueur->get_race()]['spawn_x']);
-						$joueur->set_y($Trace[$joueur->get_race()]['spawn_y']);
-						$joueur->set_mp($joueur->get_mp() - $sortmp);
-						$joueur->set_pa($joueur->get_pa() - $sortpa);
-						$difficulte_sort = diff_sort($sort->get_difficulte(), $joueur, 'incantation', $sortpa_base, $sortmp_base);
-						$augmentation = augmentation_competence('incantation', $joueur, $difficulte_sort);
-						if ($augmentation[1] == 1)
+						foreach($cibles as $cible)
 						{
-							$joueur->set_incantation($augmentation[0]);
-						}	
-						$difficulte_sort = diff_sort($sort->get_difficulte(), $joueur, 'sort_element', $sortpa_base, $sortmp_base);
-						$augmentation = augmentation_competence('sort_element', $joueur, $difficulte_sort);
-						if ($augmentation[1] == 1)
-						{
-							$joueur->set_sort_element($augmentation[0]);
+							$cible->set_x($Trace[$joueur->get_race()]['spawn_x']);
+							$cible->set_y($Trace[$joueur->get_race()]['spawn_y']);
+							$cible->sauver();
+							echo $cible->get_nom().' a été téléporté dans votre capitale.<br />';
 						}
-						//sauve_sans_bonus_ignorables($joueur, array('mp', 'pa', 'incantation', 'sort_element', 'x', 'y'));
-						$joueur->sauver();
-						echo 'Vous vous êtes téléporté dans votre capitale
-						<img src="image/pixel.gif" onLoad="envoiInfo(\'deplacement.php\', \'centre\');" />';
+						$lancement = true;
+						echo '<img src="image/pixel.gif" onLoad="envoiInfo(\'deplacement.php\', \'centre\');" />';
 					}	
 					else
 					{
@@ -244,25 +240,9 @@ if (isset($_GET['ID']) && !$joueur->is_buff('bloque_sort'))
 					{
 						//Mis en place du debuff
 						lance_buff($sort->get_type(), $joueur->get_id(), 1, 0, $sort->get_duree(), $sort->get_nom(), 'Vous ne pouvez plus attaquer ni lancer le sort repos du sage', 'perso', 1, 0, 0, 0);
-						$joueur->set_pa($joueur->get_pa() - $sortpa);
 						$joueur->set_mp($joueur->get_mp() + $sort->get_effet());
 						if($joueur->get_mp() > $joueur->get_mp_maximum()) $joueur->set_mp($joueur->get_mp_maximum());
-						//Augmentation des compétences
-						$difficulte_sort = diff_sort($sort->get_difficulte(), $joueur, 'incantation', $sortpa_base, 1);
-						$augmentation = augmentation_competence('incantation', $joueur, $difficulte_sort);
-						if ($augmentation[1] == 1)
-						{
-							$joueur->set_incantation($augmentation[0]);
-						}
-						$difficulte_sort = diff_sort($sort->get_difficulte(), $joueur, $sort->get_comp_assoc(), $sortpa_base, 1);
-						$augmentation = augmentation_competence($sort->get_comp_assoc(), $joueur, $difficulte_sort);
-						if ($augmentation[1] == 1)
-						{
-							$joueur->set_comp($sort->get_comp_assoc(), $augmentation[0]);
-						}
-						//Mis à jour du joueur
-						//sauve_sans_bonus_ignorables($joueur, array('mp', 'pa', 'incantation', $row['comp_assoc']));
-						$joueur->sauver();
+						$lancement = true;
 					}
 					else
 					{
@@ -298,24 +278,7 @@ if (isset($_GET['ID']) && !$joueur->is_buff('bloque_sort'))
 					}
 					if($action)
 					{
-						$joueur->set_pa($joueur->get_pa() - $sortpa);
-						$joueur->set_mp($joueur->get_mp() - $sortmp);
-						//Augmentation des compétences
-						$difficulte_sort = diff_sort($sort->get_difficulte(), $joueur, 'incantation', $sortpa_base, $sortmp_base);
-						$augmentation = augmentation_competence('incantation', $joueur, $difficulte_sort);
-						if ($augmentation[1] == 1)
-						{
-							$joueur->set_incantation($augmentation[0]);
-						}	
-						$difficulte_sort = diff_sort($sort->get_difficulte(), $joueur, $sort->get_comp_assoc(), $sortpa_base, $sortmp_base);
-						$augmentation = augmentation_competence($sort->get_comp_assoc(), $joueur, $difficulte_sort);
-						if ($augmentation[1] == 1)
-						{
-							$joueur->set_comp($sort->get_comp_assoc(), $augmentation[0]);
-						}
-						//Mis à jour du joueur
-						//sauve_sans_bonus_ignorables($joueur, array('mp', 'pa', 'incantation', $row['comp_assoc']));
-						$joueur->sauver();
+						$lancement = true;
 						if($groupe)
 						{
 							$requete = "INSERT INTO journal(id_perso, action, actif, passif, time, valeur, valeur2, x, y) VALUES(".$joueur->get_id().", 'gbuff', '".$joueur->get_nom()."', 'groupe', NOW(), '".$sort->get_nom()."', 0, 0, 0)";
@@ -386,23 +349,7 @@ if (isset($_GET['ID']) && !$joueur->is_buff('bloque_sort'))
 							}
 						}
 					}
-					$joueur->set_pa($joueur->get_pa() - $sortpa);
-					$joueur->set_mp($joueur->get_mp() - $sortmp);
-					//Augmentation des compétences
-					$difficulte_sort = diff_sort($sort->get_difficulte(), $joueur, 'incantation', $sortpa_base, $sortmp_base);
-					$augmentation = augmentation_competence('incantation', $joueur, $difficulte_sort);
-					if ($augmentation[1] == 1)
-					{
-						$joueur->set_incantation($augmentation[0]);
-					}	
-					$difficulte_sort = diff_sort($sort->get_difficulte(), $joueur, $sort->get_comp_assoc(), $sortpa_base, $sortmp_base);
-					$augmentation = augmentation_competence($sort->get_comp_assoc(), $joueur, $difficulte_sort);
-					if ($augmentation[1] == 1)
-					{
-						$joueur->set_comp_assoc($sort->get_comp_assoc(), $augmentation[0]);
-					}
-					//Mise à jour du joueur
-					$joueur->sauver();
+					$lancement = true;
 				break;
 				case "guerison" :
 					$check = false;
@@ -433,24 +380,7 @@ if (isset($_GET['ID']) && !$joueur->is_buff('bloque_sort'))
 					}
 					if($check)
 					{
-						$joueur->set_pa($joueur->get_pa() - $sortpa);
-						$joueur->set_mp($joueur->get_mp() - $sortmp);
-	
-						//-- Augmentation des compétences
-						$difficulte_sort = diff_sort($sort->get_difficulte(), $joueur, 'incantation', $sortpa_base, $sortmp_base);
-						$augmentation = augmentation_competence('incantation', $joueur, $difficulte_sort);
-						if ($augmentation[1] == 1)
-						{
-							$joueur->set_incantation($augmentation[0]);
-						}
-						$difficulte_sort = diff_sort($sort->get_difficulte(), $joueur, $sort->get_comp_assoc(), $sortpa_base, $sortmp_base);
-						$augmentation = augmentation_competence($sort->get_comp_assoc(), $joueur, $difficulte_sort);
-						if ($augmentation[1] == 1)
-						{
-							$joueur->set_comp_assoc($sort->get_comp_assoc(), $augmentation[0]);
-						}
-						//-- Mise à jour du joueur
-						$joueur->sauver();
+						$lancement = true;
 					}
 					$groupe_href = '&amp;type='.$type_cible.'&amp;id_'.$type_cible.'='.$cible->get_id();
 					echo "<a href=\"\" onclick=\"return envoiInfo('sort.php?ID=".$_GET["ID"].$groupe_href."', 'information')\">Utiliser de nouveau cette compétence</a>";
@@ -481,27 +411,10 @@ if (isset($_GET['ID']) && !$joueur->is_buff('bloque_sort'))
 							echo "Impossible de lancer de lancer le sort. Vous n&apos;avez aucun buff.<br/>";
 						}
 						else
-						{	
-							$joueur->set_pa($joueur->get_pa() - $sortpa);
-							$joueur->set_mp($joueur->get_mp() - $sortmp);
-
+						{
+							$lancement = true;
 							$db->query("DELETE FROM buff WHERE id=".$buff_tab[rand(0, count($buff_tab)-1)].";");
 							$db->query("DELETE FROM buff WHERE id=".$debuff_tab[rand(0, count($debuff_tab)-1)].";");
-							//-- Augmentation des compétences
-							$difficulte_sort = diff_sort($sort->get_difficulte(), $joueur, 'incantation', $sortpa_base, $sortmp_base);
-							$augmentation = augmentation_competence('incantation', $joueur, $difficulte_sort);
-							if ($augmentation[1] == 1)
-							{
-								$joueur->set_incantation($augmentation[0]);
-							}
-							$difficulte_sort = diff_sort($sort->get_difficulte(), $joueur, $sort->get_comp_assoc(), $sortpa_base, $sortmp_base);
-							$augmentation = augmentation_competence($sort->get_comp_assoc(), $joueur, $difficulte_sort);
-							if ($augmentation[1] == 1)
-							{
-								$joueur->set_comp_assoc($sort->get_comp_assoc(), $augmentation[0]);
-							}
-							//-- Mise à jour du joueur
-							$joueur->sauver();
 						}
 					}
 					else { echo "Impossible de lancer de lancer le sort. Vous n&apos;avez aucun buff.<br/>"; };
@@ -515,8 +428,6 @@ if (isset($_GET['ID']) && !$joueur->is_buff('bloque_sort'))
 					if($cible->is_buff('bulle_dephasante', true)) $protection *= $cible->get_buff('bulle_dephasante','effet');
 					$attaque = rand(0, ($joueur->get_volonte() * $joueur->get_comp($sort->get_comp_assoc())));
 					$defense = rand(0, $protection);
-					$joueur->set_pa($joueur->get_pa() - $sortpa);
-					$joueur->set_mp($joueur->get_mp() - $sortmp);
 					if ($attaque > $defense)
 					{
 						$duree = $sort->get_duree();
@@ -543,22 +454,7 @@ if (isset($_GET['ID']) && !$joueur->is_buff('bloque_sort'))
 					{
 						echo $cible->get_nom().' résiste à votre sort !<br />';
 				 	}
-					//Augmentation des compétences
-					$difficulte_sort = diff_sort($sort->get_difficulte(), $joueur, 'incantation', $sortpa_base, $sortmp_base);
-					$augmentation = augmentation_competence('incantation', $joueur, $difficulte_sort);
-					if ($augmentation[1] == 1)
-					{
-						$joueur->set_incantation($augmentation[0]);
-					}
-					$difficulte_sort = diff_sort($sort->get_difficulte(), $joueur, $sort->get_comp_assoc(), $sortpa_base, $sortmp_base);
-					$augmentation = augmentation_competence($sort->get_comp_assoc(), $joueur, $difficulte_sort);
-					if ($augmentation[1] == 1)
-					{
-						$joueur->set_comp($sort->get_comp_assoc(), $augmentation[0]);
-					}
-					//Mis à jour du joueur
-					//sauve_sans_bonus_ignorables($joueur, array('mp', 'pa', 'incantation', $sort->get_comp_assoc()));
-					$joueur->sauver();
+					$lancement = true;
 				break;
 				case 'maladie_amorphe' : case 'maladie_degenerescence' : case 'maladie_mollesse' :
 					if($type_cible == 'joueur')
@@ -632,24 +528,7 @@ if (isset($_GET['ID']) && !$joueur->is_buff('bloque_sort'))
 				 			}
 			 			}
 			 		}
-					$joueur->set_pa($joueur->get_pa() - $sortpa);
-					$joueur->set_mp($joueur->get_mp() - $sortmp);
-					//Augmentation des compétences
-					$difficulte_sort = diff_sort($sort->get_difficulte(), $joueur, 'incantation', $sortpa_base, $sortmp_base);
-					$augmentation = augmentation_competence('incantation', $joueur, $difficulte_sort);
-					if ($augmentation[1] == 1)
-					{
-						$joueur->set_incantation($augmentation[0]);
-					}
-					$difficulte_sort = diff_sort($sort->get_difficulte(), $joueur, $sort->get_comp_assoc(), $sortpa_base, $sortmp_base);
-					$augmentation = augmentation_competence($sort->get_comp_assoc(), $joueur, $difficulte_sort);
-					if ($augmentation[1] == 1)
-					{
-						$joueur->set_comp($sort->get_comp_assoc(), $augmentation[0]);
-					}
-					//Mis à jour du joueur
-					//sauve_sans_bonus_ignorables($joueur, array('mp', 'pa', 'incantation', $row['comp_assoc']));
-					$joueur->sauver();
+					$lancement = true;
 				break;
 				case 'rez' :
 					//Sale
@@ -672,27 +551,10 @@ if (isset($_GET['ID']) && !$joueur->is_buff('bloque_sort'))
 						}
 						if($sort->get_effet() > $pourcent_max)
 						{
-							$joueur->set_pa($joueur->get_pa() - $sortpa);
-							$joueur->set_mp($joueur->get_mp() - $sortmp);
+							$lancement = true;
 							//Mis en place de la résurection
 							$requete = "INSERT INTO rez VALUES('', ".$cible->get_id().", ".$joueur->get_id().", '".$joueur->get_nom()."', ".$sort->get_effet().", ".$sort->get_effet2().", ".$sort->get_duree().", NOW())";
 							$db->query($requete);
-							//Augmentation des compétences
-							$difficulte_sort = diff_sort($sort->get_difficulte(), $joueur, 'incantation', $sortpa_base, $sortmp_base);
-							$augmentation = augmentation_competence('incantation', $joueur, $difficulte_sort);
-							if ($augmentation[1] == 1)
-							{
-								$joueur->set_incantation($augmentation[0]);
-							}
-							$difficulte_sort = diff_sort($sort->get_difficulte(), $joueur, $sort->get_comp_assoc(), $sortpa_base, $sortmp_base);
-							$augmentation = augmentation_competence($sort->get_comp_assoc(), $joueur, $difficulte_sort);
-							if ($augmentation[1] == 1)
-							{
-								$joueur->set_comp($sort->get_comp_assoc(), $augmentation[0]);
-							}
-							//Mis à jour du joueur
-							//sauve_sans_bonus_ignorables($joueur, array('mp', 'pa', 'incantation', $row['comp_assoc']));
-							$joueur->sauver();
 							echo 'Résurrection bien lancée.';
 						}
 						else
@@ -707,16 +569,40 @@ if (isset($_GET['ID']) && !$joueur->is_buff('bloque_sort'))
 				break;				
 			}
 		}
-		if($groupe)
-			$cible = $joueur;
-		echo '<br /><a href="sort.php?type='.$type_cible.'&amp;id_'.$type_cible.'='.$cible->get_id().'" onclick="return envoiInfo(this.href, \'information\');">Revenir au livre de sort</a>';
+		//On fait le final si le lancement est réussi
+		if($lancement)
+		{
+			$joueur->set_pa($joueur->get_pa() - $sortpa);
+			$lanceur->set_mp($lanceur->get_mp() - $sortmp);
+			if($possible_augmentation)
+			{
+				//Augmentation des compétences
+				$difficulte_sort = diff_sort($sort->get_difficulte(), $joueur, 'incantation', $sortpa_base, $sortmp_base);
+				$augmentation = augmentation_competence('incantation', $joueur, $difficulte_sort);
+				if ($augmentation[1] == 1)
+				{
+					$joueur->set_incantation($augmentation[0]);
+				}
+				$difficulte_sort = diff_sort($sort->get_difficulte(), $joueur, $sort->get_comp_assoc(), $sortpa_base, $sortmp_base);
+				$augmentation = augmentation_competence($sort->get_comp_assoc(), $joueur, $difficulte_sort);
+				if ($augmentation[1] == 1)
+				{
+					$joueur->set_comp($sort->get_comp_assoc(), $augmentation[0]);
+				}
+			}
+			$joueur->sauver();
+			$lanceur->sauver();
+		}
+		if($groupe) $cible = $joueur;
+		if($type_lanceur == 'joueur') echo '<br /><a href="sort.php?type='.$type_cible.'&amp;id_'.$type_cible.'='.$cible->get_id().'" onclick="return envoiInfo(this.href, \'information\');">Revenir au livre de sort</a>';
+		else echo '<br /><a href="gestion_monstre.php" onclick="return envoiInfo(this.href, \'information\');">Revenir à la gestion des monstres</a>';
 	}
 }
 elseif($joueur->is_buff('bloque_sort'))
 {
 	echo 'Vous êtes sous vunérabilité, vous ne pouvez plus lancer de sorts hors combat.';
 }
-else
+elseif($type_lanceur == 'joueur')
 {
 	if(array_key_exists('action', $_GET))
 	{
