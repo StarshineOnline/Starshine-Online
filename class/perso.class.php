@@ -3729,7 +3729,7 @@ class perso extends entite
 		return $this->ecurie_self;
 	}
 
-	function add_pet($id_monstre, $hp = false)
+	function add_pet($id_monstre, $hp = false, $mp = false)
 	{
 		if($this->nb_pet() >= $this->get_comp('max_pet')) return false;
 		else
@@ -3741,7 +3741,7 @@ class perso extends entite
 			$pet->set_nom($monstre->get_nom());
 			if(!$hp) $pet->set_hp($monstre->get_hp());
 			else $pet->set_hp($hp);
-			$pet->set_mp(0);
+			$pet->set_mp($mp);
 			if(count($this->get_pets()) == 0) $pet->set_principale(1);
 			else $pet->set_principale(0);
 			$pet->sauver();

@@ -484,3 +484,29 @@ tr.tabMonstre td { border:1px solid grey; text-align:center; padding:2px; }
  Messagerie 
  **********************************/
 .msgbar { width:50px; }
+
+/***********************************
+ Pet
+ **********************************/
+.monstre img
+{
+	float : left;
+	margin : 0 10px 0 0;
+}
+
+.monstre h3
+{
+	margin-bottom : 3px;
+}
+
+.monstre .monstre_name
+{
+	border : 0px;
+	background : transparent;
+	font-weight : bold;
+}
+
+.monstre .monstre_infos
+{
+	margin-left : 40px;
+}

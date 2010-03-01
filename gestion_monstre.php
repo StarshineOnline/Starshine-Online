@@ -27,8 +27,18 @@ if(array_key_exists('stop', $_GET))
 	refresh_perso();
 	$joueur->get_buff();
 }
+if(array_key_exists('name', $_GET))
+{
+	$pet = new pet($_GET['id']);
+	$pet->set_nom($_GET['name']);
+	$pet->sauver();
+	echo '<h6>Nom de la créature modifié avec succès</h6>';
+}
+else
+{
 ?>
 <fieldset>
+	<div id="monstre_message"></div>
 	<legend>Mes créatures <?php echo $joueur->nb_pet().' / '.$joueur->get_max_pet(); ?></legend>
 <?php
 $pets = $joueur->get_pets();
@@ -38,19 +48,25 @@ if(count($pets) > 0)
 	{
 		$pet->get_monstre();
 		?>
-			<h3><?php if($pet->get_principale() == 1) echo '<img src="image/icone/couronne.png">'; ?> <?php echo $pet->get_nom(); ?></h3>
-			<img src="image/monstre/<?php echo $pet->monstre->get_lib(); ?>.png" style="float : left; margin : 0 10px 0 0;">
-			Type : <?php echo $pet->monstre->get_nom(); ?><br />
-			HP : <?php echo $pet->get_hp(); ?> / <?php echo $pet->monstre->get_hp(); ?><br />
-			MP : <?php echo $pet->get_mp(); ?> / <?php echo $pet->get_mp_max(); ?><br />
-			<a href="gestion_monstre.php?supprimer=<?php echo $pet->get_id(); ?>" onclick="if(confirm('Voulez vous vraiment supprimer cette créature ~<?php echo $pet->get_nom(); ?>~ ?')) return envoiInfo(this.href, 'information'); else return false;" title="Supprimer"><span class="del" style="float : right;"></span></a>
-			<?php
-			if($pet->monstre->get_sort_dressage() != '')
-			{
-				$sort = $pet->monstre->get_infos_sort_dressage();
-				echo'<a href="sort.php?ID='.$sort->get_id().'&lanceur=monstre&id_pet='.$pet->get_id().'" onclick="return envoiInfo(this.href, \'information\');">Ultiliser le sort : '.$sort->get_nom().'</a><br />';
-			}
-			if($pet->get_principale() == 0) echo'<a href="gestion_monstre.php?principale='.$pet->get_id().'" onclick="return envoiInfo(this.href, \'information\');">Définir comme créature principale</a>';
+	<div class="monstre">
+		<h3><?php if($pet->get_principale() == 1) echo '<img src="image/icone/couronne.png">'; ?> <form action="" onsubmit="$('#monstre_message').load('gestion_monstre.php?id=<?php echo $pet->get_id(); ?>&name=' + $('#monstre_name_<?php echo $pet->get_id(); ?>').val()); return false;"><input type="text" class="monstre_name" id="monstre_name_<?php echo $pet->get_id(); ?>" value="<?php echo $pet->get_nom(); ?>" /></form></h3>
+			<img src="image/monstre/<?php echo $pet->monstre->get_lib(); ?>.png">
+			<div class="monstre_infos">
+				Type : <?php echo $pet->monstre->get_nom(); ?><br />
+				HP : <?php echo $pet->get_hp(); ?> / <?php echo $pet->monstre->get_hp(); ?><br />
+				MP : <?php echo $pet->get_mp(); ?> / <?php echo $pet->get_mp_max(); ?><br />
+				<a href="gestion_monstre.php?supprimer=<?php echo $pet->get_id(); ?>" onclick="if(confirm('Voulez vous vraiment supprimer cette créature ~<?php echo $pet->get_nom(); ?>~ ?')) return envoiInfo(this.href, 'information'); else return false;" title="Supprimer"><span class="del" style="float : right;"></span></a>
+				<?php
+				if($pet->monstre->get_sort_dressage() != '')
+				{
+					$sort = $pet->monstre->get_infos_sort_dressage();
+					echo'<a href="sort.php?ID='.$sort->get_id().'&lanceur=monstre&id_pet='.$pet->get_id().'" onclick="return envoiInfo(this.href, \'information\');">Ultiliser le sort : '.$sort->get_nom().'</a><br />';
+				}
+				if($pet->get_principale() == 0) echo'<a href="gestion_monstre.php?principale='.$pet->get_id().'" onclick="return envoiInfo(this.href, \'information\');">Définir comme créature principale</a>';
+		?>
+			</div>
+	</div>
+		<?php
 	}
 }
 else
@@ -102,3 +118,6 @@ else
 }
 ?>
 </fieldset>
+<?php
+}
+?>
