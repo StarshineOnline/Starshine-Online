@@ -71,6 +71,7 @@ switch($type)
 			$attaquant = new entite('pet', $joueur);
 		}
 		$map_monstre = new map_monstre($_GET['id_monstre']);
+		$map_monstre->check_monstre();
 		if ($map_monstre->nonexistant)
 		{
 			echo '<h5>Ce monstre est déjà au paradis des monstres</h5>';

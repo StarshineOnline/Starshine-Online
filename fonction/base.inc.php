@@ -2227,6 +2227,7 @@ function lance_buff($type, $id, $effet, $effet2, $duree, $nom, $description, $ty
 	{
 		$table = 'buff_monstre';
 		$champ = 'id_monstre';
+		$duree = $duree * 6;
 	}
 	
 	// Requête SQL

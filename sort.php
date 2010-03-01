@@ -202,10 +202,11 @@ if (isset($_GET['ID']) && !$joueur->is_buff('bloque_sort'))
 					{
 						$sorthp = $sort->get_effet();
 						$sortmp = $sort->get_effet2() * -1;
-						if($sortmp > (floor($joueur->get_mp_maximum()) - $joueur->get_mp())) $sortmp = floor($joueur->get_mp_maximum()) - $joueur->get_mp();
-						echo 'Vous utilisez '.$sorthp.' HP pour convertir en '.$sortmp.' MP<br />';
+						$sortmp_base = $sort->get_effet();
+						if(($sortmp * -1) > (floor($joueur->get_mp_maximum()) - $joueur->get_mp())) $sortmp = (floor($joueur->get_mp_maximum()) - $joueur->get_mp()) * -1;
+						echo 'Vous utilisez '.$sorthp.' HP pour convertir en '.($sortmp * -1).' MP<br />';
 						$joueur->set_hp($joueur->get_hp() - $sorthp);
-						if($sortmp > 0)
+						if($sortmp < 0)
 						{
 							$lancement = true;
 						}
@@ -572,6 +573,7 @@ if (isset($_GET['ID']) && !$joueur->is_buff('bloque_sort'))
 		//On fait le final si le lancement est réussi
 		if($lancement)
 		{
+			echo '<br />';
 			$joueur->set_pa($joueur->get_pa() - $sortpa);
 			$lanceur->set_mp($lanceur->get_mp() - $sortmp);
 			if($possible_augmentation)

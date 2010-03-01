@@ -11,6 +11,7 @@ $W_case = $_GET['poscase'];
 //Prise des infos du perso
 $joueur = new perso($_SESSION['ID']);
 $map_monstre = new map_monstre($W_ID);
+$map_monstre->check_monstre();
 $monstre = new monstre($map_monstre->get_type());
 
 $survie = $joueur->get_survie();

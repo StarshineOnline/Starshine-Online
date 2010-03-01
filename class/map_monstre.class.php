@@ -609,4 +609,13 @@ class map_monstre
 			}
 		}
 	}
+
+	function check_monstre()
+	{
+		global $db;
+		// On supprime tous les buffs périmés
+		$requete = "DELETE FROM buff_monstre WHERE fin <= ".time();
+		$req = $db->query($requete);
+
+	}
 }
