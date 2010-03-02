@@ -118,7 +118,7 @@ if($distance == 0)
 			{
 				echo '<h6>Vous avez réussi à dresser ce monstre</h6>';
 				//On le met dans son inventaire de monstre
-				if($joueur->add_pet($pet->get_id(), $monstre->get_hp(), ($pet->get_energie() * 10))
+				if($joueur->add_pet($pet->get_id(), $monstre->get_hp(), ($pet->get_energie() * 10)))
 				{
 					$buff = $joueur->get_buff('dressage');
 					$buff->supprimer();
