@@ -60,7 +60,7 @@ if(count($pets) > 0)
 				if($pet->monstre->get_sort_dressage() != '')
 				{
 					$sort = $pet->monstre->get_infos_sort_dressage();
-					echo'<a href="sort.php?ID='.$sort->get_id().'&lanceur=monstre&id_pet='.$pet->get_id().'" onclick="return envoiInfo(this.href, \'information\');">Ultiliser le sort : '.$sort->get_nom().'</a><br />';
+					echo'<a href="sort.php?ID='.$sort->get_id().'&lanceur=monstre&id_pet='.$pet->get_id().'" onclick="return envoiInfo(this.href, \'information\');" onmouseover="'.make_overlib(description($sort->get_description(), $sort).'<br />MP créature : '.$sort->get_mp().'<br />PA personnage : '.$sort->get_pa()).'" onmouseout="return nd();">Utiliser le sort : '.$sort->get_nom().'</a><br />';
 				}
 				if($pet->get_principale() == 0) echo'<a href="gestion_monstre.php?principale='.$pet->get_id().'" onclick="return envoiInfo(this.href, \'information\');">Définir comme créature principale</a>';
 		?>

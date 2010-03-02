@@ -50,6 +50,9 @@ if($bourg->get_x() == $joueur->get_x() AND $bourg->get_y() == $joueur->get_y() A
 		<li>
 			<a href="bureau_quete.php" onclick="return envoiInfo(this.href, 'carte')">Bureau des quètes</a>
 		</li>
+		<li>
+			<a href="ecurie.php" onclick="return envoiInfo(this.href, 'carte')">Ecurie</a>
+		</li>
   <?php
   $is_election = elections::is_mois_election($R->get_id());
 	if($is_election)

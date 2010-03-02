@@ -11,6 +11,8 @@ $joueur->check_perso();
 //Vérifie si le perso est mort
 verif_mort($joueur, 1);
 
+
+$case = new map_case(sSQL($joueur->get_pos()));
 $W_requete = 'SELECT royaume, type FROM map WHERE ID =\''.sSQL($joueur->get_pos()).'\'';
 $W_req = $db->query($W_requete);
 $W_row = $db->read_assoc($W_req);
@@ -28,10 +30,10 @@ $max_ecurie = 10;
 
 ?>
 <fieldset>
-   	<legend><?php echo '<a href="ville.php" onclick="return envoiInfo(this.href, \'centre\')">';?><?php echo $R->get_nom();?></a> > <?php echo '<a href="ecurie.php" onclick="return envoiInfo(this.href, \'carte\')">';?> Ecurie </a></legend>
+   	<legend><?php if(verif_ville($joueur->get_x(), $joueur->get_y())) return_ville( '<a href="ville.php" onclick="return envoiInfo(this.href, \'centre\')">'.$R->get_nom().'</a> >', $joueur->get_pos()); ?> <?php echo '<a href="ecurie.php" onclick="return envoiInfo(this.href,\'carte\')">';?> Ecurie</a></legend>
 		<?php include_once(root.'ville_bas.php');?>
 <?php
-if($W_row['type'] == 1 && $R->get_diplo($joueur->get_race()) == 127)
+if($case->is_ville(true) && $R->get_diplo($joueur->get_race()) == 127)
 {
 	//Le joueur dépose une créature dans l'écurie
 	if(array_key_exists('d', $_GET))
@@ -113,7 +115,7 @@ if($W_row['type'] == 1 && $R->get_diplo($joueur->get_race()) == 127)
 		$pet->get_monstre();
 		?>
 		<li>
-			<?php echo $pet->get_nom(); ?> - <?php echo $pet->monstre->get_nom(); ?> -- HP : <?php echo $pet->get_hp(); ?> / <?php echo $pet->monstre->get_hp(); ?> <a href=""><img src="image/sort/sort_soins1.png" alt="Soigner" title="Soigner" style="width : 16px; height : 16px; vertical-align : top;" /> <span class="small">(<?php echo $pet->get_cout_soin(); ?> stars)</span></a> <a href="ecurie.php?r=<?php echo $pet->get_id(); ?>" onclick="return envoiInfo(this.href, 'carte');"><img src="image/icone/reprendre.png" alt="Reprendre" title="Reprendre" style="width : 16px; height : 16px; vertical-align : top;" /></a>
+			<img src="image/monstre/<?php echo $pet->monstre->get_lib(); ?>.png" style="width : 16px; height : 16px; vertical-align : top;" /> <?php echo $pet->get_nom(); ?> - <span class="xsmall">HP : <?php echo $pet->get_hp(); ?> / <?php echo $pet->monstre->get_hp(); ?> -- MP : <?php echo $pet->get_mp(); ?> / <?php echo $pet->get_mp_max(); ?></span> <a href=""><img src="image/sort/sort_soins1.png" alt="Soigner" title="Soigner" style="width : 16px; height : 16px; vertical-align : top;" /> <span class="small">(<?php echo $pet->get_cout_soin(); ?> stars)</span></a> <a href="ecurie.php?r=<?php echo $pet->get_id(); ?>" onclick="return envoiInfo(this.href, 'carte');"><img src="image/icone/reprendre.png" alt="Reprendre" title="Reprendre" style="width : 16px; height : 16px; vertical-align : top;" /></a>
 		</li>
 		<?php
 	}
@@ -137,7 +139,7 @@ if($W_row['type'] == 1 && $R->get_diplo($joueur->get_race()) == 127)
 		}
 		?>
 		<li>
-			<?php echo $pet->get_nom(); ?> - <?php echo $pet->monstre->get_nom(); ?> -- HP : <?php echo $pet->get_hp(); ?> / <?php echo $pet->monstre->get_hp(); ?> <a href="ecurie.php?<?php echo $link; ?>=<?php echo $pet->get_id(); ?>" onclick="return envoiInfo(this.href, 'carte');"><?php echo $texte; ?></a> <a href="ecurie.php?d=<?php echo $pet->get_id(); ?>" onclick="return envoiInfo(this.href, 'carte');"><img src="image/icone/deposer.png" alt="Déposer" title="Déposer" style="width : 16px; height : 16px; vertical-align : top;" /> <span class="small">(<?php echo $pet->get_cout_depot(); ?> stars)</span></a>
+			<img src="image/monstre/<?php echo $pet->monstre->get_lib(); ?>.png" style="width : 16px; height : 16px; vertical-align : top;" /> <?php echo $pet->get_nom(); ?> - <span class="xsmall">HP : <?php echo $pet->get_hp(); ?> / <?php echo $pet->monstre->get_hp(); ?> -- MP : <?php echo $pet->get_mp(); ?> / <?php echo $pet->get_mp_max(); ?></span> <a href="ecurie.php?<?php echo $link; ?>=<?php echo $pet->get_id(); ?>" onclick="return envoiInfo(this.href, 'carte');"><?php echo $texte; ?></a> <a href="ecurie.php?d=<?php echo $pet->get_id(); ?>" onclick="return envoiInfo(this.href, 'carte');"><img src="image/icone/deposer.png" alt="Déposer" title="Déposer" style="width : 16px; height : 16px; vertical-align : top;" /> <span class="small">(<?php echo $pet->get_cout_depot(); ?> stars)</span></a>
 		</li>
 		<?php
 	}

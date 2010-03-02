@@ -389,5 +389,19 @@ class map_case
 			}
 		}
 	}
+
+	function is_ville($bourg = false)
+	{
+		if($this->type == 1) return true;
+		else
+		{
+			if($bourg)
+			{
+				$construction = construction::create(array('x', 'y', 'type'), array($this->get_x(), $this->get_y(), 'bourg'));
+				if(count($construction) > 0) return true;
+			}
+			return false;
+		}
+	}
 }
 ?>
