@@ -16,5 +16,5 @@ $req = $db->query($requete);
 while($row = $db->read_assoc($req))
 {
 	$update = "UPDATE map SET info = '".$row['info']."', royaume = '".$row['royaume']."' WHERE id = ".$row['id'];
-	$db->query($requete);
+	$db->query($update);
 }
