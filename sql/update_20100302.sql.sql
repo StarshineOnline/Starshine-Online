@@ -26,5 +26,5 @@ UPDATE `classe_requis` SET `requis` =  '50' WHERE `classe_requis`.`id` =85;
 UPDATE `classe_requis` SET `requis` = '75' WHERE `classe_requis`.`id` =84;
 UPDATE `classe_requis` SET `requis` =  '50' WHERE `classe_requis`.`id` =94;
 UPDATE `classe_requis` SET `requis` = '75' WHERE `classe_requis`.`id` =93;
-UPDATE `classe_requis` SET `requis` = '50' WHERE `classe_requis`.`id` =98
+UPDATE `classe_requis` SET `requis` = '50' WHERE `classe_requis`.`id` =98;
 UPDATE `classe_requis` SET `requis` = '75' WHERE `classe_requis`.`id` =97;
