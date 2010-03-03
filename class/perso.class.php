@@ -3826,7 +3826,7 @@ class perso extends entite
 
 	function max_dresse()
 	{
-		$max = floor(sqrt($this->get_dressage())) - 5;
+		$max = (floor(pow($this->get_dressage(), 0.772) / 7) + 1);
 		if($max < 1) $max = 1;
 		return $max;
 	}
