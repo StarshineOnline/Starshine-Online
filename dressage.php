@@ -85,20 +85,24 @@ if($distance == 0)
 			//On vérifie qu'il a le niveau en dressage requis pour dresser un monstre de ce niveau
 			if($joueur->can_dresse($monstre))
 			{
-				lance_buff('dressage', $joueur->get_id(), 0, $_GET['id'], 172800, 'Dressage', 'On dresse le monstre', 'perso', 1, 0, 0, 0);
-				?>
-				<h6>Dressage en cours</h6>
-				<br />
-				<a href="dressage.php?id=<?php echo $_GET['id']; ?>" onclick="return envoiInfo(this.href, 'information')">Continuer le dressage</a><br />
-				<br />
-				Le dressage a commencé.<br />
-				Vous pouvez continuer le dressage (10 PA) pour augmenter vos chances de dresser cette créature.<br />
-				Un jour après avoir commencer le dressage, vous pouvez décider de finir le dressage de cette créature et ainsi savoir si il est réussi ou non.<br />
-				Attention, vous ne pouvez plus ni bouger ni attaquer lorsque vous êtes en train de dresser une créature.<br />
-				De plus, si un joueur vous attaque, le dressage sera arrêté.<br />
-				<br />
-				Vous pouvez à tout moment décider d'arrêter le dressage, pour cela rendez vous dans la partie "dressage" du jeu.
-				<?php
+				if($joueur->nb_pet() < $joueur->get_comp('max_pet'))
+				{
+					lance_buff('dressage', $joueur->get_id(), 0, $_GET['id'], 172800, 'Dressage', 'On dresse le monstre', 'perso', 1, 0, 0, 0);
+					?>
+					<h6>Dressage en cours</h6>
+					<br />
+					<a href="dressage.php?id=<?php echo $_GET['id']; ?>" onclick="return envoiInfo(this.href, 'information')">Continuer le dressage</a><br />
+					<br />
+					Le dressage a commencé.<br />
+					Vous pouvez continuer le dressage (10 PA) pour augmenter vos chances de dresser cette créature.<br />
+					Un jour après avoir commencer le dressage, vous pouvez décider de finir le dressage de cette créature et ainsi savoir si il est réussi ou non.<br />
+					Attention, vous ne pouvez plus ni bouger ni attaquer lorsque vous êtes en train de dresser une créature.<br />
+					De plus, si un joueur vous attaque, le dressage sera arrêté.<br />
+					<br />
+					Vous pouvez à tout moment décider d'arrêter le dressage, pour cela rendez vous dans la partie "dressage" du jeu.
+					<?php
+				}
+				else '<h5>Vous ne pouvez pas dresser plus de '.$joueur->get_comp('max_pet').' créatures</h5>';
 			}
 			else
 			{

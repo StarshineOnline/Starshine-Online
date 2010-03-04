@@ -3837,5 +3837,10 @@ class perso extends entite
 		if($this->max_dresse() >= $monstre->get_level() && $m->get_dressage() != 999999) return true;
 		else return false;
 	}
+
+	function soin_pet()
+	{
+		return floor(sqrt($this->get_dressage()) * 5);
+	}
 }
 ?>

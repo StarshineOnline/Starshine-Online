@@ -27,6 +27,37 @@ if(array_key_exists('stop', $_GET))
 	refresh_perso();
 	$joueur->get_buff();
 }
+if(array_key_exists('soin', $_GET))
+{
+	$pet = new pet($_GET['soin']);
+	//Si on a assez de PV
+	if($joueur->get_hp() > ceil($joueur->get_hp_max() / 10))
+	{
+		if($joueur->get_pa() >= 1)
+		{
+			if($pet->get_hp < $pet->monstre->get_hp())
+			{
+				$pet->get_monstre();
+				$joueur->set_hp($joueur->get_hp() - ceil($joueur->get_hp_max() / 10));
+				$joueur->set_pa($joueur->get_pa() - 1);
+				$joueur->sauver();
+				$des = de_soin(0, $joueur->soin_pet());
+				foreach($des as $de)
+				{
+					$heal += rand(1, $de);
+				}
+				if($heal > ($pet->monstre->get_hp() - $pet->get_hp())) $heal = $pet->monstre->get_hp() - $pet->get_hp();
+				$pet->set_hp($pet->get_hp() + $heal);
+				echo '<h6>Vous soignez '.$pet->get_nom().' de '.$heal.' HP.</h6>';
+				$pet->sauver();
+				refresh_perso();
+			}
+			else echo '<h5>Votre créature a toute sa vie.</h5>';
+		}
+		else echo '<h5>Vous n\'avez pas assez de PA.</h5>';
+	}
+	else echo '<h5>Vous n\'avez pas assez de HP.</h5>';
+}
 if(array_key_exists('name', $_GET))
 {
 	$pet = new pet($_GET['id']);
@@ -52,6 +83,7 @@ if(count($pets) > 0)
 		<h3><?php if($pet->get_principale() == 1) echo '<img src="image/icone/couronne.png">'; ?> <form action="" onsubmit="$('#monstre_message').load('gestion_monstre.php?id=<?php echo $pet->get_id(); ?>&name=' + $('#monstre_name_<?php echo $pet->get_id(); ?>').val()); return false;"><input type="text" class="monstre_name" id="monstre_name_<?php echo $pet->get_id(); ?>" value="<?php echo $pet->get_nom(); ?>" /></form></h3>
 			<img src="image/monstre/<?php echo $pet->monstre->get_lib(); ?>.png">
 			<div class="monstre_infos">
+				<a href="gestion_monstre.php?soin=<?php echo $pet->get_id(); ?>" onclick="return envoiInfo(this.href, 'information');" title="Soigner, puissance : <?php echo $joueur->soin_pet(); ?>"><span style="float : right;">Soin <span class="xsmall">(vous coûte <?php echo ceil($joueur->get_hp() / 10); ?> HP / 1 PA)</span></span></a>
 				Type : <?php echo $pet->monstre->get_nom(); ?><br />
 				HP : <?php echo $pet->get_hp(); ?> / <?php echo $pet->monstre->get_hp(); ?><br />
 				MP : <?php echo $pet->get_mp(); ?> / <?php echo $pet->get_mp_max(); ?><br />
