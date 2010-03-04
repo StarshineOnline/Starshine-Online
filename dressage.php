@@ -102,7 +102,7 @@ if($distance == 0)
 					Vous pouvez à tout moment décider d'arrêter le dressage, pour cela rendez vous dans la partie "dressage" du jeu.
 					<?php
 				}
-				else '<h5>Vous ne pouvez pas dresser plus de '.$joueur->get_comp('max_pet').' créatures</h5>';
+				else echo '<h5>Vous ne pouvez pas dresser plus de '.$joueur->get_comp('max_pet').' créatures</h5>';
 			}
 			else
 			{

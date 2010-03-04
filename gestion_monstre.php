@@ -35,7 +35,7 @@ if(array_key_exists('soin', $_GET))
 	{
 		if($joueur->get_pa() >= 1)
 		{
-			if($pet->get_hp < $pet->monstre->get_hp())
+			if($pet->get_hp() < $pet->monstre->get_hp())
 			{
 				$pet->get_monstre();
 				$joueur->set_hp($joueur->get_hp() - ceil($joueur->get_hp_max() / 10));
