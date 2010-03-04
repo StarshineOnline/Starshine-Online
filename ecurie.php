@@ -33,7 +33,7 @@ $max_ecurie = 10;
    	<legend><?php if(verif_ville($joueur->get_x(), $joueur->get_y())) return_ville( '<a href="ville.php" onclick="return envoiInfo(this.href, \'centre\')">'.$R->get_nom().'</a> >', $joueur->get_pos()); ?> <?php echo '<a href="ecurie.php" onclick="return envoiInfo(this.href,\'carte\')">';?> Ecurie</a></legend>
 		<?php include_once(root.'ville_bas.php');?>
 <?php
-if($case->is_ville(true) && $R->get_diplo($joueur->get_race()) == 127)
+if($case->is_ville(true) && $R->get_diplo($joueur->get_race()) <= 6)
 {
 	//Le joueur dépose une créature dans l'écurie
 	if(array_key_exists('d', $_GET))
