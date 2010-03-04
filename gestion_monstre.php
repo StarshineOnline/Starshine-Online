@@ -30,6 +30,7 @@ if(array_key_exists('stop', $_GET))
 if(array_key_exists('soin', $_GET))
 {
 	$pet = new pet($_GET['soin']);
+	$pet->get_monstre();
 	//Si on a assez de PV
 	if($joueur->get_hp() > ceil($joueur->get_hp_max() / 10))
 	{
@@ -37,7 +38,6 @@ if(array_key_exists('soin', $_GET))
 		{
 			if($pet->get_hp() < $pet->monstre->get_hp())
 			{
-				$pet->get_monstre();
 				$joueur->set_hp($joueur->get_hp() - ceil($joueur->get_hp_max() / 10));
 				$joueur->set_pa($joueur->get_pa() - 1);
 				$joueur->sauver();
