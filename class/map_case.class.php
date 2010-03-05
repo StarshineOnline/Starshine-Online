@@ -390,7 +390,7 @@ class map_case
 		}
 	}
 
-	function is_ville($bourg = false)
+	function is_ville($bourg = false, $bonus = false)
 	{
 		if($this->type == 1) return true;
 		else
@@ -398,7 +398,8 @@ class map_case
 			if($bourg)
 			{
 				$construction = construction::create(array('x', 'y', 'type'), array($this->get_x(), $this->get_y(), 'bourg'));
-				if(count($construction) > 0) return true;
+				if(!$bonus && count($construction) > 0) return true;
+				else if($construction[0]->$bonus == 1) return true;
 			}
 			return false;
 		}
