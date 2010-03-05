@@ -244,6 +244,7 @@ if (isset($_GET['ID']) && !$joueur->is_buff('bloque_sort'))
 						$sortmp_base = $sort->get_effet();
 						$joueur->set_mp($joueur->get_mp() + $sort->get_effet());
 						if($joueur->get_mp() > $joueur->get_mp_maximum()) $joueur->set_mp($joueur->get_mp_maximum());
+						$joueur->sauver();
 						$lancement = true;
 					}
 					else
