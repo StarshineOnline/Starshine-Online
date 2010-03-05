@@ -15,15 +15,8 @@ $W_requete = 'SELECT royaume, type FROM map WHERE ID =\''.sSQL($joueur->get_pos(
 $W_req = $db->query($W_requete);
 $W_row = $db->read_assoc($W_req);
 
-if ($W_row['type'] != 1) // On est pas en ville
-{
-	$X = $joueur->get_x();
-	$Y = $joueur->get_y();
-	$bat_requete = "select c.id from construction c, batiment b where c.id_batiment = b.id and c.x = $X and c.y = $Y and b.bonus5 = 1";
-	$bat_req = $db->query($bat_requete);
-	$bat_row = $db->read_assoc($bat_req);
-	if ($bat_row == false) security_block(URL_MANIPULATION, 'Accès à la taverne depuis les champs ');
-}
+$case = new map_case($joueur->get_pos());
+if(!$case->is_ville(true)) exit();
 
 
 $R = new royaume($W_row['royaume']);
