@@ -402,8 +402,8 @@ class map_case
 				else
 				{
 					$batiment = new batiment($construction[0]->get_id_batiment());
-					var_dump($batiment);
-					 if($batiment->$bonus == 1) return true;
+					$get = 'get_'.$bonus;
+					 if($batiment->$get == 1) return true;
 				}
 			}
 			return false;
