@@ -397,15 +397,16 @@ class map_case
 		{
 			if($bourg)
 			{
-				$construction = construction::create(array('x', 'y', 'type'), array($this->get_x(), $this->get_y(), 'bourg'));
-				if(!$bonus && count($construction) > 0) return true;
+				if(!$bourg)
+				{
+					$construction = construction::create(array('x', 'y', 'type'), array($this->get_x(), $this->get_y(), 'bourg'));
+					if(!$bonus && count($construction) > 0) return true;
+				}
 				else
 				{
+					$construction = construction::create(array('x', 'y'), array($this->get_x(), $this->get_y()));
 					$batiment = new batiment($construction[0]->get_id_batiment());
 					$get = 'get_'.$bonus;
-					var_dump($batiment);
-					var_dump($get);
-					var_dump($batiment->$get);
 					 if($batiment->$get() == 1) return true;
 				}
 			}
