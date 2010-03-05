@@ -398,9 +398,13 @@ class map_case
 			if($bourg)
 			{
 				$construction = construction::create(array('x', 'y', 'type'), array($this->get_x(), $this->get_y(), 'bourg'));
-				var_dump($construction);
 				if(!$bonus && count($construction) > 0) return true;
-				else if($construction[0]->$bonus == 1) return true;
+				else
+				{
+					$batiment = new batiment($construction[0]->get_id_batiment());
+					var_dump($batiment);
+					 if($batiment->$bonus == 1) return true;
+				}
 			}
 			return false;
 		}
