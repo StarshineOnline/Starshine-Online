@@ -78,7 +78,7 @@ $Trace['elfehaut']['dexterite'] = 12;  ///< Dextérité des Hauts Elfes.
 $Trace['elfehaut']['puissance'] = 13;  ///< Puissance des Hauts Elfes.
 $Trace['elfehaut']['volonte'] = 18;  ///< Volonté des Hauts Elfes.
 $Trace['elfehaut']['energie'] = 12;  ///< Energie des Hauts Elfes.
-$Trace['elfehaut']['passif'] = '+10% regen MP<br /> +1 Dex, +1 Volonté, +1 Réserve de mana, la nuit';  ///< Description des bonus des Hauts Elfes. 
+$Trace['elfehaut']['passif'] = '+10% regen MP<br /> +1 Dex, +1 Volonté, +2 Réserve de mana, la nuit';  ///< Description des bonus des Hauts Elfes. 
 
 $Trace['elfehaut']['affinite_sort_mort'] = 1;  ///< Affinité avec la magie de la mort des Hauts Elfes.
 $Trace['elfehaut']['affinite_sort_element'] = 7;  ///< Affinité avec la magie élémentaire des Hauts Elfes.
@@ -286,7 +286,7 @@ $Trace['vampire']['dexterite'] = 13;  ///< Dextérité des Vampires.
 $Trace['vampire']['puissance'] = 16;  ///< Puissance des Vampires.
 $Trace['vampire']['volonte'] = 11;  ///< Volonté des Vampires.
 $Trace['vampire']['energie'] = 11;  ///< Energie des Vampires.
-$Trace['vampire']['passif'] = '+1 en réserve de mana<br /> +2 Dex, +2 Volonté, +2 Réserve Mana la nuit<br /> -1 Dex, -1 Volonté, -1 Réserve de mana le jour';  ///< Description des bonus des 
+$Trace['vampire']['passif'] = '+2 en réserve de mana<br /> +2 Dex, +2 Volonté, +2 Réserve Mana la nuit<br /> -1 Dex, -1 Volonté, -1 Réserve de mana le jour';  ///< Description des bonus des 
 
 $Trace['vampire']['affinite_sort_mort'] = 6;  ///< Affinité avec la magie de la mort des Vampires.
 $Trace['vampire']['affinite_sort_element'] = 6;  ///< Affinité avec la magie élémentaire des Vampires.
