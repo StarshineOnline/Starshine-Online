@@ -234,7 +234,7 @@ $Trace['scavenger']['dexterite'] = 16;  ///< Dextérité des Scavengers.
 $Trace['scavenger']['puissance'] = 12;  ///< Puissance des Scavengers.
 $Trace['scavenger']['volonte'] = 12;  ///< Volonté des Scavengers.
 $Trace['scavenger']['energie'] = 12;  ///< Energie des Scavengers.
-$Trace['scavenger']['passif'] = '+15% Protection physique et +5% protection magique<br /> +45% de chance de réussir fabrication d\'objets';  ///< Description des bonus des Scavengers. 
+$Trace['scavenger']['passif'] = '+15% Protection physique et +5% protection magique<br /> +45% de chance de réussir fabrication d\'objets<br />+20% pour soigner ses créatures.';  ///< Description des bonus des Scavengers.
 
 $Trace['scavenger']['affinite_sort_mort'] = 4;  ///< Affinité avec la magie de la mort des Scavengers.
 $Trace['scavenger']['affinite_sort_element'] = 4;  ///< Affinité avec la magie élémentaire des Scavengers.

@@ -3769,12 +3769,13 @@ class perso extends entite
 		$pet->sauver();
 	}
 
-	function pet_to_ecurie($pet_id, $type_ecurie = 1, $max_ecurie = 10)
+	function pet_to_ecurie($pet_id, $type_ecurie = 1, $max_ecurie = 10, $taxe = 0)
 	{
 		$pet = new pet($_GET['d']);
 		if($pet->get_id_joueur() == $this->get_id())
 		{
-			if($this->get_star() >= $pet->get_cout_depot() OR $type_ecurie == 2)
+			$cout = $pet->get_cout_depot() + $taxe;
+			if(($this->get_star() >= $cout) OR $type_ecurie == 2)
 			{
 				if($this->nb_pet_ecurie() < $max_ecurie)
 				{
@@ -3783,23 +3784,27 @@ class perso extends entite
 					$pet->sauver();
 					if($type_ecurie == 1)
 					{
-						$this->set_star($this->get_star() - $pet->get_cout_depot());
+						$this->set_star($this->get_star() - $cout);
 						$this->sauver();
 					}
+					return true;
 				}
 				else
 				{
-					echo '<h5>L\'écurie ne peut pas prendre plus de vis créatures.</h5>';
+					echo '<h5>L\'écurie ne peut pas prendre plus de '.$max_ecurie.' créatures.</h5>';
+					return false;
 				}
 			}
 			else
 			{
 				echo '<h5>Vous n\'avez pas assez de stars !</h5>';
+			return false;
 			}
 		}
 		else
 		{
 			echo '<h5>Cette créature ne vous appartient pas !</h5>';
+			return false;
 		}
 	}
 
@@ -3840,7 +3845,9 @@ class perso extends entite
 
 	function soin_pet()
 	{
-		return floor(sqrt($this->get_dressage()) * 5);
+		$facteur = ($this->get_puissance() + 10) / 22;
+		if($this->get_race() == 'scavenger') $facteur = $facteur * 1.2;
+		return floor(sqrt($this->get_dressage()) * 4 * $facteur);
 	}
 }
 ?>

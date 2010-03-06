@@ -679,7 +679,13 @@ function lance_sort($id, $acteur, &$effects)
 					//Debuff
 					if($rand < 50)
 					{
-						$effects[] = new globe_foudre(1, 15, true);
+						$de_att = rand(1, $passif->get_vie());
+						$de_deff = rand(1, 40);
+						if($de_att <= $de_deff)
+						{
+							$effects[] = new globe_foudre(1, 15, true);
+						}
+						else echo 'La foudre ne fera rien<br />';
 					}
 					else
 					{
@@ -828,7 +834,7 @@ function lance_sort($id, $acteur, &$effects)
 							$inventaire = unserialize($inventaire);
 						if ($inventaire->chaussure == "p112")
 							$pm *= 2;
-			    }
+					}
 					// Lancer des dés
 					$att = rand(0, $sm);
 					$def = rand(0, $pm);
@@ -1105,8 +1111,14 @@ function lance_comp($id, $acteur, &$effects)
 			$row['comp_assoc'] = $actif->get_comp_combat();
 			$comp_attaque = true;
       		//$effects[] = new fleche_magnetique($row['effet2'], $row['effet']);
-      		$actif->etat['fleche_magnetique_attaque']['effet'] = $row['effet'];
-      		$actif->etat['fleche_magnetique_attaque']['effet2'] = $row['effet2'];
+			$de_att = rand(1, $passif->get_vie());
+			$de_deff = rand(1, 40);
+			if($de_att <= $de_deff)
+			{
+	      		$actif->etat['fleche_magnetique_attaque']['effet'] = $row['effet'];
+		  		$actif->etat['fleche_magnetique_attaque']['effet2'] = $row['effet2'];
+			}
+			else echo 'La flêche magnétique ne fera rien<br />';
 		break;
 		case 'fleche_sable' :
 			echo '&nbsp;&nbsp;<strong>'.$actif->get_nom().'</strong> utilise '.$row['nom'].' !<br />';

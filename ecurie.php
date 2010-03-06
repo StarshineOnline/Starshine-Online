@@ -38,7 +38,12 @@ if($case->is_ville(true) && ($R->get_diplo($joueur->get_race()) <= 6 OR $R->get_
 	//Le joueur dépose une créature dans l'écurie
 	if(array_key_exists('d', $_GET))
 	{
-		$joueur->pet_to_ecurie($_GET['d'], 1);
+		$taxe = ceil($pet->get_cout_depot() * $R->get_taxe_diplo($joueur->get_race()) / 100);
+		if($joueur->pet_to_ecurie($_GET['d'], 1, 10, $taxe))
+		{
+			$R->set_star($R->get_star() + $taxe);
+			$R->sauver();
+		}
 	}
 	//Le joueur reprend une créature de l'écurie
 	if(array_key_exists('r', $_GET))
@@ -53,7 +58,9 @@ if($case->is_ville(true) && ($R->get_diplo($joueur->get_race()) <= 6 OR $R->get_
 		{
 			if($pet->get_hp() > 0)
 			{
-				if($joueur->get_star() >= $pet->get_cout_soin())
+				$taxe = ceil($pet->get_cout_soin() * $R->get_taxe_diplo($joueur->get_race()) / 100);
+				$cout = $pet->get_cout_soin() + $taxe;
+				if($joueur->get_star() >= $cout)
 				{
 					$pet->get_monstre();
 					$pet->set_hp(ceil($pet->get_hp() + 0.1 * $pet->monstre->get_hp()));
@@ -61,8 +68,10 @@ if($case->is_ville(true) && ($R->get_diplo($joueur->get_race()) <= 6 OR $R->get_
 					$pet->set_mp(ceil($pet->get_mp() + 0.1 * $pet->get_mp_max()));
 					if($pet->get_mp() > $pet->get_mp_max()) $pet->set_mp($pet->get_mp_max());
 					$pet->sauver();
-					$joueur->set_star($joueur->get_star() - $pet->get_cout_soin());
+					$joueur->set_star($joueur->get_star() - $cout);
 					$joueur->sauver();
+					$R->set_star($R->get_star() + $taxe);
+					$R->sauver();
 				}
 				else
 				{
@@ -85,14 +94,18 @@ if($case->is_ville(true) && ($R->get_diplo($joueur->get_race()) <= 6 OR $R->get_
 		$pet = new pet($_GET['v']);
 		if($pet->get_id_joueur() == $joueur->get_id())
 		{
-			if($joueur->get_star() >= $pet->get_cout_rez())
+			$taxe = ceil($pet->get_cout_rez() * $R->get_taxe_diplo($joueur->get_race()) / 100);
+			$cout = $pet->get_cout_soin() + $taxe;
+			if($joueur->get_star() >= $cout)
 			{
 				$pet->get_monstre();
 				$pet->set_hp($pet->monstre->get_hp());
 				$pet->set_mp($pet->get_mp_max());
 				$pet->sauver();
-				$joueur->set_star($joueur->get_star() - $pet->get_cout_rez());
+				$joueur->set_star($joueur->get_star() - $cout);
 				$joueur->sauver();
+				$R->set_star($R->get_star() + $taxe);
+				$R->sauver();
 			}
 			else
 			{

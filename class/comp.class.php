@@ -515,7 +515,8 @@ class magnetique extends effect {
 			$this->magnetise($actif, $passif);
 	}
 
-	function magnetise(&$actif, &$passif) {
+	function magnetise(&$actif, &$passif)
+	{
 		//chance de débuffer
 		$rand = rand(0, 100);
 		//Le débuff marche

@@ -242,7 +242,7 @@ if (isset($_GET['ID']) && !$joueur->is_buff('bloque_sort'))
 						//Mis en place du debuff
 						lance_buff($sort->get_type(), $joueur->get_id(), 1, 0, $sort->get_duree(), $sort->get_nom(), 'Vous ne pouvez plus attaquer ni lancer le sort repos du sage', 'perso', 1, 0, 0, 0);
 						$sortmp_base = $sort->get_effet();
-						$joueur->set_mp($joueur->get_mp() + $sort->get_effet());
+						$sortmp = $sort->get_effet() * -1;
 						if($joueur->get_mp() > $joueur->get_mp_maximum()) $joueur->set_mp($joueur->get_mp_maximum());
 						$joueur->sauver();
 						$lancement = true;
