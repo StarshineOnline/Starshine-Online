@@ -113,9 +113,19 @@ if($case->is_ville(true) && ($R->get_diplo($joueur->get_race()) <= 6 OR $R->get_
 	foreach($joueur->ecurie as $pet)
 	{
 		$pet->get_monstre();
+		if($pet->get_hp() <= 0)
+		{
+			$link = 'v';
+			$texte = '<img src="image/buff/rez.jpg" alt="Ressuciter" title="Ressuciter" style="width : 16px; height : 16px; vertical-align : top;" /> <span class="small">('.$pet->get_cout_rez().' stars)</span>';
+		}
+		else
+		{
+			$link = 's';
+			$texte = '<img src="image/sort/sort_soins1.png" alt="Soigner" title="Soigner" style="width : 16px; height : 16px; vertical-align : top;" /> <span class="small">('.$pet->get_cout_soin().' stars)</span>';
+		}
 		?>
 		<li>
-			<img src="image/monstre/<?php echo $pet->monstre->get_lib(); ?>.png" style="width : 16px; height : 16px; vertical-align : top;" /> <?php echo $pet->get_nom(); ?> - <span class="xsmall">HP : <?php echo $pet->get_hp(); ?> / <?php echo $pet->monstre->get_hp(); ?> -- MP : <?php echo $pet->get_mp(); ?> / <?php echo $pet->get_mp_max(); ?></span> <a href=""><img src="image/sort/sort_soins1.png" alt="Soigner" title="Soigner" style="width : 16px; height : 16px; vertical-align : top;" /> <span class="small">(<?php echo $pet->get_cout_soin(); ?> stars)</span></a> <a href="ecurie.php?r=<?php echo $pet->get_id(); ?>" onclick="return envoiInfo(this.href, 'carte');"><img src="image/icone/reprendre.png" alt="Reprendre" title="Reprendre" style="width : 16px; height : 16px; vertical-align : top;" /></a>
+			<img src="image/monstre/<?php echo $pet->monstre->get_lib(); ?>.png" style="width : 16px; height : 16px; vertical-align : top;" /> <?php echo $pet->get_nom(); ?> - <span class="xsmall">HP : <?php echo $pet->get_hp(); ?> / <?php echo $pet->monstre->get_hp(); ?> -- MP : <?php echo $pet->get_mp(); ?> / <?php echo $pet->get_mp_max(); ?></span> <a href="ecurie.php?<?php echo $link; ?>=<?php echo $pet->get_id(); ?>" onclick="return envoiInfo(this.href, 'carte');"><?php echo $texte; ?></a> <a href="ecurie.php?d=<?php echo $pet->get_id(); ?>" onclick="return envoiInfo(this.href, 'carte');"><img src="image/icone/deposer.png" alt="Déposer" title="Déposer" style="width : 16px; height : 16px; vertical-align : top;" /> <span class="small">(<?php echo $pet->get_cout_depot(); ?> stars)</span></a>
 		</li>
 		<?php
 	}
