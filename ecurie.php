@@ -126,15 +126,17 @@ if($case->is_ville(true) && ($R->get_diplo($joueur->get_race()) <= 6 OR $R->get_
 	foreach($joueur->ecurie as $pet)
 	{
 		$pet->get_monstre();
+		$taxe_soin = ceil($pet->get_cout_soin() * $R->get_taxe_diplo($joueur->get_race()) / 100);
+		$taxe_rez = ceil($pet->get_cout_rez() * $R->get_taxe_diplo($joueur->get_race()) / 100);
 		if($pet->get_hp() <= 0)
 		{
 			$link = 'v';
-			$texte = '<img src="image/buff/rez.jpg" alt="Ressuciter" title="Ressuciter" style="width : 16px; height : 16px; vertical-align : top;" /> <span class="small">('.$pet->get_cout_rez().' stars)</span>';
+			$texte = '<img src="image/buff/rez.jpg" alt="Ressuciter" title="Ressuciter" style="width : 16px; height : 16px; vertical-align : top;" /> <span class="small">('.($pet->get_cout_rez() + $taxe_rez).' stars)</span>';
 		}
 		else
 		{
 			$link = 's';
-			$texte = '<img src="image/sort/sort_soins1.png" alt="Soigner" title="Soigner" style="width : 16px; height : 16px; vertical-align : top;" /> <span class="small">('.$pet->get_cout_soin().' stars)</span>';
+			$texte = '<img src="image/sort/sort_soins1.png" alt="Soigner" title="Soigner" style="width : 16px; height : 16px; vertical-align : top;" /> <span class="small">('.($pet->get_cout_soin() + $taxe_soin).' stars)</span>';
 		}
 		?>
 		<li>
@@ -150,19 +152,22 @@ if($case->is_ville(true) && ($R->get_diplo($joueur->get_race()) <= 6 OR $R->get_
 	foreach($joueur->pets as $pet)
 	{
 		$pet->get_monstre();
+		$taxe_depot = ceil($pet->get_cout_depot() * $R->get_taxe_diplo($joueur->get_race()) / 100);
+		$taxe_soin = ceil($pet->get_cout_soin() * $R->get_taxe_diplo($joueur->get_race()) / 100);
+		$taxe_rez = ceil($pet->get_cout_rez() * $R->get_taxe_diplo($joueur->get_race()) / 100);
 		if($pet->get_hp() <= 0)
 		{
 			$link = 'v';
-			$texte = '<img src="image/buff/rez.jpg" alt="Ressuciter" title="Ressuciter" style="width : 16px; height : 16px; vertical-align : top;" /> <span class="small">('.$pet->get_cout_rez().' stars)</span>';
+			$texte = '<img src="image/buff/rez.jpg" alt="Ressuciter" title="Ressuciter" style="width : 16px; height : 16px; vertical-align : top;" /> <span class="small">('.($pet->get_cout_rez() + $taxe_rez).' stars)</span>';
 		}
 		else
 		{
 			$link = 's';
-			$texte = '<img src="image/sort/sort_soins1.png" alt="Soigner" title="Soigner" style="width : 16px; height : 16px; vertical-align : top;" /> <span class="small">('.$pet->get_cout_soin().' stars)</span>';
+			$texte = '<img src="image/sort/sort_soins1.png" alt="Soigner" title="Soigner" style="width : 16px; height : 16px; vertical-align : top;" /> <span class="small">('.($pet->get_cout_soin() + $taxe_soin).' stars)</span>';
 		}
 		?>
 		<li>
-			<img src="image/monstre/<?php echo $pet->monstre->get_lib(); ?>.png" style="width : 16px; height : 16px; vertical-align : top;" /> <?php echo $pet->get_nom(); ?> - <span class="xsmall">HP : <?php echo $pet->get_hp(); ?> / <?php echo $pet->monstre->get_hp(); ?> -- MP : <?php echo $pet->get_mp(); ?> / <?php echo $pet->get_mp_max(); ?></span> <a href="ecurie.php?<?php echo $link; ?>=<?php echo $pet->get_id(); ?>" onclick="return envoiInfo(this.href, 'carte');"><?php echo $texte; ?></a> <a href="ecurie.php?d=<?php echo $pet->get_id(); ?>" onclick="return envoiInfo(this.href, 'carte');"><img src="image/icone/deposer.png" alt="Déposer" title="Déposer" style="width : 16px; height : 16px; vertical-align : top;" /> <span class="small">(<?php echo $pet->get_cout_depot(); ?> stars)</span></a>
+			<img src="image/monstre/<?php echo $pet->monstre->get_lib(); ?>.png" style="width : 16px; height : 16px; vertical-align : top;" /> <?php echo $pet->get_nom(); ?> - <span class="xsmall">HP : <?php echo $pet->get_hp(); ?> / <?php echo $pet->monstre->get_hp(); ?> -- MP : <?php echo $pet->get_mp(); ?> / <?php echo $pet->get_mp_max(); ?></span> <a href="ecurie.php?<?php echo $link; ?>=<?php echo $pet->get_id(); ?>" onclick="return envoiInfo(this.href, 'carte');"><?php echo $texte; ?></a> <a href="ecurie.php?d=<?php echo $pet->get_id(); ?>" onclick="return envoiInfo(this.href, 'carte');"><img src="image/icone/deposer.png" alt="Déposer" title="Déposer" style="width : 16px; height : 16px; vertical-align : top;" /> <span class="small">(<?php echo ($pet->get_cout_depot() + $taxe_depot); ?> stars)</span></a>
 		</li>
 		<?php
 	}
