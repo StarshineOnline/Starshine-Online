@@ -29,5 +29,5 @@ foreach($monstres as $monstre)
 	}
 	$implode = implode(';', $drops);
 	$monstre->set_drops($implode);
-	$monstre->sauver();
+	//$monstre->sauver();
 }
