@@ -16,7 +16,7 @@ $W_req = $db->query($W_requete);
 $W_row = $db->read_assoc($W_req);
 
 $case = new map_case($joueur->get_pos());
-if(!$case->is_ville(true, 'bonus7')) exit();
+if(!$case->is_ville(true, 'bonus5')) exit();
 
 
 $R = new royaume($W_row['royaume']);

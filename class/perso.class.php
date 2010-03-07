@@ -3067,7 +3067,7 @@ class perso extends entite
 
 	function check_perso($last_action = true)
 	{
-    $this->check_materiel();
+		$this->check_materiel();
 		$modif = false;	 // Indique si le personnage a été modifié.
 		global $db, $G_temps_regen_hp, $G_temps_maj_hp, $G_temps_maj_mp, $G_temps_PA, $G_PA_max, $G_pourcent_regen_hp, $G_pourcent_regen_mp;
 		// On vérifie que le personnage est vivant
@@ -3081,7 +3081,7 @@ class perso extends entite
 			{
 				$time = time();
 				$nb_maj = floor($temps_maj / $temps_hp);
-				$hp_gagne = $nb_maj * (sqrt($this->get_vie(true)) * 2.7);
+				$hp_gagne = $nb_maj * (pow($this->get_vie(true), 0.7) * 1.6);
 				$this->set_hp_max($this->get_hp_max(true) + $hp_gagne);
 				$this->set_maj_hp($this->get_maj_hp() + $nb_maj * $temps_hp);
 				$modif = true;
@@ -3845,7 +3845,7 @@ class perso extends entite
 
 	function soin_pet()
 	{
-		$facteur = ($this->get_puissance() + 10) / 22;
+		$facteur = ($this->get_vie() + 10) / 22;
 		if($this->get_race() == 'scavenger') $facteur = $facteur * 1.2;
 		return floor(sqrt($this->get_dressage()) * 4 * $facteur);
 	}

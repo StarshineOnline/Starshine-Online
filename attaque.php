@@ -131,6 +131,7 @@ switch($type)
 			//Si en défense c'est une arme de siège, on applique les dégats 2
 			if($joueur_defenseur->get_type() == 'arme_de_siege') $siege->arme_degat = $siege->get_bonus2();
 			else $siege->arme_degat = $siege->get_bonus1();
+			if($joueur->get_race() == 'barbare') $siege->arme_degat = ceil($siege->arme_degat * 1.1);
 			$attaquant = new entite('siege', $siege);
 			$defenseur = new entite('batiment', $joueur_defenseur);
 		}
