@@ -145,7 +145,7 @@ abstract class table
 		$req = $db->query($requete);
 		if($db->num_rows($req) > 0)
 		{
-		  $classe = static::table;
+		  $classe = get_called_class();
 			while($row = $db->read_assoc($req))
 			{
 				if(!$keys) $return[] = new $classe($row);

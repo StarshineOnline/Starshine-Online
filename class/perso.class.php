@@ -41,12 +41,6 @@ class perso extends entite
 
 	/**
     * @access private
-    * @var mediumint(9)
-    */
-	private $forcex;
-
-	/**
-    * @access private
     * @var varchar(20)
     */
 	private $classe;
@@ -128,48 +122,6 @@ class perso extends entite
     * @var float
     */
 	private $mp_max;
-
-	/**
-    * @access private
-    * @var mediumint(8)
-    */
-	private $identification;
-
-	/**
-    * @access private
-    * @var int(10)
-    */
-	private $craft;
-
-	/**
-    * @access private
-    * @var mediumint(8)
-    */
-	private $alchimie;
-
-	/**
-    * @access private
-    * @var mediumint(8)
-    */
-	private $architecture;
-
-	/**
-    * @access private
-    * @var mediumint(8)
-    */
-	private $forge;
-
-	/**
-    * @access private
-    * @var mediumint(8)
-    */
-	private $survie;
-
-	/**
-    * @access private
-    * @var mediumint(8)
-    */
-	private $dressage;
 
 	/**
     * @access private
@@ -307,10 +259,330 @@ class perso extends entite
 	public $poscase;
 	public $pospita;
 	public $share_xp;
+	
+	/**
+	 * @name Caractéristiques
+	 * Données et méthodes liées aux caractéristiques du personnage : constitution,
+	 * force, dextérité, puissance, volonté et énergie.      	
+	 */	
+	// @{
+	private $forcex;
+	/// Renvoie la constitution
+	function get_vie($base = false)
+	{
+		if ($base)
+			return $this->vie;
+		else
+			return $this->vie + $this->get_bonus_permanents('vie');
+	}
+	/// Modifie la constitution
+	function set_vie($vie)
+	{
+		$this->vie = $vie;
+		$this->champs_modif[] = 'vie';
+	}
+	/// Renvoie la force
+	function get_forcex($base = false)
+	{
+		if ($base)
+			return $this->forcex;
+		else
+			return $this->forcex + $this->get_bonus_permanents('forcex');
+	}
+	function get_force() 
+	{ 
+		return $this->get_forcex(); 
+	}
+	/// Modifie la force
+	function set_forcex($forcex)
+	{
+		$this->forcex = $forcex;
+		$this->champs_modif[] = 'forcex';
+	}
+	function set_force($force) 
+	{ 
+		$this->set_forcex($force); 
+	}
+	/// Renvoie la dextérité
+	function get_dexterite($base = false)
+	{
+		if ($base)
+			return $this->dexterite;
+		else
+			return $this->dexterite + $this->get_bonus_permanents('dexterite');
+	}
+	/// Modifie la dextérité
+	function set_dexterite($dexterite)
+	{
+		$this->dexterite = $dexterite;
+		$this->champs_modif[] = 'dexterite';
+	}
+	/// Renvoie la puissance
+	function get_puissance($base = false)
+	{
+		if ($base)
+			return $this->puissance;
+    else
+      return $this->puissance + $this->get_bonus_permanents('puissance');
+	}
+	/// Modifie la puissance
+	function set_puissance($puissance)
+	{
+		$this->puissance = $puissance;
+		$this->champs_modif[] = 'puissance';
+	}
+	/// Renvoie la volonté
+	function get_volonte($base = false)
+	{
+		if ($base)
+			return $this->volonte;
+		else
+			return $this->volonte + $this->get_bonus_permanents('volonte');
+	}
+	/// Modifie la volonté
+	function set_volonte($volonte)
+	{
+		$this->volonte = $volonte;
+		$this->champs_modif[] = 'volonte';
+	}
+	/// Renvoie l'énergie
+	function get_energie($base = false)
+	{
+		if ($base)
+			return $this->energie;
+    else
+      return $this->energie + $this->get_bonus_permanents('energie');
+	}
+	/// Modifie l'énergie
+	function set_energie($energie)
+	{
+		$this->energie = $energie;
+		$this->champs_modif[] = 'energie';
+	}
+  // @}
+	
+	/**
+	 * @name Compétences
+	 * Données et méthodes liées aux compténtences du personnage : mêlée, esquive,
+	 * incatation...	 
+	 */	
+	// @{
+	private $identification; ///< Compétence "identification".
+	private $craft;          ///< Ancienne compétence de craft.
+	private $alchimie;       ///< compétence "alchimie".
+	private $architecture;   ///< Compétence "architecture".
+	private $forge;          ///< Compétence "forge".
+	private $survie;         ///< Compétence "survie".
+	private $dressage;       ///< Compétence "dressage".
+  /// Renvoie la mêlée
+	function get_melee($base = false)
+	{
+		if ($base)
+			return $this->melee;
+		else
+			return $this->melee + $this->get_bonus_permanents('melee');
+	}
+	/// Modifie la mêlée
+	function set_melee($melee)
+	{
+		$this->melee = $melee;
+		$this->champs_modif[] = 'melee';
+	}
+  /// Renvoie le tir à distance
+	function get_distance($base = false)
+	{
+		if ($base)
+			return $this->distance;
+		else
+			return $this->distance + $this->get_bonus_permanents('distance');
+	}
+	/// Modifie le tir à distance
+	function set_distance($distance)
+	{
+		$this->distance = $distance;
+		$this->champs_modif[] = 'distance';
+	}
+  /// Renvoie l'esquive
+	function get_esquive($base = false)
+	{
+		if ($base)
+			return $this->esquive;
+		else
+			return $this->esquive + $this->get_bonus_permanents('esquive');
+	}
+	/// Modifie l'esquive
+	function set_esquive($esquive)
+	{
+		$this->esquive = $esquive;
+		$this->champs_modif[] = 'esquive';
+	}
+  /// Renvoie le blocage
+	function get_blocage($base = false)
+	{
+		if ($base)
+			return $this->blocage;
+		else
+			return $this->blocage + $this->get_bonus_permanents('blocage');
+	}
+	/// Modifie le blocage
+	function set_blocage($blocage)
+	{
+		$this->blocage = $blocage;
+		$this->champs_modif[] = 'blocage';
+	}
+  /// Renvoie l'incantation
+	function get_incantation($base = false)
+	{
+		if ($base)
+			return $this->incantation;
+		else
+			return $this->incantation + $this->get_bonus_permanents('incantation');
+	}
+	/// Modifie l'incantation
+	function set_incantation($incantation)
+	{
+		$this->incantation = $incantation;
+		$this->champs_modif[] = 'incantation';
+	}
+  /// Renvoie la magie de la vie
+	function get_sort_vie($base = false)
+	{
+		if ($base)
+			return $this->sort_vie;
+		else
+			return $this->sort_vie + $this->get_bonus_permanents('sort_vie');
+	}
+	/// Modifie la magie de la vie
+	function set_sort_vie($sort_vie)
+	{
+		$this->sort_vie = $sort_vie;
+		$this->champs_modif[] = 'sort_vie';
+	}
+  /// Renvoie la magie élémentaire
+	function get_sort_element($base = false)
+	{
+		if ($base)
+			return $this->sort_element;
+		else
+			return $this->sort_element + $this->get_bonus_permanents('sort_element');
+	}
+	/// Modifie la magie élémentaire
+	function set_sort_element($sort_element)
+	{
+		$this->sort_element = $sort_element;
+		$this->champs_modif[] = 'sort_element';
+	}
+  /// Renvoie la nécromancie
+	function get_sort_mort($base = false)
+	{
+		if ($base)
+			return $this->sort_mort;
+		else
+			return $this->sort_mort + $this->get_bonus_permanents('sort_mort');
+	}
+	/// Modifie la nécromancie
+	function set_sort_mort($sort_mort)
+	{
+		$this->sort_mort = $sort_mort;
+		$this->champs_modif[] = 'sort_mort';
+	}
+  /// Renvoie la coméptence identification
+	function get_identification($base = false)
+	{
+		if ($base)
+			return $this->identification;
+		else
+			return $this->identification + $this->get_bonus_permanents('identification');
+	}
+	/// Modifie la compétence d'identification
+	function set_identification($identification)
+	{
+		$this->identification = $identification;
+		$this->champs_modif[] = 'identification';
+	}
+  /// Renvoie l'ancienne compétence de craft
+	function get_craft($base = false)
+	{
+		if ($base)
+			return $this->craft;
+		else
+			return $this->craft + $this->get_bonus_permanents('craft');
+	}
+	/// Modifie l'ancienne compétence de craft
+	function set_craft($craft)
+	{
+		$this->craft = $craft;
+		$this->champs_modif[] = 'craft';
+	}
+  /// Renvoie l'alchimie
+	function get_alchimie($base = false)
+	{
+		if ($base)
+			return $this->alchimie;
+		else
+			return $this->alchimie + $this->get_bonus_permanents('alchimie');
+	}
+	/// Modifie l'alchimie
+	function set_alchimie($alchimie)
+	{
+		$this->alchimie = $alchimie;
+		$this->champs_modif[] = 'alchimie';
+	}
+  /// Renvoie l'architecture
+	function get_architecture($base = false)
+	{
+		if ($base)
+			return $this->architecture;
+		else
+			return $this->architecture + $this->get_bonus_permanents('architecture');
+	}
+	/// Modifie l'architecture
+	function set_architecture($architecture)
+	{
+		$this->architecture = $architecture;
+		$this->champs_modif[] = 'architecture';
+	}
+  /// Renvoie la forge
+	function get_forge($base = false)
+	{
+		if ($base)
+			return $this->forge;
+		else
+			return $this->forge + $this->get_bonus_permanents('forge');
+	}
+	/// Modifie la forge
+	function set_forge($forge)
+	{
+		$this->forge = $forge;
+		$this->champs_modif[] = 'forge';
+	}
+  /// Renvoie la survie
+	function get_survie()
+	{
+		return $this->survie;
+	}
+	/// Modifie la survie
+	function set_survie($survie)
+	{
+		$this->survie = $survie;
+		$this->champs_modif[] = 'survie';
+	}
+  /// Renvoie le dressage
+	function get_dressage()
+	{
+		return $this->dressage;
+	}
+	/// Modifie le dressage
+	function set_dressage($dressage)
+	{
+		$this->dressage = $dressage;
+		$this->champs_modif[] = 'dressage';
+	}
+  // @}
 
 	/**
 	* @access public
-
+  *
 	* @param int(11) id attribut
 	* @param int(10) mort attribut
 	* @param varchar(50) nom attribut
@@ -730,90 +1002,6 @@ class perso extends entite
 	* Retourne la valeur de l'attribut
 	* @access public
 	* @param none
-	* @return mediumint(9) $vie valeur de l'attribut vie
-	*/
-	function get_vie($base = false)
-	{
-		if ($base)
-			return $this->vie;
-		else
-			return $this->vie + $this->get_bonus_permanents('vie');
-	}
-
-	/**
-	* Retourne la valeur de l'attribut
-	* @access public
-	* @param none
-	* @return mediumint(9) $forcex valeur de l'attribut forcex
-	*/
-	function get_forcex($base = false)
-	{
-		if ($base)
-			return $this->forcex;
-		else
-			return $this->forcex + $this->get_bonus_permanents('forcex');
-	}
-
-	/**
-	* Retourne la valeur de l'attribut
-	* @access public
-	* @param none
-	* @return mediumint(9) $dexterite valeur de l'attribut dexterite
-	*/
-	function get_dexterite($base = false)
-	{
-		if ($base)
-			return $this->dexterite;
-		else
-			return $this->dexterite + $this->get_bonus_permanents('dexterite');
-	}
-
-	/**
-	* Retourne la valeur de l'attribut
-	* @access public
-	* @param none
-	* @return mediumint(9) $puissance valeur de l'attribut puissance
-	*/
-	function get_puissance($base = false)
-	{
-		if ($base)
-			return $this->puissance;
-    else
-      return $this->puissance + $this->get_bonus_permanents('puissance');
-	}
-
-	/**
-	* Retourne la valeur de l'attribut
-	* @access public
-	* @param none
-	* @return mediumint(9) $volonte valeur de l'attribut volonte
-	*/
-	function get_volonte($base = false)
-	{
-		if ($base)
-			return $this->volonte;
-		else
-			return $this->volonte + $this->get_bonus_permanents('volonte');
-	}
-
-	/**
-	* Retourne la valeur de l'attribut
-	* @access public
-	* @param none
-	* @return mediumint(9) $energie valeur de l'attribut energie
-	*/
-	function get_energie($base = false)
-	{
-		if ($base)
-			return $this->energie;
-    else
-      return $this->energie + $this->get_bonus_permanents('energie');
-	}
-
-	/**
-	* Retourne la valeur de l'attribut
-	* @access public
-	* @param none
 	* @return varchar(20) $classe valeur de l'attribut classe
 	*/
 	function get_classe()
@@ -979,210 +1167,6 @@ class perso extends entite
 			return $this->mp_max;
 		else
 			return $this->mp_max + $this->get_bonus_permanents('mp_max');
-	}
-
-	/**
-	* Retourne la valeur de l'attribut
-	* @access public
-	* @param none
-	* @return mediumint(9) $melee valeur de l'attribut melee
-	*/
-	function get_melee($base = false)
-	{
-		if ($base)
-			return $this->melee;
-		else
-			return $this->melee + $this->get_bonus_permanents('melee');
-	}
-
-	/**
-	* Retourne la valeur de l'attribut
-	* @access public
-	* @param none
-	* @return mediumint(9) $distance valeur de l'attribut distance
-	*/
-	function get_distance($base = false)
-	{
-		if ($base)
-			return $this->distance;
-		else
-			return $this->distance + $this->get_bonus_permanents('distance');
-	}
-
-	/**
-	* Retourne la valeur de l'attribut
-	* @access public
-	* @param none
-	* @return mediumint(9) $esquive valeur de l'attribut esquive
-	*/
-	function get_esquive($base = false)
-	{
-		if ($base)
-			return $this->esquive;
-		else
-			return $this->esquive + $this->get_bonus_permanents('esquive');
-	}
-
-	/**
-	* Retourne la valeur de l'attribut
-	* @access public
-	* @param none
-	* @return mediumint(8) $blocage valeur de l'attribut blocage
-	*/
-	function get_blocage($base = false)
-	{
-		if ($base)
-			return $this->blocage;
-		else
-			return $this->blocage + $this->get_bonus_permanents('blocage');
-	}
-
-	/**
-	* Retourne la valeur de l'attribut
-	* @access public
-	* @param none
-	* @return mediumint(9) $incantation valeur de l'attribut incantation
-	*/
-	function get_incantation($base = false)
-	{
-		if ($base)
-			return $this->incantation;
-		else
-			return $this->incantation + $this->get_bonus_permanents('incantation');
-	}
-
-	/**
-	* Retourne la valeur de l'attribut
-	* @access public
-	* @param none
-	* @return mediumint(9) $sort_vie valeur de l'attribut sort_vie
-	*/
-	function get_sort_vie($base = false)
-	{
-		if ($base)
-			return $this->sort_vie;
-		else
-			return $this->sort_vie + $this->get_bonus_permanents('sort_vie');
-	}
-
-	/**
-	* Retourne la valeur de l'attribut
-	* @access public
-	* @param none
-	* @return int(11) $sort_element valeur de l'attribut sort_element
-	*/
-	function get_sort_element($base = false)
-	{
-		if ($base)
-			return $this->sort_element;
-		else
-			return $this->sort_element + $this->get_bonus_permanents('sort_element');
-	}
-
-	/**
-	* Retourne la valeur de l'attribut
-	* @access public
-	* @param none
-	* @return int(11) $sort_mort valeur de l'attribut sort_mort
-	*/
-	function get_sort_mort($base = false)
-	{
-		if ($base)
-			return $this->sort_mort;
-		else
-			return $this->sort_mort + $this->get_bonus_permanents('sort_mort');
-	}
-
-	/**
-	* Retourne la valeur de l'attribut
-	* @access public
-	* @param none
-	* @return mediumint(8) $identification valeur de l'attribut identification
-	*/
-	function get_identification($base = false)
-	{
-		if ($base)
-			return $this->identification;
-		else
-			return $this->identification + $this->get_bonus_permanents('identification');
-	}
-
-	/**
-	* Retourne la valeur de l'attribut
-	* @access public
-	* @param none
-	* @return int(10) $craft valeur de l'attribut craft
-	*/
-	function get_craft($base = false)
-	{
-		if ($base)
-			return $this->craft;
-		else
-			return $this->craft + $this->get_bonus_permanents('craft');
-	}
-
-	/**
-	* Retourne la valeur de l'attribut
-	* @access public
-	* @param none
-	* @return mediumint(8) $alchimie valeur de l'attribut alchimie
-	*/
-	function get_alchimie($base = false)
-	{
-		if ($base)
-			return $this->alchimie;
-		else
-			return $this->alchimie + $this->get_bonus_permanents('alchimie');
-	}
-
-	/**
-	* Retourne la valeur de l'attribut
-	* @access public
-	* @param none
-	* @return mediumint(8) $architecture valeur de l'attribut architecture
-	*/
-	function get_architecture($base = false)
-	{
-		if ($base)
-			return $this->architecture;
-		else
-			return $this->architecture + $this->get_bonus_permanents('architecture');
-	}
-
-	/**
-	* Retourne la valeur de l'attribut
-	* @access public
-	* @param none
-	* @return mediumint(8) $forge valeur de l'attribut forge
-	*/
-	function get_forge($base = false)
-	{
-		if ($base)
-			return $this->forge;
-		else
-			return $this->forge + $this->get_bonus_permanents('forge');
-	}
-
-	/**
-	* Retourne la valeur de l'attribut
-	* @access public
-	* @param none
-	* @return mediumint(8) $survie valeur de l'attribut survie
-	*/
-	function get_survie()
-	{
-		return $this->survie;
-	}
-
-	/**
-	* Retourne la valeur de l'attribut
-	* @access public
-	* @param none
-	* @return mediumint(8) $dressage valeur de l'attribut survie
-	*/
-	function get_dressage()
-	{
-		return $this->dressage;
 	}
 
 	/**
@@ -1538,78 +1522,6 @@ class perso extends entite
 	/**
 	* Modifie la valeur de l'attribut
 	* @access public
-	* @param mediumint(9) $vie valeur de l'attribut
-	* @return none
-	*/
-	function set_vie($vie)
-	{
-		$this->vie = $vie;
-		$this->champs_modif[] = 'vie';
-	}
-
-	/**
-	* Modifie la valeur de l'attribut
-	* @access public
-	* @param mediumint(9) $forcex valeur de l'attribut
-	* @return none
-	*/
-	function set_forcex($forcex)
-	{
-		$this->forcex = $forcex;
-		$this->champs_modif[] = 'forcex';
-	}
-
-	/**
-	* Modifie la valeur de l'attribut
-	* @access public
-	* @param mediumint(9) $dexterite valeur de l'attribut
-	* @return none
-	*/
-	function set_dexterite($dexterite)
-	{
-		$this->dexterite = $dexterite;
-		$this->champs_modif[] = 'dexterite';
-	}
-
-	/**
-	* Modifie la valeur de l'attribut
-	* @access public
-	* @param mediumint(9) $puissance valeur de l'attribut
-	* @return none
-	*/
-	function set_puissance($puissance)
-	{
-		$this->puissance = $puissance;
-		$this->champs_modif[] = 'puissance';
-	}
-
-	/**
-	* Modifie la valeur de l'attribut
-	* @access public
-	* @param mediumint(9) $volonte valeur de l'attribut
-	* @return none
-	*/
-	function set_volonte($volonte)
-	{
-		$this->volonte = $volonte;
-		$this->champs_modif[] = 'volonte';
-	}
-
-	/**
-	* Modifie la valeur de l'attribut
-	* @access public
-	* @param mediumint(9) $energie valeur de l'attribut
-	* @return none
-	*/
-	function set_energie($energie)
-	{
-		$this->energie = $energie;
-		$this->champs_modif[] = 'energie';
-	}
-
-	/**
-	* Modifie la valeur de l'attribut
-	* @access public
 	* @param varchar(20) $race valeur de l'attribut
 	* @return none
 	*/
@@ -1833,186 +1745,6 @@ class perso extends entite
 	{
 		$this->mp_max = $mp_max;
 		$this->champs_modif[] = 'mp_max';
-	}
-
-	/**
-	* Modifie la valeur de l'attribut
-	* @access public
-	* @param mediumint(9) $melee valeur de l'attribut
-	* @return none
-	*/
-	function set_melee($melee)
-	{
-		$this->melee = $melee;
-		$this->champs_modif[] = 'melee';
-	}
-
-	/**
-	* Modifie la valeur de l'attribut
-	* @access public
-	* @param mediumint(9) $distance valeur de l'attribut
-	* @return none
-	*/
-	function set_distance($distance)
-	{
-		$this->distance = $distance;
-		$this->champs_modif[] = 'distance';
-	}
-
-	/**
-	* Modifie la valeur de l'attribut
-	* @access public
-	* @param mediumint(9) $esquive valeur de l'attribut
-	* @return none
-	*/
-	function set_esquive($esquive)
-	{
-		$this->esquive = $esquive;
-		$this->champs_modif[] = 'esquive';
-	}
-
-	/**
-	* Modifie la valeur de l'attribut
-	* @access public
-	* @param mediumint(8) $blocage valeur de l'attribut
-	* @return none
-	*/
-	function set_blocage($blocage)
-	{
-		$this->blocage = $blocage;
-		$this->champs_modif[] = 'blocage';
-	}
-
-	/**
-	* Modifie la valeur de l'attribut
-	* @access public
-	* @param mediumint(9) $incantation valeur de l'attribut
-	* @return none
-	*/
-	function set_incantation($incantation)
-	{
-		$this->incantation = $incantation;
-		$this->champs_modif[] = 'incantation';
-	}
-
-	/**
-	* Modifie la valeur de l'attribut
-	* @access public
-	* @param mediumint(9) $sort_vie valeur de l'attribut
-	* @return none
-	*/
-	function set_sort_vie($sort_vie)
-	{
-		$this->sort_vie = $sort_vie;
-		$this->champs_modif[] = 'sort_vie';
-	}
-
-	/**
-	* Modifie la valeur de l'attribut
-	* @access public
-	* @param int(11) $sort_element valeur de l'attribut
-	* @return none
-	*/
-	function set_sort_element($sort_element)
-	{
-		$this->sort_element = $sort_element;
-		$this->champs_modif[] = 'sort_element';
-	}
-
-	/**
-	* Modifie la valeur de l'attribut
-	* @access public
-	* @param int(11) $sort_mort valeur de l'attribut
-	* @return none
-	*/
-	function set_sort_mort($sort_mort)
-	{
-		$this->sort_mort = $sort_mort;
-		$this->champs_modif[] = 'sort_mort';
-	}
-
-	/**
-	* Modifie la valeur de l'attribut
-	* @access public
-	* @param mediumint(8) $identification valeur de l'attribut
-	* @return none
-	*/
-	function set_identification($identification)
-	{
-		$this->identification = $identification;
-		$this->champs_modif[] = 'identification';
-	}
-
-	/**
-	* Modifie la valeur de l'attribut
-	* @access public
-	* @param int(10) $craft valeur de l'attribut
-	* @return none
-	*/
-	function set_craft($craft)
-	{
-		$this->craft = $craft;
-		$this->champs_modif[] = 'craft';
-	}
-
-	/**
-	* Modifie la valeur de l'attribut
-	* @access public
-	* @param mediumint(8) $alchimie valeur de l'attribut
-	* @return none
-	*/
-	function set_alchimie($alchimie)
-	{
-		$this->alchimie = $alchimie;
-		$this->champs_modif[] = 'alchimie';
-	}
-
-	/**
-	* Modifie la valeur de l'attribut
-	* @access public
-	* @param mediumint(8) $architecture valeur de l'attribut
-	* @return none
-	*/
-	function set_architecture($architecture)
-	{
-		$this->architecture = $architecture;
-		$this->champs_modif[] = 'architecture';
-	}
-
-	/**
-	* Modifie la valeur de l'attribut
-	* @access public
-	* @param mediumint(8) $forge valeur de l'attribut
-	* @return none
-	*/
-	function set_forge($forge)
-	{
-		$this->forge = $forge;
-		$this->champs_modif[] = 'forge';
-	}
-
-	/**
-	* Modifie la valeur de l'attribut
-	* @access public
-	* @param mediumint(8) $survie valeur de l'attribut
-	* @return none
-	*/
-	function set_survie($survie)
-	{
-		$this->survie = $survie;
-		$this->champs_modif[] = 'survie';
-	}
-
-	/**
-	* Modifie la valeur de l'attribut
-	* @access public
-	* @param mediumint(8) $dressage valeur de l'attribut
-	* @return none
-	*/
-	function set_dressage($dressage)
-	{
-		$this->dressage = $dressage;
-		$this->champs_modif[] = 'dressage';
 	}
 
 	/**
@@ -2732,16 +2464,6 @@ class perso extends entite
 	function get_distance_pytagore($joueur)
 	{
 		return calcul_distance_pytagore($this->get_pos(), $joueur->get_pos());	
-	}
-	
-	function get_force() 
-	{ 
-		return $this->get_forcex(); 
-	}
-	
-	function set_force($force) 
-	{ 
-		$this->set_forcex($force); 
 	}
 
 	//Récupération des HP max après bonus, famine etc

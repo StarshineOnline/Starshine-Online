@@ -23,22 +23,8 @@ class entite extends placable
 	public $pp;  ///< Protection physique.
 	public $pm;  ///< Protection magique.
 	private $distance_tir;
-	protected $esquive;  ///< Compétence esquive.
-	protected $distance;  ///< Compétence tir à distance.
-	protected $blocage;  ///< Compétence blocage.
-	protected $melee;  ///< Compétence mêlée.
-	protected $incantation;  ///< Compétence incantation.
-	protected $sort_mort;  ///< Compétence nécromancie.
-	protected $sort_vie;  ///< Compétence magie de la vie.
-	protected $sort_element;  ///< Compétence magie élémentaire.
 	public $buff;
 	public $etat;
-	protected $force;  ///< Caractéristique force.
-	protected $puissance;  ///< Caractéristique puissance.
-	protected $energie;  ///< Caractéristique énergie.
-	protected $vie;  ///< Caractéristique constitution.
-	protected $volonte;  ///< Caractéristique volonté.
-	protected $dexterite;  ///< Caractéristique dextérité.
 	private $enchantement;
 	private $arme_degat;
 	private $bouclier_degat = 0;
@@ -53,6 +39,116 @@ class entite extends placable
 
 	public $potentiel_bloquer;
 	private $malus_hache = 1;
+	
+	/**
+	 * @name Caractéristiques
+	 * Données et méthodes liées aux caractéristiques de l'entité : constitution,
+	 * force, dextérité, puissance, volonté et énergie.      	
+	 */	
+	// @{
+	protected $vie;        ///< Caractéristique "constitution".
+	protected $force;      ///< Caractéristique "force".
+	protected $dexterite;  ///< Caractéristique "dextérité".
+	protected $puissance;  ///< Caractéristique "puissance".
+	protected $volonte;    ///< Caractéristique "volonté".
+	protected $energie;    ///< Caractéristique "énergie".
+	/// Renvoie la constitution
+	function get_vie()
+	{
+		return $this->vie;
+	}
+	/// Renvoie la force
+	function get_force()
+	{
+		return $this->force;
+	}
+	/// Renvoie la dextérité
+	function get_dexterite()
+	{
+		return $this->dexterite;
+	}
+	/// Modifie la dextérité
+	function set_dexterite($dexterite)
+	{
+		$this->dexterite = max(0, $dexterite);
+	}
+	/// Renvoie la puissance
+	function get_puissance()
+	{
+		return $this->puissance;
+	}
+	/// Renvoie la volonté
+	function get_volonte()
+	{
+		return $this->volonte;
+	}
+	/// Modifie la volonté
+	function set_volonte($volonte)
+	{
+		$this->volonte = max(0, $volonte);
+	}
+	/// Renvoie l'énergie
+	function get_energie()
+	{
+		return $this->energie;
+	}
+  // @}
+	
+	/**
+	 * @name Compétences
+	 * Données et méthodes liées aux compténtences du personnage : mêlée, esquive,
+	 * incatation...	 
+	 */	
+	// @{
+	protected $melee;        ///< Compétence mêlée.
+	protected $distance;     ///< Compétence tir à distance.
+	protected $esquive;      ///< Compétence esquive.
+	protected $blocage;      ///< Compétence blocage.
+	protected $incantation;  ///< Compétence incantation.
+	protected $sort_vie;     ///< Compétence magie de la vie.
+	protected $sort_element; ///< Compétence magie élémentaire.
+	protected $sort_mort;    ///< Compétence nécromancie.
+	/// Renvoie la mêlée
+	function get_melee()
+	{
+		return $this->melee;
+	}
+	/// Renvoie le tir à distance
+	function get_distance()
+	{
+		return $this->distance;
+	}
+	/// Renvoie l'esquive
+	function get_esquive()
+	{
+		return $this->esquive;
+	}
+	/// Renvoie le blocage
+	function get_blocage()
+  {
+    return $this->blocage;
+  }
+	/// Renvoie l'incantation
+	function get_incantation()
+	{
+		return $this->incantation;
+	}
+	/// Renvoie la magie de vie
+	function get_sort_vie()
+	{
+		return $this->sort_vie;
+	}
+	/// Renvoie la magie élémentaire
+	function get_sort_element()
+	{
+		return $this->sort_element;
+	}
+	/// Renvoie la nécromancie
+	function get_sort_mort()
+	{
+		return $this->sort_mort;
+	}
+  // @}
 
 	function __construct($type, &$objet)
 	{
@@ -463,34 +559,6 @@ class entite extends placable
 	{
 		return $this->distance_tir;
 	}
-	function get_esquive()
-	{
-		return $this->esquive;
-	}
-	function get_distance()
-	{
-		return $this->distance;
-	}
-	function get_melee()
-	{
-		return $this->melee;
-	}
-	function get_incantation()
-	{
-		return $this->incantation;
-	}
-	function get_sort_mort()
-	{
-		return $this->sort_mort;
-	}
-	function get_sort_vie()
-	{
-		return $this->sort_vie;
-	}
-	function get_sort_element()
-	{
-		return $this->sort_element;
-	}
 	
 	function get_buff($nom = false, $champ = false, $type = false)
 	{
@@ -540,38 +608,6 @@ class entite extends placable
 	function get_etat()
 	{
 		return $this->etat;
-	}
-	function get_force()
-	{
-		return $this->force;
-	}
-	function get_puissance()
-	{
-		return $this->puissance;
-	}
-	function get_energie()
-	{
-		return $this->energie;
-	}
-	function get_vie()
-	{
-		return $this->vie;
-	}
-	function get_volonte()
-	{
-		return $this->volonte;
-	}
-	function set_volonte($volonte)
-	{
-		$this->volonte = max(0, $volonte);
-	}
-	function get_dexterite()
-	{
-		return $this->dexterite;
-	}
-	function set_dexterite($dexterite)
-	{
-		$this->dexterite = max(0, $dexterite);
 	}
 	function get_enchantement()
 	{
@@ -762,7 +798,6 @@ class entite extends placable
 		return $this->saved_inventaire;
 	}
 
-	function get_blocage() { return $this->blocage; }
 
 	function maj_comp() 
 	{
