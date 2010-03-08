@@ -35,6 +35,7 @@ $max_ecurie = 10;
 <?php
 if($case->is_ville(true) && ($R->get_diplo($joueur->get_race()) <= 6 OR $R->get_diplo($joueur->get_race()) == 127))
 {
+	$pet = new pet($_GET['d']);
 	//Le joueur dépose une créature dans l'écurie
 	if(array_key_exists('d', $_GET))
 	{
