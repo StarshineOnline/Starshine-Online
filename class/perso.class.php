@@ -3771,7 +3771,7 @@ class perso extends entite
 
 	function pet_to_ecurie($pet_id, $type_ecurie = 1, $max_ecurie = 10, $taxe = 0)
 	{
-		$pet = new pet($_GET['d']);
+		$pet = new pet($pet_id);
 		if($pet->get_id_joueur() == $this->get_id())
 		{
 			$cout = $pet->get_cout_depot() + $taxe;
@@ -3798,7 +3798,7 @@ class perso extends entite
 			else
 			{
 				echo '<h5>Vous n\'avez pas assez de stars !</h5>';
-			return false;
+				return false;
 			}
 		}
 		else
