@@ -701,7 +701,7 @@ class map
 		else $show_only = '';
 		$query = "SELECT id, x, y, nom, lib ".$champs."
 								  FROM map_monstre
-								  WHERE ( ( (x >= ".$xmin.") AND (x <= ".$xmax.") ) AND ( (y >= ".$ymin.") AND (y <= ".$ymax.") ) ) ".$show_only."
+								  WHERE ( ( x BETWEEN ".$xmin." AND ".$xmax." ) AND ( y BETWEEN ".$ymin." AND ".$ymax." ) ) ".$show_only."
 								  ".$group." ORDER BY y ASC, x ASC, ABS(level - $level) ASC, level ASC, nom ASC, id ASC;";
 		$RqMonstres = $db->query($query);
 		if($db->num_rows($RqMonstres) > 0)
