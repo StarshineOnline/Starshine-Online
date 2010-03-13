@@ -2,263 +2,199 @@
 class perso extends entite
 {
   const table = "perso";  ///< Nom de la table correspondante.
-  
-	/**
-    * @access private
-    * @var int(10)
-    */
-	private $mort;
-
-	/**
-    * @access private
-    * @var varchar(40)
-    */
-	private $password;
-
-	/**
-    * @access private
-    * @var email(100)
-    */
-	private $email;
-
-	/**
-    * @access private
-    * @var int(11)
-    */
-	private $exp;
-
-	/**
-    * @access private
-    * @var mediumint(8)
-    */
-	private $honneur;
-
-	/**
-    * @access private
-    * @var int(10)
-    */
-	private $reputation;
-
-	/**
-    * @access private
-    * @var varchar(20)
-    */
-	private $classe;
-
-	/**
-    * @access private
-    * @var tinyint(3)
-    */
-	private $classe_id;
-
-	/**
-    * @access private
-    * @var text
-    */
-	private $inventaire;
-
-	/**
-    * @access private
-    * @var text
-    */
-	private $inventaire_slot;
-
-	/**
-    * @access private
-    * @var int(11)
-    */
-	private $dernieraction;
-
-	/**
-    * @access private
-    * @var int(10)
-    */
-	private $action_a;
-
-	/**
-    * @access private
-    * @var int(10)
-    */
-	private $action_d;
-
-	/**
-    * @access private
-    * @var text
-    */
-	private $sort_jeu;
-
-	/**
-    * @access private
-    * @var text
-    */
-	private $sort_combat;
-
-	/**
-    * @access private
-    * @var text
-    */
-	private $comp_jeu;
-
-	/**
-    * @access private
-    * @var int(11)
-    */
-	private $star;
-
-	/**
-    * @access private
-    * @var int(11)
-    */
-	private $groupe;
-
-	/**
-    * @access private
-    * @var mediumint(8)
-    */
-	private $mp;
-
-	/**
-    * @access private
-    * @var float
-    */
-	private $mp_max;
-
-	/**
-    * @access private
-    * @var double
-    */
-	private $facteur_magie;
-
-	/**
-    * @access private
-    * @var double
-    */
-	private $facteur_sort_vie;
-
-	/**
-    * @access private
-    * @var double
-    */
-	private $facteur_sort_mort;
-
-	/**
-    * @access private
-    * @var double
-    */
-	private $facteur_sort_element;
-
-	/**
-    * @access private
-    * @var int(10)
-    */
-	private $regen_hp;
-
-	/**
-    * @access private
-    * @var int(10)
-    */
-	private $maj_hp;
-
-	/**
-    * @access private
-    * @var int(10)
-    */
-	private $maj_mp;
-
-	/**
-    * @access private
-    * @var tinyint(3)
-    */
-	private $point_sso;
-
-	/**
-    * @access private
-    * @var text
-    */
-	private $quete;
-
-	/**
-    * @access private
-    * @var text
-    */
-	private $quete_fini;
-
-	/**
-    * @access private
-    * @var int(10)
-    */
-	private $dernier_connexion;
-
-	/**
-    * @access private
-    * @var varchar(50)
-    */
-	private $statut;
-
-	/**
-    * @access private
-    * @var int(11)
-    */
-	private $fin_ban;
-
-	/**
-    * @access private
-    * @var int(10)
-    */
-	private $frag;
-
-	/**
-    * @access private
-    * @var float
-    */
-	private $crime;
-
-	/**
-    * @access private
-    * @var int(10)
-    */
-	private $amende;
-
-	/**
-    * @access private
-    * @var enum('true','false')
-    */
-	private $teleport_roi;
-
-	/**
-    * @access private
-    * @var tinyint(3)
-    */
-	private $cache_classe;
-
-	/**
-    * @access private
-    * @var tinyint(3)
-    */
-	private $cache_stat;
-
-	/**
-    * @access private
-    * @var tinyint(3)
-    */
-	private $cache_niveau;
-
-	/**
-    * @access private
-    * @var tinyint(3)
-    */
-	private $max_pet;
-
-	/**
-    * @access private
-    * @var tinyint(3)
-    */
-	private $beta;
-
 	
-	public $poscase;
-	public $pospita;
-	public $share_xp;
+	
+	/**
+	 * @name Informations générales.
+	 * Donnée et méthode sur les inforamations "générales" : classe, rang, niveau,
+	 * stars, mort, points crimes, ...
+	 */
+  // @{
+	private $classe;       ///< Nom de la classe.
+	private $classe_id;    ///< Id de la classe.
+	private $exp;          ///< Points d'expérience.
+	private $point_sso;    ///< Points Shines.
+	private $honneur;      ///< Points d'honneur.
+	private $reputation;   ///< Points de réputation.
+	private $star;         ///< Nombre de stars.
+	private $frag;         ///< Nombre d'ennemis (ou non) tués.
+	private $mort;         ///< Nombre fois où le personnage est mort.
+	private $statut;       ///< Statut du joueur.
+	private $fin_ban;      ///< Date de la fin du ban.
+	private $crime;        ///< Points crime.
+	private $amende;       ///< Amende à payer.
+	private $cache_classe; ///< Indique à qui il faut cacher la classe.
+	private $cache_stat;   ///< Indique à qui il faut cacher les stats.
+	private $cache_niveau; ///< Indique à qui il faut cacher le niveau.
+	private $beta;         ///< Points de beta-test.
+	/// Modifie le nom du personnage
+	function set_nom($nom)
+	{
+		$this->nom = $nom;
+		$this->champs_modif[] = 'nom';
+	}
+	/// Modifie la race
+	function set_race($race)
+	{
+		$this->race = $race;
+		$this->champs_modif[] = 'race';
+	}
+	/// Renvoie le nom de la classe
+	function get_classe()
+	{
+		return $this->classe;
+	}
+	/// Modifie le nom de la classe
+	function set_classe($classe)
+	{
+		$this->classe = $classe;
+		$this->champs_modif[] = 'classe';
+	}
+	/// Renvoie l'id de la classe
+	function get_classe_id()
+	{
+		return $this->classe_id;
+	}
+	/// Modifie l'id de la classe
+	function set_classe_id($classe_id)
+	{
+		$this->classe_id = $classe_id;
+		$this->champs_modif[] = 'classe_id';
+	}
+	/// Renvoie les points d'expérience.
+	function get_exp()
+	{
+		return $this->exp;
+	}
+	/// Modifie les points d'expérience.
+	function set_exp($exp)
+	{
+		$this->exp = $exp;
+		$this->champs_modif[] = 'exp';
+	}
+	/// Modifie le niveau
+	function set_level($level)
+	{
+		$this->level = $level;
+		$this->champs_modif[] = 'level';
+	}
+	/// Renvoie les points shines.
+	function get_point_sso()
+	{
+		return $this->point_sso;
+	}
+  /**
+   * Renvoie les bonus shines
+   * @param  $id_bonus    Id du bonue, false s'il faut tous les renvoyer.
+   * @return    bonus demandé ou tableau des bonus.    
+   */  
+	function get_bonus_shine($id_bonus = false)
+	{
+		if(!$id_bonus)
+		{
+			$this->bonus_shine = bonus_perso::create(array('id_perso'), array($this->id));
+			return $this->bonus_shine;
+		}
+		else
+		{
+			if(!isset($this->bonus_shine)) $this->get_bonus_shine();
+			foreach($this->bonus_shine as $bonus)
+			{
+				if($bonus->get_id_bonus() == $id_bonus)
+					return $bonus;						
+			}
+		}
+		return false;
+	}
+	/// Renvoie les points d'honneur.
+	function get_honneur()
+	{
+		return $this->honneur;
+	}
+	/// Modifie les points d'honneur.
+	function set_honneur($honneur)
+	{
+		$this->honneur = $honneur;
+		$this->champs_modif[] = 'honneur';
+	}
+	/// Renvoie les points de réputation.
+	function get_reputation()
+	{
+		return $this->reputation;
+	}
+	/// Modifie les points de réputation.
+	function set_reputation($reputation)
+	{
+		$this->reputation = $reputation;
+		$this->champs_modif[] = 'reputation';
+	}
+	/// Modifie le rang au sein du royaume
+	function set_rang_royaume($rang_royaume)
+	{
+		$this->rang_royaume = $rang_royaume;
+		$this->champs_modif[] = 'rang_royaume';
+	}
+	/// Renvoie les stars.
+	function get_star()
+	{
+		return $this->star;
+	}
+  /// Ajoute des stars. S'assure que la valeur finale ne sois pas négative.
+	function add_star($add_star)
+  {
+    $this->set_star($this->star + $add_star);
+    if ($this->star < 0)
+      $this->star = 0;
+  }
+	/// Renvoie le nombre fois où le personnage est mort.
+	function get_mort()
+	{
+		return $this->mort;
+	}
+	/// Modifie le nombre fois où le personnage est mort.
+	function set_mort($mort)
+	{
+		$this->mort = $mort;
+		$this->champs_modif[] = 'mort';
+	}
+  // @}
+  
+  /**
+   * Informations joueur
+   * Informations sur le joueur : hash du mot-de-passe, e-mail, dernière connection.
+   */
+  // @{
+	private $password;           ///< hash du mot-de-passe.
+	private $email;              ///< e-mail.
+	private $dernier_connexion;  ///< Date de la dernière connexion.
+	/// Renvoie le hash du mot-de-passe.
+	function get_password()
+	{
+		return $this->password;
+	}
+	/// Modifie le hash du mot-de-passe.
+	function set_password($password)
+	{
+		$this->password = $password;
+		$this->champs_modif[] = 'password';
+	}
+	/// Renvoie l'e-mail.
+	function get_email()
+	{
+		return $this->email;
+	}
+	/// Modifie l'e-mail.
+	function set_email($email)
+	{
+		$this->email = $email;
+		$this->champs_modif[] = 'email';
+	}
+	/// Renvoie la date de la dernière connexion.
+	function get_dernier_connexion()
+	{
+		return $this->dernier_connexion;
+	}
+  // @}        
 	
 	/**
 	 * @name Caractéristiques
@@ -374,6 +310,7 @@ class perso extends entite
 	private $forge;          ///< Compétence "forge".
 	private $survie;         ///< Compétence "survie".
 	private $dressage;       ///< Compétence "dressage".
+	public $competences;     ///< Compétences que seules certaines classes peuvent avoir.
   /// Renvoie la mêlée
 	function get_melee($base = false)
 	{
@@ -578,7 +515,1296 @@ class perso extends entite
 		$this->dressage = $dressage;
 		$this->champs_modif[] = 'dressage';
 	}
+  /**
+   * Renvoie la valeur de l'artisanat
+   * L'artisanat est calculé à partir des 3 compétences d'artisanat : c'est 10 
+   * fois la racine carré de leur somme.
+   */       
+	function get_artisanat()
+	{
+		return round(sqrt(($this->architecture + $this->forge + $this->alchimie) * 10));
+	}
+	/**
+	 * Renvoie la compétence demandée
+	 * @param  $comp_assoc   Compétence demandée.
+	 * @param  $base         true s'il faut donner la valeur de base (sans les bonus).	 
+	 */	 
+	function get_comp($comp_assoc = '', $base = false)
+	{
+		$get = 'get_'.$comp_assoc;
+		if(method_exists($this, $get)) return $this->$get($base);
+		else return $this->get_competence($comp_assoc, false, $base);
+	}
+  /**
+	 * Modifie la compétence indiquée
+	 * @param  $comp_assoc   Compétence à modifier.
+	 * @param  $valeur       Nouvelle valeur.
+	 */	 
+	function set_comp($comp_assoc = '', $valeur = '')
+	{
+		$set = 'set_'.$comp_assoc;
+		if(method_exists($this, $set)) $this->$set($valeur);
+		else $this->set_competence($comp_assoc, $valeur);
+	}
+  /**
+   * Indique si le personnage à une certaine compétence.
+   * N'est valable que pour les compétences que seules certaines classes peuvent
+   * avoir (maitrises, sorts de groupe, ...).
+   * @param  $nom   Nom de la compétence.     
+   */ 
+	function is_comp_perso($nom = '')
+	{
+		if(!isset($this->comp_perso)) $this->get_comp_perso();
+
+		return array_key_exists($nom, $this->comp_perso);
+	}
+	/**
+	 * Permet de savoir si le joueur possède la compétence nom
+	 * @param $nom le nom de la compétence
+	 * @return true si le perso al la compétence false sinon.
+ 	*/
+	function is_competence($nom = '', $type = false)
+	{
+		if(!isset($this->competences)) $this->get_competence();
+		$competence = false;
+
+		if(is_array($this->competences))
+		{
+			$tmp = $this->competences;
+			while(current($tmp) && !$competence)
+			{
+				if(!empty($nom))
+				{
+					if(strcmp(current($tmp)->get_competence(), $nom) == 0)
+						$competence = true;
+
+					next($tmp);
+				}
+				else
+					$competence = (count($this->competences) > 0);
+			}
+		}
+		else $competence = false;
+
+		return $competence;
+	}
+  /**
+   * Renvoie une compétence que seules certaines classes peuvent avoir (maitrises, sorts de groupe, ...)
+   * @param  $nom   Nom de la compétence.     
+   */  
+	function get_comp_perso($nom = '')
+	{
+		if(empty($nom))
+		{
+			$this->comp_perso = comp_perso::create(array('id_perso'), array($this->id), 'id ASC', 'competence');
+			return $this->comp_perso;
+		}
+		else
+		{
+			if(!isset($this->comp_perso)) $this->get_comp_perso();
+				return $this->comp_perso[$nom];
+		}
+	}
+  /**
+   * Accède aux compétences que seules certaines classes peuvent avoir (maitrises, sorts de groupe, ...)
+   * @param  $nom     Nom de la compétence ou false si on les veux toutes.
+   * @param  $champ   Champ(de la bdd) dont ont veut connaitre la valeur.
+	 * @param  $base    true s'il faut donner la valeur de base (sans les bonus).	
+   */  
+	function get_competence($nom = false, $champ = false, $base = false)
+	{
+		if(!$nom)
+		{
+			$this->competences = comp_perso::create(array('id_perso'), array($this->id), 'id ASC', 'competence');
+			return $this->competences;
+		}
+		else
+		{
+			if ($base) $bonus = 0;
+			else $bonus = $this->get_bonus_permanents($nom);
+			if(!isset($this->competences)) $this->get_competence();
+			if($champ)
+			{
+				$get = 'get_'.$champ;
+				return $this->competences[$nom]->$get() + $bonus;
+			}
+			elseif(is_object($this->competences[$nom]))
+				return $this->competences[$nom]->get_valeur() + $bonus;
+			else return false;
+		}
+	}
+  /**
+   * Modifie une compétence que seules certaines classes peuvent avoir (maitrises, sorts de groupe, ...)
+   * @param  $nom       Nom de la compétence. 
+	 * @param  $valeur    Nouvelle valeur.
+   */  
+	function set_competence($nom, $valeur = '')
+	{
+		if(array_key_exists($nom, $this->competences))
+		{
+			$this->competences[$nom]->set_valeur($valeur);
+			$this->competences[$nom]->sauver();
+		}
+	}
   // @}
+  
+  /**
+   * @name Inventaires et objets  
+	 * Données et méthodes liées à l'inventaire et aux objets portés ou utiliser par
+	 * les perosnnages.
+	 */
+  // @{
+	private $inventaire;           /// < Objets équipés par le personnage (sous forme textuelle).
+	private $inventaire_slot;      ///< Objets que le personnage à "dans son sac" (sous forme textuelle).
+	public $inventaire_array;      ///< Objets équipés par le personnage (sous forme d'objet).
+	public $inventaire_slot_array; ///< Objets que le personnage à "dans son sac" (sous forme de tableau).
+	public $arme;                  ///< Arme dans la main droite.
+	public $arme_gauche;           ///< Arme dans la main gauche.
+	public $bouclier;              ///< Bouclier.
+	public $accessoire;            ///< Acessoire.
+	/// Renvoie les objets équipés par le personnage sous forme textuelle.
+	function get_inventaire()
+	{
+		return $this->inventaire;
+	}
+	/// Modifie les objets équipés par le personnage sous forme textuelle.
+	function set_inventaire($inventaire)
+	{
+		$this->inventaire = $inventaire;
+		$this->champs_modif[] = 'inventaire';
+	}
+	/// Renvoie les objets que le personnage à "dans son sac" sous forme textuelle.
+	function get_inventaire_slot()
+	{
+		return $this->inventaire_slot;
+	}
+	/// Modifie les objets que le personnage à "dans son sac" sous forme textuelle.
+	function set_inventaire_slot($inventaire_slot)
+	{
+		$this->inventaire_slot = $inventaire_slot;
+		$this->champs_modif[] = 'inventaire_slot';
+	}
+	/**
+	 * Renvoie un objet équipé particulier.
+	 * @param  $partie   Partie du corps dont il faut renvoyer l'objet.
+	 */   	 
+	function get_inventaire_partie($partie)
+	{
+		if(!isset($this->inventaire_array)) $this->inventaire_array = unserialize($this->get_inventaire());
+		return $this->inventaire_array->$partie;
+	}
+	/**
+	 * Renvoie une partie de l'inventaire (utile, armes, armures ou autre) ou l'intégralité sous forme de tableau associatif.
+	 * @param  $partie   partie (utile, armes, armures ou autre) à renvoyé, ou false
+	 *                   s'il faut renvoyer toutes les parties dans un tableau associatif.
+	 * @param  $force	   true s'il faut recharger le contenu à partie de la valeur textuelle.
+	 */   	 
+	function get_inventaire_slot_partie($partie = false, $force = false)
+	{
+		if(!isset($this->inventaire_slot_array) OR !$force) $this->inventaire_slot_array = unserialize($this->get_inventaire_slot());
+		if($partie === false) return $this->inventaire_slot_array;
+		else return $this->inventaire_slot_array[$partie];
+	}
+	/**
+	 * Modifie une partie de l'inventaire	(utile, armes, armures ou autre).
+	 * @param  $objet    contenu de la partie de l'inventaire à modifier.	 
+	 * @param  $partie   partie (utile, armes, armures ou autre) à renvoyé.
+	 */	 
+	function set_inventaire_slot_partie($objet, $partie)
+	{
+		$this->inventaire_slot_array[$partie] = $objet;
+	}
+  /// Renvoie l'inventaire sous forme d'objet
+	function inventaire()
+	{
+		return unserialize($this->inventaire);
+	}
+	/// Renvoie l'arme de la main droite. Enregistre les enchantements et les effets. 	
+	function get_arme()
+	{
+		if(!isset($this->arme))
+		{
+			global $db;
+			$arme = $this->inventaire()->main_droite;
+			if($arme != '')
+			{
+				$arme_d = decompose_objet($arme);
+				$requete = "SELECT * FROM arme WHERE id = ".$arme_d['id_objet'];
+				$req = $db->query($requete);
+				$this->arme = $db->read_object($req);
+				if ($arme_d['enchantement'] != null)
+				{
+					$gemme = new gemme_enchassee($arme_d['enchantement']);
+					if ($gemme->enchantement_type == 'degat')
+						$this->arme->degat += $gemme->enchantement_effet;
+					$this->register_gemme_enchantement($gemme);
+					//my_dump($this->enchantement);
+				}
+        if ($this->arme->effet)
+        {
+          $effets = split(';', $this->arme->effet);
+          foreach ($effets as $effet)
+          {
+            $d_effet = split('-', $effet);
+						$this->register_item_effet($d_effet[0], $d_effet[1], $this->arme);
+          }
+        }
+        //my_dump($this->arme);
+			}
+			else $this->arme = false;
+		}
+		return $this->arme;
+	}
+	/// Renvoie l'arme de la main gauche. Enregistre les enchantements et les effets. 
+	function get_arme_gauche()
+	{
+		if(!isset($this->arme_gauche))
+		{
+			global $db;
+			$arme = $this->inventaire()->main_gauche;
+			if($arme != '' && $arme != 'lock')
+			{
+				$arme_d = decompose_objet($arme);
+				$requete = "SELECT * FROM arme WHERE id = ".$arme_d['id_objet'];
+				$req = $db->query($requete);
+				$this->arme_gauche = $db->read_object($req);
+				if($this->arme_gauche->type == 'bouclier')
+					$this->arme_gauche = false;
+				else if ($arme_d['enchantement'] != null)
+				{
+					$gemme = new gemme_enchassee($arme_d['enchantement']);
+					if ($gemme->enchantement_type == 'degat')
+						$this->arme_gauche->degat += $gemme->enchantement_effet;
+					$this->register_gemme_enchantement($gemme);
+					//my_dump($this->enchantement);
+				}
+			}
+			else $this->arme_gauche = false;
+		}
+		return $this->arme_gauche;
+	}
+	/// Renvoie l'arme de le bouclier. Enregistre les enchantements et les effets. 
+	function get_bouclier()
+	{
+		if(!isset($this->bouclier))
+		{
+			global $db;
+			$bouclier = $this->inventaire()->main_gauche;
+			if($bouclier != '' AND $bouclier != 'lock')
+			{
+				$arme_g = decompose_objet($bouclier);
+				$requete = "SELECT * FROM arme WHERE id = ".$arme_g['id_objet'];
+				$req = $db->query($requete);
+				$this->bouclier = $db->read_object($req);
+				if($this->bouclier->type != 'bouclier') $this->bouclier = false;
+				else if ($arme_g['enchantement'] != null)
+				{
+					$gemme = new gemme_enchassee($arme_g['enchantement']);
+					if ($gemme->enchantement_type == 'bouclier')
+						$this->bouclier->degat += $gemme->enchantement_effet;
+					$this->register_gemme_enchantement($gemme);
+					//my_dump($this->enchantement);
+				}
+			}
+			else $this->bouclier = false;
+		}
+		return $this->bouclier;
+	}
+	/// Renvoie l'accessoire. Enregistre les enchantements et les effets. 
+	function get_accessoire()
+	{
+		if(!isset($this->accessoire))
+		{
+			global $db;
+			$accessoire = $this->inventaire()->accessoire;
+			if($accessoire != '' AND $accessoire != 'lock')
+			{
+				$acc = decompose_objet($accessoire);
+				$q = "SELECT * FROM $acc[table_categorie] WHERE id = $acc[id_objet]";
+				$req = $db->query($q);
+				$this->accessoire = $db->read_object($req);
+				if ($acc['enchantement'] != null)
+				{
+					$gemme = new gemme_enchassee($acc['enchantement']);
+					$this->register_gemme_enchantement($gemme);
+					//my_dump($this->enchantement);
+				}
+				switch ($this->accessoire->type) {
+				case 'rm':
+					$this->add_bonus_permanents('reserve', $this->accessoire->effet);
+					break;
+				case 'chance_debuff':
+				case 'buff':
+				case 'fabrication':
+					$this->add_bonus_permanents($this->accessoire->type,
+																			$this->accessoire->effet);
+					break;
+				}
+			}
+			else $this->accessoire = false;
+		}
+		return $this->accessoire;
+	}
+	// "Charge" les objets pour faire agir leur effets
+  function check_materiel()
+  {
+    $this->get_arme();
+    $this->get_arme_gauche();
+    $this->get_bouclier();
+    $this->get_armure();
+    $this->get_accessoire();
+  }
+  /// Renvoie le type de l'arme utilisé 
+	function get_arme_type()
+	{
+		if(!isset($this->arme)) $this->get_arme();
+		return $this->arme->type;
+	}
+	/**
+	 * Renvoie le facteur de dégâts de ou des armes.	
+   * La plupart du temps on s'en fiche, de la main, on veut les degats
+   * @param $main   si false : cumul, si 'droite' ou 'gauche' : detail
+   */
+	function get_arme_degat($main = false)
+	{
+		$degats = 0;
+		if ($main == false || $main == 'droite')
+			if ($this->get_arme())
+				$degats += $this->arme->degat;
+		if ($main == false || $main == 'gauche')
+			if ($this->get_arme_gauche())
+				$degats += $this->arme_gauche->degat;
+		return $degats;
+	}
+	/**
+	 * Recherche un objet dans l'inventaire
+	 * @param  $id_objet   Id de l'objet.
+	 * @return   si trouvé tableau avec en première position de le nomrbe d'objet 
+	 *           dans la pile et en deuxième la position dans l'inventaire, false
+	 *           si non trouvé.   	 
+	 */	
+	function recherche_objet($id_objet)
+	{
+		global $G_place_inventaire;
+		$objet_d = decompose_objet($id_objet);
+		$trouver =  false;
+		//Recherche si le joueur n'a pas des objets de ce type dans son inventaire
+		$i = 0;
+		$partie = $this->get_inventaire_slot_partie();
+		while(($i < $G_place_inventaire) AND !$trouver)
+		{
+			$objet_i = decompose_objet($partie[$i]);
+			if($objet_i['sans_stack'] == $objet_d['sans_stack'])
+			{
+				$trouver = true;
+			}
+			else $i++;
+		}
+		if($trouver)
+		{
+			if($objet_i['stack'] > 1) $return[0] = $objet_i['stack'];
+			else $return[0] = 1;
+			$return[1] = $i;
+			return $return;
+		}
+		else return false;
+	}
+  /// Refait les piles des objets
+	function restack_objet()
+	{
+		global $G_place_inventaire;
+		$partie = $this->get_inventaire_slot_partie();
+		$i = 0;
+		$compte_stack = array();
+		$poursuite = true;
+		foreach($partie as $part)
+		{
+			$objet = decompose_objet($part);
+			if(array_key_exists($objet['sans_stack'], $compte_stack))
+				$compte_stack[$objet['sans_stack']] += $objet['stack'];
+			else
+				$compte_stack[$objet['sans_stack']] = $objet['stack'];
+			$this->supprime_objet($objet['sans_stack'], $objet['stack']);
+		}
+
+		foreach($compte_stack as $objet => $valeur)
+		{
+			for($i = 0; $i < $valeur; $i++)
+				$this->prend_objet($objet);
+		}
+	}
+  /**
+   * Supprime un objet de l'inbventaire
+   * @param  $id_objet    Id de l'objet.
+   * @param  $nombre      Nombre d'objet à supprimer, s'il peut être empiler.
+   */  
+	function supprime_objet($id_objet, $nombre)
+	{
+		global $db;
+		$i = $nombre;
+    $inventaire = $this->get_inventaire_slot_partie();
+		while($i > 0)
+		{
+			$objet = $this->recherche_objet($id_objet);
+			//Vérification si objet "stacké"
+			//print_r($objet);
+			$stack = explode('x', $inventaire[$objet[1]]);
+			if($stack[1] > 1) $inventaire[$objet[1]] = $stack[0].'x'.($stack[1] - 1);
+			else array_splice($inventaire, $objet[1], 1);
+			$i--;
+		}
+		$this->set_inventaire_slot(serialize($inventaire));
+		$this->sauver();
+	}
+  /**
+   * Ajoute un objet dans l'inventaire
+   * @param  $id_objet    Id de l'objet.
+   * @return    true si l'objet à pu être prit, false sinon  
+   */  
+	function prend_objet($id_objet)
+	{
+		if(!isset($this->inventaire_perso)) $this->inventaire_perso = new inventaire($this->inventaire, $this->inventaire_slot);
+		if($this->inventaire_perso->prend_objet($id_objet))
+		{
+			if(is_array($this->inventaire_perso->slot_liste)) $this->set_inventaire_slot(serialize($this->inventaire_perso->slot_liste));
+			else $this->set_inventaire_slot($this->inventaire_perso->slot_liste);
+			$this->sauver();
+			return true;
+		}
+		else return false;
+	}
+  /**
+   * Déséquipe un objet qui était porté.
+   * @param  $type    Type (emplacement) de l'objet.
+   * @return    true s'il a pu être déséquipé, false sinon (plus de place).   
+   */   
+	function desequip($type)
+	{
+		global $db, $G_erreur, $G_place_inventaire;
+		$inventaire = $this->inventaire();
+		if($inventaire->$type !== 0 AND $inventaire->$type != '')
+		{
+			//Inventaire plein
+			if(!$this->prend_objet($inventaire->$type))
+			{
+				$G_erreur = 'Vous n\'avez plus de place dans votre inventaire<br />';
+				return false;
+			}
+			else
+			{
+				//On enlève l'objet de l'emplacement pour le mettre dans l'inventaire
+				if($type == 'main_droite')
+				{
+					if($inventaire->main_gauche == 'lock') $inventaire->main_gauche = 0;
+				}
+				$inventaire->$type = 0;
+				$this->set_inventaire(serialize($inventaire));
+				$this->sauver();
+				return true;
+			}
+		}
+		return true;
+	}
+  /**
+   * Equipe un objet.
+   * Vérifie toutes les conditions pour le porter et déséquipe des obkets si néecessaire.
+   * @param  $objet   Objet à équiper
+   * @return       true s'il a pu être équipé, false sinon. 
+   */  
+	function equip_objet($objet)
+	{
+		global $db, $G_erreur;
+		$equip = false;
+		$conditions = array();
+		if($objet_d = decompose_objet($objet))
+		{
+			//print_r($objet_d);
+			$id_objet = $objet_d['id_objet'];
+			$categorie = $objet_d['categorie'];
+			switch ($categorie)
+			{
+				//Si c'est une arme
+				case 'a' :
+					$requete = "SELECT * FROM arme WHERE ID = ".$id_objet;
+					//Récupération des infos de l'objet
+					$req = $db->query($requete);
+					$row = $db->read_array($req);
+					if($row['type'] == 'baton')
+					{
+						$conditions[0]['attribut']	= 'coef_incantation';
+						$conditions[0]['valeur']	= $row['forcex'] * $row['melee'];
+					}
+					elseif($row['type'] == 'bouclier')
+					{
+						$conditions[0]['attribut']	= 'coef_blocage';
+						$conditions[0]['valeur']	= $row['forcex'] * $row['melee'];
+					}
+					else
+					{
+						$conditions[0]['attribut']	= 'coef_melee';
+						$conditions[0]['valeur']	= $row['forcex'] * $row['melee'];
+					}
+					$conditions[1]['attribut']	= 'coef_distance';
+					$conditions[1]['valeur']	= $row['forcex'] * $row['distance'];
+					$type = explode(';', $row['mains']);
+					$type = $type[0];
+					$mains = $row['mains'];
+				break;
+				//Si c'est une protection
+				case 'p' :
+					$requete = "SELECT * FROM armure WHERE ID = ".$id_objet;
+					//Récupération des infos de l'objet
+					$req = $db->query($requete);
+					$row = $db->read_array($req);
+					$conditions[0]['attribut']	= 'force';
+					$conditions[0]['valeur']	= $row['forcex'];
+					$type = $row['type'];
+				break;
+				//Si c'est un accessoire
+				case 'm' :
+					$requete = "SELECT * FROM accessoire WHERE ID = ".$id_objet;
+					//Récupération des infos de l'objet
+					$req = $db->query($requete);
+					$row = $db->read_array($req);
+					$conditions[0]['attribut']	= 'puissance';
+					$conditions[0]['valeur']	= $row['puissance'];
+					$type = 'accessoire';
+				break;
+			}
+
+			//Vérification des conditions
+			if (is_array($conditions))
+			{
+				$i = 0;
+				while ($i < count($conditions))
+				{
+					$get = 'get_'.$conditions[$i]['attribut'];
+					if ($this->$get() < $conditions[$i]['valeur'])
+					{
+						$G_erreur = 'Vous n\'avez pas assez en '.$conditions[$i]['attribut'].'<br />';
+						return false;
+					}
+					$i++;
+				}
+			}
+
+			//Si c'est une dague main gauche, vérifie qu'il a aussi une dague en main droite
+			if($type == 'main_gauche' AND $row['type'] == 'dague')
+			{
+				if($this->get_inventaire_partie('main_droite') === 0)
+				{
+				}
+				else
+				{
+					$main_droite = decompose_objet($this->get_inventaire_partie('main_droite'));
+					$requete = "SELECT * FROM arme WHERE ID = ".$main_droite['id_objet'];
+					//Récupération des infos de l'objet
+					$req_md = $db->query($requete);
+					$row_md = $db->read_array($req_md);
+					if($row['type'] == 'dague')
+					{
+						if($row_md['type'] != 'dague')
+						{
+							$G_erreur = 'L\'arme équipée en main droite n\'est pas une dague<br />';
+							return false;
+						}
+					}
+					elseif(count(explode(';', $row_md['mains'])) > 1)
+					{
+						$G_erreur = 'Vous devez enlever votre arme à 2 mains pour porter cet objet<br />';
+						return false;
+					}
+				}
+			}
+			//Vérifie si il a une dague en main gauche et si c'est le cas et que l'arme n'est pas une dague, on désequipe
+			if($type == 'main_droite' AND $row['type'] != 'dague')
+			{
+				if($this->get_inventaire_partie('main_gauche') === 0 OR $this->get_inventaire_partie('main_gauche') == '')
+				{
+				}
+				else
+				{
+					if($main_gauche = decompose_objet($this->get_inventaire_partie('main_gauche')))
+					{
+						$requete = "SELECT * FROM arme WHERE ID = ".$main_gauche['id_objet'];
+						//Récupération des infos de l'objet
+						$req_mg = $db->query($requete);
+						$row_mg = $db->read_array($req_mg);
+						if($row_mg['type'] == 'dague')
+						{
+							$this->desequip('main_gauche');
+						}
+					}
+					else
+					{
+					}
+				}
+			}
+
+			$desequip = true;
+			if($categorie == 'a')
+			{
+				$mains = explode(';', $mains);
+				$type = $mains[0];
+				$count = count($mains);
+			}
+			//Verifie si il a déjà un objet de ce type sur lui
+			if ($type != '')
+			{
+				//Desequipement
+				if($categorie == 'a')
+				{
+					$i = 0;
+					while($desequip AND $i < $count)
+					{
+						if($this->get_inventaire_partie($mains[$i]) === 'lock' AND $this->get_inventaire_partie('main_droite') !== 0)
+						{
+							$this->desequip('main_droite');
+						}
+						$desequip = $this->desequip($mains[$i]);
+						$i++;
+					}
+				}
+				else
+				{
+					$desequip = $this->desequip($type);
+				}
+			}
+
+			if($desequip)
+			{
+				//On équipe
+				$inventaire = $this->inventaire();
+				$inventaire->$type = $objet;
+				if($categorie == 'a' AND $count == 2) $inventaire->main_gauche = 'lock';
+				$this->set_inventaire(serialize($inventaire));
+				$this->sauver();
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+		}
+		else return false;
+	}
+	/**
+	 * Enregistre un enchantement.
+	 * Les encahnemtements possible sont : hp, mp, pp, pm, portée, star, reserve,
+	 * esquive, melee, distance (compétence) et incantation.
+	 */	
+	function register_gemme_enchantement($gemme)
+	{
+		switch ($gemme->enchantement_type)
+		{
+		case 'hp' :
+			$this->add_bonus_permanents('hp_max', $gemme->enchantement_effet);
+      break;
+    case 'mp' :
+			$this->add_bonus_permanents('mp_max', $gemme->enchantement_effet);
+      break;
+    case 'pp' :
+      $this->pp += $gemme->enchantement_effet;
+      break;
+    case 'pm' :
+      $this->pm += $gemme->enchantement_effet;
+      break;
+		case 'portee' :
+		case 'star' :
+   	case 'reserve' :
+		/* gemmes de compétence: bonus ignoré à la montée */
+		case 'esquive' :
+		case 'melee' : 
+		case 'distance' :
+		case 'incantation' :
+			$this->add_bonus_permanents($gemme->enchantement_type,
+																	$gemme->enchantement_effet);
+			break;
+		}
+		if (array_key_exists($gemme->enchantement_type, $this->enchantement))
+		{
+			$this->enchantement[$gemme->enchantement_type]['gemme_id']
+				.= ";$gemme->id";
+			$this->enchantement[$gemme->enchantement_type]['effet'] +=
+				$gemme->enchantement_effet;
+		}
+		else
+			$this->enchantement[$gemme->enchantement_type] =
+				array('gemme_id' => $gemme->id, 'effet' => $gemme->enchantement_effet);
+	}
+  // @}
+  
+  /**
+   * @name  Coefficients et facteurs de magie
+   * Données et méthodes ayant trait aux coefficients pour porter les armes et 
+   * aux facteurs multipliant les pré-requis et coût en PA et MP des sorts.
+   */         
+  // @{
+	public $coef_melee;            ///< Coefficient de mêlée.
+	public $coef_distance;         ///< Coefficient de tir à distance.
+	public $coef_blocage;          ///< Coefficient de blocage.
+	public $coef_incantation;      ///< Coefficient d'incantation.
+	private $facteur_magie;        ///< Facteur multipliant les pré-requis et coût en PA et MP des sorts.
+	private $facteur_sort_vie;     ///< Facteur pour la magie de la vie (inutilisé).
+	private $facteur_sort_mort;    ///< Facteur pour la nécromancie (inutilisé).
+	private $facteur_sort_element; ///< Facteur pour la magie élémentaire (inutilisé).
+  /// Renvoie le coefficient de mêlée.
+	function get_coef_melee()
+	{
+		if(!isset($this->coef_melee))
+			$this->coef_melee = $this->forcex * $this->get_melee();
+		return $this->coef_melee;
+	}
+  /// Renvoie le coefficient de tir à distance.
+	function get_coef_distance()
+	{
+		if(!isset($this->coef_distance))
+			$this->coef_distance = round(($this->get_forcex() + $this->get_dexterite()) / 2) * $this->get_distance();
+		return $this->coef_distance;
+	}
+  /// Renvoie le coefficient de blocage.
+	function get_coef_blocage()
+	{
+		if(!isset($this->coef_blocage)) $this->coef_blocage = round(($this->forcex + $this->dexterite) / 2) * $this->blocage;
+		return $this->coef_blocage;
+	}
+  /// Renvoie le coefficient d'incantation.
+	function get_coef_incantation()
+	{
+		if(!isset($this->coef_incantation))
+			$this->coef_incantation = $this->get_puissance() * $this->get_incantation();
+		return $this->coef_incantation;
+	}
+	/// Renvoie le facteur multipliant les pré-requis et coût en PA et MP des sorts.
+	function get_facteur_magie()
+	{
+		return round($this->facteur_magie);
+	}
+	/// Modifie le facteur multipliant les pré-requis et coût en PA et MP des sorts.
+	function set_facteur_magie($facteur_magie)
+	{
+		$this->facteur_magie = $facteur_magie;
+		$this->champs_modif[] = 'facteur_magie';
+	}
+	/// Renvoie le facteur pour la magie de la vie (inutilisé).
+	function get_facteur_sort_vie()
+	{
+		return $this->facteur_sort_vie;
+	}
+	/// Modifie le facteur pour la magie de la vie (inutilisé).
+	function set_facteur_sort_vie($facteur_sort_vie)
+	{
+		$this->facteur_sort_vie = $facteur_sort_vie;
+		$this->champs_modif[] = 'facteur_sort_vie';
+	}
+	/// Renvoie le facteur pour la nécromancie (inutilisé).
+	function get_facteur_sort_mort()
+	{
+		return $this->facteur_sort_mort;
+	}
+	/// Modifie le facteur pour la nécromancie (inutilisé).
+	function set_facteur_sort_mort($facteur_sort_mort)
+	{
+		$this->facteur_sort_mort = $facteur_sort_mort;
+		$this->champs_modif[] = 'facteur_sort_mort';
+	}
+	/// Renvoie le facteur pour la magie élémentaire (inutilisé).
+	function get_facteur_sort_element()
+	{
+		return $this->facteur_sort_element;
+	}
+	/// Modifie le facteur pour la magie élémentaire (inutilisé).
+	function set_facteur_sort_element($facteur_sort_element)
+	{
+		$this->facteur_sort_element = $facteur_sort_element;
+		$this->champs_modif[] = 'facteur_sort_element';
+	}
+  // @}
+  
+  /**
+   * @name  PA, HP & MP
+   * Données et méthodes ayant trait aux PA, HP & MP : valeur actuelle, maximale,
+   * prochaine régénération et augmentation.
+   */         
+  // @{
+	public $hp_maximum;      ///< HP maximums après bonus et malus
+	private $mp;             ///< MP actuels.
+	private $mp_max;         ///< MP maximaux
+	public $mp_maximum;      ///< HP maximums après bonus et malus
+	private $dernieraction;  ///< Date de la dernière action pour le calcul des PA.
+	private $regen_hp;       ///< Date de la prochaine régénération de HP & MP
+	private $maj_hp;         ///< Date de la prochaine augmentation de HP
+	private $maj_mp;         ///< Date de la prochaine augmentation de MP
+	/// Modifie les PA
+	function set_pa($pa)
+	{
+		$this->pa = $pa;
+		$this->champs_modif[] = 'pa';
+	}
+	/// Modifie les HP actuels
+	function set_hp($hp)
+	{
+		$this->hp = $hp;
+		$this->champs_modif[] = 'hp';
+	}
+	/// Renvoie les HP maximaux
+	function get_hp_max($base = false)
+	{
+		if ($base)
+			return $this->hp_max;
+		else
+			return $this->hp_max + $this->get_bonus_permanents('hp_max');
+	}
+	/// Modifie les HP maximaux
+	function set_hp_max($hp_max)
+	{
+		$this->hp_max = $hp_max;
+		$this->champs_modif[] = 'hp_max';
+	}
+	/// Renvoie les MP actuels
+	function get_mp()
+	{
+		return $this->mp;
+	}
+	/// Modifie les MP actuels
+	function set_mp($mp)
+	{
+		$this->mp = $mp;
+		$this->champs_modif[] = 'mp';
+	}
+	/// Renvoie les MP maximaux
+	function get_mp_max($base = false)
+	{
+		if ($base)
+			return $this->mp_max;
+		else
+			return $this->mp_max + $this->get_bonus_permanents('mp_max');
+	}
+	/// Modifie les MP maximaux
+	function set_mp_max($mp_max)
+	{
+		$this->mp_max = $mp_max;
+		$this->champs_modif[] = 'mp_max';
+	}
+	/// Renvoie la date de la prochaine régénération de HP & MP
+	function get_regen_hp()
+	{
+		return $this->regen_hp;
+	}
+	/// Modifie la date de la prochaine régénération de HP & MP
+	function set_regen_hp($regen_hp)
+	{
+		$this->regen_hp = $regen_hp;
+		$this->champs_modif[] = 'regen_hp';
+	}
+	/// Renvoie la date de la prochaine augmentation de HP
+	function get_maj_hp()
+	{
+		return $this->maj_hp;
+	}
+	/// Modifie la date de la prochaine augmentation de HP
+	function set_maj_hp($maj_hp)
+	{
+		$this->maj_hp = $maj_hp;
+		$this->champs_modif[] = 'maj_hp';
+	}
+	/// Renvoie la date de la prochaine augmentation de MP
+	function get_maj_mp()
+	{
+		return $this->maj_mp;
+	}
+	/// Modifie la date de la prochaine augmentation de MP
+	function set_maj_mp($maj_mp)
+	{
+		$this->maj_mp = $maj_mp;
+		$this->champs_modif[] = 'maj_mp';
+	}
+	/// Renvoie les HP maximums après bonus et malus
+	function get_hp_maximum()
+	{
+		$this->hp_maximum = floor($this->get_hp_max());
+		//Famine
+		if($this->is_buff('famine')) $this->hp_maximum = $this->hp_maximum - ($this->hp_maximum * ($this->get_buff('famine', 'effet') / 100));
+		return $this->hp_maximum;
+	}
+	/// Renvoie les MP maximums après bonus et malus
+	function get_mp_maximum()
+	{
+		$this->mp_maximum = floor($this->get_mp_max());
+		//Famine
+		if($this->is_buff('famine')) $this->mp_maximum = $this->mp_maximum - ($this->mp_maximum * ($this->get_buff('famine', 'effet') / 100));
+		return $this->mp_maximum;
+	}
+	/// Renvoie la date de la dernière action
+	function get_dernieraction()
+	{
+		return $this->dernieraction;
+	}
+  /// Ajoute des PA. S'assure que la valeur finale ne peut pas être négative
+	function add_pa($add_pa)
+  {
+    $this->set_pa($this->pa + $add_pa);
+    if ($this->pa < 0)
+      $this->pa = 0;
+  }
+  /// Ajoute des HP. S'assure que la valeur finale ne peut pas être négative ni dépasser le maximum
+  function add_hp($add_hp) 
+  {
+    $this->set_hp($this->hp + $add_hp);
+    if ($this->hp > $this->get_hp_maximum())
+      $this->hp = floor($this->get_hp_maximum());
+    if ($this->hp < 0)
+      $this->hp = 0;
+  }
+  /// Ajoute des MP. S'assure que la valeur finale ne peut pas être négative ni dépasser le maximum
+  function add_mp($add_mp) 
+  {
+    $this->set_mp($this->mp + $add_mp);
+    if ($this->mp > $this->get_mp_maximum())
+      $this->mp = floor($this->get_mp_maximum());
+    if ($this->mp < 0)
+      $this->mp = 0;
+  }
+  /// Supprime les rez lancées sur le personnage.
+  function supprime_rez()
+  {
+	  global $db;
+	  $requete = "DELETE FROM rez WHERE id_rez = ".$this->id;
+	  $db->query($requete);
+  }
+  // @}
+  
+  /**
+   * @name  Sorts & compétences
+   * Données et méthodes ayant trait aux sorts et compétences de combat et hors combat.
+   */         
+  // @{
+	private $sort_jeu;     ///< Sorts hors combat.
+	private $sort_combat;  ///< Sorts de combat.
+	private $comp_jeu;     ///< Compétences hors combat.
+	/// Renvoie les sorts hors combat.
+	function get_sort_jeu()
+	{
+		return $this->sort_jeu;
+	}
+	/// Modifie les sorts hors combat.
+	function set_sort_jeu($sort_jeu)
+	{
+		$this->sort_jeu = $sort_jeu;
+		$this->champs_modif[] = 'sort_jeu';
+	}
+	/// Renvoie les sorts de combat.
+	function get_sort_combat()
+	{
+		return $this->sort_combat;
+	}
+	/// Modifie les sorts de combat.
+	function set_sort_combat($sort_combat)
+	{
+		$this->sort_combat = $sort_combat;
+		$this->champs_modif[] = 'sort_combat';
+	}
+	/// Renvoie les compétences hors combat.
+	function get_comp_jeu()
+	{
+		return $this->comp_jeu;
+	}
+	/// Modifie les compétences hors combat.
+	function set_comp_jeu($comp_jeu)
+	{
+		$this->comp_jeu = $comp_jeu;
+		$this->champs_modif[] = 'comp_jeu';
+	}
+	/// Modifie les compétences de combat.
+	function set_comp_combat($comp_combat)
+	{
+		$this->comp_combat = $comp_combat;
+		$this->champs_modif[] = 'comp_combat';
+	}
+	// @}
+	
+	/**
+	 * @name Dresssage
+	 * Données et méthodes liées au dressage.
+	 */
+  // @{
+	private $max_pet;  ///< Nombre de créatures que le personnage peut posseder.
+  /// Renvoie le niveau maximal des monstres que le personnage peut dresser.
+	function max_dresse()
+	{
+		$max = (floor(pow($this->get_dressage(), 0.772) / 7) + 1);
+		if($max < 1) $max = 1;
+		return $max;
+	}
+  /// Indique si le personnage peut dresser ce monstre.
+	function can_dresse($monstre)
+	{
+		$m = new monstre($monstre->get_type());
+		if($this->max_dresse() >= $monstre->get_level() && $m->get_dressage() != 999999) return true;
+		else return false;
+	}
+  /// Renvoie le nombre de créature possédé.
+	function nb_pet()
+	{
+		return count($this->get_pets());
+	}
+  /// Renvoie le nombre de créature à l'écurie "commune"
+	function nb_pet_ecurie()
+	{
+		return count($this->get_ecurie());
+	}
+	/// Revnoie les créatures du personnage sous forme de tableau.
+	function get_pets($force = false)
+	{
+		if(!isset($this->pets) OR $force) $this->pets = pet::create(array('id_joueur', 'ecurie'), array($this->id, 0), 'principale DESC');
+		return $this->pets;
+	}
+  /// Renvoie la créature principale du personnage 
+	function get_pet()
+	{
+		if(!isset($this->pet))
+		{
+			$pet = pet::create(array('id_joueur', 'principale', 'ecurie'), array($this->id, 1, 0), 'principale DESC');
+			$this->pet = $pet[0];
+		}
+		return $this->pet;
+	}
+  /// Renvoie les créatures du personnages qui sont dans l'écurie "commune".
+	function get_ecurie($force = false)
+	{
+		if(!isset($this->ecurie) OR $force) $this->ecurie = pet::create(array('id_joueur', 'ecurie'), array($this->id, 1), 'principale DESC');
+		return $this->ecurie;
+	}
+  /// Renvoie les créatures qui sont dans l'écurie du terrain du personnage.
+	function get_ecurie_self($force = false)
+	{
+		if(!isset($this->ecurie_self) OR $force) $this->ecurie_self = pet::create(array('id_joueur', 'ecurie'), array($this->id, 2), 'principale DESC');
+		return $this->ecurie_self;
+	}
+  /**
+   * Ajoute une créature à la liste de celle possédé
+   * @param  $id_monstre    $id de la descrption du monstre.
+   * @param  $hp            hp de la créature.
+   * @param  $mp            mp de la créature.
+   * @return    true si la craéture a pu être ajoute, false sinon (plus de place).   
+   */        
+	function add_pet($id_monstre, $hp = false, $mp = false)
+	{
+		if($this->nb_pet() >= $this->get_comp('max_pet')) return false;
+		else
+		{
+			$monstre = new monstre($id_monstre);
+			$pet = new pet();
+			$pet->set_id_joueur($this->id);
+			$pet->set_id_monstre($id_monstre);
+			$pet->set_nom($monstre->get_nom());
+			if(!$hp) $pet->set_hp($monstre->get_hp());
+			else $pet->set_hp($hp);
+			$pet->set_mp($mp);
+			if(count($this->get_pets()) == 0) $pet->set_principale(1);
+			else $pet->set_principale(0);
+			$pet->sauver();
+			return true;
+		}
+	}
+  /**
+   * Change la créture principale
+   * @param  $pet_id    Id de la créature qui doit devenir la principale.
+   */   
+	function set_pet_principale($pet_id)
+	{
+		global $db;
+		$requete = "UPDATE pet SET principale = 0 WHERE id_joueur = ".$this->id;
+		$db->query($requete);
+		$pet = new pet($pet_id);
+		$pet->set_principale(1);
+		$pet->sauver();
+	}
+  /**
+   * Met une créature à l'écurie.*
+   * @param  $pet_id        Id de la créature.
+   * @param  $type_ecurie   1 pour l'écurie du personnage, 2 pour l'écurei commune.
+   * @param  $max_ecurie    Nombre de créature que peut contenir l'écurie.
+   * @param  $taxe          taxe à appliquer pour mettre la créature à l'écurie.
+   */  
+	function pet_to_ecurie($pet_id, $type_ecurie = 1, $max_ecurie = 10, $taxe = 0)
+	{
+		$pet = new pet($pet_id);
+		if($pet->get_id_joueur() == $this->get_id())
+		{
+			$cout = $pet->get_cout_depot() + $taxe;
+			if(($this->get_star() >= $cout) OR $type_ecurie == 2)
+			{
+				if($this->nb_pet_ecurie() < $max_ecurie)
+				{
+					$pet->set_ecurie($type_ecurie);
+					$pet->set_principale(0);
+					$pet->sauver();
+					if($type_ecurie == 1)
+					{
+						$this->set_star($this->get_star() - $cout);
+						$this->sauver();
+					}
+					return true;
+				}
+				else
+				{
+					echo '<h5>L\'écurie ne peut pas prendre plus de '.$max_ecurie.' créatures.</h5>';
+					return false;
+				}
+			}
+			else
+			{
+				echo '<h5>Vous n\'avez pas assez de stars !</h5>';
+				return false;
+			}
+		}
+		else
+		{
+			echo '<h5>Cette créature ne vous appartient pas !</h5>';
+			return false;
+		}
+	}
+  /**
+   * Récupère une créature de l'écurie
+   * @param  $pet_id    Id de la créature.
+   */  
+	function pet_from_ecurie($pet_id)
+	{
+		$pet = new pet($pet_id);
+		if($pet->get_id_joueur() == $this->get_id())
+		{
+			if($this->nb_pet() < $this->get_comp('max_pet'))
+			{
+				$pet->set_ecurie(0);
+				$pet->sauver();
+			}
+			else
+			{
+				echo '<h5>Vous ne pouvez pas prendre plus de créature avec vous.</h5>';
+			}
+		}
+		else
+		{
+			echo '<h5>Cette créature ne vous appartient pas !</h5>';
+		}
+	}
+  /// Renvoie les HP redonnés à la créature par un soin
+	function soin_pet()
+	{
+		$facteur = ($this->get_vie() + 10) / 22;
+		if($this->get_race() == 'scavenger') $facteur = $facteur * 1.2;
+		return floor(sqrt($this->get_dressage()) * 4 * $facteur);
+	}
+  // @} 
+	
+	/**
+	 * @name Groupe & quêtes
+	 * Données et méthodes liées au groupe et aux quêtes.
+	 */
+  // @{
+	private $groupe; ///< Id du groupe du personnage.
+	private $quete; ///< Quêtes que possède le personnage.
+	private $quete_fini; ///< Quêtes terminées.
+	public $share_xp;
+	/// Modifie l'id du groupe du personnage.
+	function set_groupe($groupe)
+	{
+		$this->groupe = $groupe;
+		$this->champs_modif[] = 'groupe';
+	}
+	/// Modifie la liste des quêtes que possède le personnage.
+	function set_quete($quete)
+	{
+		$this->quete = $quete;
+		$this->champs_modif[] = 'quete';
+	}
+	/// Modifie la liste des quêtes que terminées.
+	function set_quete_fini($quete_fini)
+	{
+		$this->quete_fini = $quete_fini;
+		$this->champs_modif[] = 'quete_fini';
+	}
+	// @}
+	
+	/**
+	 * @name Position & déplacement
+	 * Données et méthodes liées à la position et au déplacement.
+	 */  
+  // @{
+	private $teleport_roi; ///< enum('true','false'), indique si le téléport du roi a été utilisé.
+	public $poscase;
+	public $pospita;
+	/// Indique si le téléport du roi a été utilisé.
+	function get_teleport_roi()
+	{
+		return $this->teleport_roi;
+	}
+  /// Modifie l'indicateur d'utilisation du téléport du roi.
+	function set_teleport_roi($teleport_roi)
+	{
+		$this->teleport_roi = $teleport_roi;
+		$this->champs_modif[] = 'teleport_roi';
+	}
+  /**
+   * Indique si le personnage est dans une arène.
+   * @return  false s'il n'est pas dans une arène, sinon tableau contenant la 
+   *          descriptiond de l'arène dans laquelle il se trouve.   
+   */  
+	function in_arene($filter = '')
+	{
+		if ($this->x < 190 && $this->y < 190)
+			return false;
+		global $db;
+		$q = "select * from arenes where x <= $this->x and $this->x < x + size ".
+			"and y <= $this->y and $this->y < y + size $filter";
+		$req = $db->query($q);
+		if ($row = $db->read_object($req)) {
+			return $row;
+		}
+		return false;
+	}
+  /// Met à jour les fichiers XML de l'arène avec les données du personnage.
+	function trigger_arene()
+	{
+		$arene = $this->in_arene();
+		if ($arene != false)
+		{
+			require_once(root.'arenes/gen_arenes.php');
+			$arene_xml = gen_arene($arene->x, $arene->y, $arene->size, $arene->nom);
+			$arene_file = fopen(root.'arenes/'.$arene->file.'tmp', 'w+');
+			fwrite($arene_file, $arene_xml[0]);
+			fclose($arene_file);
+			rename(root.'arenes/'.$arene->file.'tmp', root.'arenes/'.$arene->file);
+			$arene_file = fopen(root.'arenes/admin/'.$arene->file.'tmp', 'w+');
+			fwrite($arene_file, $arene_xml[1]);
+			fclose($arene_file);
+			rename(root.'arenes/admin/'.$arene->file.'tmp', root.'arenes/admin/'.$arene->file);
+		}
+	}
+	// @}
+	
+	/**
+	 * @name Combats
+	 * Données et méthodes liées aux combats.
+	 */
+  // @{
+	private $action_a;   ///< Script d'attaque
+	private $action_d;   ///< Script de défense
+	/// modifie le script d'attaque.
+	function set_action_a($action_a)
+	{
+		$this->action_a = $action_a;
+		$this->champs_modif[] = 'action_a';
+	}
+	/// modifie le script de défense.
+	function set_action_d($action_d)
+	{
+		$this->action_d = $action_d;
+		$this->champs_modif[] = 'action_d';
+	}
+	// @}
+     	
 
 	/**
 	* @access public
@@ -936,127 +2162,6 @@ class perso extends entite
 	* Retourne la valeur de l'attribut
 	* @access public
 	* @param none
-	* @return int(10) $mort valeur de l'attribut mort
-	*/
-	function get_mort()
-	{
-		return $this->mort;
-	}
-
-	/**
-	* Retourne la valeur de l'attribut
-	* @access public
-	* @param none
-	* @return varchar(40) $password valeur de l'attribut password
-	*/
-	function get_password()
-	{
-		return $this->password;
-	}
-
-	/**
-	* Retourne la valeur de l'attribut
-	* @access public
-	* @param none
-	* @return varchar(100) $email valeur de l'attribut email
-	*/
-	function get_email()
-	{
-		return $this->email;
-	}
-
-	/**
-	* Retourne la valeur de l'attribut
-	* @access public
-	* @param none
-	* @return int(11) $exp valeur de l'attribut exp
-	*/
-	function get_exp()
-	{
-		return $this->exp;
-	}
-
-	/**
-	* Retourne la valeur de l'attribut
-	* @access public
-	* @param none
-	* @return mediumint(8) $honneur valeur de l'attribut honneur
-	*/
-	function get_honneur()
-	{
-		return $this->honneur;
-	}
-
-	/**
-	* Retourne la valeur de l'attribut
-	* @access public
-	* @param none
-	* @return int(10) $reputation valeur de l'attribut reputation
-	*/
-	function get_reputation()
-	{
-		return $this->reputation;
-	}
-
-	/**
-	* Retourne la valeur de l'attribut
-	* @access public
-	* @param none
-	* @return varchar(20) $classe valeur de l'attribut classe
-	*/
-	function get_classe()
-	{
-		return $this->classe;
-	}
-
-	/**
-	* Retourne la valeur de l'attribut
-	* @access public
-	* @param none
-	* @return tinyint(3) $classe_id valeur de l'attribut classe_id
-	*/
-	function get_classe_id()
-	{
-		return $this->classe_id;
-	}
-
-	/**
-	* Retourne la valeur de l'attribut
-	* @access public
-	* @param none
-	* @return text $inventaire valeur de l'attribut inventaire
-	*/
-	function get_inventaire()
-	{
-		return $this->inventaire;
-	}
-
-	/**
-	* Retourne la valeur de l'attribut
-	* @access public
-	* @param none
-	* @return text $inventaire_slot valeur de l'attribut inventaire_slot
-	*/
-	function get_inventaire_slot()
-	{
-		return $this->inventaire_slot;
-	}
-
-	/**
-	* Retourne la valeur de l'attribut
-	* @access public
-	* @param none
-	* @return int(11) $dernieraction valeur de l'attribut dernieraction
-	*/
-	function get_dernieraction()
-	{
-		return $this->dernieraction;
-	}
-
-	/**
-	* Retourne la valeur de l'attribut
-	* @access public
-	* @param none
 	* @return int(10) $action_a valeur de l'attribut action_a
 	*/
 	function get_action_a()
@@ -1079,182 +2184,11 @@ class perso extends entite
 	* Retourne la valeur de l'attribut
 	* @access public
 	* @param none
-	* @return text $sort_jeu valeur de l'attribut sort_jeu
-	*/
-	function get_sort_jeu()
-	{
-		return $this->sort_jeu;
-	}
-
-	/**
-	* Retourne la valeur de l'attribut
-	* @access public
-	* @param none
-	* @return text $sort_combat valeur de l'attribut sort_combat
-	*/
-	function get_sort_combat()
-	{
-		return $this->sort_combat;
-	}
-
-	/**
-	* Retourne la valeur de l'attribut
-	* @access public
-	* @param none
-	* @return text $comp_jeu valeur de l'attribut comp_jeu
-	*/
-	function get_comp_jeu()
-	{
-		return $this->comp_jeu;
-	}
-
-	/**
-	* Retourne la valeur de l'attribut
-	* @access public
-	* @param none
-	* @return int(11) $star valeur de l'attribut star
-	*/
-	function get_star()
-	{
-		return $this->star;
-	}
-
-	/**
-	* Retourne la valeur de l'attribut
-	* @access public
-	* @param none
 	* @return int(11) $groupe valeur de l'attribut groupe
 	*/
 	function get_groupe()
 	{
 		return $this->groupe;
-	}
-
-	/**
-	* Retourne la valeur de l'attribut
-	* @access public
-	* @param none
-	* @return float $hp_max valeur de l'attribut hp_max
-	*/
-	function get_hp_max($base = false)
-	{
-		if ($base)
-			return $this->hp_max;
-		else
-			return $this->hp_max + $this->get_bonus_permanents('hp_max');
-	}
-
-	/**
-	* Retourne la valeur de l'attribut
-	* @access public
-	* @param none
-	* @return mediumint(8) $mp valeur de l'attribut mp
-	*/
-	function get_mp()
-	{
-		return $this->mp;
-	}
-
-	/**
-	* Retourne la valeur de l'attribut
-	* @access public
-	* @param none
-	* @return float $mp_max valeur de l'attribut mp_max
-	*/
-	function get_mp_max($base = false)
-	{
-		if ($base)
-			return $this->mp_max;
-		else
-			return $this->mp_max + $this->get_bonus_permanents('mp_max');
-	}
-
-	/**
-	* Retourne la valeur de l'attribut
-	* @access public
-	* @param none
-	* @return double $facteur_magie valeur de l'attribut facteur_magie
-	*/
-	function get_facteur_magie()
-	{
-		return round($this->facteur_magie);
-	}
-
-	/**
-	* Retourne la valeur de l'attribut
-	* @access public
-	* @param none
-	* @return double $facteur_sort_vie valeur de l'attribut facteur_sort_vie
-	*/
-	function get_facteur_sort_vie()
-	{
-		return $this->facteur_sort_vie;
-	}
-
-	/**
-	* Retourne la valeur de l'attribut
-	* @access public
-	* @param none
-	* @return double $facteur_sort_mort valeur de l'attribut facteur_sort_mort
-	*/
-	function get_facteur_sort_mort()
-	{
-		return $this->facteur_sort_mort;
-	}
-
-	/**
-	* Retourne la valeur de l'attribut
-	* @access public
-	* @param none
-	* @return double $facteur_sort_element valeur de l'attribut facteur_sort_element
-	*/
-	function get_facteur_sort_element()
-	{
-		return $this->facteur_sort_element;
-	}
-
-	/**
-	* Retourne la valeur de l'attribut
-	* @access public
-	* @param none
-	* @return int(10) $regen_hp valeur de l'attribut regen_hp
-	*/
-	function get_regen_hp()
-	{
-		return $this->regen_hp;
-	}
-
-	/**
-	* Retourne la valeur de l'attribut
-	* @access public
-	* @param none
-	* @return int(10) $maj_hp valeur de l'attribut maj_hp
-	*/
-	function get_maj_hp()
-	{
-		return $this->maj_hp;
-	}
-
-	/**
-	* Retourne la valeur de l'attribut
-	* @access public
-	* @param none
-	* @return int(10) $maj_mp valeur de l'attribut maj_mp
-	*/
-	function get_maj_mp()
-	{
-		return $this->maj_mp;
-	}
-
-	/**
-	* Retourne la valeur de l'attribut
-	* @access public
-	* @param none
-	* @return tinyint(3) $point_sso valeur de l'attribut point_sso
-	*/
-	function get_point_sso()
-	{
-		return $this->point_sso;
 	}
 
 	/**
@@ -1277,17 +2211,6 @@ class perso extends entite
 	function get_quete_fini()
 	{
 		return $this->quete_fini;
-	}
-
-	/**
-	* Retourne la valeur de l'attribut
-	* @access public
-	* @param none
-	* @return int(10) $dernier_connexion valeur de l'attribut dernier_connexion
-	*/
-	function get_dernier_connexion()
-	{
-		return $this->dernier_connexion;
 	}
 
 	/**
@@ -1349,17 +2272,6 @@ class perso extends entite
 	* Retourne la valeur de l'attribut
 	* @access public
 	* @param none
-	* @return enum('true','false') $teleport_roi valeur de l'attribut teleport_roi
-	*/
-	function get_teleport_roi()
-	{
-		return $this->teleport_roi;
-	}
-
-	/**
-	* Retourne la valeur de l'attribut
-	* @access public
-	* @param none
 	* @return tinyint(3) $cache_classe valeur de l'attribut cache_classe
 	*/
 	function get_cache_classe()
@@ -1414,186 +2326,6 @@ class perso extends entite
 	/**
 	* Modifie la valeur de l'attribut
 	* @access public
-	* @param int(10) $mort valeur de l'attribut
-	* @return none
-	*/
-	function set_mort($mort)
-	{
-		$this->mort = $mort;
-		$this->champs_modif[] = 'mort';
-	}
-
-	/**
-	* Modifie la valeur de l'attribut
-	* @access public
-	* @param varchar(50) $nom valeur de l'attribut
-	* @return none
-	*/
-	function set_nom($nom)
-	{
-		$this->nom = $nom;
-		$this->champs_modif[] = 'nom';
-	}
-
-	/**
-	* Modifie la valeur de l'attribut
-	* @access public
-	* @param varchar(40) $password valeur de l'attribut
-	* @return none
-	*/
-	function set_password($password)
-	{
-		$this->password = $password;
-		$this->champs_modif[] = 'password';
-	}
-
-	/**
-	* Modifie la valeur de l'attribut
-	* @access public
-	* @param varchar(100) $email valeur de l'attribut
-	* @return none
-	*/
-	function set_email($email)
-	{
-		$this->email = $email;
-		$this->champs_modif[] = 'email';
-	}
-
-	/**
-	* Modifie la valeur de l'attribut
-	* @access public
-	* @param int(11) $exp valeur de l'attribut
-	* @return none
-	*/
-	function set_exp($exp)
-	{
-		$this->exp = $exp;
-		$this->champs_modif[] = 'exp';
-	}
-
-	/**
-	* Modifie la valeur de l'attribut
-	* @access public
-	* @param mediumint(8) $honneur valeur de l'attribut
-	* @return none
-	*/
-	function set_honneur($honneur)
-	{
-		$this->honneur = $honneur;
-		$this->champs_modif[] = 'honneur';
-	}
-
-	/**
-	* Modifie la valeur de l'attribut
-	* @access public
-	* @param int(10) $reputation valeur de l'attribut
-	* @return none
-	*/
-	function set_reputation($reputation)
-	{
-		$this->reputation = $reputation;
-		$this->champs_modif[] = 'reputation';
-	}
-
-	/**
-	* Modifie la valeur de l'attribut
-	* @access public
-	* @param mediumint(9) $level valeur de l'attribut
-	* @return none
-	*/
-	function set_level($level)
-	{
-		$this->level = $level;
-		$this->champs_modif[] = 'level';
-	}
-
-	/**
-	* Modifie la valeur de l'attribut
-	* @access public
-	* @param mediumint(9) $rang_royaume valeur de l'attribut
-	* @return none
-	*/
-	function set_rang_royaume($rang_royaume)
-	{
-		$this->rang_royaume = $rang_royaume;
-		$this->champs_modif[] = 'rang_royaume';
-	}
-
-	/**
-	* Modifie la valeur de l'attribut
-	* @access public
-	* @param varchar(20) $race valeur de l'attribut
-	* @return none
-	*/
-	function set_race($race)
-	{
-		$this->race = $race;
-		$this->champs_modif[] = 'race';
-	}
-
-	/**
-	* Modifie la valeur de l'attribut
-	* @access public
-	* @param varchar(20) $classe valeur de l'attribut
-	* @return none
-	*/
-	function set_classe($classe)
-	{
-		$this->classe = $classe;
-		$this->champs_modif[] = 'classe';
-	}
-
-	/**
-	* Modifie la valeur de l'attribut
-	* @access public
-	* @param tinyint(3) $classe_id valeur de l'attribut
-	* @return none
-	*/
-	function set_classe_id($classe_id)
-	{
-		$this->classe_id = $classe_id;
-		$this->champs_modif[] = 'classe_id';
-	}
-
-	/**
-	* Modifie la valeur de l'attribut
-	* @access public
-	* @param text $inventaire valeur de l'attribut
-	* @return none
-	*/
-	function set_inventaire($inventaire)
-	{
-		$this->inventaire = $inventaire;
-		$this->champs_modif[] = 'inventaire';
-	}
-
-	/**
-	* Modifie la valeur de l'attribut
-	* @access public
-	* @param text $inventaire_slot valeur de l'attribut
-	* @return none
-	*/
-	function set_inventaire_slot($inventaire_slot)
-	{
-		$this->inventaire_slot = $inventaire_slot;
-		$this->champs_modif[] = 'inventaire_slot';
-	}
-
-	/**
-	* Modifie la valeur de l'attribut
-	* @access public
-	* @param smallint(6) $pa valeur de l'attribut
-	* @return none
-	*/
-	function set_pa($pa)
-	{
-		$this->pa = $pa;
-		$this->champs_modif[] = 'pa';
-	}
-
-	/**
-	* Modifie la valeur de l'attribut
-	* @access public
 	* @param int(11) $dernieraction valeur de l'attribut
 	* @return none
 	*/
@@ -1601,78 +2333,6 @@ class perso extends entite
 	{
 		$this->dernieraction = $dernieraction;
 		$this->champs_modif[] = 'dernieraction';
-	}
-
-	/**
-	* Modifie la valeur de l'attribut
-	* @access public
-	* @param int(10) $action_a valeur de l'attribut
-	* @return none
-	*/
-	function set_action_a($action_a)
-	{
-		$this->action_a = $action_a;
-		$this->champs_modif[] = 'action_a';
-	}
-
-	/**
-	* Modifie la valeur de l'attribut
-	* @access public
-	* @param int(10) $action_d valeur de l'attribut
-	* @return none
-	*/
-	function set_action_d($action_d)
-	{
-		$this->action_d = $action_d;
-		$this->champs_modif[] = 'action_d';
-	}
-
-	/**
-	* Modifie la valeur de l'attribut
-	* @access public
-	* @param text $sort_jeu valeur de l'attribut
-	* @return none
-	*/
-	function set_sort_jeu($sort_jeu)
-	{
-		$this->sort_jeu = $sort_jeu;
-		$this->champs_modif[] = 'sort_jeu';
-	}
-
-	/**
-	* Modifie la valeur de l'attribut
-	* @access public
-	* @param text $sort_combat valeur de l'attribut
-	* @return none
-	*/
-	function set_sort_combat($sort_combat)
-	{
-		$this->sort_combat = $sort_combat;
-		$this->champs_modif[] = 'sort_combat';
-	}
-
-	/**
-	* Modifie la valeur de l'attribut
-	* @access public
-	* @param text $comp_combat valeur de l'attribut
-	* @return none
-	*/
-	function set_comp_combat($comp_combat)
-	{
-		$this->comp_combat = $comp_combat;
-		$this->champs_modif[] = 'comp_combat';
-	}
-
-	/**
-	* Modifie la valeur de l'attribut
-	* @access public
-	* @param text $comp_jeu valeur de l'attribut
-	* @return none
-	*/
-	function set_comp_jeu($comp_jeu)
-	{
-		$this->comp_jeu = $comp_jeu;
-		$this->champs_modif[] = 'comp_jeu';
 	}
 
 	/**
@@ -1690,150 +2350,6 @@ class perso extends entite
 	/**
 	* Modifie la valeur de l'attribut
 	* @access public
-	* @param int(11) $groupe valeur de l'attribut
-	* @return none
-	*/
-	function set_groupe($groupe)
-	{
-		$this->groupe = $groupe;
-		$this->champs_modif[] = 'groupe';
-	}
-
-	/**
-	* Modifie la valeur de l'attribut
-	* @access public
-	* @param mediumint(9) $hp valeur de l'attribut
-	* @return none
-	*/
-	function set_hp($hp)
-	{
-		$this->hp = $hp;
-		$this->champs_modif[] = 'hp';
-	}
-
-	/**
-	* Modifie la valeur de l'attribut
-	* @access public
-	* @param float $hp_max valeur de l'attribut
-	* @return none
-	*/
-	function set_hp_max($hp_max)
-	{
-		$this->hp_max = $hp_max;
-		$this->champs_modif[] = 'hp_max';
-	}
-
-	/**
-	* Modifie la valeur de l'attribut
-	* @access public
-	* @param mediumint(8) $mp valeur de l'attribut
-	* @return none
-	*/
-	function set_mp($mp)
-	{
-		$this->mp = $mp;
-		$this->champs_modif[] = 'mp';
-	}
-
-	/**
-	* Modifie la valeur de l'attribut
-	* @access public
-	* @param float $mp_max valeur de l'attribut
-	* @return none
-	*/
-	function set_mp_max($mp_max)
-	{
-		$this->mp_max = $mp_max;
-		$this->champs_modif[] = 'mp_max';
-	}
-
-	/**
-	* Modifie la valeur de l'attribut
-	* @access public
-	* @param double $facteur_magie valeur de l'attribut
-	* @return none
-	*/
-	function set_facteur_magie($facteur_magie)
-	{
-		$this->facteur_magie = $facteur_magie;
-		$this->champs_modif[] = 'facteur_magie';
-	}
-
-	/**
-	* Modifie la valeur de l'attribut
-	* @access public
-	* @param double $facteur_sort_vie valeur de l'attribut
-	* @return none
-	*/
-	function set_facteur_sort_vie($facteur_sort_vie)
-	{
-		$this->facteur_sort_vie = $facteur_sort_vie;
-		$this->champs_modif[] = 'facteur_sort_vie';
-	}
-
-	/**
-	* Modifie la valeur de l'attribut
-	* @access public
-	* @param double $facteur_sort_mort valeur de l'attribut
-	* @return none
-	*/
-	function set_facteur_sort_mort($facteur_sort_mort)
-	{
-		$this->facteur_sort_mort = $facteur_sort_mort;
-		$this->champs_modif[] = 'facteur_sort_mort';
-	}
-
-	/**
-	* Modifie la valeur de l'attribut
-	* @access public
-	* @param double $facteur_sort_element valeur de l'attribut
-	* @return none
-	*/
-	function set_facteur_sort_element($facteur_sort_element)
-	{
-		$this->facteur_sort_element = $facteur_sort_element;
-		$this->champs_modif[] = 'facteur_sort_element';
-	}
-
-	/**
-	* Modifie la valeur de l'attribut
-	* @access public
-	* @param int(10) $regen_hp valeur de l'attribut
-	* @return none
-	*/
-	function set_regen_hp($regen_hp)
-	{
-		$this->regen_hp = $regen_hp;
-		$this->champs_modif[] = 'regen_hp';
-	}
-
-	/**
-	* Modifie la valeur de l'attribut
-	* @access public
-	* @param int(10) $maj_hp valeur de l'attribut
-	* @return none
-	*/
-	function set_maj_hp($maj_hp)
-	{
-		$this->maj_hp = $maj_hp;
-		$this->champs_modif[] = 'maj_hp';
-	}
-
-	/**
-	* Modifie la valeur de l'attribut
-	* @access public
-	* @param int(10) $maj_mp valeur de l'attribut
-	* @return none
-	*/
-	function set_maj_mp($maj_mp)
-	{
-		$this->maj_mp = $maj_mp;
-		$this->champs_modif[] = 'maj_mp';
-	}
-
-	/**
-	* Modifie la valeur de l'attribut
-	* @access public
 	* @param tinyint(3) $point_sso valeur de l'attribut
 	* @return none
 	*/
@@ -1841,30 +2357,6 @@ class perso extends entite
 	{
 		$this->point_sso = $point_sso;
 		$this->champs_modif[] = 'point_sso';
-	}
-
-	/**
-	* Modifie la valeur de l'attribut
-	* @access public
-	* @param text $quete valeur de l'attribut
-	* @return none
-	*/
-	function set_quete($quete)
-	{
-		$this->quete = $quete;
-		$this->champs_modif[] = 'quete';
-	}
-
-	/**
-	* Modifie la valeur de l'attribut
-	* @access public
-	* @param text $quete_fini valeur de l'attribut
-	* @return none
-	*/
-	function set_quete_fini($quete_fini)
-	{
-		$this->quete_fini = $quete_fini;
-		$this->champs_modif[] = 'quete_fini';
 	}
 
 	/**
@@ -1942,18 +2434,6 @@ class perso extends entite
 	/**
 	* Modifie la valeur de l'attribut
 	* @access public
-	* @param enum('true','false') $teleport_roi valeur de l'attribut
-	* @return none
-	*/
-	function set_teleport_roi($teleport_roi)
-	{
-		$this->teleport_roi = $teleport_roi;
-		$this->champs_modif[] = 'teleport_roi';
-	}
-
-	/**
-	* Modifie la valeur de l'attribut
-	* @access public
 	* @param tinyint(3) $cache_classe valeur de l'attribut
 	* @return none
 	*/
@@ -2012,40 +2492,6 @@ class perso extends entite
 	}
 //fonction
 
-	function get_comp($comp_assoc = '', $base = false)
-	{
-		$get = 'get_'.$comp_assoc;
-		if(method_exists($this, $get)) return $this->$get($base);
-		else return $this->get_competence($comp_assoc, false, $base);
-	}
-
-	function set_comp($comp_assoc = '', $valeur = '')
-	{
-		$set = 'set_'.$comp_assoc;
-		if(method_exists($this, $set)) $this->$set($valeur);
-		else $this->set_competence($comp_assoc, $valeur);
-	}
-
-	function get_comp_perso($nom = '')
-	{
-		if(empty($nom))
-		{
-			$this->comp_perso = comp_perso::create(array('id_perso'), array($this->id), 'id ASC', 'competence');
-			return $this->comp_perso;
-		}
-		else
-		{
-			if(!isset($this->comp_perso)) $this->get_comp_perso();
-				return $this->comp_perso[$nom];
-		}
-	}
-
-	function is_comp_perso($nom = '')
-	{
-		if(!isset($this->comp_perso)) $this->get_comp_perso();
-
-		return array_key_exists($nom, $this->comp_perso);
-	}
 
 	function get_buff($nom = false, $champ = false, $type = true)
 	{
@@ -2166,110 +2612,6 @@ class perso extends entite
 			return array_key_exists($nom, $this->enchantement);
 	}
 
-	/**
-	 * Permet de savoir si le joueur possède la compétence nom
-	 * @param $nom le nom de la compétence
-	 * @return true si le perso est sous le debuff false sinon.
- 	*/
-	function is_competence($nom = '', $type = false)
-	{
-		if(!isset($this->competences)) $this->get_competence();
-		$competence = false;
-
-		if(is_array($this->competences))
-		{
-			$tmp = $this->competences;
-			while(current($tmp) && !$competence)
-			{
-				if(!empty($nom))
-				{
-					if(strcmp(current($tmp)->get_competence(), $nom) == 0)
-						$competence = true;
-
-					next($tmp);
-				}
-				else
-					$competence = (count($this->competences) > 0);
-			}
-		}
-		else $competence = false;
-
-		return $competence;
-	}
-
-	public $competences;
-	function get_competence($nom = false, $champ = false, $base = false)
-	{
-		if(!$nom)
-		{
-			$this->competences = comp_perso::create(array('id_perso'), array($this->id), 'id ASC', 'competence');
-			return $this->competences;
-		}
-		else
-		{
-			if ($base) $bonus = 0;
-			else $bonus = $this->get_bonus_permanents($nom);
-			if(!isset($this->competences)) $this->get_competence();
-			if($champ)
-			{
-				$get = 'get_'.$champ;
-				return $this->competences[$nom]->$get() + $bonus;
-			}
-			elseif(is_object($this->competences[$nom]))
-				return $this->competences[$nom]->get_valeur() + $bonus;
-			else return false;
-		}
-	}
-
-	function set_competence($nom, $valeur = '')
-	{
-		if(array_key_exists($nom, $this->competences))
-		{
-			$this->competences[$nom]->set_valeur($valeur);
-			$this->competences[$nom]->sauver();
-		}
-	}
-
-	/**
-   * La plupart du temps on s'en fiche, de la main, on veut les degats
-   * donc si $main == false : cumul, si $main == 'droite' || 'gauche' : detail
-   */
-	function get_arme_degat($main = false)
-	{
-		$degats = 0;
-		if ($main == false || $main == 'droite')
-			if ($this->get_arme())
-				$degats += $this->arme->degat;
-		if ($main == false || $main == 'gauche')
-			if ($this->get_arme_gauche())
-				$degats += $this->arme_gauche->degat;
-		return $degats;
-	}
-
-	function get_artisanat()
-	{
-		return round(sqrt(($this->architecture + $this->forge + $this->alchimie) * 10));
-	}
-
-	public $inventaire_array;
-	function get_inventaire_partie($partie)
-	{
-		if(!isset($this->inventaire_array)) $this->inventaire_array = unserialize($this->get_inventaire());
-		return $this->inventaire_array->$partie;
-	}
-
-	public $inventaire_slot_array;
-	function get_inventaire_slot_partie($partie = false, $force = false)
-	{
-		if(!isset($this->inventaire_slot_array) OR !$force) $this->inventaire_slot_array = unserialize($this->get_inventaire_slot());
-		if($partie === false) return $this->inventaire_slot_array;
-		else return $this->inventaire_slot_array[$partie];
-	}
-
-	function set_inventaire_slot_partie($objet, $partie)
-	{
-		$this->inventaire_slot_array[$partie] = $objet;
-	}
 
 	public $pp_base;
 	public $pm_base;
@@ -2420,37 +2762,6 @@ class perso extends entite
 		else return $this->reserve;
 	}
 
-	public $coef_melee;
-	function get_coef_melee()
-	{
-		if(!isset($this->coef_melee))
-			$this->coef_melee = $this->forcex * $this->get_melee();
-		return $this->coef_melee;
-	}
-
-	public $coef_incantation;
-	function get_coef_incantation()
-	{
-		if(!isset($this->coef_incantation))
-			$this->coef_incantation = $this->get_puissance() * $this->get_incantation();
-		return $this->coef_incantation;
-	}
-
-	public $coef_distance;
-	function get_coef_distance()
-	{
-		if(!isset($this->coef_distance))
-			$this->coef_distance = round(($this->get_forcex() + $this->get_dexterite()) / 2) * $this->get_distance();
-		return $this->coef_distance;
-	}
-
-	public $coef_blocage;
-	function get_coef_blocage()
-	{
-		if(!isset($this->coef_blocage)) $this->coef_blocage = round(($this->forcex + $this->dexterite) / 2) * $this->blocage;
-		return $this->coef_blocage;
-	}
-
 	function get_pos()
 	{
 		return convert_in_pos($this->x, $this->y);
@@ -2466,25 +2777,6 @@ class perso extends entite
 		return calcul_distance_pytagore($this->get_pos(), $joueur->get_pos());	
 	}
 
-	//Récupération des HP max après bonus, famine etc
-	public $hp_maximum;
-	function get_hp_maximum()
-	{
-		$this->hp_maximum = floor($this->get_hp_max());
-		//Famine
-		if($this->is_buff('famine')) $this->hp_maximum = $this->hp_maximum - ($this->hp_maximum * ($this->get_buff('famine', 'effet') / 100));
-		return $this->hp_maximum;
-	}
-
-	//Récupération des MP max après bonus, famine etc
-	public $mp_maximum;
-	function get_mp_maximum()
-	{
-		$this->mp_maximum = floor($this->get_mp_max());
-		//Famine
-		if($this->is_buff('famine')) $this->mp_maximum = $this->mp_maximum - ($this->mp_maximum * ($this->get_buff('famine', 'effet') / 100));
-		return $this->mp_maximum;
-	}
 
 	public $reserve_bonus;
 	function get_reserve_bonus()
@@ -2494,181 +2786,6 @@ class perso extends entite
 		if($this->is_buff('buff_sacrifice')) $this->reserve_bonus += $this->get_buff('buff_sacrifice', 'effet');
 		// Les bonus raciaux sont comptés dans les bonus perm
 		return $this->reserve_bonus;
-	}
-
-	function inventaire()
-	{
-		return unserialize($this->inventaire);
-	}
-
-	public $arme;
-	function get_arme()
-	{
-		if(!isset($this->arme))
-		{
-			global $db;
-			$arme = $this->inventaire()->main_droite;
-			if($arme != '')
-			{
-				$arme_d = decompose_objet($arme);
-				$requete = "SELECT * FROM arme WHERE id = ".$arme_d['id_objet'];
-				$req = $db->query($requete);
-				$this->arme = $db->read_object($req);
-				if ($arme_d['enchantement'] != null)
-				{
-					$gemme = new gemme_enchassee($arme_d['enchantement']);
-					if ($gemme->enchantement_type == 'degat')
-						$this->arme->degat += $gemme->enchantement_effet;
-					$this->register_gemme_enchantement($gemme);
-					//my_dump($this->enchantement);
-				}
-        if ($this->arme->effet)
-        {
-          $effets = split(';', $this->arme->effet);
-          foreach ($effets as $effet)
-          {
-            $d_effet = split('-', $effet);
-						$this->register_item_effet($d_effet[0], $d_effet[1], $this->arme);
-          }
-        }
-        //my_dump($this->arme);
-			}
-			else $this->arme = false;
-		}
-		return $this->arme;
-	}
-
-	public $arme_gauche;
-	function get_arme_gauche()
-	{
-		if(!isset($this->arme_gauche))
-		{
-			global $db;
-			$arme = $this->inventaire()->main_gauche;
-			if($arme != '' && $arme != 'lock')
-			{
-				$arme_d = decompose_objet($arme);
-				$requete = "SELECT * FROM arme WHERE id = ".$arme_d['id_objet'];
-				$req = $db->query($requete);
-				$this->arme_gauche = $db->read_object($req);
-				if($this->arme_gauche->type == 'bouclier')
-					$this->arme_gauche = false;
-				else if ($arme_d['enchantement'] != null)
-				{
-					$gemme = new gemme_enchassee($arme_d['enchantement']);
-					if ($gemme->enchantement_type == 'degat')
-						$this->arme_gauche->degat += $gemme->enchantement_effet;
-					$this->register_gemme_enchantement($gemme);
-					//my_dump($this->enchantement);
-				}
-			}
-			else $this->arme_gauche = false;
-		}
-		return $this->arme_gauche;
-	}
-
-	public $bouclier;
-	function get_bouclier()
-	{
-		if(!isset($this->bouclier))
-		{
-			global $db;
-			$bouclier = $this->inventaire()->main_gauche;
-			if($bouclier != '' AND $bouclier != 'lock')
-			{
-				$arme_g = decompose_objet($bouclier);
-				$requete = "SELECT * FROM arme WHERE id = ".$arme_g['id_objet'];
-				$req = $db->query($requete);
-				$this->bouclier = $db->read_object($req);
-				if($this->bouclier->type != 'bouclier') $this->bouclier = false;
-				else if ($arme_g['enchantement'] != null)
-				{
-					$gemme = new gemme_enchassee($arme_g['enchantement']);
-					if ($gemme->enchantement_type == 'bouclier')
-						$this->bouclier->degat += $gemme->enchantement_effet;
-					$this->register_gemme_enchantement($gemme);
-					//my_dump($this->enchantement);
-				}
-			}
-			else $this->bouclier = false;
-		}
-		return $this->bouclier;
-	}
-
-	public $accessoire;
-	function get_accessoire()
-	{
-		if(!isset($this->accessoire))
-		{
-			global $db;
-			$accessoire = $this->inventaire()->accessoire;
-			if($accessoire != '' AND $accessoire != 'lock')
-			{
-				$acc = decompose_objet($accessoire);
-				$q = "SELECT * FROM $acc[table_categorie] WHERE id = $acc[id_objet]";
-				$req = $db->query($q);
-				$this->accessoire = $db->read_object($req);
-				if ($acc['enchantement'] != null)
-				{
-					$gemme = new gemme_enchassee($acc['enchantement']);
-					$this->register_gemme_enchantement($gemme);
-					//my_dump($this->enchantement);
-				}
-				switch ($this->accessoire->type) {
-				case 'rm':
-					$this->add_bonus_permanents('reserve', $this->accessoire->effet);
-					break;
-				case 'chance_debuff':
-				case 'buff':
-				case 'fabrication':
-					$this->add_bonus_permanents($this->accessoire->type,
-																			$this->accessoire->effet);
-					break;
-				}
-			}
-			else $this->accessoire = false;
-		}
-		return $this->accessoire;
-	}
-
-	function register_gemme_enchantement($gemme)
-	{
-		switch ($gemme->enchantement_type)
-		{
-		case 'hp' :
-			$this->add_bonus_permanents('hp_max', $gemme->enchantement_effet);
-      break;
-    case 'mp' :
-			$this->add_bonus_permanents('mp_max', $gemme->enchantement_effet);
-      break;
-    case 'pp' :
-      $this->pp += $gemme->enchantement_effet;
-      break;
-    case 'pm' :
-      $this->pm += $gemme->enchantement_effet;
-      break;
-		case 'portee' :
-		case 'star' :
-   	    case 'reserve' :
-		/* gemmes de compétence: bonus ignoré à la montée */
-		case 'esquive' :
-		case 'melee' : 
-		case 'distance' :
-		case 'incantation' :
-			$this->add_bonus_permanents($gemme->enchantement_type,
-																	$gemme->enchantement_effet);
-			break;
-		}
-		if (array_key_exists($gemme->enchantement_type, $this->enchantement))
-		{
-			$this->enchantement[$gemme->enchantement_type]['gemme_id']
-				.= ";$gemme->id";
-			$this->enchantement[$gemme->enchantement_type]['effet'] +=
-				$gemme->enchantement_effet;
-		}
-		else
-			$this->enchantement[$gemme->enchantement_type] =
-				array('gemme_id' => $gemme->id, 'effet' => $gemme->enchantement_effet);
 	}
 
 	function get_distance_tir()
@@ -2683,12 +2800,6 @@ class perso extends entite
 			return ($arme + $bonus + $this->get_bonus_permanents('portee'));
 		}
 		return 0;
-	}
-
-	function get_arme_type()
-	{
-		if(!isset($this->arme)) $this->get_arme();
-		return $this->arme->type;
 	}
 
 	function get_liste_quete()
@@ -2777,15 +2888,6 @@ class perso extends entite
 		$this->action = $row[0];
 		return $this->action;
 	}
-
-  function check_materiel()
-  {
-    $this->get_arme();
-    $this->get_arme_gauche();
-    $this->get_bouclier();
-    $this->get_armure();
-    $this->get_accessoire();
-  }
 
 	function check_perso($last_action = true)
 	{
@@ -2989,294 +3091,6 @@ class perso extends entite
 		$db->query($requete);
 	}
 
-	function recherche_objet($id_objet)
-	{
-		global $G_place_inventaire;
-		$objet_d = decompose_objet($id_objet);
-		$trouver =  false;
-		//Recherche si le joueur n'a pas des objets de ce type dans son inventaire
-		$i = 0;
-		$partie = $this->get_inventaire_slot_partie();
-		while(($i < $G_place_inventaire) AND !$trouver)
-		{
-			$objet_i = decompose_objet($partie[$i]);
-			if($objet_i['sans_stack'] == $objet_d['sans_stack'])
-			{
-				$trouver = true;
-			}
-			else $i++;
-		}
-		if($trouver)
-		{
-			if($objet_i['stack'] > 1) $return[0] = $objet_i['stack'];
-			else $return[0] = 1;
-			$return[1] = $i;
-			return $return;
-		}
-		else return false;
-	}
-
-	function restack_objet()
-	{
-		global $G_place_inventaire;
-		$partie = $this->get_inventaire_slot_partie();
-		$i = 0;
-		$compte_stack = array();
-		$poursuite = true;
-		foreach($partie as $part)
-		{
-			$objet = decompose_objet($part);
-			if(array_key_exists($objet['sans_stack'], $compte_stack))
-				$compte_stack[$objet['sans_stack']] += $objet['stack'];
-			else
-				$compte_stack[$objet['sans_stack']] = $objet['stack'];
-			$this->supprime_objet($objet['sans_stack'], $objet['stack']);
-		}
-
-		foreach($compte_stack as $objet => $valeur)
-		{
-			for($i = 0; $i < $valeur; $i++)
-				$this->prend_objet($objet);
-		}
-	}
-
-	function supprime_objet($id_objet, $nombre)
-	{
-		global $db;
-		$i = $nombre;
-    $inventaire = $this->get_inventaire_slot_partie();
-		while($i > 0)
-		{
-			$objet = $this->recherche_objet($id_objet);
-			//Vérification si objet "stacké"
-			//print_r($objet);
-			$stack = explode('x', $inventaire[$objet[1]]);
-			if($stack[1] > 1) $inventaire[$objet[1]] = $stack[0].'x'.($stack[1] - 1);
-			else array_splice($inventaire, $objet[1], 1);
-			$i--;
-		}
-		$this->set_inventaire_slot(serialize($inventaire));
-		$this->sauver();
-	}
-
-	function prend_objet($id_objet)
-	{
-		if(!isset($this->inventaire_perso)) $this->inventaire_perso = new inventaire($this->inventaire, $this->inventaire_slot);
-		if($this->inventaire_perso->prend_objet($id_objet))
-		{
-			if(is_array($this->inventaire_perso->slot_liste)) $this->set_inventaire_slot(serialize($this->inventaire_perso->slot_liste));
-			else $this->set_inventaire_slot($this->inventaire_perso->slot_liste);
-			$this->sauver();
-			return true;
-		}
-		else return false;
-	}
-
-	function desequip($type)
-	{
-		global $db, $G_erreur, $G_place_inventaire;
-		$inventaire = $this->inventaire();
-		if($inventaire->$type !== 0 AND $inventaire->$type != '')
-		{
-			//Inventaire plein
-			if(!$this->prend_objet($inventaire->$type))
-			{
-				$G_erreur = 'Vous n\'avez plus de place dans votre inventaire<br />';
-				return false;
-			}
-			else
-			{
-				//On enlève l'objet de l'emplacement pour le mettre dans l'inventaire
-				if($type == 'main_droite')
-				{
-					if($inventaire->main_gauche == 'lock') $inventaire->main_gauche = 0;
-				}
-				$inventaire->$type = 0;
-				$this->set_inventaire(serialize($inventaire));
-				$this->sauver();
-				return true;
-			}
-		}
-		return true;
-	}
-
-	function equip_objet($objet)
-	{
-		global $db, $G_erreur;
-		$equip = false;
-		$conditions = array();
-		if($objet_d = decompose_objet($objet))
-		{
-			//print_r($objet_d);
-			$id_objet = $objet_d['id_objet'];
-			$categorie = $objet_d['categorie'];
-			switch ($categorie)
-			{
-				//Si c'est une arme
-				case 'a' :
-					$requete = "SELECT * FROM arme WHERE ID = ".$id_objet;
-					//Récupération des infos de l'objet
-					$req = $db->query($requete);
-					$row = $db->read_array($req);
-					if($row['type'] == 'baton')
-					{
-						$conditions[0]['attribut']	= 'coef_incantation';
-						$conditions[0]['valeur']	= $row['forcex'] * $row['melee'];
-					}
-					elseif($row['type'] == 'bouclier')
-					{
-						$conditions[0]['attribut']	= 'coef_blocage';
-						$conditions[0]['valeur']	= $row['forcex'] * $row['melee'];
-					}
-					else
-					{
-						$conditions[0]['attribut']	= 'coef_melee';
-						$conditions[0]['valeur']	= $row['forcex'] * $row['melee'];
-					}
-					$conditions[1]['attribut']	= 'coef_distance';
-					$conditions[1]['valeur']	= $row['forcex'] * $row['distance'];
-					$type = explode(';', $row['mains']);
-					$type = $type[0];
-					$mains = $row['mains'];
-				break;
-				//Si c'est une protection
-				case 'p' :
-					$requete = "SELECT * FROM armure WHERE ID = ".$id_objet;
-					//Récupération des infos de l'objet
-					$req = $db->query($requete);
-					$row = $db->read_array($req);
-					$conditions[0]['attribut']	= 'force';
-					$conditions[0]['valeur']	= $row['forcex'];
-					$type = $row['type'];
-				break;
-				//Si c'est un accessoire
-				case 'm' :
-					$requete = "SELECT * FROM accessoire WHERE ID = ".$id_objet;
-					//Récupération des infos de l'objet
-					$req = $db->query($requete);
-					$row = $db->read_array($req);
-					$conditions[0]['attribut']	= 'puissance';
-					$conditions[0]['valeur']	= $row['puissance'];
-					$type = 'accessoire';
-				break;
-			}
-
-			//Vérification des conditions
-			if (is_array($conditions))
-			{
-				$i = 0;
-				while ($i < count($conditions))
-				{
-					$get = 'get_'.$conditions[$i]['attribut'];
-					if ($this->$get() < $conditions[$i]['valeur'])
-					{
-						$G_erreur = 'Vous n\'avez pas assez en '.$conditions[$i]['attribut'].'<br />';
-						return false;
-					}
-					$i++;
-				}
-			}
-
-			//Si c'est une dague main gauche, vérifie qu'il a aussi une dague en main droite
-			if($type == 'main_gauche' AND $row['type'] == 'dague')
-			{
-				if($this->get_inventaire_partie('main_droite') === 0)
-				{
-				}
-				else
-				{
-					$main_droite = decompose_objet($this->get_inventaire_partie('main_droite'));
-					$requete = "SELECT * FROM arme WHERE ID = ".$main_droite['id_objet'];
-					//Récupération des infos de l'objet
-					$req_md = $db->query($requete);
-					$row_md = $db->read_array($req_md);
-					if($row['type'] == 'dague')
-					{
-						if($row_md['type'] != 'dague')
-						{
-							$G_erreur = 'L\'arme équipée en main droite n\'est pas une dague<br />';
-							return false;
-						}
-					}
-					elseif(count(explode(';', $row_md['mains'])) > 1)
-					{
-						$G_erreur = 'Vous devez enlever votre arme à 2 mains pour porter cet objet<br />';
-						return false;
-					}
-				}
-			}
-			//Vérifie si il a une dague en main gauche et si c'est le cas et que l'arme n'est pas une dague, on désequipe
-			if($type == 'main_droite' AND $row['type'] != 'dague')
-			{
-				if($this->get_inventaire_partie('main_gauche') === 0 OR $this->get_inventaire_partie('main_gauche') == '')
-				{
-				}
-				else
-				{
-					if($main_gauche = decompose_objet($this->get_inventaire_partie('main_gauche')))
-					{
-						$requete = "SELECT * FROM arme WHERE ID = ".$main_gauche['id_objet'];
-						//Récupération des infos de l'objet
-						$req_mg = $db->query($requete);
-						$row_mg = $db->read_array($req_mg);
-						if($row_mg['type'] == 'dague')
-						{
-							$this->desequip('main_gauche');
-						}
-					}
-					else
-					{
-					}
-				}
-			}
-
-			$desequip = true;
-			if($categorie == 'a')
-			{
-				$mains = explode(';', $mains);
-				$type = $mains[0];
-				$count = count($mains);
-			}
-			//Verifie si il a déjà un objet de ce type sur lui
-			if ($type != '')
-			{
-				//Desequipement
-				if($categorie == 'a')
-				{
-					$i = 0;
-					while($desequip AND $i < $count)
-					{
-						if($this->get_inventaire_partie($mains[$i]) === 'lock' AND $this->get_inventaire_partie('main_droite') !== 0)
-						{
-							$this->desequip('main_droite');
-						}
-						$desequip = $this->desequip($mains[$i]);
-						$i++;
-					}
-				}
-				else
-				{
-					$desequip = $this->desequip($type);
-				}
-			}
-
-			if($desequip)
-			{
-				//On équipe
-				$inventaire = $this->inventaire();
-				$inventaire->$type = $objet;
-				if($categorie == 'a' AND $count == 2) $inventaire->main_gauche = 'lock';
-				$this->set_inventaire(serialize($inventaire));
-				$this->sauver();
-				return true;
-			}
-			else
-			{
-				return false;
-			}
-		}
-		else return false;
-	}
 
 	private $bonus_permanents = array();
 	function get_bonus_permanents($bonus)
@@ -3292,25 +3106,6 @@ class perso extends entite
 			$this->bonus_permanents[$bonus] += $value;
 		else
 			$this->bonus_permanents[$bonus] = $value;
-	}
-
-	function get_bonus_shine($id_bonus = false)
-	{
-		if(!$id_bonus)
-		{
-			$this->bonus_shine = bonus_perso::create(array('id_perso'), array($this->id));
-			return $this->bonus_shine;
-		}
-		else
-		{
-			if(!isset($this->bonus_shine)) $this->get_bonus_shine();
-			foreach($this->bonus_shine as $bonus)
-			{
-				if($bonus->get_id_bonus() == $id_bonus)
-					return $bonus;						
-			}
-		}
-		return false;
 	}
 
 	/**
@@ -3348,228 +3143,9 @@ class perso extends entite
 		}
 	}
 
-	function add_pa($add_pa)
-  {
-    $this->set_pa($this->pa + $add_pa);
-    if ($this->pa < 0)
-      $this->pa = 0;
-  }
-
-	function add_star($add_star)
-  {
-    $this->set_star($this->star + $add_star);
-    if ($this->star < 0)
-      $this->star = 0;
-  }
-
-  function add_hp($add_hp) 
-  {
-    $this->set_hp($this->hp + $add_hp);
-    if ($this->hp > $this->get_hp_maximum())
-      $this->hp = floor($this->get_hp_maximum());
-    if ($this->hp < 0)
-      $this->hp = 0;
-  }
-
-  function add_mp($add_mp) 
-  {
-    $this->set_mp($this->mp + $add_mp);
-    if ($this->mp > $this->get_mp_maximum())
-      $this->mp = floor($this->get_mp_maximum());
-    if ($this->mp < 0)
-      $this->mp = 0;
-  }
-
-  function supprime_rez()
-  {
-	  global $db;
-	  $requete = "DELETE FROM rez WHERE id_rez = ".$this->id;
-	  $db->query($requete);
-  }
-
-	function in_arene($filter = '')
-	{
-		if ($this->x < 190 && $this->y < 190)
-			return false;
-		global $db;
-		$q = "select * from arenes where x <= $this->x and $this->x < x + size ".
-			"and y <= $this->y and $this->y < y + size $filter";
-		$req = $db->query($q);
-		if ($row = $db->read_object($req)) {
-			return $row;
-		}
-		return false;
-	}
-
-	function trigger_arene()
-	{
-		$arene = $this->in_arene();
-		if ($arene != false)
-		{
-			require_once(root.'arenes/gen_arenes.php');
-			$arene_xml = gen_arene($arene->x, $arene->y, $arene->size, $arene->nom);
-			$arene_file = fopen(root.'arenes/'.$arene->file.'tmp', 'w+');
-			fwrite($arene_file, $arene_xml[0]);
-			fclose($arene_file);
-			rename(root.'arenes/'.$arene->file.'tmp', root.'arenes/'.$arene->file);
-			$arene_file = fopen(root.'arenes/admin/'.$arene->file.'tmp', 'w+');
-			fwrite($arene_file, $arene_xml[1]);
-			fclose($arene_file);
-			rename(root.'arenes/admin/'.$arene->file.'tmp', root.'arenes/admin/'.$arene->file);
-		}
-	}
-
 	/** on ne m'aura plus avec les machins déclarés depuis dehors */
 	//function __get($name) { $debug = debug_backtrace(); die('fuck: '.$debug[0]['file'].' line '.$debug[0]['line']); }
 	//function __set($name, $value) { $debug = debug_backtrace(); die('fuck: '.$debug[0]['file'].' line '.$debug[0]['line']); }
 
-	function get_pets($force = false)
-	{
-		if(!isset($this->pets) OR $force) $this->pets = pet::create(array('id_joueur', 'ecurie'), array($this->id, 0), 'principale DESC');
-		return $this->pets;
-	}
-
-	function get_pet()
-	{
-		if(!isset($this->pet))
-		{
-			$pet = pet::create(array('id_joueur', 'principale', 'ecurie'), array($this->id, 1, 0), 'principale DESC');
-			$this->pet = $pet[0];
-		}
-		return $this->pet;
-	}
-
-	function get_ecurie($force = false)
-	{
-		if(!isset($this->ecurie) OR $force) $this->ecurie = pet::create(array('id_joueur', 'ecurie'), array($this->id, 1), 'principale DESC');
-		return $this->ecurie;
-	}
-
-	function get_ecurie_self($force = false)
-	{
-		if(!isset($this->ecurie_self) OR $force) $this->ecurie_self = pet::create(array('id_joueur', 'ecurie'), array($this->id, 2), 'principale DESC');
-		return $this->ecurie_self;
-	}
-
-	function add_pet($id_monstre, $hp = false, $mp = false)
-	{
-		if($this->nb_pet() >= $this->get_comp('max_pet')) return false;
-		else
-		{
-			$monstre = new monstre($id_monstre);
-			$pet = new pet();
-			$pet->set_id_joueur($this->id);
-			$pet->set_id_monstre($id_monstre);
-			$pet->set_nom($monstre->get_nom());
-			if(!$hp) $pet->set_hp($monstre->get_hp());
-			else $pet->set_hp($hp);
-			$pet->set_mp($mp);
-			if(count($this->get_pets()) == 0) $pet->set_principale(1);
-			else $pet->set_principale(0);
-			$pet->sauver();
-			return true;
-		}
-	}
-
-	function nb_pet()
-	{
-		return count($this->get_pets());
-	}
-
-	function nb_pet_ecurie()
-	{
-		return count($this->get_ecurie());
-	}
-
-	function set_pet_principale($pet_id)
-	{
-		global $db;
-		$requete = "UPDATE pet SET principale = 0 WHERE id_joueur = ".$this->id;
-		$db->query($requete);
-		$pet = new pet($pet_id);
-		$pet->set_principale(1);
-		$pet->sauver();
-	}
-
-	function pet_to_ecurie($pet_id, $type_ecurie = 1, $max_ecurie = 10, $taxe = 0)
-	{
-		$pet = new pet($pet_id);
-		if($pet->get_id_joueur() == $this->get_id())
-		{
-			$cout = $pet->get_cout_depot() + $taxe;
-			if(($this->get_star() >= $cout) OR $type_ecurie == 2)
-			{
-				if($this->nb_pet_ecurie() < $max_ecurie)
-				{
-					$pet->set_ecurie($type_ecurie);
-					$pet->set_principale(0);
-					$pet->sauver();
-					if($type_ecurie == 1)
-					{
-						$this->set_star($this->get_star() - $cout);
-						$this->sauver();
-					}
-					return true;
-				}
-				else
-				{
-					echo '<h5>L\'écurie ne peut pas prendre plus de '.$max_ecurie.' créatures.</h5>';
-					return false;
-				}
-			}
-			else
-			{
-				echo '<h5>Vous n\'avez pas assez de stars !</h5>';
-				return false;
-			}
-		}
-		else
-		{
-			echo '<h5>Cette créature ne vous appartient pas !</h5>';
-			return false;
-		}
-	}
-
-	function pet_from_ecurie($pet_id)
-	{
-		$pet = new pet($pet_id);
-		if($pet->get_id_joueur() == $this->get_id())
-		{
-			if($this->nb_pet() < $this->get_comp('max_pet'))
-			{
-				$pet->set_ecurie(0);
-				$pet->sauver();
-			}
-			else
-			{
-				echo '<h5>Vous ne pouvez pas prendre plus de créature avec vous.</h5>';
-			}
-		}
-		else
-		{
-			echo '<h5>Cette créature ne vous appartient pas !</h5>';
-		}
-	}
-
-	function max_dresse()
-	{
-		$max = (floor(pow($this->get_dressage(), 0.772) / 7) + 1);
-		if($max < 1) $max = 1;
-		return $max;
-	}
-
-	function can_dresse($monstre)
-	{
-		$m = new monstre($monstre->get_type());
-		if($this->max_dresse() >= $monstre->get_level() && $m->get_dressage() != 999999) return true;
-		else return false;
-	}
-
-	function soin_pet()
-	{
-		$facteur = ($this->get_vie() + 10) / 22;
-		if($this->get_race() == 'scavenger') $facteur = $facteur * 1.2;
-		return floor(sqrt($this->get_dressage()) * 4 * $facteur);
-	}
 }
 ?>
