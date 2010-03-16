@@ -1221,7 +1221,7 @@ else
 										//Celui qui trouve garde
 										case 'k' :
 											echo 'Répartition des objets, celui qui trouve garde.<br />';
-											$gagnant = new perso($attaquant->get_id());
+											$gagnant = new perso($joueur->get_id());
 										break;
 									}
 									echo $gagnant->get_nom().' reçoit "'.$objet_nom.'"<br />';

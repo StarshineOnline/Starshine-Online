@@ -67,7 +67,8 @@ if (isset($_GET['ID']) && !$joueur->is_buff('bloque_sort'))
 		$sortpa_base = $sort->get_pa();
 		$sortmp_base = $sort->get_mp();
 		$sortpa = round($sort->get_pa() * $joueur->get_facteur_magie());
-		$sortmp = round($sort->get_mp() * (1 - (($Trace[$joueur->get_race()]['affinite_'.$sort->get_comp_assoc()] - 5) / 10)));
+		if($type_cible != 'monstre') $sortmp = round($sort->get_mp() * (1 - (($Trace[$joueur->get_race()]['affinite_'.$sort->get_comp_assoc()] - 5) / 10)));
+		else $sortmp = $sortmp_base;
 		//Réduction du cout par concentration
 		if($joueur->is_buff('buff_concentration', true)) $sortmp = ceil($sortmp * (1 - ($joueur->get_buff('buff_concentration','effet') / 100)));
 		//Coût en MP * 1.5 si sort de groupe
@@ -434,7 +435,7 @@ if (isset($_GET['ID']) && !$joueur->is_buff('bloque_sort'))
 					if ($attaque > $defense)
 					{
 						$duree = $sort->get_duree();
-						if($joueur->is_buff('souffrance_extenuante', true)) $duree = $duree * $joueur->get_buff('buff_souffrance_extenuante','effet');
+						if($joueur->is_buff('souffrance_extenuante', true)) $duree = $duree * $joueur->get_buff('souffrance_extenuante', 'effet');
 						//Mis en place du debuff
 						if(lance_buff($sort->get_type(), $cible->get_id(), $sort->get_effet(), $sort->get_effet2(), $duree, $sort->get_nom(), description($sort->get_description(), $sort), $type_cible == 'monstre' ? 'monstre' : 'perso', 1, 0, 0))
 						{

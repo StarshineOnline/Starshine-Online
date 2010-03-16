@@ -160,24 +160,22 @@ include_once(root.'inc/fp.php');
 						$perso = new perso($_SESSION['ID']);
 						$perso->set_statut('ban');
 						$perso->set_fin_ban((time() + (3600 * 24 * 36500)));
-						if($db->query($requete))
+						$perso->sauver();
+						require('connect_forum.php');
+						$groupe = $perso->get_groupe();
+						if($groupe !== null || $groupe != 0)
+							degroup($perso->get_id(), $groupe->get_id());
+						$requete = "INSERT INTO punbbbans VALUES(NULL, '".$perso->get_nom()."', NULL, NULL, NULL, NULL, 0)";
+						if($db_forum->query($requete))
 						{
-							require('connect_forum.php');
-							$groupe = $perso->get_groupe();
-							if($groupe !== null || $groupe != 0)
-								degroup($perso->get_id(), $groupe->get_id());
-							$requete = "INSERT INTO punbbbans VALUES(NULL, '".$perso->get_nom()."', NULL, NULL, NULL, NULL, 0)";
-							if($db_forum->query($requete))
-							{
-							 	echo 'Votre personnage est bien supprimé';
-								$perso->sauver();
-								unset($_COOKIE['nom']);
-								unset($_SESSION['nom']);
-								unset($_SESSION['ID']);
-							}
-							else
-								echo 'ERREUR: Veuillez contacter un admin!';
+						 	echo 'Votre personnage est bien supprimé';
+							$perso->sauver();
+							unset($_COOKIE['nom']);
+							unset($_SESSION['nom']);
+							unset($_SESSION['ID']);
 						}
+						else
+							echo 'ERREUR: Veuillez contacter un admin!';
 					break;
 					case 'hibern' :
 						$requete = "UPDATE perso SET statut = 'hibern', fin_ban = ".(time() + (3600 * 24 * 14))." WHERE ID = ".$_SESSION['ID'];

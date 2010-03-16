@@ -164,7 +164,7 @@ elseif($_GET['direction'] == 'suppr_construction')
 	{
 		$batiment = new batiment($construction->get_id_batiment());
 		//On vérifie que la construction a plus de 10% de ses PV max
-		if($construction->get_hp() > ($batiment->get_hp() * 0.1))
+		if($construction->get_hp() > ($batiment->get_hp() * $G_prct_vie_suppression))
 		{
 			$requete = "DELETE FROM construction WHERE id = ".sSQL($_GET['id']);
 			if($db->query($requete))
@@ -186,7 +186,9 @@ elseif($_GET['direction'] == 'suppr_construction')
 					supprime_bourg($row[1]);
 				}
 			}
+			else echo '<h5>Erreur dans la requête</h5>';
 		}
+		else echo '<h5>Ce batiment ne vous appartient pas</h5>';
 	}
 }
 elseif($_GET['direction'] == 'up_construction')
