@@ -35,7 +35,7 @@
 .tex135{background:url('../image/texture/texthherbe3/hautherbe_bg3.png') no-repeat;} 
 .tex136{background:url('../image/texture/texthherbe3/hautherbe_hd3.png') no-repeat;} 
 .tex137{background:url('../image/texture/texthherbe3/hautherbe_hg3.png') no-repeat;} 
-.tex138{background:url('../image/texture/textureherbe/tex_herbeenforet.png') no-repeat;} 
+.tex138{background:url('../image/texture/textureherbe/tex_herbeenforetcentre.png') no-repeat;} 
 .tex139{background:url('../image/texture/texthterre/text_hterrebd.png') no-repeat;} 
 .tex140{background:url('../image/texture/texthterre/text_hterrebg.png') no-repeat;} 
 .tex141{background:url('../image/texture/texthterre/text_hterrebm.png') no-repeat;} 
@@ -95,7 +95,8 @@
 .tex195{background:url('../image/texture/herbebasse/herbebassebd.png') no-repeat;} 
 .tex196{background:url('../image/texture/herbebasse/herbebassebd2.png') no-repeat;} 
 .tex197{background:url('../image/texture/herbebasse/herbebassemd.png') no-repeat;} 
-.tex198{background:url('../image/texture/herbebasse/herbebassecentre.png') no-repeat;} 
+.tex198{background:url('../image/texture/herbebasse/herbebassecentre.png') no-repeat;}
+.tex199{background:url('../image/texture/textureherbe/tex_herbeenforethd.png') no-repeat;} 
 
 .tex2{background:url('../image/texture/tex_foret1.png') no-repeat;} 
 .tex201{background:url('../image/texture/tex_foret1.png') no-repeat;} 
@@ -581,6 +582,9 @@
 .tex965{background:url('../image/texture/route/jonction_foretverte_ herbe_h1.png') no-repeat;}
 .tex966{background:url('../image/texture/route/jonction_foret_capitaleedb.png') no-repeat;}
 .tex967{background:url('../image/texture/route/jonction_foretverte_ herbe_h2.png') no-repeat;}
+.tex968{background:url('../image/texture/route/jonction_foret_herbe1.png') no-repeat;}
+.tex969{background:url('../image/texture/route/jonction_foret_herbe2.png') no-repeat;}
+.tex970{background:url('../image/texture/route/jonction_foret_herbe3.png') no-repeat;}
 
 
 .tex4{background:url('../image/texture/tex_myriandre.png') no-repeat;}
