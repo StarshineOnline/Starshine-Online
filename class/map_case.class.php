@@ -406,6 +406,7 @@ class map_case
 				{
 					$construction = construction::create(array('x', 'y'), array($this->get_x(), $this->get_y()));
 					$batiment = new batiment($construction[0]->get_id_batiment());
+					if(!$bonus) $bonus = 'bonus5';
 					$get = 'get_'.$bonus;
 					 if($batiment->$get() == 1) return true;
 				}

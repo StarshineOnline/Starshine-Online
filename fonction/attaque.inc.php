@@ -60,7 +60,7 @@ function attaque($acteur = 'attaquant', $competence, &$effects)
   	if($actif->is_buff('batiment_distance')) $actif->potentiel_toucher *= 1 + (($actif->get_buff('batiment_distance', 'effet')) / 100);
   	if($actif->is_buff('buff_cri_bataille')) $actif->potentiel_toucher *= 1 + (($actif->get_buff('buff_cri_bataille', 'effet')) / 100);
   	if(array_key_exists('dissimulation', $actif->etat)) $actif->potentiel_toucher *= 1 + (($actif->etat['dissimulation']['effet']) / 100);
-  	if($actif->is_buff('buff_position')) $actif->potentiel_toucher *= 1 + (($actif->get_buff('buff_position', 'effet')) / 100);
+  	if($actif->is_buff('buff_position') && $actif->get_arme_type() == 'arc') $actif->potentiel_toucher *= 1 + (($actif->get_buff('buff_position', 'effet')) / 100);
   	if(array_key_exists('a_toucher', $actif->etat)) $actif->potentiel_toucher *= 1 + ($actif->etat['a_toucher']['effet'] / 100);
   	//Corrompu la journée
   	if($actif->get_race() == 'humainnoir' AND moment_jour() == 'Journee') $actif->potentiel_toucher *= 1.1; else $bonus_race = 1;
@@ -140,8 +140,8 @@ function attaque($acteur = 'attaquant', $competence, &$effects)
       	if(array_key_exists('berzeker', $passif->etat)) $buff_berz_degat_r = $passif->etat['berzeker']['effet'] * $G_buff['berz_degat_recu']; else $buff_berz_degat_r = 0;
       	if($actif->is_buff('buff_force')) $buff_force = $actif->get_buff('buff_force', 'effet'); else $buff_force = 0;
       	if($actif->is_buff('buff_cri_victoire')) $buff_cri_victoire = $actif->get_buff('buff_cri_victoire', 'effet'); else $buff_cri_victoire = 0;
-      	if($actif->is_buff('fleche_tranchante')) $degat += $actif->get_buff('fleche_tranchante', 'effet');
-      	if($actif->is_buff('oeil_chasseur') AND $passif->get_espece() == 'bete') $degat += $actif->get_buff('oeil_chasseur', 'effet');
+      	if($actif->is_buff('fleche_tranchante') && $actif->get_arme_type() == 'arc') $degat += $actif->get_buff('fleche_tranchante', 'effet');
+      	if($actif->is_buff('oeil_chasseur') && $passif->get_espece() == 'bete' && $actif->get_arme_type() == 'arc') $degat += $actif->get_buff('oeil_chasseur', 'effet');
       	$degat = $degat + $buff_bene_degat + $buff_berz_degat + $buff_berz_degat_r + $buff_force + $buff_cri_victoire;
       	if($actif->is_buff('maladie_mollesse')) $degat = ceil($degat / (1 + ($actif->get_buff('maladie_mollesse', 'effet') / 100)));
 
@@ -358,7 +358,7 @@ function attaque($acteur = 'attaquant', $competence, &$effects)
 			$degat = round($degat * $multiplicateur);
 			$degat_avant = round($degat_avant * $multiplicateur);
 			$critique = true;
-			if(array_key_exists('renouveau_energique', $actif->buff))
+			if(array_key_exists('renouveau_energique', $actif->buff) && $actif->get_arme_type() == 'arc')
 			{
 				$actif->set_reserve($actif->get_reserve() + $actif->get_buff('renouveau_energique', 'effet'));
 				echo $actif->get_nom().' se ressaisi et gagne '.$actif->get_buff('renouveau_energique', 'effet').' RM<br />';
