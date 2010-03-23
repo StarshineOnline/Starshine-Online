@@ -835,6 +835,22 @@
 .tex1641{background:url('../image/texture/donjon_gobelin/tex_donjongob_prison2.png') no-repeat;}
 .tex1642{background:url('../image/texture/donjon_gobelin/tex_donjongob_prison3.png') no-repeat;}
 
+.tex1643{background:url('../image/texture/donjon_gobelin/buisson bg.png') no-repeat;}
+.tex1644{background:url('../image/texture/donjon_gobelin/buisson bg2.png') no-repeat;}
+.tex1645{background:url('../image/texture/donjon_gobelin/buisson mg.png') no-repeat;}
+.tex1646{background:url('../image/texture/donjon_gobelin/buisson hg.png') no-repeat;}
+.tex1647{background:url('../image/texture/donjon_gobelin/buisson hg2.png') no-repeat;}
+.tex1648{background:url('../image/texture/donjon_gobelin/buisson hm.png') no-repeat;}
+.tex1649{background:url('../image/texture/donjon_gobelin/buisson hd.png') no-repeat;}
+.tex1650{background:url('../image/texture/donjon_gobelin/buisson hd2.png') no-repeat;}
+.tex1651{background:url('../image/texture/donjon_gobelin/buisson md.png') no-repeat;}
+.tex1652{background:url('../image/texture/donjon_gobelin/buisson bd.png') no-repeat;}
+.tex1653{background:url('../image/texture/donjon_gobelin/buisson bd2.png') no-repeat;}
+.tex1654{background:url('../image/texture/donjon_gobelin/buisson bm.png') no-repeat;}
+.tex1655{background:url('../image/texture/donjon_gobelin/buisson centre.png') no-repeat;}
+
+
+
 .tex2000{background:url('../image/texture/capitale/vampire/villevampendestrbg.gif') no-repeat;}
 .tex2001{background:url('../image/texture/capitale/vampire/villevampendestrbm.gif') no-repeat;}
 .tex2002{background:url('../image/texture/capitale/vampire/villevampendestrbd.gif') no-repeat;}
@@ -1005,18 +1021,5 @@
 .tex2227{background:url('../image/texture/jonctionhhterre/text_hterrehdjonctionhh3.png') no-repeat;}
 .tex2228{background:url('../image/texture/jonctionhhterre/text_hterrebmjonctionhh3.png') no-repeat;}
 
-.tex2229{background:url('../image/texture/buisson/buisson bg.png') no-repeat;}
-.tex2230{background:url('../image/texture/buisson/buisson bg2.png') no-repeat;}
-.tex2231{background:url('../image/texture/buisson/buisson mg.png') no-repeat;}
-.tex2232{background:url('../image/texture/buisson/buisson hg.png') no-repeat;}
-.tex2233{background:url('../image/texture/buisson/buisson hg2.png') no-repeat;}
-.tex2234{background:url('../image/texture/buisson/buisson hm.png') no-repeat;}
-.tex2235{background:url('../image/texture/buisson/buisson hd.png') no-repeat;}
-.tex2236{background:url('../image/texture/buisson/buisson hd2.png') no-repeat;}
-.tex2237{background:url('../image/texture/buisson/buisson md.png') no-repeat;}
-.tex2238{background:url('../image/texture/buisson/buisson bd.png') no-repeat;}
-.tex2239{background:url('../image/texture/buisson/buisson bd2.png') no-repeat;}
-.tex2240{background:url('../image/texture/buisson/buisson bm.png') no-repeat;}
-.tex2241{background:url('../image/texture/buisson/buisson centre.png') no-repeat;}
 
 .texblack{background-color:#000;}
