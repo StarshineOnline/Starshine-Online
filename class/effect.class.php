@@ -491,7 +491,7 @@ class effet_vampirisme extends effect
 	}
 
   function inflige_degats(&$actif, &$passif, $degats) {
-		$this->debug("effet_vampirisme: inflige_degats($degats)");
+		$this->debug("effet_vampirisme: inflige_degats($degats) [effet $this->effet]");
 		$gain = round($degats * $this->effet / 100);
 		if (($actif->get_hp() + $gain) > $actif->get_hp_max())
 			$gain = $actif->get_hp_max() - $actif->get_hp();

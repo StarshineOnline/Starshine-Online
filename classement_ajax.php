@@ -1,7 +1,7 @@
 <?php
 if (file_exists('root.php'))
   include_once('root.php');
-?><?php
+
 	if(array_key_exists('javascript', $_GET)) include_once(root.'inc/fp.php');
 	//Tableau des classements
 	$tab_classement = array();
@@ -13,6 +13,10 @@ if (file_exists('root.php'))
 	$tab_classement['honneur']['champ'] = 'Honneur';
 	$tab_classement['honneur']['affiche'] = true;
 	$tab_classement['honneur']['affiche_niveau'] = false;
+	$tab_classement['reputation']['nom'] = 'Les plus réputés';
+	$tab_classement['reputation']['champ'] = 'Réputation';
+	$tab_classement['reputation']['affiche'] = true;
+	$tab_classement['reputation']['affiche_niveau'] = false;
 	$tab_classement['star']['nom'] = 'Les plus fortunés';
 	$tab_classement['star']['champ'] = '';
 	$tab_classement['star']['affiche'] = false;
