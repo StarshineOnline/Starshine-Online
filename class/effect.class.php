@@ -504,6 +504,7 @@ class effet_vampirisme extends effect
 		else
 			$this->debug($actif->get_nom().' gagne '.$gain.' HP par '.$this->pos.' '.
 									$this->nom);
+		return $degats;
 	}
 }
 
