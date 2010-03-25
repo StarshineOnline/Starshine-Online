@@ -211,78 +211,12 @@ echo 'xmin : '.$xmin.' xmax : '.$xmax.' ymin : '.$ymin.' ymax : '.$ymax;
 	</div>
 	<div class="selecteur">
 		<select name="<?php echo $positioncase;?>" size="15" class="baseJumpbox" id="selectText" onChange="changeTexture('texturePreview')">
-				<optgroup label="Donjon">
-					<option value="" class="baseRow1">Case noire</option>
-					<option value="1501" class="baseRow1">Donjon 1</option>
-					<option value="1502" class="baseRow1">Donjon 2</option>
-					<option value="1503" class="baseRow1">Donjon 3</option>
-					<option value="1504" class="baseRow1">Donjon 4</option>
-					<option value="1505" class="baseRow1">Donjon 5</option>
-					<option value="1506" class="baseRow1">Donjon 6</option>
-					<option value="1507" class="baseRow1">Donjon 7</option>
-					<option value="1508" class="baseRow1">Donjon 8</option>
-					<option value="1509" class="baseRow1">Donjon 9</option>
-					<option value="1510" class="baseRow1">Donjon 10</option>
-					<option value="1511" class="baseRow1">Donjon 11</option>
-					<option value="1512" class="baseRow1">Donjon 12</option>
-					<option value="1513" class="baseRow1">Donjon 13</option>
-				</optgroup>
-				<optgroup label="Mur Donjon">
-					<option value="1601" class="baseRow1">Mur Donjon 1</option>
-					<option value="1602" class="baseRow1">Mur Donjon 2</option>
-					<option value="1603" class="baseRow1">Mur Donjon 3</option>
-					<option value="1604" class="baseRow1">Mur Donjon 4</option>
-					<option value="1605" class="baseRow1">Mur Donjon 5</option>
-					<option value="1606" class="baseRow1">Mur Donjon 6</option>
-					<option value="1607" class="baseRow1">Mur Donjon 7</option>
-					<option value="1608" class="baseRow1">Mur Donjon 8</option>
-					<option value="1609" class="baseRow1">Mur Donjon 9</option>
-					<option value="1610" class="baseRow1">Mur Donjon 10</option>
-					<option value="1611" class="baseRow1">Mur Donjon 11</option>
-					<option value="1612" class="baseRow1">Mur Donjon 12</option>
-					<option value="1613" class="baseRow1">Mur Donjon 13</option>
-				</optgroup>
-				<optgroup label="Donjon Gobelin">
-					<option value="" class="baseRow1">Case noire</option>
-					<option value="1516" class="baseRow1">Donjon Gobelin 1</option>
-					<option value="1517" class="baseRow1">Donjon Gobelin 2</option>
-					<option value="1518" class="baseRow1">Donjon Gobelin 3</option>
-					<option value="1519" class="baseRow1">Donjon Gobelin 4</option>
-					<option value="1520" class="baseRow1">Donjon Gobelin 5</option>
-					<option value="1521" class="baseRow1">Donjon Gobelin 6</option>
-					<option value="1522" class="baseRow1">Donjon Gobelin 7</option>
-					<option value="1523" class="baseRow1">Donjon Gobelin 8</option>
-					<option value="1524" class="baseRow1">Donjon Gobelin 9</option>
-					<option value="1525" class="baseRow1">Donjon Gobelin 10</option>
-					<option value="1526" class="baseRow1">Donjon Gobelin 11</option>
-					<option value="1527" class="baseRow1">Donjon Gobelin 12</option>
-					<option value="1528" class="baseRow1">Donjon Gobelin 13</option>
-					<option value="1529" class="baseRow1">Donjon Gobelin 14</option>
-					<option value="1530" class="baseRow1">Donjon Gobelin 15</option>
-					<option value="1531" class="baseRow1">Donjon Gobelin 16</option>
-					<option value="1532" class="baseRow1">Donjon Gobelin 17</option>
-					<option value="1533" class="baseRow1">Donjon Gobelin 18</option>
-					<option value="1534" class="baseRow1">Donjon Gobelin 19</option>
-					<option value="1535" class="baseRow1">Donjon Gobelin 20</option>
-	
-				</optgroup>
-				<optgroup label="Mur Donjon Gobelin">
-					<option value="1616" class="baseRow1">Mur Donjon gobelin 1</option>
-					<option value="1617" class="baseRow1">Mur Donjon gobelin 2</option>
-					<option value="1618" class="baseRow1">Mur Donjon gobelin 3</option>
-					<option value="1619" class="baseRow1">Mur Donjon gobelin 4</option>
-					<option value="1620" class="baseRow1">Mur Donjon gobelin 5</option>
-					<option value="1621" class="baseRow1">Mur Donjon gobelin 6</option>
-					<option value="1622" class="baseRow1">Mur Donjon gobelin 7</option>
-					<option value="1623" class="baseRow1">Mur Donjon gobelin 8</option>
-					<option value="1624" class="baseRow1">Mur Donjon gobelin 9</option>
-					<option value="1625" class="baseRow1">Mur Donjon gobelin 10</option>
-					<option value="1626" class="baseRow1">Mur Donjon gobelin 11</option>
-					<option value="1627" class="baseRow1">Mur Donjon gobelin 12</option>
-					<option value="1628" class="baseRow1">Mur Donjon gobelin 13</option>
-				</optgroup>
 
-<?php if(array_key_exists('arene', $_GET)) include_once('terrain.inc.html'); ?>
+<?php
+	include_once('donjon.inc.html');
+  if (array_key_exists('arene', $_GET)) 
+		 include_once('terrain.inc.html');
+ ?>
 
 		</select>
 		<table>
