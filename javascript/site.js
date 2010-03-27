@@ -41,18 +41,18 @@ function validation_perso()
 {
 	if ($('#creat_nom').val() == '')
 	{
-		$('#creat_erreur').text('Vous avez laisser un champ libre, ou vos mots de passe ne correspondent pas');
+		$('#creat_erreur').text('Vous avez laissé un champ libre, ou vos mots de passe ne correspondent pas');
 		$('#creat_erreur').show();
 	}
 
 	if (($('#creat_pass').val() != $('#creat_pass2').val()) || ($('#creat_pass2').val()=='') || ($('creat_pass2').val()==''))
 	{
-		$('#creat_erreur').text('Vous avez laisser un champ libre, ou vos mots de passe ne correspondent pas');
+		$('#creat_erreur').text('Vous avez laissé un champ libre, ou vos mots de passe ne correspondent pas');
 		$('#creat_erreur').show();
 	}
 	if ($('#perso_selected_id').val() == '')
 	{
-		$('#creat_erreur').test("Vous n'avez pas sélectionnez de personnage.");
+		$('#creat_erreur').test("Vous n'avez pas sélectionné de type de personnage (cadre à droite).");
 		$('#creat_erreur').show();
 	}	
 	if (($('#perso_selected_id').val() != '') && ($('#creat_pass').val() == $('#creat_pass2').val()) && ($('#creat_pass2').val()!='') && ($('#creat_pass2').val()!='') && ($('#creat_nom').val() != ''))
@@ -86,3 +86,9 @@ $(document).ready(function()
 		$(this).hide();
 	});
 });
+
+$(function() {
+		$(".combat").sortable();
+		$(".combat").disableSelection();
+	});
+
