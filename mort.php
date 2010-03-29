@@ -6,6 +6,7 @@ include_once(root.'haut.php');
 
 $joueur = new perso($_SESSION['ID']);
 $choix = $_GET['choix'];
+/*
 if($choix == 1)
 {
 	$requete = "DELETE FROM rez WHERE id_perso = ".$joueur->get_id();
@@ -40,5 +41,6 @@ elseif($choix == 3)
 	//Ville
 	verif_mort($malus, 4, 43200, 2);
 }
+ */
 ?>
 <img src="image/pixel.gif" onload="window.location = 'jeu2.php';" />
