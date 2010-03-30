@@ -206,7 +206,7 @@ N'oubliez pas de reporter les bugs et problèmes, et d'apporter vos suggestions 
 			else
 			{
 				echo "<div id='login_ok'>";	
-				echo "<a href='jeu2.php'>Entrez dans le monde de Starshine-Online</a> / <span style='cursor:pointer;' onclick=\"if(confirm('Es tu sur de vouloir te déconnecter malheureux ?')) { document.location.href='index.php?deco=ok'; };\">Se deconnecter</span>";
+				echo "<a href='plateau.php'>Entrez dans le monde de Starshine-Online</a> / <span style='cursor:pointer;' onclick=\"if(confirm('Es tu sur de vouloir te déconnecter malheureux ?')) { document.location.href='index.php?deco=ok'; };\">Se deconnecter</span>";
 				echo "</div>";
 			}
 			?>	
