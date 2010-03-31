@@ -157,7 +157,7 @@ N'oubliez pas de reporter les bugs et problèmes, et d'apporter vos suggestions 
 		</div>
 		<div class='perso_cadre'>
 		<?php
-		$RqRace = $db->query("SELECT race FROM royaume WHERE race != '' ORDER BY star_nouveau_joueur DESC, race ASC");
+		$RqRace = $db->query("SELECT race FROM royaume WHERE race != '' AND race != 'dragon' ORDER BY star_nouveau_joueur DESC, race ASC");
 
 		$i=0;
 		while($objRace = $db->read_object($RqRace))
