@@ -286,7 +286,7 @@ $Trace['vampire']['dexterite'] = 13;  ///< Dextérité des Vampires.
 $Trace['vampire']['puissance'] = 16;  ///< Puissance des Vampires.
 $Trace['vampire']['volonte'] = 11;  ///< Volonté des Vampires.
 $Trace['vampire']['energie'] = 11;  ///< Energie des Vampires.
-$Trace['vampire']['passif'] = '+2 en réserve de mana<br /> +2 Dex, +2 Volonté, +2 Réserve Mana la nuit<br /> -1 Dex, -1 Volonté, -1 Réserve de mana le jour';  ///< Description des bonus des 
+$Trace['vampire']['passif'] = '+2 en réserve de mana<br /> +2 Dex, +2 Volonté, +2 Réserve Mana la nuit<br /> -1 Dex, -1 Volonté, -1 Réserve de mana le jour';  ///< Description des bonus des
 
 $Trace['vampire']['affinite_sort_mort'] = 6;  ///< Affinité avec la magie de la mort des Vampires.
 $Trace['vampire']['affinite_sort_element'] = 6;  ///< Affinité avec la magie élémentaire des Vampires.
@@ -298,5 +298,30 @@ $Trace['vampire']['spawn_c_x'] = 140;
 $Trace['vampire']['spawn_c_y'] = 30;
 $Trace['vampire']['couleur'] = "#cccccc";  ///< Couleur des Vampires.
 $Trace['vampire']['forum_id'] = 40;   ///< ID du forum des Vampires.
+//@}
+
+/**
+ * @name Dragons
+ * Caractéristiques des Dragons
+ */
+ /// @{
+$Trace['dragon']['vie'] = 13;  ///< Constitution des Vampires.
+$Trace['dragon']['force'] = 11;   ///<  Force des Vampires.
+$Trace['dragon']['dexterite'] = 13;  ///< Dextérité des Vampires.
+$Trace['dragon']['puissance'] = 16;  ///< Puissance des Vampires.
+$Trace['dragon']['volonte'] = 11;  ///< Volonté des Vampires.
+$Trace['dragon']['energie'] = 11;  ///< Energie des Vampires.
+$Trace['dragon']['passif'] = '+2 en réserve de mana<br /> +2 Dex, +2 Volonté, +2 Réserve Mana la nuit<br /> -1 Dex, -1 Volonté, -1 Réserve de mana le jour';  ///< Description des bonus des
+
+$Trace['dragon']['affinite_sort_mort'] = 6;  ///< Affinité avec la magie de la mort des Vampires.
+$Trace['dragon']['affinite_sort_element'] = 6;  ///< Affinité avec la magie élémentaire des Vampires.
+$Trace['dragon']['affinite_sort_vie'] = 3;  ///< Affinité avec la magie de la vie des Vampires.
+$Trace['dragon']['numrace'] = 99;  ///< Numéro des Vampires.
+$Trace['dragon']['spawn_x'] = 76;
+$Trace['dragon']['spawn_y'] = 152;
+$Trace['dragon']['spawn_c_x'] = 140;
+$Trace['dragon']['spawn_c_y'] = 30;
+$Trace['dragon']['couleur'] = "#cccccc";  ///< Couleur des Vampires.
+$Trace['dragon']['forum_id'] = 40;   ///< ID du forum des Vampires.
 //@}
 ?>
