@@ -40,7 +40,7 @@ if((isset($_POST['log']) OR isset($_COOKIE['nom'])) AND !array_key_exists('nom',
 		?>
 		<script language="javascript" type="text/javascript">
 		<!--
-		window.location.replace("plateau.php");
+		window.location.replace("interface.php");
 		-->
 		</script>
 		<?php

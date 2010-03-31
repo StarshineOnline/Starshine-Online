@@ -121,7 +121,7 @@ if($W_distance < 4)
 				if($num_rows == 0) $unlock = true;
 			}
 			else $unlock = true;
-			if($W_row['x'] == $joueur->get_x() AND $W_row['y'] == $joueur->get_y() AND $unlock) echo ' <a href="jeu2.php?donjon_id='.$W_row['id'].'">Entrer dans le donjon</a>';
+			if($W_row['x'] == $joueur->get_x() AND $W_row['y'] == $joueur->get_y() AND $unlock) echo ' <a href="interface.php?donjon_id='.$W_row['id'].'">Entrer dans le donjon</a>';
 			echo '<br />';
 		}
 	}
@@ -139,7 +139,7 @@ if($W_distance < 4)
 		{
 			echo  '&nbsp;&nbsp;&nbsp;'.$W_row['nom'];
 			//Sortie du donjon
-			if($W_row['x_donjon'] == $joueur->get_x() AND $W_row['y_donjon'] == $joueur->get_y()) echo ' <a href="jeu2.php?donjon_id='.$W_row['id'].'&amp;type=sortie">Sortir du donjon</a>';
+			if($W_row['x_donjon'] == $joueur->get_x() AND $W_row['y_donjon'] == $joueur->get_y()) echo ' <a href="interface.php?donjon_id='.$W_row['id'].'&amp;type=sortie">Sortir du donjon</a>';
 			echo '<br />';
 		}
 	}
