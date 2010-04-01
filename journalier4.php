@@ -35,6 +35,15 @@ $date_hier = date("Y-m-d", mktime(0, 0, 0, date("m") , date("d") - 2, date("Y"))
 
 $ressources = array();
 
+//On initialise le tableau de ressources des royaumes
+foreach($Trace as $r => $valeur)
+{
+	foreach($ress['Plaine'] as $ressource => $valeur)
+	{
+		$ressource_final[$r][$ressource] = 0;
+	}
+}
+
 $requete = "SELECT royaume.race as race, info, COUNT(*) as tot_terrain FROM `map` LEFT JOIN royaume ON map.royaume = royaume.id WHERE royaume <> 0 GROUP BY info, royaume";
 $req = $db->query($requete);
 while($row = $db->read_assoc($req))
@@ -145,8 +154,6 @@ while($row = $db->read_assoc($req))
 		if($key == 'Nourriture') $tot_nou += $value;
 	}
 }
-
-var_dump($ressource_final);
 
 foreach($ressource_final as $key => $value)
 {
