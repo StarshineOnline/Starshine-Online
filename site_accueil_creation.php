@@ -146,6 +146,7 @@ else
 		VALUES ('','$nom','$password','$exp','$level','$star','$vie','$force','$dexterite','$puissance','$volonte','$energie','$race','$classe', $classe_id, '$inventaire','180','$time',$x,$y,'$hp','$hp_max','$mp','$mp_max','$regen_hp','$maj_mp','$maj_hp', '$sort_jeu', '$sort_combat', '$comp_combat', '$quete', '$sort_vie', '$sort_element', '$sort_mort', '$facteur_magie')";*/
 
 		$joueur->sauver();
+		$jid = replace_all($joueur->get_nom()).'@jabber.starshine-online.com';
 		if($joueur->get_id() == -1)
 		{
 			echo $requete.'<br />';
@@ -172,7 +173,19 @@ Bon jeu !';
 		}
 		require('connect_forum.php');
 		//Création de l'utilisateur dans le forum
-		$requete = "INSERT INTO punbbusers(`group_id`, `username`, `password`, `language`, `style`, `registered`) VALUES('".$punbb[$race]."', '".$joueur->get_nom()."', '".sha1($mdp)."', 'French', 'SSO', '".time()."')";
+		$requete = "INSERT INTO punbbusers(`group_id`, `username`, `password`, `language`, `style`, `registered`, `jabber`, `email`) VALUES('".$punbb[$race]."', '".$joueur->get_nom()."', '".sha1($mdp)."', 'French', 'SSO', '".time()."', '$jid', '".$joueur->get_email()."')";
 		$db_forum->query($requete);
 	}
+}
+
+function replace_accents($string)
+{
+  return str_replace( array('à','á','â','ã','ä', 'ç', 'è','é','ê','ë', 'ì','í','î','ï', 'ñ', 'ò','ó','ô','õ','ö', 'ù','ú','û','ü', 'ý','ÿ', 'À','Á','Â','Ã','Ä', 'Ç', 'È','É','Ê','Ë', 'Ì','Í','Î','Ï', 'Ñ', 'Ò','Ó','Ô','Õ','Ö', 'Ù','Ú','Û','Ü', 'Ý'), array('a','a','a','a','a', 'c', 'e','e','e','e', 'i','i','i','i', 'n', 'o','o','o','o','o', 'u','u','u','u', 'y','y', 'A','A','A','A','A', 'C', 'E','E','E','E', 'I','I','I','I', 'N', 'O','O','O','O','O', 'U','U','U','U', 'Y'), $string);
+}
+
+function replace_all($string)
+{
+  $string = str_replace(' ', '_', $string);
+  return replace_accents($string);
+  //return strtolower(replace_accents($string));
 }
