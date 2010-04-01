@@ -52,7 +52,7 @@ function validation_perso()
 	}
 	if ($('#perso_selected_id').val() == '')
 	{
-		$('#creat_erreur').test("Vous n'avez pas sélectionné de type de personnage (cadre à droite).");
+		$('#creat_erreur').text("Vous n'avez pas sélectionné de type de personnage (cadre à droite).");
 		$('#creat_erreur').show();
 	}	
 	if (($('#perso_selected_id').val() != '') && ($('#creat_pass').val() == $('#creat_pass2').val()) && ($('#creat_pass2').val()!='') && ($('#creat_pass2').val()!='') && ($('#creat_nom').val() != ''))
