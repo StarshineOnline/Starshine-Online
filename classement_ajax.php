@@ -73,6 +73,10 @@ if (file_exists('root.php'))
 	$tab_classement['survie']['champ'] = 'Survie';
 	$tab_classement['survie']['affiche'] = true;
 	$tab_classement['survie']['affiche_niveau'] = false;
+	$tab_classement['dressage']['nom'] = 'Dresseur';
+	$tab_classement['dressage']['champ'] = 'dressage';
+	$tab_classement['dressage']['affiche'] = true;
+	$tab_classement['dressage']['affiche_niveau'] = false;
 ?>
 		<div id="table_classement">
 <?php
