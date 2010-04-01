@@ -112,7 +112,7 @@ echo $a1.'<-- Page précédente'.$a2.' / '.$a3.'Page suivante -->'.$a4.'<br />
 <select name="archive" id="archive">
 	<option value="now">Mois actuel</option>';
 require_once('connect_log.php');
-$requete = "SELECT table_name FROM information_schema.tables WHERE table_name like 'journal%' AND table_schema = 'starshine_log' ORDER BY table_name DESC";
+$requete = "SELECT table_name FROM information_schema.tables WHERE table_name like 'journal%' AND table_schema = '$cfg_log[sql][db]' ORDER BY table_name DESC";
 $req = $db_log->query($requete);
 while($row = $db_log->read_assoc($req))
 {
