@@ -2313,7 +2313,6 @@ Votre dernier souvenir est l'endroit où vous êtes mort <?php echo 'x : '.$joue
 <div id='menu'></div>
 <div id='mort'>
 <fieldset>
-	<?php
 					Que voulez vous faire ?
 					<ul>
 					<?php
@@ -2345,7 +2344,6 @@ Votre dernier souvenir est l'endroit où vous êtes mort <?php echo 'x : '.$joue
 						<li style="padding-top:5px;padding-bottom:5px;">Vous pouvez attendre qu&rsquo;un autre joueur vous ressucite</li>
 					</ul>
 					<a href="index.php">Index du jeu</a> - <a href="http://forum.starshine-online.com">Accéder au forum</a>  - <a href="http://www.starshine-online.com/tigase/">Accéder au Tchat</a>
-	 ?>
 </fieldset>
 <fieldset>
 					Vos dernières actions :
