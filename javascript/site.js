@@ -60,7 +60,7 @@ function validation_perso()
 		var tmp = $('#perso_selected_id').val();
 		var perso = tmp.split('_');
 
-		$('#personnage_box').load('./site_accueil_creation.php?race='+perso[0]+'&classe='+perso[1]+'&pseudo='+$('#creat_nom').val()+'&mdp='+$('#creat_pass').val());
+		$('#personnage_box').load('./site_accueil_creation.php?race='+perso[0]+'&classe='+perso[1]+'&pseudo='+encodeURIComponent($('#creat_nom').val())+'&mdp='+encodeURIComponent($('#creat_pass').val()));
 	}
 }
 function affichePopUpErreur(erreur)
