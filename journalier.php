@@ -45,6 +45,7 @@ while($row = $db->read_assoc($req))
 $nbr_monstre = 1000;
 $nbr_perso = 750;
 $level_moyen = 6;
+$joueur[1] = 10;
 
 $arenes = array();
 $requete = "SELECT * FROM arenes";
