@@ -146,6 +146,8 @@ while($row = $db->read_assoc($req))
 	}
 }
 
+var_dump($ressource_final);
+
 foreach($ressource_final as $key => $value)
 {
 	$requete = "SELECT ".$key." FROM stat_jeu WHERE date = '".$date."'";
