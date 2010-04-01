@@ -163,7 +163,7 @@ include_once(root.'inc/fp.php');
 						$perso->sauver();
 						require('connect_forum.php');
 						$groupe = $perso->get_groupe();
-						if($groupe == 0)
+						if($groupe != 0)
 						{	degroup($perso->get_id(), $groupe->get_id());}
 						$requete = "INSERT INTO punbbbans VALUES(NULL, '".$perso->get_nom()."', NULL, NULL, NULL, NULL, 2)";
 						if($db_forum->query($requete))
