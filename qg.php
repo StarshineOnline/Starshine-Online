@@ -49,7 +49,7 @@ if($W_row['type'] == 1)
 						{
 							if(!array_key_exists('id', $_GET))
 							{
-								$requete = "SELECT *, depot_royaume.id AS id_depot FROM depot_royaume LEFT JOIN objet_royaume ON depot_royaume.id_objet = objet_royaume.id WHERE id_royaume = ".$R->get_id()." AND id_objet=1";
+								$requete = "SELECT depot_royaume.*, depot_royaume.id AS id_depot FROM depot_royaume, grade, objet_royaume WHERE depot_royaume.id_objet = objet_royaume.id AND id_royaume = ".$R->get_id()." AND id_objet=1 AND objet_royaume.grade <= grade.rang  AND grade.id = ".$joueur->get_rang_royaume();
 							}
 							else
 							{
