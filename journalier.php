@@ -134,7 +134,7 @@ while($row = $db->read_array($req))
 			{
 				//echo $row2['info'].'<br />';
 				//Plus c'est élevé moins les monstres spawn
-				$rand = rand(0, (5000 * 30));
+				$rand = rand(0, (5000 * 1000));
 				if($rand < $limite OR $spawn == 0)
 				{
 					$check = true;
