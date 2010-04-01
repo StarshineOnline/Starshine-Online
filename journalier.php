@@ -42,10 +42,11 @@ while($row = $db->read_assoc($req))
 	$monstre[$row['level']]['tot_type'] += 1;
 }
 
-$nbr_monstre = 1000;
+/*$nbr_monstre = 1000;
 $nbr_perso = 750;
 $level_moyen = 6;
 $joueur[1] = 10;
+*/
 
 $arenes = array();
 $requete = "SELECT * FROM arenes";
@@ -133,7 +134,7 @@ while($row = $db->read_array($req))
 			{
 				//echo $row2['info'].'<br />';
 				//Plus c'est élevé moins les monstres spawn
-				$rand = rand(0, (5000 * 1000));
+				$rand = rand(0, (5000 * 100));
 				if($rand < $limite OR $spawn == 0)
 				{
 					$check = true;
