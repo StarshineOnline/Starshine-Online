@@ -42,7 +42,7 @@ while($row = $db->read_assoc($req))
 	$monstre[$row['level']]['tot_type'] += 1;
 }
 
-$nbr_monstre = 250000;
+$nbr_monstre = 1000;
 $nbr_perso = 750;
 $level_moyen = 6;
 
