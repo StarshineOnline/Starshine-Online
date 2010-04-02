@@ -242,6 +242,8 @@ function type_terrain($info)
 	//Initialise les variables de terrain
 	$typeterrain[1][0] = 'plaine';
 	$typeterrain[1][1] = 'Plaine';
+	$typeterrain[22][0] = 'plaine';
+	$typeterrain[22][1] = 'Plaine';
 	$typeterrain[2][0] = 'foret';
 	$typeterrain[2][1] = 'Forêt';
 	$typeterrain[3][0] = 'desert';
