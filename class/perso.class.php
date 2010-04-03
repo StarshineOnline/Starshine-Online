@@ -17,7 +17,7 @@ class perso extends entite
 	private $honneur;      ///< Points d'honneur.
 	private $reputation;   ///< Points de réputation.
 	private $star;         ///< Nombre de stars.
-	private $frag;         ///< Nombre d'ennemis (ou non) tués.
+	private $frag;         ///< Nombre de personnages tués.
 	private $mort;         ///< Nombre fois où le personnage est mort.
 	private $statut;       ///< Statut du joueur.
 	private $fin_ban;      ///< Date de la fin du ban.
@@ -83,6 +83,12 @@ class perso extends entite
 	{
 		return $this->point_sso;
 	}
+	/// Modifie les points shines.
+	function set_point_sso($point_sso)
+	{
+		$this->point_sso = $point_sso;
+		$this->champs_modif[] = 'point_sso';
+	}
   /**
    * Renvoie les bonus shines
    * @param  $id_bonus    Id du bonue, false s'il faut tous les renvoyer.
@@ -146,6 +152,23 @@ class perso extends entite
     if ($this->star < 0)
       $this->star = 0;
   }
+	/// Modifie les stars.
+	function set_star($star)
+	{
+		$this->star = $star;
+		$this->champs_modif[] = 'star';
+	}
+  /// Renvoie le nombre de personnages tués
+	function get_frag()
+	{
+		return $this->frag;
+	}
+  /// Modifie le nombre de personnages tués
+	function set_frag($frag)
+	{
+		$this->frag = $frag;
+		$this->champs_modif[] = 'frag';
+	}
 	/// Renvoie le nombre fois où le personnage est mort.
 	function get_mort()
 	{
@@ -156,6 +179,94 @@ class perso extends entite
 	{
 		$this->mort = $mort;
 		$this->champs_modif[] = 'mort';
+	}
+	/// Renvoie le statut
+	function get_statut()
+	{
+		return $this->statut;
+	}
+	/// Modifie le statut
+	function set_statut($statut)
+	{
+		$this->statut = $statut;
+		$this->champs_modif[] = 'statut';
+	}
+	/// Renvoie la date de fin du ban
+	function get_fin_ban()
+	{
+		return $this->fin_ban;
+	}
+	/// Modifie la date de fin du ban
+	function set_fin_ban($fin_ban)
+	{
+		$this->fin_ban = $fin_ban;
+		$this->champs_modif[] = 'fin_ban';
+	}
+	/// Renvoie le nombre de points crime
+	function get_crime()
+	{
+		return $this->crime;
+	}
+	/// Modifie le nombre de points crime
+	function set_crime($crime)
+	{
+		$this->crime = $crime;
+		$this->champs_modif[] = 'crime';
+	}
+	/// Renvoie le montant de l'amende
+	function get_amende()
+	{
+		return $this->amende;
+	}
+	/// Modifie le montant de l'amende
+	function set_amende($amende)
+	{
+		$this->amende = $amende;
+		$this->champs_modif[] = 'amende';
+	}
+	/// Renvoie à qui il faut cacher la classe
+	function get_cache_classe()
+	{
+		return $this->cache_classe;
+	}
+	/// Modifie à qui il faut cacher la classe
+	function set_cache_classe($cache_classe)
+	{
+		$this->cache_classe = $cache_classe;
+		$this->champs_modif[] = 'cache_classe';
+	}
+	/// Renvoie à qui il faut cacher les stats
+	function get_cache_stat()
+	{
+		return $this->cache_stat;
+	}
+	/// Modifie à qui il faut cacher les stats
+	function set_cache_stat($cache_stat)
+	{
+		$this->cache_stat = $cache_stat;
+		$this->champs_modif[] = 'cache_stat';
+	}
+	/// Renvoie à qui il faut cacher le niveau
+	function get_cache_niveau()
+	{
+		return $this->cache_niveau;
+	}
+	/// Modifie à qui il faut cacher le niveau
+	function set_cache_niveau($cache_niveau)
+	{
+		$this->cache_niveau = $cache_niveau;
+		$this->champs_modif[] = 'cache_niveau';
+	}
+	/// Renvoie le nombre de points beta
+	function get_beta()
+	{
+		return $this->beta;
+	}
+	/// Modifie le nombre de points beta
+	function set_beta($beta)
+	{
+		$this->beta = $beta;
+		$this->champs_modif[] = 'beta';
 	}
   // @}
   
@@ -193,6 +304,12 @@ class perso extends entite
 	function get_dernier_connexion()
 	{
 		return $this->dernier_connexion;
+	}
+	/// Modifie la date de la dernière connexion.
+	function set_dernier_connexion($dernier_connexion)
+	{
+		$this->dernier_connexion = $dernier_connexion;
+		$this->champs_modif[] = 'dernier_connexion';
 	}
   // @}        
 	
@@ -1440,6 +1557,12 @@ class perso extends entite
 	{
 		return $this->dernieraction;
 	}
+	/// Modifie la date de la dernière action
+	function set_dernieraction($dernieraction)
+	{
+		$this->dernieraction = $dernieraction;
+		$this->champs_modif[] = 'dernieraction';
+	}
   /// Ajoute des PA. S'assure que la valeur finale ne peut pas être négative
 	function add_pa($add_pa)
   {
@@ -1475,8 +1598,9 @@ class perso extends entite
   // @}
   
   /**
-   * @name  Sorts & compétences
+   * @name  Sorts, compétences & buffs
    * Données et méthodes ayant trait aux sorts et compétences de combat et hors combat.
+   * Ainsi que les buffs et débuffs du actifs sur le personnage.   
    */         
   // @{
 	private $sort_jeu;     ///< Sorts hors combat.
@@ -1521,6 +1645,100 @@ class perso extends entite
 		$this->comp_combat = $comp_combat;
 		$this->champs_modif[] = 'comp_combat';
 	}
+	/**
+	 * Renvoie une propriété d'un buff / débuff particulier actif sur le personnage ou l'ensemble de ceux-ci.
+	 * @param  $nom      Nom (type) du (dé)buff recherché, renvoie tous les buffs actifs si vaut false.
+	 * @param  $champ    Propriété recherchée (correspond à un champ dans la bdd).
+	 * @param  $type	   Si false on prend le premier buff, si true celui dont le type correspond à $nom.
+	 * @return     Tableau des buffs ou valeur demandée.	 
+	 */	
+	function get_buff($nom = false, $champ = false, $type = true)
+	{
+		if(!$nom)
+		{
+			$this->buff = buff::create('id_perso', $this->id, 'id ASC', 'type');
+			return $this->buff;
+		}
+		else
+		{
+			if(!isset($this->buff)) $this->get_buff();
+			if(!$type)
+			{
+				$get = 'get_'.$champ;
+				return $this->buff[0]->$get();
+			}
+			else
+				foreach($this->buff as $buff)
+				{
+					if($champ)
+					{
+						if($buff->get_type() == $nom)
+						{
+							$get = 'get_'.$champ;
+							return $buff->$get();
+						}
+					}
+					else
+					{
+						if($buff->get_type() == $nom)
+						{
+							return $buff;
+						}
+					}
+				}
+		}
+		return false;
+	}
+
+	function get_nb_buff($debuff = 0)
+	{
+		return count(buff::create(array('id_perso', 'debuff'), array($this->id, $debuff), 'id ASC', 'type'));
+	}
+	/**
+	 * Permet de savoir si le joueur est sous le buff nom
+	 * @param $nom le nom du buff
+	 * @param $type si le nom est le type du buff
+	 * @return true si le perso est sous le buff false sinon.
+ 	*/
+	function is_buff($nom = '', $type = true)
+	{
+		if(!isset($this->buff)) $this->get_buff();
+		$buffe = false;
+		
+		if(is_array($this->buff))
+		{
+			if(!empty($nom))
+			{
+				foreach($this->buff as $key => $buff)
+				{
+					if($type)
+					{
+						if($key == $nom) $buffe = true;
+					}
+					else if($buff->get_nom() ==  $nom)
+					{
+						$buffe = true;
+					}
+				}
+			}
+			else
+				$buffe = (count($this->buff) > 0);
+		}
+		else
+			$buffe = false;
+			
+		return $buffe;
+	}
+	
+	function add_buff($nom, $effet, $effet2 = 0)
+	{
+		if(!isset($this->buff)) $this->get_buff();
+		$buff = new buff();
+		$buff->set_type($nom);
+		$buff->set_effet($effet);
+		$buff->set_effet2($effet2);
+		$this->buff[] = $buff;
+	}
 	// @}
 	
 	/**
@@ -1529,6 +1747,18 @@ class perso extends entite
 	 */
   // @{
 	private $max_pet;  ///< Nombre de créatures que le personnage peut posseder.
+
+	/// Renvoie le nombre de créatures que le personnage peut posseder.
+	function get_max_pet()
+	{
+		return $this->max_pet;
+	}
+	/// Modifie le nombre de créatures que le personnage peut posseder.
+	function set_max_pet($max_pet)
+	{
+		$this->max_pet = $max_pet;
+		$this->champs_modif[] = 'max_pet';
+	}
   /// Renvoie le niveau maximal des monstres que le personnage peut dresser.
 	function max_dresse()
 	{
@@ -1707,17 +1937,33 @@ class perso extends entite
 	private $quete; ///< Quêtes que possède le personnage.
 	private $quete_fini; ///< Quêtes terminées.
 	public $share_xp;
+
+	/// Renvoie l'id du groupe du personnage.
+	function get_groupe()
+	{
+		return $this->groupe;
+	}
 	/// Modifie l'id du groupe du personnage.
 	function set_groupe($groupe)
 	{
 		$this->groupe = $groupe;
 		$this->champs_modif[] = 'groupe';
 	}
+	/// Renvoie la liste des quêtes que possède le personnage.
+	function get_quete()
+	{
+		return $this->quete;
+	}
 	/// Modifie la liste des quêtes que possède le personnage.
 	function set_quete($quete)
 	{
 		$this->quete = $quete;
 		$this->champs_modif[] = 'quete';
+	}
+	/// Renvoie la liste des quêtes que terminées.
+	function get_quete_fini()
+	{
+		return $this->quete_fini;
 	}
 	/// Modifie la liste des quêtes que terminées.
 	function set_quete_fini($quete_fini)
@@ -1789,19 +2035,56 @@ class perso extends entite
 	 * Données et méthodes liées aux combats.
 	 */
   // @{
-	private $action_a;   ///< Script d'attaque
-	private $action_d;   ///< Script de défense
-	/// modifie le script d'attaque.
+	private $action_a;   ///< Id du script d'attaque
+	private $action_d;   ///< Id du script de défense
+	public $action_do;
+
+	// Renvoie l'id du script d'attaque.
+	function get_action_a()
+	{
+		return $this->action_a;
+	}
+	/**
+	 * Modifie le script d'attaque.
+	 * @param  $action_a     Id du nouveau script d'attaque.
+	 */	 
 	function set_action_a($action_a)
 	{
 		$this->action_a = $action_a;
 		$this->champs_modif[] = 'action_a';
 	}
-	/// modifie le script de défense.
+	// Renvoie l'id du script de défense.
+	/**
+	 * Modifie le script de défense.
+	 * @param  $action_d     Id du nouveau script de défense.
+	 */	 
 	function set_action_d($action_d)
 	{
 		$this->action_d = $action_d;
 		$this->champs_modif[] = 'action_d';
+	}
+	/**
+	 * Récupère le contenu du script pour une action donnéd
+	 * @param  $type_action    'attaque' ou 'defense'.
+	 * @return     Contenu du script (sous forme textuelle).
+	 */   	 
+	function recupaction($type_action)
+	{
+		global $db;
+		if($type_action == 'defense' && $this->action_d != 0) $action_id = $this->action_d;
+		else $action_id = $this->action_a;
+		if($action_id != 0)
+		{
+			$requete = "SELECT action FROM action_perso WHERE id = ".$action_id;
+			$req = $db->query($requete);
+			$row = $db->read_row($req);
+		}
+		else
+		{
+			$row[0] = '!';
+		}
+		$this->action = $row[0];
+		return $this->action;
 	}
 	// @}
      	
@@ -2157,429 +2440,9 @@ class perso extends entite
 	{
 		return 'id = '.$this->id.', mort = '.$this->mort.', nom = '.$this->nom.', password = '.$this->password.', email = '.$this->email.', exp = '.$this->exp.', honneur = '.$this->honneur.', reputation = '.$this->reputation.', level = '.$this->level.', rang_royaume = '.$this->rang_royaume.', vie = '.$this->vie.', forcex = '.$this->forcex.', dexterite = '.$this->dexterite.', puissance = '.$this->puissance.', volonte = '.$this->volonte.', energie = '.$this->energie.', race = '.$this->race.', classe = '.$this->classe.', classe_id = '.$this->classe_id.', inventaire = '.$this->inventaire.', inventaire_slot = '.$this->inventaire_slot.', pa = '.$this->pa.', dernieraction = '.$this->dernieraction.', action_a = '.$this->action_a.', action_d = '.$this->action_d.', sort_jeu = '.$this->sort_jeu.', sort_combat = '.$this->sort_combat.', comp_combat = '.$this->comp_combat.', comp_jeu = '.$this->comp_jeu.', star = '.$this->star.', x = '.$this->x.', y = '.$this->y.', groupe = '.$this->groupe.', hp = '.$this->hp.', hp_max = '.$this->hp_max.', mp = '.$this->mp.', mp_max = '.$this->mp_max.', melee = '.$this->melee.', distance = '.$this->distance.', esquive = '.$this->esquive.', blocage = '.$this->blocage.', incantation = '.$this->incantation.', sort_vie = '.$this->sort_vie.', sort_element = '.$this->sort_element.', sort_mort = '.$this->sort_mort.', identification = '.$this->identification.', craft = '.$this->craft.', alchimie = '.$this->alchimie.', architecture = '.$this->architecture.', forge = '.$this->forge.', survie = '.$this->survie.', dressage = '.$this->dressage.', facteur_magie = '.$this->facteur_magie.', facteur_sort_vie = '.$this->facteur_sort_vie.', facteur_sort_mort = '.$this->facteur_sort_mort.', facteur_sort_element = '.$this->facteur_sort_element.', regen_hp = '.$this->regen_hp.', maj_hp = '.$this->maj_hp.', maj_mp = '.$this->maj_mp.', point_sso = '.$this->point_sso.', quete = '.$this->quete.', quete_fini = '.$this->quete_fini.', dernier_connexion = '.$this->dernier_connexion.', statut = '.$this->statut.', fin_ban = '.$this->fin_ban.', frag = '.$this->frag.', crime = '.$this->crime.', amende = '.$this->amende.', teleport_roi = '.$this->teleport_roi.', cache_classe = '.$this->cache_classe.', cache_stat = '.$this->cache_stat.', cache_niveau = '.$this->cache_niveau.', max_pet = '.$this->max_pet.', beta = '.$this->beta;
 	}
-
-	/**
-	* Retourne la valeur de l'attribut
-	* @access public
-	* @param none
-	* @return int(10) $action_a valeur de l'attribut action_a
-	*/
-	function get_action_a()
-	{
-		return $this->action_a;
-	}
-
-	/**
-	* Retourne la valeur de l'attribut
-	* @access public
-	* @param none
-	* @return int(10) $action_d valeur de l'attribut action_d
-	*/
-	function get_action_d()
-	{
-		return $this->action_d;
-	}
-
-	/**
-	* Retourne la valeur de l'attribut
-	* @access public
-	* @param none
-	* @return int(11) $groupe valeur de l'attribut groupe
-	*/
-	function get_groupe()
-	{
-		return $this->groupe;
-	}
-
-	/**
-	* Retourne la valeur de l'attribut
-	* @access public
-	* @param none
-	* @return text $quete valeur de l'attribut quete
-	*/
-	function get_quete()
-	{
-		return $this->quete;
-	}
-
-	/**
-	* Retourne la valeur de l'attribut
-	* @access public
-	* @param none
-	* @return text $quete_fini valeur de l'attribut quete_fini
-	*/
-	function get_quete_fini()
-	{
-		return $this->quete_fini;
-	}
-
-	/**
-	* Retourne la valeur de l'attribut
-	* @access public
-	* @param none
-	* @return varchar(50) $statut valeur de l'attribut statut
-	*/
-	function get_statut()
-	{
-		return $this->statut;
-	}
-
-	/**
-	* Retourne la valeur de l'attribut
-	* @access public
-	* @param none
-	* @return int(11) $fin_ban valeur de l'attribut fin_ban
-	*/
-	function get_fin_ban()
-	{
-		return $this->fin_ban;
-	}
-
-	/**
-	* Retourne la valeur de l'attribut
-	* @access public
-	* @param none
-	* @return int(10) $frag valeur de l'attribut frag
-	*/
-	function get_frag()
-	{
-		return $this->frag;
-	}
-
-	/**
-	* Retourne la valeur de l'attribut
-	* @access public
-	* @param none
-	* @return float $crime valeur de l'attribut crime
-	*/
-	function get_crime()
-	{
-		return $this->crime;
-	}
-
-	/**
-	* Retourne la valeur de l'attribut
-	* @access public
-	* @param none
-	* @return int(10) $amende valeur de l'attribut amende
-	*/
-	function get_amende()
-	{
-		return $this->amende;
-	}
-
-	/**
-	* Retourne la valeur de l'attribut
-	* @access public
-	* @param none
-	* @return tinyint(3) $cache_classe valeur de l'attribut cache_classe
-	*/
-	function get_cache_classe()
-	{
-		return $this->cache_classe;
-	}
-
-	/**
-	* Retourne la valeur de l'attribut
-	* @access public
-	* @param none
-	* @return tinyint(3) $cache_stat valeur de l'attribut cache_stat
-	*/
-	function get_cache_stat()
-	{
-		return $this->cache_stat;
-	}
-
-	/**
-	* Retourne la valeur de l'attribut
-	* @access public
-	* @param none
-	* @return tinyint(3) $cache_niveau valeur de l'attribut cache_niveau
-	*/
-	function get_cache_niveau()
-	{
-		return $this->cache_niveau;
-	}
-
-	/**
-	* Retourne la valeur de l'attribut
-	* @access public
-	* @param none
-	* @return tinyint(3) $max_pet valeur de l'attribut max_pet
-	*/
-	function get_max_pet()
-	{
-		return $this->max_pet;
-	}
-
-	/**
-	* Retourne la valeur de l'attribut
-	* @access public
-	* @param none
-	* @return tinyint(3) $beta valeur de l'attribut beta
-	*/
-	function get_beta()
-	{
-		return $this->beta;
-	}
-
-	/**
-	* Modifie la valeur de l'attribut
-	* @access public
-	* @param int(11) $dernieraction valeur de l'attribut
-	* @return none
-	*/
-	function set_dernieraction($dernieraction)
-	{
-		$this->dernieraction = $dernieraction;
-		$this->champs_modif[] = 'dernieraction';
-	}
-
-	/**
-	* Modifie la valeur de l'attribut
-	* @access public
-	* @param int(11) $star valeur de l'attribut
-	* @return none
-	*/
-	function set_star($star)
-	{
-		$this->star = $star;
-		$this->champs_modif[] = 'star';
-	}
-
-	/**
-	* Modifie la valeur de l'attribut
-	* @access public
-	* @param tinyint(3) $point_sso valeur de l'attribut
-	* @return none
-	*/
-	function set_point_sso($point_sso)
-	{
-		$this->point_sso = $point_sso;
-		$this->champs_modif[] = 'point_sso';
-	}
-
-	/**
-	* Modifie la valeur de l'attribut
-	* @access public
-	* @param int(10) $dernier_connexion valeur de l'attribut
-	* @return none
-	*/
-	function set_dernier_connexion($dernier_connexion)
-	{
-		$this->dernier_connexion = $dernier_connexion;
-		$this->champs_modif[] = 'dernier_connexion';
-	}
-
-	/**
-	* Modifie la valeur de l'attribut
-	* @access public
-	* @param varchar(50) $statut valeur de l'attribut
-	* @return none
-	*/
-	function set_statut($statut)
-	{
-		$this->statut = $statut;
-		$this->champs_modif[] = 'statut';
-	}
-
-	/**
-	* Modifie la valeur de l'attribut
-	* @access public
-	* @param int(11) $fin_ban valeur de l'attribut
-	* @return none
-	*/
-	function set_fin_ban($fin_ban)
-	{
-		$this->fin_ban = $fin_ban;
-		$this->champs_modif[] = 'fin_ban';
-	}
-
-	/**
-	* Modifie la valeur de l'attribut
-	* @access public
-	* @param int(10) $frag valeur de l'attribut
-	* @return none
-	*/
-	function set_frag($frag)
-	{
-		$this->frag = $frag;
-		$this->champs_modif[] = 'frag';
-	}
-
-	/**
-	* Modifie la valeur de l'attribut
-	* @access public
-	* @param float $crime valeur de l'attribut
-	* @return none
-	*/
-	function set_crime($crime)
-	{
-		$this->crime = $crime;
-		$this->champs_modif[] = 'crime';
-	}
-
-	/**
-	* Modifie la valeur de l'attribut
-	* @access public
-	* @param int(10) $amende valeur de l'attribut
-	* @return none
-	*/
-	function set_amende($amende)
-	{
-		$this->amende = $amende;
-		$this->champs_modif[] = 'amende';
-	}
-
-	/**
-	* Modifie la valeur de l'attribut
-	* @access public
-	* @param tinyint(3) $cache_classe valeur de l'attribut
-	* @return none
-	*/
-	function set_cache_classe($cache_classe)
-	{
-		$this->cache_classe = $cache_classe;
-		$this->champs_modif[] = 'cache_classe';
-	}
-
-	/**
-	* Modifie la valeur de l'attribut
-	* @access public
-	* @param tinyint(3) $cache_stat valeur de l'attribut
-	* @return none
-	*/
-	function set_cache_stat($cache_stat)
-	{
-		$this->cache_stat = $cache_stat;
-		$this->champs_modif[] = 'cache_stat';
-	}
-
-	/**
-	* Modifie la valeur de l'attribut
-	* @access public
-	* @param tinyint(3) $cache_niveau valeur de l'attribut
-	* @return none
-	*/
-	function set_cache_niveau($cache_niveau)
-	{
-		$this->cache_niveau = $cache_niveau;
-		$this->champs_modif[] = 'cache_niveau';
-	}
-
-	/**
-	* Modifie la valeur de l'attribut
-	* @access public
-	* @param tinyint(3) $max_pet valeur de l'attribut
-	* @return none
-	*/
-	function set_max_pet($max_pet)
-	{
-		$this->max_pet = $max_pet;
-		$this->champs_modif[] = 'max_pet';
-	}
-
-	/**
-	* Modifie la valeur de l'attribut
-	* @access public
-	* @param tinyint(3) $beta valeur de l'attribut
-	* @return none
-	*/
-	function set_beta($beta)
-	{
-		$this->beta = $beta;
-		$this->champs_modif[] = 'beta';
-	}
 //fonction
 
 
-	function get_buff($nom = false, $champ = false, $type = true)
-	{
-		if(!$nom)
-		{
-			$this->buff = buff::create('id_perso', $this->id, 'id ASC', 'type');
-			return $this->buff;
-		}
-		else
-		{
-			if(!isset($this->buff)) $this->get_buff();
-			if(!$type)
-			{
-				$get = 'get_'.$champ;
-				return $this->buff[0]->$get();
-			}
-			else
-				foreach($this->buff as $buff)
-				{
-					if($champ)
-					{
-						if($buff->get_type() == $nom)
-						{
-							$get = 'get_'.$champ;
-							return $buff->$get();
-						}
-					}
-					else
-					{
-						if($buff->get_type() == $nom)
-						{
-							return $buff;
-						}
-					}
-				}
-		}
-		return false;
-	}
-
-	function get_nb_buff($debuff = 0)
-	{
-		return count(buff::create(array('id_perso', 'debuff'), array($this->id, $debuff), 'id ASC', 'type'));
-	}
-	/**
-	 * Permet de savoir si le joueur est sous le buff nom
-	 * @param $nom le nom du buff
-	 * @param $type si le nom est le type du buff
-	 * @return true si le perso est sous le buff false sinon.
- 	*/
-	function is_buff($nom = '', $type = true)
-	{
-		if(!isset($this->buff)) $this->get_buff();
-		$buffe = false;
-		
-		if(is_array($this->buff))
-		{
-			if(!empty($nom))
-			{
-				foreach($this->buff as $key => $buff)
-				{
-					if($type)
-					{
-						if($key == $nom) $buffe = true;
-					}
-					else if($buff->get_nom() ==  $nom)
-					{
-						$buffe = true;
-					}
-				}
-			}
-			else
-				$buffe = (count($this->buff) > 0);
-		}
-		else
-			$buffe = false;
-			
-		return $buffe;
-	}
-	
-	function add_buff($nom, $effet, $effet2 = 0)
-	{
-		if(!isset($this->buff)) $this->get_buff();
-		$buff = new buff();
-		$buff->set_type($nom);
-		$buff->set_effet($effet);
-		$buff->set_effet2($effet2);
-		$this->buff[] = $buff;
-	}
 
 	public $grade;
 	function get_grade()
@@ -2866,27 +2729,6 @@ class perso extends entite
 	function is_groupe()
 	{
 		return !empty($this->groupe);
-	}
-
-	public $action;
-	public $action_do;
-	function recupaction($type_action)
-	{
-		global $db;
-		if($type_action == 'defense' && $this->action_d != 0) $action_id = $this->action_d;
-		else $action_id = $this->action_a;
-		if($action_id != 0)
-		{
-			$requete = "SELECT action FROM action_perso WHERE id = ".$action_id;
-			$req = $db->query($requete);
-			$row = $db->read_row($req);
-		}
-		else
-		{
-			$row[0] = '!';
-		}
-		$this->action = $row[0];
-		return $this->action;
 	}
 
 	function check_perso($last_action = true)

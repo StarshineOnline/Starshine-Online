@@ -35,12 +35,17 @@ $date_hier = date("Y-m-d", mktime(0, 0, 0, date("m") , date("d") - 2, date("Y"))
 
 $ressources = array();
 
+/// Liste des royaumes
+$lst_roy = array_keys($Trace);
+/// Liste des ressources
+$lst_rsrc = array_keys($ress['Plaine']);
+
 //On initialise le tableau de ressources des royaumes
-foreach($Trace as $r => $valeur)
+foreach($lst_roy as $royaume)
 {
-	foreach($ress['Plaine'] as $ressource => $valeur)
+	foreach($lst_rsrc as $ressource)
 	{
-		$ressource_final[$r][$ressource] = 0;
+		$ressource_final[$royaume][$ressource] = 0;
 	}
 }
 
@@ -48,7 +53,7 @@ $requete = "SELECT royaume.race as race, info, COUNT(*) as tot_terrain FROM `map
 $req = $db->query($requete);
 while($row = $db->read_assoc($req))
 {
-	if($row['tot'] > 0)
+	if($row['tot_terrain'] > 0)
 	{
 		$typeterrain = type_terrain($row['info']);
 		$ressources[$row['race']][$typeterrain[1]] += $row['tot_terrain']/10;
@@ -58,25 +63,22 @@ while($row = $db->read_assoc($req))
 
 //print_r($ress);
 //Ressource normale
-$i = 0;
-$key = array_keys($ressources);
-foreach($ressources as $res)
+foreach($ressources as $royaume=>$packs)
 {
-	$j = 0;
-	$keys = array_keys($res);
-	while($j < count($res))
+	foreach($packs as $terr=>$nbr_packs)
 	{
-		$k = 0;
-		$kei = array_keys($ress[utf8_decode($keys[$j])]);
-		foreach($ress[utf8_decode($keys[$j])] as $rr)
+    if( $terr == 'Bâtiment' )
+      continue;
+    // test pour s'il faut utiliser utf8_decode ou non
+    if( !array_key_exists(utf8_decode($terr), $ress) )
+      $mail .= "Le terrain '$terr' n'a pas de ressource !\n";
+		$gains_pack = $ress[utf8_decode($terr)];
+		foreach($gains_pack as $rsrc=>$gain)
 		{
-			$ressource_final[$key[$i]][$kei[$k]] += $rr * floor($ressources[$key[$i]][$keys[$j]]);
-			if($kei[$k] == 'Nourriture') $tot_nou += $rr * floor($ressources[$key[$i]][$keys[$j]]);
-			$k++;
+			$ressource_final[$royaume][$rsrc] += $gain * floor($nbr_packs);
+			if($rsrc == 'Nourriture') $tot_nou += $gain * floor($nbr_packs);
 		}
-		$j++;
 	}
-	$i++;
 }
 
 

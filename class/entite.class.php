@@ -11,34 +11,33 @@
  */
 class entite extends placable
 {
-	private $action;
 	private $arme_type;
-	protected $comp_combat;  ///< Liste des compétences de combat.
-	private $comp;
-	protected $hp;   ///< HP actuels de l'entité
-	protected $hp_max;
-	public $reserve;  ///< Réesrve de mana.
-	protected $pa;  /// < Nombre de PA.
-	protected $race;  ///< Race de l'entité.
 	public $pp;  ///< Protection physique.
 	public $pm;  ///< Protection magique.
 	private $distance_tir;
-	public $buff;
 	public $etat;
 	private $enchantement;
 	private $arme_degat;
 	private $bouclier_degat = 0;
-	protected $level;  ///< Niveau de l'entité.
-	private $type;
-	protected $rang_royaume;  ///< Grade de l'entité au sein de son royaume.
-	private $espece;
 	private $point_victoire;
-	private $competence = array();
 
 	private $objet_ref;
 
 	public $potentiel_bloquer;
 	private $malus_hache = 1;
+  
+	/**
+	 * @name Informations générales.
+	 * Donnée et méthode sur les inforamations "générales" : classe, rang, niveau,
+	 * stars, mort, points crimes, ...
+	 */
+  // @{
+	protected $race;  ///< Race de l'entité.
+	protected $level;  ///< Niveau de l'entité.
+	protected $rang_royaume;  ///< Grade de l'entité au sein de son royaume.
+	private $type;
+	private $espece;
+  // @}
 	
 	/**
 	 * @name Caractéristiques
@@ -108,6 +107,8 @@ class entite extends placable
 	protected $sort_vie;     ///< Compétence magie de la vie.
 	protected $sort_element; ///< Compétence magie élémentaire.
 	protected $sort_mort;    ///< Compétence nécromancie.
+	private $comp;
+	private $competence = array();
 	/// Renvoie la mêlée
 	function get_melee()
 	{
@@ -148,6 +149,36 @@ class entite extends placable
 	{
 		return $this->sort_mort;
 	}
+  // @}
+  
+  /**
+   * @name  PA, HP & MP
+   * Données et méthodes ayant trait aux PA, HP & MP : valeur actuelle, maximale,
+   * prochaine régénération et augmentation.
+   */         
+  // @{
+	protected $pa;  /// < Nombre de PA.
+	protected $hp;   ///< HP actuels de l'entité
+	protected $hp_max;   ///< HP maximums.
+  // @}
+  
+  /**
+   * @name  Sorts, compétences & buffs
+   * Données et méthodes ayant trait aux sorts et compétences de combat et hors combat.
+   * Ainsi que les buffs et débuffs du actifs sur l'entité.   
+   */         
+  // @{
+	protected $comp_combat;  ///< Liste des compétences de combat.
+	public $buff;   ///< Buffs & débuffs actifs dur le personnage
+	// @}
+	
+	/**
+	 * @name Combats
+	 * Données et méthodes liées aux combats.
+	 */
+  // @{
+	public $action;   ///< Contenu du script de combat utilisé
+	public $reserve;  ///< Réserve de mana.
   // @}
 
 	function __construct($type, &$objet)
