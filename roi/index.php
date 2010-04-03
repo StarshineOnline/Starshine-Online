@@ -128,7 +128,7 @@ if(($joueur->get_race() == $royaume->get_race() && $joueur->get_grade()->get_id(
 		<div id='militaire_menu' style='display:none;'><span class='menu' onclick="affiche_page('construction.php');">Drapeaux & batiments</span><span class='menu' onclick="affiche_page('gestion_royaume.php?direction=carte');">Carte</span><?php /*<span class='menu' onclick="affiche_page('gestion_groupe.php');">Gestion des groupes</span><span class='menu' onclick="affiche_page('gestion_bataille.php');">Gestion des batailles</span> */ ?><span class='menu' onclick="affiche_page('gestion_royaume.php?direction=boutique');">Boutique Militaire</span></div>
 		<div id='communication_menu' style='display:none;'><span class='menu' onclick="affiche_page('gestion_royaume.php?direction=diplomatie');">Diplomatie</span><span class='menu' onclick="affiche_page('motk.php');">Message du roi</span><span class='menu' onclick="affiche_page('propagande.php');">Propagande</span></div>
 		<div id='divers_menu' style='display:none;'><span class='menu' onclick="affiche_page('quete.php');">Gestion des quètes</span><span class='menu' onclick="affiche_page('gestion_royaume.php?direction=criminel');">Criminels</span><span class='menu' onclick="affiche_page('gestion_royaume.php?direction=stats');">Statistiques</span><span class='menu' onclick="affiche_page('point_victoire.php');">Points de victoires</span></div>
-	</div><a class="fermer" href="../jeu2.php" target="_top" style="float: right; padding-right: 5px">&nbsp;</a>
+	</div><a class="fermer" href="../interface.php" target="_top" style="float: right; padding-right: 5px">&nbsp;</a>
 	</div>
 </div>
 <div id='contenu_back'>
