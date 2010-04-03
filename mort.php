@@ -43,4 +43,4 @@ elseif($choix == 3)
 }
  
 ?>
-<img src="image/pixel.gif" onload="window.location = 'jeu2.php';" />
+<img src="image/pixel.gif" onload="window.location = 'interface.php';" />
