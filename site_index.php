@@ -51,7 +51,7 @@ function switch_race()
 <div id='header'>
 	<div id='header_logo'>
 		<ul>
-		<li class='menu'><a href='jeu2.php'>Jouez</a></li>		
+		<li class='menu'><a href='interface.php'>Jouez</a></li>		
 		<li id='lejeu' class='menu' onclick="menu_change('lejeu');">Le jeu</li>
 		<li id='communaute' class='menu' onclick="menu_change('communaute');">Communauté</li>
 		<li id='starshine' class='menu' onclick="menu_change('starshine');">Starshine</li>

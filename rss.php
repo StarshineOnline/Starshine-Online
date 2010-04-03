@@ -32,25 +32,25 @@ if(array_key_exists('code', $_GET))
 		<generator>SSO Viewer</generator>
 		<item>
 			<title><?php echo $joueur->get_nom(); ?></title>
-			<link>http://www.starshine-online.com/jeu2.php</link>
+			<link>http://www.starshine-online.com/interface.php</link>
 			<description></description>
 			<pubDate>Thu, 18 Sep 2008 08:35:25 +0000</pubDate>
 		</item>
 		<item>
 			<title>HP : <?php echo $joueur['hp']; ?> / <?php echo $joueur['hp_max']; ?> - PA : <?php echo $joueur['pa']; ?> / 180</title>
-			<link>http://www.starshine-online.com/jeu2.php</link>
+			<link>http://www.starshine-online.com/interface.php</link>
 			<description></description>
 			<pubDate>Thu, 18 Sep 2008 08:35:25 +0000</pubDate>
 		</item>
 		<item>
 			<title>MP : <?php echo $joueur['mp']; ?> / <?php echo $joueur['mp_max']; ?> - X : <?php echo $joueur['x']; ?> - Y : <?php echo $joueur['y']; ?></title>
-			<link>http://www.starshine-online.com/jeu2.php</link>
+			<link>http://www.starshine-online.com/interface.php</link>
 			<description></description>
 			<pubDate>Thu, 18 Sep 2008 08:35:25 +0000</pubDate>
 		</item>
 		<item>
 			<title>Honneur : <?php echo $joueur['honneur']; ?> - Star : <?php echo $joueur['star']; ?> - Niveau : <?php echo $joueur['level']; ?> - XP : <?php echo $pourcent_level; ?>%</title>
-			<link>http://www.starshine-online.com/jeu2.php</link>
+			<link>http://www.starshine-online.com/interface.php</link>
 			<description></description>
 			<pubDate>Thu, 18 Sep 2008 08:35:25 +0000</pubDate>
 		</item>
@@ -60,7 +60,7 @@ if(array_key_exists('code', $_GET))
 			?>
 			<item>
 				<title><?php echo $buff['nom']; ?></title>
-				<link>http://www.starshine-online.com/jeu2.php</link>
+				<link>http://www.starshine-online.com/interface.php</link>
 				<description><?php echo $buff['description']; ?></description>
 				<pubDate>Thu, 18 Sep 2008 08:35:25 +0000</pubDate>
 			</item>
@@ -73,7 +73,7 @@ if(array_key_exists('code', $_GET))
 			?>
 			<item>
 				<title><?php echo $buff['nom']; ?></title>
-				<link>http://www.starshine-online.com/jeu2.php</link>
+				<link>http://www.starshine-online.com/interface.php</link>
 				<description><?php echo $buff['description']; ?></description>
 				<pubDate>Thu, 18 Sep 2008 08:35:25 +0000</pubDate>
 			</item>
