@@ -147,7 +147,7 @@ function check_undead_players()
   if ($joueur->get_hp() < 1) {
     ob_end_clean();
     if (strlen($_SERVER["SCRIPT_NAME"]) >= 8)
-      if (substr_compare($_SERVER["SCRIPT_NAME"], 'jeu2.php', -8, 8) == 0)
+      if (substr_compare($_SERVER["SCRIPT_NAME"], 'interface.php', -8, 8) == 0)
 	print_head();
     verif_mort($joueur, 1);
     exit(0);
