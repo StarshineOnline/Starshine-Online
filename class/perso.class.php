@@ -2053,6 +2053,13 @@ class perso extends entite
 		$this->action_a = $action_a;
 		$this->champs_modif[] = 'action_a';
 	}
+
+	// Renvoie l'id du script d'attaque.
+	function get_action_d()
+	{
+		return $this->action_d;
+	}
+	
 	// Renvoie l'id du script de défense.
 	/**
 	 * Modifie le script de défense.
