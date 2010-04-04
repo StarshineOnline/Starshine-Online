@@ -65,20 +65,30 @@ while($row = $db->read_assoc($req))
 //Ressource normale
 foreach($ressources as $royaume=>$packs)
 {
+  $mail_packs = '';
 	foreach($packs as $terr=>$nbr_packs)
 	{
+	  if( !$mail_packs )
+      $mail_packs .= ', ';
+    $mail_packs .= $nbr_packs.' '.$terr;
     if( $terr == 'Bâtiment' )
       continue;
     // test pour s'il faut utiliser utf8_decode ou non
+    $mail_gains = '';
     if( !array_key_exists(utf8_decode($terr), $ress) )
-      $mail .= "Le terrain '$terr' n'a pas de ressource !\n";
+      $mail_gains .= 'pas de ressource !';
 		$gains_pack = $ress[utf8_decode($terr)];
 		foreach($gains_pack as $rsrc=>$gain)
 		{
+		  if( !$mail_gains )
+		    $mail_gains .= ', ';
 			$ressource_final[$royaume][$rsrc] += $gain * floor($nbr_packs);
 			if($rsrc == 'Nourriture') $tot_nou += $gain * floor($nbr_packs);
+			$mail_gains .= ($gain * floor($nbr_packs)).' '.$rsrc;
 		}
+		$mail_packs .= $mail_packs.' ('.$mail_gains.')';
 	}
+  $mail .= $royaume.' : '.$mail_packs."\n";
 }
 
 
