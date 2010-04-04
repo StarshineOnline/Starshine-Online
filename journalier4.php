@@ -68,7 +68,7 @@ foreach($ressources as $royaume=>$packs)
   $mail_packs = '';
 	foreach($packs as $terr=>$nbr_packs)
 	{
-	  if( !$mail_packs )
+	  if( $mail_packs )
       $mail_packs .= ', ';
     $mail_packs .= $nbr_packs.' '.$terr;
     if( $terr == 'Bâtiment' )
@@ -80,13 +80,13 @@ foreach($ressources as $royaume=>$packs)
 		$gains_pack = $ress[utf8_decode($terr)];
 		foreach($gains_pack as $rsrc=>$gain)
 		{
-		  if( !$mail_gains )
+		  if( $mail_gains )
 		    $mail_gains .= ', ';
 			$ressource_final[$royaume][$rsrc] += $gain * floor($nbr_packs);
 			if($rsrc == 'Nourriture') $tot_nou += $gain * floor($nbr_packs);
 			$mail_gains .= ($gain * floor($nbr_packs)).' '.$rsrc;
 		}
-		$mail_packs .= $mail_packs.' ('.$mail_gains.')';
+		$mail_packs .= ' ('.$mail_gains.')';
 	}
   $mail .= $royaume.' : '.$mail_packs."\n";
 }
