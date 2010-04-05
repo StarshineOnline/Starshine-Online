@@ -75,9 +75,7 @@ foreach($ressources as $royaume=>$packs)
       continue;
     // test pour s'il faut utiliser utf8_decode ou non
     $mail_gains = '';
-    if( !array_key_exists(utf8_decode($terr), $ress) )
-      $mail_gains .= 'pas de ressource !';
-		$gains_pack = $ress[utf8_decode($terr)];
+		$gains_pack = $ress[$terr];
 		foreach($gains_pack as $rsrc=>$gain)
 		{
 		  if( $mail_gains )
