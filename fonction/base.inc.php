@@ -250,10 +250,14 @@ function type_terrain($info)
 	$typeterrain[3][1] = 'Désert';
 	$typeterrain[4][0] = 'glace';
 	$typeterrain[4][1] = 'Glace';
+	$typeterrain[24][0] = 'glace';
+	$typeterrain[24][1] = 'Glace';	
 	$typeterrain[5][0] = 'eau';
 	$typeterrain[5][1] = 'Eau';
 	$typeterrain[6][0] = 'montagne';
 	$typeterrain[6][1] = 'Montagne';
+	$typeterrain[23][0] = 'montagne';
+	$typeterrain[23][1] = 'Montagne';	
 	$typeterrain[7][0] = 'marais';
 	$typeterrain[7][1] = 'Marais';
 	$typeterrain[8][0] = 'route';
