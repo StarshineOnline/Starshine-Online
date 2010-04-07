@@ -5,6 +5,7 @@ if (file_exists('root.php'))
 include_once(root.'inc/fp.php');
 if (isset($_SESSION['nom']))
 {
+	if (isset($api_login) && $api_login) { $check = true; }
 }
 elseif($connexion)
 {
