@@ -87,7 +87,8 @@ $joueur = new perso($_SESSION['ID']);
 		$script_defense = recupaction_all($joueur->get_action_d());
 		?>
 			Voici l'interface du script de combat, grâce à celui-ci vous pourrez attaquer avec des sorts ou des compétences.<br />
-			<h3>Création</h3>
+			<fieldset>
+				<legend>Création</legend>
 				<ul>
 					<li><a href="action.php?mode=s" onclick="return envoiInfo(this.href, 'information');">Créer un script de combat en mode simplifié</a></li>
 					<li><a href="action.php?mode=a" onclick="return envoiInfo(this.href, 'information');">Créer un script de combat en mode avancé</a></li>
@@ -106,7 +107,9 @@ $joueur = new perso($_SESSION['ID']);
  								<input type="button" name="valid" value="Copier" onclick="envoiInfo('actions.php?action=dupliq&amp;id_action=' + document.getElementById('id_action_c').value + '&amp;nom_copie=' + document.getElementById('nom_copie').value, 'information');" />
 					</li>
 				</ul>
-			<h3>Utilisation</h3>
+			</fieldset>
+			<fieldset>
+				<legend>Utilisation</legend>
 				<table>
 					<tr>
 						<td>
@@ -163,7 +166,9 @@ $joueur = new perso($_SESSION['ID']);
 						</td>
 					</tr>
 					</table>
-			<h3>Modification</h3>
+			</fieldset>
+			<fieldset>
+				<legend>Modification</legend>
 				<table>
 					<tr>
 						<td>
@@ -212,12 +217,15 @@ $joueur = new perso($_SESSION['ID']);
 				</table>
 		<br />
 		</form>
-		<h3>Aide</h3>
+		</fieldset>
+		<fieldset>
+			<legend>Aide</legend>
 		<p><strong>Généralités :</strong> Une attaque sur un monstre ou un joueur se fait généralement en 10 rounds (11 si l'un des deux est un Orc, 9 si l'attaquant
 		a le buff Sacrifice sur lui). Vous pouvez paramétrer les 10 actions que vous allez faire dans le script de combat, afin de les réaliser à chaque attaque. Il
 		est donc conseillé de créer un script d'attaque, et de créer vos 10 actions en ajoutant les compétences que vous voulez utiliser. Vous pouvez aussi créer un script
 		de défense qui s'exécutera automatiquement si vous êtes attaqué par d'autres joueurs. (les compétences que vous pourrez utiliser dans votre script sont limitées par votre réserve de mana)</p>
 		<p><a href="http://wiki.starshine-online.com/index.php?n=PmWiki.ScriptsDeCombat">Pour avoir plus d'informations sur le script de combat</a></p>
+		</fieldset>
 		</div>
 
 	</fieldset>

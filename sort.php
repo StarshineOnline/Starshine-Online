@@ -582,13 +582,13 @@ if (isset($_GET['ID']) && !$joueur->is_buff('bloque_sort'))
 			if($possible_augmentation)
 			{
 				//Augmentation des compétences
-				$difficulte_sort = diff_sort($sort->get_difficulte(), $joueur, 'incantation', $sortpa_base, $sortmp_base);
+				$difficulte_sort = diff_sort($sort->get_difficulte() * 1.1, $joueur, 'incantation', $sortpa_base, $sortmp_base);
 				$augmentation = augmentation_competence('incantation', $joueur, $difficulte_sort);
 				if ($augmentation[1] == 1)
 				{
 					$joueur->set_incantation($augmentation[0]);
 				}
-				$difficulte_sort = diff_sort($sort->get_difficulte(), $joueur, $sort->get_comp_assoc(), $sortpa_base, $sortmp_base);
+				$difficulte_sort = diff_sort($sort->get_difficulte() * 1.1, $joueur, $sort->get_comp_assoc(), $sortpa_base, $sortmp_base);
 				$augmentation = augmentation_competence($sort->get_comp_assoc(), $joueur, $difficulte_sort);
 				if ($augmentation[1] == 1)
 				{

@@ -937,8 +937,8 @@ function lance_sort($id, $acteur, &$effects)
 	//Augmentation des compétences liées
 	$get = 'get_'.$row['comp_assoc'];
 	
-	$augmentation['actif']['comp'][] = array($row['comp_assoc'], $rectif_augm * (3.3 * sqrt(pow($actif->$get(), 1.3) / ($row['difficulte'] / 4))));
-	$augmentation['actif']['comp'][] = array('incantation', $rectif_augm * (2.3 * sqrt($actif->get_incantation() / ($row['difficulte'] / 2))));
+	$augmentation['actif']['comp'][] = array($row['comp_assoc'], $rectif_augm * (3.4 * sqrt(pow($actif->$get(), 1.3) / ($row['difficulte'] / 4))));
+	$augmentation['actif']['comp'][] = array('incantation', $rectif_augm * (2.1 * sqrt($actif->get_incantation() / ($row['difficulte'] / 2))));
 
   /* Application des effets de fin de round */
   foreach ($effects as $effect)
