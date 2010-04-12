@@ -115,7 +115,10 @@ $royaumes = array();
 $requete = "select sum(level)/count(id) moy from perso WHERE statut = 'actif'";
 $req = $db->query($requete);
 $row = $db->read_row($req);
-$moyenne_niveau = floor($row[0]);
+$moyenne_niveau = floor($row[0] - 1.5); // Bastien : on fait -1.5 pour eviter
+if ($moyenne_niveau < 1)                // les escaliers, il faut qu'une race
+  $moyenne_niveau = 1;                  // soit vraiment a la bourre pour
+                                        // creer des grosses marches
 //On récupère le nombre d'habitants très actifs suivant le niveau moyen
 if ($moyenne_niveau > 3)
 {
