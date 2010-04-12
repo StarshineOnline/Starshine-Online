@@ -67,8 +67,10 @@ if (isset($_GET['ID']) && !$joueur->is_buff('bloque_sort'))
 		$sortpa_base = $sort->get_pa();
 		$sortmp_base = $sort->get_mp();
 		$sortpa = round($sort->get_pa() * $joueur->get_facteur_magie());
-		if($type_cible != 'monstre') $sortmp = round($sort->get_mp() * (1 - (($Trace[$joueur->get_race()]['affinite_'.$sort->get_comp_assoc()] - 5) / 10)));
-		else $sortmp = $sortmp_base;
+		//Qu'est-ce que c'est que cette blague?
+		//if($type_cible != 'monstre')
+		$sortmp = round($sort->get_mp() * (1 - (($Trace[$joueur->get_race()]['affinite_'.$sort->get_comp_assoc()] - 5) / 10)));
+		// $sortmp = $sortmp_base;
 		//Réduction du cout par concentration
 		if($joueur->is_buff('buff_concentration', true)) $sortmp = ceil($sortmp * (1 - ($joueur->get_buff('buff_concentration','effet') / 100)));
 		//Coût en MP * 1.5 si sort de groupe

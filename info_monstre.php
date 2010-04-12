@@ -55,7 +55,7 @@ $coeff = floor($survie / $monstre->get_level());
 	$nbr_barre = round(($map_monstre->get_hp() / $monstre->get_hp()) * $nbr_barre_total);
 	$longueur = round(100 * ($nbr_barre / $nbr_barre_total), 2);
 	if($longueur < 0) $longueur = 0;
-	$fiabilite = round((100 / $nbr_barre_total), 2);
+	$fiabilite = round((100 / $nbr_barre_total) / 2, 2);
 	?>
 				<img src="genere_barre_vie.php?longueur=<?php echo $longueur; ?>" title="Estimation des HP : <?php echo $longueur; ?>% / + ou - : <?php echo $fiabilite; ?>%" /><br />
 	<?php

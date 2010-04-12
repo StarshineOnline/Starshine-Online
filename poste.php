@@ -52,7 +52,7 @@ if($joueur->get_race() == $R->get_race() OR $R->get_diplo($joueur->get_race()) <
 			//Vérification si le personnage existe
 			case 'select_perso' :
 				$perso = sSQL($_GET['perso_envoi']);
-				$requete = "SELECT ID, nom, race FROM perso WHERE nom = '".$perso."'";
+				$requete = "SELECT ID, nom, race FROM perso WHERE nom LIKE '".$perso."'";
 				$req = $db->query($requete);
 				if($db->num_rows > 0)
 				{

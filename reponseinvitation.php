@@ -4,7 +4,7 @@ if (file_exists('root.php'))
 ?><?php
 include_once(root.'inc/fp.php');
 //L'ID de l'invitation
-$W_ID = sSQL($_GET['ID']);
+$W_ID = sSQL($_GET['id']);
 //L'id du groupe
 $W_groupe = sSQL($_GET['groupe']);
 //La réponse oui ou non
@@ -22,7 +22,7 @@ elseif ($W_reponse == 'oui')
 	if ($joueur->get_groupe() > 0)
 		echo 'vous êtes déjà groupé.';
 	elseif(count($groupe->get_membre()) >= 5)
-		echo 'Le groupe a atteind son maximum de membres.';
+		echo 'Le groupe a atteint son maximum de membres.';
 	else
 	{
 		//Ajoute le membre au groupe

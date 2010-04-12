@@ -780,7 +780,7 @@ else
 			$nbr_barre = round(($defenseur->get_hp() / $defenseur->get_hp_max()) * $nbr_barre_total);
 			$longueur = round(100 * ($nbr_barre / $nbr_barre_total), 2);
 			if($longueur < 0) $longueur = 0;
-			$fiabilite = round((100 / $nbr_barre_total), 2);
+			$fiabilite = round((100 / $nbr_barre_total) / 2, 2);
 			echo '
 			<hr />';
 			
