@@ -23,34 +23,74 @@ $Tmaxcomp['craft'] = 500;
 $Tmaxcomp['survie'] = 500;
 $Tmaxcomp['dressage'] = 100;
 
-$Tclasse['combattant']['type'] = 'guerrier';
-$Tclasse['magicien']['type'] = 'mage';
-$Tclasse['voleur']['type'] = 'voleur';
-$Tclasse['guerrier']['type'] = 'guerrier';
-$Tclasse['archer']['type'] = 'archer';
-$Tclasse['sorcier']['type'] = 'mage';
-$Tclasse['clerc']['type'] = 'mage';
-$Tclasse['nécromancien']['type'] = 'mage';
-$Tclasse['rodeur']['type'] = 'archer';
-$Tclasse['druide oblaire']['type'] = 'mage';
-$Tclasse['dresseur de lombre']['type'] = 'mage';
-$Tclasse['invocateur']['type'] = 'mage';
-$Tclasse['assassin']['type'] = 'voleur';
-$Tclasse['champion']['type'] = 'champion';
-$Tclasse['paladin']['type'] = 'champion';
-$Tclasse['archer d élite']['type'] = 'archer';
-$Tclasse['grand sorcier']['type'] = 'archimage';
-$Tclasse['prètre']['type'] = 'archimage';
-$Tclasse['prêtre']['type'] = 'archimage'; // Bastien: ben oui, c'est un accent circonflexe
-$Tclasse['grand nécromancien']['type'] = 'archimage';
-$Tclasse['ombre']['type'] = 'voleur';
-$Tclasse['titan']['type'] = 'champion';
-$Tclasse['templier']['type'] = 'champion';
-$Tclasse['sniper']['type'] = 'archer';
-$Tclasse['elémentaliste']['type'] = 'archimage';
-$Tclasse['sage']['type'] = 'archimage';
-$Tclasse['sage']['type'] = 'archimage'; // Bastien: ben oui, c'est un accent circonflexe
-$Tclasse['pestimancien']['type'] = 'archimage';
-$Tclasse['duelliste']['type'] = 'voleur';
+## Combattants
+# Guerrier
+$Tclasse['combattant']['type'] = 'guerrier';		#1
+$Tclasse['guerrier']['type'] = 'guerrier';			#2
+$Tclasse['champion']['type'] = 'champion';			#3
+$Tclasse['titan']['type'] = 'champion';					#4
+
+# Paladin
+$Tclasse['paladin']['type'] = 'champion';				#3
+$Tclasse['templier']['type'] = 'champion';			#4
+
+# Voleur
+$Tclasse['voleur']['type'] = 'voleur';					#2
+$Tclasse['assassin']['type'] = 'voleur';				#3
+$Tclasse['ombre']['type'] = 'voleur';						#4
+
+## Danseur élémentaire
+$Tclasse['danseur élémentaire']['type'] = 'voleur';#3
+$Tclasse['derviche']['type'] = 'voleur';				#4
+
+# Archer
+$Tclasse['archer']['type'] = 'archer';					#2
+$Tclasse['archer d élite']['type'] = 'archer';	#3
+$Tclasse['sniper']['type'] = 'archer';					#4
+
+# Archer noir
+$Tclasse['archer noir']['type'] = 'archer';			#3
+$Tclasse['prédateur']['type'] = 'archer';				#4
+
+# Rodeur
+$Tclasse['rodeur']['type'] = 'rodeur';					#2
+$Tclasse['pisteur']['type'] = 'rodeur';					#3
+$Tclasse['dresseur']['type'] = 'rodeur';				#4
+
+## Mages
+# Sorcier
+$Tclasse['magicien']['type'] = 'mage';					#1
+$Tclasse['sorcier']['type'] = 'mage';						#2
+$Tclasse['grand sorcier']['type'] = 'archimage';#3
+$Tclasse['elémentaliste']['type'] = 'archimage';#4
+
+# Clerc
+$Tclasse['clerc']['type'] = 'mage';							#2
+$Tclasse['prètre']['type'] = 'archimage';				#3
+$Tclasse['prêtre']['type'] = 'archimage';				#3' // accent circonflexe
+$Tclasse['sage']['type'] = 'archimage';					#4
+
+# Necro
+$Tclasse['nécromancien']['type'] = 'mage';			#2
+$Tclasse['grand nécromancien']['type'] = 'archimage';#3
+$Tclasse['pestimancien']['type'] = 'archimage';	#4
+
+# Arcaniste
+$Tclasse['arcaniste']['type'] = 'archimage';		#3
+$Tclasse['demoniste']['type'] = 'archimage';		#4
+
+# Druide
+$Tclasse['druide oblaire']['type'] = 'druide';	#2
+$Tclasse['druide anruth']['type'] = 'druide';		#3
+$Tclasse['druide ollamh']['type'] = 'druide';		#4
+
+# Dresseur de l'ombre
+$Tclasse['dresseur de lombre']['type'] = 'mage';#2
+
+# Invocateur
+$Tclasse['invocateur']['type'] = 'mage';				#2
+$Tclasse['grand invocateur']['type'] = 'mage';	#3
+$Tclasse['conjurateur']['type'] = 'archimage';	#4
+
 
 ?>
