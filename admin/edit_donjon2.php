@@ -180,7 +180,7 @@ echo 'xmin : '.$xmin.' xmax : '.$xmax.' ymin : '.$ymin.' ymax : '.$ymax;
 	   <a id='rose_div_c'></a>
 	   <a id='rose_div_cd' href="?xmin=<?php echo ($xmin + 4); ?>&ymin=<?php echo $ymin; ?>"></a>
 	   <a id='rose_div_bg'></a>
-	   <a id='rose_div_b' href="?ymin=<?php echo ($ymin - 4); ?>&xmin=<?php echo $xmin; ?>"></a>
+	   <a id='rose_div_b' href="?ymin=<?php echo ($ymin + 4); ?>&xmin=<?php echo $xmin; ?>"></a>
 	   <a id='rose_div_bd'></a>
 </div>	
 	<div class="selecteur">
