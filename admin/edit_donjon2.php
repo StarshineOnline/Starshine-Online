@@ -18,8 +18,8 @@ if (isset($_GET['ymin'])) $ymin = $_GET['ymin'];
 elseif (isset($_POST['ymin'])) $ymin = $_POST['ymin'];
 else $ymin = 1;
 
-$xmax = $xmin + 15;
-$ymax = $ymin + 15;
+$xmax = $xmin + 30;
+$ymax = $ymin + 30;
 
 if($ymin < 1) $ymin = 1;
 //if($ymax > 99) $ymax = 99;
