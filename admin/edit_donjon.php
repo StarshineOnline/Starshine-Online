@@ -27,5 +27,4 @@ while($row = $db->read_assoc($req))
 	echo '<a href="edit_donjon2.php?xmin='.($row['x'] - 1).'&amp;ymin='.($row['y'] - 1).'&amp;xmax='.($row['x'] + $row['size'] + 1).'&amp;ymax='.($row['y'] + $row['size'] + 1).'&amp;arene='.$row['nom'].'">'.$row['nom'].'</a><br />';
 }
 
-
 ?>

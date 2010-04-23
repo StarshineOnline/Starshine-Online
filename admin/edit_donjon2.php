@@ -172,43 +172,17 @@ echo 'xmin : '.$xmin.' xmax : '.$xmax.' ymin : '.$ymin.' ymax : '.$ymax;
 	</tr>
 	</table>
 	</div>
-	<div class="deplacement">
-	<table cellpadding="0" cellspacing="0">
-	<tr>
-		<td>
-		<img src="image/rosedesvent/nordouest.png" alt="" />
-		</td>
-		<td>
-		<a href="edit_donjon2.php?ymin=<?php echo ($ymin - 5); ?>&xmin=<?php echo $xmin; ?>"><img src="image/rosedesvent/nord.png" alt="" /></a>
-		</td>
-		<td>
-		<img src="image/rosedesvent/nordest.png" alt="" />
-		</td>
-	</tr>
-	<tr>
-		<td>
-		<a href="edit_donjon2.php?xmin=<?php echo ($xmin - 5); ?>&ymin=<?php echo $ymin; ?>"><img src="image/rosedesvent/ouest.png" alt="" /></a>
-		</td>
-		<td>
-		<img src="image/rosedesvent/centre.png" alt="" />
-		</td>
-		<td>
-		<a href="edit_donjon2.php?xmin=<?php echo ($xmax - 4); ?>&ymin=<?php echo $ymin; ?>"><img src="image/rosedesvent/est.png" alt="" /></a>
-		</td>
-	</tr>
-	<tr>
-		<td>
-		<img src="image/rosedesvent/sudouest.png" alt="" />
-		</td>
-		<td>
-		<a href="edit_donjon2.php?ymin=<?php echo ($ymax - 4); ?>&xmin=<?php echo $xmin; ?>"><img src="image/rosedesvent/sud.png" alt="" /></a>
-		</td>
-		<td>
-		<img src="image/rosedesvent/sudest.png" alt="" />
-		</td>
-	</tr>
-	</table>
-	</div>
+<div id='rosedesvents'>
+	   <a id='rose_div_hg'></a>
+	   <a id='rose_div_h' href="?ymin=<?php echo ($ymin - 4); ?>&xmin=<?php echo $xmin; ?>"></a>
+	   <a id='rose_div_hd'></a>
+	   <a id='rose_div_cg'href="?xmin=<?php echo ($xmin - 4); ?>&ymin=<?php echo $ymin; ?>"></a>
+	   <a id='rose_div_c'></a>
+	   <a id='rose_div_cd' href="?xmin=<?php echo ($xmin + 4); ?>&ymin=<?php echo $ymin; ?>"></a>
+	   <a id='rose_div_bg'></a>
+	   <a id='rose_div_b' href="?ymin=<?php echo ($ymin - 4); ?>&xmin=<?php echo $xmin; ?>"></a>
+	   <a id='rose_div_bd'></a>
+</div>	
 	<div class="selecteur">
 		<select name="<?php echo $positioncase;?>" size="15" class="baseJumpbox" id="selectText" onChange="changeTexture('texturePreview')">
 
