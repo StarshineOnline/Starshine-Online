@@ -7,11 +7,23 @@ require('haut_roi.php');
 $requete = "select sum(level)/count(id) moy from perso WHERE statut = 'actif'";
 $req = $db->query($requete);
 $row = $db->read_row($req);
-$ref_ta = min(3, floor($row[0]));
+$ref_ta = floor($row[0] - 1.5); // Bastien : on fait -1.5 pour eviter
+if ($ref_ta < 1)                // les escaliers, il faut qu'une race
+  $ref_ta = 1;                  // soit vraiment a la bourre pour
+                                        // creer des grosses marches
+//On récupère le nombre d'habitants très actifs suivant le niveau moyen
+
 
 $semaine = time() - (3600 * 24 * 7);
 $royaumes = array();
-$requete = "SELECT race, COUNT(*) as tot FROM perso WHERE level > $ref_ta AND dernier_connexion > ".$semaine." GROUP BY race";
+if ($moyenne_niveau > 3)
+{
+	echo "Niveau de référence pour l'entretien: 4\n<br />";
+	$requete = "SELECT race, COUNT(*) as tot FROM perso WHERE level > 3 AND dernier_connexion > $semaine GROUP BY race";
+} else {
+	echo "Niveau de référence pour l'entretien: $ref_ta\n<br />";
+	$requete = "SELECT race, COUNT(*) as tot FROM perso WHERE level > $ref_ta AND dernier_connexion > $semaine GROUP BY race";
+}
 $req = $db->query($requete);
 while($row = $db->read_row($req))
 {
