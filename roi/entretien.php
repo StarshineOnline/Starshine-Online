@@ -16,7 +16,7 @@ if ($ref_ta < 1)                // les escaliers, il faut qu'une race
 
 $semaine = time() - (3600 * 24 * 7);
 $royaumes = array();
-if ($moyenne_niveau > 3)
+if ($ref_ta > 3)
 {
 	echo "Niveau de référence pour l'entretien: 4\n<br />";
 	$requete = "SELECT race, COUNT(*) as tot FROM perso WHERE level > 3 AND dernier_connexion > $semaine GROUP BY race";
