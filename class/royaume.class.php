@@ -1113,7 +1113,12 @@ class royaume
 		$semaine = time() - (3600 * 24 * 7);
 		$requete = $db->query("select sum(level)/count(id) moy from perso WHERE statut = 'actif'");
 		$row = $db->read_row($requete);
-		$ref_ta = min(3, floor($row[0]));
+		$ref_ta = floor($row[0] - 1.5); // Bastien : on fait -1.5 pour eviter
+		if ($ref_ta < 1)                // les escaliers, il faut qu'une race
+		  $ref_ta = 1;                  // soit vraiment a la bourre pour
+		                                        // creer des grosses marches
+		//On récupère le nombre d'habitants très actifs suivant le niveau moyen
+
 
 		$requete = $db->query("SELECT COUNT(*) as count FROM perso WHERE race = '".$this->get_race()."' AND level > $ref_ta AND dernier_connexion > ".$semaine." AND statut = 'actif'");
 		$row = $db->read_row($requete);
