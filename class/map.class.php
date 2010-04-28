@@ -425,8 +425,8 @@ class map
 						if($this->affiche_royaume) $taille_border = 1;
 						else $taille_border = 0;
 						$border = "border:".$taille_border."px solid ".$Gcouleurs[$MAPTAB[$x_map][$y_map]['royaume']].";";
-						echo "<li class='$class_map ".$class_css['resolution']."'>
-							   <div class='map_contenu ".$class_css['resolution']."' 
+						echo "<li class='$class_map ".$class_css['resolution']."'>\n";
+						echo "<div class='map_contenu ".$class_css['resolution']."' 
 							   		id='marq$case' 
 							   		style='".$background.$border."' ";
 						if(!empty($overlib))
@@ -439,9 +439,22 @@ class map
 							$onclick = str_replace('%%id%%', $MAPTAB[$x_map][$y_map]['id'], $this->onclick);
 						}
 						else $onclick = $this->onclick;
-						echo " 		onclick=\"".$onclick."\" 
-							   ><span id='pos_".$MAPTAB[$x_map][$y_map]["id"]."'>".$repere."</span></div>
-							  </li>";	
+						echo " 		onclick=\"".$onclick."\"\n>";
+						
+						if ($this->atmosphere_type != false)
+						{
+							echo '<div style="background-attachment: fixed; '.
+								'background-image: url(image/interface/calque-atmosphere-'.
+								$this->atmosphere_type.'.png); ';
+							if ($this->atmosphere_decal != false)
+								echo 'background-position: '.$this->atmosphere_decal.'; ';
+							echo 'margin-top: -2px; margin-bottom: -2px; margin-left: -2px;'.
+								' height: 62px; width: 60px; background-repeat: repeat;">';
+						}
+						echo "<span id='pos_".$MAPTAB[$x_map][$y_map]["id"]."'>".$repere."</span></div>";
+						if ($this->atmosphere_type != false)
+							echo '</div>';
+						echo "\n</li>";	
 						
 						$case++;
 					}
@@ -833,6 +846,21 @@ class map
 	function set_affiche_royaume($val)
 	{
 		$this->affiche_royaume = $val;
+	}
+
+	private $atmosphere_type = false;
+	function set_atmosphere($type)
+	{
+		$this->atmosphere_type = $type;
+	}
+
+	private $atmosphere_decal = false;
+	function set_atmosphere_decal($x, $y)
+	{
+		if ($x == 0 && $y == 0)
+			$this->atmosphere_decal = false;
+		else
+			$this->atmosphere_decal = (-$x * 60).'px '.(-$y * 60).'px';
 	}
 }
 ?>

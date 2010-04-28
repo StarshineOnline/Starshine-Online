@@ -20,6 +20,11 @@ $map->get_pnj();
 $map->get_joueur($objXY->race);
 $map->get_drapeau();
 $map->get_batiment();
+// TODO: gestion du calque supérieur
+if (false) {
+	$map->set_atmosphere('nuit');
+	$map->set_atmosphere_decal($x, $y);
+}
 $map->onclick_status = true;
 if(isset($_GET['show_only'])) $map->change_show_only($_GET['show_only']);
 $map->get_monstre($level);
