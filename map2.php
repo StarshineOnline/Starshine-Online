@@ -22,7 +22,9 @@ $map->get_drapeau();
 $map->get_batiment();
 // TODO: gestion du calque supérieur
 if (false) {
-	$map->set_atmosphere('nuit');
+	$atmosphere_type = 'nuage';
+	$atmosphere_moment = strtolower(moment_jour());
+	$map->set_atmosphere($atmosphere_type.'-'.$atmosphere_moment);
 	$map->set_atmosphere_decal($x, $y);
 }
 $map->onclick_status = true;

@@ -81,6 +81,10 @@ function print_head($Option_List = "")
 			}
 		}
 	}
+	global $add_data_to_head;
+	if (isset($add_data_to_head) && $add_data_to_head != '') {
+	  echo $add_data_to_head;
+  }
 	echo "    <link rel=\"icon\" type=\"image/png\" href=\"http://www.starshine-online.com/image/favicon.png\" />
 			</head>
 		   <body"; if(!empty($style)) { echo "style='$style'"; }; echo ">
@@ -101,6 +105,12 @@ function print_messbar()
 	<input type="button" value="url" class="msgbar" onclick="storeCaret('url')">
 	<input type="button" value="img" class="msgbar" onclick="storeCaret('img')"><br/>
 <?php
+}
+
+function add_data_to_head($data)
+{
+	global $add_data_to_head;
+	$add_data_to_head .= $data;
 }
 
 function make_overlib($message)
