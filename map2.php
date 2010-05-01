@@ -16,14 +16,22 @@ require('class/map.class.php');
 $map = new map($x, $y);
 $arene = $joueur->in_arene();
 if(!empty($arene)) $map->set_arene(true);
+else { // Calcul de l'état atmosphérique
+  $q = "select * from map_zone where x1 <= $x and y1 <= $y and ".
+    "x2 >= $x and y2 >= $y limit 1";
+  $req = $db->query($q);
+  if ($row = $db->read_object($req)) {
+    $atmosphere_type = $row->type;
+  }
+}
 $map->get_pnj();
 $map->get_joueur($objXY->race);
 $map->get_drapeau();
 $map->get_batiment();
 // TODO: gestion du calque supérieur
-if (false) {
-	$atmosphere_type = 'nuage';
+if (isset($atmosphere_type)) {
 	$atmosphere_moment = strtolower(moment_jour());
+  //echo "load ${atmosphere_type}-${atmosphere_moment}";
 	$map->set_atmosphere($atmosphere_type.'-'.$atmosphere_moment);
 	$map->set_atmosphere_decal($x, $y);
 }
