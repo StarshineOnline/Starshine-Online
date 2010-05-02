@@ -2992,6 +2992,38 @@ class perso extends entite
 		}
 	}
 
+	private $options_tab = false;
+	/**
+   * Cette fonction renvoie le tableau d'options
+   */
+	function get_options()
+	{
+		if (!$this->options_tab) {
+			global $db;
+			$this->options_tab = array();
+			$requete = "select nom, valeur from options where id_perso = $this->id";
+			$req = $db->query($requete);
+			if ($req) while ($row = $db->read_row($req)) {
+				$this->options_tab[$row[0]] = $row[1];
+			}
+		}
+		return $this->options_tab;
+	}
+
+	/**
+   * Cette fonction renvoie une option
+   */
+	function get_option($name)
+	{
+		if (!$this->options_tab) {
+			$this->get_options();
+		}
+		if (array_key_exists($name, $this->options_tab))
+			return $this->options_tab[$name];
+		else
+			return false;
+	}
+
 	/** on ne m'aura plus avec les machins déclarés depuis dehors */
 	//function __get($name) { $debug = debug_backtrace(); die('fuck: '.$debug[0]['file'].' line '.$debug[0]['line']); }
 	//function __set($name, $value) { $debug = debug_backtrace(); die('fuck: '.$debug[0]['file'].' line '.$debug[0]['line']); }

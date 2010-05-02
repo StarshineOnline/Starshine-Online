@@ -1,7 +1,7 @@
 <?php
 if (file_exists('root.php'))
   include_once('root.php');
-?><?php
+
 session_start();
 header ("Content-type: image/png");
 include_once(root.'inc/fp.php');

@@ -184,6 +184,29 @@ include_once(root.'inc/fp.php');
 						unset($_SESSION['nom']);
 						unset($_SESSION['ID']);
 					break;
+					case 'atm' :
+					{
+						$requete = false;
+						$val = sSQL($_GET['val']);
+						switch ($_GET['effet'])
+						{
+						case 'sky':
+							$requete = "REPLACE INTO options(id_perso, nom, valeur) VALUES(".
+								$_SESSION['ID'].", 'desactive_atm', $val)";
+							break;
+						case 'time':
+							$requete = "REPLACE INTO options(id_perso, nom, valeur) VALUES(".
+								$_SESSION['ID'].", 'desactive_atm_all', $val)";
+							break;
+						default:
+							echo "<h5>Erreur de parametre</h5>";
+						}
+						if ($requete) {
+							header("Location: ?");
+							$db->query($requete);
+							exit(0);
+						}
+					}
 				}
 			}
 			else
@@ -195,6 +218,26 @@ include_once(root.'inc/fp.php');
 					$row = $db->read_row($q);
 					$clef_api = sha1($row[0]);
 				}
+				
+				$atm_val = 1;
+				$atm_all_val = 1;
+				$q = $db->query("select nom, valeur from options where ".
+												"id_perso = $_SESSION[ID] and nom in ".
+												"('desactive_atm', 'desactive_atm_all')");
+				if ($q) {
+					while ($row = $db->read_row($q)) {
+						switch ($row[0]) {
+						case 'desactive_atm':
+							$atm_val = $row[1] ? 0 : 1;
+							break;
+						case 'desactive_atm_all':
+							$atm_all_val = $row[1] ? 0 : 1;
+							break;
+						}
+					}
+				}
+				$atm_verb = $atm_val ? 'Désactiver' : 'Activer';
+				$atm_all_verb = $atm_all_val ? 'Désactiver <strong>tous</strong>' : 'Activer';
 
 			?>
 			<div class"news">
@@ -206,6 +249,13 @@ include_once(root.'inc/fp.php');
 				</ul>
 			</div>
 			<div class"news">
+				<h3>Options graphiques</h3>
+				  <ul>
+<?php if (isset($G_use_atmosphere) && $G_use_atmosphere) { ?>
+					  <li><a href="option.php?action=atm&amp;effet=sky&amp;val=<?php echo $atm_val; ?>" onclick="return envoiInfo(this.href, 'popup_content');"><?php echo $atm_verb; ?> les effets atmospheriques</a></li>
+					  <li><a href="option.php?action=atm&amp;effet=time&amp;val=<?php echo $atm_all_val; ?>" onclick="return envoiInfo(this.href, 'popup_content');"><?php echo $atm_all_verb; ?> les effets atmosphériques et liés à l'heure</a></li>
+<?php } ?>
+				  </ul>
 				<h3>Mot de passe</h3>
 				<strong>Attention cela change &eacute;galement votre mot de passe sur le forum!</strong><br />
 				<ul>
