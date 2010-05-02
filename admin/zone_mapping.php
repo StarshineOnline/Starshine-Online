@@ -85,7 +85,7 @@ include_once(root.'admin/menu_admin.php');
 
 foreach ($zones_type as $type) {
 	echo '<tr><td>';
-	foreach (array('nuit', 'jour', 'soir', 'matin') as $moment) {
+	foreach (array('nuit', 'journee', 'soir', 'matin') as $moment) {
 		echo '&nbsp;<img src="../image/interface/calque-atmosphere-'.
 			$type.'-'.$moment.'.png" alt="'.$type.'" width=100 height=100 />';
 	}
