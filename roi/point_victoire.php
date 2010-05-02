@@ -25,6 +25,7 @@ elseif(array_key_exists('action', $_GET))
 				$ids_implode = implode(', ', $ids);
 				$requete = "DELETE FROM buff WHERE id IN (".$ids_implode.")";
 				$db->query($requete);
+				echo '<h6>La famine a bien été supprimée</h6>';
 			break;
 			case 'buff' :
 				$duree = 3600 * 24 * 31;
@@ -35,7 +36,9 @@ elseif(array_key_exists('action', $_GET))
 				{
 					$requete = "INSERT INTO buff(`type`, `effet`, `effet2`, `fin`, `duree`, `id_perso`, `nom`, `description`, `debuff`, `supprimable`)
 								VALUES('".$action->get_type_buff()."', ".$action->get_effet().", 0, ".(time()+$duree).", ".$duree.", ".$row['id'].", '".$action->get_nom()."', '".addslashes($action->get_description())."', 1, 0)";
+					$db->query($requete);
 				}
+				echo '<h6>Votre royaume bénéficie maintenant du buff : '.$action->get_nom().'</h6>';
 			break;
 		}
 		$royaume->set_point_victoire($royaume->get_point_victoire() - $action->get_cout());
