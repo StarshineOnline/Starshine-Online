@@ -793,7 +793,7 @@ else
 
 			if($check_pet)
 			{
-				$augmentation = augmentation_competence('dressage', $joueur, 2);
+				$augmentation = augmentation_competence('dressage', $joueur, 2.3);
 				if($augmentation[1] == 1)
 				{
 					$joueur->set_dressage($augmentation[0]);
@@ -801,7 +801,7 @@ else
 			}
 			if($check_pet_def)
 			{
-				$augmentation = augmentation_competence('dressage', $joueur_defenseur, 2);
+				$augmentation = augmentation_competence('dressage', $joueur_defenseur, 2.3);
 				if($augmentation[1] == 1)
 				{
 					$joueur_defenseur->set_dressage($augmentation[0]);

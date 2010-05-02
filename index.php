@@ -163,8 +163,8 @@ N'oubliez pas de reporter les bugs et problèmes, et d'apporter vos suggestions 
 		while($objRace = $db->read_object($RqRace))
 		{
 			if ($i=='0'){echo "<p style='clear:both;'>";}
-			echo "<span class='".$objRace->race."_guerrier' title='".$objRace->race."_guerrier' id='".$objRace->race."_guerrier' onclick=\"race('".$objRace->race."','guerrier');\">&nbsp;</span>";
-			echo "<span class='".$objRace->race."_mage' title='".$objRace->race."_mage' id='".$objRace->race."_mage' onclick=\"race('".$objRace->race."','mage');\">&nbsp;</span>";
+			echo "<span class='".$objRace->race."_guerrier' title='".$objRace->race." Combattant' id='".$objRace->race."_guerrier' onclick=\"race('".$objRace->race."','guerrier');\">&nbsp;</span>";
+			echo "<span class='".$objRace->race."_mage' title='".$objRace->race." Magicien' id='".$objRace->race."_mage' onclick=\"race('".$objRace->race."','mage');\">&nbsp;</span>";
 			echo "<span class='perso_espacement'>&nbsp;</span>";
 			$i++;
 			if ($i=='3'){echo '</p>';$i=0;}
