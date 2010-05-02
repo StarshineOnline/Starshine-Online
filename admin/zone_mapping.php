@@ -7,8 +7,7 @@ $textures = false;
 include_once(root.'inc/fp.php');
 
 /* Tableau des types de zones à gérer */
-$zones_type = array(
-										'vide', /* Pas de zone */
+$zones_type = array( /* Pas de zone par défaut */
 										'nuage',
 );
 /* Fin du tableau */
@@ -31,7 +30,15 @@ if (array_key_exists('type', $_GET)) {
 	$y1 = ($_GET['y'] / 3) + 1;
 	$x2 = (($_GET['x'] + $_GET['width']) / 3) + 1;
 	$y2 = (($_GET['y'] + $_GET['height']) / 3) + 1;
-	$db->query("insert into map_zone values ('$type', $x1, $y1, $x2, $y2)");
+	$db->query("insert into map_zone values ('$type', $x1, $y1, $x2, $y2, 0)");
+	header("Location: ?");
+	exit (0);
+}
+if (array_key_exists('order', $_GET)) {
+	$sens = $_GET['order'] == 'plus' ? '+' : '-';
+	$db->query("update map_zone set ordre = ordre $sens 1 where ".
+						 "x1 = $_GET[x1] and y1 = $_GET[y1] ".
+						 "and x2 = $_GET[x2] and y2 = $_GET[y2]");
 	header("Location: ?");
 	exit (0);
 }
@@ -62,7 +69,11 @@ function popUp(x1,y1,x2,y2,event) {
   }
   $("#dialog").dialog("open");
   $("#remove_zone").html("<a href=\"?erase=one&x1=" + x1 + "&y1=" + y1
-    + "&x2=" + x2 + "&y2=" + y2 + "\">Oui</a>");
+    + "&x2=" + x2 + "&y2=" + y2 + "\">Effacer</a>");
+  $("#modif_order").html("<a href=\"?order=plus&x1=" + x1 + "&y1=" + y1
+    + "&x2=" + x2 + "&y2=" + y2 + "\">Monter l\'ordre</a> " + 
+    "<a href=\"?order=minus&x1=" + x1 + "&y1=" + y1
+    + "&x2=" + x2 + "&y2=" + y2 + "\">Baisser l\'ordre</a>");
 }
 function popDown() { $("#dialog").dialog("close"); }
 function toggleSelect() {
@@ -85,9 +96,12 @@ include_once(root.'admin/menu_admin.php');
 
 ?>
 <div id="imgJSselbox"></div>
-<div id="dialog" title="Supprimer la zone ?">
+<div id="dialog" title="Modifier la zone">
   <div id="remove_zone"></div>
-  <a href="javascript:popDown()">Non</a>
+  <hr/>
+  <div id="modif_order"></div>
+	<hr/>
+  <a href="javascript:popDown()">Fermer</a>
 </div>
 <p><a href="javascript:toggleSelect()" id="toggleSelect">Desactiver la
 selection des zones</a></p>
@@ -112,7 +126,7 @@ foreach ($zones_type as $type) {
 echo '</tbody></table>';
 
 echo '<map name="zones_map" id="zones_map">';
-$req = $db->query("select * from map_zone order by type");
+$req = $db->query("select * from map_zone order by ordre desc, type");
 while($row = $db->read_object($req))
 {
 	$x = ($row->x1 - 1) * 3;

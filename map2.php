@@ -23,13 +23,15 @@ else { // Calcul de l'état atmosphérique
   if ($row = $db->read_object($req)) {
     $atmosphere_type = $row->type;
   }
+	else {
+		$atmosphere_type = 'vide';
+	}
 }
 $map->get_pnj();
 $map->get_joueur($objXY->race);
 $map->get_drapeau();
 $map->get_batiment();
-// TODO: gestion du calque supérieur
-if (isset($atmosphere_type)) {
+if (isset($atmosphere_type) && isset($G_use_atmosphere) && $G_use_atmosphere) {
 	$atmosphere_moment = strtolower(moment_jour());
   //echo "load ${atmosphere_type}-${atmosphere_moment}";
 	$map->set_atmosphere($atmosphere_type.'-'.$atmosphere_moment);

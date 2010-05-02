@@ -11,7 +11,8 @@ imagesavealpha($im, true);
 $transparent = imagecolorallocatealpha($im, 255, 255, 255, 127);
 $type_img = array();
 
-$req = $db->query("select * from map_zone order by type");
+// L'ordre est inversé ici, car le premier est écrasé par le second
+$req = $db->query("select * from map_zone order by ordre asc, type");
 while($row = $db->read_object($req))
 {
 	if (!array_key_exists($row->type, $type_img)) {

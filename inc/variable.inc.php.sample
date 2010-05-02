@@ -1,4 +1,4 @@
-<?php
+<?php /* -*- mode: php -*- */
   /**
    * @file variable.inc.php
    * Définitions des constantes.
@@ -185,5 +185,8 @@ define('BASE', 'http://www.starshine-online.com/');
 				 
   /// id d'utilisateur du forum à utiliser pour les posts automatiques
   $G_id_forum = 2;
+
+  /// utiliser les calques
+  $G_use_atmosphere = false;
 
 ?>
