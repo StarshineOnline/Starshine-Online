@@ -1782,7 +1782,7 @@ function merge_augmentations($a1, $a2)
  * 
  * @param  $competence    ID de la compétence.
  * @param  $joueur        Tableau associatif décrivant le joueur.
- * @param  $difficulte    Difficuté (plus le chiffre est faible, plus c'est difficile)
+ * @param  $difficulte    Difficuté (plus le chiffre est fort, plus c'est difficile)
  * 
  * @return  [0]     Nouvelle valeur de la compétence.
  * @return  [1]     1 s'il y a augmentation, 0 sinon.

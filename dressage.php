@@ -53,7 +53,7 @@ if($distance == 0)
 						$buff = $joueur->get_buff('dressage');
 						$buff->set_effet($buff->get_effet() + $rand);
 						$buff->sauver();
-						$augmentation = augmentation_competence('dressage', $joueur, 1.6);
+						$augmentation = augmentation_competence('dressage', $joueur, 1.4);
 						if ($augmentation[1] == 1) $joueur->set_dressage($augmentation[0]);
 						$joueur->set_pa($joueur->get_pa() - 10);
 						$joueur->sauver();
@@ -138,6 +138,8 @@ if($distance == 0)
 			else
 			{
 				echo '<h5>Vous n\'avez pas réussi à dresser ce monstre</h5>';
+				$buff = $joueur->get_buff('dressage');
+				$buff->supprimer();
 			}
 		}
 		else
