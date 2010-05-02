@@ -39,7 +39,7 @@ $map->get_batiment();
 if (isset($atmosphere_type) && isset($G_use_atmosphere) && $G_use_atmosphere) {
 	$atmosphere_moment = strtolower(moment_jour());
   //echo "load ${atmosphere_type}-${atmosphere_moment}";
-	$atmosphere_moment = 'nuit';
+	//$atmosphere_moment = 'nuit';
 	$map->set_atmosphere($atmosphere_type.'-'.$atmosphere_moment);
 	$map->set_atmosphere_decal($x, $y);
 }
