@@ -15,7 +15,7 @@ $req = $db->query("select * from map_zone order by type");
 while($row = $db->read_object($req))
 {
 	if (!array_key_exists($row->type, $type_img)) {
-		$file = root.'image/interface/calque-atmosphere-'.$row->type.'-nuit.png';
+		$file = root.'image/interface/calque-atmosphere-'.$row->type.'-journee.png';
 		$type_img[$row->type] =	imagecreatefrompng($file);
 		imagesavealpha($type_img[$row->type], true);
 		list($width, $height) = getimagesize($file);

@@ -55,10 +55,24 @@ add_data_to_head('<script type="text/javascript">
 $(document).ready(function() {
     $("#dialog").dialog({ autoOpen: false });
   });
-function popUp(x1,y1,x2,y2) { $("#dialog").dialog("open");
-$("#remove_zone").html("<a href=\"?erase=one&x1=" + x1 + "&y1=" + y1
- + "&x2=" + x2 + "&y2=" + y2 + "\">Oui</a>"); }
+var disable_select = 0;
+function popUp(x1,y1,x2,y2,event) {
+  if (!(imgx == -1 && imgy == -1) || (cropw>0 || croph>0) || disable_select) {
+    return getImageCropSelectionPoint("map", event);
+  }
+  $("#dialog").dialog("open");
+  $("#remove_zone").html("<a href=\"?erase=one&x1=" + x1 + "&y1=" + y1
+    + "&x2=" + x2 + "&y2=" + y2 + "\">Oui</a>");
+}
 function popDown() { $("#dialog").dialog("close"); }
+function toggleSelect() {
+  disable_select = !disable_select;
+  if (disable_select) {
+    $("#toggleSelect").html("Activer la sélection des zones");
+  } else {
+    $("#toggleSelect").html("Desactiver la sélection des zones");
+  }
+}
 </script>');
 
 add_data_to_head('<link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet" type="text/css" />');
@@ -75,9 +89,10 @@ include_once(root.'admin/menu_admin.php');
   <div id="remove_zone"></div>
   <a href="javascript:popDown()">Non</a>
 </div>
+<p><a href="javascript:toggleSelect()" id="toggleSelect">Desactiver la
+selection des zones</a></p>
 <img src="carte_zone.php" id="map" usemap="#zones_map"
-      onclick="getImageCropSelectionPoint('map',event);">
-
+      onclick="getImageCropSelectionPoint('map', event);">
 <table>
 <thead><th>Appercu</th><th>Type</th><th>Action</th></thead>
 <tbody>
@@ -108,7 +123,7 @@ while($row = $db->read_object($req))
   $r_coords = "$row->x1,$row->y1,$row->x2,$row->y2";
 	echo "\n";
 	echo '<area shape="rect" coords="'.$coords.
-    '" href="javascript:popUp('.$r_coords.')" alt="'.$row->type.'" />';
+    '" onClick="popUp('.$r_coords.', event)" alt="'.$row->type.'" />';
 }
 echo "</map>\n";
 
