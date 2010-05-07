@@ -375,10 +375,10 @@ function ressource_terrain($terrain)
  * 
  * @return numéro du type de terrain si la case appartient à un royaume false sinon.
  */
-function is_ville($case)
+function is_ville($x, $y)
 {
 	global $db;
-	$requete = "SELECT type, royaume FROM map WHERE id = ".$case;
+	$requete = "SELECT type, royaume FROM map WHERE x = $x and y = $y";
 	$req = $db->query($requete);
 	$row = $db->read_row($req);
 	if($row[1] != 0) return $row[0];
@@ -3141,11 +3141,10 @@ function affiche_condition_session($action, $joueur)
 function verif_ville($x, $y, $r = false)
 {
 	global $db;
-	$position = convert_in_pos($x, $y);
 	if($r === false)
-		$W_requete = 'SELECT type FROM map WHERE id = '.$position;
+		$W_requete = 'SELECT type FROM map WHERE x = '.$x.' and y = '.$y;
 	else
-		$W_requete = 'SELECT type FROM map WHERE id = '.$position.' AND royaume = '.$r;
+		$W_requete = 'SELECT type FROM map WHERE x = '.$x.' and y = '.$y.' AND royaume = '.$r;
 	$W_req = $db->query($W_requete);
 	$W_row = $db->read_assoc($W_req);
 	//On est en ville

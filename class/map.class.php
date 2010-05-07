@@ -1,7 +1,7 @@
 <?php
 if (file_exists('../root.php'))
   include_once('../root.php');
-?><?php
+
 class map
 {
 	public $x;
@@ -84,18 +84,18 @@ class map
 		}
 		$total_cases = ($this->xmax - $this->xmin + 1) * ($this->ymax - $this->ymin + 1);
 		$this->nb_cases = $total_cases;
-		$RqMapTxt = "SELECT ID,decor,royaume,info FROM map 
-						 WHERE ( (FLOOR(id / 1000) >= $ymin) AND (FLOOR(id / 1000) <= $ymax) ) 
-						 AND ( ((id - (FLOOR(id / 1000) * 1000) ) >= $xmin) AND ((id - (FLOOR(id / 1000) * 1000)) <= $xmax) ) 
-						 ORDER BY id;";
+		$RqMapTxt = "SELECT x,y,decor,royaume,info FROM map 
+						 WHERE y >= $ymin AND y <= $ymax 
+						 AND x >= $xmin AND x <= $xmax
+						 ORDER BY y,x;";
 		$RqMap = $db->query($RqMapTxt);
 		while($objMap = $db->read_object($RqMap))
 		{
-			$coord = convert_in_coord($objMap->ID);
-			$MAPTAB[$coord['x']][$coord['y']]["id"] = $objMap->ID;
-			$MAPTAB[$coord['x']][$coord['y']]["decor"] = $objMap->decor;
-			$MAPTAB[$coord['x']][$coord['y']]["royaume"] = $objMap->royaume;
-			$MAPTAB[$coord['x']][$coord['y']]["type"] = $objMap->info;
+			//$coord = convert_in_coord($objMap->ID);
+			$MAPTAB[$objMap->x][$objMap->y]["id"] = $objMap->x.'_'.$objMap->y;
+			$MAPTAB[$objMap->x][$objMap->y]["decor"] = $objMap->decor;
+			$MAPTAB[$objMap->x][$objMap->y]["royaume"] = $objMap->royaume;
+			$MAPTAB[$objMap->x][$objMap->y]["type"] = $objMap->info;
 		}
 		$classe_css = array();
 		if(!$this->donjon)
@@ -443,13 +443,12 @@ class map
 						
 						if ($this->atmosphere_type != false)
 						{
-							echo '<div style="background-attachment: fixed; '.
-								'background-image: url(image/interface/calque-atmosphere-'.
-								$this->atmosphere_type.'.png); ';
-							if ($this->atmosphere_decal != false)
-								echo 'background-position: '.$this->atmosphere_decal.'; ';
-							echo 'margin-top: -2px; margin-bottom: -2px; margin-left: -2px;'.
-								' height: 62px; width: 60px; background-repeat: repeat;">';
+							$this->atmosphere_layer($this->atmosphere_type, $x_map, $y_map);
+						} elseif (isset($this->map[$x_map][$y_map]['calque'])) {
+							$this->atmosphere_layer($this->map[$x_map][$y_map]['calque'],
+																			$x_map, $y_map,
+																			$this->map[$x_map][$y_map]['calque_dx'],
+																			$this->map[$x_map][$y_map]['calque_dy']);
 						}
 						echo "<span id='pos_".$MAPTAB[$x_map][$y_map]["id"]."'>".$repere."</span></div>";
 						if ($this->atmosphere_type != false)
@@ -461,8 +460,24 @@ class map
 				}
 				echo "</ul>";
 			}
-			echo "</div>"; 
+			echo "</div>";
 		}
+	}
+
+	function atmosphere_layer($atmosphere_type, $x, $y, $cdx = 0, $cdy = 0)
+	{
+		echo '<div style="background-attachment: scroll; '.
+			'background-image: url(image/interface/calque-atmosphere-'.
+			$atmosphere_type.'.png); ';
+		$dx = (-$x * 60) + $cdx;
+		$dy = (-$y * 60) + $cdy;
+		if ($this->atmosphere_decal != false) {
+			$dx += $this->atmosphere_decal['x'];
+			$dy += $this->atmosphere_decal['y'];
+		}
+		echo "background-position: ${dx}px ${dy}px; ";
+		echo 'margin-top: -2px; margin-bottom: -2px; margin-left: -2px;'.
+			' height: 62px; width: 60px; background-repeat: repeat;">';
 	}
 
 	function get_pnj()
@@ -595,7 +610,7 @@ class map
 							      WHERE ( ( (placement.x >= ".$this->xmin.") AND (placement.x <= ".$this->xmax.") ) AND ( (placement.y >= ".$this->ymin.") AND (placement.y <= ".$this->ymax.") ) ) 
 							      AND batiment.id = placement.id_batiment 
 							      AND royaume.id=placement.royaume
-								  AND map.id = ((placement.y * 1000) + placement.x)
+								  AND map.y = placement.y AND map.x = placement.x
 								  $filter
 							      ORDER BY placement.y ASC, placement.x ASC;");
 		if($db->num_rows($RqDrapeaux) > 0)
@@ -644,7 +659,7 @@ class map
 							FROM construction, batiment, map 
 							WHERE ( ( (construction.x >= ".$this->xmin.") AND (construction.x <= ".$this->xmax.") ) AND ( (construction.y >= ".$this->ymin.") AND (construction.y <= ".$this->ymax.") ) ) 
 							AND batiment.id = construction.id_batiment 
-							AND map.id = ((construction.y * 1000) + construction.x)
+							AND map.y = construction.y AND map.x = construction.x
 							$filter
 							ORDER BY construction.y ASC, construction.x ASC;");
 		if($db->num_rows($RqBatiments) > 0)
@@ -860,7 +875,39 @@ class map
 		if ($x == 0 && $y == 0)
 			$this->atmosphere_decal = false;
 		else
-			$this->atmosphere_decal = (-$x * 60).'px '.(-$y * 60).'px';
+			$this->atmosphere_decal = array('x' => $x, 'y' => $y);
+			//$this->atmosphere_decal = (-$x * 60).'px '.(-$y * 60).'px';
+	}
+
+	function compute_atmosphere()
+	{
+		global $db;
+		$xmin = $this->xmin;
+		$xmax = $this->xmax;
+		$ymin = $this->ymin;
+		$ymax = $this->ymax;
+		$atmosphere_moment = strtolower(moment_jour());
+		for ($x = $xmin; $x <= $xmax; $x++) {
+			for ($y = $ymin; $y <= $ymax; $y++) {
+				$this->map[$x][$y]['calque'] = 'vide-'.$atmosphere_moment;
+				$this->map[$x][$y]['calque_dx'] = 0;
+				$this->map[$x][$y]['calque_dy'] = 0;
+			}
+		}
+		$q = "select x, y, type, dx, dy from map_zone, (select x, y from map where $xmin <= x AND x <= $xmax AND $ymin <= y AND y <= $ymax) points where x1 <= x and x <= x2 and y1 <= y and y <= y2";
+		$time_start = microtime(true);
+		$req = $db->query($q);
+		while ($row = $db->read_object($req)) {
+			$this->map[$row->x][$row->y]['calque'] = $row->type.'-'.$atmosphere_moment;
+			$this->map[$row->x][$row->y]['calque_dx'] = $row->dx;
+			$this->map[$row->x][$row->y]['calque_dy'] = $row->dy;
+			//echo "dx: $row->dx, dy: $row->dy";
+		}
+		$time_end = microtime(true);
+		$time = $time_end - $time_start;
+		//my_dump($this->map);
+		echo "<!-- Requete calques en $time secondes --> \n";
+		//echo $q;
 	}
 }
 ?>

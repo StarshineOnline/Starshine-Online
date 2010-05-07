@@ -2,7 +2,7 @@
 if (file_exists('root.php')) include_once('root.php');
 include_once(root.'inc/fp.php');
 $joueur = new perso($_SESSION['ID']);
-if((is_ville(convert_in_pos($joueur->get_x(), $joueur->get_y())) == 1) AND (!array_key_exists('ville', $_GET) OR (array_key_exists('ville', $_GET) AND $_GET['ville'] == 'no')))
+if((is_ville($joueur->get_x(), $joueur->get_y()) == 1) AND (!array_key_exists('ville', $_GET) OR (array_key_exists('ville', $_GET) AND $_GET['ville'] == 'no')))
 {
 	return_ville('<img src="image/interface/affiche_ville.png" alt="Accéder à la ville" />', $joueur->get_pos());
 }

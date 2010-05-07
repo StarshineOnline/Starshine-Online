@@ -19,15 +19,17 @@ if(!empty($arene)) $map->set_arene(true);
 elseif ($joueur->get_option('desactive_atm_all') != 1)
 { // Calcul de l'état atmosphérique si on a pas désactivé la fonction
 	if ($joueur->get_option('desactive_atm') == 0) {
-		$q = "select * from map_zone where x1 <= $x and y1 <= $y and ".
-			"x2 >= $x and y2 >= $y limit 1";
-		$req = $db->query($q);
-		if ($row = $db->read_object($req)) {
-			$atmosphere_type = $row->type;
-		}
-		else {
-			$atmosphere_type = 'vide';
-		}
+// 		$q = "select * from map_zone where x1 <= $x and y1 <= $y and ".
+// 			"x2 >= $x and y2 >= $y limit 1";
+// 		$req = $db->query($q);
+// 		if ($row = $db->read_object($req)) {
+// 			$atmosphere_type = $row->type;
+// 		}
+// 		else {
+// 			$atmosphere_type = 'vide';
+// 		}
+		$map->compute_atmosphere();
+		//$map->set_atmosphere_decal($x, $y);
 	} else {
 		$atmosphere_type = 'vide';
 	}
@@ -38,10 +40,10 @@ $map->get_drapeau();
 $map->get_batiment();
 if (isset($atmosphere_type) && isset($G_use_atmosphere) && $G_use_atmosphere) {
 	$atmosphere_moment = strtolower(moment_jour());
+	//$atmosphere_moment = 'soir';
   //echo "load ${atmosphere_type}-${atmosphere_moment}";
-	//$atmosphere_moment = 'nuit';
 	$map->set_atmosphere($atmosphere_type.'-'.$atmosphere_moment);
-	$map->set_atmosphere_decal($x, $y);
+	//$map->set_atmosphere_decal($x, $y);
 }
 $map->onclick_status = true;
 if(isset($_GET['show_only'])) $map->change_show_only($_GET['show_only']);
