@@ -16,7 +16,8 @@ require('class/map.class.php');
 $map = new map($x, $y);
 $arene = $joueur->in_arene();
 if(!empty($arene)) $map->set_arene(true);
-elseif ($joueur->get_option('desactive_atm_all') != 1)
+elseif ($joueur->get_option('desactive_atm_all') != 1 &&
+				isset($G_use_atmosphere) && $G_use_atmosphere)
 { // Calcul de l'état atmosphérique si on a pas désactivé la fonction
 	if ($joueur->get_option('desactive_atm') == 0) {
 // 		$q = "select * from map_zone where x1 <= $x and y1 <= $y and ".
