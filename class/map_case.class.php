@@ -51,7 +51,20 @@ class map_case
 		//Verification nombre et du type d'argument pour construire l'etat adequat.
 		if( (func_num_args() == 1) && is_numeric($id) )
 		{
-			$requeteSQL = $db->query("SELECT info, decor, royaume, type FROM map WHERE id = ".$id);
+			$coord = convert_in_coord($id);
+			$requeteSQL = $db->query("SELECT info, decor, royaume, type FROM map WHERE x = $coord[x] and y = $coord[y]");
+			//Si le thread est dans la base, on le charge sinon on crée un thread vide.
+			if( $db->num_rows($requeteSQL) > 0 )
+			{
+				list($this->info, $this->decor, $this->royaume, $this->type) = $db->read_array($requeteSQL);
+			}
+			else $this->__construct();
+			$this->id = $id;
+		}
+		elseif( (func_num_args() == 1) && is_array($id) && 
+						array_key_exists('x', $id) && array_key_exists('y', $id))
+		{
+			$requeteSQL = $db->query("SELECT info, decor, royaume, type FROM map WHERE x = $id[x] and y = $id[y]");
 			//Si le thread est dans la base, on le charge sinon on crée un thread vide.
 			if( $db->num_rows($requeteSQL) > 0 )
 			{
@@ -67,7 +80,7 @@ class map_case
 			$this->decor = $id['decor'];
 			$this->royaume = $id['royaume'];
 			$this->type = $id['type'];
-			}
+		}
 		else
 		{
 			$this->info = $info;

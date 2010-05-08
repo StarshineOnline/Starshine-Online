@@ -38,8 +38,10 @@ switch($type)
 			$defense = $joueur_defenseur->get_buff('defense_pet', 'effet');
 			$rand = rand(0, 100);
 			//Défense par le pet
+			print_debug("Defense par le pet: $rand VS $defense");
 			if($rand < $defense)
 			{
+				print_debug("Defense par le pet OK");
 				$check_pet_def = true;
 			}
 		}
@@ -600,6 +602,7 @@ else
 				}
 					if ($siege_true) break;
 			}
+
 			$attaque_hp_apres = $attaquant->get_hp();
 			$defense_hp_apres = $defenseur->get_hp();
 			$degat_defense = $defense_hp_avant - $defense_hp_apres;

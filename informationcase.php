@@ -1,7 +1,7 @@
 <?php
 if (file_exists('root.php'))
   include_once('root.php');
-?><?php
+
 /**
 * 
 * Permet l'affichage des informations d'une case en fonction du joueur.

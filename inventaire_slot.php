@@ -6,8 +6,8 @@ if (file_exists('root.php'))
 	{
 		include_once(root.'inc/fp.php');
 		$joueur = new perso($_SESSION['ID']);
-		$W_case = 1000 * $joueur->get_y() + $joueur->get_x();
-		$W_requete = 'SELECT * FROM map WHERE ID ='.sSQL($W_case);
+		$W_requete = 'SELECT * FROM map WHERE x ='.$joueur->get_x()
+			.' and y = '.$joueur->get_y();
 		$W_req = $db->query($W_requete);
 		$W_row = $db->read_array($W_req);
 		$R = get_royaume_info($joueur->get_race(), $W_row['royaume']);
