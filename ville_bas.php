@@ -3,7 +3,7 @@ if (file_exists('root.php'))
   include_once('root.php');
 ?><p style="text-align : center;">
 <?php
-if(is_ville($joueur->get_pos()))
+if(is_ville($joueur->get_x(), $joueur->get_y()))
 {
 ?>
 <a href="ville.php" onclick="return envoiInfo(this.href,'carte')"><img src="image/ville/retour_ville.png" alt="Retour au menu de la ville" title="Retour au menu de la ville" /></a>

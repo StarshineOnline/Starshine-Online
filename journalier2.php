@@ -240,8 +240,11 @@ require_once('stats/stat_lvl.php');
 require_once('stats/stat_race.php');
 require_once('stats/stat_classe.php');
 
+define('CARTE_WIDTH', 190 * 3);
+define('CARTE_HEIGHT', 190 * 3);
+
 echo 'Création de l\'image de la carte du monde<br />';
-$im = imagecreate (600, 600)
+$im = imagecreate (CARTE_WIDTH, CARTE_HEIGHT)
    or die ("Impossible d'initialiser la bibliothèque GD");
 $background_color = imagecolorallocate ($im, 255, 255, 255);
 
@@ -294,7 +297,7 @@ $show_info = array();
 
 echo 'Création de la carte des royaumes<br />';
 
-$im = imagecreate (600, 600)
+$im = imagecreate (CARTE_WIDTH, CARTE_HEIGHT)
    or die ("Impossible d'initialiser la bibliothèque GD");
 $background_color = imagecolorallocate ($im, 255, 255, 255);
 
@@ -361,7 +364,7 @@ while($row = $db->read_assoc($req))
 	$map_monstre[$row['x']][$row['y']] = $row['tot'];
 }
 
-$im = imagecreate (600, 600)
+$im = imagecreate (CARTE_WIDTH, CARTE_HEIGHT)
    or die ("Impossible d'initialiser la bibliothèque GD");
 $background_color = imagecolorallocate ($im, 255, 255, 255);
 $carte = 'image/carte_densite_mob.png';

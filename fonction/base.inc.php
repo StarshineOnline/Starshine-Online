@@ -2184,7 +2184,8 @@ function description($texte, $objet)
  */ 
 function return_ville($texte, $poscase)
 {
-	if(is_ville($poscase) == 1)
+  $pos = convert_in_coord($poscase);
+	if (is_ville($pos['x'], $pos['y']) == 1)
 	{
 		echo '<a href="ville.php?poscase='.$poscase.'" onclick="return envoiInfo(this.href, \'centre\')">'.$texte.'</a>';
 	}
