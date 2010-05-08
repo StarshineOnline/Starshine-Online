@@ -150,9 +150,7 @@ if (isset($_GET['deplacement']))
 	if($_GET['deplacement'] == 'centre') $mouvement = false;
 	if($mouvement)
 	{
-		if($donjon) $W_pos = convertd_in_pos($coord['x'], $coord['y']);
-		else $W_pos = convert_in_pos($coord['x'], $coord['y']);
-		$W_requete = 'SELECT info FROM map WHERE id ='.$W_pos;
+		$W_requete = 'SELECT info FROM map WHERE x ='.$coord['x'].' and y = '.$coord['y'];
 		$W_req = $db->query($W_requete);
 		$W_row = $db->read_array($W_req);
 		$num_rows = $db->num_rows;
@@ -160,7 +158,7 @@ if (isset($_GET['deplacement']))
 		$type_terrain = type_terrain($W_row['info']);
 		$coutpa = cout_pa($type_terrain[0], $joueur->get_race());
 		$coutpa_base = $coutpa;
-		$case = new map_case(convert_in_pos($coord['x'], $coord['y']));
+		$case = new map_case(array($coord['x'], $coord['y']));
 		$coutpa = cout_pa2($coutpa, $joueur, $case, $diagonale);
 		//Si le joueur a un buff ou débuff qui l'empèche de bouger
 		if($joueur->is_buff('buff_forteresse') OR $joueur->is_buff('buff_position') OR $joueur->is_buff('debuff_enracinement') OR $joueur->is_buff('bloque_deplacement'))
