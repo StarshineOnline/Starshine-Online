@@ -31,7 +31,7 @@ if(array_key_exists('id_echange', $_GET))
 //Sinon c'est le début d'un echange
 else
 {
-	$W_ID = $_GET['id_joueur'];
+	$W_ID = sSQL($_GET['id_joueur']);
 	$receveur = new perso($W_ID);
 	$j1 = new perso($joueur->get_id());
 	$j2 = new perso($W_ID);
