@@ -13,8 +13,7 @@ check_perso($joueur);
 //Vérifie si le perso est mort
 verif_mort($joueur, 1);
 
-$pos = convert_in_pos($joueur->get_x(), $joueur->get_y());
-$W_requete = "SELECT royaume FROM map WHERE id = ".$pos;
+$W_requete = "SELECT royaume FROM map WHERE x = ".$joueur->get_x()." and y = ".$joueur->get_y();
 $W_req = $db->query($W_requete);
 $W_row = $db->read_array($W_req);
 $R = new royaume($W_row['royaume']);
