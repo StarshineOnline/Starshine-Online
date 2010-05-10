@@ -51,9 +51,9 @@ class map_case
 		//Verification nombre et du type d'argument pour construire l'etat adequat.
 		if( (func_num_args() == 1) && is_numeric($id) )
 		{
+			echo 'HERE';
 			$coord = convert_in_coord($id);
 			$requeteSQL = $db->query("SELECT info, decor, royaume, type FROM map WHERE x = $coord[x] and y = $coord[y]");
-			//Si le thread est dans la base, on le charge sinon on crée un thread vide.
 			if( $db->num_rows($requeteSQL) > 0 )
 			{
 				list($this->info, $this->decor, $this->royaume, $this->type) = $db->read_array($requeteSQL);
@@ -65,13 +65,24 @@ class map_case
 						array_key_exists('x', $id) && array_key_exists('y', $id))
 		{
 			$requeteSQL = $db->query("SELECT info, decor, royaume, type FROM map WHERE x = $id[x] and y = $id[y]");
-			//Si le thread est dans la base, on le charge sinon on crée un thread vide.
 			if( $db->num_rows($requeteSQL) > 0 )
 			{
 				list($this->info, $this->decor, $this->royaume, $this->type) = $db->read_array($requeteSQL);
 			}
 			else $this->__construct();
-			$this->id = $id;
+			$this->x = $id['x'];
+			$this->y = $id['y'];
+		}
+		elseif( (func_num_args() == 2) && is_numeric($id) && is_numeric($info))
+		{ // Beurk beurk ...
+			$requeteSQL = $db->query("SELECT info, decor, royaume, type FROM map WHERE x = $id and y = $info");
+			if( $db->num_rows($requeteSQL) > 0 )
+			{
+				list($this->info, $this->decor, $this->royaume, $this->type) = $db->read_array($requeteSQL);
+			}
+			else $this->__construct();
+			$this->x = $id;
+			$this->y = $info;
 		}
 		elseif( (func_num_args() == 1) && is_array($id) )
 		{
@@ -331,12 +342,14 @@ class map_case
 
 	function get_x()
 	{
+		if (isset($this->x)) return $this->x;
 		if(!isset($this->coord)) $this->coord();
 		return $this->coord['x'];
 	}
 
 	function get_y()
 	{
+		if (isset($this->y)) return $this->y;
 		if(!isset($this->coord)) $this->coord();
 		return $this->coord['y'];
 	}

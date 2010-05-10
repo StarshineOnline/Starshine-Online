@@ -11,11 +11,11 @@ $joueur->check_perso();
 //Vérifie si le perso est mort
 verif_mort($joueur, 1);
 
-$W_requete = 'SELECT royaume, type FROM map WHERE ID =\''.sSQL($joueur->get_pos()).'\'';
+$W_requete = 'SELECT royaume, type FROM map WHERE x = '.$joueur->get_x().' and y = '.$joueur->get_y();
 $W_req = $db->query($W_requete);
 $W_row = $db->read_assoc($W_req);
 
-$case = new map_case($joueur->get_pos());
+$case = new map_case(array('x' => $joueur->get_x(), 'y' => $joueur->get_y()));
 if(!$case->is_ville(true, 'bonus5')) exit();
 
 

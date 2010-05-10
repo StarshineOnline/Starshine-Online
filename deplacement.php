@@ -144,7 +144,7 @@ if (isset($_GET['deplacement']))
 		$type_terrain = type_terrain($W_row['info']);
 		$coutpa = cout_pa($type_terrain[0], $joueur->get_race());
 		$coutpa_base = $coutpa;
-		$case = new map_case(array($coord['x'], $coord['y']));
+		$case = new map_case(array('x' => $coord['x'], 'y' => $coord['y']));
 		$coutpa = cout_pa2($coutpa, $joueur, $case, $diagonale);
 		//Si le joueur a un buff ou débuff qui l'empèche de bouger
 		if($joueur->is_buff('buff_forteresse') OR $joueur->is_buff('buff_position') OR $joueur->is_buff('debuff_enracinement') OR $joueur->is_buff('bloque_deplacement') OR $joueur->is_buff('dressage'))

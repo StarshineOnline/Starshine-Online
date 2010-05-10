@@ -10,6 +10,9 @@ include_once(root.'inc/fp.php');
 $zones_type = array( /* Pas de zone par défaut */
 										'nuage',
 										'pluie',
+										'neige',
+										'oiseau',
+										'ambiance',
 										'test',
 );
 /* Fin du tableau */
