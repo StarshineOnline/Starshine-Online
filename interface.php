@@ -2,7 +2,6 @@
 if (file_exists('root.php'))
   include_once('root.php');
 
-
 //Connexion obligatoire
 $connexion = true;
 //Inclusion du haut du document html
@@ -138,7 +137,11 @@ echo "<div id='menu_date'><img src='image/interface/".moment_jour().
 	
 </div>
 </div>";
-
+if (file_exists(root.'revision.inc')) {
+	echo "\n<div style=\"font-size: 0.5em; text-align: right; padding-right: 15px\">";
+	include_once(root.'revision.inc');
+	echo "</div>\n";
+}
 
 //Inclusion du bas de la page
 include_once(root.'bas.php');
