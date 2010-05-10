@@ -31,6 +31,7 @@ if(array_key_exists('id_echange', $_GET))
 //Sinon c'est le début d'un echange
 else
 {
+	validate_integer_value($_GET['id_joueur']);
 	$W_ID = sSQL($_GET['id_joueur']);
 	$receveur = new perso($W_ID);
 	$j1 = new perso($joueur->get_id());
@@ -51,7 +52,8 @@ if(array_key_exists('nouvel_echange', $_GET))
 //Si début d'un echange
 if(!isset($echange))
 {
-	$W_ID = $_GET['id_joueur'];
+	validate_integer_value($_GET['id_joueur']);
+	$W_ID = sSQL($_GET['id_joueur']);
 	$receveur = new perso($W_ID);
 	echo '<div class="information_case">';
 	//On demande au joueurs si il veut faire un échange ou en récupérer un ancien
