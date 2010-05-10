@@ -375,9 +375,8 @@ class map_case
 			//Si c'est un drapeau, on transforme le royaume
 			if($row['type'] == 'drapeau')
 			{
-				$pos = convert_in_pos($row['x'], $row['y']);
 				//Mis à jour de la carte
-				$requete = "UPDATE map SET royaume = ".$row['royaume']." WHERE ID = ".$pos;
+				$requete = "UPDATE map SET royaume = ".$row['royaume']." WHERE x = ".$row['x']." and y = ".$row['y'];
 				//echo $requete;
 				$db->query($requete);
 				//Suppression du drapeau
