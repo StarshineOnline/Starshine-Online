@@ -21,7 +21,7 @@ else if(array_key_exists('message', $_GET))
 		{
 			$id_groupe = 0;
 			$id_thread = 0;
-			$id_dest = $_GET['id_destinataire'];
+			$id_dest = sSQL($_GET['id_destinataire']);
 			$messagerie = new messagerie($joueur->get_id(), $joueur->get_groupe());
 			$messagerie->envoi_message($id_thread, $id_dest, $titre, $message, $id_groupe);
 			echo '<h6>Message transmis avec succés</h6>';

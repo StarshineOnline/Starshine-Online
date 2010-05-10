@@ -11,7 +11,7 @@ if($joueur->get_rang_royaume() != 6  AND $joueur->get_id() != $royaume->get_mini
 else if($_GET['action'] == 'achat')
 {
 	//Récupère les informations sur la quète
-	$requete = "SELECT * FROM quete WHERE id = ".sSQL($_GET['id']);
+	$requete = "SELECT * FROM quete WHERE id = '".sSQL($_GET['id'])."'";
 	$req = $db->query($requete);
 	$row = $db->read_assoc($req);
 	//Vérifie que le royaume a assez de stars pour l'acheter
