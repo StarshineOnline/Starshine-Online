@@ -51,7 +51,6 @@ class map_case
 		//Verification nombre et du type d'argument pour construire l'etat adequat.
 		if( (func_num_args() == 1) && is_numeric($id) )
 		{
-			echo 'HERE';
 			$coord = convert_in_coord($id);
 			$requeteSQL = $db->query("SELECT info, decor, royaume, type FROM map WHERE x = $coord[x] and y = $coord[y]");
 			if( $db->num_rows($requeteSQL) > 0 )
