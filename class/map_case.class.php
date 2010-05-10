@@ -59,6 +59,8 @@ class map_case
 			}
 			else $this->__construct();
 			$this->id = $id;
+			$this->x = $coord['x'];
+      $this->y = $coord['y'];
 		}
 		elseif( (func_num_args() == 1) && is_array($id) && 
 						array_key_exists('x', $id) && array_key_exists('y', $id))
@@ -126,7 +128,7 @@ class map_case
 				}
 				$requete = 'UPDATE map SET ';
 				$requete .= $champs;
-				$requete .= ' WHERE id = '.$this->id;
+				$requete .= ' WHERE x = '.$this->x.' and y = '.$this->y;
 				$db->query($requete);
 				$this->champs_modif = array();
 			}

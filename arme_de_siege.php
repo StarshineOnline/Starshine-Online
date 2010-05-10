@@ -14,7 +14,7 @@ $joueur->check_perso();
 //Vérifie si le perso est mort
 verif_mort($joueur, 1);
 
-$W_requete = 'SELECT * FROM map WHERE ID =\''.sSQL($W_case).'\'';
+$W_requete = 'SELECT * FROM map WHERE x = '.$joueur->get_x().' and y = '.$joueur->get_y();
 $W_req = $db->query($W_requete);
 $W_row = $db->read_array($W_req);
 $R = new royaume($W_row['royaume']);
@@ -59,7 +59,7 @@ if($W_distance == 0)
 		{
 			if($row_bp['royaume'] != $Trace[$joueur->get_race()]['numrace'] && $row_bp['id'] != $arme->get_id())
 			{
-				$pos = convert_in_pos($row_bp['x'],$row_bp['y']);
+				$pos = convert_in_pos($row_bp['x'], $row_bp['y']);
 
 				echo "<li style='clear:both;' onmouseover=\"$('#pos_".$pos."').addClass('pos_over');\" onmouseout=\"$('#pos_".$pos."').removeClass('pos_over');\"><span style='float:left;width:110px;'>".$row_bp['nom']." </span><span style='float:left;width:105px;'> X : ".$row_bp['x']." - Y : ".$row_bp['y']."</span>";
 				if($pat && $joueur->grade->get_rang() >= $row_b['bonus6'] && $joueur->get_pa() >= 10) echo ' - <a href="attaque.php?type=siege&table=construction&id_arme_de_siege='.$arme->get_id().'&id_batiment='.$row_bp['id'].'" onclick="return envoiInfo(this.href, \'information\');">Attaquer avec l\'arme de siège (10 PA)</a></li>';
@@ -83,7 +83,7 @@ if($W_distance == 0)
 		}
 		echo '</ul>';
 	}
-	$requete = 'SELECT map.id as id, nom FROM map LEFT JOIN royaume ON map.royaume = royaume.id WHERE (map.id - (floor(map.id / 1000)) * 1000) >= '.$x_min.' AND (map.id - (floor(map.id / 1000)) * 1000) <= '.$x_max.' AND floor(map.id / 1000) >= '.$y_min.' AND floor(map.id / 1000) <= '.$y_max.' AND type = 1 ';
+	$requete = 'SELECT map.x as x, map.y as y, nom FROM map LEFT JOIN royaume ON map.royaume = royaume.id WHERE map.x >= '.$x_min.' AND map.x <= '.$x_max.' AND map.y >= '.$y_min.' AND map.y <= '.$y_max.' AND type = 1 ';
 					//'AND royaume.race != "'.$joueur->get_race().'"';
 	$req_v = $db->query($requete);
 	$row_v = $db->read_assoc($req_v);
@@ -91,7 +91,12 @@ if($W_distance == 0)
 	{
 		echo '<h4><span class="titre_info">Ville à portée</span></h4>';
 		echo $row_v['nom'];
-		if($pat && $joueur->grade->get_rang() >= $row_b['bonus6']) echo ' - <a href="attaque.php?type=ville&amp;id_arme_de_siege='.$arme->get_id().'&id_ville='.$row_v['id'].'" onclick="return envoiInfo(this.href, \'information\');">Attaquer avec l\'arme de siège</a>';
+		$id = convert_in_pos($row_v['x'], $row_v['y']);
+		if($pat && $joueur->grade->get_rang() >= $row_b['bonus6']) {
+			echo ' - <a href="attaque.php?type=ville&amp;id_arme_de_siege='
+				.$arme->get_id().'&id_ville='.$id
+				.'" onclick="return envoiInfo(this.href, \'information\');">Attaquer avec l\'arme de siège</a>';
+		}
 	}
 }
 ?>

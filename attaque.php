@@ -214,7 +214,9 @@ else
 	{
 		//Récupération si la case est une ville et diplomatie
 		$chateau = false;
-		$requete = "SELECT type FROM map WHERE id = ".$W_case." AND type = 1 AND royaume = ".$Trace[$defenseur->get_race()]['numrace'];
+		$requete = "SELECT type FROM map WHERE x = ".$defenseur->get_x()
+			.' and y = '.$defenseur->get_y()." AND type = 1 AND royaume = ".
+			$Trace[$defenseur->get_race()]['numrace'];
 		$db->query($requete);
 		if($db->num_rows > 0)
 		{
