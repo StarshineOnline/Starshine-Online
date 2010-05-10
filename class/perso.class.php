@@ -820,6 +820,7 @@ class perso extends entite
 	{
 		if(!isset($this->inventaire_slot_array) OR !$force) {
 			$this->inventaire_slot_array = unserialize($this->get_inventaire_slot());
+			$pack = false;
 			for ($i = 0; $i < count($this->inventaire_slot_array); $i++) {
 				$objet_d = decompose_objet($this->inventaire_slot_array[$i]);
 				if (!isset($objet_d['id_objet']) || $objet_d['id_objet'] == '') {
@@ -829,7 +830,7 @@ class perso extends entite
 					$pack = true;
 				}
 			}
-			if ($pack) {
+			if ($pack && is_array($this->inventaire_slot_array)) {
 				// On re-indexe le tableau, et on sauve
 				$tmp = array_chunk($this->inventaire_slot_array,
 													 count($this->inventaire_slot_array));
