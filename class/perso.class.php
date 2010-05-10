@@ -818,7 +818,26 @@ class perso extends entite
 	 */   	 
 	function get_inventaire_slot_partie($partie = false, $force = false)
 	{
-		if(!isset($this->inventaire_slot_array) OR !$force) $this->inventaire_slot_array = unserialize($this->get_inventaire_slot());
+		if(!isset($this->inventaire_slot_array) OR !$force) {
+			$this->inventaire_slot_array = unserialize($this->get_inventaire_slot());
+			for ($i = 0; $i < count($this->inventaire_slot_array); $i++) {
+				$objet_d = decompose_objet($this->inventaire_slot_array[$i]);
+				if (!isset($objet_d['id_objet']) || $objet_d['id_objet'] == '') {
+					error_log("Bug inventaire: [$this->nom][$i]: pas d'id_objet (".
+										$this->inventaire_slot_array[$i].")\n",3, '/tmp/bugs.log');
+					unset($this->inventaire_slot_array[$i]);
+					$pack = true;
+				}
+			}
+			if ($pack) {
+				// On re-indexe le tableau, et on sauve
+				$tmp = array_chunk($this->inventaire_slot_array,
+													 count($this->inventaire_slot_array));
+				$this->inventaire_slot_array = $tmp[0];
+				$this->set_inventaire_slot(serialize($this->inventaire_slot_array));
+				$this->sauver();
+			}
+		}
 		if($partie === false) return $this->inventaire_slot_array;
 		else return $this->inventaire_slot_array[$partie];
 	}
