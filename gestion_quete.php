@@ -14,7 +14,7 @@ check_perso($joueur);
 verif_mort($joueur, 1);
 
 $W_case = $_GET['poscase'];
-$W_requete = 'SELECT * FROM map WHERE ID =\''.sSQL($W_case).'\'';
+$W_requete = 'SELECT * FROM map WHERE x = '.$joueur->get_x().' and y = '.$joueur->get_y();
 $W_req = $db->query($W_requete);
 $W_row = $db->read_array($W_req);
 $R = get_royaume_info($joueur->get_race(), $W_row['royaume']);

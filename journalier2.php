@@ -274,7 +274,7 @@ $col = 'info';
 $carte = 'image/carte.png';
 
 //Requète pour l'affichage de la map
-$requete = 'SELECT * FROM map ORDER BY id';
+$requete = 'SELECT * FROM map order by x,y';
 $req = $db->query($requete);
 
 $i = 0;
@@ -284,9 +284,9 @@ while($row = $db->read_array($req))
 	$rowid = $row['id'];
 	$W_terrain_case = $row['decor'];
 	
-	if (($coord['x'] != 0) AND ($coord['y'] != 0))
+	if (($row['x'] != 0) AND ($row['y'] != 0))
 	{
-		imagefilledrectangle($im, (($coord['x'] - 1) * 3), (($coord['y'] - 1) * 3), ((($coord['x'] - 1) * 3) + 2), ((($coord['y'] - 1) * 3) + 2), $show_info[$row[$col]]);
+		imagefilledrectangle($im, (($row['x'] - 1) * 3), (($row['y'] - 1) * 3), ((($row['x'] - 1) * 3) + 2), ((($row['y'] - 1) * 3) + 2), $show_info[$row[$col]]);
 	}
 	$i++;
 }
@@ -331,7 +331,7 @@ $col = 'royaume';
 $carte = 'image/carte_royaume.png';
 
 //Requète pour l'affichage de la map
-$requete = 'SELECT * FROM map ORDER BY id';
+$requete = 'SELECT * FROM map ORDER BY x,y';
 $req = $db->query($requete);
 
 $i = 0;
@@ -341,9 +341,9 @@ while($row = $db->read_array($req))
 	$rowid = $row['id'];
 	$W_terrain_case = $row['decor'];
 	
-	if (($coord['x'] != 0) AND ($coord['y'] != 0))
+	if (($row['x'] != 0) AND ($row['y'] != 0))
 	{
-		imagefilledrectangle($im, (($coord['x'] - 1) * 3), (($coord['y'] - 1) * 3), ((($coord['x'] - 1) * 3) + 2), ((($coord['y'] - 1) * 3) + 2), $show_info[$row[$col]]);
+		imagefilledrectangle($im, (($row['x'] - 1) * 3), (($row['y'] - 1) * 3), ((($row['x'] - 1) * 3) + 2), ((($row['y'] - 1) * 3) + 2), $show_info[$row[$col]]);
 	}
 	$i++;
 }

@@ -84,7 +84,7 @@ $col = 'royaume';
 $carte = 'image/carte/carte_diplo_'.$_GET['race'].'.png';
 
 //Requète pour l'affichage de la map
-$requete = 'SELECT ID, royaume FROM map ORDER BY ID';
+$requete = 'SELECT x,y, royaume FROM map ORDER BY x,y';
 $req = $db->query($requete);
 
 $i = 0;
@@ -93,9 +93,9 @@ while($row = $db->read_array($req))
 	$coord = convert_in_coord($row['ID']);
 	$rowid = $row['ID'];
 	
-	if (($coord['x'] != 0) AND ($coord['y'] != 0))
+	if (($row['x'] != 0) AND ($row['y'] != 0))
 	{
-		imagefilledrectangle($im, (($coord['x'] - 1) * 4), (($coord['y'] - 1) * 4), ((($coord['x'] - 1) * 4) + 3), ((($coord['y'] - 1) * 4) + 3), $show_info[$row[$col]]);
+		imagefilledrectangle($im, (($row['x'] - 1) * 4), (($row['y'] - 1) * 4), ((($row['x'] - 1) * 4) + 3), ((($row['y'] - 1) * 4) + 3), $show_info[$row[$col]]);
 	}
 	$i++;
 }

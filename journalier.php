@@ -101,7 +101,7 @@ while($row = $db->read_array($req))
 					case 'd' :
 					break;
 					case 'p' :
-						$where .= '(id - (floor(id / 1000) * 1000)) = '.$xy[0].' AND (floor(id / 1000)) = '.$xy[1];
+						$where .= 'x = '.$xy[0].' AND y = '.$xy[1];
 					break;
 				}
 			}
@@ -120,7 +120,7 @@ while($row = $db->read_array($req))
 		$ratio = $up / $down;
 		if($ratio > 50) $ratio = 50;
 		$limite = $ratio * 10000;
-		$requete = "SELECT id, info FROM map WHERE ".$where;
+		$requete = "SELECT x, y, info FROM map WHERE ".$where;
 		//echo $requete.'<br />';
 		$req2 = $db->query($requete);
 		while($row2 = $db->read_array($req2))

@@ -15,7 +15,7 @@ $position = convert_in_pos($joueur->get_x(), $joueur->get_y());
 //Vérifie si le perso est mort
 verif_mort($joueur, 1);
 $verif_ville = verif_ville($joueur->get_x(), $joueur->get_y());
-$W_requete = 'SELECT * FROM map WHERE ID =\''.sSQL($position).'\'';
+$W_requete = 'SELECT * FROM map WHERE x = '.$joueur->get_x().' and y = '.$joueur->get_y();
 $W_req = $db->query($W_requete);
 $W_row = $db->read_array($W_req);
 $R = new royaume($W_row['royaume']);
