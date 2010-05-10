@@ -138,7 +138,7 @@ echo "<div id='menu_date'><img src='image/interface/".moment_jour().
 </div>
 </div>";
 if (file_exists(root.'revision.inc')) {
-	echo "\n<div style=\"font-size: 0.5em; text-align: right; padding-right: 15px\">";
+	echo "\n<div id=\"revnum\" style=\"font-size: 0.3em; text-align: right; padding-right: 15px\">";
 	include_once(root.'revision.inc');
 	echo "</div>\n";
 }
