@@ -68,7 +68,7 @@ $query = "INSERT INTO `construction` (
 FROM `placement` WHERE type != 'drapeau' and `fin_placement` <= $now";
 
 //Requète pour l'affichage de la map
-$requete = 'SELECT * FROM map WHERE (((FLOOR(ID / '.$G_ligne.') >= '.$ymin.') AND (FLOOR(ID / '.$G_ligne.') <= '.$ymax.')) AND (((ID - (FLOOR(ID / '.$G_colonne.') * 1000)) >= '.$xmin.') AND ((ID - (FLOOR(ID / '.$G_colonne.') * 1000)) <= '.$xmax.'))) ORDER BY ID';
+$requete = "SELECT * FROM map WHERE $xmin <= x AND x <= $xmax AND $ymin <= y AND y <= $ymax ORDER BY y, x";
 $req = $db->query($requete);
 //Requète pour l'affichage des joueurs dans le périmètre de vision
 $requete_joueurs = 'SELECT ID, nom, level, race, x, y, classe, cache_classe, cache_niveau, hp, cache_stat, melee, distance, esquive, blocage, incantation, sort_vie, sort_element, sort_mort, craft, honneur, exp FROM perso WHERE (((x >= '.$xmin.') AND (x <= '.$xmax.')) AND ((y >= '.$ymin.') AND (y <= '.$ymax.'))) AND statut = \'actif\' ORDER BY y ASC, x ASC, dernier_connexion DESC';
@@ -96,13 +96,11 @@ while($row_batiment = $db->read_assoc($req_batiment)) $row_b[] = $row_batiment;
 
 while($row = $db->read_array($req)) {
   $square = $doc->createElement("square");
-  $coord = convert_in_coord($row['id']);
   // Square
-  cpyToAttr($square, $coord, array('x', 'y'));
-  cpyToAttr($square, $row, array('decor', 'royaume', 'type'));
+  cpyToAttr($square, $row, array('x', 'y', 'decor', 'royaume', 'type'));
 
   // Ourself
-  if ($coord_joueur['x'] == $coord['x'] && $coord_joueur['y'] == $coord['y']) {
+  if ($coord_joueur['x'] == $row['x'] && $coord_joueur['y'] == $row['y']) {
     for ($i = 0; $i < count($row_j); $i++) {
       if ($_SESSION['ID'] == $row_j[$i]['ID']) {
         $pc = $doc->createElement('pc');
@@ -121,8 +119,8 @@ while($row = $db->read_array($req)) {
   // PNJ
   if (!isset($_REQUEST['npc']) || $_REQUEST['npc']) {
     for ($i = 0; $i < count($row_pnj); $i++) {
-      if ($row_pnj[$i]['x'] == $coord['x'] && 
-          $row_pnj[$i]['y'] == $coord['y']) {
+      if ($row_pnj[$i]['x'] == $row['x'] && 
+          $row_pnj[$i]['y'] == $row['y']) {
         $pnj = $doc->createElement('npc');
         cpyToAttr($pnj, $row_pnj[$i], array('nom', 'image'));
         $square->appendChild($pnj);
@@ -133,8 +131,8 @@ while($row = $db->read_array($req)) {
   // Joueurs
   if (!isset($_REQUEST['pc']) || $_REQUEST['pc']) {
     for ($i = 0; $i < count($row_j); $i++) {
-      if ($row_j[$i]['x'] == $coord['x'] &&
-	  $row_j[$i]['y'] == $coord['y']) {
+      if ($row_j[$i]['x'] == $row['x'] &&
+	  $row_j[$i]['y'] == $row['y']) {
 	if ($_SESSION['ID'] == $row_j[$i]['ID']) continue; // Ourself
 	$pc = $doc->createElement('pc');
 	cpyToAttr($pc, $row_j[$i], array('nom', 'race'));
@@ -165,7 +163,7 @@ while($row = $db->read_array($req)) {
   // Batiments
   if (!isset($_REQUEST['buildings']) || $_REQUEST['buildings']) {
     for ($i = 0; $i < count($row_b); $i++) {
-      if ($row_b[$i]['x'] == $coord['x'] && $row_b[$i]['y'] == $coord['y']) {
+      if ($row_b[$i]['x'] == $row['x'] && $row_b[$i]['y'] == $row['y']) {
         $building = $doc->createElement('building');
         cpyToAttr($building, $row_b[$i], array('nom', 'royaume', 'hp'));
         $building->setAttribute('image', $row_b[$i]['image'].'_04');
@@ -177,7 +175,7 @@ while($row = $db->read_array($req)) {
   // Drapeaux
   if (!isset($_REQUEST['flags']) || $_REQUEST['flags']) {
     for ($i = 0; $i < count($row_d); $i++) {
-      if ($row_d[$i]['x'] == $coord['x'] && $row_d[$i]['y'] == $coord['y']) {
+      if ($row_d[$i]['x'] == $row['x'] && $row_d[$i]['y'] == $row['y']) {
         $temps_passe = time() - $row_d[$i]['debut_placement'];
         $temps_total = $row_d[$i]['fin_placement'] -
           $row_d[$i]['debut_placement'];
@@ -202,7 +200,7 @@ while($row = $db->read_array($req)) {
   // Monstres
   if (!isset($_REQUEST['monsters']) || $_REQUEST['monsters']) {
     for ($i = 0; $i < count($row_m); $i++) {
-      if ($row_m[$i]['x'] == $coord['x'] && $row_m[$i]['y'] == $coord['y']) {
+      if ($row_m[$i]['x'] == $row['x'] && $row_m[$i]['y'] == $row['y']) {
         $monster = $doc->createElement('monster');
         cpyToAttr($monster, $row_m[$i], array('nom', 'lib'));
         $square->appendChild($monster);

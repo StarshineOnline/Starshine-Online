@@ -144,11 +144,9 @@ function gen_arene($x, $y, $size, $nom, $import = false, $make_import = false)
 		$cases = $xml->createElement('cases');
 		$root->appendChild($cases);
 		
-		$q = "select decor, FLOOR(id / 1000) y, (id - (FLOOR(id / 1000) * 1000))".
-			" x from map where ((FLOOR(id / 1000) >= $y) AND ".
-			"(FLOOR(id / 1000) < ($y + $size))) AND ".
-			"(((id - (FLOOR(id / 1000) * 1000)) >= $x) AND ".
-			"((id - (FLOOR(id / 1000) * 1000)) < ($x + $size))) ORDER BY id;";
+		$q = "select decor, y, x from map where ".
+			"$y <= y AND y < ($y + $size) AND ".
+			"$x <= x AND x < ($x + $size) ORDER BY x,y";
 		$req = $db->query($q);
 		while ($row = $db->read_assoc($req)) {
 			$case = $xml->createElement('case');
