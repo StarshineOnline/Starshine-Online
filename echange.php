@@ -102,7 +102,7 @@ if(array_key_exists('valid_etape', $_GET))
 				$echange = recup_echange($echange['id_echange']);
 			}
 			//On passe l'échange en mode proposition
-			$requete = "UPDATE echange SET statut = 'proposition' WHERE id_echange = ".sSQL($_GET['id_echange']);
+			$requete = "UPDATE echange SET statut = 'proposition' WHERE id_echange = '".sSQL($_GET['id_echange'])."'";
 			if($db->query($requete))
 			{
 				//On envoi un message au gars
@@ -126,7 +126,7 @@ if(array_key_exists('valid_etape', $_GET))
 				$echange = recup_echange($echange['id_echange']);
 			}
 			//On passe l'échange en mode finalisation
-			$requete = "UPDATE echange SET statut = 'finalisation' WHERE id_echange = ".sSQL($_GET['id_echange']);
+			$requete = "UPDATE echange SET statut = 'finalisation' WHERE id_echange = '".sSQL($_GET['id_echange'])."'";
 			if($db->query($requete))
 			{
 				//On envoi un message au gars <== a faire ==>
@@ -208,7 +208,7 @@ if(array_key_exists('valid_etape', $_GET))
 						$db->query($requete);
 						//On met a jour le statut de l'échange
 						//On passe l'échange en mode fini
-						$requete = "UPDATE echange SET statut = 'fini' WHERE id_echange = ".sSQL($_GET['id_echange']);
+						$requete = "UPDATE echange SET statut = 'fini' WHERE id_echange = '".sSQL($_GET['id_echange'])."'";
 						if($db->query($requete))
 						{
 							//On envoi un message au gars <== a faire ==>
