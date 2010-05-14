@@ -963,11 +963,16 @@ else
 						if($membre->is_buff('moral')) $honneur_gagne = floor( $honneur_gagne * (1 + ($membre->get_buff('moral', 'effet') / 100)) );
 						if($membre->is_buff('cacophonie')) $honneur_gagne = floor( $honneur_gagne * (1 - ($membre->get_buff('cacophonie', 'effet') / 100)) );
 						$reputation_gagne = floor($honneur_gagne / 10);
+
+						// Pas d'honneur pour un kill de sa propre race
+						if ($membre->get_race() == $passif->get_race())
+							$honneur_gagne = 0;
+
 						$membre->set_star($membre->get_star() + $star);
 						$membre->set_exp($membre->get_exp() + $xp_gagne);
 						$membre->set_honneur($membre->get_honneur() + $honneur_gagne);
 						$membre->set_reputation($membre->get_reputation() + $reputation_gagne);
-						$msg_xp .= $membre->get_nom().' gagne <strong class="reward">'.$xp_gagne.' XP</strong> et <strong class="reward">'.$honneur_gagne.' points d\'honneur</strong><br />';
+						$msg_xp .= $membre->get_nom().' gagne <strong class="reward">'.$xp_gagne.' XP</strong>, <strong class="reward">'.$honneur_gagne.' points d\'honneur</strong>, et <strong class="reward">'.$reputation_gagne.' points de réputation</strong><br />';
 						$membre->sauver();
 						if($membre->get_id() == $attaquant->get_id()) verif_action('J'.$row_diplo[0], $membre, 's');
 						else verif_action('J'.$row_diplo[0], $membre, 'g');

@@ -625,7 +625,7 @@
   case 'criminel':
 		echo "<div id='criminel'>";
 	    //Sélection de tous les joueurs ayant des points de crime
-	    $requete = "SELECT * FROM perso WHERE crime > 0 AND race = '".$royaume->get_race()."' AND perso.statut = 'actif' ORDER BY crime DESC";
+	    $requete = "SELECT id, nom, crime FROM perso WHERE crime > 0 AND race = '".$royaume->get_race()."' AND perso.statut = 'actif' ORDER BY crime DESC";
 	    $req = $db->query($requete);
 	    ?>
 	    <fieldset>	    	    	    	    
