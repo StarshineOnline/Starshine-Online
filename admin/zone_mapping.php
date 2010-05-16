@@ -11,8 +11,9 @@ $zones_type = array( /* Pas de zone par défaut */
 										'nuage',
 										'pluie',
 										'neige',
-										'oiseau',
 										'ambiance',
+										'roches',
+										'tempete',
 										'test',
 );
 /* Fin du tableau */
