@@ -124,7 +124,7 @@ class map
 		}
 		if ($this->troisd)
 		{
-			echo "<div id='carte_3D'>";
+			echo "<div id=\"carte_3D\">";
 			//echo "<div><b>Debug :</b><br/>x : $x, y : $y<br/>x_min : $x_min, x_max : $x_max<br/>y_min : $y_min, y_max : $y_max<br/></div>";
 			{//-- MAP
 				$_NB_CASE = 7;
@@ -255,7 +255,7 @@ class map
 						
 						echo "<li class='".$class_map."' style='top:".$y_pos."px;left:".$x_pos."px;z-index:$z_index;'>";
 						echo " <div class='map_contenu' 
-									id='marq$case' 
+									id=\"marq$case\" 
 									style=\"".$background.$border.$opacity."margin-top:-15px;width:100px;\" ";
 						if(!empty($overlib))
 						{
@@ -268,7 +268,7 @@ class map
 						}
 						else $onclick = $this->onclick;
 						echo " 		onclick=\"".$onclick."\" 
-							   ><span id='pos_".$MAPTAB[$x_map][$y_map]["id"]."'>".$repere."</span></div>
+							   ><span id=\"pos_".$MAPTAB[$x_map][$y_map]["id"]."\">".$repere."</span></div>
 							  </li>";	
 						
 						echo "</li>";
@@ -283,13 +283,13 @@ class map
 					echo "</ul>";
 				}	
 				echo "<ul>
-					   <li id='bord_gauche' style='top:".$y_pos."px;left:".$x_pos."px;z-index:$z_index;'></li>";
+					   <li id=\"bord_gauche\" style=\"top:".$y_pos."px;left:".$x_pos."px;z-index:$z_index;\"></li>";
 				$z_index --;
 				$x_pos += floor($w_box / 2);
 				$y_pos -= floor($h_box / 2);
 				for($x_map = $this->xmin; $x_map <= $this->xmax; $x_map++)
 				{
-					echo " <li class='bord_haut' style='top:".$y_pos."px;left:".$x_pos."px;z-index:$z_index;'>$x_map<br/>X</li>";
+					echo " <li class=\"bord_haut\" style=\"top:".$y_pos."px;left:".$x_pos."px;z-index:$z_index;\">$x_map<br/>X</li>";
 					$z_index --;
 					$x_pos += floor($w_box / 2);
 					$y_pos -= floor($h_box / 2);
@@ -303,8 +303,8 @@ class map
 		{
 			echo '<div class="div_map" style="width : '.round(20 + ($taille_cellule * $this->case_affiche)).'px;height:'.round(20 + ($taille_cellule * $this->case_affiche)).'px;">';
 			{//-- Affichage du bord haut (bh) de la map
-				echo "<ul id='".$classe_css['map_bord_haut']."'>
-					   <li id='".$classe_css['map_bord_haut_gauche']."'";if (!empty($class_css['resolution'])) {echo "class='".$class_css['resolution']."'";} echo "onclick=\"$this->show_royaume_button\">&nbsp;</li>";
+				echo "<ul id=\"".$classe_css['map_bord_haut']."\">
+					   <li id=\"".$classe_css['map_bord_haut_gauche']."\" ";if (!empty($class_css['resolution'])) {echo "class=\"".$class_css['resolution']."\" ";} echo "onclick=\"$this->show_royaume_button\">&nbsp;</li>";
 				for ($bh = $this->xmin; $bh <= $this->xmax; $bh++)
 				{
 					if($bh == $this->x) { $class_x = "id='bord_haut_x' "; } else { $class_x = ""; }; //-- Pour mettre en valeur la position X ou se trouve le joueur
@@ -451,7 +451,8 @@ class map
 																			$this->map[$x_map][$y_map]['calque_dy']);
 						}
 						echo "<span id='pos_".$MAPTAB[$x_map][$y_map]["id"]."'>".$repere."</span></div>";
-						if ($this->atmosphere_type != false)
+						if ($this->atmosphere_type != false || 
+								isset($this->map[$x_map][$y_map]['calque']))
 							echo '</div>';
 						echo "\n</li>";	
 						
