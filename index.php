@@ -228,21 +228,5 @@ N'oubliez pas de reporter les bugs et problèmes, et d'apporter vos suggestions 
 	 <p>Liens d'aide au jeu : <a href='http://wiki.starshine-online.com/'>Comprendre Starshine</a> <a href='http://bug.starshine-online.com/'>Signaler un Bug</a> <a href='http://forum.starshine-online.com/'>Le Forum
 	 </a></p>
 	</div>
-
-	<div id='accueil_pub'>
-	<script type="text/javascript"><!--
-google_ad_client = "pub-7541997421837440";
-/* 468x60, date de création 06/01/09 */
-google_ad_slot = "3202928182";
-google_ad_width = 468;
-google_ad_height = 60;
-//-->
-</script>
-<script type="text/javascript"
-src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
-</script>
-	
-	</div>
-</div>
 </body>
 </html>
