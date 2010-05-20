@@ -2,7 +2,6 @@
 if (file_exists('root.php'))
   include_once('root.php');
 
-
 //Inclusion du haut du document html
 include_once(root.'haut_ajax.php');
 
@@ -13,11 +12,13 @@ check_perso($joueur);
 //Vérifie si le perso est mort
 verif_mort($joueur, 1);
 
-$W_requete = "SELECT royaume FROM map WHERE x = ".$joueur->get_x()." and y = ".$joueur->get_y();
+$W_requete = "SELECT royaume,type FROM map WHERE x = ".$joueur->get_x()." and y = ".$joueur->get_y();
 $W_req = $db->query($W_requete);
 $W_row = $db->read_array($W_req);
 $R = new royaume($W_row['royaume']);
 $R->get_diplo($joueur->get_race());
+if ($W_row['type'] != '1') security_block(URL_MANIPULATION, 'Accès hors de la ville');
+$pos = $joueur->get_pos();
 
 if ($joueur->get_race() != $R->get_race() &&
 		$R->get_diplo($joueur->get_race()) > 6)
@@ -29,7 +30,7 @@ if ($joueur->get_race() != $R->get_race() &&
 if(array_key_exists('fort', $_GET)) $fort = '&amp;fort=ok'; else $fort = '';
 ?>
 <fieldset>
-    	<legend><?php if(!array_key_exists('fort', $_GET)) return_ville('<a href="ville.php" onclick="return envoiInfo(this.href, \'centre\')">'.$R->get_nom().'</a> > ', $pos); ?> <?php echo '<a href="taverne.php" onclick="return envoiInfo(this.href,\'carte\')">';?> Alchimiste </a></legend>
+    	<legend><?php if(!array_key_exists('fort', $_GET)) return_ville('<a href="ville.php" onclick="return envoiInfo(this.href, \'centre\')">'.$R->get_nom().'</a> > ', $pos); ?> <?php echo '<a href="alchimiste.php" onclick="return envoiInfo(this.href,\'carte\')">';?> Alchimiste </a></legend>
 				<?php include_once(root.'ville_bas.php');?>
 		<?php
 $W_distance = detection_distance($pos, $joueur->get_pos());
