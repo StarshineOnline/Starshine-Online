@@ -19,7 +19,6 @@ $W_row = $db->read_assoc($W_req);
 $R = new royaume($W_row['royaume']);
 $R->get_diplo($joueur->get_race());
 
-
 if ($joueur->get_race() != $R->get_race() &&
 		$R->get_diplo($joueur->get_race()) > 6)
 {

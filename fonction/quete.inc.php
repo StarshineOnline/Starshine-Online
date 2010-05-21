@@ -37,10 +37,11 @@ function verif_action($type_cible, $joueur, $mode)
 		$echo = '';
 		while($i < $count && array_key_exists('id_quete', $liste_quete[$i]))
 		{
-			if ($liste_quete[$i]['id_quete'] == '') {
-				mail('irulan@geekwu.org', '[Starshine-Online] bug', $joueur->get_nom().
-						 " a une quete invalide dans sa liste\n".
-						 print_r($liste_quete, true));
+			if ($liste_quete[$i]['id_quete'] == '')
+			{
+				$log_admin = new log_admin();
+				$message = $joueur->get_nom()." a une quete invalide dans sa liste";
+				$log_admin->send($joueur->get_id(), 'bug quete', $message);
 				$i++;
 				continue;
 			}

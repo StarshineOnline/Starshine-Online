@@ -289,7 +289,7 @@ $this-><?php echo $champ_reference; ?> = $<?php echo $champ_reference; ?>;
 		echo '
 }
 
-class'.$table.' extends '.${table}.'_db {
+class '.$table.' extends '.${table}.'_db {
   function __construct('.$liste_arguments.') {
     if( (func_num_args() == 1) && (
          is_numeric($'.$champ_reference.') || is_array($'.$champ_reference.')))

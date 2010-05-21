@@ -375,8 +375,14 @@ function ressource_terrain($terrain)
  * 
  * @return numéro du type de terrain si la case appartient à un royaume false sinon.
  */
-function is_ville($x, $y)
+function is_ville($x, $y = false)
 {
+	if($y == false)
+	{
+		$xy = convert_in_coord($x);
+		$x = $xy['x'];
+		$y = $xy['y'];
+	}
 	global $db;
 	$requete = "SELECT type, royaume FROM map WHERE x = $x and y = $y";
 	$req = $db->query($requete);

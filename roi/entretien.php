@@ -18,10 +18,10 @@ $semaine = time() - (3600 * 24 * 7);
 $royaumes = array();
 if ($ref_ta > 3)
 {
-	echo "Niveau de référence pour l'entretien: 4\n<br />";
+	echo "Niveau de référence pour l'entretien: 4";
 	$requete = "SELECT race, COUNT(*) as tot FROM perso WHERE level > 3 AND dernier_connexion > $semaine GROUP BY race";
 } else {
-	echo "Niveau de référence pour l'entretien: $ref_ta\n<br />";
+	echo "Niveau de référence pour l'entretien: $ref_ta";
 	$requete = "SELECT race, COUNT(*) as tot FROM perso WHERE level > $ref_ta AND dernier_connexion > $semaine GROUP BY race";
 }
 $req = $db->query($requete);
@@ -36,6 +36,7 @@ if($joueur->get_rang_royaume() != 6 AND $joueur->get_id() != $royaume->get_minis
 else 
 {
 if($ratio < 1) $ratio = 1;
+echo ' , Multiplicateur d\'entretien : '.$ratio.'<br />';
 echo '
 <fieldset class="tier">
 <legend>Batiments interne</legend>
@@ -45,7 +46,9 @@ echo '
 			while($row = $db->read_assoc($req))
 			{
 				$entretien = ceil($row['entretien'] * $ratio);
-				echo '<li><span class="nom">'.$row['nom'].' :</span><span class="cout">-'.$entretien.'</span></li>';
+				if($ratio != 1) $base = ' <span class="xsmall">('.$row['entretien'].')</span>';
+				else $base = '';
+				echo '<li><span class="nom">'.$row['nom'].'</span><span class="cout">: -'.$entretien.' '.$base.'</span></li>';
 				$royaumes[$row['id_royaume']]['batiments'][$row['id_const']] = $entretien;
 				$royaumes[$row['id_royaume']]['total'] += $entretien;
 			}
@@ -65,8 +68,10 @@ echo '
 			while($row = $db->read_assoc($req))
 			{
 				$entretien = ceil($row['entretien'] * $ratio);
+				if($ratio != 1) $base = ' <span class="xsmall">('.$row['entretien'].')</span>';
+				else $base = '';
 				echo '
-				<li><span class="nom">'.$row['nom_b'].' ('.$row['x_c'].' - '.$row['y_c'].') :</span><span class="cout"> -'.$entretien.'</span></li>';
+				<li><span class="nom">'.$row['nom_b'].' ('.$row['x_c'].' - '.$row['y_c'].')</span><span class="cout">: -'.$entretien.''.$base.'</span></li>';
 				$royaumes[$row['royaume']]['total_c'] += $entretien;
 			}
 			echo '
