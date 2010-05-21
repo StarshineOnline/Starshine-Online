@@ -88,6 +88,11 @@ else
 	$menu[$i++]['acces'] = '';
 	$acces[] = '';
 	
+	$menu[$i]['nom'] = 'Log admin';
+	$menu[$i]['url'] = 'log_admin.php';
+	$menu[$i++]['acces'] = '';
+	$acces[] = '';
+	
 	$menu[$i]['nom'] = 'Multi-Compte';
 	$menu[$i]['url'] = 'admin_2.php';
 	$menu[$i++]['acces'] = '';

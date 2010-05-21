@@ -301,5 +301,30 @@ class log_admin extends log_admin_db {
 	  $this->sauver();
   }
 
+	static function display_all($where = false, $limit = false)
+	{
+		global $db;
+		$requete = 'SELECT l.id, l.id_joueur, p.nom, l.type, l.message, l.date FROM log_admin l, perso p WHERE l.id_joueur = p.id ';
+		if ($where != false) 
+			$requete .= " AND $where ";
+		$requete .= ' ORDER BY l.date DESC ';
+		if ($limit != false) 
+			$requete .= " LIMIT $limit";
+		$req = $db->query($requete);
+		$out = '<ul>';
+		if($db->num_rows($req) > 0)
+		{
+			while($row = $db->read_assoc($req))
+			{
+				// TODO: fonctions diverses ...
+				$out .= "<li>$row[nom] ($row[date]|$row[type]): $row[message]</li>";
+			}
+		} else {
+			$out .= 'Aucun';
+		}
+		$out .= '</ul>';
+		return $out;
+	}
+
 }
 ?>

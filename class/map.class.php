@@ -146,7 +146,7 @@ class map
 				{
 					if( ($y_map % 2) == 0) { $moins = 1; } else { $moins = 0; };
 					echo "<ul>
-						   <li class='bord_bas' style='top:".$y_pos."px;left:".$x_pos."px;z-index:$z_index;'>$y_map<br/>Y</li>";
+						   <li class=\"bord_bas\" style=\"top:".$y_pos."px;left:".$x_pos."px;z-index:$z_index;\">$y_map<br/>Y</li>";
 					$z_index --;
 					$x_pos += floor($w_box / 2);
 					$y_pos -= floor($h_box / 2);
