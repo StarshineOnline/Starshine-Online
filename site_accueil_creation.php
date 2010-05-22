@@ -36,7 +36,10 @@ else
 	$nombre = check_existing_account($pseudo);
 	if ($nombre > 0)
 	{
-		echo 'Erreur nom déjà utilisé';
+		?>
+		Erreur nom déjà utilisé<br />
+		<a href="http://www.starshine-online.com/#creation">Réessayer</a>
+		<?php
 	}
 	else
 	{
