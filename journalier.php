@@ -59,11 +59,11 @@ while($row = $db->read_array($req))
 		}
 }
 
-
 //Sélection des monstres
 $requete = "SELECT * FROM monstre ORDER BY level";
 $req = $db->query($requete);
-$insert = 'INSERT INTO map_monstre VALUES';
+$insert_file = tempnam("/tmp", "journalier");
+$handle = fopen($insert_file, "w");
 $check_virgule = false;
 $total_monstre = 0;
 while($row = $db->read_array($req))
@@ -125,7 +125,8 @@ while($row = $db->read_array($req))
 		$req2 = $db->query($requete);
 		while($row2 = $db->read_array($req2))
 		{
-			if (in_array($row2['id'], $arenes))
+			$id2 = convert_in_pos($row2['x'], $row2['y']);
+			if (in_array($id2, $arenes))
 				continue; // On ne fait pas poper dans les arenes
 
 			//echo $row2['id'].' '.$row2['info'].' ';
@@ -138,10 +139,9 @@ while($row = $db->read_array($req))
 				if($rand < $limite OR $spawn == 0)
 				{
 					$check = true;
-					$coord = convert_in_coord($row2['id']);
 					if($spawn == 0)
 					{
-						$requete = "SELECT id FROM map_monstre WHERE x = ".$coord['x']." AND y = ".$coord['y']." AND type = ".$id;
+						$requete = "SELECT id FROM map_monstre WHERE x = ".$row2['x']." AND y = ".$row2['y']." AND type = ".$id;
 						$req4 = $db->query($requete);
 						//echo $requete.'<br />';
 						if($db->num_rows > 0) $check = false;
@@ -150,26 +150,13 @@ while($row = $db->read_array($req))
 					{
 						$temps_mort = $niveau * 1 * 30 * 24 * 60 * 60;
 						$mort_naturelle = time() + $temps_mort;
-						if(!$check_virgule) $check_virgule = true;
-						else
-						{
-							$insert .= ', ';
-						}
 						//Création d'un monstre sur la map
-						$insert .= "(NULL,'".$id."','".$coord['x']."','".$coord['y']."','".$hp."', ".$niveau.", '".addslashes($nom)."','".$lib."', ".$mort_naturelle.")";
-						//echo $requete.'<br />';
-						//$req3 = $db->query($requete);
+						//$insert .= "(NULL,'".$id."','".$coord['x']."','".$coord['y']."','".$hp."', ".$niveau.", '".addslashes($nom)."','".$lib."', ".$mort_naturelle.")";
+						fwrite($handle, "\\N\t'".$id."'\t'".$row2['x']."'\t'".
+									 $row2['y']."'\t'".$hp."'\t'".$niveau."'\t'".
+									 addslashes($nom)."'\t'".$lib."'\t'".$mort_naturelle."'\n");
 						$tot_monstre++;
 						$total_monstre++;
-						if(($total_monstre % 500) == 0)
-						{
-							$db->query($insert);
-							echo "insert done\n";
-							//echo $insert.'<br /><br /><br /><br />';
-							$insert = 'INSERT INTO map_monstre VALUES';
-							$check_virgule = false;
-							$total_monstre = 0;
-						}
 					}
 				}
 			}
@@ -180,9 +167,16 @@ while($row = $db->read_array($req))
 	$mail .= $next_line;
 }
 
-$db->query($insert);
-//echo $insert.'<br /><br /><br /><br />';
+fclose($insert_file);
+$ret = $db->query("load data local infile \"$insert_file\" into table map_monstre FIELDS ENCLOSED BY ''''");
+$ret_info = $db->get_mysql_info();
 echo "insert done\n";
+var_dump($ret_info);
+if ($ret_info['warnings'] == 0) {
+	unlink($insert_file);
+} else {
+	echo "Warnings detected: file kept\n";
+}
 
 //Si le premier du mois, pop des boss de donjons
 if(date("j") == 1)
