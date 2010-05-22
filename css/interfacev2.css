@@ -44,7 +44,7 @@ body { margin:0; padding:0; background:#7e909c url(../image/v2/bg_site.png) repe
 #menu_details .menu { width:120px; display:block; float:left; cursor:pointer; text-align:center; border-left:1px solid #CCC; border-rightr:1px solid #CCC; }
 #menu_details .menu:hover { background:transparent url(../image/v2/bouton_hover.png) no-repeat left; padding-top:1px; }
 #menu_deco { float:right; cursor:pointer; margin-right:9px; line-height:20px; font-size:.9em; }
-#contenu_back { margin:0; padding:0; overflow:auto; }
+#contenu_back { margin:0; padding:0; }
 #contenu { width:1000px; margin:auto; min-height:700px; }
 #news { width:830px; float:left; }
 #mort fieldset { -moz-border-radius: 10px;-moz-border-radius: 10px; border-radius: 10px; width:46%;float:left;margin:8px;}
