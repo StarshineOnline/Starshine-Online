@@ -101,19 +101,6 @@ function switch_race()
 	
 ?>
 	</div>
-	<div class='pub'>
-					<script type='text/javascript'><!--
-					google_ad_client = 'pub-7541997421837440';
-					/* accueil */
-					google_ad_slot = '8229796384';
-					google_ad_width = 120;
-					google_ad_height = 600;
-					//-->
-					</script>
-					<script type='text/javascript'
-					src='http://pagead2.googlesyndication.com/pagead/show_ads.js'>
-					</script>
-	</div>
 </div>
 </div>
 <div id='bas'>

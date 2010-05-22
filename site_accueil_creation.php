@@ -33,7 +33,7 @@ else
 	//$requete = "SELECT ID FROM perso WHERE nom = '".$pseudo."'";
 	//$req = $db->query($requete);
 	//$nombre = $db->num_rows;
-  $nombre = check_existing_account($pseudo);
+	$nombre = check_existing_account($pseudo);
 	if ($nombre > 0)
 	{
 		echo 'Erreur nom déjà utilisé';
@@ -44,9 +44,9 @@ else
 		include_once(root.'inc/classe.inc.php');
 		
 		echo 
-		'<h3>Bienvenue dans Starshine-Online</h3>'.
-		'<div style="padding:5px">'.
-		'	Vous venez de créer un '.$Gtrad[$race].' '.$classe.' du nom de '.$pseudo.'<br />';
+		'<h3>Bienvenue dans Starshine-Online</h3>
+		<div style="padding:5px">
+			Vous venez de créer un '.$Gtrad[$race].' '.$classe.' du nom de '.$pseudo.'<br />';
 ?>
 			N'hésitez pas à aller voir régulièrement les informations fournies dans votre forum de race, et de lire le message de votre roi.<br />
 			Bon jeu !<br />

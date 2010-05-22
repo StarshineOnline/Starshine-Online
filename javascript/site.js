@@ -34,7 +34,7 @@ function race(input_race,input_classe)
 	}
 	$('#'+input_race+'_'+input_classe).className = 'perso_selected';
 	$('#perso_selected_id').val(input_race+'_'+input_classe);
-	$('#personnage').show();	
+	$('#personnage').show();
 	$('#personnage').load('./site_accueil_personnage.php?race='+input_race+'&classe='+input_classe);
 }
 function validation_perso()
@@ -60,7 +60,8 @@ function validation_perso()
 		var tmp = $('#perso_selected_id').val();
 		var perso = tmp.split('_');
 
-		$('#personnage_box').load('./site_accueil_creation.php?race='+perso[0]+'&classe='+perso[1]+'&pseudo='+encodeURIComponent($('#creat_nom').val())+'&mdp='+encodeURIComponent($('#creat_pass').val()));
+		$('#creation_box').load('./site_accueil_creation.php?race='+perso[0]+'&classe='+perso[1]+'&pseudo='+encodeURIComponent($('#creat_nom').val())+'&mdp='+encodeURIComponent($('#creat_pass').val()));
+		$('#personnage').hide();
 	}
 }
 function affichePopUpErreur(erreur)
