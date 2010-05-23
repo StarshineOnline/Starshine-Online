@@ -129,6 +129,6 @@ foreach ($ts as $tt => $tn)
 	</table>
 </div>
 <div id="desc_quete" class="quete_description">
-	Pour avoir une description plus précise d'une quète, il vous faut simplement cliquer sur son titre dans la partie du haut.
+	Pour avoir une description plus précise d'une quête, il vous faut simplement cliquer sur son titre dans la partie du haut.
 </div>
 </fieldset>

@@ -10,31 +10,31 @@ if($joueur->get_rang_royaume() != 6  AND $joueur->get_id() != $royaume->get_mini
 	echo '<p>Cette page vous est interdit</p>';
 else if($_GET['action'] == 'achat')
 {
-	//Récupère les informations sur la quète
+	//Récupère les informations sur la quête
 	$requete = "SELECT * FROM quete WHERE id = '".sSQL($_GET['id'])."'";
 	$req = $db->query($requete);
 	$row = $db->read_assoc($req);
 	//Vérifie que le royaume a assez de stars pour l'acheter
 	if($royaume->get_star() >= $row['star_royaume'])
 	{
-		//Ajout de la quète dans la liste des quètes du royaume
+		//Ajout de la quête dans la liste des quêtes du royaume
 		$requete = "INSERT INTO quete_royaume VALUES('', ".$royaume->get_id().", ".$row['id'].")";
 		$req = $db->query($requete);
 		//Mis a jour des stars du royaume
 		$requete = "UPDATE royaume SET star = star - ".$row['star_royaume']." WHERE ID = ".$royaume->get_id();
 		$req = $db->query($requete);
-		echo '<h6>Votre royaume a bien acheté la quète "'.$row['nom'].'</h6>';
+		echo '<h6>Votre royaume a bien acheté la quête "'.$row['nom'].'</h6>';
 	}
 	else
 	{
-		echo '<h5>Votre royaume n\'a pas assez de stars pour acheter cette quète.</h5>';
+		echo '<h5>Votre royaume n\'a pas assez de stars pour acheter cette quête.</h5>';
 	}
 	?>
 	<?php
 }
 elseif($_GET['action'] == 'voir')
 {
-	//Récupère les informations sur la quète
+	//Récupère les informations sur la quête
 	$requete = "SELECT * FROM quete WHERE id = ".sSQL($_GET['id']);
 	$req = $db->query($requete);
 	$row = $db->read_assoc($req);
@@ -59,7 +59,7 @@ elseif($_GET['action'] == 'voir')
 				$qreq = $db->query($requete);
 				$qrow = $db->read_assoc($qreq);
 				?>
-			<li>Avoir fini la quète : <?php echo $qrow['nom']; ?></li>
+			<li>Avoir fini la quête : <?php echo $qrow['nom']; ?></li>
 				<?php
 			}
 		}
@@ -98,7 +98,7 @@ elseif($_GET['action'] == 'voir')
 	</ul>
 	<h3>Cout pour le royaume : <?php echo $row['star_royaume']; ?> stars</h3>
 	<br />
-	<a onclick="envoiInfo('quete.php?direction=quete&amp;action=achat&amp;id=<?php echo $row['id']; ?>','message_confirm');envoiInfo('quete.php','contenu_jeu');refresh('perso_contenu.php','perso_contenu');$('#popup').hide();">Acheter cette quète</a><br />
+	<a onclick="envoiInfo('quete.php?direction=quete&amp;action=achat&amp;id=<?php echo $row['id']; ?>','message_confirm');envoiInfo('quete.php','contenu_jeu');refresh('perso_contenu.php','perso_contenu');$('#popup').hide();">Acheter cette quête</a><br />
 	<br />
 	<?php
 }
@@ -134,7 +134,7 @@ else
 			<span class='quete_star'>".$quete->star."</span>
 			<span class='quete_exp'>".$quete->exp."</span>
 			<span class='quete_honneur'>".$quete->honneur."</span>
-			<span class='quete_achat'><a onclick=\"affichePopUp('quete.php?".$href."');\" id='quete_".$quete->id."'>Détails de la quète</a></span>
+			<span class='quete_achat'><a onclick=\"affichePopUp('quete.php?".$href."');\" id='quete_".$quete->id."'>Détails de la quête</a></span>
 		</li>";
 		if ($class == 't1'){$class = 't2';}else{$class = 't1';}		
 	}

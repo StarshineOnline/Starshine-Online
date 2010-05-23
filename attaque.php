@@ -1286,7 +1286,7 @@ else
 						}
 						else $star_joueur = 0;
 						$msg_xp .= $membre->get_nom().' gagne <strong class="reward">'.$xp_joueur.' XP</strong> et <strong class="reward">'.$star_joueur.' Stars</strong><br />';
-						//Vérification de l'avancement des quètes solo pour le tueur, groupe pour les autres
+						//Vérification de l'avancement des quêtes solo pour le tueur, groupe pour les autres
 						if($defenseur->get_hp() <= 0)
 						{
 							if($membre->get_id() == $attaquant->get_id()) verif_action('M'.$map_monstre->get_type(), $membre, 's');

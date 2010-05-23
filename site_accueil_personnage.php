@@ -55,7 +55,7 @@ echo "<h3>".$Gtrad[$race]." - ".$classe."</h3>
 					<span>Dextérité</span>
 					<span>".$Trace[$race]['dexterite']."</span>
 				</li>
-				<li title='Augmente vos dégats magiques.'>
+				<li title='Augmente vos dégâts magiques.'>
 					<span>Puissance</span>
 					<span>".$Trace[$race]['puissance']."</span>
 				</li>	

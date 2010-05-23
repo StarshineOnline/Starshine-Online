@@ -1045,12 +1045,12 @@ foreach($tab_loc as $loc)
 				case 'arme' :
 					if($loc['loc'] == 'main_droite')
 					{
-						echo '<br />Dégats : '.$joueur->get_arme_degat('droite');
+						echo '<br />Dégâts : '.$joueur->get_arme_degat('droite');
 					}
 					else
 					{
-						if($row['type'] == 'dague')	echo '<br />Dégats : '.$joueur->get_arme_degat('gauche');
-						else echo '<br />Dégats absorbés : '.$joueur->get_bouclier()->degat;
+						if($row['type'] == 'dague')	echo '<br />Dégâts : '.$joueur->get_arme_degat('gauche');
+						else echo '<br />Dégâts absorbés : '.$joueur->get_bouclier()->degat;
 					}
 				break;
 				case 'armure' :

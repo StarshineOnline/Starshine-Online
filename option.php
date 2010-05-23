@@ -89,7 +89,7 @@ include_once(root.'inc/fp.php');
 					break;
 					case 'journal' :
 						$liste_options = array('soin', 'gsoin', 'buff', 'gbuff',  'degat', 'kill', 'quete', 'loot');
-						$liste_options_nom = array('Soins', 'Soins de groupe', 'Buffs', 'Buffs de groupe', 'Dégats', 'Kills', 'Quètes', 'Loots');
+						$liste_options_nom = array('Soins', 'Soins de groupe', 'Buffs', 'Buffs de groupe', 'Dégâts', 'Kills', 'Quêtes', 'Loots');
 						$options = recup_option($_SESSION['ID']);
 						if(array_key_exists('submit', $_POST))
 						{
@@ -135,7 +135,7 @@ include_once(root.'inc/fp.php');
 							echo '<h6>Filtre du journal modifié avec succès</h6>';
 						}
 						?>
-						Elements que vous ne voulez pas voir apparaitre dans votre journal des actions :
+						Éléments que vous ne voulez pas voir apparaitre dans votre journal des actions :
 						<form method="post" action="option.php?action=journal" id="formJournal">
 							<ul>
 								<?php

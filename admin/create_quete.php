@@ -19,7 +19,7 @@ else
 	<div id="contenu">
 	<div id="centre3">
 	<div class="titre">
-				Création d\'une quète
+				Création d\'une quête
 	</div>				
 	';
 
@@ -131,7 +131,7 @@ else
 <table class="admin">
 <tr>
 	<td>
-		Nom de la quète
+		Nom de la quête
 	</td>
 	<td>
 		: <input type="text" name="nom_quete" />

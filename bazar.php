@@ -99,7 +99,7 @@ if($W_distance == 0)
 				Type
 			</td>
 			<td>
-				Dégats
+				Dégâts
 			</td>
 			<td>
 				Force

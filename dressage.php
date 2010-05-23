@@ -58,7 +58,7 @@ if($distance == 0)
 						$joueur->set_pa($joueur->get_pa() - 10);
 						$joueur->sauver();
 						?>
-						Vous apprenez quelques tours a votre animal. Il semble se familiariser de plus en plus à vous.<br />
+						Vous apprenez quelques tours à votre animal. Il semble se familiariser de plus en plus à vous.<br />
 						<?php
 						echo '
 						<a href="dressage.php?id='.$_GET['id'].'" onclick="return envoiInfo(this.href, \'information\')">Continuer le dressage</a>';

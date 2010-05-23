@@ -522,7 +522,7 @@ while($row = $db->read_assoc($req))
 }
 
 ?>
-<h2>Quètes</h2>
+<h2>Quêtes</h2>
 <table>
 <tr>
 	<td class="space">

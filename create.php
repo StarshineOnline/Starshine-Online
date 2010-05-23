@@ -264,7 +264,7 @@ function switch_classe()
 				<td>
 					<span onmousemove="javascript:afficheInfo(\'force'.$race.'\', \'block\', event); document.getElementById(\'force'.$race.'\').style.zIndex = 2;" onmouseout="javascript:afficheInfo(\'force'.$race.'\', \'none\', event );" />Force</span>
 					<div class="infobox" id="force'.$race.'">
-						Augmente vos dégats physiques, et vous permet de porter de meilleurs armures.
+						Augmente vos dégâts physiques, et vous permet de porter de meilleurs armures.
 					</div>
 				</td>
 				<td>
@@ -286,7 +286,7 @@ function switch_classe()
 				<td>
 					<span onmousemove="javascript:afficheInfo(\'puiss'.$race.'\', \'block\', event); document.getElementById(\'puiss'.$race.'\').style.zIndex = 2;" onmouseout="javascript:afficheInfo(\'puiss'.$race.'\', \'none\', event );" />Puissance</span>
 					<div class="infobox" id="puiss'.$race.'">
-						Augmente vos dégats magiques.
+						Augmente vos dégâts magiques.
 					</div>
 				</td>
 				<td>

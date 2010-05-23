@@ -26,7 +26,7 @@ $Trace['barbare']['dexterite'] = 11;  ///< Dextérité des Barbares.
 $Trace['barbare']['puissance'] = 10;  ///< Puissance des Barbares.
 $Trace['barbare']['volonte'] = 10;  ///< Volonté des Barbares.
 $Trace['barbare']['energie'] = 11;  ///< Energie des Barbares.
-$Trace['barbare']['passif'] = '+30% de Protection physique et +10 de base<br /> +40% de dégats physiques sur les batiments.<br />+10% de dégats avec les armes de siège.';  ///< Description des bonus des Barbares.
+$Trace['barbare']['passif'] = '+30% de Protection physique et +10 de base<br /> +40% de dégâtss physiques sur les batiments.<br />+10% de dégâtss avec les armes de siège.';  ///< Description des bonus des Barbares.
 
 $Trace['barbare']['affinite_sort_mort'] = 4;  ///< Affinité avec la magie de la mort des Barbares.
 $Trace['barbare']['affinite_sort_element'] = 4;  ///< Afinité avec la magie élémentaire des Barbares.
@@ -208,7 +208,7 @@ $Trace['orc']['dexterite'] = 14;  ///< Dextérité des Orcs.
 $Trace['orc']['puissance'] = 10;  ///< Puissance des Orcs.
 $Trace['orc']['volonte'] = 10;  ///< Volonté des Orcs.
 $Trace['orc']['energie'] = 10;  ///< Energie des Orcs.
-$Trace['orc']['passif'] = 'Chaque combat dure un round de plus<br /> +5% de dégats sur les critiques physiques';  ///< Description des bonus des Orcs.
+$Trace['orc']['passif'] = 'Chaque combat dure un round de plus<br /> +5% de dégâtss sur les critiques physiques';  ///< Description des bonus des Orcs.
 
 $Trace['orc']['affinite_sort_mort'] = 3;  ///< Affinité avec la magie de la mort des Orcs.
 $Trace['orc']['affinite_sort_element'] = 5;  ///< Affinité avec la magie élémentaire des Orcs.

@@ -80,7 +80,7 @@ while($row = $db->read_array($req))
 				$des .= '1D'.$de_degat_sort[$ide];
 				$ide++;
 			}
-			$phrase = 'Inflige '.$des.' dégats';
+			$phrase = 'Inflige '.$des.' dégâts';
 		}
 		echo '<td><span class="small">'.$phrase.'</span></td>';
 		echo '</tr>';

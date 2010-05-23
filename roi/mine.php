@@ -147,7 +147,7 @@ elseif(array_key_exists('case', $_GET))
 						$requete = "SELECT id, nom, cout, bonus1, bonus2 FROM batiment WHERE type = 'mine' AND cond1 = 0";
 						$req = $db->query($requete);
 						?>
-						Quel mine voulait vous construire ?<br />
+						Quelle mine voulait vous construire ?<br />
 						<select name="type_mine" id="type_mine">
 						<?php
 						while($row = $db->read_assoc($req))

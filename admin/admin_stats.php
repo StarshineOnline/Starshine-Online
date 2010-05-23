@@ -25,18 +25,18 @@ else
 	?>
 	<form method="post">
 	<select name="id">
-		<option value="1">Joueurs ayant fait le plus de dégats en moyenne lorsqu'il attaque</option>
-		<option value="2">Joueurs ayant fait le moins de dégats en moyenne lorsqu'il attaque</option>
-		<option value="3">Joueurs ayant pris le plus de dégats en moyenne lorsqu'il attaque</option>
-		<option value="4">Joueurs ayant pris le moins de dégats en moyenne lorsqu'il attaque</option>
-		<option value="5">Joueurs ayant fait le plus de dégats en moyenne lorsqu'il défend</option>
-		<option value="6">Joueurs ayant fait le moins de dégats en moyenne lorsqu'il défend</option>
-		<option value="7">Joueurs ayant pris le plus de dégats en moyenne lorsqu'il défend</option>
-		<option value="8">Joueurs ayant pris le moins de dégats en moyenne lorsqu'il défend</option>
-		<option value="9">Joueurs ayant fait les plus gros dégats en attaque</option>
-		<option value="10">Joueurs ayant fait les plus faible dégats en attaque</option>
-		<option value="17">Joueurs ayant fait les plus gros dégats en défense</option>
-		<option value="18">Joueurs ayant fait les plus faible dégats en défense</option>
+		<option value="1">Joueurs ayant fait le plus de dégâts en moyenne lorsqu'il attaque</option>
+		<option value="2">Joueurs ayant fait le moins de dégâts en moyenne lorsqu'il attaque</option>
+		<option value="3">Joueurs ayant pris le plus de dégâts en moyenne lorsqu'il attaque</option>
+		<option value="4">Joueurs ayant pris le moins de dégâts en moyenne lorsqu'il attaque</option>
+		<option value="5">Joueurs ayant fait le plus de dégâts en moyenne lorsqu'il défend</option>
+		<option value="6">Joueurs ayant fait le moins de dégâts en moyenne lorsqu'il défend</option>
+		<option value="7">Joueurs ayant pris le plus de dégâts en moyenne lorsqu'il défend</option>
+		<option value="8">Joueurs ayant pris le moins de dégâts en moyenne lorsqu'il défend</option>
+		<option value="9">Joueurs ayant fait les plus gros dégâts en attaque</option>
+		<option value="10">Joueurs ayant fait les plus faible dégâts en attaque</option>
+		<option value="17">Joueurs ayant fait les plus gros dégâts en défense</option>
+		<option value="18">Joueurs ayant fait les plus faible dégâts en défense</option>
 		<option value="19">Joueurs ayant fait le plus d'attaque</option>
 		<option value="20">Joueurs ayant subit le plus d'attaque</option>
 		<option value="21">Ratio Kill / Death</option>
@@ -45,7 +45,7 @@ else
 		<option value="13">Joueurs ayant reçu le plus de loot</option>
 		<option value="14">Joueurs ayant vendu le plus de d'objet a l'HV</option>
 		<option value="15">Joueurs ayant vendu le plus a l'HV</option>
-		<option value="16">Joueurs ayant fini le plus de quètes</option>
+		<option value="16">Joueurs ayant fini le plus de quêtes</option>
 	</select>
 	<select name="table">
 	<?php

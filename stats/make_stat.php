@@ -39,7 +39,7 @@ include_once(root.$root.'fonction/base.inc.php');
 //Inclusion du fichier contenant toutes les fonctions concernant les groupes
 include_once(root.$root.'fonction/groupe.inc.php');
 
-//Inclusion du fichier contenant les fonctions permettant de gérer les quètes
+//Inclusion du fichier contenant les fonctions permettant de gérer les quêtes
 include_once(root.$root.'fonction/quete.inc.php');
 
 //Inclusion du fichier contenant les fonctions permettant de gérer l'équipement

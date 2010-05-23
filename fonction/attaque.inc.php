@@ -189,12 +189,12 @@ function attaque($acteur = 'attaquant', $competence, &$effects)
 
 					$degat = $degat - $degat_bloque;
 					if($degat < 0) $degat = 0;
-					echo '&nbsp;&nbsp;<span class="manque">'.$passif->get_nom().' bloque le coup et absorbe '.$degat_bloque.' dégats</span><br />';
+					echo '&nbsp;&nbsp;<span class="manque">'.$passif->get_nom().' bloque le coup et absorbe '.$degat_bloque.' dégâts</span><br />';
 					if($passif->is_buff('bouclier_feu'))
 					{
 						$degats = $passif->get_buff('bouclier_feu', 'effet');
 						$actif->set_hp($actif->get_hp() - $degats);
-						echo '&nbsp;&nbsp;<span class="degat">'.$passif->get_nom().' inflige '.$degats.' dégats grâce au bouclier de feu</span><br />';
+						echo '&nbsp;&nbsp;<span class="degat">'.$passif->get_nom().' inflige '.$degats.' dégâts grâce au bouclier de feu</span><br />';
 					}
 					if($passif->is_buff('bouclier_eau'))
 					{
@@ -339,7 +339,7 @@ function attaque($acteur = 'attaquant', $competence, &$effects)
 					}
 				}
 			}
-			//Art du critique : augmente les dégats fait par un coup critique
+			//Art du critique : augmente les dégâts fait par un coup critique
 			if($actif->is_competence('art_critique')) $art_critique = $actif->get_competence('art_critique')->get_valeur() / 100; else $art_critique = 0;
 			//Buff Colère
 			if($actif->is_buff('buff_colere')) $buff_colere = ($actif->get_buff('buff_colere', 'effet')) / 100; else $buff_colere = 0;
@@ -354,7 +354,7 @@ function attaque($acteur = 'attaquant', $competence, &$effects)
 				$multiplicateur = 
 					$effect->calcul_mult_critique($actif, $passif, $multiplicateur);
 			/* ~multiplicateur critique */
-			print_debug("Dégats de base : $degat, multiplicateur : $multiplicateur<br />");
+			print_debug("Dégâts de base : $degat, multiplicateur : $multiplicateur<br />");
 			$degat = round($degat * $multiplicateur);
 			$degat_avant = round($degat_avant * $multiplicateur);
 			$critique = true;
@@ -366,7 +366,7 @@ function attaque($acteur = 'attaquant', $competence, &$effects)
 			//if(array_key_exists('maitre_critique', $actif['competences'])) augmentation_competence('maitre_critique', $actif, 3);
 		}
     	$reduction = $degat_avant - $degat;
-      	echo '&nbsp;&nbsp;<span class="degat"><strong>'.$actif->get_nom().'</strong> inflige <strong>'.$degat.'</strong> dégats</span><br />';
+      	echo '&nbsp;&nbsp;<span class="degat"><strong>'.$actif->get_nom().'</strong> inflige <strong>'.$degat.'</strong> dégâts</span><br />';
       	if($reduction != 0) echo '&nbsp;&nbsp;<span class="small">(réduits de '.$reduction.' par l\'armure)</span><br />';
 	    //Si flêche étourdissante
     	if($actif->etat['fleche_etourdit'] > 0)
@@ -420,7 +420,7 @@ function attaque($acteur = 'attaquant', $competence, &$effects)
 			$buff_epine = $passif->get_buff('buff_epine', 'effet') / 100;
 			$effet = round($degat * $buff_epine);
 			$actif->set_hp($actif->get_hp() - $effet);
-			if($effet > 0) echo '&nbsp;&nbsp;<span class="degat">'.$passif->get_nom().' renvoi '.$effet.' dégats grâce à l\' Armure en épine</span><br />';
+			if($effet > 0) echo '&nbsp;&nbsp;<span class="degat">'.$passif->get_nom().' renvoi '.$effet.' dégâts grâce à l\' Armure en épine</span><br />';
 		}
 	    //Armure de glace
     	if($passif->is_buff('buff_armure_glace', true))
@@ -435,10 +435,10 @@ function attaque($acteur = 'attaquant', $competence, &$effects)
 			}
 		}
 
-		/* Application des effets de dégats infligés */
+		/* Application des effets de dégâts infligés */
 		foreach ($effects as $effect)
 			$degat = $effect->inflige_degats($actif, $passif, $degat);
-			/* ~Dégats infligés */
+			/* ~Dégâts infligés */
 
       	$passif->set_hp($passif->get_hp() - $degat);
 	}
@@ -505,7 +505,7 @@ function degat_magique($carac, $degat, $actif, $passif)
     $req = $db->query($requete);
     $row = $db->read_assoc($req);
     $degat += $row['enchantement_effet'];
-    $dbg_msg .= "La ".$row['nom'].' augmente les dégats de '.
+    $dbg_msg .= "La ".$row['nom'].' augmente les dégâts de '.
 			$row['enchantement_effet'].'<br />';
   }
 
@@ -524,12 +524,12 @@ function degat_magique($carac, $degat, $actif, $passif)
     {
       $degat = degat_critique($actif, $passif, $degat);
     }
-  //Diminution des dégats grâce à l'armure magique
+  //Diminution des dégâts grâce à l'armure magique
   $reduction = calcul_pp(($passif->get_pm() * $passif->get_puissance()) / 12);
   $degat_avant = $degat;
   $degat = round($degat * $reduction);
   print_debug('(Réduction de '.($degat_avant - $degat).
-						 ' dégats par la PM)<br />');
+						 ' dégâts par la PM)<br />');
   return $degat;
 }
 ?>

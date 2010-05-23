@@ -128,10 +128,10 @@ foreach($races as $race)
 </table>
 <?
 echo '<pre>
-Dégat infligés';
+Dégât infligés';
 array_multisort($somme, SORT_DESC);
 print_r($somme);
-echo 'Dégat recus';
+echo 'Dégât recus';
 array_multisort($recu, SORT_DESC);
 print_r($recu);
 echo 'Différence';

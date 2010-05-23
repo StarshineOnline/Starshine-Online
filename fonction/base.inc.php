@@ -2603,10 +2603,10 @@ function affiche_ligne_journal($row)
 	switch($row['action'])
 	{
 		case 'attaque' :
-			return '<li class="jdegat"><span class="small">['.$date.']</span> Vous attaquez '.$row['passif'].' et lui faites '.$row['valeur'].' dégats, il vous en fait '.$row['valeur2'].'</li>';
+			return '<li class="jdegat"><span class="small">['.$date.']</span> Vous attaquez '.$row['passif'].' et lui faites '.$row['valeur'].' dégâts, il vous en fait '.$row['valeur2'].'</li>';
 		break;
 		case 'defense' :
-			return '<li class="jrdegat"><span class="small">['.$date.']</span> '.$row['passif'].' vous a attaqué et fait '.$row['valeur'].' dégats et vous lui faites '.$row['valeur2'].'</li>';
+			return '<li class="jrdegat"><span class="small">['.$date.']</span> '.$row['passif'].' vous a attaqué et fait '.$row['valeur'].' dégâts et vous lui faites '.$row['valeur2'].'</li>';
 		break;
 		case 'tue' :
 			return '<li class="jkill"><span class="small">['.$date.']</span> Vous tuez '.$row['passif'].'.</li>';

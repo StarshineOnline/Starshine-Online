@@ -12,7 +12,7 @@ if(is_ville($joueur->get_x(), $joueur->get_y()))
 <a href="hotel.php" onclick="return envoiInfo(this.href,'carte')" title="Hotel des ventes"><img src="image/ville/hotel_des_ventes.png" alt="Hotel des ventes" /></a>
 <a href="ecolemagie.php" onclick="return envoiInfo(this.href,'carte')" title="Ecole de magie"><img src="image/ville/ecole_de_magie.png" alt="Ecole de magie" /></a>
 <a href="ecolecombat.php" onclick="return envoiInfo(this.href,'carte')" title="Ecole de combat"><img src="image/ville/ecole_de_combat.png" alt="Ecole de combat" /></a>
-<a href="bureau_quete.php" onclick="return envoiInfo(this.href,'carte')" title="Bureau des quêtes"><img src="image/ville/bureau_des_quete.png" alt="Bureau des quètes" /></a>
+<a href="bureau_quete.php" onclick="return envoiInfo(this.href,'carte')" title="Bureau des quêtes"><img src="image/ville/bureau_des_quete.png" alt="Bureau des quêtes" /></a>
 <?php
 }
 ?>

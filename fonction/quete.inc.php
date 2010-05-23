@@ -25,7 +25,7 @@ function verif_quete($id_quete, $id_quete_joueur, $joueur)
 	return $valid;
 }
 
-//Verifie si l'action fait avancer une quète
+//Verifie si l'action fait avancer une quête
 function verif_action($type_cible, $joueur, $mode)
 {
 	global $db;
@@ -68,7 +68,7 @@ function verif_action($type_cible, $joueur, $mode)
 					$id_cible = substr($row['objectif'][$j]->cible, 1);
 					$id_type_cible = substr($type_cible, 1);
 					$type_cible_objectif = $row['objectif'][$j]->cible;
-					$echo .= "Identifiant quète du perso : ".$i."\n Cible de la quète : ".$row['objectif'][$j]->cible."\n Cible de l'action : ".$type_cible."\n Identifiant de la cible de la quète : ".$id_cible."\n Identifiant de la cible de l'action : ".$id_type_cible."\n";
+					$echo .= "Identifiant quête du perso : ".$i."\n Cible de la quête : ".$row['objectif'][$j]->cible."\n Cible de l'action : ".$type_cible."\n Identifiant de la cible de la quête : ".$id_cible."\n Identifiant de la cible de l'action : ".$id_type_cible."\n";
 					//Si c'est la bonne cible, ou spécial pour PNJ si la cible = 0
 					if($row['objectif'][$j]->cible == $type_cible OR ($row['objectif'][$j]->cible == 'P0' AND $type_cible[0] == 'P') OR ($type_cible != 'J127' AND intval($id_type_cible) >= intval($id_cible) AND $type_cible[0] == 'J' AND $type_cible_objectif[0] == 'J'))
 					{
@@ -124,7 +124,7 @@ function fin_quete($joueur, $id_quete_joueur, $id_quete)
 	//Validation de la quête et mis à jour des quêtes du perso
 	array_splice($liste_quete, $id_quete_joueur, 1);
 	$joueur->set_quete(serialize($liste_quete));
-	//On vérifie si la quète a déjà était fini, si non, on la mets dans les quètes finies
+	//On vérifie si la quête a déjà était fini, si non, on la mets dans les quêtes finies
 	$quete_fini = explode(';', $joueur->get_quete_fini());
 	if(!in_array($id_quete, $quete_fini))
 	{
@@ -231,11 +231,11 @@ function affiche_quetes($fournisseur, $joueur)
 	while($row = $db->read_array($req))
 	{
 		$quete_fini = explode(';', $joueur->get_quete_fini());
-		//Si c'est une quète non répétable et que le joueur a déjà fini la quète, on affiche pas.
+		//Si c'est une quête non répétable et que le joueur a déjà fini la quête, on affiche pas.
 		if($row['repete'] == 'n' AND in_array($row['idq'], $quete_fini))
 		{
 		}
-		//Si c'est une quète qui en nécessite une autre mais que le joueur ne l'a pas déjà faite.
+		//Si c'est une quête qui en nécessite une autre mais que le joueur ne l'a pas déjà faite.
 		else
 		{
 			$check = true;
@@ -273,7 +273,7 @@ function prend_quete($id_quete, $joueur)
 	$numero_quete = (count($liste_quete));
 	$valid = true;
 	$G_erreur = '';
-	//Vérifie si le joueur n'a pas déjà pris la quète.
+	//Vérifie si le joueur n'a pas déjà pris la quête.
 	if($liste_quete != '')
 	{
 		foreach($liste_quete as $quest)
@@ -285,7 +285,7 @@ function prend_quete($id_quete, $joueur)
 	{
 		$numero_quete = 0;
 	}
-	//Vérifie si il peut prendre cette quète
+	//Vérifie si il peut prendre cette quête
 	$quete_fini = explode(';', $joueur->get_quete_fini());
 	$quete_requis = explode(';', $row['quete_requis']);
 	foreach($quete_requis as $requis)
@@ -311,7 +311,7 @@ function prend_quete($id_quete, $joueur)
 	}
 	else
 	{
-		$G_erreur = 'Vous avez déjà cette quète en cours !<br />';
+		$G_erreur = 'Vous avez déjà cette quête en cours !<br />';
 	}
 	if($row['fournisseur'] == '') $link = 'bureau_quete';
 	else $link = $row['fournisseur'];
@@ -368,7 +368,7 @@ function verif_inventaire($id_quete, $joueur)
 	return $check;
 }
 
-//Supprime une quète, renvoi le joueur après suppression
+//Supprime une quête, renvoi le joueur après suppression
 function supprime_quete($joueur, $quete_joueur)
 {
 	global $db;

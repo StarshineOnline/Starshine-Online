@@ -198,7 +198,7 @@ if($W_row['type'] == 1)
 				Mains
 			</span>
 			<span class='degats'>
-				Dégats
+				Dégâts
 			</span>
 			<span class='coef'>
 				<span onClick="return nd();" onmouseover="return <?php echo make_overlib('Coéf Arc = '.$joueur->get_coef_distance().'<br />Coéf Mélée = '.$joueur->get_coef_melee().'<br />Coéf Incantation = '.$joueur->get_coef_incantation()).'<br />Coéf Blocage = '.$joueur->get_blocage; ?>" onmouseout="return nd();">Coéf.</span>
@@ -252,7 +252,7 @@ if($W_row['type'] == 1)
 				$requete = "SELECT * FROM arme WHERE id = ".$arme['id_objet'];
 				$req_arme = $db->query($requete);
 				$row_arme = $db->read_array($req_arme);
-				$echo = 'Arme équipée : '.$row_arme['nom'].' - '.$row_arme['type'].' - Dégats '.$row_arme['degat'];
+				$echo = 'Arme équipée : '.$row_arme['nom'].' - '.$row_arme['type'].' - Dégâts '.$row_arme['degat'];
 			}
 			else
 				$echo = 'Rien n\'est équipé';

@@ -2737,7 +2737,7 @@ class perso extends entite
 		}
 		else
 		{
-			$G_erreur = 'Vous avez déjà cette quète en cours !';
+			$G_erreur = 'Vous avez déjà cette quête en cours !';
 			return false;
 		}
 	}

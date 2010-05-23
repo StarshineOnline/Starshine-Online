@@ -71,7 +71,7 @@ if($W_row['type'] == 1)
 										{
 											$db->query("DELETE FROM hotel WHERE id = ".sSQL($_GET["id_vente"]).";");
 											
-											$action_message = "<span class='message_vert'>Vous avez bien récupérer votre objet de l&apos;h&ocirc;tel des ventes.</span>";
+											$action_message = "<span class='message_vert'>Vous avez bien récupéré votre objet de l&apos;h&ocirc;tel des ventes.</span>";
 											
 											$db->query("INSERT INTO journal VALUES(NULL, ".$joueur->get_id().", 'recup', '', '', NOW(), '".sSQL(nom_objet($objObjetHotel->objet))."', 0, 0, 0)");
 										}
@@ -202,7 +202,7 @@ if($W_row['type'] == 1)
 				if($type == "moi")
 				{//-- Suivant si c'est un objet que l'on a mis en vente
 					$tmp_achat_click = "onclick=\"envoiInfo('hotel.php?action=suppr&amp;id_vente=".$objets_tab[$id]["id"]."&amp;poscase=".$_GET["poscase"]."', 'carte');\"";
-					$tmp_achat = "R&eacute;cup&eacute;per";
+					$tmp_achat = "R&eacute;cup&eacute;rer";
 				}
 				else
 				{//-- ou pas

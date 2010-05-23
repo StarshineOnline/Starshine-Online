@@ -23,24 +23,24 @@ $_SESSION['position'] = convert_in_pos($joueur['x'], $joueur['y']);
 
 if($_GET['action'] == 'achat')
 {
-	//Récupère les informations sur la quète
+	//Récupère les informations sur la quête
 	$requete = "SELECT * FROM quete WHERE id = ".sSQL($_GET['id']);
 	$req = $db->query($requete);
 	$row = $db->read_assoc($req);
 	//Vérifie que le royaume a assez de stars pour l'acheter
 	if($R['star'] >= $row['star_royaume'])
 	{
-		//Ajout de la quète dans la liste des quètes du royaume
+		//Ajout de la quête dans la liste des quêtes du royaume
 		$requete = "INSERT INTO quete_royaume VALUES('', ".$R['ID'].", ".$row['id'].")";
 		$req = $db->query($requete);
 		//Mis a jour des stars du royaume
 		$requete = "UPDATE royaume SET star = star - ".$row['star_royaume']." WHERE ID = ".$R['ID'];
 		$req = $db->query($requete);
-		echo 'Votre royaume a bien acheter la quète "'.$row['nom'].'"';
+		echo 'Votre royaume a bien acheter la quête "'.$row['nom'].'"';
 	}
 	else
 	{
-		echo 'Votre royaume n\'a pas assez de stars pour acheter cette quète.';
+		echo 'Votre royaume n\'a pas assez de stars pour acheter cette quête.';
 	}
 }
 else
@@ -50,7 +50,7 @@ else
 
 ?>
 	<div id="carte">
-		<h2 style="width : 330px;">Gestion des quètes</h2>
+		<h2 style="width : 330px;">Gestion des quêtes</h2>
 		<table>
 		<tr>
 			<td>
@@ -75,7 +75,7 @@ else
 				'.$row['star_royaume'].'
 			</td>
 			<td>
-				<a href="gestion_quete.php?poscase='.$W_case.'&amp;action=achat&amp;id='.$row['id'].'" onclick="return envoiInfo(this.href, \'carte\')">Acheter cette quète</a>
+				<a href="gestion_quete.php?poscase='.$W_case.'&amp;action=achat&amp;id='.$row['id'].'" onclick="return envoiInfo(this.href, \'carte\')">Acheter cette quête</a>
 			</td>
 		</tr>';
 	}
