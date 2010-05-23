@@ -51,7 +51,6 @@ $atm_all_verb = $atm_all_val ? 'Désactiver <strong>tous</strong>' : 'Activer';
 ?>
 <ul>
 <?php
-$G_use_atmosphere = true;
 if (isset($G_use_atmosphere) && $G_use_atmosphere) { ?>
 					  <li><a href="meteo.php?action=atm&amp;effet=sky&amp;val=<?php echo $atm_val; ?>" onclick="envoiInfo(this.href, 'cluetip-inner'); deplacement('centre', cache_monstre, affiche_royaume,'normal', show_only); return false;"><?php echo $atm_verb; ?> les effets atmospheriques</a></li>
 					  <li><a href="meteo.php?action=atm&amp;effet=time&amp;val=<?php echo $atm_all_val; ?>" onclick="envoiInfo(this.href, 'cluetip-inner'); deplacement('centre', cache_monstre, affiche_royaume,'normal', show_only); return false;"><?php echo $atm_all_verb; ?> les effets atmosphériques et liés à l'heure</a></li>
