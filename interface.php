@@ -85,11 +85,10 @@ $_SESSION['position'] = convert_in_pos($joueur->get_x(), $joueur->get_y());
 $arene = $joueur->in_arene();
 $time = time();
 if ($arene) $time += $arene->decal;
-echo '<div id="menu_date" onclick="envoiInfo(\'meteo.php\', \'meteo\'); $(\'#meteo\').toggle()"><img src="image/interface/'.moment_jour().
+echo '<div id="menu_date" rel="meteo.php"><img src="image/interface/'.moment_jour().
   '.png" alt="'.moment_jour().'" title="'.moment_jour().' - '.date_sso($time).
   '" />'.moment_jour();?>
 	</div>
-	<div id="meteo"></div>
 
 	<input type="hidden" id="menu_encours" value="lejeu" />
 	<div id='menu_details'>

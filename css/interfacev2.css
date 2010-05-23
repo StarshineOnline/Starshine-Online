@@ -128,8 +128,8 @@ body { margin:0; padding:0; background:#7e909c url(../image/v2/bg_site.png) repe
 #rose_div_bd:active { background-position:bottom; }
 
 /*-- Overlib ----------------------------------------------------------*/
-.overlib { background:transparent url(../image/interface/1.png) center; border:1px solid #000000; -moz-border-radius:5px; -webkit-border-radius:5px; border-radius: 5px; min-width:250px; }
-.overlib ul { clear:both; position:relative; }
+.overlib, #cluetip { background:transparent url(../image/interface/1.png) center; border:1px solid #000000; -moz-border-radius:5px; -webkit-border-radius:5px; border-radius: 5px; min-width:250px; }
+.overlib ul, #cluetip ul { clear:both; position:relative; }
 .overlib_titres { text-align:center; font-weight:bold; color:black; }
 .overlib_batiments span { font-weight:bold; color:black; }
 .overlib_joueurs span { font-weight:bold; color:#6633FF; }
@@ -139,6 +139,9 @@ body { margin:0; padding:0; background:#7e909c url(../image/v2/bg_site.png) repe
 .overlib_nom_objet { float:right; width:200px; font-style:italic; }
 .overlib_desc_objet { float:right; width:200px; }
 .overlib_desc_objet span { float:left; width:75px; }
+#cluetip {padding : 5px;}
+#cluetip a {color : #444; text-decoration : none;}
+#cluetip a:hover {color : #888;}
 
 /*-- Map --------------------------------------------------------------*/
 #carte { width:445px; height:100%; float:left; margin:0; clear:both; z-index:500; }
