@@ -121,7 +121,7 @@ while($row = $db->read_array($req))
 		if($ratio > 50) $ratio = 50;
 		$limite = $ratio * 10000;
 		$requete = "SELECT x, y, info FROM map WHERE ".$where;
-		//echo $requete.'<br />';
+		echo $requete."\n";
 		$req2 = $db->query($requete);
 		while($row2 = $db->read_array($req2))
 		{
@@ -167,7 +167,7 @@ while($row = $db->read_array($req))
 	$mail .= $next_line;
 }
 
-fclose($insert_file);
+fclose($handle);
 $ret = $db->query("load data local infile \"$insert_file\" into table map_monstre FIELDS ENCLOSED BY ''''");
 $ret_info = $db->get_mysql_info();
 echo "insert done\n";
@@ -177,6 +177,12 @@ if ($ret_info['warnings'] == 0) {
 } else {
 	echo "Warnings detected: file kept\n";
 }
+// Je ne comprends pas pourquoi l'utf-8 passe mal en prod alors que ća marche
+// parfaitement en dev. du coup, on redresse.
+// Query OK, 2903 rows affected (2.33 sec)
+// Rows matched: 122130  Changed: 2903  Warnings: 0
+// NB: avoir nom, lib, et niveau and map_monstre est totalement inutile
+$db->query("update map_monstre set nom = (select monstre.nom from monstre where monstre.id = map_monstre.type)");
 
 //Si le premier du mois, pop des boss de donjons
 if(date("j") == 1)
