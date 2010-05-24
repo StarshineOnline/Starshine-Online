@@ -16,7 +16,7 @@ include_once(root.'fonction/base.inc.php');
 
 $date = date("Y-m-d", mktime(0, 0, 0, date("m") , date("d") - 1, date("Y")));
 
-echo 'Simulation de Génération des monstres sur la carte<br />';
+echo "Simulation de Génération des monstres sur la carte\n";
 
 //Récupération du nombre de joueurs par niveau
 $requete = "SELECT level, COUNT(*) as total FROM perso WHERE statut = 'actif' GROUP BY level";
@@ -30,7 +30,7 @@ while($row = $db->read_assoc($req))
 }
 
 //Récupération du nombre de monstres par niveau
-$requete = "SELECT level, type, COUNT(*) as total FROM map_monstre GROUP BY level, type ORDER BY level ASC";
+$requete = "SELECT level, mm.type, COUNT(1) as total FROM map_monstre mm, monstre m WHERE mm.type = m.id GROUP BY level, type ORDER BY level ASC";
 $req = $db->query($requete);
 
 $tot = 0;
@@ -152,9 +152,8 @@ while($row = $db->read_array($req))
 						$mort_naturelle = time() + $temps_mort;
 						//Création d'un monstre sur la map
 						//$insert .= "(NULL,'".$id."','".$coord['x']."','".$coord['y']."','".$hp."', ".$niveau.", '".addslashes($nom)."','".$lib."', ".$mort_naturelle.")";
-						fwrite($handle, "\\N\t'".$id."'\t'".$row2['x']."'\t'".
-									 $row2['y']."'\t'".$hp."'\t'".$niveau."'\t'".
-									 addslashes($nom)."'\t'".$lib."'\t'".$mort_naturelle."'\n");
+						fwrite($handle, $id."\t".$row2['x']."\t".$row2['y']."\t".$hp."\t".
+                   $mort_naturelle."\n");
 						$tot_monstre++;
 						$total_monstre++;
 					}
@@ -168,21 +167,18 @@ while($row = $db->read_array($req))
 }
 
 fclose($handle);
-$ret = $db->query("load data local infile \"$insert_file\" into table map_monstre FIELDS ENCLOSED BY ''''");
+$ret = $db->query("LOAD DATA LOCAL INFILE \"$insert_file\" INTO TABLE map_monstre (type, x, y, hp, mort_naturelle)");
 $ret_info = $db->get_mysql_info();
 echo "insert done\n";
 var_dump($ret_info);
 if ($ret_info['warnings'] == 0) {
 	unlink($insert_file);
 } else {
-	echo "Warnings detected: file kept\n";
+	$msg "Warnings detected: file `${insert_file}` kept";
+  echo $msg."\n";
+  $log = new log_admin();
+  $log->send(0, 'journalier', $msg);
 }
-// Je ne comprends pas pourquoi l'utf-8 passe mal en prod alors que ća marche
-// parfaitement en dev. du coup, on redresse.
-// Query OK, 2903 rows affected (2.33 sec)
-// Rows matched: 122130  Changed: 2903  Warnings: 0
-// NB: avoir nom, lib, et niveau and map_monstre est totalement inutile
-$db->query("update map_monstre set nom = (select monstre.nom from monstre where monstre.id = map_monstre.type)");
 
 //Si le premier du mois, pop des boss de donjons
 if(date("j") == 1)
@@ -194,9 +190,10 @@ if(date("j") == 1)
 	if($db->num_rows == 0)
 	{
 		$time = time() + 2678400;
-		$requete = "INSERT INTO map_monstre VALUES(NULL, '64','3','212','6400', 6, '".addslashes('Devorsis')."','devorsis', ".$time.")";
+		$requete = "INSERT INTO map_monstre VALUES(NULL, '64','3','212','6400',"
+      .$time.")";
 		$db->query($requete);
-		$mail .= "Pop de Devorsis";
+		$mail .= "Pop de Devorsis\n";
 	}
 	//Donjon Gob
 	//Draconide 1
@@ -206,11 +203,13 @@ if(date("j") == 1)
 	if($db->num_rows == 0)
 	{
 		$time = time() + 2678400;
-		$requete = "INSERT INTO map_monstre VALUES(NULL,'125','36','283','5000', 18, 'Construct draconide','construct_draconide', ".$time.")";
+		$requete = "INSERT INTO map_monstre VALUES(NULL,'125','36','283','5000',"
+      .$time.")";
 		$db->query($requete);
-		$requete = "INSERT INTO map_monstre VALUES(NULL,'126','12','289','5000', 18, 'Construct draconide','construct_draconide2', ".$time.")";
+		$requete = "INSERT INTO map_monstre VALUES(NULL,'126','12','289','5000',"
+      .$time.")";
 		$db->query($requete);
-		$mail .= "Pop du construct draconide 1, construct draconide 2";
+		$mail .= "Pop du construct draconide 1, construct draconide 2\n";
 	}
 }
 $mail .= mysql_error();

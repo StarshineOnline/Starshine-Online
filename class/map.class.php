@@ -715,7 +715,7 @@ class map
 		if($groupe)
 		{
 			$group = ' GROUP BY x, y, lib';
-			$champs = ', COUNT(id) as tot';
+			$champs = ', COUNT(1) as tot';
 		}
 		else
 		{
@@ -728,9 +728,9 @@ class map
 			$show_only = " AND type IN (".$this->show_only.")";
 		}
 		else $show_only = '';
-		$query = "SELECT id, x, y, nom, lib ".$champs."
-								  FROM map_monstre
-								  WHERE ( ( x BETWEEN ".$xmin." AND ".$xmax." ) AND ( y BETWEEN ".$ymin." AND ".$ymax." ) ) ".$show_only."
+		$query = "SELECT mm.id, mm.x, mm.y, m.nom, m.lib ".$champs."
+								  FROM map_monstre mm, monstre m
+								  WHERE mm.type = m.id AND ( ( x BETWEEN ".$xmin." AND ".$xmax." ) AND ( y BETWEEN ".$ymin." AND ".$ymax." ) ) ".$show_only."
 								  ".$group." ORDER BY y ASC, x ASC, ABS(level - $level) ASC, level ASC, nom ASC, id ASC;";
 		$RqMonstres = $db->query($query);
 		if($db->num_rows($RqMonstres) > 0)

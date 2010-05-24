@@ -1,7 +1,10 @@
 <?php
 if (file_exists('root.php'))
   include_once('root.php');
-?><?php
+
+  echo "forbidden";
+  exit (1);
+
 //Connexion obligatoire
 $connexion = true;
 //Inclusion du haut du document html

@@ -78,9 +78,8 @@ class map_monstre
 		//Verification nombre et du type d'argument pour construire l'etat adequat.
 		if( (func_num_args() == 1) && is_numeric($id) )
 		{
-			$requeteSQL = $db->query("SELECT type, x, y, hp, level, nom, lib, mort_naturelle FROM map_monstre WHERE id = ".$id);
-			//Si le thread est dans la base, on le charge sinon on crée un thread vide.
-			if( $db->num_rows($requeteSQL) > 0 )
+			$requeteSQL = $db->query("SELECT mm.type, mm.x, mm.y, mm.hp, m.level, m.nom, m.lib, mm.mort_naturelle FROM map_monstre mm, monstre m WHERE mm.type = m.id AND mm.id = ".$id);
+      if( $db->num_rows($requeteSQL) > 0 )
 			{
 				list($this->type, $this->x, $this->y, $this->hp, $this->level, $this->nom, $this->lib, $this->mort_naturelle) = $db->read_array($requeteSQL);
 			}
@@ -130,7 +129,7 @@ class map_monstre
 		{
 			if(count($this->champs_modif) > 0)
 			{
-				if($force) $champs = 'type = '.$this->type.', x = '.$this->x.', y = '.$this->y.', hp = '.$this->hp.', level = '.$this->level.', nom = "'.mysql_escape_string($this->nom).'", lib = "'.mysql_escape_string($this->lib).'", mort_naturelle = "'.mysql_escape_string($this->mort_naturelle).'"';
+				if($force) $champs = 'type = '.$this->type.', x = '.$this->x.', y = '.$this->y.', hp = '.$this->hp.', mort_naturelle = "'.mysql_escape_string($this->mort_naturelle).'"';
 				else
 				{
 					$champs = '';
@@ -149,8 +148,8 @@ class map_monstre
 		}
 		else
 		{
-			$requete = 'INSERT INTO map_monstre (type, x, y, hp, level, nom, lib, mort_naturelle) VALUES(';
-			$requete .= ''.$this->type.', '.$this->x.', '.$this->y.', '.$this->hp.', '.$this->level.', "'.mysql_escape_string($this->nom).'", "'.mysql_escape_string($this->lib).'", "'.mysql_escape_string($this->mort_naturelle).'")';
+			$requete = 'INSERT INTO map_monstre (type, x, y, hp, mort_naturelle) VALUES(';
+			$requete .= ''.$this->type.', '.$this->x.', '.$this->y.', '.$this->hp.', "'.mysql_escape_string($this->mort_naturelle).'")';
 			$db->query($requete);
 			//Récuperation du dernier ID inséré.
 			$this->id = $db->last_insert_id();
@@ -209,7 +208,7 @@ class map_monstre
 			}
 		}
 
-		$requete = "SELECT id, type, x, y, hp, level, nom, lib, mort_naturelle FROM map_monstre WHERE ".$where." ORDER BY ".$ordre;
+		$requete = "SELECT mm.id, mm.type, mm.x, mm.y, mm.hp, m.level, m.nom, m.lib, mm.mort_naturelle FROM map_monstre mm, monstre m WHERE mm.type = m.id AND ".$where." ORDER BY ".$ordre;
 		$req = $db->query($requete);
 		if($db->num_rows($req) > 0)
 		{
@@ -402,7 +401,6 @@ class map_monstre
 	function set_level($level)
 	{
 		$this->level = $level;
-		$this->champs_modif[] = 'level';
 	}
 
 	/**
@@ -414,7 +412,6 @@ class map_monstre
 	function set_nom($nom)
 	{
 		$this->nom = $nom;
-		$this->champs_modif[] = 'nom';
 	}
 
 	/**
@@ -426,7 +423,6 @@ class map_monstre
 	function set_lib($lib)
 	{
 		$this->lib = $lib;
-		$this->champs_modif[] = 'lib';
 	}
 
 	/**
@@ -520,13 +516,15 @@ class map_monstre
 		switch ($this->type)
 		{
 		case 64: //Si c'est Devorsis on fait pop le fossoyeur
-			$requete = "INSERT INTO map_monstre VALUES(NULL, '65','3','212','4800', 6, '".addslashes('Le Fossoyeur')."','fossoyeur', ".(time() + 2678400).")";
+			$requete = "INSERT INTO map_monstre VALUES(NULL, '65','3','212','4800',"
+        .(time() + 2678400).")";
 			$db->query($requete);
 			echo '<strong>Rha, tu me détruis aujourdhui mais le fossoyeur saura saisir ton âme... tu es déja mort !</strong>';
 			break;
 			
 		case 65: //Si c'est le fossoyeur on fait pop finwir
-			$requete = "INSERT INTO map_monstre VALUES(NULL, '75','24','209','8000', 7, '".addslashes('Finrwirr le serviteur')."','finrwirr', ".(time() + 2678400).")";
+			$requete = "INSERT INTO map_monstre VALUES(NULL, '75','24','209','8000',"
+        .(time() + 2678400).")";
 			$db->query($requete);
 			echo '<strong>Tu ne fait que retarder l\'inévitable, Le maître saura te faire payer ton insolence !</strong>';
 			break;
@@ -535,7 +533,8 @@ class map_monstre
 			echo '<strong>Aaaargh VAINCU, JE SUIS VAINCU, comment est ce possible !!! Maître !! Maître venez à moi, vengez votre plus fidèle serviteur !!!</strong>';
 			if (false) // Si le gros monstre n'a pas ete vaincu
 			{
-				$requete = "INSERT INTO map_monstre VALUES(NULL, '116','24','209','10000', 8, '".addslashes('Adenaïos le nécromant')."','adennaios', ".(time() + 2678400).")";
+				$requete = "INSERT INTO map_monstre VALUES(NULL,116,24,209,10000,"
+          .(time() + 2678400).")";
 				$db->query($requete);
 			}
 			else
@@ -552,7 +551,8 @@ class map_monstre
 			//Si il n'est pas là on le fait pop
 			if($db->num_rows($req_d) == 0)
 			{
-				$requete = "INSERT INTO map_monstre VALUES(NULL,'123','44','293','5800', 18, 'Roi Goblin','roi_goblin', ".(time() + 2678400).")";
+				$requete = "INSERT INTO map_monstre VALUES(NULL,123,44,293,5800,"
+          .(time() + 2678400).")";
 				$db->query($requete);
 				echo '<strong>Un bruit de mécanisme eveille votre attention, mais il vous est impossible de savoir d\'où provient ce son.</strong>';
 			}
@@ -601,8 +601,8 @@ class map_monstre
 					$y = $row['pop_y'];
 					if ($x === null) $x = rand(1, 150);
 					if ($y === null) $y = rand(1, 150);
-					$requete = "INSERT INTO map_monstre SELECT null, $row[pop_type], ".
-						"$x, $y, hp, level, nom, lib, $mort_naturelle ".
+					$requete = "INSERT INTO map_monstre SELECT null, id, ".
+						"$x, $y, hp, $mort_naturelle ".
 						"FROM monstre WHERE id = $row[pop_type]";
 					$db->query($requete);
 				}
@@ -616,6 +616,5 @@ class map_monstre
 		// On supprime tous les buffs périmés
 		$requete = "DELETE FROM buff_monstre WHERE fin <= ".time();
 		$req = $db->query($requete);
-
 	}
 }

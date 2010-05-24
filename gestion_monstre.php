@@ -126,7 +126,7 @@ else
 	?>
 	<h3>Créatures que vous pouvez dresser sur la case <span class="xsmall">(niveau <= <?php echo $joueur->max_dresse(); ?>)</span></h3>
 	<?php
-	$W_requete = 'SELECT id, nom, type, hp, level FROM map_monstre WHERE (x = '.$joueur->get_x().') AND (y = '.$joueur->get_y().') AND level <= '.$joueur->max_dresse().' ORDER BY level ASC, nom ASC, id ASC';
+	$W_requete = 'SELECT mm.id, m.nom, mm.type, mm.hp, m.level FROM map_monstre mm, monstre m WHERE mm.type = m.id AND (mm.x = '.$joueur->get_x().') AND (mm.y = '.$joueur->get_y().') AND m.level <= '.$joueur->max_dresse().' ORDER BY level ASC, nom ASC, id ASC';
 	$W_query = $db->query($W_requete);
 	//Affichage des infos des monstres
 	if($db->num_rows > 0)

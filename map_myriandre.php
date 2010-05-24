@@ -27,7 +27,7 @@ $req = $db->query($requete);
 $requete_joueurs = 'SELECT ID, nom, level, race, x, y, classe, hp FROM perso WHERE statut = \'actif\' AND (((x >= '.$xmin.') AND (x <= '.$xmax.')) AND ((y >= '.$ymin.') AND (y <= '.$ymax.')))ORDER BY y ASC, x ASC, dernier_connexion DESC';
 $req_joueurs = $db->query($requete_joueurs);
 //Requète pour l'affichage des monstres dans le périmètre de vision
-$requete_monstres = 'SELECT id, x, y, nom, lib, hp FROM map_monstre WHERE (((x >= '.$xmin.') AND (x <= '.$xmax.')) AND ((y >= '.$ymin.') AND (y <= '.$ymax.'))) GROUP BY x, y, lib ORDER BY y ASC, x ASC';
+$requete_monstres = 'SELECT mm.id, mm.x, mm.y, m.nom, m.lib, mm.hp FROM map_monstre mm, monstre m WHERE mm.type = m.id AND (((x >= '.$xmin.') AND (x <= '.$xmax.')) AND ((y >= '.$ymin.') AND (y <= '.$ymax.'))) GROUP BY x, y, lib ORDER BY y ASC, x ASC';
 echo $requete_monstres;
 $req_monstres = $db->query($requete_monstres);
 //Requète pour l'affichage des drapeaux dans le périmètre de vision

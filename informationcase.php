@@ -214,7 +214,7 @@ if($W_distance < 4)
 	if(array_key_exists('cout_attaque', $joueur->get_buff())) $pa_attaque = ceil($pa_attaque / $joueur->get_buff('cout_attaque', 'effet'));
 	if(array_key_exists('plus_cout_attaque', $joueur->get_buff())) $pa_attaque = $pa_attaque * $joueur->get_buff('plus_cout_attaque', 'effet');
 	
-	$W_requete = 'SELECT id, nom, type, hp, level FROM map_monstre WHERE (x = '.$case->get_x().') AND (y = '.$case->get_y().') ORDER BY level ASC, nom ASC, id ASC';
+	$W_requete = 'SELECT mm.id, m.nom, mm.type, mm.hp, m.level FROM map_monstre mm, monstre m WHERE mm.type = m.id AND (x = '.$case->get_x().') AND (y = '.$case->get_y().') ORDER BY level ASC, nom ASC, id ASC';
 	$W_query = $db->query($W_requete);
 	
 	//Affichage des infos des monstres

@@ -31,7 +31,7 @@ while($row = $db->read_assoc($req))
 }
 
 //Récupération du nombre de monstres par niveau
-$requete = "SELECT level, type, COUNT(*) as total FROM map_monstre GROUP BY level, type ORDER BY level ASC";
+$requete = "SELECT m.level, mm.type, COUNT(*) as total FROM map_monstre mm, monstre m WHERE mm.type = m.id GROUP BY mm.level, m.type ORDER BY mm.level ASC";
 $req = $db->query($requete);
 
 $tot = 0;

@@ -43,7 +43,7 @@ include_once(root.'fonction/equipement.inc.php');
 include_once(root.'class/inventaire.class.php');
 
 //On regarde si sworling est là
-$requete = "SELECT id FROM map_monstre WHERE lib = 'sworling'";
+$requete = "SELECT id FROM map_monstre WHERE type = 56";
 $req = $db->query($requete);
 $x = ceil(rand(0, 150));
 $y = ceil(rand(0, 150));
@@ -56,7 +56,8 @@ if($db->num_rows > 0)
 //Il n'existe pas, on le recréé
 else
 {
-	$requete = "INSERT INTO map_monstre VALUES('','56','".$x."','".$y."','1', 6, '".addslashes('Sworling le téléporteur')."','sworling', ".(time() + 360000).")";
+	$requete = "INSERT INTO map_monstre VALUES('','56','".$x."','".$y."','1',"
+    .(time() + 360000).")";
 }
 $db->query($requete);
 
@@ -73,8 +74,9 @@ if($db->num_rows > 0)
 else
 { // En SQL c'est mieux et on aura pas d'erreur
 	$mort = time() + 360000;
-	$requete = "insert into map_monstre (type, x, y, hp, level, nom, lib, mort_naturelle) select ".
-		"m.id, d.x, d.y, m.hp, m.level, m.nom, m.lib, $mort from monstre m, donjon d where m.id = 57 and d.nom = 'Myriandre'";
+	$requete = "insert into map_monstre (type, x, y, hp, mort_naturelle) select".
+		" m.id, d.x, d.y, m.hp, $mort from monstre m, donjon d".
+    " where m.id = 57 and d.nom = 'Myriandre'";
 	$db->query($requete);
 }
 
