@@ -88,9 +88,9 @@ $Tclasse['druide ollamh']['type'] = 'druide';		#4
 $Tclasse['dresseur de lombre']['type'] = 'druide';#2
 
 # Invocateur
-$Tclasse['invocateur']['type'] = 'mage';				#2
-$Tclasse['grand invocateur']['type'] = 'mage';	#3
-$Tclasse['conjurateur']['type'] = 'archimage';	#4
+$Tclasse['invocateur']['type'] = 'druide';			#2
+$Tclasse['grand invocateur']['type'] = 'druide';#3
+$Tclasse['conjurateur']['type'] = 'druide';			#4
 
 
 ?>
