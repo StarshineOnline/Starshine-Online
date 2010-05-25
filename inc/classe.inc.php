@@ -85,7 +85,7 @@ $Tclasse['druide anruth']['type'] = 'druide';		#3
 $Tclasse['druide ollamh']['type'] = 'druide';		#4
 
 # Dresseur de l'ombre
-$Tclasse['dresseur de lombre']['type'] = 'mage';#2
+$Tclasse['dresseur de lombre']['type'] = 'druide';#2
 
 # Invocateur
 $Tclasse['invocateur']['type'] = 'mage';				#2
