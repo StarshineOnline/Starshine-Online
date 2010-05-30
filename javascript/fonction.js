@@ -267,7 +267,6 @@ var show_only = '';
 $(document).ready(function()
 {
 	$(".login_nom").focus();
-	$('#menu_date').cluetip({activation: 'click', ajaxCache: false, width: '500px', showTitle: false, cluetipClass: 'meteo', dropShadow: false});;
 	$("#popup").draggable({ handle: '#popup_menu'});
 	$(".3D").draggable({handle: '#info_case'});
 	$("#loading").ajaxStart(function()

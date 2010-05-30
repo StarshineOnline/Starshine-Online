@@ -40,7 +40,8 @@ class map
 		$this->troisd = $troisd;
 		$this->affiche_terrain = false;
 
-		$this->show_royaume_button = "javascript:affiche_royaume=!affiche_royaume;deplacement('centre', cache_monstre, affiche_royaume, show_only);";
+		//$this->show_royaume_button = "javascript:affiche_royaume=!affiche_royaume;deplacement('centre', cache_monstre, affiche_royaume, show_only);";
+		$this->show_royaume_button = '';
 
 		if(!$this->donjon)
 		{
@@ -304,7 +305,7 @@ class map
 			echo '<div class="div_map" style="width : '.round(20 + ($taille_cellule * $this->case_affiche)).'px;height:'.round(20 + ($taille_cellule * $this->case_affiche)).'px;">';
 			{//-- Affichage du bord haut (bh) de la map
 				echo "<ul id=\"".$classe_css['map_bord_haut']."\">
-					   <li id=\"".$classe_css['map_bord_haut_gauche']."\" ";if (!empty($class_css['resolution'])) {echo "class=\"".$class_css['resolution']."\" ";} echo "onclick=\"$this->show_royaume_button\">&nbsp;</li>";
+					   <li id=\"".$classe_css['map_bord_haut_gauche']."\" rel=\"option_map.php\" ";if (!empty($class_css['resolution'])) {echo "class=\"".$class_css['resolution']."\" ";} echo "onclick=\"$this->show_royaume_button\">&nbsp;</li>";
 				for ($bh = $this->xmin; $bh <= $this->xmax; $bh++)
 				{
 					if($bh == $this->x) { $class_x = "id='bord_haut_x' "; } else { $class_x = ""; }; //-- Pour mettre en valeur la position X ou se trouve le joueur
@@ -461,7 +462,15 @@ class map
 				}
 				echo "</ul>";
 			}
-			echo "</div>";
+			?>
+			</div>
+			<script type="text/javascript">
+			// <![CDATA[
+				$('#map_bord_haut_gauche').cluetip({activation: 'click', ajaxCache: false, width: '500px', cluetipClass: 'meteo', showTitle: false, closeText: 'Fermer', dropShadow: false, sticky: true, leftOffset: -5});
+			// ]]>
+			</script>
+			<?php
+			;
 		}
 	}
 

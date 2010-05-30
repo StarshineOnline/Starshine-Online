@@ -233,8 +233,8 @@ $this-><?php echo $champ_reference; ?> = $<?php echo $champ_reference; ?>;
 		{
 			while($row = $db->read_assoc($req))
 			{
-				if(!$keys) $return[] = new <?php echo $table; ?>_db($row);
-				else $return[$row[$keys]] = new <?php echo $table; ?>_db($row);
+				if(!$keys) $return[] = new <?php echo $table; ?>($row);
+				else $return[$row[$keys]] = new <?php echo $table; ?>($row);
 			}
 		}
 		else $return = array();
