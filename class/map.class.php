@@ -740,7 +740,7 @@ class map
 		$query = "SELECT mm.id, mm.x, mm.y, m.nom, m.lib ".$champs."
 								  FROM map_monstre mm, monstre m
 								  WHERE mm.type = m.id AND ( ( x BETWEEN ".$xmin." AND ".$xmax." ) AND ( y BETWEEN ".$ymin." AND ".$ymax." ) ) ".$show_only."
-								  ".$group." ORDER BY y ASC, x ASC, ABS(level - $level) ASC, level ASC, nom ASC, id ASC;";
+								  ".$group." ORDER BY y ASC, x ASC, ABS(mm.level - $level) ASC, mm.level ASC, nom ASC, id ASC;";
 		$RqMonstres = $db->query($query);
 		if($db->num_rows($RqMonstres) > 0)
 		{
