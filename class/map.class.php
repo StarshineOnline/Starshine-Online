@@ -734,7 +734,7 @@ class map
 		//On affiche que les monstres d'un certain type
 		if($this->show_only != '')
 		{
-			$show_only = " AND type IN (".$this->show_only.")";
+			$show_only = " AND m.type IN (".$this->show_only.")";
 		}
 		else $show_only = '';
 		$query = "SELECT mm.id, mm.x, mm.y, m.nom, m.lib ".$champs."
