@@ -235,7 +235,7 @@ function doPost() {
 	$(function() {
 		$("#selecteur").dialog({ position: ['right','top'] });
 	});
-	</script>
+</script>
 
 </body>
 </html>
