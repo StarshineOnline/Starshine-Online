@@ -1,0 +1,97 @@
+h1 {
+	font-size: 2em;
+	color: #0F1B2E;
+	padding-bottom: 1em;
+}
+
+h2 {
+	font-size: 1.6em;
+	color: #1D3256;
+	padding-bottom: 0.5em;
+	clear:both;
+}
+
+h3 {
+	font-size: 1.3em;
+	margin-top: 2em;
+	color: #1D3256;
+}
+
+p {
+	padding-bottom: 1em;
+	margin-right: 1em;
+	margin-left:1em;
+}
+
+/* Content */
+#content {
+	margin-left: 10px;
+}
+
+
+/* 2 columns reports */
+#leftcolumn {
+	float: left;
+	width: 50%;
+	padding-left: 10px;
+}
+#rightcolumn {
+	float: right;
+	width: 45%;
+}
+/* not in widget */
+.widget #leftcolumn, .widget #rightcolumn {
+	float:left;
+	width:100%;
+	padding-left:10px;
+}
+
+/* Calendar*/
+div.ui-datepicker {
+	font-size: 62.5%;
+}
+
+.ui-datepicker-current-period a, .ui-datepicker-current-period a:link, .ui-datepicker-current-period a:visited {
+	border: 1px solid #2E85FF;
+	color: #2E85FF;
+}
+
+#otherPeriods a {
+	text-decoration: none;
+}
+
+#otherPeriods a:hover {
+	text-decoration: underline;
+}
+
+#currentPeriod {
+	border-bottom: 1px dotted #520202;
+}
+
+.hoverPeriod {
+	cursor: pointer;
+	font-weight: bold;
+	border-bottom: 1px solid #520202;
+}
+
+div .sparkline {
+	float:left;
+	clear:both;
+	padding-bottom: 1px;
+	margin-top:10px;
+	border-bottom:1px solid white;
+}
+
+.sparkline img {
+	vertical-align: middle;
+	padding-right: 10px;
+	margin-top: 0;
+}
+
+div.pk-emptyGraph {
+        padding-top: 20px;
+        padding-bottom: 10px;
+        text-align: center;
+        font-size: 0.9em;
+        font-style: italic;
+}

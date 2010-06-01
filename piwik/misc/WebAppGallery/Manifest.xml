@@ -1,0 +1,8 @@
+<MSDeploy.iisApp>
+  <iisApp path="piwik" />
+  <setAcl
+    path="piwik"
+    setAclUser="anonymousAuthenticationUser"
+    setAclAccess="Modify"
+  />
+</MSDeploy.iisApp>
