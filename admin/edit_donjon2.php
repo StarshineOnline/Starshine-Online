@@ -4,8 +4,11 @@ if (file_exists('../root.php'))
 $admin = true;
 
 $textures = false;
-include_once(root.'haut.php');
+include_once(root.'inc/fp.php');
 setlocale(LC_ALL, 'fr_FR');
+add_data_to_head('<link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet" type="text/css" />');
+include_once(root.'admin/admin_haut.php');
+
 include_once(root.'haut_site.php');
 
 
@@ -25,6 +28,11 @@ if($ymin < 1) $ymin = 1;
 //if($ymax > 99) $ymax = 99;
 if($xmin < 1) $xmin = 1;
 //if($xmax > 99) $xmax = 99;
+
+if (array_key_exists('xmax', $_REQUEST)) $xmax = $_REQUEST['xmax'];
+if (array_key_exists('ymax', $_REQUEST)) $ymax = $_REQUEST['ymax'];
+
+
 ?>
 
 <script language="javascript">
@@ -60,27 +68,29 @@ if ($direction == 'phase2')
 {
 	$posymax = $ymax * 1000;
 	$posymin = $ymin * 1000;
-	for($c = $posymin;$c <= $posymax;$c = $c + 1000)
+	for($c = $ymin; $c <= $ymax; $c++)
 	{
 		for($d = $xmin; $d <= $xmax; $d++)
 		{
-			$temp = $d + $c;
+			//$temp = $d + $c;
+			$clause = "x = $d and y = $c";
+			$temp = $d + $c * 1000;
 			$decor = $_POST['hidden'.$temp];
 			if($decor != '')
 			{
 				$info = floor($decor / 100);
-				$requete = "SELECT ID FROM map WHERE ID = $temp";
+				$requete = "SELECT x, y FROM map WHERE $clause";
 				$req = $db->query($requete);
 				if($db->num_rows > 0)
 				{
-					$requete = "UPDATE map SET decor = $decor, info = $info, type = 2 WHERE ID = $temp";
+					$requete = "UPDATE map SET decor = $decor, info = $info, type = 2 WHERE $clause";
 				}
 				else
 				{
-					$requete = "INSERT INTO map VALUES ($temp, $info, $decor, 0, 2)";
+					$requete = "INSERT INTO map (x, y, info, decor, royaume, type) VALUES ($d, $c, $info, $decor, 0, 2)";
 				}
 				$req = $db->query($requete);
-				//echo $requete.'<br />';
+				//echo $requete. "<br />\n";
 			}
 		}
 	}
@@ -99,15 +109,23 @@ if ($direction == 'phase2')
 	}
 }
 
+$size_tab = 'min-width: '.(($xmax - $xmin) * 60 + 45).'px; min-height: '.
+(($ymax - $ymin) * 60 + 20).'px;';
+
 ?>
 
-<form action="edit_donjon2.php<?php if(array_key_exists('arene', $_GET)) echo '?arene='.$_GET['arene'] ?>" name="formulaire" method="POST">
+<form action="edit_donjon2.php<?php if(array_key_exists('arene', $_GET)) echo '?arene='.$_GET['arene'] ?>" name="formulaire" method="POST" id="theform">
+		<input type="hidden" name="direction" value="phase2" />
+		<input type="hidden" name="xmin" value="<?php echo $xmin; ?>" />
+		<input type="hidden" name="ymin" value="<?php echo $ymin; ?>" />
+		<input type="hidden" name="xmax" value="<?php echo $xmax; ?>" />
+		<input type="hidden" name="ymax" value="<?php echo $ymax; ?>" />
 <?php
 echo 'xmin : '.$xmin.' xmax : '.$xmax.' ymin : '.$ymin.' ymax : '.$ymax;
 //Requète pour l'affichage de la map
 ?>
 	<div class="mapedit">
-	<table cellpadding="0" cellspacing="0">
+	<table cellpadding="0" cellspacing="0" style="<?php echo $size_tab ?>">
 	<tr class="tabnoir">
 		<td>
 		</td>
@@ -133,8 +151,8 @@ echo 'xmin : '.$xmin.' xmax : '.$xmax.' ymin : '.$ymin.' ymax : '.$ymax;
 		$x_map = $xmin;
 		while($x_map < $xmax)
 		{
-			$positioncase = convert_in_pos($x_map, $y_map);
-			$requete = "SELECT * FROM map WHERE ID = ".$positioncase;
+			//$positioncase = convert_in_pos($x_map, $y_map);
+			$requete = "SELECT * FROM map WHERE x = $x_map and y = $y_map";
 			$req = $db->query($requete);
 			if ($x_map == $xmin)
 			{
@@ -148,20 +166,21 @@ echo 'xmin : '.$xmin.' xmax : '.$xmax.' ymin : '.$ymin.' ymax : '.$ymax;
 			{
 				$row = $db->read_assoc($req);
 				//Affichage de la case
-				$coord = convert_in_coord($row['ID']);
-				$rowid = $row['ID'];
+				$coord = array($row['x'], $row['y']);
+				$rowid = convert_in_pos($row['x'], $row['y']);
 				$W_terrain_case = $row['decor'];				
 				echo '
-					<td class="decor tex'.$W_terrain_case.'" id="case'.$positioncase.'" onClick="clickTexture('.$positioncase.')">
-						<input type="hidden" name="hidden'.$positioncase.'" value="'.$W_terrain_case.'" id="input'.$positioncase.'" />
+					<td class="decor tex'.$W_terrain_case.'" id="case'.$rowid.'" onClick="clickTexture('.$rowid.')">
+						<input type="hidden" name="hidden'.$rowid.'" value="'.$W_terrain_case.'" id="input'.$rowid.'" />
 					</td>';
 			}
 			else
 			{
 				//affichage case noire
+				$rowid = convert_in_pos($x_map, $y_map);
 					echo '
-						<td class="decor texblack" id="case'.$positioncase.'" onClick="clickTexture('.$positioncase.')">
-							<input type="hidden" name="hidden'.$positioncase.'" value="" id="input'.$positioncase.'" />
+						<td class="decor texblack" id="case'.$rowid.'" onClick="clickTexture('.$rowid.')">
+							<input type="hidden" name="hidden'.$rowid.'" value="" id="input'.$rowid.'" />
 						</td>';
 			}
 			$x_map++;
@@ -183,7 +202,14 @@ echo 'xmin : '.$xmin.' xmax : '.$xmax.' ymin : '.$ymin.' ymax : '.$ymax;
 	   <a id='rose_div_b' href="?ymin=<?php echo ($ymin + 4); ?>&xmin=<?php echo $xmin; ?>"></a>
 	   <a id='rose_div_bd'></a>
 </div>	
-	<div class="selecteur">
+	<div class="selecteur" id="selecteur" title="Palette">
+		<table>
+		<tr>
+			<td class="decor" id="texturePreview">
+			</td>
+			<td><input type="submit" value="ok" onClick="javascript:doPost()" /></td>
+		</tr>
+		</table>
 		<select name="<?php echo $positioncase;?>" size="15" class="baseJumpbox" id="selectText" onChange="changeTexture('texturePreview')">
 
 <?php
@@ -193,21 +219,23 @@ echo 'xmin : '.$xmin.' xmax : '.$xmax.' ymin : '.$ymin.' ymax : '.$ymax;
  ?>
 
 		</select>
-		<table>
-		<tr>
-			<td class="decor" id="texturePreview">
-			</td>
-		</tr>
-		</table>
-		<input type="hidden" name="direction" value="phase2" />
-		<input type="hidden" name="xmin" value="<?php echo $xmin; ?>" />
-		<input type="hidden" name="ymin" value="<?php echo $ymin; ?>" />
-		<input type="submit" value="ok" /><br />
 		</form>
+  	<div>
+		Starshine Editeur v2.2
+  	</div>
 	</div>
 	<a href="view_map2.php">Map Globale</a>
-	<div style="margin-top : 650px; text-align : center;">
-		Starshine Editeur v2.1
-	</div>
+
+<script type="text/javascript">
+function doPost() {
+  $('#theform').submit();
+}
+
+
+	$(function() {
+		$("#selecteur").dialog({ position: ['right','top'] });
+	});
+	</script>
+
 </body>
 </html>
