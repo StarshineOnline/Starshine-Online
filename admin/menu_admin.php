@@ -112,6 +112,11 @@ else
 	$menu[$i]['url'] = 'http://munin.starshine-online';
 	$menu[$i++]['acces'] = '';
 	$acces[] = '';
+
+	$menu[$i]['nom'] = 'Stats Web';
+	$menu[$i]['url'] = 'http://www.starshine-online.com/piwik';
+	$menu[$i++]['acces'] = '';
+	$acces[] = '';
 	
 	$menu[$i]['nom'] = 'Etude HV';
 	$menu[$i]['url'] = 'etude_hotel.php';
