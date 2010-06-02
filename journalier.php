@@ -174,10 +174,9 @@ var_dump($ret_info);
 if ($ret_info['warnings'] == 0) {
 	unlink($insert_file);
 } else {
-	$msg "Warnings detected: file `${insert_file}` kept";
-  echo $msg."\n";
-  $log = new log_admin();
-  $log->send(0, 'journalier', $msg);
+	$msg = "Warnings detected: file `${insert_file}` kept \n";
+	$log = new log_admin();
+	$log->send(0, 'journalier', $msg);
 }
 
 //Si le premier du mois, pop des boss de donjons
