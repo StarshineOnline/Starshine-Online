@@ -6,10 +6,35 @@ $admin = true;
 $textures = false;
 include_once(root.'inc/fp.php');
 
+define('MAX_X_NON_DONJON', 190);
+define('MAX_Y_NON_DONJON', 190);
+
 if (array_key_exists('change', $_GET)) {
-	echo '<pre>';
-	var_dump($_POST);
-	echo '</pre>';
+	$first = true;
+	$req = "insert into map (x, y, type, decor, info) values \n";
+	foreach ($_POST['changes'] as $c) {
+		if ($first) $first = false;
+		else $req .= ",\n";
+		$x = acase::get_x($c['case']);
+		$y = acase::get_y($c['case']);
+		if (array_key_exists('type', $c)) {
+			$type = $c['type'];
+		} else {
+			$type = 0;
+			if ($x > MAX_X_NON_DONJON || $y > MAX_Y_NON_DONJON)
+				$type = 2;
+		}
+		$decor = $c['decor'];
+		$info = floor($decor / 100);
+		$req .= "($x, $y, $type, $decor, $info)";
+	}
+	$req .= "\nON DUPLICATE KEY UPDATE type = VALUES(type), decor = VALUES(decor), info = VALUES(info)";
+	$res = $db->query($req);
+	if ($_POST['showQ'] == 'true')
+		$_SESSION['last_query'] = "$req\n".print_r($db->get_mysql_info(), true);
+	else
+		$_SESSION['last_query'] = null;
+	echo '<script type="text/javascript">location.reload();</script>';
 	exit(0);
 }
 
@@ -21,6 +46,14 @@ class acase {
 
 	function __construct($x, $y) {
 		$this->id = $y * 1000 + $x;
+	}
+
+	static function get_x($id) {
+		return $id % 1000;
+	}
+
+	static function get_y($id) {
+		return floor($id / 1000);
 	}
 
 	function set_row($row) {
@@ -37,11 +70,14 @@ class acase {
 		} else {
 			echo 'class="decor texblack"';
 		}
-		echo '></td>';
+		echo '>';
+		echo '<span class="casetype">'.$this->type.'</span>';
+		echo '</td>';
 	}
 }
 
 add_css_to_head('http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css');
+add_raw_css_to_head('.casetype { font-size: 0.5em; color: black; background-color: yellow; display: none; } ');
 
 include_once(root.'admin/admin_haut.php');
 
@@ -88,6 +124,8 @@ $req = $db->query($requete);
 while ($row = $db->read_assoc($req)) {
 	$cases[$row['x']][$row['y']]->set_row($row);
 }
+
+echo '<a href="index.php">Retour</a>';
 
 $size = 'min-width: '.(($xmax - $xmin) * 60 + 45).'px; min-height: '.
 (($ymax - $ymin) * 60 + 20).'px;';
@@ -153,6 +191,13 @@ function decal($sens, $sens2 = '') {
 	echo "?xmin=${nxmin}&amp;ymin=${nymin}&amp;xmax=${nxmax}&amp;ymax=${nymax}";
 }
 
+if (isset($_SESSION['last_query']) && $_SESSION['last_query'] != null) {
+	echo '<div id="lastq" title="Last query"><pre>'.
+		$_SESSION['last_query'].'</pre></div>';
+	$add_js_start = '$("#lastq").dialog({ position: [\'left\',\'top\'] });';
+	$_SESSION['last_query'] = null;
+}
+
 ?>
 
 <div id='rosedesvents'>
@@ -173,14 +218,25 @@ function decal($sens, $sens2 = '') {
     <tr>
 			<td class="decor" id="texturePreview" style="border: 0px; width: 60px; heigh: 60px;"></td>
 			<td><input type="submit" value="ok" onClick="javascript:doPost()" /></td>
+      <td><input type="checkbox" id="doShowQ" value="off" />Show Query</td>
 		</tr>
 	</table>
-	<select size="10" class="baseJumpbox" id="selectText" onChange="changeTexture()" style="max-height: 600px">
+	<select size="10" class="baseJumpbox" id="selectText" onChange="changeTexture()" style="max-height: 500px">
 <?php
 include_once('terrain.inc.html');
 include_once('donjon.inc.html');
  ?>
 	</select>
+  <div>Type:
+    <select id="type_drop">
+      <option value="-1">Auto</option>
+      <option value="0">Normal</option>
+      <option value="1">Capitale</option>
+      <option value="2">Donjon</option>
+      <option value="3">Point spécial</option>
+    </select>
+	  <input type="button" onClick="toggleTypeView()" value="Voir Type" />
+  </div>
 	<div>
 	Starshine Editeur v2.2
 	</div>
@@ -192,7 +248,8 @@ include_once('donjon.inc.html');
 
 	function doPost() {
 		/* $('#theform').submit(); */
-		$.post("?change", { changes: curChanges }, function(data) { $('body').append(data); });
+		var theShowQ = document.getElementById('doShowQ').checked;
+		$.post("?change", { changes: curChanges, showQ: theShowQ }, function(data) { $('body').append(data); });
 	}
 
   function changeTexture() {
@@ -202,12 +259,27 @@ include_once('donjon.inc.html');
 
 
   function clickTexture(numeroCase) {
-		curChanges.push({case: numeroCase, decor: curDec});
+		var lType = $("#type_drop").val();
+		if (lType == -1)
+			curChanges.push({case: numeroCase, decor: curDec});
+		else
+			curChanges.push({case: numeroCase, decor: curDec, type: lType });
 		$("#case" + numeroCase).attr({class: "decor tex" + curDec});
 	}
 
+  var typeView = 0;
+  function toggleTypeView() {
+		typeView = !typeView;
+		if (typeView)
+			$('.casetype').show();
+		else
+			$('.casetype').hide();
+	}
+
 	$(function() {
+		$("#rosedesvents").addClass('ui-draggable');
 		$("#selecteur").dialog({ position: ['right','top'] });
+		<?php echo $add_js_start; ?>
 	});
 </script>
 

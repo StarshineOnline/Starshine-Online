@@ -34,7 +34,7 @@ else
 	$acces[] = '';
 
 	$menu[$i]['nom'] = 'Editeur de carte';
-	$menu[$i]['url'] = 'edit_map3.php';
+	$menu[$i]['url'] = 'edit_map_full.php';
 	$menu[$i++]['acces'] = 'admin';
 	$acces[] = 'admin';
 
