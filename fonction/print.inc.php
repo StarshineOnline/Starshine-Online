@@ -110,7 +110,25 @@ function print_messbar()
 function add_data_to_head($data)
 {
 	global $add_data_to_head;
-	$add_data_to_head .= $data;
+	$add_data_to_head .= $data."\n";
+}
+
+function add_css_to_head($css)
+{
+	$data = '<link href="'.$css.'" rel="stylesheet" type="text/css" />';
+	add_data_to_head($data);
+}
+
+function add_raw_css_to_head($css)
+{
+	$data = '<style type="text/css">'.$css.'</style>';
+	add_data_to_head($data);
+}
+
+function add_js_to_head($js)
+{
+	$data = '<script type="text/javascript" src="'.$js.'"></script>';
+	add_data_to_head($data);
 }
 
 function make_overlib($message)
