@@ -50,8 +50,8 @@ class map
 		}
 		else
 		{
-			$limite_x = 300;
-			$limite_y = 300;
+			$limite_x = 500;
+			$limite_y = 500;
 		}
 
 		if($this->x < ($this->champ_vision + 1))			{ $this->xmin = 1;		$this->xmax = $this->x + ($this->case_affiche - ($this->x)); }
