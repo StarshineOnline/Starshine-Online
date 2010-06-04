@@ -21,6 +21,7 @@ $map = new map($x, $y, $visu, '', true);
 if (is_object($joueur) && $joueur->in_arene()) {
 	$map->arene = true;
 }
+else { $map->set_dungeon_layer(true); }
 $map->get_pnj();
 $map->get_joueur($objXY->race);
 $map->get_monstre($level);

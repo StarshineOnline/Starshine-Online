@@ -445,15 +445,22 @@ class map
 						if ($this->atmosphere_type != false)
 						{
 							$this->atmosphere_layer($this->atmosphere_type, $x_map, $y_map);
-						} elseif (isset($this->map[$x_map][$y_map]['calque'])) {
+						}
+						elseif (isset($this->map[$x_map][$y_map]['calque']))
+						{
 							$this->atmosphere_layer($this->map[$x_map][$y_map]['calque'],
 																			$x_map, $y_map,
 																			$this->map[$x_map][$y_map]['calque_dx'],
 																			$this->map[$x_map][$y_map]['calque_dy']);
 						}
+						elseif ($this->dungeon_layer)
+						{
+							$this->print_dungeon_layer($x_map - $this->xmin, $y_map - $this->ymin);
+						}
 						echo "<span id='pos_".$MAPTAB[$x_map][$y_map]["id"]."'>".$repere."</span></div>";
 						if ($this->atmosphere_type != false || 
-								isset($this->map[$x_map][$y_map]['calque']))
+								isset($this->map[$x_map][$y_map]['calque']) ||
+								$this->dungeon_layer)
 							echo '</div>';
 						echo "\n</li>";	
 						
@@ -485,6 +492,17 @@ class map
 			$dx += $this->atmosphere_decal['x'];
 			$dy += $this->atmosphere_decal['y'];
 		}
+		echo "background-position: ${dx}px ${dy}px; ";
+		echo 'margin-top: -2px; margin-bottom: -2px; margin-left: -2px;'.
+			' height: 62px; width: 60px; background-repeat: repeat;">';
+	}
+
+	function print_dungeon_layer($x, $y)
+	{
+		echo '<div style="background-attachment: scroll; '.
+			'background-image: url(image/interface/calque-atmosphere-noir.png); ';
+		$dx = (-$x * 60);
+		$dy = (-$y * 60);
 		echo "background-position: ${dx}px ${dy}px; ";
 		echo 'margin-top: -2px; margin-bottom: -2px; margin-left: -2px;'.
 			' height: 62px; width: 60px; background-repeat: repeat;">';
@@ -887,6 +905,12 @@ class map
 		else
 			$this->atmosphere_decal = array('x' => $x, 'y' => $y);
 			//$this->atmosphere_decal = (-$x * 60).'px '.(-$y * 60).'px';
+	}
+
+	var $dungeon_layer = false;
+	function set_dungeon_layer($layer)
+	{
+		$this->dungeon_layer = $layer;
 	}
 
 	function compute_atmosphere()
