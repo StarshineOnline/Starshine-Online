@@ -117,8 +117,8 @@ $req = $db->query($requete);
 while($row = $db->read_assoc($req))
 {
 	$terrain = type_terrain($row['info']);
-	echo utf8_decode($terrain[1]);
-	$ress_terrain = $ress[utf8_decode($terrain[1])];
+	//echo /*utf8_decode(*/$terrain[1]/*)*/;
+	$ress_terrain = $ress[ $terrain[1] ];
 	$royaume = get_royaume_info($row['royaume'], $row['royaume']);
 	if($batiment[$row['id_batiment']]['bonus2'] != 0)
 	{
