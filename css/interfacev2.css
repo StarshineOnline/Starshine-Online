@@ -1,3 +1,6 @@
+/*-- Includes -----------------------------------------------------*/
+@import "datatables.css";
+
 /*-- Global site --------------------------------------------------*/
 html { width:100%; height:100%; }
 body { margin:0; padding:0; background:#7e909c url(../image/v2/bg_site.png) repeat-x; width:100%; height:100%; font:13px "Helvetica Neue", Helvetica, Arial, Geneva, sans-serif; }

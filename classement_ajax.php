@@ -74,80 +74,21 @@ if (file_exists('root.php'))
 	$tab_classement['survie']['affiche'] = true;
 	$tab_classement['survie']['affiche_niveau'] = false;
 	$tab_classement['dressage']['nom'] = 'Dresseur';
-	$tab_classement['dressage']['champ'] = 'dressage';
+	$tab_classement['dressage']['champ'] = 'Dressage';
 	$tab_classement['dressage']['affiche'] = true;
 	$tab_classement['dressage']['affiche_niveau'] = false;
+
+
+if(!array_key_exists('tri', $_GET)) $tri = 'honneur';
+else $tri = $_GET['tri'];
+if (array_key_exists('race', $_GET)) {
+  $target = 'classement_ajax_json.php?race='.$_GET['race'].'&tri='.$tri;
+} else {
+  $target = 'classement_ajax_json.php?tri='.$tri;
+}
 ?>
-		<div id="table_classement">
+		<div id="table_classement" class="display">
 <?php
-	$joueur = new perso($_SESSION['ID']);
-	if(!array_key_exists('tri', $_GET)) $tri = 'honneur';
-	else
-	{
-		$tri = mysql_escape_string($_GET['tri']);
-		if(!strcmp($tri, 'craft'))
-		{
-			$tri = 'architecture, forge, alchimie';
-		}
-		$i = 0;
-	}
-	if(array_key_exists('race', $_GET))
-	{
-		$race = $_GET['race'];
-	}
-	else
-	{
-		$race = 'tous';
-	}
-	if(array_key_exists('i', $_GET)) $i = $_GET['i'];
-	else
-	{
-		$i = 0;
-	}
-	if($race == 'race')
-	{
-		$where = "race = '".sSQL($joueur->get_race())."'";
-	}
-	else
-	{
-		$where = '1';
-	}
-	if($i === 'moi')
-	{
-		if(!strcmp($tri, 'architecture, forge, alchimie'))
-		{
-			$requete = "SELECT COUNT(*) FROM perso WHERE ROUND(SQRT((alchimie + forge + architecture) * 10)) > ".$joueur->get_artisanat()." AND statut = 'actif' AND ".$where;
-		}
-		else
-		{
-			$get = 'get_'.$tri;
-			$requete = "SELECT COUNT(*) FROM perso WHERE ".sSQL($tri)." > ".$joueur->$get()." AND statut = 'actif' AND ".$where;
-		}
-		$req = $db->query($requete);
-		$row = $db->read_row($req);
-		$sup = $row[0] + 15;
-		$inf = $row[0] - 10;
-		if($inf < 0)
-		{
-			$inf = 0;
-			$sup = 26;
-		}
-		$k = $inf - 25;
-	}
-	else
-	{
-		$inf = $i;
-		$sup = $inf + 26;
-		$k = $inf - 25;
-	}
-	if($k < 0) $k = 0;
-	$j = 26;
-	$ord = strcmp($tri, 'architecture, forge, alchimie') ? $tri : 'ROUND(SQRT((alchimie + forge + architecture) * 10))';
-	$tri = strcmp($tri, 'architecture, forge, alchimie') ? $tri : 'ROUND(SQRT((alchimie + forge + architecture) * 10)) as craft';
-	$requete = "SELECT id, nom, ".sSQL($tri).", level, race, classe, cache_stat, cache_classe FROM perso WHERE statut = 'actif' AND ".$where." ORDER BY ".$ord." DESC, nom ASC LIMIT $inf, $j";
-	//echo $requete;
-	//echo 'inf : '.$inf.' j : '.$j.' k : '.$k.' sup : '.$sup.' '.$requete.'<br />';
-	$req = $db->query($requete);
 	$tri = !strcmp('ROUND(SQRT((alchimie + forge + architecture) * 10)) as craft', $tri) ? 'craft' : $tri;
 ?>
 		<input type="hidden" id="tri" value="<?php echo $tri; ?>" />
@@ -159,135 +100,58 @@ if (file_exists('root.php'))
 		<div class="titre">
 			<?php echo $tab_classement[$tri]['nom']; ?>
 		</div>
-		<table cellspacing="0" style="width : 100%;">
+		<table cellspacing="0" style="width : 100%;"  id="classement_table">
+		<thead>
 		<tr class="table">
-			<td>
+			<th>
 				#
-			</td>
-			<td>
+			</th>
+			<th>
 				Nom
-			</td>
+			</th>
 			<?php
 			if($tab_classement[$tri]['affiche'])
 			{
 			?>
-			<td>
+			<th>
 				<?php echo $tab_classement[$tri]['champ']; ?>
-			</td>
+			</th>
 			<?php
 			}
 			if($tab_classement[$tri]['affiche_niveau'])
 			{
 			?>
-			<td>
+			<th>
 				Niveau
-			</td>
+			</th>
 			<?php
 			}
 			?>
 		</tr>
-
-		<?php
-			$z = 0;
-			$y = $inf;
-			while($row = $db->read_array($req))
-			{
-				if($z < 25)
-				{
-					if(!check_affiche_bonus($row['cache_stat'], $joueur, $row))
-					{
-						?>
-						<tr class="table">
-							<td>
-								<?php echo ($y + 1); ?>
-							</td>
-							<td>
-								###
-							</td>
-							<?php
-							if($tab_classement[$tri]['affiche'])
-							{
-							?>
-								<td>
-									###
-								</td>
-							<?php
-							}
-							if($tab_classement[$tri]['affiche_niveau'])
-							{
-							?>
-								<td>
-									###
-								</td>
-							</tr>
-							<?php
-							}
-					}
-					else
-					{
-						$nom = $row['nom'];
-						if((strtolower($row['nom']) != strtolower($_SESSION['nom'])) AND
-							 ($row['cache_classe'] > 1 OR
-								($row['cache_classe'] == 1 AND $row['race'] != $joueur->get_race())))
-							$row['classe'] = 'combattant';
-						if(strtolower($nom) == strtolower($_SESSION['nom']))
-						{
-							$style = 'background-color : #0aa74c;';
-						}
-						else $style = '';
-						echo '
-						<tr style="'.$style.'" class="table">
-							<td>
-								'.($y + 1).'
-							</td>
-							<td>
-								<img src="image/personnage/'.$row['race'].'/'.$row['race'].'_'.$Tclasse[$row['classe']]['type'].'.png" alt="'.$Gtrad[$row['race']].' - '.$row['classe'].'" title="'.$Gtrad[$row['race']].' - '.$row['classe'].'"  style="width : 20px; height : 20px;vertical-align : middle;" /> '.$nom.'
-							</td>';
-						if($tab_classement[$tri]['affiche'])
-						{
-						?>
-							<td>
-								<?php echo $row[$tri]; ?>
-							</td>
-						<?php
-						}
-						if($tab_classement[$tri]['affiche_niveau'])
-						{
-						?>
-							<td>
-								<?php echo $row['level']; ?>
-							</td>
-						</tr>
-						<?php
-						}
-					}
-					$y++;
-				}
-				$z++;
-			}
-		
-		?>
+		</thead>
+		<tbody>
+			</tbody>
 		</table>
 	</td>
 </tr>
 </table>
-		<?php
-		if($inf > 0)
-		{
-		?>
-			<a href="javascript:adresse('', '<?php echo $k; ?>', '')"><<- Précédent</a>
-		<?php
-		}
-		else
-		{
-		?>
-		<<- Précédent
-		<?php
-		}
-		if($z > 25)
-		{
-		?>
-			<a href="javascript:adresse('', '<?php echo ($sup - 1); ?>', '')">Suivant ->></a>
-		<?php
-		}
-		?>
+<script type="text/javascript">
+		$('#classement_table').dataTable({
+			"sAjaxSource": "<?php echo $target ?>",		
+				"bProcessing": true,
+				"bServerSide": true,
+				"sPaginationType": "full_numbers",
+				"oLanguage": {
+				  "sInfo": "_START_ à _END_ sur _TOTAL_",
+					"sInfoEmpty": "Pas de résultats",
+					"sInfoFiltered": " (nombre total : _MAX_)",
+					"sLengthMenu": "Affiche _MENU_ éléments",
+					"sProcessing": "Calcul en cours ...",
+					"sSearch": "Filtrer sur :",
+					"sZeroRecords": "Pas de résultat",
+					"oPaginate": {
+						"sFirst": "Début", "sLast": "Fin", "sNext": "Suivant", "sPrevious": "Précédent"
+					}
+	  		}
+		});
+</script>
