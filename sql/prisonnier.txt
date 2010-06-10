@@ -1,0 +1,13 @@
+<em>L'homme est allongé par terre, il porte les restes d'une armure tailladée de toutes parts, à ses cotés gisent plusieurs personnes, toutes semblent gravement bléssées, leur visage émacié refléte une terreur sans nom.</em>
+
+[ID:1]Ne vous inquiétez pas, on va vous sortir d'ici ![/ID:1]
+*****
+<em>l'homme pousse un râle de douleur, vomissant une gerbe de sang</em>
+- fuy... fuyez... elle nous... dévore... de l'intérieur... Rhaa
+[ID:2]<em>Le reste de la phrase se perd dans un gargouilli incompréhensible</em>[/ID:2]
+*****
+Ils nous ont attaqué par surprise... des hordes de goules et de zombies... le nécromant était à leur tête... rhaa .. et le dragon, le dragon... son souffle destructeur... <em>gargouillis</em>. on a rien pu faire... Ils en ont gardé quelques un en vie... la torture... la douleur... elle s'en nourrit... rha <em>gargouillis</em>.
+
+[ID:3]Arretez de parler, on va vous sortir d'ici[/ID:3]
+*****
+c'est... trop tard .. pour moi.. par pitié, vengez notre mort a tous, ne les laissez pas réaliser leur noir dessein quels qu'il soit, Tuez... les ... tous...
