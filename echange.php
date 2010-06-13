@@ -1,7 +1,7 @@
 <?php
 if (file_exists('root.php'))
   include_once('root.php');
-?><?php
+
 include_once(root.'inc/fp.php');
 ?>
 <fieldset>
@@ -12,7 +12,7 @@ $joueur->restack_objet();
 //Si un identifiant d'echange est passé alors on récupère les infos sur cet échange
 if(array_key_exists('id_echange', $_GET))
 {
-	$echange = recup_echange(sSQL($_GET['id_echange']));
+	$echange = recup_echange(sSQL($_GET['id_echange'], SSQL_INTEGER));
 	$receveur = new perso($echange['id_j2']);
 	//Vérification si le joueur fait parti du donneur ou receveur
 	if($joueur->get_id() != $echange['id_j1'] AND $joueur->get_id() != $echange['id_j2'])
@@ -31,8 +31,7 @@ if(array_key_exists('id_echange', $_GET))
 //Sinon c'est le début d'un echange
 else
 {
-	validate_integer_value($_GET['id_joueur']);
-	$W_ID = sSQL($_GET['id_joueur']);
+	$W_ID = sSQL($_GET['id_joueur'], SSQL_INTEGER);
 	$receveur = new perso($W_ID);
 	$j1 = new perso($joueur->get_id());
 	$j2 = new perso($W_ID);
@@ -52,8 +51,7 @@ if(array_key_exists('nouvel_echange', $_GET))
 //Si début d'un echange
 if(!isset($echange))
 {
-	validate_integer_value(sSQL($_GET['id_joueur']));
-	$W_ID = sSQL($_GET['id_joueur']);
+	$W_ID = sSQL($_GET['id_joueur'], SSQL_INTEGER);
 	$receveur = new perso($W_ID);
 	echo '<div class="information_case">';
 	//On demande au joueurs si il veut faire un échange ou en récupérer un ancien
@@ -99,12 +97,12 @@ if(array_key_exists('valid_etape', $_GET))
 	{
 		case 'creation' :
 			//Ajout des stars dans la bdd
-			if(echange_objet_ajout(sSQL($_GET['star']), 'star', $echange['id_echange'], $joueur->get_id()))
+			if(echange_objet_ajout(sSQL($_GET['star'], SSQL_INTEGER), 'star', $echange['id_echange'], $joueur->get_id()))
 			{
 				$echange = recup_echange($echange['id_echange']);
 			}
 			//On passe l'échange en mode proposition
-			$requete = "UPDATE echange SET statut = 'proposition' WHERE id_echange = '".sSQL($_GET['id_echange'])."'";
+			$requete = "UPDATE echange SET statut = 'proposition' WHERE id_echange = '".sSQL($_GET['id_echange'], SSQL_INTEGER)."'";
 			if($db->query($requete))
 			{
 				//On envoi un message au gars
@@ -123,12 +121,12 @@ if(array_key_exists('valid_etape', $_GET))
 			if($j1->get_id() == $joueur->get_id())
 				break;
 			//Ajout des stars dans la bdd
-			if(echange_objet_ajout(sSQL($_GET['star']), 'star', $echange['id_echange'], $joueur->get_id()))
+			if(echange_objet_ajout(sSQL($_GET['star'], SSQL_INTEGER), 'star', $echange['id_echange'], $joueur->get_id()))
 			{
 				$echange = recup_echange($echange['id_echange']);
 			}
 			//On passe l'échange en mode finalisation
-			$requete = "UPDATE echange SET statut = 'finalisation' WHERE id_echange = '".sSQL($_GET['id_echange'])."'";
+			$requete = "UPDATE echange SET statut = 'finalisation' WHERE id_echange = '".sSQL($_GET['id_echange'], SSQL_INTEGER)."'";
 			if($db->query($requete))
 			{
 				//On envoi un message au gars <== a faire ==>
@@ -150,7 +148,7 @@ if(array_key_exists('valid_etape', $_GET))
 			//Vérification que les joueurs ont bien les objets dans leur inventaire
 			else
 			{
-				if(verif_echange(sSQL($_GET['id_echange']), $j1->get_id(), $j2->get_id()))
+				if(verif_echange(sSQL($_GET['id_echange'], SSQL_INTEGER), $j1->get_id(), $j2->get_id()))
 				{
 					$check = true;
 					//Vérification qu'ils ont bien assez de place
@@ -210,7 +208,7 @@ if(array_key_exists('valid_etape', $_GET))
 						$db->query($requete);
 						//On met a jour le statut de l'échange
 						//On passe l'échange en mode fini
-						$requete = "UPDATE echange SET statut = 'fini' WHERE id_echange = '".sSQL($_GET['id_echange'])."'";
+						$requete = "UPDATE echange SET statut = 'fini' WHERE id_echange = '".sSQL($_GET['id_echange'], SSQL_INTEGER)."'";
 						if($db->query($requete))
 						{
 							//On envoi un message au gars <== a faire ==>
@@ -247,7 +245,7 @@ if(array_key_exists('ajout_objet', $_GET))
 if(array_key_exists('suppr_objet', $_GET))
 {
 	//Ajout de l'objet dans la bdd
-	if(echange_objet_suppr(sSQL($_GET['suppr_objet'])))
+	if(echange_objet_suppr(sSQL($_GET['suppr_objet'], SSQL_INTEGER)))
 	{
 		array_splice($echange['objet'], $_GET['index_objet'], 1);
 	}

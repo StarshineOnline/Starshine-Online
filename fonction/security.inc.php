@@ -12,8 +12,13 @@ function mydie($p)
   print "$p \n"; exit (0);
 }
 
+define('SSQL_INTEGER', 0);
+define('SSQL_FLOAT', 1);
+define('SSQL_STRING', 2);
+define('SSQL_NONE', -1);
+
 // Fonction générique de protection des entrées SQL
-function sSQL($data)
+function sSQL($data, $type = SSQL_NONE)
 {
   // On vire les magic quote si elles sont là
   if (get_magic_quotes_gpc()) {
@@ -25,21 +30,49 @@ function sSQL($data)
   } else {
     $data = $data;
   }
+
+  switch ($type)
+  {
+    case SSQL_INTEGER:
+      validate_integer_value($data);
+      $data = intval($data);
+      break;
+    case SSQL_FLOAT:
+      validate_numeric_value($data);
+      $data = floatval($data);
+      break;
+    case SSQL_STRING:
+      validate_sql_value($data);
+      $data = strval($data);
+      break;
+    case SSQL_NONE:
+      break; // No type test
+  }
   
   // On protège
   $res = mysql_real_escape_string($data);
-  if ($res === FALSE)
-    return mysql_error();
+  if ($res === FALSE) {
+    echo mysql_error();
+    exit (1);
+  }
   return $res;
 }
 
 // Si on veut faire des tests génériques
 function validate_sql_value($sql)
 {
-  if (false) security_block(SQL_INJECTION, 'Bad SQL entry');
+  if (is_object($sql) || is_array($sql) || false)
+    security_block(SQL_INJECTION, 'Bad SQL entry');
 }
 
 function validate_integer_value($int)
+{
+  validate_sql_value($int);
+  if (!is_numeric($int)) security_block(SQL_INJECTION, 'Bad SQL entry');
+  else { global $unit_debug; if (isset($unit_debug) && $unit_debug) print " OK\n"; }
+}
+
+function validate_numeric_value($int)
 {
   validate_sql_value($int);
   if (!is_numeric($int)) security_block(SQL_INJECTION, 'Bad SQL entry');
