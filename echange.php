@@ -52,7 +52,7 @@ if(array_key_exists('nouvel_echange', $_GET))
 //Si début d'un echange
 if(!isset($echange))
 {
-	validate_integer_value($_GET['id_joueur']);
+	validate_integer_value(sSQL($_GET['id_joueur']));
 	$W_ID = sSQL($_GET['id_joueur']);
 	$receveur = new perso($W_ID);
 	echo '<div class="information_case">';
@@ -99,7 +99,7 @@ if(array_key_exists('valid_etape', $_GET))
 	{
 		case 'creation' :
 			//Ajout des stars dans la bdd
-			if(echange_objet_ajout($_GET['star'], 'star', $echange['id_echange'], $joueur->get_id()))
+			if(echange_objet_ajout(sSQL($_GET['star']), 'star', $echange['id_echange'], $joueur->get_id()))
 			{
 				$echange = recup_echange($echange['id_echange']);
 			}
@@ -123,7 +123,7 @@ if(array_key_exists('valid_etape', $_GET))
 			if($j1->get_id() == $joueur->get_id())
 				break;
 			//Ajout des stars dans la bdd
-			if(echange_objet_ajout($_GET['star'], 'star', $echange['id_echange'], $joueur->get_id()))
+			if(echange_objet_ajout(sSQL($_GET['star']), 'star', $echange['id_echange'], $joueur->get_id()))
 			{
 				$echange = recup_echange($echange['id_echange']);
 			}
@@ -150,7 +150,7 @@ if(array_key_exists('valid_etape', $_GET))
 			//Vérification que les joueurs ont bien les objets dans leur inventaire
 			else
 			{
-				if(verif_echange($_GET['id_echange'], $j1->get_id(), $j2->get_id()))
+				if(verif_echange(sSQL($_GET['id_echange']), $j1->get_id(), $j2->get_id()))
 				{
 					$check = true;
 					//Vérification qu'ils ont bien assez de place
@@ -247,7 +247,7 @@ if(array_key_exists('ajout_objet', $_GET))
 if(array_key_exists('suppr_objet', $_GET))
 {
 	//Ajout de l'objet dans la bdd
-	if(echange_objet_suppr($_GET['suppr_objet']))
+	if(echange_objet_suppr(sSQL($_GET['suppr_objet'])))
 	{
 		array_splice($echange['objet'], $_GET['index_objet'], 1);
 	}
