@@ -10,7 +10,7 @@ $tab_sort_jeu = explode(';', $joueur->get_comp_jeu());
 if($joueur->get_groupe() != 0) $groupe_joueur = new groupe($joueur->get_groupe()); else $groupe_joueur = false;
 if (isset($_GET['ID']))
 {
-	$requete = "SELECT * FROM comp_jeu WHERE id = ".sSQL($_GET['ID']);
+	$requete = "SELECT * FROM comp_jeu WHERE id = ".sSQL($_GET['ID'], SSQL_INTEGER);
 	//echo $requete;
 	$req = $db->query($requete);
 
@@ -41,6 +41,7 @@ if (isset($_GET['ID']))
 			case 'oeil_chasseur' : 
 			case 'renouveau_energique' :
 			case 'bulle_dephasante' :
+		  case 'defense_pet':
 				foreach($cibles as $cible)
 				{
 					$cible_s = new perso($cible);
@@ -236,5 +237,6 @@ else
 	echo '</table>';
 }
 
+print_reload_area('infoperso.php?javascript=oui', 'perso');
 ?>
-<img src="image/pixel.gif" onLoad="envoiInfo('infoperso.php?javascript=oui', 'perso');" />
+

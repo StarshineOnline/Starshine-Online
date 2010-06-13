@@ -265,4 +265,10 @@ function my_log($log)
 		fwrite($logfile, print_r($log, true));
 }
 
+function print_reload_area($url, $area)
+{
+	echo '<script type="text/javascript">envoiInfo(\''.
+		$url.'\', \''.$area.'\');</script>';
+}
+
 ?>
