@@ -12,7 +12,7 @@ $joueur->restack_objet();
 //Si un identifiant d'echange est passé alors on récupère les infos sur cet échange
 if(array_key_exists('id_echange', $_GET))
 {
-	$echange = recup_echange($_GET['id_echange']);
+	$echange = recup_echange(sSQL($_GET['id_echange']));
 	$receveur = new perso($echange['id_j2']);
 	//Vérification si le joueur fait parti du donneur ou receveur
 	if($joueur->get_id() != $echange['id_j1'] AND $joueur->get_id() != $echange['id_j2'])
