@@ -503,6 +503,7 @@ class map
 			foreach ($this->tooltips as $tt) 
 			{
 				echo "$('#marq${tt}').cluetip({local:true, showTitle: false, leftOffset: -5, dropShadow: false, waitImage: false });";
+				//echo "$('#marq${tt}').aToolTip({ toolTipClass: 'cluetip-meteo', tipContent: $('#TT_${tt}').html() });";
 			}
 ?>
 			// ]]>
