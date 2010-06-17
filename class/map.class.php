@@ -24,6 +24,9 @@ class map
 	public $arene = false;
 	private $affiche_royaume;
 
+	private $tooltip_txt = '';
+	private $tooltips = array();
+
 	function __construct($x, $y, $champ_vision = 3, $root = '', $donjon = false, $resolution = 'high', $troisd = false)
 	{
 		$this->x = $x;
@@ -248,9 +251,14 @@ class map
 							for($i = 0; $i < count($this->map[$x_map][$y_map]["Drapeaux"]); $i++)			{ $overlib .= "<li class='overlib_batiments'><span>Construction</span>&nbsp;-&nbsp;".ucwords($this->map[$x_map][$y_map]["Drapeaux"][$i]["nom"])."</li>"; }
 	
 							$overlib .= "</ul>";
-							$overlib = str_replace("'", "\'", trim($overlib));
+							$this->tooltip_txt .=  '<div style="display: none" id="TT_'.
+								$case.'">'.$overlib."</div>\n";
+							$this->tooltips[] = $case;
+							$overlib = "";
+
 						}
 						else { $overlib = ""; }
+
 					
 						if(is_array($MAPTAB[$x_map][$y_map])) { $class_map = "decor tex".$MAPTAB[$x_map][$y_map]["decor"]; } else { $class_map = "decor texblack"; };
 						
@@ -262,6 +270,10 @@ class map
 						{
 							echo "	onmouseover=\"return overlib('$overlib', BGCLASS, 'overlib', BGCOLOR, '', FGCOLOR, '');\" 
 							   		onmouseout=\"return nd();\" ";
+						}
+						if (in_array($case, $this->tooltips))
+						{
+							echo " rel=\"#TT_${case}\" ";
 						}
 						if($this->onclick_status)
 						{
@@ -411,7 +423,10 @@ class map
 							for($i = 0; $i < count($this->map[$x_map][$y_map]["Drapeaux"]); $i++)			{ $overlib .= "<li class='overlib_batiments'><span>Construction</span>&nbsp;-&nbsp;".ucwords($this->map[$x_map][$y_map]["Drapeaux"][$i]["nom"])."</li>"; }
 	
 							$overlib .= "</ul>";
-							$overlib = str_replace("'", "\'", trim($overlib));
+							$this->tooltip_txt .=  '<div style="display: none" id="TT_'.
+								$case.'">'.$overlib."</div>\n";
+							$this->tooltips[] = $case;
+							$overlib = "";
 						}
 						else { $overlib = ""; }
 	
@@ -434,6 +449,10 @@ class map
 						{
 							echo "	onmouseover=\"return overlib('$overlib', BGCLASS, 'overlib', BGCOLOR, '', FGCOLOR, '');\" 
 							   		onmouseout=\"return nd();\" ";
+						}
+						if (in_array($case, $this->tooltips))
+						{
+							echo " rel=\"#TT_${case}\" ";
 						}
 						if($this->onclick_status)
 						{
@@ -468,12 +487,24 @@ class map
 					}
 				}
 				echo "</ul>";
+
+				if (count($this->tooltips))
+					echo $this->tooltip_txt;
+
+
 			}
 			?>
 			</div>
 			<script type="text/javascript">
 			// <![CDATA[
 				$('#map_bord_haut_gauche').cluetip({activation: 'click', ajaxCache: false, width: '500px', cluetipClass: 'meteo', showTitle: false, closeText: 'Fermer', dropShadow: false, sticky: true, leftOffset: -5});
+<?php
+		if (count($this->tooltips))
+			foreach ($this->tooltips as $tt) 
+			{
+				echo "$('#marq${tt}').cluetip({local:true, showTitle: false, leftOffset: -5, dropShadow: false, waitImage: false });";
+			}
+?>
 			// ]]>
 			</script>
 			<?php
