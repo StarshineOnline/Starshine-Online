@@ -51,16 +51,16 @@ INSERT INTO `pnj` (
 `texte`
 )
 VALUES (
-14 , 'Cusinier gobelin', 'goblin_cuisinier', '11', '280', '<em>Un gobelin en costume de cuisinier vous regarde d''un air apeuré, cherchant à se cacher derrière son fourneau.</em>
+14 , 'Cuisinier gobelin', 'goblin_cuisinier', '11', '280', '<em>Un gobelin en costume de cuisinier vous regarde d''un air apeuré, cherchant à se cacher derrière son fourneau.</em>
 [ISQUETE:85][ID:1]Donne-moi ton livre de recettes, ou je te fais la peau ![/ID:1]
 [ID:2]Bonjour, je cherche un livre de recettes originales, vous auriez ca ?[/ID:2][/ISQUETE:85][QUETEFINI85:3]Vous m''avez déjà pris mon livre ... je n''ai plus rien pour vous ...[/QUETEFINI85:3]
 [retour]
 *****
 [donneitem:o52][verifinventaire:85]<em>Le petit être vous donne son livre</em>
 *****
-Oui, mes ce sont mes secrets de fabrication ...
+Oui, mais ce sont mes secrets de fabrication ...
 
-[ID:1]Donne-moi ton livre de recettes, où je te fais la peau ![/ID:1]
+[ID:1]Donne-moi ton livre de recettes, ou je te fais la peau ![/ID:1]
 *****
 C''est vrai ...
 [retour]'

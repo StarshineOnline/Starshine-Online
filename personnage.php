@@ -367,6 +367,7 @@ echo '
 				$joueur->set_y($Trace[$joueur->get_race()]['spawn_y']);
 				$joueur->set_teleport_roi('true');
 				$joueur->sauver();
+				print_reload_area('deplacement.php?deplacement=centre', 'centre');
 			}
 			echo '
 	<table style="border : 0px;" cellspacing="0" width="100%">

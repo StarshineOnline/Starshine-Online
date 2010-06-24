@@ -423,7 +423,7 @@ class map
 							for($i = 0; $i < count($this->map[$x_map][$y_map]["Drapeaux"]); $i++)			{ $overlib .= "<li class='overlib_batiments'><span>Construction</span>&nbsp;-&nbsp;".ucwords($this->map[$x_map][$y_map]["Drapeaux"][$i]["nom"])."</li>"; }
 	
 							$overlib .= "</ul>";
-							$this->tooltip_txt .=  '<div style="display: none" id="TT_'.
+							$this->tooltip_txt .=  '<div style="display: none; font-size: 0.85em;" id="TT_'.
 								$case.'">'.$overlib."</div>\n";
 							$this->tooltips[] = $case;
 							$overlib = "";

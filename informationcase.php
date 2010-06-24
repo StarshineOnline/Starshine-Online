@@ -52,8 +52,26 @@ if($W_distance < 4)
 	<h4><span class='titre_info'><?php echo $R->get_nom(); ?></span></h4>
 	<strong><?php echo $Gtrad[$R->get_race()]; ?></strong> - <?php echo $Gtrad['diplo'.$R->get_diplo($joueur->get_race())]; ?> - Taxe : <?php echo $R->get_taxe_diplo($joueur->get_race()); ?>%<br />
 	<strong><?php echo $type_terrain[1]; ?></strong> - <?php echo $coutpa; ?> PA de déplacement <span class="xsmall">(en diagonale = <?php echo $coutpa_diagonale; ?> PA)</span>
-	
-	<?php
+
+<?php
+  if ($W_distance == 1)
+	{
+		// Informations case spéciale
+		$S_requete = 'SELECT * from map_event WHERE x = '.$joueur->get_x().
+		  ' AND y = '.$joueur->get_y();
+		$S_query = $db->query($S_requete);
+		if ($db->num_rows > 0)
+		{
+			$S_row = $db->read_array($S_query);
+			echo "<h4><span class='titre_info'>$S_row[titre]</span></h4>";
+			echo nl2br($S_row['description']);
+			if ($_row['action'] == '')
+			{
+				echo "<br/><a href=\"map_event.php?poscase=$W_case\" onclick=\"return envoiInfo(this.href, 'information')\" >$S_row[action]</a>";
+			}
+		}
+	}
+
 	//Recherche des joueurs sur la case
 	$W_requete = 'SELECT perso.id, grade.nom as gnom FROM perso LEFT JOIN grade ON perso.rang_royaume = grade.id WHERE (x = '.$case->get_x().') AND (y = '.$case->get_y().') AND statut = \'actif\'';
 	$W_query = $db->query($W_requete);

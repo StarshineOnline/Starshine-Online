@@ -37,6 +37,64 @@ if (array_key_exists('change', $_GET)) {
 	echo '<script type="text/javascript">location.reload();</script>';
 	exit(0);
 }
+if (array_key_exists('modevent', $_GET) && $_GET['modevent']) {
+	if ($_GET['titre'] == '') {
+		$db->query("DELETE FROM map_event WHERE x = $_GET[x] AND y = $_GET[y]");
+	}
+	else {
+		$titre = mysql_escape_string(stripslashes($_GET['titre']));
+		$description = mysql_escape_string(stripslashes($_GET['descr']));
+		$q = "INSERT INTO map_event (x, y, `titre`, `description`, `action`, `code`, `sql`) ";
+		$qq = "VALUES ($_GET[x], $_GET[y], '$titre', '$description', ";
+		if ($_GET['action'] != '')
+			$qq .= '\''.mysql_escape_string(stripslashes($_GET['action'])).'\', ';
+		else
+			$qq .= 'NULL, ';
+		if ($_GET['code'] != '')
+			$qq .= '\''.mysql_escape_string(stripslashes($_GET['code'])).'\', ';
+		else
+			$qq .= 'NULL, ';
+		if ($_GET['sql'] != '')
+			$qq .= '\''.mysql_escape_string(stripslashes($_GET['sql'])).'\'';
+		else
+			$qq .= 'NULL';
+		$qqq = ') ON DUPLICATE KEY UPDATE `titre` = VALUES(`titre`), `description` = VALUES(`description`), `action` = VALUES(`action`), `code` = VALUES(`code`), `sql` = VALUES(`sql`)';
+		
+		$db->query($q.$qq.$qqq);
+	}
+}
+if (array_key_exists('infoscase', $_GET)) {
+	$x = $_GET['infoscase'] % 1000;
+	$y = floor($_GET['infoscase'] / 1000);
+	$q = "select * from map left join map_event using (x, y) where x = $x and y = $y";
+	$res = $db->query($q);
+	$row = $db->read_assoc($req);
+	echo "Case $x / $y : décor $row[decor], type : $row[type]";
+	echo "<div style=\"width: 60px; height: 60px;\" class=\"decor tex$row[decor]\"></div>";
+	echo '<hr><form method="post" action="#" id="eventform"><div>';
+	echo '<h3>Event</h3>';
+	if ($row['titre'] == '') { echo '<small>(pas d\'event)</small>'; }
+	echo '<table>';
+	echo '<tr><td>Titre: </td><td><input type="text" name="titre" value="'.
+		$row['titre'].'"/></td></tr>';
+	echo '<tr><td>Description: </td><td><textarea name="descr">'.
+		$row['description'].'</textarea></td></tr>';
+	echo '<tr><td>Action: </td><td><input type="text" name="action" value="'.
+		$row['action'].'"/></td></tr>';
+	echo '<tr><td>Code: </td><td><textarea name="code">'.$row['code'].
+		'</textarea></td></tr>';
+	echo '<tr><td>SQL: </td><td><textarea name="sql">'.$row['sql'].
+		'</textarea></td></tr>';
+	echo '</table><input type="hidden" name="x" value="'.$x.'">';
+	echo '<input type="hidden" name="infoscase" value="'.$_GET['infoscase'].'">';
+	echo '<input type="hidden" name="y" value="'.$y.'">';
+	echo '<input type="hidden" name="modevent" value="1">';
+	echo '<input type="button" value="Modifier" onClick="doModEvent()">';
+	echo '<input type="reset" value="Annuler">';
+	//echo '<input type="button" value="Effacer" onclick="doEraseEvent">';
+	echo '</form>';
+	exit(0);
+}
 
 class acase {
 	var $type = 0;
@@ -212,6 +270,7 @@ if (isset($_SESSION['last_query']) && $_SESSION['last_query'] != null) {
   <a id='rose_div_bd' href="<?php decal('bas', 'droite'); ?>"></a>
 </div>
 
+<div id="infoscase" title="Informations"></div>
 
 <div class="selecteur" id="selecteur" title="Palette">
   <table>
@@ -222,6 +281,9 @@ if (isset($_SESSION['last_query']) && $_SESSION['last_query'] != null) {
 		</tr>
 	</table>
 	<select size="10" class="baseJumpbox" id="selectText" onChange="changeTexture()" style="max-height: 500px">
+   <optgroup label="Outils">
+    <option value="-1">Selection</option>
+   </optgroup>
 <?php
 include_once('terrain.inc.html');
 include_once('donjon.inc.html');
@@ -243,7 +305,7 @@ include_once('donjon.inc.html');
 </div>
 
 <script type="text/javascript">
-  var curDec = 120;
+  var curDec = -1;
   var curChanges = [];
 
 	function doPost() {
@@ -257,8 +319,21 @@ include_once('donjon.inc.html');
 		$("#texturePreview").attr({class: "decor tex" + curDec});
 	}
 
+  function doModEvent() {
+		$("#infoscase").load('edit_map_full.php?' + $("#eventform").serialize());
+		return false;
+	}
+
+  function doEraseEvent() {
+		return false;
+	}
 
   function clickTexture(numeroCase) {
+		if (curDec == -1) {
+			$("#infoscase").dialog("open");
+			$("#infoscase").load('edit_map_full.php?infoscase=' + numeroCase);
+			return;
+		}
 		var lType = $("#type_drop").val();
 		if (lType == -1)
 			curChanges.push({case: numeroCase, decor: curDec});
@@ -277,6 +352,7 @@ include_once('donjon.inc.html');
 	}
 
 	$(function() {
+		$("#infoscase").dialog({ autoOpen: false });
 		$("#rosedesvents").addClass('ui-draggable');
 		$("#selecteur").dialog({ position: ['right','top'] });
 		<?php echo $add_js_start; ?>
