@@ -114,7 +114,7 @@ else
 		$batiment[$row['id']] = $row;
 	}
 	//@TODO gérer les mines dans construction
-	$requete = "SELECT * FROM construction LEFT JOIN map ON map.ID = (construction.y * 1000) + construction.x WHERE construction.type = 'mine' AND construction.royaume = ".$royaume->get_id();
+	$requete = "SELECT * FROM construction LEFT JOIN map USING(x, y) WHERE construction.type = 'mine' AND construction.royaume = ".$royaume->get_id();
 	$req = $db->query($requete);
 	while($row = $db->read_assoc($req))
 	{
