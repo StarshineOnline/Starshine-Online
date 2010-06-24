@@ -3044,6 +3044,14 @@ class perso extends entite
 			return false;
 	}
 
+	/**
+   * Retourne la position "old style"
+   */
+	function get_poscase()
+	{
+		return $this->y * 1000 + $this->x;
+	}
+
 	/** on ne m'aura plus avec les machins déclarés depuis dehors */
 	//function __get($name) { $debug = debug_backtrace(); die('fuck: '.$debug[0]['file'].' line '.$debug[0]['line']); }
 	//function __set($name, $value) { $debug = debug_backtrace(); die('fuck: '.$debug[0]['file'].' line '.$debug[0]['line']); }

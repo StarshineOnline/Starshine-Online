@@ -367,6 +367,31 @@ if ($joueur->get_race() == $R->get_race() ||
 		}
 		while($row = $db->read_array($req))
 		{
+			if ($row['requis'] != '')
+			{ // Vérifier les conditions
+				$cond = explode(';', $row['requis']);
+				foreach ($cond as $tcond)
+				{
+					$ctype = substr($tcond, 0, 1);
+					$cval = substr($tcond, 1);
+					$cok = true;
+					switch ($ctype)
+					{
+					case 'q': // quete
+						$q = explode(';', $joueur->get_quete_fini());
+						$cok = in_array($cval, $q);
+						break;
+					default:
+						$cok = false;
+						break;
+					}
+					if (!$cok)
+						break; // un requis pas matché : on s'arrête
+				}
+				if (!$cok) // un requis pas matché : on ignore la ligne
+					continue;
+			}
+
 			$taxe = ceil($row['star'] * $R->get_taxe_diplo($joueur->get_race()) / 100);
 			$cout = $row['star'] + $taxe;
 			if(array_key_exists('fort', $_GET)) $fort = '&amp;fort=ok'; else $fort = '';
