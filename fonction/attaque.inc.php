@@ -31,12 +31,17 @@ function attaque($acteur = 'attaquant', $competence, &$effects)
       $actif = $defenseur;
       $passif = $attaquant;
     }
-  	$augmentation = array('actif' => array('comp' => array(), 'comp_perso' => array()), 'passif' => array('comp' => array(), 'comp_perso' => array()));
+  	$augmentation = array('actif' => array('comp' => array(),
+																					 'comp_perso' => array()),
+													'passif' => array('comp' => array(),
+																						'comp_perso' => array()));
   	//Réctification si c'est un orc
-	$round = is_donjon($actif->get_x(), $actif->get_y()) ? 20 : 10;
-	$rectif_augm = $actif->get_race() == 'orc' ? 2 - ($round / ($round + 1)) : 1;
-	if($rectif_augm == 1)
-		$rectif_augm = $passif->get_race() == 'orc' ? 2 - ($round / ($round + 1)) : 1;
+		$round = is_donjon($actif->get_x(), $actif->get_y()) ? 20 : 10;
+		$rectif_augm = $actif->get_race() == 'orc' ?
+			($round + 1) / $round : 1;
+		if($rectif_augm == 1)
+			$rectif_augm = $passif->get_race() == 'orc' ?
+				($round + 1) / $round : 1;
 		
   	$ups = array();
 
