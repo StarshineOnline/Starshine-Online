@@ -170,7 +170,8 @@ while($row = $db->read_array($req))
 //echo json_encode($result_json, JSON_HEX_TAG|JSON_HEX_APOS|JSON_HEX_QUOT|JSON_HEX_AMP);
 //echo Zend_Json::encode($result_json);
 
-$sOutput = substr_replace( $sOutput, "", -1 );
+
+$sOutput = substr_replace( $sOutput, $endl, -1 -strlen($endl));
 $sOutput .= '] }';
 
 header('Content-type: text/plain');
