@@ -715,7 +715,7 @@ class map
 	{
 		global $db;
 		if (!empty($royaume)){$filter = 'AND map.royaume = '.$royaume; }
-		$RqBatiments = $db->query("SELECT construction.x, construction.y, construction.hp, construction.royaume, construction.nom, construction.id_batiment, batiment.image 
+		$RqBatiments = $db->query("SELECT construction.x, construction.y, construction.hp, batiment.hp AS hp_max, construction.royaume, construction.nom, construction.id_batiment, batiment.image 
 							FROM construction, batiment, map 
 							WHERE ( ( (construction.x >= ".$this->xmin.") AND (construction.x <= ".$this->xmax.") ) AND ( (construction.y >= ".$this->ymin.") AND (construction.y <= ".$this->ymax.") ) ) 
 							AND batiment.id = construction.id_batiment 
@@ -745,7 +745,8 @@ class map
 						$image = $this->root."image/batiment/";
 					}
 					
-					if(file_exists($image.$objBatiments->image."_04.png")) 		{ $image .= $objBatiments->image."_04.png"; }
+					if ($objBatiments->hp < $objBatiments->hp_max / 3 && file_exists($image.$objBatiments->image."_hit.png")) { $image .= $objBatiments->image."_hit.png"; }
+					if (file_exists($image.$objBatiments->image."_04.png")) 		{ $image .= $objBatiments->image."_04.png"; }
 					elseif(file_exists($image.$objBatiments->image."_04.gif")) 	{ $image .= $objBatiments->image."_04.gif"; }
 					else 														{ $image = $objBatiments->image."_introuvable.png"; } //-- Si aucun des fichiers n'existe autant rien mettre...
 				}

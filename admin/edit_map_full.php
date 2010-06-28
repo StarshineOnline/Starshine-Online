@@ -61,6 +61,7 @@ if (array_key_exists('modevent', $_GET) && $_GET['modevent']) {
 		$qqq = ') ON DUPLICATE KEY UPDATE `titre` = VALUES(`titre`), `description` = VALUES(`description`), `action` = VALUES(`action`), `code` = VALUES(`code`), `sql` = VALUES(`sql`)';
 		
 		$db->query($q.$qq.$qqq);
+		echo 'Modification effectu&eacute;e.<br/>';
 	}
 }
 if (array_key_exists('infoscase', $_GET)) {
@@ -352,7 +353,7 @@ include_once('donjon.inc.html');
 	}
 
 	$(function() {
-		$("#infoscase").dialog({ autoOpen: false });
+		$("#infoscase").dialog({ autoOpen: false, minWidth: 350, width: 350 });
 		$("#rosedesvents").addClass('ui-draggable');
 		$("#selecteur").dialog({ position: ['right','top'] });
 		<?php echo $add_js_start; ?>

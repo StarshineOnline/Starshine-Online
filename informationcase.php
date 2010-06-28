@@ -54,7 +54,7 @@ if($W_distance < 4)
 	<strong><?php echo $type_terrain[1]; ?></strong> - <?php echo $coutpa; ?> PA de déplacement <span class="xsmall">(en diagonale = <?php echo $coutpa_diagonale; ?> PA)</span>
 
 <?php
-  if ($W_distance == 1)
+  if ($W_distance == 0)
 	{
 		// Informations case spéciale
 		$S_requete = 'SELECT * from map_event WHERE x = '.$joueur->get_x().
