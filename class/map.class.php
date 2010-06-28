@@ -157,6 +157,7 @@ class map
 					
 					for($x_map = $this->xmin; $x_map <= $this->xmax; $x_map++)
 					{
+						$background = "";
 						if( ($x_map == $this->x) && ($y_map == $this->y) && is_array($this->map[$x_map][$y_map]["Joueurs"]))
 						{
 							if(!empty($this->map[$x_map][$y_map]["Joueurs"][0]["image"])) 	{ $background = "background-image : url(".$this->map[$x_map][$y_map]["Joueurs"][0]["image"].") !important;"; };
@@ -185,7 +186,6 @@ class map
 						{//-- Affichage des Monstres ----------------------------------//
 							if(!empty($this->map[$x_map][$y_map]["Monstres"][0]["image"])) 	{ $background = "background-image : url(".$this->map[$x_map][$y_map]["Monstres"][0]["image"].") !important;"; };
 						}
-						else { $background = ""; }
 						switch(calcul_distance_pytagore(convert_in_pos($this->x, $this->y), convert_in_pos($x_map, $y_map)))
 						{
 							case 0 : $opacity = ""; break;
