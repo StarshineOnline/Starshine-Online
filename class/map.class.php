@@ -341,6 +341,7 @@ class map
 							echo "<ul class='".$class_css['resolution_map']."'>
 						 		   <li $class_y "; if((!empty($class_css['resolution'])) OR (!empty($classe_css['map_bord_gauche']))) { echo "class='".$classe_css['map_bord_gauche']." ".$class_css['resolution']."'";} echo ">".$y_map."</li>"; //-- Bord gauche de la map
 						}
+						$background = "";
 						if( ($x_map == $this->x) && ($y_map == $this->y) && is_array($this->map[$x_map][$y_map]["Joueurs"]))
 						{
 							if(!empty($this->map[$x_map][$y_map]["Joueurs"][0]["image"])) 	{ $background = "background-image : url(".$this->map[$x_map][$y_map]["Joueurs"][0]["image"].") !important;"; };
@@ -369,7 +370,6 @@ class map
 						{//-- Affichage des Monstres ----------------------------------//
 							if(!empty($this->map[$x_map][$y_map]["Monstres"][0]["image"])) 	{ $background = "background-image : url(".$this->map[$x_map][$y_map]["Monstres"][0]["image"].") !important;"; };
 						}
-						else { $background = ""; }
 	
 						if(   (count($this->map[$x_map][$y_map]["Batiments"]) > 0)
 							|| (count($this->map[$x_map][$y_map]["Batiments_ennemi"]) > 0)
