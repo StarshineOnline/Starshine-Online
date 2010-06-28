@@ -54,18 +54,18 @@ if($W_distance < 4)
 	<strong><?php echo $type_terrain[1]; ?></strong> - <?php echo $coutpa; ?> PA de déplacement <span class="xsmall">(en diagonale = <?php echo $coutpa_diagonale; ?> PA)</span>
 
 <?php
-  if ($W_distance == 0)
+  if ($W_distance <= 1)
 	{
 		// Informations case spéciale
-		$S_requete = 'SELECT * from map_event WHERE x = '.$joueur->get_x().
-		  ' AND y = '.$joueur->get_y();
+		$S_requete = 'SELECT * from map_event WHERE x = '.$case->get_x().
+		  ' AND y = '.$case->get_y();
 		$S_query = $db->query($S_requete);
 		if ($db->num_rows > 0)
 		{
 			$S_row = $db->read_array($S_query);
 			echo "<h4><span class='titre_info'>$S_row[titre]</span></h4>";
 			echo nl2br($S_row['description']);
-			if ($_row['action'] == '')
+			if ($_row['action'] == '' && $W_distance == 0)
 			{
 				echo "<br/><a href=\"map_event.php?poscase=$W_case\" onclick=\"return envoiInfo(this.href, 'information')\" >$S_row[action]</a>";
 			}
@@ -110,6 +110,7 @@ if($W_distance < 4)
 	
 	//Affichage des Donjons
 	$RqDonjon = 'SELECT * FROM donjon WHERE (x = '.$case->get_x().') AND (y = '.$case->get_y().')';
+	if (isset($G_disallow_donjon) && $G_disallow_donjon == true) $RqDonjon .= ' AND 1 = 0';
 	
 	$W_query = $db->query($RqDonjon);
 	

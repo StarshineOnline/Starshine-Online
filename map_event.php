@@ -17,23 +17,30 @@ if ($W_case != $joueur->get_poscase()) {
 	security_block(URL_MANIPULATION, 'Event pas sur la même case');
 }
 
+global $dontrefresh;
+
 $S_requete = 'SELECT * from map_event WHERE x = '.$joueur->get_x().
 ' AND y = '.$joueur->get_y();
 $S_query = $db->query($S_requete);
 if ($db->num_rows > 0)
 {
+	$dontrefresh = false;
 	$S_row = $db->read_array($S_query);
 	if ($S_row['code'] != '')
 	{
 		$code = $S_row['code'];
 		eval($code);
 	}
-	elseif ($S_row['sql'] != '')
+	if ($S_row['sql'] != '')
 	{
-		$db->query($S_row['sql']);
+		foreach (explode(';', $S_row['sql']) as $sql)
+			$db->query($sql);
 	}
-	print_reload_area('deplacement.php?deplacement=centre', 'centre');
-	print_reload_area('informationcase.php?case='.$W_case, 'information');
+	if (!$dontrefresh)
+	{
+		print_reload_area('deplacement.php?deplacement=centre', 'centre');
+		print_reload_area('informationcase.php?case='.$W_case, 'information');
+	}
 }
 else
 {

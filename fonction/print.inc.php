@@ -271,4 +271,9 @@ function print_reload_area($url, $area)
 		$url.'\', \''.$area.'\');</script>';
 }
 
+function print_js_onload($js)
+{
+	echo '<script type="text/javascript">$(document).ready(function(){ '.$js.' });</script>';
+}
+
 ?>
