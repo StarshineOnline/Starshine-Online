@@ -110,7 +110,15 @@ if($W_distance < 4)
 	
 	//Affichage des Donjons
 	$RqDonjon = 'SELECT * FROM donjon WHERE (x = '.$case->get_x().') AND (y = '.$case->get_y().')';
-	if (isset($G_disallow_donjon) && $G_disallow_donjon == true) $RqDonjon .= ' AND 1 = 0';
+	if (isset($G_disallow_donjon) && $G_disallow_donjon == true) {
+		$disallowed = true;
+		if (isset($G_allow_donjon_for) && is_array($G_allow_donjon_for))
+			foreach ($G_allow_donjon_for as $allowed)
+				if ($allowed == $joueur->get_nom())
+					$disallowed = false;
+		if ($disallowed)
+			$RqDonjon .= ' AND 1 = 0';
+	}
 	
 	$W_query = $db->query($RqDonjon);
 	

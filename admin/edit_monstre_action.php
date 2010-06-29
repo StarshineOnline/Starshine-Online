@@ -1,10 +1,10 @@
 <?php
 if (file_exists('../root.php'))
   include_once('../root.php');
-$admin = true;
 
+$admin = true;
 $textures = false;
-include_once(root.'haut.php');
+include_once(root.'admin/admin_haut.php');
 setlocale(LC_ALL, 'fr_FR');
 include_once(root.'haut_site.php');
 if ($G_maintenance)
@@ -168,8 +168,9 @@ else
 		<?php
 		
 		$comp_actuel = '';
-		$requete = "SELECT * FROM sort_combat WHERE incantation < ".$monstre->get_incantation()." ORDER BY comp_assoc ASC, incantation DESC";
+		$requete = "SELECT * FROM sort_combat WHERE incantation < ".$monstre->get_incantation()." ORDER BY comp_assoc ASC, nom, incantation DESC";
 		$req = $db->query($requete);
+		echo $requete;
 		while($row = $db->read_array($req))
 		{
 			if($row['comp_assoc'] != $comp_actuel)
@@ -179,7 +180,8 @@ else
 				<optgroup label="'.$row['comp_assoc'].'" >';
 				$comp_actuel = $row['comp_assoc'];
 			}
-			if($monstre[$row['comp_assoc']] >= $row['comp_requis'])
+			$getter = 'get_'.$comp_actuel;
+			if(method_exists($monstre, $getter) && $monstre->$getter() >= $row['comp_requis'])
 			{
 				echo '<option value="s'.$row['id'].'">Lancer '.$row['nom'].' ('.$row['mp'].' RÃ©serves)</option>';
 			}
@@ -187,7 +189,7 @@ else
 		echo '</optgroup>';
 		
 		$comp_actuel = '';
-		$requete = "SELECT * FROM comp_combat ORDER BY comp_assoc ASC, comp_requis DESC";
+		$requete = "SELECT * FROM comp_combat ORDER BY comp_assoc ASC, nom, comp_requis DESC";
 		$req = $db->query($requete);
 		while($row = $db->read_array($req))
 		{

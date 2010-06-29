@@ -85,7 +85,7 @@ function print_head($Option_List = "")
 	if (isset($add_data_to_head) && $add_data_to_head != '') {
 	  echo $add_data_to_head;
   }
-	echo "    <link rel=\"icon\" type=\"image/png\" href=\"http://www.starshine-online.com/image/favicon.png\" />
+	echo "    <link rel=\"icon\" type=\"image/png\" href=\"image/favicon.png\" />
 			</head>
 		   <body"; if(!empty($style)) { echo "style='$style'"; }; echo ">
 		    <div id='overDiv' style='position:absolute; visibility:hidden; z-index:1000;'></div>\n";

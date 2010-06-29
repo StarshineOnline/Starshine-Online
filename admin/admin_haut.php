@@ -66,7 +66,7 @@ else
 	}
 	elseif($admin)
 	{
-		print_head("css:../css/texture.css~../css/texture_low.css~../css/interfacev2.css~../css/admin.css~../css/prototip.css;script:../javascript/jquery/jquery-1.4.2.min.js~../javascript/jquery/jquery-ui-1.7.2.custom.min.js;title:StarShine Admin");
+		print_head("css:../css/texture.css~../css/texture_low.css~../css/interfacev2.css~../css/admin.css~../css/prototip.css;script:../javascript/jquery/jquery-1.4.2.min.js~../javascript/jquery/jquery-ui-1.7.2.custom.min.js~../javascript/fonction.js;title:StarShine Admin");
 	}
 }
 $fin = getmicrotime();
