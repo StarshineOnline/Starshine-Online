@@ -65,7 +65,7 @@ if($W_distance < 4)
 			$S_row = $db->read_array($S_query);
 			echo "<h4><span class='titre_info'>$S_row[titre]</span></h4>";
 			echo nl2br($S_row['description']);
-			if ($_row['action'] == '' && $W_distance == 0)
+			if ($S_row['action'] != '' && $W_distance == 0)
 			{
 				echo "<br/><a href=\"map_event.php?poscase=$W_case\" onclick=\"return envoiInfo(this.href, 'information')\" >$S_row[action]</a>";
 			}
@@ -268,7 +268,8 @@ if($W_distance < 4)
 			if($diff_level > 0) $strong = 'bold'; else $strong = 'normal';
 			// on envois dans infojoueur.php -> ID du joueur et La position de la case ou il se trouve
 			$image = $W2_row['lib'];
-			if (file_exists('image/monstre/'.$image.'.png')) $image .= '.png';
+			if (file_exists('image/monstre/'.$image.'_low.png')) $image .= '_low.png';
+			elseif (file_exists('image/monstre/'.$image.'.png')) $image .= '.png';
 			else $image .= '.gif';
 			echo '
 			<li style="clear:both;"><img src="image/monstre/'.$image.'" alt="'.$W2_row['nom'].'" style="vertical-align : middle;height:21px;float:left;width:21px;" /><span style="color : '.$color.'; font-weight : '.$strong.';float:left;width:270px;margin-left:15px;">'.$W_nom.'</span>

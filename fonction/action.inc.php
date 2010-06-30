@@ -138,6 +138,7 @@ function sub_script_action($joueur, $ennemi, $mode, &$effects)
 			$count = count($actions);
 			$action = false;
 			$i = 0;
+			//my_dump($actions);
 			while(($i < $count) && (!$action))
 			{
 			  // Récupération des conditions et de l'action
@@ -237,19 +238,19 @@ function sub_script_action($joueur, $ennemi, $mode, &$effects)
 								break;
 							// Vérification si le personnage n'est pas dans un certain état
 							case '°' :
-                				$array_valeurs = get_array_condition($valeur);
-                				foreach ($array_valeurs as $la_valeur)
-                				{
-                  					if(array_key_exists($la_valeur, $param))
-                  					{
-                    					$valid = false;
-                    					break;
-                  					}
-                  					else
-                  					{
-                    					$valid = true;
-                  					}
-                				}
+								$array_valeurs = get_array_condition($valeur);
+								foreach ($array_valeurs as $la_valeur)
+								{
+									if(array_key_exists($la_valeur, $param))
+									{
+										$valid = false;
+										break;
+									}
+									else
+									{
+										$valid = true;
+									}
+								}
 								break;
 							// Vérification si le personnage est dans un certain état
 							case '+' :
@@ -360,6 +361,7 @@ function sub_script_action($joueur, $ennemi, $mode, &$effects)
 									$action = true;
 								}
 							}
+							//else { echo "mana inssufisant : $mp_need vs ".$joueur->get_reserve(); }
 						}
 						else
 						{
@@ -611,6 +613,42 @@ function lance_sort($id, $acteur, &$effects)
 			$get_comp_assoc = 'get_'.$row['carac_assoc'];
 			switch($row['type'])
 			{
+			  case 'empalement_abomination':
+					$degat = degat_magique($actif->$get_comp_assoc(), ($row['effet'] + $bonus_degats_magique), $actif, $passif);
+					if ($passif->get_hp() > $degat) // Si on survit
+						$degat = $passif->get_hp() - 4; // 1 + 3 de LS
+					echo '&nbsp;&nbsp;<span class="degat">Une &eacute;pine jaillit de <strong>'.
+						$actif->get_nom().'</strong> infligeant <strong>'.$degat.
+						'</strong> dégâts, et transpercant '.$passif->get_nom().'</span><br/>';
+					$passif->set_hp($passif->get_hp() - $degat);
+					$xi = $passif->get_x() - 3;
+					$xa = $passif->get_x() + 3;
+					$yi = $passif->get_y() - 3;
+					$ya = $passif->get_y() + 3;
+					$requete_persos = "select id from perso where x >= $xi and x <= $xa and y >= $yi and y <= $ya and hp > 0 and statut = 'actif'";
+					$req_persos = $db->query($requete_persos);
+					while ($row_persos = $db->read_assoc($req_persos))
+					{
+						if ($row_persos['id'] == $passif->get_id())	continue;
+						$spectateur = new perso($row_persos['id']);
+						$rand = rand(0, 20);
+						$final = $rand + $spectateur->get_volonte();
+						print_debug("Jet de terreur pour ".$spectateur->get_nom().": $rand ($final) vs $row[effet2]<br/>");
+						if ($final < $row['effet2'] && $rand != 20)
+						{
+							echo '<strong>'.$spectateur->get_nom().'</strong> est effray&eacute; par ce spectacle, et se glace de terreur !<br/>';
+							lance_buff('debuff_enracinement', $row_persos['id'], '10', '0', 86400, 'Terreur',
+												 'Vous etes terroris&eacute; par l\'affreux spectacle du supplice de '.$passif->get_nom(), 'perso', 1, 0, 0, 0);
+						}
+					}
+					echo 'La marque de l\'abomination restera longtemps sur vous ...<br/>';
+					if ($passif->get_hp() > 3)
+						lance_buff('debuff_enracinement', $passif->get_id(), '10', '0', 86400, 'Terreur',
+											 'Vous etes terroris&eacute; par l\'attaque de la cr&eacute;ature', 'perso', 1, 0, 0, 0);
+					lance_buff('lente_agonie', $passif->get_id(), 1, 0, 2678400, 'Marque de l\\\'abomination', 
+										 'Les blessures engendrées par l\'épine de l\'abomination vous laissent dans une souffrance atroce. Il vous faudra du temps pour vous en remettre',
+										 'perso', 1, 0, 0, 0);
+					break;
   			case 'degat_feu' : /* Les 3 c'est pareil une fois tellurique  */
 	  		case 'degat_nature' :
 		  	case 'degat_mort' :
