@@ -1026,6 +1026,17 @@
 .tex2555{background:url('../image/texture/donjon_gobelin/sol couloir verticalest_ombre.png') no-repeat;}
 .tex2556{background:url('../image/texture/donjon_gobelin/sol couloir verticalouestest_ombre.png') no-repeat;}
 .tex2557{background:url('../image/texture/donjon_gobelin/squel chercheur.png') no-repeat;}
+.tex2558{background:url('../image/texture/donjon_gobelin/sol_gob_bureau_astro_bg.png') no-repeat;}
+.tex2559{background:url('../image/texture/donjon_gobelin/sol_gob_bureau_astro_bd.png') no-repeat;}
+.tex2560{background:url('../image/texture/donjon_gobelin/sol_gob_biblio_1.png') no-repeat;}
+.tex2561{background:url('../image/texture/donjon_gobelin/sol_gob_biblio_2_bg.png') no-repeat;}
+.tex2562{background:url('../image/texture/donjon_gobelin/sol_gob_biblio_2_bd.png') no-repeat;}
+.tex2563{background:url('../image/texture/donjon_gobelin/socle_draco_hg2.png') no-repeat;}
+.tex2564{background:url('../image/texture/donjon_gobelin/socle_draco_hd2.png') no-repeat;}
+.tex2565{background:url('../image/texture/donjon_gobelin/socle_draco_mg.png') no-repeat;}
+.tex2566{background:url('../image/texture/donjon_gobelin/socle_draco_md.png') no-repeat;}
+.tex2567{background:url('../image/texture/donjon_gobelin/socle_draco_bg.png') no-repeat;}
+.tex2568{background:url('../image/texture/donjon_gobelin/socle_draco_bd.png') no-repeat;}
 
 .tex2541{background:url('../image/texture/donjon_gobelin/abomination_tentacule_haut_gauche.png') no-repeat;}
 .tex2542{background:url('../image/texture/donjon_gobelin/abomination_tentacule_haut_milieu.png') no-repeat;}
@@ -1150,9 +1161,15 @@
 .tex2617{background:url('../image/texture/donjon_gobelin/tex_mur_nord_lum_ombre1d.png') no-repeat;}
 .tex2618{background:url('../image/texture/donjon_gobelin/tex_mur_nord_lum_ombre2d.png') no-repeat;}
 .tex2619{background:url('../image/texture/donjon_gobelin/tex_mur_nordouest_ombre.png') no-repeat;}
-.tex2620{background:url('../image/texture/donjon_gobelin/tex_mur_cuisine_hd.png') no-repeat;}
-.tex2621{background:url('../image/texture/donjon_gobelin/tex_mur_cuisine_hd.png') no-repeat;}
-.tex2622{background:url('../image/texture/donjon_gobelin/tex_mur_cuisine_hd.png') no-repeat;}
+
+.tex2620{background:url('../image/texture/donjon_gobelin/mur_gob_bureau_astro_hg.png') no-repeat;}
+.tex2621{background:url('../image/texture/donjon_gobelin/mur_gob_bureau_astro_hd.png') no-repeat;}
+.tex2622{background:url('../image/texture/donjon_gobelin/mur_gob_biblio_2_hg.png') no-repeat;}
+.tex2623{background:url('../image/texture/donjon_gobelin/mur_gob_biblio_2_hd.png') no-repeat;}
+.tex2624{background:url('../image/texture/donjon_gobelin/mur_gob_biblio_1.png') no-repeat;}
+.tex2625{background:url('../image/texture/donjon_gobelin/socle_draco_hg.png') no-repeat;}
+.tex2626{background:url('../image/texture/donjon_gobelin/socle_draco_hd.png') no-repeat;}
+
 
 .tex2000{background:url('../image/texture/capitale/vampire/villevampendestrbg.gif') no-repeat;}
 .tex2001{background:url('../image/texture/capitale/vampire/villevampendestrbm.gif') no-repeat;}
