@@ -205,7 +205,7 @@ if(date("j") == 1)
 		$requete = "INSERT INTO map_monstre VALUES(NULL,'125','38','284','5000',"
       .$time.")";
 		$db->query($requete);
-		$requete = "INSERT INTO map_monstre VALUES(NULL,'126','12','289','5000',"
+		$requete = "INSERT INTO map_monstre VALUES(NULL,'126','11','287','5000',"
       .$time.")";
 		$db->query($requete);
 		$mail .= "Pop du construct draconide 1, construct draconide 2\n";
