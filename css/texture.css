@@ -896,7 +896,7 @@
 .tex1515{background:url('../image/texture/tex_donjon15.png') no-repeat;}
 .tex1516{background:url('../image/texture/donjon_gobelin/tex_donjongob1.png') no-repeat;}
 .tex1517{background:url('../image/texture/donjon_gobelin/tex_donjongob2.png') no-repeat;}
-.tex1518{background:url('../image/texture/donjon_gobelin/tex_donjongob3.png') no-repeat;}
+
 .tex1519{background:url('../image/texture/donjon_gobelin/mur o.png') no-repeat;}
 .tex1520{background:url('../image/texture/donjon_gobelin/mur e.png') no-repeat;}
 .tex1521{background:url('../image/texture/donjon_gobelin/tex_donjongob6.png') no-repeat;}
@@ -1148,6 +1148,7 @@
 .tex1691{background:url('../image/texture/donjon_gobelin/tex_mur_porte_prison.png') no-repeat;}
 .tex1692{background:url('../image/texture/donjon_gobelin/tex_donjongob_prisonniergob.png') no-repeat;}
 .tex1693{background:url('../image/texture/donjon_gobelin/tex_donjongob_prisonnierhum.png') no-repeat;}
+.tex1684{background:url('../image/texture/donjon_gobelin/mur gob sud.png') no-repeat;}
 
 .tex2601{background:url('../image/texture/donjon_gobelin/tex_gobrideaug.png') no-repeat;}
 .tex2602{background:url('../image/texture/donjon_gobelin/tex_gobrideaud.png') no-repeat;}
