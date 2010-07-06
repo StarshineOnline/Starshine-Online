@@ -3,3 +3,5 @@ UPDATE `monstre` SET `spawn_loc` = 'p36-284;p33-285;p35-285;p36-285;p14-285;p13-
 
 update map_monstre set x=14 where x=13 and y=285;
 
+
+insert into monstre select null, 'necro_serviteur', 'Serviteur d''Adénnaïos', type, floor(hp * 1.2), floor(pp * 1.2), floor(pm * 1.2), forcex + 1, dexterite + 1, puissance + 1, volonte + 1, energie + 1, melee + 100, esquive + 100, incantation + 100, sort_vie + 100, sort_mort + 100, dressage, sort_dressage, sort_element + 100, arme, action, level + 1, floor(xp * 1.2), floor(star * 1.2), drops, spawn, 'p6-221;p7-221;p8-221;p9-221;p10-221;p11-221;p12-221', terrain, affiche, '' from monstre where lib = 'spectre_myriandre';
