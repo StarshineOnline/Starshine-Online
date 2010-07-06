@@ -1038,6 +1038,15 @@
 .tex2567{background:url('../image/texture/donjon_gobelin/socle_draco_bg.png') no-repeat;}
 .tex2568{background:url('../image/texture/donjon_gobelin/socle_draco_bd.png') no-repeat;}
 
+.tex2569{background:url('../image/texture/donjon_gobelin/sol_gob_sculpture_bd.png') no-repeat;}
+.tex2570{background:url('../image/texture/donjon_gobelin/sol_gob_sculpture_bg.png') no-repeat;}
+.tex2571{background:url('../image/texture/donjon_gobelin/sol_gob_sculpture_hg.png') no-repeat;}
+.tex2572{background:url('../image/texture/donjon_gobelin/sol_gob_sculpture_hd.png') no-repeat;}
+.tex2573{background:url('../image/texture/donjon_gobelin/sol_gob_peinture_g2.png') no-repeat;}
+.tex2574{background:url('../image/texture/donjon_gobelin/sol_gob_peinture_g.png') no-repeat;}
+.tex2575{background:url('../image/texture/donjon_gobelin/sol_gob_peinture_m.png') no-repeat;}
+.tex2576{background:url('../image/texture/donjon_gobelin/sol_gob_peinture_d.png') no-repeat;}
+
 .tex2541{background:url('../image/texture/donjon_gobelin/abomination_tentacule_haut_gauche.png') no-repeat;}
 .tex2542{background:url('../image/texture/donjon_gobelin/abomination_tentacule_haut_milieu.png') no-repeat;}
 .tex2543{background:url('../image/texture/donjon_gobelin/abomination_tentacule_haut_droite.png') no-repeat;}
@@ -1169,6 +1178,10 @@
 .tex2624{background:url('../image/texture/donjon_gobelin/mur_gob_biblio_1.png') no-repeat;}
 .tex2625{background:url('../image/texture/donjon_gobelin/socle_draco_hg.png') no-repeat;}
 .tex2626{background:url('../image/texture/donjon_gobelin/socle_draco_hd.png') no-repeat;}
+
+.tex2627{background:url('../image/texture/donjon_gobelin/mur_gob_peinture_hg.png') no-repeat;}
+.tex2628{background:url('../image/texture/donjon_gobelin/mur_gob_peinture_m.png') no-repeat;}
+.tex2629{background:url('../image/texture/donjon_gobelin/mur_gob_biblio_1b.png') no-repeat;}
 
 
 .tex2000{background:url('../image/texture/capitale/vampire/villevampendestrbg.gif') no-repeat;}
