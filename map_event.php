@@ -17,7 +17,18 @@ if ($W_case != $joueur->get_poscase()) {
 	security_block(URL_MANIPULATION, 'Event pas sur la même case');
 }
 
+function showImage($url, $titre = null)
+{
+	global $dontrefresh;
+	$dontrefresh = true;
+	echo '<fieldset><legend>'.$titre.'</legend>';
+	echo '<div id="info_case">';
+	echo '<img alt="'.$title.'" title="'.$title.'" src="'.$url.'" />';
+	echo '</div>';
+}
+
 global $dontrefresh;
+global $dontrefreshmap;
 
 $S_requete = 'SELECT * from map_event WHERE x = '.$joueur->get_x().
 ' AND y = '.$joueur->get_y();
@@ -25,6 +36,7 @@ $S_query = $db->query($S_requete);
 if ($db->num_rows > 0)
 {
 	$dontrefresh = false;
+	$dontrefreshmap = false;
 	$S_row = $db->read_array($S_query);
 	if ($S_row['code'] != '')
 	{
@@ -36,11 +48,10 @@ if ($db->num_rows > 0)
 		foreach (explode(';', $S_row['sql']) as $sql)
 			$db->query($sql);
 	}
-	if (!$dontrefresh)
-	{
+	if (!$dontrefreshmap)
 		print_reload_area('deplacement.php?deplacement=centre', 'centre');
+	if (!$dontrefresh)
 		print_reload_area('informationcase.php?case='.$W_case, 'information');
-	}
 }
 else
 {

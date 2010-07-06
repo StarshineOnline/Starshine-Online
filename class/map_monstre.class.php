@@ -531,9 +531,9 @@ class map_monstre
 			
 		case 75: //Si c'est Finrwirr on fait pop le gros monstre
 			echo '<strong>Aaaargh VAINCU, JE SUIS VAINCU, comment est ce possible !!! Maître !! Maître venez à moi, vengez votre plus fidèle serviteur !!!</strong>';
-			if (false) // Si le gros monstre n'a pas ete vaincu
+			if (true) // Si le gros monstre n'a pas ete vaincu
 			{
-				$requete = "INSERT INTO map_monstre VALUES(NULL,116,24,209,10000,"
+				$requete = "INSERT INTO map_monstre VALUES(NULL,116,18,227,10000,"
           .(time() + 2678400).")";
 				$db->query($requete);
 			}
@@ -587,7 +587,7 @@ class map_monstre
 					$prerequis = false;
 			}
 			if ($row['eval_condition'] !== null)
-				$prerequis = eval($row['eval_condition']);
+				$prerequis = $prerequis || eval($row['eval_condition']);
 			if ($prerequis == true)
 			{
 				if ($row['texte'] !== null)
