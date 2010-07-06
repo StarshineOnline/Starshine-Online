@@ -202,7 +202,7 @@ if(date("j") == 1)
 	if($db->num_rows == 0)
 	{
 		$time = time() + 2678400;
-		$requete = "INSERT INTO map_monstre VALUES(NULL,'125','36','283','5000',"
+		$requete = "INSERT INTO map_monstre VALUES(NULL,'125','38','284','5000',"
       .$time.")";
 		$db->query($requete);
 		$requete = "INSERT INTO map_monstre VALUES(NULL,'126','12','289','5000',"
