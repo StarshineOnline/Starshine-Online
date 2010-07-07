@@ -131,23 +131,8 @@ if($W_distance < 4)
 		{
 			echo '&nbsp;&nbsp;&nbsp;'.$W_row['nom'];
 			//Entrée du donjon
-			$quete_fini = explode(';', $joueur->get_quete_fini());
-			$unlock = false;
-			//Myriandre locké si pas fini la quête
-			if($W_row['nom'] == 'Myriandre')
-			{
-				if(in_array('53', $quete_fini)) $unlock = true;
-			}
-			elseif($W_row['nom'] == 'Teleport')
-			{
-				$requete_dragon = 'SELECT id FROM map_monstre WHERE type = 125 OR type = 126';
-				$req_dragon = $db->query($requete_dragon);
-				
-				$num_rows = $db->num_rows;
-				//Si les 2 dragons sont morts alors on ouvre
-				if($num_rows == 0) $unlock = true;
-			}
-			else $unlock = true;
+			// Verifier les conditions de teleport
+			$unlock = verif_tp_donjon($W_row, $joueur);
 			if($W_row['x'] == $joueur->get_x() AND $W_row['y'] == $joueur->get_y() AND $unlock) echo ' <a href="interface.php?donjon_id='.$W_row['id'].'">Entrer dans le donjon</a>';
 			echo '<br />';
 		}

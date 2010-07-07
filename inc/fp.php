@@ -1,7 +1,7 @@
 <?php
 if (file_exists('../root.php'))
   include_once('../root.php');
-?><?php
+
 /**
 * @file fp.php
 * Fichier d'inclusion principal.
@@ -60,6 +60,9 @@ include_once(root.$root.'fonction/groupe.inc.php');
 
 //Inclusion du fichier contenant les fonctions permettant de gérer les quètes
 include_once(root.$root.'fonction/quete.inc.php');
+
+//Inclusion du fichier contenant les fonctions permettant de gérer les donjons
+include_once(root.$root.'fonction/donjons.inc.php');
 
 //Inclusion du fichier contenant les fonctions permettant de gérer l'équipement
 include_once(root.$root.'fonction/equipement.inc.php');

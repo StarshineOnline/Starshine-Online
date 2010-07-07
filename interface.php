@@ -27,18 +27,35 @@ else
 if(array_key_exists('donjon_id', $_GET))
 {
 	$id = $_GET['donjon_id'];
-	
+
 	$requete = "SELECT x, y, x_donjon, y_donjon FROM donjon WHERE id = ".$id;
+	
+  if (isset($G_disallow_donjon) && $G_disallow_donjon == true) {
+    $disallowed = true;
+    if (isset($G_allow_donjon_for) && is_array($G_allow_donjon_for))
+      foreach ($G_allow_donjon_for as $allowed)
+        if ($allowed == $joueur->get_nom())
+          $disallowed = false;
+    if ($disallowed)
+      security_block(URL_MANIPULATION);
+  }
 	$req = $db->query($requete);
 	
 	$row = $db->read_assoc($req);
+
+	// Verification que les conditions sont reunies
+	$unlock = verif_tp_donjon($row, $joueur);
+	if ($unlock == false)
+		security_block(URL_MANIPULATION);
+
 	//sortie
 	if(array_key_exists('type', $_GET))
 	{
 		if($joueur->get_x() == $row['x_donjon'] AND $joueur->get_y() == $row['y_donjon'])
 		{
-			$requete = "UPDATE perso SET x = ".$row['x'].", y = ".$row['y']." WHERE ID = ".$_SESSION['ID'];
-			$db->query($requete);
+			$joueur->set_x($row['x']);
+			$joueur->set_y($row['y']);
+			$joueur->sauver();
 		}
 	}
 	//Entrée
@@ -46,11 +63,11 @@ if(array_key_exists('donjon_id', $_GET))
 	{
 		if($joueur->get_x() == $row['x'] AND $joueur->get_y() == $row['y'])
 		{
-			$requete = "UPDATE perso SET x = ".$row['x_donjon'].", y = ".$row['y_donjon']." WHERE ID = ".$_SESSION['ID'];
-			$db->query($requete);
+			$joueur->set_x($row['x_donjon']);
+			$joueur->set_y($row['y_donjon']);
+			$joueur->sauver();
 		}
 	}
-	$joueur = new perso($_SESSION['ID']);
 }
 
 //Vérifie si le perso est mort

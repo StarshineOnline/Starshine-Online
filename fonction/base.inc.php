@@ -3445,4 +3445,3 @@ function sauve_sans_bonus_ignorables($joueur, $fields)
 	$db->query($query);
 }
 
-?>

@@ -9,6 +9,16 @@ setcookie('dernier_affichage_popup', time(), time() + (24 * 3600 * 31));
 
 if(array_key_exists('affiche', $_GET)) $affiche = $_GET['affiche']; else $affiche = false;
 
+// Si message global
+$requete = "SELECT * FROM motd WHERE publie = 1";
+$req_motd = $db->query($requete);
+if ($db->num_rows > 0)
+{
+	echo '<h3>Informations du monde</h3>';
+	while ($row_motd = $db->read_assoc($req_motd)) 
+		echo '<h4>'.$row_motd['titre'].'</h4>'.nl2br($row_motd['text']).'<hr/>';
+}
+
 //Si message du roi
 $requete = "SELECT * FROM motk WHERE race = '".$joueur->get_race()."'";
 $req_m = $db->query($requete);
