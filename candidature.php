@@ -27,7 +27,7 @@ if( $W_row['type'] == 1 )
   $check = true;
 elseif( $batiment = verif_batiment($joueur->get_x(), $joueur->get_y(), $Trace[$joueur->get_race()]['numrace']) )
   $check = $batiment['type'] == 'bourg';
-$is_election = elections::is_mois_election($R->get_id(), $roi);
+$is_election = elections::is_mois_election($R->get_id());
 if( $check && $is_election )
 {
 	if(array_key_exists('type', $_POST))
