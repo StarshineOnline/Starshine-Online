@@ -37,36 +37,36 @@ if (array_key_exists('change', $_GET)) {
 	echo '<script type="text/javascript">location.reload();</script>';
 	exit(0);
 }
-if (array_key_exists('modevent', $_GET) && $_GET['modevent']) {
-	if ($_GET['titre'] == '') {
-		$db->query("DELETE FROM map_event WHERE x = $_GET[x] AND y = $_GET[y]");
+if (array_key_exists('modevent', $_REQUEST) && $_REQUEST['modevent']) {
+	if ($_REQUEST['titre'] == '') {
+		$db->query("DELETE FROM map_event WHERE x = $_REQUEST[x] AND y = $_REQUEST[y]");
 	}
 	else {
-		$titre = mysql_escape_string(stripslashes($_GET['titre']));
-		$description = mysql_escape_string(stripslashes($_GET['descr']));
+		$titre = mysql_escape_string(stripslashes($_REQUEST['titre']));
+		$description = mysql_escape_string(stripslashes($_REQUEST['descr']));
 		$q = "INSERT INTO map_event (x, y, `titre`, `description`, `action`, `code`, `sql`) ";
-		$qq = "VALUES ($_GET[x], $_GET[y], '$titre', '$description', ";
-		if ($_GET['action'] != '')
-			$qq .= '\''.mysql_escape_string(stripslashes($_GET['action'])).'\', ';
+		$qq = "VALUES ($_REQUEST[x], $_REQUEST[y], '$titre', '$description', ";
+		if ($_REQUEST['action'] != '')
+			$qq .= '\''.mysql_escape_string(stripslashes($_REQUEST['action'])).'\', ';
 		else
 			$qq .= 'NULL, ';
-		if ($_GET['code'] != '')
-			$qq .= '\''.mysql_escape_string(stripslashes($_GET['code'])).'\', ';
+		if ($_REQUEST['code'] != '')
+			$qq .= '\''.mysql_escape_string(stripslashes($_REQUEST['code'])).'\', ';
 		else
 			$qq .= 'NULL, ';
-		if ($_GET['sql'] != '')
-			$qq .= '\''.mysql_escape_string(stripslashes($_GET['sql'])).'\'';
+		if ($_REQUEST['sql'] != '')
+			$qq .= '\''.mysql_escape_string(stripslashes($_REQUEST['sql'])).'\'';
 		else
 			$qq .= 'NULL';
 		$qqq = ') ON DUPLICATE KEY UPDATE `titre` = VALUES(`titre`), `description` = VALUES(`description`), `action` = VALUES(`action`), `code` = VALUES(`code`), `sql` = VALUES(`sql`)';
 		
-		$db->query($q.$qq.$qqq);
+		$res = $db->query($q.$qq.$qqq);
 		echo 'Modification effectu&eacute;e.<br/>';
 	}
 }
-if (array_key_exists('infoscase', $_GET)) {
-	$x = $_GET['infoscase'] % 1000;
-	$y = floor($_GET['infoscase'] / 1000);
+if (array_key_exists('infoscase', $_REQUEST)) {
+	$x = $_REQUEST['infoscase'] % 1000;
+	$y = floor($_REQUEST['infoscase'] / 1000);
 	$q = "select * from map left join map_event using (x, y) where x = $x and y = $y";
 	$res = $db->query($q);
 	$row = $db->read_assoc($req);
@@ -87,7 +87,7 @@ if (array_key_exists('infoscase', $_GET)) {
 	echo '<tr><td>SQL: </td><td><textarea name="sql">'.$row['sql'].
 		'</textarea></td></tr>';
 	echo '</table><input type="hidden" name="x" value="'.$x.'">';
-	echo '<input type="hidden" name="infoscase" value="'.$_GET['infoscase'].'">';
+	echo '<input type="hidden" name="infoscase" value="'.$_REQUEST['infoscase'].'">';
 	echo '<input type="hidden" name="y" value="'.$y.'">';
 	echo '<input type="hidden" name="modevent" value="1">';
 	echo '<input type="button" value="Modifier" onClick="doModEvent()">';
@@ -321,7 +321,8 @@ include_once('donjon.inc.html');
 	}
 
   function doModEvent() {
-		$("#infoscase").load('edit_map_full.php?' + $("#eventform").serialize());
+		/* $("#infoscase").load('edit_map_full.php', $("#eventform").serialize()); */
+		$.post('edit_map_full.php', $("#eventform").serialize(), function(data) { $("#infoscase").html(data); });
 		return false;
 	}
 

@@ -48,6 +48,11 @@ else
 	$menu[$i++]['acces'] = 'admin';
 	$acces[] = 'admin';
 
+	$menu[$i]['nom'] = 'Editeur de PNJ';
+	$menu[$i]['url'] = 'edit_pnj.php';
+	$menu[$i++]['acces'] = 'admin';
+	$acces[] = 'admin';
+
 	$menu[$i]['nom'] = 'Création de quête';
 	$menu[$i]['url'] = 'create_quete.php';
 	$menu[$i++]['acces'] = 'admin';
