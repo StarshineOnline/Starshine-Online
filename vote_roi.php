@@ -80,43 +80,50 @@ if( $check )
   	{
   	  $elections = elections::get_prochain_election($R->get_id(), $roi);
       $prochain_election = $elections[0];
-      if( $prochain_election->get_type() == 'universel' )
-      {
-        $label_btn = "Voter !";
+    	$candidats = candidat::create('id_election', $prochain_election->get_id());
+    	if( count($candidats) )
+    	{
+        if( $prochain_election->get_type() == 'universel' )
+        {
+          $label_btn = "Voter !";
+        	?>
+        	Pour qui allez vous voter ?<br />
+        	<?php
+        }
+        else
+        {
+          $label_btn = "Nommer !";
+        	?>
+        	Qui allez vous nommer ?<br />
+        	<?php
+        }
       	?>
-      	Pour qui allez vous voter ?<br />
+      	<select name="id_candidat" id="id_candidat" onchange="envoiInfo('info_candidat.php?id_candidat=' + $('#id_candidat').val(), 'info_candidat');">
+      		<?php
+      		$i = 0;
+      		foreach($candidats as $candidat)
+      		{
+      			if($i == 0) $_GET['id_candidat'] = $candidat->get_id();
+      			?>
+      			<option value="<?php echo $candidat->get_id(); ?>"><?php echo $candidat->get_nom(); ?> / pour <?php echo $candidat->get_duree(); ?> mois / Prochaine élection : <?php echo $candidat->get_type(); ?></option>
+      			<?php
+      			$i++;
+      		}
+      		?>
+      	</select>
+      	<div id="info_candidat">
+      		<?php
+      		include('info_candidat.php');
+      		?>
+      	</div>
+      	<input type="button" onclick="envoiInfo('vote_roi.php?action=vote&id_candidat=' + document.getElementById('id_candidat').value, 'carte');" value="<?php echo $label_btn; ?>">
       	<?php
+    		  //echo $url;
       }
       else
       {
-        $label_btn = "Nommer !";
-      	?>
-      	Qui allez vous nommer ?<br />
-      	<?php
+        echo "Il n'y a pas de candidats. Le roi et ses ministres seront reconduits pour le mois suivant.";
       }
-    	$candidats = candidat::create('id_election', $prochain_election->get_id());
-    	?>
-    	<select name="id_candidat" id="id_candidat" onchange="envoiInfo('info_candidat.php?id_candidat=' + $('#id_candidat').val(), 'info_candidat');">
-    		<?php
-    		$i = 0;
-    		foreach($candidats as $candidat)
-    		{
-    			if($i == 0) $_GET['id_candidat'] = $candidat->get_id();
-    			?>
-    			<option value="<?php echo $candidat->get_id(); ?>"><?php echo $candidat->get_nom(); ?> / pour <?php echo $candidat->get_duree(); ?> mois / Prochaine élection : <?php echo $candidat->get_type(); ?></option>
-    			<?php
-    			$i++;
-    		}
-    		?>
-    	</select>
-    	<div id="info_candidat">
-    		<?php
-    		include('info_candidat.php');
-    		?>
-    	</div>
-    	<input type="button" onclick="envoiInfo('vote_roi.php?action=vote&id_candidat=' + document.getElementById('id_candidat').value, 'carte');" value="<?php echo $label_btn; ?>">
-    	<?php
-    		//echo $url;
     }
     else
     {
