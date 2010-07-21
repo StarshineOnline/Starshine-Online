@@ -122,7 +122,7 @@ if( $check )
       }
       else
       {
-        echo "Il n'y a pas de candidats. Le roi et ses ministres seront reconduits pour le mois suivant.";
+        echo "Il n'y a pas de candidat. Le roi et ses ministres seront reconduits pour le mois suivant.";
       }
     }
     else
