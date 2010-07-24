@@ -19,12 +19,23 @@ if ($W_case != $joueur->get_poscase()) {
 
 function showImage($url, $titre = null)
 {
-	global $dontrefresh;
-	$dontrefresh = true;
-	echo '<fieldset><legend>'.$titre.'</legend>';
-	echo '<div id="info_case">';
-	echo '<img alt="'.$title.'" title="'.$title.'" src="'.$url.'" />';
-	echo '</div>';
+  global $dontrefresh;
+  $dontrefresh = true;
+  echo '<fieldset><legend>'.$titre.'</legend>';
+  echo '<div id="info_case">';
+  echo '<img alt="'.$title.'" title="'.$title.'" src="'.$url.'" />';
+  echo '</div>';
+}
+
+function showParchemin($texte, $titre = 'Une page de parchemin',
+											 $image = 'pagenoir.png', $x = 416, $y = 575)
+{
+  global $dontrefresh;
+  $dontrefresh = true;
+  echo '<fieldset><legend>'.$titre.'</legend>';
+  echo '<div id="info_case" style="background: url(\'image/'.$image
+		.'\'); width: '.($x - 30).'px; height: '.($y - 30).
+		'px; padding: 15px;"><div class="parchemin_texte">'.$texte.'</div></div>';
 }
 
 global $dontrefresh;

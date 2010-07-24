@@ -274,6 +274,7 @@ function prend_quete($id_quete, $joueur)
 	$valid = true;
 	$G_erreur = '';
 	//Vérifie si le joueur n'a pas déjà pris la quête.
+	//my_dump($row);
 	if($liste_quete != '')
 	{
 		foreach($liste_quete as $quest)

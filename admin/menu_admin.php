@@ -58,6 +58,11 @@ else
 	$menu[$i++]['acces'] = 'admin';
 	$acces[] = 'admin';
 
+	$menu[$i]['nom'] = 'Édition de quête';
+	$menu[$i]['url'] = 'edit_quete.php';
+	$menu[$i++]['acces'] = 'admin';
+	$acces[] = 'admin';
+
 	$menu[$i]['nom'] = 'Création d\'un monstre';
 	$menu[$i]['url'] = 'create_monstre.php';
 	$menu[$i++]['acces'] = 'admin';
@@ -164,7 +169,7 @@ else
 	$acces[] = 'admin';
 
 	//Trié par nom et par acces
-	array_multisort($acces, SORT_DESC, $menu);
+	//array_multisort($acces, SORT_DESC, $menu);
 	}
 	?>
 	

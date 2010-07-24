@@ -131,6 +131,12 @@ function add_js_to_head($js)
 	add_data_to_head($data);
 }
 
+function add_raw_js_to_head($js)
+{
+	$data = '<script type="text/javascript">'.$js.'</script>';
+	add_data_to_head($data);
+}
+
 function make_overlib($message)
 {
 	$print = preg_replace('`([^\\\])\'`', '\\1\\\'', $message);
@@ -265,10 +271,57 @@ function my_log($log)
 		fwrite($logfile, print_r($log, true));
 }
 
+function print_dataTables($fields, $data, $id = null)
+{
+	if ($id == null) $id = 'datatable'.rand();
+	echo '<table id="'.$id.'" class="dataTable"><thead><tr><th>';
+	echo implode('</th><th>', $fields);
+	echo "</th></tr></thead>\n<tbody>\n";
+	if (is_array($data)) {
+		foreach ($data as $row) {
+			echo '<tr><td>'.implode('</td><td>', $row)."</td></tr>\n";
+		}
+	}
+	echo "</tbody>\n</table>\n";
+	print_js_onload('$("#'.$id.'").dataTable({ "sPaginationType": "full_numbers" });');
+}
+
 function print_reload_area($url, $area)
 {
 	echo '<script type="text/javascript">envoiInfo(\''.
 		$url.'\', \''.$area.'\');</script>';
+}
+
+function print_key_value_form_row($key, $val, $type = null, $fname = null, $options = null, $start = true, $end = true, $size = 1)
+{
+	if ($start) echo '<tr>';
+	echo '<td>'.$key.'&nbsp;: </td><td colspan="'.$size.'">';
+	if ($fname == null) 
+		$fname = $key;
+	if ($type == null)
+		$type = 'text';
+	$multiple = '';
+	switch ($type) {
+	case 'textarea':
+		echo '<textarea name="'.$fname.'" cols="80" rows="10">'.$val.'</textarea>';
+		break;
+	case 'list':
+		$multiple = 'multitple="multiple" ';
+	case 'combo':
+		echo '<select name="'.$fname.'" '.$multiple.'>';
+		foreach ($options as $opt => $optval) {
+			if ($optval == $val) $selected = 'selected="selected" ';
+			else $selected = '';
+			echo '<option value="'.$optval.'" '.$selected.'>'.$opt.'</option>';
+		}
+		echo '</select>';
+		break;
+	default:
+		echo '<input type="'.$type.'" value="'.$val.'" name="'.$fname.'" />';
+		break;
+	}
+	echo '</td>';
+	if ($end) echo "</tr>\n";
 }
 
 function print_js_onload($js)

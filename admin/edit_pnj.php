@@ -80,3 +80,4 @@ else
 	echo '<div id="upd_res"></div>';
 }
 include_once(root.'admin/admin_bas.php');
+?>
