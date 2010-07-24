@@ -35,8 +35,41 @@ echo '</div>';
 function showQuest(id) {
 	$('#showquest').load('edit_quete_ajax.php?id=' + id);
 }
+
+var cibledlg = null;
+function selCible(t) {
+	querier = t;
+	cibledlg.dialog("open");
+}
+
+function doSelM(id) {
+	cibledlg.dialog("close");
+	querier.value = 'M' + id;
+}
+
+function doSelP(id) {
+	cibledlg.dialog("close");
+	querier.value = 'P' + id;
+}
 </script>
 <?php
+
+print_js_onload('cibledlg = $("#cibledlg").dialog({ autoOpen: false });');
+
+echo '<div id="cibledlg" title="cibles"><table>'.
+'<tr><th>Monstres</th><th>PNJ</th></tr><tr><td>';
+$req = $db->query("select id, nom, lib as image from monstre");
+while ($m = $db->read_object($req)) {
+	echo '<img src="../image/monstre/'.$m->image.'.png" alt="'.$m->nom.
+		'" /> <a href="javascript:doSelM('.$m->id.')">'.$m->nom.'</a><br/>';
+}
+echo '</td><td style="vertical-align: text-top">';
+$req2 = $db->query("select id, nom, image from pnj");
+while ($m = $db->read_object($req2)) {
+	echo '<img src="../image/pnj/'.$m->image.'.png" alt="'.$m->nom.
+		'" /> <a href="javascript:doSelP('.$m->id.')">'.$m->nom.'</a><br/>';
+}
+echo '</td></tr></table></div>';
 
 include_once(root.'admin/admin_bas.php');
 
