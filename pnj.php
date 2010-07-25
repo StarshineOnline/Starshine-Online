@@ -104,6 +104,22 @@ if(eregi("\[donneitem:([^[]*)\]", $message, $regs))
 	$message = eregi_replace("\[donneitem:([^[]*)\]", "", $message);
 	verif_action($regs[1], $joueur, 's');
 }
+//Vends un item
+if(eregi("\[vendsitem:([^[\:]*):([^[]*)\]", $message, $regs))
+{
+	if ($joueur->get_star() < $regs[2])
+	{
+		$replace = "Vous n'avez pas assez de stars !!<br/>";
+	}
+	else
+	{
+		$joueur->set_star($joueur->get_star() - $regs[2]);
+		$joueur->prend_objet($regs[1]);
+		$replace = "Vous recevez un objet.<br/>";
+		verif_action($regs[1], $joueur, 's');
+	}
+	$message = eregi_replace("\[vendsitem:([^[\:]*):([^[]*)\]", $replace, $message);
+}
 //validation inventaire
 if(eregi("\[verifinventaire:([^[]*)\]", $message, $regs))
 {
