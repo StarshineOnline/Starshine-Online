@@ -29,6 +29,9 @@ if (array_key_exists('action', $_POST) && $_POST['action'] == 'post')
 	$requete .= ', quete_requis = \''.sSQL($_POST['quete_requis']).'\'';
 	$requete .= ', star_royaume = \''.sSQL($_POST['star_royaume']).'\'';
 	$requete .= ', lvl_joueur = \''.sSQL($_POST['lvl_joueur']).'\'';
+	$requete .= ', mode = \''.sSQL($_POST['mode']).'\'';
+	$requete .= ', achat = \''.sSQL($_POST['achat']).'\'';
+	$requete .= ', fournisseur = \''.sSQL($_POST['fournisseur']).'\'';
 
 	if (count($objectifs))
 		$requete .= ', objectif = \''.$strobjectifs.'\'';
@@ -61,7 +64,7 @@ print_key_value_form_row('mode', $quete->mode, 'combo', null,
 print_key_value_form_row('achat', $quete->achat, 'combo', null,
 												 array('oui' => 'oui', 'non' => 'non'), true, false);
 print_key_value_form_row('fournisseur', $quete->fournisseur, 'combo', null, 
-												 array('Auqun' => '',
+												 array('Aucun' => '',
 															 'École de combat' => 'ecole_combat',
 															 'Magasin' => 'magasin', 'Taverne' => 'taverne'),
 												 false);
