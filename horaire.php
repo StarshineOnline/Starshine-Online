@@ -1,7 +1,7 @@
 <?php
 if (file_exists('root.php'))
   include_once('root.php');
-?><?php
+
 include_once(root.'class/db.class.php');
 include_once(root.'fonction/time.inc.php');
 include_once(root.'fonction/action.inc.php');

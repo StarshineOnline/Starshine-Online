@@ -59,6 +59,25 @@ while($row = $db->read_array($req))
 		}
 }
 
+// peuplement du plan de karn
+$mort = time() + 22000000;
+$id_plan = 145;
+// Les cases considérées
+$sql_cases = "select x,y from map where ".
+  "x > 25 and x < 50 and y > 205 and y < 235 and info in (15,25)";
+// Les cases occupées par le plan dans les cases en question
+$sql_cases_occupees = "select c.x,c.y from map_monstre mm, ($sql_cases) c ".
+  "where c.x = mm.x and c.y = mm.y and nc.x = c.x and nc.y = c.y and ".
+  "mm.type = $id_plan";
+// Les cases en questions MOINS les cases occupées parmis elles
+$sql_cases_vides = "select nc.x, nc.y from ($sql_cases) nc ".
+  "where not exists ($sql_cases_occupees)";
+// La jointure sur les caracs du mob
+$sql_insert = "select m.id, f.x, f.y, m.hp, $mort ".
+  "from monstre m, ($sql_cases_vides) f where m.id = $id_plan";
+// L'insert
+$db->query("insert into map_monstre(type,x,y,hp,mort_naturelle) $sql_insert");
+
 //Sélection des monstres
 $requete = "SELECT * FROM monstre ORDER BY level";
 $req = $db->query($requete);

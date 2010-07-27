@@ -613,6 +613,11 @@ function lance_sort($id, $acteur, &$effects)
 			$get_comp_assoc = 'get_'.$row['carac_assoc'];
 			switch($row['type'])
 			{
+
+          /***************************************/
+          /****       Les sorts spéciaux      ****/
+          /***************************************/
+
 			  case 'empalement_abomination':
 					$degat = degat_magique($actif->$get_comp_assoc(), ($row['effet'] + $bonus_degats_magique), $actif, $passif);
 					if ($passif->get_hp() > $degat) // Si on survit
@@ -649,6 +654,23 @@ function lance_sort($id, $acteur, &$effects)
 										 'Les blessures engendrées par l\'épine de l\'abomination vous laissent dans une souffrance atroce. Il vous faudra du temps pour vous en remettre',
 										 'perso', 1, 0, 0, 0);
 					break;
+
+        case 'nostalgie_karn':
+          $description = 'vous sentez votre esprit vieillir, vous ne pensez quʼaux moments où vous étiez en pleine santé et vous avez du mal a vous concentrer';
+					$degat = degat_magique($actif->$get_comp_assoc(),
+                                 ($row['effet'] + $bonus_degats_magique),
+                                 $actif, $passif);
+          lance_buff('maladie_degenerescence', $passif->get_id(),
+                     $row['effet2'], '0', 2678400, 'Nostalgie de Karn',
+                     sSQL($description), 'perso', 1, 0, 0, 0);
+					echo '&nbsp;&nbsp;<span class="degat"><strong>'.$actif->get_nom().'</strong> inflige <strong>'.$degat.'</strong> dégâts avec '.$row['nom'].'</span><br />';
+          echo '<br/><em>'.$description.'</em>';
+          break;
+          
+
+          /***************************************/
+          /****        Les sorts normaux      ****/
+          /***************************************/
   			case 'degat_feu' : /* Les 3 c'est pareil une fois tellurique  */
 	  		case 'degat_nature' :
 		  	case 'degat_mort' :
