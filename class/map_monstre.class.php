@@ -519,19 +519,21 @@ class map_monstre
 			$requete = "INSERT INTO map_monstre VALUES(NULL, '65','3','212','4800',"
         .(time() + 2678400).")";
 			$db->query($requete);
-			echo '<strong>Rha, tu me détruis aujourdhui mais le fossoyeur saura saisir ton âme... tu es déja mort !</strong>';
+			echo '<strong>Rha, tu me détruis aujourdhui mais le fossoyeur saura saisir ton âme... tu es déja mort !</strong><br/>';
 			break;
 			
 		case 65: //Si c'est le fossoyeur on fait pop finwir
 			$requete = "INSERT INTO map_monstre VALUES(NULL, '75','24','209','8000',"
         .(time() + 2678400).")";
 			$db->query($requete);
-			echo '<strong>Tu ne fait que retarder l\'inévitable, Le maître saura te faire payer ton insolence !</strong>';
+			echo '<strong>Tu ne fait que retarder l\'inévitable, Le maître saura te faire payer ton insolence !</strong><br/>';
 			break;
 			
 		case 75: //Si c'est Finrwirr on fait pop le gros monstre
-			echo '<strong>Aaaargh VAINCU, JE SUIS VAINCU, comment est ce possible !!! Maître !! Maître venez à moi, vengez votre plus fidèle serviteur !!!</strong>';
-			if (true) // Si le gros monstre n'a pas ete vaincu
+			echo '<strong>Aaaargh VAINCU, JE SUIS VAINCU, comment est ce possible !!! Maître !! Maître venez à moi, vengez votre plus fidèle serviteur !!!</strong><br/>';
+      $req = $db->query("select decor from map where x = 20 and y = 227");
+      $row = $db->read_assoc($req);
+			if ($row['decor'] == 1601) // Si le gros monstre n'a pas ete vaincu, le passage vers le portail est encore un mur
 			{
 				$requete = "INSERT INTO map_monstre VALUES(NULL,116,18,227,10000,"
           .(time() + 2678400).")";
@@ -539,9 +541,18 @@ class map_monstre
 			}
 			else
 			{
-				echo '<br/><em>Seul le silence répond à cet appel, Adenaïos le nécromant a déjà été vaincu ...</em>';
+				echo '<em>Seul le silence répond à cet appel, Adenaïos le nécromant a déjà été vaincu ...</em><br/>';
 			}
 			break;
+
+    case 116: // Si c'est le gros monstre, on ouvre le chemin vers le portail
+    {
+      echo "Maitre Aâzgruth reprend mon âme, ahhharghh, vous ne savez rien de ce qui vous attends... <em>Le squelette du nécromant se brise sous vos yeux. Une silhouette noir s'en dégage pendant quelque secondes avant d'être subitement avalée par le mur situé en face de vous ... qui eclate comme un miroir.</em><br/>";
+      $requete = "update map set decor = 1539, info = 15 where y = 227 and (x = 20 or x = 21)";
+      $db->query($requete);
+      $requete = "update map set decor = 1676 where y = 226 and (x = 20 or x = 21)";
+      $db->query($requete);
+    }
 			
 		case 125:	//Si c'est un draconide
 		case 126:

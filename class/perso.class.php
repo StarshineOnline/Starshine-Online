@@ -942,6 +942,15 @@ class perso extends entite
 					$this->register_gemme_enchantement($gemme);
 					//my_dump($this->enchantement);
 				}
+        if ($this->bouclier->effet)
+        {
+          $effets = split(';', $this->bouclier->effet);
+          foreach ($effets as $effet)
+          {
+            $d_effet = split('-', $effet);
+						$this->register_item_effet($d_effet[0], $d_effet[1], $this->bouclier);
+          }
+        }
 			}
 			else $this->bouclier = false;
 		}
@@ -2602,7 +2611,9 @@ class perso extends entite
 					$ep->pos = 'sa';
 				}
 				$this->add_effet_permanent('attaquant', $ep);
-																	 
+				break;
+			case 10:
+				$this->add_effet_permanent('defenseur', new protection_artistique($effet, $item->nom));
 			default:
 				break;
 			}

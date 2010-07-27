@@ -257,6 +257,7 @@ class effect
    * 
    * @param  $actif     Personnage actif lors de l'action.
    * @param  $passif    Personnage passif lors de l'action.
+	 * @param  $reduction La reduction avant modification
 	 * 
 	 * @return		reduction des degats
    */   
@@ -505,6 +506,31 @@ class effet_vampirisme extends effect
 			$this->debug($actif->get_nom().' gagne '.$gain.' HP par '.$this->pos.' '.
 									$this->nom);
 		return $degats;
+	}
+}
+
+class protection_artistique extends effect
+{
+	var $effet;
+
+	function __construct($aEffet, $aNom) {
+    if ($aNom == null)
+      $aNom = 'protection_artistique';
+		parent::__construct($aNom);
+    $this->effet = $aEffet;
+  }
+
+	function calcul_bloquage_reduction(&$actif, &$passif, $reduction) {
+		$bonus_reduction = 0;
+		for ($tmp_honneur = $passif->get_honneur() - 20000; $tmp_honneur > 0;
+				 $tmp_honneur -= 15000)
+			$bonus_reduction += $this->effet;
+		if ($bonus_reduction > 0)
+			$this->debug($passif->get_nom().' voit son bloquage augmenté de '.
+									 $bonus_reduction.' grâce à son honneur ('.$this->nom.') !');
+		else
+			$this->debug('Pas assez d\'honneur pour profiter du '.$this->nom);
+		return $reduction + $bonus_reduction;
 	}
 }
 
