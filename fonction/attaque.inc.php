@@ -1,3 +1,4 @@
+
 <?php //  -*- tab-width:2  -*-
 if (file_exists('../root.php'))
   include_once('../root.php');
@@ -281,9 +282,11 @@ function attaque($acteur = 'attaquant', $competence, &$effects)
 		$passif->PP_effective = $PP;
 		
 	    /* ~PP */
+
     	if(!$transperce) $reduction = calcul_pp($PP); else $reduction = 1;
-      	$degat_avant = $degat;
-      	$degat = round($degat * $reduction);
+      if ($reduction < 0) $reduction = 0; // On se soigne pas avec l'armure ^^
+      $degat_avant = $degat;
+      $degat = round($degat * $reduction);
 			
 	    //Coup critique
     	$actif_chance_critique = ceil(pow($actif->get_dexterite(), 1.5) * 10);
