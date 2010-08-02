@@ -9,7 +9,6 @@ include_once(root.'haut.php');
 setlocale(LC_ALL, 'fr_FR');
 include_once(root.'haut_site.php');
 
-
 if (!array_key_exists('xmin', $_GET) &&
 		!array_key_exists('ymin', $_GET))
 {
@@ -22,6 +21,8 @@ if (!array_key_exists('xmin', $_GET) &&
 		{
 			echo '<a href="?xmin='.$row['x_donjon'].'&amp;ymin='.$row['y_donjon'].'">'.$row['nom'].'</a><br />';
 		}
+
+  echo '<br/><a href="view_donjon_full.php">Afficher tout</a><br/>';
 	
 	echo '<h1>Arènes</h1>';
 	
@@ -31,6 +32,7 @@ if (!array_key_exists('xmin', $_GET) &&
 		{
 			echo '<a href="?xmin='.($row['x'] - 1).'&amp;ymin='.($row['y'] - 1).'&amp;xmax='.($row['x'] + $row['size'] + 1).'&amp;ymax='.($row['y'] + $row['size'] + 1).'&amp;arene='.$row['nom'].'">'.$row['nom'].'</a><br />';
 		}
+  
 	echo "\n</div></body></html>\n";
 	exit(0);
 }
