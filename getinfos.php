@@ -16,7 +16,6 @@ if ($check == false)
 }
 
 header('Content-Type: text/xml; charset=utf-8');
-//header('Content-type: text/plain');
 
 function cpyToAttr($node, $row, $attr) {
   if (is_array($attr)) {
