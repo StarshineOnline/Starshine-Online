@@ -70,7 +70,7 @@ if (array_key_exists('infoscase', $_REQUEST)) {
 	$q = "select * from map left join map_event using (x, y) where x = $x and y = $y";
 	$res = $db->query($q);
 	$row = $db->read_assoc($req);
-	echo "Case $x / $y : décor $row[decor], type : $row[type]";
+	echo "Case $x / $y : décor $row[decor] (info $row[info]), type : $row[type]";
 	echo "<div style=\"width: 60px; height: 60px;\" class=\"decor tex$row[decor]\"></div>";
 	echo '<hr><form method="post" action="#" id="eventform"><div>';
 	echo '<h3>Event</h3>';
