@@ -538,6 +538,9 @@ class map_monstre
 				$requete = "INSERT INTO map_monstre VALUES(NULL,116,18,227,10000,"
           .(time() + 2678400).")";
 				$db->query($requete);
+				// Ouverture du passage vers le gros monstre
+				$requete = "UPDATE map set decor = 1539, info = 15 where x = 4 and (y >= 216 and y <= 219)";
+				$db->query($requete);
 			}
 			else
 			{
