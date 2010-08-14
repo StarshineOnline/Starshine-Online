@@ -227,7 +227,6 @@ foreach($tab_royaume as $race => $royaume)
 		$requete = "UPDATE royaume SET food = food - ".$royaume['food_necessaire']." WHERE id = ".$royaume['id'];
 		$db->query($requete);
 	}
-	//Sinon
 	else
 	{
 		//Calcul du debuff
@@ -278,10 +277,10 @@ foreach($tab_royaume as $race => $royaume)
 				lance_buff('famine', $joueur, $debuff, 0, $duree, 'Famine', 'Vos HP et MP max sont réduits de %effet%%', 'perso', 1, 0, 0, 0);
 			}
 			$mail .= "Lancement du buff famine sur ".count($persos)." ".$race.", effet : ".$debuff.".\n";
-			$requete = "UPDATE royaume SET food = 0 WHERE id = ".$royaume['id'];
-			$mail .= $requete."\n";
-			$db->query($requete);
 		}
+		$requete = "UPDATE royaume SET food = 0 WHERE id = ".$royaume['id'];
+		$mail .= $requete."\n";
+		$db->query($requete);
 	}
 	$requete = "UPDATE buff SET effet = 50 WHERE type = 'famine' AND effet > 50";
 	$db->query($requete);
