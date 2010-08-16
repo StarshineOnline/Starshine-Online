@@ -678,6 +678,10 @@ function lance_sort($id, $acteur, &$effects)
 				$degat = degat_magique($actif->$get_comp_assoc(),
 															 ($row['effet'] + $bonus_degats_magique),
 															 $actif, $passif);
+				echo '&nbsp;&nbsp;<span class="degat"><strong>'.$actif->get_nom().
+					'</strong> inflige <strong>'.$degat.'</strong> dégâts avec '.
+					$row['nom'].'</span><br />';
+				$passif->set_hp($passif->get_hp() - $degat);
 				print_debug($passif->get_nom().' perd '.$perte_pa.' PA');
 
 				echo '<br/><em>'.$description.'</em>';

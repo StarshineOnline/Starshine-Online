@@ -27,3 +27,5 @@ NULL , 'Absorbtion temporelle', 'Retire jusque %effet2% PA à la cible. Dégats 
 );
 
 update `monstre` set `action` = '#09=15@~180;#09=5@~180;#14<3µ#10°posture@~101;#11°appel_tenebreµ#09<15@~70;#14<3@~173;#14<3@~44;#14<3@~92;#14<3@~128;#14<3@~122' where id = 144;
+
+update `monstre` set `action` = '#09=15@~180;#09=5@~180;#09=3@~179;#14<3µ#10°posture@~101;#11°appel_tenebreµ#09<15@~70;#14<3@~173;#14<3@~44;#14<3@~92;#14<3@~128;#14<3@~122' where id = 144;
