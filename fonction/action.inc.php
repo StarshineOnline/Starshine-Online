@@ -666,6 +666,22 @@ function lance_sort($id, $acteur, &$effects)
 					echo '&nbsp;&nbsp;<span class="degat"><strong>'.$actif->get_nom().'</strong> inflige <strong>'.$degat.'</strong> dégâts avec '.$row['nom'].'</span><br />';
           echo '<br/><em>'.$description.'</em>';
           break;
+
+					
+			case 'absorb_temporelle':
+
+				$description = 'Vous êtes complétement déstabilisé et ne voyez plus rien pendant quelques secondes. En revenant à vous, vous avez la douloureuse impression que vos gestes vous ont échappé.';
+
+				$perte_pa = rand(1, $row['effet2']);
+				$pa = max(0, $passif->get_pa() - $perte_pa);
+				$passif->set_pa($pa);
+				$degat = degat_magique($actif->$get_comp_assoc(),
+															 ($row['effet'] + $bonus_degats_magique),
+															 $actif, $passif);
+				print_debug($passif->get_nom().' perd '.$perte_pa.' PA');
+
+				echo '<br/><em>'.$description.'</em>';
+				break;
           
 
           /***************************************/
