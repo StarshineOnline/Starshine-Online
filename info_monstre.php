@@ -60,7 +60,7 @@ $coeff = floor($survie / $monstre->get_level());
 				<img src="genere_barre_vie.php?longueur=<?php echo $longueur; ?>" title="Estimation des HP : <?php echo $longueur; ?>% / + ou - : <?php echo $fiabilite; ?>%" /><br />
 	<?php
 	//Description
-	if($coeff >= 5) echo '
+	if($coeff >= 1) echo '
 	<p class="xsmall">'.$monstre->get_description().'</p>';
 	?>
 	<table style="border : 0px;" cellspacing="0" width="100%">

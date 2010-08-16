@@ -656,7 +656,7 @@ function lance_sort($id, $acteur, &$effects)
 					break;
 
         case 'nostalgie_karn':
-          $description = 'vous sentez votre esprit vieillir, vous ne pensez quʼaux moments où vous étiez en pleine santé et vous avez du mal a vous concentrer';
+          $description = 'Vous sentez votre esprit vieillir, vous ne pensez quʼaux moments où vous étiez en pleine santé et vous avez du mal a vous concentrer';
 					$degat = degat_magique($actif->$get_comp_assoc(),
                                  ($row['effet'] + $bonus_degats_magique),
                                  $actif, $passif);
