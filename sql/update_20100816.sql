@@ -1,5 +1,5 @@
 -- Demon chronophage et son special
-UPDATE `starshine`.`monstre` SET `spawn_loc` = 'p37-222;p39-221;p37-218;p39-217;p34-217;p32-223;p39-227;p32-216;p40-212;p42-231' WHERE `monstre`.`id` =144 LIMIT 1 ;
+UPDATE `monstre` SET `spawn_loc` = 'p37-222;p39-221;p37-218;p39-217;p34-217;p32-223;p39-227;p32-216;p40-212;p42-231' WHERE `monstre`.`id` =144 LIMIT 1 ;
 
 INSERT INTO `sort_combat` (
 `id` ,
