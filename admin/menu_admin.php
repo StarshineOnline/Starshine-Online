@@ -97,6 +97,11 @@ else
 	$menu[$i]['url'] = 'admin_joueur.php';
 	$menu[$i++]['acces'] = '';
 	$acces[] = '';
+
+	$menu[$i]['nom'] = 'Contrôle des persos/pnj';
+	$menu[$i]['url'] = 'controle_joueur.php';
+	$menu[$i++]['acces'] = '';
+	$acces[] = '';
 	
 	$menu[$i]['nom'] = 'Log admin';
 	$menu[$i]['url'] = 'log_admin.php';
