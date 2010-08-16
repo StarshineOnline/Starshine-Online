@@ -1,7 +1,7 @@
 <?php
 if (file_exists('root.php'))
   include_once('root.php');
-?><?php
+
 //JOURNALIER RESSOURCES DE ROYAUME //
 $mail = '';
 
@@ -65,6 +65,9 @@ while($row = $db->read_assoc($req))
 //Ressource normale
 foreach($ressources as $royaume=>$packs)
 {
+	if (!array_key_exists($royaume, $Trace)) {
+		continue;
+	}
   $mail_packs = '';
 	foreach($packs as $terr=>$nbr_packs)
 	{
@@ -160,6 +163,9 @@ while($row = $db->read_assoc($req))
 	}
 	foreach($ress_final as $key => $value)
 	{
+		if (!array_key_exists($royaume['race'], $Trace)) {
+			continue;
+		}
 		$ressource_final[$royaume['race']][$key] += $value;
 		if($key == 'Nourriture') $tot_nou += $value;
 	}
@@ -168,6 +174,7 @@ while($row = $db->read_assoc($req))
 foreach($ressource_final as $key => $value)
 {
 	$requete = "SELECT ".$key." FROM stat_jeu WHERE date = '".$date."'";
+	//echo $requete."\n";
 	$req_stat_jeu = $db->query($requete);
 	$row_stat_jeu = $db->read_assoc($req_stat_jeu);
 	$explode_stat = explode(';', $row_stat_jeu[$key]);
@@ -193,11 +200,6 @@ $requete = "UPDATE stat_jeu SET food = ".$food_total." WHERE date = '".$date."'"
 $db->query($requete);
 
 //Nourriture
-//On réduit de 1 les debuff famines
-$requete = "UPDATE buff SET effet = effet - 3 WHERE type= 'famine'";
-$db->query($requete);
-$requete = "DELETE FROM buff WHERE type = 'famine' AND effet <= 0";
-$db->query($requete);
 //On récupère la food nécessaire par habitant
 $requete = "SELECT food, nombre_joueur FROM stat_jeu WHERE date = '".$date_hier."'";
 $req = $db->query($requete);
@@ -216,6 +218,8 @@ while($row = $db->read_assoc($req))
 }
 foreach($tab_royaume as $race => $royaume)
 {
+	$idpersos = "select id from perso where race = '$race' AND statut = 'actif'";
+
 	$royaume['food_necessaire'] = floor($food_necessaire * $royaume['actif']);
 	//echo $royaume['race'].' '.$royaume['food_necessaire'].'<br />';
 	//Si ya assez de food
@@ -226,12 +230,18 @@ foreach($tab_royaume as $race => $royaume)
 	{
 		$requete = "UPDATE royaume SET food = food - ".$royaume['food_necessaire']." WHERE id = ".$royaume['id'];
 		$db->query($requete);
+		//On réduit de 3 les debuff famines (1 ??)
+		$requete = "UPDATE buff SET effet = effet - 3 WHERE type = 'famine' AND id_perso IN ($idpersos)";
+		$db->query($requete);
 	}
 	else
 	{
 		//Calcul du debuff
 		$royaume['food_doit'] = $royaume['food_necessaire'] - $royaume['food'];
-		$ratio = $royaume['food_doit'] / $royaume['food_necessaire'];
+		if ($royaume['food_necessaire'] != 0)
+			$ratio = $royaume['food_doit'] / $royaume['food_necessaire'];
+		else
+			$ratio = 0;
 		$debuff = ceil($ratio * 9) - 1;
 		if($debuff > 6) $debuff = 6;
 		if($debuff > 0)
@@ -270,7 +280,7 @@ foreach($tab_royaume as $race => $royaume)
 				$requete = "UPDATE buff SET effet = effet + ".$debuff.", duree = ".$duree.", fin = ".$fin." WHERE id IN (".$buffs_implode.")";
 				$db->query($requete);
 			}
-			$mail .= "Mis à jour du buff famine sur ".count($buffs_implode)." ".$race.", effet + ".$debuff.".\n";
+			$mail .= "Mis à jour du buff famine sur ".count($buffs)." ".$race.", effet + ".$debuff.".\n";
 			foreach($persos as $joueur)
 			{
 				//Lancement du buff
@@ -282,9 +292,12 @@ foreach($tab_royaume as $race => $royaume)
 		$mail .= $requete."\n";
 		$db->query($requete);
 	}
-	$requete = "UPDATE buff SET effet = 50 WHERE type = 'famine' AND effet > 50";
-	$db->query($requete);
 }
+// Nettoyage
+$requete = "UPDATE buff SET effet = 50 WHERE type = 'famine' AND effet > 50";
+$db->query($requete);
+$requete = "DELETE FROM buff WHERE type = 'famine' AND effet <= 0";
+$db->query($requete);
 
 $mail_send = getenv('SSO_MAIL');
 if ($mail_send == null || $mail_send == '')
