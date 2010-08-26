@@ -160,7 +160,7 @@ elseif($_GET['direction'] == 'suppr_construction')
 {
 	$construction = new construction($_GET['id']);
 	//On vérifie que c'est le bon royaume
-	if($contruction->get_royaume() == $royaume->get_id())
+	if($construction->get_royaume() == $royaume->get_id())
 	{
 		$batiment = new batiment($construction->get_id_batiment());
 		//On vérifie que la construction a plus de 10% de ses PV max
