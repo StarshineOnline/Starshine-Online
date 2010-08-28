@@ -31,7 +31,7 @@ switch($type)
 		}
 		$def = false;
 		$joueur_defenseur = new perso($_GET['id_joueur']);
-		$joueur_defenseur->check_perso();
+		$joueur_defenseur->check_perso(false);
 		//On vérifie que ya pas un buff qui fait défendre par un pet
 		if($joueur_defenseur->is_buff('defense_pet'))
 		{
