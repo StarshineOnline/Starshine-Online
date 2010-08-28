@@ -5,7 +5,7 @@ if (file_exists('root.php'))
 {//-- Initialisation
 	require_once(root.'inc/fp.php');
 	if(!isset($joueur)) { $joueur = new perso($_SESSION["ID"]); }; 		//-- Récupération du tableau contenant toutes les informations relatives au joueur
-	$joueur = check_perso($joueur);
+	$joueur->check_perso();
 	echo '<div id="perso_contenu">';
 	require_once(root."levelup.php"); 				//-- Dans le cas ou le joueur a pris un level on traite son level up.
 }
