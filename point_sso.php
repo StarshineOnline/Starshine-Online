@@ -5,7 +5,7 @@ if (file_exists('root.php'))
 
 include_once(root.'inc/fp.php');
 $joueur = new perso($_SESSION['ID']);
-check_perso($joueur);
+$joueur->check_perso();
 $bonus = recup_bonus($joueur->get_id());
 
 echo '

@@ -10,7 +10,7 @@ include_once(root.$root.'inc/fp.php');
 
 $joueur = new perso($_SESSION['ID']);
 
-check_perso($joueur);
+$joueur->check_perso();
 
 //Véifie si le perso est mort
 verif_mort($joueur, 1);
