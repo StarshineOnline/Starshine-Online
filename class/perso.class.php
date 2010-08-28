@@ -2785,7 +2785,7 @@ class perso extends entite
 			{
 				$time = time();
 				$nb_maj = floor($temps_maj / $temps_hp);
-				$hp_gagne = $nb_maj * (pow($this->get_vie(true), 0.7) * 2.6);
+				$hp_gagne = $nb_maj * (pow($this->get_vie(true), 0.9) * 1.6);
 				$this->set_hp_max($this->get_hp_max(true) + $hp_gagne);
 				$this->set_maj_hp($this->get_maj_hp() + $nb_maj * $temps_hp);
 				$modif = true;
