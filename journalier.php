@@ -80,6 +80,8 @@ $db->query("insert into map_monstre(type,x,y,hp,mort_naturelle) $sql_insert");
 
 //Sélection des monstres
 $requete = "SELECT * FROM monstre ORDER BY level";
+//$requete = "SELECT * FROM monstre WHERE id > 140 ORDER BY level";
+//$requete = "SELECT * FROM monstre WHERE id = 144 ORDER BY level";
 $req = $db->query($requete);
 $insert_file = tempnam("/tmp", "journalier");
 $handle = fopen($insert_file, "w");
@@ -87,6 +89,7 @@ $check_virgule = false;
 $total_monstre = 0;
 while($row = $db->read_array($req))
 {
+	echo "Gestion de l'id $row[id]: $row[nom]\n";
 	$tot_monstre = 0;
 	//Génération de monstres sur la carte dont l'identifiant est generation_id
 	$id = $row['id'];
@@ -140,7 +143,7 @@ while($row = $db->read_array($req))
 		if($ratio > 50) $ratio = 50;
 		$limite = $ratio * 10000;
 		$requete = "SELECT x, y, info FROM map WHERE ".$where;
-		echo $requete."\n";
+		//echo $requete."\n";
 		$req2 = $db->query($requete);
 		while($row2 = $db->read_array($req2))
 		{
@@ -152,7 +155,7 @@ while($row = $db->read_array($req))
 			if (($row2['info'] === '') OR ($row2['info'] === '0')) $row2['info'] = 1;
 			if (in_array($row2['info'], $terrain))
 			{
-				//echo $row2['info'].'<br />';
+				//echo $row2['info']."\n";
 				//Plus c'est élevé moins les monstres spawn
 				$rand = rand(0, (5000 * 1000));
 				if($rand < $limite OR $spawn == 0)
@@ -162,7 +165,7 @@ while($row = $db->read_array($req))
 					{
 						$requete = "SELECT id FROM map_monstre WHERE x = ".$row2['x']." AND y = ".$row2['y']." AND type = ".$id;
 						$req4 = $db->query($requete);
-						//echo $requete.'<br />';
+						echo $requete."\n";
 						if($db->num_rows > 0) $check = false;
 					}
 					if($check)

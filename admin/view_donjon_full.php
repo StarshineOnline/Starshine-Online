@@ -81,7 +81,7 @@ while ($row = $db->read_object($req)) {
 }
 $db->free($req);
 
-$req = $db->query("select mm.*, m.lib as image, m.nom, m.hp as hp_max from map_monstre mm, monstre m where mm.type = m.id and $range_str");
+$req = $db->query("select mm.*, m.lib as image, m.nom, m.hp as hp_max from map_monstre mm, monstre m where mm.type = m.id and $range_str order by m.level asc");
 while ($row = $db->read_object($req)) {
   if (array_key_exists($row->x, $map) &&
       array_key_exists($row->y, $map[$row->x])) 
