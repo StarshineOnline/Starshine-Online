@@ -1346,9 +1346,15 @@ else
 				//Insertion de l'attaque dans les journaux des 2 joueurs
 				$requete = "INSERT INTO journal VALUES(NULL, ".$joueur->get_id().", 'attaque', '".$joueur->get_nom()."', '".$defenseur->get_nom()."', NOW(), ".($defense_hp_avant - $defense_hp_apres).", ".($attaque_hp_avant - $attaque_hp_apres).", ".$joueur_defenseur->get_x().", ".$joueur_defenseur->get_y().")";
 				$db->query($requete);
-				$requete = "INSERT INTO journal VALUES(NULL, ".$joueur_defenseur->get_id().", 'defense', '".$joueur_defenseur->get_nom()."', '".$joueur->get_nom()."', NOW(), ".($defense_hp_avant - $defense_hp_apres).", ".($attaque_hp_avant - $attaque_hp_apres).", ".$joueur_defenseur->get_x().", ".$joueur_defenseur->get_y().")";
+				
+				if(!$check_pet_def)
+					$requete = "INSERT INTO journal VALUES(NULL, ".$joueur_defenseur->get_id().", 'defense', '".$joueur_defenseur->get_nom()."', '".$joueur->get_nom()."', NOW(), ".($defense_hp_avant - $defense_hp_apres).", ".($attaque_hp_avant - $attaque_hp_apres).", ".$joueur_defenseur->get_x().", ".$joueur_defenseur->get_y().")";
+				else
+					$requete = "INSERT INTO journal VALUES(NULL, ".$joueur_defenseur->get_id().", 'defense', '".$defenseur->get_nom()."', '".$joueur->get_nom()."', NOW(), ".($defense_hp_avant - $defense_hp_apres).", ".($attaque_hp_avant - $attaque_hp_apres).", ".$joueur_defenseur->get_x().", ".$joueur_defenseur->get_y().")";
+				
 				$db->query($requete);
-				if($defenseur->get_hp() <= 0)
+				
+				if($defenseur->get_hp() <= 0 && !$check_pet_def)
 				{
 					$requete = "INSERT INTO journal VALUES(NULL, ".$joueur->get_id().", 'tue', '".$joueur->get_nom()."', '".$joueur_defenseur->get_nom()."', NOW(), 0, 0, ".$joueur_defenseur->get_x().", ".$joueur_defenseur->get_y().")";
 					$db->query($requete);
@@ -1356,7 +1362,7 @@ else
 					$db->query($requete);
 				}
 				
-				if($attaquant->get_hp() <= 0)
+				if($attaquant->get_hp() <= 0 && !$check_pet)
 				{
 					$requete = "INSERT INTO journal VALUES(NULL, ".$joueur->get_id().", 'mort', '".$joueur->get_nom()."', '".$joueur_defenseur->get_nom()."', NOW(), 0, 0, ".$joueur_defenseur->get_x().", ".$joueur_defenseur->get_y().")";
 					$db->query($requete);

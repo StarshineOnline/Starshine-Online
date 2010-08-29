@@ -2417,7 +2417,10 @@ function affiche_ligne_journal($row)
 			return '<li class="jdegat"><span class="small">['.$date.']</span> Vous attaquez '.$row['passif'].' et lui faites '.$row['valeur'].' dégâts, il vous en fait '.$row['valeur2'].'</li>';
 		break;
 		case 'defense' :
-			return '<li class="jrdegat"><span class="small">['.$date.']</span> '.$row['passif'].' vous a attaqué et fait '.$row['valeur'].' dégâts et vous lui faites '.$row['valeur2'].'</li>';
+			if ($row['actif'] != $_SESSION['nom']) // Equivaut à : le defenseur est le pet
+				return '<li class="jrdegat"><span class="small">['.$date.']</span> '.$row['passif'].' a attaqué votre '.$row['actif'].' et fait '.$row['valeur'].' dégâts et votre '.$row['actif'].' fait '.$row['valeur2'].'</li>';
+			else
+				return '<li class="jrdegat"><span class="small">['.$date.']</span> '.$row['passif'].' vous a attaqué et fait '.$row['valeur'].' dégâts et vous lui faites '.$row['valeur2'].'</li>';
 		break;
 		case 'tue' :
 			return '<li class="jkill"><span class="small">['.$date.']</span> Vous tuez '.$row['passif'].'.</li>';
