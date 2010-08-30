@@ -874,7 +874,10 @@ class entite extends placable
 	function set_pa($new_pa)
 	{
 		if($this->type == 'joueur')
+		{
 			$this->objet_ref->set_pa($new_pa);
+			$this->pa = $new_pa;
+		}
 	}
 
 	function get_arme()
