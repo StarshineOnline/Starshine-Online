@@ -1111,7 +1111,7 @@ else
 							{
 								$check = false;
 								$i_quete = 0;
-								$liste_quete = $attaquant->get_liste_quete();
+								$liste_quete = $joueur->get_liste_quete();
 								$count_quete = count($liste_quete);
 								while(!$check AND $i_quete < $count_quete)
 								{
