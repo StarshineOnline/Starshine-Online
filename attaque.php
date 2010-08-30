@@ -1103,9 +1103,9 @@ else
 							$share = explode('-', $drops[$i]);
 							$objet = $share[0];
 							$taux = ceil($share[1] / $G_drop_rate);
-							if($joueur->get_race() == 'humain') $taux = floor($taux / 1.3);
-							if($joueur->is_buff('fouille_gibier')) $taux = floor($taux / (1 + ($joueur->get_buff('fouille_gibier', 'effet') / 100)));
-							$tirage = rand(1, $taux);
+							if($joueur->get_race() == 'humain') $taux = $taux / 1.3;
+							if($joueur->is_buff('fouille_gibier')) $taux = $taux / (1 + ($joueur->get_buff('fouille_gibier', 'effet') / 100));
+							$tirage = rand(1, floor($taux));
 							//Si c'est un objet de quête :
 							if($objet[0] == 'q')
 							{
