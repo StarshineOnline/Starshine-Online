@@ -1824,7 +1824,10 @@ class perso extends entite
 		if(!isset($this->pet))
 		{
 			$pet = pet::create(array('id_joueur', 'principale', 'ecurie'), array($this->id, 1, 0), 'principale DESC');
-			$this->pet = $pet[0];
+			if (count($pet))
+				$this->pet = $pet[0];
+			else
+				$this->pet = null;
 		}
 		return $this->pet;
 	}
