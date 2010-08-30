@@ -33,7 +33,7 @@ if($joueur->get_race() == 'orc') $round_max++;
 		}
 	}
 	?>
-	<h3><strong>Vous avez <?php echo $joueur->get_reserve(); ?> réserves de mana au total par combat</h3>
+	<h3><strong>Vous avez <?php echo $joueur->get_reserve_bonus(); ?> réserves de mana au total par combat</h3>
 	<?php
 if(array_key_exists('id_action', $_GET) && $_GET['id_action'] == '')
 {
