@@ -45,8 +45,8 @@ include_once(root.'class/inventaire.class.php');
 //On regarde si sworling est là
 $requete = "SELECT id FROM map_monstre WHERE type = 56";
 $req = $db->query($requete);
-$x = ceil(rand(0, 150));
-$y = ceil(rand(0, 150));
+$x = ceil(rand(0, 190));
+$y = ceil(rand(0, 190));
 //Il est déjà là, on le téléport
 if($db->num_rows > 0)
 {
