@@ -35,14 +35,23 @@ switch($type)
 		//On vérifie que ya pas un buff qui fait défendre par un pet
 		if($joueur_defenseur->is_buff('defense_pet'))
 		{
-			$defense = $joueur_defenseur->get_buff('defense_pet', 'effet');
-			$rand = rand(0, 100);
-			//Défense par le pet
-			print_debug("Defense par le pet: $rand VS $defense");
-			if($rand < $defense)
+			if (!$pet || $pet->get_hp() < 1)
 			{
-				print_debug("Defense par le pet OK");
-				$check_pet_def = true;
+				$check_pet_def = false;
+				print_debug("Le pet est mort ...");
+			}
+			else
+			{
+				$defense = $joueur_defenseur->get_buff('defense_pet', 'effet');
+				$rand = rand(0, 100);
+				$pet = $joueur_defenseur->get_pet();
+				//Défense par le pet
+				print_debug("Defense par le pet: $rand VS $defense");
+				if($rand < $defense)
+				{
+					print_debug("Defense par le pet OK");
+					$check_pet_def = true;
+				}
 			}
 		}
 		//Si il est en train de dresser un mob, le dressage est arrêté
