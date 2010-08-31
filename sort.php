@@ -309,11 +309,13 @@ if (isset($_GET['ID']) && !$joueur->is_buff('bloque_sort'))
 						if($cible->get_id() != $joueur->get_id())
 						{
 							//Test d'esquive du sort
-							$protecion = $cible->get_volonte() * $cible->get_pm() / 3;
+							$protection = $cible->get_volonte() * $cible->get_pm() / 3;
 							if($cible->is_buff('bulle_sanctuaire', true)) $protection *= $cible->get_buff('bulle_sanctuaire','effet');
 							if($cible->is_buff('bulle_dephasante', true)) $protection *= $cible->get_buff('bulle_dephasante','effet');
-							$attaque = rand(0, ($joueur->get_volonte() * $joueur->get_comp($sort->get_comp_assoc())));
+							$puissance = $joueur->get_volonte() * $joueur->get_comp($sort->get_comp_assoc());
+							$attaque = rand(0, $puissance);
 							$defense = rand(0, $protection);
+							print_debug("Lance sort: $attaque ($puissance) vs $defense ($protection)");
 							if ($attaque > $defense)
 							{
 								//Mis en place du debuff pour tous
@@ -429,7 +431,7 @@ if (isset($_GET['ID']) && !$joueur->is_buff('bloque_sort'))
 				break;
 				case 'debuff_aveuglement' : case 'debuff_enracinement' : case 'debuff_desespoir' : case 'debuff_ralentissement' : case 'lente_agonie' :
 					//Test d'esquive du sort
-					$protecion = $cible->get_volonte() * $cible->get_pm() / 3;
+					$protection = $cible->get_volonte() * $cible->get_pm() / 3;
 					if($cible->is_buff('bulle_sanctuaire', true)) $protection *= $cible->get_buff('bulle_sanctuaire','effet');
 					if($cible->is_buff('bulle_dephasante', true)) $protection *= $cible->get_buff('bulle_dephasante','effet');
 					$attaque = rand(0, ($joueur->get_volonte() * $joueur->get_comp($sort->get_comp_assoc())));
