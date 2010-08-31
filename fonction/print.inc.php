@@ -162,33 +162,42 @@ function affiche_perso_visu($joueur, $W_row, $position="")
 	$bonus = recup_bonus($W_ID);
 	// on envois dans infojoueur.php -> ID du joueur et La position de la case ou il se trouve
 	
-	$requete = "SELECT ".$perso->get_race()." FROM diplomatie WHERE race = '".$joueur->get_race()."'";
-	$req_diplo = $db->query($requete);
-	$row_diplo = $db->read_array($req_diplo);
-
-	$statut_joueur = 'normal';
-	$diplo = $row_diplo[0];
-	if ($row_diplo[0] == 127)
+	if ($joueur->get_race() == 'pnj' || $perso->get_race() == 'pnj')
 	{
-		$amende = recup_amende($W_ID);
-		$row_diplo[0] = 0;
-		if($amende)	{
-			switch($amende['statut']) {
-			case 'normal' :
-				break;
-			case 'bandit' :
-				$row_diplo[0] = 5;
-				$statut_joueur = 'Bandit';
-				break;
-			case 'criminel' :
-				$row_diplo[0] = 10;
-				$statut_joueur = 'Criminel';
-				break;
-			}
-		}
+		$facteur_xp = 1;
+		$facteur_honneur = 1;
+		$statut_joueur = 'normal';
 	}
-	$facteur_xp = $row_diplo[0] * 0.2;
-	$facteur_honneur = ($row_diplo[0] * 0.2) - 0.8;
+	else
+	{
+		$requete = "SELECT ".$perso->get_race()." FROM diplomatie WHERE race = '".$joueur->get_race()."'";
+		$req_diplo = $db->query($requete);
+		$row_diplo = $db->read_array($req_diplo);
+		
+		$statut_joueur = 'normal';
+		$diplo = $row_diplo[0];
+		if ($row_diplo[0] == 127)
+			{
+				$amende = recup_amende($W_ID);
+				$row_diplo[0] = 0;
+				if($amende)	{
+					switch($amende['statut']) {
+					case 'normal' :
+						break;
+					case 'bandit' :
+						$row_diplo[0] = 5;
+						$statut_joueur = 'Bandit';
+						break;
+					case 'criminel' :
+						$row_diplo[0] = 10;
+						$statut_joueur = 'Criminel';
+						break;
+					}
+				}
+			}
+		$facteur_xp = $row_diplo[0] * 0.2;
+		$facteur_honneur = ($row_diplo[0] * 0.2) - 0.8;
+	}
 
 	if ($facteur_honneur < 0) $facteur_honneur = 0;
 	if(array_key_exists(6, $bonus) AND !check_affiche_bonus($bonus[6], $joueur, $perso)) $chaine_nom = $perso->get_nom();

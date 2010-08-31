@@ -294,6 +294,11 @@ else
 	if($attaquant->is_buff('deluge')) $attaquant->set_volonte($attaquant->get_volonte(true) - $attaquant->get_buff('deluge', 'effet'));
 	if($defenseur->is_buff('engloutissement')) $defenseur->set_dexterite($defenseur->get_dexterite(true) - $defenseur->get_buff('engloutissement', 'effet'));
 	if($defenseur->is_buff('deluge')) $defenseur->set_volonte($defenseur->get_volonte(true) - $defenseur->get_buff('deluge', 'effet'));
+
+	// Check des maladies
+	maladie::degenerescence($attaquant);
+	maladie::degenerescence($defenseur);
+
 	$pa_attaque = $pa_attaque - $reduction_pa;
 	if($pa_attaque <= 0) $pa_attaque = 1;
 	if (isset($no_pa_attaque) && $no_pa_attaque == true)
