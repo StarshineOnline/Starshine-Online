@@ -570,10 +570,12 @@ class magnetique extends effect {
 					$this->message($this->titre.' ne supprime pas de buff - plus de buff');
 				}
 			}
+			return true;
 		}
 		else
 		{
 			$this->message($this->titre.' ne supprime pas de buff');
+			return false;
 		}
 	}
 

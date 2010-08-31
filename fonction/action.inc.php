@@ -755,23 +755,12 @@ function lance_sort($id, $acteur, &$effects)
 				break;
 				case 'globe_foudre' :
 					$degat = degat_magique($actif->$get_comp_assoc(), ($row['effet'] + $bonus_degats_magique), $actif, $passif);
-					$rand = rand(0, 100);
-					//Debuff
-					if($rand < 50)
-					{
-						$de_att = rand(1, $passif->get_vie());
-						$de_deff = rand(1, 40);
-						if($de_att <= $de_deff)
-						{
-							$effects[] = new globe_foudre(1, 15, true);
-						}
-						else echo 'La foudre ne fera rien<br />';
-					}
-					else
-					{
-						//Dégat +1
+
+					// On ajoute pas a la stack d'effet car on a besoin de savoir
+					// tout de suite si la foudre passe ou pas pour le +1 degats
+					$foudre = new globe_foudre(1, 15, true);
+					if ($foudre->magnetise($actif, $passif) == false)
 						$degat++;
-					}
 					echo '&nbsp;&nbsp;<span class="degat"><strong>'.$actif->get_nom().'</strong> inflige <strong>'.$degat.'</strong> dégâts avec '.$row['nom'].'</span><br />';
 					$passif->set_hp($passif->get_hp() - $degat);
 				break;
