@@ -8,6 +8,11 @@
     $militaire = true;
     $economie = true;
   }
+  elseif( $joueur->get_id() == $royaume->get_ministre_economie() AND $joueur->get_id() == $royaume->get_ministre_militaire() )
+  {
+    $militaire = true;
+    $economie = true;
+  }
   elseif( $joueur->get_id() == $royaume->get_ministre_economie() )
   {
     $militaire = false;

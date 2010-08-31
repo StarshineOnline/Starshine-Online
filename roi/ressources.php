@@ -206,7 +206,7 @@ else
 	
 	?>
 	</ul></div>
-	<h3>Vous contrôllez </h3>
+	<h3>Vous contrôlez </h3>
 	<ul>
 	<?php
 	foreach($terrain_ress as $terrain => $total)
