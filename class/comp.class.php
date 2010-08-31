@@ -520,7 +520,7 @@ class magnetique extends effect {
 		//chance de débuffer
 		$rand = rand(0, 100);
 		//Le débuff marche
-		$this->message($this->chance.'/ 100 => '.$rand);
+		$this->debug($this->chance.'/ 100 => '.$rand);
 		if($rand <= $this->chance)
 		{
 			$nb_buff_suppr = rand(1, $this->nb);
