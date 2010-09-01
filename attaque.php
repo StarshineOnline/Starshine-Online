@@ -1033,8 +1033,9 @@ else
 							($joueur->get_honneur() - $joueur->get_honneur() * $coeff).
 							' honneur en mourrant.<br />';
 						$joueur->set_honneur($joueur->get_honneur() * $coeff);
-						$joueur->sauver();
 					}
+					$joueur->set_mort($joueur->get_mort() + 1);
+					$joueur->sauver();
 
 					//Si c'est Dévorsis
 					if($defenseur->get_id() == 61)
