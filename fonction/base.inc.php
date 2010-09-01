@@ -2418,7 +2418,7 @@ function affiche_ligne_journal($row)
 		break;
 		case 'defense' :
 			if ($row['actif'] != $_SESSION['nom']) // Equivaut à : le defenseur est le pet
-				return '<li class="jrdegat"><span class="small">['.$date.']</span> '.$row['passif'].' a attaqué votre '.$row['actif'].' et fait '.$row['valeur'].' dégâts et votre '.$row['actif'].' lui a fait '.$row['valeur2'].'</li>';
+				return '<li class="jrdegat"><span class="small">['.$date.']</span> '.$row['passif'].' a attaqué votre '.$row['actif'].' et fait '.$row['valeur'].' dégâts et votre '.$row['actif'].' fait '.$row['valeur2'].'</li>';
 			else
 				return '<li class="jrdegat"><span class="small">['.$date.']</span> '.$row['passif'].' vous a attaqué et fait '.$row['valeur'].' dégâts et vous lui faites '.$row['valeur2'].'</li>';
 		break;
@@ -2992,7 +2992,7 @@ function verif_ville($x, $y, $r = false)
 function verif_batiment($x, $y, $r)
 {
 	global $db;
-	$requete = "SELECT nom, type FROM construction WHERE x = ".$x." AND y = ".$y." AND royaume = ".$r;
+	$requete = "SELECT nom, type, id_batiment FROM construction WHERE x = ".$x." AND y = ".$y." AND royaume = ".$r;
 	$req = $db->query($requete);
 	if($db->num_rows > 0)
 	{

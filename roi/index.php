@@ -33,7 +33,11 @@ if(($joueur->get_race() == $royaume->get_race() && $joueur->get_grade()->get_id(
 	}
 	elseif($batiment = verif_batiment($joueur->get_x(), $joueur->get_y(), $royaume->get_id()))
 	{
-		if($batiment['type'] == 'fort' OR $batiment['type'] == 'bourg') $check = true;
+		if($batiment['type'] == 'fort' OR $batiment['type'] == 'bourg')
+		{
+			$bourg = new batiment($batiment['id_batiment']);
+			if($bourg->get_bonus7() == 1) $check = true;
+		}
 	}
 	
 	if($check)
