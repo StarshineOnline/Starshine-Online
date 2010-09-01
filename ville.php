@@ -85,7 +85,7 @@ if($W_row['type'] == 1)
 		if($amende['acces_ville'] == 'y') $acces_ville = true;
 		else $acces_ville = false;
 	}
-	else $acces_ville = false;
+	else $acces_ville = true;
 	
 	if($amende)
 	{
