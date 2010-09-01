@@ -2849,7 +2849,7 @@ class perso extends entite
 				//if($this['accessoire']['id'] != '0' AND $this['accessoire']['type'] == 'regen_hp') $bonus_accessoire = $this['accessoire']['effet']; else $bonus_accessoire = 0;
 				//if($this['accessoire']['id'] != '0' AND $this['accessoire']['type'] == 'regen_mp') $bonus_accessoire_mp = $this['accessoire']['effet']; else $bonus_accessoire_mp = 0;
 				$accessoire = $this->get_accessoire();
-				if($accessoire !== false)
+				if($accessoire != false)
 				{
 					switch($accessoire->type)
 					{
