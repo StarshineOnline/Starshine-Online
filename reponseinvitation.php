@@ -25,15 +25,20 @@ elseif ($W_reponse == 'oui')
 		echo 'Le groupe a atteint son maximum de membres.';
 	else
 	{
-		//Ajoute le membre au groupe
-		$groupe_joueur = new groupe_joueur(-1, $joueur->get_id(), $groupe->get_id(), 'n');
-		//echo $groupe_joueur;
-		$joueur->set_groupe($groupe->get_id());
-		
-		$invitation->supprimer();
-		$groupe_joueur->sauver();
-		$joueur->sauver();
-		echo 'Vous êtes maintenant membre du groupe !';
+		if(!$joueur->is_buff('debuff_groupe'))
+		{
+			//Ajoute le membre au groupe
+			$groupe_joueur = new groupe_joueur(-1, $joueur->get_id(), $groupe->get_id(), 'n');
+			//echo $groupe_joueur;
+			$joueur->set_groupe($groupe->get_id());
+			
+			$invitation->supprimer();
+			$groupe_joueur->sauver();
+			$joueur->sauver();
+			echo 'Vous êtes maintenant membre du groupe !';
+		}
+		else
+			echo "Vous êtes trop déprimé pour rejoindre un groupe. Pour le moment vous ne voulez parler à personne.";
 	}
 }
 ?>
