@@ -24,13 +24,16 @@ $R->get_diplo($joueur->get_race());
 <?php
 $check = false;
 if( $W_row['type'] == 1 )
+{
   $check = true;
+  include('ville_bas.php');
+}
 elseif( $batiment = verif_batiment($joueur->get_x(), $joueur->get_y(), $Trace[$joueur->get_race()]['numrace']) )
   $check = $batiment['type'] == 'bourg';
 $is_election = elections::is_mois_election($R->get_id());
 if( $check && $is_election )
 {
-	if(array_key_exists('type', $_POST))
+	if(array_key_exists('type', $_GET))
 	{
 		$election = elections::get_prochain_election($Trace[$joueur->get_race()]['numrace']);
 		$candidats = candidat::create(array('id_perso', 'id_election'), array($joueur->get_id(), $election[0]->get_id()));
@@ -42,13 +45,14 @@ if( $check && $is_election )
 			$candidat->set_nom($joueur->get_nom());
 			$candidat->set_royaume($Trace[$joueur->get_race()]['numrace']);
 			$candidat->set_id_election($election[0]->get_id());
-			$candidat->set_duree($_POST['duree']);
-			$candidat->set_type($_POST['type']);
-			$candidat->set_programme($_POST['programme']);
+			$candidat->set_duree(sSQL($_GET['duree']));
+			$candidat->set_type(sSQL($_GET['type']));
+			$candidat->set_programme(sSQL($_GET['programme']));
+			
 			$save = true;
-			if($_POST['ministre_economie'] != '')
+			if($_GET['ministre_economie'] != '')
 			{
-				$economie = perso::create(array('nom', 'race'), array($_POST['ministre_economie'], $joueur->get_race()));
+				$economie = perso::create(array('nom', 'race'), array(sSQL($_GET['ministre_economie']), $joueur->get_race()));
 				if(count($economie) == 1) $candidat->set_id_ministre_economie($economie[0]->get_id());
 				else
 				{
@@ -56,9 +60,9 @@ if( $check && $is_election )
 					$save = false;
 				}
 			}
-			if($_POST['ministre_militaire'] != '')
+			if($_GET['ministre_militaire'] != '')
 			{
-				$militaire = perso::create(array('nom', 'race'), array($_POST['ministre_militaire'], $joueur->get_race()));
+				$militaire = perso::create(array('nom', 'race'), array(sSQL($_GET['ministre_militaire']), $joueur->get_race()));
 				if(count($militaire) == 1) $candidat->set_id_ministre_militaire($militaire[0]->get_id());
 				else
 				{
@@ -83,7 +87,7 @@ if( $check && $is_election )
 	<h2>Candidature</h2>
 	<form method="post" action="candidature.php" id="formCandidature">
 		Programme électoral :<br />
-		<textarea style="width : 300px; height : 200px;" name="programme"></textarea><br />
+		<textarea style="width : 300px; height : 200px;" name="programme" id="programme"></textarea><br />
 		<br />
 		Ministre militaire : <input type="text" name="ministre_militaire" id="ministre_militaire" /><br />
 		Ministre économie : <input type="text" name="ministre_economie" id="ministre_economie" /><br />
@@ -100,7 +104,7 @@ if( $check && $is_election )
 			<option value="6">6 mois</option>
 			<option value="12">1 an</option>
 		</select>
-		<input type="submit" value="Me présenter à la prochaine élection" />
+		<input type="button" onclick="envoiInfo('candidature.php?programme='+encodeURIComponent($('#programme').val())+'&ministre_militaire='+encodeURIComponent($('#ministre_militaire').val())+'&ministre_economie='+encodeURIComponent($('#ministre_economie').val())+'&type='+encodeURIComponent($('#type').val())+'&duree='+encodeURIComponent($('#duree').val()), 'carte');" value="Me présenter à la prochaine élection" />
 	</form>
 	<?php
 	}	
