@@ -77,7 +77,6 @@ if($W_row['type'] == 1)
 				$db->query($requete);
 			}
 			$amende = recup_amende($joueur->get_id());
-			$joueur = recupperso($joueur->get_id());
 		}
 	}
 	if($amende)
