@@ -177,7 +177,7 @@ if($W_row['type'] == 1)
 					
 					if((array_key_exists("tri", $_GET) AND $_GET["tri"] == $arrayObjet["type"]) OR $all)
 					{
-						$objets_tab_new[$arrayObjet["id"]] = $arrayObjet;
+						$objets_tab_new[$arrayObjetsHotel["objet"]] = $arrayObjet;
 						$objets_tab[$arrayObjetsHotel["id"]] = $arrayObjetsHotel;
 						
 						$objet_id[] = $objet_info["id_objet"];
@@ -190,8 +190,8 @@ if($W_row['type'] == 1)
 			{
 				unset($objet_info);
 				$objet_info = decompose_objet($objets_tab[$id]["objet"]);
-				$objet = $objets_tab_new[$objet_info["id_objet"]];
-				
+				$objet = $objets_tab_new[$objet_info["id"]];
+
 				//Modification du nom des grimoires
 				if($objet_info['table_categorie'] == 'grimoire')
 				{
@@ -317,9 +317,9 @@ if($W_row['type'] == 1)
 											break;
 											
 						case "gemme" :
-						case "objet" :		$tmp_overlib .= "<ul><li>$tmp_stack ".description($objets_tab_new[$objet_info["id_objet"]]["description"], $objets_tab_new[$objet_info["id_objet"]])."</li></ul>";
+						case "objet" :		$tmp_overlib .= "<ul><li>$tmp_stack ".description($objets_tab_new[$objet_info["id"]]["description"], $objets_tab_new[$objet_info["id"]])."</li></ul>";
 											break;
-						case "grimoire" :		$tmp_overlib .= "<ul><li>$tmp_stack ".description_objet('l'.$objets_tab_new[$objet_info["id_objet"]]['id'])."</li></ul>";
+						case "grimoire" :		$tmp_overlib .= "<ul><li>$tmp_stack ".description_objet($objet_info["id"])."</li></ul>";
 											break;
 					}
 				}
