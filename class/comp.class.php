@@ -472,7 +472,7 @@ class fleche_poison extends comp_combat {
     $pot_def = $passif->get_volonte();
     $de_att = rand(0, $pot_att);
     $de_deff = rand(0, $pot_def);
-    $this->debug("Poison: dé de $pot_att doi être supérieur à dé de $pot_def");
+    $this->debug("Poison: dé de $pot_att doit être supérieur à dé de $pot_def");
     $this->debug("$de_att / $de_deff");
     if ($de_att > $de_deff) {
       $this->poison = true;

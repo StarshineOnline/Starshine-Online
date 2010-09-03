@@ -452,6 +452,10 @@ function attaque($acteur = 'attaquant', $competence, &$effects)
   	else
     {
 		echo '&nbsp;&nbsp;<span class="manque">'.$actif->get_nom().' manque la cible</span><br />';
+		
+		// On enleve les effets des comps qui ont raté
+		unset($actif->etat['fleche_poison_attaque']);
+		unset($actif->etat['fleche_debilitante_attaque']);
     }
   	if(array_key_exists('coup_mortel', $actif))
     {
