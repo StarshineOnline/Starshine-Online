@@ -164,7 +164,7 @@ function attaque($acteur = 'attaquant', $competence, &$effects)
 			{
 				$p_e = $passif->get_enchantement();
 				if(array_key_exists('blocage', $p_e)) $enchantement_blocage = 1 + ($p_e['blocage']['effet'] / 100); else $enchantement_blocage = 1;
-				if($actif->is_buff('buff_bouclier_sacre')) $buff_blocage = 1 + ($actif->get_buff('buff_bouclier_sacre', 'effet') / 100); else $buff_blocage = 1;
+				if($passif->is_buff('buff_bouclier_sacre')) $buff_blocage = 1 + ($passif->get_buff('buff_bouclier_sacre', 'effet') / 100); else $buff_blocage = 1;
 				if(array_key_exists('benediction', $passif->etat)) $buff_bene_blocage = 1 + (($passif->etat['benediction']['effet'] * $G_buff['bene_bouclier']) / 100); else $buff_bene_blocage = 1;
 				if(array_key_exists('a_c_bloque', $actif->etat)) $augmentation_chance_bloque = 1 + ($actif->etat['a_c_bloque']['effet'] / 100); else $augmentation_chance_bloque = 1;
 				if(array_key_exists('b_c_bloque', $actif->etat)) $baisse_chance_bloque = 1 + ($actif->etat['b_c_bloque']['effet'] / 100); else $baisse_chance_bloque = 1;
