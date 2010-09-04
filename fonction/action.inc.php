@@ -780,7 +780,7 @@ function lance_sort($id, $acteur, &$effects)
 					}
 				break;
 				case 'drain_vie' :
-					$degat = degat_magique(($actif->$get_comp_assoc() - 2), ($row['effet'] + $bonus_degats_magique), $actif, $passif);
+					$degat = degat_magique(($actif->$get_comp_assoc()), ($row['effet'] + $bonus_degats_magique), $actif, $passif);
 					if ($passif->get_type() == 'batiment') $drain = 0;
 					else $drain = round($degat * 0.3);
 					// Augmentation du nombre de HP récupérable par récupération
