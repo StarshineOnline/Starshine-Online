@@ -23,28 +23,28 @@ function creer_sujet_forum($titre, $msg, $forum, $posteur)
   global $G_prefixe_forum, $db_forum;
   
   // Nom du posteur
-  $requete = "SELECT username FROM ".$G_prefixe_forum."users WHERE id = $posteur";
+  $requete = 'SELECT username FROM '.$G_prefixe_forum.'users WHERE id = '.$posteur;
   $db_forum->query($requete);
   $row = $db_forum->read_assoc($req);
-  $nom = $row["username"];
+  $nom = $row['username'];
   
 	// Creation du sujet
 	$time = time();
-	$requete = "INSERT INTO ".$G_prefixe_forum."topics (poster, subject, posted, last_post, last_poster, forum_id) VALUES('$nom', '$titre', $time, $time, '$nom', $forum)";
+	$requete = 'INSERT INTO '.$G_prefixe_forum.'topics (poster, subject, posted, last_post, last_poster, forum_id) VALUES("'.mysql_escape_string($nom).'", "'.mysql_escape_string($titre).'", '.$time.', '.$time.', "'.mysql_escape_string($nom).'", '.$forum.')';
 	$db_forum->query($requete);
 	$id_sujet = $db_forum->last_insert_id();
 	
 	// Création du post
-	$requete = "INSERT INTO ".$G_prefixe_forum."posts (poster, poster_id, message, posted, topic_id) VALUES('$nom', $posteur, '$msg', $time, $id_sujet)";
+	$requete = 'INSERT INTO '.$G_prefixe_forum.'posts (poster, poster_id, message, posted, topic_id) VALUES("'.mysql_escape_string($nom).'", '.$posteur.', "'.mysql_escape_string($msg).'", '.$time.', '.$id_sujet.')';
 	$db_forum->query($requete);
 	$id_post = $db_forum->last_insert_id();
 	
 	// Ajout de l'id du dernier post au sujet
-	$requete = "UPDATE ".$G_prefixe_forum."topics SET last_post_id=$id_post, first_post_id=$id_post WHERE id=$id_sujet";
+	$requete = 'UPDATE '.$G_prefixe_forum.'topics SET last_post_id='.$id_post.', first_post_id='.$id_post.' WHERE id='.$id_sujet;
 	$db_forum->query($requete);
 	
 	// Incrémentation du nombre de posts
-	$requete = "UPDATE ".$G_prefixe_forum."users SET num_posts=num_posts+1, last_post=$time WHERE id=$posteur";
+	$requete = 'UPDATE '.$G_prefixe_forum.'users SET num_posts=num_posts+1, last_post='.$time.' WHERE id='.$posteur;
 	$db_forum->query($requete);
 }
  
