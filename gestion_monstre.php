@@ -18,7 +18,16 @@ if(array_key_exists('principale', $_GET))
 if(array_key_exists('supprimer', $_GET))
 {
 	$pet = new pet($_GET['supprimer']);
+	//Si c'est la créature principale que l'on supprime
+	if($pet->get_principale() == 1)
+		$new_principale = true;
 	$pet->supprimer();
+	if($new_principale)
+	{
+		$pets = $joueur->get_pets();
+		$joueur->set_pet_principale($pets[0]->get_id());
+		unset($pets);
+	}
 }
 if(array_key_exists('stop', $_GET))
 {
@@ -76,7 +85,7 @@ else
 	<div id="monstre_message"></div>
 	<legend>Mes créatures <?php echo $joueur->nb_pet().' / '.$joueur->get_max_pet(); ?></legend>
 <?php
-$pets = $joueur->get_pets();
+$pets = $joueur->get_pets(true);
 if(count($pets) > 0)
 {
 	foreach($pets as $pet)
