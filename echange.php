@@ -109,9 +109,12 @@ if(array_key_exists('valid_etape', $_GET))
 				$titre = $joueur->get_nom().' vous propose un échange';
 				$message = mysql_escape_string($joueur->get_nom().' vous propose un échange[br]
 				Pour voir ce qu\'il vous propose cliquez ici : [echange:'.$_GET['id_echange'].']');
-				$requete = "INSERT INTO message VALUES(NULL, ".$receveur->get_id().", ".$joueur->get_id().", '".$joueur->get_nom()."', '".$receveur->get_nom()."', '".$titre."', '".$message."', '', '".time()."', 0)";
-				$req = $db->query($requete);
-				//C'est ok
+				$id_groupe = 0;
+				$id_dest = 0;
+				$id_thread = 0;
+				$id_dest = $receveur->get_id();
+				$messagerie = new messagerie($joueur->get_id(), $joueur->get_groupe());
+				$messagerie->envoi_message($id_thread, $id_dest, $titre, $message, $id_groupe);
 				echo '<h6>Votre proposition a bien été envoyée</h6>';
 				
 				unset($echange);
@@ -129,7 +132,16 @@ if(array_key_exists('valid_etape', $_GET))
 			$requete = "UPDATE echange SET statut = 'finalisation' WHERE id_echange = '".sSQL($_GET['id_echange'], SSQL_INTEGER)."'";
 			if($db->query($requete))
 			{
-				//On envoi un message au gars <== a faire ==>
+				//On envoi un message au gars
+				$titre = $joueur->get_nom().' vous propose un échange';
+				$message = mysql_escape_string($joueur->get_nom().' vous propose un échange[br]
+				Pour voir ce qu\'il vous propose cliquez ici : [echange:'.$_GET['id_echange'].']');
+				$id_groupe = 0;
+				$id_dest = 0;
+				$id_thread = 0;
+				$id_dest = $j1->get_id();
+				$messagerie = new messagerie($joueur->get_id(), $joueur->get_groupe());
+				$messagerie->envoi_message($id_thread, $id_dest, $titre, $message, $id_groupe);
 				
 				//C'est ok
 				echo '<h6>Votre proposition a bien été envoyée</h6>';
@@ -150,6 +162,20 @@ if(array_key_exists('valid_etape', $_GET))
 			{
 				if(verif_echange(sSQL($_GET['id_echange'], SSQL_INTEGER), $j1->get_id(), $j2->get_id()))
 				{
+					//On compte les objets de chaque personne
+					$i = 0;
+					$nb_objet['j1'] = 0;
+					$nb_objet['j2'] = 0;
+					$count = count($echange['objet']);
+					while($i < $count)
+					{
+						if($j1->get_id() == $echange['objet'][$i]['id_j'])
+							$nb_objet['j1']++;
+						else
+							$nb_objet['j2']++;
+						$i++;
+					}
+					
 					$check = true;
 					//Vérification qu'ils ont bien assez de place
 					if($G_place_inventaire - count($j1->get_inventaire_slot_partie()) < ($nb_objet['j2'] - $nb_objet['j1']))
@@ -165,7 +191,6 @@ if(array_key_exists('valid_etape', $_GET))
 					
 					if($check)
 					{
-						
 						//On supprime tous les objets
 						$i = 0;
 						$count = count($echange['objet']);
@@ -211,7 +236,15 @@ if(array_key_exists('valid_etape', $_GET))
 						$requete = "UPDATE echange SET statut = 'fini' WHERE id_echange = '".sSQL($_GET['id_echange'], SSQL_INTEGER)."'";
 						if($db->query($requete))
 						{
-							//On envoi un message au gars <== a faire ==>
+							//On envoi un message au gars
+							$titre = 'Finalisation de l\'échange avec '.$joueur->get_nom();
+							$message = mysql_escape_string($joueur->get_nom().' a finalisé l\'échange');
+							$id_groupe = 0;
+							$id_dest = 0;
+							$id_thread = 0;
+							$id_dest = $j2->get_id();
+							$messagerie = new messagerie($joueur->get_id(), $joueur->get_groupe());
+							$messagerie->envoi_message($id_thread, $id_dest, $titre, $message, $id_groupe);		
 							
 							//C'est ok
 							echo '<h6>L\'échange s\'est déroulé avec succès</h6>';
