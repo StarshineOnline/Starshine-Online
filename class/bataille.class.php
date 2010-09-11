@@ -81,7 +81,7 @@ class bataille
 			$requete .= $this->id_royaume.', '.$this->x.', '.$this->y.', "'.$this->nom.'", "'.$this->description.'", '.$this->etat.', '.$this->debut.', '.$this->fin.')';
 			$db->query($requete);
 			//Récuperation du dernier ID inséré.
-			list($this->id) = $db->last_insert_id();
+			$this->id = $db->last_insert_id();
 		}
 	}
 	
@@ -100,7 +100,7 @@ class bataille
 			}
 			$in = implode(',', $groupes);
 			//On efface tous les etats qui correspondent à ces messages
-			$requete = "DELETE FROM bataille_groupe WHERE id_groupe IN (".$in.")";
+			$requete = "DELETE FROM bataille_groupe WHERE id IN (".$in.")";
 			$db->query($requete);
 			//On récupère tous les repères associés et on les suppriment
 			$requete = "SELECT id FROM bataille_repere WHERE id_bataille = ".$this->id;
@@ -111,7 +111,7 @@ class bataille
 			}
 			$in = implode(',', $reperes);
 			//On efface tous les etats qui correspondent à ces messages
-			$requete = "DELETE FROM bataille_repere WHERE id_repere IN (".$in.")";
+			$requete = "DELETE FROM bataille_repere WHERE id IN (".$in.")";
 			$db->query($requete);
 			//On supprime tous les repère_groupe associés
 			$requete = "DELETE FROM bataille_groupe_repere WHERE id_repere IN (".$in.")";
@@ -134,7 +134,7 @@ class bataille
 		global $db;
 		$this->groupes = array();
 
-		$requete = "SELECT id, id_bataille, id_groupe FROM bataille_groupe WHERE id_bataille = ".$this->id;
+		$requete = "SELECT id, id_bataille, id_groupe, id_thread FROM bataille_groupe WHERE id_bataille = ".$this->id;
 		$req = $db->query($requete);
 		while($row = $db->read_assoc($req))
 		{

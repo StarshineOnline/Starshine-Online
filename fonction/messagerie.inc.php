@@ -29,6 +29,8 @@ function transform_texte($texte)
 	$texte = str_replace("[/color]", "</span>", $texte);
 	//Lien vers échange
 	$texte = preg_replace("`\[echange:([^[]*)\]`i", "<a href=\"echange.php?id_echange=\\1\" onclick=\"return envoiInfo(this.href, 'information')\">Echange ID : \\1</a>", $texte);
+	// Lien vers bataille
+	$texte = preg_replace("`\[bataille:([^[]*)\]`i", "<a href=\"groupe_bataille.php\" onclick=\"return envoiInfo(this.href, 'information')\">Bataille : \\1</a>", $texte);
 	return $texte;
 }
 

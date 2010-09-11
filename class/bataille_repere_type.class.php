@@ -87,5 +87,10 @@ class bataille_repere_type
 	{
 		return $this->id;
 	}
+	
+	function get_nom()
+	{
+		return $this->nom;
+	}
 }
 ?>

@@ -7,6 +7,7 @@ class bataille_groupe
 	public $id;
 	public $id_bataille;
 	public $id_groupe;
+	public $id_thread;
 
 	/**	
 		*	Constructeur permettant la création d'un repère de bataille.
@@ -16,17 +17,18 @@ class bataille_groupe
 		*		-bataille_groupe($id) qui va chercher l'etat dont l'id est $id
 		*		-bataille_groupe($array) qui associe les champs de $array à l'objet.
 	**/
-	function __construct($id = 0, $id_bataille = 0, $id_groupe = 0)
+	function __construct($id = 0, $id_bataille = 0, $id_groupe = 0, $id_thread = 0)
 	{
 		global $db;
 		//Verification du nombre et du type d'argument pour construire l'etat adequat.
 		if( (func_num_args() == 1) && is_numeric($id) )
 		{
-			$requeteSQL = $db->query('SELECT id_bataille, id_groupe FROM bataille_groupe WHERE id = '.$id);
+			$requeteSQL = $db->query('SELECT id_bataille, id_groupe, id_thread FROM bataille_groupe WHERE id = '.$id);
 			//Si le thread est dans la base, on le charge sinon on crée un thread vide.
 			if( $db->num_rows($requeteSQL) > 0 )
 			{
-				list($this->id_bataille, $this->id_groupe) = $db->read_row($requeteSQL);
+				list($this->id_bataille, $this->id_groupe, $this->id_thread) = $db->read_row($requeteSQL);
+				
 			}
 			else
 				$this->__construct();
@@ -37,11 +39,25 @@ class bataille_groupe
 			$this->id = $id['id'];
 			$this->id_bataille = $id['id_bataille'];
 			$this->id_groupe = $id['id_groupe'];
+			$this->id_thread = $id['id_thread'];
+		}
+		elseif ($id == 0 AND $id_bataille == 0 AND is_numeric($id_groupe))
+		{
+			$requeteSQL = $db->query('SELECT bataille_groupe.id, id_bataille, id_thread, bataille.id, bataille.etat FROM bataille_groupe LEFT JOIN bataille ON bataille_groupe.id_bataille = bataille.id WHERE id_groupe = '.$id_groupe.' AND bataille.etat != 2');
+			//Si le thread est dans la base, on le charge sinon on crée un thread vide.
+			if( $db->num_rows($requeteSQL) > 0 )
+			{
+				list($this->id, $this->id_bataille, $this->id_thread) = $db->read_row($requeteSQL);
+			}
+			else
+				$this->__construct();
+			$this->id_groupe = $id_groupe;
 		}
 		else
 		{
 			$this->id_bataille = $id_bataille;
 			$this->id_groupe = $id_groupe;
+			$this->id_thread = $id_thread;
 			$this->id = $id;
 		}		
 	}
@@ -53,14 +69,14 @@ class bataille_groupe
 		if( $this->id > 0 )
 		{
 			$requete = 'UPDATE bataille_groupe SET ';
-			$requete .= 'id_bataille = '.$this->id_bataille.', id_groupe = '.$this->id_groupe;
+			$requete .= 'id_bataille = '.$this->id_bataille.', id_groupe = '.$this->id_groupe.', id_thread = '.$this->id_thread;
 			$requete .= ' WHERE id = '.$this->id;
 			$db->query($requete);
 		}
 		else
 		{
-			$requete = 'INSERT INTO bataille_groupe (id_bataille, id_groupe) VALUES(';
-			$requete .= $this->id_bataille.', '.$this->id_groupe.')';
+			$requete = 'INSERT INTO bataille_groupe (id_bataille, id_groupe, id_thread) VALUES(';
+			$requete .= $this->id_bataille.', '.$this->id_groupe.', '.$this->id_thread.')';
 			$db->query($requete);
 			//Récuperation du dernier ID inséré.
 			list($this->id) = $db->last_insert_id();
@@ -108,6 +124,20 @@ class bataille_groupe
 			$this->nom =$row['nom'];
 		}
 		return $this->nom;
+	}
+	
+	function is_bataille()
+	{
+		if($this->id_bataille > 0)
+		{
+			$bataille = new bataille($this->id_bataille);
+			if($bataille->etat == 2) // La bataille est finie
+				return false;
+			else
+				return true;
+		}
+		else
+			return false;
 	}
 }
 ?>

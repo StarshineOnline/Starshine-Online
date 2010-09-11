@@ -7,7 +7,7 @@ include_once(root.'inc/fp.php');
 include_once(root.'fonction/messagerie.inc.php');
 $joueur = new perso($_SESSION['ID']);
 $R = get_royaume_info($joueur->get_race(), $Trace[$joueur->get_race()]['numrace']);
-function affiche_bataille_groupe($bataille, $leader = true)
+function affiche_bataille_groupe($bataille, $leader = false)
 {
 	global $joueur;
 	?>
@@ -20,7 +20,8 @@ function affiche_bataille_groupe($bataille, $leader = true)
 	if($bataille->is_groupe_in($joueur->get_groupe()))
 	{
 		$bataille->get_reperes();
-		echo 'Vous participez à cette bataille<br />';
+		echo 'Vous participez à cette bataille<br /><br />';
+		echo 'Liste des missions :<br />';
 		foreach($bataille->reperes as $repere)
 		{
 			if($repere_groupe = $repere->get_groupe($joueur->get_groupe()))
@@ -34,7 +35,7 @@ function affiche_bataille_groupe($bataille, $leader = true)
 				{
 					$accepter = '';
 				}
-				if(($repere_groupe->accepter == 0 AND $leader) OR $repere_groupe->accepter == 1) echo $repere->repere_type->nom.' en '.$repere->x.' / '.$repere->y.$accepter;
+				if(($repere_groupe->accepter == 0 AND $leader) OR $repere_groupe->accepter == 1) echo $repere->repere_type->nom.' en '.$repere->x.' / '.$repere->y.$accepter.'<br />';
 			}
 		}
 	}
@@ -75,9 +76,9 @@ if(array_key_exists('affiche_bataille', $_GET))
 }
 else
 {
-	//Si c'est le chef de groupe
+	/*//Si c'est le chef de groupe
 	if($groupe['id_leader'] == $joueur->get_id())
-	{
+	{*/
 		$bataille_royaume = new bataille_royaume($Trace[$joueur->get_race()]['numrace']);
 		$bataille_royaume->get_batailles();
 		
@@ -88,7 +89,11 @@ else
 			$bataille_groupe->id_bataille = $_GET['id_bataille'];
 			$bataille_groupe->id_groupe = $joueur->get_groupe();
 			$bataille_groupe->sauver();
-			affiche_bataille_groupe($bataille);
+			//Si c'est le chef de groupe
+			if($groupe['id_leader'] == $joueur->get_id())
+				affiche_bataille_groupe($bataille, true);
+			else
+				affiche_bataille_groupe($bataille);
 		}
 		elseif(array_key_exists('accepter', $_GET))
 		{
@@ -105,14 +110,17 @@ else
 					?>
 					<div id="bataille_<?php echo $bataille->id; ?>">
 					<?php
-						affiche_bataille_groupe($bataille);
+						if($groupe['id_leader'] == $joueur->get_id())
+							affiche_bataille_groupe($bataille, true);
+						else
+							affiche_bataille_groupe($bataille);
 					?>
 					</div>
 					<?php
 				}
 			}
 		}
-	}
+	/*}
 	//On affiche uniquement les bataille auquel le groupe participe
 	else
 	{
@@ -123,6 +131,6 @@ else
 			$bataille = new bataille($row['id_bataille']);
 			affiche_bataille_groupe($bataille);
 		}
-	}
+	}*/
 }
 ?>

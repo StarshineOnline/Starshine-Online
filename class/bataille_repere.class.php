@@ -116,6 +116,7 @@ class bataille_repere
 			$row = $db->read_assoc($req);
 			$this->repere_type = new batiment($row);
 		}
+		return $this->type;
 	}
 
 	function get_groupes()

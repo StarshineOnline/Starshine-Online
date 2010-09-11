@@ -580,7 +580,7 @@ class map
 		}
 	}
 
-	function get_joueur($race = 'neutre', $all = false)
+	function get_joueur($race = 'neutre', $all = false, $race_only = false)
 	{
 		global $db;
 		global $Tclasse;
@@ -614,49 +614,56 @@ class map
 			$joueurs = 0;
 			while($objJoueurs = $db->read_object($RqJoueurs))
 			{
-				$joueurs = count($this->map[$objJoueurs->x][$objJoueurs->y]["Joueurs"]);
-
-				$image = "";
-				$this->map[$objJoueurs->x][$objJoueurs->y]["Joueurs"][$joueurs]["id"] = $objJoueurs->id;
-				$this->map[$objJoueurs->x][$objJoueurs->y]["Joueurs"][$joueurs]["nom"] = htmlspecialchars($objJoueurs->nom);
-				$this->map[$objJoueurs->x][$objJoueurs->y]["Joueurs"][$joueurs]["level"] = $objJoueurs->level;
-				$this->map[$objJoueurs->x][$objJoueurs->y]["Joueurs"][$joueurs]["race"] = $Gtrad[$objJoueurs->race];
-				$this->map[$objJoueurs->x][$objJoueurs->y]["Joueurs"][$joueurs]["classe"] = $objJoueurs->classe;
-				if($all)
+				if($race_only AND $objJoueurs->race != $race)
 				{
-					$this->map[$objJoueurs->x][$objJoueurs->y]["Joueurs"][$joueurs]["hp"] = $objJoueurs->hp;
-					$this->map[$objJoueurs->x][$objJoueurs->y]["Joueurs"][$joueurs]["hp_max"] = floor($objJoueurs->hp_max);
-					$this->map[$objJoueurs->x][$objJoueurs->y]["Joueurs"][$joueurs]["mp"] = $objJoueurs->mp;
-					$this->map[$objJoueurs->x][$objJoueurs->y]["Joueurs"][$joueurs]["mp_max"] = floor($objJoueurs->mp_max);
-					$this->map[$objJoueurs->x][$objJoueurs->y]["Joueurs"][$joueurs]["pa"] = $objJoueurs->pa;
+				
 				}
-				{//-- Vérification des bonus liés au points shine
-					//Si c'est pas lui même
-					if($objJoueurs->id != $_SESSION['id'])
+				else
+				{
+					$joueurs = count($this->map[$objJoueurs->x][$objJoueurs->y]["Joueurs"]);
+
+					$image = "";
+					$this->map[$objJoueurs->x][$objJoueurs->y]["Joueurs"][$joueurs]["id"] = $objJoueurs->id;
+					$this->map[$objJoueurs->x][$objJoueurs->y]["Joueurs"][$joueurs]["nom"] = htmlspecialchars($objJoueurs->nom);
+					$this->map[$objJoueurs->x][$objJoueurs->y]["Joueurs"][$joueurs]["level"] = $objJoueurs->level;
+					$this->map[$objJoueurs->x][$objJoueurs->y]["Joueurs"][$joueurs]["race"] = $Gtrad[$objJoueurs->race];
+					$this->map[$objJoueurs->x][$objJoueurs->y]["Joueurs"][$joueurs]["classe"] = $objJoueurs->classe;
+					if($all)
 					{
-						if($objJoueurs->cache_classe == 2)	{ $this->map[$objJoueurs->x][$objJoueurs->y]["Joueurs"][$joueurs]["classe"] = "combattant"; }
-						elseif($objJoueurs->cache_classe == 1 && $objJoueurs->race != $race) { $this->map[$objJoueurs->x][$objJoueurs->y]["Joueurs"][$joueurs]["classe"] = "combattant"; }
-						if($objJoueurs->cache_niveau == 2)	{ $this->map[$objJoueurs->x][$objJoueurs->y]["Joueurs"][$joueurs]["level"] = "xxx"; }
-						elseif($objJoueurs->cache_niveau == 1 && $objJoueurs->race != $race) { $this->map[$objJoueurs->x][$objJoueurs->y]["Joueurs"][$joueurs]["level"] = "xxx"; }
+						$this->map[$objJoueurs->x][$objJoueurs->y]["Joueurs"][$joueurs]["hp"] = $objJoueurs->hp;
+						$this->map[$objJoueurs->x][$objJoueurs->y]["Joueurs"][$joueurs]["hp_max"] = floor($objJoueurs->hp_max);
+						$this->map[$objJoueurs->x][$objJoueurs->y]["Joueurs"][$joueurs]["mp"] = $objJoueurs->mp;
+						$this->map[$objJoueurs->x][$objJoueurs->y]["Joueurs"][$joueurs]["mp_max"] = floor($objJoueurs->mp_max);
+						$this->map[$objJoueurs->x][$objJoueurs->y]["Joueurs"][$joueurs]["pa"] = $objJoueurs->pa;
 					}
+					{//-- Vérification des bonus liés au points shine
+						//Si c'est pas lui même
+						if($objJoueurs->id != $_SESSION['id'])
+						{
+							if($objJoueurs->cache_classe == 2)	{ $this->map[$objJoueurs->x][$objJoueurs->y]["Joueurs"][$joueurs]["classe"] = "combattant"; }
+							elseif($objJoueurs->cache_classe == 1 && $objJoueurs->race != $race) { $this->map[$objJoueurs->x][$objJoueurs->y]["Joueurs"][$joueurs]["classe"] = "combattant"; }
+							if($objJoueurs->cache_niveau == 2)	{ $this->map[$objJoueurs->x][$objJoueurs->y]["Joueurs"][$joueurs]["level"] = "xxx"; }
+							elseif($objJoueurs->cache_niveau == 1 && $objJoueurs->race != $race) { $this->map[$objJoueurs->x][$objJoueurs->y]["Joueurs"][$joueurs]["level"] = "xxx"; }
+						}
+					}
+					{//-- Vérification que l'image de classe existe ($Tclasse est contenue dans ./inc/classe.inc.php)
+						$classe = $this->map[$objJoueurs->x][$objJoueurs->y]["Joueurs"][$joueurs]["classe"];
+						if($this->resolution == 'low')
+						{
+							$image = $this->root."image/personnage_low/".$objJoueurs->race."/".$objJoueurs->race;
+						}
+						else
+						{
+							$image = $this->root."image/personnage/".$objJoueurs->race."/".$objJoueurs->race;
+						}
+						if(file_exists($image."_".$Tclasse[$classe]["type"].".png")) 		{ $image .= "_".$Tclasse[$classe]["type"].".png"; }
+						elseif(file_exists($image."_".$Tclasse[$classe]["type"].".gif")) 	{ $image .= "_".$Tclasse[$classe]["type"].".gif"; }
+						elseif(file_exists($image.".png")) 									{ $image .= ".png"; }
+						elseif(file_exists($image.".gif"))  								{ $image .= ".gif"; }
+						else 																{ $image = ""; } //-- Si aucun des fichiers n'existe autant rien mettre...
+					}			
+					$this->map[$objJoueurs->x][$objJoueurs->y]["Joueurs"][$joueurs]["image"] = $image;
 				}
-				{//-- Vérification que l'image de classe existe ($Tclasse est contenue dans ./inc/classe.inc.php)
-					$classe = $this->map[$objJoueurs->x][$objJoueurs->y]["Joueurs"][$joueurs]["classe"];
-					if($this->resolution == 'low')
-					{
-						$image = $this->root."image/personnage_low/".$objJoueurs->race."/".$objJoueurs->race;
-					}
-					else
-					{
-						$image = $this->root."image/personnage/".$objJoueurs->race."/".$objJoueurs->race;
-					}
-					if(file_exists($image."_".$Tclasse[$classe]["type"].".png")) 		{ $image .= "_".$Tclasse[$classe]["type"].".png"; }
-					elseif(file_exists($image."_".$Tclasse[$classe]["type"].".gif")) 	{ $image .= "_".$Tclasse[$classe]["type"].".gif"; }
-					elseif(file_exists($image.".png")) 									{ $image .= ".png"; }
-					elseif(file_exists($image.".gif"))  								{ $image .= ".gif"; }
-					else 																{ $image = ""; } //-- Si aucun des fichiers n'existe autant rien mettre...
-				}			
-				$this->map[$objJoueurs->x][$objJoueurs->y]["Joueurs"][$joueurs]["image"] = $image;
 			}
 		}
 	}
@@ -887,8 +894,8 @@ class map
 			$rep = count($this->map[$repere->x][$repere->y]["Batiments_ennemi"]);
 			$repere->get_type();
 			$this->map[$repere->x][$repere->y]["Batiments_ennemi"][$rep]["id_batiment"] = $repere->id_batiment;
-			$this->map[$repere->x][$repere->y]["Batiments_ennemi"][$rep]["nom"] = $repere->repere_type->nom;
-			$this->map[$repere->x][$repere->y]["Batiments_ennemi"][$rep]["image"] = $repere->repere_type->get_image($this->root, $this->resolution);
+			$this->map[$repere->x][$repere->y]["Batiments_ennemi"][$rep]["nom"] = $repere->repere_type->get_nom();
+			$this->map[$repere->x][$repere->y]["Batiments_ennemi"][$rep]["image"] = $repere->repere_type->get_image_full($this->root, $this->resolution);
 		}
 	}
 

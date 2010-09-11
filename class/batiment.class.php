@@ -916,7 +916,7 @@ class batiment
 	}
 
 //fonction
-	/*function get_image($root, $resolution = 'high')
+	function get_image_full($root, $resolution = 'high')
 	{
 		if($resolution != 'high') $image = $root."image/batiment_low/";
 		else $image = $root."image/batiment/";
@@ -925,7 +925,7 @@ class batiment
 		elseif(file_exists($image.$this->image."_04.gif")) 	{ $image .= $this->image."_04.gif"; }
 		else 														{ $image = ""; } //-- Si aucun des fichiers n'existe autant rien mettre...
 		return $image;
-	}*/
+	}
 
 	function get_suivant()
 	{

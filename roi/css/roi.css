@@ -198,7 +198,33 @@ width:16px;}
 #bataille_new select 				{float:left;border : 1px solid #CCC;-moz-border-radius: 5px;-webkit-border-radius:5px;width:310px;}
 #bataille_new .select				{background-image : url('../../image/icone/valider.png') ;background-position:right center;background-repeat:no-repeat;}
 
+#info_bataille  						{float:left;width:450px;}
+#info_bataille ul li 				{clear:both;padding-left:4px; -moz-border-radius: 10px; -webkit-border-radius:10px;}
+#info_bataille ul li:hover			{background-color:#C5D4EF;-moz-border-radius: 10px;}
+#info_bataille fieldset 				{-moz-border-radius: 10px;}
+#info_bataille label					{width:200px;}
+#info_bataille input 				{border : 1px solid #CCC;-moz-border-radius: 5px; -webkit-border-radius:5px;width:50px;}
+#info_bataille textarea 				{border : 1px solid #CCC;-moz-border-radius: 5px;-webkit-border-radius:5px;width:310px;}
+#info_bataille select 				{border : 1px solid #CCC;-moz-border-radius: 5px;-webkit-border-radius:5px;width:310px;}
+#info_bataille .select				{background-image : url('../../image/icone/valider.png') ;background-position:right center;background-repeat:no-repeat;}
+
 #move_map_menu input 				{float:left;border : 1px solid #CCC;-moz-border-radius: 5px;-webkit-border-radius:5px;width:310px;}
 
 #choix_bataille						{float:left;margin-left:30px;}
 #rose 								{float:left;margin-left:5px;}
+
+/*-- Overlib ----------------------------------------------------------*/
+.overlib, #cluetip { background:transparent url(../image/interface/1.png) center; border:1px solid #000000; -moz-border-radius:5px; -webkit-border-radius:5px; border-radius: 5px; min-width:250px; }
+.overlib ul, #cluetip ul { clear:both; position:relative; }
+.overlib_titres { text-align:center; font-weight:bold; color:black; }
+.overlib_batiments span { font-weight:bold; color:black; }
+.overlib_joueurs span { font-weight:bold; color:#6633FF; }
+.overlib_monstres span { font-weight:bold; color:#CC3300; }
+.overlib_infos { clear:both; font-size:7pt; font-style:italic; color:black; margin-top:10px; text-align:center; }
+.overlib_img_objet { position:absolute; left:-5px; top:-2px; width:50px; height:55px; background-position:center center; background-repeat:no-repeat; }
+.overlib_nom_objet { float:right; width:200px; font-style:italic; }
+.overlib_desc_objet { float:right; width:200px; }
+.overlib_desc_objet span { float:left; width:75px; }
+#cluetip {padding : 5px;}
+#cluetip a {color : #444; text-decoration : none;}
+#cluetip a:hover {color : #888;}
