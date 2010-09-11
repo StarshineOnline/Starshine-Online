@@ -780,7 +780,7 @@ function lance_sort($id, $acteur, &$effects)
 					}
 				break;
 				case 'drain_vie' :
-					$degat = degat_magique(($actif->$get_comp_assoc()), ($row['effet'] + $bonus_degats_magique), $actif, $passif);
+					$degat = degat_magique(($actif->$get_comp_assoc() - 2), ($row['effet'] + $bonus_degats_magique), $actif, $passif);
 					if ($passif->get_type() == 'batiment') $drain = 0;
 					else $drain = round($degat * 0.3);
 					// Augmentation du nombre de HP récupérable par récupération
@@ -895,15 +895,13 @@ function lance_sort($id, $acteur, &$effects)
 					if (array_key_exists('bouclier_protecteur', $passif->etat)) $pm = $pm + ($passif->etat['bouclier_protecteur']['effet'] * $passif->get_bouclier_degat());
 
 					$pm = pow($passif->get_volonte(), 1.83) * sqrt($pm) * 3;
-					// Bottes en peau de Basilic, quick'n dirty
-					if ($passif->get_type() == 'joueur')
-					{
-						$inventaire = $passif->get_inventaire();
-						if (is_string($inventaire)) // Parfois? sérialisé, on déserialise
-							$inventaire = unserialize($inventaire);
-						if ($inventaire->chaussure == "p112")
-							$pm *= 2;
+
+					// Bonus de protection contre la paralysie
+					if ($res_para = $passif->get_bonus_permanents('resistance_para')) {
+						print_debug("Ajuste la resistance à la paralysie de $res_para%");
+						$pm *= 1 + $res_para / 100;
 					}
+
 					// Lancer des dés
 					$att = rand(0, $sm);
 					$def = rand(0, $pm);

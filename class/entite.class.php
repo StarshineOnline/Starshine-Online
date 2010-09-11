@@ -900,5 +900,19 @@ class entite extends placable
 		return false;
 	}
 
+	function get_effets_permanents(&$effets, $mode)
+	{
+		if ($this->type == 'joueur')
+			return $this->objet_ref->get_effets_permanents($effets, $mode);
+	}
+
+	function get_bonus_permanents($bonus)
+	{
+		if ($this->type == 'joueur')
+			return $this->objet_ref->get_bonus_permanents($bonus);
+		else
+			return 0;
+	}
+
 }
 ?>

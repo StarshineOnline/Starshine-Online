@@ -2541,11 +2541,14 @@ class perso extends entite
 						$this->pp += $row[0];
 						$this->pm += $row[1];
 						// Effets magiques
-						$effet = explode(';', $row[2]);
-						foreach($effet as $eff)
+						if ($row[2] != '')
 						{
-							$explode = explode('-', $eff);
-							$this->register_item_effet($explode[0], $explode[1]);
+							$effet = explode(';', $row[2]);
+							foreach($effet as $eff)
+							{
+								$explode = explode('-', $eff);
+								$this->register_item_effet($explode[0], $explode[1]);
+							}
 						}
 					}
 					// Gemmes
@@ -2603,6 +2606,9 @@ class perso extends entite
 				break;
 			case 5:
 				$this->add_bonus_permanents('volonte', $effet);
+				break;
+			case 6:
+				$this->add_bonus_permanents('resistance_para', $effet);
 				break;
 			case 7:
 				$this->add_bonus_permanents('dexterite', $effet);
