@@ -32,7 +32,7 @@ include_once(root.'haut_site.php');
 include_once(root.'admin/menu_admin.php');
 echo '<div style="margin-left: 200px">';
 
-$requete = 'select nom from perso';
+$requete = 'select nom,race from perso';
 if (!$is_admin) {
 	$p = array();
 	foreach ($pnjs as $pp) $p[] = '\''.sSQL($pp).'\'';
@@ -41,9 +41,9 @@ if (!$is_admin) {
 }
 $req = $db->query($requete);
 
-echo '<table id="perso"><thead><tr><th>Nom</th></tr></thead><tbody>';
+echo '<table id="perso"><thead><tr><th>Nom</th><th>Race</th></tr></thead><tbody>';
 while ($row = $db->read_object($req)) {
-	echo "<tr><td><a href=\"?controle=$row->nom\">$row->nom</td></tr>\n";
+	echo "<tr><td><a href=\"?controle=$row->nom\">$row->nom</td><td>$row->race</td></tr>\n";
 }
 echo '</tbody></table>';
 print_js_onload('$("#perso").dataTable({"sPaginationType": "full_numbers"});');

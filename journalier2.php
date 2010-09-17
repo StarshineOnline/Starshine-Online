@@ -16,7 +16,7 @@ include_once('journalier2-stats.php');
 include_once('journalier2-royaumes.php');
 
 // Géneration stats
-echo "Création des images statistiques<br />";
+echo "Création des images statistiques\n";
 require_once('stats/stat_lvl.php');
 require_once('stats/stat_race.php');
 require_once('stats/stat_classe.php');
@@ -25,7 +25,7 @@ require_once('stats/stat_classe.php');
 include_once('journalier2-map-monde.php');
 
 // Cartes des royaumes
-include_once('journalier2-map-royames.php');
+include_once('journalier2-map-royaumes.php');
 
 // Carte de la densité mobs
 include_once('journalier2-map-mobs.php');

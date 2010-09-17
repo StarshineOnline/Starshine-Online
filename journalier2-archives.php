@@ -7,7 +7,7 @@ include_once('journalier2-head.php');
 
 // Mise en archive de la population de chaque royaume
 $mail .= "\nJoueur et Stars de chaque royaume\n\n";
-echo 'Mise en archive des stars et population de chaque royaume<br />';
+echo "Mise en archive des stars et population de chaque royaume\n";
 /**
  * Stats à mémoriser pour chaque race.
  * Tableau bi-dimensionnel, la première clé est la race, la deuxième un indice indexant

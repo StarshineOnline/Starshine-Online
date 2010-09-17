@@ -5,7 +5,7 @@ if (isset($_SERVER['REMOTE_ADDR'])) die('Forbidden connection from '.$_SERVER['R
 
 include_once('journalier2-head.php');
 
-echo 'Création de l\'image de la carte du monde<br />';
+echo "Création de l'image de la carte du monde\n";
 $im = imagecreate (CARTE_WIDTH, CARTE_HEIGHT)
    or die ("Impossible d'initialiser la bibliothèque GD");
 $background_color = imagecolorallocate ($im, 255, 255, 255);

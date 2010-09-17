@@ -5,13 +5,13 @@ if (isset($_SERVER['REMOTE_ADDR'])) die('Forbidden connection from '.$_SERVER['R
 
 include_once('journalier2-head.php');
 
-echo 'Création du dossier '.$date.'<br />';
+echo 'Création du dossier '.$date."\n";
 if(mkdir('image/stat/'.$date, 0777))
-  echo 'Répertoire '.$date.' créé<br />';
+  echo 'Répertoire '.$date." créé\n";
 else
-  echo 'Le répertoire '.$date.' existe déjà<br />';
+  echo 'Le répertoire '.$date." existe déjà\n";
 
-echo 'Déplacement des anciennes images dans le nouveau dossier<br />';
+echo "Déplacement des anciennes images dans le nouveau dossier\n";
 copy('image/carte.png', 'image/stat/'.$date.'/carte.png');
 copy('image/carte_royaume.png', 'image/stat/'.$date.'/carte_royaume.png');
 copy('image/carte_densite_mob.png', 'image/stat/'.$date.'/carte_densite_mob.png');

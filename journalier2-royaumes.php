@@ -23,10 +23,10 @@ if ($moyenne_niveau < 1)                // les escaliers, il faut qu'une race
 //On récupère le nombre d'habitants très actifs suivant le niveau moyen
 if ($moyenne_niveau > 3)
 {
-	echo "Niveau de référence pour l'entretien: 4\n<br />";
+	echo "Niveau de référence pour l'entretien: 4\n\n";
 	$requete = "SELECT race, COUNT(*) as tot FROM perso WHERE level > 3 AND dernier_connexion > $semaine GROUP BY race";
 } else {
-	echo "Niveau de référence pour l'entretien: $moyenne_niveau\n<br />";
+	echo "Niveau de référence pour l'entretien: $moyenne_niveau\n\n";
 	$requete = "SELECT race, COUNT(*) as tot FROM perso WHERE level > $moyenne_niveau AND dernier_connexion > $semaine GROUP BY race";
 }
 $req = $db->query($requete);
@@ -90,7 +90,7 @@ foreach($royaumes as $royaume)
 //PHASE 2, entretien des batiments externes
 //On récupère les couts d'entretiens
 $requete = "SELECT *, construction.id AS id_const, batiment.hp AS hp_m, construction.hp AS hp_c FROM batiment RIGHT JOIN construction ON construction.id_batiment = batiment.id ORDER by royaume ASC";
-echo $requete.'<br />';
+echo $requete."\n";
 $req = $db->query($requete);
 while($row = $db->read_assoc($req))
 {

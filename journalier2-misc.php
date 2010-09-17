@@ -9,7 +9,7 @@ $mail .= "\nStars pour les nouveaux joueurs\n\n";
 //Calcul des stars pour nouveau joueur
 $count = count($tableau_race);
 print_r($tableau_race);
-echo "<br />";
+echo "\n";
 $keys = array_keys($tableau_race);
 $i = 0;
 while($i < $count)
@@ -31,6 +31,6 @@ while($i < $count)
 	}
 	$i++;
 }
-echo "<br />";
+echo "\n";
 
 ?>
