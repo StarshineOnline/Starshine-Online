@@ -800,6 +800,31 @@
   		while($row = $db->read_assoc($req))
   		{
   			$overlib = $row['description'];
+			// On calcul combien le royaume peut acheter au max
+			$max = 0;
+			if ($royaume->get_star()>$row['prix'] AND 
+			$royaume->get_pierre()>$row['pierre'] AND
+			$royaume->get_bois()>$row['bois'] AND
+			$royaume->get_eau()>$row['eau'] AND
+			$royaume->get_sable()>$row['sable'] AND
+			$royaume->get_charbon()>$row['charbon'] AND
+			$royaume->get_essence()>$row['essence'])
+			{
+				if($row['prix'] != 0)
+					$max = floor($royaume->get_star()/$row['prix']);
+				if($row['pierre'] != 0 AND floor($royaume->get_pierre()/$row['pierre']) < $max)
+					$max = floor($royaume->get_pierre()/$row['pierre']);
+				if($row['bois'] != 0  AND floor($royaume->get_bois()/$row['bois']) < $max)
+					$max = floor($royaume->get_bois()/$row['bois']);
+				if($row['eau'] != 0  AND floor($royaume->get_eau()/$row['eau']) < $max)
+					$max = floor($royaume->get_eau()/$row['eau']);
+				if($row['sable'] != 0  AND floor($royaume->get_sable()/$row['sable']) < $max)
+					$max = floor($royaume->get_sable()/$row['sable']);
+				if($row['charbon'] != 0  AND floor($royaume->get_charbon()/$row['charbon']) < $max)
+					$max = floor($royaume->get_charbon()/$row['charbon']);
+				if($row['essence'] != 0  AND floor($royaume->get_essence()/$row['essence']) < $max)
+					$max = floor($royaume->get_essence()/$row['essence']);
+			}
   
   			echo "<li class='$boutique_class'>
   				<span class='boutique_nom'>".$row['nom']."</span>
@@ -810,7 +835,7 @@
   				<span class='boutique_sable' title='Cout en sable'"; if ($royaume->get_sable()<$row['sable']){echo " style='font-style: italic;color:#BF0008;'";} echo ">".$row['sable']."</span>
   				<span class='boutique_charbon' title='Cout en charbon'"; if ($royaume->get_charbon()<$row['charbon']){echo " style='font-style: italic;color:#BF0008;'";} echo ">".$row['charbon']."</span>
   				<span class='boutique_essence' title='Cout en Essence magique'"; if ($royaume->get_essence()<$row['essence']){echo " style='font-style: italic;color:#BF0008;'";} echo ">".$row['essence']."</span>
-  				<span class='boutique_nombre'><input type='text' id='nbr$i' value='0' /></span>
+  				<span class='boutique_nombre'><input type='text' id='nbr$i' value='0' /> <a href=\"#\" onClick=\"$('#nbr".$i."').val(".$max.");\">Max</a></span>
   				<span class='boutique_nom'><a href='#' onclick=\"royaume_update('".$row['oid']."',$('#nbr".$i."').val(), 'update_objet_royaume')\">Acheter</a></span>
   				</li>";
   				if ($boutique_class == 't1'){$boutique_class = 't2';}else{$boutique_class = 't1';}

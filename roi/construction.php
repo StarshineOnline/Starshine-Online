@@ -155,6 +155,27 @@ else if(!array_key_exists('direction', $_GET))
 		echo "</ul>";
 		echo "</fieldset>";		
 	}
+
+	$req = $db->query("SELECT objet_royaume.*, COUNT(depot_royaume.id_objet) AS nbr_objet, depot_royaume.id_objet, depot_royaume.id AS id_depot FROM depot_royaume, objet_royaume WHERE depot_royaume.id_objet = objet_royaume.id AND id_royaume = ".$royaume->get_id()." GROUP BY depot_royaume.id_objet ASC");         
+	if ($db->num_rows($req)>0)
+	{
+		echo "<fieldset>";	
+		echo "<legend>Liste des objets disponibles dans votre depot militaire</legend>";	
+		echo "<ul>";
+		$boutique_class = 't1';
+		while($row = $db->read_assoc($req))
+		{
+			echo "
+			<li class='$boutique_class'>
+				<span style='display:block;width:420px;float:left;'>
+					".$row['nom']." : ".$row['nbr_objet']." 
+				</span>
+			</li>";			
+			if ($boutique_class == 't1'){$boutique_class = 't2';}else{$boutique_class = 't1';}						
+		}
+		echo "</ul>";
+		echo "</fieldset>";
+	}
 }
 elseif($_GET['direction'] == 'suppr_construction')
 {
