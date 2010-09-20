@@ -1,8 +1,47 @@
-INSERT INTO `bataille_repere_type` (`id`, `nom`, `description`, `ajout_groupe`, `image`) VALUES
-(5, 'Attaque', 'Ordonner ‡ un ou plusieurs groupe d''attaquer une position, des ennemis, des batiments...', 0, ''),
-(6, 'DÈfense', 'Ordonner ‡ un ou plusieurs groupe de dÈfendre une position, des alliÈs, des b‚timents...', 0, ''),
-(7, 'DÈplacement', 'Ordonner ‡ un ou plusieurs groupe de se rendre ‡ la position indiquÈe.', 0, ''),
-(8, 'RÈparation', 'Ordonner ‡ un ou plusieurs groupe de rÈparer un b‚timent.', 0, ''),
-(9, 'Construction', 'Ordonner ‡ un ou plusieurs groupe de construire un batiment, une arme 
+Ôªø-- phpMyAdmin SQL Dump
+-- version 3.3.5
+-- http://www.phpmyadmin.net
+--
+-- Serveur: 127.0.0.1
+-- G√©n√©r√© le : Lun 20 Septembre 2010 √† 12:37
+-- Version du serveur: 5.1.49
+-- Version de PHP: 5.3.3
 
-ALTER TABLE `bataille_groupe` ADD `id_thread` INT NOT NULL
+SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8 */;
+
+--
+-- Base de donn√©es: `starshine`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `bataille_repere_type`
+--
+
+DROP TABLE IF EXISTS `bataille_repere_type`;
+CREATE TABLE IF NOT EXISTS `bataille_repere_type` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `nom` varchar(100) NOT NULL,
+  `description` text NOT NULL,
+  `ajout_groupe` tinyint(3) unsigned NOT NULL,
+  `image` varchar(200) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=10 ;
+
+--
+-- Contenu de la table `bataille_repere_type`
+--
+
+INSERT INTO `bataille_repere_type` (`id`, `nom`, `description`, `ajout_groupe`, `image`) VALUES
+(5, 'Attaque', 'Ordonner √† un ou plusieurs groupe d''attaquer une position, des ennemis, des batiments...', 0, ''),
+(6, 'D√©fense', 'Ordonner √† un ou plusieurs groupe de d√©fendre une position, des alli√©s, des b√¢timents...', 0, ''),
+(7, 'D√©placement', 'Ordonner √† un ou plusieurs groupe de se rendre √† la position indiqu√©e.', 0, ''),
+(8, 'R√©paration', 'Ordonner √† un ou plusieurs groupe de r√©parer un b√¢timent.', 0, ''),
+(9, 'Construction', 'Ordonner √† un ou plusieurs groupe de construire un batiment, une arme de si√®ge, √† la position indiqu√©e.', 0, '');
