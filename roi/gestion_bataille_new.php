@@ -39,7 +39,7 @@ elseif(array_key_exists('new2', $_GET))
 	foreach($_GET as $key => $value)
 	{
 		$id_groupe = str_replace("groupe", "", $key); //On recupere que l'id
-		if($value == 1 AND $key != "x" AND $key != "y") // Si on ajoute un groupe
+		if($value == 1 AND $key != "x" AND $key != "y" AND $key != "id_bataille") // Si on ajoute un groupe
 		{
 			$groupe = new bataille_groupe(0,0,$id_groupe);
 			// Si le groupe ne participe pas deja a la bataille
