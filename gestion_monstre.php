@@ -60,7 +60,7 @@ if(array_key_exists('soin', $_GET))
 					//Heal MP
 					$heal_mp = floor($heal / 3);
 					if($heal > ($pet->monstre->get_hp() - $pet->get_hp())) $heal = $pet->monstre->get_hp() - $pet->get_hp();
-					if($heal_mp > ($pet->monstre->get_mp() - $pet->get_mp())) $heal_mp = $pet->monstre->get_mp() - $pet->get_mp();
+					if($heal_mp > ($pet->get_mp_max() - $pet->get_mp())) $heal_mp = $pet->get_mp_max() - $pet->get_mp();
 					$pet->set_hp($pet->get_hp() + $heal);
 					$pet->set_mp($pet->get_mp() + $heal_mp);
 					echo '<h6>Vous soignez '.$pet->get_nom().' de '.$heal.' HP et '.$heal_mp.' MP</h6>';
