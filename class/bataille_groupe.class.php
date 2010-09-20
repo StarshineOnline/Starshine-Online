@@ -41,7 +41,7 @@ class bataille_groupe
 			$this->id_groupe = $id['id_groupe'];
 			$this->id_thread = $id['id_thread'];
 		}
-		elseif ($id == 0 AND $id_bataille == 0 AND is_numeric($id_groupe))
+		elseif ((func_num_args() >= 1) AND $id == 0 AND $id_bataille == 0 AND is_numeric($id_groupe))
 		{
 			$requeteSQL = $db->query('SELECT bataille_groupe.id, id_bataille, id_thread, bataille.id, bataille.etat FROM bataille_groupe LEFT JOIN bataille ON bataille_groupe.id_bataille = bataille.id WHERE id_groupe = '.$id_groupe.' AND bataille.etat != 2');
 			//Si le thread est dans la base, on le charge sinon on crée un thread vide.
