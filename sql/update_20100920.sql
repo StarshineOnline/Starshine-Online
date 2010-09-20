@@ -33,7 +33,7 @@ CREATE TABLE IF NOT EXISTS `bataille_repere_type` (
   `ajout_groupe` tinyint(3) unsigned NOT NULL,
   `image` varchar(200) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=10 ;
+);
 
 --
 -- Contenu de la table `bataille_repere_type`
