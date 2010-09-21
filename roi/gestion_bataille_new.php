@@ -43,7 +43,7 @@ elseif(array_key_exists('new2', $_GET))
 		{
 			$groupe = new bataille_groupe(0,0,$id_groupe);
 			// Si le groupe ne participe pas deja a la bataille
-			if($groupe->id_bataille != $id_bataille)
+			if($groupe->id_bataille != $id_bataille OR $id_bataille == 0)
 			{
 				$bataille_groupe = new bataille_groupe(0, $bataille->id, $id_groupe);
 				$bataille_groupe->sauver();
@@ -173,7 +173,7 @@ else
 		<div id="move_map_menu" style='margin-top:8px;'>
 		<span style='float:left;margin-left:5px;width : 20px;'>X :</span><input type="text" id="go_x" style="width : 50px;" />
 		<span style='float:left;margin-left:5px;width : 20px;'>Y :</span><input type="text" id="go_y" style="width : 50px;" />
-		<input type="button" onclick="envoiInfo('gestion_bataille.php?move_map&x=' + $('go_x').value + '&y=' + $('go_y').value, 'choix_bataille');" value="Go !" style="width : 30px;" /><br />
+		<input type="button" onclick="envoiInfo('gestion_bataille.php?move_map&x=' + $('#go_x').val() + '&y=' + $('#go_y').val(), 'choix_bataille');" value="Go !" style="width : 30px;" /><br />
 
 		<div id="valide_choix_bataille" style='clear:both;'>
 <?php

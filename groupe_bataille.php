@@ -6,7 +6,7 @@ if (file_exists('root.php'))
 include_once(root.'inc/fp.php');
 include_once(root.'fonction/messagerie.inc.php');
 $joueur = new perso($_SESSION['ID']);
-$R = get_royaume_info($joueur->get_race(), $Trace[$joueur->get_race()]['numrace']);
+$R = new royaume($Trace[$joueur->get_race()]['numrace']);
 function affiche_bataille_groupe($bataille, $leader = false)
 {
 	global $joueur;
@@ -36,6 +36,7 @@ function affiche_bataille_groupe($bataille, $leader = false)
 					$accepter = '';
 				}
 				if(($repere_groupe->accepter == 0 AND $leader) OR $repere_groupe->accepter == 1) echo $repere->repere_type->nom.' en '.$repere->x.' / '.$repere->y.$accepter.'<br />';
+				else echo $repere->repere_type->nom.' en '.$repere->x.' / '.$repere->y.'<br />';
 			}
 		}
 	}
@@ -55,24 +56,28 @@ $groupe = recupgroupe($joueur->get_groupe(), '');
 if(array_key_exists('affiche_bataille', $_GET))
 {
 	$bataille = new bataille($_GET['affiche_bataille']);
-	$bataille->get_reperes('tri_type');
-	$batiments = array();
-	$dimensions = dimension_map($bataille->x, $bataille->y, 11);
-	$requete = "SELECT x, y, hp, nom, type, image FROM construction WHERE royaume = ".$R['ID']." AND x >= ".$dimensions['xmin']." AND x <= ".$dimensions['xmax']." AND y >= ".$dimensions['ymin']." AND y <= ".$dimensions['ymax'];
-	$req = $db->query($requete);
-	while($row = $db->read_assoc($req))
+	if ($bataille->id_royaume == $R->get_id())
 	{
-		$batiments[convert_in_pos($row['x'], $row['y'])] = $row;
+		$bataille->get_reperes('tri_type');
+		$batiments = array();
+		$dimensions = dimension_map($bataille->x, $bataille->y, 11);
+		$requete = "SELECT x, y, hp, nom, type, image FROM construction WHERE royaume = ".$R->get_id()." AND x >= ".$dimensions['xmin']." AND x <= ".$dimensions['xmax']." AND y >= ".$dimensions['ymin']." AND y <= ".$dimensions['ymax'];
+		$req = $db->query($requete);
+		while($row = $db->read_assoc($req))
+		{
+			$batiments[convert_in_pos($row['x'], $row['y'])] = $row;
+		}
+		$x = $bataille->x;
+		$y = $bataille->y;
+		
+		$map = new map($x, $y, 10, '', false, 'low');
+		$map->set_batiment($batiments);
+		$map->get_joueur($R->get_race(), false, true);
+		if(array_key_exists('action', $bataille->reperes)) $map->set_repere($bataille->reperes['action']);
+		if(array_key_exists('batiment', $bataille->reperes)) $map->set_batiment_ennemi($bataille->reperes['batiment']);
+		$map->set_onclick("return false;");
+		$map->affiche();
 	}
-	$x = $bataille->x;
-	$y = $bataille->y;
-	
-	$map = new map($x, $y, 12, '', false, 'low');
-	$map->set_batiment($batiments);
-	if(array_key_exists('action', $bataille->reperes)) $map->set_repere($bataille->reperes['action']);
-	if(array_key_exists('batiment', $bataille->reperes)) $map->set_batiment_ennemi($bataille->reperes['batiment']);
-	$map->set_onclick("return false;");
-	$map->affiche();
 }
 else
 {
@@ -105,7 +110,7 @@ else
 			foreach($bataille_royaume->batailles as $bataille)
 			{
 				//il faut que ça soit des batailles "en cours"
-				if($bataille->etat == 1)
+				if($bataille->etat == 1 AND $bataille->is_groupe_in($joueur->get_groupe()))
 				{
 					?>
 					<div id="bataille_<?php echo $bataille->id; ?>">
