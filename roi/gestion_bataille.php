@@ -18,7 +18,6 @@ function affiche_bataille($bataille)
 		{
 			?>
 			<a href="#" onclick="affiche_page('gestion_bataille_new.php?modif&id_bataille=<?php echo $bataille->id; ?>');">Modifier</a><br />
-			<a href="#" onclick="javascript: if(confirm('Voulez vous vraiment supprimer cette bataille ?')) { return envoiInfo('gestion_bataille.php?id_bataille=<?php echo $bataille->id; ?>&amp;suppr_bataille', 'bataille_<?php echo $bataille->id; ?>');} else{return false;}" >Supprimer</a><br />
 			<a href="gestion_bataille.php?id_bataille=<?php echo $bataille->id; ?>&amp;debut_bataille" onclick="return envoiInfo(this.href, 'bataille_<?php echo $bataille->id; ?>');">Debuter</a><br />
 			<?php
 		}
@@ -26,11 +25,11 @@ function affiche_bataille($bataille)
 		{
 			?>
 			<a href="#" onclick="affiche_page('gestion_bataille_new.php?modif&id_bataille=<?php echo $bataille->id; ?>');">Modifier</a><br />
-			<a href="#" onclick="javascript: if(confirm('Voulez vous vraiment supprimer cette bataille ?')) { return envoiInfo('gestion_bataille.php?id_bataille=<?php echo $bataille->id; ?>&amp;suppr_bataille', 'bataille_<?php echo $bataille->id; ?>');} else{return false;}" >Supprimer</a><br />
 			<a href="gestion_bataille.php?id_bataille=<?php echo $bataille->id; ?>&amp;fin_bataille" onclick="return envoiInfo(this.href, 'bataille_<?php echo $bataille->id; ?>');">Fermer</a><br />
 			<?php
 		}
 		?>
+		<a href="#" onclick="javascript: if(confirm('Voulez vous vraiment supprimer cette bataille ?')) { return envoiInfo('gestion_bataille.php?id_bataille=<?php echo $bataille->id; ?>&amp;suppr_bataille', 'bataille_<?php echo $bataille->id; ?>');} else{return false;}" >Supprimer</a><br />
 		</fieldset>
 		<fieldset style="padding : 5px; width : 500px; float : left; min-height : 50px;">
 			<legend><?php echo $bataille->nom; ?></legend>
