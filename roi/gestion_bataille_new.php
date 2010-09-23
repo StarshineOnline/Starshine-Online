@@ -18,55 +18,61 @@ elseif(array_key_exists('new2', $_GET))
 	$y = sSQL($_GET['y']);
 	$nom = sSQL($_GET['nom']);
 	$description = sSQL($_GET['description']);
-	
-	//Si c'est une modification
-	if(array_key_exists('id_bataille', $_GET))
+	if($nom != NULL AND $description != NULL AND $x > 0 AND $y > 0 AND $x < 191 AND $y < 191)
 	{
-		$id_bataille = (int) $_GET['id_bataille'];
-		$old_bataille = new bataille($id_bataille);
-		$bataille = new bataille($id_bataille, $id_royaume, $x, $y, $nom, $description);
-		$bataille->etat = $old_bataille->etat;
-		$message = 'La bataille "'.$bataille->nom.'" a été modifiée avec succès';
+		//Si c'est une modification
+		if(array_key_exists('id_bataille', $_GET))
+		{
+			$id_bataille = (int) $_GET['id_bataille'];
+			$old_bataille = new bataille($id_bataille);
+			$bataille = new bataille($id_bataille, $id_royaume, $x, $y, $nom, $description);
+			$bataille->etat = $old_bataille->etat;
+			$message = 'La bataille "'.$bataille->nom.'" a été modifiée avec succès';
+		}
+		else
+		{
+			$bataille = new bataille("", $id_royaume, $x, $y, $nom, $description);
+			$message = 'La bataille "'.$bataille->nom.'" a été créée avec succès';
+		}
+		$bataille->sauver();
+		
+		// On récupère les groupes participants
+		foreach($_GET as $key => $value)
+		{
+			$id_groupe = str_replace("groupe", "", $key); //On recupere que l'id
+			if($value == 1 AND $key != "x" AND $key != "y" AND $key != "id_bataille") // Si on ajoute un groupe
+			{
+				$groupe = new bataille_groupe(0,0,$id_groupe);
+				// Si le groupe ne participe pas deja a la bataille
+				if($groupe->id_bataille != $id_bataille OR $id_bataille == 0)
+				{
+					$bataille_groupe = new bataille_groupe(0, $bataille->id, $id_groupe);
+					$bataille_groupe->sauver();
+					unset($bataille_groupe);
+				}
+			}
+			 // Si on a supprimé un groupe de la bataille
+			elseif($value == 0 AND $key != "x" AND $key != "y")
+			{
+				$groupe = new bataille_groupe(0,0,$id_groupe);
+				if($groupe->id_bataille == $id_bataille)
+				{
+					// On supprime les reperes associés au groupe, puis le groupe
+					$groupe->get_reperes();
+					foreach ($groupe->reperes as $repere)
+						$repere->supprimer();
+				
+					$groupe->supprimer();
+				}
+			}
+		}
+		
+	echo '<br /><br /><h6>'.$message.'</h6>';
 	}
 	else
-	{
-		$bataille = new bataille("", $id_royaume, $x, $y, $nom, $description);
-		$message = 'La bataille "'.$bataille->nom.'" a été créée avec succès';
-	}
-	$bataille->sauver();
+		echo '<br /><br /><h5>Un ou plusieurs champs invalides.</h5>';
+		
 	
-	// On récupère les groupes participants
-	foreach($_GET as $key => $value)
-	{
-		$id_groupe = str_replace("groupe", "", $key); //On recupere que l'id
-		if($value == 1 AND $key != "x" AND $key != "y" AND $key != "id_bataille") // Si on ajoute un groupe
-		{
-			$groupe = new bataille_groupe(0,0,$id_groupe);
-			// Si le groupe ne participe pas deja a la bataille
-			if($groupe->id_bataille != $id_bataille OR $id_bataille == 0)
-			{
-				$bataille_groupe = new bataille_groupe(0, $bataille->id, $id_groupe);
-				$bataille_groupe->sauver();
-				unset($bataille_groupe);
-			}
-		}
-		 // Si on a supprimé un groupe de la bataille
-		elseif($value == 0 AND $key != "x" AND $key != "y")
-		{
-			$groupe = new bataille_groupe(0,0,$id_groupe);
-			if($groupe->id_bataille == $id_bataille)
-			{
-				// On supprime les reperes associés au groupe, puis le groupe
-				$groupe->get_reperes();
-				foreach ($groupe->reperes as $repere)
-					$repere->supprimer();
-			
-				$groupe->supprimer();
-			}
-		}
-	}
-
-	echo '<br /><br /><h6>'.$message.'</h6>';
 
 }
 //Information et modification sur une bataille

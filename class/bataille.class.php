@@ -99,9 +99,13 @@ class bataille
 				$groupes[] = $row['id'];
 			}
 			$in = implode(',', $groupes);
-			//On efface tous les etats qui correspondent à ces messages
-			$requete = "DELETE FROM bataille_groupe WHERE id IN (".$in.")";
-			$db->query($requete);
+			if ($in != NULL)
+			{
+				//On efface tous les etats qui correspondent à ces messages
+				$requete = "DELETE FROM bataille_groupe WHERE id IN (".$in.")";
+				$db->query($requete);
+			}
+			
 			//On récupère tous les repères associés et on les suppriment
 			$requete = "SELECT id FROM bataille_repere WHERE id_bataille = ".$this->id;
 			$req = $db->query($requete);
@@ -110,12 +114,15 @@ class bataille
 				$reperes[] = $row['id'];
 			}
 			$in = implode(',', $reperes);
-			//On efface tous les etats qui correspondent à ces messages
-			$requete = "DELETE FROM bataille_repere WHERE id IN (".$in.")";
-			$db->query($requete);
-			//On supprime tous les repère_groupe associés
-			$requete = "DELETE FROM bataille_groupe_repere WHERE id_repere IN (".$in.")";
-			$db->query($requete);
+			if ($in != NULL)
+			{
+				//On efface tous les etats qui correspondent à ces messages
+				$requete = "DELETE FROM bataille_repere WHERE id IN (".$in.")";
+				$db->query($requete);
+				//On supprime tous les repère_groupe associés
+				$requete = "DELETE FROM bataille_groupe_repere WHERE id_repere IN (".$in.")";
+				$db->query($requete);
+			}
 		}
 		if( $this->id > 0 )
 		{

@@ -84,7 +84,7 @@ elseif(array_key_exists('move_map', $_GET))
 
 		<span style='float:left;margin-left:5px;width : 20px;'>X :</span><input type="text" id="go_x" style="width : 50px;" />
 		<span style='float:left;margin-left:5px;width : 20px;'>Y :</span><input type="text" id="go_y" style="width : 50px;" />
-		<input type="button" onclick="envoiInfo('gestion_bataille.php?move_map&x=' + $('go_x').value + '&y=' + $('go_y').value, 'choix_bataille');" value="Go !" style="width : 30px;" /><br />
+		<input type="button" onclick="envoiInfo('gestion_bataille.php?move_map&x=' + $('#go_x').val() + '&y=' + $('#go_y').val(), 'choix_bataille');" value="Go !" style="width : 30px;" /><br />
 
 		<div id="valide_choix_bataille" style='clear:both;'></div>
 		</div>
