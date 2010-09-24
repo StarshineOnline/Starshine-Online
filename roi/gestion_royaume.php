@@ -785,7 +785,7 @@
   			<span class='boutique_prix'><img src='../image/starsv2.png' alt='Prix' title='Prix' /></span>
   			<span class='boutique_pierre'><img src='../image/icone/ressources_pierre.png' alt='pierre' title='Pierre' /></span>
   			<span class='boutique_bois'><img src='../image/icone/ressources_bois.png' alt='Bois' title='Bois' /></span>
-  			<span class='boutique_eau'><img src='../image/icone/ressources_eau.png' alt='Eau' title='Eau'' /></span>
+  			<span class='boutique_eau'><img src='../image/icone/ressources_eau.png' alt='Eau' title='Eau' /></span>
   			<span class='boutique_sable'><img src='../image/icone/ressources_sable.png' alt='Sable' title='Sable' /></span>
   			<span class='boutique_charbon'><img src='../image/icone/ressources_charbon.png' alt='Charbon' title='Charbon' /></span>
   			<span class='boutique_essence'><img src='../image/icone/ressources_essence.png' alt='Essence Magique' title='Essence Magique' /></span>

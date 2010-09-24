@@ -26,7 +26,7 @@ foreach($groupe->membre_joueur as $membre)
 	if($membre->get_id() == $groupe->get_id_leader()) $nom = $membre->get_nom().'*'; else $nom = $membre->get_nom();
 	$membre->get_grade();
 	?>
-	<li onMouseOver="new Tip('membre_<?php echo $membre->get_id(); ?>', '<?php echo $membre->get_classe(); ?>', {style : 'protoblue'});" id="membre_<?php echo $membre->get_id(); ?>"><img src="<?php echo $image; ?>" alt="<?php echo $membre->get_classe(); ?>" style="width : 27px; height : 27px; vertical-align: middle;"> <span style="font-weight : bold;"><a href="carte_strategique.php" onclick="new Ajax.Updater('conteneur', this.href); return false;"><?php echo $nom.'</a></span> - '.$membre->get_race().' - '.$membre->grade->get_nom(); ?></li>
+	<li onMouseOver="new Tip('membre_<?php echo $membre->get_id(); ?>', '<?php echo $membre->get_classe(); ?>', {style : 'protoblue'});" id="membre_<?php echo $membre->get_id(); ?>"><img src="<?php echo $image; ?>" alt="<?php echo $membre->get_classe(); ?>" style="width : 27px; height : 27px; vertical-align: middle;"> <span style="font-weight : bold;"><?php echo $nom.'</span> - '.$membre->get_race().' - '.$membre->grade->get_nom(); ?></li>
 	<?php
 }
 ?>
