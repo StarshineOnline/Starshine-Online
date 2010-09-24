@@ -5,7 +5,7 @@ if (file_exists('../root.php'))
 require('haut_roi.php');
 
 $bataille = new bataille($_GET['id_bataille']);
-if($joueur->get_rang_royaume() != 6)
+if($joueur->get_rang_royaume() != 6 AND $joueur->get_id() != $royaume->get_ministre_militaire())
 	echo '<p>Cheater</p>';
 else if(array_key_exists('mission', $_GET))
 {
