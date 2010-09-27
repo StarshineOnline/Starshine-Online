@@ -213,6 +213,10 @@
 .texl354{background:url('../image/texture_low/textdesert/tempetec.png') no-repeat;}
 .texl355{background:url('../image/texture_low/textdesert/tempeted.png') no-repeat;}
 .texl356{background:url('../image/texture_low/textdesert/tempetee.png') no-repeat;}
+.texl357{background:url('../image/texture_low/textdesert/animsable.png') no-repeat;}
+.texl358{background:url('../image/texture_low/textdesert/animsableb.png') no-repeat;}
+.texl359{background:url('../image/texture_low/textdesert/animsablemouvant.png') no-repeat;}
+.texl360{background:url('../image/texture_low/textdesert/animsablemouvantb.png') no-repeat;}
 
 .texl401{background:url('../image/texture_low/textbanquise/tex_neige1.png') no-repeat;}
 .texl402{background:url('../image/texture_low/textbanquise/tex_banquiseno.png') no-repeat;}
@@ -309,6 +313,7 @@
 .texl493{background:url('../image/texture_low/textbanquise/tex_neige bm.png') no-repeat;}
 .texl494{background:url('../image/texture_low/textbanquise/tex_neige2.png') no-repeat;}
 .texl495{background:url('../image/texture_low/textbanquise/tex_neige3.png') no-repeat;}
+.texl496{background:url('../image/texture_low/textbanquise/montagne centreneige.png') no-repeat;}
 
 .texl501{background:url('../image/texture_low/tex_eau1.png') no-repeat;}
 .texl502{background:url('../image/texture_low/riviereherbe/tex_riviereeo.png') no-repeat;}
@@ -394,6 +399,63 @@
 .texl640{background:url('../image/texture_low/piquegauche.png') no-repeat;}
 .texl641{background:url('../image/texture_low/piquehaut.png') no-repeat;}
 .texl642{background:url('../image/texture_low/piquehaut2.png') no-repeat;}
+.texl643{background:url('../image/texture_low/textmontagne/mont bg.png') no-repeat;}
+.texl644{background:url('../image/texture_low/textmontagne/mont bg2.png') no-repeat;}
+.texl645{background:url('../image/texture_low/textmontagne/mont bg3.png') no-repeat;}
+.texl646{background:url('../image/texture_low/textmontagne/mont mg.png') no-repeat;}
+.texl647{background:url('../image/texture_low/textmontagne/chemin gobelin.png') no-repeat;}
+.texl648{background:url('../image/texture_low/textmontagne/mont hg1.png') no-repeat;}
+.texl649{background:url('../image/texture_low/textmontagne/mont hg2.png') no-repeat;}
+.texl650{background:url('../image/texture_low/textmontagne/mont hg3.png') no-repeat;}
+.texl651{background:url('../image/texture_low/textmontagne/mont hg4.png') no-repeat;}
+.texl652{background:url('../image/texture_low/textmontagne/mont hm.png') no-repeat;}
+.texl653{background:url('../image/texture_low/textmontagne/mont hm1.png') no-repeat;}
+.texl654{background:url('../image/texture_low/textmontagne/mont hm2.png') no-repeat;}
+.texl655{background:url('../image/texture_low/textmontagne/mont hd1.png') no-repeat;}
+.texl656{background:url('../image/texture_low/textmontagne/mont hd2.png') no-repeat;}
+.texl657{background:url('../image/texture_low/textmontagne/mont hd3.png') no-repeat;}
+.texl658{background:url('../image/texture_low/textmontagne/mont hd4.png') no-repeat;}
+.texl659{background:url('../image/texture_low/textmontagne/mont bd.png') no-repeat;}
+.texl660{background:url('../image/texture_low/textmontagne/mont bd2.png') no-repeat;}
+.texl661{background:url('../image/texture_low/textmontagne/mont bd3.png') no-repeat;}
+.texl662{background:url('../image/texture_low/textmontagne/mont bm1.png') no-repeat;}
+.texl663{background:url('../image/texture_low/textmontagne/mont bm2.png') no-repeat;}
+.texl664{background:url('../image/texture_low/textmontagne/mont bm3.png') no-repeat;}
+.texl665{background:url('../image/texture_low/textmontagne/mont bm4.png') no-repeat;}
+.texl666{background:url('../image/texture_low/textmontagne/mont bm5.png') no-repeat;}
+.texl667{background:url('../image/texture_low/textmontagne/mont centre1.png') no-repeat;}
+.texl668{background:url('../image/texture_low/textmontagne/mont centre2.png') no-repeat;}
+.texl669{background:url('../image/texture_low/textmontagne/mont centre3.png') no-repeat;}
+.texl670{background:url('../image/texture_low/textmontagne/mont centre4.png') no-repeat;}
+.texl671{background:url('../image/texture_low/textmontagne/mont centre5.png') no-repeat;}
+.texl672{background:url('../image/texture_low/textmontagne/montagne bg2.png') no-repeat;}
+.texl673{background:url('../image/texture_low/textmontagne/montagne mg.png') no-repeat;}
+.texl674{background:url('../image/texture_low/textmontagne/montagne hg.png') no-repeat;}
+.texl675{background:url('../image/texture_low/textmontagne/montagne hg2.png') no-repeat;}
+.texl676{background:url('../image/texture_low/textmontagne/montagne hm.png') no-repeat;}
+.texl677{background:url('../image/texture_low/textmontagne/montagne hd.png') no-repeat;}
+.texl678{background:url('../image/texture_low/textmontagne/montagne hd2.png') no-repeat;}
+.texl679{background:url('../image/texture_low/textmontagne/montagne md.png') no-repeat;}
+.texl680{background:url('../image/texture_low/textmontagne/montagne bd2.png') no-repeat;}
+.texl681{background:url('../image/texture_low/textmontagne/montagne bm.png') no-repeat;}
+.texl682{background:url('../image/texture_low/textmontagne/montagne centre.png') no-repeat;}
+.texl683{background:url('../image/texture_low/textmontagne/montagne centred.png') no-repeat;}
+.texl684{background:url('../image/texture_low/textmontagne/montagne centreh.png') no-repeat;}
+.texl685{background:url('../image/texture_low/textmontagne/montagne centreg.png') no-repeat;}
+.texl686{background:url('../image/texture_low/textmontagne/montagne centreg2.png') no-repeat;}
+.texl687{background:url('../image/texture_low/textmontagne/montagne centred2.png') no-repeat;}
+.texl688{background:url('../image/texture_low/textmontagne/montagne centreb.png') no-repeat;}
+.texl689{background:url('../image/texture_low/textmontagne/montagne centrehb.png') no-repeat;}
+.texl690{background:url('../image/texture_low/textmontagne/mont hg1jointure.png') no-repeat;}
+.texl691{background:url('../image/texture_low/textmontagne/mont hg3jointure.png') no-repeat;}
+.texl692{background:url('../image/texture_low/textmontagne/montagne moyen bg.png') no-repeat;}
+.texl693{background:url('../image/texture_low/textmontagne/montagne moyen mg.png') no-repeat;}
+.texl694{background:url('../image/texture_low/textmontagne/montagne moyen hm.png') no-repeat;}
+.texl695{background:url('../image/texture_low/textmontagne/montagne moyen centre1.png') no-repeat;}
+.texl696{background:url('../image/texture_low/textmontagne/montagne moyen centre2.png') no-repeat;}
+.texl697{background:url('../image/texture_low/textmontagne/montagne moyen bd.png') no-repeat;}
+.texl698{background:url('../image/texture_low/textmontagne/montagne moyen bm.png') no-repeat;}
+.texl699{background:url('../image/texture_low/textmontagne/montagne moyen bm1.png') no-repeat;}
 
 .texl701{background:url('../image/texture_low/tex_marais.png') no-repeat;}
 .texl702{background:url('../image/texture_low/tex_marais1.png') no-repeat;}
@@ -460,6 +522,20 @@
 .texl763{background:url('../image/texture_low/marais/animmaraisherbejonctionMHD.png') no-repeat;}
 .texl764{background:url('../image/texture_low/marais/animmaraisherbejonctionMHG.png') no-repeat;}
 .texl765{background:url('../image/texture_low/marais/tex_maraisupbgc.png') no-repeat;}
+.texl766{background:url('../image/texture_low/marais/tex_maraisupsquelbm.png') no-repeat;}
+.texl767{background:url('../image/texture_low/marais/tex_maraisupsquelhm.png') no-repeat;}
+.texl768{background:url('../image/texture_low/marais/tex_maraisupsquelmd.png') no-repeat;}
+.texl769{background:url('../image/texture_low/marais/tex_maraisupsquelmg.png') no-repeat;}
+.texl770{background:url('../image/texture_low/marais/tex_maraisupsquelcentre.png') no-repeat;}
+.texl771{background:url('../image/texture_low/marais/tex_maraisupsquelbg2.png') no-repeat;}
+.texl772{background:url('../image/texture_low/marais/tex_maraisupsquelhg2.png') no-repeat;}
+.texl773{background:url('../image/texture_low/marais/tex_maraisupsquelhd2.png') no-repeat;}
+.texl774{background:url('../image/texture_low/marais/tex_maraisupsquelbd2.png') no-repeat;}
+.texl775{background:url('../image/texture_low/marais/souchemaraisa.png') no-repeat;}
+.texl776{background:url('../image/texture_low/marais/souchemaraisb.png') no-repeat;}
+.texl777{background:url('../image/texture_low/marais/cristauxmarais.png') no-repeat;}
+.texl778{background:url('../image/texture_low/marais/animbulle.png') no-repeat;}
+.texl779{background:url('../image/texture_low/marais/animbulleb.png') no-repeat;}
 
 .texl801{background:url('../image/texture_low/route/tex_routepaveens.png') no-repeat;}
 .texl802{background:url('../image/texture_low/route/tex_routepaveeeo.png') no-repeat;}
@@ -636,6 +712,18 @@
 .texl974{background:url('../image/texture_low/route/tex_routeterremauditens deep hm.png') no-repeat;}
 .texl975{background:url('../image/texture_low/route/tex_routeterremauditens deep m.png') no-repeat;}
 .texl976{background:url('../image/texture_low/route/tex_routeterremauditens deep bm.png') no-repeat;}
+.texl977{background:url('../image/texture_low/route/tex_routemontagneh.png') no-repeat;}
+.texl978{background:url('../image/texture_low/route/tex_routemontagneherbeg.png') no-repeat;}
+.texl979{background:url('../image/texture_low/route/tex_routemontagneherbed.png') no-repeat;}
+.texl980{background:url('../image/texture_low/route/tex_routemontagneh2.png') no-repeat;}
+.texl981{background:url('../image/texture_low/route/tex_routemontagneh3.png') no-repeat;}
+.texl982{background:url('../image/texture_low/route/tex_routemontagneherbbd.png') no-repeat;}
+.texl983{background:url('../image/texture_low/route/tex_routemontagneherbbd2.png') no-repeat;}
+.texl984{background:url('../image/texture_low/route/tex_routemontagneherbbd3.png') no-repeat;}
+.texl985{background:url('../image/texture_low/route/tex_routemontagneherbbg.png') no-repeat;}
+.texl986{background:url('../image/texture_low/route/tex_routemontagneherbbg2.png') no-repeat;}
+.texl987{background:url('../image/texture_low/route/tex_routemontagneherbbg3.png') no-repeat;}
+.texl988{background:url('../image/texture_low/route/tex_routemontagneherbbg4.png') no-repeat;}
 
 .texl4{background:url('../image/texture_low/tex_myriandre.png') no-repeat;}
 .texl7{background:url('../image/texture_low/tex_herbcimet.png') no-repeat;}
@@ -808,6 +896,7 @@
 .texl1515{background:url('../image/texture_low/tex_donjon15.png') no-repeat;}
 .texl1516{background:url('../image/texture_low/donjon_gobelin/tex_donjongob1.png') no-repeat;}
 .texl1517{background:url('../image/texture_low/donjon_gobelin/tex_donjongob2.png') no-repeat;}
+
 .texl1518{background:url('../image/texture_low/donjon_gobelin/tex_donjongob3.png') no-repeat;}
 .texl1519{background:url('../image/texture_low/donjon_gobelin/tex_donjongob4.png') no-repeat;}
 .texl1520{background:url('../image/texture_low/donjon_gobelin/tex_donjongob5.png') no-repeat;}
@@ -826,6 +915,7 @@
 .texl1533{background:url('../image/texture_low/donjon_gobelin/tex_donjongob18.png') no-repeat;}
 .texl1534{background:url('../image/texture_low/donjon_gobelin/tex_donjongob19.png') no-repeat;}
 .texl1535{background:url('../image/texture_low/donjon_gobelin/tex_donjongob20.png') no-repeat;}
+
 .texl1536{background:url('../image/texture_low/donjon_gobelin/herbe donjon.png') no-repeat;}
 
 .texl1601{background:url('../image/texture_low/tex_mur_donjon1.png') no-repeat;}
@@ -1062,6 +1152,15 @@
 .texl2232{background:url('../image/texture_low/tex_herbefleurbd.png') no-repeat;}
 .texl2233{background:url('../image/texture_low/hautesherbes/hautherbecentreanim.png') no-repeat;}
 .texl2234{background:url('../image/texture_low/hautesherbes/hautherbe diag bg anim.png') no-repeat;}
+
+.texl2305{background:url('../image/texture_low/textmontagne/mont jointure1b.png') no-repeat;}
+.texl2306{background:url('../image/texture_low/textmontagne/mont jointure2b.png') no-repeat;}
+.texl2307{background:url('../image/texture_low/textmontagne/mont jointure3b.png') no-repeat;}
+.texl2308{background:url('../image/texture_low/textmontagne/mont jointure4b.png') no-repeat;}
+.texl2309{background:url('../image/texture_low/textmontagne/mont jointure5b.png') no-repeat;}
+.texl2310{background:url('../image/texture_low/textmontagne/mont jointure6b.png') no-repeat;}
+.texl2311{background:url('../image/texture_low/textmontagne/mont jointure7b.png') no-repeat;}
+.texl2312{background:url('../image/texture_low/textmontagne/mont jointure8b.png') no-repeat;}
 
 
 .texlblack{background-color:#000;}
