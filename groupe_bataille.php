@@ -6,7 +6,9 @@ if (file_exists('root.php'))
 include_once(root.'inc/fp.php');
 include_once(root.'fonction/messagerie.inc.php');
 $joueur = new perso($_SESSION['ID']);
-$R = new royaume($Trace[$joueur->get_race()]['numrace']);
+$groupe = new groupe($joueur->get_groupe());
+$leader = new perso($groupe->get_id_leader());
+$R = new royaume($Trace[$leader->get_race()]['numrace']);
 function affiche_bataille_groupe($bataille, $leader = false)
 {
 	global $joueur;
@@ -125,17 +127,5 @@ else
 				}
 			}
 		}
-	/*}
-	//On affiche uniquement les bataille auquel le groupe participe
-	else
-	{
-		$requete = "SELECT bataille_repere.id_bataille FROM bataille_groupe_repere LEFT JOIN bataille_repere ON bataille_repere.id = bataille_groupe_repere.id_repere LEFT JOIN bataille_groupe ON bataille_groupe.id = bataille_groupe_repere.id_groupe WHERE bataille_groupe.id_groupe = ".$joueur->get_groupe()." AND accepter = 1";
-		$req = $db->query($requete);
-		while($row = $db->read_assoc($req))
-		{
-			$bataille = new bataille($row['id_bataille']);
-			affiche_bataille_groupe($bataille);
-		}
-	}*/
 }
 ?>
