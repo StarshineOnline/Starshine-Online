@@ -96,8 +96,6 @@ else
 	//Ressource normale
 	foreach($ress as $key_terr => $terr)
 	{
-		$key_terr = utf8_encode($key_terr);
-		//print_r($terr);
 		foreach($terr as $key => $res)
 		{
 			$ressource_final[$key] += $res * floor($ressources[$key_terr]);
