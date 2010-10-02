@@ -710,7 +710,12 @@ else
 				}
 				$map_batiment->set_hp($defenseur->get_hp());
 				if($map_batiment->get_hp() > 0) $map_batiment->sauver();
-				else $map_batiment->supprimer();
+				else 
+				{
+					$map_batiment->supprimer();
+					$royaume_attaquant = new royaume($Trace[$joueur->get_race()]['numrace']);
+					$royaume_attaquant->add_point_victoire($map_batiment->get_point_victoire());
+				}
 			}
 			elseif($type == 'siege')
 			{
