@@ -91,16 +91,18 @@ function get_array_condition($valeur) {
  */   
 function sub_script_action($joueur, $ennemi, $mode, &$effects)
 {
-	global $db, $round, $Trace, $debugs;
+	global $db, $round, $Trace, $debugs, $log_combat;
 	$stop = false;
 	if($joueur->etat['paralysie'] > 0)
 	{
 		echo $joueur->get_nom().' est paralysé<br />';
+		$log_combat .= "cp";
 		return '';
 	}
 	elseif($joueur->etat['etourdit'] > 0)
 	{
 		echo $joueur->get_nom().' est étourdi<br />';
+		$log_combat .= "ce";
 		return '';
 	}
 	elseif($joueur->etat['tir_vise'] > 0)
@@ -121,6 +123,7 @@ function sub_script_action($joueur, $ennemi, $mode, &$effects)
 			if($rand < $cible)
 			{
 				echo $joueur->get_nom().' est glacé<br />';
+				$log_combat .= "cg";
 				return '';
 				$stop = true;
 			}
@@ -411,6 +414,7 @@ function sub_script_action($joueur, $ennemi, $mode, &$effects)
 				if($rand > $chance_reussite)
 				{
 					echo $ennemi->get_nom().' anticipe l\'attaque, et elle échoue !<br />';
+					$log_combat .= "a";
 					return '';
 				}
 			}
@@ -437,7 +441,7 @@ function sub_script_action($joueur, $ennemi, $mode, &$effects)
  */
 function lance_sort($id, $acteur, &$effects)
 {
-	global $attaquant, $defenseur, $db, $Gtrad, $debugs, $Trace, $G_buff, $G_debuff;
+	global $attaquant, $defenseur, $db, $Gtrad, $debugs, $Trace, $G_buff, $G_debuff, $log_combat;
 	// Définition des personnages actif et passif
 	if ($acteur == 'attaquant')
 	{
@@ -991,15 +995,18 @@ function lance_sort($id, $acteur, &$effects)
 					$actif->etat['posture']['type'] = 'posture_pierre';
 				break;
 			}
+			$log_combat .= "~".$degat;
 		}
 		else  // pas touché
 		{
 			echo '&nbsp;&nbsp;<span class="manque">'.$actif->get_nom().' manque la cible avec '.$row['nom'].'</span><br />';
+			$log_combat .= "~m";
 		}
 	}
 	else // lancer raté
 	{
 		echo '&nbsp;&nbsp;<span class="manque">'.$actif->get_nom().' rate le lancement de '.$row['nom'].'</span><br />';
+		$log_combat .= "~l";
 	}
 	//Augmentation des compétences liées
 	$get = 'get_'.$row['comp_assoc'];
@@ -1039,7 +1046,7 @@ function lance_sort($id, $acteur, &$effects)
  */
 function lance_comp($id, $acteur, &$effects)
 {
-	global $attaquant, $defenseur, $db, $Gtrad, $debugs, $comp_attaque, $G_round_total, $ups;
+	global $attaquant, $defenseur, $db, $Gtrad, $debugs, $comp_attaque, $G_round_total, $ups, $log_combat;
 	// Définition des personnages actif et passif
 	if ($acteur == 'attaquant')
 	{
@@ -1424,7 +1431,7 @@ function lance_comp($id, $acteur, &$effects)
  */
 function critique_magique($attaquant, $defenseur)
 {
-	global $debugs;  // Numéro des informations de debug.
+	global $debugs,$log_combat;  // Numéro des informations de debug.
 	// Dé de critiques
 	$chance = rand(0, 10000);
 	// Calcule des chances de critique
@@ -1440,6 +1447,7 @@ function critique_magique($attaquant, $defenseur)
 	if($chance < $actif_chance_critique)
 	{
 		echo '&nbsp;&nbsp;<span class="coupcritique">SORT CRITIQUE !</span><br />';
+		$log_combat .= '!';
 		$critique = true;
 	}
 	return $critique;

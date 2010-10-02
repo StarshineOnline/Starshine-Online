@@ -2414,13 +2414,13 @@ function affiche_ligne_journal($row)
 	switch($row['action'])
 	{
 		case 'attaque' :
-			return '<li class="jdegat"><span class="small">['.$date.']</span> Vous attaquez '.$row['passif'].' et lui faites '.$row['valeur'].' dégâts, il vous en fait '.$row['valeur2'].'</li>';
+			return '<li class="jdegat"><span class="small">['.$date.']</span> Vous attaquez '.$row['passif'].' et lui faites '.$row['valeur'].' dégâts, il vous en fait '.$row['valeur2'].' - <a href="#" onClick="return envoiInfo(\'journal_combat.php?id='.$row['id'].'\',\'information\')">Voir</a></li>';
 		break;
 		case 'defense' :
 			if ($row['actif'] != $_SESSION['nom']) // Equivaut à : le defenseur est le pet
-				return '<li class="jrdegat"><span class="small">['.$date.']</span> '.$row['passif'].' a attaqué votre '.$row['actif'].' et fait '.$row['valeur'].' dégâts et votre '.$row['actif'].' fait '.$row['valeur2'].'</li>';
+				return '<li class="jrdegat"><span class="small">['.$date.']</span> '.$row['passif'].' a attaqué votre '.$row['actif'].' et fait '.$row['valeur'].' dégâts et votre '.$row['actif'].' fait '.$row['valeur2'].' - <a href="#" onClick="return envoiInfo(\'journal_combat.php?id='.$row['id'].'\',\'information\')">Voir</a></li>';
 			else
-				return '<li class="jrdegat"><span class="small">['.$date.']</span> '.$row['passif'].' vous a attaqué et fait '.$row['valeur'].' dégâts et vous lui faites '.$row['valeur2'].'</li>';
+				return '<li class="jrdegat"><span class="small">['.$date.']</span> '.$row['passif'].' vous a attaqué et fait '.$row['valeur'].' dégâts et vous lui faites '.$row['valeur2'].' - <a href="#" onClick="return envoiInfo(\'journal_combat.php?id='.$row['id'].'\',\'information\')">Voir</a></li>';
 		break;
 		case 'tue' :
 			return '<li class="jkill"><span class="small">['.$date.']</span> Vous tuez '.$row['passif'].'.</li>';

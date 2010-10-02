@@ -20,7 +20,7 @@ include_once(root.$root.'class/gemmes.class.php');
  */
 function attaque($acteur = 'attaquant', $competence, &$effects)
 {
-  	global $attaquant, $defenseur, $G_buff, $G_debuff, $ups, $Gtrad, $G_round_total, $db;
+  	global $attaquant, $defenseur, $G_buff, $G_debuff, $ups, $Gtrad, $G_round_total, $db, $log_combat;
   	if ($acteur == 'attaquant')
     {
       $actif = $attaquant;
@@ -324,6 +324,7 @@ function attaque($acteur = 'attaquant', $competence, &$effects)
 	    if($chance < $actif_chance_critique)
 		{
 			echo '&nbsp;&nbsp;<span class="coupcritique">COUP CRITIQUE !</span><br />';
+			$log_combat .= '!';
 			//Chance de paralyser l'adversaire
 			if($actif->etat['posture']['type'] == 'posture_paralyse')
 			{
@@ -374,6 +375,7 @@ function attaque($acteur = 'attaquant', $competence, &$effects)
 		}
     	$reduction = $degat_avant - $degat;
       	echo '&nbsp;&nbsp;<span class="degat"><strong>'.$actif->get_nom().'</strong> inflige <strong>'.$degat.'</strong> dégâts</span><br />';
+		$log_combat .= '~'.$degat;
       	if($reduction != 0) echo '&nbsp;&nbsp;<span class="small">(réduits de '.$reduction.' par l\'armure)</span><br />';
 	    //Si flêche étourdissante
     	if($actif->etat['fleche_etourdit'] > 0)
@@ -456,6 +458,8 @@ function attaque($acteur = 'attaquant', $competence, &$effects)
 		// On enleve les effets des comps qui ont raté
 		unset($actif->etat['fleche_poison_attaque']);
 		unset($actif->etat['fleche_debilitante_attaque']);
+		
+		$log_combat .= '~e';
     }
   	if(array_key_exists('coup_mortel', $actif))
     {

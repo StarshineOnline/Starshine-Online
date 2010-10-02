@@ -9,6 +9,7 @@ include_once(root.'haut_ajax.php');
 //Si attaque via pet, on fait les verifs nécessaires
 $check_pet = false;
 $check_pet_def = false;
+$log_combat = "";
 $no_pa_attaque = false;
 $joueur = new perso($_SESSION['ID']);
 if(array_key_exists('pet', $_GET))
@@ -356,9 +357,13 @@ else
 			$attaque_hp_avant = $attaquant->get_hp();
 			$defense_hp_avant = $defenseur->get_hp();
 
+			$log_combat .= 'r'.$round.':';
 			//Boucle principale qui fait durer le combat $round_total round
 			while(($round < ($round_total + 1)) AND ($attaquant->get_hp() > 0) AND ($defenseur->get_hp() > 0))
 			{
+				$log_effects_attaquant = "";
+				$log_effects_defenseur = "";
+				
 				if($attaquant->get_arme_type() == 'arc') $attaquant->set_comp('distance'); else $attaquant->set_comp('melee');
 				if($defenseur->get_arme_type() == 'arc') $defenseur->set_comp('distance'); else $defenseur->set_comp('melee');
 				//Calcul du potentiel de toucher et parer
@@ -420,6 +425,7 @@ else
 					{
 						echo $defenseur->get_nom().' s\'approche<br />';
 						$action[0] = '';
+						$log_combat .= 'n';
 					}
 					elseif (($mode == 'defenseur') && ($type == 'batiment'))
 					{
@@ -441,14 +447,17 @@ else
 					{
 						//Attaque
 						case 'attaque' :
+							$log_combat .= 'c0';
 							$augmentations = attaque($mode, ${$mode}->get_comp(), $effects);
 						break;
 						//Lancement d'un sort
 						case 'lance_sort' :
+							$log_combat .= 's'.$action[1];
 							$augmentations = lance_sort($action[1], $mode, $effects);
 						break;
 						//Lancement d'une compétence
 						case 'lance_comp' :
+							$log_combat .= 'c'.$action[1];
 							$augmentations = lance_comp($action[1], $mode, $effects);
 							if($comp_attaque)
 							{
@@ -501,6 +510,7 @@ else
 							if($attaquant->etat['putrefaction']['duree'] > 0) $perte_hp = $perte_hp * $attaquant->etat['putrefaction']['effet'];
 							$attaquant->set_hp($attaquant->get_hp() - $perte_hp);
 							echo '&nbsp;&nbsp;<span class="degat">'.$attaquant->get_nom().' perd '.$perte_hp.' HP par le poison</span><br />';
+							$log_effects_attaquant .= "&ef1~".$perte_hp;
 						}
 						if($defenseur->etat['poison']['duree'] > 0)
 						{
@@ -508,6 +518,7 @@ else
 							if($defenseur->etat['putrefaction']['duree'] > 0) $perte_hp = $perte_hp * $defenseur->etat['putrefaction']['effet'];
 							$defenseur->set_hp($defenseur->get_hp() - $perte_hp);
 							echo '&nbsp;&nbsp;<span class="degat">'.$defenseur->get_nom().' perd '.$perte_hp.' HP par le poison</span><br />';
+							$log_effects_defenseur .= "&ef1~".$perte_hp;
 						}
 						//Perte de HP par hémorragie
 						if($attaquant->etat['hemorragie']['duree'] > 0)
@@ -515,12 +526,14 @@ else
 							$perte_hp = $attaquant->etat['hemorragie']['effet'];
 							$attaquant->set_hp($attaquant->get_hp() - $perte_hp);
 							echo '&nbsp;&nbsp;<span class="degat">'.$attaquant->get_nom().' perd '.$perte_hp.' HP par hémorragie</span><br />';
+							$log_effects_attaquant .= "&ef2~".$perte_hp;
 						}
 						if($defenseur->etat['hemorragie']['duree'] > 0)
 						{
 							$perte_hp = $defenseur->etat['hemorragie']['effet'];
 							$defenseur->set_hp($defenseur->get_hp() - $perte_hp);
 							echo '&nbsp;&nbsp;<span class="degat">'.$defenseur->get_nom().' perd '.$perte_hp.' HP par hémorragie</span><br />';
+							$log_effects_defenseur .= "&ef2~".$perte_hp;
 						}
 						//Perte de HP par embrasement
 						if($attaquant->etat['embraser']['duree'] > 0)
@@ -528,12 +541,14 @@ else
 							$perte_hp = $attaquant->etat['embraser']['effet'];
 							$attaquant->set_hp($attaquant->get_hp() - $perte_hp);
 							echo '&nbsp;&nbsp;<span class="degat">'.$attaquant->get_nom().' perd '.$perte_hp.' HP par embrasement</span><br />';
+							$log_effects_attaquant .= "&ef3~".$perte_hp;
 						}
 						if($defenseur->etat['embraser']['duree'] > 0)
 						{
 							$perte_hp = $defenseur->etat['embraser']['effet'];
 							$defenseur->set_hp($defenseur->get_hp() - $perte_hp);
 							echo '&nbsp;&nbsp;<span class="degat">'.$defenseur->get_nom().' perd '.$perte_hp.' HP par embrasement</span><br />';
+							$log_effects_defenseur .= "&ef3~".$perte_hp;
 						}
 						//Perte de HP par acide
 						if($attaquant->etat['acide']['duree'] > 0)
@@ -541,23 +556,27 @@ else
 							$perte_hp = $attaquant->etat['acide']['effet'];
 							$attaquant->set_hp($attaquant->get_hp() - $perte_hp);
 							echo '&nbsp;&nbsp;<span class="degat">'.$attaquant->get_nom().' perd '.$perte_hp.' HP par acide</span><br />';
+							$log_effects_attaquant .= "&ef4~".$perte_hp;
 						}
 						if($defenseur->etat['acide']['duree'] > 0)
 						{
 							$perte_hp = $defenseur->etat['acide']['effet'];
 							$defenseur->set_hp($defenseur->get_hp() - $perte_hp);
 							echo '&nbsp;&nbsp;<span class="degat">'.$defenseur->get_nom().' perd '.$perte_hp.' HP par acide</span><br />';
+							$log_effects_defenseur .= "&ef4~".$perte_hp;
 						}
 						//Perte de HP par lien sylvestre
 						if($attaquant->etat['lien_sylvestre']['duree'] > 0)
 						{
 							$attaquant->set_hp($attaquant->get_hp() - $attaquant->etat['lien_sylvestre']['effet']);
 							echo '&nbsp;&nbsp;<span class="degat">'.$attaquant->get_nom().' perd '.$attaquant->etat['lien_sylvestre']['effet'].' HP par le lien sylvestre</span><br />';
+							$log_effects_attaquant .= "&ef5~".$attaquant->etat['lien_sylvestre']['effet'];
 						}
 						if($defenseur->etat['lien_sylvestre']['duree'] > 0)
 						{
 							$defenseur->set_hp($defenseur->get_hp() - $defenseur->etat['lien_sylvestre']['effet']);
 							echo '&nbsp;&nbsp;<span class="degat">'.$defenseur->get_nom().' perd '.$defenseur->etat['lien_sylvestre']['effet'].' HP par le lien sylvestre</span><br />';
+							$log_effects_defenseur .= "&ef5~".$attaquant->etat['lien_sylvestre']['effet'];
 						}
 						if($attaquant->etat['recuperation']['duree'] > 0)
 						{
@@ -571,6 +590,7 @@ else
 							{
 								$attaquant->etat['recuperation']['hp_recup'] += $effet;
 								echo '&nbsp;&nbsp;<span class="soin">'.$attaquant->get_nom().' gagne '.$effet.' HP par récupération</span><br />';
+								$log_effects_attaquant .= "&ef6~".$effet;
 							}
 							else
 								print_debug($attaquant->get_nom().' ne peut pas gagner de HP par récupération');
@@ -587,15 +607,18 @@ else
 							{
 								$defenseur->etat['recuperation']['hp_recup'] += $effet; 
 								echo '&nbsp;&nbsp;<span class="soin">'.$defenseur->get_nom().' gagne '.$effet.' HP par récupération</span><br />';
+								$log_effects_defenseur .= "&ef6~".$effet;
 							}
 						}
 						if($defenseur->etat['fleche_debilitante']['duree'] > 0)
 						{
 							echo '&nbsp;&nbsp;<span class="soin">'.$defenseur->get_nom().' est sous l\'effet de Flêche Débilisante</span><br />';
+							$log_effects_defenseur .= "&ef7~0";
 						}
 						if($attaquant->etat['fleche_debilitante']['duree'] > 0)
 						{
 							echo '&nbsp;&nbsp;<span class="soin">'.$attaquant->get_nom().' est sous l\'effet de Flêche Débilisante</span><br />';
+							$log_effects_attaquant .= "&ef7~0";
 						}
 					}
 
@@ -606,16 +629,22 @@ else
 					?>
 					</div>
 					<?php
-				//Fin du round
+				
+				//Fin du round et gestion du log du combat
 				if($mode == 'defenseur')
 				{
 					$round++;
+					$log_combat .= ','.$log_effects_attaquant.','.$log_effects_defenseur;
+					if ($round < ($round_total + 1)) $log_combat .= ';r'.$round.':';
 					?>
 					</td>
 				</tr>
 			</table>
 					<?php
 				}
+				else
+					$log_combat .= ','; // Fin du round de l'attaquant
+					
 					if ($siege_true) break;
 			}
 
@@ -1362,6 +1391,13 @@ else
 				//Insertion de l'attaque dans les journaux des 2 joueurs
 				$requete = "INSERT INTO journal VALUES(NULL, ".$joueur->get_id().", 'attaque', '".$joueur->get_nom()."', '".$defenseur->get_nom()."', NOW(), ".($defense_hp_avant - $defense_hp_apres).", ".($attaque_hp_avant - $attaque_hp_apres).", ".$joueur_defenseur->get_x().", ".$joueur_defenseur->get_y().")";
 				$db->query($requete);
+				// Creation du log du combat
+				$combat = new combat();
+				$combat->attaquant = $joueur->get_id();
+				$combat->defenseur = $joueur_defenseur->get_id();
+				$combat->combat = $log_combat;
+				$combat->id_journal = $db->last_insert_id();
+				$combat->sauver();
 				
 				if(!$check_pet_def)
 					$requete = "INSERT INTO journal VALUES(NULL, ".$joueur_defenseur->get_id().", 'defense', '".$joueur_defenseur->get_nom()."', '".$joueur->get_nom()."', NOW(), ".($defense_hp_avant - $defense_hp_apres).", ".($attaque_hp_avant - $attaque_hp_apres).", ".$joueur_defenseur->get_x().", ".$joueur_defenseur->get_y().")";
@@ -1369,6 +1405,12 @@ else
 					$requete = "INSERT INTO journal VALUES(NULL, ".$joueur_defenseur->get_id().", 'defense', '".$defenseur->get_nom()."', '".$joueur->get_nom()."', NOW(), ".($defense_hp_avant - $defense_hp_apres).", ".($attaque_hp_avant - $attaque_hp_apres).", ".$joueur_defenseur->get_x().", ".$joueur_defenseur->get_y().")";
 				
 				$db->query($requete);
+				$combat = new combat();
+				$combat->attaquant = $joueur->get_id();
+				$combat->defenseur = $joueur_defenseur->get_id();
+				$combat->combat = $log_combat;
+				$combat->id_journal = $db->last_insert_id();
+				$combat->sauver();
 				
 				if($defenseur->get_hp() <= 0 && !$check_pet_def)
 				{
@@ -1397,7 +1439,6 @@ else
 		echo '<h5>Vous n\'avez pas assez de points d\'actions</h5>';
 	}
 }
-
 ?>
 <a onclick="for (i=0; i<<?php echo $debugs; ?>; i++) {if(document.getElementById('debug' + i).style.display == 'inline') document.getElementById('debug' + i).style.display = 'none'; else document.getElementById('debug' + i).style.display = 'inline';}"><img src="image/interface/debug.png" alt="Debug" Title="Débug pour voir en détail le combat" style="vertical-align : middle;cursor:pointer;" /></a> <br />
 <a href="informationcase.php?case=<?php echo $W_case; ?>" onclick="return envoiInfo(this.href, 'information')"><img src="image/interface/retour.png" alt="Retour" title="Retour à l'information case" style="vertical-align : middle;" /></a>
