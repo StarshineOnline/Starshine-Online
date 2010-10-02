@@ -1,22 +1,11 @@
 <?php
 if (file_exists('root.php'))
   include_once('root.php');
-?><?php
-$textures = false;
-include_once(root.'haut.php');
-setlocale(LC_ALL, 'fr_FR', 'FRA');
-include_once(root.'haut_site.php');
-if ($G_maintenance)
-{
-	echo 'Starshine-online est actuellement en cours de mis à jour.<br />
-	le forum est toujours disponible <a href="punbb/">ici - Forum</a>';
-}
-else
-{
-	include_once(root.'menu.php');
-	//Si le joueur est connecté on affiche le menu de droite
 
-	?>
+include_once(root.'inc/fp.php');
+?>
+<a href="classement.php" onclick="return envoiInfo(this.href, 'popup_content');">Classement des Personnages</a><br />
+<a href="classement_groupe.php" onclick="return envoiInfo(this.href, 'popup_content');">Classement des groupes</a><br />
 	<div id="contenu">
 		<div id="centre2">
 	<?php
@@ -873,8 +862,4 @@ foreach($tab2 as $row)
 </tr>
 </table>
 </div>
-<?php
-	include_once(root.'menu_d.php');
-}
-?>
 </div>
