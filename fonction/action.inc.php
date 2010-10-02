@@ -399,7 +399,7 @@ function sub_script_action($joueur, $ennemi, $mode, &$effects)
 					$chance_reussite = 100 - ( (100 - $chance_reussite) / (6 - $ennemi->get_level()) );
 				}
 				// Réduction des chances d'anticiper si adversaire glacé (avec une orbe de glace)
-				if($ennemi->etat['glace_anticipe']['duree'] > 0) $chance_reussite = $chance_reussite * $ennemi->etat['glace_anticipe']['effet'];
+				if($ennemi->etat['glace_anticipe']['duree'] > 0) $chance_reussite = $chance_reussite + $ennemi->etat['glace_anticipe']['effet'];
 				// Réduction des chances d'anticiper si adversaire amorphe
 				if($joueur->is_buff('maladie_amorphe')) $chance_reussite = $chance_reussite - $joueur->get_buff('maladie_amorphe', 'effet');
 				// Ob détermine si l'action est anticipée
