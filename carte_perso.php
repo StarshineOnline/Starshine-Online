@@ -7,7 +7,7 @@ header ("Content-type: image/png");
 include_once(root.'inc/fp.php');
 $im = imagecreatefrompng('image/carte.png');
 $rouge = imagecolorallocate($im, 255, 0, 0);
-$violet = imagecolorallocate($im, 102, 0, 153);
+$orange = imagecolorallocate($im, 255, 140, 0);
 //Positionnement du perso sur la carte
 $joueur = new perso($_SESSION['ID']);
 $x = ($joueur->get_x() - 1) * 3;
@@ -28,7 +28,7 @@ if($joueur->get_groupe() > 0)
 			$y = ($membre->get_y() - 1) * 3;
 			$x_fin = (($membre->get_x() - 1) * 3) + 2;
 			$y_fin = (($membre->get_y() - 1) * 3) + 2;
-			imagefilledrectangle($im, $x, $y, $x_fin, $y_fin, $violet);
+			imagefilledrectangle($im, $x, $y, $x_fin, $y_fin, $orange);
 		}
 	}
 }
