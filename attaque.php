@@ -36,6 +36,7 @@ switch($type)
 		//On vérifie que ya pas un buff qui fait défendre par un pet
 		if($joueur_defenseur->is_buff('defense_pet'))
 		{
+			$pet = $joueur_defenseur->get_pet();
 			if (!$pet || $pet->get_hp() < 1)
 			{
 				$check_pet_def = false;
@@ -45,7 +46,6 @@ switch($type)
 			{
 				$defense = $joueur_defenseur->get_buff('defense_pet', 'effet');
 				$rand = rand(0, 100);
-				$pet = $joueur_defenseur->get_pet();
 				//Défense par le pet
 				print_debug("Defense par le pet: $rand VS $defense");
 				if($rand < $defense)
@@ -338,7 +338,7 @@ else
 				{
 					if($row[0] == 127)
 					{
-						$amende = recup_amende($defenseur->get_id());
+						$amende = recup_amende($joueur_defenseur->get_id());
 						if($amende)
 						{
 							if($amende['statut'] != 'normal') $pascrime = true;
