@@ -20,16 +20,20 @@ include_once(root.$root.'class/gemmes.class.php');
  */
 function attaque($acteur = 'attaquant', $competence, &$effects)
 {
-  	global $attaquant, $defenseur, $G_buff, $G_debuff, $ups, $Gtrad, $G_round_total, $db, $log_combat;
+  	global $attaquant, $defenseur, $G_buff, $G_debuff, $ups, $Gtrad, $G_round_total, $db, $log_combat, $log_effects_attaquant, $log_effects_defenseur;
   	if ($acteur == 'attaquant')
     {
       $actif = $attaquant;
       $passif = $defenseur;
+	  $log_effects_actif = $log_effects_attaquant;
+	  $log_effects_passif = $log_effects_defenseur;
     }
   	else
     {
       $actif = $defenseur;
       $passif = $attaquant;
+	  $log_effects_actif = $log_effects_defenseur;
+	  $log_effects_passif = $log_effects_attaquant;
     }
   	$augmentation = array('actif' => array('comp' => array(),
 																					 'comp_perso' => array()),
@@ -422,6 +426,7 @@ function attaque($acteur = 'attaquant', $competence, &$effects)
 			if(array_key_exists('recuperation', $actif->etat)) $actif->etat['recuperation']['hp_max'] += $effet;
 			$actif->set_hp($actif->get_hp() + $effet);
 			if($effet > 0) echo '&nbsp;&nbsp;<span class="soin">'.$actif->get_nom().' gagne '.$effet.' HP par la rage vampirique</span><br />';
+			$log_effects_actif .= "&ef8~".$effet;
 		}
 	    //Epines
     	if($passif->is_buff('buff_epine', true))
@@ -430,6 +435,7 @@ function attaque($acteur = 'attaquant', $competence, &$effects)
 			$effet = round($degat * $buff_epine);
 			$actif->set_hp($actif->get_hp() - $effet);
 			if($effet > 0) echo '&nbsp;&nbsp;<span class="degat">'.$passif->get_nom().' renvoi '.$effet.' dégâts grâce à l\' Armure en épine</span><br />';
+			$log_effects_passif .= "&ef9~".$effet;
 		}
 	    //Armure de glace
     	if($passif->is_buff('buff_armure_glace', true))
@@ -500,11 +506,15 @@ function attaque($acteur = 'attaquant', $competence, &$effects)
     {
       $attaquant = $actif;
       $defenseur = $passif;
+	  $log_effects_attaquant = $log_effects_actif;
+	  $log_effects_defenseur = $log_effects_passif;
     }
   	else
     {
       $attaquant = $passif;
       $defenseur = $actif;
+	  $log_effects_defenseur = $log_effects_actif;
+	  $log_effects_attaquant = $log_effects_passif;
     }
 	return $augmentation;
 }
