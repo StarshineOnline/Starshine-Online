@@ -576,7 +576,7 @@ else
 						{
 							$defenseur->set_hp($defenseur->get_hp() - $defenseur->etat['lien_sylvestre']['effet']);
 							echo '&nbsp;&nbsp;<span class="degat">'.$defenseur->get_nom().' perd '.$defenseur->etat['lien_sylvestre']['effet'].' HP par le lien sylvestre</span><br />';
-							$log_effects_defenseur .= "&ef5~".$attaquant->etat['lien_sylvestre']['effet'];
+							$log_effects_defenseur .= "&ef5~".$defenseur->etat['lien_sylvestre']['effet'];
 						}
 						if($attaquant->etat['recuperation']['duree'] > 0)
 						{

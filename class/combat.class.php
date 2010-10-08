@@ -358,6 +358,16 @@ class combat
 				$effects_a[1] => 7 // id de l'effet
 				$effects_a[2] => 4 // valeur des degats 
 				*/
+						// Armure d'epine
+						if($effects_d[1] == "9")
+							if($effects_d[2] > 0) echo '&nbsp;&nbsp;<span class="degat">'.$defenseur->get_nom().' renvoi '.$effects_d[2].' dégâts grâce à l\'Armure en épine</span><br />';
+						if($effects_a[1] == "9")
+							if($effects_a[2] > 0) echo '&nbsp;&nbsp;<span class="degat">'.$attaquant->get_nom().' renvoi '.$effects_a[2].' dégâts grâce à l\'Armure en épine</span><br />';
+						// Rage vampirique
+						if($effects_d[1] == "8")
+							if($effects_d[2] > 0) echo '&nbsp;&nbsp;<span class="soin">'.$defenseur->get_nom().' gagne '.$effects_d[2].' HP par la rage vampirique</span><br />';
+						if($effects_a[1] == "8")
+							if($effects_a[2] > 0) echo '&nbsp;&nbsp;<span class="soin">'.$attaquant->get_nom().' gagne '.$effects_a[2].' HP par la rage vampirique</span><br />';
 						//Perte de HP par le poison
 						if($effects_a[1] == "1")
 							echo '&nbsp;&nbsp;<span class="degat">'.$attaquant->get_nom().' perd '.$effects_a[2].' HP par le poison</span><br />';
