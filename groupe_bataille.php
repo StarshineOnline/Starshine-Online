@@ -86,7 +86,7 @@ else
 	/*//Si c'est le chef de groupe
 	if($groupe['id_leader'] == $joueur->get_id())
 	{*/
-		$bataille_royaume = new bataille_royaume($Trace[$joueur->get_race()]['numrace']);
+		$bataille_royaume = new bataille_royaume($Trace[$leader->get_race()]['numrace']);
 		$bataille_royaume->get_batailles();
 		
 		if(array_key_exists('participe', $_GET))
