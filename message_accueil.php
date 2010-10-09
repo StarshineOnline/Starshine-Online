@@ -5,6 +5,9 @@ if (file_exists('root.php'))
 include_once(root.'inc/fp.php');
 $joueur = new perso($_SESSION['ID']);
 
+$oldcookie = $_COOKIE['dernier_affichage_popup'];
+setcookie('dernier_affichage_popup', time(), time() + (24 * 3600 * 31));
+
 if(array_key_exists('affiche', $_GET)) $affiche = $_GET['affiche']; else $affiche = false;
 
 // Si message global
@@ -21,7 +24,7 @@ if ($db->num_rows > 0)
 $requete = "SELECT * FROM motk WHERE race = '".$joueur->get_race()."'";
 $req_m = $db->query($requete);
 $row_m = $db->read_assoc($req_m);
-if ($_COOKIE['dernier_affichage_popup'] <= $row_m['date'] OR $affiche == 'all')
+if ($oldcookie <= $row_m['date'] OR $affiche == 'all')
 {
 	$message = htmlspecialchars(stripslashes($row_m['message']));
 	$message = str_replace('[br]', '<br />', $message);
@@ -51,7 +54,7 @@ if ($_COOKIE['dernier_affichage_popup'] <= $row_m['date'] OR $affiche == 'all')
 }
 
 //On cherche les derniers événements de ce joueur.
-$requete_journal = "SELECT * FROM journal WHERE id_perso = ".$joueur->get_id()." AND time > '".date("Y-m-d H:i:s", $_COOKIE['dernier_affichage_popup'])."' ORDER BY time ASC, id ASC";
+$requete_journal = "SELECT * FROM journal WHERE id_perso = ".$joueur->get_id()." AND time > '".date("Y-m-d H:i:s", $oldcookie)."' ORDER BY time ASC, id ASC";
 $req_journal = $db->query($requete_journal);
 while($row_journal = $db->read_assoc($req_journal))
 {
@@ -74,7 +77,7 @@ $requete_news = "SELECT * FROM punbbtopics WHERE (forum_id = 5) ORDER BY posted 
 $req_news = $db_forum->query($requete_news);
 
 $row_news = $db_forum->read_array($req_news);
-if ($_COOKIE['dernier_affichage_popup'] <= $row_news['posted'])
+if ($oldcookie <= $row_news['posted'])
 {
 	echo '<div class="titre_news"><strong><a class="news" href="http://forum.starshine-online.com/viewtopic.php?id='.$row_news['id'].'">'./*utf8_encode*/($row_news['subject']).'</a></strong><br />
 	<span style="font-size:10px;">Par '.$row_news['poster'].', le '.date("l d F Y à H:i", $row_news['posted']).'</span><!-- <span style="font-size : 10px;"> ('.($row_news['num_replies']).' commentaires)</span> --></div>';
@@ -107,6 +110,4 @@ while($row = $db_forum->read_array($req) AND $i < 5)
 	<span style="font-size:10px;">Par '.$row['last_poster'].', le '.date("l d F Y à H:i", $row['last_post']).'</span><!-- <span style="font-size : 10px;"> ('.($row['num_replies']).' commentaires)</span> --></div>';
 	$i++;
 }
-
-setcookie('dernier_affichage_popup', time(), time() + (24 * 3600 * 31));
 ?>
