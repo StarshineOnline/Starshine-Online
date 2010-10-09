@@ -5,8 +5,6 @@ if (file_exists('root.php'))
 include_once(root.'inc/fp.php');
 $joueur = new perso($_SESSION['ID']);
 
-setcookie('dernier_affichage_popup', time(), time() + (24 * 3600 * 31));
-
 if(array_key_exists('affiche', $_GET)) $affiche = $_GET['affiche']; else $affiche = false;
 
 // Si message global
@@ -109,4 +107,6 @@ while($row = $db_forum->read_array($req) AND $i < 5)
 	<span style="font-size:10px;">Par '.$row['last_poster'].', le '.date("l d F Y à H:i", $row['last_post']).'</span><!-- <span style="font-size : 10px;"> ('.($row['num_replies']).' commentaires)</span> --></div>';
 	$i++;
 }
+
+setcookie('dernier_affichage_popup', time(), time() + (24 * 3600 * 31));
 ?>
