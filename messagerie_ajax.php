@@ -141,7 +141,8 @@ else
 		foreach($messagerie->threads as $key => $thread)
 		{
 			$message_total = $thread->get_message_total($joueur->get_id());
-			if($message_total > 0)
+			// Si y'a au moins un message dans le thread, et que ce thread n'est pas masqué par le joueur
+			if($message_total > 0 AND $message_total != $messagerie->get_thread_masque($thread->id_thread))
 			{
 				$date = date("d-m H:i", strtotime($thread->dernier_message));
 				//Recherche du destinataire
@@ -153,7 +154,7 @@ else
 					$nom_interlocuteur = $interlocuteur['nom'];
 				}
 				else $nom_interlocuteur = 'groupe';
-				if($thread->important) $style = 'font-weight : bold;';
+				if($thread->important == 1) $style = 'font-weight : bold;';
 				else $style = '';
 				$thread_non_lu = $messagerie->get_thread_non_lu($thread->id_thread);
 				if($thread_non_lu > 0) $texte_thread_non_lu = '('.$thread_non_lu.')';
@@ -170,6 +171,12 @@ else
 					$options .= '<a href="thread_modif.php?id_thread='.$thread->id_thread.'&suppr=1" onclick="if(confirm(\'Si vous supprimez ce message, tous les messages à l\\\'intérieur seront supprimés !\')) return envoiInfo(this.href, \'thread_'.$thread->id_thread.'\'); else return false;" title="Supprimer"><span class="del" style="float : right;"></span></a>';
 				}
 				else $options = '';
+				
+				//Masquage
+				if(($groupe->get_leader() == $joueur->get_id() && $type_thread == 'groupe') OR ($thread->id_auteur == $joueur->get_id()) OR ($thread->id_dest == $joueur->get_id()))
+				{
+					$options .= '<a href="thread_modif.php?id_thread='.$thread->id_thread.'&masq=1" onclick="if(confirm(\'Etes vous sur de vouloir masquer ce message ?\')) return envoiInfo(this.href, \'thread_'.$thread->id_thread.'\'); else return false;" title="Masquer"><span class="masq" style="float: right;"></span></a>';
+				}
 				?>
 				<li <?php if($thread_non_lu>0) {echo "style='font-weight: bold;' ";} ?> id="thread_<?php echo $thread->id_thread; ?>" class="<?php echo $class;?>" onclick="envoiInfo('messagerie.php?id_thread=<?php echo $thread->id_thread; ?>', 'information');">
 					<span class='titre'>

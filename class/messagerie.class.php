@@ -102,6 +102,31 @@ class messagerie
 		else return false;
 	}
 	
+	//Récupération du nombre de message masqués pour ce thread et ce perso
+	function get_thread_masque($id_thread = 0)
+	{
+		global $db;
+		if($id_thread != 0)
+		{
+			$requete = "SELECT messagerie_message.id_message FROM messagerie_message LEFT JOIN messagerie_etat ON messagerie_message.id_message = messagerie_etat.id_message WHERE messagerie_etat.id_dest = ".$this->id_perso." AND messagerie_message.id_thread = ".$id_thread." AND messagerie_etat.etat = 'masque'";
+			$req = $db->query($requete);
+			return $db->num_rows($req);
+		}
+		else return false;
+	}
+	
+	//Marque comme masque tous les message d'un thread
+	function set_thread_masque($id_thread = 0)
+	{
+		global $db;
+		if($id_thread != 0)
+		{
+			$requete = "UPDATE messagerie_etat, messagerie_message SET messagerie_etat.etat = 'masque' WHERE messagerie_etat.id_message = messagerie_message.id_message AND messagerie_message.id_thread = ".$id_thread." AND messagerie_etat.id_dest = ".$this->id_perso;
+			$req = $db->query($requete);
+		}
+		else return false;
+	}
+	
 	//Récupère le thread et les ?tats de message
 	function get_thread($id_thread = 0, $nombre = 'all', $tri_date = 'ASC', $numero_page = false, $message_par_page = 10)
 	{

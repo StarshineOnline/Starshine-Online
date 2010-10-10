@@ -261,8 +261,8 @@ textarea#css, textarea#description { width: 500px; height:150px; }
 #messagerie_liste .t1 {background:#B4CFEF; -moz-border-radius:5px; -webkit-border-radius:5px; border-radius: 5px;}
 #messagerie_liste .titre { float:left; display:block; width:190px; padding-left:10px; }
 #messagerie_liste .msg { float:left; display:block; width:35px; text-align: right;padding-right:10px;}
-#messagerie_liste .par { float:left; display:block; width:100px; }
-#messagerie_liste .date { float:left; display:block; width:90px; }
+#messagerie_liste .par { float:left; display:block; width:90px; }
+#messagerie_liste .date { float:left; display:block; width:100px; }
 #combat_cartouche { clear:both; background-color:#DDDDDD; padding:9px; -moz-border-radius:12px; -webkit-border-radius:12px; border-radius: 12px; min-height:70px; }
 .infoperso td { font-size:10px; margin:0; padding:0; }
 .roseeticone { float:left; padding:4px; margin:5px; }
@@ -284,6 +284,8 @@ div.spacer { clear:both; }
 .fav_off { background:transparent url(./../image/messagerie_fav_off.png) no-repeat scroll left center; height:14px; width:16px; display:block; float:left; }
 .del { background:transparent url(./../image/messagerie_del.png) no-repeat scroll top; height:16px; width:16px; display:block; }
 .del:hover { background-position:bottom!important; }
+.masq { background:transparent url(./../image/messagerie_del.png) no-repeat scroll top; height:16px; width:16px; display:block; }
+.masq:hover { background-position:bottom!important; }
 .msg_cache { background:transparent url(./../image/messagerie_cacher.png) no-repeat scroll top; height:16px; width:16px; display:block; float:left; }
 .msg_voir { background:transparent url(./../image/messagerie_voir.png) no-repeat scroll top; height:16px; width:16px; display:block; float:left; }
 h3.messagerie span.auteur { position:absolute; left:0; font-weight:bold; font-size:11px; display:block; width:114px; text-align:center; text-transform:capitalize; }
