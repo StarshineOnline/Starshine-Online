@@ -301,7 +301,7 @@ class log_admin extends log_admin_db {
 	  $this->sauver();
   }
 
-	static function display_all($where = false, $limit = false)
+	static function display_all($where = false, $limit = false, $table = false)
 	{
 		global $db;
 		$requete = 'SELECT l.id, l.id_joueur, p.nom, l.type, l.message, l.date FROM log_admin l, perso p WHERE l.id_joueur = p.id ';
@@ -311,18 +311,27 @@ class log_admin extends log_admin_db {
 		if ($limit != false) 
 			$requete .= " LIMIT $limit";
 		$req = $db->query($requete);
-		$out = '<ul>';
+		if ($table)
+			$out = '<table id="'.$table.'"><thead><tr><th>Date</th><th>Nom</th><th>Type</th><th>Message</th></tr></thead><tbody>';
+		else
+			$out = '<ul>';
 		if($db->num_rows($req) > 0)
 		{
 			while($row = $db->read_assoc($req))
 			{
 				// TODO: fonctions diverses ...
-				$out .= "<li>$row[nom] ($row[date]|$row[type]): $row[message]</li>";
+				if ($table)
+					$out .= "<tr><td><small>$row[date]</small></td><td>$row[nom]</td><td>$row[type]</td><td>$row[message]</td></tr>";
+				else
+					$out .= "<li>$row[nom] ($row[date]|$row[type]): $row[message]</li>";
 			}
 		} else {
 			$out .= 'Aucun';
 		}
-		$out .= '</ul>';
+		if ($table)
+			$out .= '</tbody></table>';
+		else
+			$out .= '</ul>';
 		return $out;
 	}
 
