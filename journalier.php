@@ -188,6 +188,8 @@ while($row = $db->read_array($req))
 	$mail .= $next_line;
 }
 
+$log = new log_admin();
+
 fclose($handle);
 $ret = $db->query("LOAD DATA LOCAL INFILE \"$insert_file\" INTO TABLE map_monstre (type, x, y, hp, mort_naturelle)");
 $ret_info = $db->get_mysql_info();
@@ -197,13 +199,13 @@ if ($ret_info['warnings'] == 0) {
 	unlink($insert_file);
 } else {
 	$msg = "Warnings detected: file `${insert_file}` kept \n";
-	$log = new log_admin();
 	$log->send(0, 'journalier', $msg);
 }
 
 //Si le premier du mois, pop des boss de donjons
 if(date("j") == 1)
 {
+	$log->send(0, 'journalier', 'Jour 1: pop des boss de donjon');
 	//Myriandre
 	$requete = "SELECT type FROM map_monstre WHERE type = 64 OR type = 65 OR type = 75";
 	$db->query($requete);
@@ -215,6 +217,7 @@ if(date("j") == 1)
       .$time.")";
 		$db->query($requete);
 		$mail .= "Pop de Devorsis\n";
+		$log->send(0, 'journalier', 'Pop de Devorsis');
 	}
 	//Donjon Gob
 	//Draconide 1
@@ -231,6 +234,7 @@ if(date("j") == 1)
       .$time.")";
 		$db->query($requete);
 		$mail .= "Pop du construct draconide 1, construct draconide 2\n";
+		$log->send(0, 'journalier', 'Pop des construct draconide');
 	}
 }
 $mail .= mysql_error();
