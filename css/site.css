@@ -21,8 +21,8 @@ a:hover								{color:#CCF2FF;}
 .creation_text 						{ float:left; display:block; width:200px; }
 #login 								{ padding:3px 10px 0; margin-left:71px; width:530px; position:absolute; background:transparent url(./../image/site/cadrehautpagesso.png) no-repeat scroll 0 0; color:#EEE; height:75px; font-size:11px; top:0; }
 #login_ok 							{ color:#E2D1AA;padding:21px 95px 0; margin-left:71px; width:530px; position:absolute; background:transparent url(./../image/site/cadrehautpagesso1.png) no-repeat scroll 0 0; color:#EEE; height:75px; font-size:11px; top:0; }
-#login_ok a 						{ color:#ffd200;text-decoration: none;}
-#login_ok a:hover						{ color:#CCF2FF;text-decoration: none;}
+#login_ok a 						{ color:#E2D1AA;text-decoration: none;}
+#login_ok a:hover						{ color:#fae086;text-decoration: none;}
 .login_nom 							{ background-color:#000000; border:0 none; color:white; float:left; height:13px; margin-left:52px; margin-top:19px; text-align:left; width:81px; }
 .login_mdp 							{ background-color:#000000; border:0 none; color:white; float:left; height:13px; margin-left:54px; margin-top:19px; text-align:left; width:80px; }
 .login_auto 						{ background-color:#000000; border:0 none; color:white; float:left; height:13px; margin-left:76px; margin-top:19px; text-align:left; width:14px; }
