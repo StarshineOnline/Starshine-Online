@@ -304,7 +304,8 @@ class log_admin extends log_admin_db {
 	static function display_all($where = false, $limit = false, $table = false)
 	{
 		global $db;
-		$requete = 'SELECT l.id, l.id_joueur, p.nom, l.type, l.message, l.date FROM log_admin l, perso p WHERE l.id_joueur = p.id ';
+		// left join pour les id_perso 0 (journalier)
+		$requete = 'SELECT l.id, l.id_joueur, p.nom, l.type, l.message, l.date FROM log_admin l LEFT JOIN perso p ON l.id_joueur = p.id';
 		if ($where != false) 
 			$requete .= " AND $where ";
 		$requete .= ' ORDER BY l.date DESC ';
@@ -320,8 +321,9 @@ class log_admin extends log_admin_db {
 			while($row = $db->read_assoc($req))
 			{
 				// TODO: fonctions diverses ...
+				if ($row['nom'] == null) $row['nom'] = '<em>'.$row['type'].'</em>';
 				if ($table)
-					$out .= "<tr><td><small>$row[date]</small></td><td>$row[nom]</td><td>$row[type]</td><td>$row[message]</td></tr>";
+					$out .= "<tr id=\"id$row[id]\"><td><small>$row[date]</small></td><td>$row[nom]</td><td>$row[type]</td><td>$row[message]</td></tr>";
 				else
 					$out .= "<li>$row[nom] ($row[date]|$row[type]): $row[message]</li>";
 			}
