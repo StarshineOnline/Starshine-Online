@@ -290,7 +290,7 @@ if(isset($echange))
 <h3>Echange avec <?php echo $receveur->get_nom(); ?> - N° : <?php echo $echange['id_echange']; ?> - <?php echo $echange['statut']; ?></h3>
 <div class="information_case">
 <?php
-	if(($echange['statut'] == 'proposition') OR ($echange['statut'] == 'finalisation'))
+	if(($echange['statut'] == 'proposition') OR ($echange['statut'] == 'finalisation') OR $echange['statut'] == 'fini')
 	{
 		?>
 		Proposition de <?php echo $j1->get_nom(); ?> :
@@ -320,9 +320,10 @@ if(isset($echange))
 		</div>
 		<?php
 	}
-	if($echange['statut'] == 'finalisation')
+	if($echange['statut'] == 'finalisation' OR $echange['statut'] == 'fini')
 	{
 		?>
+		<br />
 		Proposition de <?php echo $j2->get_nom(); ?> :
 		<div>
 		Stars : <?php echo $echange['star'][$j2->get_id()]['objet']; ?><br />
@@ -349,7 +350,7 @@ if(isset($echange))
 		</ul>
 		</div>
 		<?php
-		if($echange['id_j1'] == $joueur->get_id())
+		if($echange['id_j1'] == $joueur->get_id() AND $echange['statut'] != 'fini')
 		{
 		?>
 		<input type="button" value="Finir l'échange" onclick="envoiInfo('echange.php?id_echange=<?php echo $echange['id_echange']; ?>&amp;valid_etape=true', 'information');" />
@@ -449,7 +450,7 @@ Vous proposez :
 	}
 }
 echo '</div>';
-if($echange['statut'] != 'annule' AND isset($echange))
+if($echange['statut'] != 'annule' AND isset($echange) AND $echange['statut'] != 'fini')
 {
 ?>
 <div class="information_case"><input type="button" onclick="if(confirm('Voulez vous supprimer cet échange ?')) envoiInfo('liste_echange.php?id_echange=<?php echo $echange['id_echange']; ?>&amp;annule=ok', 'information');" value="Supprimer l'échange" /></div>
