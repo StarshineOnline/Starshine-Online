@@ -705,9 +705,9 @@
 
         
     	echo '<input type="checkbox" name="acces_ville" id="acces_ville" ';
-    	if($amende['acces_ville'] == 'y') {echo 'checked="checked"';} 
+    	if($amende['acces_ville'] == 'n') {echo 'checked="checked"';} 
     	echo ' /> Empèche le joueur d\'accéder à la ville<br />
-    	<input type="checkbox" name="spawn_ville" id="spawn_ville"'; if($joueur->get_crime() > 30) {echo 'disabled';} if($amende['respawn_ville'] == 'y') {echo 'checked="checked"';}  echo '/> Empèche de renaître à la ville<br />
+    	<input type="checkbox" name="spawn_ville" id="spawn_ville"'; if($joueur->get_crime() > 30) {echo 'disabled';} if($amende['respawn_ville'] == 'n') {echo 'checked="checked"';}  echo '/> Empèche de renaître à la ville<br />
     	<br />
     	Statut du personnage <select name="statut" id="statut">';
     	
@@ -722,7 +722,7 @@
     	<br />
     	 Montant de l'amende (max : <?php echo $amende_max; ?>) <input type="text" name="montant" id="montant" value='<?php echo $amende['montant'];?>' /><br />
     	 <br />
-    	 <input type="submit" value="Valider cette amende" onclick="envoiInfo('gestion_royaume.php?direction=gestion_criminel2&amp;id=<?php echo $joueur->get_id(); ?>&amp;acces_ville=' + $('#acces_ville').is(':checked') + '&amp;spawn_ville=' + $('#spawn_ville').is(':checked') + '&amp;statut=' + $('#statut').val() + '&amp;montant=' + $('#montant').val(), 'message_confirm');$('#popup').hide();envoiInfo('gestion_royaume.php?direction=criminel','contenu_jeu');" />
+    	 <input type="submit" value="Valider cette amende" onclick="envoiInfo('gestion_royaume.php?direction=gestion_criminel2&amp;id=<?php echo $joueur->get_id(); ?>&amp;acces_ville=' + $('#acces_ville').is(':not(:checked)') + '&amp;spawn_ville=' + $('#spawn_ville').is(':not(:checked)') + '&amp;statut=' + $('#statut').val() + '&amp;montant=' + $('#montant').val(), 'message_confirm');$('#popup').hide();envoiInfo('gestion_royaume.php?direction=criminel','contenu_jeu');" />
 	       <?php
 	    break;
 	

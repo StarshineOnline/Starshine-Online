@@ -15,10 +15,7 @@ $W_requete = 'SELECT * FROM map WHERE x = '.$joueur->get_x().' and y = '.$joueur
 $W_req = $db->query($W_requete);
 $W_row = $db->read_assoc($W_req);
 $R = new royaume($W_row['royaume']);
-?>
-	<div id="carte">
-	<fieldset class='ville_<?php echo $R->get_race(); ?>'>
-<?php
+
 
 $W_distance = detection_distance($W_case, $joueur->get_pos());
 
@@ -79,29 +76,34 @@ if($W_row['type'] == 1)
 			$amende = recup_amende($joueur->get_id());
 		}
 	}
-	if($amende)
-	{
-		if($amende['acces_ville'] == 'y') $acces_ville = true;
-		else $acces_ville = false;
-	}
-	else $acces_ville = true;
+		if($amende)
+		{
+			if($amende['acces_ville'] == 'y') $acces_ville = true;
+			else $acces_ville = false;
+		}
+		else $acces_ville = true;
 	
-	if($amende)
-	{
-	//Payer l'amende
+		if($amende)
+		{
+			//Payer l'amende
+			?>
+			<p style='text-align:center;color:#EF3B3B;background-color:#EEE;-moz-border:12px;'>Vous êtes considéré comme criminel par votre royaume.<br />
+			Il vous faut payer une amende de <?php echo $amende['montant']; ?> stars pour ne plus l'être.<br />
+			<a href="ville.php" onclick="return envoiInfo('ville.php?direction=paye_amende', 'centre')">Pour payer l'amende, cliquez ici</a></p>
+			<?php
+		}
+		?>
+	<div id="carte">
+	<fieldset class='ville_<?php echo $R->get_race(); ?>'>
+<?php
+	// Nom de la ville
 	?>
-	<p style='text-align:center;color:#EF3B3B;background-color:#EEE;-moz-border:12px;'>Vous êtes considéré comme criminel par votre royaume.<br />
-	Il vous faut payer une amende de <?php echo $amende['montant']; ?> stars pour ne plus l'être.<br />
-	<a href="" onclick="return envoiInfo('ville.php?direction=paye_amende', 'carte')">Pour payer l'amende, cliquez ici</a></p>
+		<legend><?php echo '<a href="ville.php" onclick="return envoiInfo(this.href,\'centre\')">';?><?php echo $R->get_nom();?></a> </legend>
 	<?php
-	}
 
 	//Affichage de la ville uniquement pour les persos qui ne sont pas en guerre, et qui n'ont pas d'amende
 	if(($R->get_diplo($joueur->get_race()) < 7 OR $R->get_diplo($joueur->get_race()) == 127) AND $acces_ville)
 	{
-		?>
-		<legend><?php echo '<a href="ville.php" onclick="return envoiInfo(this.href,\'centre\')">';?><?php echo $R->get_nom();?></a> </legend>
-<?php
 				
 				if($R->get_id() != 0)
 				{
