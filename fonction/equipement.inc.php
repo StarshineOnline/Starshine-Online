@@ -73,6 +73,9 @@ function decompose_objet($objet)
 			case 'o' :
 				$objet_dec['table_categorie'] = 'objet';
 			break;
+			case 'd' :
+				$objet_dec['table_categorie'] = 'objet_pet';
+			break;
 			case 'g' :
 				global $db;
 				$objet_dec['table_categorie'] = 'gemme';
@@ -231,6 +234,12 @@ function description_objet($id_objet)
 			$req = $db->query($requete);
 			$row = $db->read_assoc($req);
 			$description .= '<strong>'.$row['nom'].'</strong><br />	<table> <tr> <td> Type </td> <td> '.$Gtrad[$row['type']].' </td> </tr> <tr> <td> PP </td> <td> '.$row['PP'].' </td> </tr> <tr> <td> PM </td> <td> '.$row['PM'].' </td> </tr> <tr> <td> Force nécessaire </td> <td> '.$row['forcex'].' </td> </tr> <tr> <td> Prix HT<br /> <span class=\\\'xsmall\\\'>(en magasin)</span> </td> <td> '.$row['prix'].' </td> </tr> </table>';
+		break;
+		case 'd' :
+			$requete = "SELECT * FROM objet_pet WHERE id = ".$objet['id_objet'];
+			$req = $db->query($requete);
+			$row = $db->read_assoc($req);
+			$description .= '<strong>'.$row['nom'].'</strong><br />	<table> <tr> <td> Type </td> <td> '.$row['type'].' </td> </tr> <tr> <td> PP </td> <td> '.$row['PP'].' </td> </tr> <tr> <td> PM </td> <td> '.$row['PM'].' </td> </tr> <tr> <td> Dressage nécessaire </td> <td> '.$row['dressage'].' </td> </tr> <tr> <td> Prix HT<br /> <span class=\\\'xsmall\\\'>(en magasin)</span> </td> <td> '.$row['prix'].' </td> </tr> </table>';
 		break;
 		case 'm' :
 			$requete = "SELECT * FROM accessoire WHERE id = ".$objet['id_objet'];
@@ -661,7 +670,7 @@ function verif_echange_joueur($id_echange, $id_joueur, $id_objet = 0, $type_obje
 		if($joueur->get_star() >= $id_objet)
 		{
 			//Si ya déjà des stars, on les suppriment
-			if(array_key_exists('star', $echange) && array_key_exists($id_joueur, $echange['star']))
+			if(array_key_exists('star', $echange) && array_key_exists($id_joueur, $echange['star']) && $echange['statut'] != 'finalisation')
 			{
 				echange_objet_suppr($echange['star'][$id_joueur]['id_echange_objet']);
 			}
