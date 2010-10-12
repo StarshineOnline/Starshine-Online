@@ -190,8 +190,7 @@ if($W_row['type'] == 1)
 			{
 				unset($objet_info);
 				$objet_info = decompose_objet($objets_tab[$id]["objet"]);
-				$objet = $objets_tab_new[$objet_info["id"]];
-
+				$objet = $objets_tab_new[$objet_info["sans_stack"]];
 				//Modification du nom des grimoires
 				if($objet_info['table_categorie'] == 'grimoire')
 				{
@@ -211,15 +210,15 @@ if($W_row['type'] == 1)
 				}
 				if($objet_info["stack"] > 1) 	{ $tmp_stack = " X ".$objet_info["stack"]; } else { $tmp_stack = ""; };
 				if($objet_info["slot"] > 0) 	
-				{ 
+				{
 					$tmp_slot = "<span class='slot' title='slot de niveau ".$objet_info["slot"]."'>".$objet_info["slot"]."</span>"; 
 					$tmp_slot2 = "slot de niveau ".$objet_info["slot"]; 
 				}
 				elseif($objet_info["slot"] == "0") 	
-				{ 
+				{
 					$tmp_slot = "<span class='slot' title='slot impossible'>x</span>"; 
 					$tmp_slot2 = "slot impossible"; 
-				} 
+				}
 				else { $tmp_slot = ""; $tmp_slot2 = "";}
 				if($objet_info["enchantement"] > "0")
 				{
