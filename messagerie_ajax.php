@@ -166,20 +166,19 @@ else
 					else $important_etat = 1;
 					//$options = '<a href="thread_modif?id_thread='.$thread->id_thread.'&important='.$important_etat.'" onclick="return envoiInfo(this.href, \'\');">(i)</a>';
 				}
-				if(($groupe->get_leader() == $joueur->get_id() && $type_thread == 'groupe') OR ($thread->id_auteur == $joueur->get_id() && $message_total <= 1))
-				{
-					$options .= '<a href="thread_modif.php?id_thread='.$thread->id_thread.'&suppr=1" onclick="if(confirm(\'Si vous supprimez ce message, tous les messages à l\\\'intérieur seront supprimés !\')) return envoiInfo(this.href, \'thread_'.$thread->id_thread.'\'); else return false;" title="Supprimer"><span class="del" style="float : right;"></span></a>';
-				}
-				else $options = '';
-				
 				//Masquage
 				if(($groupe->get_leader() == $joueur->get_id() && $type_thread == 'groupe') OR ($thread->id_auteur == $joueur->get_id()) OR ($thread->id_dest == $joueur->get_id()))
 				{
 					$options .= '<a href="thread_modif.php?id_thread='.$thread->id_thread.'&masq=1" onclick="if(confirm(\'Etes vous sur de vouloir masquer ce message ?\')) return envoiInfo(this.href, \'thread_'.$thread->id_thread.'\'); else return false;" title="Masquer"><span class="masq" style="float: right;"></span></a>';
 				}
+				else $options = '';
+				if(($groupe->get_leader() == $joueur->get_id() && $type_thread == 'groupe') OR ($thread->id_auteur == $joueur->get_id() && $message_total <= 1))
+				{
+					$options .= '<a href="thread_modif.php?id_thread='.$thread->id_thread.'&suppr=1" onclick="if(confirm(\'Si vous supprimez ce message, tous les messages à l\\\'intérieur seront supprimés !\')) return envoiInfo(this.href, \'thread_'.$thread->id_thread.'\'); else return false;" title="Supprimer"><span class="del" style="float : right;"></span></a>';
+				}
 				?>
-				<li <?php if($thread_non_lu>0) {echo "style='font-weight: bold;' ";} ?> id="thread_<?php echo $thread->id_thread; ?>" class="<?php echo $class;?>" onclick="envoiInfo('messagerie.php?id_thread=<?php echo $thread->id_thread; ?>', 'information');">
-					<span class='titre'>
+				<li <?php if($thread_non_lu>0) {echo "style='font-weight: bold;' ";} ?> id="thread_<?php echo $thread->id_thread; ?>" class="<?php echo $class;?>">
+					<span class='titre' onclick="envoiInfo('messagerie.php?id_thread=<?php echo $thread->id_thread; ?>', 'information');">
 
 				<?php
 				//Si le titre est trop long je le coupe pour que ça casse pas ma mise en page qui déchire ta soeur en deux
@@ -211,7 +210,8 @@ else
 						<?php echo $date; ?>
 						<?php echo $options; ?>
 					</span>
-				</li>
+					</li>
+				
 				<?php
 				if ($class=='t1'){$class='t2';}else{$class='t1';}
 			}
