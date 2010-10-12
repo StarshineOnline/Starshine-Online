@@ -118,7 +118,7 @@ elseif(array_key_exists('info_bataille', $_GET))
 	?>
 	</div>
 	<div id="info_bataille" style="float: left;">
-		<h1>Bataille : <?php echo $bataille->nom; ?> <a href="gestion_bataille.php?refresh_bataille=<?php echo $bataille->id; ?>" onclick="return envoiInfo(this.href, 'map');">R</a></h1>
+		<h1>Bataille : <?php echo $bataille->nom; ?> <a href="gestion_bataille.php?refresh_bataille=<?php echo $bataille->id; ?>" onclick="return envoiInfo(this.href, 'map');"><img src="../image/interface/icone_refresh_bataille.png" alt="R" /></a></h1>
 		<fieldset>
 			<legend>Description</legend>
 			<?php echo transform_texte($bataille->description); ?>

@@ -429,9 +429,9 @@ class map
 							$overlib = "";
 						}
 						else { $overlib = ""; }
-	
+
 						//Repere
-						if(is_array($this->map[$x_map][$y_map]["Reperes"])) $repere = $this->map[$x_map][$y_map]["Reperes"][0]['nom'][0];
+						if(is_array($this->map[$x_map][$y_map]["Reperes"])) $repere = '<img src="'.root.'image/interface/'.$this->map[$x_map][$y_map]["Reperes"][0]["image"].'" alt="'.$this->map[$x_map][$y_map]["Reperes"][0]['nom'][0].'" width="20px" />';
 						else $repere = '&nbsp;';
 	
 						if($this->resolution == 'low') $tex_resolution = 'l';
@@ -883,6 +883,7 @@ class map
 			$this->map[$repere->x][$repere->y]["Reperes"][$rep]["id_repere"] = $repere->id;
 			$this->map[$repere->x][$repere->y]["Reperes"][$rep]["nom"] = $repere->repere_type->nom;
 			$this->map[$repere->x][$repere->y]["Reperes"][$rep]["id_type"] = $repere->id_type;
+			$this->map[$repere->x][$repere->y]["Reperes"][$rep]["image"] = $repere->repere_type->image;
 		}
 	}
 
