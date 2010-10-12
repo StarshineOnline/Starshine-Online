@@ -408,7 +408,7 @@ table.inventaire tr.element td,table.inventaire tr.header td { font-size:.9em; }
 .quartier_haut li:hover {background: #FFF;}
 
 
-.quartier_bas			{background:transparent url(../image/ville/cadrebiseauBQ.png) center;padding:6px;margin-top:50px;margin-left:103px;width:132px;height:135px;float:left;}
+.quartier_bas			{background:transparent url(../image/ville/cadrebiseauBQ.png) center;padding:6px;margin-top:45px;margin-left:103px;width:132px;height:130px;float:left;}
 .quartier_bas_titre {font-size:14px;font-variant:small-caps; font-family:"Trebuchet MS", Times, serif; font-weight:bold;background:transparent url(../image/ville/cadretitreBQ.png) top;display:block;height:34px;width:106px;margin-left:12px;margin-top:-8px;line-height:38px;text-indent:13px;color:#463300;}
 .quartier_bas li {cursor: pointer;background: #bfccdd;border : 1px solid #8d7845;-moz-border-radius: 6px;-webkit-border-radius:6px; border-radius: 6px;font-size:11px;height:14px;margin:2px;text-align:center;color: #3a3a4f;}
 .quartier_bas li:hover {background: #FFF;}
