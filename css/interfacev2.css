@@ -1,3 +1,6 @@
+/*-- Includes -----------------------------------------------------*/
+@import "datatables.css";
+
 /*-- Global site --------------------------------------------------*/
 html { width:100%; height:100%; }
 body { margin:0; padding:0; background:#7e909c url(../image/v2/bg_site.png) repeat-x; width:100%; height:100%; font:13px "Helvetica Neue", Helvetica, Arial, Geneva, sans-serif; }
@@ -17,6 +20,7 @@ body { margin:0; padding:0; background:#7e909c url(../image/v2/bg_site.png) repe
 #perso_menu ul { margin:0; padding:0; list-style-type:none; height:17px; text-align:center; position:relative; }
 #perso_menu ul li { padding-left:5px; padding-right:5px; cursor:pointer; width:100px; background:transparent url(../image/v2/box_accueil2.png); border-left:1px solid #777; border-right:1px solid #777; border-top:1px solid #777; margin-left:5px; margin-right:5px; font-style:italic; -moz-border-radius-topleft:12px; -moz-border-radius-topright:12px; -webkit-border-top-right-radius:12px; -webkit-border-top-left-radius:12px; border-top-left-radius: 12px; border-top-right-radius: 12px;}
 #perso_menu .menu { float:left; }
+#perso_menu .menu2 { float:left;margin-top: -3px; }
 #perso_menu .select { background:transparent url(../image/v2/bouton_selected.png) repeat-x; font-style:normal; font-weight:bold; }
 .pos_over { background:transparent url(../image/interface/2.png) center; display:block; -moz-border-radius:5px; -webkit-border-radius:5px; border-radius: 5px; height:58px!important; width:58px!important; }
 #perso_contenu { margin:auto; min-height:110px; padding:5px; }
@@ -38,11 +42,12 @@ body { margin:0; padding:0; background:#7e909c url(../image/v2/bg_site.png) repe
 #menu a { color:#222; text-decoration:none; }
 #menu_date { float:left; height:20px; margin-left:9px; width:91px; line-height:20px; font-size:.9em; }
 #menu_date img { height:15px; padding-right:8px; vertical-align:middle; }
+#meteo {display : none; z-index : 999999999; width : 300px;}
 #menu_details { font-size:12px; float:left; margin-top:2px; }
 #menu_details .menu { width:120px; display:block; float:left; cursor:pointer; text-align:center; border-left:1px solid #CCC; border-rightr:1px solid #CCC; }
 #menu_details .menu:hover { background:transparent url(../image/v2/bouton_hover.png) no-repeat left; padding-top:1px; }
 #menu_deco { float:right; cursor:pointer; margin-right:9px; line-height:20px; font-size:.9em; }
-#contenu_back { margin:0; padding:0; overflow:auto; }
+#contenu_back { margin:0; padding:0; }
 #contenu { width:1000px; margin:auto; min-height:700px; }
 #news { width:830px; float:left; }
 #mort fieldset { -moz-border-radius: 10px;-moz-border-radius: 10px; border-radius: 10px; width:46%;float:left;margin:8px;}
@@ -83,14 +88,15 @@ body { margin:0; padding:0; background:#7e909c url(../image/v2/bg_site.png) repe
 .buff_nondispo { position:relative; float:left; height:19px; width:16px; padding:0; margin:0 2px; background:transparent url(../image/buff/nobuff.png) top no-repeat; }
 .buff_duree_restante { position:absolute; bottom:0; left:0; }
 #joueur_groupe { width:300px; float:left; background:transparent url(../image/fond_groupe.png) center; margin-left:30px; height:83px; margin-top:4px; }
-#joueur_groupe_bouton { width:50px; float:left; }
-#joueur_groupe ul { width:250px; float:left; }
-#mail_groupe { cursor:pointer; width:32px; height:32px; background:transparent url(../image/message.png) center no-repeat; }
-#info_groupe { cursor:pointer; width:21px; height:21px; background:transparent url(../image/interface/information.png) center; }
+#joueur_groupe_bouton { width:35px; float:left; text-align : center;}
+#joueur_groupe ul { width:265px; float:left; }
+#mail_groupe { cursor:pointer; width:32px; height:32px; background:transparent url(../image/message.png) center no-repeat; margin : auto;}
+#info_groupe { cursor:pointer; width:21px; height:21px; background:transparent url(../image/interface/information.png) center; margin : auto; margin-top : 12px; margin-bottom : 7px;}
 #info_groupe:hover { background-position:top; }
 #info_groupe:active { background-position:bottom; }
 #joueur_groupe li { cursor:pointer; font-size:8pt; border-bottom:1px dotted #8b94b0; padding:0 0 2px; }
 .joueur_groupe_pseudo { float:left; line-height:16px; width:125px; }
+.joueur_groupe_ischef { float:left; width:16px; height : 16px; display : block; margin-right : 2px;}
 .joueur_groupe_barre_hp { float:left; width:102px; height:6px; margin:0; }
 .joueur_groupe_barre_mp { float:left; width:102px; height:6px; margin:1px 0 0; }
 
@@ -125,8 +131,8 @@ body { margin:0; padding:0; background:#7e909c url(../image/v2/bg_site.png) repe
 #rose_div_bd:active { background-position:bottom; }
 
 /*-- Overlib ----------------------------------------------------------*/
-.overlib { background:transparent url(../image/interface/1.png) center; border:1px solid #000000; -moz-border-radius:5px; -webkit-border-radius:5px; border-radius: 5px; min-width:250px; }
-.overlib ul { clear:both; position:relative; }
+.overlib, #cluetip { background:transparent url(../image/interface/1.png) center; border:1px solid #000000; -moz-border-radius:5px; -webkit-border-radius:5px; border-radius: 5px; min-width:250px; }
+.overlib ul, #cluetip ul { clear:both; position:relative; }
 .overlib_titres { text-align:center; font-weight:bold; color:black; }
 .overlib_batiments span { font-weight:bold; color:black; }
 .overlib_joueurs span { font-weight:bold; color:#6633FF; }
@@ -136,6 +142,9 @@ body { margin:0; padding:0; background:#7e909c url(../image/v2/bg_site.png) repe
 .overlib_nom_objet { float:right; width:200px; font-style:italic; }
 .overlib_desc_objet { float:right; width:200px; }
 .overlib_desc_objet span { float:left; width:75px; }
+#cluetip {padding : 5px;}
+#cluetip a {color : #444; text-decoration : none;}
+#cluetip a:hover {color : #888;}
 
 /*-- Map --------------------------------------------------------------*/
 #carte { width:445px; height:100%; float:left; margin:0; clear:both; z-index:500; }
@@ -199,9 +208,9 @@ body { margin:0; padding:0; background:#7e909c url(../image/v2/bg_site.png) repe
 .message_prev:hover { background-position:bottom!important; }
 .message_next { background:transparent url(./../image/interface/next_20.png) no-repeat scroll top; height:20px; width:20px; display:block; float:right; }
 .message_next:hover { background-position:bottom!important; }
-.bulle_message {min-height: 25px;	float:left;width:430px;margin-top:-3px;border-width: 20px 8px 20px 8px;	-webkit-border-image: url('./../image/interface/bulle_message.png') 20 8 20 8;-moz-border-image: url('./../image/interface/bulle_message.png') 20 8 20 8;}
+.bulle_message {min-height: 25px;	float:left;width:419px;margin-top:-3px;border-width: 20px 8px 20px 8px;	-webkit-border-image: url('./../image/interface/bulle_message.png') 20 8 20 8;-moz-border-image: url('./../image/interface/bulle_message.png') 20 8 20 8;}
 .bulle_message_me {	border-width: 16px 8px 8px 8px;	-webkit-border-image: url('./../image/interface/bulle_message_me.png') 16 8 8 8;-moz-border-image: url('./../image/interface/bulle_message_me.png') 16 8 8 8;}
-.bulle_message_new {min-height: 25px;	float:left;width:430px;margin-top:-3px;border-width: 20px 8px 20px 8px;	-webkit-border-image: url('./../image/interface/bulle_message_new.png') 20 8 20 8;-moz-border-image: url('./../image/interface/bulle_message_new.png') 20 8 20 8;}
+.bulle_message_new {min-height: 25px;	float:left;width:419px;margin-top:-3px;border-width: 20px 8px 20px 8px;	-webkit-border-image: url('./../image/interface/bulle_message_new.png') 20 8 20 8;-moz-border-image: url('./../image/interface/bulle_message_new.png') 20 8 20 8;}
 .haut_bulle_gauche{background:transparent url(./../image/interface/bulle_message_haut.png) no-repeat scroll top;display:block;float:left;height:16px;margin-left:21px;margin-top:9px;width:21px;margin-right:7px;}
 .haut_bulle_droite{background:transparent url(./../image/interface/bulle_message_haut_droite.png) no-repeat scroll top;display:block;float:right;height:16px;margin-left:7px;margin-top:9px;width:21px;margin-right:21px;}
 
@@ -252,8 +261,8 @@ textarea#css, textarea#description { width: 500px; height:150px; }
 #messagerie_liste .t1 {background:#B4CFEF; -moz-border-radius:5px; -webkit-border-radius:5px; border-radius: 5px;}
 #messagerie_liste .titre { float:left; display:block; width:190px; padding-left:10px; }
 #messagerie_liste .msg { float:left; display:block; width:35px; text-align: right;padding-right:10px;}
-#messagerie_liste .par { float:left; display:block; width:100px; }
-#messagerie_liste .date { float:left; display:block; width:90px; }
+#messagerie_liste .par { float:left; display:block; width:90px; }
+#messagerie_liste .date { float:left; display:block; width:100px; }
 #combat_cartouche { clear:both; background-color:#DDDDDD; padding:9px; -moz-border-radius:12px; -webkit-border-radius:12px; border-radius: 12px; min-height:70px; }
 .infoperso td { font-size:10px; margin:0; padding:0; }
 .roseeticone { float:left; padding:4px; margin:5px; }
@@ -275,6 +284,8 @@ div.spacer { clear:both; }
 .fav_off { background:transparent url(./../image/messagerie_fav_off.png) no-repeat scroll left center; height:14px; width:16px; display:block; float:left; }
 .del { background:transparent url(./../image/messagerie_del.png) no-repeat scroll top; height:16px; width:16px; display:block; }
 .del:hover { background-position:bottom!important; }
+.masq { background:transparent url(./../image/messagerie_cacher.png) no-repeat scroll top; height:16px; width:16px; display:block; }
+.masq:hover { background-position:bottom!important; }
 .msg_cache { background:transparent url(./../image/messagerie_cacher.png) no-repeat scroll top; height:16px; width:16px; display:block; float:left; }
 .msg_voir { background:transparent url(./../image/messagerie_voir.png) no-repeat scroll top; height:16px; width:16px; display:block; float:left; }
 h3.messagerie span.auteur { position:absolute; left:0; font-weight:bold; font-size:11px; display:block; width:114px; text-align:center; text-transform:capitalize; }
@@ -381,7 +392,7 @@ table.inventaire tr.element td,table.inventaire tr.header td { font-size:.9em; }
 
 
 .quartier_marchand		{background:transparent url(../image/ville/cadrebiseauQM.png) center;padding:6px;margin-left:16px;margin-top:35px;width:138px;height:121px;float:left;}
-.quartier_marchand_titre {font-size:14px;font-variant:small-caps; font-family:"Trebuchet MS", Times, serif; font-weight:bold;background:transparent url(../image/ville/cadretitreQM.png) top;display:block;height:34px;width:114px;margin-left:0px;margin-top:-3px;line-height:35px;text-indent:13px;color:#463300;}
+.quartier_marchand_titre {font-size:14px;font-variant:small-caps; font-family:"Trebuchet MS", Times, serif; font-weight:bold;background:transparent url(../image/ville/cadretitreQM.png) top;display:block;height:34px;width:139px;margin-left:0px;margin-top:-3px;line-height:35px;text-indent:11px;color:#463300;}
 .quartier_marchand li {cursor: pointer; background: #bfccdd;border : 1px solid #8d7845;-moz-border-radius: 6px;-webkit-border-radius:6px; border-radius: 6px;font-size:11px;height:14px;margin:2px;text-align:center;color: #3a3a4f;}
 .quartier_marchand li:hover {background: #FFF;}
 
@@ -397,12 +408,17 @@ table.inventaire tr.element td,table.inventaire tr.header td { font-size:.9em; }
 .quartier_haut li:hover {background: #FFF;}
 
 
-.quartier_bas			{background:transparent url(../image/ville/cadrebiseauBQ.png) center;padding:6px;margin-top:62px;margin-left:103px;width:132px;height:117px;float:left;}
-.quartier_bas_titre {font-size:14px;font-variant:small-caps; font-family:"Trebuchet MS", Times, serif; font-weight:bold;background:transparent url(../image/ville/cadretitreBQ.png) top;display:block;height:34px;width:106px;margin-left:12px;margin-top:-4px;line-height:38px;text-indent:13px;color:#463300;}
+.quartier_bas			{background:transparent url(../image/ville/cadrebiseauBQ.png) center;padding:6px;margin-top:62px;margin-left:103px;width:132px;height:113px;float:left;}
+.quartier_bas_titre {font-size:14px;font-variant:small-caps; font-family:"Trebuchet MS", Times, serif; font-weight:bold;background:transparent url(../image/ville/cadretitreBQ.png) top;display:block;height:34px;width:106px;margin-left:12px;margin-top:-8px;line-height:38px;text-indent:13px;color:#463300;}
 .quartier_bas li {cursor: pointer;background: #bfccdd;border : 1px solid #8d7845;-moz-border-radius: 6px;-webkit-border-radius:6px; border-radius: 6px;font-size:11px;height:14px;margin:2px;text-align:center;color: #3a3a4f;}
 .quartier_bas li:hover {background: #FFF;}
 
 .trcolor2 { background-color:#B4CFEF;border-radius : 5px;-moz-border-radius: 5px;-webkit-border-radius:5px; }
+
+#perso_envoi {width : 200px; padding : 0; margin : 0;}
+#suggestion {display : none; width : 200px;	position: absolute; background-color : white; border : 1px solid black}
+#suggestion ul li {cursor : pointer;}
+#suggestion ul li:hover {background-color:#B4CFEF;}
 
 /***************************************************
   Gestion Royaume
@@ -477,3 +493,29 @@ tr.tabMonstre td { border:1px solid grey; text-align:center; padding:2px; }
  Messagerie 
  **********************************/
 .msgbar { width:50px; }
+
+/***********************************
+ Pet
+ **********************************/
+.monstre img
+{
+	float : left;
+	margin : 0 10px 0 0;
+}
+
+.monstre h3
+{
+	margin-bottom : 3px;
+}
+
+.monstre .monstre_name
+{
+	border : 0px;
+	background : transparent;
+	font-weight : bold;
+}
+
+.monstre .monstre_infos
+{
+	margin-left : 40px;
+}
