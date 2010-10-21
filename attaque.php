@@ -1433,6 +1433,20 @@ else
 					$db->query($requete);
 				}
 			}
+			//Mise dans le journal si attaque sur batiment
+			elseif($type == 'batiment')
+			{
+				//Insertion de l'attaque dans les journaux des 2 joueurs
+				$requete = "INSERT INTO journal VALUES(NULL, ".$joueur->get_id().", 'attaque', '".$joueur->get_nom()."', '".$defenseur->get_nom()."', NOW(), ".($defense_hp_avant - $defense_hp_apres).", ".($attaque_hp_avant - $attaque_hp_apres).", ".$defenseur->get_x().", ".$defenseur->get_y().")";
+				$db->query($requete);
+				// Creation du log du combat
+				$combat = new combat();
+				$combat->attaquant = $joueur->get_id();
+				$combat->defenseur = $defenseur->get_id();
+				$combat->combat = $log_combat;
+				$combat->id_journal = $db->last_insert_id();
+				$combat->sauver();
+			}
 		}
 		else
 		{
