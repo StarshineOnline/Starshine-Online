@@ -13,6 +13,10 @@ $joueur = new perso($_SESSION['ID']);
 if ($joueur->is_buff('buff_rapidite')) $reduction_pa = $joueur->get_buff('buff_rapidite', 'effet'); else $reduction_pa = 0;
 if ($joueur->is_buff('debuff_ralentissement')) $reduction_pa -= $joueur->get_buff('debuff_ralentissement', 'effet');
 
+//Vérifie si le perso est mort
+if ($joueur->get_hp() <= 0)
+	exit();
+
 //Case et coordonnées de la case
 $W_case = $_GET['case'];
 
