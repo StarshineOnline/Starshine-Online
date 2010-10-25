@@ -344,11 +344,13 @@ class combat
 						}
 					}
 				}
-				elseif($attaque[1] == "a")
-					echo ${$mode}->get_nom().' anticipe l\'attaque, et elle échoue !<br />';
+				elseif($attaque[1] == "a" AND $mode == 'attaquant')
+					echo $defenseur->get_nom().' anticipe l\'attaque, et elle échoue !<br />';
+				elseif($attaque[1] == "a" AND $mode == 'defenseur')
+					echo $attaquant->get_nom().' anticipe l\'attaque, et elle échoue !<br />';
 				elseif ($attaque[1] == 'n')
 					echo ${$mode}->get_nom().' s\'approche<br />';
-				
+
 				// On gère les effets
 				if($mode == 'defenseur')
 				{
