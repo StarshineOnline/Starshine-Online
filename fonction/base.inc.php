@@ -2181,8 +2181,12 @@ Votre dernier souvenir est l'endroit où vous êtes mort <?php echo 'x : '.$joue
 					}
 					?>
 					</ul>
+</fieldset>
+</div>
 
-			</fieldset></div>
+<div id="information" style="float: right;">
+</div>
+
 			</div></div>
 			<?php
 			exit();
@@ -2541,7 +2545,7 @@ function progression_level($level)
  * 
  * @return    Classe HTML.   
  */
-function over_price($base, $joueur)
+function over_price($base, $joueurz)
 {
 	if($base > $joueur AND $joueur != '')
 	{

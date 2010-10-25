@@ -50,7 +50,8 @@ body { margin:0; padding:0; background:#7e909c url(../image/v2/bg_site.png) repe
 #contenu_back { margin:0; padding:0; }
 #contenu { width:1000px; margin:auto; min-height:700px; }
 #news { width:830px; float:left; }
-#mort fieldset { -moz-border-radius: 10px;-moz-border-radius: 10px; border-radius: 10px; width:46%;float:left;margin:8px;}
+#mort {float: left; width: 50%;}
+#mort fieldset { -moz-border-radius: 10px;-moz-border-radius: 10px; border-radius: 10px;margin:8px;}
 
 /*-- Basics elements --------------------------------------------------*/
 #global { position:relative; margin:0 auto; width:960px; height:100%; border:1px solid red; }
