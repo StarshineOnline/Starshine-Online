@@ -2545,7 +2545,7 @@ function progression_level($level)
  * 
  * @return    Classe HTML.   
  */
-function over_price($base, $joueurz)
+function over_price($base, $joueur)
 {
 	if($base > $joueur AND $joueur != '')
 	{
