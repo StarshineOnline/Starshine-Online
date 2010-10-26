@@ -14,8 +14,7 @@ if ($joueur->is_buff('buff_rapidite')) $reduction_pa = $joueur->get_buff('buff_r
 if ($joueur->is_buff('debuff_ralentissement')) $reduction_pa -= $joueur->get_buff('debuff_ralentissement', 'effet');
 
 //Vérifie si le perso est mort
-if ($joueur->get_hp() <= 0)
-	exit();
+check_undead_players(true);
 
 //Case et coordonnées de la case
 $W_case = $_GET['case'];

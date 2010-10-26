@@ -40,5 +40,5 @@ if (isset($api_login) && $api_login && !array_key_exists('nom', $_SESSION) &&
 }
 
 if(!isset($root)) $root = '';
-if ($check) check_undead_players();
+if ($check) check_undead_players(true);
 ?>

@@ -159,7 +159,7 @@ function unit_sSQL()
 
 }
 
-function check_undead_players()
+function check_undead_players($ajax = false)
 {
   global $G_undead_checked;
   if ($G_undead_checked) return;
@@ -179,10 +179,15 @@ function check_undead_players()
   }
   if ($joueur->get_hp() < 1) {
     ob_end_clean();
-    if (strlen($_SERVER["SCRIPT_NAME"]) >= 8)
-      if (substr_compare($_SERVER["SCRIPT_NAME"], 'interface.php', -8, 8) == 0)
-	print_head();
-    verif_mort($joueur, 1);
+		if ($ajax) {
+			print_js_onload("location.href = 'interface.php'");
+		}
+		else {
+			if (strlen($_SERVER["SCRIPT_NAME"]) >= 8)
+				if (substr_compare($_SERVER["SCRIPT_NAME"], 'interface.php', -8, 8) == 0)
+					print_head();
+			verif_mort($joueur, 1);
+		}
     exit(0);
   }
 }
