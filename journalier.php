@@ -14,6 +14,9 @@ include_once(root.'inc/variable.inc.php');
 //Inclusion du fichier contenant toutes les fonctions de base
 include_once(root.'fonction/base.inc.php');
 
+//Inclusion du fichier contenant les logs admin
+include_once(root.'class/log_admin.class.php');
+
 $date = date("Y-m-d", mktime(0, 0, 0, date("m") , date("d") - 1, date("Y")));
 
 echo "Simulation de Génération des monstres sur la carte\n";
