@@ -479,6 +479,7 @@ class fleche_poison extends comp_combat {
     } else {
       $this->notice("Le poison n'agit pas");
     }
+	return $degats;
 	}
 
   function fin_round(&$actif, &$passif) {
