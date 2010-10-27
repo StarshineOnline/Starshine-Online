@@ -1357,8 +1357,9 @@ function recupbatiment($ID, $table)
 		$R_monstre['type'] = $row_p['type'];
 		$R_monstre['ID'] = $row_p['id_batiment'];
 	}
+	$o_batiment = new batiment($ID);
 	$requete = 'SELECT * FROM batiment WHERE id = '.$row_p['id_batiment'];
-	$req = $db->query($requete);	
+	$req = $db->query($requete);
 	$row = $db->read_array($req);
 	if($table == 'construction')
 	{
@@ -1384,9 +1385,9 @@ function recupbatiment($ID, $table)
 	$R_monstre['level'] = 0;
 	$R_monstre['cout'] = $row['cout'];  // Coût du bâtiment à la construction.
 	$R_monstre['force'] = ceil($coeff * $row['carac']);
-	$R_monstre['arme_degat'] = $row['bonus1'];  // Facteur de dégâts contre les bâtiments.
-	$R_monstre['arme_degat2'] = $row['bonus2'];  // Facteur de dégâts contre les armes de sièges.
-	$R_monstre['reload'] = $row['bonus3'];  // Temps entre deux tirs.
+	$R_monstre['arme_degat'] = $o_batiment->get_bonus('degats_bat');  // Facteur de dégâts contre les bâtiments.
+	$R_monstre['arme_degat2'] = $o_batiment->get_bonus('degats_siege');  // Facteur de dégâts contre les armes de sièges.
+	$R_monstre['reload'] = $o_batiment->get_bonus('rechargement');  // Temps entre deux tirs.
 	$R_monstre['dexterite'] = ceil($coeff * $row['carac']);
 	$R_monstre['puissance'] = ceil($coeff * $row['carac']);
 	$R_monstre['volonte'] = ceil($coeff * $row['carac']);
@@ -1403,7 +1404,7 @@ function recupbatiment($ID, $table)
 	$R_monstre['debuff'] = array();
 	$R_monstre['enchantement'] = array();
 	$R_monstre['objet_effet'] = array();
-	$R_monstre['melee'] = $row['bonus5'];
+	$R_monstre['melee'] =  $o_batiment->get_bonus('precision');
 
 	return $R_monstre;
 }

@@ -141,8 +141,8 @@ switch($type)
 			$joueur_defenseur->x = $map_batiment->get_x();
 			$joueur_defenseur->y = $map_batiment->get_y();
 			//Si en défense c'est une arme de siège, on applique les dégats 2
-			if($joueur_defenseur->get_type() == 'arme_de_siege') $siege->arme_degat = $siege->get_bonus2();
-			else $siege->arme_degat = $siege->get_bonus1();
+			if($joueur_defenseur->get_type() == 'arme_de_siege') $siege->arme_degat = $siege->get_bonus('degats_siege');
+			else $siege->arme_degat = $siege->get_bonus('degats_bat');
 			if($joueur->get_race() == 'barbare') $siege->arme_degat = ceil($siege->arme_degat * 1.1);
 			$attaquant = new entite('siege', $siege);
 			$defenseur = new entite('batiment', $joueur_defenseur);
@@ -170,7 +170,7 @@ switch($type)
 		$coord = convert_in_coord($_GET['id_ville']);
 		$joueur_defenseur->x = $coord['x'];
 		$joueur_defenseur->y = $coord['y'];
-		$siege->arme_degat = $siege->get_bonus1();
+		$siege->arme_degat = $siege->get_bonus('degats_bat');
 		$attaquant = new entite('siege', $siege);
 		$defenseur = new entite('ville', $joueur_defenseur);
 	break;
@@ -241,20 +241,27 @@ else
 		if($db->num_rows > 0)
 		{
 			$row = $db->read_row($req);
-			$requete = "SELECT bonus1, bonus2, bonus3 FROM batiment WHERE id = ".$row[0];
-			$req = $db->query($requete);
-			$row = $db->read_assoc($req);
-			switch($row['type'])
-			{
-				case 'fort' :
-					//Augmentation des chances d'esquiver
-					$defenseur->add_buff('batiment_esquive', $row['bonus1']);
-					//Augmentation de la PP
-					$defenseur->add_buff('batiment_pp', $row['bonus2']);
-					//Augmentation de la PM
-					$defenseur->add_buff('batiment_pm', $row['bonus3']);
-				break;
-			}
+			$batiment_def = new batiment($row[0]);
+			//Augmentation des chances d'esquiver
+			if ($batiment_def->has_bonus('batiment_esquive'))
+				$defenseur->add_buff('batiment_esquive',
+														 $batiment_def->get_bonus('batiment_esquive'));
+			//Augmentation de la PP
+			if ($batiment_def->has_bonus('batiment_pp'))
+				$defenseur->add_buff('batiment_pp', 
+														 $batiment_def->get_bonus('batiment_pp'));
+			//Augmentation de la PM
+			if ($batiment_def->has_bonus('batiment_pm'))
+				$defenseur->add_buff('batiment_pm', 
+														 $batiment_def->get_bonus('batiment_pm'));
+			//Augmentation de l'incantation
+			if ($batiment_def->has_bonus('batiment_incantation'))
+				$defenseur->add_buff('batiment_incantation', 
+														 $batiment_def->get_bonus('batiment_incantation'));
+			//Augmentation du tir à distance
+			if ($batiment_def->has_bonus('batiment_distance'))
+				$defenseur->add_buff('batiment_distance', 
+														 $batiment_def->get_bonus('batiment_distance'));
 		}
 		//On vérifie si l'attaquant est sur un batiment offensif
 		$requete = "SELECT id_batiment FROM construction WHERE x = ".$joueur->get_x()." AND y = ".$attaquant->get_y()." AND royaume = ".$Trace[$attaquant->get_race()]['numrace'];
@@ -262,18 +269,15 @@ else
 		if($db->num_rows > 0)
 		{
 			$row = $db->read_row($req);
-			$requete = "SELECT bonus1, bonus2 FROM batiment WHERE id = ".$row[0];
-			$req = $db->query($requete);
-			$row = $db->read_assoc($req);
-			switch($row['type'])
-			{
-				case 'tour' :
-					//Augmentation de tir à distance
-					$defenseur->add_buff('batiment_distance', $row['bonus1']);
-					//Augmentation de l'ancement de sorts
-					$defenseur->add_buff('batiment_incantation', $row['bonus2']);
-				break;
-			}
+			$batiment_off = new batiment($row[0]);
+			//Augmentation de tir à distance
+			if ($batiment_off->has_bonus('batiment_distance'))
+				$attaquant->add_buff('batiment_distance', 
+														 $batiment_off->get_bonus('batiment_distance'));
+			//Augmentation de lancement de sorts
+			if ($batiment_off->has_bonus('batiment_incantation'))
+				$attaquant->add_buff('batiment_incantation', 
+														 $batiment_off->get_bonus('batiment_incantation'));
 		}
 	} //fin $type = 'joueur'
 	if($type == 'siege' OR $type == 'ville') $round_total = 1;
@@ -1382,7 +1386,7 @@ else
 			{
 				$joueur->set_pa($joueur->get_pa() - $pa_attaque);
 				$joueur->sauver();
-				$map_siege->set_rechargement(time() + $siege->get_bonus3());
+				$map_siege->set_rechargement(time() + $siege->get_bonus('rechargement'));
 				$map_siege->sauver();
 			}
 			else

@@ -144,7 +144,11 @@ elseif(array_key_exists('case', $_GET))
 					//On peut construire une mine
 					else
 					{
-						$requete = "SELECT id, nom, cout, bonus1, bonus2 FROM batiment WHERE type = 'mine' AND cond1 = 0";
+						$requete = "SELECT b.id, b.nom, b.cout, bp.valeur production, bs.valeur specialite 
+FROM batiment b 
+LEFT JOIN batiment_bonus bp ON bp.id_batiment = b.id and bp.bonus = 'production' 
+LEFT JOIN batiment_bonus bs ON bs.id_batiment = b.id and bs.bonus = 'specialite' 
+where b.type = 'mine' and b.cond1 = 0";
 						$req = $db->query($requete);
 						?>
 						Quelle mine voulait vous construire ?<br />
@@ -153,37 +157,37 @@ elseif(array_key_exists('case', $_GET))
 						while($row = $db->read_assoc($req))
 						{
 							$description = '';
-							if($row['bonus2'] != 0)
+							if($row['specialite'] != 0)
 							{
-								switch($row['bonus2'])
+								switch($row['specialite'])
 								{
 									case 1 :
-										$description = 'Pierre x'.$row['bonus1'];
+										$description = 'Pierre x'.$row['production'];
 									break;
 									case 2 :
-										$description = 'Bois x'.$row['bonus1'];
+										$description = 'Bois x'.$row['production'];
 									break;
 									case 3 :
-										$description = 'Eau x'.$row['bonus1'];
+										$description = 'Eau x'.$row['production'];
 									break;
 									case 4 :
-										$description = 'Sable x'.$row['bonus1'];
+										$description = 'Sable x'.$row['production'];
 									break;
 									case 5 :
-										$description = 'Nourriture x'.$row['bonus1'];
+										$description = 'Nourriture x'.$row['production'];
 									break;
 									case 6 :
-										$description = 'Star x'.$row['bonus1'];
+										$description = 'Star x'.$row['production'];
 									break;
 									case 7 :
-										$description = 'Charbon x'.$row['bonus1'];
+										$description = 'Charbon x'.$row['production'];
 									break;
 									case 8 :
-										$description = 'Essence Magique x'.$row['bonus1'];
+										$description = 'Essence Magique x'.$row['production'];
 									break;
 								}
 							}
-							else $description = 'Toute ressources x'.$row['bonus1'];
+							else $description = 'Toute ressources x'.$row['production'];
 							echo '<option value="'.$row['id'].'">'.$row['nom'].' - '.$row['cout'].' stars ('.$description.')</option>';
 						}
 						?>

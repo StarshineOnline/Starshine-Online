@@ -21,13 +21,11 @@ $R = new royaume($W_row['royaume']);
 
 //Informations sur le batiment
 $arme = new construction($_GET['id_construction']);
-$requete = "SELECT * FROM batiment WHERE id = ".$arme->get_id_batiment();
-$req = $db->query($requete);
-$row_b = $db->read_assoc($req);
+$batiment = new batiment($arme->get_id_batiment());
 ?>
 	<div id="carte">
 	<fieldset>
-		<legend><?php echo $row_b['nom']; ?></legend>
+		<legend><?php echo $batiment->get_nom(); ?></legend>
 <?php
 
 $W_distance = detection_distance(convert_in_pos($arme->get_x(), $arme->get_y()), $joueur->get_pos());
@@ -35,7 +33,7 @@ $W_distance = detection_distance(convert_in_pos($arme->get_x(), $arme->get_y()),
 if($W_distance == 0)
 {
 	echo 'Position - X : '.$arme->get_x().' - Y : '.$arme->get_y().'<br />';
-	echo 'Distance de tir : '.$row_b['bonus4'].' case.<br />';
+	echo 'Distance de tir : '.$batiment->get_bonus('portee').' case.<br />';
 	echo 'Temps avant de pouvoir tirer : ';
 	$pat = false;
 	if($arme->get_rechargement() > time()) echo transform_sec_temp($arme->get_rechargement() - time());
@@ -45,10 +43,10 @@ if($W_distance == 0)
 		$pat = true;
 	}
 	echo '<br />';
-	$x_min = $joueur->get_x() - $row_b['bonus4'];
-	$x_max = $joueur->get_x() + $row_b['bonus4'];
-	$y_min = $joueur->get_y() - $row_b['bonus4'];
-	$y_max = $joueur->get_y() + $row_b['bonus4'];
+	$x_min = $joueur->get_x() - $batiment->get_bonus('portee');
+	$x_max = $joueur->get_x() + $batiment->get_bonus('portee');
+	$y_min = $joueur->get_y() - $batiment->get_bonus('portee');
+	$y_max = $joueur->get_y() + $batiment->get_bonus('portee');
 	$requete = "SELECT * FROM construction WHERE x >= ".$x_min." AND x <= ".$x_max." AND y >= ".$y_min." AND y <= ".$y_max;
 	$req_bp = $db->query($requete);
 	echo '<ul>';
@@ -62,7 +60,7 @@ if($W_distance == 0)
 				$pos = convert_in_pos($row_bp['x'], $row_bp['y']);
 
 				echo "<li style='clear:both;' onmouseover=\"$('#pos_".$pos."').addClass('pos_over');\" onmouseout=\"$('#pos_".$pos."').removeClass('pos_over');\"><span style='float:left;width:110px;'>".$row_bp['nom']." </span><span style='float:left;width:105px;'> X : ".$row_bp['x']." - Y : ".$row_bp['y']."</span>";
-				if($pat && $joueur->grade->get_rang() >= $row_b['bonus6'] && $joueur->get_pa() >= 10) echo ' - <a href="attaque.php?type=siege&table=construction&id_arme_de_siege='.$arme->get_id().'&id_batiment='.$row_bp['id'].'" onclick="return envoiInfo(this.href, \'information\');">Attaquer avec l\'arme de siège (10 PA)</a></li>';
+				if($pat && $joueur->grade->get_rang() >= $batiment->get_bonus('rang_manip') && $joueur->get_pa() >= 10) echo ' - <a href="attaque.php?type=siege&table=construction&id_arme_de_siege='.$arme->get_id().'&id_batiment='.$row_bp['id'].'" onclick="return envoiInfo(this.href, \'information\');">Attaquer avec l\'arme de siège (10 PA)</a></li>';
 			}
 		}
 		echo '</ul>';
@@ -78,7 +76,7 @@ if($W_distance == 0)
 			if($row_bp['royaume'] != $Trace[$joueur->get_race()]['numrace'] && $row_bp['id'] != $arme->get_id())
 			{
 				echo '<li>'.$row_bp['nom'].' - X : '.$row_bp['x'].' - Y : '.$row_bp['y'];
-				if($pat && $joueur->grade->get_rang() >= $row_b['bonus6'] && $joueur->get_pa() >= 10) echo ' - <a href="attaque.php?table=placement&amp;type=siege&amp;id_arme_de_siege='.$arme->get_id().'&amp;id_batiment='.$row_bp['id'].'" onclick="return envoiInfo(this.href, \'information\');">Attaquer avec l\'arme de siège</a></li>';
+				if($pat && $joueur->grade->get_rang() >= $batiment->get_bonus('rang_manip') && $joueur->get_pa() >= 10) echo ' - <a href="attaque.php?table=placement&amp;type=siege&amp;id_arme_de_siege='.$arme->get_id().'&amp;id_batiment='.$row_bp['id'].'" onclick="return envoiInfo(this.href, \'information\');">Attaquer avec l\'arme de siège</a></li>';
 			}
 		}
 		echo '</ul>';
@@ -92,7 +90,7 @@ if($W_distance == 0)
 		echo '<h4><span class="titre_info">Ville à portée</span></h4>';
 		echo $row_v['nom'];
 		$id = convert_in_pos($row_v['x'], $row_v['y']);
-		if($pat && $joueur->grade->get_rang() >= $row_b['bonus6']) {
+		if($pat && $joueur->grade->get_rang() >= $batiment->get_bonus('rang_manip')) {
 			echo ' - <a href="attaque.php?type=ville&amp;id_arme_de_siege='
 				.$arme->get_id().'&id_ville='.$id
 				.'" onclick="return envoiInfo(this.href, \'information\');">Attaquer avec l\'arme de siège</a>';

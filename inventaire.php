@@ -71,13 +71,14 @@ if(!$visu AND isset($_GET['action']))
 				if ($W_row['type'] != 1)
 				{
 					//Cherche infos sur l'objet
-					$requete = "SELECT *, batiment.id AS batiment_id, batiment.nom AS batiment_nom  FROM objet_royaume RIGHT JOIN batiment ON batiment.id = objet_royaume.id_batiment WHERE objet_royaume.id = ".sSQL($_GET['id_objet']);
+					$requete = "SELECT batiment.id AS batiment_id FROM objet_royaume RIGHT JOIN batiment ON batiment.id = objet_royaume.id_batiment WHERE objet_royaume.id = ".sSQL($_GET['id_objet']);
 					$req = $db->query($requete);
 					if (mysql_num_rows($req) == 0)
 					{
 						die('<h5>Erreur SQL</h5>');
 					}
 					$row = $db->read_assoc($req);
+					$batiment = new batiment($row['batiment_id']);
 					if($R->get_diplo($joueur->get_race()) == 127 OR $_GET['type'] == 'arme_de_siege')
 					{
 						//On vérifie si ya pas déjà un batiment en construction
@@ -92,19 +93,19 @@ if(!$visu AND isset($_GET['action']))
 							{
 								//Positionnement de la construction
 								$distance = calcul_distance(convert_in_pos($Trace[$joueur->get_race()]['spawn_x'], $Trace[$joueur->get_race()]['spawn_y']), ($joueur->get_pos()));
-								$time = time() + ($row['temps_construction'] * $distance);
+								$time = time() + ($batiment->get_temps_construction() * $distance);
 								if($_GET['type'] == 'arme_de_siege')
 								{
-									$time = time() + $row['temps_construction'];
+									$time = time() + $batiment->get_temps_construction();
 									$rez = 0;
 								}
-								else $rez = $row['bonus4'];
-								$requete = "INSERT INTO placement (type, x, y, royaume, debut_placement, fin_placement, id_batiment, hp, nom, rez, point_victoire) VALUES('".sSQL($_GET['type'])."', '".$joueur->get_x()."', '".$joueur->get_y()."', '".$Trace[$joueur->get_race()]['numrace']."', ".time().", '".$time."', '".$row['batiment_id']."', '".$row['hp']."', '".$row['batiment_nom']."', '".$rez."', '".$row['point_victoire']."')";
+								else $rez = $batiment->get_bonus('rez');
+								$requete = "INSERT INTO placement (type, x, y, royaume, debut_placement, fin_placement, id_batiment, hp, nom, rez, point_victoire) VALUES('".sSQL($_GET['type'])."', '".$joueur->get_x()."', '".$joueur->get_y()."', '".$Trace[$joueur->get_race()]['numrace']."', ".time().", '".$time."', '".$batiment->get_id()."', '".$batiment->get_hp()."', '".$batiment->get_nom()."', '".$rez."', '".$batiment->get_point_victoire()."')";
 								$db->query($requete);
 								//On supprime l'objet de l'inventaire
 								$joueur->supprime_objet($joueur->get_inventaire_slot_partie($_GET['key_slot']), 1);
 								$joueur->sauver();
-								echo '<h6>'.$row['nom'].' posé avec succès</h6>';
+								echo '<h6>'.$batiment->get_nom().' posé avec succès</h6>';
 							}
 							else
 							{

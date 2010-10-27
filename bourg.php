@@ -29,21 +29,31 @@ $batiment = new batiment($bourg->get_id_batiment());
 	<fieldset>
 		<legend><?php echo $batiment->get_nom(); ?></legend>
 <?php
-
 if($bourg->get_x() == $joueur->get_x() AND $bourg->get_y() == $joueur->get_y() AND $joueur->get_race() == $R->get_race())
 {
 	?>
 	<ul class="ville">
 	<?php
-	if($batiment->get_bonus7() == 1)
+		 include_once(root.'ville_bas.php');
+	if($batiment->has_bonus('taverne'))
 	{
 	?>
 		<li>
 			<a href="taverne.php" onclick="return envoiInfo(this.href, 'carte')">Taverne</a>
 		</li>
+	<?php
+  }
+	if($batiment->has_bonus('poste'))
+	{
+	?>
 		<li>
 			<a href="poste.php" onclick="return envoiInfo(this.href, 'carte')">La Poste</a>
 		</li>
+	<?php
+  }
+	if($batiment->has_bonus('ecurie'))
+	{
+	?>
 		<li>
 			<a href="ecurie.php" onclick="return envoiInfo(this.href, 'carte')">Ecurie</a>
 		</li>
@@ -109,9 +119,10 @@ if($bourg->get_x() == $joueur->get_x() AND $bourg->get_y() == $joueur->get_y() A
 		<?php
     }
   }
-	if($batiment->get_bonus7() == 1 AND ($joueur->get_rang_royaume() == 6 ||
-																			 $R->get_ministre_economie() == $joueur->get_id() ||
-																			 $R->get_ministre_militaire() == $joueur->get_id() ))
+	if($batiment->has_bonus('royaume')
+		 AND ($joueur->get_rang_royaume() == 6 ||
+					$R->get_ministre_economie() == $joueur->get_id() ||
+					$R->get_ministre_militaire() == $joueur->get_id() ))
 	{
 ?>
 		<li>
@@ -119,10 +130,15 @@ if($bourg->get_x() == $joueur->get_x() AND $bourg->get_y() == $joueur->get_y() A
 		</li>
 <?php
 	}
+	if($batiment->has_bonus('teleport'))
+	{
 ?>
     	<li>
       		<a href="teleport.php" onclick="return envoiInfo(this.href, 'carte')">Pierre de Téléportation</a>
     	</li>
+<?php
+  }
+?>
 	</ul>
 <?php
 }

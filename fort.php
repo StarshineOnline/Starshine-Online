@@ -33,18 +33,23 @@ if($joueur->get_x() == $construction->get_x() AND $joueur->get_y() == $construct
 	 echo "<legend>".$batiment->get_nom()."</legend>"; 
 	echo "<ul>";
 
-	if($batiment->get_bonus7() == 1)
+	if($batiment->get_bonus('alchimiste') == 1)
 	{
 	?>
 		<li>
 			<a href="alchimiste.php" onclick="return envoiInfo(this.href, 'carte')">Alchimiste</a>
 		</li>
+	<?php
+	}
+	if($batiment->get_bonus('poste') == 1)
+	{
+	?>
 		<li>
 			<a href="poste.php" onclick="return envoiInfo(this.href, 'carte')">La Poste</a>
 		</li>
 	<?php
 	}
-	if($batiment->get_bonus6() == 1)
+	if($batiment->get_bonus('teleport') == 1)
 	{
 	?>
 		<li>
@@ -52,17 +57,27 @@ if($joueur->get_x() == $construction->get_x() AND $joueur->get_y() == $construct
 		</li>
 	<?php
 	}
+	if($batiment->get_bonus('taverne') == 1)
+	{
 	?>
 		<li>
 			<a href="taverne.php" onclick="return envoiInfo(this.href, 'carte')">Taverne</a>
 		</li>
+	<?php
+  }
+	if($batiment->has_bonus('ecurie'))
+	{
+	?>
+		<li>
+			<a href="ecurie.php" onclick="return envoiInfo(this.href, 'carte')">Ecurie</a>
+		</li>
 <?php
+  }
 	//Si il est roi
 	if(($joueur->get_rang_royaume() == 6 ||
 			 $R->get_ministre_economie() == $joueur->get_id() ||
 			 $R->get_ministre_militaire() == $joueur->get_id()) AND  
-			 $batiment->get_id() != 1 AND
-			 $batiment->get_bonus7() == 1)
+			 $batiment->get_bonus('royaume'))
 	{
 ?>
 		<li>

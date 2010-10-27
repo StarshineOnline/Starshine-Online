@@ -105,7 +105,11 @@ else
 	//Ressource mine
 	//On récupère la liste des batiments de type mine
 	$batiment = array();
-	$requete = "SELECT * FROM batiment WHERE type = 'mine'";
+	$requete = "SELECT b.id, bp.valeur production, bs.valeur specialite 
+FROM batiment b 
+LEFT JOIN batiment_bonus bp ON bp.id_batiment = b.id and bp.bonus = 'production' 
+LEFT JOIN batiment_bonus bs ON bs.id_batiment = b.id and bs.bonus = 'specialite' 
+where b.type = 'mine'";
 	$req = $db->query($requete);
 	while($row = $db->read_assoc($req))
 	{
@@ -118,33 +122,33 @@ else
 	{
 		$terrain = type_terrain($row['info']);
 		$ress_terrain = $ress[utf8_decode($terrain[1])];
-		if($batiment[$row['id_batiment']]['bonus2'] != 0)
+		if($batiment[$row['id_batiment']]['specialite'] != 0)
 		{
-			switch($batiment[$row['id_batiment']]['bonus2'])
+			switch($batiment[$row['id_batiment']]['specialite'])
 			{
 				case 1 :
-					$ress_final = array('Pierre' => $batiment[$row['id_batiment']]['bonus1'] * $ress_terrain['Pierre']);
+					$ress_final = array('Pierre' => $batiment[$row['id_batiment']]['production'] * $ress_terrain['Pierre']);
 				break;
 				case 2 :
-					$ress_final = array('Bois' => $batiment[$row['id_batiment']]['bonus1'] * $ress_terrain['Bois']);
+					$ress_final = array('Bois' => $batiment[$row['id_batiment']]['production'] * $ress_terrain['Bois']);
 				break;
 				case 3 :
-					$ress_final = array('Eau' => $batiment[$row['id_batiment']]['bonus1'] * $ress_terrain['Eau']);
+					$ress_final = array('Eau' => $batiment[$row['id_batiment']]['production'] * $ress_terrain['Eau']);
 				break;
 				case 4 :
-					$ress_final = array('Sable' => $batiment[$row['id_batiment']]['bonus1'] * $ress_terrain['Sable']);
+					$ress_final = array('Sable' => $batiment[$row['id_batiment']]['production'] * $ress_terrain['Sable']);
 				break;
 				case 5 :
-					$ress_final = array('Nourriture' => $batiment[$row['id_batiment']]['bonus1'] * $ress_terrain['Nourriture']);
+					$ress_final = array('Nourriture' => $batiment[$row['id_batiment']]['production'] * $ress_terrain['Nourriture']);
 				break;
 				case 6 :
-					$ress_final = array('Star' => $batiment[$row['id_batiment']]['bonus1'] * $ress_terrain['Star']);
+					$ress_final = array('Star' => $batiment[$row['id_batiment']]['production'] * $ress_terrain['Star']);
 				break;
 				case 7 :
-					$ress_final = array('Charbon' => $batiment[$row['id_batiment']]['bonus1'] * $ress_terrain['Charbon']);
+					$ress_final = array('Charbon' => $batiment[$row['id_batiment']]['production'] * $ress_terrain['Charbon']);
 				break;
 				case 8 :
-					$ress_final = array('Essence Magique' => $batiment[$row['id_batiment']]['bonus1'] * $ress_terrain['Essence Magique']);
+					$ress_final = array('Essence Magique' => $batiment[$row['id_batiment']]['production'] * $ress_terrain['Essence Magique']);
 				break;
 			}			
 		}
@@ -153,7 +157,7 @@ else
 			$ress_final = array();
 			foreach($ress_terrain as $key => $value)
 			{
-				$ress_final[$key] = $batiment[$row['id_batiment']]['bonus1'] * $value;
+				$ress_final[$key] = $batiment[$row['id_batiment']]['production'] * $value;
 			}
 
 		}

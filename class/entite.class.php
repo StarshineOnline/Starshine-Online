@@ -402,10 +402,10 @@ class entite extends placable
 				$this->race = 'neutre';
 				$this->pp = $objet->get_pp();
 				$this->pm = $objet->get_pm();
-				$this->distance_tir = $objet->get_bonus4();
+				$this->distance_tir = $objet->get_bonus('portee');
 				$this->esquive = $this->facteur * ceil($this->coef_carac * $objet->get_carac());
-				$this->distance = $objet->get_bonus4();
-				$this->melee = $objet->get_bonus5() * $objet->bonus_architecture;
+				$this->distance = $objet->get_bonus('portee');
+				$this->melee = $objet->get_bonus('precision') * $objet->bonus_architecture;
 				$this->incantation = 0;
 				$this->sort_mort = 0;
 				$this->sort_vie = 0;
@@ -443,8 +443,8 @@ class entite extends placable
 				$this->pm = $objet->get_pm();
 				$this->distance_tir = 1;
 				$this->esquive = $this->facteur * ceil($this->coef_carac * $objet->get_carac());
-				$this->distance = $objet->get_bonus4();
-				$this->melee = $objet->get_bonus5() * $objet->bonus_architecture;
+				$this->distance = $objet->get_bonus('portee');
+				$this->melee = $objet->get_bonus('precision') * $objet->bonus_architecture;
 				$this->incantation = 0;
 				$this->sort_mort = 0;
 				$this->sort_vie = 0;

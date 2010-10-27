@@ -219,7 +219,8 @@ foreach($tab2 as $row)
 <?php
 
 $tab = array();
-$requete = "SELECT royaume.race as race_joueur, (SUM( cout ) * 100) AS tot FROM `construction` LEFT JOIN batiment ON construction.id_batiment = batiment.id LEFT JOIN royaume ON construction.royaume = royaume.id WHERE batiment.bonus2 != 6 GROUP BY royaume ORDER BY tot DESC";
+$requete = "SELECT royaume.race as race_joueur, (SUM( cout ) * 100) AS tot FROM `construction` LEFT JOIN batiment ON construction.id_batiment = batiment.id LEFT JOIN royaume ON construction.royaume = royaume.id GROUP BY royaume ORDER BY tot DESC";
+// - WHERE batiment.bonus 2 != 6 --> c'était les péages, y'en a plus
 $req = $db->query($requete);
 while($row = $db->read_assoc($req))
 {
