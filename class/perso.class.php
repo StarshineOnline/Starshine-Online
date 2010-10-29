@@ -1363,6 +1363,7 @@ class perso extends entite
 		case 'melee' : 
 		case 'distance' :
 		case 'incantation' :
+		case 'max_dresse':
 			$this->add_bonus_permanents($gemme->enchantement_type,
 																	$gemme->enchantement_effet);
 			break;
@@ -1793,6 +1794,8 @@ class perso extends entite
 	{
 		$max = (floor(pow($this->get_dressage(), 0.772) / 7) + 1);
 		if($max < 1) $max = 1;
+		if ($this->get_bonus_permanents('max_dresse'))
+			$max += $this->get_bonus_permanents('max_dresse');
 		return $max;
 	}
   /// Indique si le personnage peut dresser ce monstre.
