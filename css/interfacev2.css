@@ -132,7 +132,7 @@ body { margin:0; padding:0; background:#7e909c url(../image/v2/bg_site.png) repe
 #rose_div_bd:active { background-position:bottom; }
 
 /*-- Overlib ----------------------------------------------------------*/
-.overlib, #cluetip { background:transparent url(../image/interface/1.png) center; border:1px solid #000000; -moz-border-radius:5px; -webkit-border-radius:5px; border-radius: 5px; min-width:250px; }
+.overlib, #cluetip { background:transparent url(../image/interface/1.png) center; border:1px solid #000000; -moz-border-radius:5px; -webkit-border-radius:5px; border-radius: 5px; min-width:250px; z-index:100 !important;}
 .overlib ul, #cluetip ul { clear:both; position:relative; }
 .overlib_titres { text-align:center; font-weight:bold; color:black; }
 .overlib_batiments span { font-weight:bold; color:black; }
