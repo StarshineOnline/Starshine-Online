@@ -63,6 +63,9 @@ while($i < $count)
 			case 'loot' :
 				$and .= " AND action <> 'loot'";
 			break;
+			case 'pet' :
+				$and .= " AND action <> 'pet_leave'";
+			break;
 		}
 	}
 	$i++;

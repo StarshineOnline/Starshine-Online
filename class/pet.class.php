@@ -405,6 +405,7 @@ class pet extends map_monstre
 	function get_monstre()
 	{
 		if(!isset($this->monstre)) $this->monstre = new monstre($this->get_id_monstre());
+		return $this->monstre;
 	}
 
 	function get_mp_max()

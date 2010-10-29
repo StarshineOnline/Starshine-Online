@@ -2971,6 +2971,23 @@ class perso extends entite
 				$j_d_a = (floor($time / $temps_pa)) * $temps_pa;
 				if($j_d_a > $this->get_dernieraction()) $this->set_dernieraction($j_d_a);
 			}
+
+			// On ne doit pas avoir de pet indressable
+			$pet_del = false;
+			$ecurie = $this->get_pets();
+			$max_dresse = $this->max_dresse();
+			foreach ($ecurie as $pet) {
+				$mob = $pet->get_monstre();
+				if ($mob->get_level() > $max_dresse) {
+					$journal = "INSERT INTO journal VALUES(NULL, $this->id, 'pet_leave',  '', '', NOW(), '".
+						mysql_escape_string($pet->get_nom())."', 0, $this->x, $this->y)";
+					$db->query($journal);
+					$pet->supprimer();
+					$pet_del = true;
+				}
+			}
+			if ($pet_del) // On recharge l'ecurie
+				$this->get_pets(true);
 			
 			// Mise-à-jour du personnage dans la base de donnée
 			$this->sauver();
