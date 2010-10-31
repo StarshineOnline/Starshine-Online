@@ -1,7 +1,7 @@
 <?php
 if (file_exists('root.php'))
   include_once('root.php');
-?><?php
+
 /**
 *
 * Permet l'affichage des informations d'une case en fonction du joueur.
@@ -10,6 +10,7 @@ if (file_exists('root.php'))
 include_once(root.'inc/fp.php');
 //Récupération des informations du personnage
 $joueur = new perso($_SESSION['ID']);
+$joueur->check_perso();
 
 //Case et coordonnées de la case
 $W_case = $_GET['case'];
