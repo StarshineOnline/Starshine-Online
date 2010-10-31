@@ -630,6 +630,16 @@ class entite extends placable
 		return $buffs;
 	}
 
+	function add_buff($nom, $effet)
+	{
+		if (is_object($effet))
+			$newbuff = $effet;
+		else
+			$newbuff = new buff(0, $nom, $effet, 0,
+													$this->id, time() + 1, 1, $nom, '', 0, 0);
+		array_push($this->buff, $newbuff);
+	}
+
 	function supprime_buff($id)
 	{
 		if(!isset($this->buff)) $this->get_buff();
