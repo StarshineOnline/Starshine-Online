@@ -1364,6 +1364,7 @@ class perso extends entite
 		case 'distance' :
 		case 'incantation' :
 		case 'max_dresse':
+		case 'max_pet':
 			$this->add_bonus_permanents($gemme->enchantement_type,
 																	$gemme->enchantement_effet);
 			break;
@@ -1781,6 +1782,8 @@ class perso extends entite
 	/// Renvoie le nombre de créatures que le personnage peut posseder.
 	function get_max_pet()
 	{
+		if ($this->get_bonus_permanents('max_pet'))
+			return $this->max_pet + $this->get_bonus_permanents('max_pet');
 		return $this->max_pet;
 	}
 	/// Modifie le nombre de créatures que le personnage peut posseder.
