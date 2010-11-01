@@ -68,7 +68,8 @@ if ($joueur->get_race() == $R->get_race() ||
 							else $joueur->set_honneur(0);
 							
 							//tirage au sort :
-							$de = rand(1, 10) + rand(1, $joueur->get_puissance());
+							$moy = floor(($joueur->get_puissance() + $joueur->get_vie()) / 2);
+							$de = rand(1, 10) + rand(1, $moy);
 							if($de <= 2)
 							{
 								$debuff = true;
