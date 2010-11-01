@@ -84,7 +84,7 @@ if ($joueur->get_race() == $R->get_race() ||
 							}
 							elseif($de <= 10)
 							{
-								if(rand(1, 100) < 20) $debuff = true;
+								if(rand(1, 100) < 20)
 								{
 									$debuff = true;
 								}
