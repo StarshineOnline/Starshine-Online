@@ -1220,6 +1220,7 @@ class royaume
 	{
 		if(!isset($this->motk)) $this->get_motk();
 		$this->motk->set_message($texte);
+		$this->motk->set_date(time());
 		$this->motk->sauver();
 	}
 
