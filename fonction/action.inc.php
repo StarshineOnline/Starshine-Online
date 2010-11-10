@@ -1169,7 +1169,7 @@ function lance_comp($id, $acteur, &$effects)
 			if($de_att > $de_deff)
 			{
 				$actif->etat['fleche_etourdit']['effet'] = $row['effet'];
-				$actif->etat['fleche_etourdit']['duree'] = 2;
+				$actif->etat['fleche_etourdit']['duree'] = 1;
 			}
 			$comp_attaque = true;
 		break;
