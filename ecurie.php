@@ -96,7 +96,7 @@ if($case->is_ville(true) && ($R->get_diplo($joueur->get_race()) <= 6 OR $R->get_
 		if($pet->get_id_joueur() == $joueur->get_id())
 		{
 			$taxe = ceil($pet->get_cout_rez() * $R->get_taxe_diplo($joueur->get_race()) / 100);
-			$cout = $pet->get_cout_soin() + $taxe;
+			$cout = $pet->get_cout_rez() + $taxe;
 			if($joueur->get_star() >= $cout)
 			{
 				$pet->get_monstre();
