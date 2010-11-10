@@ -70,6 +70,7 @@ if (isset($_GET['ID']) && !$joueur->is_buff('bloque_sort'))
 		// Pas d'affinité si c'est le pet qui lance le sort
 		if($type_lanceur != "monstre")
 		{
+			$joueur->check_sort_jeu_connu($_GET['ID']);
 			$sortpa = round($sort->get_pa() * $joueur->get_facteur_magie());
 			$sortmp = round($sort->get_mp() * (1 - (($Trace[$joueur->get_race()]['affinite_'.$sort->get_comp_assoc()] - 5) / 10)));
 			//Réduction du cout par concentration

@@ -3095,6 +3095,13 @@ class perso extends entite
 		return $this->y * 1000 + $this->x;
 	}
 
+	function check_sort_jeu_connu($id)
+	{
+		$connus = explode(';', $this->sort_jeu);
+		if (!in_array($id, $connus)) 
+			security_block(URL_MANIPULATION);
+	}
+
 	/** on ne m'aura plus avec les machins déclarés depuis dehors */
 	//function __get($name) { $debug = debug_backtrace(); die('fuck: '.$debug[0]['file'].' line '.$debug[0]['line']); }
 	//function __set($name, $value) { $debug = debug_backtrace(); die('fuck: '.$debug[0]['file'].' line '.$debug[0]['line']); }
