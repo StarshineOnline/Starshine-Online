@@ -165,6 +165,11 @@ if(array_key_exists('from', $_GET) && $_GET['id_action'] != '')
 			$final = $_SESSION['script'][$id_action]['final'];
 			$typefinal = $final[0];
 			$numfinal = mb_substr($final, 1, strlen($final));
+
+			if ($typefinal == 's')
+				$joueur->check_sort_combat_connu($numfinal);
+			if ($typefinal == 'c')
+				$joueur->check_comp_combat_connu($numfinal);			
 			
 			if ($final == '!')
 			{
