@@ -707,13 +707,13 @@ function lance_sort($id, $acteur, &$effects)
 					echo '&nbsp;&nbsp;<span class="degat"><strong>'.$actif->get_nom().'</strong> inflige <strong>'.$degat.'</strong> dégâts avec '.$row['nom'].'</span><br />';
 					$passif->set_hp($passif->get_hp() - $degat);
 					// On regarde si la cible est glacé
-					$chances = rand(0, ($row['effet2'] * 10));
+					/*$chances = rand(0, ($row['effet2'] * 10));
 					$tirage = rand(0, 100);
 					if($chances > $tirage)
-					{
-						$passif->etat['glacer']['effet'] = 1;
+					{*/
+						$passif->etat['glacer']['effet'] = $row['effet2'];
 						$passif->etat['glacer']['duree'] = $row['duree'];
-					}
+					//}
 				break;
 				case 'degat_vent' :
 					$degat = degat_magique($actif->$get_comp_assoc(), ($row['effet'] + $bonus_degats_magique), $actif, $passif);
