@@ -3102,6 +3102,27 @@ class perso extends entite
 			security_block(URL_MANIPULATION);
 	}
 
+	function check_sort_combat_connu($id)
+	{
+		$connus = explode(';', $this->sort_combat);
+		if (!in_array($id, $connus)) 
+			security_block(URL_MANIPULATION);
+	}
+
+	function check_comp_jeu_connu($id)
+	{
+		$connus = explode(';', $this->comp_jeu);
+		if (!in_array($id, $connus)) 
+			security_block(URL_MANIPULATION);
+	}
+
+	function check_comp_combat_connu($id)
+	{
+		$connus = explode(';', $this->comp_combat);
+		if (!in_array($id, $connus)) 
+			security_block(URL_MANIPULATION);
+	}
+
 	/** on ne m'aura plus avec les machins déclarés depuis dehors */
 	//function __get($name) { $debug = debug_backtrace(); die('fuck: '.$debug[0]['file'].' line '.$debug[0]['line']); }
 	//function __set($name, $value) { $debug = debug_backtrace(); die('fuck: '.$debug[0]['file'].' line '.$debug[0]['line']); }
