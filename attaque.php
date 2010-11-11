@@ -365,9 +365,6 @@ else
 			//Boucle principale qui fait durer le combat $round_total round
 			while(($round < ($round_total + 1)) AND ($attaquant->get_hp() > 0) AND ($defenseur->get_hp() > 0))
 			{
-				$log_effects_attaquant = "";
-				$log_effects_defenseur = "";
-				
 				if($attaquant->get_arme_type() == 'arc') $attaquant->set_comp('distance'); else $attaquant->set_comp('melee');
 				if($defenseur->get_arme_type() == 'arc') $defenseur->set_comp('distance'); else $defenseur->set_comp('melee');
 				//Calcul du potentiel de toucher et parer
@@ -633,12 +630,13 @@ else
 					?>
 					</div>
 					<?php
-				
 				//Fin du round et gestion du log du combat
 				if($mode == 'defenseur')
 				{
 					$round++;
 					$log_combat .= ','.$log_effects_attaquant.','.$log_effects_defenseur;
+					$log_effects_attaquant = "";
+					$log_effects_defenseur = "";
 					if ($round < ($round_total + 1)) $log_combat .= ';r'.$round.':';
 					?>
 					</td>
