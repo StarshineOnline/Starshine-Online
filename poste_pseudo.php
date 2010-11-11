@@ -27,7 +27,7 @@ include_once(root.'fonction/security.inc.php');
     	    	
     	    	echo '<ul>';
 	            while ($result = $db->read_object($requeteSQL))
-    	            echo '<li onclick="remplir(\'perso_envoi\', \''.$result->nom.'\', \'suggestion\');">'.$result->nom.'</li>';
+    	            echo '<li onclick="remplir(\''.$_POST['origine'].'\', \''.$result->nom.'\', \''.$_POST['cible'].'\');">'.$result->nom.'</li>';
     	        echo '</ul>';
         	} 
     	} 

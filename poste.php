@@ -136,7 +136,7 @@ if($joueur->get_race() == $R->get_race() OR $R->get_diplo($joueur->get_race()) <
 
 	<div class="ville_test">
 	A qui voulez vous envoyer un message ?
-	<input type="text" id="perso_envoi" value="" onkeyup="javascript:suggestion(this.value, 'suggestion');"/>
+	<input type="text" id="perso_envoi" value="" onkeyup="javascript:suggestion(this.value, 'suggestion', this.id);"/>
 	<div id="suggestion"></div>
 	<br />
 	<input type="button" onclick="javascript:envoiInfo('poste.php?action=select_perso&amp;perso_envoi=' + encodeURIComponent(document.getElementById('perso_envoi').value), 'carte')" value="Sélectionner" />

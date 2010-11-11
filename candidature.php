@@ -89,8 +89,12 @@ if( $check && $is_election )
 		Programme électoral :<br />
 		<textarea style="width : 300px; height : 200px;" name="programme" id="programme"></textarea><br />
 		<br />
-		Ministre militaire : <input type="text" name="ministre_militaire" id="ministre_militaire" /><br />
-		Ministre économie : <input type="text" name="ministre_economie" id="ministre_economie" /><br />
+		Ministre militaire : <input type="text" name="ministre_militaire" id="ministre_militaire" onkeyup="javascript:suggestion(this.value, 'suggestion_mil', this.id);"/>
+	<div id="suggestion_mil"></div>
+	<br />
+		Ministre économie : <input type="text" name="ministre_economie" id="ministre_economie" onkeyup="javascript:suggestion(this.value, 'suggestion_eco', this.id);"/>
+	<div id="suggestion_eco"></div>
+	<br />
 		Type de la prochaine élection
 		<select name="type" id="type">
 			<option value="universel">Universelle</option>

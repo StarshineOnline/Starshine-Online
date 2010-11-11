@@ -298,7 +298,7 @@ function findPos(obj)
 	return {x:curleft,y:curtop};
 }
 
-function suggestion(valeur, cible)
+function suggestion(valeur, cible, origine)
 {
 	if(valeur.length == 0)
 	{
@@ -306,7 +306,7 @@ function suggestion(valeur, cible)
 	}
 	else
 	{
-		$.post("poste_pseudo.php", {queryString: ""+escape(valeur)+""}, 
+		$.post("poste_pseudo.php", {queryString: ""+escape(valeur)+"", origine: ""+origine+"", cible: ""+cible+""}, 
 		function(data)
 		{
      	 	if(data.length >0) 
@@ -316,7 +316,7 @@ function suggestion(valeur, cible)
 				$('#'+cible).show();
 			}
         });
-		pos = findPos(document.getElementById('perso_envoi'));
-		$('#suggestions').css({top: (pos.y + 12) + "px", left: pos.x + "px"});
+		pos = findPos(document.getElementById(origine));
+		$('#'+cible).css({top: (pos.y + 20) + "px", left: pos.x + "px"});
 	}
 }
