@@ -788,7 +788,7 @@ function lance_sort($id, $acteur, &$effects)
 					if ($passif->get_type() == 'batiment') $drain = 0;
 					else $drain = round($degat * 0.3);
 					// Augmentation du nombre de HP récupérable par récupération
-					if(array_key_exists('recuperation', $actif->etat) && $actif->etat['recuperation']['hp_recup'] != 0) $actif->etat['recuperation']['hp_max'] += $drain;
+					if(array_key_exists('recuperation', $actif->etat)) $actif->etat['recuperation']['hp_max'] += $drain;
 					echo '&nbsp;&nbsp;<span class="degat"><strong>'.$actif->get_nom().'</strong> inflige <strong>'.$degat.'</strong> dégâts avec '.$row['nom'].'<br />
 					Et gagne <strong>'.$drain.'</strong> hp grâce au drain</span><br />';
 					$passif->set_hp($passif->get_hp() - $degat);
@@ -801,7 +801,7 @@ function lance_sort($id, $acteur, &$effects)
 					if ($passif->get_type() == 'batiment') $drain = 0;
 					else $drain = round($degat * 0.5);
 					// Augmentation du nombre de HP récupérable par récupération
-					if(array_key_exists('recuperation', $actif->etat) && $actif->etat['recuperation']['hp_recup'] != 0) $actif->etat['recuperation']['hp_max'] += $drain;
+					if(array_key_exists('recuperation', $actif->etat)) $actif->etat['recuperation']['hp_max'] += $drain;
 					echo '&nbsp;&nbsp;<span class="degat"><strong>'.$actif->get_nom().'</strong> inflige <strong>'.$degat.'</strong> dégâts avec '.$row['nom'].'<br />
 					Et gagne <strong>'.$drain.'</strong> hp grâce au drain</span><br />';
 					$passif->set_hp($passif->get_hp() - $degat);
