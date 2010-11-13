@@ -431,5 +431,174 @@ class pet extends map_monstre
 		$this->get_monstre();
 		return pow($this->monstre->get_level(), 2);
 	}
+	
+	public $pp_base;
+	public $pm_base;
+	public $enchant;
+	public $armure;
+	function get_armure()
+	{
+		global $db;
+		if(!isset($this->armure))
+		{
+			$joueur = new perso($this->get_id_joueur());
+			$this->pp = 0;
+			$this->pm = 0;
+			// Pièces d'armure
+			$partie_armure = array('selle', 'tete', 'torse', 'main', 'ceinture', 'jambe', 'chaussure', 'dos', 'cou', 'doigt');
+			foreach($partie_armure as $partie)
+			{
+				if($partie != '')
+				{
+					$partie_d = decompose_objet($joueur->get_inventaire_partie($partie, true));
+					if($partie_d['id_objet'] != '')
+					{
+						$requete = "SELECT PP, PM, effet FROM objet_pet WHERE id = ".$partie_d['id_objet'];
+						$req = $db->query($requete);
+						$row = $db->read_row($req);
+						$this->pp += $row[0];
+						$this->pm += $row[1];
+						// Effets magiques
+						if ($row[2] != '')
+						{
+							$effet = explode(';', $row[2]);
+							foreach($effet as $eff)
+							{
+								$explode = explode('-', $eff);
+								$this->register_item_effet($explode[0], $explode[1]);
+							}
+						}
+					}
+					// Gemmes
+					if($partie_d['enchantement'] > 0)
+					{
+						$gemme = new gemme_enchassee($partie_d['enchantement']);
+						$this->register_gemme_enchantement($gemme);
+          //my_dump($this->enchantement);
+					//$this->enchant = enchant($partie_d['enchantement'], $this);
+					}
+				}
+			}
+			$this->pp_base = $this->pp;
+			$this->pm_base = $this->pm;
+			//Bonus raciaux
+			/*if($this->get_race() == 'nain') $this->pm = round(($this->pm + 10) * 1.1);
+			if($this->get_race() == 'barbare') $this->pp = round(($this->pp + 10) * 1.3);
+			if($this->get_race() == 'scavenger')
+			{
+				$this->pp = round($this->pp * 1.15);
+				$this->pm = round($this->pm * 1.05);
+			}
+			if($this->get_race() == 'mortvivant' AND moment_jour() == 'Soir')
+			{
+				$this->pp = round($this->pp * 1.15);
+				$this->pm = round($this->pm * 1.15);
+			}
+
+			//Effets des enchantements
+			if (isset($this->enchantement['pourcent_pm'])) $this->pm += floor($this->pm * $this->enchantement['pourcent_pm']['effet'] / 100);
+			if (isset($this->enchantement['pourcent_pp']))	$this->pp += floor($this->pp * $this->enchantement['pourcent_pp']['effet'] / 100);
+
+			//Buffs
+			if($this->is_buff('buff_bouclier')) $this->pp = round($this->pp * (1 + ($this->get_buff('buff_bouclier', 'effet') / 100)));
+			if($this->is_buff('buff_barriere')) $this->pm = round($this->pm * (1 + ($this->get_buff('buff_barriere', 'effet') / 100)));
+			if($this->is_buff('buff_forteresse'))
+			{
+				$this->pp = round($this->pp * (1 + (($this->get_buff('buff_forteresse', 'effet')) / 100)));
+				$this->pm = round($this->pm * (1 + (($this->get_buff('buff_forteresse', 'effet2')) / 100)));
+			}
+			if($this->is_buff('buff_cri_protecteur')) $this->pp = round($this->pp * (1 + ($this->get_buff('buff_cri_protecteur', 'effet') / 100)));
+			if($this->is_buff('debuff_desespoir')) $this->pm = round($this->pm / (1 + (($this->get_buff('debuff_desespoir', 'effet')) / 100)));
+			//Maladie suppr_defense
+			if($this->is_buff('suppr_defense')) $this->pp = 0;*/
+		}
+		$this->armure=true;
+	}
+	
+	function get_pm($base = false)
+	{
+		if(!isset($this->pm))
+		{
+			$this->get_armure();
+		}
+		if(!$base) return $this->pm;
+		else return $this->pm_base;
+	}
+
+	function get_pp($base = false)
+	{
+		if(!isset($this->pp))
+		{
+			$this->get_armure();
+		}
+		if(!$base) return $this->pp;
+		else return $this->pp_base;
+	}
+	
+	function get_distance_tir()
+	{
+		$joueur = new perso($this->get_id_joueur());
+		$arme = $joueur->inventaire_pet()->arme;
+		if(!isset($this->arme)) $this->get_arme();
+		if($this->arme)
+		{
+			$arme = $this->arme->distance_tir;
+			/*if($this->is_buff('longue_portee')) $bonus = $this->get_buff('longue_portee', 'effet');
+			else $bonus = 0;*/
+			return ($arme);
+		}
+		return 0;
+	}
+	
+	// Renvoie l'arme de la main droite. Enregistre les enchantements et les effets. 	
+	function get_arme()
+	{
+		if(!isset($this->arme))
+		{
+			$joueur = new perso($this->get_id_joueur());
+			global $db;
+			$arme = $joueur->inventaire_pet()->arme;
+			if($arme != '')
+			{
+				$arme_d = decompose_objet($arme);
+				$requete = "SELECT * FROM objet_pet WHERE id = ".$arme_d['id_objet'];
+				$req = $db->query($requete);
+				$this->arme = $db->read_object($req);
+				/*if ($arme_d['enchantement'] != null)
+				{
+					$gemme = new gemme_enchassee($arme_d['enchantement']);
+					if ($gemme->enchantement_type == 'degat')
+						$this->arme->degat += $gemme->enchantement_effet;
+					$this->register_gemme_enchantement($gemme);
+					//my_dump($this->enchantement);
+				}
+				if ($this->arme->effet)
+				{
+				  $effets = split(';', $this->arme->effet);
+				  foreach ($effets as $effet)
+				  {
+					$d_effet = split('-', $effet);
+					$this->register_item_effet($d_effet[0], $d_effet[1], $this->arme);
+				  }
+				}*/
+			}
+			else $this->arme = false;
+		}
+		return $this->arme;
+	}
+	
+	/**
+	 * Renvoie le facteur de dégâts de ou des armes.	
+   * La plupart du temps on s'en fiche, de la main, on veut les degats
+   * @param $main   si false : cumul, si 'droite' ou 'gauche' : detail
+   */
+	function get_arme_degat($main = false)
+	{
+		$degats = 0;
+		if ($main == false || $main == 'droite')
+			if ($this->get_arme())
+				$degats += $this->arme->degat;
+		return $degats;
+	}
 }
 ?>

@@ -239,7 +239,13 @@ function description_objet($id_objet)
 			$requete = "SELECT * FROM objet_pet WHERE id = ".$objet['id_objet'];
 			$req = $db->query($requete);
 			$row = $db->read_assoc($req);
-			$description .= '<strong>'.$row['nom'].'</strong><br />	<table> <tr> <td> Type </td> <td> '.$row['type'].' </td> </tr> <tr> <td> PP </td> <td> '.$row['PP'].' </td> </tr> <tr> <td> PM </td> <td> '.$row['PM'].' </td> </tr> <tr> <td> Dressage nécessaire </td> <td> '.$row['dressage'].' </td> </tr> <tr> <td> Prix HT<br /> <span class=\\\'xsmall\\\'>(en magasin)</span> </td> <td> '.$row['prix'].' </td> </tr> </table>';
+			if($row['type'] == "arme")
+			{
+				$description .= '<strong>'.$row['nom'].'</strong><br />	<table> <tr> <td> Type </td> <td> '.$row['type'].' </td> </tr> <tr> <td> Nombre de mains </td> <td> '.count(explode(';', $row['mains'])).' </td> </tr> <tr> <td> Dégâts </td> <td> '.$row['degat'].' </td> </tr> <tr> <td> Dressage nécessaire </td> <td> '.$row['dressage'].' </td> </tr> <tr> <td> Portée </td> <td> '.$row['distance_tir'].' </td> </tr> '; 
+				$description .= ' <tr> <td> Prix HT<br /> <span class=\\\'xsmall\\\'>(en magasin)</span> </td> <td> '.$row['prix'].' </td> </tr> </table>';
+			}
+			else
+				$description .= '<strong>'.$row['nom'].'</strong><br />	<table> <tr> <td> Type </td> <td> '.$row['type'].' </td> </tr> <tr> <td> PP </td> <td> '.$row['PP'].' </td> </tr> <tr> <td> PM </td> <td> '.$row['PM'].' </td> </tr> <tr> <td> Dressage nécessaire </td> <td> '.$row['dressage'].' </td> </tr> <tr> <td> Prix HT<br /> <span class=\\\'xsmall\\\'>(en magasin)</span> </td> <td> '.$row['prix'].' </td> </tr> </table>';
 		break;
 		case 'm' :
 			$requete = "SELECT * FROM accessoire WHERE id = ".$objet['id_objet'];

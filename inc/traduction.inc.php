@@ -77,6 +77,8 @@ $Gtrad['cou'] = 'Cou';
 $Gtrad['dos'] = 'Dos';
 $Gtrad['doigt'] = 'Doigt';
 $Gtrad['accessoire'] = 'Accessoire';
+$Gtrad['selle'] = 'Selle';
+$Gtrad['arme'] = 'Arme';
 //@}
 
 

@@ -319,9 +319,9 @@ class entite extends placable
 				$this->pa = 0;
 				$this->nom = $pet->get_nom();
 				$this->race = 'neutre';
-				$this->pp = $pet->monstre->get_pp();
-				$this->pm = $pet->monstre->get_pm();
-				$this->distance_tir = 0;
+				$this->pp = $pet->monstre->get_pp() + $pet->get_pp();
+				$this->pm = $pet->monstre->get_pm() + $pet->get_pm();
+				$this->distance_tir = $pet->get_distance_tir();
 				$this->esquive = $pet->monstre->get_esquive();
 				$this->distance = $pet->monstre->get_melee();
 				$this->melee = $pet->monstre->get_melee();
@@ -338,7 +338,7 @@ class entite extends placable
 				$this->volonte = $pet->monstre->get_volonte();
 				$this->dexterite = $pet->monstre->get_dexterite();
 				$this->enchantement = array();
-				$this->arme_degat = 0;
+				$this->arme_degat = $pet->get_arme_degat();
 				$this->level = $pet->monstre->get_level();
 				$this->rang_royaume = 0;
 				$this->star = $pet->monstre->get_star();

@@ -39,6 +39,14 @@ if($joueur->get_inventaire_slot() != '')
 						$mains = explode(';', $row['mains']);
 						$partie = $mains[0];
 					break;
+					//Si c'est un objet de pet
+					case 'd' :
+						$requete = "SELECT * FROM objet_pet WHERE ID = ".$objet_d['id_objet'];
+						//Récupération des infos de l'objet
+						$req = $db->query($requete);
+						$row = $db->read_array($req);
+						$partie = $row['type'];
+					break;
 					//Si c'est une protection
 					case 'p' :
 						$requete = "SELECT * FROM armure WHERE ID = ".$objet_d['id_objet'];
@@ -146,6 +154,10 @@ if($joueur->get_inventaire_slot() != '')
 				elseif($objet_d['categorie'] == 'a' OR $objet_d['categorie'] == 'p' OR $objet_d['categorie'] == 'm')
 				{
 					echo '<span class="inventaire_span" style="width:60px;"><a href="inventaire.php?action=equip&amp;id_objet='.$objet_d['id_objet'].'&amp;partie='.$partie.'&amp;key_slot='.$i.'&amp;categorie='.$objet_d['categorie'].$filtre_url.'" onclick="return envoiInfo(this.href, \'information\');">Equiper</a></span> ';
+				}
+				elseif($objet_d['categorie'] == 'd')
+				{
+					echo '<span class="inventaire_span" style="width:60px;"><a href="inventaire_pet.php?action=equip&amp;id_objet='.$objet_d['id_objet'].'&amp;partie='.$partie.'&amp;key_slot='.$i.'&amp;categorie='.$objet_d['categorie'].$filtre_url.'" onclick="return envoiInfo(this.href, \'information\');">Equiper</a></span> ';
 				}
 				elseif($objet_d['categorie'] == 'o' OR $objet_d['categorie'] == 'r')
 				{

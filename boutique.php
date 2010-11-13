@@ -129,6 +129,38 @@ if($W_row['type'] == 1)
 							echo '<h5>Vous n\'avez pas assez de Stars</h5>';
 						}
 					break;
+					case 'dressage' :
+						$requete = "SELECT id, prix, type FROM objet_pet WHERE id = ".sSQL($_GET['id']);
+						$req = $db->query($requete);
+						$row = $db->read_array($req);
+						$taxe = ceil($row['prix'] * $R->get_taxe_diplo($joueur->get_race()) / 100);
+						$cout = $row['prix'] + $taxe;
+						if ($joueur->get_star() >= $cout)
+						{
+							if($joueur->prend_objet_pet('d'.$row['id']))
+							{
+								$joueur->set_star($joueur->get_star() - $cout);
+								$joueur->sauver();
+								//Récupération de la taxe
+								if($taxe > 0)
+								{
+									$R->set_star($R->get_star() + $taxe);
+									$R->sauver();
+									$R->add_armurerie($taxe);
+								}
+								echo '<h6>Armure achetée !</h6>
+								<img src="image/pixel.gif" onLoad="envoiInfo(\'infoperso.php?javascript=oui\', \'perso\');" />';
+							}
+							else
+							{
+								echo $G_erreur;
+							}
+						}
+						else
+						{
+							echo '<h5>Vous n\'avez pas assez de Stars</h5>';
+						}
+					break;
 				}
 			break;
 		}
@@ -337,9 +369,10 @@ if($W_row['type'] == 1)
 		<li onclick=\"envoiInfo('".$url2."&amp;part=torse', 'carte');\">Torse|</li>
 		<li onclick=\"envoiInfo('".$url2."&amp;part=cou', 'carte');\">Cou|</li>
 		<li onclick=\"envoiInfo('".$url2."&amp;part=dos', 'carte');\">Dos|</li>
-		<li onclick=\"envoiInfo('".$url2."&amp;part=doigt', 'carte');\">Doigt</li>
+		<li onclick=\"envoiInfo('".$url2."&amp;part=doigt', 'carte');\">Doigt|</li>
+		<li onclick=\"envoiInfo('".$url2."&amp;part=dressage', 'carte');\">Dressage</li>
 		
-		</ul>		";
+		</ul>";
 		
 		?>
 		</div>
@@ -372,15 +405,20 @@ if($W_row['type'] == 1)
 		
 		$color = 1;
 		$where = 'lvl_batiment <= '.$level_batiment;
-		if(array_key_exists('part', $_GET))
+		if(array_key_exists('part', $_GET) AND $_GET['part'] == "dressage")
+		{
+			$requete = "SELECT * FROM objet_pet ORDER BY".$ordre;
+		}
+		elseif(array_key_exists('part', $_GET))
 		{
 			$where .= " AND type = '".sSQL($_GET['part'])."'";
+			$requete = "SELECT * FROM armure WHERE ".$where." ORDER BY".$ordre;
 		}
 		else
 		{
 			$where .= " AND type = 'ceinture'";
+			$requete = "SELECT * FROM armure WHERE ".$where." ORDER BY".$ordre;
 		}
-		$requete = "SELECT * FROM armure WHERE ".$where." ORDER BY".$ordre;
 		$req = $db->query($requete);
 		
 		while($row = $db->read_array($req))
@@ -388,9 +426,10 @@ if($W_row['type'] == 1)
 			$taxe = ceil($row['prix'] * $R->get_taxe_diplo($joueur->get_race()) / 100);
 			$cout = $row['prix'] + $taxe;
 			$couleur = $color;
-			if($row['forcex'] > $joueur->get_force() OR $cout > $joueur->get_star()) $couleur = 3;
+			if($_GET['part'] == "dressage" AND ($row['dressage'] > $joueur->get_dressage() OR $cout > $joueur->get_star())) $couleur = 3;
+			elseif($_GET['part'] != "dressage" AND ($row['forcex'] > $joueur->get_force() OR $cout > $joueur->get_star())) $couleur = 3;
 
-			if($joueur->inventaire()->$row['type'] != '' AND $joueur->inventaire()->$row['type'] !== 0)
+			if($_GET['part'] != "dressage" AND $joueur->inventaire()->$row['type'] != '' AND $joueur->inventaire()->$row['type'] !== 0)
 			{
 				$armure = decompose_objet($joueur->inventaire()->$row['type']);
 				$requete = "SELECT * FROM armure WHERE id = ".$armure['id_objet'];
@@ -398,8 +437,57 @@ if($W_row['type'] == 1)
 				$row_armure = $db->read_array($req_armure);
 				$echo = 'Armure équipée : '.$row_armure['nom'].' - PP = '.$row_armure['PP'].' / PM = '.$row_armure['PM'];
 			}
+			elseif($_GET['part'] == "dressage" AND $joueur->inventaire_pet()->$row['type'] != '' AND $joueur->inventaire_pet()->$row['type'] !== 0)
+			{
+				$armure = decompose_objet($joueur->inventaire_pet()->$row['type']);
+				$requete = "SELECT * FROM objet_pet WHERE id = ".$armure['id_objet'];
+				$req_armure = $db->query($requete);
+				$row_armure = $db->read_array($req_armure);
+				$echo = 'Armure équipée sur votre pet : '.$row_armure['nom'].' - PP = '.$row_armure['PP'].' / PM = '.$row_armure['PM'];
+			}
 			else $echo = 'Armure équipée : Aucune';
+			
+			if($_GET['part'] == "dressage")
+			{
 		?>
+		<li class="element trcolor<?php echo $couleur; ?>" onmouseover="return <?php echo make_overlib($echo); ?>" onClick="return nd();" onmouseout="return nd();">
+			<span class='image'>
+				<?php echo '<img src="image/armure/'.$row['type'].'/'.$row['type'].''.$row['id'].'.png" style="height:24px;" />'; 	?>	
+
+			</span>
+
+			<span class='nom'>
+				<?php echo $row['nom']; ?>
+			</span>
+			<span class='pp'>
+				<?php echo $row['PP']; ?>
+			</span>
+			<span class='pm'>
+				<?php echo $row['PM']; ?>
+			</span>
+			<span class='force'>
+				<span class="<?php echo over_price($row['dressage'], $joueur->get_dressage()); ?>"><?php echo $row['dressage']; ?></span>
+			</span>
+			<span class='stars'>
+				<span class="<?php echo over_price($cout, $joueur->get_star()); ?>"><?php echo $cout; ?></span>
+			</span>
+			<span class='achat'>
+			<?php
+				if (over_price($cout, $joueur->get_star()) == 'achat_normal' AND over_price($row['forcex'], $joueur->get_force()) == 'achat_normal')
+				{
+				?>	
+				<a href="boutique.php?action=achat&amp;type=dressage&amp;id=<?php echo $row['id']; ?>" onclick="return envoiInfo(this.href, 'carte')"><span class="achat">Achat</span></a>
+				<?php 
+				}
+				?>
+			</span>
+		</li>
+		<?php
+				if($color == 1) $color = 2; else $color = 1;
+			}
+			else
+			{
+			?>
 		<li class="element trcolor<?php echo $couleur; ?>" onmouseover="return <?php echo make_overlib($echo); ?>" onClick="return nd();" onmouseout="return nd();">
 			<span class='image'>
 				<?php echo '<img src="image/armure/'.$row['type'].'/'.$row['type'].''.$row['id'].'.png" style="height:24px;" />'; 	?>	
@@ -433,7 +521,8 @@ if($W_row['type'] == 1)
 			</span>
 		</li>
 		<?php
-			if($color == 1) $color = 2; else $color = 1;
+				if($color == 1) $color = 2; else $color = 1;
+			}
 		}
 		
 		?>

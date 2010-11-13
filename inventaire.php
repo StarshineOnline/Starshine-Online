@@ -37,7 +37,12 @@ $W_row = $db->read_assoc($W_req);
 $R = new royaume($W_row['royaume']);
 ?>
 <fieldset>
-<legend>Inventaire</legend>
+<legend>Inventaire du Personnage</legend>
+<ul id="messagerie_onglet">
+	<li><a href="inventaire.php" onclick="return envoiInfo(this.href, 'information');">Personnage</a></li>
+	<li><a href="inventaire_pet.php" onclick="return envoiInfo(this.href, 'information');">Créature</a></li>
+</ul>
+	<div class="spacer"></div>
 <?php
 //Switch des actions
 if(!$visu AND isset($_GET['action']))
