@@ -35,7 +35,7 @@ if( $check && $is_election )
 {
 	if(array_key_exists('type', $_GET))
 	{
-		$election = elections::get_prochain_election($Trace[$joueur->get_race()]['numrace']);
+		$election = elections::get_prochain_election($Trace[$joueur->get_race()]['numrace'], true);
 		$candidats = candidat::create(array('id_perso', 'id_election'), array($joueur->get_id(), $election[0]->get_id()));
 		//On vérifie qu'il n'est pas déjà candidat
 		if(count($candidats) == 0)
