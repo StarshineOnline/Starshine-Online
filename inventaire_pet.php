@@ -1,9 +1,4 @@
-<?php //	 -*- tab-width:	 2 -*-
-
-// ALTER TABLE `perso` ADD `inventaire_pet` TEXT NOT NULL AFTER `inventaire` 
-
-
-
+<?php
 if (file_exists('root.php'))
   include_once('root.php');
 
