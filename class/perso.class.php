@@ -953,7 +953,7 @@ class perso extends entite
 		if(!isset($this->arme_pet))
 		{
 			global $db;
-			$arme = $this->inventaire_pet()->arme;
+			$arme = $this->inventaire_pet()->arme_pet;
 			if($arme != '')
 			{
 				$arme_d = decompose_objet($arme);
@@ -1790,6 +1790,11 @@ class perso extends entite
 	{
 		$this->comp_jeu = $comp_jeu;
 		$this->champs_modif[] = 'comp_jeu';
+	}
+	/// Renvoie les compétences de combat.
+	function get_comp_combat()
+	{
+		return $this->comp_combat;
 	}
 	/// Modifie les compétences de combat.
 	function set_comp_combat($comp_combat)

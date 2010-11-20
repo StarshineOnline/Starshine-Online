@@ -239,7 +239,7 @@ function description_objet($id_objet)
 			$requete = "SELECT * FROM objet_pet WHERE id = ".$objet['id_objet'];
 			$req = $db->query($requete);
 			$row = $db->read_assoc($req);
-			if($row['type'] == "arme")
+			if($row['type'] == "arme_pet")
 			{
 				$description .= '<strong>'.$row['nom'].'</strong><br />	<table> <tr> <td> Type </td> <td> '.$row['type'].' </td> </tr> <tr> <td> Nombre de mains </td> <td> '.count(explode(';', $row['mains'])).' </td> </tr> <tr> <td> Dégâts </td> <td> '.$row['degat'].' </td> </tr> <tr> <td> Dressage nécessaire </td> <td> '.$row['dressage'].' </td> </tr> <tr> <td> Portée </td> <td> '.$row['distance_tir'].' </td> </tr> '; 
 				$description .= ' <tr> <td> Prix HT<br /> <span class=\\\'xsmall\\\'>(en magasin)</span> </td> <td> '.$row['prix'].' </td> </tr> </table>';

@@ -352,8 +352,8 @@ $tab_loc[1]['type'] = 'selle';
 $tab_loc[2]['loc'] = 'dos';
 $tab_loc[2]['type'] = 'dos';
 
-$tab_loc[3]['loc'] = 'arme';
-$tab_loc[3]['type'] = 'arme';
+$tab_loc[3]['loc'] = 'arme_pet';
+$tab_loc[3]['type'] = 'arme_pet';
 $tab_loc[4]['loc'] = 'torse';
 $tab_loc[4]['type'] = 'armure';
 $tab_loc[5]['loc'] = ' ';
@@ -388,13 +388,13 @@ foreach($tab_loc as $loc)
 			if(!$visu AND $joueur->get_inventaire_partie($loc['loc'], true) != '' AND $joueur->get_inventaire_partie($loc['loc'], true) != 'lock') $desequip = true; else $desequip = false;
 			switch($loc['type'])
 			{
-				case 'arme' :
+				case 'arme_pet' :
 					if($joueur->get_inventaire_partie($loc['loc'], true) != 'lock')
 					{
 						$requete = "SELECT * FROM `objet_pet` WHERE id = ".$objet['id_objet'];
 						$sqlQuery = $db->query($requete);
 						$row = $db->read_array($sqlQuery);
-						$image = 'image/objet_pet/arme/arme'.$row['id'].'.png'; 
+						$image = 'image/objet_pet/arme_pet/arme'.$row['id'].'.png'; 
 						$nom = $row['nom'];
 					}
 					else
@@ -454,7 +454,7 @@ foreach($tab_loc as $loc)
 		{
 			switch($loc['type'])
 			{
-				case 'arme' :
+				case 'arme_pet' :
 					echo '<br />Dégâts : '.$joueur->get_arme_degat('pet');
 				break;
 				case 'armure' :

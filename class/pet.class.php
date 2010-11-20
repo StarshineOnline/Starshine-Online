@@ -539,10 +539,10 @@ class pet extends map_monstre
 	{
 		$joueur = new perso($this->get_id_joueur());
 		$arme = $joueur->inventaire_pet()->arme;
-		if(!isset($this->arme)) $this->get_arme();
-		if($this->arme)
+		if(!isset($this->arme_pet)) $this->get_arme();
+		if($this->arme_pet)
 		{
-			$arme = $this->arme->distance_tir;
+			$arme = $this->arme_pet->distance_tir;
 			/*if($this->is_buff('longue_portee')) $bonus = $this->get_buff('longue_portee', 'effet');
 			else $bonus = 0;*/
 			return ($arme);
@@ -553,38 +553,38 @@ class pet extends map_monstre
 	// Renvoie l'arme de la main droite. Enregistre les enchantements et les effets. 	
 	function get_arme()
 	{
-		if(!isset($this->arme))
+		if(!isset($this->arme_pet))
 		{
 			$joueur = new perso($this->get_id_joueur());
 			global $db;
-			$arme = $joueur->inventaire_pet()->arme;
+			$arme = $joueur->inventaire_pet()->arme_pet;
 			if($arme != '')
 			{
 				$arme_d = decompose_objet($arme);
 				$requete = "SELECT * FROM objet_pet WHERE id = ".$arme_d['id_objet'];
 				$req = $db->query($requete);
-				$this->arme = $db->read_object($req);
+				$this->arme_pet = $db->read_object($req);
 				/*if ($arme_d['enchantement'] != null)
 				{
 					$gemme = new gemme_enchassee($arme_d['enchantement']);
 					if ($gemme->enchantement_type == 'degat')
-						$this->arme->degat += $gemme->enchantement_effet;
+						$this->arme_pet->degat += $gemme->enchantement_effet;
 					$this->register_gemme_enchantement($gemme);
 					//my_dump($this->enchantement);
 				}
-				if ($this->arme->effet)
+				if ($this->arme_pet->effet)
 				{
-				  $effets = split(';', $this->arme->effet);
+				  $effets = split(';', $this->arme_pet->effet);
 				  foreach ($effets as $effet)
 				  {
 					$d_effet = split('-', $effet);
-					$this->register_item_effet($d_effet[0], $d_effet[1], $this->arme);
+					$this->register_item_effet($d_effet[0], $d_effet[1], $this->arme_pet);
 				  }
 				}*/
 			}
-			else $this->arme = false;
+			else $this->arme_pet = false;
 		}
-		return $this->arme;
+		return $this->arme_pet;
 	}
 	
 	/**
@@ -597,7 +597,7 @@ class pet extends map_monstre
 		$degats = 0;
 		if ($main == false || $main == 'droite')
 			if ($this->get_arme())
-				$degats += $this->arme->degat;
+				$degats += $this->arme_pet->degat;
 		return $degats;
 	}
 }
