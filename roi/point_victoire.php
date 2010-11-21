@@ -12,33 +12,31 @@ elseif(array_key_exists('action', $_GET))
 	$action = new point_victoire_action($_GET['action']);
 	if($royaume->get_point_victoire() >= $action->get_cout())
 	{
+		$persos = "SELECT id FROM perso WHERE race = '".$royaume->get_race()."' AND statut = 'actif'";
 		switch($action->get_type())
 		{
 			case 'famine' :
-				$ids = array();
-				$requete = "SELECT buff.id FROM perso LEFT JOIN buff ON buff.id_perso = perso.id WHERE buff.type = 'famine' AND race = '".$royaume->get_race()."'";
-				$req = $db->query($requete);
-				while($row = $db->read_row($req))
-				{
-					$ids[] = $row[0];
-				}
-				$ids_implode = implode(', ', $ids);
-				$requete = "DELETE FROM buff WHERE id IN (".$ids_implode.")";
+				$requete = "DELETE FROM buff WHERE type = 'famine' AND id_perso IN ($persos)";
 				$db->query($requete);
 				echo '<h6>La famine a bien été supprimée</h6>';
 			break;
+			case 'remove_buff' :
+				$requete = "DELETE FROM buff WHERE type = '".$action->get_effet()."' AND id_perso IN ($persos)";
+				$db->query($requete);
+				echo '<h6>'.$action->get_effet().' a bien été supprimé(e)</h6>';
+			break;
+			case 'remove_buffs' :
+				$requete = "DELETE FROM buff WHERE type IN (".$action->get_effet().") AND id_perso IN ($persos)";
+				$db->query($requete);
+				echo '<h6>'.$action->get_effet().' a bien été supprimé(e)</h6>';
+			break;
 			case 'buff' :
-				$duree = 3600 * 24 * 31;
-				//On sélectionne tous les joueurs de ce royaume
-				$requete = "SELECT id FROM perso WHERE race = '".$royaume->get_race()."' AND statut = 'actif'";
-				$req = $db->query($requete);
-				while($row = $db->read_assoc($req))
-				{
-					$requete = "INSERT INTO buff(`type`, `effet`, `effet2`, `fin`, `duree`, `id_perso`, `nom`, `description`, `debuff`, `supprimable`)
-								VALUES('".$action->get_type_buff()."', ".$action->get_effet().", 0, ".(time()+$duree).", ".$duree.", ".$row['id'].", '".$action->get_nom()."', '".addslashes($action->get_description())."', 1, 0)";
-					$db->query($requete);
-				}
-				echo '<h6>Votre royaume bénéficie maintenant du buff : '.$action->get_nom().'</h6>';
+			  $duree = 3600 * 24 * 31;
+			  $requete = "INSERT INTO buff(`type`, `effet`, `effet2`, `fin`, `duree`, `id_perso`, `nom`, `description`, `debuff`, `supprimable`)
+								SELECT '".$action->get_type_buff()."', ".$action->get_effet().", 0, ".(time()+$duree).", ".$duree.", id, '".$action->get_nom()."', '".addslashes($action->get_description())."', 1, 0
+                FROM ($persos) persos";
+				$db->query($requete);
+			  echo '<h6>Votre royaume bénéficie maintenant du buff : '.$action->get_nom().'</h6>';
 			break;
 		}
 		$royaume->set_point_victoire($royaume->get_point_victoire() - $action->get_cout());
