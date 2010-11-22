@@ -21,14 +21,14 @@ elseif(array_key_exists('action', $_GET))
 				echo '<h6>La famine a bien été supprimée</h6>';
 			break;
 			case 'remove_buff' :
-				$requete = "DELETE FROM buff WHERE type = '".$action->get_effet()."' AND id_perso IN ($persos)";
+				$requete = "DELETE FROM buff WHERE type = '".$action->get_type_buff()."' AND id_perso IN ($persos)";
 				$db->query($requete);
-				echo '<h6>'.$action->get_effet().' a bien été supprimé(e)</h6>';
+				echo '<h6>'.$action->get_type_buff().' a bien été supprimé(e)</h6>';
 			break;
 			case 'remove_buffs' :
-				$requete = "DELETE FROM buff WHERE type IN (".$action->get_effet().") AND id_perso IN ($persos)";
+				$requete = "DELETE FROM buff WHERE type IN (".$action->get_type_buff().") AND id_perso IN ($persos)";
 				$db->query($requete);
-				echo '<h6>'.$action->get_effet().' a bien été supprimé(e)</h6>';
+				echo '<h6>'.$action->get_type_buff().' a bien été supprimé(e)</h6>';
 			break;
 			case 'buff' :
 			  $duree = 3600 * 24 * 31;
