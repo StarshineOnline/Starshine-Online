@@ -125,9 +125,9 @@ while($row = $db->read_array($req))
 		$aft = '';
 	}
   
-  $sOutput .= '[ "'.get_cell($bef.$row['rank'].$aft).'"';
 	if (!check_affiche_bonus($row['cache_stat'], $joueur, $row))
 	{
+	$sOutput .= '[ "###"';
     /* $jsrow[] = '###'; */
     $sOutput .= ', "###"';
     if ($tab_classement[$tri]['affiche'])
@@ -137,6 +137,7 @@ while($row = $db->read_array($req))
   }
 	else
   {
+  $sOutput .= '[ "'.get_cell($bef.$row['rank'].$aft).'"';
     $nom = $row['nom'];
     if((strtolower($row['nom']) != strtolower($_SESSION['nom'])) AND
     ($row['cache_classe'] > 1 OR
