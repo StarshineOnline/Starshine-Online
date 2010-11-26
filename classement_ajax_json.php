@@ -1,62 +1,65 @@
 <?php
-if (file_exists('root.php'))
-  include_once('root.php');
+if (file_exists('root.php')) {
+	include_once('root.php');
+}
+		 
+include_once(root.'inc/fp.php');
+//Tableau des classements
+include_once(root.'inc/classement_ajax_tab.php');
 
-	include_once(root.'inc/fp.php');
-	//Tableau des classements
-  include_once(root.'inc/classement_ajax_tab.php');
+$joueur = new perso($_SESSION['ID']);
+if(!array_key_exists('tri', $_GET)) $tri = 'honneur';
+else
+{
+	$tri = mysql_escape_string($_GET['tri']);
+	if(!strcmp($tri, 'craft'))
+	{
+		$tri = 'architecture, forge, alchimie';
+	}
+	$i = 0;
+}
+if(array_key_exists('race', $_GET))
+{
+	$race = $_GET['race'];
+}
+else
+{
+	$race = 'tous';
+}
 
-	$joueur = new perso($_SESSION['ID']);
-	if(!array_key_exists('tri', $_GET)) $tri = 'honneur';
-	else
-	{
-		$tri = mysql_escape_string($_GET['tri']);
-		if(!strcmp($tri, 'craft'))
-		{
-			$tri = 'architecture, forge, alchimie';
-		}
-		$i = 0;
-	}
-	if(array_key_exists('race', $_GET))
-	{
-		$race = $_GET['race'];
-	}
-	else
-	{
-		$race = 'tous';
-	}
+if(array_key_exists('iDisplayStart', $_GET)) $i = $_GET['iDisplayStart'];
+else $i = 0;
 
-	if(array_key_exists('iDisplayStart', $_GET)) $i = $_GET['iDisplayStart'];
-	else $i = 0;
+if(array_key_exists('iDisplayLength', $_GET)) $j = $_GET['iDisplayLength'];
+else $j = 25;
 
-	if(array_key_exists('iDisplayLength', $_GET)) $j = $_GET['iDisplayLength'];
-	else $j = 25;
-
-	if($race == 'race')
-	{
-		$where = "race = '".sSQL($joueur->get_race())."'";
-	}
-	else
-	{
-		$where = '1';
-	}
+if($race == 'race')
+{
+	$where = "race = '".sSQL($joueur->get_race())."'";
+}
+else
+{
+	$where = '1';
+}
 
 $inf = intval($i);
 
-	$ord = strcmp($tri, 'architecture, forge, alchimie') ? $tri : 'ROUND(SQRT((alchimie + forge + architecture) * 10))';
-	$tri = strcmp($tri, 'architecture, forge, alchimie') ? $tri : 'ROUND(SQRT((alchimie + forge + architecture) * 10)) as craft';
-	$requete = "SELECT @rownum:=@rownum+1 rank, id, nom, ".sSQL($tri).", level, race, classe, cache_stat, cache_classe FROM perso, (SELECT @rownum:=$inf) r WHERE statut = 'actif' AND ".$where." ORDER BY ".$ord." DESC, nom ASC";
-	//echo $requete;
-	//echo 'inf : '.$inf.' j : '.$j.' k : '.$k.' sup : '.$sup.' '.$requete.'<br />';
+$ord = strcmp($tri, 'architecture, forge, alchimie') ? $tri : 'ROUND(SQRT((alchimie + forge + architecture) * 10))';
+$tri = strcmp($tri, 'architecture, forge, alchimie') ? $tri : 'ROUND(SQRT((alchimie + forge + architecture) * 10)) as craft';
+$requete = "SELECT @rownum:=@rownum+1 rank, id, nom, ".sSQL($tri).", level, race, classe, cache_stat, cache_classe FROM perso, (SELECT @rownum:=$inf) r WHERE statut = 'actif' AND ".$where." ORDER BY ".$ord." DESC, nom ASC";
+//echo $requete;
+//echo 'inf : '.$inf.' j : '.$j.' k : '.$k.' sup : '.$sup.' '.$requete.'<br />';
 
 if (array_key_exists('sSearch', $_GET) && $_GET['sSearch'] != '')
 {
+	$mode_search = true;
 	$where .= " AND nom like '".sSQL($_GET['sSearch'])."%'";
 	$requete = "select * from ($requete) s where nom like '".
 		sSQL($_GET['sSearch'])."%' LIMIT $inf, $j";
 }
 else
 {
+	$mode_search = false;
 	$requete .= " LIMIT $inf, $j";
 }
 
@@ -125,19 +128,27 @@ while($row = $db->read_array($req))
 		$aft = '';
 	}
   
+	$sRowOutput = '[ "'.get_cell($bef.$row['rank'].$aft).'"';
 	if (!check_affiche_bonus($row['cache_stat'], $joueur, $row))
 	{
-	$sOutput .= '[ "###"';
-    /* $jsrow[] = '###'; */
-    $sOutput .= ', "###"';
-    if ($tab_classement[$tri]['affiche'])
-      $sOutput .= ', "###"'; /* $jsrow[] = '###'; */
-    if($tab_classement[$tri]['affiche_niveau'])
-      $sOutput .= ', "###"'; /* $jsrow[] = '###'; */
+		// En mode_search, on ne sort pas la ligne
+		if ($mode_search == true)
+		{
+			$sRowOutput = '';
+		}
+		else
+		{
+			/* $jsrow[] = '###'; */
+			$sRowOutput .= ', "###"';
+			if ($tab_classement[$tri]['affiche'])
+				$sRowOutput .= ', "###"'; /* $jsrow[] = '###'; */
+			if($tab_classement[$tri]['affiche_niveau'])
+				$sRowOutput .= ', "###"'; /* $jsrow[] = '###'; */
+			$sRowOutput .= '],';
+		}
   }
 	else
   {
-  $sOutput .= '[ "'.get_cell($bef.$row['rank'].$aft).'"';
     $nom = $row['nom'];
     if((strtolower($row['nom']) != strtolower($_SESSION['nom'])) AND
     ($row['cache_classe'] > 1 OR
@@ -153,15 +164,16 @@ while($row = $db->read_array($req))
     /* $jsrow[] = $perso; */
     $cell = str_replace('\\', '\\\\', $cell);
     $cell = str_replace('"', '\"', $cell);
-    $sOutput .= ', "'.$cell.'"';
+    $sRowOutput .= ', "'.$cell.'"';
     if($tab_classement[$tri]['affiche'])
-      $sOutput .= ', "'.get_cell($bef.$row[$tri].$aft).'"';
+      $sRowOutput .= ', "'.get_cell($bef.$row[$tri].$aft).'"';
       /* $jsrow[] = $row[$tri]; */
     if ($tab_classement[$tri]['affiche_niveau'])
-      $sOutput .= ', "'.get_cell($bef.$row['level'].$aft).'"';
+      $sRowOutput .= ', "'.get_cell($bef.$row['level'].$aft).'"';
+		$sRowOutput .= '],';
   }
 	$y++;
-  $sOutput .= "],".$endl;
+  $sOutput .= $sRowOutput.$endl;
   
 	/* $result_json['aaData'][] = $jsrow; */
 }
