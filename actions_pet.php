@@ -112,7 +112,7 @@ echo "<h3>Scripts de ".$pet->get_nom()."</h3>";
 					<li>
 						Copier le script : <select name="id_action_c" id="id_action_c">
 							<?php
-								$requete = "SELECT * FROM action_pet WHERE id_joueur = ".$joueur->get_id()." ORDER BY nom ASC";
+								$requete = "SELECT * FROM action_pet WHERE id_joueur = ".$joueur->get_id()." AND type_monstre = ".$pet->get_id_monstre()." ORDER BY nom ASC";
 								$req = $db->query($requete);
 								while($row = $db->read_assoc($req))
 								{
@@ -194,7 +194,7 @@ echo "<h3>Scripts de ".$pet->get_nom()."</h3>";
 						<td>
 							 : <select name="id_action" id="id_action">
 						<?php
-						$requete = "SELECT * FROM action_pet WHERE id_joueur = ".$joueur->get_id()." ORDER BY nom ASC";
+						$requete = "SELECT * FROM action_pet WHERE id_joueur = ".$joueur->get_id()." AND type_monstre = ".$pet->get_id_monstre()." ORDER BY nom ASC";
 						$req = $db->query($requete);
 						while($row = $db->read_assoc($req))
 						{
@@ -216,7 +216,7 @@ echo "<h3>Scripts de ".$pet->get_nom()."</h3>";
 						<td>
 							: <select name="id_action_suppr" id="id_action_suppr">
 							<?php
-							$requete = "SELECT * FROM action_pet WHERE id_joueur = ".$joueur->get_id()." ORDER BY nom ASC";
+							$requete = "SELECT * FROM action_pet WHERE id_joueur = ".$joueur->get_id()." AND type_monstre = ".$pet->get_id_monstre()." ORDER BY nom ASC";
 							$req = $db->query($requete);
 							while($row = $db->read_assoc($req))
 							{
