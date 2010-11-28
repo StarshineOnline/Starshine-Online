@@ -61,8 +61,12 @@ while($row = $db->read_assoc($req))
 	$royaumes[$row['id_royaume']]['batiments'][$row['id_const']] = $entretien;
 	$royaumes[$row['id_royaume']]['total'] += $entretien;
 }
-//Entretien !
 
+//Entretien !
+/// Augmente la dette des batiments inactifs (de la moitie de l'entretien)
+$requete = 'update construction_ville set dette = dette + (select FLOOR(b.entretien / 2) from batiment_ville b where b.id = construction_ville.id_batiment) where construction_ville.dette > 0';
+$req = $db->query($requete);
+/// Calcule l'entertien courant des batiments
 foreach($royaumes as $royaume)
 {
 	$royaume['stars'] -= $royaume['total'];
@@ -109,6 +113,7 @@ foreach($royaumes as $royaume)
 		$dette = $royaume['stars'] * -1;
 		$pourcent = $dette / $royaume['total_c'];
 		$pourcent_vie = $pourcent / 10;
+		echo "Dette: $dette, pourcent_vie: $pourcent_vie \n";
 		$keys = array_keys($royaume['constructions']);
 		$i = 0;
 		while($i < count($royaume['constructions']))
