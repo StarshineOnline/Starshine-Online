@@ -16,7 +16,7 @@ class entite extends placable
 	public $pm;  ///< Protection magique.
 	private $distance_tir;
 	public $etat;
-	private $enchantement;
+	public $enchantement;
 	private $arme_degat;
 	private $bouclier_degat = 0;
 	private $point_victoire;
@@ -307,7 +307,7 @@ class entite extends placable
 			case 'pet' :
 				$pet = $objet->get_pet();
 				$pet->get_monstre();
-				$this->action = $pet->monstre->get_action();
+				$this->action = $pet->recupaction('attaque');
 				$this->arme_type = $pet->monstre->get_arme();
 				$this->comp_combat = 'melee';
 				$this->comp = array();

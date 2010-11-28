@@ -1478,10 +1478,13 @@ function recupobjet($objet)
  * 
  * @return  Contenu du script sous forme de chaine de caractère.    
  */
-function recupaction($action)
+function recupaction($action, $pet = false)
 {
 	global $db;
-	$requete = "SELECT action FROM action_perso WHERE id = ".$action;
+	if (!$pet)
+		$requete = "SELECT action FROM action_perso WHERE id = ".$action;
+	else
+		$requete = "SELECT action FROM action_pet WHERE id = ".$action;
 	$req = $db->query($requete);
 	$row = $db->read_row($req);
 	return $row[0];
@@ -1494,10 +1497,13 @@ function recupaction($action)
  * 
  * @return  Informations sur le script sous forme de tableau associatif.    
  */
-function recupaction_all($action)
+function recupaction_all($action, $pet = false)
 {
 	global $db;
-	$requete = "SELECT * FROM action_perso WHERE id = ".$action;
+	if (!$pet)
+		$requete = "SELECT * FROM action_perso WHERE id = ".$action;
+	else
+		$requete = "SELECT * FROM action_pet WHERE id = ".$action;
 	$req = $db->query($requete);
 	$row = $db->read_assoc($req);
 	return $row;

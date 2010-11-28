@@ -9,6 +9,23 @@ include_once(root.'haut_ajax.php');
 
 $joueur = new perso($_SESSION['ID']);
 $joueur->check_perso();
+
+if(isset($_GET['id_pet']) AND $_GET['id_pet'] != NULL)
+{
+	$pet = new pet($_GET['id_pet']);
+	$table = "action_pet";
+	$sujet = $pet;
+	$check_pet = true;
+	$link = "id_pet=".$_GET['id_pet']."&amp;";
+}
+else
+{
+	$table = "action_perso";
+	$sujet = $joueur;
+	$check_pet = false;
+	$link = "";
+}
+
 $round_max = 10;
 if($joueur->get_race() == 'orc') $round_max++;
 ?>
@@ -20,7 +37,7 @@ if($joueur->get_race() == 'orc') $round_max++;
 	{
 		if (array_key_exists('id_action', $_GET) && $_GET['id_action'] != '')
 		{
-			$requete = "UPDATE action_perso SET nom = '".sSQL($_GET['nom_action'])."' WHERE id = ".sSQL($_GET['id_action']);
+			$requete = "UPDATE ".$table." SET nom = '".sSQL($_GET['nom_action'])."' WHERE id = ".sSQL($_GET['id_action']);
 		}
 		else
 		{
@@ -33,7 +50,7 @@ if($joueur->get_race() == 'orc') $round_max++;
 		}
 	}
 	?>
-	<h3><strong>Vous avez <?php echo $joueur->get_reserve_bonus(); ?> réserves de mana au total par combat</h3>
+	<h3><strong>Vous avez <?php echo $sujet->get_reserve_bonus(); ?> réserves de mana au total par combat</h3>
 	<?php
 if(array_key_exists('id_action', $_GET) && $_GET['id_action'] == '')
 {
@@ -42,7 +59,8 @@ if(array_key_exists('id_action', $_GET) && $_GET['id_action'] == '')
 //On récupère le script id_action
 if(array_key_exists('from', $_GET) && $_GET['id_action'] != '')
 {
-	$action_t = recupaction_all($_GET['id_action']);
+	if($check_pet) $action_t = recupaction_all($_GET['id_action'], true);
+	else $action_t = recupaction_all($_GET['id_action']);
 	$_GET['id_action'] = $action_t['id'];
 	$_GET['nom_action'] = $action_t['nom'];
 	$_GET['mode'] = $action_t['mode'];
@@ -50,9 +68,11 @@ if(array_key_exists('from', $_GET) && $_GET['id_action'] != '')
 
 	if(array_key_exists('id_action', $_GET))
 	{
-		$action_t = recupaction_all($_GET['id_action']);
+		if($check_pet) $action_t = recupaction_all($_GET['id_action'], true);
+		else $action_t = recupaction_all($_GET['id_action']);
 		$id_action = $_GET['id_action'];
-		$actionexplode = explode(';', recupaction($id_action));
+		if($check_pet) $actionexplode = explode(';', recupaction($id_action, true));
+		else $actionexplode = explode(';', recupaction($id_action));
 	}
 	else
 	{
@@ -65,14 +85,15 @@ if(array_key_exists('from', $_GET) && $_GET['id_action'] != '')
 				$actionexplode[] = '#09='.$i.'@!';
 			}
 		}
-		$requete = "INSERT INTO action_perso VALUES(NULL, ".$joueur->get_id().", '".sSQL($_GET['nom_action'])."', '".implode(';', $actionexplode)."', '".sSQL($_GET['mode'])."')";
+		if($check_pet) $requete = "INSERT INTO action_pet VALUES(NULL, ".$joueur->get_id().", ".$pet->get_id_monstre().", '".sSQL($_GET['nom_action'])."', '".implode(';', $actionexplode)."', '".sSQL($_GET['mode'])."')";
+		else $requete = "INSERT INTO action_perso VALUES(NULL, ".$joueur->get_id().", '".sSQL($_GET['nom_action'])."', '".implode(';', $actionexplode)."', '".sSQL($_GET['mode'])."')";
 		$req = $db->query($requete);
 		$id_action = $db->last_insert_id();
 	}
 	if($_GET['mode'] == 'a')
 	{
 	?>
-	<h3>Nom du script : <input type="text" value="<?php echo $action_t['nom']; ?>" id="nom_action" name="nom_action" /> <a href="#" onclick="return envoiInfo('action.php?mode=a&amp;id_action=<?php echo $id_action; ?>&amp;action=change_nom&amp;nom_action=' + document.getElementById('nom_action').value.replace(new RegExp(' '), '%20'), 'information');"><img src="image/valid.png" alt="Valider" title="Valider le nom du script" style="vertical-align : bottom;"/></a></h3>
+	<h3>Nom du script : <input type="text" value="<?php echo $action_t['nom']; ?>" id="nom_action" name="nom_action" /> <a href="#" onclick="return envoiInfo('action.php?<?php echo $link; ?>mode=a&amp;id_action=<?php echo $id_action; ?>&amp;action=change_nom&amp;nom_action=' + document.getElementById('nom_action').value.replace(new RegExp(' '), '%20'), 'information');"><img src="image/valid.png" alt="Valider" title="Valider le nom du script" style="vertical-align : bottom;"/></a></h3>
 	<?php
 		if(array_key_exists('id_action', $_GET)) $action_t = recupaction_all($_GET['id_action']);
 		//On supprime une action de script de combat
@@ -94,7 +115,7 @@ if(array_key_exists('from', $_GET) && $_GET['id_action'] != '')
 				$i++;
 			}
 			$action = implode(';', $actionexplode);
-			$requete = "UPDATE action_perso SET action = '$action' WHERE id = '".$id_action."'";
+			$requete = "UPDATE ".$table." SET action = '$action' WHERE id = '".$id_action."'";
 			$req = $db->query($requete);
 		}
 		
@@ -108,7 +129,7 @@ if(array_key_exists('from', $_GET) && $_GET['id_action'] != '')
 			$actionexplode[$i-1] = $actionexplode_tmp;
 			
 			$action = implode(';', $actionexplode);
-			$requete = "UPDATE action_perso SET action = '$action' WHERE id = '".$id_action."'";
+			$requete = "UPDATE ".$table." SET action = '$action' WHERE id = '".$id_action."'";
 			$req = $db->query($requete);
 		}
 		//Ajout d'une condition a l'action
@@ -167,9 +188,9 @@ if(array_key_exists('from', $_GET) && $_GET['id_action'] != '')
 			$numfinal = mb_substr($final, 1, strlen($final));
 
 			if ($typefinal == 's')
-				$joueur->check_sort_combat_connu($numfinal);
+				$sujet->check_sort_combat_connu($numfinal);
 			if ($typefinal == 'c')
-				$joueur->check_comp_combat_connu($numfinal);			
+				$sujet->check_comp_combat_connu($numfinal);			
 			
 			if ($final == '!')
 			{
@@ -185,36 +206,27 @@ if(array_key_exists('from', $_GET) && $_GET['id_action'] != '')
 			}
 			$actionexplode[count($actionexplode)] = $action_temp;
 			$action = implode(';', $actionexplode);
-			$requete = "UPDATE action_perso SET action = '$action' WHERE id = '".$id_action."'";
+			$requete = "UPDATE ".$table." SET action = '$action' WHERE id = '".$id_action."'";
 			$req = $db->query($requete);
 			$_SESSION['script'] = array();
 			
-			if($joueur->get_action_a() == '')
-			{
-				$requete = "UPDATE perso SET action_a = '".sSQL($id_action)."' WHERE ID = ".$joueur->get_id();
-				if($db->query($requete))
-					$joueur->set_action_a($id_action);
-			}
-			
-			if($joueur->get_action_d() == '')
-			{
-				$requete = "UPDATE perso SET action_d = '".sSQL($id_action)."' WHERE ID = ".$joueur->get_id();
-				if($db->query($requete))
-					$joueur->set_action_d($id_action);
-			}
-			$joueur->sauver();
+			if($sujet->get_action_a() == '')
+				$sujet->set_action_a($id_action);
+			if($sujet->get_action_d() == '')
+				$sujet->set_action_d($id_action);
+			$sujet->sauver();
 		}
 		?>
 			</table>
 		<?php
 		//print_r($_SESSION['script'][$id_action]);
-		echo affiche_condition_session($_SESSION['script'][$id_action], $joueur);
+		echo affiche_condition_session($_SESSION['script'][$id_action], $sujet);
 		//=== VALIDATION DE LA CONDITION ===
 		if(array_key_exists('valid_cond', $_GET))
 		{
 			?>
-			<input type="button" name="ajout" value="Ajouter une condition" onclick="return envoiInfo('action.php?mode=a&amp;id_action=<?php echo $id_action; ?>', 'information');" />
-			<input type="button" name="valid" value="Valider cette ligne" onclick="return envoiInfo('action.php?mode=a&amp;id_action=<?php echo $id_action; ?>&amp;valid=ok', 'information');" />
+			<input type="button" name="ajout" value="Ajouter une condition" onclick="return envoiInfo('action.php?<?php echo $link; ?>mode=a&amp;id_action=<?php echo $id_action; ?>', 'information');" />
+			<input type="button" name="valid" value="Valider cette ligne" onclick="return envoiInfo('action.php?<?php echo $link; ?>mode=a&amp;id_action=<?php echo $id_action; ?>&amp;valid=ok', 'information');" />
 			<?php
 		}
 		//=== CONDITION ===
@@ -246,7 +258,7 @@ if(array_key_exists('from', $_GET) && $_GET['id_action'] != '')
 					<input type="text" name="valeur" id="valeur" style="visibility : hidden; width : 40px;" /><br />
 				</td>
 				<td>
-					<input type="button" name="valid_cond" value="Valider" onclick="return envoiInfo('action.php?mode=a&amp;id_action=<?php echo $id_action; ?>&amp;si=' + document.getElementById('si').value + '&amp;op=' + document.getElementById('op').value + '&amp;valeur=' + document.getElementById('valeur').value + '&amp;valid_cond=ok', 'information');" /><br />
+					<input type="button" name="valid_cond" value="Valider" onclick="return envoiInfo('action.php?<?php echo $link; ?>mode=a&amp;id_action=<?php echo $id_action; ?>&amp;si=' + document.getElementById('si').value + '&amp;op=' + document.getElementById('op').value + '&amp;valeur=' + document.getElementById('valeur').value + '&amp;valid_cond=ok', 'information');" /><br />
 				</td>
 			</tr>
 			<?php
@@ -281,7 +293,7 @@ if(array_key_exists('from', $_GET) && $_GET['id_action'] != '')
 						</select>
 					</td>
 					<td>
-						<input type="button" name="valid_cond" value="Valider" onclick="return envoiInfo('action.php?mode=a&amp;id_action=<?php echo $id_action; ?>&amp;si=10&amp;op=o&amp;valeur=' + document.getElementById('etat_s').value + '&amp;qui=' + document.getElementById('qui_s').value + '&amp;valid_cond=ok', 'information');" /><br />
+						<input type="button" name="valid_cond" value="Valider" onclick="return envoiInfo('action.php?<?php echo $link; ?>mode=a&amp;id_action=<?php echo $id_action; ?>&amp;si=10&amp;op=o&amp;valeur=' + document.getElementById('etat_s').value + '&amp;qui=' + document.getElementById('qui_s').value + '&amp;valid_cond=ok', 'information');" /><br />
 					</td>
 				</tr>
 				<?php
@@ -314,7 +326,7 @@ if(array_key_exists('from', $_GET) && $_GET['id_action'] != '')
 					</select>
 				</td>
 				<td>
-					<input type="button" name="valid_cond" value="Valider" onclick="return envoiInfo('action.php?mode=a&amp;id_action=<?php echo $id_action; ?>&amp;si=10&amp;op=o&amp;valeur=' + document.getElementById('etat').value + '&amp;qui=' + document.getElementById('qui').value + '&amp;valid_cond=ok', 'information');" /><br />
+					<input type="button" name="valid_cond" value="Valider" onclick="return envoiInfo('action.php?<?php echo $link; ?>mode=a&amp;id_action=<?php echo $id_action; ?>&amp;si=10&amp;op=o&amp;valeur=' + document.getElementById('etat').value + '&amp;qui=' + document.getElementById('qui').value + '&amp;valid_cond=ok', 'information');" /><br />
 				</td>
 			</tr>
 			</table>
@@ -329,7 +341,7 @@ if(array_key_exists('from', $_GET) && $_GET['id_action'] != '')
 			<h3>Quel action voulez vous faire ?</h3>
 		<?php
 		//Affichage de la liste des sorts de combat
-		$sort = explode(';', $joueur->get_sort_combat());
+		$sort = explode(';', $sujet->get_sort_combat());
 		if ($sort[0] != '')
 		{
 		?>
@@ -353,11 +365,11 @@ if(array_key_exists('from', $_GET) && $_GET['id_action'] != '')
 			}
 		?>
 			</select>
-			<input type="button" name="valid" value="Utiliser ce sort" onclick="return envoiInfo('action.php?mode=a&amp;id_action=<?php echo $id_action; ?>&amp;final=' + document.getElementById('final_s').value, 'information');" />
+			<input type="button" name="valid" value="Utiliser ce sort" onclick="return envoiInfo('action.php?<?php echo $link; ?>mode=a&amp;id_action=<?php echo $id_action; ?>&amp;final=' + document.getElementById('final_s').value, 'information');" />
 		<?php
 		}
 		//Affichage des compétences de combat
-		$comp = explode(';', $joueur->get_comp_combat());
+		$comp = explode(';', $sujet->get_comp_combat());
 		if ($comp[0] != '')
 		{
 		?>
@@ -371,12 +383,12 @@ if(array_key_exists('from', $_GET) && $_GET['id_action'] != '')
 			}
 		?>
 			</select>
-			<input type="button" name="valid" value="Utiliser cette compétence" onclick="return envoiInfo('action.php?mode=a&amp;id_action=<?php echo $id_action; ?>&amp;final=' + document.getElementById('final_c').value, 'information');" />
+			<input type="button" name="valid" value="Utiliser cette compétence" onclick="return envoiInfo('action.php?<?php echo $link; ?>mode=a&amp;id_action=<?php echo $id_action; ?>&amp;final=' + document.getElementById('final_c').value, 'information');" />
 		<?php
 		}
 		?>
 			</form>
-			<input type="button" name="valid" value="Attaque simple" onclick="return envoiInfo('action.php?mode=a&amp;id_action=<?php echo $id_action; ?>&amp;final=!', 'information');" />
+			<input type="button" name="valid" value="Attaque simple" onclick="return envoiInfo('action.php?<?php echo $link; ?>mode=a&amp;id_action=<?php echo $id_action; ?>&amp;final=!', 'information');" />
 		<?php
 		}
 		?>
@@ -389,7 +401,7 @@ if(array_key_exists('from', $_GET) && $_GET['id_action'] != '')
 		$count = count($actionexplode);
 		while ($i < $count)
 		{
-			$echo = affiche_condition($actionexplode[$i], $joueur);
+			$echo = affiche_condition($actionexplode[$i], $sujet);
 			echo 
 			'
 				<tr class="combat">
@@ -398,8 +410,8 @@ if(array_key_exists('from', $_GET) && $_GET['id_action'] != '')
 					</td>
 					<td>
 			';
-			if ($i != 0) echo ' <a href="action.php?mode=a&amp;id_action='.$id_action.'&amp;up='.$i.'" onclick="return envoiInfo(this.href, \'information\')">Monter</a>';
-			if($actionexplode[$i][0] != '') echo '</td><td><a href="action.php?mode=a&amp;id_action='.$id_action.'&amp;suppr='.$i.'" onclick="return envoiInfo(this.href, \'information\')">Supprimer</a>';
+			if ($i != 0) echo ' <a href="action.php?'.$link.'mode=a&amp;id_action='.$id_action.'&amp;up='.$i.'" onclick="return envoiInfo(this.href, \'information\')">Monter</a>';
+			if($actionexplode[$i][0] != '') echo '</td><td><a href="action.php?'.$link.'mode=a&amp;id_action='.$id_action.'&amp;suppr='.$i.'" onclick="return envoiInfo(this.href, \'information\')">Supprimer</a>';
 			echo '
 					</td>
 				</tr>';
@@ -422,7 +434,7 @@ if(array_key_exists('from', $_GET) && $_GET['id_action'] != '')
 					<option value="attaque">Attaquer</option>
 			<?php
 			
-			$sort = explode(';', $joueur->get_sort_combat());
+			$sort = explode(';', $sujet->get_sort_combat());
 			if ($sort[0] != '')
 			{
 				$requete = "SELECT * FROM sort_combat WHERE id IN (".implode(',', $sort).")";
@@ -434,7 +446,7 @@ if(array_key_exists('from', $_GET) && $_GET['id_action'] != '')
 					echo '<option value="s'.$row['id'].'"'.$selected.'>Lancer '.$row['nom'].' ('.$mpsort.' Réserves)</option>';
 				}
 			}
-			$comp = explode(';', $joueur->get_comp_combat());
+			$comp = explode(';', $sujet->get_comp_combat());
 			if ($comp[0] != '')
 			{
 				$requete = "SELECT * FROM comp_combat WHERE id IN (".implode(',', $comp).")";
@@ -455,7 +467,7 @@ if(array_key_exists('from', $_GET) && $_GET['id_action'] != '')
 	echo '</table>';
 	?>
 	</form>
-	<input type="button" name="valid" value="Ok" onclick="envoiInfo('actions.php?mode=s&amp;id_action=<?php echo $id_action; ?>&amp;valid=ok<?php echo $dataJS; ?>', 'information');" />
+	<input type="button" name="valid" value="Ok" onclick="envoiInfo('<?php if(isset($check_pet)) echo "actions_pet.php?".$link; else echo "actions.php?"; ?>mode=s&amp;id_action=<?php echo $id_action; ?>&amp;valid=ok<?php echo $dataJS; ?>', 'information');" />
 	<?php
 		//echo $dataJS;
 		/*&amp;r=<?php echo $i; ?>&amp;final=' + document.getElementById('final<?php echo $i; ?>').value + '*/

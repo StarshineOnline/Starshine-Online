@@ -525,8 +525,7 @@ function degat_magique($carac, $degat, $actif, $passif)
   if (isset($actif->enchantement) &&
       isset($actif->enchantement['degat_magie'])) {
     global $db;
-    $requete = "SELECT nom, enchantement_effet FROM gemme WHERE id = ".
-      $actif['enchantement']['degat_magie']['gemme_id'];
+    $requete = "SELECT nom, enchantement_effet FROM gemme WHERE id = ".$actif->enchantement['degat_magie']['gemme_id'];
     $req = $db->query($requete);
     $row = $db->read_assoc($req);
     $degat += $row['enchantement_effet'];
