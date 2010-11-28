@@ -9,10 +9,10 @@ CREATE TABLE IF NOT EXISTS `action_pet` (
 );
 
 ALTER TABLE `pet` ADD `action_a` INT( 10 ) NOT NULL DEFAULT '0',
-ADD `action_d` INT( 10 ) NOT NULL DEFAULT '0'
+ADD `action_d` INT( 10 ) NOT NULL DEFAULT '0';
 
 ALTER TABLE `monstre` ADD `sort_combat` TEXT NOT NULL ,
-ADD `comp_combat` TEXT NOT NULL 
+ADD `comp_combat` TEXT NOT NULL ;
 
 UPDATE `monstre` SET `comp_combat` = '8' WHERE `id` = 1;
 UPDATE `monstre` SET `comp_combat` = '8' WHERE `id` = 2;
