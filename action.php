@@ -467,7 +467,7 @@ if(array_key_exists('from', $_GET) && $_GET['id_action'] != '')
 	echo '</table>';
 	?>
 	</form>
-	<input type="button" name="valid" value="Ok" onclick="envoiInfo('<?php if(isset($check_pet)) echo "actions_pet.php?".$link; else echo "actions.php?"; ?>mode=s&amp;id_action=<?php echo $id_action; ?>&amp;valid=ok<?php echo $dataJS; ?>', 'information');" />
+	<input type="button" name="valid" value="Ok" onclick="envoiInfo('<?php if($check_pet) echo "actions_pet.php?".$link; else echo "actions.php?"; ?>mode=s&amp;id_action=<?php echo $id_action; ?>&amp;valid=ok<?php echo $dataJS; ?>', 'information');" />
 	<?php
 		//echo $dataJS;
 		/*&amp;r=<?php echo $i; ?>&amp;final=' + document.getElementById('final<?php echo $i; ?>').value + '*/
