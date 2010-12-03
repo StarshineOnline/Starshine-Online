@@ -654,8 +654,9 @@ if(!$visu AND isset($_GET['action']))
 				if($accessoire->type == 'fabrication')
 					$craft = round($craft * (1 + ($accessoire->effet / 100)));
 			}
-
+			
 			// Gemme de fabrique : augmente de effet % le craft
+			$joueur->get_armure();
 			if ($joueur->get_enchantement()!== false &&
 					$joueur->is_enchantement('forge')) {
 				$craft += round($craft * ($joueur->get_enchantement('forge','effet') / 100));
@@ -699,6 +700,7 @@ if(!$visu AND isset($_GET['action']))
 					}
 
 					// Gemme de fabrique : augmente de effet % le craft
+					$joueur->get_armure();
 					if ($joueur->get_enchantement()!== false &&
 							$joueur->is_enchantement('forge')) {
 						$craft += round($craft * ($joueur->get_enchantement('forge','effet') / 100));
