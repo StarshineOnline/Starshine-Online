@@ -2440,7 +2440,7 @@ function affiche_ligne_journal($row)
 			return '<li class="jmort"><span class="small">['.$date.']</span> '.$row['passif'].' vous a tué.</li>';
 		break;
 		case 'pet_leave' :
-			return '<li class="jmort"><span class="small">['.$date.']</span> '.$row['valeur'].' a échappé à votre contrôle et vous a quitté.</li>';
+			return '<li class="jmort"><span class="small">['.$date.']</span> Votre '.$row['valeur'].' a échappé à votre contrôle et vous a quitté.</li>';
 		break;
 		case 'soin' :
 			return '<li class="jsoin"><span class="small">['.$date.']</span> Vous soignez '.$row['passif'].' de '.$row['valeur'].' HP.</li>';

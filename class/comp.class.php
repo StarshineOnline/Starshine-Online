@@ -126,7 +126,6 @@ class maitrise_bouclier extends competence
 {
   function __construct($aPrintUp = false) {
     parent::__construct('maitrise_bouclier', $aPrintUp);
-    //echo 'instance de maitrise_bouclier <br/>';
   }
 
 	static function factory(&$effects, &$actif, &$passif, $acteur = '') {
@@ -137,7 +136,6 @@ class maitrise_bouclier extends competence
     $this->used = true;
     $passif->potentiel_bloquer *=
       1 + ($passif->get_competence('maitrise_bouclier')->get_valeur() / 1000);
-    //$passif['maitrise_bouclier'] = $passif['competences']['maitrise_bouclier'];
   }
 
   function fin_round(&$actif, &$passif) {
@@ -616,6 +614,29 @@ class fleche_sable extends comp_combat {
 		return $degats - $this->effet;
 	}
   
+}
+
+/**
+ * Bouclier protecteur
+ */
+class bouclier_protecteur extends etat {
+
+  function __construct($aEffet) {
+    parent::__construct($aEffet, 'Bouclier protecteur');
+    $this->order = effect::$FIN_ADD;
+	}
+
+	static function factory(&$effects, &$actif, &$passif, $acteur = '') {
+		if (array_key_exists('bouclier_protecteur', $passif->etat)) {
+			$effects[] = new bouclier_protecteur($passif->etat['bouclier_protecteur']['effet']);
+		}
+	}
+	
+	function calcul_pm(&$actif, &$passif, $pm) {
+		$pluspm = $this->effet * $passif->bouclier()->degat;
+		$this->debug($this->nom.' augmente la PM de '.$pluspm);
+		return $pm + $pluspm;
+	}
 }
 
 ?>

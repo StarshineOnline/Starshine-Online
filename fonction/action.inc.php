@@ -441,7 +441,7 @@ function sub_script_action($joueur, $ennemi, $mode, &$effects)
  */
 function lance_sort($id, $acteur, &$effects)
 {
-	global $attaquant, $defenseur, $db, $Gtrad, $debugs, $Trace, $G_buff, $G_debuff, $log_combat;
+	global $attaquant, $defenseur, $db, $Gtrad, $debugs, $Trace, $G_buff, $G_debuff, $G_round_total, $log_combat;
 	// Définition des personnages actif et passif
 	if ($acteur == 'attaquant')
 	{
@@ -455,12 +455,12 @@ function lance_sort($id, $acteur, &$effects)
 	}
 
 	$augmentation = array('actif' => array('comp' => array(), 'comp_perso' => array()), 'passif' => array('comp' => array(), 'comp_perso' => array()));
-	//Réctification si c'est un orc
-	$round = is_donjon($actif->get_x(), $actif->get_y()) ? 20 : 10;
-	$rectif_augm = $actif->get_race() == 'orc' ? 2 - ($round / ($round + 1)) : 1;
-	if($rectif_augm == 1)
-		$rectif_augm = $passif->get_race() == 'orc' ? 2 - ($round / ($round + 1)) : 1;
 	
+	//Réctification si c'est un orc ou un donjon
+	$round = is_donjon($actif->get_x(), $actif->get_y()) ? $G_round_total * 2 : $G_round_total;
+	if ($actif->get_race() == 'orc' || $passif->get_race() == 'orc')
+		$round += 1;
+	$rectif_augm = $round / $G_round_total;
 
   /* Application des effets de début de round */
   foreach ($effects as $effect) $effect->debut_round($actif, $passif);
@@ -558,13 +558,10 @@ function lance_sort($id, $acteur, &$effects)
 				$pm = $effect->calcul_pm($actif, $passif, $pm);
 			/* ~PM */
 
-			if(array_key_exists('bouclier_protecteur', $passif->etat)) $pm = $pm + ($passif->etat['bouclier_protecteur']['effet'] * $passif->get_bouclier_degat());
 			if($passif->is_buff('batiment_pm')) $buff_batiment_barriere = 1 + (($passif->get_buff('batiment_pm', 'effet') / 100)); else $buff_batiment_barriere = 1;
 			if($passif->is_buff('debuff_desespoir')) $debuff_desespoir = 1 + (($passif->get_buff('debuff_desespoir', 'effet')) / 100); else 	$debuff_desespoir = 1;
 			if($passif->etat['posture']['type'] == 'posture_glace') $aura_glace = 1 + (($passif->etat['posture']['effet']) / 100); else $aura_glace = 1;
-			//Corrompu la nuit
-			if($actif->get_race() == 'humainnoir' AND moment_jour() == 'Nuit') $bonus_race = 1.1; else $bonus_race = 1;
-			$PM = $pm * $bonus_race * $aura_glace * $buff_batiment_barriere;
+			$PM = $pm * $aura_glace * $buff_batiment_barriere;
 			// Calcul des potentiels toucher et parer
 			$potentiel_toucher = round($actif->get_volonte() * $potentiel_magique);
 			$potentiel_parer = round($passif->get_volonte() * $PM / $debuff_desespoir);
@@ -877,16 +874,6 @@ function lance_sort($id, $acteur, &$effects)
 					echo '&nbsp;&nbsp;<strong>'.$actif->get_nom().'</strong> se lance le sort '.$row['nom'].'<br />';
 				break;
 				case 'paralysie' :
-					//Objets magiques
-					/*foreach($actif['objet_effet'] as $effet)
-					{
-						switch($effet['id'])
-						{
-							case '6' :
-								//$potentiel_magique_arme += $potentiel_magique_arme * (1 + ($effet['effet'] / 100));
-							break;
-						}
-					}*/
 					// Calcul du potentiel paralyser
 					$sm = ($actif->get_volonte() * $actif->get_sort_mort());
 					// Calcul du potentiel résister
@@ -896,13 +883,12 @@ function lance_sort($id, $acteur, &$effects)
 					foreach ($effects as $effect)
 						$pm = $effect->calcul_pm($actif, $passif, $pm);
 					/* ~PM */
-					if (array_key_exists('bouclier_protecteur', $passif->etat)) $pm = $pm + ($passif->etat['bouclier_protecteur']['effet'] * $passif->get_bouclier_degat());
 
 					$pm = pow($passif->get_volonte(), 1.83) * sqrt($pm) * 3;
 
 					// Bonus de protection contre la paralysie
 					if ($res_para = $passif->get_bonus_permanents('resistance_para')) {
-						print_debug("Ajuste la resistance à la paralysie de $res_para%");
+						print_debug("Ajuste la resistance à la paralysie de $res_para%<br/>");
 						$pm *= 1 + $res_para / 100;
 					}
 
@@ -928,7 +914,12 @@ function lance_sort($id, $acteur, &$effects)
 					
 					// Calcul du potentiel résister
 					$pm = $passif->get_pm();
-					if (array_key_exists('bouclier_protecteur', $passif->etat)) $pm = $pm + ($passif->etat['bouclier_protecteur']['effet'] * $passif->get_bouclier_degat());
+
+					/* Application des effets de PM */
+					foreach ($effects as $effect)
+						$pm = $effect->calcul_pm($actif, $passif, $pm);
+					/* ~PM */
+
 					$pm = $passif->get_volonte() * $pm;
 					// Lancer des dés
 					$att = rand(0, $sm);

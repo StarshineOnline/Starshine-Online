@@ -39,13 +39,12 @@ function attaque($acteur = 'attaquant', $competence, &$effects)
 																					 'comp_perso' => array()),
 													'passif' => array('comp' => array(),
 																						'comp_perso' => array()));
-  	//Réctification si c'est un orc
-		$round = is_donjon($actif->get_x(), $actif->get_y()) ? 20 : 10;
-		$rectif_augm = $actif->get_race() == 'orc' ?
-			($round + 1) / $round : 1;
-		if($rectif_augm == 1)
-			$rectif_augm = $passif->get_race() == 'orc' ?
-				($round + 1) / $round : 1;
+
+  	//Réctification si c'est un orc ou un donjon
+		$round = is_donjon($actif->get_x(), $actif->get_y()) ? $G_round_total * 2 : $G_round_total;
+		if ($actif->get_race() == 'orc' || $passif->get_race() == 'orc')
+			$round += 1;
+		$rectif_augm = $round / $G_round_total;
 		
   	$ups = array();
 
@@ -71,8 +70,6 @@ function attaque($acteur = 'attaquant', $competence, &$effects)
   	if(array_key_exists('dissimulation', $actif->etat)) $actif->potentiel_toucher *= 1 + (($actif->etat['dissimulation']['effet']) / 100);
   	if($actif->is_buff('buff_position') && $actif->get_arme_type() == 'arc') $actif->potentiel_toucher *= 1 + (($actif->get_buff('buff_position', 'effet')) / 100);
   	if(array_key_exists('a_toucher', $actif->etat)) $actif->potentiel_toucher *= 1 + ($actif->etat['a_toucher']['effet'] / 100);
-  	//Corrompu la journée
-  	if($actif->get_race() == 'humainnoir' AND moment_jour() == 'Journee') $actif->potentiel_toucher *= 1.1; else $bonus_race = 1;
   	if($actif->etat['posture']['type'] == 'posture_touche') $actif->potentiel_toucher *= 1 + (($actif->etat['posture']['effet']) / 100); else $buff_posture_touche = 1;
 	
   	/* Application des effets de début de round */
@@ -80,17 +77,31 @@ function attaque($acteur = 'attaquant', $competence, &$effects)
   		$effect->debut_round($actif, $passif);
   	/* ~Debut */
 
+  	$potentiel_toucher = $actif->potentiel_toucher;
+  	$potentiel_parer = $passif->potentiel_parer;
+
+		/* Application des effets de potentiel toucher */
+		foreach ($effects as $effect)
+			$potentiel_toucher =
+				$effect->calcul_attaque_physique($actif, $passif, $potentiel_toucher);
+		/* ~Potentiel Toucher */
+			
+		/* Application des effets de potentiel parer */
+		foreach ($effects as $effect)
+			$potentiel_parer =
+				$effect->calcul_defense_physique($actif, $passif, $potentiel_parer);
+		/* ~Potentiel Parer */
 
   	//Test d'esquive
-  	$attaque = rand(0, $actif->potentiel_toucher);
-  	$defense = rand(0, $passif->potentiel_parer);
-  	print_debug('Potentiel toucher attaquant : '.$actif->potentiel_toucher.
-							'<br />Potentiel parer défenseur : '.$passif->potentiel_parer.
+  	$attaque = rand(0, $potentiel_toucher);
+  	$defense = rand(0, $potentiel_parer);
+  	print_debug('Potentiel toucher attaquant : '.$potentiel_toucher.
+							'<br />Potentiel parer défenseur : '.$potentiel_parer.
 							'<br />Résultat => Attaquant : '.$attaque.' | Défense '.
 							$defense.'<br />');
 	if ($attaque > $defense)
 	{
-		//Si c'est un coup de bouclier, infliger les dégats du bouclier et teste d'étourdissement
+		//Si c'est un coup de bouclier, infliger les dégats du bouclier et tester l'étourdissement
 		if($actif->etat['coup_bouclier']['effet'] > 0)
 		{
 			$degat = $actif->get_bouclier_degat();
@@ -107,7 +118,7 @@ function attaque($acteur = 'attaquant', $competence, &$effects)
 			{
 				$passif->etat['etourdit']['effet'] = $actif->etat['coup_bouclier']['effet'];
 				$passif->etat['etourdit']['duree'] = $actif->etat['coup_bouclier']['effet2'];
-				echo '&nbsp;&nbsp;Le coup de bouclier étourdit '.$passif->get_nom().' pour '.$passif->etat['etourdit']['duree'].' !<br />';
+				echo '&nbsp;&nbsp;Le coup de bouclier étourdit '.$passif->get_nom().' pour '.$passif->etat['etourdit']['duree'].' rounds !<br />';
 			}
 		}
 		//sinon
@@ -403,9 +414,11 @@ function attaque($acteur = 'attaquant', $competence, &$effects)
 		//Si flêche poison
 		if($actif->etat['fleche_poison_attaque'])
 		{
-			$effects[] = new fleche_poison($actif->etat['fleche_poison_attaque']['effet'], 
-						$actif->etat['fleche_poison_attaque']['effet2'],	$actif->etat['fleche_poison_attaque']['duree']);
-			unset($actif->etat['fleche_poison_attaque']);						
+			$effects[] = new fleche_poison
+				($actif->etat['fleche_poison_attaque']['effet'], 
+				 $actif->etat['fleche_poison_attaque']['effet2'],
+				 $actif->etat['fleche_poison_attaque']['duree']);
+			unset($actif->etat['fleche_poison_attaque']);
 		}
 		//Si flêche debilitante
 		if($actif->etat['fleche_debilitante_attaque'])

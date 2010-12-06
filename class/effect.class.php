@@ -15,6 +15,16 @@ class effect
   var $order; ///< Sert à déterminer l'ordre des effets
   var $used;  ///< true si l'effet a été utilisé, false sinon.
 
+	static $DEBUT_DEBUT				= -10000;
+	static $DEBUT_ADD					= -1000;
+	static $DEBUT_MULT				= -100;
+	static $STANDARD_MULT			= -10;
+	static $STANDARD					= 1;
+	static $STANDARD_ADD			= 10;
+	static $FIN_MULT					= 100;
+	static $FIN_ADD						= 1000;
+	static $FIN_FIN						= 10000;
+
   /**
    * Constructeur
    * 
@@ -22,7 +32,7 @@ class effect
    */  
   function __construct($aNom) {
     $this->nom = $aNom;
-    $this->order = 1;
+    $this->order = self::$STANDARD;
     $this->used = false;
   }
 
@@ -123,6 +133,7 @@ class effect
     poison_lent::factory($effects, $actif, $passif, $acteur);
     ensable::factory($effects, $actif, $passif, $acteur);
 		tellurique::factory($effects, $actif, $passif, $acteur);
+		bouclier_protecteur::factory($effects, $actif, $passif, $acteur);
     /*
      * Compétences passives
      */
@@ -137,6 +148,10 @@ class effect
      */
     gemme_enchassee::factory($effects, $actif, $passif, $acteur);
     buff_actif::factory($effects, $actif, $passif, $acteur);
+		/*
+     * Bonus raciaux
+     */
+		toucher_humainnoir::factory($effects, $actif, $passif, $acteur);
 
     /* Tri des effets selon leur ordre */
     sort_effects($effects);
@@ -214,6 +229,26 @@ class effect
    * @return    Potentiel parer après modification.              
    */  
 	function calcul_defense_magique(&$actif, &$passif, $def) { return $def; }
+  /**
+   * Modifie le potentiel toucher physique
+   * 
+   * @param  $actif     Personnage actif lors de l'action.
+   * @param  $passif    Personnage passif lors de l'action.
+   * @param  $att       Potentiel toucher avant modification.
+   * 
+   * @return    Potentiel toucher après modification.              
+   */  
+	function calcul_attaque_physique(&$actif, &$passif, $att) { return $att; }
+  /**
+   * Modifie le potentiel parer physique
+   * 
+   * @param  $actif     Personnage actif lors de l'action.
+   * @param  $passif    Personnage passif lors de l'action.
+   * @param  $def       Potentiel parer avant modification.
+   * 
+   * @return    Potentiel parer après modification.              
+   */  
+	function calcul_defense_physique(&$actif, &$passif, $def) { return $def; }
   /**
    * Modifie le facteur de dégâts de l'arme
    * 
@@ -478,6 +513,46 @@ class tellurique extends etat {
 	}
 }
 
+/**
+ * Bonus nocturne des corrompus
+ */
+class toucher_humainnoir extends etat {
+
+	var $effet_phy = 1;
+	var $effet_mag = 1;
+
+  function __construct($aPhy, $aMag) {
+    parent::__construct(1, 'Bonus racial corrompu');
+    $this->order = effect::$FIN_FIN;
+		$this->effet_phy = $aPhy;
+		$this->effet_mag = $aMag;
+	}
+
+	static function factory(&$effects, &$actif, &$passif, $acteur = '') {
+		if ($actif->get_race() == 'humainnoir') {
+			if (moment_jour() == 'Nuit')
+				$effects[] = new toucher_humainnoir(1, 1.1);
+			elseif (moment_jour() == 'Journee')
+				$effects[] = new toucher_humainnoir(1.1, 1);
+		}
+	}
+	
+	function calcul_attaque_magique(&$actif, &$passif, $att) {
+		if ($this->effet_mag != 1)
+			$this->debug($this->nom.' agmente le potentiel magique');
+		return $att * $this->effet_mag;
+	}
+	
+	function calcul_attaque_physique(&$actif, &$passif, $att) {
+		if ($this->effet_phy != 1)
+			$this->debug($this->nom.' agmente le potentiel magique');
+		return $att * $this->effet_phy;
+	}
+}
+
+/**
+ * Effet Vampirisme
+ */
 class effet_vampirisme extends effect
 {
 	var $effet;
@@ -509,6 +584,9 @@ class effet_vampirisme extends effect
 	}
 }
 
+/**
+ * Protection Artistique (bouclier du gobelin artiste)
+ */
 class protection_artistique extends effect
 {
 	var $effet;

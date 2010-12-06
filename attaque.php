@@ -186,7 +186,7 @@ $W_distance = detection_distance($W_case, convert_in_pos($attaquant->get_x(), $a
 if(is_donjon($attaquant->get_x(), $attaquant->get_y())
 	 && ($attaquant->in_arene('and donj = 0') == false))
 {
-	$round_total = 20;
+	$round_total = $G_round_total * 2;
 	$attaquant->set_reserve($attaquant->get_reserve() * 2);
 	$defenseur->set_reserve($defenseur->get_reserve() * 2);
 	$W_case = convertd_in_pos($defenseur->get_x(), $defenseur->get_y());
