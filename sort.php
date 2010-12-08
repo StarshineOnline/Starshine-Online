@@ -66,6 +66,12 @@ if (isset($_GET['ID']) && !$joueur->is_buff('bloque_sort'))
 		//Vérification que c'est un buff de groupe
 		$sortpa_base = $sort->get_pa();
 		$sortmp_base = $sort->get_mp();
+
+		//Vérification que le joueur a le droit aux sorts de groupe
+		if ($groupe && 
+				!($joueur->is_competence('sort_groupe') ||
+					$joueur->is_competence('sort_groupe_'.$sort->get_comp_assoc())))
+			security_block(URL_MANIPULATION, 'Sort de groupe non autorisé');
 		
 		// Pas d'affinité si c'est le pet qui lance le sort
 		if($type_lanceur != "monstre")
