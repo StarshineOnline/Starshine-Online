@@ -60,24 +60,29 @@ if (isset($_REQUEST['teleport_in'])) {
   $requete_arenes_perso = "insert into arenes_joueurs value($x, $y, $id, $grp)";
   $req = $db->query($requete_arenes_perso);
   /* groupage */
-  $requete_arenes_perso = "select id from groupe where nom = 'DTE $race'";
-  $req = $db->query($requete_arenes_perso);
-  if ($db->num_rows > 0)
-    $R_groupe = $db->read_assoc($req);
-  else
-    die('groupe non crée !');
+  if (array_key_exists('group', $_REQUEST)) {
+    $requete_arenes_perso = "select id from groupe where nom = 'DTE $race'";
+    $req = $db->query($requete_arenes_perso);
+    if ($db->num_rows > 0)
+      $R_groupe = $db->read_assoc($req);
+    else
+      die('groupe non crée !');
+    $group = ", groupe=$R_groupe[id]";
+  } else { $group = ''; }
   if (array_key_exists('full', $_REQUEST))
     $fullish = ', hp=floor(hp_max), mp=floor(mp_max)';
   if (array_key_exists('pa', $_REQUEST) && $_REQUEST['pa'] != '')
     $pa = ", pa=floor($_REQUEST[pa] * $G_PA_max)";
-  $requete_perso = "update perso set x=$nx, y=$ny, groupe=$R_groupe[id] $fullish $pa where id = $id";
+  $requete_perso = "update perso set x=$nx, y=$ny $group $fullish $pa where id = $id";
   $req = $db->query($requete_perso);
   $requete_journal = "INSERT INTO journal VALUES('', $id, 'teleport', '".$admin_nom."', '".$R_perso['nom']."', NOW(), '$arene', 0, 0, 0)";
   $req = $db->query($requete_journal);
   /* de-(de)buff */
   $req = $db->query("delete from buff where id_perso = $id");
   /* insert dans groupe DTE */
-  $db->query("insert into groupe_joueur(id_joueur, id_groupe, leader) select $id, id, 'n' from groupe where nom = 'DTE $race'");
+  if (array_key_exists('group', $_REQUEST)) {
+    $db->query("insert into groupe_joueur(id_joueur, id_groupe, leader) select $id, id, 'n' from groupe where nom = 'DTE $race'");
+  }
   
 }
 
@@ -182,6 +187,7 @@ if ($db->num_rows > 0) {
 ?>
 </select>
 <input name="player" type="text" />
+<label>Groupe racial <input name="group" type="checkbox" /></label>
 <label>Full HP/MP <input name="full" type="checkbox" /></label>
 <label>PA <select name="pa">
 <option selected="selected"></option>
