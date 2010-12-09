@@ -28,10 +28,12 @@ class view_map
   var $map;
   var $perso = array();
   var $monstre = array();
+	var $pnj = array();
 
   function __construct($map) { $this->map = $map; }
   function add_monstre($monstre) { $this->monstre[] = $monstre; }
   function add_perso($perso) { $this->perso[] = $perso; }
+  function add_pnj($pnj) { $this->pnj[] = $pnj; }
   function get_id() { return 'TT_'.$this->map->x.'_'.$this->map->y; }
   function prnt() {
     global $Tclasse;
@@ -46,10 +48,13 @@ class view_map
     if (count($this->perso)) {
       echo '<div rel="#'.$this->get_id().'" class="map_contenu" style="background-image: url(../image/personnage/'.$this->perso[0]->race.'/'.$this->perso[0]->race.'_'.$Tclasse[$this->perso[0]->classe]['type'].'.png)">&nbsp;</div>';
     }
+    elseif (count($this->pnj)) {
+      echo '<div rel="#'.$this->get_id().'" class="map_contenu" style="background-image: url(../image/pnj/'.$this->pnj[0]->image.'.png); width: 54px; height: 54px"></div>';
+    }
     elseif (count($this->monstre)) {
       echo '<div rel="#'.$this->get_id().'" class="map_contenu" style="background-image: url(../image/monstre/'.$this->monstre[0]->image.'.png); width: 54px; height: 54px"></div>';
     }
-    if (count($this->perso) || count($this->monstre)) {
+    if (count($this->perso) || count($this->monstre) || count($this->pnj)) {
       $add = '<div id="'.$this->get_id().'" class="map_contenu_div">';
       foreach ($this->perso as $perso) {
         $image = '../image/personnage_low/'.$perso->race.'/'.$perso->race.'_'.
@@ -58,6 +63,10 @@ class view_map
           .$perso->nom.' - '.$perso->race.' - '.$perso->classe.' - '
           .$perso->hp.' / '.$perso->hp_max.' HP - '.$perso->mp.' / '
           .$perso->mp_max.' MP - '.$perso->pa.' PA</li>';
+      }
+      foreach ($this->pnj as $pnj) {
+        $add .= '<li class="overlib_perso"><img src="../image/pnj/'
+          .$pnj->image.'.png" />'.$pnj->nom.'</li>';
       }
       foreach ($this->monstre as $monstre) {
         $add .= '<li class="overlib_perso"><img src="../image/monstre/'
@@ -86,6 +95,14 @@ while ($row = $db->read_object($req)) {
   if (array_key_exists($row->x, $map) &&
       array_key_exists($row->y, $map[$row->x])) 
     $map[$row->x][$row->y]->add_monstre($row);
+}
+$db->free($req);
+
+$req = $db->query("select * from pnj where $range_str");
+while ($row = $db->read_object($req)) {
+	if (array_key_exists($row->x, $map) &&
+			array_key_exists($row->y, $map[$row->x]))
+		$map[$row->x][$row->y]->add_pnj($row);
 }
 $db->free($req);
 
