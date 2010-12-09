@@ -47,13 +47,20 @@ $coord['x'] = $row['x'];
 $coord['y'] = $row['y'];
 $coord_joueur['y'] = $row['y'];
 $coord_joueur['x'] = $row['x'];
-$xmin = $coord['x'] - 3;
+
+$size_view = 3;
+if (is_donjon($coord_joueur['x'], $coord_joueur['y'])) {
+  $size_view = 2; // Voir pour les arènes ?
+}
+$root->setAttribute('radius', $size_view);
+
+$xmin = $coord['x'] - $size_view;
 if ($xmin < 1) $xmin = 1;
-$xmax = $coord['x'] + 3;
+$xmax = $coord['x'] + $size_view;
 if ($xmax > 999) $xmax = 999;
-$ymin = $coord['y'] - 3;
+$ymin = $coord['y'] - $size_view;
 if ($ymin < 1) $ymin = 1;
-$ymax = $coord['y'] + 3;
+$ymax = $coord['y'] + $size_view;
 if ($ymax > 1000) $ymax = 1000;
 
 // Mise à jour des placemens
