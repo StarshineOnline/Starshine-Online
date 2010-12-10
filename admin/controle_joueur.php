@@ -7,7 +7,7 @@ $textures = false;
 include_once(root.'inc/fp.php');
 
 session_start();
-$pnjs = array('Minotaure');
+$pnjs = array('Minotaure', 'Bastounet_test');
 $is_admin = ($_SESSION["admin_db_auth"] == 'admin') ? true : false;
 
 if (array_key_exists('controle', $_GET)) { 
