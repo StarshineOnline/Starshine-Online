@@ -7,11 +7,14 @@ $textures = false;
 include_once(root.'inc/fp.php');
 
 session_start();
-$pnjs = array('Minotaure', 'Bastounet_test');
+$pnjs = array('Minotaure', 'Bastounet_test',
+              'test_baba', 'test_humain', 'test_nain', 'test_troll',
+              'test_edb', 'test_corrompu', 'test_orc', 'test_vamp',
+              'test_he', 'test_mb');
 $is_admin = ($_SESSION["admin_db_auth"] == 'admin') ? true : false;
 
 if (array_key_exists('controle', $_GET)) { 
-	if ($is_admin || array_key_exists($_GET['controle'], $pnjs)) {
+	if ($is_admin || in_array($_GET['controle'], $pnjs)) {
 		header('Location: ../interface.php');
 		$_SESSION['nom'] = $_GET['controle'];
 		$req = $db->query('select id from perso where nom = \''.
@@ -21,6 +24,7 @@ if (array_key_exists('controle', $_GET)) {
 		exit(0);
 	}
 	else {
+exit(0);
 		security_block(URL_MANIPULATION);
 	}
 }
