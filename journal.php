@@ -6,6 +6,10 @@ include_once(root.'inc/fp.php');
 $joueur = new perso($_SESSION['ID']);
 $options = recup_option($_SESSION['ID']);
 ?>
+<fieldset><legend><a href="#" onclick="return envoiInfo('option.php?action=journal', 'options');">Options</a></legend>
+<div id="options">
+</div>
+</fieldset>
 <fieldset>
 
 <?php
@@ -67,6 +71,10 @@ while($i < $count)
 				$and .= " AND action <> 'pet_leave'";
 			break;
 		}
+	}
+	elseif($keys[$i] == "nbrLignesJournal")
+	{
+		$nombre_action_journal = $options[$keys[$i]];
 	}
 	$i++;
 }

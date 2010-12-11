@@ -88,8 +88,8 @@ include_once(root.'inc/fp.php');
 						}
 					break;
 					case 'journal' :
-						$liste_options = array('soin', 'gsoin', 'buff', 'gbuff',  'degat', 'kill', 'quete', 'loot');
-						$liste_options_nom = array('Soins', 'Soins de groupe', 'Buffs', 'Buffs de groupe', 'Dégâts', 'Kills', 'Quêtes', 'Loots');
+						$liste_options = array('soin', 'gsoin', 'buff', 'gbuff',  'degat', 'kill', 'quete', 'loot', 'nbrLignesJournal');
+						$liste_options_nom = array('Soins', 'Soins de groupe', 'Buffs', 'Buffs de groupe', 'Dégâts', 'Kills', 'Quêtes', 'Loots', 'Nombre de lignes');
 						$options = recup_option($_SESSION['ID']);
 						if(array_key_exists('submit', $_POST))
 						{
@@ -113,6 +113,19 @@ include_once(root.'inc/fp.php');
 										$db->query($requete);
 									}
 								}
+								elseif(array_key_exists($liste_options[$i], $_POST) AND is_numeric($_POST[$liste_options[$i]]))
+								{
+									if(array_key_exists($liste_options[$i], $options))
+									{
+										$requete = "UPDATE options SET valeur = '".$_POST[$liste_options[$i]]."' WHERE id_perso = ".$_SESSION['ID']." AND nom = '".$liste_options[$i]."'";
+										$db->query($requete);
+									}
+									else
+									{
+										$requete = "INSERT INTO options(id, id_perso, nom, valeur) VALUES('', ".$_SESSION['ID'].", '".$liste_options[$i]."', '".$_POST[$liste_options[$i]]."')";
+										$db->query($requete);
+									}
+								}
 								else
 								{
 									if(array_key_exists($liste_options[$i], $options))
@@ -133,6 +146,11 @@ include_once(root.'inc/fp.php');
 							}
 							$options = recup_option($_SESSION['ID']);
 							echo '<h6>Filtre du journal modifié avec succès</h6>';
+							?>
+							<script type="text/javascript">
+								refresh('journal.php','information');
+							</script>
+							<?php
 						}
 						?>
 						Éléments que vous ne voulez pas voir apparaitre dans votre journal des actions :
@@ -141,7 +159,7 @@ include_once(root.'inc/fp.php');
 								<?php
 								$i = 0;
 								$count = count($liste_options);
-								while($i < $count)
+								while($i < $count-1)
 								{
 									if(array_key_exists($liste_options[$i], $options) AND $options[$liste_options[$i]] == 1) $check = true; else $check = false;
 									?>
@@ -150,9 +168,18 @@ include_once(root.'inc/fp.php');
 									$i++;
 								}
 								?>
-							</ul>
+							</ul><br />
+							Nombre de lignes : 
+							<select name="nbrLignesJournal">
+								<option value="<?php echo $options[$liste_options[$i]]; ?>" selected><?php echo $options[$liste_options[$i]]; ?></option>
+								<option value="15">15</option>
+								<option value="30">30</option>
+								<option value="45">45</option>
+								<option value="60">60</option>
+							</select>
+							<br />
 							<input type="hidden" name="submit" />
-							<input type="submit" value="Valider" onclick="return envoiFormulaire('formJournal', 'popup_content');" />
+							<input type="submit" value="Valider" onclick="return envoiFormulaire('formJournal', 'options');" />
 						</form>
 						<?php
 					break;
