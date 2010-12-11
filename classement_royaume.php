@@ -20,7 +20,8 @@ while($row = $db->read_assoc($req))
 }
 
 $tab = array();
-$requete = "SELECT (SUM(honneur) * 4) as tot, race as race_joueur FROM perso WHERE statut = 'actif' GROUP BY race ORDER BY tot DESC";
+// Comme ca les persos test level 0 ne comptent pas
+$requete = "SELECT (SUM(honneur) * 4) as tot, race as race_joueur FROM perso WHERE statut = 'actif' and level > 0 GROUP BY race ORDER BY tot DESC";
 $req = $db->query($requete);
 while($row = $db->read_assoc($req))
 {
