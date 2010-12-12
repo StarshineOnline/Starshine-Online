@@ -50,6 +50,8 @@ function showParchemin($texte, $titre = 'Une page de parchemin',
 
 function checkTpAbo(&$joueur)
 {
+  global $dontrefresh;
+  $dontrefresh = true;
 	$quetes = $joueur->get_liste_quete();
 	$found = false;
 	foreach ($quetes as $id => $q) {
