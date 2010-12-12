@@ -59,10 +59,12 @@ if($joueur->get_quete() != '')
 if($joueur->get_quete_fini() != '')
 {
 	$quete_fini = explode(';', $joueur->get_quete_fini());
-	foreach($quete_fini as $quete)
+	foreach($quete_fini as $quetef)
 	{
+		// Nouvelle version
+		$message = eregi_replace("\[quete_finie:${quetef}\]([^[]*)\[/quete_finie:${quetef}\]", "\\1", $message);
 		//On affiche le lien pour la discussion
-		$message = eregi_replace("\[QUETEFINI".$quete.":([^[]*)\]([^[]*)\[/QUETEFINI".$quete.":([^[]*)\]", "<li><a href=\"pnj.php?id=".$id."&amp;reponse=\\1&amp;poscase=".$W_case."\" onclick=\"return envoiInfo(this.href, 'information')\">\\2</a></li>", $message);
+		$message = eregi_replace("\[QUETEFINI".$quetef.":([^[]*)\]([^[]*)\[/QUETEFINI".$quetef.":([^[]*)\]", "<li><a href=\"pnj.php?id=".$id."&amp;reponse=\\1&amp;poscase=".$W_case."\" onclick=\"return envoiInfo(this.href, 'information')\">\\2</a></li>", $message);
 		$supp = false;
 	}
 }
@@ -84,6 +86,7 @@ while (eregi("\[ISQUETE:([^[]*)\]([^[]*)\[/ISQUETE:([^[]*)\]", $message, $regs))
 $message = eregi_replace("\[QUETE([^[]*)\]([^[]*)\[/QUETE([^[]*)\]", "", $message);
 //On supprime les autres liens
 $message = eregi_replace("\[QUETEFINI([^[]*)\]([^[]*)\[/QUETEFINI([^[]*)\]", "", $message);
+$message = eregi_replace("\[quete_finie:([^[]*)\]([^[]*)\[/quete_finie:([^[]*)\]", "", $message);
 $message = eregi_replace("\[retour]", "<li><a href=\"informationcase.php?case=".$W_case."\" onclick=\"return envoiInfo(this.href, 'information')\">Retour aux informations de la case</a></li>", $message);
 //Validation de la quête
 if(eregi("\[quete]", $message))
