@@ -10,7 +10,7 @@ session_start();
 $pnjs = array('Minotaure', 'Bastounet_test',
               'test_baba', 'test_humain', 'test_nain', 'test_troll',
               'test_edb', 'test_corrompu', 'test_orc', 'test_vamp',
-              'test_he', 'test_mb');
+              'test_he', 'test_mv');
 $is_admin = ($_SESSION["admin_db_auth"] == 'admin') ? true : false;
 
 if (array_key_exists('controle', $_GET)) { 

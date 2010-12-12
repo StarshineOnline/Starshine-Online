@@ -1,4 +1,4 @@
-<?php
+<?php // -*- php -*-
 if (file_exists('root.php'))
   include_once('root.php');
 
@@ -15,6 +15,16 @@ $W_case = $_GET['poscase'];
 
 if ($W_case != $joueur->get_poscase()) {
 	security_block(URL_MANIPULATION, 'Event pas sur la même case');
+}
+
+function showMessage($msg, $titre = null)
+{
+  global $dontrefresh;
+  $dontrefresh = true;
+  echo '<fieldset><legend>'.$titre.'</legend>';
+  echo '<div id="info_case">';
+  echo $msg;
+  echo '</div>';
 }
 
 function showImage($url, $titre = null)
@@ -36,6 +46,41 @@ function showParchemin($texte, $titre = 'Une page de parchemin',
   echo '<div id="info_case" style="background: url(\'image/'.$image
 		.'\'); width: '.($x - 30).'px; height: '.($y - 30).
 		'px; padding: 15px;"><div class="parchemin_texte">'.$texte.'</div></div>';
+}
+
+function checkTpAbo(&$joueur)
+{
+	$quetes = $joueur->get_liste_quete();
+	$found = false;
+	foreach ($quetes as $id => $q) {
+		if ($q['id_quete'] == 86) {
+			$found = true;
+				echo '<fieldset><legend>Descente vers les profondeurs</legend>'.
+					'<div id="info_case">';
+				echo 'Comme vous l\'avait demandé le gobelin, vous descendez explorer'.
+					' les profondeurs. Qui sait ce que vous allez y trouver ?<br/>';
+				fin_quete($joueur, $id, $q['id_quete']);
+				echo '</div>';
+		}
+	}
+	if (!$found) {
+		$quetes_fini = explode(';', $joueur->get_quete_fini());
+		foreach ($quetes_fini as $qf) {
+			if ($qf == 86) {
+				$found = true;
+				showMessage('Vous descendez à nouveau dans les profondeurs',
+										'Descente vers les profondeurs');
+			}
+		}
+	}
+	if (!$found) {
+		showMessage('Ce puis vous inquiète trop, vous ne voulez pas y entrer',
+								'Descente vers les profondeurs');
+		return;
+	}
+	$joueur->set_x(20);
+	$joueur->set_y(304);
+	$joueur->sauver();
 }
 
 global $dontrefresh;
