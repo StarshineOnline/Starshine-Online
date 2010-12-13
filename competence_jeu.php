@@ -198,7 +198,7 @@ else
 	{
 		$where = 'WHERE comp_assoc = \''.sSQL($_GET['tri']).'\'';
 	}
-	$requete = "SELECT * FROM comp_jeu ".$where." ORDER BY comp_assoc ASC, type ASC";
+	$requete = "SELECT * FROM comp_jeu ".$where." ORDER BY comp_assoc ASC, type ASC, nom ASC";
 	$req = $db->query($requete);
 
 
