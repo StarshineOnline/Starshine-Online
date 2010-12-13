@@ -539,13 +539,13 @@ class toucher_humainnoir extends etat {
 	
 	function calcul_attaque_magique(&$actif, &$passif, $att) {
 		if ($this->effet_mag != 1)
-			$this->debug($this->nom.' agmente le potentiel magique');
+			$this->debug($this->nom.' augmente le potentiel magique');
 		return $att * $this->effet_mag;
 	}
 	
 	function calcul_attaque_physique(&$actif, &$passif, $att) {
 		if ($this->effet_phy != 1)
-			$this->debug($this->nom.' agmente le potentiel physique');
+			$this->debug($this->nom.' augmente le potentiel physique');
 		return $att * $this->effet_phy;
 	}
 }
