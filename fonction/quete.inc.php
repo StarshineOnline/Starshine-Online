@@ -335,6 +335,7 @@ function verif_inventaire($id_quete, $joueur)
 		}
 		$i++;
 	}
+	$items = array();
 	if($check)
 	{
 		$requete = "SELECT objectif FROM quete WHERE id = ".$id_quete;
@@ -350,6 +351,8 @@ function verif_inventaire($id_quete, $joueur)
 			if(!$joueur->recherche_objet($cible)) {
 				$check = false;
 				echo "Il vous manque l'objet $cible.<br />";
+			} else {
+				$items[] = $cible;
 			}
 			$i++;
 		}
@@ -362,6 +365,12 @@ function verif_inventaire($id_quete, $joueur)
 				$liste_quete[$id_quete_joueur]['objectif'][$i]->nombre = 1;
 				$i++;
 			}
+			while (count($items)) {
+				$i = array_pop($items);
+				echo "remove item $i <br/>";
+				$joueur->supprime_objet($i, 1);
+			}
+			$joueur->sauver();
 			verif_quete($id_quete, $id_quete_joueur, $joueur);
 			fin_quete($joueur, $id_quete_joueur, $id_quete);
 		}

@@ -56,9 +56,9 @@ if($joueur->get_quete() != '')
 		}
 	}
 }
+$quete_fini = explode(';', $joueur->get_quete_fini());
 if($joueur->get_quete_fini() != '')
 {
-	$quete_fini = explode(';', $joueur->get_quete_fini());
 	foreach($quete_fini as $quetef)
 	{
 		// Nouvelle version
@@ -66,6 +66,21 @@ if($joueur->get_quete_fini() != '')
 		//On affiche le lien pour la discussion
 		$message = eregi_replace("\[QUETEFINI".$quetef.":([^[]*)\]([^[]*)\[/QUETEFINI".$quetef.":([^[]*)\]", "<li><a href=\"pnj.php?id=".$id."&amp;reponse=\\1&amp;poscase=".$W_case."\" onclick=\"return envoiInfo(this.href, 'information')\">\\2</a></li>", $message);
 		$supp = false;
+	}
+}
+while (eregi("\[non_quete:([^[]*)\]([^[]*)\[/non_quete:([^[]*)\]", $message, $regs))
+{
+	$numq = $regs[1];
+	if (in_array($numq, $quetes_actives) == false &&
+			in_array($numq, $quete_fini) == false)
+	{
+		$message = eregi_replace("\[non_quete:${numq}\]([^[]*)\[/non_quete:$numq\]",
+														 $regs[2], $message);
+	}
+	else
+	{
+		$message = eregi_replace("\[non_quete:${numq}\]([^[]*)\[/non_quete:$numq\]",
+														 '', $message);
 	}
 }
 while (eregi("\[ISQUETE:([^[]*)\]([^[]*)\[/ISQUETE:([^[]*)\]", $message, $regs))
