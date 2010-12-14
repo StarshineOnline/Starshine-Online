@@ -223,9 +223,9 @@ if($W_row['type'] == 1)
 					$joueur->set_sort_jeu(implode(';', $sort_jeu));
 					$joueur->set_sort_combat(implode(';', $sort_combat));
 					$joueur->set_classe_id($_GET['id']);
-					$joueur->set_classe(strtolower($nom));
+					$joueur->set_classe(mb_strtolower($nom,'UTF-8'));
 					$joueur->sauver();
-					echo 'Félicitations vous suivez maintenant la voie du '.strtolower($nom).'<br />';
+					echo 'Félicitations vous suivez maintenant la voie du '.mb_strtolower($nom,'UTF-8').'<br />';
 				}
 			break;
 			case 'quete_myriandre' :
