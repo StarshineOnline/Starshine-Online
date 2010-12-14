@@ -267,7 +267,6 @@ function attaque($acteur = 'attaquant', $competence, &$effects)
 			$defe = rand(0, $defe);
 			if($att > $defe)
 			{
-				echo 'Le coup porté est tellement violent qu\'il transperce l\'armure !<br />';
 				$transperce = true;
 			}
 		}
@@ -279,7 +278,6 @@ function attaque($acteur = 'attaquant', $competence, &$effects)
 			$defe = rand(0, 100);
 			if($defe < $atta)
 			{
-				echo 'Le coup porté est tellement violent qu\'il transperce l\'armure !<br />';
 				$transperce = true;
 			}
 		}
@@ -297,7 +295,12 @@ function attaque($acteur = 'attaquant', $competence, &$effects)
 		
 	    /* ~PP */
 
-    	if(!$transperce) $reduction = calcul_pp($PP); else $reduction = 1;
+    	if(!$transperce) $reduction = calcul_pp($PP); 
+		else 
+		{
+			$reduction = 1;
+			echo 'Le coup porté est tellement violent qu\'il transperce l\'armure !<br />';
+		}
       if ($reduction < 0) $reduction = 0; // On se soigne pas avec l'armure ^^
       $degat_avant = $degat;
       $degat = round($degat * $reduction);
