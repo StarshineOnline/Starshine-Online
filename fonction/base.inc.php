@@ -272,10 +272,14 @@ function type_terrain($info)
 	$typeterrain[15][1] = 'Donjon';
 	$typeterrain[25][0] = 'donjon';
 	$typeterrain[25][1] = 'Donjon';	
+	$typeterrain[35][0] = 'donjon';
+	$typeterrain[35][1] = 'Donjon';	
 	$typeterrain[16][0] = 'mur_donjon';
 	$typeterrain[16][1] = 'Mur de Donjon';
 	$typeterrain[26][0] = 'mur_donjon';
 	$typeterrain[26][1] = 'Mur de Donjon';	
+	$typeterrain[36][0] = 'mur_donjon';
+	$typeterrain[36][1] = 'Mur de Donjon';	
 	/* TEMPLATE
 	$typeterrain[][0] = '';
 	$typeterrain[][1] = '';
