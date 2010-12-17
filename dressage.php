@@ -129,6 +129,116 @@ if($distance == 0)
 					$buff->supprimer();
 					$monstre->supprimer();
 					echo '<h6>Le '.$pet->get_nom().' est maintenant votre créature.</h6>';
+					
+					$drop = $pet->get_drops();
+					//Drop d'un objet ?
+					$drops = explode(';', $drop);
+					if($drops[0] != '')
+					{
+						$count = count($drops);
+						$i = 0;
+						while($i < $count)
+						{
+							$share = explode('-', $drops[$i]);
+							$objet = $share[0];
+							$taux = ceil($share[1] / ($G_drop_rate*1.5));
+							if($joueur->get_race() == 'humain') $taux = $taux / 1.3;
+							if($joueur->is_buff('fouille_gibier')) $taux = $taux / (1 + ($joueur->get_buff('fouille_gibier', 'effet') / 100));
+							if ($taux < 2) $taux = 2; // Comme ca, pas de 100%
+							$tirage = rand(1, floor($taux));
+
+							if($tirage == 1)
+							{
+								$type_obj = '';
+								//Nom de l'objet
+								switch($objet[0])
+								{
+									case 'h' :
+										$objet_nom = 'Objet non identifié';
+										//Gemme aléatoire
+										if($objet[1] == 'g')
+										{
+											//Niveau de la gemme
+											$niveau_gemme = $objet[2];
+											//Recherche des gemmes de ce niveau
+											$ids = array();
+											$requete = "SELECT id FROM gemme WHERE niveau = ".$niveau_gemme;
+											$req_g = $db->query($requete);
+											while($row = $db->read_row($req_g))
+											{
+												$ids[] = $row[0];
+											}
+											$num = rand(0, (count($ids) - 1));
+											$objet = 'hg'.$ids[$num];
+										}
+									break;
+									case 'l' :
+										$id_objet = mb_substr($objet, 1);
+										$requete = "SELECT nom FROM grimoire WHERE id = $id_objet";
+										$req = $db->query($requete);
+										$row = $db->read_row($req);
+										$objet_nom = 'Grimoire : '.$row[0];
+									break;
+								}
+								echo 'Vous fouillez le corps du monstre et découvrez "'.$objet_nom.'" !<br />';
+								//Si le joueur a un groupe
+								if($joueur->get_groupe() > 0)
+								{
+									//Répartition en fonction du mode de distribution
+									switch($groupe->get_partage())
+									{
+										//Aléatoire
+										case 'r' :
+											echo 'Répartition des objets aléatoire.<br />';
+											$chance = count($groupe->membre);
+											$aleat = rand(1, $chance);
+											$gagnant = new perso($groupe->membre[($aleat - 1)]->get_id_joueur());
+										break;
+										//Par tour
+										case 't' :
+											echo 'Répartition des objets par tour.<br />';
+											$gagnant = new perso($groupe->get_prochain_loot());
+											//Changement du prochain loot
+											$j_g = $groupe->trouve_position_joueur($groupe->get_prochain_loot());
+											//Si c'est pas le dernier alors suivant
+											if((count($groupe->membre) - 1) != $j_g)
+											{
+												$groupe->set_prochain_loot($groupe->membre[($j_g + 1)]->get_id_joueur());
+											}
+											//Sinon premier
+											else
+											{
+												$groupe->set_prochain_loot($groupe->membre[0]->get_id_joueur());
+											}
+											$groupe->sauver();
+										break;
+										//Leader
+										case 'l' :
+											echo 'Répartition des objets au leader.<br />';
+											$gagnant = new perso($groupe->get_id_leader());
+										break;
+										//Celui qui trouve garde
+										case 'k' :
+											echo 'Répartition des objets, celui qui trouve garde.<br />';
+											$gagnant = new perso($joueur->get_id());
+										break;
+									}
+									echo $gagnant->get_nom().' reçoit "'.$objet_nom.'"<br />';
+								}
+								else
+								{
+									$gagnant = new perso($joueur->get_id());
+								}
+								//Insertion du loot dans le journal du gagnant
+								$requete = "INSERT INTO journal VALUES(NULL, ".$gagnant->get_id().", 'loot', '', '', NOW(), '".mysql_escape_string($objet_nom)."', 0, ".$joueur->get_x().", ".$joueur->get_y().")";
+								$db->query($requete);
+								
+								$gagnant->restack_objet();
+								$gagnant->prend_objet($objet);
+							}
+							$i++;
+						}
+					}
 				}
 				else
 				{
