@@ -439,18 +439,22 @@ echo '
 	';
 		break;
 		case 'achiev' :
-			$color = true;
-			echo '<table style="border : 0px;" cellspacing="0" width="100%">';
-			
-			foreach($joueur->get_achievement() as $achiev)
+			$achievements = $joueur->get_achievement();
+			if($achievements != NULL)
 			{
-				if($color) $style = 1;
-				else $style = 2;
-				$color = !$color;
+				$color = true;
+				echo '<table style="border : 0px;" cellspacing="0" width="100%">';
 				
-				echo '<tr class="trcolor'.$style.'"><td>'.$achiev['nom'].'</td><td>'.description($achiev['description'], $achiev).'</td></tr>';
+				foreach($achievements as $achiev)
+				{
+					if($color) $style = 1;
+					else $style = 2;
+					$color = !$color;
+					
+					echo '<tr class="trcolor'.$style.'"><td>'.$achiev['nom'].'</td><td>'.description($achiev['description'], $achiev).'</td></tr>';
+				}
+				echo '</table>';
 			}
-			echo '</table>';
 		break;
 	}
 ?>
