@@ -157,6 +157,11 @@ class perso extends entite
 	{
 		$this->star = $star;
 		$this->champs_modif[] = 'star';
+		
+		// Augmentation du compteur de l'achievement
+		$achiev = $this->get_compteur('stars');
+		$achiev->set_compteur($this->star);
+		$achiev->sauver();
 	}
   /// Renvoie le nombre de personnages tués
 	function get_frag()
@@ -168,6 +173,11 @@ class perso extends entite
 	{
 		$this->frag = $frag;
 		$this->champs_modif[] = 'frag';
+		
+		// Augmentation du compteur de l'achievement
+		$achiev = $this->get_compteur('kill');
+		$achiev->set_compteur($this->frag);
+		$achiev->sauver();
 	}
 	/// Renvoie le nombre fois où le personnage est mort.
 	function get_mort()
@@ -179,6 +189,11 @@ class perso extends entite
 	{
 		$this->mort = $mort;
 		$this->champs_modif[] = 'mort';
+		
+		// Augmentation du compteur de l'achievement
+		$achiev = $this->get_compteur('mort');
+		$achiev->set_compteur($this->mort);
+		$achiev->sauver();
 	}
 	/// Renvoie le statut
 	function get_statut()
@@ -3251,6 +3266,48 @@ class perso extends entite
 			security_block(URL_MANIPULATION);
 	}
 
+	
+	/**
+   * Les achievements
+   */
+   function get_compteur($variable)
+   {
+		global $db;
+		$requete = "SELECT id, id_perso, compteur, variable FROM achievement_compteur WHERE id_perso = '".$this->id."' AND variable = '".$variable."'";
+		$req = $db->query($requete);
+		if ($db->num_rows($req) > 0) // Le compteur existe
+		{
+			$row = $db->read_array($req);
+			$compteur = new achievement_compteur($row);
+		}
+		else // Sinon on le crée
+		{
+			$compteur = new achievement_compteur();
+			$compteur->set_id_perso($this->id);
+			$compteur->set_variable($variable);
+			$compteur->set_compteur(0);
+			$compteur->sauver();
+		}
+		return $compteur;
+	}
+	
+	function get_achievement()
+   {
+		global $db;
+		if(!isset($this->achievement))
+		{
+			$requete = "SELECT id_perso, id_achiev, achievement_type.id, nom, description, value, variable FROM achievement 
+			LEFT JOIN achievement_type ON achievement.id_achiev = achievement_type.id
+			WHERE id_perso = '".$this->id."' ORDER BY nom ASC";
+			$req = $db->query($requete);
+			while($row = $db->read_assoc($req))
+			{
+				$this->achievement[] = $row;
+			}
+		}
+		return $this->achievement;
+	}
+   
 	/** on ne m'aura plus avec les machins déclarés depuis dehors */
 	//function __get($name) { $debug = debug_backtrace(); die('fuck: '.$debug[0]['file'].' line '.$debug[0]['line']); }
 	//function __set($name, $value) { $debug = debug_backtrace(); die('fuck: '.$debug[0]['file'].' line '.$debug[0]['line']); }

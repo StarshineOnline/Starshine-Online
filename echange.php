@@ -248,6 +248,16 @@ if(array_key_exists('valid_etape', $_GET))
 							
 							//C'est ok
 							echo '<h6>L\'échange s\'est déroulé avec succès</h6>';
+							
+							// Augmentation du compteur de l'achievement
+							$achiev = $j1->get_compteur('objets_echanges');
+							$achiev->set_compteur($achiev->get_compteur() + $nb_objet['j1']);
+							$achiev->sauver();
+							
+							// Augmentation du compteur de l'achievement
+							$achiev = $j2->get_compteur('objets_echanges');
+							$achiev->set_compteur($achiev->get_compteur() + $nb_objet['j2']);
+							$achiev->sauver();
 							unset($echange);
 						}
 					}

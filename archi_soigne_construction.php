@@ -45,6 +45,12 @@ if($joueur->get_pa() >= 30)
 					$joueur->set_architecture($augmentation[0]);
 					$joueur->sauver();
 				}
+				
+				// Augmentation du compteur de l'achievement
+				$achiev = $joueur->get_compteur('structure_hp');
+				$achiev->set_compteur($achiev->get_compteur() + $hp_repare);
+				$achiev->sauver();
+				
 				echo '<h6>La construction a été réparée de '.$hp_repare.' HP</h6>';
 				$joueur->sauver();
 			}

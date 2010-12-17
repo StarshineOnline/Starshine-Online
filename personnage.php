@@ -29,7 +29,7 @@ $de_degat_arme = de_degat($joueur->get_forcex(), $joueur->get_arme_degat());
 echo '
 <fieldset>
 	<legend>Nom : '.$joueur->get_nom().'</legend>
-	<p class="brillant"><a href="'.$adresse.'direction=carac" onclick="return envoiInfo(this.href, \'information\')">Carac</a> | <a href="'.$adresse.'direction=comp" onclick="return envoiInfo(this.href, \'information\')">Compétences</a> | <a href="'.$adresse.'direction=magie" onclick="return envoiInfo(this.href, \'information\')">Magie</a> | <a href="'.$adresse.'direction=stat" onclick="return envoiInfo(this.href, \'information\')">Stats</a></p>
+	<p class="brillant"><a href="'.$adresse.'direction=carac" onclick="return envoiInfo(this.href, \'information\')">Carac</a> | <a href="'.$adresse.'direction=comp" onclick="return envoiInfo(this.href, \'information\')">Compétences</a> | <a href="'.$adresse.'direction=magie" onclick="return envoiInfo(this.href, \'information\')">Magie</a> | <a href="'.$adresse.'direction=stat" onclick="return envoiInfo(this.href, \'information\')">Stats</a> | <a href="'.$adresse.'direction=achiev" onclick="return envoiInfo(this.href, \'information\')">Achievement</a></p>
 	<p><strong>'.$joueur->get_nom().'</strong> - '.$Gtrad[$joueur->get_race()].' - '.$joueur->get_classe().'</p>
 	';
 	if(!array_key_exists('direction', $_GET)) $_GET['direction'] = 'carac';
@@ -437,6 +437,20 @@ echo '
 	</tr>
 	</table>
 	';
+		break;
+		case 'achiev' :
+			$color = true;
+			echo '<table style="border : 0px;" cellspacing="0" width="100%">';
+			
+			foreach($joueur->get_achievement() as $achiev)
+			{
+				if($color) $style = 1;
+				else $style = 2;
+				$color = !$color;
+				
+				echo '<tr class="trcolor'.$style.'"><td>'.$achiev['nom'].'</td><td>'.description($achiev['description'], $achiev).'</td></tr>';
+			}
+			echo '</table>';
 		break;
 	}
 ?>

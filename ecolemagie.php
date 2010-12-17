@@ -201,6 +201,12 @@ if($W_row['type'] == 1)
 			$set = 'set_'.$_GET['app'];
 			$joueur->$set(3);
 			$joueur->sauver();
+			
+			// Augmentation du compteur de l'achievement
+			$achiev = $joueur->get_compteur('type_magie');
+			$achiev->set_compteur($achiev->get_compteur() + 1);
+			$achiev->sauver();
+				
 			echo 'L\'apprentissage de '.$Gtrad[$_GET['app']].' est un succès !<br />';
 			if($taxe > 0)
 			{

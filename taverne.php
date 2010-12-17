@@ -143,6 +143,11 @@ if ($joueur->get_race() == $R->get_race() ||
 								$row = $db->read_assoc($req);
 								lance_buff($row['type'], $joueur->get_id(), $row['effet'], $row['effet2'], $row['duree'], $row['nom'], description($row['description'], $row), 'perso', 0, 0, $joueur->get_grade()->get_rang());
 								$texte .= '<br />En plus, vous recevez le buff : '.$row['nom'].' !!!';
+								
+								// Augmentation du compteur de l'achievement
+								$achiev = $joueur->get_compteur('taverne_bonus');
+								$achiev->set_compteur($achiev->get_compteur() + 1);
+								$achiev->sauver();
 							}
 							elseif($debuff)
 							{
@@ -159,6 +164,11 @@ if ($joueur->get_race() == $R->get_race() ||
 								$row = $db->read_assoc($req);
 								lance_buff($row['type'], $joueur->get_id(), $row['effet'], $row['effet2'], $row['duree'], $row['nom'], description($row['description'], $row), 'perso', 1, 0, 0);
 								$texte .= '<br />Ouch cette piètre prestation vous coupe le moral, vous recevez le debuff : '.$row['nom'].' !!!';
+								
+								// Augmentation du compteur de l'achievement
+								$achiev = $joueur->get_compteur('taverne_malus');
+								$achiev->set_compteur($achiev->get_compteur() + 1);
+								$achiev->sauver();
 							}
 							
 							//maladie

@@ -224,6 +224,7 @@ else
 	{
 		//Récupération si la case est une ville et diplomatie
 		$chateau = false;
+		$defenseur_en_defense = false;
 		$requete = "SELECT type FROM map WHERE x = ".$defenseur->get_x()
 			.' and y = '.$defenseur->get_y()." AND type = 1 AND royaume = ".
 			$Trace[$defenseur->get_race()]['numrace'];
@@ -234,6 +235,7 @@ else
 			$defenseur->set_pm($defenseur->get_pm() * 1.16);
 			$defenseur->set_pp($defenseur->get_pp() * 1.3);
 			$chateau = true;
+			$defenseur_en_defense = true;
 		}
 		//On vérifie si le défenseur est sur un batiment défensif
 		$requete = "SELECT id_batiment FROM construction WHERE x = ".$defenseur->get_x()." AND y = ".$defenseur->get_y()." AND royaume = ".$Trace[$defenseur->get_race()]['numrace'];
@@ -262,6 +264,7 @@ else
 			if ($batiment_def->has_bonus('batiment_distance'))
 				$defenseur->add_buff('batiment_distance', 
 														 $batiment_def->get_bonus('batiment_distance'));
+			$defenseur_en_defense = true;
 		}
 		//On vérifie si l'attaquant est sur un batiment offensif
 		$requete = "SELECT id_batiment FROM construction WHERE x = ".$joueur->get_x()." AND y = ".$attaquant->get_y()." AND royaume = ".$Trace[$attaquant->get_race()]['numrace'];
@@ -718,6 +721,11 @@ else
 					$royaume_attaquant = new royaume($Trace[$joueur->get_race()]['numrace']);
 					$royaume_attaquant->add_point_victoire($map_batiment->get_point_victoire());
 				}
+				
+				// Augmentation du compteur de l'achievement
+				$achiev = $joueur->get_compteur('structure_degats');
+				$achiev->set_compteur($achiev->get_compteur() + $degat_defense);
+				$achiev->sauver();
 			}
 			elseif($type == 'siege')
 			{
@@ -908,6 +916,14 @@ else
 					$passif = $joueur_defenseur;
 					$gains = true;
 					$joueur_defenseur->supprime_rez();
+					
+					if($defenseur_en_defense)
+					{
+						// Augmentation du compteur de l'achievement
+						$achiev = $joueur->get_compteur('kill_defense');
+						$achiev->set_compteur($achiev->get_compteur() + 1);
+						$achiev->sauver();
+					}
 				}
 
 				if($gains)
@@ -1027,6 +1043,21 @@ else
 						if($membre->get_id() == $attaquant->get_id()) verif_action('J'.$row_diplo[0], $membre, 's');
 						else verif_action('J'.$row_diplo[0], $membre, 'g');
 					}
+					
+					// Augmentation du compteur de l'achievement
+					if($actif->get_level() >= $passif->get_level()) // Kill d'un joueur d'un plus petit level
+						$achiev = $actif->get_compteur('kill_lower');
+					else
+						$achiev = $actif->get_compteur('kill_higher');
+					$achiev->set_compteur($achiev->get_compteur() + 1);
+					$achiev->sauver();
+					
+					// Achievement joueur meme race
+					if($actif->get_race() == $passif->get_race())
+						$achiev = $actif->get_compteur('kill_race');
+					$achiev->set_compteur($achiev->get_compteur() + 1);
+					$achiev->sauver();
+					
 					$actif->set_frag($actif->get_frag() + 1);
 					$passif->set_mort($passif->get_mort() + 1);
 					$actif->sauver();
@@ -1054,7 +1085,11 @@ else
 
 					// On efface le monstre
 					$map_monstre->supprimer();
-
+					
+					// Augmentation du compteur de l'achievement
+					$achiev = $joueur->get_compteur('kill_monstres');
+					$achiev->set_compteur($achiev->get_compteur() + 1);
+					$achiev->sauver();
 				}
 				elseif ($attaquant->get_hp() <= 0 && !$pet) //L'attaquant est mort !
 				{

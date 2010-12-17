@@ -715,6 +715,11 @@ if(!$visu AND isset($_GET['action']))
 						//Craft réussi
 						echo 'Réussite !<br />';
 						$objet['slot'] = $_GET['niveau'];
+						
+						// Augmentation du compteur de l'achievement
+						$achiev = $joueur->get_compteur('objets_slot');
+						$achiev->set_compteur($achiev->get_compteur() + 1);
+						$achiev->sauver();
 					}
 					else
 					{
@@ -881,6 +886,11 @@ if(!$visu AND isset($_GET['action']))
 					$objet['enchantement'] = $gemme['id_objet'];
 					$objet['slot'] = 0;
 					$gemme_casse = true;
+					
+					// Augmentation du compteur de l'achievement
+					$achiev = $joueur->get_compteur('objets_slotted');
+					$achiev->set_compteur($achiev->get_compteur() + 1);
+					$achiev->sauver();
 				}
 				else
 				{

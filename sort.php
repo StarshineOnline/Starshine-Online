@@ -52,6 +52,8 @@ if($type_lanceur == 'joueur') include ('livre.php');
 <hr>
 <?php
 $lancement = false;
+$buff = false;
+$debuff = false;
 
 if($joueur->get_groupe() != 0) $groupe_joueur = new groupe($joueur->get_groupe());
 
@@ -300,6 +302,7 @@ if (isset($_GET['ID']) && !$joueur->is_buff('bloque_sort'))
 					if($action)
 					{
 						$lancement = true;
+						$buff = true;
 						if($groupe)
 						{
 							$requete = "INSERT INTO journal(id_perso, action, actif, passif, time, valeur, valeur2, x, y) VALUES(".$joueur->get_id().", 'gbuff', '".$joueur->get_nom()."', 'groupe', NOW(), '".$sort->get_nom()."', 0, 0, 0)";
@@ -478,6 +481,7 @@ if (isset($_GET['ID']) && !$joueur->is_buff('bloque_sort'))
 						echo $cible->get_nom().' résiste à votre sort !<br />';
 				 	}
 					$lancement = true;
+					$debuff = true;
 				break;
 				case 'maladie_amorphe' : case 'maladie_degenerescence' : case 'maladie_mollesse' :
 					if($type_cible == 'joueur')
@@ -552,6 +556,7 @@ if (isset($_GET['ID']) && !$joueur->is_buff('bloque_sort'))
 			 			}
 			 		}
 					$lancement = true;
+					$debuff = true;
 				break;
 				case 'rez' :
 					//Sale
@@ -578,6 +583,12 @@ if (isset($_GET['ID']) && !$joueur->is_buff('bloque_sort'))
 							//Mis en place de la résurection
 							$requete = "INSERT INTO rez VALUES('', ".$cible->get_id().", ".$joueur->get_id().", '".$joueur->get_nom()."', ".$sort->get_effet().", ".$sort->get_effet2().", ".$sort->get_duree().", NOW())";
 							$db->query($requete);
+							
+							// Augmentation du compteur de l'achievement
+							$achiev = $joueur->get_compteur('rez');
+							$achiev->set_compteur($achiev->get_compteur() + 1);
+							$achiev->sauver();
+							
 							echo 'Résurrection bien lancée.';
 						}
 						else
@@ -616,6 +627,14 @@ if (isset($_GET['ID']) && !$joueur->is_buff('bloque_sort'))
 			}
 			$joueur->sauver();
 			$lanceur->sauver();
+			
+			// Augmentation du compteur de l'achievement
+			if($buff)				
+				$achiev = $joueur->get_compteur('buff');
+			elseif($debuff)
+				$achiev = $joueur->get_compteur('debuff');
+			$achiev->set_compteur($achiev->get_compteur() + 1);
+			$achiev->sauver();
 		}
 		if($groupe) $cible = $joueur;
 		if($type_lanceur == 'joueur') echo '<br /><a href="sort.php?type='.$type_cible.'&amp;id_'.$type_cible.'='.$cible->get_id().'" onclick="return envoiInfo(this.href, \'information\');">Revenir au livre de sort</a>';

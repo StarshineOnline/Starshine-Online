@@ -56,6 +56,11 @@ if($W_row['type'] == 1)
 											$action_message = "<span class='message_vert'>l&apos;".$_GET["type"]." a bien &eacute;t&eacute; acheté.</span>";
 											
 											$db->query("INSERT INTO journal VALUES(NULL, ".$_GET["id_vendeur"].", 'vend', '', '', NOW(), '".addslashes(nom_objet($objObjetHotel->objet))."', '".$objObjetHotel->prix."', 0, 0)");
+											
+											// Augmentation du compteur de l'achievement
+											$achiev = $vendeur->get_compteur('objets_vendus');
+											$achiev->set_compteur($achiev->get_compteur() + 1);
+											$achiev->sauver();
 										}
 										else { $action_message = "<span class='message_rouge'>$G_erreur</span>"; };
 									}

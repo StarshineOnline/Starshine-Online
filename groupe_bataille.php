@@ -6,8 +6,8 @@ if (file_exists('root.php'))
 include_once(root.'inc/fp.php');
 include_once(root.'fonction/messagerie.inc.php');
 $joueur = new perso($_SESSION['ID']);
-$groupe = new groupe($joueur->get_groupe());
-$leader = new perso($groupe->get_id_leader());
+$groupe_joueur = new groupe($joueur->get_groupe());
+$leader = new perso($groupe_joueur->get_id_leader());
 $R = new royaume($Trace[$leader->get_race()]['numrace']);
 function affiche_bataille_groupe($bataille, $leader = false)
 {
@@ -106,6 +106,14 @@ else
 		{
 			$bgr = new bataille_groupe_repere($_GET['id_bataille_repere']);
 			$bgr->accepte();
+			
+			// Augmentation du compteur de l'achievement
+			foreach($groupe_joueur->get_membre_joueur() as $membre)
+			{
+				$achiev = $membre->get_compteur('bataille');
+				$achiev->set_compteur($achiev->get_compteur() + 1);
+				$achiev->sauver();
+			}
 		}
 		else
 		{
