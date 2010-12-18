@@ -158,16 +158,31 @@ if($joueur->get_groupe() == $perso->get_groupe() && $joueur->get_groupe() != 0 &
 	}
 }
 
-$titres = recup_titre_honorifique($perso->get_id());
-if(!empty($titres) AND array_key_exists(15, $bonus) AND check_affiche_bonus($bonus[15], $joueur, $perso))
-{
-	?>
 
-		<h4><span class="titre_info">Titres</span></h4>
-	<?php
-	foreach($titres as $titre)
+if(array_key_exists(15, $bonus) AND check_affiche_bonus($bonus[15], $joueur, $perso))
+{
+	$titres = recup_titre_honorifique($perso->get_id());
+	if(!empty($titres))
 	{
-		echo $titre.'<br />';
+		?>
+			<h4><span class="titre_info">Titres</span></h4>
+		<?php
+		foreach($titres as $titre)
+		{
+			echo $titre.'<br />';
+		}
+	}
+	
+	$achievements = $perso->get_achievement();
+	if(!empty($achievements))
+	{
+	?>
+		<h4><span class="titre_info">Achievements</span></h4>
+	<?php
+		foreach($achievements as $achiev)
+		{
+			echo $achiev['nom'].'<br />';
+		}
 	}
 }
 if(array_key_exists(16, $bonus) AND check_affiche_bonus($bonus[16], $joueur, $perso))
