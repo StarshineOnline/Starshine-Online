@@ -629,12 +629,18 @@ if (isset($_GET['ID']) && !$joueur->is_buff('bloque_sort'))
 			$lanceur->sauver();
 			
 			// Augmentation du compteur de l'achievement
-			if($buff)				
+			if($buff)
+			{
 				$achiev = $joueur->get_compteur('buff');
+				$achiev->set_compteur($achiev->get_compteur() + 1);
+				$achiev->sauver();
+			}
 			elseif($debuff)
+			{
 				$achiev = $joueur->get_compteur('debuff');
-			$achiev->set_compteur($achiev->get_compteur() + 1);
-			$achiev->sauver();
+				$achiev->set_compteur($achiev->get_compteur() + 1);
+				$achiev->sauver();
+			}
 		}
 		if($groupe) $cible = $joueur;
 		if($type_lanceur == 'joueur') echo '<br /><a href="sort.php?type='.$type_cible.'&amp;id_'.$type_cible.'='.$cible->get_id().'" onclick="return envoiInfo(this.href, \'information\');">Revenir au livre de sort</a>';
