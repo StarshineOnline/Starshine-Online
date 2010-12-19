@@ -116,14 +116,15 @@ class achievement_compteur
 		{
 			if ($this->compteur >= $achiev->get_value())
 			{
-				$requete = 'SELECT id FROM achievement WHERE id_perso = "'.$this->id_perso.'" AND id_achiev = "'.$achiev->get_id().'"';
-				$db->query($requete);
+				$achievement = achievement::create(array('id_perso','id_achiev'), array($this->id_perso, $achiev->get_id()));
 				// Achievement pas deja debloqué ?
-				if($db->num_rows == 0)
+				if(count($achievement) == 0)
 				{
 					$joueur = new perso($this->id_perso);
-					$requete = 'INSERT INTO achievement VALUES("", "'.$this->id_perso.'", "'.$achiev->get_id().'")';
-					$db->query($requete);
+					$achievement = new achievement();
+					$achievement->set_id_perso($this->id_perso);
+					$achievement->set_id_achiev($achiev->get_id());
+					$achievement->sauver();
 					echo $joueur->get_nom().' debloque l\'achievement "'.$achiev->get_nom().'" !<br />';
 				}
 			}
@@ -155,7 +156,7 @@ class achievement_compteur
 		global $db;
 		$this->achievement_type = array();
 
-		$requete = "SELECT id, nom, description, value, variable FROM achievement_type WHERE variable = '".$this->variable."'";
+		$requete = "SELECT id, nom, description, value, variable, secret FROM achievement_type WHERE variable = '".$this->variable."'";
 		$req = $db->query($requete);
 		while ($row = $db->read_assoc($req))
 			$this->achievement_type[] = new achievement_type($row);

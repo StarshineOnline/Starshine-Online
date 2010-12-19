@@ -178,6 +178,11 @@ class perso extends entite
 		$achiev = $this->get_compteur('kill');
 		$achiev->set_compteur($this->frag);
 		$achiev->sauver();
+		
+		// Augmentation du compteur de l'achievement
+		$achiev = $this->get_compteur('ratio');
+		$achiev->set_compteur($this->frag / $this->mort);
+		$achiev->sauver();
 	}
 	/// Renvoie le nombre fois où le personnage est mort.
 	function get_mort()
@@ -3296,13 +3301,13 @@ class perso extends entite
 		global $db;
 		if(!isset($this->achievement))
 		{
-			$requete = "SELECT id_perso, id_achiev, achievement_type.id, nom, description, value, variable FROM achievement 
+			$requete = "SELECT id_perso, id_achiev, achievement_type.id, nom, description, value, variable, secret FROM achievement 
 			LEFT JOIN achievement_type ON achievement.id_achiev = achievement_type.id
 			WHERE id_perso = '".$this->id."' ORDER BY nom ASC";
 			$req = $db->query($requete);
 			while($row = $db->read_assoc($req))
 			{
-				$this->achievement[] = $row;
+				$this->achievement[$row['id_achiev']] = $row;
 			}
 		}
 		return $this->achievement;

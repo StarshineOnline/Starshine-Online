@@ -9,6 +9,7 @@ class achievement_type
 	private $description;
 	private $value;
 	private $variable;
+	private $secret;
 	
 	/**	
 		*	Constructeur permettant la création d'un achievement.
@@ -18,17 +19,17 @@ class achievement_type
 		*		-achievement_type($id) qui va chercher l'etat dont l'id est $id
 		*		-achievement_type($array) qui associe les champs de $array à l'objet.
 	**/
-	function __construct($id = 0, $nom = '', $description = '', $value = 0, $variable = '')
+	function __construct($id = 0, $nom = '', $description = '', $value = 0, $variable = '', $secret = 0)
 	{
 		global $db;
 		//Verification du nombre et du type d'argument pour construire l'etat adequat.
 		if( (func_num_args() == 1) && is_numeric($id) )
 		{
-			$requeteSQL = $db->query('SELECT nom, description, value, variable FROM achievement_type WHERE id = '.$id);
+			$requeteSQL = $db->query('SELECT nom, description, value, variable, secret FROM achievement_type WHERE id = '.$id);
 			//Si le thread est dans la base, on le charge sinon on crée un thread vide.
 			if( $db->num_rows($requeteSQL) > 0 )
 			{
-				list($this->nom, $this->description, $this->value, $this->variable) = $db->read_row($requeteSQL);
+				list($this->nom, $this->description, $this->value, $this->variable, $this->secret) = $db->read_row($requeteSQL);
 			}
 			else
 				$this->__construct();
@@ -41,6 +42,7 @@ class achievement_type
 			$this->description = $id['description'];
 			$this->value = $id['value'];
 			$this->variable = $id['variable'];
+			$this->secret = $id['secret'];
 		}
 		else
 		{
@@ -49,39 +51,48 @@ class achievement_type
 			$this->description = $description;
 			$this->value = $value;
 			$this->variable = $variable;
+			$this->secret = $secret;
 		}
 	}
 	
-	//Fonction d'ajout / modification.
-	function sauver()
+	static function create($champs, $valeurs, $ordre = 'id ASC', $keys = false, $where = false)
 	{
 		global $db;
-		if( $this->id > 0 )
+		if(!$where)
 		{
-			$requete = 'UPDATE achievement_type SET ';
-			$requete .= 'nom = "'.$this->nom.'", description = "'.$this->description.'", value = '.$this->value.', variable = '.$this->variable.'';
-			$requete .= ' WHERE id = '.$this->id;
-			$db->query($requete);
+			if(!is_array($champs))
+			{
+				$array_champs[] = $champs;
+				$array_valeurs[] = $valeurs;
+			}
+			else
+			{
+				$array_champs = $champs;
+				$array_valeurs = $valeurs;
+			}
+			foreach($array_champs as $key => $champ)
+			{
+				$where[] = $champ .' = "'.mysql_escape_string($array_valeurs[$key]).'"';
+			}
+			$where = implode(' AND ', $where);
+			if($champs === 0)
+			{
+				$where = ' 1 ';
+			}
 		}
-		else
+
+		$requete = "SELECT id, nom, description, value, variable, secret FROM achievement_type WHERE ".$where." ORDER BY ".$ordre;
+		$req = $db->query($requete);
+		if($db->num_rows($req) > 0)
 		{
-			$requete = 'INSERT INTO achievement_type (nom, description, value, variable) VALUES(';
-			$requete .= '"'.$this->nom.'", "'.$this->description.'", "'.$this->value.'", "'.$this->variable.'")';
-			$db->query($requete);
-			//Récuperation du dernier ID inséré.
-			list($this->id) = $db->last_insert_id();
+			while($row = $db->read_assoc($req))
+			{
+				if(!$keys) $return[] = new achievement_type($row);
+				else $return[$row[$keys]] = new achievement_type($row);
+			}
 		}
-	}
-	
-	//supprimer l'etat de la base.
-	function supprimer()
-	{
-		global $db;
-		if( $this->id > 0 )
-		{
-			$requete = 'DELETE FROM achievement_type WHERE id = '.$this->id;
-			$db->query($requete);
-		}
+		else $return = array();
+		return $return;
 	}
 	
 	function __toString()
@@ -99,19 +110,9 @@ class achievement_type
 		return $this->id;
 	}
 	
-	function set_nom($nom)
-	{
-		$this->nom = $nom;
-	}
-	
 	function get_description()
 	{
 		return $this->description;
-	}
-	
-	function set_description($description)
-	{
-		$this->description = $description;
 	}
 	
 	function get_value()
@@ -119,19 +120,14 @@ class achievement_type
 		return $this->value;
 	}
 	
-	function set_value($value)
-	{
-		$this->value = $value;
-	}
-	
 	function get_variable()
 	{
 		return $this->variable;
 	}
 	
-	function set_variable($variable)
+	function get_secret()
 	{
-		$this->variable = $variable;
+		return $this->secret;
 	}
 }
 ?>

@@ -138,12 +138,14 @@ else
 			</li>
 
 		<?php
+		$message_total_total = 0;
 		foreach($messagerie->threads as $key => $thread)
 		{
 			$message_total = $thread->get_message_total($joueur->get_id());
 			// Si y'a au moins un message dans le thread, et que ce thread n'est pas masqué par le joueur
 			if($message_total > 0 AND $message_total != $messagerie->get_thread_masque($thread->id_thread))
 			{
+				$message_total_total += $message_total;
 				$date = date("d-m H:i", strtotime($thread->dernier_message));
 				//Recherche du destinataire
 				if($thread->id_dest != 0)
@@ -219,6 +221,14 @@ else
 		?>
 		</ul>
 		<?php
+		if($type_thread = 'perso' AND $message_total_total >= 500)
+		{
+			// Augmentation du compteur de l'achievement
+			$achiev = $joueur->get_compteur('messages');
+			$achiev->set_compteur($message_total_total);
+			$achiev->sauver();
+			
+		}
 	}
 }
 
