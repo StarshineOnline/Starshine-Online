@@ -3312,6 +3312,32 @@ class perso extends entite
 		}
 		return $this->achievement;
 	}
+	
+	function already_unlocked_achiev($achievement_type)
+	{
+		global $db;
+		$requete = "SELECT id FROM achievement WHERE id_perso = '".$this->id."' AND id_achiev = '".$achievement_type->get_id()."'";
+		$req = $db->query($requete);
+		if ($db->num_rows($req) > 0) // L'achievement est deja debloqué
+			return true;
+		else
+			return false;
+	}
+	
+	function unlock_achiev($variable)
+	{
+		$achievement_type = achievement_type::create('variable', $variable);
+		// Si le joueur ne l'a pas deja debloqué
+		if(!$this->already_unlocked_achiev($achievement_type[0]))
+		{
+			// On debloque l'achievement
+			$achievement = new achievement();
+			$achievement->set_id_perso($this->get_id());
+			$achievement->set_id_achiev($achievement_type[0]->get_id());
+			$achievement->sauver();
+			echo $this->get_nom().' debloque l\'achievement "'.$achievement_type[0]->get_nom().'" !<br />';
+		}
+	}
    
 	/** on ne m'aura plus avec les machins déclarés depuis dehors */
 	//function __get($name) { $debug = debug_backtrace(); die('fuck: '.$debug[0]['file'].' line '.$debug[0]['line']); }

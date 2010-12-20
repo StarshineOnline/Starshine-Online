@@ -175,6 +175,11 @@ switch($type)
 		$defenseur = new entite('ville', $joueur_defenseur);
 	break;
 }
+
+//Achievement
+if($attaquant->action == $defenseur->action)
+	$joueur->unlock_achiev('same_action');
+
 // round_total sera modifié ensuite au besoin, mais on doit le seter au début
 $round_total = $G_round_total;
 $W_case = convert_in_pos($defenseur->get_x(), $defenseur->get_y());
@@ -652,7 +657,7 @@ else
 					
 					if ($siege_true) break;
 			}
-
+			
 			$attaque_hp_apres = $attaquant->get_hp();
 			$defense_hp_apres = $defenseur->get_hp();
 			$degat_defense = $defense_hp_avant - $defense_hp_apres;
@@ -787,6 +792,9 @@ else
 								$royaume_attaquant->add_point_victoire(100);
 								$royaume_attaquant->sauver();
 								echo '<h6>La capitale est détruite ! Votre royaume gagne 100 points de victoire.</h6><br />';
+								
+								// On debloque l'achievement
+								$joueur->unlock_achiev('capitale_detruite');
 							}
 						}
 					}
@@ -907,6 +915,10 @@ else
 					$gains = true;
 					//On supprime toutes les rez
 					$joueur->supprime_rez();
+					
+					//Achievement
+					if($attaquant->get_hp() == 0)
+						$joueur->unlock_achiev('near_kill');
 				}
 				//Le défenseur est mort !
 				if (!$check_pet_def && $defenseur->get_hp() <= 0)
@@ -924,6 +936,10 @@ else
 						$achiev->set_compteur($achiev->get_compteur() + 1);
 						$achiev->sauver();
 					}
+					
+					//Achievement
+					if($defenseur->get_hp() == 0)
+						$joueur_defenseur->unlock_achiev('near_kill');
 				}
 
 				if($gains)
@@ -939,8 +955,14 @@ else
 						//Si on tape un joueur de son groupe xp = 0
 						foreach($groupe->membre_joueur as $membre_id)
 						{
-							if($membre_id->get_id() == $passif->get_id()) {
+							if($membre_id->get_id() == $passif->get_id()) 
+							{
 								$xp = 0;
+								
+								// Augmentation du compteur de l'achievement
+								$achiev = $actif->get_compteur('kill_teammate');
+								$achiev->set_compteur($achiev->get_compteur() + 1);
+								$achiev->sauver();
 							}
 						}
 					}
@@ -1090,6 +1112,10 @@ else
 					$achiev = $joueur->get_compteur('kill_monstres');
 					$achiev->set_compteur($achiev->get_compteur() + 1);
 					$achiev->sauver();
+					
+					//Si c'est un Seigneur loup-garou on debloque l'achievement
+					if($map_monstre->get_type() == 115)
+						$joueur->unlock_achiev('seigneur_loup_garou');
 				}
 				elseif ($attaquant->get_hp() <= 0 && !$pet) //L'attaquant est mort !
 				{
