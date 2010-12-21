@@ -3324,7 +3324,7 @@ class perso extends entite
 			return false;
 	}
 	
-	function unlock_achiev($variable)
+	function unlock_achiev($variable, $hide_message = false)
 	{
 		$achievement_type = achievement_type::create('variable', $variable);
 		// Si le joueur ne l'a pas deja debloqué
@@ -3335,8 +3335,22 @@ class perso extends entite
 			$achievement->set_id_perso($this->get_id());
 			$achievement->set_id_achiev($achievement_type[0]->get_id());
 			$achievement->sauver();
-			echo $this->get_nom().' debloque l\'achievement "'.$achievement_type[0]->get_nom().'" !<br />';
+			if ($hide_message == false) {
+				echo $this->get_nom().' debloque l\'achievement "'.$achievement_type[0]->get_nom().'" !<br />';
+			}
 		}
+	}
+
+	/** 
+	 * Renvoie vrai si le joueur a debloque un achievement de type (aka 'variable') donne 
+	 */
+	function check_achiev_by_type($type)
+	{
+		global $db;
+		$t = sSQL($type, SSQL_STRING);
+		$requete = "SELECT id FROM achievement a, achievement_type t WHERE a.id_perso = $this->id AND a.id_achiev = t.id AND t.variable = '$t'";
+		$req = $db->query($requete);
+		return ($db->num_rows($req) > 0);
 	}
    
 	/** on ne m'aura plus avec les machins déclarés depuis dehors */
