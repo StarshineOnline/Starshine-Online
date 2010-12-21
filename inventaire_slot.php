@@ -19,6 +19,7 @@ $i = 0;
 echo "<ul>";
 if($joueur->get_inventaire_slot() != '')
 {
+$arme_de_siege = 0;
 	$joueur->restack_objet();
 	foreach($joueur->get_inventaire_slot_partie() as $invent)
 	{
@@ -77,6 +78,9 @@ if($joueur->get_inventaire_slot() != '')
 						$row = $db->read_array($req);
 						$partie = $row['type'];
 						$row['utilisable'] = 'y';
+						
+						if($row['type'] == "arme_de_siege")
+							$arme_de_siege++;
 					break;
 					case 'm' :
 						$requete = "SELECT * FROM accessoire WHERE ID = ".$objet_d['id_objet'];

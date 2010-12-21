@@ -111,6 +111,14 @@ if(!$visu AND isset($_GET['action']))
 								$joueur->supprime_objet($joueur->get_inventaire_slot_partie($_GET['key_slot']), 1);
 								$joueur->sauver();
 								echo '<h6>'.$batiment->get_nom().' posé avec succès</h6>';
+								
+								if($_GET['type'] == 'mur')
+								{
+									// Augmentation du compteur de l'achievement
+									$achiev = $joueur->get_compteur('pose_murs');
+									$achiev->set_compteur($achiev->get_compteur() + 1);
+									$achiev->sauver();
+								}
 							}
 							else
 							{
@@ -164,6 +172,11 @@ if(!$visu AND isset($_GET['action']))
 									$joueur->supprime_objet($joueur->get_inventaire_slot_partie($_GET['key_slot'], true), 1);
 									$joueur->sauver();
 									echo '<h6>Drapeau posé avec succès</h6>';
+									
+									// Augmentation du compteur de l'achievement
+									$achiev = $joueur->get_compteur('pose_drapeaux');
+									$achiev->set_compteur($achiev->get_compteur() + 1);
+									$achiev->sauver();
 								}
 								else
 								{
@@ -262,6 +275,11 @@ if(!$visu AND isset($_GET['action']))
                 				$joueur->add_mp(-$row['mp']);
                 				$joueur->add_pa(-$row['pa']);
                 				$joueur->sauver();
+								
+								// Augmentation du compteur de l'achievement
+								$achiev = $joueur->get_compteur('use_potion');
+								$achiev->set_compteur($achiev->get_compteur() + 1);
+								$achiev->sauver();
 						}
 					}
 					else echo 'Vous êtes mort !';
@@ -1103,6 +1121,14 @@ if(!$visu)
 	<?php
 	require_once('inventaire_slot.php');
 	?>
+</div>
+<br />
+<?php
+// Augmentation du compteur de l'achievement
+$achiev = $joueur->get_compteur('nbr_arme_siege');
+$achiev->set_compteur($arme_de_siege);
+$achiev->sauver();
+?>
 </fieldset>
 <?php
 }

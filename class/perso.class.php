@@ -1635,6 +1635,15 @@ class perso extends entite
 	{
 		$this->hp = $hp;
 		$this->champs_modif[] = 'hp';
+		
+		if ($this->get_hp() == 1337)
+			$this->unlock_achiev('hp_1337');
+		elseif ($this->get_hp() == 666)
+			$this->unlock_achiev('hp_666');
+		elseif ($this->get_hp() == 42)
+			$this->unlock_achiev('hp_42');
+		elseif ($this->get_hp() == 1)
+			$this->unlock_achiev('hp_1');
 	}
 	/// Renvoie les HP maximaux
 	function get_hp_max($base = false)

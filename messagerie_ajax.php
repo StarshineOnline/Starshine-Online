@@ -221,7 +221,7 @@ else
 		?>
 		</ul>
 		<?php
-		if($type_thread = 'perso' AND $message_total_total >= 500)
+		if($type_thread == 'perso' AND $message_total_total >= 500)
 		{
 			// Augmentation du compteur de l'achievement
 			$achiev = $joueur->get_compteur('messages');
