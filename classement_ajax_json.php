@@ -46,7 +46,7 @@ $inf = intval($i);
 
 $ord = strcmp($tri, 'architecture, forge, alchimie') ? $tri : 'ROUND(SQRT((alchimie + forge + architecture) * 10))';
 $tri = strcmp($tri, 'architecture, forge, alchimie') ? $tri : 'ROUND(SQRT((alchimie + forge + architecture) * 10)) as craft';
-$requete = "SELECT @rownum:=@rownum+1 rank, id, nom, ".sSQL($tri).", level, race, classe, cache_stat, cache_classe FROM perso, (SELECT @rownum:=$inf) r WHERE statut = 'actif' AND ".$where." ORDER BY ".$ord." DESC, nom ASC";
+$requete = "SELECT @rownum:=@rownum+1 rank, id, nom, ".sSQL($tri).", level, race, classe, cache_stat, cache_classe FROM perso, (SELECT @rownum:=$inf) r WHERE statut = 'actif' AND level > 0 AND ".$where." ORDER BY ".$ord." DESC, nom ASC";
 //echo $requete;
 //echo 'inf : '.$inf.' j : '.$j.' k : '.$k.' sup : '.$sup.' '.$requete.'<br />';
 
