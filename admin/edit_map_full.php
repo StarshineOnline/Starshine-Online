@@ -293,10 +293,16 @@ include_once('donjon.inc.html');
   <div>Type:
     <select id="type_drop">
       <option value="-1">Auto</option>
-      <option value="0">Normal</option>
-      <option value="1">Capitale</option>
-      <option value="2">Donjon</option>
-      <option value="3">Point spécial</option>
+      <option value="0">Normal (0)</option>
+      <option value="1">Capitale (1)</option>
+      <option value="2">Donjon (2)</option>
+      <option value="3">Point spécial (3)</option>
+<?php
+$req = $db->query("select * from map_type_calque");
+while ($row = $db->read_object($req)) {
+	echo "      <option value=\"$row->type\">$row->nom ($row->type)</option>\n";
+}
+?>
     </select>
 	  <input type="button" onClick="toggleTypeView()" value="Voir Type" />
   </div>
@@ -339,8 +345,10 @@ include_once('donjon.inc.html');
 		var lType = $("#type_drop").val();
 		if (lType == -1)
 			curChanges.push({case: numeroCase, decor: curDec});
-		else
+		else {
 			curChanges.push({case: numeroCase, decor: curDec, type: lType });
+      $("#case" + numeroCase + " > span.casetype").html("* " + lType);
+    }
 		$("#case" + numeroCase).attr({class: "decor tex" + curDec});
 	}
 

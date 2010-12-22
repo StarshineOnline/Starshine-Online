@@ -72,12 +72,14 @@ class map
 	{
 		global $db;
 		global $Gcouleurs;
+
 		if($this->donjon && !$this->arene)
 		{
 			$xmin = $this->xmin + 1;
 			$xmax = $this->xmax - 1;
 			$ymin = $this->ymin + 1;
 			$ymax = $this->ymax - 1;
+      $this->load_map_calques(); // Uniquement en donj ?
 		}
 		else
 		{
@@ -88,7 +90,7 @@ class map
 		}
 		$total_cases = ($this->xmax - $this->xmin + 1) * ($this->ymax - $this->ymin + 1);
 		$this->nb_cases = $total_cases;
-		$RqMapTxt = "SELECT x,y,decor,royaume,info FROM map 
+		$RqMapTxt = "SELECT x,y,decor,royaume,info,type FROM map 
 						 WHERE y >= $ymin AND y <= $ymax 
 						 AND x >= $xmin AND x <= $xmax
 						 ORDER BY y,x;";
@@ -100,6 +102,7 @@ class map
 			$MAPTAB[$objMap->x][$objMap->y]["decor"] = $objMap->decor;
 			$MAPTAB[$objMap->x][$objMap->y]["royaume"] = $objMap->royaume;
 			$MAPTAB[$objMap->x][$objMap->y]["type"] = $objMap->info;
+			$MAPTAB[$objMap->x][$objMap->y]["maptype"] = $objMap->type;
 		}
 		$classe_css = array();
 		if(!$this->donjon)
@@ -461,12 +464,27 @@ class map
 						else $onclick = $this->onclick;
 						echo " 		onclick=\"".$onclick."\"\n>";
 						
+            $num_layers = 0;
+
+            // Premier layer
+            if (array_key_exists($MAPTAB[$x_map][$y_map]['maptype'],
+                                 $this->map_calques))
+            {
+              $num_layers++;
+              $mcalque =
+                $this->map_calques[$MAPTAB[$x_map][$y_map]['maptype']];
+              $this->print_maptype_layer($mcalque, $x_map, $y_map);
+            }
+
+            // Layers "atmosphériques"
 						if ($this->atmosphere_type != false)
 						{
+              $num_layers++;
 							$this->atmosphere_layer($this->atmosphere_type, $x_map, $y_map);
 						}
 						elseif (isset($this->map[$x_map][$y_map]['calque']))
 						{
+              $num_layers++;
 							$this->atmosphere_layer($this->map[$x_map][$y_map]['calque'],
 																			$x_map, $y_map,
 																			$this->map[$x_map][$y_map]['calque_dx'],
@@ -474,14 +492,14 @@ class map
 						}
 						elseif ($this->dungeon_layer)
 						{
+              $num_layers++;
 							$this->print_dungeon_layer($x_map - $this->xmin, $y_map - $this->ymin);
 						}
+
 						echo "<span id='pos_".$MAPTAB[$x_map][$y_map]["id"]."'>".$repere."</span></div>";
-						if ($this->atmosphere_type != false || 
-								isset($this->map[$x_map][$y_map]['calque']) ||
-								$this->dungeon_layer)
+            while ($num_layers-- > 0)
 							echo '</div>';
-						echo "\n</li>";	
+						echo "\n</li>";
 						
 						$case++;
 					}
@@ -539,6 +557,17 @@ class map
 		echo 'margin-top: -2px; margin-bottom: -2px; margin-left: -2px;'.
 			' height: 62px; width: 60px; background-repeat: repeat;">';
 	}
+
+  function print_maptype_layer($map_type_calque, $x, $y)
+  {
+		echo '<div style="background-attachment: scroll; '.
+			'background-image: url(image/texture/'.$map_type_calque->calque.'); ';
+		$dx = (-$x + $map_type_calque->decalage_x) * 60;
+		$dy = (-$y + $map_type_calque->decalage_y) * 60;
+		echo "background-position: ${dx}px ${dy}px; ";
+		echo 'margin-top: -2px; margin-bottom: -2px; margin-left: -2px;'.
+			' height: 62px; width: 60px; background-repeat: repeat;">';    
+  }
 
 	function get_pnj()
 	{
@@ -899,6 +928,16 @@ class map
 			$this->map[$repere->x][$repere->y]["Batiments_ennemi"][$rep]["image"] = $repere->repere_type->get_image_full($this->root, $this->resolution);
 		}
 	}
+
+  private $map_calques = array();
+  function load_map_calques()
+  {
+    global $db;
+    $req = $db->query("select * from map_type_calque");
+    while ($row = $db->read_object($req)) {
+      $this->map_calques[$row->type] = $row;
+    }
+  }
 
 	function set_onclick($onclick)
 	{
