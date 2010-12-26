@@ -147,7 +147,7 @@ if($distance == 0)
 							if ($taux < 2) $taux = 2; // Comme ca, pas de 100%
 							$tirage = rand(1, floor($taux));
 
-							if($tirage == 1)
+							if($tirage == 1 AND ($objet[0] == "h" OR $objet[0] == "l"))
 							{
 								$type_obj = '';
 								//Nom de l'objet
