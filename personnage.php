@@ -438,23 +438,41 @@ echo '
 	</table>
 	';
 		break;
-		case 'achiev' :
+		case 'achiev' :	
+			$color = true;
+		
 			$achievements = $joueur->get_achievement();
 			if($achievements != NULL)
 			{
-				$color = true;
 				echo '<table style="border : 0px;" cellspacing="0" width="100%">';
-				
+				echo '<strong>Debloqués :</strong>';
 				foreach($achievements as $achiev)
 				{
 					if($color) $style = 1;
 					else $style = 2;
 					$color = !$color;
-					
-					echo '<tr class="trcolor'.$style.'"><td>'.$achiev['nom'].'</td><td>'.description($achiev['description'], $achiev).'</td></tr>';
+					$description = description($achiev['description'], $achiev);
+					echo '<tr class="trcolor'.$style.'"><td><span onmouseover="return '.make_overlib($description).'" onmouseout="return nd();">'.$achiev['nom'].'</span></td></tr>';
 				}
-				echo '</table>';
+				echo '</table><hr />';
 			}
+			
+			/*echo '<strong>Non-Debloqués :</strong>';
+			echo '<table style="border : 0px;" cellspacing="0" width="100%">';
+			$requete = "SELECT * FROM achievement_type ORDER BY nom ASC";
+			$req = $db->query($requete);
+			while($row = $db->read_assoc($req))
+			{
+				if(!array_key_exists($row['id'], $achievements) AND $row['secret'] != 1)
+				{
+					if($color) $style = 1;
+					else $style = 2;
+					$color = !$color;
+					$description = description($row['description'], $row);
+					echo '<tr class="trcolor'.$style.'"><td><span onmouseover="return '.make_overlib($description).'" onmouseout="return nd();">'.$row['nom'].'</span></td></tr>';
+				}
+			}
+			echo '</table>';*/
 		break;
 	}
 ?>
