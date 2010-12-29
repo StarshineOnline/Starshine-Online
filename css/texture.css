@@ -1249,6 +1249,14 @@
 .tex3534{background:url('../image/texture/donjon_aquatique/sol_mur_coin_bas_est_donjon_aqua.png') no-repeat;}
 .tex3535{background:url('../image/texture/donjon_aquatique/couloir_vertical_imp1_donjon_aqua.png') no-repeat;}
 
+.tex3536{background:url('../image/texture/donjon_gobelin/tex_sol_mur_nord_gob_mucus_ombre.png') no-repeat;}
+.tex3537{background:url('../image/texture/donjon_gobelin/tex_sol_gob_sudcentre_mucus_ombre.png') no-repeat;}
+.tex3538{background:url('../image/texture/donjon_gobelin/tex_sol_gob_sud_mucus_ombre.png') no-repeat;}
+.tex3539{background:url('../image/texture/donjon_gobelin/tex_sol_gob_centre_mucus_ombre.png') no-repeat;}
+.tex3540{background:url('../image/texture/donjon_gobelin/tex_sol_gob_centrebg_mucus_ombre.png') no-repeat;}
+.tex3541{background:url('../image/texture/donjon_gobelin/tex_sol_gob_centrehg_mucus_ombre.png') no-repeat;}
+.tex3542{background:url('../image/texture/donjon_gobelin/tex_sol_gob_centrehd_mucus_ombre.png') no-repeat;}
+
 .tex3600{background:url('../image/texture/donjon_gobelin/mur nord.png') no-repeat;}
 .tex3601{background:url('../image/texture/donjon_gobelin/mur gobelin nord g.png') no-repeat;}
 .tex3602{background:url('../image/texture/donjon_gobelin/mur gobelin nord d.png') no-repeat;}
@@ -1279,6 +1287,7 @@
 .tex3626{background:url('../image/texture/donjon_aquatique/mur_nordd_donjon_aqua.png') no-repeat;}
 .tex3627{background:url('../image/texture/donjon_aquatique/couloir_vertical_mur_imp_donjon_aqua.png') no-repeat;}
 
+.tex3628{background:url('../image/texture/donjon_gobelin/tex_mur_gob_nord_mucus_ombre.png') no-repeat;}
 
 .tex2000{background:url('../image/texture/capitale/vampire/villevampendestrbg.gif') no-repeat;}
 .tex2001{background:url('../image/texture/capitale/vampire/villevampendestrbm.gif') no-repeat;}
