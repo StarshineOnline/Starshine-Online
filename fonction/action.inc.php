@@ -627,6 +627,8 @@ function lance_sort($id, $acteur, &$effects)
 						$actif->get_nom().'</strong> infligeant <strong>'.$degat.
 						'</strong> dégâts, et transpercant '.$passif->get_nom().'</span><br/>';
 					$passif->set_hp($passif->get_hp() - $degat);
+			  case 'cri_abomination':
+					echo '&nbsp;&nbsp;<span class="degat">L\'abomination profère un hurlement terrifiant !</span><br/>';
 					$xi = $passif->get_x() - 3;
 					$xa = $passif->get_x() + 3;
 					$yi = $passif->get_y() - 3;
