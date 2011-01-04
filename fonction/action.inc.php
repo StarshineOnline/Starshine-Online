@@ -293,6 +293,7 @@ function sub_script_action($joueur, $ennemi, $mode, &$effects)
 							$row = $db->read_assoc($req);
 							// Récupération des MP nécessaires
 							$mp_need = round($row['mp'] * (1 - (($Trace[$joueur->get_race()]['affinite_'.$row['comp_assoc']] - 5) / 10)));
+							if($joueur->get_type() == "pet") $mp_need = $row['mp'];
 							// Appel des ténebres
 							if($joueur->etat['appel_tenebre']['duree'] > 0)
 							{
@@ -473,6 +474,7 @@ function lance_sort($id, $acteur, &$effects)
 
   // Calcul de MP nécessaires
 	$mp_need = round($row['mp'] * (1 - (($Trace[$actif->get_race()]['affinite_'.$row['comp_assoc']] - 5) / 10)));
+	if($actif->get_type() == "pet") $mp_need = $row['mp'];
 	//Appel des ténebres
 	if($actif->etat['appel_tenebre']['duree'] > 0)
 	{

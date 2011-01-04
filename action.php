@@ -359,7 +359,8 @@ if(array_key_exists('from', $_GET) && $_GET['id_action'] != '')
 					echo '<optgroup label="'.$Gtrad[$row['comp_assoc']].'">';
 					$comp_assoc = $row['comp_assoc'];
 				}
-				$mpsort = round($row['mp'] * (1 - (($Trace[$joueur->get_race()]['affinite_'.$row['comp_assoc']] - 5) / 10)));
+				if(!$check_pet) $mpsort = round($row['mp'] * (1 - (($Trace[$joueur->get_race()]['affinite_'.$row['comp_assoc']] - 5) / 10)));
+				else $mpsort = $row['mp'];
 				echo '<option value="s'.$row['id'].'">'.$row['nom'].' ('.$mpsort.' RM)</option>';
 				$i++;
 			}
@@ -441,7 +442,8 @@ if(array_key_exists('from', $_GET) && $_GET['id_action'] != '')
 				$req = $db->query($requete);
 				while($row = $db->read_array($req))
 				{
-					$mpsort = round($row['mp'] * (1 - (($Trace[$joueur->get_race()]['affinite_'.$row['comp_assoc']] - 5) / 10)));
+					if(!$check_pet) $mpsort = round($row['mp'] * (1 - (($Trace[$joueur->get_race()]['affinite_'.$row['comp_assoc']] - 5) / 10)));
+					else $mpsort = $row['mp'];
 					if($actionexplode[($i - 1)] == '#09='.$i.'@~'.$row['id']) $selected = ' selected'; else $selected = '';
 					echo '<option value="s'.$row['id'].'"'.$selected.'>Lancer '.$row['nom'].' ('.$mpsort.' Réserves)</option>';
 				}
