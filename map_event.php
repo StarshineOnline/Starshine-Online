@@ -93,7 +93,8 @@ function checkOpenJailGate(&$joueur)
 		"description like '%abomination%'";
 	$q = $db->query($req);
 	if ($db->num_rows > 0) {
-		showMessage('Vous ressentez comme une peur émannant de la porte, qui s\'ouvre');
+		showMessage('Vous ressentez comme une peur émannant de la porte, qui s\'actionne',
+								'Vous touchez la porte');
 		$req_gate = "update map set decor = if(decor = 1691,1598,1691), ".
 			"info = floor(decor/100) where x = 25 and y = 288";
 		$req_player = "update perso set hp = 0, y = y + 1 where x = 25 and y = 288";
@@ -102,7 +103,8 @@ function checkOpenJailGate(&$joueur)
 		return true;
 	}
 	else {
-		showMessage('La porte reste de marbre, semblant ne pas vous prendre au sérieux');
+		showMessage('La porte reste de marbre, semblant ne pas vous prendre au sérieux',
+								'Vous touchez la porte');
 		return false;
 	}
 }
