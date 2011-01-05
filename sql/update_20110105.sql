@@ -1,7 +1,7 @@
 -- -*- sql -*-
 
 -- Quêtes du gobelin artiste
-INSERT INTO `starshine`.`achievement_type` (
+INSERT INTO `achievement_type` (
 `id` ,
 `nom` ,
 `description` ,
@@ -16,7 +16,7 @@ NULL , 'Sauveur de l''art Gobelin', 'Avoir validé la seconde quête du gobelin 
 );
 
 -- Abomination
-INSERT INTO `starshine`.`achievement_type` (
+INSERT INTO `achievement_type` (
 `id` ,
 `nom` ,
 `description` ,
