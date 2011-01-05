@@ -85,6 +85,28 @@ function checkTpAbo(&$joueur)
 	$joueur->sauver();
 }
 
+function checkOpenJailGate(&$joueur)
+{
+	global $db;
+	$req = "select * from buff where id_perso = ".$joueur->get_id().
+		" and type = 'lente_agonie' and supprimable = 0 and ".
+		"description like '%abomination%'";
+	$q = $db->query($req);
+	if ($db->num_rows > 0) {
+		showMessage('Vous ressentez comme une peur émannant de la porte, qui s\'ouvre');
+		$req_gate = "update map set decor = if(decor = 1691,1598,1691), ".
+			"info = floor(decor/100) where x = 25 and y = 288";
+		$req_player = "update perso set hp = 0, y = y + 1 where x = 25 and y = 288";
+		$db->query($req_gate);
+		$db->query($req_player);
+		return true;
+	}
+	else {
+		showMessage('La porte reste de marbre, semblant ne pas vous prendre au sérieux');
+		return false;
+	}
+}
+
 global $dontrefresh;
 global $dontrefreshmap;
 
