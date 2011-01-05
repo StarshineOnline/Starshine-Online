@@ -88,11 +88,8 @@ function checkTpAbo(&$joueur)
 function checkOpenJailGate(&$joueur)
 {
 	global $db;
-	$req = "select * from buff where id_perso = ".$joueur->get_id().
-		" and type = 'lente_agonie' and supprimable = 0 and ".
-		"description like '%abomination%'";
-	$q = $db->query($req);
-	if ($db->num_rows > 0) {
+	$achiev = $joueur->get_compteur('abomination_mark');
+	if ($achiev->get_compteur() > 0) {
 		showMessage('Vous ressentez comme une peur émannant de la porte, qui s\'actionne',
 								'Vous touchez la porte');
 		$req_gate = "update map set decor = if(decor = 1691,1598,1691), ".

@@ -924,5 +924,13 @@ class entite extends placable
 			return 0;
 	}
 
+	function get_compteur($type)
+	{
+		if ($this->type == 'joueur')
+			return $this->objet_ref->get_compteur($type);
+		else
+			return new fake_compteur ;
+	}
+
 }
 ?>

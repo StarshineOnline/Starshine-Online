@@ -1,8 +1,21 @@
-<?php
+<?php // -*- php -*-
 if (file_exists('../root.php'))
   include_once('../root.php');
-?><?php
-class achievement_compteur
+
+class fake_compteur
+{
+	function sauver() {}
+	function supprimer() {}
+	function get_compteur() {	return 0;	}
+	function set_compteur($compteur) {}
+	function get_variable() {	return 0;	}
+	function set_variable($variable) {}
+	function get_id_perso() {	return 0;	}
+	function set_id_perso($id_perso) {}
+	function get_achievement_type() {	return 0;	}
+}
+
+Class achievement_compteur
 {
 	private $id;
 	private $id_perso;

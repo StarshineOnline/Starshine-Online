@@ -623,12 +623,21 @@ function lance_sort($id, $acteur, &$effects)
 
 			  case 'empalement_abomination':
 					$degat = degat_magique($actif->$get_comp_assoc(), ($row['effet'] + $bonus_degats_magique), $actif, $passif);
-					if ($passif->get_hp() > $degat) // Si on survit
+					if ($passif->get_hp() > $degat) { // Si on survit
 						$degat = $passif->get_hp() - 4; // 1 + 3 de LS
+          }
 					echo '&nbsp;&nbsp;<span class="degat">Une &eacute;pine jaillit de <strong>'.
 						$actif->get_nom().'</strong> infligeant <strong>'.$degat.
 						'</strong> dégâts, et transpercant '.$passif->get_nom().'</span><br/>';
 					$passif->set_hp($passif->get_hp() - $degat);
+
+					if ($passif->get_hp() > 0) {
+						// On augmente d'un la marque de l'abomination
+						$achiev = $passif->get_compteur('abomination_mark');
+						$achiev->set_compteur($achiev->get_compteur() + 1);
+						$achiev->sauver();
+					}
+
 			  case 'cri_abomination':
 					echo '&nbsp;&nbsp;<span class="degat">L\'abomination profère un hurlement terrifiant !</span><br/>';
 					$xi = $passif->get_x() - 3;
@@ -652,6 +661,13 @@ function lance_sort($id, $acteur, &$effects)
 						}
 					}
 					echo 'La marque de l\'abomination restera longtemps sur vous ...<br/>';
+					$achiev = $passif->get_compteur('abomination_mark');
+					if ($achiev->get_compteur() == 0) {
+						// Premier combat contre l'abomination
+						$achiev->set_compteur(1);
+						$achiev->sauver();
+					}
+
 					if ($passif->get_hp() > 3)
 						lance_buff('debuff_enracinement', $passif->get_id(), '10', '0', 86400, 'Terreur',
 											 'Vous etes terroris&eacute; par l\'attaque de la cr&eacute;ature', 'perso', 1, 0, 0, 0);
