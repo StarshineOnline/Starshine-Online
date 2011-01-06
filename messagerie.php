@@ -26,6 +26,9 @@ elseif(array_key_exists('action', $_GET))
 		case 'perso' :
 			$titre_messagerie = ' personelle';
 		break;
+		case 'echange' :
+			$titre_messagerie = ' des échanges';
+		break;
 	}
 }
 ?>

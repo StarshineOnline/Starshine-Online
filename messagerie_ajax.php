@@ -110,6 +110,10 @@ else
 			$affiche_threads = true;
 			$type_thread = 'perso';
 		break;
+		case 'echange' :
+			$affiche_threads = true;
+			$type_thread = 'echange';
+		break;
 	}
 
 	if($affiche_threads)

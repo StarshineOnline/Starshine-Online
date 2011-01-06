@@ -33,20 +33,22 @@ class messagerie
 	 * @return ['total'] Nombre total de message non lu.
 	 * @return ['groupe'] Nombre de message de groupe non lu.
 	 * @return ['perso'] Nombre de message perso non lu.
+	 * @return ['echange'] Nombre de message perso non lu.
 	 */
 	function get_non_lu()
 	{
 		global $db;
 		//Initatisation
-		$return = array('total' => 0, 'groupe' => 0, 'perso' => 0);
-		$requete = 'SELECT COUNT(id_message_etat) AS perso, SUM(groupe) AS groupe FROM messagerie_etat WHERE etat LIKE "non_lu" AND id_dest = '.$this->id_perso."";
+		$return = array('total' => 0, 'groupe' => 0, 'perso' => 0, 'echange' => 0);
+		$requete = 'SELECT COUNT(id_message_etat) AS perso, SUM(groupe) AS groupe, SUM(echange) AS echange FROM messagerie_etat WHERE etat LIKE "non_lu" AND id_dest = '.$this->id_perso."";
 		$req = $db->query($requete);
 		
 		if($db->num_rows($req) > 0)
 			$return = $db->read_assoc($req);
 		$return['groupe'] = empty($return['groupe']) ? 0 : $return['groupe']; 
-		$return['perso'] -= $return['groupe']; 
-		$return['total'] = $return['groupe'] + $return['perso'];
+		$return['echange'] = empty($return['echange']) ? 0 : $return['echange']; 
+		$return['perso'] -= ($return['groupe'] + $return['echange']); 
+		$return['total'] = $return['groupe'] + $return['echange'] + $return['perso'];
 		return $return;		
 	}
 	
@@ -62,7 +64,10 @@ class messagerie
 				$where = 'id_groupe = '.$perso['groupe'].' AND id_groupe != 0';
 			break;
 			case 'perso' :
-				$where = 'id_dest = '.$this->id_perso.' OR (id_auteur = '.$this->id_perso.' AND id_groupe = 0)';
+				$where = '(id_dest = '.$this->id_perso.' OR (id_auteur = '.$this->id_perso.' AND id_groupe = 0)) AND (titre NOT LIKE "%vous propose un échange" AND titre NOT LIKE "Finalisation de l\'échange avec%")';
+			break;
+			case 'echange' :
+				$where = '(id_dest = '.$this->id_perso.' OR id_auteur = '.$this->id_perso.') AND (titre LIKE "%vous propose un échange" OR titre LIKE "Finalisation de l\'échange avec%")';
 			break;
 		}
 		$requete = "SELECT id_thread, id_groupe, id_dest, id_auteur, important, dernier_message, titre FROM messagerie_thread WHERE ".$where." ORDER BY important DESC, dernier_message DESC, id_thread DESC";
@@ -157,10 +162,10 @@ class messagerie
 		global $db;
 		if($id_message != 0)
 		{
-			$requete = "SELECT id_message_etat, groupe FROM messagerie_etat WHERE id_dest = ".$this->id_perso." AND id_message = ".$id_message;
+			$requete = "SELECT id_message_etat, groupe, echange FROM messagerie_etat WHERE id_dest = ".$this->id_perso." AND id_message = ".$id_message;
 			$req = $db->query($requete);
 			$row = $db->read_assoc($req);
-			$etat_objet = new messagerie_etat_message($row['id_message_etat'], $id_message, $etat, $this->id_perso, $row['groupe']);
+			$etat_objet = new messagerie_etat_message($row['id_message_etat'], $id_message, $etat, $this->id_perso, $row['groupe'], $row['echange']);
 			$etat_objet->sauver();
 		}
 	}
@@ -181,7 +186,7 @@ class messagerie
 	}
 
 	//Envoi d'un message
-	function envoi_message($id_thread = 0, $id_dest = 0, $titre = 'Titre vide', $message, $id_groupe = 0, $roi = 0)
+	function envoi_message($id_thread = 0, $id_dest = 0, $titre = 'Titre vide', $message, $id_groupe = 0, $roi = 0, $echange = false)
 	{
 		global $db;
 		//Création du thread si besoin
@@ -224,12 +229,16 @@ class messagerie
 			$type_groupe = 0;
 		}
 		
+		//Si c'est un message d'echange
+		if($echange)
+			$type_echange = 1;
+		
 		//On ajoute un état pour chaque membre
 		foreach($ids_dest as $id)
 		{
 			if($id != $this->id_perso) $etat = 'non_lu';
 			else $etat = 'lu';
-			$etat_objet = new messagerie_etat_message(0, $message->id_message, $etat, $id, $type_groupe);
+			$etat_objet = new messagerie_etat_message(0, $message->id_message, $etat, $id, $type_groupe, $type_echange);
 			$etat_objet->sauver();
 		}
 	}
