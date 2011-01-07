@@ -232,6 +232,8 @@ class messagerie
 		//Si c'est un message d'echange
 		if($echange)
 			$type_echange = 1;
+		else
+			$type_echange = 0;
 		
 		//On ajoute un état pour chaque membre
 		foreach($ids_dest as $id)
