@@ -1,7 +1,7 @@
-<?php
+<?php // -*- php -*-
 if (file_exists('root.php'))
   include_once('root.php');
-?><?php
+
 include_once(root.'inc/fp.php');
 //Visu par un autre joueur
 if(array_key_exists('id_perso', $_GET))
@@ -452,7 +452,11 @@ echo '
 					else $style = 2;
 					$color = !$color;
 					$description = description($achiev['description'], $achiev);
-					echo '<tr class="trcolor'.$style.'"><td><span onmouseover="return '.make_overlib($description).'" onmouseout="return nd();">'.$achiev['nom'].'</span></td></tr>';
+					echo '<tr class="trcolor'.$style.'"><td style="';
+					if ($achiev['color'] != '') echo 'color: '.$achiev['color'].'; ';
+					if ($achiev['strong']) echo 'font-weight: bold; ';
+					echo '"><span onmouseover="return '.make_overlib($description).
+						'" onmouseout="return nd();">'.$achiev['nom'].'</span></td></tr>';
 				}
 				echo '</table><hr />';
 			}

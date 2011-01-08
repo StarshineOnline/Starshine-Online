@@ -1,4 +1,4 @@
-<?php
+<?php // -*- php -*-
 class perso extends entite
 {
   const table = "perso";  ///< Nom de la table correspondante.
@@ -3310,7 +3310,7 @@ class perso extends entite
 		global $db;
 		if(!isset($this->achievement))
 		{
-			$requete = "SELECT id_perso, id_achiev, achievement_type.id, nom, description, value, variable, secret FROM achievement 
+			$requete = "SELECT id_perso, id_achiev, achievement_type.id, nom, description, value, variable, secret, strong, color FROM achievement 
 			LEFT JOIN achievement_type ON achievement.id_achiev = achievement_type.id
 			WHERE id_perso = '".$this->id."' ORDER BY nom ASC";
 			$req = $db->query($requete);
