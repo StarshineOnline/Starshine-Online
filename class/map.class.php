@@ -782,7 +782,7 @@ class map
 					}
 					
 					if ($objBatiments->hp < $objBatiments->hp_max / 3 && file_exists($image.$objBatiments->image."_hit.png")) { $image .= $objBatiments->image."_hit.png"; }
-					if (file_exists($image.$objBatiments->image."_04.png")) 		{ $image .= $objBatiments->image."_04.png"; }
+					elseif(file_exists($image.$objBatiments->image."_04.png")) 		{ $image .= $objBatiments->image."_04.png"; }
 					elseif(file_exists($image.$objBatiments->image."_04.gif")) 	{ $image .= $objBatiments->image."_04.gif"; }
 					else 														{ $image = $objBatiments->image."_introuvable.png"; } //-- Si aucun des fichiers n'existe autant rien mettre...
 				}
