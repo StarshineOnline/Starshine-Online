@@ -258,6 +258,22 @@ if(array_key_exists('valid_etape', $_GET))
 							$achiev = $j2->get_compteur('objets_echanges');
 							$achiev->set_compteur($achiev->get_compteur() + $nb_objet['j2']);
 							$achiev->sauver();
+							
+							if($nb_objet['j2'] == 0 AND $echange['star'][$j1->get_id()]['objet'] > 0)
+							{
+								// Augmentation du compteur de l'achievement
+								$achiev = $j1->get_compteur('donner_stars');
+								$achiev->set_compteur($achiev->get_compteur() + $echange['star'][$j1->get_id()]['objet']);
+								$achiev->sauver();
+							}
+							if($nb_objet['j1'] == 0 AND $echange['star'][$j2->get_id()]['objet'] > 0)
+							{
+								// Augmentation du compteur de l'achievement
+								$achiev = $j2->get_compteur('donner_stars');
+								$achiev->set_compteur($achiev->get_compteur() + $echange['star'][$j2->get_id()]['objet']);
+								$achiev->sauver();
+							}
+							
 							unset($echange);
 						}
 					}

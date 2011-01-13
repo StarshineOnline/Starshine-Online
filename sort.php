@@ -151,6 +151,16 @@ if (isset($_GET['ID']) && !$joueur->is_buff('bloque_sort'))
 								$cible->set_hp($cible->get_hp() + $soin);
 								$cible->sauver();
 								
+								// Augmentation du compteur de l'achievement
+								$achiev = $joueur->get_compteur('total_heal');
+								$achiev->set_compteur($achiev->get_compteur() + $soin);
+								$achiev->sauver();
+								
+								// Augmentation du compteur de l'achievement
+								$achiev = $joueur->get_compteur('nbr_heal');
+								$achiev->set_compteur($achiev->get_compteur() + 1);
+								$achiev->sauver();
+								
 								if($groupe)
 								{
 									//Insertion du soin de groupe dans le journal de la cible
@@ -469,6 +479,21 @@ if (isset($_GET['ID']) && !$joueur->is_buff('bloque_sort'))
 								$db->query($requete);
 								$requete = "INSERT INTO journal VALUES(NULL,  ".$cible->get_id().", 'rdebuff', '".$cible->get_nom()."', '".$joueur->get_nom()."', NOW(), '".$sort->get_nom()."', 0, ".$joueur->get_x().", ".$joueur->get_y().")";
 								$db->query($requete);
+								
+								if($sort->get_type() == "debuff_enracinement")
+								{
+									// Augmentation du compteur de l'achievement
+									$achiev = $cible->get_compteur('nbr_enracine');
+									$achiev->set_compteur($achiev->get_compteur() + 1);
+									$achiev->sauver();
+								}
+								elseif($sort->get_type() == "lente_agonie")
+								{
+									// Augmentation du compteur de l'achievement
+									$achiev = $joueur->get_compteur('nbr_lenteagonie');
+									$achiev->set_compteur($achiev->get_compteur() + 1);
+									$achiev->sauver();
+								}
 							}
 						}
 						else
