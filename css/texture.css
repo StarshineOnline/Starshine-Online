@@ -1347,8 +1347,10 @@
 .tex4529{background:url('../image/texture/donjon_aquatique/sol_inferieur_couloir_horiz_impmd_donjon_aqua.png') no-repeat;}
 .tex4530{background:url('../image/texture/donjon_aquatique/sol_inferieur_couloir_verti_impbm_donjon_aqua.png') no-repeat;}
 .tex4531{background:url('../image/texture/donjon_aquatique/sol_inferieur_couloir_verti_imphm_donjon_aqua.png') no-repeat;}
-.tex4532{background:url('../image/texture/donjon_aquatique/couloir_vertical1_jonc_donjon_aqua.png') no-repeat;}
-.tex4533{background:url('../image/texture/donjon_aquatique/couloir_vertical1_joncb_donjon_aqua.png') no-repeat;}
+.tex4532{background:url('../image/texture/donjon_aquatique/sol_inferieur_couloir_vertical1_jonc_donjon_aqua.png') no-repeat;}
+.tex4533{background:url('../image/texture/donjon_aquatique/sol_inferieur_couloir_vertical1_joncb_donjon_aqua.png') no-repeat;}
+.tex4534{background:url('../image/texture/donjon_aquatique/sol_inferieur_couloir_horiz_joncg_donjon_aqua.png') no-repeat;}
+.tex4535{background:url('../image/texture/donjon_aquatique/sol_inferieur_couloir_horiz_joncd_donjon_aqua.png') no-repeat;}
 
 .tex3600{background:url('../image/texture/donjon_gobelin/mur nord.png') no-repeat;}
 .tex3601{background:url('../image/texture/donjon_gobelin/mur gobelin nord g.png') no-repeat;}
