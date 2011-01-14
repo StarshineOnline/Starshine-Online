@@ -67,6 +67,16 @@ if ($joueur->get_race() == $R->get_race() ||
 							}
 							else $joueur->set_honneur(0);
 							
+							// Augmentation du compteur de l'achievement
+							$achiev = $joueur->get_compteur('honneur_en_putes');
+							$achiev->set_compteur($achiev->get_compteur() + $honneur_need);
+							$achiev->sauver();
+							
+							// Augmentation du compteur de l'achievement
+							$achiev = $joueur->get_compteur('nbr_putes');
+							$achiev->set_compteur($achiev->get_compteur() + 1);
+							$achiev->sauver();
+								
 							//tirage au sort :
 							$moy = floor(($joueur->get_puissance() + $joueur->get_vie()) / 2);
 							$de = rand(1, 10) + rand(1, $moy);
@@ -320,6 +330,19 @@ if ($joueur->get_race() == $R->get_race() ||
 								$db->query($requete);
 							}
 							echo '<h6>La taverne vous remercie de votre achat !<br />'.$texte.'</h6>';
+							
+							if($row_taverne['pa'] == 12 AND $row_taverne['pute'] == 0) // Equivaut à "c'est un repas"
+							{
+								// Augmentation du compteur de l'achievement
+								$achiev = $joueur->get_compteur('stars_en_repas');
+								$achiev->set_compteur($achiev->get_compteur() + $cout);
+								$achiev->sauver();
+								
+								// Augmentation du compteur de l'achievement
+								$achiev = $joueur->get_compteur('nbr_repas');
+								$achiev->set_compteur($achiev->get_compteur() + 1);
+								$achiev->sauver();
+							}
 						}
 					}
 					else

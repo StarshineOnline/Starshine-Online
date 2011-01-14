@@ -26,6 +26,7 @@ if ($joueur->get_race() != $R->get_race() &&
 }
 echo "<fieldset>";
 $batiment_ok = false;
+$tp = false;
 if ($W_row['type'] != 1)
 {  
   $W_requete_bat = 'SELECT royaume, type FROM construction WHERE x = '.
@@ -62,6 +63,7 @@ if ($W_row['type'] != 1)
 				$joueur->set_star($joueur->get_star() - $cout);
 				$joueur->set_pa($joueur->get_pa() - 5);
 				$joueur->sauver();
+				$tp = true;
 				//Récupération de la taxe
 				if($taxe > 0)
 				{
@@ -94,6 +96,7 @@ if ($W_row['type'] != 1)
 				$joueur->set_star($joueur->get_star() - $cout);
 				$joueur->set_pa($joueur->get_pa() - 5);
 				$joueur->sauver();
+				$tp = true;
 				//Récupération de la taxe
 				if($taxe > 0)
 				{
@@ -107,6 +110,15 @@ if ($W_row['type'] != 1)
 			else echo 'Vous n\'avez pas assez de stars ou de PA !<br />';
 		}
 	}
+	
+	if($tp)
+	{
+		// Augmentation du compteur de l'achievement
+		$achiev = $joueur->get_compteur('nbr_tp');
+		$achiev->set_compteur($achiev->get_compteur() + 1);
+		$achiev->sauver();
+	}
+	
 	$W_coord = convert_in_coord($W_case);
 	?>
    	<legend><?php if(!array_key_exists('fort', $_GET)) return_ville( '<a href="ville.php" onclick="return envoiInfo(this.href, \'centre\')">'.$R->get_nom().'</a> > ', $joueur->get_pos()); ?> <?php echo '<a href="teleport.php" onclick="return envoiInfo(this.href, \'carte\')">';?> Pierre de téléportation </a></legend>
