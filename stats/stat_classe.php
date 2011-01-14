@@ -1,7 +1,7 @@
 <?php
 if (file_exists('../root.php'))
   include_once('../root.php');
-?><?php
+
 $data = array();
 $legend = array();
 $label = array();
@@ -16,7 +16,7 @@ while($row = $db->read_assoc($req))
 
 $rang = array(false, false, false, false);
 
-$requete = "SELECT classe, COUNT(*) as total, classe.rang as rang FROM perso RIGHT JOIN classe ON perso.classe_id = classe.id WHERE statut = 'actif' GROUP BY classe ORDER BY classe.rang ASC";
+$requete = "SELECT classe, COUNT(*) as total, classe.rang as rang FROM perso RIGHT JOIN classe ON perso.classe_id = classe.id WHERE statut = 'actif' and level > 0 GROUP BY classe ORDER BY classe.rang ASC";
 $req = $db->query($requete);
 echo $requete.'<br />';
 while($row = $db->read_array($req))

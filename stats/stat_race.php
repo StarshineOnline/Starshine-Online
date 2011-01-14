@@ -1,11 +1,11 @@
 <?php
 if (file_exists('../root.php'))
   include_once('../root.php');
-?><?php
+
 $data = array();
 $legend = array();
 $label = array();
-$requete = "SELECT race, COUNT(*) as total FROM perso WHERE statut = 'actif' GROUP BY race";
+$requete = "SELECT race, COUNT(*) as total FROM perso WHERE statut = 'actif' AND level > 0 GROUP BY race";
 echo $requete.'<br />';
 $req = $db->query($requete);
 while($row = $db->read_array($req))
