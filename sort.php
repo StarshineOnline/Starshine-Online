@@ -1,12 +1,11 @@
-<?php
+<?php // -*- mode: php -*-
 if (file_exists('root.php'))
   include_once('root.php');
 
 include(root.'haut_ajax.php');
 
 if(array_key_exists('tri', $_GET)) $tris = $_GET['tri']; else $tris = 'favoris';
-?>
-<?php
+
 if(array_key_exists('type', $_GET))	$type_cible = $_GET['type'];
 else $type_cible = 'joueur';
 
@@ -59,12 +58,43 @@ if($joueur->get_groupe() != 0) $groupe_joueur = new groupe($joueur->get_groupe()
 
 if (isset($_GET['ID']) && !$joueur->is_buff('bloque_sort'))
 {
+	$no_req = false;
 	$sort = new sort_jeu($_GET['ID']);
+
+	$prerequis = explode(';', $sort->get_requis());
+	foreach ($prerequis as $requis) {
+		$regs = array();
+		if (mb_ereg('^classe:(.*)$', $requis, $regs)) {
+			if ($regs[1] != mb_strtolower($perso->get_classe())) {
+				print_debug("La classe $regs[1] est requise pour ce sort");
+				$no_req = true;
+			}
+		}
+		if (mb_ereg('^([0-9]+)$', $requis, $regs)) {
+			if (!in_array($regs[1], explode(';', $joueur->get_sort_jeu()))) {
+				print_debug("Il vous manque le sort $regs[1] pour lancer ce sort");
+				$no_req = true;
+			}
+		}
+	}
+
 	$W_distance = calcul_distance_pytagore($cible->get_pos(), $joueur->get_pos());
-	if($W_distance > $sort->get_portee()) echo 'Vous êtes trop loin pour lancer ce sort !';
+	
+	if ($no_req) {
+		echo 'Vous n\'avez pas les pré-requis pour lancer ce sort !';
+	}
+	elseif($W_distance > $sort->get_portee()) {
+		echo 'Vous êtes trop loin pour lancer ce sort !';
+	}
 	else
 	{
-		if(array_key_exists('groupe', $_GET) AND $_GET['groupe'] == 'yes') $groupe = true; else $groupe = false;
+		if(array_key_exists('groupe', $_GET) AND $_GET['groupe'] == 'yes')
+			$groupe = true;
+		elseif ($sort->get_cible() == 3) {
+			$force_groupe = true;
+			$groupe = false;
+		}
+		else $groupe = false;
 		//Vérification que c'est un buff de groupe
 		$sortpa_base = $sort->get_pa();
 		$sortmp_base = $sort->get_mp();
@@ -89,11 +119,23 @@ if (isset($_GET['ID']) && !$joueur->is_buff('bloque_sort'))
 		else
 		{
 			$sortpa = $sortpa_base;
-			$sortmp = $sortmp_base;		
+			$sortmp = $sortmp_base;
+		}
+
+		if ($joueur->is_buff('buff_contagion')) {
+			if (mb_ereg('^maladie_', $sort->get_type())) {
+				$contagion = $joueur->get_buff('buff_contagion');
+				print_debug("réduction de coût par la contagion (depuis $sortpa/$sortmp)");
+				$sortpa -= $contagion->get_effet();
+				$sortmp -= $contagion->get_effet2();
+				if ($sortpa < 1) $sortpa = 1;
+				if ($sortmp < 0) $sortmp = 0;
+				print_debug("-> $sortpa/$sortmp");
+			}	
 		}
 		
 		$action = false;
-		if(isset($groupe_joueur) AND $groupe)
+		if(isset($groupe_joueur) AND ($groupe OR $force_groupe))
 		{
 			$cibles = array();
 			foreach($groupe_joueur->get_membre_joueur() as $membre)
@@ -111,6 +153,66 @@ if (isset($_GET['ID']) && !$joueur->is_buff('bloque_sort'))
 		{
 			switch($sort->get_type())
 			{
+				case 'vie_pourcent' :
+					$soin_total = 0;
+					$action = false;
+					foreach($cibles as $cible)
+					{
+						if ($cible->get_hp() <= 0) continue;
+						$soin = floor($cible->get_hp_maximum() * 0.05);
+						if($soin > (floor($cible->get_hp_maximum()) - $cible->get_hp()))
+							$soin = floor($cible->get_hp_maximum()) - $cible->get_hp();
+						if ($soin == 0) continue;
+						$action = true;
+						echo 'Vous soignez '.$cible->get_nom().' de '.$soin.' HP<br />';
+						$soin_total += $soin;
+						$cible->set_hp($cible->get_hp() + $soin);
+						$cible->sauver();
+								
+						// Augmentation du compteur de l'achievement
+						$achiev = $joueur->get_compteur('total_heal');
+						$achiev->set_compteur($achiev->get_compteur() + $soin);
+						$achiev->sauver();
+						
+								// Augmentation du compteur de l'achievement
+						$achiev = $joueur->get_compteur('nbr_heal');
+						$achiev->set_compteur($achiev->get_compteur() + 1);
+						$achiev->sauver();
+
+						if ($groupe)
+						{
+							//Insertion du soin de groupe dans le journal de la cible
+							$requete = "INSERT INTO journal(id_perso, action, actif, passif, time, valeur, valeur2, x, y) VALUES(".$cible->get_id().", 'rgsoin', '".$cible->get_nom()."', '".$joueur->get_nom()."', NOW(), ".$soin.", 0, ".$joueur->get_x().", ".$joueur->get_y().")";
+							$db->query($requete);
+						}
+						else if($cible->get_id() != $joueur->get_id())
+						{
+							//Insertion du soin de groupe dans le journal de la cible
+							$requete = "INSERT INTO journal(id_perso, action, actif, passif, time, valeur, valeur2, x, y) VALUES(".$cible->get_id().", 'rsoin', '".$cible->get_nom()."', '".$joueur->get_nom()."', NOW(), ".$soin.", 0, ".$joueur->get_x().", ".$joueur->get_y().")";
+							$db->query($requete);
+						}
+					}
+
+					if($action)
+					{
+						$lancement = true;
+						//Insertion du soin de groupe dans le journal du lanceur
+						if($groupe)
+						{
+							$requete = "INSERT INTO journal(id_perso, action, actif, passif, time, valeur, valeur2, x, y) VALUES(".$joueur->get_id().", 'gsoin', '".$joueur->get_nom()."', 'groupe', NOW(), ".$soin_total.", 0, ".$joueur->get_x().", ".$joueur->get_y().")";
+						}
+						else
+						{
+							$requete = "INSERT INTO journal(id_perso, action, actif, passif, time, valeur, valeur2, x, y) VALUES(".$joueur->get_id().", 'soin', '".$joueur->get_nom()."', '".$cible->get_nom()."', NOW(), ".$soin_total.", 0, ".$joueur->get_x().", ".$joueur->get_y().")";
+						}
+						$db->query($requete);
+					}
+
+					if($groupe) $groupe_href = '&amp;groupe=yes';
+					else $groupe_href = '&amp;type='.$type_cible.'&amp;id_'.$type_cible.'='.$cible->get_id();
+					echo '<a href="sort.php?ID='.$_GET['ID'].$groupe_href.'" onclick="return envoiInfo(this.href, \'information\')">Utiliser de nouveau ce sort</a>';
+
+					break;
 				case 'vie' :
 					$soin_total = 0;
 					foreach($cibles as $cible)
@@ -213,11 +315,14 @@ if (isset($_GET['ID']) && !$joueur->is_buff('bloque_sort'))
 						}
 					}
 					$pourcent = $total_pourcent / $nbr_membre;
+					print_debug("équilibrage: $pourcent");
 					foreach($cibles as $cible)
 					{
 						if($cible->get_hp() > 0)
 						{
-							$cible->set_hp(floor($cible->get_hp() * $pourcent));
+							$cible->set_hp(floor($cible->get_hp_max() * $pourcent));
+							echo $cible->get_nom().' est équilibré à '.$cible->get_hp().
+								' HP.<br />';
 							$cible->sauver();
 						}
 						else
@@ -225,6 +330,7 @@ if (isset($_GET['ID']) && !$joueur->is_buff('bloque_sort'))
 							echo $cible->get_nom().' est mort.<br />';
 						}
 					}
+					$cible = $joueur;
 					$lancement = true;
 				break;
 				case 'body_to_mind' :
@@ -282,7 +388,7 @@ if (isset($_GET['ID']) && !$joueur->is_buff('bloque_sort'))
 						echo 'Vous êtes déjà reposé';
 					}
 				break;
-				case 'buff_critique' : case 'buff_evasion' : case 'buff_bouclier' : case 'buff_sacrifice' : case 'buff_inspiration' : case 'buff_force' : case 'buff_armure_glace' : case 'buff_barriere' : case 'buff_bouclier_sacre' : case 'buff_colere' : case 'buff_epine' : case 'buff_meditation' : case 'buff_rage_vampirique' : case 'buff_rapidite' : case 'buff_concentration' : case 'buff_furie_magique' : case 'buff_surpuissance' : case 'bouclier_feu' : case 'bouclier_terre' : case 'bouclier_eau' : case 'souffrance_extenuante' : case 'bulle_sanctuaire' : case 'bulle_dephasante' :
+			case 'buff_critique' : case 'buff_evasion' : case 'buff_bouclier' : case 'buff_sacrifice' : case 'buff_inspiration' : case 'buff_force' : case 'buff_armure_glace' : case 'buff_barriere' : case 'buff_bouclier_sacre' : case 'buff_colere' : case 'buff_epine' : case 'buff_meditation' : case 'buff_rage_vampirique' : case 'buff_rapidite' : case 'buff_concentration' : case 'buff_furie_magique' : case 'buff_surpuissance' : case 'bouclier_feu' : case 'bouclier_terre' : case 'bouclier_eau' : case 'souffrance_extenuante' : case 'bulle_sanctuaire' : case 'bulle_dephasante' : case 'buff_contagion' :
 					foreach($cibles as $cible)
 					{
 						//Mis en place du buff
@@ -753,7 +859,7 @@ elseif($type_lanceur == 'joueur')
 				$sort_groupe = false;
 				if($cible->get_id() == $joueur->get_id())
 				{
-					$cond = ($sort->get_cible() == 1 OR $sort->get_cible() == 8 OR $sort->get_cible() == 2) && $sort->get_type() != 'rez';
+					$cond = ($sort->get_cible() == 1 OR $sort->get_cible() == 8 OR $sort->get_cible() == 2 OR $sort->get_cible() == 3) && $sort->get_type() != 'rez';
 					if($cond)
 						$sort_groupe = true;
 				}

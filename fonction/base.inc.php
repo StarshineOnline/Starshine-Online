@@ -1,4 +1,4 @@
-<?php //  -*- tab-width:2  -*-
+<?php //  -*- tab-width:2; mode: php  -*-
 if (file_exists('../root.php'))
   include_once('../root.php');
 
@@ -2619,6 +2619,7 @@ function image_sort($type)
 	switch($type)
 	{
 		case 'vie' :
+		case 'vie_pourcent' :
 			return '<img src="image/sort/sort_soins1.png" alt="" style="vertical-align : middle;" />';
 		break;
 		case 'buff_critique' :
