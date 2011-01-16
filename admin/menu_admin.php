@@ -43,6 +43,11 @@ else
 	$menu[$i++]['acces'] = 'admin';
 	$acces[] = 'admin';
 
+	$menu[$i]['nom'] = 'Editeur de calque supérieur';
+	$menu[$i]['url'] = 'edit_calque_sup.php';
+	$menu[$i++]['acces'] = 'admin';
+	$acces[] = 'admin';
+
 	$menu[$i]['nom'] = 'Editeur de zone';
 	$menu[$i]['url'] = 'zone_mapping.php';
 	$menu[$i++]['acces'] = 'admin';
