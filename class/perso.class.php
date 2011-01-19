@@ -181,7 +181,10 @@ class perso extends entite
 		
 		// Augmentation du compteur de l'achievement
 		$achiev = $this->get_compteur('ratio');
-		$achiev->set_compteur($this->frag / $this->mort);
+		if ($this->mort == 0)
+			$achiev->set_compteur($this->frag / 1);
+		else
+			$achiev->set_compteur($this->frag / $this->mort);
 		$achiev->sauver();
 	}
 	/// Renvoie le nombre fois où le personnage est mort.
