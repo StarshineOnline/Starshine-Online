@@ -44,6 +44,10 @@ switch($type_lanceur)
 	case 'monstre':
 		$lanceur = new pet($_GET['id_pet']);
 		$possible_augmentation = false;
+		// Check des spells du mob
+		$monstre = new monstre($lanceur->get_id_monstre());
+		$spells = explode(';', $monstre->get_sort_dressage());
+		if (!in_array("s$_GET[ID]", $spells)) security_block(URL_MANIPULATION);
 	break;
 }
 if($type_lanceur == 'joueur') include ('livre.php');
@@ -61,19 +65,25 @@ if (isset($_GET['ID']) && !$joueur->is_buff('bloque_sort'))
 	$no_req = false;
 	$sort = new sort_jeu($_GET['ID']);
 
-	$prerequis = explode(';', $sort->get_requis());
-	foreach ($prerequis as $requis) {
-		$regs = array();
-		if (mb_ereg('^classe:(.*)$', $requis, $regs)) {
-			if ($regs[1] != mb_strtolower($perso->get_classe())) {
-				print_debug("La classe $regs[1] est requise pour ce sort");
-				$no_req = true;
+	if ($type_lanceur == 'joueur') {
+		// Check des spells du joueur
+		$spells = explode(';', $joueur->get_sort_jeu());
+		if (!in_array($_GET['ID'], $spells)) security_block(URL_MANIPULATION);
+		// Check prérequis
+		$prerequis = explode(';', $sort->get_requis());
+		foreach ($prerequis as $requis) {
+			$regs = array();
+			if (mb_ereg('^classe:(.*)$', $requis, $regs)) {
+				if ($regs[1] != mb_strtolower($perso->get_classe())) {
+					print_debug("La classe $regs[1] est requise pour ce sort");
+					$no_req = true;
+				}
 			}
-		}
-		if (mb_ereg('^([0-9]+)$', $requis, $regs)) {
-			if (!in_array($regs[1], explode(';', $joueur->get_sort_jeu()))) {
-				print_debug("Il vous manque le sort $regs[1] pour lancer ce sort");
-				$no_req = true;
+			if (mb_ereg('^([0-9]+)$', $requis, $regs)) {
+				if (!in_array($regs[1], explode(';', $joueur->get_sort_jeu()))) {
+					print_debug("Il vous manque le sort $regs[1] pour lancer ce sort");
+					$no_req = true;
+				}
 			}
 		}
 	}
