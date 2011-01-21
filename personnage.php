@@ -440,7 +440,11 @@ echo '
 		break;
 		case 'achiev' :	
 			$color = true;
-		
+			
+			//On debloque les achievements uniques
+			$joueur->unlock_achiev('race_'.$joueur->get_race());
+			
+			
 			$achievements = $joueur->get_achievement();
 			if($achievements != NULL)
 			{

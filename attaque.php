@@ -941,7 +941,12 @@ else
 					if($defenseur->get_hp() == 0)
 						$joueur_defenseur->unlock_achiev('near_kill');
 				}
-
+				
+				// Augmentation du compteur de l'achievement
+				$achiev = $actif->get_compteur('kill_'.$passif->get_race());
+				$achiev->set_compteur($achiev->get_compteur() + 1);
+				$achiev->sauver();
+				
 				if($gains)
 				{
 					//Gain d'expérience
