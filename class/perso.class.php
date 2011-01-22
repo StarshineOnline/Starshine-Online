@@ -2782,7 +2782,7 @@ class perso extends entite
 			case 9:
 				$ep = new effet_vampirisme($effet, $item->nom);
 				if ($item->type == 'hache' || $item->type == 'dague' ||
-						($item->type == 'epee' && eregi('^lame', $item->nom))) {
+						($item->type == 'epee' && preg_match('/^lame/', $item->nom))) {
 					$ep->pos = 'sa';
 				}
 				$this->add_effet_permanent('attaquant', $ep);

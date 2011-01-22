@@ -25,6 +25,9 @@ class entite extends placable
 
 	public $potentiel_bloquer;
 	private $malus_hache = 1;
+	
+	/// Pour compatibilité (le temps de refaire la hiérarchie)
+	protected function get_table() { return ''; }
   
 	/**
 	 * @name Informations générales.

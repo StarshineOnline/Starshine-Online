@@ -10,6 +10,17 @@ abstract class table
 	protected $id; ///< id de l'élément dans la table.
 	protected $champs_modif;  ///< Liste des champs modifiés.
 	
+	/// Renvoie le nom du champ servant d'identifiant
+	protected function get_champ_id()
+	{
+    return 'id';
+  }
+  /// Renvoie le nom de la table (par défaut le nom de la classe)
+  protected function get_table()
+  {
+    return get_class($this);
+  }
+	
 	/// Renvoie l'id de l'élément dans la table
 	function get_id()
 	{
@@ -25,10 +36,10 @@ abstract class table
 	 * Charge un élément de la base de donnée
 	 * @param $id    Id (clé primaire) de l'élément dans la table
 	 */
-  /*protected function charger($id)
+  protected function charger($id)
   {
 		global $db;
-		$requete = 'SELECT '.$this->get_liste_champs().' FROM '.static::table.' WHERE '.static::champ_id.' = "'.$id.'"';
+		$requete = 'SELECT '.$this->get_liste_champs().' FROM '.$this->get_table().' WHERE '.$this->get_champ_id().' = "'.$id.'"';
 		$req = $db->query($requete);
 		if( $db->num_rows($req) )
 		{
@@ -39,7 +50,7 @@ abstract class table
       $this->__construct();
       $this->id = $id;
     }
-  }*/
+  }
 	/**
 	 * Initialise les données membres à l'aide d'un tableau
 	 * @param array $vals    Tableau contenant les valeurs des données.
@@ -56,7 +67,7 @@ abstract class table
 	 * @param bool $force    Force la mis à jour de tous les attributs de l'objet 
 	 *                       si true, sinon uniquement ceux qui ont été modifiés.
    */   
-	/*function sauver($force = false)
+	function sauver($force = false)
 	{
 		global $db;
 		if( $this->id > 0 )
@@ -73,19 +84,19 @@ abstract class table
 					}
 					$champs = implode(', ', $champs);
 				}
-				$requete = 'UPDATE '.static::table.' SET $champs WHERE '.static::champ_id.' = '.$this->id.'"';
+				$requete = 'UPDATE '.$this->get_table().' SET $champs WHERE '.$this->get_champ_id().' = '.$this->id.'"';
 				$db->query($requete);
 				$this->champs_modif = array();
 			}
 		}
 		else
 		{
-			$requete = 'INSERT INTO '.static::table.' ('.$this->get_liste_champs().') VALUES('.$this->get_valeurs_insert().')';
+			$requete = 'INSERT INTO '.$this->get_table().' ('.$this->get_liste_champs().') VALUES('.$this->get_valeurs_insert().')';
 			$db->query($requete);
 			//Récuperation du dernier ID inséré.
 			$this->id = $db->last_insert_id();
 		}
-	}*/
+	}
 	/// Renvoie la liste des champs pour une insertion dans la base
 	abstract protected function get_liste_champs();
 	/// Renvoie la liste des valeurs des champspour une insertion dans la base
@@ -94,15 +105,15 @@ abstract class table
 	abstract protected function get_liste_update();
 	
 	/// Supprime l'élément de la base de donnée
-	/*function supprimer()
+	function supprimer()
 	{
 		global $db;
 		if( $this->id > 0 )
 		{
-			$requete = 'DELETE FROM '.static::table.' WHERE '.static::champ_id.' = "'.$this->id.'"';
+			$requete = 'DELETE FROM '.$this->get_table().' WHERE '.$this->get_champ_id().' = "'.$this->id.'"';
 			$db->query($requete);
 		}
-	}*/
+	}
 
 	/**
 	* Crée un tableau d'objets respectant certains critères
@@ -141,11 +152,11 @@ abstract class table
 			}
 		}
 
-		$requete = 'SELECT '.static::champ_id.', '.$classe->get_liste_champs().' FROM perso WHERE '.$where.' ORDER BY '.$ordre;
+		$requete = 'SELECT '.static::get_champ_id().', '.$classe->get_liste_champs().' FROM '.$this->get_table().' WHERE '.$where.' ORDER BY '.$ordre;
 		$req = $db->query($requete);
 		if($db->num_rows($req) > 0)
 		{
-		  $classe = get_called_class();
+		  $classe = get_class($this);
 			while($row = $db->read_assoc($req))
 			{
 				if(!$keys) $return[] = new $classe($row);

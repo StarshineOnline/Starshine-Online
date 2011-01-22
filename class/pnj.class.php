@@ -14,8 +14,6 @@ include_once(root.'personnage.class.php');
 */
 class pnj extends placable
 {
-  const table = 'pnj';  ///< Nom de la table correspondante.
-  
 	private $image;
 	private $texte;
 	

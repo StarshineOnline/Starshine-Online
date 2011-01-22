@@ -124,14 +124,14 @@ N'oubliez pas de reporter les bugs et problèmes, et d'apporter vos suggestions 
 				$requete_post = "SELECT message FROM punbbposts WHERE (topic_id = ".$row['id'].") ORDER BY id ASC";
 				$req_post = $db_forum->query($requete_post);
 				$row_post = $db_forum->read_array($req_post);
-				eregi("\[chapeau\]([^[]*)\[/chapeau\]", $row_post['message'], $regs);
+				preg_match("`\[chapeau\]([^[]*)\[/chapeau\]`", $row_post['message'], $regs);
 				if($regs[1] != '') $message = $regs[1];
 				else $message = $row_post['message'];
 				$message = /*utf8_encode*/(nl2br($message));
-				$message = eregi_replace("\[img\]([^[]*)\[/img\]", '<img src=\\1 title="\\1">', $message );
-				$message = eregi_replace("\[b\]([^[]*)\[/b\]", '<strong>\\1</strong>', $message );
-				$message = eregi_replace("\[i\]([^[]*)\[/i\]", '<i>\\1</i>', $message );
-				$message = eregi_replace("\[url\]([^[]*)\[/url\]", '<a href="\\1">\\1</a>', $message );
+				$message = preg_replace("`\[img\]([^[]*)\[/img\]`", '<img src=\\1 title="\\1">', $message );
+				$message = preg_replace("`\[b\]([^[]*)\[/b\]`", '<strong>\\1</strong>', $message );
+				$message = preg_replace("`\[i\]([^[]*)\[/i\]`", '<i>\\1</i>', $message );
+				$message = preg_replace("`\[url\]([^[]*)\[/url\]`", '<a href="\\1">\\1</a>', $message );
 				if(strlen($message) > 600)
 				{
 					$message = mb_substr($message, 0, 600);
