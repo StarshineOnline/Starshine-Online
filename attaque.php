@@ -177,7 +177,7 @@ switch($type)
 }
 
 //Achievement
-if($attaquant->action == $defenseur->action)
+if(!$check_pet AND ($type == "joueur" OR $type == "monstre") AND $attaquant->action == $defenseur->action)
 	$joueur->unlock_achiev('same_action');
 
 // round_total sera modifié ensuite au besoin, mais on doit le seter au début
