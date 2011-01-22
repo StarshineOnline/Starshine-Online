@@ -114,7 +114,7 @@ if(array_key_exists('valid_etape', $_GET))
 				$id_thread = 0;
 				$id_dest = $receveur->get_id();
 				$messagerie = new messagerie($joueur->get_id(), $joueur->get_groupe());
-				$messagerie->envoi_message($id_thread, $id_dest, $titre, $message, $id_groupe, true);
+				$messagerie->envoi_message($id_thread, $id_dest, $titre, $message, $id_groupe, 0, true);
 				echo '<h6>Votre proposition a bien été envoyée</h6>';
 				
 				unset($echange);
@@ -141,7 +141,7 @@ if(array_key_exists('valid_etape', $_GET))
 				$id_thread = 0;
 				$id_dest = $j1->get_id();
 				$messagerie = new messagerie($joueur->get_id(), $joueur->get_groupe());
-				$messagerie->envoi_message($id_thread, $id_dest, $titre, $message, $id_groupe, true);
+				$messagerie->envoi_message($id_thread, $id_dest, $titre, $message, $id_groupe, 0, true);
 				
 				//C'est ok
 				echo '<h6>Votre proposition a bien été envoyée</h6>';
@@ -244,7 +244,7 @@ if(array_key_exists('valid_etape', $_GET))
 							$id_thread = 0;
 							$id_dest = $j2->get_id();
 							$messagerie = new messagerie($joueur->get_id(), $joueur->get_groupe());
-							$messagerie->envoi_message($id_thread, $id_dest, $titre, $message, $id_groupe, true);		
+							$messagerie->envoi_message($id_thread, $id_dest, $titre, $message, $id_groupe, 0, true);		
 							
 							//C'est ok
 							echo '<h6>L\'échange s\'est déroulé avec succès</h6>';
