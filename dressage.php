@@ -184,6 +184,7 @@ if($distance == 0)
 								//Si le joueur a un groupe
 								if($joueur->get_groupe() > 0)
 								{
+									$groupe = new groupe($joueur->get_groupe());
 									//Répartition en fonction du mode de distribution
 									switch($groupe->get_partage())
 									{
