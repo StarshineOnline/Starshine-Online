@@ -29,12 +29,12 @@ elseif(array_key_exists('message', $_GET))
 
 	$message = str_replace('[br]', '<br />', $message);
 	//$message = $amessage.$message;
-	$message = preg_replace("`\[img\]([^[]*)\[/img\]", '<img src=\\1 title="\\1">`', $message );
-	$message = preg_replace("`\[b\]([^[]*)\[/b\]", '<strong>\\1</strong>`', $message );
-	$message = preg_replace("`\[i\]([^[]*)\[/i\]", '<i>\\1</i>`', $message );
-	$message = preg_replace("`\[url\]([^[]*)\[/url\]`", '<a href="\\1">\\1</a>', $message );
-	$message = str_replace("[/color]", "</span>", $message);
-	$regCouleur = "`\[color= ?(([[:alpha:]]+)|(#[[:digit:][:alpha:]]{6})) ?\]`";
+	$message = preg_replace("`\[img\]([^[]*)\[/img\]`i", '<img src=\\1 title="\\1">`', $message );
+	$message = preg_replace("`\[b\]([^[]*)\[/b\]`i", '<strong>\\1</strong>`', $message );
+	$message = preg_replace("`\[i\]([^[]*)\[/i\]`i", '<i>\\1</i>`', $message );
+	$message = preg_replace("`\[url\]([^[]*)\[/url\]`i", '<a href="\\1">\\1</a>', $message );
+	$message = str_ireplace("[/color]", "</span>", $message);
+	$regCouleur = "`\[color= ?(([[:alpha:]]+)|(#[[:digit:][:alpha:]]{6})) ?\]`i";
 	$message = preg_replace($regCouleur, "<span style=\"color: \\1\">", $message);
 
 	if (empty($message)){$message = "Aucune propagande pour l'instant";}

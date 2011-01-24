@@ -85,10 +85,10 @@ function switch_race()
 			$req_post = $db_forum->query($requete_post);
 			$row_post = $db_forum->read_array($req_post);
 			$message = /*utf8_encode*/(nl2br($row_post['message']));
-			$message = preg_replace("`\[img\]([^[]*)\[/img\]`", '<img src=\\1 title="\\1">', $message );
-			$message = preg_replace("`\[b\]([^[]*)\[/b\]`", '<strong>\\1</strong>', $message );
-			$message = preg_replace("`\[i\]([^[]*)\[/i\]`", '<i>\\1</i>', $message );
-			$message = preg_replace("`\[url\]([^[]*)\[/url\]`", '<a href="\\1">\\1</a>', $message );
+			$message = preg_replace("`\[img\]([^[]*)\[/img\]`i", '<img src=\\1 title="\\1">', $message );
+			$message = preg_replace("`\[b\]([^[]*)\[/b\]`i", '<strong>\\1</strong>', $message );
+			$message = preg_replace("`\[i\]([^[]*)\[/i\]`i", '<i>\\1</i>', $message );
+			$message = preg_replace("`\[url\]([^[]*)\[/url\]`i", '<a href="\\1">\\1</a>', $message );
 			if(strlen($message) > 600)
 			{
 				$message = mb_substr($message, 0, 600);

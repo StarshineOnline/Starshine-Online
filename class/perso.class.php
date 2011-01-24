@@ -1570,7 +1570,7 @@ class perso extends entite
 	/// Renvoie le facteur multipliant les pré-requis et coût en PA et MP des sorts.
 	function get_facteur_magie()
 	{
-		return $this->facteur_magie;
+		return round($this->facteur_magie);
 	}
 	/// Modifie le facteur multipliant les pré-requis et coût en PA et MP des sorts.
 	function set_facteur_magie($facteur_magie)
@@ -2782,7 +2782,7 @@ class perso extends entite
 			case 9:
 				$ep = new effet_vampirisme($effet, $item->nom);
 				if ($item->type == 'hache' || $item->type == 'dague' ||
-						($item->type == 'epee' && preg_match('/^lame/', $item->nom))) {
+						($item->type == 'epee' && preg_match('/^lame/i', $item->nom))) {
 					$ep->pos = 'sa';
 				}
 				$this->add_effet_permanent('attaquant', $ep);

@@ -21,7 +21,7 @@ if ($row['x'] != $joueur->get_x() ||
 
 echo '<fieldset><legend>'.$row['nom'].'</legend>';
 $reponses = explode('*****', nl2br($row['texte']));
-$message = preg_replace("`\[ID:([^[]*)\]([^[]*)\[/ID:([^[]*)\]`", "<li><a href=\"pnj.php?id=".$id."&amp;reponse=\\1&amp;poscase=".$W_case."\" onclick=\"return envoiInfo(this.href, 'information')\">\\2</a></li>", $reponses[$reponse]);
+$message = preg_replace("`\[ID:([^[]*)\]([^[]*)\[/ID:([^[]*)\]`i", "<li><a href=\"pnj.php?id=".$id."&amp;reponse=\\1&amp;poscase=".$W_case."\" onclick=\"return envoiInfo(this.href, 'information')\">\\2</a></li>", $reponses[$reponse]);
 //On vérifie si ya une quête pour ce pnj
 $supp = true;
 $quetes_actives = array();
@@ -62,68 +62,68 @@ if($joueur->get_quete_fini() != '')
 	foreach($quete_fini as $quetef)
 	{
 		// Nouvelle version
-		$message = preg_replace("`\[quete_finie:${quetef}\]([^[]*)\[/quete_finie:${quetef}\]`", "\\1", $message);
+		$message = preg_replace("`\[quete_finie:${quetef}\]([^[]*)\[/quete_finie:${quetef}\]`i", "\\1", $message);
 		//On affiche le lien pour la discussion
-		$message = preg_replace("`\[QUETEFINI".$quetef.":([^[]*)\]([^[]*)\[/QUETEFINI".$quetef.":([^[]*)\]`", "<li><a href=\"pnj.php?id=".$id."&amp;reponse=\\1&amp;poscase=".$W_case."\" onclick=\"return envoiInfo(this.href, 'information')\">\\2</a></li>", $message);
+		$message = preg_replace("`\[QUETEFINI".$quetef.":([^[]*)\]([^[]*)\[/QUETEFINI".$quetef.":([^[]*)\]`i", "<li><a href=\"pnj.php?id=".$id."&amp;reponse=\\1&amp;poscase=".$W_case."\" onclick=\"return envoiInfo(this.href, 'information')\">\\2</a></li>", $message);
 		$supp = false;
 	}
 }
-while (preg_match("`\[non_quete:([^[]*)\]([^[]*)\[/non_quete:([^[]*)\]`", $message, $regs))
+while (preg_match("`\[non_quete:([^[]*)\]([^[]*)\[/non_quete:([^[]*)\]`i", $message, $regs))
 {
 	$numq = $regs[1];
 	if (in_array($numq, $quetes_actives) == false &&
 			in_array($numq, $quete_fini) == false)
 	{
-		$message = preg_replace("`\[non_quete:${numq}\]([^[]*)\[/non_quete:$numq\]`",
+		$message = preg_replace("`\[non_quete:${numq}\]([^[]*)\[/non_quete:$numq\]`i",
 														 $regs[2], $message);
 	}
 	else
 	{
-		$message = preg_replace("`\[non_quete:${numq}\]([^[]*)\[/non_quete:$numq\]`",
+		$message = preg_replace("`\[non_quete:${numq}\]([^[]*)\[/non_quete:$numq\]`i",
 														 '', $message);
 	}
 }
-while (preg_match("`\[ISQUETE:([^[]*)\]([^[]*)\[/ISQUETE:([^[]*)\]`", $message, $regs))
+while (preg_match("`\[ISQUETE:([^[]*)\]([^[]*)\[/ISQUETE:([^[]*)\]`i", $message, $regs))
 {
 	$numq = $regs[1];
 	if (in_array($numq, $quetes_actives))
 	{
-		$message = preg_replace("`\[ISQUETE:${numq}\]([^[]*)\[/ISQUETE:$numq\]`",
+		$message = preg_replace("`\[ISQUETE:${numq}\]([^[]*)\[/ISQUETE:$numq\]`i",
 														 $regs[2], $message);
 	}
 	else
 	{
-		$message = preg_replace("`\[ISQUETE:${numq}\]([^[]*)\[/ISQUETE:$numq\]`",
+		$message = preg_replace("`\[ISQUETE:${numq}\]([^[]*)\[/ISQUETE:$numq\]`i",
 														 '', $message);
 	}
 }
 //On supprime le lien pour la discussion
-$message = preg_replace("`\[QUETE([^[]*)\]([^[]*)\[/QUETE([^[]*)\]`", "", $message);
+$message = preg_replace("`\[QUETE([^[]*)\]([^[]*)\[/QUETE([^[]*)\]`i", "", $message);
 //On supprime les autres liens
-$message = preg_replace("`\[QUETEFINI([^[]*)\]([^[]*)\[/QUETEFINI([^[]*)\]`", "", $message);
-$message = preg_replace("`\[quete_finie:([^[]*)\]([^[]*)\[/quete_finie:([^[]*)\]`", "", $message);
-$message = preg_replace("`\[retour]`", "<li><a href=\"informationcase.php?case=".$W_case."\" onclick=\"return envoiInfo(this.href, 'information')\">Retour aux informations de la case</a></li>", $message);
+$message = preg_replace("`\[QUETEFINI([^[]*)\]([^[]*)\[/QUETEFINI([^[]*)\]`i", "", $message);
+$message = preg_replace("`\[quete_finie:([^[]*)\]([^[]*)\[/quete_finie:([^[]*)\]`i", "", $message);
+$message = preg_replace("`\[retour]`i", "<li><a href=\"informationcase.php?case=".$W_case."\" onclick=\"return envoiInfo(this.href, 'information')\">Retour aux informations de la case</a></li>", $message);
 //Validation de la quête
-if(preg_match("`\[quete]`", $message))
+if(preg_match("`\[quete]`i", $message))
 {
 	verif_action('P'.$id, $joueur, 's');
-	$message = preg_replace("`\[quete]`", "", $message);
+	$message = preg_replace("`\[quete]`i", "", $message);
 }
 //Prise d'une quête
-if(preg_match("`\[prendquete:([^[]*)\]`", $message, $regs))
+if(preg_match("`\[prendquete:([^[]*)\]`i", $message, $regs))
 {
 	prend_quete($regs[1], $joueur);
-	$message = preg_replace("`\[prendquete:([^[]*)\]`", "", $message);
+	$message = preg_replace("`\[prendquete:([^[]*)\]`i", "", $message);
 }
 //Donne un item
 if(preg_match("`\[donneitem:([^[]*)\]`", $message, $regs))
 {
 	$joueur->prend_objet($regs[1]);
-	$message = preg_replace("`\[donneitem:([^[]*)\]`", "", $message);
+	$message = preg_replace("`\[donneitem:([^[]*)\]`i", "", $message);
 	verif_action($regs[1], $joueur, 's');
 }
 //Vends un item
-if(preg_match("`\[vendsitem:([^[\:]*):([^[]*)\]`", $message, $regs))
+if(preg_match("`\[vendsitem:([^[\:]*):([^[]*)\]`i", $message, $regs))
 {
 	if ($joueur->get_star() < $regs[2])
 	{
@@ -136,16 +136,16 @@ if(preg_match("`\[vendsitem:([^[\:]*):([^[]*)\]`", $message, $regs))
 		$replace = "Vous recevez un objet.<br/>";
 		verif_action($regs[1], $joueur, 's');
 	}
-	$message = preg_replace("`\[vendsitem:([^[\:]*):([^[]*)\]`", $replace, $message);
+	$message = preg_replace("`\[vendsitem:([^[\:]*):([^[]*)\]`i", $replace, $message);
 }
 //validation inventaire
-if(preg_match("`\[verifinventaire:([^[]*)\]`", $message, $regs))
+if(preg_match("`\[verifinventaire:([^[]*)\]`i", $message, $regs))
 {
 	if (verif_inventaire($regs[1], $joueur) == false) {
 		$message = "<h5>Tu te moques de moi, mon bonhomme ?</h5>";
 	}
 	else {
-		$message = preg_replace("`\[verifinventaire:([^[]*)\]`", "", $message);
+		$message = preg_replace("`\[verifinventaire:([^[]*)\]`i", "", $message);
 	}
 }
 echo '<ul>'.$message.'</ul>';
