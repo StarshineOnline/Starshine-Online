@@ -1,4 +1,4 @@
-<?php
+<?php // -*- tab-width:2; mode: php -*-
 if (file_exists('root.php'))
   include_once('root.php');
 
@@ -68,16 +68,12 @@ if($distance == 0)
 				//Sinon erreur
 				else
 				{
-					?>
-					<h5>Vous tentez déjà de dresser un monstre.</h5>
-					<?php
+					echo "<h5>Vous tentez déjà de dresser un monstre.</h5>";
 				}
 			}
 			else
 			{
-				?>
-				<h5>Vous n'avez pas assez de PA</h5>
-				<?php
+				echo "<h5>Vous n'avez pas assez de PA</h5>";
 			}
 		}
 		//Sinon on commence le dressage sur ce monstre
@@ -89,7 +85,7 @@ if($distance == 0)
 				if($joueur->nb_pet() < $joueur->get_comp('max_pet'))
 				{
 					lance_buff('dressage', $joueur->get_id(), 0, $_GET['id'], 172800, 'Dressage', 'On dresse le monstre', 'perso', 1, 0, 0, 0);
-					?>
+?>
 					<h6>Dressage en cours</h6>
 					<br />
 					<a href="dressage.php?id=<?php echo $_GET['id']; ?>" onclick="return envoiInfo(this.href, 'information')">Continuer le dressage</a><br />
@@ -100,7 +96,7 @@ if($distance == 0)
 					Attention, vous ne pouvez plus ni bouger ni attaquer lorsque vous êtes en train de dresser une créature.<br />
 					De plus, si un joueur vous attaque, le dressage sera arrêté.<br />
 					<br />
-					Vous pouvez à tout moment décider d'arrêter le dressage, pour cela rendez vous dans la partie "dressage" du jeu.
+					Vous pouvez à tout moment décider d'arrêter le dressage, pour cela rendez vous dans la partie "dressage" du jeu. <!-- ' -->
 					<?php
 				}
 				else echo '<h5>Vous ne pouvez pas dresser plus de '.$joueur->get_comp('max_pet').' créatures</h5>';
@@ -185,6 +181,7 @@ if($distance == 0)
 								if($joueur->get_groupe() > 0)
 								{
 									$groupe = new groupe($joueur->get_groupe());
+									$groupe->get_membre();
 									//Répartition en fonction du mode de distribution
 									switch($groupe->get_partage())
 									{
