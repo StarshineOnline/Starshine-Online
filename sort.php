@@ -86,7 +86,7 @@ if (isset($_GET['ID']) && !$joueur->is_buff('bloque_sort'))
 				}
 			}
 		}
-		if ($sort->get_incantation()*$joueur->get_facteur_magie() >= $joueur->get_incantation()) {
+		if ($sort->get_incantation()*$joueur->get_facteur_magie() > $joueur->get_incantation()) {
 			print_debug("Il vous faut ".$sort->get_incantation()*$joueur->get_facteur_magie()." en incantation pour lancer ce sort");
 			$no_req = true;
 		}
