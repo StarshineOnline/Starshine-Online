@@ -153,6 +153,11 @@ else
 	$menu[$i++]['acces'] = '';
 	$acces[] = '';
 
+	$menu[$i]['nom'] = 'Event';
+	$menu[$i]['url'] = 'event.php';
+	$menu[$i++]['acces'] = '';
+	$acces[] = '';
+
 	$menu[$i]['nom'] = 'Jabber / Admin';
 	$menu[$i]['url'] = 'admin_jabber.php';
 	$menu[$i++]['acces'] = 'admin';

@@ -38,7 +38,7 @@ if (isset($_REQUEST['teleport_in'])) {
   $arene = $_REQUEST['teleport_in'];
   $player = $_REQUEST['player'];
 
-  $requete_perso = "select x, y, ID, nom, groupe, race from perso where nom = '".sSQL($player)."'";
+  $requete_perso = "select x, y, id, nom, groupe, race from perso where nom = '".sSQL($player)."'";
   $req = $db->query($requete_perso);
   if ($db->num_rows > 0)
     $R_perso = $db->read_assoc($req);
@@ -46,7 +46,7 @@ if (isset($_REQUEST['teleport_in'])) {
     die('perso inconnu');
   $x = $R_perso['x'];
   $y = $R_perso['y'];
-  $id = $R_perso['ID'];
+  $id = $R_perso['id'];
   $grp = $R_perso['groupe'];
   $race = $R_perso['race'];
   $requete_arene = "select x as xmin, y as ymin, x + size as xmax, y + size as ymax from arenes where nom = '$arene'";
@@ -57,7 +57,7 @@ if (isset($_REQUEST['teleport_in'])) {
     die('arene inconnue');
   $nx = $R_arene['xmin'] + $_REQUEST['p_x'];
   $ny = $R_arene['ymin'] + $_REQUEST['p_y'];
-  $requete_arenes_perso = "insert into arenes_joueurs value($x, $y, $id, $grp)";
+  $requete_arenes_perso = "insert into arenes_joueurs (x, y, id_perso, groupe) value($x, $y, $id, $grp)";
   $req = $db->query($requete_arenes_perso);
   /* groupage */
   if (array_key_exists('group', $_REQUEST)) {
@@ -97,17 +97,18 @@ if (isset($_REQUEST['remove']))
   $nx = $R_arene['x'];
   $ny = $R_arene['y'];
   $id = $R_arene['id'];
+  $id_perso = $R_arene['id_perso'];
   $grp = $R_arene['groupe'];
   $now = time();
-  $requete_perso = "update perso set x=$nx, y=$ny, groupe=$grp, dernieraction=$now where id = $id";
+  $requete_perso = "update perso set x=$nx, y=$ny, groupe=$grp, dernieraction=$now where id = $id_perso";
   $req = $db->query($requete_perso);
-  $requete_perso = "update perso set hp=1 where id = $id and hp < 1";
+  $requete_perso = "update perso set hp=1 where id = $id_perso and hp < 1";
   $req = $db->query($requete_perso);
   $requete_arenes_perso = "delete from arenes_joueurs where id = '$id'";
   $db->query($requete_arenes_perso);
-  $requete_journal = "INSERT INTO journal VALUES('', $id, 'teleport', '".$admin_nom."', '".$R_perso['nom']."', NOW(), 'jeu', 0, 0, 0)";
+  $requete_journal = "INSERT INTO journal VALUES('', $id_perso, 'teleport', '".$admin_nom."', '".$R_perso['nom']."', NOW(), 'jeu', 0, 0, 0)";
   $req = $db->query($requete_journal);
-  $requete_groupe_perso = "delete from groupe_joueur where id_joueur = '$id' and id_groupe in (select id from groupe where nom like 'DTE %')";
+  $requete_groupe_perso = "delete from groupe_joueur where id_joueur = '$id_perso' and id_groupe in (select id from groupe where nom like 'DTE %')";
   $db->query($requete_groupe_perso);
 }
 

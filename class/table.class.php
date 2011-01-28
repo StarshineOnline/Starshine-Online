@@ -5,8 +5,6 @@
  */
 abstract class table
 {
-  const champ_id = 'id';  ///< Nom du champ servant de clé primaire (id).
-  
 	protected $id; ///< id de l'élément dans la table.
 	protected $champs_modif;  ///< Liste des champs modifiés.
 	
@@ -80,11 +78,11 @@ abstract class table
 					$champs = '';
 					foreach($this->champs_modif as $champ)
 					{
-						$champs[] .= $champ.' = "'.mysql_escape_string($this->{$champ}).'"';
+						$champs[] .= $champ.' = "'.mysql_escape_string($this->get_champ($champ)).'"';
 					}
 					$champs = implode(', ', $champs);
 				}
-				$requete = 'UPDATE '.$this->get_table().' SET $champs WHERE '.$this->get_champ_id().' = '.$this->id.'"';
+				$requete = 'UPDATE '.$this->get_table().' SET '.$champs.' WHERE '.$this->get_champ_id().' = "'.$this->id.'"';
 				$db->query($requete);
 				$this->champs_modif = array();
 			}
@@ -97,6 +95,13 @@ abstract class table
 			$this->id = $db->last_insert_id();
 		}
 	}
+
+  /// Renvoie la valeur d'un champ de la base de donnée
+  protected function get_champ($champ)
+  {
+    return $this->{$champ};
+  }
+  
 	/// Renvoie la liste des champs pour une insertion dans la base
 	abstract protected function get_liste_champs();
 	/// Renvoie la liste des valeurs des champspour une insertion dans la base
@@ -170,7 +175,7 @@ abstract class table
 	/// Affiche l'objet sous forme de string
 	function __toString()
 	{
-    return $this->get_liste_update();
+    return 'id = '.$this->get_id().', '.$this->get_liste_update();
 	}
 } 
 ?>

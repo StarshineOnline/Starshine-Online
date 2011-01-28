@@ -1019,3 +1019,18 @@ tr.tabMonstre td
 	padding : 2px;
 }
 
+
+/***************************************************
+  Events
+ ***************************************************/
+.event_bloc
+{
+  float:left;
+  padding-top: 20px;
+}
+
+.event_minibloc
+{
+  float:left;
+  padding-left: 30px;
+}
