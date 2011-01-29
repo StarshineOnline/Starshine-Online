@@ -122,7 +122,6 @@ abstract class table
 
 	/**
 	* Crée un tableau d'objets respectant certains critères
-	* @param string $classe          Classe des objets à créer
 	* @param array|string $champs    Champs servant a trouver les résultats
 	* @param array|string  $valeurs  Valeurs servant a trouver les résultats
 	* @param string  $ordre          Ordre de tri
@@ -171,6 +170,37 @@ abstract class table
 		else $return = array();
 		return $return;
 	}*/
+
+	/**
+	* Crée un tableau d'objets respectant certains critères pour n'importe qu'elle table
+	* @param string      $classe     Classe des objets à créer
+	* @param string      $table      Table ou chercher
+	* @param string      $cond       Condition (+ éventuellement tri)
+	* @param bool|string $keys       Si false, stockage en tableau classique, si string
+	*                                stockage avec sous tableau en fonction du champ $keys
+	* @return array     Liste d'objets
+	*/
+	static function gen_create($classe, $table, $cond, $keys = false)
+	{
+		global $db;
+		$return = array();
+		
+		$requete = 'SELECT * FROM '.$table.' WHERE '.$cond;
+		$req = $db->query($requete);
+		if($db->num_rows($req) > 0)
+		{
+			while($row = $db->read_assoc($req))
+			{
+				if(!$keys)
+          $return[] = new $classe($row);
+				else
+          $return[$row[$keys]][] = new $classe($row);
+			}
+		  return $return;
+		}
+		else
+      $return = array();
+	}
 	
 	/// Affiche l'objet sous forme de string
 	function __toString()

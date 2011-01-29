@@ -1025,7 +1025,7 @@ tr.tabMonstre td
  ***************************************************/
 .event_bloc
 {
-  float:left;
+  display: block;
   padding-top: 20px;
 }
 

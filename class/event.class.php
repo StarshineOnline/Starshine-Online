@@ -1,4 +1,21 @@
 <?php
+/**
+ * @file event.class.php
+ * Gestion des event
+ * Comprend la classe principale et ses spécialisation pour les différents types d'events.
+ */
+
+// On effectue les inclusions manuellement pour pouvoir garder les spécialisations dans le même fichier que la classe mère
+include_once('event_participant.class.php');
+
+/**
+ * Classe de base pour les events, liée à la table event de la base de données.
+ * Il s'agit de la classe principale, elle doit être spécialisée pour chaque type d'event.
+ * Il ne faut la créer directement mais utiliser les méthodes statiques create,
+ * factory et nouveau qui se chargeront de crée la bonne classe fille. De même la
+ * création des autres objets concernant les events doit être déléguée à cette classe
+ * afin de créer les bonnes classes filles si besoin.
+ */
 class event extends table
 {
 
@@ -17,13 +34,13 @@ class event extends table
 	/**
 		Constructeur.
 		Le constructeur peut être utilisé de plusieurs façons:
-		-event() qui crée un pnj "vide".
-		-event($id) qui récupère les informations du pnj dans la base.
-		-event($vals) qui récupère les informations du pnj dans la base.
+		-event() qui crée un event "vide".
+		-event($id) qui récupère les informations de l'event dans la base.
+		-event($vals) qui l'event à partir d'information déjà récupèrées sans la base.
 		-event($statut, $date_debut) qui crée un nouvel event.
 
 		@param $id int Id de l'event dans la base.
-		@param $id array Tableau associatif contenant les entrées de la base de données.
+		@param $vals array Tableau associatif contenant les entrées de la base de données.
 		@param $statut String Statut de l'event (en gestation, annoncé, inscription, en cours, fini).
 		@param $date_debut int Date du début de l'event.
 	*/
@@ -153,17 +170,24 @@ class event extends table
   {
     table::init_tab($vals);
 		$this->statut = $vals['statut'];
-		$this->date_debut = $vals['date_debut'];
-		$this->date_fin = $vals['date_fin'];
+		$this->date_debut = strtotime($vals['date_debut']);
+		$this->date_fin = $vals['date_fin']?strtotime($vals['date_fin']):null;
 		$this->unserializeDonnees($vals['donnees']);
   }
   /// Renvoie la valeur d'un champ de la base de donnée
   protected function get_champ($champ)
   {
-    if($champ == 'Donnees')
+    switch($champ)
+    {
+    case 'date_debut':
+      return $this->get_date_debut('Y-m-d');
+    case 'date_fin':
+      return $this->get_date_fin('Y-m-d');
+    case 'donnees':
       return $this->serializeDonnees();
-    else
+    default:
       return $this->{$champ};
+    }
   }
 	/// Renvoie la liste des champs pour une insertion dans la base
 	protected function get_liste_champs()
@@ -173,12 +197,12 @@ class event extends table
 	/// Renvoie la liste des valeurs des champspour une insertion dans la base
 	protected function get_valeurs_insert()
 	{
-		return '"'.substr(get_class($this),6).'", "'.$this->statut.'", '.$this->date_debut.', '.($this->date_fin!==null?$this->date_fin:'NULL').', "'.mysql_escape_string($this->serializeDonnees()).'"';
+		return '"'.substr(get_class($this),6).'", "'.$this->statut.'", "'.$this->get_date_debut('Y-m-d').'", '.($this->date_fin!==null?'"'.$this->date_fin('Y-m-d').'"':'NULL').', "'.mysql_escape_string($this->serializeDonnees()).'"';
 	}
 	/// Renvoie la liste des champs et valeurs pour une mise-à-jour dans la base
 	protected function get_liste_update()
 	{
-		return 'statut = '.$this->statut.', date_debut = "'.$this->date_debut.'", date_fin = ."'.$this->date_fin.'", donnees = "'.mysql_escape_string($this->serializeDonnees()).'"';
+		return 'statut = '.$this->statut.', date_debut = "'.$this->get_date_debut('Y-m-d').'", date_fin = '.($this->date_fin!==null?'"'.$this->date_fin('Y-m-d').'"':'NULL').', donnees = "'.mysql_escape_string($this->serializeDonnees()).'"';
 	}
   /**
    * Renvoie le nom de la table.
@@ -237,27 +261,47 @@ class event extends table
     }
 	}
 
-	/// Renvoie la date du début de l'event
-	function get_date_debut()
+	/**
+	 * Renvoie la date du début de l'event
+	 * @param  $format   - si false, renvoie le timestamp UNIX
+	 *                   - si chaîne de caractère renvoie la date suivant le format demandé (cf. fonction date)
+	 */
+	function get_date_debut($format=false)
 	{
-		return $this->date_debut;
+    if($format)
+      return date($format, $this->date_debut);
+    else
+		  return $this->date_debut;
 	}
 	/// Modifie la date du début de l'event
 	function set_date_debut($date_debut)
 	{
-		$this->date_debut = $date_debut;
+    if( is_string($date_debut) )
+		  $this->date_debut = strtotime($date_debut);
+		else
+		  $this->date_debut = $date_debut;
 		$this->champs_modif[] = 'date_debut';
 	}
 
-	/// Renvoie la date de la fin de l'event
-	function get_date_fin()
+	/**
+	 * Renvoie la date de la fin de l'event
+	 * @param  $format   - si false, renvoie le timestamp UNIX
+	 *                   - si chaîne de caractère renvoie la date suivant le format demandé (cf. fonction date)
+	 */
+	function get_date_fin($format=false)
 	{
-		return $this->date_fin;
+    if($format)
+      return date($format, $this->date_fin);
+    else
+		  return $this->date_fin;
 	}
 	/// Modifie la date de la fin de l'event
 	function set_date_fin($date_fin)
 	{
-		$this->date_fin = $date_fin;
+    if( is_string($date_fin) )
+		  $this->date_fin = strtotime($date_fin);
+		else
+		  $this->date_fin = $date_fin;
 		$this->champs_modif[] = 'date_fin';
 	}
 	// @}
@@ -293,6 +337,7 @@ class event extends table
     </div>
     <div id="event_page">
 <?php
+    // contenu
     switch( $_GET['page'] )
     {
     case 'participants':
@@ -313,6 +358,7 @@ class event extends table
   {
     global $_GET;
     
+    // Modification des paramètres (statut, date de début et de fin)
     if( array_key_exists('statut', $_GET) )
     {
       $this->set_statut($_GET['statut']);
@@ -338,11 +384,14 @@ class event extends table
       $this->set_date_fin($_GET['date_fin']);
       $this->sauver();
     }
+    
+    // Commandes permettant la modification des paramètres
 ?>
     <div class="event_bloc">
       <div class="event_minibloc">
         <ul>
 <?php
+    // COmmandes pour la modification du statut suivant sa valeur actuelle
     switch($this->get_statut())
     {
     case event::en_gestation:
@@ -353,11 +402,11 @@ class event extends table
       else
       {
         echo '<li><a href="event.php?event='.$this->get_id().'&page=options&statut='.event::annonce.'" onclick="return envoiInfo(this.href, \'contenu\');">Passer au statut <i>annoncé</i></a></li>';
-        //echo '<li><a href="event.php?event='.$this->get_id().'&page=options&statut='.event::inscriptions.'" onclick="return envoiInfo(this.href, \'contenu\');"">Permettre les inscriptions</a></li>';
+        echo '<li><a href="event.php?event='.$this->get_id().'&page=options&statut='.event::inscriptions.'" onclick="return envoiInfo(this.href, \'contenu\');"">Permettre les inscriptions</a></li>';
       }
       break;
     case event::annonce:
-      //echo '<li><a href="event.php?event='.$this->get_id().'&page=options&statut='.event::inscriptions.'" onclick="return envoiInfo(this.href, \'contenu\');">Permettre les inscriptions</a></li>';
+      echo '<li><a href="event.php?event='.$this->get_id().'&page=options&statut='.event::inscriptions.'" onclick="return envoiInfo(this.href, \'contenu\');">Permettre les inscriptions</a></li>';
       break;
     case event::en_cours:
       if($terminer)
@@ -370,17 +419,18 @@ class event extends table
       <div class="event_minibloc">
         <form id="form_date_debut" method="get" action="event.php?event=<?php echo $this->get_id();?>&page=options">
           Date de début :
-          <input name="date_debut" type="text" id="date_debut" <?php if($this->get_date_debut()!='0000-00-00') echo 'value="'.$this->get_date_debut().'"';?> onchange="return envoiFormulaire('form_date_debut', 'contenu');"/>
+          <input name="date_debut" type="text" id="date_debut" onchange="return envoiFormulaire('form_date_debut', 'contenu');"/>
         </form>
       </div>
 <?php
+    // Date de fin s'il faut en demander une
     if($fin)
     {
 ?>
       <div class="event_minibloc">
         <form id="form_date_fin" method="get" action="event.php?event=<?php echo $this->get_id();?>&page=options">
           Date de fin :
-          <input name="date_fin" type="text" id="date_fin" <?php if($this->get_date_fin()!='0000-00-00') echo 'value="'.$this->get_date_fin().'"';?> onchange="return envoiFormulaire('form_date_debut', 'contenu');"/>
+          <input name="date_fin" type="text" id="date_fin" onchange="return envoiFormulaire('form_date_debut', 'contenu');"/>
         </form>
       </div>
 <?php
@@ -388,9 +438,19 @@ class event extends table
 ?>
       <script type="text/javascript">
         $( "#date_debut" ).datepicker();
-        $( "#date_debut" ).datepicker("option", "dateFormat", "yy-mm-dd");
+        $( "#date_debut" ).datepicker("option", "dateFormat", "dd/mm/yy");
         $( "#date_fin" ).datepicker();
-        $( "#date_fin" ).datepicker("option", "dateFormat", "yy-mm-dd");
+        $( "#date_fin" ).datepicker("option", "dateFormat", "dd/mm/yy");
+<?php
+        if($this->get_date_debut())
+        {
+          echo '$( "#date_debut" ).datepicker("setDate",  new Date('.$this->get_date_debut('Y').','.($this->get_date_debut('m')-1).','.$this->get_date_debut('d').") );\n";
+        }
+        if($this->get_date_fin())
+        {
+          echo '$( "#date_fin" ).datepicker("setDate",  new Date('.$this->get_date_fin('Y').','.($this->get_date_fin('m')-1).','.$this->get_date_fin('d').") );\n";
+        }
+?>
       </script>
     </div>
 <?php
@@ -399,9 +459,139 @@ class event extends table
   /// Page des participants par défaut de l'interface d'administration
   function admin_participants_def()
   {
+    echo '<div class="event_bloc">';
+    if( array_key_exists('ajout', $_GET) )
+    {
+      $perso = perso::create('nom', $_GET['ajout']);
+      if( count($perso) )
+      {
+        if( $this->get_participant('id_perso', $perso[0]->get_id()) == null )
+        {
+          $partic = $this->nouveau_participant($perso[0]);
+          $partic->sauver();
+        }
+        else
+          echo '<h5>Personnage déjà inscrit !</h5>';
+      }
+      else
+        echo '<h5>Personnage inexistant !</h5>';
+    }
+    $this->liste_participant(true);
+?>
+    </div>
+    <div class="event_bloc">
+      <form id="event_ajout" method="get" action="event.php?event=<?php echo $this->get_id();?>&page=participants">
+        Ajouter un participant :
+        <input type="text" name="ajout"/>
+        <input type="submit" value="ajouter"  onclick="return envoiFormulaire('event_ajout', 'contenu');"/>
+      </form>
+    </div>
+<?php
+  }
+  
+  /// Interface disponible en ville
+  function interface_ville()
+  {
+    echo '<p class="ville_haut">'.$this->get_nom().'</p>';
+    if( $this->get_statut() == event::inscriptions )
+    {
+      $this->ville_inscription();
+      echo '<hr/>';
+    }
+    echo '<p><span>Liste des participants :</span><br/>';
+    $this->liste_participant();
+    echo '</p>';
+  }
+  
+  /**
+   * Partie de l'interface permettant l'inscription
+   * @param  $stars  int    Stars demandé pour l'inscription
+   */
+  function ville_inscription($stars=0)
+  {
+    global $joueur, $_GET, $_SESSION;
+    if( array_key_exists('action', $_GET) && $_GET['action']=='inscrire' )
+    {
+      if( $joueur->get_star() >= $stars )
+      {
+        $partic = $this->nouveau_participant($joueur);
+        $partic->sauver();
+        $joueur->set_star($joueur->get_star() - $stars );
+        $joueur->sauver();
+        echo '<h6>Vous êtes inscrit !</h6>';
+      }
+      else
+        echo "<h5>Vous n'avez pas assez de stars !</h5>";
+      exit(0);
+    }
+    echo '<p>La compétition débutera le '.$this->get_date_debut('j/m/Y').' - ';
+    if( $this->get_participant('id_perso', $_SESSION['ID']) )
+      echo 'vous êtes inscrit</p>';
+    else
+    {
+      echo '<a href="show_arenes.php?event='.$this->get_id().'&action=inscrire"  onclick="if(confirm(\'La participation demande d\\\'y consacrer du temps, êtes vous bien sûr de vouloir vous inscrire ?\')) { return envoiInfo(this.href, \'carte\'); } else {return false;}">s\'inscrire';
+      if( $stars == 1 )
+        echo ' (1 star)';
+      elseif( $stars > 1 )
+        echo ' ('.$stars.' stars)';
+      echo '</a></p>';
+    }
+  }
+  
+  /**
+   * Affiche la liste des participants
+   * @param  $admin    bool             indique si c'est pour afficher dans l'interface d'adminitration
+   * @param  $royaume  bool/id/string   indique s'il faut afficher les royaumes ou spécifie un royaume en particulier (TODO)
+   */
+  function liste_participant($admin=false, $royaume=false)
+  {
+    global $db;
+    // On effectue une requête sur les tables "event_participant" et "perso"
+    $requete = 'SELECT perso.nom';
+    if($admin)
+      $requete .= ', event_participant.id, event_participant.id_perso, perso.race, perso.classe';
+    elseif($royaume)
+      $requete .= ', perso.race';
+    $requete .= ' FROM event_participant, perso WHERE event_participant.event = '.$this->get_id().' AND perso.id = event_participant.id_perso ORDER BY perso.nom';
+		$req = $db->query($requete);
+    // Si on affiche que le nom du participant alors on le fait sous forme de liste
+    if( !$admin && !$royaume)
+    {
+      echo '<ul>';
+      while($row = $db->read_assoc($req))
+      {
+        echo '<li>'.$row['nom'].'</li>';
+      }
+      echo '</ul>';
+    }
+    else
+    {
+      echo '<table><tbody>';
+      while($row = $db->read_assoc($req))
+      {
+        echo '<tr><td>';
+        if( $admin )
+          echo '<a href="admin_joueur.php?direction=info_joueur&id='.$row['id_perso'].'">'.$row['nom'].'</a>';
+        else
+          echo $row['nom'];
+        echo '</td><td>'.traduit($row['race']);
+        if( $admin )
+        {
+          echo '</td><td>'.$row['classe'].'</td><td><a href="event.php?event='.$this->get_id().'&page=participants&supprimer='.$row['id'].'">supprimer</a>';
+        }
+        echo '</td></tr>';
+      }
+      echo '</tbody></table>';
+    }
   }
 	// @}
 
+
+  /**
+   * @name Informations
+   * Informations sur l'event et son fonctionnement
+   */
+  // @{
 	/**
 	 * Indique si une rez est possible
 	 * @param $id    id du personnage.
@@ -417,22 +607,62 @@ class event extends table
   {
     return substr(get_class($this),6);
   }
-	
+	// @}
+
+  /**
+   * @name Création des autres objets
+   * Gestion de la création des autres objets impliqués
+   */
+  // @{
+  /**
+   * Renvoie les participants ou un participant en particulier
+   * Peut être utilisé de plusieurs façons :
+   * - get_participant()                  renvoie un tableau contenant tous les participants
+   * - get_participant(true)              renvoie tous les participants par équipe, sous forme de tableau associatif
+   * - get_participant($champ, $valeur)   renvoie un ou plusieurs participant suivant la valeur d'un champ précis
+   *
+   * @param  $champ   string    champ
+   * @param  $valeur  string    valeur du champ demandée
+   */
+  function get_participant($champ=false, $valeur=null)
+  {
+    return event_participant::creer($this, 'event_participant', $champ, $valeur);
+  }
+  /**
+   * Crée un nouveau participant (à surcharger)
+   * @param $perso  id du personnage ou objet le représentant
+   */
+  function nouveau_participant($perso)
+  {
+    return new event_participant($this, $perso, null);
+  }
+  // @}
 };
 
+
+/**
+ * Classe gérant un DTE
+ * Une équipe par royaume plus une équipe admin, s'affrontent en matchs sucessifs.
+ */
 class event_dte extends event
 {
-
+  /**
+   * @name Informations
+   * Informations sur l'event et son fonctionnement
+   */
+  // @{
 	/// Renvoie le nom de l'event (dépend du type)
   function get_nom()
   {
     return 'DTE';
   }
+	// @}
 
   /**
    * @name Interfaces
    * Gestion des interfaces utilisateur.
    */
+  // @{
 	/// Gère l'interface d'administration (à surcharger)
 	function interface_admin()
 	{
@@ -443,12 +673,16 @@ class event_dte extends event
     // menu
 ?>
     <div id="event_menu">
-      <a href="event.php?event=<?php echo $this->get_id();?>&page=options" onclick="return envoiInfo(this.href, 'contenu');">Options</a>
+      <a href="event.php?event=<?php echo $this->get_id();?>&page=options" onclick="return envoiInfo(this.href, 'contenu');">Options</a> |
+      <a href="event.php?event=<?php echo $this->get_id();?>&page=participants" onclick="return envoiInfo(this.href, 'contenu');">Participants</a>
     </div>
     <div id="event_page">
 <?php
     switch( $_GET['page'] )
     {
+    case 'participants':
+      $this->admin_participants_def();
+      break;
     default:
       $this->admin_options();
     }
@@ -463,13 +697,24 @@ class event_dte extends event
   // @}
 };
 
+
+
+/**
+ * Classe gérant un RTE
+ * Similaire au DTE mais les équipes sont composés aléatoirement entre les différents participants.
+ */
 class event_rte extends event_dte
 {
-
+  /**
+   * @name Informations
+   * Informations sur l'event et son fonctionnement
+   */
+  // @{
 	/// Renvoie le nom de l'event (dépend du type)
   function get_nom()
   {
     return 'RTE';
   }
+  // @}
 };
 ?>

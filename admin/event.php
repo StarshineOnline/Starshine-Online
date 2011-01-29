@@ -1,10 +1,15 @@
 <?php
+/**
+ * @file event.php
+ * Interface d'adiministration des events
+ */
+
 if (file_exists('../root.php'))
   include_once('../root.php');
 
+// affichage d'un morceau de l'interface ou de la page intégrale ?
 if( array_key_exists('event', $_GET) )
-{
-  //Inclusion des fichiers indispensables
+{ // morceau de l'interface pour un event particulier
   include_once(root.'inc/fp.php');
   
   $event = event::factory($_GET['event']);
@@ -15,14 +20,13 @@ if( array_key_exists('event', $_GET) )
   }
 }
 elseif( array_key_exists('creer', $_GET) )
-{
-  //Inclusion des fichiers indispensables
+{ // morceau de l'interface pour la création d'un nouvel event
   include_once(root.'inc/fp.php');
   
   $event = event::nouveau($_GET['creer']);
 }
 else
-{
+{ // Page en entier
 
   $textures = false;
   $admin = true;
@@ -63,7 +67,7 @@ else
 <?php
     exit(0);
   }
-  else
+  else // il y a des évent non fini (ni annulé), on choisi le premier
     $event = $events[0];
 }
 
