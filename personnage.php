@@ -207,7 +207,7 @@ echo '
 			'.genere_image_comp($joueur->get_blocage(), 'blocage', $maximum['blocage']).' <span class="xsmall">('.$joueur->get_blocage().' / '.$maximum['blocage'].')</span>
 		</td>
 	</tr>
-	<tr class="trcolor2">
+	<tr class="trcolor1">
 		<td>
 			Dressage
 		</td>
@@ -215,7 +215,7 @@ echo '
 			'.genere_image_comp($joueur->get_dressage(), 'dressage', $maximum['dressage']).' <span class="xsmall">('.$joueur->get_dressage().' / '.$maximum['dressage'].')</span>
 		</td>
 	</tr>
-	<tr class="trcolor1">
+	<tr class="trcolor2">
 		<td>
 			Artisanat
 		</td>
