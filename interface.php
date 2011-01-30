@@ -113,7 +113,18 @@ echo '<div id="menu_date"><img src="image/interface/'.moment_jour().
 		<div id='starshine_menu' style='display:none;'><span class='menu' onclick="affichePopUp('liste_monstre.php');">Bestiaire</span><span class='menu' onclick="affichePopUp('background.php');">Background</span><span class='menu' onclick="affichePopUp('royaume.php');">Carte</span>
 		<?php //echo "<span class='menu' onclick=\"affichePopUp('beta_test.php');\">Beta</span>"; ?>
 		</div>
-		<div id='communaute_menu' style='display:none;'><span class='menu'><a href="http://forum.starshine-online.com">Forum</a></span><span class='menu'><a href="http://wiki.starshine-online.com/">Wiki</a></span><span class='menu'><a href="http://bug.starshine-online.com/">Signaler un bug</a></span><span class='menu' onclick="affichePopUp('acces_chat.php');">Tchat</span><span class='menu' onclick="affichePopUp('don.php');">Faire un don</span><span class="menu" style="margin : 0; padding : 0;"><script type="text/javascript">var flattr_url = 'http://www.starshine-online.com'; var flattr_btn='compact'; </script><script src="http://api.flattr.com/button/load.js" type="text/javascript"></script></span></div>
+		<div id='communaute_menu' style='display:none;'><span class='menu'><a href="http://forum.starshine-online.com">Forum</a></span><span class='menu'><a href="http://wiki.starshine-online.com/">Wiki</a></span><span class='menu'><a href="http://bug.starshine-online.com/">Signaler un bug</a></span><span class='menu' onclick="affichePopUp('acces_chat.php');">Tchat</span><span class='menu' onclick="affichePopUp('don.php');">Faire un don</span><span class="menu" style="margin : 0; padding : 0;"><a class="FlattrButton" style="display:none;" rev="flattr;button:compact;" href="http://www.starshine-online.com"></a></span></div>
+			<script type="text/javascript">
+			/* <![CDATA[ */
+				(function() {
+					var s = document.createElement('script'), t = document.getElementsByTagName('script')[0];
+					s.type = 'text/javascript';
+					s.async = true;
+					s.src = 'http://api.flattr.com/js/0.6/load.js?mode=auto';
+					t.parentNode.insertBefore(s, t);
+				})();
+			/* ]]> */
+			</script>
 	</div>
 	<div id='menu_deco'>
 		<span class="fermer" title='Se déconnecter' onclick="if(confirm('Voulez vous déconnecter ?')) { document.location.href='index.php?deco=ok'; };">&nbsp;</span>
