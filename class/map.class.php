@@ -1,4 +1,4 @@
-<?php
+<?php // -*- mode: php -*-
 if (file_exists('../root.php'))
   include_once('../root.php');
 
@@ -284,7 +284,7 @@ class map
 						}
 						else $onclick = $this->onclick;
 						echo " 		onclick=\"".$onclick."\" 
-							   ><span id=\"pos_".$MAPTAB[$x_map][$y_map]["id"]."\">".$repere."</span></div>
+							   ><span id=\"pos_".$MAPTAB[$x_map][$y_map]["id"]."\">".$repere."</span></div><!-- .map_contenu #marq$case -->
 							  </li>";	
 						
 						echo "</li>";
@@ -315,7 +315,7 @@ class map
 			echo "  </div>";
 		
 		}
-		else
+		else // --- CARTE NORMALE ---
 		{
 			echo '<div class="div_map" style="width : '.round(20 + ($taille_cellule * $this->case_affiche)).'px;height:'.round(20 + ($taille_cellule * $this->case_affiche)).'px;">';
 			{//-- Affichage du bord haut (bh) de la map
@@ -474,13 +474,18 @@ class map
               $mcalque =
                 $this->map_calques[$MAPTAB[$x_map][$y_map]['maptype']];
               $this->print_maptype_layer($mcalque, $x_map, $y_map);
+							$margin_left = 0;
             }
+						else {
+							$margin_left = -2;
+						}
 
             // Layers "atmosphériques"
 						if ($this->atmosphere_type != false)
 						{
               $num_layers++;
-							$this->atmosphere_layer($this->atmosphere_type, $x_map, $y_map);
+							$this->atmosphere_layer($this->atmosphere_type, $x_map, $y_map,
+																			0, 0, $margin_left);
 						}
 						elseif (isset($this->map[$x_map][$y_map]['calque']))
 						{
@@ -488,12 +493,14 @@ class map
 							$this->atmosphere_layer($this->map[$x_map][$y_map]['calque'],
 																			$x_map, $y_map,
 																			$this->map[$x_map][$y_map]['calque_dx'],
-																			$this->map[$x_map][$y_map]['calque_dy']);
+																			$this->map[$x_map][$y_map]['calque_dy'],
+																			$margin_left);
 						}
 						elseif ($this->dungeon_layer)
 						{
               $num_layers++;
-							$this->print_dungeon_layer($x_map - $this->xmin, $y_map - $this->ymin);
+							$this->print_dungeon_layer($x_map - $this->xmin,
+																				 $y_map - $this->ymin, $margin_left);
 						}
 
 						echo "<span id='pos_".$MAPTAB[$x_map][$y_map]["id"]."'>".$repere."</span></div>";
@@ -531,7 +538,8 @@ class map
 		}
 	}
 
-	function atmosphere_layer($atmosphere_type, $x, $y, $cdx = 0, $cdy = 0)
+	function atmosphere_layer($atmosphere_type, $x, $y, $cdx = 0, $cdy = 0,
+														$margin_left = -2)
 	{
 		echo '<div style="background-attachment: scroll; '.
 			'background-image: url(image/interface/calque-atmosphere-'.
@@ -543,30 +551,30 @@ class map
 			$dy += $this->atmosphere_decal['y'];
 		}
 		echo "background-position: ${dx}px ${dy}px; ";
-		echo 'margin-top: -2px; margin-bottom: -2px; margin-left: -2px;'.
-			' height: 62px; width: 60px; background-repeat: repeat;">';
+		echo 'margin-top: -2px; margin-bottom: -2px; margin-left: '.$margin_left.
+			'px; height: 62px; width: 60px; background-repeat: repeat;">';
 	}
 
-	function print_dungeon_layer($x, $y)
+	function print_dungeon_layer($x, $y, $margin_left = -2)
 	{
 		echo '<div style="background-attachment: scroll; '.
 			'background-image: url(image/interface/calque-atmosphere-noir.png); ';
 		$dx = (-$x * 60);
 		$dy = (-$y * 60);
 		echo "background-position: ${dx}px ${dy}px; ";
-		echo 'margin-top: -2px; margin-bottom: -2px; margin-left: -2px;'.
-			' height: 62px; width: 60px; background-repeat: repeat;">';
+		echo 'margin-top: -2px; margin-bottom: -2px; margin-left: '.$margin_left.
+			'px; height: 62px; width: 60px; background-repeat: repeat;">';
 	}
 
-  function print_maptype_layer($map_type_calque, $x, $y)
+  function print_maptype_layer($map_type_calque, $x, $y, $margin_left = -2)
   {
 		echo '<div style="background-attachment: scroll; '.
 			'background-image: url(image/texture/'.$map_type_calque->calque.'); ';
 		$dx = (-$x + $map_type_calque->decalage_x) * 60;
 		$dy = (-$y + $map_type_calque->decalage_y) * 60;
 		echo "background-position: ${dx}px ${dy}px; ";
-		echo 'margin-top: -2px; margin-bottom: -2px; margin-left: -2px;'.
-			' height: 62px; width: 60px; background-repeat: repeat;">';    
+		echo 'margin-top: -2px; margin-bottom: -2px; margin-left: '.$margin_left.
+			'px; height: 62px; width: 60px; background-repeat: repeat;">';    
   }
 
 	function get_pnj()
