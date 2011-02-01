@@ -876,6 +876,7 @@ else
 				if($augmentation[1] == 1)
 				{
 					$joueur_defenseur->set_dressage($augmentation[0]);
+					$joueur_defenseur->sauver();
 				}
 			}
 
