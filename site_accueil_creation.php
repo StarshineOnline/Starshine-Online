@@ -38,7 +38,7 @@ else
 	{
 		?>
 		Erreur nom déjà utilisé<br />
-		<a href="http://www.starshine-online.com/">Réessayer</a>
+		<a href=".">Réessayer</a>
 		<?php
 	}
 	else
