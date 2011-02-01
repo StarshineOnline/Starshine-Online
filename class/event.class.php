@@ -268,7 +268,9 @@ class event extends table
 	 */
 	function get_date_debut($format=false)
 	{
-    if($format)
+    if( $this->date_debut == 0 )
+      return 0;
+    elseif($format)
       return date($format, $this->date_debut);
     else
 		  return $this->date_debut;
@@ -290,7 +292,9 @@ class event extends table
 	 */
 	function get_date_fin($format=false)
 	{
-    if($format)
+    if( $this->date_fin == 0 )
+      return 0;
+    elseif($format)
       return date($format, $this->date_fin);
     else
 		  return $this->date_fin;
@@ -483,7 +487,7 @@ class event extends table
       <form id="event_ajout" method="get" action="event.php?event=<?php echo $this->get_id();?>&page=participants">
         Ajouter un participant :
         <input type="text" name="ajout"/>
-        <input type="submit" value="ajouter"  onclick="return envoiFormulaire('event_ajout', 'contenu');"/>
+        <input type="submit" value="ajouter" onclick="return envoiFormulaire('event_ajout', 'contenu');"/>
       </form>
     </div>
 <?php
@@ -545,7 +549,12 @@ class event extends table
    */
   function liste_participant($admin=false, $royaume=false)
   {
-    global $db;
+    global $db, $_GET;
+    // Supression d'un participant
+    if( $admin && array_key_exists('supprimer', $_GET) )
+    {
+      $this->get_participant('id', $_GET['supprimer'])->supprimer();
+    }
     // On effectue une requête sur les tables "event_participant" et "perso"
     $requete = 'SELECT perso.nom';
     if($admin)
@@ -577,7 +586,7 @@ class event extends table
         echo '</td><td>'.traduit($row['race']);
         if( $admin )
         {
-          echo '</td><td>'.$row['classe'].'</td><td><a href="event.php?event='.$this->get_id().'&page=participants&supprimer='.$row['id'].'">supprimer</a>';
+          echo '</td><td>'.$row['classe'].'</td><td><a href="event.php?event='.$this->get_id().'&page=participants&supprimer='.$row['id'].'" onclick="return envoiInfo(this.href, \'contenu\');">supprimer</a>';
         }
         echo '</td></tr>';
       }
@@ -641,20 +650,109 @@ class event extends table
 
 
 /**
- * Classe gérant un DTE
+ * Classe de base pour le DTE & RTE
  * Une équipe par royaume plus une équipe admin, s'affrontent en matchs sucessifs.
  */
-class event_dte extends event
+class event_dte_rte extends event
 {
+
   /**
-   * @name Informations
-   * Informations sur l'event et son fonctionnement
+   * @name Paramètres
+   * Paramètres de l'event et accesseurs.
    */
   // @{
-	/// Renvoie le nom de l'event (dépend du type)
-  function get_nom()
+  protected $autorisations = array(1,1,1);  ///< indique ce qui est autorisé et ce qu ne l'est pas.
+  const autor_rez = 0;  ///< indice des infos sur l'autorisation des rez.
+  const autor_parch = 1;  ///< indice des infos sur l'autorisation des parchemisn et potions.
+  const autor_obj_donj = 2;  ///< indice des infos sur l'autorisation des objets de donjons.
+  protected $type_tournoi = 0;   ///< indique le type de tournoi (éliminatoires direct, poules)
+  const eliminatoires = 0;  ///< valeur indiquant que le tournoi se fait par éliminatoires direct
+  const poules3_elim = 1;   ///< valeur indiquant que le tournoi se fait par des poules de 3 suivies d'éliminatoires
+  const manuel = -1;   ///< valeur indiquant que les matchs sont organisés manuellement à partir de l'interface admin
+  protected $organis_match = array(1, false);  ///< organisation des matchs.
+  const poules_match3 = 0;  ///< indice des infos sur les matchs à 3 dans les poules.
+  const ptt_finale = 1;  ///< indice des infos sur la présence d'une petite finale.
+  const pas_match3 = 0;  ///< indique qu'il n'y a pas de match à 3 dans les poules.
+  const match3_prem = 1;  ///< indique que le match à 3 des poules à lieu en premier.
+  const match3_der = 2;  ///< indique que le match à 3 des poules à lieu en dernier.
+  protected $pa_matchs = array(100,100,50,100,50);   ///< pourcentage de PA total qu'auront les perso pour les matchs.
+  const pa_finale = 0;  ///< pourcentage de PA pour la finale
+  const pa_match2_poules = 1;  ///< pourcentage de PA pour les matchs à 2 en poules.
+  const pa_match3_poules = 2;  ///< pourcentage de PA pour les matchs à 3 en poules.
+  const pa_match2_elim = 3;  ///< pourcentage de PA pour les matchs à 2 en éliminatoires.
+  const pa_match3_elim = 4;  ///< pourcentage de PA pour les matchs à 3 en éliminatoires.
+	/**
+	 * Indique si une rez est possible (pour un personnage donné)
+	 * @param $id    id du personnage.
+	 * @return       true si la rez est possible, false sinon
+	 */
+  function rezPossible($id)
   {
-    return 'DTE';
+    return $this->get_autorisations(event_dte_rte::autor_rez);
+  }
+  /// Indique les autorisations
+  function get_autorisations($ind)
+  {
+    return $this->autorisations[$ind];
+  }
+  /// Définit les autorisations
+  function set_autorisations($ind, $val)
+  {
+    $this->autorisations[$ind] = $val;
+		$this->champs_modif[] = 'donnees';
+  }
+  /// Indique le type de tournoi
+  function get_type_tournoi()
+  {
+    return $this->type_tournoi;
+  }
+  /// Définit le type de tournoi
+  function set_type_tournoi($type_tournoi)
+  {
+    $this->type_tournoi = $type_tournoi;
+		$this->champs_modif[] = 'donnees';
+  }
+  /// Indique les roptions concernant l'organisations des matchs
+  function get_organis_match($ind)
+  {
+    return $this->organis_match[$ind];
+  }
+  /// Définit les roptions concernant l'organisations des matchs
+  function set_organis_match($ind, $val)
+  {
+    $this->organis_match[$ind] = $val;
+		$this->champs_modif[] = 'donnees';
+  }
+  /// Indique le pourcentage de PA au début des matchs
+  function get_pa_matchs($ind)
+  {
+    return $this->pa_matchs[$ind];
+  }
+  /// Définit le pourcentage de PA au début des matchs
+  function set_pa_matchs($ind, $val)
+  {
+    $this->pa_matchs[$ind] = $val;
+		$this->champs_modif[] = 'donnees';
+  }
+  
+	/// sérialisation des données spécifiques à chaque event (à surcharger)
+	protected function serializeDonnees()
+  {
+    $donnees = array(implode(',', $this->autorisations), $this->get_type_tournoi(),
+      implode(',', $this->organis_match), implode(',', $this->pa_matchs));
+    return implode('|', $donnees);
+  }
+	/// déserialisation des données spécifiques à chaque event (à surcharger)
+	protected function unserializeDonnees($donnees)
+  {
+    if( $donnees )
+    {
+      $vals = explode('|', $donnees);
+      $this->autorisations = explode(',', $vals[0]);
+      $this->set_type_tournoi($vals[1]);
+      $this->organis_match = explode(',', $vals[2]);
+      $this->pa_matchs = explode(',', $vals[3]);
+    }
   }
 	// @}
 
@@ -692,9 +790,99 @@ class event_dte extends event
   /// Page des options de l'interface d'administration
   function admin_options()
   {
+    global $_GET, $_POST;
+    
+    $modifie = false;
     $this->admin_options_def();
+    // Modification des options
+    if( array_key_exists('action', $_GET) && $_GET['action']=='options' )
+    {
+      $this->set_autorisations(event_dte_rte::autor_rez, array_key_exists('rez_autor', $_POST)?1:0);
+      $this->set_autorisations(event_dte_rte::autor_parch, array_key_exists('parch_autor', $_POST)?1:0);
+      $this->set_autorisations(event_dte_rte::autor_obj_donj, array_key_exists('obj_donj_autor', $_POST)?1:0);
+      $this->set_type_tournoi($_POST['type_tournoi']);
+      $this->set_organis_match(event_dte_rte::poules_match3, $_POST['poules_match3']);
+      $this->set_organis_match(event_dte_rte::ptt_finale, $_POST['ptt_finale']?1:0);
+      $this->set_pa_matchs(event_dte_rte::pa_match2_poules, $_POST['pa_match2_poules']);
+      $this->set_pa_matchs(event_dte_rte::pa_match3_poules, $_POST['pa_match3_poules']);
+      $this->set_pa_matchs(event_dte_rte::pa_match2_elim, $_POST['pa_match2_elim']);
+      $this->set_pa_matchs(event_dte_rte::pa_match3_elim, $_POST['pa_match3_elim']);
+      $this->set_pa_matchs(event_dte_rte::pa_finale, $_POST['pa_finale']);
+      /*$this->set_($_POST['']);
+      $this->set_($_POST['']);
+      $this->set_($_POST['']);
+      $this->set_($_POST['']);
+      $this->set_($_POST['']);*/
+      $modifie = true;
+    }
+?>
+    <hr class="event_sep" />
+    <div class="event_bloc">
+      <form id="event_options" method="post" action="event.php?event=<?php echo $this->get_id();?>&page=options&action=options">
+        <div class="event_minibloc">
+          Type de tournoi : <select name="type_tournoi"><option value="0" <?PHP if($this->get_type_tournoi()==0) echo 'selected="selected"'; ?> >éliminatoires</option><option value="1" <?PHP if($this->get_type_tournoi()==1) echo 'selected="selected"'; ?> >poules de 3 puis éliminatoires</option><option <?PHP if($this->get_type_tournoi()==-1) echo 'selected="selected"'; ?> value="-1">matchs définis à la main</option></select><br />
+          Match à 3 pour les poules de 3 : <select name="poules_match3"><option value="1"  <?PHP if($this->get_organis_match(event_dte_rte::poules_match3)==1) echo 'selected="selected"'; ?>>en premier</option><option value="2" <?PHP if($this->get_organis_match(event_dte_rte::poules_match3)==2) echo 'selected="selected"'; ?>>en dernier</option><option value="0" <?PHP if($this->get_organis_match(event_dte_rte::poules_match3)==0) echo 'selected="selected"'; ?>>aucun</option></select><br />
+          Pourcentage de PA pour les matchs de poules à 2 : <input type="text" name="pa_match2_poules" value="<?php echo $this->get_pa_matchs(event_dte_rte::pa_match2_poules); ?>" size="5" /><br />
+          Pourcentage de PA pour les matchs de poules à 3 : <input type="text" name="pa_match3_poules" value="<?php echo $this->get_pa_matchs(event_dte_rte::pa_match3_poules); ?>" size="5" /><br />
+          Pourcentage de PA pour les matchs de poules à 2 : <input type="text" name="pa_match2_elim" value="<?php echo $this->get_pa_matchs(event_dte_rte::pa_match2_elim); ?>" size="5" /><br />
+          Pourcentage de PA pour les matchs de poules à 3 : <input type="text" name="pa_match3_elim" value="<?php echo $this->get_pa_matchs(event_dte_rte::pa_match3_elim); ?>" size="5" /><br />
+          Pourcentage de PA pour la finale : <input type="text" name="pa_finale" value="<?php echo $this->get_pa_matchs(event_dte_rte::pa_finale); ?>" size="5" /><br />
+          <input type="checkbox" name="ptt_finale" <?php if($this->get_pa_matchs(event_dte_rte::pa_finale)) echo 'checked="checked"';?> />Petite finale<br />
+          <input type="checkbox" name="rez_autor" <?php if($this->get_autorisations(event_dte_rte::autor_rez)) echo 'checked="checked"';?> />Rez autorisées<br />
+          <input type="checkbox" name="parch_autor" <?php if($this->get_autorisations(event_dte_rte::autor_parch)) echo 'checked="checked"';?> />Parchemins et potions autorisés<br />
+          <input type="checkbox" name="obj_donj_autor" <?php if($this->get_autorisations(event_dte_rte::autor_obj_donj)) echo 'checked="checked"';?> />Objets de donjons autorisés
+        </div>
+        <input class="event_submit" type="submit" onclick="return envoiFormulaire('event_options', 'contenu');"/>
+      </form>
+    </div>
+<?PHP
+    if( $modifie )
+      $this->sauver();
   }
-  // @}
+	// @}
+};
+
+
+/**
+ * Classe gérant un DTE
+ * Une équipe par royaume plus une équipe admin, s'affrontent en matchs sucessifs.
+ */
+class event_dte extends event_dte_rte
+{
+  /**
+   * @name Informations
+   * Informations sur l'event et son fonctionnement
+   */
+  // @{
+	/// Renvoie le nom de l'event (dépend du type)
+  function get_nom()
+  {
+    return 'DTE';
+  }
+	// @}
+	
+  /**
+   * @name Gestion interne des données
+   * Méthodes, surchargées ou à surcharger, necessaire à l'initialisation de l'objet
+   * et à sa sauvegarde dans la base de données.
+   */
+  // @{
+	/// serialisation des données spécifiques à chaque event (à surcharger)
+	protected function serializeDonnees()
+  {
+    return '';
+  }
+	/// déserialisation des données spécifiques à chaque event (à surcharger)
+	protected function unserializeDonnees($donnees)
+  {
+  }
+	// @}
+
+  /// Page des options de l'interface d'administration
+  /*function admin_options()
+  {
+    event_dte_rte::admin_options_def();
+  }*/
 };
 
 
@@ -703,7 +891,7 @@ class event_dte extends event
  * Classe gérant un RTE
  * Similaire au DTE mais les équipes sont composés aléatoirement entre les différents participants.
  */
-class event_rte extends event_dte
+class event_rte extends event_dte_rte
 {
   /**
    * @name Informations
@@ -716,5 +904,11 @@ class event_rte extends event_dte
     return 'RTE';
   }
   // @}
+
+  /// Page des options de l'interface d'administration
+  /*function admin_options()
+  {
+    event_dte_rte::admin_options_def();
+  }*/
 };
 ?>

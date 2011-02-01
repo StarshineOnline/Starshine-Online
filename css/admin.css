@@ -1027,10 +1027,27 @@ tr.tabMonstre td
 {
   display: block;
   padding-top: 20px;
+  padding-bottom: 20px;
 }
 
 .event_minibloc
 {
   float:left;
   padding-left: 30px;
+  padding-bottom: 20px;
+}
+
+.event_sep
+{
+  margin-top: 50px;
+  margin-bottom: 0px;
+  clear: both;
+}
+
+.event_submit
+{
+  margin-top: 30px;
+  margin-left: 100px;
+  display: block;
+  clear: both;
 }
