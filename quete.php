@@ -101,7 +101,7 @@ foreach ($ts as $tt => $tn)
 					$total += $objectif[$i]->nombre;
 					$i++;
 				}
-				$show_only = implode(';', $show_only);
+				$show_only = implode(',', $show_only);
 				echo '<tr>
 				<td width="40%" onclick="$(\'#liste_quete\').height(\'100px\'); envoiInfo(\'desc_quete.php?id_quete='.$row['id'].'&amp;quete_joueur='.$quest[$row['id']].'\', \'desc_quete\');">
 					<span class="small" style="cursor : pointer;">'.$row['nom'].'
