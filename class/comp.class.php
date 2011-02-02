@@ -548,7 +548,7 @@ class magnetique extends effect {
 					{
 						// Ne doit pas arriver, mais arrive parfois
 						error_log('On ne va pas reussir a supprimer le buff');
-						error_log('Buffs: '.print_r($passif['buff'], true));
+						error_log('Buffs: '.print_r($passif->get_buff(), true));
 						error_log('Rand: '.$rand);
 						error_log('Actif: '.print_r($actif, true));
 						error_log('Passif: '.print_r($passif, true));
