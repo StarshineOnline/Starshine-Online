@@ -171,7 +171,7 @@ include_once(root.'inc/fp.php');
 							</ul><br />
 							Nombre de lignes : 
 							<select name="nbrLignesJournal">
-								<option value="<?php echo $options[$liste_options[$i]]; ?>" selected><?php echo $options[$liste_options[$i]]; ?></option>
+								<option value="<?php  if($options[$liste_options[$i]] != 0) echo ($options[$liste_options[$i]]); else echo '15' ?>" selected><?php if($options[$liste_options[$i]] != 0) echo ($options[$liste_options[$i]]); else echo '15'; ?></option>
 								<option value="15">15</option>
 								<option value="30">30</option>
 								<option value="45">45</option>
