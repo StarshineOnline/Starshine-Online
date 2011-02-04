@@ -29,7 +29,7 @@ $coeff = floor($survie / $monstre->get_level());
 	<legend>Information sur <?php echo $monstre->get_nom() ?></legend>
 	<p>Niveau : <?php echo $monstre->get_level(); ?><?php if($coeff >= 7) echo ' - Type : '.$monstre->get_type(); ?>&nbsp;&nbsp;&nbsp;&nbsp;
 	<?php
-	if(!$joueur->is_buff('repos_sage') OR !$joueur->is_buff('bloque_attaque')) echo '<a href="attaque.php?type=monstre&id_monstre='.$map_monstre->get_id().'" onclick="return envoiInfo(this.href, \'information\')"><img src="image/interface/attaquer.png" alt="Combattre" title="Attaquer ('.($pa_attaque - $reduction_pa).' PA)" style="vertical-align : middle;" /> </a>';
+	if(!$joueur->is_buff('repos_sage') AND !$joueur->is_buff('bloque_attaque')) echo '<a href="attaque.php?type=monstre&id_monstre='.$map_monstre->get_id().'" onclick="return envoiInfo(this.href, \'information\')"><img src="image/interface/attaquer.png" alt="Combattre" title="Attaquer ('.($pa_attaque - $reduction_pa).' PA)" style="vertical-align : middle;" /> </a>';
 	echo ' <a href="dressage.php?id='.$W_ID.'" onclick="return envoiInfo(this.href, \'information\')"><img src="image/icone/miniconedressage.png" alt="Dressage" title="Dresser cette créature (10 PA)" style="vertical-align : middle;" /></a>';
 	if($joueur->get_sort_jeu() != '') echo ' <a href="sort.php?poscase='.$map_monstre->get_pos().'&id_monstre='.$map_monstre->get_id().'&amp;type=monstre" onclick="return envoiInfo(this.href, \'information\')"><img src="image/sort_hc_icone.png" title="Lancer un sort" alt="Lancer un sort" style="vertical-align : middle;" /></a>';
 	?>
