@@ -263,7 +263,7 @@ if($W_distance < 4)
 			<li style="clear:both;"><img src="image/monstre/'.$image.'" alt="'.$W2_row['nom'].'" style="vertical-align : middle;height:21px;float:left;width:21px;" /><span style="color : '.$color.'; font-weight : '.$strong.';float:left;width:270px;margin-left:15px;">'.$W_nom.'</span>
 			
 				<span style="float:left;">';
-				if(!$joueur->is_buff('repos_sage') OR !$joueur->is_buff('bloque_attaque'))
+				if(!$joueur->is_buff('repos_sage') AND !$joueur->is_buff('bloque_attaque'))
 				{
 					echo '
 					<a href="attaque.php?id_monstre='.$W_ID.'&type=monstre" onclick="return envoiInfo(this.href, \'information\')"><img src="image/interface/attaquer.png" alt="Combattre" title="Attaquez ce monstre ('.($pa_attaque - $reduction_pa).' PA)" style="vertical-align : middle;" /></a>';
