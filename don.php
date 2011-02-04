@@ -8,7 +8,7 @@ if($ratio_don > 10) $ratio_don = 10;
 if($ratio_don < 0) $ratio_don = 0;
 $barre_don = './image/barre/pa'.$ratio_don.'.png';
 ?>
-<ing src="<?php echo $barre_don; ?>" />
+<img src="<?php echo $barre_don; ?>" />
 <h3>Faire un don via paypal</h3>
 <form action="https://www.paypal.com/cgi-bin/webscr" method="post">
 <input type="hidden" name="cmd" value="_s-xclick">
