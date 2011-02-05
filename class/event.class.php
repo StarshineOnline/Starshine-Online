@@ -7,6 +7,7 @@
 
 // On effectue les inclusions manuellement pour pouvoir garder les spécialisations dans le même fichier que la classe mère
 include_once('event_participant.class.php');
+include_once('event_equipe.class.php');
 
 /**
  * Classe de base pour les events, liée à la table event de la base de données.
@@ -61,7 +62,6 @@ class event extends table
 			$this->statut = $statut;
 			$this->date_debut = $date_debut;
 			$this->date_fin = null;
-			$this->unserializeDonnees('');
 		}
 	}
 
@@ -329,8 +329,6 @@ class event extends table
 	/// Gère l'interface d'administration (à surcharger)
 	function interface_admin()
 	{
-    global $_GET;
-    
     echo '<h2>Evènement actuel : '.$this->get_nom().' - statut : '.$this->get_statut_nom().'</h2>';
     
     // menu
@@ -360,8 +358,6 @@ class event extends table
    */
   function admin_options_def($fin = false, $terminer=false)
   {
-    global $_GET;
-    
     // Modification des paramètres (statut, date de début et de fin)
     if( array_key_exists('statut', $_GET) )
     {
@@ -407,10 +403,12 @@ class event extends table
       {
         echo '<li><a href="event.php?event='.$this->get_id().'&page=options&statut='.event::annonce.'" onclick="return envoiInfo(this.href, \'contenu\');">Passer au statut <i>annoncé</i></a></li>';
         echo '<li><a href="event.php?event='.$this->get_id().'&page=options&statut='.event::inscriptions.'" onclick="return envoiInfo(this.href, \'contenu\');"">Permettre les inscriptions</a></li>';
+        echo '<li><a href="event.php?event='.$this->get_id().'&page=options&statut='.event::en_cours.'" onclick="return envoiInfo(this.href, \'contenu\');"">Démarrer l\'event</a></li>';
       }
       break;
     case event::annonce:
       echo '<li><a href="event.php?event='.$this->get_id().'&page=options&statut='.event::inscriptions.'" onclick="return envoiInfo(this.href, \'contenu\');">Permettre les inscriptions</a></li>';
+        echo '<li><a href="event.php?event='.$this->get_id().'&page=options&statut='.event::en_cours.'" onclick="return envoiInfo(this.href, \'contenu\');"">Démarrer l\'event</a></li>';
       break;
     case event::en_cours:
       if($terminer)
@@ -513,7 +511,7 @@ class event extends table
    */
   function ville_inscription($stars=0)
   {
-    global $joueur, $_GET, $_SESSION;
+    global $joueur;
     if( array_key_exists('action', $_GET) && $_GET['action']=='inscrire' )
     {
       if( $joueur->get_star() >= $stars )
@@ -549,7 +547,7 @@ class event extends table
    */
   function liste_participant($admin=false, $royaume=false)
   {
-    global $db, $_GET;
+    global $db;
     // Supression d'un participant
     if( $admin && array_key_exists('supprimer', $_GET) )
     {
@@ -592,6 +590,93 @@ class event extends table
       }
       echo '</tbody></table>';
     }
+  }
+  
+  /// Interface admin par défaut pour la gestion des équipes
+  function admin_equipes_def()
+  {
+    global $db;
+
+    // Création d'une équipe
+    if( array_key_exists('nom_equipe', $_GET) )
+    {
+      $equipe = $this->nouvelle_equipe($_GET['nom_equipe']);
+      $equipe->sauver();
+    }
+    // Supression d'une équipe
+    elseif( array_key_exists('supprimer', $_GET) )
+    {
+      $this->get_equipe('id', $_GET['supprimer'])->supprimer();
+    }
+    // Supression d'un participant d'une équipe
+    elseif( array_key_exists('virer', $_GET) )
+    {
+      $partic = $this->get_participant('id', $_GET['virer']);
+      $partic->set_equipe(null);
+      $partic->sauver();
+    }
+    // Ajout d'un participant à une équipe
+    if( array_key_exists('participant', $_GET) && array_key_exists('equipe', $_GET) )
+    {
+      $partic = $this->get_participant('id', $_GET['participant']);
+      if( $_GET['equipe'] )
+        $partic->set_equipe($_GET['equipe']);
+      else
+        $partic->set_equipe(null);
+      $partic->sauver();
+    }
+?>
+    <div  class="event_bloc">
+      <div  class="event_minibloc">
+        <h3>Équipes</h3>
+<?PHP
+    // Équipes existantes
+    $equipes = $this->get_equipe();
+    $liste = array();
+    foreach($equipes as $equipe)
+    {
+        echo '<div class="event_equipe"><b>'.$equipe->get_nom().'</b><table><tbody>';
+        $requete = 'SELECT event_participant.id, event_participant.id_perso, perso.nom, perso.race, perso.classe FROM event_participant, perso WHERE event_participant.equipe = '.$equipe->get_id().' AND perso.id = event_participant.id_perso ORDER BY perso.nom';
+		    $req = $db->query($requete);
+		    if( $db->num_rows($req) < 5 )
+          $liste[$equipe->get_id()] = $equipe->get_nom();
+        while($row = $db->read_assoc($req))
+        {
+          echo '<tr><td><a href="admin_joueur.php?direction=info_joueur&id='.$row['id_perso'].'">'.$row['nom'].'</a></td>';
+          echo '<td>'.traduit($row['race']).'</td><td>'.$row['classe'].'</td>';
+          echo '<td><a href="event.php?event='.$this->get_id().'&page=equipes&virer='.$row['id'].'" onclick="return envoiInfo(this.href, \'contenu\');">supprimer</a></td></tr>';
+        }
+        echo '</table></tbody><a href="event.php?event='.$this->get_id().'&page=equipes&supprimer='.$equipe->get_id().'" onclick="return envoiInfo(this.href, \'contenu\');">supprimer</a></div>';
+    }
+?>
+      <form id="nouv_equipe" method="get" action="event.php?event=<?php echo $this->get_id();?>&page=equipes">
+        Nouvelle équipe :
+        <input type="text" name="nom_equipe"/>
+        <input type="submit" value="Créer" onclick="return envoiFormulaire('nouv_equipe', 'contenu');"/>
+      </form>
+      </div>
+      <div  class="event_minibloc">
+        <h3>Participants sans équipe</h3>
+        <table>
+          <tbody>
+<?PHP
+        // Participants sans équipe
+        $requete = 'SELECT event_participant.id, event_participant.id_perso, perso.nom, perso.race, perso.classe FROM event_participant, perso WHERE event_participant.event = '.$this->get_id().' AND event_participant.equipe IS NULL AND perso.id = event_participant.id_perso ORDER BY perso.nom';
+		    $req = $db->query($requete);
+        while($row = $db->read_assoc($req))
+        {
+          echo '<tr><td><a href="admin_joueur.php?direction=info_joueur&id='.$row['id_perso'].'">'.$row['nom'].'</a></td>';
+          echo '<td>'.traduit($row['race']).'</td><td>'.$row['classe'].'</td><td><form id="aj_'.$row['id_perso'].'" method="get" action="event.php?event='.$this->get_id().'&page=equipes&participant='.$row['id'].'"><select name="equipe" onchange="return envoiFormulaire(\'aj_'.$row['id_perso'].'\', \'contenu\');"><option value="0"></option>';
+          foreach($liste as $id=>$nom)
+            echo '<option value="'.$id.'">'.$nom.'</option>';
+          echo '</select></form></td></tr>';
+        }
+?>
+          </tbody>
+        </table>
+      </div>
+    </div>
+<?PHP
   }
 	// @}
 
@@ -645,6 +730,28 @@ class event extends table
   {
     return new event_participant($this, $perso, null);
   }
+  /**
+   * Renvoie les équipes ou une équipe en particulier
+   * Peut être utilisé de plusieurs façons :
+   * - get_equipe()                  renvoie un tableau contenant tous les équipes
+   * - get_equipe($champ, $valeur)   renvoie un ou plusieurs équipes suivant la valeur d'un champ précis
+   *
+   * @param  $champ   string    champ
+   * @param  $valeur  string    valeur du champ demandée
+   */
+  function get_equipe($champ=null, $valeur=null)
+  {
+    return event_equipe::creer($this, 'event_equipe', $champ, $valeur);
+  }
+  /**
+   * Crée un nouvelle équipe (à surcharger)
+   * @param $nom    nom de l'équipe
+		@param $equipe  royaume, si l'équipe défend les couleurs d'un royaume, peut-être null.
+   */
+  function nouvelle_equipe($nom='', $royaume=null)
+  {
+    return new event_equipe($this, $nom, $royaume);
+  }
   // @}
 };
 
@@ -653,7 +760,7 @@ class event extends table
  * Classe de base pour le DTE & RTE
  * Une équipe par royaume plus une équipe admin, s'affrontent en matchs sucessifs.
  */
-class event_dte_rte extends event
+abstract class event_dte_rte extends event
 {
 
   /**
@@ -681,6 +788,35 @@ class event_dte_rte extends event
   const pa_match3_poules = 2;  ///< pourcentage de PA pour les matchs à 3 en poules.
   const pa_match2_elim = 3;  ///< pourcentage de PA pour les matchs à 2 en éliminatoires.
   const pa_match3_elim = 4;  ///< pourcentage de PA pour les matchs à 3 en éliminatoires.
+  protected $victoire_match = 0;  ///< indique les conditions à réunir pour gagner un match.
+  const dernier_vie = 0;   ///< le gagnant du match est celui qui a les derniers participants en vie.
+  const nbr_meurtres = 1;   ///< le gagnant du match est celui qui a fait le plus de mort.
+  const nbr_points = 2;   ///< le gagnant du match est celui qui a le plus de points.
+  protected $victoire_poule = 0;  ///< indique les conditions déterminant le classement au sein des poules.
+  const points_victoire = 0;  ///< seuls les points dus aux résultat des matchs comptent pour le classement dans la poule.
+  const points_totaux = 1;   ///< l'intégralité des points gagnés comptent pour le classement dans la poule.
+  const vict_poule_manuel = 2;   ///< le classement au sein d'une poule est défini manuellement.
+  protected $points = array(3, 1, 0, 2, 1, .5, -.25, 1, 1, 1, 0, 1, -1, 0, -1, -1);  ///< points donnés par les différentes actions.
+  const points_vict_match3 = 0;  ///< indice des points donnés par une victoire dans un match à 3.
+  const points_deux_match3 = 1;  ///< indice des points donnés au deuxième dans un match à 3.
+  const points_defaite_match3 = 2;  ///< indice des points donnés par une défaite dans un match à 3.
+  const points_vict_match2 = 3;  ///< indice des points donnés par une victoire dans un match à 2.
+  const points_defaite_match2 = 4;  ///< indice des points donnés par une défaite dans un match à 2.
+  const points_meurtre = 5;  ///< indice des points donnés pour la mort d'un adversaire.
+  const points_mort = 6;  ///< indice des points donnés pour la mort d'un membre de l'équipe.
+  const points_prem_meurtre = 7;    ///< indice des points donnés pour le premier meurtre d'un adversaire.
+  const points_1vs1 = 8;    ///< indice des points donnés si le match se tremine en 1 vs 1.
+  const points_pas_blesse_tot = 9;   ///< indice des points donnés si au moins un membre de l'équipe n'a pas été blessé.
+  const points_pas_blesse_chaque = 10;   ///< indice des points donnés par membre de l'équipe n'a pas été blessé.
+  const points_retourn_match3 = 11;   ///< indice des points donnés si l'équipe s'est retrouvée en infériorité numerique face à la 2ème équipe au moment où la 3ème équipe a été éliminée et qu'elle a quand même remporté la victoire.
+  const points_agit_pas_tot = 12;   ///< indice des points donnés si au moins un membre de l'équipe n'a pas agit à part des déplacement.
+  const points_agit_pas_chaque = 13;   ///< indice des points donnés par membre de l'équipe qui n'a pas agit à part des déplacement.
+  const points_plus48h = 14;   ///< indice des points donnés si le match dure plus de 48h.
+  const points_attaque_1seule = 15;  ///< indice des points donnés si l'équipe n'attaque qu'une seule autre équipe lors d'un match à 3.
+  protected $options_matchs = array(1, 1, 0);   ///< options des matchs
+  const match_tp_auto = 0;  ///< indice du TP automatique.
+  const match_bloque_avant = 1;    ///< indice du blocage pré-match.
+  const match_temps_buff = 2;   ///< indice du temps laissé pour le buffage.
 	/**
 	 * Indique si une rez est possible (pour un personnage donné)
 	 * @param $id    id du personnage.
@@ -712,12 +848,12 @@ class event_dte_rte extends event
     $this->type_tournoi = $type_tournoi;
 		$this->champs_modif[] = 'donnees';
   }
-  /// Indique les roptions concernant l'organisations des matchs
+  /// Indique les options concernant l'organisations des matchs
   function get_organis_match($ind)
   {
     return $this->organis_match[$ind];
   }
-  /// Définit les roptions concernant l'organisations des matchs
+  /// Définit les options concernant l'organisations des matchs
   function set_organis_match($ind, $val)
   {
     $this->organis_match[$ind] = $val;
@@ -734,12 +870,57 @@ class event_dte_rte extends event
     $this->pa_matchs[$ind] = $val;
 		$this->champs_modif[] = 'donnees';
   }
+  /// Indique les conditions à réunir pour gagner un match
+  function get_victoire_match()
+  {
+    return $this->victoire_match;
+  }
+  /// Définit les conditions à réunir pour gagner un match.
+  function set_victoire_match( $val)
+  {
+    $this->victoire_match = $val;
+		$this->champs_modif[] = 'donnees';
+  }
+  /// Indique les conditions déterminant le calssement au sein des poules
+  function get_victoire_poule()
+  {
+    return $this->victoire_poule;
+  }
+  /// Définit les conditions déterminant le calssement au sein des poules
+  function set_victoire_poule($val)
+  {
+    $this->victoire_poule = $val;
+		$this->champs_modif[] = 'donnees';
+  }
+  /// Indique points donnés par les différentes actions
+  function get_points($ind)
+  {
+    return $this->points[$ind];
+  }
+  /// Définit points donnés par les différentes actions
+  function set_points($ind, $val)
+  {
+    $this->points[$ind] = $val;
+		$this->champs_modif[] = 'donnees';
+  }
+  /// Indique les options des matchs
+  function get_options_matchs($ind)
+  {
+    return $this->options_matchs[$ind];
+  }
+  /// Définit les options des matchs
+  function set_options_matchs($ind, $val)
+  {
+    $this->options_matchs[$ind] = $val;
+		$this->champs_modif[] = 'donnees';
+  }
   
 	/// sérialisation des données spécifiques à chaque event (à surcharger)
 	protected function serializeDonnees()
   {
     $donnees = array(implode(',', $this->autorisations), $this->get_type_tournoi(),
-      implode(',', $this->organis_match), implode(',', $this->pa_matchs));
+      implode(',', $this->organis_match), implode(',', $this->pa_matchs), $this->victoire_match,
+      $this->victoire_poule, implode(',', $this->points), implode(',', $this->options_matchs));
     return implode('|', $donnees);
   }
 	/// déserialisation des données spécifiques à chaque event (à surcharger)
@@ -749,9 +930,13 @@ class event_dte_rte extends event
     {
       $vals = explode('|', $donnees);
       $this->autorisations = explode(',', $vals[0]);
-      $this->set_type_tournoi($vals[1]);
+      $this->type_tournoi = $vals[1];
       $this->organis_match = explode(',', $vals[2]);
       $this->pa_matchs = explode(',', $vals[3]);
+      $this->victoire_match = $vals[4];
+      $this->victoire_poule = $vals[5];
+      $this->points = explode(',', $vals[6]);
+      $this->options_matchs = explode(',', $vals[7]);
     }
   }
 	// @}
@@ -761,18 +946,17 @@ class event_dte_rte extends event
    * Gestion des interfaces utilisateur.
    */
   // @{
-	/// Gère l'interface d'administration (à surcharger)
+	/// Gère l'interface d'administration commun au DTE et RTE
 	function interface_admin()
 	{
-    global $_GET;
-
     echo '<h2>Evènement actuel : '.$this->get_nom().' - statut : '.$this->get_statut_nom().'</h2>';
 
     // menu
 ?>
     <div id="event_menu">
       <a href="event.php?event=<?php echo $this->get_id();?>&page=options" onclick="return envoiInfo(this.href, 'contenu');">Options</a> |
-      <a href="event.php?event=<?php echo $this->get_id();?>&page=participants" onclick="return envoiInfo(this.href, 'contenu');">Participants</a>
+      <a href="event.php?event=<?php echo $this->get_id();?>&page=participants" onclick="return envoiInfo(this.href, 'contenu');">Participants</a> |
+      <a href="event.php?event=<?php echo $this->get_id();?>&page=equipes" onclick="return envoiInfo(this.href, 'contenu');">Équipes</a>
     </div>
     <div id="event_page">
 <?php
@@ -780,6 +964,9 @@ class event_dte_rte extends event
     {
     case 'participants':
       $this->admin_participants_def();
+      break;
+    case 'equipes':
+      $this->admin_equipes_def();
       break;
     default:
       $this->admin_options();
@@ -790,8 +977,6 @@ class event_dte_rte extends event
   /// Page des options de l'interface d'administration
   function admin_options()
   {
-    global $_GET, $_POST;
-    
     $modifie = false;
     $this->admin_options_def();
     // Modification des options
@@ -808,11 +993,17 @@ class event_dte_rte extends event
       $this->set_pa_matchs(event_dte_rte::pa_match2_elim, $_POST['pa_match2_elim']);
       $this->set_pa_matchs(event_dte_rte::pa_match3_elim, $_POST['pa_match3_elim']);
       $this->set_pa_matchs(event_dte_rte::pa_finale, $_POST['pa_finale']);
-      /*$this->set_($_POST['']);
-      $this->set_($_POST['']);
-      $this->set_($_POST['']);
-      $this->set_($_POST['']);
-      $this->set_($_POST['']);*/
+      $this->set_victoire_match($_POST['victoire_match']);
+      $this->set_victoire_poule($_POST['victoire_poule']);
+      $this->set_points(event_dte_rte::points_vict_match2, $_POST['points_vict_match2']);
+      $this->set_points(event_dte_rte::points_defaite_match2, $_POST['points_defaite_match2']);
+      $this->set_points(event_dte_rte::points_vict_match3, $_POST['points_vict_match3']);
+      $this->set_points(event_dte_rte::points_deux_match3, $_POST['points_deux_match3']);
+      $this->set_points(event_dte_rte::points_defaite_match3, $_POST['points_defaite_match3']);
+      $this->set_options_matchs(event_dte_rte::match_tp_auto, array_key_exists('match_tp_auto', $_POST)?1:0);
+      $this->set_options_matchs(event_dte_rte::match_bloque_avant, array_key_exists('match_bloque_avant', $_POST)?1:0);
+      $this->set_options_matchs(event_dte_rte::match_temps_buff, $_POST['match_temps_buff']);
+      //$this->set_($_POST['']);
       $modifie = true;
     }
 ?>
@@ -824,14 +1015,31 @@ class event_dte_rte extends event
           Match à 3 pour les poules de 3 : <select name="poules_match3"><option value="1"  <?PHP if($this->get_organis_match(event_dte_rte::poules_match3)==1) echo 'selected="selected"'; ?>>en premier</option><option value="2" <?PHP if($this->get_organis_match(event_dte_rte::poules_match3)==2) echo 'selected="selected"'; ?>>en dernier</option><option value="0" <?PHP if($this->get_organis_match(event_dte_rte::poules_match3)==0) echo 'selected="selected"'; ?>>aucun</option></select><br />
           Pourcentage de PA pour les matchs de poules à 2 : <input type="text" name="pa_match2_poules" value="<?php echo $this->get_pa_matchs(event_dte_rte::pa_match2_poules); ?>" size="5" /><br />
           Pourcentage de PA pour les matchs de poules à 3 : <input type="text" name="pa_match3_poules" value="<?php echo $this->get_pa_matchs(event_dte_rte::pa_match3_poules); ?>" size="5" /><br />
-          Pourcentage de PA pour les matchs de poules à 2 : <input type="text" name="pa_match2_elim" value="<?php echo $this->get_pa_matchs(event_dte_rte::pa_match2_elim); ?>" size="5" /><br />
-          Pourcentage de PA pour les matchs de poules à 3 : <input type="text" name="pa_match3_elim" value="<?php echo $this->get_pa_matchs(event_dte_rte::pa_match3_elim); ?>" size="5" /><br />
+          Pourcentage de PA pour les matchs d'éliminatoires à 2 : <input type="text" name="pa_match2_elim" value="<?php echo $this->get_pa_matchs(event_dte_rte::pa_match2_elim); ?>" size="5" /><br />
+          Pourcentage de PA pour les matchs d'éliminatoires à 3 : <input type="text" name="pa_match3_elim" value="<?php echo $this->get_pa_matchs(event_dte_rte::pa_match3_elim); ?>" size="5" /><br />
           Pourcentage de PA pour la finale : <input type="text" name="pa_finale" value="<?php echo $this->get_pa_matchs(event_dte_rte::pa_finale); ?>" size="5" /><br />
           <input type="checkbox" name="ptt_finale" <?php if($this->get_pa_matchs(event_dte_rte::pa_finale)) echo 'checked="checked"';?> />Petite finale<br />
           <input type="checkbox" name="rez_autor" <?php if($this->get_autorisations(event_dte_rte::autor_rez)) echo 'checked="checked"';?> />Rez autorisées<br />
           <input type="checkbox" name="parch_autor" <?php if($this->get_autorisations(event_dte_rte::autor_parch)) echo 'checked="checked"';?> />Parchemins et potions autorisés<br />
           <input type="checkbox" name="obj_donj_autor" <?php if($this->get_autorisations(event_dte_rte::autor_obj_donj)) echo 'checked="checked"';?> />Objets de donjons autorisés
         </div>
+        <div class="event_minibloc">
+          Conditions à réunir pour gagner un match :<select name="victoire_match"><option value="0"  <?PHP if($this->get_victoire_match()==0) echo 'selected="selected"'; ?>>dernier en vie</option><option value="1" <?PHP if($this->get_victoire_match()==1) echo 'selected="selected"'; ?>>nombre de meurtres</option><option value="2" <?PHP if($this->get_victoire_match()==2) echo 'selected="selected"'; ?>>points</option></select><br />
+          Conditions déterminant le classement au sein des poules :<select name="victoire_poule"><option value="0"  <?PHP if($this->get_victoire_poule()==0) echo 'selected="selected"'; ?>>points des victoires</option><option value="1" <?PHP if($this->get_victoire_poule()==1) echo 'selected="selected"'; ?>>points des matchs</option><option value="2" <?PHP if($this->get_victoire_poule()==2) echo 'selected="selected"'; ?>>manuel</option></select><br />
+          Points en cas de victoire dans un match à 2 : <input type="text" name="points_vict_match2" value="<?php echo $this->get_points(event_dte_rte::points_vict_match2); ?>" size="5" /><br />
+          Points en cas de défaite dans un match à 2 : <input type="text" name="points_defaite_match2" value="<?php echo $this->get_points(event_dte_rte::points_defaite_match2); ?>" size="5" /><br />
+          Points en cas de victoire dans un match à 2 : <input type="text" name="points_vict_match3" value="<?php echo $this->get_points(event_dte_rte::points_vict_match3); ?>" size="5" /><br />
+          Points pour le second dans un match à 2 : <input type="text" name="points_deux_match3" value="<?php echo $this->get_points(event_dte_rte::points_deux_match3); ?>" size="5" /><br />
+          Points en cas de défaite dans un match à 2 : <input type="text" name="points_defaite_match3" value="<?php echo $this->get_points(event_dte_rte::points_defaite_match3); ?>" size="5" />
+        </div>
+        <div class="event_minibloc">
+          <input type="checkbox" name="match_tp_auto" <?php if($this->get_pa_matchs(event_dte_rte::match_tp_auto)) echo 'checked="checked"';?> />TP automatique<br />
+          <input type="checkbox" name="match_bloque_avant" <?php if($this->get_pa_matchs(event_dte_rte::match_bloque_avant)) echo 'checked="checked"';?> />Blocage pré-match<br />
+          Temps laissé pour le buffage : <input type="text" name="match_temps_buff" value="<?php echo $this->get_points(event_dte_rte::match_temps_buff); ?>" size="5" /> min.
+        </div>
+<?php
+        $this->admin_options_spec();
+?>
         <input class="event_submit" type="submit" onclick="return envoiFormulaire('event_options', 'contenu');"/>
       </form>
     </div>
@@ -839,6 +1047,8 @@ class event_dte_rte extends event
     if( $modifie )
       $this->sauver();
   }
+	/// Gère l'interface d'administration spécifique au DTE et au RTE (à spécialiser)
+	abstract function admin_options_spec();
 	// @}
 };
 
@@ -877,12 +1087,11 @@ class event_dte extends event_dte_rte
   {
   }
 	// @}
-
-  /// Page des options de l'interface d'administration
-  /*function admin_options()
-  {
-    event_dte_rte::admin_options_def();
-  }*/
+	
+	/// Gère l'interface d'administration spécifique au DTE
+	function admin_options_spec()
+	{
+  }
 };
 
 
@@ -905,10 +1114,46 @@ class event_rte extends event_dte_rte
   }
   // @}
 
-  /// Page des options de l'interface d'administration
-  /*function admin_options()
+  /**
+   * @name Paramètres
+   * Paramètres de l'event et accesseurs.
+   */
+  // @{
+  protected $creat_equipes = array(1, 1, 1, 0);  ///< indique comment sont créées les équipes.
+  const equipe_auto = 0;  ///< indice pour l'automatisation de la création des équipes.
+  const equipe_refait_deux = 1;  ///< indice pour la regénération des équipe ayant terminé deuxième en poules
+  const equipe_pretres  = 2;  ///< indice pour la dispersion des prêtres / clercs.
+  const pretres_aleat = 0;  ///< répartition des prêtre complétement aléatoire.
+  const pretres_aumoins1 = 1;  ///< au moins 1 prêtre dans chaque équipe.
+  const pretres_reparti = 2;  ///< répartie tous les prêtre dans les équipes.
+  const pretres_reparti_vie = 3;  ///< répartie tous les prêtre, druides et paladins dans les équipes.
+  const equipe_pretres_2vie= 3;  ///< indice pour l'équivalence 1 prêtre = 2 paladins/druides
+  /// Indique les options des matchs
+  function get_creat_equipes($ind)
   {
-    event_dte_rte::admin_options_def();
-  }*/
+    return $this->creat_equipes[$ind];
+  }
+  /// Définit les options des matchs
+  function set_creat_equipes($ind, $val)
+  {
+    $this->creat_equipes[$ind] = $val;
+		$this->champs_modif[] = 'donnees';
+  }
+  // @}
+
+	/// Gère l'interface d'administration spécifique au DTE
+	function admin_options_spec()
+	{
+    if( array_key_exists('action', $_GET) && $_GET['action']=='options' )
+    {
+      $this->set_creat_equipes(event_rte::equipe_auto, array_key_exists('equipe_auto', $_POST)?1:0);
+      //$this->set_($_POST['']);
+    }
+?>
+        <div class="event_minibloc">
+          <input type="checkbox" name="equipe_auto" <?php if($this->get_pa_matchs(event_rte::equipe_auto)) echo 'checked="checked"';?> />Création automatique des équipes<br />
+        </div>
+<?PHP
+  }
 };
 ?>

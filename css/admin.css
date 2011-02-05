@@ -1051,3 +1051,8 @@ tr.tabMonstre td
   display: block;
   clear: both;
 }
+
+.event_equipe
+{
+  margin-bottom: 20px;
+}

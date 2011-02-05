@@ -78,7 +78,12 @@ abstract class table
 					$champs = '';
 					foreach($this->champs_modif as $champ)
 					{
-						$champs[] .= $champ.' = "'.mysql_escape_string($this->get_champ($champ)).'"';
+            $val = $this->get_champ($champ);
+            if( $val === null )
+              $val = 'NULL';
+            else
+              $val = '"'.mysql_escape_string($val).'"';
+						$champs[] .= $champ.' = '.$val;
 					}
 					$champs = implode(', ', $champs);
 				}
