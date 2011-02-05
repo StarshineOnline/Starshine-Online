@@ -1196,6 +1196,43 @@
   		</fieldset>
   		<?php
   	}
+	break;
+	case "echange":
+	if($economie)
+	{
+		?>
+		<div id="diplomatie">
+			<fieldset>
+			<ul>
+		<?php
+		$requete = "SELECT ID, race FROM royaume WHERE ID != 0 AND ID != '".$Trace[$joueur->get_race()]['numrace']."' ORDER BY race";
+		$req = $db->query($requete);
+		$diplo_class = "t1";
+		while($row = $db->read_assoc($req))
+		{
+			$req_tmp = $db->query("SELECT date_fin FROM echange_royaume WHERE statut = 'fini' AND ((id_r2 = '".$Trace[$row['race']]['numrace']."' AND id_r1 = '".$Trace[$joueur->get_race()]['numrace']."') OR (id_r1 = '".$Trace[$row['race']]['numrace']."' AND id_r2 = '".$Trace[$joueur->get_race()]['numrace']."')) ORDER BY date_fin DESC LIMIT 0,1");
+			$row_tmp = $db->read_assoc($req_tmp);
+			$temps = $row_tmp['date_fin'] + (60*60*24*7) - time();
+			if($temps > 0) $show = '<span class="xsmall" style="font-size : 0.7em" >'.transform_sec_temp($temps).' avant échange possible</span>';
+			else $show = '<a style="font-size : 0.9em;" onclick="affichePopUp(\'echange_royaume.php?id_race='.$row['ID'].'\');"><span class="xsmall">Echange Possible</span></a>';
+			
+			$req_ech = $db->query("SELECT statut FROM echange_royaume WHERE statut != 'fini' AND statut != 'annule' AND ((id_r2 = '".$Trace[$row['race']]['numrace']."' AND id_r1 = '".$Trace[$joueur->get_race()]['numrace']."') OR (id_r1 = '".$Trace[$row['race']]['numrace']."' AND id_r2 = '".$Trace[$joueur->get_race()]['numrace']."')) ORDER BY date_fin DESC LIMIT 0,1");
+			$echange = '';
+			if($db->num_rows($req_ech) > 0) $echange = '<span class="nom" style="font-size : 0.8em;">Echange en cours</span>';
+			
+			echo '<li class="'.$diplo_class.'">
+			<span class="drapeau"><img src="../image/g_etendard/g_etendard_'.$Trace[$row['race']]['numrace'].'.png" style="vertical-align : middle;height:30px;">'.$Gtrad[$row['race']].'</span>
+			<span class="liens" style="cursor:pointer;">'.$show.'</span>'.$echange.'</li>';
+			
+			if ($diplo_class == 't1'){$diplo_class = 't2';}else{$diplo_class = 't1';}
+		}
+		?>
+			</ul>
+			</fieldset>
+		</div>
+		<?php
+	}
+	break;
   }// Fin du switch
 ?>
 

@@ -551,16 +551,22 @@ function equip_objet($objet, $joueur)
 }
 
 //Récupère les données d'un echange
-function recup_echange($id_echange)
+function recup_echange($id_echange, $royaume = false)
 {
 	global $db;
 	$echange = array();
 	$echange['objet'] = array();
-	$requete = "SELECT * FROM echange WHERE id_echange = ".$id_echange;
+	if($royaume)
+		$requete = "SELECT * FROM echange_royaume WHERE id_echange = ".$id_echange;
+	else
+		$requete = "SELECT * FROM echange WHERE id_echange = ".$id_echange;
 	if($req_e = $db->query($requete))
 	{
 		$echange = $db->read_assoc($req_e);
-		$requete = "SELECT * FROM echange_objet WHERE id_echange = ".$id_echange;
+		if($royaume)
+			$requete = "SELECT * FROM echange_ressource_royaume WHERE id_echange = ".$id_echange;
+		else
+			$requete = "SELECT * FROM echange_objet WHERE id_echange = ".$id_echange;
 		$req_o = $db->query($requete);
 		while($row_o = $db->read_assoc($req_o))
 		{
@@ -568,9 +574,13 @@ function recup_echange($id_echange)
 			{
 				$echange['objet'][] = $row_o;
 			}
-			else
+			elseif($row_o['type'] == "star" and !$royaume)
 			{
 				$echange['star'][$row_o['id_j']] = $row_o;
+			}
+			else
+			{
+				$echange['ressource'][$row_o['type']][$row_o['id_r']] = $row_o;
 			}
 		}
 	}
@@ -578,11 +588,14 @@ function recup_echange($id_echange)
 }
 
 //Récupère tous les échanges entre 2 joueurs
-function recup_echange_perso($joueur_id, $receveur)
+function recup_echange_perso($joueur_id, $receveur, $royaume = false)
 {
 	global $db;
 	$echanges = array();
-	$requete = "SELECT id_echange, statut FROM echange WHERE ((id_j1 = ".$joueur_id." AND id_j2 = ".$receveur.") OR (id_j1 = ".$receveur." AND id_j2 = ".$joueur_id.")) AND statut <> 'fini' AND statut <> 'annule'";
+	if($royaume)
+		$requete = "SELECT id_echange, statut FROM echange_royaume WHERE ((id_r1 = ".$joueur_id." AND id_r2 = ".$receveur.") OR (id_r1 = ".$receveur." AND id_r2 = ".$joueur_id.")) AND statut <> 'fini' AND statut <> 'annule'";
+	else
+		$requete = "SELECT id_echange, statut FROM echange WHERE ((id_j1 = ".$joueur_id." AND id_j2 = ".$receveur.") OR (id_j1 = ".$receveur." AND id_j2 = ".$joueur_id.")) AND statut <> 'fini' AND statut <> 'annule'";
 	$req = $db->query($requete);
 	while($row = $db->read_assoc($req))
 	{
@@ -631,11 +644,31 @@ function echange_objet_ajout($id_objet, $type, $id_echange, $id_joueur)
 	else return false;
 }
 
+//Ajoute des ressources a l'échange royaume
+function echange_royaume_ajout($nombre, $type, $id_echange, $id_royaume)
+{
+	global $db;
+	if(verif_echange_royaume($id_echange, $id_royaume, $nombre, $type))
+	{
+		$requete = "INSERT INTO echange_ressource_royaume(id_echange, id_r, type, nombre) VALUES (".$id_echange.", ".$id_royaume.", '".$type."', '".$nombre."')";
+		if($db->query($requete)) return true; else return false;
+	}
+	else return false;
+}
+
 //Supprime un objet a l'échange
 function echange_objet_suppr($id_objet_echange)
 {
 	global $db;
 	$requete = "DELETE FROM echange_objet WHERE id_echange_objet = ".$id_objet_echange;
+	if($db->query($requete)) return true; else return false;
+}
+
+//Supprime une ressource a l'échange royaume
+function echange_royaume_suppr($id_echange_ressource)
+{
+	global $db;
+	$requete = "DELETE FROM echange_ressource_royaume WHERE id_echange_ressource = ".$id_echange_ressource;
 	if($db->query($requete)) return true; else return false;
 }
 
@@ -687,9 +720,58 @@ function verif_echange_joueur($id_echange, $id_joueur, $id_objet = 0, $type_obje
 	return $check;
 }
 
+function verif_echange_royaume($id_echange, $id_royaume, $nombre = 0, $type_ressource = null)
+{
+	$royaume = new royaume($id_royaume);
+	$echange = recup_echange($id_echange, true);
+	$check = true;
+	if($type_ressource != null)
+	{
+		$get = "get_".$type_ressource;
+		//Vérification de la ressource
+		if ($nombre < 0) { security_block(BAD_ENTRY, "$nombre < 0"); }
+		//Si il a assez de la ressource
+		if($royaume->$get() >= $nombre)
+		{
+			//Si ya déjà de cet ressource, on la supprime
+			if(array_key_exists($id_royaume, $echange['ressource'][$type_ressource]) && $echange['statut'] != 'finalisation')
+			{
+				echange_royaume_suppr($echange['ressource'][$type_ressource][$id_royaume]['id_echange_ressource']);
+			}
+		}
+		else $check = false;
+	}
+	else
+	{
+		foreach($echange['ressource'] AS $ressource)
+		{
+			$get = "get_".$ressource[$id_royaume]['type'];
+			//Vérification de la ressource
+			if ($ressource[$id_royaume]['nombre'] < 0) { security_block(BAD_ENTRY, $ressource[$id_royaume]['nombre']." < 0"); }
+			//Si il a assez de la ressource
+			if($royaume->$get() >= $ressource[$id_royaume]['nombre'])
+			{
+				//Si ya déjà de cet ressource, on la supprime
+				if(array_key_exists($id_royaume, $echange['ressource'][$ressource['type']]) && $echange['statut'] != 'finalisation')
+				{
+					echange_royaume_suppr($echange['ressource'][$ressource['type']][$id_royaume]['id_echange_objet']);
+				}
+			}
+			else return false;
+		}
+	}
+	return $check;
+}
+
 function verif_echange($id_echange, $id_j1, $id_j2)
 {
 	if(verif_echange_joueur($id_echange, $id_j1) && verif_echange_joueur($id_echange, $id_j2)) return true;
+	else return false;
+}
+
+function verif_echange_both_royaume($id_echange, $id_r1, $id_r2)
+{
+	if(verif_echange_royaume($id_echange, $id_r1) && verif_echange_royaume($id_echange, $id_r2)) return true;
 	else return false;
 }
 
