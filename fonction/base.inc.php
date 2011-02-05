@@ -2788,7 +2788,7 @@ function refresh_perso()
  * 
  * @return    Code HTML décrivant la ligne.  
  */
-function affiche_condition($action, $joueur)
+function affiche_condition($action, $joueur, $check_pet)
 {
 	global $db, $Trace;
 	$liste_etats = get_etats();
@@ -2803,7 +2803,8 @@ function affiche_condition($action, $joueur)
 		$requete = "SELECT nom, mp, comp_assoc, description, effet, effet2, duree FROM sort_combat WHERE id = ".$sort_sort;
 		$req = $db->query($requete);
 		$row = $db->read_assoc($req);
-		$mpsort = round($row['mp'] * (1 - (($Trace[$joueur->get_race()]['affinite_'.$row['comp_assoc']] - 5) / 10)));
+		if(!$check_pet) $mpsort = round($row['mp'] * (1 - (($Trace[$joueur->get_race()]['affinite_'.$row['comp_assoc']] - 5) / 10)));
+		else $mpsort = $row['mp'];
 		$echo .= 'Lancer le sort <strong onmouseover="return overlib(\'<ul><li class=\\\'overlib_titres\\\'>'.addslashes(description($row['description'], $row)).'</li></ul>\', BGCLASS, \'overlib\', BGCOLOR, \'\', FGCOLOR, \'\');" onmouseout="return nd();">'.$row['nom'].'</strong> <span class="small">('.$mpsort.' réserves)</span>';
 	}
 	elseif ($action[0] == '_')
@@ -2878,7 +2879,8 @@ function affiche_condition($action, $joueur)
 			$requete = "SELECT nom, mp, comp_assoc, description, effet, effet2, duree FROM sort_combat WHERE id = ".$sort_sort;
 			$req = $db->query($requete);
 			$row = $db->read_assoc($req);
-			$mpsort = round($row['mp'] * (1 - (($Trace[$joueur->get_race()]['affinite_'.$row['comp_assoc']] - 5) / 10)));
+			if(!$check_pet) $mpsort = round($row['mp'] * (1 - (($Trace[$joueur->get_race()]['affinite_'.$row['comp_assoc']] - 5) / 10)));
+			else $mpsort = $row['mp'];
 			$echo .= 'Lancer le sort <strong onmouseover="return overlib(\'<ul><li class=\\\'overlib_titres\\\'>'.addslashes(description($row['description'], $row)).'</li></ul>\', BGCLASS, \'overlib\', BGCOLOR, \'\', FGCOLOR, \'\');" onmouseout="return nd();">'.$row['nom'].'</strong> <span class="small">('.$mpsort.' réserves)</span>';
 		}
 		elseif ($alors[0] == '_')
@@ -2901,7 +2903,7 @@ function affiche_condition($action, $joueur)
  * 
  * @return    Code HTML décrivant la ligne.  
  */
-function affiche_condition_session($action, $joueur)
+function affiche_condition_session($action, $joueur, $check_pet)
 {
 	global $db, $Trace;
 	$etats = get_etats();
@@ -2962,7 +2964,8 @@ function affiche_condition_session($action, $joueur)
 		$requete = "SELECT nom, mp, comp_assoc, description, effet, effet2, duree FROM sort_combat WHERE id = ".$sort_sort;
 		$req = $db->query($requete);
 		$row = $db->read_assoc($req);
-		$mpsort = round($row['mp'] * (1 - (($Trace[$joueur->get_race()]['affinite_'.$row['comp_assoc']] - 5) / 10)));
+		if(!$check_pet) $mpsort = round($row['mp'] * (1 - (($Trace[$joueur->get_race()]['affinite_'.$row['comp_assoc']] - 5) / 10)));
+		else $mpsort = $row['mp'];
 		$echo .= 'Lancer le sort <strong onmouseover="return overlib(\'<ul><li class=\\\'overlib_titres\\\'>'.addslashes(description($row['description'], $row)).'</li></ul>\', BGCLASS, \'overlib\', BGCOLOR, \'\', FGCOLOR, \'\');" onmouseout="return nd();">'.$row['nom'].'</strong> <span class="small">('.$mpsort.' réserves)</span>';
 	}
 	elseif ($action['final'][0] == 'c')
