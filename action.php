@@ -220,7 +220,7 @@ if(array_key_exists('from', $_GET) && $_GET['id_action'] != '')
 			</table>
 		<?php
 		//print_r($_SESSION['script'][$id_action]);
-		echo affiche_condition_session($_SESSION['script'][$id_action], $sujet);
+		echo affiche_condition_session($_SESSION['script'][$id_action], $sujet, $check_pet);
 		//=== VALIDATION DE LA CONDITION ===
 		if(array_key_exists('valid_cond', $_GET))
 		{
@@ -402,7 +402,7 @@ if(array_key_exists('from', $_GET) && $_GET['id_action'] != '')
 		$count = count($actionexplode);
 		while ($i < $count)
 		{
-			$echo = affiche_condition($actionexplode[$i], $sujet);
+			$echo = affiche_condition($actionexplode[$i], $sujet, $check_pet);
 			echo 
 			'
 				<tr class="combat">
