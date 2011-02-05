@@ -504,7 +504,7 @@ foreach($tab2 as $row)
 
 
 $tab = array();
-$requete = "SELECT royaume.race as race_joueur, (SUM( star_royaume ) * 50) AS tot FROM `quete_royaume` LEFT JOIN quete ON quete_royaume.id_quete = quete.id LEFT JOIN royaume ON quete_royaume.id_royaume = royaume.id GROUP BY id_royaume ORDER BY tot DESC";
+$requete = "SELECT royaume.race as race_joueur, (SUM( star_royaume ) * 20) AS tot FROM `quete_royaume` LEFT JOIN quete ON quete_royaume.id_quete = quete.id LEFT JOIN royaume ON quete_royaume.id_royaume = royaume.id GROUP BY id_royaume ORDER BY tot DESC";
 $req = $db->query($requete);
 while($row = $db->read_assoc($req))
 {
@@ -598,7 +598,7 @@ foreach($tab2 as $row)
 
 
 $tab = array();
-$requete = "SELECT race as race_joueur, (star * 50) as tot FROM `royaume` WHERE ID <> 0 ORDER BY star DESC";
+$requete = "SELECT race as race_joueur, (star * 25) as tot FROM `royaume` WHERE ID <> 0 ORDER BY star DESC";
 $req = $db->query($requete);
 while($row = $db->read_assoc($req))
 {
@@ -689,6 +689,100 @@ foreach($tab2 as $row)
 </tr>
 </table>
 
+<?php
+
+
+$tab = array();
+$requete = "SELECT race as race_joueur, ((pierre + bois + eau + sable + charbon + essence + food) * 25) as tot FROM `royaume` WHERE ID <> 0 ORDER BY star DESC";
+$req = $db->query($requete);
+while($row = $db->read_assoc($req))
+{
+	$tableau[$row['race_joueur']] += $row['tot'];
+	$tab[$row['race_joueur']] = $row['tot'];
+}
+
+?>
+<h2>Ressources du royaume</h2>
+<table>
+<tr>
+	<td class="space">
+		<table class="classroy">
+			<tr>
+				<td>
+					#
+				</td>
+				<td>
+					Royaume
+				</td>
+				<td>
+					Points
+				</td>
+			</tr>
+<?php
+array_multisort($tab, SORT_DESC);
+$tab2 = array();
+$keys = array_keys($tab);
+$i = 1;
+foreach($tab as $row)
+{
+	$tab2[$keys[($i - 1)]] = $row / $joueurs[$keys[($i - 1)]];
+	?>
+			<tr>
+				<td>
+					<?php echo $i; ?>
+				</td>
+				<td>
+					<?php echo $Gtrad[$keys[($i - 1)]]; ?>
+				</td>
+				<td>
+					<?php echo number_format($row, 0, ',', ' '); ?>
+				</td>
+			</tr>
+	<?php
+	$i++;
+}
+?>
+		</table>
+	</td>
+	<td class="space">
+		<table class="classroy">
+			<tr>
+				<td>
+					#
+				</td>
+				<td>
+					Royaume
+				</td>
+				<td>
+					Points / Joueur
+				</td>
+			</tr>
+<?php
+array_multisort($tab2, SORT_DESC);
+$keys = array_keys($tab2);
+$i = 1;
+foreach($tab2 as $row)
+{
+	?>
+			<tr>
+				<td>
+					<?php echo $i; ?>
+				</td>
+				<td>
+					<?php echo $Gtrad[$keys[($i - 1)]]; ?>
+				</td>
+				<td>
+					<?php echo number_format($row, 0, ',', ' '); ?>
+				</td>
+			</tr>
+	<?php
+	$i++;
+}
+?>
+		</table>
+	</td>
+</tr>
+</table>
 <?php
 
 
