@@ -175,6 +175,24 @@
 		</fieldset>
 		</div>
 		<?php
+		$requete = "SELECT * FROM diplomatie_demande WHERE royaume_recois = '".$joueur->get_race()."'";
+		$req = $db->query($requete);
+		if($db->num_rows > 0)
+		{
+			echo '<h3>Demande(s) diplomatiques</h3>
+			<ul>';
+			while($row = $db->read_assoc($req))
+			{
+				echo '
+				<li>
+					Le roi '.$Gtrad[$row['royaume_demande']].' vous demande de passer en diplomatie et vous donne '.$row['stars'].' stars : '.$Gtrad['diplo'.$row['diplo']].'<br />
+					Accépter ? <a href="gestion_royaume.php?direction=diplomatie_demande&amp;reponse=oui&amp;id_demande='.$row['id'].';" onclick="return envoiInfo(this.href, \'contenu_jeu\');">Oui</a> / <a href="gestion_royaume.php?direction=diplomatie_demande&amp;reponse=non&amp;id_demande='.$row['id'].';" onclick="return envoiInfo(this.href, \'contenu_jeu\');">Non</a>
+				</li>';
+			}
+			?>
+			</ul>
+			<?php
+		}
     break;
     
   case 'diplomatie_modif':
@@ -1178,24 +1196,6 @@
   		</fieldset>
   		<?php
   	}
-  }
-	$requete = "SELECT * FROM diplomatie_demande WHERE royaume_recois = '".$joueur->get_race()."'";
-	$req = $db->query($requete);
-	if($db->num_rows > 0)
-	{
-	    echo '<h3>Demande(s) diplomatiques</h3>
-	    <ul>';
-	    while($row = $db->read_assoc($req))
-	    {
-	        echo '
-	        <li>
-	            Le roi '.$Gtrad[$row['royaume_demande']].' vous demande de passer en diplomatie et vous donne '.$row['stars'].' stars : '.$Gtrad['diplo'.$row['diplo']].'<br />
-	            Accépter ? <a href="gestion_royaume.php?direction=diplomatie_demande&amp;reponse=oui&amp;id_demande='.$row['id'].';" onclick="return envoiInfo(this.href, \'contenu_jeu\');">Oui</a> / <a href="gestion_royaume.php?direction=diplomatie_demande&amp;reponse=non&amp;id_demande='.$row['id'].';" onclick="return envoiInfo(this.href, \'contenu_jeu\');">Non</a>
-	        </li>';
-	    }
-	    ?>
-	    </ul>
-	    <?php
-	}
+  }// Fin du switch
 ?>
 
