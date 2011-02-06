@@ -193,6 +193,32 @@ if(array_key_exists('valid_etape', $_GET))
 					$r1->sauver();
 					$r2->sauver();
 					
+					$donne_r1 = '';
+					$donne_r2 = '';
+					//Ce qu'a donné r1
+					if(intval($echange['ressource']['star'][$r1->get_id()]['nombre']) > 0) $donne_r1 .= ', '.intval($echange['ressource']['star'][$r1->get_id()]['nombre']).' stars';
+					if(intval($echange['ressource']['pierre'][$r1->get_id()]['nombre']) > 0) $donne_r1 .= ', '.intval($echange['ressource']['pierre'][$r1->get_id()]['nombre']).' pierre';
+					if(intval($echange['ressource']['bois'][$r1->get_id()]['nombre']) > 0) $donne_r1 .= ', '.intval($echange['ressource']['bois'][$r1->get_id()]['nombre']).' bois';
+					if(intval($echange['ressource']['eau'][$r1->get_id()]['nombre']) > 0) $donne_r1 .= ', '.intval($echange['ressource']['eau'][$r1->get_id()]['nombre']).' eau';
+					if(intval($echange['ressource']['sable'][$r1->get_id()]['nombre']) > 0) $donne_r1 .= ', '.intval($echange['ressource']['sable'][$r1->get_id()]['nombre']).' sable';
+					if(intval($echange['ressource']['charbon'][$r1->get_id()]['nombre']) > 0) $donne_r1 .= ', '.intval($echange['ressource']['charbon'][$r1->get_id()]['nombre']).' charbon';
+					if(intval($echange['ressource']['essence'][$r1->get_id()]['nombre']) > 0) $donne_r1 .= ', '.intval($echange['ressource']['essence'][$r1->get_id()]['nombre']).' essence';
+					if(intval($echange['ressource']['food'][$r1->get_id()]['nombre']) > 0) $donne_r1 .= ', '.intval($echange['ressource']['food'][$r1->get_id()]['nombre']).' food';
+					//Ce qu'a donné r2
+					if(intval($echange['ressource']['star'][$r2->get_id()]['nombre']) > 0) $donne_r2 .= ', '.intval($echange['ressource']['star'][$r2->get_id()]['nombre']).' stars';
+					if(intval($echange['ressource']['pierre'][$r2->get_id()]['nombre']) > 0) $donne_r2 .= ', '.intval($echange['ressource']['pierre'][$r2->get_id()]['nombre']).' pierre';
+					if(intval($echange['ressource']['bois'][$r2->get_id()]['nombre']) > 0) $donne_r2 .= ', '.intval($echange['ressource']['bois'][$r2->get_id()]['nombre']).' bois';
+					if(intval($echange['ressource']['eau'][$r2->get_id()]['nombre']) > 0) $donne_r2 .= ', '.intval($echange['ressource']['eau'][$r2->get_id()]['nombre']).' eau';
+					if(intval($echange['ressource']['sable'][$r2->get_id()]['nombre']) > 0) $donne_r2 .= ', '.intval($echange['ressource']['sable'][$r2->get_id()]['nombre']).' sable';
+					if(intval($echange['ressource']['charbon'][$r2->get_id()]['nombre']) > 0) $donne_r2 .= ', '.intval($echange['ressource']['charbon'][$r2->get_id()]['nombre']).' charbon';
+					if(intval($echange['ressource']['essence'][$r2->get_id()]['nombre']) > 0) $donne_r2 .= ', '.intval($echange['ressource']['essence'][$r2->get_id()]['nombre']).' essence';
+					if(intval($echange['ressource']['food'][$r2->get_id()]['nombre']) > 0) $donne_r2 .= ', '.intval($echange['ressource']['food'][$r2->get_id()]['nombre']).' food';
+					
+					//On met le log dans la base
+					$message_mail = $r1->get_race()." échange à ".$r2->get_race()."".$donne_r1." contre".$donne_r2;
+					$log_admin = new log_admin();
+					$log_admin->send($joueur->get_id(), 'Echange royaume', $message_mail);
+					
 					//On met a jour le statut de l'échange
 					//On passe l'échange en mode fini
 					$requete = "UPDATE echange_royaume SET statut = 'fini', date_fin = '".time()."' WHERE id_echange = '".sSQL($_GET['id_echange'], SSQL_INTEGER)."'";
