@@ -22,7 +22,7 @@ $W_distance = detection_distance($W_case,$_SESSION["position"]);
 
 $W_coord = convert_in_coord($W_case);
 
-$food_necessaire = floor($food_necessaire * $royaume->get_habitants());
+$food_necessaire = floor($food_necessaire * $royaume->get_habitants() * 0.95) + floor($royaume->get_food() * 0.05);
 ?>
 <div style='width:300px;float:left;'>
 

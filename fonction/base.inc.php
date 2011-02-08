@@ -628,11 +628,10 @@ function cout_pa2($coutpa, $joueur, $case, $diagonale)
 	{
 		if($batiment['augmentation_pa'] > 1)
 		{
-			$coutpa = $coutpa * $batiment['augmentation_pa'];
-			//Si on est sur son royaume réduction du cout de PA par 2
-			if($case->get_royaume() == $Trace[$joueur->get_race()]['numrace'])
+			//Si on est pas sur son royaume augmentation de PA
+			if($case->get_royaume() != $Trace[$joueur->get_race()]['numrace'])
 			{
-				$coutpa = ceil($coutpa / 2);
+				$coutpa = $coutpa * $batiment['augmentation_pa'];
 			}
 		}
 	}	

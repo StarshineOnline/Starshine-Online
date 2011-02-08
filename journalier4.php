@@ -211,7 +211,7 @@ $row = $db->read_assoc($req);
 if($row['nombre_joueur'] != 0) $food_necessaire = $row['food'] / $row['nombre_joueur'];
 else $food_necessaire = 0;
 
-$mail .= 'Nourriture nécessaire'.$food_necessaire."\n";
+$mail .= 'Nourriture nécessaire '.$food_necessaire."\n";
 
 //On récupère les infos des royaumes
 $requete = "SELECT id, race, food FROM royaume WHERE id != 0";
@@ -224,7 +224,7 @@ foreach($tab_royaume as $race => $royaume)
 {
 	$idpersos = "select id from perso where race = '$race' AND statut = 'actif'";
 
-	$royaume['food_necessaire'] = floor($food_necessaire * $royaume['actif']);
+	$royaume['food_necessaire'] = floor($food_necessaire * $royaume['actif'] * 0.95) + floor(0.05 * $royaume['food']);
 	//echo $royaume['race'].' '.$royaume['food_necessaire'].'<br />';
 	//Si ya assez de food
 	$mail .= "Race : ".$race." - Nécessaire : ".$royaume['food_necessaire']." / Possède : ".$royaume['food']."\n";

@@ -153,39 +153,47 @@ if(!$visu AND isset($_GET['action']))
 						//Si terrain neutre ou pas a nous ET que c'est pas dans un donjon
 						if((($R->get_diplo($joueur->get_race()) > 6 && $R->get_diplo($joueur->get_race()) != 127) OR $R->get_nom() == 'Neutre') AND !is_donjon($joueur->get_x(), $joueur->get_y()))
 						{
-							//On vérifie si ya pas déjà un batiment en construction
-							$requete = "SELECT id FROM placement WHERE x = ".$joueur->get_x()." AND y = ".$joueur->get_y();
-							$req = $db->query($requete);
-							if($db->num_rows <= 0)
+							//Si c'est un petit drapeau, on vérifie qu'on est uniquement sur neutre
+							if($row['nom'] == 'Petit Drapeau' && $R->get_nom() != 'Neutre')
 							{
-								//On vérifie si ya pas déjà un batiment
-								$requete = "SELECT id FROM construction WHERE x = ".$joueur->get_x()." AND y = ".$joueur->get_y();
-								$req = $db->query($requete);
-								if($db->num_rows <= 0)
-								{
-									//Positionnement du drapeau
-									$distance = calcul_distance(convert_in_pos($Trace[$joueur->get_race()]['spawn_x'], $Trace[$joueur->get_race()]['spawn_y']), ($joueur->get_pos()));
-									$time = time() + ($row['temps_construction'] * $distance);
-									$requete = "INSERT INTO placement (id, type, x, y, royaume, debut_placement, fin_placement, id_batiment, hp, nom, rez) VALUES('', 'drapeau', '".$joueur->get_x()."', '".$joueur->get_y()."', '".$Trace[$joueur->get_race()]['numrace']."', ".time().", '".$time."', '".$row['batiment_id']."', '".$row['hp']."', 'drapeau', 0)";
-									$db->query($requete);
-									//On supprime l'objet de l'inventaire
-									$joueur->supprime_objet($joueur->get_inventaire_slot_partie($_GET['key_slot'], true), 1);
-									$joueur->sauver();
-									echo '<h6>Drapeau posé avec succès</h6>';
-									
-									// Augmentation du compteur de l'achievement
-									$achiev = $joueur->get_compteur('pose_drapeaux');
-									$achiev->set_compteur($achiev->get_compteur() + 1);
-									$achiev->sauver();
-								}
-								else
-								{
-									echo '<h5>Il y a déjà un batiment sur cette case !</h5>';
-								}
+									echo '<h5>Vous ne pouvez pas poser de petit drapeau sur une case non neutre !</h5>';
 							}
 							else
 							{
-								echo '<h5>Il y a déjà un batiment en construction sur cette case !</h5>';
+								//On vérifie si ya pas déjà un batiment en construction
+								$requete = "SELECT id FROM placement WHERE x = ".$joueur->get_x()." AND y = ".$joueur->get_y();
+								$req = $db->query($requete);
+								if($db->num_rows <= 0)
+								{
+									//On vérifie si ya pas déjà un batiment
+									$requete = "SELECT id FROM construction WHERE x = ".$joueur->get_x()." AND y = ".$joueur->get_y();
+									$req = $db->query($requete);
+									if($db->num_rows <= 0)
+									{
+										//Positionnement du drapeau
+										$distance = calcul_distance(convert_in_pos($Trace[$joueur->get_race()]['spawn_x'], $Trace[$joueur->get_race()]['spawn_y']), ($joueur->get_pos()));
+										$time = time() + ($row['temps_construction'] * $distance);
+										$requete = "INSERT INTO placement (id, type, x, y, royaume, debut_placement, fin_placement, id_batiment, hp, nom, rez) VALUES('', 'drapeau', '".$joueur->get_x()."', '".$joueur->get_y()."', '".$Trace[$joueur->get_race()]['numrace']."', ".time().", '".$time."', '".$row['batiment_id']."', '".$row['hp']."', 'drapeau', 0)";
+										$db->query($requete);
+										//On supprime l'objet de l'inventaire
+										$joueur->supprime_objet($joueur->get_inventaire_slot_partie($_GET['key_slot'], true), 1);
+										$joueur->sauver();
+										echo '<h6>Drapeau posé avec succès</h6>';
+
+										// Augmentation du compteur de l'achievement
+										$achiev = $joueur->get_compteur('pose_drapeaux');
+										$achiev->set_compteur($achiev->get_compteur() + 1);
+										$achiev->sauver();
+									}
+									else
+									{
+										echo '<h5>Il y a déjà un batiment sur cette case !</h5>';
+									}
+								}
+								else
+								{
+									echo '<h5>Il y a déjà un batiment en construction sur cette case !</h5>';
+								}
 							}
 						}
 						else
