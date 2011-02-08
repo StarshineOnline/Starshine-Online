@@ -734,9 +734,12 @@ function verif_echange_royaume($id_echange, $id_royaume, $nombre = 0, $type_ress
 		if($royaume->$get() >= $nombre)
 		{
 			//Si ya déjà de cet ressource, on la supprime
-			if(array_key_exists($id_royaume, $echange['ressource'][$type_ressource]) && $echange['statut'] != 'finalisation')
+			if(isset($echange['ressource'][$type_ressource]))
 			{
-				echange_royaume_suppr($echange['ressource'][$type_ressource][$id_royaume]['id_echange_ressource']);
+				if(array_key_exists($id_royaume, $echange['ressource'][$type_ressource]) && $echange['statut'] != 'finalisation')
+				{
+					echange_royaume_suppr($echange['ressource'][$type_ressource][$id_royaume]['id_echange_ressource']);
+				}
 			}
 		}
 		else $check = false;
