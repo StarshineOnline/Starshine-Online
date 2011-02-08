@@ -27,7 +27,7 @@ $requete = "SELECT SUM(nombre) as food_bourse FROM bourse_royaume WHERE actif = 
 $req = $db->query($requete);
 $row = $db->read_assoc($req);
 $food_bourse = $row['food_bourse'];
-$food_necessaire = floor($food_necessaire * $royaume->get_habitants() * 0.95) + floor($royaume->get_food() * 0.05);
+$food_necessaire = floor($food_necessaire * $royaume->get_habitants() * 0.95) + floor(($royaume->get_food() + $food_bourse) * 0.05);
 ?>
 <div style='width:300px;float:left;'>
 
