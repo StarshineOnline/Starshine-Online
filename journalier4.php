@@ -222,9 +222,14 @@ while($row = $db->read_assoc($req))
 }
 foreach($tab_royaume as $race => $royaume)
 {
+	//On prend en compte la nourriture en bourse dans les stocks
+	$requete = "SELECT SUM(nombre) as food_bourse FROM bourse_royaume WHERE actif = 1 AND id_royaume = ".$royaume['id'];
+	$req = $db->query($requete);
+	$row = $db->read_assoc($req);
+	$food_bourse = $row['food_bourse'];
 	$idpersos = "select id from perso where race = '$race' AND statut = 'actif'";
 
-	$royaume['food_necessaire'] = floor($food_necessaire * $royaume['actif'] * 0.95) + floor(0.05 * $royaume['food']);
+	$royaume['food_necessaire'] = floor($food_necessaire * $royaume['actif'] * 0.95) + floor(0.05 * ($royaume['food'] + $food_bourse));
 	//echo $royaume['race'].' '.$royaume['food_necessaire'].'<br />';
 	//Si ya assez de food
 	$mail .= "Race : ".$race." - Nécessaire : ".$royaume['food_necessaire']." / Possède : ".$royaume['food']."\n";
