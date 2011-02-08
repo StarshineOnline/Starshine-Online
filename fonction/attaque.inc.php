@@ -283,7 +283,7 @@ function attaque($acteur = 'attaquant', $competence, &$effects)
 		}
       	if(array_key_exists('coup_mortel', $actif->etat))
 		{
-			$degat = $degat * 4;
+			$degat = $degat * 3;
 		}
       	$PP = round(($passif->get_pp() * $buff_bene_bouclier * $buff_batiment_bouclier * $aura_pierre) / ($buff_berz_bouclier * $debuff_acide));
 
@@ -322,7 +322,7 @@ function attaque($acteur = 'attaquant', $competence, &$effects)
     	if($actif->get_race() == 'elfebois') $actif_chance_critique *= 1.15;
       	if(array_key_exists('coup_mortel', $actif->etat))
 		{
-			$actif_chance_critique *= 1.7;
+			$actif_chance_critique *= 1 + ($actif->etat['coup_mortel']['effet2']/100);
 			unset($actif->etat['coup_mortel']);
 		}
 	    //Enchantement critique

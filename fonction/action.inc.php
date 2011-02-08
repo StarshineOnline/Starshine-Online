@@ -1133,6 +1133,7 @@ function lance_comp($id, $acteur, &$effects)
 			echo '&nbsp;&nbsp;<strong>'.$actif->get_nom().'</strong> utilise '.$row['nom'].'<br />';
 			$actif->set_potentiel_toucher($actif->get_potentiel_toucher() * (1 - ($row['effet'] / 100)));
 			$actif->etat['coup_mortel']['effet'] = true;
+			$actif->etat['coup_mortel']['effet2'] = $row['effet2'];
 			$actif->etat['coup_mortel']['duree'] = 1;
 			$comp_attaque = true;
 		break;
