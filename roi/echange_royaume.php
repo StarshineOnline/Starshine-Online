@@ -187,8 +187,8 @@ if(array_key_exists('valid_etape', $_GET))
 					$r1->set_essence($r1->get_essence() + intval($echange['ressource']['essence'][$r2->get_id()]['nombre']) - intval($echange['ressource']['essence'][$r1->get_id()]['nombre']));
 					$r2->set_essence($r2->get_essence() + intval($echange['ressource']['essence'][$r1->get_id()]['nombre']) - intval($echange['ressource']['essence'][$r2->get_id()]['nombre']));
 					
-					$r1->set_food($r1->get_star() + intval($echange['ressource']['food'][$r2->get_id()]['nombre']) - intval($echange['ressource']['food'][$r1->get_id()]['nombre']));
-					$r2->set_food($r2->get_star() + intval($echange['ressource']['food'][$r1->get_id()]['nombre']) - intval($echange['ressource']['food'][$r2->get_id()]['nombre']));
+					$r1->set_food($r1->get_food() + intval($echange['ressource']['food'][$r2->get_id()]['nombre']) - intval($echange['ressource']['food'][$r1->get_id()]['nombre']));
+					$r2->set_food($r2->get_food() + intval($echange['ressource']['food'][$r1->get_id()]['nombre']) - intval($echange['ressource']['food'][$r2->get_id()]['nombre']));
 					
 					$r1->sauver();
 					$r2->sauver();
