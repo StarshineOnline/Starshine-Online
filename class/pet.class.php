@@ -449,7 +449,7 @@ class pet extends map_monstre
 			$this->pp = 0;
 			$this->pm = 0;
 			// Pièces d'armure
-			$partie_armure = array('selle', 'tete', 'torse', 'main', 'ceinture', 'jambe', 'chaussure', 'dos', 'cou', 'doigt');
+			$partie_armure = array('cou', 'selle', 'dos', 'torse');
 			foreach($partie_armure as $partie)
 			{
 				if($partie != '')
@@ -485,21 +485,8 @@ class pet extends map_monstre
 			}
 			$this->pp_base = $this->pp;
 			$this->pm_base = $this->pm;
-			//Bonus raciaux
-			/*if($this->get_race() == 'nain') $this->pm = round(($this->pm + 10) * 1.1);
-			if($this->get_race() == 'barbare') $this->pp = round(($this->pp + 10) * 1.3);
-			if($this->get_race() == 'scavenger')
-			{
-				$this->pp = round($this->pp * 1.15);
-				$this->pm = round($this->pm * 1.05);
-			}
-			if($this->get_race() == 'mortvivant' AND moment_jour() == 'Soir')
-			{
-				$this->pp = round($this->pp * 1.15);
-				$this->pm = round($this->pm * 1.15);
-			}
 
-			//Effets des enchantements
+			/*//Effets des enchantements
 			if (isset($this->enchantement['pourcent_pm'])) $this->pm += floor($this->pm * $this->enchantement['pourcent_pm']['effet'] / 100);
 			if (isset($this->enchantement['pourcent_pp']))	$this->pp += floor($this->pp * $this->enchantement['pourcent_pp']['effet'] / 100);
 
@@ -541,17 +528,24 @@ class pet extends map_monstre
 	
 	function get_distance_tir()
 	{
+		global $db;
+		$distance = 0;
 		$joueur = new perso($this->get_id_joueur());
 		$arme = $joueur->inventaire_pet()->arme_pet;
 		if(!isset($this->arme_pet)) $this->get_arme();
 		if($this->arme_pet)
 		{
-			$arme = $this->arme_pet->distance_tir;
-			/*if($this->is_buff('longue_portee')) $bonus = $this->get_buff('longue_portee', 'effet');
-			else $bonus = 0;*/
-			return ($arme);
+			$distance += $this->arme_pet->distance_tir;
 		}
-		return 0;
+		$laisse = decompose_objet($joueur->get_inventaire_partie("cou", true));
+		if($laisse['id_objet'] != '')
+		{
+			$requete = "SELECT distance_tir FROM objet_pet WHERE id = ".$laisse['id_objet'];
+			$req = $db->query($requete);
+			$row = $db->read_row($req);
+			$distance += $row[0];
+		}
+		return $distance;
 	}
 	
 	public $reserve_bonus;

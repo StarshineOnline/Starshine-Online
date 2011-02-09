@@ -77,11 +77,11 @@ $joueur = new perso($joueur_id);
 $tab_loc = array();
 
 $tab_loc[0]['loc'] = 'cou';
-$tab_loc[0]['type'] = 'collier';
+$tab_loc[0]['type'] = 'armure';
 $tab_loc[1]['loc'] = 'selle';
-$tab_loc[1]['type'] = 'selle';
+$tab_loc[1]['type'] = 'armure';
 $tab_loc[2]['loc'] = 'dos';
-$tab_loc[2]['type'] = 'dos';
+$tab_loc[2]['type'] = 'armure';
 
 $tab_loc[3]['loc'] = 'arme_pet';
 $tab_loc[3]['type'] = 'arme_pet';
