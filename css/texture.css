@@ -1370,6 +1370,21 @@
 .tex4551{background:url('../image/texture/donjon_aquatique/sol_chute_tronc_hm.png') no-repeat;}
 .tex4552{background:url('../image/texture/donjon_aquatique/sol_chute_tronc_bd.png') no-repeat;}
 .tex4553{background:url('../image/texture/donjon_aquatique/sol_chute_eau.png') no-repeat;}
+.tex4554{background:url('../image/texture/donjon_aquatique/sol_chute_entre_mg2.png') no-repeat;}
+.tex4555{background:url('../image/texture/donjon_aquatique/sol_chute_entre_mg.png') no-repeat;}
+.tex4556{background:url('../image/texture/donjon_aquatique/sol_chute_entre_m.png') no-repeat;}
+.tex4557{background:url('../image/texture/donjon_aquatique/sol_chute_entre_hg.png') no-repeat;}
+.tex4558{background:url('../image/texture/donjon_aquatique/sol_chute_entre_hg2.png') no-repeat;}
+.tex4559{background:url('../image/texture/donjon_aquatique/sol_chute_entre_hg3.png') no-repeat;}
+.tex4560{background:url('../image/texture/donjon_aquatique/sol_chute_entre_hmg.png') no-repeat;}
+.tex4561{background:url('../image/texture/donjon_aquatique/sol_chute_entre_hm.png') no-repeat;}
+.tex4562{background:url('../image/texture/donjon_aquatique/sol_chute_entre_md2.png') no-repeat;}
+.tex4563{background:url('../image/texture/donjon_aquatique/sol_chute_entre_md3.png') no-repeat;}
+.tex4564{background:url('../image/texture/donjon_aquatique/sol_chute_entre_hmd.png') no-repeat;}
+.tex4565{background:url('../image/texture/donjon_aquatique/sol_chute_entre_hmd2.png') no-repeat;}
+.tex4566{background:url('../image/texture/donjon_aquatique/sol_chute_entre_bd.png') no-repeat;}
+.tex4567{background:url('../image/texture/donjon_aquatique/sol_chute_entre_bd2.png') no-repeat;}
+.tex4568{background:url('../image/texture/donjon_aquatique/sol_chute_entre.png') no-repeat;}
 
 .tex3600{background:url('../image/texture/donjon_gobelin/mur nord.png') no-repeat;}
 .tex3601{background:url('../image/texture/donjon_gobelin/mur gobelin nord g.png') no-repeat;}
