@@ -21,7 +21,18 @@ $W_row = $db->read_array($W_req);
 $R = new royaume($W_row['royaume']);
 //$R = get_royaume_info($joueur->get_race(), $W_row['royaume']);
 $_SESSION['position'] = $position;
-include_once(root.'ville_bas.php');
+?>
+<fieldset>
+<?php
+if($W_row['type'] == 1)
+{
+	//-- On verifie que le joueur est bien sur la ville ($W_distance)
+	echo "<script type='text/javascript'>return nd();</script>";
+	echo "<legend>
+		   <a href=\"ville.php\" onclick=\"return envoiInfo(this.href, 'centre');\">".$R->get_nom()."</a> >
+		   <a href=\"terrain.php\" onclick=\"return envoiInfo(this.href, 'carte');\"> Votre terrain </a>
+		  </legend>";
+	include_once(root."ville_bas.php");
 	?>
 <div class="ville_test">
 	<?php
@@ -126,7 +137,7 @@ include_once(root.'ville_bas.php');
 						$nom = nom_objet($objet['id']);
 						if($objet['stack'] != '') $stack = ' X'.$objet['stack'];
 						else $stack = '';
-						echo $nom.$stack.'<a href="terrain.php?id_construction='.$construction->id.'&amp;depose='.$key.'" onclick="return envoiInfo(this.href, \'carte\');">Déposer dans votre coffre</a><br />';
+						echo $nom.$stack.' <a href="terrain.php?id_construction='.$construction->id.'&amp;depose='.$key.'" onclick="return envoiInfo(this.href, \'carte\');">Déposer dans votre coffre</a><br />';
 					}
 				break;
 				case 'laboratoire' :
@@ -415,3 +426,7 @@ include_once(root.'ville_bas.php');
 		echo 'Ce n\'est pas votre royaume.';
 	?>
 </div>
+<?php
+}
+?>
+</fieldset>

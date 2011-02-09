@@ -208,6 +208,12 @@ function nom_objet($id_objet)
 		case 'l' :
 			$table = 'grimoire';
 		break;
+		case 'r' :
+			$table = 'objet_royaume';
+		break;
+		case 'd' :
+			$table = 'objet_pet';
+		break;
 	}
 	$requete = "SELECT nom FROM ".$table." WHERE id = ".$objet['id_objet'];
 	$req = $db->query($requete);

@@ -18,11 +18,18 @@ $W_row = $db->read_assoc($W_req);
 $R = new royaume($W_row['royaume']);
 $R->get_diplo($joueur->get_race());
 
+echo "<fieldset>";
+
 if($W_row['type'] == 1)
 {
+	//-- On verifie que le joueur est bien sur la ville ($W_distance)
+	echo "<script type='text/javascript'>return nd();</script>";
+	echo "<legend>
+		   <a href=\"ville.php\" onclick=\"return envoiInfo(this.href, 'centre');\">".$R->get_nom()."</a> >
+		   <a href=\"vente_terrain.php\" onclick=\"return envoiInfo(this.href, 'carte');\"> Vente de terrains </a>
+		  </legend>";
+	include_once(root."ville_bas.php");
 	?>
-	<h2 class="ville_titre"><?php if(verif_ville($joueur->get_x(), $joueur->get_y())) return_ville('<a href="ville.php" onclick="return envoiInfo(this.href, \'centre\')">'.$R->get_nom().'</a> -', $joueur->get_pos()); ?> <?php echo '<a href="vente_terrain.php" onclick="return envoiInfo(this.href, \'carte\')">';?> Ventes de terrain </a></h2>
-	<?php include_once(root.'ville_bas.php');?>
 	<div class="ville_test">
 	<?php
 	if(isset($_GET['action']))
@@ -112,3 +119,4 @@ if($W_row['type'] == 1)
 	}
 }
 ?>
+</fieldset>
