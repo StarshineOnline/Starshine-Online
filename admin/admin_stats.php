@@ -48,15 +48,15 @@ else
 		<option value="16">Joueurs ayant fini le plus de quêtes</option>
 	</select>
 	<select name="table">
+		<option value="journal">journal</option>
 	<?php
 	require_once('../connect_log.php');
-	$requete = "SHOW TABLES STATUS name like 'journal%'";
+	$requete = "SHOW TABLE STATUS FROM starshine_log_08 like 'journal%'";
 	$req = $db_log->query($requete);
 	while($row = $db_log->read_assoc($req))
 	{
-		var_dump($row);
 		?>
-		<option value="<?php echo $row['Tables_in_starshine_log']; ?>"><?php echo $row['Tables_in_starshine_log']; ?></option>
+		<option value="<?php echo $row['Name']; ?>"><?php echo $row['Name']; ?></option>
 		<?php
 	}
 	?>
@@ -192,9 +192,11 @@ else
 			</td>
 		</tr>
 		<?php
-		$req = $db_log->query($requete);
+		if($table == 'journal') $db_scan = $db;
+		else $db_scan = $db_log;
+		$req = $db_scan->query($requete);
 		$i = 1;
-		while($row = $db_log->read_assoc($req) AND $i < 51)
+		while($row = $db_scan->read_assoc($req) AND $i < 51)
 		{
 			if($row['tot'] > $min)
 			{
