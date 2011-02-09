@@ -92,136 +92,33 @@ $joueur = new perso($_SESSION['ID']);
 		$script_defense = recupaction_all($joueur->get_action_d());
 		?>
 			Voici l'interface du script de combat, grâce à celui-ci vous pourrez attaquer avec des sorts ou des compétences.<br />
+			<a href="action.php?mode=s" onclick="return envoiInfo(this.href, 'information');">Créer un script de combat simple</a> - <a href="action.php?mode=a" onclick="return envoiInfo(this.href, 'information');">Créer un script de combat avancé</a>
 			<fieldset>
-				<legend>Création</legend>
+				<legend>Listing</legend>
 				<ul>
-					<li><a href="action.php?mode=s" onclick="return envoiInfo(this.href, 'information');">Créer un script de combat en mode simplifié</a></li>
-					<li><a href="action.php?mode=a" onclick="return envoiInfo(this.href, 'information');">Créer un script de combat en mode avancé</a></li>
-					<li>
-						Copier le script : <select name="id_action_c" id="id_action_c">
-							<?php
-								$requete = "SELECT * FROM action_perso WHERE id_joueur = ".$joueur->get_id()." ORDER BY nom ASC";
-								$req = $db->query($requete);
-								while($row = $db->read_assoc($req))
-								{
-									echo '<option value="'.$row['id'].'">'.$row['nom'].'</option>';
-								}
-							?>
-								</select>
-								en le nommant <input type="text" value="copie" name="nom_copie" id="nom_copie" style="width : 50px;" />
- 								<input type="button" name="valid" value="Copier" onclick="envoiInfo('actions.php?action=dupliq&amp;id_action=' + document.getElementById('id_action_c').value + '&amp;nom_copie=' + document.getElementById('nom_copie').value, 'information');" />
+				<?php
+				$requete = "SELECT * FROM action_perso WHERE id_joueur = ".$joueur->get_id()." ORDER BY nom ASC";
+				$req = $db->query($requete);
+				while($row = $db->read_assoc($req))
+				{
+					if($row['nom']==$script_attaque['nom']) $type = '<img src="/image/interface/attaquer.png" alt="att" title="Script d\'attaque" /> ';
+					elseif($row['nom']==$script_defense['nom']) $type = '<img src="/image/interface/icone_defense_bataille.png" alt="def" title="Script de défense" /> ';
+					else $type = '';
+					?>
+					<li><?php echo $type.$row['nom']; ?>
+						<span class="options">
+							<img src="/image/interface/attaquer.png" alt="att" title="Définir comme script d'attaque" onclick="envoiInfo('actions.php?action=select&amp;type=attaque&amp;id_action=<?php echo $row['id']; ?>', 'information');" />
+							<img src="/image/interface/icone_defense_bataille.png" alt="def" title="Définir comme script de défense" onclick="envoiInfo('actions.php?action=select&amp;type=defense&amp;id_action=<?php echo $row['id']; ?>', 'information');" />
+							<img src="/image/interface/valid.png" alt="modif" title="Modifier" onclick="envoiInfo('action.php?from=modif&amp;id_action=<?php echo $row['id']; ?>', 'information');" />
+							<img src="/image/interface/copier.png" alt="copie" title="Copier" onclick="envoiInfo('actions.php?action=dupliq&amp;id_action=<?php echo $row['id']; ?>&amp;nom_copie=copie', 'information');" />
+							<img src="/image/interface/croix_quitte.png" alt="suppr" title="Supprimer" onclick="if(confirm('Voulez vous vraiment supprimer ce script ?')) envoiInfo('actions.php?action=suppr_action&amp;id_action=<?php echo $row['id']; ?>', 'information');" />
+						</span>
 					</li>
+					<?php
+				}
+				?>
 				</ul>
-			</fieldset>
-			<fieldset>
-				<legend>Utilisation</legend>
-				<table>
-					<tr>
-						<td>
-							Script d'attaque
-						</td>
-						<td>
-							: <select name="id_action_a" id="id_action_a">
-						<?php
-						$requete = "SELECT * FROM action_perso WHERE id_joueur = ".$joueur->get_id()." ORDER BY nom ASC";
-						$req = $db->query($requete);
-						while($row = $db->read_assoc($req))
-						{
-							if ($row['nom']==$script_attaque['nom'])
-							{
-								echo '<option value="'.$row['id'].'" selected="selected">'.$row['nom'].'</option>';
-							}
-							else
-							{
-								echo '<option value="'.$row['id'].'">'.$row['nom'].'</option>';
-							}
-						}
-						?>
-							</select>
-						</td>
-						<td>
-							<input type="button" name="valid" value="Utiliser" onclick="envoiInfo('actions.php?action=select&amp;type=attaque&amp;id_action=' + document.getElementById('id_action_a').value, 'information');" />
-						</td>
-					</tr>
-					<tr>
-						<td>
-							Script de défense
-						</td>
-						<td>
-							: <select name="id_action_d" id="id_action_d">
-							<?php
-								$requete = "SELECT * FROM action_perso WHERE id_joueur = ".$joueur->get_id()." ORDER BY nom ASC";
-								$req = $db->query($requete);
-								while($row = $db->read_assoc($req))
-								{
-									if ($row['nom']==$script_defense['nom'])
-									{
-										echo '<option value="'.$row['id'].'" selected="selected">'.$row['nom'].'</option>';
-									}
-									else
-									{
-										echo '<option value="'.$row['id'].'">'.$row['nom'].'</option>';
-									}
-								}
-							?>
-								</select>
-						</td>
-						<td>
-							<input type="button" name="valid" value="Utiliser" onclick="envoiInfo('actions.php?action=select&amp;type=defense&amp;id_action=' + document.getElementById('id_action_d').value, 'information');" />
-						</td>
-					</tr>
-					</table>
-			</fieldset>
-			<fieldset>
-				<legend>Modification</legend>
-				<table>
-					<tr>
-						<td>
-							Modifier
-						</td>
-						<td>
-							 : <select name="id_action" id="id_action">
-						<?php
-						$requete = "SELECT * FROM action_perso WHERE id_joueur = ".$joueur->get_id()." ORDER BY nom ASC";
-						$req = $db->query($requete);
-						while($row = $db->read_assoc($req))
-						{
-							?>
-							<option value="<?php echo $row['id']; ?>"><?php echo $row['nom']; ?></option>
-							<?php
-						}
-						?>
-							</select>
-						</td>
-						<td>
-							<input type="button" name="valid" value="Modifier" style="width : 100px;" onclick="envoiInfo('action.php?from=modif&amp;id_action=' + document.getElementById('id_action').value, 'information');" />
-						</td>
-					</tr>
-					<tr>
-						<td>
-							Supprimer
-						</td>
-						<td>
-							: <select name="id_action_suppr" id="id_action_suppr">
-							<?php
-							$requete = "SELECT * FROM action_perso WHERE id_joueur = ".$joueur->get_id()." ORDER BY nom ASC";
-							$req = $db->query($requete);
-							while($row = $db->read_assoc($req))
-							{
-								?>
-								<option value="<?php echo $row['id']; ?>"><?php echo $row['nom']; ?></option>
-								<?php
-							}
-							?>
-							</select>
-						</td>
-						<td>
-							<input type="button" name="valid" value="Supprimer" style="width : 100px;" onclick="if(confirm('Voulez vous vraiment supprimer cette action ?')) envoiInfo('actions.php?action=suppr_action&amp;id_action=' + document.getElementById('id_action_suppr').value, 'information');" />
-						</td>
-					</tr>
-				</table>
 		<br />
-		</form>
 		</fieldset>
 		<fieldset>
 			<legend>Aide</legend>
