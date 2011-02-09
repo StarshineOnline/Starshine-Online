@@ -49,7 +49,7 @@ else
 	</select>
 	<select name="table">
 	<?php
-	require_once('connect_log.php');
+	require_once('../connect_log.php');
 	$requete = "SHOW TABLES WHERE Tables_in_starshine_log like 'journal%'";
 	$req = $db_log->query($requete);
 	while($row = $db_log->read_assoc($req))
