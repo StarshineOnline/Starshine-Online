@@ -433,7 +433,7 @@ if(!$visu AND isset($_GET['action']))
 			$objet = decompose_objet($joueur->get_inventaire_slot_partie($_GET['key_slot']));
 			$categorie = empty($objet['categorie'])?mb_substr($id_objet, 0, 1):$objet['categorie'];
 			//Rétrocompatibilité avec anciens inventaires
-			if($categorie != 'a' AND $categorie != 'p' AND $categorie != 'o' AND $categorie != 'g' AND $categorie != 'm' AND $categorie != 'l')
+			if($categorie != 'a' AND $categorie != 'p' AND $categorie != 'o' AND $categorie != 'g' AND $categorie != 'm' AND $categorie != 'l' AND $categorie != 'd')
 			{
 				$categorie = 'p';
 			}
@@ -454,6 +454,12 @@ if(!$visu AND isset($_GET['action']))
 					//Récupération des infos de l'objet
 					$req = $db->query($requete);
 					$row = $db->read_array($req);
+					$partie = $row['type'];
+				break;
+				case 'd' :
+					$requete = "SELECT * FROM objet_pet WHERE id = ".$id_objet;
+					$req = $db->query($requete);
+					$row = $db->read_assoc($req);
 					$partie = $row['type'];
 				break;
 				case 'o' :
@@ -519,6 +525,12 @@ if(!$visu AND isset($_GET['action']))
 						//Récupération des infos de l'objet
 						$req = $db->query($requete);
 						$row = $db->read_array($req);
+						$partie = $row['type'];
+					break;
+					case 'd' :
+						$requete = "SELECT * FROM objet_pet WHERE id = ".$objet['id_objet'];
+						$req = $db->query($requete);
+						$row = $db->read_assoc($req);
 						$partie = $row['type'];
 					break;
 					case 'o' :
@@ -609,6 +621,13 @@ if(!$visu AND isset($_GET['action']))
 								//Récupération des infos de l'objet
 								$req = $db->query($requete);
 								$row = $db->read_array($req);
+								$partie = $row['type'];
+								$objet_id = $objet;
+							break;
+							case 'd' :
+								$requete = "SELECT * FROM objet_pet WHERE id = ".$objet_d['id_objet'];
+								$req = $db->query($requete);
+								$row = $db->read_assoc($req);
 								$partie = $row['type'];
 								$objet_id = $objet;
 							break;

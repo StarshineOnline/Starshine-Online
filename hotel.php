@@ -97,6 +97,7 @@ if($W_row['type'] == 1)
 				<ul id='hotel_liste_type'>
 				 <li ".$url."arme".$urlfin."Armes|</li>
 				 <li ".$url."armure".$urlfin."Armures|</li>
+				 <li ".$url."dressage".$urlfin."Dressage|</li>
 				 <li ".$url."accessoire".$urlfin."Access.|</li>
 				 <li ".$url."objet".$urlfin."Objets|</li>
 				 <li ".$url."gemme".$urlfin."Gemmes|</li>
@@ -125,6 +126,7 @@ if($W_row['type'] == 1)
 		{//-- Récupération du filtre
 			case "arme" :		$abbr = "a";	break;
 			case "armure" :		$abbr = "p";	break;
+			case "dressage" :	$abbr = "d";	break;
 			case "objet" :		$abbr = "o";	break;
 			case "gemme" :		$abbr = "g";	break;
 			case "accessoire" :	$abbr = "m";	break;
