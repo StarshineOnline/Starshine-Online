@@ -50,10 +50,11 @@ else
 	<select name="table">
 	<?php
 	require_once('../connect_log.php');
-	$requete = "SHOW TABLES WHERE Tables_in_starshine_log like 'journal%'";
+	$requete = "SHOW TABLES STATUS name like 'journal%'";
 	$req = $db_log->query($requete);
 	while($row = $db_log->read_assoc($req))
 	{
+		var_dump($row);
 		?>
 		<option value="<?php echo $row['Tables_in_starshine_log']; ?>"><?php echo $row['Tables_in_starshine_log']; ?></option>
 		<?php
