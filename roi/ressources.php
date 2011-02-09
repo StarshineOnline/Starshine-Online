@@ -121,7 +121,7 @@ where b.type = 'mine'";
 	while($row = $db->read_assoc($req))
 	{
 		$terrain = type_terrain($row['info']);
-		$ress_terrain = $ress[utf8_decode($terrain[1])];
+		$ress_terrain = $ress[$terrain[1]];
 		if($batiment[$row['id_batiment']]['specialite'] != 0)
 		{
 			switch($batiment[$row['id_batiment']]['specialite'])
