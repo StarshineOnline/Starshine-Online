@@ -95,7 +95,7 @@ $joueur = new perso($_SESSION['ID']);
 			<a href="action.php?mode=s" onclick="return envoiInfo(this.href, 'information');">Créer un script de combat simple</a> - <a href="action.php?mode=a" onclick="return envoiInfo(this.href, 'information');">Créer un script de combat avancé</a>
 			<fieldset>
 				<legend>Listing</legend>
-				<ul>
+				<ul id="liste_script">
 				<?php
 				$requete = "SELECT * FROM action_perso WHERE id_joueur = ".$joueur->get_id()." ORDER BY nom ASC";
 				$req = $db->query($requete);
