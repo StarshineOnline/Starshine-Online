@@ -278,7 +278,7 @@ h3.old { border-top:1px solid; border-bottom:1px solid; border-color:#888; margi
 /***************************************************
   Script de combat
  ***************************************************/
-#liste_script li {height : 20px; line-height : 20px;}
+#liste_script li {height : 22px; line-height : 20px; clear : both;}
 .options {padding-left : 8px;}
 .edit { background:transparent url(./../image/edit.png) no-repeat scroll top; height:16px; width:16px; display:block; float:left;}
 .copy { background:transparent url(./../image/copy.png) no-repeat scroll top; height:16px; width:16px; display:block; float:left;}
