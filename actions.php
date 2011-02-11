@@ -103,9 +103,9 @@ $joueur = new perso($_SESSION['ID']);
 				{
 					$type = '';
 					if($row['nom']==$script_attaque['nom']) $type .= '<img src="image/interface/attaquer.png" alt="att" style="width : 16px; height : 16px;" title="Script d\'attaque" /> ';
-					else $type = '<a><span class="space"></span></a> ';
+					else $type .= '<a><span class="space"></span></a> ';
 					if($row['nom']==$script_defense['nom']) $type .= ' <a><span class="shield" title="Script de défense"> </span></a> ';
-					else $type = '<a><span class="space"></span></a> ';
+					else $type .= '<a><span class="space"></span></a> ';
 					?>
 					<li><span class="" style="float : left; width : 270px;"><?php echo $type.$row['nom']; ?></span>
 						<span class="options">
