@@ -102,16 +102,16 @@ $joueur = new perso($_SESSION['ID']);
 				while($row = $db->read_assoc($req))
 				{
 					if($row['nom']==$script_attaque['nom']) $type = '<img src="image/interface/attaquer.png" alt="att" title="Script d\'attaque" /> ';
-					elseif($row['nom']==$script_defense['nom']) $type = '<img src="image/interface/icone_defense_bataille.png" alt="def" title="Script de défense" /> ';
-					else $type = '';
+					elseif($row['nom']==$script_defense['nom']) $type = '<a><span class="shield" title="Script de défense"> </span></a> ';
+					else $type = '<a><span class="space"> </span></a> ';
 					?>
-					<li><?php echo $type.$row['nom']; ?>
+					<li><span class="" style="float : left;"><?php echo $type.$row['nom']; ?></span>
 						<span class="options">
 							<img src="image/interface/attaquer.png" alt="att" title="Définir comme script d'attaque" onclick="envoiInfo('actions.php?action=select&amp;type=attaque&amp;id_action=<?php echo $row['id']; ?>', 'information');" />
-							<img src="image/interface/icone_defense_bataille.png" alt="def" title="Définir comme script de défense" onclick="envoiInfo('actions.php?action=select&amp;type=defense&amp;id_action=<?php echo $row['id']; ?>', 'information');" />
-							<img src="image/interface/valid.png" alt="modif" title="Modifier" onclick="envoiInfo('action.php?from=modif&amp;id_action=<?php echo $row['id']; ?>', 'information');" />
-							<img src="image/interface/copier.png" alt="copie" title="Copier" onclick="envoiInfo('actions.php?action=dupliq&amp;id_action=<?php echo $row['id']; ?>&amp;nom_copie=copie', 'information');" />
-							<img src="image/interface/croix_quitte.png" alt="suppr" title="Supprimer" onclick="if(confirm('Voulez vous vraiment supprimer ce script ?')) envoiInfo('actions.php?action=suppr_action&amp;id_action=<?php echo $row['id']; ?>', 'information');" />
+							<a title="Définir comme script de défense" onclick="envoiInfo('actions.php?action=select&amp;type=defense&amp;id_action=<?php echo $row['id']; ?>', 'information'); return false;"><span class="shield"></span></a>
+							<a title="Modifier" onclick="envoiInfo('action.php?from=modif&amp;id_action=<?php echo $row['id']; ?>', 'information');"><span class="edit"></span></a>
+							<a title="Copier" onclick="envoiInfo('actions.php?action=dupliq&amp;id_action=<?php echo $row['id']; ?>&amp;nom_copie=copie', 'information');"><span class="copy"></span></a>
+							<a title="Supprimer ce script de combat" onclick="if(confirm('Voulez vous vraiment supprimer ce script ?')) envoiInfo('actions.php?action=suppr_action&amp;id_action=<?php echo $row['id']; ?>', 'information');"><span class="del"></span></a>
 						</span>
 					</li>
 					<?php

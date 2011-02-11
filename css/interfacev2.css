@@ -289,6 +289,10 @@ div.spacer { clear:both; }
 .masq:hover { background-position:bottom!important; }
 .msg_cache { background:transparent url(./../image/messagerie_cacher.png) no-repeat scroll top; height:16px; width:16px; display:block; float:left; }
 .msg_voir { background:transparent url(./../image/messagerie_voir.png) no-repeat scroll top; height:16px; width:16px; display:block; float:left; }
+.edit { background:transparent url(./../image/edit.png) no-repeat scroll top; height:16px; width:16px; display:block; float:left;}
+.copy { background:transparent url(./../image/copy.png) no-repeat scroll top; height:16px; width:16px; display:block; float:left;}
+.shield { background:transparent url(./../image/shield.png) no-repeat scroll top; height:16px; width:16px; display:block; float:left;}
+.space { height:16px; width:16px; display:block; float:left;}
 h3.messagerie span.auteur { position:absolute; left:0; font-weight:bold; font-size:11px; display:block; width:114px; text-align:center; text-transform:capitalize; }
 h3.messagerie span.titre { position:absolute; left:114px; color:#828387; font-weight:normal; }
 .messagerie span.date { font-style:italic; font-size:.7em; }
