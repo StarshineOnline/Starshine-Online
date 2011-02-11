@@ -274,6 +274,17 @@ textarea#css, textarea#description { width: 500px; height:150px; }
 #information h2 { padding-left:25px; line-height:25px; font-size:1.4em; font-family:"Trebuchet MS", Times, serif; font-variant:small-caps; text-align:center; margin-top:5px; margin-bottom:8px; padding:0; background-color:#D8AB41; border-bottom:1px solid #888888; border-color:#888888; border-top:1px solid #888888; color:#000000; }
 h3.old { border-top:1px solid; border-bottom:1px solid; border-color:#888; margin-top:10px; margin-bottom:5px; padding-left:10px; background-color:#91AEF2; font-family:"Trebuchet MS", Times, serif; font-variant:small-caps; }
 
+
+/***************************************************
+  Script de combat
+ ***************************************************/
+.options {margin-left : 8px;}
+.edit { background:transparent url(./../image/edit.png) no-repeat scroll top; height:16px; width:16px; display:block; float:left;}
+.copy { background:transparent url(./../image/copy.png) no-repeat scroll top; height:16px; width:16px; display:block; float:left;}
+.shield { background:transparent url(./../image/shield.png) no-repeat scroll top; height:16px; width:16px; display:block; float:left;}
+.space { height:16px; width:16px; display:block; float:left;}
+
+
 /***************************************************
   Messagerie
  ***************************************************/
@@ -289,10 +300,6 @@ div.spacer { clear:both; }
 .masq:hover { background-position:bottom!important; }
 .msg_cache { background:transparent url(./../image/messagerie_cacher.png) no-repeat scroll top; height:16px; width:16px; display:block; float:left; }
 .msg_voir { background:transparent url(./../image/messagerie_voir.png) no-repeat scroll top; height:16px; width:16px; display:block; float:left; }
-.edit { background:transparent url(./../image/edit.png) no-repeat scroll top; height:16px; width:16px; display:block; float:left;}
-.copy { background:transparent url(./../image/copy.png) no-repeat scroll top; height:16px; width:16px; display:block; float:left;}
-.shield { background:transparent url(./../image/shield.png) no-repeat scroll top; height:16px; width:16px; display:block; float:left;}
-.space { height:16px; width:16px; display:block; float:left;}
 h3.messagerie span.auteur { position:absolute; left:0; font-weight:bold; font-size:11px; display:block; width:114px; text-align:center; text-transform:capitalize; }
 h3.messagerie span.titre { position:absolute; left:114px; color:#828387; font-weight:normal; }
 .messagerie span.date { font-style:italic; font-size:.7em; }
