@@ -93,11 +93,10 @@ class arene extends table
 		$req = $db->query($requete);
 		if($db->num_rows($req) > 0)
 		{
-		  $classe = get_class($this);
 			while($row = $db->read_assoc($req))
 			{
-				if(!$keys) $return[] = new $classe($row);
-				else $return[$row[$keys]][] = new $classe($row);
+				if(!$keys) $return[] = new arene($row);
+				else $return[$row[$keys]][] = new arene($row);
 			}
 		}
 		else $return = array();

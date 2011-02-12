@@ -1085,6 +1085,7 @@ abstract class event_dte_rte extends event
       $this->admin_equipes_def();
       break;
     case 'matchs':
+      echo 0;
       $this->admin_matchs();
       break;
     default:
@@ -1152,9 +1153,9 @@ abstract class event_dte_rte extends event
           Points en cas de défaite dans un match à 3 : <input type="text" name="points_defaite_match3" value="<?php echo $this->get_points(event_dte_rte::points_defaite_match3); ?>" size="5" />
         </div>
         <div class="event_minibloc">
-          <input type="checkbox" name="match_tp_auto" <?php if($this->get_pa_matchs(event_dte_rte::match_tp_auto)) echo 'checked="checked"';?> />TP automatique<br />
-          <input type="checkbox" name="match_bloque_avant" <?php if($this->get_pa_matchs(event_dte_rte::match_bloque_avant)) echo 'checked="checked"';?> />Blocage pré-match<br />
-          Temps laissé pour le buffage : <input type="text" name="match_temps_buff" value="<?php echo $this->get_points(event_dte_rte::match_temps_buff); ?>" size="5" /> min.
+          <input type="checkbox" name="match_tp_auto" <?php if($this->get_options_matchs(event_dte_rte::match_tp_auto)) echo 'checked="checked"';?> />TP automatique<br />
+          <input type="checkbox" name="match_bloque_avant" <?php if($this->get_options_matchs(event_dte_rte::match_bloque_avant)) echo 'checked="checked"';?> />Blocage pré-match<br />
+          Temps laissé pour le buffage : <input type="text" name="match_temps_buff" value="<?php echo $this->get_options_matchs(event_dte_rte::match_temps_buff); ?>" size="5" /> min.
         </div>
 <?php
         $this->admin_options_spec();
@@ -1172,8 +1173,10 @@ abstract class event_dte_rte extends event
   /// Page des matchs de l'interface d'administration
   function admin_matchs($fin = false)
   {
+    echo 1;
     $equipes = $this->get_equipe();
     $arenes = arene::create(0, 0);
+    echo 2;
     
     if( array_key_exists('nouveau', $_GET) )
     {
@@ -1233,8 +1236,10 @@ abstract class event_dte_rte extends event
         $match->sauver();
       }
     }
+    echo 3;
     
     $matchs = $this->get_partie();
+    echo 4;
     
     // Affichage des matchs
     foreach($matchs as $match)
@@ -1505,7 +1510,6 @@ class event_rte extends event_dte_rte
     if( array_key_exists('action', $_GET) && $_GET['action']=='options' )
     {
       $this->set_creat_equipes(event_rte::equipe_auto, array_key_exists('equipe_auto', $_POST)?1:0);
-      $this->sauver();
       //$this->set_($_POST['']);
     }
 ?>
