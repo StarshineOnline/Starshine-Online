@@ -1026,6 +1026,7 @@ tr.tabMonstre td
 .event_bloc
 {
   display: block;
+  clear: both;
   padding-top: 20px;
   padding-bottom: 20px;
 }

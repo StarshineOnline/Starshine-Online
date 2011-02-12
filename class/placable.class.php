@@ -92,12 +92,12 @@ abstract class placable extends table
 	/// Renvoie la liste des valeurs des champspour une insertion dans la base
 	protected function get_valeurs_insert()
 	{
-		return '"$this->nom", $this->x, $this->y';
+		return '"'.$this->nom.'", '.$this->x.', '.$this->y;
 	}
 	/// Renvoie la liste des champs et valeurs pour une mise-à-jour dans la base
 	protected function get_liste_update()
 	{
-		return 'nom = "$this->nom.", x = $this->x, y = $this->y';
+		return 'nom = "'.$this->nom.'", x = '.$this->x.', y = '.$this->y;
 	}
 }
 

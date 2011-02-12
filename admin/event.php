@@ -41,6 +41,7 @@ else
   }
   include_once(root.'admin/menu_admin.php');
 ?>
+  <script type='text/javascript' src='../javascript/jquery/jquery-ui-timepicker-addon.js'></script>
   <div id="contenu">
 <?php
 

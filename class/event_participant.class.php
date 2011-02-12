@@ -122,7 +122,7 @@ class event_participant extends table
   /// Renvoie la valeur d'un champ de la base de donnée
   protected function get_champ($champ)
   {
-    if($champ == 'Donnees')
+    if($champ == 'donnees')
       return $this->serializeDonnees();
     else
       return $this->{$champ};

@@ -37,7 +37,7 @@ abstract class table
   protected function charger($id)
   {
 		global $db;
-		$requete = 'SELECT '.$this->get_liste_champs().' FROM '.$this->get_table().' WHERE '.$this->get_champ_id().' = "'.$id.'"';
+		$requete = 'SELECT * FROM '.$this->get_table().' WHERE '.$this->get_champ_id().' = "'.$id.'"';
 		$req = $db->query($requete);
 		if( $db->num_rows($req) )
 		{

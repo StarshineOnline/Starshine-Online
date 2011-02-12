@@ -129,7 +129,7 @@ class event_equipe extends table
   /// Renvoie la valeur d'un champ de la base de donnée
   protected function get_champ($champ)
   {
-    if($champ == 'Donnees')
+    if($champ == 'donnees')
       return $this->serializeDonnees();
     else
       return $this->{$champ};
@@ -142,12 +142,12 @@ class event_equipe extends table
 	/// Renvoie la liste des valeurs des champspour une insertion dans la base
 	protected function get_valeurs_insert()
 	{
-		return $this->get_id_event().', "'.$this->get_nom().'", '.($this->get_id_royaume()!==null?$this->get_id_royaume():'NULL').', "'.mysql_escape_string($this->serializeDonnees()).'"';
+		return $this->get_id_event().', "'.mysql_escape_string($this->get_nom()).'", '.($this->get_id_royaume()!==null?$this->get_id_royaume():'NULL').', "'.mysql_escape_string($this->serializeDonnees()).'"';
 	}
 	/// Renvoie la liste des champs et valeurs pour une mise-à-jour dans la base
 	protected function get_liste_update()
 	{
-		return 'event = '.$this->get_id_event().', nom = "'.$this->get_nom.'", royaume = .'.($this->get_id_royaume()!==null?$this->get_id_royaume():'NULL').', donnees = "'.mysql_escape_string($this->serializeDonnees()).'"';
+		return 'event = '.$this->get_id_event().', nom = "'.mysql_escape_string($this->get_nom()).'", royaume = '.($this->get_id_royaume()!==null?$this->get_id_royaume():'NULL').', donnees = "'.mysql_escape_string($this->serializeDonnees()).'"';
 	}
   /**
    * Renvoie le nom de la table.
@@ -184,8 +184,8 @@ class event_equipe extends table
 	{
 		return $this->nom;
 	}
-	/// Renvoie l'id du perso
-	function set_perso($nom)
+	/// Modifie le nom
+	function set_nom($nom)
 	{
     $this->nom = $nom;
 		$this->champs_modif[] = 'nom';
@@ -195,9 +195,9 @@ class event_equipe extends table
 	function get_royaume()
 	{
     if( is_numeric($this->royaume) )
-      return $this->royaume;
-    else
 		  return new royaume($this->royaume);
+    else
+      return $this->royaume;
 	}
 	/// Renvoie l'id du royaume
 	function get_id_royaume()
@@ -214,6 +214,138 @@ class event_equipe extends table
 		$this->champs_modif[] = 'royaume';
 	}
 	// @}
+	
+	/// Infos ajouter à la fin de la liste de membres dans l'interface admin
+	function interface_admin() {}
+};
+
+/// Classe pour les équipes des DTE & RTE
+class event_equipe_dte_rte extends event_equipe
+{
+  /**
+   * @name Paramètres
+   * Paramètres de l'event et accesseurs.
+   */
+  // @{
+  protected $poule=null;  ///< Poule à laquelle apartient l'équipe
+  protected $points_victoire=0;  ///< points dus aux résultats des matchs
+  protected $nbr_meurtres=0;  ///< nombre de meurtes
+  protected $points_matchs=0;  ///< points gagnés lors des matchs (système complet de points)
+  /// Renvoie la poule
+  function get_poule()
+  {
+    return $this->poule;
+  }
+  /// Modifie la poule
+  function set_poule($poule)
+  {
+    $this->poule = $poule;
+		$this->champs_modif[] = 'donnees';
+  }
+  /// Renvoie les points dus aux résultats des matchs
+  function get_points_victoire()
+  {
+    return $this->points_victoire;
+  }
+  /// Modifie les points dus aux résultats des matchs
+  function set_points_victoire($points)
+  {
+    $this->points_victoire = $points;
+		$this->champs_modif[] = 'donnees';
+  }
+  /// Ajoute des points dus aux résultats des matchs
+  function add_points_victoire($points)
+  {
+    $this->points_victoire = $points;
+		$this->champs_modif[] = 'donnees';
+  }
+  /// Renvoie le nombre de meurtes
+  function get_nbr_meurtres()
+  {
+    return $this->nbr_meurtres;
+  }
+  /// Modifie le nombre de meurtes
+  function set_nbr_meurtres($meurtres)
+  {
+    $this->nbr_meurtres = $meurtres;
+		$this->champs_modif[] = 'donnees';
+  }
+  /// Ajoute des meurtes
+  function add_nbr_meurtres($meurtres)
+  {
+    $this->nbr_meurtres = $meurtres;
+		$this->champs_modif[] = 'donnees';
+  }
+  /// Renvoie les points gagnés lors des matchs
+  function get_points_matchs()
+  {
+    return $this->points_matchs;
+  }
+  /// Modifie les points gagnés lors des matchs
+  function set_points_matchs($points)
+  {
+    $this->points_matchs = $points;
+		$this->champs_modif[] = 'donnees';
+  }
+  /// Ajoute des points gagnés lors des matchs
+  function add_points_matchs($points)
+  {
+    $this->points_matchs = $points;
+		$this->champs_modif[] = 'donnees';
+  }
+  
+	/// serialisation des données spécifiques à chaque event (à surcharger)
+	protected function serializeDonnees()
+  {
+    $donnees = array($this->poule!==null?$this->poule:'null', $this->points_victoire, $this->nbr_meurtres, $this->points_matchs);
+    return implode('|', $donnees);
+  }
+	/// déserialisation des données spécifiques à chaque event (à surcharger)
+	protected function unserializeDonnees($donnees)
+  {
+    if( $donnees )
+    {
+      $vals = explode('|', $donnees);
+      $this->poule = $vals[0]!='null'?$vals[0]:null;
+      $this->points_victoire = $vals[1];
+      $this->nbr_meurtres = $vals[2];
+      $this->points_matchs = $vals[3];
+    }
+  }
+	// @}
+
+	/// Infos ajoutées à la fin de la liste de membres dans l'interface admin
+	function interface_admin()
+  {
+    if( array_key_exists('equipe', $_GET) && $_GET['equipe'] == $this->get_id() )
+    {
+      if( array_key_exists('poule', $_GET) )
+      {
+        $this->set_poule($_GET['poule']);
+      }
+      elseif( array_key_exists('points_victoire', $_GET) )
+      {
+        $this->set_points_victoire($_GET['points_victoire']);
+      }
+      elseif( array_key_exists('nbr_meurtres', $_GET) )
+      {
+        $this->set_nbr_meurtres($_GET['nbr_meurtres']);
+      }
+      elseif( array_key_exists('points_matchs', $_GET) )
+      {
+        $this->set_points_matchs($_GET['points_matchs']);
+      }
+      $this->sauver();
+    }
+?>
+    <form id="equipe_<?php echo $this->get_id(); ?>" method="get" action="event.php?event=<?php echo $this->get_id_event();?>&page=equipes&equipe=<?php echo $this->get_id(); ?>">
+      Poule : <input type="text" name="poule" value="<?php echo $this->get_poule(); ?>"  onchange="return envoiFormulaire('equipe_<?php echo $this->get_id(); ?>', 'contenu');" /><br />
+      Points des victoires : <input type="text" name="points_victoire" value="<?php echo $this->get_points_victoire(); ?>" size="5" onchange="return envoiFormulaire('equipe_<?php echo $this->get_id(); ?>', 'contenu');" /><br />
+      Nombre de meurtres : <input type="text" name="nbr_meurtres" value="<?php echo $this->get_nbr_meurtres(); ?>" size="5" onchange="return envoiFormulaire('equipe_<?php echo $this->get_id(); ?>', 'contenu');" /><br />
+      Points des matchs : <input type="text" name="points_matchs" value="<?php echo $this->get_points_matchs(); ?>" size="5" onchange="return envoiFormulaire('equipe_<?php echo $this->get_id(); ?>', 'contenu');" />
+    </form>
+<?php
+  }
 };
 
 ?>

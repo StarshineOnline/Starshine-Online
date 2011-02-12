@@ -35,81 +35,24 @@ if ($admin_nom == '') {
 require_once(root.'arenes/gen_arenes.php');
 
 if (isset($_REQUEST['teleport_in'])) {
-  $arene = $_REQUEST['teleport_in'];
-  $player = $_REQUEST['player'];
-
-  $requete_perso = "select x, y, id, nom, groupe, race from perso where nom = '".sSQL($player)."'";
-  $req = $db->query($requete_perso);
-  if ($db->num_rows > 0)
-    $R_perso = $db->read_assoc($req);
-  else
-    die('perso inconnu');
-  $x = $R_perso['x'];
-  $y = $R_perso['y'];
-  $id = $R_perso['id'];
-  $grp = $R_perso['groupe'];
-  $race = $R_perso['race'];
-  $requete_arene = "select x as xmin, y as ymin, x + size as xmax, y + size as ymax from arenes where nom = '$arene'";
-  $req = $db->query($requete_arene);
-  if ($db->num_rows > 0)
-    $R_arene = $db->read_assoc($req);
-  else
-    die('arene inconnue');
-  $nx = $R_arene['xmin'] + $_REQUEST['p_x'];
-  $ny = $R_arene['ymin'] + $_REQUEST['p_y'];
-  $requete_arenes_perso = "insert into arenes_joueurs (x, y, id_perso, groupe) value($x, $y, $id, $grp)";
-  $req = $db->query($requete_arenes_perso);
-  /* groupage */
-  if (array_key_exists('group', $_REQUEST)) {
-    $requete_arenes_perso = "select id from groupe where nom = 'DTE $race'";
-    $req = $db->query($requete_arenes_perso);
-    if ($db->num_rows > 0)
-      $R_groupe = $db->read_assoc($req);
-    else
-      die('groupe non crée !');
-    $group = ", groupe=$R_groupe[id]";
-  } else { $group = ''; }
-  if (array_key_exists('full', $_REQUEST))
-    $fullish = ', hp=floor(hp_max), mp=floor(mp_max)';
-  if (array_key_exists('pa', $_REQUEST) && $_REQUEST['pa'] != '')
-    $pa = ", pa=floor($_REQUEST[pa] * $G_PA_max)";
-  $requete_perso = "update perso set x=$nx, y=$ny $group $fullish $pa where id = $id";
-  $req = $db->query($requete_perso);
-  $requete_journal = "INSERT INTO journal VALUES('', $id, 'teleport', '".$admin_nom."', '".$R_perso['nom']."', NOW(), '$arene', 0, 0, 0)";
-  $req = $db->query($requete_journal);
-  /* de-(de)buff */
-  $req = $db->query("delete from buff where id_perso = $id");
-  /* insert dans groupe DTE */
-  if (array_key_exists('group', $_REQUEST)) {
-    $db->query("insert into groupe_joueur(id_joueur, id_groupe, leader) select $id, id, 'n' from groupe where nom = 'DTE $race'");
+  $perso = perso::create('nom', $_REQUEST['player']);
+  if( !$perso )
+    die('<h5>Perso inconnu !</h5>');
+  $perso = $perso[0];
+  $arene = new arene($_REQUEST['teleport_in']);
+  $groupe = groupe::create('nom', 'DTE '.$perso->get_race());
+  if(array_key_exists('pa', $_REQUEST) && $_REQUEST['pa'] != '')
+  {
+    $perso->set_pa($_REQUEST[pa] * $G_PA_max);
+    $perso->set_dernieraction( time() );
   }
-  
+  arenes_joueur::tp_arene($perso, $arene, $_REQUEST['p_x'], $_REQUEST['p_y'], $groupe[0], array_key_exists('full', $_REQUEST), 0, 0, $admin_nom);
 }
 
 if (isset($_REQUEST['remove']))
 {
-  $requete_arenes_perso = "select * from arenes_joueurs where id = '".sSQL($_REQUEST['remove'])."'";
-  $req = $db->query($requete_arenes_perso);
-  if ($db->num_rows > 0)
-    $R_arene = $db->read_assoc($req);
-  else
-    die('perso pas dans l\'arène');
-  $nx = $R_arene['x'];
-  $ny = $R_arene['y'];
-  $id = $R_arene['id'];
-  $id_perso = $R_arene['id_perso'];
-  $grp = $R_arene['groupe'];
-  $now = time();
-  $requete_perso = "update perso set x=$nx, y=$ny, groupe=$grp, dernieraction=$now where id = $id_perso";
-  $req = $db->query($requete_perso);
-  $requete_perso = "update perso set hp=1 where id = $id_perso and hp < 1";
-  $req = $db->query($requete_perso);
-  $requete_arenes_perso = "delete from arenes_joueurs where id = '$id'";
-  $db->query($requete_arenes_perso);
-  $requete_journal = "INSERT INTO journal VALUES('', $id_perso, 'teleport', '".$admin_nom."', '".$R_perso['nom']."', NOW(), 'jeu', 0, 0, 0)";
-  $req = $db->query($requete_journal);
-  $requete_groupe_perso = "delete from groupe_joueur where id_joueur = '$id_perso' and id_groupe in (select id from groupe where nom like 'DTE %')";
-  $db->query($requete_groupe_perso);
+  $ar_perso = new arenes_joueur(0, $_REQUEST['remove']);
+  $ar_perso->teleporte($admin_nom);
 }
 
 if (isset($_REQUEST['decal']))
@@ -182,7 +125,7 @@ if ($db->num_rows > 0) {
   while ($R_arene = $db->read_assoc($req)) {
 		$size_a = ceil($R_arene['size'] / 2);
 		if (!isset($size_a1)) $size_a1 = $size_a;
-    echo '<option value="'.$R_arene['nom'].'">'.$R_arene['nom']."</option>\n";
+    echo '<option value="'.$R_arene['id'].'">'.$R_arene['nom']."</option>\n";
   }
 }
 ?>
@@ -210,14 +153,14 @@ if ($db->num_rows > 0) {
 <h3>Joueurs en ar&egrave;ne :</h3>
 <table><tr><th>nom</th><th>arene</th><th>action</th></tr>
 <?php
-$requete_arene = "select * from arenes_joueurs";
+$requete_arene = "select * from arenes_joueurs where statut < 30";
 $req = $db->query($requete_arene);
 if ($db->num_rows > 0)
 {
 	while ($R_arene = $db->read_assoc($req))
 	{
 		//$p = recupperso_essentiel($R_arene['id'], 'ID, nom');
-    $p = new perso($R_arene['id']);
+    $p = new perso($R_arene['id_perso']);
 		$a = $p->in_arene();
     echo '<tr><td>'.$p->get_nom().'</td><td>'.$a->nom.'</td><td>'.
       '<a href="arenes.php?remove='.$R_arene['id'].'">Retirer</td></tr>';
