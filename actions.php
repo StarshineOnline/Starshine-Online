@@ -92,9 +92,8 @@ $joueur = new perso($_SESSION['ID']);
 		$script_defense = recupaction_all($joueur->get_action_d());
 		?>
 			Voici l'interface du script de combat, grâce à celui-ci vous pourrez attaquer avec des sorts ou des compétences.<br />
-			<a href="action.php?mode=s" onclick="return envoiInfo(this.href, 'information');">Créer un script de combat simple</a> - <a href="action.php?mode=a" onclick="return envoiInfo(this.href, 'information');">Créer un script de combat avancé</a>
 			<fieldset>
-				<legend>Listing</legend>
+				<legend>Vos scripts de combat</legend>
 				<ul id="liste_script">
 				<?php
 				$requete = "SELECT * FROM action_perso WHERE id_joueur = ".$joueur->get_id()." ORDER BY nom ASC";
@@ -107,11 +106,10 @@ $joueur = new perso($_SESSION['ID']);
 					if($row['nom']==$script_defense['nom']) $type .= '<a><span class="shield" title="Script de défense"> </span></a> ';
 					else $type .= '<a><span class="space"></span></a> ';
 					?>
-					<li><span class="" style="float : left; width : 270px;"><?php echo $type.$row['nom']; ?></span>
+					<li><span class="nom_script" onclick="envoiInfo('action.php?from=modif&amp;id_action=<?php echo $row['id']; ?>', 'information');" title="Modifier le script"><?php echo $type.$row['nom']; ?></span>
 						<span class="options">
 							<a title="Définir comme script d'attaque" onclick="envoiInfo('actions.php?action=select&amp;type=attaque&amp;id_action=<?php echo $row['id']; ?>', 'information'); return false;"><span class="attaque"></span></a>
 							<a title="Définir comme script de défense" onclick="envoiInfo('actions.php?action=select&amp;type=defense&amp;id_action=<?php echo $row['id']; ?>', 'information'); return false;"><span class="shield"></span></a>
-							<a title="Modifier" onclick="envoiInfo('action.php?from=modif&amp;id_action=<?php echo $row['id']; ?>', 'information');"><span class="edit"></span></a>
 							<a title="Copier" onclick="envoiInfo('actions.php?action=dupliq&amp;id_action=<?php echo $row['id']; ?>&amp;nom_copie=copie', 'information');"><span class="copy"></span></a>
 							<a title="Supprimer ce script de combat" style="float : left;" onclick="if(confirm('Voulez vous vraiment supprimer ce script ?')) envoiInfo('actions.php?action=suppr_action&amp;id_action=<?php echo $row['id']; ?>', 'information');"><span class="del"></span></a>
 						</span>
@@ -120,7 +118,8 @@ $joueur = new perso($_SESSION['ID']);
 				}
 				?>
 				</ul>
-		<br />
+				<br />
+				<a href="action.php?mode=s" onclick="return envoiInfo(this.href, 'information');">Créer un script de combat simple</a> - <a href="action.php?mode=a" onclick="return envoiInfo(this.href, 'information');">Créer un script de combat avancé</a>
 		</fieldset>
 		<fieldset>
 			<legend>Aide</legend>

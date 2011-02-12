@@ -279,12 +279,14 @@ h3.old { border-top:1px solid; border-bottom:1px solid; border-color:#888; margi
   Script de combat
  ***************************************************/
 #liste_script li {height : 22px; line-height : 20px; clear : both;}
-#liste_script li:hover {background-color : #bcc9e0;}
+#liste_script li:hover {background-color : #b0c0e0;}
+.nom_script {float : left; width : 270px; padding-left : 18px; cursor : pointer;}
+.nom_script:hover {background:transparent url(./../image/edit.png) no-repeat scroll top;}
 .options {padding-left : 8px;}
-.edit { background:transparent url(./../image/edit.png) no-repeat scroll top; height:16px; width:16px; display:block; float:left; cursor : pointer;}
+.edit { background:transparent url(./../image/edit.png) no-repeat scroll top; height:16px; width:16px; display:block; float:left;}
 .copy { background:transparent url(./../image/copy.png) no-repeat scroll top; height:16px; width:16px; display:block; float:left; cursor : pointer;}
 .shield { background:transparent url(./../image/shield.png) no-repeat scroll top; height:16px; width:16px; display:block; float:left; cursor : pointer;}
-.attaque { background:transparent url(./../image/interface/attaquer.png) no-repeat scroll top; height:16px; width:16px; display:block; float:left; cursor : pointer;}
+.attaque { background:transparent url(./../image/sword.png) no-repeat scroll top; height:16px; width:16px; display:block; float:left; cursor : pointer;}
 .space { height:16px; width:16px; display:block; float:left;}
 
 
@@ -297,7 +299,7 @@ div.spacer { clear:both; }
 .messagerie { margin-top:0; margin-bottom:0; font-variant:normal; font-weight:normal; background-color:#E7CF98; padding:0 6px 3px; -moz-border-radius:10px; -webkit-border-radius:10px; border-radius: 10px; float:left; }
 .fav_on { background:transparent url(./../image/messagerie_fav_on.png) no-repeat scroll left center; height:14px; width:16px; display:block; float:left; }
 .fav_off { background:transparent url(./../image/messagerie_fav_off.png) no-repeat scroll left center; height:14px; width:16px; display:block; float:left; }
-.del { background:transparent url(./../image/messagerie_del.png) no-repeat scroll top; height:16px; width:16px; display:block; }
+.del { background:transparent url(./../image/messagerie_del.png) no-repeat scroll top; height:16px; width:16px; display:block; cursor : pointer}
 .del:hover { background-position:bottom!important; }
 .masq { background:transparent url(./../image/messagerie_cacher.png) no-repeat scroll top; height:16px; width:16px; display:block; }
 .masq:hover { background-position:bottom!important; }
