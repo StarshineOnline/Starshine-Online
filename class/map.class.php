@@ -73,13 +73,13 @@ class map
 		global $db;
 		global $Gcouleurs;
 
+      $this->load_map_calques(); // Uniquement en donj ?
 		if($this->donjon && !$this->arene)
 		{
 			$xmin = $this->xmin + 1;
 			$xmax = $this->xmax - 1;
 			$ymin = $this->ymin + 1;
 			$ymax = $this->ymax - 1;
-      $this->load_map_calques(); // Uniquement en donj ?
 		}
 		else
 		{
