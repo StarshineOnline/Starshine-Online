@@ -279,10 +279,12 @@ h3.old { border-top:1px solid; border-bottom:1px solid; border-color:#888; margi
   Script de combat
  ***************************************************/
 #liste_script li {height : 22px; line-height : 20px; clear : both;}
+#liste_script li:hover {background-color : #bcc9e0;}
 .options {padding-left : 8px;}
-.edit { background:transparent url(./../image/edit.png) no-repeat scroll top; height:16px; width:16px; display:block; float:left;}
-.copy { background:transparent url(./../image/copy.png) no-repeat scroll top; height:16px; width:16px; display:block; float:left;}
-.shield { background:transparent url(./../image/shield.png) no-repeat scroll top; height:16px; width:16px; display:block; float:left;}
+.edit { background:transparent url(./../image/edit.png) no-repeat scroll top; height:16px; width:16px; display:block; float:left; cursor : pointer;}
+.copy { background:transparent url(./../image/copy.png) no-repeat scroll top; height:16px; width:16px; display:block; float:left; cursor : pointer;}
+.shield { background:transparent url(./../image/shield.png) no-repeat scroll top; height:16px; width:16px; display:block; float:left; cursor : pointer;}
+.attaque { background:transparent url(./../image/interface/attaquer.png) no-repeat scroll top; height:16px; width:16px; display:block; float:left; cursor : pointer;}
 .space { height:16px; width:16px; display:block; float:left;}
 
 
