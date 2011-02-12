@@ -20,8 +20,6 @@ $joueur = new perso($_SESSION['ID']);
 if (isset($_GET['id_pet']))
 {
 $pet = new pet($_GET['id_pet']);
-echo "<h3>Scripts de ".$pet->get_nom()."</h3>";
-
 		//Suppression du script
 		if(array_key_exists('action', $_GET) && $_GET['action'] == 'suppr_action')
 		{
