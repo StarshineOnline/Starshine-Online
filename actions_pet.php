@@ -105,7 +105,7 @@ echo "<h3>Scripts de ".$pet->get_nom()."</h3>";
 		?>
 			Voici l'interface du script de combat, grâce à celui-ci vous pourrez attaquer avec des sorts ou des compétences.<br />
 			<fieldset>
-				<legend>Scripts de combat de ".$pet->get_nom()."</legend>
+				<legend>Scripts de combat de <?php echo $pet->get_nom(); ?></legend>
 				<ul id="liste_script">
 				<?php
 				$requete = "SELECT * FROM action_pet WHERE id_joueur = ".$joueur->get_id()." AND type_monstre = ".$pet->get_id_monstre()." ORDER BY nom ASC";
@@ -122,7 +122,7 @@ echo "<h3>Scripts de ".$pet->get_nom()."</h3>";
 						<span class="options">
 							<a title="Définir comme script d'attaque" onclick="envoiInfo('actions_pet.php?action=select&id_pet=<?php echo $pet->get_id(); ?>&amp;type=attaque&amp;id_action=<?php echo $row['id']; ?>', 'information'); return false;"><span class="attaque hover"></span></a>
 							<a title="Définir comme script de défense" onclick="envoiInfo('actions_pet.php?action=select&id_pet=<?php echo $pet->get_id(); ?>&amp;type=defense&amp;id_action=<?php echo $row['id']; ?>', 'information'); return false;"><span class="shield hover"></span></a>
-							<a title="Copier" onclick="envoiInfo('actions_pet.php?action=dupliq&amp;&id_pet=<?php echo $pet->get_id(); ?>id_action=<?php echo $row['id']; ?>&amp;nom_copie=copie', 'information');"><span class="copy hover"></span></a>
+							<a title="Copier" onclick="envoiInfo('actions_pet.php?action=dupliq&id_pet=<?php echo $pet->get_id(); ?>&amp;id_action=<?php echo $row['id']; ?>&amp;nom_copie=copie', 'information');"><span class="copy hover"></span></a>
 							<a title="Supprimer ce script de combat" style="float : left;" onclick="if(confirm('Voulez vous vraiment supprimer ce script ?')) envoiInfo('actions_pet.php?action=suppr_action&id_pet=<?php echo $pet->get_id(); ?>&amp;id_action=<?php echo $row['id']; ?>', 'information');"><span class="del hover"></span></a>
 						</span>
 					</li>
