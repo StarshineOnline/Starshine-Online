@@ -488,20 +488,20 @@ class pet extends map_monstre
 
 			/*//Effets des enchantements
 			if (isset($this->enchantement['pourcent_pm'])) $this->pm += floor($this->pm * $this->enchantement['pourcent_pm']['effet'] / 100);
-			if (isset($this->enchantement['pourcent_pp']))	$this->pp += floor($this->pp * $this->enchantement['pourcent_pp']['effet'] / 100);
-
+			if (isset($this->enchantement['pourcent_pp']))	$this->pp += floor($this->pp * $this->enchantement['pourcent_pp']['effet'] / 100);*/
+			
 			//Buffs
-			if($this->is_buff('buff_bouclier')) $this->pp = round($this->pp * (1 + ($this->get_buff('buff_bouclier', 'effet') / 100)));
-			if($this->is_buff('buff_barriere')) $this->pm = round($this->pm * (1 + ($this->get_buff('buff_barriere', 'effet') / 100)));
-			if($this->is_buff('buff_forteresse'))
+			if($joueur->is_buff('buff_bouclier')) $this->pp = round($this->pp * (1 + ($joueur->get_buff('buff_bouclier', 'effet') / 100)));
+			if($joueur->is_buff('buff_barriere')) $this->pm = round($this->pm * (1 + ($joueur->get_buff('buff_barriere', 'effet') / 100)));
+			if($joueur->is_buff('buff_forteresse'))
 			{
-				$this->pp = round($this->pp * (1 + (($this->get_buff('buff_forteresse', 'effet')) / 100)));
-				$this->pm = round($this->pm * (1 + (($this->get_buff('buff_forteresse', 'effet2')) / 100)));
+				$this->pp = round($this->pp * (1 + (($joueur->get_buff('buff_forteresse', 'effet')) / 100)));
+				$this->pm = round($this->pm * (1 + (($joueur->get_buff('buff_forteresse', 'effet2')) / 100)));
 			}
-			if($this->is_buff('buff_cri_protecteur')) $this->pp = round($this->pp * (1 + ($this->get_buff('buff_cri_protecteur', 'effet') / 100)));
-			if($this->is_buff('debuff_desespoir')) $this->pm = round($this->pm / (1 + (($this->get_buff('debuff_desespoir', 'effet')) / 100)));
+			if($joueur->is_buff('buff_cri_protecteur')) $this->pp = round($this->pp * (1 + ($joueur->get_buff('buff_cri_protecteur', 'effet') / 100)));
+			if($joueur->is_buff('debuff_desespoir')) $this->pm = round($this->pm / (1 + (($joueur->get_buff('debuff_desespoir', 'effet')) / 100)));
 			//Maladie suppr_defense
-			if($this->is_buff('suppr_defense')) $this->pp = 0;*/
+			if($joueur->is_buff('suppr_defense')) $this->pp = 0;
 		}
 		$this->armure=true;
 	}
@@ -551,11 +551,13 @@ class pet extends map_monstre
 	public $reserve_bonus;
 	function get_reserve_bonus()
 	{
+		$joueur = new perso($this->get_id_joueur());
 		if(!isset($this->monstre)) $this->get_monstre();
 		$this->reserve_bonus = $this->monstre->get_reserve();
-		/*if($this->is_buff('buff_inspiration')) $this->reserve_bonus += $this->get_buff('buff_inspiration', 'effet');
-		if($this->is_buff('buff_sacrifice')) $this->reserve_bonus += $this->get_buff('buff_sacrifice', 'effet');*/
-		// Les bonus raciaux sont comptés dans les bonus perm
+		
+		if($joueur->is_buff('buff_inspiration')) $this->reserve_bonus += $joueur->get_buff('buff_inspiration', 'effet');
+		if($joueur->is_buff('buff_sacrifice')) $this->reserve_bonus += $joueur->get_buff('buff_sacrifice', 'effet');
+
 		return $this->reserve_bonus;
 	}
 	

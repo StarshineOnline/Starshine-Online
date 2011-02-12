@@ -318,7 +318,7 @@ class entite extends placable
 				$this->y = $objet->get_y();
 				$this->hp = $pet->get_hp();
 				$this->hp_max = $pet->monstre->get_hp();
-				$this->reserve = $pet->monstre->get_reserve();
+				$this->reserve = $pet->get_reserve_bonus();
 				$this->pa = 0;
 				$this->nom = $pet->get_nom();
 				$this->race = 'neutre';
