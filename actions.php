@@ -106,7 +106,7 @@ $joueur = new perso($_SESSION['ID']);
 					if($row['nom']==$script_defense['nom']) $type .= '<a><span class="shield" title="Script de défense"> </span></a> ';
 					else $type .= '<a><span class="space"></span></a> ';
 					?>
-					<li><?php echo $type; ?><span class="nom_script" onclick="envoiInfo('action.php?from=modif&amp;id_action=<?php echo $row['id']; ?>', 'information');" title="Modifier le script"><?php echo $type.$row['nom']; ?></span>
+					<li><?php echo $type; ?><span class="nom_script" onclick="envoiInfo('action.php?from=modif&amp;id_action=<?php echo $row['id']; ?>', 'information');" title="Modifier le script"><?php echo $row['nom']; ?></span>
 						<span class="options">
 							<a title="Définir comme script d'attaque" onclick="envoiInfo('actions.php?action=select&amp;type=attaque&amp;id_action=<?php echo $row['id']; ?>', 'information'); return false;"><span class="attaque"></span></a>
 							<a title="Définir comme script de défense" onclick="envoiInfo('actions.php?action=select&amp;type=defense&amp;id_action=<?php echo $row['id']; ?>', 'information'); return false;"><span class="shield"></span></a>
