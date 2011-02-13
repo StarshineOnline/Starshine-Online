@@ -392,7 +392,7 @@ if($W_row['type'] == 1)
 				PM
 			</span>
 			<span class='force'>
-				Force
+				<?php if(array_key_exists('part', $_GET) AND $_GET['part'] == 'dressage') echo 'Dressage'; else echo 'Force'; ?>
 			</span>
 			<span class='stars'>
 				Stars
@@ -405,7 +405,7 @@ if($W_row['type'] == 1)
 		
 		$color = 1;
 		$where = 'lvl_batiment <= '.$level_batiment;
-		if(array_key_exists('part', $_GET) AND $_GET['part'] == "dressage")
+		if(array_key_exists('part', $_GET) AND $_GET['part'] == 'dressage')
 		{
 			$requete = "SELECT * FROM objet_pet ORDER BY".$ordre;
 		}
@@ -429,23 +429,31 @@ if($W_row['type'] == 1)
 			if($_GET['part'] == "dressage" AND ($row['dressage'] > $joueur->get_dressage() OR $cout > $joueur->get_star())) $couleur = 3;
 			elseif($_GET['part'] != "dressage" AND ($row['forcex'] > $joueur->get_force() OR $cout > $joueur->get_star())) $couleur = 3;
 
-			if($_GET['part'] != "dressage" AND $joueur->inventaire()->$row['type'] != '' AND $joueur->inventaire()->$row['type'] !== 0)
+			switch($_GET['part'])
 			{
-				$armure = decompose_objet($joueur->inventaire()->$row['type']);
-				$requete = "SELECT * FROM armure WHERE id = ".$armure['id_objet'];
-				$req_armure = $db->query($requete);
-				$row_armure = $db->read_array($req_armure);
-				$echo = 'Armure équipée : '.$row_armure['nom'].' - PP = '.$row_armure['PP'].' / PM = '.$row_armure['PM'];
+				case 'dressage' :
+					if($joueur->inventaire_pet()->$row['type'] != '' AND $joueur->inventaire_pet()->$row['type'] !== 0)
+					{
+						$armure = decompose_objet($joueur->inventaire_pet()->$row['type']);
+						$requete = "SELECT * FROM objet_pet WHERE id = ".$armure['id_objet'];
+						$req_armure = $db->query($requete);
+						$row_armure = $db->read_array($req_armure);
+						$echo = 'Armure équipée sur votre pet : '.$row_armure['nom'].' - PP = '.$row_armure['PP'].' / PM = '.$row_armure['PM'];
+					}
+					else $echo = 'Armure ('.$row['type'].') équipée sur votre pet : Aucune';
+				break;
+				default :
+					if($joueur->inventaire()->$row['type'] != '' AND $joueur->inventaire()->$row['type'] !== 0)
+					{
+						$armure = decompose_objet($joueur->inventaire()->$row['type']);
+						$requete = "SELECT * FROM armure WHERE id = ".$armure['id_objet'];
+						$req_armure = $db->query($requete);
+						$row_armure = $db->read_array($req_armure);
+						$echo = 'Armure équipée : '.$row_armure['nom'].' - PP = '.$row_armure['PP'].' / PM = '.$row_armure['PM'];
+					}
+					else $echo = 'Armure équipée : Aucune';
+				break;
 			}
-			elseif($_GET['part'] == "dressage" AND $joueur->inventaire_pet()->$row['type'] != '' AND $joueur->inventaire_pet()->$row['type'] !== 0)
-			{
-				$armure = decompose_objet($joueur->inventaire_pet()->$row['type']);
-				$requete = "SELECT * FROM objet_pet WHERE id = ".$armure['id_objet'];
-				$req_armure = $db->query($requete);
-				$row_armure = $db->read_array($req_armure);
-				$echo = 'Armure équipée sur votre pet : '.$row_armure['nom'].' - PP = '.$row_armure['PP'].' / PM = '.$row_armure['PM'];
-			}
-			else $echo = 'Armure équipée : Aucune';
 			
 			if($_GET['part'] == "dressage")
 			{
