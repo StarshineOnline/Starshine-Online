@@ -33,4 +33,24 @@ while($i < $count)
 }
 echo "\n";
 
+// events
+try
+{
+  $events = event::create('','', 'id ASC', false, 'statut < '.event::en_cours.' AND date_debut <= CURDATE()');
+  foreach($events as $event)
+  {
+    $event->demarer();
+  }
+  $events = event::create('statut', event::en_cours);
+  foreach($events as $event)
+  {
+    $event->journalier();
+  }
+}
+catch(Exception $e)
+{
+  $mail .= 'Erreur gestion des events : '.$e->getMessage()."\n";
+}
+
+
 ?>

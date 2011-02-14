@@ -312,18 +312,6 @@ class event extends table
 	}
 	// @}
 
-
-  /**
-   * @name Tâches automatiques
-   * Gestion des tâches automatiques.
-   */
-  /// Méthode appelée par le script journalier
-  function journalier() {}
-  /// Méthode appelée par le script horaire
-  function horaire() {}
-	// @}
-
-
   /**
    * @name Interfaces
    * Gestion des interfaces utilisateur.
@@ -356,28 +344,28 @@ class event extends table
   /**
    * Page des options par défaut de l'interface d'administration
    * @param $fin bool        Indique s'il faut demander la date de fin de l'évènement.
-   * @param $terminer bool   Indique s'il faut l'évènement doit-être terminé manuellement.
+   * @param $terminer bool   Indique s'il l'évènement doit-être terminé manuellement.
    */
   function admin_options_def($fin = false, $terminer=false)
   {
     // Modification des paramètres (statut, date de début et de fin)
     if( array_key_exists('statut', $_GET) )
     {
-      $this->set_statut($_GET['statut']);
-      $this->sauver();
-      if( $_GET['statut'] == event::en_cours )
+      switch( $_GET['statut'] )
       {
+      case event::en_cours:
         $this->set_date_debut( time() );
-      }
-      elseif( $_GET['statut'] == event::fini )
-      {
-        echo "Event terminé !";
-        exit(0);
-      }
-      elseif( $_GET['statut'] == event::annule )
-      {
-        echo "Event annulé !";
-        exit(0);
+        $this->demarer();
+        break;
+      case event::fini:
+        $this->terminer();
+        die('Event terminé !');
+      case event::annule:
+        $this->terminer(true);
+        die('Event annulé !');
+      default:
+        $this->set_statut($_GET['statut']);
+        $this->sauver();
       }
     }
     if( array_key_exists('date_debut', $_GET) )
@@ -414,6 +402,7 @@ class event extends table
       break;
     case event::annonce:
       echo '<li><a href="event.php?event='.$this->get_id().'&page=options&statut='.event::inscriptions.'" onclick="return envoiInfo(this.href, \'contenu\');">Permettre les inscriptions</a></li>';
+    case event::inscriptions:
         echo '<li><a href="event.php?event='.$this->get_id().'&page=options&statut='.event::en_cours.'" onclick="return envoiInfo(this.href, \'contenu\');"">Démarrer l\'event</a></li>';
       break;
     case event::en_cours:
@@ -768,10 +757,12 @@ class event extends table
    *
    * @param  $champ   string    champ
    * @param  $valeur  string    valeur du champ demandée
+   * @param  $ordre   string    instructions pour le tri
+   * @param  $limit   string    nombre max d'entrée
    */
-  function get_partie($champ=null, $valeur=null)
+  function get_partie($champ=null, $valeur=null, $ordre='id ASC', $limit=false)
   {
-    return event_partie::creer($this, 'event_partie', $champ, $valeur);
+    return event_partie::creer($this, 'event_partie', $champ, $valeur, $ordre, $limit);
   }
   /**
    * Crée un nouvelle partie (à surcharger)
@@ -814,6 +805,47 @@ class event extends table
     return new arenes_joueur($perso, $statut, $arene, $partie, $x, $y, $groupe, $hp);
   }
   // @}
+
+
+  /**
+   * @name Déroulement de l'event
+   * Gestion du déroulement de l'event
+   */
+  // @{
+  /// Début de l'event (à surcharger)
+  function demarer()
+  {
+    $this->set_statut( event::en_cours );
+    $this->sauver();
+  }
+  /**
+   * Fin de l'event
+   * @param $annule  bool     true si c'est une annulation, falsie si c'est la fin normale
+   */
+   function terminer($annule=false)
+   {
+      global $db;
+      // on change le statut des parties
+      $db->query('UPDATE event_parties SET statut='.event_partie::fini.' WHERE event='.$this->get_id().' AND statut < '.event_partie::fini);
+      // On TP hors de l'arènes les personnages qui y sont encore pour l'event et on modifie les statuts
+      $persos = $this->get_arenes_joueur('statut', arenes_joueur::en_cours);
+      foreach($persos as $perso)
+      {
+        $perso->teleporte();
+      }
+      $db->query('UPDATE arenes_joueurs SET statut='.arenes_joueur::fini.' WHERE event='.$this->get_id().' AND statut < '.arenes_joueur::fini);
+      // On change le statut de l'event
+      if( $annule )
+        $this->set_statut( event::annule );
+      else
+        $this->set_statut( event::fini );
+      $this->sauver();
+   }
+   /// Méthode appelée par le script journalier (à surcharger)
+   function journalier() {}
+   /// Méthode appelée par le script horaire (à surcharger)
+   function horaire() {}
+   // @}
 };
 
 
@@ -1037,10 +1069,12 @@ abstract class event_dte_rte extends event
    *
    * @param  $champ   string    champ
    * @param  $valeur  string    valeur du champ demandée
+   * @param  $ordre   string    instructions pour le tri
+   * @param  $limit   string    nombre max d'entrée
    */
-  function get_partie($champ=null, $valeur=null)
+  function get_partie($champ=null, $valeur=null, $ordre='id ASC', $limit=false)
   {
-    return event_partie::creer($this, 'event_partie_dte_rte', $champ, $valeur);
+    return event_partie::creer($this, 'event_partie_dte_rte', $champ, $valeur, $ordre, $limit);
   }
   /**
    * Crée un nouvelle partie (à surcharger)
@@ -1085,7 +1119,6 @@ abstract class event_dte_rte extends event
       $this->admin_equipes_def();
       break;
     case 'matchs':
-      echo 0;
       $this->admin_matchs();
       break;
     default:
@@ -1098,7 +1131,7 @@ abstract class event_dte_rte extends event
   function admin_options()
   {
     $modifie = false;
-    $this->admin_options_def();
+    $this->admin_options_def(false, true);
     // Modification des options
     if( array_key_exists('action', $_GET) && $_GET['action']=='options' )
     {
@@ -1138,7 +1171,7 @@ abstract class event_dte_rte extends event
           Pourcentage de PA pour les matchs d'éliminatoires à 2 : <input type="text" name="pa_match2_elim" value="<?php echo $this->get_pa_matchs(event_dte_rte::pa_match2_elim); ?>" size="5" /><br />
           Pourcentage de PA pour les matchs d'éliminatoires à 3 : <input type="text" name="pa_match3_elim" value="<?php echo $this->get_pa_matchs(event_dte_rte::pa_match3_elim); ?>" size="5" /><br />
           Pourcentage de PA pour la finale : <input type="text" name="pa_finale" value="<?php echo $this->get_pa_matchs(event_dte_rte::pa_finale); ?>" size="5" /><br />
-          <input type="checkbox" name="ptt_finale" <?php if($this->get_pa_matchs(event_dte_rte::pa_finale)) echo 'checked="checked"';?> />Petite finale<br />
+          <input type="checkbox" name="ptt_finale" <?php if($this->get_organis_match(event_dte_rte::ptt_finale)) echo 'checked="checked"';?> />Petite finale<br />
           <input type="checkbox" name="rez_autor" <?php if($this->get_autorisations(event_dte_rte::autor_rez)) echo 'checked="checked"';?> />Rez autorisées<br />
           <input type="checkbox" name="parch_autor" <?php if($this->get_autorisations(event_dte_rte::autor_parch)) echo 'checked="checked"';?> />Parchemins et potions autorisés<br />
           <input type="checkbox" name="obj_donj_autor" <?php if($this->get_autorisations(event_dte_rte::autor_obj_donj)) echo 'checked="checked"';?> />Objets de donjons autorisés
@@ -1171,12 +1204,10 @@ abstract class event_dte_rte extends event
 	abstract function admin_options_spec();
 
   /// Page des matchs de l'interface d'administration
-  function admin_matchs($fin = false)
+  function admin_matchs()
   {
-    echo 1;
     $equipes = $this->get_equipe();
     $arenes = arene::create(0, 0);
-    echo 2;
     
     if( array_key_exists('nouveau', $_GET) )
     {
@@ -1201,22 +1232,30 @@ abstract class event_dte_rte extends event
         $match->supprimer();
       break;
       case 'modifier':
-        if( $match->get_statut() < event_partie::fini )
+        if( $match->get_statut() < event_partie::en_cours )
         {
-          if( array_key_exists('date_fin', $_POST) )
-            $match->set_heure_fin( strtotime($_POST['heure_fin']) );
-          if( $match->get_statut() < event_partie::en_cours )
-          {
-            $match->set_arene($_POST['arene']);
-            $match->set_heure_debut( strtotime($_POST['heure_debut']) );
-            $heure_sso = explode(':', $_POST['heure_sso']);
-            $match->set_heure_sso( $heure_sso[0]*60+$heure_sso[1] );
-          }
+          $match->set_arene($_POST['arene']);
+          $heure_sso = explode(':', $_POST['heure_sso']);
+          $match->set_heure_sso( $heure_sso[0]*60+$heure_sso[1] );
         }
+        // Heure du début
+        if($match->get_statut() != event_partie::en_cours)
+        {
+          $heure_debut = explode(' ', $_POST['heure_debut']);
+          $date = explode('/', $heure_debut[0]);
+          $heure = explode(':', $heure_debut[1]);
+          $match->set_heure_debut( mktime($heure[0], $heure[1], 0, $date[1], $date[0], $date[2]) );
+        }
+        // Heure de fin
+        $heure_fin = explode(' ', $_POST['heure_fin']);
+        $date = explode('/', $heure_fin[0]);
+        $heure = explode(':', $heure_fin[1]);
+        $match->set_heure_fin( mktime($heure[0], $heure[1], 0, $date[1], $date[0], $date[2]) );
+        // autres
         if( array_key_exists('gagnant', $_POST) )
-          $match->set_gagnant( $match->get_participant($_POST['gagnant']) );
+          $match->set_gagnant( $_POST['gagnant'] );
         if( array_key_exists('second', $_POST) )
-          $match->set_second( $match->get_participant($_POST['second']) );
+          $match->set_second( $_POST['second'] );
         if( $_POST['equipe0'] == $_POST['equipe1'] )
           die('<h5>Une équipe ne peut pas jouer contre elle-même !</h5>');
         $match->set_participant(0, $_POST['equipe0']);
@@ -1236,16 +1275,33 @@ abstract class event_dte_rte extends event
         $match->sauver();
       }
     }
-    echo 3;
+    elseif( array_key_exists('statut', $_GET) )
+    {
+      $match = $this->get_partie('id', $_GET['match']);
+      switch($_GET['statut'])
+      {
+      case event_partie::en_cours:
+        $match->set_statut( $_GET['statut'] );
+        $match->set_heure_debut( time() );
+        $arene = $match->get_arene();
+        $arene->set_open(1);
+        $arene->sauver();
+        $match->sauver();
+        break;
+      case event_partie::fini:
+        $match->terminer();
+      }
+    }
     
     $matchs = $this->get_partie();
-    echo 4;
+    
+
+    echo '<p><i>Rappel pour l\'heure SSO : 6-9h = matin, 10-15h = journée, 16-19h = soir, 20-5h = nuit</i></p>';
     
     // Affichage des matchs
     foreach($matchs as $match)
     {
 ?>
-      <p><i>Rappel pour l'heure SSO : 6-9h = matin, 10-15h = journée, 16-19h = soir, 20-5h = nuit</i></p>
       <div class="event_bloc">
 <?PHP
         switch($match->get_type())
@@ -1267,10 +1323,10 @@ abstract class event_dte_rte extends event
         switch($match->get_statut())
         {
         case event_partie::a_venir:
-          echo '<a href="event.php?event='.$this->get_id().'>&page=matchs&match='.$match->get_id().'&statut='.event_partie::en_cours.'" onclick="return envoiInfo(this.href, \'contenu\');">Démarer</a><br />';
+          echo '<a href="event.php?event='.$this->get_id().'&page=matchs&match='.$match->get_id().'&statut='.event_partie::en_cours.'" onclick="return envoiInfo(this.href, \'contenu\');">Démarer</a><br />';
           break;
         case event_partie::en_cours:
-          echo '<a href="event.php?event='.$this->get_id().'>&page=matchs&match='.$match->get_id().'&statut='.event_partie::fini.'" onclick="return envoiInfo(this.href, \'contenu\');">Terminer</a><br />';
+          echo '<a href="event.php?event='.$this->get_id().'&page=matchs&match='.$match->get_id().'&statut='.event_partie::fini.'" onclick="return envoiInfo(this.href, \'contenu\');">Terminer</a><br />';
           break;
         }
 ?>
@@ -1287,15 +1343,20 @@ abstract class event_dte_rte extends event
             </select><br />
             Date de début : <input type="text" id="heure_debut_<?PHP echo $match->get_id(); ?>" name="heure_debut" /><br />
             Heure SSO : <input type="text" id="heure_sso_<?PHP echo $match->get_id(); ?>" name="heure_sso" /><br />
+            Date de fin : <input type="text" id="heure_fin_<?PHP echo $match->get_id(); ?>" name="heure_fin" /><br />
 <?PHP
-        if($fin)
-          echo 'Date de fin : <input type="text" id="heure_fin_'.$match->get_id().'" name="heure_fin" /><br />';
         if( $match->get_statut() == event_partie::fini )
         {
-          echo 'Gagnant : <select name="gagnant"><option value="0">non défini</option><option value="1">équipe 1</option><option value="2">équipe 2</option>';
+          echo 'Gagnant : <select name="gagnant"><option value="0">non défini</option>';
+          $id0 = $match->get_participant(0);
+          echo '<option value="'.$id0.'"'.($match->get_gagnant()==$id0?' selected="selected"':'').'>'.$equipes[$id0]->get_nom().'</option>';
+          $id1 = $match->get_participant(1);
+          echo '<option value="'.$id1.'"'.($match->get_gagnant()==$id1?' selected="selected"':'').'>'.$equipes[$id1]->get_nom().'</option>';
           if( $match->get_type() == event_partie_dte_rte::match3 )
           {
-            echo '</select><br />Second : <select name="second"><option value="0">non défini</option><option value="1">équipe 1</option><option value="2">équipe 2</option>';
+            $id2 = $match->get_participant(2);
+            echo '<option value="'.$id2.'"'.($match->get_gagnant()==$id2?' selected="selected"':'').'>'.$equipes[$id2]->get_nom().'</option>';
+            echo '</select><br />Second : <select name="second"><option value="'.$id0.'"'.($match->get_gagnant()==$id0?' selected="selected"':'').'>'.$equipes[$id0]->get_nom().'</option><option value="'.$id1.'"'.($match->get_gagnant()==$id1?' selected="selected"':'').'>'.$equipes[$id1]->get_nom().'</option><option value="'.$id2.'"'.($match->get_gagnant()==$id2?' selected="selected"':'').'>'.$equipes[$id2]->get_nom().'</option>';
           }
           echo '</select><br />';
         }
@@ -1308,13 +1369,13 @@ abstract class event_dte_rte extends event
 <?php
         if($match->get_heure_debut())
         {
-          echo '$( "#heure_debut_'.$match->get_id().'" ).datepicker("setDate",  new Date('.date('Y', $match->get_heure_debut()).','.(date('m', $match->get_heure_debut())-1).','.date('d', $match->get_heure_debut()).', '.date('H', $match->get_heure_debut()).', '.date('i', $match->get_heure_debut()).', '.date('s', $match->get_heure_debut()).") );\n";
+          echo '$( "#heure_debut_'.$match->get_id().'" ).datetimepicker("setDate",  new Date('.date('Y', $match->get_heure_debut()).','.(date('m', $match->get_heure_debut())-1).','.date('d', $match->get_heure_debut()).', '.date('H', $match->get_heure_debut()).', '.date('i', $match->get_heure_debut()).', '.date('s', $match->get_heure_debut()).") );\n";
         }
         if($match->get_heure_fin())
         {
-          echo '$( "#heure_fin_'.$match->get_id().'" ).datepicker("setDate",  new Date('.date('Y', $match->get_heure_fin()).','.(date('m', $match->get_heure_fin())-1).','.date('d', $match->get_heure_fin()).', '.date('H', $match->get_heure_fin()).', '.date('i', $match->get_heure_fin()).', '.date('s', $match->get_heure_fin()).") );\n";
+          echo '$( "#heure_fin_'.$match->get_id().'" ).datetimepicker("setDate",  new Date('.date('Y', $match->get_heure_fin()).','.(date('m', $match->get_heure_fin())-1).','.date('d', $match->get_heure_fin()).', '.date('H', $match->get_heure_fin()).', '.date('i', $match->get_heure_fin()).', '.date('s', $match->get_heure_fin()).") );\n";
         }
-        echo '$( "#heure_sso_'.$match->get_id().'" ).datepicker("setDate",  new Date(0,0,0, '.($match->get_heure_sso()/60).', '.($match->get_heure_sso()%60).", 0) );\n";
+        echo '$( "#heure_sso_'.$match->get_id().'" ).datetimepicker("setDate",  new Date(0,0,0, '.($match->get_heure_sso()/60).', '.($match->get_heure_sso()%60).", 0) );\n";
 ?>
             </script>
           </div>
@@ -1387,6 +1448,108 @@ abstract class event_dte_rte extends event
         <input type="submit" value="Créer" onclick="return envoiFormulaire('nouv_match', 'contenu');"/>
       </div>
 <?PHP
+  }
+
+  /// Interface disponible en ville
+  function interface_ville()
+  {
+    echo '<p class="ville_haut">'.$this->get_nom().'</p>';
+    if( $this->get_statut() == event::inscriptions )
+    {
+      $this->ville_inscription();
+      echo '<hr/><p><span>Liste des participants :</span><br/>';
+      $this->liste_participant();
+      echo '</p>';
+      return;
+    }
+    
+    // matchs en cours
+    $matchs = $this->get_partie('statut', event_partie::en_cours);
+    $arenes_matchs = array();
+    if( $matchs )
+    {
+      echo '<p><b>Matchs en cours</b><ul>';
+      foreach($matchs as $match)
+      {
+        $equipe0 = $this->get_equipe('id', $match->get_participant(0));
+        $equipe1 = $this->get_equipe('id', $match->get_participant(1));
+        echo '<li>'.$equipe0->get_nom().' vs '.$equipe1->get_nom();
+        if( $match->get_type() == event_partie_dte_rte::match3 )
+        {
+          $equipe2 = $this->get_equipe('id', $match->get_participant(2));
+          echo ' vs '.$equipe2->get_nom();
+        }
+        $arene = $match->get_arene();
+        echo ' : <a href="show_arenes.php?nom_arene='.$arene->get_nom().'">'.$arene->get_nom().'</a></li>';
+        $arenes_matchs[] = $arene->get_id();
+      }
+      echo '</ul></p>';
+    }
+    
+    // On regarde s'il y a d'autre arènes ouvertes
+    $arenes = arene::create('open', 1);
+    if( count($arenes) > count($matchs) )
+    {
+      if( $matchs )
+        echo '<p><b>Autres arènes ouvertes</b><ul>';
+      else
+        echo '<p><b>Arènes ouvertes</b><ul>';
+      foreach($arenes as $arene)
+      {
+        if( !in_array($arene->get_id(), $arenes_matchs) )
+        {
+          echo '<li><a href="show_arenes.php?nom_arene='.$arene->get_nom().'">'.$arene->get_nom().'</a></li>';
+        }
+      }
+      echo '</ul></p>';
+    }
+    
+    // matchs terminés récements
+    $matchs = $this->get_partie('statut', event_partie::fini, 'heure_fin DESC', 3);
+    if( $matchs )
+    {
+      echo '<p><b>Matchs terminés</b><ul>';
+      foreach($matchs as $match)
+      {
+        $partic = $match->get_participants();
+        $gagnant = $this->get_equipe('id', $match->get_gagnant());
+        $partic = array_diff($partic, array($gagnant->get_id()));
+        echo '<li>1° : '.$gagnant->get_nom();
+        $p = 2;
+        if( $match->get_type() == event_partie_dte_rte::match3 )
+        {
+          $p++;
+          $second = $this->get_equipe('id', $match->get_second());
+          $partic = array_diff($partic, array($second->get_id()));
+          echo ' - 2° : '.$second->get_nom();
+        }
+        $arene = $match->get_arene();
+        $perdant = $this->get_equipe('id', array_pop($partic));
+        echo ' - '.$p.'° : '.$perdant->get_nom().' ('.$arene->get_nom().')';
+      }
+      echo '</ul></p>';
+    }
+
+    // Prochains matchs
+    $matchs = $this->get_partie('statut', event_partie::a_venir, 'heure_debut ASC', 2);
+    if( $matchs )
+    {
+      echo '<p><b>Prochains matchs</b><ul>';
+      foreach($matchs as $match)
+      {
+        $equipe0 = $this->get_equipe('id', $match->get_participant(0));
+        $equipe1 = $this->get_equipe('id', $match->get_participant(1));
+        echo '<li>'.$equipe0->get_nom().' vs '.$equipe1->get_nom();
+        if( $match->get_type() == event_partie_dte_rte::match3 )
+        {
+          $equipe2 = $this->get_equipe('id', $match->get_participant(2));
+          echo ' vs '.$equipe2->get_nom();
+        }
+        $arene = $match->get_arene();
+        echo ' : '.date('d/m/Y H:i', $match->get_heure_debut()).', '.$arene->get_nom();
+      }
+      echo '</ul></p>';
+    }
   }
 	// @}
 };

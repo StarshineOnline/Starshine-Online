@@ -147,7 +147,7 @@ class arene extends table
 	/// Renvoie la liste des champs et valeurs pour une mise-à-jour dans la base
 	protected function get_liste_update()
 	{
-		return 'nom = "'.$this->get_nom().'", x = '.$this->get_x().', y = .'.$this->get_y().', size = '.$this->get_size().', file = "'.mysql_escape_string($this->get_file()).'", open = '.($this->get_open()?1:0).', donj = '.($this->get_donj()?1:0).', decal = '.$this->get_decal().', donnees = "'.mysql_escape_string($this->get_positions()).'"';
+		return 'nom = "'.$this->get_nom().'", x = '.$this->get_x().', y = '.$this->get_y().', size = '.$this->get_size().', file = "'.mysql_escape_string($this->get_file()).'", open = '.($this->get_open()?1:0).', donj = '.($this->get_donj()?1:0).', decal = '.$this->get_decal().', donnees = "'.mysql_escape_string($this->get_positions()).'"';
 	}
   /**
    * Renvoie le nom de la table.

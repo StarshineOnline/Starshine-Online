@@ -60,12 +60,14 @@ class event_partie extends table
    * - creer($event, $classe)                    renvoie un tableau contenant tous les équipes
    * - creer($event, $classe, $champ, $valeur)   renvoie une ou plusieurs équipes suivant la valeur d'un champ précis
    *
-   * @param  $event  string    objet event
+   * @param  $event   string    objet event
    * @param  $classe  string    classe à créer
    * @param  $champ   string    champ sur lequel porte la condition
    * @param  $valeur  string    valeur du champ demandée
+   * @param  $ordre   string    instructions pour le tri
+   * @param  $limit   string    nombre max d'entrée
    */
-  static function creer($event, $classe, $champ=null, $valeur=null)
+  static function creer($event, $classe, $champ=null, $valeur=null, $ordre='id ASC', $limit=false)
   {
 		global $db;
 		$keys = false;
@@ -73,7 +75,15 @@ class event_partie extends table
 
 		$requete = 'SELECT * FROM event_partie WHERE event = '.$event->get_id();
     if( $champ )
-      $requete .= ' AND '.$champ.' = "'.$valeur.'"';
+    {
+      if($valeur)
+        $requete .= ' AND '.$champ.' = "'.$valeur.'"';
+      else
+        $requete .= $champ;
+    }
+    $requete .= ' ORDER BY '.$ordre;
+    if( $limit )
+      $requete .= ' LIMIT 0,'.$limit;
 		$req = $db->query($requete);
 		if($db->num_rows($req) > 0)
 		{
@@ -146,7 +156,7 @@ class event_partie extends table
 	/// Renvoie la liste des champs et valeurs pour une mise-à-jour dans la base
 	protected function get_liste_update()
 	{
-		return 'event = '.$this->get_id_event().', statut = "'.$this->get_statut().'", arene = .'.($this->get_id_arene()!==null?$this->get_id_arene():'NULL').', heure_sso = '.$this->get_heure_sso().', heure_debut = '.$this->get_heure_debut().', heure_fin = '.($this->get_heure_fin()!==null?$this->get_heure_fin():'NULL').', gagnant = '.$this->get_gagnant().', donnees = "'.mysql_escape_string($this->serializeDonnees()).'"';
+		return 'event = '.$this->get_id_event().', statut = "'.$this->get_statut().'", arene = '.($this->get_id_arene()!==null?$this->get_id_arene():'NULL').', heure_sso = '.$this->get_heure_sso().', heure_debut = '.$this->get_heure_debut().', heure_fin = '.($this->get_heure_fin()!==null?$this->get_heure_fin():'NULL').', gagnant = '.$this->get_gagnant().', donnees = "'.mysql_escape_string($this->serializeDonnees()).'"';
 	}
   /**
    * Renvoie le nom de la table.
@@ -201,18 +211,17 @@ class event_partie extends table
 	/// Renvoie l'arene
 	function get_arene()
 	{
-    if( is_numeric($this->arene) )
-		  return new arene($this->royaume);
-    else
-      return $this->arene;
+    if( !is_object($this->arene) and $this->arene !== null )
+      $this->arene = new arene($this->arene);
+    return $this->arene;
 	}
 	/// Renvoie l'id de l'arene
 	function get_id_arene()
 	{
-    if( is_numeric($this->arene) or $this->arene === null )
-      return $this->arene;
-    else
+    if( is_object($this->arene) )
 		  return $this->arene->get_id();
+    else
+      return $this->arene;
 	}
 	/// Modifie l'arene
 	function set_arene($arene)
@@ -388,6 +397,41 @@ class event_partie_dte_rte extends event_partie
     }
   }
 	// @}
+	
+	/// Termine un match
+	function terminer()
+	{
+    global $db;
+    $this->set_statut(event_partie::fini);
+    // TP des personnages hors de l'arènes
+    $persos = $this->event->get_arenes_joueur('partie = '.$this->get_id().' AND statut = '.arenes_joueur::en_cours);
+    foreach($persos as $perso)
+    {
+      $perso->teleporte();
+    }
+    // fermeture de l'arène
+    $arene = $this->get_arene();
+    $arene->set_open(0);
+    $arene->sauver();
+    // Calcul du nombre de meurtes équipe 1
+    /*$id0 =$this->get_participant(0);
+    $requete = 'SELECT id_perso in event_participant WHERE event='.$this->get_id_event().' AND equipe='.$id0;
+    $req = $db->query($requete);
+    $persos0 = array();
+    while($row = $db->read_assoc($req))
+    {
+      $persos0[] = $row['id_perso'];
+    }
+    $lst0 = implode(',', $persos0);
+    $requete = 'SELECT count(*) as nbr FROM journal WHERE action="tue" AND actif IN ('.$lst0.')  AND passif NOT IN ('.$lst0.') AND UNIX_TIMESTAMP(journal.time) > '.$this->get_heure_debut();
+    echo $requete;
+    $req = $db->query($requete);
+    $row = $db->read_assoc($req);
+    $this->set_nbr_meurtres(0, $row['nbr']);*/
+    // TODO: calcul des points
+    // Détermination du gagnant et éventuellement du second
+    $this->sauver();
+  }
 };
 
 ?>

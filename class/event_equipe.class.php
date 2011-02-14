@@ -58,8 +58,9 @@ class event_equipe extends table
    * @param  $classe  string    classe à créer
    * @param  $champ   string    champ sur lequel porte la condition
    * @param  $valeur  string    valeur du champ demandée
+   * @param  $ordre   string    instructions pour le tri
    */
-  static function creer($event, $classe, $champ=null, $valeur=null)
+  static function creer($event, $classe, $champ=null, $valeur=null, $ordre='id ASC')
   {
 		global $db;
 		$keys = false;
@@ -68,6 +69,7 @@ class event_equipe extends table
 		$requete = 'SELECT * FROM event_equipe WHERE event = '.$event->get_id();
     if( $champ )
       $requete .= ' AND '.$champ.' = "'.$valeur.'"';
+    $requete .= ' ORDER BY '.$ordre;
 		$req = $db->query($requete);
 		if($db->num_rows($req) > 0)
 		{
@@ -77,7 +79,7 @@ class event_equipe extends table
       {
   			while($row = $db->read_assoc($req))
   			{
-  				$return[] = new $classe($event, $row);
+  				$return[$row['id']] = new $classe($event, $row);
   			}
       }
 		}
@@ -194,18 +196,17 @@ class event_equipe extends table
 	/// Renvoie le royaume
 	function get_royaume()
 	{
-    if( is_numeric($this->royaume) )
-		  return new royaume($this->royaume);
-    else
-      return $this->royaume;
+    if( !is_object($this->royaume) and $this->royaume !== null )
+      $this->royaume = new royaume($this->royaume);
+    return $this->royaume;
 	}
 	/// Renvoie l'id du royaume
 	function get_id_royaume()
 	{
-    if( is_numeric($this->royaume) or $this->royaume === null )
-      return $this->royaume;
-    else
+    if( is_object($this->royaume) )
 		  return $this->royaume->get_id();
+    else
+      return $this->royaume;
 	}
 	/// Modifie le royaume
 	function set_royaume($royaume)

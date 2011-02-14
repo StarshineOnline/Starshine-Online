@@ -73,7 +73,12 @@ class arenes_joueur extends table
 
 		$requete = 'SELECT * FROM arenes_joueurs WHERE event = '.$event->get_id();
     if( $champ )
-      $requete .= ' AND '.$champ.' = "'.$valeur.'"';
+    {
+      if( $valeur )
+        $requete .= ' AND '.$champ.' = "'.$valeur.'"';
+      else
+        $requete .= ' AND '.$champ;
+    }
 		$req = $db->query($requete);
 		if($db->num_rows($req) > 0)
 		{
@@ -216,17 +221,17 @@ class arenes_joueur extends table
 	/// Renvoie le perso sous forme d'objet
 	function get_perso()
 	{
-    if( is_numeric($this->id_perso) )
+    if( !is_object($this->id_perso) )
       $this->id_perso = new perso($this->id_perso);
 		return $this->id_perso;
 	}
 	/// Renvoie l'id du perso
 	function get_id_perso()
 	{
-    if( is_numeric($this->id_perso) )
-      return $this->id_perso;
-    else
+    if( is_object($this->id_perso) )
 		  return $this->id_perso->get_id();
+    else
+      return $this->id_perso;
 	}
 	/// Modifie le personnage
 	function set_perso($perso)
@@ -244,19 +249,19 @@ class arenes_joueur extends table
 	{
     if( !$this->groupe )
       return null;
-    if( is_numeric($this->groupe) )
+    if( !is_object($this->groupe) )
       $this->perso = new groupe($this->groupe);
 		return $this->groupe;
 	}
 	/// Renvoie l'id du groupe
 	function get_id_groupe()
 	{
-    if( is_numeric($this->groupe) )
-      return $this->groupe;
+    if( is_object($this->groupe) )
+		  return $this->groupe->get_id();
     elseif( !$this->groupe )
       return 0;
     else
-		  return $this->groupe->get_id();
+      return $this->groupe;
 	}
 	/// Modifie le groupe
 	function set_groupe($groupe)
@@ -270,19 +275,19 @@ class arenes_joueur extends table
 	{
     if( !$this->partie )
       return null;
-    if( is_numeric($this->partie) )
+    if( !is_object($this->partie) )
       $this->perso = new partie($this->partie);
 		return $this->partie;
 	}
 	/// Renvoie l'id de la partie
 	function get_id_partie()
 	{
-    if( is_numeric($this->partie) )
-      return $this->partie;
+    if( is_object($this->partie) )
+		  return $this->partie->get_id();
     elseif( !$this->partie )
       return 0;
     else
-		  return $this->partie->get_id();
+      return $this->partie;
 	}
 	/// Modifie la partie
 	function set_partie($partie)
@@ -296,19 +301,19 @@ class arenes_joueur extends table
 	{
     if( !$this->arene )
       return null;
-    if( is_numeric($this->arene) )
+    if( !is_object($this->arene) )
       $this->arene = new arene($this->arene);
 		return $this->arene;
 	}
 	/// Renvoie l'id de l'arène
 	function get_id_arene()
 	{
-    if( is_numeric($this->arene) )
-      return $this->arene;
+    if( is_object($this->arene) )
+		  return $this->arene->get_id();
     elseif( !$this->arene )
       return 0;
     else
-		  return $this->arene->get_id();
+      return $this->arene;
 	}
 	/// Modifie l'arène
 	function set_arene($arene)

@@ -175,14 +175,14 @@ class event_participant extends table
 	/// Renvoie le perso sous forme d'objet
 	function get_perso()
 	{
-    if( is_numeric($this->perso) )
+    if( !is_object($this->perso) )
       $this->perso = new perso($this->perso);
 		return $this->perso;
 	}
 	/// Renvoie l'id du perso
 	function get_id_perso()
 	{
-    if( is_numeric($this->perso) )
+    if( !is_object($this->perso) )
       return $this->perso;
     else
 		  return $this->perso->get_id();
@@ -191,7 +191,7 @@ class event_participant extends table
 	/// Renvoie l'id de l'équipe
 	function get_id_equipe()
 	{
-    if( is_numeric($this->equipe) or $this->equipe === null )
+    if( !is_object($this->equipe) or $this->equipe === null )
       return $this->equipe;
     else
 		  return $this->equipe->get_id();

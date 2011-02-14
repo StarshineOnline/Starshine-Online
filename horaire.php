@@ -137,4 +137,19 @@ imagepng ($im2, $carte);
 imagedestroy($im2);
 imagedestroy($im);
 
+// events
+try
+{
+  include_once(root.'class/table.class.php');
+  include_once(root.'class/event.class.php');
+  $events = event::create('statut', event::en_cours);
+  foreach($events as $event)
+  {
+    $event->horaire();
+  }
+}
+catch(Exception $e)
+{
+}
+
 ?>
