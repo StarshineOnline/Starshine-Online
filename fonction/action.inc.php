@@ -1369,7 +1369,7 @@ function lance_comp($id, $acteur, &$effects)
 			echo '&nbsp;&nbsp;<strong>'.$actif->get_nom().'</strong> utilise '.$row['nom'].'<br />';
 			$actif->etat['a_toucher']['effet'] += $row['effet'];
 			$actif->etat['a_toucher']['duree'] = 1;
-			$actif->etat['a_critique']['effet'] += $row['effet'];
+			$actif->etat['a_critique']['effet'] += $row['effet2'];
 			$actif->etat['a_critique']['duree'] = 1;
 			$comp_attaque = true;
 		break;
