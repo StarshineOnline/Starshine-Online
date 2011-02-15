@@ -66,7 +66,7 @@ while($row = $db->read_array($req))
 		, 'brisement_os', 'lapidation', 'globe_foudre', 'vortex_vie', 'vortex_mana', 'putrefaction', 'embrasement', 'sphere_glace');
 		if(in_array($row['type'], $sort_de_degat))
 		{
-			if($row['type'] == 'drain_vie') $j = $joueur->get_comp($row['carac_assoc']) - 2;
+			if($row['type'] == 'drain_vie' OR $row['type'] == 'vortex_vie' OR $row['type'] == 'vortex_mana') $j = $joueur->get_comp($row['carac_assoc']) - 2;
 			else
 			{
 				$j = $joueur->get_comp($row['carac_assoc']);
