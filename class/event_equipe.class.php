@@ -68,7 +68,7 @@ class event_equipe extends table
 
 		$requete = 'SELECT * FROM event_equipe WHERE event = '.$event->get_id();
     if( $champ )
-      $requete .= ' AND '.$champ.' = "'.$valeur.'"';
+      $requete .= ' AND '.$champ.' = "'.mysql_escape_string($valeur).'"';
     $requete .= ' ORDER BY '.$ordre;
 		$req = $db->query($requete);
 		if($db->num_rows($req) > 0)

@@ -4,6 +4,7 @@
  * Gestion des arènes
  */
 
+require_once(root.'arenes/gen_arenes.php');
 
 /**
  * Classe de base pour les arènes, liée à la table arenes de la base de données.
@@ -245,6 +246,21 @@ class arene extends table
     $this->open = $open;
 		$this->champs_modif[] = 'open';
 	}
+	// Ouvre l'arène
+	function ouvrir()
+	{
+    $this->set_open(1);
+		$this->sauver();
+    gen_all();
+  }
+  // Ferme l'arène
+  function fermer()
+  {
+    $this->set_open(0);
+		$this->sauver();
+    unlink(root.'/arenes/'.$this->get_file());
+    unlink(root.'/arenes/admin/'.$this->get_file());
+  }
 
 	/// Indique si l'arène est de type donjon
 	function get_donj()
@@ -269,6 +285,35 @@ class arene extends table
     $this->decal = $decal;
 		$this->champs_modif[] = 'decal';
 	}
+	/**
+	 * Calcul le décalage et change en fonction de l'heure voulue
+	 * @param  $heure_reelle int   heure dans le monde réel
+	 * @param  $heure_sso    int   heure sso
+	 */
+	 function calcul_decal($heure_reelle, $heure_sso)
+	 {
+      // On reprend l'alogrithme d'Irulan :
+      $date_visee = date("H:i:s", $heure_sso);
+      $decal = 0;
+      // Comme je ne sais pas calculer ca, je vais chercher par dichotomie
+      // Date trouvée en ~16 iterations
+      $tdsso = date_sso($heure_reelle + $decal);
+      $step = 57600; // demi-jour SSO
+      while ($tdsso != $date_visee) {
+        if (($tdsso > $date_visee && $step > 0) ||
+            ($tdsso < $date_visee && $step < 0)) {
+          $step *= -1;
+        }
+        $step = round($step / 2);
+        $decal += $step;
+        //echo "step is $step, decal is $decal \n";
+        $tdsso = date_sso($heure_reelle + $decal);
+      }
+      
+      // On modifie le décalage
+      $this->decal = $decal;
+  		$this->champs_modif[] = 'decal';
+   }
 
 	/**
 	 * Renvoie les positions de départs de personnages
@@ -281,12 +326,17 @@ class arene extends table
 	 */
 	function get_positions($type='')
 	{
-    $vals = array();
-    foreach($this->positions as $type=>$pos)
+    if( $type )
+      return $this->positions[$type];
+    else
     {
-      $vals[] = $type.':'.implode(',',$pos);
+      $vals = array();
+      foreach($this->positions as $type=>$pos)
+      {
+        $vals[] = $type.':'.implode(',',$pos);
+      }
+  		return implode('|',$vals);
     }
-		return implode('|',$vals);
 	}
 	/**
 	 * Modifie les positions de départs de personnages
@@ -306,7 +356,7 @@ class arene extends table
       foreach($vals as $val)
       {
         $pos = explode(':', $val);
-        $this->positions[$pos[0]] =explode(',', $pos[10]);
+        $this->positions[$pos[0]] = explode(',', $pos[1]);
       }
     }
 		$this->champs_modif[] = 'positions';

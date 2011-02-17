@@ -32,6 +32,7 @@ class event_participant extends table
 	{
 		global $db;
 		//Verification du nombre et du type d'argument pour construire l'objet adequat.
+		//echo "event=<.$event> - partic=$partic - equipe=$equipe<br/>";
 		if( func_num_args() == 2 && is_numeric($partic) )
 		{
 			$this->charger($partic);
@@ -115,8 +116,8 @@ class event_participant extends table
   {
     table::init_tab($vals);
 		$this->event = $vals['event'];
-		$this->perso = $vals['perso'];
-		$this->equipe = $vals['royaume']!='NULL' ? $vals['royaume'] : null;
+		$this->perso = $vals['id_perso'];
+		$this->equipe = $vals['equipe']!='NULL' ? $vals['equipe'] : null;
 		$this->unserializeDonnees($vals['donnees']);
   }
   /// Renvoie la valeur d'un champ de la base de donnée
@@ -140,7 +141,7 @@ class event_participant extends table
 	/// Renvoie la liste des champs et valeurs pour une mise-à-jour dans la base
 	protected function get_liste_update()
 	{
-		return 'event = '.$this->get_id_event().', id_perso = '.$this->get_id_perso().', equipe = .'.($this->get_id_equipe()!==null?$this->get_id_equipe():'NULL').', donnees = "'.mysql_escape_string($this->serializeDonnees()).'"';
+		return 'event = '.$this->get_id_event().', id_perso = '.$this->get_id_perso().', equipe = '.($this->get_id_equipe()!==null?$this->get_id_equipe():'NULL').', donnees = "'.mysql_escape_string($this->serializeDonnees()).'"';
 	}
   /**
    * Renvoie le nom de la table.

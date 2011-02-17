@@ -250,7 +250,7 @@ class arenes_joueur extends table
     if( !$this->groupe )
       return null;
     if( !is_object($this->groupe) )
-      $this->perso = new groupe($this->groupe);
+      $this->groupe = new groupe($this->groupe);
 		return $this->groupe;
 	}
 	/// Renvoie l'id du groupe
@@ -359,7 +359,7 @@ class arenes_joueur extends table
   protected function tp($arene, $x, $y, $groupe, $hp, $admin)
   {
     global $db;
-    
+
     $perso = $this->get_perso();
     if( $arene )
     {
@@ -391,7 +391,8 @@ class arenes_joueur extends table
       else
       {
         $mbr_grp = groupe_joueur::create(array('id_joueur', 'id_groupe'), array($perso->get_id(), $this->groupe));
-        $mbr_grp->supprimer();
+        if($mbr_grp)
+          $mbr_grp[0]->supprimer();
       }
       $perso->set_groupe( $groupe->get_id() );
     }

@@ -76,10 +76,9 @@ class event_partie extends table
 		$requete = 'SELECT * FROM event_partie WHERE event = '.$event->get_id();
     if( $champ )
     {
+      $requete .= ' AND '.$champ;
       if($valeur)
-        $requete .= ' AND '.$champ.' = "'.$valeur.'"';
-      else
-        $requete .= $champ;
+        $requete .= ' = "'.mysql_escape_string($valeur).'"';
     }
     $requete .= ' ORDER BY '.$ordre;
     if( $limit )
@@ -156,7 +155,7 @@ class event_partie extends table
 	/// Renvoie la liste des champs et valeurs pour une mise-à-jour dans la base
 	protected function get_liste_update()
 	{
-		return 'event = '.$this->get_id_event().', statut = "'.$this->get_statut().'", arene = '.($this->get_id_arene()!==null?$this->get_id_arene():'NULL').', heure_sso = '.$this->get_heure_sso().', heure_debut = '.$this->get_heure_debut().', heure_fin = '.($this->get_heure_fin()!==null?$this->get_heure_fin():'NULL').', gagnant = '.$this->get_gagnant().', donnees = "'.mysql_escape_string($this->serializeDonnees()).'"';
+		return 'event = '.$this->get_id_event().', statut = '.$this->get_statut().', arene = '.($this->get_id_arene()!==null?$this->get_id_arene():'NULL').', heure_sso = '.$this->get_heure_sso().', heure_debut = '.$this->get_heure_debut().', heure_fin = '.($this->get_heure_fin()!==null?$this->get_heure_fin():'NULL').', gagnant = '.$this->get_gagnant().', donnees = "'.mysql_escape_string($this->serializeDonnees()).'"';
 	}
   /**
    * Renvoie le nom de la table.
@@ -323,9 +322,11 @@ class event_partie_dte_rte extends event_partie
    */
   // @{
   protected $type;  ///< type de match
-  const match2 = 0;  ///< match à 2
-  const match3 = 1;  ///< match à 3
-  const finale = 2;  ///< finale
+  const match2_poule = 0;  ///< match à 2 en phase de poule
+  const match3_poule = 1;  ///< match à 3 en phase de poule
+  const match2_elim = 2;  ///< match à 2 en phase éliminatoire
+  const match3_elim = 3;  ///< match à 3 en phase éliminatoire
+  const finale = 4;  ///< finale
   protected $second;  ///< équipe ayant terminé deuxième lors des match à 3.
   protected $nbr_meurtres=array(0,0);  ///< nombre de meurtes lors du match pour chaque équipe
   protected $points_matchs=array(0,0);  ///< points gagnés lors du match pour chaque équipe
@@ -397,7 +398,76 @@ class event_partie_dte_rte extends event_partie
     }
   }
 	// @}
-	
+
+  /// Démare un match
+  function demarer()
+  {
+    global $G_temps_PA, $db;
+    // Récupération des information
+    $arene = $this->get_arene();
+    switch( $this->get_type() )
+    {
+    case event_partie_dte_rte::match2_poule:
+      $pos = $arene->get_positions('m2');
+      $pa = $this->event->get_pa_matchs(event_dte_rte::pa_match2_poules);
+      break;
+    case event_partie_dte_rte::match2_elim:
+      $pos = $arene->get_positions('m2');
+      $pa = $this->event->get_pa_matchs(event_dte_rte::pa_match3_poules);
+      break;
+    case event_partie_dte_rte::match3_poule:
+      $pos = $arene->get_positions('m3');
+      $pa = $this->event->get_pa_matchs(event_dte_rte::pa_match2_elim);
+      break;
+    case event_partie_dte_rte::match3_elim:
+      $pos = $arene->get_positions('m3');
+      $pa = $this->event->get_pa_matchs(event_dte_rte::pa_match2_elim);
+      break;
+    case event_partie_dte_rte::finale:
+      $pos = $arene->get_positions('mf');
+      $pa = $this->event->get_pa_matchs(event_dte_rte::pa_finale);
+      break;
+    }
+    // S'il on ne connait pas les position de TP alors on annule
+    if( !$pos )
+      return;
+    // Ouverture de l'arène et modification de l'heure
+    $arene->calcul_decal($this->get_heure_debut(), $this->get_heure_sso());
+    $arene->ouvrir(1);
+    // On récupère les équipes concernées et on téléporte les personnages
+    $equipes = $this->get_participants();
+    $liste = array();
+    $i=0;
+    foreach($equipes as $id)
+    {
+      $equipe = $this->event->get_equipe('id', $id);
+      $persos = $this->event->get_participant('equipe', $id);
+      $x = $pos[$i];
+      $y = $pos[$i+1];
+      $groupe = groupe::create('nom', $this->event->get_nom().' '.$equipe->get_nom());
+      if( $groupe )
+        $groupe = $groupe[0];
+      else
+      {
+        $groupe = new groupe(0, 't', 0, $this->event->get_nom().' '.$equipe->get_nom());
+        $groupe->sauver();
+      }
+      foreach($persos as $perso)
+      {
+        $liste[] = $perso->get_id_perso();
+        $perso_ar = $this->event->nouveau_arenes_joueur($perso->get_id_perso(), arenes_joueur::en_attente, $arene, $this, $x, $y, $groupe, true);
+        $perso_ar->teleporte();
+      }
+      $i += 2;
+    }
+    // On change les PA
+    $liste = implode(',', $liste);
+    $requete = 'UPDATE perso SET dernieraction=UNIX_TIMESTAMP(), pa='.$pa.'-FLOOR( ('.$this->get_heure_debut().'-UNIX_TIMESTAMP())/'.$G_temps_PA.' ) WHERE id IN ('.$liste.')';
+    $db->query($requete);
+    // On change le statut
+    $this->set_statut(event_partie::en_cours);
+    $this->sauver();
+  }
 	/// Termine un match
 	function terminer()
 	{
@@ -411,8 +481,7 @@ class event_partie_dte_rte extends event_partie
     }
     // fermeture de l'arène
     $arene = $this->get_arene();
-    $arene->set_open(0);
-    $arene->sauver();
+    $arene->fermer();
     // Calcul du nombre de meurtes équipe 1
     /*$id0 =$this->get_participant(0);
     $requete = 'SELECT id_perso in event_participant WHERE event='.$this->get_id_event().' AND equipe='.$id0;

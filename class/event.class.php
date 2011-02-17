@@ -802,7 +802,7 @@ class event extends table
    */
   function nouveau_arenes_joueur($perso, $statut=0, $arene=0, $partie=0, $x=0, $y=0, $groupe =0, $hp=1)
   {
-    return new arenes_joueur($perso, $statut, $arene, $partie, $x, $y, $groupe, $hp);
+    return new arenes_joueur($this, $perso, $statut, $arene, $partie, $x, $y, $groupe, $hp);
   }
   // @}
 
@@ -1213,14 +1213,28 @@ abstract class event_dte_rte extends event
     {
       if( count($equipes) < 2 )
         die('<h5>Il doit y a voir au moins 2 équipes pour créer des matchs !');
-      if( $_GET['nouveau'] == event_partie_dte_rte::match3 && count($equipes) < 3 )
+      if( ($_GET['nouveau'] == event_partie_dte_rte::match3_poule || $_GET['nouveau'] == event_partie_dte_rte::match3_elim) && count($equipes) < 3 )
         die('<h5>Il doit y a voir au moins 3 équipes pour créer des matchs à 3 !');
       $nouv = $this->nouvelle_partie(event_partie::a_venir);
       $nouv->set_type($_GET['nouveau']);
       // Arène et heure SSO au hasard
       $num_arene = rand(0, count($arenes)-1);
       $nouv->set_arene( $arenes[$num_arene] );
-      $nouv->set_heure_sso( rand(0,23)*60 );
+      switch( rand(0,3) )
+      {
+      case 0:
+        $nouv->set_heure_sso( (6+rand(0,3))*60 );
+        break;
+      case 1:
+        $nouv->set_heure_sso( (10+rand(0,5))*60 );
+        break;
+      case 2:
+        $nouv->set_heure_sso( (16+rand(0,3))*60 );
+        break;
+      case 3:
+        $nouv->set_heure_sso( (20+rand(0,9))%24*60 );
+        break;
+      }
       $nouv->sauver();
     }
     elseif( array_key_exists('action', $_GET) )
@@ -1306,11 +1320,17 @@ abstract class event_dte_rte extends event
 <?PHP
         switch($match->get_type())
         {
-        case event_partie_dte_rte::match2:
-          echo '<b>Match #'.$match->get_id().'</b> - match à 2';
+        case event_partie_dte_rte::match2_poule:
+          echo '<b>Match #'.$match->get_id().'</b> - match de poule à 2';
           break;
-        case event_partie_dte_rte::match3:
-          echo '<b>Match #'.$match->get_id().'</b> - match à 3';
+        case event_partie_dte_rte::match3_poule:
+          echo '<b>Match #'.$match->get_id().'</b> - match de poule à 3';
+          break;
+        case event_partie_dte_rte::match2_elim:
+          echo '<b>Match #'.$match->get_id().'</b> - match d\'éliminatoire à 2';
+          break;
+        case event_partie_dte_rte::match3_elim:
+          echo '<b>Match #'.$match->get_id().'</b> - match d\'éliminatoire à 3';
           break;
         case event_partie_dte_rte::finale:
           echo '<b>Match #'.$match->get_id().'</b> - finale';
@@ -1352,7 +1372,7 @@ abstract class event_dte_rte extends event
           echo '<option value="'.$id0.'"'.($match->get_gagnant()==$id0?' selected="selected"':'').'>'.$equipes[$id0]->get_nom().'</option>';
           $id1 = $match->get_participant(1);
           echo '<option value="'.$id1.'"'.($match->get_gagnant()==$id1?' selected="selected"':'').'>'.$equipes[$id1]->get_nom().'</option>';
-          if( $match->get_type() == event_partie_dte_rte::match3 )
+          if( $match->get_type() == event_partie_dte_rte::match3_poule || $match->get_type() == event_partie_dte_rte::match3_elim )
           {
             $id2 = $match->get_participant(2);
             echo '<option value="'.$id2.'"'.($match->get_gagnant()==$id2?' selected="selected"':'').'>'.$equipes[$id2]->get_nom().'</option>';
@@ -1412,7 +1432,7 @@ abstract class event_dte_rte extends event
             </select>
           </div>
 <?PHP
-      if( $match->get_type() == event_partie_dte_rte::match3 )
+      if( $_GET['nouveau'] == event_partie_dte_rte::match3_poule || $_GET['nouveau'] == event_partie_dte_rte::match3_elim )
       {
 ?>
           <div class="event_minibloc">
@@ -1444,7 +1464,7 @@ abstract class event_dte_rte extends event
 ?>
       <div class="event_bloc">
         <form  id="nouv_match" method="get" action="event.php?event=<?php echo $this->get_id();?>&page=matchs">
-        Nouveau match : <select name="nouveau"><option value="0">match à 2</option><option value="1">match à 3</option><option value="2">finale</option></select>
+        Nouveau match : <select name="nouveau"><option value="0">match de poule à 2</option><option value="1">match de poule à 3</option><option value="3">match d'éliminatoire à 2</option><option value="4">match d'éliminatoire à 3</option><option value="5">finale</option></select>
         <input type="submit" value="Créer" onclick="return envoiFormulaire('nouv_match', 'contenu');"/>
       </div>
 <?PHP
@@ -1552,6 +1572,19 @@ abstract class event_dte_rte extends event
     }
   }
 	// @}
+	
+  /// Méthode appelée par le script horaire
+  function horaire()
+  {
+    if( $this->get_options_matchs(event_dte_rte::match_tp_auto) )
+    {
+      $matchs = $this->get_partie('statut = '.event_partie::a_venir.' AND heure_debut < '.(time() + 4200));
+      foreach($matchs as $match)
+      {
+        $match->demarer();
+      }
+    }
+  }
 };
 
 

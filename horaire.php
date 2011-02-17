@@ -140,8 +140,12 @@ imagedestroy($im);
 // events
 try
 {
-  include_once(root.'class/table.class.php');
-  include_once(root.'class/event.class.php');
+  function __autoload($class_name)
+  {
+  	global $root;
+  	$file = root.'class/'.$class_name.'.class.php';
+  	require_once($file);
+  }
   $events = event::create('statut', event::en_cours);
   foreach($events as $event)
   {
