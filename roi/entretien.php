@@ -259,8 +259,6 @@ echo '
             cursor: 'pointer',
             dataLabels: {
                enabled: true,
-               color: Highcharts.theme.textColor || '#000000',
-               connectorColor: Highcharts.theme.textColor || '#000000',
                formatter: function() {
                   return '<b>'+ this.point.name +'</b>: '+ this.y +' %';
                }
