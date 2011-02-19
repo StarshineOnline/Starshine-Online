@@ -164,7 +164,7 @@ while($row = $db->read_array($req))
 	$jours++;
 }
 ?>
-		<div id="graph_entretien">
+		<div id="graph_entretien" style="float : left;">
 			<div id="placeholder_entretien" style="width:900px;height:300px;"></div>
 		<script id="source" language="javascript" type="text/javascript">
 			<?php
@@ -204,6 +204,7 @@ while($row = $db->read_array($req))
 		  });
 		});
 		</script>
+		</div>
 <table>
 <?php
 echo '
