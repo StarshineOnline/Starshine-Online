@@ -231,7 +231,7 @@ echo '
 ?>
 </table>
 		<div id="graph_recette_total" style="float : left;">
-			<div id="placeholder_recette_total" style="width:900px;height:300px;"></div>
+			<div id="placeholder_recette_total" style="width:500px;height:600px;"></div>
 		<script id="source" language="javascript" type="text/javascript">
 		$(document).ready(function()
 		{
@@ -243,7 +243,14 @@ echo '
 			 title: {
 				text: 'Recettes totales'
 			 },
+			 xAxis: {categories:'Total'},
 			 yAxis: {min : 0},
+			 tooltip: {
+		         formatter: function() {
+				    return ''+
+					this.series.name +': '+ this.y +' ('+ Math.round(this.percentage) +'%)';
+				}
+			},
 			 plotOptions:
 			 {
 				column:
