@@ -164,8 +164,8 @@ while($row = $db->read_array($req))
 	$jours++;
 }
 ?>
-		<div id="graph_entretien" style="float : left;">
-			<div id="placeholder_entretien" style="width:900px;height:300px;"></div>
+		<div id="graph_recette" style="float : left;">
+			<div id="placeholder_recette" style="width:900px;height:300px;"></div>
 		<script id="source" language="javascript" type="text/javascript">
 			<?php
 			$d = array();
@@ -183,9 +183,9 @@ while($row = $db->read_array($req))
 			?>
 		$(document).ready(function()
 		{
-			chart_entretien = new Highcharts.Chart({
+			chart_recette = new Highcharts.Chart({
 			 chart: {
-				renderTo: 'placeholder_entretien',
+				renderTo: 'placeholder_recette',
 				defaultSeriesType: 'column'
 			 },
 			 title: {
@@ -205,14 +205,17 @@ while($row = $db->read_array($req))
 		});
 		</script>
 		</div>
-<table>
+
+<table style="clear : both;">
 <?php
 echo '
 <tr>
 	<td>Total pour ce mois</td><td></td>
 </tr>';
+$datas = array();
 foreach($total_source as $key => $value)
 {
+	$datas[] = '{data:'.$value.', name: "'.$sources[$key].'"}';
 	$pourcent = round(($value / $total_total), 4) * 100;
 		echo '
 <tr>
@@ -227,3 +230,29 @@ echo '
 }
 ?>
 </table>
+		<div id="graph_recette_total" style="float : left;">
+			<div id="placeholder_recette_total" style="width:900px;height:300px;"></div>
+		<script id="source" language="javascript" type="text/javascript">
+		$(document).ready(function()
+		{
+			chart_recette_total = new Highcharts.Chart({
+			 chart: {
+				renderTo: 'placeholder_recette_total',
+				defaultSeriesType: 'column'
+			 },
+			 title: {
+				text: 'Recettes totales'
+			 },
+			 yAxis: {min : 0},
+			 plotOptions:
+			 {
+				column:
+				{
+					stacking: 'percent'
+				}
+			},
+			 series: [<?php echo implode(', ', $datas); ?>]
+		  });
+		});
+		</script>
+		</div>
