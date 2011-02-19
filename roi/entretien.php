@@ -194,7 +194,7 @@ while($row = $db->read_array($req))
 				}
 				?>
 				<?php
-				$datas[] = '{data:['.implode(', ', $d).'], name: "'.$map.'"}';
+				$datas[] = '{data:['.implode(', ', $d).'], name: "'.$date.'"}';
 			}
 			?>
 		$(document).ready(function()
