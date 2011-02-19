@@ -71,7 +71,7 @@ class arenes_joueur extends table
 		$keys = false;
     $return = array();
 
-		$requete = 'SELECT * FROM arenes_joueurs WHERE event = '.$event->get_id();
+		$requete = 'SELECT * FROM arenes_joueurs WHERE event = '.(is_object($event)?$event->get_id():$event);
     if( $champ )
     {
       if( $valeur )
@@ -413,6 +413,7 @@ class arenes_joueur extends table
     $this->sauver();
     // Journal
     $requete = 'INSERT INTO journal VALUES("", '.$perso->get_id().', "teleport", "'.mysql_escape_string($admin).'", "'.mysql_escape_string($perso->get_nom()).'", NOW(), "'.$lieu.'", 0, 0, 0)';
+    $db->query($requete);
   }
   
   /**

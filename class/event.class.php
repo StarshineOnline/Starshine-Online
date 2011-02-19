@@ -135,6 +135,23 @@ class event extends table
 
     return new $classe($row);
   }
+  
+  /**
+   * Crée le bonb objet en fonction d'un participant précis
+   * @param $perso $objet/int   objet ou id du personnage participant à l'event
+   */
+  static function create_from_arenes_joueur($perso)
+  {
+    global $db;
+    if( is_object($perso) )
+      $perso = $perso->get_id();
+    $requete = 'SELECT event FROM arenes_joueurs WHERE statut='.arenes_joueur::en_cours.' AND id_perso='.$perso;
+    $req = $db->query($requete);
+    $row = $db->read_assoc($req);
+    if( $row && $row['event'] )
+      return event::factory($row['event']);
+    return null;
+  }
 
 	/**
 	 * Crée un nouvel event du type donné
@@ -688,7 +705,7 @@ class event extends table
 	 * @param $id    id du personnage.
 	 * @return       true si la rez est possible, false sinon
 	 */
-  function rezPossible($id)
+  function rez_possible($id)
   {
     return true;
   }
@@ -915,7 +932,7 @@ abstract class event_dte_rte extends event
 	 * @param $id    id du personnage.
 	 * @return       true si la rez est possible, false sinon
 	 */
-  function rezPossible($id)
+  function rez_possible($id)
   {
     return $this->get_autorisations(event_dte_rte::autor_rez);
   }
@@ -1298,8 +1315,7 @@ abstract class event_dte_rte extends event
         $match->set_statut( $_GET['statut'] );
         $match->set_heure_debut( time() );
         $arene = $match->get_arene();
-        $arene->set_open(1);
-        $arene->sauver();
+        $arene->ouvrir();
         $match->sauver();
         break;
       case event_partie::fini:

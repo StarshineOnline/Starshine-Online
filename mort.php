@@ -11,7 +11,7 @@ if($choix == 1)
 {
 	$requete = "DELETE FROM rez WHERE id_perso = ".$joueur->get_id();
 	$db->query($requete);
-	//Fort
+	//Ville
 	verif_mort(20, 2, 43200, 2);
 }
 elseif($choix == 2)
@@ -34,11 +34,12 @@ elseif($choix == 3)
 {
 	$requete = "DELETE FROM rez WHERE id_perso = ".$joueur->get_id();
 	$db->query($requete);
+  // ??
 	$R = new royaume($Trace[$joueur->get_race()]['numrace']);
 	$R->verif_hp();
 	if($R->get_capitale_hp() > 0) $malus = 15;
 	else $malus = 5;
-	//Ville
+	//Fort
 	verif_mort($malus, 4, 43200, 2);
 }
  

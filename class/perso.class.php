@@ -2190,8 +2190,8 @@ class perso extends entite
 	}
   /**
    * Indique si le personnage est dans une arène.
-   * @return  false s'il n'est pas dans une arène, sinon tableau contenant la 
-   *          descriptiond de l'arène dans laquelle il se trouve.   
+   * @return  false s'il n'est pas dans une arène, sinon objet contenant la
+   *          description de l'arène dans laquelle il se trouve.
    */  
 	function in_arene($filter = '')
 	{

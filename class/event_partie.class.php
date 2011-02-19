@@ -482,23 +482,76 @@ class event_partie_dte_rte extends event_partie
     // fermeture de l'arène
     $arene = $this->get_arene();
     $arene->fermer();
-    // Calcul du nombre de meurtes équipe 1
-    /*$id0 =$this->get_participant(0);
-    $requete = 'SELECT id_perso in event_participant WHERE event='.$this->get_id_event().' AND equipe='.$id0;
-    $req = $db->query($requete);
-    $persos0 = array();
-    while($row = $db->read_assoc($req))
+    // Calcul du nombre de meurtes
+    $nbr_equipes = $this->get_nbr_participant();
+    $reste = array();
+    for($i=0;$i<$nbr_equipes;$i++)
     {
-      $persos0[] = $row['id_perso'];
+      // Calcul du nombre de meurtes
+      $id =$this->get_participant($i);
+      $requete = 'SELECT perso.id, perso.nom FROM event_participant, perso WHERE event_participant.event='.$this->get_id_event().' AND event_participant.equipe='.$id.' AND perso.id=event_participant.id_perso';
+      $req = $db->query($requete);
+      $ids = array();
+      $noms = array();
+      while($row = $db->read_assoc($req))
+      {
+        $ids[] = $row['id'];
+        $noms[] = '"'.$row['nom'].'"';
+      }
+      $ids = implode(',', $ids);
+      $noms = implode(',', $noms);
+      $requete = 'SELECT count(*) as nbr FROM journal WHERE action="tue" AND actif IN ('.$noms.')  AND passif NOT IN ('.$noms.') AND UNIX_TIMESTAMP(journal.time) > '.$this->get_heure_debut();
+      $req = $db->query($requete);
+      $row = $db->read_assoc($req);
+      $this->set_nbr_meurtres($i, $row['nbr']);
+      // équipe toujours là ?
+      $requete = 'SELECT count(*) as nbr FROM perso WHERE id IN ('.$ids.') AND hp > 0';
+      $req = $db->query($requete);
+      $row = $db->read_assoc($req);
+      if( $row['nbr'] )
+        $reste[] = $id;
+      else
+      {
+        $requete = 'SELECT UNIX_TIMESTAMP(time) AS heure FROM journal WHERE action="tue" AND passif IN ('.$noms.') ORDER BY time DESC LIMIT 0,1';
+        $req = $db->query($requete);
+        $row = $db->read_assoc($req);
+        $dernier[$row['heure']] = $id;
+      }
+      // TODO: calcul des points
     }
-    $lst0 = implode(',', $persos0);
-    $requete = 'SELECT count(*) as nbr FROM journal WHERE action="tue" AND actif IN ('.$lst0.')  AND passif NOT IN ('.$lst0.') AND UNIX_TIMESTAMP(journal.time) > '.$this->get_heure_debut();
-    echo $requete;
-    $req = $db->query($requete);
-    $row = $db->read_assoc($req);
-    $this->set_nbr_meurtres(0, $row['nbr']);*/
-    // TODO: calcul des points
     // Détermination du gagnant et éventuellement du second
+    switch( $this->event->get_victoire_match() )
+    {
+    case event_dte_rte::dernier_vie:
+      switch( count($reste) )
+      {
+      case 0:
+        ksort($dernier);
+        $der = array_pop($dernier);
+        $avder = array_pop($dernier);
+        if( $der != $avder )
+        {
+          $this->set_gagnant($der);
+          if($nbr_equipes > 2)
+          {
+            $prem = array_pop($dernier);
+            if($avder != $prem)
+              $this->set_second($avder);
+          }
+        }
+      case 1:
+        $this->set_gagnant($reste[0]);
+        if($nbr_equipes > 2)
+        {
+          $der = array_pop($dernier);
+          $prem = array_pop($dernier);
+          if($der != $prem)
+            $this->set_second($der);
+        }
+      }
+      break;
+    }
+    // Sauvegarde
     $this->sauver();
   }
 };

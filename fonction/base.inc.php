@@ -2120,6 +2120,28 @@ function verif_mort($pourcent, $var, $duree_debuff=0, $multiplicateur_mouvement=
 	global $Trace, $db, $joueur;
 	if ($joueur->get_hp() <= 0)
 	{
+    // Personnage dans une arène ?
+    $arene = false;
+    if( $joueur->in_arene() )
+    {
+      $event = event::create_from_arenes_joueur($joueur);
+      if( $event )
+        $perso_ar = $event->get_arenes_joueur('id_perso='.$joueur->get_id().' AND statut='.arenes_joueur::en_cours);
+      else
+        $perso_ar = arenes_joueur::creer(0, 'arenes_joueur', 'id_perso='.$joueur->get_id().' AND statut='.arenes_joueur::en_cours);
+      // Si a on trouvé les infos sur son TP, alors traitement spécial
+      if( $perso_ar )
+      {
+        // rez non autorisée ou choix de sortir de l'arène
+        if( ( $event !== null && !$event->rez_possible($joueur->get_id()) ) || $var == 2 )
+        {
+          // renvoie hors de l'arène
+          $perso_ar[0]->teleporte( $joueur->get_nom() );
+          return;
+        }
+        $arene = true;
+      }
+    }
 		//Recherche du fort le plus proche
 		$requete = "SELECT *, (ABS(".$joueur->get_x()." - cast(x as signed integer)) + ABS(".$joueur->get_y()." - cast(y as signed integer))) AS plop FROM `construction` WHERE rez > 0 AND type = 'fort' AND royaume = ".$Trace[$joueur->get_race()]['numrace']." ORDER BY plop ASC";
 		$req_b = $db->query($requete);
@@ -2176,9 +2198,19 @@ Votre dernier souvenir est l'endroit où vous êtes mort <?php echo 'x : '.$joue
 							echo '
 						<li style="padding-top:5px;padding-bottom:5px;"><a href="mort.php?choix=3&amp;rez='.$row_d['id'].'">Revenir dans le fort le plus proche (x : '.$row_b['x'].' / y : '.$row_b['y'].') ('.($row_b['rez'] + $bonus).'% HP / '.($row_b['rez'] + $bonus).'% MP)</li>';
 					}
-					// Capitale ou refuge des criminels
-					echo '
+					// Capitale, refuge des criminels ou sort de l'arène
+					if( $arene )
+					{
+            // sortie de l'arène
+				  	echo '
+						<li style="padding-top:5px;padding-bottom:5px;"><a href="mort.php?choix=1">Sortir de l\'arène</a></li>';
+          }
+          else
+          {
+					  // Capitale ou refuge des criminels
+				  	echo '
 						<li style="padding-top:5px;padding-bottom:5px;"><a href="mort.php?choix=1">'.$echo.' ('.(20 + $bonus).'% HP / '.(20 + $bonus).'% MP)</a></li>';
+          }
 					?>
 						<li style="padding-top:5px;padding-bottom:5px;"><a href="index.php?deco=ok">Vous déconnecter</a></li>
 						<li style="padding-top:5px;padding-bottom:5px;">Vous pouvez attendre qu&rsquo;un autre joueur vous ressucite</li>
