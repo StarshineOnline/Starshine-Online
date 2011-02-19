@@ -265,7 +265,7 @@ echo '
             }
          }
       },
-			 series: [{type: 'pie', name : 'Recettes totales', data : <?php echo implode(', ', $datas); ?>}]
+			 series: [{type: 'pie', name : 'Recettes totales', data : [<?php echo implode(', ', $datas); ?>]}]
 		  });
 		});
 		</script>
