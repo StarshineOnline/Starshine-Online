@@ -142,7 +142,7 @@ echo '
 <?php
 if(date("G") > 4) $time = mktime(0, 0, 0, date("m") , date("d")-1, date("Y"));
 else $time = mktime(0, 0, 0, date("m") , date("d")-2, date("Y"));
-$requete = "SELECT ".$royaume->get_race().", date FROM stat_jeu WHERE EXTRACT(YEAR_MONTH FROM date) = '".date("Ym", time())."'";
+$requete = "SELECT ".$royaume->get_race().", date, UNIXTIMESTAMP(date) as stamp FROM stat_jeu WHERE EXTRACT(YEAR_MONTH FROM date) = '".date("Ym", time())."'";
 $req = $db->query($requete);
 $total_source = array();
 $total_total = 0;
@@ -162,7 +162,7 @@ while($row = $db->read_array($req))
 	{
 		if(array_key_exists($i, $sources))
 		{
-			$data[$sources[$i]][$row['date']] = $stats[$i];
+			$data[$sources[$i]][$row['stamp']] = $stats[$i];
 			echo '
 	<tr>
 		<td>'.$sources[$i].'</td><td> : +'.$stats[$i].'</td>
@@ -190,7 +190,7 @@ while($row = $db->read_array($req))
 				$d = array();
 				foreach($da as $date => $m)
 				{
-					$d[] = '["'.$date.'",'.$m.']';
+					$d[] = '['.$date.'*1000,'.$m.']';
 				}
 				?>
 				<?php
