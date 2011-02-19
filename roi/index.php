@@ -51,8 +51,9 @@ if(($joueur->get_race() == $royaume->get_race() && $joueur->get_grade()->get_id(
 	<link href="../css/interfacev2.css" rel="stylesheet" type="text/css" />
 	<link href="../css/prototip.css" rel="stylesheet" type="text/css" />
 	<link href="css/roi.css" rel="stylesheet" type="text/css" />
-	<script src="../javascript//jquery/jquery-1.3.2.min.js" type="text/javascript"></script>
-	<script src="../javascript//jquery/jquery-ui-1.7.2.custom.min.js" type="text/javascript"></script>	
+	<script src="../javascript/jquery/jquery-1.5.min.js" type="text/javascript"></script>
+	<script src="../javascript/jquery/jquery-ui-1.8.9.custom.min.js" type="text/javascript"></script>
+	<script src="../javascript/jquery/highcharts.js" type="text/javascript"></script>
 	<script src="../javascript/fonction.js" type="text/javascript"></script>
 	<script src="../javascript/overlib/overlib.js" type="text/javascript"></script>
 	<script src="javascript/menu.js" type="text/javascript"></script>

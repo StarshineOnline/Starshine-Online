@@ -147,6 +147,7 @@ $req = $db->query($requete);
 $total_source = array();
 $total_total = 0;
 $jours = 0;
+$data = array();
 while($row = $db->read_array($req))
 {
 	$stats = explode(';', $row[$royaume->get_race()]);
@@ -161,6 +162,7 @@ while($row = $db->read_array($req))
 	{
 		if(array_key_exists($i, $sources))
 		{
+			$data[$sources[$i]][$row['date']] = $stats[$i];
 			echo '
 	<tr>
 		<td>'.$sources[$i].'</td><td> : +'.$stats[$i].'</td>
@@ -177,6 +179,40 @@ while($row = $db->read_array($req))
 	</tr>';
 	$jours++;
 }
+?>
+		<div id="graph_entretien" style="float : left;">
+			<div id="placeholder_hour" style="width:600px;height:300px;"></div>
+		<script id="source" language="javascript" type="text/javascript">
+			<?php
+			$d = array();
+			foreach($data as $ressource => $da)
+			{
+				$d = array();
+				foreach($da as $date => $m)
+				{
+					$d[] = '["'.$date.'",'.$m.']';
+				}
+				?>
+				<?php
+				$datas[] = '{data:['.implode(', ', $d).'], name: "'.$map.'"}';
+			}
+			?>
+		$(document).ready(function()
+		{
+			chart_entretien = new Highcharts.Chart({
+			 chart: {
+				renderTo: 'placeholder_entretien',
+				defaultSeriesType: 'line'
+			 },
+			 title: {
+				text: 'Entretien'
+			 },
+			 xAxis: {type: 'datetime'},
+			 series: [<?php echo implode(', ', $datas); ?>]
+		  });
+		});
+		</script>
+<?php
 echo '
 <tr>
 	<td>Total pour ce mois</td><td></td>

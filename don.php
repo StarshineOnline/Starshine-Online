@@ -2,7 +2,7 @@
 if (file_exists('root.php'))
   include_once('root.php');
 $max = 250;
-$actuel = 127.91;
+$actuel = 184.87;
 $ratio_don = floor(10 * ($actuel / $max));
 if($ratio_don > 10) $ratio_don = 10;
 if($ratio_don < 0) $ratio_don = 0;

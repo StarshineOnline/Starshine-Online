@@ -30,7 +30,7 @@ if ($joueur->get_race() != $R->get_race() &&
 
 		?>
 		<fieldset>
-		<legend><?php echo '<a href="ville.php" onclick="return envoiInfo(this.href,\'centre\')">';?><?php echo $R->get_nom();?></a> > <?php echo '<a href="boutique.php" onclick="return envoiInfo(this.href,\'carte\')">';?> Marchand d'<?php echo $_GET['type']; ?>s </a></legend>
+		<legend><?php echo '<a href="ville.php" onclick="return envoiInfo(this.href,\'centre\')">';?><?php echo $R->get_nom();?></a> > <?php echo '<a href="boutique.php?type=armure" onclick="return envoiInfo(this.href,\'carte\')">';?> Marchand d'<?php echo $_GET['type']; ?>s </a></legend>
 <?php
 	if($_GET['type'] == 'armure')
 	{
