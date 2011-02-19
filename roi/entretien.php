@@ -215,7 +215,7 @@ echo '
 $datas = array();
 foreach($total_source as $key => $value)
 {
-	$datas[] = '{data:'.$value.', name: "'.$sources[$key].'"}';
+	$datas[] = '["'.$sources[$key].'",'.$value.']';
 	$pourcent = round(($value / $total_total), 4) * 100;
 		echo '
 <tr>
@@ -265,7 +265,7 @@ echo '
             }
          }
       },
-			 series: [<?php echo implode(', ', $datas); ?>]
+			 series: [{type: 'pie', name : 'Recettes totales', data : <?php echo implode(', ', $datas); ?>}]
 		  });
 		});
 		</script>
