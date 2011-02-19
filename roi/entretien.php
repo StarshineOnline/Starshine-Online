@@ -202,12 +202,20 @@ while($row = $db->read_array($req))
 			chart_entretien = new Highcharts.Chart({
 			 chart: {
 				renderTo: 'placeholder_entretien',
-				defaultSeriesType: 'line'
+				defaultSeriesType: 'column'
 			 },
 			 title: {
-				text: 'Entretien'
+				text: 'Recettes'
 			 },
 			 xAxis: {type: 'datetime'},
+			 yAxis: {min : 0},
+			 plotOptions:
+			 {
+				column:
+				{
+					stacking: 'normal'
+				}
+			},
 			 series: [<?php echo implode(', ', $datas); ?>]
 		  });
 		});
