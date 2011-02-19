@@ -260,12 +260,12 @@ echo '
             dataLabels: {
                enabled: true,
                formatter: function() {
-                  return '<b>'+ this.point.name +'</b>: '+ this.y +' %';
+                  return '<b>'+ this.point.name +'</b>: '+ this.y;
                }
             }
          }
       },
-			 series: [{type: 'pie', name : 'Recettes totales', data : [<?php echo implode(', ', $datas); ?>]}]
+			 series: [{type: 'pie', data : [<?php echo implode(', ', $datas); ?>]}]
 		  });
 		});
 		</script>
