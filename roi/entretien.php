@@ -181,7 +181,7 @@ while($row = $db->read_array($req))
 }
 ?>
 		<div id="graph_entretien" style="float : left;">
-			<div id="placeholder_hour" style="width:600px;height:300px;"></div>
+			<div id="placeholder_entretien" style="width:600px;height:300px;"></div>
 		<script id="source" language="javascript" type="text/javascript">
 			<?php
 			$d = array();
