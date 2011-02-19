@@ -142,7 +142,7 @@ echo '
 <?php
 if(date("G") > 4) $time = mktime(0, 0, 0, date("m") , date("d")-1, date("Y"));
 else $time = mktime(0, 0, 0, date("m") , date("d")-2, date("Y"));
-$requete = "SELECT ".$royaume->get_race().", date, UNIXTIMESTAMP(date) as stamp FROM stat_jeu WHERE EXTRACT(YEAR_MONTH FROM date) = '".date("Ym", time())."'";
+$requete = "SELECT ".$royaume->get_race().", date, UNIX_TIMESTAMP(date) as stamp FROM stat_jeu WHERE EXTRACT(YEAR_MONTH FROM date) = '".date("Ym", time())."'";
 $req = $db->query($requete);
 $total_source = array();
 $total_total = 0;
