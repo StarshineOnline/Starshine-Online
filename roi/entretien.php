@@ -164,8 +164,8 @@ while($row = $db->read_array($req))
 	$jours++;
 }
 ?>
-		<div id="graph_entretien" style="float : left;">
-			<div id="placeholder_entretien" style="width:600px;height:300px;"></div>
+		<div id="graph_entretien">
+			<div id="placeholder_entretien" style="width:900px;height:300px;"></div>
 		<script id="source" language="javascript" type="text/javascript">
 			<?php
 			$d = array();
