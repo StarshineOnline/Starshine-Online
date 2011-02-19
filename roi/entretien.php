@@ -238,7 +238,9 @@ echo '
 			chart_recette_total = new Highcharts.Chart({
 			 chart: {
 				renderTo: 'placeholder_recette_total',
-				defaultSeriesType: 'column'
+				plotBackgroundColor: null,
+         plotBorderWidth: null,
+         plotShadow: false
 			 },
 			 title: {
 				text: 'Recettes totales'
@@ -251,13 +253,20 @@ echo '
 					this.series.name +': '+ this.y +' ('+ Math.round(this.percentage) +'%)';
 				}
 			},
-			 plotOptions:
-			 {
-				column:
-				{
-					stacking: 'percent'
-				}
-			},
+			 plotOptions: {
+         pie: {
+            allowPointSelect: true,
+            cursor: 'pointer',
+            dataLabels: {
+               enabled: true,
+               color: Highcharts.theme.textColor || '#000000',
+               connectorColor: Highcharts.theme.textColor || '#000000',
+               formatter: function() {
+                  return '<b>'+ this.point.name +'</b>: '+ this.y +' %';
+               }
+            }
+         }
+      },
 			 series: [<?php echo implode(', ', $datas); ?>]
 		  });
 		});
