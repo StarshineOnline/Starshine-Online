@@ -135,10 +135,6 @@ echo '
 			</ul>
 			
 </fieldset>			
-			
-	
-		
-<table style='clear:both;'>
 <?php
 if(date("G") > 4) $time = mktime(0, 0, 0, date("m") , date("d")-1, date("Y"));
 else $time = mktime(0, 0, 0, date("m") , date("d")-2, date("Y"));
@@ -154,29 +150,17 @@ while($row = $db->read_array($req))
 	$i = 0;
 	$total = 0;
 	$count = count($stats);
-			echo '
-	<tr>
-		<td>Date</td><td> : '.$row['date'].'</td>
-	</tr>';
 	while($i < $count)
 	{
 		if(array_key_exists($i, $sources))
 		{
 			$data[$sources[$i]][$row['stamp']] = $stats[$i];
-			echo '
-	<tr>
-		<td>'.$sources[$i].'</td><td> : +'.$stats[$i].'</td>
-	</tr>';
 			$total += $stats[$i];
 			$total_total += $stats[$i];
 			$total_source[$i] += $stats[$i];
 		}
 		$i++;
 	}
-	echo '
-	<tr>
-		<td><h6>TOTAL</h6></td><td><h6> +'.$total.'</h6></td>
-	</tr>';
 	$jours++;
 }
 ?>
