@@ -204,6 +204,7 @@ while($row = $db->read_array($req))
 		  });
 		});
 		</script>
+<table>
 <?php
 echo '
 <tr>
@@ -224,3 +225,4 @@ echo '
 </tr>';
 }
 ?>
+</table>
