@@ -2046,7 +2046,7 @@ function return_gestion_royaume($texte, $poscase)
  * @param  $nom           Nom du buff
  * @param  $description   Description du buff
  * @param  $type_cible    Type de cible ('perso' ou 'monstre')
- * @param  $debuff        1 si c'est un débuff, 0 si c'est un débuff
+ * @param  $debuff        1 si c'est un débuff, 0 si c'est un buff
  * @param  $nb_buff       Nombre de buffs déjà actifs sur la cible.
  * @param  $grade         Grade de la cible.
  * @param  $supprimable   1 si le buff est supprimable, 0 sinon.

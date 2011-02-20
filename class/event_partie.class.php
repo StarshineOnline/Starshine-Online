@@ -427,6 +427,8 @@ class event_partie_dte_rte extends event_partie
       $pos = $arene->get_positions('mf');
       $pa = $this->event->get_pa_matchs(event_dte_rte::pa_finale);
       break;
+    default:
+      echo 'type inconnu : '.$this->get_type();
     }
     // S'il on ne connait pas les position de TP alors on annule
     if( !$pos )
@@ -438,6 +440,10 @@ class event_partie_dte_rte extends event_partie
     $equipes = $this->get_participants();
     $liste = array();
     $i=0;
+    $blocage = $this->event->get_options_matchs(event_dte_rte::match_bloque_avant);
+    $tps_buff = $this->event->get_options_matchs(event_dte_rte::match_temps_buff);
+    $heure_debut = $this->get_heure_debut();
+    $fin_buff = $heure_debut + $tps_buff*60;
     foreach($equipes as $id)
     {
       $equipe = $this->event->get_equipe('id', $id);
@@ -457,12 +463,23 @@ class event_partie_dte_rte extends event_partie
         $liste[] = $perso->get_id_perso();
         $perso_ar = $this->event->nouveau_arenes_joueur($perso->get_id_perso(), arenes_joueur::en_attente, $arene, $this, $x, $y, $groupe, true);
         $perso_ar->teleporte();
+        // blocage
+        if( $blocage )
+        {
+          $requete = 'INSERT INTO buff (`type`, `fin`, `duree`, `id_perso`, `nom`, `description`, `debuff`, `supprimable`) VALUES ("petrifie", '.$heure_debut.', '.$heure_debut.'-UNIX_TIMESTAMP(), '.$perso->get_id_perso().', "Pétrification", "Vous ne pouvez agir avant le début du match", 1, 0)';
+          $db->query($requete);
+          if( $tps_buff )
+          {
+            $requete = 'INSERT INTO buff (`type`, `fin`, `duree`, `id_perso`, `nom`, `description`, `debuff`, `supprimable`) VALUES ("debuff_enracinement", '.$fin_buff.', '.$fin_buff.'-UNIX_TIMESTAMP(), '.$perso->get_id_perso().', "Enracinnement", "Vous ne pouvez bouger avant le début du combat", 1, 0)';
+            $db->query($requete);
+          }
+        }
       }
       $i += 2;
     }
     // On change les PA
     $liste = implode(',', $liste);
-    $requete = 'UPDATE perso SET dernieraction=UNIX_TIMESTAMP(), pa='.$pa.'-FLOOR( ('.$this->get_heure_debut().'-UNIX_TIMESTAMP())/'.$G_temps_PA.' ) WHERE id IN ('.$liste.')';
+    $requete = 'UPDATE perso SET dernieraction=UNIX_TIMESTAMP(), pa='.$pa.'-FLOOR( ('.$heure_debut.'-UNIX_TIMESTAMP())/'.$G_temps_PA.' ) WHERE id IN ('.$liste.')';
     $db->query($requete);
     // On change le statut
     $this->set_statut(event_partie::en_cours);
@@ -505,7 +522,7 @@ class event_partie_dte_rte extends event_partie
       $row = $db->read_assoc($req);
       $this->set_nbr_meurtres($i, $row['nbr']);
       // équipe toujours là ?
-      $requete = 'SELECT count(*) as nbr FROM perso WHERE id IN ('.$ids.') AND hp > 0';
+      $requete = 'SELECT count(*) as nbr FROM perso WHERE id IN ('.$ids.') AND hp > 0 && x >= 200';
       $req = $db->query($requete);
       $row = $db->read_assoc($req);
       if( $row['nbr'] )

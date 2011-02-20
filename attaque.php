@@ -222,6 +222,10 @@ elseif($attaquant->get_hp() <= 0 OR $defenseur->get_hp() <= 0)
 {
 	echo '<h5>Un des protagonistes n\'a plus de points de vie</h5>';
 }
+elseif($joueur->is_buff('petrifie'))
+{
+	echo '<h5>Vous êtes pétrifié, vous ne pouvez pas attaquer.</h5>';
+}
 else
 {
 	$R = new royaume($Trace[$joueur->get_race()]['numrace']);

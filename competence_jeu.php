@@ -29,6 +29,10 @@ if (isset($_GET['ID']))
 	{
 		echo '<h5>Pas assez de mana</h5>';
 	}
+  elseif($joueur->is_buff('petrifie'))
+  {
+  	echo '<h5>Vous êtes pétrifié, vous ne pouvez pas utiliser de compétence.</h5>';
+  }
 	else
 	{
 		switch($row['type'])

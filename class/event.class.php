@@ -1278,10 +1278,13 @@ abstract class event_dte_rte extends event
           $match->set_heure_debut( mktime($heure[0], $heure[1], 0, $date[1], $date[0], $date[2]) );
         }
         // Heure de fin
-        $heure_fin = explode(' ', $_POST['heure_fin']);
-        $date = explode('/', $heure_fin[0]);
-        $heure = explode(':', $heure_fin[1]);
-        $match->set_heure_fin( mktime($heure[0], $heure[1], 0, $date[1], $date[0], $date[2]) );
+        if( $_POST['heure_fin'] )
+        {
+          $heure_fin = explode(' ', $_POST['heure_fin']);
+          $date = explode('/', $heure_fin[0]);
+          $heure = explode(':', $heure_fin[1]);
+          $match->set_heure_fin( mktime($heure[0], $heure[1], 0, $date[1], $date[0], $date[2]) );
+        }
         // autres
         if( array_key_exists('gagnant', $_POST) )
           $match->set_gagnant( $_POST['gagnant'] );
@@ -1448,7 +1451,7 @@ abstract class event_dte_rte extends event
             </select>
           </div>
 <?PHP
-      if( $_GET['nouveau'] == event_partie_dte_rte::match3_poule || $_GET['nouveau'] == event_partie_dte_rte::match3_elim )
+      if( $match->get_type() == event_partie_dte_rte::match3_poule || $match->get_type() == event_partie_dte_rte::match3_elim )
       {
 ?>
           <div class="event_minibloc">
@@ -1480,7 +1483,7 @@ abstract class event_dte_rte extends event
 ?>
       <div class="event_bloc">
         <form  id="nouv_match" method="get" action="event.php?event=<?php echo $this->get_id();?>&page=matchs">
-        Nouveau match : <select name="nouveau"><option value="0">match de poule à 2</option><option value="1">match de poule à 3</option><option value="3">match d'éliminatoire à 2</option><option value="4">match d'éliminatoire à 3</option><option value="5">finale</option></select>
+        Nouveau match : <select name="nouveau"><option value="0">match de poule à 2</option><option value="1">match de poule à 3</option><option value="2">match d'éliminatoire à 2</option><option value="3">match d'éliminatoire à 3</option><option value="4">finale</option></select>
         <input type="submit" value="Créer" onclick="return envoiFormulaire('nouv_match', 'contenu');"/>
       </div>
 <?PHP
@@ -1592,12 +1595,39 @@ abstract class event_dte_rte extends event
   /// Méthode appelée par le script horaire
   function horaire()
   {
+    global $db;
+    // Début des matchs
     if( $this->get_options_matchs(event_dte_rte::match_tp_auto) )
     {
       $matchs = $this->get_partie('statut = '.event_partie::a_venir.' AND heure_debut < '.(time() + 4200));
       foreach($matchs as $match)
       {
         $match->demarer();
+      }
+    }
+    // Matchs terminés à cause de l'heure
+    $matchs = $this->get_partie('statut = '.event_partie::en_cours.' AND heure_fin > 0 AND heure_fin <= UNIX_TIMESTAMP()');
+    foreach($matchs as $match)
+    {
+      $match->terminer();
+    }
+    // Matchs gagnés par une équipe
+    $matchs = $this->get_partie('statut', event_partie::en_cours);
+    foreach($matchs as $match)
+    {
+      $equipes = $match->get_participants();
+      $reste = 0;
+      foreach($equipes as $id)
+      {
+        $requete = 'SELECT count(*) as nbr FROM perso, event_participant WHERE perso.id=event_participant.id_perso AND event_participant.equipe='.$id.' AND hp > 0 AND x >= 200';
+        $req = $db->query($requete);
+        $row = $db->read_assoc($req);
+        if( $row && $row['nbr'] )
+          $reste++;
+      }
+      if( $reste <= 1 )
+      {
+        $match->terminer();
       }
     }
   }

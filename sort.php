@@ -100,6 +100,10 @@ if (isset($_GET['ID']) && !$joueur->is_buff('bloque_sort'))
 	elseif($W_distance > $sort->get_portee()) {
 		echo 'Vous êtes trop loin pour lancer ce sort !';
 	}
+  elseif($joueur->is_buff('petrifie'))
+  {
+  	echo 'Vous êtes pétrifié, vous ne pouvez pas lancer de sort.';
+  }
 	else
 	{
 		if(array_key_exists('groupe', $_GET) AND $_GET['groupe'] == 'yes')
