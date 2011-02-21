@@ -225,11 +225,29 @@ if($W_row['type'] == 1)
 					$joueur->set_classe_id($_GET['id']);
 					$joueur->set_classe(mb_strtolower($nom,'UTF-8'));
 					$joueur->sauver();
+					if (($_GET['id'] > '2' AND $_GET['id'] < '9') OR ($_GET['id'] == '15') OR ($_GET['id'] > '23' AND $_GET['id'] < '28'))
+					{
+						$achiev = $joueur->get_compteur('rang_2');
+						$achiev->set_compteur($achiev->get_compteur() + 1);
+						$achiev->sauver();
+					}
+					if ($_GET['id'] > '8' AND $_GET['id'] < '15') OR ($_GET['id'] == '16') OR ($_GET['id'] > '27' AND $_GET['id'] < '34')
+					{
+						$achiev = $joueur->get_compteur('rang_3');
+						$achiev->set_compteur($achiev->get_compteur() + 1);
+						$achiev->sauver();
+					}
+					if ($_GET['id'] > '16' AND $_GET['id'] < '24') OR ($_GET['id'] > '33' AND $_GET['id'] < '40')
+					{
+						$achiev = $joueur->get_compteur('rang_4');
+						$achiev->set_compteur($achiev->get_compteur() + 1);
+						$achiev->sauver();
+					}
 					echo 'Félicitations vous suivez maintenant la voie du '.mb_strtolower($nom,'UTF-8').'<br />';
 				}
 			break;
 			case 'quete_myriandre' :
-			?>
+			?>''
 <h3 class="ville_haut">Journal de Frankriss hawkeye :</h3>
 < le journal est en très mauvais état, maculé de sang, certaines pages sont partiellement ou entièrement déchirées. ><br />
 <br />
