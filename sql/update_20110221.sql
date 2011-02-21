@@ -3,7 +3,7 @@ INSERT INTO `achievement_type` (`id`, `nom`, `description`, `value`, `variable`,
 
 INSERT INTO `achievement` (`id_perso`, `id_achiev`) SELECT `ID`, 87 FROM `perso` WHERE ( `classe_id` > 2 );
 
-INSERT INTO `achievement` (`id_perso`, `id_achiev`) SELECT `ID`, 88 FROM `perso` WHERE ( `classe_id` > 8 AND `classe_id` < 17 AND ` classe_id` <> 15);
+INSERT INTO `achievement` (`id_perso`, `id_achiev`) SELECT `ID`, 88 FROM `perso` WHERE ( `classe_id` > 8 AND `classe_id` < 17 AND `classe_id` <> 15);
 INSERT INTO `achievement` (`id_perso`, `id_achiev`) SELECT `ID`, 88 FROM `perso` WHERE ( `classe_id` > 27 AND `classe_id` < 40 );
 
 INSERT INTO `achievement` (`id_perso`, `id_achiev`) SELECT `ID`, 89 FROM `perso` WHERE ( `classe_id` > 33 AND `classe_id` < 40 );
