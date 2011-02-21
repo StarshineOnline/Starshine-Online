@@ -3339,6 +3339,9 @@ class perso extends entite
 	function unlock_achiev($variable, $hide_message = false)
 	{
 		$achievement_type = achievement_type::create('variable', $variable);
+		// L'achiev n'existe pas
+		if ($achievement_type == null || count($achievement_type) == 0)
+			return;
 		// Si le joueur ne l'a pas deja debloqué
 		if(!$this->already_unlocked_achiev($achievement_type[0]))
 		{
