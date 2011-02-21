@@ -1,4 +1,4 @@
-<?php
+<?php // -*- mode: php; tab-width:2 -*-
 if (file_exists('root.php'))
   include_once('root.php');
 
@@ -37,6 +37,7 @@ if($W_row['type'] == 1)
 		$req = $db->query($requete);
 		$row = $db->read_array($req);
 		$nom = $row['nom'];
+		$rang = $row['rang'];
 		$description = $row['description'];
 		$requete = "SELECT * FROM classe_requis WHERE id_classe = '".sSQL($_GET['id'])."'";
 		$req = $db->query($requete);
@@ -223,25 +224,14 @@ if($W_row['type'] == 1)
 					$joueur->set_sort_jeu(implode(';', $sort_jeu));
 					$joueur->set_sort_combat(implode(';', $sort_combat));
 					$joueur->set_classe_id($_GET['id']);
-					$joueur->set_classe(mb_strtolower($nom,'UTF-8'));
+					$joueur->set_classe(mb_strtolower($nom, 'UTF-8'));
 					$joueur->sauver();
-					if (($_GET['id'] > '2' AND $_GET['id'] < '9') OR ($_GET['id'] == '15') OR ($_GET['id'] > '23' AND $_GET['id'] < '28'))
-					{
-						$joueur->unlock_achiev('rang_2');
-					}
-					if ($_GET['id'] > '8' AND $_GET['id'] < '15') OR ($_GET['id'] == '16') OR ($_GET['id'] > '27' AND $_GET['id'] < '34')
-					{
-						$joueur->unlock_achiev('rang_3');
-					}
-					if ($_GET['id'] > '16' AND $_GET['id'] < '24') OR ($_GET['id'] > '33' AND $_GET['id'] < '40')
-					{
-						$joueur->unlock_achiev('rang_4');
-					}
+					$joueur->unlock_achiev("rang_$rang");
 					echo 'Félicitations vous suivez maintenant la voie du '.mb_strtolower($nom,'UTF-8').'<br />';
 				}
 			break;
 			case 'quete_myriandre' :
-			?>''
+			?>
 <h3 class="ville_haut">Journal de Frankriss hawkeye :</h3>
 < le journal est en très mauvais état, maculé de sang, certaines pages sont partiellement ou entièrement déchirées. ><br />
 <br />
