@@ -962,6 +962,11 @@ class map
 		$this->cache_monstre = !$this->cache_monstre;
 	}
 	
+	function set_cache_monstre($val)
+	{
+		$this->cache_monstre = $val;
+	}
+	
 	function change_affiche_royaume()
 	{
 		global $Gcouleurs;

@@ -116,7 +116,7 @@ foreach ($ts as $tt => $tn)
 					<span class="small" style="cursor : pointer;">'.$total_fait.' / '.$total.'</span>
 				</td>
 				<td width="10%">
-					<span class="small" style="cursor : pointer;"><a href="" onclick="javascript:show_only=\''.$show_only.'\'; deplacement(\'centre\', cache_monstre, affiche_royaume, \'normal\', show_only); return false;"><img src="image/icone/eye_p.png" title="Afficher uniquement les monstres de ce type sur la carte" alt="O" style="vertical-align : middle;" /></a></span>
+					<span class="small" style="cursor : pointer;"><a href="" onclick="javascript:show_only=\''.$show_only.'\'; deplacement(\'centre\', \'normal\', show_only); return false;"><img src="image/icone/eye_p.png" title="Afficher uniquement les monstres de ce type sur la carte" alt="O" style="vertical-align : middle;" /></a></span>
 				</td>
 				</tr>';
 				?>

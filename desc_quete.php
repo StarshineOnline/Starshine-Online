@@ -103,7 +103,7 @@ if($row['mode'] == 's') $mode = 'Solo'; else $mode = 'Groupe';
 
 $show_only = implode(',', $show_only);
 echo '
-<h2 style="margin : 0px; padding : 0px;margin-bottom : 3px;"">'.$row['nom'].' <a href="" onclick="javascript:show_only=\''.$show_only.'\'; deplacement(\'centre\', cache_monstre, affiche_royaume, \'normal\', show_only); return false;"><img src="image/icone/eye.png" style="vertical-align : -18%;" title="Afficher uniquement les monstres de ce type sur la carte" alt="O" /></a></h2>
+<h2 style="margin : 0px; padding : 0px;margin-bottom : 3px;"">'.$row['nom'].' <a href="" onclick="javascript:show_only=\''.$show_only.'\'; deplacement(\'centre\', \'normal\', show_only); return false;"><img src="image/icone/eye.png" style="vertical-align : -18%;" title="Afficher uniquement les monstres de ce type sur la carte" alt="O" /></a></h2>
 <div class="description_quete">
 	<span style="font-style : italic;">Niveau conseillé '.$row['lvl_joueur'].'<br />
 	'.$mode.' '.$repetable.'</span><br />

@@ -1,8 +1,10 @@
-<?php
+<?php // -*- mode: php -*-
 if (file_exists('root.php')) include_once('root.php');
 
 require_once(root.'inc/fp.php');
 $joueur = new perso($_SESSION['ID']);
+$roy_val = $joueur->get_option('affiche_royaume') ? 0 : 1;
+$mons_val = $joueur->get_option('cache_monstre') ? 0 : 1;
 switch($_GET['action'])
 {
 	case 'atm' :
@@ -24,6 +26,26 @@ switch($_GET['action'])
 			break;
 		}
 		$db->query($requete);
+	}
+
+  case 'affiche_royaumes':
+  {
+		$val = sSQL($_GET['val'], SSQL_INTEGER);
+		$requete = "REPLACE INTO options(id_perso, nom, valeur) VALUES(".
+			$_SESSION['ID'].", 'affiche_royaume', $val)";
+		$db->query($requete);
+		print_js_onload("deplacement('centre');");
+		$roy_val = $roy_val ? 0 : 1;
+	}
+
+  case 'cache_monstre':
+  {
+		$val = sSQL($_GET['val'], SSQL_INTEGER);
+		$requete = "REPLACE INTO options(id_perso, nom, valeur) VALUES(".
+			$_SESSION['ID'].", 'cache_monstre', '$val')";
+		$db->query($requete);
+		print_js_onload("deplacement('centre');");
+		$mons_val = $mons_val ? 0 : 1;
 	}
 }
 $atm_val = 1;
@@ -52,9 +74,9 @@ $atm_all_verb = $atm_all_val ? 'Désactiver <strong>tous</strong>' : 'Activer';
 <ul>
 <?php
 if (isset($G_use_atmosphere) && $G_use_atmosphere) { ?>
-					  <li><a href="option_map.php?action=atm&amp;effet=sky&amp;val=<?php echo $atm_val; ?>" onclick="envoiInfo(this.href, 'cluetip-inner'); deplacement('centre', cache_monstre, affiche_royaume,'normal', show_only); return false;"><?php echo $atm_verb; ?> les effets atmospheriques</a></li>
-					  <li><a href="option_map.php?action=atm&amp;effet=time&amp;val=<?php echo $atm_all_val; ?>" onclick="envoiInfo(this.href, 'cluetip-inner'); deplacement('centre', cache_monstre, affiche_royaume,'normal', show_only); return false;"><?php echo $atm_all_verb; ?> les effets atmosphériques et liés à l'heure</a></li>
+					  <li><a href="option_map.php?action=atm&amp;effet=sky&amp;val=<?php echo $atm_val; ?>" onclick="envoiInfo(this.href, 'cluetip-inner'); deplacement('centre', 'normal', show_only); return false;"><?php echo $atm_verb; ?> les effets atmospheriques</a></li>
+					  <li><a href="option_map.php?action=atm&amp;effet=time&amp;val=<?php echo $atm_all_val; ?>" onclick="envoiInfo(this.href, 'cluetip-inner'); deplacement('centre', 'normal', show_only); return false;"><?php echo $atm_all_verb; ?> les effets atmosphériques et liés à l\'heure</a></li>
 <?php } ?>
-					  <li><a href="option_map.php" onclick="affiche_royaume=!affiche_royaume; deplacement('centre', cache_monstre, affiche_royaume,'normal', show_only); return false;">Afficher / masquer les royaumes</a></li>
-					  <li><a href="option_map.php" onclick="cache_monstre=!cache_monstre;show_only='';deplacement('centre', cache_monstre, affiche_royaume,'normal', show_only); return false;">Afficher / masquer les monstres</a></li>
+					  <li><a href="option_map.php?action=affiche_royaumes&amp;val=<?php echo $roy_val; ?>" onclick="envoiInfo(this.href, 'cluetip-inner'); deplacement('centre', 'normal', show_only); return false;">Afficher / masquer les royaumes</a></li>
+					  <li><a href="option_map.php?action=cache_monstre&amp;val=<?php echo $mons_val; ?>" onclick="envoiInfo(this.href, 'cluetip-inner'); deplacement('centre', 'normal', show_only); return false;">Afficher / masquer les monstre</a></li>
 </ul>

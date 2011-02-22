@@ -1,4 +1,4 @@
-<?php
+<?php // -*- mode: php -*-
 if (file_exists('root.php'))
   include_once('root.php');
 
@@ -50,8 +50,8 @@ $map->onclick_status = true;
 if(isset($_GET['show_only'])) $map->change_show_only($_GET['show_only']);
 $map->get_monstre($level);
 
-if(isset($_GET['cache_monstre'])) $map->change_cache_monstre();
-if(isset($_GET['affiche_royaume'])) $map->change_affiche_royaume();
+$map->set_cache_monstre($joueur->get_option('cache_monstre'));
+$map->set_affiche_royaume($joueur->get_option('affiche_royaume'));
 
 $map->affiche();
 ?>
