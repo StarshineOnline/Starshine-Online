@@ -1570,7 +1570,7 @@ class perso extends entite
 	/// Renvoie le facteur multipliant les pré-requis et coût en PA et MP des sorts.
 	function get_facteur_magie()
 	{
-		return round($this->facteur_magie);
+		return $this->facteur_magie;
 	}
 	/// Modifie le facteur multipliant les pré-requis et coût en PA et MP des sorts.
 	function set_facteur_magie($facteur_magie)
