@@ -223,7 +223,7 @@ while($row = $db->read_assoc($req))
 foreach($tab_royaume as $race => $royaume)
 {
 	//On prend en compte la nourriture en bourse dans les stocks
-	$requete = "SELECT SUM(nombre) as food_bourse FROM bourse_royaume WHERE actif = 1 AND id_royaume = ".$royaume['id'];
+	$requete = "SELECT SUM(nombre) as food_bourse FROM bourse_royaume WHERE actif = 1 AND ressource = 'food' AND id_royaume = ".$royaume['id'];
 	$req = $db->query($requete);
 	$row = $db->read_assoc($req);
 	$food_bourse = $row['food_bourse'];

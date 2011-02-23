@@ -23,7 +23,7 @@ $W_distance = detection_distance($W_case,$_SESSION["position"]);
 $W_coord = convert_in_coord($W_case);
 
 //On prend en compte la nourriture en bourse dans les stocks
-$requete = "SELECT SUM(nombre) as food_bourse FROM bourse_royaume WHERE actif = 1 AND id_royaume = ".$royaume->get_id();
+$requete = "SELECT SUM(nombre) as food_bourse FROM bourse_royaume WHERE actif = 1 AND ressource = 'food' AND id_royaume = ".$royaume->get_id();
 $req = $db->query($requete);
 $row = $db->read_assoc($req);
 $food_bourse = $row['food_bourse'];
