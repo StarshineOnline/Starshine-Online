@@ -27,6 +27,7 @@ switch($_GET['action'])
 		}
 		$db->query($requete);
 	}
+	break;
 
   case 'affiche_royaumes':
   {
@@ -37,6 +38,7 @@ switch($_GET['action'])
 		print_js_onload("deplacement('centre');");
 		$roy_val = $roy_val ? 0 : 1;
 	}
+	break;
 
   case 'cache_monstre':
   {
@@ -47,6 +49,8 @@ switch($_GET['action'])
 		print_js_onload("deplacement('centre');");
 		$mons_val = $mons_val ? 0 : 1;
 	}
+	break;
+
 }
 $atm_val = 1;
 $atm_all_val = 1;
