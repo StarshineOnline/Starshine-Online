@@ -1,0 +1,1 @@
+INSERT INTO `achievement_type` (`id`, `nom`, `description`, `value`, `variable`, `secret`, `strong`, `color`) VALUES (null, 'Destructeur de monde', 'Avoir tué un dev !', '0', 'kill_bastounet', '0', '0', NULL)

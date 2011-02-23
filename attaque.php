@@ -945,6 +945,11 @@ else
 					//Achievement
 					if($defenseur->get_hp() == 0)
 						$joueur_defenseur->unlock_achiev('near_kill');
+
+					if ($defenseur->get_nom() == 'Irulan')
+					{
+						$actif->unlock_achiev('kill_bastounet');
+					}
 				}
 
 				if($gains)
