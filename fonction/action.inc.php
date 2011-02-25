@@ -1,4 +1,4 @@
-<?php //  -*- tab-width:2  -*-
+<?php //  -*- mode: php; tab-width:2  -*-
 if (file_exists('../root.php'))
   include_once('../root.php');
 
@@ -899,10 +899,7 @@ function lance_sort($id, $acteur, &$effects)
 					// Calcul du potentiel résister
 					$pm = $passif->get_pm();
 
-					/* Application des effets de PM */
-					foreach ($effects as $effect)
-						$pm = $effect->calcul_pm($actif, $passif, $pm);
-					/* ~PM */
+					// On utilise bien la PM DE BASE pour le 3eme jet
 
 					$pm = pow($passif->get_volonte(), 1.83) * sqrt($pm) * 3;
 
@@ -935,10 +932,7 @@ function lance_sort($id, $acteur, &$effects)
 					// Calcul du potentiel résister
 					$pm = $passif->get_pm();
 
-					/* Application des effets de PM */
-					foreach ($effects as $effect)
-						$pm = $effect->calcul_pm($actif, $passif, $pm);
-					/* ~PM */
+					// On utilise bien la PM DE BASE pour le 3eme jet
 
 					$pm = $passif->get_volonte() * $pm;
 					// Lancer des dés
