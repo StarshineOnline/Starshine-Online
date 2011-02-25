@@ -446,6 +446,7 @@ class pet extends map_monstre
 		if(!isset($this->armure))
 		{
 			$joueur = new perso($this->get_id_joueur());
+			$this->get_monstre();
 			$this->pp = 0;
 			$this->pm = 0;
 			// Pièces d'armure
@@ -460,8 +461,8 @@ class pet extends map_monstre
 						$requete = "SELECT PP, PM, effet FROM objet_pet WHERE id = ".$partie_d['id_objet'];
 						$req = $db->query($requete);
 						$row = $db->read_row($req);
-						$this->pp += $row[0];
-						$this->pm += $row[1];
+						$this->pp += $row[0] + $this->monstre->get_pp();
+						$this->pm += $row[1] + $this->monstre->get_pm();
 						// Effets magiques
 						if ($row[2] != '')
 						{
@@ -486,10 +487,6 @@ class pet extends map_monstre
 			$this->pp_base = $this->pp;
 			$this->pm_base = $this->pm;
 
-			/*//Effets des enchantements
-			if (isset($this->enchantement['pourcent_pm'])) $this->pm += floor($this->pm * $this->enchantement['pourcent_pm']['effet'] / 100);
-			if (isset($this->enchantement['pourcent_pp']))	$this->pp += floor($this->pp * $this->enchantement['pourcent_pp']['effet'] / 100);*/
-			
 			//Buffs
 			if($joueur->is_buff('buff_bouclier')) $this->pp = round($this->pp * (1 + ($joueur->get_buff('buff_bouclier', 'effet') / 100)));
 			if($joueur->is_buff('buff_barriere')) $this->pm = round($this->pm * (1 + ($joueur->get_buff('buff_barriere', 'effet') / 100)));

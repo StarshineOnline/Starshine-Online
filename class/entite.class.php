@@ -322,8 +322,8 @@ class entite extends placable
 				$this->pa = 0;
 				$this->nom = $pet->get_nom();
 				$this->race = 'neutre';
-				$this->pp = $pet->monstre->get_pp() + $pet->get_pp();
-				$this->pm = $pet->monstre->get_pm() + $pet->get_pm();
+				$this->pp = $pet->get_pp();
+				$this->pm = $pet->get_pm();
 				$this->distance_tir = $pet->get_distance_tir();
 				$this->esquive = $pet->monstre->get_esquive();
 				$this->distance = $pet->monstre->get_melee();
