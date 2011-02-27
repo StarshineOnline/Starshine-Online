@@ -1395,7 +1395,7 @@ abstract class event_dte_rte extends event
           {
             $id2 = $match->get_participant(2);
             echo '<option value="'.$id2.'"'.($match->get_gagnant()==$id2?' selected="selected"':'').'>'.$equipes[$id2]->get_nom().'</option>';
-            echo '</select><br />Second : <select name="second"><option value="'.$id0.'"'.($match->get_gagnant()==$id0?' selected="selected"':'').'>'.$equipes[$id0]->get_nom().'</option><option value="'.$id1.'"'.($match->get_gagnant()==$id1?' selected="selected"':'').'>'.$equipes[$id1]->get_nom().'</option><option value="'.$id2.'"'.($match->get_gagnant()==$id2?' selected="selected"':'').'>'.$equipes[$id2]->get_nom().'</option>';
+            echo '</select><br />Second : <select name="second"><option value="0">non défini</option><option value="'.$id0.'"'.($match->get_second()==$id0?' selected="selected"':'').'>'.$equipes[$id0]->get_nom().'</option><option value="'.$id1.'"'.($match->get_second()==$id1?' selected="selected"':'').'>'.$equipes[$id1]->get_nom().'</option><option value="'.$id2.'"'.($match->get_second()==$id2?' selected="selected"':'').'>'.$equipes[$id2]->get_nom().'</option>';
           }
           echo '</select><br />';
         }

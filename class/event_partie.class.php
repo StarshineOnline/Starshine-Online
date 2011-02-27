@@ -421,7 +421,7 @@ class event_partie_dte_rte extends event_partie
       break;
     case event_partie_dte_rte::match3_elim:
       $pos = $arene->get_positions('m3');
-      $pa = $this->event->get_pa_matchs(event_dte_rte::pa_match2_elim);
+      $pa = $this->event->get_pa_matchs(event_dte_rte::pa_match3_elim);
       break;
     case event_partie_dte_rte::finale:
       $pos = $arene->get_positions('mf');
