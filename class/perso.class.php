@@ -929,10 +929,10 @@ class perso extends entite
 				}
         if ($this->arme->effet)
         {
-          $effets = split(';', $this->arme->effet);
+          $effets = explode(';', $this->arme->effet);
           foreach ($effets as $effet)
           {
-            $d_effet = split('-', $effet);
+            $d_effet = explode('-', $effet);
 						$this->register_item_effet($d_effet[0], $d_effet[1], $this->arme);
           }
         }
@@ -993,10 +993,10 @@ class perso extends entite
 				}
 				if ($this->arme_pet->effet)
 				{
-				  $effets = split(';', $this->arme->effet);
+				  $effets = explode(';', $this->arme->effet);
 				  foreach ($effets as $effet)
 				  {
-					$d_effet = split('-', $effet);
+					$d_effet = explode('-', $effet);
 								$this->register_item_effet($d_effet[0], $d_effet[1], $this->arme);
 				  }
 				}
@@ -1030,10 +1030,10 @@ class perso extends entite
 				}
         if ($this->bouclier->effet)
         {
-          $effets = split(';', $this->bouclier->effet);
+          $effets = explode(';', $this->bouclier->effet);
           foreach ($effets as $effet)
           {
-            $d_effet = split('-', $effet);
+            $d_effet = explode('-', $effet);
 						$this->register_item_effet($d_effet[0], $d_effet[1], $this->bouclier);
           }
         }
