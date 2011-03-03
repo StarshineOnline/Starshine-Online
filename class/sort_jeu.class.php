@@ -1057,5 +1057,13 @@ class sort_jeu
 	}
 
 		//fonction
+
+  function get_mp_final($joueur)
+  {
+    global $Trace;
+    $affinite = $Trace[$joueur->get_race()]['affinite_'.$sort->comp_assoc];
+    $facteur = (1 - (($affinite - 5) / 10));
+    return round($this->mp * $facteur);
+  }
 }
 ?>

@@ -88,12 +88,24 @@ if($W_row['type'] == 1)
 				<ul>
 					<?php
 					$comps = array();
-					$i = 0;
+					$sorts = array();
 					while($row = $db->read_array($req))
 					{
-						if($row['type'] == 'comp_combat') $comps[0][$i] = $row['competence'];
-						else $comps[1][$i] = $row['competence'];
-						$i++;
+            switch ($row['type'])
+            {
+              case 'comp_combat':
+                $comps[0][] = $row['competence'];
+                break;
+              case 'comp_jeu':
+                $comps[1][] = $row['competence'];
+                break;
+              case 'sort_jeu':
+                $sorts['jeu'][] = $row['competence'];
+                break;
+              case 'sort_combat':
+                $sorts['combat'][] = $row['competence'];
+                break;
+            }
 					}
 					$count = count($comps[0]);
 					if($count > 0)
@@ -133,6 +145,29 @@ if($W_row['type'] == 1)
 							<?php
 						}
 					}
+					if(count($sorts['combat']) > 0)
+					{
+						$ids = implode(', ', $sorts['combat']);
+						$requete = "SELECT * FROM sort_combat WHERE id IN (".$ids.")";
+						$req = $db->query($requete);
+						while($row = $db->read_assoc($req))
+						{
+              $desc = description($row['description'], $row);
+              $tooltip = print_tooltip("$desc ($row[pa] PA - $row[mp] MP)");
+              echo "<li $tooltip>$row[nom]</li>";
+						}
+					}
+					foreach ($sorts['jeu'] as $id)
+					{
+            $sort = new sort_jeu($id);
+            $desc = description($sort->get_description(), $sort);
+            $noms = $sort->get_nom();
+            $pa = $sort->get_pa();
+            $mp = $sort->get_mp_final($joueur);
+            $tooltip = print_tooltip("$desc ($pa PA - $mp MP)");
+            echo "<li $tooltip>$noms</li>";
+					}
+          print_tooltipify();
 					?>
 				</ul>
 				<br />

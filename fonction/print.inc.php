@@ -338,4 +338,20 @@ function print_js_onload($js)
 	echo '<script type="text/javascript">$(document).ready(function(){ '.$js.' });</script>';
 }
 
+global $auto_tootltip_num;
+$auto_tootltip_num = 0;
+function print_tooltip($tooltip)
+{
+  global $auto_tootltip_num;
+  $name = 'autottn_'.(++$auto_tootltip_num);
+  echo '<div id="'.$name.'" style="display: none; font-size: 0.85em;">'.
+    $tooltip."</div>\n";
+  return ' class="autottnsrc" rel="#'.$name.'" ';
+}
+
+function print_tooltipify()
+{
+  print_js_onload('$(\'.autottnsrc\').cluetip({local:true, showTitle: false, dropShadow: false, waitImage: false, positionBy: \'mouse\'});');
+}
+
 ?>
