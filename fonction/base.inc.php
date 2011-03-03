@@ -3322,3 +3322,14 @@ function sauve_sans_bonus_ignorables($joueur, $fields)
 	$db->query($query);
 }
 
+function is_nobuild_type($type)
+{
+	switch ($type)
+	{
+		case 1: // ville
+		case 2: // donjon
+		case 3: // point special
+			return false;
+	}
+	return true;
+}	

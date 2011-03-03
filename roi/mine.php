@@ -123,7 +123,7 @@ elseif(array_key_exists('case', $_GET))
 		else
 		{
 			$row = $db->read_assoc($req);
-			if($row['type'] == 0)
+			if(is_nobuild_type($row['type']) == false)
 			{
 				//On vérifie qu'il y a pas déjà une construction sur cette case
 				$requete = "SELECT id FROM construction WHERE x = ".$coord['x']." AND y = ".$coord['y'];
