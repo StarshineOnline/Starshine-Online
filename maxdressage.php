@@ -13,7 +13,7 @@ if (file_exists('root.php'))
 */
 include_once(root.'inc/fp.php');
 
-$requete = "SELECT id FROM perso ORDER BY id ASC";
+$requete = "SELECT id FROM perso WHERE classe != 'combattant' and classe != 'magicien' ORDER BY id ASC";
 $req = $db->query($requete);
 while($row = $db->read_assoc($req))
 {
@@ -28,9 +28,13 @@ while($row = $db->read_assoc($req))
 	}
 	else
 	{
-		$max = $Tmaxcomp[$competence];
+		$max = 100;
 	}
 	echo ' - '.$max.'<br />';
+	if($perso->get_dressage() > $max)
+	{
+		echo '<br />HOP HOP HOP on dépasse<br /><br />';
+	}
 }
 
 ?>
