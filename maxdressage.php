@@ -18,7 +18,7 @@ $req = $db->query($requete);
 while($row = $db->read_assoc($req))
 {
 	$perso = new perso($row['id']);
-	echo $perso->get_dressage();
+	echo $perso->get_nom().' - '.$perso->get_classe().' - '.$perso->get_dressage();
 	$requete = "SELECT * FROM classe_permet WHERE id_classe = ".$perso->get_classe_id()." AND competence = 'dressage'";
 	$req_m = $db->query($requete);
 	$row_m = $db->read_assoc($req_m);
