@@ -157,7 +157,7 @@ if($W_row['type'] == 1)
               echo "<li $tooltip>$row[nom]</li>";
 						}
 					}
-					foreach ($sorts['jeu'] as $id)
+					if (is_array($sorts['jeu'])) foreach ($sorts['jeu'] as $id)
 					{
             $sort = new sort_jeu($id);
             $desc = description($sort->get_description(), $sort);
