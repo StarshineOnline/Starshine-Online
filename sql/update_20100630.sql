@@ -1,5 +1,5 @@
 -- Le spécial
-INSERT INTO `starshine`.`sort_combat` (
+INSERT INTO `sort_combat` (
 `id` ,
 `nom` ,
 `description` ,

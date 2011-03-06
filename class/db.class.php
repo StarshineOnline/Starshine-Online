@@ -705,9 +705,12 @@ class db
   }
 
   // libère la mémoire utilisé par la requète
-  function free()
+  function free($asql = null)
   {
-    return mysql_free_result($this->sql);
+    if ($asql === null)
+      return mysql_free_result($this->sql);
+    else
+      return mysql_free_result($asql);
   }
 
   // ferme une connexion à un serveur msSQL

@@ -234,6 +234,10 @@ N'oubliez pas de reporter les bugs et problèmes, et d'apporter vos suggestions 
 	 <p>Liens d'aide au jeu : <a href='http://wiki.starshine-online.com/'>Comprendre Starshine</a> <a href='http://bug.starshine-online.com/'>Signaler un Bug</a> <a href='http://forum.starshine-online.com/'>Le Forum
 	 </a></p>
 	</div>
+<?php
+if ($G_no_piwik != true)
+{
+?>
 	<!-- Piwik -->
 <script type="text/javascript">
 var pkBaseURL = (("https:" == document.location.protocol) ? "https://www.starshine-online.com/piwik/" : "http://www.starshine-online.com/piwik/");
@@ -246,5 +250,6 @@ piwikTracker.enableLinkTracking();
 } catch( err ) {}
 </script><noscript><p><img src="http://www.starshine-online.com/piwik/piwik.php?idsite=1" style="border:0" alt="" /></p></noscript>
 <!-- End Piwik Tag -->
+<?php } /* G_no_piwik */ ?>
 </body>
 </html>
