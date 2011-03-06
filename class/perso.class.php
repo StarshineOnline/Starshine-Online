@@ -1976,6 +1976,11 @@ class perso extends entite
 	{
 		return count($this->get_ecurie());
 	}
+  /// Renvoie le nombre de créature à l'écurie "personnel"
+	function nb_pet_ecurie_self()
+	{
+		return count($this->get_ecurie_self());
+	}
 	/// Revnoie les créatures du personnage sous forme de tableau.
 	function get_pets($force = false)
 	{

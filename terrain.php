@@ -191,7 +191,7 @@ if($W_row['type'] == 1)
 					$joueur->get_pets(true);
 					$joueur->get_ecurie_self(true);
 					?>
-					<h3>Créatures dans votre écurie (<?php echo $joueur->get_ecurie_self(); ?> / <?php echo $batiment->effet; ?>)</h3>
+					<h3>Créatures dans votre écurie (<?php echo $joueur->nb_pet_ecurie_self(); ?> / <?php echo $batiment->effet; ?>)</h3>
 					<ul>
 					<?php
 					foreach($joueur->ecurie_self as $pet)
