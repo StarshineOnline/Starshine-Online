@@ -19,7 +19,7 @@ while($row = $db->read_assoc($req))
 {
 	$perso = new perso($row['id']);
 	echo $perso->get_dressage();
-	$requete = "SELECT * FROM classe_permet WHERE id_classe = ".$joueur->get_classe_id()." AND competence = 'dressage'";
+	$requete = "SELECT * FROM classe_permet WHERE id_classe = ".$perso->get_classe_id()." AND competence = 'dressage'";
 	$req = $db->query($requete);
 	$row = $db->read_assoc($req);
 	if($db->num_rows > 0)
