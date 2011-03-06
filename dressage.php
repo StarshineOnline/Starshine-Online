@@ -54,7 +54,7 @@ if($distance == 0)
 						$buff = $joueur->get_buff('dressage');
 						$buff->set_effet($buff->get_effet() + $rand);
 						$buff->sauver();
-						$augmentation = augmentation_competence('dressage', $joueur, 1);
+						$augmentation = augmentation_competence('dressage', $joueur, 0.9);
 						if ($augmentation[1] == 1) $joueur->set_dressage($augmentation[0]);
 						$joueur->set_pa($joueur->get_pa() - 10);
 						$joueur->sauver();
