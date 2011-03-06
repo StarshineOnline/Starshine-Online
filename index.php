@@ -32,6 +32,12 @@ N'oubliez pas de reporter les bugs et problèmes, et d'apporter vos suggestions 
 
 		</div>
 		<div id='screenshot_box' style='display:none;'>
+			<script type="text/javascript">
+			$(function()
+			{
+				$('#screenshot_box a').lightBox({fixedNavigation:true});
+			});
+			</script>
 			<ul>
 				<li><a href="image/screenshots/screenshot01.png" title="Le jeu"><img src="image/screenshots/mini_screenshot01.png" alt='screenshot01' /></a></li>
 				<li><a href="image/screenshots/screenshot02.png" title="Inventaire"><img src="image/screenshots/mini_screenshot02.png" alt='screenshot02' /></a></li>

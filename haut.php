@@ -58,21 +58,21 @@ if(!isset($root)) $root = '';
 //check_undead_players();
 if (isset($site) && $site)
 {
-	print_head("css:./css/site.css;script:./javascript/jquery/jquery-1.4.2.min.js~./javascript/jquery/jquery-ui-1.7.2.custom.min.js~./javascript/jquery/jquery.dataTables.min.js~./javascript/fonction.js~./javascript/site.js;title:StarShine, le jeu qu'il tient ses plannings !");
+	print_head("css:./css/site.css~./css/jquery.lightbox-0.5.css;script:./javascript/jquery/jquery-1.5.1.min.js~./javascript/jquery/jquery-ui-1.8.10.custom.min.js~./javascript/jquery/jquery.lightbox-0.5.min.js~./javascript/jquery/jquery.dataTables.min.js~./javascript/fonction.js~./javascript/site.js;title:StarShine, le jeu qu'il tient ses plannings !");
 }
 else
 {
 	if ($interface_v2)
 	{
-		print_head("css:./css/texture.css~./css/texture_low.css~./css/interfacev2.css;script:./javascript/jquery/jquery-1.4.2.min.js~./javascript/jquery/jquery-ui-1.7.2.custom.min.js~./javascript/jquery/jquery.dataTables.min.js~./javascript/fonction.js~./javascript/overlib/overlib.js~./javascript/jquery/jquery.hoverIntent.minified.js~./javascript/jquery/jquery.cluetip.min.js~./javascript/jquery/atooltip.min.jquery.js;title:StarShine, le jeu qu'il tient ses plannings !");
+		print_head("css:./css/texture.css~./css/texture_low.css~./css/interfacev2.css;script:./javascript/jquery/jquery-1.5.1.min.js~./javascript/jquery/jquery-ui-1.8.10.custom.min.js~./javascript/jquery/jquery.dataTables.min.js~./javascript/fonction.js~./javascript/overlib/overlib.js~./javascript/jquery/jquery.hoverIntent.minified.js~./javascript/jquery/jquery.cluetip.min.js~./javascript/jquery/atooltip.min.jquery.js;title:StarShine, le jeu qu'il tient ses plannings !");
 	}
 	elseif($interface_3D)
 	{
-		print_head("css:./css/texture3D.css~./css/texture_low.css~./css/interface3D.css;script:./javascript/jquery/jquery-1.4.2.min.js~./javascript/jquery/jquery-ui-1.7.2.custom.min.js~./javascript/fonction.js~./javascript/overlib/overlib.js;title:StarShine, le jeu qu'il tient ses plannings !");
+		print_head("css:./css/texture3D.css~./css/texture_low.css~./css/interface3D.css;script:./javascript/jquery/jquery-1.5.1.min.js~./javascript/jquery/jquery-ui-1.8.10.custom.min.js~./javascript/fonction.js~./javascript/overlib/overlib.js;title:StarShine, le jeu qu'il tient ses plannings !");
 	}
 	elseif($admin)
 	{
-		print_head("css:../css/texture.css~../css/texture_low.css~../css/interfacev2.css;script:../javascript/fonction.js~../javascript/overlib/overlib.js~../javascript/jquery/jquery-1.4.2.min.js~./javascript/jquery/jquery-ui-1.7.2.custom.min.js;title:StarShine, le jeu qu'il tient ses plannings !");
+		print_head("css:../css/texture.css~../css/texture_low.css~../css/interfacev2.css;script:../javascript/fonction.js~../javascript/overlib/overlib.js~../javascript/jquery/jquery-1.5.1.min.js~./javascript/jquery/jquery-ui-1.8.10.custom.min.js;title:StarShine, le jeu qu'il tient ses plannings !");
 	}
 }
 $fin = getmicrotime();
