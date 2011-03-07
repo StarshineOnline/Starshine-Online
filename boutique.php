@@ -66,7 +66,7 @@ if($W_row['type'] == 1)
 				switch ($_GET['type'])
 				{
 					case 'arme' :
-						$requete = "SELECT id, prix FROM arme WHERE id = ".sSQL($_GET['id']);
+						$requete = "SELECT id, prix, lvl_batiment FROM arme WHERE id = ".sSQL($_GET['id']);
 						$req = $db->query($requete);
 						$row = $db->read_array($req);
 						$taxe = ceil($row['prix'] * $R->get_taxe_diplo($joueur->get_race()) / 100);
@@ -77,6 +77,15 @@ if($W_row['type'] == 1)
 							{
 								$joueur->set_star($joueur->get_star() - $cout);
 								$joueur->sauver();
+								
+								// Lien trafiqué
+								if($row['lvl_batiment'] >= $level_batiment)
+								{
+									$joueur->supprime_objet('a'.$row['id'], 1);
+									echo 'Demande de ban envoyée'; // Pour faire peur au tricheur :D
+									exit(0);
+								}
+								
 								//Récupération de la taxe
 								if($taxe > 0)
 								{
@@ -98,7 +107,7 @@ if($W_row['type'] == 1)
 						}
 					break;
 					case 'armure' :
-						$requete = "SELECT id, prix, type FROM armure WHERE id = ".sSQL($_GET['id']);
+						$requete = "SELECT id, prix, type, lvl_batiment FROM armure WHERE id = ".sSQL($_GET['id']);
 						$req = $db->query($requete);
 						$row = $db->read_array($req);
 						$taxe = ceil($row['prix'] * $R->get_taxe_diplo($joueur->get_race()) / 100);
@@ -109,6 +118,15 @@ if($W_row['type'] == 1)
 							{
 								$joueur->set_star($joueur->get_star() - $cout);
 								$joueur->sauver();
+								
+								// Lien trafiqué
+								if($row['lvl_batiment'] >= $level_batiment)
+								{
+									$joueur->supprime_objet('p'.$row['id'], 1);
+									echo 'Demande de ban envoyée'; // Pour faire peur au tricheur :D
+									exit(0);
+								}
+								
 								//Récupération de la taxe
 								if($taxe > 0)
 								{
@@ -130,7 +148,7 @@ if($W_row['type'] == 1)
 						}
 					break;
 					case 'dressage' :
-						$requete = "SELECT id, prix, type FROM objet_pet WHERE id = ".sSQL($_GET['id']);
+						$requete = "SELECT id, prix, type, lvl_batiment FROM objet_pet WHERE id = ".sSQL($_GET['id']);
 						$req = $db->query($requete);
 						$row = $db->read_array($req);
 						$taxe = ceil($row['prix'] * $R->get_taxe_diplo($joueur->get_race()) / 100);
@@ -141,6 +159,15 @@ if($W_row['type'] == 1)
 							{
 								$joueur->set_star($joueur->get_star() - $cout);
 								$joueur->sauver();
+								
+								// Lien trafiqué
+								if($row['lvl_batiment'] >= $level_batiment)
+								{
+									$joueur->supprime_objet('d'.$row['id'], 1);
+									echo 'Demande de ban envoyée'; // Pour faire peur au tricheur :D
+									exit(0);
+								}
+								
 								//Récupération de la taxe
 								if($taxe > 0)
 								{
