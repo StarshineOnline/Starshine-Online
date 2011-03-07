@@ -3340,7 +3340,8 @@ function pose_drapeau_roi($x, $y)
 	global $db;
 	global $Trace;
 
-	if ($joueur->get_rang_royaume() != 6) security_block(URL_MANIPULATION);
+	if ($x > 190 || $x < 0 || $y > 190 || $y < 0) security_block(URL_MANIPULATION); // Case invalide
+	if ($joueur->get_rang_royaume() != 6) security_block(URL_MANIPULATION); // Pas roi
 
 	if (!verif_ville($joueur->get_x(), $joueur->get_y())) {
 		echo "<h5>Vous n'êtes pas à la capitale !</h5>";
@@ -3348,6 +3349,13 @@ function pose_drapeau_roi($x, $y)
 	}
 
 	$race = $Trace[$joueur->get_race()]['numrace'];
+
+	$req = $db->query("select 1 from map where royaume = $race and ((x = $x + 1 and y = $y) or (x = $x - 1 and y = $y) or (x = $x and y = $y + 1) or (x = $x and y = $y 1 1))");
+	if ($db->num_rows($req) < 1) security_block(URL_MANIPULATION); // Pas de case adjacente
+	$req = $db->query("select 1 from map where royaume = 0 and x = $x and y = $y");
+	if ($db->num_rows($req) < 1) security_block(URL_MANIPULATION); // case pas libre !!
+	$req = $db->query("select 1 from placement where x = $x and y = $y");
+	if ($db->num_rows($req) > 0) security_block(URL_MANIPULATION); // case pas libre !!
 
 	$req = $db->query("SELECT temps_construction, b.id id, o.id oid from depot_royaume d, objet_royaume o, batiment b where o.id = d.id_objet and o.id_batiment = b.id and o.type = 'drapeau' and b.hp = 1 and d.id_royaume = $race");
 	if ($db->num_rows($req) < 1) {
