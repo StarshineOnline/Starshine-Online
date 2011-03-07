@@ -3333,3 +3333,34 @@ function is_nobuild_type($type)
 	}
 	return true;
 }	
+
+function pose_drapeau_roi($x, $y)
+{
+	global $joueur;
+	global $db;
+	global $Trace;
+
+	if ($joueur->get_rang_royaume() != 6) security_block(URL_MANIPULATION);
+
+	if (!verif_ville($joueur->get_x(), $joueur->get_y())) {
+		echo "<h5>Vous n'êtes pas à la capitale !</h5>";
+		return false;
+	}
+
+	$race = $Trace[$joueur->get_race()]['numrace'];
+
+	$req = $db->query("SELECT temps_construction, b.id id, o.id oid from depot_royaume d, objet_royaume o, batiment b where o.id = d.id_objet and o.id_batiment = b.id and o.type = 'drapeau' and b.hp = 1 and d.id_royaume = $race");
+	if ($db->num_rows($req) < 1) {
+		echo "<h5>Plus de drapeaux au dépôt</h5>";
+		return false;
+	}
+	$row = $db->read_assoc($req);
+
+	$drapeau_id = $row['id'];
+	$req = $db->query("delete from depot_royaume where id_objet = $row[oid] and id_royaume = $race limit 1");
+	$distance = abs($Trace[$joueur->get_race()]['spawn_x'] - $x) + abs($Trace[$joueur->get_race()]['spawn_y'] - $y);
+	$time = time() + ($row['temps_construction'] * $distance);
+	$requete = "INSERT INTO placement (type, x, y, royaume, debut_placement, fin_placement, id_batiment, hp, nom, rez) VALUES('drapeau', $x, $y, '$race', ".
+		time().", '$time', $drapeau_id, 1, 'drapeau', 0)";
+	$req = $db->query($requete);
+}
