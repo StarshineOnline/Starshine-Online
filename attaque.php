@@ -300,7 +300,7 @@ else
 	if($type == 'joueur') $pa_attaque = $G_PA_attaque_joueur;
 	elseif($type == 'batiment') $pa_attaque = $G_PA_attaque_batiment;
 	else $pa_attaque = $G_PA_attaque_monstre;
-	if($attaquant->get_race() == $defenseur->get_race()) $pa_attaque += 3;
+	if($attaquant->get_race() == $defenseur->get_race() && $attaquant->in_arene() == false) $pa_attaque += 3;
 	if($attaquant->get_race() == 'orc' OR $defenseur->get_race() == 'orc') $round_total += 1;
 	if($attaquant->is_buff('buff_sacrifice')) $round_total -= $attaquant->get_buff('buff_sacrifice', 'effet2');
 	if($attaquant->is_buff('cout_attaque')) $pa_attaque = ceil($pa_attaque / $attaquant->get_buff('cout_attaque', 'effet'));

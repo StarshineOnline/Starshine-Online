@@ -85,7 +85,7 @@ $W_distance = detection_distance($W_case, $joueur->get_pos());
 if ($perso->get_id() != $joueur->get_id())
 {
 	$pa_attaque = $G_PA_attaque_joueur;
-	if($joueur->get_race() == $perso->get_race()) $pa_attaque += 3;
+	if($joueur->get_race() == $perso->get_race() && !$joueur->in_arene()) $pa_attaque += 3;
 	if($joueur->is_buff('cout_attaque')) $pa_attaque = ceil($pa_attaque / $joueur->get_buff('cout_attaque', 'effet'));
 	if($joueur->is_buff('plus_cout_attaque')) $pa_attaque = $pa_attaque * $joueur->get_buff('plus_cout_attaque', 'effet');
 	if($joueur->is_buff('buff_rapidite')) $reduction_pa = $joueur->get_buff('buff_rapidite', 'effet'); else $reduction_pa = 0;
