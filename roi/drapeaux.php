@@ -54,9 +54,17 @@ $req = "select * from tmp_adj_lib";
 $r_c = $db->query($req);
 $nb_cases_ok = $db->num_rows($r_c);
 
+$mleft = 0;
+$mtop = 0;
 $mag_factor = 1;
 if (array_key_exists('mag_factor', $_GET)) {
 	$mag_factor = $_GET['mag_factor'];
+}
+if (array_key_exists('mtop', $_GET)) {
+	$mtop = $_GET['mtop'];
+}
+if (array_key_exists('mleft', $_GET)) {
+	$mleft = $_GET['mleft'];
 }
 
 $rand = rand();
@@ -79,18 +87,24 @@ Cases de pose autorisées : <?php echo $nb_cases_ok; ?><br/>
 <input type="button" onclick="zooml()" value="−" />
 </div>
 <div id="map" style="width: 760px; height: 760px; overflow: hidden; position: relative">
-<img style="position: absolute; left: 0px; top: 0px" width="<?php echo $map_size; ?>" height="<?php echo $map_size; ?>" id="mapim" usemap="#mapimmap" alt="Carte des poses de drapeaux" src="drapeaux_map.php?img=<?php echo $rand; ?>" />
+<img style="position: absolute; left: <?php echo $mleft; ?>px; top: <?php echo $mtop; ?>px" width="<?php echo $map_size; ?>" height="<?php echo $map_size; ?>" id="mapim" usemap="#mapimmap" alt="Carte des poses de drapeaux" src="drapeaux_map.php?img=<?php echo $rand; ?>" />
 <div id="mapinmapd">
 <?php print_map($mag_factor, $r_c); ?>
 </div>
 </div>
 
 <script type="text/javascript">
+var mtop = <?php echo $mtop; ?>;
+var mleft = <?php echo $mleft; ?>;
+
 function pose_drapeau(x, y)
 {
   // TODO: poser une question ?
 	//alert("pose_drapeau: " + x + "/" + y);
-	affiche_page('drapeaux.php?posex=' + x + '&posey=' + y + '&mag_factor=' + mag);
+	var url = 'drapeaux.php?posex=' + x + '&posey=' + y + '&mag_factor=' + mag;
+	if (mtop != 0) { url = url + '&mtop=' + mtop; }
+	if (mleft != 0) { url = url + '&mleft=' + mleft; }
+	affiche_page(url);
 }
 
 function mover()
@@ -98,28 +112,32 @@ function mover()
 	//var x = $("#mapim").css("left").substring(0, -2);
 	var l = $("#mapim").css("left").split('p');
 	var x = new Number(l[0]);
-	$("#mapim").css("left", (x - 50) + 'px');
+	mleft = x - 50;
+	$("#mapim").css("left", mleft + 'px');
 }
 
 function movel()
 {
 	var l = $("#mapim").css("left").split('p');
 	var x = new Number(l[0]);
-	$("#mapim").css("left", (x + 50) + 'px');
+	mleft = x + 50;
+	$("#mapim").css("left", mleft + 'px');
 }
 
 function moveu()
 {
 	var l = $("#mapim").css("top").split('p');
 	var x = new Number(l[0]);
-	$("#mapim").css("top", (x + 50) + 'px');
+	mtop = x + 50;
+	$("#mapim").css("top", mtop + 'px');
 }
 
 function moveb()
 {
 	var l = $("#mapim").css("top").split('p');
 	var x = new Number(l[0]);
-	$("#mapim").css("top", (x - 50) + 'px');
+	mtop = x - 50;
+	$("#mapim").css("top", mtop + 'px');
 }
 
 var mag = <?php echo $mag_factor; ?>;
@@ -129,7 +147,10 @@ function zooml() { if (mag > 1) { mag--; affimg(); } }
 
 function affimg()
 {
-	affiche_page('drapeaux.php?mag_factor=' + mag);
+	var url = 'drapeaux.php?mag_factor=' + mag;
+	if (mtop != 0) { url = url + '&mtop=' + mtop; }
+	if (mleft != 0) { url = url + '&mleft=' + mleft; }
+	affiche_page(url);
 }
 
 </script>
