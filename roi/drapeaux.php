@@ -17,6 +17,12 @@ if (array_key_exists('posex', $_REQUEST) &&
   if (pose_drapeau_roi($_REQUEST['posex'], $_REQUEST['posey']))
     echo "<p>Drapeau posé en $_REQUEST[posex], $_REQUEST[posey]</p>";
 }
+if (array_key_exists('poseall', $_REQUEST)) {
+	$nb = pose_drapeau_roi_all();
+	if ($nb !== false) {
+		echo "<p>$nb drapeaux posés</p>";
+	}
+}
 
 function print_map($mag_factor, $r_c) {
 	global $db;
@@ -43,13 +49,8 @@ $r_nbp = $db->query($req);
 $nbp = $db->read_array($r_nbp);
 $nb_drapeaux_poses = $nbp[0];
 
-// On va utiliser des tables temporaires car la requete kifaitout prends ~30 s à s'effectuer
-$req1 = "create temporary table tmp_royaume as select x,y from map where royaume = $roy_id";
-$db->query($req1); // on prends le royaume
-$req2 = "create temporary table tmp_adj as select distinct m.x, m.y from map m, tmp_royaume t where m.royaume = 0 and m.info != 5 and ((m.x = t.x + 1 and m.y = t.y) or (m.x = t.x - 1 and m.y = t.y) or (m.x = t.x and m.y = t.y + 1) or (m.x = t.x and m.y = t.y - 1))";
-$db->query($req2); // on prends les cases neutres autour du royaume qui ne sont pas de l'eau
-$req3 = "create temporary table tmp_adj_lib as select * from tmp_adj m where not exists (select x, y from placement p where p.x = m.x and p.y = m.y) and not exists (select x, y from construction c where c.x = m.x and c.y = m.y)";
-$db->query($req3); // on enleve les cases occupées par un placement ou un batiment
+
+make_tmp_adj_tables($roy_id);
 $req = "select * from tmp_adj_lib";
 $r_c = $db->query($req);
 $nb_cases_ok = $db->num_rows($r_c);
@@ -84,7 +85,8 @@ Cases de pose autorisées : <?php echo $nb_cases_ok; ?><br/>
 <input type="button" onclick="moveu()" value="↑" />
 <input type="button" onclick="moveb()" value="↓" /><br />
 <input type="button" onclick="zoomm()" value="+" />
-<input type="button" onclick="zooml()" value="−" />
+<input type="button" onclick="zooml()" value="−" /><br />
+<input type="button" onclick="toutposer()" value="Poser un maximum" />
 </div>
 <div id="map" style="width: 760px; height: 760px; overflow: hidden; position: relative">
 <img style="position: absolute; left: <?php echo $mleft; ?>px; top: <?php echo $mtop; ?>px" width="<?php echo $map_size; ?>" height="<?php echo $map_size; ?>" id="mapim" usemap="#mapimmap" alt="Carte des poses de drapeaux" src="drapeaux_map.php?img=<?php echo $rand; ?>" />
@@ -148,6 +150,15 @@ function zooml() { if (mag > 1) { mag--; affimg(); } }
 function affimg()
 {
 	var url = 'drapeaux.php?mag_factor=' + mag;
+	if (mtop != 0) { url = url + '&mtop=' + mtop; }
+	if (mleft != 0) { url = url + '&mleft=' + mleft; }
+	affiche_page(url);
+}
+
+function toutposer()
+{
+	var url = 'drapeaux.php?poseall';
+	if (mag > 1) { url = url + '&mag_factor=' + mag; }
 	if (mtop != 0) { url = url + '&mtop=' + mtop; }
 	if (mleft != 0) { url = url + '&mleft=' + mleft; }
 	affiche_page(url);

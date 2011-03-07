@@ -3372,3 +3372,53 @@ function pose_drapeau_roi($x, $y)
 		time().", '$time', $drapeau_id, 1, 'drapeau', 0)";
 	$req = $db->query($requete);
 }
+
+function pose_drapeau_roi_all()
+{
+	global $joueur;
+	global $db;
+	global $Trace;
+
+	if ($x > 190 || $x < 0 || $y > 190 || $y < 0) security_block(URL_MANIPULATION); // Case invalide
+	if ($joueur->get_rang_royaume() != 6) security_block(URL_MANIPULATION); // Pas roi
+
+	if (!verif_ville($joueur->get_x(), $joueur->get_y())) {
+		echo "<h5>Vous n'êtes pas à la capitale !</h5>";
+		return false;
+	}
+	$race = $Trace[$joueur->get_race()]['numrace'];
+
+	
+	$req = $db->query("SELECT temps_construction, b.id id, o.id oid from depot_royaume d, objet_royaume o, batiment b where o.id = d.id_objet and o.id_batiment = b.id and o.type = 'drapeau' and b.hp = 1 and d.id_royaume = $race");
+	$nb_drapeaux = $db->num_rows($req);
+	if ($nb_drapeaux < 1) {
+		echo "<h5>Plus de drapeaux au dépôt</h5>";
+		return false;
+	}
+	$row = $db->read_assoc($req);
+
+	make_tmp_adj_tables($race);
+	$req = $db->query("select * from tmp_adj_lib");
+	$nb_cases = $db->num_rows($req);
+
+	$nb = min($nb_cases, $nb_drapeaux);
+	$req = $db->query("delete from depot_royaume where id_objet = $row[oid] and id_royaume = $race limit $nb");
+	$time = time();
+	$expr_distance = '(abs('.$Trace[$joueur->get_race()]['spawn_x'].' - x) + abs('.$Trace[$joueur->get_race()]['spawn_y'].' - y))';
+	$req = $db->query("insert into placement (type, x, y, royaume, debut_placement, fin_placement, id_batiment, hp, nom, rez) select 'drapeau', x, y, $race, $time, $time + ($row[temps_construction] * $expr_distance), $row[id], 1, 'drapeau', 0 from tmp_adj_lib limit $nb;");
+	return $nb;
+}
+
+function make_tmp_adj_tables($roy_id)
+{
+	global $db;
+
+	$db->query("drop table if exists tmp_royaume, tmp_adj, tmp_adj_lib");
+	// On va utiliser des tables temporaires car la requete kifaitout prends ~30 s à s'effectuer
+	$req1 = "create temporary table tmp_royaume as select x,y from map where royaume = $roy_id";
+	$db->query($req1); // on prends le royaume
+	$req2 = "create temporary table tmp_adj as select distinct m.x, m.y from map m, tmp_royaume t where m.royaume = 0 and m.info != 5 and ((m.x = t.x + 1 and m.y = t.y) or (m.x = t.x - 1 and m.y = t.y) or (m.x = t.x and m.y = t.y + 1) or (m.x = t.x and m.y = t.y - 1))";
+	$db->query($req2); // on prends les cases neutres autour du royaume qui ne sont pas de l'eau
+	$req3 = "create temporary table tmp_adj_lib as select * from tmp_adj m where not exists (select x, y from placement p where p.x = m.x and p.y = m.y) and not exists (select x, y from construction c where c.x = m.x and c.y = m.y)";
+	$db->query($req3); // on enleve les cases occupées par un placement ou un batiment
+}

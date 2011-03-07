@@ -33,13 +33,7 @@ if (array_key_exists('img', $_GET) &&
 	imagefill($imalpha, 0, 0, $noir);
 	imagecolortransparent($imalpha, $noir);
 
-	// On va utiliser des tables temporaires car la requete kifaitout prends ~30 s à s'effectuer
-	$req1 = "create temporary table tmp_royaume as select x,y from map where royaume = $roy_id";
-	$db->query($req1); // on prends le royaume
-	$req2 = "create temporary table tmp_adj as select distinct m.x, m.y from map m, tmp_royaume t where m.royaume = 0 and m.info != 5 and ((m.x = t.x + 1 and m.y = t.y) or (m.x = t.x - 1 and m.y = t.y) or (m.x = t.x and m.y = t.y + 1) or (m.x = t.x and m.y = t.y - 1))";
-	$db->query($req2); // on prends les cases neutres autour du royaume qui ne sont pas de l'eau
-	$req3 = "create temporary table tmp_adj_lib as select * from tmp_adj m where not exists (select x, y from placement p where p.x = m.x and p.y = m.y) and not exists (select x, y from construction c where c.x = m.x and c.y = m.y)";
-	$db->query($req3); // on enleve les cases occupées par un placement ou un batiment
+	make_tmp_adj_tables($roy_id);
 	$req4 = "select * from tmp_adj_lib";
 	$req = $db->query($req4);
 
