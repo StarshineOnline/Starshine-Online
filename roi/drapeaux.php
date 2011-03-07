@@ -18,6 +18,19 @@ if (array_key_exists('posex', $_REQUEST) &&
     echo "<p>Drapeau posé en $_REQUEST[posex], $_REQUEST[posey]</p>";
 }
 
+function print_map($mag_factor, $r_c) {
+	global $db;
+	echo "<map name=\"mapimmap\">\n";
+	while ($r = $db->read_object($r_c)) {
+		$r->x1 = ($r->x - 1) * 4 * $mag_factor;
+		$r->y1 = ($r->y - 1) * 4 * $mag_factor;
+		$r->x2 = $r->x1 + (4 * $mag_factor);
+		$r->y2 = $r->y1 + (4 * $mag_factor);
+		echo "<area shape=\"rect\" coords=\"$r->x1,$r->y1,$r->x2,$r->y2\" alt=\"$r->x,$r->y\" href=\"javascript:pose_drapeau($r->x, $r->y)\" />\n";
+	}
+	echo "</map>\n";
+}
+
 $roy_id = $royaume->get_id();
 
 $req = "SELECT count(1) from depot_royaume d, objet_royaume o, batiment b where o.id = d.id_objet and o.id_batiment = b.id and o.type = 'drapeau' and b.hp = 1 and d.id_royaume = $roy_id";
@@ -41,8 +54,15 @@ $req = "select * from tmp_adj_lib";
 $r_c = $db->query($req);
 $nb_cases_ok = $db->num_rows($r_c);
 
+$mag_factor = 1;
+if (array_key_exists('mag_factor', $_GET)) {
+	$mag_factor = $_GET['mag_factor'];
+}
+
 $rand = rand();
 $_SESSION['map_drap_key'] = $rand;
+
+$map_size = 760 * $mag_factor;
 
 ?>
 <div id="info">
@@ -50,19 +70,19 @@ Drapeaux disponibles : <?php echo $nb_drapeaux_dispo; ?><br/>
 Drapeaux posés : <?php echo $nb_drapeaux_poses; ?><br/>
 Cases de pose autorisées : <?php echo $nb_cases_ok; ?><br/>
 </div>
-<div id="map">
-<img id="mapim" usemap="#mapimmap" alt="Carte des poses de drapeaux" src="drapeaux_map.php?img=<?php echo $rand; ?>" />
-<map name="mapimmap">
-<?php
-	while ($r = $db->read_object($r_c)) {
-		$r->x1 = ($r->x - 1) * 4;
-		$r->y1 = ($r->y - 1) * 4;
-		$r->x2 = $r->x1 + 4;
-		$r->y2 = $r->y1 + 4;
-		echo "<area shape=\"rect\" coords=\"$r->x1,$r->y1,$r->x2,$r->y2\" alt=\"$r->x,$r->y\" href=\"javascript:pose_drapeau($r->x, $r->y)\" />\n";
-	}
-?>
-</map>
+<div id="ctrls" style="float: right; background-color: #FFFFCC; padding: 3px">
+<input type="button" onclick="movel()" value="←" />
+<input type="button" onclick="mover()" value="→" />
+<input type="button" onclick="moveu()" value="↑" />
+<input type="button" onclick="moveb()" value="↓" /><br />
+<input type="button" onclick="zoomm()" value="+" />
+<input type="button" onclick="zooml()" value="−" />
+</div>
+<div id="map" style="width: 760px; height: 760px; overflow: hidden; position: relative">
+<img style="position: absolute; left: 0px; top: 0px" width="<?php echo $map_size; ?>" height="<?php echo $map_size; ?>" id="mapim" usemap="#mapimmap" alt="Carte des poses de drapeaux" src="drapeaux_map.php?img=<?php echo $rand; ?>" />
+<div id="mapinmapd">
+<?php print_map($mag_factor, $r_c); ?>
+</div>
 </div>
 
 <script type="text/javascript">
@@ -70,6 +90,46 @@ function pose_drapeau(x, y)
 {
   // TODO: poser une question ?
 	//alert("pose_drapeau: " + x + "/" + y);
-	affiche_page('drapeaux.php?posex=' + x + '&posey=' + y);
+	affiche_page('drapeaux.php?posex=' + x + '&posey=' + y + '&mag_factor=' + mag);
 }
+
+function mover()
+{
+	//var x = $("#mapim").css("left").substring(0, -2);
+	var l = $("#mapim").css("left").split('p');
+	var x = new Number(l[0]);
+	$("#mapim").css("left", (x - 50) + 'px');
+}
+
+function movel()
+{
+	var l = $("#mapim").css("left").split('p');
+	var x = new Number(l[0]);
+	$("#mapim").css("left", (x + 50) + 'px');
+}
+
+function moveu()
+{
+	var l = $("#mapim").css("top").split('p');
+	var x = new Number(l[0]);
+	$("#mapim").css("top", (x + 50) + 'px');
+}
+
+function moveb()
+{
+	var l = $("#mapim").css("top").split('p');
+	var x = new Number(l[0]);
+	$("#mapim").css("top", (x - 50) + 'px');
+}
+
+var mag = <?php echo $mag_factor; ?>;
+
+function zoomm() {	mag++; affimg(); }
+function zooml() { if (mag > 1) { mag--; affimg(); } }
+
+function affimg()
+{
+	affiche_page('drapeaux.php?mag_factor=' + mag);
+}
+
 </script>
