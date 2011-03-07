@@ -461,8 +461,8 @@ class pet extends map_monstre
 						$requete = "SELECT PP, PM, effet FROM objet_pet WHERE id = ".$partie_d['id_objet'];
 						$req = $db->query($requete);
 						$row = $db->read_row($req);
-						$this->pp += $row[0] + $this->monstre->get_pp();
-						$this->pm += $row[1] + $this->monstre->get_pm();
+						$this->pp += $row[0];
+						$this->pm += $row[1];
 						// Effets magiques
 						if ($row[2] != '')
 						{
@@ -484,6 +484,8 @@ class pet extends map_monstre
 					}
 				}
 			}
+			$this->pp += $this->monstre->get_pp();
+			$this->pm += $this->monstre->get_pm();
 			$this->pp_base = $this->pp;
 			$this->pm_base = $this->pm;
 
