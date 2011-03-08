@@ -74,4 +74,8 @@
 	$tab_classement['dressage']['champ'] = 'Dressage';
 	$tab_classement['dressage']['affiche'] = true;
 	$tab_classement['dressage']['affiche_niveau'] = false;
+	$tab_classement['achiev']['nom'] = 'Les Roxxors';
+	$tab_classement['achiev']['champ'] = 'Achievements';
+	$tab_classement['achiev']['affiche'] = true;
+	$tab_classement['achiev']['affiche_niveau'] = false;
 
