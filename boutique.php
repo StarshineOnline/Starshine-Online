@@ -82,8 +82,7 @@ if($W_row['type'] == 1)
 								if($row['lvl_batiment'] > $level_batiment)
 								{
 									$joueur->supprime_objet('a'.$row['id'], 1);
-									echo 'Demande de ban envoyée'; // Pour faire peur au tricheur :D
-									exit(0);
+									security_block(URL_MANIPULATION, 'Batiment non disponible dans cette ville');
 								}
 								
 								//Récupération de la taxe
@@ -123,8 +122,7 @@ if($W_row['type'] == 1)
 								if($row['lvl_batiment'] > $level_batiment)
 								{
 									$joueur->supprime_objet('p'.$row['id'], 1);
-									echo 'Demande de ban envoyée'; // Pour faire peur au tricheur :D
-									exit(0);
+									security_block(URL_MANIPULATION, 'Batiment non disponible dans cette ville');
 								}
 								
 								//Récupération de la taxe
@@ -164,8 +162,7 @@ if($W_row['type'] == 1)
 								if($row['lvl_batiment'] > $level_batiment)
 								{
 									$joueur->supprime_objet('d'.$row['id'], 1);
-									echo 'Demande de ban envoyée'; // Pour faire peur au tricheur :D
-									exit(0);
+									security_block(URL_MANIPULATION, 'Batiment non disponible dans cette ville');
 								}
 								
 								//Récupération de la taxe
