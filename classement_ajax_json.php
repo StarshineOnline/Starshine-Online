@@ -51,7 +51,7 @@ $requete = "SELECT @rownum:=@rownum+1 rank, id, nom, ".sSQL($tri).", level, race
 //echo 'inf : '.$inf.' j : '.$j.' k : '.$k.' sup : '.$sup.' '.$requete.'<br />';
 
 if ($tri == 'achiev') {
-	$requete = "SELECT @rownum:=@rownum+1 rank, id, nom, achiev, level, race, classe, cache_stat, cache_classe FROM perso, (select count(1) achiev, id_perso idp from achievement group by id_perso) a, (SELECT @rownum:=$inf) r WHERE a.idp = perso.id AND statut = 'actif' AND level > 0 AND $where ORDER BY $ord DESC, nom ASC";
+	$requete = "SELECT @rownum:=@rownum+1 rank, id, nom, achiev, level, race, classe, cache_stat, cache_classe FROM perso, (select count(1) achiev, id_perso idp from achievement group by id_perso order by achiev DESC) a, (SELECT @rownum:=$inf) r WHERE a.idp = perso.id AND statut = 'actif' AND level > 0 AND $where ORDER BY $ord DESC, nom ASC";
 }
 
 if (array_key_exists('sSearch', $_GET) && $_GET['sSearch'] != '')
