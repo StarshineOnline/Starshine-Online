@@ -3329,9 +3329,9 @@ function is_nobuild_type($type)
 		case 1: // ville
 		case 2: // donjon
 		case 3: // point special
-			return false;
+			return true;
 	}
-	return true;
+	return false;
 }	
 
 function pose_drapeau_roi($x, $y)
