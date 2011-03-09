@@ -129,8 +129,7 @@ echo '<div id="menu_date"><img src="image/interface/'.moment_jour().
 <?php } /* G_no_flattr */ ?>
 	</div>
 	<div id='menu_deco'>
-<!--		<span class="show_debug_button" id="debug_log_button" title='Voir le debug' onclick="show_debug_log()">&nbsp;</span> -->
-		<span class="fermer" title='Se déconnecter' onclick="if(confirm('Voulez vous déconnecter ?')) { document.location.href='index.php?deco=ok'; };">&nbsp;</span>
+		<span class="fermer" title='Se déconnecter' onclick="if(confirm('Voulez vous déconnecter ?')) { document.location.href='index.php?deco=ok'; };">&nbsp;</span><span class="show_debug_button" id="debug_log_button" title='Voir le debug' onclick="show_debug_log()"><img src="image/interface/debug.png" onclick="show_debug_log()"/></span>
 	</div>
 </div>
 <div id='contenu_back'>

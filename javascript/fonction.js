@@ -271,6 +271,8 @@ $(document).ready(function()
 		$(this).hide();
 	});
 
+		$("#debug_log_button").hide();
+
 		$("#popup").ajaxError(function(e, jqxhr, settings, exception) {
 				if (jqxhr.status == 403) {
 						// Sans doute un security_block, pop erreur
@@ -278,10 +280,11 @@ $(document).ready(function()
 						$('#popup_content').html(jqxhr.responseText);
 						$('#popup_content h1').css('color', 'red');
 				} else {
-						// On loggue dans un cadre debug ?
+						// On loggue dans un cadre caché
 						$('#debug_log').append(jqxhr.responseText);
 						$('#debug_log').append('<p>requested: ' + settings.url + '</p>');
 						$('#debug_log').append('<hr/>');
+						// On fait apparaître le bouton de debug
 						$('#debug_log_button').show();
 				}
 		});
