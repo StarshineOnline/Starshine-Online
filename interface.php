@@ -129,6 +129,7 @@ echo '<div id="menu_date"><img src="image/interface/'.moment_jour().
 <?php } /* G_no_flattr */ ?>
 	</div>
 	<div id='menu_deco'>
+<!--		<span class="show_debug_button" id="debug_log_button" title='Voir le debug' onclick="show_debug_log()">&nbsp;</span> -->
 		<span class="fermer" title='Se déconnecter' onclick="if(confirm('Voulez vous déconnecter ?')) { document.location.href='index.php?deco=ok'; };">&nbsp;</span>
 	</div>
 </div>
@@ -172,6 +173,9 @@ if (file_exists(root.'revision.inc')) {
 	include_once(root.'revision.inc');
 	echo "</div>\n";
 }
+
+// Les logs de debug ajax
+echo '<div id="debug_log" class="debug"></div>';
 
 //Inclusion du bas de la page
 include_once(root.'bas.php');

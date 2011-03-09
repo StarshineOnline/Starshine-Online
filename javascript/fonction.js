@@ -270,7 +270,30 @@ $(document).ready(function()
 	{
 		$(this).hide();
 	});
+
+		$("#popup").ajaxError(function(e, jqxhr, settings, exception) {
+				if (jqxhr.status == 403) {
+						// Sans doute un security_block, pop erreur
+						$('#popup').show();
+						$('#popup_content').html(jqxhr.responseText);
+						$('#popup_content h1').css('color', 'red');
+				} else {
+						// On loggue dans un cadre debug ?
+						$('#debug_log').append(jqxhr.responseText);
+						$('#debug_log').append('<p>requested: ' + settings.url + '</p>');
+						$('#debug_log').append('<hr/>');
+						$('#debug_log_button').show();
+				}
+		});
 });
+
+function show_debug_log()
+{
+		$('#popup').show();
+		$('#popup_content').html($('#debug_log').html() + '<a href="javascript:clear_debug_log()">clear</a>');
+}
+
+function clear_debug_log() { $('#debug_log').text(''); $('#popup_content').text(''); }
 
 function remplir(destination, valeur, source)
 {
