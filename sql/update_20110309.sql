@@ -1,0 +1,1 @@
+INSERT INTO `achievement_type` (`id`, `nom`, `description`, `value`, `variable`, `secret`, `strong`, `color`) VALUES (null, 'Judge Dredd', 'Avoir tué 100 perso ayant des points de crime', '0', 'dredd', '0', '0', NULL)

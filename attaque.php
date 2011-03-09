@@ -950,6 +950,13 @@ else
 					{
 						$actif->unlock_achiev('kill_bastounet');
 					}
+					
+					if ($passif->get_crime() > 0)
+					{
+						$achiev = $actif->get_compteur('dredd');
+						$achiev->set_compteur($achiev->get_compteur() + 1);
+						$achiev->sauver();
+					}
 				}
 
 				if($gains)
@@ -1050,6 +1057,7 @@ else
 									}
 								break;
 							}
+
 							$xp = $xp / 5;
 							$honneur = $honneur / 5;
 						}
