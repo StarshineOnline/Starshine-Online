@@ -79,7 +79,7 @@ if($W_row['type'] == 1)
 								$joueur->sauver();
 								
 								// Lien trafiqué
-								if($row['lvl_batiment'] > $level_batiment)
+								if($row['lvl_batiment'] > $level_batiment && false)
 								{
 									$joueur->supprime_objet('a'.$row['id'], 1);
 									security_block(URL_MANIPULATION, 'Batiment non disponible dans cette ville');
@@ -119,7 +119,7 @@ if($W_row['type'] == 1)
 								$joueur->sauver();
 								
 								// Lien trafiqué
-								if($row['lvl_batiment'] > $level_batiment)
+								if($row['lvl_batiment'] > $level_batiment && false)
 								{
 									$joueur->supprime_objet('p'.$row['id'], 1);
 									security_block(URL_MANIPULATION, 'Batiment non disponible dans cette ville');
@@ -159,7 +159,7 @@ if($W_row['type'] == 1)
 								$joueur->sauver();
 								
 								// Lien trafiqué
-								if($row['lvl_batiment'] > $level_batiment)
+								if($row['lvl_batiment'] > $level_batiment && false)
 								{
 									$joueur->supprime_objet('d'.$row['id'], 1);
 									security_block(URL_MANIPULATION, 'Batiment non disponible dans cette ville');

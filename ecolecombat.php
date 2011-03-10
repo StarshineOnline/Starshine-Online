@@ -66,7 +66,7 @@ if($W_row['type'] == 1)
 				case 'apprendre' :
 				  $req_check = $db->query("SELECT lvl_batiment FROM ".$ecole." WHERE id = '".sSQL($_GET['id'])."'");
 				  $row_check = $db->read_array($req_check);
-				  if($row_check['lvl_batiment'] > $level_batiment)
+				  if($row_check['lvl_batiment'] > $level_batiment && false)
 					security_block(URL_MANIPULATION, 'Batiment non disponible dans cette ville');
 				  else
 					apprend_competence($ecole, sSQL($_GET['id']), $joueur, $R, false);
