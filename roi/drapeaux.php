@@ -1,4 +1,7 @@
 <?php // -*- tab-width:2; mode: php -*- 
+$ts = array();
+$ts['start'] = microtime();
+
 if (file_exists('../root.php')) {
   include_once('../root.php');
 }
@@ -49,12 +52,14 @@ $r_nbp = $db->query($req);
 $nbp = $db->read_array($r_nbp);
 $nb_drapeaux_poses = $nbp[0];
 
-
+$ts['make_tmp_adj_tables'] = microtime();
 make_tmp_adj_tables($roy_id);
+$ts['select'] = microtime();
 $req = "select * from tmp_adj_lib";
 $r_c = $db->query($req);
 $nb_cases_ok = $db->num_rows($r_c);
 
+$ts['fini'] = microtime();
 $mleft = 0;
 $mtop = 0;
 $mag_factor = 1;
@@ -165,3 +170,6 @@ function toutposer()
 }
 
 </script>
+<?php
+$ts['end'] = microtime();
+echo '<!-- '; var_dump($ts); echo '-->';
