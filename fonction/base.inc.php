@@ -3419,6 +3419,10 @@ function make_tmp_adj_tables($roy_id)
 	$db->query($req1); // on prends le royaume
 	$req2 = "create temporary table tmp_adj as select distinct m.x, m.y from map m, tmp_royaume t where m.royaume = 0 and m.info != 5 and ((m.x = t.x + 1 and m.y = t.y) or (m.x = t.x - 1 and m.y = t.y) or (m.x = t.x and m.y = t.y + 1) or (m.x = t.x and m.y = t.y - 1))";
 	$db->query($req2); // on prends les cases neutres autour du royaume qui ne sont pas de l'eau
-	$req3 = "create temporary table tmp_adj_lib as select * from tmp_adj m where not exists (select x, y from placement p where p.x = m.x and p.y = m.y) and not exists (select x, y from construction c where c.x = m.x and c.y = m.y)";
-	$db->query($req3); // on enleve les cases occupées par un placement ou un batiment
+	$req3 = "create temporary table tmp_adj_lib as select * from tmp_adj";
+	$db->query($req3); // on enleve les cases occupées par un placement ou un batiment: recopie
+	$req4 = "delete t from tmp_adj_lib t, placement p where t.x = p.x and t.y = p.y";
+	$db->query($req4); // on enleve les cases occupées par un placement ou un batiment: virer placements
+	$req5 = "delete t from tmp_adj_lib t, construction c where t.x = c.x and t.y = c.y";
+	$db->query($req5); // on enleve les cases occupées par un placement ou un batiment: virer constructions
 }
