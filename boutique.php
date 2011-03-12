@@ -431,7 +431,7 @@ if($W_row['type'] == 1)
 		$where = 'lvl_batiment <= '.$level_batiment;
 		if(array_key_exists('part', $_GET) AND $_GET['part'] == 'dressage')
 		{
-			$requete = "SELECT * FROM objet_pet ORDER BY".$ordre;
+			$requete = "SELECT * FROM objet_pet WHERE ".$where." ORDER BY".$ordre;
 		}
 		elseif(array_key_exists('part', $_GET))
 		{
