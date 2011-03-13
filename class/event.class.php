@@ -892,12 +892,12 @@ abstract class event_dte_rte extends event
   const pas_match3 = 0;  ///< indique qu'il n'y a pas de match à 3 dans les poules.
   const match3_prem = 1;  ///< indique que le match à 3 des poules à lieu en premier.
   const match3_der = 2;  ///< indique que le match à 3 des poules à lieu en dernier.
-  protected $pa_matchs = array(100,100,50,100,50);   ///< pourcentage de PA total qu'auront les perso pour les matchs.
-  const pa_finale = 0;  ///< pourcentage de PA pour la finale
-  const pa_match2_poules = 1;  ///< pourcentage de PA pour les matchs à 2 en poules.
-  const pa_match3_poules = 2;  ///< pourcentage de PA pour les matchs à 3 en poules.
-  const pa_match2_elim = 3;  ///< pourcentage de PA pour les matchs à 2 en éliminatoires.
-  const pa_match3_elim = 4;  ///< pourcentage de PA pour les matchs à 3 en éliminatoires.
+  protected $pa_matchs = array(100,100,50,100,50);   ///< nombre de PA total qu'auront les perso pour les matchs.
+  const pa_finale = 0;  ///< nombre de PA pour la finale
+  const pa_match2_poules = 1;  ///< nombre de PA pour les matchs à 2 en poules.
+  const pa_match3_poules = 2;  ///< nombre de PA pour les matchs à 3 en poules.
+  const pa_match2_elim = 3;  ///< nombre de PA pour les matchs à 2 en éliminatoires.
+  const pa_match3_elim = 4;  ///< nombre de PA pour les matchs à 3 en éliminatoires.
   protected $victoire_match = 0;  ///< indique les conditions à réunir pour gagner un match.
   const dernier_vie = 0;   ///< le gagnant du match est celui qui a les derniers participants en vie.
   const nbr_meurtres = 1;   ///< le gagnant du match est celui qui a fait le plus de mort.
@@ -969,12 +969,12 @@ abstract class event_dte_rte extends event
     $this->organis_match[$ind] = $val;
 		$this->champs_modif[] = 'donnees';
   }
-  /// Indique le pourcentage de PA au début des matchs
+  /// Indique le nombre de PA au début des matchs
   function get_pa_matchs($ind)
   {
     return $this->pa_matchs[$ind];
   }
-  /// Définit le pourcentage de PA au début des matchs
+  /// Définit le nombre de PA au début des matchs
   function set_pa_matchs($ind, $val)
   {
     $this->pa_matchs[$ind] = $val;
@@ -1183,11 +1183,11 @@ abstract class event_dte_rte extends event
         <div class="event_minibloc">
           Type de tournoi : <select name="type_tournoi"><option value="0" <?PHP if($this->get_type_tournoi()==0) echo 'selected="selected"'; ?> >éliminatoires</option><option value="1" <?PHP if($this->get_type_tournoi()==1) echo 'selected="selected"'; ?> >poules de 3 puis éliminatoires</option><option <?PHP if($this->get_type_tournoi()==-1) echo 'selected="selected"'; ?> value="-1">matchs définis à la main</option></select><br />
           Match à 3 pour les poules de 3 : <select name="poules_match3"><option value="1"  <?PHP if($this->get_organis_match(event_dte_rte::poules_match3)==1) echo 'selected="selected"'; ?>>en premier</option><option value="2" <?PHP if($this->get_organis_match(event_dte_rte::poules_match3)==2) echo 'selected="selected"'; ?>>en dernier</option><option value="0" <?PHP if($this->get_organis_match(event_dte_rte::poules_match3)==0) echo 'selected="selected"'; ?>>aucun</option></select><br />
-          Pourcentage de PA pour les matchs de poules à 2 : <input type="text" name="pa_match2_poules" value="<?php echo $this->get_pa_matchs(event_dte_rte::pa_match2_poules); ?>" size="5" /><br />
-          Pourcentage de PA pour les matchs de poules à 3 : <input type="text" name="pa_match3_poules" value="<?php echo $this->get_pa_matchs(event_dte_rte::pa_match3_poules); ?>" size="5" /><br />
-          Pourcentage de PA pour les matchs d'éliminatoires à 2 : <input type="text" name="pa_match2_elim" value="<?php echo $this->get_pa_matchs(event_dte_rte::pa_match2_elim); ?>" size="5" /><br />
-          Pourcentage de PA pour les matchs d'éliminatoires à 3 : <input type="text" name="pa_match3_elim" value="<?php echo $this->get_pa_matchs(event_dte_rte::pa_match3_elim); ?>" size="5" /><br />
-          Pourcentage de PA pour la finale : <input type="text" name="pa_finale" value="<?php echo $this->get_pa_matchs(event_dte_rte::pa_finale); ?>" size="5" /><br />
+          Nombre de PA pour les matchs de poules à 2 : <input type="text" name="pa_match2_poules" value="<?php echo $this->get_pa_matchs(event_dte_rte::pa_match2_poules); ?>" size="5" /><br />
+          Nombre de PA pour les matchs de poules à 3 : <input type="text" name="pa_match3_poules" value="<?php echo $this->get_pa_matchs(event_dte_rte::pa_match3_poules); ?>" size="5" /><br />
+          Nombre de PA pour les matchs d'éliminatoires à 2 : <input type="text" name="pa_match2_elim" value="<?php echo $this->get_pa_matchs(event_dte_rte::pa_match2_elim); ?>" size="5" /><br />
+          Nombre de PA pour les matchs d'éliminatoires à 3 : <input type="text" name="pa_match3_elim" value="<?php echo $this->get_pa_matchs(event_dte_rte::pa_match3_elim); ?>" size="5" /><br />
+          Nombre de PA pour la finale : <input type="text" name="pa_finale" value="<?php echo $this->get_pa_matchs(event_dte_rte::pa_finale); ?>" size="5" /><br />
           <input type="checkbox" name="ptt_finale" <?php if($this->get_organis_match(event_dte_rte::ptt_finale)) echo 'checked="checked"';?> />Petite finale<br />
           <input type="checkbox" name="rez_autor" <?php if($this->get_autorisations(event_dte_rte::autor_rez)) echo 'checked="checked"';?> />Rez autorisées<br />
           <input type="checkbox" name="parch_autor" <?php if($this->get_autorisations(event_dte_rte::autor_parch)) echo 'checked="checked"';?> />Parchemins et potions autorisés<br />
