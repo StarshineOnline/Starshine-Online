@@ -1512,11 +1512,11 @@ abstract class event_dte_rte extends event
       {
         $equipe0 = $this->get_equipe('id', $match->get_participant(0));
         $equipe1 = $this->get_equipe('id', $match->get_participant(1));
-        echo '<li>'.$equipe0->get_nom().' vs '.$equipe1->get_nom();
-        if( $match->get_type() == event_partie_dte_rte::match3 )
+        echo '<li><i>'.$equipe0->get_nom().'</i> vs <i>'.$equipe1->get_nom().'</i>';
+        if( $match->get_type() == event_partie_dte_rte::match3_poule || $match->get_type() == event_partie_dte_rte::match3_elim )
         {
           $equipe2 = $this->get_equipe('id', $match->get_participant(2));
-          echo ' vs '.$equipe2->get_nom();
+          echo ' vs <i>'.$equipe2->get_nom().'</i>';
         }
         $arene = $match->get_arene();
         echo ' : <a href="show_arenes.php?nom_arene='.$arene->get_nom().'">'.$arene->get_nom().'</a></li>';
@@ -1553,18 +1553,18 @@ abstract class event_dte_rte extends event
         $partic = $match->get_participants();
         $gagnant = $this->get_equipe('id', $match->get_gagnant());
         $partic = array_diff($partic, array($gagnant->get_id()));
-        echo '<li>1° : '.$gagnant->get_nom();
+        echo '<li>1° : <i>'.$gagnant->get_nom().'</i>';
         $p = 2;
-        if( $match->get_type() == event_partie_dte_rte::match3 )
+        if( $match->get_type() == event_partie_dte_rte::match3_poule || $match->get_type() == event_partie_dte_rte::match3_elim )
         {
           $p++;
           $second = $this->get_equipe('id', $match->get_second());
           $partic = array_diff($partic, array($second->get_id()));
-          echo ' - 2° : '.$second->get_nom();
+          echo ' - 2° : <i>'.$second->get_nom().'</i>';
         }
         $arene = $match->get_arene();
         $perdant = $this->get_equipe('id', array_pop($partic));
-        echo ' - '.$p.'° : '.$perdant->get_nom().' ('.$arene->get_nom().')';
+        echo ' - <i>'.$p.'° : '.$perdant->get_nom().'</i> ('.$arene->get_nom().')';
       }
       echo '</ul></p>';
     }
@@ -1578,11 +1578,11 @@ abstract class event_dte_rte extends event
       {
         $equipe0 = $this->get_equipe('id', $match->get_participant(0));
         $equipe1 = $this->get_equipe('id', $match->get_participant(1));
-        echo '<li>'.$equipe0->get_nom().' vs '.$equipe1->get_nom();
+        echo '<li><i>'.$equipe0->get_nom().'</i> vs <i>'.$equipe1->get_nom().'</i>';
         if( $match->get_type() == event_partie_dte_rte::match3_poule || $match->get_type() == event_partie_dte_rte::match3_elim )
         {
           $equipe2 = $this->get_equipe('id', $match->get_participant(2));
-          echo ' vs '.$equipe2->get_nom();
+          echo ' vs <i>'.$equipe2->get_nom().'</i>';
         }
         $arene = $match->get_arene();
         echo ' : '.date('d/m/Y H:i', $match->get_heure_debut()).', '.$arene->get_nom();

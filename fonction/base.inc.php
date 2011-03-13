@@ -2535,9 +2535,9 @@ function affiche_ligne_journal($row)
 		break;
 	  case 'teleport' :
 			if ($row['valeur'] == 'jeu')
-				return '<li class="jgbuff"><span class="small">['.$date.']</span> '.$row['passif'].' vous téléporte dans le jeu.</li>';
+				return '<li class="jgbuff"><span class="small">['.$date.']</span> '.$row['actif'].' vous téléporte dans le jeu.</li>';
 			else
-				return '<li class="jgbuff"><span class="small">['.$date.']</span> '.$row['passif'].' vous téléporte dans l\'arène '.$row['valeur'].'.</li>';
+				return '<li class="jgbuff"><span class="small">['.$date.']</span> '.$row['actif'].' vous téléporte dans l\'arène '.$row['valeur'].'.</li>';
 		break;
 	}
 }
