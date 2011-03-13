@@ -1579,7 +1579,7 @@ abstract class event_dte_rte extends event
         $equipe0 = $this->get_equipe('id', $match->get_participant(0));
         $equipe1 = $this->get_equipe('id', $match->get_participant(1));
         echo '<li>'.$equipe0->get_nom().' vs '.$equipe1->get_nom();
-        if( $match->get_type() == event_partie_dte_rte::match3 )
+        if( $match->get_type() == event_partie_dte_rte::match3_poule || $match->get_type() == event_partie_dte_rte::match3_elim )
         {
           $equipe2 = $this->get_equipe('id', $match->get_participant(2));
           echo ' vs '.$equipe2->get_nom();
