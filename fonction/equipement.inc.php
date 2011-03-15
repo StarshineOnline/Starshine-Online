@@ -714,8 +714,14 @@ function verif_echange_joueur($id_echange, $id_joueur, $id_objet = 0, $type_obje
 		//Si il a assez de stars	
 		if($joueur->get_star() >= $id_objet)
 		{
+			// On verifie que les stars sont toujours là lors de la finalisation
+			if($echange['statut'] == 'finalisation')
+			{
+				if($joueur->get_star() < $echange['star'][$id_joueur]['objet'])
+					$check = false;
+			}
 			//Si ya déjà des stars, on les suppriment
-			if(array_key_exists('star', $echange) && array_key_exists($id_joueur, $echange['star']) && $echange['statut'] != 'finalisation')
+			elseif(array_key_exists('star', $echange) && array_key_exists($id_joueur, $echange['star']))
 			{
 				echange_objet_suppr($echange['star'][$id_joueur]['id_echange_objet']);
 			}
