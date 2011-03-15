@@ -490,15 +490,6 @@ class event_partie_dte_rte extends event_partie
 	{
     global $db;
     $this->set_statut(event_partie::fini);
-    // TP des personnages hors de l'arènes
-    $persos = $this->event->get_arenes_joueur('partie = '.$this->get_id().' AND statut = '.arenes_joueur::en_cours);
-    foreach($persos as $perso)
-    {
-      $perso->teleporte();
-    }
-    // fermeture de l'arène
-    $arene = $this->get_arene();
-    $arene->fermer();
     // Calcul du nombre de meurtes
     $nbr_equipes = $this->get_nbr_participant();
     $reste = array();
@@ -568,6 +559,15 @@ class event_partie_dte_rte extends event_partie
       }
       break;
     }
+    // TP des personnages hors de l'arènes
+    $persos = $this->event->get_arenes_joueur('partie = '.$this->get_id().' AND statut = '.arenes_joueur::en_cours);
+    foreach($persos as $perso)
+    {
+      $perso->teleporte();
+    }
+    // fermeture de l'arène
+    $arene = $this->get_arene();
+    $arene->fermer();
     // Sauvegarde
     $this->sauver();
   }

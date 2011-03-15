@@ -124,7 +124,7 @@ class event_equipe extends table
   {
     table::init_tab($vals);
 		$this->event = $vals['event'];
-		$this->nom = $vals['nom'];
+		$this->nom = stripslashes($vals['nom']);
 		$this->royaume = $vals['royaume']!='NULL' ? $vals['royaume'] : null;
 		$this->unserializeDonnees($vals['donnees']);
   }

@@ -1552,19 +1552,26 @@ abstract class event_dte_rte extends event
       {
         $partic = $match->get_participants();
         $gagnant = $this->get_equipe('id', $match->get_gagnant());
-        $partic = array_diff($partic, array($gagnant->get_id()));
-        echo '<li>1° : <i>'.$gagnant->get_nom().'</i>';
+        if($gagnant)
+          $partic = array_diff($partic, array($gagnant->get_id()));
+        echo '<li>1° : <i>'.($gagnant?$gagnant->get_nom():'inconnu').'</i>';
         $p = 2;
         if( $match->get_type() == event_partie_dte_rte::match3_poule || $match->get_type() == event_partie_dte_rte::match3_elim )
         {
           $p++;
           $second = $this->get_equipe('id', $match->get_second());
-          $partic = array_diff($partic, array($second->get_id()));
-          echo ' - 2° : <i>'.$second->get_nom().'</i>';
+          if($second)
+            $partic = array_diff($partic, array($second->get_id()));
+          echo ' - 2° : <i>'.($second?$second->get_nom():'inconnu').'</i>';
         }
         $arene = $match->get_arene();
-        $perdant = $this->get_equipe('id', array_pop($partic));
-        echo ' - <i>'.$p.'° : '.$perdant->get_nom().'</i> ('.$arene->get_nom().')';
+        if( count($partic) == 1 )
+        {
+          $perdant = $this->get_equipe('id', array_pop($partic));
+          echo ' - '.$p.'° : <i>'.$perdant->get_nom().'</i> ('.$arene->get_nom().')';
+        }
+        else
+          echo ' - '.$p.'° : <i>inconnu</i> ('.$arene->get_nom().')';
       }
       echo '</ul></p>';
     }
