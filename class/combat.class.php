@@ -298,6 +298,7 @@ class combat
 								$drain = round($attaque[5] * 0.2);
 								echo '&nbsp;&nbsp;<span class="degat"><strong>'.${$mode}->get_nom().'</strong> inflige <strong>'.$attaque[5].'</strong> dégâts avec '.$row['nom'].'<br />
 								Et gagne <strong>'.$drain.'</strong> RM grâce au drain</span><br />';
+                break;
 							case 'brulure_mana' :
 								$brule_mana = $row['effet'];
 								echo '&nbsp;&nbsp;<span class="degat"><strong>'.${$mode}->get_nom().'</strong> retire '.$brule_mana.' réserve de mana et inflige <strong>'.$attaque[5].'</strong> dégâts avec '.$row['nom'].'</span><br />';
