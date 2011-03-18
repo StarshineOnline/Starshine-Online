@@ -252,7 +252,7 @@ if (isset($_REQUEST['dump'])) {
 		$upd = '<hr><pre>';
 		while ($m = $db->read_array($req)) {
 			$map[] = "($m[x], $m[y], $m[info], $m[decor], $m[royaume], $m[type])";
-			$upd .= "update map set decor=$m[decor], type=$m[type] where x=$m[x], y=$m[y] ;\n";
+			$upd .= "update map set decor=$m[decor], type=$m[type] where x=$m[x] and y=$m[y] ;\n";
 		}
 		echo "<pre>insert into map(x,y,info,decor,royaume,type) values \n".
 			implode(",\n", $map).';</pre>';
