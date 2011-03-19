@@ -95,7 +95,7 @@ class messagerie
 		else return false;
 	}
 
-	//Marque comme lu tous les message d'un thread
+	//Marque comme lu tous les messages d'un thread
 	function set_thread_lu($id_thread = 0)
 	{
 		global $db;
@@ -105,6 +105,14 @@ class messagerie
 			$req = $db->query($requete);
 		}
 		else return false;
+	}
+	
+	//Marque comme lu tous les messages du joueur
+	function set_thread_lu_all()
+	{
+		global $db;
+		$requete = "UPDATE messagerie_etat SET etat = 'lu' WHERE etat = 'non_lu' AND id_dest = ".$this->id_perso;
+		$req = $db->query($requete);
 	}
 	
 	//Récupération du nombre de message masqués pour ce thread et ce perso

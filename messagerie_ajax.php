@@ -138,6 +138,7 @@ else
 			</span>
 			<span class='date'>
 				Date
+				<a href="thread_modif.php?lu_all=1" onclick="if(confirm('Etes vous sur de vouloir marquer tous les messages commu lus ?')) return envoiInfo(this.href, 'information'); else return false;" title="Lire"><span class="msg_voir" style="float: right;"></span></a>';
 			</span>
 			</li>
 
