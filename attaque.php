@@ -1099,9 +1099,16 @@ else
 					
 					// Achievement joueur meme race
 					if($actif->get_race() == $passif->get_race())
+					{
 						$achiev = $actif->get_compteur('kill_race');
-					$achiev->set_compteur($achiev->get_compteur() + 1);
-					$achiev->sauver();
+						$achiev->set_compteur($achiev->get_compteur() + 1);
+						$achiev->sauver();
+					}
+					
+					$achievement_bouche_oreille = achievement_type::create('variable', 'bouche_oreille');
+					// Si le joueur mort l'a deja debloqué
+					if($passif->already_unlocked_achiev($achievement_bouche_oreille[0]))
+						$actif->unlock_achiev('bouche_oreille');
 					
 					$actif->set_frag($actif->get_frag() + 1);
 					$passif->set_mort($passif->get_mort() + 1);
