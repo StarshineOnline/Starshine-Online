@@ -403,6 +403,8 @@ class arenes_joueur extends table
     {
       $perso->set_hp( $perso->get_hp_maximum() );
       $perso->set_mp( $perso->get_mp_maximum() );
+			// Soigne aussi les pets, ya pas de raison
+			$db->query('UPDATE pet SET hp = (SELECT hp FROM monstre WHERE id = pet.id_monstre), mp = (SELECT mp FROM monstre WHERE id = pet.id_monstre) WHERE id_joueur = '.$perso->get_id());
     }
     elseif( $hp !== false )
     {
