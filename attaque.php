@@ -1146,6 +1146,8 @@ else
 					//Si c'est un Seigneur loup-garou on debloque l'achievement
 					if($map_monstre->get_type() == 115)
 						$joueur->unlock_achiev('seigneur_loup_garou');
+					if($map_monstre->get_type() == 56)
+						$joueur->unlock_achiev('sworling');
 				}
 				elseif ($attaquant->get_hp() <= 0 && !$pet) //L'attaquant est mort !
 				{

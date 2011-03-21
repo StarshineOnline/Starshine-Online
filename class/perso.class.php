@@ -1647,6 +1647,8 @@ class perso extends entite
 			$this->unlock_achiev('hp_42');
 		elseif ($this->get_hp() == 1)
 			$this->unlock_achiev('hp_1');
+		elseif ($this->get_hp() == 69)
+			$this->unlock_achiev('hp_69');
 	}
 	/// Renvoie les HP maximaux
 	function get_hp_max($base = false)
