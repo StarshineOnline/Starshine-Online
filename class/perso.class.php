@@ -2056,7 +2056,7 @@ class perso extends entite
   /**
    * Met une créature à l'écurie.*
    * @param  $pet_id        Id de la créature.
-   * @param  $type_ecurie   1 pour l'écurie du personnage, 2 pour l'écurei commune.
+   * @param  $type_ecurie   2 pour l'écurie du personnage, 1 pour l'écurie commune.
    * @param  $max_ecurie    Nombre de créature que peut contenir l'écurie.
    * @param  $taxe          taxe à appliquer pour mettre la créature à l'écurie.
    */  
@@ -2068,7 +2068,16 @@ class perso extends entite
 			$cout = $pet->get_cout_depot() + $taxe;
 			if(($this->get_star() >= $cout) OR $type_ecurie == 2)
 			{
-				if($this->nb_pet_ecurie() < $max_ecurie)
+				if ($type_ecurie == 2)
+				{
+					$test_nb_pet = $this->nb_pet_ecurie_self();
+				}
+				else
+				{
+					$test_nb_pet = $this->nb_pet_ecurie();
+				}
+				
+				if($test_nb_pet < $max_ecurie)
 				{
 					$pet->set_ecurie($type_ecurie);
 					$pet->set_principale(0);
