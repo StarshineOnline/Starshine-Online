@@ -86,7 +86,7 @@ if (isset($_GET['ID']) && !$joueur->is_buff('bloque_sort'))
 				}
 			}
 		}
-		if ($sort->get_incantation()*$joueur->get_facteur_magie() > $joueur->get_incantation() && $sort->get_nom() != "Balance") {
+		if ($sort->get_incantation()*$joueur->get_facteur_magie() > $joueur->get_incantation() && $sort->get_special() == false) {
 			print_debug("Il vous faut ".$sort->get_incantation()*$joueur->get_facteur_magie()." en incantation pour lancer ce sort");
 			$no_req = true;
 		}
@@ -124,8 +124,8 @@ if (isset($_GET['ID']) && !$joueur->is_buff('bloque_sort'))
 					$type_lanceur == 'monstre'))
 			security_block(URL_MANIPULATION, 'Sort de groupe non autorisé');
 		
-		// Pas d'affinité si c'est le pet qui lance le sort ou pour balance
-		if($type_lanceur != "monstre" && $sort->get_nom() != "Balance")
+		// Pas d'affinité si c'est le pet qui lance le sort ou pour les sorts speciaux
+		if($type_lanceur != "monstre" && $sort->get_special() == false)
 		{
 			$joueur->check_sort_jeu_connu($_GET['ID']);
 			$sortpa = round($sort->get_pa() * $joueur->get_facteur_magie());
@@ -855,9 +855,17 @@ elseif($type_lanceur == 'joueur')
 	echo '<table width="97%" class="information_case">';
 	foreach($sorts as $sort)
 	{
-		if ($sort->get_nom() != "Balance") { $sortpa = round($sort->get_pa() * $joueur->get_facteur_magie()); }
-		else {$sortpa = $sort->get_pa() ; }
-		$sortmp = round($sort->get_mp() * (1 - (($Trace[$joueur->get_race()]['affinite_'.$sort->get_comp_assoc()] - 5) / 10)));
+		if ($sort->get_special() == false)
+		{
+			$sortpa = round($sort->get_pa() * $joueur->get_facteur_magie());
+			$sortmp = round($sort->get_mp() * (1 - (($Trace[$joueur->get_race()]['affinite_'.$sort->get_comp_assoc()] - 5) / 10)));
+		}
+		else 
+		{
+			$sortpa = $sort->get_pa();
+			$sortmp = $sort->get_mp();
+		}
+		
 		//Réduction du cout par concentration
 		if($joueur->is_buff('buff_concentration', true)) $sortmp = ceil($sortmp * (1 - ($joueur->get_buff('buff_concentration','effet') / 100)));
 		if($magie != $sort->get_comp_assoc())

@@ -121,6 +121,12 @@ class sort_jeu
     */
 	private $lvl_batiment;
 
+	/**
+    * @access private
+    * @var tinyint(1)
+    */
+	private $special;
+
 	
 	/**
 	* @access public
@@ -145,19 +151,20 @@ class sort_jeu
 	* @param int(10) difficulte attribut
 	* @param int(11) prix attribut
 	* @param tinyint(3) lvl_batiment attribut
+	* @param tinyint(1) special attribut
 	* @return none
 	*/
-	function __construct($id = 0, $nom = '', $description = '', $pa = '', $mp = '', $type = '', $comp_assoc = '', $carac_assoc = '', $carac_requis = '', $incantation = '', $comp_requis = '', $effet = '', $effet2 = '', $duree = '', $cible = '', $portee = '', $requis = '', $difficulte = '', $prix = '', $lvl_batiment = '')
+	function __construct($id = 0, $nom = '', $description = '', $pa = '', $mp = '', $type = '', $comp_assoc = '', $carac_assoc = '', $carac_requis = '', $incantation = '', $comp_requis = '', $effet = '', $effet2 = '', $duree = '', $cible = '', $portee = '', $requis = '', $difficulte = '', $prix = '', $lvl_batiment = '', $special = '')
 	{
 		global $db;
 		//Verification nombre et du type d'argument pour construire l'etat adequat.
 		if( (func_num_args() == 1) && is_numeric($id) )
 		{
-			$requeteSQL = $db->query("SELECT nom, description, pa, mp, type, comp_assoc, carac_assoc, carac_requis, incantation, comp_requis, effet, effet2, duree, cible, portee, requis, difficulte, prix, lvl_batiment FROM sort_jeu WHERE id = ".$id);
+			$requeteSQL = $db->query("SELECT nom, description, pa, mp, type, comp_assoc, carac_assoc, carac_requis, incantation, comp_requis, effet, effet2, duree, cible, portee, requis, difficulte, prix, lvl_batiment, special FROM sort_jeu WHERE id = ".$id);
 			//Si le thread est dans la base, on le charge sinon on crée un thread vide.
 			if( $db->num_rows($requeteSQL) > 0 )
 			{
-				list($this->nom, $this->description, $this->pa, $this->mp, $this->type, $this->comp_assoc, $this->carac_assoc, $this->carac_requis, $this->incantation, $this->comp_requis, $this->effet, $this->effet2, $this->duree, $this->cible, $this->portee, $this->requis, $this->difficulte, $this->prix, $this->lvl_batiment) = $db->read_array($requeteSQL);
+				list($this->nom, $this->description, $this->pa, $this->mp, $this->type, $this->comp_assoc, $this->carac_assoc, $this->carac_requis, $this->incantation, $this->comp_requis, $this->effet, $this->effet2, $this->duree, $this->cible, $this->portee, $this->requis, $this->difficulte, $this->prix, $this->lvl_batiment, $this->special) = $db->read_array($requeteSQL);
 			}
 			else $this->__construct();
 			$this->id = $id;
@@ -184,6 +191,7 @@ class sort_jeu
 			$this->difficulte = $id['difficulte'];
 			$this->prix = $id['prix'];
 			$this->lvl_batiment = $id['lvl_batiment'];
+			$this->special = $id['special'];
 			}
 		else
 		{
@@ -206,6 +214,7 @@ class sort_jeu
 			$this->difficulte = $difficulte;
 			$this->prix = $prix;
 			$this->lvl_batiment = $lvl_batiment;
+			$this->special = $special;
 			$this->id = $id;
 		}
 	}
@@ -223,7 +232,7 @@ class sort_jeu
 		{
 			if(count($this->champs_modif) > 0)
 			{
-				if($force) $champs = 'nom = "'.mysql_escape_string($this->nom).'", description = "'.mysql_escape_string($this->description).'", pa = "'.mysql_escape_string($this->pa).'", mp = "'.mysql_escape_string($this->mp).'", type = "'.mysql_escape_string($this->type).'", comp_assoc = "'.mysql_escape_string($this->comp_assoc).'", carac_assoc = "'.mysql_escape_string($this->carac_assoc).'", carac_requis = "'.mysql_escape_string($this->carac_requis).'", incantation = "'.mysql_escape_string($this->incantation).'", comp_requis = "'.mysql_escape_string($this->comp_requis).'", effet = "'.mysql_escape_string($this->effet).'", effet2 = "'.mysql_escape_string($this->effet2).'", duree = "'.mysql_escape_string($this->duree).'", cible = "'.mysql_escape_string($this->cible).'", portee = "'.mysql_escape_string($this->portee).'", requis = "'.mysql_escape_string($this->requis).'", difficulte = "'.mysql_escape_string($this->difficulte).'", prix = "'.mysql_escape_string($this->prix).'", lvl_batiment = "'.mysql_escape_string($this->lvl_batiment).'"';
+				if($force) $champs = 'nom = "'.mysql_escape_string($this->nom).'", description = "'.mysql_escape_string($this->description).'", pa = "'.mysql_escape_string($this->pa).'", mp = "'.mysql_escape_string($this->mp).'", type = "'.mysql_escape_string($this->type).'", comp_assoc = "'.mysql_escape_string($this->comp_assoc).'", carac_assoc = "'.mysql_escape_string($this->carac_assoc).'", carac_requis = "'.mysql_escape_string($this->carac_requis).'", incantation = "'.mysql_escape_string($this->incantation).'", comp_requis = "'.mysql_escape_string($this->comp_requis).'", effet = "'.mysql_escape_string($this->effet).'", effet2 = "'.mysql_escape_string($this->effet2).'", duree = "'.mysql_escape_string($this->duree).'", cible = "'.mysql_escape_string($this->cible).'", portee = "'.mysql_escape_string($this->portee).'", requis = "'.mysql_escape_string($this->requis).'", difficulte = "'.mysql_escape_string($this->difficulte).'", prix = "'.mysql_escape_string($this->prix).'", lvl_batiment = "'.mysql_escape_string($this->lvl_batiment).'", special = '.intval($this->special);
 				else
 				{
 					$champs = '';
@@ -250,8 +259,8 @@ class sort_jeu
 		}
 		else
 		{
-			$requete = 'INSERT INTO sort_jeu (nom, description, pa, mp, type, comp_assoc, carac_assoc, carac_requis, incantation, comp_requis, effet, effet2, duree, cible, portee, requis, difficulte, prix, lvl_batiment) VALUES(';
-			$requete .= '"'.mysql_escape_string($this->nom).'", "'.mysql_escape_string($this->description).'", "'.mysql_escape_string($this->pa).'", "'.mysql_escape_string($this->mp).'", "'.mysql_escape_string($this->type).'", "'.mysql_escape_string($this->comp_assoc).'", "'.mysql_escape_string($this->carac_assoc).'", "'.mysql_escape_string($this->carac_requis).'", "'.mysql_escape_string($this->incantation).'", "'.mysql_escape_string($this->comp_requis).'", "'.mysql_escape_string($this->effet).'", "'.mysql_escape_string($this->effet2).'", "'.mysql_escape_string($this->duree).'", "'.mysql_escape_string($this->cible).'", "'.mysql_escape_string($this->portee).'", "'.mysql_escape_string($this->requis).'", "'.mysql_escape_string($this->difficulte).'", "'.mysql_escape_string($this->prix).'", "'.mysql_escape_string($this->lvl_batiment).'")';
+			$requete = 'INSERT INTO sort_jeu (nom, description, pa, mp, type, comp_assoc, carac_assoc, carac_requis, incantation, comp_requis, effet, effet2, duree, cible, portee, requis, difficulte, prix, lvl_batiment, special) VALUES(';
+			$requete .= '"'.mysql_escape_string($this->nom).'", "'.mysql_escape_string($this->description).'", "'.mysql_escape_string($this->pa).'", "'.mysql_escape_string($this->mp).'", "'.mysql_escape_string($this->type).'", "'.mysql_escape_string($this->comp_assoc).'", "'.mysql_escape_string($this->carac_assoc).'", "'.mysql_escape_string($this->carac_requis).'", "'.mysql_escape_string($this->incantation).'", "'.mysql_escape_string($this->comp_requis).'", "'.mysql_escape_string($this->effet).'", "'.mysql_escape_string($this->effet2).'", "'.mysql_escape_string($this->duree).'", "'.mysql_escape_string($this->cible).'", "'.mysql_escape_string($this->portee).'", "'.mysql_escape_string($this->requis).'", "'.mysql_escape_string($this->difficulte).'", "'.mysql_escape_string($this->prix).'", "'.mysql_escape_string($this->lvl_batiment).'", special = '.intval($this->special).')';
 			$db->query($requete);
 			//Récuperation du dernier ID inséré.
 			$this->id = $db->last_insert_id();
@@ -311,7 +320,7 @@ class sort_jeu
 			}
 		}
 
-		$requete = "SELECT id, nom, description, pa, mp, type, comp_assoc, carac_assoc, carac_requis, incantation, comp_requis, effet, effet2, duree, cible, portee, requis, difficulte, prix, lvl_batiment FROM sort_jeu WHERE ".$where." ORDER BY ".$ordre;
+		$requete = "SELECT id, nom, description, pa, mp, type, comp_assoc, carac_assoc, carac_requis, incantation, comp_requis, effet, effet2, duree, cible, portee, requis, difficulte, prix, lvl_batiment, special FROM sort_jeu WHERE ".$where." ORDER BY ".$ordre;
 		$req = $db->query($requete);
 		if($db->num_rows($req) > 0)
 		{
@@ -333,7 +342,7 @@ class sort_jeu
 	*/
 	function __toString()
 	{
-		return 'id = '.$this->id.', nom = '.$this->nom.', description = '.$this->description.', pa = '.$this->pa.', mp = '.$this->mp.', type = '.$this->type.', comp_assoc = '.$this->comp_assoc.', carac_assoc = '.$this->carac_assoc.', carac_requis = '.$this->carac_requis.', incantation = '.$this->incantation.', comp_requis = '.$this->comp_requis.', effet = '.$this->effet.', effet2 = '.$this->effet2.', duree = '.$this->duree.', cible = '.$this->cible.', portee = '.$this->portee.', requis = '.$this->requis.', difficulte = '.$this->difficulte.', prix = '.$this->prix.', lvl_batiment = '.$this->lvl_batiment;
+		return 'id = '.$this->id.', nom = '.$this->nom.', description = '.$this->description.', pa = '.$this->pa.', mp = '.$this->mp.', type = '.$this->type.', comp_assoc = '.$this->comp_assoc.', carac_assoc = '.$this->carac_assoc.', carac_requis = '.$this->carac_requis.', incantation = '.$this->incantation.', comp_requis = '.$this->comp_requis.', effet = '.$this->effet.', effet2 = '.$this->effet2.', duree = '.$this->duree.', cible = '.$this->cible.', portee = '.$this->portee.', requis = '.$this->requis.', difficulte = '.$this->difficulte.', prix = '.$this->prix.', lvl_batiment = '.$this->lvl_batiment.', special = '.$this->special;
 	}
 	
 	/**
@@ -554,6 +563,17 @@ class sort_jeu
 	function get_lvl_batiment()
 	{
 		return $this->lvl_batiment;
+	}
+
+	/**
+	* Retourne la valeur de l'attribut
+	* @access public
+	* @param none
+	* @return tinyint(1) $special valeur de l'attribut special
+	*/
+	function get_special()
+	{
+		return $this->special;
 	}
 
 	/**
@@ -1052,6 +1072,31 @@ class sort_jeu
 			case 'del' :
 				$this->lvl_batiment -= $lvl_batiment;
 				$this->champs_del[] = array('nom' => 'lvl_batiment', 'valeur' => $lvl_batiment);
+			break;
+		}
+	}
+
+	/**
+	* Modifie la valeur de l'attribut
+	* @access public
+	* @param tinyint(1) $special valeur de l'attribut
+	* @return none
+	*/
+	function set_special($special, $param = 'set')
+	{
+		switch($param)
+		{
+			case 'set' :
+				$this->special = $special;
+				$this->champs_modif[] = 'special';
+			break;
+			case 'add' :
+				$this->special += $special;
+				$this->champs_add[] = array('nom' => 'special', 'valeur' => $special);
+			break;
+			case 'del' :
+				$this->special -= $special;
+				$this->champs_del[] = array('nom' => 'special', 'valeur' => $special);
 			break;
 		}
 	}

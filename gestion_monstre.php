@@ -54,10 +54,16 @@ if(array_key_exists('soin', $_GET))
 					$joueur->set_pa($joueur->get_pa() - 1);
 					$joueur->sauver();
 					$des = de_soin(0, $joueur->soin_pet());
+					$msg = '';
 					foreach($des as $de)
 					{
-						$heal += rand(1, $de);
+						$rnd = rand(1, $de);
+						$heal += $rnd;
+						if ($msg == '') $msg = 'Soin: jet de ';
+						else $msg .= ' + ';
+						$msg .= "d${de}($rnd)";
 					}
+					print_debug($msg);
 					//Heal MP
 					$heal_mp = floor($heal / 3);
 					if($heal > ($pet->monstre->get_hp() - $pet->get_hp())) $heal = $pet->monstre->get_hp() - $pet->get_hp();
