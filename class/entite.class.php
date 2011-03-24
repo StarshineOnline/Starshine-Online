@@ -934,6 +934,17 @@ class entite extends placable
 		else
 			return new fake_compteur ;
 	}
-
+	
+	protected $compteur_critique=0;
+	
+	function set_compteur_critique()
+	{
+		$this->compteur_critique++;
+	}
+	
+	function get_compteur_critique()
+	{
+		return $this->compteur_critique;
+	}
 }
 ?>

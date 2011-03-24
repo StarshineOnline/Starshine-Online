@@ -907,6 +907,7 @@ else
 			</ul>
 			<div style="float:left;">';
 
+			
 			if($type == 'joueur')
 			{
 				$gains = false;
@@ -1167,12 +1168,18 @@ else
 					$joueur->sauver();
 
 					//Si c'est Dévorsis
-					if($defenseur->get_id() == 61)
+					if($map_monstre->get_type() == 61)
 					{
 						$gain_hp = floor($attaquant->get_hp_max() * 0.1);
-						$map_monstre->set($defenseur->get_hp() + $gain_hp);
+						$map_monstre->set_hp($defenseur->get_hp() + $gain_hp);
 						$map_monstre->sauver();
 						echo 'Dévorsis regagne '.$gain_hp.' HP en vous tuant.<br />';
+					}
+					
+					// achievement
+					if($map_monstre->get_type() == 1)
+					{	
+						$joueur->unlock_achiev('killer_rabbit');
 					}
 				}
 				else
@@ -1465,7 +1472,21 @@ else
 				elseif($type == 'monstre') echo(' <a href="attaque.php?id_monstre='.$map_monstre->get_id().'&amp;type=monstre'.$link.'" onclick="return envoiInfo(this.href, \'information\')"><img src="image/interface/attaquer.png" alt="Combattre" title="Attaquer la même cible" style="vertical-align : middle;" /></a><br />');
 				elseif($type == 'batiment') echo(' <a href="attaque.php?id_batiment='.$map_batiment->get_id().'&amp;type=batiment&amp;table='.$_GET['table'].$link.'" onclick="return envoiInfo(this.href, \'information\')"><img src="image/interface/attaquer.png" alt="Combattre" title="Attaquer la même cible" style="vertical-align : middle;" /></a><br />');
 			}
+			
 
+			if (!$check_pet AND !$check_pet_def AND ($attaquant->get_compteur_critique() > 0))
+			{
+
+				$achiev = $attaquant->get_compteur('critique');
+				$achiev->set_compteur($achiev->get_compteur() + $attaquant->get_compteur_critique());
+				$achiev->sauver();
+			}
+			if (!$check_pet AND !$check_pet_def AND ($defenseur->get_compteur_critique() > 0))
+			{
+				$achiev = $defenseur->get_compteur('critique');
+				$achiev->set_compteur($achiev->get_compteur() + $defenseur->get_compteur_critique());
+				$achiev->sauver();
+			}
 			//Suppression des PA si c'est une attaque du joueur
 			if($type == 'joueur' OR $type == 'monstre' OR $type == 'batiment')
 			{

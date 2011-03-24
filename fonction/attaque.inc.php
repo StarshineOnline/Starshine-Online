@@ -341,6 +341,7 @@ function attaque($acteur = 'attaquant', $competence, &$effects)
 								' doit être inférieur au Potentiel critique<br />');
 	    if($chance < $actif_chance_critique)
 		{
+			$actif->set_compteur_critique();
 			echo '&nbsp;&nbsp;<span class="coupcritique">COUP CRITIQUE !</span><br />';
 			$log_combat .= '!';
 			//Chance de paralyser l'adversaire
@@ -562,6 +563,8 @@ function degat_magique($carac, $degat, $actif, $passif)
   print_debug($dbg_msg);
   if(critique_magique($actif, $passif))
     {
+ 	  $actif->set_compteur_critique();
+	  //echo $actif->get_compteur_critique();
       $degat = degat_critique($actif, $passif, $degat);
     }
   //Diminution des dégâts grâce à l'armure magique
@@ -570,6 +573,7 @@ function degat_magique($carac, $degat, $actif, $passif)
   $degat = round($degat * $reduction);
   print_debug('(Réduction de '.($degat_avant - $degat).
 						 ' dégâts par la PM)<br />');
+				 
   return $degat;
 }
 ?>
