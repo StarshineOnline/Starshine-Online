@@ -1168,7 +1168,7 @@ else
 					$joueur->sauver();
 
 					//Si c'est Dévorsis
-					if($map_monstre->get_type() == 61)
+					if($map_monstre->get_type() == 64)
 					{
 						$gain_hp = floor($attaquant->get_hp_max() * 0.1);
 						$map_monstre->set_hp($defenseur->get_hp() + $gain_hp);
