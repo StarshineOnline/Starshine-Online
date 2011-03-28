@@ -564,7 +564,6 @@ function degat_magique($carac, $degat, $actif, $passif)
   if(critique_magique($actif, $passif))
     {
  	  $actif->set_compteur_critique();
-	  //echo $actif->get_compteur_critique();
       $degat = degat_critique($actif, $passif, $degat);
     }
   //Diminution des dégâts grâce à l'armure magique

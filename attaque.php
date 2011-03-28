@@ -1474,14 +1474,13 @@ else
 			}
 			
 
-			if (!$check_pet AND !$check_pet_def AND ($attaquant->get_compteur_critique() > 0))
+			if (!$check_pet AND ($attaquant->get_compteur_critique() > 0) AND ($attaquant->get_type() == 'joueur'))
 			{
-
 				$achiev = $attaquant->get_compteur('critique');
 				$achiev->set_compteur($achiev->get_compteur() + $attaquant->get_compteur_critique());
 				$achiev->sauver();
 			}
-			if (!$check_pet AND !$check_pet_def AND ($defenseur->get_compteur_critique() > 0))
+			if (!$check_pet_def AND ($defenseur->get_compteur_critique() > 0) AND ($defenseur->get_type() == 'joueur'))
 			{
 				$achiev = $defenseur->get_compteur('critique');
 				$achiev->set_compteur($achiev->get_compteur() + $defenseur->get_compteur_critique());
