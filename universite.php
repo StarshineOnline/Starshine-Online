@@ -193,7 +193,7 @@ if($W_row['type'] == 1)
 						$requete = "SELECT * FROM classe WHERE id = ".$row['requis'];
 						$req_classe = $db->query($requete);
 						$row_classe = $db->read_array($req_classe);
-						if(strtolower($row_classe['nom']) != strtolower($joueur->get_classe()))
+						if(mb_strtolower($row_classe['nom']) != mb_strtolower($joueur->get_classe()))
 						{
 							echo 'Il vous faut être un '.$row_classe['nom'].'<br />';
 							$fin = true;
