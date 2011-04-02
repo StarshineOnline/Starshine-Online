@@ -372,16 +372,16 @@ class arenes_joueur extends table
     // enregistrement des données à rétablir
 		$this->x = $perso->get_x();
 		$this->y = $perso->get_y();
-		if($groupe)
+		if($groupe !== null)
 		  $this->groupe = $perso->get_groupe();
     else
-      $this->groupe = 0;
+      $this->groupe = null;
 		$this->hp = $perso->get_hp();
     // Téléport
     $perso->set_x($x);
     $perso->set_y($y);
     // Groupage
-    if( $groupe )
+    if( $groupe !== null )
     {
       if( $arene )
       {

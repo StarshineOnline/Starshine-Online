@@ -843,7 +843,7 @@ class event extends table
    {
       global $db;
       // on change le statut des parties
-      $db->query('UPDATE event_parties SET statut='.event_partie::fini.' WHERE event='.$this->get_id().' AND statut < '.event_partie::fini);
+      $db->query('UPDATE event_partie SET statut='.event_partie::fini.' WHERE event='.$this->get_id().' AND statut < '.event_partie::fini);
       // On TP hors de l'arènes les personnages qui y sont encore pour l'event et on modifie les statuts
       $persos = $this->get_arenes_joueur('statut', arenes_joueur::en_cours);
       foreach($persos as $perso)
@@ -1512,11 +1512,15 @@ abstract class event_dte_rte extends event
       {
         $equipe0 = $this->get_equipe('id', $match->get_participant(0));
         $equipe1 = $this->get_equipe('id', $match->get_participant(1));
-        echo '<li><i>'.$equipe0->get_nom().'</i> vs <i>'.$equipe1->get_nom().'</i>';
+        echo '<li>';
+        $this->infos_equipe($equipe0);
+        echo ' vs ';
+        $this->infos_equipe($equipe1);
         if( $match->get_type() == event_partie_dte_rte::match3_poule || $match->get_type() == event_partie_dte_rte::match3_elim )
         {
           $equipe2 = $this->get_equipe('id', $match->get_participant(2));
-          echo ' vs <i>'.$equipe2->get_nom().'</i>';
+          echo ' vs ';
+          $this->infos_equipe($equipe2);
         }
         $arene = $match->get_arene();
         echo ' : <a href="show_arenes.php?nom_arene='.$arene->get_nom().'">'.$arene->get_nom().'</a></li>';
@@ -1553,22 +1557,33 @@ abstract class event_dte_rte extends event
         $partic = $match->get_participants();
         $gagnant = $this->get_equipe('id', $match->get_gagnant());
         if($gagnant)
+        {
           $partic = array_diff($partic, array($gagnant->get_id()));
-        echo '<li>1° : <i>'.($gagnant?$gagnant->get_nom():'inconnu').'</i>';
+          echo '<li>1° : ';
+          $this->infos_equipe($gagnant);
+        }
+        else
+          echo '<li>1° : inconnu';
         $p = 2;
         if( $match->get_type() == event_partie_dte_rte::match3_poule || $match->get_type() == event_partie_dte_rte::match3_elim )
         {
           $p++;
           $second = $this->get_equipe('id', $match->get_second());
           if($second)
+          {
             $partic = array_diff($partic, array($second->get_id()));
-          echo ' - 2° : <i>'.($second?$second->get_nom():'inconnu').'</i>';
+            echo ' - 2° : ';
+            $this->infos_equipe($second);
+          }
+          else
+            echo ' - 2° : inconnu</i>';
         }
         $arene = $match->get_arene();
         if( count($partic) == 1 )
         {
           $perdant = $this->get_equipe('id', array_pop($partic));
-          echo ' - '.$p.'° : <i>'.$perdant->get_nom().'</i> ('.$arene->get_nom().')';
+          echo ' - '.$p.'° : ';
+          $this->infos_equipe($perdant);
         }
         else
           echo ' - '.$p.'° : <i>inconnu</i> ('.$arene->get_nom().')';
@@ -1585,17 +1600,30 @@ abstract class event_dte_rte extends event
       {
         $equipe0 = $this->get_equipe('id', $match->get_participant(0));
         $equipe1 = $this->get_equipe('id', $match->get_participant(1));
-        echo '<li><i>'.$equipe0->get_nom().'</i> vs <i>'.$equipe1->get_nom().'</i>';
+        echo '<li>';
+        $this->infos_equipe($equipe0);
+        echo ' vs ';
+        $this->infos_equipe($equipe1);
         if( $match->get_type() == event_partie_dte_rte::match3_poule || $match->get_type() == event_partie_dte_rte::match3_elim )
         {
           $equipe2 = $this->get_equipe('id', $match->get_participant(2));
-          echo ' vs <i>'.$equipe2->get_nom().'</i>';
+          echo ' vs ';
+          $this->infos_equipe($equipe2);
         }
         $arene = $match->get_arene();
         echo ' : '.date('d/m/Y H:i', $match->get_heure_debut()).', '.$arene->get_nom();
       }
       echo '</ul></p>';
     }
+  }
+  
+  /**
+   * Affiche le nom d'une équipe avec éventuellement une info-bulle dans l'interface de ville
+   * @param  $equipe    objet représentant l'équipe
+   */
+  function infos_equipe($equipe)
+  {
+      echo '<i>'.$equipe->get_nom().'</i>';
   }
 	// @}
 	
@@ -1766,6 +1794,23 @@ class event_rte extends event_dte_rte
           <input type="checkbox" name="equipe_auto" <?php if($this->get_creat_equipes(event_rte::equipe_auto)) echo 'checked="checked"';?> />Création automatique des équipes<br />
         </div>
 <?PHP
+  }
+
+  /**
+   * Affiche le nom d'une équipe avec éventuellement une info-bulle dans l'interface de ville
+   * @param  $equipe    objet représentant l'équipe
+   */
+  function infos_equipe($equipe)
+  {
+    global $db;
+    echo '<i onmouseover="return overlib(\'<ul>';
+    $requete = 'SELECT perso.nom FROM perso, event_participant WHERE perso.id = event_participant.id_perso AND event_participant.equipe='.$equipe->get_id();
+    $req = $db->query($requete);
+    while( $row = $db->read_assoc($req) )
+    {
+      echo '<li>'.$row['nom'].'</li>';
+    }
+    echo '</ul>\', BGCLASS, \'overlib\', BGCOLOR, \'\', FGCOLOR, \'\')"  onmouseout="return nd();">'.$equipe->get_nom().'</i>';
   }
 };
 ?>

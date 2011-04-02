@@ -455,7 +455,7 @@ class event_partie_dte_rte extends event_partie
         $groupe = $groupe[0];
       else
       {
-        $groupe = new groupe(0, 't', 0, $this->event->get_nom().' '.$equipe->get_nom());
+        $groupe = new groupe(0, 'k', 0, $this->event->get_nom().' '.$equipe->get_nom());
         $groupe->sauver();
       }
       foreach($persos as $perso)

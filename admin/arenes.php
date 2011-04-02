@@ -40,13 +40,19 @@ if (isset($_REQUEST['teleport_in'])) {
     die('<h5>Perso inconnu !</h5>');
   $perso = $perso[0];
   $arene = new arene($_REQUEST['teleport_in']);
-  $groupe = groupe::create('nom', 'DTE '.$perso->get_race());
+  if( array_key_exists('group', $_REQUEST) )
+  {
+    $groupe = groupe::create('nom', 'DTE '.$perso->get_race());
+    $groupe = $groupe[0];
+  }
+  else
+    $groupe = null;
   if(array_key_exists('pa', $_REQUEST) && $_REQUEST['pa'] != '')
   {
     $perso->set_pa($_REQUEST[pa] * $G_PA_max);
     $perso->set_dernieraction( time() );
   }
-  arenes_joueur::tp_arene($perso, $arene, $_REQUEST['p_x'], $_REQUEST['p_y'], $groupe[0], array_key_exists('full', $_REQUEST), 0, 0, $admin_nom);
+  arenes_joueur::tp_arene($perso, $arene, $_REQUEST['p_x'], $_REQUEST['p_y'], $groupe, array_key_exists('full', $_REQUEST), 0, 0, $admin_nom);
 }
 
 if (isset($_REQUEST['remove']))
