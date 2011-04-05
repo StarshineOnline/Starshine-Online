@@ -545,7 +545,8 @@ if (isset($_GET['ID']) && !$joueur->is_buff('bloque_sort'))
 						$lancement = true;
 					}
 					$groupe_href = '&amp;type='.$type_cible.'&amp;id_'.$type_cible.'='.$cible->get_id();
-					echo "<a href=\"\" onclick=\"return envoiInfo('sort.php?ID=".$_GET["ID"].$groupe_href."', 'information')\">Utiliser de nouveau cette compétence</a>";
+					if ($_GET['groupe'] == 'yes') $groupe = '&amp;groupe='.$_GET['groupe']; else $groupe = '';
+					echo "<a href=\"\" onclick=\"return envoiInfo('sort.php?ID=".$_GET["ID"].$groupe.$groupe_href."', 'information')\">Utiliser de nouveau cette compétence</a>";
 				break;
 				case "esprit_sacrifie" :	 //-- Esprit Sacrifié
 					//-- Suppression d'un debuff au hasard
