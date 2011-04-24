@@ -1,9 +1,6 @@
 <?php // -*- php -*-
 class perso extends entite
 {
-  const table = "perso";  ///< Nom de la table correspondante.
-	
-	
 	/**
 	 * @name Informations générales.
 	 * Donnée et méthode sur les inforamations "générales" : classe, rang, niveau,
@@ -16,6 +13,7 @@ class perso extends entite
 	private $point_sso;    ///< Points Shines.
 	private $honneur;      ///< Points d'honneur.
 	private $reputation;   ///< Points de réputation.
+	public $grade;         ///< Grade.
 	private $star;         ///< Nombre de stars.
 	private $frag;         ///< Nombre de personnages tués.
 	private $mort;         ///< Nombre fois où le personnage est mort.
@@ -27,6 +25,7 @@ class perso extends entite
 	private $cache_stat;   ///< Indique à qui il faut cacher les stats.
 	private $cache_niveau; ///< Indique à qui il faut cacher le niveau.
 	private $beta;         ///< Points de beta-test.
+	private $options_tab = false;  ///< Tableau des options
 	/// Modifie le nom du personnage
 	function set_nom($nom)
 	{
@@ -133,6 +132,12 @@ class perso extends entite
 	{
 		$this->reputation = $reputation;
 		$this->champs_modif[] = 'reputation';
+	}
+	/// Renvoie le grade
+	function get_grade()
+	{
+		if(!isset($this->grade)) $this->grade = new grade($this->rang_royaume);
+		return $this->grade;
 	}
 	/// Modifie le rang au sein du royaume
 	function set_rang_royaume($rang_royaume)
@@ -290,6 +295,34 @@ class perso extends entite
 	{
 		$this->beta = $beta;
 		$this->champs_modif[] = 'beta';
+	}
+	/// Renvoie le tableau d'options
+	function get_options()
+	{
+		if (!$this->options_tab) {
+			global $db;
+			$this->options_tab = array();
+			$requete = "select nom, valeur from options where id_perso = $this->id";
+			$req = $db->query($requete);
+			if ($req) while ($row = $db->read_row($req)) {
+				$this->options_tab[$row[0]] = $row[1];
+			}
+		}
+		return $this->options_tab;
+	}
+	/**
+	 * Renvoie une option en particulier
+	 * @param  $name   nom de l'option
+	 */
+	function get_option($name)
+	{
+		if (!$this->options_tab) {
+			$this->get_options();
+		}
+		if (array_key_exists($name, $this->options_tab))
+			return $this->options_tab[$name];
+		else
+			return false;
 	}
   // @}
   
@@ -794,16 +827,21 @@ class perso extends entite
 	 * les perosnnages.
 	 */
   // @{
-	private $inventaire;           /// < Objets équipés par le personnage (sous forme textuelle).
-	private $inventaire_pet;           /// < Objets équipés par le pet du personnage (sous forme textuelle).
-	private $inventaire_slot;      ///< Objets que le personnage à "dans son sac" (sous forme textuelle).
-	public $inventaire_array;      ///< Objets équipés par le personnage (sous forme d'objet).
-	public $inventaire_array_pet;      ///< Objets équipés par le pet du personnage (sous forme d'objet).
-	public $inventaire_slot_array; ///< Objets que le personnage à "dans son sac" (sous forme de tableau).
-	public $arme;                  ///< Arme dans la main droite.
-	public $arme_gauche;           ///< Arme dans la main gauche.
-	public $bouclier;              ///< Bouclier.
-	public $accessoire;            ///< Acessoire.
+	private $inventaire;             /// < Objets équipés par le personnage (sous forme textuelle).
+	private $inventaire_pet;         /// < Objets équipés par le pet du personnage (sous forme textuelle).
+	private $inventaire_slot;        ///< Objets que le personnage à "dans son sac" (sous forme textuelle).
+	public $inventaire_array;        ///< Objets équipés par le personnage (sous forme d'objet).
+	public $inventaire_array_pet;    ///< Objets équipés par le pet du personnage (sous forme d'objet).
+	public $inventaire_slot_array;   ///< Objets que le personnage à "dans son sac" (sous forme de tableau).
+	public $arme;                    ///< Arme dans la main droite.
+	public $arme_gauche;             ///< Arme dans la main gauche.
+	public $bouclier;                ///< Bouclier.
+	public $accessoire;              ///< Acessoire.
+	public $enchantement = array();  ///< Liste des enchantements (gemmes incrusté dans l'équipement porté).
+	public $pp_base;                 ///< PP de base (sans les buffs).
+	public $pm_base;                 ///< PM de base (sans les buffs).
+	public $enchant;                 ///< plus utilisé.
+	public $armure;                  ///< true si la PP et la PM on été calculées, false sinon.
 	/// Renvoie les objets équipés par le personnage sous forme textuelle.
 	function get_inventaire()
 	{
@@ -1169,7 +1207,7 @@ class perso extends entite
 		}
 	}
   /**
-   * Supprime un objet de l'inbventaire
+   * Supprime un objet de l'inventaire
    * @param  $id_objet    Id de l'objet.
    * @param  $nombre      Nombre d'objet à supprimer, s'il peut être empiler.
    */  
@@ -1480,7 +1518,7 @@ class perso extends entite
 	}
 	/**
 	 * Enregistre un enchantement.
-	 * Les encahnemtements possible sont : hp, mp, pp, pm, portée, star, reserve,
+	 * Les enchantements possible sont : hp, mp, pp, pm, portée, star, reserve,
 	 * esquive, melee, distance (compétence) et incantation.
 	 */	
 	function register_gemme_enchantement($gemme)
@@ -1523,6 +1561,267 @@ class perso extends entite
 		else
 			$this->enchantement[$gemme->enchantement_type] =
 				array('gemme_id' => $gemme->id, 'effet' => $gemme->enchantement_effet);
+	}
+
+  /**
+   * Renvoie au choix la liste des enchantements, un enchantement particulier ou un paramètre d'un enchantement particulier.
+   * @param  $nom   false pour renvoyer la liste des enchantements, ou nom de l'enchantement.
+   * @param  $key   false pour renvoyer l'enchantement en entier, ou nom du paramètre à renvoyer de l'enchantement.
+   */
+	function get_enchantement($nom = false, $key = false)
+	{
+		if ($nom === false)
+			return $this->enchantement;
+		else if (array_key_exists($nom, $this->enchantement))
+		{
+			if ($key === false)
+				return $this->enchantement[$nom];
+			else
+				return $this->enchantement[$nom][$key];
+		}
+		else
+			return false;
+	}
+
+  /**
+   * Indique s'il y a des enchantement ou si un enchantement en particulier est présent.
+   * @param  $nom   false pour renvoyer la présence d'enchantement en général, ou nom de l'enchantement.
+   */
+	function is_enchantement($nom = false)
+	{
+		if ($nom === false)
+			return (count($this->enchantement) != 0);
+		else
+			return array_key_exists($nom, $this->enchantement);
+	}
+	
+	/// Calcule la PP et la PM en fonction des pièces d'armures portées ainsi que des buffs et autres modificateurs.
+	function get_armure()
+	{
+		global $db;
+		if(!isset($this->armure))
+		{
+			$this->pp = 0;
+			$this->pm = 0;
+			// Pièces d'armure
+			$partie_armure = array('tete', 'torse', 'main', 'ceinture', 'jambe', 'chaussure', 'dos', 'cou', 'doigt');
+			foreach($partie_armure as $partie)
+			{
+				if($partie != '')
+				{
+					$partie_d = decompose_objet($this->get_inventaire_partie($partie));
+					if($partie_d['id_objet'] != '')
+					{
+						$requete = "SELECT PP, PM, effet FROM armure WHERE id = ".$partie_d['id_objet'];
+						$req = $db->query($requete);
+						$row = $db->read_row($req);
+						$this->pp += $row[0];
+						$this->pm += $row[1];
+						// Effets magiques
+						if ($row[2] != '')
+						{
+							$effet = explode(';', $row[2]);
+							foreach($effet as $eff)
+							{
+								$explode = explode('-', $eff);
+								$this->register_item_effet($explode[0], $explode[1]);
+							}
+						}
+					}
+					// Gemmes
+					if($partie_d['enchantement'] > 0)
+					{
+						$gemme = new gemme_enchassee($partie_d['enchantement']);
+						$this->register_gemme_enchantement($gemme);
+          //my_dump($this->enchantement);
+					//$this->enchant = enchant($partie_d['enchantement'], $this);
+					}
+				}
+			}
+			$this->pp_base = $this->pp;
+			$this->pm_base = $this->pm;
+			//Bonus raciaux
+			if($this->get_race() == 'nain') $this->pm = round(($this->pm + 10) * 1.1);
+			if($this->get_race() == 'barbare') $this->pp = round(($this->pp + 10) * 1.3);
+			if($this->get_race() == 'scavenger')
+			{
+				$this->pp = round($this->pp * 1.15);
+				$this->pm = round($this->pm * 1.05);
+			}
+			if($this->get_race() == 'mortvivant' AND moment_jour() == 'Soir')
+			{
+				$this->pp = round($this->pp * 1.15);
+				$this->pm = round($this->pm * 1.15);
+			}
+
+			//Effets des enchantements
+			if (isset($this->enchantement['pourcent_pm'])) $this->pm += floor($this->pm * $this->enchantement['pourcent_pm']['effet'] / 100);
+			if (isset($this->enchantement['pourcent_pp']))	$this->pp += floor($this->pp * $this->enchantement['pourcent_pp']['effet'] / 100);
+
+			//Buffs
+			if($this->is_buff('buff_bouclier')) $this->pp = round($this->pp * (1 + ($this->get_buff('buff_bouclier', 'effet') / 100)));
+			if($this->is_buff('buff_barriere')) $this->pm = round($this->pm * (1 + ($this->get_buff('buff_barriere', 'effet') / 100)));
+			if($this->is_buff('buff_forteresse'))
+			{
+				$this->pp = round($this->pp * (1 + (($this->get_buff('buff_forteresse', 'effet')) / 100)));
+				$this->pm = round($this->pm * (1 + (($this->get_buff('buff_forteresse', 'effet2')) / 100)));
+			}
+			if($this->is_buff('buff_cri_protecteur')) $this->pp = round($this->pp * (1 + ($this->get_buff('buff_cri_protecteur', 'effet') / 100)));
+			if($this->is_buff('debuff_desespoir')) $this->pm = round($this->pm / (1 + (($this->get_buff('debuff_desespoir', 'effet')) / 100)));
+			//Maladie suppr_defense
+			if($this->is_buff('suppr_defense')) $this->pp = 0;
+		}
+		$this->armure=true;
+	}
+
+  /**
+   * Renvoie la PM.
+   * Appelle get_armure si elle n'a pas déjà été calculée.
+   * @param  $base    true pour avoir la PM de base (sans modificateurs), false pour avoir la totale.
+   */
+	function get_pm($base = false)
+	{
+		if(!isset($this->pm))
+		{
+			$this->get_armure();
+		}
+		if(!$base) return $this->pm;
+		else return $this->pm_base;
+	}
+
+  /**
+   * Renvoie la PP.
+   * Appelle get_armure si elle n'a pas déjà été calculée.
+   * @param  $base    true pour avoir la PP de base (sans modificateurs), false pour avoir la totale.
+   */
+	function get_pp($base = false)
+	{
+		if(!isset($this->pp))
+		{
+			$this->get_armure();
+		}
+		if(!$base) return $this->pp;
+		else return $this->pp_base;
+	}
+	
+	/**
+	 * Enregistre un effet (effets magiques des objets de donjons)
+	 * @param  $id     id de l'effet
+	 * @param  $effet  paramètres de l'effet
+	 * @param  $item   objet concerné
+	 */
+	function register_item_effet($id, $effet, $item = null)
+	{
+		switch ($id)
+			{ // TODO: les autres, c'est quoi donc ?
+			case 1:
+				$this->add_bonus_permanents('regen_hp', $effet);
+				break;
+			case 5:
+				$this->add_bonus_permanents('volonte', $effet);
+				break;
+			case 6:
+				$this->add_bonus_permanents('resistance_para', $effet);
+				break;
+			case 7:
+				$this->add_bonus_permanents('dexterite', $effet);
+				break;
+			case 9:
+				$ep = new effet_vampirisme($effet, $item->nom);
+				if ($item->type == 'hache' || $item->type == 'dague' ||
+						($item->type == 'epee' && preg_match('/^lame/i', $item->nom))) {
+					$ep->pos = 'sa';
+				}
+				$this->add_effet_permanent('attaquant', $ep);
+				break;
+			case 10:
+				$this->add_effet_permanent('defenseur', new protection_artistique($effet, $item->nom));
+			default:
+				break;
+			}
+	}
+  // @}
+
+
+  /**
+   * @name  Effes parmanents
+   * Effets modifiant les caractéristiques et les compétences. Ces effets peuvent
+   * être dus aux bonus raciaux, aux objets portés…
+   */
+  // @{
+	private $bonus_permanents = array();           ///< liste des effets permanents.
+	private $effet_permanents_attaquant = array(); ///< inutilisé.
+	private $effet_permanents_defenseur = array(); ///< inutilisé.
+	/// renvoie un bonus permanent particulier
+	function get_bonus_permanents($bonus)
+	{
+		if (array_key_exists($bonus, $this->bonus_permanents))
+			return $this->bonus_permanents[$bonus];
+		return 0;
+	}
+  /// Ajoute un bonus permanant
+	function add_bonus_permanents($bonus, $value)
+	{
+		if (array_key_exists($bonus, $this->bonus_permanents))
+			$this->bonus_permanents[$bonus] += $value;
+		else
+			$this->bonus_permanents[$bonus] = $value;
+	}
+  /**
+   * Ajoute un effet permanent
+   * @param  $mode    type de l'effet
+   * @param  $effet   paramètres de l'effet
+   */
+	function add_effet_permanent($mode, $effet)
+	{
+		$effets_mode = "effet_permanents_$mode";
+		array_push($this->$effets_mode, $effet);
+	}
+  /**
+   * Renvoie les effets présents d'un certains type
+   * @param  &$effets   tableau auquel sera ajouté les effets trouvés
+   * @param  $mode      type des effets
+   */
+	function get_effets_permanents(&$effets, $mode)
+	{
+		$effets_mode = "effet_permanents_$mode";
+		foreach ($this->$effets_mode as $ep) {
+			array_push($effets, $ep);
+		}
+	}
+	/**
+   * Cette fonction permet d'appliquer a la construction les bonus
+   * permanents tels les carac des vampires ou d'items
+   */
+	function applique_bonus()
+	{
+		// Bonus raciaux
+		switch ($this->race)
+		{
+		case 'vampire':
+			$this->add_bonus_permanents('reserve', 2);
+			if (moment_jour($this->id) == 'Nuit')
+			{
+				$this->add_bonus_permanents('reserve', 3);
+				$this->add_bonus_permanents('dexterite', 2);
+				$this->add_bonus_permanents('volonte', 2);
+			}
+			elseif (moment_jour($this->id) == 'Journee')
+			{
+				$this->add_bonus_permanents('reserve', -1);
+				$this->add_bonus_permanents('dexterite', -1);
+				$this->add_bonus_permanents('volonte', -1);
+			}
+			break;
+		case 'elfehaut':
+			if (moment_jour($this->id) == 'Nuit')
+			{
+				$this->add_bonus_permanents('reserve', 2);
+				$this->add_bonus_permanents('dexterite', 1);
+				$this->add_bonus_permanents('volonte', 1);
+			}
+			break;
+		}
 	}
   // @}
   
@@ -1781,6 +2080,229 @@ class perso extends entite
 	  $requete = "DELETE FROM rez WHERE id_rez = ".$this->id;
 	  $db->query($requete);
   }
+  /**
+   * Vérifie s'il faut mettre à jour, les HP, MP, PA,…
+   * Gère les gains de PA, régénration de HP & MP, augmentation des maximums de HP & MP,
+   * supprime les buffs & bans périmés ainsi que les créature de trop haut niveau dans l'écurie.
+   */
+	function check_perso($last_action = true)
+	{
+		$this->check_materiel();
+		$modif = false;	 // Indique si le personnage a été modifié.
+		global $db, $G_temps_regen_hp, $G_temps_maj_hp, $G_temps_maj_mp, $G_temps_PA, $G_PA_max, $G_pourcent_regen_hp, $G_pourcent_regen_mp;
+		// On vérifie que le personnage est vivant
+		if($this->hp > 0)
+		{
+			// On augmente les HP max si nécessaire
+			$temps_maj = time() - $this->get_maj_hp(); // Temps écoulé depuis la dernière augmentation de HP.
+			$temps_hp = $G_temps_maj_hp;  // Temps entre deux augmentation de HP.
+
+			If ($temps_maj > $temps_hp && $temps_hp > 0) // Pour ne jamais diviser par 0...
+			{
+				$time = time();
+				$nb_maj = floor($temps_maj / $temps_hp);
+				$hp_gagne = $nb_maj * (pow($this->get_vie(true), 0.9) * 1.6);
+				$this->set_hp_max($this->get_hp_max(true) + $hp_gagne);
+				$this->set_maj_hp($this->get_maj_hp() + $nb_maj * $temps_hp);
+				$modif = true;
+			}
+			// On augmente les MP max si nécessaire
+			$temps_maj = time() - $this->get_maj_mp(); // Temps écoulé depuis la dernière augmentation de MP.
+			$temps_mp = $G_temps_maj_mp;  // Temps entre deux augmentation de MP.
+			if ($temps_maj > $temps_mp)
+			{
+				$time = time();
+				$nb_maj = floor($temps_maj / $temps_mp);
+				$mp_gagne = $nb_maj * (($this->get_energie(true) - 3) / 4);
+				$this->set_mp_max($this->get_mp_max(true) + $mp_gagne);
+				$this->set_maj_mp($this->get_maj_mp() + $nb_maj * $temps_mp);
+				$modif = true;
+			}
+			// Régénération des HP et MP
+			$temps_regen = time() - $this->get_regen_hp(); // Temps écoulé depuis la dernière régénération.
+
+			// Gemme du troll
+			if (array_key_exists('regeneration', $this->get_enchantement())) {
+				$bonus_regen = $this->get_enchantement('regeneration', 'effet') * 60;
+				if ($G_temps_regen_hp <= $bonus_regen) {
+					$bonus_regen = $G_temps_regen_hp - 3600; // 1h min de regen
+				}
+			} else $bonus_regen = 0;
+
+			if ($temps_regen > ($G_temps_regen_hp - $bonus_regen))
+			{
+				$time = time();
+				$nb_regen = floor($temps_regen / ($G_temps_regen_hp - $bonus_regen));
+				$regen_hp = $G_pourcent_regen_hp;
+				$regen_mp = $G_pourcent_regen_mp;
+				//Buff préparation du camp
+				if($this->is_buff('preparation_camp'))
+				{
+					// Le buff a-t-il été lancé après la dernière régénération ?
+					if($this->get_buff('preparation_camp', 'effet2') > $this->get_regen_hp())
+					{
+						// On calcule le moment où doit avoir lieu la première régénération après le lancement du buff
+						$regen_cherche = $this->get_regen_hp() + (($G_temps_regen_hp - $bonus_regen) * floor(($this->get_buff('preparation_camp', 'effet2') - $this->get_regen_hp()) / $G_temps_regen_hp));
+					}
+					else $regen_cherche = $this->get_regen_hp();
+					// Le buff s'est-il arrêté entre temps ?
+					if($this->get_buff('preparation_camp', 'fin') > time()) $fin = time();
+					else $fin = $this->get_buff('preparation_camp', 'fin');
+					// On calcule le nombre de régénération pour lesquels le buff doit être pris en compte
+					$nb_regen_avec_buff = floor(($fin - $regen_cherche) / ($G_temps_regen_hp - $bonus_regen));
+					//bonus buff du camp
+					$bonus_camp = 1 + ((($nb_regen_avec_buff / $nb_regen) * $this->get_buff('preparation_camp', 'effet')) / 100);
+					$regen_hp = $regen_hp * $bonus_camp;
+					$regen_mp = $regen_mp * $bonus_camp;
+				}
+				// Bonus raciaux
+				if($this->get_race() == 'troll') $regen_hp = $regen_hp * 1.2;
+				if($this->get_race() == 'elfehaut') $regen_mp = $regen_mp * 1.1;
+				// Accessoires
+				//if($this['accessoire']['id'] != '0' AND $this['accessoire']['type'] == 'regen_hp') $bonus_accessoire = $this['accessoire']['effet']; else $bonus_accessoire = 0;
+				//if($this['accessoire']['id'] != '0' AND $this['accessoire']['type'] == 'regen_mp') $bonus_accessoire_mp = $this['accessoire']['effet']; else $bonus_accessoire_mp = 0;
+				$accessoire = $this->get_accessoire();
+				if($accessoire != false)
+				{
+					switch($accessoire->type)
+					{
+						case 'regen_hp':
+							$bonus_accessoire = $accessoire->effet;
+							break;
+						case 'regen_mp':
+							$bonus_accessoire_mp = $accessoire->effet;
+							break;
+						default:
+							break;
+					}
+				}
+				$bonus_arme = $this->get_bonus_permanents('regen_hp');
+				$bonus_arme_mp = $this->get_bonus_permanents('regen_mp');
+				// Effets magiques des objets
+				/*foreach($this['objet_effet'] as $effet)
+				{
+					switch($effet['id'])
+					{
+						case '1' :
+							$bonus_accessoire += $effet['effet'];
+						break;
+						case '10' :
+							$bonus_accessoire_mp += $effet['effet'];
+						break;
+					}
+				}*/
+				// Calcul des HP et MP récupérés
+				$hp_gagne = $nb_regen * (floor($this->get_hp_maximum() * $regen_hp) + $bonus_accessoire + $bonus_arme);
+				$mp_gagne = $nb_regen * (floor($this->get_mp_maximum() * $regen_mp) + $bonus_accessoire_mp + $bonus_arme_mp);
+				//DéBuff lente agonie
+				if($this->is_buff('lente_agonie'))
+				{
+					// Le débuff a-t-il été lancé après la dernière régénération ?
+					if($this->get_buff('lente_agonie', 'effet2') > $this->get_regen_hp())
+					{
+						$regen_cherche = $this->get_regen_hp() + (($G_temps_regen_hp - $bonus_regen) * floor(($this->get_buff('lente_agonie', 'effet2') - $this->get_regen_hp()) / $G_temps_regen_hp));
+					}
+					else $regen_cherche = $this->get_regen_hp();
+					// Le débuff s'est-il arrêté entre temps ?
+					if($this->get_buff('lente_agonie', 'fin') > time()) $fin = time();
+					else $fin = $this->get_buff('lente_agonie', 'fin');
+					// On calcule le nombre de régénération pour lesquels le débuff doit être pris en compte
+					$nb_regen_avec_buff = floor(($fin - $regen_cherche) / ($G_temps_regen_hp - $bonus_regen));
+					// Calcul du malus
+					$malus_agonie = ((1 - ($nb_regen_avec_buff / $nb_regen)) - (($nb_regen_avec_buff / $nb_regen) * $this->get_buff('lente_agonie', 'effet')));
+					$hp_gagne = $hp_gagne * $malus_agonie;
+				}
+				//Maladie regen negative
+				if($this->is_buff('regen_negative') AND !$this->is_buff('lente_agonie'))
+				{
+					$hp_gagne = $hp_gagne * -1;
+					$mp_gagne = $mp_gagne * -1;
+					// On diminue le nombre de régénération pendant lesquels la maladie est active ou supprime s'il n'y en  plus
+					if($this->get_buff('regen_negative', 'effet') > 1)
+					{
+						$requete = "UPDATE buff SET effet = ".($this->get_buff('regen_negative', 'effet') - 1)." WHERE id = ".$this->get_buff('regen_negative', 'id');
+					}
+					else
+					{
+						$requete = "DELETE FROM buff WHERE id = ".$this->get_buff('regen_negative', 'id');
+					}
+					$db->query($requete);
+				}
+				//Maladie high regen
+				if($this->is_buff('high_regen'))
+				{
+					$hp_gagne = $hp_gagne * 3;
+					$mp_gagne = $mp_gagne * 3;
+					// On diminue le nombre de régénération pendant lesquels la maladie est active ou supprime s'il n'y en  plus
+					if($this->get_buff('high_regen', 'effet') > 1)
+					{
+						$requete = "UPDATE buff SET effet = ".($this->get_buff('high_regen', 'effet') - 1)." WHERE id = ".$this->get_buff('high_regen', 'id');
+					}
+					else
+					{
+						$requete = "DELETE FROM buff WHERE id = ".$this->get_buff('high_regen', 'id');
+					}
+					$db->query($requete);
+				}
+				//Maladie mort_regen
+				if($this->is_buff('high_regen') AND $hp_gagne != 0 AND $mp_gagne != 0)
+				{
+					$hp_gagne = $this->get_hp();
+				}
+				// Mise à jour des HP
+				$this->set_hp($this->get_hp() + $hp_gagne);
+				if ($this->get_hp() > $this->get_hp_maximum()) $this->set_hp(floor($this->get_hp_maximum()));
+				// Mise à jour des MP
+				$this->set_mp($this->get_mp() + $mp_gagne);
+				if ($this->get_mp() > $this->get_mp_maximum()) $this->set_mp(floor($this->get_mp_maximum()));
+				$this->set_regen_hp($this->get_regen_hp() + ($nb_regen * ($G_temps_regen_hp - $bonus_regen)));
+			}
+
+			if($last_action)
+			{
+				//Calcul des PA du joueur
+				$time = time();
+				$temps_pa = $G_temps_PA;
+				// Nombre de PA à ajouter
+				$panew = floor(($time - $this->get_dernieraction()) / $temps_pa);
+				if($panew < 0) $panew = 0;
+				$prochain = ($this->get_dernieraction() + $temps_pa) - $time;
+				if ($prochain < 0) $prochain = 0;
+				// Mise à jour des PA
+				$this->set_pa($this->get_pa() + $panew);
+				if ($this->get_pa() > $G_PA_max) $this->set_pa($G_PA_max);
+				// Calcul du moment où a eu lieu le dernier gain de PA
+				$j_d_a = (floor($time / $temps_pa)) * $temps_pa;
+				if($j_d_a > $this->get_dernieraction()) $this->set_dernieraction($j_d_a);
+			}
+
+			// On ne doit pas avoir de pet indressable
+			$pet_del = false;
+			$ecurie = $this->get_pets();
+			$max_dresse = $this->max_dresse();
+			foreach ($ecurie as $pet) {
+				$mob = $pet->get_monstre();
+				if ($mob->get_level() > $max_dresse) {
+					$journal = "INSERT INTO journal VALUES(NULL, $this->id, 'pet_leave',  '', '', NOW(), '".
+						mysql_escape_string($pet->get_nom())."', 0, $this->x, $this->y)";
+					$db->query($journal);
+					$pet->supprimer();
+					$pet_del = true;
+				}
+			}
+			if ($pet_del) // On recharge l'ecurie
+				$this->get_pets(true);
+
+			// Mise-à-jour du personnage dans la base de donnée
+			$this->sauver();
+		} // if($this->get_hp() > 0)
+		// On supprime tous les buffs périmés
+		$requete = "DELETE FROM buff WHERE fin <= ".time();
+		$req = $db->query($requete);
+		// On enlève le ban s'il y en a un et qu'il est fini
+		$requete = "UPDATE perso SET statut = 'actif' WHERE statut = 'ban' AND fin_ban <= ".time();
+		$db->query($requete);
+	}
   // @}
   
   /**
@@ -1792,6 +2314,14 @@ class perso extends entite
 	private $sort_jeu;     ///< Sorts hors combat.
 	private $sort_combat;  ///< Sorts de combat.
 	private $comp_jeu;     ///< Compétences hors combat.
+
+  /// Vérifie si un sort hors combat est connu
+	function check_sort_jeu_connu($id)
+	{
+		$connus = explode(';', $this->sort_jeu);
+		if (!in_array($id, $connus))
+			security_block(URL_MANIPULATION);
+	}
 	/// Renvoie les sorts hors combat.
 	function get_sort_jeu()
 	{
@@ -1802,6 +2332,13 @@ class perso extends entite
 	{
 		$this->sort_jeu = $sort_jeu;
 		$this->champs_modif[] = 'sort_jeu';
+	}
+  /// Vérifie si un sort de combat est connu
+	function check_sort_combat_connu($id)
+	{
+		$connus = explode(';', $this->sort_combat);
+		if (!in_array($id, $connus))
+			security_block(URL_MANIPULATION);
 	}
 	/// Renvoie les sorts de combat.
 	function get_sort_combat()
@@ -1814,6 +2351,13 @@ class perso extends entite
 		$this->sort_combat = $sort_combat;
 		$this->champs_modif[] = 'sort_combat';
 	}
+  /// Vérifie si une compétence hors combat est connu
+	function check_comp_jeu_connu($id)
+	{
+		$connus = explode(';', $this->comp_jeu);
+		if (!in_array($id, $connus))
+			security_block(URL_MANIPULATION);
+	}
 	/// Renvoie les compétences hors combat.
 	function get_comp_jeu()
 	{
@@ -1824,6 +2368,13 @@ class perso extends entite
 	{
 		$this->comp_jeu = $comp_jeu;
 		$this->champs_modif[] = 'comp_jeu';
+	}
+  /// Vérifie si une compétence de combat est connu
+	function check_comp_combat_connu($id)
+	{
+		$connus = explode(';', $this->comp_combat);
+		if (!in_array($id, $connus))
+			security_block(URL_MANIPULATION);
 	}
 	/// Renvoie les compétences de combat.
 	function get_comp_combat()
@@ -2145,11 +2696,16 @@ class perso extends entite
 	 * Données et méthodes liées au groupe et aux quêtes.
 	 */
   // @{
-	private $groupe; ///< Id du groupe du personnage.
-	private $quete; ///< Quêtes que possède le personnage.
+	private $groupe;     ///< Id du groupe du personnage.
+	private $quete;      ///< Quêtes que possède le personnage.
 	private $quete_fini; ///< Quêtes terminées.
-	public $share_xp;
+	public  $share_xp;
 
+  /// Indique si le personnage a un groupe
+	function is_groupe()
+	{
+		return !empty($this->groupe);
+	}
 	/// Renvoie l'id du groupe du personnage.
 	function get_groupe()
 	{
@@ -2161,10 +2717,17 @@ class perso extends entite
 		$this->groupe = $groupe;
 		$this->champs_modif[] = 'groupe';
 	}
-	/// Renvoie la liste des quêtes que possède le personnage.
+	
+	/// Renvoie la liste des quêtes que possède le personnage sous forme textuelle.
 	function get_quete()
 	{
 		return $this->quete;
+	}
+  /// Renvoie la liste des quêtes que possède le personnage sous forme de tableau.
+	function get_liste_quete()
+	{
+		$this->liste_quete = unserialize($this->quete);
+		return $this->liste_quete;
 	}
 	/// Modifie la liste des quêtes que possède le personnage.
 	function set_quete($quete)
@@ -2183,6 +2746,50 @@ class perso extends entite
 		$this->quete_fini = $quete_fini;
 		$this->champs_modif[] = 'quete_fini';
 	}
+  /// Ajoute une quête à la liste des quêtes que possède le personnage.
+	function prend_quete($quete)
+	{
+		global $db;
+		$valid = true;
+		$requete = "SELECT id, objectif FROM quete WHERE id = ".$quete;
+		$req = $db->query($requete);
+		$row = $db->read_assoc($req);
+		//Vérifie si le joueur n'a pas déjà pris la quète.
+		if($this->get_quete() != '')
+		{
+			foreach($this->get_liste_quete() as $quest)
+			{
+				if($quest['id_quete'] == $_GET['id']) $valid = false;
+			}
+			$numero_quete = (count($this->liste_quete));
+		}
+		else
+		{
+			$numero_quete = 0;
+		}
+		if($valid)
+		{
+			$quete = unserialize($row['objectif']);
+			$count = count($quete);
+			$i = 0;
+			while($i < $count)
+			{
+				$this->liste_quete[$numero_quete]['objectif'][$i]->cible = $quete[$i]->cible;
+				$this->liste_quete[$numero_quete]['objectif'][$i]->requis = $quete[$i]->requis;
+				$this->liste_quete[$numero_quete]['objectif'][$i]->nombre = 0;
+				$this->liste_quete[$numero_quete]['id_quete'] = $row['id'];
+				$i++;
+			}
+			$this->set_quete(serialize($this->liste_quete));
+			$this->sauver();
+			return true;
+		}
+		else
+		{
+			$G_erreur = 'Vous avez déjà cette quête en cours !';
+			return false;
+		}
+	}
 	// @}
 	
 	/**
@@ -2193,6 +2800,39 @@ class perso extends entite
 	private $teleport_roi; ///< enum('true','false'), indique si le téléport du roi a été utilisé.
 	public $poscase;
 	public $pospita;
+
+	/**
+	* Retourne la position
+	* @access public
+	* @param none
+	* @return int
+	*/
+	function get_case()
+	{
+		return $this->x.$this->y;
+	}
+	/**
+   * Retourne la position "old style"
+   */
+	function get_poscase()
+	{
+		return $this->y * 1000 + $this->x;
+	}
+  /// Renvoie la position sous forme d'un seul entier
+	function get_pos()
+	{
+		return convert_in_pos($this->x, $this->y);
+	}
+  /// renvoie la distance avec un autre joueur
+	function get_distance_joueur($joueur)
+	{
+		return calcul_distance($this->get_pos(), $joueur->get_pos());
+	}
+  /// renvoie la distance pytagorienne avec un autre joueur
+	function get_distance_pytagore($joueur)
+	{
+		return calcul_distance_pytagore($this->get_pos(), $joueur->get_pos());
+	}
 	/// Indique si le téléport du roi a été utilisé.
 	function get_teleport_roi()
 	{
@@ -2247,9 +2887,10 @@ class perso extends entite
 	 * Données et méthodes liées aux combats.
 	 */
   // @{
-	private $action_a;   ///< Id du script d'attaque
-	private $action_d;   ///< Id du script de défense
+	private $action_a;       ///< Id du script d'attaque
+	private $action_d;       ///< Id du script de défense
 	public $action_do;
+	public $reserve_bonus;   ///< RM avec les bonus dus aux buffs
 
 	// Renvoie l'id du script d'attaque.
 	function get_action_a()
@@ -2305,11 +2946,54 @@ class perso extends entite
 		$this->action = $row[0];
 		return $this->action;
 	}
+	
+	/**
+	 * Renvoie la RM
+	 * @param  $base  true s'il faut renvoyer la valeur de base, false pour renvoyer la RM avec les bonus permanents (mais sans les buffs).
+	 */
+	function get_reserve($base = false)
+	{
+		if (!isset($this->reserve))
+			$this->reserve = ceil(2.1 * ($this->energie + floor(($this->energie - 8) / 2)));
+		if (!$base) return $this->reserve + $this->get_bonus_permanents('reserve');
+		else return $this->reserve;
+	}
+	/// Renvoie la RM avec les bonus dû aux buffs
+	function get_reserve_bonus()
+	{
+		$this->reserve_bonus = $this->get_reserve();
+		if($this->is_buff('buff_inspiration')) $this->reserve_bonus += $this->get_buff('buff_inspiration', 'effet');
+		if($this->is_buff('buff_sacrifice')) $this->reserve_bonus += $this->get_buff('buff_sacrifice', 'effet');
+		// Les bonus raciaux sont comptés dans les bonus perm
+		return $this->reserve_bonus;
+	}
+
+  /// Renvoie la distance à laquelle le personnage peut attaquer
+	function get_distance_tir()
+	{
+		$arme = $this->inventaire()->main_droite;
+		if(!isset($this->arme)) $this->get_arme();
+		if($this->arme)
+		{
+			$arme = $this->arme->distance_tir;
+			if($this->is_buff('longue_portee')) $bonus = $this->get_buff('longue_portee', 'effet');
+			else $bonus = 0;
+			return ($arme + $bonus + $this->get_bonus_permanents('portee'));
+		}
+		return 0;
+	}
 	// @}
      	
 
+
 	/**
-	* @access public
+	 * @name Accès à la base de données
+	 * Méthode gérant la lecture et l'écriture dans la base de données
+	 */
+  // @{
+	/**
+	* Constructeur
+	* Crée l'objet à partir de l'id (en cherchant dans la base de données), d'un tableau ou des paramètres.
   *
 	* @param int(11) id attribut
 	* @param int(10) mort attribut
@@ -2661,650 +3345,16 @@ class perso extends entite
 	{
 		return 'id = '.$this->id.', mort = '.$this->mort.', nom = '.$this->nom.', password = '.$this->password.', email = '.$this->email.', exp = '.$this->exp.', honneur = '.$this->honneur.', reputation = '.$this->reputation.', level = '.$this->level.', rang_royaume = '.$this->rang_royaume.', vie = '.$this->vie.', forcex = '.$this->forcex.', dexterite = '.$this->dexterite.', puissance = '.$this->puissance.', volonte = '.$this->volonte.', energie = '.$this->energie.', race = '.$this->race.', classe = '.$this->classe.', classe_id = '.$this->classe_id.', inventaire = '.$this->inventaire.', inventaire_pet = '.$this->inventaire_pet.', inventaire_slot = '.$this->inventaire_slot.', pa = '.$this->pa.', dernieraction = '.$this->dernieraction.', action_a = '.$this->action_a.', action_d = '.$this->action_d.', sort_jeu = '.$this->sort_jeu.', sort_combat = '.$this->sort_combat.', comp_combat = '.$this->comp_combat.', comp_jeu = '.$this->comp_jeu.', star = '.$this->star.', x = '.$this->x.', y = '.$this->y.', groupe = '.$this->groupe.', hp = '.$this->hp.', hp_max = '.$this->hp_max.', mp = '.$this->mp.', mp_max = '.$this->mp_max.', melee = '.$this->melee.', distance = '.$this->distance.', esquive = '.$this->esquive.', blocage = '.$this->blocage.', incantation = '.$this->incantation.', sort_vie = '.$this->sort_vie.', sort_element = '.$this->sort_element.', sort_mort = '.$this->sort_mort.', identification = '.$this->identification.', craft = '.$this->craft.', alchimie = '.$this->alchimie.', architecture = '.$this->architecture.', forge = '.$this->forge.', survie = '.$this->survie.', dressage = '.$this->dressage.', facteur_magie = '.$this->facteur_magie.', facteur_sort_vie = '.$this->facteur_sort_vie.', facteur_sort_mort = '.$this->facteur_sort_mort.', facteur_sort_element = '.$this->facteur_sort_element.', regen_hp = '.$this->regen_hp.', maj_hp = '.$this->maj_hp.', maj_mp = '.$this->maj_mp.', point_sso = '.$this->point_sso.', quete = '.$this->quete.', quete_fini = '.$this->quete_fini.', dernier_connexion = '.$this->dernier_connexion.', statut = '.$this->statut.', fin_ban = '.$this->fin_ban.', frag = '.$this->frag.', crime = '.$this->crime.', amende = '.$this->amende.', teleport_roi = '.$this->teleport_roi.', cache_classe = '.$this->cache_classe.', cache_stat = '.$this->cache_stat.', cache_niveau = '.$this->cache_niveau.', max_pet = '.$this->max_pet.', beta = '.$this->beta;
 	}
-//fonction
-
-
-
-	public $grade;
-	function get_grade()
-	{
-		if(!isset($this->grade)) $this->grade = new grade($this->rang_royaume);
-		return $this->grade;
-	}
-
-	public $enchantement = array();
-	function get_enchantement($nom = false, $key = false)
-	{
-		if ($nom === false)
-			return $this->enchantement;
-		else if (array_key_exists($nom, $this->enchantement))
-		{
-			if ($key === false)
-				return $this->enchantement[$nom];
-			else
-				return $this->enchantement[$nom][$key];
-		}
-		else
-			return false;
-	}
-
-	function is_enchantement($nom = false)
-	{
-		if ($nom === false)
-			return (count($this->enchantement) != 0);
-		else
-			return array_key_exists($nom, $this->enchantement);
-	}
-
-
-	public $pp_base;
-	public $pm_base;
-	public $enchant;
-	public $armure;
-	function get_armure()
-	{
-		global $db;
-		if(!isset($this->armure))
-		{
-			$this->pp = 0;
-			$this->pm = 0;
-			// Pièces d'armure
-			$partie_armure = array('tete', 'torse', 'main', 'ceinture', 'jambe', 'chaussure', 'dos', 'cou', 'doigt');
-			foreach($partie_armure as $partie)
-			{
-				if($partie != '')
-				{
-					$partie_d = decompose_objet($this->get_inventaire_partie($partie));
-					if($partie_d['id_objet'] != '')
-					{
-						$requete = "SELECT PP, PM, effet FROM armure WHERE id = ".$partie_d['id_objet'];
-						$req = $db->query($requete);
-						$row = $db->read_row($req);
-						$this->pp += $row[0];
-						$this->pm += $row[1];
-						// Effets magiques
-						if ($row[2] != '')
-						{
-							$effet = explode(';', $row[2]);
-							foreach($effet as $eff)
-							{
-								$explode = explode('-', $eff);
-								$this->register_item_effet($explode[0], $explode[1]);
-							}
-						}
-					}
-					// Gemmes
-					if($partie_d['enchantement'] > 0)
-					{
-						$gemme = new gemme_enchassee($partie_d['enchantement']);
-						$this->register_gemme_enchantement($gemme);
-          //my_dump($this->enchantement);
-					//$this->enchant = enchant($partie_d['enchantement'], $this);
-					}
-				}
-			}
-			$this->pp_base = $this->pp;
-			$this->pm_base = $this->pm;
-			//Bonus raciaux
-			if($this->get_race() == 'nain') $this->pm = round(($this->pm + 10) * 1.1);
-			if($this->get_race() == 'barbare') $this->pp = round(($this->pp + 10) * 1.3);
-			if($this->get_race() == 'scavenger')
-			{
-				$this->pp = round($this->pp * 1.15);
-				$this->pm = round($this->pm * 1.05);
-			}
-			if($this->get_race() == 'mortvivant' AND moment_jour() == 'Soir')
-			{
-				$this->pp = round($this->pp * 1.15);
-				$this->pm = round($this->pm * 1.15);
-			}
-
-			//Effets des enchantements
-			if (isset($this->enchantement['pourcent_pm'])) $this->pm += floor($this->pm * $this->enchantement['pourcent_pm']['effet'] / 100);
-			if (isset($this->enchantement['pourcent_pp']))	$this->pp += floor($this->pp * $this->enchantement['pourcent_pp']['effet'] / 100);
-
-			//Buffs
-			if($this->is_buff('buff_bouclier')) $this->pp = round($this->pp * (1 + ($this->get_buff('buff_bouclier', 'effet') / 100)));
-			if($this->is_buff('buff_barriere')) $this->pm = round($this->pm * (1 + ($this->get_buff('buff_barriere', 'effet') / 100)));
-			if($this->is_buff('buff_forteresse'))
-			{
-				$this->pp = round($this->pp * (1 + (($this->get_buff('buff_forteresse', 'effet')) / 100)));
-				$this->pm = round($this->pm * (1 + (($this->get_buff('buff_forteresse', 'effet2')) / 100)));
-			}
-			if($this->is_buff('buff_cri_protecteur')) $this->pp = round($this->pp * (1 + ($this->get_buff('buff_cri_protecteur', 'effet') / 100)));
-			if($this->is_buff('debuff_desespoir')) $this->pm = round($this->pm / (1 + (($this->get_buff('debuff_desespoir', 'effet')) / 100)));
-			//Maladie suppr_defense
-			if($this->is_buff('suppr_defense')) $this->pp = 0;
-		}
-		$this->armure=true;
-	}
-
-	function register_item_effet($id, $effet, $item = null)
-	{
-		switch ($id)
-			{ // TODO: les autres, c'est quoi donc ?
-			case 1:
-				$this->add_bonus_permanents('regen_hp', $effet);
-				break;
-			case 5:
-				$this->add_bonus_permanents('volonte', $effet);
-				break;
-			case 6:
-				$this->add_bonus_permanents('resistance_para', $effet);
-				break;
-			case 7:
-				$this->add_bonus_permanents('dexterite', $effet);
-				break;
-			case 9:
-				$ep = new effet_vampirisme($effet, $item->nom);
-				if ($item->type == 'hache' || $item->type == 'dague' ||
-						($item->type == 'epee' && preg_match('/^lame/i', $item->nom))) {
-					$ep->pos = 'sa';
-				}
-				$this->add_effet_permanent('attaquant', $ep);
-				break;
-			case 10:
-				$this->add_effet_permanent('defenseur', new protection_artistique($effet, $item->nom));
-			default:
-				break;
-			}
-	}
-
-	private $effet_permanents_attaquant = array();
-	private $effet_permanents_defenseur = array();
-	function add_effet_permanent($mode, $effet)
-	{
-		$effets_mode = "effet_permanents_$mode";
-		array_push($this->$effets_mode, $effet);
-	}
-
-	function get_effets_permanents(&$effets, $mode)
-	{
-		$effets_mode = "effet_permanents_$mode";
-		foreach ($this->$effets_mode as $ep) {
-			array_push($effets, $ep);
-		}
-	}
-
-	function get_pm($base = false)
-	{
-		if(!isset($this->pm))
-		{
-			$this->get_armure();
-		}
-		if(!$base) return $this->pm;
-		else return $this->pm_base;
-	}
-
-	function get_pp($base = false)
-	{
-		if(!isset($this->pp))
-		{
-			$this->get_armure();
-		}
-		if(!$base) return $this->pp;
-		else return $this->pp_base;
-	}
-
-	function get_reserve($base = false)
-	{
-		if (!isset($this->reserve))
-			$this->reserve = ceil(2.1 * ($this->energie + floor(($this->energie - 8) / 2)));
-		if (!$base) return $this->reserve + $this->get_bonus_permanents('reserve');
-		else return $this->reserve;
-	}
-
-	function get_pos()
-	{
-		return convert_in_pos($this->x, $this->y);
-	}
-
-	function get_distance_joueur($joueur)
-	{
-		return calcul_distance($this->get_pos(), $joueur->get_pos());
-	}
-
-	function get_distance_pytagore($joueur)
-	{
-		return calcul_distance_pytagore($this->get_pos(), $joueur->get_pos());	
-	}
-
-
-	public $reserve_bonus;
-	function get_reserve_bonus()
-	{
-		$this->reserve_bonus = $this->get_reserve();
-		if($this->is_buff('buff_inspiration')) $this->reserve_bonus += $this->get_buff('buff_inspiration', 'effet');
-		if($this->is_buff('buff_sacrifice')) $this->reserve_bonus += $this->get_buff('buff_sacrifice', 'effet');
-		// Les bonus raciaux sont comptés dans les bonus perm
-		return $this->reserve_bonus;
-	}
-
-	function get_distance_tir()
-	{
-		$arme = $this->inventaire()->main_droite;
-		if(!isset($this->arme)) $this->get_arme();
-		if($this->arme)
-		{
-			$arme = $this->arme->distance_tir;
-			if($this->is_buff('longue_portee')) $bonus = $this->get_buff('longue_portee', 'effet');
-			else $bonus = 0;
-			return ($arme + $bonus + $this->get_bonus_permanents('portee'));
-		}
-		return 0;
-	}
-
-	function get_liste_quete()
-	{
-		$this->liste_quete = unserialize($this->quete);
-		return $this->liste_quete;
-	}
-
-	function prend_quete($quete)
-	{
-		global $db;
-		$valid = true;
-		$requete = "SELECT id, objectif FROM quete WHERE id = ".$quete;
-		$req = $db->query($requete);
-		$row = $db->read_assoc($req);
-		//Vérifie si le joueur n'a pas déjà pris la quète.
-		if($this->get_quete() != '')
-		{
-			foreach($this->get_liste_quete() as $quest)
-			{
-				if($quest['id_quete'] == $_GET['id']) $valid = false;
-			}
-			$numero_quete = (count($this->liste_quete));
-		}
-		else
-		{
-			$numero_quete = 0;
-		}
-		if($valid)
-		{
-			$quete = unserialize($row['objectif']);
-			$count = count($quete);
-			$i = 0;
-			while($i < $count)
-			{
-				$this->liste_quete[$numero_quete]['objectif'][$i]->cible = $quete[$i]->cible;
-				$this->liste_quete[$numero_quete]['objectif'][$i]->requis = $quete[$i]->requis;
-				$this->liste_quete[$numero_quete]['objectif'][$i]->nombre = 0;
-				$this->liste_quete[$numero_quete]['id_quete'] = $row['id'];
-				$i++;
-			}
-			$this->set_quete(serialize($this->liste_quete));
-			$this->sauver();
-			return true;
-		}
-		else
-		{
-			$G_erreur = 'Vous avez déjà cette quête en cours !';
-			return false;
-		}
-	}
-
-	/**
-	* Retourne la position
-	* @access public
-	* @param none
-	* @return int
-	*/
-	function get_case()
-	{
-		return $this->x.$this->y;
-	}
-
-	function is_groupe()
-	{
-		return !empty($this->groupe);
-	}
-
-	function check_perso($last_action = true)
-	{
-		$this->check_materiel();
-		$modif = false;	 // Indique si le personnage a été modifié.
-		global $db, $G_temps_regen_hp, $G_temps_maj_hp, $G_temps_maj_mp, $G_temps_PA, $G_PA_max, $G_pourcent_regen_hp, $G_pourcent_regen_mp;
-		// On vérifie que le personnage est vivant
-		if($this->hp > 0)
-		{
-			// On augmente les HP max si nécessaire
-			$temps_maj = time() - $this->get_maj_hp(); // Temps écoulé depuis la dernière augmentation de HP.
-			$temps_hp = $G_temps_maj_hp;  // Temps entre deux augmentation de HP.
-
-			If ($temps_maj > $temps_hp && $temps_hp > 0) // Pour ne jamais diviser par 0...
-			{
-				$time = time();
-				$nb_maj = floor($temps_maj / $temps_hp);
-				$hp_gagne = $nb_maj * (pow($this->get_vie(true), 0.9) * 1.6);
-				$this->set_hp_max($this->get_hp_max(true) + $hp_gagne);
-				$this->set_maj_hp($this->get_maj_hp() + $nb_maj * $temps_hp);
-				$modif = true;
-			}
-			// On augmente les MP max si nécessaire
-			$temps_maj = time() - $this->get_maj_mp(); // Temps écoulé depuis la dernière augmentation de MP.
-			$temps_mp = $G_temps_maj_mp;  // Temps entre deux augmentation de MP.
-			if ($temps_maj > $temps_mp)
-			{
-				$time = time();
-				$nb_maj = floor($temps_maj / $temps_mp);
-				$mp_gagne = $nb_maj * (($this->get_energie(true) - 3) / 4);
-				$this->set_mp_max($this->get_mp_max(true) + $mp_gagne);
-				$this->set_maj_mp($this->get_maj_mp() + $nb_maj * $temps_mp);
-				$modif = true;
-			}
-			// Régénération des HP et MP
-			$temps_regen = time() - $this->get_regen_hp(); // Temps écoulé depuis la dernière régénération.
-
-			// Gemme du troll
-			if (array_key_exists('regeneration', $this->get_enchantement())) {
-				$bonus_regen = $this->get_enchantement('regeneration', 'effet') * 60;
-				if ($G_temps_regen_hp <= $bonus_regen) {
-					$bonus_regen = $G_temps_regen_hp - 3600; // 1h min de regen
-				}
-			} else $bonus_regen = 0;
-
-			if ($temps_regen > ($G_temps_regen_hp - $bonus_regen))
-			{
-				$time = time();
-				$nb_regen = floor($temps_regen / ($G_temps_regen_hp - $bonus_regen));
-				$regen_hp = $G_pourcent_regen_hp;
-				$regen_mp = $G_pourcent_regen_mp;
-				//Buff préparation du camp
-				if($this->is_buff('preparation_camp'))
-				{
-					// Le buff a-t-il été lancé après la dernière régénération ?
-					if($this->get_buff('preparation_camp', 'effet2') > $this->get_regen_hp())
-					{
-						// On calcule le moment où doit avoir lieu la première régénération après le lancement du buff 
-						$regen_cherche = $this->get_regen_hp() + (($G_temps_regen_hp - $bonus_regen) * floor(($this->get_buff('preparation_camp', 'effet2') - $this->get_regen_hp()) / $G_temps_regen_hp));
-					}
-					else $regen_cherche = $this->get_regen_hp();
-					// Le buff s'est-il arrêté entre temps ?
-					if($this->get_buff('preparation_camp', 'fin') > time()) $fin = time();
-					else $fin = $this->get_buff('preparation_camp', 'fin');
-					// On calcule le nombre de régénération pour lesquels le buff doit être pris en compte 
-					$nb_regen_avec_buff = floor(($fin - $regen_cherche) / ($G_temps_regen_hp - $bonus_regen));
-					//bonus buff du camp
-					$bonus_camp = 1 + ((($nb_regen_avec_buff / $nb_regen) * $this->get_buff('preparation_camp', 'effet')) / 100);
-					$regen_hp = $regen_hp * $bonus_camp;
-					$regen_mp = $regen_mp * $bonus_camp;
-				}
-				// Bonus raciaux
-				if($this->get_race() == 'troll') $regen_hp = $regen_hp * 1.2;
-				if($this->get_race() == 'elfehaut') $regen_mp = $regen_mp * 1.1;
-				// Accessoires
-				//if($this['accessoire']['id'] != '0' AND $this['accessoire']['type'] == 'regen_hp') $bonus_accessoire = $this['accessoire']['effet']; else $bonus_accessoire = 0;
-				//if($this['accessoire']['id'] != '0' AND $this['accessoire']['type'] == 'regen_mp') $bonus_accessoire_mp = $this['accessoire']['effet']; else $bonus_accessoire_mp = 0;
-				$accessoire = $this->get_accessoire();
-				if($accessoire != false)
-				{
-					switch($accessoire->type)
-					{
-						case 'regen_hp':
-							$bonus_accessoire = $accessoire->effet;
-							break;
-						case 'regen_mp':
-							$bonus_accessoire_mp = $accessoire->effet;
-							break;
-						default:
-							break;
-					}
-				}
-				$bonus_arme = $this->get_bonus_permanents('regen_hp');
-				$bonus_arme_mp = $this->get_bonus_permanents('regen_mp');
-				// Effets magiques des objets
-				/*foreach($this['objet_effet'] as $effet)
-				{
-					switch($effet['id'])
-					{
-						case '1' :
-							$bonus_accessoire += $effet['effet'];
-						break;
-						case '10' :
-							$bonus_accessoire_mp += $effet['effet'];
-						break;
-					}
-				}*/
-				// Calcul des HP et MP récupérés
-				$hp_gagne = $nb_regen * (floor($this->get_hp_maximum() * $regen_hp) + $bonus_accessoire + $bonus_arme);
-				$mp_gagne = $nb_regen * (floor($this->get_mp_maximum() * $regen_mp) + $bonus_accessoire_mp + $bonus_arme_mp);
-				//DéBuff lente agonie
-				if($this->is_buff('lente_agonie'))
-				{
-					// Le débuff a-t-il été lancé après la dernière régénération ?
-					if($this->get_buff('lente_agonie', 'effet2') > $this->get_regen_hp())
-					{
-						$regen_cherche = $this->get_regen_hp() + (($G_temps_regen_hp - $bonus_regen) * floor(($this->get_buff('lente_agonie', 'effet2') - $this->get_regen_hp()) / $G_temps_regen_hp));
-					}
-					else $regen_cherche = $this->get_regen_hp();
-					// Le débuff s'est-il arrêté entre temps ?
-					if($this->get_buff('lente_agonie', 'fin') > time()) $fin = time();
-					else $fin = $this->get_buff('lente_agonie', 'fin');
-					// On calcule le nombre de régénération pour lesquels le débuff doit être pris en compte 
-					$nb_regen_avec_buff = floor(($fin - $regen_cherche) / ($G_temps_regen_hp - $bonus_regen));
-					// Calcul du malus
-					$malus_agonie = ((1 - ($nb_regen_avec_buff / $nb_regen)) - (($nb_regen_avec_buff / $nb_regen) * $this->get_buff('lente_agonie', 'effet')));
-					$hp_gagne = $hp_gagne * $malus_agonie;
-				}
-				//Maladie regen negative
-				if($this->is_buff('regen_negative') AND !$this->is_buff('lente_agonie'))
-				{
-					$hp_gagne = $hp_gagne * -1;
-					$mp_gagne = $mp_gagne * -1;
-					// On diminue le nombre de régénération pendant lesquels la maladie est active ou supprime s'il n'y en  plus
-					if($this->get_buff('regen_negative', 'effet') > 1)
-					{
-						$requete = "UPDATE buff SET effet = ".($this->get_buff('regen_negative', 'effet') - 1)." WHERE id = ".$this->get_buff('regen_negative', 'id');
-					}
-					else
-					{
-						$requete = "DELETE FROM buff WHERE id = ".$this->get_buff('regen_negative', 'id');
-					}
-					$db->query($requete);
-				}
-				//Maladie high regen
-				if($this->is_buff('high_regen'))
-				{
-					$hp_gagne = $hp_gagne * 3;
-					$mp_gagne = $mp_gagne * 3;
-					// On diminue le nombre de régénération pendant lesquels la maladie est active ou supprime s'il n'y en  plus
-					if($this->get_buff('high_regen', 'effet') > 1)
-					{
-						$requete = "UPDATE buff SET effet = ".($this->get_buff('high_regen', 'effet') - 1)." WHERE id = ".$this->get_buff('high_regen', 'id');
-					}
-					else
-					{
-						$requete = "DELETE FROM buff WHERE id = ".$this->get_buff('high_regen', 'id');
-					}
-					$db->query($requete);
-				}
-				//Maladie mort_regen
-				if($this->is_buff('high_regen') AND $hp_gagne != 0 AND $mp_gagne != 0)
-				{
-					$hp_gagne = $this->get_hp();
-				}
-				// Mise à jour des HP
-				$this->set_hp($this->get_hp() + $hp_gagne);
-				if ($this->get_hp() > $this->get_hp_maximum()) $this->set_hp(floor($this->get_hp_maximum()));
-				// Mise à jour des MP
-				$this->set_mp($this->get_mp() + $mp_gagne);
-				if ($this->get_mp() > $this->get_mp_maximum()) $this->set_mp(floor($this->get_mp_maximum()));
-				$this->set_regen_hp($this->get_regen_hp() + ($nb_regen * ($G_temps_regen_hp - $bonus_regen)));
-			}
-			
-			if($last_action)
-			{
-				//Calcul des PA du joueur
-				$time = time();
-				$temps_pa = $G_temps_PA;
-				// Nombre de PA à ajouter 
-				$panew = floor(($time - $this->get_dernieraction()) / $temps_pa);
-				if($panew < 0) $panew = 0;
-				$prochain = ($this->get_dernieraction() + $temps_pa) - $time;
-				if ($prochain < 0) $prochain = 0;
-				// Mise à jour des PA
-				$this->set_pa($this->get_pa() + $panew);
-				if ($this->get_pa() > $G_PA_max) $this->set_pa($G_PA_max);
-				// Calcul du moment où a eu lieu le dernier gain de PA
-				$j_d_a = (floor($time / $temps_pa)) * $temps_pa;
-				if($j_d_a > $this->get_dernieraction()) $this->set_dernieraction($j_d_a);
-			}
-
-			// On ne doit pas avoir de pet indressable
-			$pet_del = false;
-			$ecurie = $this->get_pets();
-			$max_dresse = $this->max_dresse();
-			foreach ($ecurie as $pet) {
-				$mob = $pet->get_monstre();
-				if ($mob->get_level() > $max_dresse) {
-					$journal = "INSERT INTO journal VALUES(NULL, $this->id, 'pet_leave',  '', '', NOW(), '".
-						mysql_escape_string($pet->get_nom())."', 0, $this->x, $this->y)";
-					$db->query($journal);
-					$pet->supprimer();
-					$pet_del = true;
-				}
-			}
-			if ($pet_del) // On recharge l'ecurie
-				$this->get_pets(true);
-			
-			// Mise-à-jour du personnage dans la base de donnée
-			$this->sauver();
-		} // if($this->get_hp() > 0)
-		// On supprime tous les buffs périmés
-		$requete = "DELETE FROM buff WHERE fin <= ".time();
-		$req = $db->query($requete);
-		// On enlève le ban s'il y en a un et qu'il est fini
-		$requete = "UPDATE perso SET statut = 'actif' WHERE statut = 'ban' AND fin_ban <= ".time();
-		$db->query($requete);
-	}
-
-
-	private $bonus_permanents = array();
-	function get_bonus_permanents($bonus)
-	{
-		if (array_key_exists($bonus, $this->bonus_permanents))
-			return $this->bonus_permanents[$bonus];
-		return 0;
-	}
-
-	function add_bonus_permanents($bonus, $value)
-	{
-		if (array_key_exists($bonus, $this->bonus_permanents))
-			$this->bonus_permanents[$bonus] += $value;
-		else
-			$this->bonus_permanents[$bonus] = $value;
-	}
-
-	/**
-   * Cette fonction permet d'appliquer a la construction les bonus
-   * permanents tels les carac des vampires ou d'items
-   */
-	function applique_bonus()
-	{
-		// Bonus raciaux
-		switch ($this->race)
-		{
-		case 'vampire':
-			$this->add_bonus_permanents('reserve', 2);
-			if (moment_jour($this->id) == 'Nuit')
-			{
-				$this->add_bonus_permanents('reserve', 3);
-				$this->add_bonus_permanents('dexterite', 2);
-				$this->add_bonus_permanents('volonte', 2);
-			}
-			elseif (moment_jour($this->id) == 'Journee')
-			{
-				$this->add_bonus_permanents('reserve', -1);
-				$this->add_bonus_permanents('dexterite', -1);
-				$this->add_bonus_permanents('volonte', -1);
-			}
-			break;
-		case 'elfehaut':
-			if (moment_jour($this->id) == 'Nuit')
-			{
-				$this->add_bonus_permanents('reserve', 2);
-				$this->add_bonus_permanents('dexterite', 1);
-				$this->add_bonus_permanents('volonte', 1);				
-			}
-			break;
-		}
-	}
-
-	private $options_tab = false;
-	/**
-   * Cette fonction renvoie le tableau d'options
-   */
-	function get_options()
-	{
-		if (!$this->options_tab) {
-			global $db;
-			$this->options_tab = array();
-			$requete = "select nom, valeur from options where id_perso = $this->id";
-			$req = $db->query($requete);
-			if ($req) while ($row = $db->read_row($req)) {
-				$this->options_tab[$row[0]] = $row[1];
-			}
-		}
-		return $this->options_tab;
-	}
-
-	/**
-   * Cette fonction renvoie une option
-   */
-	function get_option($name)
-	{
-		if (!$this->options_tab) {
-			$this->get_options();
-		}
-		if (array_key_exists($name, $this->options_tab))
-			return $this->options_tab[$name];
-		else
-			return false;
-	}
-
-	/**
-   * Retourne la position "old style"
-   */
-	function get_poscase()
-	{
-		return $this->y * 1000 + $this->x;
-	}
-
-	function check_sort_jeu_connu($id)
-	{
-		$connus = explode(';', $this->sort_jeu);
-		if (!in_array($id, $connus)) 
-			security_block(URL_MANIPULATION);
-	}
-
-	function check_sort_combat_connu($id)
-	{
-		$connus = explode(';', $this->sort_combat);
-		if (!in_array($id, $connus)) 
-			security_block(URL_MANIPULATION);
-	}
-
-	function check_comp_jeu_connu($id)
-	{
-		$connus = explode(';', $this->comp_jeu);
-		if (!in_array($id, $connus)) 
-			security_block(URL_MANIPULATION);
-	}
-
-	function check_comp_combat_connu($id)
-	{
-		$connus = explode(';', $this->comp_combat);
-		if (!in_array($id, $connus)) 
-			security_block(URL_MANIPULATION);
-	}
-
+	// @}
 	
 	/**
-   * Les achievements
-   */
-   function get_compteur($variable)
-   {
+	 * @name Les achievements
+	 * Gestion des achievements
+	 */
+  // @{
+  /// Renvoie un compteur d'achievement
+  function get_compteur($variable)
+  {
 		global $db;
 		$requete = "SELECT id, id_perso, compteur, variable FROM achievement_compteur WHERE id_perso = '".$this->id."' AND variable = '".$variable."'";
 		$req = $db->query($requete);
@@ -3323,7 +3373,7 @@ class perso extends entite
 		}
 		return $compteur;
 	}
-	
+	/// Renvoie les achievements sous forme de tableau associatif
 	function get_achievement()
    {
 		global $db;
@@ -3340,7 +3390,7 @@ class perso extends entite
 		}
 		return $this->achievement;
 	}
-	
+	/// Indique si un achievement a déjà été débloqué
 	function already_unlocked_achiev($achievement_type)
 	{
 		global $db;
@@ -3351,7 +3401,7 @@ class perso extends entite
 		else
 			return false;
 	}
-	
+	/// Débloque un achievement
 	function unlock_achiev($variable, $hide_message = false)
 	{
 		$achievement_type = achievement_type::create('variable', $variable);
@@ -3383,6 +3433,7 @@ class perso extends entite
 		$req = $db->query($requete);
 		return ($db->num_rows($req) > 0);
 	}
+	// @}
    
 	/** on ne m'aura plus avec les machins déclarés depuis dehors */
 	//function __get($name) { $debug = debug_backtrace(); die('fuck: '.$debug[0]['file'].' line '.$debug[0]['line']); }
