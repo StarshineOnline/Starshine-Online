@@ -11,21 +11,6 @@
  */
 class entite extends placable
 {
-	private $arme_type;
-	public $pp;  ///< Protection physique.
-	public $pm;  ///< Protection magique.
-	private $distance_tir;
-	public $etat;
-	public $enchantement;
-	private $arme_degat;
-	private $bouclier_degat = 0;
-	private $point_victoire;
-
-	private $objet_ref;
-
-	public $potentiel_bloquer;
-	private $malus_hache = 1;
-	
 	/// Pour compatibilité (le temps de refaire la hiérarchie)
 	protected function get_table() { return ''; }
   
@@ -35,11 +20,95 @@ class entite extends placable
 	 * stars, mort, points crimes, ...
 	 */
   // @{
-	protected $race;  ///< Race de l'entité.
-	protected $level;  ///< Niveau de l'entité.
-	protected $rang_royaume;  ///< Grade de l'entité au sein de son royaume.
-	private $type;
-	private $espece;
+	protected $race;         ///< Race de l'entité.
+	protected $level;        ///< Niveau de l'entité.
+	protected $rang_royaume; ///< Grade de l'entité au sein de son royaume.
+	private $type;           ///< Type de l'entité.
+	private $espece;         ///< Espèce de l'entité.
+	public $etat;            ///< État de l'entité.
+	private $point_victoire; ///< Points de victoire gagnés si l'entité est détruite.
+	/// Renvoie la race
+	function get_race()
+	{
+		return $this->race;
+	}
+	/// Renvoie le grade de l'entité au sein de son royaume.
+	function get_rang_royaume()
+	{
+		return $this->rang_royaume;
+	}
+	/// Renvoie le grade.
+	function get_rang()
+	{
+		if(isset($this->rang))
+			return $this->rang;
+		else
+			return $this->rang_royaume;
+	}
+	/// Renvoie le grade sous forme d'objet
+	function get_grade()
+	{
+		$grade = grade::create(array('rang'), array($this->rang_royaume));
+		return $grade[0];
+	}
+	/// Renvoie le niveau de l'entité
+	function get_level()
+	{
+		return $this->level;
+	}
+  /// Renvoie le type de l'entité
+	function get_type()
+	{
+		return $this->type;
+	}
+  /// Indique si l'entité est du type demandé
+	function is_type($type)
+	{
+		return !strcmp($this->type, $type);
+	}
+  /// Renvoie l'espèce de l'entité
+	function get_espece()
+	{
+		return $this->espece;
+	}
+  /// Renvoie l'honneur
+	function get_honneur()
+	{
+		if($this->type == 'joueur') return $this->objet_ref->get_honneur();
+		else return null;
+	}
+  /// Renvoie la réputation
+	function get_reputation()
+	{
+		if($this->type == 'joueur') return $this->objet_ref->get_reputation();
+		else return null;
+	}
+	/// Renvoie l'état
+	function get_etat()
+	{
+		return $this->etat;
+	}
+  /// Renvoie l'expérience
+	function get_exp()
+	{
+		if($this->type == 'joueur')
+			return $this->objet_ref->get_exp();
+		else
+			return 0;
+	}
+  /// Renvoie les stars
+	function get_star()
+	{
+		if(isset($this->star))
+			return $this->star;
+		else
+			return 0;
+	}
+  /// Renvoie les points de victoire gagnés
+	function get_point_victoire()
+	{
+		return $this->point_victoire;
+	}
   // @}
 	
 	/**
@@ -152,6 +221,100 @@ class entite extends placable
 	{
 		return $this->sort_mort;
 	}
+  /**
+   * Indique si l'entité posède une certaine compétence ou s'il en a de manière générale
+   * @param  $nom     nom ou type de la compétence.
+   * @param  $type    true si $nom est le type de la compétence, $false si c'est son nom.
+   */
+	function is_competence($nom = '', $type = false)
+	{
+		$buffe = false;
+		if(is_array($this->competence))
+		{
+			if(!empty($nom))
+			{
+				foreach($this->competence as $key => $comp)
+				{
+					if($type)
+					{
+						if($key == $nom) $buffe = true;
+					}
+					else if($comp->get_competence() == $nom)
+					{
+						$buffe = true;
+					}
+				}
+			}
+			else
+				$buffe = (count($this->buff) > 0);
+		}
+		else
+			$buffe = false;
+
+		return $buffe;
+	}
+   /**
+   * Renvoie la compétence demandée
+   * @param  $nom     nom ou type de la compétence.
+   * @param  $type    true si $nom est le type de la compétence, $false si c'est son nom.
+   */
+	function get_competence($nom, $type = false)
+	{
+		$buffe = false;
+		if(is_array($this->competence))
+		{
+			if(!empty($nom))
+			{
+				foreach($this->competence as $key => $comp)
+				{
+					if($type)
+					{
+						return $comp;
+					}
+					else if($comp->get_competence() == $nom)
+					{
+						return $comp;
+					}
+				}
+			}
+		}
+		return null;
+	}
+	/// Mise-à-jour des compétences à partir de l'objet
+	function maj_comp()
+	{
+		if ($this->type == 'joueur' || $this->type == 'monstre')
+		{
+			$this->esquive = $this->objet_ref->get_esquive();
+			$this->melee = $this->objet_ref->get_melee();
+			$this->distance = $this->objet_ref->get_melee();
+			$this->incantation = $this->objet_ref->get_incantation();
+			$this->sort_mort = $this->objet_ref->get_sort_mort();
+			$this->sort_vie = $this->objet_ref->get_sort_vie();
+			$this->sort_element = $this->objet_ref->get_sort_element();
+		}
+		if ($this->type == 'joueur')
+		{
+			$this->comp = $this->objet_ref->get_comp();
+			$this->distance = $this->objet_ref->get_distance();
+			$this->competence = $this->objet_ref->get_comp_perso();
+		}
+	}
+  /// Renvoie les compétence de combat
+	function get_comp_combat()
+	{
+		return $this->comp_combat;
+	}
+	/// ???
+	function get_comp()
+	{
+		return $this->comp;
+	}
+	/// ???
+	function set_comp($valeur)
+	{
+		$this->comp = $valeur;
+	}
   // @}
   
   /**
@@ -160,9 +323,45 @@ class entite extends placable
    * prochaine régénération et augmentation.
    */         
   // @{
-	protected $pa;  /// < Nombre de PA.
-	protected $hp;   ///< HP actuels de l'entité
+	protected $pa;       /// < Nombre de PA.
+	protected $hp;       ///< HP actuels de l'entité
 	protected $hp_max;   ///< HP maximums.
+	/// Renvoie le nomnre de PA
+	function get_pa()
+	{
+		return $this->pa;
+	}
+	/// Modifie les PA
+	function set_pa($new_pa)
+	{
+		if($this->type == 'joueur')
+		{
+			$this->objet_ref->set_pa($new_pa);
+			$this->pa = $new_pa;
+		}
+	}
+	/// Renvoie les HP actuels
+	function get_hp()
+	{
+		return $this->hp;
+	}
+	/// Modifie les HP actuels
+	function set_hp($valeur)
+	{
+		$this->hp = $valeur;
+	}
+  /// Ajoute de HP à la valeur actuelle
+  function add_hp($add_hp)
+	{
+		$this->hp += $add_hp;
+		if ($this->hp > $this->hp_max)
+			$this->hp = $this->hp_max;
+	}
+	/// Renvoie les HP maximaux
+	function get_hp_max()
+	{
+		return $this->hp_max;
+	}
   // @}
   
   /**
@@ -172,7 +371,265 @@ class entite extends placable
    */         
   // @{
 	protected $comp_combat;  ///< Liste des compétences de combat.
-	public $buff;   ///< Buffs & débuffs actifs dur le personnage
+	public $buff;   ///< Buffs & débuffs actifs sur le personnage.
+	/**
+	 * Renvoie une propriété d'un buff / débuff particulier actif sur le personnage ou l'ensemble de ceux-ci.
+	 * @param  $nom      Nom (type) du (dé)buff recherché, renvoie tous les buffs actifs si vaut false.
+	 * @param  $champ    Propriété recherchée (correspond à un champ dans la bdd).
+	 * @param  $type	   Si false on prend le premier buff, si true celui dont le type correspond à $nom.
+	 * @return     Tableau des buffs ou valeur demandée.
+	 */
+	function get_buff($nom = false, $champ = false, $type = false)
+	{
+		if(!$nom)
+		{
+			return $this->buff;
+		}
+		else
+		{
+			if(!isset($this->buff)) $this->get_buff();
+			if(!$type)
+			{
+				$get = 'get_'.$champ;
+				if(method_exists($this->buff[$nom], $get)) return $this->buff[$nom]->$get();
+				else return false;
+			}
+			else
+				foreach($this->buff as $buff)
+				{
+					if($buff->get_type() == $nom)
+					{
+						$get = 'get_'.$champ;
+						return $buff->$get();
+					}
+				}
+		}
+	}
+  /// Renvoie un tableau contenant uniqument les buffs (c'est-à-dire sans les débuffs)
+	function get_buff_only()
+	{
+		$buffs = array();
+		foreach($this->get_buff() as $buff)
+		{
+			if($buff->get_debuff() == 0)
+				$buffs[] = $buff;
+		}
+
+		return $buffs;
+	}
+  /**
+   * Ajoute un buff
+   * @param  $nom     Nom du buff
+   * @param  $effet   Effet principal
+   * @param  $effet   Effet secondaire
+   */
+	function add_buff($nom, $effet, $effet2 = 0)
+	{
+		if(!isset($this->buff)) $this->get_buff();
+		$buff = new buff();
+		$buff->set_type($nom);
+		$buff->set_effet($effet);
+		$buff->set_effet2($effet2);
+		$this->buff[$nom] = $buff;
+	}
+  /**
+   * Supprime un buff
+   * @param  $id    id du buff.
+   */
+	function supprime_buff($id)
+	{
+		if(!isset($this->buff)) $this->get_buff();
+		unset($this->buff[$id]);
+	}
+	/**
+	 * Permet de savoir si le joueur est sous le buff nom
+	 * @param $nom le nom du buff
+	 * @param $type si le nom est le type du buff
+	 * @return true si le perso est sous le buff false sinon.
+ 	*/
+	function is_buff($nom = '', $type = true)
+	{
+		$buffe = false;
+		if(is_array($this->buff))
+		{
+			if(!empty($nom))
+			{
+				foreach($this->buff as $key => $buff)
+				{
+					if($type)
+					{
+						if($key == $nom) $buffe = true;
+					}
+					else if($buff->get_nom() ==  $nom)
+					{
+						$buffe = true;
+					}
+				}
+			}
+			else
+				$buffe = (count($this->buff) > 0);
+		}
+		else
+			$buffe = false;
+
+		return $buffe;
+	}
+  // @}
+
+  /**
+   * @name Inventaires et objets
+	 * Données et méthodes liées à l'inventaire et aux objets portés ou utiliser par
+	 * les perosnnages.
+	 */
+  // @{
+	private $arme_type;          ///< Type de l'arme utilisée.
+	public $pp;                  ///< Protection physique.
+	public $pm;                  ///< Protection magique.
+	public $enchantement;        ///< Liste des enchantements de gemmes.
+	private $arme_degat;         ///< Dégâts de l'arme.
+	private $bouclier_degat = 0; ///< Dégâts bloqués par le bouclier.
+	private $malus_hache = 1;    ///< Malus d'esquive dû au port d'une hache.
+	private $saved_inventaire = null; ///< Inventaire
+	/// Renvoie le type de l'arme utilisée
+	function get_arme_type()
+	{
+		return $this->arme_type;
+	}
+	/// Renvoie l'arme utilisée
+	function get_arme()
+	{
+		if ($this->type == 'joueur')
+			return $this->objet_ref->get_arme();
+	}
+	/// Renvoie le type de bouclier ('bouclier' ou '')
+	function get_bouclier_type()
+	{
+		return $this->bouclier() ? 'bouclier' : '';
+	}
+	/// Renvoie la PP
+	function get_pp()
+	{
+		return $this->pp;
+	}
+	/// Modifie la PP
+	function set_pp($valeur)
+	{
+		$this->pp = $valeur;
+	}
+	/// Renvoie la PM
+	function get_pm()
+	{
+		return $this->pm;
+	}
+	/// Modifie la PM
+	function set_pm($valeur)
+	{
+		$this->pm = $valeur;
+	}
+	/// Renvoie la liste des enchantements de gemmes
+	function get_enchantement()
+	{
+		return $this->enchantement;
+	}
+	/// Renvoie les dégâts de l'arme
+	function get_arme_degat()
+	{
+		return $this->arme_degat;
+	}
+	/// Renvoie les dégâts bloqués par le bouclier
+	function get_bouclier_degat()
+	{
+		return $this->bouclier_degat;
+	}
+  /// Renvoie le bouclier
+	function bouclier()
+	{
+		switch($this->type)
+		{
+			case 'joueur' :
+				//$this->dump();
+				return $this->objet_ref->get_bouclier();
+				break;
+			case 'monstre' :
+				break;
+		}
+		return false;
+	}
+  /// Renvoie l'inventaire
+	function get_inventaire()
+	{
+		if ($this->type == 'joueur' && $this->saved_inventaire == null)
+			$this->saved_inventaire = $this->objet_ref->get_inventaire();
+		return $this->saved_inventaire;
+	}
+  // @}
+
+
+  /**
+   * @name  Effes parmanents
+   * Effets modifiant les caractéristiques et les compétences. Ces effets peuvent
+   * être dus aux bonus raciaux, aux objets portés…
+   */
+  /**
+   * Renvoie les effets présents d'un certains type
+   * @param  &$effets   tableau auquel sera ajouté les effets trouvés
+   * @param  $mode      type des effets
+   */
+	function get_effets_permanents(&$effets, $mode)
+	{
+		if ($this->type == 'joueur')
+			return $this->objet_ref->get_effets_permanents($effets, $mode);
+	}
+  /// renvoie un bonus permanent particulier
+	function get_bonus_permanents($bonus)
+	{
+		if ($this->type == 'joueur')
+			return $this->objet_ref->get_bonus_permanents($bonus);
+		else
+			return 0;
+	}
+  // @}
+
+	/**
+	 * @name Groupe & quêtes
+	 * Données et méthodes liées au groupe et aux quêtes.
+	 */
+  // @{
+  /// Renvoie l'id du groupe du personnage.
+	function get_groupe()
+	{
+		if ($this->type == 'joueur') return $this->objet_ref->get_groupe();
+		else return null;
+	}
+  /// Renvoie la liste des quêtes que possède le personnage sous forme de tableau.
+	function get_liste_quete()
+	{
+		if ($this->type == 'joueur') return $this->objet_ref->get_liste_quete();
+		else return null;
+	}
+	// @}
+
+	/**
+	 * @name Position & déplacement
+	 * Données et méthodes liées à la position et au déplacement.
+	 */
+  // @{
+  /// Renvoie la position sous forme d'un seul entier
+	function get_pos()
+	{
+		return convert_in_pos($this->x, $this->y);
+	}
+  /**
+   * Indique si le personnage est dans une arène.
+   * @return  false s'il n'est pas dans une arène, sinon objet contenant la
+   *          description de l'arène dans laquelle il se trouve.
+   */
+	function in_arene($filter = '')
+	{
+		if ($this->type == 'joueur')
+			return $this->objet_ref->in_arene($filter);
+		return false;
+	}
 	// @}
 	
 	/**
@@ -180,10 +637,78 @@ class entite extends placable
 	 * Données et méthodes liées aux combats.
 	 */
   // @{
-	public $action;   ///< Contenu du script de combat utilisé
-	public $reserve;  ///< Réserve de mana.
-  // @}
+	public $action;            ///< Contenu du script de combat utilisé.
+	public $reserve;           ///< Réserve de mana.
+	private $distance_tir;     ///< Distance de tir
+	public $potentiel_bloquer; ///< Potentiel bloquer
+	/// Renvoie le contenu du script de combat utilisé
+	function get_action()
+	{
+		return $this->action;
+	}
+	/// Renvoie la réerve de mana
+	function get_reserve($base = false)
+	{
+		return $this->reserve;
+	}
+	/// Modifie la réerve de mana
+	function set_reserve($valeur)
+	{
+		$this->reserve = $valeur;
+	}
+	/// Renvoie la distance de tir
+	function get_distance_tir()
+	{
+		return $this->distance_tir;
+	}
+	/// Calcul et renvoie le potentiel toucher physique
+	function get_potentiel_toucher()
+	{
+		if($this->get_arme_type() == 'arc')
+		{
+			$this->potentiel_toucher = round($this->get_distance() + ($this->get_distance() * ((pow($this->get_dexterite(), 2)) / 1000)));
+		}
+		else
+		{
+			$this->potentiel_toucher = round($this->get_melee() + ($this->get_melee() * ((pow($this->get_dexterite(), 2)) / 1000)));
+		}
+		return $this->potentiel_toucher;
+	}
+	/// Modifie le potentiel toucher physique
+	function set_potentiel_toucher($valeur)
+	{
+		$this->potentiel_toucher = $valeur;
+	}
+  /**
+   * Calcul et renvoie le potentiel parer physique
+   * @param  $esquive   Valeur de la compétence esquive à prendre en compte si elle est différente de celle de l'entité (sinon false).
+   */
+	function get_potentiel_parer($esquive = false)
+	{
+		if(!$esquive) $this->potentiel_parer = round($this->get_esquive() + ($this->get_esquive() * ((pow($this->get_dexterite(), 2)) / 1000)));
+		else $this->potentiel_parer = round($esquive + ($esquive * ((pow($this->get_dexterite(), 2)) / 1000)));
+		if ($this->arme_type == 'hache')
+			$this->potentiel_parer *= $this->malus_hache;
+		return $this->potentiel_parer;
+	}
+	/// Modifie le potentiel parer physique
+	function set_potentiel_parer($valeur)
+	{
+		$this->potentiel_parer = $valeur;
+	}
+	// @}
 
+	/**
+	 * @name Accès à la base de données & création
+	 * Méthode gérant la lecture et l'écriture dans la base de données
+	 */
+  // @{
+	private $objet_ref;    ///< Référence vers l'objet source
+  /**
+   * Crée l'objet à partir d'un objet source
+   * @param  $type    Type de l'entité
+   * @objet  $objet   Référence vers l'objet source.
+   */
 	function __construct($type, &$objet)
 	{
 		$this->objet_effet = array();
@@ -468,7 +993,6 @@ class entite extends placable
 			break;
 		}
 	}
-	
 	/// Renvoie la liste des champs pour une insertion dans la base
 	protected function get_liste_champs()
 	{
@@ -484,17 +1008,7 @@ class entite extends placable
 	{
 		return placable::get_liste_update().', hp = $this->hp';
 	}
-
-	function get_type()
-	{
-		return $this->type;
-	}
-
-	function is_type($type)
-	{
-		return !strcmp($this->type, $type);
-	}
-
+  /// Renvoie l'objet source
 	function get_objet()
 	{
 		$objet = null;
@@ -509,424 +1023,17 @@ class entite extends placable
 		}
 		return $objet;
 	}
-
-	function get_action()
-	{
-		return $this->action;
-	}
-	function get_rang_royaume()
-	{
-		return $this->rang_royaume;
-	}
-	function get_rang()
-	{
-		if(isset($this->rang))
-			return $this->rang;
-		else
-			return $this->rang_royaume;
-	}
-	function get_arme_type()
-	{
-		return $this->arme_type;
-	}
-	function get_bouclier_type()
-	{
-		return $this->bouclier() ? 'bouclier' : '';
-	}
-	function get_comp_combat()
-	{
-		return $this->comp_combat;
-	}
-	function get_comp()
-	{
-		return $this->comp;
-	}
-	function set_comp($valeur)
-	{
-		$this->comp = $valeur;
-	}
-	function get_hp()
-	{
-		return $this->hp;
-	}
-	function set_hp($valeur)
-	{
-		$this->hp = $valeur;
-	}
-	function get_hp_max()
-	{
-		return $this->hp_max;
-	}
-	function get_reserve()
-	{
-		return $this->reserve;
-	}
-	function set_reserve($valeur)
-	{
-		$this->reserve = $valeur;
-	}
-	function get_pa()
-	{
-		return $this->pa;
-	}
-	function get_race()
-	{
-		return $this->race;
-	}
-	function get_pp()
-	{
-		return $this->pp;
-	}
-	function set_pp($valeur)
-	{
-		$this->pp = $valeur;
-	}
-	function get_pm()
-	{
-		return $this->pm;
-	}
-	function set_pm($valeur)
-	{
-		$this->pm = $valeur;
-	}
-	function get_distance_tir()
-	{
-		return $this->distance_tir;
-	}
-	
-	function get_buff($nom = false, $champ = false, $type = false)
-	{
-		if(!$nom)
-		{
-			return $this->buff;
-		}
-		else
-		{
-			if(!isset($this->buff)) $this->get_buff();
-			if(!$type)
-			{
-				$get = 'get_'.$champ;
-				if(method_exists($this->buff[$nom], $get)) return $this->buff[$nom]->$get();
-				else return false;
-			}
-			else
-				foreach($this->buff as $buff)
-				{
-					if($buff->get_type() == $nom)
-					{
-						$get = 'get_'.$champ;
-						return $buff->$get();
-					}
-				}
-		}
-	}
-	
-	function get_buff_only()
-	{
-		$buffs = array();
-		foreach($this->get_buff() as $buff)
-		{
-			if($buff->get_debuff() == 0)
-				$buffs[] = $buff; 
-		}
-		
-		return $buffs;
-	}
-
-	function add_buff($nom, $effet, $effet2 = 0)
-	{
-		if(!isset($this->buff)) $this->get_buff();
-		$buff = new buff();
-		$buff->set_type($nom);
-		$buff->set_effet($effet);
-		$buff->set_effet2($effet2);
-		$this->buff[$nom] = $buff;
-	}
-
-	function supprime_buff($id)
-	{
-		if(!isset($this->buff)) $this->get_buff();
-		unset($this->buff[$id]);
-	}
-
-	function get_etat()
-	{
-		return $this->etat;
-	}
-	function get_enchantement()
-	{
-		return $this->enchantement;
-	}
-	function get_arme_degat()
-	{
-		return $this->arme_degat;
-	}
-	function get_bouclier_degat()
-	{
-		return $this->bouclier_degat;
-	}
-	/// Renvoie le niveau de l'entité
-	function get_level()
-	{
-		return $this->level;
-	}
-	function get_grade()
-	{
-		$grade = grade::create(array('rang'), array($this->rang_royaume));
-		return $grade[0];
-	}
-	function get_potentiel_toucher()
-	{
-		if($this->get_arme_type() == 'arc')
-		{
-			$this->potentiel_toucher = round($this->get_distance() + ($this->get_distance() * ((pow($this->get_dexterite(), 2)) / 1000)));
-		}
-		else
-		{
-			$this->potentiel_toucher = round($this->get_melee() + ($this->get_melee() * ((pow($this->get_dexterite(), 2)) / 1000)));
-		}
-		return $this->potentiel_toucher;
-	}
-	function set_potentiel_toucher($valeur)
-	{
-		$this->potentiel_toucher = $valeur;
-	}
-
-	function get_potentiel_parer($esquive = false)
-	{
-		if(!$esquive) $this->potentiel_parer = round($this->get_esquive() + ($this->get_esquive() * ((pow($this->get_dexterite(), 2)) / 1000)));
-		else $this->potentiel_parer = round($esquive + ($esquive * ((pow($this->get_dexterite(), 2)) / 1000)));
-		if ($this->arme_type == 'hache') 
-			$this->potentiel_parer *= $this->malus_hache;
-		return $this->potentiel_parer;
-	}
-	function set_potentiel_parer($valeur)
-	{
-		$this->potentiel_parer = $valeur;
-	}
-
-	function is_buff($nom = '', $type = true)
-	{
-		$buffe = false;
-		if(is_array($this->buff))
-		{
-			if(!empty($nom))
-			{
-				foreach($this->buff as $key => $buff)
-				{
-					if($type)
-					{
-						if($key == $nom) $buffe = true;
-					}
-					else if($buff->get_nom() ==  $nom)
-					{
-						$buffe = true;
-					}
-				}
-			}
-			else
-				$buffe = (count($this->buff) > 0);
-		}
-		else
-			$buffe = false;
-
-		return $buffe;
-	}
-
-	function is_competence($nom = '', $type = false)
-	{
-		$buffe = false;
-		if(is_array($this->competence))
-		{
-			if(!empty($nom))
-			{
-				foreach($this->competence as $key => $comp)
-				{
-					if($type)
-					{
-						if($key == $nom) $buffe = true;
-					}
-					else if($comp->get_competence() == $nom)
-					{
-						$buffe = true;
-					}
-				}
-			}
-			else
-				$buffe = (count($this->buff) > 0);
-		}
-		else
-			$buffe = false;
-
-		return $buffe;
-	}
-
-	function get_competence($nom)
-	{
-		$buffe = false;
-		if(is_array($this->competence))
-		{
-			if(!empty($nom))
-			{
-				foreach($this->competence as $key => $comp)
-				{
-					if($type)
-					{
-						return $comp;
-					}
-					else if($comp->get_competence() == $nom)
-					{
-						return $comp;
-					}
-				}
-			}
-		}
-		return null;
-	}
-	
-	function get_pos()
-	{
-		return convert_in_pos($this->x, $this->y);
-	}
-
-	function get_espece()
-	{
-		return $this->espece;
-	}
-
-	function get_groupe()
-	{
-		if ($this->type == 'joueur') return $this->objet_ref->get_groupe();
-		else return null;
-	}
-
-	function get_liste_quete()
-	{
-		if ($this->type == 'joueur') return $this->objet_ref->get_liste_quete();
-		else return null;
-	}
-
-	function get_honneur()
-	{
-		if($this->type == 'joueur') return $this->objet_ref->get_honneur();
-		else return null;
-	}
-
-	function get_reputation()
-	{
-		if($this->type == 'joueur') return $this->objet_ref->get_reputation();
-		else return null;
-	}
-
+	/// Affiche un "dump" de l'objet
 	function dump() { echo '<pre>'; var_dump($this); echo '</pre>'; }
+	// @}
 
-	function bouclier()
-	{
-		switch($this->type)
-		{
-			case 'joueur' :
-				//$this->dump();
-				return $this->objet_ref->get_bouclier();
-				break;
-			case 'monstre' : 
-				break;
-		}
-		return false;
-	}
-
-	private $saved_inventaire = null;
-	function get_inventaire()
-	{
-		if ($this->type == 'joueur' && $this->saved_inventaire == null)
-			$this->saved_inventaire = $this->objet_ref->get_inventaire();
-		return $this->saved_inventaire;
-	}
-
-
-	function maj_comp() 
-	{
-		if ($this->type == 'joueur' || $this->type == 'monstre')
-		{
-			$this->esquive = $this->objet_ref->get_esquive();
-			$this->melee = $this->objet_ref->get_melee();
-			$this->distance = $this->objet_ref->get_melee();
-			$this->incantation = $this->objet_ref->get_incantation();
-			$this->sort_mort = $this->objet_ref->get_sort_mort();
-			$this->sort_vie = $this->objet_ref->get_sort_vie();
-			$this->sort_element = $this->objet_ref->get_sort_element();
-		}
-		if ($this->type == 'joueur')
-		{
-			$this->comp = $this->objet_ref->get_comp();
-			$this->distance = $this->objet_ref->get_distance();
-			$this->competence = $this->objet_ref->get_comp_perso();
-		}
-	}
-
-	function get_exp()
-	{
-		if($this->type == 'joueur')
-			return $this->objet_ref->get_exp();
-		else
-			return 0;
-	}
-
-	function get_star()
-	{
-		if(isset($this->star))
-			return $this->star;
-		else
-			return 0;
-	}
-
-	function get_point_victoire()
-	{
-		return $this->point_victoire;
-	}
-
-	function set_pa($new_pa)
-	{
-		if($this->type == 'joueur')
-		{
-			$this->objet_ref->set_pa($new_pa);
-			$this->pa = $new_pa;
-		}
-	}
-
-	function get_arme()
-	{
-		if ($this->type == 'joueur')
-			return $this->objet_ref->get_arme();
-	}
-
-  function add_hp($add_hp) 
-	{
-		$this->hp += $add_hp;
-		if ($this->hp > $this->hp_max)
-			$this->hp = $this->hp_max;
-	}
-
-	function in_arene($filter = '')
-	{
-		if ($this->type == 'joueur')
-			return $this->objet_ref->in_arene($filter);
-		return false;
-	}
-
-	function get_effets_permanents(&$effets, $mode)
-	{
-		if ($this->type == 'joueur')
-			return $this->objet_ref->get_effets_permanents($effets, $mode);
-	}
-
-	function get_bonus_permanents($bonus)
-	{
-		if ($this->type == 'joueur')
-			return $this->objet_ref->get_bonus_permanents($bonus);
-		else
-			return 0;
-	}
-
+	/**
+	 * @name Les achievements
+	 * Gestion des achievements
+	 */
+  // @{
+	protected $compteur_critique=0;  ///< Compteur de coups critiques.
+  /// Revnoie la valeur d'un compteur
 	function get_compteur($type)
 	{
 		if ($this->type == 'joueur')
@@ -934,17 +1041,16 @@ class entite extends placable
 		else
 			return new fake_compteur ;
 	}
-	
-	protected $compteur_critique=0;
-	
+	/// Incrémente le compteur de critiques
 	function set_compteur_critique()
 	{
 		$this->compteur_critique++;
 	}
-	
+  /// Renvoie la valeur du compteur de critiques
 	function get_compteur_critique()
 	{
 		return $this->compteur_critique;
 	}
+  // @}
 }
 ?>

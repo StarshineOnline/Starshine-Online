@@ -2471,7 +2471,12 @@ class perso extends entite
 			
 		return $buffe;
 	}
-	
+	/**
+   * Ajoute un buff
+   * @param  $nom     Nom du buff
+   * @param  $effet   Effet principal
+   * @param  $effet   Effet secondaire
+   */
 	function add_buff($nom, $effet, $effet2 = 0)
 	{
 		if(!isset($this->buff)) $this->get_buff();
@@ -2818,11 +2823,6 @@ class perso extends entite
 	{
 		return $this->y * 1000 + $this->x;
 	}
-  /// Renvoie la position sous forme d'un seul entier
-	function get_pos()
-	{
-		return convert_in_pos($this->x, $this->y);
-	}
   /// renvoie la distance avec un autre joueur
 	function get_distance_joueur($joueur)
 	{
@@ -2983,8 +2983,6 @@ class perso extends entite
 		return 0;
 	}
 	// @}
-     	
-
 
 	/**
 	 * @name Accès à la base de données
