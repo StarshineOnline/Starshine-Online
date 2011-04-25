@@ -1,10 +1,18 @@
 <?php // -*- php -*-
+/**
+ * @file perso.class.php
+ * Gestion des personnages joueurs
+ */
+ 
+/**
+ * Classe représentant un personnage joueur
+ */
 class perso extends entite
 {
 	/**
 	 * @name Informations générales.
 	 * Donnée et méthode sur les inforamations "générales" : classe, rang, niveau,
-	 * stars, mort, points crimes, ...
+	 * stars, mort, points crimes, …
 	 */
   // @{
 	private $classe;       ///< Nom de la classe.
@@ -327,7 +335,7 @@ class perso extends entite
   // @}
   
   /**
-   * Informations joueur
+   * @name Informations joueur
    * Informations sur le joueur : hash du mot-de-passe, e-mail, dernière connection.
    */
   // @{
@@ -473,7 +481,7 @@ class perso extends entite
 	/**
 	 * @name Compétences
 	 * Données et méthodes liées aux compténtences du personnage : mêlée, esquive,
-	 * incatation...	 
+	 * incatation, …
 	 */	
 	// @{
 	private $identification; ///< Compétence "identification".
@@ -722,7 +730,7 @@ class perso extends entite
   /**
    * Indique si le personnage à une certaine compétence.
    * N'est valable que pour les compétences que seules certaines classes peuvent
-   * avoir (maitrises, sorts de groupe, ...).
+   * avoir (maitrises, sorts de groupe, …).
    * @param  $nom   Nom de la compétence.     
    */ 
 	function is_comp_perso($nom = '')
@@ -762,7 +770,7 @@ class perso extends entite
 		return $competence;
 	}
   /**
-   * Renvoie une compétence que seules certaines classes peuvent avoir (maitrises, sorts de groupe, ...)
+   * Renvoie une compétence que seules certaines classes peuvent avoir (maitrises, sorts de groupe, …)
    * @param  $nom   Nom de la compétence.     
    */  
 	function get_comp_perso($nom = '')
@@ -779,7 +787,7 @@ class perso extends entite
 		}
 	}
   /**
-   * Accède aux compétences que seules certaines classes peuvent avoir (maitrises, sorts de groupe, ...)
+   * Accède aux compétences que seules certaines classes peuvent avoir (maitrises, sorts de groupe, …)
    * @param  $nom     Nom de la compétence ou false si on les veux toutes.
    * @param  $champ   Champ(de la bdd) dont ont veut connaitre la valeur.
 	 * @param  $base    true s'il faut donner la valeur de base (sans les bonus).	
@@ -807,7 +815,7 @@ class perso extends entite
 		}
 	}
   /**
-   * Modifie une compétence que seules certaines classes peuvent avoir (maitrises, sorts de groupe, ...)
+   * Modifie une compétence que seules certaines classes peuvent avoir (maitrises, sorts de groupe, …)
    * @param  $nom       Nom de la compétence. 
 	 * @param  $valeur    Nouvelle valeur.
    */  
@@ -827,8 +835,8 @@ class perso extends entite
 	 * les perosnnages.
 	 */
   // @{
-	private $inventaire;             /// < Objets équipés par le personnage (sous forme textuelle).
-	private $inventaire_pet;         /// < Objets équipés par le pet du personnage (sous forme textuelle).
+	private $inventaire;             ///< Objets équipés par le personnage (sous forme textuelle).
+	private $inventaire_pet;         ///< Objets équipés par le pet du personnage (sous forme textuelle).
 	private $inventaire_slot;        ///< Objets que le personnage à "dans son sac" (sous forme textuelle).
 	public $inventaire_array;        ///< Objets équipés par le personnage (sous forme d'objet).
 	public $inventaire_array_pet;    ///< Objets équipés par le pet du personnage (sous forme d'objet).
@@ -2097,7 +2105,7 @@ class perso extends entite
 			$temps_maj = time() - $this->get_maj_hp(); // Temps écoulé depuis la dernière augmentation de HP.
 			$temps_hp = $G_temps_maj_hp;  // Temps entre deux augmentation de HP.
 
-			If ($temps_maj > $temps_hp && $temps_hp > 0) // Pour ne jamais diviser par 0...
+			If ($temps_maj > $temps_hp && $temps_hp > 0) // Pour ne jamais diviser par 0…
 			{
 				$time = time();
 				$nb_maj = floor($temps_maj / $temps_hp);
@@ -2575,7 +2583,7 @@ class perso extends entite
    * @param  $id_monstre    $id de la descrption du monstre.
    * @param  $hp            hp de la créature.
    * @param  $mp            mp de la créature.
-   * @return    true si la craéture a pu être ajoute, false sinon (plus de place).   
+   * @return    true si la créature a pu être ajoute, false sinon (plus de place).
    */        
 	function add_pet($id_monstre, $hp = false, $mp = false)
 	{

@@ -1,11 +1,11 @@
 <?php
-/* 
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * @file entite.class.php
+ * Gestion des participants à un combat
  */
 
 /**
- * Description of entite
+ * Classe représentant les participants à un combat
  *
  * @author florian
  */
@@ -17,7 +17,7 @@ class entite extends placable
 	/**
 	 * @name Informations générales.
 	 * Donnée et méthode sur les inforamations "générales" : classe, rang, niveau,
-	 * stars, mort, points crimes, ...
+	 * stars, mort, points crimes, …
 	 */
   // @{
 	protected $race;         ///< Race de l'entité.
@@ -168,7 +168,7 @@ class entite extends placable
 	/**
 	 * @name Compétences
 	 * Données et méthodes liées aux compténtences du personnage : mêlée, esquive,
-	 * incatation...	 
+	 * incatation, …
 	 */	
 	// @{
 	protected $melee;        ///< Compétence mêlée.
