@@ -1462,6 +1462,7 @@ else
 					$R->add_point_victoire($point_victoire);
 					//On efface le batiment
 					$map_batiment->supprimer();
+					$R->sauver();
 				}
 			}
 
