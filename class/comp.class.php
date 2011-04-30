@@ -129,7 +129,7 @@ class maitrise_bouclier extends competence
   }
 
 	static function factory(&$effects, &$actif, &$passif, $acteur = '') {
-		if ($passif->bouclier AND $passif->is_competence('maitrise_bouclier')) $effects[] = new maitrise_bouclier($acteur != 'attaquant');
+		if ($passif->bouclier() AND $passif->is_competence('maitrise_bouclier')) $effects[] = new maitrise_bouclier($acteur != 'attaquant');
 	}
 
   function calcul_bloquage(&$actif, &$passif) {
