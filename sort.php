@@ -139,6 +139,9 @@ if (isset($_GET['ID']) && !$joueur->is_buff('bloque_sort'))
 		{
 			$sortpa = $sortpa_base;
 			$sortmp = $sortmp_base;
+			//Réduction du cout par concentration
+			if($joueur->is_buff('buff_concentration', true)) $sortmp = ceil($sortmp * (1 - ($joueur->get_buff('buff_concentration','effet') / 100)));
+			//Coût en MP * 1.5 si sort de groupe
 			if($groupe) $sortmp = ceil($sortmp * 1.5);
 		}
 
