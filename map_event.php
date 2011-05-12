@@ -48,7 +48,7 @@ function showParchemin($texte, $titre = 'Une page de parchemin',
 		'px; padding: 15px;"><div class="parchemin_texte">'.$texte.'</div></div>';
 }
 
-function giveRecette(&$joueur, $id_recette)
+function giveRecette(&$joueur, $id_recette, $quiet = false)
 {
   global $dontrefresh;
 	$perso = new perso_recette();
@@ -59,7 +59,11 @@ function giveRecette(&$joueur, $id_recette)
 		$perso_recette->id_perso = $joueur->get_id();
 		$perso_recette->id_recette =$id_recette;
 		$perso_recette->sauver();
-		echo '<h6>Vous avez acquis une nouvelle recette !</h6>';
+		if ($quiet) {
+			echo '<small>Vous avez acquis une nouvelle recette !</small>';
+		} else {
+			echo '<h6>Vous avez acquis une nouvelle recette !</h6>';
+		}
 		$dontrefresh = true;
 	}
 }
