@@ -48,6 +48,22 @@ function showParchemin($texte, $titre = 'Une page de parchemin',
 		'px; padding: 15px;"><div class="parchemin_texte">'.$texte.'</div></div>';
 }
 
+function giveRecette(&$joueur, $id_recette)
+{
+  global $dontrefresh;
+	$perso = new perso_recette();
+	$perso_recette = $perso->recov($joueur->get_id(), $id_recette);
+	if(!$perso_recette)
+	{
+		$perso_recette = new perso_recette();
+		$perso_recette->id_perso = $joueur->get_id();
+		$perso_recette->id_recette =$id_recette;
+		$perso_recette->sauver();
+		echo '<h6>Vous avez acquis une nouvelle recette !</h6>';
+		$dontrefresh = true;
+	}
+}
+
 function checkTpAbo(&$joueur)
 {
   global $dontrefresh;
