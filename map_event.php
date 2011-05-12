@@ -60,7 +60,7 @@ function giveRecette(&$joueur, $id_recette, $quiet = false)
 		$perso_recette->id_recette =$id_recette;
 		$perso_recette->sauver();
 		if ($quiet) {
-			echo '<small>Vous avez acquis une nouvelle recette !</small>';
+			echo '&nbsp;<small>Vous avez acquis une nouvelle recette !</small>';
 		} else {
 			echo '<h6>Vous avez acquis une nouvelle recette !</h6>';
 		}
