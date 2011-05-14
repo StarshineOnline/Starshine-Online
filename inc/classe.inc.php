@@ -67,7 +67,7 @@ $Tclasse['elémentaliste']['type'] = 'archimage';#4
 # Clerc
 $Tclasse['clerc']['type'] = 'mage';							#2
 $Tclasse['prètre']['type'] = 'archimage';				#3
-$Tclasse['prêtre']['type'] = 'archimage';				#3' // accent circonflexe
+$Tclasse['prêtre']['type'] = 'archimage';				#3 // accent circonflexe
 $Tclasse['sage']['type'] = 'archimage';					#4
 
 # Necro
@@ -81,16 +81,16 @@ $Tclasse['demoniste']['type'] = 'archimage';		#4
 
 # Druide
 $Tclasse['druide oblaire']['type'] = 'druide';	#2
-$Tclasse['druide anruth']['type'] = 'druide';		#3
-$Tclasse['druide ollamh']['type'] = 'druide';		#4
+$Tclasse['druide anruth']['type'] = 'druide2';	#3
+$Tclasse['druide ollamh']['type'] = 'druide2';	#4
 
-# Dresseur de l'ombre
+# Dresseur de l´ombre
 $Tclasse['dresseur de lombre']['type'] = 'druide';#2
 
 # Invocateur
 $Tclasse['invocateur']['type'] = 'druide';			#2
-$Tclasse['grand invocateur']['type'] = 'druide';#3
-$Tclasse['conjurateur']['type'] = 'druide';			#4
+$Tclasse['grand invocateur']['type'] = 'druide2';#3
+$Tclasse['conjurateur']['type'] = 'druide2';		#4
 
 
 ?>
