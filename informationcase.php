@@ -38,7 +38,14 @@ if($W_distance < 4)
 	$coutpa_base = $coutpa;
 	$coutpa_diagonale = cout_pa2($coutpa, $joueur, $case, true);
 	$coutpa = cout_pa2($coutpa, $joueur, $case, false);
-	if ($coutpa_base > 49) $coutpa = 'Infranchissable';
+	if ($coutpa_base > 49) 
+	{
+		$coutpa = 'Infranchissable';
+	}	
+	else
+	{
+		$coutpa = $coutpa." PA de déplacement <span class=\"xsmall\">(en diagonale = ".$coutpa_diagonale."PA)</span>";
+	}
 	
 	//Si c'est la capitale
 	if($case->get_x() == $Trace[$R->get_race()]['spawn_x'] AND $case->get_y() == $Trace[$R->get_race()]['spawn_y'])
@@ -54,7 +61,7 @@ if($W_distance < 4)
 	
 	<h4><span class='titre_info'><?php echo $R->get_nom(); ?></span></h4>
 	<strong><?php echo $Gtrad[$R->get_race()]; ?></strong> - <?php echo $Gtrad['diplo'.$R->get_diplo($joueur->get_race())]; ?> - Taxe : <?php echo $R->get_taxe_diplo($joueur->get_race()); ?>%<br />
-	<strong><?php echo $type_terrain[1]; ?></strong> - <?php echo $coutpa; ?> PA de déplacement <span class="xsmall">(en diagonale = <?php echo $coutpa_diagonale; ?> PA)</span>
+	<strong><?php echo $type_terrain[1]; ?></strong> - <?php echo $coutpa; ?>
 
 <?php
   if ($W_distance <= 1)
