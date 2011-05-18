@@ -76,8 +76,8 @@ $Tclasse['grand nécromancien']['type'] = 'archimage';#3
 $Tclasse['pestimancien']['type'] = 'archimage';	#4
 
 # Arcaniste
-$Tclasse['arcaniste']['type'] = 'archimage';		#3
-$Tclasse['demoniste']['type'] = 'archimage';		#4
+$Tclasse['arcaniste']['type'] = 'druide2';		#3
+$Tclasse['demoniste']['type'] = 'druide2';		#4
 
 # Druide
 $Tclasse['druide oblaire']['type'] = 'druide';	#2
