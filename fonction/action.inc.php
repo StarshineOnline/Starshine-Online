@@ -1212,10 +1212,7 @@ function lance_comp($id, $acteur, &$effects)
 		break;
 		case 'fleche_poison' :
 			echo '&nbsp;&nbsp;<strong>'.$actif->get_nom().'</strong> utilise '.$row['nom'].' !<br />';
-      		//$effects[] = new fleche_poison($row['effet'], $row['effet2'], $row['duree']);
-      		$actif->etat['fleche_poison_attaque']['effet'] = $row['effet'];
-      		$actif->etat['fleche_poison_attaque']['effet2'] = $row['effet2'];
-      		$actif->etat['fleche_poison_attaque']['duree'] = $row['duree'];
+      		$effects[] = new fleche_poison($row['effet'], $row['effet2'], $row['duree']);
 			//On prends en compte la bonne compétence
 			$row['comp_assoc'] = $actif->get_comp_combat();
 			$comp_attaque = true;

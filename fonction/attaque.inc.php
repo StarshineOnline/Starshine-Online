@@ -1,4 +1,4 @@
-<?php //  -*- tab-width:2  -*-
+<?php //  -*- tab-width:2; mode: php;  -*-
 if (file_exists('../root.php'))
   include_once('../root.php');
 
@@ -414,15 +414,6 @@ function attaque($acteur = 'attaquant', $competence, &$effects)
 			$effects[] = new fleche_sable($actif->etat['fleche_sable_attaque']['effet'], 
 						$actif->etat['fleche_sable_attaque']['effet2'],	$actif->etat['fleche_sable_attaque']['duree']);
 			unset($actif->etat['fleche_sable_attaque']);
-		}		
-		//Si flêche poison
-		if($actif->etat['fleche_poison_attaque'])
-		{
-			$effects[] = new fleche_poison
-				($actif->etat['fleche_poison_attaque']['effet'], 
-				 $actif->etat['fleche_poison_attaque']['effet2'],
-				 $actif->etat['fleche_poison_attaque']['duree']);
-			unset($actif->etat['fleche_poison_attaque']);
 		}
 		//Si flêche debilitante
 		if($actif->etat['fleche_debilitante_attaque'])

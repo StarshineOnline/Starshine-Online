@@ -1,4 +1,4 @@
-<?php //  -*- tab-width:2; intent-tabs-mode:nil;  -*-
+<?php //  -*- tab-width:2; intent-tabs-mode: nil; mode: php;  -*-
 if (file_exists('../root.php'))
   include_once('../root.php');
 
@@ -462,6 +462,8 @@ class fleche_poison extends comp_combat {
 	}
 
   function calcul_arme(&$actif, &$passif, $arme) {
+    $this->debug("boost du facteur d'arme - fleche empoisonnee: $arme -> ".
+                 ($arme + $this->effet));
 		return $arme + $this->effet;
 	}
 
