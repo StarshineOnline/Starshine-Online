@@ -16,6 +16,11 @@ if(array_key_exists('pet', $_GET))
 {
 	if($joueur->nb_pet() > 0) $check_pet = true;
 }
+if(is_donjon($joueur->get_x(), $joueur->get_y())
+	 && ($joueur->in_arene('and donj = 0') == false))
+	 {
+		 $donj = true;
+	 }
 $type = $_GET['type'];
 switch($type)
 {
@@ -74,9 +79,47 @@ switch($type)
 	case 'monstre' :
 		if(!$check_pet)
 		{
-			$joueur = new perso($_SESSION['ID']);
-			$joueur->action_do = $joueur->recupaction('attaque');
-			$attaquant = new entite('joueur', $joueur);
+			if (!$donj)
+			{
+				$joueur = new perso($_SESSION['ID']);
+				$joueur->action_do = $joueur->recupaction('attaque');
+				$attaquant = new entite('joueur', $joueur);
+			}
+			else
+			{
+				//On vérifie que ya pas un buff qui fait défendre par un pet
+				if($joueur->is_buff('defense_pet'))
+				{
+					$pet = $joueur->get_pet();
+					if (!$pet || $pet->get_hp() < 1)
+					{
+						$check_pet_donj = false;
+						print_debug("Le pet est mort ...");
+					}
+					else
+					{
+						$attaque_donj = $joueur->get_buff('defense_pet', 'effet');
+						$rand = rand(0, 100);
+						//Défense par le pet
+						print_debug("Defense par le pet: $rand VS $defense");
+						if($rand < $attaque_donj)
+						{
+							print_debug("Defense par le pet OK");
+							$check_pet_donj = true;
+						}
+					}
+				}
+				
+				if(!$check_pet_donj)
+				{
+					$joueur->action_do = $joueur->recupaction('defense');
+					$attaquant = new entite('joueur', $joueur);
+				}
+				else
+				{
+					$attaquant = new entite('pet', $joueur);
+				}
+			}
 		}
 		else
 		{
@@ -259,8 +302,7 @@ else
 														 $batiment_def->get_bonus('batiment_esquive'));
 			//Augmentation de la PP
 			if ($batiment_def->has_bonus('batiment_pp'))
-				$defenseur->add_buff('batiment_pp', 
-														 $batiment_def->get_bonus('batiment_pp'));
+				$defenseur->add_buff('batiment_pp', $batiment_def->get_bonus('batiment_pp'));
 			//Augmentation de la PM
 			if ($batiment_def->has_bonus('batiment_pm'))
 				$defenseur->add_buff('batiment_pm', 
@@ -925,6 +967,8 @@ else
 					//Achievement
 					if($attaquant->get_hp() == 0)
 						$joueur->unlock_achiev('near_kill');
+					if($attaquant->get_groupe() == 0)
+						$joueur->unlock_achiev('divided_fall');
 				}
 				//Le défenseur est mort !
 				if (!$check_pet_def && $defenseur->get_hp() <= 0)
@@ -946,6 +990,8 @@ else
 					//Achievement
 					if($defenseur->get_hp() == 0)
 						$joueur_defenseur->unlock_achiev('near_kill');
+					if($defenseur->get_groupe() == 0)
+						$joueur_defenseur->unlock_achiev('divided_fall');
 
 					if ($defenseur->get_nom() == 'Irulan')
 					{
