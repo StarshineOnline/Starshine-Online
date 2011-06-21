@@ -31,9 +31,13 @@ if(array_key_exists(7, $bonus) AND !check_affiche_bonus($bonus[7], $joueur, $per
 else $classe = $perso->get_classe();
 if(array_key_exists(11, $bonus) AND !check_affiche_bonus($bonus[11], $joueur, $perso)) $niveau = 'xx';
 else $niveau = $perso->get_level();
+$titre_perso = new titre($W_ID);
+$titre = $titre_perso->get_titre_perso($bonus);
 ?>
 <div id="info_case">
-<h4><span class="titre_info"><?php echo $chaine_nom; ?></span></h4>
+<h4><span class="titre_info"><?php echo $titre[0].' ';
+		echo $chaine_nom;
+		echo ' '.$titre[1]; ?></span></h4>
 
 <?php
 //Avatar

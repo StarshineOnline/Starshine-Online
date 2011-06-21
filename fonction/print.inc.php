@@ -209,15 +209,24 @@ function affiche_perso_visu($joueur, $W_row, $position="")
 	else { echo '<img src="image/personnage/'.$perso->get_race().'/'.$perso->get_race().'_'.$Tclasse[$perso->get_classe()]["type"].'.png" alt="'.$perso->get_race().'" title="'.$perso->get_race().'" style="vertical-align: middle;height:21px;float:left;width:21px;" />';}
 	
 	echo '<span style="font-weight : bold;float:left;width:290px;margin-left:15px;"><a href="infojoueur.php?ID='.$perso->get_id().'&poscase='.$perso->get_case().'" onclick="return envoiInfo(this.href, \'information\');" onclick="return nd();" onmouseover="return '.make_overlib($echo).'" onmouseout="return nd();">';
-			
+	
+	$titre_perso = new titre($W_ID);
+	$titre = $titre_perso->get_titre_perso($bonus);
 	if ($perso->get_hp() <= 0)
 	{
-		echo '<span class="mort">'.$chaine_nom.'</span> ';
+		echo '<span class="mort">';
+		echo $titre[0].' ';
+		echo $chaine_nom;
+		echo ' '.$titre[1];
+		echo '</span> ';
 	}
 	else
 	{
+		echo $titre[0].' ';
 		echo $chaine_nom;
+		echo ' '.$titre[1];
 	}
+	
 
 	echo '</a>'.$position.'</span>';
 	echo '<span style="float:left;">';

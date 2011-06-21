@@ -3,7 +3,7 @@ if (file_exists('root.php'))
   include_once('root.php');
 
 include_once(root.'inc/fp.php');
-
+$titre_perso = new titre($_SESSION['ID']);
 ?>
 		<div class="titre">
 			Options de votre compte
@@ -14,6 +14,35 @@ include_once(root.'inc/fp.php');
 			{
 				switch($_GET['action'])
 				{
+					case 'titre' :
+						if(array_key_exists('final', $_POST))
+						{
+							$titre_perso->set_id_titre($_POST['final']);
+							echo '<h6>Votre titre a bien été modifié !</br> Pensez à réactualiser !</h6>';
+						}
+						else
+						{
+							$requete = "SELECT * FROM achievement WHERE id_perso = ".$_SESSION['ID'];
+							$req = $db->query($requete);
+							?>
+							<form method="post" action="option.php?action=titre" id="formtitre">
+							<select name="final" >
+							<?php
+							while($row = $db->read_array($req))
+							{
+								$requete2 = "SELECT * FROM achievement_type WHERE id = ".$row['id_achiev'];
+								$req2 = $db->query($requete2);
+								$row2 = $db->read_array($req2);
+								$titre = explode('-', $row2['titre']);
+								if ($titre[1] != null ) echo '<option value="'.$row['id_achiev'].'">Titre : '.$titre[1].'</option>';
+							}
+							?>
+							
+							<input type="submit" id='new_titre' name="new_titre" value="Ok" onclick="return envoiFormulaire('formtitre', 'popup_content');">	
+							</select></form>
+							<?php
+						}
+					break;
 					case 'mdp' :
 						if(array_key_exists('ancien_pass', $_POST))
 						{
@@ -273,7 +302,10 @@ include_once(root.'inc/fp.php');
 					<li><a href="option.php?action=journal" onclick="return envoiInfo(this.href, 'popup_content');">Filtrer votre journal des actions</a></li>
 					<li><a href="configure_point_sso.php" onclick="return envoiInfo(this.href, 'popup_content');">Configurer vos bonus Shine</a></li>
 					<li><a href="option.php?action=email" onclick="return envoiInfo(this.href, 'popup_content');">Modifier votre email</a></li>
+					<li><a href="option.php?action=titre" onclick="return envoiInfo(this.href, 'popup_content');">Choisir un titre</a></li>
+
 				</ul>
+				
 			</div>
 			<div class"news">
 				<h3>Options graphiques</h3>

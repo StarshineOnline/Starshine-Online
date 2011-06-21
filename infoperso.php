@@ -45,8 +45,12 @@ if (file_exists('root.php'))
 	echo "</div>";
 }
 {//-- Buffs, Grade, Pseudo
+	$titre_perso = new titre($_SESSION["ID"]);
+	
+	$bonus = recup_bonus($joueur->get_id());
+	$titre = $titre_perso->get_titre_perso($bonus);
 	echo "<div id='joueur_buffs_nom' style=\"background:transparent url('./image/interface/fond_info_perso_".$joueur->get_race().".png') top left no-repeat;\">";
-	echo " <div id='joueur_nom' onclick=\"envoiInfo('personnage.php', 'information');\" title=\"Accès à la fiche de votre personnage\">".ucwords($joueur->get_grade()->get_nom())." ".ucwords($joueur->get_nom())." - niv.".$joueur->get_level()."<br />".ucwords($Gtrad[$joueur->get_race()])." ".ucwords($joueur->get_classe())." </div>
+	echo " <div id='joueur_nom' onclick=\"envoiInfo('personnage.php', 'information');\" title=\"Accès à la fiche de votre personnage\">".$titre[0]." ".ucwords($joueur->get_grade()->get_nom())." ".ucwords($joueur->get_nom())." ".$titre[1]."  - niv.".$joueur->get_level()."<br />".ucwords($Gtrad[$joueur->get_race()])." ".ucwords($joueur->get_classe())." </div>
 	";
 	echo " <div id='buff_list'>
 			<ul>";
