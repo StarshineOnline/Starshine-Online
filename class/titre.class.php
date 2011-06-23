@@ -84,6 +84,7 @@ class titre extends perso
 	
 	function get_titre_perso($bonus)
 	{			
+    global $db;
 		$titre_perso[] ='';
 		$titre = $this->get_titre($this->get_id_titre());
 		if ($titre != NULL & $titre[0] == 'ap')
