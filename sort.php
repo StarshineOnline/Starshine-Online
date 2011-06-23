@@ -331,6 +331,7 @@ if (isset($_GET['ID']) && !$joueur->is_buff('bloque_sort'))
 					$total_pourcent = 0;
 					foreach($cibles as $cible)
 					{
+            $cible->check_perso(false);
 						if($cible->get_hp() > 0)
 						{
 							$total_pourcent += $cible->get_hp() / $cible->get_hp_max();
