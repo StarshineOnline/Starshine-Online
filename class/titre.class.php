@@ -94,7 +94,7 @@ class titre extends perso
 				$titre_perso[1] = 'dit ';
 				if (array_key_exists(12, $bonus))
 				{
-					$requete = 'SELECT * FROM bonus_perso WHERE id_bonus = "12" AND id_perso = "'.$this->get_id().'"';
+					$requete = 'SELECT * FROM bonus_perso WHERE id_bonus = "12" AND id_perso = "'.$this->id_perso.'"';
 					$req = $db->query($requete);
 					$row = $db->read_assoc($req);
 					if ($row['valeur'] == 2)
@@ -125,7 +125,7 @@ class titre extends perso
 			{
 				if (array_key_exists(12, $bonus) )
 				{
-					$requete = 'SELECT * FROM bonus_perso WHERE id_bonus = "12" AND id_perso = "'.$this->get_id().'"';
+					$requete = 'SELECT * FROM bonus_perso WHERE id_bonus = "12" AND id_perso = "'.$this->id_perso.'"';
 					$req = $db->query($requete);
 					$row = $db->read_assoc($req);
 					if ($row['valeur'] == 2)
