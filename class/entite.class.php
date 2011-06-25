@@ -646,14 +646,15 @@ class entite extends placable
 	{
 		return $this->action;
 	}
-	/// Renvoie la réerve de mana
+	/// Renvoie la réserve de mana
 	function get_reserve($base = false)
 	{
 		return $this->reserve;
 	}
-	/// Modifie la réerve de mana
+	/// Modifie la réserve de mana
 	function set_reserve($valeur)
 	{
+		if ($valeur <= 0) $valeur = 0;
 		$this->reserve = $valeur;
 	}
 	/// Renvoie la distance de tir

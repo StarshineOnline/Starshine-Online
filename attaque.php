@@ -891,8 +891,9 @@ else
 				if ($joueur->is_competence('survie_humanoide'))
 					$survie += $joueur->get_competence('survie_humanoide');
 			}
-
-			$nbr_barre_total = ceil($survie / $defenseur->get_level());
+			
+			if ($defenseur->get_level() != 0) $nbr_barre_total = ceil($survie / $defenseur->get_level()); // Pour les PNJ
+			else $nbr_barre_total = $survie;
 			if($nbr_barre_total > 100) $nbr_barre_total = 100;
 			$nbr_barre = round(($defenseur->get_hp() / $defenseur->get_hp_max()) * $nbr_barre_total);
 			$longueur = round(100 * ($nbr_barre / $nbr_barre_total), 2);
