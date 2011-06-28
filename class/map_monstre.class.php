@@ -571,6 +571,12 @@ class map_monstre
 				echo '<strong>Un bruit de mécanisme eveille votre attention, mais il vous est impossible de savoir d\'où provient ce son.</strong>';
 			}
 			break;
+
+		case 123: //Le roi des gobs fait pop le second roi des gobs
+			$requete = "INSERT INTO map_monstre select NULL, id, 17, 292, hp, ".(time() + 2678400)." from monstre where lib = 'roi_goblin_2' limit 1";
+			$db->query($requete);
+			echo '<strong>Le roi gobelin Ziwek Rustog pousse un cri d\'une frénésie grotesque, se mettant à lancer tout un tas de babioles aux les quatre coins de la pièce. Vous regardez les objets voler tout autour de vous, tentant de les éviter ou les laissant ricocher sur vos armures. Cela devient presque un jeu. Vous reprenez peu à peu vos esprits, revenant vers le roi narquois, et vous comprenez que ce dernier vous a ensorcelé et s\'est carapaté. Devant vous, vous apercevez un petit passage avec des traces fraîches.</strong>';
+			break;
 			
 		default:
 			// Rien à faire
