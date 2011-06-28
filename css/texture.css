@@ -1506,7 +1506,14 @@
 .tex5585{background:url('../image/texture/repere_aquatique/sol_repere_entre_grdetable_g_mb.png') no-repeat;}
 .tex5586{background:url('../image/texture/repere_aquatique/sol_repere_entre_bordelg_md.png') no-repeat;}
 .tex5587{background:url('../image/texture/repere_aquatique/sol_repere_entre_bordeld_m.png') no-repeat;}
-.tex5588{background:url('../image/texture/donjon_aquatique/sol_chute_contact.png') no-repeat;}
+.tex5588{background:url('../image/texture/donjon_aquatique/sol_centre_detail_roche.png') no-repeat;}
+.tex5589{background:url('../image/texture/donjon_aquatique/sol_centre_detail_roche2.png') no-repeat;}
+.tex5590{background:url('../image/texture/donjon_aquatique/sol_centre_detail_flaque_bd.png') no-repeat;}
+.tex5591{background:url('../image/texture/donjon_aquatique/sol_centre_detail_flaque_hg.png') no-repeat;}
+.tex5592{background:url('../image/texture/donjon_aquatique/sol_centre_detail_flaque_hd.png') no-repeat;}
+.tex5593{background:url('../image/texture/donjon_aquatique/couloir_horiz_tombe.png') no-repeat;}
+.tex5594{background:url('../image/texture/donjon_aquatique/sol_centre_tentepierre_bg.png') no-repeat;}
+.tex5595{background:url('../image/texture/donjon_aquatique/sol_centre_tentepierre_bd.png') no-repeat;}
 
 .tex3600{background:url('../image/texture/donjon_gobelin/mur nord.png') no-repeat;}
 .tex3601{background:url('../image/texture/donjon_gobelin/mur gobelin nord g.png') no-repeat;}
@@ -1585,6 +1592,10 @@
 .tex3669{background:url('../image/texture/repere_aquatique/mur_repere_tente_hd.png') no-repeat;}
 .tex3670{background:url('../image/texture/repere_aquatique/mur_repere_tente_hg.png') no-repeat;}
 .tex3671{background:url('../image/texture/repere_aquatique/mur_repere_bar_hd.png') no-repeat;}
+
+.tex3672{background:url('../image/texture/donjon_aquatique/mur_aqua_tombe.png') no-repeat;}
+.tex3673{background:url('../image/texture/donjon_aquatique/mur_tentepierre_hg.png') no-repeat;}
+.tex3674{background:url('../image/texture/donjon_aquatique/mur_tentepierre_hd.png') no-repeat;}
 
 .tex2000{background:url('../image/texture/capitale/vampire/villevampendestrbg.gif') no-repeat;}
 .tex2001{background:url('../image/texture/capitale/vampire/villevampendestrbm.gif') no-repeat;}
