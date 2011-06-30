@@ -544,13 +544,13 @@ else
 					//Augmentation des compétences liées
 					if($mode == 'attaquant')
 					{
-						if(!$check_pet) $joueur = augmentation_competences($augmentations['actif'], $joueur);
+						if(!$check_pet && !$check_pet_donj) $joueur = augmentation_competences($augmentations['actif'], $joueur);
 						if(!$check_pet_def) $joueur_defenseur = augmentation_competences($augmentations['passif'], $joueur_defenseur);
 					}
 					else
 					{
 						if(!$check_pet_def) $joueur_defenseur = augmentation_competences($augmentations['actif'], $joueur_defenseur);
-						if(!$check_pet) $joueur = augmentation_competences($augmentations['passif'], $joueur);
+						if(!$check_pet&& !$check_pet_donj) $joueur = augmentation_competences($augmentations['passif'], $joueur);
 					}
 					// Mise à jour de l'entité pour refleter les up
 					$attaquant->maj_comp();
@@ -736,7 +736,7 @@ else
 			if($type == 'monstre')
 			{
 				//echo '<pre>'; var_dump($joueur); echo '</pre>';
-				if(!$check_pet)
+				if(!$check_pet && !$check_pet_donj)
 				{
 					$joueur->set_hp($attaquant->get_hp());
 					$joueur->sauver();
