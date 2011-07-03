@@ -1851,14 +1851,14 @@ class perso extends entite
 	function get_coef_melee()
 	{
 		if(!isset($this->coef_melee))
-			$this->coef_melee = $this->forcex * $this->get_melee();
+			$this->coef_melee = $this->forcex * $this->get_melee(true);
 		return $this->coef_melee;
 	}
   /// Renvoie le coefficient de tir à distance.
 	function get_coef_distance()
 	{
 		if(!isset($this->coef_distance))
-			$this->coef_distance = round(($this->get_forcex() + $this->get_dexterite()) / 2) * $this->get_distance();
+			$this->coef_distance = round(($this->get_forcex(true) + $this->get_dexterite(true)) / 2) * $this->get_distance(true);
 		return $this->coef_distance;
 	}
   /// Renvoie le coefficient de blocage.
@@ -1871,7 +1871,7 @@ class perso extends entite
 	function get_coef_incantation()
 	{
 		if(!isset($this->coef_incantation))
-			$this->coef_incantation = $this->get_puissance() * $this->get_incantation();
+			$this->coef_incantation = $this->get_puissance(true) * $this->get_incantation(true);
 		return $this->coef_incantation;
 	}
 	/// Renvoie le facteur multipliant les pré-requis et coût en PA et MP des sorts.
