@@ -416,7 +416,7 @@ if (isset($_GET['ID']) && !$joueur->is_buff('bloque_sort'))
 					foreach($cibles as $cible)
 					{
 						//Mis en place du buff
-						if(lance_buff($sort->get_type(), $cible->get_id(), $sort->get_effet(), $sort->get_effet2(), $sort->get_duree(), $sort->get_nom(), description($sort->get_description(), $sort), $type_cible == 'joueur' ? 'perso' : 'monstre', 0, count($cible->get_buff_only()), $cible->get_grade()->get_rang()))
+						if(lance_buff($sort->get_type(), $cible->get_id(), $sort->get_effet(), $sort->get_effet2(), $sort->get_duree(), $sort->get_nom(), description($sort->get_description(), $sort), $type_cible == 'joueur' ? 'perso' : 'monstre', 0, count($cible->get_buff_only()), $cible->get_grade()->get_nb_buff()))
 						{
 							$action = true;
 							echo $cible->get_nom().' a bien reçu le buff<br />';

@@ -151,7 +151,7 @@ if ($joueur->get_race() == $R->get_race() ||
 								$requete = "SELECT * FROM sort_jeu WHERE id = ".$sort;
 								$req = $db->query($requete);
 								$row = $db->read_assoc($req);
-								lance_buff($row['type'], $joueur->get_id(), $row['effet'], $row['effet2'], $row['duree'], $row['nom'], description($row['description'], $row), 'perso', 0, 0, $joueur->get_grade()->get_rang());
+								lance_buff($row['type'], $joueur->get_id(), $row['effet'], $row['effet2'], $row['duree'], $row['nom'], description($row['description'], $row), 'perso', 0, 0, $joueur->get_grade()->get_nb_buff());
 								$texte .= '<br />En plus, vous recevez le buff : '.$row['nom'].' !!!';
 								
 								// Augmentation du compteur de l'achievement

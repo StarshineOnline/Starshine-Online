@@ -51,7 +51,7 @@ if (isset($_GET['ID']))
 				{
 					$cible_s = new perso($cible);
 					//Mis en place du buff
-					if(lance_buff($row['type'], $cible_s->get_id(), $row['effet'], $row['effet2'], $row['duree'], $row['nom'], description($row['description'], $row), 'perso', 0, $cible_s->get_nb_buff(), $cible_s->get_grade()->get_rang()))
+					if(lance_buff($row['type'], $cible_s->get_id(), $row['effet'], $row['effet2'], $row['duree'], $row['nom'], description($row['description'], $row), 'perso', 0, $cible_s->get_nb_buff(), $cible_s->get_grade()->get_nb_buff()))
 					{
 						$action = true;
 						echo $cible_s->get_nom().' a bien reçu le buff<br />';
@@ -80,6 +80,7 @@ if (isset($_GET['ID']))
 			case 'preparation_camp' : 
 			case 'fouille_gibier' : 
 			case 'recherche_precieux' :
+			case 'buff_charisme' :
 				if($groupe_joueur)
 				{
 					$cibles = array();
@@ -98,7 +99,7 @@ if (isset($_GET['ID']))
 					$cible_s = new perso($cible);
 					if($row['type'] == 'preparation_camp') $row['effet2'] = time();
 					//Mis en place du buff
-					if(lance_buff($row['type'], $cible_s->get_id(), $row['effet'], $row['effet2'], $row['duree'], $row['nom'], description($row['description'], $row), 'perso', 0, $cible_s->get_nb_buff(), $cible_s->get_grade()->get_rang()))
+					if(lance_buff($row['type'], $cible_s->get_id(), $row['effet'], $row['effet2'], $row['duree'], $row['nom'], description($row['description'], $row), 'perso', 0, $cible_s->get_nb_buff(), $cible_s->get_grade()->get_nb_buff()))
 					{
 						$action = true;
 						echo $cible_s->get_nom().' a bien reçu le buff<br />';

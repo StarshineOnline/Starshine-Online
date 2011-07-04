@@ -144,7 +144,10 @@ class perso extends entite
 	/// Renvoie le grade
 	function get_grade()
 	{
-		if(!isset($this->grade)) $this->grade = new grade($this->rang_royaume);
+		if(!isset($this->grade)) {
+			$this->grade = new grade($this->rang_royaume);
+			if ($this->is_buff('buff_charisme')) $this->grade->add_bonus_buff(2);
+		}
 		return $this->grade;
 	}
 	/// Modifie le rang au sein du royaume

@@ -1,4 +1,4 @@
-<?php
+<?php //  -*- tab-width:2; mode: php  -*-
 if (file_exists('../root.php'))
   include_once('../root.php');
 
@@ -311,5 +311,14 @@ class grade
 	}
 
 		//fonction
+	private $bonus_buff = 0;
+	function add_bonus_buff($nb) { $this->bonus_buff += $nb; }
+	function get_nb_buff($base = false)
+  {
+    if ($base)
+			return min(10, $this->rang + 2);
+		else
+			return min(10, $this->bonus_buff + $this->rang + 2);
+  }
 }
 ?>

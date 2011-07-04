@@ -2056,12 +2056,12 @@ function return_gestion_royaume($texte, $poscase)
  * @param  $type_cible    Type de cible ('perso' ou 'monstre')
  * @param  $debuff        1 si c'est un débuff, 0 si c'est un buff
  * @param  $nb_buff       Nombre de buffs déjà actifs sur la cible.
- * @param  $grade         Grade de la cible.
+ * @param  $nb_buff_max   Nombre de buffs max de la cible de la cible (grade+).
  * @param  $supprimable   1 si le buff est supprimable, 0 sinon.
  * 
  * @return      true si le sort a été lancé et false sinon.
  */
-function lance_buff($type, $id, $effet, $effet2, $duree, $nom, $description, $type_cible, $debuff, $nb_buff, $grade, $supprimable = 1)
+function lance_buff($type, $id, $effet, $effet2, $duree, $nom, $description, $type_cible, $debuff, $nb_buff, $nb_buff_max, $supprimable = 1)
 {
 	global $db, $G_erreur;
 	$lancement = true;
@@ -2087,7 +2087,7 @@ function lance_buff($type, $id, $effet, $effet2, $duree, $nom, $description, $ty
 	if($db->num_rows == 0)
 	{
 	  // La cible n'a pas le sort d'encore lancé
-		if($nb_buff < ($grade + 2))
+		if($nb_buff < $nb_buff_max)
 		{
 		  // Ajout du buff
 			$requete = "INSERT INTO ".$table."(`type`, `effet`, `effet2`, `fin`, `duree`, `".$champ."`, `nom`, `description`, `debuff`, `supprimable`) VALUES('".$type."', ".$effet.", ".$effet2.", ".(time()+$duree).", ".$duree.", ".$id.", '".$nom."', '".addslashes($description)."', ".$debuff.", ".$supprimable.")";

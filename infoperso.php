@@ -1,4 +1,4 @@
-<?php
+<?php // -*- tab-width:2; mode: php -*-
 if (file_exists('root.php'))
   include_once('root.php');
 
@@ -73,15 +73,15 @@ if (file_exists('root.php'))
 				}
 			}
 		}
-		if($joueur->get_nb_buff() < ($joueur->get_grade()->get_rang() + 2) )
+		if($joueur->get_nb_buff() < ($joueur->get_grade()->get_nb_buff()) )
 		{
-			$case_buff_dispo = ($joueur->get_grade()->get_rang() + 2) - $joueur->get_nb_buff();
+			$case_buff_dispo = ($joueur->get_grade()->get_nb_buff()) - $joueur->get_nb_buff();
 			for($b = 0; $b < $case_buff_dispo; $b++)
 			{
 				echo "<li class='buff_dispo' title='vous pouvez encore recevoir $case_buff_dispo buffs'>&nbsp;</li>";
 			}
 		}
-		if(($joueur->get_grade()->get_rang() + 2) < 10)
+		if(($joueur->get_grade()->get_nb_buff(true)) < 10)
 		{
 			$RqNextGrade = $db->query("SELECT * FROM grade WHERE rang > ".$joueur->get_grade()->get_rang()." ORDER BY rang ASC;");
 			while($objNextGrade = $db->read_object($RqNextGrade))
@@ -90,7 +90,7 @@ if (file_exists('root.php'))
 				if($objNextGrade->honneur > 0) { $tmp .= " (encore ".number_format(($objNextGrade->honneur - $joueur->get_honneur()), 0, ".", ".")."pt d&apos;honneur)"; }
 				$title_grade[$objNextGrade->rang + 2] = $tmp.".";
 			}
-			for($b = ($joueur->get_grade()->get_rang() + 2 + 1); $b <= 10; $b++)
+			for($b = ($joueur->get_grade()->get_nb_buff() + 1); $b <= 10; $b++)
 			{
 				echo "<li class='buff_nondispo' title='".$title_grade[$b]."'>&nbsp;</li>";
 			}
