@@ -17,13 +17,22 @@ $case->check_case('all');
 
 if (array_key_exists('posex', $_REQUEST) && 
     array_key_exists('posey', $_REQUEST)) {
-  if (pose_drapeau_roi($_REQUEST['posex'], $_REQUEST['posey']))
+	if ($joueur->is_buff('debuff_rvr'))
+	{
+		echo '<h5>RvR impossible pendant la trêve</h5>';
+	}
+  elseif (pose_drapeau_roi($_REQUEST['posex'], $_REQUEST['posey']))
     echo "<p>Drapeau posé en $_REQUEST[posex], $_REQUEST[posey]</p>";
 }
 if (array_key_exists('poseall', $_REQUEST)) {
-	$nb = pose_drapeau_roi_all();
-	if ($nb !== false) {
-		echo "<p>$nb drapeaux posés</p>";
+	if ($joueur->is_buff('debuff_rvr')) {
+		echo '<h5>RvR impossible pendant la trêve</h5>';
+	}
+	else {
+		$nb = pose_drapeau_roi_all();
+		if ($nb !== false) {
+			echo "<p>$nb drapeaux posés</p>";
+		}
 	}
 }
 

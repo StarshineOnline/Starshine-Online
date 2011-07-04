@@ -1,4 +1,4 @@
-<?php
+<?php // -*- tab-width:2; mode: php -*- 
 if (file_exists('../root.php'))
   include_once('../root.php');
 
@@ -116,7 +116,7 @@ else if(!array_key_exists('direction', $_GET))
 			$batiment = new batiment($construction->get_id_batiment());
 			
 			//On peut l'upragder si il y a un suivant
-			if($batiment->get_suivant())
+			if($batiment->get_suivant() && !$joueur->is_buff('debuff_rvr'))
 			{
 				$batiment_suivant = new batiment($batiment->get_suivant());
 				
@@ -176,6 +176,10 @@ else if(!array_key_exists('direction', $_GET))
 		echo "</ul>";
 		echo "</fieldset>";
 	}
+}
+elseif($joueur->is_buff('debuff_rvr'))
+{
+	echo '<h5>RvR impossible pendant la trêve</h5>';
 }
 elseif($_GET['direction'] == 'suppr_construction')
 {

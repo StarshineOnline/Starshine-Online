@@ -142,6 +142,7 @@ switch($type)
 		$diff_lvl = abs($joueur->get_level() - $defenseur->get_level());
 	break;
 	case 'batiment' :
+		if ($joueur->is_buff('debuff_rvr')) $no_rvr = true;
 		if(!$check_pet)
 		{
 			$joueur = new perso($_SESSION['ID']);
@@ -164,6 +165,7 @@ switch($type)
 		$defenseur = new entite('batiment', $joueur_defenseur);
 	break;
 	case 'siege' :
+		if ($joueur->is_buff('debuff_rvr')) $no_rvr = true;
 		$map_siege = new construction($_GET['id_arme_de_siege']);
 		if($_GET['table'] == 'construction') $map_batiment = new construction($_GET['id_batiment']);
 		else $map_batiment = new placement($_GET['id_batiment']);
@@ -192,6 +194,7 @@ switch($type)
 		}
 	break;
 	case 'ville' :
+		if ($joueur->is_buff('debuff_rvr')) $no_rvr = true;
 		$map_siege = new construction($_GET['id_arme_de_siege']);
 		$joueur = new perso($_SESSION['ID']);
 		$map_case = new map_case($_GET['id_ville']);
@@ -252,6 +255,10 @@ if(is_donjon($joueur->get_x(), $joueur->get_y())
 if($joueur->is_buff('repos_sage') && !$no_pa_attaque)
 {
 	echo '<h5>Vous êtes sous repos du sage, vous ne pouvez pas attaquer.</h5>';
+}
+elseif($no_rvr)
+{
+	echo '<h5>Vous ne pouvez pas attaquer pendant la trêve.</h5>';
 }
 elseif($joueur->is_buff('dressage'))
 {

@@ -1,4 +1,4 @@
-<?php //	 -*- tab-width:	 2 -*-
+<?php //	 -*- tab-width:	2; mode: php -*-
 if (file_exists('root.php'))
   include_once('root.php');
 
@@ -73,6 +73,11 @@ if(!$visu AND isset($_GET['action']))
 		case 'utilise' :
 			if($_GET['type'] == 'fort' OR $_GET['type'] == 'tour' OR $_GET['type'] == 'bourg' OR $_GET['type'] == 'mur' OR $_GET['type'] == 'arme_de_siege')
 			{
+				if ($joueur->is_buff('debuff_rvr'))
+				{
+					echo '<h5>RvR impossible pendant la trêve</h5>';
+					break;
+				}
 				if ($W_row['type'] != 1)
 				{
 					//Cherche infos sur l'objet
@@ -143,6 +148,11 @@ if(!$visu AND isset($_GET['action']))
 			switch($_GET['type'])
 			{
 				case 'drapeau' :
+				  if ($joueur->is_buff('debuff_rvr'))
+					{
+						echo '<h5>RvR impossible pendant la trêve</h5>';
+						break;
+					}
 					if ($W_row['type'] != 1)
 					{
 						//Cherche infos sur l'objet
@@ -401,6 +411,11 @@ if(!$visu AND isset($_GET['action']))
 		//Dépot de l'objet au dépot militaire
 		case 'depot' :
 			//On le dépose
+			if ($joueur->is_buff('debuff_rvr'))
+			{
+				echo '<h5>RvR impossible pendant la trêve</h5>';
+				break;
+			}
 			if ($R->get_race() != $joueur->get_race())
 			{
 				echo '<h5>Impossible de poser au dépot '.$R->get_race().'</h5>';

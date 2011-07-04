@@ -1,4 +1,4 @@
-<?php
+<?php //	 -*- tab-width:	2; mode: php -*-
 if (file_exists('root.php'))
   include_once('root.php');
 
@@ -6,8 +6,12 @@ include_once(root.'inc/fp.php');
 $joueur = new perso($_SESSION['ID']);
 check_undead_players();
 
+if ($joueur->is_buff('debuff_rvr'))
+{
+	echo '<h5>RvR impossible pendant la trêve</h5>';
+}
 //Si le joueur a assez de PA
-if($joueur->get_pa() >= 30)
+elseif($joueur->get_pa() >= 30)
 {
 	//On recherche les informations sur ce placement
 	$requete = 'SELECT x, y, fin_placement, debut_placement FROM placement WHERE id = '.sSQL($_GET['id_construction']);
