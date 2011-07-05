@@ -2086,9 +2086,10 @@ function lance_buff($type, $id, $effet, $effet2, $duree, $nom, $description, $ty
 	//echo $db->num_rows;
 	if($db->num_rows == 0)
 	{
-	  // La cible n'a pas le sort d'encore lancé
-		if($nb_buff < $nb_buff_max)
+		// La cible n'a pas le sort d'encore lancé
+		if($nb_buff < $nb_buff_max || $nb_buff_max == 0 || $debuff)
 		{
+			// On peut avoir autant de debuff qu'on veut
 		  // Ajout du buff
 			$requete = "INSERT INTO ".$table."(`type`, `effet`, `effet2`, `fin`, `duree`, `".$champ."`, `nom`, `description`, `debuff`, `supprimable`) VALUES('".$type."', ".$effet.", ".$effet2.", ".(time()+$duree).", ".$duree.", ".$id.", '".$nom."', '".addslashes($description)."', ".$debuff.", ".$supprimable.")";
 			$db->query($requete);
