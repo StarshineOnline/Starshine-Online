@@ -35,7 +35,10 @@ elseif ($W_reponse == 'oui')
 			$invitation->supprimer();
 			$groupe_joueur->sauver();
 			$joueur->sauver();
-			echo 'Vous êtes maintenant membre du groupe !';
+			echo 'Vous êtes maintenant membre du groupe ! <br />';
+			
+			// On debloque l'achievement
+			$joueur->unlock_achiev('rejoindre_groupe');
 		}
 		else
 			echo "Vous êtes trop déprimé pour rejoindre un groupe. Pour le moment vous ne voulez parler à personne.";

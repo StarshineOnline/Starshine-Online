@@ -118,6 +118,9 @@ function degroup($ID_joueur, $ID_groupe)
 			
 			$requete = 'UPDATE invitation SET inviteur = '.$groupe['membre'][1]['id'].' WHERE inviteur = '.$ID_joueur;
 			$db->query($requete);
+			
+			$new_leader = new perso($groupe['membre'][1]['id_joueur']);
+			$new_leader->unlock_achiev('nouveau_chef');
 		}
 		
 		//On supprime le joueur du groupe
@@ -154,7 +157,7 @@ function degroup($ID_joueur, $ID_groupe)
 		$requete = 'DELETE FROM invitation WHERE groupe = '.$groupe['id'];
 		$db->query($requete);
 	}
-	echo 'Le joueur a bien quitté le groupe';
+	echo 'Le joueur a bien quitté le groupe <br />';
 	lance_buff('debuff_groupe', $ID_joueur, '0', '0', 86400, 'Dépression', 'Tant que vous êtes déprimé, vous ne pouvez grouper avec qui que ce soit.', 'perso', 1, 0, 0, 0);
 }
 

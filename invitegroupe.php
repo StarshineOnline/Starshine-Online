@@ -37,7 +37,7 @@ if (isset($groupe_joueur) && $groupe_joueur->is_leader())
 		//Si il est déjà groupé
 		if ($perso->get_groupe() == 0)
 		{
-			//Vérifie qu'il n'est pas déprimmé
+			//Vérifie qu'il n'est pas déprimé
 			if($perso->is_buff('debuff_groupe', true))
 			{
 				echo 'Ce joueur est déprimé, il ne vous voit même pas!';
@@ -52,7 +52,14 @@ if (isset($groupe_joueur) && $groupe_joueur->is_leader())
 					$invit = new invitation(-1, $joueur->get_id(), $perso->get_id(), time(), $joueur->get_groupe());
 					$invit->sauver();
 					if($invit->get_id() >= 0)
+					{
 						echo 'Invitation bien envoyée!<br />';
+						
+						// Augmentation du compteur de l'achievement
+						$achiev = $joueur->get_compteur('invitation_groupe');
+						$achiev->set_compteur($achiev->get_compteur() + 1);
+						$achiev->sauver();
+					}
 					else
 						echo 'Veuillez renvoyer l\'invitation.';
 				}
