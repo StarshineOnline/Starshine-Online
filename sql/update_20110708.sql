@@ -35,7 +35,7 @@ update perso set sort_jeu = concat(sort_jeu, ';', (select id from sort_jeu where
 
 -- comp de rang 4 titan
 -- définition
-INSERT INTO `starshine`.`comp_jeu` (
+INSERT INTO `comp_jeu` (
 `id` ,
 `nom` ,
 `description` ,
