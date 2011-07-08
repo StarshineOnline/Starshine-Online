@@ -396,8 +396,26 @@ class arenes_joueur extends table
       }
       $perso->set_groupe( $groupe->get_id() );
     }
-    // Supression des buffs et débuffs
-    $db->query('DELETE FROM buff WHERE id_perso = '.$perso->get_id());
+	
+	// Supression des buffs et débuffs
+	if($arene)
+	{
+		// On enregistre les buffs actuels
+		$requete = 'INSERT INTO arenes_oldbuff(`type`,`effet`,`effet2`,`id_perso`,`fin`,`duree`,`nom`,`description`,`debuff`,`supprimable`) 
+		SELECT buff.type, buff.effet, buff.effet2, buff.id_perso, buff.fin, buff.duree, buff.nom, buff.description, buff.debuff, buff.supprimable FROM buff WHERE id_perso = '.$perso->get_id();
+		$db->query($requete);
+		// On les supprime
+		$db->query('DELETE FROM buff WHERE id_perso = '.$perso->get_id());
+	}
+	else
+	{
+		// On retablit les anciens buffs
+		$requete = 'INSERT INTO buff(`type`,`effet`,`effet2`,`id_perso`,`fin`,`duree`,`nom`,`description`,`debuff`,`supprimable`) 
+		SELECT old.type, old.effet, old.effet2, old.id_perso, old.fin, old.duree, old.nom, old.description, old.debuff, old.supprimable FROM arenes_oldbuff AS old WHERE id_perso = '.$perso->get_id();
+		$db->query($requete);
+		$db->query('DELETE FROM arenes_oldbuff WHERE id_perso = '.$perso->get_id());
+	}
+	
     // HP
     if( $hp === true )
     {
