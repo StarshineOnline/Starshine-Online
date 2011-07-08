@@ -42,6 +42,9 @@ include_once(root.'fonction/equipement.inc.php');
 //Inclusion du fichier contenant la classe inventaire
 include_once(root.'class/inventaire.class.php');
 
+//Inclusion du fichier contenant les fonctions permettant de gérer les gemmes
+include_once(root.'class/gemmes.class.php');
+
 //On regarde si sworling est là
 $requete = "SELECT id FROM map_monstre WHERE type = 56";
 $req = $db->query($requete);

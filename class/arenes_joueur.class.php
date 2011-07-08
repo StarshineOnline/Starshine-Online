@@ -361,6 +361,7 @@ class arenes_joueur extends table
     global $db;
 
     $perso = $this->get_perso();
+	$perso->check_perso();
     if( $arene )
     {
       $x += $arene->get_x();
