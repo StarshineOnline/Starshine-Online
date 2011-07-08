@@ -74,8 +74,9 @@ if (isset($_GET['ID']) && !$joueur->is_buff('bloque_sort'))
 		foreach ($prerequis as $requis) {
 			$regs = array();
 			if (mb_ereg('^classe:(.*)$', $requis, $regs)) {
-				if ($regs[1] != mb_strtolower($perso->get_classe())) {
-					print_debug("La classe $regs[1] est requise pour ce sort");
+				if ($regs[1] != mb_strtolower($joueur->get_classe())) {
+					print_debug("La classe $regs[1] est requise pour ce sort (".
+                      $joueur->get_classe().")");
 					$no_req = true;
 				}
 			}
@@ -756,7 +757,28 @@ if (isset($_GET['ID']) && !$joueur->is_buff('bloque_sort'))
 					{
 						echo 'Le joueur n\'est pas mort';
 					}
-				break;				
+          break;
+        case 'transfert_energie':
+          if ($cible->get_mp() < $cible->get_mp_maximum())
+          {
+            $lancement = true;
+            $avant = $cible->get_mp();
+            $cible->add_mp($sort->get_effet());
+            $cible->sauver();
+            $gain = $cible->get_mp() - $avant;
+            echo $cible->get_nom().' gagne '.$gain.' MP.<br />';
+            if ($groupe) 
+              $groupe_href = '&amp;groupe=yes'; 
+            else 
+              $groupe_href = '&amp;type='.$type_cible.'&amp;id_'.$type_cible.
+                '='.$cible->get_id();
+            echo '<a href="sort.php?ID='.$_GET['ID'].$groupe_href.
+              '" onclick="return envoiInfo(this.href, \'information\')">'.
+              'Utiliser de nouveau ce sort</a>';
+          }
+          else
+            echo 'Le joueur a tous ses points de magie';
+          break;
 			}
 		}
 		//On fait le final si le lancement est réussi

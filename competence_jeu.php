@@ -81,6 +81,7 @@ if (isset($_GET['ID']))
 			case 'fouille_gibier' : 
 			case 'recherche_precieux' :
 			case 'buff_charisme' :
+			case 'buff_honneur' :
 				if($groupe_joueur)
 				{
 					$cibles = array();
