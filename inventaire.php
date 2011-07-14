@@ -491,7 +491,23 @@ if(!$visu AND isset($_GET['action']))
 					$row = $db->read_array($req);
 				break;
 			}
-			$prix = floor($row['prix'] / $G_taux_vente);
+			$modif_prix = 1;
+				if($objet['slot'] > 0)
+				{
+					$modif_prix = 1 + ($objet['slot'] / 5);
+				}
+				if($objet['slot'] == '0')
+				{
+					$modif_prix = 0.9;
+				}
+				if($objet['enchantement'] > '0')
+				{
+					$requete = "SELECT * FROM gemme WHERE id = ".$objet['enchantement'];
+					$req = $db->query($requete);
+					$row_e = $db->read_assoc($req);
+					$modif_prix = 1 + ($row_e['niveau'] / 2);
+				}
+			$prix = floor(($row['prix']) * $modif_prix / $G_taux_vente);
 			$joueur->supprime_objet($joueur->get_inventaire_slot_partie($_GET['key_slot']), 1);
 			$requete = "UPDATE perso SET star = star + ".$prix." WHERE ID = ".$joueur->get_id();
 			$req = $db->query($requete);
