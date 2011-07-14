@@ -28,6 +28,7 @@ $titre_perso = new titre($_SESSION['ID']);
 							<form method="post" action="option.php?action=titre" id="formtitre">
 							<select name="final" >
 							<?php
+							echo '<option value="0">Titre : Aucun titre</option>';
 							while($row = $db->read_array($req))
 							{
 								$requete2 = "SELECT * FROM achievement_type WHERE id = ".$row['id_achiev'];

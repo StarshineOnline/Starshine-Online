@@ -45,7 +45,7 @@ class titre extends perso
    function set_id_titre($id_titre)
    {
 	   global $db;
-		if( $this->id_titre != 0 )
+		if( $this->id_titre != NULL )
 		{
 			$requete = 'UPDATE options SET ';
 			$requete .= 'valeur = "'.$id_titre.'"';
@@ -100,17 +100,21 @@ class titre extends perso
 					if ($row['valeur'] == 2)
 					{
 						$titre_perso[1] .= ' la ';
+						if ($titre[3] != NULL) $titre_perso[1] .= $titre[3];
+						else $titre_perso[1] .= $titre[1];
 					}
 					else
 					{
 						$titre_perso[1] .= ' le ';
+						$titre_perso[1] .= $titre[1];
 					}				
 				}
 				else
 				{
 					$titre_perso[1] .= ' le ';
+					$titre_perso[1] .= $titre[1];
 				}
-				$titre_perso[1] .= $titre[1];
+				
 				return $titre_perso;
 			}
 			else
@@ -131,17 +135,21 @@ class titre extends perso
 					if ($row['valeur'] == 2)
 					{
 						$titre_perso[0] = 'La ';
+						if ($titre[3] != NULL) $titre_perso[0] .= $titre[3];
+						else $titre_perso[0] .= $titre[1];
 					}
 					else
 					{
 						$titre_perso[0] = 'Le ';
+						$titre_perso[0] .= $titre[1];						
 					}				
 				}
 				else
 				{
 					$titre_perso[0] .= 'Le ';
+					$titre_perso[0] .= $titre[1];
 				}
-				$titre_perso[0] .= $titre[1];
+				
 			}
 			else
 			{
