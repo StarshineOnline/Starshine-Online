@@ -240,12 +240,12 @@ function attaque($acteur = 'attaquant', $competence, &$effects)
 					/* ~Blocage */
 
 				}
-			}
-			$diff_blocage = (2.5 * $G_round_total / 5) * $rectif_augm;
+				$diff_blocage = (2.5 * $G_round_total / 5) * $rectif_augm;
 			$augmentation['passif']['comp'][] = array('blocage', $diff_blocage);
 			if($passif->is_competence('maitrise_bouclier'))
-				$augmentation['passif']['comp_perso'][] =
-			array('maitrise_bouclier', 6 * $rectif_augm);
+				$augmentation['passif']['comp_perso'][] = array('maitrise_bouclier', 6 * $rectif_augm);
+			}
+			
 		}
      	//Posture défensive
       	if($passif->etat['posture']['type'] == 'posture_defense') $buff_posture_defense = $passif->etat['posture']['effet']; else $buff_posture_defense = 0;
