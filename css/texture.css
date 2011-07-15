@@ -1585,6 +1585,10 @@
 .tex6562{background:url('../image/texture/donjon_aquagob/sol_donjon_aquagob_trou_centre.png') no-repeat;}
 .tex6563{background:url('../image/texture/donjon_aquagob/sol_donjon_aquagob_trou_ouest.png') no-repeat;}
 .tex6564{background:url('../image/texture/donjon_aquagob/sol_donjon_aquagob_trou_est.png') no-repeat;}
+.tex6565{background:url('../image/texture/donjon_aquagob/sol_donjon_aquagob_ouest_couloir.png') no-repeat;}
+.tex6566{background:url('../image/texture/donjon_aquagob/sol_donjon_aquagob_est_couloir.png') no-repeat;}
+.tex6567{background:url('../image/texture/donjon_aquagob/sol_donjon_aquagob_jonc_est_couloir.png') no-repeat;}
+.tex6568{background:url('../image/texture/donjon_aquagob/sol_donjon_aquagob_jonc_ouest_couloir.png') no-repeat;}
 
 .tex3600{background:url('../image/texture/donjon_gobelin/mur nord.png') no-repeat;}
 .tex3601{background:url('../image/texture/donjon_gobelin/mur gobelin nord g.png') no-repeat;}
