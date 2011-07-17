@@ -410,6 +410,8 @@ class arenes_joueur extends table
 	}
 	else
 	{
+		// On supprime les buffs de l'arene
+		$db->query('DELETE FROM buff WHERE id_perso = '.$perso->get_id());
 		// On retablit les anciens buffs
 		$requete = 'INSERT INTO buff(`type`,`effet`,`effet2`,`id_perso`,`fin`,`duree`,`nom`,`description`,`debuff`,`supprimable`) 
 		SELECT old.type, old.effet, old.effet2, old.id_perso, old.fin, old.duree, old.nom, old.description, old.debuff, old.supprimable FROM arenes_oldbuff AS old WHERE id_perso = '.$perso->get_id();
