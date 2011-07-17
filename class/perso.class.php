@@ -1948,16 +1948,16 @@ class perso extends entite
 	{
 		$this->hp = $hp;
 		$this->champs_modif[] = 'hp';
-		
-		if ($this->get_hp() == 1337)
+
+		if ($this->hp == 1337)
 			$this->unlock_achiev('hp_1337');
-		elseif ($this->get_hp() == 666)
+		elseif ($this->hp == 666)
 			$this->unlock_achiev('hp_666');
-		elseif ($this->get_hp() == 42)
+		elseif ($this->hp == 42)
 			$this->unlock_achiev('hp_42');
-		elseif ($this->get_hp() == 1)
+		elseif ($this->hp == 1)
 			$this->unlock_achiev('hp_1');
-		elseif ($this->get_hp() == 69)
+		elseif ($this->hp == 69)
 			$this->unlock_achiev('hp_69');
 	}
 	/// Renvoie les HP maximaux
@@ -2221,7 +2221,7 @@ class perso extends entite
 					$nb_regen_avec_buff = floor(($fin - $regen_cherche) / ($G_temps_regen_hp - $bonus_regen));
 					// Calcul du malus
 					$malus_agonie = ((1 - ($nb_regen_avec_buff / $nb_regen)) - (($nb_regen_avec_buff / $nb_regen) * $this->get_buff('lente_agonie', 'effet')));
-					$hp_gagne = $hp_gagne * $malus_agonie;
+					$hp_gagne = round($hp_gagne * $malus_agonie);
 				}
 				//Maladie regen negative
 				if($this->is_buff('regen_negative') AND !$this->is_buff('lente_agonie'))
@@ -2261,8 +2261,9 @@ class perso extends entite
 					$hp_gagne = $this->get_hp();
 				}
 				// Mise à jour des HP
-				$this->set_hp($this->get_hp() + $hp_gagne);
-				if ($this->get_hp() > $this->get_hp_maximum()) $this->set_hp(floor($this->get_hp_maximum()));
+				
+				if (($this->get_hp() + $hp_gagne) > $this->get_hp_maximum()) $this->set_hp(floor($this->get_hp_maximum()));
+				else { $this->set_hp($this->get_hp() + $hp_gagne);}
 				// Mise à jour des MP
 				$this->set_mp($this->get_mp() + $mp_gagne);
 				if ($this->get_mp() > $this->get_mp_maximum()) $this->set_mp(floor($this->get_mp_maximum()));
