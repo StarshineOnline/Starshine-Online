@@ -19,6 +19,8 @@ include_once(root.'class/log_admin.class.php');
 
 $date = date("Y-m-d", mktime(0, 0, 0, date("m") , date("d") - 1, date("Y")));
 
+$log = new log_admin();
+
 echo "Simulation de Génération des monstres sur la carte\n";
 
 //Récupération du nombre de joueurs par niveau
@@ -191,8 +193,6 @@ while($row = $db->read_array($req))
 	$mail .= $next_line;
 }
 
-$log = new log_admin();
-
 fclose($handle);
 $ret = $db->query("LOAD DATA LOCAL INFILE \"$insert_file\" INTO TABLE map_monstre (type, x, y, hp, mort_naturelle)");
 $ret_info = $db->get_mysql_info();
@@ -208,6 +208,7 @@ if ($ret_info['warnings'] == 0) {
 //Si le premier du mois, pop des boss de donjons
 if(date("j") == 1)
 {
+  echo "Gestion des pops de boss de donjon\n";
 	$log->send(0, 'journalier', 'Jour 1: pop des boss de donjon');
 	//Myriandre
 	$requete = "SELECT type FROM map_monstre WHERE type = 64 OR type = 65 OR type = 75";
@@ -215,6 +216,7 @@ if(date("j") == 1)
 	//Si il n'est pas là on le fait pop
 	if($db->num_rows == 0)
 	{
+    echo "pop de devoris\n";
 		$time = time() + 2678400;
 		$requete = "INSERT INTO map_monstre VALUES(NULL, '64','21','217','6400',"
       .$time.")";
@@ -223,22 +225,28 @@ if(date("j") == 1)
 		$log->send(0, 'journalier', 'Pop de Devorsis');
 	}
 	//Donjon Gob
-	//Draconide 1
-	$requete = "SELECT type FROM map_monstre WHERE type = 125 OR type = 126 OR type = 123";
+	//Draconides, on teste la présence des draconides et des rois
+	$requete = "SELECT type FROM map_monstre WHERE type in (125, 126, 123, 149)";
 	$db->query($requete);
-	//Si il n'est pas là on le fait pop
+	//S'ils ne sont pas là on les fait pop
 	if($db->num_rows == 0)
 	{
 		$time = time() + 2678400;
 		$requete = "INSERT INTO map_monstre VALUES(NULL,'125','38','284','5000',"
       .$time.")";
-		$db->query($requete);
+		$req = $db->query($requete);
 		$requete = "INSERT INTO map_monstre VALUES(NULL,'126','11','287','5000',"
       .$time.")";
 		$db->query($requete);
 		$mail .= "Pop du construct draconide 1, construct draconide 2\n";
 		$log->send(0, 'journalier', 'Pop des construct draconide');
 	}
+  else
+  {
+    $row = $db->read_assoc($req);
+    $type = $row['type'];
+    $log->send(0, 'journalier', "pas de pop des draconides, présent: $type");
+  }
 }
 $mail .= mysql_error();
 

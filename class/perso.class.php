@@ -147,6 +147,7 @@ class perso extends entite
 		if(!isset($this->grade)) {
 			$this->grade = new grade($this->rang_royaume);
 			if ($this->is_buff('buff_charisme')) $this->grade->add_bonus_buff(2);
+			if ($this->is_buff('debuff_charisme')) $this->grade->add_bonus_buff(-2);
 		}
 		return $this->grade;
 	}

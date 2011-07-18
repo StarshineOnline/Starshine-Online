@@ -318,7 +318,7 @@ class grade
     if ($base)
 			return min(10, $this->rang + 2);
 		else
-			return min(10, $this->bonus_buff + $this->rang + 2);
+			return max(2, min(10, $this->bonus_buff + $this->rang + 2));
   }
 }
 ?>
