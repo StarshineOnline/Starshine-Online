@@ -513,6 +513,7 @@ class map_monstre
 	function kill_monstre_de_donjon()
 	{
 		global $db;
+    $log = new log_admin();
 		switch ($this->type)
 		{
 		case 64: //Si c'est Devorsis on fait pop le fossoyeur
@@ -520,6 +521,7 @@ class map_monstre
         .(time() + 2678400).")";
 			$db->query($requete);
 			echo '<strong>Rha, tu me détruis aujourdhui mais le fossoyeur saura saisir ton âme... tu es déja mort !</strong><br/>';
+      $log->send(0, 'donjon', "devoris tué, pop du fossoyeur");
 			break;
 			
 		case 65: //Si c'est le fossoyeur on fait pop finwir
@@ -527,6 +529,7 @@ class map_monstre
         .(time() + 2678400).")";
 			$db->query($requete);
 			echo '<strong>Tu ne fait que retarder l\'inévitable, Le maître saura te faire payer ton insolence !</strong><br/>';
+      $log->send(0, 'donjon', "fossoyeur tué, pop de finwir");
 			break;
 			
 		case 75: //Si c'est Finrwirr on fait pop le gros monstre
@@ -541,10 +544,12 @@ class map_monstre
 				// Ouverture du passage vers le gros monstre
 				$requete = "UPDATE map set decor = 1539, info = 15 where x = 4 and (y >= 216 and y <= 219)";
 				$db->query($requete);
+        $log->send(0, 'donjon', "finwir tué, pop d'adénaïos");
 			}
 			else
 			{
 				echo '<em>Seul le silence répond à cet appel, Adenaïos le nécromant a déjà été vaincu ...</em><br/>';
+        $log->send(0, 'donjon', "finwir tué, mais PAS de pop d'adénaïos");
 			}
 			break;
 
@@ -555,6 +560,7 @@ class map_monstre
       $db->query($requete);
       $requete = "update map set decor = 1676 where y = 226 and (x = 20 or x = 21)";
       $db->query($requete);
+      $log->send(0, 'donjon', "adénaïos tué, ouverture du portail");
     }
 			
 		case 125:	//Si c'est un draconide
@@ -569,13 +575,17 @@ class map_monstre
           .(time() + 2678400).")";
 				$db->query($requete);
 				echo '<strong>Un bruit de mécanisme eveille votre attention, mais il vous est impossible de savoir d\'où provient ce son.</strong>';
+        $log->send(0, 'donjon', "plus de draconides, ouverture du portail");
 			}
+      else
+        $log->send(0, 'donjon', "un draconide tué, reste un");
 			break;
 
 		case 123: //Le roi des gobs fait pop le second roi des gobs
 			$requete = "INSERT INTO map_monstre select NULL, id, 17, 292, hp, ".(time() + 2678400)." from monstre where lib = 'roi_goblin_2' limit 1";
 			$db->query($requete);
 			echo '<strong>Le roi gobelin Ziwek Rustog pousse un cri d\'une frénésie grotesque, se mettant à lancer tout un tas de babioles aux les quatre coins de la pièce. Vous regardez les objets voler tout autour de vous, tentant de les éviter ou les laissant ricocher sur vos armures. Cela devient presque un jeu. Vous reprenez peu à peu vos esprits, revenant vers le roi narquois, et vous comprenez que ce dernier vous a ensorcelé et s\'est carapaté. Devant vous, vous apercevez un petit passage avec des traces fraîches.</strong>';
+      $log->send(0, 'donjon', "roi gob I tué, pop du roi gob II");
 			break;
 			
 		default:
