@@ -1660,7 +1660,7 @@ class perso extends entite
 				$this->pp = round($this->pp * 1.15);
 				$this->pm = round($this->pm * 1.05);
 			}
-			if($this->get_race() == 'mortvivant' AND moment_jour() == 'Soir')
+			if($this->get_race() == 'mortvivant' AND moment_jour($this->id) == 'Soir')
 			{
 				$this->pp = round($this->pp * 1.15);
 				$this->pm = round($this->pm * 1.15);
