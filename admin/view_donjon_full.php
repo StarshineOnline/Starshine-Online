@@ -55,7 +55,7 @@ class view_map
       $dx = (-$x + $map_type_calque->decalage_x) * 60;
       $dy = (-$y + $map_type_calque->decalage_y) * 60;
 		 $calque .= "background-position: ${dx}px ${dy}px; ".
-       'margin-top: -2px; margin-bottom: -2px; margin-left: -2px;'.
+       'margin-top: -2px; margin-bottom: -2px; margin-left: 0px;'.
        ' height: 60px; width: 60px; background-repeat: repeat;">&nbsp;</div>'; 
     }
     else
