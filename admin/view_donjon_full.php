@@ -37,6 +37,7 @@ class view_map
   function get_id() { return 'TT_'.$this->map->x.'_'.$this->map->y; }
   function prnt() {
     global $Tclasse;
+    global $map_calques;
     $add = '';
 		echo '<td style="border: 0px; width: 60px; height: 60px;"';
 		if ($this->map->decor != 0) {
@@ -45,15 +46,31 @@ class view_map
 			echo 'class="decor texblack"';
 		}
 		echo '>';
+    if (array_key_exists($this->map->type, $map_calques)) {
+      $x = $this->map->x;
+      $y = $this->map->y;
+      $map_type_calque = $map_calques[$this->map->type];
+      $calque = '<div style="background-attachment: scroll; '.
+        'background-image: url(../image/texture/'.$map_type_calque->calque.'); ';
+      $dx = (-$x + $map_type_calque->decalage_x) * 60;
+      $dy = (-$y + $map_type_calque->decalage_y) * 60;
+		 $calque .= "background-position: ${dx}px ${dy}px; ".
+       'margin-top: -2px; margin-bottom: -2px; margin-left: -2px;'.
+       ' height: 60px; width: 60px; background-repeat: repeat;">&nbsp;</div>'; 
+    }
+    else
+      $calque = '';
     if (count($this->perso)) {
-      echo '<div rel="#'.$this->get_id().'" class="map_contenu" style="background-image: url(../image/personnage/'.$this->perso[0]->race.'/'.$this->perso[0]->race.'_'.$Tclasse[$this->perso[0]->classe]['type'].'.png)">&nbsp;</div>';
+      echo '<div rel="#'.$this->get_id().'" class="map_contenu" style="background-image: url(../image/personnage/'.$this->perso[0]->race.'/'.$this->perso[0]->race.'_'.$Tclasse[$this->perso[0]->classe]['type'].'.png)">'.$calque.'</div>';
     }
     elseif (count($this->pnj)) {
-      echo '<div rel="#'.$this->get_id().'" class="map_contenu" style="background-image: url(../image/pnj/'.$this->pnj[0]->image.'.png); width: 54px; height: 54px"></div>';
+      echo '<div rel="#'.$this->get_id().'" class="map_contenu" style="background-image: url(../image/pnj/'.$this->pnj[0]->image.'.png); width: 54px; height: 54px">'.$calque.'</div>';
     }
     elseif (count($this->monstre)) {
-      echo '<div rel="#'.$this->get_id().'" class="map_contenu" style="background-image: url(../image/monstre/'.$this->monstre[0]->image.'.png); width: 54px; height: 54px"></div>';
+      echo '<div rel="#'.$this->get_id().'" class="map_contenu" style="background-image: url(../image/monstre/'.$this->monstre[0]->image.'.png); width: 54px; height: 54px">'.$calque.'</div>';
     }
+    else
+      echo $calque;
     if (count($this->perso) || count($this->monstre) || count($this->pnj)) {
       $add = '<div id="'.$this->get_id().'" class="map_contenu_div">';
       foreach ($this->perso as $perso) {
@@ -82,6 +99,13 @@ class view_map
 
 function prnt_blank() {
   echo '<td style="border: 0px; width: 60px; height: 60px;" class="decor texblack"></td>';
+}
+
+global $map_calques;
+$map_calques = array();
+$req = $db->query("select * from map_type_calque");
+while ($row = $db->read_object($req)) {
+  $map_calques[$row->type] = $row;
 }
 
 $req = $db->query("select * from map where $range_str");
