@@ -161,13 +161,16 @@ function trafiquerCanalisation(&$joueur, $item, $x, $y, $decor, $changes)
     showMessage('La canalisation est déjà réparée !', 'Trafiquer');
     return;
   }
-  if ($joueur->recherche_objet($item)) // check inventaire
+  if ($item == null OR $joueur->recherche_objet($item)) // check inventaire
   {
     foreach ($changes as $c)
       $c->apply();
     showMessage('Vous réparez la canalisation ...', 'Trafiquer');
-    $joueur->supprime_objet($item, 1);
-    $joueur->sauver();
+    if ($item != null)
+    {
+      $joueur->supprime_objet($item, 1);
+      $joueur->sauver();
+    }
   }
   else
     showMessage('Vous n\'avez pas de matériel !', 'Trafiquer');
