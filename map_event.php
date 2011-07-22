@@ -153,13 +153,16 @@ function trafiquerCanalisation(&$joueur, $item, $x, $y, $decor, $changes)
 {
 	global $db;
 
-  $req = "select decor from map where x = $x and y = $y";
-  $res = $db->query($req);
-  $row = $db->read_array($res);
-  if ($row['decor'] != $decor)
+  if ($decor != null)
   {
-    showMessage('La canalisation est déjà réparée !', 'Trafiquer');
-    return;
+    $req = "select decor from map where x = $x and y = $y";
+    $res = $db->query($req);
+    $row = $db->read_array($res);
+    if ($row['decor'] != $decor)
+    {
+      showMessage('La canalisation est déjà réparée !', 'Trafiquer');
+      return;
+    }
   }
   if ($item == null OR $joueur->recherche_objet($item)) // check inventaire
   {
