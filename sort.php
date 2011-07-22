@@ -726,6 +726,13 @@ if (isset($_GET['ID']) && !$joueur->is_buff('bloque_sort'))
 					//On vérifie que le joueur est bien mort !
 					if($cible->get_hp() <= 0)
 					{
+            // On vérifie qu'il y a pas d'anti-rez
+            if ($cible->is_buff('debuff_antirez'))
+            {
+              echo 'Ce joueur est affligé par l\'hérésie divine, il ne peut pas être rappelé à la vie';
+              break;
+            }
+
 						//On vérifie si le joueur n'a pas déjà une rez plus efficace d'active
 						$requete = "SELECT pourcent FROM rez WHERE id_perso = ".$cible->get_id();
 						$req_pourcent = $db->query($requete);

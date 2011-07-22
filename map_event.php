@@ -126,6 +126,53 @@ function checkOpenJailGate(&$joueur)
 	}
 }
 
+class MapChanges
+{
+  private $x;
+  private $y;
+  private $field;
+  private $from;
+  private $to;
+  function __construct($x, $y, $field, $from, $to) {
+    $this->x = $x;
+    $this->y = $y;
+    $this->field = $field;
+    $this->from = $from;
+    $this->to = $to;
+  }
+
+  function apply() {
+    global $db;
+    $sql = "update map set $field = if( $field = $from, $o, $from ), ".
+      "info = floor(decor/100) where x = $x and y = $y";
+    $db->query($sql);
+  }
+}
+
+function trafiquerCanalisation(&$joueur, $item, $x, $y, $decor, $changes)
+{
+	global $db;
+
+  $req = "select decor from map where x = $x and y = $y";
+  $res = $db->query($req);
+  $row = $db->read_array($res);
+  if ($row['decor'] != $decor)
+  {
+    showMessage('La canalisation est déjà réparée !', 'Trafiquer');
+    return;
+  }
+  if ($joueur->recherche_objet($item)) // check inventaire
+  {
+    foreach ($changes as $c)
+      $c->apply();
+    showMessage('Vous réparez la canalisation ...', 'Trafiquer');
+    $joueur->supprime_objet($item, 1);
+    $joueur->sauver();
+  }
+  else
+    showMessage('Vous n\'avez pas de matériel !', 'Trafiquer');
+}
+
 global $dontrefresh;
 global $dontrefreshmap;
 
