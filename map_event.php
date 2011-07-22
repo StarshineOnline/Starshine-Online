@@ -143,8 +143,9 @@ class MapChanges
 
   function apply() {
     global $db;
-    $sql = "update map set $field = if( $field = $from, $o, $from ), ".
-      "info = floor(decor/100) where x = $x and y = $y";
+    $sql = "update map set $this->field = ".
+      "if ( $this->field = $this->from, $this->to, $this->from ), ".
+      "info = floor(decor/100) where x = $this->x and y = $this->y";
     $db->query($sql);
   }
 }
