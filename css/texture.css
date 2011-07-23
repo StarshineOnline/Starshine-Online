@@ -1265,7 +1265,6 @@
 .tex3549{background:url('../image/texture/donjon_gobelin/tex_couloir_gob_verti_mucus_ombre.png') no-repeat;}
 .tex3550{background:url('../image/texture/donjon_gobelin/tex_couloir_gob_horiz_mucus_ombre.png') no-repeat;}
 
-
 .tex3553{background:url('../image/texture/donjon_gobelin/tex_sol_gob_nord_estb_mucus_ombre.png') no-repeat;}
 .tex3554{background:url('../image/texture/donjon_gobelin/tex_sol_gob_nord_ouestb_mucus_ombre.png') no-repeat;}
 .tex3555{background:url('../image/texture/donjon_gobelin/sol_bib_ombre_nord.png') no-repeat;}
@@ -1626,6 +1625,11 @@
 .tex7502{background:url('../image/texture/donjon_aquatique/sol_inferieur_bmd_donjon_aqua.png') no-repeat;}
 .tex7503{background:url('../image/texture/donjon_aquatique/portail_plan_donjon_aqua_.png') no-repeat;}
 .tex7504{background:url('../image/texture/donjon_aquatique/sol_murnord_canal_casseb.png') no-repeat;}
+.tex7505{background:url('../image/texture/donjon_aquatique/sol_detail_alguecoquillage.png') no-repeat;}
+.tex7506{background:url('../image/texture/donjon_aquatique/sol_donjon_aqua_tente_chacaldg.png') no-repeat;}
+.tex7507{background:url('../image/texture/donjon_aquatique/sol_donjon_aqua_tente_chacalgg.png') no-repeat;}
+.tex7508{background:url('../image/texture/donjon_aquatique/sol_donjon_aqua_tente_chacalg.png') no-repeat;}
+.tex7509{background:url('../image/texture/donjon_aquatique/sol_donjon_aqua_tente_chacald.png') no-repeat;}
 
 .tex3600{background:url('../image/texture/donjon_gobelin/mur nord.png') no-repeat;}
 .tex3601{background:url('../image/texture/donjon_gobelin/mur gobelin nord g.png') no-repeat;}
