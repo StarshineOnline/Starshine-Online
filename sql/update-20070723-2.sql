@@ -1,0 +1,1 @@
+ALTER TABLE `arenes_joueurs` CHANGE `groupe` `groupe` INT( 11 ) NULL
