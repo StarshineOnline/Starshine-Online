@@ -1748,6 +1748,9 @@ class perso extends entite
 				break;
 			case 10:
 				$this->add_effet_permanent('defenseur', new protection_artistique($effet, $item->nom));
+			case 13:
+				$this->camouflage = $effet;
+				break;
 			default:
 				break;
 			}
@@ -3443,6 +3446,20 @@ class perso extends entite
 		$requete = "SELECT id FROM achievement a, achievement_type t WHERE a.id_perso = $this->id AND a.id_achiev = t.id AND t.variable = '$t'";
 		$req = $db->query($requete);
 		return ($db->num_rows($req) > 0);
+	}
+
+	private $camouflage = null;
+	function get_camouflage()
+	{
+		return $camouflage;
+	}
+
+	function get_race_a()
+	{
+		if ($this->camouflage)
+			return $this->camouflage;
+		else 
+			return $this->get_race();
 	}
 	// @}
    

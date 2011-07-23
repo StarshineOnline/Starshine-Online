@@ -1,4 +1,4 @@
-<?php
+<?php // -*- mode: php; tab-width: 2 -*-
 if (file_exists('root.php'))
   include_once('root.php');
 
@@ -9,6 +9,7 @@ $W_ID = $_GET['ID'];
 //Prise des infos du perso
 $joueur = new perso($_SESSION['ID']);
 $perso = new perso($W_ID);
+$perso->check_materiel();
 $groupe = new groupe($joueur->get_groupe());
 
 $W_case = convert_in_pos($perso->get_x(), $perso->get_y());
@@ -61,7 +62,7 @@ if($perso['lignee'] != 0)
 }*/
 ?>
 <?php
-echo $Gtrad[$perso->get_race()];
+echo $Gtrad[$perso->get_race_a()];
 //Sexe
 if(array_key_exists(12, $bonus) AND check_affiche_bonus($bonus[12], $joueur, $perso))
 {

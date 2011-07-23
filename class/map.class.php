@@ -1,4 +1,4 @@
-<?php // -*- mode: php -*-
+<?php // -*- mode: php; tab-width: 2 -*-
 if (file_exists('../root.php'))
   include_once('../root.php');
 
@@ -682,6 +682,12 @@ class map
 							if($objJoueurs->cache_niveau == 2)	{ $this->map[$objJoueurs->x][$objJoueurs->y]["Joueurs"][$joueurs]["level"] = "xxx"; }
 							elseif($objJoueurs->cache_niveau == 1 && $objJoueurs->race != $race) { $this->map[$objJoueurs->x][$objJoueurs->y]["Joueurs"][$joueurs]["level"] = "xxx"; }
 						}
+					}
+					{//-- Vérification du camouflage, ce qui oblige à instancier :(
+						$tmp_perso = new perso($objJoueurs->id);
+						$tmp_perso->check_materiel();
+						if ($tmp_perso->get_race_a() != $objJoueurs->race)
+							$objJoueurs->race = $tmp_perso->get_race_a();
 					}
 					{//-- Vérification que l'image de classe existe ($Tclasse est contenue dans ./inc/classe.inc.php)
 						$classe = $this->map[$objJoueurs->x][$objJoueurs->y]["Joueurs"][$joueurs]["classe"];

@@ -56,7 +56,10 @@ $Gtrad['orc'] = 'Orc';
 $Gtrad['scavenger'] = 'Scavenger';
 $Gtrad['troll'] = 'Troll';
 $Gtrad['vampire'] = 'Vampire';
+// et de races
 $Gtrad['neutre'] = 'Neutre';
+$Gtrad['pnj'] = 'PNJ';
+$Gtrad['coyotte'] = 'Coyotte';
 //@}
 
 

@@ -1,4 +1,4 @@
-<?php
+<?php // -*- mode: php; tab-width: 2 -*-
 if (file_exists('../root.php'))
   include_once('../root.php');
 
@@ -158,6 +158,7 @@ function affiche_perso_visu($joueur, $W_row, $position="")
 	if ($W_ID == null) continue;
 	
 	$perso = new perso($W_ID);
+	$perso->check_materiel();
 	
 	$bonus = recup_bonus($W_ID);
 	// on envois dans infojoueur.php -> ID du joueur et La position de la case ou il se trouve
@@ -204,9 +205,9 @@ function affiche_perso_visu($joueur, $W_row, $position="")
 	else $chaine_nom = $W_row['gnom'].' '.$perso->get_nom();
 	$echo = $Gtrad['diplo'.$diplo].' => XP : '.($facteur_xp * 100).'% - Honneur : '.($facteur_honneur * 100).'%';
 	
-	if($perso->get_cache_classe() == 2)	{  echo '<img src="image/personnage/'.$perso->get_race().'/'.$perso->get_race().'_guerrier.png" alt="'.$perso->get_race().'" title="'.$perso->get_race().'" style="vertical-align: middle;height:21px;float:left;width:21px;" />';  }
-	elseif($perso->get_cache_classe() == 1 && $joueur->get_race() != $perso->get_race()) { echo '<img src="image/personnage/'.$perso->get_race().'/'.$perso->get_race().'_guerrier.png" alt="'.$perso->get_race().'" title="'.$perso->get_race().'" style="vertical-align: middle;height:21px;float:left;width:21px;" />'; }
-	else { echo '<img src="image/personnage/'.$perso->get_race().'/'.$perso->get_race().'_'.$Tclasse[$perso->get_classe()]["type"].'.png" alt="'.$perso->get_race().'" title="'.$perso->get_race().'" style="vertical-align: middle;height:21px;float:left;width:21px;" />';}
+	if($perso->get_cache_classe() == 2)	{  echo '<img src="image/personnage/'.$perso->get_race_a().'/'.$perso->get_race_a().'_guerrier.png" alt="'.$perso->get_race_a().'" title="'.$perso->get_race_a().'" style="vertical-align: middle;height:21px;float:left;width:21px;" />';  }
+	elseif($perso->get_cache_classe() == 1 && $joueur->get_race_a() != $perso->get_race_a()) { echo '<img src="image/personnage/'.$perso->get_race_a().'/'.$perso->get_race_a().'_guerrier.png" alt="'.$perso->get_race_a().'" title="'.$perso->get_race_a().'" style="vertical-align: middle;height:21px;float:left;width:21px;" />'; }
+	else { echo '<img src="image/personnage/'.$perso->get_race_a().'/'.$perso->get_race_a().'_'.$Tclasse[$perso->get_classe()]["type"].'.png" alt="'.$perso->get_race_a().'" title="'.$perso->get_race_a().'" style="vertical-align: middle;height:21px;float:left;width:21px;" />';}
 	
 	echo '<span style="font-weight : bold;float:left;width:290px;margin-left:15px;"><a href="infojoueur.php?ID='.$perso->get_id().'&poscase='.$perso->get_case().'" onclick="return envoiInfo(this.href, \'information\');" onclick="return nd();" onmouseover="return '.make_overlib($echo).'" onmouseout="return nd();">';
 	
