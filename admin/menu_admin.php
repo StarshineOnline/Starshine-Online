@@ -152,6 +152,12 @@ else
 	$menu[$i]['url'] = 'arenes.php';
 	$menu[$i++]['acces'] = '';
 	$acces[] = '';
+	
+	
+	$menu[$i]['nom'] = 'Gestion des titres honorifiques';
+	$menu[$i]['url'] = 'titre_honorifique.php';
+	$menu[$i++]['acces'] = '';
+	$acces[] = '';
 
 	$menu[$i]['nom'] = 'Event';
 	$menu[$i]['url'] = 'event.php';

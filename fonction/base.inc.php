@@ -1157,15 +1157,22 @@ function recup_amende($id_perso)
  *  
  * @return   Titres sous forme de tableau de tableaux associatif.
  */
-function recup_titre_honorifique($id_perso)
+function recup_titre_honorifique($id)
 {
 	global $db;
 	$titres = array();
-	$requete = "SELECT * FROM titre_honorifique WHERE id_perso = ".$id_perso;
+	$requete = "SELECT * FROM titre_honorifique";
 	$req = $db->query($requete);
 	while($row = $db->read_assoc($req))
 	{
-		$titres[] = $row['titre'];
+		$liste = explode('-', $row['id_perso']);
+		foreach ($liste as $perso)
+		{
+			if ($perso == $id)
+			{
+				$titres[] = $row['titre'];
+			}
+		}
 	}
 	return $titres;
 }

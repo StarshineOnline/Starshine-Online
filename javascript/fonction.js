@@ -33,6 +33,13 @@ function show_op()
 	document.getElementById('valeur').style.visibility = 'visible';
 }
 
+function affiche_test(x)
+{
+	var doc;
+	doc = document.getElementById('test'+x);
+	x++;
+	doc.innerHTML ="Perso : <input type=\"text\" name=\"id"+x+"\" onkeydown = \"affiche_test("+x+")\" /><br />";
+}
 function opii(id)
 {
 	selection = id.options[id.selectedIndex].value;
