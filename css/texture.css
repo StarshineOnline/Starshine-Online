@@ -1643,7 +1643,20 @@
 .tex7519{background:url('../image/texture/ville_aquatique/sol_mur_sud_ville_aqua.png') no-repeat;}
 .tex7520{background:url('../image/texture/ville_aquatique/sol_mur_nordouest_ville_aqua.png') no-repeat;}
 .tex7521{background:url('../image/texture/ville_aquatique/sol_mur_nordest_ville_aqua.png') no-repeat;}
-
+.tex7522{background:url('../image/texture/donjon_aquatique/sol_donjon_aqua_etandartbg.png') no-repeat;}
+.tex7523{background:url('../image/texture/donjon_aquatique/sol_centre_trone_chefchacal.png') no-repeat;}
+.tex7524{background:url('../image/texture/donjon_aquatique/sol_mur_ouest_table_chefchacal_bas.png') no-repeat;}
+.tex7525{background:url('../image/texture/donjon_aquatique/sol_mur_ouest_table_chefchacal_haut.png') no-repeat;}
+.tex7526{background:url('../image/texture/donjon_aquatique/sol_mur_est_litchef.png') no-repeat;}
+.tex7527{background:url('../image/texture/donjon_aquatique/sol_mur_nordouest_chefchacal.png') no-repeat;}
+.tex7528{background:url('../image/texture/donjon_aquatique/couloir_verti_jonction_eau_basse.png') no-repeat;}
+.tex7529{background:url('../image/texture/donjon_aquatique/sol_mur_sud_ouest_hammam.png') no-repeat;}
+.tex7530{background:url('../image/texture/donjon_aquatique/sol_mur_nord_ouest_hammam.png') no-repeat;}
+.tex7531{background:url('../image/texture/donjon_aquatique/sol_mur_nord_est_hammam.png') no-repeat;}
+.tex7532{background:url('../image/texture/donjon_aquatique/sol_mur_nord_hammam.png') no-repeat;}
+.tex7533{background:url('../image/texture/donjon_aquatique/sol_sud_hammam.png') no-repeat;}
+.tex7534{background:url('../image/texture/donjon_aquatique/sol_mur_sud_est_hammam.png') no-repeat;}
+.tex7535{background:url('../image/texture/donjon_aquatique/sol_rideau_hammam_ouvert.png') no-repeat;}
 
 .tex3600{background:url('../image/texture/donjon_gobelin/mur nord.png') no-repeat;}
 .tex3601{background:url('../image/texture/donjon_gobelin/mur gobelin nord g.png') no-repeat;}
@@ -1786,6 +1799,11 @@
 .tex4628{background:url('../image/texture/ville_aquatique/mur_nord_porte_ville_aqua.png') no-repeat;}
 .tex4629{background:url('../image/texture/ville_aquatique/mur_nordouest_pillier_ville_aqua.png') no-repeat;}
 .tex4630{background:url('../image/texture/ville_aquatique/mur_nordest_pillier_ville_aqua.png') no-repeat;}
+
+.tex4631{background:url('../image/texture/donjon_aquatique/mur_rideau_hammam_hg.png') no-repeat;}
+.tex4632{background:url('../image/texture/donjon_aquatique/mur_rideau_hammam_hm.png') no-repeat;}
+.tex4633{background:url('../image/texture/donjon_aquatique/mur_rideau_hammam_hd.png') no-repeat;}
+.tex4634{background:url('../image/texture/donjon_aquatique/mur_nordouest_chefchacal.png') no-repeat;}
 
 .tex2000{background:url('../image/texture/capitale/vampire/villevampendestrbg.gif') no-repeat;}
 .tex2001{background:url('../image/texture/capitale/vampire/villevampendestrbm.gif') no-repeat;}
