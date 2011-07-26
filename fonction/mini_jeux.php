@@ -7,22 +7,22 @@ function joue_des($joueur, $mise = 50)
 		showMessage('<h5>Vous n\'avez pas assez de pa</h5>', $titre);
 		return;
 	}
-	if ($joueur->get_stars() < $mise) {
+	if ($joueur->get_star() < $mise) {
 		showMessage('<h5>Vous n\'avez pas assez de stars</h5>', $titre);
 		return;
 	}
-	$joueur->add_stars($mise * -1);
+	$joueur->add_star($mise * -1);
 	$joueur->add_pa(-4);
 	$d1 = rand(1, 6);
 	$d2 = rand(1, 6);
 	$msg = "Vous lancez les dés et tirez $d1 et $d2.<br>";
-	if ($d1 == $d2 == 1) {
-		$joueur->add_stars($mise);
+	if ($d1 == $d2 && $d1 == 1) {
+		$joueur->add_star($mise);
 		$msg .= "Vous regagnez $mise stars !";
 	}
-	elseif ($d1 == $d2 == 1) {
+	elseif ($d1 == $d2 && $d1 == 1) {
 		$gains = $mise * 2;
-		$joueur->add_stars($gains);
+		$joueur->add_star($gains);
 		$msg = "vous gagnez $gains stars !";
 	}
 	else
@@ -38,11 +38,11 @@ function joue_gobelets($joueur, $mise = 50)
 		showMessage('<h5>Vous n\'avez pas assez de pa</h5>', $titre);
 		return;
 	}
-	if ($joueur->get_stars() < $mise) {
+	if ($joueur->get_star() < $mise) {
 		showMessage('<h5>Vous n\'avez pas assez de stars</h5>', $titre);
 		return;
 	}
-  $joueur->add_stars($mise * -1);
+  $joueur->add_star($mise * -1);
   $joueur->add_pa(-4);
   $d1 = rand(1, 6);
 	do {
