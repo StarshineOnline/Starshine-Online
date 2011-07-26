@@ -13,8 +13,8 @@ function joue_des($joueur, $mise = 50)
 	}
 	$joueur->add_star($mise * -1);
 	$joueur->add_pa(-4);
-	$d1 = rand(1, 6);
-	$d2 = rand(1, 6);
+	$d1 = mt_rand(1, 6);
+	$d2 = mt_rand(1, 6);
 	$msg = "Vous lancez les dés et tirez $d1 et $d2.<br>";
 	if ($d1 == $d2 && $d1 == 1) {
 		$joueur->add_star($mise);
@@ -44,9 +44,9 @@ function joue_gobelets($joueur, $mise = 50)
 	}
   $joueur->add_star($mise * -1);
   $joueur->add_pa(-4);
-  $d1 = rand(1, 6);
+  $d1 = mt_rand(1, 6);
 	do {
-		$d2 = rand(1, 6);
+		$d2 = mt_rand(1, 6);
 	} while ($d2 == $d1);
 	$msg = "Vous avez choisi le gobelet numéro $d1.<br>Le jeton était dans le gebelet $d2, vous avez perdu !";
   showMessage($msg, $titre);

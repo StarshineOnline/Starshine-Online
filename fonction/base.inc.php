@@ -294,6 +294,10 @@ function type_terrain($info)
 	$typeterrain[36][1] = 'Mur de Donjon';
 	$typeterrain[46][0] = 'mur_donjon';
 	$typeterrain[46][1] = 'Mur de Donjon';
+	$typeterrain[105][0] = 'taverne_donjon';
+  $typeterrain[105][1] = 'Repère des renegats';
+	$typeterrain[106][0] = 'taverne_donjon';
+  $typeterrain[106][1] = 'Repère des renegats';
 	/* TEMPLATE
 	$typeterrain[][0] = '';
 	$typeterrain[][1] = '';
@@ -438,6 +442,7 @@ function cout_pa($info, $race)
 	$coutpa['barbare']['objet'] = 2;
 	$coutpa['barbare']['terre_maudite'] = 5;
 	$coutpa['barbare']['donjon'] = 5;
+	$coutpa['barbare']['taverne_donjon'] = 2;
 	$coutpa['barbare']['mur_donjon'] = 50;
 
 	/*** ELFE DES BOIS ***/
@@ -452,6 +457,7 @@ function cout_pa($info, $race)
 	$coutpa['elfebois']['objet'] = 2;
 	$coutpa['elfebois']['terre_maudite'] = 5;
 	$coutpa['elfebois']['donjon'] = 5;
+	$coutpa['elfebois']['taverne_donjon'] = 2;
 	$coutpa['elfebois']['mur_donjon'] = 50;
 
 	/*** HAUT ELFE ***/
@@ -466,6 +472,7 @@ function cout_pa($info, $race)
 	$coutpa['elfehaut']['objet'] = 2;
 	$coutpa['elfehaut']['terre_maudite'] = 5;
 	$coutpa['elfehaut']['donjon'] = 5;
+	$coutpa['elfehaut']['taverne_donjon'] = 2;
 	$coutpa['elfehaut']['mur_donjon'] = 50;
 
 	/*** HUMAIN ***/
@@ -480,6 +487,7 @@ function cout_pa($info, $race)
 	$coutpa['humain']['objet'] = 2;
 	$coutpa['humain']['terre_maudite'] = 5;
 	$coutpa['humain']['donjon'] = 5;
+	$coutpa['humain']['taverne_donjon'] = 2;
 	$coutpa['humain']['mur_donjon'] = 50;
 
 	/*** HUMAINS NOIRS ***/
@@ -494,6 +502,7 @@ function cout_pa($info, $race)
 	$coutpa['humainnoir']['objet'] = 2;
 	$coutpa['humainnoir']['terre_maudite'] = 5;
 	$coutpa['humainnoir']['donjon'] = 5;
+	$coutpa['humainnoir']['taverne_donjon'] = 2;
 	$coutpa['humainnoir']['mur_donjon'] = 50;
 
 	/*** MORTS VIVANTS ***/
@@ -508,6 +517,7 @@ function cout_pa($info, $race)
 	$coutpa['mortvivant']['objet'] = 2;
 	$coutpa['mortvivant']['terre_maudite'] = 5;
 	$coutpa['mortvivant']['donjon'] = 5;
+	$coutpa['mortvivant']['taverne_donjon'] = 2;
 	$coutpa['mortvivant']['mur_donjon'] = 50;
 
 	/*** NAINS ***/
@@ -522,6 +532,7 @@ function cout_pa($info, $race)
 	$coutpa['nain']['objet'] = 2;
 	$coutpa['nain']['terre_maudite'] = 5;
 	$coutpa['nain']['donjon'] = 5;
+	$coutpa['nain']['taverne_donjon'] = 2;
 	$coutpa['nain']['mur_donjon'] = 50;
 
 	/*** ORC ***/
@@ -536,6 +547,7 @@ function cout_pa($info, $race)
 	$coutpa['orc']['objet'] = 2;
 	$coutpa['orc']['terre_maudite'] = 5;
 	$coutpa['orc']['donjon'] = 5;
+	$coutpa['orc']['taverne_donjon'] = 2;
 	$coutpa['orc']['mur_donjon'] = 50;
 
 	/*** SCAVENGERS ***/
@@ -550,6 +562,7 @@ function cout_pa($info, $race)
 	$coutpa['scavenger']['objet'] = 2;
 	$coutpa['scavenger']['terre_maudite'] = 5;
 	$coutpa['scavenger']['donjon'] = 5;
+	$coutpa['scavenger']['taverne_donjon'] = 2;
 	$coutpa['scavenger']['mur_donjon'] = 50;
 
 	/*** TROLL ***/
@@ -564,6 +577,7 @@ function cout_pa($info, $race)
 	$coutpa['troll']['objet'] = 2;
 	$coutpa['troll']['terre_maudite'] = 5;
 	$coutpa['troll']['donjon'] = 5;
+	$coutpa['troll']['taverne_donjon'] = 2;
 	$coutpa['troll']['mur_donjon'] = 50;
 
 	/*** VAMPIRES ***/
@@ -578,6 +592,7 @@ function cout_pa($info, $race)
 	$coutpa['vampire']['objet'] = 2;
 	$coutpa['vampire']['terre_maudite'] = 4;
 	$coutpa['vampire']['donjon'] = 5;
+	$coutpa['vampire']['taverne_donjon'] = 2;
 	$coutpa['vampire']['mur_donjon'] = 50;
 
 	/*** RACE ***/
@@ -590,6 +605,7 @@ function cout_pa($info, $race)
 	$coutpa['']['route'] = ;
 	$coutpa['']['objet'] = ;
 	$coutpa['']['donjon'] = 5;
+	$coutpa['']['taverne_donjon'] = 2;
 	$coutpa['']['mur_donjon'] = 50;
 	*/
 	if ($coutpa[$race][$info] == '') $coutpa[$race][$info] = 6;
