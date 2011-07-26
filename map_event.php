@@ -8,6 +8,7 @@ if (file_exists('root.php'))
 * 
 */
 include_once(root.'inc/fp.php');
+include_once(root.'fonction/mini_jeux.php');
 //Récupération des informations du personnage
 $joueur = new perso($_SESSION['ID']);
 
