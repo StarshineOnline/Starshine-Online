@@ -18,6 +18,13 @@ while($row = $db->read_assoc($req))
 	echo '<a href="edit_map_full.php?xmin='.$row['x_donjon'].'&amp;ymin='.$row['y_donjon'].'">'.$row['nom'].'</a><br />';
 }
 
+$requete = "SELECT * FROM donjon_entry_point";
+$req = $db->query($requete);
+while($row = $db->read_assoc($req))
+{
+	echo '<a href="edit_map_full.php?xmin='.$row['x'].'&amp;ymin='.$row['y'].'">'.$row['nom'].'</a><br />';
+}
+
 echo '<h1>Arènes</h1>';
 
 $requete = "SELECT * FROM arenes";
