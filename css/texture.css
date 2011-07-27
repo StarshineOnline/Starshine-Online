@@ -1407,19 +1407,7 @@
 .tex4587{background:url('../image/texture/ville_aquatique/sol_mur_sudest_ville_aqua_ruine1.png') no-repeat;}
 .tex4588{background:url('../image/texture/ville_aquatique/sol_mur_sudouest_ville_aqua_ruine.png') no-repeat;}
 .tex4589{background:url('../image/texture/ville_aquatique/sol_ruine_aquatique_d.png') no-repeat;}
-.tex4590{background:url('../image/texture/ville_aquatique/haut_mur_nord_pillier_ville_aqua_bas.png') no-repeat;}
-.tex4591{background:url('../image/texture/ville_aquatique/haut_mur_nord_pillier_ville_aqua_bas_deco.png') no-repeat;}
-.tex4592{background:url('../image/texture/ville_aquatique/haut_mur_nord_pillier_ville_aqua_haut.png') no-repeat;}
-.tex4593{background:url('../image/texture/ville_aquatique/haut_mur_nord_pillier_ville_aqua_haut_deco.png') no-repeat;}
-.tex4594{background:url('../image/texture/ville_aquatique/haut_mur_nord_ville_aqua_deco_bas.png') no-repeat;}
-.tex4595{background:url('../image/texture/ville_aquatique/haut_mur_nord_ville_aqua_deco_haut.png') no-repeat;}
-.tex4596{background:url('../image/texture/ville_aquatique/haut_mur_nordest_ville_aqua_deco_haut.png') no-repeat;}
-.tex4597{background:url('../image/texture/ville_aquatique/haut_mur_nordest_ville_aqua_decobas.png') no-repeat;}
-.tex4598{background:url('../image/texture/ville_aquatique/haut_mur_nordouest_ville_aqua_decobas.png') no-repeat;}
-.tex4599{background:url('../image/texture/ville_aquatique/haut_mur_nordouest_ville_aqua_deco_haut.png') no-repeat;}
 
-.tex5500{background:url('../image/texture/ville_aquatique/haut_mur_nordouest_ville_aqua_haut_ruine.png') no-repeat;}
-.tex5501{background:url('../image/texture/ville_aquatique/haut_mur_nordest_ville_aqua_haut_ruine.png') no-repeat;}
 .tex5502{background:url('../image/texture/ville_aquatique/sol_mur_ouest_ville_aqua_ruinebas.png') no-repeat;}
 .tex5503{background:url('../image/texture/ville_aquatique/sol_mur_ouest_ville_aqua_ruinehaut.png') no-repeat;}
 .tex5504{background:url('../image/texture/ville_aquatique/couloir_vertical_bas_ville_aqua.png') no-repeat;}
@@ -1858,6 +1846,19 @@
 .tex4636{background:url('../image/texture/repere_aquatique/mur_repere_wc_handicap.png') no-repeat;}
 .tex4637{background:url('../image/texture/repere_aquatique/mur_repere_wc_homme.png') no-repeat;}
 .tex4638{background:url('../image/texture/repere_aquatique/mur_repere_wc_femme.png') no-repeat;}
+
+.tex4639{background:url('../image/texture/ville_aquatique/haut_mur_nord_pillier_ville_aqua_bas.png') no-repeat;}
+.tex4640{background:url('../image/texture/ville_aquatique/haut_mur_nord_pillier_ville_aqua_bas_deco.png') no-repeat;}
+.tex4641{background:url('../image/texture/ville_aquatique/haut_mur_nord_pillier_ville_aqua_haut.png') no-repeat;}
+.tex4642{background:url('../image/texture/ville_aquatique/haut_mur_nord_pillier_ville_aqua_haut_deco.png') no-repeat;}
+.tex4643{background:url('../image/texture/ville_aquatique/haut_mur_nord_ville_aqua_deco_bas.png') no-repeat;}
+.tex4644{background:url('../image/texture/ville_aquatique/haut_mur_nord_ville_aqua_deco_haut.png') no-repeat;}
+.tex4645{background:url('../image/texture/ville_aquatique/haut_mur_nordest_ville_aqua_deco_haut.png') no-repeat;}
+.tex4646{background:url('../image/texture/ville_aquatique/haut_mur_nordest_ville_aqua_decobas.png') no-repeat;}
+.tex4647{background:url('../image/texture/ville_aquatique/haut_mur_nordouest_ville_aqua_decobas.png') no-repeat;}
+.tex4648{background:url('../image/texture/ville_aquatique/haut_mur_nordouest_ville_aqua_deco_haut.png') no-repeat;}
+.tex4649{background:url('../image/texture/ville_aquatique/haut_mur_nordouest_ville_aqua_haut_ruine.png') no-repeat;}
+.tex4650{background:url('../image/texture/ville_aquatique/haut_mur_nordest_ville_aqua_haut_ruine.png') no-repeat;}
 
 .tex2000{background:url('../image/texture/capitale/vampire/villevampendestrbg.gif') no-repeat;}
 .tex2001{background:url('../image/texture/capitale/vampire/villevampendestrbm.gif') no-repeat;}
