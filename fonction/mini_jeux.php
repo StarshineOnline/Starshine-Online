@@ -44,11 +44,11 @@ function joue_gobelets($joueur, $mise = 50)
 	}
   $joueur->add_star($mise * -1);
   $joueur->add_pa(-4);
-  $d1 = mt_rand(1, 6);
+  $d1 = mt_rand(1, 3);
 	do {
-		$d2 = mt_rand(1, 6);
+		$d2 = mt_rand(1, 3);
 	} while ($d2 == $d1);
-	$msg = "Vous avez choisi le gobelet numéro $d1.<br>Le jeton était dans le gebelet $d2, vous avez perdu !";
+	$msg = "Vous avez choisi le gobelet numéro $d1.<br>Le jeton était dans le gobelet $d2, vous avez perdu !";
   showMessage($msg, $titre);
   $joueur->sauver();
 }

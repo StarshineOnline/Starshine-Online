@@ -1,4 +1,4 @@
-<?php //  -*- tab-width:2; intent-tabs-mode: nil; mode: php;  -*-
+<?php //  -*- tab-width:2; mode: php;  -*-
 if (file_exists('../root.php'))
   include_once('../root.php');
 
@@ -533,13 +533,9 @@ class magnetique extends effect {
 				$keys = array();
 				foreach ($passif_buff as $nbuff => $buff)
 				{
-					//Pourquoi ce if ?
-					/*if (isset($buff['id']))
-					{*/
-						// Voir si on peut enlever un debuff
-						if ($buff->get_debuff() == 1) continue;
-						$keys[] = $nbuff;
-					//}
+					if ($buff->get_debuff() == 1) continue;
+					if ($buff->get_id() == '') continue;
+					$keys[] = $nbuff;
 				}
 				$count = count($keys);
 				//echo $count.'<br />';
