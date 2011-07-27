@@ -1401,13 +1401,12 @@
 .tex4582{background:url('../image/texture/donjon_aquatique/sol_chute_entre_eau_sablebas_d2.png') no-repeat;}
 .tex4583{background:url('../image/texture/donjon_aquatique/sol_chute_entre_eau_sablebas_d3.png') no-repeat;}
 
-.tex4584{background:url('../image/texture/donjon_aquatique/sol_mur_est_ville_aqua_ruinebas.png') no-repeat;}
-.tex4585{background:url('../image/texture/donjon_aquatique/sol_mur_est_ville_aqua_ruinehaut.png') no-repeat;}
-.tex4586{background:url('../image/texture/donjon_aquatique/sol_mur_sudest_ville_aqua_ruine.png') no-repeat;}
-.tex4587{background:url('../image/texture/donjon_aquatique/sol_mur_sudest_ville_aqua_ruine1.png') no-repeat;}
-.tex4588{background:url('../image/texture/donjon_aquatique/sol_mur_sudouest_ville_aqua_ruine.png') no-repeat;}
-.tex4589{background:url('../image/texture/donjon_aquatique/sol_ruine_aquatique_d.png') no-repeat;}
-
+.tex4584{background:url('../image/texture/ville_aquatique/sol_mur_est_ville_aqua_ruinebas.png') no-repeat;}
+.tex4585{background:url('../image/texture/ville_aquatique/sol_mur_est_ville_aqua_ruinehaut.png') no-repeat;}
+.tex4586{background:url('../image/texture/ville_aquatique/sol_mur_sudest_ville_aqua_ruine.png') no-repeat;}
+.tex4587{background:url('../image/texture/ville_aquatique/sol_mur_sudest_ville_aqua_ruine1.png') no-repeat;}
+.tex4588{background:url('../image/texture/ville_aquatique/sol_mur_sudouest_ville_aqua_ruine.png') no-repeat;}
+.tex4589{background:url('../image/texture/ville_aquatique/sol_ruine_aquatique_d.png') no-repeat;}
 
 .tex10584{background:url('../image/texture/repere_aquatique/sol_repere_bar_bd.png') no-repeat;}
 .tex10585{background:url('../image/texture/repere_aquatique/sol_repere_bar_bg.png') no-repeat;}
