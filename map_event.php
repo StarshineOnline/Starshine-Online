@@ -181,6 +181,18 @@ function trafiquerCanalisation(&$joueur, $item, $x, $y, $decor, $changes)
     showMessage('Vous n\'avez pas de matériel !', 'Trafiquer');
 }
 
+function checkChacalGate(&$joueur, $changes)
+{
+	$armor = decompose_objet($joueur->get_inventaire_partie('torse'));
+	if ($armor['id_objet'] != 127)
+	{
+    showMessage('La porte vous est interdite', 'porte');
+	}
+	else
+		foreach ($changes as $c)
+			$c->apply();
+}
+
 global $dontrefresh;
 global $dontrefreshmap;
 
