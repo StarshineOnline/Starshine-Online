@@ -40,13 +40,19 @@ if (isset($_REQUEST['teleport_in'])) {
     die('<h5>Perso inconnu !</h5>');
   $perso = $perso[0];
   $arene = new arene($_REQUEST['teleport_in']);
-  if( array_key_exists('group', $_REQUEST) )
+  if( array_key_exists('group', $_REQUEST) && $_REQUEST['group'] != '' )
   {
-    $groupe = groupe::create('nom', 'DTE '.$perso->get_race());
-    $groupe = $groupe[0];
+    $groupe = groupe::create('nom', $_REQUEST['group']);// 'DTE '.$perso->get_race()
+    if( $groupe )
+      $groupe = $groupe[0];
+    else
+    {
+      $groupe = new groupe(0, 'k', 0, $_REQUEST['group']);
+      $groupe->sauver();
+    }
   }
   else
-    $groupe = null;
+    $groupe = false;
   if(array_key_exists('pa', $_REQUEST) && $_REQUEST['pa'] != '')
   {
     $perso->set_pa($_REQUEST[pa] * $G_PA_max);
@@ -137,7 +143,7 @@ if ($db->num_rows > 0) {
 ?>
 </select>
 <input name="player" type="text" />
-<label>Groupe racial <input name="group" type="checkbox" /></label>
+<label>Groupe <input name="group" type="text" /></label>
 <label>Full HP/MP <input name="full" type="checkbox" /></label>
 <label>PA <select name="pa">
 <option selected="selected"></option>
