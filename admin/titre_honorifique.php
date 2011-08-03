@@ -32,35 +32,36 @@ if(!array_key_exists('titre', $_GET))
 }
 else
 {
-	$pseudo = array();
 	$x = 0;
-	$verif = false;
+	$verif = true;
+	$ids = array();
 	while ($x <5 && $_GET['id'.$x] != '')
 	{
-		$id = $_GET['id'.$x];
-		$req_id = "SELECT id FROM perso WHERE nom = '".$id."'" ;
+		$req_id = "SELECT * FROM perso WHERE nom = '".$_GET['id'.$x]."'" ;
 		$req = $db->query($req_id);
-		$row = $db->read_row($req);	
-		if ($row)
+		$row = $db->read_array($req);
+		if (!$row)
 		{
-			$pseudo[] = $row[0];
-			echo "Attribution effectuée";
-			$verif = true;
+			echo 'Le pseudo '.$_GET['id'.$x].' est erroné <br/>';
+			$verif = false;
 		}
 		else
 		{
-			$verif = false;
-			echo 'Le pseudo '.$id.' est erroné <br/>';
+			$ids[] = $row['ID'];
 		}
 		$x++;
 	}
-	echo '<br/>';echo '<br/>';echo '<br/>';
+
 	
-	$liste_id = implode('-', $pseudo);
+	
 	if ($verif)
 	{
-		$requete = "INSERT INTO titre_honorifique (id_perso, titre) VALUE ('".$liste_id."', '".$_GET['titre']."')";
-		$db->query($requete);
+		foreach ($ids as $id)
+		{
+			$requete = "INSERT INTO titre_honorifique (id, id_perso, titre) VALUE ('', '".$id."', '".$_GET['titre']."')";
+			$db->query($requete);
+			Echo "attribution effectuée </br>";
+		}
 	}
 	
 }
