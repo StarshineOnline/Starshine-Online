@@ -710,6 +710,11 @@ class pet extends map_monstre
 		if (!in_array($id, $connus)) 
 			security_block(URL_MANIPULATION);
 	}
+
+  function register_gemme_enchantement()
+  {
+    // TRICHE ?!
+  }
 	// @}
 }
 ?>
