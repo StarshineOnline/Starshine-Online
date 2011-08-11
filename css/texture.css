@@ -1468,6 +1468,13 @@
 .tex5554{background:url('../image/texture/donjon_aquatique/sol_mur_nord_crabe.png') no-repeat;}
 .tex5555{background:url('../image/texture/donjon_aquatique/sol_mur_nord_crabeb.png') no-repeat;}
 
+.tex5556{background:url('../image/texture/repere_aquatique/sol_repere_tente_interieur_bg.png') no-repeat;}
+.tex5557{background:url('../image/texture/repere_aquatique/sol_repere_tente_interieur_bm.png') no-repeat;}
+.tex5558{background:url('../image/texture/repere_aquatique/sol_repere_tente_interieur_bd.png') no-repeat;}
+.tex5559{background:url('../image/texture/repere_aquatique/sol_repere_tente_interieur_mg.png') no-repeat;}
+.tex5560{background:url('../image/texture/repere_aquatique/sol_repere_tente_interieur_centre.png') no-repeat;}
+.tex5561{background:url('../image/texture/repere_aquatique/sol_repere_tente_interieur_md.png') no-repeat;}
+
 .tex10584{background:url('../image/texture/repere_aquatique/sol_repere_bar_bd.png') no-repeat;}
 .tex10585{background:url('../image/texture/repere_aquatique/sol_repere_bar_bg.png') no-repeat;}
 .tex10586{background:url('../image/texture/repere_aquatique/sol_repere_bar_bm.png') no-repeat;}
@@ -1924,6 +1931,10 @@
 .tex4660{background:url('../image/texture/ville_aquatique/mur_entree_ferme_ville_aqua_haut.png') no-repeat;}
 
 .tex4661{background:url('../image/texture/donjon_aquatique/mur_nord_superieur_eaubasse_gauche.png') no-repeat;}
+
+.tex4662{background:url('../image/texture/repere_aquatique/mur_repere_tente_interieur_hg.png') no-repeat;}
+.tex4663{background:url('../image/texture/repere_aquatique/mur_repere_tente_interieur_hm.png') no-repeat;}
+.tex4664{background:url('../image/texture/repere_aquatique/mur_repere_tente_interieur_hd.png') no-repeat;}
 
 .tex2000{background:url('../image/texture/capitale/vampire/villevampendestrbg.gif') no-repeat;}
 .tex2001{background:url('../image/texture/capitale/vampire/villevampendestrbm.gif') no-repeat;}
