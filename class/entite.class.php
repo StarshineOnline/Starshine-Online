@@ -489,6 +489,7 @@ class entite extends placable
 	private $arme_degat;         ///< Dégâts de l'arme.
 	private $bouclier_degat = 0; ///< Dégâts bloqués par le bouclier.
 	private $malus_hache = 1;    ///< Malus d'esquive dû au port d'une hache.
+	private $malus_arc = 1;    ///< Malus d'esquive dû au port d'un arc.
 	private $saved_inventaire = null; ///< Inventaire
 	/// Renvoie le type de l'arme utilisée
 	function get_arme_type()
@@ -690,6 +691,9 @@ class entite extends placable
 		else $this->potentiel_parer = round($esquive + ($esquive * ((pow($this->get_dexterite(), 2)) / 1000)));
 		if ($this->arme_type == 'hache')
 			$this->potentiel_parer *= $this->malus_hache;
+		if ($this->arme_type == 'arc')
+			$this->potentiel_parer *= $this->malus_arc;
+
 		return $this->potentiel_parer;
 	}
 	/// Modifie le potentiel parer physique
@@ -746,6 +750,7 @@ class entite extends placable
 					break;
 					case 'arc':
 						$this->comp_combat = 'distance';
+						$this->malus_arc = 0.8;
 					break;
 					case 'bouclier':
 						$this->comp_combat = 'blocage';
