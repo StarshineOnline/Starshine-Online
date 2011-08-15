@@ -1115,6 +1115,13 @@ class perso extends entite
 				case 'rm':
 					$this->add_bonus_permanents('reserve', $this->accessoire->effet);
 					break;
+				case 'donjon':
+					//+300 PM + 300 PP + 50 MP + 100 HP
+					$this->add_bonus_permanents('hp_max', $this->accessoire->effet/3);
+					$this->add_bonus_permanents('mp_max', $this->accessoire->effet/6);
+					$this->pm += $this->accessoire->effet;
+					$this->pp += $this->accessoire->effet;									
+					break;
 				case 'chance_debuff':
 				case 'buff':
 				case 'fabrication':
@@ -1750,6 +1757,12 @@ class perso extends entite
 				$this->add_effet_permanent('defenseur', new protection_artistique($effet, $item->nom));
 			case 13:
 				$this->camouflage = $effet;
+				break;
+			case 14 :
+				$this->add_effet_permanent('attaquant', new bonus_pinceau($effet, $item->nom));
+				break;
+			case 15 :
+				$this->add_effet_permanent('attaquant', new bonus_pinceau_degats($effet, $item->nom));
 				break;
 			default:
 				break;

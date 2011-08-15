@@ -612,4 +612,61 @@ class protection_artistique extends effect
 	}
 }
 
+/**
+ * Pinceau Magique 
+ */
+class bonus_pinceau extends effect
+{
+	var $effet;
+
+	function __construct($aEffet, $aNom) {
+    if ($aNom == null)
+      $aNom = 'bonus_pinceau';
+		parent::__construct($aNom);
+    $this->effet = $aEffet;
+  }
+	
+
+	function calcul_attaque_magique(&$actif, &$passif, $potentiel) {
+		$bonus_potentiel = 0;
+		for ($tmp_honneur = $actif->get_honneur() - 20000; $tmp_honneur > 0;
+				 $tmp_honneur -= 15000)
+			echo $this->effet;
+			$bonus_potentiel += $this->effet;
+		if ($bonus_potentiel > 0)
+			$this->debug($actif->get_nom().' voit son potentiel magique augmenté de '.
+									 $bonus_potentiel.' grâce à son honneur ('.$this->nom.') !');
+		else
+			$this->debug('Pas assez d\'honneur pour profiter du '.$this->nom);
+		return $potentiel * (1 + 0.1*$bonus_potentiel);
+	}
+}
+
+/**
+ * Pinceau Magique 
+ */
+class bonus_pinceau_degats extends effect
+{
+	var $effet;
+
+	function __construct($aEffet, $aNom) {
+    if ($aNom == null)
+      $aNom = 'bonus_pinceau_degat';
+		parent::__construct($aNom);
+    $this->effet = $aEffet;
+  }
+	
+	function calcul_degats_magiques(&$actif, &$passif, $bonus) {
+		$bonus_degat = 0;
+		for ($tmp_honneur = $actif->get_honneur() - 20000; $tmp_honneur > 0;
+				 $tmp_honneur -= 15000)
+			$bonus_degat += $this->effet;
+		if ($bonus_degat > 0)
+			$this->debug($actif->get_nom().' voit son facteur de dégat augmenté de '.
+									 $bonus_degat.' grâce à son honneur ('.$this->nom.') !');
+		else
+			$this->debug('Pas assez d\'honneur pour profiter du '.$this->nom);
+		return $bonus + $bonus_degat;
+	}
+}
 ?>
