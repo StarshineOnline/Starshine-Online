@@ -50,7 +50,7 @@ if($joueur->get_race() == 'orc') $round_max++;
 		}
 	}
 	?>
-	<h3><strong>Vous avez <?php echo $sujet->get_reserve_bonus(); ?> réserves de mana au total par combat</h3>
+	<h3><strong>Vous avez <?php echo $sujet->get_reserve_bonus(); ?> réserves de mana au total par combat</strong></h3>
 	<?php
 if(array_key_exists('id_action', $_GET) && $_GET['id_action'] == '')
 {
@@ -216,9 +216,7 @@ if(array_key_exists('from', $_GET) && $_GET['id_action'] != '')
 				$sujet->set_action_d($id_action);
 			$sujet->sauver();
 		}
-		?>
-			</table>
-		<?php
+		echo '</table>';
 		//print_r($_SESSION['script'][$id_action]);
 		echo affiche_condition_session($_SESSION['script'][$id_action], $sujet, $check_pet);
 		//=== VALIDATION DE LA CONDITION ===
@@ -251,8 +249,8 @@ if(array_key_exists('from', $_GET) && $_GET['id_action'] != '')
 				</td>
 				<td>
 					<select name="op" id="op" style="visibility : hidden">
-						<option value=">">></option>
-						<option value="<"><</option>
+						<option value="&gt;">&gt;</option>
+						<option value="&lt;">&lt;</option>
 						<option value="=">=</option>
 					</select>
 					<input type="text" name="valeur" id="valeur" style="visibility : hidden; width : 40px;" /><br />

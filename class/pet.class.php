@@ -1,66 +1,66 @@
 <?php
 class pet extends map_monstre
 {
-/**
-    * @access private
-    * @var int(10)
-    */
+	/**
+	 * @access private
+	 * @var int(10)
+	 */
 	private $id;
 
 	/**
-    * @access private
-    * @var int(10)
-    */
+	 * @access private
+	 * @var int(10)
+	 */
 	private $id_joueur;
 
 	/**
-    * @access private
-    * @var int(10)
-    */
+	 * @access private
+	 * @var int(10)
+	 */
 	private $id_monstre;
 
 	/**
-    * @access private
-    * @var varchar(100)
-    */
+	 * @access private
+	 * @var varchar(100)
+	 */
 	private $nom;
 
 	/**
-    * @access private
-    * @var mediumint(8)
-    */
+	 * @access private
+	 * @var mediumint(8)
+	 */
 	private $hp;
 
 	/**
-    * @access private
-    * @var mediumint(8)
-    */
+	 * @access private
+	 * @var mediumint(8)
+	 */
 	private $mp;
 
 	/**
-    * @access private
-    * @var tinyint(3)
-    */
+	 * @access private
+	 * @var tinyint(3)
+	 */
 	private $principale;
 
 	/**
-    * @access private
-    * @var tinyint(3)
-    */
+	 * @access private
+	 * @var tinyint(3)
+	 */
 	private $ecurie;
-	
-	/**
-	* @access public
 
-	* @param int(10) id attribut
-	* @param int(10) id_joueur attribut
-	* @param int(10) id_monstre attribut
-	* @param varchar(100) nom attribut
-	* @param mediumint(8) hp attribut
-	* @param mediumint(8) mp attribut
-	* @param tinyint(3) principale attribut
-	* @return none
-	*/
+	/**
+	 * @access public
+
+	 * @param int(10) id attribut
+	 * @param int(10) id_joueur attribut
+	 * @param int(10) id_monstre attribut
+	 * @param varchar(100) nom attribut
+	 * @param mediumint(8) hp attribut
+	 * @param mediumint(8) mp attribut
+	 * @param tinyint(3) principale attribut
+	 * @return none
+	 */
 	function __construct($id = 0, $id_joueur = 0, $id_monstre = 0, $nom = '', $hp = '', $mp = '', $principale = '', $ecurie = '', $action_a = '', $action_d = '')
 	{
 		global $db;
@@ -88,7 +88,7 @@ class pet extends map_monstre
 			$this->ecurie = $id['ecurie'];
 			$this->action_a = $id['action_a'];
 			$this->action_d = $id['action_d'];
-			}
+		}
 		else
 		{
 			$this->id_joueur = $id_joueur;
@@ -105,11 +105,11 @@ class pet extends map_monstre
 	}
 
 	/**
-	* Sauvegarde automatiquement en base de donnée. Si c'est un nouvel objet, INSERT, sinon UPDATE
-	* @access public
-	* @param bool $force force la mis à jour de tous les attributs de l'objet si true, sinon uniquement ceux qui ont été modifiés
-	* @return none
-	*/
+	 * Sauvegarde automatiquement en base de donnée. Si c'est un nouvel objet, INSERT, sinon UPDATE
+	 * @access public
+	 * @param bool $force force la mis à jour de tous les attributs de l'objet si true, sinon uniquement ceux qui ont été modifiés
+	 * @return none
+	 */
 	function sauver($force = false)
 	{
 		global $db;
@@ -145,11 +145,11 @@ class pet extends map_monstre
 	}
 
 	/**
-	* Supprime de la base de donnée
-	* @access public
-	* @param none
-	* @return none
-	*/
+	 * Supprime de la base de donnée
+	 * @access public
+	 * @param none
+	 * @return none
+	 */
 	function supprimer()
 	{
 		global $db;
@@ -161,14 +161,14 @@ class pet extends map_monstre
 	}
 
 	/**
-	* Crée un tableau d'objets respectant certains critères
-	* @access static
-	* @param array|string $champs champs servant a trouver les résultats
-	* @param array|string $valeurs valeurs servant a trouver les résultats
-	* @param string $ordre ordre de tri
-	* @param bool|string $keys Si false, stockage en tableau classique, si string stockage avec sous tableau en fonction du champ $keys
-	* @return array $return liste d'objets
-	*/
+	 * Crée un tableau d'objets respectant certains critères
+	 * @access static
+	 * @param array|string $champs champs servant a trouver les résultats
+	 * @param array|string $valeurs valeurs servant a trouver les résultats
+	 * @param string $ordre ordre de tri
+	 * @param bool|string $keys Si false, stockage en tableau classique, si string stockage avec sous tableau en fonction du champ $keys
+	 * @return array $return liste d'objets
+	 */
 	static function create($champs, $valeurs, $ordre = 'id ASC', $keys = false, $where = false)
 	{
 		global $db;
@@ -211,110 +211,110 @@ class pet extends map_monstre
 	}
 
 	/**
-	* Affiche l'objet sous forme de string
-	* @access public
-	* @param none
-	* @return string objet en string
-	*/
+	 * Affiche l'objet sous forme de string
+	 * @access public
+	 * @param none
+	 * @return string objet en string
+	 */
 	function __toString()
 	{
 		return 'id = '.$this->id.', id_joueur = '.$this->id_joueur.', id_monstre = '.$this->id_monstre.', nom = '.$this->nom.', hp = '.$this->hp.', mp = '.$this->mp.', principale = '.$this->principale.', ecurie = '.$this->ecurie;
 	}
-	
+
 	/**
-	* Retourne la valeur de l'attribut
-	* @access public
-	* @param none
-	* @return int(10) $id valeur de l'attribut id
-	*/
+	 * Retourne la valeur de l'attribut
+	 * @access public
+	 * @param none
+	 * @return int(10) $id valeur de l'attribut id
+	 */
 	function get_id()
 	{
 		return $this->id;
 	}
 
 	/**
-	* Retourne la valeur de l'attribut
-	* @access public
-	* @param none
-	* @return int(10) $id_joueur valeur de l'attribut id_joueur
-	*/
+	 * Retourne la valeur de l'attribut
+	 * @access public
+	 * @param none
+	 * @return int(10) $id_joueur valeur de l'attribut id_joueur
+	 */
 	function get_id_joueur()
 	{
 		return $this->id_joueur;
 	}
 
 	/**
-	* Retourne la valeur de l'attribut
-	* @access public
-	* @param none
-	* @return int(10) $id_monstre valeur de l'attribut id_monstre
-	*/
+	 * Retourne la valeur de l'attribut
+	 * @access public
+	 * @param none
+	 * @return int(10) $id_monstre valeur de l'attribut id_monstre
+	 */
 	function get_id_monstre()
 	{
 		return $this->id_monstre;
 	}
 
 	/**
-	* Retourne la valeur de l'attribut
-	* @access public
-	* @param none
-	* @return varchar(100) $nom valeur de l'attribut nom
-	*/
+	 * Retourne la valeur de l'attribut
+	 * @access public
+	 * @param none
+	 * @return varchar(100) $nom valeur de l'attribut nom
+	 */
 	function get_nom()
 	{
 		return $this->nom;
 	}
 
 	/**
-	* Retourne la valeur de l'attribut
-	* @access public
-	* @param none
-	* @return mediumint(8) $hp valeur de l'attribut hp
-	*/
+	 * Retourne la valeur de l'attribut
+	 * @access public
+	 * @param none
+	 * @return mediumint(8) $hp valeur de l'attribut hp
+	 */
 	function get_hp()
 	{
 		return $this->hp;
 	}
 
 	/**
-	* Retourne la valeur de l'attribut
-	* @access public
-	* @param none
-	* @return mediumint(8) $mp valeur de l'attribut mp
-	*/
+	 * Retourne la valeur de l'attribut
+	 * @access public
+	 * @param none
+	 * @return mediumint(8) $mp valeur de l'attribut mp
+	 */
 	function get_mp()
 	{
 		return $this->mp;
 	}
 
 	/**
-	* Retourne la valeur de l'attribut
-	* @access public
-	* @param none
-	* @return tinyint(3) $principale valeur de l'attribut principale
-	*/
+	 * Retourne la valeur de l'attribut
+	 * @access public
+	 * @param none
+	 * @return tinyint(3) $principale valeur de l'attribut principale
+	 */
 	function get_principale()
 	{
 		return $this->principale;
 	}
 
 	/**
-	* Retourne la valeur de l'attribut
-	* @access public
-	* @param none
-	* @return tinyint(3) $principale valeur de l'attribut ecurie
-	*/
+	 * Retourne la valeur de l'attribut
+	 * @access public
+	 * @param none
+	 * @return tinyint(3) $principale valeur de l'attribut ecurie
+	 */
 	function get_ecurie()
 	{
 		return $this->ecurie;
 	}
-	
+
 	/**
-	* Modifie la valeur de l'attribut
-	* @access public
-	* @param int(10) $id valeur de l'attribut
-	* @return none
-	*/
+	 * Modifie la valeur de l'attribut
+	 * @access public
+	 * @param int(10) $id valeur de l'attribut
+	 * @return none
+	 */
 	function set_id($id)
 	{
 		$this->id = $id;
@@ -322,11 +322,11 @@ class pet extends map_monstre
 	}
 
 	/**
-	* Modifie la valeur de l'attribut
-	* @access public
-	* @param int(10) $id_joueur valeur de l'attribut
-	* @return none
-	*/
+	 * Modifie la valeur de l'attribut
+	 * @access public
+	 * @param int(10) $id_joueur valeur de l'attribut
+	 * @return none
+	 */
 	function set_id_joueur($id_joueur)
 	{
 		$this->id_joueur = $id_joueur;
@@ -334,11 +334,11 @@ class pet extends map_monstre
 	}
 
 	/**
-	* Modifie la valeur de l'attribut
-	* @access public
-	* @param int(10) $id_monstre valeur de l'attribut
-	* @return none
-	*/
+	 * Modifie la valeur de l'attribut
+	 * @access public
+	 * @param int(10) $id_monstre valeur de l'attribut
+	 * @return none
+	 */
 	function set_id_monstre($id_monstre)
 	{
 		$this->id_monstre = $id_monstre;
@@ -346,11 +346,11 @@ class pet extends map_monstre
 	}
 
 	/**
-	* Modifie la valeur de l'attribut
-	* @access public
-	* @param varchar(100) $nom valeur de l'attribut
-	* @return none
-	*/
+	 * Modifie la valeur de l'attribut
+	 * @access public
+	 * @param varchar(100) $nom valeur de l'attribut
+	 * @return none
+	 */
 	function set_nom($nom)
 	{
 		$this->nom = $nom;
@@ -358,11 +358,11 @@ class pet extends map_monstre
 	}
 
 	/**
-	* Modifie la valeur de l'attribut
-	* @access public
-	* @param mediumint(8) $hp valeur de l'attribut
-	* @return none
-	*/
+	 * Modifie la valeur de l'attribut
+	 * @access public
+	 * @param mediumint(8) $hp valeur de l'attribut
+	 * @return none
+	 */
 	function set_hp($hp)
 	{
 		$this->hp = $hp;
@@ -370,11 +370,11 @@ class pet extends map_monstre
 	}
 
 	/**
-	* Modifie la valeur de l'attribut
-	* @access public
-	* @param mediumint(8) $mp valeur de l'attribut
-	* @return none
-	*/
+	 * Modifie la valeur de l'attribut
+	 * @access public
+	 * @param mediumint(8) $mp valeur de l'attribut
+	 * @return none
+	 */
 	function set_mp($mp)
 	{
 		$this->mp = $mp;
@@ -382,11 +382,11 @@ class pet extends map_monstre
 	}
 
 	/**
-	* Modifie la valeur de l'attribut
-	* @access public
-	* @param tinyint(3) $principale valeur de l'attribut
-	* @return none
-	*/
+	 * Modifie la valeur de l'attribut
+	 * @access public
+	 * @param tinyint(3) $principale valeur de l'attribut
+	 * @return none
+	 */
 	function set_principale($principale)
 	{
 		$this->principale = $principale;
@@ -394,11 +394,11 @@ class pet extends map_monstre
 	}
 
 	/**
-	* Modifie la valeur de l'attribut
-	* @access public
-	* @param tinyint(3) $ecurie valeur de l'attribut
-	* @return none
-	*/
+	 * Modifie la valeur de l'attribut
+	 * @access public
+	 * @param tinyint(3) $ecurie valeur de l'attribut
+	 * @return none
+	 */
 	function set_ecurie($ecurie)
 	{
 		$this->ecurie = $ecurie;
@@ -421,21 +421,21 @@ class pet extends map_monstre
 	function get_cout_soin()
 	{
 		$this->get_monstre();
-		return pow($this->monstre->get_level(), 2);
+		return pow($this->get_level(), 2);
 	}
 
 	function get_cout_rez()
 	{
 		$this->get_monstre();
-		return pow($this->monstre->get_level(), 2) * 20;
+		return pow($this->get_level(), 2) * 20;
 	}
 
 	function get_cout_depot()
 	{
 		$this->get_monstre();
-		return pow($this->monstre->get_level(), 2);
+		return pow($this->get_level(), 2);
 	}
-	
+
 	public $pp_base;
 	public $pm_base;
 	public $enchant;
@@ -479,8 +479,8 @@ class pet extends map_monstre
 					{
 						$gemme = new gemme_enchassee($partie_d['enchantement']);
 						$this->register_gemme_enchantement($gemme);
-          //my_dump($this->enchantement);
-					//$this->enchant = enchant($partie_d['enchantement'], $this);
+						//my_dump($this->enchantement);
+						//$this->enchant = enchant($partie_d['enchantement'], $this);
 					}
 				}
 			}
@@ -504,7 +504,7 @@ class pet extends map_monstre
 		}
 		$this->armure=true;
 	}
-	
+
 	function get_pm($base = false)
 	{
 		if(!isset($this->pm))
@@ -524,7 +524,7 @@ class pet extends map_monstre
 		if(!$base) return $this->pp;
 		else return $this->pp_base;
 	}
-	
+
 	function get_distance_tir()
 	{
 		global $db;
@@ -546,21 +546,21 @@ class pet extends map_monstre
 		}
 		return $distance;
 	}
-	
+
 	public $reserve_bonus;
 	function get_reserve_bonus()
 	{
 		$joueur = new perso($this->get_id_joueur());
 		if(!isset($this->monstre)) $this->get_monstre();
 		$this->reserve_bonus = $this->monstre->get_reserve();
-		
+
 		if($joueur->is_buff('buff_inspiration')) $this->reserve_bonus += $joueur->get_buff('buff_inspiration', 'effet');
 		if($joueur->is_buff('buff_sacrifice')) $this->reserve_bonus += $joueur->get_buff('buff_sacrifice', 'effet');
 
 		return $this->reserve_bonus;
 	}
-	
-	// Renvoie l'arme de la main droite. Enregistre les enchantements et les effets. 	
+
+	// Renvoie l'arme de la main droite. Enregistre les enchantements et les effets.
 	function get_arme()
 	{
 		if(!isset($this->arme_pet))
@@ -575,47 +575,47 @@ class pet extends map_monstre
 				$req = $db->query($requete);
 				$this->arme_pet = $db->read_object($req);
 				/*if ($arme_d['enchantement'] != null)
-				{
+				 {
 					$gemme = new gemme_enchassee($arme_d['enchantement']);
 					if ($gemme->enchantement_type == 'degat')
-						$this->arme_pet->degat += $gemme->enchantement_effet;
+					$this->arme_pet->degat += $gemme->enchantement_effet;
 					$this->register_gemme_enchantement($gemme);
 					//my_dump($this->enchantement);
-				}
-				if ($this->arme_pet->effet)
-				{
-				  $effets = split(';', $this->arme_pet->effet);
-				  foreach ($effets as $effet)
-				  {
+					}
+					if ($this->arme_pet->effet)
+					{
+					$effets = split(';', $this->arme_pet->effet);
+					foreach ($effets as $effet)
+					{
 					$d_effet = split('-', $effet);
 					$this->register_item_effet($d_effet[0], $d_effet[1], $this->arme_pet);
-				  }
-				}*/
+					}
+					}*/
 			}
 			else $this->arme_pet = false;
 		}
 		return $this->arme_pet;
 	}
-	
+
 	/**
 	 * Renvoie le facteur de dégâts de ou des armes.	
-   * La plupart du temps on s'en fiche, de la main, on veut les degats
-   * @param $main   si false : cumul, si 'droite' ou 'gauche' : detail
-   */
+	 * La plupart du temps on s'en fiche, de la main, on veut les degats
+	 * @param $main   si false : cumul, si 'droite' ou 'gauche' : detail
+	 */
 	function get_arme_degat($main = false)
 	{
 		$degats = 0;
 		if ($main == false || $main == 'droite')
-			if ($this->get_arme())
-				$degats += $this->arme_pet->degat;
+		if ($this->get_arme())
+		$degats += $this->arme_pet->degat;
 		return $degats;
 	}
-	
+
 	/**
 	 * @name Combats
 	 * Données et méthodes liées aux combats.
 	 */
-  // @{
+	// @{
 	private $action_a;   ///< Id du script d'attaque
 	private $action_d;   ///< Id du script de défense
 	public $action_do;
@@ -628,7 +628,7 @@ class pet extends map_monstre
 	/**
 	 * Modifie le script d'attaque.
 	 * @param  $action_a     Id du nouveau script d'attaque.
-	 */	 
+	 */
 	function set_action_a($action_a)
 	{
 		$this->action_a = $action_a;
@@ -640,12 +640,12 @@ class pet extends map_monstre
 	{
 		return $this->action_d;
 	}
-	
+
 	// Renvoie l'id du script de défense.
 	/**
-	 * Modifie le script de défense.
-	 * @param  $action_d     Id du nouveau script de défense.
-	 */	 
+	* Modifie le script de défense.
+	* @param  $action_d     Id du nouveau script de défense.
+	*/
 	function set_action_d($action_d)
 	{
 		$this->action_d = $action_d;
@@ -655,7 +655,7 @@ class pet extends map_monstre
 	 * Récupère le contenu du script pour une action donnéd
 	 * @param  $type_action    'attaque' ou 'defense'.
 	 * @return     Contenu du script (sous forme textuelle).
-	 */   	 
+	 */
 	function recupaction($type_action)
 	{
 		global $db;
@@ -676,12 +676,12 @@ class pet extends map_monstre
 		return $this->action;
 	}
 	// @}
-	
+
 	/**
-   * @name  Sorts, compétences
-   * Données et méthodes ayant trait aux sorts et compétences de combat.
-   */         
-  // @{
+	 * @name  Sorts, compétences
+	 * Données et méthodes ayant trait aux sorts et compétences de combat.
+	 */
+	// @{
 	/// Renvoie les sorts de combat.
 	function get_sort_combat()
 	{
@@ -694,27 +694,45 @@ class pet extends map_monstre
 		if(!isset($this->monstre)) $this->get_monstre();
 		return $this->monstre->get_comp_combat();
 	}
-	
+
 	function check_sort_combat_connu($id)
 	{
 		if(!isset($this->monstre)) $this->get_monstre();
 		$connus = explode(';', $this->monstre->get_sort_combat());
-		if (!in_array($id, $connus)) 
-			security_block(URL_MANIPULATION);
+		if (!in_array($id, $connus))
+		security_block(URL_MANIPULATION);
 	}
 
 	function check_comp_combat_connu($id)
 	{
 		if(!isset($this->monstre)) $this->get_monstre();
 		$connus = explode(';', $this->monstre->get_comp_combat());
-		if (!in_array($id, $connus)) 
-			security_block(URL_MANIPULATION);
+		if (!in_array($id, $connus))
+		security_block(URL_MANIPULATION);
 	}
 
-  function register_gemme_enchantement()
-  {
-    // TRICHE ?!
-  }
+	function register_gemme_enchantement()
+	{
+		// TRICHE ?!
+	}
+
+	function get_level()
+	{
+		$this->get_monstre();
+		if ($this->monstre->get_level() == 0)
+		{ // pets invoqués : level perso
+			global $joueur;
+			if ($this->id_joueur == $joueur->get_id())
+			{
+				return $joueur->get_level();
+			}
+			else
+			{
+				$perso = new perso($this->id_joueur);
+				return $perso->get_level();
+			}
+		}
+	}
 	// @}
 }
 ?>

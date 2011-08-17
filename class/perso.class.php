@@ -2636,7 +2636,8 @@ class perso extends entite
 			$pet->set_nom($monstre->get_nom());
 			if(!$hp) $pet->set_hp($monstre->get_hp());
 			else $pet->set_hp($hp);
-			$pet->set_mp($mp);
+			if (!$mp) $pet->set_mp($pet->get_mp_max());
+			else $pet->set_mp($mp);
 			if(count($this->get_pets()) == 0) $pet->set_principale(1);
 			else $pet->set_principale(0);
 			$pet->sauver();

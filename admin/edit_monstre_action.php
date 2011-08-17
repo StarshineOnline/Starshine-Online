@@ -234,8 +234,8 @@ else
 				</td>
 				<td>
 					<select name="op" id="op" style="visibility : hidden">
-						<option value=">">></option>
-						<option value="<"><</option>
+						<option value="&gt;">&gt;</option>
+						<option value="&lt;">&lt;</option>
 						<option value="=">=</option>
 					</select>
 					<input type="text" name="valeur" id="valeur" style="visibility : hidden; width : 40px;" /><br />

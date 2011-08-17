@@ -233,7 +233,7 @@ echo '
 <br />
 		<div id="graph_recette_total" style="float : left;">
 			<div id="placeholder_recette_total" style="width:900px;height:600px;"></div>
-		<script id="source" language="javascript" type="text/javascript">
+		<script type="text/javascript">
 		$(document).ready(function()
 		{
 			chart_recette_total = new Highcharts.Chart({

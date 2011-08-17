@@ -1,6 +1,6 @@
-<?php // -*- tab-width:2 -*- 
+<?php // -*- tab-width:2 -*-
 if (file_exists('root.php'))
-  include_once('root.php');
+include_once('root.php');
 
 include ('livre.php');
 $tab_sort_jeu = explode(';', $joueur->get_comp_jeu());
@@ -29,24 +29,24 @@ if (isset($_GET['ID']))
 	{
 		echo '<h5>Pas assez de mana</h5>';
 	}
-  elseif($joueur->is_buff('petrifie'))
-  {
-  	echo '<h5>Vous êtes pétrifié, vous ne pouvez pas utiliser de compétence.</h5>';
-  }
+	elseif($joueur->is_buff('petrifie'))
+	{
+		echo '<h5>Vous êtes pétrifié, vous ne pouvez pas utiliser de compétence.</h5>';
+	}
 	else
 	{
 		switch($row['type'])
 		{
-			case 'buff_forteresse' : 
-			case 'buff_position' : 
-			case 'rapide_vent' : 
-			case 'renouveau_energetique' : 
-			case 'longue_portee' : 
-			case 'fleche_tranchante' : 
-			case 'oeil_chasseur' : 
+			case 'buff_forteresse' :
+			case 'buff_position' :
+			case 'rapide_vent' :
+			case 'renouveau_energetique' :
+			case 'longue_portee' :
+			case 'fleche_tranchante' :
+			case 'oeil_chasseur' :
 			case 'renouveau_energique' :
 			case 'bulle_dephasante' :
-		  case 'defense_pet':
+			case 'defense_pet':
 				foreach($cibles as $cible)
 				{
 					$cible_s = new perso($cible);
@@ -71,14 +71,14 @@ if (isset($_GET['ID']))
 					$requete = "INSERT INTO journal VALUES('', ".$joueur->get_id().", 'buff', '".$joueur->get_nom()."', '".$cible_s->get_nom()."', NOW(), '".$row['nom']."', 0, 0, 0)";
 					$db->query($requete);
 				}
-			break;
-			case 'buff_cri_bataille' : 
-			case 'buff_cri_victoire' : 
-			case 'buff_cri_rage' : 
-			case 'buff_cri_detresse' : 
-			case 'buff_cri_protecteur' : 
-			case 'preparation_camp' : 
-			case 'fouille_gibier' : 
+				break;
+			case 'buff_cri_bataille' :
+			case 'buff_cri_victoire' :
+			case 'buff_cri_rage' :
+			case 'buff_cri_detresse' :
+			case 'buff_cri_protecteur' :
+			case 'preparation_camp' :
+			case 'fouille_gibier' :
 			case 'recherche_precieux' :
 			case 'buff_charisme' :
 			case 'buff_honneur' :
@@ -126,7 +126,7 @@ if (isset($_GET['ID']))
 					$requete = "INSERT INTO journal VALUES('', ".$joueur->get_id().", 'gbuff', '".$joueur->get_nom()."', '".$cible_s->get_nom()."', NOW(), '".$row['nom']."', 0, 0, 0)";
 					$db->query($requete);
 				}
-			break;
+				break;
 			case 'repos_interieur' :
 				if($joueur->is_buff('repos_interieur') AND $joueur->get_buff('repos_interieur', 'effet') >= 10)
 				{
@@ -147,30 +147,95 @@ if (isset($_GET['ID']))
 						echo '<a href="competence_jeu.php?ID='.$_GET['ID'].'" onclick="return envoiInfo(this.href, \'information\')">Utilisez a nouveau cette compétence</a>';
 					}
 				}
-			break;
+				break;
 			case "esprit_libre" :
-					//-- Suppression d'un debuff au hasard
-					$debuff_tab = array();
-					foreach($joueur->get_buff() as $debuff)
+				//-- Suppression d'un debuff au hasard
+				$debuff_tab = array();
+				foreach($joueur->get_buff() as $debuff)
+				{
+					if($debuff->get_debuff() == 1 && $debuff->get_supprimable())
 					{
-						if($debuff->get_debuff() == 1 && $debuff->get_supprimable()) 
-						{ 
-							$debuff_tab[] = $debuff->get_id(); 
-						};
+						$debuff_tab[] = $debuff->get_id();
+					};
+				}
+				if(count($debuff_tab) > 0)
+				{
+					$joueur->set_pa($joueur->get_pa() - $sortpa);
+					$joueur->set_mp($joueur->get_mp() - $sortmp);
+					$joueur->sauver();
+
+					$db->query("DELETE FROM buff WHERE id=".$debuff_tab[rand(0, count($debuff_tab)-1)].";");
+				}
+				else { echo "Impossible de lancer de lancer le sort. Vous n&apos;avez aucune debuff.<br/>"; };
+
+				echo '<a href="competence_jeu.php?ID='.$_GET['ID'].'" onclick="return envoiInfo(this.href, \'information\')">Utilisez a nouveau cette compétence</a>';
+					
+				break;
+
+			case 'invocation_pet':
+				$id_pet = 0;
+				switch (strtolower($joueur->get_classe()))
+				{
+					case 'dresseur':
+						$pet = 'Mammouth';
+						break;
+					case 'druide ollamh':
+						$pet = 'Ange';
+						break;
+					case 'conjurateur':
+						$pet = 'Élémentaire noble';
+						break;
+					case 'démoniste':
+						$pet = 'Démon majeur';
+						break;
+					default:
+						$pet = 'none';
+						break;
+				}
+				$req = $db->query("select id from monstre where nom = '$pet'");
+				if ($req)
+				{
+					$row = $db->read_assoc($req);
+					if ($row)
+					{
+						$id_pet = $row['id'];
 					}
-					if(count($debuff_tab) > 0)
+				}
+				$ecurie = $joueur->get_pets();
+				foreach ($ecurie as $cur_pet)
+				{
+					if ($cur_pet->get_monstre()->get_level() == 0)
+					{
+						echo "<h5>Vous avez déjà un compagnon invoqué</h5>";
+						$id_pet = -1;
+						break;
+					}
+				}
+				if ($id_pet == -1)
+					break;
+				if ($id_pet != 0)
+				{
+					if ($joueur->add_pet($id_pet))
 					{
 						$joueur->set_pa($joueur->get_pa() - $sortpa);
 						$joueur->set_mp($joueur->get_mp() - $sortmp);
 						$joueur->sauver();
-					
-						$db->query("DELETE FROM buff WHERE id=".$debuff_tab[rand(0, count($debuff_tab)-1)].";");
+						echo "$pet bien invoqué";
 					}
-					else { echo "Impossible de lancer de lancer le sort. Vous n&apos;avez aucune debuff.<br/>"; };
-						
-					echo '<a href="competence_jeu.php?ID='.$_GET['ID'].'" onclick="return envoiInfo(this.href, \'information\')">Utilisez a nouveau cette compétence</a>';
-					
-			break;
+					else
+					{
+						echo "<h5>Impossible d'ajouter le pet: trop de pets</h5>";
+					}
+				}
+				else
+				{
+					echo "<h5>Impossible de trouver un monstre à invoquer</h5>";
+				}
+				break;
+				
+			default:
+				echo "<h5>Compétence introuvable</h5>";
+				break;
 		}
 	}
 	echo '<br /><a href="competence_jeu.php" onclick="return envoiInfo(this.href, \'information\');">Revenir au livre des compétences</a>';
@@ -191,7 +256,7 @@ else
 			$magies[] = $row['comp_assoc'];
 		}
 	}
-	
+
 	foreach($magies as $magie)
 	{
 		echo '<a href="competence_jeu.php?tri='.$magie.'" onclick="return envoiInfo(this.href, \'information\');"><img src="image/'.$magie.'.png" alt="'.$Gtrad[$magie].'" title="'.$Gtrad[$magie].'"/></a> ';
@@ -229,14 +294,14 @@ else
 			<tr>
 				<td>
 					<span style="'.$cursor.'text-decoration : none; color : '.$color.';" onclick="'.$href.'; return nd();" onmouseover="return '.make_overlib($echo).'" onmouseout="return nd();"> <strong>'.$row['nom'].'</strong></span>';
-					?>
-				
-				</td>
-				<td>
-					<span class="xsmall">(<?php echo $row['mp']; ?> MP - <?php echo $row['pa']; ?> PA)</span>
-				</td>
-			</tr>
-			</div>
+			?>
+
+</td>
+<td><span class="xsmall">(<?php echo $row['mp']; ?> MP - <?php echo $row['pa']; ?>
+		PA)</span>
+</td>
+</tr>
+</div>
 			<?php
 			$i++;
 		}
