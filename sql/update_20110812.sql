@@ -26,6 +26,5 @@ INSERT INTO `monstre` (`id`, `lib`, `nom`, `type`, `hp`, `pp`, `pm`, `forcex`, `
 -- -- Sorts de rang 4 pour derviche et prédateur
 INSERT INTO `sort_jeu` (`id`, `nom`, `description`, `pa`, `mp`, `type`, `comp_assoc`, `carac_assoc`, `carac_requis`, `incantation`, `comp_requis`, `effet`, `effet2`, `duree`, `cible`, `portee`, `requis`, `difficulte`, `prix`, `lvl_batiment`, `special`) VALUES 
 -- voir pour les difficultés/incantation ...
-(NULL, 'Libération', '(Personnel) Supprime un buff, et vous redonne %effet%% de vos PV.', '5', '15', 'liberation', 'sort_element', 'volonte', '200', '1', '0', '7', '0', '0', '1', '2', 'classe:derviche', '1', '0', '99', '1'), 
-(NULL, 'Transfert de mana', 'Redonne %effet% MP', '2', '30', 'transfert_mana', 'sort_mort', 'puissance', '200', '1', '0', '20', '0', '0', '2', '2', 'classe:prédateur', '1', '0', '99', '1');
+(NULL, 'Libération', '(Personnel) Supprime un buff, et vous redonne %effet%% de vos PV.', '5', '15', 'liberation', 'sort_element', 'volonte', '200', '1', '0', '7', '0', '0', '1', '2', 'classe:derviche', '1', '0', '99', '1');
 
