@@ -192,6 +192,7 @@ else
 			<option value="6">Montagne</option>
 			<option value="7;11">Marais / Terre Maudite</option>
 			<option value="8">Route</option>
+			<option value="15;25;35;45;55;65;75;85;95">Donjon</option>
 		</select>
 	</td>
 	<td>
