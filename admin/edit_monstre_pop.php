@@ -22,6 +22,7 @@ else
 	$req = $db->query($requete);
 	$monstre = $db->read_assoc($req);
 	$pops = explode(';', $monstre['spawn_loc']);
+	while (count($pops) > 0 && $pops[0] == '') array_shift($pops);
 	if(array_key_exists('x', $_POST))
 	{
 		$pops[] = 'p'.$_POST['x'].'-'.$_POST['y'];
