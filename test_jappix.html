@@ -4,6 +4,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-15">
 <title>test</title>
 
+<script type="text/javascript" src="javascript/diacritics.js"></script>
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js"></script>
 <script type="text/javascript" src="https://static.jappix.com/php/get.php?l=fr&amp;t=js&amp;g=mini.xml"></script>
 
@@ -18,7 +19,7 @@ function doLogin() {
   var pwd = $('#ipwd').val();
   if (log == '' || pwd == '' || !log || !pwd) return false;
   $('#login').hide();
-  localStorage.ssologin = log;
+  localStorage.ssologin = clearLogin(log);
   localStorage.ssopwd = pwd;
   tryLogin();
 }
@@ -26,12 +27,13 @@ function doLogin() {
 function tryLogin() {
   MINI_GROUPCHATS = ["sso@conference.jabber.starshine-online.com"];
   MINI_ANIMATE = true;
-  var log = localStorage.ssologin;
+  var log = clearLogin(localStorage.ssologin);
   var pwd = localStorage.ssopwd;
   if (log == null || pwd == null) {
     $('#login').show();
     $('#clearauth').hide();
   } else {
+    alert(log);
     MINI_NICKNAME = log;
     launchMini(false, true, "jabber.starshine-online.com", log, pwd);
     $('#clearauth').show();
@@ -61,5 +63,5 @@ function doCls() {
 </div>
 <hr>
 <address></address>
-<!-- hhmts start -->Last modified: Sat Aug 20 10:03:37 CEST 2011 <!-- hhmts end -->
+<!-- hhmts start -->Last modified: Sat Aug 20 11:55:06 CEST 2011 <!-- hhmts end -->
 </body> </html>
