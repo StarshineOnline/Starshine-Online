@@ -1,0 +1,65 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-15">
+<title>test</title>
+
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js"></script>
+<script type="text/javascript" src="https://static.jappix.com/php/get.php?l=fr&amp;t=js&amp;g=mini.xml"></script>
+
+<script type="text/javascript">
+   jQuery(document).ready(function() {
+     $('#login').hide();
+     tryLogin();
+   });
+
+function doLogin() {
+  var log = $('#ilogin').val();
+  var pwd = $('#ipwd').val();
+  if (log == '' || pwd == '' || !log || !pwd) return false;
+  $('#login').hide();
+  localStorage.ssologin = log;
+  localStorage.ssopwd = pwd;
+  tryLogin();
+}
+
+function tryLogin() {
+  MINI_GROUPCHATS = ["sso@conference.jabber.starshine-online.com"];
+  MINI_ANIMATE = true;
+  var log = localStorage.ssologin;
+  var pwd = localStorage.ssopwd;
+  if (log == null || pwd == null) {
+    $('#login').show();
+    $('#clearauth').hide();
+  } else {
+    MINI_NICKNAME = log;
+    launchMini(false, true, "jabber.starshine-online.com", log, pwd);
+    $('#clearauth').show();
+  }
+}
+
+function doCls() {
+  localStorage.removeItem('ssologin');
+  localStorage.removeItem('ssopwd');
+  $('#login').show();
+  $('#clearauth').hide();
+}
+</script>
+
+</head>
+
+<body>
+<div id="minichat_login">
+<div id="login">
+	<label>Login: <input id="ilogin" type="text" /></label><br/>
+	<label>Password: <input id="ipwd" type="password"></label><br/>
+	<input type="button" onclick="doLogin()" value="Connection" />
+</div>
+<div id="clearauth">
+	<input type="button" onclick="doCls()" value="Effacer" />
+</div>
+</div>
+<hr>
+<address></address>
+<!-- hhmts start -->Last modified: Sat Aug 20 10:03:37 CEST 2011 <!-- hhmts end -->
+</body> </html>
