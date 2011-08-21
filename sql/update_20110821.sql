@@ -8,8 +8,8 @@ CREATE TABLE IF NOT EXISTS `maree` (
 CREATE TABLE `calendrier` (
 `date` DATETIME NOT NULL ,
 `script` VARCHAR( 255 ) NULL ,
-`eval` VARCHAR( 65535 ) NULL ,
-`sql` VARCHAR( 65535 ) NULL ,
+`eval` TEXT NULL ,
+`sql` TEXT NULL ,
 `next` DATETIME NULL
 ) ENGINE = MYISAM COMMENT = 'Calendrier définissant diverses actions automatisées';
 
