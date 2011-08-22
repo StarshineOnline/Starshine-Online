@@ -897,7 +897,7 @@ function lance_sort($id, $acteur, &$effects)
 					// Calcul du potentiel paralyser
 					$sm = ($actif->get_volonte() * $actif->get_sort_mort());
 					// Calcul du potentiel résister
-					$pm = $passif->get_pm();
+					$pm = $passif->get_pm_para();
 
 					// On utilise bien la PM DE BASE pour le 3eme jet
 
@@ -930,7 +930,7 @@ function lance_sort($id, $acteur, &$effects)
 					$sm = ($actif->get_volonte() * $actif->get_sort_mort());
 					
 					// Calcul du potentiel résister
-					$pm = $passif->get_pm();
+					$pm = $passif->get_pm_para();
 
 					// On utilise bien la PM DE BASE pour le 3eme jet
 
