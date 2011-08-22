@@ -1674,13 +1674,13 @@ class perso extends entite
 				$this->pm = round($this->pm * 1.15);
 			}
 			
-			//pm pour le 3eme jet de para
-			$this->pm_para = $this->pm;
-			
 			//Effets des enchantements
 			if (isset($this->enchantement['pourcent_pm'])) $this->pm += floor($this->pm * $this->enchantement['pourcent_pm']['effet'] / 100);
 			if (isset($this->enchantement['pourcent_pp']))	$this->pp += floor($this->pp * $this->enchantement['pourcent_pp']['effet'] / 100);
 
+			//pm pour le 3eme jet de para
+			$this->pm_para = $this->pm;
+			
 			//Buffs
 			if($this->is_buff('buff_bouclier')) $this->pp = round($this->pp * (1 + ($this->get_buff('buff_bouclier', 'effet') / 100)));
 			if($this->is_buff('buff_barriere')) $this->pm = round($this->pm * (1 + ($this->get_buff('buff_barriere', 'effet') / 100)));
