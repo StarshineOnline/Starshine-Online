@@ -852,6 +852,7 @@ class perso extends entite
 	public $enchantement = array();  ///< Liste des enchantements (gemmes incrusté dans l'équipement porté).
 	public $pp_base;                 ///< PP de base (sans les buffs).
 	public $pm_base;                 ///< PM de base (sans les buffs).
+	public $pm_para;                 ///< PM pour la resistance à para (sans les buffs avec bonus raciaux).
 	public $enchant;                 ///< plus utilisé.
 	public $armure;                  ///< true si la PP et la PM on été calculées, false sinon.
 	/// Renvoie les objets équipés par le personnage sous forme textuelle.
@@ -1672,7 +1673,10 @@ class perso extends entite
 				$this->pp = round($this->pp * 1.15);
 				$this->pm = round($this->pm * 1.15);
 			}
-
+			
+			//pm pour le 3eme jet de para
+			$this->pm_para = $this->pm;
+			
 			//Effets des enchantements
 			if (isset($this->enchantement['pourcent_pm'])) $this->pm += floor($this->pm * $this->enchantement['pourcent_pm']['effet'] / 100);
 			if (isset($this->enchantement['pourcent_pp']))	$this->pp += floor($this->pp * $this->enchantement['pourcent_pp']['effet'] / 100);
@@ -1708,6 +1712,16 @@ class perso extends entite
 		else return $this->pm_base;
 	}
 
+	function get_pm_para()
+	{
+		if(!isset($this->pm_para))
+		{
+			$this->get_armure();
+		}
+		return $this->pm_para;
+	}
+	
+	
   /**
    * Renvoie la PP.
    * Appelle get_armure si elle n'a pas déjà été calculée.
