@@ -1,4 +1,4 @@
-<?php
+<?php // -*- mode: php; -*-
 class construction
 {
 /**
@@ -563,5 +563,32 @@ class construction
 		$this->champs_modif[] = 'point_victoire';
 	}
 //fonction
+
+	private $buff = null;
+	function get_buff()
+	{
+		if ($this->buff == null) {
+			$this->buff = get_construction_buff($this->id);
+		}
+		return $this->buff;
+	}
+
+	static function get_construction_buff($id)
+	{
+		global $db;
+		$buff = array();
+		$req = $db->query("select * from buff_batiment where id_construction = '$id'");
+		if ($req) {
+			while ($b = $db->read_object($req)) {
+				$buff[] = $b;
+			}
+		}
+		return $buff;
+	}
+
+	static function check_buff()
+	{
+		$req = $db->query("delete from buff_batiment where date_fin <= ".time());
+	}
 }
 ?>

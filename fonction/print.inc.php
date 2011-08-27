@@ -348,6 +348,11 @@ function print_js_onload($js)
 	echo '<script type="text/javascript">$(document).ready(function(){ '.$js.' });</script>';
 }
 
+function print_onload_infoperso()
+{
+	print_js_onload("envoiInfo('infoperso.php?javascript=oui', 'perso');");
+}
+
 global $auto_tootltip_num;
 $auto_tootltip_num = 0;
 function print_tooltip($tooltip)
@@ -362,6 +367,21 @@ function print_tooltip($tooltip)
 function print_tooltipify()
 {
   print_js_onload('$(\'.autottnsrc\').cluetip({local:true, showTitle: false, dropShadow: false, waitImage: false, positionBy: \'mouse\'});');
+}
+
+function print_batiment_buff($buffs)
+{
+	if (count($buffs)) {
+		$out = '<ul>';
+		foreach ($buffs as $buff) {
+			$out .= "<li><strong>$buff->type</strong> : encore ";
+			$out .= transform_sec_temp($buff->date_fin - time());
+			$out .= ' avant la fin de l\'effet</li>';
+		}
+		$out .= '</ul>';
+		$tt = print_tooltip($out);
+		echo " - <img src=\"image/buff/buff.png\" alt=\"Buffs\" $tt />";
+	}
 }
 
 ?>

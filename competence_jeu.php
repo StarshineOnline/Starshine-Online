@@ -1,4 +1,4 @@
-<?php // -*- tab-width:2 -*-
+<?php // -*- mode: php; tab-width:2 -*-
 if (file_exists('root.php'))
 include_once('root.php');
 
@@ -232,6 +232,45 @@ if (isset($_GET['ID']))
 					echo "<h5>Impossible de trouver un monstre à invoquer</h5>";
 				}
 				break;
+
+		case 'sabotage':
+			$sql = 'select * from placement where x = '.$joueur->get_x().' and y = '.
+				$joueur->get_y().' and type = \'arme_de_siege\'';
+			$sql2 = 'select * from construction where x = '.$joueur->get_x().
+				' and y = '.$joueur->get_y().' and type = \'arme_de_siege\'';
+			$req = $db->query($sql);
+			if ($req && $db->num_rows($req) > 0) {
+				$type = 'placement';
+				$b = $db->read_object($req);
+			}
+			else {
+				$req = $db->query($sql2);
+				if ($req && $db->num_rows($req) > 0) {
+					$type = 'construction';
+					$b = $db->read_object($req);
+				}
+			}
+			if ($req && $db->num_rows($req) > 0) {
+				$date_fin = time() + $row['duree'];
+				$sql3 = "insert into buff_batiment ".
+					"(id_${type}, date_fin, duree, type, effet) values (".
+					$b->id.", $date_fin, $row[duree], 'sabotage', 1) ".
+					'ON DUPLICATE KEY UPDATE date_fin = VALUES(date_fin)';
+				$req = $db->query($sql3);
+				if ($req) {
+						$joueur->set_pa($joueur->get_pa() - $sortpa);
+						$joueur->set_mp($joueur->get_mp() - $sortmp);
+						$joueur->sauver();
+						echo "Bâtiment saboté.<br/>";
+				} else {
+					echo "<h5>Erreur SQL ???</h5>";
+				}
+			}
+			else {
+				echo "<h5>Pas de cible sur la case</h5>";
+			}
+				
+			break;
 				
 			default:
 				echo "<h5>Compétence introuvable</h5>";

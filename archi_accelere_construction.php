@@ -13,14 +13,25 @@ if ($joueur->is_buff('debuff_rvr'))
 //Si le joueur a assez de PA
 elseif($joueur->get_pa() >= 30)
 {
+	$ID_CONSTRUCTION = sSQL($_GET['id_construction'], SSQL_INTEGER);
+
 	//On recherche les informations sur ce placement
-	$requete = 'SELECT x, y, fin_placement, debut_placement FROM placement WHERE id = '.sSQL($_GET['id_construction']);
+	$requete = 'SELECT x, y, fin_placement, debut_placement FROM placement WHERE id = \''.$ID_CONSTRUCTION.'\'';
 	$req = $db->query($requete);
 	$row = $db->read_assoc($req);
 
 	if ($row['fin_placement'] < time())
 	{
 		security_block(BAD_ENTRY, "Construction déjà finie !");
+	}
+
+	$buffs = placement::get_placement_buff($ID_CONSTRUCTION);
+	foreach ($buffs as $b) {
+		if ($b->type == 'sabotage') {
+			echo '<h5>Ce bâtiment est saboté</h5></div>';
+			print_onload_infoperso();
+			exit(0);
+		}
 	}
 	
 	//Calcul de la distance entre le joueur et le placement

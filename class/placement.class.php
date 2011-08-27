@@ -1,4 +1,4 @@
-<?php
+<?php // -*- php -*-
 class placement
 {
 /**
@@ -554,6 +554,33 @@ class placement
 			$this->image = $row['image'];
 		}
 		return $this->image;
+	}
+
+	private $buff = null;
+	function get_buff()
+	{
+		if ($this->buff == null) {
+			$this->buff = get_placement_buff($this->id);
+		}
+		return $this->buff;
+	}
+
+	static function get_placement_buff($id)
+	{
+		global $db;
+		$buff = array();
+		$req = $db->query("select * from buff_batiment where id_placement = '$id'");
+		if ($req) {
+			while ($b = $db->read_object($req)) {
+				$buff[] = $b;
+			}
+		}
+		return $buff;
+	}
+
+	static function check_buff()
+	{
+		$req = $db->query("delete from buff_batiment where date_fin <= ".time());
 	}
 
 }

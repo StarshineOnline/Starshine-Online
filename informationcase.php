@@ -1,4 +1,4 @@
-<?php
+<?php // -*- php -*-
 if (file_exists('root.php'))
   include_once('root.php');
 
@@ -194,6 +194,8 @@ if($W_distance < 4)
 			{
 					echo ' <a href="archi_accelere_construction.php?id_construction='.$W_row['id'].'" onclick="return envoiInfo(this.href, \'information\')">Accélérer <span class="xsmall">(30 PA)</a>';
 			}
+			$buffs = placement::get_placement_buff($W_row['id']);
+			if (count($buffs)) print_batiment_buff($buffs);
 			echo '<br />';
 		}
 	}
@@ -228,6 +230,8 @@ if($W_distance < 4)
 			{
 				echo ' <a href="archi_soigne_construction.php?id_construction='.$W_row['id'].'" onclick="return envoiInfo(this.href, \'information\')">Réparer <span class="xsmall">(30 PA)</a>';
 			}
+			$buffs = construction::get_construction_buff($W_row['id']);
+			if (count($buffs)) print_batiment_buff($buffs);
 			echo '<br />';
 		}
 	}
@@ -286,5 +290,6 @@ if($W_distance < 4)
 	}
 	echo "</div></fieldset>";
 }
+print_tooltipify();
 ?>
 

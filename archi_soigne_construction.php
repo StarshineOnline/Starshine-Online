@@ -13,8 +13,10 @@ if ($joueur->is_buff('debuff_rvr'))
 //Si le joueur a assez de PA
 elseif($joueur->get_pa() >= 30)
 {
+	$ID_CONSTRUCTION = sSQL($_GET['id_construction'], SSQL_INTEGER);
+
 	//On recherche les informations sur ce placement
-	$requete = 'SELECT x, y, construction.hp as hp_c, batiment.hp as hp_b FROM construction LEFT JOIN batiment ON batiment.id = construction.id_batiment WHERE construction.id = '.sSQL($_GET['id_construction']);
+	$requete = 'SELECT x, y, construction.hp as hp_c, batiment.hp as hp_b FROM construction LEFT JOIN batiment ON batiment.id = construction.id_batiment WHERE construction.id = \''.$ID_CONSTRUCTION.'\'';
 	$req = $db->query($requete);
 	$row = $db->read_assoc($req);
 	
@@ -23,6 +25,16 @@ elseif($joueur->get_pa() >= 30)
 	//Si il est sur la case
 	if($distance == 0)
 	{
+
+		$buffs = construction::get_construction_buff($ID_CONSTRUCTION);
+		foreach ($buffs as $b) {
+			if ($b->type == 'sabotage') {
+				echo '<h5>Ce bâtiment est saboté</h5></div>';
+				print_onload_infoperso();
+				exit(0);
+			}
+		}
+
 		//HP redonnés
 		$hp_repare_max = ceil(pow($joueur->get_architecture(), 1.5));
 		$hp_repare_min = ceil($hp_repare_max / 3);

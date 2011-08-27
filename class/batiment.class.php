@@ -1,4 +1,4 @@
-<?php
+<?php // -*- php -*-
 class batiment
 {
 /**
@@ -741,4 +741,5 @@ class batiment
 		else
 			return false;
 	}
+
 }
