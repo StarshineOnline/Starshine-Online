@@ -17,7 +17,7 @@ $W_row = $db->read_assoc($W_req);
 $R = new royaume($W_row['royaume']);
 $R->get_diplo($joueur->get_race());
 
-if ($R->is_raz())
+if ($R->is_raz() && $W_row['type'] == 1)
 {
 	echo "<h5>Impossible de commercer dans une ville mise à sac</h5>";
 	exit (0);
