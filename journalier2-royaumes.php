@@ -7,7 +7,7 @@ include_once('journalier2-head.php');
 
 // RAZ capitale
 $now = time();
-$requete = "UPDATE royaume set fin_raz_capitale = 0 where fin_raz_capitale > 0 and fin_raz_capitale < $now";
+$requete = "UPDATE royaume set fin_raz_capitale = 0, capitale_hp = 30000 where fin_raz_capitale > 0 and fin_raz_capitale < $now";
 $req = $db->query($requete);
 
 //Récupération de points de victoire
