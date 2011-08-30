@@ -6,11 +6,7 @@ require('haut_roi.php');
 
 //check_case('all');
 $R = new royaume($Trace[$joueur->get_race()]['numrace']);
-if ($R->is_raz())
-{
-	echo '<h5>Gestion impossible quand la capitale est mise à sac</h5>';
-	exit(0);
-}
+if ($R->is_raz()) $RAZ_ROYAUME = true;
 
 if($joueur->get_rang_royaume() != 6 AND $joueur->get_id() != $royaume->get_ministre_militaire())
 	echo '<p>Cette page vous est interdit</p>';
@@ -18,6 +14,10 @@ else if(!array_key_exists('direction', $_GET))
 {
 	echo "<div id='affiche_minimap' style='float:right;'>";
 	echo "</div>";
+	if ($RAZ_ROYAUME)
+	{
+		echo '<div><strong>Gestion impossible quand la capitale est mise à sac</strong></div>';
+	}
 	echo "<div id='contruction'>";
 	
 	$req = $db->query("SELECT *, placement.royaume AS r, placement.type FROM placement LEFT JOIN map ON (map.y = placement.y AND placement.x = map.x) WHERE (placement.type = 'drapeau' OR placement.type = 'arme_de_siege') AND placement.royaume != ".$royaume->get_id()." AND map.royaume = ".$royaume->get_id()."");
@@ -182,6 +182,11 @@ else if(!array_key_exists('direction', $_GET))
 		echo "</ul>";
 		echo "</fieldset>";
 	}
+}
+elseif ($RAZ_ROYAUME)
+{
+	echo '<h5>Gestion impossible quand la capitale est mise à sac</h5>';
+	exit(0);
 }
 elseif($joueur->is_buff('debuff_rvr'))
 {
