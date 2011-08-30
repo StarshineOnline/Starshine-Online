@@ -1,4 +1,4 @@
-<?php
+<?php // -*- mode: php; tab-width:2 -*-
 class royaume
 {
 /**
@@ -1248,5 +1248,10 @@ class royaume
     print_debug("Le mur est à $this->level_mur <br/>");
     return $this->level_mur;
   }
+
+	function is_raz()
+	{
+		return $this->get_fin_raz_capitale() > time();
+	}
 }
 ?>

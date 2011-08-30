@@ -1,36 +1,39 @@
-<?php
+<?php // -*- mode: php; tab-width:2 -*-
   if (file_exists('../root.php'))
     include_once('../root.php');
   
-  require('haut_roi.php');
-  if( $joueur->get_rang_royaume() == 6 )
-  {
-    $militaire = true;
-    $economie = true;
-  }
-  elseif( $joueur->get_id() == $royaume->get_ministre_economie() AND $joueur->get_id() == $royaume->get_ministre_militaire() )
-  {
-    $militaire = true;
-    $economie = true;
-  }
-  elseif( $joueur->get_id() == $royaume->get_ministre_economie() )
-  {
-    $militaire = false;
-    $economie = true;
-  }
-  elseif( $joueur->get_id() == $royaume->get_ministre_militaire() )
-  {
-    $militaire = true;
-    $economie = false;
-  }
-  else
-  {
-    echo '<p>Cheater</p>';
-    exit;
-  }
+require('haut_roi.php');
+if( $joueur->get_rang_royaume() == 6 )
+{
+	$militaire = true;
+	$economie = true;
+ }
+elseif( $joueur->get_id() == $royaume->get_ministre_economie() AND $joueur->get_id() == $royaume->get_ministre_militaire() )
+{
+	$militaire = true;
+	$economie = true;
+}
+elseif( $joueur->get_id() == $royaume->get_ministre_economie() )
+{
+	$militaire = false;
+	$economie = true;
+}
+elseif( $joueur->get_id() == $royaume->get_ministre_militaire() )
+{
+	$militaire = true;
+	$economie = false;
+}
+else
+{
+	echo '<p>Cheater</p>';
+	exit;
+}
+
+$R = new royaume($Trace[$joueur->get_race()]['numrace']);
+$RAZ_ROYAUME = $R->is_raz();
   
-  switch( $_GET['direction'] )
-	{
+switch( $_GET['direction'] )
+{
   case 'diplomatie':
 		$diplo = unserialize($royaume->get_diplo_time());
 		$req = $db->query("SELECT * FROM diplomatie WHERE race = '".$joueur->get_race()."'");
@@ -293,6 +296,7 @@
 	    break;
 	    
 	case 'construction':
+		if ($RAZ_ROYAUME) { echo '<h5>Gestion impossible quand la capitale est mise à sac</h5>'; break; }
   	if( $economie )
   	{
   	    $requete = "SELECT *, construction_ville.id as id_const, construction_ville.hp as cur_hp, batiment_ville.hp as max_hp FROM construction_ville LEFT JOIN batiment_ville ON construction_ville.id_batiment = batiment_ville.id WHERE id_royaume = ".$royaume->get_id();
@@ -337,6 +341,7 @@
   	break;
   	
   case 'reactif':
+		if ($RAZ_ROYAUME) { echo '<h5>Gestion impossible quand la capitale est mise à sac</h5>'; break; }
   	if( $economie )
   	{
   	    $id_batiment = $_GET['batiment'];
@@ -358,6 +363,7 @@
   	break;
   	
   case 'modification':
+		if ($RAZ_ROYAUME) { echo '<h5>Gestion impossible quand la capitale est mise à sac</h5>'; break; }
   	if( $economie )
   	{
   	    $type = $_GET['batiment'];
@@ -426,6 +432,7 @@
                 }
   	        break;
   	        case 'ameliore' :
+		if ($RAZ_ROYAUME) { echo '<h5>Gestion impossible quand la capitale est mise à sac</h5>'; break; }
   	            $id_batiment = $_GET['id_batiment'];
   	            $requete = "SELECT cout, nom, hp FROM batiment_ville WHERE id = ".$id_batiment;
   	            $req = $db->query($requete);
@@ -449,6 +456,7 @@
   	            }
   	        break;
   	        case 'reduit':
+		if ($RAZ_ROYAUME) { echo '<h5>Gestion impossible quand la capitale est mise à sac</h5>'; break; }
   	            // On récupère le nouveau bâtiment
   	            $id_batiment = $_GET['id_batiment'];
   	            $requete = "SELECT cout, nom, hp FROM batiment_ville WHERE id = ".$id_batiment;
@@ -472,6 +480,7 @@
   	break;
   	
   case 'reparation':
+		if ($RAZ_ROYAUME) { echo '<h5>Gestion impossible quand la capitale est mise à sac</h5>'; break; }
   	if( $economie )
   	{
   	    // Récupération de informations sur le bâtiment
@@ -502,6 +511,7 @@
     break;
   	
   case 'carte':
+		if ($RAZ_ROYAUME) { echo '<h5>Gestion impossible quand la capitale est mise à sac</h5>'; break; }
   	if( $militaire )
   	{
   		include('carte_roy.php');
@@ -790,9 +800,11 @@
 	    break;
 	    
 	case 'achat_militaire':
+		if ($RAZ_ROYAUME) { echo '<h5>Gestion impossible quand la capitale est mise à sac</h5>'; break; }
     break;
     
   case 'boutique':
+		if ($RAZ_ROYAUME) { echo '<h5>Gestion impossible quand la capitale est mise à sac</h5>'; break; }
   	if( $militaire )
   	{
   		echo "
@@ -866,6 +878,7 @@
   	break;
   	
   case 'bourse_enchere':
+		if ($RAZ_ROYAUME) { echo '<h5>Gestion impossible quand la capitale est mise à sac</h5>'; break; }
   	if( $economie )
   	{
   		require_once(root.'class/bourse_royaume.class.php');
@@ -912,6 +925,7 @@
   	break;
   	
   case 'bourse_ressource':
+		if ($RAZ_ROYAUME) { echo '<h5>Gestion impossible quand la capitale est mise à sac</h5>'; break; }
   	if( $economie )
   	{
   		require_once(root.'class/bourse_royaume.class.php');
@@ -981,6 +995,7 @@
   	break;
   	
   case 'bourse':
+		if ($RAZ_ROYAUME) { echo '<h5>Gestion impossible quand la capitale est mise à sac</h5>'; break; }
   	if( $economie )
   	{
   		require_once(root.'class/bourse_royaume.class.php');
@@ -1198,6 +1213,7 @@
   	}
 	break;
 	case "echange":
+		if ($RAZ_ROYAUME) { echo '<h5>Gestion impossible quand la capitale est mise à sac</h5>'; break; }
 	if($economie)
 	{
 		?>

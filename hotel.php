@@ -1,4 +1,4 @@
-<?php
+<?php // -*- mode: php; tab-width:2 -*-
 if (file_exists('root.php'))
   include_once('root.php');
 
@@ -16,6 +16,12 @@ $W_row = $db->read_assoc($W_req);
 $R = new royaume($W_row['royaume']);
 $R->get_diplo($joueur->get_race());
 $mois = 60 * 60 * 24 * 31;
+
+if ($R->is_raz())
+{
+	echo "<h5>Impossible de commercer dans une ville mise à sac</h5>";
+	exit (0);
+}
 
 if ($joueur->get_race() != $R->get_race() &&
 		$R->get_diplo($joueur->get_race()) > 6)

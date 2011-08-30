@@ -5,6 +5,12 @@ if (file_exists('../root.php'))
 require('haut_roi.php');
 
 //check_case('all');
+$R = new royaume($Trace[$joueur->get_race()]['numrace']);
+if ($R->is_raz())
+{
+	echo '<h5>Gestion impossible quand la capitale est mise à sac</h5>';
+	exit(0);
+}
 
 if($joueur->get_rang_royaume() != 6 AND $joueur->get_id() != $royaume->get_ministre_militaire())
 	echo '<p>Cette page vous est interdit</p>';

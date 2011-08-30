@@ -2171,6 +2171,10 @@ function verif_mort($pourcent, $var, $duree_debuff=0, $multiplicateur_mouvement=
         $arene = true;
       }
     }
+		$R = new royaume($Trace[$joueur->get_race()]['numrace']);
+		if ($R->is_raz()) $capitale_rez_p = 5;
+		else $capitale_rez_p = 20;
+
 		//Recherche du fort le plus proche
 		$requete = "SELECT *, (ABS(".$joueur->get_x()." - cast(x as signed integer)) + ABS(".$joueur->get_y()." - cast(y as signed integer))) AS plop FROM `construction` WHERE rez > 0 AND type = 'fort' AND royaume = ".$Trace[$joueur->get_race()]['numrace']." ORDER BY plop ASC";
 		$req_b = $db->query($requete);
@@ -2238,7 +2242,7 @@ Votre dernier souvenir est l'endroit où vous êtes mort <?php echo 'x : '.$joue
           {
 					  // Capitale ou refuge des criminels
 				  	echo '
-						<li style="padding-top:5px;padding-bottom:5px;"><a href="mort.php?choix=1">'.$echo.' ('.(20 + $bonus).'% HP / '.(20 + $bonus).'% MP)</a></li>';
+						<li style="padding-top:5px;padding-bottom:5px;"><a href="mort.php?choix=1">'.$echo.' ('.($capitale_rez_p + $bonus).'% HP / '.($capitale_rez_p + $bonus).'% MP)</a></li>';
           }
 					?>
 						<li style="padding-top:5px;padding-bottom:5px;"><a href="index.php?deco=ok">Vous déconnecter</a></li>

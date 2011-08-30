@@ -1,4 +1,4 @@
-<?php
+<?php // -*- mode: php; tab-width:2 -*-
 if (file_exists('root.php'))
   include_once('root.php');
 
@@ -20,6 +20,13 @@ if(!$case->is_ville(true, 'taverne')) exit();
 
 
 $R = new royaume($W_row['royaume']);
+
+if ($R->is_raz())
+{
+	echo "<h5>Impossible de commercer dans une ville mise à sac</h5>";
+	exit (0);
+}
+
 $R->get_diplo($joueur->get_race());
 ?>
 <fieldset><legend><?php if(verif_ville($joueur->get_x(), $joueur->get_y())) return_ville( '<a href="ville.php" onclick="return envoiInfo(this.href, \'centre\')">'.$R->get_nom().'</a> > ', $joueur->get_pos()); ?> <?php echo '<a href="taverne.php?poscase='.$W_case.'" onclick="return envoiInfo(this.href,\'carte\')">';?> Taverne </a></legend>

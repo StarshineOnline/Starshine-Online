@@ -12,6 +12,13 @@ if ($joueur->get_rang_royaume() != 6) {
 	echo '<p>Cette page vous est interdite</p>';
   exit(0);
 }
+$R = new royaume($Trace[$joueur->get_race()]['numrace']);
+if ($R->is_raz())
+{
+	echo '<h5>Gestion impossible quand la capitale est mise à sac</h5>';
+	exit(0);
+}
+
 $case = new map_case();
 $case->check_case('all');
 

@@ -1,7 +1,6 @@
-<?php
+<?php // -*- tab-width:2; mode: php -*- 
 if (file_exists('root.php'))
   include_once('root.php');
-?><?php
 
 //Inclusion du haut du document html
 include_once(root.'haut_ajax.php');
@@ -19,6 +18,11 @@ $W_requete = 'SELECT * FROM map WHERE x = '.$joueur->get_x().' and y = '.$joueur
 $W_req = $db->query($W_requete);
 $W_row = $db->read_array($W_req);
 $R = new royaume($W_row['royaume']);
+if ($R->is_raz())
+{
+	echo "<h5>Impossible de commercer dans une ville mise à sac</h5>";
+	exit (0);
+}
 //$R = get_royaume_info($joueur->get_race(), $W_row['royaume']);
 $_SESSION['position'] = $position;
 ?>

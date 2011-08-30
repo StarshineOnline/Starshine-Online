@@ -1,4 +1,4 @@
-<?php
+<?php // -*- mode: php; tab-width:2 -*-
 if (file_exists('../root.php'))
   include_once('../root.php');
 
@@ -8,8 +8,13 @@ include_once(root.'class/bourg.class.php');
 include_once(root.'class/mine.class.php');
 include_once(root.'class/placement.class.php');
 
+$R = new royaume($Trace[$joueur->get_race()]['numrace']);
+$RAZ_ROYAUME = $R->is_raz();
+
 if($joueur->get_rang_royaume() != 6 AND $joueur->get_id() != $royaume->get_ministre_economie())
 	echo '<p>Cette page vous est interdit</p>';
+else if ($RAZ_ROYAUME) 
+	echo '<h5>Gestion impossible quand la capitale est mise à sac</h5>';
 else if(array_key_exists('id', $_GET))
 {
 	$bourg = new bourg($_GET['id']);

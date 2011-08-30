@@ -1,9 +1,14 @@
-<?php
+<?php // -*- mode: php; tab-width:2 -*-
 if (file_exists('root.php'))
   include_once('root.php');
 if (isset($_SERVER['REMOTE_ADDR'])) die('Forbidden connection from '.$_SERVER['REMOTE_ADDR']);
 
 include_once('journalier2-head.php');
+
+// RAZ capitale
+$now = time();
+$requete = "UPDATE royaume set fin_raz_capitale = 0 where fin_raz_capitale > 0 and fin_raz_capitale < $now";
+$req = $db->query($requete);
 
 //Récupération de points de victoire
 $requete = "UPDATE royaume r SET point_victoire = point_victoire + (select count(1) from map where type = 3 and royaume = r.id and r.id <> 0)";

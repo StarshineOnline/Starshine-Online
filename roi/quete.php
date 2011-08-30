@@ -1,11 +1,16 @@
-<?php
+<?php // -*- tab-width:2; mode: php -*- 
 if (file_exists('../root.php'))
   include_once('../root.php');
-?><?php
+
 require('haut_roi.php');
 
-?>
-<?php
+$R = new royaume($Trace[$joueur->get_race()]['numrace']);
+if ($R->is_raz())
+{
+	echo '<h5>Gestion impossible quand la capitale est mise à sac</h5>';
+	exit(0);
+}
+
 if($joueur->get_rang_royaume() != 6  AND $joueur->get_id() != $royaume->get_ministre_economie())
 	echo '<p>Cette page vous est interdit</p>';
 else if($_GET['action'] == 'achat')
@@ -29,8 +34,7 @@ else if($_GET['action'] == 'achat')
 	{
 		echo '<h5>Votre royaume n\'a pas assez de stars pour acheter cette quête.</h5>';
 	}
-	?>
-	<?php
+
 }
 elseif($_GET['action'] == 'voir')
 {
