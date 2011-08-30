@@ -268,6 +268,8 @@ function type_terrain($info)
 	$typeterrain[10][1] = 'Bâtiment';
 	$typeterrain[20][0] = 'objet';
 	$typeterrain[20][1] = 'Bâtiment';
+	$typeterrain[21][0] = 'objet';
+	$typeterrain[21][1] = 'Bâtiment';
 	$typeterrain[11][0] = 'terre_maudite';
 	$typeterrain[11][1] = 'Terre Maudite';
 	$typeterrain[15][0] = 'donjon';
