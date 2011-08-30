@@ -219,6 +219,11 @@ switch($type)
 		$siege->arme_degat = $siege->get_bonus('degats_bat');
 		$attaquant = new entite('siege', $siege);
 		$defenseur = new entite('ville', $joueur_defenseur);
+		if ($map_royaume->is_raz())
+		{
+			echo '<h5>Cette ville est déjà mise à sac</h5>';
+			exit (0);
+		}
 	break;
 }
 

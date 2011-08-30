@@ -1,7 +1,6 @@
 <?php
 if (file_exists('root.php'))
   include_once('root.php');
-?><?php
 
 //Inclusion du haut du document html
 include_once(root.'haut_ajax.php');
@@ -81,7 +80,7 @@ if($W_distance == 0)
 		}
 		echo '</ul>';
 	}
-	$requete = 'SELECT map.x as x, map.y as y, nom FROM map LEFT JOIN royaume ON map.royaume = royaume.id WHERE map.x >= '.$x_min.' AND map.x <= '.$x_max.' AND map.y >= '.$y_min.' AND map.y <= '.$y_max.' AND type = 1 ';
+	$requete = 'SELECT map.x as x, map.y as y, nom FROM map LEFT JOIN royaume ON map.royaume = royaume.id WHERE map.x >= '.$x_min.' AND map.x <= '.$x_max.' AND map.y >= '.$y_min.' AND map.y <= '.$y_max.' AND type = 1 AND royaume.fin_raz_capitale > 0 AND royaume.fin_raz_capitale < '.time();
 					//'AND royaume.race != "'.$joueur->get_race().'"';
 	$req_v = $db->query($requete);
 	$row_v = $db->read_assoc($req_v);
