@@ -1364,20 +1364,22 @@ class perso extends entite
 					if($row['type'] == 'baton')
 					{
 						$conditions[0]['attribut']	= 'coef_incantation';
-						$conditions[0]['valeur']	= $row['forcex'] * $row['melee'];
+						$conditions[0]['valeur'] = $row['forcex'] * $row['melee'];
 					}
 					elseif($row['type'] == 'bouclier')
 					{
 						$conditions[0]['attribut']	= 'coef_blocage';
-						$conditions[0]['valeur']	= $row['forcex'] * $row['melee'];
+						$conditions[0]['valeur'] = $row['forcex'] * $row['melee'];
 					}
 					else
 					{
-						$conditions[0]['attribut']	= 'coef_melee';
-						$conditions[0]['valeur']	= $row['forcex'] * $row['melee'];
+						$conditions[0]['attribut'] = 'coef_melee';
+						$conditions[0]['valeur'] = $row['forcex'] * $row['melee'];
 					}
 					$conditions[1]['attribut']	= 'coef_distance';
 					$conditions[1]['valeur']	= $row['forcex'] * $row['distance'];
+					$conditions[2]['attribut']	= 'force';
+					$conditions[2]['valeur']	= $row['forcex'];
 					$type = explode(';', $row['mains']);
 					$type = $type[0];
 					$mains = $row['mains'];

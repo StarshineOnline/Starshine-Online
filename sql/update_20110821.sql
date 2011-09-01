@@ -11,5 +11,5 @@ CREATE TABLE `calendrier` (
 `eval` TEXT NULL ,
 `sql` TEXT NULL ,
 `next` DATETIME NULL
-) ENGINE = MYISAM COMMENT = 'Calendrier définissant diverses actions automatisées';
+) ENGINE = INNODB COMMENT = 'Calendrier définissant diverses actions automatisées';
 
