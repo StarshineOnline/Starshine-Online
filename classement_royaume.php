@@ -45,7 +45,7 @@ td.space
 <h2>Honneur</h2>
 <table>
 <tr>
-	<td class="space">
+	<td>
 		<table class="classroy">
 			<tr>
 				<td>
@@ -84,7 +84,7 @@ foreach($tab as $row)
 ?>
 		</table>
 	</td>
-	<td class="space">
+	<td>
 		<table class="classroy">
 			<tr>
 				<td>
@@ -139,7 +139,7 @@ while($row = $db->read_assoc($req))
 <h2>Niveaux</h2>
 <table>
 <tr>
-	<td class="space">
+	<td>
 		<table class="classroy">
 			<tr>
 				<td>
@@ -178,7 +178,7 @@ foreach($tab as $row)
 ?>
 		</table>
 	</td>
-	<td class="space">
+	<td>
 		<table class="classroy">
 			<tr>
 				<td>
@@ -233,7 +233,7 @@ while($row = $db->read_assoc($req))
 <h2>Constructions (hors ville)</h2>
 <table>
 <tr>
-	<td class="space">
+	<td>
 		<table class="classroy">
 			<tr>
 				<td>
@@ -272,7 +272,7 @@ foreach($tab as $row)
 ?>
 		</table>
 	</td>
-	<td class="space">
+	<td>
 		<table class="classroy">
 			<tr>
 				<td>
@@ -326,7 +326,7 @@ while($row = $db->read_assoc($req))
 <h2>Cases controlées</h2>
 <table>
 <tr>
-	<td class="space">
+	<td>
 		<table class="classroy">
 			<tr>
 				<td>
@@ -365,7 +365,7 @@ foreach($tab as $row)
 ?>
 		</table>
 	</td>
-	<td class="space">
+	<td>
 		<table class="classroy">
 			<tr>
 				<td>
@@ -421,7 +421,7 @@ while($row = $db->read_assoc($req))
 <h2>Constructions (en ville)</h2>
 <table>
 <tr>
-	<td class="space">
+	<td>
 		<table class="classroy">
 			<tr>
 				<td>
@@ -460,7 +460,7 @@ foreach($tab as $row)
 ?>
 		</table>
 	</td>
-	<td class="space">
+	<td>
 		<table class="classroy">
 			<tr>
 				<td>
@@ -516,7 +516,7 @@ while($row = $db->read_assoc($req))
 <h2>Quêtes</h2>
 <table>
 <tr>
-	<td class="space">
+	<td>
 		<table class="classroy">
 			<tr>
 				<td>
@@ -555,7 +555,7 @@ foreach($tab as $row)
 ?>
 		</table>
 	</td>
-	<td class="space">
+	<td>
 		<table class="classroy">
 			<tr>
 				<td>
@@ -610,7 +610,7 @@ while($row = $db->read_assoc($req))
 <h2>Stars du royaume</h2>
 <table>
 <tr>
-	<td class="space">
+	<td>
 		<table class="classroy">
 			<tr>
 				<td>
@@ -649,7 +649,7 @@ foreach($tab as $row)
 ?>
 		</table>
 	</td>
-	<td class="space">
+	<td>
 		<table class="classroy">
 			<tr>
 				<td>
@@ -705,7 +705,7 @@ while($row = $db->read_assoc($req))
 <h2>Ressources du royaume</h2>
 <table>
 <tr>
-	<td class="space">
+	<td>
 		<table class="classroy">
 			<tr>
 				<td>
@@ -744,7 +744,7 @@ foreach($tab as $row)
 ?>
 		</table>
 	</td>
-	<td class="space">
+	<td>
 		<table class="classroy">
 			<tr>
 				<td>
@@ -791,7 +791,7 @@ array_multisort($tableau, SORT_DESC);
 <h2>Total</h2>
 <table>
 <tr>
-	<td class="space">
+	<td>
 		<table class="classroy">
 			<tr>
 				<td>
@@ -837,7 +837,7 @@ $moyenne2 = $somme2 / 11;
 ?>
 		</table>
 	</td>
-	<td class="space">
+	<td>
 		<table class="classroy">
 			<tr>
 				<td>
@@ -880,7 +880,7 @@ foreach($tab2 as $row)
 <h2>Ratio</h2>
 <table>
 <tr>
-	<td class="space">
+	<td>
 		<table class="classroy">
 			<tr>
 				<td>
@@ -918,7 +918,7 @@ foreach($tableau as $row)
 ?>
 		</table>
 	</td>
-	<td class="space">
+	<td>
 		<table class="classroy">
 			<tr>
 				<td>
