@@ -383,7 +383,7 @@ else
 	$joueur_true = false;
 	$siege_true = false;
 	if ($type == 'joueur' OR $type == 'monstre' OR $type == 'batiment') if($joueur->get_pa() >= $pa_attaque) $joueur_true = true;
-	if($type == 'siege' OR $type == 'ville') if ($map_siege->get_rechargement() <= time()) if($attaquant->get_pa() >= $pa_attaque) $siege_true = true;
+	if($type == 'siege' OR $type == 'ville') if ($map_siege->get_rechargement() <= time()) if($joueur->get_pa() >= $pa_attaque) $siege_true = true;
 	//Vérifie si l'attaquant a assez de points d'actions pour attaquer ou si l'arme de siege a assez de rechargement
 	if ($joueur_true OR $siege_true)
 	{
