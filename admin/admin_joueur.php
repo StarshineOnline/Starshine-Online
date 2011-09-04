@@ -510,6 +510,8 @@ else
 										<li>Honneur : '.$row['honneur'].'</li>
 										<li><strong>Objets</strong> :</li>';
 										$rewards = explode(';', $row['reward']);
+                    while (count($rewards) > 0 && $rewards[0] == '')
+                      array_shift($rewards);
 										$r = 0;
 										while($r < count($rewards))
 										{

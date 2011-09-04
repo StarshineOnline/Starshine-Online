@@ -55,7 +55,7 @@ else
 				<option value="reserve">+X réserve de mana</option>
 				<option value="blocage">+X% chance de bloquer</option>
 				<option value="degat">+X facteur de dégat</option>
-				<option value="portee">+X portée de l'arme</option>
+				<option value="portee">+X portée de l´arme</option>
 				<option value="star">+X% stars trouvé sur les mobs</option>
 				<option value="pa_sort">-X% PA pour les sorts</option>
 				<option value="round_plus">+X round de combat</option>

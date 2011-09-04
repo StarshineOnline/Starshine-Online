@@ -22,6 +22,8 @@ else
 	$req = $db->query($requete);
 	$monstre = $db->read_assoc($req);
 	$drops = explode(';', $monstre['drops']);
+  if (count($drops) == 1 && $drops[0] == '') $drops = array();
+	while (count($drops) > 0 && $drops[0] == '') array_shift($drops);
 	if(array_key_exists('chance_drop', $_POST))
 	{
 		if($_POST['objet'] != '') $o_drop = $_POST['objet'];
