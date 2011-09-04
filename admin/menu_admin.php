@@ -2,7 +2,7 @@
 if (file_exists('../root.php'))
   include_once('../root.php');
 
-if ($maintenance)
+if (isset($maintenance) && $maintenance)
 {
 }
 else

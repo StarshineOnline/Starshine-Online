@@ -1,10 +1,10 @@
 <?php
 if (file_exists('../root.php'))
   include_once('../root.php');
-$admin = true;
 
+$admin = true;
 $textures = false;
-include_once(root.'haut.php');
+include_once(root.'admin/admin_haut.php');
 setlocale(LC_ALL, 'fr_FR');
 include_once(root.'haut_site.php');
 if ($G_maintenance)
@@ -18,7 +18,7 @@ else
 	if(array_key_exists('id_monstre', $_GET)) $id_monstre = $_GET['id_monstre'];
 	else $id_monstre = $_POST['id_monstre'];
 	$monstre = recupmonstre($id_monstre, false);
-	$requete = "SELECT id, nom, spawn_loc FROM monstre WHERE id = ".$id_monstre;
+	$requete = "SELECT * FROM monstre WHERE id = ".$id_monstre;
 	$req = $db->query($requete);
 	$monstre = $db->read_assoc($req);
 	$pops = explode(';', $monstre['spawn_loc']);
@@ -30,11 +30,27 @@ else
 		$requete = "UPDATE monstre SET spawn_loc = '".$pops_i."' WHERE id = ".$id_monstre;
 		$db->query($requete);
 	}
+  if (array_key_exists('delx', $_GET)) {
+    foreach ($pops as $k => $p) {
+      if ($p == ($_GET['delx'].'-'.$_GET['dely'])) {
+        unset($pops[$k]);
+      }
+      if ($p == ('p'.$_GET['delx'].'-'.$_GET['dely'])) {
+        unset($pops[$k]);
+      }
+    }
+    $pops = array_values($pops);
+		$pops_i = implode(';', $pops);
+		$requete = "UPDATE monstre SET spawn_loc = '".$pops_i."' WHERE id = ".$id_monstre;
+		$db->query($requete);
+  }
+
+  $monstre['reserve'] = ceil(2.1 * ($monstre['energie'] + floor(($monstre['energie'] - 8) / 2)))
 	?>
 	<div id="contenu">
 		<div id="centre3">
 			<div class="titre">
-				Edition du pop de <?php echo $monstre['nom']; ?> - <?php echo $monstre['reserve']; ?> RM - Arme : <?php echo $monstre['arme_type']; ?>
+				Edition du pop de <?php echo $monstre['nom']; ?> - <?php echo $monstre['reserve']; ?> RM - Arme : <?php echo $monstre['arme']; ?>
 			</div>
 			pops actuels :
 			<ul>
@@ -44,7 +60,10 @@ else
 					if($pop != '')
 					{
 						$explode = explode('-', $pop);
-						echo '<li>X : '.$explode[0].' - Y : '.$explode[1].'</li>';
+						echo '<li>X : '.$explode[0].' - Y : '.$explode[1].' '.
+              '<a href="edit_monstre_pop.php?delx='.$explode[0].'&amp;dely='.
+              $explode[1].'&amp;id_monstre='.$id_monstre.
+              '">[Supprimer]</a></li>';
 					}
 				}
 			?>

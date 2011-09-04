@@ -52,19 +52,19 @@ if (isset($site) && $site)
 }
 else
 {
-	if ($interface_v2)
+	if (isset($interface_v2) && $interface_v2)
 	{
 		print_head("css:./css/texture.css~./css/texture_low.css~./css/interfacev2.css;script:./javascript/jquery/jquery-1.3.2.min.js~./javascript/jquery/jquery-ui-1.7.2.custom.min.js~./javascript/fonction.js~./javascript/overlib/overlib.js;title:StarShine, le jeu qu'il tient ses plannings !");
 	}
-	elseif($interface_3D)
+	elseif (isset($interface_3D) && $interface_3D)
 	{
 		print_head("css:./css/texture3D.css~./css/interface3D.css~./css/prototip.css~./css/site.css;script:./javascript/fonction.js~./javascript/overlib/overlib.js~./javascript/scriptaculous/prototype.js~./javascript/scriptaculous/scriptaculous.js~./javascript/scriptaculous/prototip.js;title:StarShine, le jeu qu'il tient ses plannings !");
 	}
-	elseif($old_admin)
+	elseif (isset($old_admin) && $old_admin)
   { // Le mappeur marche pas avec jquery 1.4
 		print_head("css:../css/texture.css~../css/texture_low.css~../css/interfacev2.css~../css/admin.css~../css/prototip.css;script:../javascript/fonction.js~../javascript/overlib/overlib.js~../javascript/scriptaculous/prototype.js~../javascript/scriptaculous/scriptaculous.js~../javascript/scriptaculous/prototip.js;title:StarShine Admin");
 	}
-	elseif($admin)
+	elseif (isset($admin) && $admin)
 	{
 		if (!isset($ajax))
       print_head("css:../css/texture.css~../css/texture_low.css~../css/interfacev2.css~../css/admin.css~../css/prototip.css~../css/jquery-ui-1.7.3.custom.css;script:../javascript/jquery/jquery-1.4.2.min.js~../javascript/jquery/jquery-ui-1.7.2.custom.min.js~../javascript/fonction.js~../javascript/jquery/jquery.dataTables.min.js~admin.js~../javascript/jquery/jquery.ui.datepicker-fr.js;title:StarShine Admin");
