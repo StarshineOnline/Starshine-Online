@@ -1,4 +1,4 @@
-<?php
+<?php //  -*- tab-width:2; mode: php  -*-
 if (file_exists('../root.php'))
   include_once('../root.php');
 
@@ -52,6 +52,16 @@ else
 	$menu[$i]['url'] = 'zone_mapping.php';
 	$menu[$i++]['acces'] = 'admin';
 	$acces[] = 'admin';
+
+	$menu[$i]['nom'] = 'Calendrier';
+	$menu[$i]['url'] = 'calendrier.php';
+	$menu[$i++]['acces'] = 'admin';
+	$acces[] = 'admin';
+
+	$menu[$i]['nom'] = '--'; // Séparateur
+	$menu[$i]['url'] = '';
+	$menu[$i++]['acces'] = '';
+	$acces[] = '';
 
 	$menu[$i]['nom'] = 'Editeur de PNJ';
 	$menu[$i]['url'] = 'edit_pnj.php';

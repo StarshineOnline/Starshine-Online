@@ -587,6 +587,16 @@ class map_monstre
 			echo '<strong>Le roi gobelin Ziwek Rustog pousse un cri d\'une frénésie grotesque, se mettant à lancer tout un tas de babioles aux les quatre coins de la pièce. Vous regardez les objets voler tout autour de vous, tentant de les éviter ou les laissant ricocher sur vos armures. Cela devient presque un jeu. Vous reprenez peu à peu vos esprits, revenant vers le roi narquois, et vous comprenez que ce dernier vous a ensorcelé et s\'est carapaté. Devant vous, vous apercevez un petit passage avec des traces fraîches.</strong>';
       $log->send(0, 'donjon', "roi gob I tué, pop du roi gob II");
 			break;
+
+			// Les maraudeurs goeliers
+		case 162:
+		case 176:
+		case 177:
+		case 178:
+			echo '<strong>Sur le corps du geôlier, vous trouvez la clef de la porte et l\'ouvrez. La clef tombe en poussière après usage.</strong><br />';
+			print_reload_area('deplacement.php?deplacement=centre', 'centre');
+			ouvrePorteMaraudeurGeolier($this->x);
+			break;
 			
 		default:
 			// Rien à faire

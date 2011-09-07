@@ -1,4 +1,4 @@
-<?php
+<?php // -*- mode: php; tab-width:2 -*-
 if (file_exists('../root.php'))
   include_once('../root.php');
 
@@ -67,7 +67,7 @@ else
 	elseif (isset($admin) && $admin)
 	{
 		if (!isset($ajax))
-      print_head("css:../css/texture.css~../css/texture_low.css~../css/interfacev2.css~../css/admin.css~../css/prototip.css~../css/jquery-ui-1.7.3.custom.css;script:../javascript/jquery/jquery-1.4.2.min.js~../javascript/jquery/jquery-ui-1.7.2.custom.min.js~../javascript/fonction.js~../javascript/jquery/jquery.dataTables.min.js~admin.js~../javascript/jquery/jquery.ui.datepicker-fr.js;title:StarShine Admin");
+      print_head("css:../css/texture.css~../css/texture_low.css~../css/interfacev2.css~../css/admin.css~../css/prototip.css~../css/jquery-ui-1.7.3.custom.css;script:../javascript/jquery/jquery-1.4.2.min.js~../javascript/jquery/jquery-ui-1.7.2.custom.min.js~../javascript/fonction.js~../javascript/jquery/jquery.cluetip.min.js~../javascript/jquery/jquery.dataTables.min.js~admin.js~../javascript/jquery/jquery.ui.datepicker-fr.js;title:StarShine Admin");
 	}
 }
 $fin = getmicrotime();

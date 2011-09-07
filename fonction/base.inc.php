@@ -3455,3 +3455,15 @@ function make_tmp_adj_tables($roy_id)
 	$req5 = "delete t from tmp_adj_lib t, construction c where t.x = c.x and t.y = c.y";
 	$db->query($req5); // on enleve les cases occupées par un placement ou un batiment: virer constructions
 }
+
+function ouvrePorteMaraudeurGeolier($x)
+{
+	global $db;
+	$px = $x - 1;
+	$py = 365;
+	$db->query("update map set decor = 6570, info = 65 where x = $px and y = $py");
+	$dt = "DATE_ADD(NOW(), interval 1 hour)";
+	$sql = "update perso set hp = 0, y = y - 1 where x = $px and y = $py ;";
+	$sql .= "update map set decor = 4605, info = 46 where x = $px and y = $py";
+	$db->query("insert into calendrier(`date`, `sql`) values ($dt, '$sql')");
+}

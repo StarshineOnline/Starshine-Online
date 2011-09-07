@@ -31,6 +31,12 @@ if ($req) {
 		$sql = 'update calendrier set done = 1 where id = '.$row->id;
 		if (!$mysqli->query($sql)) die($mysqli->error);
 
+		if ($row->next) {
+			$sql = 'update `calendrier` set `done` = 0, `date` = `date` + `next` '.
+				'where id = '.$row->id;
+			if (!$mysqli->query($sql)) die($mysqli->error);
+		}
+
 		if ($row->eval) {
 			eval($row->eval);
 		}
@@ -45,12 +51,6 @@ if ($req) {
 			passthru('php '.$row->script.' id_task='.$this->id, $ret);
 			if ($ret) die('exec error');
 		}
-
-		if ($row->next) {
-			$sql = 'update `calendrier` set `done` = 0, `date` = `date` + `next` '.
-				'where id = '.$row->id;
-			if (!$mysqli->query($sql)) die($mysqli->error);
-		}
 		
 		$mysqli->commit();
 		$mysqli->autocommit(false);
@@ -58,6 +58,11 @@ if ($req) {
 }
 
 $mysqli->commit();
+
+$sql = "delete from `calendrier` where `date` < DATE_SUB(NOW(), interval 7 day) and `done` = 1";
+$mysqli->autocommit(true);
+$mysqli->query($sql);
+
 $mysqli->close();
 
 exit(0);
