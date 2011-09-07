@@ -42,6 +42,11 @@ if($W_distance == 0)
 		$pat = true;
 	}
 	echo '<br />';
+	if ($joueur->get_pa() < 10)
+	{
+		echo 'Pas assez de PA pour tirer<br />';
+		$pat = false;
+	}
 	$x_min = $joueur->get_x() - $batiment->get_bonus('portee');
 	$x_max = $joueur->get_x() + $batiment->get_bonus('portee');
 	$y_min = $joueur->get_y() - $batiment->get_bonus('portee');
