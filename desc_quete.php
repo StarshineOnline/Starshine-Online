@@ -2,7 +2,7 @@
 if (file_exists('root.php'))
   include_once('root.php');
 
-//Affiche et gère l'inventaire du personnage
+//Affiche et gère les quêtes du personnage
 
 //Inclusion des fichiers indispensables
 //Connexion obligatoire
@@ -17,71 +17,71 @@ $row = $db->read_assoc($req);
 if($row['repete'] == 'y') $repetable = ' - Répétable'; else $repetable = '';
 if($row['mode'] == 's') $mode = 'Solo'; else $mode = 'Groupe';
 
-	$echo_quete = '';
-	$objectif = unserialize($row['objectif']);
-	$i = 0;
-	$quetes = unserialize($joueur->get_quete());
-	$show_only = array();
-	if(is_array($quetes))
-	{
-		foreach($quetes[$_GET['quete_joueur']]['objectif'] as $objectif_fait)
-		{
-			$total_fait = $objectif_fait->nombre;
-			$total = $objectif[$i]->nombre;
-			if($total_fait >= $total) $objectif[$i]->termine = true;
-			else $objectif[$i]->termine = false;
-			if($objectif_fait->requis == '' OR $objectif[$objectif_fait->requis]->termine)
-			{
-				$cible = $objectif[$i]->cible;
-				$type = $cible[0];
-				$cible = mb_substr($cible, 1);
-				switch($type)
-				{
-					case 'M' :
-						$afaire = 'Tuer ';
-						$table = 'monstre';
-						$monstre = new monstre($cible);
-						$cible_nom = $monstre->get_nom();
-						$show_only[] = $monstre->get_id();
-						$total_o = $total;
+$echo_quete = '';
+$objectif = unserialize($row['objectif']);
+$i = 0;
+$quetes = unserialize($joueur->get_quete());
+$show_only = array();
+if(is_array($quetes))
+{
+  foreach($quetes[$_GET['quete_joueur']]['objectif'] as $objectif_fait)
+  {
+    $total_fait = $objectif_fait->nombre;
+    $total = $objectif[$i]->nombre;
+    if($total_fait >= $total) $objectif[$i]->termine = true;
+    else $objectif[$i]->termine = false;
+    if($objectif_fait->requis == '' OR $objectif[$objectif_fait->requis]->termine)
+    {
+      $cible = $objectif[$i]->cible;
+      $type = $cible[0];
+      $cible = mb_substr($cible, 1);
+      switch($type)
+      {
+        case 'M' :
+          $afaire = 'Tuer ';
+          $table = 'monstre';
+          $monstre = new monstre($cible);
+          $cible_nom = $monstre->get_nom();
+          $show_only[] = $monstre->get_id();
+          $total_o = $total;
 					break;
-					case 'J' :
-						$afaire = 'Tuer ';
-						$table = 'diplomatie';
-						$cible_nom = 'joueurs en '.$DIPLO[$cible];
-						$total_o = $total;
+        case 'J' :
+          $afaire = 'Tuer ';
+          $table = 'diplomatie';
+          $cible_nom = 'joueurs en '.$DIPLO[$cible];
+          $total_o = $total;
 					break;
-					case 'P' :
-						$afaire = 'Parler à ';
-						$table = 'pnj';
-						if($cible != 0)
-						{
-							$requete = "SELECT * FROM pnj WHERE id = ".$cible;
-							$req_m = $db->query($requete);
-							$row_m = $db->read_assoc($req_m);
-							$cible_nom = $row_m['nom'];
-						}
-						else
-						{
-							$cible_nom = 'n\'importe quel PNJ';
-						}
-						$total_o = '';
+        case 'P' :
+          $afaire = 'Parler à ';
+          $table = 'pnj';
+          if($cible != 0)
+          {
+            $requete = "SELECT * FROM pnj WHERE id = ".$cible;
+            $req_m = $db->query($requete);
+            $row_m = $db->read_assoc($req_m);
+            $cible_nom = $row_m['nom'];
+          }
+          else
+          {
+            $cible_nom = 'n\'importe quel PNJ';
+          }
+          $total_o = '';
 					break;
-					case 'L' :
-						$afaire = 'Trouver ';
-						$table = 'objet';
-						if($cible != 0)
-						{
-							$requete = "SELECT * FROM ".$table." WHERE id = ".$cible;
-							$req_m = $db->query($requete);
-							$row_m = $db->read_assoc($req_m);
-							$cible_nom = $row_m['nom'];
-						}
-						else
-						{
-							$cible_nom = 'n\'importe quel PNJ';
-						}
-						$total_o = '';
+        case 'L' :
+          $afaire = 'Trouver ';
+          $table = 'objet';
+          if($cible != 0)
+          {
+            $requete = "SELECT * FROM ".$table." WHERE id = ".$cible;
+            $req_m = $db->query($requete);
+            $row_m = $db->read_assoc($req_m);
+            $cible_nom = $row_m['nom'];
+          }
+          else
+          {
+            $cible_nom = 'n\'importe quel PNJ';
+          }
+          $total_o = '';
 					break;
 					case 'O' :
 						$afaire = 'Rapporter ';
@@ -93,13 +93,17 @@ if($row['mode'] == 's') $mode = 'Solo'; else $mode = 'Groupe';
 						$cible_nom = $row_m['nom'];
 						if($objet['slot'] != '') $cible_nom .= ' slot niveau '.$objet['slot'];
 						$total_o = '';
-					break;
-				}
-				$echo_quete .= $afaire.' '.$total_o.' '.$cible_nom.' => '.$total_fait.' / '.$total.'<br />';
-			}
-			$i++;
-		}
-	}
+            break;
+        case 'X':
+          $afaire = $objectif[$i]->info;
+          $cible_nom = '';
+          break;
+      }
+      $echo_quete .= $afaire.' '.$total_o.' '.$cible_nom.' => '.$total_fait.' / '.$total.'<br />';
+    }
+    $i++;
+  }
+}
 
 $show_only = implode(',', $show_only);
 echo '

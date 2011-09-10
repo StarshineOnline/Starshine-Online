@@ -69,6 +69,15 @@ function giveRecette(&$joueur, $id_recette, $quiet = false)
 	}
 }
 
+function checkTpCacheChache(&$joueur)
+{
+  global $dontrefresh;
+  $dontrefresh = true;
+	$quetes = $joueur->get_quete_fini();
+	$found = false;
+  // TODO ...
+}
+
 function checkTpAbo(&$joueur)
 {
   global $dontrefresh;

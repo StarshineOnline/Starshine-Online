@@ -14,15 +14,15 @@ fi
 # Clefs ssh
 if [ -x /usr/bin/ssh-agent ]; then
     if [ -z $SSH_AUTH_SOCK ]; then
-	echo starting agent
-	eval `/usr/bin/ssh-agent`
+        echo starting agent
+        eval `/usr/bin/ssh-agent`
     else
-	KEEP_AGENT=1
+        KEEP_AGENT=1
     fi
     for i in identity id_rsa id_dsa; do
-	if [ -f $HOME/.ssh/$i ]; then
-	    ssh-add -l | grep $i > /dev/null || ssh-add $HOME/.ssh/$i
-	fi
+        if [ -f $HOME/.ssh/$i ]; then
+            ssh-add -l | grep $i > /dev/null || ssh-add $HOME/.ssh/$i
+        fi
     done
 fi
 
@@ -46,12 +46,12 @@ echo done
 
 if [ -x /usr/bin/ssh-agent ]; then
     if [ -z $KEEP_AGENT ]; then
-	echo killing agent
-	kill $SSH_AGENT_PID
+        echo killing agent
+        kill $SSH_AGENT_PID
     fi
 fi
 
 # Voici le contenu de get_maj :
 # #!/bin/bash
 # mysqldump -u starshine -pilove50 starshine comp_combat comp_jeu accessoire arme armure classe classe_comp_permet classe_permet classe_requis gemme monstre objet quete recette sort_combat sort_jeu taverne > maj.sql
-# echo maj.sql done
+# cat maj.sql

@@ -389,4 +389,3 @@ function supprime_quete($joueur, $quete_joueur)
 	return $joueur;
 }
 
-?>

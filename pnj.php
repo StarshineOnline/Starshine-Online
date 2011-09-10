@@ -1,4 +1,4 @@
-<?php
+<?php // -*- mode: php; tab-width:2 -*-
 if (file_exists('root.php'))
   include_once('root.php');
 
@@ -29,6 +29,7 @@ if($joueur->get_quete() != '')
 {
 	foreach(unserialize($joueur->get_quete()) as $quete)
 	{
+		if (!is_numeric($quete['id_quete'])) continue;
 		$requete = 'SELECT * FROM quete WHERE id = '.$quete['id_quete'];
 		$req = $db->query($requete);
 		$row = $db->read_assoc($req);
@@ -137,6 +138,14 @@ if(preg_match("`\[vendsitem:([^[\:]*):([^[]*)\]`i", $message, $regs))
 		verif_action($regs[1], $joueur, 's');
 	}
 	$message = preg_replace("`\[vendsitem:([^[\:]*):([^[]*)\]`i", $replace, $message);
+}
+//lancement fonction personalisée (cf. fonction/pnj.inc.php)
+if(preg_match("`\[run:([a-z0-9_]+)\]`i", $message, $regs))
+{
+  include_once('fonction/pnj.inc.php');
+  $run = 'pnj_run_'.$regs[1];
+  $replace = $run();
+  $message = preg_replace("`\[run:$regs[1]\]`i", $replace, $message);
 }
 //validation inventaire
 if(preg_match("`\[verifinventaire:([^[]*)\]`i", $message, $regs))

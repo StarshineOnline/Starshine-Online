@@ -1,21 +1,16 @@
 <?php
 if (file_exists('../root.php'))
   include_once('../root.php');
-$admin = true;
 
+$admin = true;
 $textures = false;
-include_once(root.'haut.php');
+include_once(root.'admin/admin_haut.php');
 setlocale(LC_ALL, 'fr_FR');
 include_once(root.'haut_site.php');
-if ($G_maintenance)
-{
-	echo 'Starshine-online est actuellement en cours de mis à jour.<br />
-	le forum est toujours disponible <a href="punbb/">ici - Forum</a>';
-}
-else
-{
-	include_once(root.'admin/menu_admin.php');
-	echo '
+if ($G_maintenance) die('maintenance');
+include_once(root.'admin/menu_admin.php');
+
+echo '
 	<div id="contenu">
 	<div id="centre3">
 	<div class="titre">
@@ -24,39 +19,39 @@ else
 	';
 
 
-	//Insertion de la quête dans la bdd
-	if(array_key_exists('submit3', $_POST))
-	{
-		$requete = "INSERT INTO quete VALUES('', '".$_SESSION['quete']['nom']."', '".$_SESSION['quete']['description']."', '".$_SESSION['quete']['fournisseur']."', '".serialize($_SESSION['objectif'])."', '".$_SESSION['quete']['exp']."', '".$_SESSION['quete']['honneur']."', '".$_SESSION['quete']['star']."', '', '".$_SESSION['quete']['repetable']."', '".$_SESSION['quete']['mode']."', '', '".$_SESSION['quete']['niveau_requis']."', '".$_SESSION['quete']['honneur_requis']."', '".$_SESSION['quete']['quete_requis']."', '".$_SESSION['quete']['star_royaume']."', '".$_SESSION['quete']['niveau']."', 'oui')";
-		$db->query($requete);
-	}
-	if(array_key_exists('submit', $_POST) OR array_key_exists('submit2', $_POST))
-	{
-		if(array_key_exists('submit2', $_POST))
-		{
-			$numero = count($_SESSION['objectif']);
-			$_SESSION['objectif'][$numero]->cible = $_POST['objectif'].$_POST['cible'];
-			$_SESSION['objectif'][$numero]->nombre = $_POST['nombre'];
-			$_SESSION['objectif'][$numero]->requis = $_POST['requis'];
-		}
-		else
-		{
-			$_SESSION['objectif'] = array();
-			$_SESSION['quete']['nom'] = $_POST['nom_quete'];
-			$_SESSION['quete']['niveau'] = $_POST['niveau_quete'];
-			$_SESSION['quete']['niveau_requis'] = $_POST['niveau_requis'];
-			$_SESSION['quete']['honneur_requis'] = $_POST['honneur_requis'];
-			$_SESSION['quete']['honneur'] = $_POST['honneur'];
-			$_SESSION['quete']['exp'] = $_POST['exp'];
-			$_SESSION['quete']['star'] = $_POST['star'];
-			$_SESSION['quete']['star_royaume'] = $_POST['star_royaume'];
-			$_SESSION['quete']['repetable'] = $_POST['repetable'];
-			$_SESSION['quete']['mode'] = $_POST['mode'];
-			$_SESSION['quete']['fournisseur'] = $_POST['fournisseur'];
-			$_SESSION['quete']['quete_requis'] = $_POST['quete_requis'];
-			$_SESSION['quete']['description'] = $_POST['description'];
-		}
-			?>
+//Insertion de la quête dans la bdd
+if(array_key_exists('submit3', $_POST))
+{
+  $requete = "INSERT INTO quete VALUES('', '".$_SESSION['quete']['nom']."', '".$_SESSION['quete']['description']."', '".$_SESSION['quete']['fournisseur']."', '".serialize($_SESSION['objectif'])."', '".$_SESSION['quete']['exp']."', '".$_SESSION['quete']['honneur']."', '".$_SESSION['quete']['star']."', '', '".$_SESSION['quete']['repetable']."', '".$_SESSION['quete']['mode']."', '', '".$_SESSION['quete']['niveau_requis']."', '".$_SESSION['quete']['honneur_requis']."', '".$_SESSION['quete']['quete_requis']."', '".$_SESSION['quete']['star_royaume']."', '".$_SESSION['quete']['niveau']."', 'oui')";
+  $db->query($requete);
+}
+if(array_key_exists('submit', $_POST) OR array_key_exists('submit2', $_POST))
+{
+  if(array_key_exists('submit2', $_POST))
+  {
+    $numero = count($_SESSION['objectif']);
+    $_SESSION['objectif'][$numero]->cible = $_POST['objectif'].$_POST['cible'];
+    $_SESSION['objectif'][$numero]->nombre = $_POST['nombre'];
+    $_SESSION['objectif'][$numero]->requis = $_POST['requis'];
+  }
+  else
+  {
+    $_SESSION['objectif'] = array();
+    $_SESSION['quete']['nom'] = $_POST['nom_quete'];
+    $_SESSION['quete']['niveau'] = $_POST['niveau_quete'];
+    $_SESSION['quete']['niveau_requis'] = $_POST['niveau_requis'];
+    $_SESSION['quete']['honneur_requis'] = $_POST['honneur_requis'];
+    $_SESSION['quete']['honneur'] = $_POST['honneur'];
+    $_SESSION['quete']['exp'] = $_POST['exp'];
+    $_SESSION['quete']['star'] = $_POST['star'];
+    $_SESSION['quete']['star_royaume'] = $_POST['star_royaume'];
+    $_SESSION['quete']['repetable'] = $_POST['repetable'];
+    $_SESSION['quete']['mode'] = $_POST['mode'];
+    $_SESSION['quete']['fournisseur'] = $_POST['fournisseur'];
+    $_SESSION['quete']['quete_requis'] = $_POST['quete_requis'];
+    $_SESSION['quete']['description'] = $_POST['description'];
+  }
+?>
 <form action="create_quete.php" method="post">
 <table class="admin">
 <tr>
@@ -100,7 +95,7 @@ else
 				echo '<option value="'.$row['id'].'">'.$row['nom'].' - Niv.'.$row['level'].'</option>';
 			}
 			?>
-			<option value="0">N'importe quel PNJ</option>
+			<option value="0">N´importe quel PNJ</option>
 			<?php
 			$requete = "SELECT * FROM pnj ORDER BY nom ASC";
 			$req = $db->query($requete);
@@ -250,5 +245,4 @@ else
 <form>
 <?php
 	}
-}
 ?>
