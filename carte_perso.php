@@ -2,7 +2,7 @@
 if (file_exists('root.php'))
   include_once('root.php');
 
-session_start();
+//session_start();
 header ("Content-type: image/png");
 include_once(root.'inc/fp.php');
 $im = imagecreatefrompng('image/carte.png');

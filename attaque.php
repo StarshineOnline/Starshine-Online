@@ -287,7 +287,6 @@ else
 	if($type == 'joueur')
 	{
 		//Récupération si la case est une ville et diplomatie
-		$chateau = false;
 		$defenseur_en_defense = false;
 		$requete = "SELECT type FROM map WHERE x = ".$defenseur->get_x()
 			.' and y = '.$defenseur->get_y()." AND type = 1 AND royaume = ".
@@ -296,9 +295,9 @@ else
 		if($db->num_rows > 0)
 		{
 			echo 'Le défenseur est sur sa ville, application des bonus !<br />';
-			$defenseur->set_pm($defenseur->get_pm() * 1.16);
-			$defenseur->set_pp($defenseur->get_pp() * 1.3);
-			$chateau = true;
+			$defenseur->add_buff('batiment_pp', 30);
+			$defenseur->add_buff('batiment_pm', 16);
+			$defenseur->add_buff('batiment_esquive', 50);
 			$defenseur_en_defense = true;
 		}
 		//On vérifie si le défenseur est sur un batiment défensif
@@ -434,11 +433,10 @@ else
 				if($attaquant->get_arme_type() == 'arc') $attaquant->set_comp('distance'); else $attaquant->set_comp('melee');
 				if($defenseur->get_arme_type() == 'arc') $defenseur->set_comp('distance'); else $defenseur->set_comp('melee');
 				//Calcul du potentiel de toucher et parer
-				$attaquant->get_potentiel_toucher();
+				/*$attaquant->get_potentiel_toucher();
 				$defenseur->get_potentiel_toucher();
 				$attaquant->get_potentiel_parer();
-				if($type == 'joueur' && $chateau) $esquive = $defenseur->get_esquive() * 1.5; else $esquive = $defenseur->get_esquive();
-				$defenseur->get_potentiel_parer($esquive);
+				$defenseur->get_potentiel_parer();*/
 				$attaquant->degat_sup = 0;
 				$attaquant->degat_moins = 0;
 				$defenseur->degat_sup = 0;

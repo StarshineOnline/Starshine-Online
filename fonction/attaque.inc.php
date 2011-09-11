@@ -48,37 +48,13 @@ function attaque($acteur = 'attaquant', $competence, &$effects)
 		
   	$ups = array();
 
-	//Buff evasion
-  	if(array_key_exists('benediction', $passif->etat)) $passif->potentiel_parer *= 1 + (($passif->etat['benediction']['effet'] * $G_buff['bene_evasion']) / 100);
-  	if(array_key_exists('berzeker', $passif->etat)) $passif->potentiel_parer /= 1 + (($passif->etat['berzeker']['effet'] * $G_buff['berz_evasion']) / 100);
-  	if(array_key_exists('derniere_chance', $passif->etat)) $passif->potentiel_parer /= 1 + (($passif->etat['derniere_chance']['effet']) / 100);
-  	if($passif->etat['posture']['type'] == 'posture_esquive') $passif->potentiel_parer *= 1 + (($passif->etat['posture']['effet']) / 100);
-  	if($passif->etat['posture']['type'] == 'posture_vent') $passif->potentiel_parer *= 1 + (($passif->etat['posture']['effet']) / 100);
-  	if($passif->get_arme_type() != 'baton') $passif->potentiel_parer *= (100 - $passif->arme_var1) / 100;
-  	if($passif->get_race() == 'elfebois') $passif->potentiel_parer *= 1.15;
-	//Debuff precision
-  	if($actif->is_buff('debuff_aveuglement')) $actif->potentiel_toucher /= 1 + (($actif->get_buff('debuff_aveuglement', 'effet')) / 100);
-  	if(array_key_exists('aveugle', $actif->etat)) $actif->potentiel_toucher /= 1 + (($actif->etat['aveugle']['effet']) / 100);
-  	if(array_key_exists('lien_sylvestre', $actif->etat)) $actif->potentiel_toucher /= 1 + (($actif->etat['lien_sylvestre']['effet2']) / 100);
-  	if(array_key_exists('b_toucher', $actif->etat)) $actif->potentiel_toucher /= 1 + ($actif->etat['b_toucher']['effet'] / 100);
-  	//Buff précision
-  	if(array_key_exists('benediction', $actif->etat))	$actif->potentiel_toucher *= 1 + (($actif->etat['benediction']['effet'] * $G_buff['bene_accuracy']) / 100);
-  	if(array_key_exists('berzeker', $actif->etat)) $actif->potentiel_toucher *= 1 + (($actif->etat['berzeker']['effet'] * $G_buff['berz_accuracy']) / 100);
-  	if(array_key_exists('tir_vise', $actif->etat)) $actif->potentiel_toucher *= 1 + (($actif->etat['tir_vise']['effet'] * $G_buff['vise_accuracy']) / 100);
-  	if($actif->is_buff('batiment_distance')) $actif->potentiel_toucher *= 1 + (($actif->get_buff('batiment_distance', 'effet')) / 100);
-  	if($actif->is_buff('buff_cri_bataille')) $actif->potentiel_toucher *= 1 + (($actif->get_buff('buff_cri_bataille', 'effet')) / 100);
-  	if(array_key_exists('dissimulation', $actif->etat)) $actif->potentiel_toucher *= 1 + (($actif->etat['dissimulation']['effet']) / 100);
-  	if($actif->is_buff('buff_position') && $actif->get_arme_type() == 'arc') $actif->potentiel_toucher *= 1 + (($actif->get_buff('buff_position', 'effet')) / 100);
-  	if(array_key_exists('a_toucher', $actif->etat)) $actif->potentiel_toucher *= 1 + ($actif->etat['a_toucher']['effet'] / 100);
-  	if($actif->etat['posture']['type'] == 'posture_touche') $actif->potentiel_toucher *= 1 + (($actif->etat['posture']['effet']) / 100); else $buff_posture_touche = 1;
-	
   	/* Application des effets de début de round */
   	foreach ($effects as $effect) 
   		$effect->debut_round($actif, $passif);
   	/* ~Debut */
 
-  	$potentiel_toucher = $actif->potentiel_toucher;
-  	$potentiel_parer = $passif->potentiel_parer;
+  	$potentiel_toucher = $actif->get_potentiel_toucher();
+  	$potentiel_parer = $passif->get_potentiel_parer();
 
 		/* Application des effets de potentiel toucher */
 		foreach ($effects as $effect)
@@ -88,8 +64,10 @@ function attaque($acteur = 'attaquant', $competence, &$effects)
 			
 		/* Application des effets de potentiel parer */
 		foreach ($effects as $effect)
+		{
 			$potentiel_parer =
 				$effect->calcul_defense_physique($actif, $passif, $potentiel_parer);
+    }
 		/* ~Potentiel Parer */
 
   	//Test d'esquive
