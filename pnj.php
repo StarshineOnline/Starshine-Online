@@ -120,7 +120,7 @@ if(preg_match("`\[prendquete:([^[]*)\]`i", $message, $regs))
 if(preg_match("`\[donneitem:([^[]*)\]`", $message, $regs))
 {
 	$joueur->prend_objet($regs[1]);
-	$message = preg_replace("`\[donneitem:([^[]*)\]`i", "", $message);
+	$message = preg_replace("`\[donneitem:$regs[1]\]`i", "", $message);
 	verif_action($regs[1], $joueur, 's');
 }
 //Vends un item
@@ -134,10 +134,12 @@ if(preg_match("`\[vendsitem:([^[\:]*):([^[]*)\]`i", $message, $regs))
 	{
 		$joueur->set_star($joueur->get_star() - $regs[2]);
 		$joueur->prend_objet($regs[1]);
+		$joueur->sauver();
 		$replace = "Vous recevez un objet.<br/>";
 		verif_action($regs[1], $joueur, 's');
 	}
-	$message = preg_replace("`\[vendsitem:([^[\:]*):([^[]*)\]`i", $replace, $message);
+	$message = preg_replace("`\[vendsitem:$regs[1]:$regs[2]\]`i",
+                          $replace, $message);
 }
 //lancement fonction personalisée (cf. fonction/pnj.inc.php)
 if(preg_match("`\[run:([a-z0-9_]+)\]`i", $message, $regs))
@@ -154,7 +156,7 @@ if(preg_match("`\[verifinventaire:([^[]*)\]`i", $message, $regs))
 		$message = "<h5>Tu te moques de moi, mon bonhomme ?</h5>";
 	}
 	else {
-		$message = preg_replace("`\[verifinventaire:([^[]*)\]`i", "", $message);
+		$message = preg_replace("`\[verifinventaire:$regs[1]\]`i", "", $message);
 	}
 }
 echo '<ul>'.$message.'</ul>';

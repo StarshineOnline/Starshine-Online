@@ -14,7 +14,7 @@ INSERT INTO `quete` (`nom`, `description`, `fournisseur`, `objectif`, `exp`, `ho
 
 -- pnj: riky
 INSERT INTO `pnj` (`nom`, `image`, `x`, `y`, `texte`) VALUES
-('Riky Tendre-flocon', 'riky', 37, 334, '<em>Vous découvrez un petit garçon dissimulé</em>\n[isquete:90][id:1]Ho ... je crois que j''ai trouvé un petit bout d''ombre ...[/id:1][/isquete:90][non_quete:90]Chut ! j''suis caché ![/non_quete:90][quetefini:90]Chut ! z''avez déjà gagné, vous, je joue avec d''autres maintenant, ne leur montrez pas ma cachette ![/quetefini:90]*****\n[run:cache_cache]');
+('Riky Tendre-flocon', 'riky', 37, 335, '<em>Vous découvrez un petit garçon dissimulé</em>\n[isquete:90][id:1]Ho ... je crois que j''ai trouvé un petit bout d''ombre ...[/id:1][/isquete:90][non_quete:90]Chut ! j''suis caché ![/non_quete:90][quetefini:90]Chut ! z''avez déjà gagné, vous, je joue avec d''autres maintenant, ne leur montrez pas ma cachette ![/quetefini:90]*****\n[run:cache_cache]');
 
 -- maj de lily plume pour donner la quete
 UPDATE `pnj` SET `texte` = '<em>Une petite fille, la frimousse remplie de taches de rousseur vous lance un regard malicieux.</em>

@@ -202,6 +202,20 @@ function checkChacalGate(&$joueur, $changes)
 			$c->apply();
 }
 
+function checkTeleportHydraulique(&$joueur)
+{
+  // TODO: mettre les bones valeurs
+  global $db;
+  $sql = 'select * from map where (x = 0 and y = 0 and decor = 0) or '.
+    '(x = 0 and y = 0 and decor = 0) or (x = 0 and y = 0 and decor = 0)';
+  $res = $db->query($sql);
+  if ($res && $db->num_rows($res)) {
+    $joueur->set_x(0);
+    $joueur->set_y(0);
+    $joueur->sauver();
+  }
+}
+
 global $dontrefresh;
 global $dontrefreshmap;
 
