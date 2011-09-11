@@ -64,13 +64,13 @@ update perso set y = y + 1 where x=30 and y=325' WHERE `calendrier`.`id_manuel` 
 
 ---- II
 -- creation du morceau de canalisation
-INSERT INTO `starshine`.`objet` (`nom`, `type`, `prix`, `achetable`, `stack`, `utilisable`, `effet`, `description`, `pa`, `mp`) VALUES ('Morceau de canalisation', 'repaation_canalisation', '0', 'n', '0', 'n', '0', 'Un morceau de canalisation permettant de réparer le réseau du sous-sol ... enfin, c''est ce que vous a promis le vendeur.', '0', '0');
+INSERT INTO `objet` (`nom`, `type`, `prix`, `achetable`, `stack`, `utilisable`, `effet`, `description`, `pa`, `mp`) VALUES ('Morceau de canalisation', 'repaation_canalisation', '0', 'n', '0', 'n', '0', 'Un morceau de canalisation permettant de réparer le réseau du sous-sol ... enfin, c''est ce que vous a promis le vendeur.', '0', '0');
 -- id: 57
 
 -- Amélioration des relations diplomatiques: id 88
 -- Exploration des strates inférieures: id 89
 -- vente de tuyaux par brizen
-UPDATE .`pnj` SET `texte` = '<em>(gratte gratte)
+UPDATE `pnj` SET `texte` = '<em>(gratte gratte)
 
 (gratte oreille droite)
 
