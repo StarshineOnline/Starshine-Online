@@ -3,7 +3,7 @@
 -- dans les entrées manuelles, et ne plus se baser sur le sql ou l'eval
 ALTER TABLE `calendrier` ADD `id_manuel` VARCHAR( 50 ) NULL DEFAULT NULL COMMENT 'identificateur pour les entrées manuelles' ,
 ADD UNIQUE (
-`logical_id`
+`id_manuel`
 );
 -- cet id doit être unique. Le laissser à NULL pour les entrées auto
 
