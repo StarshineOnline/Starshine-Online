@@ -187,7 +187,8 @@ if($W_distance < 4)
 			{
 				if(!array_key_exists('repos_sage', $joueur->get_buff()))
 				{
-					echo ' <a href="attaque.php?id_batiment='.$W_row['id'].'&amp;type=batiment&amp;table=placement" onclick="return envoiInfo(this.href, \'information\')"><img src="image/interface/attaquer.png" alt="Combattre" style="vertical-align : middle;" /> Attaquer <span class="xsmall">('.($G_PA_attaque_batiment - $reduction_pa).' PA)</a>';
+					echo ' <a href="attaque.php?id_batiment='.$W_row['id'].'&amp;type=batiment&amp;table=placement" onclick="return envoiInfo(this.href, \'information\')"><img src="image/interface/attaquer.png" alt="Combattre" style="vertical-align : middle;" title="Attaquer ('.($G_PA_attaque_batiment - $reduction_pa).' PA)" /></a>';
+					if($joueur->nb_pet() > 0) echo '<a href="attaque.php?id_batiment='.$W_row['id'].'&amp;type=batiment&amp;table=placement&amp;pet" onclick="return envoiInfo(this.href, \'information\')"><img src="image/icone/miniconeattakfamilier.png" alt="Attaque avec créature" title="Attaquer avec votre créature ('.($G_PA_attaque_batiment - $reduction_pa).' PA)" style="vertical-align : middle;" /></a>';
 				}
 			}
 			else
@@ -225,7 +226,10 @@ if($W_distance < 4)
 			echo ' '.$nom;
 			echo ' '.$Gtrad[$R->get_race()].' - HP : '.$W_row['hp'].' / '.$row_b['hp'];
 			echo '</span>';
-			if($joueur->get_race() != $R->get_race() && $row_b['type'] != 'bourg') echo  ' <a href="attaque.php?id_batiment='.$W_row['id'].'&amp;type=batiment&amp;table=construction" onclick="return envoiInfo(this.href, \'information\')"><img src="image/interface/attaquer.png" alt="Combattre" title="Attaquer '.($G_PA_attaque_batiment - $reduction_pa).' PA" style="vertical-align : middle;" /> Attaquer</a>';
+			if($joueur->get_race() != $R->get_race() && $row_b['type'] != 'bourg') {
+				echo  ' <a href="attaque.php?id_batiment='.$W_row['id'].'&amp;type=batiment&amp;table=construction" onclick="return envoiInfo(this.href, \'information\')"><img src="image/interface/attaquer.png" alt="Combattre" title="Attaquer ('.($G_PA_attaque_batiment - $reduction_pa).') PA" style="vertical-align : middle;" /></a>';
+				if($joueur->nb_pet() > 0) echo '<a href="attaque.php?id_batiment='.$W_row['id'].'&amp;type=batiment&amp;table=construction&amp;pet" onclick="return envoiInfo(this.href, \'information\')"><img src="image/icone/miniconeattakfamilier.png" alt="Attaque avec créature" title="Attaquer avec votre créature ('.($G_PA_attaque_batiment - $reduction_pa).' PA)" style="vertical-align : middle;" /></a>';
+			}
 			elseif($W_row['hp'] < $row_b['hp'] && $joueur->get_race() == $R->get_race())
 			{
 				echo ' <a href="archi_soigne_construction.php?id_construction='.$W_row['id'].'" onclick="return envoiInfo(this.href, \'information\')">Réparer <span class="xsmall">(30 PA)</a>';
