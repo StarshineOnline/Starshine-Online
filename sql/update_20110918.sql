@@ -9,4 +9,6 @@ INSERT INTO `map_event` (`x`, `y`, `titre`, `description`, `action`, `code`, `sq
 -- retour
 (44, 327, 'Conduit d''aération', 'Le mur nord est percé d''un conduit d''aération barré d''une grille de fer forgé.', 'Ouvrir la grille', 'tpLyly($joueur);', NULL);
 
+UPDATE `objet` SET `type` = 'reparation_canalisation' WHERE `objet`.`nom` = 'Morceau de canalisation';
+
 
