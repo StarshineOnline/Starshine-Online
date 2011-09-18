@@ -7,6 +7,13 @@ include_once('journalier2-head.php');
 
 // RAZ capitale
 $now = time();
+$requete = "select id from royaume where fin_raz_capitale > 0 and fin_raz_capitale";
+$req = $db->query($requete);
+if ($req)
+	while($row = $db->read_object($req)) {
+		$requete = "update construction_ville set dette = 0, date = 0, hp = 1000 where id_royaume = ".$row->id;
+		$db->query($requete);
+	}
 $requete = "UPDATE royaume set fin_raz_capitale = 0, capitale_hp = 30000 where fin_raz_capitale > 0 and fin_raz_capitale < $now";
 $req = $db->query($requete);
 
