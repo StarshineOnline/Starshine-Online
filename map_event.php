@@ -216,6 +216,32 @@ function checkTeleportHydraulique(&$joueur)
   }
 }
 
+function tpLyly(&$joueur)
+{
+  switch ($joueur->get_x()) {
+    case 39: // sortie
+      showMessage('Vous traversez le conduit, et retournez au couloir');
+      $joueur->set_x(44);
+      $joueur->set_y(327);
+      $joueur->sauver();
+      break;
+    case 44: // entrée
+      $qf = explode(';', $joueur->get_quete_fini());
+      if (array_search(90, $qf)) {
+        showMessage('Vous tirez le troisième barreau, et la grille s\'efface dans le sol, libérant le passage que vous empruntez aussitôt');
+      $joueur->set_x(39);
+      $joueur->set_y(326);
+      $joueur->sauver();
+      }
+      else {
+        showMessage('La grille a l\'air d\'être trop bien scellée pour être ouverte');
+      }
+      break;
+    default:
+      security_block(URL_MANIPULATION, 'Pas sur le TP');
+  }
+}
+
 global $dontrefresh;
 global $dontrefreshmap;
 
