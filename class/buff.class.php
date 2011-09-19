@@ -46,9 +46,10 @@ class buff_actif extends effect
 		//$this->notice("Activation de $type");
 	}
 
-  function debut_round(&$actif, &$passif) {
+  function calcul_defense_physique(&$actif, &$passif) {
 		if (in_array($this->type, self::$esquive_buff))
 			$passif->potentiel_parer *= (1 + ($this->buff->get_effet() / 100));
+    return $passif->potentiel_parer;
 	}
 }
 

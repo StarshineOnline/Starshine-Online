@@ -672,6 +672,9 @@ class entite extends placable
 	/// Calcul et renvoie le potentiel toucher physique
 	function get_potentiel_toucher()
 	{
+    if( isset($this->potentiel_toucher) )
+      return $this->potentiel_toucher;
+
 		if($this->get_arme_type() == 'arc')
 		{
 			$this->potentiel_toucher = round($this->get_distance() + ($this->get_distance() * ((pow($this->get_dexterite(), 2)) / 1000)));
@@ -680,6 +683,21 @@ class entite extends placable
 		{
 			$this->potentiel_toucher = round($this->get_melee() + ($this->get_melee() * ((pow($this->get_dexterite(), 2)) / 1000)));
 		}
+	  //Debuff precision
+  	if($this->is_buff('debuff_aveuglement')) $this->potentiel_toucher /= 1 + (($this->get_buff('debuff_aveuglement', 'effet')) / 100);
+  	if(array_key_exists('aveugle', $this->etat)) $this->potentiel_toucher /= 1 + (($this->etat['aveugle']['effet']) / 100);
+  	if(array_key_exists('lien_sylvestre', $this->etat)) $this->potentiel_toucher /= 1 + (($this->etat['lien_sylvestre']['effet2']) / 100);
+  	if(array_key_exists('b_toucher', $this->etat)) $this->potentiel_toucher /= 1 + ($this->etat['b_toucher']['effet'] / 100);
+  	//Buff précision
+  	if(array_key_exists('benediction', $this->etat))	$this->potentiel_toucher *= 1 + (($this->etat['benediction']['effet'] * $G_buff['bene_accuracy']) / 100);
+  	if(array_key_exists('berzeker', $this->etat)) $this->potentiel_toucher *= 1 + (($this->etat['berzeker']['effet'] * $G_buff['berz_accuracy']) / 100);
+  	if(array_key_exists('tir_vise', $this->etat)) $this->potentiel_toucher *= 1 + (($this->etat['tir_vise']['effet'] * $G_buff['vise_accuracy']) / 100);
+  	if($this->is_buff('batiment_distance')) $this->potentiel_toucher *= 1 + (($this->get_buff('batiment_distance', 'effet')) / 100);
+  	if($this->is_buff('buff_cri_bataille')) $this->potentiel_toucher *= 1 + (($this->get_buff('buff_cri_bataille', 'effet')) / 100);
+  	if(array_key_exists('dissimulation', $this->etat)) $this->potentiel_toucher *= 1 + (($this->etat['dissimulation']['effet']) / 100);
+  	if($this->is_buff('buff_position') && $this->get_arme_type() == 'arc') $this->potentiel_toucher *= 1 + (($this->get_buff('buff_position', 'effet')) / 100);
+  	if(array_key_exists('a_toucher', $this->etat)) $this->potentiel_toucher *= 1 + ($this->etat['a_toucher']['effet'] / 100);
+  	if($this->etat['posture']['type'] == 'posture_touche') $this->potentiel_toucher *= 1 + (($this->etat['posture']['effet']) / 100);
 		return $this->potentiel_toucher;
 	}
 	/// Modifie le potentiel toucher physique
@@ -693,12 +711,22 @@ class entite extends placable
    */
 	function get_potentiel_parer($esquive = false)
 	{
+    if( isset($this->potentiel_parer) )
+      return $this->potentiel_parer;
+      
 		if(!$esquive) $this->potentiel_parer = round($this->get_esquive() + ($this->get_esquive() * ((pow($this->get_dexterite(), 2)) / 1000)));
 		else $this->potentiel_parer = round($esquive + ($esquive * ((pow($this->get_dexterite(), 2)) / 1000)));
 		if ($this->arme_type == 'hache')
 			$this->potentiel_parer *= $this->malus_hache;
 		if ($this->arme_type == 'arc')
 			$this->potentiel_parer *= $this->malus_arc;
+  	if(array_key_exists('benediction', $this->etat)) $this->potentiel_parer *= 1 + (($this->etat['benediction']['effet'] * $G_buff['bene_evasion']) / 100);
+  	if(array_key_exists('berzeker', $this->etat)) $this->potentiel_parer /= 1 + (($this->etat['berzeker']['effet'] * $G_buff['berz_evasion']) / 100);
+  	if(array_key_exists('derniere_chance', $this->etat)) $this->potentiel_parer /= 1 + (($this->etat['derniere_chance']['effet']) / 100);
+  	if($this->etat['posture']['type'] == 'posture_esquive') $this->potentiel_parer *= 1 + (($this->etat['posture']['effet']) / 100);
+  	if($this->etat['posture']['type'] == 'posture_vent') $this->potentiel_parer *= 1 + (($this->etat['posture']['effet']) / 100);
+  	
+  	if($this->get_race() == 'elfebois') $this->potentiel_parer *= 1.15;
 
 		return $this->potentiel_parer;
 	}
