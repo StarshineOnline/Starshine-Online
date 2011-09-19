@@ -430,17 +430,19 @@ else
 			//Boucle principale qui fait durer le combat $round_total round
 			while(($round < ($round_total + 1)) AND ($attaquant->get_hp() > 0) AND ($defenseur->get_hp() > 0))
 			{
-				if($attaquant->get_arme_type() == 'arc') $attaquant->set_comp('distance'); else $attaquant->set_comp('melee');
-				if($defenseur->get_arme_type() == 'arc') $defenseur->set_comp('distance'); else $defenseur->set_comp('melee');
+				/*if($attaquant->get_arme_type() == 'arc') $attaquant->set_comp('distance'); else $attaquant->set_comp('melee');
+				if($defenseur->get_arme_type() == 'arc') $defenseur->set_comp('distance'); else $defenseur->set_comp('melee');*/
 				//Calcul du potentiel de toucher et parer
 				/*$attaquant->get_potentiel_toucher();
 				$defenseur->get_potentiel_toucher();
 				$attaquant->get_potentiel_parer();
 				$defenseur->get_potentiel_parer();*/
-				$attaquant->degat_sup = 0;
+				$attaquant->init_round();
+				$defenseur->init_round();
+				/*$attaquant->degat_sup = 0;
 				$attaquant->degat_moins = 0;
 				$defenseur->degat_sup = 0;
-				$defenseur->degat_moins = 0;
+				$defenseur->degat_moins = 0;*/
 				if ($mode == 'attaquant') $mode = 'defenseur';
 				else ($mode = 'attaquant');
 

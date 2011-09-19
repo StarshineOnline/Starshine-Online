@@ -713,7 +713,7 @@ class entite extends placable
 	{
     if( isset($this->potentiel_parer) )
       return $this->potentiel_parer;
-      
+
 		if(!$esquive) $this->potentiel_parer = round($this->get_esquive() + ($this->get_esquive() * ((pow($this->get_dexterite(), 2)) / 1000)));
 		else $this->potentiel_parer = round($esquive + ($esquive * ((pow($this->get_dexterite(), 2)) / 1000)));
 		if ($this->arme_type == 'hache')
@@ -735,6 +735,15 @@ class entite extends placable
 	{
 		$this->potentiel_parer = $valeur;
 	}
+	/// Initialise l'objet pour un nouveau round de combat
+	function init_round()
+  {
+    if($this->get_arme_type() == 'arc') $this->set_comp('distance'); else $this->set_comp('melee');
+    unset($this->potentiel_toucher);
+    unset($this->potentiel_parer);
+		$this->degat_sup = 0;
+		$this->degat_moins = 0;
+  }
 	// @}
 
 	/**
