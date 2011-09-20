@@ -127,6 +127,7 @@ if($W_row['type'] == 1)
 						$nom = nom_objet($item->objet);
 						if($item->nombre > 1) $stack = ' X'.$item->nombre;
 						else $stack = '';
+						if (!$objet['identifier']) { $nom = 'Objet non indentifié';}
 						echo $nom.$stack.'<a href="terrain.php?id_construction='.$construction->id.'&amp;prend='.$key.'" onclick="return envoiInfo(this.href, \'carte\');">Prendre</a><br />';
 					}
 					echo '
@@ -137,6 +138,7 @@ if($W_row['type'] == 1)
 						$nom = nom_objet($objet['id']);
 						if($objet['stack'] != '') $stack = ' X'.$objet['stack'];
 						else $stack = '';
+						if (!$objet['identifier']) { $nom = 'Objet non indentifié';}
 						echo $nom.$stack.' <a href="terrain.php?id_construction='.$construction->id.'&amp;depose='.$key.'" onclick="return envoiInfo(this.href, \'carte\');">Déposer dans votre coffre</a><br />';
 					}
 				break;
