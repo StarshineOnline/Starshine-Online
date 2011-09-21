@@ -27,7 +27,7 @@ function pnj_run_cache_cache()
     }
   }
   // fait se cacher le gosse ailleurs
-  $pos = array(array('x' => 35, 'y' => 335), array('x' => 31, 'y' => 334),
+  $pos = array(array('x' => 37, 'y' => 335), array('x' => 31, 'y' => 334),
                array('x' => 45, 'y' => 331), array('x' => 34, 'y' => 337),
                array('x' => 40, 'y' => 333), array('x' => 34, 'y' => 329));
   $i = 0;
@@ -37,7 +37,6 @@ function pnj_run_cache_cache()
     $x = $pos[$i]['x'];
     $y = $pos[$i]['y'];
   } while ($x == $joueur->get_x() && $y == $joueur->get_y());
-  $x = 
   $db->query("update pnj set x = $x, y = $y where nom = 'Riky Tendre-flocon'");
   return "Bravo ! Tu m'as trouvé ! Mais y arriveras-tu de nouveau ?<br />".
     "<em>Riky s'enfuit en courant pour se cacher ailleurs</em>";
