@@ -672,7 +672,7 @@ class entite extends placable
 	/// Calcul et renvoie le potentiel toucher physique
 	function get_potentiel_toucher()
 	{
-    if( isset($this->potentiel_toucher) )
+    if( isset($this->potentiel_toucher) && $this->potentiel_toucher )
       return $this->potentiel_toucher;
 
 		if($this->get_arme_type() == 'arc')
@@ -711,7 +711,7 @@ class entite extends placable
    */
 	function get_potentiel_parer($esquive = false)
 	{
-    if( isset($this->potentiel_parer) )
+    if( isset($this->potentiel_parer) && $this->potentiel_parer )
       return $this->potentiel_parer;
 
 		if(!$esquive) $this->potentiel_parer = round($this->get_esquive() + ($this->get_esquive() * ((pow($this->get_dexterite(), 2)) / 1000)));

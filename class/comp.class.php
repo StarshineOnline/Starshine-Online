@@ -159,8 +159,8 @@ class maitrise_dague extends competence
 
   function debut_round(&$actif, &$passif) {
     $this->used = true;
-    $actif->potentiel_toucher *=
-      1 + ($actif->get_competence('maitrise_dague')->get_valeur() / 1000);
+    $actif->set_potentiel_toucher($actif->set_potentiel_toucher *
+      (1 + ($actif->get_competence('maitrise_dague')->get_valeur() / 1000)));
   }
 
   function fin_round(&$actif, &$passif) {
@@ -184,8 +184,8 @@ class maitrise_epee extends competence
 
   function debut_round(&$actif, &$passif) {
     $this->used = true;
-    $actif->potentiel_toucher *=
-      1 + ($actif->get_competence('maitrise_epee')->get_valeur() / 1000);
+    $actif->set_potentiel_toucher($actif->set_potentiel_toucher *
+      (1 + ($actif->get_competence('maitrise_epee')->get_valeur() / 1000)));
     //$actif['maitrise_epee'] = $actif['competences']['maitrise_epee'];
   }
 
@@ -210,8 +210,8 @@ class maitrise_hache extends competence
 
   function debut_round(&$actif, &$passif) {
     $this->used = true;
-    $actif->potentiel_toucher *=
-			1 + ($actif->get_competence('maitrise_hache')->get_valeur() / 1000);
+    $actif->set_potentiel_toucher($actif->set_potentiel_toucher *
+      (1 + ($actif->get_competence('maitrise_hache')->get_valeur() / 1000)));
     //$actif['maitrise_hache'] = $actif['competences']['maitrise_hache'];
   }
 
@@ -236,8 +236,8 @@ class maitrise_arc extends competence
 
   function debut_round(&$actif, &$passif) {
     $this->used = true;
-    $actif->potentiel_toucher *=
-      1 + ($actif->get_competence('maitrise_arc')->get_valeur() / 1000);
+    $actif->set_potentiel_toucher($actif->set_potentiel_toucher *
+      (1 + ($actif->get_competence('maitrise_arc')->get_valeur() / 1000)));
     //$actif['maitrise_arc'] = $actif['competences']['maitrise_arc'];
   }
 
