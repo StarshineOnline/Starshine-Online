@@ -637,7 +637,7 @@ function cout_pa2($coutpa, $joueur, $case, $diagonale)
 		if($coutpa > 2) $coutpa -= 1;
 	}
 	//Buff rapide comme le vent
-	if($joueur->is_buff('rapide_vent', true) or $joueur->is_enchantement('course'))
+	if($joueur->is_buff('rapide_vent', true) or $joueur->is_enchantement('course') OR $joueur->is_buff('buff_rush', true))
 	{
 		if($coutpa > 2) $coutpa -= 1;
 	}

@@ -49,6 +49,12 @@ class point_victoire_action
     */
 	private $description;
 
+
+	/**
+    * @access private
+    * @var int(10)
+    */
+	private $duree;
 	
 	/**
 	* @access public
@@ -63,17 +69,17 @@ class point_victoire_action
 	* @param text description attribut
 	* @return none
 	*/
-	function __construct($id = 0, $nom = '', $type = '', $action = '', $cout = '', $type_buff = '', $effet = '', $description = '')
+	function __construct($id = 0, $nom = '', $type = '', $action = '', $cout = '', $type_buff = '', $effet = '', $description = '', $duree='')
 	{
 		global $db;
 		//Verification nombre et du type d'argument pour construire l'etat adequat.
 		if( (func_num_args() == 1) && is_numeric($id) )
 		{
-			$requeteSQL = $db->query("SELECT nom, type, action, cout, type_buff, effet, description FROM point_victoire_action WHERE id = ".$id);
+			$requeteSQL = $db->query("SELECT nom, type, action, cout, type_buff, effet, description, duree FROM point_victoire_action WHERE id = ".$id);
 			//Si le thread est dans la base, on le charge sinon on crée un thread vide.
 			if( $db->num_rows($requeteSQL) > 0 )
 			{
-				list($this->nom, $this->type, $this->action, $this->cout, $this->type_buff, $this->effet, $this->description) = $db->read_array($requeteSQL);
+				list($this->nom, $this->type, $this->action, $this->cout, $this->type_buff, $this->effet, $this->description, $this->duree) = $db->read_array($requeteSQL);
 			}
 			else $this->__construct();
 			$this->id = $id;
@@ -88,6 +94,7 @@ class point_victoire_action
 			$this->type_buff = $id['type_buff'];
 			$this->effet = $id['effet'];
 			$this->description = $id['description'];
+			$this->duree = $id['duree'];
 			}
 		else
 		{
@@ -99,6 +106,7 @@ class point_victoire_action
 			$this->effet = $effet;
 			$this->description = $description;
 			$this->id = $id;
+			$this->duree = $duree;
 		}
 	}
 
@@ -115,7 +123,7 @@ class point_victoire_action
 		{
 			if(count($this->champs_modif) > 0)
 			{
-				if($force) $champs = 'nom = "'.mysql_escape_string($this->nom).'", type = "'.mysql_escape_string($this->type).'", action = "'.mysql_escape_string($this->action).'", cout = "'.mysql_escape_string($this->cout).'", type_buff = "'.mysql_escape_string($this->type_buff).'", effet = "'.mysql_escape_string($this->effet).'", description = "'.mysql_escape_string($this->description).'"';
+				if($force) $champs = 'nom = "'.mysql_escape_string($this->nom).'", type = "'.mysql_escape_string($this->type).'", action = "'.mysql_escape_string($this->action).'", cout = "'.mysql_escape_string($this->cout).'", type_buff = "'.mysql_escape_string($this->type_buff).'", effet = "'.mysql_escape_string($this->effet).'", description = "'.mysql_escape_string($this->description).'", description = "'.mysql_escape_string($this->duree).'"';
 				else
 				{
 					$champs = '';
@@ -134,8 +142,8 @@ class point_victoire_action
 		}
 		else
 		{
-			$requete = 'INSERT INTO point_victoire_action (nom, type, action, cout, type_buff, effet, description) VALUES(';
-			$requete .= '"'.mysql_escape_string($this->nom).'", "'.mysql_escape_string($this->type).'", "'.mysql_escape_string($this->action).'", "'.mysql_escape_string($this->cout).'", "'.mysql_escape_string($this->type_buff).'", "'.mysql_escape_string($this->effet).'", "'.mysql_escape_string($this->description).'")';
+			$requete = 'INSERT INTO point_victoire_action (nom, type, action, cout, type_buff, effet, description, duree) VALUES(';
+			$requete .= '"'.mysql_escape_string($this->nom).'", "'.mysql_escape_string($this->type).'", "'.mysql_escape_string($this->action).'", "'.mysql_escape_string($this->cout).'", "'.mysql_escape_string($this->type_buff).'", "'.mysql_escape_string($this->effet).'", "'.mysql_escape_string($this->description).'", "'.mysql_escape_string($this->duree).'")';
 			$db->query($requete);
 			//Récuperation du dernier ID inséré.
 			$this->id = $db->last_insert_id();
@@ -194,7 +202,7 @@ class point_victoire_action
 			}
 		}
 
-		$requete = "SELECT id, nom, type, action, cout, type_buff, effet, description FROM point_victoire_action WHERE ".$where." ORDER BY ".$ordre;
+		$requete = "SELECT id, nom, type, action, cout, type_buff, effet, description, duree FROM point_victoire_action WHERE ".$where." ORDER BY ".$ordre;
 		$req = $db->query($requete);
 		if($db->num_rows($req) > 0)
 		{
@@ -216,7 +224,7 @@ class point_victoire_action
 	*/
 	function __toString()
 	{
-		return 'id = '.$this->id.', nom = '.$this->nom.', type = '.$this->type.', action = '.$this->action.', cout = '.$this->cout.', type_buff = '.$this->type_buff.', effet = '.$this->effet.', description = '.$this->description;
+		return 'id = '.$this->id.', nom = '.$this->nom.', type = '.$this->type.', action = '.$this->action.', cout = '.$this->cout.', type_buff = '.$this->type_buff.', effet = '.$this->effet.', description = '.$this->description.', duree = '.$this->duree;
 	}
 	
 	/**
@@ -305,6 +313,16 @@ class point_victoire_action
 	function get_description()
 	{
 		return $this->description;
+	}
+	/**
+	* Retourne la valeur de l'attribut
+	* @access public
+	* @param none
+	* @return text $description valeur de l'attribut description
+	*/
+	function get_duree()
+	{
+		return $this->duree;
 	}
 
 	/**
@@ -402,6 +420,19 @@ class point_victoire_action
 		$this->description = $description;
 		$this->champs_modif[] = 'description';
 	}
+/**
+	* Modifie la valeur de l'attribut
+	* @access public
+	* @param varchar(50) $type_buff valeur de l'attribut
+	* @return none
+	*/
+	function set_duree($duree)
+	{
+		$this->type_buff = $duree;
+		$this->champs_modif[] = 'duree';
+	}
+
+
 //fonction
 }
 ?>

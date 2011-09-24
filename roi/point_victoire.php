@@ -31,9 +31,9 @@ elseif(array_key_exists('action', $_GET))
 				echo '<h6>'.$action->get_type_buff().' a bien été supprimé(e)</h6>';
 			break;
 			case 'buff' :
-			  $duree = 3600 * 24 * 31;
+			  
 			  $requete = "INSERT INTO buff(`type`, `effet`, `effet2`, `fin`, `duree`, `id_perso`, `nom`, `description`, `debuff`, `supprimable`)
-								SELECT '".$action->get_type_buff()."', ".$action->get_effet().", 0, ".(time()+$duree).", ".$duree.", id, '".$action->get_nom()."', '".addslashes($action->get_description())."', 1, 0
+								SELECT '".$action->get_type_buff()."', ".$action->get_effet().", 0, ".(time()+$action->get_duree()).", ".$action->get_duree().", id, '".$action->get_nom()."', '".addslashes($action->get_description())."', 1, 0
                 FROM ($persos) persos";
 				$db->query($requete);
 			  echo '<h6>Votre royaume bénéficie maintenant du buff : '.$action->get_nom().'</h6>';
