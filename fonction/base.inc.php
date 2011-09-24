@@ -1046,6 +1046,7 @@ function recupperso($ID)
 				if(array_key_exists('buff_bouclier', $R_perso['buff'])) $R_perso['PP'] = round($R_perso['PP'] * (1 + ($R_perso['buff']['buff_bouclier']['effet'] / 100)));
 				if(array_key_exists('buff_barriere', $R_perso['buff'])) $R_perso['PM'] = round($R_perso['PM'] * (1 + ($R_perso['buff']['buff_barriere']['effet'] / 100)));
 				if(array_key_exists('buff_inspiration', $R_perso['buff'])) $R_perso['reserve'] = $R_perso['reserve'] + $R_perso['buff']['buff_inspiration']['effet'];
+				if(array_key_exists('buff_rune', $R_perso['buff'])) $R_perso['reserve'] = $R_perso['reserve'] + $R_perso['buff']['buff_rune']['effet'];
 				if(array_key_exists('buff_sacrifice', $R_perso['buff'])) $R_perso['reserve'] += $R_perso['buff']['buff_sacrifice']['effet'];
 				if(array_key_exists('longue_portee', $R_perso['buff']) AND $R_perso['arme_type'] == 'arc') $R_perso['arme_distance'] += 1;
 				if(array_key_exists('buff_forteresse', $R_perso['buff']))

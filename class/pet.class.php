@@ -555,6 +555,7 @@ class pet extends map_monstre
 		$this->reserve_bonus = $this->monstre->get_reserve();
 
 		if($joueur->is_buff('buff_inspiration')) $this->reserve_bonus += $joueur->get_buff('buff_inspiration', 'effet');
+		if($joueur->is_buff('buff_rune')) $this->reserve_bonus += $joueur->get_buff('buff_rune', 'effet');
 		if($joueur->is_buff('buff_sacrifice')) $this->reserve_bonus += $joueur->get_buff('buff_sacrifice', 'effet');
 
 		return $this->reserve_bonus;
