@@ -202,6 +202,22 @@ function checkChacalGate(&$joueur, $changes)
 			$c->apply();
 }
 
+function checkChacalTP(&$joueur, $x, $y)
+{
+	$armor = decompose_objet($joueur->get_inventaire_partie('torse'));
+	if ($armor['id_objet'] != 127)
+	{
+    showMessage('La porte vous est interdite', 'porte');
+	}
+	else
+	{
+    showMessage('On vous laisse entrer', 'porte');
+    $joueur->set_x($x);
+    $joueur->set_y($y);
+    $joueur->sauver();
+	}
+}
+
 function checkTeleportHydraulique(&$joueur)
 {
   // TODO: mettre les bones valeurs
