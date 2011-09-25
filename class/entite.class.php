@@ -1,4 +1,6 @@
 <?php
+
+
 /**
  * @file entite.class.php
  * Gestion des participants à un combat
@@ -12,8 +14,9 @@
 class entite extends placable
 {
 	/// Pour compatibilité (le temps de refaire la hiérarchie)
+	
+	
 	protected function get_table() { return ''; }
-  
 	/**
 	 * @name Informations générales.
 	 * Donnée et méthode sur les inforamations "générales" : classe, rang, niveau,
@@ -672,6 +675,7 @@ class entite extends placable
 	/// Calcul et renvoie le potentiel toucher physique
 	function get_potentiel_toucher()
 	{
+		global $G_buff, $G_debuff;
     if( isset($this->potentiel_toucher) && $this->potentiel_toucher )
       return $this->potentiel_toucher;
 
@@ -698,6 +702,7 @@ class entite extends placable
   	if($this->is_buff('buff_position') && $this->get_arme_type() == 'arc') $this->potentiel_toucher *= 1 + (($this->get_buff('buff_position', 'effet')) / 100);
   	if(array_key_exists('a_toucher', $this->etat)) $this->potentiel_toucher *= 1 + ($this->etat['a_toucher']['effet'] / 100);
   	if($this->etat['posture']['type'] == 'posture_touche') $this->potentiel_toucher *= 1 + (($this->etat['posture']['effet']) / 100);
+ 
 		return $this->potentiel_toucher;
 	}
 	/// Modifie le potentiel toucher physique
@@ -711,6 +716,7 @@ class entite extends placable
    */
 	function get_potentiel_parer($esquive = false)
 	{
+		global $G_buff, $G_debuff;
     if( isset($this->potentiel_parer) && $this->potentiel_parer )
       return $this->potentiel_parer;
 
@@ -721,7 +727,7 @@ class entite extends placable
 		if ($this->arme_type == 'arc')
 			$this->potentiel_parer *= $this->malus_arc;
   	if(array_key_exists('benediction', $this->etat)) $this->potentiel_parer *= 1 + (($this->etat['benediction']['effet'] * $G_buff['bene_evasion']) / 100);
-  	if(array_key_exists('berzeker', $this->etat)) $this->potentiel_parer /= 1 + (($this->etat['berzeker']['effet'] * $G_buff['berz_evasion']) / 100);
+   	if(array_key_exists('berzeker', $this->etat)) $this->potentiel_parer /= 1 + (($this->etat['berzeker']['effet'] * $G_buff['berz_evasion']) / 100);  	
   	if(array_key_exists('derniere_chance', $this->etat)) $this->potentiel_parer /= 1 + (($this->etat['derniere_chance']['effet']) / 100);
   	if($this->etat['posture']['type'] == 'posture_esquive') $this->potentiel_parer *= 1 + (($this->etat['posture']['effet']) / 100);
   	if($this->etat['posture']['type'] == 'posture_vent') $this->potentiel_parer *= 1 + (($this->etat['posture']['effet']) / 100);
