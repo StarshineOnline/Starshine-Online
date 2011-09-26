@@ -421,6 +421,7 @@ class pet extends map_monstre
 	function get_cout_soin()
 	{
 		$this->get_monstre();
+
 		return pow($this->get_level(), 2);
 	}
 
@@ -732,6 +733,10 @@ class pet extends map_monstre
 				$perso = new perso($this->id_joueur);
 				return $perso->get_level();
 			}
+		}
+		else
+		{
+			return $this->monstre->get_level();
 		}
 	}
 	// @}
