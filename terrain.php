@@ -127,8 +127,8 @@ if($W_row['type'] == 1)
 						$nom = nom_objet($item->objet);
 						if($item->nombre > 1) $stack = ' X'.$item->nombre;
 						else $stack = '';
-						if (!$objet['identifier']) { $nom = 'Objet non indentifié';}
-						echo $nom.$stack.'<a href="terrain.php?id_construction='.$construction->id.'&amp;prend='.$key.'" onclick="return envoiInfo(this.href, \'carte\');">Prendre</a><br />';
+						if ($item->objet[0] == 'h') { $nom = 'Objet non indentifié'; }
+						echo $nom.$stack.' <a href="terrain.php?id_construction='.$construction->id.'&amp;prend='.$key.'" onclick="return envoiInfo(this.href, \'carte\');">Prendre</a><br />';
 					}
 					echo '
 					<h3>Votre inventaire</h3>';
