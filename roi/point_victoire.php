@@ -58,8 +58,13 @@ else
 	<?php
 	$actions = point_victoire_action::create(0, 0);
 	foreach($actions as $action)
-	{
-		if($action->get_type() == 'buff') $description = 'Buff l\'ensemble des joueurs de votre royaume avec : "'.$action->get_description().'"';
+	{	
+		$duree_j = floor($action->get_duree() / (3600 * 24));
+		$duree_h = floor(($action->get_duree() - ($duree_j * 3600 * 24)) / 3600);
+		$duree_m = floor(($action->get_duree() - ($duree_j * 3600 * 24) - ($duree_h * 3600)) / 60);
+		
+		if($action->get_type() == 'buff') $description = 'Buff l\'ensemble des joueurs de votre royaume avec : "'.$action->get_description().'"<br/>
+															Durée : '.$duree_j.'j '.$duree_h.'h '.$duree_m.'m <br />';
 		else $description = $action->get_description();
 		echo '
 		<tr>
