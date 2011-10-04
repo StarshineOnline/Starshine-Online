@@ -16,6 +16,48 @@ if (mysqli_connect_error()) {
             . mysqli_connect_error());
 }
 
+if ($_SERVER['argc'] > 1) {
+  if (in_array('help', $_SERVER['argv']) ||
+    in_array('-help', $_SERVER['argv'])) {
+    die('usage: '.$_SERVER['argv'][0].' [help|runskip]'."\n");
+  }
+  if (in_array('runskip', $_SERVER['argv'])) {
+    // run calendar skipping actions until all events are in the future
+    $sql = 'update calendrier set `date` = '.
+      'from_unixtime(unix_timestamp(`date`) + `nextu`) '.
+      'where `date` < now() and `next` is not null and `done` = 0';
+    $done = false;
+    $max = 0;
+    $total = 0;
+    $runs = 0;
+    //$mysqli->autocommit(false);
+    $stmt = $mysqli->prepare($sql);
+    if (!$stmt) die($mysqli->error);
+    do {
+      $ret = $stmt->execute();
+      if (!$ret) die($mysqli->error);
+      if ($stmt->get_warnings()) die($stmt->get_warnings());
+      if ($stmt->affected_rows > 0) {
+        // Had an effect
+        $total += $stmt->affected_rows;
+        $runs++;
+        if ($stmt->affected_rows > $max)
+          $max = $stmt->affected_rows;
+      }
+      else {
+        $done= true;
+      }
+      echo '.';
+    } while (!$done);
+    $stmt->close();
+    $mysqli->commit();
+    echo "Runskip done, executed $runs run(s), affecting $max different tasks for $total total modifications\n";
+    exit (0);
+  }
+  die('usage: '.$_SERVER['argv'][0].' [help|runskip]'."\n".
+      print_r($_SERVER['argv'], true)."\n");
+}
+
 function verif_queries($sql) {
 	$sql2 = trim($sql); // trim spaces
 	$sql3 = trim($sql2, ";"); // remove trailing ;
@@ -24,7 +66,7 @@ function verif_queries($sql) {
 
 $mysqli->autocommit(false);
 
-$sql = 'select * from `calendrier` where `date` < NOW() and `done` = 0';
+$sql = 'select * from `calendrier` where `date` <= NOW() and `done` = 0';
 $req = $mysqli->query($sql.' ORDER BY `date`');
 if ($req) {
 	while ($row = $req->fetch_object()) {
@@ -32,7 +74,12 @@ if ($req) {
 		if (!$mysqli->query($sql)) die($mysqli->error);
 
 		if ($row->next) {
+      /*
 			$sql = 'update `calendrier` set `done` = 0, `date` = `date` + `next` '.
+				'where id = '.$row->id;
+      */
+      $sql = 'update `calendrier` set `done` = 0, `date` = '.
+        'from_unixtime(unix_timestamp(`date`) + `nextu`) '.
 				'where id = '.$row->id;
 			if (!$mysqli->query($sql)) die($mysqli->error);
 		}

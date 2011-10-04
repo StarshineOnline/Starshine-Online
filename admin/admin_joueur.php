@@ -163,7 +163,7 @@ else
 						{
 						?>
 						<li><a href="admin_joueur.php?direction=objet&amp;id=<?php echo $_GET['id']; ?>">Donner un objet</a> | <a href="admin_joueur.php?direction=recette&amp;id=<?php echo $_GET['id']; ?>">Donner une recette</a> | <a href="admin_joueur.php?direction=arme&amp;id=<?php echo $_GET['id']; ?>">Donner une arme</a></li> | <a href="admin_joueur.php?direction=armure&amp;id=<?php echo $_GET['id']; ?>">Donner une armure</a> | <a href="admin_joueur.php?direction=accessoire&amp;id=<?php echo $_GET['id']; ?>">Donner un accessoire</a> | <a href="admin_joueur.php?direction=titre&amp;id=<?php echo $_GET['id']; ?>">Donner un titre</a></li>
-						<li><a href="admin_joueur.php?direction=quete&amp;id=<?php echo $_GET['id']; ?>">Quêtes</a> - <a href="admin_joueur.php?direction=inventaire&amp;id=<?php echo $_GET['id']; ?>">Inventaire</a> - <a href="admin_joueur.php?direction=journal&amp;id=<?php echo $_GET['id']; ?>">Voir le journal des actions</a> | <a href="admin_joueur.php?direction=messagerie&amp;id=<?php echo $_GET['id']; ?>">Voir la messagerie</a></li>
+						<li><a href="admin_joueur.php?direction=quete&amp;id=<?php echo $_GET['id']; ?>">Quêtes</a> - <a href="admin_joueur.php?direction=inventaire&amp;id=<?php echo $_GET['id']; ?>">Inventaire</a> - <a href="admin_joueur.php?direction=journal&amp;id=<?php echo $_GET['id']; ?>">Voir le journal des actions</a> | <a href="admin_joueur.php?direction=messagerie&amp;id=<?php echo $_GET['id']; ?>">Voir la messagerie</a> | <a href="admin_joueur.php?direction=donnepa&amp;id=<?php echo $_GET['id']; ?>">Donner full PA</a></li>
 						<?php
 						}
 						?>
@@ -804,6 +804,12 @@ if($joueur->get_inventaire_slot() != '')
 				echo 'Objet bien supprimer<br />';
 				echo '<a href="admin_joueur.php?direction=inventaire&amp;id='.$joueur->get_id().'">Retour à l\'inventaire</a> | <a href="admin_joueur.php?direction=info_joueur&amp;id='.$joueur->get_id().'">Retour au personnage</a>';
 			break;
+      case 'donnepa':
+        $pa = max($G_PA_max, 180);
+				$joueur = new perso($_GET['id']);
+        $joueur->set_pa($pa);
+        $joueur->sauver();
+        break;
 		}
 	}
 	else
