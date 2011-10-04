@@ -25,7 +25,7 @@ if ($_SERVER['argc'] > 1) {
     // run calendar skipping actions until all events are in the future
     $sql = 'update calendrier set `date` = '.
       'from_unixtime(unix_timestamp(`date`) + `nextu`) '.
-      'where `date` < now() and `next` is not null and `done` = 0';
+      'where `date` < now() and `nextu` > 0 and `done` = 0';
     $done = false;
     $max = 0;
     $total = 0;
@@ -73,7 +73,7 @@ if ($req) {
 		$sql = 'update calendrier set done = 1 where id = '.$row->id;
 		if (!$mysqli->query($sql)) die($mysqli->error);
 
-		if ($row->next) {
+		if ($row->nextu) {
       /*
 			$sql = 'update `calendrier` set `done` = 0, `date` = `date` + `next` '.
 				'where id = '.$row->id;
