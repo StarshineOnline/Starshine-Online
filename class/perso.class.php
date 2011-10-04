@@ -2145,11 +2145,21 @@ class perso extends entite
 			{
 				$time = time();
 				$nb_maj = floor($temps_maj / $temps_hp);
-				$hp_gagne = $nb_maj * (pow($this->get_vie(true), 0.9) * 1.6);
-				$this->set_hp_max($this->get_hp_max(true) + $hp_gagne);
-				$this->set_maj_hp($this->get_maj_hp() + $nb_maj * $temps_hp);
-				$modif = true;
-			}
+				$hp_gagne = $nb_maj * (pow($this->get_vie(true), 0.9) * 1.3);
+				if (($this->get_hp_max(true) + $hp_gagne) < (120*(pow($this->get_vie(true), 0.9))))
+				{
+					$this->set_hp_max($this->get_hp_max(true) + $hp_gagne);
+					$this->set_maj_hp($this->get_maj_hp() + $nb_maj * $temps_hp);
+					$modif = true;
+				}			
+				else
+				{
+					$hp_gagne =0;
+					$modif = true;
+					$this->set_hp_max(120*(pow($this->get_vie(true), 0.9)));
+					$this->set_maj_hp($this->get_maj_hp() + $nb_maj * $temps_hp);
+				}
+			} 
 			// On augmente les MP max si nécessaire
 			$temps_maj = time() - $this->get_maj_mp(); // Temps écoulé depuis la dernière augmentation de MP.
 			$temps_mp = $G_temps_maj_mp;  // Temps entre deux augmentation de MP.
@@ -2157,10 +2167,20 @@ class perso extends entite
 			{
 				$time = time();
 				$nb_maj = floor($temps_maj / $temps_mp);
-				$mp_gagne = $nb_maj * (($this->get_energie(true) - 3) / 4);
-				$this->set_mp_max($this->get_mp_max(true) + $mp_gagne);
-				$this->set_maj_mp($this->get_maj_mp() + $nb_maj * $temps_mp);
-				$modif = true;
+				$mp_gagne = $nb_maj * (pow($this->get_energie(true), 1.2)/10);
+				if (($this->get_mp_max(true) + $mp_gagne) < (pow($this->get_energie(true), 1.2)*13))
+				{
+					$this->set_mp_max($this->get_mp_max(true) + $mp_gagne);
+					$this->set_maj_mp($this->get_maj_mp() + $nb_maj * $temps_mp);
+					$modif = true;
+				}
+				else
+				{
+					$mp_gagne =0;
+					$modif = true;
+					$this->set_mp_max(pow($this->get_energie(true), 1.2)*13);
+					$this->set_maj_mp($this->get_maj_mp() + $nb_maj * $temps_mp);
+				}
 			}
 			// Régénération des HP et MP
 			$temps_regen = time() - $this->get_regen_hp(); // Temps écoulé depuis la dernière régénération.
