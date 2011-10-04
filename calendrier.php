@@ -30,7 +30,7 @@ if ($_SERVER['argc'] > 1) {
     $max = 0;
     $total = 0;
     $runs = 0;
-    //$mysqli->autocommit(false);
+    $mysqli->autocommit(false);
     $stmt = $mysqli->prepare($sql);
     if (!$stmt) die($mysqli->error);
     do {

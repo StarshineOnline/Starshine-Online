@@ -21,6 +21,24 @@ update `calendrier` set nextu = 86400*7 where `next` = cast('0000-00-07 00:00:00
 update `calendrier` set nextu = 600 where `next` = cast('0000-00-00 00:10:00' as datetime);
 ALTER TABLE `calendrier` DROP `next` ;
 
+-- correction calendrier
+UPDATE `calendrier` SET `date` = '2011-10-04 18:00:00' WHERE `id_manuel` = 'pop maraudeur geolier 1' LIMIT 1 ;
+
+UPDATE `calendrier` SET `date` = '2011-10-04 20:00:00' WHERE `id_manuel` = 'kill maraudeur geolier 1' LIMIT 1 ;
+
+UPDATE `calendrier` SET `date` = '2011-10-04 12:00:00' WHERE `id_manuel` = 'pop maraudeur geolier 2' LIMIT 1 ;
+
+UPDATE `calendrier` SET `date` = '2011-10-04 14:00:00' WHERE `id_manuel` = 'kill maraudeur geolier 2' LIMIT 1 ;
+
+UPDATE `calendrier` SET `date` = '2011-10-04 10:00:00' WHERE `id_manuel` = 'kill maraudeur geolier 3' LIMIT 1 ;
+
+UPDATE `calendrier` SET `date` = '2011-10-04 19:30:00' WHERE `id_manuel` = 'kill maraudeur geolier 4' LIMIT 1 ;
+
+UPDATE `calendrier` SET `date` = '2011-10-04 08:00:00',
+`sql` = 'update pnj set x=30, y=320 where nom = ''Leonard Sileyn''; update map set decor = 10550, info = 106 where x=30 and y=325; update perso set y = y + 1 where x=30 and y=325' WHERE `id_manuel` = 'depart Leonard Sileyn' LIMIT 1 ;
+
+UPDATE `calendrier` SET `date` = '2011-10-04 10:00:00' WHERE `id_manuel` = 'retour Leonard Sileyn' LIMIT 1 ;
+
 -- oubli des zones de maree
 ALTER TABLE `maree` ADD `zone` INT NOT NULL ;
 
