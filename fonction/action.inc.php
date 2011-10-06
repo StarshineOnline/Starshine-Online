@@ -816,7 +816,7 @@ function lance_sort($id, $acteur, &$effects)
 				case 'vortex_vie' :
 					$degat = degat_magique(($actif->$get_comp_assoc() - 2), ($row['effet'] + $bonus_degats_magique), $actif, $passif);
 					if ($passif->get_type() == 'batiment') $drain = 0;
-					else $drain = round($degat * 0.5);
+					else $drain = round($degat * 0.4);
 					// Augmentation du nombre de HP récupérable par récupération
 					if(array_key_exists('recuperation', $actif->etat)) $actif->etat['recuperation']['hp_max'] += $drain;
 					echo '&nbsp;&nbsp;<span class="degat"><strong>'.$actif->get_nom().'</strong> inflige <strong>'.$degat.'</strong> dégâts avec '.$row['nom'].'<br />

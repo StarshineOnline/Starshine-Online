@@ -290,7 +290,7 @@ class combat
 								Et gagne <strong>'.$drain.'</strong> hp grâce au drain</span><br />';
 							break;
 							case 'vortex_vie' :
-								$drain = round($attaque[5] * 0.5);
+								$drain = round($attaque[5] * 0.4);
 								echo '&nbsp;&nbsp;<span class="degat"><strong>'.${$mode}->get_nom().'</strong> inflige <strong>'.$attaque[5].'</strong> dégâts avec '.$row['nom'].'<br />
 								Et gagne <strong>'.$drain.'</strong> hp grâce au drain</span><br />';
 							break;
