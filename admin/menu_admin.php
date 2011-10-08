@@ -53,6 +53,11 @@ else
 	$menu[$i++]['acces'] = 'admin';
 	$acces[] = 'admin';
 
+	$menu[$i]['nom'] = 'Marees';
+	$menu[$i]['url'] = 'marees.php';
+	$menu[$i++]['acces'] = 'admin';
+	$acces[] = 'admin';
+
 	$menu[$i]['nom'] = 'Calendrier';
 	$menu[$i]['url'] = 'calendrier.php';
 	$menu[$i++]['acces'] = 'admin';
