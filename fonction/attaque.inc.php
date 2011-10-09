@@ -84,9 +84,13 @@ function attaque($acteur = 'attaquant', $competence, &$effects)
 		{
 			$degat = $actif->get_bouclier_degat();
 
+			// Prise en compte des effets defenseurs de l'attaquant (protection artistique ...)
+			$tmp_effets = array();
+			get_effets_permanents('defenseur', $tmp_effets);
 			/* Application des degats bloques */
-			foreach ($effects as $effect)
-				$degat = $effect->calcul_bloquage_reduction($actif, $passif, $degat);
+			foreach ($tmp_effets as $effect)
+				// Actif et passif sont inversés puisque c'est l'actif qui touche au bouclier
+				$degat = $effect->calcul_bloquage_reduction($passif, $actif, $degat);
 			/* ~degats bloques */
 
 			$att = $degat + $actif->get_force();
