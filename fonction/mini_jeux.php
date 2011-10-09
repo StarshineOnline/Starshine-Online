@@ -52,3 +52,30 @@ function joue_gobelets($joueur, $mise = 50)
   showMessage($msg, $titre);
   $joueur->sauver();
 }
+
+function peche($joueur, $recompense = null, $diff = 30, $mise = 0)
+{
+	$titre = 'Pêche';
+	if ($joueur->get_pa() < 10) {
+		showMessage('<h5>Vous n\'avez pas assez de pa</h5>', $titre);
+		return;
+	}
+	if ($joueur->get_star() < $mise) {
+		showMessage('<h5>Vous n\'avez pas assez de stars</h5>', $titre);
+		return;
+	}
+  $joueur->add_star($mise * -1);
+  $joueur->add_pa(-10);
+  $d1 = mt_rand(1, $joueur->get_force()) + 
+		mt_rand(1, $joueur->get_dexterite());
+	$d2 = mt_rand(1, $diff);
+	if ($d1 > $d2) {
+		$msg = "Vous avez réussi à attraper le poisson !";
+		if ($recompense) $joueur->prend_objet($recompense);
+		if ($mise) $joueur->add_star($mise * 2);
+	} else {
+		$msg = 'Vous échouez à attraper le poisson';
+	}
+  showMessage($msg, $titre);
+  $joueur->sauver();	
+}
