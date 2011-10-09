@@ -73,9 +73,12 @@ function peche($joueur, $recompense = null, $diff = 30, $mise = 0)
 		$msg = "Vous avez réussi à attraper le poisson !";
 		if ($recompense) $joueur->prend_objet($recompense);
 		if ($mise) $joueur->add_star($mise * 2);
+		$ok = true;
 	} else {
 		$msg = 'Vous échouez à attraper le poisson';
+		$ok = false;
 	}
   showMessage($msg, $titre);
-  $joueur->sauver();	
+  $joueur->sauver();
+	return $ok;
 }
