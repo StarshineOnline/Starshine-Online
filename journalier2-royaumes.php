@@ -7,7 +7,7 @@ include_once('journalier2-head.php');
 
 // RAZ capitale
 $now = time();
-$requete = "select id from royaume where fin_raz_capitale > 0 and fin_raz_capitale";
+$requete = "select id from royaume where fin_raz_capitale > 0 and fin_raz_capitale < $now";
 $req = $db->query($requete);
 if ($req)
 	while($row = $db->read_object($req)) {

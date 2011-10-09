@@ -83,7 +83,13 @@ function attaque($acteur = 'attaquant', $competence, &$effects)
 		if($actif->etat['coup_bouclier']['effet'] > 0)
 		{
 			$degat = $actif->get_bouclier_degat();
-			$att = $actif->get_bouclier_degat() + $actif->get_force();
+
+			/* Application des degats bloques */
+			foreach ($effects as $effect)
+				$degat = $effect->calcul_bloquage_reduction($actif, $passif, $degat);
+			/* ~degats bloques */
+
+			$att = $degat + $actif->get_force();
 			$def = $passif->get_vie() + round($passif->get_pp() / 100);
 			$atta = rand(0, $att);
 			$defe = rand(0, $def);
