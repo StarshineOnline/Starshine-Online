@@ -1771,6 +1771,7 @@ class perso extends entite
 				break;
 			case 10:
 				$this->add_effet_permanent('defenseur', new protection_artistique($effet, $item->nom));
+				break;
 			case 13:
 				$this->camouflage = $effet;
 				break;

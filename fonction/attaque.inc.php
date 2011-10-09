@@ -86,7 +86,7 @@ function attaque($acteur = 'attaquant', $competence, &$effects)
 
 			// Prise en compte des effets defenseurs de l'attaquant (protection artistique ...)
 			$tmp_effets = array();
-			$actif->get_effets_permanents('defenseur', $tmp_effets);
+			$actif->get_effets_permanents($tmp_effets, 'defenseur');
 			/* Application des degats bloques */
 			foreach ($tmp_effets as $effect)
 				// Actif et passif sont inversés puisque c'est l'actif qui touche au bouclier
