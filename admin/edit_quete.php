@@ -51,6 +51,11 @@ function doSelP(id) {
 	cibledlg.dialog("close");
 	querier.value = 'P' + id;
 }
+
+function doSel(id) {
+	cibledlg.dialog("close");
+	querier.value = id;
+}
 </script>
 <?php
 
@@ -68,6 +73,11 @@ $req2 = $db->query("select id, nom, image from pnj");
 while ($m = $db->read_object($req2)) {
 	echo '<img src="../image/pnj/'.$m->image.'.png" alt="'.$m->nom.
 		'" /> <a href="javascript:doSelP('.$m->id.')">'.$m->nom.'</a><br/>';
+}
+echo '<br/><strong>Objets</strong><br/>';
+$req3 = $db->query("select id, nom from objet");
+while ($m = $db->read_object($req3)) {
+	echo '<a href="javascript:doSel(\'Oo'.$m->id.'\')">'.$m->nom.'</a><br/>';
 }
 echo '</td></tr></table></div>';
 
