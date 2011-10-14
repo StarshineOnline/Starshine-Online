@@ -1172,7 +1172,7 @@ if(!$visu)
 <?php
 // Augmentation du compteur de l'achievement
 $achiev = $joueur->get_compteur('nbr_arme_siege');
-$achiev->set_compteur($arme_de_siege);
+$achiev->set_compteur(intval($arme_de_siege));
 $achiev->sauver();
 ?>
 </fieldset>
