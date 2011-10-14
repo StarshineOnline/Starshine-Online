@@ -321,7 +321,7 @@ if(isset($echange))
 		?>
 		Proposition de <?php echo $j1->get_nom(); ?> :
 		<div>
-		Stars : <?php echo $echange['star'][$j1->get_id()]['objet']; ?><br />
+		Stars : <?php echo 'test'; echo $echange['star'][$j1->get_id()]['objet']; ?><br />
 		Objets :
 		<ul>
 			<?php
@@ -335,7 +335,9 @@ if(isset($echange))
 					if($echange['objet'][$keys[$i]]['type'] == 'objet' AND $echange['objet'][$keys[$i]]['id_j'] == $j1->get_id())
 					{
 					?>
-					<li><?php echo nom_objet($echange['objet'][$keys[$i]]['objet']); ?></li>
+					<li><?php if (!$objet_d['identifier']) { $nom = 'Objet non indentifié';}
+								else { $nom = nom_objet($echange['objet'][$keys[$i]]['objet']);}
+						echo $nom; ?></li>
 					<?php
 					}
 					$i++;
@@ -366,7 +368,11 @@ if(isset($echange))
 					if($echange['objet'][$keys[$i]]['type'] == 'objet' AND $echange['objet'][$keys[$i]]['id_j'] == $j2->get_id())
 					{
 					?>
-					<li><?php echo nom_objet($echange['objet'][$keys[$i]]['objet']); ?></li>
+					<li><?php 
+					
+					if (!$objet_d['identifier']) { $nom = 'Objet non indentifié';}
+								else { $nom = nom_objet($echange['objet'][$keys[$i]]['objet']);}
+						echo $nom; ?></li>
 					<?php
 					}
 					$i++;
@@ -418,7 +424,10 @@ Vous proposez :
 					if($echange['objet'][$keys[$i]]['type'] == 'objet' AND $echange['objet'][$keys[$i]]['id_j'] == $joueur->get_id())
 					{
 					?>
-					<li><?php echo nom_objet($echange['objet'][$keys[$i]]['objet']); ?> <a href="echange.php?id_echange=<?php echo $echange['id_echange']; ?>&amp;suppr_objet=<?php echo $echange['objet'][$keys[$i]]['id_echange_objet']; ?>&amp;index_objet=<?php echo $keys[$i]; ?>" onclick="return envoiInfo(this.href, 'information');">X</a></li>
+					<li><?php 
+					if (!$objet_d['identifier']) { $nom = 'Objet non indentifié';}
+								else { $nom = nom_objet($echange['objet'][$keys[$i]]['objet']);}
+					echo $nom; ?> <a href="echange.php?id_echange=<?php echo $echange['id_echange']; ?>&amp;suppr_objet=<?php echo $echange['objet'][$keys[$i]]['id_echange_objet']; ?>&amp;index_objet=<?php echo $keys[$i]; ?>" onclick="return envoiInfo(this.href, 'information');">X</a></li>
 					<?php
 					}
 					$i++;
@@ -438,12 +447,15 @@ Vous proposez :
 						if($invent !== 0 AND $invent != '')
 						{
 							$objet_d = decompose_objet($invent);
-							//Si ca n'est pas un objet non identifié ou un objet de royaume
+							//Si ca n'est pas un objet de royaume
 							$check = true;
-							if($objet_d['categorie'] != 'r' AND $objet_d['id'][0] != 'h' AND $check)
+							if($objet_d['categorie'] != 'r' AND $check)
 							{
+								if (!$objet_d['identifier']) { $nom = 'Objet non indentifié';}
+								else { $nom = nom_objet($objet_d['id']);}
+								
 								$options .= '
-				<option value="'.$objet_d['sans_stack'].'">'.nom_objet($objet_d['id']).'</option>
+							<option value="'.$objet_d['sans_stack'].'">'.$nom.'</option>
 								';
 							}
 						}
