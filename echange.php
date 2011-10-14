@@ -321,7 +321,7 @@ if(isset($echange))
 		?>
 		Proposition de <?php echo $j1->get_nom(); ?> :
 		<div>
-		Stars : <?php echo 'test'; echo $echange['star'][$j1->get_id()]['objet']; ?><br />
+		Stars : <?php echo $echange['star'][$j1->get_id()]['objet']; ?><br />
 		Objets :
 		<ul>
 			<?php
