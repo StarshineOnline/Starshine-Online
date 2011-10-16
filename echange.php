@@ -335,7 +335,7 @@ if(isset($echange))
 					if($echange['objet'][$keys[$i]]['type'] == 'objet' AND $echange['objet'][$keys[$i]]['id_j'] == $j1->get_id())
 					{
 					?>
-					<li><?php if (!$objet_d['identifier']) { $nom = 'Objet non indentifié';}
+					<li><?php if ($echange['objet'][$keys[$i]]['objet'][0] == 'h') { $nom = 'Objet non indentifié';}
 								else { $nom = nom_objet($echange['objet'][$keys[$i]]['objet']);}
 						echo $nom; ?></li>
 					<?php
@@ -370,7 +370,7 @@ if(isset($echange))
 					?>
 					<li><?php 
 					
-					if (!$objet_d['identifier']) { $nom = 'Objet non indentifié';}
+					if ($echange['objet'][$keys[$i]]['objet'][0] == 'h') { $nom = 'Objet non indentifié';}
 								else { $nom = nom_objet($echange['objet'][$keys[$i]]['objet']);}
 						echo $nom; ?></li>
 					<?php
@@ -425,7 +425,7 @@ Vous proposez :
 					{
 					?>
 					<li><?php 
-					if (!$objet_d['identifier']) { $nom = 'Objet non indentifié';}
+					if ($echange['objet'][$keys[$i]]['objet'][0] == 'h') { $nom = 'Objet non indentifié';}
 								else { $nom = nom_objet($echange['objet'][$keys[$i]]['objet']);}
 					echo $nom; ?> <a href="echange.php?id_echange=<?php echo $echange['id_echange']; ?>&amp;suppr_objet=<?php echo $echange['objet'][$keys[$i]]['id_echange_objet']; ?>&amp;index_objet=<?php echo $keys[$i]; ?>" onclick="return envoiInfo(this.href, 'information');">X</a></li>
 					<?php
