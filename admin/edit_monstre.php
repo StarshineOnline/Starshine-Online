@@ -67,6 +67,9 @@ $req = $db->query($requete);
 			Esquive
 		</td>
 		<td>
+			Incantation
+		</td>
+		<td>
 			Terrain
 		</td>
 		<td>
@@ -129,6 +132,9 @@ $req = $db->query($requete);
 		</td>
 		<td>
 			'.$row['esquive'].'
+		</td>
+		<td>
+			'.$row['incantation'].'
 		</td>
 		<td>
 			'.$type_terrain.'

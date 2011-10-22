@@ -621,6 +621,25 @@ function lance_sort($id, $acteur, &$effects)
           /****       Les sorts spéciaux      ****/
           /***************************************/
 
+			case 'debuff_enracinement':
+					$degat = degat_magique($actif->$get_comp_assoc(), $bonus_degats_magique, $actif, $passif);
+					echo '&nbsp;&nbsp;<span class="degat"><strong>'.$actif->get_nom().'</strong> inflige <strong>'.$degat.'</strong> dégâts avec '.$row['nom'].'</span><br />';
+					$passif->set_hp($passif->get_hp() - $degat);
+
+					$d_attaque = rand(1, $row['effet2']);
+					$d_defense = rand(1, $passif->get_dexterite() + $passif->get_force());
+					print_debug("enracinement: $d_attaque vs $d_defense");
+					if ($d_attaque > $d_defense) {
+						echo '<strong>'.$passif->get_nom().
+							'</strong> est affecté par le debuff '.$row['nom'].'<br/>';
+						lance_buff($row['type'], $passif->get_id(),
+											 $row['effet'], '0', $row['effet'] * 60, $row['nom'],
+											 sSQL($row['description']), 'perso', 1, 0, 0, 0);
+					}
+					
+				
+				break;
+
 			  case 'empalement_abomination':
 					$degat = degat_magique($actif->$get_comp_assoc(), ($row['effet'] + $bonus_degats_magique), $actif, $passif);
 					if ($passif->get_hp() > $degat) { // Si on survit
