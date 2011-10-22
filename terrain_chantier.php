@@ -35,11 +35,15 @@ $_SESSION['position'] = $position;
 	{
 		if(array_key_exists('id_chantier', $_GET))
 		{
-			//Il faut qu'il ai 10 PA
-			if($joueur->get_pa() >= 10)
+			$chantier = new terrain_chantier($_GET['id_chantier']);
+			$batiment = $chantier->get_batiment();
+			if ($chantier->star_point == 0)
 			{
-				$chantier = new terrain_chantier($_GET['id_chantier']);
-				$batiment = $chantier->get_batiment();
+				send_forbidden('Gros malin, va ! ');
+			}
+			//Il faut qu'il ai 10 PA
+			elseif($joueur->get_pa() >= 10)
+			{
 				//dé d'Architecture
 				$de_architecture = rand(1, $joueur->get_architecture());
 				$taxe = floor(($chantier->star_point * $de_architecture) * $R->get_taxe_diplo($joueur->get_race()) / 100);
