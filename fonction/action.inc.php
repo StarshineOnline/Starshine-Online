@@ -93,25 +93,54 @@ function sub_script_action($joueur, $ennemi, $mode, &$effects)
 {
 	global $db, $round, $Trace, $debugs, $log_combat;
 	$stop = false;
+	$test = true;
 	if($joueur->etat['paralysie'] > 0)
 	{
 		echo $joueur->get_nom().' est paralysé<br />';
-		$log_combat .= "cp";
-		return '';
+		if (isset($joueur->etat['paralysie']['cpt']))
+		{
+			$joueur->etat['paralysie']['cpt']++;
+		}
+		else
+		{
+			$joueur->etat['paralysie']['cpt'] = 1;
+		}
+		$resist_para = pow($joueur->get_pm_para(), 0.5)*pow($joueur->get_volonte(),1.85) + $joueur->etat['paralysie']['cpt']*1000;
+		$sm = ($ennemi->get_volonte() * $ennemi->get_sort_mort());
+							
+		$att = rand(0, $sm);
+		$def = rand(0, $resist_para);	
+		echo '<div class="debug" id="debug'.$debugs++."\">Potentiel para : $sm<br />Potentiel résister : $resist_para<br />Résultat => Lanceur : $att | Défenseur $def<br /></div>";
+		if($att < $def)
+		{
+			unset($joueur->etat['paralysie']['cpt']);
+			$joueur->etat['paralysie']['duree'] = 0;
+			echo $joueur->get_nom().' se défait de la paralysie<br />';
+			
+		}
+		else
+		{
+			$log_combat .= "cp";
+			$test = false;
+			return '';
+			
+		}
 	}
-	elseif($joueur->etat['etourdit'] > 0)
+	if($joueur->etat['etourdit'] > 0)
 	{
 		echo $joueur->get_nom().' est étourdi<br />';
 		$log_combat .= "ce";
+		$test = false;
 		return '';
 	}
-	elseif($joueur->etat['tir_vise'] > 0)
+	if($joueur->etat['tir_vise'] > 0)
 	{
 		echo $joueur->get_nom().' décoche une terrible flèche<br />';
 		$effectue[0] = 'attaque';
+		$test = false;
 		return $effectue;
 	}
-	else
+	if ($test)
 	{
 	  //var_dump($joueur->etat['glacer']);
 		if($joueur->etat['glacer'] > 0)
@@ -913,36 +942,11 @@ function lance_sort($id, $acteur, &$effects)
 					echo '&nbsp;&nbsp;<strong>'.$actif->get_nom().'</strong> se lance le sort '.$row['nom'].'<br />';
 				break;
 				case 'paralysie' :
-					// Calcul du potentiel paralyser
-					$sm = ($actif->get_volonte() * $actif->get_sort_mort());
-					// Calcul du potentiel résister
-					$pm = $passif->get_pm_para();
-
-					// On utilise bien la PM DE BASE pour le 3eme jet
-
-					$pm = pow($passif->get_volonte(), 1.83) * sqrt($pm) * 3;
-
-					// Bonus de protection contre la paralysie
-					if ($res_para = $passif->get_bonus_permanents('resistance_para')) {
-						print_debug("Ajuste la resistance à la paralysie de $res_para%<br/>");
-						$pm *= 1 + $res_para / 100;
-					}
-
-					// Lancer des dés
-					$att = rand(0, $sm);
-					$def = rand(0, $pm);
 					echo '&nbsp;&nbsp;<strong>'.$actif->get_nom().'</strong> lance le sort '.$row['nom'].'<br />';
-					if($att > $def)
-					{
 						echo ' et réussit !<br />';
 						$passif->etat['paralysie']['effet'] = $row['effet'];
 						$passif->etat['paralysie']['duree'] = $row['effet'];
-					}
-					else
-					{
-						echo ' et échoue...<br />';
-					}
-					echo '<div class="debug" id="debug'.$debugs++."\">Potentiel paralyser : $sm<br />Potentiel résister : $pm<br />Résultat => Lanceur : $att | Défenseur $def<br /></div>";
+					
 				break;
 				case 'silence' :
 					// Calcul du potentiel paralyser
