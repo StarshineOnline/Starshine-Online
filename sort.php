@@ -603,6 +603,7 @@ if (isset($_GET['ID']) && !$joueur->is_buff('bloque_sort'))
           if($cible->is_buff('bulle_dephasante', true)) $protection *= $cible->get_buff('bulle_dephasante','effet');
           $attaque = rand(0, ($joueur->get_volonte() * $joueur->get_comp($sort->get_comp_assoc())));
           $defense = rand(0, $protection);
+					print_debug("Lance sort: $attaque ($puissance) vs $defense ($protection)");
           if ($attaque > $defense)
           {
             $duree = $sort->get_duree();
