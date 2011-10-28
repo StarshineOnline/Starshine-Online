@@ -1,4 +1,4 @@
-<?php
+<?php // -*- mode: php; tab-width:2 -*-
 if (file_exists('root.php'))
   include_once('root.php');
 
@@ -23,7 +23,7 @@ while($row = $db->read_array($req))
 }
 foreach($magies as $magie)
 {
-	echo '<a href="sort_combat.php?tri='.$magie.'" onclick="return envoiInfo(this.href, \'information\');"><img src="image/icone_'.$magie.'.png" alt="'.$Gtrad[$magie].'" title="'.$Gtrad[$magie].'" /></a> ';
+	echo '<a href="sort_combat.php?tri='.$magie.'" onclick="return envoiInfo(this.href, \'information\');"><img src="image/icone_'.$magie.'.png" alt="'.$Gtrad[$magie].'" title="'.$Gtrad[$magie].'" onmouseover="this.src = \'image/icone/'.$magie.'hover.png\'" onmouseout="this.src = \'image/icone_'.$magie.'.png\'" /></a> ';
 }
 $where = 'WHERE comp_assoc = \''.sSQL($_GET['tri']).'\'';
 $requete = "SELECT * FROM sort_combat ".$where." ORDER BY comp_assoc ASC, type ASC, nom ASC";
