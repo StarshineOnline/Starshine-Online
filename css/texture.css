@@ -1590,6 +1590,9 @@
 .tex8510{background:url('../image/texture/ville_aquatique/sol_mur_sud_ville_aqua_casse.png') no-repeat;}
 .tex8511{background:url('../image/texture/ville_aquatique/escalier_bas.png') no-repeat;}
 
+.tex8512{background:url('../image/texture/donjon_aquatique/sol_lit_prison_hg.png') no-repeat;}
+.tex8513{background:url('../image/texture/donjon_aquatique/sol_lit_prison_hd.png') no-repeat;}
+
 .tex10584{background:url('../image/texture/repere_aquatique/sol_repere_bar_bd.png') no-repeat;}
 .tex10585{background:url('../image/texture/repere_aquatique/sol_repere_bar_bg.png') no-repeat;}
 .tex10586{background:url('../image/texture/repere_aquatique/sol_repere_bar_bm.png') no-repeat;}
@@ -2137,6 +2140,14 @@
 .tex5622{background:url('../image/texture/repere_aquatique/mur_repere_cuisine_hg.png') no-repeat;}
 .tex5623{background:url('../image/texture/repere_aquatique/mur_repere_cuisine_hm.png') no-repeat;}
 .tex5624{background:url('../image/texture/repere_aquatique/mur_repere_cuisine_hd.png') no-repeat;}
+
+.tex5624{background:url('../image/texture/repere_aquatique/mur_repere_cuisine_hd.png') no-repeat;}
+.tex5624{background:url('../image/texture/repere_aquatique/mur_repere_cuisine_hd.png') no-repeat;}
+.tex5624{background:url('../image/texture/repere_aquatique/mur_repere_cuisine_hd.png') no-repeat;}
+
+.tex5625{background:url('../image/texture/donjon_aquatique/mur_lit_prison_g.png') no-repeat;}
+.tex5626{background:url('../image/texture/donjon_aquatique/mur_lit_prison_m.png') no-repeat;}
+.tex5627{background:url('../image/texture/donjon_aquatique/mur_lit_prison_d.png') no-repeat;}
 
 .tex2000{background:url('../image/texture/capitale/vampire/villevampendestrbg.gif') no-repeat;}
 .tex2001{background:url('../image/texture/capitale/vampire/villevampendestrbm.gif') no-repeat;}
