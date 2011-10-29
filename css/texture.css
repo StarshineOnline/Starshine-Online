@@ -1601,6 +1601,9 @@
 .tex8519{background:url('../image/texture/donjon_aquatique/sol_tente_chacal_conseiller_centrem.png') no-repeat;}
 .tex8520{background:url('../image/texture/donjon_aquatique/sol_tente_chacal_porte_nord2.png') no-repeat;}
 
+.tex8521{background:url('../image/texture/donjon_aquatique/sol_piege_sac.png') no-repeat;}
+.tex8522{background:url('../image/texture/donjon_aquatique/sol_mur_ouest_sworling.png') no-repeat;}
+
 .tex10584{background:url('../image/texture/repere_aquatique/sol_repere_bar_bd.png') no-repeat;}
 .tex10585{background:url('../image/texture/repere_aquatique/sol_repere_bar_bg.png') no-repeat;}
 .tex10586{background:url('../image/texture/repere_aquatique/sol_repere_bar_bm.png') no-repeat;}
@@ -2156,6 +2159,9 @@
 .tex5625{background:url('../image/texture/donjon_aquatique/mur_lit_prison_g.png') no-repeat;}
 .tex5626{background:url('../image/texture/donjon_aquatique/mur_lit_prison_m.png') no-repeat;}
 .tex5627{background:url('../image/texture/donjon_aquatique/mur_lit_prison_d.png') no-repeat;}
+
+.tex5628{background:url('../image/texture/donjon_aquatique/mur_piege_sud.png') no-repeat;}
+.tex5629{background:url('../image/texture/donjon_aquatique/mur_piege_nord.png') no-repeat;}
 
 .tex2000{background:url('../image/texture/capitale/vampire/villevampendestrbg.gif') no-repeat;}
 .tex2001{background:url('../image/texture/capitale/vampire/villevampendestrbm.gif') no-repeat;}
