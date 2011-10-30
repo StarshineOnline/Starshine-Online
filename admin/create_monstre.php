@@ -4,7 +4,7 @@ if (file_exists('../root.php'))
 $admin = true;
 
 $textures = false;
-include_once(root.'haut.php');
+include_once(root.'admin/admin_haut.php');
 setlocale(LC_ALL, 'fr_FR');
 include_once(root.'haut_site.php');
 if ($G_maintenance)
@@ -28,7 +28,7 @@ else
 	if(array_key_exists('submit', $_POST))
 	{
 		
-		$requete = "INSERT INTO monstre(lib, nom, type, hp, pp, pm, forcex, dexterite, puissance, volonte, melee, esquive, incantation, sort_vie, sort_mort, sort_element, level, xp, star, terrain) VALUES('".$_POST['lib']."', '".$_POST['nom']."', '".$_POST['type']."', ".$_POST['hp'].", ".$_POST['pp'].", ".$_POST['pm'].", ".$_POST['forcex'].", ".$_POST['dexterite'].", ".$_POST['puissance'].", ".$_POST['volonte'].", ".$_POST['melee'].", ".$_POST['esquive'].", ".$_POST['incantation'].", ".$_POST['sort_vie'].", ".$_POST['sort_mort'].", ".$_POST['sort_element'].", ".$_POST['level'].", ".$_POST['xp'].", ".$_POST['star'].", '".$_POST['terrain']."')";
+		$requete = "INSERT INTO monstre(lib, nom, type, hp, pp, pm, forcex, dexterite, puissance, volonte, energie, melee, esquive, incantation, sort_vie, sort_mort, sort_element, level, xp, star, terrain, affiche) VALUES('".$_POST['lib']."', '".$_POST['nom']."', '".$_POST['type']."', ".$_POST['hp'].", ".$_POST['pp'].", ".$_POST['pm'].", ".$_POST['forcex'].", ".$_POST['dexterite'].", ".$_POST['puissance'].", ".$_POST['volonte'].", ".$_POST['energie'].", ".$_POST['melee'].", ".$_POST['esquive'].", ".$_POST['incantation'].", ".$_POST['sort_vie'].", ".$_POST['sort_mort'].", ".$_POST['sort_element'].", ".$_POST['level'].", ".$_POST['xp'].", ".$_POST['star'].", '".$_POST['terrain'].", '".$_POST['affiche']."')";
 		$db->query($requete);
 		
 	}
@@ -113,10 +113,10 @@ else
 		<input type="text" name="volonte" />
 	</td>
 	<td>
-		
+		Energie
 	</td>
 	<td>
-	
+  	<input type="text" name="energie" />
 	</td>
 </tr>
 <tr>
@@ -185,20 +185,25 @@ else
 	</td>
 	<td>
 		<select name="terrain">
-			<option value="1">Plaine</option>
+			<option value="1;22">Plaine</option>
 			<option value="2">Forêt</option>
 			<option value="3">Désert</option>
 			<option value="4">Glace</option>
 			<option value="6">Montagne</option>
 			<option value="7;11">Marais / Terre Maudite</option>
-			<option value="8">Route</option>
-			<option value="15;25;35;45;55;65;75;85;95">Donjon</option>
+			<option value="8;9">Route</option>
+			<option value="15;25;35;45;55;65;75;85;95;101">Donjon</option>
 		</select>
 	</td>
 	<td>
+   Affiche
 	</td>
 	<td>
-		
+		<select name="affiche">
+			<option value="y" selected="selected">Affiche description</option>
+			<option value="n">Cache description</option>
+      <option value="h">Cache toutes les informations, desactive survie</option>
+		</select>
 	</td>
 	<td>
 	</td>

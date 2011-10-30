@@ -665,9 +665,59 @@ function lance_sort($id, $acteur, &$effects)
 											 $row['effet'], '0', $row['effet'] * 60, $row['nom'],
 											 sSQL($row['description']), 'perso', 1, 0, 0, 0);
 					}
-					
-				
-				break;
+          break;
+
+			case 'heresie_divine':
+					$degat = degat_magique($actif->$get_comp_assoc(), $row['effet'] + $bonus_degats_magique, $actif, $passif);
+					echo '&nbsp;&nbsp;<span class="degat"><strong>'.$actif->get_nom().'</strong> inflige <strong>'.$degat.'</strong> dégâts avec '.$row['nom'].'</span><br />';
+					$passif->set_hp($passif->get_hp() - $degat);
+
+          echo '<strong>'.$passif->get_nom().
+            '</strong> est affecté par le debuff '.$row['nom'].'<br/>';
+          lance_buff('debuff_rez', $passif->get_id(),
+                     $row['effet'], $row['effet2'],
+                     $row['effet2'] * 3600, $row['nom'],
+                     sSQL($row['description']), 'perso', 1, 0, 0, 0);
+          break;
+
+			case 'encombrement_psy':
+					$degat = degat_magique($actif->$get_comp_assoc(), $row['effet'] + $bonus_degats_magique, $actif, $passif);
+					echo '&nbsp;&nbsp;<span class="degat"><strong>'.$actif->get_nom().'</strong> inflige <strong>'.$degat.'</strong> dégâts avec '.$row['nom'].'</span><br />';
+					$passif->set_hp($passif->get_hp() - $degat);
+
+          echo '<strong>'.$passif->get_nom().
+            '</strong> est affecté par le debuff '.$row['nom'].'<br/>';
+          lance_buff('debuff_charisme', $passif->get_id(),
+                     8, $row['effet2'], $row['effet2'] * 86400, $row['nom'],
+                     sSQL($row['description']), 'perso', 1, 0, 0, 0);
+          break;
+
+			case 'tsunami':
+					$degat = degat_magique($actif->$get_comp_assoc(), $row['effet'] + $bonus_degats_magique, $actif, $passif);
+					echo '&nbsp;&nbsp;<span class="degat"><strong>'.$actif->get_nom().'</strong> inflige <strong>'.$degat.'</strong> dégâts avec '.$row['nom'].'</span><br />';
+					$passif->set_hp($passif->get_hp() - $degat);
+
+          // Choose direction: 1->N 2->E 3->S 4->W
+          $ax = $actif->get_x();
+          $ay = $actif->get_y();
+          $px = $passif->get_x();
+          $py = $passif->get_y();
+          if ($ax == $px && $ay == $py) $direction = rand(1, 4);
+          elseif ($ax == $px) $direction = ($ay < $py) ? 1 : 3;
+          elseif ($ay == $py) $direction = ($ax < $px) ? 2 : 4;
+          else {
+            $p = array();
+            if ($ay > $py) $p[] = 3;
+            if ($ay < $py) $p[] = 1;
+            if ($ax > $px) $p[] = 4;
+            if ($ax < $px) $p[] = 2;
+            shuffle($p);
+            $direction = array_pop($p);
+          }
+
+          // TODO
+
+          break;
 
 			  case 'empalement_abomination':
 					$degat = degat_magique($actif->$get_comp_assoc(), ($row['effet'] + $bonus_degats_magique), $actif, $passif);
