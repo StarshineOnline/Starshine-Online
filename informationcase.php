@@ -244,7 +244,7 @@ if($W_distance < 4)
 	if(array_key_exists('cout_attaque', $joueur->get_buff())) $pa_attaque = ceil($pa_attaque / $joueur->get_buff('cout_attaque', 'effet'));
 	if(array_key_exists('plus_cout_attaque', $joueur->get_buff())) $pa_attaque = $pa_attaque * $joueur->get_buff('plus_cout_attaque', 'effet');
 	
-	$W_requete = 'SELECT mm.id, m.nom, mm.type, mm.hp, m.level FROM map_monstre mm, monstre m WHERE mm.type = m.id AND (x = '.$case->get_x().') AND (y = '.$case->get_y().') ORDER BY level ASC, nom ASC, id ASC';
+	$W_requete = 'SELECT mm.id, m.nom, mm.type, mm.hp, m.level, m.affiche FROM map_monstre mm, monstre m WHERE mm.type = m.id AND (x = '.$case->get_x().') AND (y = '.$case->get_y().') ORDER BY level ASC, nom ASC, id ASC';
 	$W_query = $db->query($W_requete);
 	
 	//Affichage des infos des monstres
@@ -264,6 +264,11 @@ if($W_distance < 4)
 			$W2_row = $db->read_array($W2_query);
 			$W_hp = $W_row['hp'];
 			$diff_level = ($W2_row['level'] - $joueur->get_level());
+
+      if ($W_row['affiche'] == 'h') {
+        $diff_level = 0;
+      }
+
 			if($diff_level > 5) $diff_level = 5;
 			elseif($diff_level < -5) $diff_level = -5;
 			//echo $diff_level;

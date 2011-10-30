@@ -134,6 +134,7 @@ class effect
     ensable::factory($effects, $actif, $passif, $acteur);
 		tellurique::factory($effects, $actif, $passif, $acteur);
 		bouclier_protecteur::factory($effects, $actif, $passif, $acteur);
+    riposte_furtive::factory($effects, $actif, $passif, $acteur);
     /*
      * Compétences passives
      */
@@ -358,6 +359,15 @@ class effect
    * @param  $degats    Dégâts infligés.           
    */ 
   function inflige_degats(&$actif, &$passif, $degats) { return $degats; }
+  /**
+   * Applique les effets ayant lieu lorsque les dégâts magiques ont lieu
+   * Ne retourne rien, pas de modification des dégâts à ce stade
+   * 
+   * @param  $actif     Personnage actif lors de l'action.
+   * @param  $passif    Personnage passif lors de l'action.
+   * @param  $degats    Dégâts infligés.           
+   */ 
+  function inflige_degats_magiques(&$actif, &$passif, $degats) { }
   /**
    * Action a effectuer en fin de round
    * 
@@ -669,4 +679,42 @@ class bonus_pinceau_degats extends effect
 		return $bonus + $bonus_degat;
 	}
 }
+
+
+/**
+ * Riposte furtive
+ */
+class riposte_furtive extends effect
+{
+	var $effet;
+
+	function __construct($aEffet, $aNom = null) {
+    if ($aNom == null)
+      $aNom = 'Riposte furtive';
+		parent::__construct($aNom);
+    $this->effet = $aEffet / 100;
+    $this->order = effect::$FIN_FIN;
+  }
+
+	static function factory(&$effects, &$actif, &$passif, $acteur = '') {
+		if (array_key_exists('riposte_furtive', $passif->etat)) {
+      $effet = $passif->etat['riposte_furtive']['effet'];
+      effect::debug('riposte_furtive active: '.$effet.'%');
+			$effects[] = new riposte_furtive($effet);
+    }
+	}
+	
+  function inflige_degats(&$actif, &$passif, $degats) {
+    $inf = floor($degats * $this->effet);
+    $this->hit('La riposte furtive de '.$passif->get_nom().' inflige '.$inf.
+               ' dégâts à '.$actif->get_nom());
+    $actif->add_hp($inf * -1);
+    return $degats;
+  }
+	
+  function inflige_degats_magiques(&$actif, &$passif, $degats) {
+    $this->inflige_degats($actif, $passif, $degats);
+  }
+}
+
 ?>

@@ -1022,8 +1022,21 @@ function lance_sort($id, $acteur, &$effects)
 					$actif->etat['posture']['duree'] = 20;
 					$actif->etat['posture']['type'] = 'posture_pierre';
 				break;
+				case 'riposte_furtive' :
+					$actif->etat['riposte_furtive']['effet'] = $row['effet'];
+					$actif->etat['riposte_furtive']['effet2'] = $row['effet2'];
+					$actif->etat['riposte_furtive']['duree'] = $row['duree'];
+					echo '&nbsp;&nbsp;<strong>'.$actif->get_nom().
+            '</strong> lance le sort '.$row['nom'].'<br />';
+				break;
 			}
 			$log_combat .= "~".$degat;
+      if ($degat > 0) {
+        /* Application des effets de degats magiques */
+        foreach ($effects as $effect)
+          $effect->inflige_degats_magiques($actif, $passif, $degats);
+        /* ~Fin de round */
+      }
 		}
 		else  // pas touché
 		{

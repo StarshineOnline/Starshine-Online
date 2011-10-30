@@ -657,4 +657,13 @@ class map_monstre
 		$requete = "DELETE FROM buff_monstre WHERE fin <= ".time();
 		$req = $db->query($requete);
 	}
+
+  private $affiche = null;
+  function get_affiche() {
+    if (!$this->affiche) {
+      $m = new monstre($this->type);
+      $this->affiche = $m->get_affiche();
+    }
+    return $this->affiche;
+  }
 }

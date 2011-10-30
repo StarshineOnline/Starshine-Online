@@ -76,6 +76,11 @@ if($distance == 0)
 				echo "<h5>Vous n'avez pas assez de PA</h5>";
 			}
 		}
+    else if ($monstre->get_affiche() == 'h')
+    {
+      // les monstres cachés ne sont pas dressables
+      echo "<h5>Vous ne pouvez pas dresser ce monstre</h5>";
+    }
 		//Sinon on commence le dressage sur ce monstre
 		else
 		{

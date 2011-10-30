@@ -41,6 +41,16 @@ if [ ! -z $HOST ]; then
 fi
 
 mysql -u $USER $pass $conn $BASE -e 'source dumpstatic.sql'
+mysql -u $USER $pass $conn $BASE <<EOF
+update map m, map_static s SET
+m.info = s.info, m.decor = s.decor, m.type = s.type
+WHERE m.x = s.x AND m.y = s.y ;
+
+insert ignore into map(royaume,x,y,id,info,decor,type)
+select 0, x,y,id,info,decor,type from map_static ;
+
+drop table map_static ;
+EOF
 
 echo done
 
