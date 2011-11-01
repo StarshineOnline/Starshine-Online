@@ -58,7 +58,7 @@ else
 	{
 		foreach ($ids as $id)
 		{
-			$requete = "INSERT INTO titre_honorifique (id, id_perso, titre) VALUE ('', '".$id."', '".$_GET['titre']."')";
+			$requete = "INSERT INTO titre_honorifique (id, id_perso, titre) VALUE ('', ".$id.", '".$_GET['titre']."')";
 			$db->query($requete);
 			Echo "attribution effectuée </br>";
 		}
