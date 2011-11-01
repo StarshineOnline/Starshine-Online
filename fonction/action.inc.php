@@ -674,7 +674,7 @@ function lance_sort($id, $acteur, &$effects)
 
           echo '<strong>'.$passif->get_nom().
             '</strong> est affecté par le debuff '.$row['nom'].'<br/>';
-          lance_buff('debuff_rez', $passif->get_id(),
+          lance_buff('debuff_antirez', $passif->get_id(),
                      $row['effet'], $row['effet2'],
                      $row['effet2'] * 3600, $row['nom'],
                      sSQL($row['description']), 'perso', 1, 0, 0, 0);
