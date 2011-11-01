@@ -95,7 +95,7 @@ if ($req) {
 
 		if ($row->script) {
 			$ret = 0;
-			passthru('php '.$row->script.' id_task='.$this->id, $ret);
+			passthru('php '.$row->script.' id_task='.$row->id, $ret);
 			if ($ret) die('exec error');
 		}
 		
