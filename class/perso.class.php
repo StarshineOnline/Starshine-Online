@@ -3051,6 +3051,7 @@ class perso extends entite
 	{
 		$this->reserve_bonus = $this->get_reserve();
 		if($this->is_buff('buff_inspiration')) $this->reserve_bonus += $this->get_buff('buff_inspiration', 'effet');
+		if($this->is_buff('buff_rune')) $this->reserve_bonus += $this->get_buff('buff_rune', 'effet');
 		if($this->is_buff('buff_sacrifice')) $this->reserve_bonus += $this->get_buff('buff_sacrifice', 'effet');
 		// Les bonus raciaux sont comptés dans les bonus perm
 		return $this->reserve_bonus;
