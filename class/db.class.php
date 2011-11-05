@@ -744,6 +744,30 @@ class db
   {
   	return $this->lnk;
   }
+
+  function query_get_value($query)
+  {
+    $req = $this->query($query);
+    if ($req) {
+      $row = $this->read_array($req);
+      $this->free($req);
+      return $row ? $row[0] : null;
+    }
+    else 
+      return null;
+  }
+
+  function query_get_object($query)
+  {
+    $req = $this->query($query);
+    if ($req) {
+      $obj = $this->read_object($req);
+      $this->free($req);
+      return $obj;
+    }
+    else 
+      return null;
+  }
 }
 
 /*

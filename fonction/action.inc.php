@@ -696,27 +696,8 @@ function lance_sort($id, $acteur, &$effects)
 					$degat = degat_magique($actif->$get_comp_assoc(), $row['effet'] + $bonus_degats_magique, $actif, $passif);
 					echo '&nbsp;&nbsp;<span class="degat"><strong>'.$actif->get_nom().'</strong> inflige <strong>'.$degat.'</strong> dégâts avec '.$row['nom'].'</span><br />';
 					$passif->set_hp($passif->get_hp() - $degat);
-
-          // Choose direction: 1->N 2->E 3->S 4->W
-          $ax = $actif->get_x();
-          $ay = $actif->get_y();
-          $px = $passif->get_x();
-          $py = $passif->get_y();
-          if ($ax == $px && $ay == $py) $direction = rand(1, 4);
-          elseif ($ax == $px) $direction = ($ay < $py) ? 1 : 3;
-          elseif ($ay == $py) $direction = ($ax < $px) ? 2 : 4;
-          else {
-            $p = array();
-            if ($ay > $py) $p[] = 3;
-            if ($ay < $py) $p[] = 1;
-            if ($ax > $px) $p[] = 4;
-            if ($ax < $px) $p[] = 2;
-            shuffle($p);
-            $direction = array_pop($p);
-          }
-
-          // TODO
-
+          
+          projection($actif, $passif, $row['effet2']);
           break;
 
 			  case 'empalement_abomination':
@@ -1621,5 +1602,97 @@ function get_etats()
 	$etats['embraser']['nom'] = 'Embrasé';
 	$etats['embraser']['id'] = 'embraser';
 	return $etats;
+}
+
+function projection(&$actif, &$passif, $effet)
+{
+  global $db;
+
+  // Choose direction: 1->N 2->E 3->S 4->W
+  $ax = $actif->get_x();
+  $ay = $actif->get_y();
+  $px = $passif->get_x();
+  $py = $passif->get_y();
+  if ($ax == $px && $ay == $py) $direction = rand(1, 4);
+  elseif ($ax == $px) $direction = ($ay < $py) ? 1 : 3;
+  elseif ($ay == $py) $direction = ($ax < $px) ? 2 : 4;
+  else {
+    $p = array();
+    if ($ay > $py) $p[] = 3;
+    if ($ay < $py) $p[] = 1;
+    if ($ax > $px) $p[] = 4;
+    if ($ax < $px) $p[] = 2;
+    shuffle($p);
+    $direction = array_pop($p);
+  }
+
+  print_debug("projection vers: $direction");
+  $translation = 0;
+  $continue_projection = true;
+  do
+  {
+    $cur = translation($px, $py, $direction);
+    $map = $db->query_get_object("select * from map where x = $cur[x] and y = $cur[y]");
+    if ($map) {
+      $info = type_terrain($map->info);
+      $pa = cout_pa($info[0], $passif->get_race());
+    } else {
+      print_debug("BORD DE CARTE !!");
+      $pa = 50;
+    }
+    if ($pa > 49) {
+      // Infranchissable: mur
+      $continue_projection = false;
+      echo '<span class="degat">&nbsp;&nbsp;'.$passif->get_nom().
+        ' est projeté contre un mur et perds '.$effet.
+        ' points de vie!<br/></span>';
+      $passif->add_hp($effet * -1);
+      continue;
+    }
+    else {
+      $px = $cur['x'];
+      $py = $cur['y'];
+      print_debug("déplacement en: $px/$py");
+      if ($translation++ > 1) $continue_projection = false;
+    }
+    $def = rand(1, $passif->get_force());
+    $att = rand(1, 40 / $translation);
+    print_debug("resistance à la projection: $def vs $att<br/>");
+    if ($def > $att) $continue_projection = false;
+  } while ($continue_projection);
+  if ($translation > 0) {
+    $joueur = $passif->get_objet();
+    $joueur->set_x($px);
+    $joueur->set_y($py);
+    $joueur->sauver();
+    print_reload_area('deplacement.php?deplacement=centre', 'centre');
+    $row = $db->query_get_object("select * from map_monstre where x = $px and y = $py");
+    if ($row) {
+      $_SESSION['attaque_donjon'] = 'ok';
+      print_js_onload("alert('Vous êtes projeté sur un monstre!'); ".
+                      "envoiInfo('attaque.php?type=monstre&".
+                      "id_monstre=$row->id', 'information')");
+    }
+  }
+}
+
+function translation($x, $y, $direction) 
+{
+  switch ($direction)
+  {
+    case 1:
+      return array('x' => $x, 'y' => $y - 1);
+      break;
+    case 2:
+      return array('x' => $x + 1, 'y' => $y);
+      break;
+    case 3:
+      return array('x' => $x, 'y' => $y + 1);
+      break;
+    case 4:
+      return array('x' => $x - 1, 'y' => $y);
+      break;
+  }
+  return array('x' => $x, 'y' => $y);
 }
 ?>
