@@ -11,13 +11,15 @@ include_once(root.'class/effect.class.php');
 class buff_actif extends effect
 {
 
-	private static $esquive_buff = array('buff_evasion', 'buff_cri_detresse', 'batiment_esquive');
+	private static $esquive_buff = array('buff_evasion', 'buff_cri_detresse', 'batiment_esquive', 'virtuose_sexe');
+	private static $esquive_magique_buff = array('virtuose_sexe');
 
 	static function factory(&$effects, &$actif, &$passif, $acteur = '') {
     $acti = array();
 		$actives = array_merge($acti);
 		$pass = array();
     $passives = array_merge($pass, self::$esquive_buff);
+    $passives = array_merge($pass, self::$esquive_magique_buff);
     foreach ($actif->get_buff() as $type => $buff) {
       if (in_array($type, $actives)) {
 				$effects[] = new buff_actif($type, $buff, 'actif');
@@ -43,14 +45,25 @@ class buff_actif extends effect
 		$this->type = $type;
 		$this->buff = $buff;
 		$this->acteur = $acteur;
+    $this->effet = $buff->get_effet();
 		//$this->notice("Activation de $type");
 	}
 
   function calcul_defense_physique(&$actif, &$passif) {
-		if (in_array($this->type, self::$esquive_buff))
-			$passif->potentiel_parer *= (1 + ($this->buff->get_effet() / 100));
+		if (in_array($this->type, self::$esquive_buff)) {
+			$passif->potentiel_parer *= (1 + ($this->effet / 100));
+      $this->debug("augmentation de l'esquive de $this->effet% ($this->type)");
+    }
     return $passif->potentiel_parer;
 	}
+
+	function calcul_defense_magique(&$actif, &$passif, $def) {
+		if (in_array($this->type, self::$esquive_magique_buff)) {
+			$def *= (1 + ($this->effet / 100));
+      $this->debug("augmentation de l'esquive magique de $this->effet% ($this->type)");
+    }
+    return $def;
+  }
 }
 
 class buff

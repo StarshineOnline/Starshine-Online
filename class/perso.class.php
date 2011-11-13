@@ -2120,6 +2120,13 @@ class perso extends entite
     if ($this->mp < 0)
       $this->mp = 0;
   }
+  /// Ajoute d'honneur. S'assure que la valeur finale ne peut pas être négative
+  function add_honneur($add_h) 
+  {
+    $this->set_honneur($this->honneur + $add_h);
+    if ($this->honneur < 0)
+      $this->honneur = 0;
+  }
   /// Supprime les rez lancées sur le personnage.
   function supprime_rez()
   {

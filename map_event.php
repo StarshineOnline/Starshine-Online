@@ -115,6 +115,77 @@ function checkTpAbo(&$joueur)
 	$joueur->sauver();
 }
 
+function checkTpValidQuest(&$joueur, $queteId, $x, $y, $allowNotQuest = false)
+{
+  global $dontrefresh;
+  $dontrefresh = true;
+	$quetes = $joueur->get_liste_quete();
+	$found = false;
+	foreach ($quetes as $id => $q) {
+		if ($q['id_quete'] == $queteId) {
+			$found = true;
+      $qd = new quete($queteId);
+      echo '<fieldset><legend>'.$qd->get_nom().'</legend><div id="info_case">';
+      echo 'Comme on vous l\'avait demandé, vous empruntez le passage. '.
+        'Qui sait ce que vous allez trouver ?<br/>';
+      fin_quete($joueur, $id, $q['id_quete']);
+      echo '</div>';
+		}
+	}
+	if (!$found) {
+		$quetes_fini = explode(';', $joueur->get_quete_fini());
+		foreach ($quetes_fini as $qf) {
+			if ($qf == $queteId) {
+				$found = true;
+				showMessage('Vous empruntez à nouveau le passage',
+										'Passage inquiétant');
+			}
+		}
+	}
+	if (!$found && !$allowNotQuest) {
+		showMessage('Ce passage vous inquiète trop, vous ne voulez pas y entrer',
+								'Passage inquiétant');
+		return;
+	}
+	$joueur->set_x($x);
+	$joueur->set_y($y);
+	$joueur->sauver();
+}
+
+function usePute(&$joueur, $stars, $honneur, $effet, $virtuose)
+{
+  global $dontrefresh;
+  $dontrefresh = true;
+  if ($joueur->get_star() < $star || $joueur->get_honneur() < $honneur) {
+    showMessage('<h5>Vous n\'avez pas les moyens !</h5>', 'Prostitution');
+    return;
+  }
+  if ($joueur->get_pa() < 12) {
+    showMessage('<h5>Vous n\'avez pas assez de PA !</h5>', 'Prostitution');
+    return;
+  }
+  $joueur->add_star($stars * -1);
+  $joueur->add_honneur($honneur * -1);
+  $joueur->add_hp($effet);
+  $joueur->add_mp($effet);
+  $joueur->add_pa(-12);
+  $joueur->sauver();
+  
+  $spe = array('virtuose_sexe' => array('type' => 'virtuose_sexe',
+                                        'nom' => 'Virtuose du sexe',
+                                        'description' => 'La joie décuple vos facultés d´esquive',
+                                        'effet' => 10000,
+                                        'effet2' => 0,
+                                        'duree' => 86400 * 3));
+
+  echo '<fieldset><legend>Prostitution</legend><div id="info_case">';
+  if ($virtuose)
+    $res = pute_effets($joueur, $honneur, array_keys($spe), $spe);
+  else
+    $res = pute_effets($joueur, $honneur);
+  echo '<h6>'.$res.'</h6>Vous gagnez '.$effet.' PV/PM</div>';
+}
+
 function checkOpenJailGate(&$joueur)
 {
 	global $db;
