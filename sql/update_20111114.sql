@@ -12,3 +12,5 @@ VALUES (NULL, 'Cape d''invisibilité', '0', '100', '0', 'dos', '24-0', '100000',
 
 INSERT INTO `starshine`.`armure` (`id`, `nom`, `PP`, `PM`, `forcex`, `type`, `effet`, `prix`, `lvl_batiment`) 
 VALUES (NULL, 'Collier de force', '200', '50', '0', '', '', '100000', '9');
+
+INSERT INTO `starshine`.`armure` (`id`, `nom`, `PP`, `PM`, `forcex`, `type`, `effet`, `prix`, `lvl_batiment`) VALUES (NULL, 'Casque de vision supérieure', '100', '0', '10', 'tete', '21-5', '100000', '9');
