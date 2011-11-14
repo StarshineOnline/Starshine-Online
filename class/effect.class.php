@@ -636,7 +636,6 @@ class bonus_pinceau extends effect
     $this->effet = $aEffet;
   }
 	
-
 	function calcul_attaque_magique(&$actif, &$passif, $potentiel) {
 		$bonus_potentiel = 0;
 		for ($tmp_honneur = $actif->get_honneur() - 20000; $tmp_honneur > 0;
@@ -650,6 +649,31 @@ class bonus_pinceau extends effect
 			$this->debug('Pas assez d\'honneur pour profiter du '.$this->nom);
 		return $potentiel * (1 + 0.1*$bonus_potentiel);
 	}
+}
+
+class pierre_precision extends effect
+{
+	var $effet;
+
+	function __construct($aEffet, $aNom) {
+    if ($aNom == null)
+      $aNom = 'pierre_precision';
+		parent::__construct($aNom);
+    $this->effet = $aEffet;
+  }
+  
+	function calcul_attaque_magique(&$actif, &$passif, $potentiel) {
+		$this->debug($actif->get_nom().' voit son potentiel magique augmenté de '.
+									 $this->effet.'% ('.$this->nom.') !');
+		return $potentiel*(1+$this->effet/100);
+								 }
+	
+	function calcul_attaque_physique(&$actif, &$passif, $potentiel) {
+		$this->debug($actif->get_nom().' voit son potentiel physique augmenté de '.
+									 $this->effet.'% ('.$this->nom.') !');
+		return $potentiel*(1+$this->effet/100);					 
+								 }
+	
 }
 
 /**
@@ -679,7 +703,57 @@ class bonus_pinceau_degats extends effect
 		return $bonus + $bonus_degat;
 	}
 }
+/**
+ * boutte flamme
+ */
+class boutte_flamme extends effect
+{
+	var $effet;
 
+	function __construct($aEffet, $aNom) {
+    if ($aNom == null)
+      $aNom = 'boutte_flamme';
+		parent::__construct($aNom);
+    $this->effet = $aEffet;
+  }
+		
+	/*function calcul_degats_magiques(&$actif, &$passif, $degats, $type) {
+		switch ($type) {
+		case 'degat_feu':
+		case 'degat_froid':
+		case 'degat_vent':
+		case 'degat_terre':
+		case 'lapidation':
+		case 'globe_foudre':
+		case 'embrasement':
+		case 'sphere_glace':
+			$degats += $this->effet;
+			$this->debug($actif->get_nom().' voit ses dégats augmentés de '.
+									 $this->effet.' grâce à son arme ('.$this->nom.') !');
+		}
+		return $degats;
+	}*/
+	
+	function inflige_degats_magiques(&$actif, &$passif, $degats, $type) {  
+    switch ($type) {
+		case 'degat_feu':
+		case 'degat_froid':
+		case 'degat_vent':
+		case 'degat_terre':
+		case 'lapidation':
+		case 'globe_foudre':
+		case 'embrasement':
+		case 'sphere_glace':
+		{
+			$this->hit('Le boute-flamme de '.$actif->get_nom().' augmente votre sensibilité aux sorts élémentaires
+			Vous recevez '.$this->effet.' dégâts supplémentaire');
+			$passif->add_hp($this->effet * -1);
+			break;
+		}
+    return $degats;
+	}
+	}
+}
 
 /**
  * Riposte furtive
@@ -714,6 +788,32 @@ class riposte_furtive extends effect
 	
   function inflige_degats_magiques(&$actif, &$passif, $degats) {
     $this->inflige_degats($actif, $passif, $degats);
+  }
+}
+
+/**
+ * Carapace de pierre incisive
+ */
+class carapace_incisive extends effect
+{
+	var $effet;
+
+	function __construct($aEffet, $aNom = null) {
+    if ($aNom == null)
+      $aNom = 'carapace_incisive';
+		parent::__construct($aNom);
+    $this->effet = $aEffet / 100;
+	}
+	
+	function inflige_degats(&$actif, &$passif, $degats) {
+    if ( rand(0,100) < 5)
+    {
+		$degat = 2 * $degats;
+		$this->hit('La carapace incisve de '.$passif->get_nom().' inflige '.$degat.
+               ' dégâts à '.$actif->get_nom());
+		$actif->add_hp($degat * -1);
+	}
+	return $degats;
   }
 }
 

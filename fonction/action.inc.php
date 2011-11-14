@@ -432,6 +432,26 @@ function sub_script_action($joueur, $ennemi, $mode, &$effects)
 				if($ennemi->etat['glace_anticipe']['duree'] > 0) $chance_reussite = $chance_reussite + $ennemi->etat['glace_anticipe']['effet'];
 				// Réduction des chances d'anticiper si adversaire amorphe
 				if($joueur->is_buff('maladie_amorphe')) $chance_reussite = $chance_reussite - $joueur->get_buff('maladie_amorphe', 'effet');
+				// item donjon
+				if ($ennemi->get_type() == 'joueur')
+				{
+				$joueur2 = new perso($ennemi->get_id());
+				$item = $joueur2->get_inventaire_partie('tete');
+				if ($item != '') $objet_t = decompose_objet($item);		
+				if ($objet_t !='')
+				{
+					$requete = "SELECT * FROM armure WHERE ID = ".$objet_t['id_objet'];
+					//Récupération des infos de l'objet
+					$req = $db->query($requete);
+					$row = $db->read_array($req);
+					$effet = explode('-', $row['effet']);
+					if ($effet[0] == '21')
+					{
+						$chance_reussite -= $effet[1];
+					}
+				}
+				}
+				
 				// Ob détermine si l'action est anticipée
 				$rand = rand(0, 100);
 				echo '
@@ -1065,7 +1085,7 @@ function lance_sort($id, $acteur, &$effects)
       if ($degat > 0) {
         /* Application des effets de degats magiques */
         foreach ($effects as $effect)
-          $effect->inflige_degats_magiques($actif, $passif, $degats);
+          $effect->inflige_degats_magiques($actif, $passif, $degats, $row['type']);
         /* ~Fin de round */
       }
 		}
@@ -1118,6 +1138,8 @@ function lance_sort($id, $acteur, &$effects)
  */
 function lance_comp($id, $acteur, &$effects)
 {
+	if (file_exists('root.php'))
+	include_once('root.php');
 	global $attaquant, $defenseur, $db, $Gtrad, $debugs, $comp_attaque, $G_round_total, $ups, $log_combat;
 	// Définition des personnages actif et passif
 	if ($acteur == 'attaquant')
@@ -1404,7 +1426,25 @@ function lance_comp($id, $acteur, &$effects)
 		break;
 		case 'dissimulation' :
 		  // On regarde si la dissimulation est réussie
-			$att = rand(0, $actif->get_dexterite() * $actif->get_esquive());
+			$bonus = 1;
+			if ($actif->get_type() == 'joueur')
+			{
+			$joueur = new perso($actif->get_id());
+			$objet_t = decompose_objet($joueur->get_inventaire_partie('dos'));		
+			if ($objet_t !='')
+			{
+				$requete = "SELECT * FROM armure WHERE ID = ".$objet_t['id_objet'];
+				//Récupération des infos de l'objet
+				$req = $db->query($requete);
+				$row = $db->read_array($req);
+				$effet = explode('-', $row['effet']);
+				if ($effet[0] == '24')
+				{
+					$bonus *= 1.5;
+				}
+			}
+			}
+			$att = rand(0, $actif->get_dexterite() * $actif->get_esquive() * $bonus);
 			$def = rand(0, $passif->get_volonte() * ($passif->get_pm() * 2.5));
 			echo '&nbsp;&nbsp;<strong>'.$actif->get_nom().'</strong> tente de se dissimuler...';
 			if($att > $def)

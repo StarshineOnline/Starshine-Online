@@ -1131,6 +1131,10 @@ class perso extends entite
 					$this->add_bonus_permanents($this->accessoire->type,
 																			$this->accessoire->effet);
 					break;
+				case 'pierre_precision':
+					$this->add_effet_permanent('attaquant', new pierre_precision($this->accessoire->effet, 'pierre_precision'));
+					break;
+																			
 				}
 			}
 			else $this->accessoire = false;
@@ -1782,6 +1786,12 @@ class perso extends entite
 				break;
 			case 15 :
 				$this->add_effet_permanent('attaquant', new bonus_pinceau_degats($effet, $item->nom));
+				break;
+			case 23 :
+				$this->add_effet_permanent('defenseur', new carapace_incisive($effet, $item->nom));
+				break;
+			case 24 : 
+				$this->add_effet_permanent('attaquant', new boutte_flamme($effet, $item->nom));
 				break;
 			default:
 				break;

@@ -50,6 +50,19 @@ switch($type)
 			else
 			{
 				$defense = $joueur_defenseur->get_buff('defense_pet', 'effet');
+				$collier = decompose_objet($joueur_defenseur->get_inventaire_partie('cou'));		
+				if ($collier != '')
+				{
+					$requete = "SELECT * FROM armure WHERE ID = ".$collier['id_objet'];
+					//Récupération des infos de l'objet
+					$req = $db->query($requete);
+					$row = $db->read_array($req);
+					$effet = explode('-', $row['effet']);
+					if ($effet[0] == '20')
+					{
+						$defense = $defense + $effet[1];
+					}
+				}
 				$rand = rand(0, 100);
 				//Défense par le pet
 				print_debug("Defense par le pet: $rand VS $defense");
