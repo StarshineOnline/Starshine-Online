@@ -117,6 +117,7 @@ function checkTpAbo(&$joueur)
 
 function checkTpValidQuest(&$joueur, $queteId, $x, $y, $allowNotQuest = false)
 {
+  global $db;
   global $dontrefresh;
   $dontrefresh = true;
 	$quetes = $joueur->get_liste_quete();
@@ -124,10 +125,10 @@ function checkTpValidQuest(&$joueur, $queteId, $x, $y, $allowNotQuest = false)
 	foreach ($quetes as $id => $q) {
 		if ($q['id_quete'] == $queteId) {
 			$found = true;
-      $qd = new quete($queteId);
-      echo '<fieldset><legend>'.$qd->get_nom().'</legend><div id="info_case">';
+      $qd = $db->query_get_object("select * from quete where id = $queteId");
+      echo '<fieldset><legend>'.$qd->nom.'</legend><div id="info_case">';
       echo 'Comme on vous l\'avait demandé, vous empruntez le passage. '.
-        'Qui sait ce que vous allez trouver ?<br/>';
+        'Qui sait ce que vous allez y trouver ?<br/>';
       fin_quete($joueur, $id, $q['id_quete']);
       echo '</div>';
 		}
