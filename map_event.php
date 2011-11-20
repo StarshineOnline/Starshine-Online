@@ -208,29 +208,7 @@ function checkOpenJailGate(&$joueur)
 	}
 }
 
-class MapChanges
-{
-  private $x;
-  private $y;
-  private $field;
-  private $from;
-  private $to;
-  function __construct($x, $y, $field, $from, $to) {
-    $this->x = $x;
-    $this->y = $y;
-    $this->field = $field;
-    $this->from = $from;
-    $this->to = $to;
-  }
-
-  function apply() {
-    global $db;
-    $sql = "update map set $this->field = ".
-      "if ( $this->field = $this->from, $this->to, $this->from ), ".
-      "info = floor(decor/100) where x = $this->x and y = $this->y";
-    $db->query($sql);
-  }
-}
+include_once(root.'class/map_changes.php');
 
 function trafiquerCanalisation(&$joueur, $item, $x, $y, $decor, $changes)
 {
@@ -257,6 +235,12 @@ function trafiquerCanalisation(&$joueur, $item, $x, $y, $decor, $changes)
       $joueur->supprime_objet($item, 1);
       $joueur->sauver();
     }
+		$sch = serialize($changes);
+		$code = 'include_once(root."class/map_changes.php"); $cs = unserialize(\''.
+			$sch.'\'); foreach ($cs as $c)  $c->apply();';
+		$scode = sSQL($code);
+		$date = 'DATE_ADD(NOW(), interval 5 day)';
+		$res = $db->query("insert into calendrier (date, eval) values ($date, '$scode')");
   }
   else
     showMessage('Vous n\'avez pas de matériel !', 'Trafiquer');
@@ -292,14 +276,13 @@ function checkChacalTP(&$joueur, $x, $y)
 
 function checkTeleportHydraulique(&$joueur)
 {
-  // TODO: mettre les bones valeurs
   global $db;
-  $sql = 'select * from map where (x = 0 and y = 0 and decor = 0) or '.
-    '(x = 0 and y = 0 and decor = 0) or (x = 0 and y = 0 and decor = 0)';
+  $sql = 'select * from map where (x = 27 and y = 407 and type = 158) or '.
+    '(x = 18 and y = 409 and type = 158) or (x = 6 and y = 426 and type = 158)';
   $res = $db->query($sql);
-  if ($res && $db->num_rows($res)) {
-    $joueur->set_x(0);
-    $joueur->set_y(0);
+  if ($res && $db->num_rows($res) == 3) {
+    $joueur->set_x(14);
+    $joueur->set_y(401);
     $joueur->sauver();
   }
 }

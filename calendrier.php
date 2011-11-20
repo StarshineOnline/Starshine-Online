@@ -73,7 +73,7 @@ if ($req) {
 		$sql = 'update calendrier set done = 1 where id = '.$row->id;
 		if (!$mysqli->query($sql)) die($mysqli->error);
 
-		if ($row->nextu) {
+		if ($row->nextu && $row->nextu > 0) {
       /*
 			$sql = 'update `calendrier` set `done` = 0, `date` = `date` + `next` '.
 				'where id = '.$row->id;
