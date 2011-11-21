@@ -20,7 +20,10 @@ if (array_key_exists('delete_maree', $_REQUEST)) {
 	if ($db->query("delete from maree where x = $x and y = $y"))
 		die('1');
 	else
+	{
+		$db->query("update map set info = floor(decor / 100) where x = $x and y = $y");
 		die('0');
+	}
 }
 
 if (array_key_exists('add_maree', $_REQUEST)) {
@@ -31,7 +34,11 @@ if (array_key_exists('add_maree', $_REQUEST)) {
 	if ($db->query("insert into maree(x, y, type, zone) values ($x, $y, $type, $zone)"))
 		die('1');
 	else
+	{
+		if ($zone == 1)
+			$db->query("update map, maree set map.info = 101 where map.x = maree.x and map.y = maree.y and maree.zone = 1");
 		die();
+	}
 }
 
 include_once(root.'admin/admin_haut.php');
