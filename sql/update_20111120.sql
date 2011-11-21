@@ -33,3 +33,5 @@ insert into maree select x, y, 0, 1 from map where
    ( x = 74 and y IN (398, 397) ) or ( x BETWEEN 73 AND 76 and y = 402 ) or
    ( x BETWEEN 76 AND 79 and y = 404 ) or ( x BETWEEN 76 AND 79 and y = 405 ) or
    ( x BETWEEN 76 AND 81 and y = 406 ) or ( x BETWEEN 76 AND 79 and y = 407 );
+update map, maree set map.info = 101 where map.x = maree.x and map.y = maree.y and maree.zone = 1;
+
