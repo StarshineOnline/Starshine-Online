@@ -3468,11 +3468,11 @@ function make_tmp_adj_tables($roy_id)
 	$db->query($req1); // on prends le royaume
 	$req15 = "alter table tmp_royaume ADD INDEX (x), ADD INDEX (y), ADD INDEX (x, y)";
 	$db->query($req15); // on crée des index pour éviter de faire des requêtes de 2 minutes 40 qui bouffent 98% du CPU
-	$req2 = "create temporary table tmp_adj as select distinct m.x, m.y from map m, tmp_royaume t where m.royaume = 0 and m.info != 5 and ((m.x = t.x + 1 and m.y = t.y) or (m.x = t.x - 1 and m.y = t.y) or (m.x = t.x and m.y = t.y + 1) or (m.x = t.x and m.y = t.y - 1))";
-	$db->query($req2); // on prends les cases neutres autour du royaume qui ne sont pas de l'eau
+	$req2 = "create temporary table tmp_adj as select distinct m.x, m.y from map m, tmp_royaume t where m.royaume = 0 and m.info != 5 and m.type != 1 and m.type != 2 and ((m.x = t.x + 1 and m.y = t.y) or (m.x = t.x - 1 and m.y = t.y) or (m.x = t.x and m.y = t.y + 1) or (m.x = t.x and m.y = t.y - 1))";
+	$db->query($req2); // on prends les cases neutres autour du royaume qui ne sont pas de l'eau ni une ville, ni du donjon
 	$req3 = "create temporary table tmp_adj_lib as select * from tmp_adj";
 	$db->query($req3); // on enleve les cases occupées par un placement ou un batiment: recopie
-	$req35 = "alter table tmp_royaume ADD INDEX (x), ADD INDEX (y), ADD INDEX (x, y)";
+	$req35 = "alter table tmp_adj_lib ADD INDEX (x), ADD INDEX (y), ADD INDEX (x, y)";
 	$db->query($req35); // on crée des index pour éviter de faire des requêtes de 2 minutes 40 qui bouffent 98% du CPU
 	$req4 = "delete t from tmp_adj_lib t, placement p where t.x = p.x and t.y = p.y";
 	$db->query($req4); // on enleve les cases occupées par un placement ou un batiment: virer placements
