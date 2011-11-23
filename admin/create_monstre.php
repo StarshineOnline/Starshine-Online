@@ -28,7 +28,7 @@ else
 	if(array_key_exists('submit', $_POST))
 	{
 		
-		$requete = "INSERT INTO monstre(lib, nom, type, hp, pp, pm, forcex, dexterite, puissance, volonte, energie, melee, esquive, incantation, sort_vie, sort_mort, sort_element, level, xp, star, terrain, affiche) VALUES('".$_POST['lib']."', '".$_POST['nom']."', '".$_POST['type']."', ".$_POST['hp'].", ".$_POST['pp'].", ".$_POST['pm'].", ".$_POST['forcex'].", ".$_POST['dexterite'].", ".$_POST['puissance'].", ".$_POST['volonte'].", ".$_POST['energie'].", ".$_POST['melee'].", ".$_POST['esquive'].", ".$_POST['incantation'].", ".$_POST['sort_vie'].", ".$_POST['sort_mort'].", ".$_POST['sort_element'].", ".$_POST['level'].", ".$_POST['xp'].", ".$_POST['star'].", '".$_POST['terrain'].", '".$_POST['affiche']."')";
+		$requete = "INSERT INTO monstre(lib, nom, type, hp, pp, pm, forcex, dexterite, puissance, volonte, energie, melee, esquive, incantation, sort_vie, sort_mort, sort_element, level, xp, star, terrain, affiche) VALUES('".$_POST['lib']."', '".$_POST['nom']."', '".$_POST['type']."', ".$_POST['hp'].", ".$_POST['pp'].", ".$_POST['pm'].", ".$_POST['forcex'].", ".$_POST['dexterite'].", ".$_POST['puissance'].", ".$_POST['volonte'].", ".$_POST['energie'].", ".$_POST['melee'].", ".$_POST['esquive'].", ".$_POST['incantation'].", ".$_POST['sort_vie'].", ".$_POST['sort_mort'].", ".$_POST['sort_element'].", ".$_POST['level'].", ".$_POST['xp'].", ".$_POST['star'].", '".$_POST['terrain']."', '".$_POST['affiche']."')";
 		$db->query($requete);
 		
 	}
