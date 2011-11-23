@@ -3401,7 +3401,7 @@ function pose_drapeau_roi($x, $y)
 
 	$req = $db->query("select 1 from map where royaume = $race and ((x = $x + 1 and y = $y) or (x = $x - 1 and y = $y) or (x = $x and y = $y + 1) or (x = $x and y = $y - 1))");
 	if ($db->num_rows($req) < 1) security_block(URL_MANIPULATION); // Pas de case adjacente
-	$req = $db->query("select 1 from map where royaume = 0 and x = $x and y = $y");
+	$req = $db->query("select 1 from map where royaume = 0 and x = $x and y = $y and type != 1 and type != 2"); // ceinture et bretelles
 	if ($db->num_rows($req) < 1) security_block(URL_MANIPULATION); // case pas libre !!
 	$req = $db->query("select 1 from placement where x = $x and y = $y");
 	if ($db->num_rows($req) > 0) security_block(URL_MANIPULATION); // case pas libre !!
