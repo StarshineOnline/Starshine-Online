@@ -2154,6 +2154,11 @@ class perso extends entite
 		$this->check_materiel();
 		$modif = false;	 // Indique si le personnage a été modifié.
 		global $db, $G_temps_regen_hp, $G_temps_maj_hp, $G_temps_maj_mp, $G_temps_PA, $G_PA_max, $G_pourcent_regen_hp, $G_pourcent_regen_mp;
+		global $G_max_hp_max_factor, $G_max_mp_max_factor;
+		if ($G_max_hp_max_factor < 10)
+			$G_max_hp_max_factor = 120;
+		if ($G_max_mp_max_factor < 2)
+			$G_max_mp_max_factor = 13;
 		// On vérifie que le personnage est vivant
 		if($this->hp > 0)
 		{
@@ -2166,7 +2171,8 @@ class perso extends entite
 				$time = time();
 				$nb_maj = floor($temps_maj / $temps_hp);
 				$hp_gagne = $nb_maj * (pow($this->get_vie(true), 0.9) * 1.3);
-				if (($this->get_hp_max(true) + $hp_gagne) < (120*(pow($this->get_vie(true), 0.9))))
+				$mx_hp_max = $G_max_hp_max_factor * (pow($this->get_vie(true), 0.9));
+				if (($this->get_hp_max(true) + $hp_gagne) < $mx_hp_max)
 				{
 					$this->set_hp_max($this->get_hp_max(true) + $hp_gagne);
 					$this->set_maj_hp($this->get_maj_hp() + $nb_maj * $temps_hp);
@@ -2176,7 +2182,7 @@ class perso extends entite
 				{
 					$hp_gagne =0;
 					$modif = true;
-					$this->set_hp_max(120*(pow($this->get_vie(true), 0.9)));
+					$this->set_hp_max($mx_hp_max);
 					$this->set_maj_hp($this->get_maj_hp() + $nb_maj * $temps_hp);
 				}
 			} 
@@ -2188,7 +2194,8 @@ class perso extends entite
 				$time = time();
 				$nb_maj = floor($temps_maj / $temps_mp);
 				$mp_gagne = $nb_maj * (pow($this->get_energie(true), 1.2)/10);
-				if (($this->get_mp_max(true) + $mp_gagne) < (pow($this->get_energie(true), 1.2)*13))
+				$max_mp_max = pow($this->get_energie(true), 1.2) * $G_max_mp_max_factor;
+				if (($this->get_mp_max(true) + $mp_gagne) < $max_mp_max)
 				{
 					$this->set_mp_max($this->get_mp_max(true) + $mp_gagne);
 					$this->set_maj_mp($this->get_maj_mp() + $nb_maj * $temps_mp);
@@ -2198,7 +2205,7 @@ class perso extends entite
 				{
 					$mp_gagne =0;
 					$modif = true;
-					$this->set_mp_max(pow($this->get_energie(true), 1.2)*13);
+					$this->set_mp_max($max_mp_max);
 					$this->set_maj_mp($this->get_maj_mp() + $nb_maj * $temps_mp);
 				}
 			}

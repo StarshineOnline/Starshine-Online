@@ -76,6 +76,11 @@ define('BASE', 'http://www.starshine-online.com/');
 	$G_apprentissage_rate = 0.7;
 	$G_drop_rate = 1;
 	$G_xp_rate = 1;
+
+  /// Facteur max des PV max
+  $G_max_hp_max_factor = 120;
+  /// Facteur max des PV max
+  $G_max_mp_max_factor = 13;
 	
 	/**
 	 * @name 	Cibles des sorts
