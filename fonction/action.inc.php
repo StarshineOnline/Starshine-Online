@@ -1431,7 +1431,7 @@ function lance_comp($id, $acteur, &$effects)
 			{
 			$joueur = new perso($actif->get_id());
 			$objet_t = decompose_objet($joueur->get_inventaire_partie('dos'));		
-			if ($objet_t !='')
+			if ($objet_t != '' && $objet_t['id_objet'] != '')
 			{
 				$requete = "SELECT * FROM armure WHERE ID = ".$objet_t['id_objet'];
 				//Récupération des infos de l'objet
