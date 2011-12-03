@@ -10,7 +10,7 @@ include_once(root.'haut_ajax.php');
 $W_ID = $_GET['ID'];
 
 $joueur = new perso($_SESSION['ID']);
-
+//TEST
 $ennemi = 'batiment';
 $defenseur = recupbatiment($_GET['id_batiment'], $_GET['table']);
 $defenseur['type2'] = 'batiment';
