@@ -854,7 +854,6 @@ class perso extends entite
 	public $enchantement = array();  ///< Liste des enchantements (gemmes incrusté dans l'équipement porté).
 	public $pp_base;                 ///< PP de base (sans les buffs).
 	public $pm_base;                 ///< PM de base (sans les buffs).
-	public $pm_para;                 ///< PM pour la resistance à para (sans les buffs avec bonus raciaux).
 	public $enchant;                 ///< plus utilisé.
 	public $armure;                  ///< true si la PP et la PM on été calculées, false sinon.
 	/// Renvoie les objets équipés par le personnage sous forme textuelle.
@@ -1666,8 +1665,7 @@ class perso extends entite
 					}
 				}
 			}
-			$this->pp_base = $this->pp;
-			$this->pm_base = $this->pm;
+
 			//Bonus raciaux
 			if($this->get_race() == 'nain') $this->pm = round(($this->pm + 10) * 1.1);
 			if($this->get_race() == 'barbare') $this->pp = round(($this->pp + 10) * 1.3);
@@ -1686,19 +1684,14 @@ class perso extends entite
 			if (isset($this->enchantement['pourcent_pm'])) $this->pm += floor($this->pm * $this->enchantement['pourcent_pm']['effet'] / 100);
 			if (isset($this->enchantement['pourcent_pp']))	$this->pp += floor($this->pp * $this->enchantement['pourcent_pp']['effet'] / 100);
 
-			//pm pour le 3eme jet de para
-			$this->pm_para = $this->pm;
-			
+			$this->pp_base = $this->pp;			
 			//Buffs
 			if($this->is_buff('buff_bouclier')) $this->pp = round($this->pp * (1 + ($this->get_buff('buff_bouclier', 'effet') / 100)));
-			if($this->is_buff('buff_barriere')) $this->pm = round($this->pm * (1 + ($this->get_buff('buff_barriere', 'effet') / 100)));
 			if($this->is_buff('buff_forteresse'))
 			{
 				$this->pp = round($this->pp * (1 + (($this->get_buff('buff_forteresse', 'effet')) / 100)));
-				$this->pm = round($this->pm * (1 + (($this->get_buff('buff_forteresse', 'effet2')) / 100)));
 			}
 			if($this->is_buff('buff_cri_protecteur')) $this->pp = round($this->pp * (1 + ($this->get_buff('buff_cri_protecteur', 'effet') / 100)));
-			if($this->is_buff('debuff_desespoir')) $this->pm = round($this->pm / (1 + (($this->get_buff('debuff_desespoir', 'effet')) / 100)));
 			//Maladie suppr_defense
 			if($this->is_buff('suppr_defense')) $this->pp = 0;
 		}
@@ -1706,27 +1699,16 @@ class perso extends entite
 	}
 
   /**
-   * Renvoie la PM.
+   * Renvoie la PM de base
    * Appelle get_armure si elle n'a pas déjà été calculée.
-   * @param  $base    true pour avoir la PM de base (sans modificateurs), false pour avoir la totale.
    */
-	function get_pm($base = false)
+	function get_pm()
 	{
 		if(!isset($this->pm))
 		{
 			$this->get_armure();
 		}
-		if(!$base) return $this->pm;
-		else return $this->pm_base;
-	}
-
-	function get_pm_para()
-	{
-		if(!isset($this->pm_para))
-		{
-			$this->get_armure();
-		}
-		return $this->pm_para;
+		return $this->pm;
 	}
 	
 	

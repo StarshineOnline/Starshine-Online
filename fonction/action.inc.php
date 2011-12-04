@@ -105,7 +105,7 @@ function sub_script_action($joueur, $ennemi, $mode, &$effects)
 		{
 			$joueur->etat['paralysie']['cpt'] = 1;
 		}
-		$resist_para = pow($joueur->get_pm_para(), 0.5)*pow($joueur->get_volonte(),1.85) + $joueur->etat['paralysie']['cpt']*1000;
+		$resist_para = pow($joueur->get_pm(), 0.5)*pow($joueur->get_volonte(),1.85) + $joueur->etat['paralysie']['cpt']*1000;
 		$sm = ($ennemi->get_volonte() * $ennemi->get_sort_mort());
 							
 		$att = rand(0, $sm);
@@ -616,13 +616,11 @@ function lance_sort($id, $acteur, &$effects)
 				$pm = $effect->calcul_pm($actif, $passif, $pm);
 			/* ~PM */
 
-			if($passif->is_buff('batiment_pm')) $buff_batiment_barriere = 1 + (($passif->get_buff('batiment_pm', 'effet') / 100)); else $buff_batiment_barriere = 1;
-			if($passif->is_buff('debuff_desespoir')) $debuff_desespoir = 1 + (($passif->get_buff('debuff_desespoir', 'effet')) / 100); else 	$debuff_desespoir = 1;
 			if($passif->etat['posture']['type'] == 'posture_glace') $aura_glace = 1 + (($passif->etat['posture']['effet']) / 100); else $aura_glace = 1;
-			$PM = $pm * $aura_glace * $buff_batiment_barriere;
+			$pm *= $aura_glace;
 			// Calcul des potentiels toucher et parer
 			$potentiel_toucher = round($actif->get_volonte() * $potentiel_magique);
-			$potentiel_parer = round($passif->get_volonte() * $PM / $debuff_desespoir);
+			$potentiel_parer = round($passif->get_volonte() * $pm);
 
 			/* Application des effets de potentiel toucher */
 			foreach ($effects as $effect)
@@ -1011,7 +1009,7 @@ function lance_sort($id, $acteur, &$effects)
 					$sm = ($actif->get_volonte() * $actif->get_sort_mort());
 					
 					// Calcul du potentiel résister
-					$pm = $passif->get_pm_para();
+					$pm = $passif->get_pm();
 
 					// On utilise bien la PM DE BASE pour le 3eme jet
 

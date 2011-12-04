@@ -292,6 +292,19 @@ echo '
 			$maximum['sort_vie'] = recup_max_comp('sort_vie', $joueur->get_classe_id());
 			$maximum['sort_mort'] = recup_max_comp('sort_mort', $joueur->get_classe_id());
 			$maximum['sort_element'] = recup_max_comp('sort_element', $joueur->get_classe_id());
+			
+			
+			$pm = $joueur->get_pm();
+
+			/* Application des effets de PM */
+			// Effets généraux
+			$effects = effect::general_factory($joueur, $joueur, $mode);
+			// Effets permanents des joueurs
+			foreach ($effects as $effect)
+			{ 
+				$pm = $effect->calcul_pm($actif, $passif, $pm);
+				}
+				
 			echo '
 	<table style="border : 0px;" cellspacing="0" width="100%">
 	<tr class="trcolor2">
@@ -299,7 +312,7 @@ echo '
 			Protection Magique
 		</td>
 		<td>
-			<span onmouseover="return '.make_overlib('PM de base : '.$joueur->get_pm(true)).'" onmouseout="return nd();">'.$joueur->get_pm().'</span> - Réduction des dégâts de '.(round(1 - calcul_pp($joueur->get_pm() * $joueur->get_puissance() / 12), 2) * 100).' %
+			<span onmouseover="return '.make_overlib('PM de base : '.$joueur->get_pm()).'" onmouseout="return nd();">'.round($pm).'</span> - Réduction des dégâts de '.(round(1 - calcul_pp($joueur->get_pm() * $joueur->get_puissance() / 12), 2) * 100).' %
 		</td>
 	</tr>
 	<tr class="trcolor1">
