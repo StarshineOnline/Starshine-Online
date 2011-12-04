@@ -488,7 +488,6 @@ class entite extends placable
 	private $arme_type;          ///< Type de l'arme utilisée.
 	public $pp;                  ///< Protection physique.
 	public $pm;                  ///< Protection magique.
-	public $pm_para;             ///< Protection magique.
 	public $enchantement;        ///< Liste des enchantements de gemmes.
 	private $arme_degat;         ///< Dégâts de l'arme.
 	private $bouclier_degat = 0; ///< Dégâts bloqués par le bouclier.
@@ -525,11 +524,6 @@ class entite extends placable
 	function get_pm()
 	{
 		return $this->pm;
-	}
-	//renvoi la PM pour resister a paralysie
-	function get_pm_para()
-	{
-		return $this->pm_para;
 	}
 	/// Modifie la PM
 	function set_pm($valeur)
@@ -819,7 +813,6 @@ class entite extends placable
 				$this->race = $objet->get_race();
 				$this->pp = $objet->get_pp();
 				$this->pm = $objet->get_pm();
-				$this->pm_para = $objet->get_pm_para();
 				$this->distance_tir = $objet->get_distance_tir();
 				$this->esquive = $objet->get_esquive();
 				$this->distance = $objet->get_distance();
@@ -864,7 +857,6 @@ class entite extends placable
 				$this->race = 'neutre';
 				$this->pp = $objet->get_pp();
 				$this->pm = $objet->get_pm();
-				$this->pm_para = $objet->get_pm();
 				$this->distance_tir = 0;
 				$this->esquive = $objet->get_esquive();
 				$this->distance = $objet->get_melee();
@@ -906,7 +898,6 @@ class entite extends placable
 				$this->race = 'neutre';
 				$this->pp = $pet->get_pp();
 				$this->pm = $pet->get_pm();
-				$this->pm_para = $pet->get_pm();
 				$this->distance_tir = $pet->get_distance_tir();
 				$this->esquive = $pet->monstre->get_esquive();
 				$this->distance = $pet->monstre->get_melee();
@@ -949,7 +940,6 @@ class entite extends placable
 				$this->race = 'neutre';
 				$this->pp = $objet->get_pp();
 				$this->pm = $objet->get_pm();
-				$this->pm_para = $objet->get_pm();
 				$this->distance_tir = 1;
 				$this->esquive = $this->facteur * ceil($this->coef_carac * $objet->get_carac());
 				$this->distance = 0;
@@ -989,7 +979,6 @@ class entite extends placable
 				$this->race = 'neutre';
 				$this->pp = $objet->get_pp();
 				$this->pm = $objet->get_pm();
-				$this->pm_para = $objet->get_pm();
 				$this->distance_tir = $objet->get_bonus('portee');
 				$this->esquive = $this->facteur * ceil($this->coef_carac * $objet->get_carac());
 				$this->distance = $objet->get_bonus('portee');
@@ -1029,7 +1018,6 @@ class entite extends placable
 				$this->race = 'neutre';
 				$this->pp = $objet->get_pp();
 				$this->pm = $objet->get_pm();
-				$this->pm_para = $objet->get_pm();
 				$this->distance_tir = 1;
 				$this->esquive = $this->facteur * ceil($this->coef_carac * $objet->get_carac());
 				$this->distance = $objet->get_bonus('portee');
