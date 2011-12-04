@@ -214,8 +214,8 @@ function attaque($acteur = 'attaquant', $competence, &$effects)
 						if($att > $def)
 						{
 							echo '&nbsp;&nbsp;<span class="degat">'.$passif->get_nom().' bloque et glace '.$actif->get_nom().'</span><br />';
-							$actif->etat['paralysie']['effet'] = 1;
-							$actif->etat['paralysie']['duree'] = ($passif->get_buff('bouclier_eau', 'effet2') + 1);
+							$actif->etat['bouclier_glace']['effet'] = 1;
+							$actif->etat['bouclier_glace']['duree'] = ($passif->get_buff('bouclier_eau', 'effet2') + 1);
 						}
 					}
 									

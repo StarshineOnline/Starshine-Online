@@ -133,6 +133,13 @@ function sub_script_action($joueur, $ennemi, $mode, &$effects)
 		$test = false;
 		return '';
 	}
+		if($joueur->etat['bouclier_glace'] > 0)
+	{
+		echo $joueur->get_nom().' est glacé<br />';
+		$log_combat .= "cp";
+		$test = false;
+		return '';
+	}
 	if($joueur->etat['tir_vise'] > 0)
 	{
 		echo $joueur->get_nom().' décoche une terrible flèche<br />';
@@ -1477,7 +1484,7 @@ function lance_comp($id, $acteur, &$effects)
 			$actif->etat['a_toucher']['duree'] = 1;
 			$actif->etat['a_c_bloque']['effet'] += $row['effet2'];
 			$actif->etat['a_c_bloque']['duree'] = 1;
-			$actif->etat['b_critique']['effet'] += $row['effet'];
+			$actif->etat['b_critique']['effet'] += $row['effet3'];
 			$actif->etat['b_critique']['duree'] = 1;
 			$comp_attaque = true;
 		break;
@@ -1486,7 +1493,7 @@ function lance_comp($id, $acteur, &$effects)
 			$actif->degat_sup += $row['effet'];
 			$actif->etat['a_c_bloque']['effet'] += $row['effet2'];
 			$actif->etat['a_c_bloque']['duree'] = 1;
-			$actif->etat['b_critique']['effet'] += $row['effet'];
+			$actif->etat['b_critique']['effet'] += $row['effet3'];
 			$actif->etat['b_critique']['duree'] = 1;
 			$comp_attaque = true;
 		break;
