@@ -5,3 +5,6 @@ image
 inc/variable.inc.php
 root.php
 mysql.sh
+sql/dumpstatic.sql
+sql/j_stats.sql
+sql/record_stats.sh

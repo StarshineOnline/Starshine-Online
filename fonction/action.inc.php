@@ -53,6 +53,7 @@ function script_action($joueur, $ennemi, $mode, &$effects)
 				return '';
 			}
 		}
+	print_debug("action sélectionnée: $effectue[0] $effectue[1]");
 	return $effectue;
 }
 
@@ -1505,6 +1506,10 @@ function lance_comp($id, $acteur, &$effects)
 			$actif->etat['b_critique']['duree'] = 1;
 			$comp_attaque = true;
 			break;
+    case 'vol_a_la_tire' :
+      $effects[] = new vol_a_la_tire($row['effet'], $row['effet2'], 0);
+      $comp_attaque = true;
+      break;
 	  default:
 			// On traite toutes les autres compétences, génériquement
 			$actif->etat[$type]['effet'] = $row['effet'];
@@ -1513,6 +1518,7 @@ function lance_comp($id, $acteur, &$effects)
 			$actif->etat[$type]['duree'] = $row['duree'];
 			$actif->etat[$type]['level'] = $row['level'];
 			$comp_attaque = ($G_cibles[$row['cible']] == 'Ennemi');
+			//echo "lance: $row[nom]: $row[effet] <br/>";
 			break;
 	}
 
