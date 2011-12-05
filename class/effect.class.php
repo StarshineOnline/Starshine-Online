@@ -832,7 +832,7 @@ class mirroir_eclatant extends effect
 		$degat = $this->effet * $degats;
 		$this->hit('Votre bouclier inflige '.ceil($degat).
                ' dégâts à '.$actif->get_nom());
-		$actif->add_hp($degat * -1);
+		$actif->add_hp(ceil($degat) * -1);
 		$degat = $degats * $this->effet;
 		$this->hit('Votre bouclier bloque '.ceil($degat).
                ' dégâts');
