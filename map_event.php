@@ -1,4 +1,4 @@
-<?php // -*- php -*-
+<?php // -*- mode: php; tab-width: 2 -*-
 if (file_exists('root.php'))
   include_once('root.php');
 
@@ -284,7 +284,10 @@ function checkTeleportHydraulique(&$joueur)
     $joueur->set_x(14);
     $joueur->set_y(401);
     $joueur->sauver();
+		showMessage('Le calligramme disparaît et une brise légère vous transporte instantanément autre-part.');
   }
+	else
+		showMessage('Le calligramme luit faiblement sous vos pieds mais rien ne se passe...');
 }
 
 function tpLyly(&$joueur)

@@ -1,4 +1,4 @@
-<?php //  -*- mode: php; tab-width:2  -*-
+<?php //  -*- mode: php; tab-width: 2; -*-
 if (file_exists('../root.php'))
   include_once('../root.php');
 
@@ -53,6 +53,7 @@ function script_action($joueur, $ennemi, $mode, &$effects)
 				return '';
 			}
 		}
+	print_debug("action sélectionnée: $effectue[0] $effectue[1]");
 	return $effectue;
 }
 
@@ -130,6 +131,13 @@ function sub_script_action($joueur, $ennemi, $mode, &$effects)
 	{
 		echo $joueur->get_nom().' est étourdi<br />';
 		$log_combat .= "ce";
+		$test = false;
+		return '';
+	}
+		if($joueur->etat['bouclier_glace'] > 0)
+	{
+		echo $joueur->get_nom().' est glacé<br />';
+		$log_combat .= "cp";
 		$test = false;
 		return '';
 	}
@@ -1431,7 +1439,7 @@ function lance_comp($id, $acteur, &$effects)
 			{
 			$joueur = new perso($actif->get_id());
 			$objet_t = decompose_objet($joueur->get_inventaire_partie('dos'));		
-			if ($objet_t !='')
+			if ($objet_t != '' && $objet_t['id_objet'] != '')
 			{
 				$requete = "SELECT * FROM armure WHERE ID = ".$objet_t['id_objet'];
 				//Récupération des infos de l'objet
@@ -1477,7 +1485,7 @@ function lance_comp($id, $acteur, &$effects)
 			$actif->etat['a_toucher']['duree'] = 1;
 			$actif->etat['a_c_bloque']['effet'] += $row['effet2'];
 			$actif->etat['a_c_bloque']['duree'] = 1;
-			$actif->etat['b_critique']['effet'] += $row['effet'];
+			$actif->etat['b_critique']['effet'] += $row['effet3'];
 			$actif->etat['b_critique']['duree'] = 1;
 			$comp_attaque = true;
 		break;
@@ -1486,7 +1494,7 @@ function lance_comp($id, $acteur, &$effects)
 			$actif->degat_sup += $row['effet'];
 			$actif->etat['a_c_bloque']['effet'] += $row['effet2'];
 			$actif->etat['a_c_bloque']['duree'] = 1;
-			$actif->etat['b_critique']['effet'] += $row['effet'];
+			$actif->etat['b_critique']['effet'] += $row['effet3'];
 			$actif->etat['b_critique']['duree'] = 1;
 			$comp_attaque = true;
 		break;
@@ -1498,6 +1506,10 @@ function lance_comp($id, $acteur, &$effects)
 			$actif->etat['b_critique']['duree'] = 1;
 			$comp_attaque = true;
 			break;
+    case 'vol_a_la_tire' :
+      $effects[] = new vol_a_la_tire($row['effet'], $row['effet2'], 0);
+      $comp_attaque = true;
+      break;
 	  default:
 			// On traite toutes les autres compétences, génériquement
 			$actif->etat[$type]['effet'] = $row['effet'];
@@ -1506,6 +1518,7 @@ function lance_comp($id, $acteur, &$effects)
 			$actif->etat[$type]['duree'] = $row['duree'];
 			$actif->etat[$type]['level'] = $row['level'];
 			$comp_attaque = ($G_cibles[$row['cible']] == 'Ennemi');
+			//echo "lance: $row[nom]: $row[effet] <br/>";
 			break;
 	}
 

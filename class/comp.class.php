@@ -84,7 +84,25 @@ class comp_combat extends active_effect
 {
   function __construct($aNom, $aLevel) {
     parent::__construct($aNom, 'comp_combat', $aLevel);
+  }  
+
+	static function factory(&$effects, &$actif, &$passif, $acteur = '') {
+    $etats_actif = array('vol_a_la_tire');
+    $etats_passif = array();
+    foreach ($etats_actif as $e) {
+      if (array_key_exists($e, $actif->etat)) {
+        $et = $actif->etat[$e];
+        $effects[] = new $e($et['effet'], $et['effet2'], $et['duree']);
+      }
+    }
+    foreach ($etats_passif as $e) {
+      if (array_key_exists($e, $passif->etat)) {
+        $et = $passif->etat[$e];
+        $effects[] = new $e($et['effet'], $et['effet2'], $et['duree']);
+      }
+    }
   }
+
 }
 
 
@@ -635,6 +653,26 @@ class bouclier_protecteur extends etat {
 		$this->debug($this->nom.' augmente la PM de '.$pluspm);
 		return $pm + $pluspm;
 	}
+}
+
+class vol_a_la_tire extends comp_combat {
+
+  function __construct($aEffet, $aEffet2, $aDuree) {
+    parent::__construct('Vol à la tire', null);
+    $this->duree = $aDuree;
+    $this->effet = $aEffet;
+    $this->effet2 = $aEffet2;
+  }
+
+  function fin_round(&$actif, &$passif) {
+    $vol = rand(1, $this->effet2);
+    $this->notice($actif->get_nom().' vole '.$vol.' stars !');
+    $obj = $passif->get_objet();
+    $obj->add_star($vol * -1);
+    $obj->sauver();
+    return $degats;
+  }
+
 }
 
 ?>

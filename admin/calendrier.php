@@ -14,7 +14,7 @@ $req = $db->query("select * from calendrier order by date desc");
 
 ?>
 <table>
-<tr><th>Date</th><th>Intervalle</th><th>SQL</th><th>code</th><th>Script</th></tr>
+<tr><th>Date</th><th>Intervalle</th><th>SQL</th><th>code</th><th>Script</th><th>id_manuel</th></tr>
 <?php
 
 if ($req) 
@@ -32,7 +32,7 @@ if ($req)
 		if ($row->script) 
 			echo ' - <img src="../image/icone/mobinfo.png" alt="script" '.
 				print_tooltip($row->script).' />';
-		echo "</td></tr>\n";
+		echo "</td><td>$row->id_manuel</td></tr>\n";
 	}
 
 ?>

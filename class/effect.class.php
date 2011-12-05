@@ -1,4 +1,4 @@
-<?php
+<?php // -*- mode: php; tab-width: 2 -*-
 if (file_exists('../root.php'))
   include_once('../root.php');
 
@@ -132,8 +132,8 @@ class effect
     empoisonne::factory($effects, $actif, $passif, $acteur);
     poison_lent::factory($effects, $actif, $passif, $acteur);
     ensable::factory($effects, $actif, $passif, $acteur);
-		tellurique::factory($effects, $actif, $passif, $acteur);
-		bouclier_protecteur::factory($effects, $actif, $passif, $acteur);
+    tellurique::factory($effects, $actif, $passif, $acteur);
+    bouclier_protecteur::factory($effects, $actif, $passif, $acteur);
     riposte_furtive::factory($effects, $actif, $passif, $acteur);
     /*
      * Compétences passives
@@ -149,10 +149,10 @@ class effect
      */
     gemme_enchassee::factory($effects, $actif, $passif, $acteur);
     buff_actif::factory($effects, $actif, $passif, $acteur);
-		/*
+    /*
      * Bonus raciaux
      */
-		toucher_humainnoir::factory($effects, $actif, $passif, $acteur);
+    toucher_humainnoir::factory($effects, $actif, $passif, $acteur);
 
     /* Tri des effets selon leur ordre */
     sort_effects($effects);
