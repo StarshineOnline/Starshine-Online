@@ -817,4 +817,28 @@ class carapace_incisive extends effect
   }
 }
 
+class mirroir_eclatant extends effect
+{
+	var $effet;
+
+	function __construct($aEffet, $aNom = null) {
+    if ($aNom == null)
+      $aNom = 'mirroir_eclatant';
+		parent::__construct($aNom);
+    $this->effet = $aEffet / 100;
+	}
+	
+	function applique_bloquage(&$actif, &$passif, $degats) {
+		$degat = $this->effet * $degats;
+		$this->hit('Votre bouclier inflige '.ceil($degat).
+               ' dégâts à '.$actif->get_nom());
+		$actif->add_hp(ceil($degat) * -1);
+		$degat = $degats * $this->effet;
+		$this->hit('Votre bouclier bloque '.ceil($degat).
+               ' dégâts');
+               return ceil($degat*(1-$this->effet/100));		
+	}
+  }
+
+
 ?>
