@@ -41,3 +41,12 @@ function pnj_run_cache_cache()
   return "Bravo ! Tu m'as trouvé ! Mais y arriveras-tu de nouveau ?<br />".
     "<em>Riky s'enfuit en courant pour se cacher ailleurs</em>";
 }
+
+function pnj_run_tp_devant_cesar($x, $y)
+{
+  global $joueur;
+  global $db;
+	$joueur->set_x($x);
+	$joueur->set_y($y);
+}
+

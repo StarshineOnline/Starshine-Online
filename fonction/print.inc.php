@@ -388,6 +388,8 @@ function check_son_ambiance()
 {
 	global $joueur;
 	global $db;
+	if ($joueur->get_option('no_sound'))
+		return;
 	$x = $joueur->get_x();
 	$y = $joueur->get_y();
 	$son = $db->query_get_object("select type from map_sound_zone where x1 <= $x and $x <= x2 and y1 <= $y and $y <= y2");
