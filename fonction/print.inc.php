@@ -394,6 +394,9 @@ function check_son_ambiance()
 	if ($son) {
 		print_js_onload("setAmbianceAudio('$son->type');");
 	}
+	else {
+		print_js_onload("setAmbianceAudio('');");
+	}
 }
 
 ?>

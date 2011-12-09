@@ -172,12 +172,9 @@ echo '<div id="menu_date"><img src="image/interface/'.moment_jour().
 echo '<div id="debug_log" class="debug"></div>';
 
 ?>
-<div id="ambiance_sound">
-	<audio id="audio_1" controls>
-	</audio>
-	<audio id="audio_2" controls>
-	</audio>
+<div id="ambiance_sound"><div id="ambiance_sound_container"></div>
 	<script type="text/javascript">
+var m_current_audio = null;
 function doLoop() {
 	document.getElementById('audio_1').addEventListener('ended', function(){
 			this.currentTime = 0;
@@ -192,21 +189,38 @@ function doLoop() {
 		}, false);
 }
 function setAmbianceAudio(file) {
-	var a = [ document.getElementById('audio_1'),
-						document.getElementById('audio_2') ];
+	if (m_current_audio == file || m_current_audio == null && file == '')
+		return;
+	if (file == '') {
+		m_current_audio = null;
+	}
+	else
+		m_current_audio = file;
+	c = document.getElementById('ambiance_sound_container');
+	var a = [ 'audio_1', 'audio_2' ];
 	var e = [ 'ogg', 'mp3' ];
-	for (var i in a) 
-		a[i].pause();
 	for (var i in a) {
-		while (a[i].hasChildNodes())
-			a[i].removeChild(a[i].firstChild);
+		var aa = document.getElementById(a[i]);
+		if (aa) 
+			aa.pause();
+	}
+	if (m_current_audio == null)
+		return;
+	while (c.hasChildNodes())
+		c.removeChild(c.firstChild);
+	for (var i in a) {
+		var aa = document.createElement('audio');
+		aa.setAttribute('id', a[i]);
+		aa.setAttribute('controls', 'controls');
 		for (var j in e) {
 			var x = document.createElement('source');
 			x.setAttribute('src', 'image/son/' + file + '.' + e[j]);
-			a[i].appendChild(x);
+			aa.appendChild(x);
 		}
+		c.appendChild(aa);
 	}
-	a[0].play();
+	document.getElementById(a[0]).play();
+	doLoop();
 }
 function stopAmbiance() {
 	var a = [ document.getElementById('audio_1'),
@@ -218,8 +232,6 @@ function showSoundPanel() {
 	$('#ambiance_sound').dialog('open');
 }
 $(document).ready(function(){
-		//setAmbianceAudio('Goutte-01-SF');
-		doLoop();
 		$('#ambiance_sound').dialog({ autoOpen: false });
 	});
 	</script>
