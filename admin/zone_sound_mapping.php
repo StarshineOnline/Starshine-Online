@@ -28,21 +28,11 @@ if (array_key_exists('erase', $_GET)) {
 	exit (0);
 }
 if (array_key_exists('type', $_GET)) {
-	$file = root."image/interface/calque-atmosphere-$_GET[type]-nuit.png";
-	list($width, $height) = getimagesize($file);
-	$w_c = $width / 60;
-	$h_c = $height / 60;
 	$type = $_GET['type'];
 	$x1 = round($_GET['x'] / 3) + 1;
 	$y1 = round($_GET['y'] / 3) + 1;
 	$x2 = round(($_GET['x'] + $_GET['width']) / 3) + 1;
 	$y2 = round(($_GET['y'] + $_GET['height']) / 3) + 1;
-	if (($x2 + 1 - $x1) % $w_c) {
-		do { $x2++; } while ((($x2 + 1 - $x1) % $w_c) != 0);
-	}
-	if (($y2 + 1 - $y1) % $h_c) {
-		do { $y2++; } while ((($y2 + 1 - $y1) % $h_c) != 0);
-	}
 	$db->query("insert into map_sound_zone values ('$type', $x1, $y1, $x2, $y2, 0)");
 	header("Location: ?");
 	exit (0);
