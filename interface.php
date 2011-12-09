@@ -109,7 +109,7 @@ echo '<div id="menu_date"><img src="image/interface/'.moment_jour().
 
 	<input type="hidden" id="menu_encours" value="lejeu" />
 	<div id='menu_details'>
-		<div id='lejeu_menu' style='display:none;'><span class='menu' onclick="affichePopUp('diplomatie.php');">Diplomatie</span><span class='menu' onclick="affichePopUp('classement.php');">Classement</span><span class='menu' onclick="affichePopUp('stats2.php?graph=carte_royaume');">Statistiques</span><span class='menu' onclick="affichePopUp('message_accueil.php?affiche=all');">Message d'Accueil</span><span class='menu' onclick="affichePopUp('option.php');">Options</span></div>
+		<div id='lejeu_menu' style='display:none;'><span class='menu' onclick="affichePopUp('diplomatie.php');">Diplomatie</span><span class='menu' onclick="affichePopUp('classement.php');">Classement</span><span class='menu' onclick="affichePopUp('stats2.php?graph=carte_royaume');">Statistiques</span><span class='menu' onclick="affichePopUp('message_accueil.php?affiche=all');">Message d'Accueil</span><span class='menu' onclick="affichePopUp('option.php');">Options</span><span class='menu' onclick='showSoundPanel()'>Son</span></div>
 		<div id='starshine_menu' style='display:none;'><span class='menu' onclick="affichePopUp('liste_monstre.php');">Bestiaire</span><span class='menu' onclick="affichePopUp('background.php');">Background</span><span class='menu' onclick="affichePopUp('royaume.php');">Carte</span>
 		<?php //echo "<span class='menu' onclick=\"affichePopUp('beta_test.php');\">Beta</span>"; ?>
 		</div>
@@ -167,14 +167,77 @@ echo '<div id="menu_date"><img src="image/interface/'.moment_jour().
 	
 </div>
 </div>";
-if (file_exists(root.'revision.inc')) {
-	echo "\n<div id=\"revnum\" style=\"font-size: 0.3em; text-align: right; padding-right: 15px\">";
-	include_once(root.'revision.inc');
-	echo "</div>\n";
-}
 
 // Les logs de debug ajax
 echo '<div id="debug_log" class="debug"></div>';
+
+?>
+<div id="ambiance_sound"><div id="ambiance_sound_container"></div>
+	<script type="text/javascript">
+var m_current_audio = null;
+function doLoop() {
+	document.getElementById('audio_1').addEventListener('ended', function(){
+			this.currentTime = 0;
+			this.pause();
+			document.getElementById('audio_2').play();
+		}, false);
+
+	document.getElementById('audio_2').addEventListener('ended', function(){
+			this.currentTime = 0;
+			this.pause();
+			document.getElementById('audio_1').play();
+		}, false);
+}
+function setAmbianceAudio(file) {
+	if (m_current_audio == file || m_current_audio == null && file == '')
+		return;
+	if (file == '') {
+		m_current_audio = null;
+	}
+	else
+		m_current_audio = file;
+	c = document.getElementById('ambiance_sound_container');
+	var a = [ 'audio_1', 'audio_2' ];
+	var e = [ 'ogg', 'mp3' ];
+	for (var i in a) {
+		var aa = document.getElementById(a[i]);
+		if (aa) 
+			aa.pause();
+	}
+	if (m_current_audio == null)
+		return;
+	while (c.hasChildNodes())
+		c.removeChild(c.firstChild);
+	for (var i in a) {
+		var aa = document.createElement('audio');
+		aa.setAttribute('id', a[i]);
+		aa.setAttribute('controls', 'controls');
+		for (var j in e) {
+			var x = document.createElement('source');
+			x.setAttribute('src', 'image/son/' + file + '.' + e[j]);
+			aa.appendChild(x);
+		}
+		c.appendChild(aa);
+	}
+	document.getElementById(a[0]).play();
+	doLoop();
+}
+function stopAmbiance() {
+	var a = [ document.getElementById('audio_1'),
+						document.getElementById('audio_2') ];
+	for (var i in a) 
+		a[i].pause();
+}
+function showSoundPanel() {
+	$('#ambiance_sound').dialog('open');
+}
+$(document).ready(function(){
+		$('#ambiance_sound').dialog({ autoOpen: false });
+	});
+	</script>
+<a href="javascript:stopAmbiance()">Stop</a>
+</div>
+<?php
 
 //Inclusion du bas de la page
 include_once(root.'bas.php');

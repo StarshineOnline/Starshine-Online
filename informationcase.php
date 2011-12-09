@@ -300,5 +300,7 @@ if($W_distance < 4)
 	echo "</div></fieldset>";
 }
 print_tooltipify();
+check_son_ambiance();
+
 ?>
 
