@@ -308,7 +308,7 @@ $titre_perso = new titre($_SESSION['ID']);
 				$atm_all_verb = $atm_all_val ? 'Désactiver <strong>tous</strong>' : 'Activer';
 
 				$no_sound = $db->query_get_object("select valeur from options where ".
-												"id_perso = $_SESSION[ID] and nom = 'no_sound')");
+												"id_perso = $_SESSION[ID] and nom = 'no_sound'");
 				if ($no_sound->valeur)
 				{
 					$sound_verb = 'Activer';
