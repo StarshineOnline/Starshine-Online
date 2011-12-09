@@ -1,4 +1,4 @@
-<?php
+<?php // -*- mode: php; tab-width: 2 -*-
 if (file_exists('root.php'))
   include_once('root.php');
 
@@ -207,6 +207,7 @@ else
 	include_once(root.'map2.php');
 }
 if(!$peu_bouger AND $cause != '') echo '<img src="image/pixel.gif" onLoad="alert(\''.$cause.'\');" />';
+check_son_ambiance();
 ?>
 
 <img src="image/pixel.gif" onLoad="refresh('./menu_carteville.php', 'carteville');" />

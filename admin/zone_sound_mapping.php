@@ -9,7 +9,6 @@ include_once(root.'inc/fp.php');
 /* Tableau des types de zones à gérer */
 $zones_type = array( /* Pas de zone par défaut */
 										'Goutte',
-										'bulle_sous_eau',
 										'sous_eau',
 										'chutte'
 );
