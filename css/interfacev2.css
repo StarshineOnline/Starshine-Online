@@ -543,3 +543,38 @@ tr.tabMonstre td { border:1px solid grey; text-align:center; padding:2px; }
 {
 	margin-left : 40px;
 }
+
+/*********************************
+ JQuery
+**********************************/
+.ui-dialog-titlebar
+{
+	cursor:move;
+	background:transparent url(../image/v2/bouton_fond.png) repeat-x scroll 0 0;
+}
+.ui-dialog-content
+{
+	background:transparent url(../image/v2/box_accueil.png) repeat scroll 0 0;
+	color:#EEE;
+	-moz-border-bottom-left-radius: 12px 12px;
+	-moz-border-bottom-right-radius: 12px 12px;
+	-webkit-border-bottom-left-radius: 12px 12px;
+	-webkit-border-bottom-right-radius: 12px 12px;
+	border-bottom-left-radius: 12px 12px;
+	border-bottom-right-radius: 12px 12px;
+	padding: 5px;
+}
+.ui-dialog-content a
+{
+	color:#EEE;
+}
+.ui-dialog .ui-dialog-titlebar-close
+{
+	background-image: url(../image/interface/rouge.png);
+	background-repeat: no-repeat;
+}
+.ui-dialog .ui-dialog-titlebar-close span, a.ui-dialog-titlebar-close
+{
+	color: transparent;
+	text-decoration: none;
+}

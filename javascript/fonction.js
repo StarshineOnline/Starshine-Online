@@ -404,6 +404,6 @@ function stopAmbiance() {
 		a[i].pause();
 }
 function showSoundPanel() {
-	$('#ambiance_sound').dialog('open');
+	var p = $('#ambiance_sound').dialog('open');
 }
 
