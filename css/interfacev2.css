@@ -63,7 +63,7 @@ body { margin:0; padding:0; background:#7e909c url(../image/v2/bg_site.png) repe
 /*-- Infos perso ------------------------------------------------------*/
 #infos_perso { float:left; background:transparent url(./../image/fond_infoperso.png) center; width:325px; height:100px; position:relative; }
 #joueur_PA { font-size:8pt; color:white; background:green; width:125px; text-align:center; position:absolute; top:46px; left:105px; }
-#joueur_HP { font-size:8pt; color:white; background:transparent url(./../image/barre/hp9.png) center no-repeat; width:125px; text-align:center; position:absolute; top:10px; left:105px; }
+#joueur_HP { font-size:8pt; color:white; background:transparent; width:125px; text-align:center; position:absolute; top:10px; left:105px; }
 #joueur_MP { font-size:8pt; color:white; background:blue; width:125px; text-align:center; position:absolute; top:28px; left:105px; }
 #joueur_XP { width:100px; height:100px; position:absolute; top:0; left:0; }
 #joueur_PO { font-size:8pt; background:transparent url(./../image/starsv2.png) left no-repeat; width:50px; height:24px; line-height:24px; text-align:center; padding:0 0 0 24px; position:absolute; top:10px; left:235px; }
@@ -542,4 +542,39 @@ tr.tabMonstre td { border:1px solid grey; text-align:center; padding:2px; }
 .monstre .monstre_infos
 {
 	margin-left : 40px;
+}
+
+/*********************************
+ JQuery
+**********************************/
+.ui-dialog-titlebar
+{
+	cursor:move;
+	background:transparent url(../image/v2/bouton_fond.png) repeat-x scroll 0 0;
+}
+.ui-dialog-content
+{
+	background:transparent url(../image/v2/box_accueil.png) repeat scroll 0 0;
+	color:#EEE;
+	-moz-border-bottom-left-radius: 12px 12px;
+	-moz-border-bottom-right-radius: 12px 12px;
+	-webkit-border-bottom-left-radius: 12px 12px;
+	-webkit-border-bottom-right-radius: 12px 12px;
+	border-bottom-left-radius: 12px 12px;
+	border-bottom-right-radius: 12px 12px;
+	padding: 5px;
+}
+.ui-dialog-content a
+{
+	color:#EEE;
+}
+.ui-dialog .ui-dialog-titlebar-close
+{
+	background-image: url(../image/interface/rouge.png);
+	background-repeat: no-repeat;
+}
+.ui-dialog .ui-dialog-titlebar-close span, a.ui-dialog-titlebar-close
+{
+	color: transparent;
+	text-decoration: none;
 }

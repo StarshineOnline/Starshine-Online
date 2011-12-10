@@ -109,7 +109,7 @@ echo '<div id="menu_date"><img src="image/interface/'.moment_jour().
 
 	<input type="hidden" id="menu_encours" value="lejeu" />
 	<div id='menu_details'>
-		<div id='lejeu_menu' style='display:none;'><span class='menu' onclick="affichePopUp('diplomatie.php');">Diplomatie</span><span class='menu' onclick="affichePopUp('classement.php');">Classement</span><span class='menu' onclick="affichePopUp('stats2.php?graph=carte_royaume');">Statistiques</span><span class='menu' onclick="affichePopUp('message_accueil.php?affiche=all');">Message d'Accueil</span><span class='menu' onclick="affichePopUp('option.php');">Options</span></div>
+		<div id='lejeu_menu' style='display:none;'><span class='menu' onclick="affichePopUp('diplomatie.php');">Diplomatie</span><span class='menu' onclick="affichePopUp('classement.php');">Classement</span><span class='menu' onclick="affichePopUp('stats2.php?graph=carte_royaume');">Statistiques</span><span class='menu' onclick="affichePopUp('message_accueil.php?affiche=all');">Message d'Accueil</span><span class='menu' onclick="affichePopUp('option.php');">Options</span><span class='menu' onclick='showSoundPanel()'>Son</span></div>
 		<div id='starshine_menu' style='display:none;'><span class='menu' onclick="affichePopUp('liste_monstre.php');">Bestiaire</span><span class='menu' onclick="affichePopUp('background.php');">Background</span><span class='menu' onclick="affichePopUp('royaume.php');">Carte</span>
 		<?php //echo "<span class='menu' onclick=\"affichePopUp('beta_test.php');\">Beta</span>"; ?>
 		</div>
@@ -167,14 +167,18 @@ echo '<div id="menu_date"><img src="image/interface/'.moment_jour().
 	
 </div>
 </div>";
-if (file_exists(root.'revision.inc')) {
-	echo "\n<div id=\"revnum\" style=\"font-size: 0.3em; text-align: right; padding-right: 15px\">";
-	include_once(root.'revision.inc');
-	echo "</div>\n";
-}
 
 // Les logs de debug ajax
 echo '<div id="debug_log" class="debug"></div>';
+
+echo '<div id="ambiance_sound"><div id="ambiance_sound_container"></div>';
+if ($joueur->get_option('no_sound')) {
+	echo 'Le son est desactivé dans les options';
+}
+else {
+echo '<a href="javascript:stopAmbiance()">Stop</a></div>';
+} // !if ($joueur->get_option('no_sound'))
+print_js_onload("$('#ambiance_sound').dialog({ autoOpen: false });");
 
 //Inclusion du bas de la page
 include_once(root.'bas.php');

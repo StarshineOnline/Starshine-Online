@@ -53,6 +53,11 @@ else
 	$menu[$i++]['acces'] = 'admin';
 	$acces[] = 'admin';
 
+	$menu[$i]['nom'] = 'Editeur de zone sonore';
+	$menu[$i]['url'] = 'zone_sound_mapping.php';
+	$menu[$i++]['acces'] = 'admin';
+	$acces[] = 'admin';
+
 	$menu[$i]['nom'] = 'Marees';
 	$menu[$i]['url'] = 'marees.php';
 	$menu[$i++]['acces'] = 'admin';

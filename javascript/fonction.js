@@ -1,3 +1,4 @@
+// -*- tab-width: 2 -*-
 function envoiInfoPost(page,position)
 {
 	function Affiche(requete){$(position).innerHTML = requete.responseText; Hidechargement();}
@@ -345,3 +346,64 @@ function suggestion(valeur, cible, origine)
 		$('#'+cible).css({top: (pos.y + 20) + "px", left: pos.x + "px"});
 	}
 }
+
+var Sound = {
+	m_current_audio: null
+};
+function doLoop() {
+	document.getElementById('audio_1').addEventListener('ended', function(){
+			this.currentTime = 0;
+			this.pause();
+			document.getElementById('audio_2').play();
+		}, false);
+
+	document.getElementById('audio_2').addEventListener('ended', function(){
+			this.currentTime = 0;
+			this.pause();
+			document.getElementById('audio_1').play();
+		}, false);
+}
+function setAmbianceAudio(file) {
+	if (Sound.m_current_audio == file || Sound.m_current_audio == null && file == '')
+		return;
+	if (file == '') {
+		Sound.m_current_audio = null;
+	}
+	else
+		Sound.m_current_audio = file;
+	c = document.getElementById('ambiance_sound_container');
+	var a = [ 'audio_1', 'audio_2' ];
+	var e = [ 'ogg', 'mp3' ];
+	for (var i in a) {
+		var aa = document.getElementById(a[i]);
+		if (aa) 
+			aa.pause();
+	}
+	if (Sound.m_current_audio == null)
+		return;
+	while (c.hasChildNodes())
+		c.removeChild(c.firstChild);
+	for (var i in a) {
+		var aa = document.createElement('audio');
+		aa.setAttribute('id', a[i]);
+		aa.setAttribute('controls', 'controls');
+		for (var j in e) {
+			var x = document.createElement('source');
+			x.setAttribute('src', 'image/son/' + file + '.' + e[j]);
+			aa.appendChild(x);
+		}
+		c.appendChild(aa);
+	}
+	document.getElementById(a[0]).play();
+	doLoop();
+}
+function stopAmbiance() {
+	var a = [ document.getElementById('audio_1'),
+						document.getElementById('audio_2') ];
+	for (var i in a) 
+		a[i].pause();
+}
+function showSoundPanel() {
+	var p = $('#ambiance_sound').dialog('open');
+}
+

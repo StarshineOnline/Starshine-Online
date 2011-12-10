@@ -1,4 +1,4 @@
-<?php
+<?php // -*- mode: php; tab-width: 2 -*-
 if (file_exists('root.php'))
   include_once('root.php');
 
@@ -264,6 +264,17 @@ $titre_perso = new titre($_SESSION['ID']);
 							exit(0);
 						}
 					}
+					break;
+					case 'sound' :
+					{
+						$val = sSQL($_GET['val']);
+						$requete = "REPLACE INTO options(id_perso, nom, valeur) VALUES(".
+							$_SESSION['ID'].", 'no_sound', $val)";
+						header("Location: ?");
+						$db->query($requete);
+						exit(0);
+					}
+					break;
 				}
 			}
 			else
@@ -296,6 +307,19 @@ $titre_perso = new titre($_SESSION['ID']);
 				$atm_verb = $atm_val ? 'Désactiver' : 'Activer';
 				$atm_all_verb = $atm_all_val ? 'Désactiver <strong>tous</strong>' : 'Activer';
 
+				$no_sound = $db->query_get_object("select valeur from options where ".
+												"id_perso = $_SESSION[ID] and nom = 'no_sound'");
+				if ($no_sound && $no_sound->valeur)
+				{
+					$sound_verb = 'Activer';
+					$sound_val = 0;
+				}
+				else
+				{
+					$sound_verb = 'Désactiver';
+					$sound_val = 1;
+				}
+
 			?>
 			<div class"news">
 				<h3>Options du jeu</h3>
@@ -309,12 +333,15 @@ $titre_perso = new titre($_SESSION['ID']);
 				
 			</div>
 			<div class"news">
-				<h3>Options graphiques</h3>
+				<h3>Options graphiques et son</h3>
 				  <ul>
 <?php if (isset($G_use_atmosphere) && $G_use_atmosphere) { ?>
 					  <li><a href="option.php?action=atm&amp;effet=sky&amp;val=<?php echo $atm_val; ?>" onclick="return envoiInfo(this.href, 'popup_content');"><?php echo $atm_verb; ?> les effets atmospheriques</a></li>
 					  <li><a href="option.php?action=atm&amp;effet=time&amp;val=<?php echo $atm_all_val; ?>" onclick="return envoiInfo(this.href, 'popup_content');"><?php echo $atm_all_verb; ?> les effets atmosphériques et liés à l'heure</a></li>
 <?php } ?>
+
+					  <li><a href="option.php?action=sound&amp;val=<?php echo $sound_val; ?>" onclick="return envoiInfo(this.href, 'popup_content');"><?php echo $sound_verb; ?> les effets sons</a></li>
+
 				  </ul>
 				<h3>Mot de passe</h3>
 				<strong>Attention cela change &eacute;galement votre mot de passe sur le forum!</strong><br />
