@@ -309,15 +309,15 @@ $titre_perso = new titre($_SESSION['ID']);
 
 				$no_sound = $db->query_get_object("select valeur from options where ".
 												"id_perso = $_SESSION[ID] and nom = 'no_sound'");
-				if ($no_sound->valeur)
+				if ($no_sound && $no_sound->valeur)
 				{
 					$sound_verb = 'Activer';
-					$sound_val = 1;
+					$sound_val = 0;
 				}
 				else
 				{
 					$sound_verb = 'Désactiver';
-					$sound_val = 0;
+					$sound_val = 1;
 				}
 
 			?>
