@@ -153,7 +153,7 @@ if(!$visu AND isset($_GET['action']))
 						echo '<h5>RvR impossible pendant la trêve</h5>';
 						break;
 					}
-					if ($W_row['type'] != 1)
+					if ($W_row['type'] == 0)
 					{
 						//Cherche infos sur l'objet
 						$requete = "SELECT *, batiment.id AS batiment_id  FROM objet_royaume RIGHT JOIN batiment ON batiment.id = objet_royaume.id_batiment WHERE objet_royaume.id = ".sSQL($_GET['id_objet']);
@@ -213,7 +213,7 @@ if(!$visu AND isset($_GET['action']))
 					}
 					else
 					{
-						echo '<h5>Vous ne pouvez pas poser de drapeau sur une ville</h5>';
+						echo '<h5>Vous ne pouvez pas poser de drapeau sur ce type de terrain</h5>';
 					}
 				break;
 				case 'identification' :
