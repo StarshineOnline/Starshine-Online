@@ -1,63 +1,94 @@
 <?php // -*- tab-width:2; mode: php -*-
-
-class map_monstre
-{
 /**
-    * @access private
-    * @var int(10)
-    */
-	private $id;
+ * @file map_monstre.class.php
+ * Définition de la classe map_monstre représentant un monstre sur la carte
+ */
 
+/**
+ * Classe map_monstre
+ * Classe représentant un monstre sur la carte
+ */
+class map_monstre extends entnj_incarn
+{
 	/**
-    * @access private
-    * @var mediumint(8)
-    */
-	private $type;
-
-	/**
-    * @access private
-    * @var mediumint(8)
-    */
-	private $x;
-
-	/**
-    * @access private
-    * @var mediumint(8)
-    */
-	private $y;
-
-	/**
-    * @access private
-    * @var mediumint(8)
-    */
-	private $hp;
-
-	/**
-    * @access private
-    * @var tinyint(3)
-    */
-	private $level;
-
-	/**
-    * @access private
-    * @var varchar(50)
-    */
-	private $nom;
-
-	/**
-    * @access private
-    * @var varchar(40)
-    */
-	private $lib;
-
-	/**
-    * @access private
-    * @var int(10)
-    */
-	private $mort_naturelle;
-
+	 * @name Informations générales.
+	 * Donnée et méthode sur les inforamations "générales" : type, niveau, …
+	 */
+  // @{
+	protected $id_monstre; ///< id de la définition dans la table "monstre"
+	protected $level; ///< niveau du monstre
+	protected $lib;
+	protected $mort_naturelle; ///< Date de la mort naturelle du monstre
 	public $nonexistant = false;
+
+
+	/// Renvoie l'id de la définition du monstre
+	function get_id_monstre()
+	{
+		return $this->id_monstre;
+	}
+	/**
+	 * Retourne l'id de la définition dans la table "monstre"
+	 * @deprecated   Ne plus utiliser, méthode à remplacer par get_id_monstre()
+	 */
+	function get_type()
+	{
+		return $this->id_monstre;
+	}
+	/// Renvoie l'objet représentant la définition
+	function get_def()
+	{
+		return new monstre($this->type);
+	}
+	/// Modifie l'id de la définition du monstre
+	function set_id_monstre($id_monstre)
+	{
+		$this->id_monstre = $id_monstre;
+		$this->champs_modif[] = 'type';
+	}
 	
+	/// Retourne le niveau du monstre
+	function get_level()
+	{
+		return $this->level;
+	}
+	/// Modifie le niveau du monstre
+	function set_level($level)
+	{
+		$this->level = $level;
+ }
+	/// Retourne la valeur de l'attribut "lib"
+	function get_lib()
+	{
+		return $this->lib;
+	}
+	/// Modifie la valeur de l'attribut "lib"
+	function set_lib($lib)
+	{
+		$this->lib = $lib;
+	}
+	/// Retourne la date de la mort naturelle du monstre
+	function get_mort_naturelle()
+	{
+		return $this->mort_naturelle;
+	}
+	/// Modifie la date de la mort naturelle du monstre
+	function set_mort_naturelle($mort_naturelle)
+	{
+		$this->mort_naturelle = $mort_naturelle;
+		$this->champs_modif[] = 'mort_naturelle';
+	}
+	function get_race()
+	{
+		return 'neutre';
+	}
+	// @}
+
+	/**
+	 * @name Accès à la base de données
+	 * Méthode gérant la lecture et l'écriture dans la base de données
+	 */
+  // @{
 	/**
 	* @access public
 
@@ -70,18 +101,17 @@ class map_monstre
 	* @param varchar(50) nom attribut
 	* @param varchar(40) lib attribut
 	* @param int(10) mort_naturelle attribut
-	* @return none
 	*/
-	function __construct($id = 0, $type = 0, $x = 0, $y = 0, $hp = 0, $level = 0, $nom = '', $lib = '', $mort_naturelle = '')
+	function __construct($id = 0, $id_monstre = 0, $x = 0, $y = 0, $hp = 0, $level = 0, $nom = '', $lib = '', $mort_naturelle = '')
 	{
 		global $db;
-		//Verification nombre et du type d'argument pour construire l'etat adequat.
+		//Verification du nombre et du type d'argument pour construire l'objet adequat.
 		if( (func_num_args() == 1) && is_numeric($id) )
 		{
-			$requeteSQL = $db->query("SELECT mm.type, mm.x, mm.y, mm.hp, m.level, m.nom, m.lib, mm.mort_naturelle FROM map_monstre mm, monstre m WHERE mm.type = m.id AND mm.id = ".$id);
+			$requeteSQL = $db->query('SELECT mm.type, mm.x, mm.y, mm.hp, m.level, m.nom, m.lib, mm.mort_naturelle FROM map_monstre mm, monstre m WHERE mm.type = m.id AND mm.id = '.$id);
       if( $db->num_rows($requeteSQL) > 0 )
 			{
-				list($this->type, $this->x, $this->y, $this->hp, $this->level, $this->nom, $this->lib, $this->mort_naturelle) = $db->read_array($requeteSQL);
+				$this->init_tab( $db->read_array($requeteSQL) );
 			}
 			else
 			{
@@ -92,351 +122,69 @@ class map_monstre
 		}
 		elseif( (func_num_args() == 1) && is_array($id) )
 		{
-			$this->id = $id['id'];
-			$this->type = $id['type'];
-			$this->x = $id['x'];
-			$this->y = $id['y'];
-			$this->hp = $id['hp'];
-			$this->level = $id['level'];
-			$this->nom = $id['nom'];
-			$this->lib = $id['lib'];
-			$this->mort_naturelle = $id['mort_naturelle'];
-			}
+      $this->init_tab($id);
+		}
 		else
 		{
-			$this->type = $type;
-			$this->x = $x;
-			$this->y = $y;
-			$this->hp = $hp;
+      entnj_incarn::__construct($nom, $x, $y, $hp, $id);
+			$this->id_monstre = $id_monstre;
 			$this->level = $level;
-			$this->nom = $nom;
 			$this->lib = $lib;
 			$this->mort_naturelle = $mort_naturelle;
-			$this->id = $id;
 		}
-	}
-
-	/**
-	* Sauvegarde automatiquement en base de donnée. Si c'est un nouvel objet, INSERT, sinon UPDATE
-	* @access public
-	* @param bool $force force la mis à jour de tous les attributs de l'objet si true, sinon uniquement ceux qui ont été modifiés
-	* @return none
-	*/
-	function sauver($force = false)
-	{
-		global $db;
-		if( $this->id > 0 )
-		{
-			if(count($this->champs_modif) > 0)
-			{
-				if($force) $champs = 'type = '.$this->type.', x = '.$this->x.', y = '.$this->y.', hp = '.$this->hp.', mort_naturelle = "'.mysql_escape_string($this->mort_naturelle).'"';
-				else
-				{
-					$champs = '';
-					foreach($this->champs_modif as $champ)
-					{
-						$champs[] .= $champ.' = "'.mysql_escape_string($this->{$champ}).'"';
-					}
-					$champs = implode(', ', $champs);
-				}
-				$requete = 'UPDATE map_monstre SET ';
-				$requete .= $champs;
-				$requete .= ' WHERE id = '.$this->id;
-				$db->query($requete);
-				$this->champs_modif = array();
-			}
-		}
-		else
-		{
-			$requete = 'INSERT INTO map_monstre (type, x, y, hp, mort_naturelle) VALUES(';
-			$requete .= ''.$this->type.', '.$this->x.', '.$this->y.', '.$this->hp.', "'.mysql_escape_string($this->mort_naturelle).'")';
-			$db->query($requete);
-			//Récuperation du dernier ID inséré.
-			$this->id = $db->last_insert_id();
-		}
-	}
-
-	/**
-	* Supprime de la base de donnée
-	* @access public
-	* @param none
-	* @return none
-	*/
-	function supprimer()
-	{
-		global $db;
-		if( $this->id > 0 )
-		{
-			$requete = 'DELETE FROM map_monstre WHERE id = '.$this->id;
-			$db->query($requete);
-		}
-	}
-
-	/**
-	* Supprime de la base de donnée
-	* @access static
-	* @param array|string $champs champs servant a trouver les résultats
-	* @param array|string $valeurs valeurs servant a trouver les résultats
-	* @param string $ordre ordre de tri
-	* @param bool|string $keys Si false, stockage en tableau classique, si string stockage avec sous tableau en fonction du champ $keys
-	* @return array $return liste d'objets
-	*/
-	static function create($champs, $valeurs, $ordre = 'id ASC', $keys = false, $where = false)
-	{
-		global $db;
-		$return = array();
-		if(!$where)
-		{
-			if(!is_array($champs))
-			{
-				$array_champs[] = $champs;
-				$array_valeurs[] = $valeurs;
-			}
-			else
-			{
-				$array_champs = $champs;
-				$array_valeurs = $valeurs;
-			}
-			foreach($array_champs as $key => $champ)
-			{
-				$where[] = $champ .' = "'.mysql_escape_string($array_valeurs[$key]).'"';
-			}
-			$where = implode(' AND ', $where);
-			if($champs === 0)
-			{
-				$where = ' 1 ';
-			}
-		}
-
-		$requete = "SELECT mm.id, mm.type, mm.x, mm.y, mm.hp, m.level, m.nom, m.lib, mm.mort_naturelle FROM map_monstre mm, monstre m WHERE mm.type = m.id AND ".$where." ORDER BY ".$ordre;
-		$req = $db->query($requete);
-		if($db->num_rows($req) > 0)
-		{
-			while($row = $db->read_assoc($req))
-			{
-				if(!$keys) $return[] = new map_monstre($row);
-				else $return[$row[$keys]][] = new map_monstre($row);
-			}
-		}
-		else $return = array();
-		return $return;
-	}
-
-	/**
-	* Affiche l'objet sous forme de string
-	* @access public
-	* @param none
-	* @return string objet en string
-	*/
-	function __toString()
-	{
-		return 'id = '.$this->id.', type = '.$this->type.', x = '.$this->x.', y = '.$this->y.', hp = '.$this->hp.', level = '.$this->level.', nom = '.$this->nom.', lib = '.$this->lib.', mort_naturelle = '.$this->mort_naturelle;
 	}
 	
 	/**
-	* Retourne la valeur de l'attribut
-	* @access public
-	* @param none
-	* @return int(10) $id valeur de l'attribut id
-	*/
-	function get_id()
-	{
-		return $this->id;
-	}
+	 * Initialise les données membres à l'aide d'un tableau
+	 * @param array $vals    Tableau contenant les valeurs des données.
+	 */
+  protected function init_tab($vals)
+  {
+    entnj_incarn::init_tab($vals);
+		$this->id_monstre = $vals['type'];
+		$this->level = $vals['level'];
+		$this->lib = $vals['lib'];
+		$this->mort_naturelle = $vals['mort_naturelle'];
+  }
 
-	/**
-	* Retourne la valeur de l'attribut
-	* @access public
-	* @param none
-	* @return mediumint(8) $type valeur de l'attribut type
-	*/
-	function get_type()
+	/// Renvoie la liste des champs pour une insertion dans la base
+	protected function get_liste_champs()
 	{
-		return $this->type;
+    return 'x, y, hp, type, mort_naturelle';
+  }
+	/// Renvoie la liste des valeurs des champspour une insertion dans la base
+	protected function get_valeurs_insert()
+	{
+		return $this->x.', '.$this->y.', '.$this->hp.', '.$this->id_monstre.', '.$this->mort_naturelle;
 	}
+	/// Renvoie la liste des champs et valeurs pour une mise-à-jour dans la base
+	protected function get_liste_update()
+	{
+		return 'x = '.$this->x.', y = '.$this->y.', hp = '.$this->hp.', type = '.$this->id_monstre.', mort_naturelle = '.$this->mort_naturelle;
+	}
+  /// Renvoie la valeur d'un champ de la base de donnée
+  protected function get_champ($champ)
+  {
+    if('type')
+      return $this->id_monstre;
+    else
+      return $this->{$champ};
+  }
+	// @}
 
+  /**
+   * @name  Buffs
+   * Données et méthodes ayant trait aux buffs et débuffs actifs sur le monstre.
+   */
+  // @{
 	/**
-	* Retourne la valeur de l'attribut
-	* @access public
-	* @param none
-	* @return mediumint(8) $x valeur de l'attribut x
-	*/
-	function get_x()
-	{
-		return $this->x;
-	}
-
-	/**
-	* Retourne la valeur de l'attribut
-	* @access public
-	* @param none
-	* @return mediumint(8) $y valeur de l'attribut y
-	*/
-	function get_y()
-	{
-		return $this->y;
-	}
-
-	/**
-	* Retourne la valeur de l'attribut
-	* @access public
-	* @param none
-	* @return mediumint(8) $hp valeur de l'attribut hp
-	*/
-	function get_hp()
-	{
-		return $this->hp;
-	}
-
-	/**
-	* Retourne la valeur de l'attribut
-	* @access public
-	* @param none
-	* @return tinyint(3) $level valeur de l'attribut level
-	*/
-	function get_level()
-	{
-		return $this->level;
-	}
-
-	/**
-	* Retourne la valeur de l'attribut
-	* @access public
-	* @param none
-	* @return varchar(50) $nom valeur de l'attribut nom
-	*/
-	function get_nom()
-	{
-		return $this->nom;
-	}
-
-	/**
-	* Retourne la valeur de l'attribut
-	* @access public
-	* @param none
-	* @return varchar(40) $lib valeur de l'attribut lib
-	*/
-	function get_lib()
-	{
-		return $this->lib;
-	}
-
-	/**
-	* Retourne la valeur de l'attribut
-	* @access public
-	* @param none
-	* @return int(10) $mort_naturelle valeur de l'attribut mort_naturelle
-	*/
-	function get_mort_naturelle()
-	{
-		return $this->mort_naturelle;
-	}
-
-	/**
-	* Modifie la valeur de l'attribut
-	* @access public
-	* @param int(10) $id valeur de l'attribut
-	* @return none
-	*/
-	function set_id($id)
-	{
-		$this->id = $id;
-		$this->champs_modif[] = 'id';
-	}
-
-	/**
-	* Modifie la valeur de l'attribut
-	* @access public
-	* @param mediumint(8) $type valeur de l'attribut
-	* @return none
-	*/
-	function set_type($type)
-	{
-		$this->type = $type;
-		$this->champs_modif[] = 'type';
-	}
-
-	/**
-	* Modifie la valeur de l'attribut
-	* @access public
-	* @param mediumint(8) $x valeur de l'attribut
-	* @return none
-	*/
-	function set_x($x)
-	{
-		$this->x = $x;
-		$this->champs_modif[] = 'x';
-	}
-
-	/**
-	* Modifie la valeur de l'attribut
-	* @access public
-	* @param mediumint(8) $y valeur de l'attribut
-	* @return none
-	*/
-	function set_y($y)
-	{
-		$this->y = $y;
-		$this->champs_modif[] = 'y';
-	}
-
-	/**
-	* Modifie la valeur de l'attribut
-	* @access public
-	* @param mediumint(8) $hp valeur de l'attribut
-	* @return none
-	*/
-	function set_hp($hp)
-	{
-		$this->hp = $hp;
-		$this->champs_modif[] = 'hp';
-	}
-
-	/**
-	* Modifie la valeur de l'attribut
-	* @access public
-	* @param tinyint(3) $level valeur de l'attribut
-	* @return none
-	*/
-	function set_level($level)
-	{
-		$this->level = $level;
-	}
-
-	/**
-	* Modifie la valeur de l'attribut
-	* @access public
-	* @param varchar(50) $nom valeur de l'attribut
-	* @return none
-	*/
-	function set_nom($nom)
-	{
-		$this->nom = $nom;
-	}
-
-	/**
-	* Modifie la valeur de l'attribut
-	* @access public
-	* @param varchar(40) $lib valeur de l'attribut
-	* @return none
-	*/
-	function set_lib($lib)
-	{
-		$this->lib = $lib;
-	}
-
-	/**
-	* Modifie la valeur de l'attribut
-	* @access public
-	* @param int(10) $mort_naturelle valeur de l'attribut
-	* @return none
-	*/
-	function set_mort_naturelle($mort_naturelle)
-	{
-		$this->mort_naturelle = $mort_naturelle;
-		$this->champs_modif[] = 'mort_naturelle';
-	}
-	//fonction
+	 * Renvoie une propriété d'un buff / débuff particulier actif sur le personnage ou l'ensemble de ceux-ci.
+	 * @param  $nom      Nom (type) du (dé)buff recherché, renvoie tous les buffs actifs si vaut false.
+	 * @param  $champ    Propriété recherchée (correspond à un champ dans la bdd).
+	 * @param  $type	   Si false on prend le premier buff, si true celui dont le type correspond à $nom.
+	 * @return     Tableau des buffs ou valeur demandée.
+	 */
+	protected $buff;  ///< Liste des buffs actifs sur le monstre
 	function get_buff($nom = false, $champ = false, $type = true)
 	{
 		if(!$nom)
@@ -499,17 +247,32 @@ class map_monstre
 
 		return $buffe;
 	}
-	
-	function get_pos()
+	// @}
+
+  /**
+   * @name  Spécifiques aux montres
+   * Données et méthodes spécifiques aux monstres.
+   */
+  // @{
+  private $affiche = null;
+  function get_affiche() {
+    if (!$this->affiche) {
+      $m = new monstre($this->type);
+      $this->affiche = $m->get_affiche();
+    }
+    return $this->affiche;
+  }
+
+  /// Supprime les buffs périmés actifs sur le monstre
+	function check_monstre()
 	{
-		return convert_in_pos($this->x, $this->y);
+		global $db;
+		// On supprime tous les buffs périmés
+		$requete = "DELETE FROM buff_monstre WHERE fin <= ".time();
+		$req = $db->query($requete);
 	}
 
-	function get_race()
-	{
-		return 'neutre';
-	}
-
+  /// Gère les actions spéciales à effectuer lorsqu'un mosntre dedonjon a été tué
 	function kill_monstre_de_donjon()
 	{
 		global $db;
@@ -603,6 +366,7 @@ class map_monstre
 		}
 	}
 
+  /// Cherche dans la bdd s'il y a une action spéciale à effectuer lors de la mort d'un mosntre de donjon et l'effectue si besoin
 	function kill_monstre_de_donjon2()
 	{
 		global $db;
@@ -649,21 +413,5 @@ class map_monstre
 			}
 		}
 	}
-
-	function check_monstre()
-	{
-		global $db;
-		// On supprime tous les buffs périmés
-		$requete = "DELETE FROM buff_monstre WHERE fin <= ".time();
-		$req = $db->query($requete);
-	}
-
-  private $affiche = null;
-  function get_affiche() {
-    if (!$this->affiche) {
-      $m = new monstre($this->type);
-      $this->affiche = $m->get_affiche();
-    }
-    return $this->affiche;
-  }
+	// @}
 }

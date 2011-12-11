@@ -49,16 +49,11 @@ class event extends table
 	*/
 	function __construct($statut = 0, $date_debut = 0)
 	{
-		global $db;
 		//Verification du nombre et du type d'argument pour construire l'objet adequat.
-		if( func_num_args() == 1 && is_numeric($statut) )
+		if( func_num_args() == 1 )
 		{
 			$this->charger($statut);
 		}
-		elseif( is_array($statut) )
-		{
-			$this->init_tab($statut);
-    }
 		else
 		{
 			$this->statut = $statut;

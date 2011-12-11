@@ -1,54 +1,80 @@
 <?php
+/**
+ * @file pet.class.php
+ * Définition de la classe pet représentant un monstre dressé
+ */
+
+/**
+ * Classe pet
+ * Classe représentant un monstre dressé
+ */
+ 
 class pet extends map_monstre
 {
 	/**
-	 * @access private
-	 * @var int(10)
+	 * @name Informations générales.
+	 * Donnée et méthode sur les inforamations "générales" : type, niveau, …
 	 */
-	private $id;
+  // @{
+	protected $id_joueur; ///< id du joueur propriétaire du monstre
+	protected $mp;  ///< MP du monstre
+	protected $principale; ///< indique si c'est la créature principale du dresseur
+	protected $ecurie; ///< indique si le monstre est dans une écurie (et dans laquelle) ou non
+
+	/// Retourne l'id du joueur propriétaire du monstre
+	function get_id_joueur()
+	{
+		return $this->id_joueur;
+	}
+	/// Modifie l'id du joueur propriétaire du monstre
+	function set_id_joueur($id_joueur)
+	{
+		$this->id_joueur = $id_joueur;
+		$this->champs_modif[] = 'type';
+	}
+
+	/// Renvoie les MP du monstre
+	function get_mp()
+	{
+		return $this->mp;
+	}
+	/// Modifie les MP du monstre
+	function set_mp($mp)
+	{
+		$this->mp = $mp;
+		$this->champs_modif[] = 'mp';
+	}
+
+	/// Renvoie si c'est la créature principale du dresseur
+	function get_principale()
+	{
+		return $this->principale;
+	}
+	/// Modifie si c'est la créature principale du dresseur
+	function set_principale($principale)
+	{
+		$this->principale = $principale;
+		$this->champs_modif[] = 'principale';
+	}
+
+	/// Renvoie si le monstre est dans une écurie (et dans laquelle) ou non
+	function get_ecurie()
+	{
+		return $this->ecurie;
+	}
+	/// Modifie si le monstre est dans une écurie (et dans laquelle) ou non
+	function set_ecurie($ecurie)
+	{
+		$this->ecurie = $ecurie;
+		$this->champs_modif[] = 'ecurie';
+	}
+	// @}
 
 	/**
-	 * @access private
-	 * @var int(10)
+	 * @name Accès à la base de données
+	 * Méthode gérant la lecture et l'écriture dans la base de données
 	 */
-	private $id_joueur;
-
-	/**
-	 * @access private
-	 * @var int(10)
-	 */
-	private $id_monstre;
-
-	/**
-	 * @access private
-	 * @var varchar(100)
-	 */
-	private $nom;
-
-	/**
-	 * @access private
-	 * @var mediumint(8)
-	 */
-	private $hp;
-
-	/**
-	 * @access private
-	 * @var mediumint(8)
-	 */
-	private $mp;
-
-	/**
-	 * @access private
-	 * @var tinyint(3)
-	 */
-	private $principale;
-
-	/**
-	 * @access private
-	 * @var tinyint(3)
-	 */
-	private $ecurie;
-
+  // @{
 	/**
 	 * @access public
 
@@ -61,349 +87,77 @@ class pet extends map_monstre
 	 * @param tinyint(3) principale attribut
 	 * @return none
 	 */
-	function __construct($id = 0, $id_joueur = 0, $id_monstre = 0, $nom = '', $hp = '', $mp = '', $principale = '', $ecurie = '', $action_a = '', $action_d = '')
+	function __construct($id = 0, $id_joueur = 0, $id_monstre = 0, $nom = '', $hp = 0, $mp = 0, $principale = 0, $ecurie = 0, $action_a = 0, $action_d = 0)
 	{
 		global $db;
 		//Verification nombre et du type d'argument pour construire l'etat adequat.
 		if( (func_num_args() == 1) && is_numeric($id) )
 		{
-			$requeteSQL = $db->query("SELECT id_joueur, id_monstre, nom, hp, mp, principale, ecurie, action_a, action_d FROM pet WHERE id = ".$id);
+			$requeteSQL = $db->query('SELECT p.id_joueur, p.id_monstre, p.nom, p.hp, p.mp, p.principale, p.ecurie, p.action_a, p.action_d, m.level, m.lib FROM pet p, monstre m WHERE p.id_monstre = m.id AND p.id = '.$id);
 			//Si le thread est dans la base, on le charge sinon on crée un thread vide.
 			if( $db->num_rows($requeteSQL) > 0 )
 			{
-				list($this->id_joueur, $this->id_monstre, $this->nom, $this->hp, $this->mp, $this->principale, $this->ecurie, $this->action_a, $this->action_d) = $db->read_array($requeteSQL);
+				$this->init_tab( $db->read_array($requeteSQL) );
 			}
 			else $this->__construct();
 			$this->id = $id;
 		}
 		elseif( (func_num_args() == 1) && is_array($id) )
 		{
-			$this->id = $id['id'];
-			$this->id_joueur = $id['id_joueur'];
-			$this->id_monstre = $id['id_monstre'];
-			$this->nom = $id['nom'];
-			$this->hp = $id['hp'];
-			$this->mp = $id['mp'];
-			$this->principale = $id['principale'];
-			$this->ecurie = $id['ecurie'];
-			$this->action_a = $id['action_a'];
-			$this->action_d = $id['action_d'];
+			$this->init_tab($id);
 		}
 		else
 		{
+      $requeteSQL = $db->query('SELECT level, lib FROM monstre WHERE id='.$id_monstre);
+      if( $db->num_rows($requeteSQL) > 0 )
+      {
+        $row = $db->read_array($requeteSQL);
+        map_monstre::__construct($id, $nom, $id_monstre, null, null, $hp, $row['level'], $nom, $row['lib']);
+      }
+      else
+        map_monstre::__construct($id, $nom, $id_monstre, null, null, $hp, 0, $nom);
 			$this->id_joueur = $id_joueur;
 			$this->id_monstre = $id_monstre;
-			$this->nom = $nom;
-			$this->hp = $hp;
 			$this->mp = $mp;
 			$this->principale = $principale;
 			$this->ecurie = $ecurie;
-			$this->id = $id;
 			$this->action_a = $action_a;
 			$this->action_d = $action_d;
 		}
 	}
 
 	/**
-	 * Sauvegarde automatiquement en base de donnée. Si c'est un nouvel objet, INSERT, sinon UPDATE
-	 * @access public
-	 * @param bool $force force la mis à jour de tous les attributs de l'objet si true, sinon uniquement ceux qui ont été modifiés
-	 * @return none
+	 * Initialise les données membres à l'aide d'un tableau
+	 * @param array $vals    Tableau contenant les valeurs des données.
 	 */
-	function sauver($force = false)
-	{
-		global $db;
-		if( $this->id > 0 )
-		{
-			if(count($this->champs_modif) > 0)
-			{
-				if($force) $champs = 'id_joueur = '.$this->id_joueur.', id_monstre = '.$this->id_monstre.', nom = "'.mysql_escape_string($this->nom).'", hp = "'.mysql_escape_string($this->hp).'", mp = "'.mysql_escape_string($this->mp).'", principale = "'.mysql_escape_string($this->principale).'", ecurie = "'.mysql_escape_string($this->ecurie).'", action_a = "'.mysql_escape_string($this->action_a).'", action_d = "'.mysql_escape_string($this->action_d).'"';
-				else
-				{
-					$champs = '';
-					foreach($this->champs_modif as $champ)
-					{
-						$champs[] .= $champ.' = "'.mysql_escape_string($this->{$champ}).'"';
-					}
-					$champs = implode(', ', $champs);
-				}
-				$requete = 'UPDATE pet SET ';
-				$requete .= $champs;
-				$requete .= ' WHERE id = '.$this->id;
-				$db->query($requete);
-				$this->champs_modif = array();
-			}
-		}
-		else
-		{
-			$requete = 'INSERT INTO pet (id_joueur, id_monstre, nom, hp, mp, principale, ecurie, action_a, action_d) VALUES(';
-			$requete .= ''.$this->id_joueur.', '.$this->id_monstre.', "'.mysql_escape_string($this->nom).'", "'.mysql_escape_string($this->hp).'", "'.mysql_escape_string($this->mp).'", "'.mysql_escape_string($this->principale).'", "'.mysql_escape_string($this->ecurie).'", "'.mysql_escape_string($this->action_a).'", "'.mysql_escape_string($this->action_d).'")';
-			$db->query($requete);
-			//Récuperation du dernier ID inséré.
-			$this->id = $db->last_insert_id();
-		}
-	}
+  protected function init_tab($vals)
+  {
+    map_monstre::init_tab($vals);
+		$this->id_joueur = $vals['id_joueur'];
+		$this->id_monstre = $vals['id_monstre'];
+		$this->mp = $vals['mp'];
+		$this->principale = $vals['principale'];
+		$this->ecurie = $vals['ecurie'];
+		$this->action_a = $vals['action_a'];
+		$this->action_d = $vals['action_d'];
+  }
 
-	/**
-	 * Supprime de la base de donnée
-	 * @access public
-	 * @param none
-	 * @return none
-	 */
-	function supprimer()
+	/// Renvoie la liste des champs pour une insertion dans la base
+	protected function get_liste_champs()
 	{
-		global $db;
-		if( $this->id > 0 )
-		{
-			$requete = 'DELETE FROM pet WHERE id = '.$this->id;
-			$db->query($requete);
-		}
-	}
-
-	/**
-	 * Crée un tableau d'objets respectant certains critères
-	 * @access static
-	 * @param array|string $champs champs servant a trouver les résultats
-	 * @param array|string $valeurs valeurs servant a trouver les résultats
-	 * @param string $ordre ordre de tri
-	 * @param bool|string $keys Si false, stockage en tableau classique, si string stockage avec sous tableau en fonction du champ $keys
-	 * @return array $return liste d'objets
-	 */
-	static function create($champs, $valeurs, $ordre = 'id ASC', $keys = false, $where = false)
+    return 'id_joueur, id_monstre, nom, hp, mp, principale, ecurie, action_a, action_d';
+  }
+	/// Renvoie la liste des valeurs des champspour une insertion dans la base
+	protected function get_valeurs_insert()
 	{
-		global $db;
-		$return = array();
-		if(!$where)
-		{
-			if(!is_array($champs))
-			{
-				$array_champs[] = $champs;
-				$array_valeurs[] = $valeurs;
-			}
-			else
-			{
-				$array_champs = $champs;
-				$array_valeurs = $valeurs;
-			}
-			foreach($array_champs as $key => $champ)
-			{
-				$where[] = $champ .' = "'.mysql_escape_string($array_valeurs[$key]).'"';
-			}
-			$where = implode(' AND ', $where);
-			if($champs === 0)
-			{
-				$where = ' 1 ';
-			}
-		}
-
-		$requete = "SELECT id, id_joueur, id_monstre, nom, hp, mp, principale, ecurie, action_a, action_d FROM pet WHERE ".$where." ORDER BY ".$ordre;
-		$req = $db->query($requete);
-		if($db->num_rows($req) > 0)
-		{
-			while($row = $db->read_assoc($req))
-			{
-				if(!$keys) $return[] = new pet($row);
-				else $return[$row[$keys]] = new pet($row);
-			}
-		}
-		else $return = array();
-		return $return;
+		return $this->id_joueur.', '.$this->id_monstre.', \''.mysql_escape_string($this->nom).'\', '.$this->hp.', '.$this->mp.', '.$this->principale.', '.$this->ecurie.', '.$this->action_a.', '.$this->action_d;
 	}
-
-	/**
-	 * Affiche l'objet sous forme de string
-	 * @access public
-	 * @param none
-	 * @return string objet en string
-	 */
-	function __toString()
+	/// Renvoie la liste des champs et valeurs pour une mise-à-jour dans la base
+	protected function get_liste_update()
 	{
-		return 'id = '.$this->id.', id_joueur = '.$this->id_joueur.', id_monstre = '.$this->id_monstre.', nom = '.$this->nom.', hp = '.$this->hp.', mp = '.$this->mp.', principale = '.$this->principale.', ecurie = '.$this->ecurie;
+		return 'id_joueur = '.$this->id_joueur.', id_monstre = '.$this->id_monstre.', nom = \''.mysql_escape_string($this->nom).'\', hp = '.$this->hp.', mp = '.$this->mp.', principale = '.$this->principale.', ecurie = '.$this->ecurie.', action_a = '.$this->action_a.', action_d = '.$this->action_d;
 	}
-
-	/**
-	 * Retourne la valeur de l'attribut
-	 * @access public
-	 * @param none
-	 * @return int(10) $id valeur de l'attribut id
-	 */
-	function get_id()
-	{
-		return $this->id;
-	}
-
-	/**
-	 * Retourne la valeur de l'attribut
-	 * @access public
-	 * @param none
-	 * @return int(10) $id_joueur valeur de l'attribut id_joueur
-	 */
-	function get_id_joueur()
-	{
-		return $this->id_joueur;
-	}
-
-	/**
-	 * Retourne la valeur de l'attribut
-	 * @access public
-	 * @param none
-	 * @return int(10) $id_monstre valeur de l'attribut id_monstre
-	 */
-	function get_id_monstre()
-	{
-		return $this->id_monstre;
-	}
-
-	/**
-	 * Retourne la valeur de l'attribut
-	 * @access public
-	 * @param none
-	 * @return varchar(100) $nom valeur de l'attribut nom
-	 */
-	function get_nom()
-	{
-		return $this->nom;
-	}
-
-	/**
-	 * Retourne la valeur de l'attribut
-	 * @access public
-	 * @param none
-	 * @return mediumint(8) $hp valeur de l'attribut hp
-	 */
-	function get_hp()
-	{
-		return $this->hp;
-	}
-
-	/**
-	 * Retourne la valeur de l'attribut
-	 * @access public
-	 * @param none
-	 * @return mediumint(8) $mp valeur de l'attribut mp
-	 */
-	function get_mp()
-	{
-		return $this->mp;
-	}
-
-	/**
-	 * Retourne la valeur de l'attribut
-	 * @access public
-	 * @param none
-	 * @return tinyint(3) $principale valeur de l'attribut principale
-	 */
-	function get_principale()
-	{
-		return $this->principale;
-	}
-
-	/**
-	 * Retourne la valeur de l'attribut
-	 * @access public
-	 * @param none
-	 * @return tinyint(3) $principale valeur de l'attribut ecurie
-	 */
-	function get_ecurie()
-	{
-		return $this->ecurie;
-	}
-
-	/**
-	 * Modifie la valeur de l'attribut
-	 * @access public
-	 * @param int(10) $id valeur de l'attribut
-	 * @return none
-	 */
-	function set_id($id)
-	{
-		$this->id = $id;
-		$this->champs_modif[] = 'id';
-	}
-
-	/**
-	 * Modifie la valeur de l'attribut
-	 * @access public
-	 * @param int(10) $id_joueur valeur de l'attribut
-	 * @return none
-	 */
-	function set_id_joueur($id_joueur)
-	{
-		$this->id_joueur = $id_joueur;
-		$this->champs_modif[] = 'id_joueur';
-	}
-
-	/**
-	 * Modifie la valeur de l'attribut
-	 * @access public
-	 * @param int(10) $id_monstre valeur de l'attribut
-	 * @return none
-	 */
-	function set_id_monstre($id_monstre)
-	{
-		$this->id_monstre = $id_monstre;
-		$this->champs_modif[] = 'id_monstre';
-	}
-
-	/**
-	 * Modifie la valeur de l'attribut
-	 * @access public
-	 * @param varchar(100) $nom valeur de l'attribut
-	 * @return none
-	 */
-	function set_nom($nom)
-	{
-		$this->nom = $nom;
-		$this->champs_modif[] = 'nom';
-	}
-
-	/**
-	 * Modifie la valeur de l'attribut
-	 * @access public
-	 * @param mediumint(8) $hp valeur de l'attribut
-	 * @return none
-	 */
-	function set_hp($hp)
-	{
-		$this->hp = $hp;
-		$this->champs_modif[] = 'hp';
-	}
-
-	/**
-	 * Modifie la valeur de l'attribut
-	 * @access public
-	 * @param mediumint(8) $mp valeur de l'attribut
-	 * @return none
-	 */
-	function set_mp($mp)
-	{
-		$this->mp = $mp;
-		$this->champs_modif[] = 'mp';
-	}
-
-	/**
-	 * Modifie la valeur de l'attribut
-	 * @access public
-	 * @param tinyint(3) $principale valeur de l'attribut
-	 * @return none
-	 */
-	function set_principale($principale)
-	{
-		$this->principale = $principale;
-		$this->champs_modif[] = 'principale';
-	}
-
-	/**
-	 * Modifie la valeur de l'attribut
-	 * @access public
-	 * @param tinyint(3) $ecurie valeur de l'attribut
-	 * @return none
-	 */
-	function set_ecurie($ecurie)
-	{
-		$this->ecurie = $ecurie;
-		$this->champs_modif[] = 'ecurie';
-	}
+	// @}
 
 	//fonction
 	function get_monstre()
@@ -437,10 +191,18 @@ class pet extends map_monstre
 		return pow($this->get_level(), 2);
 	}
 
-	public $pp_base;
-	public $pm_base;
-	public $enchant;
-	public $armure;
+  /**
+   * @name Inventaires et objets
+	 * Données et méthodes liées à l'inventaire et aux objets portés ou utiliser par
+	 * les perosnnages.
+	 */
+  // @{
+	public $pp_base; ///< PP de base (sans les buffs).
+	public $pm_base; ///< PM de base (sans les buffs).
+	public $enchant; ///< plus utilisé.
+	public $armure;  ///< true si la PP et la PM on été calculées, false sinon.
+	
+	/// Calcule la PP et la PM en fonction des pièces d'armures portées ainsi que des buffs et autres modificateurs.
 	function get_armure()
 	{
 		global $db;
@@ -506,6 +268,11 @@ class pet extends map_monstre
 		$this->armure=true;
 	}
 
+  /**
+   * Renvoie la PM.
+   * Appelle get_armure si elle n'a pas déjà été calculée.
+   * @param  $base    true pour avoir la PM de base (sans modificateurs), false pour avoir la totale.
+   */
 	function get_pm($base = false)
 	{
 		if(!isset($this->pm))
@@ -516,6 +283,11 @@ class pet extends map_monstre
 		else return $this->pm_base;
 	}
 
+  /**
+   * Renvoie la PP.
+   * Appelle get_armure si elle n'a pas déjà été calculée.
+   * @param  $base    true pour avoir la PP de base (sans modificateurs), false pour avoir la totale.
+   */
 	function get_pp($base = false)
 	{
 		if(!isset($this->pp))
@@ -524,42 +296,6 @@ class pet extends map_monstre
 		}
 		if(!$base) return $this->pp;
 		else return $this->pp_base;
-	}
-
-	function get_distance_tir()
-	{
-		global $db;
-		$distance = 0;
-		$joueur = new perso($this->get_id_joueur());
-		$arme = $joueur->inventaire_pet()->arme_pet;
-		if(!isset($this->arme_pet)) $this->get_arme();
-		if($this->arme_pet)
-		{
-			$distance += $this->arme_pet->distance_tir;
-		}
-		$laisse = decompose_objet($joueur->get_inventaire_partie("cou", true));
-		if($laisse['id_objet'] != '')
-		{
-			$requete = "SELECT distance_tir FROM objet_pet WHERE id = ".$laisse['id_objet'];
-			$req = $db->query($requete);
-			$row = $db->read_row($req);
-			$distance += $row[0];
-		}
-		return $distance;
-	}
-
-	public $reserve_bonus;
-	function get_reserve_bonus()
-	{
-		$joueur = new perso($this->get_id_joueur());
-		if(!isset($this->monstre)) $this->get_monstre();
-		$this->reserve_bonus = $this->monstre->get_reserve();
-
-		if($joueur->is_buff('buff_inspiration')) $this->reserve_bonus += $joueur->get_buff('buff_inspiration', 'effet');
-		if($joueur->is_buff('buff_rune')) $this->reserve_bonus += $joueur->get_buff('buff_rune', 'effet');
-		if($joueur->is_buff('buff_sacrifice')) $this->reserve_bonus += $joueur->get_buff('buff_sacrifice', 'effet');
-
-		return $this->reserve_bonus;
 	}
 
 	// Renvoie l'arme de la main droite. Enregistre les enchantements et les effets.
@@ -613,6 +349,12 @@ class pet extends map_monstre
 		return $degats;
 	}
 
+	function register_gemme_enchantement()
+	{
+		// TRICHE ?!
+	}
+	// @}
+
 	/**
 	 * @name Combats
 	 * Données et méthodes liées aux combats.
@@ -621,33 +363,26 @@ class pet extends map_monstre
 	private $action_a;   ///< Id du script d'attaque
 	private $action_d;   ///< Id du script de défense
 	public $action_do;
+	public $reserve_bonus;   ///< RM avec les bonus dus aux buffs
 
-	// Renvoie l'id du script d'attaque.
+	/// Renvoie l'id du script d'attaque.
 	function get_action_a()
 	{
 		return $this->action_a;
 	}
-	/**
-	 * Modifie le script d'attaque.
-	 * @param  $action_a     Id du nouveau script d'attaque.
-	 */
+	/// Modifie l'id du script d'attaque.
 	function set_action_a($action_a)
 	{
 		$this->action_a = $action_a;
 		$this->champs_modif[] = 'action_a';
 	}
 
-	// Renvoie l'id du script d'attaque.
+	/// Renvoie l'id du script d'attaque.
 	function get_action_d()
 	{
 		return $this->action_d;
 	}
-
-	// Renvoie l'id du script de défense.
-	/**
-	* Modifie le script de défense.
-	* @param  $action_d     Id du nouveau script de défense.
-	*/
+  /// Modifie l'id du script de défense.
 	function set_action_d($action_d)
 	{
 		$this->action_d = $action_d;
@@ -677,6 +412,46 @@ class pet extends map_monstre
 		$this->action = $row[0];
 		return $this->action;
 	}
+
+  /// Renvoie la distance à laquelle le personnage peut attaquer
+	function get_distance_tir()
+	{
+		global $db;
+		$distance = 0;
+		$joueur = new perso($this->get_id_joueur());
+		$arme = $joueur->inventaire_pet()->arme_pet;
+		if(!isset($this->arme_pet)) $this->get_arme();
+		if($this->arme_pet)
+		{
+			$distance += $this->arme_pet->distance_tir;
+		}
+		$laisse = decompose_objet($joueur->get_inventaire_partie("cou", true));
+		if($laisse['id_objet'] != '')
+		{
+			$requete = "SELECT distance_tir FROM objet_pet WHERE id = ".$laisse['id_objet'];
+			$req = $db->query($requete);
+			$row = $db->read_row($req);
+			$distance += $row[0];
+		}
+		return $distance;
+	}
+	
+  /**
+	 * Renvoie la RM
+	 * @param  $base  true s'il faut renvoyer la valeur de base, false pour renvoyer la RM avec les bonus permanents (mais sans les buffs).
+	 */
+	function get_reserve_bonus()
+	{
+		$joueur = new perso($this->get_id_joueur());
+		if(!isset($this->monstre)) $this->get_monstre();
+		$this->reserve_bonus = $this->monstre->get_reserve();
+
+		if($joueur->is_buff('buff_inspiration')) $this->reserve_bonus += $joueur->get_buff('buff_inspiration', 'effet');
+		if($joueur->is_buff('buff_rune')) $this->reserve_bonus += $joueur->get_buff('buff_rune', 'effet');
+		if($joueur->is_buff('buff_sacrifice')) $this->reserve_bonus += $joueur->get_buff('buff_sacrifice', 'effet');
+
+		return $this->reserve_bonus;
+	}
 	// @}
 
 	/**
@@ -697,6 +472,7 @@ class pet extends map_monstre
 		return $this->monstre->get_comp_combat();
 	}
 
+  /// Vérifie si un sort de combat est bien connu par le monstre
 	function check_sort_combat_connu($id)
 	{
 		if(!isset($this->monstre)) $this->get_monstre();
@@ -705,6 +481,7 @@ class pet extends map_monstre
 		security_block(URL_MANIPULATION);
 	}
 
+  /// Vérifie si une compétence de combat est bien connu par le monstre
 	function check_comp_combat_connu($id)
 	{
 		if(!isset($this->monstre)) $this->get_monstre();
@@ -713,31 +490,23 @@ class pet extends map_monstre
 		security_block(URL_MANIPULATION);
 	}
 
-	function register_gemme_enchantement()
-	{
-		// TRICHE ?!
-	}
-
+	/// Retourne le niveau du monstre
 	function get_level()
 	{
-		$this->get_monstre();
-		if ($this->monstre->get_level() == 0)
+		if ($this->level == 0)
 		{ // pets invoqués : level perso
 			global $joueur;
 			if ($this->id_joueur == $joueur->get_id())
 			{
-				return $joueur->get_level();
+				$this->level = $joueur->get_level();
 			}
 			else
 			{
 				$perso = new perso($this->id_joueur);
-				return $perso->get_level();
+				$this->level = $perso->get_level();
 			}
 		}
-		else
-		{
-			return $this->monstre->get_level();
-		}
+		return $this->level;
 	}
 	// @}
 }
