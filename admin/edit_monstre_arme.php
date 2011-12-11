@@ -35,7 +35,7 @@ else
 	{
 		$requete = "UPDATE monstre SET arme = '".sSQL($_POST['arme'])."' WHERE id = ".$id_monstre;
 		$db->query($requete);
-		echo 'Description mise à jour';
+		echo 'Arme mise à jour';
 	}
 	else 
 	{
@@ -52,7 +52,8 @@ else
 					<option value="dague" <?php echo $sel_d; ?>>Dague</option>
 					<option value="arc" <?php echo $sel_a; ?>>Arc</option>
 				</select>
-				<input type="hidden" value="<?php echo $id_monstre ?>" />
+				<input type="hidden" name="id_monstre"
+							 value="<?php echo $id_monstre ?>" />
 				<input type="submit" value="Valider" />
 			</form>
 
