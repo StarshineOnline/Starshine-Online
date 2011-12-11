@@ -1,3 +1,4 @@
+// -*- tab-width: 2 -*-
 function menu_change(input_name)
 {
 	if ($('#menu_encours').val()=='')

@@ -1643,6 +1643,10 @@
 
 .tex8554{background:url('../image/texture/donjon_aquatique/sol_chute_1case_nid.png') no-repeat;}
 
+.tex8560{background:url('../image/texture/donjon_aquatique/sol_bureau_bartak.png') no-repeat;}
+
+.tex8561{background:url('../image/texture/donjon_aquatique/tex_lac_donjon.png') no-repeat;}
+
 .tex10584{background:url('../image/texture/repere_aquatique/sol_repere_bar_bd.png') no-repeat;}
 .tex10585{background:url('../image/texture/repere_aquatique/sol_repere_bar_bg.png') no-repeat;}
 .tex10586{background:url('../image/texture/repere_aquatique/sol_repere_bar_bm.png') no-repeat;}
@@ -2066,8 +2070,8 @@
 .tex4618{background:url('../image/texture/donjon_aquatique/mur_nord_donjon_aqua_plusg1.png') no-repeat;}
 .tex4619{background:url('../image/texture/donjon_aquatique/mur_nord_donjon_aqua_plusd1.png') no-repeat;}
 .tex4620{background:url('../image/texture/donjon_aquatique/mur_donjon_aqua_stalactitehd.png') no-repeat;}
-.tex4621{background:url('../image/texture/donjon_aquatique/mur_nordouesthoriz_donjon_aqua_canalisation_eau.png') no-repeat;}
-.tex4622{background:url('../image/texture/donjon_aquatique/mur_nordouesthoriz_donjon_aqua_canalisation.png') no-repeat;}
+.tex4621{background:url('../image/texture/donjon_aquatique/mur_rail_direction_gauche.png') no-repeat;}
+.tex4622{background:url('../image/texture/donjon_aquatique/mur_rail.png') no-repeat;}
 
 .tex4623{background:url('../image/texture/ville_aquatique/mur_nord_ville_aqua.png') no-repeat;}
 .tex4624{background:url('../image/texture/ville_aquatique/mur_nord_ville_aqua_fissure.png') no-repeat;}

@@ -171,73 +171,14 @@ echo '<div id="menu_date"><img src="image/interface/'.moment_jour().
 // Les logs de debug ajax
 echo '<div id="debug_log" class="debug"></div>';
 
-?>
-<div id="ambiance_sound"><div id="ambiance_sound_container"></div>
-	<script type="text/javascript">
-var m_current_audio = null;
-function doLoop() {
-	document.getElementById('audio_1').addEventListener('ended', function(){
-			this.currentTime = 0;
-			this.pause();
-			document.getElementById('audio_2').play();
-		}, false);
-
-	document.getElementById('audio_2').addEventListener('ended', function(){
-			this.currentTime = 0;
-			this.pause();
-			document.getElementById('audio_1').play();
-		}, false);
+echo '<div id="ambiance_sound"><div id="ambiance_sound_container"></div>';
+if ($joueur->get_option('no_sound')) {
+	echo 'Le son est desactivé dans les options';
 }
-function setAmbianceAudio(file) {
-	if (m_current_audio == file || m_current_audio == null && file == '')
-		return;
-	if (file == '') {
-		m_current_audio = null;
-	}
-	else
-		m_current_audio = file;
-	c = document.getElementById('ambiance_sound_container');
-	var a = [ 'audio_1', 'audio_2' ];
-	var e = [ 'ogg', 'mp3' ];
-	for (var i in a) {
-		var aa = document.getElementById(a[i]);
-		if (aa) 
-			aa.pause();
-	}
-	if (m_current_audio == null)
-		return;
-	while (c.hasChildNodes())
-		c.removeChild(c.firstChild);
-	for (var i in a) {
-		var aa = document.createElement('audio');
-		aa.setAttribute('id', a[i]);
-		aa.setAttribute('controls', 'controls');
-		for (var j in e) {
-			var x = document.createElement('source');
-			x.setAttribute('src', 'image/son/' + file + '.' + e[j]);
-			aa.appendChild(x);
-		}
-		c.appendChild(aa);
-	}
-	document.getElementById(a[0]).play();
-	doLoop();
-}
-function stopAmbiance() {
-	var a = [ document.getElementById('audio_1'),
-						document.getElementById('audio_2') ];
-	for (var i in a) 
-		a[i].pause();
-}
-function showSoundPanel() {
-	$('#ambiance_sound').dialog('open');
-}
-$(document).ready(function(){
-		$('#ambiance_sound').dialog({ autoOpen: false });
-	});
-	</script>
-<a href="javascript:stopAmbiance()">Stop</a>
-</div>
-<?php
+else {
+echo '<a href="javascript:stopAmbiance()">Stop</a></div>';
+} // !if ($joueur->get_option('no_sound'))
+print_js_onload("$('#ambiance_sound').dialog({ autoOpen: false });");
 
 //Inclusion du bas de la page
 include_once(root.'bas.php');
