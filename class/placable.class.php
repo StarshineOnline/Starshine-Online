@@ -83,6 +83,12 @@ abstract class placable extends table
 		$this->y = $y;
 		$this->champs_modif[] = 'y';
 	}
+
+  /// Renvoie la position sous forme d'un seul entier
+	function get_pos()
+	{
+		return convert_in_pos($this->x, $this->y);
+	}
 	
 	/// Renvoie la liste des champs pour une insertion dans la base
 	protected function get_liste_champs()
