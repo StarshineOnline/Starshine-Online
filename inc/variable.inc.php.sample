@@ -192,6 +192,6 @@ define('BASE', 'http://www.starshine-online.com/');
   $G_id_forum = 2;
 
   /// utiliser les calques
-  $G_use_atmosphere = false;
+  $G_use_atmosphere = true;
 
 ?>

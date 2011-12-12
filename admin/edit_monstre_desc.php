@@ -1,4 +1,4 @@
-<?php
+<?php // -*- mode: php; tab-width:2 -*-
 if (file_exists('../root.php'))
   include_once('../root.php');
 $admin = true;
@@ -23,7 +23,7 @@ else
 
 	if(array_key_exists('description', $_POST))
 	{
-		$requete = "UPDATE monstre SET description = '".$_POST['description']."' WHERE id = ".$id_monstre;
+		$requete = "UPDATE monstre SET description = '".sSQL($_POST['description'])."' WHERE id = ".$id_monstre;
 		$db->query($requete);
 		echo 'Description mise à jour';
 	}
