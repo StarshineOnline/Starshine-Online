@@ -461,9 +461,6 @@ class map_monstre extends entnj_incarn
 			// mélange les items
 			shuffle($grosbill);
 			shuffle($loot);
-
-			my_dump($grosbill);
-			my_dump($loot);
 			// TODO
 
 			if (count($grosbill)) {
@@ -475,7 +472,7 @@ class map_monstre extends entnj_incarn
 					$tirage -= $l->chance;
 					if ($tirage < 1) {
 						loot_item($joueur, $l->item);
-						$old++;
+						//$old++;
 						break;
 					}
 				}

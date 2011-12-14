@@ -8,7 +8,7 @@ ALTER TABLE `joueur_loot` ADD PRIMARY KEY ( `id_joueur` , `id_monstre` ) ;
 CREATE TABLE `boss_loot` (
 `id_monstre` INT NOT NULL ,
 `item` VARCHAR( 20 ) NOT NULL ,
-`chance` INT NOT NULL ,
+`chance` INT NOT NULL COMMENT 'plus le nombre est élevé, plus il y a de chance de dropper cet item parmis les drops possibles',
 `level` TINYINT NOT NULL DEFAULT '0' COMMENT '0 - item normal, 1 - item grosbill'
 ) ENGINE = MYISAM COMMENT = 'définit les loots unique des boss';
 

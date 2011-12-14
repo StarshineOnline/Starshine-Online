@@ -3753,5 +3753,5 @@ function pute_effets(&$joueur, $honneur_need, $specials = null, $specials_det = 
  */
 function loot_item(&$joueur, $item)
 {
-	echo "Here we loot <b>$item</b>";
+	echo "Here we loot <b>$item</b><br/>";
 }
