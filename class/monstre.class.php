@@ -1,4 +1,4 @@
-<?php
+<?php // -*- mode: php; tab-width:2 -*-
 class monstre
 {
 /**
@@ -1200,6 +1200,14 @@ class monstre
 		return $this->comp_combat;
 	}
 	// @}
+
+	function get_distance()
+	{
+		if ($this->arme == 'arc')
+			return $this->melee;
+		else
+			return 0;
+	}
 
 }
 ?>

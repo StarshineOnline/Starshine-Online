@@ -1,6 +1,6 @@
 <?php // -*- mode: php; tab-width: 2 -*-
 
-function joue_des($joueur, $mise = 50)
+function joue_des($joueur, $mise = 50, $objet = 43)
 {
 	$titre = 'Jeu de dés';
 	if ($joueur->get_pa() < 4) {
@@ -17,13 +17,25 @@ function joue_des($joueur, $mise = 50)
 	$d2 = mt_rand(1, 6);
 	$msg = "Vous lancez les dés et tirez $d1 et $d2.<br>";
 	if ($d1 == $d2 && $d1 == 1) {
-		$joueur->add_star($mise);
-		$msg .= "Vous regagnez $mise stars !";
-	}
-	elseif ($d1 == $d2 && $d1 == 1) {
 		$gains = $mise * 2;
 		$joueur->add_star($gains);
 		$msg = "vous gagnez $gains stars !";
+	}
+	elseif ($d1 == $d2 && $d1 == 6) {
+    global $db;
+    $o = $db->query_get_object("select * from objet where id = $objet");
+    if ($o) {
+      $msg = "vous gagnez un $o->nom !";
+      $joueur->prend_objet("o$objet");
+    } else {
+      $gains = $mise * 2;
+      $joueur->add_star($gains);
+      $msg = "vous gagnez $gains stars !";
+    }
+	}
+	elseif ($d1 == $d2) {
+		$joueur->add_star($mise);
+		$msg .= "Vous regagnez $mise stars !";
 	}
 	else
 		$msg .= 'Vous avez perdu !';

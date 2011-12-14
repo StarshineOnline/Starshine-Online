@@ -165,7 +165,7 @@ class map_monstre extends entnj_incarn
   /// Renvoie la valeur d'un champ de la base de donnée
   protected function get_champ($champ)
   {
-    if('type')
+    if( $champ == 'type' )
       return $this->id_monstre;
     else
       return $this->{$champ};
