@@ -413,5 +413,46 @@ class map_monstre extends entnj_incarn
 			}
 		}
 	}
+
+	function check_boss_loot(&$joueur, $groupe)
+	{
+		global $db;
+		$req = $db->query("select * from boss_loot where id_monstre = $this->id_monstre");
+		if ($req && $db->num_rows($req)) {
+			// récupère les loots possibles
+			$tloot = array();
+			while ($row = $db->read_object($req))
+				$tloot[] = $row;
+
+			if (1/*fouille_gibier*/)
+				foreach ($tloot as &$l)
+					$l->chance = floor($l->chance * 1.2) /* bonus_fouille*/;
+
+			$grosbill = array();
+			$loot = array();
+			foreach ($tloot as $l) {
+				if ($l->level == 0)
+					$loot[] = $l;
+				else
+					$grosbill[] = $l;
+			}
+			// récupère les loots des joueurs sur le boss
+			if ($groupe) {
+				$ids = array();
+				foreach ($groupe->get_membre() as $m)
+					$ids[] = $m->get_id_joueur();
+			} else
+				$ids = array($joueur->get_id());
+			$id = implode(',', $ids);
+			$req = $db->query("select * from joueur_loot where id_joueur in ($id) and id_monstre = $this->id_monstre");
+			$old = $db->num_rows($req);
+			// S'il y a déjà eu loot, on ne drop pas d'item grosbill
+			if ($old > 0) $grosbill = array();
+
+			my_dump($grosbill);
+			my_dump($loot);
+			// TODO
+		}
+	}
 	// @}
 }

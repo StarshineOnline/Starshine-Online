@@ -1310,6 +1310,9 @@ else
 
 				if($gains_drop)
 				{
+
+					$map_monstre->check_boss_loot($joueur, $groupe);
+
 					//Drop d'un objet ?
 					$drops = explode(';', $drop);
 					if($drops[0] != '')
