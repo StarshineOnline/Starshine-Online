@@ -424,9 +424,15 @@ class map_monstre extends entnj_incarn
 			while ($row = $db->read_object($req))
 				$tloot[] = $row;
 
-			if (1/*fouille_gibier*/)
+			// ajuste le taux de drop
+			$taux = 1;
+			if($joueur->get_race() == 'humain')
+				$taux *= 1.3;
+			if($joueur->is_buff('fouille_gibier')) 
+				$taux *= (1 + ($joueur->get_buff('fouille_gibier', 'effet') / 100));
+			if ($taux > 1)
 				foreach ($tloot as &$l)
-					$l->chance = floor($l->chance * 1.2) /* bonus_fouille*/;
+					$l->chance = floor($l->chance * $taux);
 
 			$grosbill = array();
 			$loot = array();
@@ -439,19 +445,61 @@ class map_monstre extends entnj_incarn
 			// récupère les loots des joueurs sur le boss
 			if ($groupe) {
 				$ids = array();
-				foreach ($groupe->get_membre() as $m)
+				$mbr = $groupe->get_membre();
+				$nb_joueurs = count($mbr);
+				foreach ($mbr as $m)
 					$ids[] = $m->get_id_joueur();
-			} else
+			} else {
+				$nb_joueurs = 1;
 				$ids = array($joueur->get_id());
+			}
 			$id = implode(',', $ids);
 			$req = $db->query("select * from joueur_loot where id_joueur in ($id) and id_monstre = $this->id_monstre");
 			$old = $db->num_rows($req);
 			// S'il y a déjà eu loot, on ne drop pas d'item grosbill
 			if ($old > 0) $grosbill = array();
+			// mélange les items
+			shuffle($grosbill);
+			shuffle($loot);
 
 			my_dump($grosbill);
 			my_dump($loot);
 			// TODO
+
+			if (count($grosbill)) {
+				$range = 0;
+				foreach ($grosbill as $l)
+					$range += $l->chance;
+				$tirage = mt_rand(1, $range);
+				foreach ($grosbill as $l) {
+					$tirage -= $l->chance;
+					if ($tirage < 1) {
+						loot_item($joueur, $l->item);
+						$old++;
+						break;
+					}
+				}
+			}
+
+			while (count($loot) && $nb_joueurs > $old) {
+				$range = 0;
+				foreach ($loot as $l)
+					$range += $l->chance;
+				$tirage = mt_rand(1, $range);
+				foreach ($loot as $k => $l) {
+					$tirage -= $l->chance;
+					if ($tirage < 1) {
+						loot_item($joueur, $l->item);
+						unset($loot[$k]);
+						$old++;
+						break;
+					}
+				}
+			}
+
+			// enregistre les loots			
+			//$db->query('select insert into joueur_loot(id_joueur, id_monstre) '.
+			//"select id, $this->id_monstre from perso where id in ($id)");
 		}
 	}
 	// @}

@@ -3747,3 +3747,11 @@ function pute_effets(&$joueur, $honneur_need, $specials = null, $specials_det = 
   }
   return $texte;
 }
+
+/**
+ * loot un item
+ */
+function loot_item(&$joueur, $item)
+{
+	echo "Here we loot <b>$item</b>";
+}
