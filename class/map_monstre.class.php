@@ -472,7 +472,7 @@ class map_monstre extends entnj_incarn
 					$tirage -= $l->chance;
 					if ($tirage < 1) {
 						loot_item($joueur, $l->item);
-						//$old++;
+						$old++;
 						break;
 					}
 				}
