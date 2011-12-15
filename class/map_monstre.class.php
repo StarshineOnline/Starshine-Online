@@ -461,8 +461,8 @@ class map_monstre extends entnj_incarn
 			// mélange les items
 			shuffle($grosbill);
 			shuffle($loot);
-			// TODO
 
+			$has_loot = false;
 			if (count($grosbill)) {
 				$range = 0;
 				foreach ($grosbill as $l)
@@ -471,7 +471,8 @@ class map_monstre extends entnj_incarn
 				foreach ($grosbill as $l) {
 					$tirage -= $l->chance;
 					if ($tirage < 1) {
-						loot_item($joueur, $l->item);
+						$has_loot = true;
+						loot_item($joueur, $groupe, $l->item);
 						$old++;
 						break;
 					}
@@ -486,7 +487,8 @@ class map_monstre extends entnj_incarn
 				foreach ($loot as $k => $l) {
 					$tirage -= $l->chance;
 					if ($tirage < 1) {
-						loot_item($joueur, $l->item);
+						$has_loot = true;
+						loot_item($joueur, $groupe, $l->item);
 						unset($loot[$k]);
 						$old++;
 						break;
@@ -494,9 +496,10 @@ class map_monstre extends entnj_incarn
 				}
 			}
 
-			// enregistre les loots			
-			//$db->query('select insert into joueur_loot(id_joueur, id_monstre) '.
-			//"select id, $this->id_monstre from perso where id in ($id)");
+			// enregistre les loots	
+			if ($has_loot)
+				$db->query('insert ignore into joueur_loot(id_joueur, id_monstre) '.
+									 "select id, $this->id_monstre from perso where id in ($id)");
 		}
 	}
 	// @}
