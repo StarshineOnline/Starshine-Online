@@ -3483,6 +3483,9 @@ function make_tmp_adj_tables($roy_id)
 function ouvrePorteMaraudeurGeolier($x)
 {
 	global $db;
+	if ($x == 43) $x = 44; 
+	// On fait comme si on était en 44 car on a bougé le goellier pour éviter
+	// les tirs sous buff longue portée depuis la prison
 	$px = $x - 1;
 	$py = 365;
 	$db->query("update map set decor = 6570, info = 65 where x = $px and y = $py");
