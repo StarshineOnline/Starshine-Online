@@ -38,7 +38,7 @@ class map_monstre extends entnj_incarn
 	/// Renvoie l'objet représentant la définition
 	function get_def()
 	{
-		return new monstre($this->type);
+		return new monstre($this->id_monstre);
 	}
 	/// Modifie l'id de la définition du monstre
 	function set_id_monstre($id_monstre)
@@ -257,7 +257,7 @@ class map_monstre extends entnj_incarn
   private $affiche = null;
   function get_affiche() {
     if (!$this->affiche) {
-      $m = new monstre($this->type);
+      $m = new monstre($this->id_monstre);
       $this->affiche = $m->get_affiche();
     }
     return $this->affiche;
@@ -277,7 +277,7 @@ class map_monstre extends entnj_incarn
 	{
 		global $db;
     $log = new log_admin();
-		switch ($this->type)
+		switch ($this->id_monstre)
 		{
 		case 64: //Si c'est Devorsis on fait pop le fossoyeur
 			$requete = "INSERT INTO map_monstre VALUES(NULL, '65','3','212','4800',"
@@ -370,7 +370,7 @@ class map_monstre extends entnj_incarn
 	function kill_monstre_de_donjon2()
 	{
 		global $db;
-		$requete = "select * from monstre_special where type = $this->type";
+		$requete = "select * from monstre_special where type = $this->id_monstre";
 		$req_d = $db->query($requete);
 		if ($db->num_rows($req_d))
 		{
