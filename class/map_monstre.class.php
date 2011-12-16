@@ -413,5 +413,94 @@ class map_monstre extends entnj_incarn
 			}
 		}
 	}
+
+	function check_boss_loot(&$joueur, $groupe)
+	{
+		global $db;
+		$req = $db->query("select * from boss_loot where id_monstre = $this->id_monstre");
+		if ($req && $db->num_rows($req)) {
+			// récupère les loots possibles
+			$tloot = array();
+			while ($row = $db->read_object($req))
+				$tloot[] = $row;
+
+			// ajuste le taux de drop
+			$taux = 1;
+			if($joueur->get_race() == 'humain')
+				$taux *= 1.3;
+			if($joueur->is_buff('fouille_gibier')) 
+				$taux *= (1 + ($joueur->get_buff('fouille_gibier', 'effet') / 100));
+			if ($taux > 1)
+				foreach ($tloot as &$l)
+					$l->chance = floor($l->chance * $taux);
+
+			$grosbill = array();
+			$loot = array();
+			foreach ($tloot as $l) {
+				if ($l->level == 0)
+					$loot[] = $l;
+				else
+					$grosbill[] = $l;
+			}
+			// récupère les loots des joueurs sur le boss
+			if ($groupe) {
+				$ids = array();
+				$mbr = $groupe->get_membre();
+				$nb_joueurs = count($mbr);
+				foreach ($mbr as $m)
+					$ids[] = $m->get_id_joueur();
+			} else {
+				$nb_joueurs = 1;
+				$ids = array($joueur->get_id());
+			}
+			$id = implode(',', $ids);
+			$req = $db->query("select * from joueur_loot where id_joueur in ($id) and id_monstre = $this->id_monstre");
+			$old = $db->num_rows($req);
+			// S'il y a déjà eu loot, on ne drop pas d'item grosbill
+			if ($old > 0) $grosbill = array();
+			// mélange les items
+			shuffle($grosbill);
+			shuffle($loot);
+
+			$has_loot = false;
+			if (count($grosbill)) {
+				$range = 0;
+				foreach ($grosbill as $l)
+					$range += $l->chance;
+				$tirage = mt_rand(1, $range);
+				foreach ($grosbill as $l) {
+					$tirage -= $l->chance;
+					if ($tirage < 1) {
+						$has_loot = true;
+						loot_item($joueur, $groupe, $l->item);
+						$old++;
+						break;
+					}
+				}
+			}
+
+			while (count($loot) && $nb_joueurs > $old) {
+				$range = 0;
+				foreach ($loot as $l)
+					$range += $l->chance;
+				$tirage = mt_rand(1, $range);
+				foreach ($loot as $k => $l) {
+					$tirage -= $l->chance;
+					if ($tirage < 1) {
+						$has_loot = true;
+						loot_item($joueur, $groupe, $l->item);
+						unset($loot[$k]);
+						$old++;
+						break;
+					}
+				}
+			}
+
+			// enregistre les loots	
+			if ($has_loot)
+				$db->query('insert ignore into joueur_loot(id_joueur, id_monstre) '.
+									 "select id, $this->id_monstre from perso where id in ($id)");
+		}
+	}
 	// @}
 }
