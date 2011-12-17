@@ -14,6 +14,16 @@ include_once(root.'haut.php');
 	</div>
 </div>
 <div id='accueil'>
+	<div style="top:600px; position:absolute; height:65; width:475; display:block; margin:auto; margin-left: 82px;">
+	 <iframe src="pub.htm" frameborder="0" scrolling="no" height="65" width="475">
+	 </iframe>
+  </div>
+  
+	<div style="top:600px; position:absolute; height:65; width:475; display:block; margin:auto; margin-left: 82px;">
+	 <iframe src="http://elettar.starshine-online.com/pub.php" frameborder="0" scrolling="no" height="65" width="475">
+	 </iframe>
+  </div>
+  
 	<div id='loading_sso' style='display:none;'></div>	
 	<div id='test'>
 	<div class='box'>
