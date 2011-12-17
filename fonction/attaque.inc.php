@@ -554,4 +554,158 @@ function degat_magique($carac, $degat, $actif, $passif)
 				 
   return $degat;
 }
-?>
+
+/**
+ * loot un item
+ */
+function loot_item(&$joueur, &$groupe, $item)
+{
+	global $db;
+	$type_obj = '';
+	//Nom de l'objet
+	switch($item[0])
+	{
+	case 'h' :
+		$objet_nom = 'Objet non identifié';
+		//Gemme aléatoire
+		if($item[1] == 'g')
+		{
+			//Niveau de la gemme
+			$niveau_gemme = $item[2];
+			//Recherche des gemmes de ce niveau
+			$ids = array();
+			$requete = "SELECT id FROM gemme WHERE niveau = ".$niveau_gemme;
+			$req_g = $db->query($requete);
+			while($row = $db->read_row($req_g))
+			{
+				$ids[] = $row[0];
+			}
+			$num = rand(0, (count($ids) - 1));
+			$item = 'hg'.$ids[$num];
+		}
+		break;
+	case 'o' :
+		$id_objet = mb_substr($item, 1);
+		$requete = "SELECT nom FROM objet WHERE id = ".$id_objet;
+		$req = $db->query($requete);
+		$row = $db->read_row($req);
+		$objet_nom = $row[0];
+		break;
+	case 'm' :
+		$id_objet = mb_substr($item, 1);
+		$requete = "SELECT nom FROM accessoire WHERE id = ".$id_objet;
+		$req = $db->query($requete);
+		$row = $db->read_row($req);
+		$objet_nom = $row[0];
+		break;
+	case 'a' :
+		$id_objet = mb_substr($item, 1);
+		$requete = "SELECT nom FROM arme WHERE id = ".$id_objet;
+		$req = $db->query($requete);
+		$row = $db->read_row($req);
+		$objet_nom = $row[0];
+		break;
+	case 'p' :
+		$id_objet = mb_substr($item, 1);
+		$requete = "SELECT nom FROM armure WHERE id = ".$id_objet;
+		$req = $db->query($requete);
+		$row = $db->read_row($req);
+		$objet_nom = $row[0];
+		break;
+	case 'r' :
+		$id_objet = mb_substr($item, 1);
+		$requete = "SELECT nom, difficulte FROM recette WHERE id = ".$id_objet;
+		$req = $db->query($requete);
+		$row = $db->read_row($req);
+		$objet_nom = 'Recette unique : '.$row[0];
+		$recette_difficulte = $row[1];
+		break;
+	case 'q' :
+		$id_objet = mb_substr($item, 1);
+		$requete = "SELECT nom FROM objet WHERE id = ".$id_objet;
+		$req = $db->query($requete);
+		$row = $db->read_row($req);
+		$objet_nom = $row[0];
+		$item = 'o'.$id_objet;
+		$type_obj = 'quete';
+		break;
+	case 'l' :
+		$id_objet = mb_substr($item, 1);
+		$requete = "SELECT nom FROM grimoire WHERE id = $id_objet";
+		$req = $db->query($requete);
+		$row = $db->read_row($req);
+		$objet_nom = 'Grimoire : '.$row[0];
+		break;
+	}
+	echo 'Vous fouillez le corps du monstre et découvrez "'.$objet_nom.'" !<br />';
+	//Si le joueur a un groupe
+	if ($joueur->get_groupe() > 0 AND $type_obj != 'quete')
+	{
+		//Répartition en fonction du mode de distribution
+		switch ($groupe->get_partage())
+		{
+			//Aléatoire
+		case 'r' :
+			echo 'Répartition des objets aléatoire.<br />';
+			$chance = count($groupe->membre);
+			$aleat = rand(1, $chance);
+			$gagnant = new perso($groupe->membre[($aleat - 1)]->get_id_joueur());
+			break;
+			//Par tour
+		case 't' :
+			echo 'Répartition des objets par tour.<br />';
+			$gagnant = new perso($groupe->get_prochain_loot());
+			//Changement du prochain loot
+			$j_g = $groupe->trouve_position_joueur($groupe->get_prochain_loot());
+			//Si c'est pas le dernier alors suivant
+			if ((count($groupe->membre) - 1) != $j_g)
+			{
+				$groupe->set_prochain_loot($groupe->membre[($j_g + 1)]->get_id_joueur());
+			}
+			//Sinon premier
+			else
+			{
+				$groupe->set_prochain_loot($groupe->membre[0]->get_id_joueur());
+			}
+			$groupe->sauver();
+			break;
+			//Leader
+		case 'l' :
+			echo 'Répartition des objets au leader.<br />';
+			$gagnant = new perso($groupe->get_id_leader());
+			break;
+			//Celui qui trouve garde
+		case 'k' :
+			echo 'Répartition des objets, celui qui trouve garde.<br />';
+			$gagnant = new perso($joueur->get_id());
+			break;
+		}
+		echo $gagnant->get_nom().' reçoit "'.$objet_nom.'"<br />';
+	}
+	else
+	{
+		$gagnant = new perso($joueur->get_id());
+	}
+	//Insertion du loot dans le journal du gagnant
+	$requete = 'INSERT INTO journal(id_perso, action, time, valeur, x, y) VALUES('.
+		$gagnant->get_id().", 'loot', NOW(), '".mysql_escape_string($objet_nom).
+		"', ".$joueur->get_x().", ".$joueur->get_y().")";
+	$db->query($requete);
+	if ($item[0] != 'r')
+	{
+		$gagnant->restack_objet();
+		if($type_obj == 'quete')
+		{
+			verif_action('L'.$id_objet, $gagnant, 's');
+			$gagnant->prend_objet($item);
+		}
+		else
+		{
+			$gagnant->prend_objet($item);
+		}
+	}
+	else
+	{
+		prend_recette($item, $gagnant);
+	}						
+}
