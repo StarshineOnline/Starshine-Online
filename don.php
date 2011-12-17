@@ -10,7 +10,7 @@ if( isset($_GET['action']) )
   $action = $_GET['action'];
 else
   $action = false;
-  
+
 $requete = 'SELECT valeur FROM variable WHERE nom LIKE "don_test"';
 $req = $db->query($requete);
 $row = $db->read_assoc($req);
@@ -68,7 +68,7 @@ if( $action == "ipn" )
   mail('elettar@starshine-online.com', 'SSO - don Paypal', $mail);
   exit;
 }
-else if( $action == "valid" )
+else if( $action == "valide" )
 {
   // Identifiants de votre document
   $docId      = 118738;
@@ -76,7 +76,7 @@ else if( $action == "valid" )
 
   // PHP5 avec register_long_arrays désactivé?
   if (!isset($HTTP_GET_VARS)) {
-      $HTTP_SESSION_VARS    = $_SESSION;
+      //$HTTP_SESSION_VARS    = $_SESSION;
       $HTTP_SERVER_VARS     = $_SERVER;
       $HTTP_GET_VARS        = $_GET;
   }
@@ -90,24 +90,27 @@ else if( $action == "valid" )
   $query     .= "&REMOTE_ADDR=".$HTTP_SERVER_VARS['REMOTE_ADDR'];
   $result     = @file($query);
 
-  if(trim($result[0]) !== "OK") {
-      header('Location: http://www.starshine-online.com/don.php?action=erreur');
-      exit();
+  if(trim($result[0]) === "OK")
+  {
+    echo 'Merci pour le don ! <br />';
+    $requete = 'SELECT valeur FROM variable WHERE nom LIKE "don_sms"';
+    $req = $db->query($requete);
+    $row = $db->read_assoc($req);
+    $dons = $row['valeur'] + .2;
+    $requete = 'UPDATE variable SET valeur = "'.$dons.'" WHERE nom LIKE "don_sms"';
+    $db->query($requete);
+  }
+  else
+  {
+    echo 'Le don n\'a pu être vérifié !<br />';
   }
 
   // Accès à votre page protégée
 
-  echo 'Merci pour le don ! ';
-      $requete = 'SELECT valeur FROM variable WHERE nom LIKE "don_sms"';
-      $req = $db->query($requete);
-      $row = $db->read_assoc($req);
-      $dons = $row['valeur'] + .2;
-      $requete = 'UPDATE variable SET valeur = "'.$dons.'"" WHERE nom LIKE "don_sms"';
-      $db->query($requete);
 }
 else if( $action == "erreur" )
 {
-  echo 'Il y a visiblement une erreur, la question qui se pose est : mais comment avez vous fait pour arriver là ?<br />';
+  echo 'Il y a visiblement une erreur, la question qui se pose est : mais comment avez-vous fait pour arriver là ?<br />';
 }
 
 $requete = 'SELECT valeur FROM variable WHERE nom LIKE "don_necessaire"';
@@ -115,7 +118,8 @@ $req = $db->query($requete);
 if( $row = $db->read_assoc($req) )
 {
   $necessaire = $row['valeur'];
-  $requete = 'SELECT valeur FROM variable WHERE nom IN ("don_paypal", "don_sms", "don_pub)"';
+  $requete = 'SELECT valeur FROM variable WHERE nom IN ("don_paypal", "don_sms", "don_pub")';
+  $req = $db->query($requete);
   $dons = 0;
   while( $row = $db->read_assoc($req) )
   {
