@@ -10,11 +10,14 @@ if( isset($_GET['action']) )
   $action = $_GET['action'];
 else
   $action = false;
+$test = isset($_GET['test']) && $_GET['test'] == 1;
 
 if( $action == "ipn" )
 {
-  //$paypal_url = parse_url('https://www.paypal.com/fr/cgi-bin/webscr');  ///< url pour la confirmation du don paypal
-  $paypal_url = parse_url('https://www.sandbox.paypal.com/cgi-bin/webscr'); // url pour les tests
+  if( $test )
+    $paypal_url = parse_url('https://www.sandbox.paypal.com/cgi-bin/webscr');
+  else
+    $paypal_url = parse_url('https://www.paypal.com/fr/cgi-bin/webscr');
   $vars = array();;
   $vars_post = '';
   $mail = "Réception d'un paiment par paypal:\n";
@@ -133,7 +136,7 @@ $barre_don = './image/barre/pa'.$ratio_don.'.png';*/
 /*Avancement pour paiement hébergement : <img src="<?php echo $barre_don; ? >" title="<?php echo $actuel.'€ / 250 €'; ? >" /><br />*/
 ?>
 <h3>Faire un don via paypal</h3>
-<form action="https://www.paypal.com/cgi-bin/webscr" method="post">
+<form action="<?PHP echo $paypal_url; ?>" method="post">
 <input type="hidden" name="cmd" value="_s-xclick">
 <input type="hidden" name="hosted_button_id" value="CVXP4LZ8DWHV8">
 <input type="image" src="https://www.paypalobjects.com/fr_FR/FR/i/btn/btn_donate_SM.gif" border="0" name="submit" alt="PayPal - la solution de paiement en ligne la plus simple et la plus sécurisée !">
