@@ -10,7 +10,11 @@ if( isset($_GET['action']) )
   $action = $_GET['action'];
 else
   $action = false;
-$test = isset($_GET['test']) && $_GET['test'] == 1;
+  
+$requete = 'SELECT valeur FROM variable WHERE nom LIKE "don_test"';
+$req = $db->query($requete);
+$row = $db->read_assoc($req);
+$test = $row && $row['don_test'] == 'true';
 
 if( $action == "ipn" )
 {
@@ -143,6 +147,8 @@ $barre_don = './image/barre/pa'.$ratio_don.'.png';*/
 <img alt="" border="0" src="https://www.paypalobjects.com/fr_FR/i/scr/pixel.gif" width="1" height="1">
 </form>
 <?PHP
+if( $test )
+  echo 'Attention : le don par paypal est acutellement en mode test, il n\'y aura donc pas réellement de virement.';
 /*<form action="https://www.paypal.com/cgi-bin/webscr" method="post">
 <input type="hidden" name="cmd" value="_s-xclick">
 <input type="hidden" name="hosted_button_id" value="FR3RDRQTGWJEE">
