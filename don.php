@@ -14,14 +14,15 @@ else
 $requete = 'SELECT valeur FROM variable WHERE nom LIKE "don_test"';
 $req = $db->query($requete);
 $row = $db->read_assoc($req);
-$test = $row && $row['don_test'] == 'true';
+$test = $row && $row['valeur'] == 'true';
+if( $test )
+  $paypal_url = 'https://www.sandbox.paypal.com/cgi-bin/webscr';
+else
+  $paypal_url = 'https://www.paypal.com/fr/cgi-bin/webscr';
 
 if( $action == "ipn" )
 {
-  if( $test )
-    $paypal_url = parse_url('https://www.sandbox.paypal.com/cgi-bin/webscr');
-  else
-    $paypal_url = parse_url('https://www.paypal.com/fr/cgi-bin/webscr');
+  $parsed_url = parse_url($paypal_url);
   $vars = array();;
   $vars_post = '';
   $mail = "Réception d'un paiment par paypal:\n";
@@ -32,11 +33,11 @@ if( $action == "ipn" )
   }
   $mail .= 'Variables : '.$vars_post."\n";
   $vars_post .='cmd=_notify-validate';
-  $fp = fsockopen($paypal_url['host'],'80',$err_num,$err_str,30);
+  $fp = fsockopen($parsed_url['host'],'80',$err_num,$err_str,30);
   if( $fp )
   {
-    fputs($fp, "POST $url_parsed[path] HTTP/1.1\r\n");
-    fputs($fp, "Host: $url_parsed[host]\r\n");
+    fputs($fp, "POST $parsed_url[path] HTTP/1.1\r\n");
+    fputs($fp, "Host: $parsed_url[host]\r\n");
     fputs($fp, "Content-type: application/x-www-form-urlencoded\r\n");
     fputs($fp, "Content-length: ".strlen($vars_post)."\r\n");
     fputs($fp, "Connection: close\r\n\r\n");
@@ -148,7 +149,7 @@ $barre_don = './image/barre/pa'.$ratio_don.'.png';*/
 </form>
 <?PHP
 if( $test )
-  echo 'Attention : le don par paypal est acutellement en mode test, il n\'y aura donc pas réellement de virement.';
+  echo '<b>Attention :</b> le don par paypal est acutellement en mode test, il n\'y aura donc pas réellement de virement.';
 /*<form action="https://www.paypal.com/cgi-bin/webscr" method="post">
 <input type="hidden" name="cmd" value="_s-xclick">
 <input type="hidden" name="hosted_button_id" value="FR3RDRQTGWJEE">
