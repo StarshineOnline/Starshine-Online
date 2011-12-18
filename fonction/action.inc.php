@@ -713,11 +713,13 @@ function lance_sort($id, $acteur, &$effects)
 					echo '&nbsp;&nbsp;<span class="degat"><strong>'.$actif->get_nom().'</strong> inflige <strong>'.$degat.'</strong> dégâts avec '.$row['nom'].'</span><br />';
 					$passif->set_hp($passif->get_hp() - $degat);
 
-          echo '<strong>'.$passif->get_nom().
-            '</strong> est affecté par le debuff '.$row['nom'].'<br/>';
-          lance_buff('debuff_charisme', $passif->get_id(),
-                     8, $row['effet2'], $row['effet2'] * 86400, $row['nom'],
-                     sSQL($row['description']), 'perso', 1, 0, 0, 0);
+					if ($this->type == 'joueur') {
+						echo '<strong>'.$passif->get_nom().
+							'</strong> est affecté par le debuff '.$row['nom'].'<br/>';
+						lance_buff('debuff_charisme', $passif->get_id(),
+											 8, $row['effet2'], $row['effet2'] * 86400, $row['nom'],
+											 sSQL($row['description']), 'perso', 1, 0, 0, 0);
+					}
           break;
 
 			case 'tsunami':
