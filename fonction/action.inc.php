@@ -713,7 +713,7 @@ function lance_sort($id, $acteur, &$effects)
 					echo '&nbsp;&nbsp;<span class="degat"><strong>'.$actif->get_nom().'</strong> inflige <strong>'.$degat.'</strong> dégâts avec '.$row['nom'].'</span><br />';
 					$passif->set_hp($passif->get_hp() - $degat);
 
-					if ($this->type == 'joueur') {
+					if ($passif->get_type() == 'joueur') {
 						echo '<strong>'.$passif->get_nom().
 							'</strong> est affecté par le debuff '.$row['nom'].'<br/>';
 						lance_buff('debuff_charisme', $passif->get_id(),
