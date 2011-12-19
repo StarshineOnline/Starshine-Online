@@ -343,6 +343,11 @@ function print_key_value_form_row($key, $val, $type = null, $fname = null, $opti
 	if ($end) echo "</tr>\n";
 }
 
+function print_js($js)
+{
+	echo '<script type="text/javascript">'.$js.'</script>';
+}
+
 function print_js_onload($js)
 {
 	echo '<script type="text/javascript">$(document).ready(function(){ '.$js.' });</script>';

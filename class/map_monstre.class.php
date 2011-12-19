@@ -489,7 +489,6 @@ class map_monstre extends entnj_incarn
 					if ($tirage < 1) {
 						$has_loot = true;
 						loot_item($joueur, $groupe, $l->item);
-						unset($loot[$k]);
 						$old++;
 						break;
 					}

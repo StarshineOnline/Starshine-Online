@@ -15,3 +15,22 @@ function doNewPnj() {
 		$.post('edit_pnj.php?mode=donew', data, function(res) { $("#upd_res").html(res); });
 		return false;
 }
+
+function setUniqueLoot(o) {
+  $('#hd-loot-id').val(o);
+  $('#item-txt').val(o);
+}
+
+function setLootSelector(t) {
+  if (t != '' && uLoot[t]) {
+    var loot = uLoot[t];
+    html = '';
+    for (var k in loot) {
+      html += '<option value="' + t + k + '">' + loot[k] + '</option>';
+    }
+    $('#loot-opt').html(html);
+  }
+  else {
+    $('#loot-opt').html('');
+  }
+}
