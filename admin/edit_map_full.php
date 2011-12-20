@@ -42,20 +42,22 @@ if (array_key_exists('modevent', $_REQUEST) && $_REQUEST['modevent']) {
 		$db->query("DELETE FROM map_event WHERE x = $_REQUEST[x] AND y = $_REQUEST[y]");
 	}
 	else {
-		$titre = mysql_escape_string(stripslashes($_REQUEST['titre']));
-		$description = mysql_escape_string(stripslashes($_REQUEST['descr']));
+		$titre = mysql_escape_string($_REQUEST['titre']);
+		$description = mysql_escape_string($_REQUEST['descr']));
 		$q = "INSERT INTO map_event (x, y, `titre`, `description`, `action`, `code`, `sql`) ";
 		$qq = "VALUES ($_REQUEST[x], $_REQUEST[y], '$titre', '$description', ";
 		if ($_REQUEST['action'] != '')
-			$qq .= '\''.mysql_escape_string(stripslashes($_REQUEST['action'])).'\', ';
+			$qq .= '\''.mysql_escape_string($_REQUEST['action']).'\', ';
 		else
 			$qq .= 'NULL, ';
+		my_dump($_REQUEST['code']);
+		my_dump(stripslashes($_REQUEST['code']));
 		if ($_REQUEST['code'] != '')
-			$qq .= '\''.mysql_escape_string(stripslashes($_REQUEST['code'])).'\', ';
+			$qq .= '\''.mysql_escape_string($_REQUEST['code']).'\', ';
 		else
 			$qq .= 'NULL, ';
 		if ($_REQUEST['sql'] != '')
-			$qq .= '\''.mysql_escape_string(stripslashes($_REQUEST['sql'])).'\'';
+			$qq .= '\''.mysql_escape_string($_REQUEST['sql']).'\'';
 		else
 			$qq .= 'NULL';
 		$qqq = ') ON DUPLICATE KEY UPDATE `titre` = VALUES(`titre`), `description` = VALUES(`description`), `action` = VALUES(`action`), `code` = VALUES(`code`), `sql` = VALUES(`sql`)';
