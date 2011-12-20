@@ -1792,6 +1792,9 @@ class perso extends entite
 			case 24 : 
 				$this->add_effet_permanent('attaquant', new boutte_flamme($effet, $item->nom));
 				break;
+			case 25 :
+				$this->add_effet_permanent('defenseur', new anneau_resistance($effet, $item->nom));
+				break;
 			default:
 				break;
 			}
