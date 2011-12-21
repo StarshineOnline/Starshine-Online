@@ -1095,7 +1095,7 @@ function lance_sort($id, $acteur, &$effects)
       if ($degat > 0) {
         /* Application des effets de degats magiques */
         foreach ($effects as $effect)
-          $effect->inflige_degats_magiques($actif, $passif, $degats, $row['type']);
+          $effect->inflige_degats_magiques($actif, $passif, $degat, $row['type']);
         /* ~Fin de round */
       }
 		}
