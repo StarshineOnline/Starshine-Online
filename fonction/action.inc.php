@@ -843,7 +843,7 @@ function lance_sort($id, $acteur, &$effects)
 					//}
 				break;
 				case 'degat_vent' :
-					$degat = degat_magique($actif->$get_comp_assoc(), ($row['effet'] + $bonus_degats_magique), $actif, $passif, $effects), $row['type'];
+					$degat = degat_magique($actif->$get_comp_assoc(), ($row['effet'] + $bonus_degats_magique), $actif, $passif, $effects, $row['type']);
 					echo '&nbsp;&nbsp;<span class="degat"><strong>'.$actif->get_nom().'</strong> inflige <strong>'.$degat.'</strong> dégâts avec '.$row['nom'].'</span><br />';
 					// On regarde s'il y a un gain de PA
 					$cap = $row['effet2'];
