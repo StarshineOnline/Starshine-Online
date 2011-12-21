@@ -664,8 +664,9 @@ function lance_sort($id, $acteur, &$effects)
 			/* Application des effets de degats magiques */
 			foreach ($effects as $effect)
 				$bonus_degats_magique =
-					$effect->calcul_degats_magiques($actif, $passif,
-																					$bonus_degats_magique, $row['type']);
+					$effect->calcul_bonus_degats_magiques($actif, $passif,
+                                                $bonus_degats_magique,
+                                                $row['type']);
 			/* ~degats magiques */
 			$bonus_degats_magique += $facteur_degats_arme;
 			$bonus_degats_magique += $actif->get_buff('buff_surpuissance', 'effet');
@@ -679,7 +680,7 @@ function lance_sort($id, $acteur, &$effects)
           /***************************************/
 
 			case 'debuff_enracinement':
-					$degat = degat_magique($actif->$get_comp_assoc(), $bonus_degats_magique, $actif, $passif);
+        $degat = degat_magique($actif->$get_comp_assoc(), $bonus_degats_magique, $actif, $passif, $effects, $row['type']);
 					echo '&nbsp;&nbsp;<span class="degat"><strong>'.$actif->get_nom().'</strong> inflige <strong>'.$degat.'</strong> dégâts avec '.$row['nom'].'</span><br />';
 					$passif->set_hp($passif->get_hp() - $degat);
 
@@ -696,7 +697,7 @@ function lance_sort($id, $acteur, &$effects)
           break;
 
 			case 'heresie_divine':
-					$degat = degat_magique($actif->$get_comp_assoc(), $row['effet'] + $bonus_degats_magique, $actif, $passif);
+					$degat = degat_magique($actif->$get_comp_assoc(), $row['effet'] + $bonus_degats_magique, $actif, $passif, $effects, $row['type']);
 					echo '&nbsp;&nbsp;<span class="degat"><strong>'.$actif->get_nom().'</strong> inflige <strong>'.$degat.'</strong> dégâts avec '.$row['nom'].'</span><br />';
 					$passif->set_hp($passif->get_hp() - $degat);
 
@@ -709,7 +710,7 @@ function lance_sort($id, $acteur, &$effects)
           break;
 
 			case 'encombrement_psy':
-					$degat = degat_magique($actif->$get_comp_assoc(), $row['effet'] + $bonus_degats_magique, $actif, $passif);
+					$degat = degat_magique($actif->$get_comp_assoc(), $row['effet'] + $bonus_degats_magique, $actif, $passif, $effects, $row['type']);
 					echo '&nbsp;&nbsp;<span class="degat"><strong>'.$actif->get_nom().'</strong> inflige <strong>'.$degat.'</strong> dégâts avec '.$row['nom'].'</span><br />';
 					$passif->set_hp($passif->get_hp() - $degat);
 
@@ -723,7 +724,7 @@ function lance_sort($id, $acteur, &$effects)
           break;
 
 			case 'tsunami':
-					$degat = degat_magique($actif->$get_comp_assoc(), $row['effet'] + $bonus_degats_magique, $actif, $passif);
+					$degat = degat_magique($actif->$get_comp_assoc(), $row['effet'] + $bonus_degats_magique, $actif, $passif, $effects, $row['type']);
 					echo '&nbsp;&nbsp;<span class="degat"><strong>'.$actif->get_nom().'</strong> inflige <strong>'.$degat.'</strong> dégâts avec '.$row['nom'].'</span><br />';
 					$passif->set_hp($passif->get_hp() - $degat);
           
@@ -731,7 +732,7 @@ function lance_sort($id, $acteur, &$effects)
           break;
 
 			  case 'empalement_abomination':
-					$degat = degat_magique($actif->$get_comp_assoc(), ($row['effet'] + $bonus_degats_magique), $actif, $passif);
+					$degat = degat_magique($actif->$get_comp_assoc(), ($row['effet'] + $bonus_degats_magique), $actif, $passif, $effects, $row['type']);
 					if ($passif->get_hp() > $degat) { // Si on survit
 						$degat = $passif->get_hp() - 4; // 1 + 3 de LS
           }
@@ -789,7 +790,7 @@ function lance_sort($id, $acteur, &$effects)
           $description = 'Vous sentez votre esprit vieillir, vous ne pensez quʼaux moments où vous étiez en pleine santé et vous avez du mal a vous concentrer';
 					$degat = degat_magique($actif->$get_comp_assoc(),
                                  ($row['effet'] + $bonus_degats_magique),
-                                 $actif, $passif);
+                                 $actif, $passif, $effects, $row['type']);
           lance_buff('maladie_degenerescence', $passif->get_id(),
                      $row['effet2'], '0', 2678400, 'Nostalgie de Karn',
                      sSQL($description), 'perso', 1, 0, 0, 0);
@@ -807,7 +808,7 @@ function lance_sort($id, $acteur, &$effects)
 				$passif->set_pa($pa);
 				$degat = degat_magique($actif->$get_comp_assoc(),
 															 ($row['effet'] + $bonus_degats_magique),
-															 $actif, $passif);
+															 $actif, $passif, $effects, $row['type']);
 				echo '&nbsp;&nbsp;<span class="degat"><strong>'.$actif->get_nom().
 					'</strong> inflige <strong>'.$degat.'</strong> dégâts avec '.
 					$row['nom'].'</span><br />';
@@ -824,12 +825,12 @@ function lance_sort($id, $acteur, &$effects)
   			case 'degat_feu' : /* Les 3 c'est pareil une fois tellurique  */
 	  		case 'degat_nature' :
 		  	case 'degat_mort' :
-					$degat = degat_magique($actif->$get_comp_assoc(), ($row['effet'] + $bonus_degats_magique), $actif, $passif);
+					$degat = degat_magique($actif->$get_comp_assoc(), ($row['effet'] + $bonus_degats_magique), $actif, $passif, $effects, $row['type']);
 					echo '&nbsp;&nbsp;<span class="degat"><strong>'.$actif->get_nom().'</strong> inflige <strong>'.$degat.'</strong> dégâts avec '.$row['nom'].'</span><br />';
 					$passif->set_hp($passif->get_hp() - $degat);
 				break;
 				case 'degat_froid' :
-					$degat = degat_magique($actif->$get_comp_assoc(), ($row['effet'] + $bonus_degats_magique), $actif, $passif);
+					$degat = degat_magique($actif->$get_comp_assoc(), ($row['effet'] + $bonus_degats_magique), $actif, $passif, $effects, $row['type']);
 					echo '&nbsp;&nbsp;<span class="degat"><strong>'.$actif->get_nom().'</strong> inflige <strong>'.$degat.'</strong> dégâts avec '.$row['nom'].'</span><br />';
 					$passif->set_hp($passif->get_hp() - $degat);
 					// On regarde si la cible est glacé
@@ -842,7 +843,7 @@ function lance_sort($id, $acteur, &$effects)
 					//}
 				break;
 				case 'degat_vent' :
-					$degat = degat_magique($actif->$get_comp_assoc(), ($row['effet'] + $bonus_degats_magique), $actif, $passif);
+					$degat = degat_magique($actif->$get_comp_assoc(), ($row['effet'] + $bonus_degats_magique), $actif, $passif, $effects, $row['type']);
 					echo '&nbsp;&nbsp;<span class="degat"><strong>'.$actif->get_nom().'</strong> inflige <strong>'.$degat.'</strong> dégâts avec '.$row['nom'].'</span><br />';
 					// On regarde s'il y a un gain de PA
 					$cap = $row['effet2'];
@@ -858,20 +859,20 @@ function lance_sort($id, $acteur, &$effects)
 					$passif->set_hp($passif->get_hp() - $degat);
 				break;
 				case 'sacrifice_morbide' :
-					$degat = degat_magique($actif->$get_comp_assoc(), ($row['effet'] + $bonus_degats_magique), $actif, $passif);
+					$degat = degat_magique($actif->$get_comp_assoc(), ($row['effet'] + $bonus_degats_magique), $actif, $passif, $effects, $row['type']);
 					echo '&nbsp;&nbsp;<span class="degat"><strong>'.$actif->get_nom().'</strong> se suicide et inflige <strong>'.$degat.'</strong> dégâts avec '.$row['nom'].'</span><br />';
 					$passif->set_hp($passif->get_hp() - $degat);
 					$actif->set_hp(0);
 				break;
 				case 'degat_terre' :
-					$degat = degat_magique($actif->$get_comp_assoc(), ($row['effet'] + $bonus_degats_magique), $actif, $passif);
+					$degat = degat_magique($actif->$get_comp_assoc(), ($row['effet'] + $bonus_degats_magique), $actif, $passif, $effects, $row['type']);
 					echo '&nbsp;&nbsp;<span class="degat"><strong>'.$actif->get_nom().'</strong> inflige <strong>'.$degat.'</strong> dégâts avec '.$row['nom'].'</span><br />';
 					$actif->etat['tellurique']['effet'] += $row['effet2'];
 					$actif->etat['tellurique']['duree'] = $row['duree'];
 					$passif->set_hp($passif->get_hp() - $degat);
 				break;
 				case 'lapidation' :
-					$degat = degat_magique($actif->$get_comp_assoc(), ($row['effet'] + $bonus_degats_magique), $actif, $passif);
+					$degat = degat_magique($actif->$get_comp_assoc(), ($row['effet'] + $bonus_degats_magique), $actif, $passif, $effects, $row['type']);
 					echo '&nbsp;&nbsp;<span class="degat"><strong>'.$actif->get_nom().'</strong> inflige <strong>'.$degat.'</strong> dégâts avec '.$row['nom'].'</span><br />';
 					$passif->set_hp($passif->get_hp() - $degat);
 					// On regarde si la cible est étourdie
@@ -884,7 +885,7 @@ function lance_sort($id, $acteur, &$effects)
 					}
 				break;
 				case 'globe_foudre' :
-					$degat = degat_magique($actif->$get_comp_assoc(), ($row['effet'] + $bonus_degats_magique), $actif, $passif);
+					$degat = degat_magique($actif->$get_comp_assoc(), ($row['effet'] + $bonus_degats_magique), $actif, $passif, $effects, $row['type']);
 
 					// On ajoute pas a la stack d'effet car on a besoin de savoir
 					// tout de suite si la foudre passe ou pas pour le +1 degats
@@ -899,7 +900,7 @@ function lance_sort($id, $acteur, &$effects)
 					// On vérifie que le personnage a assez de HP
 					if($cout_hp < $actif->get_hp())
 					{
-						$degat = degat_magique($actif->$get_comp_assoc(), ($row['effet'] + $bonus_degats_magique), $actif, $passif);
+						$degat = degat_magique($actif->$get_comp_assoc(), ($row['effet'] + $bonus_degats_magique), $actif, $passif, $effects, $row['type']);
 						echo '&nbsp;&nbsp;<span class="degat"><strong>'.$actif->get_nom().'</strong> inflige <strong>'.$degat.'</strong> dégâts avec '.$row['nom'].'</span><br />';
 						$passif->set_hp($passif->get_hp() - $degat);
 						$actif->set_hp($actif->get_hp() - $cout_hp);
@@ -910,7 +911,7 @@ function lance_sort($id, $acteur, &$effects)
 					}
 				break;
 				case 'drain_vie' :
-					$degat = degat_magique(($actif->$get_comp_assoc() - 2), ($row['effet'] + $bonus_degats_magique), $actif, $passif);
+					$degat = degat_magique(($actif->$get_comp_assoc() - 2), ($row['effet'] + $bonus_degats_magique), $actif, $passif, $effects, $row['type']);
 					if ($passif->get_type() == 'batiment') $drain = 0;
 					else $drain = round($degat * 0.3);
 					// Augmentation du nombre de HP récupérable par récupération
@@ -923,7 +924,7 @@ function lance_sort($id, $acteur, &$effects)
 					if($actif->get_hp() > floor($actif->get_hp_max())) $actif->set_hp($actif->get_hp_max());
 				break;
 				case 'vortex_vie' :
-					$degat = degat_magique(($actif->$get_comp_assoc() - 2), ($row['effet'] + $bonus_degats_magique), $actif, $passif);
+					$degat = degat_magique(($actif->$get_comp_assoc() - 2), ($row['effet'] + $bonus_degats_magique), $actif, $passif, $effects, $row['type']);
 					if ($passif->get_type() == 'batiment') $drain = 0;
 					else $drain = round($degat * 0.4);
 					// Augmentation du nombre de HP récupérable par récupération
@@ -936,7 +937,7 @@ function lance_sort($id, $acteur, &$effects)
 					if($actif->get_hp() > floor($actif->get_hp_max())) $actif->set_hp($actif->get_hp_max());
 				break;
 				case 'vortex_mana' :
-					$degat = degat_magique(($actif->$get_comp_assoc() - 2), ($row['effet'] + $bonus_degats_magique), $actif, $passif);
+					$degat = degat_magique(($actif->$get_comp_assoc() - 2), ($row['effet'] + $bonus_degats_magique), $actif, $passif, $effects, $row['type']);
 					$drain = round($degat * 0.2);
 					echo '&nbsp;&nbsp;<span class="degat"><strong>'.$actif->get_nom().'</strong> inflige <strong>'.$degat.'</strong> dégâts avec '.$row['nom'].'<br />
 					Et gagne <strong>'.$drain.'</strong> RM grâce au drain</span><br />';
@@ -944,27 +945,27 @@ function lance_sort($id, $acteur, &$effects)
 					$actif->set_reserve($actif->get_reserve() + $drain);
 				break;
 				case 'putrefaction' :
-					$degat = degat_magique($actif->$get_comp_assoc(), ($row['effet'] + $bonus_degats_magique), $actif, $passif);
+					$degat = degat_magique($actif->$get_comp_assoc(), ($row['effet'] + $bonus_degats_magique), $actif, $passif, $effects, $row['type']);
 					echo '&nbsp;&nbsp;<span class="degat"><strong>'.$actif->get_nom().'</strong> inflige <strong>'.$degat.'</strong> dégâts avec '.$row['nom'].'</span><br />';
 					$passif->set_hp($passif->get_hp() - $degat);
 					$passif->etat['putrefaction']['duree'] = 1;
 					$passif->etat['putrefaction']['effet'] = 2;
 				break;
 				case 'brisement_os' :
-					$degat = degat_magique($actif->$get_comp_assoc(), ($row['effet'] + $bonus_degats_magique), $actif, $passif);
+					$degat = degat_magique($actif->$get_comp_assoc(), ($row['effet'] + $bonus_degats_magique), $actif, $passif, $effects, $row['type']);
 					if($passif->etat['paralysie']['duree'] > 0) $degat = round($degat * 1.6);
 					echo '&nbsp;&nbsp;<span class="degat"><strong>'.$actif->get_nom().'</strong> inflige <strong>'.$degat.'</strong> dégâts avec '.$row['nom'].'</span><br />';
 					$passif->set_hp($passif->get_hp() - $degat);
 				break;
 				case 'embrasement' :
-					$degat = degat_magique($actif->$get_comp_assoc(), ($row['effet'] + $bonus_degats_magique), $actif, $passif);
+					$degat = degat_magique($actif->$get_comp_assoc(), ($row['effet'] + $bonus_degats_magique), $actif, $passif, $effects, $row['type']);
 					echo '&nbsp;&nbsp;<span class="degat"><strong>'.$actif->get_nom().'</strong> inflige <strong>'.$degat.'</strong> dégâts avec '.$row['nom'].'</span><br />';
 					$passif->set_hp($passif->get_hp() - $degat);
 					$passif->etat['embraser']['duree'] = 5;
 					$passif->etat['embraser']['effet'] = 1;
 				break;
 				case 'sphere_glace' :
-					$degat = degat_magique($actif->$get_comp_assoc(), ($row['effet'] + $bonus_degats_magique), $actif, $passif);
+					$degat = degat_magique($actif->$get_comp_assoc(), ($row['effet'] + $bonus_degats_magique), $actif, $passif, $effects, $row['type']);
 					echo '&nbsp;&nbsp;<span class="degat"><strong>'.$actif->get_nom().'</strong> inflige <strong>'.$degat.'</strong> dégâts avec '.$row['nom'].'</span><br />';
 					$passif->set_hp($passif->get_hp() - $degat);
 					$passif->etat['glace_anticipe']['duree'] = 3;

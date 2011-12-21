@@ -280,6 +280,17 @@ class effect
    * 
    * @return    Bonus dégâts après modification.
    */ 
+  function calcul_bonus_degats_magiques(&$actif, &$passif, $bonus_degats, $type) { return $bonus_degats; }
+  /**
+   * Modifie les dégâts des sorts
+   * 
+   * @param  $actif     Personnage actif lors de l'action.
+   * @param  $passif    Personnage passif lors de l'action.
+   * @param  $degats    Dégâts avant modification.
+   * @param  $type      Type de sort.
+   * 
+   * @return    Dégâts après modification.
+   */ 
   function calcul_degats_magiques(&$actif, &$passif, $degats, $type) { return $degats; }
   /**
    * Effectue les modifications concernant le blocage (potentiel blocage, maitrise du bouclier)
@@ -690,7 +701,7 @@ class bonus_pinceau_degats extends effect
     $this->effet = $aEffet;
   }
 	
-	function calcul_degats_magiques(&$actif, &$passif, $bonus) {
+	function calcul_bonus_degats_magiques(&$actif, &$passif, $bonus_degats) {
 		$bonus_degat = 0;
 		for ($tmp_honneur = $actif->get_honneur() - 20000; $tmp_honneur > 0;
 				 $tmp_honneur -= 15000)
@@ -700,7 +711,7 @@ class bonus_pinceau_degats extends effect
 									 $bonus_degat.' grâce à son honneur ('.$this->nom.') !');
 		else
 			$this->debug('Pas assez d\'honneur pour profiter du '.$this->nom);
-		return $bonus + $bonus_degat;
+		return $bonus_degats + $bonus_degat;
 	}
 }
 /**
@@ -717,7 +728,7 @@ class boutte_flamme extends effect
     $this->effet = $aEffet;
   }
 		
-	/*function calcul_degats_magiques(&$actif, &$passif, $degats, $type) {
+	function calcul_degats_magiques(&$actif, &$passif, $degats, $type) {
 		switch ($type) {
 		case 'degat_feu':
 		case 'degat_froid':
@@ -732,27 +743,28 @@ class boutte_flamme extends effect
 									 $this->effet.' grâce à son arme ('.$this->nom.') !');
 		}
 		return $degats;
-	}*/
-	
+	}
+	/*
 	function inflige_degats_magiques(&$actif, &$passif, $degats, $type) {  
     switch ($type) {
-		case 'degat_feu':
-		case 'degat_froid':
-		case 'degat_vent':
-		case 'degat_terre':
-		case 'lapidation':
-		case 'globe_foudre':
-		case 'embrasement':
-		case 'sphere_glace':
-		{
-			$this->hit('Le boute-flamme de '.$actif->get_nom().' augmente votre sensibilité aux sorts élémentaires
+      case 'degat_feu':
+      case 'degat_froid':
+      case 'degat_vent':
+      case 'degat_terre':
+      case 'lapidation':
+      case 'globe_foudre':
+      case 'embrasement':
+      case 'sphere_glace':
+      {
+        $this->hit('Le boute-flamme de '.$actif->get_nom().' augmente votre sensibilité aux sorts élémentaires
 			Vous recevez '.$this->effet.' dégâts supplémentaire');
-			$passif->add_hp($this->effet * -1);
-			break;
-		}
-    return $degats;
-	}
-	}
+        $passif->add_hp($this->effet * -1);
+        break;
+      }
+      return $degats;
+    }
+  }
+  */
 }
 
 /**
@@ -851,25 +863,18 @@ class anneau_resistance extends effect
     $this->effet = $aEffet;
 	}
 	
-	function inflige_degats(&$actif, &$passif, $degats) {
-    return $degats; // En attendant que ce soit debuggué
-    if ( $actif->get_race() == $this->effet) {
-      if ( $degats >= 2) {
-        echo 1;
-      } 
-      elseif  ( $degats >= 0 ) {
-        $degat = $degats;
-      }
-			$this->hit('L\' anneau de resistance de '.$passif->get_nom().' reduit les degats de '.$degat);
-			$passif->add_hp($degat);
+	function calcul_degats(&$actif, &$passif, $degats) {
+    if ($actif->get_race() == $this->effet) {
+      $reduction = min(2, $degats);
+			$this->hit('L\'anneau de resistance de '.$passif->get_nom().
+                 ' reduit les degats de '.$reduction);
+      $degats -= $reduction;
     }
     return $degats;
   }
   
-  function inflige_degats_magiques(&$actif, &$passif, $degats) {
-    if ( $actif->get_race() == $this->effet) {
-      $this->inflige_degats(&$actif, &$passif, $degats);
-    }
+  function calcul_degats_magiques(&$actif, &$passif, $degats, $type) {
+    return $this->calcul_degats(&$actif, &$passif, $degats);
   }
 }
 
