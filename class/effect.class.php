@@ -866,7 +866,7 @@ class anneau_resistance extends effect
 	function calcul_degats(&$actif, &$passif, $degats) {
     if ($actif->get_race() == $this->effet) {
       $reduction = min(2, $degats);
-			$this->hit('L\' anneau de resistance de '.$passif->get_nom().
+			$this->hit('L\'anneau de resistance de '.$passif->get_nom().
                  ' reduit les degats de '.$reduction);
       $degats -= $reduction;
     }
@@ -874,10 +874,7 @@ class anneau_resistance extends effect
   }
   
   function calcul_degats_magiques(&$actif, &$passif, $degats, $type) {
-    if ($actif->get_race() == $this->effet) {
-       $degats = $this->inflige_degats(&$actif, &$passif, $degats);
-    }
-    return $degats;
+    return $this->calcul_degats(&$actif, &$passif, $degats);
   }
 }
 
