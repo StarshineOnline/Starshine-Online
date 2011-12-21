@@ -515,7 +515,7 @@ function attaque($acteur = 'attaquant', $competence, &$effects)
 	return $augmentation;
 }
 
-function degat_magique($carac, $degat, $actif, $passif)
+function degat_magique($carac, $degat, $actif, $passif, $effects, $type)
 {
 	$dbg_msg = '';
   if (isset($actif->enchantement) &&
@@ -551,6 +551,11 @@ function degat_magique($carac, $degat, $actif, $passif)
   $degat = round($degat * $reduction);
   print_debug('(Réduction de '.($degat_avant - $degat).
 						 ' dégâts par la PM)<br />');
+
+  /* Application des modifications des dégâts */
+  foreach ($effects as $effect)
+    $degat = calcul_degats_magiques($actif, $passif, $degat, $type);
+  /* ~modifications des dégâts */
 				 
   return $degat;
 }
