@@ -838,9 +838,9 @@ class mirroir_eclatant extends effect
                ' dégâts');
                return ceil($degat*(1-$this->effet/100));		
 	}
-  }
+}
   
-  class anneau_resistance extends effect
+class anneau_resistance extends effect
 {
 	var $effet;
 
@@ -852,27 +852,24 @@ class mirroir_eclatant extends effect
 	}
 	
 	function inflige_degats(&$actif, &$passif, $degats) {
-    if ( $actif->get_race() == $this->effet)
-   {
-	   if ( $degats >= 2)
-		{
-			echo 1;
-		} 
-		elseif  ( $degats >= 0 )
-		{
-			$degat = $degats;
-		}
+    return $degats; // En attendant que ce soit debuggué
+    if ( $actif->get_race() == $this->effet) {
+      if ( $degats >= 2) {
+        echo 1;
+      } 
+      elseif  ( $degats >= 0 ) {
+        $degat = $degats;
+      }
 			$this->hit('L\' anneau de resistance de '.$passif->get_nom().' reduit les degats de '.$degat);
 			$passif->add_hp($degat);
-	}
-	return $degats;
+    }
+    return $degats;
   }
   
   function inflige_degats_magiques(&$actif, &$passif, $degats) {
-   if ( $actif->get_race() == $this->effet)
-   {
-	   $this->inflige_degats(&$actif, &$passif, $degats);
-   }
+    if ( $actif->get_race() == $this->effet) {
+      $this->inflige_degats(&$actif, &$passif, $degats);
+    }
   }
 }
 
