@@ -2213,7 +2213,7 @@ function verif_mort($pourcent, $var, $duree_debuff=0, $multiplicateur_mouvement=
 		$spawn_ville = 'ok';
 		if($amende)
 		{
-			if($amende['respawn_ville'] == 'y')
+			if($amende['respawn_ville'] == 'n')
 			{
 				$echo = 'Revenir dans le refuge des criminels';
 				$spawn_ville = 'wrong';
