@@ -554,7 +554,7 @@ function degat_magique($carac, $degat, $actif, $passif, $effects, $type)
 
   /* Application des modifications des dégâts */
   foreach ($effects as $effect)
-    $degat = calcul_degats_magiques($actif, $passif, $degat, $type);
+    $degat = $effect->calcul_degats_magiques($actif, $passif, $degat, $type);
   /* ~modifications des dégâts */
 				 
   return $degat;
