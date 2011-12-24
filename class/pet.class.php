@@ -509,5 +509,12 @@ class pet extends map_monstre
 		return $this->level;
 	}
 	// @}
+
+	/// Modifie si c'est la créature principale du dresseur
+	function set_nom($nom)
+	{
+		$this->nom = $nom;
+		$this->champs_modif[] = 'nom';
+	}
 }
 ?>
