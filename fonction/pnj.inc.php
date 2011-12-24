@@ -42,14 +42,6 @@ function pnj_run_cache_cache()
     "<em>Riky s'enfuit en courant pour se cacher ailleurs</em>";
 }
 
-function pnj_run_tp_devant_cesar($x, $y)
-{
-  global $joueur;
-  global $db;
-	$joueur->set_x($x);
-	$joueur->set_y($y);
-}
-
 function pnj_if_test_true(&$joueur)
 {
   return true;
@@ -57,5 +49,15 @@ function pnj_if_test_true(&$joueur)
 
 function pnj_if_test_false(&$joueur)
 {
+  return false;
+}
+
+function pnj_if_have_pet_yugzilla(&$joueur)
+{
+  $ecurie = $joueur->get_pets();
+  foreach ($ecurie as $pet) {
+    if ($pet->get_id_monstre() == 191)
+      return true;
+  }
   return false;
 }
