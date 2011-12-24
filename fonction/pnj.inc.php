@@ -50,3 +50,12 @@ function pnj_run_tp_devant_cesar($x, $y)
 	$joueur->set_y($y);
 }
 
+function pnj_if_test_true(&$joueur)
+{
+  return true;
+}
+
+function pnj_if_test_false(&$joueur)
+{
+  return false;
+}
