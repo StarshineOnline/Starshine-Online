@@ -518,7 +518,7 @@ class tellurique extends etat {
 		}
 	}
 
-  function calcul_degats_magiques(&$actif, &$passif, $degats, $type) {
+  function calcul_bonus_degats_magiques(&$actif, &$passif, $bonus_degats, $type) {
 		switch ($type) {
 		case 'degat_feu':
 		case 'degat_froid':
@@ -528,9 +528,9 @@ class tellurique extends etat {
 		case 'globe_foudre':
 		case 'embrasement':
 		case 'sphere_glace':
-			$degats += $this->effet;
+			$bonus_degats += $this->effet;
 		}
-		return $degats;
+		return $bonus_degats;
 	}
 }
 

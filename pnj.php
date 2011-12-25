@@ -142,12 +142,27 @@ if(preg_match("`\[vendsitem:([^[\:]*):([^[]*)\]`i", $message, $regs))
                           $replace, $message);
 }
 //lancement fonction personalisée (cf. fonction/pnj.inc.php)
-if(preg_match("`\[run:([a-z0-9_]+)\]`i", $message, $regs))
+while (preg_match("`\[run:([a-z0-9_]+)\]`i", $message, $regs))
 {
   include_once('fonction/pnj.inc.php');
   $run = 'pnj_run_'.$regs[1];
   $replace = $run();
   $message = preg_replace("`\[run:$regs[1]\]`i", $replace, $message);
+}
+//IF fonction personalisée (cf. fonction/pnj.inc.php)
+while (preg_match("`\[if:([a-z0-9_]+)\]`i", $message, $regs))
+{
+  include_once('fonction/pnj.inc.php');
+  $run = 'pnj_if_'.$regs[1];
+  $ok = $run($joueur);
+  if ($ok) {
+    $message = preg_replace("`\[if:$regs[1]\]`i", '', $message);
+    $message = preg_replace("`\[/if:$regs[1]\]`i", '', $message);
+  }
+  else {
+    $message = preg_replace("`\[if:$regs[1]\].*\[/if:$regs[1]\]`i", '',
+                            $message);
+  }
 }
 //validation inventaire
 if(preg_match("`\[verifinventaire:([^[]*)\]`i", $message, $regs))
