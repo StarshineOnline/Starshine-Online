@@ -153,7 +153,7 @@ if(!$visu AND isset($_GET['action']))
 						echo '<h5>RvR impossible pendant la trêve</h5>';
 						break;
 					}
-					if ($W_row['type'] != 0 && $W_row['type'] != 4)
+					if ($W_row['type'] != 1 && $W_row['type'] != 4)
 					{
 						//Cherche infos sur l'objet
 						$requete = "SELECT *, batiment.id AS batiment_id  FROM objet_royaume RIGHT JOIN batiment ON batiment.id = objet_royaume.id_batiment WHERE objet_royaume.id = ".sSQL($_GET['id_objet']);
