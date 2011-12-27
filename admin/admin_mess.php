@@ -39,9 +39,9 @@ else
 		}
 		else
 		{ 	
-			$motd_titre = $_POST['titre'];
+			$motd_titre = mysql_escape_string($_POST['titre']);
 			$motd_publi = $_POST['publi'];
-			$motd_resume = $_POST['resume'];
+			$motd_resume = mysql_escape_string($_POST['resume']);
 			$requete = "INSERT INTO motd (`titre`,`publie`,`text`)
 			VALUES ('$motd_titre','$motd_publi','$motd_resume')";
 			$req = $db->query($requete);
