@@ -15,10 +15,7 @@ include_once(root.'haut.php');
 </div>
 <div id='accueil'>
 	<div style="top:600px; position:absolute; height:65; width:475; display:block; margin:auto; margin-left: 82px;">
-	  <!-- WebtrafficAgents.com Ads Code for ref:au-koazxd Gen:12/17/11 07:01:05-->
-    <script src="http://traffic.webtrafficagents.com/scripts/AdLauncher.js"  type="text/javascript"></script>
-    <script type="text/javascript">InitAd('au-koazxd');</script>
-    <!-- End WebtrafficAgents.com Ads Code-->
+	  <script type="text/javascript" src="http://www.adcash.com/script/java.php?option=rotateur&rotateur=43457"></script>
   </div>
   
 	<div id='loading_sso' style='display:none;'></div>	
