@@ -890,7 +890,7 @@ class entite extends placable
 				$this->point_victoire = 0;
 			break;
 			case 'pet' :
-				$pet = $objet->get_pet();
+				$pet = $objet->get_pet(); // bug si pas de créature principale
 				$pet->get_monstre();
 				$this->action = $pet->recupaction('attaque');
 				$this->arme_type = $pet->monstre->get_arme();

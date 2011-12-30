@@ -90,17 +90,16 @@ class map_monstre extends entnj_incarn
 	 */
   // @{
 	/**
-	* @access public
-
-	* @param int(10) id attribut
-	* @param mediumint(8) type attribut
-	* @param mediumint(8) x attribut
-	* @param mediumint(8) y attribut
-	* @param mediumint(8) hp attribut
-	* @param tinyint(3) level attribut
-	* @param varchar(50) nom attribut
-	* @param varchar(40) lib attribut
-	* @param int(10) mort_naturelle attribut
+	* Constructeur
+	* @param id                Id dans la base de donnée ou tableau associatif contenant les informations permettant la création de l'objet
+	* @param $id_monstre       Id de la définition du monstre
+	* @param x                 Position x du monstre
+	* @param y                 Position y du monstre
+	* @param hp                HP¨actuels du monstre
+	* @param level             Niveau du monstre
+	* @param nom               Nom d monstre
+	* @param lib
+	* @param mort_naturelle    Date de la mort naturelle du monstre
 	*/
 	function __construct($id = 0, $id_monstre = 0, $x = 0, $y = 0, $hp = 0, $level = 0, $nom = '', $lib = '', $mort_naturelle = '')
 	{
@@ -177,6 +176,7 @@ class map_monstre extends entnj_incarn
    * Données et méthodes ayant trait aux buffs et débuffs actifs sur le monstre.
    */
   // @{
+	protected $buff;  ///< Liste des buffs actifs sur le monstre
 	/**
 	 * Renvoie une propriété d'un buff / débuff particulier actif sur le personnage ou l'ensemble de ceux-ci.
 	 * @param  $nom      Nom (type) du (dé)buff recherché, renvoie tous les buffs actifs si vaut false.
@@ -184,7 +184,6 @@ class map_monstre extends entnj_incarn
 	 * @param  $type	   Si false on prend le premier buff, si true celui dont le type correspond à $nom.
 	 * @return     Tableau des buffs ou valeur demandée.
 	 */
-	protected $buff;  ///< Liste des buffs actifs sur le monstre
 	function get_buff($nom = false, $champ = false, $type = true)
 	{
 		if(!$nom)
