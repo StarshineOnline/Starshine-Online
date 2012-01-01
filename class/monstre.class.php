@@ -1,288 +1,194 @@
 <?php // -*- mode: php; tab-width:2 -*-
-class monstre
-{
 /**
-    * @access private
-    * @var mediumint(8)
-    */
-	private $id;
+ * @file monstre.class.php
+ * Définition de la classe monstre, représentant la définition d'un monstre.
+ */
 
-	/**
-    * @access private
-    * @var varchar(50)
-    */
-	private $lib;
+/**
+ * Classe monstre
+ * Cette classe représentant la définition d'un monstre.
+ * Correspond à la table du même nom dans la base de données
+ */
+class monstre extends entitenj_def
+{
+	protected $lib;  ///< Nom interne du monstre
+	protected $level;  ///< Niveau du monstre
+	protected $xp;  ///< XP gagnés en combattan le monstre
+	protected $star;  ///< Stars gagnées en tuant le monstre
+	protected $drops;  ///< Objets gagnées en tuant le monstre
+	protected $spawn;  ///< ?
+	protected $spawn_loc;  ///< Lieu particulier d'apparition du monstre
+	protected $terrain;  ///< Types de terrain où on peut trouver le monstre
+	protected $affiche;  ///< Affichage des caractéristiques du monstre : y: affiche tout - n: n'affiche pas la description - h: cache aussi level, hp, caracs, et autres infos survie
 
-	/**
-    * @access private
-    * @var varchar(50)
-    */
-	private $nom;
-
-	/**
-    * @access private
-    * @var varchar(50)
-    */
-	private $type;
-
-	/**
-    * @access private
-    * @var mediumint(9)
-    */
-	private $hp;
-
-	/**
-    * @access private
-    * @var mediumint(9)
-    */
-	private $pp;
-
-	/**
-    * @access private
-    * @var mediumint(9)
-    */
-	private $pm;
-
-	/**
-    * @access private
-    * @var tinyint(4)
-    */
-	private $forcex;
-
-	/**
-    * @access private
-    * @var tinyint(4)
-    */
-	private $dexterite;
-
-	/**
-    * @access private
-    * @var tinyint(4)
-    */
-	private $puissance;
-
-	/**
-    * @access private
-    * @var tinyint(4)
-    */
-	private $volonte;
-
-	/**
-    * @access private
-    * @var tinyint(3)
-    */
-	private $energie;
-
-	/**
-    * @access private
-    * @var mediumint(9)
-    */
-	private $melee;
-
-	/**
-    * @access private
-    * @var mediumint(9)
-    */
-	private $esquive;
-
-	/**
-    * @access private
-    * @var mediumint(8)
-    */
-	private $incantation;
-
-	/**
-    * @access private
-    * @var mediumint(8)
-    */
-	private $sort_vie;
-
-	/**
-    * @access private
-    * @var mediumint(8)
-    */
-	private $sort_mort;
-
-	/**
-    * @access private
-    * @var mediumint(8)
-    */
-	private $sort_element;
-
-	/**
-    * @access private
-    * @var mediumint(8)
-    */
-	private $dressage;
-
-	/**
-    * @access private
-    * @var varchar(5)
-    */
-	private $sort_dressage;
-
-	/**
-    * @access private
-    * @var varchar(10)
-    */
-	private $arme;
-
-	/**
-    * @access private
-    * @var text
-    */
-	private $action;
-
-	/**
-    * @access private
-    * @var tinyint(3)
-    */
-	private $level;
-
-	/**
-    * @access private
-    * @var mediumint(9)
-    */
-	private $xp;
-
-	/**
-    * @access private
-    * @var mediumint(9)
-    */
-	private $star;
-
-	/**
-    * @access private
-    * @var text
-    */
-	private $drops;
-
-	/**
-    * @access private
-    * @var int(10)
-    */
-	private $spawn;
-
-	/**
-    * @access private
-    * @var text
-    */
-	private $spawn_loc;
-
-	/**
-    * @access private
-    * @var varchar(50)
-    */
-	private $terrain;
-
-	/**
-    * @access private
-    * @var enum('y','n')
-    */
-	private $affiche;
-
-	/**
-    * @access private
-    * @var text
-    */
-	private $description;
-
-	
-	/**
-	* @access public
-
-	* @param mediumint(8) id attribut
-	* @param varchar(50) lib attribut
-	* @param varchar(50) nom attribut
-	* @param varchar(50) type attribut
-	* @param mediumint(9) hp attribut
-	* @param mediumint(9) pp attribut
-	* @param mediumint(9) pm attribut
-	* @param tinyint(4) forcex attribut
-	* @param tinyint(4) dexterite attribut
-	* @param tinyint(4) puissance attribut
-	* @param tinyint(4) volonte attribut
-	* @param tinyint(3) energie attribut
-	* @param mediumint(9) melee attribut
-	* @param mediumint(9) esquive attribut
-	* @param mediumint(8) incantation attribut
-	* @param mediumint(8) sort_vie attribut
-	* @param mediumint(8) sort_mort attribut
-	* @param mediumint(8) sort_element attribut
-	* @param mediumint(8) dressage attribut
-	* @param varchar(5) sort_dressage attribut
-	* @param varchar(10) arme attribut
-	* @param text action attribut
-	* @param tinyint(3) level attribut
-	* @param mediumint(9) xp attribut
-	* @param mediumint(9) star attribut
-	* @param text drops attribut
-	* @param int(10) spawn attribut
-	* @param text spawn_loc attribut
-	* @param varchar(50) terrain attribut
-	* @param enum('y','n') affiche attribut
-	* @param text description attribut
-	* @return none
-	*/
-	function __construct($id = 0, $lib = '', $nom = '', $type = '', $hp = '', $pp = '', $pm = '', $forcex = '', $dexterite = '', $puissance = '', $volonte = '', $energie = '', $melee = '', $esquive = '', $incantation = '', $sort_vie = '', $sort_mort = '', $sort_element = '', $dressage = '', $sort_dressage = '', $arme = '', $action = '', $level = '', $xp = '', $star = '', $drops = '', $spawn = '', $spawn_loc = '', $terrain = '', $affiche = '', $description = '', $sort_combat = '', $comp_combat = '')
+	/// Renvoie le nom interne du monstre
+	function get_lib()
 	{
-		global $db;
+		return $this->lib;
+	}
+	/// Modifie le nom interne du monstre
+	function set_lib($lib)
+	{
+		$this->lib = $lib;
+		$this->champs_modif[] = 'lib';
+	}
+
+	/// Renvoie le niveau du monstre
+	function get_level()
+	{
+		return $this->level;
+	}
+	/// Modifie le niveau du monstre
+	function set_level($level)
+	{
+		$this->level = $level;
+		$this->champs_modif[] = 'level';
+	}
+
+	/// Renvoie les XP gagnés en combattan le monstre
+	function get_xp()
+	{
+		return $this->xp;
+	}
+	/// Modifie les XP gagnés en combattan le monstre
+	function set_xp($xp)
+	{
+		$this->xp = $xp;
+		$this->champs_modif[] = 'xp';
+	}
+
+	/// Renvoie les stars gagnées en tuant le monstre
+	function get_star()
+	{
+		return $this->star;
+	}
+	/// Modifie les stars gagnées en tuant le monstre
+	function set_star($star)
+	{
+		$this->star = $star;
+		$this->champs_modif[] = 'star';
+	}
+
+	/// Renvoie les objets gagnées en tuant le monstre
+	function get_drops()
+	{
+		return $this->drops;
+	}
+	/// Modifie les objets gagnées en tuant le monstre
+	function set_drops($drops)
+	{
+		$this->drops = $drops;
+		$this->champs_modif[] = 'drops';
+	}
+
+	/// Renvoie ?
+	function get_spawn()
+	{
+		return $this->spawn;
+	}
+	/// Modifie ?
+	function set_spawn($spawn)
+	{
+		$this->spawn = $spawn;
+		$this->champs_modif[] = 'spawn';
+	}
+
+	/// Renvoie le lieu particulier d'apparition du monstre
+	function get_spawn_loc()
+	{
+		return $this->spawn_loc;
+	}
+	/// Modifie le lieu particulier d'apparition du monstre
+	function set_spawn_loc($spawn_loc)
+	{
+		$this->spawn_loc = $spawn_loc;
+		$this->champs_modif[] = 'spawn_loc';
+	}
+
+	/// Renvoie le stypes de terrain où on peut trouver le monstre
+	function get_terrain()
+	{
+		return $this->terrain;
+	}
+	/// Modifie les types de terrain où on peut trouver le monstre
+	function set_terrain($terrain)
+	{
+		$this->terrain = $terrain;
+		$this->champs_modif[] = 'terrain';
+	}
+
+	/// Renvoie l'affichage des caractéristiques du monstre
+	function get_affiche()
+	{
+		return $this->affiche;
+	}
+	/// Modifie l'affichage des caractéristiques du monstre
+	function set_affiche($affiche)
+	{
+		$this->affiche = $affiche;
+		$this->champs_modif[] = 'affiche';
+  }
+  
+  /// Renvoie la race
+	function get_race()
+	{
+		return 'neutre';
+	}
+	// @}
+
+
+	/**
+	 * @name Accès à la base de données
+	 * Méthode gérant la lecture et l'écriture dans la base de données
+	 */
+  // @{
+	/**
+   * Constructeur
+   * @param  $id               Id dans la base de donnée ou tableau associatif contenant les informations permettant la création de l'objet
+	 * @param  $lib              Nom interne du monstre
+   * @param  $nom              Nom de l'entité
+   * @param  $type             Type de l'entité
+   * @param  $hp               HP maximums de l'entité
+   * @param  $pp               PP de l'entité
+   * @param  $pm               PM de l'entité
+	 * @param  $force            Attribut force
+	 * @param  $dexterite        Attribut dexterite
+	 * @param  $puissance        Attribut puissance
+	 * @param  $volonte          Attribut volonté
+	 * @param  $energie          Attribut énergie
+	 * @param  $melee            Compétence de mêlée/tir
+	 * @param  $esquive          Compétence d'esquive
+	 * @param  $incantation      Compétence d'incantation
+	 * @param  $sort_vie         Compétence de magie de la vie
+	 * @param  $sort_mort        Compétence de nécromancie
+	 * @param  $sort_element     Compétence de magie élémentaire
+	 * @param  $dressage         Difficulté de dressage du monstre
+	 * @param  $sort_dressage    Sorts et compétences hors combat disponibles une fois desssé
+	 * @param  $arme             Arme utilisée
+	 * @param  $action           Script du monstre
+	 * @param  $level            Niveau du monstre
+	 * @param  $xp               XP gagné en combattan le monstre
+	 * @param  $star             Star gagnées en tuant le monstre
+	 * @param  $drops            Objets gagnées en tuant le monstre
+	 * @param  $spawn            ?
+	 * @param  $spawn_loc        Lieu particulier d'apparition du monstre
+	 * @param  $terrain          Types de terrain où on peut trouver le monstre
+	 * @param  $affiche          Affichage des caractéristiques du monstre
+   * @param  $description      Description de l'entité
+   * @param  $sort_combat      Sorts de combats disponibles une fois desssé
+   * @param  $comp_combat      Compétences de combats disponibles une fois desssé
+	*/
+	function __construct($id = 0, $lib = '', $nom = '', $type = '', $hp = '', $pp = '', $pm = '', $force = '', $dexterite = '', $puissance = '', $volonte = '', $energie = '', $melee = '', $esquive = '', $incantation = '', $sort_vie = '', $sort_mort = '', $sort_element = '', $dressage = '', $sort_dressage = '', $arme = '', $action = '', $level = '', $xp = '', $star = '', $drops = '', $spawn = '', $spawn_loc = '', $terrain = '', $affiche = '', $description = '', $sort_combat = '', $comp_combat = '')
+	{
 		//Verification nombre et du type d'argument pour construire l'etat adequat.
-		if( (func_num_args() == 1) && is_numeric($id) )
+		if( func_num_args() == 1 )
 		{
-			$requeteSQL = $db->query("SELECT lib, nom, type, hp, pp, pm, forcex, dexterite, puissance, volonte, energie, melee, esquive, incantation, sort_vie, sort_mort, sort_element, dressage, sort_dressage, arme, action, level, xp, star, drops, spawn, spawn_loc, terrain, affiche, description, sort_combat, comp_combat FROM monstre WHERE id = ".$id);
-			//Si le thread est dans la base, on le charge sinon on crée un thread vide.
-			if( $db->num_rows($requeteSQL) > 0 )
-			{
-				list($this->lib, $this->nom, $this->type, $this->hp, $this->pp, $this->pm, $this->forcex, $this->dexterite, $this->puissance, $this->volonte, $this->energie, $this->melee, $this->esquive, $this->incantation, $this->sort_vie, $this->sort_mort, $this->sort_element, $this->dressage, $this->sort_dressage, $this->arme, $this->action, $this->level, $this->xp, $this->star, $this->drops, $this->spawn, $this->spawn_loc, $this->terrain, $this->affiche, $this->description, $this->sort_combat, $this->comp_combat) = $db->read_array($requeteSQL);
-			}
-			else $this->__construct();
-			$this->id = $id;
+			$this->charger($id);
 		}
-		elseif( (func_num_args() == 1) && is_array($id) )
-		{
-			$this->id = $id['id'];
-			$this->lib = $id['lib'];
-			$this->nom = $id['nom'];
-			$this->type = $id['type'];
-			$this->hp = $id['hp'];
-			$this->pp = $id['pp'];
-			$this->pm = $id['pm'];
-			$this->forcex = $id['forcex'];
-			$this->dexterite = $id['dexterite'];
-			$this->puissance = $id['puissance'];
-			$this->volonte = $id['volonte'];
-			$this->energie = $id['energie'];
-			$this->melee = $id['melee'];
-			$this->esquive = $id['esquive'];
-			$this->incantation = $id['incantation'];
-			$this->sort_vie = $id['sort_vie'];
-			$this->sort_mort = $id['sort_mort'];
-			$this->sort_element = $id['sort_element'];
-			$this->dressage = $id['dressage'];
-			$this->sort_dressage = $id['sort_dressage'];
-			$this->arme = $id['arme'];
-			$this->action = $id['action'];
-			$this->level = $id['level'];
-			$this->xp = $id['xp'];
-			$this->star = $id['star'];
-			$this->drops = $id['drops'];
-			$this->spawn = $id['spawn'];
-			$this->spawn_loc = $id['spawn_loc'];
-			$this->terrain = $id['terrain'];
-			$this->affiche = $id['affiche'];
-			$this->description = $id['description'];
-			$this->sort_combat = $id['sort_combat'];
-			$this->comp_combat = $id['comp_combat'];
-			}
 		else
 		{
+      entitenj_def::__construct($id, $nom, $type, $hp, $pp, $pm, $description);
 			$this->lib = $lib;
-			$this->nom = $nom;
-			$this->type = $type;
-			$this->hp = $hp;
-			$this->pp = $pp;
-			$this->pm = $pm;
 			$this->forcex = $forcex;
 			$this->dexterite = $dexterite;
 			$this->puissance = $puissance;
@@ -306,681 +212,240 @@ class monstre
 			$this->spawn_loc = $spawn_loc;
 			$this->terrain = $terrain;
 			$this->affiche = $affiche;
-			$this->description = $description;
-			$this->sort_combat = $sort_combat;
-			$this->comp_combat = $comp_combat;
-			$this->id = $id;
+		  $this->sort_combat = $sort_combat;
+		  $this->comp_combat = $comp_combat;
 		}
 	}
 
 	/**
-	* Sauvegarde automatiquement en base de donnée. Si c'est un nouvel objet, INSERT, sinon UPDATE
-	* @access public
-	* @param bool $force force la mis à jour de tous les attributs de l'objet si true, sinon uniquement ceux qui ont été modifiés
-	* @return none
-	*/
-	function sauver($force = false)
+	 * Initialise les données membres à l'aide d'un tableau
+	 * @param array $vals    Tableau contenant les valeurs des données.
+	 */
+  protected function init_tab($vals)
+  {
+    entitenj_def::init_tab($vals);
+		$this->lib = $vals['lib'];
+		$this->forcex = $vals['forcex'];
+		$this->dexterite = $vals['dexterite'];
+		$this->puissance = $vals['puissance'];
+		$this->volonte = $vals['volonte'];
+		$this->energie = $vals['energie'];
+		$this->melee = $vals['melee'];
+		$this->esquive = $vals['esquive'];
+		$this->incantation = $vals['incantation'];
+		$this->sort_vie = $vals['sort_vie'];
+		$this->sort_mort = $vals['sort_mort'];
+		$this->sort_element = $vals['sort_element'];
+		$this->dressage = $vals['dressage'];
+		$this->sort_dressage = $vals['sort_dressage'];
+		$this->arme = $vals['arme'];
+		$this->action = $vals['action'];
+		$this->level = $vals['level'];
+		$this->xp = $vals['xp'];
+		$this->star = $vals['star'];
+		$this->drops = $vals['drops'];
+		$this->spawn = $vals['spawn'];
+		$this->spawn_loc = $vals['spawn_loc'];
+		$this->terrain = $vals['terrain'];
+		$this->affiche = $vals['affiche'];
+		$this->sort_combat = $vals['sort_combat'];
+		$this->comp_combat = $vals['comp_combat'];
+  }
+
+	/// Renvoie la liste des champs pour une insertion dans la base
+	protected function get_liste_champs()
 	{
-		global $db;
-		if( $this->id > 0 )
-		{
-			if(count($this->champs_modif) > 0)
-			{
-				if($force) $champs = 'lib = "'.mysql_escape_string($this->lib).'", nom = "'.mysql_escape_string($this->nom).'", type = "'.mysql_escape_string($this->type).'", hp = "'.mysql_escape_string($this->hp).'", pp = "'.mysql_escape_string($this->pp).'", pm = "'.mysql_escape_string($this->pm).'", forcex = "'.mysql_escape_string($this->forcex).'", dexterite = "'.mysql_escape_string($this->dexterite).'", puissance = "'.mysql_escape_string($this->puissance).'", volonte = "'.mysql_escape_string($this->volonte).'", energie = "'.mysql_escape_string($this->energie).'", melee = "'.mysql_escape_string($this->melee).'", esquive = "'.mysql_escape_string($this->esquive).'", incantation = "'.mysql_escape_string($this->incantation).'", sort_vie = "'.mysql_escape_string($this->sort_vie).'", sort_mort = "'.mysql_escape_string($this->sort_mort).'", sort_element = "'.mysql_escape_string($this->sort_element).'", dressage = "'.mysql_escape_string($this->dressage).'", sort_dressage = "'.mysql_escape_string($this->sort_dressage).'", arme = "'.mysql_escape_string($this->arme).'", action = "'.mysql_escape_string($this->action).'", level = "'.mysql_escape_string($this->level).'", xp = "'.mysql_escape_string($this->xp).'", star = "'.mysql_escape_string($this->star).'", drops = "'.mysql_escape_string($this->drops).'", spawn = "'.mysql_escape_string($this->spawn).'", spawn_loc = "'.mysql_escape_string($this->spawn_loc).'", terrain = "'.mysql_escape_string($this->terrain).'", affiche = "'.mysql_escape_string($this->affiche).'", description = "'.mysql_escape_string($this->description).'", sort_combat = "'.mysql_escape_string($this->sort_combat).'", comp_combat = "'.mysql_escape_string($this->comp_combat).'"';
-				else
-				{
-					$champs = '';
-					foreach($this->champs_modif as $champ)
-					{
-						$champs[] .= $champ.' = "'.mysql_escape_string($this->{$champ}).'"';
-					}
-					$champs = implode(', ', $champs);
-				}
-				$requete = 'UPDATE monstre SET ';
-				$requete .= $champs;
-				$requete .= ' WHERE id = '.$this->id;
-				$db->query($requete);
-				$this->champs_modif = array();
-			}
-		}
-		else
-		{
-			$requete = 'INSERT INTO monstre (lib, nom, type, hp, pp, pm, forcex, dexterite, puissance, volonte, energie, melee, esquive, incantation, sort_vie, sort_mort, sort_element, dressage, sort_dressage, arme, action, level, xp, star, drops, spawn, spawn_loc, terrain, affiche, description, sort_combat, comp_combat) VALUES(';
-			$requete .= '"'.mysql_escape_string($this->lib).'", "'.mysql_escape_string($this->nom).'", "'.mysql_escape_string($this->type).'", "'.mysql_escape_string($this->hp).'", "'.mysql_escape_string($this->pp).'", "'.mysql_escape_string($this->pm).'", "'.mysql_escape_string($this->forcex).'", "'.mysql_escape_string($this->dexterite).'", "'.mysql_escape_string($this->puissance).'", "'.mysql_escape_string($this->volonte).'", "'.mysql_escape_string($this->energie).'", "'.mysql_escape_string($this->melee).'", "'.mysql_escape_string($this->esquive).'", "'.mysql_escape_string($this->incantation).'", "'.mysql_escape_string($this->sort_vie).'", "'.mysql_escape_string($this->sort_mort).'", "'.mysql_escape_string($this->sort_element).'", "'.mysql_escape_string($this->dressage).'", "'.mysql_escape_string($this->sort_dressage).'", "'.mysql_escape_string($this->arme).'", "'.mysql_escape_string($this->action).'", "'.mysql_escape_string($this->level).'", "'.mysql_escape_string($this->xp).'", "'.mysql_escape_string($this->star).'", "'.mysql_escape_string($this->drops).'", "'.mysql_escape_string($this->spawn).'", "'.mysql_escape_string($this->spawn_loc).'", "'.mysql_escape_string($this->terrain).'", "'.mysql_escape_string($this->affiche).'", "'.mysql_escape_string($this->description).', "'.mysql_escape_string($this->sort_combat).', "'.mysql_escape_string($this->comp_combat).'")';
-			$db->query($requete);
-			//Récuperation du dernier ID inséré.
-			$this->id = $db->last_insert_id();
-		}
+    return entitenj_def::get_liste_champs().', lib, forcex, dexterite, puissance, volonte, energie, melee, esquive, incantation, sort_vie, sort_mort, sort_element, dressage, sort_dressage, arme, action, level, xp, star, drops, spawn, spawn_loc, terrain, affiche, sort_combat, comp_combat';
+  }
+	/// Renvoie la liste des valeurs des champspour une insertion dans la base
+	protected function get_valeurs_insert()
+	{//.', "'.mysql_escape_string($this->type).'", '.$this->rez
+		return entitenj_def::get_valeurs_insert().', '.$this->lib.', '.$this->forcex.', '.$this->dexterite.', '.$this->volonte.', '.$this->energie.', '.$this->esquive.', '.$this->incantation.', '.$this->sort_vie.', '.$this->sort_mort.', '.$this->sort_element.', '.$this->dressage.', "'.mysql_escape_string($this->sort_dressage).'", "'.mysql_escape_string($this->arme).'", "'.mysql_escape_string($this->action).'", '.$this->level.', '.$this->xp.', '.$this->star.', "'.mysql_escape_string($this->drops).'", '.$this->spawn.', "'.mysql_escape_string($this->spawn_loc).'", "'.mysql_escape_string($this->terrain).'", "'.mysql_escape_string($this->affiche).'", "'.mysql_escape_string($this->sort_combat).'", "'.mysql_escape_string($this->comp_combat).'"';
 	}
+	/// Renvoie la liste des champs et valeurs pour une mise-à-jour dans la base
+	protected function get_liste_update()
+	{//.', type = "'.mysql_escape_string($this->type).'", rez = '.$this->rez
+		return entitenj_def::get_liste_update().', lib = "'.mysql_escape_string($this->lib).'", forcex = '.$this->forcex.', dexterite = '.$this->dexterite.', volonte = '.$this->volonte.', energie = '.$this->energie.', esquive = '.$this->esquive.', incantation = '.$this->incantation.', sort_vie = '.$this->sort_vie.', sort_mort = '.$this->sort_mort.', sort_element = '.$this->sort_element.', dressage = '.$this->dressage.', sort_dressage = "'.mysql_escape_string($this->sort_dressage).'", arme = "'.mysql_escape_string($this->arme).'", action = "'.mysql_escape_string($this->action).'", level = '.$this->level.', xp = '.$this->xp.', stars = '.$this->star.', drops = "'.mysql_escape_string($this->drops).'", spawn = '.$this->spawn.', spawn_loc = "'.mysql_escape_string($this->spawn_loc).'", terrain = "'.mysql_escape_string($this->terrain).'", affiche = "'.mysql_escape_string($this->affiche).'", sort_combat = "'.mysql_escape_string($this->sort_combat).'", comp_combat = "'.mysql_escape_string($this->comp_combat).'"';
+	}
+	// @}
 
 	/**
-	* Supprime de la base de donnée
-	* @access public
-	* @param none
-	* @return none
-	*/
-	function supprimer()
-	{
-		global $db;
-		if( $this->id > 0 )
-		{
-			$requete = 'DELETE FROM monstre WHERE id = '.$this->id;
-			$db->query($requete);
-		}
-	}
+	 * @name Caractéristiques
+	 * Données et méthodes liées aux caractéristiques du personnage : constitution,
+	 * force, dextérité, puissance, volonté et énergie.
+	 */
+  // @{
+	protected $forcex;  ///< Caractéristique force
+	protected $dexterite;  ///< Caractéristique dexterite
+	protected $puissance;  ///< Caractéristique puissance
+	protected $volonte;  ///< Caractéristique volonté
+	protected $energie;  ///< Caractéristique énergie
 
-	/**
-	* Supprime de la base de donnée
-	* @access static
-	* @param array|string $champs champs servant a trouver les résultats
-	* @param array|string $valeurs valeurs servant a trouver les résultats
-	* @param string $ordre ordre de tri
-	* @param bool|string $keys Si false, stockage en tableau classique, si string stockage avec sous tableau en fonction du champ $keys
-	* @return array $return liste d'objets
-	*/
-	static function create($champs, $valeurs, $ordre = 'id ASC', $keys = false, $where = false)
+	/// Renvoie la caractéristique force
+	function get_force()
 	{
-		global $db;
-		$return = array();
-		if(!$where)
-		{
-			if(!is_array($champs))
-			{
-				$array_champs[] = $champs;
-				$array_valeurs[] = $valeurs;
-			}
-			else
-			{
-				$array_champs = $champs;
-				$array_valeurs = $valeurs;
-			}
-			foreach($array_champs as $key => $champ)
-			{
-				$where[] = $champ .' = "'.mysql_escape_string($array_valeurs[$key]).'"';
-			}
-			$where = implode(' AND ', $where);
-			if($champs === 0)
-			{
-				$where = ' 1 ';
-			}
-		}
-
-		$requete = "SELECT id, lib, nom, type, hp, pp, pm, forcex, dexterite, puissance, volonte, energie, melee, esquive, incantation, sort_vie, sort_mort, sort_element, dressage, sort_dressage, arme, action, level, xp, star, drops, spawn, spawn_loc, terrain, affiche, description, sort_combat, comp_combat FROM monstre WHERE ".$where." ORDER BY ".$ordre;
-		$req = $db->query($requete);
-		if($db->num_rows($req) > 0)
-		{
-			while($row = $db->read_assoc($req))
-			{
-				if(!$keys) $return[] = new monstre($row);
-				else $return[$row[$keys]][] = new monstre($row);
-			}
-		}
-		else $return = array();
-		return $return;
+		return $this->forcex;
 	}
-
 	/**
-	* Affiche l'objet sous forme de string
-	* @access public
-	* @param none
-	* @return string objet en string
-	*/
-	function __toString()
-	{
-		return 'id = '.$this->id.', lib = '.$this->lib.', nom = '.$this->nom.', type = '.$this->type.', hp = '.$this->hp.', pp = '.$this->pp.', pm = '.$this->pm.', forcex = '.$this->forcex.', dexterite = '.$this->dexterite.', puissance = '.$this->puissance.', volonte = '.$this->volonte.', energie = '.$this->energie.', melee = '.$this->melee.', esquive = '.$this->esquive.', incantation = '.$this->incantation.', sort_vie = '.$this->sort_vie.', sort_mort = '.$this->sort_mort.', sort_element = '.$this->sort_element.', dressage = '.$this->dressage.', sort_dressage = '.$this->sort_dressage.', arme = '.$this->arme.', action = '.$this->action.', level = '.$this->level.', xp = '.$this->xp.', star = '.$this->star.', drops = '.$this->drops.', spawn = '.$this->spawn.', spawn_loc = '.$this->spawn_loc.', terrain = '.$this->terrain.', affiche = '.$this->affiche.', description = '.$this->description;
-	}
-	
-	/**
-	* Retourne la valeur de l'attribut
-	* @access public
-	* @param none
-	* @return mediumint(8) $id valeur de l'attribut id
-	*/
-	function get_id()
-	{
-		return $this->id;
-	}
-
-	/**
-	* Retourne la valeur de l'attribut
-	* @access public
-	* @param none
-	* @return varchar(50) $lib valeur de l'attribut lib
-	*/
-	function get_lib()
-	{
-		return $this->lib;
-	}
-
-	/**
-	* Retourne la valeur de l'attribut
-	* @access public
-	* @param none
-	* @return varchar(50) $nom valeur de l'attribut nom
-	*/
-	function get_nom()
-	{
-		return $this->nom;
-	}
-
-	/**
-	* Retourne la valeur de l'attribut
-	* @access public
-	* @param none
-	* @return varchar(50) $type valeur de l'attribut type
-	*/
-	function get_type()
-	{
-		return $this->type;
-	}
-
-	/**
-	* Retourne la valeur de l'attribut
-	* @access public
-	* @param none
-	* @return mediumint(9) $hp valeur de l'attribut hp
-	*/
-	function get_hp()
-	{
-		return $this->hp;
-	}
-
-	/**
-	* Retourne la valeur de l'attribut
-	* @access public
-	* @param none
-	* @return mediumint(9) $pp valeur de l'attribut pp
-	*/
-	function get_pp()
-	{
-		return $this->pp;
-	}
-
-	/**
-	* Retourne la valeur de l'attribut
-	* @access public
-	* @param none
-	* @return mediumint(9) $pm valeur de l'attribut pm
-	*/
-	function get_pm()
-	{
-		return $this->pm;
-	}
-
-	/**
-	* Retourne la valeur de l'attribut
-	* @access public
-	* @param none
-	* @return tinyint(4) $forcex valeur de l'attribut forcex
-	*/
+	 * Renvoie la caractéristique force
+	 * @deprecated Utiliser get_force() à la place
+	 */
 	function get_forcex()
 	{
 		return $this->forcex;
 	}
-
-	/**
-	* Retourne la valeur de l'attribut
-	* @access public
-	* @param none
-	* @return tinyint(4) $dexterite valeur de l'attribut dexterite
-	*/
-	function get_dexterite()
+	/// Modifie la caractéristique force
+	function set_force($force)
 	{
-		return $this->dexterite;
+		$this->forcex = $force;
+		$this->champs_modif[] = 'forcex';
 	}
-
 	/**
-	* Retourne la valeur de l'attribut
-	* @access public
-	* @param none
-	* @return tinyint(4) $puissance valeur de l'attribut puissance
-	*/
-	function get_puissance()
-	{
-		return $this->puissance;
-	}
-
-	/**
-	* Retourne la valeur de l'attribut
-	* @access public
-	* @param none
-	* @return tinyint(4) $volonte valeur de l'attribut volonte
-	*/
-	function get_volonte()
-	{
-		return $this->volonte;
-	}
-
-	/**
-	* Retourne la valeur de l'attribut
-	* @access public
-	* @param none
-	* @return tinyint(3) $energie valeur de l'attribut energie
-	*/
-	function get_energie()
-	{
-		return $this->energie;
-	}
-
-	/**
-	* Retourne la valeur de l'attribut
-	* @access public
-	* @param none
-	* @return mediumint(9) $melee valeur de l'attribut melee
-	*/
-	function get_melee()
-	{
-		return $this->melee;
-	}
-
-	/**
-	* Retourne la valeur de l'attribut
-	* @access public
-	* @param none
-	* @return mediumint(9) $esquive valeur de l'attribut esquive
-	*/
-	function get_esquive()
-	{
-		return $this->esquive;
-	}
-
-	/**
-	* Retourne la valeur de l'attribut
-	* @access public
-	* @param none
-	* @return mediumint(8) $incantation valeur de l'attribut incantation
-	*/
-	function get_incantation()
-	{
-		return $this->incantation;
-	}
-
-	/**
-	* Retourne la valeur de l'attribut
-	* @access public
-	* @param none
-	* @return mediumint(8) $sort_vie valeur de l'attribut sort_vie
-	*/
-	function get_sort_vie()
-	{
-		return $this->sort_vie;
-	}
-
-	/**
-	* Retourne la valeur de l'attribut
-	* @access public
-	* @param none
-	* @return mediumint(8) $sort_mort valeur de l'attribut sort_mort
-	*/
-	function get_sort_mort()
-	{
-		return $this->sort_mort;
-	}
-
-	/**
-	* Retourne la valeur de l'attribut
-	* @access public
-	* @param none
-	* @return mediumint(8) $sort_element valeur de l'attribut sort_element
-	*/
-	function get_sort_element()
-	{
-		return $this->sort_element;
-	}
-
-	/**
-	* Retourne la valeur de l'attribut
-	* @access public
-	* @param none
-	* @return mediumint(8) $dressage valeur de l'attribut dressage
-	*/
-	function get_dressage()
-	{
-		return $this->dressage;
-	}
-
-	/**
-	* Retourne la valeur de l'attribut
-	* @access public
-	* @param none
-	* @return varchar(5) $sort_dressage valeur de l'attribut sort_dressage
-	*/
-	function get_sort_dressage()
-	{
-		return $this->sort_dressage;
-	}
-
-	/**
-	* Retourne la valeur de l'attribut
-	* @access public
-	* @param none
-	* @return varchar(10) $arme valeur de l'attribut arme
-	*/
-	function get_arme()
-	{
-		return $this->arme;
-	}
-
-	/**
-	* Retourne la valeur de l'attribut
-	* @access public
-	* @param none
-	* @return text $action valeur de l'attribut action
-	*/
-	function get_action()
-	{
-		return $this->action;
-	}
-
-	/**
-	* Retourne la valeur de l'attribut
-	* @access public
-	* @param none
-	* @return tinyint(3) $level valeur de l'attribut level
-	*/
-	function get_level()
-	{
-		return $this->level;
-	}
-
-	/**
-	* Retourne la valeur de l'attribut
-	* @access public
-	* @param none
-	* @return mediumint(9) $xp valeur de l'attribut xp
-	*/
-	function get_xp()
-	{
-		return $this->xp;
-	}
-
-	/**
-	* Retourne la valeur de l'attribut
-	* @access public
-	* @param none
-	* @return mediumint(9) $star valeur de l'attribut star
-	*/
-	function get_star()
-	{
-		return $this->star;
-	}
-
-	/**
-	* Retourne la valeur de l'attribut
-	* @access public
-	* @param none
-	* @return text $drops valeur de l'attribut drops
-	*/
-	function get_drops()
-	{
-		return $this->drops;
-	}
-
-	/**
-	* Retourne la valeur de l'attribut
-	* @access public
-	* @param none
-	* @return int(10) $spawn valeur de l'attribut spawn
-	*/
-	function get_spawn()
-	{
-		return $this->spawn;
-	}
-
-	/**
-	* Retourne la valeur de l'attribut
-	* @access public
-	* @param none
-	* @return text $spawn_loc valeur de l'attribut spawn_loc
-	*/
-	function get_spawn_loc()
-	{
-		return $this->spawn_loc;
-	}
-
-	/**
-	* Retourne la valeur de l'attribut
-	* @access public
-	* @param none
-	* @return varchar(50) $terrain valeur de l'attribut terrain
-	*/
-	function get_terrain()
-	{
-		return $this->terrain;
-	}
-
-	/**
-	* Retourne la valeur de l'attribut
-	* @access public
-	* @param none
-	* @return enum('y','n') $affiche valeur de l'attribut affiche
-	*/
-	function get_affiche()
-	{
-		return $this->affiche;
-	}
-
-	/**
-	* Retourne la valeur de l'attribut
-	* @access public
-	* @param none
-	* @return text $description valeur de l'attribut description
-	*/
-	function get_description()
-	{
-		return $this->description;
-	}
-
-	/**
-	* Modifie la valeur de l'attribut
-	* @access public
-	* @param mediumint(8) $id valeur de l'attribut
-	* @return none
-	*/
-	function set_id($id)
-	{
-		$this->id = $id;
-		$this->champs_modif[] = 'id';
-	}
-
-	/**
-	* Modifie la valeur de l'attribut
-	* @access public
-	* @param varchar(50) $lib valeur de l'attribut
-	* @return none
-	*/
-	function set_lib($lib)
-	{
-		$this->lib = $lib;
-		$this->champs_modif[] = 'lib';
-	}
-
-	/**
-	* Modifie la valeur de l'attribut
-	* @access public
-	* @param varchar(50) $nom valeur de l'attribut
-	* @return none
-	*/
-	function set_nom($nom)
-	{
-		$this->nom = $nom;
-		$this->champs_modif[] = 'nom';
-	}
-
-	/**
-	* Modifie la valeur de l'attribut
-	* @access public
-	* @param varchar(50) $type valeur de l'attribut
-	* @return none
-	*/
-	function set_type($type)
-	{
-		$this->type = $type;
-		$this->champs_modif[] = 'type';
-	}
-
-	/**
-	* Modifie la valeur de l'attribut
-	* @access public
-	* @param mediumint(9) $hp valeur de l'attribut
-	* @return none
-	*/
-	function set_hp($hp)
-	{
-		$this->hp = $hp;
-		$this->champs_modif[] = 'hp';
-	}
-
-	/**
-	* Modifie la valeur de l'attribut
-	* @access public
-	* @param mediumint(9) $pp valeur de l'attribut
-	* @return none
-	*/
-	function set_pp($pp)
-	{
-		$this->pp = $pp;
-		$this->champs_modif[] = 'pp';
-	}
-
-	/**
-	* Modifie la valeur de l'attribut
-	* @access public
-	* @param mediumint(9) $pm valeur de l'attribut
-	* @return none
-	*/
-	function set_pm($pm)
-	{
-		$this->pm = $pm;
-		$this->champs_modif[] = 'pm';
-	}
-
-	/**
-	* Modifie la valeur de l'attribut
-	* @access public
-	* @param tinyint(4) $forcex valeur de l'attribut
-	* @return none
-	*/
+	 * Modifie la caractéristique force
+	 * @deprecated Utiliser set_force() à la place
+	 */
 	function set_forcex($forcex)
 	{
 		$this->forcex = $forcex;
 		$this->champs_modif[] = 'forcex';
 	}
 
-	/**
-	* Modifie la valeur de l'attribut
-	* @access public
-	* @param tinyint(4) $dexterite valeur de l'attribut
-	* @return none
-	*/
+	/// Renvoie la caractéristique dexterite
+	function get_dexterite()
+	{
+		return $this->dexterite;
+	}
+	/// Modifie la caractéristique dexterite
 	function set_dexterite($dexterite)
 	{
 		$this->dexterite = $dexterite;
 		$this->champs_modif[] = 'dexterite';
 	}
 
-	/**
-	* Modifie la valeur de l'attribut
-	* @access public
-	* @param tinyint(4) $puissance valeur de l'attribut
-	* @return none
-	*/
+	/// Renvoie la caractéristique puissance
+	function get_puissance()
+	{
+		return $this->puissance;
+	}
+	/// Modifie la caractéristique puissance
 	function set_puissance($puissance)
 	{
 		$this->puissance = $puissance;
 		$this->champs_modif[] = 'puissance';
 	}
 
-	/**
-	* Modifie la valeur de l'attribut
-	* @access public
-	* @param tinyint(4) $volonte valeur de l'attribut
-	* @return none
-	*/
+	/// Renvoie la caractéristique volonté
+	function get_volonte()
+	{
+		return $this->volonte;
+	}
+	/// Modifie la caractéristique volonté
 	function set_volonte($volonte)
 	{
 		$this->volonte = $volonte;
 		$this->champs_modif[] = 'volonte';
 	}
 
-	/**
-	* Modifie la valeur de l'attribut
-	* @access public
-	* @param tinyint(3) $energie valeur de l'attribut
-	* @return none
-	*/
+	/// Renvoie la caractéristique énergie
+	function get_energie()
+	{
+		return $this->energie;
+	}
+	/// Modifie la caractéristique énergie
 	function set_energie($energie)
 	{
 		$this->energie = $energie;
 		$this->champs_modif[] = 'energie';
 	}
+  // @}
 
 	/**
-	* Modifie la valeur de l'attribut
-	* @access public
-	* @param mediumint(9) $melee valeur de l'attribut
-	* @return none
-	*/
+	 * @name Compétences
+	 * Données et méthodes liées aux compténtences du personnage : mêlée, esquive,
+	 * incatation, …
+	 */
+	// @{
+	protected $melee;  ///< Compétence de mêlée/tir
+	protected $esquive;  ///< Compétence d'esquive
+	protected $incantation;  ///< Compétence d'incantation
+	protected $sort_vie;  ///< Compétence de magie de la vie
+	protected $sort_mort;  ///< Compétence de nécromancie
+	protected $sort_element;  ///< Compétence de magie élémentaire
+
+	/// Renvoie la compétence de mêlée/tir
+	function get_melee()
+	{
+		return $this->melee;
+	}
+  /// Renvoie la valeur de la compétence de tir
+	function get_distance()
+	{
+		if ($this->arme == 'arc')
+			return $this->melee;
+		else
+			return 0;
+	}
+	/// Modifie la compétence de mêlée/tir
 	function set_melee($melee)
 	{
 		$this->melee = $melee;
 		$this->champs_modif[] = 'melee';
 	}
 
-	/**
-	* Modifie la valeur de l'attribut
-	* @access public
-	* @param mediumint(9) $esquive valeur de l'attribut
-	* @return none
-	*/
+	/// Renvoie la compétence d'esquive
+	function get_esquive()
+	{
+		return $this->esquive;
+	}
+	/// Modifie la compétence d'esquive
 	function set_esquive($esquive)
 	{
 		$this->esquive = $esquive;
 		$this->champs_modif[] = 'esquive';
 	}
 
-	/**
-	* Modifie la valeur de l'attribut
-	* @access public
-	* @param mediumint(8) $incantation valeur de l'attribut
-	* @return none
-	*/
+	/// Renvoie la compétence d'incantation
+	function get_incantation()
+	{
+		return $this->incantation;
+	}
+	/// Modifie la compétence d'incantation
 	function set_incantation($incantation)
 	{
 		$this->incantation = $incantation;
 		$this->champs_modif[] = 'incantation';
 	}
 
-	/**
-	* Modifie la valeur de l'attribut
-	* @access public
-	* @param mediumint(8) $sort_vie valeur de l'attribut
-	* @return none
-	*/
+	/// Renvoie la compétence de magie de la vie
+	function get_sort_vie()
+	{
+		return $this->sort_vie;
+	}
+	/// Modifie la compétence de magie de la vie
 	function set_sort_vie($sort_vie)
 	{
 		$this->sort_vie = $sort_vie;
 		$this->champs_modif[] = 'sort_vie';
 	}
 
-	/**
-	* Modifie la valeur de l'attribut
-	* @access public
-	* @param mediumint(8) $sort_mort valeur de l'attribut
-	* @return none
-	*/
+	/// Renvoie la compétence de nécromancie
+	function get_sort_mort()
+	{
+		return $this->sort_mort;
+	}
+	/// Modifie la compétence de nécromancie
 	function set_sort_mort($sort_mort)
 	{
 		$this->sort_mort = $sort_mort;
 		$this->champs_modif[] = 'sort_mort';
 	}
 
-	/**
-	* Modifie la valeur de l'attribut
-	* @access public
-	* @param mediumint(8) $sort_element valeur de l'attribut
-	* @return none
-	*/
+	/// Renvoie la compétence de magie élémentaire
+	function get_sort_element()
+	{
+		return $this->sort_element;
+	}
+	/// Modifie la compétence de magie élémentaire
 	function set_sort_element($sort_element)
 	{
 		$this->sort_element = $sort_element;
@@ -988,187 +453,77 @@ class monstre
 	}
 
 	/**
-	* Modifie la valeur de l'attribut
-	* @access public
-	* @param mediumint(8) $dressage valeur de l'attribut
-	* @return none
-	*/
-	function set_dressage($dressage)
-	{
-		$this->dressage = $dressage;
-		$this->champs_modif[] = 'dressage';
-	}
-
-	/**
-	* Modifie la valeur de l'attribut
-	* @access public
-	* @param varchar(5) $sort_dressage valeur de l'attribut
-	* @return none
-	*/
-	function set_sort_dressage($sort_dressage)
-	{
-		$this->sort_dressage = $sort_dressage;
-		$this->champs_modif[] = 'sort_dressage';
-	}
-
-	/**
-	* Modifie la valeur de l'attribut
-	* @access public
-	* @param varchar(10) $arme valeur de l'attribut
-	* @return none
-	*/
-	function set_arme($arme)
-	{
-		$this->arme = $arme;
-		$this->champs_modif[] = 'arme';
-	}
-
-	/**
-	* Modifie la valeur de l'attribut
-	* @access public
-	* @param text $action valeur de l'attribut
-	* @return none
-	*/
-	function set_action($action)
-	{
-		$this->action = $action;
-		$this->champs_modif[] = 'action';
-	}
-
-	/**
-	* Modifie la valeur de l'attribut
-	* @access public
-	* @param tinyint(3) $level valeur de l'attribut
-	* @return none
-	*/
-	function set_level($level)
-	{
-		$this->level = $level;
-		$this->champs_modif[] = 'level';
-	}
-
-	/**
-	* Modifie la valeur de l'attribut
-	* @access public
-	* @param mediumint(9) $xp valeur de l'attribut
-	* @return none
-	*/
-	function set_xp($xp)
-	{
-		$this->xp = $xp;
-		$this->champs_modif[] = 'xp';
-	}
-
-	/**
-	* Modifie la valeur de l'attribut
-	* @access public
-	* @param mediumint(9) $star valeur de l'attribut
-	* @return none
-	*/
-	function set_star($star)
-	{
-		$this->star = $star;
-		$this->champs_modif[] = 'star';
-	}
-
-	/**
-	* Modifie la valeur de l'attribut
-	* @access public
-	* @param text $drops valeur de l'attribut
-	* @return none
-	*/
-	function set_drops($drops)
-	{
-		$this->drops = $drops;
-		$this->champs_modif[] = 'drops';
-	}
-
-	/**
-	* Modifie la valeur de l'attribut
-	* @access public
-	* @param int(10) $spawn valeur de l'attribut
-	* @return none
-	*/
-	function set_spawn($spawn)
-	{
-		$this->spawn = $spawn;
-		$this->champs_modif[] = 'spawn';
-	}
-
-	/**
-	* Modifie la valeur de l'attribut
-	* @access public
-	* @param text $spawn_loc valeur de l'attribut
-	* @return none
-	*/
-	function set_spawn_loc($spawn_loc)
-	{
-		$this->spawn_loc = $spawn_loc;
-		$this->champs_modif[] = 'spawn_loc';
-	}
-
-	/**
-	* Modifie la valeur de l'attribut
-	* @access public
-	* @param varchar(50) $terrain valeur de l'attribut
-	* @return none
-	*/
-	function set_terrain($terrain)
-	{
-		$this->terrain = $terrain;
-		$this->champs_modif[] = 'terrain';
-	}
-
-	/**
-	* Modifie la valeur de l'attribut
-	* @access public
-	* @param enum('y','n') $affiche valeur de l'attribut
-	* @return none
-	*/
-	function set_affiche($affiche)
-	{
-		$this->affiche = $affiche;
-		$this->champs_modif[] = 'affiche';
-	}
-
-	/**
-	* Modifie la valeur de l'attribut
-	* @access public
-	* @param text $description valeur de l'attribut
-	* @return none
-	*/
-	function set_description($description)
-	{
-		$this->description = $description;
-		$this->champs_modif[] = 'description';
-	}
-
-		//fonction
-	function get_reserve()
-	{
-		return ceil(2.1 * ($this->energie + floor(($this->energie - 8) / 2)));
-	}
-
-	function get_buff()
-	{
-		if(isset($this->buff))
-			return $this->buff;
-		else
-			return false;
-	}
-
-	function get_race()
-	{
-		return 'neutre';
-	}
-	
+	 * Modifie la valeur s'une compétence
+	 * @param  $comp_assoc   Compétence à modifier
+	 * @param  $valeur       Nouvelle valeur
+	 */
 	function set_comp($comp_assoc = '', $valeur = '')
 	{
 		$set = 'set_'.$comp_assoc;
 		if(method_exists($this, $set)) $this->$set($valeur);
 		else $this->set_competence($comp_assoc, $valeur);
 	}
+	// @}
 
+	/**
+	 * @name Dresssage
+	 * Données et méthodes liées au dressage.
+	 */
+  // @{
+	protected $dressage;  ///< Difficulté de dressage du monstre
+	protected $sort_dressage;  ///< Sorts et compétences hors combat disponibles une fois desssé
+	protected $sort_combat;  ///< Sorts de combat.
+	protected $comp_combat;     ///< Compétences de combat.
+
+	/// Renvoie la difficulté de dressage du monstre
+	function get_dressage()
+	{
+		return $this->dressage;
+	}
+	/// Modifie la difficulté de dressage du monstre
+	function set_dressage($dressage)
+	{
+		$this->dressage = $dressage;
+		$this->champs_modif[] = 'dressage';
+	}
+
+	/// Renvoie les sorts et compétences hors combat disponibles une fois desssé
+	function get_sort_dressage()
+	{
+		return $this->sort_dressage;
+	}
+	/// Modifie les sorts et compétences hors combat disponibles une fois desssé
+	function set_sort_dressage($sort_dressage)
+	{
+		$this->sort_dressage = $sort_dressage;
+		$this->champs_modif[] = 'sort_dressage';
+	}
+
+	/// Renvoie les sorts de combat disponibles une fois desssé.
+	function get_sort_combat()
+	{
+		return $this->sort_combat;
+	}
+	/// Modifie les sorts de combat disponibles une fois desssé
+	function set_sort_combat($sort_combat)
+	{
+		$this->sort_combat = $sort_combat;
+		$this->champs_modif[] = 'sort_combat';
+	}
+	
+	/// Renvoie les compétences de combat disponibles une fois desssé.
+	function get_comp_combat()
+	{
+		return $this->comp_combat;
+	}
+	/// Modifie les compétences de combat disponibles une fois desssé
+	function set_comp_combat($comp_combat)
+	{
+		$this->comp_combat = $comp_combat;
+		$this->champs_modif[] = 'comp_combat';
+	}
+
+  /// Renvoie les informations sur le sort ou la compétence hors combat disponible une fois desssé
 	function get_infos_sort_dressage()
 	{
 		if($this->sort_dressage[0] == 's')
@@ -1180,33 +535,54 @@ class monstre
 			return new comp_jeu(substr($this->sort_dressage, 1));
 		}
 	}
-	
-	/**
-   * @name  Sorts, compétences
-   * Données et méthodes ayant trait aux sorts et compétences de combat.
-   */         
-  // @{
-	private $sort_combat;  ///< Sorts de combat.
-	private $comp_combat;     ///< Compétences de combat.
+	// @}
 
-	/// Renvoie les sorts de combat.
-	function get_sort_combat()
+	/**
+	 * @name Combats
+	 * Données et méthodes liées aux combats.
+	 */
+  // @{
+	protected $arme;  ///< Arme utilisée
+	protected $action;  ///< Script du monstre
+
+	/// Renvoie l'arme utilisée
+	function get_arme()
 	{
-		return $this->sort_combat;
+		return $this->arme;
 	}
-	/// Renvoie les compétences de combat.
-	function get_comp_combat()
+	/// Modifie l'arme utilisée
+	function set_arme($arme)
 	{
-		return $this->comp_combat;
+		$this->arme = $arme;
+		$this->champs_modif[] = 'arme';
+	}
+
+	/// Renvoie le script du monstre
+	function get_action()
+	{
+		return $this->action;
+	}
+	/// Modifie le script du monstre
+	function set_action($action)
+	{
+		$this->action = $action;
+		$this->champs_modif[] = 'action';
+	}
+	
+	/// Renvoie la RM
+	function get_reserve()
+	{
+		return ceil(2.1 * ($this->energie + floor(($this->energie - 8) / 2)));
 	}
 	// @}
 
-	function get_distance()
+  /// Est-ce vraiment utile ?
+	function get_buff()
 	{
-		if ($this->arme == 'arc')
-			return $this->melee;
+		if(isset($this->buff))
+			return $this->buff;
 		else
-			return 0;
+			return false;
 	}
 
 }

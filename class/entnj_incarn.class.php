@@ -11,8 +11,12 @@ if (file_exists('../root.php'))
  */
 abstract class entnj_incarn extends placable
 {
+	/**
+	 * @name Informations générales.
+	 * Donnée et méthode sur les inforamations "générales" : type, niveau, …
+	 */
+  // @{
   protected $hp;   ///< HP actuels de l'objet
-  protected $id_def;  ///< id de la de l'entrée qui définit l'objet (monstre ou batiment)
 	/// Renvoie les HP actuels
 	function get_hp()
 	{
@@ -24,13 +28,9 @@ abstract class entnj_incarn extends placable
 		$this->hp = $hp;
 		$this->champs_modif[] = 'hp';
 	}
-	/// Renvoie l'id de la définition
-	function get_id_def()
-	{
-		return $this->type;
-	}
 	/// Renvoie l'objet représentant la définition
 	abstract function get_def();
+	// @}
 
 
 	/**
