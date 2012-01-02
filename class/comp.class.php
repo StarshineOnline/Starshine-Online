@@ -610,6 +610,7 @@ class globe_foudre extends magnetique {
 		parent::__construct('globe_foudre');
     $this->titre = 'Le globe de foudre';
 		$this->hit = $aHit;
+		$this->chance = $achance;
 		//$this->message("Construction de ".$this->titre);
   }
   /// Test si l'effet agit ou non
