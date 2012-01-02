@@ -510,16 +510,15 @@ class fleche_poison extends comp_combat {
 	}
 }
 
-class magnetique extends effect {
-	var $nb;
-	var $chance;
+abstract class magnetique extends effect {
+	//var $nb;
+	//var $chance;
 	var $titre;
 	var $hit;
 
-	function __construct($aName, $aNb) {
+	function __construct($aName/*, $aNb*/) {
 		parent::__construct($aName);
-		$this->nb = $aNb;
-		$this->chance = 15;
+		//$this->nb = $aNb;
 		$this->titre = 'L\'effet magnétique';
 		$this->hit = false;
 	}
@@ -534,25 +533,31 @@ class magnetique extends effect {
 			$this->magnetise($actif, $passif);
 	}
 
+  /// Test si l'effet agit ou non
+  abstract function test_chance(&$passif);
+  /// Supprime un buff ou un niveau de buff
+  abstract function suppr_buff($buff, &$passif);
+
 	function magnetise(&$actif, &$passif)
 	{
 		//chance de débuffer
-		$rand = rand(0, 100);
+		//$rand = rand(0, 100);
 		//Le débuff marche
-		$this->debug($this->chance.'/ 100 => '.$rand);
-		if($rand <= $this->chance)
+		//$this->debug($this->chance.'/ 100 => '.$rand);
+		if(/*$rand <= $this->chance*/ $this->test_chance($passif) )
 		{
-			$nb_buff_suppr = rand(1, $this->nb);
+			//$nb_buff_suppr = rand(1, $this->nb);
 			//echo $nb_buff_suppr.'<br />';
 			$passif_buff = $passif->get_buff();
-			for($i = 0; $i < $nb_buff_suppr; $i++)
-			{
+			/*for($i = 0; $i < $nb_buff_suppr; $i++)
+			{*/
 				// BD: on doit ne prendre que les vrais
 				$keys = array();
 				foreach ($passif_buff as $nbuff => $buff)
 				{
 					if ($buff->get_debuff() == 1) continue;
 					if ($buff->get_id() == '') continue;
+					if (!$buff->get_supprimable()) continue;
 					$keys[] = $nbuff;
 				}
 				$count = count($keys);
@@ -574,22 +579,25 @@ class magnetique extends effect {
 					}
 					else
 					{
-						global $db;
+						/*global $db;
 						$this->message($this->titre.' supprime le buff '.$passif_buff[$keys[$rand]]->get_nom());
 						$passif->supprime_buff($keys[$rand]);
 						$passif_buff[$keys[$rand]]->supprimer();
-						unset($passif_buff[$keys[$rand]]);
+						unset($passif_buff[$keys[$rand]]);*/
+						$this->suppr_buff($passif_buff[$keys[$rand]], $passif);
 					}
 				}
 				else {
-					$this->message($this->titre.' ne supprime pas de buff - plus de buff');
+					//$this->message($this->titre.' ne supprime pas de buff - plus de buff');
+					$this->message($this->titre.' n\'a pas de buff sur lequel agir');
 				}
-			}
+			//}
 			return true;
 		}
 		else
 		{
-			$this->message($this->titre.' ne supprime pas de buff');
+			//$this->message($this->titre.' ne supprime pas de buff');
+			$this->message($this->titre.' n\'agit pas');
 			return false;
 		}
 	}
@@ -597,21 +605,98 @@ class magnetique extends effect {
 }
 
 class globe_foudre extends magnetique {
-	function __construct($aNb, $achance, $aHit = false) {
-		parent::__construct('globe_foudre', $aNb);
+	private $chance;
+	function __construct($achance, $aHit = false) {
+		parent::__construct('globe_foudre');
     $this->titre = 'Le globe de foudre';
 		$this->hit = $aHit;
 		//$this->message("Construction de ".$this->titre);
   }
+  /// Test si l'effet agit ou non
+  function test_chance(&$passif)
+  {
+    $rand = rand(0, 100);
+    $this->debug($this->chance.'/ 100 => '.$rand);
+    return $rand <= $this->chance;
+  }
+  /// Supprime un buff
+  function suppr_buff($buff, &$passif)
+  {
+    $this->message($this->titre.' supprime le buff '.$buff->get_nom());
+    $passif->supprime_buff( $buff->get_type() );
+		$buff->supprimer();
+  }
 }
 
 class fleche_magnetique extends magnetique {
-
-	function __construct($aNb, $achance) {
-		parent::__construct('fleche_magnetique', $aNb);
+  private $potentiel; ///< potentiel de réussite
+  private $nbr_max;  ///< nombre maximum de niveaux retités
+	function __construct($nbr_max, $potentiel) {
+		parent::__construct('fleche_magnetique'/*, $aNb*/);
 		$this->titre = 'La flèche magnétique';
-		$this->chance = $achance;
+		$this->potentiel = $potentiel;
+		$this->nbr_max = $nbr_max;
 	}
+  /// Test si l'effet agit ou non
+  function test_chance(&$passif)
+  {
+    $de_att = rand(0, $this->potentiel);
+    $de_deff = rand(0, $passif->get_vie());
+    return $de_att >= $de_deff;
+  }
+  /// Supprime un niveau buff
+  function suppr_buff($buff, &$passif)
+  {
+    $buffs = sort_jeu::create('type', $buff->get_type(), 'incantation DESC');
+    if( !$buffs )
+    {
+      $buffs = comp_jeu::create('type', $buff->get_type(), 'comp_requis DESC');
+    }
+    if( !$buffs )
+    {
+      $this->notice($this->titre.' aurait dû agir mais le buff '.$buff->get_type().' n\'est pas reconnu. Pr&eacute;venez un administrateur.');
+      return;
+    }
+
+    $nouv = false;
+    $nbr = $nbr_red = rand(1, $this->nbr_max);
+    foreach($buffs as $b)
+    {
+      if( $nouv )
+      {
+        $nbr--;
+        if( $nbr == 0 )
+        {
+          if( substr($b->get_nom(), 0, 11) != '(Personnel)' )
+            $nouv = $b;
+          break;
+        }
+      }
+      else if( $b->get_nom() == $buff->get_nom() )
+        $nouv = true;
+    }
+
+    if( $nouv === false )
+    {
+      $this->notice($this->titre.' aurait dû agir mais le buff '.$buff->get_nom(). 'n\'a pu être retrouvé. Pr&eacute;venez un administrateur.');
+      return;
+    }
+    else if( $nouv === true )
+    {
+      $this->message($this->titre.' supprime le buff '.$buff->get_nom());
+      $passif->supprime_buff( $buff->get_type() );
+		  $buff->supprimer();
+    }
+    else
+    {
+      $this->message($this->titre.' réduit le buff '.$buff->get_nom().' de '.$nbr_red.' niveau'.($nbr_red>1?'x.':'.'));
+      $buff->set_nom( $nouv->get_nom() );
+      $buff->set_effet( $nouv->get_effet() );
+      $buff->set_effet2( $nouv->get_effet2() );
+      $buff->set_description( $nouv->get_description() );
+      $buff->sauver();
+    }
+  }
 }
 
 class fleche_sable extends comp_combat {

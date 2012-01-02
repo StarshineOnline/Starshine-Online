@@ -286,11 +286,14 @@ class comp_jeu_db
 		}
 
 		$requete = "SELECT id, nom, description, mp, pa, type, comp_assoc, carac_assoc, carac_requis, comp_requis, arme_requis, effet, effet2, duree, cible, requis, prix, lvl_batiment FROM comp_jeu WHERE ".$where." ORDER BY ".$ordre;
-		$req = $db->query($requete);
+    //echo $requete.'<br/>';
+    $req = $db->query($requete);
 		if($db->num_rows($req) > 0)
 		{
 			while($row = $db->read_assoc($req))
 			{
+        /*print_r($row);
+        echo '<br/>';*/
 				if(!$keys) $return[] = new comp_jeu($row);
 				else $return[$row[$keys]] = new comp_jeu($row);
 			}
@@ -728,9 +731,8 @@ class comp_jeu_db
 
 class comp_jeu extends comp_jeu_db {
   function __construct($id = 0, $nom = '', $description = '', $mp = '', $pa = '', $type = '', $comp_assoc = '', $carac_assoc = '', $carac_requis = '', $comp_requis = '', $arme_requis = '', $effet = '', $effet2 = '', $duree = '', $cible = '', $requis = '', $prix = '', $lvl_batiment = '') {
-    if( (func_num_args() == 1) && (
-         is_numeric(id) || is_array(id)))
-      parent::__construct(id);
+    if( (func_num_args() == 1) && (is_numeric($id) || is_array($id)))
+      parent::__construct($id);
     else
       parent::__construct($id, $nom, $description, $mp, $pa, $type, $comp_assoc, $carac_assoc, $carac_requis, $comp_requis, $arme_requis, $effet, $effet2, $duree, $cible, $requis, $prix, $lvl_batiment);
   }

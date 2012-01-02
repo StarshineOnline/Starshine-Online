@@ -889,7 +889,7 @@ function lance_sort($id, $acteur, &$effects)
 
 					// On ajoute pas a la stack d'effet car on a besoin de savoir
 					// tout de suite si la foudre passe ou pas pour le +1 degats
-					$foudre = new globe_foudre(1, 15, true);
+					$foudre = new globe_foudre(15, true);
 					if ($foudre->magnetise($actif, $passif) == false)
 						$degat++;
 					echo '&nbsp;&nbsp;<span class="degat"><strong>'.$actif->get_nom().'</strong> inflige <strong>'.$degat.'</strong> dégâts avec '.$row['nom'].'</span><br />';
@@ -1291,14 +1291,14 @@ function lance_comp($id, $acteur, &$effects)
 			$row['comp_assoc'] = $actif->get_comp_combat();
 			$comp_attaque = true;
       		//$effects[] = new fleche_magnetique($row['effet2'], $row['effet']);
-			$de_att = rand(1, $passif->get_vie());
+			/*$de_att = rand(1, $passif->get_vie());
 			$de_deff = rand(1, 40);
 			if($de_att <= $de_deff)
-			{
+			{*/
 	      		$actif->etat['fleche_magnetique_attaque']['effet'] = $row['effet'];
 		  		$actif->etat['fleche_magnetique_attaque']['effet2'] = $row['effet2'];
-			}
-			else echo 'La flêche magnétique ne fera rien<br />';
+			/*}
+			else echo 'La flêche magnétique ne fera rien<br />';*/
 		break;
 		case 'fleche_sable' :
 			echo '&nbsp;&nbsp;<strong>'.$actif->get_nom().'</strong> utilise '.$row['nom'].' !<br />';
