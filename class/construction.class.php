@@ -120,6 +120,12 @@ class construction extends entitenj_constr
 	{
 		return entitenj_constr::get_liste_update().', rechargement = '.$this->rechargement.', date_construction = '.$this->date_construction.', image = "'.mysql_escape_string($this->image).'"';
 	}
+	
+  /// Renvoie le nom de la table (par défaut le nom de la classe)
+  protected function get_table()
+  {
+    return 'construction';
+  }
 	// @}
 }
 ?>
