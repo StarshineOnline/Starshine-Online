@@ -5,8 +5,11 @@ if (file_exists('root.php'))
 //JOURNALIER RESSOURCES DE ROYAUME //
 $mail = '';
 
-include_once(root.'class/db.class.php');
-include_once(root.'class/construction.class.php');
+function __autoload($class_name)
+{
+	global $root;
+	require_once($root.'class/'.$class_name .'.class.php');
+}
 include_once(root.'fonction/time.inc.php');
 include_once(root.'fonction/action.inc.php');
 

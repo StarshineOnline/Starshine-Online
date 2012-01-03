@@ -88,7 +88,7 @@ class placement extends entitenj_constr
 	* @param rez                 Pourcentage de HP/MP à la rez ou distance de vision des tours
 	* @param point_victoire      Nombre de points de victoire gagnés lorsque le bâtiment est détruit
 	*/
-	function __construct($id = 0, $type = '', $x = '', $y = '', $royaume = '', $debut_placement = '', $fin_placement = '', $id_batiment = '', $hp = '', $nom = '', $rez = '', $point_victoire = '')
+	function __construct($id = 0, $type = '', $x = 0, $y = 0, $royaume = 0, $debut_placement = 0, $fin_placement = 0, $id_batiment = 0, $hp = '', $nom = '', $rez = 0, $point_victoire = 0)
 	{
 		//Verification nombre et du type d'argument pour construire l'etat adequat.
 		if( func_num_args() == 1 )
