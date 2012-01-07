@@ -65,9 +65,9 @@ class gemme_enchassee extends effect
    * @see effect::factory
 	 */
 	static function factory(&$effects, &$actif, &$passif, $acteur = '') {
-    $actives = array('vampire', 'poison', 'divine');
+    $actives = array('vampire', 'poison', 'divin');
     $passives = array('bouclier', 'bouclier_epine', 'blocage',
-                      'parade', 'evasion', 'divine');
+                      'parade', 'evasion', 'divin');
 
 		//my_dump($actif->get_enchantement());
 
@@ -154,7 +154,7 @@ class gemme_enchassee extends effect
 
   // Gemme divine
   function calcul_mp(&$actif, $mp) {
-		if ($this->enchantement_type == 'divine') {
+		if ($this->enchantement_type == 'divin') {
       $mp -= $this->enchantement_effet;
       if ($mp < 1) { $mp = 1; }
     }
