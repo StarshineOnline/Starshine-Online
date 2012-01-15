@@ -14,9 +14,10 @@ include_once(root.'haut.php');
 	</div>
 </div>
 <div id='accueil'>
-	<div style="top:600px; position:absolute; height:65; width:475; display:block; margin:auto; margin-left: 82px;">
-	  <script type="text/javascript" src="http://www.adcash.com/script/java.php?option=rotateur&rotateur=43457"></script>
-  </div>
+<?PHP
+  if( file_exists(root.'pub.php') )
+    include(root.'pub.php');
+?>
   
 	<div id='loading_sso' style='display:none;'></div>	
 	<div id='test'>
