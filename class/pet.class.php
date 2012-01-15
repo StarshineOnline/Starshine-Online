@@ -68,6 +68,12 @@ class pet extends map_monstre
 		$this->ecurie = $ecurie;
 		$this->champs_modif[] = 'ecurie';
 	}
+
+  /// Renvoie la race
+	function get_race($perso)
+	{
+		return $perso->get_race();
+	}
 	// @}
 
 	/**
@@ -282,6 +288,15 @@ class pet extends map_monstre
 		if(!$base) return $this->pm;
 		else return $this->pm_base;
 	}
+  /// Renvoie le bonus de PM dû à l'armure
+  function get_bonus_pm()
+  {
+		if(!isset($this->pm))
+		{
+			$this->get_armure();
+		}
+		return $this->pm - $this->pm_base;
+  }
 
   /**
    * Renvoie la PP.
@@ -297,6 +312,15 @@ class pet extends map_monstre
 		if(!$base) return $this->pp;
 		else return $this->pp_base;
 	}
+  /// Renvoie le bonus de PP dû à l'armure
+  function get_bonus_pp()
+  {
+		if(!isset($this->pp))
+		{
+			$this->get_armure();
+		}
+		return $this->pp - $this->pp_base;
+  }
 
 	// Renvoie l'arme de la main droite. Enregistre les enchantements et les effets.
 	function get_arme()

@@ -128,12 +128,6 @@ class monstre extends entitenj_def
 		$this->affiche = $affiche;
 		$this->champs_modif[] = 'affiche';
   }
-  
-  /// Renvoie la race
-	function get_race()
-	{
-		return 'neutre';
-	}
 	// @}
 
 
@@ -281,6 +275,12 @@ class monstre extends entitenj_def
 	protected $volonte;  ///< Caractéristique volonté
 	protected $energie;  ///< Caractéristique énergie
 
+  /// Renvoie la caractéristique constitution
+  function  get_constitution()
+  {
+    return 15;
+  }
+  
 	/// Renvoie la caractéristique force
 	function get_force()
 	{

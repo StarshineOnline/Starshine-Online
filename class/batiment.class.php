@@ -20,7 +20,6 @@ class batiment extends entitenj_def
 	protected $entretien;  ///< Coût journalier de l'entretien du bâtiment.
 	protected $cond1;   ///< Temps avant amélioration
 	protected $cond2;   ///< Inutilisé ?
-	protected $carac;  ///< Valeur de base des caractéristiques du bâtiment.
 	protected $upgrade;   ///< ID de la version améliorée.
 	protected $augmentation_pa;   ///< Augmentation du coût en PA des déplacements sur le bâtiment.
 	protected $temps_construction;///< Temps de construction du bâtiment.
@@ -73,18 +72,6 @@ class batiment extends entitenj_def
 	{
 		$this->cond2 = $cond2;
 		$this->champs_modif[] = 'cond2';
-	}
-
-	/// Renvoie la valeur de base des caractéristiques du bâtiment
-	function get_carac()
-	{
-		return $this->carac;
-	}
-	/// Modifie la valeur de base des caractéristiques du bâtiment
-	function set_carac($carac)
-	{
-		$this->carac = $carac;
-		$this->champs_modif[] = 'carac';
 	}
 
 	/// Renvoie l'ID de la version améliorée
@@ -205,6 +192,12 @@ class batiment extends entitenj_def
 		$this->PM = $PM;
 		$this->champs_modif[] = 'PM';
 	}
+	
+  /// Renvoie l'espèce
+	function get_espece()
+	{
+    return 'batiment';;
+  }
 	// @}
 
 
@@ -334,6 +327,144 @@ class batiment extends entitenj_def
 		else
 			return false;
 	}
+	// @}
+
+	/**
+	 * @name Caractéristiques
+	 * Données et méthodes liées aux caractéristiques du personnage : constitution,
+	 * force, dextérité, puissance, volonté et énergie.
+	 */
+  // @{
+	protected $carac;  ///< Valeur de base des caractéristiques du bâtiment.
+
+	/// Renvoie la valeur de base des caractéristiques du bâtiment
+	function get_carac()
+	{
+		return $this->carac;
+	}
+	/// Modifie la valeur de base des caractéristiques du bâtiment
+	function set_carac($carac)
+	{
+		$this->carac = $carac;
+		$this->champs_modif[] = 'carac';
+	}
+	
+  function get_constitution()
+  {
+    return $this->carac;
+  }
+  function get_force()
+  {
+    return $this->carac;
+  }
+  function get_dexterite()
+  {
+    return $this->carac;
+  }
+  function get_puissance()
+  {
+    return $this->carac;
+  }
+  function get_volonte()
+  {
+    return $this->carac;
+  }
+  function get_energie()
+  {
+    return $this->carac;
+  }
+  // @}
+
+	/**
+	 * @name Compétences
+	 * Données et méthodes liées aux compténtences du personnage : mêlée, esquive,
+	 * incatation, …
+	 */
+	// @{
+	/// Renvoie la compétence de mêlée
+	function get_melee()
+	{
+    $melee = $this->get_bonus('precision');
+    if($melee)
+      return $melee;
+    else
+      return 0;
+  }
+  /// Renvoie la valeur de la compétence de tir
+	function get_distance()
+	{
+    return 100 * $this->carac;
+  }
+	/// Renvoie la compétence d'esquive
+	function get_esquive()
+	{
+    return 1;
+  }
+	/// Renvoie la compétence d'incantation
+	function get_incantation()
+	{
+    return 0;
+  }
+	/// Renvoie la compétence de magie de la vie
+	function get_sort_vie()
+	{
+    return 0;
+  }
+	/// Renvoie la compétence de nécromancie
+	function get_sort_mort()
+	{
+    return 0;
+  }
+	/// Renvoie la compétence de magie élémentaire
+	function get_sort_element()
+	{
+    return 0;
+  }
+	// @}
+
+	/**
+	 * @name Combats
+	 * Données et méthodes liées aux combats.
+	 */
+  // @{
+	/// Renvoie l'arme utilisée
+	function get_arme()
+	{
+    return '';
+  }
+	/// Renvoie le script du monstre
+	function get_action()
+	{
+    return '';
+  }
+	/// Renvoie la RM
+	function get_reserve()
+	{
+    return 0;
+  }
+  /// Renvoie la distance à laquelle le personnage peut attaquer
+	function get_distance_tir()
+  {
+    $portee = $this->get_bonus('portee');
+    if( $portee === false )
+      return 0;
+    else
+      return $portee;
+  }
+	/// Renvoie le facteur de dégâts de ou des armes.
+	function get_arme_degat($perso=null, $adversaire=null)
+  {
+    if( $adversaire != null && $adversaire->get_type() == 'arme_de_siege')
+      $degats = $this->get_bonus('degats_siege');
+    else
+      $degats = $this->get_bonus('degats_bat');
+    if( $degats === false )
+      return 0;
+    elseif( $perso->get_race() == 'barbare' )
+      return ceil($degats * 1.1);
+    else
+      return $degats;
+  }
 	// @}
 
 }

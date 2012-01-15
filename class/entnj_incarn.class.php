@@ -3,11 +3,10 @@
  * @file entnj_incarn.class.php
  * Définition de la classe entnj_incarn
  */
-if (file_exists('../root.php'))
-  include_once('../root.php');
+
 /**
  * Classe abstraite entnj_incarn
- * Cette classe de base pour les incarnation des entité non joueurs (map_monstre, pet construction, placement)
+ * Classe de base pour les incarnation des entité non joueurs (map_monstre, pet construction, placement)
  */
 abstract class entnj_incarn extends placable
 {
@@ -30,6 +29,12 @@ abstract class entnj_incarn extends placable
 	}
 	/// Renvoie l'objet représentant la définition
 	abstract function get_def();
+
+  /// Renvoie la race
+	function get_race($perso)
+	{
+		return 'neutre';
+	}
 	// @}
 
 
@@ -80,6 +85,30 @@ abstract class entnj_incarn extends placable
 		return placable::get_liste_update().', hp = '.$this->hp;
 	}
 	// @}
+	
+	/// Renvoie le coefficient pour modifier les caractéristique
+  function get_coeff_carac() { return 1; }
+	/// Renvoie le coefficient pour modifier les compétences
+  function get_coeff_comp($perso) { return 1; }
+  /// Renvoie le bonus de PM dû à l'armure
+  function get_bonus_pm() { return 0; }
+  /// Renvoie le bonus de PP dû à l'armure
+  function get_bonus_pp() { return 0; }
+  /// Renvoie la distance à laquelle le personnage peut attaquer
+	function get_distance_tir() { return false; }
+	/// Renvoie le script du monstre
+	function get_action() { return false; }
+	/**
+	 * Renvoie l'ensemble des buffs / débuffs actif sur le bâtiment.
+	 * @return     Tableau des buffs.
+	 */
+  abstract function get_buff($nom = false, $champ = false, $type = true);
+	/**
+	 * Renvoie le facteur de dégâts de ou des armes.
+	 * La plupart du temps on s'en fiche, de la main, on veut les degats
+	 * @param $main   si false : cumul, si 'droite' ou 'gauche' : detail
+	 */
+	function get_arme_degat($main = false) { return 0; }
 }
 
 ?>

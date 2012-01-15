@@ -29,11 +29,11 @@ switch($type)
 		{
 			$joueur = new perso($_SESSION['ID']);
 			$joueur->action_do = $joueur->recupaction('attaque');
-			$attaquant = new entite('joueur', $joueur);
+			$attaquant = entite::factory('joueur', $joueur);
 		}
 		else
 		{
-			$attaquant = new entite('pet', $joueur);
+			$attaquant = entite::factory('pet', $joueur->get_pet(), $joueur);
 		}
 		$def = false;
 		$joueur_defenseur = new perso($_GET['id_joueur']);
@@ -82,11 +82,11 @@ switch($type)
 		if(!$check_pet_def)
 		{
 			$joueur_defenseur->action_do = $joueur_defenseur->recupaction('defense');
-			$defenseur = new entite('joueur', $joueur_defenseur);
+			$defenseur = entite::factory('joueur', $joueur_defenseur);
 		}
 		else
 		{
-			$defenseur = new entite('pet', $joueur_defenseur);
+			$defenseur = entite::factory('pet', $joueur_defenseur->get_pet(), $joueur_defenseur);
 		}
 	break;
 	case 'monstre' :
@@ -96,7 +96,7 @@ switch($type)
 			{
 				$joueur = new perso($_SESSION['ID']);
 				$joueur->action_do = $joueur->recupaction('attaque');
-				$attaquant = new entite('joueur', $joueur);
+				$attaquant = entite::factory('joueur', $joueur);
 			}
 			else
 			{
@@ -126,17 +126,17 @@ switch($type)
 				if(!$check_pet_donj)
 				{
 					$joueur->action_do = $joueur->recupaction('defense');
-					$attaquant = new entite('joueur', $joueur);
+					$attaquant = entite::factory('joueur', $joueur);
 				}
 				else
 				{
-					$attaquant = new entite('pet', $joueur);
+					$attaquant = entite::factory('pet', $joueur->get_pet(), $joueur);
 				}
 			}
 		}
 		else
 		{
-			$attaquant = new entite('pet', $joueur);
+			$attaquant = entite::factory('pet', $joueur->get_pet(), $joueur);
 		}
 		$map_monstre = new map_monstre($_GET['id_monstre']);
 		$map_monstre->check_monstre();
@@ -146,47 +146,47 @@ switch($type)
 			exit (0);
 		}
 		$joueur_defenseur = new monstre($map_monstre->get_type());
-		$joueur_defenseur->hp_max = $joueur_defenseur->get_hp();
+		/*$joueur_defenseur->hp_max = $joueur_defenseur->get_hp();
 		$joueur_defenseur->set_hp($map_monstre->get_hp());
 		$joueur_defenseur->x = $map_monstre->get_x();
 		$joueur_defenseur->y = $map_monstre->get_y();
-		$joueur_defenseur->buff = $map_monstre->get_buff();
-		$defenseur = new entite('monstre', $joueur_defenseur);
+		$joueur_defenseur->buff = $map_monstre->get_buff();*/
+		$defenseur = entite::factory('monstre', $map_monstre);
 		$diff_lvl = abs($joueur->get_level() - $defenseur->get_level());
 	break;
 	case 'batiment' :
 		if ($joueur->is_buff('debuff_rvr')) $no_rvr = true;
+		$joueur = new perso($_SESSION['ID']);
 		if(!$check_pet)
 		{
-			$joueur = new perso($_SESSION['ID']);
 			$joueur->action_do = $joueur->recupaction('attaque');
-			$attaquant = new entite('joueur', $joueur);
+			$attaquant = entite::factory('joueur', $joueur);
 		}
 		else
 		{
-			$attaquant = new entite('pet', $joueur);
+			$attaquant = entite::factory('pet', $joueur->get_pet(), $joueur);
 		}
 		if($_GET['table'] == 'construction') $map_batiment = new construction($_GET['id_batiment']);
 		else $map_batiment = new placement($_GET['id_batiment']);
-		$joueur_defenseur = new batiment($map_batiment->get_id_batiment());
+		/*$joueur_defenseur = new batiment($map_batiment->get_id_batiment());
 		if($_GET['table'] == 'construction') $joueur_defenseur->coef = 1;
 		else $joueur_defenseur->coef = $map_batiment->get_temps_restant() / $map_batiment->get_temps_total();
 		$joueur_defenseur->hp_max = $joueur_defenseur->get_hp();
 		$joueur_defenseur->set_hp($map_batiment->get_hp());
 		$joueur_defenseur->x = $map_batiment->get_x();
-		$joueur_defenseur->y = $map_batiment->get_y();
-		$defenseur = new entite('batiment', $joueur_defenseur);
+		$joueur_defenseur->y = $map_batiment->get_y();*/
+		$defenseur = entite::factory('batiment', $map_batiment, $joueur);
 	break;
 	case 'siege' :
 		if ($joueur->is_buff('debuff_rvr')) $no_rvr = true;
-		$map_siege = new construction($_GET['id_arme_de_siege']);
+		$map_siege = new arme_siege($_GET['id_arme_de_siege']);
 		if($_GET['table'] == 'construction') $map_batiment = new construction($_GET['id_batiment']);
 		else $map_batiment = new placement($_GET['id_batiment']);
 		$joueur = new perso($_SESSION['ID']);
 		if($joueur->get_pa() >= 10)
 		{
 			$siege = new batiment($map_siege->get_id_batiment());
-			$siege->bonus_architecture = 1 + ($joueur->get_architecture() / 100);
+			/*$siege->bonus_architecture = 1 + ($joueur->get_architecture() / 100);
 			$siege->hp_max = $siege->get_hp();
 			$siege->set_hp($map_siege->get_hp());
 			$siege->x = $map_siege->get_x();
@@ -201,9 +201,9 @@ switch($type)
 			//Si en défense c'est une arme de siège, on applique les dégats 2
 			if($joueur_defenseur->get_type() == 'arme_de_siege') $siege->arme_degat = $siege->get_bonus('degats_siege');
 			else $siege->arme_degat = $siege->get_bonus('degats_bat');
-			if($joueur->get_race() == 'barbare') $siege->arme_degat = ceil($siege->arme_degat * 1.1);
-			$attaquant = new entite('siege', $siege);
-			$defenseur = new entite('batiment', $joueur_defenseur);
+			if($joueur->get_race() == 'barbare') $siege->arme_degat = ceil($siege->arme_degat * 1.1);*/
+			$defenseur = entite::factory('batiment', $map_batiment);
+			$attaquant = entite::factory('siege', $map_siege, $joueur, $defenseur);
 		}
 	break;
 	case 'ville' :
@@ -230,8 +230,8 @@ switch($type)
 		$joueur_defenseur->x = $coord['x'];
 		$joueur_defenseur->y = $coord['y'];
 		$siege->arme_degat = $siege->get_bonus('degats_bat');
-		$attaquant = new entite('siege', $siege);
-		$defenseur = new entite('ville', $joueur_defenseur);
+		$attaquant = entite::factory('siege', $siege);
+		$defenseur = entite::factory('ville', $joueur_defenseur);
 		if ($map_royaume->is_raz())
 		{
 			echo '<h5>Cette ville est déjà mise à sac</h5>';
@@ -284,6 +284,7 @@ elseif($joueur->is_buff('dressage'))
 }
 else if($W_distance > $attaquant->get_distance_tir())
 {
+  echo "$W_distance > ".$attaquant->get_distance_tir()."<br/>";
 	echo '<h5>Vous êtes trop loin pour l\'attaquer !</h5>';
 }
 elseif($attaquant->get_hp() <= 0 OR $defenseur->get_hp() <= 0)
@@ -443,19 +444,8 @@ else
 			//Boucle principale qui fait durer le combat $round_total round
 			while(($round < ($round_total + 1)) AND ($attaquant->get_hp() > 0) AND ($defenseur->get_hp() > 0))
 			{
-				/*if($attaquant->get_arme_type() == 'arc') $attaquant->set_comp('distance'); else $attaquant->set_comp('melee');
-				if($defenseur->get_arme_type() == 'arc') $defenseur->set_comp('distance'); else $defenseur->set_comp('melee');*/
-				//Calcul du potentiel de toucher et parer
-				/*$attaquant->get_potentiel_toucher();
-				$defenseur->get_potentiel_toucher();
-				$attaquant->get_potentiel_parer();
-				$defenseur->get_potentiel_parer();*/
 				$attaquant->init_round();
 				$defenseur->init_round();
-				/*$attaquant->degat_sup = 0;
-				$attaquant->degat_moins = 0;
-				$defenseur->degat_sup = 0;
-				$defenseur->degat_moins = 0;*/
 				if ($mode == 'attaquant') $mode = 'defenseur';
 				else ($mode = 'attaquant');
 
@@ -523,7 +513,7 @@ else
 					//echo $action[0];
 					$hp_avant = ${$mode_def}->get_hp();
 					$augmentations = array('actif' => array('comp' => array(), 'comp_perso' => array()), 'passif' => array('comp' => array(), 'comp_perso' => array()));
-					switch($action[0])
+          switch($action[0])
 					{
 						//Attaque
 						case 'attaque' :
@@ -1261,7 +1251,7 @@ else
 				else
 				{
 					$gains_xp = true;
-					if($degat_defense > 0) $coef = 0.5 * ($degat_defense) / $joueur_defenseur->hp_max;
+					if($degat_defense > 0) $coef = 0.5 * ($degat_defense) / $defenseur->get_hp_max();//$joueur_defenseur->hp_max;
 				}
 				if($gains_xp)
 				{

@@ -143,4 +143,9 @@ class placement extends entitenj_constr
 	{
 		return entitenj_constr::get_construction_buff($id);
 	}
+
+	/// Renvoie le coefficient pour modifier les caractéristique
+  function get_coeff_carac() { return $this->get_temps_restant() / $this->get_temps_total(); }
+	/// Renvoie le coefficient pour modifier les compétences
+  function get_coeff_comp($perso) { return $this->get_temps_restant() / $this->get_temps_total(); }
 }

@@ -1,6 +1,4 @@
 <?php
-
-
 /**
  * @file entite.class.php
  * Gestion des participants à un combat
@@ -26,10 +24,10 @@ class entite extends placable
 	protected $race;         ///< Race de l'entité.
 	protected $level;        ///< Niveau de l'entité.
 	protected $rang_royaume; ///< Grade de l'entité au sein de son royaume.
-	private $type;           ///< Type de l'entité.
-	private $espece;         ///< Espèce de l'entité.
+	protected $type;           ///< Type de l'entité.
+	protected $espece;         ///< Espèce de l'entité.
 	public $etat;            ///< État de l'entité.
-	private $point_victoire; ///< Points de victoire gagnés si l'entité est détruite.
+	protected $point_victoire; ///< Points de victoire gagnés si l'entité est détruite.
 	/// Renvoie la race
 	function get_race()
 	{
@@ -182,8 +180,8 @@ class entite extends placable
 	protected $sort_vie;     ///< Compétence magie de la vie.
 	protected $sort_element; ///< Compétence magie élémentaire.
 	protected $sort_mort;    ///< Compétence nécromancie.
-	private $comp;
-	private $competence = array();
+	protected $comp;
+	protected $competence = array();
 	/// Renvoie la mêlée
 	function get_melee()
 	{
@@ -485,16 +483,16 @@ class entite extends placable
 	 * les perosnnages.
 	 */
   // @{
-	private $arme_type;          ///< Type de l'arme utilisée.
+	protected $arme_type;          ///< Type de l'arme utilisée.
 	public $pp;                  ///< Protection physique.
 	public $pm;                  ///< Protection magique.
 	public $pm_para;             ///< Protection magique.
 	public $enchantement;        ///< Liste des enchantements de gemmes.
-	private $arme_degat;         ///< Dégâts de l'arme.
-	private $bouclier_degat = 0; ///< Dégâts bloqués par le bouclier.
-	private $malus_hache = 1;    ///< Malus d'esquive dû au port d'une hache.
-	private $malus_arc = 1;    ///< Malus d'esquive dû au port d'un arc.
-	private $saved_inventaire = null; ///< Inventaire
+	protected $arme_degat;         ///< Dégâts de l'arme.
+	protected $bouclier_degat = 0; ///< Dégâts bloqués par le bouclier.
+	protected $malus_hache = 1;    ///< Malus d'esquive dû au port d'une hache.
+	protected $malus_arc = 1;    ///< Malus d'esquive dû au port d'un arc.
+	protected $saved_inventaire = null; ///< Inventaire
 	/// Renvoie le type de l'arme utilisée
 	function get_arme_type()
 	{
@@ -649,7 +647,7 @@ class entite extends placable
   // @{
 	public $action;            ///< Contenu du script de combat utilisé.
 	public $reserve;           ///< Réserve de mana.
-	private $distance_tir;     ///< Distance de tir
+	protected $distance_tir;     ///< Distance de tir
 	public $potentiel_bloquer; ///< Potentiel bloquer
 	/// Renvoie le contenu du script de combat utilisé
 	function get_action()
@@ -757,7 +755,7 @@ class entite extends placable
 	 * Méthode gérant la lecture et l'écriture dans la base de données
 	 */
   // @{
-	private $objet_ref;    ///< Référence vers l'objet source
+	protected $objet_ref;    ///< Référence vers l'objet source
   /**
    * Crée l'objet à partir d'un objet source
    * @param  $type    Type de l'entité
@@ -1054,6 +1052,30 @@ class entite extends placable
 			break;
 		}
 	}
+  /**
+   * Crée l'objet la bonne classe à partir d'un objet source
+   * @param  $type    Type de l'entité
+   * @objet  $objet   Référence vers l'objet source.
+   */
+	static function factory($type, &$src, $perso=null, $adversaire=null)
+	{
+    switch($type)
+    {
+		case 'monstre' :
+		case 'pet' :
+		case 'batiment' :
+		case 'siege' :
+      $objet = new entitenj($src, $perso, $adversaire);
+		  break;
+		//case 'ville' :
+		default:
+      return new entite($type, $src);
+    }
+		$objet->objet_effet = array();
+		$objet->type = $type;
+		$objet->objet_ref = &$src->get_def();
+		return $objet;
+  }
 	/// Renvoie la liste des champs pour une insertion dans la base
 	protected function get_liste_champs()
 	{
@@ -1062,12 +1084,12 @@ class entite extends placable
 	/// Renvoie la liste des valeurs des champspour une insertion dans la base
 	protected function get_valeurs_insert()
 	{
-		return placable::get_valeurs_insert().', $this->hp';
+		return placable::get_valeurs_insert().', '.$this->hp;
 	}
 	/// Renvoie la liste des champs et valeurs pour une mise-à-jour dans la base
 	protected function get_liste_update()
 	{
-		return placable::get_liste_update().', hp = $this->hp';
+		return placable::get_liste_update().', hp = '.$this->hp;
 	}
   /// Renvoie l'objet source
 	function get_objet()

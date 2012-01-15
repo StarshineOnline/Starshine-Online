@@ -6,7 +6,7 @@
 
 /**
  * Classe abstraite entitenj_def
- * Cette classe de base pour les définitions des entités non joueurs (monstre, batiment)
+ * Classe de base pour les définitions des entités non joueurs (monstre, batiment)
  */
 abstract class entitenj_def extends table
 {
@@ -93,6 +93,27 @@ abstract class entitenj_def extends table
 		$this->description = $description;
 		$this->champs_modif[] = 'description';
 	}
+
+	/// Renvoie le niveau du monstre
+	function get_level()
+	{
+    return 1;
+  }
+	/// Renvoie les stars gagnées en tuant le monstre
+	function get_star()
+	{
+    return 0;
+  }
+	/// Renvoie les points de victoire gagnés lors de la destruction du bâtiment
+	function get_point_victoire()
+	{
+    return 0;
+  }
+  /// Renvoie l'espèce
+	function get_espece()
+	{
+    return $this->type;
+  }
 	// @}
 
 
@@ -159,6 +180,65 @@ abstract class entitenj_def extends table
 	{
 		return 'nom = "'.mysql_escape_string($this->nom).'", type = "'.mysql_escape_string($this->type).'", hp = '.$this->hp.', pp = '.$this->pp.', pm = '.$this->pm;
 	}
+	// @}
+
+	/**
+	 * @name Caractéristiques
+	 * Données et méthodes liées aux caractéristiques du personnage : constitution,
+	 * force, dextérité, puissance, volonté et énergie.
+	 */
+  // @{
+  /// Renvoie la caractéristique constitution
+  abstract function  get_constitution();
+	/// Renvoie la caractéristique force
+  abstract function  get_force();
+	/// Renvoie la caractéristique dexterite
+  abstract function  get_dexterite();
+	/// Renvoie la caractéristique puissance
+  abstract function  get_puissance();
+	/// Renvoie la caractéristique volonté
+  abstract function  get_volonte();
+	/// Renvoie la caractéristique énergie
+  abstract function  get_energie();
+  // @}
+
+	/**
+	 * @name Compétences
+	 * Données et méthodes liées aux compténtences du personnage : mêlée, esquive,
+	 * incatation, …
+	 */
+	// @{
+	/// Renvoie la compétence de mêlée
+	abstract function get_melee();
+  /// Renvoie la valeur de la compétence de tir
+	abstract function get_distance();
+	/// Renvoie la compétence d'esquive
+	abstract function get_esquive();
+	/// Renvoie la compétence d'incantation
+	abstract function get_incantation();
+	/// Renvoie la compétence de magie de la vie
+	abstract function get_sort_vie();
+	/// Renvoie la compétence de nécromancie
+	abstract function get_sort_mort();
+	/// Renvoie la compétence de magie élémentaire
+	abstract function get_sort_element();
+	// @}
+
+	/**
+	 * @name Combats
+	 * Données et méthodes liées aux combats.
+	 */
+  // @{
+	/// Renvoie l'arme utilisée
+	abstract function get_arme();
+	/// Renvoie le script du monstre
+	abstract function get_action();
+	/// Renvoie la RM
+	abstract function get_reserve();
+	/// Renvoie le facteur de dégâts de ou des armes.
+	function get_arme_degat($perso=null, $adversaire=null) { return 0; }
+  /// Renvoie la distance à laquelle le personnage peut attaquer
+	function get_distance_tir() { return 0; }
 	// @}
 }
 ?>

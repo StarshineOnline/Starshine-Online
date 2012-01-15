@@ -164,10 +164,10 @@ class entitenj_constr extends entnj_incarn
 	 * Renvoie l'ensemble des buffs / débuffs actif sur le bâtiment.
 	 * @return     Tableau des buffs.
 	 */
-	function get_buff()
+	function get_buff($nom = false, $champ = false, $type = true)
 	{
 		if ($this->buff == null) {
-			$this->buff = get_construction_buff($this->id);
+			$this->buff = self::get_construction_buff($this->id);
 		}
 		return $this->buff;
 	}
