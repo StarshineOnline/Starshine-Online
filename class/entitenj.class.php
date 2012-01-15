@@ -33,7 +33,7 @@ class entitenj extends entite
 		  $this->y = $perso->get_y();
     }
 		$this->hp = $incarn->get_hp();
-		$this->hp_max = $incarn->get_hp();
+		$this->hp_max = $def->get_hp();
 		$this->reserve = $def->get_reserve();
 		$this->pa = 0;
 		$this->nom = $def->get_nom();
