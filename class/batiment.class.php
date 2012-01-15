@@ -460,7 +460,7 @@ class batiment extends entitenj_def
       $degats = $this->get_bonus('degats_bat');
     if( $degats === false )
       return 0;
-    elseif( $perso->get_race() == 'barbare' )
+    elseif( $perso != null && $perso->get_race() == 'barbare' )
       return ceil($degats * 1.1);
     else
       return $degats;

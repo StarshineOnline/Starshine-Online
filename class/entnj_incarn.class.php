@@ -96,8 +96,8 @@ abstract class entnj_incarn extends placable
   function get_bonus_pp() { return 0; }
   /// Renvoie la distance à laquelle le personnage peut attaquer
 	function get_distance_tir() { return false; }
-	/// Renvoie le script du monstre
-	function get_action() { return false; }
+	/// Renvoie le script d'action
+	function get_action($attaquant) { return false; }
 	/**
 	 * Renvoie l'ensemble des buffs / débuffs actif sur le bâtiment.
 	 * @return     Tableau des buffs.

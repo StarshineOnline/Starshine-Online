@@ -1057,7 +1057,7 @@ class entite extends placable
    * @param  $type    Type de l'entité
    * @objet  $objet   Référence vers l'objet source.
    */
-	static function factory($type, &$src, $perso=null, $adversaire=null)
+	static function factory($type, &$src, $perso=null, $attaquant=true, $adversaire=null)
 	{
     switch($type)
     {
@@ -1065,7 +1065,7 @@ class entite extends placable
 		case 'pet' :
 		case 'batiment' :
 		case 'siege' :
-      $objet = new entitenj($src, $perso, $adversaire);
+      $objet = new entitenj($src, $perso, $attaquant, $adversaire);
 		  break;
 		//case 'ville' :
 		default:

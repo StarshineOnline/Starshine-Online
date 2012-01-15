@@ -14,12 +14,12 @@ class entitenj extends entite
   private $def;  ///< Objet contenant les informations sur la définition de l'entité (dérivé de entitenj_def)
   
   
-  function __construct($incarn, $perso, $adversaire=null)
+  function __construct($incarn, $perso, $attaquant=true, $adversaire=null)
   {
     $def = $incarn->get_def();
     $this->incarn = $incarn;
     $this->def = $def;
-		$this->action = $incarn->get_action();
+		$this->action = $incarn->get_action($attaquant);
     if( $this->action === false )
 			$this->action = $def->get_action();
 		$this->arme_type = $def->get_arme();

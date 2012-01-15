@@ -33,7 +33,7 @@ switch($type)
 		}
 		else
 		{
-			$attaquant = entite::factory('pet', $joueur->get_pet(), $joueur);
+			$attaquant = entite::factory('pet', $joueur->get_pet(), $joueur, true);
 		}
 		$def = false;
 		$joueur_defenseur = new perso($_GET['id_joueur']);
@@ -86,7 +86,7 @@ switch($type)
 		}
 		else
 		{
-			$defenseur = entite::factory('pet', $joueur_defenseur->get_pet(), $joueur_defenseur);
+			$defenseur = entite::factory('pet', $joueur_defenseur->get_pet(), $joueur_defenseur, false);
 		}
 	break;
 	case 'monstre' :

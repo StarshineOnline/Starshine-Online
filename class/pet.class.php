@@ -384,8 +384,8 @@ class pet extends map_monstre
 	 * Données et méthodes liées aux combats.
 	 */
 	// @{
-	private $action_a;   ///< Id du script d'attaque
-	private $action_d;   ///< Id du script de défense
+	protected $action_a;   ///< Id du script d'attaque
+	protected $action_d;   ///< Id du script de défense
 	public $action_do;
 	public $reserve_bonus;   ///< RM avec les bonus dus aux buffs
 
@@ -413,7 +413,7 @@ class pet extends map_monstre
 		$this->champs_modif[] = 'action_d';
 	}
 	/**
-	 * Récupère le contenu du script pour une action donnéd
+	 * Récupère le contenu du script pour une action donné
 	 * @param  $type_action    'attaque' ou 'defense'.
 	 * @return     Contenu du script (sous forme textuelle).
 	 */
@@ -436,6 +436,14 @@ class pet extends map_monstre
 		$this->action = $row[0];
 		return $this->action;
 	}
+	/// Renvoie le script d'action
+	function get_action($attaquant)
+  {
+    if( $attaquant )
+      return $this->recupaction('attaque');
+    else
+      return $this->recupaction('defense');
+  }
 
   /// Renvoie la distance à laquelle le personnage peut attaquer
 	function get_distance_tir()
