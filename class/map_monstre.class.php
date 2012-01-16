@@ -188,7 +188,7 @@ class map_monstre extends entnj_incarn
 	{
 		if(!$nom)
 		{
-			$this->buff = buff_monstre::create(id_monstre, $this->id, 'id ASC', 'type');
+			$this->buff = buff_monstre::create('id_monstre', $this->id, 'id ASC', 'type');
 			return $this->buff;
 		}
 		else

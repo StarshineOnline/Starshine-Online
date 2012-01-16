@@ -165,6 +165,46 @@ class pet extends map_monstre
 	}
 	// @}
 
+  /**
+   * @name  Buffs
+   * Données et méthodes ayant trait aux buffs et débuffs actifs sur le monstre.
+   */
+  // @{
+	/**
+	 * Renvoie une propriété d'un buff / débuff particulier actif sur le personnage ou l'ensemble de ceux-ci.
+	 * @param  $nom      Nom (type) du (dé)buff recherché, renvoie tous les buffs actifs si vaut false.
+	 * @param  $champ    Propriété recherchée (correspond à un champ dans la bdd).
+	 * @param  $type	   Si false on prend le premier buff, si true celui dont le type correspond à $nom.
+	 * @return     Tableau des buffs ou valeur demandée.
+	 */
+	function get_buff($nom = false, $champ = false, $type = true)
+	{
+		if(!$nom)
+		{
+			$this->buff = buff::create('id_perso', $this->id_joueur, 'id ASC', 'type');
+			return $this->buff;
+		}
+		else
+		{
+			if(!isset($this->buff)) $this->get_buff();
+			if(!$type)
+			{
+				$get = 'get_'.$champ;
+				return $this->buff[0]->$get();
+			}
+			else
+				foreach($this->buff as $buff)
+				{
+					if($buff->get_type() == $nom)
+					{
+						$get = 'get_'.$champ;
+						return $buff->$get();
+					}
+				}
+		}
+	}
+	// @}
+
 	//fonction
 	function get_monstre()
 	{
