@@ -398,7 +398,10 @@ class batiment extends entitenj_def
 	/// Renvoie la compétence d'esquive
 	function get_esquive()
 	{
-    return 1;
+    if( $this->type == 'arme_de_siege' )
+      return 40 * $this->carac;
+    else
+      return 100 * $this->carac;
   }
 	/// Renvoie la compétence d'incantation
 	function get_incantation()
