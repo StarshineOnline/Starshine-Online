@@ -203,7 +203,7 @@ switch($type)
 			else $siege->arme_degat = $siege->get_bonus('degats_bat');
 			if($joueur->get_race() == 'barbare') $siege->arme_degat = ceil($siege->arme_degat * 1.1);*/
 			$defenseur = entite::factory('batiment', $map_batiment);
-			$attaquant = entite::factory('siege', $map_siege, $joueur, $defenseur);
+			$attaquant = entite::factory('siege', $map_siege, $joueur, true, $defenseur);
 		}
 	break;
 	case 'ville' :
