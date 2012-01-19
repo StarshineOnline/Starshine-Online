@@ -64,6 +64,11 @@ class placement extends entitenj_constr
   /// Renvoie le temps restant de construction
 	function get_temps_restant()
 	{
+		return $this->fin_placement - time();
+	}
+  /// Renvoie le temps écouylé depuis le début de la construction
+	function get_temps_ecoule()
+	{
 		return time() - $this->debut_placement;
 	}
 	// @}
@@ -145,7 +150,7 @@ class placement extends entitenj_constr
 	}
 
 	/// Renvoie le coefficient pour modifier les caractéristique
-  function get_coeff_carac() { return $this->get_temps_restant() / $this->get_temps_total(); }
+  function get_coeff_carac() { return $this->get_temps_ecoule() / $this->get_temps_total(); }
 	/// Renvoie le coefficient pour modifier les compétences
-  function get_coeff_comp($perso) { return $this->get_temps_restant() / $this->get_temps_total(); }
+  function get_coeff_comp($perso) { return $this->get_temps_ecoule() / $this->get_temps_total(); }
 }
