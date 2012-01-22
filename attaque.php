@@ -214,24 +214,26 @@ switch($type)
 		$map_royaume = new royaume($map_case->get_royaume());
 		$map_royaume->verif_hp();
 		$siege = new batiment($map_siege->get_id_batiment());
-		$siege->bonus_architecture = 1 + ($joueur->get_architecture() / 100);
+		/*$siege->bonus_architecture = 1 + ($joueur->get_architecture() / 100);
 		$siege->hp_max = $siege->get_hp();
 		$siege->set_hp($map_siege->get_hp());
 		$siege->x = $map_siege->get_x();
 		$siege->y = $map_siege->get_y();
-		$joueur_defenseur = new batiment();
+		$joueur_defenseur = new batiment();*/
     /* Bastien: 15 c'est un bourg, 16 bourg + 1 */
-		$joueur_defenseur->set_carac(16 + $map_royaume->get_level_mur());
+		/*$joueur_defenseur->set_carac(16 + $map_royaume->get_level_mur());
 		$joueur_defenseur->coef = 1;
 		$joueur_defenseur->hp_max = 30000;
 		$joueur_defenseur->set_hp($map_royaume->get_capitale_hp());
-		$joueur_defenseur->set_pp($map_royaume->get_pp());
+		$joueur_defenseur->set_pp($map_royaume->get_pp());*/
 		$coord = convert_in_coord($_GET['id_ville']);
-		$joueur_defenseur->x = $coord['x'];
+		$map_royaume->x =$coord['x'];
+		$map_royaume->y =$coord['y'];
+		/*$joueur_defenseur->x = $coord['x'];
 		$joueur_defenseur->y = $coord['y'];
-		$siege->arme_degat = $siege->get_bonus('degats_bat');
-		$attaquant = entite::factory('siege', $siege);
-		$defenseur = entite::factory('ville', $joueur_defenseur);
+		$siege->arme_degat = $siege->get_bonus('degats_bat');*/
+		$attaquant = entite::factory('siege', $map_siege);
+		$defenseur = entite::factory('ville', $map_royaume);
 		if ($map_royaume->is_raz())
 		{
 			echo '<h5>Cette ville est déjà mise à sac</h5>';
@@ -284,6 +286,8 @@ elseif($joueur->is_buff('dressage'))
 }
 else if($W_distance > $attaquant->get_distance_tir())
 {
+  echo 'Attaquant ('.$attaquant->get_x().','.$attaquant->get_y().")<br/>";
+  echo 'Défenseur ('.$defenseur->get_x().','.$defenseur->get_y().")<br/>";
   echo "$W_distance > ".$attaquant->get_distance_tir()."<br/>";
 	echo '<h5>Vous êtes trop loin pour l\'attaquer !</h5>';
 }

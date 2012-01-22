@@ -649,6 +649,8 @@ class entite extends placable
 	public $reserve;           ///< Réserve de mana.
 	protected $distance_tir;     ///< Distance de tir
 	public $potentiel_bloquer; ///< Potentiel bloquer
+	public $potentiel_toucher;
+	public $potentiel_parer;
 	/// Renvoie le contenu du script de combat utilisé
 	function get_action()
 	{
@@ -761,7 +763,7 @@ class entite extends placable
    * @param  $type    Type de l'entité
    * @objet  $objet   Référence vers l'objet source.
    */
-	function __construct($type, &$objet)
+	function __construct($type=null, &$objet=null)
 	{
 		$this->objet_effet = array();
 		$this->type = $type;
@@ -779,20 +781,20 @@ class entite extends placable
 				switch ($this->arme_type)
 					{
 					case 'hache':
-						/* On calcule le malus d'esquive de la hache */
+						// On calcule le malus d'esquive de la hache
 						$hache = $objet->get_arme();
 						if ($hache->mains == 'main_droite') {
-							/* Hache à 1 main : 5% */
+							// Hache à 1 main : 5%
 							$this->malus_hache = 0.95;
 						}
 						else {
-							/* Hache à 2 mains : 15% */
+							// Hache à 2 mains : 15%
 							$this->malus_hache = 0.85;
 						}
 					case 'epee':
 					case 'dague':
 					case 'baton':
-					case '': /* main nues */
+					case '': // main nues 
 						$this->comp_combat = 'melee';
 					break;
 					case 'arc':
@@ -1066,14 +1068,59 @@ class entite extends placable
 		case 'batiment' :
 		case 'siege' :
       $objet = new entitenj($src, $perso, $attaquant, $adversaire);
+		  $objet->objet_ref = &$src->get_def();
 		  break;
-		//case 'ville' :
+    case 'perso' :
+      $objet = new perso($src->get_id());
+			$objet->action = $src->action_do;
+			switch ($objet->arme_type)
+				{
+				case 'hache':
+					/* On calcule le malus d'esquive de la hache */
+					$hache = $src->get_arme();
+					if ($hache->mains == 'main_droite') {
+						/* Hache à 1 main : 5% */
+						$objet->malus_hache = 0.95;
+					}
+					else {
+						/* Hache à 2 mains : 15% */
+						$objet->malus_hache = 0.85;
+					}
+				case 'epee':
+				case 'dague':
+				case 'baton':
+				case '': /* main nues */
+					$objet->comp_combat = 'melee';
+				break;
+				case 'arc':
+					$objet->comp_combat = 'distance';
+					$objet->malus_arc = 0.8;
+				break;
+				case 'bouclier':
+					$objet->comp_combat = 'blocage';
+				break;
+				default:
+					die("Invalid arme_type ($this->arme_type) !!");
+				}
+			$objet->competence = $src->get_comp_perso();
+			$objet->hp_max = $src->get_hp_maximum();
+			$objet->reserve = $src->get_reserve_bonus();
+			$objet->get_buff();
+			$objet->etat = array();
+			if ($src->get_bouclier())
+				$objet->bouclier_degat = $src->get_bouclier()->degat;
+			$objet->rang = $src->get_grade()->get_rang();
+			$objet->espece = 'humainoïde';
+			$objet->point_victoire = 0;
+			break;
+		case 'ville' :
+      $objet = new entite_cap($src);
+      break;
 		default:
       return new entite($type, $src);
     }
 		$objet->objet_effet = array();
 		$objet->type = $type;
-		$objet->objet_ref = &$src->get_def();
 		return $objet;
   }
 	/// Renvoie la liste des champs pour une insertion dans la base

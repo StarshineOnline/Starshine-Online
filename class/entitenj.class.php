@@ -6,7 +6,7 @@
 
 /**
  * Classe abstraite entitenj
- * Classe les entité non joueurs dont les informatiosn sotn réparties sur deux tables
+ * Classe gérant les entité non joueurs dont les informatiosn sotn réparties sur deux tables
  */
 class entitenj extends entite
 {
