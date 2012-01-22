@@ -3085,8 +3085,8 @@ class perso extends entite
   /// Action effectuées à la fin d'un combat
   function fin_combat(&$perso, $degats=null)
   {
-    $objet_ref->set_hp( $this->get_hp() );
-    $objet_ref->sauver();
+    $this->objet_ref->set_hp( $this->get_hp() );
+    $this->objet_ref->sauver();
   }
 	// @}
 

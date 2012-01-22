@@ -751,7 +751,9 @@ class entite extends placable
 		$this->degat_moins = 0;
   }
   /// Action effectuées à la fin d'un combat
-  function fin_combat(&$perso, $degats=null) {}
+  function fin_combat(&$perso, $degats=null) { echo "on fait rien ! ($this)<br/>"; }
+  /// Action effectuées à la fin d'un combat pour le défenseur
+  function fin_defense(&$perso) {}
 	// @}
 
 	/**
@@ -1072,7 +1074,7 @@ class entite extends placable
       $objet = new entitenj($src, $perso, $attaquant, $adversaire);
 		  $objet->objet_ref = &$src->get_def();
 		  break;
-    case 'perso' :
+    case 'joueur' :
       $objet = new perso($src->get_id());
 			$objet->action = $src->action_do;
 			switch ($objet->arme_type)
