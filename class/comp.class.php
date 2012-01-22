@@ -22,7 +22,8 @@ class competence extends effect
 
   function test_montee(&$acteur, $diff)
   {
-    global $Gtrad;
+    // ce code ne devrait plus être utilisé à priori
+    /*global $Gtrad;
     global $db;
     $augmentation = augmentation_competence($this->nom, $acteur, $diff);
     if ($augmentation[1] == true) {
@@ -35,9 +36,8 @@ class competence extends effect
 	" AND competence = '".$this->nom."'";
       //echo "$requete<br/>";
       $db->query($requete);
-      $acteur['competences'][$this->nom] = $augmentation[0];
       return true;
-    }
+    }*/
     return false;
   }
 }
