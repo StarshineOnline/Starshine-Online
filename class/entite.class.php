@@ -744,7 +744,7 @@ class entite extends placable
 	/// Initialise l'objet pour un nouveau round de combat
 	function init_round()
   {
-    if($this->get_arme_type() == 'arc') $this->set_comp('distance'); else $this->set_comp('melee');
+    if($this->get_arme_type() == 'arc') $this->set_comp_att('distance'); else $this->set_comp_att('melee');
     unset($this->potentiel_toucher);
     unset($this->potentiel_parer);
 		$this->degat_sup = 0;
