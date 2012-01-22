@@ -56,7 +56,7 @@ class entite_cap extends entite
   }
 
   /// Action effectuées à la fin d'un combat
-  function fin_combat(&$perso, $degats=null)
+  function fin_defense(&$perso, $degats=null)
   {
 		//hasard pour différente actions de destruction sur la ville.
 		//Si il y a assez de ressources en ville

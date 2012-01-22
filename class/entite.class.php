@@ -753,7 +753,7 @@ class entite extends placable
   /// Action effectuées à la fin d'un combat
   function fin_combat(&$perso, $degats=null) { echo "on fait rien ! ($this)<br/>"; }
   /// Action effectuées à la fin d'un combat pour le défenseur
-  function fin_defense(&$perso) {}
+  function fin_defense(&$perso, &$royaume, $pet, $degats, $batiment) {}
 	// @}
 
 	/**

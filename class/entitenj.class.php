@@ -17,7 +17,7 @@ class entitenj extends entite
   function __construct($incarn, $perso, $attaquant=true, $adversaire=null)
   {
     $def = $incarn->get_def();
-    $this->incarn = $incarn;
+    $this->incarn = &$incarn;
     $this->def = $def;
 		$this->action = $incarn->get_action($attaquant);
     if( $this->action === false )
@@ -71,15 +71,16 @@ class entitenj extends entite
   /// Action effectuées à la fin d'un combat
   function fin_combat(&$perso, $degats=null)
   {
+    $this->incarn->set_hp( $this->get_hp() );
     if( $this->get_hp() > 0 )
-    {
-      $this->incarn->set_hp( $this->get_hp() );
       $this->incarn->sauver();
-    }
     else
-    {
       $this->incarn->mort($perso);
-    }
+  }
+  /// Action effectuées à la fin d'un combat pour le défenseur
+  function fin_defense(&$perso, &$royaume, $pet, $degats, $batiment)
+  {
+    return $this->incarn->fin_defense($perso, $royaume, $pet, $degats, $this->def);
   }
 }
 

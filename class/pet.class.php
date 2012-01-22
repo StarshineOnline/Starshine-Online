@@ -77,6 +77,11 @@ class pet extends map_monstre
 	
 	/// Indique que l'entité est morte
 	function mort(&$perso) {}
+  /// Action effectuées à la fin d'un combat pour le défenseur
+  function fin_defense(&$perso, &$royaume, $pet, $degats, &$def)
+  {
+    return $perso->fin_combat_pvp($this, false);
+  }
 	// @}
 
 	/**

@@ -969,7 +969,7 @@ else
 			<div style="float:left;">';
 
 			
-			if($type == 'joueur')
+			/*if($type == 'joueur')
 			{
 				$gains = false;
 				$coef = 1;
@@ -1186,7 +1186,7 @@ else
 					$passif->sauver();
 				}
 			}
-			elseif($type == 'monstre')
+			/*elseif($type == 'monstre')
 			{
 				//Le défenseur est mort !
 				if ($defenseur->get_hp() <= 0)
@@ -1373,7 +1373,7 @@ else
 						$membre->sauver();
 					}
 				}
-			}
+			}*/
 			/*elseif($type == 'batiment')
 			{
 				if($defenseur->get_hp() <= 0)
@@ -1391,6 +1391,7 @@ else
 					$R->sauver();
 				}
 			}*/
+			$msg_xp .= $defenseur->fin_defense($joueur, $R, $pet, $degat_defense, $defenseur_en_defense);
 
 			if ($defenseur->get_hp() > 0)
 			{

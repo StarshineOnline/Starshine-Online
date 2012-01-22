@@ -114,6 +114,8 @@ abstract class entnj_incarn extends placable
 	{
     $this->supprimer();
   }
+  /// Action effectuées à la fin d'un combat pour le défenseur
+  function fin_defense(&$perso, &$royaume, $pet, $degats, &$def) { return ""; }
 }
 
 ?>
