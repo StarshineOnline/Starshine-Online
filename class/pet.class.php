@@ -74,6 +74,9 @@ class pet extends map_monstre
 	{
 		return $perso->get_race();
 	}
+	
+	/// Indique que l'entité est morte
+	function mort(&$perso) {}
 	// @}
 
 	/**

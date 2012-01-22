@@ -750,6 +750,8 @@ class entite extends placable
 		$this->degat_sup = 0;
 		$this->degat_moins = 0;
   }
+  /// Action effectuées à la fin d'un combat
+  function fin_combat(&$perso, $degats=null) {}
 	// @}
 
 	/**
@@ -1112,6 +1114,7 @@ class entite extends placable
 			$objet->rang = $src->get_grade()->get_rang();
 			$objet->espece = 'humainoïde';
 			$objet->point_victoire = 0;
+		  $objet->objet_ref = &$src;
 			break;
 		case 'ville' :
       $objet = new entite_cap($src);

@@ -312,12 +312,12 @@ class royaume
 	*/
 	function supprimer()
 	{
-		global $db;
+		/*global $db;
 		if( $this->id > 0 )
 		{
 			$requete = 'DELETE FROM royaume WHERE id = '.$this->id;
 			$db->query($requete);
-		}
+		}*/
 	}
 
 	/**
@@ -1253,5 +1253,12 @@ class royaume
 	{
 		return $this->get_fin_raz_capitale() > time();
 	}
+	
+  static function supprime_bourg($royaume)
+  {
+  	global $db;
+  	$requete = "UPDATE royaume SET bourg = bourg - 1 WHERE ID = ".$royaume." AND bourg > 0";
+  	$db->query($requete);
+  }
 }
 ?>

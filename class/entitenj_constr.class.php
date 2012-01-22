@@ -194,5 +194,23 @@ class entitenj_constr extends entnj_incarn
 		$req = $db->query("delete from buff_batiment where date_fin <= ".time());
 	}
 	// @}
+	
+	/// Indique que l'entité est morte
+	function mort(&$perso)
+	{
+    global $Trace;
+    $this->supprimer();
+		//On supprime un bourg au compteur
+		if($this->get_type() == 'bourg')
+		{
+			royaume::supprime_bourg( $this->get_royaume() );
+		}
+		//On retrouve les points de victoire
+		$royaume = new royaume($Trace[$perso->get_race()]['numrace']);
+		$royaume->add_point_victoire( $this->get_point_victoire() );
+		$royaume->sauver();
+		//On efface le batiment
+		$this->supprimer();
+  }
 }
 ?>

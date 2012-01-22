@@ -286,9 +286,6 @@ elseif($joueur->is_buff('dressage'))
 }
 else if($W_distance > $attaquant->get_distance_tir())
 {
-  echo 'Attaquant ('.$attaquant->get_x().','.$attaquant->get_y().")<br/>";
-  echo 'Défenseur ('.$defenseur->get_x().','.$defenseur->get_y().")<br/>";
-  echo "$W_distance > ".$attaquant->get_distance_tir()."<br/>";
 	echo '<h5>Vous êtes trop loin pour l\'attaquer !</h5>';
 }
 elseif($attaquant->get_hp() <= 0 OR $defenseur->get_hp() <= 0)
@@ -727,7 +724,9 @@ else
 			$defense_hp_apres = $defenseur->get_hp();
 			$degat_defense = $defense_hp_avant - $defense_hp_apres;
 			//On donne les bons HP à l'attaque et la défense
-			if($type == 'joueur')
+			$attaquant->fin_combat($joueur);
+			$defenseur->fin_combat($joueur, $degat_defense);
+			/*if($type == 'joueur')
 			{
 				if(!$check_pet)
 				{
@@ -865,7 +864,7 @@ else
 					}
 					$map_royaume->sauver();
 				}
-			}
+			}*/
 			//Fin du combat
 			if($mode == 'attaquant')
 			{
@@ -1375,7 +1374,7 @@ else
 					}
 				}
 			}
-			elseif($type == 'batiment')
+			/*elseif($type == 'batiment')
 			{
 				if($defenseur->get_hp() <= 0)
 				{
@@ -1391,7 +1390,7 @@ else
 					$map_batiment->supprimer();
 					$R->sauver();
 				}
-			}
+			}*/
 
 			if ($defenseur->get_hp() > 0)
 			{

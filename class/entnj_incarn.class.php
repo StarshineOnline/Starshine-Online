@@ -109,6 +109,11 @@ abstract class entnj_incarn extends placable
 	 * @param $main   si false : cumul, si 'droite' ou 'gauche' : detail
 	 */
 	function get_arme_degat($main = false) { return 0; }
+	/// Indique que l'entité est morte
+	function mort(&$perso)
+	{
+    $this->supprimer();
+  }
 }
 
 ?>

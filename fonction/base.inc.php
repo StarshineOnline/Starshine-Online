@@ -2145,13 +2145,6 @@ function lance_buff($type, $id, $effet, $effet2, $duree, $nom, $description, $ty
 			$lancement = false;
 		}
 	}
-	elseif ($nb_buff_max < $nb_buff)
-	{
-		// Si places restantes == 0, c'est bon, vu qu'on relance, mais si
-		// places restantes < 0 -> overbuff
-		$lancement = false;
-		$G_erreur = 'overbuff';
-	}
 	elseif($effet >= $Buff_row['effet'])
 	{
 	  // L'effet est plus grand (ou égal) : on met à jour
@@ -3143,6 +3136,8 @@ function aff_var($v)
  *  Supprime un bourg dans le nombre de bourgs possédés par un royaume
  *  
  * @param   $royaume    Royaume auquel on doit supprimer un bourg.  
+ *
+ * @deprecated : utiliser la méthode de la classe royaume à la place
  */
 function supprime_bourg($royaume)
 {

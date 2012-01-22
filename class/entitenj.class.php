@@ -67,6 +67,20 @@ class entitenj extends entite
 		$this->espece = $def->get_type();
 		$this->point_victoire = $def->get_point_victoire();
   }
+  
+  /// Action effectuées à la fin d'un combat
+  function fin_combat(&$perso, $degats=null)
+  {
+    if( $this->get_hp() > 0 )
+    {
+      $this->incarn->set_hp( $this->get_hp() );
+      $this->incarn->sauver();
+    }
+    else
+    {
+      $this->incarn->mort($perso);
+    }
+  }
 }
 
 ?>
