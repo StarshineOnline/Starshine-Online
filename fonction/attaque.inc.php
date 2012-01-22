@@ -355,7 +355,7 @@ function attaque($acteur = 'attaquant', $competence, &$effects)
 				}
 			}
 			//Art du critique : augmente les dégâts fait par un coup critique
-			if($actif->is_competence('art_critique')) $art_critique = $actif->get_competence('art_critique')->get_valeur() / 100; else $art_critique = 0;
+			if($actif->is_competence('art_critique')) $art_critique = $actif->get_competence2('art_critique')->get_valeur() / 100; else $art_critique = 0;
 			//Buff Colère
 			if($actif->is_buff('buff_colere')) $buff_colere = ($actif->get_buff('buff_colere', 'effet')) / 100; else $buff_colere = 0;
 			//Orc
