@@ -180,7 +180,6 @@ class entite extends placable
 	protected $sort_vie;     ///< Compétence magie de la vie.
 	protected $sort_element; ///< Compétence magie élémentaire.
 	protected $sort_mort;    ///< Compétence nécromancie.
-	protected $comp;
 	protected $competence = array();
 	/// Renvoie la mêlée
 	function get_melee()
@@ -296,7 +295,7 @@ class entite extends placable
 		}
 		if ($this->type == 'joueur')
 		{
-			$this->comp = $this->objet_ref->get_comp();
+			$this->comp_att = $this->objet_ref->get_comp_att();
 			$this->distance = $this->objet_ref->get_distance();
 			$this->competence = $this->objet_ref->get_comp_perso();
 		}
@@ -305,16 +304,6 @@ class entite extends placable
 	function get_comp_combat()
 	{
 		return $this->comp_combat;
-	}
-	/// ???
-	function get_comp()
-	{
-		return $this->comp;
-	}
-	/// ???
-	function set_comp($valeur)
-	{
-		$this->comp = $valeur;
 	}
   // @}
   
@@ -651,6 +640,7 @@ class entite extends placable
 	public $potentiel_bloquer; ///< Potentiel bloquer
 	public $potentiel_toucher;
 	public $potentiel_parer;
+	protected $comp_att;       ///< Coméptence utilisé pour attaquer
 	/// Renvoie le contenu du script de combat utilisé
 	function get_action()
 	{
@@ -741,6 +731,16 @@ class entite extends placable
 	{
 		$this->potentiel_parer = $valeur;
 	}
+	/// Renvoie la compétence utilisée pour attaquer
+	function get_comp_att()
+	{
+		return $this->comp_att;
+	}
+	/// Modifie la compétence utilisée pour attaquer?
+	function set_comp_att($valeur)
+	{
+		$this->comp_att = $valeur;
+	}
 	/// Initialise l'objet pour un nouveau round de combat
 	function init_round()
   {
@@ -811,7 +811,7 @@ class entite extends placable
 					default:
 						die("Invalid arme_type ($this->arme_type) !!");
 					}
-				$this->comp = $objet->get_comp();
+				$this->comp_att = $objet->get_comp_att();
 				$this->competence = $objet->get_comp_perso();
 				$this->x = $objet->get_x();
 				$this->y = $objet->get_y();

@@ -519,7 +519,7 @@ else
 						//Attaque
 						case 'attaque' :
 							$log_combat .= 'c0';
-							$augmentations = attaque($mode, ${$mode}->get_comp(), $effects);
+							$augmentations = attaque($mode, ${$mode}->get_comp_att(), $effects);
 						break;
 						//Lancement d'un sort
 						case 'lance_sort' :
@@ -532,7 +532,7 @@ else
 							$augmentations = lance_comp($action[1], $mode, $effects);
 							if($comp_attaque)
 							{
-								$aug2 = attaque($mode, ${$mode}->get_comp(), $effects);
+								$aug2 = attaque($mode, ${$mode}->get_comp_att(), $effects);
 								$augmentations = merge_augmentations($augmentations, $aug2);
 								$count = count($ups);
 								if($count > 0)
