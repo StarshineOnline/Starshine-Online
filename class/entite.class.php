@@ -258,7 +258,7 @@ class entite extends placable
    * @param  $nom     nom ou type de la compétence.
    * @param  $type    true si $nom est le type de la compétence, $false si c'est son nom.
    */
-	function get_competence($nom, $type = false)
+	function get_competence2($nom, $type = false)
 	{
 		$buffe = false;
 		if(is_array($this->competence))
