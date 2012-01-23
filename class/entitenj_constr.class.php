@@ -183,7 +183,7 @@ class entitenj_constr extends entnj_incarn
 		$req = $db->query("select * from buff_batiment where id_construction = '$id'");
 		if ($req) {
 			while ($b = $db->read_object($req)) {
-				$buff[] = $b;
+				$buff[$b->type] = $b;
 			}
 		}
 		return $buff;
