@@ -82,6 +82,12 @@ class entitenj extends entite
   {
     return $this->incarn->fin_defense($perso, $royaume, $pet, $degats, $this->def);
   }
+  
+  // à améliorer
+  function get_type_def()
+  {
+    return $this->def->get_type();
+  }
 }
 
 ?>
