@@ -507,6 +507,11 @@ class map_monstre extends entnj_incarn
   function fin_defense(&$perso, &$royaume, $pet, $degats, &$def)
   {
     global $db, $G_xp_rate, $G_drop_rate, $G_range_level;
+
+		$gains_xp = false;
+		$gains_drop = false;
+		$gains_star = false;
+			
 		//Le défenseur est mort !
 		if ($this->get_hp() <= 0)
 		{
@@ -670,7 +675,7 @@ class map_monstre extends entnj_incarn
 				//XP Final
 				$xp_perso = $xp * (1 + (($this->get_level() - $membre->get_level()) / $G_range_level));
 				$xp_perso = floor($xp_perso * $membre->share_xp / $groupe->get_share_xp($perso->get_pos()));
-				if($xp_joueur < 0) $xp_perso = 0;
+				if($xp_perso < 0) $xp_perso = 0;
 				$membre->set_exp($membre->get_exp() + $xp_perso);
 				if($gains_star)
 				{
