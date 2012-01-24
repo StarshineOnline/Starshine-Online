@@ -18,7 +18,7 @@ class maladie
 		{
 			$malignite = ($entite->get_buff('maladie_degenerescence', 'effet') / 100)+1;
 			print_debug($entite->get_nom().' est sous degenerescence, malignite '.$malignite);
-			$entite->set_reserve(floor($entite->get_reserve() / $malignite));
+			$entite->set_rm_restant(floor($entite->get_rm_restant() / $malignite));
 		}
 	}
 }

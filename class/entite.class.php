@@ -636,6 +636,7 @@ class entite extends placable
   // @{
 	public $action;            ///< Contenu du script de combat utilisé.
 	public $reserve;           ///< Réserve de mana.
+	public $rm_restant;           ///< Réserve de mana restante.
 	protected $distance_tir;     ///< Distance de tir
 	public $potentiel_bloquer; ///< Potentiel bloquer
 	public $potentiel_toucher;
@@ -655,7 +656,18 @@ class entite extends placable
 	function set_reserve($valeur)
 	{
 		if ($valeur <= 0) $valeur = 0;
-		$this->reserve = $valeur;
+		  $this->reserve = $valeur;
+	}
+	/// Renvoie la réserve de mana
+	function get_rm_restant()
+	{
+		return $this->rm_restant;
+	}
+	/// Modifie la réserve de mana
+	function set_rm_restant($valeur)
+	{
+		if ($valeur <= 0) $valeur = 0;
+		  $this->rm_restant = $valeur;
 	}
 	/// Renvoie la distance de tir
 	function get_distance_tir()
@@ -1108,7 +1120,7 @@ class entite extends placable
 				}
 			$objet->competence = $src->get_comp_perso();
 			$objet->hp_max = $src->get_hp_maximum();
-			$objet->reserve = $src->get_reserve_bonus();
+			$objet->rm_restant = $src->get_reserve_bonus();
 			$objet->get_buff();
 			$objet->etat = array();
 			if ($src->get_bouclier())

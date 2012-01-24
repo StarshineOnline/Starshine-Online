@@ -217,7 +217,7 @@ function sub_script_action($joueur, $ennemi, $mode, &$effects)
 							break;
 							//Réserve de mana du joueur
 							case '01' :
-								$param = $joueur->get_reserve();
+								$param = $joueur->get_rm_restant();
 							break;
 							//Round
 							case '09' :
@@ -349,7 +349,7 @@ function sub_script_action($joueur, $ennemi, $mode, &$effects)
               /* ~Mana */
 
 							// Si le joueur a assez de reserve on indique l'action à effectuer
-							if($joueur->get_reserve() >= $mp_need)
+							if($joueur->get_rm_restant() >= $mp_need)
 							{
 								$effectue[0] = 'lance_sort';
 								$effectue[1] = $id_sort;
@@ -391,7 +391,7 @@ function sub_script_action($joueur, $ennemi, $mode, &$effects)
               /* ~Mana */
 
 							// On vérifie que le personnage a assez de MP
-							if($joueur->get_reserve() >= $mp_need)
+							if($joueur->get_rm_restant() >= $mp_need)
 							{
 								// Si l'arme utilisée est la bonne on indique l'action à effectuer
 								$arme_requis = explode(';', $row['arme_requis']);
@@ -551,7 +551,7 @@ function lance_sort($id, $acteur, &$effects)
   /* ~Mana */
 
 	//Suppresion de la réserve
-	$actif->set_reserve($actif->get_reserve() - $mp_need);
+	$actif->set_rm_restant($actif->get_rm_restant() - $mp_need);
 
   // Calcul du potentiel magique
 	$get = 'get_'.$row['comp_assoc'];
@@ -942,7 +942,7 @@ function lance_sort($id, $acteur, &$effects)
 					echo '&nbsp;&nbsp;<span class="degat"><strong>'.$actif->get_nom().'</strong> inflige <strong>'.$degat.'</strong> dégâts avec '.$row['nom'].'<br />
 					Et gagne <strong>'.$drain.'</strong> RM grâce au drain</span><br />';
 					$passif->set_hp($passif->get_hp() - $degat);
-					$actif->set_reserve($actif->get_reserve() + $drain);
+					$actif->set_rm_restant($actif->get_rm_restant() + $drain);
 				break;
 				case 'putrefaction' :
 					$degat = degat_magique($actif->$get_comp_assoc(), ($row['effet'] + $bonus_degats_magique), $actif, $passif, $effects, $row['type']);
@@ -986,7 +986,7 @@ function lance_sort($id, $acteur, &$effects)
 					$degat = round($degat * $reduction);
 					echo '&nbsp;&nbsp;<span class="degat"><strong>'.$actif->get_nom().'</strong> retire '.$brule_mana.' réserve de mana et inflige <strong>'.$degat.'</strong> dégâts avec '.$row['nom'].'</span><br />';
 					$passif->set_hp($passif->get_hp() - $degat);
-					$passif->set_reserve($passif->get_reserve() - $brule_mana);
+					$passif->set_rm_restant($passif->get_rm_restant() - $brule_mana);
 				break;
 				case 'appel_tenebre' :
 					$passif->etat['appel_tenebre']['effet'] = $row['effet'];
@@ -1196,7 +1196,7 @@ function lance_comp($id, $acteur, &$effects)
   /* ~Debut */
 
 	//Suppresion de la réserve
-	$actif->set_reserve($actif->get_reserve() - $mp_need);
+	$actif->set_rm_restant($actif->get_rm_restant() - $mp_need);
 
 	$comp_attaque = false;  // Indique si le personnage attaque se round-ci.
 	$utilise_comp = $row['type'];

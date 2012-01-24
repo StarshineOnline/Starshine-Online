@@ -375,7 +375,7 @@ function attaque($acteur = 'attaquant', $competence, &$effects)
 			$critique = true;
 			if(array_key_exists('renouveau_energique', $actif->buff) && $actif->get_arme_type() == 'arc')
 			{
-				$actif->set_reserve($actif->get_reserve() + $actif->get_buff('renouveau_energique', 'effet'));
+				$actif->set_rm_restant($actif->get_rm_restant() + $actif->get_buff('renouveau_energique', 'effet'));
 				echo $actif->get_nom().' se ressaisi et gagne '.$actif->get_buff('renouveau_energique', 'effet').' RM<br />';
 			}
 			//if(array_key_exists('maitre_critique', $actif['competences'])) augmentation_competence('maitre_critique', $actif, 3);

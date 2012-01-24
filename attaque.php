@@ -258,8 +258,8 @@ if(is_donjon($joueur->get_x(), $joueur->get_y())
 	 && ($joueur->in_arene('and donj = 0') == false))
 {
 	$round_total = $G_round_total * 2;
-	$attaquant->set_reserve($attaquant->get_reserve() * 2);
-	$defenseur->set_reserve($defenseur->get_reserve() * 2);
+	$attaquant->set_rm_restant($attaquant->get_rm_restant() * 2);
+	$defenseur->set_rm_restant($defenseur->get_rm_restant() * 2);
 	$W_case = convertd_in_pos($defenseur->get_x(), $defenseur->get_y());
 	$W_distance = detection_distance($W_case, convertd_in_pos($attaquant->get_x(), $attaquant->get_y()));
 	//Un monstre attaque pas de pa pour attaquer
