@@ -10,6 +10,8 @@
  */
 class arme_siege extends construction
 {
+	/// Renvoie le coefficient pour modifier les caractéristique
+  function get_coeff_carac() { return 0; }
 	/// Renvoie le coefficient pour modifier les compétences
   function get_coeff_comp($perso)
   {
