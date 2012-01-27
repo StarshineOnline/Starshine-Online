@@ -544,7 +544,7 @@ class map_monstre extends entnj_incarn
 		{
 			$coeff = 0.5;
 			//Différence de level
-			$diff_level = abs($attaquant->get_level() - $this->get_level());
+			$diff_level = abs($perso->get_level() - $this->get_level());
 			//Perde d'honneur
 			$coeff = 1 - ($diff_level * 0.02);
 			if ($coeff != 1)
@@ -560,7 +560,7 @@ class map_monstre extends entnj_incarn
 			//Si c'est Dévorsis
 			if($this->get_type() == 64)
 			{
-				$gain_hp = floor($attaquant->get_hp_max() * 0.1);
+				$gain_hp = floor($perso->get_hp_max() * 0.1);
 				$this->set_hp($this->get_hp() + $gain_hp);
 				$this->sauver();
 				echo 'Dévorsis regagne '.$gain_hp.' HP en vous tuant.<br />';
