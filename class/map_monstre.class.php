@@ -456,8 +456,15 @@ class map_monstre extends entnj_incarn
 			$id = implode(',', $ids);
 			$req = $db->query("select * from joueur_loot where id_joueur in ($id) and id_monstre = $this->id_monstre");
 			$old = $db->num_rows($req);
-			// S'il y a déjà eu loot, on ne drop pas d'item grosbill
-			if ($old > 0) $grosbill = array();
+
+      // 20% de chance de loot d'un item grosbill par membre du groupe
+      // n'ayant pas encore looté. Comme ça, si les joueurs dégroupent
+      // pour kill 5 fois ils ont 5 * 20% plutôt que 5 * 100%
+      $chances = ($nb_joueurs - $old) * 20;
+      $de = mt_rand(1, 100);
+      if ($de > $chances) // pas de drop grosbill !
+        $grosbill = array();
+
 			// mélange les items
 			shuffle($grosbill);
 			shuffle($loot);
