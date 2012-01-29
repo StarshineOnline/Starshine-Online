@@ -55,9 +55,10 @@ if (file_exists('root.php'))
 	echo " <div id='buff_list'>
 			<ul>";
 	//my_dump($joueur->get_buff());
-		if(is_array($joueur->get_buff()))
+    $buffs = $joueur->get_buff();
+		if(is_array($buffs))
 		{
-			foreach($joueur->get_buff() as $buff)
+			foreach($buffs as $buff)
 			{//-- Listing des buffs
 				if($buff->get_debuff() == 0)
 				{
@@ -99,10 +100,10 @@ if (file_exists('root.php'))
 		</div>
 		<br />
 		<div id='debuff_list'>";
-		if(is_array($joueur->get_buff()))
+		if(is_array($buffs))
 		{
 			echo "<ul>";
-			foreach($joueur->get_buff() as $buff)
+			foreach($buffs as $buff)
 			{//-- Listing des debuffs
 				if($buff->get_debuff() == 1)
 				{
