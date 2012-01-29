@@ -1612,15 +1612,15 @@ function diff_sort($difficulte, $joueur, $type, $sortpa, $sortmp)
 	if($type == 'incantation')
 	{
 		$facteur1 = 2;
-		$facteur2 = 1;
+		$facteur2 = 4;//1;
 	}
 	else
 	{
 		$facteur1 = 4;
-		$facteur2 = 1.5;
+		$facteur2 = 5;//1.5;
 	}
 	$difficulte = $difficulte / $facteur1;
-	$pamp = 7 / sqrt($sortpa * $sortmp);
+	$pamp = 7 / $sortpa;//sqrt($sortpa * $sortmp);
 	$total = ($facteur2 * $pamp * sqrt($joueur->get_comp($type) / $difficulte));
 	//echo $total.'<br />';
 	return $total;

@@ -131,6 +131,7 @@ $Gtrad['max_pet'] = 'Nombre de créatures';
 $Gtrad['classe'] = 'Classe';
 $Gtrad['honneur'] = 'Honneur';
 $Gtrad['level'] = 'Niveau';
+$Gtrad['reputation'] = 'Réputation';
 //@}
 
 

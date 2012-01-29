@@ -1,0 +1,12 @@
+UPDATE classe_requis SET competence = 'reputation', requis = 500 WHERE competence LIKE 'honneur' AND requis = 3000;
+UPDATE classe_requis SET competence = 'reputation', requis = 3000 WHERE competence LIKE 'honneur' AND requis = 10000;
+UPDATE classe_requis SET competence = 'reputation', requis = 17000 WHERE competence LIKE 'honneur' AND requis = 75000;
+UPDATE classe_requis SET requis = 150 WHERE competence LIKE 'incantation' AND requis = 125;
+UPDATE classe_requis SET requis = 350 WHERE competence LIKE 'incantation' AND requis = 300;
+UPDATE classe_requis SET requis = 100 WHERE competence LIKE 'incantation' AND requis = 75;
+UPDATE classe_requis SET requis = 75 WHERE competence LIKE 'sort_%' AND id_classe IN (25, 26, 27);
+UPDATE classe_requis SET requis = 200 WHERE competence LIKE 'sort_%' AND id_classe IN (12, 13, 14);
+UPDATE classe_requis SET requis = 100 WHERE competence LIKE 'sort_%' AND id_classe IN (5, 6, 15);
+UPDATE classe_requis SET requis = 50 WHERE competence LIKE 'sort_%' AND id_classe IN (16, 32, 33);
+INSERT INTO classe_requis (id_classe, competence, requis) VALUES (16, 'sort_vie', 50);
+DELETE FROM classe_permet WHERE competence LIKE 'sort_vie+';
