@@ -15,9 +15,9 @@ class comp_sort_buff extends table
 	 * Donnée et méthode sur les inforamations "générales" : type, niveau, …
 	 */
   // @{
-  private $type;   ///< Type générique.
-	private $effet;  ///< Effet principal.
-	private $duree;  ///< Durée.
+  protected $type;   ///< Type générique.
+	protected $effet;  ///< Effet principal.
+	protected $duree;  ///< Durée.
 
 
 	/// Renvoie le type générique
