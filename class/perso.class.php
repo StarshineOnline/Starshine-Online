@@ -2503,7 +2503,7 @@ class perso extends entite
 	{
 		if(!$nom)
 		{
-			$this->buff = buff::create('id_perso', $this->id, 'id ASC', 'type');
+			$this->buff = buff::create('id_perso', $this->id, 'id ASC', 'type', false, true);
 			return $this->buff;
 		}
 		else

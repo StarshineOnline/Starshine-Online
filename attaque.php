@@ -929,7 +929,7 @@ else
 
 			if($check_pet)
 			{
-				$augmentation = augmentation_competence('dressage', $joueur, 1.3);
+				$augmentation = augmentation_competence('dressage', $joueur, 0.43);
 				if($augmentation[1] == 1)
 				{
 					$joueur->set_dressage($augmentation[0]);
@@ -937,7 +937,7 @@ else
 			}
 			if($check_pet_def)
 			{
-				$augmentation = augmentation_competence('dressage', $joueur_defenseur, 1.3);
+				$augmentation = augmentation_competence('dressage', $joueur_defenseur, 0.43);
 				if($augmentation[1] == 1)
 				{
 					$joueur_defenseur->set_dressage($augmentation[0]);
@@ -1437,7 +1437,7 @@ else
 			if($type == 'joueur')
 			{
 				//Insertion de l'attaque dans les journaux des 2 joueurs
-				$requete = "INSERT INTO journal VALUES(NULL, ".$joueur->get_id().", 'attaque', '".$joueur->get_nom()."', '".$defenseur->get_nom()."', NOW(), ".($defense_hp_avant - $defense_hp_apres).", ".($attaque_hp_avant - $attaque_hp_apres).", ".$joueur_defenseur->get_x().", ".$joueur_defenseur->get_y().")";
+				$requete = "INSERT INTO journal VALUES(NULL, ".$joueur->get_id().", 'attaque', '".mysql_escape_string($joueur->get_nom())."', '".mysql_escape_string($defenseur->get_nom())."', NOW(), ".($defense_hp_avant - $defense_hp_apres).", ".($attaque_hp_avant - $attaque_hp_apres).", ".$joueur_defenseur->get_x().", ".$joueur_defenseur->get_y().")";
 				$db->query($requete);
 				// Creation du log du combat
 				$combat = new combat();
