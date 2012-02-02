@@ -387,6 +387,10 @@ class entite extends placable
 			else
 				foreach($this->buff as $buff)
 				{
+					// C'est gore mais ća devrait marcher le temps que ce soit debuggué
+					// pour de bon ;p
+					if (is_array($buff) && count($buff) == 1 && is_object($buff[0]))
+						$buff = $buff[0];
 					if (!is_object($buff)) {
 						my_dump($this->buff);
 						my_dump($buff);
