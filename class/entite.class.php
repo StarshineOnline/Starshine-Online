@@ -388,7 +388,8 @@ class entite extends placable
 				foreach($this->buff as $buff)
 				{
 					if (!is_object($buff)) {
-						var_dump($buff);
+						my_dump($this->buff);
+						my_dump($buff);
 					}
 					if($buff->get_type() == $nom)
 					{
