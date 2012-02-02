@@ -1,4 +1,4 @@
-<?php
+<?php // -*- mode: php; tab-width: 2 -*-
 /**
  * @file entite.class.php
  * Gestion des participants à un combat
