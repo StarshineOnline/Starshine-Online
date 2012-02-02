@@ -391,10 +391,6 @@ class entite extends placable
 					// pour de bon ;p
 					if (is_array($buff) && count($buff) == 1 && is_object($buff[0]))
 						$buff = $buff[0];
-					if (!is_object($buff)) {
-						my_dump($this->buff);
-						my_dump($buff);
-					}
 					if($buff->get_type() == $nom)
 					{
 						$get = 'get_'.$champ;
