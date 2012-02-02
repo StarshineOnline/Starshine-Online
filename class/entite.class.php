@@ -387,6 +387,9 @@ class entite extends placable
 			else
 				foreach($this->buff as $buff)
 				{
+					if (!is_object($buff)) {
+						var_dump($buff);
+					}
 					if($buff->get_type() == $nom)
 					{
 						$get = 'get_'.$champ;
