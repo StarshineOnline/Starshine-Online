@@ -501,7 +501,7 @@ function cout_pa($info, $race)
 	$coutpa['nain']['montagne'] = 5;
 
 	/*** ORC ***/
-	$coutpa['orc'] = $coutGeneral;['plaine'] = 4;
+	$coutpa['orc'] = $coutGeneral;
 
 	/*** SCAVENGERS ***/
 	$coutpa['scavenger'] = $coutGeneral;
