@@ -192,7 +192,7 @@ class pet extends map_monstre
 	{
 		if(!$nom)
 		{
-			$this->buff = buff::create('id_perso', $this->id_joueur, 'id ASC', 'type');
+			$this->buff = buff::create('id_perso', $this->id_joueur, 'id ASC', 'type', false, true);
 			return $this->buff;
 		}
 		else
