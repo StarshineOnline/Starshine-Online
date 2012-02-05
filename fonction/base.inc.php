@@ -479,11 +479,11 @@ function cout_pa($info, $race)
 	$coutpa['barbare']['glace'] = 4;
 
 	/*** ELFE DES BOIS ***/
-	$coutpa['elfebois'] = $coutGeneral;['plaine'] = 4;
+	$coutpa['elfebois'] = $coutGeneral;
 	$coutpa['elfebois']['foret'] = 5;
 
 	/*** HAUT ELFE ***/
-	$coutpa['elfehaut'] = $coutGeneral;['plaine'] = 4;
+	$coutpa['elfehaut'] = $coutGeneral;
 	$coutpa['elfehaut']['foret'] = 5;
 
 	/*** HUMAIN ***/
