@@ -314,6 +314,18 @@ function type_terrain($info)
   $typeterrain[105][1] = 'Repère des renegats';
 	$typeterrain[106][0] = 'taverne_donjon';
   $typeterrain[106][1] = 'Repère des renegats';
+	$typeterrain[135][0] = 'donjon_aqua_level_1';
+  $typeterrain[135][1] = 'Donjon';
+	$typeterrain[145][0] = 'donjon_aqua_level_1';
+  $typeterrain[145][1] = 'Donjon';
+	$typeterrain[155][0] = 'donjon_aqua_level_1';
+  $typeterrain[155][1] = 'Donjon';
+	$typeterrain[165][0] = 'donjon_aqua_level_1';
+  $typeterrain[165][1] = 'Donjon';
+	$typeterrain[175][0] = 'donjon_aqua_level_1';
+  $typeterrain[175][1] = 'Donjon';
+	$typeterrain[185][0] = 'donjon_aqua_level_1';
+  $typeterrain[185][1] = 'Donjon';
 	/* TEMPLATE
 	$typeterrain[][0] = '';
 	$typeterrain[][1] = '';
@@ -446,195 +458,62 @@ function is_ville($x, $y = false)
 function cout_pa($info, $race)
 {
 	//Initialisation des variables de déplacement, 50 = infranchissable.
+	$coutGeneral['plaine'] = 4;
+	$coutGeneral['foret'] = 6;
+	$coutGeneral['desert'] = 5;
+	$coutGeneral['glace'] = 5;
+	$coutGeneral['marais'] = 5;
+	$coutGeneral['montagne'] = 6;
+	$coutGeneral['eau'] = 50;
+	$coutGeneral['route'] = 2;
+	$coutGeneral['objet'] = 2;
+	$coutGeneral['terre_maudite'] = 5;
+	$coutGeneral['donjon'] = 5;
+	$coutGeneral['taverne_donjon'] = 2;
+	$coutGeneral['donjon_aqua_level_1'] = 4;
+	$coutGeneral['mur_donjon'] = 50;
+	$coutGeneral['mer'] = 6;
+	
 	/*** BARBARES ***/
-	$coutpa['barbare']['plaine'] = 4;
-	$coutpa['barbare']['foret'] = 6;
-	$coutpa['barbare']['desert'] = 5;
+	$coutpa['barbare'] = $coutGeneral;
 	$coutpa['barbare']['glace'] = 4;
-	$coutpa['barbare']['marais'] = 5;
-	$coutpa['barbare']['montagne'] = 6;
-	$coutpa['barbare']['eau'] = 50;
-	$coutpa['barbare']['route'] = 2;
-	$coutpa['barbare']['objet'] = 2;
-	$coutpa['barbare']['terre_maudite'] = 5;
-	$coutpa['barbare']['donjon'] = 5;
-	$coutpa['barbare']['taverne_donjon'] = 2;
-	$coutpa['barbare']['mur_donjon'] = 50;
-	$coutpa['barbare']['mer'] = 6;
 
 	/*** ELFE DES BOIS ***/
-	$coutpa['elfebois']['plaine'] = 4;
+	$coutpa['elfebois'] = $coutGeneral;['plaine'] = 4;
 	$coutpa['elfebois']['foret'] = 5;
-	$coutpa['elfebois']['desert'] = 5;
-	$coutpa['elfebois']['glace'] = 5;
-	$coutpa['elfebois']['marais'] = 5;
-	$coutpa['elfebois']['montagne'] = 6;
-	$coutpa['elfebois']['eau'] = 50;
-	$coutpa['elfebois']['route'] = 2;
-	$coutpa['elfebois']['objet'] = 2;
-	$coutpa['elfebois']['terre_maudite'] = 5;
-	$coutpa['elfebois']['donjon'] = 5;
-	$coutpa['elfebois']['taverne_donjon'] = 2;
-	$coutpa['elfebois']['mur_donjon'] = 50;
-	$coutpa['elfebois']['mer'] = 6;
 
 	/*** HAUT ELFE ***/
-	$coutpa['elfehaut']['plaine'] = 4;
+	$coutpa['elfehaut'] = $coutGeneral;['plaine'] = 4;
 	$coutpa['elfehaut']['foret'] = 5;
-	$coutpa['elfehaut']['desert'] = 5;
-	$coutpa['elfehaut']['glace'] = 5;
-	$coutpa['elfehaut']['marais'] = 5;
-	$coutpa['elfehaut']['montagne'] = 6;
-	$coutpa['elfehaut']['eau'] = 50;
-	$coutpa['elfehaut']['route'] = 2;
-	$coutpa['elfehaut']['objet'] = 2;
-	$coutpa['elfehaut']['terre_maudite'] = 5;
-	$coutpa['elfehaut']['donjon'] = 5;
-	$coutpa['elfehaut']['taverne_donjon'] = 2;
-	$coutpa['elfehaut']['mur_donjon'] = 50;
-	$coutpa['elfehaut']['mer'] = 6;
 
 	/*** HUMAIN ***/
-	$coutpa['humain']['plaine'] = 4;
-	$coutpa['humain']['foret'] = 6;
-	$coutpa['humain']['desert'] = 5;
-	$coutpa['humain']['glace'] = 5;
-	$coutpa['humain']['marais'] = 5;
-	$coutpa['humain']['montagne'] = 6;
-	$coutpa['humain']['eau'] = 50;
-	$coutpa['humain']['route'] = 2;
-	$coutpa['humain']['objet'] = 2;
-	$coutpa['humain']['terre_maudite'] = 5;
-	$coutpa['humain']['donjon'] = 5;
-	$coutpa['humain']['taverne_donjon'] = 2;
-	$coutpa['humain']['mur_donjon'] = 50;
-	$coutpa['humain']['mer'] = 6;
+	$coutpa['humain'] = $coutGeneral;
 
 	/*** HUMAINS NOIRS ***/
-	$coutpa['humainnoir']['plaine'] = 4;
-	$coutpa['humainnoir']['foret'] = 6;
-	$coutpa['humainnoir']['desert'] = 5;
-	$coutpa['humainnoir']['glace'] = 5;
-	$coutpa['humainnoir']['marais'] = 5;
-	$coutpa['humainnoir']['montagne'] = 6;
-	$coutpa['humainnoir']['eau'] = 50;
-	$coutpa['humainnoir']['route'] = 2;
-	$coutpa['humainnoir']['objet'] = 2;
-	$coutpa['humainnoir']['terre_maudite'] = 5;
-	$coutpa['humainnoir']['donjon'] = 5;
-	$coutpa['humainnoir']['taverne_donjon'] = 2;
-	$coutpa['humainnoir']['mur_donjon'] = 50;
-	$coutpa['humainnoir']['mer'] = 6;
+	$coutpa['humainnoir'] = $coutGeneral;
 
 	/*** MORTS VIVANTS ***/
-	$coutpa['mortvivant']['plaine'] = 4;
-	$coutpa['mortvivant']['foret'] = 6;
-	$coutpa['mortvivant']['desert'] = 5;
-	$coutpa['mortvivant']['glace'] = 5;
+	$coutpa['mortvivant'] = $coutGeneral;
 	$coutpa['mortvivant']['marais'] = 4;
-	$coutpa['mortvivant']['montagne'] = 6;
-	$coutpa['mortvivant']['eau'] = 50;
-	$coutpa['mortvivant']['route'] = 2;
-	$coutpa['mortvivant']['objet'] = 2;
-	$coutpa['mortvivant']['terre_maudite'] = 5;
-	$coutpa['mortvivant']['donjon'] = 5;
-	$coutpa['mortvivant']['taverne_donjon'] = 2;
-	$coutpa['mortvivant']['mur_donjon'] = 50;
-	$coutpa['mortvivant']['mer'] = 6;
 
 	/*** NAINS ***/
-	$coutpa['nain']['plaine'] = 4;
-	$coutpa['nain']['foret'] = 6;
-	$coutpa['nain']['desert'] = 5;
-	$coutpa['nain']['glace'] = 5;
-	$coutpa['nain']['marais'] = 5;
+	$coutpa['nain'] = $coutGeneral;
 	$coutpa['nain']['montagne'] = 5;
-	$coutpa['nain']['eau'] = 50;
-	$coutpa['nain']['route'] = 2;
-	$coutpa['nain']['objet'] = 2;
-	$coutpa['nain']['terre_maudite'] = 5;
-	$coutpa['nain']['donjon'] = 5;
-	$coutpa['nain']['taverne_donjon'] = 2;
-	$coutpa['nain']['mur_donjon'] = 50;
-	$coutpa['nain']['mer'] = 6;
 
 	/*** ORC ***/
-	$coutpa['orc']['plaine'] = 4;
-	$coutpa['orc']['foret'] = 6;
-	$coutpa['orc']['desert'] = 5;
-	$coutpa['orc']['glace'] = 5;
-	$coutpa['orc']['marais'] = 5;
-	$coutpa['orc']['montagne'] = 6;
-	$coutpa['orc']['eau'] = 50;
-	$coutpa['orc']['route'] = 2;
-	$coutpa['orc']['objet'] = 2;
-	$coutpa['orc']['terre_maudite'] = 5;
-	$coutpa['orc']['donjon'] = 5;
-	$coutpa['orc']['taverne_donjon'] = 2;
-	$coutpa['orc']['mur_donjon'] = 50;
-	$coutpa['orc']['mer'] = 6;
+	$coutpa['orc'] = $coutGeneral;['plaine'] = 4;
 
 	/*** SCAVENGERS ***/
-	$coutpa['scavenger']['plaine'] = 4;
-	$coutpa['scavenger']['foret'] = 6;
+	$coutpa['scavenger'] = $coutGeneral;
 	$coutpa['scavenger']['desert'] = 4;
-	$coutpa['scavenger']['glace'] = 5;
-	$coutpa['scavenger']['marais'] = 5;
-	$coutpa['scavenger']['montagne'] = 6;
-	$coutpa['scavenger']['eau'] = 50;
-	$coutpa['scavenger']['route'] = 2;
-	$coutpa['scavenger']['objet'] = 2;
-	$coutpa['scavenger']['terre_maudite'] = 5;
-	$coutpa['scavenger']['donjon'] = 5;
-	$coutpa['scavenger']['taverne_donjon'] = 2;
-	$coutpa['scavenger']['mur_donjon'] = 50;
-	$coutpa['scavenger']['mer'] = 6;
 
 	/*** TROLL ***/
-	$coutpa['troll']['plaine'] = 4;
-	$coutpa['troll']['foret'] = 6;
-	$coutpa['troll']['desert'] = 5;
-	$coutpa['troll']['glace'] = 5;
-	$coutpa['troll']['marais'] = 5;
-	$coutpa['troll']['montagne'] = 6;
-	$coutpa['troll']['eau'] = 50;
-	$coutpa['troll']['route'] = 2;
-	$coutpa['troll']['objet'] = 2;
-	$coutpa['troll']['terre_maudite'] = 5;
-	$coutpa['troll']['donjon'] = 5;
-	$coutpa['troll']['taverne_donjon'] = 2;
-	$coutpa['troll']['mur_donjon'] = 50;
-	$coutpa['troll']['mer'] = 6;
+	$coutpa['troll'] = $coutGeneral;
 
 	/*** VAMPIRES ***/
-	$coutpa['vampire']['plaine'] = 4;
-	$coutpa['vampire']['foret'] = 6;
-	$coutpa['vampire']['desert'] = 5;
-	$coutpa['vampire']['glace'] = 5;
-	$coutpa['vampire']['marais'] = 5;
-	$coutpa['vampire']['montagne'] = 6;
-	$coutpa['vampire']['eau'] = 50;
-	$coutpa['vampire']['route'] = 2;
-	$coutpa['vampire']['objet'] = 2;
+	$coutpa['vampire'] = $coutGeneral;
 	$coutpa['vampire']['terre_maudite'] = 4;
-	$coutpa['vampire']['donjon'] = 5;
-	$coutpa['vampire']['taverne_donjon'] = 2;
-	$coutpa['vampire']['mur_donjon'] = 50;
-	$coutpa['vampire']['mer'] = 6;
 
-	/*** RACE ***/
-	/* TEMPLATE
-	$coutpa['']['plaine'] = ;
-	$coutpa['']['foret'] = ;
-	$coutpa['']['desert'] = ;
-	$coutpa['']['glace'] = ;
-	$coutpa['']['eau'] = ;
-	$coutpa['']['route'] = ;
-	$coutpa['']['objet'] = ;
-	$coutpa['']['donjon'] = 5;
-	$coutpa['']['taverne_donjon'] = 2;
-	$coutpa['']['mur_donjon'] = 50;
-	*/
 	if ($coutpa[$race][$info] == '') $coutpa[$race][$info] = 6;
 	return $coutpa[$race][$info];
 }
