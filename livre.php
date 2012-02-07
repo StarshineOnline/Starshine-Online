@@ -25,7 +25,7 @@ if($joueur->get_comp_jeu() != '')
 //Si le perso a des compétences de combat affichage du lien vers compétences de combat
 if($joueur->get_comp_combat() != '')
 {
-	echo '<a href="competence.php" onclick="return envoiInfo(this.href, \'information\');"><img src="image/competence_icone.png" alt="Compétences de combat" style="vertical-align : middle;" title="Compétences de combat" onmouseover="this.src = \'image/competencehcombathover.png\'" onmouseout="this.src = \'image/competencehcombat.png\'" /></a> ';
+	echo '<a href="competence.php" onclick="return envoiInfo(this.href, \'information\');"><img src="image/competencehcombat.png" alt="Compétences de combat" style="vertical-align : middle;" title="Compétences de combat" onmouseover="this.src = \'image/competencehcombathover.png\'" onmouseout="this.src = \'image/competencehcombat.png\'" /></a> ';
 }
 ?>
 <a href="livre_recette.php" onclick="return envoiInfo(this.href, 'information');"><img src="image/icone/livrederecette.png" alt="Livre de recettes" style="vertical-align : middle;" title="Livre de recettes" onmouseover="this.src = 'image/icone/livrederecettehover.png'" onmouseout="this.src = 'image/icone/livrederecette.png'" /></a>
