@@ -1,10 +1,11 @@
 <?php
+/**
+ * @file buff.class.php
+ * Définition de la classe buff représentant les buffs sur les personnages
+ */
 if (file_exists('../root.php'))
   include_once('../root.php');
 ?><?php //  -*- tab-width:2  -*-
-/**
-* @file buff.class.php
-*/
 
 include_once(root.'class/effect.class.php');
 
@@ -66,6 +67,10 @@ class buff_actif extends effect
   }
 }
 
+/**
+ * Classe buff
+ * Classe buff représentant les buffs sur les personnages
+ */
 class buff extends buff_base
 {
 	/**
@@ -117,7 +122,7 @@ class buff extends buff_base
 		else
 		{
       buff_base::__construct($id, $type, $effet, $duree);
-			$this->id_perso = id_perso;
+			$this->id_perso = $id_perso;
 		}
 	}
 

@@ -18,6 +18,7 @@ class comp_sort_buff extends table
   protected $type;   ///< Type générique.
 	protected $effet;  ///< Effet principal.
 	protected $duree;  ///< Durée.
+	protected $nom;   ///< Nom du buff
 
 
 	/// Renvoie le type générique
@@ -55,6 +56,18 @@ class comp_sort_buff extends table
 		$this->duree = $duree;
 		$this->champs_modif[] = 'duree';
 	}
+
+	/// Renvoie le nom du buff
+	function get_nom()
+	{
+		return $this->nom;
+	}
+	/// Modifie le nom du buff
+	function set_nom($nom)
+	{
+		$this->nom = $nom;
+		$this->champs_modif[] = 'nom';
+	}
 	// @}
 
 
@@ -70,7 +83,7 @@ class comp_sort_buff extends table
 	 * @param effet    Effet principal.
 	 * @param duree    Durée
 	 */
-	function __construct($id=0, $type='', $effet=0, $duree=0)
+	function __construct($id=0, $nom='', $type='', $effet=0, $duree=0)
 	{
 		//Verification nombre d'arguments pour construire l'etat adequat.
 		if( func_num_args() == 1 )
@@ -80,6 +93,7 @@ class comp_sort_buff extends table
 		else
 		{
 			$this->id = $id;
+			$this->nom = $nom;
 			$this->type = $type;
 			$this->effet = $effet;
 			$this->duree = $duree;
@@ -93,6 +107,7 @@ class comp_sort_buff extends table
   protected function init_tab($vals)
   {
 		$this->id = $vals['id'];
+		$this->nom = $vals['nom'];
 		$this->type = $vals['type'];
 		$this->effet = $vals['effet'];
 		$this->duree = $vals['duree'];
@@ -101,17 +116,17 @@ class comp_sort_buff extends table
 	/// Renvoie la liste des champs pour une insertion dans la base
 	protected function get_liste_champs()
 	{
-    return 'type, effet, duree';
+    return 'nom, type, effet, duree';
   }
 	/// Renvoie la liste des valeurs des champspour une insertion dans la base
 	protected function get_valeurs_insert()
 	{
-		return '"'.mysql_escape_string($this->type).'", '.$this->effet.', '.$this->duree;
+		return '"'.mysql_escape_string($this->nom).'", "'.mysql_escape_string($this->type).'", '.$this->effet.', '.$this->duree;
 	}
 	/// Renvoie la liste des champs et valeurs pour une mise-à-jour dans la base
 	protected function get_liste_update()
 	{
-		return 'type = "'.mysql_escape_string($this->type).'", effet = '.$this->effet.', duree = '.$this->duree;
+		return 'nom = "'.mysql_escape_string($this->nom).'", type = "'.mysql_escape_string($this->type).'", effet = '.$this->effet.', duree = '.$this->duree;
 	}
 	// @}
 }

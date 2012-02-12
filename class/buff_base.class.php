@@ -1,7 +1,7 @@
 <?php
 /**
  * @file buff_base.class.php
- * Définition de la classe comp_sort_buff servant de base aux compétences sorts et buffs
+ * Définition de la classe buff_base servant de base aux buffs
  */
 
 /**
@@ -17,7 +17,6 @@ class buff_base extends comp_sort_buff
   // @{
 	protected $effet2; ///< Effet secondaire
 	protected $fin;  ///< Date et heure de fin du buff
-	protected $nom;   ///< Nom du buff
 	protected $description;  ///< Description du buff
 	protected $debuff; ///< 0 pour un buff,  pour un debuff
 	protected $supprimable;   ///< 1 si on peut supprimer le (de)buff, 0 sinon
@@ -44,18 +43,6 @@ class buff_base extends comp_sort_buff
 	{
 		$this->fin = $fin;
 		$this->champs_modif[] = 'fin';
-	}
-	
-	/// Renvoie le nom du buff
-	function get_nom()
-	{
-		return $this->nom;
-	}
-	/// Modifie le nom du buff
-	function set_nom($nom)
-	{
-		$this->nom = $nom;
-		$this->champs_modif[] = 'nom';
 	}
 
 	/// Renvoie la description du buff
@@ -130,7 +117,6 @@ class buff_base extends comp_sort_buff
       comp_sort_buff::__construct($id, $type, $effet, $duree);
 			$this->effet2 = $effet2;
 			$this->fin = $fin;
-			$this->nom = $nom;
 			$this->description = $description;
 			$this->debuff = $debuff;
 			$this->supprimable = $supprimable;
@@ -146,7 +132,6 @@ class buff_base extends comp_sort_buff
     comp_sort_buff::init_tab($vals);
 		$this->effet2 = $vals['effet2'];
 		$this->fin = $vals['fin'];
-		$this->nom = $vals['nom'];
 		$this->description = $vals['description'];
 		$this->debuff = $vals['debuff'];
 		$this->supprimable = $vals['supprimable'];
@@ -155,17 +140,17 @@ class buff_base extends comp_sort_buff
 	/// Renvoie la liste des champs pour une insertion dans la base
 	protected function get_liste_champs()
 	{
-    return comp_sort_buff::get_liste_champs().', effet2, fin, nom, description, debuff, supprimable';
+    return comp_sort_buff::get_liste_champs().', effet2, fin, description, debuff, supprimable';
   }
 	/// Renvoie la liste des valeurs des champspour une insertion dans la base
 	protected function get_valeurs_insert()
 	{
-		return comp_sort_buff::get_valeurs_insert().', '.$this->effet2.', '.$this->fin.', "'.mysql_escape_string($this->nom).'", "'.mysql_escape_string($this->description).'", '.$this->debuff.', '.$this->supprimable;
+		return comp_sort_buff::get_valeurs_insert().', '.$this->effet2.', '.$this->fin.', "'.mysql_escape_string($this->description).'", '.$this->debuff.', '.$this->supprimable;
 	}
 	/// Renvoie la liste des champs et valeurs pour une mise-à-jour dans la base
 	protected function get_liste_update()
 	{
-		return comp_sort_buff::get_liste_update().', effet2 = '.$this->effet2.', fin = '.$this->fin.', nom = "'.mysql_escape_string($this->nom).'", description = "'.mysql_escape_string($this->description).'", debuff = '.$this->debuff.', supprimable = '.$this->supprimable;
+		return comp_sort_buff::get_liste_update().', effet2 = '.$this->effet2.', fin = '.$this->fin.', description = "'.mysql_escape_string($this->description).'", debuff = '.$this->debuff.', supprimable = '.$this->supprimable;
 	}
 	// @}
 }

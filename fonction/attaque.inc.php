@@ -6,7 +6,7 @@ if (file_exists('../root.php'))
  * @file attaque.inc.php
  *
  */
-include_once(root.$root.'class/comp.class.php');
+include_once(root.$root.'class/competence.class.php');
 include_once(root.$root.'class/gemmes.class.php');
 
 /**
