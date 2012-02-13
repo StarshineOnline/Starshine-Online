@@ -26,6 +26,13 @@ class comp_sort extends comp_sort_buff
 	protected $mp;   ///< Coût en MP ou en RM
 	protected $prix;  ///< Prix de la compétence ou le sort
 	protected $lvl_batiment;   ///< Niveau de l'école qui vent la compétence ou le sort
+	
+	const cible_perso = 1;  ///< Valeur de l'attirbut cible si celle-ci est le lanceur
+	const cible_unique = 2;  ///< Valeur de l'attirbut cible si celle-ci est un unique personnage
+	const cible_groupe = 3;  ///< Valeur de l'attirbut cible si celle-ci est le groupe du lanceur
+	const cible_autre = 4;  ///< Valeur de l'attirbut cible si celle-ci est un autre personnage
+	const cible_autregrp = 5;  ///< Valeur de l'attirbut cible si celle-ci est un autre groupe
+	const cible_case = 8;  ///< Valeur de l'attirbut cible pour les débuffs de masse
 
   /// Renvoie la compétence associée
 	function get_comp_assoc()
@@ -112,9 +119,12 @@ class comp_sort extends comp_sort_buff
 	}
 	
 	/// Renvoie la description de la compétence ou le sort
-	function get_description()
+	function get_description($format=false)
 	{
-		return $this->description;
+    if($format)
+      return $this->formate_description( $this->description );
+    else
+		  return $this->description;
 	}
 	/// Modifie la description de la compétence ou le sort
 	function set_description($description)
@@ -122,6 +132,24 @@ class comp_sort extends comp_sort_buff
 		$this->description = $description;
 		$this->champs_modif[] = 'description';
 	}
+	/// Formate la description
+	function formate_description($texte)
+	{
+  	while(preg_match("`%([a-z0-9]*)%`i",$texte, $regs))
+  	{
+  		$get = 'get_'.$regs[1];
+  		$texte = str_replace('%'.$regs[1].'%', $this->$get(), $texte);
+  	}
+  	// Evaluation
+  	$valeur = '';
+  	while(preg_match('`@(.*)@`', $texte, $regs))
+  	{
+  		$r = $regs[1];
+  		eval("\$valeur = ".$r.";");
+  		$texte = str_replace('@'.$regs[1].'@', $valeur, $texte);
+  	}
+  	return $texte;
+  }
 
   /// Renvoie le coût en MP ou en RM
 	function get_mp()
@@ -244,5 +272,38 @@ class comp_sort extends comp_sort_buff
 		return comp_sort_buff::get_liste_update().', comp_assoc = "'.mysql_escape_string($this->comp_assoc).'", carac_assoc = "'.mysql_escape_string($this->carac_assoc).'", comp_requis = '.$this->comp_requis.', carac_requis = '.$this->carac_requis.', effet2 = '.$this->effet2.', requis = '.$this->requis.', cible = '.$this->cible.', description = "'.mysql_escape_string($this->description).'", mp = '.$this->mp.', prix = '.$this->prix.', lvl_batiment = '.$this->lvl_batiment;
 	}
 	// @}
+	
+	/**
+	 * Renvoie la liste des cibles
+	 * @param cible  Cible principale telle que donnée à la méthode lancer
+	 * @return  liste des cibles sous forme de tableau
+	 */
+  function get_liste_cibles($cible)
+  {
+    switch( $this->get_cible() )
+    {
+    case comp_sort::cible_groupe:
+    case comp_sort::cible_autregrp:
+      if($cible->get_groupe() != 0)
+      {
+        $groupe_cible = new groupe( $cible->get_groupe() );
+        $cibles = array();
+				foreach($groupe_cible->get_membre() as $membre)
+				{
+					// On peut agir avec les membres du groupe si ils sont a 7 ou moins de distance
+					if($membre->get_distance_pytagore($cible) <= 7)
+            $cibles[] = new perso($membre->get_id_joueur());
+				}
+      }
+    case comp_sort::cible_perso:
+    case comp_sort::cible_unique:
+    case comp_sort::cible_autre:
+      return Array( $cible );
+      break;
+    case comp_sort::cible_case:
+      return Array();
+    }
+  }
+	
 }
 ?>

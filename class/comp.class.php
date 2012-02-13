@@ -54,7 +54,7 @@ class comp extends comp_sort
 	 * @param lvl_batiment   Niveau de l'école qui vent la compétence ou le sort
 	 * @param arme_requis    Arme requise pour utiliser la compétence
 	 */
-	function __construct($id=0, $nom='', $type='', $effet=0, $duree=0, $comp_assoc='', $carac_assoc='', $comp_requis=0, $carac_requis=0
+	function __construct($id=0, $nom='', $type='', $effet=0, $duree=0, $comp_assoc='', $carac_assoc='', $comp_requis=0, $carac_requis=0,
     $effet2=0, $requis=0, $cible=0, $description='', $mp=0, $prix=0, $lvl_batiment=0, $arme_requis='')
 	{
 		//Verification nombre d'arguments pour construire l'etat adequat.
@@ -64,7 +64,7 @@ class comp extends comp_sort
 		}
 		else
 		{
-      comp_sort::__construct($id, $type, $effet, $duree, $comp_assoc=, $carac_assoc, $comp_requis, $carac_requis, $effet2, $requis, $cible, $description, $mp, $prix, $lvl_batiment);
+      comp_sort::__construct($id, $type, $effet, $duree, $comp_assoc, $carac_assoc, $comp_requis, $carac_requis, $effet2, $requis, $cible, $description, $mp, $prix, $lvl_batiment);
 			$this->arme_requis = $arme_requis;
 		}
   }

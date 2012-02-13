@@ -11,14 +11,15 @@ if($joueur->get_groupe() != 0) $groupe_joueur = new groupe($joueur->get_groupe()
 if (isset($_GET['ID']))
 {
 	$joueur->check_comp_jeu_connu($_GET['ID']);
+	$comp = comp_jeu::factory( sSQL($_GET['ID'], SSQL_INTEGER) );
 	$requete = "SELECT * FROM comp_jeu WHERE id = ".sSQL($_GET['ID'], SSQL_INTEGER);
 	//echo $requete;
 	$req = $db->query($requete);
 
 	$row = $db->read_array($req);
 	if(array_key_exists('groupe', $_GET) AND $_GET['groupe'] == 'yes') $groupe = true; else $groupe = false;
-	$sortpa = round($row['pa']);
-	$sortmp = round($row['mp']);
+	$sortpa = $comp->get_pa();//round($row['pa']);
+	$sortmp = $comp->get_mp();//round($row['mp']);
 	$action = false;
 	$cibles = array($joueur->get_id());
 	if($joueur->get_pa() < $sortpa)
@@ -35,7 +36,13 @@ if (isset($_GET['ID']))
 	}
 	else
 	{
-		switch($row['type'])
+    if( $comp->lance($joueur) )
+    {
+			$joueur->set_pa($joueur->get_pa() - $sortpa);
+			$joueur->set_mp($joueur->get_mp() - $sortmp);
+			$joueur->sauver();
+    }
+		/*switch($row['type'])
 		{
 			case 'buff_forteresse' :
 			case 'buff_position' :
@@ -275,7 +282,7 @@ if (isset($_GET['ID']))
 			default:
 				echo "<h5>Compétence introuvable</h5>";
 				break;
-		}
+		}*/
 	}
 	echo '<br /><a href="competence_jeu.php" onclick="return envoiInfo(this.href, \'information\');">Revenir au livre des compétences</a>';
 }
