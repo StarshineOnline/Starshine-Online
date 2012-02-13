@@ -134,6 +134,7 @@ class comp_jeu extends comp
   function lance($perso)
   {
     global $db;
+    $action = false;
     $cibles = $this->get_liste_cibles( $perso );
     foreach($cibles as $cible)
 		{
@@ -152,6 +153,7 @@ class comp_jeu extends comp
 				else echo $cible->get_nom().' a trop de buffs.<br />';
 			}
 		}
+		return $action;
   }
 }
 
