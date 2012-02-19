@@ -278,13 +278,17 @@ class comp_sort extends comp_sort_buff
 	 * @param cible  Cible principale telle que donnée à la méthode lancer
 	 * @return  liste des cibles sous forme de tableau
 	 */
-  function get_liste_cibles($cible)
+  function get_liste_cibles($cible, $groupe=true)
   {
     switch( $this->get_cible() )
     {
     case comp_sort::cible_groupe:
     case comp_sort::cible_autregrp:
-      if($cible->get_groupe() != 0)
+      if( $cible->get_race() == 'neutre' )
+      {
+        return map_monstre::create(array('x', 'y'), array($cible->get_x(), $cible->get_y()));
+      }
+      else if($groupe && $cible->get_groupe() != 0)
       {
         $groupe_cible = new groupe( $cible->get_groupe() );
         $cibles = array();
@@ -294,14 +298,16 @@ class comp_sort extends comp_sort_buff
 					if($membre->get_distance_pytagore($cible) <= 7)
             $cibles[] = new perso($membre->get_id_joueur());
 				}
+				return $cibles;
       }
     case comp_sort::cible_perso:
     case comp_sort::cible_unique:
     case comp_sort::cible_autre:
       return Array( $cible );
-      break;
     case comp_sort::cible_case:
-      return Array();
+      $champs = array('x', 'y', 'statut');
+      $valeurs = array($joueur->get_x(), $joueur->get_y(), 'actif');
+      return perso::create($champs, $valeurs, 'id ASC', false, false);
     }
   }
 	
