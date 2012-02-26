@@ -42,9 +42,10 @@ $Gtrad['coup_puissant'] = 'Coup Puissant';
 
 /**
  * @name Royaumes
- * Traduction des noms de royaumes.
+ * Traduction des noms de royaumes et de races.
  * @{  
  */
+// Royaumes
 $Gtrad['barbare'] = 'Barbare';
 $Gtrad['elfebois'] = 'Elfe des bois';
 $Gtrad['elfehaut'] = 'Haut-Elfe';
@@ -56,10 +57,10 @@ $Gtrad['orc'] = 'Orc';
 $Gtrad['scavenger'] = 'Scavenger';
 $Gtrad['troll'] = 'Troll';
 $Gtrad['vampire'] = 'Vampire';
-// et de races
+// Races
 $Gtrad['neutre'] = 'Neutre';
 $Gtrad['pnj'] = 'PNJ';
-$Gtrad['coyotte'] = 'Coyotte';
+$Gtrad['coyotte'] = 'Coyote';
 //@}
 
 

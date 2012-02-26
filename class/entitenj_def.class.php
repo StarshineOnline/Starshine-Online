@@ -163,22 +163,23 @@ abstract class entitenj_def extends table
 		$this->hp = $vals['hp'];
 		$this->pp = $vals['pp'];
 		$this->pm = $vals['pm'];
+		$this->description = $vals['description'];
   }
 
 	/// Renvoie la liste des champs pour une insertion dans la base
 	protected function get_liste_champs()
 	{
-    return 'nom, type, hp, pp, pm';
+    return 'nom, type, hp, pp, pm, description';
   }
 	/// Renvoie la liste des valeurs des champspour une insertion dans la base
 	protected function get_valeurs_insert()
 	{
-		return mysql_escape_string($this->nom).', '.mysql_escape_string($this->type).', '.$this->hp.', '.$this->pp.', '.$this->pm;
+		return mysql_escape_string($this->nom).', '.mysql_escape_string($this->type).', '.$this->hp.', '.$this->pp.', '.$this->pm.', "'.mysql_escape_string($this->description).'"';
 	}
 	/// Renvoie la liste des champs et valeurs pour une mise-à-jour dans la base
 	protected function get_liste_update()
 	{
-		return 'nom = "'.mysql_escape_string($this->nom).'", type = "'.mysql_escape_string($this->type).'", hp = '.$this->hp.', pp = '.$this->pp.', pm = '.$this->pm;
+		return 'nom = "'.mysql_escape_string($this->nom).'", type = "'.mysql_escape_string($this->type).'", hp = '.$this->hp.', pp = '.$this->pp.', pm = '.$this->pm.', description = "'.mysql_escape_string($this->description).'"';
 	}
 	// @}
 
