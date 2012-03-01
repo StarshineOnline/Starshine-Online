@@ -39,7 +39,11 @@ elseif(array_key_exists('new2', $_GET))
 		// On récupère les groupes participants
 		foreach($_GET as $key => $value)
 		{
+			// beurk beurk beurk, la belle injection SQL qui se profile !! on va essayer de s'en prémunir
+			// 1- tester si la clef commence bien par bien groupe
+			if (strpos($key, 'groupe') !== 0) continue;
 			$id_groupe = str_replace("groupe", "", $key); //On recupere que l'id
+			if (!is_numeric($id_groupe)) continue; // On vérifie que ce soit bien un int
 			if($value == 1 AND $key != "x" AND $key != "y" AND $key != "id_bataille") // Si on ajoute un groupe
 			{
 				$groupe = new bataille_groupe(0,0,$id_groupe);
