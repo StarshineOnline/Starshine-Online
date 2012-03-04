@@ -17,6 +17,7 @@ class entitenj extends entite
   function __construct($incarn, $perso, $attaquant=true, $adversaire=null)
   {
     $def = $incarn->get_def();
+    $this->id = $incarn->get_id();
     $this->incarn = &$incarn;
     $this->def = $def;
 		$this->action = $incarn->get_action($attaquant);
