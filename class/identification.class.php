@@ -11,7 +11,7 @@ class identification
 	function connexion($nom, $password, $autologin = false, $api = false)
 	{
 		global $db, $erreur_login;
-		$requete = 'SELECT ID, nom, password, dernier_connexion, statut, fin_ban, race, rang_royaume FROM perso WHERE nom = \''.$nom.'\'';
+		$requete = 'SELECT ID, nom, password, dernier_connexion, statut, fin_ban, race, rang_royaume FROM perso WHERE nom = \''.sSQL($nom, SSQL_STRING).'\'';
 		$req = $db->query($requete);
 		if ($db->num_rows($req) > 0)
 		{

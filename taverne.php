@@ -52,7 +52,7 @@ if ($joueur->get_race() == $R->get_race() ||
 		{
 			//Achat
 			case 'achat' :
-				$requete = "SELECT * FROM taverne WHERE id = ".sSQL($_GET['id']);
+				$requete = "SELECT * FROM taverne WHERE id = ".sSQL($_GET['id'], SSQL_INTEGER);
 				$req_taverne = $db->query($requete);
 				$row_taverne = $db->read_array($req_taverne);
 				$taxe = ceil($row_taverne['star'] * $R->get_taxe_diplo($joueur->get_race()) / 100);

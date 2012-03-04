@@ -65,18 +65,21 @@ class bataille_groupe
 	//Fonction d'ajout / modification.
 	function sauver()
 	{
+		$b = sSQL($this->id_bataille, SSQL_INTEGER);
+		$g = sSQL($this->id_groupe, SSQL_INTEGER);
+		$t = sSQL($this->id_thread, SSQL_INTEGER);
 		global $db;
 		if( $this->id > 0 )
 		{
 			$requete = 'UPDATE bataille_groupe SET ';
-			$requete .= 'id_bataille = '.$this->id_bataille.', id_groupe = '.$this->id_groupe.', id_thread = '.$this->id_thread;
+			$requete .= 'id_bataille = '.$b.', id_groupe = '.$g.', id_thread = '.$t;
 			$requete .= ' WHERE id = '.$this->id;
 			$db->query($requete);
 		}
 		else
 		{
 			$requete = 'INSERT INTO bataille_groupe (id_bataille, id_groupe, id_thread) VALUES(';
-			$requete .= $this->id_bataille.', '.$this->id_groupe.', '.$this->id_thread.')';
+			$requete .= $b.', '.$g.', '.$t.')';
 			$db->query($requete);
 			//Récuperation du dernier ID inséré.
 			list($this->id) = $db->last_insert_id();
