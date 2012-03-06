@@ -39,7 +39,7 @@ $lanceur_url = '';
 switch($type_lanceur)
 {
   case 'joueur':
-    $lanceur = $joueur;
+    $lanceur = &$joueur;
     $possible_augmentation = true;
     break;
   case 'monstre':
@@ -65,7 +65,8 @@ if($joueur->get_groupe() != 0) $groupe_joueur = new groupe($joueur->get_groupe()
 if (isset($_GET['ID']) && !$joueur->is_buff('bloque_sort'))
 {
   $no_req = false;
-  $sort = new sort_jeu($_GET['ID']);
+  //$sort = new sort_jeu($_GET['ID']);
+  $sort = sort_jeu::factory($_GET['ID']);
 
   if ($type_lanceur == 'joueur') {
     // Check des spells du joueur
@@ -111,10 +112,10 @@ if (isset($_GET['ID']) && !$joueur->is_buff('bloque_sort'))
   {
     if(array_key_exists('groupe', $_GET) AND $_GET['groupe'] == 'yes')
     $groupe = true;
-    elseif ($sort->get_cible() == 3) {
+    /*elseif ($sort->get_cible() == 3) {
       $force_groupe = true;
       $groupe = false;
-    }
+    }*/
     else $groupe = false;
     //Vérification que c'est un buff de groupe
     $sortpa_base = $sort->get_pa();
@@ -161,7 +162,7 @@ if (isset($_GET['ID']) && !$joueur->is_buff('bloque_sort'))
     }
 
     $action = false;
-    if(isset($groupe_joueur) AND ($groupe OR $force_groupe))
+    /*if(isset($groupe_joueur) AND ($groupe OR $force_groupe))
     {
       $cibles = array();
       foreach($groupe_joueur->get_membre_joueur() as $membre)
@@ -170,14 +171,14 @@ if (isset($_GET['ID']) && !$joueur->is_buff('bloque_sort'))
         if($joueur->get_distance_pytagore($membre) <= 7) $cibles[] = $membre;
       }
     }
-    else $cibles = array($cible);
+    else $cibles = array($cible);*/
 
     if($joueur->get_pa() < $sortpa) echo '<h5>Pas assez de PA</h5>';
     elseif($lanceur->get_mp() < $sortmp) echo '<h5>Pas assez de mana</h5>';
     elseif($lanceur->get_hp() <= 0) echo '<h5>Vous êtes mort</h5>';
     else
     {
-      switch($sort->get_type())
+      /*switch($sort->get_type())
       {
         case 'vie_pourcent' :
           $soin_total = 0;
@@ -907,12 +908,12 @@ if (isset($_GET['ID']) && !$joueur->is_buff('bloque_sort'))
             echo 'Le joueur n\'est pas mort';
           }
           break;
-      }
+      }*/
+      $lancement = $sort->lance($joueur, $cible, $groupe, $lanceur_url, $type_cible);
     }
     //On fait le final si le lancement est réussi
     if($lancement)
     {
-      echo '<br />';
       $joueur->set_pa($joueur->get_pa() - $sortpa);
       $lanceur->set_mp($lanceur->get_mp() - $sortmp);
       if($possible_augmentation)
@@ -1043,12 +1044,12 @@ elseif($type_lanceur == 'joueur')
         $sort_groupe = false;
         if($cible->get_id() == $joueur->get_id())
         {
-          $cond = ($sort->get_cible() == 1 OR $sort->get_cible() == 8 OR $sort->get_cible() == 2 OR $sort->get_cible() == 3) && $sort->get_type() != 'rez';
+          $cond = ($sort->get_cible() == comp_sort::cible_perso OR $sort->get_cible() == comp_sort::cible_case OR $sort->get_cible() == comp_sort::cible_unique OR $sort->get_cible() == comp_sort::cible_groupe) && $sort->get_type() != 'rez';
           if($cond)
           $sort_groupe = true;
         }
         else
-        $cond = ($sort->get_cible() == 2 OR $sort->get_cible() == 4);
+        $cond = ($sort->get_cible() == comp_sort::cible_unique OR $sort->get_cible() == comp_sort::cible_autre || $sort->get_cible() == comp_sort::cible_autregrp);
 
         if($cond)
         {

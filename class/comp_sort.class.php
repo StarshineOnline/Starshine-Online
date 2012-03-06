@@ -27,12 +27,12 @@ class comp_sort extends comp_sort_buff
 	protected $prix;  ///< Prix de la compétence ou le sort
 	protected $lvl_batiment;   ///< Niveau de l'école qui vent la compétence ou le sort
 	
-	const cible_perso = 1;  ///< Valeur de l'attirbut cible si celle-ci est le lanceur
-	const cible_unique = 2;  ///< Valeur de l'attirbut cible si celle-ci est un unique personnage
-	const cible_groupe = 3;  ///< Valeur de l'attirbut cible si celle-ci est le groupe du lanceur
-	const cible_autre = 4;  ///< Valeur de l'attirbut cible si celle-ci est un autre personnage
-	const cible_autregrp = 5;  ///< Valeur de l'attirbut cible si celle-ci est un autre groupe
-	const cible_case = 8;  ///< Valeur de l'attirbut cible pour les débuffs de masse
+	const cible_perso = 1;  ///< Valeur de l'attribut cible si celle-ci est le lanceur
+	const cible_unique = 2;  ///< Valeur de l'attribut cible si celle-ci est un unique personnage
+	const cible_groupe = 3;  ///< Valeur de l'attribut cible si celle-ci est le groupe du lanceur
+	const cible_autre = 4;  ///< Valeur de l'attribut cible si celle-ci est un autre personnage
+	const cible_autregrp = 5;  ///< Valeur de l'attribut cible si celle-ci est un autre groupe
+	const cible_case = 8;  ///< Valeur de l'attribut cible pour les débuffs de masse
 
   /// Renvoie la compétence associée
 	function get_comp_assoc()
@@ -284,6 +284,7 @@ class comp_sort extends comp_sort_buff
     {
     case comp_sort::cible_groupe:
     case comp_sort::cible_autregrp:
+    case comp_sort::cible_unique:
       if( $cible->get_race() == 'neutre' )
       {
         return map_monstre::create(array('x', 'y'), array($cible->get_x(), $cible->get_y()));
@@ -301,12 +302,11 @@ class comp_sort extends comp_sort_buff
 				return $cibles;
       }
     case comp_sort::cible_perso:
-    case comp_sort::cible_unique:
     case comp_sort::cible_autre:
       return Array( $cible );
     case comp_sort::cible_case:
       $champs = array('x', 'y', 'statut');
-      $valeurs = array($joueur->get_x(), $joueur->get_y(), 'actif');
+      $valeurs = array($cible->get_x(), $cible->get_y(), 'actif');
       return perso::create($champs, $valeurs, 'id ASC', false, false);
     }
   }

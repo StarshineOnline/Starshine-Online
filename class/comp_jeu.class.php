@@ -102,8 +102,7 @@ class comp_jeu extends comp
   static function factory($id)
   {
     global $db;
-    $table = get_called_class();
-    $requete = 'SELECT * FROM comp_jeu WHERE id = "'.$id.'"';
+    $requete = 'SELECT * FROM comp_jeu WHERE id = '.$id;
   	$req = $db->query($requete);
   	$row=$db->read_assoc($req);
   	if( $row )
@@ -144,8 +143,11 @@ class comp_jeu extends comp
 				$action = true;
 				echo $cible->get_nom().' a bien reçu le buff<br />';
 				//Insertion du buff dans le journal du receveur
-				$requete = "INSERT INTO journal VALUES('', ".$cible->get_id().", 'rgbuff', '".$cible->get_nom()."', '".$perso->get_nom()."', NOW(), '".$this->get_nom()."', 0, 0, 0)";
-				$db->query($requete);
+				if( count($cibles)>1 && $cible->get_id() != $perso->get_id() )
+				{
+  				$requete = "INSERT INTO journal VALUES('', ".$cible->get_id().", 'rgbuff', '".$cible->get_nom()."', '".$perso->get_nom()."', NOW(), '".$this->get_nom()."', 0, 0, 0)";
+  				$db->query($requete);
+        }
 			}
 			else
 			{
@@ -153,6 +155,11 @@ class comp_jeu extends comp
 				else echo $cible->get_nom().' a trop de buffs.<br />';
 			}
 		}
+		if( $action )
+		{
+			$requete = "INSERT INTO journal VALUES('', ".$perso->get_id().", '".(count($cibles)>1?"gbuff":"buff")."', '".$perso->get_nom()."', '".$perso->get_nom()."', NOW(), '".$this->get_nom()."', 0, 0, 0)";
+			$db->query($requete);
+    }
 		return $action;
   }
 }
