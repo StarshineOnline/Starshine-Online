@@ -530,6 +530,7 @@ class sort_balance extends sort_jeu
         echo $cible->get_nom().' est mort.<br />';
       }
     }
+    return true;
   }
 }
 
