@@ -289,7 +289,20 @@ class comp_sort extends comp_sort_buff
     case comp_sort::cible_unique:
       if( $cible->get_race() == 'neutre' )
       {
-        return map_monstre::create(array('x', 'y'), array($cible->get_x(), $cible->get_y()));
+        if( $groupe )
+        {
+          $champs = array('x', 'y');
+          $valeurs = array($cible->get_x(), $cible->get_y());
+          $monstres = map_monstre::create($champs, $valeurs, 'id ASC', false, false);
+          $entites = array();
+          foreach($monstres as $m)
+          {
+            $entites[] = new entitenj($m);
+          }
+          return $entites;
+        }
+        else
+          return map_monstre::create(array('x', 'y'), array($cible->get_x(), $cible->get_y()));
       }
       else if($groupe && $cible->get_groupe() != 0)
       {

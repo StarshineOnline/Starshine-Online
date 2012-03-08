@@ -1062,7 +1062,7 @@ elseif($type_lanceur == 'joueur')
       }
       else if($type_cible == 'monstre')
       {
-        if(($sort->get_cible() == 2 OR $sort->get_cible() == 4) AND $sort->get_type() != 'rez')
+        if(($sort->get_cible() == comp_sort::cible_unique OR $sort->get_cible() == comp_sort::cible_autre || $sort->get_cible() == comp_sort::cible_autregrp ) AND $sort->get_type() != 'rez')
         {
           $href = 'envoiInfo(\'sort.php?ID='.$sort->get_id().'&amp;type=monstre&amp;id_monstre='.$cible->get_id().'\', \'information\')';
           $color = '#444';
