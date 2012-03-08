@@ -280,7 +280,7 @@ class comp_sort extends comp_sort_buff
 	 */
   function get_liste_cibles($cible, $groupe=true)
   {
-    echo "type de cible : ".$this->get_cible()."<br/>";
+    print_debug("type de cible : ".$this->get_cible()."<br/>");
     switch( $this->get_cible() )
     {
     case comp_sort::cible_groupe:
