@@ -2340,7 +2340,8 @@ class perso extends entite
 				if (($this->get_hp() + $hp_gagne) > $this->get_hp_maximum()) $this->set_hp(floor($this->get_hp_maximum()));
 				else { $this->set_hp($this->get_hp() + $hp_gagne);}
 				// Mise à jour des MP
-				$this->set_mp($this->get_mp() + $mp_gagne);
+				// Le nombre de MP total ne peut pas être négatif
+				$this->set_mp(max(0,$this->get_mp() + $mp_gagne));
 				if ($this->get_mp() > $this->get_mp_maximum()) $this->set_mp(floor($this->get_mp_maximum()));
 				$this->set_regen_hp($this->get_regen_hp() + ($nb_regen * ($G_temps_regen_hp - $bonus_regen)));
 			}
