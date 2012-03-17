@@ -46,63 +46,142 @@ switch( $_GET['direction'] )
 			}
 			else
 			{
-			    //Si modification moins, on envoi la demande à l'autre royaume
-			    if($_GET['diplo'] == 'm')
-			    {
-				$requete = 'SELECT * FROM diplomatie_demande WHERE royaume_demande = \''.$joueur->get_race().'\' AND royaume_recois = \''.sSQL($_GET['race']).'\'';
-				$db->query($requete);
-				if(empty($db->num_rows))
+				// On check si la future diplomatie est valide
+				$new_diplo=$row;
+				// Mise à jour de la diplo temporaire
+				if($_GET['diplo'] == 'm')
+					$new_diplo[$_GET['race']]-=1;
+				else
+					$new_diplo[$_GET['race']]+=1;
+				$local_diplo=array_count_values($new_diplo);
+				$valid_diplo=true;
+				// Gestion de la diplomatie ennemie
+				if (array_key_exists(10, $local_diplo))
 				{
-					$diplo_req = $row[$_GET['race']] - 1;
-					$star = $_GET['star'];
-					if($star > $royaume->get_star()) $star = $royaume->get_star();
-					//Suppression des stars
-					$db->query("UPDATE royaume SET star = star - ".$star." WHERE ID = ".$royaume->get_id()."");
-					//Envoi de la demande
-					$db->query("INSERT INTO diplomatie_demande VALUES(NULL, ".$diplo_req.", '".$joueur->get_race()."', '".sSQL($_GET['race'])."',  ".$star.")");
-					echo 'Une demande au royaume '.$Gtrad[$_GET['race']].' pour passer en diplomatie : '.$Gtrad['diplo'.$diplo_req].' en échange de '.$star.' stars a été envoyée.<br /><br />';
+					if ($local_diplo[10]>1)
+					{
+						echo 'Il ne peut y avoir qu\'un seul ennemi éternel.';
+						$valid_diplo=false;
+					}
+					else
+					{
+						if (array_key_exists(9, $local_diplo))
+						{
+							if ($local_diplo[10]+$local_diplo[9]>3)
+							{
+								echo 'Il ne peut y avoir que 3 ennemis en tout (ennemi éternel compris).';
+								$valid_diplo=false;
+							}
+						}
+					}
 				}
 				else
-					echo 'Une demande au royaume '.$Gtrad[$_GET['race']].' pour passer en diplomatie : '.$Gtrad['diplo'.$diplo_req].' est déjà en cours.<br /><br />';
-			    }
-			    //Sinon, on change la diplomatie.
-			    else
-			    {
-			        $diplo_req = $row[$_GET['race']] + 1;
-			        $duree = (pow(2, abs(5 - $diplo_req)) * 60 * 60 * 24);
-			        $prochain_changement = time() + $duree;
-			        //Requète de changement pour ce royaume
-			        $requete = "UPDATE diplomatie SET ".sSQL($_GET['race'])." = ".$diplo_req." WHERE race = '".$joueur->get_race()."'";
-			        $db->query($requete);
-			        //Requète de changement pour l'autre royaume
-			        $requete = "UPDATE diplomatie SET ".$joueur->get_race()." = ".$diplo_req." WHERE race = '".sSQL($_GET['race'])."'";
-			        $db->query($requete);
-			        $requete = "SELECT diplo_time FROM royaume WHERE race = '".sSQL($_GET['race'])."'";
-			        $req = $db->query($requete);
-			        $row2 = $db->read_assoc($req);
-			        $row2['diplo_time'] = unserialize($row2['diplo_time']);
-			        $row2['diplo_time'][$joueur->get_race()] = $prochain_changement;
-			        $row2['diplo_time'] = serialize($row2['diplo_time']);
-			        $diplo[$_GET['race']] = $prochain_changement;
-			        $diplo = serialize($diplo);
-			        $requete = "UPDATE royaume SET diplo_time = '".$row2['diplo_time']."' WHERE race = '".sSQL($_GET['race'])."'";
-			        $db->query($requete);
-			        $requete = "UPDATE royaume SET diplo_time = '".$diplo."' WHERE ID = ".$royaume->get_id();
-			        $db->query($requete);
-			        echo 'Vous êtes maintenant en '.$Gtrad['diplo'.$diplo_req].' avec les '.$Gtrad[$_GET['race']].'<br /><br />';
-			        //Recherche du roi
-			        $requete = "SELECT id, nom FROM perso WHERE race = '".sSQL($_GET['race'])."' AND rang_royaume = 6";
-			        $req = $db->query($requete);
-			        $row_roi = $db->read_assoc($req);
-			        //Envoi d'un message au roi
-			        $message = 'Le roi des '.$Gtrad[$joueur->get_race()].' a changé son attitude diplomatique envers votre royaume en : '.$Gtrad['diplo'.$diplo_req];
-			        $requete = "INSERT INTO message VALUES('', ".$row_roi['id'].", 0, 'Mess. Auto', '".$row_roi['nom']."', 'Modification de diplomatie', '".$message."', '', '".time()."', 0)";
-			        $db->query($requete);
-			    }
+				{
+					if (array_key_exists(9, $local_diplo))
+					{
+						if ($local_diplo[9]>3)
+						{
+							echo 'Il ne peut y avoir que 3 ennemis en tout (ennemi éternel compris).';
+							$valid_diplo=false;
+						}
+					}
+				}
+				// Gestion de la diplomatie alliée
+				if (array_key_exists(0, $local_diplo))
+				{
+					if ($local_diplo[0]>1)
+					{
+						echo 'Il ne peut y avoir qu\'un seul allié fraternel.';
+						$valid_diplo=false;
+					}
+					else
+					{
+						if (array_key_exists(1, $local_diplo))
+						{
+							if ($local_diplo[0]+$local_diplo[1]>3)
+							{
+							echo 'Il ne peut y avoir que 3 alliés en tout (allié fraternel compris).';
+							$valid_diplo=false;
+							}
+						}
+					}
+				}
+				else
+				{
+					if (array_key_exists(1, $local_diplo))
+					{
+						if ($local_diplo[1]>3)
+						{
+							echo 'Il ne peut y avoir que 3 alliés en tout (allié fraternel compris).';
+							$valid_diplo=false;
+						}
+					}
+				}
+				if ($valid_diplo==true)
+				{
+					echo 'mise a jour de diplo';
+				}
+				// On ne met à jour que si cela est nécessaire
+				if ($valid_diplo==true)
+				{
+				
+					//Si modification moins, on envoi la demande à l'autre royaume
+					if($_GET['diplo'] == 'm')
+					{
+						$requete = 'SELECT * FROM diplomatie_demande WHERE royaume_demande = \''.$joueur->get_race().'\' AND royaume_recois = \''.sSQL($_GET['race']).'\'';
+						$db->query($requete);
+						if(empty($db->num_rows))
+						{
+							$diplo_req = $row[$_GET['race']] - 1;
+							$star = $_GET['star'];
+							if($star > $royaume->get_star()) $star = $royaume->get_star();
+							//Suppression des stars
+							$db->query("UPDATE royaume SET star = star - ".$star." WHERE ID = ".$royaume->get_id()."");
+							//Envoi de la demande
+							$db->query("INSERT INTO diplomatie_demande VALUES(NULL, ".$diplo_req.", '".$joueur->get_race()."', '".sSQL($_GET['race'])."',  ".$star.")");
+							echo 'Une demande au royaume '.$Gtrad[$_GET['race']].' pour passer en diplomatie : '.$Gtrad['diplo'.$diplo_req].' en échange de '.$star.' stars a été envoyée.<br /><br />';
+						}
+						else
+							echo 'Une demande au royaume '.$Gtrad[$_GET['race']].' pour passer en diplomatie : '.$Gtrad['diplo'.$diplo_req].' est déjà en cours.<br /><br />';
+					}
+					else
+					{
+						$diplo_req = $row[$_GET['race']] + 1;
+						$duree = (pow(2, abs(5 - $diplo_req)) * 60 * 60 * 24);
+						$prochain_changement = time() + $duree;
+						//Requète de changement pour ce royaume
+						$requete = "UPDATE diplomatie SET ".sSQL($_GET['race'])." = ".$diplo_req." WHERE race = '".$joueur->get_race()."'";
+						$db->query($requete);
+						//Requète de changement pour l'autre royaume
+						$requete = "UPDATE diplomatie SET ".$joueur->get_race()." = ".$diplo_req." WHERE race = '".sSQL($_GET['race'])."'";
+						$db->query($requete);
+						$requete = "SELECT diplo_time FROM royaume WHERE race = '".sSQL($_GET['race'])."'";
+						$req = $db->query($requete);
+						$row2 = $db->read_assoc($req);
+						$row2['diplo_time'] = unserialize($row2['diplo_time']);
+						$row2['diplo_time'][$joueur->get_race()] = $prochain_changement;
+						$row2['diplo_time'] = serialize($row2['diplo_time']);
+						$diplo[$_GET['race']] = $prochain_changement;
+						$diplo = serialize($diplo);
+						$requete = "UPDATE royaume SET diplo_time = '".$row2['diplo_time']."' WHERE race = '".sSQL($_GET['race'])."'";
+						$db->query($requete);
+						$requete = "UPDATE royaume SET diplo_time = '".$diplo."' WHERE ID = ".$royaume->get_id();
+						$db->query($requete);
+						echo 'Vous êtes maintenant en '.$Gtrad['diplo'.$diplo_req].' avec les '.$Gtrad[$_GET['race']].'<br /><br />';
+						//Recherche du roi
+						$requete = "SELECT id, nom FROM perso WHERE race = '".sSQL($_GET['race'])."' AND rang_royaume = 6";
+						$req = $db->query($requete);
+						$row_roi = $db->read_assoc($req);
+						//Envoi d'un message au roi
+						$message = 'Le roi des '.$Gtrad[$joueur->get_race()].' a changé son attitude diplomatique envers votre royaume en : '.$Gtrad['diplo'.$diplo_req];
+						$requete = "INSERT INTO message VALUES('', ".$row_roi['id'].", 0, 'Mess. Auto', '".$row_roi['nom']."', 'Modification de diplomatie', '".$message."', '', '".time()."', 0)";
+						$db->query($requete);
+					}
+				}
+			}
 			    $requete = "SELECT * FROM diplomatie WHERE race = '".$joueur->get_race()."'";
 			    $req = $db->query($requete);
 			    $row = $db->read_assoc($req);
-			}
 		}
 		$i = 0;
 		$keys = array_keys($row);
@@ -188,7 +267,7 @@ switch( $_GET['direction'] )
 			{
 				echo '
 				<li>
-					Le roi '.$Gtrad[$row['royaume_demande']].' vous demande de passer en diplomatie et vous donne '.$row['stars'].' stars : '.$Gtrad['diplo'.$row['diplo']].'<br />
+					Le roi '.$Gtrad[$row['royaume_demande']].' vous demande de passer en '.$Gtrad['diplo'.$row['diplo']].' et vous donne '.$row['stars'].' stars : '.$Gtrad['diplo'.$row['diplo']].'<br />
 					Accépter ? <a href="gestion_royaume.php?direction=diplomatie_demande&amp;reponse=oui&amp;id_demande='.$row['id'].';" onclick="return envoiInfo(this.href, \'contenu_jeu\');">Oui</a> / <a href="gestion_royaume.php?direction=diplomatie_demande&amp;reponse=non&amp;id_demande='.$row['id'].';" onclick="return envoiInfo(this.href, \'contenu_jeu\');">Non</a>
 				</li>';
 			}
