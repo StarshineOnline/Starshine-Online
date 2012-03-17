@@ -2,7 +2,7 @@
 UPDATE batiment SET carac = 35, pp = 2000, hp = 20000 WHERE id = 2;
 UPDATE batiment SET carac = 40, pp = 6000, hp = 30000 WHERE id = 3;
 UPDATE batiment SET carac = 45, pp = 7500, hp = 40000 WHERE id = 4;
-UPDATE batiment SET carac = 45, pm = 300 WHERE id = 1;
+UPDATE batiment SET pm = 300, hp = 5000 WHERE id = 1;
 INSERT batiment_bonus VALUES (1, 'royaume', NULL);
 -- bourgs
 UPDATE batiment SET carac = 25, pm = 200, pp = 500, hp = 4000 WHERE id = 10;
