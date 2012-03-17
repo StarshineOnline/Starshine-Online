@@ -89,7 +89,7 @@ if(!$visu AND isset($_GET['action']))
 					}
 					$row = $db->read_assoc($req);
 					$batiment = new batiment($row['batiment_id']);
-					if($R->get_diplo($joueur->get_race()) == 127 OR $_GET['type'] == 'arme_de_siege')
+					if($R->get_diplo($joueur->get_race()) == 127 OR $_GET['type'] == 'arme_de_siege' || $_GET['id'] == 1) // id=1 : poste avancé
 					{
 						//On vérifie si ya pas déjà un batiment en construction
 						$requete = "SELECT id FROM placement WHERE x = ".$joueur->get_x()." AND y = ".$joueur->get_y();
@@ -101,29 +101,46 @@ if(!$visu AND isset($_GET['action']))
 							$req = $db->query($requete);
 							if($db->num_rows <= 0)
 							{
-								//Positionnement de la construction
-								$distance = calcul_distance(convert_in_pos($Trace[$joueur->get_race()]['spawn_x'], $Trace[$joueur->get_race()]['spawn_y']), ($joueur->get_pos()));
-								$time = time() + ($batiment->get_temps_construction() * $distance);
-								if($_GET['type'] == 'arme_de_siege')
-								{
-									$time = time() + $batiment->get_temps_construction();
-									$rez = 0;
-								}
-								else $rez = $batiment->get_bonus('rez');
-								$requete = "INSERT INTO placement (type, x, y, royaume, debut_placement, fin_placement, id_batiment, hp, nom, rez, point_victoire) VALUES('".sSQL($_GET['type'])."', '".$joueur->get_x()."', '".$joueur->get_y()."', '".$Trace[$joueur->get_race()]['numrace']."', ".time().", '".$time."', '".$batiment->get_id()."', '".$batiment->get_hp()."', '".$batiment->get_nom()."', '".$rez."', '".$batiment->get_point_victoire()."')";
-								$db->query($requete);
-								//On supprime l'objet de l'inventaire
-								$joueur->supprime_objet($joueur->get_inventaire_slot_partie($_GET['key_slot']), 1);
-								$joueur->sauver();
-								echo '<h6>'.$batiment->get_nom().' posé avec succès</h6>';
-								
-								if($_GET['type'] == 'mur')
-								{
-									// Augmentation du compteur de l'achievement
-									$achiev = $joueur->get_compteur('pose_murs');
-									$achiev->set_compteur($achiev->get_compteur() + 1);
-									$achiev->sauver();
-								}
+                $nbr_mur = 0;
+                if( $_GET['type'] == 'mur' )
+                {
+                  $requete = 'SELECT id FROM construction WHERE ABS(CAST(x AS SIGNED) -'.$joueur->get_x().') <= 1 AND ABS(CAST(y AS SIGNED) - '.$joueur->get_y().') <= 1 AND type LIKE "mur"';
+							    $req = $db->query($requete);
+							    $nbr_mur += $db->num_rows;
+                  $requete = 'SELECT id FROM placement WHERE ABS(CAST(x AS SIGNED) -'.$joueur->get_x().') <= 1 AND ABS(CAST(y AS SIGNED) - '.$joueur->get_y().') <= 1 AND type LIKE "mur"';
+							    $req = $db->query($requete);
+							    $nbr_mur += $db->num_rows;
+                }
+                if( $nbr_mur <= 2 )
+                {
+  								//Positionnement de la construction
+  								$distance = calcul_distance(convert_in_pos($Trace[$joueur->get_race()]['spawn_x'], $Trace[$joueur->get_race()]['spawn_y']), ($joueur->get_pos()));
+  								$time = time() + ($batiment->get_temps_construction() * $distance);
+  								if($_GET['type'] == 'arme_de_siege')
+  								{
+  									$time = time() + $batiment->get_temps_construction();
+  									$rez = 0;
+  								}
+  								else $rez = $batiment->get_bonus('rez');
+  								$requete = "INSERT INTO placement (type, x, y, royaume, debut_placement, fin_placement, id_batiment, hp, nom, rez, point_victoire) VALUES('".sSQL($_GET['type'])."', '".$joueur->get_x()."', '".$joueur->get_y()."', '".$Trace[$joueur->get_race()]['numrace']."', ".time().", '".$time."', '".$batiment->get_id()."', '".$batiment->get_hp()."', '".$batiment->get_nom()."', '".$rez."', '".$batiment->get_point_victoire()."')";
+  								$db->query($requete);
+  								//On supprime l'objet de l'inventaire
+  								$joueur->supprime_objet($joueur->get_inventaire_slot_partie($_GET['key_slot']), 1);
+  								$joueur->sauver();
+  								echo '<h6>'.$batiment->get_nom().' posé avec succès</h6>';
+
+  								if($_GET['type'] == 'mur')
+  								{
+  									// Augmentation du compteur de l'achievement
+  									$achiev = $joueur->get_compteur('pose_murs');
+  									$achiev->set_compteur($achiev->get_compteur() + 1);
+  									$achiev->sauver();
+  								}
+                }
+                else
+                {
+								  echo '<h5>Il y a déjà trop de murs autour !</h5>';
+                }
 							}
 							else
 							{
