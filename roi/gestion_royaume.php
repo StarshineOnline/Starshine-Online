@@ -188,7 +188,7 @@ switch( $_GET['direction'] )
 			{
 				echo '
 				<li>
-					Le roi '.$Gtrad[$row['royaume_demande']].' vous demande de passer en diplomatie et vous donne '.$row['stars'].' stars : '.$Gtrad['diplo'.$row['diplo']].'<br />
+					Le roi '.$Gtrad[$row['royaume_demande']].' vous demande de passer en '.$Gtrad['diplo'.$row['diplo']].' et vous donne '.$row['stars'].' stars : '.$Gtrad['diplo'.$row['diplo']].'<br />
 					Accépter ? <a href="gestion_royaume.php?direction=diplomatie_demande&amp;reponse=oui&amp;id_demande='.$row['id'].';" onclick="return envoiInfo(this.href, \'contenu_jeu\');">Oui</a> / <a href="gestion_royaume.php?direction=diplomatie_demande&amp;reponse=non&amp;id_demande='.$row['id'].';" onclick="return envoiInfo(this.href, \'contenu_jeu\');">Non</a>
 				</li>';
 			}
