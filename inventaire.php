@@ -358,7 +358,7 @@ if(!$visu AND isset($_GET['action']))
 						?>
 						<img src="image/pixel.gif" onLoad="envoiInfo('infoperso.php?javascript=oui', 'perso');" />
 						<?php
-						$$joueur->set_mp(max(0, ($joueur->get_mp() - $row['mp'])));
+						$joueur->set_mp(max(0, ($joueur->get_mp() - $row['mp'])));
 						$joueur->sauver();
 					}
 				break;
