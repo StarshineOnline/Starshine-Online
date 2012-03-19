@@ -2668,6 +2668,9 @@ function image_sort($type)
 		case 'orage_magnetique' :
 			return '<img src="image/buff/orage_magnetique.png" alt="" style="vertical-align : middle;" />';
 		break;
+		case 'balance' :
+			return '<img src="image/buff/balance.png" alt="" style="vertical-align : middle;" />';
+		break;
 		case 'bouclier_eau' :
 			return '<img src="image/buff/bouclier_eau.png" alt="" style="vertical-align : middle;" />';
 		break;
@@ -2712,6 +2715,9 @@ function image_sort($type)
 		break;
 		case 'lente_agonie' :
 			return '<img src="image/buff/lente_agonie.png" alt="" style="vertical-align : middle;" />';
+		break;
+		case 'transfert_energie' :
+			return '<img src="image/buff/transfert_energie.png" alt="" style="vertical-align : middle;" />';
 		break;
 	}
 }
