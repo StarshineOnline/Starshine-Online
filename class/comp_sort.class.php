@@ -32,7 +32,8 @@ class comp_sort extends comp_sort_buff
 	const cible_groupe = 3;  ///< Valeur de l'attribut cible si celle-ci est le groupe du lanceur
 	const cible_autre = 4;  ///< Valeur de l'attribut cible si celle-ci est un autre personnage
 	const cible_autregrp = 5;  ///< Valeur de l'attribut cible si celle-ci est un autre groupe
-	const cible_case = 8;  ///< Valeur de l'attribut cible pour les débuffs de masse
+	const cible_case = 6;  ///< Valeur de l'attribut cible pour les débuffs sur une case
+	const cible_9cases = 8;  ///< Valeur de l'attribut cible pour les débuffs sur un carré de 3x3 cases
 
   /// Renvoie la compétence associée
 	function get_comp_assoc()
@@ -323,6 +324,9 @@ class comp_sort extends comp_sort_buff
       $champs = array('x', 'y', 'statut');
       $valeurs = array($cible->get_x(), $cible->get_y(), 'actif');
       return perso::create($champs, $valeurs, 'id ASC', false, false);
+    case comp_sort::cible_9cases:
+      $cond = 'ABS(CAST(x AS SIGNED) -'.$cible->get_x().') <= 1 AND ABS(CAST(y AS SIGNED) - '.$cible->get_y().') <= 1 AND statut LIKE "actif"';
+      return perso::create(null, null, 'id ASC', false, $cond);
     }
   }
 	
