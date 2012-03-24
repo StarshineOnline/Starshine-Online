@@ -2590,7 +2590,7 @@ class perso extends entite
 		$buff->set_type($nom);
 		$buff->set_effet($effet);
 		$buff->set_effet2($effet2);
-		$this->buff[] = $buff;
+		$this->buff[$nom] = $buff;
 	}
 	// @}
 	
