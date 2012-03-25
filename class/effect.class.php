@@ -131,10 +131,15 @@ class effect
      */
     empoisonne::factory($effects, $actif, $passif, $acteur);
     poison_lent::factory($effects, $actif, $passif, $acteur);
+    poison::factory($effects, $actif, $passif, $acteur);
     ensable::factory($effects, $actif, $passif, $acteur);
     tellurique::factory($effects, $actif, $passif, $acteur);
     bouclier_protecteur::factory($effects, $actif, $passif, $acteur);
     riposte_furtive::factory($effects, $actif, $passif, $acteur);
+    hemorragie::factory($effects, $actif, $passif, $acteur);
+    embraser::factory($effects, $actif, $passif, $acteur);
+    acide::factory($effects, $actif, $passif, $acteur);
+    lien_sylvestre::factory($effects, $actif, $passif, $acteur);
     /*
      * Compétences passives
      */
@@ -423,6 +428,44 @@ class etat extends effect {
 }
 
 /**
+ * Hémorragie
+ */
+class perte_hp extends etat
+{
+  const type_log = false;
+  
+  function __construct()
+  {
+    parent::__construct(self::get_etat(), self::get_etat());
+	}
+	static function get_etat()
+	{
+    return get_called_class();
+  }
+	static function get_nom()
+	{
+    return get_called_class();
+  }
+	static function factory(&$effects, &$actif, &$passif, $acteur = '')
+  {
+		if (array_key_exists(self::get_etat(), $actif->etat))
+    {
+      $classe = get_called_class();
+			$effects[] = new $classe();
+		}
+	}
+
+  function fin_round(&$actif, &$passif)
+  {
+    global $log_effects_attaquant;
+		$perte_hp = $actif->etat[$this->get_etat()]['effet'];
+		$actif->set_hp($actif->get_hp() - $perte_hp);
+		$this->hit($actif->get_nom().' perd '.$perte_hp. ' HP par '.$this->get_nom());
+		$log_effects_attaquant .= '&'.static::type_log.'~'.$perte_hp;
+	}
+}
+
+/**
  * empoisonné
  */
 class empoisonne extends effect {
@@ -451,6 +494,36 @@ class empoisonne extends effect {
 }
 
 /**
+ * Poison
+ */
+class poison extends effect
+{
+  function __construct()
+  {
+    parent::__construct('poison');
+	}
+
+	static function factory(&$effects, &$actif, &$passif, $acteur = '')
+  {
+		if (array_key_exists('poison', $actif->etat))
+    {
+			$effects[] = new poison();
+		}
+	}
+
+  function fin_round(&$actif, &$passif)
+  {
+    global $log_effects_attaquant;
+		$perte_hp = $actif->etat['poison']['effet'] - $attaquant->etat['poison']['duree'] + 1;
+		if($actif->etat['putrefaction']['duree'] > 0)
+      $perte_hp = $perte_hp * $actif->etat['putrefaction']['effet'];
+		$actif->set_hp($actif->get_hp() - $perte_hp);
+		$this->hit($actif->get_nom().' perd '.$perte_hp. ' HP par le poison');
+		$log_effects_attaquant .= "&ef1~".$perte_hp;
+	}
+}
+
+/**
  * Poison lent: pas d'atténuation de la vigueur
  */
 class poison_lent extends effect {
@@ -475,6 +548,46 @@ class poison_lent extends effect {
 		if ($actif->etat['poison_lent']['duree'] < 1)
 			unset($actif->etat['poison_lent']);
 	}
+}
+
+/**
+ * Hémorragie
+ */
+class hemorragie extends perte_hp
+{
+  const type_log = 'ef2';
+}
+
+/**
+ * Embrasement
+ */
+class embraser extends perte_hp
+{
+  const type_log = 'ef3';
+	static function get_nom()
+	{
+    return 'embrasement';
+  }
+}
+
+/**
+ * Acide
+ */
+class acide extends perte_hp
+{
+  const type_log = 'ef4';
+}
+
+/**
+ * Lien sylvestre
+ */
+class lien_sylvestre extends perte_hp
+{
+  const type_log = 'ef5';
+	static function get_nom()
+	{
+    return 'le lien sylvestre';
+  }
 }
 
 /**

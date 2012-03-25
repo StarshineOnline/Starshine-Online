@@ -532,7 +532,7 @@ else
 					if($mode == 'defenseur')
 					{
 						//Perte de HP par le poison
-						if($attaquant->etat['poison']['duree'] > 0)
+						/*if($attaquant->etat['poison']['duree'] > 0)
 						{
 							$perte_hp = $attaquant->etat['poison']['effet'] - $attaquant->etat['poison']['duree'] + 1;
 							if($attaquant->etat['putrefaction']['duree'] > 0) $perte_hp = $perte_hp * $attaquant->etat['putrefaction']['effet'];
@@ -605,7 +605,7 @@ else
 							$defenseur->set_hp($defenseur->get_hp() - $defenseur->etat['lien_sylvestre']['effet']);
 							echo '&nbsp;&nbsp;<span class="degat">'.$defenseur->get_nom().' perd '.$defenseur->etat['lien_sylvestre']['effet'].' HP par le lien sylvestre</span><br />';
 							$log_effects_defenseur .= "&ef5~".$defenseur->etat['lien_sylvestre']['effet'];
-						}
+						}*/
 						if($attaquant->etat['recuperation']['duree'] > 0)
 						{
 							$effet = $attaquant->etat['recuperation']['effet'];
