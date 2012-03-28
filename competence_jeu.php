@@ -173,7 +173,7 @@ if (isset($_GET['ID']))
 
 					$db->query("DELETE FROM buff WHERE id=".$debuff_tab[rand(0, count($debuff_tab)-1)].";");
 				}
-				else { echo "Impossible de lancer de lancer le sort. Vous n&apos;avez aucune debuff.<br/>"; };
+				else { echo "Impossible de lancer de lancer le sort. Vous n&apos;avez aucun debuff.<br/>"; };
 
 				echo '<a href="competence_jeu.php?ID='.$_GET['ID'].'" onclick="return envoiInfo(this.href, \'information\')">Utilisez a nouveau cette compétence</a>';
 					

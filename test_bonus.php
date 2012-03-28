@@ -158,7 +158,7 @@ while($row_l = $db->read_assoc($req_l))
 			$texte = '<strong style="color : '.$color.'">'.$row['nom'].'</strong><br />';
 			if(!$possede) $texte.= '<span class="xsmall">'.$row['point'].' point(s)</span><br />';
 			$texte .= '
-					<a href="javascript:if(confirm(\'Voulez vous vraiment prendre le bonus ~'.$row['nom'].'~ pour '.$row['point'].' points ? \')) document.location.href=\'test_bonus.php?action=prend&amp;id='.$row['id_bonus'].'&amp;categorie='.$categorie.'\';"><img src="image/cadre.png" onmousemove="afficheInfo(\'cadre_'.$row['id_bonus'].'\', \'block\', event, \'centre\');" onmouseout="afficheInfo(\'cadre_'.$row['id_bonus'].'\', \'none\', event, \'centre\');"></a>
+					<a href="javascript:if(confirm(\'Voulez-vous vraiment prendre le bonus ~'.$row['nom'].'~ pour '.$row['point'].' points ? \')) document.location.href=\'test_bonus.php?action=prend&amp;id='.$row['id_bonus'].'&amp;categorie='.$categorie.'\';"><img src="image/cadre.png" onmousemove="afficheInfo(\'cadre_'.$row['id_bonus'].'\', \'block\', event, \'centre\');" onmouseout="afficheInfo(\'cadre_'.$row['id_bonus'].'\', \'none\', event, \'centre\');"></a>
 					<div style="color : #fff; text-align : left; display: none; z-index: 2; position: absolute; top: 250px; right: 150px; background-color : #555; border: 1px solid #000000; font-size:12px; width: 250px; padding: 5px;" id="cadre_'.$row['id_bonus'].'">
 						<strong>'.$row['nom'].'</strong><br />
 						'.$row['description'].'<br />

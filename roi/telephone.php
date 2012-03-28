@@ -4,7 +4,7 @@ if (file_exists('../root.php'))
 ?><?php
 require('haut_roi.php');
 if($joueur->get_rang_royaume() != 6  AND $joueur->get_id() != $royaume->get_ministre_economie() AND $joueur->get_id() != $royaume->get_ministre_militaire())
-	echo '<p>Cette page vous est interdit</p>';
+	echo '<p>Cette page vous est interdite</p>';
 else if(array_key_exists('message', $_GET))
 {
 	$erreur = false;
