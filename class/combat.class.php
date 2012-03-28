@@ -340,7 +340,7 @@ class combat
 								echo '&nbsp;&nbsp;Des tourbillons d\'air entourent <strong>'.${$mode}->get_nom().'</strong> !<br />';
 							break;
 							case 'aura_pierre' :
-								echo '&nbsp;&nbsp;De solides pierre volent autour de <strong>'.${$mode}->get_nom().'</strong> !<br />';
+								echo '&nbsp;&nbsp;De solides pierres volent autour de <strong>'.${$mode}->get_nom().'</strong> !<br />';
 							break;
 						}
 					}
@@ -363,9 +363,9 @@ class combat
 				*/
 						// Armure d'epine
 						if($effects_d[1] == "9")
-							if($effects_d[2] > 0) echo '&nbsp;&nbsp;<span class="degat">'.$defenseur->get_nom().' renvoi '.$effects_d[2].' dégâts grâce à l\'Armure en épine</span><br />';
+							if($effects_d[2] > 0) echo '&nbsp;&nbsp;<span class="degat">'.$defenseur->get_nom().' renvoie '.$effects_d[2].' dégâts grâce à l\'Armure en épine</span><br />';
 						if($effects_a[1] == "9")
-							if($effects_a[2] > 0) echo '&nbsp;&nbsp;<span class="degat">'.$attaquant->get_nom().' renvoi '.$effects_a[2].' dégâts grâce à l\'Armure en épine</span><br />';
+							if($effects_a[2] > 0) echo '&nbsp;&nbsp;<span class="degat">'.$attaquant->get_nom().' renvoie '.$effects_a[2].' dégâts grâce à l\'Armure en épine</span><br />';
 						// Rage vampirique
 						if($effects_d[1] == "8")
 							if($effects_d[2] > 0) echo '&nbsp;&nbsp;<span class="soin">'.$defenseur->get_nom().' gagne '.$effects_d[2].' HP par la rage vampirique</span><br />';

@@ -6,7 +6,7 @@ require('haut_roi.php');
 include_once(root.'fonction/messagerie.inc.php');
 
 if($joueur->get_rang_royaume() != 6)
-	echo '<p>Cette page vous est interdit</p>';
+	echo '<p>Cette page vous est interdite</p>';
 elseif(array_key_exists('action', $_GET))
 {
 	$action = new point_victoire_action($_GET['action']);

@@ -11,5 +11,5 @@ INSERT INTO `armure` (
 `lvl_batiment`
 )
 VALUES (
-NULL , 'Déguisement de coyotte', '20', '5', '6', 'torse', '13-coyotte', '1000', '9'
+NULL , 'Déguisement de coyote', '20', '5', '6', 'torse', '13-coyotte', '1000', '9'
 );

@@ -12,7 +12,7 @@ $R = new royaume($Trace[$joueur->get_race()]['numrace']);
 $RAZ_ROYAUME = $R->is_raz();
 
 if($joueur->get_rang_royaume() != 6 AND $joueur->get_id() != $royaume->get_ministre_economie())
-	echo '<p>Cette page vous est interdit</p>';
+	echo '<p>Cette page vous est interdite</p>';
 else if ($RAZ_ROYAUME) 
 	echo '<h5>Gestion impossible quand la capitale est mise à sac</h5>';
 else if(array_key_exists('id', $_GET))
@@ -156,7 +156,7 @@ LEFT JOIN batiment_bonus bs ON bs.id_batiment = b.id and bs.bonus = 'specialite'
 where b.type = 'mine' and b.cond1 = 0";
 						$req = $db->query($requete);
 						?>
-						Quelle mine voulait vous construire ?<br />
+						Quelle mine voulez-vous construire ?<br />
 						<select name="type_mine" id="type_mine">
 						<?php
 						while($row = $db->read_assoc($req))

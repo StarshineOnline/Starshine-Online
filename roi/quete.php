@@ -12,7 +12,7 @@ if ($R->is_raz())
 }
 
 if($joueur->get_rang_royaume() != 6  AND $joueur->get_id() != $royaume->get_ministre_economie())
-	echo '<p>Cette page vous est interdit</p>';
+	echo '<p>Cette page vous est interdite</p>';
 else if($_GET['action'] == 'achat')
 {
 	//Récupère les informations sur la quête

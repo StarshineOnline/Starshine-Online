@@ -146,6 +146,11 @@ switch($type)
 			exit (0);
 		}
 		$joueur_defenseur = new monstre($map_monstre->get_type());
+		/*$joueur_defenseur->hp_max = $joueur_defenseur->get_hp();
+		$joueur_defenseur->set_hp($map_monstre->get_hp());
+		$joueur_defenseur->x = $map_monstre->get_x();
+		$joueur_defenseur->y = $map_monstre->get_y();
+		$joueur_defenseur->buff = $map_monstre->get_buff();*/
 		$defenseur = entite::factory('monstre', $map_monstre);
 		$diff_lvl = abs($joueur->get_level() - $defenseur->get_level());
 	break;
@@ -163,6 +168,13 @@ switch($type)
 		}
 		if($_GET['table'] == 'construction') $map_batiment = new construction($_GET['id_batiment']);
 		else $map_batiment = new placement($_GET['id_batiment']);
+		/*$joueur_defenseur = new batiment($map_batiment->get_id_batiment());
+		if($_GET['table'] == 'construction') $joueur_defenseur->coef = 1;
+		else $joueur_defenseur->coef = $map_batiment->get_temps_restant() / $map_batiment->get_temps_total();
+		$joueur_defenseur->hp_max = $joueur_defenseur->get_hp();
+		$joueur_defenseur->set_hp($map_batiment->get_hp());
+		$joueur_defenseur->x = $map_batiment->get_x();
+		$joueur_defenseur->y = $map_batiment->get_y();*/
 		$defenseur = entite::factory('batiment', $map_batiment, $joueur);
 	break;
 	case 'siege' :
@@ -174,6 +186,22 @@ switch($type)
 		if($joueur->get_pa() >= 10)
 		{
 			$siege = new batiment($map_siege->get_id_batiment());
+			/*$siege->bonus_architecture = 1 + ($joueur->get_architecture() / 100);
+			$siege->hp_max = $siege->get_hp();
+			$siege->set_hp($map_siege->get_hp());
+			$siege->x = $map_siege->get_x();
+			$siege->y = $map_siege->get_y();
+			$joueur_defenseur = new batiment($map_batiment->get_id_batiment());
+			if($_GET['table'] == 'construction') $joueur_defenseur->coef = 1;
+			else $joueur_defenseur->coef = $map_batiment->get_temps_restant() / $map_batiment->get_temps_total();
+			$joueur_defenseur->hp_max = $joueur_defenseur->get_hp();
+			$joueur_defenseur->set_hp($map_batiment->get_hp());
+			$joueur_defenseur->x = $map_batiment->get_x();
+			$joueur_defenseur->y = $map_batiment->get_y();
+			//Si en défense c'est une arme de siège, on applique les dégâts 2
+			if($joueur_defenseur->get_type() == 'arme_de_siege') $siege->arme_degat = $siege->get_bonus('degats_siege');
+			else $siege->arme_degat = $siege->get_bonus('degats_bat');
+			if($joueur->get_race() == 'barbare') $siege->arme_degat = ceil($siege->arme_degat * 1.1);*/
 			$defenseur = entite::factory('batiment', $map_batiment);
 			$attaquant = entite::factory('siege', $map_siege, $joueur, true, $defenseur);
 		}
@@ -186,9 +214,24 @@ switch($type)
 		$map_royaume = new royaume($map_case->get_royaume());
 		$map_royaume->verif_hp();
 		$siege = new batiment($map_siege->get_id_batiment());
+		/*$siege->bonus_architecture = 1 + ($joueur->get_architecture() / 100);
+		$siege->hp_max = $siege->get_hp();
+		$siege->set_hp($map_siege->get_hp());
+		$siege->x = $map_siege->get_x();
+		$siege->y = $map_siege->get_y();
+		$joueur_defenseur = new batiment();*/
+    /* Bastien: 15 c'est un bourg, 16 bourg + 1 */
+		/*$joueur_defenseur->set_carac(16 + $map_royaume->get_level_mur());
+		$joueur_defenseur->coef = 1;
+		$joueur_defenseur->hp_max = 30000;
+		$joueur_defenseur->set_hp($map_royaume->get_capitale_hp());
+		$joueur_defenseur->set_pp($map_royaume->get_pp());*/
 		$coord = convert_in_coord($_GET['id_ville']);
 		$map_royaume->x =$coord['x'];
 		$map_royaume->y =$coord['y'];
+		/*$joueur_defenseur->x = $coord['x'];
+		$joueur_defenseur->y = $coord['y'];
+		$siege->arme_degat = $siege->get_bonus('degats_bat');*/
 		$attaquant = entite::factory('siege', $map_siege);
 		$defenseur = entite::factory('ville', $map_royaume);
 		if ($map_royaume->is_raz())
@@ -332,10 +375,10 @@ else
 	if($attaquant->is_buff('plus_cout_attaque')) $pa_attaque = $pa_attaque * $attaquant->get_buff('plus_cout_attaque', 'effet');
 	if($attaquant->is_buff('buff_rapidite')) $reduction_pa = $attaquant->get_buff('buff_rapidite', 'effet'); else $reduction_pa = 0;
 	if($attaquant->is_buff('debuff_ralentissement')) $reduction_pa -= $attaquant->get_buff('debuff_ralentissement', 'effet');
-	if($attaquant->is_buff('engloutissement')) $attaquant->add_bonus_permanents('dexterite', -$attaquant->get_buff('engloutissement', 'effet'));
-	if($attaquant->is_buff('deluge')) $attaquant->add_bonus_permanents('volonte', -$attaquant->get_buff('deluge', 'effet'));
-	if($defenseur->is_buff('engloutissement')) $defenseur->add_bonus_permanents('dexterite', -$defenseur->get_buff('engloutissement', 'effet'));
-	if($defenseur->is_buff('deluge')) $defenseur->add_bonus_permanents('volonte', -$defenseur->get_buff('deluge', 'effet'));
+	if($attaquant->is_buff('engloutissement')) $attaquant->set_dexterite($attaquant->get_dexterite(true) - $attaquant->get_buff('engloutissement', 'effet'));
+	if($attaquant->is_buff('deluge')) $attaquant->set_volonte($attaquant->get_volonte(true) - $attaquant->get_buff('deluge', 'effet'));
+	if($defenseur->is_buff('engloutissement')) $defenseur->set_dexterite($defenseur->get_dexterite(true) - $defenseur->get_buff('engloutissement', 'effet'));
+	if($defenseur->is_buff('deluge')) $defenseur->set_volonte($defenseur->get_volonte(true) - $defenseur->get_buff('deluge', 'effet'));
 
 	// Check des maladies
 	maladie::degenerescence($attaquant);
@@ -683,6 +726,145 @@ else
 			//On donne les bons HP à l'attaque et la défense
 			$attaquant->fin_combat($joueur);
 			$defenseur->fin_combat($joueur, $degat_defense);
+			/*if($type == 'joueur')
+			{
+				if(!$check_pet)
+				{
+					$joueur->set_hp($attaquant->get_hp());
+					$joueur->sauver();
+				}
+				else
+				{
+					$pet = $joueur->get_pet();
+					$pet->set_hp($attaquant->get_hp());
+					$pet->sauver();
+				}
+				if(!$check_pet_def)
+				{
+					$joueur_defenseur->set_hp($defenseur->get_hp());
+					$joueur_defenseur->sauver();
+				}
+				else
+				{
+					$pet_def = $joueur_defenseur->get_pet();
+					$pet_def->set_hp($defenseur->get_hp());
+					$pet_def->sauver();
+				}
+			}
+			if($type == 'monstre')
+			{
+				//echo '<pre>'; var_dump($joueur); echo '</pre>';
+				if(!$check_pet && !$check_pet_donj)
+				{
+					$joueur->set_hp($attaquant->get_hp());
+					$joueur->sauver();
+				}
+				else
+				{
+					$pet = $joueur->get_pet();
+					$pet->set_hp($attaquant->get_hp());
+					$pet->sauver();
+				}
+				$map_monstre->set_hp($defenseur->get_hp());
+				if($map_monstre->get_hp() > 0) $map_monstre->sauver();
+				else $map_monstre->supprimer();
+			}
+			elseif($type == 'batiment')
+			{
+				if(!$check_pet)
+				{
+					$joueur->set_hp($attaquant->get_hp());
+					$joueur->sauver();
+				}
+				else
+				{
+					$pet = $joueur->get_pet();
+					$pet->set_hp($attaquant->get_hp());
+					$pet->sauver();
+				}
+				$map_batiment->set_hp($defenseur->get_hp());
+				if($map_batiment->get_hp() > 0) $map_batiment->sauver();
+				else 
+				{
+					$map_batiment->supprimer();
+					$royaume_attaquant = new royaume($Trace[$joueur->get_race()]['numrace']);
+					$royaume_attaquant->add_point_victoire($map_batiment->get_point_victoire());
+				}
+				
+				// Augmentation du compteur de l'achievement
+				$achiev = $joueur->get_compteur('structure_degats');
+				$achiev->set_compteur($achiev->get_compteur() + $degat_defense);
+				$achiev->sauver();
+			}
+			elseif($type == 'siege')
+			{
+				$map_batiment->set_hp($defenseur->get_hp());
+				if($map_batiment->get_hp() > 0) $map_batiment->sauver();
+				else $map_batiment->supprimer();
+			}
+			elseif($type == 'ville')
+			{
+				if($degat_defense > 0)
+				{
+					//hasard pour différente actions de destruction sur la ville.
+					//Si il y a assez de ressources en ville
+					$suppr_hp = true;
+					if($map_royaume->total_ressources() > 1000)
+					{
+						$rand = rand(1, 100);
+						//Premier cas, on supprime les ressources
+						if($rand >= 50)
+						{
+							$suppr_hp = false;
+							$map_royaume->supprime_ressources($degat_defense / 100);
+							echo '<h6>L\'attaque détruit des ressources au royaume '.$Gtrad[$map_royaume->get_race()].'</h6><br />';
+						}
+					}
+					//Sinon on attaque les batiments ou la ville
+					if($suppr_hp)
+					{
+						print_debug("Les infrastructures sont touchées<br/>");
+						$map_royaume->get_constructions_ville(true);
+						$count = count($map_royaume->constructions_ville);
+						//Si on peut détruire des bâtiments en ville
+						if($count > 0)
+						{
+							$rand = rand(0, $count - 1);
+							//On attaque la construction $rand du tableau
+							$construction_ville = new construction_ville($map_royaume->constructions_ville[$rand]['id']);
+							$return = $construction_ville->suppr_hp($degat_defense);
+							echo '<h6>Attaque d\'un batiment en ville</h6>';
+							//On a downgrade un batiment, on gagne des points de victoire
+							if($return > 0)
+							{
+								$royaume_attaquant = new royaume($Trace[$joueur->get_race()]['numrace']);
+								$royaume_attaquant->add_point_victoire($return);
+								$royaume_attaquant->sauver();
+								echo '<h6>Une construction a été détruite ! Votre royaume gagne '.$return .' points de victoire.</h6><br />';
+							}
+						}
+						else
+						{
+							echo '<h6>Le coeur même de la ville est attaqué</h6>';
+							$map_royaume->set_capitale_hp($defenseur->get_hp());
+							//Si la capitale n'a plus de vie, on met le royaume en raz
+							if($map_royaume->get_capitale_hp() < 0)
+							{
+								$time = time() + 3600 * 24 * 31;
+								$map_royaume->set_fin_raz_capitale($time);
+								$royaume_attaquant = new royaume($Trace[$joueur->get_race()]['numrace']);
+								$royaume_attaquant->add_point_victoire(100);
+								$royaume_attaquant->sauver();
+								echo '<h6>La capitale est détruite ! Votre royaume gagne 100 points de victoire.</h6><br />';
+								
+								// On debloque l'achievement
+								$joueur->unlock_achiev('capitale_detruite');
+							}
+						}
+					}
+					$map_royaume->sauver();
+				}
+			}*/
 			//Fin du combat
 			if($mode == 'attaquant')
 			{
@@ -787,6 +969,428 @@ else
 			<div style="float:left;">';
 
 			
+			/*if($type == 'joueur')
+			{
+				$gains = false;
+				$coef = 1;
+				//L'attaquant est mort !
+				if (!$check_pet && $attaquant->get_hp() <= 0)
+				{
+					$joueur->trigger_arene();
+					$actif = $joueur_defenseur;
+					$passif = $joueur;
+					$gains = true;
+					//On supprime toutes les rez
+					$joueur->supprime_rez();
+					
+					//Achievement
+					if($attaquant->get_hp() == 0)
+						$joueur->unlock_achiev('near_kill');
+					if($attaquant->get_groupe() == 0)
+						$joueur->unlock_achiev('divided_fall');
+				}
+				//Le défenseur est mort !
+				if (!$check_pet_def && $defenseur->get_hp() <= 0)
+				{
+					$joueur->trigger_arene();
+					$actif = $joueur;
+					$passif = $joueur_defenseur;
+					$gains = true;
+					$joueur_defenseur->supprime_rez();
+					
+					if($defenseur_en_defense)
+					{
+						// Augmentation du compteur de l'achievement
+						$achiev = $joueur->get_compteur('kill_defense');
+						$achiev->set_compteur($achiev->get_compteur() + 1);
+						$achiev->sauver();
+					}
+					
+					//Achievement
+					if($defenseur->get_hp() == 0)
+						$joueur_defenseur->unlock_achiev('near_kill');
+					if($defenseur->get_groupe() == 0)
+						$joueur_defenseur->unlock_achiev('divided_fall');
+
+					if ($defenseur->get_nom() == 'Irulan')
+					{
+						$actif->unlock_achiev('kill_bastounet');
+					}
+					
+					if ($passif->get_crime() > 0)
+					{
+						$achiev = $actif->get_compteur('dredd');
+						$achiev->set_compteur($achiev->get_compteur() + 1);
+						$achiev->sauver();
+					}
+				}
+
+				if($gains)
+				{
+					// Augmentation du compteur de l'achievement
+					$achiev = $actif->get_compteur('kill_'.$passif->get_race());
+					$achiev->set_compteur($achiev->get_compteur() + 1);
+					$achiev->sauver();
+				
+					//Gain d'expérience
+					$xp = $passif->get_level() * 100 * $G_xp_rate;
+
+					//Si le joueur a un groupe
+					if($actif->get_groupe() > 0)
+					{
+						$groupe = new groupe($actif->get_groupe());
+						$groupe->get_share_xp($actif->get_pos());
+						//Si on tape un joueur de son groupe xp = 0
+						foreach($groupe->membre_joueur as $membre_id)
+						{
+							if($membre_id->get_id() == $passif->get_id()) 
+							{
+								$xp = 0;
+								
+								// Augmentation du compteur de l'achievement
+								$achiev = $actif->get_compteur('kill_teammate');
+								$achiev->set_compteur($achiev->get_compteur() + 1);
+								$achiev->sauver();
+							}
+						}
+					}
+					//Joueur solo
+					else
+					{
+						$groupe = new groupe();
+						$groupe->level_groupe = $actif->get_level();
+						$groupe->somme_groupe = $actif->get_level();
+						$groupe->set_share_xp(100);
+						$groupe->membre_joueur[0] = new perso();
+						$groupe->membre_joueur[0]->set_x($actif->get_x());
+						$groupe->membre_joueur[0]->set_y($actif->get_y());
+						$groupe->membre_joueur[0]->set_id($actif->get_id());
+						$groupe->membre_joueur[0]->share_xp = 100;
+						$groupe->membre_joueur[0]->set_race($actif->get_race());
+						$groupe->membre_joueur[0]->set_level($actif->get_level());
+						$groupe->membre_joueur[0]->set_exp($actif->get_exp());
+						$groupe->membre_joueur[0]->set_star($actif->get_star());
+						$groupe->membre_joueur[0]->set_honneur($actif->get_honneur());
+						$groupe->membre_joueur[0]->set_reputation($actif->get_reputation());
+					}
+					$G_range_level = ceil($passif->get_level() * 0.5);
+					$xp = $xp * (1 + (($passif->get_level() - $actif->get_level()) / $G_range_level));
+					if($xp < 0) $xp = 0;
+					//Si il est en groupe réduction de l'xp gagné par rapport au niveau du groupe
+					if($actif->get_groupe() > 0)
+					{
+						$xp = $xp * $actif->get_level() / $groupe->get_level();
+					}
+					$honneur = floor($xp * 4);
+
+					//Partage de l'xp au groupe
+					foreach($groupe->membre_joueur as $membre)
+					{
+						//Facteur de diplomatie
+						$requete = "SELECT ".$passif->get_race()." FROM diplomatie WHERE race = '".$membre->get_race()."'";
+						$req_diplo = $db->query($requete);
+						$row_diplo = $db->read_row($req_diplo);
+
+						//Vérification crime
+						if($membre->get_id() == $actif->get_id() AND $crime AND $actif->get_id() == $attaquant->get_id())
+						{
+							$points = $G_crime[$row_diplo[0]];
+							$actif->set_crime($actif->get_crime() + $points);
+							$msg_xp .=  'Vous tuez un joueur en '.$Gtrad['diplo'.$row[0]].', vous recevez '.$points.' point(s) de crime<br />';
+						}
+						$star = 0;
+						if ($row_diplo[0] == 127) $row_diplo[0] = 0;
+						//Si le défenseur est criminel
+						if($pascrime)
+						{
+							switch($amende['statut'])
+							{
+								case 'bandit' :
+									$row_diplo[0] = 5;
+									$statut_joueur = 'Bandit';
+								break;
+								case 'criminel' :
+									$row_diplo[0] = 10;
+									$statut_joueur = 'Criminel';
+									if($amende['prime'] > 0)
+									{
+										$star = $amende['prime'];
+										$msg_xp .=  'Vous avez tué un criminel ayant une prime sur sa tête, vous gagnez '.$star.' stars.<br />';
+										$requete = "UPDATE amende SET prime = 0 WHERE id = ".$amende['id'];
+										$db->query($requete);
+										$requete = "DELETE FROM prime_criminel WHERE id_amende = ".$amende['id'];
+										$db->query($requete);
+									}
+								break;
+							}
+
+							$xp = $xp / 5;
+							$honneur = $honneur / 5;
+						}
+						$facteur_xp = $row_diplo[0] * 0.2;
+						$facteur_honneur = ($row_diplo[0] * 0.2) - 0.8;
+						if ($facteur_honneur < 0) $facteur_honneur = 0;
+						//XP Final
+						$partage = $groupe->get_share_xp($actif->get_pos());
+						$partage = $partage == 0 ? 1 : $partage;
+						$xp_gagne = floor(($xp * $facteur_xp) * $membre->share_xp / $partage);
+						if($xp_gagne < 0) $xp_gagne = 0;
+						$honneur_gagne = floor(($honneur * $facteur_honneur) * $membre->share_xp / $partage);
+						//(de)Buffs moral, pour la gloire, cacophonie
+						if($membre->is_buff('moral'))
+              $honneur_gagne = floor( $honneur_gagne * (1 + ($membre->get_buff('moral', 'effet') / 100)) );
+						if($membre->is_buff('buff_honneur'))
+              $honneur_gagne = floor( $honneur_gagne * (1 + ($membre->get_buff('buff_honneur', 'effet') / 100)) );
+						if($membre->is_buff('cacophonie'))
+              $honneur_gagne = floor( $honneur_gagne * (1 - ($membre->get_buff('cacophonie', 'effet') / 100)) );
+						$reputation_gagne = floor($honneur_gagne / 10);
+
+						// Pas d'honneur pour un kill de sa propre race
+						if ($membre->get_race() == $passif->get_race())
+							$honneur_gagne = 0;
+
+						$membre->set_star($membre->get_star() + $star);
+						$membre->set_exp($membre->get_exp() + $xp_gagne);
+						$membre->set_honneur($membre->get_honneur() + $honneur_gagne);
+						$membre->set_reputation($membre->get_reputation() + $reputation_gagne);
+						$msg_xp .= $membre->get_nom().' gagne <strong class="reward">'.$xp_gagne.' XP</strong>, <strong class="reward">'.$honneur_gagne.' points d\'honneur</strong>, et <strong class="reward">'.$reputation_gagne.' points de réputation</strong><br />';
+						$membre->sauver();
+						if($membre->get_id() == $attaquant->get_id()) verif_action('J'.$row_diplo[0], $membre, 's');
+						else verif_action('J'.$row_diplo[0], $membre, 'g');
+					}
+					
+					// Augmentation du compteur de l'achievement
+					if($actif->get_level() >= $passif->get_level()) // Kill d'un joueur d'un plus petit level
+						$achiev = $actif->get_compteur('kill_lower');
+					else
+						$achiev = $actif->get_compteur('kill_higher');
+					$achiev->set_compteur($achiev->get_compteur() + 1);
+					$achiev->sauver();
+					
+					// Achievement joueur meme race
+					if($actif->get_race() == $passif->get_race())
+					{
+						$achiev = $actif->get_compteur('kill_race');
+						$achiev->set_compteur($achiev->get_compteur() + 1);
+						$achiev->sauver();
+					}
+					
+					$achievement_bouche_oreille = achievement_type::create('variable', 'bouche_oreille');
+					// Si le joueur mort l'a deja debloqué
+					if($passif->already_unlocked_achiev($achievement_bouche_oreille[0]))
+						$actif->unlock_achiev('bouche_oreille');
+					
+					$actif->set_frag($actif->get_frag() + 1);
+					$passif->set_mort($passif->get_mort() + 1);
+					$actif->sauver();
+					$passif->sauver();
+				}
+			}
+			/*elseif($type == 'monstre')
+			{
+				//Le défenseur est mort !
+				if ($defenseur->get_hp() <= 0)
+				{
+					$coeff = 0.5;
+					//Différence de level
+					$diff_level = abs($attaquant->get_level() - $defenseur->get_level());
+					//Perde d'honneur
+					$coeff = 1 - ($diff_level * 0.02);
+
+					$gains_xp = true;
+					$coef = 1;
+					$gains_drop = true;
+					$gains_star = true;
+					
+					// On gere les monstres de donjon
+					$map_monstre->kill_monstre_de_donjon();
+
+					// On efface le monstre
+					$map_monstre->supprimer();
+					
+					// Augmentation du compteur de l'achievement
+					$achiev = $joueur->get_compteur('kill_monstres');
+					$achiev->set_compteur($achiev->get_compteur() + 1);
+					$achiev->sauver();
+					
+					//Si c'est un Seigneur loup-garou on debloque l'achievement
+					if($map_monstre->get_type() == 115)
+						$joueur->unlock_achiev('seigneur_loup_garou');
+					if($map_monstre->get_type() == 56)
+						$joueur->unlock_achiev('sworling');
+				}
+				elseif ($attaquant->get_hp() <= 0 && !$pet) //L'attaquant est mort !
+				{
+					$coeff = 0.5;
+					//Différence de level
+					$diff_level = abs($attaquant->get_level() - $defenseur->get_level());
+					//Perde d'honneur
+					$coeff = 1 - ($diff_level * 0.02);
+					if ($coeff != 1)
+					{
+						echo 'Vous perdez '.
+							($joueur->get_honneur() - $joueur->get_honneur() * $coeff).
+							' honneur en mourant.<br />';
+						$joueur->set_honneur($joueur->get_honneur() * $coeff);
+					}
+					$joueur->set_mort($joueur->get_mort() + 1);
+					$joueur->sauver();
+
+					//Si c'est Dévorsis
+					if($map_monstre->get_type() == 64)
+					{
+						$gain_hp = floor($attaquant->get_hp_max() * 0.1);
+						$map_monstre->set_hp($defenseur->get_hp() + $gain_hp);
+						$map_monstre->sauver();
+						echo 'Dévorsis regagne '.$gain_hp.' HP en vous tuant.<br />';
+					}
+					
+					// achievement
+					if($map_monstre->get_type() == 1)
+					{	
+						$joueur->unlock_achiev('killer_rabbit');
+					}
+				}
+				else
+				{
+					$gains_xp = true;
+					if($degat_defense > 0) $coef = 0.5 * ($degat_defense) / $defenseur->get_hp_max();//$joueur_defenseur->hp_max;
+				}
+				if($gains_xp)
+				{
+					//Niveau du groupe
+					if($joueur->get_groupe() == 0)
+					{
+						$groupe = new groupe();
+						$groupe->level_groupe = $joueur->get_level();
+						$groupe->somme_groupe = $joueur->get_level();
+						$groupe->set_share_xp(100);
+						$groupe->membre_joueur[0] = $joueur;
+						$groupe->membre_joueur[0]->share_xp = 100;
+					}
+					else
+					{
+						$groupe = new groupe($joueur->get_groupe());
+						$groupe->get_membre();
+					}
+					//Gain d'expérience
+					$requete = "SELECT xp, star, drops FROM monstre WHERE id = '".$map_monstre->get_type()."'";
+					$req = $db->query($requete);
+					$row = $db->read_row($req);
+					$xp = $row[0] * $G_xp_rate * $coef;
+				}
+				if($gains_drop)
+				{
+						$drop = $row[2];
+				}
+				if($gains_star)
+				{
+					$starmax = $row[1];
+					$starmin = floor($row[1] / 2);
+					$star = rand($starmin, $starmax) * $G_drop_rate;
+					if($joueur->get_race() == 'nain') $star = floor($star * 1.1);
+					if($joueur->is_buff('recherche_precieux')) $star = $star * (1 + ($joueur->get_buff('recherche_precieux', 'effet') / 100));
+					$star = ceil($star);
+					$taxe = floor($star * $R->get_taxe_diplo($joueur->get_race()) / 100);
+					$star = $star - $taxe;
+					//Récupération de la taxe
+					if($taxe > 0)
+					{
+						$R->gain_star($taxe, 'monstre');
+						$R->sauver();
+					}
+				}
+
+				if($gains_drop)
+				{
+
+					$map_monstre->check_boss_loot($joueur, $groupe);
+
+					//Drop d'un objet ?
+					$drops = explode(';', $drop);
+					if($drops[0] != '')
+					{
+						$count = count($drops);
+						$i = 0;
+						while($i < $count)
+						{
+							$share = explode('-', $drops[$i]);
+							$objet = $share[0];
+							$taux = ceil($share[1] / $G_drop_rate);
+							if($joueur->get_race() == 'humain') $taux = $taux / 1.3;
+							if($joueur->is_buff('fouille_gibier')) $taux = $taux / (1 + ($joueur->get_buff('fouille_gibier', 'effet') / 100));
+							if ($taux < 2) $taux = 2; // Comme ca, pas de 100%
+							$tirage = rand(1, floor($taux));
+							//Si c'est un objet de quête :
+							if($objet[0] == 'q')
+							{
+								$check = false;
+								$i_quete = 0;
+								$liste_quete = $joueur->get_liste_quete();
+								$count_quete = count($liste_quete);
+								while(!$check AND $i_quete < $count_quete)
+								{
+									if($liste_quete[$i_quete]['id_quete'] == $share[1])
+										$check = true;
+									$i_quete++;
+								}
+								if($check) $tirage = 1;
+								else $tirage = 2;
+							}
+							if($tirage == 1)
+								loot_item($joueur, $groupe, $objet);
+							$i++;
+						}
+					}
+				}
+
+				if($gains_xp)
+				{
+					//Partage de l'xp au groupe
+					if ($xp < 0) $xp = 0;
+
+					$groupe->get_share_xp($joueur->get_pos());
+					foreach($groupe->membre_joueur as $membre)
+					{
+						//XP Final
+						$xp_joueur = $xp * (1 + (($defenseur->get_level() - $membre->get_level()) / $G_range_level));
+						$xp_joueur = floor($xp_joueur * $membre->share_xp / $groupe->get_share_xp($joueur->get_pos()));
+						if($xp_joueur < 0) $xp_joueur = 0;
+						$membre->set_exp($membre->get_exp() + $xp_joueur);
+						if($gains_star)
+						{
+							$star_joueur = floor($star * $membre->share_xp / $groupe->get_share_xp($joueur->get_pos()));
+							$membre->set_star($membre->get_star() + $star_joueur);
+						}
+						else $star_joueur = 0;
+						$msg_xp .= $membre->get_nom().' gagne <strong class="reward">'.$xp_joueur.' XP</strong> et <strong class="reward">'.$star_joueur.' Stars</strong><br />';
+						//Vérification de l'avancement des quêtes solo pour le tueur, groupe pour les autres
+						if($defenseur->get_hp() <= 0)
+						{
+							if($membre->get_id() == $attaquant->get_id()) verif_action('M'.$map_monstre->get_type(), $membre, 's');
+							else verif_action('M'.$map_monstre->get_type(), $membre, 'g');
+						}
+						$membre->sauver();
+					}
+				}
+			}*/
+			/*elseif($type == 'batiment')
+			{
+				if($defenseur->get_hp() <= 0)
+				{
+					//On supprime un bourg au compteur
+					if($defenseur->get_type() == 'bourg')
+					{
+						supprime_bourg($R->get_id());
+					}
+					//On retrouve les points de victoire
+					$point_victoire = $defenseur->get_point_victoire();
+					$R->add_point_victoire($point_victoire);
+					//On efface le batiment
+					$map_batiment->supprimer();
+					$R->sauver();
+				}
+			}*/
 			$msg_xp .= $defenseur->fin_defense($joueur, $R, $pet, $degat_defense, $defenseur_en_defense);
 
 			if ($defenseur->get_hp() > 0)

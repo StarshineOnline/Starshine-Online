@@ -1,17 +1,17 @@
-UPDATE `comp_combat` SET `description` = 'Dégâts normaux, a environ 15% de chance de réduire de un buff de 1 niveau',
+UPDATE `comp_combat` SET `description` = 'Dégâts normaux, a environ 15% de chance de réduire un buff de 1 niveau',
 `effet` = '5' WHERE `comp_combat`.`id` =56;
 
-UPDATE `comp_combat` SET `description` = 'Dégâts normaux, a environ 25% de chance de réduire de un buff de 1 niveau',
+UPDATE `comp_combat` SET `description` = 'Dégâts normaux, a environ 25% de chance de réduire un buff de 1 niveau',
 `effet` = '8',
 `effet2` = '1' WHERE `comp_combat`.`id` =57;
 
-UPDATE `comp_combat` SET `description` = 'Dégâts normaux, a environ 25% de chance de réduire de un buff de 1 à %effet2% niveaux',
+UPDATE `comp_combat` SET `description` = 'Dégâts normaux, a environ 25% de chance de réduire un buff de 1 à %effet2% niveaux',
 `effet` = '8' WHERE `comp_combat`.`id` =58;
 
-UPDATE `comp_combat` SET `description` = 'Dégâts normaux, a environ 30% de chance de réduire de un buff de 1 à %effet2% niveaux',
+UPDATE `comp_combat` SET `description` = 'Dégâts normaux, a environ 30% de chance de réduire un buff de 1 à %effet2% niveaux',
 `effet` = '9' WHERE `comp_combat`.`id` =86;
 
-UPDATE `comp_combat` SET `description` = 'Dégâts normaux, a environ 40% de chance de réduire de un buff de 1 à %effet2% niveaux',
+UPDATE `comp_combat` SET `description` = 'Dégâts normaux, a environ 40% de chance de réduire un buff de 1 à %effet2% niveaux',
 `effet` = '10' WHERE `comp_combat`.`id` =87;
 
 UPDATE `monstre` SET `pp` = '260' WHERE `monstre`.`id` =38;

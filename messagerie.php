@@ -24,7 +24,7 @@ elseif(array_key_exists('action', $_GET))
 			$titre_messagerie = ' de groupe';
 		break;
 		case 'perso' :
-			$titre_messagerie = ' personelle';
+			$titre_messagerie = ' personnelle';
 		break;
 		case 'echange' :
 			$titre_messagerie = ' des échanges';
