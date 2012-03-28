@@ -647,12 +647,12 @@ foreach($tab_loc as $loc)
 				case 'arme' :
 					if($loc['loc'] == 'main_droite')
 					{
-						echo 'Dégâts : '.$joueur['arme_droite'];
+						echo 'Dégats : '.$joueur['arme_droite'];
 					}
 					else
 					{
-						if($row['type'] == 'dague')	echo 'Dégâts : '.$joueur['arme_gauche'];
-						else echo 'Dégâts absorbés : '.$row['degat'];
+						if($row['type'] == 'dague')	echo 'Dégats : '.$joueur['arme_gauche'];
+						else echo 'Dégats absorbés : '.$row['degat'];
 					}
 				break;
 				case 'armure' :

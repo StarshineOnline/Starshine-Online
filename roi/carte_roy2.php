@@ -7,7 +7,7 @@
 
 	// Emplacement de l'image
 	if($joueur->get_rang_royaume() != 6 AND $joueur->get_id() != $royaume->get_ministre_militaire())
-		echo '<p>Cette page vous est interdite</p>';
+		echo '<p>Cette page vous est interdit</p>';
 	else
 	{
 

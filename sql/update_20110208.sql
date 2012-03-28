@@ -1,8 +1,8 @@
-UPDATE `comp_combat` SET `description` = 'Réduit vos chances de toucher physiquement de %effet%%, multiplie les dégâts par 3, et augmente les chances de critique de %effet2%%.', `effet2` = '60' WHERE `comp_combat`.`id` = 29; 
-UPDATE `comp_combat` SET `description` = 'Réduit vos chances de toucher de %effet%%, multiplie les dégâts par 3, et augmente les chances de critique de %effet2%%.', `effet2` = '60' WHERE `comp_combat`.`id` = 30; 
-UPDATE `comp_combat` SET `description` = 'Réduit vos chances de toucher de %effet%%, multiplie les dégâts par 3, et augmente les chances de critique de %effet2%%.', `effet2` = '60' WHERE `comp_combat`.`id` = 31; 
-UPDATE `comp_combat` SET `description` = 'Réduit vos chances de toucher de %effet%%, multiplie les dégâts par 3, et augmente les chances de critique de %effet2%%.(requiert coup mortel 3)', `effet2` = '75' WHERE `comp_combat`.`id` = 114; 
-UPDATE `comp_combat` SET `description` = 'Réduit vos chances de toucher de %effet%%, multiplie les dégâts par 3, et augmente les chances de critique de %effet2%%.', `effet2` = '90' WHERE `comp_combat`.`id` = 115;
+UPDATE `comp_combat` SET `description` = 'Réduit vos chances de toucher physiquement de %effet%%, multiplie les dégats par 3, et augmente les chances de critique de %effet2%%.', `effet2` = '60' WHERE `comp_combat`.`id` = 29; 
+UPDATE `comp_combat` SET `description` = 'Réduit vos chances de toucher de %effet%%, multiplie les dégats par 3, et augmente les chances de critique de %effet2%%.', `effet2` = '60' WHERE `comp_combat`.`id` = 30; 
+UPDATE `comp_combat` SET `description` = 'Réduit vos chances de toucher de %effet%%, multiplie les dégats par 3, et augmente les chances de critique de %effet2%%.', `effet2` = '60' WHERE `comp_combat`.`id` = 31; 
+UPDATE `comp_combat` SET `description` = 'Réduit vos chances de toucher de %effet%%, multiplie les dégats par 3, et augmente les chances de critique de %effet2%%.(requiert coup mortel 3)', `effet2` = '75' WHERE `comp_combat`.`id` = 114; 
+UPDATE `comp_combat` SET `description` = 'Réduit vos chances de toucher de %effet%%, multiplie les dégats par 3, et augmente les chances de critique de %effet2%%.', `effet2` = '90' WHERE `comp_combat`.`id` = 115;
 UPDATE `objet_royaume` SET `pierre` = '25' WHERE `objet_royaume`.`id` =1;
 UPDATE `objet_royaume` SET `prix` = '200',
 `pierre` = '300',

@@ -253,7 +253,7 @@ class comp_esprit_libre extends comp_jeu
 		}
 		else
 		{
-      echo "Impossible de lancer de lancer le sort. Vous n&apos;avez aucun debuff.<br/>";
+      echo "Impossible de lancer de lancer le sort. Vous n&apos;avez aucune debuff.<br/>";
       $action = false;
     }
 

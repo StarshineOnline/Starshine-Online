@@ -157,7 +157,7 @@ echo '
 	';
 		if($joueur->get_teleport_roi() != 'true' AND !$visu)
 		{
-			echo '<a href="personnage.php?direction=stat&action=teleport" onclick="if(confirm(\'Voulez-vous vraiment vous téléporter sur votre capitale ?\')) return envoiInfo(this.href, \'information\'); else return false;">Se téléporter dans votre capitale</a>';
+			echo '<a href="personnage.php?direction=stat&action=teleport" onclick="if(confirm(\'Voulez vous vraiment vous téléportez sur votre capitale ?\')) return envoiInfo(this.href, \'information\'); else return false;">Se téléporter dans votre capitale</a>';
 		}
 		break;
 

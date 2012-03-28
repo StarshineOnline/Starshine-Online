@@ -21,7 +21,7 @@ INSERT INTO `sort_combat` (
 `etat_lie`
 )
 VALUES (
-NULL , 'Empalement abominable', 'Empale la cible (dégâts +%effet% au minimum, cible réduite à 1 PV si elle survit), les spectateurs font un jet de volonté DC %effet2% pour ne pas être terrorisés.', '1', 'empalement_abomination', 'sort_mort', 'puissance', '100', '1', '1', '100', '28', '0', '4', '', '0', '1', '9', ''
+NULL , 'Empalement abominable', 'Empale la cible (dégats +%effet% au minimum, cible réduite à 1 PV si elle survit), les spectateurs font un jet de volonté DC %effet2% pour ne pas être terrorisés.', '1', 'empalement_abomination', 'sort_mort', 'puissance', '100', '1', '1', '100', '28', '0', '4', '', '0', '1', '9', ''
 );
 
 -- La bebête ...

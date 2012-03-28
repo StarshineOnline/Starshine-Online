@@ -94,7 +94,7 @@ else
 	{
 		//Confirmation de suppression d'un message
 		case 'del' :
-			echo 'Voulez-vous vraiment effacer ce message ?<br />
+			echo 'Voulez vous vraiment effacer ce message ?<br />
 			<a href="messagerie.php?ID='.$id_mess.'&amp;action=delc" onclick="return envoiInfo(this.href, \'information\')">Oui</a> / <a href="messagerie.php" onclick="return envoiInfo(this.href, \'information\')">Non</a>';
 		break;
 		//Suppression d'un message

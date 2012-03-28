@@ -23,7 +23,7 @@ INSERT INTO `sort_combat` (
 `etat_lie`
 )
 VALUES (
-NULL , 'Absorption temporelle', 'Retire jusque %effet2% PA à la cible. Dégâts + %effet%', '0', 'absorb_temporelle', 'sort_element', 'puissance', '0', '0', '1', '10', '10', '0', '4', '', '0', '1', '99', ''
+NULL , 'Absorption temporelle', 'Retire jusque %effet2% PA à la cible. Dégats + %effet%', '0', 'absorb_temporelle', 'sort_element', 'puissance', '0', '0', '1', '10', '10', '0', '4', '', '0', '1', '99', ''
 );
 
 update `monstre` set `action` = '#09=15@~180;#09=5@~180;#14<3µ#10°posture@~101;#11°appel_tenebreµ#09<15@~70;#14<3@~173;#14<3@~44;#14<3@~92;#14<3@~128;#14<3@~122' where id = 144;

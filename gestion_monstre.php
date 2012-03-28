@@ -114,7 +114,7 @@ if(count($pets) > 0)
 				Type : <?php echo $pet->monstre->get_nom(); ?><br />
 				HP : <?php echo $pet->get_hp(); ?> / <?php echo $pet->monstre->get_hp(); ?><br />
 				MP : <?php echo $pet->get_mp(); ?> / <?php echo $pet->get_mp_max(); ?><br />
-				<a href="gestion_monstre.php?supprimer=<?php echo $pet->get_id(); ?>" onclick="if(confirm('Voulez-vous vraiment supprimer cette créature ~<?php echo $pet->get_nom(); ?>~ ?')) return envoiInfo(this.href, 'information'); else return false;" title="Supprimer"><span class="del" style="float : right;"></span></a>
+				<a href="gestion_monstre.php?supprimer=<?php echo $pet->get_id(); ?>" onclick="if(confirm('Voulez vous vraiment supprimer cette créature ~<?php echo $pet->get_nom(); ?>~ ?')) return envoiInfo(this.href, 'information'); else return false;" title="Supprimer"><span class="del" style="float : right;"></span></a>
 				<?php
 				if($pet->monstre->get_sort_dressage() != '')
 				{

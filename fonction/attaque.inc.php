@@ -430,7 +430,7 @@ function attaque($acteur = 'attaquant', $competence, &$effects)
 			$buff_epine = $passif->get_buff('buff_epine', 'effet') / 100;
 			$effet = round($degat * $buff_epine);
 			$actif->set_hp($actif->get_hp() - $effet);
-			if($effet > 0) echo '&nbsp;&nbsp;<span class="degat">'.$passif->get_nom().' renvoie '.$effet.' dégâts grâce à l\' Armure en épine</span><br />';
+			if($effet > 0) echo '&nbsp;&nbsp;<span class="degat">'.$passif->get_nom().' renvoi '.$effet.' dégâts grâce à l\' Armure en épine</span><br />';
 			$log_effects_passif .= "&ef9~".$effet;
 		}
 	    //Armure de glace

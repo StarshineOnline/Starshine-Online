@@ -32,7 +32,7 @@ while($row = $db->read_row($req))
 $min_habitants = @min($habitants);
 if($min_habitants > 0) $ratio = $habitants[$royaume->get_race()] / $min_habitants;
 if($joueur->get_rang_royaume() != 6 AND $joueur->get_id() != $royaume->get_ministre_economie())
-	echo '<p>Cette page vous est interdite</p>';
+	echo '<p>Cette page vous est interdit</p>';
 else 
 {
 if($ratio < 1) $ratio = 1;

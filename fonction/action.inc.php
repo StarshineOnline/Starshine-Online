@@ -1079,7 +1079,7 @@ function lance_sort($id, $acteur, &$effects)
 					$actif->etat['posture']['type'] = 'posture_vent';
 				break;
 				case 'aura_pierre' :
-					echo '&nbsp;&nbsp;De solides pierres volent autour de <strong>'.$actif->get_nom().'</strong> !<br />';
+					echo '&nbsp;&nbsp;De solides pierre volent autour de <strong>'.$actif->get_nom().'</strong> !<br />';
 					$actif->etat['posture']['effet'] = $row['effet'];
 					$actif->etat['posture']['duree'] = 20;
 					$actif->etat['posture']['type'] = 'posture_pierre';

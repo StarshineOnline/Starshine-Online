@@ -22,7 +22,7 @@ INSERT INTO `quete` (
 `achat`
 )
 VALUES (
-85 , 'Nouvelle carte', 'Ma carte commence à se faire vieille, il faudrait que je la renouvelle, mais je n''ai pas d''inspiration. Si vous pouviez me trouver un livre de recettes original, je vous donnerai une carte de membre de l''amicale des Taverniers.', 'taverne', 'a:1:{i:0;O:8:"stdClass":3:{s:5:"cible";s:4:"Oo52";s:6:"nombre";i:1;s:6:"requis";s:0:"";}}', '0', '0', '0', '', 'n', 's', '', '5', '0', '', '1', '0', 'non'
+85 , 'Nouvelle carte', 'Ma carte commence à se faire vieille, il faudrait que je la renouvelle, mais je n''ai pas d''inspiration. Si vous pouviez me trouver un livre de recettes original, je vous donnerais une carte de membre de l''amicale des Taverniers.', 'taverne', 'a:1:{i:0;O:8:"stdClass":3:{s:5:"cible";s:4:"Oo52";s:6:"nombre";i:1;s:6:"requis";s:0:"";}}', '0', '0', '0', '', 'n', 's', '', '5', '0', '', '1', '0', 'non'
 );
 
 INSERT INTO `objet` (

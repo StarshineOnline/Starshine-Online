@@ -138,7 +138,7 @@ if($case->is_ville(true) && ($R->get_diplo($joueur->get_race()) <= 6 OR $R->get_
 		if($pet->get_hp() <= 0)
 		{
 			$link = 'v';
-			$texte = '<img src="image/buff/rez.jpg" alt="Ressusciter" title="Ressusciter" style="width : 16px; height : 16px; vertical-align : top;" /> <span class="small">('.($pet->get_cout_rez() + $taxe_rez).' stars)</span>';
+			$texte = '<img src="image/buff/rez.jpg" alt="Ressuciter" title="Ressuciter" style="width : 16px; height : 16px; vertical-align : top;" /> <span class="small">('.($pet->get_cout_rez() + $taxe_rez).' stars)</span>';
 		}
 		else
 		{
@@ -165,7 +165,7 @@ if($case->is_ville(true) && ($R->get_diplo($joueur->get_race()) <= 6 OR $R->get_
 		if($pet->get_hp() <= 0)
 		{
 			$link = 'v';
-			$texte = '<img src="image/buff/rez.jpg" alt="Ressusciter" title="Ressusciter" style="width : 16px; height : 16px; vertical-align : top;" /> <span class="small">('.($pet->get_cout_rez() + $taxe_rez).' stars)</span>';
+			$texte = '<img src="image/buff/rez.jpg" alt="Ressuciter" title="Ressuciter" style="width : 16px; height : 16px; vertical-align : top;" /> <span class="small">('.($pet->get_cout_rez() + $taxe_rez).' stars)</span>';
 		}
 		else
 		{

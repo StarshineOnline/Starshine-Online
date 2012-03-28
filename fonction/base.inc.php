@@ -2125,7 +2125,7 @@ Votre dernier souvenir est l'endroit où vous êtes mort <?php echo 'x : '.$joue
 						while($row = $db->read_assoc($req))
 						{
 							echo '
-						<li style="padding-top:5px;padding-bottom:5px;"><a href="mort.php?choix=2&amp;rez='.$row['id'].'">Vous faire ressusciter par '.$row['nom_rez'].' ('.($row['pourcent'] + $bonus).'% HP / '.($row['pourcent'] + $bonus).' MP)</li>';
+						<li style="padding-top:5px;padding-bottom:5px;"><a href="mort.php?choix=2&amp;rez='.$row['id'].'">Vous faire ressuciter par '.$row['nom_rez'].' ('.($row['pourcent'] + $bonus).'% HP / '.($row['pourcent'] + $bonus).' MP)</li>';
 						}
 					}
 					// Fort le plus proche (si on le personnage n'est pas dans un donjon)
@@ -3453,7 +3453,7 @@ function pute_effets(&$joueur, $honneur_need, $specials = null, $specials_det = 
     {
       $buff = true;
     }
-    $texte = 'Magnifique est un qualificatif trop pauvre pour mesurer votre performance. Vous avez été tellement bon que la personne à qui vous avez fait l\'honneur de votre présence a eu une extinction de voix à force de crier votre nom. De plus, fait marquant, au milieu de l\'affaire, elle est partie et a appelé toute ses copines qui ont quitté leur chambre, laissant leurs clients sur la paille, pour venir profiter de votre journée de grâce. Ce n\'est donc pas moins que la taverne entière (tout sexe confondu) que vous avez honoré (sans payer plus cher). Une chose est sûre, vous avez rendu des gens heureux aujourd\'hui.';
+    $texte = 'Magnifique est un qualiquatif trop pauvre pour qualifier votre performance. Vous avez été tellement bon que la personne à qui vous avez fait l\'honneur de votre présence a eu une extinction de voix à force de crier votre nom. De plus, fait marquant, au milieu de l\'affaire, elle est partie et a appelée toute ses copines qui ont quitté leur chambre, laissant leurs clients sur la paille, pour venir profiter de votre journée de grâce. Ce n\'est donc pas moins que la taverne entière (tout sexe confondu) que vous avez honoré (sans payer plus cher). Une chose est sûre, vous avez rendu des gens heureux aujourd\'hui.';
   }
 
   //lancement du buff ou debuff
@@ -3516,10 +3516,10 @@ function pute_effets(&$joueur, $honneur_need, $specials = null, $specials_det = 
     $liste_maladie = array();
     $liste_maladie[0]['nom'] = 'Crise cardiaque';
     $liste_maladie[0]['description'] = '
-								En sortant de la taverne, vous vous sentez faible. Très faible.<br />
-								Vous vous apercevez trop tard que vous vous êtes trop démené.<br />
+								En sortant de la taverne, vous vous sentez faibles. Très faibles.<br />
+								Vous vous appercevez trop tard que vous vous êtes trop démenés.<br />
 								Vous vous écroulez par terre, et n\'arrivez plus à respirer.<br />
-								Vous mourez seul et abandonné de tous.';
+								Vous mourrez seul et abandonnés de tous.';
     $liste_maladie[0]['effets'] = 'mort';
     $liste_maladie[1]['nom'] = 'Lumbago';
     $liste_maladie[1]['description'] = '

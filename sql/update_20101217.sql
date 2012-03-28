@@ -44,7 +44,7 @@ CREATE TABLE IF NOT EXISTS `achievement_type` (
 INSERT INTO `achievement_type` (`id`, `nom`, `description`, `value`, `variable`) VALUES
 (1, 'Vocation raté', 'En étant combattant, avoir acheté %value% affinités à l''école de magie', 3, 'type_magie'),
 (2, 'Bob le bricoleur', 'Avoir réparé/construit plus de %value% points de structure', 50000, 'structure_hp'),
-(3, 'Demolition Man', 'Avoir infligé %value% point de dégâts a des bâtiments/arme de siège', 50, 'structure_degats'),
+(3, 'Demolition Man', 'Avoir infligé %value% point de dégats a des bâtiments/arme de siège', 50, 'structure_degats'),
 (4, 'La taille n''est rien', 'Avoir tué %value% joueurs de niveau plus élevé', 1000, 'kill_higher'),
 (5, 'Racaille des bacs à sable', 'Avoir tué %value% joueurs de niveau plus faible', 1000, 'kill_lower'),
 (6, 'Tuer n''est pas jouer', 'Avoir tué %value% joueurs de sa race', 50, 'kill_race'),

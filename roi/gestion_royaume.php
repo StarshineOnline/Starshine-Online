@@ -407,7 +407,7 @@ switch( $_GET['direction'] )
   	    	}
   	    	else
   	    	{
-  		       echo "<li class='$construc_class'><span class='nom'>".$row['nom']; ?></span><span class="small" style='float:left;width:100px;'> inactif </span><span style='float:left;width:100px;'><a href="gestion_royaume.php?direction=reactif&amp;action=list&amp;batiment=<?php echo $row['id_const']; ?>" onclick="if(confirm('Voulez-vous vraiment réactiver cette construction ?')) return envoiInfo(this.href, 'contenu_jeu'); else return false;">Réactiver pour <?php echo $row['dette']; ?> stars</a></li>
+  		       echo "<li class='$construc_class'><span class='nom'>".$row['nom']; ?></span><span class="small" style='float:left;width:100px;'> inactif </span><span style='float:left;width:100px;'><a href="gestion_royaume.php?direction=reactif&amp;action=list&amp;batiment=<?php echo $row['id_const']; ?>" onclick="if(confirm('Voulez vous vraiment réactiver cette construction ?')) return envoiInfo(this.href, 'contenu_jeu'); else return false;">Réactiver pour <?php echo $row['dette']; ?> stars</a></li>
   	        <?php
   	    	}
   	  		if ($construc_class == 't1'){$construc_class = 't2';}else{$construc_class = 't1';}	    

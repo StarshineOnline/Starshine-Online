@@ -82,5 +82,5 @@ if (isset($G_use_atmosphere) && $G_use_atmosphere) { ?>
 					  <li><a href="option_map.php?action=atm&amp;effet=time&amp;val=<?php echo $atm_all_val; ?>" onclick="envoiInfo(this.href, 'cluetip-inner'); deplacement('centre', 'normal', show_only); return false;"><?php echo $atm_all_verb; ?> les effets atmosphériques et liés à l\'heure</a></li>
 <?php } ?>
 					  <li><a href="option_map.php?action=affiche_royaumes&amp;val=<?php echo $roy_val; ?>" onclick="envoiInfo(this.href, 'cluetip-inner'); deplacement('centre', 'normal', show_only); return false;">Afficher / masquer les royaumes</a></li>
-					  <li><a href="option_map.php?action=cache_monstre&amp;val=<?php echo $mons_val; ?>" onclick="envoiInfo(this.href, 'cluetip-inner'); deplacement('centre', 'normal', show_only); return false;">Afficher / masquer les monstres</a></li>
+					  <li><a href="option_map.php?action=cache_monstre&amp;val=<?php echo $mons_val; ?>" onclick="envoiInfo(this.href, 'cluetip-inner'); deplacement('centre', 'normal', show_only); return false;">Afficher / masquer les monstre</a></li>
 </ul>

@@ -52,7 +52,7 @@ $bonus = recup_bonus($joueur->get_id());
 				$requete = "UPDATE bonus_perso SET valeur = '".sSQL(htmlspecialchars($_POST['description']))."' WHERE id_bonus_perso = ".$bonus_total[$id]['id_bonus_perso'];
 				$db->query($requete);
 				$bonus = recup_bonus($joueur->get_id());
-				echo '<h6>Votre description a bien été modifiée !</h6>';
+				echo '<h6>Votre description a bien été modifié !</h6>';
 			}
 			//Changement de css
 			if(array_key_exists('css', $_GET))

@@ -558,7 +558,7 @@ class map_monstre extends entnj_incarn
 			{
 				echo 'Vous perdez '.
 					($perso->get_honneur() - $perso->get_honneur() * $coeff).
-					' honneur en mourant.<br />';
+					' honneur en mourrant.<br />';
 				$perso->set_honneur($perso->get_honneur() * $coeff);
 			}
 			$perso->set_mort($perso->get_mort() + 1);

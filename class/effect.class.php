@@ -739,7 +739,7 @@ class boutte_flamme extends effect
 		case 'embrasement':
 		case 'sphere_glace':
 			$degats += $this->effet;
-			$this->debug($actif->get_nom().' voit ses dégâts augmentés de '.
+			$this->debug($actif->get_nom().' voit ses dégats augmentés de '.
 									 $this->effet.' grâce à son arme ('.$this->nom.') !');
 		}
 		return $degats;
