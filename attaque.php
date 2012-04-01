@@ -605,7 +605,7 @@ else
 							$defenseur->set_hp($defenseur->get_hp() - $defenseur->etat['lien_sylvestre']['effet']);
 							echo '&nbsp;&nbsp;<span class="degat">'.$defenseur->get_nom().' perd '.$defenseur->etat['lien_sylvestre']['effet'].' HP par le lien sylvestre</span><br />';
 							$log_effects_defenseur .= "&ef5~".$defenseur->etat['lien_sylvestre']['effet'];
-						}*/
+						}
 						if($attaquant->etat['recuperation']['duree'] > 0)
 						{
 							$effet = $attaquant->etat['recuperation']['effet'];
@@ -647,7 +647,7 @@ else
 						{
 							echo '&nbsp;&nbsp;<span class="soin">'.$attaquant->get_nom().' est sous l\'effet de Flêche Débilisante</span><br />';
 							$log_effects_attaquant .= "&ef7~0";
-						}
+						}*/
 					}
 
 					//Update de la base de donnée.

@@ -140,6 +140,8 @@ class effect
     embraser::factory($effects, $actif, $passif, $acteur);
     acide::factory($effects, $actif, $passif, $acteur);
     lien_sylvestre::factory($effects, $actif, $passif, $acteur);
+    recuperation::factory($effects, $actif, $passif, $acteur);
+    debilitant::factory($effects, $actif, $passif, $acteur);
     /*
      * Compétences passives
      */
@@ -434,9 +436,9 @@ class perte_hp extends etat
 {
   const type_log = false;
   
-  function __construct()
+  function __construct($effet)
   {
-    parent::__construct(self::get_etat(), self::get_etat());
+    parent::__construct($effet, self::get_etat());
 	}
 	static function get_etat()
 	{
@@ -451,14 +453,14 @@ class perte_hp extends etat
 		if (array_key_exists(self::get_etat(), $actif->etat))
     {
       $classe = get_called_class();
-			$effects[] = new $classe();
+			$effects[] = new $classe( $actif->etat[self::get_etat()]['effet'] );
 		}
 	}
 
   function fin_round(&$actif, &$passif)
   {
     global $log_effects_attaquant;
-		$perte_hp = $actif->etat[$this->get_etat()]['effet'];
+		$perte_hp = $this->effet;
 		$actif->set_hp($actif->get_hp() - $perte_hp);
 		$this->hit($actif->get_nom().' perd '.$perte_hp. ' HP par '.$this->get_nom());
 		$log_effects_attaquant .= '&'.static::type_log.'~'.$perte_hp;
@@ -591,6 +593,44 @@ class lien_sylvestre extends perte_hp
 }
 
 /**
+ * Récupération
+ */
+class recuperation extends etat
+{
+  function __construct($aEffet)
+  {
+    parent::__construct($aEffet, 'recuperation');
+	}
+
+	static function factory(&$effects, &$actif, &$passif, $acteur = '')
+  {
+		if (array_key_exists('recuperation', $actif->etat))
+    {
+			$effects[] = new recuperation($actif->etat['recuperation']['effet']);
+    }
+	}
+
+  function fin_round(&$actif, &$passif)
+  {
+    global $log_effects_attaquant;
+		$effet = $this->effet;
+		if(($actif->get_hp() + $effet) > $actif->etat['recuperation']['hp_max'])
+		{
+			$effet = $actif->etat['recuperation']['hp_max'] - $actif->get_hp();
+		}
+		$actif->set_hp($actif->get_hp() + $effet);
+		if($effet > 0)
+		{
+			$actif->etat['recuperation']['hp_recup'] += $effet;
+			echo '&nbsp;&nbsp;<span class="soin">'.$actif->get_nom().' gagne '.$effet.' HP par récupération</span><br />';
+			$log_effects_attaquant .= "&ef6~".$effet;
+		}
+		else
+			print_debug($actif->get_nom().' ne peut pas gagner de HP par récupération');
+  }
+}
+
+/**
  * Ensablé : sous l'effet de flèche de sable
  */
 class ensable extends etat {
@@ -613,6 +653,32 @@ class ensable extends etat {
 	function calcul_attaque_magique(&$actif, &$passif, $att) {
     $this->debug($actif->get_nom().' est ensablé');
     return $att / (1 + ($this->effet / 100));
+  }
+}
+
+/**
+ * debilitant : sous l'effet de flèche débilitant
+ */
+class debilitant extends etat {
+
+  function __construct($aEffet)
+  {
+    parent::__construct($aEffet, 'fleche_debilitante');
+	}
+
+	static function factory(&$effects, &$actif, &$passif, $acteur = '')
+  {
+		if (array_key_exists('fleche_debilitante', $actif->etat))
+    {
+			$effects[] = new ensable($actif->etat['fleche_debilitante']['effet']);
+		}
+	}
+
+  function fin_round(&$actif, &$passif)
+  {
+    global $log_effects_attaquant;
+		echo '&nbsp;&nbsp;<span class="soin">'.$defenseur->get_nom().' est sous l\'effet de Flêche Débilisante</span><br />';
+		$log_effects_defenseur .= "&ef7~0";
   }
 }
 
