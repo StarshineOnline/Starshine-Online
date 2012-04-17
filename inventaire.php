@@ -89,7 +89,7 @@ if(!$visu AND isset($_GET['action']))
 					}
 					$row = $db->read_assoc($req);
 					$batiment = new batiment($row['batiment_id']);
-					if($R->get_diplo($joueur->get_race()) == 127 OR $_GET['type'] == 'arme_de_siege' || $_GET['id'] == 1) // id=1 : poste avancé
+					if($R->get_diplo($joueur->get_race()) == 127 OR $_GET['type'] == 'arme_de_siege' || $batiment->get_id() == 1) // id=1 : poste avancé
 					{
 						//On vérifie si ya pas déjà un batiment en construction
 						$requete = "SELECT id FROM placement WHERE x = ".$joueur->get_x()." AND y = ".$joueur->get_y();
