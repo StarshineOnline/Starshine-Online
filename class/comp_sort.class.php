@@ -273,7 +273,13 @@ class comp_sort extends comp_sort_buff
 		return comp_sort_buff::get_liste_update().', comp_assoc = "'.mysql_escape_string($this->comp_assoc).'", carac_assoc = "'.mysql_escape_string($this->carac_assoc).'", comp_requis = '.$this->comp_requis.', carac_requis = '.$this->carac_requis.', effet2 = '.$this->effet2.', requis = '.$this->requis.', cible = '.$this->cible.', description = "'.mysql_escape_string($this->description).'", mp = '.$this->mp.', prix = '.$this->prix.', lvl_batiment = '.$this->lvl_batiment;
 	}
 	// @}
-	
+
+
+	/**
+	 * @name Gestion du lancement
+	 * Méthodes utilisées lors de l'utilisation (lancement) de la compétence / du sort
+	 */
+  // @{
 	/**
 	 * Renvoie la liste des cibles
 	 * @param cible  Cible principale telle que donnée à la méthode lancer
@@ -329,6 +335,99 @@ class comp_sort extends comp_sort_buff
       return perso::create(null, null, 'id ASC', false, $cond);
     }
   }
-	
+
+  /**
+   * Effectuer un test entre deux potentiel
+   * @param  $pot_action    potentiel pour effectuer l'action (offensif)
+   * @param  $pot_oppos     potentiel du jet d'opposition (défensif)
+   * @return   true si le teste à réussi, false sinon
+   */
+  static function test_potentiel($pot_action, $pot_oppos)
+  {
+  	$attaque = rand(0, $pot_action);
+  	$defense = rand(0, $pot_oppos);
+  	print_debug('Potentiel attaquant : '.$pot_action.
+							'<br />Potentiel défenseur : '.$pot_oppos.
+							'<br />Résultat => Attaquant : '.$attaque.' | Défense '.
+							$defense.'<br />');
+    return $attaque > $defense;
+  }
+
+  /**
+   * Fonction permettant de calculer les dés de dégat en fonction de la force et de l'arme de la personne
+   *
+   * @param  $force         Force du personnage.
+   * @param  $degat_arme    Facteur de dégâts de l'arme.
+   *
+   * @return  Tableau contenant les dés à lancer (chaque dès apparait autant de fois dans la tableu qu'il faut le lancer).
+   */
+  static function calcule_des($force, $degat_arme)
+  {
+    // tableau utilisé pour déterminer les dés
+  	$tab_de = array();
+  	$tab_de[0][0] = 2;
+  	$tab_de[0][1] = 3;
+  	$tab_de[0][2] = 4;
+  	$tab_de[0][3] = 5;
+  	$tab_de[0][4] = 6;
+  	$tab_de[0][5] = 7;
+  	$tab_de[0][6] = 11;
+  	$tab_de[1][0] = 2;
+  	$tab_de[1][1] = 4;
+  	$tab_de[1][2] = 6;
+  	$tab_de[1][3] = 8;
+  	$tab_de[1][4] = 10;
+  	$tab_de[1][5] = 12;
+  	$tab_de[1][6] = 20;
+  	// Facteur de dégâts
+  	$potentiel = ceil($force / 3) + $degat_arme;
+  	// Tableau des dés à lancer
+  	$de_degat = array();
+  	while($potentiel > 1)
+  	{
+  		if (($potentiel > 7) AND ($potentiel < 15))
+  		{
+  			$des = array_search(ceil($potentiel / 2), $tab_de[0]);
+  			$potentiel = $potentiel - $tab_de[0][$des];
+  			$de[] = $tab_de[1][$des];
+  		}
+  		else
+  		{
+  			$z = 6;
+  			$check = true;
+  			while($z >= 0 && $check)
+  			{
+  				if ($potentiel >= $tab_de[0][$z])
+  				{
+  					$potentiel = $potentiel - $tab_de[0][$z];
+  					$de[] = $tab_de[1][$z];
+  					$check = false;
+  				}
+  				$z--;
+  			}
+  		}
+  	}
+  	return $de;
+  }
+  
+  /**
+   * Méthode effecute le lancer de dés
+   * @param  $des   Tableau des dés tels que donné par de_degat ou de_soin
+   */
+  static function lance_des($des)
+  {
+		$degat = 0;
+		$i = 0;
+		$dbg_msg = '';
+		while($i < count($des))
+		{
+			$de = rand(1, $des[$i]);
+			$degat += $de;
+			$dbg_msg .= 'Max : '.$des[$i].' - Dé : '.$de.'<br />';
+			$i++;
+		}
+		print_debug($dbg_msg);
+  }
+	// @}
 }
 ?>
