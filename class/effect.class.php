@@ -1053,7 +1053,7 @@ class anneau_resistance extends effect
   }
   
   function calcul_degats_magiques(&$actif, &$passif, $degats, $type) {
-    return $this->calcul_degats(&$actif, &$passif, $degats);
+    return $this->calcul_degats($actif, $passif, $degats);
   }
 }
 
