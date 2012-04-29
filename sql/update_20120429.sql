@@ -55,6 +55,11 @@ UPDATE monstre SET sort_combat = "32;67", comp_combat = "110;103;81;80;49;48;47;
 UPDATE monstre SET arme = "dague", sort_combat = "110;164", comp_combat = "22;24;108;110;11;12;13;14;103;41;42;43;76;77;29;30;31;", action = "#10°posture@~110;#14<3@~164;#14<5@_77;114;115;#14<5@_103" WHERE id = 101; -- Lézard Voltaïque
 UPDATE monstre SET arme = "arc", blocage = 500, bouclier = 8, comp_combat = "7;1;2;3;4;23;32;33;34;62;63;64;68;69;70;90;91;94;95;100;109;116;117", action = "#10°posture@_109;#14<5@_100;#14<5@_95;_117" WHERE id = 102; -- Harpie Vengeresse
 UPDATE monstre SET blocage = 600, bouclier = 8 WHERE id = 106; -- Wyrm
+UPDATE monstre SET sort_combat = '99;100;101;108;190;110;7;8;9;10;43;171;172;11;12;13;14;1;2;5;6;40;109;51;52;53;54' WHERE id =28; -- Djinn
+UPDATE monstre SET comp_combat = '19;20;21;22;25;8;47;9;5;53;10;6;48;54;49;95;101;55;80;99;102;84;98' WHERE id =44; -- Ogre à deux têtes
+UPDATE monstre SET sort_combat = '66;67;68;69;30;31;91;92;118;119;120;121;3;4;15;16;84;85;94;27;28;29;123;130;131;132;133;134;123;124;125;126;127;128;17;18;21;72;73;74;75;87;129' WHERE id =90; -- Banshee
+UPDATE monstre SET sort_combat = '102;103;104;153;154;155;24;25;26;61;62;63;159;160;165;166;167;168' WHERE id =12; -- Élémentaire d''eau
+
 
 -- Encombrement psychique
 UPDATE sort_combat SET effet = 0, nom = 'Encombrement psychique 2' WHERE type LIKE 'encombrement_psy';
