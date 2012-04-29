@@ -153,7 +153,7 @@ elseif(array_key_exists('case', $_GET))
 FROM batiment b 
 LEFT JOIN batiment_bonus bp ON bp.id_batiment = b.id and bp.bonus = 'production' 
 LEFT JOIN batiment_bonus bs ON bs.id_batiment = b.id and bs.bonus = 'specialite' 
-where b.type = 'mine' and b.cond1 = 0";
+where b.type = 'mine' and b.cond1 = 0 and b.cout < 1000000";
 						$req = $db->query($requete);
 						?>
 						Quelle mine voulez-vous construire ?<br />

@@ -52,6 +52,7 @@ class entitenj extends entite
 		$this->sort_mort = ceil( $def->get_sort_mort() * $incarn->get_coeff_comp($perso) );
 		$this->sort_vie = ceil( $def->get_sort_vie() * $incarn->get_coeff_comp($perso) );
 		$this->sort_element = ceil( $def->get_sort_element() * $incarn->get_coeff_comp($perso) );
+		$this->blocage = $def->get_blocage();
 		$this->buff = $incarn->get_buff();
 		$this->etat = array();
 		$this->force = ceil( $def->get_force() * $incarn->get_coeff_carac() );
@@ -62,6 +63,7 @@ class entitenj extends entite
 		$this->dexterite = ceil( $def->get_dexterite() * $incarn->get_coeff_carac() );
 		$this->enchantement = array();
 		$this->arme_degat = $incarn->get_arme_degat() + $def->get_arme_degat($perso, $adversaire);
+		$this->bouclier_degat = $def->get_bouclier();
 		$this->level = $def->get_level();
 		$this->rang_royaume = 0;
 		$this->star = $def->get_star();

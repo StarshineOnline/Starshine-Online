@@ -719,7 +719,7 @@ function lance_sort($id, $acteur, &$effects)
 							'</strong> est affecté par le debuff '.$row['nom'].'<br/>';
 						lance_buff('debuff_charisme', $passif->get_id(),
 											 8, $row['effet2'], $row['effet2'] * 86400, $row['nom'],
-											 sSQL($row['description']), 'perso', 1, 0, 0, 0);
+											 sSQL($row['description']), 'perso', 1, 0, 0, $row['effet']);
 					}
           break;
 
