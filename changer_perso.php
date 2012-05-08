@@ -19,7 +19,7 @@ include_once(root.'inc/fp.php');
   <table>
     <tbody>
       <?php
-      $requete = 'SELECT ID, nom, race, classe FROM perso WHERE id_joueur = '.$_SESSION['id_joueur'];
+      $requete = 'SELECT ID, nom, race, classe FROM perso WHERE id_joueur = '.$_SESSION['id_joueur'].' ORDER BY id';
       $req = $db->query($requete);
       while( $row = $db->read_assoc($req) )
       {

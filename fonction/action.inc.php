@@ -77,7 +77,7 @@ function get_array_condition($valeur) {
 /**
  * Détermine l'action a effectuer, si on peut.
  * Commence par vérifier si le personnage peut effectuer une action en fonction de son état.
- * Ensuite détermine l'action à efectuer en foncion du script. Puis finallement détermine si
+ * Ensuite détermine l'action à effectuer en foncion du script. Puis finallement détermine si
  * l'action est anticipée.    
  *
  * @param $joueur Pesonnage du joueur. 
@@ -171,7 +171,7 @@ function sub_script_action($joueur, $ennemi, $mode, &$effects)
 			$effectue[0] = 'attaque';
 			return $effectue;
 		}
-		if(!$stop)  // Etrange : il y a un "return" juste avant le seul moment ou stop est mit à "true".
+		if(!$stop)  // Etrange : il y a un "return" juste avant le seul moment où stop est mis à "true".
 		{
 		  // Récupèration des actions du personnage
 			$actions = explode(';', $joueur->get_action());
