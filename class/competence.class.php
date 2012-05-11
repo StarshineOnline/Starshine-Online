@@ -312,7 +312,7 @@ class art_critique extends competence
 
   function calcul_mult_critique(&$actif, &$passif, $mult) {
     $this->critique = true;
-    return $mult + $actif->get_competence2('art_critique')->get_valeur();
+    return $mult + ($actif->get_competence2('art_critique')->get_valeur() / 2);
   }
 }
 
