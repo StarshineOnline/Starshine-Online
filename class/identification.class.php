@@ -27,7 +27,6 @@ class identification
       $requete = 'SELECT ID, nom, race, rang_royaume FROM perso WHERE id_joueur = '.$id_joueur.' AND ( statut NOT IN ("ban", "hibern") OR fin_ban < '.time().' ) ORDER BY id';
       $req = $db->query($requete);
 			$nbr_perso = $db->num_rows($req);
-      echo '<p style="color:white;">'.$requete.' -> '.$nbr_perso.' résultats</p>';
 			if( $nbr_perso )
 			{
         $row = $db->read_assoc($req);
