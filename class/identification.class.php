@@ -118,7 +118,6 @@ class identification
 			$erreur_login = 'Erreur de mot de passe.';
 			return false;
 		}
-		echo '<p style="color:white;">ok ('.$id_joueur.' - '.$id_base.')</p>';
 		if($id_base)
 		  return true;
     else
