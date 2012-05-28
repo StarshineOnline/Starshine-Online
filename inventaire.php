@@ -104,14 +104,79 @@ if(!$visu AND isset($_GET['action']))
                 $nbr_mur = 0;
                 if( $_GET['type'] == 'mur' )
                 {
-                  $requete = 'SELECT id FROM construction WHERE ABS(CAST(x AS SIGNED) -'.$joueur->get_x().') <= 1 AND ABS(CAST(y AS SIGNED) - '.$joueur->get_y().') <= 1 AND type LIKE "mur"';
-							    $req = $db->query($requete);
-							    $nbr_mur += $db->num_rows;
-                  $requete = 'SELECT id FROM placement WHERE ABS(CAST(x AS SIGNED) -'.$joueur->get_x().') <= 1 AND ABS(CAST(y AS SIGNED) - '.$joueur->get_y().') <= 1 AND type LIKE "mur"';
-							    $req = $db->query($requete);
-							    $nbr_mur += $db->num_rows;
+					//   Debut Evolution #581
+					// Pour pouvoir construire un mur, il faut ne pas avoir plus de 2 murs autour de celui que l'on construit.
+					// Attention, les tests pour voir s'il n'y a pas trop de murs autour seront uniquement
+					// fait sur les 4 cases juste au nord, a l'est, au sud et a l'ouest (avec la meme limite qu'actuellement). 
+					// Il faut aussi tester pour chacune des ces cases ou il y a deja des murs si la limite ne sera pas depassee une fois le mur pose
+
+					// On commence par extraire la position des murs ou des constructions de murs a 2 cases de distance de la case a traiter 
+					//   000000
+					//   000000
+					//   000000
+					$position_murs=array();
+					$position_murs[0]=array(0,0,0,0,0);
+					$position_murs[1]=array(0,0,0,0,0);
+					$position_murs[2]=array(0,0,0,0,0);
+					$position_murs[3]=array(0,0,0,0,0);
+					$position_murs[4]=array(0,0,0,0,0);
+					
+					// Il y a donc 25 positions a recuperer
+					$requete  = 'SELECT x,y FROM construction WHERE ABS(CAST(x AS SIGNED) -'.$joueur->get_x().') <= 2 AND ABS(CAST(y AS SIGNED) - '.$joueur->get_y().') <= 2 AND type LIKE "mur"';
+					$requete  = 'SELECT id,x,y FROM construction WHERE ABS(CAST(x AS SIGNED) - '.$joueur->get_x().') <= 2 AND ABS(CAST(y AS SIGNED) - '.$joueur->get_y().') <= 2 AND type LIKE "mur" UNION SELECT id,x,y FROM placement WHERE ABS(CAST(x AS SIGNED) - '.$joueur->get_x().') <= 2 AND ABS(CAST(y AS SIGNED) - '.$joueur->get_y().') <= 2 AND type LIKE "mur"';
+					$req = $db->query($requete);
+					
+					// Stockage des positions dans la matrice
+					while($row = $db->read_assoc($req))
+					{
+						$position_murs[$row[x]-$joueur->get_x()+2][$row[y]-$joueur->get_y()+2]=1;
+					}
+					// Rajout de la position du nouveau mur dans la matrice pour les tests (il est au milieu de la matrice).
+					$position_murs[2][2]=1;
+
+					// DEBUG message
+					/*echo '<h4> Matrice des murs deja poses ou en construction:</h4>';
+					for ($i=0;$i<5;$i++)
+					{
+						echo '<h4>';
+						for ($j=0;$j<5;$j++)
+						{
+							// Attention, les x sont verticaux la !!!
+							echo ' '.$position_murs[$j][$i];
+						}
+						echo '</h4>';
+					}*/
+					
+					// Gestion des cardinalites (somme du nombre de murs adjacent au nord, ouest, est, sud de chaque position en comptant la position courante
+					// Cette matrice n'est pas utilisee directement, elle sert juste pour le debug (attention a la variable max_nb_murs si on la retire !)
+					$murs_cardinalite=array();
+					$murs_cardinalite[0]=array(0,0,0);
+					$murs_cardinalite[1]=array(0,0,0);
+					$murs_cardinalite[2]=array(0,0,0);
+					$max_nb_murs=0;
+					for ($x = 1; $x<=3 ; $x+=1)
+					{
+						for ($y = 1; $y<=3 ; $y+=1)
+						{
+							$murs_cardinalite[$x-1][$y-1]=$position_murs[$x-1][$y]+$position_murs[$x+1][$y]+$position_murs[$x][$y-1]+$position_murs[$x][$y+1]+ $position_murs[$x][$y];
+							$max_nb_murs=max($max_nb_murs,$murs_cardinalite[$x-1][$y-1]);
+						}
+					}
+
+					// DEBUG MESSAGE
+					/*
+					echo '<h4>Nombre de murs estimes (en incluant le futur mur) autour de la position ('.$row[x]-$joueur->get_x().','.$row[y]-$joueur->get_y().'):</h4>';
+					echo '<h4>'.$murs_cardinalite[0][0].'  '.$murs_cardinalite[1][0].' '.$murs_cardinalite[2][0].'</h4>';
+					echo '<h4>'.$murs_cardinalite[0][1].'  '.$murs_cardinalite[1][1].' '.$murs_cardinalite[2][1].'</h4>';
+					echo '<h4>'.$murs_cardinalite[0][2].'  '.$murs_cardinalite[1][2].' '.$murs_cardinalite[2][2].'</h4>';
+					echo '<h4>Le maximum est :'.$max_nb_murs.'</h4>';
+					*/
+					// Il reste maintenant a verifier que toutes les conditions sont réunies
+					// Si une des cases vaut 4 ou plus, alors erreur
+					$nbr_mur = $max_nb_murs;
+					//   Fin Evolution #581
                 }
-                if( $nbr_mur <= 2 )
+                if( $nbr_mur <= 3 )
                 {
   								//Positionnement de la construction
   								$distance = calcul_distance(convert_in_pos($Trace[$joueur->get_race()]['spawn_x'], $Trace[$joueur->get_race()]['spawn_y']), ($joueur->get_pos()));
