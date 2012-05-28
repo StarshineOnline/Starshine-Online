@@ -880,7 +880,7 @@ class bonus_pinceau_degats extends effect
     $this->effet = $aEffet;
   }
 	
-	function calcul_bonus_degats_magiques(&$actif, &$passif, $bonus_degats) {
+	function calcul_bonus_degats_magiques(&$actif, &$passif, $bonus_degats, $type) {
 		$bonus_degat = 0;
 		for ($tmp_honneur = $actif->get_honneur() - 20000; $tmp_honneur > 0;
 				 $tmp_honneur -= 15000)

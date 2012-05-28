@@ -1,0 +1,41 @@
+-- -*- coding: latin-1-unix -*-
+-- Copie Tsunami en le modifiant
+insert into sort_combat
+(`nom`,
+ `description`,
+ `mp`,
+ `type`,
+ `comp_assoc`,
+ `carac_assoc`,
+ `carac_requis`,
+ `incantation`,
+ `comp_requis`,
+ `effet`,
+ `effet2`,
+ `duree`,
+ `cible`,
+ `requis`,
+ `prix`,
+ `difficulte`,
+ `lvl_batiment`,
+ `etat_lie`) 
+select 'Télékinésie opportuniste',
+ 'Projète l''adversaire en lui drainant des points de vie',
+ `mp`,
+ 'tsunami_drain',
+ `comp_assoc`,
+ `carac_assoc`,
+ `carac_requis`,
+ `incantation`,
+ `comp_requis`,
+ `effet` + 5,
+ `effet2`,
+ `duree`,
+ `cible`,
+ `requis`,
+ `prix`,
+ `difficulte`,
+ `lvl_batiment`,
+ `etat_lie` 
+FROM `sort_combat` WHERE nom = 'Tsunami';
+

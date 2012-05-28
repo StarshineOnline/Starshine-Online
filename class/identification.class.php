@@ -24,10 +24,9 @@ class identification
 			$id_joueur = $row['id'];
 			$droits = $row['droits'];
 			$pseudo = $row['pseudo'];
-      $requete = 'SELECT ID, nom, race, rang_royaume FROM perso WHERE id_joueur = '.$id_joueur.' AND ( statut NOT IN ("ban", "hibern") OR fin_ban < '.time().' )';
+      $requete = 'SELECT ID, nom, race, rang_royaume FROM perso WHERE id_joueur = '.$id_joueur.' AND ( statut NOT IN ("ban", "hibern") OR fin_ban < '.time().' ) ORDER BY id';
       $req = $db->query($requete);
 			$nbr_perso = $db->num_rows($req);
-      echo '<p style="color:white;">'.$requete.' -> '.$nbr_perso.' résultats</p>';
 			if( $nbr_perso )
 			{
         $row = $db->read_assoc($req);
@@ -119,7 +118,6 @@ class identification
 			$erreur_login = 'Erreur de mot de passe.';
 			return false;
 		}
-		echo '<p style="color:white;">ok ('.$id_joueur.' - '.$id_base.')</p>';
 		if($id_base)
 		  return true;
     else

@@ -3602,7 +3602,7 @@ class perso extends entite
 	* @param bool|string $keys Si false, stockage en tableau classique, si string stockage avec sous tableau en fonction du champ $keys
 	* @return array $return liste d'objets
 	*/
-	static function create($champs, $valeurs, $ordre = 'id ASC', $keys = false, $where = false)
+	static function create($champs, $valeurs, $ordre = 'id ASC', $keys = false, $where = false, $key_unique = false)
 	{
 		global $db;
 		$return = array();

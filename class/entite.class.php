@@ -552,6 +552,7 @@ class entite extends placable
 				return $this->objet_ref->get_bouclier();
 				break;
 			case 'monstre' :
+			case 'pet' :
         return $this->get_blocage();
 				break;
 		}
