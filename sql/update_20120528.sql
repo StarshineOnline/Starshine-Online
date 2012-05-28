@@ -1,4 +1,4 @@
--- -*- coding: latin-15-unix -*-
+-- -*- coding: latin-1-unix -*-
 -- Copie Tsunami en le modifiant
 insert into sort_combat
 (`nom`,
