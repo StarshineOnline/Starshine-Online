@@ -2405,7 +2405,7 @@ class perso extends entite
 
 		// Gestion de la forme de demon
 		if ($this->is_buff('debuff_forme_demon')) {
-			$this->camouflage = 'demon';
+			$this->demonize();
 		}
 
 		// On supprime tous les buffs périmés
@@ -2421,8 +2421,18 @@ class perso extends entite
 		$this->check_materiel();
 		// Gestion de la forme de demon
 		if ($this->is_buff('debuff_forme_demon')) {
-			$this->camouflage = 'demon';
+			$this->demonize();
 		}
+	}
+
+	function demonize() {
+		if (isset($this->camouflage) && $this->camouflage == 'demon')
+			return;
+		$this->camouflage = 'demon';
+		foreach (array('forcex', 'dexterite', 'vie', 'puissance', 'volonte', 'energie') as $bonus)
+			$this->add_bonus_permanents($bonus, 6);
+		foreach (array('melee', 'tir', 'incantation') as $bonus)
+			$this->add_bonus_permanents($bonus, 400);
 	}
   
   /**
