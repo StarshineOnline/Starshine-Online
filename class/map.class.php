@@ -499,7 +499,7 @@ class map
 						elseif ($this->dungeon_layer)
 						{
 							$donjon_layer = 'calque-atmosphere-noir';
-							if (75 <= $this->x && $this->x <= 100 && 305 <= $this->y && $this->y <= 305)
+							if (75 <= $this->x && $this->x <= 100 && 288 <= $this->y && $this->y <= 305)
 								$donjon_layer = 'calque-atmosphere-noir-nysin';
               $num_layers++;
 							$this->print_dungeon_layer($x_map - $this->xmin,
