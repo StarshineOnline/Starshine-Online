@@ -36,9 +36,14 @@ elseif($joueur->get_pa() >= 30)
 		}
 
 		//HP redonnés
-		$hp_repare_max = ceil(pow($joueur->get_architecture(), 1.5));
-		$hp_repare_min = ceil($hp_repare_max / 3);
+		$hp_repare_max = ceil(1000 * (1 - 50/($joueur->get_architecture()+50)));
+		$hp_repare_min = $joueur->get_architecture();
 		$hp_repare = rand($hp_repare_min, $hp_repare_max);
+		// Gemme de fabrique : augmente de effet % l'accélération
+		if ($joueur->is_enchantement('forge'))
+		{
+			$hp_repare += floor($joueur->get_enchantement('forge', 'effet') / 100 * $hp_repare);
+		}
 		$hp = $row['hp_c'] + $hp_repare;
 		if($hp > $row['hp_b'])
 		{

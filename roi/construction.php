@@ -9,7 +9,7 @@ $R = new royaume($Trace[$joueur->get_race()]['numrace']);
 if ($R->is_raz()) $RAZ_ROYAUME = true;
 
 if($joueur->get_rang_royaume() != 6 AND $joueur->get_id() != $royaume->get_ministre_militaire())
-	echo '<p>Cette page vous est interdit</p>';
+	echo '<p>Cette page vous est interdite</p>';
 else if(!array_key_exists('direction', $_GET))
 {
 	echo "<div id='affiche_minimap' style='float:right;'>";
@@ -83,7 +83,7 @@ else if(!array_key_exists('direction', $_GET))
 	if ($db->num_rows($req)>0)
 	{
 		echo "<fieldset>";	
-		echo "<legend>Liste de vos drapeaux sur territoire énnemi</legend>";	
+		echo "<legend>Liste de vos drapeaux sur territoire ennemi</legend>";	
 		echo "<ul>";
 		$boutique_class = 't1';
 		while($row = $db->read_assoc($req))
@@ -128,7 +128,7 @@ else if(!array_key_exists('direction', $_GET))
 				
 				if ($batiment_suivant->get_cond1() < (time() - $construction->get_date_construction()))
 				{
-					echo ' - <a href="construction.php?direction=up_construction&amp;id='.$row['id'].'" onclick="if(confirm(\'Voulez vous upgrader ce '.$construction->get_nom().' ?\')) return envoiInfo(this.href, \'message_confirm\'); else return false;">Upgrader - '.$batiment_suivant->get_cout().' stars</a>';
+					echo ' - <a href="construction.php?direction=up_construction&amp;id='.$row['id'].'" onclick="if(confirm(\'Voulez-vous upgrader ce '.$construction->get_nom().' ?\')) return envoiInfo(this.href, \'message_confirm\'); else return false;">Upgrader - '.$batiment_suivant->get_cout().' stars</a>';
 				}
 				else
 				{
@@ -147,7 +147,7 @@ else if(!array_key_exists('direction', $_GET))
 			if( $construction->get_hp() >= $batiment->get_hp() * $G_prct_vie_suppression )
 			{
   			echo "<span style='display:block;width:30px;float:left;cursor:pointer;padding-left:4px;'>
-  					<a onclick=\"if(confirm('Voulez vous supprimer ce ".$construction->get_nom()." ?')) {return envoiInfo('construction.php?direction=suppr_construction&amp;id=".$construction->get_id()."', 'message_confirm');} else {return false;};\"><img src='../image/interface/croix_quitte.png' alt='suppression' title='Supprimer.'/></a>
+  					<a onclick=\"if(confirm('Voulez-vous supprimer ce ".$construction->get_nom()." ?')) {return envoiInfo('construction.php?direction=suppr_construction&amp;id=".$construction->get_id()."', 'message_confirm');} else {return false;};\"><img src='../image/interface/croix_quitte.png' alt='suppression' title='Supprimer.'/></a>
   				</span>";
       }
       else

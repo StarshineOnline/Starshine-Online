@@ -29,7 +29,7 @@ function affiche_bataille($bataille)
 			<?php
 		}
 		?>
-		<a href="#" onclick="javascript: if(confirm('Voulez vous vraiment supprimer cette bataille ?')) { return envoiInfo('gestion_bataille.php?id_bataille=<?php echo $bataille->id; ?>&amp;suppr_bataille', 'bataille_<?php echo $bataille->id; ?>');} else{return false;}" >Supprimer</a><br />
+		<a href="#" onclick="javascript: if(confirm('Voulez-vous vraiment supprimer cette bataille ?')) { return envoiInfo('gestion_bataille.php?id_bataille=<?php echo $bataille->id; ?>&amp;suppr_bataille', 'bataille_<?php echo $bataille->id; ?>');} else{return false;}" >Supprimer</a><br />
 		</fieldset>
 		<fieldset style="padding : 5px; width : 500px; float : left; min-height : 50px;">
 			<legend><?php echo $bataille->nom; ?></legend>
@@ -243,7 +243,7 @@ elseif(array_key_exists('info_case', $_GET) OR array_key_exists('type', $_GET))
 		}
 		echo '
 		<div id="repere'.$repere->id.'">'.$type.' : '.$repere->repere_type->get_nom().' 
-		<a href="gestion_bataille.php?id_repere='.$repere->id.'&del_repere" onclick="javascript: if(confirm(\'Voulez vous vraiment supprimer ce repère ?\')) { $(\'#repere'.$repere->id.'\').remove(); return envoiInfo(this.href, \'information_modif\'); } else return false;">X</a><br />';
+		<a href="gestion_bataille.php?id_repere='.$repere->id.'&del_repere" onclick="javascript: if(confirm(\'Voulez-vous vraiment supprimer ce repère ?\')) { $(\'#repere'.$repere->id.'\').remove(); return envoiInfo(this.href, \'information_modif\'); } else return false;">X</a><br />';
 		if($repere->type == 'action') echo '&nbsp;&nbsp;&nbsp;<i>'.count($repere->groupes).' groupe</i>';
 		echo '
 		</div>';

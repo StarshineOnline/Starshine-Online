@@ -43,15 +43,16 @@ elseif($joueur->get_pa() >= 30)
 			security_block(BAD_ENTRY, "Erreur de paramètre");
 
 		//Seconde supprimées du décompte
-		$secondes_max = floor(($row['fin_placement'] - $row['debut_placement']) * (sqrt($joueur->get_architecture()) / 100));
+		$seconde_prct = floor(($row['fin_placement'] - $row['debut_placement']) * (sqrt($joueur->get_architecture()) / 100));
+		$secondes_max = min(round(15000 * sqrt($joueur->get_architecture())), $seconde_prct);
 
-		// Gemme de fabrique : augmente de effet % le max possible
+		$secondes_min = min(250 * $joueur->get_architecture(), round($seconde_prct / 2));
+		$secondes = rand($secondes_min, $secondes_max);
+		// Gemme de fabrique : augmente de effet % l'accélération
 		if ($joueur->is_enchantement('forge'))
 		{
 			$secondes_max += floor($joueur->get_enchantement('forge', 'effet') / 100 * $secondes_max);
 		}
-		$secondes_min = round($secondes_max / 2);
-		$secondes = round(rand($secondes_min, $secondes_max));
 		//On met à jour le placement
 		$requete = "UPDATE placement SET fin_placement = fin_placement - ".$secondes." WHERE id = ".sSQL($_GET['id_construction']);
 		if($db->query($requete))

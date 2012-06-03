@@ -39,7 +39,7 @@ if ($W_row['type'] != 1)
     $joueur->get_x().' and y = '.$joueur->get_y(); 
 	$W_req_bat = $db->query($W_requete_bat);
 	$W_row_bat = $db->read_assoc($W_req_bat);
-	if ($W_row_bat && $W_row_bat['type'] == 'bourg')
+	if ($W_row_bat && ($W_row_bat['type'] == 'bourg' || $W_row_bat['type'] == 'fort'))
 		$batiment_ok = true;
 }
 

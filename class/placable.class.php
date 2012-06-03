@@ -56,6 +56,7 @@ abstract class placable extends table
 	function set_nom($nom)
 	{
 		$this->nom = $nom;
+		$this->champs_modif[] = 'nom';
 	}
 	
 	/// Renvoie la coorodonnée x

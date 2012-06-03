@@ -30,7 +30,8 @@ body { margin:0; padding:0; background:#7e909c url(../image/v2/bg_site.png) repe
 #popup_menu { cursor:move; background:transparent url(../image/v2/bouton_fond.png) repeat-x scroll 0 0; }
 #popup_content { padding:5px; text-align:justify; width:98%; }
 #popup_marge { min-height:470px; margin:auto; width:800px; }
-.fermer { background:transparent url(../image/interface/rouge.png) no-repeat top left; display:block; height:16px; width:16px; cursor:pointer!important; }
+.changer { background:transparent url(../image/interface/changer.png) no-repeat top left; display:inline-block; height:16px; width:16px; cursor:pointer!important; margin-top:3px }
+.fermer { background:transparent url(../image/interface/rouge.png) no-repeat top left; display:inline-block; height:16px; width:16px; cursor:pointer!important; }
 #mask { background-image:url(../image/v2/overlay.png); height:100%; left:0; position:absolute; top:0; width:100%; z-index:9999999; }
 #header { background-color:#c6d9f5; min-height:120px; margin:0; padding:0; }
 #header_logo { width:1000px; margin:auto; background:transparent url(../image/v2/site_haut.png) no-repeat left; min-height:120px; }

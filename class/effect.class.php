@@ -131,10 +131,17 @@ class effect
      */
     empoisonne::factory($effects, $actif, $passif, $acteur);
     poison_lent::factory($effects, $actif, $passif, $acteur);
+    poison::factory($effects, $actif, $passif, $acteur);
     ensable::factory($effects, $actif, $passif, $acteur);
     tellurique::factory($effects, $actif, $passif, $acteur);
     bouclier_protecteur::factory($effects, $actif, $passif, $acteur);
     riposte_furtive::factory($effects, $actif, $passif, $acteur);
+    hemorragie::factory($effects, $actif, $passif, $acteur);
+    embraser::factory($effects, $actif, $passif, $acteur);
+    acide::factory($effects, $actif, $passif, $acteur);
+    lien_sylvestre::factory($effects, $actif, $passif, $acteur);
+    recuperation::factory($effects, $actif, $passif, $acteur);
+    debilitant::factory($effects, $actif, $passif, $acteur);
     /*
      * Compétences passives
      */
@@ -423,6 +430,44 @@ class etat extends effect {
 }
 
 /**
+ * Hémorragie
+ */
+class perte_hp extends etat
+{
+  const type_log = false;
+  
+  function __construct($effet)
+  {
+    parent::__construct($effet, self::get_etat());
+	}
+	static function get_etat()
+	{
+    return get_called_class();
+  }
+	static function get_nom()
+	{
+    return get_called_class();
+  }
+	static function factory(&$effects, &$actif, &$passif, $acteur = '')
+  {
+		if (array_key_exists(self::get_etat(), $actif->etat))
+    {
+      $classe = get_called_class();
+			$effects[] = new $classe( $actif->etat[self::get_etat()]['effet'] );
+		}
+	}
+
+  function fin_round(&$actif, &$passif)
+  {
+    global $log_effects_attaquant;
+		$perte_hp = $this->effet;
+		$actif->set_hp($actif->get_hp() - $perte_hp);
+		$this->hit($actif->get_nom().' perd '.$perte_hp. ' HP par '.$this->get_nom());
+		$log_effects_attaquant .= '&'.static::type_log.'~'.$perte_hp;
+	}
+}
+
+/**
  * empoisonné
  */
 class empoisonne extends effect {
@@ -447,6 +492,36 @@ class empoisonne extends effect {
 			$actif->etat['empoisonne']['effet'] = 1;
 		if ($actif->etat['empoisonne']['duree'] < 1)
 			unset($actif->etat['empoisonne']);
+	}
+}
+
+/**
+ * Poison
+ */
+class poison extends effect
+{
+  function __construct()
+  {
+    parent::__construct('poison');
+	}
+
+	static function factory(&$effects, &$actif, &$passif, $acteur = '')
+  {
+		if (array_key_exists('poison', $actif->etat))
+    {
+			$effects[] = new poison();
+		}
+	}
+
+  function fin_round(&$actif, &$passif)
+  {
+    global $log_effects_attaquant;
+		$perte_hp = $actif->etat['poison']['effet'] - $attaquant->etat['poison']['duree'] + 1;
+		if($actif->etat['putrefaction']['duree'] > 0)
+      $perte_hp = $perte_hp * $actif->etat['putrefaction']['effet'];
+		$actif->set_hp($actif->get_hp() - $perte_hp);
+		$this->hit($actif->get_nom().' perd '.$perte_hp. ' HP par le poison');
+		$log_effects_attaquant .= "&ef1~".$perte_hp;
 	}
 }
 
@@ -478,6 +553,84 @@ class poison_lent extends effect {
 }
 
 /**
+ * Hémorragie
+ */
+class hemorragie extends perte_hp
+{
+  const type_log = 'ef2';
+}
+
+/**
+ * Embrasement
+ */
+class embraser extends perte_hp
+{
+  const type_log = 'ef3';
+	static function get_nom()
+	{
+    return 'embrasement';
+  }
+}
+
+/**
+ * Acide
+ */
+class acide extends perte_hp
+{
+  const type_log = 'ef4';
+}
+
+/**
+ * Lien sylvestre
+ */
+class lien_sylvestre extends perte_hp
+{
+  const type_log = 'ef5';
+	static function get_nom()
+	{
+    return 'le lien sylvestre';
+  }
+}
+
+/**
+ * Récupération
+ */
+class recuperation extends etat
+{
+  function __construct($aEffet)
+  {
+    parent::__construct($aEffet, 'recuperation');
+	}
+
+	static function factory(&$effects, &$actif, &$passif, $acteur = '')
+  {
+		if (array_key_exists('recuperation', $actif->etat))
+    {
+			$effects[] = new recuperation($actif->etat['recuperation']['effet']);
+    }
+	}
+
+  function fin_round(&$actif, &$passif)
+  {
+    global $log_effects_attaquant;
+		$effet = $this->effet;
+		if(($actif->get_hp() + $effet) > $actif->etat['recuperation']['hp_max'])
+		{
+			$effet = $actif->etat['recuperation']['hp_max'] - $actif->get_hp();
+		}
+		$actif->set_hp($actif->get_hp() + $effet);
+		if($effet > 0)
+		{
+			$actif->etat['recuperation']['hp_recup'] += $effet;
+			echo '&nbsp;&nbsp;<span class="soin">'.$actif->get_nom().' gagne '.$effet.' HP par récupération</span><br />';
+			$log_effects_attaquant .= "&ef6~".$effet;
+		}
+		else
+			print_debug($actif->get_nom().' ne peut pas gagner de HP par récupération');
+  }
+}
+
+/**
  * Ensablé : sous l'effet de flèche de sable
  */
 class ensable extends etat {
@@ -500,6 +653,32 @@ class ensable extends etat {
 	function calcul_attaque_magique(&$actif, &$passif, $att) {
     $this->debug($actif->get_nom().' est ensablé');
     return $att / (1 + ($this->effet / 100));
+  }
+}
+
+/**
+ * debilitant : sous l'effet de flèche débilitant
+ */
+class debilitant extends etat {
+
+  function __construct($aEffet)
+  {
+    parent::__construct($aEffet, 'fleche_debilitante');
+	}
+
+	static function factory(&$effects, &$actif, &$passif, $acteur = '')
+  {
+		if (array_key_exists('fleche_debilitante', $actif->etat))
+    {
+			$effects[] = new ensable($actif->etat['fleche_debilitante']['effet']);
+		}
+	}
+
+  function fin_round(&$actif, &$passif)
+  {
+    global $log_effects_attaquant;
+		echo '&nbsp;&nbsp;<span class="soin">'.$defenseur->get_nom().' est sous l\'effet de Flêche Débilisante</span><br />';
+		$log_effects_defenseur .= "&ef7~0";
   }
 }
 
@@ -701,7 +880,7 @@ class bonus_pinceau_degats extends effect
     $this->effet = $aEffet;
   }
 	
-	function calcul_bonus_degats_magiques(&$actif, &$passif, $bonus_degats) {
+	function calcul_bonus_degats_magiques(&$actif, &$passif, $bonus_degats, $type) {
 		$bonus_degat = 0;
 		for ($tmp_honneur = $actif->get_honneur() - 20000; $tmp_honneur > 0;
 				 $tmp_honneur -= 15000)
@@ -739,7 +918,7 @@ class boutte_flamme extends effect
 		case 'embrasement':
 		case 'sphere_glace':
 			$degats += $this->effet;
-			$this->debug($actif->get_nom().' voit ses dégats augmentés de '.
+			$this->debug($actif->get_nom().' voit ses dégâts augmentés de '.
 									 $this->effet.' grâce à son arme ('.$this->nom.') !');
 		}
 		return $degats;
@@ -874,7 +1053,7 @@ class anneau_resistance extends effect
   }
   
   function calcul_degats_magiques(&$actif, &$passif, $degats, $type) {
-    return $this->calcul_degats(&$actif, &$passif, $degats);
+    return $this->calcul_degats($actif, $passif, $degats);
   }
 }
 

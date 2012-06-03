@@ -239,7 +239,7 @@ function trafiquerCanalisation(&$joueur, $item, $x, $y, $decor, $changes)
 		$code = 'include_once(root."class/map_changes.php"); $cs = unserialize(\''.
 			$sch.'\'); foreach ($cs as $c)  $c->apply();';
 		$scode = sSQL($code);
-		$date = 'DATE_ADD(NOW(), interval 5 day)';
+		$date = 'DATE_ADD(NOW(), interval 3 day)';
 		$res = $db->query("insert into calendrier (date, eval) values ($date, '$scode')");
   }
   else

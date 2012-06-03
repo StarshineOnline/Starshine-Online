@@ -6,7 +6,7 @@ if (file_exists('../root.php'))
  * @file attaque.inc.php
  *
  */
-include_once(root.$root.'class/comp.class.php');
+include_once(root.$root.'class/competence.class.php');
 include_once(root.$root.'class/gemmes.class.php');
 
 /**
@@ -186,7 +186,7 @@ function attaque($acteur = 'attaquant', $competence, &$effects)
 				//Si le joueur bloque
 				if ($attaque <= $blocage)
 				{
-					$degat_bloque = $passif->bouclier()->degat;
+					$degat_bloque = $passif->get_bouclier_degat();//$passif->bouclier()->degat;
 					if($passif->is_buff('bouclier_terre')) $degat_bloque += $passif->get_buff('bouclier_terre', 'effet');
 
 					/* Application des degats bloques */
@@ -355,7 +355,7 @@ function attaque($acteur = 'attaquant', $competence, &$effects)
 				}
 			}
 			//Art du critique : augmente les dégâts fait par un coup critique
-			if($actif->is_competence('art_critique')) $art_critique = $actif->get_competence('art_critique')->get_valeur() / 100; else $art_critique = 0;
+			if($actif->is_competence('art_critique')) $art_critique = $actif->get_competence2('art_critique')->get_valeur() / 100; else $art_critique = 0;
 			//Buff Colère
 			if($actif->is_buff('buff_colere')) $buff_colere = ($actif->get_buff('buff_colere', 'effet')) / 100; else $buff_colere = 0;
 			//Orc
@@ -375,7 +375,7 @@ function attaque($acteur = 'attaquant', $competence, &$effects)
 			$critique = true;
 			if(array_key_exists('renouveau_energique', $actif->buff) && $actif->get_arme_type() == 'arc')
 			{
-				$actif->set_reserve($actif->get_reserve() + $actif->get_buff('renouveau_energique', 'effet'));
+				$actif->set_rm_restant($actif->get_rm_restant() + $actif->get_buff('renouveau_energique', 'effet'));
 				echo $actif->get_nom().' se ressaisi et gagne '.$actif->get_buff('renouveau_energique', 'effet').' RM<br />';
 			}
 			//if(array_key_exists('maitre_critique', $actif['competences'])) augmentation_competence('maitre_critique', $actif, 3);
@@ -430,7 +430,7 @@ function attaque($acteur = 'attaquant', $competence, &$effects)
 			$buff_epine = $passif->get_buff('buff_epine', 'effet') / 100;
 			$effet = round($degat * $buff_epine);
 			$actif->set_hp($actif->get_hp() - $effet);
-			if($effet > 0) echo '&nbsp;&nbsp;<span class="degat">'.$passif->get_nom().' renvoi '.$effet.' dégâts grâce à l\' Armure en épine</span><br />';
+			if($effet > 0) echo '&nbsp;&nbsp;<span class="degat">'.$passif->get_nom().' renvoie '.$effet.' dégâts grâce à l\' Armure en épine</span><br />';
 			$log_effects_passif .= "&ef9~".$effet;
 		}
 	    //Armure de glace

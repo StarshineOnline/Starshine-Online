@@ -31,7 +31,7 @@ function recherche_nb_objet($joueur, $id_objet)
 //Renvoi l'objet décomposé sous forme de tableau => stack, slot, enchantement, id, id_objet, sans_stack
 function decompose_objet($objet)
 {
-	if($objet == 'lock')
+	if($objet == 'lock' || !$objet )
 	{
 		return false;
 	}

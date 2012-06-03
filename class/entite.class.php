@@ -1,6 +1,4 @@
-<?php
-
-
+<?php // -*- mode: php; tab-width: 2 -*-
 /**
  * @file entite.class.php
  * Gestion des participants à un combat
@@ -26,10 +24,10 @@ class entite extends placable
 	protected $race;         ///< Race de l'entité.
 	protected $level;        ///< Niveau de l'entité.
 	protected $rang_royaume; ///< Grade de l'entité au sein de son royaume.
-	private $type;           ///< Type de l'entité.
-	private $espece;         ///< Espèce de l'entité.
+	protected $type;           ///< Type de l'entité.
+	protected $espece;         ///< Espèce de l'entité.
 	public $etat;            ///< État de l'entité.
-	private $point_victoire; ///< Points de victoire gagnés si l'entité est détruite.
+	protected $point_victoire; ///< Points de victoire gagnés si l'entité est détruite.
 	/// Renvoie la race
 	function get_race()
 	{
@@ -182,8 +180,7 @@ class entite extends placable
 	protected $sort_vie;     ///< Compétence magie de la vie.
 	protected $sort_element; ///< Compétence magie élémentaire.
 	protected $sort_mort;    ///< Compétence nécromancie.
-	private $comp;
-	private $competence = array();
+	protected $competence = array();
 	/// Renvoie la mêlée
 	function get_melee()
 	{
@@ -261,7 +258,7 @@ class entite extends placable
    * @param  $nom     nom ou type de la compétence.
    * @param  $type    true si $nom est le type de la compétence, $false si c'est son nom.
    */
-	function get_competence($nom, $type = false)
+	function get_competence2($nom, $type = false)
 	{
 		$buffe = false;
 		if(is_array($this->competence))
@@ -298,7 +295,7 @@ class entite extends placable
 		}
 		if ($this->type == 'joueur')
 		{
-			$this->comp = $this->objet_ref->get_comp();
+			$this->comp_att = $this->objet_ref->get_comp_att();
 			$this->distance = $this->objet_ref->get_distance();
 			$this->competence = $this->objet_ref->get_comp_perso();
 		}
@@ -307,16 +304,6 @@ class entite extends placable
 	function get_comp_combat()
 	{
 		return $this->comp_combat;
-	}
-	/// ???
-	function get_comp()
-	{
-		return $this->comp;
-	}
-	/// ???
-	function set_comp($valeur)
-	{
-		$this->comp = $valeur;
 	}
   // @}
   
@@ -400,6 +387,10 @@ class entite extends placable
 			else
 				foreach($this->buff as $buff)
 				{
+					// C'est gore mais ća devrait marcher le temps que ce soit debuggué
+					// pour de bon ;p
+					/*if (is_array($buff) && count($buff) == 1 && is_object($buff[0]))
+						$buff = $buff[0];*/
 					if($buff->get_type() == $nom)
 					{
 						$get = 'get_'.$champ;
@@ -485,16 +476,16 @@ class entite extends placable
 	 * les perosnnages.
 	 */
   // @{
-	private $arme_type;          ///< Type de l'arme utilisée.
+	protected $arme_type;          ///< Type de l'arme utilisée.
 	public $pp;                  ///< Protection physique.
 	public $pm;                  ///< Protection magique.
 	public $pm_para;             ///< Protection magique.
 	public $enchantement;        ///< Liste des enchantements de gemmes.
-	private $arme_degat;         ///< Dégâts de l'arme.
-	private $bouclier_degat = 0; ///< Dégâts bloqués par le bouclier.
-	private $malus_hache = 1;    ///< Malus d'esquive dû au port d'une hache.
-	private $malus_arc = 1;    ///< Malus d'esquive dû au port d'un arc.
-	private $saved_inventaire = null; ///< Inventaire
+	protected $arme_degat;         ///< Dégâts de l'arme.
+	protected $bouclier_degat = 0; ///< Dégâts bloqués par le bouclier.
+	protected $malus_hache = 1;    ///< Malus d'esquive dû au port d'une hache.
+	protected $malus_arc = 1;    ///< Malus d'esquive dû au port d'un arc.
+	protected $saved_inventaire = null; ///< Inventaire
 	/// Renvoie le type de l'arme utilisée
 	function get_arme_type()
 	{
@@ -561,6 +552,8 @@ class entite extends placable
 				return $this->objet_ref->get_bouclier();
 				break;
 			case 'monstre' :
+			case 'pet' :
+        return $this->get_blocage();
 				break;
 		}
 		return false;
@@ -649,8 +642,12 @@ class entite extends placable
   // @{
 	public $action;            ///< Contenu du script de combat utilisé.
 	public $reserve;           ///< Réserve de mana.
-	private $distance_tir;     ///< Distance de tir
+	public $rm_restant;           ///< Réserve de mana restante.
+	protected $distance_tir;     ///< Distance de tir
 	public $potentiel_bloquer; ///< Potentiel bloquer
+	public $potentiel_toucher;
+	public $potentiel_parer;
+	protected $comp_att;       ///< Coméptence utilisé pour attaquer
 	/// Renvoie le contenu du script de combat utilisé
 	function get_action()
 	{
@@ -665,7 +662,18 @@ class entite extends placable
 	function set_reserve($valeur)
 	{
 		if ($valeur <= 0) $valeur = 0;
-		$this->reserve = $valeur;
+		  $this->reserve = $valeur;
+	}
+	/// Renvoie la réserve de mana
+	function get_rm_restant()
+	{
+		return $this->rm_restant;
+	}
+	/// Modifie la réserve de mana
+	function set_rm_restant($valeur)
+	{
+		if ($valeur <= 0) $valeur = 0;
+		  $this->rm_restant = $valeur;
 	}
 	/// Renvoie la distance de tir
 	function get_distance_tir()
@@ -741,15 +749,29 @@ class entite extends placable
 	{
 		$this->potentiel_parer = $valeur;
 	}
+	/// Renvoie la compétence utilisée pour attaquer
+	function get_comp_att()
+	{
+		return $this->comp_att;
+	}
+	/// Modifie la compétence utilisée pour attaquer?
+	function set_comp_att($valeur)
+	{
+		$this->comp_att = $valeur;
+	}
 	/// Initialise l'objet pour un nouveau round de combat
 	function init_round()
   {
-    if($this->get_arme_type() == 'arc') $this->set_comp('distance'); else $this->set_comp('melee');
+    if($this->get_arme_type() == 'arc') $this->set_comp_att('distance'); else $this->set_comp_att('melee');
     unset($this->potentiel_toucher);
     unset($this->potentiel_parer);
 		$this->degat_sup = 0;
 		$this->degat_moins = 0;
   }
+  /// Action effectuées à la fin d'un combat
+  function fin_combat(&$perso, $degats=null) { echo "on fait rien ! ($this)<br/>"; }
+  /// Action effectuées à la fin d'un combat pour le défenseur
+  function fin_defense(&$perso, &$royaume, $pet, $degats, $batiment) {}
 	// @}
 
 	/**
@@ -757,13 +779,13 @@ class entite extends placable
 	 * Méthode gérant la lecture et l'écriture dans la base de données
 	 */
   // @{
-	private $objet_ref;    ///< Référence vers l'objet source
+	protected $objet_ref;    ///< Référence vers l'objet source
   /**
    * Crée l'objet à partir d'un objet source
    * @param  $type    Type de l'entité
    * @objet  $objet   Référence vers l'objet source.
    */
-	function __construct($type, &$objet)
+	function __construct($type=null, &$objet=null)
 	{
 		$this->objet_effet = array();
 		$this->type = $type;
@@ -781,20 +803,20 @@ class entite extends placable
 				switch ($this->arme_type)
 					{
 					case 'hache':
-						/* On calcule le malus d'esquive de la hache */
+						// On calcule le malus d'esquive de la hache
 						$hache = $objet->get_arme();
 						if ($hache->mains == 'main_droite') {
-							/* Hache à 1 main : 5% */
+							// Hache à 1 main : 5%
 							$this->malus_hache = 0.95;
 						}
 						else {
-							/* Hache à 2 mains : 15% */
+							// Hache à 2 mains : 15%
 							$this->malus_hache = 0.85;
 						}
 					case 'epee':
 					case 'dague':
 					case 'baton':
-					case '': /* main nues */
+					case '': // main nues 
 						$this->comp_combat = 'melee';
 					break;
 					case 'arc':
@@ -807,7 +829,7 @@ class entite extends placable
 					default:
 						die("Invalid arme_type ($this->arme_type) !!");
 					}
-				$this->comp = $objet->get_comp();
+				$this->comp_att = $objet->get_comp_att();
 				$this->competence = $objet->get_comp_perso();
 				$this->x = $objet->get_x();
 				$this->y = $objet->get_y();
@@ -890,7 +912,7 @@ class entite extends placable
 				$this->point_victoire = 0;
 			break;
 			case 'pet' :
-				$pet = $objet->get_pet();
+				$pet = $objet->get_pet(); // bug si pas de créature principale
 				$pet->get_monstre();
 				$this->action = $pet->recupaction('attaque');
 				$this->arme_type = $pet->monstre->get_arme();
@@ -1054,6 +1076,76 @@ class entite extends placable
 			break;
 		}
 	}
+  /**
+   * Crée l'objet la bonne classe à partir d'un objet source
+   * @param  $type    Type de l'entité
+   * @objet  $objet   Référence vers l'objet source.
+   */
+	static function factory($type, &$src, $perso=null, $attaquant=true, $adversaire=null)
+	{
+    switch($type)
+    {
+		case 'monstre' :
+		case 'pet' :
+		case 'batiment' :
+		case 'siege' :
+      $objet = new entitenj($src, $perso, $attaquant, $adversaire);
+		  $objet->objet_ref = &$src->get_def();
+		  break;
+    case 'joueur' :
+      $objet = new perso($src->get_id());
+			$objet->action = $src->action_do;
+			switch ($objet->arme_type)
+				{
+				case 'hache':
+					/* On calcule le malus d'esquive de la hache */
+					$hache = $src->get_arme();
+					if ($hache->mains == 'main_droite') {
+						/* Hache à 1 main : 5% */
+						$objet->malus_hache = 0.95;
+					}
+					else {
+						/* Hache à 2 mains : 15% */
+						$objet->malus_hache = 0.85;
+					}
+				case 'epee':
+				case 'dague':
+				case 'baton':
+				case '': /* main nues */
+					$objet->comp_combat = 'melee';
+				break;
+				case 'arc':
+					$objet->comp_combat = 'distance';
+					$objet->malus_arc = 0.8;
+				break;
+				case 'bouclier':
+					$objet->comp_combat = 'blocage';
+				break;
+				default:
+					die("Invalid arme_type ($this->arme_type) !!");
+				}
+			$objet->competence = $src->get_comp_perso();
+			$objet->hp_max = $src->get_hp_maximum();
+			$objet->rm_restant = $src->get_reserve_bonus();
+			$objet->get_buff();
+			$objet->etat = array();
+			if ($src->get_bouclier())
+				$objet->bouclier_degat = $src->get_bouclier()->degat;
+			$objet->rang = $src->get_grade()->get_rang();
+			$objet->espece = 'humainoïde';
+			$objet->point_victoire = 0;
+		  $objet->objet_ref = &$src;
+			break;
+		case 'ville' :
+      $objet = new entite_cap($src);
+      break;
+		default:
+      return new entite($type, $src);
+    }
+		$objet->objet_effet = array();
+		$objet->type = $type;
+		return $objet;
+  }
 	/// Renvoie la liste des champs pour une insertion dans la base
 	protected function get_liste_champs()
 	{
@@ -1062,12 +1154,12 @@ class entite extends placable
 	/// Renvoie la liste des valeurs des champspour une insertion dans la base
 	protected function get_valeurs_insert()
 	{
-		return placable::get_valeurs_insert().', $this->hp';
+		return placable::get_valeurs_insert().', '.$this->hp;
 	}
 	/// Renvoie la liste des champs et valeurs pour une mise-à-jour dans la base
 	protected function get_liste_update()
 	{
-		return placable::get_liste_update().', hp = $this->hp';
+		return placable::get_liste_update().', hp = '.$this->hp;
 	}
   /// Renvoie l'objet source
 	function get_objet()

@@ -68,6 +68,23 @@ class pet extends map_monstre
 		$this->ecurie = $ecurie;
 		$this->champs_modif[] = 'ecurie';
 	}
+
+  /// Renvoie la race
+	function get_race($perso)
+	{
+		return $perso->get_race();
+	}
+	
+	/// Indique que l'entité est morte
+	function mort(&$perso)
+  {
+    $this->sauver();
+  }
+  /// Action effectuées à la fin d'un combat pour le défenseur
+  function fin_defense(&$perso, &$royaume, $pet, $degats, &$def)
+  {
+    return $perso->fin_combat_pvp($this, false);
+  }
 	// @}
 
 	/**
@@ -156,6 +173,46 @@ class pet extends map_monstre
 	protected function get_liste_update()
 	{
 		return 'id_joueur = '.$this->id_joueur.', id_monstre = '.$this->id_monstre.', nom = \''.mysql_escape_string($this->nom).'\', hp = '.$this->hp.', mp = '.$this->mp.', principale = '.$this->principale.', ecurie = '.$this->ecurie.', action_a = '.$this->action_a.', action_d = '.$this->action_d;
+	}
+	// @}
+
+  /**
+   * @name  Buffs
+   * Données et méthodes ayant trait aux buffs et débuffs actifs sur le monstre.
+   */
+  // @{
+	/**
+	 * Renvoie une propriété d'un buff / débuff particulier actif sur le personnage ou l'ensemble de ceux-ci.
+	 * @param  $nom      Nom (type) du (dé)buff recherché, renvoie tous les buffs actifs si vaut false.
+	 * @param  $champ    Propriété recherchée (correspond à un champ dans la bdd).
+	 * @param  $type	   Si false on prend le premier buff, si true celui dont le type correspond à $nom.
+	 * @return     Tableau des buffs ou valeur demandée.
+	 */
+	function get_buff($nom = false, $champ = false, $type = true)
+	{
+		if(!$nom)
+		{
+			$this->buff = buff::create('id_perso', $this->id_joueur, 'id ASC', 'type', false, true);
+			return $this->buff;
+		}
+		else
+		{
+			if(!isset($this->buff)) $this->get_buff();
+			if(!$type)
+			{
+				$get = 'get_'.$champ;
+				return $this->buff[0]->$get();
+			}
+			else
+				foreach($this->buff as $buff)
+				{
+					if($buff->get_type() == $nom)
+					{
+						$get = 'get_'.$champ;
+						return $buff->$get();
+					}
+				}
+		}
 	}
 	// @}
 
@@ -282,6 +339,15 @@ class pet extends map_monstre
 		if(!$base) return $this->pm;
 		else return $this->pm_base;
 	}
+  /// Renvoie le bonus de PM dû à l'armure
+  function get_bonus_pm()
+  {
+		if(!isset($this->pm))
+		{
+			$this->get_armure();
+		}
+		return $this->pm - $this->pm_base;
+  }
 
   /**
    * Renvoie la PP.
@@ -297,6 +363,15 @@ class pet extends map_monstre
 		if(!$base) return $this->pp;
 		else return $this->pp_base;
 	}
+  /// Renvoie le bonus de PP dû à l'armure
+  function get_bonus_pp()
+  {
+		if(!isset($this->pp))
+		{
+			$this->get_armure();
+		}
+		return $this->pp - $this->pp_base;
+  }
 
 	// Renvoie l'arme de la main droite. Enregistre les enchantements et les effets.
 	function get_arme()
@@ -360,8 +435,8 @@ class pet extends map_monstre
 	 * Données et méthodes liées aux combats.
 	 */
 	// @{
-	private $action_a;   ///< Id du script d'attaque
-	private $action_d;   ///< Id du script de défense
+	protected $action_a;   ///< Id du script d'attaque
+	protected $action_d;   ///< Id du script de défense
 	public $action_do;
 	public $reserve_bonus;   ///< RM avec les bonus dus aux buffs
 
@@ -389,7 +464,7 @@ class pet extends map_monstre
 		$this->champs_modif[] = 'action_d';
 	}
 	/**
-	 * Récupère le contenu du script pour une action donnéd
+	 * Récupère le contenu du script pour une action donné
 	 * @param  $type_action    'attaque' ou 'defense'.
 	 * @return     Contenu du script (sous forme textuelle).
 	 */
@@ -412,6 +487,14 @@ class pet extends map_monstre
 		$this->action = $row[0];
 		return $this->action;
 	}
+	/// Renvoie le script d'action
+	function get_action($attaquant)
+  {
+    if( $attaquant )
+      return $this->recupaction('attaque');
+    else
+      return $this->recupaction('defense');
+  }
 
   /// Renvoie la distance à laquelle le personnage peut attaquer
 	function get_distance_tir()
@@ -509,5 +592,10 @@ class pet extends map_monstre
 		return $this->level;
 	}
 	// @}
+	/// Renvoie le coefficient pour modifier les compétences
+  function get_coeff_comp($perso)
+  {
+    return 1 + ($perso->get_dressage()-400)/1000;
+  }
 }
 ?>

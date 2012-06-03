@@ -90,17 +90,16 @@ class map_monstre extends entnj_incarn
 	 */
   // @{
 	/**
-	* @access public
-
-	* @param int(10) id attribut
-	* @param mediumint(8) type attribut
-	* @param mediumint(8) x attribut
-	* @param mediumint(8) y attribut
-	* @param mediumint(8) hp attribut
-	* @param tinyint(3) level attribut
-	* @param varchar(50) nom attribut
-	* @param varchar(40) lib attribut
-	* @param int(10) mort_naturelle attribut
+	* Constructeur
+	* @param id                Id dans la base de donnée ou tableau associatif contenant les informations permettant la création de l'objet
+	* @param $id_monstre       Id de la définition du monstre
+	* @param x                 Position x du monstre
+	* @param y                 Position y du monstre
+	* @param hp                HP¨actuels du monstre
+	* @param level             Niveau du monstre
+	* @param nom               Nom d monstre
+	* @param lib
+	* @param mort_naturelle    Date de la mort naturelle du monstre
 	*/
 	function __construct($id = 0, $id_monstre = 0, $x = 0, $y = 0, $hp = 0, $level = 0, $nom = '', $lib = '', $mort_naturelle = '')
 	{
@@ -177,6 +176,7 @@ class map_monstre extends entnj_incarn
    * Données et méthodes ayant trait aux buffs et débuffs actifs sur le monstre.
    */
   // @{
+	protected $buff;  ///< Liste des buffs actifs sur le monstre
 	/**
 	 * Renvoie une propriété d'un buff / débuff particulier actif sur le personnage ou l'ensemble de ceux-ci.
 	 * @param  $nom      Nom (type) du (dé)buff recherché, renvoie tous les buffs actifs si vaut false.
@@ -184,12 +184,11 @@ class map_monstre extends entnj_incarn
 	 * @param  $type	   Si false on prend le premier buff, si true celui dont le type correspond à $nom.
 	 * @return     Tableau des buffs ou valeur demandée.
 	 */
-	protected $buff;  ///< Liste des buffs actifs sur le monstre
 	function get_buff($nom = false, $champ = false, $type = true)
 	{
 		if(!$nom)
 		{
-			$this->buff = buff_monstre::create(id_monstre, $this->id, 'id ASC', 'type');
+			$this->buff = buff_monstre::create('id_monstre', $this->id, 'id ASC', 'type', false, true);
 			return $this->buff;
 		}
 		else
@@ -273,7 +272,7 @@ class map_monstre extends entnj_incarn
 	}
 
   /// Gère les actions spéciales à effectuer lorsqu'un mosntre dedonjon a été tué
-	function kill_monstre_de_donjon()
+	function kill_monstre_de_donjon(&$perso)
 	{
 		global $db;
     $log = new log_admin();
@@ -356,10 +355,25 @@ class map_monstre extends entnj_incarn
 		case 176:
 		case 177:
 		case 178:
+      $duree = $this->id_monstre == 162 ? 8 : 1;
 			echo '<strong>Sur le corps du geôlier, vous trouvez la clef de la porte et l\'ouvrez. La clef tombe en poussière après usage.</strong><br />';
 			print_reload_area('deplacement.php?deplacement=centre', 'centre');
-			ouvrePorteMaraudeurGeolier($this->x);
+			ouvrePorteMaraudeurGeolier($this->x, $duree);
 			break;
+
+			// César
+		case 180:
+			$perso->unlock_achiev('brutus');
+			if ($perso->get_groupe()) {
+				$groupe = new groupe($perso->get_groupe());
+				$groupe->get_membre();
+				foreach($groupe->membre_joueur as $membre) {
+					$membre->unlock_achiev('brutus');
+				}
+			}
+			echo 'L\'éternel adolescent vous toise d\'un regard espiègle tandisque dans un flash aveuglant, vous êtes projeté en arrière. Non loin de vous, sur le mur, une étrange surface brillante que vous aviez déjà remarqué, attire à ce moment votre attention pour des raisons qui vous échappe. Cesar fait vrombir son fauteuil d\'un coup sec. Des gerbes de flamme, de sang et de salives sont projetés par l\'engin avant que Cesar ne disparaisse dans le mur. Les reflets mystérieux continuent à agiter la surface miroitante mais rien n\'y fait, en la touchant, elle reste d\'une opacité à toute épreuve. Peut être n\'est-elle réservée qu\'à un genre de personne bien particulier. Un type qui sortirait de la norme sous quelques handicapes, ou quelques forces démoniaques...';
+			break;
+
 			
 		default:
 			// Rien à faire
@@ -367,7 +381,7 @@ class map_monstre extends entnj_incarn
 	}
 
   /// Cherche dans la bdd s'il y a une action spéciale à effectuer lors de la mort d'un mosntre de donjon et l'effectue si besoin
-	function kill_monstre_de_donjon2()
+	function kill_monstre_de_donjon2(&$perso)
 	{
 		global $db;
 		$requete = "select * from monstre_special where type = $this->id_monstre";
@@ -414,7 +428,7 @@ class map_monstre extends entnj_incarn
 		}
 	}
 
-	function check_boss_loot(&$joueur, $groupe)
+	function check_boss_loot(&$perso, $groupe)
 	{
 		global $db;
 		$req = $db->query("select * from boss_loot where id_monstre = $this->id_monstre");
@@ -426,10 +440,10 @@ class map_monstre extends entnj_incarn
 
 			// ajuste le taux de drop
 			$taux = 1;
-			if($joueur->get_race() == 'humain')
+			if($perso->get_race() == 'humain')
 				$taux *= 1.3;
-			if($joueur->is_buff('fouille_gibier')) 
-				$taux *= (1 + ($joueur->get_buff('fouille_gibier', 'effet') / 100));
+			if($perso->is_buff('fouille_gibier')) 
+				$taux *= (1 + ($perso->get_buff('fouille_gibier', 'effet') / 100));
 			if ($taux > 1)
 				foreach ($tloot as &$l)
 					$l->chance = floor($l->chance * $taux);
@@ -451,13 +465,20 @@ class map_monstre extends entnj_incarn
 					$ids[] = $m->get_id_joueur();
 			} else {
 				$nb_joueurs = 1;
-				$ids = array($joueur->get_id());
+				$ids = array($perso->get_id());
 			}
 			$id = implode(',', $ids);
 			$req = $db->query("select * from joueur_loot where id_joueur in ($id) and id_monstre = $this->id_monstre");
 			$old = $db->num_rows($req);
-			// S'il y a déjà eu loot, on ne drop pas d'item grosbill
-			if ($old > 0) $grosbill = array();
+
+      // 20% de chance de loot d'un item grosbill par membre du groupe
+      // n'ayant pas encore looté. Comme ça, si les joueurs dégroupent
+      // pour kill 5 fois ils ont 5 * 20% plutôt que 5 * 100%
+      $chances = ($nb_joueurs - $old) * 20;
+      $de = mt_rand(1, 100);
+      if ($de > $chances) // pas de drop grosbill !
+        $grosbill = array();
+
 			// mélange les items
 			shuffle($grosbill);
 			shuffle($loot);
@@ -472,7 +493,7 @@ class map_monstre extends entnj_incarn
 					$tirage -= $l->chance;
 					if ($tirage < 1) {
 						$has_loot = true;
-						loot_item($joueur, $groupe, $l->item);
+						loot_item($perso, $groupe, $l->item);
 						$old++;
 						break;
 					}
@@ -488,7 +509,7 @@ class map_monstre extends entnj_incarn
 					$tirage -= $l->chance;
 					if ($tirage < 1) {
 						$has_loot = true;
-						loot_item($joueur, $groupe, $l->item);
+						loot_item($perso, $groupe, $l->item);
 						$old++;
 						break;
 					}
@@ -502,4 +523,197 @@ class map_monstre extends entnj_incarn
 		}
 	}
 	// @}
+	
+  /// Action effectuées à la fin d'un combat pour le défenseur
+  function fin_defense(&$perso, &$royaume, $pet, $degats, &$def)
+  {
+    global $db, $G_xp_rate, $G_drop_rate, $G_range_level;
+
+		$gains_xp = false;
+		$gains_drop = false;
+		$gains_star = false;
+			
+		//Le défenseur est mort !
+		if ($this->get_hp() <= 0)
+		{
+			$coeff = 0.5;
+			//Différence de level
+			$diff_level = abs($perso->get_level() - $this->get_level());
+			//Perde d'honneur
+			$coeff = 1 - ($diff_level * 0.02);
+
+			$gains_xp = true;
+			$coef = 1;
+			$gains_drop = true;
+			$gains_star = true;
+
+			// On gere les monstres de donjon
+			$this->kill_monstre_de_donjon($perso);
+
+			// Augmentation du compteur de l'achievement
+			$achiev = $perso->get_compteur('kill_monstres');
+			$achiev->set_compteur($achiev->get_compteur() + 1);
+			$achiev->sauver();
+
+			//Si c'est un Seigneur loup-garou on debloque l'achievement
+			if($this->get_type() == 115)
+				$perso->unlock_achiev('seigneur_loup_garou');
+			if($this->get_type() == 56)
+				$perso->unlock_achiev('sworling');
+		}
+		elseif ($perso->get_hp() <= 0 && !$pet) //L'attaquant est mort !
+		{
+			$coeff = 0.5;
+			//Différence de level
+			$diff_level = abs($perso->get_level() - $this->get_level());
+			//Perde d'honneur
+			$coeff = 1 - ($diff_level * 0.02);
+			if ($coeff != 1)
+			{
+				echo 'Vous perdez '.
+					($perso->get_honneur() - $perso->get_honneur() * $coeff).
+					' honneur en mourant.<br />';
+				$perso->set_honneur($perso->get_honneur() * $coeff);
+			}
+			$perso->set_mort($perso->get_mort() + 1);
+			$perso->sauver();
+
+			//Si c'est Dévorsis
+			if($this->get_type() == 64)
+			{
+				$gain_hp = floor($perso->get_hp_max() * 0.1);
+				$this->set_hp($this->get_hp() + $gain_hp);
+				$this->sauver();
+				echo 'Dévorsis regagne '.$gain_hp.' HP en vous tuant.<br />';
+			}
+
+			// achievement
+			if($this->get_type() == 1)
+			{
+				$perso->unlock_achiev('killer_rabbit');
+			}
+		}
+		elseif($degats > 0)
+		{
+			$gains_xp = true;
+			$coef = 0.5 * $degats / $def->get_hp();
+		}
+		if($gains_xp)
+		{
+			//Niveau du groupe
+			if($perso->get_groupe() == 0)
+			{
+				$groupe = new groupe();
+				$groupe->level_groupe = $perso->get_level();
+				$groupe->somme_groupe = $perso->get_level();
+				$groupe->set_share_xp(100);
+				$groupe->membre_joueur[0] = $perso;
+				$groupe->membre_joueur[0]->share_xp = 100;
+			}
+			else
+			{
+				$groupe = new groupe($perso->get_groupe());
+				$groupe->get_membre();
+			}
+			//Gain d'expérience
+			$requete = "SELECT xp, star, drops FROM monstre WHERE id = '".$this->get_type()."'";
+			$req = $db->query($requete);
+			$row = $db->read_row($req);
+			$xp = $row[0] * $G_xp_rate * $coef;
+		}
+		if($gains_drop)
+		{
+				$drop = $row[2];
+		}
+		if($gains_star)
+		{
+			$starmax = $row[1];
+			$starmin = floor($row[1] / 2);
+			$star = rand($starmin, $starmax) * $G_drop_rate;
+			if($perso->get_race() == 'nain') $star = floor($star * 1.1);
+			if($perso->is_buff('recherche_precieux')) $star = $star * (1 + ($perso->get_buff('recherche_precieux', 'effet') / 100));
+			$star = ceil($star);
+			$taxe = floor($star * $royaume->get_taxe_diplo($perso->get_race()) / 100);
+			$star = $star - $taxe;
+			//Récupération de la taxe
+			if($taxe > 0)
+			{
+				$royaume->gain_star($taxe, 'monstre');
+				$royaume->sauver();
+			}
+		}
+
+		if($gains_drop)
+		{
+			$this->check_boss_loot($perso, $groupe);
+
+			//Drop d'un objet ?
+			$drops = explode(';', $drop);
+			if($drops[0] != '')
+			{
+				$count = count($drops);
+				$i = 0;
+				while($i < $count)
+				{
+					$share = explode('-', $drops[$i]);
+					$objet = $share[0];
+					$taux = ceil($share[1] / $G_drop_rate);
+					if($perso->get_race() == 'humain') $taux = $taux / 1.3;
+					if($perso->is_buff('fouille_gibier')) $taux = $taux / (1 + ($perso->get_buff('fouille_gibier', 'effet') / 100));
+					if ($taux < 2) $taux = 2; // Comme ca, pas de 100%
+					$tirage = rand(1, floor($taux));
+					//Si c'est un objet de quête :
+					if($objet[0] == 'q')
+					{
+						$check = false;
+						$i_quete = 0;
+						$liste_quete = $perso->get_liste_quete();
+						$count_quete = count($liste_quete);
+						while(!$check AND $i_quete < $count_quete)
+						{
+							if($liste_quete[$i_quete]['id_quete'] == $share[1])
+								$check = true;
+							$i_quete++;
+						}
+						if($check) $tirage = 1;
+						else $tirage = 2;
+					}
+					if($tirage == 1)
+						loot_item($perso, $groupe, $objet);
+					$i++;
+				}
+			}
+		}
+
+		if($gains_xp)
+		{
+			//Partage de l'xp au groupe
+			if ($xp < 0) $xp = 0;
+
+			$groupe->get_share_xp($perso->get_pos());
+			foreach($groupe->membre_joueur as $membre)
+			{
+				//XP Final
+				$xp_perso = $xp * (1 + (($this->get_level() - $membre->get_level()) / $G_range_level));
+				$xp_perso = floor($xp_perso * $membre->share_xp / $groupe->get_share_xp($perso->get_pos()));
+				if($xp_perso < 0) $xp_perso = 0;
+				$membre->set_exp($membre->get_exp() + $xp_perso);
+				if($gains_star)
+				{
+					$star_perso = floor($star * $membre->share_xp / $groupe->get_share_xp($perso->get_pos()));
+					$membre->set_star($membre->get_star() + $star_perso);
+				}
+				else $star_perso = 0;
+				$msg_xp .= $membre->get_nom().' gagne <strong class="reward">'.$xp_perso.' XP</strong> et <strong class="reward">'.$star_perso.' Stars</strong><br />';
+				//Vérification de l'avancement des quêtes solo pour le tueur, groupe pour les autres
+				if($this->get_hp() <= 0)
+				{
+					if($membre->get_id() == $perso->get_id()) verif_action('M'.$this->get_type(), $membre, 's');
+					else verif_action('M'.$this->get_type(), $membre, 'g');
+				}
+				$membre->sauver();
+			}
+		}
+		return $msg_xp;
+	}
 }

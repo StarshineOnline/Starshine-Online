@@ -2340,7 +2340,8 @@ class perso extends entite
 				if (($this->get_hp() + $hp_gagne) > $this->get_hp_maximum()) $this->set_hp(floor($this->get_hp_maximum()));
 				else { $this->set_hp($this->get_hp() + $hp_gagne);}
 				// Mise à jour des MP
-				$this->set_mp($this->get_mp() + $mp_gagne);
+				// Le nombre de MP total ne peut pas être négatif
+				$this->set_mp(max(0,$this->get_mp() + $mp_gagne));
 				if ($this->get_mp() > $this->get_mp_maximum()) $this->set_mp(floor($this->get_mp_maximum()));
 				$this->set_regen_hp($this->get_regen_hp() + ($nb_regen * ($G_temps_regen_hp - $bonus_regen)));
 			}
@@ -2401,6 +2402,12 @@ class perso extends entite
 			// Mise-à-jour du personnage dans la base de donnée
 			$this->sauver();
 		} // if($this->get_hp() > 0)
+
+		// Gestion de la forme de demon
+		if ($this->is_buff('debuff_forme_demon')) {
+			$this->demonize();
+		}
+
 		// On supprime tous les buffs périmés
 		$requete = "DELETE FROM buff WHERE fin <= ".time();
 		$req = $db->query($requete);
@@ -2409,6 +2416,24 @@ class perso extends entite
 		$db->query($requete);
 	}
   // @}
+
+	function check_specials() {
+		$this->check_materiel();
+		// Gestion de la forme de demon
+		if ($this->is_buff('debuff_forme_demon')) {
+			$this->demonize();
+		}
+	}
+
+	function demonize() {
+		if (isset($this->camouflage) && $this->camouflage == 'demon')
+			return;
+		$this->camouflage = 'demon';
+		foreach (array('forcex', 'dexterite', 'vie', 'puissance', 'volonte', 'energie') as $bonus)
+			$this->add_bonus_permanents($bonus, 6);
+		foreach (array('melee', 'tir', 'incantation') as $bonus)
+			$this->add_bonus_permanents($bonus, 400);
+	}
   
   /**
    * @name  Sorts, compétences & buffs
@@ -2503,7 +2528,7 @@ class perso extends entite
 	{
 		if(!$nom)
 		{
-			$this->buff = buff::create('id_perso', $this->id, 'id ASC', 'type');
+			$this->buff = buff::create('id_perso', $this->id, 'id ASC', 'type', false, true);
 			return $this->buff;
 		}
 		else
@@ -2589,7 +2614,7 @@ class perso extends entite
 		$buff->set_type($nom);
 		$buff->set_effet($effet);
 		$buff->set_effet2($effet2);
-		$this->buff[] = $buff;
+		$this->buff[$nom] = $buff;
 	}
 	// @}
 	
@@ -3082,6 +3107,215 @@ class perso extends entite
 		}
 		return 0;
 	}
+  /// Action effectuées à la fin d'un combat
+  function fin_combat(&$perso, $degats=null)
+  {
+    $this->objet_ref->set_hp( $this->get_hp() );
+    $this->objet_ref->sauver();
+  }
+  /// Action effectuées à la fin d'un combat PvP
+  function fin_combat_pvp($ennemi, $defense, $batiment=false)
+  {
+    global $db, $G_xp_rate, $G_range_level, $G_crime, $Gtrad;
+    if( $this->get_hp() <= 0 )
+    {
+			$this->trigger_arene();
+			//On supprime toutes les rez
+			$this->supprime_rez();
+			//Achievement
+			if($this->get_hp() == 0)
+				$this->unlock_achiev('near_kill');
+			if($this->get_groupe() == 0)
+				$this->unlock_achiev('divided_fall');
+
+			// Augmentation du compteur de l'achievement
+			$achiev = $ennemi->get_compteur('kill_'.$this->get_race());
+			$achiev->set_compteur($achiev->get_compteur() + 1);
+			$achiev->sauver();
+			
+			if( $defense )
+			{
+  			if($defenseur_en_defense)
+  			{
+  				// Augmentation du compteur de l'achievement
+  				$achiev = $perso->get_compteur('kill_defense');
+  				$achiev->set_compteur($achiev->get_compteur() + 1);
+  				$achiev->sauver();
+  			}
+  			if ($this->get_nom() == 'Irulan')
+  			{
+  				$actif->unlock_achiev('kill_bastounet');
+  			}
+  			if ($this->get_crime() > 0)
+  			{
+  				$achiev = $ennemi->get_compteur('dredd');
+  				$achiev->set_compteur($ennemi->get_compteur() + 1);
+  				$achiev->sauver();
+  			}
+      }
+
+			//Gain d'expérience
+			$xp = $this->get_level() * 100 * $G_xp_rate;
+
+			//Si le joueur a un groupe
+			if($ennemi->get_groupe() > 0)
+			{
+				$groupe = new groupe($ennemi->get_groupe());
+				$groupe->get_share_xp($ennemi->get_pos());
+				//Si on tape un joueur de son groupe xp = 0
+				foreach($groupe->membre_joueur as $membre_id)
+				{
+					if($membre_id->get_id() == $this->get_id())
+					{
+						$xp = 0;
+
+						// Augmentation du compteur de l'achievement
+						$achiev = $ennemi->get_compteur('kill_teammate');
+						$achiev->set_compteur($achiev->get_compteur() + 1);
+						$achiev->sauver();
+					}
+				}
+			}
+			//Joueur solo
+			else
+			{
+				$groupe = new groupe();
+				$groupe->level_groupe = $ennemi->get_level();
+				$groupe->somme_groupe = $ennemi->get_level();
+				$groupe->set_share_xp(100);
+				$groupe->membre_joueur[0] = new perso();
+				$groupe->membre_joueur[0]->set_x($ennemi->get_x());
+				$groupe->membre_joueur[0]->set_y($ennemi->get_y());
+				$groupe->membre_joueur[0]->set_id($ennemi->get_id());
+				$groupe->membre_joueur[0]->share_xp = 100;
+				$groupe->membre_joueur[0]->set_race($ennemi->get_race());
+				$groupe->membre_joueur[0]->set_level($ennemi->get_level());
+				$groupe->membre_joueur[0]->set_exp($ennemi->get_exp());
+				$groupe->membre_joueur[0]->set_star($ennemi->get_star());
+				$groupe->membre_joueur[0]->set_honneur($ennemi->get_honneur());
+				$groupe->membre_joueur[0]->set_reputation($ennemi->get_reputation());
+			}
+			$G_range_level = ceil($this->get_level() * 0.5);
+			$xp = $xp * (1 + (($this->get_level() - $ennemi->get_level()) / $G_range_level));
+			if($xp < 0) $xp = 0;
+			//Si il est en groupe réduction de l'xp gagné par rapport au niveau du groupe
+			if($ennemi->get_groupe() > 0)
+			{
+				$xp = $xp * $ennemi->get_level() / $groupe->get_level();
+			}
+			$honneur = floor($xp * 4);
+
+			//Partage de l'xp au groupe
+			foreach($groupe->membre_joueur as $membre)
+			{
+				//Facteur de diplomatie
+				$requete = "SELECT ".$this->get_race()." FROM diplomatie WHERE race = '".$membre->get_race()."'";
+				$req_diplo = $db->query($requete);
+				$row_diplo = $db->read_row($req_diplo);
+
+				//Vérification crime
+				if($membre->get_id() == $ennemi->get_id() AND $crime AND $defense)
+				{
+					$points = $G_crime[$row_diplo[0]];
+					$ennemi->set_crime($ennemi->get_crime() + $points);
+					$msg_xp .=  'Vous tuez un joueur en '.$Gtrad['diplo'.$row[0]].', vous recevez '.$points.' point(s) de crime<br />';
+				}
+				$star = 0;
+				if ($row_diplo[0] == 127) $row_diplo[0] = 0;
+				//Si le défenseur est criminel
+				if($pascrime)
+				{
+					switch($amende['statut'])
+					{
+						case 'bandit' :
+							$row_diplo[0] = 5;
+							$statut_joueur = 'Bandit';
+						break;
+						case 'criminel' :
+							$row_diplo[0] = 10;
+							$statut_joueur = 'Criminel';
+							if($amende['prime'] > 0)
+							{
+								$star = $amende['prime'];
+								$msg_xp .=  'Vous avez tué un criminel ayant une prime sur sa tête, vous gagnez '.$star.' stars.<br />';
+								$requete = "UPDATE amende SET prime = 0 WHERE id = ".$amende['id'];
+								$db->query($requete);
+								$requete = "DELETE FROM prime_criminel WHERE id_amende = ".$amende['id'];
+								$db->query($requete);
+							}
+						break;
+					}
+
+					$xp = $xp / 5;
+					$honneur = $honneur / 5;
+				}
+				$facteur_xp = $row_diplo[0] * 0.2;
+				$facteur_honneur = ($row_diplo[0] * 0.2) - 0.8;
+				if ($facteur_honneur < 0) $facteur_honneur = 0;
+				//XP Final
+				$partage = $groupe->get_share_xp($ennemi->get_pos());
+				$partage = $partage == 0 ? 1 : $partage;
+				$xp_gagne = floor(($xp * $facteur_xp) * $membre->share_xp / $partage);
+				if($xp_gagne < 0) $xp_gagne = 0;
+				$honneur_gagne = floor(($honneur * $facteur_honneur) * $membre->share_xp / $partage);
+				//(de)Buffs moral, pour la gloire, cacophonie
+				if($membre->is_buff('moral'))
+          $honneur_gagne = floor( $honneur_gagne * (1 + ($membre->get_buff('moral', 'effet') / 100)) );
+				if($membre->is_buff('buff_honneur'))
+          $honneur_gagne = floor( $honneur_gagne * (1 + ($membre->get_buff('buff_honneur', 'effet') / 100)) );
+				if($membre->is_buff('cacophonie'))
+          $honneur_gagne = floor( $honneur_gagne * (1 - ($membre->get_buff('cacophonie', 'effet') / 100)) );
+				$reputation_gagne = floor($honneur_gagne / 10);
+
+				// Pas d'honneur pour un kill de sa propre race
+				if ($membre->get_race() == $this->get_race())
+					$honneur_gagne = 0;
+
+				$membre->set_star($membre->get_star() + $star);
+				$membre->set_exp($membre->get_exp() + $xp_gagne);
+				$membre->set_honneur($membre->get_honneur() + $honneur_gagne);
+				$membre->set_reputation($membre->get_reputation() + $reputation_gagne);
+				$msg_xp .= $membre->get_nom().' gagne <strong class="reward">'.$xp_gagne.' XP</strong>, <strong class="reward">'.$honneur_gagne.' points d\'honneur</strong>, et <strong class="reward">'.$reputation_gagne.' points de réputation</strong><br />';
+				$membre->sauver();
+				if($defense && $membre->get_id() == $ennemi->get_id()) verif_action('J'.$row_diplo[0], $membre, 's');
+				else verif_action('J'.$row_diplo[0], $membre, 'g');
+			}
+
+			// Augmentation du compteur de l'achievement
+			if($ennemi->get_level() >= $this->get_level()) // Kill d'un joueur d'un plus petit level
+				$achiev = $ennemi->get_compteur('kill_lower');
+			else
+				$achiev = $ennemi->get_compteur('kill_higher');
+			$achiev->set_compteur($achiev->get_compteur() + 1);
+			$achiev->sauver();
+
+			// Achievement joueur meme race
+			if($ennemi->get_race() == $this->get_race())
+			{
+				$achiev = $ennemi->get_compteur('kill_race');
+				$achiev->set_compteur($achiev->get_compteur() + 1);
+				$achiev->sauver();
+			}
+
+			$achievement_bouche_oreille = achievement_type::create('variable', 'bouche_oreille');
+			// Si le joueur mort l'a deja debloqué
+			if($this->already_unlocked_achiev($achievement_bouche_oreille[0]))
+				$ennemi->unlock_achiev('bouche_oreille');
+
+			$ennemi->set_frag($ennemi->get_frag() + 1);
+			$this->set_mort($this->get_mort() + 1);
+			$ennemi->sauver();
+			$this->sauver();
+    }
+    return $msg_xp;
+  }
+  /// Action effectuées à la fin d'un combat pour le défenseur
+  function fin_defense(&$perso, &$royaume, $pet, $degats, $batiment)
+  {
+    $msg_xp = $perso->fin_combat_pvp($this, false);
+    $msg_xp .= $this->fin_combat_pvp($perso, true, $batiment);
+    return $msg_xp;
+  }
 	// @}
 
 	/**
@@ -3392,7 +3626,7 @@ class perso extends entite
 	* @param bool|string $keys Si false, stockage en tableau classique, si string stockage avec sous tableau en fonction du champ $keys
 	* @return array $return liste d'objets
 	*/
-	static function create($champs, $valeurs, $ordre = 'id ASC', $keys = false, $where = false)
+	static function create($champs, $valeurs, $ordre = 'id ASC', $keys = false, $where = false, $key_unique = false)
 	{
 		global $db;
 		$return = array();

@@ -314,6 +314,18 @@ function type_terrain($info)
   $typeterrain[105][1] = 'Repère des renegats';
 	$typeterrain[106][0] = 'taverne_donjon';
   $typeterrain[106][1] = 'Repère des renegats';
+	$typeterrain[135][0] = 'donjon_aqua_level_1';
+  $typeterrain[135][1] = 'Donjon';
+	$typeterrain[145][0] = 'donjon_aqua_level_1';
+  $typeterrain[145][1] = 'Donjon';
+	$typeterrain[155][0] = 'donjon_aqua_level_1';
+  $typeterrain[155][1] = 'Donjon';
+	$typeterrain[165][0] = 'donjon_aqua_level_1';
+  $typeterrain[165][1] = 'Donjon';
+	$typeterrain[175][0] = 'donjon_aqua_level_1';
+  $typeterrain[175][1] = 'Donjon';
+	$typeterrain[185][0] = 'donjon_aqua_level_1';
+  $typeterrain[185][1] = 'Donjon';
 	/* TEMPLATE
 	$typeterrain[][0] = '';
 	$typeterrain[][1] = '';
@@ -446,195 +458,62 @@ function is_ville($x, $y = false)
 function cout_pa($info, $race)
 {
 	//Initialisation des variables de déplacement, 50 = infranchissable.
+	$coutGeneral['plaine'] = 4;
+	$coutGeneral['foret'] = 6;
+	$coutGeneral['desert'] = 5;
+	$coutGeneral['glace'] = 5;
+	$coutGeneral['marais'] = 5;
+	$coutGeneral['montagne'] = 6;
+	$coutGeneral['eau'] = 50;
+	$coutGeneral['route'] = 2;
+	$coutGeneral['objet'] = 2;
+	$coutGeneral['terre_maudite'] = 5;
+	$coutGeneral['donjon'] = 5;
+	$coutGeneral['taverne_donjon'] = 2;
+	$coutGeneral['donjon_aqua_level_1'] = 4;
+	$coutGeneral['mur_donjon'] = 50;
+	$coutGeneral['mer'] = 6;
+	
 	/*** BARBARES ***/
-	$coutpa['barbare']['plaine'] = 4;
-	$coutpa['barbare']['foret'] = 6;
-	$coutpa['barbare']['desert'] = 5;
+	$coutpa['barbare'] = $coutGeneral;
 	$coutpa['barbare']['glace'] = 4;
-	$coutpa['barbare']['marais'] = 5;
-	$coutpa['barbare']['montagne'] = 6;
-	$coutpa['barbare']['eau'] = 50;
-	$coutpa['barbare']['route'] = 2;
-	$coutpa['barbare']['objet'] = 2;
-	$coutpa['barbare']['terre_maudite'] = 5;
-	$coutpa['barbare']['donjon'] = 5;
-	$coutpa['barbare']['taverne_donjon'] = 2;
-	$coutpa['barbare']['mur_donjon'] = 50;
-	$coutpa['barbare']['mer'] = 6;
 
 	/*** ELFE DES BOIS ***/
-	$coutpa['elfebois']['plaine'] = 4;
+	$coutpa['elfebois'] = $coutGeneral;
 	$coutpa['elfebois']['foret'] = 5;
-	$coutpa['elfebois']['desert'] = 5;
-	$coutpa['elfebois']['glace'] = 5;
-	$coutpa['elfebois']['marais'] = 5;
-	$coutpa['elfebois']['montagne'] = 6;
-	$coutpa['elfebois']['eau'] = 50;
-	$coutpa['elfebois']['route'] = 2;
-	$coutpa['elfebois']['objet'] = 2;
-	$coutpa['elfebois']['terre_maudite'] = 5;
-	$coutpa['elfebois']['donjon'] = 5;
-	$coutpa['elfebois']['taverne_donjon'] = 2;
-	$coutpa['elfebois']['mur_donjon'] = 50;
-	$coutpa['elfebois']['mer'] = 6;
 
 	/*** HAUT ELFE ***/
-	$coutpa['elfehaut']['plaine'] = 4;
+	$coutpa['elfehaut'] = $coutGeneral;
 	$coutpa['elfehaut']['foret'] = 5;
-	$coutpa['elfehaut']['desert'] = 5;
-	$coutpa['elfehaut']['glace'] = 5;
-	$coutpa['elfehaut']['marais'] = 5;
-	$coutpa['elfehaut']['montagne'] = 6;
-	$coutpa['elfehaut']['eau'] = 50;
-	$coutpa['elfehaut']['route'] = 2;
-	$coutpa['elfehaut']['objet'] = 2;
-	$coutpa['elfehaut']['terre_maudite'] = 5;
-	$coutpa['elfehaut']['donjon'] = 5;
-	$coutpa['elfehaut']['taverne_donjon'] = 2;
-	$coutpa['elfehaut']['mur_donjon'] = 50;
-	$coutpa['elfehaut']['mer'] = 6;
 
 	/*** HUMAIN ***/
-	$coutpa['humain']['plaine'] = 4;
-	$coutpa['humain']['foret'] = 6;
-	$coutpa['humain']['desert'] = 5;
-	$coutpa['humain']['glace'] = 5;
-	$coutpa['humain']['marais'] = 5;
-	$coutpa['humain']['montagne'] = 6;
-	$coutpa['humain']['eau'] = 50;
-	$coutpa['humain']['route'] = 2;
-	$coutpa['humain']['objet'] = 2;
-	$coutpa['humain']['terre_maudite'] = 5;
-	$coutpa['humain']['donjon'] = 5;
-	$coutpa['humain']['taverne_donjon'] = 2;
-	$coutpa['humain']['mur_donjon'] = 50;
-	$coutpa['humain']['mer'] = 6;
+	$coutpa['humain'] = $coutGeneral;
 
 	/*** HUMAINS NOIRS ***/
-	$coutpa['humainnoir']['plaine'] = 4;
-	$coutpa['humainnoir']['foret'] = 6;
-	$coutpa['humainnoir']['desert'] = 5;
-	$coutpa['humainnoir']['glace'] = 5;
-	$coutpa['humainnoir']['marais'] = 5;
-	$coutpa['humainnoir']['montagne'] = 6;
-	$coutpa['humainnoir']['eau'] = 50;
-	$coutpa['humainnoir']['route'] = 2;
-	$coutpa['humainnoir']['objet'] = 2;
-	$coutpa['humainnoir']['terre_maudite'] = 5;
-	$coutpa['humainnoir']['donjon'] = 5;
-	$coutpa['humainnoir']['taverne_donjon'] = 2;
-	$coutpa['humainnoir']['mur_donjon'] = 50;
-	$coutpa['humainnoir']['mer'] = 6;
+	$coutpa['humainnoir'] = $coutGeneral;
 
 	/*** MORTS VIVANTS ***/
-	$coutpa['mortvivant']['plaine'] = 4;
-	$coutpa['mortvivant']['foret'] = 6;
-	$coutpa['mortvivant']['desert'] = 5;
-	$coutpa['mortvivant']['glace'] = 5;
+	$coutpa['mortvivant'] = $coutGeneral;
 	$coutpa['mortvivant']['marais'] = 4;
-	$coutpa['mortvivant']['montagne'] = 6;
-	$coutpa['mortvivant']['eau'] = 50;
-	$coutpa['mortvivant']['route'] = 2;
-	$coutpa['mortvivant']['objet'] = 2;
-	$coutpa['mortvivant']['terre_maudite'] = 5;
-	$coutpa['mortvivant']['donjon'] = 5;
-	$coutpa['mortvivant']['taverne_donjon'] = 2;
-	$coutpa['mortvivant']['mur_donjon'] = 50;
-	$coutpa['mortvivant']['mer'] = 6;
 
 	/*** NAINS ***/
-	$coutpa['nain']['plaine'] = 4;
-	$coutpa['nain']['foret'] = 6;
-	$coutpa['nain']['desert'] = 5;
-	$coutpa['nain']['glace'] = 5;
-	$coutpa['nain']['marais'] = 5;
+	$coutpa['nain'] = $coutGeneral;
 	$coutpa['nain']['montagne'] = 5;
-	$coutpa['nain']['eau'] = 50;
-	$coutpa['nain']['route'] = 2;
-	$coutpa['nain']['objet'] = 2;
-	$coutpa['nain']['terre_maudite'] = 5;
-	$coutpa['nain']['donjon'] = 5;
-	$coutpa['nain']['taverne_donjon'] = 2;
-	$coutpa['nain']['mur_donjon'] = 50;
-	$coutpa['nain']['mer'] = 6;
 
 	/*** ORC ***/
-	$coutpa['orc']['plaine'] = 4;
-	$coutpa['orc']['foret'] = 6;
-	$coutpa['orc']['desert'] = 5;
-	$coutpa['orc']['glace'] = 5;
-	$coutpa['orc']['marais'] = 5;
-	$coutpa['orc']['montagne'] = 6;
-	$coutpa['orc']['eau'] = 50;
-	$coutpa['orc']['route'] = 2;
-	$coutpa['orc']['objet'] = 2;
-	$coutpa['orc']['terre_maudite'] = 5;
-	$coutpa['orc']['donjon'] = 5;
-	$coutpa['orc']['taverne_donjon'] = 2;
-	$coutpa['orc']['mur_donjon'] = 50;
-	$coutpa['orc']['mer'] = 6;
+	$coutpa['orc'] = $coutGeneral;
 
 	/*** SCAVENGERS ***/
-	$coutpa['scavenger']['plaine'] = 4;
-	$coutpa['scavenger']['foret'] = 6;
+	$coutpa['scavenger'] = $coutGeneral;
 	$coutpa['scavenger']['desert'] = 4;
-	$coutpa['scavenger']['glace'] = 5;
-	$coutpa['scavenger']['marais'] = 5;
-	$coutpa['scavenger']['montagne'] = 6;
-	$coutpa['scavenger']['eau'] = 50;
-	$coutpa['scavenger']['route'] = 2;
-	$coutpa['scavenger']['objet'] = 2;
-	$coutpa['scavenger']['terre_maudite'] = 5;
-	$coutpa['scavenger']['donjon'] = 5;
-	$coutpa['scavenger']['taverne_donjon'] = 2;
-	$coutpa['scavenger']['mur_donjon'] = 50;
-	$coutpa['scavenger']['mer'] = 6;
 
 	/*** TROLL ***/
-	$coutpa['troll']['plaine'] = 4;
-	$coutpa['troll']['foret'] = 6;
-	$coutpa['troll']['desert'] = 5;
-	$coutpa['troll']['glace'] = 5;
-	$coutpa['troll']['marais'] = 5;
-	$coutpa['troll']['montagne'] = 6;
-	$coutpa['troll']['eau'] = 50;
-	$coutpa['troll']['route'] = 2;
-	$coutpa['troll']['objet'] = 2;
-	$coutpa['troll']['terre_maudite'] = 5;
-	$coutpa['troll']['donjon'] = 5;
-	$coutpa['troll']['taverne_donjon'] = 2;
-	$coutpa['troll']['mur_donjon'] = 50;
-	$coutpa['troll']['mer'] = 6;
+	$coutpa['troll'] = $coutGeneral;
 
 	/*** VAMPIRES ***/
-	$coutpa['vampire']['plaine'] = 4;
-	$coutpa['vampire']['foret'] = 6;
-	$coutpa['vampire']['desert'] = 5;
-	$coutpa['vampire']['glace'] = 5;
-	$coutpa['vampire']['marais'] = 5;
-	$coutpa['vampire']['montagne'] = 6;
-	$coutpa['vampire']['eau'] = 50;
-	$coutpa['vampire']['route'] = 2;
-	$coutpa['vampire']['objet'] = 2;
+	$coutpa['vampire'] = $coutGeneral;
 	$coutpa['vampire']['terre_maudite'] = 4;
-	$coutpa['vampire']['donjon'] = 5;
-	$coutpa['vampire']['taverne_donjon'] = 2;
-	$coutpa['vampire']['mur_donjon'] = 50;
-	$coutpa['vampire']['mer'] = 6;
 
-	/*** RACE ***/
-	/* TEMPLATE
-	$coutpa['']['plaine'] = ;
-	$coutpa['']['foret'] = ;
-	$coutpa['']['desert'] = ;
-	$coutpa['']['glace'] = ;
-	$coutpa['']['eau'] = ;
-	$coutpa['']['route'] = ;
-	$coutpa['']['objet'] = ;
-	$coutpa['']['donjon'] = 5;
-	$coutpa['']['taverne_donjon'] = 2;
-	$coutpa['']['mur_donjon'] = 50;
-	*/
 	if ($coutpa[$race][$info] == '') $coutpa[$race][$info] = 6;
 	return $coutpa[$race][$info];
 }
@@ -1612,15 +1491,15 @@ function diff_sort($difficulte, $joueur, $type, $sortpa, $sortmp)
 	if($type == 'incantation')
 	{
 		$facteur1 = 2;
-		$facteur2 = 1;
+		$facteur2 = 4;//1;
 	}
 	else
 	{
 		$facteur1 = 4;
-		$facteur2 = 1.5;
+		$facteur2 = 5;//1.5;
 	}
 	$difficulte = $difficulte / $facteur1;
-	$pamp = 7 / sqrt($sortpa * $sortmp);
+	$pamp = 7 / $sortpa;//sqrt($sortpa * $sortmp);
 	$total = ($facteur2 * $pamp * sqrt($joueur->get_comp($type) / $difficulte));
 	//echo $total.'<br />';
 	return $total;
@@ -2229,7 +2108,16 @@ function verif_mort($pourcent, $var, $duree_debuff=0, $multiplicateur_mouvement=
 <h2 class="ville_titre">Vous êtes mort</h2>
 Votre dernier souvenir est l'endroit où vous êtes mort <?php echo 'x : '.$joueur->get_x().' / y : '.$joueur->get_y(); ?>
 </div>
-<div id='menu'></div>
+<div id='menu'>
+	<?php
+    if( array_key_exists('nbr_perso', $_SESSION) )
+    {
+  ?>
+		<span class="changer" title='Changer de personnage' onclick="envoiInfo('changer_perso.php?info=information', 'information');">&nbsp;</span>
+	<?php
+    }
+  ?>
+</div>
 <div id='mort'>
 <fieldset>
 					Que voulez vous faire ?
@@ -2246,7 +2134,7 @@ Votre dernier souvenir est l'endroit où vous êtes mort <?php echo 'x : '.$joue
 						while($row = $db->read_assoc($req))
 						{
 							echo '
-						<li style="padding-top:5px;padding-bottom:5px;"><a href="mort.php?choix=2&amp;rez='.$row['id'].'">Vous faire ressuciter par '.$row['nom_rez'].' ('.($row['pourcent'] + $bonus).'% HP / '.($row['pourcent'] + $bonus).' MP)</li>';
+						<li style="padding-top:5px;padding-bottom:5px;"><a href="mort.php?choix=2&amp;rez='.$row['id'].'">Vous faire ressusciter par '.$row['nom_rez'].' ('.($row['pourcent'] + $bonus).'% HP / '.($row['pourcent'] + $bonus).' MP)</li>';
 						}
 					}
 					// Fort le plus proche (si on le personnage n'est pas dans un donjon)
@@ -2789,6 +2677,9 @@ function image_sort($type)
 		case 'orage_magnetique' :
 			return '<img src="image/buff/orage_magnetique.png" alt="" style="vertical-align : middle;" />';
 		break;
+		case 'balance' :
+			return '<img src="image/buff/balance.png" alt="" style="vertical-align : middle;" />';
+		break;
 		case 'bouclier_eau' :
 			return '<img src="image/buff/bouclier_eau.png" alt="" style="vertical-align : middle;" />';
 		break;
@@ -2833,6 +2724,9 @@ function image_sort($type)
 		break;
 		case 'lente_agonie' :
 			return '<img src="image/buff/lente_agonie.png" alt="" style="vertical-align : middle;" />';
+		break;
+		case 'transfert_energie' :
+			return '<img src="image/buff/transfert_energie.png" alt="" style="vertical-align : middle;" />';
 		break;
 	}
 }
@@ -3136,6 +3030,8 @@ function aff_var($v)
  *  Supprime un bourg dans le nombre de bourgs possédés par un royaume
  *  
  * @param   $royaume    Royaume auquel on doit supprimer un bourg.  
+ *
+ * @deprecated : utiliser la méthode de la classe royaume à la place
  */
 function supprime_bourg($royaume)
 {
@@ -3480,7 +3376,7 @@ function make_tmp_adj_tables($roy_id)
 	$db->query($req5); // on enleve les cases occupées par un placement ou un batiment: virer constructions
 }
 
-function ouvrePorteMaraudeurGeolier($x)
+function ouvrePorteMaraudeurGeolier($x, $duree)
 {
 	global $db;
 	if ($x == 43) $x = 44; 
@@ -3489,7 +3385,7 @@ function ouvrePorteMaraudeurGeolier($x)
 	$px = $x - 1;
 	$py = 365;
 	$db->query("update map set decor = 6570, info = 65 where x = $px and y = $py");
-	$dt = "DATE_ADD(NOW(), interval 1 hour)";
+	$dt = "DATE_ADD(NOW(), interval $duree hour)";
 	$sql = "update perso set hp = 0, y = y - 1 where x = $px and y = $py ;";
 	$sql .= "update map set decor = 4605, info = 46 where x = $px and y = $py";
 	$db->query("insert into calendrier(`date`, `sql`) values ($dt, '$sql')");
@@ -3566,7 +3462,7 @@ function pute_effets(&$joueur, $honneur_need, $specials = null, $specials_det = 
     {
       $buff = true;
     }
-    $texte = 'Magnifique est un qualiquatif trop pauvre pour qualifier votre performance. Vous avez été tellement bon que la personne à qui vous avez fait l\'honneur de votre présence a eu une extinction de voix à force de crier votre nom. De plus, fait marquant, au milieu de l\'affaire, elle est partie et a appelée toute ses copines qui ont quitté leur chambre, laissant leurs clients sur la paille, pour venir profiter de votre journée de grâce. Ce n\'est donc pas moins que la taverne entière (tout sexe confondu) que vous avez honoré (sans payer plus cher). Une chose est sûre, vous avez rendu des gens heureux aujourd\'hui.';
+    $texte = 'Magnifique est un qualificatif trop pauvre pour mesurer votre performance. Vous avez été tellement bon que la personne à qui vous avez fait l\'honneur de votre présence a eu une extinction de voix à force de crier votre nom. De plus, fait marquant, au milieu de l\'affaire, elle est partie et a appelé toute ses copines qui ont quitté leur chambre, laissant leurs clients sur la paille, pour venir profiter de votre journée de grâce. Ce n\'est donc pas moins que la taverne entière (tout sexe confondu) que vous avez honoré (sans payer plus cher). Une chose est sûre, vous avez rendu des gens heureux aujourd\'hui.';
   }
 
   //lancement du buff ou debuff
@@ -3629,10 +3525,10 @@ function pute_effets(&$joueur, $honneur_need, $specials = null, $specials_det = 
     $liste_maladie = array();
     $liste_maladie[0]['nom'] = 'Crise cardiaque';
     $liste_maladie[0]['description'] = '
-								En sortant de la taverne, vous vous sentez faibles. Très faibles.<br />
-								Vous vous appercevez trop tard que vous vous êtes trop démenés.<br />
+								En sortant de la taverne, vous vous sentez faible. Très faible.<br />
+								Vous vous apercevez trop tard que vous vous êtes trop démené.<br />
 								Vous vous écroulez par terre, et n\'arrivez plus à respirer.<br />
-								Vous mourrez seul et abandonnés de tous.';
+								Vous mourez seul et abandonné de tous.';
     $liste_maladie[0]['effets'] = 'mort';
     $liste_maladie[1]['nom'] = 'Lumbago';
     $liste_maladie[1]['description'] = '

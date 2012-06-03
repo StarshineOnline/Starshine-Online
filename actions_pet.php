@@ -68,7 +68,7 @@ $pet = new pet($_GET['id_pet']);
 			$requete = "UPDATE action_pet SET action = '".implode(';', $actionexplode)."', nom = '".$action_nom."' WHERE id = ".$id_action;
 			//echo $requete;
 			$db->query($requete);
-			echo '<h6>Le script est bien été ajouté / modifié</h6>';
+			echo '<h6>Le script a bien été ajouté / modifié</h6>';
 		}
 
 		if(array_key_exists('action', $_GET) && $_GET['action'] == 'select' && $_GET['id_action'] != '')
@@ -121,7 +121,7 @@ $pet = new pet($_GET['id_pet']);
 							<a title="Définir comme script d'attaque" onclick="envoiInfo('actions_pet.php?action=select&id_pet=<?php echo $pet->get_id(); ?>&amp;type=attaque&amp;id_action=<?php echo $row['id']; ?>', 'information'); return false;"><span class="attaque hover"></span></a>
 							<a title="Définir comme script de défense" onclick="envoiInfo('actions_pet.php?action=select&id_pet=<?php echo $pet->get_id(); ?>&amp;type=defense&amp;id_action=<?php echo $row['id']; ?>', 'information'); return false;"><span class="shield hover"></span></a>
 							<a title="Copier" onclick="envoiInfo('actions_pet.php?action=dupliq&id_pet=<?php echo $pet->get_id(); ?>&amp;id_action=<?php echo $row['id']; ?>&amp;nom_copie=copie', 'information');"><span class="copy hover"></span></a>
-							<a title="Supprimer ce script de combat" style="float : left;" onclick="if(confirm('Voulez vous vraiment supprimer ce script ?')) envoiInfo('actions_pet.php?action=suppr_action&id_pet=<?php echo $pet->get_id(); ?>&amp;id_action=<?php echo $row['id']; ?>', 'information');"><span class="del hover"></span></a>
+							<a title="Supprimer ce script de combat" style="float : left;" onclick="if(confirm('Voulez-vous vraiment supprimer ce script ?')) envoiInfo('actions_pet.php?action=suppr_action&id_pet=<?php echo $pet->get_id(); ?>&amp;id_action=<?php echo $row['id']; ?>', 'information');"><span class="del hover"></span></a>
 						</span>
 					</li>
 					<?php

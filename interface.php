@@ -114,21 +114,16 @@ echo '<div id="menu_date"><img src="image/interface/'.moment_jour().
 		<?php //echo "<span class='menu' onclick=\"affichePopUp('beta_test.php');\">Beta</span>"; ?>
 		</div>
 		<div id='communaute_menu' style='display:none;'><span class='menu'><a href="http://forum.starshine-online.com">Forum</a></span><span class='menu'><a href="http://wiki.starshine-online.com/">Wiki</a></span><span class='menu'><a href="http://bug.starshine-online.com/">Signaler un bug</a></span><span class='menu' onclick="affichePopUp('acces_chat.php');">Tchat</span><span class='menu' onclick="affichePopUp('don.php');">Faire un don</span><span class="menu" style="margin : 0; padding : 0;"><a class="FlattrButton" style="display:none;" rev="flattr;button:compact;" href="http://www.starshine-online.com"></a></span></div>
-<?php if ($G_no_flattr != true) { ?>
-			<script type="text/javascript">
-			/* <![CDATA[ */
-				(function() {
-					var s = document.createElement('script'), t = document.getElementsByTagName('script')[0];
-					s.type = 'text/javascript';
-					s.async = true;
-					s.src = 'http://api.flattr.com/js/0.6/load.js?mode=auto';
-					t.parentNode.insertBefore(s, t);
-				})();
-			/* ]]> */
-			</script>
-<?php } /* G_no_flattr */ ?>
 	</div>
 	<div id='menu_deco'>
+	<?php
+    if( array_key_exists('nbr_perso', $_SESSION) )
+    {
+  ?>
+		<span class="changer" title='Changer de personnage' onclick="affichePopUp('changer_perso.php');">&nbsp;</span>
+	<?php
+    }
+  ?>
 		<span class="fermer" title='Se déconnecter' onclick="if(confirm('Voulez vous déconnecter ?')) { document.location.href='index.php?deco=ok'; };">&nbsp;</span><span class="show_debug_button" id="debug_log_button" title='Voir le debug' onclick="show_debug_log()"><img src="image/interface/debug.png" onclick="show_debug_log()"/></span>
 	</div>
 </div>

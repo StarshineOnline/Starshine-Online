@@ -1,1114 +1,943 @@
 <?php
-class sort_jeu
-{
 /**
-    * @access private
-    * @var mediumint(8)
-    */
-	private $id;
+ * @file comp_jeu.class.php
+ * Définition de la classe comp_sort servant de base aux sorts hors combat
+ */
 
+/**
+ * Classe comp_jeu
+ * Classe comp_jeu servant de base aux sorts dhors combat
+ */
+class sort_jeu extends sort
+{
 	/**
-    * @access private
-    * @var varchar(50)
-    */
-	private $nom;
+	 * @name Informations générales.
+	 * Donnée et méthode sur les inforamations "générales" : type, niveau, …
+	 */
+  // @{
+	protected $pa;   ///< Coût en PA de la compétence
+	protected $portee;   ///< Portée du sort
+	protected $special;   ///< Indique si c'est un sort spécial (auquel cas l'affinité ne joue pas)
 
-	/**
-    * @access private
-    * @var text
-    */
-	private $description;
-
-	/**
-    * @access private
-    * @var tinyint(3)
-    */
-	private $pa;
-
-	/**
-    * @access private
-    * @var mediumint(8)
-    */
-	private $mp;
-
-	/**
-    * @access private
-    * @var varchar(50)
-    */
-	private $type;
-
-	/**
-    * @access private
-    * @var varchar(50)
-    */
-	private $comp_assoc;
-
-	/**
-    * @access private
-    * @var varchar(50)
-    */
-	private $carac_assoc;
-
-	/**
-    * @access private
-    * @var mediumint(9)
-    */
-	private $carac_requis;
-
-	/**
-    * @access private
-    * @var mediumint(8)
-    */
-	private $incantation;
-
-	/**
-    * @access private
-    * @var mediumint(9)
-    */
-	private $comp_requis;
-
-	/**
-    * @access private
-    * @var varchar(50)
-    */
-	private $effet;
-
-	/**
-    * @access private
-    * @var tinyint(4)
-    */
-	private $effet2;
-
-	/**
-    * @access private
-    * @var int(11)
-    */
-	private $duree;
-
-	/**
-    * @access private
-    * @var tinyint(4)
-    */
-	private $cible;
-
-	/**
-    * @access private
-    * @var tinyint(3)
-    */
-	private $portee;
-
-	/**
-    * @access private
-    * @var text
-    */
-	private $requis;
-
-	/**
-    * @access private
-    * @var int(10)
-    */
-	private $difficulte;
-
-	/**
-    * @access private
-    * @var int(11)
-    */
-	private $prix;
-
-	/**
-    * @access private
-    * @var tinyint(3)
-    */
-	private $lvl_batiment;
-
-	/**
-    * @access private
-    * @var tinyint(1)
-    */
-	private $special;
-
-	
-	/**
-	* @access public
-
-	* @param mediumint(8) id attribut
-	* @param varchar(50) nom attribut
-	* @param text description attribut
-	* @param tinyint(3) pa attribut
-	* @param mediumint(8) mp attribut
-	* @param varchar(50) type attribut
-	* @param varchar(50) comp_assoc attribut
-	* @param varchar(50) carac_assoc attribut
-	* @param mediumint(9) carac_requis attribut
-	* @param mediumint(8) incantation attribut
-	* @param mediumint(9) comp_requis attribut
-	* @param varchar(50) effet attribut
-	* @param tinyint(4) effet2 attribut
-	* @param int(11) duree attribut
-	* @param tinyint(4) cible attribut
-	* @param tinyint(3) portee attribut
-	* @param text requis attribut
-	* @param int(10) difficulte attribut
-	* @param int(11) prix attribut
-	* @param tinyint(3) lvl_batiment attribut
-	* @param tinyint(1) special attribut
-	* @return none
-	*/
-	function __construct($id = 0, $nom = '', $description = '', $pa = '', $mp = '', $type = '', $comp_assoc = '', $carac_assoc = '', $carac_requis = '', $incantation = '', $comp_requis = '', $effet = '', $effet2 = '', $duree = '', $cible = '', $portee = '', $requis = '', $difficulte = '', $prix = '', $lvl_batiment = '', $special = '')
-	{
-		global $db;
-		//Verification nombre et du type d'argument pour construire l'etat adequat.
-		if( (func_num_args() == 1) && is_numeric($id) )
-		{
-			$requeteSQL = $db->query("SELECT nom, description, pa, mp, type, comp_assoc, carac_assoc, carac_requis, incantation, comp_requis, effet, effet2, duree, cible, portee, requis, difficulte, prix, lvl_batiment, special FROM sort_jeu WHERE id = ".$id);
-			//Si le thread est dans la base, on le charge sinon on crée un thread vide.
-			if( $db->num_rows($requeteSQL) > 0 )
-			{
-				list($this->nom, $this->description, $this->pa, $this->mp, $this->type, $this->comp_assoc, $this->carac_assoc, $this->carac_requis, $this->incantation, $this->comp_requis, $this->effet, $this->effet2, $this->duree, $this->cible, $this->portee, $this->requis, $this->difficulte, $this->prix, $this->lvl_batiment, $this->special) = $db->read_array($requeteSQL);
-			}
-			else $this->__construct();
-			$this->id = $id;
-		}
-		elseif( (func_num_args() == 1) && is_array($id) )
-		{
-			$this->id = $id['id'];
-			$this->nom = $id['nom'];
-			$this->description = $id['description'];
-			$this->pa = $id['pa'];
-			$this->mp = $id['mp'];
-			$this->type = $id['type'];
-			$this->comp_assoc = $id['comp_assoc'];
-			$this->carac_assoc = $id['carac_assoc'];
-			$this->carac_requis = $id['carac_requis'];
-			$this->incantation = $id['incantation'];
-			$this->comp_requis = $id['comp_requis'];
-			$this->effet = $id['effet'];
-			$this->effet2 = $id['effet2'];
-			$this->duree = $id['duree'];
-			$this->cible = $id['cible'];
-			$this->portee = $id['portee'];
-			$this->requis = $id['requis'];
-			$this->difficulte = $id['difficulte'];
-			$this->prix = $id['prix'];
-			$this->lvl_batiment = $id['lvl_batiment'];
-			$this->special = $id['special'];
-			}
-		else
-		{
-			$this->nom = $nom;
-			$this->description = $description;
-			$this->pa = $pa;
-			$this->mp = $mp;
-			$this->type = $type;
-			$this->comp_assoc = $comp_assoc;
-			$this->carac_assoc = $carac_assoc;
-			$this->carac_requis = $carac_requis;
-			$this->incantation = $incantation;
-			$this->comp_requis = $comp_requis;
-			$this->effet = $effet;
-			$this->effet2 = $effet2;
-			$this->duree = $duree;
-			$this->cible = $cible;
-			$this->portee = $portee;
-			$this->requis = $requis;
-			$this->difficulte = $difficulte;
-			$this->prix = $prix;
-			$this->lvl_batiment = $lvl_batiment;
-			$this->special = $special;
-			$this->id = $id;
-		}
-	}
-
-	/**
-	* Sauvegarde automatiquement en base de donnée. Si c'est un nouvel objet, INSERT, sinon UPDATE
-	* @access public
-	* @param bool $force force la mis à jour de tous les attributs de l'objet si true, sinon uniquement ceux qui ont été modifiés
-	* @return none
-	*/
-	function sauver($force = false)
-	{
-		global $db;
-		if( $this->id > 0 )
-		{
-			if(count($this->champs_modif) > 0)
-			{
-				if($force) $champs = 'nom = "'.mysql_escape_string($this->nom).'", description = "'.mysql_escape_string($this->description).'", pa = "'.mysql_escape_string($this->pa).'", mp = "'.mysql_escape_string($this->mp).'", type = "'.mysql_escape_string($this->type).'", comp_assoc = "'.mysql_escape_string($this->comp_assoc).'", carac_assoc = "'.mysql_escape_string($this->carac_assoc).'", carac_requis = "'.mysql_escape_string($this->carac_requis).'", incantation = "'.mysql_escape_string($this->incantation).'", comp_requis = "'.mysql_escape_string($this->comp_requis).'", effet = "'.mysql_escape_string($this->effet).'", effet2 = "'.mysql_escape_string($this->effet2).'", duree = "'.mysql_escape_string($this->duree).'", cible = "'.mysql_escape_string($this->cible).'", portee = "'.mysql_escape_string($this->portee).'", requis = "'.mysql_escape_string($this->requis).'", difficulte = "'.mysql_escape_string($this->difficulte).'", prix = "'.mysql_escape_string($this->prix).'", lvl_batiment = "'.mysql_escape_string($this->lvl_batiment).'", special = '.intval($this->special);
-				else
-				{
-					$champs = '';
-					foreach($this->champs_modif as $champ)
-					{
-						$champs[] .= $champ.' = "'.mysql_escape_string($this->{$champ}).'"';
-					}
-					foreach($this->champs_add as $champ)
-					{
-						$champs[] .= $champ['nom'].' = '.$champ['nom'].' + '.$champ['valeur'];
-					}
-					foreach($this->champs_del as $champ)
-					{
-						$champs[] .= $champ['nom'].' = '.$champ['nom'].' - '.$champ['valeur'];
-					}
-					$champs = implode(', ', $champs);
-				}
-				$requete = 'UPDATE sort_jeu SET ';
-				$requete .= $champs;
-				$requete .= ' WHERE id = '.$this->id;
-				$db->query($requete);
-				$this->champs_modif = array();
-			}
-		}
-		else
-		{
-			$requete = 'INSERT INTO sort_jeu (nom, description, pa, mp, type, comp_assoc, carac_assoc, carac_requis, incantation, comp_requis, effet, effet2, duree, cible, portee, requis, difficulte, prix, lvl_batiment, special) VALUES(';
-			$requete .= '"'.mysql_escape_string($this->nom).'", "'.mysql_escape_string($this->description).'", "'.mysql_escape_string($this->pa).'", "'.mysql_escape_string($this->mp).'", "'.mysql_escape_string($this->type).'", "'.mysql_escape_string($this->comp_assoc).'", "'.mysql_escape_string($this->carac_assoc).'", "'.mysql_escape_string($this->carac_requis).'", "'.mysql_escape_string($this->incantation).'", "'.mysql_escape_string($this->comp_requis).'", "'.mysql_escape_string($this->effet).'", "'.mysql_escape_string($this->effet2).'", "'.mysql_escape_string($this->duree).'", "'.mysql_escape_string($this->cible).'", "'.mysql_escape_string($this->portee).'", "'.mysql_escape_string($this->requis).'", "'.mysql_escape_string($this->difficulte).'", "'.mysql_escape_string($this->prix).'", "'.mysql_escape_string($this->lvl_batiment).'", special = '.intval($this->special).')';
-			$db->query($requete);
-			//Récuperation du dernier ID inséré.
-			$this->id = $db->last_insert_id();
-		}
-	}
-
-	/**
-	* Supprime de la base de donnée
-	* @access public
-	* @param none
-	* @return none
-	*/
-	function supprimer()
-	{
-		global $db;
-		if( $this->id > 0 )
-		{
-			$requete = 'DELETE FROM sort_jeu WHERE id = '.$this->id;
-			$db->query($requete);
-		}
-	}
-
-	/**
-	* Supprime de la base de donnée
-	* @access static
-	* @param array|string $champs champs servant a trouver les résultats
-	* @param array|string $valeurs valeurs servant a trouver les résultats
-	* @param string $ordre ordre de tri
-	* @param bool|string $keys Si false, stockage en tableau classique, si string stockage avec sous tableau en fonction du champ $keys
-	* @return array $return liste d'objets
-	*/
-	static function create($champs, $valeurs, $ordre = 'id ASC', $keys = false, $where = false)
-	{
-		global $db;
-		$return = array();
-		if(!$where)
-		{
-			echo $where;
-			if(!is_array($champs))
-			{
-				$array_champs[] = $champs;
-				$array_valeurs[] = $valeurs;
-			}
-			else
-			{
-				$array_champs = $champs;
-				$array_valeurs = $valeurs;
-			}
-			foreach($array_champs as $key => $champ)
-			{
-				$where[] = $champ .' = "'.mysql_escape_string($array_valeurs[$key]).'"';
-			}
-			$where = implode(' AND ', $where);
-			if($champs === 0)
-			{
-				$where = ' 1 ';
-			}
-		}
-
-		$requete = "SELECT id, nom, description, pa, mp, type, comp_assoc, carac_assoc, carac_requis, incantation, comp_requis, effet, effet2, duree, cible, portee, requis, difficulte, prix, lvl_batiment, special FROM sort_jeu WHERE ".$where." ORDER BY ".$ordre;
-		$req = $db->query($requete);
-		if($db->num_rows($req) > 0)
-		{
-			while($row = $db->read_assoc($req))
-			{
-				if(!$keys) $return[] = new sort_jeu($row);
-				else $return[$row[$keys]][] = new sort_jeu($row);
-			}
-		}
-		else $return = array();
-		return $return;
-	}
-
-	/**
-	* Affiche l'objet sous forme de string
-	* @access public
-	* @param none
-	* @return string objet en string
-	*/
-	function __toString()
-	{
-		return 'id = '.$this->id.', nom = '.$this->nom.', description = '.$this->description.', pa = '.$this->pa.', mp = '.$this->mp.', type = '.$this->type.', comp_assoc = '.$this->comp_assoc.', carac_assoc = '.$this->carac_assoc.', carac_requis = '.$this->carac_requis.', incantation = '.$this->incantation.', comp_requis = '.$this->comp_requis.', effet = '.$this->effet.', effet2 = '.$this->effet2.', duree = '.$this->duree.', cible = '.$this->cible.', portee = '.$this->portee.', requis = '.$this->requis.', difficulte = '.$this->difficulte.', prix = '.$this->prix.', lvl_batiment = '.$this->lvl_batiment.', special = '.$this->special;
-	}
-	
-	/**
-	* Retourne la valeur de l'attribut
-	* @access public
-	* @param none
-	* @return mediumint(8) $id valeur de l'attribut id
-	*/
-	function get_id()
-	{
-		return $this->id;
-	}
-
-	/**
-	* Retourne la valeur de l'attribut
-	* @access public
-	* @param none
-	* @return varchar(50) $nom valeur de l'attribut nom
-	*/
-	function get_nom()
-	{
-		return $this->nom;
-	}
-
-	/**
-	* Retourne la valeur de l'attribut
-	* @access public
-	* @param none
-	* @return text $description valeur de l'attribut description
-	*/
-	function get_description()
-	{
-		return $this->description;
-	}
-
-	/**
-	* Retourne la valeur de l'attribut
-	* @access public
-	* @param none
-	* @return tinyint(3) $pa valeur de l'attribut pa
-	*/
+	/// Renvoie le coût de la comptétence
 	function get_pa()
 	{
 		return $this->pa;
 	}
-
-	/**
-	* Retourne la valeur de l'attribut
-	* @access public
-	* @param none
-	* @return mediumint(8) $mp valeur de l'attribut mp
-	*/
-	function get_mp()
+	/// Modifie le coût de la comptétence
+	function set_pa($pa)
 	{
-		return $this->mp;
+		$this->pa = $pa;
+		$this->champs_modif[] = 'pa';
 	}
 
-	/**
-	* Retourne la valeur de l'attribut
-	* @access public
-	* @param none
-	* @return varchar(50) $type valeur de l'attribut type
-	*/
-	function get_type()
-	{
-		return $this->type;
-	}
-
-	/**
-	* Retourne la valeur de l'attribut
-	* @access public
-	* @param none
-	* @return varchar(50) $comp_assoc valeur de l'attribut comp_assoc
-	*/
-	function get_comp_assoc()
-	{
-		return $this->comp_assoc;
-	}
-
-	/**
-	* Retourne la valeur de l'attribut
-	* @access public
-	* @param none
-	* @return varchar(50) $carac_assoc valeur de l'attribut carac_assoc
-	*/
-	function get_carac_assoc()
-	{
-		return $this->carac_assoc;
-	}
-
-	/**
-	* Retourne la valeur de l'attribut
-	* @access public
-	* @param none
-	* @return mediumint(9) $carac_requis valeur de l'attribut carac_requis
-	*/
-	function get_carac_requis()
-	{
-		return $this->carac_requis;
-	}
-
-	/**
-	* Retourne la valeur de l'attribut
-	* @access public
-	* @param none
-	* @return mediumint(8) $incantation valeur de l'attribut incantation
-	*/
-	function get_incantation()
-	{
-		return $this->incantation;
-	}
-
-	/**
-	* Retourne la valeur de l'attribut
-	* @access public
-	* @param none
-	* @return mediumint(9) $comp_requis valeur de l'attribut comp_requis
-	*/
-	function get_comp_requis()
-	{
-		return $this->comp_requis;
-	}
-
-	/**
-	* Retourne la valeur de l'attribut
-	* @access public
-	* @param none
-	* @return varchar(50) $effet valeur de l'attribut effet
-	*/
-	function get_effet()
-	{
-		return $this->effet;
-	}
-
-	/**
-	* Retourne la valeur de l'attribut
-	* @access public
-	* @param none
-	* @return tinyint(4) $effet2 valeur de l'attribut effet2
-	*/
-	function get_effet2()
-	{
-		return $this->effet2;
-	}
-
-	/**
-	* Retourne la valeur de l'attribut
-	* @access public
-	* @param none
-	* @return int(11) $duree valeur de l'attribut duree
-	*/
-	function get_duree()
-	{
-		return $this->duree;
-	}
-
-	/**
-	* Retourne la valeur de l'attribut
-	* @access public
-	* @param none
-	* @return tinyint(4) $cible valeur de l'attribut cible
-	*/
-	function get_cible()
-	{
-		return $this->cible;
-	}
-
-	/**
-	* Retourne la valeur de l'attribut
-	* @access public
-	* @param none
-	* @return tinyint(3) $portee valeur de l'attribut portee
-	*/
+  /// Renvoie la portée du sort
 	function get_portee()
 	{
 		return $this->portee;
 	}
-
-	/**
-	* Retourne la valeur de l'attribut
-	* @access public
-	* @param none
-	* @return text $requis valeur de l'attribut requis
-	*/
-	function get_requis()
+	/// Modifie la portée du sort
+	function set_portee($portee, $param = 'set')
 	{
-		return $this->requis;
+		$this->portee = $portee;
+		$this->champs_modif[] = 'portee';
 	}
 
-	/**
-	* Retourne la valeur de l'attribut
-	* @access public
-	* @param none
-	* @return int(10) $difficulte valeur de l'attribut difficulte
-	*/
-	function get_difficulte()
-	{
-		return $this->difficulte;
-	}
-
-	/**
-	* Retourne la valeur de l'attribut
-	* @access public
-	* @param none
-	* @return int(11) $prix valeur de l'attribut prix
-	*/
-	function get_prix()
-	{
-		return $this->prix;
-	}
-
-	/**
-	* Retourne la valeur de l'attribut
-	* @access public
-	* @param none
-	* @return tinyint(3) $lvl_batiment valeur de l'attribut lvl_batiment
-	*/
-	function get_lvl_batiment()
-	{
-		return $this->lvl_batiment;
-	}
-
-	/**
-	* Retourne la valeur de l'attribut
-	* @access public
-	* @param none
-	* @return tinyint(1) $special valeur de l'attribut special
-	*/
+  /// Renvoie si c'est un sort spécial
 	function get_special()
 	{
 		return $this->special;
 	}
-
-	/**
-	* Modifie la valeur de l'attribut
-	* @access public
-	* @param mediumint(8) $id valeur de l'attribut
-	* @return none
-	*/
-	function set_id($id, $param = 'set')
-	{
-		switch($param)
-		{
-			case 'set' :
-				$this->id = $id;
-				$this->champs_modif[] = 'id';
-			break;
-			case 'add' :
-				$this->id += $id;
-				$this->champs_add[] = array('nom' => 'id', 'valeur' => $id);
-			break;
-			case 'del' :
-				$this->id -= $id;
-				$this->champs_del[] = array('nom' => 'id', 'valeur' => $id);
-			break;
-		}
-	}
-
-	/**
-	* Modifie la valeur de l'attribut
-	* @access public
-	* @param varchar(50) $nom valeur de l'attribut
-	* @return none
-	*/
-	function set_nom($nom, $param = 'set')
-	{
-		switch($param)
-		{
-			case 'set' :
-				$this->nom = $nom;
-				$this->champs_modif[] = 'nom';
-			break;
-			case 'add' :
-				$this->nom += $nom;
-				$this->champs_add[] = array('nom' => 'nom', 'valeur' => $nom);
-			break;
-			case 'del' :
-				$this->nom -= $nom;
-				$this->champs_del[] = array('nom' => 'nom', 'valeur' => $nom);
-			break;
-		}
-	}
-
-	/**
-	* Modifie la valeur de l'attribut
-	* @access public
-	* @param text $description valeur de l'attribut
-	* @return none
-	*/
-	function set_description($description, $param = 'set')
-	{
-		switch($param)
-		{
-			case 'set' :
-				$this->description = $description;
-				$this->champs_modif[] = 'description';
-			break;
-			case 'add' :
-				$this->description += $description;
-				$this->champs_add[] = array('nom' => 'description', 'valeur' => $description);
-			break;
-			case 'del' :
-				$this->description -= $description;
-				$this->champs_del[] = array('nom' => 'description', 'valeur' => $description);
-			break;
-		}
-	}
-
-	/**
-	* Modifie la valeur de l'attribut
-	* @access public
-	* @param tinyint(3) $pa valeur de l'attribut
-	* @return none
-	*/
-	function set_pa($pa, $param = 'set')
-	{
-		switch($param)
-		{
-			case 'set' :
-				$this->pa = $pa;
-				$this->champs_modif[] = 'pa';
-			break;
-			case 'add' :
-				$this->pa += $pa;
-				$this->champs_add[] = array('nom' => 'pa', 'valeur' => $pa);
-			break;
-			case 'del' :
-				$this->pa -= $pa;
-				$this->champs_del[] = array('nom' => 'pa', 'valeur' => $pa);
-			break;
-		}
-	}
-
-	/**
-	* Modifie la valeur de l'attribut
-	* @access public
-	* @param mediumint(8) $mp valeur de l'attribut
-	* @return none
-	*/
-	function set_mp($mp, $param = 'set')
-	{
-		switch($param)
-		{
-			case 'set' :
-				$this->mp = $mp;
-				$this->champs_modif[] = 'mp';
-			break;
-			case 'add' :
-				$this->mp += $mp;
-				$this->champs_add[] = array('nom' => 'mp', 'valeur' => $mp);
-			break;
-			case 'del' :
-				$this->mp -= $mp;
-				$this->champs_del[] = array('nom' => 'mp', 'valeur' => $mp);
-			break;
-		}
-	}
-
-	/**
-	* Modifie la valeur de l'attribut
-	* @access public
-	* @param varchar(50) $type valeur de l'attribut
-	* @return none
-	*/
-	function set_type($type, $param = 'set')
-	{
-		switch($param)
-		{
-			case 'set' :
-				$this->type = $type;
-				$this->champs_modif[] = 'type';
-			break;
-			case 'add' :
-				$this->type += $type;
-				$this->champs_add[] = array('nom' => 'type', 'valeur' => $type);
-			break;
-			case 'del' :
-				$this->type -= $type;
-				$this->champs_del[] = array('nom' => 'type', 'valeur' => $type);
-			break;
-		}
-	}
-
-	/**
-	* Modifie la valeur de l'attribut
-	* @access public
-	* @param varchar(50) $comp_assoc valeur de l'attribut
-	* @return none
-	*/
-	function set_comp_assoc($comp_assoc, $param = 'set')
-	{
-		switch($param)
-		{
-			case 'set' :
-				$this->comp_assoc = $comp_assoc;
-				$this->champs_modif[] = 'comp_assoc';
-			break;
-			case 'add' :
-				$this->comp_assoc += $comp_assoc;
-				$this->champs_add[] = array('nom' => 'comp_assoc', 'valeur' => $comp_assoc);
-			break;
-			case 'del' :
-				$this->comp_assoc -= $comp_assoc;
-				$this->champs_del[] = array('nom' => 'comp_assoc', 'valeur' => $comp_assoc);
-			break;
-		}
-	}
-
-	/**
-	* Modifie la valeur de l'attribut
-	* @access public
-	* @param varchar(50) $carac_assoc valeur de l'attribut
-	* @return none
-	*/
-	function set_carac_assoc($carac_assoc, $param = 'set')
-	{
-		switch($param)
-		{
-			case 'set' :
-				$this->carac_assoc = $carac_assoc;
-				$this->champs_modif[] = 'carac_assoc';
-			break;
-			case 'add' :
-				$this->carac_assoc += $carac_assoc;
-				$this->champs_add[] = array('nom' => 'carac_assoc', 'valeur' => $carac_assoc);
-			break;
-			case 'del' :
-				$this->carac_assoc -= $carac_assoc;
-				$this->champs_del[] = array('nom' => 'carac_assoc', 'valeur' => $carac_assoc);
-			break;
-		}
-	}
-
-	/**
-	* Modifie la valeur de l'attribut
-	* @access public
-	* @param mediumint(9) $carac_requis valeur de l'attribut
-	* @return none
-	*/
-	function set_carac_requis($carac_requis, $param = 'set')
-	{
-		switch($param)
-		{
-			case 'set' :
-				$this->carac_requis = $carac_requis;
-				$this->champs_modif[] = 'carac_requis';
-			break;
-			case 'add' :
-				$this->carac_requis += $carac_requis;
-				$this->champs_add[] = array('nom' => 'carac_requis', 'valeur' => $carac_requis);
-			break;
-			case 'del' :
-				$this->carac_requis -= $carac_requis;
-				$this->champs_del[] = array('nom' => 'carac_requis', 'valeur' => $carac_requis);
-			break;
-		}
-	}
-
-	/**
-	* Modifie la valeur de l'attribut
-	* @access public
-	* @param mediumint(8) $incantation valeur de l'attribut
-	* @return none
-	*/
-	function set_incantation($incantation, $param = 'set')
-	{
-		switch($param)
-		{
-			case 'set' :
-				$this->incantation = $incantation;
-				$this->champs_modif[] = 'incantation';
-			break;
-			case 'add' :
-				$this->incantation += $incantation;
-				$this->champs_add[] = array('nom' => 'incantation', 'valeur' => $incantation);
-			break;
-			case 'del' :
-				$this->incantation -= $incantation;
-				$this->champs_del[] = array('nom' => 'incantation', 'valeur' => $incantation);
-			break;
-		}
-	}
-
-	/**
-	* Modifie la valeur de l'attribut
-	* @access public
-	* @param mediumint(9) $comp_requis valeur de l'attribut
-	* @return none
-	*/
-	function set_comp_requis($comp_requis, $param = 'set')
-	{
-		switch($param)
-		{
-			case 'set' :
-				$this->comp_requis = $comp_requis;
-				$this->champs_modif[] = 'comp_requis';
-			break;
-			case 'add' :
-				$this->comp_requis += $comp_requis;
-				$this->champs_add[] = array('nom' => 'comp_requis', 'valeur' => $comp_requis);
-			break;
-			case 'del' :
-				$this->comp_requis -= $comp_requis;
-				$this->champs_del[] = array('nom' => 'comp_requis', 'valeur' => $comp_requis);
-			break;
-		}
-	}
-
-	/**
-	* Modifie la valeur de l'attribut
-	* @access public
-	* @param varchar(50) $effet valeur de l'attribut
-	* @return none
-	*/
-	function set_effet($effet, $param = 'set')
-	{
-		switch($param)
-		{
-			case 'set' :
-				$this->effet = $effet;
-				$this->champs_modif[] = 'effet';
-			break;
-			case 'add' :
-				$this->effet += $effet;
-				$this->champs_add[] = array('nom' => 'effet', 'valeur' => $effet);
-			break;
-			case 'del' :
-				$this->effet -= $effet;
-				$this->champs_del[] = array('nom' => 'effet', 'valeur' => $effet);
-			break;
-		}
-	}
-
-	/**
-	* Modifie la valeur de l'attribut
-	* @access public
-	* @param tinyint(4) $effet2 valeur de l'attribut
-	* @return none
-	*/
-	function set_effet2($effet2, $param = 'set')
-	{
-		switch($param)
-		{
-			case 'set' :
-				$this->effet2 = $effet2;
-				$this->champs_modif[] = 'effet2';
-			break;
-			case 'add' :
-				$this->effet2 += $effet2;
-				$this->champs_add[] = array('nom' => 'effet2', 'valeur' => $effet2);
-			break;
-			case 'del' :
-				$this->effet2 -= $effet2;
-				$this->champs_del[] = array('nom' => 'effet2', 'valeur' => $effet2);
-			break;
-		}
-	}
-
-	/**
-	* Modifie la valeur de l'attribut
-	* @access public
-	* @param int(11) $duree valeur de l'attribut
-	* @return none
-	*/
-	function set_duree($duree, $param = 'set')
-	{
-		switch($param)
-		{
-			case 'set' :
-				$this->duree = $duree;
-				$this->champs_modif[] = 'duree';
-			break;
-			case 'add' :
-				$this->duree += $duree;
-				$this->champs_add[] = array('nom' => 'duree', 'valeur' => $duree);
-			break;
-			case 'del' :
-				$this->duree -= $duree;
-				$this->champs_del[] = array('nom' => 'duree', 'valeur' => $duree);
-			break;
-		}
-	}
-
-	/**
-	* Modifie la valeur de l'attribut
-	* @access public
-	* @param tinyint(4) $cible valeur de l'attribut
-	* @return none
-	*/
-	function set_cible($cible, $param = 'set')
-	{
-		switch($param)
-		{
-			case 'set' :
-				$this->cible = $cible;
-				$this->champs_modif[] = 'cible';
-			break;
-			case 'add' :
-				$this->cible += $cible;
-				$this->champs_add[] = array('nom' => 'cible', 'valeur' => $cible);
-			break;
-			case 'del' :
-				$this->cible -= $cible;
-				$this->champs_del[] = array('nom' => 'cible', 'valeur' => $cible);
-			break;
-		}
-	}
-
-	/**
-	* Modifie la valeur de l'attribut
-	* @access public
-	* @param tinyint(3) $portee valeur de l'attribut
-	* @return none
-	*/
-	function set_portee($portee, $param = 'set')
-	{
-		switch($param)
-		{
-			case 'set' :
-				$this->portee = $portee;
-				$this->champs_modif[] = 'portee';
-			break;
-			case 'add' :
-				$this->portee += $portee;
-				$this->champs_add[] = array('nom' => 'portee', 'valeur' => $portee);
-			break;
-			case 'del' :
-				$this->portee -= $portee;
-				$this->champs_del[] = array('nom' => 'portee', 'valeur' => $portee);
-			break;
-		}
-	}
-
-	/**
-	* Modifie la valeur de l'attribut
-	* @access public
-	* @param text $requis valeur de l'attribut
-	* @return none
-	*/
-	function set_requis($requis, $param = 'set')
-	{
-		switch($param)
-		{
-			case 'set' :
-				$this->requis = $requis;
-				$this->champs_modif[] = 'requis';
-			break;
-			case 'add' :
-				$this->requis += $requis;
-				$this->champs_add[] = array('nom' => 'requis', 'valeur' => $requis);
-			break;
-			case 'del' :
-				$this->requis -= $requis;
-				$this->champs_del[] = array('nom' => 'requis', 'valeur' => $requis);
-			break;
-		}
-	}
-
-	/**
-	* Modifie la valeur de l'attribut
-	* @access public
-	* @param int(10) $difficulte valeur de l'attribut
-	* @return none
-	*/
-	function set_difficulte($difficulte, $param = 'set')
-	{
-		switch($param)
-		{
-			case 'set' :
-				$this->difficulte = $difficulte;
-				$this->champs_modif[] = 'difficulte';
-			break;
-			case 'add' :
-				$this->difficulte += $difficulte;
-				$this->champs_add[] = array('nom' => 'difficulte', 'valeur' => $difficulte);
-			break;
-			case 'del' :
-				$this->difficulte -= $difficulte;
-				$this->champs_del[] = array('nom' => 'difficulte', 'valeur' => $difficulte);
-			break;
-		}
-	}
-
-	/**
-	* Modifie la valeur de l'attribut
-	* @access public
-	* @param int(11) $prix valeur de l'attribut
-	* @return none
-	*/
-	function set_prix($prix, $param = 'set')
-	{
-		switch($param)
-		{
-			case 'set' :
-				$this->prix = $prix;
-				$this->champs_modif[] = 'prix';
-			break;
-			case 'add' :
-				$this->prix += $prix;
-				$this->champs_add[] = array('nom' => 'prix', 'valeur' => $prix);
-			break;
-			case 'del' :
-				$this->prix -= $prix;
-				$this->champs_del[] = array('nom' => 'prix', 'valeur' => $prix);
-			break;
-		}
-	}
-
-	/**
-	* Modifie la valeur de l'attribut
-	* @access public
-	* @param tinyint(3) $lvl_batiment valeur de l'attribut
-	* @return none
-	*/
-	function set_lvl_batiment($lvl_batiment, $param = 'set')
-	{
-		switch($param)
-		{
-			case 'set' :
-				$this->lvl_batiment = $lvl_batiment;
-				$this->champs_modif[] = 'lvl_batiment';
-			break;
-			case 'add' :
-				$this->lvl_batiment += $lvl_batiment;
-				$this->champs_add[] = array('nom' => 'lvl_batiment', 'valeur' => $lvl_batiment);
-			break;
-			case 'del' :
-				$this->lvl_batiment -= $lvl_batiment;
-				$this->champs_del[] = array('nom' => 'lvl_batiment', 'valeur' => $lvl_batiment);
-			break;
-		}
-	}
-
-	/**
-	* Modifie la valeur de l'attribut
-	* @access public
-	* @param tinyint(1) $special valeur de l'attribut
-	* @return none
-	*/
+	/// Modifie si c'est un sort spécial
 	function set_special($special, $param = 'set')
 	{
-		switch($param)
+		$this->special = $special;
+		$this->champs_modif[] = 'special';
+	}
+	// @}
+
+	/**
+	 * @name Accès à la base de données
+	 * Méthode gérant la lecture et l'écriture dans la base de données
+	 */
+  // @{
+	/**
+	 * Constructeur
+	 * @param id             Id dans la base de donnée ou tableau associatif contenant les informations permettant la création de l'objet
+	 * @param type           Type générique.
+	 * @param effet          Effet principal.
+	 * @param duree          Durée
+	 * @param comp_assoc     Compétence associée
+	 * @param carac_assoc    Caractéristique associée
+	 * @param comp_requis    Requis dans la compétence
+	 * @param carac_requis   Requis dans la caractéristique (inutilisé)
+	 * @param effet2         Deuxième effet
+	 * @param requis         Compétence ou sort requis pour apprendre celui-ci
+	 * @param cible          Cible de la compétence ou du sort
+	 * @param description    Description du buff
+	 * @param mp             Coût en MP ou en RM
+	 * @param prix           Prix de la compétence ou le sort
+	 * @param lvl_batiment   Niveau de l'école qui vent la compétence ou le sort
+	 * @param incantation    Requis en incantation
+	 * @param difficulte     Difficulté de lancé
+	 */
+	function __construct($id=0, $nom='', $type='', $effet=0, $duree=0, $comp_assoc='', $carac_assoc='', $comp_requis=0, $carac_requis=0,
+    $effet2=0, $requis=0, $cible=0, $description='', $mp=0, $prix=0, $lvl_batiment=0, $incantation=0, $difficulte=0, $pa=0, $portee=0, $special=0)
+	{
+		//Verification nombre d'arguments pour construire l'etat adequat.
+		if( func_num_args() == 1 )
 		{
-			case 'set' :
-				$this->special = $special;
-				$this->champs_modif[] = 'special';
-			break;
-			case 'add' :
-				$this->special += $special;
-				$this->champs_add[] = array('nom' => 'special', 'valeur' => $special);
-			break;
-			case 'del' :
-				$this->special -= $special;
-				$this->champs_del[] = array('nom' => 'special', 'valeur' => $special);
-			break;
+			$this->charger($id);
 		}
+		else
+		{
+      sort::__construct($id, $type, $effet, $duree, $comp_assoc, $carac_assoc, $comp_requis, $carac_requis, $effet2, $requis, $cible, $description, $mp, $prix, $lvl_batiment, $incantation, $difficulte);
+			$this->pa = $pa;
+			$this->portee = $portee;
+			$this->special = $special;
+		}
+  }
+
+	/**
+	 * Initialise les données membres à l'aide d'un tableau
+	 * @param array $vals    Tableau contenant les valeurs des données.
+	 */
+  protected function init_tab($vals)
+  {
+    sort::init_tab($vals);
+		$this->pa = $vals['pa'];
+		$this->portee = $vals['portee'];
+		$this->special = $vals['special'];
+  }
+
+	/// Renvoie la liste des champs pour une insertion dans la base
+	protected function get_liste_champs()
+	{
+    return sort::get_liste_champs().', pa, portee, special';
+  }
+	/// Renvoie la liste des valeurs des champspour une insertion dans la base
+	protected function get_valeurs_insert()
+	{
+		return sort::get_valeurs_insert().', '.$this->pa.', '.$this->portee.', '.$this->special;
+	}
+	/// Renvoie la liste des champs et valeurs pour une mise-à-jour dans la base
+	protected function get_liste_update()
+	{
+		return sort::get_liste_update().', pa = '.$this->pa.', portee = '.$this->portee.', special = '.$this->special;
 	}
 
-		//fonction
+	/**
+	 * Méthode créant l'objet adéquat à partir d'un élément de la base de donnée.
+	 * @param id  id de la compétence ou du sort dans la base de donnée
+	 */
+  static function factory($id)
+  {
+    global $db;
+    $requete = 'SELECT * FROM sort_jeu WHERE id = '.$id;
+  	$req = $db->query($requete);
+  	$row=$db->read_assoc($req);
+  	if( $row )
+  	{
+      switch( $row['type'] )
+      {
+      case 'engloutissement':
+      case 'deluge':
+      case 'blizzard':
+      case 'orage_magnetique':
+      case 'debuff_aveuglement':
+      case 'debuff_enracinement':
+      case 'debuff_desespoir':
+      case 'debuff_ralentissement':
+      case 'lente_agonie':
+      case 'maladie_amorphe':
+      case 'maladie_degenerescence':
+      case 'maladie_mollesse':
+      case 'debuff_antirez':
+        return new sort_debuff($row);
+      case 'vie_pourcent':
+        return new sort_vie_pourcent($row);
+      case 'vie':
+        return new sort_vie($row);
+      case 'balance':
+        return new sort_balance($row);
+      case 'body_to_mind':
+        return new sort_body_to_mind($row);
+      case 'teleport':
+        return new sort_teleport($row);
+      case 'repos_sage':
+        return new sort_repos_sage($row);
+      case 'guerison':
+        return new sort_guerison($row);
+      case 'esprit_sacrifie':
+        return new sort_esprit_sacrifie($row);
+      case 'transfert_energie':
+        return new sort_transfert_energie($row);
+      case 'liberation':
+        return new sort_liberation($row);
+      case 'rez':
+        return new sort_rez($row);
+      default:
+        return new sort_jeu($row);
+      }
+  	}
+  }
+	// @}
 
-  function get_mp_final($joueur)
+	/**
+	 * Méthode gérant l'utilisation du sort
+	 * @param $perso   Personnage lançant le sort
+	 * @param $cible   Cible du sort
+	 */
+  function lance(&$perso, &$cible, $groupe=false, $lanceur_url='', $type_cible='')
+  {
+    global $db;
+    $action = false;
+    $cibles = $this->get_liste_cibles($cible, $groupe);
+    foreach($cibles as $cible)
+		{
+			//Mis en place du buff
+			if(lance_buff($this->get_type(), $cible->get_id(), $this->get_effet(), $this->get_effet2(), $this->get_duree(), $this->get_nom(), $this->get_description(true), $cible->get_race()=='neutre'?'monstre':'perso', 0, $cible->get_nb_buff(), $cible->get_grade()->get_nb_buff()))
+			{
+				$action = true;
+				echo $cible->get_nom().' a bien reçu le buff<br />';
+				//Insertion du buff dans le journal du receveur
+				if( $cible->get_id() != $perso->get_id() && $cible->get_race() != 'neutre' )
+				{
+  				$requete = "INSERT INTO journal VALUES('', ".$cible->get_id().", '".($groupe?'rgbuff':'rbuff')."', '".$cible->get_nom()."', '".$perso->get_nom()."', NOW(), '".$this->get_nom()."', 0, 0, 0)";
+  				$db->query($requete);
+				}
+			}
+			else
+			{
+				if($G_erreur == 'puissant') echo $cible.' bénéficie d\'un buff plus puissant<br />';
+				else echo $cible->get_nom().' a trop de buffs.<br />';
+			}
+		}
+    if($action)
+    {
+      if($groupe)
+      {
+        $requete = "INSERT INTO journal(id_perso, action, actif, passif, time, valeur, valeur2, x, y) VALUES(".$perso->get_id().", 'gbuff', '".$perso->get_nom()."', 'groupe', NOW(), '".$this->get_nom()."', 0, 0, 0)";
+        $db->query($requete);
+      }
+      else
+      {
+        $requete = "INSERT INTO journal(id_perso, action, actif, passif, time, valeur, valeur2, x, y) VALUES(".$perso->get_id().", 'buff', '".$perso->get_nom()."', '".$cible->get_nom()."', NOW(), '".$this->get_nom()."', 0, ".$perso->get_x().", ".$perso->get_y().")";
+        $db->query($requete);
+      }
+    }
+		return $action;
+  }
+}
+
+class sort_debuff extends sort_jeu
+{
+
+	/**
+	 * Méthode gérant l'utilisation du sort
+	 * @param $perso   Personnage lançant le sort
+	 * @param $cibles  Cibles su sort
+	 */
+  function lance(&$perso, &$cible, $groupe=false, $lanceur_url='', $type_cible='')
+  {
+    global $db;
+    $action = false;
+    $cibles = $this->get_liste_cibles( $cible );
+    foreach($cibles as $cible)
+    {
+      //Si c'est pas le joueur
+      if($cible->get_id() != $perso->get_id())
+      {
+        //Test d'esquive du sort
+        $protection = $cible->get_volonte() * $cible->get_pm() / 3;
+        if($cible->is_buff('bulle_sanctuaire', true)) $protection *= $cible->get_buff('bulle_sanctuaire','effet');
+        if($cible->is_buff('bulle_dephasante', true)) $protection *= $cible->get_buff('bulle_dephasante','effet');
+        $puissance = $perso->get_volonte() * $perso->get_comp($this->get_comp_assoc());
+        $attaque = rand(0, $puissance);
+        $defense = rand(0, $protection);
+        print_debug("Lance sort: $attaque ($puissance) vs $defense ($protection)");
+        if ($attaque > $defense)
+        {
+          //Mis en place du debuff pour tous
+          if(lance_buff($this->get_type(), $cible->get_id(), $this->get_effet(), $this->get_effet2(), $this->get_duree(), $this->get_nom(), $this->get_description(true), $cible->get_race()=='neutre'?'monstre':'perso', 1, 0, 0))
+          {
+            echo 'Le sort '.$this->get_nom().' a été lancé avec succès sur '.$cible->get_nom().'<br />';
+            //Insertion du debuff dans les journaux des 2 joueurs
+            if ($cible->get_race() != 'neutre')
+            {
+              $requete = "INSERT INTO journal(id_perso, action, actif, passif, time, valeur, valeur2, x, y) VALUES(".$perso->get_id().", 'debuff', '".$perso->get_nom()."', '".$cible->get_nom()."', NOW(), '".$this->get_nom()."', 0, ".$perso->get_x().", ".$perso->get_y().")";
+              $db->query($requete);
+              $requete = "INSERT INTO journal(id_perso, action, actif, passif, time, valeur, valeur2, x, y) VALUES(".$cible->get_id().", 'rdebuff', '".$cible->get_nom()."', '".$perso->get_nom()."', NOW(), '".$this->get_nom()."', 0, ".$perso->get_x().", ".$perso->get_y().")";
+              $db->query($requete);
+
+              if($this->get_type() == "debuff_enracinement")
+              {
+                // Augmentation du compteur de l'achievement
+                $achiev = $cible->get_compteur('nbr_enracine');
+                $achiev->set_compteur($achiev->get_compteur() + 1);
+                $achiev->sauver();
+              }
+              elseif($this->get_type() == "lente_agonie")
+              {
+                // Augmentation du compteur de l'achievement
+                $achiev = $perso->get_compteur('nbr_lenteagonie');
+                $achiev->set_compteur($achiev->get_compteur() + 1);
+                $achiev->sauver();
+              }
+            }
+          }
+          else
+          {
+            echo 'Il bénéficie d\'un debuff plus puissant.<br />';
+          }
+          //Suppression de MP pour orage magnétique
+          if($this->get_type() == 'orage_magnetique')
+          {
+            if($cible->is_buff('orage_magnetique', true))
+            {
+              echo $cible->get_nom().' est déjà sous cet effet.<br />';
+            }
+            else
+            {
+              //Réduction des mp de la cible
+              $cible->set_mp($cible->get_mp() - ($cible->get_mp_maximum() * $this->get_effet() / 100));
+              if($cible->get_mp() < 0) $cible->set_mp(0);
+              $cible->sauver();
+            }
+          }
+        }
+        else
+        {
+          echo $cible->get_nom().' résiste à votre sort !<br />';
+        }
+      }
+    }
+    return true;
+  }
+}
+
+class sort_vie_pourcent extends sort_jeu
+{
+
+	/**
+	 * Méthode gérant l'utilisation du sort
+	 * @param $perso   Personnage lançant le sort
+	 * @param $cibles  Cibles su sort
+	 */
+  function lance(&$perso, &$cible, $groupe=false, $lanceur_url='', $type_cible='')
+  {
+    global $db;
+    $action = false;
+    $soin_total = 0;
+    $cibles = $this->get_liste_cibles($cible, $groupe);
+    foreach($cibles as $cible)
+    {
+      if ($cible->get_hp() <= 0) continue;
+      $soin = floor($cible->get_hp_maximum() * 0.05);
+      if($soin > (floor($cible->get_hp_maximum()) - $cible->get_hp()))
+      $soin = floor($cible->get_hp_maximum()) - $cible->get_hp();
+      if ($soin == 0) continue;
+      $action = true;
+      echo 'Vous soignez '.$cible->get_nom().' de '.$soin.' HP<br />';
+      $soin_total += $soin;
+      $cible->set_hp($cible->get_hp() + $soin);
+      $cible->sauver();
+
+      // Augmentation du compteur de l'achievement
+      $achiev = $perso->get_compteur('total_heal');
+      $achiev->set_compteur($achiev->get_compteur() + $soin);
+      $achiev->sauver();
+
+      // Augmentation du compteur de l'achievement
+      $achiev = $perso->get_compteur('nbr_heal');
+      $achiev->set_compteur($achiev->get_compteur() + 1);
+      $achiev->sauver();
+
+      if ($groupe)
+      {
+        //Insertion du soin de groupe dans le journal de la cible
+        $requete = "INSERT INTO journal(id_perso, action, actif, passif, time, valeur, valeur2, x, y) VALUES(".$cible->get_id().", 'rgsoin', '".$cible->get_nom()."', '".$perso->get_nom()."', NOW(), ".$soin.", 0, ".$perso->get_x().", ".$perso->get_y().")";
+        $db->query($requete);
+      }
+      else if($cible->get_id() != $perso->get_id())
+      {
+        //Insertion du soin de groupe dans le journal de la cible
+        $requete = "INSERT INTO journal(id_perso, action, actif, passif, time, valeur, valeur2, x, y) VALUES(".$cible->get_id().", 'rsoin', '".$cible->get_nom()."', '".$perso->get_nom()."', NOW(), ".$soin.", 0, ".$perso->get_x().", ".$perso->get_y().")";
+        $db->query($requete);
+      }
+    }
+
+    if($action)
+    {
+      //Insertion du soin de groupe dans le journal du lanceur
+      if($groupe)
+      {
+        $requete = "INSERT INTO journal(id_perso, action, actif, passif, time, valeur, valeur2, x, y) VALUES(".$perso->get_id().", 'gsoin', '".$perso->get_nom()."', 'groupe', NOW(), ".$soin_total.", 0, ".$perso->get_x().", ".$perso->get_y().")";
+      }
+      else
+      {
+        $requete = "INSERT INTO journal(id_perso, action, actif, passif, time, valeur, valeur2, x, y) VALUES(".$perso->get_id().", 'soin', '".$perso->get_nom()."', '".$cible->get_nom()."', NOW(), ".$soin_total.", 0, ".$perso->get_x().", ".$perso->get_y().")";
+      }
+      $db->query($requete);
+    }
+
+    if($groupe) $groupe_href = '&amp;groupe=yes';
+    else $groupe_href = '&amp;type='.$type_cible.'&amp;id_'.$type_cible.'='.$cible->get_id();
+    echo '<a href="sort.php?ID='.$_GET['ID'].$groupe_href.$lanceur_url.'" onclick="return envoiInfo(this.href, \'information\')">Utiliser de nouveau ce sort</a>';
+    return $action;
+  }
+}
+
+class sort_vie extends sort_jeu
+{
+
+	/**
+	 * Méthode gérant l'utilisation du sort
+	 * @param $perso   Personnage lançant le sort
+	 * @param $cibles  Cibles su sort
+	 */
+  function lance(&$perso, &$cible, $groupe=false, $lanceur_url='', $type_cible='')
+  {
+    global $db;
+    $action = false;
+    $soin_total = 0;
+    $cibles = $this->get_liste_cibles($cible, $groupe);
+    foreach($cibles as $cible)
+    {
+      if($cible->get_hp() > 0)
+      {
+        if($cible->get_hp() < floor($cible->get_hp_maximum()))
+        {
+          $action = true;
+          $de_degat_sort = de_soin($perso->get_comp($this->get_carac_assoc()), $this->get_effet());
+          $i = 0;
+          $de_degat_sort2 = array();
+          while($i < count($de_degat_sort))
+          {
+            $de_degat_sort2[$de_degat_sort[$i]] += 1;
+            $i++;
+          }
+          $i = 0;
+          $keys = array_keys($de_degat_sort2);
+          while($i < count($de_degat_sort2))
+          {
+            if ($i > 0) echo ' + ';
+            echo $de_degat_sort2[$keys[$i]].'D'.$keys[$i];
+            $i++;
+          }
+          echo '<br />';
+          $soin = 0;
+          $i = 0;
+          while($i < count($de_degat_sort))
+          {
+            $soin += rand(1, $de_degat_sort[$i]);
+            $i++;
+          }
+          if($soin > (floor($cible->get_hp_maximum()) - $cible->get_hp())) $soin = floor($cible->get_hp_maximum()) - $cible->get_hp();
+          echo 'Vous soignez '.$cible->get_nom().' de '.$soin.' HP<br />';
+          $soin_total += $soin;
+
+          $cible->set_hp($cible->get_hp() + $soin);
+          $cible->sauver();
+
+          // Augmentation du compteur de l'achievement
+          $achiev = $perso->get_compteur('total_heal');
+          $achiev->set_compteur($achiev->get_compteur() + $soin);
+          $achiev->sauver();
+
+          // Augmentation du compteur de l'achievement
+          $achiev = $perso->get_compteur('nbr_heal');
+          $achiev->set_compteur($achiev->get_compteur() + 1);
+          $achiev->sauver();
+
+          if($groupe)
+          {
+            //Insertion du soin de groupe dans le journal de la cible
+            $requete = "INSERT INTO journal(id_perso, action, actif, passif, time, valeur, valeur2, x, y) VALUES(".$cible->get_id().", 'rgsoin', '".$cible->get_nom()."', '".$perso->get_nom()."', NOW(), ".$soin.", 0, ".$perso->get_x().", ".$perso->get_y().")";
+            $db->query($requete);
+          }
+          else if($cible->get_id() != $perso->get_id())
+          {
+            //Insertion du soin de groupe dans le journal de la cible
+            $requete = "INSERT INTO journal(id_perso, action, actif, passif, time, valeur, valeur2, x, y) VALUES(".$cible->get_id().", 'rsoin', '".$cible->get_nom()."', '".$perso->get_nom()."', NOW(), ".$soin.", 0, ".$perso->get_x().", ".$perso->get_y().")";
+            $db->query($requete);
+          }
+        }
+        else
+        {
+          echo 'La cible a toute sa vie<br />';
+        }
+      }
+      else
+      {
+        echo $cible->get_nom().' est mort.<br />';
+      }
+    }
+    if($action)
+    {
+      //Insertion du soin de groupe dans le journal du lanceur
+      if($groupe)
+      {
+        $requete = "INSERT INTO journal(id_perso, action, actif, passif, time, valeur, valeur2, x, y) VALUES(".$perso->get_id().", 'gsoin', '".$perso->get_nom()."', 'groupe', NOW(), ".$soin_total.", 0, ".$perso->get_x().", ".$perso->get_y().")";
+      }
+      else
+      {
+        $requete = "INSERT INTO journal(id_perso, action, actif, passif, time, valeur, valeur2, x, y) VALUES(".$perso->get_id().", 'soin', '".$perso->get_nom()."', '".$cible->get_nom()."', NOW(), ".$soin_total.", 0, ".$perso->get_x().", ".$perso->get_y().")";
+      }
+      $db->query($requete);
+    }
+    if($groupe) $groupe_href = '&amp;groupe=yes'; else $groupe_href = '&amp;type='.$type_cible.'&amp;id_'.$type_cible.'='.$cible->get_id();
+    echo '<a href="sort.php?ID='.$_GET['ID'].$groupe_href.$lanceur_url.'" onclick="return envoiInfo(this.href, \'information\')">Utiliser de nouveau ce sort</a>';
+    return $action;
+  }
+}
+
+class sort_balance extends sort_jeu
+{
+
+	/**
+	 * Méthode gérant l'utilisation du sort
+	 * @param $perso   Personnage lançant le sort
+	 * @param $cibles  Cibles su sort
+	 */
+  function lance(&$perso, &$cible, $groupe=false, $lanceur_url='', $type_cible='')
+  {
+    $nbr_membre = 0;
+    $total_pourcent = 0;
+    $cibles = $this->get_liste_cibles($cible, $groupe);
+    foreach($cibles as $cible)
+    {
+      $cible->check_perso(false);
+      if($cible->get_hp() > 0)
+      {
+        $total_pourcent += $cible->get_hp() / $cible->get_hp_max();
+        $nbr_membre++;
+      }
+    }
+    $pourcent = $total_pourcent / $nbr_membre;
+    print_debug("équilibrage: $pourcent");
+    foreach($cibles as $cible)
+    {
+      if($cible->get_hp() > 0)
+      {
+        $cible->set_hp(floor($cible->get_hp_max() * $pourcent));
+        echo $cible->get_nom().' est équilibré à '.$cible->get_hp().
+					' HP.<br />';
+        $cible->sauver();
+      }
+      else
+      {
+        echo $cible->get_nom().' est mort.<br />';
+      }
+    }
+    return true;
+  }
+}
+
+class sort_body_to_mind extends sort_jeu
+{
+
+	/**
+	 * Méthode gérant l'utilisation du sort
+	 * @param $perso   Personnage lançant le sort
+	 * @param $cibles  Cibles su sort
+	 */
+  function lance(&$perso, &$cible, $groupe=false, $lanceur_url='', $type_cible='')
+  {
+    if($perso->get_hp() > $this->get_effet())
+    {
+      $sorthp = $this->get_effet();
+      $sortmp = $this->get_effet2();
+      //$sortmp_base = $this->get_effet();
+      if( $perso->get_mp() + $sortmp > floor($perso->get_mp_maximum()) )
+        $sortmp = floor($perso->get_mp_maximum()) - $perso->get_mp();
+      $perso->set_mp($perso->get_mp() + $sortmp);
+      echo 'Vous utilisez '.$sorthp.' HP pour convertir en '.$sortmp.' MP<br />';
+      $perso->set_hp($perso->get_hp() - $sorthp);
+      $perso->sauver();
+      echo '<a href="sort.php?ID='.$_GET['ID'].$lanceur_url.'" onclick="return envoiInfo(this.href, \'information\')">Utiliser de nouveau ce sort</a>';
+      return $sortmp > 0;
+    }
+    else
+    {
+      echo 'Vous n\'avez pas assez de points de vie.';
+      return false;
+    }
+  }
+}
+
+class sort_teleport extends sort_jeu
+{
+
+	/**
+	 * Méthode gérant l'utilisation du sort
+	 * @param $perso   Personnage lançant le sort
+	 * @param $cibles  Cibles su sort
+	 */
+  function lance(&$perso, &$cible, $groupe=false, $lanceur_url='', $type_cible='')
   {
     global $Trace;
-    $affinite = $Trace[$joueur->get_race()]['affinite_'.$sort->comp_assoc];
-    $facteur = (1 - (($affinite - 5) / 10));
-    return round($this->mp * $facteur);
+    if($perso->get_hp() > 0)
+    {
+      $cibles = $this->get_liste_cibles($cible, $groupe);
+      foreach($cibles as $cible)
+      {
+        $cible->set_x($Trace[$perso->get_race()]['spawn_x']);
+        $cible->set_y($Trace[$perso->get_race()]['spawn_y']);
+        $cible->sauver();
+        echo $cible->get_nom().' a été téléporté dans votre capitale.<br />';
+      }
+      echo '<img src="image/pixel.gif" onLoad="envoiInfo(\'deplacement.php\', \'centre\');" />';
+      return true;
+    }
+    else
+    {
+      echo 'Vous êtes mort.';
+      return false;
+    }
+  }
+}
+
+class sort_repos_sage extends sort_jeu
+{
+
+	/**
+	 * Méthode gérant l'utilisation du sort
+	 * @param $perso   Personnage lançant le sort
+	 * @param $cibles  Cibles su sort
+	 */
+  function lance(&$perso, &$cible, $groupe=false, $lanceur_url='', $type_cible='')
+  {
+    //On vérifie qu'il a pas déjà le debuff
+    if(!$perso->is_buff('repos_sage', true))
+    {
+      //Mis en place du debuff
+      lance_buff($this->get_type(), $perso->get_id(), 1, 0, $this->get_duree(), $this->get_nom(), 'Vous ne pouvez plus attaquer ni lancer le sort repos du sage', 'perso', 1, 0, 0, 0);
+      $perso->set_mp( $perso->get_mp() + $this->get_effet() );
+      if($perso->get_mp() > $perso->get_mp_maximum()) $perso->set_mp($perso->get_mp_maximum());
+      $perso->sauver();
+      return true;
+    }
+    else
+    {
+      echo 'Vous êtes déjà reposé';
+    }
+  }
+}
+
+class sort_guerison extends sort_jeu
+{
+
+	/**
+	 * Méthode gérant l'utilisation du sort
+	 * @param $perso   Personnage lançant le sort
+	 * @param $cible  Cibles su sort
+	 */
+  function lance(&$perso, &$cible, $groupe=false, $lanceur_url='', $type_cible='')
+  {
+    global $db;
+    $cibles = $this->get_liste_cibles($cible, $groupe);
+    $action = false;
+    //-- Suppression d'un debuff au hasard
+    foreach($cibles as $cible)
+    {
+      $debuff_tab = array();
+      foreach($cible->get_buff() as $debuff)
+      {
+        if($debuff->get_debuff() == 1)
+        {
+          if($debuff->is_supprimable())
+          {
+            $debuff_tab[] = $debuff->get_id();
+          }
+        }
+      }
+      if(count($debuff_tab) > 0)
+      {
+        $requete = "DELETE FROM buff WHERE id=".$debuff_tab[rand(0, count($debuff_tab)-1)].";";
+        $db->query($requete);
+        $action = true;
+      }
+      else
+      {
+        echo "Impossible de lancer de lancer le sort. ".addslashes($cible->get_nom())." n&apos;a aucun debuff.<br/>";
+      };
+    }
+    $type_cible = $cible->get_race()=='neutre'?'monstre':'perso';
+    $groupe_href = '&amp;type='.$type_cible.'&amp;id_'.$type_cible.'='.$cible->get_id();
+    if ($groupe) $groupe = '&amp;groupe=yes'; else $groupe = '';
+    echo "<a href=\"\" onclick=\"return envoiInfo('sort.php?ID=".$this->get_id().$groupe.$lanceur_url.$groupe_href."', 'information')\">Utiliser de nouveau cette compétence</a>";
+    return $action;
+  }
+}
+
+class sort_esprit_sacrifie extends sort_jeu
+{
+
+	/**
+	 * Méthode gérant l'utilisation du sort
+	 * @param $perso   Personnage lançant le sort
+	 * @param $cible  Cibles su sort
+	 */
+  function lance(&$perso, &$cible, $groupe=false, $lanceur_url='', $type_cible='')
+  {
+    global $db;
+    $action = false;
+    //-- Suppression d'un debuff au hasard
+    if($perso->is_buff())
+    {
+      $debuff_tab = array();
+      $buff_tab = array();
+      foreach($perso->get_buff() as $buff)
+      {
+        if($buff->get_debuff() == 1)
+        {
+          if($buff->is_supprimable()) { $debuff_tab[] = $buff->get_id(); }
+        }
+        else
+        {
+          if($buff->is_supprimable()) { $buff_tab[] = $buff->get_id(); }
+        }
+      }
+      if(count($debuff_tab) == 0)
+      {
+        echo "Impossible de lancer le sort. Vous n&apos;avez aucun debuff.<br/>";
+      }
+      elseif (count($buff_tab) == 0)
+      {
+        echo "Impossible de lancer de lancer le sort. Vous n&apos;avez aucun buff.<br/>";
+      }
+      else
+      {
+        $action = true;
+        $db->query("DELETE FROM buff WHERE id=".$buff_tab[rand(0, count($buff_tab)-1)].";");
+        $db->query("DELETE FROM buff WHERE id=".$debuff_tab[rand(0, count($debuff_tab)-1)].";");
+      }
+    }
+    else { echo "Impossible de lancer de lancer le sort. Vous n&apos;avez aucun buff.<br/>"; };
+    $type_cible = $cible->get_race()=='neutre'?'monstre':'perso';
+    $groupe_href = '&amp;type='.$type_cible.'&amp;id_'.$type_cible.'='.$cible->get_id();
+    echo "<a href=\"\" onclick=\"return envoiInfo('sort.php?ID=".$_GET["ID"]."', 'information')\">Utiliser de nouveau cette compétence.</a>";
+    return $action;
+  }
+}
+
+class sort_transfert_energie extends sort_jeu
+{
+
+	/**
+	 * Méthode gérant l'utilisation du sort
+	 * @param $perso   Personnage lançant le sort
+	 * @param $cible  Cibles su sort
+	 */
+  function lance(&$perso, &$cible, $groupe=false, $lanceur_url='', $type_cible='')
+  {
+    global $db;
+    $action = false;
+    $gain_total = 0;
+    $cibles = $this->get_liste_cibles($cible, $groupe);
+    foreach($cibles as $cible)
+    {
+      $cible_perso = new perso($cible->get_id());
+      $cible_perso->check_materiel();
+      $manque = $cible_perso->get_mp_maximum() - $cible_perso->get_mp();
+      if ($manque < 1)
+      {
+        echo $cible->get_nom().' a toute sa mana.<br />';
+        continue;
+      }
+      $gain = $this->get_effet();
+      if ($gain > $manque) $gain = $manque;
+      $action = true;
+      $gain_total += $gain;
+      $cible_perso->add_mp($gain);
+      $cible_perso->sauver();
+      echo $cible->get_nom().' regagne '.$gain.' MP.<br />';
+
+      if($groupe)
+      {
+        //Insertion du 'soin' de groupe dans le journal de la cible
+        $requete = "INSERT INTO journal(id_perso, action, actif, passif, time, valeur, valeur2, x, y) VALUES(".$cible->get_id().", 'rgbuff', '".$cible->get_nom()."', '".$perso->get_nom()."', NOW(), '".$this->get_nom()."', ".$gain.", ".$perso->get_x().", ".$perso->get_y().")";
+        $db->query($requete);
+      }
+      else if($cible->get_id() != $perso->get_id())
+      {
+        //Insertion du 'soin' dans le journal de la cible
+        $requete = "INSERT INTO journal(id_perso, action, actif, passif, time, valeur, valeur2, x, y) VALUES(".$cible->get_id().", 'rbuff', '".$cible->get_nom()."', '".$perso->get_nom()."', NOW(), '".$this->get_nom()."', ".$gain.", ".$perso->get_x().", ".$perso->get_y().")";
+        $db->query($requete);
+      }
+    }
+    if ($action)
+    {
+      if($groupe) $groupe_href = '&amp;groupe=yes';
+      else $groupe_href = '&amp;type='.$type_cible.'&amp;id_'.$type_cible.'='.$cible->get_id();
+      echo '<a href="sort.php?ID='.$_GET['ID'].$groupe_href.$lanceur_url.
+    '" onclick="return envoiInfo(this.href, \'information\')">Utiliser de nouveau ce sort</a>';
+
+      if($groupe)
+      {
+        $requete = "INSERT INTO journal(id_perso, action, actif, passif, time, valeur, valeur2, x, y) VALUES(".$perso->get_id().", 'rbuff', '".$perso->get_nom()."', 'groupe', NOW(), '".$this->get_nom()."', ".$gain_total.", ".$perso->get_x().", ".$perso->get_y().")";
+        $db->query($requete);
+      }
+      else
+      {
+        $requete = "INSERT INTO journal(id_perso, action, actif, passif, time, valeur, valeur2, x, y) VALUES(".$perso->get_id().", 'buff', '".$perso->get_nom()."', '".$cible->get_nom()."', NOW(), '".$this->get_nom()."', ".$gain_total.", ".$perso->get_x().", ".$perso->get_y().")";
+        $db->query($requete);
+      }
+    }
+    return $action;
+  }
+}
+
+class sort_liberation extends sort_jeu
+{
+
+	/**
+	 * Méthode gérant l'utilisation du sort
+	 * @param $perso   Personnage lançant le sort
+	 * @param $cible  Cibles su sort
+	 */
+  function lance(&$perso, &$cible, $groupe=false, $lanceur_url='', $type_cible='')
+  {
+    global $db;
+    $action = false;
+    $gain_total = 0;
+    $cibles = $this->get_liste_cibles($cible, $groupe);
+    foreach($cibles as $cible)
+    {
+      $buff_tab = array();
+      foreach($cible->get_buff() as $buff)
+      {
+        if ($buff->get_debuff() == 0)
+        {
+          if ($buff->is_supprimable())
+          {
+            $buff_tab[] = $buff->get_id();
+          }
+        }
+      }
+      if (count($buff_tab) == 0)
+      {
+        echo 'Impossible de supprimer un buff de '.$cible->get_nom().
+        ': pas de buff';
+      }
+      else
+      {
+        $cible_perso = new perso($cible->get_id());
+        $cible_perso->check_materiel();
+        $manque = $cible_perso->get_hp_maximum() - $cible_perso->get_hp();
+        if ($manque < 1)
+        {
+          echo $cible->get_nom().' a toute sa vie.<br />';
+          continue;
+        }
+        $requete = "DELETE FROM buff WHERE id=".
+        $buff_tab[rand(0, count($buff_tab) - 1)].";";
+        $db->query($requete);
+        $gain = round($cible_perso->get_hp_maximum() * $this->get_effet() / 100);
+        if ($gain > $manque) $gain = $manque;
+        $action = true;
+        $gain_total += $gain;
+        $cible_perso->add_hp($gain);
+        $cible_perso->sauver();
+        echo 'Vous soignez '.$cible->get_nom().' de '.$gain.' HP.<br />';
+
+        if($groupe)
+        {
+          //Insertion du soin de groupe dans le journal
+          $requete = "INSERT INTO journal(id_perso, action, actif, passif, time, valeur, valeur2, x, y) VALUES(".$cible->get_id().", 'rgsoin', '".$cible->get_nom()."', '".$perso->get_nom()."', NOW(), ".$gain.", 0, ".$perso->get_x().", ".$perso->get_y().")";
+          $db->query($requete);
+        }
+        else if($cible->get_id() != $perso->get_id())
+        {
+          //Insertion du soin dans le journal
+          $requete = "INSERT INTO journal(id_perso, action, actif, passif, time, valeur, valeur2, x, y) VALUES(".$cible->get_id().", 'rsoin', '".$cible->get_nom()."', '".$perso->get_nom()."', NOW(), ".$gain.", 0, ".$perso->get_x().", ".$perso->get_y().")";
+          $db->query($requete);
+        }
+      }
+    }
+    if ($action)
+    {
+      if($groupe) $groupe_href = '&amp;groupe=yes';
+      else $groupe_href = '&amp;type='.$type_cible.'&amp;id_'.$type_cible.'='.$cible->get_id();
+      echo '<a href="sort.php?ID='.$_GET['ID'].$groupe_href.$lanceur_url.
+    '" onclick="return envoiInfo(this.href, \'information\')">Utiliser de nouveau ce sort</a>';
+      if($groupe)
+      {
+        $requete = "INSERT INTO journal(id_perso, action, actif, passif, time, valeur, valeur2, x, y) VALUES(".$perso->get_id().", 'gsoin', '".$perso->get_nom()."', 'groupe', NOW(), ".$gain_total.", 0, ".$perso->get_x().", ".$perso->get_y().")";
+        $db->query($requete);
+      }
+      else
+      {
+        $requete = "INSERT INTO journal(id_perso, action, actif, passif, time, valeur, valeur2, x, y) VALUES(".$perso->get_id().", 'soin', '".$perso->get_nom()."', '".$cible->get_nom()."', NOW(), ".$gain_total.", 0, ".$perso->get_x().", ".$perso->get_y().")";
+        $db->query($requete);
+      }
+    }
+    return $action;
+  }
+}
+
+class sort_rez extends sort_jeu
+{
+
+	/**
+	 * Méthode gérant l'utilisation du sort
+	 * @param $perso   Personnage lançant le sort
+	 * @param $cible   Cible du sort
+	 */
+  function lance(&$perso, &$cible, $groupe=false, $lanceur_url='', $type_cible='')
+  {
+    global $db;
+    $action = false;
+    //Sale
+    if($cible->get_race() == 'neutre')
+    {
+      echo 'Ce sort ne peut être utilisé que sur un joueur mort.';
+      return false;
+    }
+
+    //On vérifie que le joueur est bien mort
+    if($cible->get_hp() <= 0)
+    {
+      // On vérifie qu'il y a pas d'anti-rez
+      if ($cible->is_buff('debuff_antirez'))
+      {
+        echo 'Ce joueur est affligé par l\'hérésie divine, il ne peut pas être rappelé à la vie';
+        return false;
+      }
+
+      //On vérifie si le joueur n'a pas déjà une rez plus efficace d'active
+      $requete = "SELECT pourcent FROM rez WHERE id_perso = ".$cible->get_id();
+      $req_pourcent = $db->query($requete);
+      $pourcent_max = 0;
+      while($row_pourcent = $db->read_assoc($req_pourcent))
+      {
+        if($row_pourcent['pourcent'] > $pourcent_max) $pourcent_max = $row_pourcent['pourcent'];
+      }
+      if($this->get_effet() > $pourcent_max)
+      {
+        $action = true;
+        //Mis en place de la résurection
+        $requete = "INSERT INTO rez VALUES('', ".$cible->get_id().", ".$perso->get_id().", '".$perso->get_nom()."', ".$this->get_effet().", ".$this->get_effet2().", ".$this->get_duree().", NOW())";
+        $db->query($requete);
+
+        // Augmentation du compteur de l'achievement
+        $achiev = $perso->get_compteur('rez');
+        $achiev->set_compteur($achiev->get_compteur() + 1);
+        $achiev->sauver();
+
+        echo 'Résurrection bien lancée.';
+      }
+      else
+      {
+        echo 'Le joueur bénéficie d\'une résurrection plus puissante.';
+      }
+    }
+    else
+    {
+      echo 'Le joueur n\'est pas mort';
+    }
+    return $action;
   }
 }
 ?>

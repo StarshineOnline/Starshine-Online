@@ -14,12 +14,10 @@ include_once(root.'haut.php');
 	</div>
 </div>
 <div id='accueil'>
-	<div style="top:600px; position:absolute; height:65; width:475; display:block; margin:auto; margin-left: 82px;">
-	  <!-- WebtrafficAgents.com Ads Code for ref:au-koazxd Gen:12/17/11 07:01:05-->
-    <script src="http://traffic.webtrafficagents.com/scripts/AdLauncher.js"  type="text/javascript"></script>
-    <script type="text/javascript">InitAd('au-koazxd');</script>
-    <!-- End WebtrafficAgents.com Ads Code-->
-  </div>
+<?PHP
+  if( file_exists(root.'pub.php') )
+    include(root.'pub.php');
+?>
   
 	<div id='loading_sso' style='display:none;'></div>	
 	<div id='test'>

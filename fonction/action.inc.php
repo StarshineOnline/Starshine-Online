@@ -77,7 +77,7 @@ function get_array_condition($valeur) {
 /**
  * Détermine l'action a effectuer, si on peut.
  * Commence par vérifier si le personnage peut effectuer une action en fonction de son état.
- * Ensuite détermine l'action à efectuer en foncion du script. Puis finallement détermine si
+ * Ensuite détermine l'action à effectuer en foncion du script. Puis finallement détermine si
  * l'action est anticipée.    
  *
  * @param $joueur Pesonnage du joueur. 
@@ -171,7 +171,7 @@ function sub_script_action($joueur, $ennemi, $mode, &$effects)
 			$effectue[0] = 'attaque';
 			return $effectue;
 		}
-		if(!$stop)  // Etrange : il y a un "return" juste avant le seul moment ou stop est mit à "true".
+		if(!$stop)  // Etrange : il y a un "return" juste avant le seul moment où stop est mis à "true".
 		{
 		  // Récupèration des actions du personnage
 			$actions = explode(';', $joueur->get_action());
@@ -217,7 +217,7 @@ function sub_script_action($joueur, $ennemi, $mode, &$effects)
 							break;
 							//Réserve de mana du joueur
 							case '01' :
-								$param = $joueur->get_reserve();
+								$param = $joueur->get_rm_restant();
 							break;
 							//Round
 							case '09' :
@@ -349,7 +349,7 @@ function sub_script_action($joueur, $ennemi, $mode, &$effects)
               /* ~Mana */
 
 							// Si le joueur a assez de reserve on indique l'action à effectuer
-							if($joueur->get_reserve() >= $mp_need)
+							if($joueur->get_rm_restant() >= $mp_need)
 							{
 								$effectue[0] = 'lance_sort';
 								$effectue[1] = $id_sort;
@@ -391,7 +391,7 @@ function sub_script_action($joueur, $ennemi, $mode, &$effects)
               /* ~Mana */
 
 							// On vérifie que le personnage a assez de MP
-							if($joueur->get_reserve() >= $mp_need)
+							if($joueur->get_rm_restant() >= $mp_need)
 							{
 								// Si l'arme utilisée est la bonne on indique l'action à effectuer
 								$arme_requis = explode(';', $row['arme_requis']);
@@ -551,7 +551,7 @@ function lance_sort($id, $acteur, &$effects)
   /* ~Mana */
 
 	//Suppresion de la réserve
-	$actif->set_reserve($actif->get_reserve() - $mp_need);
+	$actif->set_rm_restant($actif->get_rm_restant() - $mp_need);
 
   // Calcul du potentiel magique
 	$get = 'get_'.$row['comp_assoc'];
@@ -719,26 +719,41 @@ function lance_sort($id, $acteur, &$effects)
 							'</strong> est affecté par le debuff '.$row['nom'].'<br/>';
 						lance_buff('debuff_charisme', $passif->get_id(),
 											 8, $row['effet2'], $row['effet2'] * 86400, $row['nom'],
-											 sSQL($row['description']), 'perso', 1, 0, 0, 0);
+											 sSQL($row['description']), 'perso', 1, 0, 0, $row['effet']);
 					}
           break;
 
+			case 'tsunami_drain':
 			case 'tsunami':
-					$degat = degat_magique($actif->$get_comp_assoc(), $row['effet'] + $bonus_degats_magique, $actif, $passif, $effects, $row['type']);
-					echo '&nbsp;&nbsp;<span class="degat"><strong>'.$actif->get_nom().'</strong> inflige <strong>'.$degat.'</strong> dégâts avec '.$row['nom'].'</span><br />';
+					$degat = degat_magique($actif->$get_comp_assoc(),
+																 $row['effet'] + $bonus_degats_magique,
+																 $actif, $passif, $effects, $row['type']);
+					echo '&nbsp;&nbsp;<span class="degat"><strong>'.$actif->get_nom().
+						'</strong> inflige <strong>'.$degat.'</strong> dégâts avec '.
+						$row['nom'];
 					$passif->set_hp($passif->get_hp() - $degat);
+					if ($row['type'] == 'tsunami_drain') {
+						// Si drain: gain de min(degats, pv manquants)
+						$drain = min($degat, ($actif->get_hp_max() - $actif->get_hp()));
+						$actif->set_hp($actif->get_hp() + $drain);
+						echo 'Et gagne <strong>'.$drain.'</strong> hp grâce au drain';
+					}
+					echo '</span><br />';
           
           projection($actif, $passif, $row['effet2']);
           break;
 
 			  case 'empalement_abomination':
-					$degat = degat_magique($actif->$get_comp_assoc(), ($row['effet'] + $bonus_degats_magique), $actif, $passif, $effects, $row['type']);
+					$degat = degat_magique($actif->$get_comp_assoc(),
+																 ($row['effet'] + $bonus_degats_magique),
+																 $actif, $passif, $effects, $row['type']);
 					if ($passif->get_hp() > $degat) { // Si on survit
 						$degat = $passif->get_hp() - 4; // 1 + 3 de LS
           }
 					echo '&nbsp;&nbsp;<span class="degat">Une &eacute;pine jaillit de <strong>'.
 						$actif->get_nom().'</strong> infligeant <strong>'.$degat.
-						'</strong> dégâts, et transpercant '.$passif->get_nom().'</span><br/>';
+						'</strong> dégâts, et transpercant '.$passif->get_nom().
+						'</span><br/>';
 					$passif->set_hp($passif->get_hp() - $degat);
 
 					if ($passif->get_hp() > 0) {
@@ -889,7 +904,7 @@ function lance_sort($id, $acteur, &$effects)
 
 					// On ajoute pas a la stack d'effet car on a besoin de savoir
 					// tout de suite si la foudre passe ou pas pour le +1 degats
-					$foudre = new globe_foudre(1, 15, true);
+					$foudre = new globe_foudre(15, true);
 					if ($foudre->magnetise($actif, $passif) == false)
 						$degat++;
 					echo '&nbsp;&nbsp;<span class="degat"><strong>'.$actif->get_nom().'</strong> inflige <strong>'.$degat.'</strong> dégâts avec '.$row['nom'].'</span><br />';
@@ -942,7 +957,7 @@ function lance_sort($id, $acteur, &$effects)
 					echo '&nbsp;&nbsp;<span class="degat"><strong>'.$actif->get_nom().'</strong> inflige <strong>'.$degat.'</strong> dégâts avec '.$row['nom'].'<br />
 					Et gagne <strong>'.$drain.'</strong> RM grâce au drain</span><br />';
 					$passif->set_hp($passif->get_hp() - $degat);
-					$actif->set_reserve($actif->get_reserve() + $drain);
+					$actif->set_rm_restant($actif->get_rm_restant() + $drain);
 				break;
 				case 'putrefaction' :
 					$degat = degat_magique($actif->$get_comp_assoc(), ($row['effet'] + $bonus_degats_magique), $actif, $passif, $effects, $row['type']);
@@ -986,7 +1001,7 @@ function lance_sort($id, $acteur, &$effects)
 					$degat = round($degat * $reduction);
 					echo '&nbsp;&nbsp;<span class="degat"><strong>'.$actif->get_nom().'</strong> retire '.$brule_mana.' réserve de mana et inflige <strong>'.$degat.'</strong> dégâts avec '.$row['nom'].'</span><br />';
 					$passif->set_hp($passif->get_hp() - $degat);
-					$passif->set_reserve($passif->get_reserve() - $brule_mana);
+					$passif->set_rm_restant($passif->get_rm_restant() - $brule_mana);
 				break;
 				case 'appel_tenebre' :
 					$passif->etat['appel_tenebre']['effet'] = $row['effet'];
@@ -1079,7 +1094,7 @@ function lance_sort($id, $acteur, &$effects)
 					$actif->etat['posture']['type'] = 'posture_vent';
 				break;
 				case 'aura_pierre' :
-					echo '&nbsp;&nbsp;De solides pierre volent autour de <strong>'.$actif->get_nom().'</strong> !<br />';
+					echo '&nbsp;&nbsp;De solides pierres volent autour de <strong>'.$actif->get_nom().'</strong> !<br />';
 					$actif->etat['posture']['effet'] = $row['effet'];
 					$actif->etat['posture']['duree'] = 20;
 					$actif->etat['posture']['type'] = 'posture_pierre';
@@ -1114,8 +1129,8 @@ function lance_sort($id, $acteur, &$effects)
 	//Augmentation des compétences liées
 	$get = 'get_'.$row['comp_assoc'];
 	
-	$augmentation['actif']['comp'][] = array($row['comp_assoc'], $rectif_augm * (3.5 * sqrt(pow($actif->$get(), 1.3) / ($row['difficulte'] / 4))));
-	$augmentation['actif']['comp'][] = array('incantation', $rectif_augm * (2.3 * sqrt($actif->get_incantation() / ($row['difficulte'] / 2))));
+	$augmentation['actif']['comp'][] = array($row['comp_assoc'], $rectif_augm * (4.2 * sqrt(pow($actif->$get(), 1.3) / ($row['difficulte'] / 4))));
+	$augmentation['actif']['comp'][] = array('incantation', $rectif_augm * (5 * sqrt($actif->get_incantation() / ($row['difficulte'] / 2))));
 
   /* Application des effets de fin de round */
   foreach ($effects as $effect)
@@ -1196,7 +1211,7 @@ function lance_comp($id, $acteur, &$effects)
   /* ~Debut */
 
 	//Suppresion de la réserve
-	$actif->set_reserve($actif->get_reserve() - $mp_need);
+	$actif->set_rm_restant($actif->get_rm_restant() - $mp_need);
 
 	$comp_attaque = false;  // Indique si le personnage attaque se round-ci.
 	$utilise_comp = $row['type'];
@@ -1291,14 +1306,14 @@ function lance_comp($id, $acteur, &$effects)
 			$row['comp_assoc'] = $actif->get_comp_combat();
 			$comp_attaque = true;
       		//$effects[] = new fleche_magnetique($row['effet2'], $row['effet']);
-			$de_att = rand(1, $passif->get_vie());
+			/*$de_att = rand(1, $passif->get_vie());
 			$de_deff = rand(1, 40);
 			if($de_att <= $de_deff)
-			{
+			{*/
 	      		$actif->etat['fleche_magnetique_attaque']['effet'] = $row['effet'];
 		  		$actif->etat['fleche_magnetique_attaque']['effet2'] = $row['effet2'];
-			}
-			else echo 'La flêche magnétique ne fera rien<br />';
+			/*}
+			else echo 'La flêche magnétique ne fera rien<br />';*/
 		break;
 		case 'fleche_sable' :
 			echo '&nbsp;&nbsp;<strong>'.$actif->get_nom().'</strong> utilise '.$row['nom'].' !<br />';

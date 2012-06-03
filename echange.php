@@ -150,7 +150,7 @@ if(array_key_exists('valid_etape', $_GET))
 		break;
 		case 'finalisation' :
 			//Finalisation de l'échange donc vérifications
-			//Les joueurs doivent être a moins d'une case l'un de l'autre
+			//Les joueurs doivent être a moins de deux cases l'un de l'autre
 			$pos1 = convert_in_pos($j1->get_x(), $j1->get_y());
 			$pos2 = convert_in_pos($j2->get_x(), $j1->get_y());
 			if(detection_distance($pos1, $pos2) > 1)
