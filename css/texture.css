@@ -1214,41 +1214,41 @@
 .tex2628{background:url('../image/texture/donjon_gobelin/mur_gob_peinture_m.png') no-repeat;}
 .tex2629{background:url('../image/texture/donjon_gobelin/mur_gob_biblio_1b.png') no-repeat;}
 
-.tex3501{background:url('../image/texture/donjon_aquatique/sol_centre_donjon_aqua.png') no-repeat;}
-.tex3502{background:url('../image/texture/donjon_aquatique/couloir_horiz_donjon_aqua.png') no-repeat;}
-.tex3503{background:url('../image/texture/donjon_aquatique/sol_mur_coin_nord_est_donjon_aqua.png') no-repeat;}
-.tex3504{background:url('../image/texture/donjon_aquatique/sol_mur_coin_nord_ouest_donjon_aqua.png') no-repeat;}
-.tex3505{background:url('../image/texture/donjon_aquatique/sol_mur_coin_sud_est_donjon_aqua.png') no-repeat;}
-.tex3506{background:url('../image/texture/donjon_aquatique/sol_mur_coin_sud_ouest_donjon_aqua.png') no-repeat;}
-.tex3507{background:url('../image/texture/donjon_aquatique/sol_mur_est1_donjon_aqua.png') no-repeat;}
-.tex3508{background:url('../image/texture/donjon_aquatique/sol_mur_est_donjon_aqua.png') no-repeat;}
-.tex3509{background:url('../image/texture/donjon_aquatique/sol_mur_nord_donjon_aqua.png') no-repeat;}
-.tex3510{background:url('../image/texture/donjon_aquatique/sol_mur_ouest1_donjon_aqua.png') no-repeat;}
-.tex3511{background:url('../image/texture/donjon_aquatique/sol_mur_ouest_donjon_aqua.png') no-repeat;}
-.tex3512{background:url('../image/texture/donjon_aquatique/sol_mur_sud_donjon_aqua.png') no-repeat;}
-.tex3513{background:url('../image/texture/donjon_aquatique/sol_mur_sud_est1_donjon_aqua.png') no-repeat;}
-.tex3514{background:url('../image/texture/donjon_aquatique/sol_mur_sud_est1b_donjon_aqua.png') no-repeat;}
-.tex3515{background:url('../image/texture/donjon_aquatique/sol_mur_sud_est2_donjon_aqua.png') no-repeat;}
-.tex3516{background:url('../image/texture/donjon_aquatique/sol_mur_sud_ouest1_donjon_aqua.png') no-repeat;}
-.tex3517{background:url('../image/texture/donjon_aquatique/sol_mur_sud_ouest_donjon_aqua.png') no-repeat;}
-.tex3518{background:url('../image/texture/donjon_aquatique/couloir_horiz_coin_est_donjon_aqua.png') no-repeat;}
-.tex3519{background:url('../image/texture/donjon_aquatique/couloir_horiz_coin_ouest_donjon_aqua.png') no-repeat;}
-.tex3520{background:url('../image/texture/donjon_aquatique/sol_mur_nord_est_donjon_aqua.png') no-repeat;}
-.tex3521{background:url('../image/texture/donjon_aquatique/sol_mur_nord_ouest_donjon_aqua.png') no-repeat;}
-.tex3522{background:url('../image/texture/donjon_aquatique/couloir_vertical_donjon_aqua.png') no-repeat;}
-.tex3523{background:url('../image/texture/donjon_aquatique/couloir_vertical1_donjon_aqua.png') no-repeat;}
-.tex3524{background:url('../image/texture/donjon_aquatique/couloir_vertical_bas_donjon_aqua.png') no-repeat;}
-.tex3525{background:url('../image/texture/donjon_aquatique/couloir_vertical_haut_donjon_aqua.png') no-repeat;}
+.tex3501, .tex13501{background:url('../image/texture/donjon_aquatique/sol_centre_donjon_aqua.png') no-repeat;}
+.tex3502, .tex13502{background:url('../image/texture/donjon_aquatique/couloir_horiz_donjon_aqua.png') no-repeat;}
+.tex3503, .tex13503{background:url('../image/texture/donjon_aquatique/sol_mur_coin_nord_est_donjon_aqua.png') no-repeat;}
+.tex3504, .tex13504{background:url('../image/texture/donjon_aquatique/sol_mur_coin_nord_ouest_donjon_aqua.png') no-repeat;}
+.tex3505, .tex13505{background:url('../image/texture/donjon_aquatique/sol_mur_coin_sud_est_donjon_aqua.png') no-repeat;}
+.tex3506, .tex13506{background:url('../image/texture/donjon_aquatique/sol_mur_coin_sud_ouest_donjon_aqua.png') no-repeat;}
+.tex3507, .tex13507{background:url('../image/texture/donjon_aquatique/sol_mur_est1_donjon_aqua.png') no-repeat;}
+.tex3508, .tex13508{background:url('../image/texture/donjon_aquatique/sol_mur_est_donjon_aqua.png') no-repeat;}
+.tex3509, .tex13509{background:url('../image/texture/donjon_aquatique/sol_mur_nord_donjon_aqua.png') no-repeat;}
+.tex3510, .tex13510{background:url('../image/texture/donjon_aquatique/sol_mur_ouest1_donjon_aqua.png') no-repeat;}
+.tex3511, .tex13511{background:url('../image/texture/donjon_aquatique/sol_mur_ouest_donjon_aqua.png') no-repeat;}
+.tex3512, .tex13512{background:url('../image/texture/donjon_aquatique/sol_mur_sud_donjon_aqua.png') no-repeat;}
+.tex3513, .tex13513{background:url('../image/texture/donjon_aquatique/sol_mur_sud_est1_donjon_aqua.png') no-repeat;}
+.tex3514, .tex13514{background:url('../image/texture/donjon_aquatique/sol_mur_sud_est1b_donjon_aqua.png') no-repeat;}
+.tex3515, .tex13515{background:url('../image/texture/donjon_aquatique/sol_mur_sud_est2_donjon_aqua.png') no-repeat;}
+.tex3516, .tex13516{background:url('../image/texture/donjon_aquatique/sol_mur_sud_ouest1_donjon_aqua.png') no-repeat;}
+.tex3517, .tex13517{background:url('../image/texture/donjon_aquatique/sol_mur_sud_ouest_donjon_aqua.png') no-repeat;}
+.tex3518, .tex13518{background:url('../image/texture/donjon_aquatique/couloir_horiz_coin_est_donjon_aqua.png') no-repeat;}
+.tex3519, .tex13519{background:url('../image/texture/donjon_aquatique/couloir_horiz_coin_ouest_donjon_aqua.png') no-repeat;}
+.tex3520, .tex13520{background:url('../image/texture/donjon_aquatique/sol_mur_nord_est_donjon_aqua.png') no-repeat;}
+.tex3521, .tex13521{background:url('../image/texture/donjon_aquatique/sol_mur_nord_ouest_donjon_aqua.png') no-repeat;}
+.tex3522, .tex13522{background:url('../image/texture/donjon_aquatique/couloir_vertical_donjon_aqua.png') no-repeat;}
+.tex3523, .tex13523{background:url('../image/texture/donjon_aquatique/couloir_vertical1_donjon_aqua.png') no-repeat;}
+.tex3524, .tex13524{background:url('../image/texture/donjon_aquatique/couloir_vertical_bas_donjon_aqua.png') no-repeat;}
+.tex3525, .tex13525{background:url('../image/texture/donjon_aquatique/couloir_vertical_haut_donjon_aqua.png') no-repeat;}
 .tex3526{background:url('../image/texture/donjon_aquatique/couloir_horiz_coin_ouestb_donjon_aqua.png') no-repeat;}
 .tex3527{background:url('../image/texture/donjon_aquatique/couloir_horiz_coin_estb_donjon_aqua.png') no-repeat;}
-.tex3528{background:url('../image/texture/donjon_aquatique/couloir_horiz_coin_estc_donjon_aqua.png') no-repeat;}
-.tex3529{background:url('../image/texture/donjon_aquatique/couloir_horiz_jonction_donjon_aqua.png') no-repeat;}
+.tex3528, .tex13528{background:url('../image/texture/donjon_aquatique/couloir_horiz_coin_estc_donjon_aqua.png') no-repeat;}
+.tex3529, .tex13529{background:url('../image/texture/donjon_aquatique/couloir_horiz_jonction_donjon_aqua.png') no-repeat;}
 .tex3530{background:url('../image/texture/donjon_aquatique/sol_mur_nordb_donjon_aqua.png') no-repeat;}
 .tex3531{background:url('../image/texture/donjon_aquatique/sol_mur_nordc_donjon_aqua.png') no-repeat;}
-.tex3532{background:url('../image/texture/donjon_aquatique/sol_mur_nordd_donjon_aqua.png') no-repeat;}
+.tex3532, .tex13532{background:url('../image/texture/donjon_aquatique/sol_mur_nordd_donjon_aqua.png') no-repeat;}
 .tex3533{background:url('../image/texture/donjon_aquatique/sol_mur_norde_donjon_aqua.png') no-repeat;}
-.tex3534{background:url('../image/texture/donjon_aquatique/sol_mur_coin_bas_est_donjon_aqua.png') no-repeat;}
-.tex3535{background:url('../image/texture/donjon_aquatique/couloir_vertical_imp1_donjon_aqua.png') no-repeat;}
+.tex3534, .tex13534{background:url('../image/texture/donjon_aquatique/sol_mur_coin_bas_est_donjon_aqua.png') no-repeat;}
+.tex3535, .tex13535{background:url('../image/texture/donjon_aquatique/couloir_vertical_imp1_donjon_aqua.png') no-repeat;}
 
 .tex3536{background:url('../image/texture/donjon_gobelin/tex_sol_mur_nord_gob_mucus_ombre.png') no-repeat;}
 .tex3537{background:url('../image/texture/donjon_gobelin/tex_sol_gob_sudcentre_mucus_ombre.png') no-repeat;}
@@ -1281,48 +1281,48 @@
 .tex3565{background:url('../image/texture/donjon_gobelin/tex_sol_tapis_bd_ombre.png') no-repeat;}
 .tex3566{background:url('../image/texture/donjon_gobelin/tex_sol_tapis_bd_bib_ombre.png') no-repeat;}
 
-.tex3567{background:url('../image/texture/donjon_aquatique/sol_mur_ouest2_donjon_aqua.png') no-repeat;}
-.tex3568{background:url('../image/texture/donjon_aquatique/sol_centre_detail_bd_donjon_aqua.png') no-repeat;}
-.tex3569{background:url('../image/texture/donjon_aquatique/sol_centre_detail_bd_poisson_donjon_aqua.png') no-repeat;}
-.tex3570{background:url('../image/texture/donjon_aquatique/sol_centre_detail_bg_donjon_aqua.png') no-repeat;}
-.tex3571{background:url('../image/texture/donjon_aquatique/sol_centre_detail_hd_donjon_aqua.png') no-repeat;}
-.tex3572{background:url('../image/texture/donjon_aquatique/sol_centre_detail_hd_squel_donjon_aqua.png') no-repeat;}
-.tex3573{background:url('../image/texture/donjon_aquatique/sol_centre_detail_hg_donjon_aqua.png') no-repeat;}
-.tex3574{background:url('../image/texture/donjon_aquatique/sol_centre_detail_hg_squel_donjon_aqua.png') no-repeat;}
-.tex3575{background:url('../image/texture/donjon_aquatique/sol_inferieur_centre_donjon_aqua.png') no-repeat;}
+.tex3567, .tex13567{background:url('../image/texture/donjon_aquatique/sol_mur_ouest2_donjon_aqua.png') no-repeat;}
+.tex3568, .tex13568{background:url('../image/texture/donjon_aquatique/sol_centre_detail_bd_donjon_aqua.png') no-repeat;}
+.tex3569, .tex13569{background:url('../image/texture/donjon_aquatique/sol_centre_detail_bd_poisson_donjon_aqua.png') no-repeat;}
+.tex3570, .tex13570{background:url('../image/texture/donjon_aquatique/sol_centre_detail_bg_donjon_aqua.png') no-repeat;}
+.tex3571, .tex13571{background:url('../image/texture/donjon_aquatique/sol_centre_detail_hd_donjon_aqua.png') no-repeat;}
+.tex3572, .tex13572{background:url('../image/texture/donjon_aquatique/sol_centre_detail_hd_squel_donjon_aqua.png') no-repeat;}
+.tex3573, .tex13573{background:url('../image/texture/donjon_aquatique/sol_centre_detail_hg_donjon_aqua.png') no-repeat;}
+.tex3574, .tex13574{background:url('../image/texture/donjon_aquatique/sol_centre_detail_hg_squel_donjon_aqua.png') no-repeat;}
+.tex3575, .tex13575{background:url('../image/texture/donjon_aquatique/sol_inferieur_centre_donjon_aqua.png') no-repeat;}
 .tex3576{background:url('../image/texture/donjon_aquatique/sol_inferieur_bd2_donjon_aqua.png') no-repeat;}
 .tex3577{background:url('../image/texture/donjon_aquatique/sol_inferieur_bd_donjon_aqua.png') no-repeat;}
 .tex3578{background:url('../image/texture/donjon_aquatique/sol_inferieur_bg_donjon_aqua.png') no-repeat;}
-.tex3579{background:url('../image/texture/donjon_aquatique/sol_inferieur_bm_donjon_aqua.png') no-repeat;}
+.tex3579, .tex13579{background:url('../image/texture/donjon_aquatique/sol_inferieur_bm_donjon_aqua.png') no-repeat;}
 .tex3580{background:url('../image/texture/donjon_aquatique/sol_inferieur_hd2_donjon_aqua.png') no-repeat;}
 .tex3581{background:url('../image/texture/donjon_aquatique/sol_inferieur_hd_donjon_aqua.png') no-repeat;}
 .tex3582{background:url('../image/texture/donjon_aquatique/sol_inferieur_hg2_donjon_aqua.png') no-repeat;}
 .tex3583{background:url('../image/texture/donjon_aquatique/sol_inferieur_hg_donjon_aqua.png') no-repeat;}
-.tex3584{background:url('../image/texture/donjon_aquatique/sol_inferieur_hm_donjon_aqua.png') no-repeat;}
+.tex3584, .tex13584{background:url('../image/texture/donjon_aquatique/sol_inferieur_hm_donjon_aqua.png') no-repeat;}
 .tex3585{background:url('../image/texture/donjon_aquatique/sol_inferieur_mgbg_donjon_aqua.png') no-repeat;}
 .tex3586{background:url('../image/texture/donjon_aquatique/sol_inferieur_md_donjon_aqua.png') no-repeat;}
 .tex3587{background:url('../image/texture/donjon_aquatique/sol_inferieur_mdbd_donjon_aqua.png') no-repeat;}
 .tex3588{background:url('../image/texture/donjon_aquatique/sol_inferieur_mdhd_donjon_aqua.png') no-repeat;}
 .tex3589{background:url('../image/texture/donjon_aquatique/sol_inferieur_mg_donjon_aqua.png') no-repeat;}
-.tex3590{background:url('../image/texture/donjon_aquatique/sol_inferieur_mghg_donjon_aqua.png') no-repeat;}
+.tex3590, .tex13590{background:url('../image/texture/donjon_aquatique/sol_inferieur_mghg_donjon_aqua.png') no-repeat;}
 .tex3591{background:url('../image/texture/donjon_aquatique/sol_inferieur_bg2_donjon_aqua.png') no-repeat;}
 .tex3592{background:url('../image/texture/donjon_aquatique/sol_inferieur_bm2_donjon_aqua.png') no-repeat;}
-.tex3593{background:url('../image/texture/donjon_aquatique/sol_mur_sud_ouestb_donjon_aqua.png') no-repeat;}
-.tex3594{background:url('../image/texture/donjon_aquatique/sol_mur_est2_donjon_aqua.png') no-repeat;}
+.tex3593, .tex13593{background:url('../image/texture/donjon_aquatique/sol_mur_sud_ouestb_donjon_aqua.png') no-repeat;}
+.tex3594, .tex13594{background:url('../image/texture/donjon_aquatique/sol_mur_est2_donjon_aqua.png') no-repeat;}
 .tex3595{background:url('../image/texture/donjon_aquatique/sol_inferieur_mur_est_donjon_aqua.png') no-repeat;}
-.tex3596{background:url('../image/texture/donjon_aquatique/sol_inferieur_mur_est_jonct_donjon_aqua.png') no-repeat;}
+.tex3596, .tex13596{background:url('../image/texture/donjon_aquatique/sol_inferieur_mur_est_jonct_donjon_aqua.png') no-repeat;}
 .tex3597{background:url('../image/texture/donjon_aquatique/sol_inferieur_mur_nord_donjon_aqua.png') no-repeat;}
 .tex3598{background:url('../image/texture/donjon_aquatique/sol_inferieur_mur_nord_est_donjon_aqua.png') no-repeat;}
-.tex3599{background:url('../image/texture/donjon_aquatique/sol_inferieur_mur_nord_ouest_jonc_donjon_aqua.png') no-repeat;}
+.tex3599, .tex13599{background:url('../image/texture/donjon_aquatique/sol_inferieur_mur_nord_ouest_jonc_donjon_aqua.png') no-repeat;}
 
-.tex4500{background:url('../image/texture/donjon_aquatique/sol_inferieur_couloir_horiz_coin_ouest_donjon_aqua.png') no-repeat;}
+.tex4500, .tex14500{background:url('../image/texture/donjon_aquatique/sol_inferieur_couloir_horiz_coin_ouest_donjon_aqua.png') no-repeat;}
 .tex4501{background:url('../image/texture/donjon_aquatique/sol_inferieur_couloir_vertical_bas_donjon_aqua.png') no-repeat;}
 .tex4502{background:url('../image/texture/donjon_aquatique/sol_inferieur_couloir_vertical_haut_donjon_aqua.png') no-repeat;}
 .tex4503{background:url('../image/texture/donjon_aquatique/sol_inferieur_couloir_vertical_donjon_aqua.png') no-repeat;}
 .tex4504{background:url('../image/texture/donjon_aquatique/sol_inferieur_couloir_vertical1_donjon_aqua.png') no-repeat;}
 .tex4505{background:url('../image/texture/donjon_aquatique/sol_inferieur_mur_est2_donjon_aqua.png') no-repeat;}
-.tex4506{background:url('../image/texture/donjon_aquatique/sol_inferieur_mur_ouest_donjon_aqua.png') no-repeat;}
-.tex4507{background:url('../image/texture/donjon_aquatique/sol_inferieur_mur_nord_est_jonc_donjon_aqua.png') no-repeat;}
+.tex4506, .tex14506{background:url('../image/texture/donjon_aquatique/sol_inferieur_mur_ouest_donjon_aqua.png') no-repeat;}
+.tex4507, .tex14507{background:url('../image/texture/donjon_aquatique/sol_inferieur_mur_nord_est_jonc_donjon_aqua.png') no-repeat;}
 .tex4508{background:url('../image/texture/donjon_aquatique/sol_inferieur_mur_ouest_jonct_donjon_aqua.png') no-repeat;}
 .tex4509{background:url('../image/texture/donjon_aquatique/sol_inferieur_mur_sud_donjon_aqua.png') no-repeat;}
 .tex4510{background:url('../image/texture/donjon_aquatique/sol_inferieur_mur_sud_jonc_est_donjon_aqua.png') no-repeat;}
@@ -1335,62 +1335,62 @@
 .tex4517{background:url('../image/texture/donjon_aquatique/sol_inferieur_couloir_horiz_donjon_aqua.png') no-repeat;}
 .tex4518{background:url('../image/texture/donjon_aquatique/sol_inferieur_mur_sud_est1_donjon_aqua.png') no-repeat;}
 .tex4519{background:url('../image/texture/donjon_aquatique/sol_inferieur_mur_sud_ouestb_donjon_aqua.png') no-repeat;}
-.tex4520{background:url('../image/texture/donjon_aquatique/sol_inferieur_mur_est_jonct2_donjon_aqua.png') no-repeat;}
-.tex4521{background:url('../image/texture/donjon_aquatique/sol_inferieur_mur_estbas_donjon_aqua.png') no-repeat;}
-.tex4522{background:url('../image/texture/donjon_aquatique/sol_inferieur_mur_ouest_jonct2_donjon_aqua.png') no-repeat;}
+.tex4520, .tex14520{background:url('../image/texture/donjon_aquatique/sol_inferieur_mur_est_jonct2_donjon_aqua.png') no-repeat;}
+.tex4521, .tex14521{background:url('../image/texture/donjon_aquatique/sol_inferieur_mur_estbas_donjon_aqua.png') no-repeat;}
+.tex4522, .tex14522{background:url('../image/texture/donjon_aquatique/sol_inferieur_mur_ouest_jonct2_donjon_aqua.png') no-repeat;}
 .tex4523{background:url('../image/texture/donjon_aquatique/sol_inferieur_mur_ouestbas_donjon_aqua.png') no-repeat;}
 .tex4524{background:url('../image/texture/donjon_aquatique/sol_inferieur_couloir_vertical_bas2_donjon_aqua.png') no-repeat;}
-.tex4525{background:url('../image/texture/donjon_aquatique/couloir_vertical_bas2_donjon_aqua.png') no-repeat;}
-.tex4526{background:url('../image/texture/donjon_aquatique/sol_mur_nord_estbas_donjon_aqua.png') no-repeat;}
-.tex4527{background:url('../image/texture/donjon_aquatique/sol_mur_nord_ouestbas_donjon_aqua.png') no-repeat;}
+.tex4525, .tex14525{background:url('../image/texture/donjon_aquatique/couloir_vertical_bas2_donjon_aqua.png') no-repeat;}
+.tex4526, .tex14526{background:url('../image/texture/donjon_aquatique/sol_mur_nord_estbas_donjon_aqua.png') no-repeat;}
+.tex4527, .tex14527{background:url('../image/texture/donjon_aquatique/sol_mur_nord_ouestbas_donjon_aqua.png') no-repeat;}
 .tex4528{background:url('../image/texture/donjon_aquatique/sol_inferieur_couloir_horiz_impmg_donjon_aqua.png') no-repeat;}
 .tex4529{background:url('../image/texture/donjon_aquatique/sol_inferieur_couloir_horiz_impmd_donjon_aqua.png') no-repeat;}
 .tex4530{background:url('../image/texture/donjon_aquatique/sol_inferieur_couloir_verti_impbm_donjon_aqua.png') no-repeat;}
 .tex4531{background:url('../image/texture/donjon_aquatique/sol_inferieur_couloir_verti_imphm_donjon_aqua.png') no-repeat;}
-.tex4532{background:url('../image/texture/donjon_aquatique/sol_inferieur_couloir_vertical1_jonc_donjon_aqua.png') no-repeat;}
+.tex4532, .tex14532{background:url('../image/texture/donjon_aquatique/sol_inferieur_couloir_vertical1_jonc_donjon_aqua.png') no-repeat;}
 .tex4533{background:url('../image/texture/donjon_aquatique/sol_inferieur_couloir_vertical1_joncb_donjon_aqua.png') no-repeat;}
 .tex4534{background:url('../image/texture/donjon_aquatique/sol_inferieur_couloir_horiz_joncg_donjon_aqua.png') no-repeat;}
-.tex4535{background:url('../image/texture/donjon_aquatique/sol_inferieur_couloir_horiz_joncd_donjon_aqua.png') no-repeat;}
-.tex4536{background:url('../image/texture/donjon_aquatique/couloir_horiz_impmg_donjon_aqua.png') no-repeat;}
-.tex4537{background:url('../image/texture/donjon_aquatique/couloir_horiz_impmd_donjon_aqua.png') no-repeat;}
-.tex4538{background:url('../image/texture/donjon_aquatique/couloir_verti_impbm_donjon_aqua.png') no-repeat;}
+.tex4535, .tex14535{background:url('../image/texture/donjon_aquatique/sol_inferieur_couloir_horiz_joncd_donjon_aqua.png') no-repeat;}
+.tex4536, .tex14536{background:url('../image/texture/donjon_aquatique/couloir_horiz_impmg_donjon_aqua.png') no-repeat;}
+.tex4537, .tex14537{background:url('../image/texture/donjon_aquatique/couloir_horiz_impmd_donjon_aqua.png') no-repeat;}
+.tex4538, .tex14538{background:url('../image/texture/donjon_aquatique/couloir_verti_impbm_donjon_aqua.png') no-repeat;}
 .tex4539{background:url('../image/texture/donjon_aquatique/couloir_horiz_jonction_eau_donjon_aqua.png') no-repeat;}
 .tex4540{background:url('../image/texture/donjon_aquatique/couloir_horiz_jonction_eau1_donjon_aqua.png') no-repeat;}
 .tex4541{background:url('../image/texture/donjon_aquatique/couloir_horiz_jonction_eau2_donjon_aqua.png') no-repeat;}
 
-.tex4542{background:url('../image/texture/donjon_aquatique/sol_chute.png') no-repeat;}
+.tex4542, .tex14542{background:url('../image/texture/donjon_aquatique/sol_chute.png') no-repeat;}
 .tex4543{background:url('../image/texture/donjon_aquatique/sol_chuteb.png') no-repeat;}
 .tex4544{background:url('../image/texture/donjon_aquatique/sol_chute2.png') no-repeat;}
 .tex4545{background:url('../image/texture/donjon_aquatique/sol_chutebg.png') no-repeat;}
 .tex4546{background:url('../image/texture/donjon_aquatique/sol_chutebd.png') no-repeat;}
-.tex4547{background:url('../image/texture/donjon_aquatique/sol_chute_fin_droit.png') no-repeat;}
-.tex4548{background:url('../image/texture/donjon_aquatique/sol_chute_fin_gauche.png') no-repeat;}
-.tex4549{background:url('../image/texture/donjon_aquatique/sol_chute_1case.png') no-repeat;}
-.tex4550{background:url('../image/texture/donjon_aquatique/sol_chute_tronc_hg.png') no-repeat;}
-.tex4551{background:url('../image/texture/donjon_aquatique/sol_chute_tronc_hm.png') no-repeat;}
-.tex4552{background:url('../image/texture/donjon_aquatique/sol_chute_tronc_bd.png') no-repeat;}
+.tex4547, .tex14547{background:url('../image/texture/donjon_aquatique/sol_chute_fin_droit.png') no-repeat;}
+.tex4548, .tex14548{background:url('../image/texture/donjon_aquatique/sol_chute_fin_gauche.png') no-repeat;}
+.tex4549, .tex14549{background:url('../image/texture/donjon_aquatique/sol_chute_1case.png') no-repeat;}
+.tex4550, .tex14550{background:url('../image/texture/donjon_aquatique/sol_chute_tronc_hg.png') no-repeat;}
+.tex4551, .tex14551{background:url('../image/texture/donjon_aquatique/sol_chute_tronc_hm.png') no-repeat;}
+.tex4552, .tex14552{background:url('../image/texture/donjon_aquatique/sol_chute_tronc_bd.png') no-repeat;}
 .tex4553{background:url('../image/texture/donjon_aquatique/sol_chute_eau.png') no-repeat;}
-.tex4554{background:url('../image/texture/donjon_aquatique/sol_chute_entre_mg2.png') no-repeat;}
-.tex4555{background:url('../image/texture/donjon_aquatique/sol_chute_entre_mg.png') no-repeat;}
-.tex4556{background:url('../image/texture/donjon_aquatique/sol_chute_entre_m.png') no-repeat;}
+.tex4554, .tex14554{background:url('../image/texture/donjon_aquatique/sol_chute_entre_mg2.png') no-repeat;}
+.tex4555, .tex14555{background:url('../image/texture/donjon_aquatique/sol_chute_entre_mg.png') no-repeat;}
+.tex4556, .tex14556{background:url('../image/texture/donjon_aquatique/sol_chute_entre_m.png') no-repeat;}
 .tex4557{background:url('../image/texture/donjon_aquatique/sol_chute_entre_hg.png') no-repeat;}
 .tex4558{background:url('../image/texture/donjon_aquatique/sol_chute_entre_hg2.png') no-repeat;}
-.tex4559{background:url('../image/texture/donjon_aquatique/sol_chute_entre_hg3.png') no-repeat;}
+.tex4559, .tex14559{background:url('../image/texture/donjon_aquatique/sol_chute_entre_hg3.png') no-repeat;}
 .tex4560{background:url('../image/texture/donjon_aquatique/sol_chute_entre_hmg.png') no-repeat;}
-.tex4561{background:url('../image/texture/donjon_aquatique/sol_chute_entre_hm.png') no-repeat;}
-.tex4562{background:url('../image/texture/donjon_aquatique/sol_chute_entre_md2.png') no-repeat;}
-.tex4563{background:url('../image/texture/donjon_aquatique/sol_chute_entre_md3.png') no-repeat;}
-.tex4564{background:url('../image/texture/donjon_aquatique/sol_chute_entre_hmd.png') no-repeat;}
-.tex4565{background:url('../image/texture/donjon_aquatique/sol_chute_entre_hmd2.png') no-repeat;}
-.tex4566{background:url('../image/texture/donjon_aquatique/sol_chute_entre_bd.png') no-repeat;}
+.tex4561, .tex14561{background:url('../image/texture/donjon_aquatique/sol_chute_entre_hm.png') no-repeat;}
+.tex4562, .tex14562{background:url('../image/texture/donjon_aquatique/sol_chute_entre_md2.png') no-repeat;}
+.tex4563, .tex14563{background:url('../image/texture/donjon_aquatique/sol_chute_entre_md3.png') no-repeat;}
+.tex4564, .tex14564{background:url('../image/texture/donjon_aquatique/sol_chute_entre_hmd.png') no-repeat;}
+.tex4565, .tex14565{background:url('../image/texture/donjon_aquatique/sol_chute_entre_hmd2.png') no-repeat;}
+.tex4566, .tex14566{background:url('../image/texture/donjon_aquatique/sol_chute_entre_bd.png') no-repeat;}
 .tex4567{background:url('../image/texture/donjon_aquatique/sol_chute_entre_bd2.png') no-repeat;}
 .tex4568{background:url('../image/texture/donjon_aquatique/sol_chute_entre.png') no-repeat;}
 
 .tex1069{background:url('../image/texture/donjon_aquatique/sol_chute_entre_eau_g.png') no-repeat;}
-.tex4570{background:url('../image/texture/donjon_aquatique/sol_chute_entre_eau_g2.png') no-repeat;}
+.tex4570, .tex14570{background:url('../image/texture/donjon_aquatique/sol_chute_entre_eau_g2.png') no-repeat;}
 .tex4571{background:url('../image/texture/donjon_aquatique/sol_chute_entre_eau_g3.png') no-repeat;}
 .tex4572{background:url('../image/texture/donjon_aquatique/sol_chute_entre_eau_m.png') no-repeat;}
-.tex4573{background:url('../image/texture/donjon_aquatique/sol_chute_entre_eau_m2.png') no-repeat;}
+.tex4573, .tex14573{background:url('../image/texture/donjon_aquatique/sol_chute_entre_eau_m2.png') no-repeat;}
 .tex4574{background:url('../image/texture/donjon_aquatique/sol_chute_entre_eau_m3.png') no-repeat;}
 .tex4575{background:url('../image/texture/donjon_aquatique/sol_chute_entre_eau_d1.png') no-repeat;}
 .tex4576{background:url('../image/texture/donjon_aquatique/sol_chute_entre_eau_d2.png') no-repeat;}
@@ -1418,18 +1418,18 @@
 .tex5508{background:url('../image/texture/ville_aquatique/couloir_vertical_porteouverte_haut_ville_aqua.png') no-repeat;}
 .tex5509{background:url('../image/texture/ville_aquatique/couloir_vertical_haut_jonc_bas.png') no-repeat;}
 .tex5510{background:url('../image/texture/ville_aquatique/couloir_vertical_imphaut_ville_aqua.png') no-repeat;}
-.tex5511{background:url('../image/texture/ville_aquatique/couloir_horiz_droite_jonc.png') no-repeat;}
+.tex5511, .tex15511{background:url('../image/texture/ville_aquatique/couloir_horiz_droite_jonc.png') no-repeat;}
 .tex5512{background:url('../image/texture/ville_aquatique/couloir_horiz_droite_jonc1.png') no-repeat;}
-.tex5513{background:url('../image/texture/ville_aquatique/couloir_horiz_droite_jonc2.png') no-repeat;}
-.tex5514{background:url('../image/texture/ville_aquatique/couloir_horiz_gauche_jonc.png') no-repeat;}
+.tex5513, .tex15513{background:url('../image/texture/ville_aquatique/couloir_horiz_droite_jonc2.png') no-repeat;}
+.tex5514, .tex15514{background:url('../image/texture/ville_aquatique/couloir_horiz_gauche_jonc.png') no-repeat;}
 .tex5515{background:url('../image/texture/ville_aquatique/couloir_horiz_gauche_jonc1.png') no-repeat;}
-.tex5516{background:url('../image/texture/ville_aquatique/couloir_horiz_gauche_jonc2.png') no-repeat;}
+.tex5516, .tex15516{background:url('../image/texture/ville_aquatique/couloir_horiz_gauche_jonc2.png') no-repeat;}
 .tex5517{background:url('../image/texture/ville_aquatique/couloir_horiz_impasse_droite.png') no-repeat;}
 .tex5518{background:url('../image/texture/ville_aquatique/couloir_horiz_impasse_gauche.png') no-repeat;}
-.tex5519{background:url('../image/texture/ville_aquatique/couloir_horiz_village_aquatique.png') no-repeat;}
-.tex5520{background:url('../image/texture/ville_aquatique/couloir_horiz_droite_jonc2_mur_nordouest.png') no-repeat;}
-.tex5521{background:url('../image/texture/ville_aquatique/couloir_horiz_gauche_jonc2_mur_nordest.png') no-repeat;}
-.tex5522{background:url('../image/texture/ville_aquatique/couloir_horiz_pillier_village_aquatique.png') no-repeat;}
+.tex5519, .tex15519{background:url('../image/texture/ville_aquatique/couloir_horiz_village_aquatique.png') no-repeat;}
+.tex5520, .tex15520{background:url('../image/texture/ville_aquatique/couloir_horiz_droite_jonc2_mur_nordouest.png') no-repeat;}
+.tex5521, .tex15521{background:url('../image/texture/ville_aquatique/couloir_horiz_gauche_jonc2_mur_nordest.png') no-repeat;}
+.tex5522, .tex15522{background:url('../image/texture/ville_aquatique/couloir_horiz_pillier_village_aquatique.png') no-repeat;}
 .tex5523{background:url('../image/texture/ville_aquatique/sol_mur_receptacle_canalisation_milieu.png') no-repeat;}
 .tex5524{background:url('../image/texture/ville_aquatique/sol_mur_receptacle_canalisation_fin_gauche.png') no-repeat;}
 .tex5525{background:url('../image/texture/ville_aquatique/sol_mur_receptacle_canalisation_milieu_h.png') no-repeat;}
@@ -1464,10 +1464,10 @@
 .tex5550{background:url('../image/texture/donjon_aquatique/sol_centre_eau_basse_rochesqueld.png') no-repeat;}
 .tex5551{background:url('../image/texture/donjon_aquatique/sol_centre_eau_basse_rocherd.png') no-repeat;}
 
-.tex5552{background:url('../image/texture/donjon_aquatique/sol_centre_detail_etoile.png') no-repeat;}
-.tex5553{background:url('../image/texture/donjon_aquatique/sol_centre_crabe.png') no-repeat;}
-.tex5554{background:url('../image/texture/donjon_aquatique/sol_mur_nord_crabe.png') no-repeat;}
-.tex5555{background:url('../image/texture/donjon_aquatique/sol_mur_nord_crabeb.png') no-repeat;}
+.tex5552, .tex15552{background:url('../image/texture/donjon_aquatique/sol_centre_detail_etoile.png') no-repeat;}
+.tex5553, .tex15553{background:url('../image/texture/donjon_aquatique/sol_centre_crabe.png') no-repeat;}
+.tex5554, .tex15554{background:url('../image/texture/donjon_aquatique/sol_mur_nord_crabe.png') no-repeat;}
+.tex5555, .tex15555{background:url('../image/texture/donjon_aquatique/sol_mur_nord_crabeb.png') no-repeat;}
 
 .tex5556{background:url('../image/texture/repere_aquatique/sol_repere_tente_interieur_bg.png') no-repeat;}
 .tex5557{background:url('../image/texture/repere_aquatique/sol_repere_tente_interieur_bm.png') no-repeat;}
@@ -1478,19 +1478,19 @@
 
 .tex5562{background:url('../image/texture/donjon_aquatique/sol_mur_ouest_tente_chacal_bas.png') no-repeat;}
 .tex5563{background:url('../image/texture/donjon_aquatique/sol_mur_ouest_tente_chacal_haut.png') no-repeat;}
-.tex5564{background:url('../image/texture/donjon_aquatique/sol_mur_est_tente_chacal_bas.png') no-repeat;}
-.tex5565{background:url('../image/texture/donjon_aquatique/sol_mur_est_tente_chacal_haut.png') no-repeat;}
-.tex5566{background:url('../image/texture/donjon_aquatique/sol_tente_chacal_conseiller_bg.png') no-repeat;}
-.tex5567{background:url('../image/texture/donjon_aquatique/sol_tente_chacal_conseiller_bmg.png') no-repeat;}
-.tex5568{background:url('../image/texture/donjon_aquatique/sol_tente_chacal_conseiller_bmd.png') no-repeat;}
-.tex5569{background:url('../image/texture/donjon_aquatique/sol_tente_chacal_conseiller_bd.png') no-repeat;}
-.tex5570{background:url('../image/texture/donjon_aquatique/sol_tente_chacal_conseiller_mg.png') no-repeat;}
-.tex5571{background:url('../image/texture/donjon_aquatique/sol_tente_chacal_conseiller_centreg.png') no-repeat;}
+.tex5564, .tex15564{background:url('../image/texture/donjon_aquatique/sol_mur_est_tente_chacal_bas.png') no-repeat;}
+.tex5565, .tex15565{background:url('../image/texture/donjon_aquatique/sol_mur_est_tente_chacal_haut.png') no-repeat;}
+.tex5566, .tex15566{background:url('../image/texture/donjon_aquatique/sol_tente_chacal_conseiller_bg.png') no-repeat;}
+.tex5567, .tex15567{background:url('../image/texture/donjon_aquatique/sol_tente_chacal_conseiller_bmg.png') no-repeat;}
+.tex5568, .tex15568{background:url('../image/texture/donjon_aquatique/sol_tente_chacal_conseiller_bmd.png') no-repeat;}
+.tex5569, .tex15569{background:url('../image/texture/donjon_aquatique/sol_tente_chacal_conseiller_bd.png') no-repeat;}
+.tex5570, .tex15570{background:url('../image/texture/donjon_aquatique/sol_tente_chacal_conseiller_mg.png') no-repeat;}
+.tex5571, .tex15571{background:url('../image/texture/donjon_aquatique/sol_tente_chacal_conseiller_centreg.png') no-repeat;}
 .tex5572{background:url('../image/texture/donjon_aquatique/sol_tente_chacal_conseiller_centred.png') no-repeat;}
-.tex5573{background:url('../image/texture/donjon_aquatique/sol_tente_chacal_conseiller_md.png') no-repeat;}
-.tex5574{background:url('../image/texture/donjon_aquatique/sol_tente_chacal_bd_ouverture.png') no-repeat;}
-.tex5575{background:url('../image/texture/donjon_aquatique/sol_tente_chacal_md_ouverture.png') no-repeat;}
-.tex5576{background:url('../image/texture/donjon_aquatique/sol_tente_chacal_mg.png') no-repeat;}
+.tex5573, .tex15573{background:url('../image/texture/donjon_aquatique/sol_tente_chacal_conseiller_md.png') no-repeat;}
+.tex5574, .tex15574{background:url('../image/texture/donjon_aquatique/sol_tente_chacal_bd_ouverture.png') no-repeat;}
+.tex5575, .tex15575{background:url('../image/texture/donjon_aquatique/sol_tente_chacal_md_ouverture.png') no-repeat;}
+.tex5576, .tex15576{background:url('../image/texture/donjon_aquatique/sol_tente_chacal_mg.png') no-repeat;}
 
 .tex5577{background:url('../image/texture/donjon_aquatique/sol_precipice_bg.png') no-repeat;}
 .tex5578{background:url('../image/texture/donjon_aquatique/sol_precipice_bm.png') no-repeat;}
@@ -1500,12 +1500,12 @@
 .tex5582{background:url('../image/texture/donjon_aquatique/sol_precipice_hm.png') no-repeat;}
 .tex5583{background:url('../image/texture/donjon_aquatique/sol_precipice_pont_hm.png') no-repeat;}
 .tex5584{background:url('../image/texture/donjon_aquatique/sol_precipice_pont_bas.png') no-repeat;}
-.tex5585{background:url('../image/texture/donjon_aquatique/sol_precipice_pont_centreb.png') no-repeat;}
-.tex5586{background:url('../image/texture/donjon_aquatique/sol_precipice_pont_centre.png') no-repeat;}
-.tex5587{background:url('../image/texture/donjon_aquatique/sol_precipice_pont_centreh.png') no-repeat;}
+.tex5585, .tex15585{background:url('../image/texture/donjon_aquatique/sol_precipice_pont_centreb.png') no-repeat;}
+.tex5586, .tex15586{background:url('../image/texture/donjon_aquatique/sol_precipice_pont_centre.png') no-repeat;}
+.tex5587, .tex15587{background:url('../image/texture/donjon_aquatique/sol_precipice_pont_centreh.png') no-repeat;}
 
-.tex7536{background:url('../image/texture/donjon_aquatique/sol_precipice_pont_bas2.png') no-repeat;}
-.tex7537{background:url('../image/texture/donjon_aquatique/sol_mur_precipice_pont_hm.png') no-repeat;}
+.tex7536, .tex17536{background:url('../image/texture/donjon_aquatique/sol_precipice_pont_bas2.png') no-repeat;}
+.tex7537, .tex17537{background:url('../image/texture/donjon_aquatique/sol_mur_precipice_pont_hm.png') no-repeat;}
 
 .tex7538{background:url('../image/texture/donjon_aquatique/sol_sphinxheritierbas.png') no-repeat;}
 .tex7539{background:url('../image/texture/donjon_aquatique/sol_sphinxheritierhaut.png') no-repeat;}
@@ -1515,20 +1515,20 @@
 .tex7542{background:url('../image/texture/donjon_aquatique/sol_Bergastmilieu.png') no-repeat;}
 .tex7543{background:url('../image/texture/donjon_aquatique/sol_Bergasthaut.png') no-repeat;}
 
-.tex7544{background:url('../image/texture/donjon_aquatique/sol_mur_gouttiere_b.png') no-repeat;}
-.tex7545{background:url('../image/texture/donjon_aquatique/sol_mur_gouttiere_m.png') no-repeat;}
-.tex7546{background:url('../image/texture/donjon_aquatique/sol_mur_gouttiere_h.png') no-repeat;}
+.tex7544, .tex17544{background:url('../image/texture/donjon_aquatique/sol_mur_gouttiere_b.png') no-repeat;}
+.tex7545, .tex17545{background:url('../image/texture/donjon_aquatique/sol_mur_gouttiere_m.png') no-repeat;}
+.tex7546, .tex17546{background:url('../image/texture/donjon_aquatique/sol_mur_gouttiere_h.png') no-repeat;}
 
 .tex7554{background:url('../image/texture/donjon_aquatique/sol_inferieure_trou.png') no-repeat;}
 .tex7555{background:url('../image/texture/donjon_aquatique/sol_bouse.png') no-repeat;}
 
-.tex7556{background:url('../image/texture/donjon_aquatique/sol_precipice_pont_centre2.png') no-repeat;}
-.tex7557{background:url('../image/texture/donjon_aquatique/sol_donjon_aqua_mur_nord_d.png') no-repeat;}
-.tex7558{background:url('../image/texture/donjon_aquatique/sol_donjon_aqua_mur_nord_g.png') no-repeat;}	
+.tex7556, .tex17556{background:url('../image/texture/donjon_aquatique/sol_precipice_pont_centre2.png') no-repeat;}
+.tex7557, .tex17557{background:url('../image/texture/donjon_aquatique/sol_donjon_aqua_mur_nord_d.png') no-repeat;}
+.tex7558, .tex17558{background:url('../image/texture/donjon_aquatique/sol_donjon_aqua_mur_nord_g.png') no-repeat;}	
 
-.tex7559{background:url('../image/texture/donjon_aquatique/couloir_horiz_jonction_donjon_aquab.png') no-repeat;}	
-.tex7560{background:url('../image/texture/donjon_aquatique/couloir_horiz_jonction_donjon_aquac.png') no-repeat;}
-.tex7561{background:url('../image/texture/donjon_aquatique/couloir_verti_donjon_aquab.png') no-repeat;}		
+.tex7559, .tex17559{background:url('../image/texture/donjon_aquatique/couloir_horiz_jonction_donjon_aquab.png') no-repeat;}	
+.tex7560, .tex17560{background:url('../image/texture/donjon_aquatique/couloir_horiz_jonction_donjon_aquac.png') no-repeat;}
+.tex7561, .tex17561{background:url('../image/texture/donjon_aquatique/couloir_verti_donjon_aquab.png') no-repeat;}		
 
 .tex7562{background:url('../image/texture/ville_aquatique/sol_mur_machine_bg.png') no-repeat;}	
 .tex7563{background:url('../image/texture/ville_aquatique/sol_mur_est_machine_bd.png') no-repeat;}	
@@ -1561,27 +1561,27 @@
 .tex7586{background:url('../image/texture/ville_aquatique/sol_porte_bd.png') no-repeat;}
 
 .tex7587{background:url('../image/texture/donjon_aquatique/sol_puit.png') no-repeat;}
-.tex7588{background:url('../image/texture/donjon_aquatique/sol_rail.png') no-repeat;}
-.tex7589{background:url('../image/texture/donjon_aquatique/sol_chaise_roulante_rail.png') no-repeat;}
+.tex7588, .tex17588{background:url('../image/texture/donjon_aquatique/sol_rail.png') no-repeat;}
+.tex7589, .tex17589{background:url('../image/texture/donjon_aquatique/sol_chaise_roulante_rail.png') no-repeat;}
 
 .tex7590{background:url('../image/texture/ville_aquatique/sol_porte_village.png') no-repeat;}
 
-.tex7591{background:url('../image/texture/donjon_aquatique/sol_directionnordsud.png') no-repeat;}
-.tex7592{background:url('../image/texture/donjon_aquatique/sol_directionnordest.png') no-repeat;}
+.tex7591, .tex17591{background:url('../image/texture/donjon_aquatique/sol_directionnordsud.png') no-repeat;}
+.tex7592, .tex17592{background:url('../image/texture/donjon_aquatique/sol_directionnordest.png') no-repeat;}
 
-.tex7593{background:url('../image/texture/ville_aquatique/couloir_vertical_entree_minerais_sud.png') no-repeat;}
-.tex7594{background:url('../image/texture/ville_aquatique/sol_entree_salle_minerais_nord.png') no-repeat;}
+.tex7593, .tex17593{background:url('../image/texture/ville_aquatique/couloir_vertical_entree_minerais_sud.png') no-repeat;}
+.tex7594, .tex17594{background:url('../image/texture/ville_aquatique/sol_entree_salle_minerais_nord.png') no-repeat;}
 
-.tex7595{background:url('../image/texture/donjon_aquatique/sol_rail_direction_gauche.png') no-repeat;}
-.tex7596{background:url('../image/texture/donjon_aquatique/sol_chaise_roulante_rail_gauche.png') no-repeat;}
-.tex7597{background:url('../image/texture/donjon_aquatique/couloir_vertical_plafondbas.png') no-repeat;}
+.tex7595, .tex17595{background:url('../image/texture/donjon_aquatique/sol_rail_direction_gauche.png') no-repeat;}
+.tex7596, .tex17596{background:url('../image/texture/donjon_aquatique/sol_chaise_roulante_rail_gauche.png') no-repeat;}
+.tex7597, .tex17597{background:url('../image/texture/donjon_aquatique/couloir_vertical_plafondbas.png') no-repeat;}
 .tex7598{background:url('../image/texture/donjon_aquatique/couloir_vertical_plafondhaut.png') no-repeat;}
 .tex7599{background:url('../image/texture/donjon_aquatique/sol_rail_end_gauche.png') no-repeat;}
 
 .tex8500{background:url('../image/texture/ville_aquatique/escalier_milieu_vertical.png') no-repeat;}
 .tex8501{background:url('../image/texture/ville_aquatique/escalier_haut_vertical.png') no-repeat;}
 .tex8502{background:url('../image/texture/ville_aquatique/escalier_bas_vertical.png') no-repeat;}
-.tex8503{background:url('../image/texture/ville_aquatique/sol_trou_escalier_village.png') no-repeat;}
+.tex8503, .tex18503{background:url('../image/texture/ville_aquatique/sol_trou_escalier_village.png') no-repeat;}
 .tex8504{background:url('../image/texture/ville_aquatique/escalier_haut_vertical_jonc.png') no-repeat;}
 .tex8505{background:url('../image/texture/ville_aquatique/escalier_centre_vertical.png') no-repeat;}
 .tex8506{background:url('../image/texture/ville_aquatique/sol_comptoir.png') no-repeat;}
@@ -1591,39 +1591,39 @@
 .tex8510{background:url('../image/texture/ville_aquatique/sol_mur_sud_ville_aqua_casse.png') no-repeat;}
 .tex8511{background:url('../image/texture/ville_aquatique/escalier_bas.png') no-repeat;}
 
-.tex8512{background:url('../image/texture/donjon_aquatique/sol_lit_prison_hg.png') no-repeat;}
-.tex8513{background:url('../image/texture/donjon_aquatique/sol_lit_prison_hd.png') no-repeat;}
+.tex8512, .tex18512{background:url('../image/texture/donjon_aquatique/sol_lit_prison_hg.png') no-repeat;}
+.tex8513, .tex18513{background:url('../image/texture/donjon_aquatique/sol_lit_prison_hd.png') no-repeat;}
 
-.tex8514{background:url('../image/texture/donjon_aquatique/sol_tente_chacal_porte_est.png') no-repeat;}
-.tex8515{background:url('../image/texture/donjon_aquatique/sol_tente_chacal_porte_ouest.png') no-repeat;}
-.tex8516{background:url('../image/texture/donjon_aquatique/sol_tente_chacal_conseiller_g.png') no-repeat;}
-.tex8517{background:url('../image/texture/donjon_aquatique/sol_tente_chacal_conseiller_d.png') no-repeat;}
-.tex8518{background:url('../image/texture/donjon_aquatique/sol_tente_chacal_porte_nord.png') no-repeat;}
+.tex8514, .tex18514{background:url('../image/texture/donjon_aquatique/sol_tente_chacal_porte_est.png') no-repeat;}
+.tex8515, .tex18515{background:url('../image/texture/donjon_aquatique/sol_tente_chacal_porte_ouest.png') no-repeat;}
+.tex8516, .tex18516{background:url('../image/texture/donjon_aquatique/sol_tente_chacal_conseiller_g.png') no-repeat;}
+.tex8517, .tex18517{background:url('../image/texture/donjon_aquatique/sol_tente_chacal_conseiller_d.png') no-repeat;}
+.tex8518, .tex18518{background:url('../image/texture/donjon_aquatique/sol_tente_chacal_porte_nord.png') no-repeat;}
 .tex8519{background:url('../image/texture/donjon_aquatique/sol_tente_chacal_conseiller_centrem.png') no-repeat;}
-.tex8520{background:url('../image/texture/donjon_aquatique/sol_tente_chacal_porte_nord2.png') no-repeat;}
+.tex8520, .tex18520{background:url('../image/texture/donjon_aquatique/sol_tente_chacal_porte_nord2.png') no-repeat;}
 
-.tex8521{background:url('../image/texture/donjon_aquatique/sol_piege_sac.png') no-repeat;}
-.tex8522{background:url('../image/texture/donjon_aquatique/sol_mur_ouest_sworling.png') no-repeat;}
-.tex8523{background:url('../image/texture/donjon_aquatique/sol_mur_nord_sworling.png') no-repeat;}
+.tex8521, .tex18521{background:url('../image/texture/donjon_aquatique/sol_piege_sac.png') no-repeat;}
+.tex8522, .tex18522{background:url('../image/texture/donjon_aquatique/sol_mur_ouest_sworling.png') no-repeat;}
+.tex8523, .tex18523{background:url('../image/texture/donjon_aquatique/sol_mur_nord_sworling.png') no-repeat;}
 .tex8524{background:url('../image/texture/donjon_aquatique/sol_porte_gardien_g.png') no-repeat;}
 .tex8525{background:url('../image/texture/donjon_aquatique/sol_porte_gardien_d.png') no-repeat;}
 .tex8526{background:url('../image/texture/donjon_aquatique/sol_tente_jonction_couloir_verti_sud.png') no-repeat;}
-.tex8527{background:url('../image/texture/donjon_aquatique/sol_lit_prison_g.png') no-repeat;}
-.tex8528{background:url('../image/texture/donjon_aquatique/sol_lit_prison_d.png') no-repeat;}
-.tex8529{background:url('../image/texture/donjon_aquatique/sol_mur_lit_prison_m.png') no-repeat;}
+.tex8527, .tex18527{background:url('../image/texture/donjon_aquatique/sol_lit_prison_g.png') no-repeat;}
+.tex8528, .tex18528{background:url('../image/texture/donjon_aquatique/sol_lit_prison_d.png') no-repeat;}
+.tex8529, .tex18529{background:url('../image/texture/donjon_aquatique/sol_mur_lit_prison_m.png') no-repeat;}
 
-.tex8530{background:url('../image/texture/donjon_aquatique/sol_centre_mechoui.png') no-repeat;}
-.tex8531{background:url('../image/texture/donjon_aquatique/sol_tente_chacal_centre_table_d.png') no-repeat;}
-.tex8532{background:url('../image/texture/donjon_aquatique/sol_tente_chacal_centre_table_g.png') no-repeat;}
-.tex8533{background:url('../image/texture/donjon_aquatique/sol_tente_chacal_hm_table_sac_sworling.png') no-repeat;}
-.tex8534{background:url('../image/texture/donjon_aquatique/sol_tente_chacal_bm_table_sac_sworling.png') no-repeat;}
-.tex8535{background:url('../image/texture/donjon_aquatique/sol_tente_chacal_bm_table_sac.png') no-repeat;}
-.tex8536{background:url('../image/texture/donjon_aquatique/sol_tente_chacal_bg_sac_sworling.png') no-repeat;}
+.tex8530, .tex18530{background:url('../image/texture/donjon_aquatique/sol_centre_mechoui.png') no-repeat;}
+.tex8531, .tex18531{background:url('../image/texture/donjon_aquatique/sol_tente_chacal_centre_table_d.png') no-repeat;}
+.tex8532, .tex18532{background:url('../image/texture/donjon_aquatique/sol_tente_chacal_centre_table_g.png') no-repeat;}
+.tex8533, .tex18533{background:url('../image/texture/donjon_aquatique/sol_tente_chacal_hm_table_sac_sworling.png') no-repeat;}
+.tex8534, .tex18534{background:url('../image/texture/donjon_aquatique/sol_tente_chacal_bm_table_sac_sworling.png') no-repeat;}
+.tex8535, .tex18535{background:url('../image/texture/donjon_aquatique/sol_tente_chacal_bm_table_sac.png') no-repeat;}
+.tex8536, .tex18536{background:url('../image/texture/donjon_aquatique/sol_tente_chacal_bg_sac_sworling.png') no-repeat;}
 
-.tex8537{background:url('../image/texture/donjon_aquatique/sol_fontaine_kesalys_bg.png') no-repeat;}
-.tex8538{background:url('../image/texture/donjon_aquatique/sol_fontaine_kesalys_bd.png') no-repeat;}
-.tex8539{background:url('../image/texture/donjon_aquatique/sol_fontaine_kesalys_hd.png') no-repeat;}
-.tex8540{background:url('../image/texture/donjon_aquatique/sol_fontaine_kesalys_hg.png') no-repeat;}
+.tex8537, .tex18537{background:url('../image/texture/donjon_aquatique/sol_fontaine_kesalys_bg.png') no-repeat;}
+.tex8538, .tex18538{background:url('../image/texture/donjon_aquatique/sol_fontaine_kesalys_bd.png') no-repeat;}
+.tex8539, .tex18539{background:url('../image/texture/donjon_aquatique/sol_fontaine_kesalys_hd.png') no-repeat;}
+.tex8540, .tex18540{background:url('../image/texture/donjon_aquatique/sol_fontaine_kesalys_hg.png') no-repeat;}
 
 .tex8541{background:url('../image/texture/donjon_aquagob/sol_donjon_auqagob_bibliocassee_bas.png') no-repeat;}
 .tex8542{background:url('../image/texture/donjon_aquagob/sol_donjon_auqagob_bibliocassee_bas2.png') no-repeat;}
@@ -1635,15 +1635,15 @@
 .tex8547{background:url('../image/texture/donjon_aquatique/sol_murnord_canal_casse_eau_basse.png') no-repeat;}
 .tex8548{background:url('../image/texture/ville_aquatique/sol_pierre_tp_village_aquatique.png') no-repeat;}
 
-.tex8549{background:url('../image/texture/donjon_aquatique/sol_chute_entre_g.png') no-repeat;}
+.tex8549, .tex18549{background:url('../image/texture/donjon_aquatique/sol_chute_entre_g.png') no-repeat;}
 .tex8550{background:url('../image/texture/donjon_aquatique/sol_eau_basse_planche.png') no-repeat;}
 .tex8551{background:url('../image/texture/donjon_aquatique/sol_centre_ruine_g_eau_basse.png') no-repeat;}
 .tex8552{background:url('../image/texture/donjon_aquatique/sol_centre_ruine_d_eau_basse.png') no-repeat;}
 .tex8553{background:url('../image/texture/donjon_aquatique/couloir_murnord_canal_casse.png') no-repeat;}
 
-.tex8554{background:url('../image/texture/donjon_aquatique/sol_chute_1case_nid.png') no-repeat;}
+.tex8554, .tex18554{background:url('../image/texture/donjon_aquatique/sol_chute_1case_nid.png') no-repeat;}
 
-.tex8555{background:url('../image/texture/donjon_aquatique/sol_passage_strate_saltus.png') no-repeat;}
+.tex8555, .tex18555{background:url('../image/texture/donjon_aquatique/sol_passage_strate_saltus.png') no-repeat;}
 .tex8558{background:url('../image/texture/donjon_aquatique/sol_droit_jeu_du_crabe.png') no-repeat;}
 .tex8559{background:url('../image/texture/donjon_aquatique/sol_gauche_jeu_du_crabe.png') no-repeat;}
 
@@ -1651,23 +1651,23 @@
 
 .tex8561{background:url('../image/texture/donjon_aquatique/tex_lac_donjon.png') no-repeat;}
 
-.tex8562{background:url('../image/texture/donjon_aquatique/sol_directionnordestouest.png') no-repeat;}
+.tex8562, .tex18562{background:url('../image/texture/donjon_aquatique/sol_directionnordestouest.png') no-repeat;}
 
-.tex8564{background:url('../image/texture/donjon_aquatique/sol_tente_chacal_armurerie_hg.png') no-repeat;}
-.tex8565{background:url('../image/texture/donjon_aquatique/sol_tente_chacal_armurerie_hm.png') no-repeat;}
-.tex8566{background:url('../image/texture/donjon_aquatique/sol_tente_chacal_armurerie_hmd.png') no-repeat;}
-.tex8567{background:url('../image/texture/donjon_aquatique/sol_tente_chacal_armurerie_hd.png') no-repeat;}
+.tex8564, .tex18564{background:url('../image/texture/donjon_aquatique/sol_tente_chacal_armurerie_hg.png') no-repeat;}
+.tex8565, .tex18565{background:url('../image/texture/donjon_aquatique/sol_tente_chacal_armurerie_hm.png') no-repeat;}
+.tex8566, .tex18566{background:url('../image/texture/donjon_aquatique/sol_tente_chacal_armurerie_hmd.png') no-repeat;}
+.tex8567, .tex18567{background:url('../image/texture/donjon_aquatique/sol_tente_chacal_armurerie_hd.png') no-repeat;}
 
-.tex8568{background:url('../image/texture/donjon_aquatique/lit_azdak_ascenceur.png') no-repeat;}
-.tex8569{background:url('../image/texture/donjon_aquatique/sol_tente_chacal_centre_table_d_bernard.png') no-repeat;}
-.tex8570{background:url('../image/texture/donjon_aquatique/sol_tente_chacal_centre_table_g_bernard.png') no-repeat;}
-.tex8571{background:url('../image/texture/donjon_aquatique/sol_tente_chacal_centrem_caisse.png') no-repeat;}
-.tex8572{background:url('../image/texture/donjon_aquatique/sol_tente_chacal_bg_caisse.png') no-repeat;}
-.tex8573{background:url('../image/texture/donjon_aquatique/sol_tente_chacal_bd_caisse.png') no-repeat;}
-.tex8574{background:url('../image/texture/donjon_aquatique/sol_tente_chacal_d_jare.png') no-repeat;}
+.tex8568, .tex18568{background:url('../image/texture/donjon_aquatique/lit_azdak_ascenceur.png') no-repeat;}
+.tex8569, .tex18569{background:url('../image/texture/donjon_aquatique/sol_tente_chacal_centre_table_d_bernard.png') no-repeat;}
+.tex8570, .tex18570{background:url('../image/texture/donjon_aquatique/sol_tente_chacal_centre_table_g_bernard.png') no-repeat;}
+.tex8571, .tex18571{background:url('../image/texture/donjon_aquatique/sol_tente_chacal_centrem_caisse.png') no-repeat;}
+.tex8572, .tex18572{background:url('../image/texture/donjon_aquatique/sol_tente_chacal_bg_caisse.png') no-repeat;}
+.tex8573, .tex18573{background:url('../image/texture/donjon_aquatique/sol_tente_chacal_bd_caisse.png') no-repeat;}
+.tex8574, .tex18574{background:url('../image/texture/donjon_aquatique/sol_tente_chacal_d_jare.png') no-repeat;}
 
-.tex8575{background:url('../image/texture/donjon_aquatique/sol_tente_chacal_centrem_caisse_b.png') no-repeat;}
-.tex8576{background:url('../image/texture/donjon_aquatique/sol_tente_chacal_centrem_caisse_h.png') no-repeat;}
+.tex8575, .tex18575{background:url('../image/texture/donjon_aquatique/sol_tente_chacal_centrem_caisse_b.png') no-repeat;}
+.tex8576, .tex18576{background:url('../image/texture/donjon_aquatique/sol_tente_chacal_centrem_caisse_h.png') no-repeat;}
 .tex8577{background:url('../image/texture/donjon_aquatique/sol_bouse_d.png') no-repeat;}
 
 .tex10584{background:url('../image/texture/repere_aquatique/sol_repere_bar_bd.png') no-repeat;}
@@ -1780,34 +1780,34 @@
 .tex10694{background:url('../image/texture/repere_aquatique/sol_repere_sud_gobelet.png') no-repeat;}
 .tex10695{background:url('../image/texture/repere_aquatique/sol_repere_echec_bg.png') no-repeat;}
 
-.tex5588{background:url('../image/texture/donjon_aquatique/sol_centre_detail_roche.png') no-repeat;}
-.tex5589{background:url('../image/texture/donjon_aquatique/sol_centre_detail_roche2.png') no-repeat;}
+.tex5588, .tex15588{background:url('../image/texture/donjon_aquatique/sol_centre_detail_roche.png') no-repeat;}
+.tex5589, .tex15589{background:url('../image/texture/donjon_aquatique/sol_centre_detail_roche2.png') no-repeat;}
 .tex5590{background:url('../image/texture/donjon_aquatique/sol_centre_detail_flaque_bd.png') no-repeat;}
 .tex5591{background:url('../image/texture/donjon_aquatique/sol_centre_detail_flaque_hg.png') no-repeat;}
 .tex5592{background:url('../image/texture/donjon_aquatique/sol_centre_detail_flaque_hd.png') no-repeat;}
-.tex5593{background:url('../image/texture/donjon_aquatique/couloir_horiz_tombe.png') no-repeat;}
-.tex5594{background:url('../image/texture/donjon_aquatique/sol_centre_tentepierre_bg.png') no-repeat;}
-.tex5595{background:url('../image/texture/donjon_aquatique/sol_centre_tentepierre_bd.png') no-repeat;}
+.tex5593, .tex15593{background:url('../image/texture/donjon_aquatique/couloir_horiz_tombe.png') no-repeat;}
+.tex5594, .tex15594{background:url('../image/texture/donjon_aquatique/sol_centre_tentepierre_bg.png') no-repeat;}
+.tex5595, .tex15595{background:url('../image/texture/donjon_aquatique/sol_centre_tentepierre_bd.png') no-repeat;}
 .tex5596{background:url('../image/texture/donjon_aquatique/sol_aqua_plan_ouvert.png') no-repeat;}
-.tex5597{background:url('../image/texture/donjon_aquatique/sol_donjon_aqua_mouille.png') no-repeat;}
-.tex5598{background:url('../image/texture/donjon_aquatique/sol_donjon_aqua_rochestalactiteb.png') no-repeat;}
-.tex5599{background:url('../image/texture/donjon_aquatique/sol_donjon_aqua_rochestalactiteh.png') no-repeat;}
+.tex5597, .tex15597{background:url('../image/texture/donjon_aquatique/sol_donjon_aqua_mouille.png') no-repeat;}
+.tex5598, .tex15598{background:url('../image/texture/donjon_aquatique/sol_donjon_aqua_rochestalactiteb.png') no-repeat;}
+.tex5599, .tex15599{background:url('../image/texture/donjon_aquatique/sol_donjon_aqua_rochestalactiteh.png') no-repeat;}
 
-.tex6500{background:url('../image/texture/donjon_aquatique/sol_donjon_aqua_stalactite.png') no-repeat;}
-.tex6501{background:url('../image/texture/donjon_aquatique/sol_donjon_aqua_stalactitebd.png') no-repeat;}
-.tex6502{background:url('../image/texture/donjon_aquatique/sol_donjon_aqua_stalactitebdjc.png') no-repeat;}
-.tex6503{background:url('../image/texture/donjon_aquatique/sol_donjon_aqua_stalactitebg.png') no-repeat;}
-.tex6504{background:url('../image/texture/donjon_aquatique/sol_donjon_aqua_stalactitehd.png') no-repeat;}
-.tex6505{background:url('../image/texture/donjon_aquatique/sol_donjon_aqua_stalactitenhg.png') no-repeat;}
-.tex6506{background:url('../image/texture/donjon_aquatique/sol_donjon_aqua_stalactitenhg2.png') no-repeat;}
-.tex6507{background:url('../image/texture/donjon_aquatique/sol_donjon_aqua_tentebd.png') no-repeat;}
-.tex6508{background:url('../image/texture/donjon_aquatique/sol_donjon_aqua_tentebg.png') no-repeat;}
-.tex6509{background:url('../image/texture/donjon_aquatique/sol_donjon_aqua_tentebm.png') no-repeat;}
-.tex6510{background:url('../image/texture/donjon_aquatique/sol_donjon_aqua_tentecentre.png') no-repeat;}
-.tex6511{background:url('../image/texture/donjon_aquatique/sol_donjon_aqua_tentemd.png') no-repeat;}
-.tex6512{background:url('../image/texture/donjon_aquatique/sol_donjon_aqua_tentemg.png') no-repeat;}
+.tex6500, .tex16500{background:url('../image/texture/donjon_aquatique/sol_donjon_aqua_stalactite.png') no-repeat;}
+.tex6501, .tex16501{background:url('../image/texture/donjon_aquatique/sol_donjon_aqua_stalactitebd.png') no-repeat;}
+.tex6502, .tex16502{background:url('../image/texture/donjon_aquatique/sol_donjon_aqua_stalactitebdjc.png') no-repeat;}
+.tex6503, .tex16503{background:url('../image/texture/donjon_aquatique/sol_donjon_aqua_stalactitebg.png') no-repeat;}
+.tex6504, .tex16504{background:url('../image/texture/donjon_aquatique/sol_donjon_aqua_stalactitehd.png') no-repeat;}
+.tex6505, .tex16505{background:url('../image/texture/donjon_aquatique/sol_donjon_aqua_stalactitenhg.png') no-repeat;}
+.tex6506, .tex16506{background:url('../image/texture/donjon_aquatique/sol_donjon_aqua_stalactitenhg2.png') no-repeat;}
+.tex6507, .tex16507{background:url('../image/texture/donjon_aquatique/sol_donjon_aqua_tentebd.png') no-repeat;}
+.tex6508, .tex16508{background:url('../image/texture/donjon_aquatique/sol_donjon_aqua_tentebg.png') no-repeat;}
+.tex6509, .tex16509{background:url('../image/texture/donjon_aquatique/sol_donjon_aqua_tentebm.png') no-repeat;}
+.tex6510, .tex16510{background:url('../image/texture/donjon_aquatique/sol_donjon_aqua_tentecentre.png') no-repeat;}
+.tex6511, .tex16511{background:url('../image/texture/donjon_aquatique/sol_donjon_aqua_tentemd.png') no-repeat;}
+.tex6512, .tex16512{background:url('../image/texture/donjon_aquatique/sol_donjon_aqua_tentemg.png') no-repeat;}
 .tex6513{background:url('../image/texture/donjon_aquatique/sol_donjon_aqua_trou_nord.png') no-repeat;}
-.tex6514{background:url('../image/texture/donjon_aquatique/sol_donjon_aqua_trou_centre.png') no-repeat;}
+.tex6514, .tex16514{background:url('../image/texture/donjon_aquatique/sol_donjon_aqua_trou_centre.png') no-repeat;}
 .tex6515{background:url('../image/texture/donjon_aquatique/sol_centre_tentepierre_bd.png') no-repeat;}
 .tex6516{background:url('../image/texture/donjon_aquatique/sol_centre_tentepierre_bg.png') no-repeat;}
 
@@ -1850,12 +1850,12 @@
 .tex6553{background:url('../image/texture/donjon_aquagob/sol_donjon_aquagob_tas_bd_impasse.png') no-repeat;}
 .tex6554{background:url('../image/texture/donjon_aquagob/sol_donjon_aquagob_tas_bg.png') no-repeat;}
 .tex6555{background:url('../image/texture/donjon_aquagob/sol_donjon_aquagob_tas_bg_impasse.png') no-repeat;}
-.tex6556{background:url('../image/texture/donjon_aquatique/sol_donjon_aqua_stalactite2.png') no-repeat;}
-.tex6557{background:url('../image/texture/donjon_aquatique/sol_couloir_verti_impbm_donjon_aqua.png') no-repeat;}
-.tex6558{background:url('../image/texture/donjon_aquatique/sol_mur_nord_passage.png') no-repeat;}
-.tex6559{background:url('../image/texture/donjon_aquatique/sol_mur_nord_passage1.png') no-repeat;}
-.tex6560{background:url('../image/texture/donjon_aquatique/sol_mur_nord_passage2.png') no-repeat;}
-.tex6561{background:url('../image/texture/donjon_aquagob/sol_donjon_aquagob_trou_sud.png') no-repeat;}
+.tex6556, .tex16556{background:url('../image/texture/donjon_aquatique/sol_donjon_aqua_stalactite2.png') no-repeat;}
+.tex6557, .tex16557{background:url('../image/texture/donjon_aquatique/sol_couloir_verti_impbm_donjon_aqua.png') no-repeat;}
+.tex6558, .tex16558{background:url('../image/texture/donjon_aquatique/sol_mur_nord_passage.png') no-repeat;}
+.tex6559, .tex16559{background:url('../image/texture/donjon_aquatique/sol_mur_nord_passage1.png') no-repeat;}
+.tex6560, .tex16560{background:url('../image/texture/donjon_aquatique/sol_mur_nord_passage2.png') no-repeat;}
+.tex6561, .tex16561{background:url('../image/texture/donjon_aquagob/sol_donjon_aquagob_trou_sud.png') no-repeat;}
 .tex6562{background:url('../image/texture/donjon_aquagob/sol_donjon_aquagob_trou_centre.png') no-repeat;}
 .tex6563{background:url('../image/texture/donjon_aquagob/sol_donjon_aquagob_trou_ouest.png') no-repeat;}
 .tex6564{background:url('../image/texture/donjon_aquagob/sol_donjon_aquagob_trou_est.png') no-repeat;}
@@ -1865,59 +1865,59 @@
 .tex6568{background:url('../image/texture/donjon_aquagob/sol_donjon_aquagob_jonc_ouest_couloir.png') no-repeat;}
 .tex6569{background:url('../image/texture/donjon_aquagob/sol_donjon_aquagob_est_cache.png') no-repeat;}
 .tex6570{background:url('../image/texture/donjon_aquatique/sol_porte_prison_scaven_donjon_aqua.png') no-repeat;}
-.tex6571{background:url('../image/texture/donjon_aquatique/sol_donjon_aqua_feu_de_camp.png') no-repeat;}
-.tex6572{background:url('../image/texture/donjon_aquatique/sol_donjon_aqua_table_chacal.png') no-repeat;}
-.tex6573{background:url('../image/texture/donjon_aquatique/sol_donjon_aqua_table_chacald.png') no-repeat;}
-.tex6574{background:url('../image/texture/donjon_aquatique/sol_donjon_aqua_feu_de_campb.png') no-repeat;}
-.tex6575{background:url('../image/texture/donjon_aquatique/sol_donjon_aqua_mur_nord_eau_basse.png') no-repeat;}
-.tex6576{background:url('../image/texture/donjon_aquatique/sol_donjon_aqua_sable_centre_eau_basse.png') no-repeat;}
-.tex6577{background:url('../image/texture/donjon_aquatique/couloir_horiz_donjon_aqua_eau_basse.png') no-repeat;}
-.tex6578{background:url('../image/texture/donjon_aquatique/couloir_horiz_jonction_eau_basse.png') no-repeat;}
-.tex6579{background:url('../image/texture/donjon_aquatique/couloir_horiz_jonction_eau_basse_gauche.png') no-repeat;}
-.tex6580{background:url('../image/texture/donjon_aquatique/couloir_horiz_jonction_eau_basse_droite.png') no-repeat;}
-.tex6581{background:url('../image/texture/donjon_aquatique/couloir_horiz_jonction_eau_bassed.png') no-repeat;}
-.tex6582{background:url('../image/texture/donjon_aquatique/couloir_vertical_donjon_aqua_eau_basse.png') no-repeat;}
-.tex6583{background:url('../image/texture/donjon_aquatique/couloir_vertical_donjon_aqua_eau_basseh.png') no-repeat;}
-.tex6584{background:url('../image/texture/donjon_aquatique/couloir_vertical_donjon_aqua_eau_bassebas.png') no-repeat;}
-.tex6585{background:url('../image/texture/donjon_aquatique/couloir_jonction_verti_horiz_eau_basse.png') no-repeat;}
-.tex6586{background:url('../image/texture/donjon_aquatique/couloir_horiz_coin_est_eau_basse.png') no-repeat;}
-.tex6587{background:url('../image/texture/donjon_aquatique/couloir_horiz_coin_ouest_eau_basse.png') no-repeat;}
-.tex6588{background:url('../image/texture/donjon_aquatique/sol_donjon_aqua_est_eau_basse.png') no-repeat;}
-.tex6589{background:url('../image/texture/donjon_aquatique/sol_donjon_aqua_ouest_eau_basse.png') no-repeat;}
-.tex6590{background:url('../image/texture/donjon_aquatique/sol_donjon_aqua_ouestbas_eau_basse.png') no-repeat;}
-.tex6591{background:url('../image/texture/donjon_aquatique/sol_donjon_aqua_estbas_eau_basse.png') no-repeat;}
-.tex6592{background:url('../image/texture/donjon_aquatique/sol_mur_nord_est_eau_basse.png') no-repeat;}
-.tex6593{background:url('../image/texture/donjon_aquatique/sol_mur_nord_ouest_eau_basse.png') no-repeat;}
-.tex6594{background:url('../image/texture/donjon_aquatique/sol_donjon_aqua_sud_eau_basse.png') no-repeat;}
-.tex6595{background:url('../image/texture/donjon_aquatique/sol_donjon_aqua_sudouest_eau_basse.png') no-repeat;}
-.tex6596{background:url('../image/texture/donjon_aquatique/sol_donjon_aqua_sudest_eau_basse.png') no-repeat;}
-.tex6597{background:url('../image/texture/donjon_aquatique/couloir_vertical_haut_eau_basse.png') no-repeat;}
+.tex6571, .tex16571{background:url('../image/texture/donjon_aquatique/sol_donjon_aqua_feu_de_camp.png') no-repeat;}
+.tex6572, .tex16572{background:url('../image/texture/donjon_aquatique/sol_donjon_aqua_table_chacal.png') no-repeat;}
+.tex6573, .tex16573{background:url('../image/texture/donjon_aquatique/sol_donjon_aqua_table_chacald.png') no-repeat;}
+.tex6574, .tex16574{background:url('../image/texture/donjon_aquatique/sol_donjon_aqua_feu_de_campb.png') no-repeat;}
+.tex6575, .tex16575{background:url('../image/texture/donjon_aquatique/sol_donjon_aqua_mur_nord_eau_basse.png') no-repeat;}
+.tex6576, .tex16576{background:url('../image/texture/donjon_aquatique/sol_donjon_aqua_sable_centre_eau_basse.png') no-repeat;}
+.tex6577, .tex16577{background:url('../image/texture/donjon_aquatique/couloir_horiz_donjon_aqua_eau_basse.png') no-repeat;}
+.tex6578, .tex16578{background:url('../image/texture/donjon_aquatique/couloir_horiz_jonction_eau_basse.png') no-repeat;}
+.tex6579, .tex16579{background:url('../image/texture/donjon_aquatique/couloir_horiz_jonction_eau_basse_gauche.png') no-repeat;}
+.tex6580, .tex16580{background:url('../image/texture/donjon_aquatique/couloir_horiz_jonction_eau_basse_droite.png') no-repeat;}
+.tex6581, .tex16581{background:url('../image/texture/donjon_aquatique/couloir_horiz_jonction_eau_bassed.png') no-repeat;}
+.tex6582, .tex16582{background:url('../image/texture/donjon_aquatique/couloir_vertical_donjon_aqua_eau_basse.png') no-repeat;}
+.tex6583, .tex16583{background:url('../image/texture/donjon_aquatique/couloir_vertical_donjon_aqua_eau_basseh.png') no-repeat;}
+.tex6584, .tex16584{background:url('../image/texture/donjon_aquatique/couloir_vertical_donjon_aqua_eau_bassebas.png') no-repeat;}
+.tex6585, .tex16585{background:url('../image/texture/donjon_aquatique/couloir_jonction_verti_horiz_eau_basse.png') no-repeat;}
+.tex6586, .tex16586{background:url('../image/texture/donjon_aquatique/couloir_horiz_coin_est_eau_basse.png') no-repeat;}
+.tex6587, .tex16587{background:url('../image/texture/donjon_aquatique/couloir_horiz_coin_ouest_eau_basse.png') no-repeat;}
+.tex6588, .tex16588{background:url('../image/texture/donjon_aquatique/sol_donjon_aqua_est_eau_basse.png') no-repeat;}
+.tex6589, .tex16589{background:url('../image/texture/donjon_aquatique/sol_donjon_aqua_ouest_eau_basse.png') no-repeat;}
+.tex6590, .tex16590{background:url('../image/texture/donjon_aquatique/sol_donjon_aqua_ouestbas_eau_basse.png') no-repeat;}
+.tex6591, .tex16591{background:url('../image/texture/donjon_aquatique/sol_donjon_aqua_estbas_eau_basse.png') no-repeat;}
+.tex6592, .tex16592{background:url('../image/texture/donjon_aquatique/sol_mur_nord_est_eau_basse.png') no-repeat;}
+.tex6593, .tex16593{background:url('../image/texture/donjon_aquatique/sol_mur_nord_ouest_eau_basse.png') no-repeat;}
+.tex6594, .tex16594{background:url('../image/texture/donjon_aquatique/sol_donjon_aqua_sud_eau_basse.png') no-repeat;}
+.tex6595, .tex16595{background:url('../image/texture/donjon_aquatique/sol_donjon_aqua_sudouest_eau_basse.png') no-repeat;}
+.tex6596, .tex16596{background:url('../image/texture/donjon_aquatique/sol_donjon_aqua_sudest_eau_basse.png') no-repeat;}
+.tex6597, .tex16597{background:url('../image/texture/donjon_aquatique/couloir_vertical_haut_eau_basse.png') no-repeat;}
 .tex6598{background:url('../image/texture/donjon_aquatique/sol_inferieur_mur_nord_ouest_donjon_aqua.png') no-repeat;}
 .tex6599{background:url('../image/texture/donjon_aquatique/sol_inferieur_hmg_donjon_aqua.png') no-repeat;}
 
-.tex7500{background:url('../image/texture/donjon_aquatique/sol_inferieur_hmd_donjon_aqua.png') no-repeat;}
-.tex7501{background:url('../image/texture/donjon_aquatique/sol_inferieur_bmg_donjon_aqua.png') no-repeat;}
-.tex7502{background:url('../image/texture/donjon_aquatique/sol_inferieur_bmd_donjon_aqua.png') no-repeat;}
-.tex7503{background:url('../image/texture/donjon_aquatique/portail_plan_donjon_aqua_.png') no-repeat;}
-.tex7504{background:url('../image/texture/donjon_aquatique/sol_murnord_canal_casseb.png') no-repeat;}
+.tex7500, .tex17500{background:url('../image/texture/donjon_aquatique/sol_inferieur_hmd_donjon_aqua.png') no-repeat;}
+.tex7501, .tex17501{background:url('../image/texture/donjon_aquatique/sol_inferieur_bmg_donjon_aqua.png') no-repeat;}
+.tex7502, .tex17502{background:url('../image/texture/donjon_aquatique/sol_inferieur_bmd_donjon_aqua.png') no-repeat;}
+.tex7503, .tex17503{background:url('../image/texture/donjon_aquatique/portail_plan_donjon_aqua_.png') no-repeat;}
+.tex7504, .tex17504{background:url('../image/texture/donjon_aquatique/sol_murnord_canal_casseb.png') no-repeat;}
 .tex7505{background:url('../image/texture/donjon_aquatique/sol_detail_alguecoquillage.png') no-repeat;}
-.tex7506{background:url('../image/texture/donjon_aquatique/sol_donjon_aqua_tente_chacaldg.png') no-repeat;}
-.tex7507{background:url('../image/texture/donjon_aquatique/sol_donjon_aqua_tente_chacalgg.png') no-repeat;}
-.tex7508{background:url('../image/texture/donjon_aquatique/sol_donjon_aqua_tente_chacalg.png') no-repeat;}
-.tex7509{background:url('../image/texture/donjon_aquatique/sol_donjon_aqua_tente_chacald.png') no-repeat;}
+.tex7506, .tex17506{background:url('../image/texture/donjon_aquatique/sol_donjon_aqua_tente_chacaldg.png') no-repeat;}
+.tex7507, .tex17507{background:url('../image/texture/donjon_aquatique/sol_donjon_aqua_tente_chacalgg.png') no-repeat;}
+.tex7508, .tex17508{background:url('../image/texture/donjon_aquatique/sol_donjon_aqua_tente_chacalg.png') no-repeat;}
+.tex7509, .tex17509{background:url('../image/texture/donjon_aquatique/sol_donjon_aqua_tente_chacald.png') no-repeat;}
 
-.tex7510{background:url('../image/texture/ville_aquatique/sol_mur_nord_ville_aqua.png') no-repeat;}
+.tex7510, .tex17510{background:url('../image/texture/ville_aquatique/sol_mur_nord_ville_aqua.png') no-repeat;}
 .tex7511{background:url('../image/texture/ville_aquatique/sol_mur_nord_pillier_ville_aqua.png') no-repeat;}
-.tex7512{background:url('../image/texture/ville_aquatique/sol_mur_nord_porte_ville_aqua.png') no-repeat;}
+.tex7512, .tex17512{background:url('../image/texture/ville_aquatique/sol_mur_nord_porte_ville_aqua.png') no-repeat;}
 .tex7513{background:url('../image/texture/ville_aquatique/sol_mur_ouest_ville_aqua.png') no-repeat;}
-.tex7514{background:url('../image/texture/ville_aquatique/sol_mur_nordouest_pillier_ville_aqua.png') no-repeat;}
-.tex7515{background:url('../image/texture/ville_aquatique/sol_mur_est_ville_aqua.png') no-repeat;}
-.tex7516{background:url('../image/texture/ville_aquatique/sol_mur_nordest_pillier_ville_aqua.png') no-repeat;}
+.tex7514, .tex17514{background:url('../image/texture/ville_aquatique/sol_mur_nordouest_pillier_ville_aqua.png') no-repeat;}
+.tex7515, .tex17515{background:url('../image/texture/ville_aquatique/sol_mur_est_ville_aqua.png') no-repeat;}
+.tex7516, .tex17516{background:url('../image/texture/ville_aquatique/sol_mur_nordest_pillier_ville_aqua.png') no-repeat;}
 .tex7517{background:url('../image/texture/ville_aquatique/sol_mur_sudest_ville_aqua.png') no-repeat;}
 .tex7518{background:url('../image/texture/ville_aquatique/sol_mur_sudouest_ville_aqua.png') no-repeat;}
 .tex7519{background:url('../image/texture/ville_aquatique/sol_mur_sud_ville_aqua.png') no-repeat;}
 .tex7520{background:url('../image/texture/ville_aquatique/sol_mur_nordouest_ville_aqua.png') no-repeat;}
-.tex7521{background:url('../image/texture/ville_aquatique/sol_mur_nordest_ville_aqua.png') no-repeat;}
+.tex7521, .tex17521{background:url('../image/texture/ville_aquatique/sol_mur_nordest_ville_aqua.png') no-repeat;}
 .tex7522{background:url('../image/texture/donjon_aquatique/sol_donjon_aqua_etandartbg.png') no-repeat;}
 .tex7523{background:url('../image/texture/donjon_aquatique/sol_centre_trone_chefchacal.png') no-repeat;}
 .tex7524{background:url('../image/texture/donjon_aquatique/sol_mur_ouest_table_chefchacal_bas.png') no-repeat;}
@@ -1960,11 +1960,11 @@
 .tex10558{background:url('../image/texture/repere_aquatique/sol_repere_plonge.png') no-repeat;}
 .tex10559{background:url('../image/texture/repere_aquatique/sol_repere_barbecue.png') no-repeat;}
 
-.tex7549{background:url('../image/texture/donjon_aquatique/sol_passage_verti_trou.png') no-repeat;}
-.tex7550{background:url('../image/texture/donjon_aquatique/sol_passage_verti_trou_bas.png') no-repeat;}
-.tex7551{background:url('../image/texture/donjon_aquatique/sol_passage_verti_trou_haut.png') no-repeat;}
+.tex7549, .tex17549{background:url('../image/texture/donjon_aquatique/sol_passage_verti_trou.png') no-repeat;}
+.tex7550, .tex17550{background:url('../image/texture/donjon_aquatique/sol_passage_verti_trou_bas.png') no-repeat;}
+.tex7551, .tex17551{background:url('../image/texture/donjon_aquatique/sol_passage_verti_trou_haut.png') no-repeat;}
 .tex7552{background:url('../image/texture/donjon_aquatique/sol_mur_descente_trou_repere.png') no-repeat;}
-.tex7553{background:url('../image/texture/donjon_aquatique/sol_case_noir.png') no-repeat;}
+.tex7553, .tex17553{background:url('../image/texture/donjon_aquatique/sol_case_noir.png') no-repeat;}
 
 .tex3600{background:url('../image/texture/donjon_gobelin/mur nord.png') no-repeat;}
 .tex3601{background:url('../image/texture/donjon_gobelin/mur gobelin nord g.png') no-repeat;}
