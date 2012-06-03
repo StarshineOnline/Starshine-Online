@@ -2402,6 +2402,12 @@ class perso extends entite
 			// Mise-à-jour du personnage dans la base de donnée
 			$this->sauver();
 		} // if($this->get_hp() > 0)
+
+		// Gestion de la forme de demon
+		if ($this->is_buff('debuff_forme_demon')) {
+			$this->camouflage = 'demon';
+		}
+
 		// On supprime tous les buffs périmés
 		$requete = "DELETE FROM buff WHERE fin <= ".time();
 		$req = $db->query($requete);
@@ -2410,6 +2416,14 @@ class perso extends entite
 		$db->query($requete);
 	}
   // @}
+
+	function check_specials() {
+		$this->check_materiel();
+		// Gestion de la forme de demon
+		if ($this->is_buff('debuff_forme_demon')) {
+			$this->camouflage = 'demon';
+		}
+	}
   
   /**
    * @name  Sorts, compétences & buffs

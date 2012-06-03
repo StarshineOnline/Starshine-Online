@@ -70,7 +70,7 @@ function pnj_if_have_achiev_brutus(&$joueur)
 function pnj_run_pacte_demoniaque()
 {
 	global $joueur;
-	lance_buff('debuff_forme_demon', $joueur->get_id(), '10', '0', 86400 * 31, 'Forme démoniaque',
-						 'Vous êtes transformé en démon', 1, 0, 0, 0);
+	$k = lance_buff('debuff_forme_demon', $joueur->get_id(), '10', '0', 86400 * 31, 'Forme démoniaque',
+									'Vous êtes transformé en démon', 'perso', 1, 0, 0, 0);
 	return 'Vous êtes maintenant en forme démoniaque';
 }

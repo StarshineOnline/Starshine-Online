@@ -685,7 +685,7 @@ class map
 					}
 					{//-- Vérification du camouflage, ce qui oblige à instancier :(
 						$tmp_perso = new perso($objJoueurs->id);
-						$tmp_perso->check_materiel();
+						$tmp_perso->check_specials();
 						if ($tmp_perso->get_race_a() != $objJoueurs->race)
 							$objJoueurs->race = $tmp_perso->get_race_a();
 					}
