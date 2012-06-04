@@ -22,6 +22,7 @@ if ($row['x'] != $joueur->get_x() ||
 echo '<fieldset><legend>'.$row['nom'].'</legend>';
 $reponses = explode('*****', nl2br($row['texte']));
 $message = preg_replace("`\[ID:([^[]*)\]([^[]*)\[/ID:([^[]*)\]`i", "<li><a href=\"pnj.php?id=".$id."&amp;reponse=\\1&amp;poscase=".$W_case."\" onclick=\"return envoiInfo(this.href, 'information')\">\\2</a></li>", $reponses[$reponse]);
+$message = preg_replace("/(\r\n|\r|\n)/", '', $message);
 //On vérifie si ya une quête pour ce pnj
 $supp = true;
 $quetes_actives = array();
