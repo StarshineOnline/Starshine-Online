@@ -2402,6 +2402,12 @@ class perso extends entite
 			// Mise-à-jour du personnage dans la base de donnée
 			$this->sauver();
 		} // if($this->get_hp() > 0)
+
+		// Gestion de la forme de demon
+		if ($this->is_buff('debuff_forme_demon')) {
+			$this->demonize();
+		}
+
 		// On supprime tous les buffs périmés
 		$requete = "DELETE FROM buff WHERE fin <= ".time();
 		$req = $db->query($requete);
@@ -2410,6 +2416,24 @@ class perso extends entite
 		$db->query($requete);
 	}
   // @}
+
+	function check_specials() {
+		$this->check_materiel();
+		// Gestion de la forme de demon
+		if ($this->is_buff('debuff_forme_demon')) {
+			$this->demonize();
+		}
+	}
+
+	function demonize() {
+		if (isset($this->camouflage) && $this->camouflage == 'demon')
+			return;
+		$this->camouflage = 'demon';
+		foreach (array('forcex', 'dexterite', 'vie', 'puissance', 'volonte', 'energie') as $bonus)
+			$this->add_bonus_permanents($bonus, 6);
+		foreach (array('melee', 'tir', 'incantation') as $bonus)
+			$this->add_bonus_permanents($bonus, 400);
+	}
   
   /**
    * @name  Sorts, compétences & buffs
@@ -3602,7 +3626,7 @@ class perso extends entite
 	* @param bool|string $keys Si false, stockage en tableau classique, si string stockage avec sous tableau en fonction du champ $keys
 	* @return array $return liste d'objets
 	*/
-	static function create($champs, $valeurs, $ordre = 'id ASC', $keys = false, $where = false)
+	static function create($champs, $valeurs, $ordre = 'id ASC', $keys = false, $where = false, $key_unique = false)
 	{
 		global $db;
 		$return = array();

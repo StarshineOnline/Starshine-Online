@@ -498,9 +498,13 @@ class map
 						}
 						elseif ($this->dungeon_layer)
 						{
+							$donjon_layer = 'calque-atmosphere-noir';
+							if (75 <= $this->x && $this->x <= 100 && 288 <= $this->y && $this->y <= 305)
+								$donjon_layer = 'calque-atmosphere-noir-plannysin';
               $num_layers++;
 							$this->print_dungeon_layer($x_map - $this->xmin,
-																				 $y_map - $this->ymin, $margin_left);
+																				 $y_map - $this->ymin, $margin_left,
+																				 $donjon_layer);
 						}
 
 						echo "<span id='pos_".$MAPTAB[$x_map][$y_map]["id"]."'>".$repere."</span></div>";
@@ -555,10 +559,11 @@ class map
 			'px; height: 62px; width: 60px; background-repeat: repeat;">';
 	}
 
-	function print_dungeon_layer($x, $y, $margin_left = -2)
+	function print_dungeon_layer($x, $y, $margin_left = -2,
+															 $donjon_layer = 'calque-atmosphere-noir')
 	{
 		echo '<div style="background-attachment: scroll; '.
-			'background-image: url(image/interface/calque-atmosphere-noir.png); ';
+			'background-image: url(image/interface/'.$donjon_layer.'.png); ';
 		$dx = (-$x * 60);
 		$dy = (-$y * 60);
 		echo "background-position: ${dx}px ${dy}px; ";
@@ -685,7 +690,7 @@ class map
 					}
 					{//-- Vérification du camouflage, ce qui oblige à instancier :(
 						$tmp_perso = new perso($objJoueurs->id);
-						$tmp_perso->check_materiel();
+						$tmp_perso->check_specials();
 						if ($tmp_perso->get_race_a() != $objJoueurs->race)
 							$objJoueurs->race = $tmp_perso->get_race_a();
 					}

@@ -61,3 +61,16 @@ function pnj_if_have_pet_yugzilla(&$joueur)
   }
   return false;
 }
+
+function pnj_if_have_achiev_brutus(&$joueur)
+{
+	return $joueur->already_unlocked_achiev('brutus');
+}
+
+function pnj_run_pacte_demoniaque()
+{
+	global $joueur;
+	$k = lance_buff('debuff_forme_demon', $joueur->get_id(), '10', '0', 86400 * 31, 'Forme démoniaque',
+									'Vous êtes transformé en démon', 'perso', 1, 0, 0, 0);
+	return 'Vous êtes maintenant en forme démoniaque';
+}

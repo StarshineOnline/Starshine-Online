@@ -272,7 +272,7 @@ class map_monstre extends entnj_incarn
 	}
 
   /// Gère les actions spéciales à effectuer lorsqu'un mosntre dedonjon a été tué
-	function kill_monstre_de_donjon()
+	function kill_monstre_de_donjon(&$perso)
 	{
 		global $db;
     $log = new log_admin();
@@ -360,6 +360,20 @@ class map_monstre extends entnj_incarn
 			print_reload_area('deplacement.php?deplacement=centre', 'centre');
 			ouvrePorteMaraudeurGeolier($this->x, $duree);
 			break;
+
+			// César
+		case 180:
+			$perso->unlock_achiev('brutus');
+			if ($perso->get_groupe()) {
+				$groupe = new groupe($perso->get_groupe());
+				$groupe->get_membre();
+				foreach($groupe->membre_joueur as $membre) {
+					$membre->unlock_achiev('brutus');
+				}
+			}
+			echo 'L\'éternel adolescent vous toise d\'un regard espiègle tandisque dans un flash aveuglant, vous êtes projeté en arrière. Non loin de vous, sur le mur, une étrange surface brillante que vous aviez déjà remarqué, attire à ce moment votre attention pour des raisons qui vous échappe. Cesar fait vrombir son fauteuil d\'un coup sec. Des gerbes de flamme, de sang et de salives sont projetés par l\'engin avant que Cesar ne disparaisse dans le mur. Les reflets mystérieux continuent à agiter la surface miroitante mais rien n\'y fait, en la touchant, elle reste d\'une opacité à toute épreuve. Peut être n\'est-elle réservée qu\'à un genre de personne bien particulier. Un type qui sortirait de la norme sous quelques handicapes, ou quelques forces démoniaques...';
+			break;
+
 			
 		default:
 			// Rien à faire
@@ -367,7 +381,7 @@ class map_monstre extends entnj_incarn
 	}
 
   /// Cherche dans la bdd s'il y a une action spéciale à effectuer lors de la mort d'un mosntre de donjon et l'effectue si besoin
-	function kill_monstre_de_donjon2()
+	function kill_monstre_de_donjon2(&$perso)
 	{
 		global $db;
 		$requete = "select * from monstre_special where type = $this->id_monstre";
@@ -534,7 +548,7 @@ class map_monstre extends entnj_incarn
 			$gains_star = true;
 
 			// On gere les monstres de donjon
-			$this->kill_monstre_de_donjon();
+			$this->kill_monstre_de_donjon($perso);
 
 			// Augmentation du compteur de l'achievement
 			$achiev = $perso->get_compteur('kill_monstres');

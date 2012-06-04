@@ -27,7 +27,7 @@ if ($req && ($row = $db->read_object($req))) {
   $pop_boss = 0;
 }
 else {
-  if (date('H') < 5 && date('j') == 1) {
+  if (date('H') < 8 && date('j') == 1) {
     $pop_boss = 1;
   }
   else {
