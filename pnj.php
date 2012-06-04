@@ -146,7 +146,7 @@ while (preg_match("`\[run:([a-z0-9_]+)\]`i", $message, $regs))
 {
   include_once('fonction/pnj.inc.php');
   $run = 'pnj_run_'.$regs[1];
-  $replace = $run();
+  $replace = $run($joueur);
   $message = preg_replace("`\[run:$regs[1]\]`i", $replace, $message);
 }
 //IF fonction personalisée (cf. fonction/pnj.inc.php)

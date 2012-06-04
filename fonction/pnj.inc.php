@@ -6,9 +6,8 @@
  * renvoie un texte qui remplacera le tag à l'affichage
  */
 
-function pnj_run_cache_cache()
+function pnj_run_cache_cache(&$joueur)
 {
-  global $joueur;
   global $db;
   // incrémente d'un le compteur de quête si elle est active
   $quetes = $joueur->get_liste_quete();
@@ -67,9 +66,8 @@ function pnj_if_have_achiev_brutus(&$joueur)
 	return $joueur->already_unlocked_achiev('brutus');
 }
 
-function pnj_run_pacte_demoniaque()
+function pnj_run_pacte_demoniaque(&$joueur)
 {
-	global $joueur;
 	$k = lance_buff('debuff_forme_demon', $joueur->get_id(), '10', '0', 86400 * 31, 'Forme démoniaque',
 									'Vous êtes transformé en démon', 'perso', 1, 0, 0, 0);
 	return 'Vous êtes maintenant en forme démoniaque';
