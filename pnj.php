@@ -164,6 +164,21 @@ while (preg_match("`\[if:([a-z0-9_]+)\]`i", $message, $regs))
                             $message);
   }
 }
+//IFNOT fonction personalisée (cf. fonction/pnj.inc.php)
+while (preg_match("`\[ifnot:([a-z0-9_]+)\]`i", $message, $regs))
+{
+  include_once('fonction/pnj.inc.php');
+  $run = 'pnj_if_'.$regs[1];
+  $ok = !($run($joueur));
+  if ($ok) {
+    $message = preg_replace("`\[ifnot:$regs[1]\]`i", '', $message);
+    $message = preg_replace("`\[/ifnot:$regs[1]\]`i", '', $message);
+  }
+  else {
+    $message = preg_replace("`\[ifnot:$regs[1]\].*\[/ifnot:$regs[1]\]`i", '',
+                            $message);
+  }
+}
 //validation inventaire
 if(preg_match("`\[verifinventaire:([^[]*)\]`i", $message, $regs))
 {
