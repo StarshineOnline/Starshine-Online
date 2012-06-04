@@ -152,31 +152,41 @@ while (preg_match("`\[run:([a-z0-9_]+)\]`i", $message, $regs))
 //IF fonction personalisée (cf. fonction/pnj.inc.php)
 while (preg_match("`\[if:([a-z0-9_]+)\]`i", $message, $regs))
 {
+	$markup = 'if:'.$regs[1];
   include_once('fonction/pnj.inc.php');
   $run = 'pnj_if_'.$regs[1];
   $ok = $run($joueur);
   if ($ok) {
-    $message = preg_replace("`\[if:$regs[1]\]`i", '', $message);
-    $message = preg_replace("`\[/if:$regs[1]\]`i", '', $message);
+    $message = preg_replace("`\[$markup\]`i", '', $message);
+    $message = preg_replace("`\[/$markup\]`i", '', $message);
   }
   else {
-    $message = preg_replace("`\[if:$regs[1]\].*\[/if:$regs[1]\]`i", '',
+		// NE PAS OUBLIER le modificateur 's' pour PCRE_DOTALL
+		$s = preg_match("`\[$markup\]`i", $message);
+		$e = preg_match("`\[/$markup\]`i", $message);
+    $message = preg_replace("`\[$markup\].*\[/$markup\]`si", '',
                             $message);
+		if (!$s || !$e) die("Erreur de dialogue pnj: id = $id, reponse = $reponse, s = $s, e = $e");
   }
 }
 //IFNOT fonction personalisée (cf. fonction/pnj.inc.php)
 while (preg_match("`\[ifnot:([a-z0-9_]+)\]`i", $message, $regs))
 {
+	$markup = 'ifnot:'.$regs[1];
   include_once('fonction/pnj.inc.php');
   $run = 'pnj_if_'.$regs[1];
-  $ok = !($run($joueur));
-  if ($ok) {
-    $message = preg_replace("`\[ifnot:$regs[1]\]`i", '', $message);
-    $message = preg_replace("`\[/ifnot:$regs[1]\]`i", '', $message);
+  $ok = $run($joueur);
+  if (!$ok) {
+    $message = preg_replace("`\[$markup\]`i", '', $message);
+    $message = preg_replace("`\[/$markup\]`i", '', $message);
   }
   else {
-    $message = preg_replace("`\[ifnot:$regs[1]\].*\[/ifnot:$regs[1]\]`i", '',
+		// NE PAS OUBLIER le modificateur 's' pour PCRE_DOTALL
+		$s = preg_match("`\[$markup\]`i", $message);
+		$e = preg_match("`\[/$markup\]`i", $message);
+    $message = preg_replace("`\[$markup\].*\[/$markup\]`si", '',
                             $message);
+		if (!$s || !$e) die("Erreur de dialogue pnj: id = $id, reponse = $reponse, s = $s, e = $e");
   }
 }
 //validation inventaire
