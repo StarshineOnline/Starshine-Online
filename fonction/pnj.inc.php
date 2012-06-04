@@ -63,7 +63,8 @@ function pnj_if_have_pet_yugzilla(&$joueur)
 
 function pnj_if_have_achiev_brutus(&$joueur)
 {
-	return $joueur->already_unlocked_achiev('brutus');
+  $brutus = achievement_type::create('variable', 'brutus');
+	return $joueur->already_unlocked_achiev($brutus);
 }
 
 function pnj_run_pacte_demoniaque(&$joueur)
