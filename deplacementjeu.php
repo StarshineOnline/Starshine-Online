@@ -4,15 +4,15 @@ if (file_exists('root.php'))
 require_once('inc/fp.php');
 if(!isset($joueur)) { $joueur = new perso($_SESSION["ID"]); }; 		//-- Récupération du tableau contenant toutes les informations relatives au joueur
 $joueur->check_perso();
-$rose_div_hg = "-1-1";
-$rose_div_h = "0-1";
-$rose_div_hd = "1-1";
-$rose_div_cg = "-10";
-$rose_div_c = "00";
-$rose_div_cd = "10";
-$rose_div_bg = "-11";
-$rose_div_b = "01";
-$rose_div_bd = "11";
+$rose_div_hg = "rel_-1_-1";
+$rose_div_h = "rel_0_-1";
+$rose_div_hd = "rel_1_-1";
+$rose_div_cg = "rel_-1_0";
+$rose_div_c = "rel_0_0";
+$rose_div_cd = "rel_1_0";
+$rose_div_bg = "rel_-1_1";
+$rose_div_b = "rel_0_1";
+$rose_div_bd = "rel_1_1";
 if ($interface_3D){	$type = 'troisd';}else{$type = 'normal';	}
 echo "<div id='rosedesvents'>
 	   <div id='rose_div_hg' onclick=\"deplacement('hautgauche', '$type', show_only);\" onmouseover=\"$('#pos_".$rose_div_hg."').addClass('pos_over');\" onmouseout=\"$('#pos_".$rose_div_hg."').removeClass('pos_over');\"></div>

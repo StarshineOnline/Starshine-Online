@@ -19,6 +19,20 @@ check_undead_players(true);
 //Case et coordonnées de la case
 $W_case = $_GET['case'];
 
+// Handle relative positioning (rel_X_Y)
+if (!is_numeric($W_case)) {
+  if ($W_case == '') die();
+  if (preg_match('/rel_(-?[0-9]+)_(-?[0-9]+)/', $W_case, $regs)) {
+    //var_dump($regs);
+    $W_case = convert_in_pos
+      ($joueur->get_x() + (int)$regs[1],
+       $joueur->get_y() + (int)$regs[2]);
+  }
+  else {
+    die('Cannot get info for tile '.htmlentities($W_case));
+  }
+}
+
 //Vérifie si il y a eu des modifications sur la case (fin de batiments drapeaux et autres)
 $case = new map_case($W_case);
 $case->check_case();
