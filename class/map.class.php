@@ -99,8 +99,10 @@ class map
 		$RqMap = $db->query($RqMapTxt);
 		while($objMap = $db->read_object($RqMap))
 		{
+      $pos_id_x = $objMap->x - $this->x;
+      $pos_id_y = $objMap->y - $this->y;
 			//$coord = convert_in_coord($objMap->ID);
-			$MAPTAB[$objMap->x][$objMap->y]["id"] = convert_in_pos($objMap->x, $objMap->y);
+			$MAPTAB[$objMap->x][$objMap->y]["id"] = "${pos_id_x}${pos_id_y}";
 			$MAPTAB[$objMap->x][$objMap->y]["decor"] = $objMap->decor;
 			$MAPTAB[$objMap->x][$objMap->y]["royaume"] = $objMap->royaume;
 			$MAPTAB[$objMap->x][$objMap->y]["type"] = $objMap->info;
