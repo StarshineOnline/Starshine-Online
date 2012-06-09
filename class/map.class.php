@@ -57,6 +57,7 @@ class map
 			$limite_y = 500;
 		}
 
+    $this->is_masked = self::is_masked_coordinates($x, $y);
     $this->is_nysin = self::is_nysin($x, $y);
 
 		if($this->x < ($this->champ_vision + 1))			{ $this->xmin = 1;		$this->xmax = $this->x + ($this->case_affiche - ($this->x)); }
@@ -72,6 +73,10 @@ class map
 
   static function is_nysin($x, $y) {
     return (75 <= $x && $x <= 100 && 288 <= $y && $y <= 305);
+  }
+
+  static function is_masked_coordinates($x, $y) {
+    return self::is_nysin($x, $y);
   }
 
 	function affiche()
@@ -331,7 +336,7 @@ class map
 				for ($bh = $this->xmin; $bh <= $this->xmax; $bh++)
 				{
           $coord_x = $bh;
-          if ($this->is_nysin) $coord_x = '*';
+          if ($this->is_masked) $coord_x = '*';
 					if($bh == $this->x) { $class_x = "id='bord_haut_x' "; } else { $class_x = ""; }; //-- Pour mettre en valeur la position X ou se trouve le joueur
 					echo "<li $class_x ";if (!empty($class_css['resolution'])) {echo "class='".$class_css['resolution']."'";} echo ">$coord_x</li>";
 				}
@@ -345,7 +350,7 @@ class map
 				for($y_map = $this->ymin; $y_map <= $this->ymax; $y_map++)
 				{
           $coord_y = $y_map;
-          if ($this->is_nysin) $coord_y = '*';
+          if ($this->is_masked) $coord_y = '*';
 					for($x_map = $this->xmin; $x_map <= $this->xmax; $x_map++)
 					{
 						if($x_map == $this->xmin)

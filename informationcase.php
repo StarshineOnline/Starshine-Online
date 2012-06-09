@@ -45,7 +45,7 @@ if($W_distance < 4)
   $coord_x = $case->get_x();
   $coord_y = $case->get_y();
 
-  if (map::is_nysin($case->get_x(), $case->get_y())) {
+  if (map::is_masked_coordinates($case->get_x(), $case->get_y())) {
     $coord_x = '*';
     if ($case->get_x() < $joueur->get_x())
       $coord_x .= ' - '.abs($case->get_x() - $joueur->get_x());
