@@ -47,7 +47,15 @@ if($W_distance < 4)
 
   if (map::is_nysin($case->get_x(), $case->get_y())) {
     $coord_x = '*';
+    if ($case->get_x() < $joueur->get_x())
+      $coord_x .= ' - '.abs($case->get_x() - $joueur->get_x());
+    if ($case->get_x() > $joueur->get_x())
+      $coord_x .= ' + '.abs($case->get_x() - $joueur->get_x());
     $coord_y = '*';
+    if ($case->get_y() < $joueur->get_y())
+      $coord_y .= ' - '.abs($case->get_y() - $joueur->get_y());
+    if ($case->get_y() > $joueur->get_y())
+      $coord_y .= ' + '.abs($case->get_y() - $joueur->get_y());
   }
 
 	?>
