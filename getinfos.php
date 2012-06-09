@@ -93,6 +93,11 @@ $requete_batiment = 'SELECT construction.x, construction.y, construction.hp, con
 $req_batiment = $db->query($requete_batiment);
 
 $joueur = new perso($_SESSION['ID']);
+if (map::is_masked_coordinates($joueur->get_x(), $joueur->get_y())) {
+	header('HTTP/1.1 403 Forbidden');
+	echo 'API usage is prohibited in masked zones';
+	exit (0);  
+}
 
 while($row_joueurs = $db->read_assoc($req_joueurs))   $row_j[] = $row_joueurs;
 while($row_p = $db->read_assoc($req_pnj))             $row_pnj[] = $row_p;

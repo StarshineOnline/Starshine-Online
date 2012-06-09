@@ -163,9 +163,10 @@ class map
 				$case = 0;
 				for($y_map = $this->ymin; $y_map <= $this->ymax; $y_map++)
 				{
+          $y_coord = $this->is_masked ? '*' : $y_map;
 					if( ($y_map % 2) == 0) { $moins = 1; } else { $moins = 0; };
 					echo "<ul>
-						   <li class=\"bord_bas\" style=\"top:".$y_pos."px;left:".$x_pos."px;z-index:$z_index;\">$y_map<br/>Y</li>";
+						   <li class=\"bord_bas\" style=\"top:".$y_pos."px;left:".$x_pos."px;z-index:$z_index;\">$y_coord<br/>Y</li>";
 					$z_index --;
 					$x_pos += floor($w_box / 2);
 					$y_pos -= floor($h_box / 2);
@@ -317,7 +318,8 @@ class map
 				$y_pos -= floor($h_box / 2);
 				for($x_map = $this->xmin; $x_map <= $this->xmax; $x_map++)
 				{
-					echo " <li class=\"bord_haut\" style=\"top:".$y_pos."px;left:".$x_pos."px;z-index:$z_index;\">$x_map<br/>X</li>";
+          $x_coord = $this->is_masked ? '*' : $x_map;
+					echo " <li class=\"bord_haut\" style=\"top:".$y_pos."px;left:".$x_pos."px;z-index:$z_index;\">$x_coord<br/>X</li>";
 					$z_index --;
 					$x_pos += floor($w_box / 2);
 					$y_pos -= floor($h_box / 2);
