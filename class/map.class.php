@@ -57,7 +57,7 @@ class map
 			$limite_y = 500;
 		}
 
-    $this->is_nysin = (75 <= $x && $x <= 100 && 288 <= $y && $y <= 305);
+    $this->is_nysin = self::is_nysin($x, $y);
 
 		if($this->x < ($this->champ_vision + 1))			{ $this->xmin = 1;		$this->xmax = $this->x + ($this->case_affiche - ($this->x)); }
 		elseif($this->x > ($limite_x - $this->champ_vision))		{ $this->xmax = $limite_x;		$this->xmin = $this->x - ($this->case_affiche - ($limite_x - $this->x + 1)); }
@@ -69,6 +69,10 @@ class map
 
 		$this->map = array();
 	}
+
+  static function is_nysin($x, $y) {
+    return (75 <= $x && $x <= 100 && 288 <= $y && $y <= 305);
+  }
 
 	function affiche()
 	{

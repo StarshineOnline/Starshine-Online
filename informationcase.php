@@ -41,9 +41,18 @@ $case->check_case();
 $W_distance = detection_distance($W_case, convert_in_pos($joueur->get_x(), $joueur->get_y()));
 if($W_distance < 4)
 {
+
+  $coord_x = $case->get_x();
+  $coord_y = $case->get_y();
+
+  if (map::is_nysin($case->get_x(), $case->get_y())) {
+    $coord_x = '*';
+    $coord_y = '*';
+  }
+
 	?>
 	<fieldset>
-	<legend>Informations Case - X : <?php echo $case->get_x(); ?> | Y : <?php echo $case->get_y(); ?><a href="carte_perso_affiche.php" onclick="affichePopUp(this.href); return false;"> <img src="image/icone/oujesuis.png" alt="Où je suis ?" title="Où je suis ?" style="vertical-align : middle;height:20px;" /></a> </legend>
+	<legend>Informations Case - X : <?php echo $coord_x; ?> | Y : <?php echo $coord_y; ?><a href="carte_perso_affiche.php" onclick="affichePopUp(this.href); return false;"> <img src="image/icone/oujesuis.png" alt="Où je suis ?" title="Où je suis ?" style="vertical-align : middle;height:20px;" /></a> </legend>
 	<div id='info_case'>
 	<?php
 	$R = new royaume($case->get_royaume());
