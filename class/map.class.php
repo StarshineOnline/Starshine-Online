@@ -57,6 +57,9 @@ class map
 			$limite_y = 500;
 		}
 
+    $this->is_masked = self::is_masked_coordinates($x, $y);
+    $this->is_nysin = self::is_nysin($x, $y);
+
 		if($this->x < ($this->champ_vision + 1))			{ $this->xmin = 1;		$this->xmax = $this->x + ($this->case_affiche - ($this->x)); }
 		elseif($this->x > ($limite_x - $this->champ_vision))		{ $this->xmax = $limite_x;		$this->xmin = $this->x - ($this->case_affiche - ($limite_x - $this->x + 1)); }
 		else												{ $this->xmin = $this->x - $this->champ_vision;	$this->xmax = $this->x + $this->champ_vision; };
@@ -68,12 +71,20 @@ class map
 		$this->map = array();
 	}
 
+  static function is_nysin($x, $y) {
+    return (75 <= $x && $x <= 100 && 288 <= $y && $y <= 305);
+  }
+
+  static function is_masked_coordinates($x, $y) {
+    return self::is_nysin($x, $y);
+  }
+
 	function affiche()
 	{
 		global $db;
 		global $Gcouleurs;
 
-      $this->load_map_calques(); // Uniquement en donj ?
+    $this->load_map_calques();
 		if($this->donjon && !$this->arene)
 		{
 			$xmin = $this->xmin + 1;
@@ -97,8 +108,9 @@ class map
 		$RqMap = $db->query($RqMapTxt);
 		while($objMap = $db->read_object($RqMap))
 		{
-			//$coord = convert_in_coord($objMap->ID);
-			$MAPTAB[$objMap->x][$objMap->y]["id"] = convert_in_pos($objMap->x, $objMap->y);
+      $pos_id_x = $objMap->x - $this->x;
+      $pos_id_y = $objMap->y - $this->y;
+			$MAPTAB[$objMap->x][$objMap->y]["id"] = "rel_${pos_id_x}_${pos_id_y}";
 			$MAPTAB[$objMap->x][$objMap->y]["decor"] = $objMap->decor;
 			$MAPTAB[$objMap->x][$objMap->y]["royaume"] = $objMap->royaume;
 			$MAPTAB[$objMap->x][$objMap->y]["type"] = $objMap->info;
@@ -151,9 +163,10 @@ class map
 				$case = 0;
 				for($y_map = $this->ymin; $y_map <= $this->ymax; $y_map++)
 				{
+          $y_coord = $this->is_masked ? '*' : $y_map;
 					if( ($y_map % 2) == 0) { $moins = 1; } else { $moins = 0; };
 					echo "<ul>
-						   <li class=\"bord_bas\" style=\"top:".$y_pos."px;left:".$x_pos."px;z-index:$z_index;\">$y_map<br/>Y</li>";
+						   <li class=\"bord_bas\" style=\"top:".$y_pos."px;left:".$x_pos."px;z-index:$z_index;\">$y_coord<br/>Y</li>";
 					$z_index --;
 					$x_pos += floor($w_box / 2);
 					$y_pos -= floor($h_box / 2);
@@ -305,7 +318,8 @@ class map
 				$y_pos -= floor($h_box / 2);
 				for($x_map = $this->xmin; $x_map <= $this->xmax; $x_map++)
 				{
-					echo " <li class=\"bord_haut\" style=\"top:".$y_pos."px;left:".$x_pos."px;z-index:$z_index;\">$x_map<br/>X</li>";
+          $x_coord = $this->is_masked ? '*' : $x_map;
+					echo " <li class=\"bord_haut\" style=\"top:".$y_pos."px;left:".$x_pos."px;z-index:$z_index;\">$x_coord<br/>X</li>";
 					$z_index --;
 					$x_pos += floor($w_box / 2);
 					$y_pos -= floor($h_box / 2);
@@ -323,8 +337,10 @@ class map
 					   <li id=\"".$classe_css['map_bord_haut_gauche']."\" rel=\"option_map.php\" ";if (!empty($class_css['resolution'])) {echo "class=\"".$class_css['resolution']."\" ";} echo "onclick=\"$this->show_royaume_button\">&nbsp;</li>";
 				for ($bh = $this->xmin; $bh <= $this->xmax; $bh++)
 				{
+          $coord_x = $bh;
+          if ($this->is_masked) $coord_x = '*';
 					if($bh == $this->x) { $class_x = "id='bord_haut_x' "; } else { $class_x = ""; }; //-- Pour mettre en valeur la position X ou se trouve le joueur
-					echo "<li $class_x ";if (!empty($class_css['resolution'])) {echo "class='".$class_css['resolution']."'";} echo ">$bh</li>";
+					echo "<li $class_x ";if (!empty($class_css['resolution'])) {echo "class='".$class_css['resolution']."'";} echo ">$coord_x</li>";
 				}
 				echo "</ul>";
 			}
@@ -335,6 +351,8 @@ class map
 				
 				for($y_map = $this->ymin; $y_map <= $this->ymax; $y_map++)
 				{
+          $coord_y = $y_map;
+          if ($this->is_masked) $coord_y = '*';
 					for($x_map = $this->xmin; $x_map <= $this->xmax; $x_map++)
 					{
 						if($x_map == $this->xmin)
@@ -342,7 +360,7 @@ class map
 							if($Once) { echo "</ul>"; } else { $Once = true; };
 							if($y_map == $this->y) { $class_y = "id='bord_haut_y' "; } else { $class_y = ""; }; //-- Pour mettre en valeur la position Y ou se trouve le joueur
 							echo "<ul class='".$class_css['resolution_map']."'>
-						 		   <li $class_y "; if((!empty($class_css['resolution'])) OR (!empty($classe_css['map_bord_gauche']))) { echo "class='".$classe_css['map_bord_gauche']." ".$class_css['resolution']."'";} echo ">".$y_map."</li>"; //-- Bord gauche de la map
+						 		   <li $class_y "; if((!empty($class_css['resolution'])) OR (!empty($classe_css['map_bord_gauche']))) { echo "class='".$classe_css['map_bord_gauche']." ".$class_css['resolution']."'";} echo ">".$coord_y."</li>"; //-- Bord gauche de la map
 						}
 						$background = "";
 						if( ($x_map == $this->x) && ($y_map == $this->y) && is_array($this->map[$x_map][$y_map]["Joueurs"]))
@@ -499,7 +517,7 @@ class map
 						elseif ($this->dungeon_layer)
 						{
 							$donjon_layer = 'calque-atmosphere-noir';
-							if (75 <= $this->x && $this->x <= 100 && 288 <= $this->y && $this->y <= 305)
+							if ($this->is_nysin)
 								$donjon_layer = 'calque-atmosphere-noir-plannysin';
               $num_layers++;
 							$this->print_dungeon_layer($x_map - $this->xmin,
