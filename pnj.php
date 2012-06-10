@@ -22,6 +22,7 @@ if ($row['x'] != $joueur->get_x() ||
 echo '<fieldset><legend>'.$row['nom'].'</legend>';
 $reponses = explode('*****', nl2br($row['texte']));
 $message = preg_replace("`\[ID:([^[]*)\]([^[]*)\[/ID:([^[]*)\]`i", "<li><a href=\"pnj.php?id=".$id."&amp;reponse=\\1&amp;poscase=".$W_case."\" onclick=\"return envoiInfo(this.href, 'information')\">\\2</a></li>", $reponses[$reponse]);
+$message = preg_replace("/(\r\n|\r|\n)/", '', $message);
 //On vérifie si ya une quête pour ce pnj
 $supp = true;
 $quetes_actives = array();
@@ -146,22 +147,47 @@ while (preg_match("`\[run:([a-z0-9_]+)\]`i", $message, $regs))
 {
   include_once('fonction/pnj.inc.php');
   $run = 'pnj_run_'.$regs[1];
-  $replace = $run();
+  $replace = $run($joueur);
   $message = preg_replace("`\[run:$regs[1]\]`i", $replace, $message);
 }
 //IF fonction personalisée (cf. fonction/pnj.inc.php)
 while (preg_match("`\[if:([a-z0-9_]+)\]`i", $message, $regs))
 {
+	$markup = 'if:'.$regs[1];
   include_once('fonction/pnj.inc.php');
   $run = 'pnj_if_'.$regs[1];
   $ok = $run($joueur);
   if ($ok) {
-    $message = preg_replace("`\[if:$regs[1]\]`i", '', $message);
-    $message = preg_replace("`\[/if:$regs[1]\]`i", '', $message);
+    $message = preg_replace("`\[$markup\]`i", '', $message);
+    $message = preg_replace("`\[/$markup\]`i", '', $message);
   }
   else {
-    $message = preg_replace("`\[if:$regs[1]\].*\[/if:$regs[1]\]`i", '',
+		// NE PAS OUBLIER le modificateur 's' pour PCRE_DOTALL
+		$s = preg_match("`\[$markup\]`i", $message);
+		$e = preg_match("`\[/$markup\]`i", $message);
+    $message = preg_replace("`\[$markup\].*\[/$markup\]`si", '',
                             $message);
+		if (!$s || !$e) die("Erreur de dialogue pnj: id = $id, reponse = $reponse, s = $s, e = $e");
+  }
+}
+//IFNOT fonction personalisée (cf. fonction/pnj.inc.php)
+while (preg_match("`\[ifnot:([a-z0-9_]+)\]`i", $message, $regs))
+{
+	$markup = 'ifnot:'.$regs[1];
+  include_once('fonction/pnj.inc.php');
+  $run = 'pnj_if_'.$regs[1];
+  $ok = $run($joueur);
+  if (!$ok) {
+    $message = preg_replace("`\[$markup\]`i", '', $message);
+    $message = preg_replace("`\[/$markup\]`i", '', $message);
+  }
+  else {
+		// NE PAS OUBLIER le modificateur 's' pour PCRE_DOTALL
+		$s = preg_match("`\[$markup\]`i", $message);
+		$e = preg_match("`\[/$markup\]`i", $message);
+    $message = preg_replace("`\[$markup\].*\[/$markup\]`si", '',
+                            $message);
+		if (!$s || !$e) die("Erreur de dialogue pnj: id = $id, reponse = $reponse, s = $s, e = $e");
   }
 }
 //validation inventaire

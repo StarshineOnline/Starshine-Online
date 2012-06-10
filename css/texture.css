@@ -2242,6 +2242,8 @@
 .tex5638{background:url('../image/texture/donjon_aquatique/mur_milieu_jeu_du_crabe.png') no-repeat;}
 .tex5639{background:url('../image/texture/donjon_aquatique/mur_donjon_aqua_tentebm.png') no-repeat;}
 
+.tex5640{background:url('../image/texture/donjon_aquatique/mur_inferieur_plan_nysin.png') no-repeat;}
+
 .tex9500{background:url('../image/texture/donjon_riviere_verte/sol_eau_basse_buisson_bg.png') no-repeat;}
 .tex9501{background:url('../image/texture/donjon_riviere_verte/sol_eau_basse_falaise_hd.png') no-repeat;}
 .tex9502{background:url('../image/texture/donjon_riviere_verte/sol_eau_basse_falaise_hd2.png') no-repeat;}
@@ -2250,7 +2252,24 @@
 .tex9505{background:url('../image/texture/donjon_riviere_verte/sol_eau_basse_rocher_aylen_d.png') no-repeat;}
 .tex9506{background:url('../image/texture/donjon_riviere_verte/sol_eau_basse_rocher_mini.png') no-repeat;}
 .tex9507{background:url('../image/texture/donjon_riviere_verte/sol_eau_basse_rocher_minih.png') no-repeat;}
-				
+
+.tex9509{background:url('../image/texture/plan_nysin/couloir_vertical_plafondbas_nysin.png') no-repeat;}
+.tex9510{background:url('../image/texture/plan_nysin/couloir_vertical_plafondhaut_nysin.png') no-repeat;}
+.tex9511{background:url('../image/texture/plan_nysin/couloir_vertical_nysin.png') no-repeat;}
+.tex9512{background:url('../image/texture/plan_nysin/sol_inferieur_centre_cratere_nysin.png') no-repeat;}
+.tex9513{background:url('../image/texture/plan_nysin/sol_inferieur_centre_cratere_tantium.png') no-repeat;}
+.tex9514{background:url('../image/texture/plan_nysin/sol_inferieur_centre_cratere_tantium_b.png') no-repeat;}
+.tex9515{background:url('../image/texture/plan_nysin/sol_inferieur_centre_cratere_tantium_md.png') no-repeat;}
+.tex9516{background:url('../image/texture/plan_nysin/sol_inferieur_centre_cratere_tantium_mg.png') no-repeat;}
+.tex9517{background:url('../image/texture/plan_nysin/Nysin_bg.png') no-repeat;}
+.tex9518{background:url('../image/texture/plan_nysin/Nysin_bd.png') no-repeat;}
+.tex9519{background:url('../image/texture/plan_nysin/Nysin_centre.png') no-repeat;}
+.tex9520{background:url('../image/texture/plan_nysin/Nysin_hg.png') no-repeat;}
+.tex9521{background:url('../image/texture/plan_nysin/Nysin_hd.png') no-repeat;}
+.tex9522{background:url('../image/texture/plan_nysin/Nysin_hm.png') no-repeat;}
+.tex9523{background:url('../image/texture/plan_nysin/Nysin_md.png') no-repeat;}	
+.tex9524{background:url('../image/texture/plan_nysin/Nysin_mg.png') no-repeat;}
+	
 .tex6600{background:url('../image/texture/donjon_riviere_verte/mur_eau_basse_buisson_bg.png') no-repeat;}	
 .tex6601{background:url('../image/texture/donjon_riviere_verte/mur_eau_basse_buisson_mgb.png') no-repeat;}	
 .tex6602{background:url('../image/texture/donjon_riviere_verte/mur_eau_basse_buisson_mgm.png') no-repeat;}	

@@ -428,6 +428,16 @@ class comp_sort extends comp_sort_buff
 		}
 		print_debug($dbg_msg);
   }
+
+  /**
+   * Calcul le pourcentage de dégâts absorbé en fonction de la PP
+   * @param  $pp    PP.
+   * @return    Pourcentage de dégâts absorbé.
+   */
+  static function calcul_pp($pp)
+  {
+  	return (1 - (sqrt($pp / 10) / 40));
+  }
 	// @}
 }
 ?>
