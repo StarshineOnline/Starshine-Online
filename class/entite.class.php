@@ -760,17 +760,17 @@ class entite extends placable
       return $this->potentiel_magique;
       
     $get = 'get_'.$comp_assoc;
-  	$potentiel_magique = floor($this->get_incantation() + 1.9 * $this->$get());
+  	$this->potentiel_magique = floor($this->get_incantation() + 1.9 * $this->$get());
   	if($this->is_buff('batiment_incantation'))
-      $potentiel_magique *= 1 + (($this->get_buff('batiment_incantation', 'effet') / 100));
+      $this->potentiel_magique *= 1 + (($this->get_buff('batiment_incantation', 'effet') / 100));
   	if($this->is_buff('buff_meditation'))
-      $potentiel_magique *= 1 + (($this->get_buff('buff_meditation', 'effet') / 100));
+      $this->potentiel_magique *= 1 + (($this->get_buff('buff_meditation', 'effet') / 100));
   	if(array_key_exists('lien_sylvestre', $this->etat))
-      $potentiel_magique /= 1 + (($this->etat['lien_sylvestre']['effet2']) / 100);
+      $this->potentiel_magique /= 1 + (($this->etat['lien_sylvestre']['effet2']) / 100);
   	if(array_key_exists('fleche_debilitante', $this->etat))
-      $potentiel_magique /= 1 + ($this->etat['fleche_debilitante']['effet'] / 100);
+      $this->potentiel_magique /= 1 + ($this->etat['fleche_debilitante']['effet'] / 100);
   	if($this->etat['posture']['type'] == 'posture_feu')
-      $potentiel_magique *= 1 + (($this->etat['posture']['effet']) / 100);
+      $this->potentiel_magique *= 1 + (($this->etat['posture']['effet']) / 100);
   	if($this->get_arme_type() == 'baton')
     {
       $arme = $this->get_arme();

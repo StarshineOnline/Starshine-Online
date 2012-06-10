@@ -68,7 +68,7 @@ class comp_combat extends comp
 	 * @param arme_requis    Arme requise pour utiliser la compétence
 	 */
 	function __construct($id=0, $nom='', $type='', $effet=0, $duree=0, $comp_assoc='', $carac_assoc='', $comp_requis=0, $carac_requis=0,
-    $effet2=0, $effet3, $requis=0, $cible=0, $description='', $mp=0, $prix=0, $lvl_batiment=0, $arme_requis='', $etat_lie='')
+    $effet2=0, $effet3=0, $requis=0, $cible=0, $description='', $mp=0, $prix=0, $lvl_batiment=0, $arme_requis='', $etat_lie='')
 	{
 		//Verification nombre d'arguments pour construire l'etat adequat.
 		if( func_num_args() == 1 )
@@ -117,7 +117,7 @@ class comp_combat extends comp
   static function factory($id)
   {
     global $db;
-    $requete = 'SELECT * FROM comp_jeu WHERE id = '.$id;
+    $requete = 'SELECT * FROM comp_combat WHERE id = '.$id;
   	$req = $db->query($requete);
   	$row=$db->read_assoc($req);
   	if( $row )
@@ -151,7 +151,7 @@ class comp_combat extends comp
    */
   function lance(&$actif, &$passif, &$effets)
   {
-    global $log_combat $G_round_total, $comp_attaque;
+    global $log_combat, $G_round_total, $comp_attaque;
 
   	$augmentation = array('actif' => array('comp' => array(), 'comp_perso' => array()),
 													'passif' => array('comp' => array(), 'comp_perso' => array()));
@@ -177,7 +177,7 @@ class comp_combat extends comp
 			$potentiel_parer = $effet->calcul_defense_physique($actif, $passif, $potentiel_parer);
     if( $this->test_potentiel($potentiel_toucher, $potentiel_parer) )
     {
-      $this->touche($actif, $passif, $effects);
+      $this->touche($actif, $passif, $effets);
       $passif->precedent['esquive'] = false;
     }
   	else
@@ -245,7 +245,7 @@ class comp_combat extends comp
   function touche(&$actif, &$passif, &$effets)
   {
     global $log_combat;
-    $degat = calcul_degats($actif, $passif, $effects);
+    $degat = $this->calcul_degats($actif, $passif, $effets);
     if($passif->type2 == 'batiment' AND $actif->get_race() == 'barbare') $degat = floor($degat * 1.4);
     $degat = $degat + $actif->degat_sup - $actif->degat_moins;
     if(array_key_exists('attaque_vicieuse', $actif->etat))
@@ -270,7 +270,7 @@ class comp_combat extends comp
 			$degat = $effet->calcul_degats($actif, $passif, $degat);
 			
     if($passif->bouclier())
-      $degat = $this->bouclier($degat, $actif, $passif, $effects);
+      $degat = $this->bouclier($degat, $actif, $passif, $effets);
    	//Posture défensive
     if($passif->etat['posture']['type'] == 'posture_defense') $buff_posture_defense = $passif->etat['posture']['effet']; else $buff_posture_defense = 0;
     $degat = $degat - $buff_posture_defense;
@@ -281,12 +281,12 @@ class comp_combat extends comp
 			$degat = $degat * 3;
 		}
     
-    $reduction = $this->armure($actif, $passif, $effects);
+    $reduction = $this->armure($actif, $passif, $effets);
     $degat_avant = $degat;
     $degat = round($degat * $reduction);
 
 	  // Coup critique
-	  $multiplicateur = $this->critiques($actif, $passif, $effects);
+	  $multiplicateur = $this->critiques($actif, $passif, $effets);
 		print_debug("Dégâts de base : $degat, multiplicateur : $multiplicateur<br />");
 		$degat = round($degat * $multiplicateur);
 		$degat_avant = round($degat_avant * $multiplicateur);
@@ -317,7 +317,7 @@ class comp_combat extends comp
 
 			// Application des effets de boost des armes
 			foreach($effets as $effet)
-				$arme_degat = $effect->calcul_arme($actif, $passif, $arme_degat);
+				$arme_degat = $effet->calcul_arme($actif, $passif, $arme_degat);
 			$de_degat = $this->calcule_des($actif->get_force(), $arme_degat);
 			$degat = 0;
 			$i = 0;

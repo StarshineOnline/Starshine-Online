@@ -80,10 +80,10 @@ class active_effect extends effect
 /**
  * Competence de combat
  */
-class comp_combat extends active_effect
+class comp_comb extends active_effect
 {
   function __construct($aNom, $aLevel) {
-    parent::__construct($aNom, 'comp_combat', $aLevel);
+    parent::__construct($aNom, 'comp_comb', $aLevel);
   }  
 
 	static function factory(&$effects, &$actif, &$passif, $acteur = '') {
@@ -109,7 +109,7 @@ class comp_combat extends active_effect
 /**
  * botte : competence de combat avec une condition
  */
-class botte extends comp_combat
+class botte extends comp_comb
 {
 	var $condition;
 	
@@ -312,12 +312,12 @@ class art_critique extends competence
 
   function calcul_mult_critique(&$actif, &$passif, $mult) {
     $this->critique = true;
-    return $mult + ($actif->get_competence2('art_critique')->get_valeur() / 2);
+    return $mult + $actif->get_competence2('art_critique')->get_valeur();
   }
 }
 
 /* Préparation */
-class preparation extends comp_combat
+class preparation extends comp_comb
 {
   function __construct($aLevel = 1) {
     parent::__construct('posture_esquive', $aLevel + 1);
@@ -330,7 +330,7 @@ class preparation extends comp_combat
 }
 
 /* Précision chirurgicale */
-class precision_chirurgicale extends comp_combat
+class precision_chirurgicale extends comp_comb
 {
   function __construct($aLevel = 1) {
     parent::__construct('posture_critique', $aLevel + 2);
@@ -468,7 +468,7 @@ class botte_ours extends botte
 	}
 }
 
-class fleche_poison extends comp_combat {
+class fleche_poison extends comp_comb {
 	var $poison;
 
   function __construct($aEffet, $aEffet2, $aDuree = 5) {
@@ -700,7 +700,7 @@ class fleche_magnetique extends magnetique {
   }
 }
 
-class fleche_sable extends comp_combat {
+class fleche_sable extends comp_comb {
 
   function __construct($aEffet, $aEffet2, $aDuree) {
     parent::__construct('Fleche de sable', null);
@@ -741,7 +741,7 @@ class bouclier_protecteur extends etat {
 	}
 }
 
-class vol_a_la_tire extends comp_combat {
+class vol_a_la_tire extends comp_comb {
 
   function __construct($aEffet, $aEffet2, $aDuree) {
     parent::__construct('Vol à la tire', null);

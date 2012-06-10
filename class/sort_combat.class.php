@@ -105,7 +105,7 @@ class sort_combat extends sort
   static function factory($id)
   {
     global $db;
-    $requete = 'SELECT * FROM sort_jeu WHERE id = '.$id;
+    $requete = 'SELECT * FROM sort_combat WHERE id = '.$id;
   	$req = $db->query($requete);
   	$row=$db->read_assoc($req);
   	if( $row )
@@ -194,7 +194,7 @@ class sort_combat extends sort
 		$PM = $pm * $aura_glace * $buff_batiment_barriere;
 		
 		// Calcul des potentiels toucher et parer
-		$potentiel_toucher = round($actif->get_volonte() * $actif->get_potentiel_magique());
+		$potentiel_toucher = round($actif->get_volonte() * $actif->get_potentiel_lancer_magique( $this->get_comp_assoc() ));
 		$potentiel_parer = round($passif->get_volonte() * $PM / $debuff_desespoir);
 		// Application des effets de potentiel toucher
 		foreach($effets as $effet)
@@ -204,7 +204,7 @@ class sort_combat extends sort
 			$potentiel_parer = $effet->calcul_defense_magique($actif, $passif, $potentiel_parer);
 			
     if( $this->test_potentiel($potentiel_toucher, $potentiel_parer) )
-      $this->touche($actif, $passif, $effects);
+      $this->touche($actif, $passif, $effets);
     else
 		{
 			echo '&nbsp;&nbsp;<span class="manque">'.$actif->get_nom().' manque la cible avec '.$this->get_nom().'</span><br />';
@@ -265,16 +265,13 @@ class sort_combat extends sort
     $get_carac_assoc = 'get_'.$this->get_carac_assoc();
     $de_degat = $this->calcule_des($actif->$get_carac_assoc(), $degat);
     $degat = $this->lance_des($de_degat);
-    if($this->critique_magique($actif, $passif))
-    {
-   	  $actif->set_compteur_critique();
-      $degat = $this->critiques($actif, $passif, $degat);
-    }
+    $degat = $this->critiques($actif, $passif, $degat);
     //Diminution des dégâts grâce à l'armure magique
     $reduction = $this->calcul_pp(($passif->get_pm() * $passif->get_puissance()) / 12);
     $degat_avant = $degat;
     $degat = round($degat * $reduction);
-    echo '(Réduction de '.($degat_avant - $degat).' dégâts par la PM)<br />';
+    if($degat > $degat_avant)
+      echo '(Réduction de '.($degat_avant - $degat).' dégâts par la PM)<br />';
 
     // Application des modifications des dégâts
     foreach($effets as $effet)
@@ -295,9 +292,9 @@ class sort_combat extends sort
   	// Dé de critiques
   	$chance = rand(0, 10000);
   	// Calcule des chances de critique
-  	$actif_chance_critique = ($attaquant->get_volonte() * 50);
-  	if(array_key_exists('buff_furie_magique', $attaquant->buff))
-      $actif_chance_critique = $actif_chance_critique  * (1 + ($attaquant->get_buff('buff_furie_magique', 'effet') / 100));
+  	$actif_chance_critique = ($actif->get_volonte() * 50);
+  	if(array_key_exists('buff_furie_magique', $actif->buff))
+      $actif_chance_critique = $actif_chance_critique  * (1 + ($actif->get_buff('buff_furie_magique', 'effet') / 100));
   	echo '
   	<div id="debug'.$debugs.'" class="debug">
   		Potentiel critique attaquant : '.$actif_chance_critique.' / 10000<br />
@@ -306,6 +303,7 @@ class sort_combat extends sort
   	$debugs++;
   	if($chance < $actif_chance_critique)
   	{
+   	  $actif->set_compteur_critique();
   		echo '&nbsp;&nbsp;<span class="coupcritique">SORT CRITIQUE !</span><br />';
   		$log_combat .= '!';
     	echo '<div id="debug'.$debugs.'" class="debug">';
