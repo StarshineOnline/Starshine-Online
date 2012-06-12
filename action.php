@@ -393,29 +393,67 @@ if(array_key_exists('from', $_GET) && $_GET['id_action'] != '')
 		?>
 		<br />
 		Script en cours :<br />
+		<script>
+		$(function() {
+			    $("#sortable").sortable({
+			        stop : function(event, ui){
+							         var tab = $(this).sortable('toArray');
+							         //alert(tab);
+							         var ordre = new Array();
+							         for(i=0;i<tab.length;i++){
+							        	 //alert(i+"=>"+tab[i]);
+							        	 if((tab[i]!="sortable")&&(tab[i]!=null)){
+							        		 ordre.push(tab[i]);
+							        	 }
+							         }
+							         for(i=0;i<ordre.length;i++){
+										//alert((i+1)+"<="+ordre[i]);
+										var ancienordre = ordre[i];
+										var formerorder = ancienordre.substring((ancienordre.lastIndexOf("_")+1));
+										var nbUp = parseInt(formerorder)-(i+1);
+										//alert(nbUp);
+										while(nbUp>=0)
+										{
+											 $.ajax({
+												   type: "GET",
+												   url: "action.php",
+												   data: "mode=a&id_action=<?php echo $id_action; ?>&up="+formerorder,
+												   success: function(data) {
+													    //alert(data);
+													    $('#information').empty();
+													    $('#information').append(data);
+												   }
+												 });
+											 formerorder--;
+											 nbUp--;
+										}
+							         }
+							         
+			        		}   		          	          
+			    });
+			  	$("#sortable").disableSelection();
+		});
+		</script>
 		<?php
 		//=== Affichage de la liste des actions ===
 		$i = 0;
-		echo '<table>';
+		//echo '<table>';
 		$count = count($actionexplode);
+		echo '<ul id="sortable" class="ui-widget-content">';
 		while ($i < $count)
 		{
 			$echo = affiche_condition($actionexplode[$i], $sujet, $check_pet);
-			echo 
-			'
-				<tr class="combat">
-					<td>
-						'.$echo.'
-					</td>
-					<td>
-			';
-			if ($i != 0) echo ' <a href="action.php?'.$link.'mode=a&amp;id_action='.$id_action.'&amp;up='.$i.'" onclick="return envoiInfo(this.href, \'information\')">Monter</a>';
+			if($echo!=""){
+				echo '<li class="ui-state-default" style="color:black;font-weight:normal;font-family:Times New Roman;font-size:120%;" id="old_'.$i.'"><span class="ui-icon ui-icon-arrowthick-2-n-s" style="display:inline-block;"></span><span style="display:inline-block;">'.$echo.'</span><span style="float:right;padding-top:10px;display:inline-block;"><a href="action.php?'.$link.'mode=a&amp;id_action='.$id_action.'&amp;suppr='.$i.'" onclick="return envoiInfo(this.href, \'information\')">Supprimer</a></span></li>';
+			/*if ($i != 0) echo ' <a href="action.php?'.$link.'mode=a&amp;id_action='.$id_action.'&amp;up='.$i.'" onclick="return envoiInfo(this.href, \'information\')">Monter</a>';
 			if($actionexplode[$i][0] != '') echo '</td><td><a href="action.php?'.$link.'mode=a&amp;id_action='.$id_action.'&amp;suppr='.$i.'" onclick="return envoiInfo(this.href, \'information\')">Supprimer</a>';
 			echo '
 					</td>
-				</tr>';
+				</tr>'; */
+			}
 			$i++;
 		}
+		echo "</ul>";
 	}
 	//Mode simplifié
 	else

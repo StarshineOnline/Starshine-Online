@@ -107,7 +107,6 @@ if(is_array($quetes))
 
 $show_only = implode(',', $show_only);
 echo '
-<h2 style="margin : 0px; padding : 0px;margin-bottom : 3px;"">'.$row['nom'].' <a href="" onclick="javascript:show_only=\''.$show_only.'\'; deplacement(\'centre\', \'normal\', show_only); return false;"><img src="image/icone/eye.png" style="vertical-align : -18%;" title="Afficher uniquement les monstres de ce type sur la carte" alt="O" /></a></h2>
 <div class="description_quete">
 	<span style="font-style : italic;">Niveau conseillé '.$row['lvl_joueur'].'<br />
 	'.$mode.' '.$repetable.'</span><br />
@@ -145,5 +144,5 @@ echo '
 		}
 		?>
 	</ul>
-	<a href="quete.php?id_quete=<?php echo $_GET['id_quete']; ?>&amp;quete_joueur=<?php echo $_GET['quete_joueur']; ?>&amp;action=delete" onclick="if(confirm('Voulez-vous vraiment abandonner cette quête ?')) return envoiInfo(this.href, 'information'); else return false;">Abandonner cette quête</a>
+	<a href="quete.php?id_quete=<?php echo $_GET['id_quete']; ?>&amp;quete_joueur=<?php echo $_GET['quete_joueur']; ?>&amp;action=delete" onclick="if(confirm('Voulez vous vraiment abandonner cette quête ?')) return envoiInfo(this.href, 'information'); else return false;">Abandonner cette quête</a>
 </div>

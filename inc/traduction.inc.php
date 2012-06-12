@@ -83,6 +83,10 @@ $Gtrad['doigt'] = 'Doigt';
 $Gtrad['accessoire'] = 'Accessoire';
 $Gtrad['selle'] = 'Selle';
 $Gtrad['arme_pet'] = 'Arme';
+$Gtrad['cou_pet'] = 'Cou';
+$Gtrad['dos_pet'] = 'Dos';
+$Gtrad['torse_pet'] = 'Torse';
+
 //@}
 
 

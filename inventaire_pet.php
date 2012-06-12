@@ -58,17 +58,17 @@ if(!$visu AND isset($_GET['action']))
 				echo '<h5>'.$G_erreur.'</h5>';
 			}
 		break;
-		case 'equip' :
-			if($joueur->equip_objet($joueur->get_inventaire_slot_partie($_GET['key_slot']), true))
-			{
-				//On supprime l'objet de l'inventaire
-				$joueur->supprime_objet($joueur->get_inventaire_slot_partie($_GET['key_slot'], true), 1);
-				$joueur->sauver();
-			}
-			else
-			{
-				echo '<h5>'.$G_erreur.'</h5>';
-			}
+			case 'equip' :	echo "<script>alert('ici')</script>";
+							if($joueur->equip_objet($joueur->get_inventaire_slot_partie($_GET['key_slot']), true))
+							{
+								//On supprime l'objet de l'inventaire
+								$joueur->supprime_objet($joueur->get_inventaire_slot_partie($_GET['key_slot'], true), 1);
+								$joueur->sauver();
+							}
+							else
+							{
+								echo '<h5>'.$G_erreur.'</h5>';
+							}
 		break;
 	}
 	refresh_perso();
@@ -76,16 +76,16 @@ if(!$visu AND isset($_GET['action']))
 $joueur = new perso($joueur_id);
 $tab_loc = array();
 
-$tab_loc[0]['loc'] = 'cou';
+$tab_loc[0]['loc'] = 'cou_pet';
 $tab_loc[0]['type'] = 'armure';
 $tab_loc[1]['loc'] = 'selle';
 $tab_loc[1]['type'] = 'armure';
-$tab_loc[2]['loc'] = 'dos';
+$tab_loc[2]['loc'] = 'dos_pet';
 $tab_loc[2]['type'] = 'armure';
 
 $tab_loc[3]['loc'] = 'arme_pet';
 $tab_loc[3]['type'] = 'arme_pet';
-$tab_loc[4]['loc'] = 'torse';
+$tab_loc[4]['loc'] = 'torse_pet';
 $tab_loc[4]['type'] = 'armure';
 $tab_loc[5]['loc'] = ' ';
 $tab_loc[5]['type'] = 'vide';
@@ -104,16 +104,33 @@ foreach($tab_loc as $loc)
 			echo '<tr style="height : 55px;">';
 		}
 		if ($loc['type']=='vide')
-		{
-			echo '<td>';
-		}
-		else
-		{
-			echo '<td class="inventaire2">';
-		}
+			{
+				if(($compteur % 3) <> 2)
+				{
+					if((is_ville($joueur->get_x(), $joueur->get_y()) == 1) AND (!array_key_exists('ville', $_GET) OR (array_key_exists('ville', $_GET) AND $_GET['ville'] == 'no')))
+					{
+						$domprop=" class='inventaireville'";
+						if(($compteur/3)==3)
+						{
+							$domprop .= " id='hdv'";  
+						}
+						elseif (($compteur/3)==4)
+						{
+							$domprop .= " id='marchand' alt='marchand'";
+						}
+					}
+					echo '<td'.$domprop.'>';
+				}
+			}
+			else
+			{
+				$jqid='drop_'.$loc['loc'];
+				echo '<td class="inventaire2" id="'.$jqid.'" >';
+			}
 		
 		if($joueur->inventaire_pet()->$loc['loc'] != '')
 		{
+			$image='image/interface/inventaire/Unknown.png';
 			$objet = decompose_objet($joueur->get_inventaire_partie($loc['loc'], true));
 			//On peut désequiper
 			if(!$visu AND $joueur->get_inventaire_partie($loc['loc'], true) != '' AND $joueur->get_inventaire_partie($loc['loc'], true) != 'lock') $desequip = true; else $desequip = false;
@@ -154,9 +171,9 @@ foreach($tab_loc as $loc)
 			}
 			if($desequip)
 			{
-				echo '<a href="inventaire_pet.php?action=desequip&amp;partie='.$loc['loc'].$filtre_url.'" onclick="return envoiInfo(this.href, \'information\');">
-				<img src="'.$image.'" style="float : left;" title="Déséquiper" alt="Déséquiper" />
-				</a>';
+				echo '<span id="drag_'.$objet["id_objet"].'"><a href="inventaire_pet.php?action=desequip&amp;partie='.$loc['loc'].$filtre_url.'" onclick="return envoiInfo(this.href, \'information\');">
+					<img src="'.$image.'" style="float : left;" title="Déséquiper" alt="Déséquiper" />
+					</a></span>';
 			}
 			echo '<strong>'.$nom.'</strong>';
 			if($objet['slot'] > 0)
@@ -213,11 +230,41 @@ if(!$visu)
 	 else $filtre = 'utile';
 ?>
 <p>Place restante dans l'inventaire : <?php echo ($G_place_inventaire - count($joueur->get_inventaire_slot_partie())) ?> / <?php echo $G_place_inventaire;?></p>
-<div id='messagerie_menu'>
-<span class="<?php if($filtre == 'utile'){echo 'seleted';}?>" onclick="envoiInfo('inventaire_slot.php?javascript=ok&amp;filtre=utile', 'inventaire_slot')">Utile</span>
-<span class="<?php if($filtre == 'arme'){ echo 'seleted';} ?>" onclick="envoiInfo('inventaire_slot.php?javascript=ok&amp;filtre=arme', 'inventaire_slot')">Arme</span>
-<span class="<?php if($filtre == 'armure'){echo 'seleted';}?>" onclick="envoiInfo('inventaire_slot.php?javascript=ok&amp;filtre=armure', 'inventaire_slot')">Armure</span>
-<span class="<?php if($filtre == 'autre'){echo 'seleted';}?>" onclick="envoiInfo('inventaire_slot.php?javascript=ok&amp;filtre=autre', 'inventaire_slot')">Autre</span>
+<div id='slots'>
+<script>
+	 $.ajax({
+		   type: "GET",
+		   url: "inventaire_slot.php",
+		   data: "javascript=ok&filtre=utile",
+		   success: function(data) {
+			    $('#inventaire_slot').append(data);
+		   }
+		 });
+	 $.ajax({
+		   type: "GET",
+		   url: "inventaire_slot.php",
+		   data: "javascript=ok&filtre=arme",
+		   success: function(data) {
+			    $('#inventaire_slot').append(data);
+		   }
+		 });
+	 $.ajax({
+		   type: "GET",
+		   url: "inventaire_slot.php",
+		   data: "javascript=ok&filtre=armure",
+		   success: function(data) {
+			    $('#inventaire_slot').append(data);
+		   }
+		 });
+	 $.ajax({
+		   type: "GET",
+		   url: "inventaire_slot.php",
+		   data: "javascript=ok&filtre=autre",
+		   success: function(data) {
+			    $('#inventaire_slot').append(data);
+		   }
+		 });
+	</script>
 </div>
 <div id="inventaire_slot">
 	<?php
