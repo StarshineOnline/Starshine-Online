@@ -26,7 +26,7 @@ if(verif_ville($joueur->get_x(), $joueur->get_y()))
 }
 elseif($batiment = verif_batiment($joueur->get_x(), $joueur->get_y(), $royaume->get_id()))
 {
-	if($batiment['nom'] == 'Fortin' OR $batiment['nom'] == 'Fort' OR $batiment['nom'] == 'Forteresse' OR $batiment['type'] == 'bourg') $check = true;
+	if($batiment['type'] == 'fort' OR $batiment['type'] == 'bourg') $check = true; // à remplacer par une vérification des bonus
 }
 
 if($check)

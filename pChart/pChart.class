@@ -473,6 +473,7 @@
             {
              if ( $Scale2 > 1 ) { $Factor = $Factor * 10; }
              if ( $Scale2 < 1 ) { $Factor = $Factor / 10; }
+						 if ( $Factor == 0 ) { $Factor = 1; $ScaleOk = TRUE; } /* escape */
             }
           }
 

@@ -16,11 +16,11 @@ verif_mort($joueur, 1);
 $W_requete = 'SELECT * FROM map WHERE x = '.$joueur->get_x().' and y = '.$joueur->get_y();
 $W_req = $db->query($W_requete);
 $W_row = $db->read_array($W_req);
-$R = new royaume($W_row['royaume']);
-$R->get_diplo($joueur->get_race());
 
 $construction = new construction(sSQL($_GET['id_construction']));
 $batiment = new batiment($construction->get_id_batiment());
+$R = new royaume($construction->get_royaume());
+$R->get_diplo($joueur->get_race());
 
 ?>
 	<div id="carte">

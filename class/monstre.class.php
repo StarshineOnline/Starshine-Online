@@ -171,8 +171,15 @@ class monstre extends entitenj_def
    * @param  $description      Description de l'entité
    * @param  $sort_combat      Sorts de combats disponibles une fois desssé
    * @param  $comp_combat      Compétences de combats disponibles une fois desssé
+   * @param  $blocage          Compétence de blocage
+   * @param  $bouclier         Dégâts réduit par le bouclier
 	*/
-	function __construct($id = 0, $lib = '', $nom = '', $type = '', $hp = '', $pp = '', $pm = '', $force = '', $dexterite = '', $puissance = '', $volonte = '', $energie = '', $melee = '', $esquive = '', $incantation = '', $sort_vie = '', $sort_mort = '', $sort_element = '', $dressage = '', $sort_dressage = '', $arme = '', $action = '', $level = '', $xp = '', $star = '', $drops = '', $spawn = '', $spawn_loc = '', $terrain = '', $affiche = '', $description = '', $sort_combat = '', $comp_combat = '')
+	function __construct($id = 0, $lib = '', $nom = '', $type = '', $hp = 0, $pp = 0, $pm = 0,
+    $force = 0, $dexterite = 0, $puissance = 0, $volonte = 0, $energie = 0, $melee = 0,
+    $esquive = 0, $incantation = 0, $sort_vie = 0, $sort_mort = 0, $sort_element = 0,
+    $dressage = 0, $sort_dressage = '', $arme = '', $action = '', $level = 0, $xp = 0,
+    $star = 0, $drops = '', $spawn = '', $spawn_loc = '', $terrain = '', $affiche = '',
+    $description = '', $sort_combat = '', $comp_combat = '', $blocage = 0, $bouclier = 0)
 	{
 		//Verification nombre et du type d'argument pour construire l'etat adequat.
 		if( func_num_args() == 1 )
@@ -208,6 +215,8 @@ class monstre extends entitenj_def
 			$this->affiche = $affiche;
 		  $this->sort_combat = $sort_combat;
 		  $this->comp_combat = $comp_combat;
+		  $this->blocage = $blocage;
+		  $this->bouclier = $bouclier;
 		}
 	}
 
@@ -244,22 +253,41 @@ class monstre extends entitenj_def
 		$this->affiche = $vals['affiche'];
 		$this->sort_combat = $vals['sort_combat'];
 		$this->comp_combat = $vals['comp_combat'];
+	  $this->blocage = $vals['blocage'];
+	  $this->bouclier = $vals['bouclier'];
   }
 
 	/// Renvoie la liste des champs pour une insertion dans la base
 	protected function get_liste_champs()
 	{
-    return entitenj_def::get_liste_champs().', lib, forcex, dexterite, puissance, volonte, energie, melee, esquive, incantation, sort_vie, sort_mort, sort_element, dressage, sort_dressage, arme, action, level, xp, star, drops, spawn, spawn_loc, terrain, affiche, sort_combat, comp_combat';
+    return entitenj_def::get_liste_champs().', lib, forcex, dexterite, puissance, volonte, energie, melee, esquive, incantation, sort_vie, sort_mort, sort_element, dressage, sort_dressage, arme, action, level, xp, star, drops, spawn, spawn_loc, terrain, affiche, sort_combat, comp_combat, blocage, bouclier';
   }
 	/// Renvoie la liste des valeurs des champspour une insertion dans la base
 	protected function get_valeurs_insert()
-	{//.', "'.mysql_escape_string($this->type).'", '.$this->rez
-		return entitenj_def::get_valeurs_insert().', '.$this->lib.', '.$this->forcex.', '.$this->dexterite.', '.$this->volonte.', '.$this->energie.', '.$this->esquive.', '.$this->incantation.', '.$this->sort_vie.', '.$this->sort_mort.', '.$this->sort_element.', '.$this->dressage.', "'.mysql_escape_string($this->sort_dressage).'", "'.mysql_escape_string($this->arme).'", "'.mysql_escape_string($this->action).'", '.$this->level.', '.$this->xp.', '.$this->star.', "'.mysql_escape_string($this->drops).'", '.$this->spawn.', "'.mysql_escape_string($this->spawn_loc).'", "'.mysql_escape_string($this->terrain).'", "'.mysql_escape_string($this->affiche).'", "'.mysql_escape_string($this->sort_combat).'", "'.mysql_escape_string($this->comp_combat).'"';
+	{
+		return entitenj_def::get_valeurs_insert().', '.$this->lib.', '.$this->forcex.', '.
+      $this->dexterite.', '.$this->volonte.', '.$this->energie.', '.$this->esquive.', '.
+      $this->incantation.', '.$this->sort_vie.', '.$this->sort_mort.', '.$this->sort_element.', '.
+      $this->dressage.', "'.mysql_escape_string($this->sort_dressage).'", "'.mysql_escape_string($this->arme).
+      '", "'.mysql_escape_string($this->action).'", '.$this->level.', '.$this->xp.', '.$this->star.', "'.
+      mysql_escape_string($this->drops).'", '.$this->spawn.', "'.mysql_escape_string($this->spawn_loc).'", "'.
+      mysql_escape_string($this->terrain).'", "'.mysql_escape_string($this->affiche).'", "'.mysql_escape_string($this->sort_combat).
+      '", "'.mysql_escape_string($this->comp_combat).'", '.$this->blocage.', '.$this->bouclier;
 	}
 	/// Renvoie la liste des champs et valeurs pour une mise-à-jour dans la base
 	protected function get_liste_update()
-	{//.', type = "'.mysql_escape_string($this->type).'", rez = '.$this->rez
-		return entitenj_def::get_liste_update().', lib = "'.mysql_escape_string($this->lib).'", forcex = '.$this->forcex.', dexterite = '.$this->dexterite.', volonte = '.$this->volonte.', energie = '.$this->energie.', esquive = '.$this->esquive.', incantation = '.$this->incantation.', sort_vie = '.$this->sort_vie.', sort_mort = '.$this->sort_mort.', sort_element = '.$this->sort_element.', dressage = '.$this->dressage.', sort_dressage = "'.mysql_escape_string($this->sort_dressage).'", arme = "'.mysql_escape_string($this->arme).'", action = "'.mysql_escape_string($this->action).'", level = '.$this->level.', xp = '.$this->xp.', stars = '.$this->star.', drops = "'.mysql_escape_string($this->drops).'", spawn = '.$this->spawn.', spawn_loc = "'.mysql_escape_string($this->spawn_loc).'", terrain = "'.mysql_escape_string($this->terrain).'", affiche = "'.mysql_escape_string($this->affiche).'", sort_combat = "'.mysql_escape_string($this->sort_combat).'", comp_combat = "'.mysql_escape_string($this->comp_combat).'"';
+	{
+		return entitenj_def::get_liste_update().', lib = "'.mysql_escape_string($this->lib).'", forcex = '.
+      $this->forcex.', dexterite = '.$this->dexterite.', volonte = '.$this->volonte.', energie = '.$this->energie.
+      ', esquive = '.$this->esquive.', incantation = '.$this->incantation.', sort_vie = '.$this->sort_vie.
+      ', sort_mort = '.$this->sort_mort.', sort_element = '.$this->sort_element.', dressage = '.$this->dressage.
+      ', sort_dressage = "'.mysql_escape_string($this->sort_dressage).'", arme = "'.mysql_escape_string($this->arme).
+      '", action = "'.mysql_escape_string($this->action).'", level = '.$this->level.', xp = '.$this->xp.', stars = '.
+      $this->star.', drops = "'.mysql_escape_string($this->drops).'", spawn = '.$this->spawn.', spawn_loc = "'.
+      mysql_escape_string($this->spawn_loc).'", terrain = "'.mysql_escape_string($this->terrain).'", affiche = "'.
+      mysql_escape_string($this->affiche).'", sort_combat = "'.mysql_escape_string($this->sort_combat).
+      '", comp_combat = "'.mysql_escape_string($this->comp_combat).'" blocage = '.$this->blocage.', bouclier = '.
+      $this->bouclier;
 	}
 	// @}
 
@@ -371,6 +399,7 @@ class monstre extends entitenj_def
 	protected $sort_vie;  ///< Compétence de magie de la vie
 	protected $sort_mort;  ///< Compétence de nécromancie
 	protected $sort_element;  ///< Compétence de magie élémentaire
+	protected $blocage;   ///< Compétence de blocage
 
 	/// Renvoie la compétence de mêlée/tir
 	function get_melee()
@@ -450,6 +479,18 @@ class monstre extends entitenj_def
 	{
 		$this->sort_element = $sort_element;
 		$this->champs_modif[] = 'sort_element';
+	}
+
+	/// Renvoie la compétence deblocage
+	function get_blocage()
+	{
+		return $this->blocage;
+	}
+	/// Modifie la compétence deblocage
+	function set_blocage($blocage)
+	{
+		$this->blocage = $blocage;
+		$this->champs_modif[] = 'blocage';
 	}
 
 	/**
@@ -544,6 +585,7 @@ class monstre extends entitenj_def
   // @{
 	protected $arme;  ///< Arme utilisée
 	protected $action;  ///< Script du monstre
+	protected $bouclier;  ///< Dégâts réduit par le bouclier
 
 	/// Renvoie l'arme utilisée
 	function get_arme()
@@ -567,6 +609,18 @@ class monstre extends entitenj_def
 	{
 		$this->action = $action;
 		$this->champs_modif[] = 'action';
+	}
+
+	/// Renvoie les dégâts réduit par le bouclier
+	function get_bouclier()
+	{
+		return $this->bouclier;
+	}
+	/// Modifie les dégâts réduit par le bouclier
+	function set_bouclier($bouclier)
+	{
+		$this->bouclier = $bouclier;
+		$this->champs_modif[] = 'bouclier';
 	}
 	
 	/// Renvoie la RM

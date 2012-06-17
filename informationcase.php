@@ -19,6 +19,20 @@ check_undead_players(true);
 //Case et coordonnées de la case
 $W_case = $_GET['case'];
 
+// Handle relative positioning (rel_X_Y)
+if (!is_numeric($W_case)) {
+  if ($W_case == '') die();
+  if (preg_match('/rel_(-?[0-9]+)_(-?[0-9]+)/', $W_case, $regs)) {
+    //var_dump($regs);
+    $W_case = convert_in_pos
+      ($joueur->get_x() + (int)$regs[1],
+       $joueur->get_y() + (int)$regs[2]);
+  }
+  else {
+    die('Cannot get info for tile '.htmlentities($W_case));
+  }
+}
+
 //Vérifie si il y a eu des modifications sur la case (fin de batiments drapeaux et autres)
 $case = new map_case($W_case);
 $case->check_case();
@@ -27,9 +41,26 @@ $case->check_case();
 $W_distance = detection_distance($W_case, convert_in_pos($joueur->get_x(), $joueur->get_y()));
 if($W_distance < 4)
 {
+
+  $coord_x = $case->get_x();
+  $coord_y = $case->get_y();
+
+  if (map::is_masked_coordinates($case->get_x(), $case->get_y())) {
+    $coord_x = '*';
+    if ($case->get_x() < $joueur->get_x())
+      $coord_x .= ' - '.abs($case->get_x() - $joueur->get_x());
+    if ($case->get_x() > $joueur->get_x())
+      $coord_x .= ' + '.abs($case->get_x() - $joueur->get_x());
+    $coord_y = '*';
+    if ($case->get_y() < $joueur->get_y())
+      $coord_y .= ' - '.abs($case->get_y() - $joueur->get_y());
+    if ($case->get_y() > $joueur->get_y())
+      $coord_y .= ' + '.abs($case->get_y() - $joueur->get_y());
+  }
+
 	?>
 	<fieldset>
-	<legend>Informations Case - X : <?php echo $case->get_x(); ?> | Y : <?php echo $case->get_y(); ?><a href="carte_perso_affiche.php" onclick="affichePopUp(this.href); return false;"> <img src="image/icone/oujesuis.png" alt="Où je suis ?" title="Où je suis ?" style="vertical-align : middle;height:20px;" /></a> </legend>
+	<legend>Informations Case - X : <?php echo $coord_x; ?> | Y : <?php echo $coord_y; ?><a href="carte_perso_affiche.php" onclick="affichePopUp(this.href); return false;"> <img src="image/icone/oujesuis.png" alt="Où je suis ?" title="Où je suis ?" style="vertical-align : middle;height:20px;" /></a> </legend>
 	<div id='info_case'>
 	<?php
 	$R = new royaume($case->get_royaume());

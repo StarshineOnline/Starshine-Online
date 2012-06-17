@@ -2108,7 +2108,16 @@ function verif_mort($pourcent, $var, $duree_debuff=0, $multiplicateur_mouvement=
 <h2 class="ville_titre">Vous êtes mort</h2>
 Votre dernier souvenir est l'endroit où vous êtes mort <?php echo 'x : '.$joueur->get_x().' / y : '.$joueur->get_y(); ?>
 </div>
-<div id='menu'></div>
+<div id='menu'>
+	<?php
+    if( array_key_exists('nbr_perso', $_SESSION) )
+    {
+  ?>
+		<span class="changer" title='Changer de personnage' onclick="envoiInfo('changer_perso.php?info=information', 'information');">&nbsp;</span>
+	<?php
+    }
+  ?>
+</div>
 <div id='mort'>
 <fieldset>
 					Que voulez vous faire ?

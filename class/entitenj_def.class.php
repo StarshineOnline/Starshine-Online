@@ -223,6 +223,8 @@ abstract class entitenj_def extends table
 	abstract function get_sort_mort();
 	/// Renvoie la compétence de magie élémentaire
 	abstract function get_sort_element();
+	/// Renvoie la compétence deblocage
+	function get_blocage() { return 0; }
 	// @}
 
 	/**
@@ -234,6 +236,8 @@ abstract class entitenj_def extends table
 	abstract function get_arme();
 	/// Renvoie le script du monstre
 	abstract function get_action();
+	/// Renvoie les dégâts réduit par le bouclier
+	function get_bouclier() { return 0; }
 	/// Renvoie la RM
 	abstract function get_reserve();
 	/// Renvoie le facteur de dégâts de ou des armes.

@@ -126,7 +126,7 @@ else
 		echo '<table>';
 		while ($i < count($actionexplode))
 		{
-			$echo = affiche_condition($actionexplode[$i], $monstre, false);
+			$echo = affiche_condition($actionexplode[$i], $monstre, true);
 			echo 
 			'
 				<tr class="combat">

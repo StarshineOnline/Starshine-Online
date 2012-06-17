@@ -28,6 +28,7 @@ switch($type)
 		if(!$check_pet)
 		{
 			$joueur = new perso($_SESSION['ID']);
+			$joueur->check_perso();
 			$joueur->action_do = $joueur->recupaction('attaque');
 			$attaquant = entite::factory('joueur', $joueur);
 		}

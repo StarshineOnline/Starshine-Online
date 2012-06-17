@@ -158,7 +158,7 @@ function affiche_perso_visu($joueur, $W_row, $position="")
 	if ($W_ID == null) continue;
 	
 	$perso = new perso($W_ID);
-	$perso->check_materiel();
+	$perso->check_specials();
 	
 	$bonus = recup_bonus($W_ID);
 	// on envois dans infojoueur.php -> ID du joueur et La position de la case ou il se trouve

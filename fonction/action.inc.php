@@ -77,7 +77,7 @@ function get_array_condition($valeur) {
 /**
  * Détermine l'action a effectuer, si on peut.
  * Commence par vérifier si le personnage peut effectuer une action en fonction de son état.
- * Ensuite détermine l'action à efectuer en foncion du script. Puis finallement détermine si
+ * Ensuite détermine l'action à effectuer en foncion du script. Puis finallement détermine si
  * l'action est anticipée.    
  *
  * @param $joueur Pesonnage du joueur. 
@@ -171,7 +171,7 @@ function sub_script_action($joueur, $ennemi, $mode, &$effects)
 			$effectue[0] = 'attaque';
 			return $effectue;
 		}
-		if(!$stop)  // Etrange : il y a un "return" juste avant le seul moment ou stop est mit à "true".
+		if(!$stop)  // Etrange : il y a un "return" juste avant le seul moment où stop est mis à "true".
 		{
 		  // Récupèration des actions du personnage
 			$actions = explode(';', $joueur->get_action());
@@ -719,26 +719,41 @@ function lance_sort($id, $acteur, &$effects)
 							'</strong> est affecté par le debuff '.$row['nom'].'<br/>';
 						lance_buff('debuff_charisme', $passif->get_id(),
 											 8, $row['effet2'], $row['effet2'] * 86400, $row['nom'],
-											 sSQL($row['description']), 'perso', 1, 0, 0, 0);
+											 sSQL($row['description']), 'perso', 1, 0, 0, $row['effet']);
 					}
           break;
 
+			case 'tsunami_drain':
 			case 'tsunami':
-					$degat = degat_magique($actif->$get_comp_assoc(), $row['effet'] + $bonus_degats_magique, $actif, $passif, $effects, $row['type']);
-					echo '&nbsp;&nbsp;<span class="degat"><strong>'.$actif->get_nom().'</strong> inflige <strong>'.$degat.'</strong> dégâts avec '.$row['nom'].'</span><br />';
+					$degat = degat_magique($actif->$get_comp_assoc(),
+																 $row['effet'] + $bonus_degats_magique,
+																 $actif, $passif, $effects, $row['type']);
+					echo '&nbsp;&nbsp;<span class="degat"><strong>'.$actif->get_nom().
+						'</strong> inflige <strong>'.$degat.'</strong> dégâts avec '.
+						$row['nom'];
 					$passif->set_hp($passif->get_hp() - $degat);
+					if ($row['type'] == 'tsunami_drain') {
+						// Si drain: gain de min(degats, pv manquants)
+						$drain = min($degat, ($actif->get_hp_max() - $actif->get_hp()));
+						$actif->set_hp($actif->get_hp() + $drain);
+						echo 'Et gagne <strong>'.$drain.'</strong> hp grâce au drain';
+					}
+					echo '</span><br />';
           
           projection($actif, $passif, $row['effet2']);
           break;
 
 			  case 'empalement_abomination':
-					$degat = degat_magique($actif->$get_comp_assoc(), ($row['effet'] + $bonus_degats_magique), $actif, $passif, $effects, $row['type']);
+					$degat = degat_magique($actif->$get_comp_assoc(),
+																 ($row['effet'] + $bonus_degats_magique),
+																 $actif, $passif, $effects, $row['type']);
 					if ($passif->get_hp() > $degat) { // Si on survit
 						$degat = $passif->get_hp() - 4; // 1 + 3 de LS
           }
 					echo '&nbsp;&nbsp;<span class="degat">Une &eacute;pine jaillit de <strong>'.
 						$actif->get_nom().'</strong> infligeant <strong>'.$degat.
-						'</strong> dégâts, et transpercant '.$passif->get_nom().'</span><br/>';
+						'</strong> dégâts, et transpercant '.$passif->get_nom().
+						'</span><br/>';
 					$passif->set_hp($passif->get_hp() - $degat);
 
 					if ($passif->get_hp() > 0) {

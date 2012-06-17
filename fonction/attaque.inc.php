@@ -186,7 +186,7 @@ function attaque($acteur = 'attaquant', $competence, &$effects)
 				//Si le joueur bloque
 				if ($attaque <= $blocage)
 				{
-					$degat_bloque = $passif->bouclier()->degat;
+					$degat_bloque = $passif->get_bouclier_degat();//$passif->bouclier()->degat;
 					if($passif->is_buff('bouclier_terre')) $degat_bloque += $passif->get_buff('bouclier_terre', 'effet');
 
 					/* Application des degats bloques */

@@ -7,7 +7,7 @@
 /**
  * Classe représentant les participants à un combat
  *
- * @author florian
+ * @author Florian
  */
 class entite extends placable
 {
@@ -552,6 +552,8 @@ class entite extends placable
 				return $this->objet_ref->get_bouclier();
 				break;
 			case 'monstre' :
+			case 'pet' :
+        return $this->get_blocage();
 				break;
 		}
 		return false;
@@ -643,8 +645,9 @@ class entite extends placable
 	public $rm_restant;           ///< Réserve de mana restante.
 	protected $distance_tir;     ///< Distance de tir
 	public $potentiel_bloquer; ///< Potentiel bloquer
-	public $potentiel_toucher;
-	public $potentiel_parer;
+	public $potentiel_toucher;  ///< Potentiel toucher physique
+	public $potentiel_parer;  ///< Potentiel parer physique
+	protected $potentiel_magique;  ///< Potentiel lancer magique
 	protected $comp_att;       ///< Coméptence utilisé pour attaquer
 	/// Renvoie le contenu du script de combat utilisé
 	function get_action()
@@ -747,6 +750,44 @@ class entite extends placable
 	{
 		$this->potentiel_parer = $valeur;
 	}
+	/**
+	 * Calcul et renvoie le potentiel toucher physique
+	 * @param $comp_assoc  Coméptence associé au sort
+	 */
+	function get_potentiel_lancer_magique($comp_assoc)
+	{
+    if( isset($this->potentiel_magique) && $this->potentiel_magique )
+      return $this->potentiel_magique;
+      
+    $get = 'get_'.$comp_assoc;
+  	$this->potentiel_magique = floor($this->get_incantation() + 1.9 * $this->$get());
+  	if($this->is_buff('batiment_incantation'))
+      $this->potentiel_magique *= 1 + (($this->get_buff('batiment_incantation', 'effet') / 100));
+  	if($this->is_buff('buff_meditation'))
+      $this->potentiel_magique *= 1 + (($this->get_buff('buff_meditation', 'effet') / 100));
+  	if(array_key_exists('lien_sylvestre', $this->etat))
+      $this->potentiel_magique /= 1 + (($this->etat['lien_sylvestre']['effet2']) / 100);
+  	if(array_key_exists('fleche_debilitante', $this->etat))
+      $this->potentiel_magique /= 1 + ($this->etat['fleche_debilitante']['effet'] / 100);
+  	if($this->etat['posture']['type'] == 'posture_feu')
+      $this->potentiel_magique *= 1 + (($this->etat['posture']['effet']) / 100);
+  	if($this->get_arme_type() == 'baton')
+    {
+      $arme = $this->get_arme();
+      $this->potentiel_magique *= (1 + ($arme->var1 / 100));
+    }
+  	//Objets magiques
+  	foreach($this->objet_effet as $effet)
+  	{
+  		switch($effet['id'])
+  		{
+  			case '11' :
+  				$this->potentiel_magique += $potentiel_magique_arme * (1 + ($effet['effet'] / 100));
+  			break;
+  		}
+  	}
+  	return $this->potentiel_magique;
+	}
 	/// Renvoie la compétence utilisée pour attaquer
 	function get_comp_att()
 	{
@@ -763,6 +804,7 @@ class entite extends placable
     if($this->get_arme_type() == 'arc') $this->set_comp_att('distance'); else $this->set_comp_att('melee');
     unset($this->potentiel_toucher);
     unset($this->potentiel_parer);
+    unset($this->potentiel_magique);
 		$this->degat_sup = 0;
 		$this->degat_moins = 0;
   }
