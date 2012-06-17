@@ -154,21 +154,12 @@ if (isset($_GET['deplacement']))
 		}
     if ($joueur->is_buff('debuff_bloque_deplacement_alea'))
     {
-      $now = heure_sso();
-      $debut = $joueur->get_buff('debuff_bloque_deplacement_alea', 'effet');
-      $fin = $debut + $joueur->get_buff('debuff_bloque_deplacement_alea', 'effet2');
-      if ($fin > 24) {
-        $fin -= 24;
-        if ($now >= $debut || $now < $fin) {
-          $peu_bouger = false;
-        }
-      } else {
-        if ($now >= $debut && $now < $fin) {
-          $peu_bouger= false;
-        }
-      }
-      if (!$peu_bouger)
+      if (is_bloque_Deplacement_alea(
+            $joueur->get_buff('debuff_bloque_deplacement_alea', 'effet'),
+            $joueur->get_buff('debuff_bloque_deplacement_alea', 'effet2'))) {
         $cause = 'Un buff vous empèche de bouger';
+        $peu_bouger = false;
+      }
     }
 		//Si en donjon et case n'existe pas, le joueur ne peut pas bouger
 		if($num_rows == 0)
