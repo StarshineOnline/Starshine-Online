@@ -83,7 +83,7 @@ class active_effect extends effect
 class comp_comb extends active_effect
 {
   function __construct($aNom, $aLevel) {
-    parent::__construct($aNom, 'comp_comb', $aLevel);
+    parent::__construct($aNom, 'comp_combat', $aLevel);
   }  
 
 	static function factory(&$effects, &$actif, &$passif, $acteur = '') {
