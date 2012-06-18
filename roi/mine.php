@@ -35,6 +35,7 @@ else if(array_key_exists('id', $_GET))
 	<div id="map_mine" style='float:left;'>
 	<?php
 	$map = new map($x, $y, 5, '../', false, 'high');
+  $map->dont_use_relative_coords = true;
 	$map->quadrillage = true;
 	$map->set_batiment_objet($batiments);
 	$map->onclick_status = true;
