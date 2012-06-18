@@ -814,13 +814,13 @@ else
 			//Suppression des PA si c'est une attaque du joueur
 			if($type == 'joueur' OR $type == 'monstre' OR $type == 'batiment')
 			{
-				if($check_pet)
+				if(get_class($attaquant)=="joueur")
 				{
-					$joueur->set_pa($joueur->get_pa() - $pa_attaque);
+					$joueur->set_pa($attaquant->get_pa() - $pa_attaque);
 				}
 				else
 				{
-					$joueur->set_pa($attaquant->get_pa() - $pa_attaque);
+					$joueur->set_pa($joueur->get_pa() - $pa_attaque);
 				}
 				$joueur->sauver();
 			}
