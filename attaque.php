@@ -814,7 +814,7 @@ else
 			//Suppression des PA si c'est une attaque du joueur
 			if($type == 'joueur' OR $type == 'monstre' OR $type == 'batiment')
 			{
-				if(get_class($attaquant)=="joueur")
+				if(get_class($attaquant)=="perso")
 				{
 					$joueur->set_pa($attaquant->get_pa() - $pa_attaque);
 				}
