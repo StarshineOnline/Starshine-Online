@@ -22,6 +22,7 @@ class map
 	public $show_royaume_button;
 	public $affiche_terrain;
 	public $arene = false;
+  public $dont_use_relative_coords = false;
 	private $affiche_royaume;
 
 	private $tooltip_txt = '';
@@ -110,7 +111,11 @@ class map
 		{
       $pos_id_x = $objMap->x - $this->x;
       $pos_id_y = $objMap->y - $this->y;
-			$MAPTAB[$objMap->x][$objMap->y]["id"] = "rel_${pos_id_x}_${pos_id_y}";
+      if ($this->dont_use_relative_coords)
+        $MAPTAB[$objMap->x][$objMap->y]["id"] =
+          convert_in_pos($objMap->x, $objMap->y);
+      else
+        $MAPTAB[$objMap->x][$objMap->y]["id"] = "rel_${pos_id_x}_${pos_id_y}";
 			$MAPTAB[$objMap->x][$objMap->y]["decor"] = $objMap->decor;
 			$MAPTAB[$objMap->x][$objMap->y]["royaume"] = $objMap->royaume;
 			$MAPTAB[$objMap->x][$objMap->y]["type"] = $objMap->info;
