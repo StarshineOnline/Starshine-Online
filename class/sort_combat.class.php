@@ -112,6 +112,68 @@ class sort_combat extends sort
   	{
       switch( $row['type'] )
       {
+      case 'debuff_enracinement': // l. 707
+        return new sort_combat($row);
+      case 'heresie_divine': // l. 724
+        return new sort_combat($row);
+      case 'encombrement_psy': // l.
+        return new sort_combat($row);
+      case 'tsunami': // l. 751
+        return new sort_combat($row);
+      case 'empalement_abomination': // l. 759
+        return new sort_combat($row);
+      case 'cri_abomination': // l. 776
+        return new sort_combat($row);
+      case 'nostalgie_karn': // l. 814
+        return new sort_combat($row);
+      case 'absorb_temporelle': // l. 827
+        return new sort_combat($row);
+      case 'degat_froid': // à modifier
+        return new sort_combat_degat_etat($row, 'glacer');
+      case 'degat_vent':
+        return new sort_combat_vent($row);
+      case 'sacrifice_morbide':
+        return new sort_combat_sacrifice($row);
+      case 'degat_terre':
+        return new sort_combat_degat_etat($row, 'tellurique');
+      case 'lapidation':
+        return new sort_combat_lapidation($row);
+      case 'globe_foudre': // à modifier
+        return new sort_combat_foudre($row);
+      case '': // l.
+        return new sort_combat($row);
+      case '': // l.
+        return new sort_combat($row);
+      case '': // l.
+        return new sort_combat($row);
+      case '': // l.
+        return new sort_combat($row);
+      case '': // l.
+        return new sort_combat($row);
+      case '': // l.
+        return new sort_combat($row);
+      case '': // l.
+        return new sort_combat($row);
+      case '': // l.
+        return new sort_combat($row);
+      case '': // l.
+        return new sort_combat($row);
+      case '': // l.
+        return new sort_combat($row);
+      case '': // l.
+        return new sort_combat($row);
+      case '': // l.
+        return new sort_combat($row);
+      case '': // l.
+        return new sort_combat($row);
+      case '': // l.
+        return new sort_combat($row);
+      case '': // l.
+        return new sort_combat($row);
+      case '': // l.
+        return new sort_combat($row);
+      case '': // l.
+        return new sort_combat($row);
       default:
         return new sort_combat($row);
       }
@@ -223,7 +285,9 @@ class sort_combat extends sort
     $degats = $this->calcul_degats($actif, $passif, $effets, $this->get_effet() + $this->bonus_degats($actif, $passif, $effets));
     // Application des effets de degats magiques
     foreach($effets as $effet)
-      $effet->inflige_degats_magiques($actif, $passif, $degat, $this->get_type());
+      $effet->inflige_degats_magiques($actif, $passif, $degats, $this->get_type());
+		echo '&nbsp;&nbsp;<span class="degat"><strong>'.$actif->get_nom().'</strong> inflige <strong>'.$degats.'</strong> dégâts avec '.$this->get_nom().'</span><br />';
+		$passif->set_hp($passif->get_hp() - $degats);
   }
 
   /**
@@ -238,7 +302,7 @@ class sort_combat extends sort
 		// Application des effets de degats magiques
 		foreach($effets as $effet)
 			$bonus_degats_magique = $effet->calcul_bonus_degats_magiques($actif, $passif, $bonus_degats_magique, $this->get_type());
-		$bonus_degats_magique += $facteur_degats_arme;
+		//$bonus_degats_magique += $facteur_degats_arme;
 		$bonus_degats_magique += $actif->get_buff('buff_surpuissance', 'effet');
 		return $bonus_degats_magique;
   }
@@ -286,22 +350,15 @@ class sort_combat extends sort
    * @param  $passif  Personnage adverse
    * @param  $degat   Facteur de dégats de base.
    */
-  function critiques(&$actif, &$passif)
+  function critiques(&$actif, &$passif, $degat)
   {
   	global $debugs, $log_combat;  // Numéro des informations de debug.
-  	// Dé de critiques
-  	$chance = rand(0, 10000);
   	// Calcule des chances de critique
   	$actif_chance_critique = ($actif->get_volonte() * 50);
   	if(array_key_exists('buff_furie_magique', $actif->buff))
       $actif_chance_critique = $actif_chance_critique  * (1 + ($actif->get_buff('buff_furie_magique', 'effet') / 100));
-  	echo '
-  	<div id="debug'.$debugs.'" class="debug">
-  		Potentiel critique attaquant : '.$actif_chance_critique.' / 10000<br />
-  		Résultat => '.$chance.' doit être inférieur au Potentiel critique<br />
-  	</div>';
   	$debugs++;
-  	if($chance < $actif_chance_critique)
+  	if($this->test_de(10000, $actif_chance_critique))
   	{
    	  $actif->set_compteur_critique();
   		echo '&nbsp;&nbsp;<span class="coupcritique">SORT CRITIQUE !</span><br />';
@@ -309,7 +366,7 @@ class sort_combat extends sort
     	echo '<div id="debug'.$debugs.'" class="debug">';
     	//Les dégâts des critiques sont diminués par la puissance
     	$puissance = 1 + ($passif->get_puissance() * $passif->get_puissance() / 1000);
-    	$degat = ($degat * 2);
+    	$degat *= 2;
     	$degat_avant = $degat;
     	$degat = round($degat / $puissance);
     	echo '(Réduction de '.($degat_avant - $degat).' dégâts critique par la puissance)<br />
@@ -318,6 +375,82 @@ class sort_combat extends sort
     return $degat;
   }
 	// @}
+}
+
+/// Classe gérant les sorts à état en plus des dégâts
+class sort_combat_degat_etat extends sort_combat
+{
+  protected $etat; ///< État à ajouter si le sort touche
+  function __construct($tbl, $etat)
+  {
+    $this->charger($tbl);
+    $this->etat = $etat;
+  }
+  /// Méthode gérant ce qu'il se passe lorsque la coméptence à été utilisé avec succès
+  function touche(&$actif, &$passif, &$effets)
+  {
+    parent::touche($actif, $passif, $effets);
+    $passif->etat[$this->etat]['effet'] = $this->get_effet2();
+		$passif->etat[$this->etat]['duree'] =  $this->get_duree();
+  }
+}
+
+/// Classe gérant les sorts cisaillement du vent
+class sort_combat_vent extends sort_combat
+{
+  /// Méthode gérant ce qu'il se passe lorsque la coméptence à été utilisé avec succès
+  function touche(&$actif, &$passif, &$effets)
+  {
+    parent::touche($actif, $passif, $effets);
+		// On regarde s'il y a un gain de PA
+		if( $this->test_de(100, $this->get_effet2()) )
+		{
+			echo '&nbsp;&nbsp;<strong>'.$actif->get_nom().'</strong> gagne 1 PA<br />';
+			$actif->set_pa($actif->get_pa() + 1);
+		}
+  }
+}
+
+/// Classe gérant les sorts sacrifice morbide
+class sort_combat_sacrifice extends sort_combat
+{
+  /// Méthode gérant ce qu'il se passe lorsque la coméptence à été utilisé avec succès
+  function touche(&$actif, &$passif, &$effets)
+  {
+    parent::touche($actif, $passif, $effets);
+		$actif->set_hp(0);
+  }
+}
+
+/// Classe gérant les sorts lapidation
+class sort_combat_lapidation extends sort_combat
+{
+  /// Méthode gérant ce qu'il se passe lorsque la coméptence à été utilisé avec succès
+  function touche(&$actif, &$passif, &$effets)
+  {
+    parent::touche($actif, $passif, $effets);
+		// On regarde si la cible est étourdie
+		if( $this->test_de(100, $this->get_effet2()) )
+		{
+			$passif->etat['etourdit']['effet'] = 1;
+			$passif->etat['etourdit']['duree'] = $this->get_duree();
+		}
+  }
+}
+
+/// Classe gérant les sorts globe de foudre
+class sort_combat_foudre extends sort_combat
+{
+  /// Méthode calculant les dégâts
+  function calcul_degats(&$actif, &$passif, &$effets, $degat)
+  {
+    $degat = parent::calcul_degats($actif, $passif, $effets, $degat);
+		// On ajoute pas a la stack d'effet car on a besoin de savoir tout de suite si la foudre passe ou pas pour le +1 degats
+		$foudre = new globe_foudre(15, true);
+		if ($foudre->magnetise($actif, $passif) == false)
+			$degat++;
+		return $degat;
+  }
 }
 
 ?>

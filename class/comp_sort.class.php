@@ -354,6 +354,20 @@ class comp_sort extends comp_sort_buff
   }
 
   /**
+   * Effectuer un test entre un dé et une valeur fixe
+   * @param  $de      dé à lancer
+   * @param  $seuil   seuil à ne pas dépasser
+   * @return   true si le teste à réussi, false sinon
+   */
+  static function test_de($de, $seuil)
+  {
+  	$val = rand(0, $de);
+		print_debug('1d'.$de.' doit être inférieur a '.$seuil.'<br />
+		Résultat => '.$val.' doit être inférieur a '.$seuil.'<br />');
+    return $val < $seuil;
+  }
+
+  /**
    * Fonction permettant de calculer les dés de dégat en fonction de la force et de l'arme de la personne
    *
    * @param  $force         Force du personnage.
@@ -427,6 +441,7 @@ class comp_sort extends comp_sort_buff
 			$i++;
 		}
 		print_debug($dbg_msg);
+		return $degat;
   }
 
   /**
