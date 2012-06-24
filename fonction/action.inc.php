@@ -814,25 +814,53 @@ function lance_sort($id, $acteur, &$effects)
           break;
 
 					
-			case 'absorb_temporelle':
+        case 'absorb_temporelle':
 
-				$description = 'Vous êtes complétement déstabilisé et ne voyez plus rien pendant quelques secondes. En revenant à vous, vous avez la douloureuse impression que vos gestes vous ont échappé.';
+          $description = 'Vous êtes complétement déstabilisé et ne voyez plus rien pendant quelques secondes. En revenant à vous, vous avez la douloureuse impression que vos gestes vous ont échappé.';
 
-				$perte_pa = rand(1, $row['effet2']);
-				$pa = max(0, $passif->get_pa() - $perte_pa);
-				$passif->set_pa($pa);
-				$degat = degat_magique($actif->$get_comp_assoc(),
-															 ($row['effet'] + $bonus_degats_magique),
-															 $actif, $passif, $effects, $row['type']);
-				echo '&nbsp;&nbsp;<span class="degat"><strong>'.$actif->get_nom().
-					'</strong> inflige <strong>'.$degat.'</strong> dégâts avec '.
-					$row['nom'].'</span><br />';
-				$passif->set_hp($passif->get_hp() - $degat);
-				print_debug($passif->get_nom().' perd '.$perte_pa.' PA');
-
-				echo '<br/><em>'.$description.'</em>';
-				break;
+          $perte_pa = rand(1, $row['effet2']);
+          $pa = max(0, $passif->get_pa() - $perte_pa);
+          $passif->set_pa($pa);
+          $degat = degat_magique($actif->$get_comp_assoc(),
+                                 ($row['effet'] + $bonus_degats_magique),
+                                 $actif, $passif, $effects, $row['type']);
+          echo '&nbsp;&nbsp;<span class="degat"><strong>'.$actif->get_nom().
+            '</strong> inflige <strong>'.$degat.'</strong> dégâts avec '.
+            $row['nom'].'</span><br />';
+          $passif->set_hp($passif->get_hp() - $degat);
+          print_debug($passif->get_nom().' perd '.$perte_pa.' PA');
           
+          echo '<br/><em>'.$description.'</em>';
+          break;
+          
+        case 'debuff_nysin_femelle':
+          // Si le joueur est déjà entravé, on ne change rien mais on tape
+          if ($passif->is_buff('debuff_bloque_deplacement_alea'))
+          {
+            $degat = degat_magique($actif->$get_comp_assoc(),
+                                   (($row['effet'] * 4) + $bonus_degats_magique),
+                                   $actif, $passif, $effects, $row['type']);
+            if (is_bloque_Deplacement_alea(
+                  $passif->get_buff('debuff_bloque_deplacement_alea', 'effet'),
+                  $passif->get_buff('debuff_bloque_deplacement_alea', 'effet2'))) {
+              // Si les entraves sont actives, on tape 4 fois plus fort
+              $degat *= 4;
+              echo '<em>Les entraves de Nysin sont actives !</em><br/>';
+            }
+            echo '&nbsp;&nbsp;<span class="degat"><strong>'.$actif->get_nom().
+              '</strong> inflige <strong>'.$degat.'</strong> dégâts à '.
+              'travers les entraves de Nysin</span><br />';
+            break;
+          }
+          $debut = rand(0, 23);
+          $fin = $debut + $row['effet'];
+          if ($fin > 24) $fin -= 24;
+          $description = "Les entraves de Nysin vous bloquent de $debut à $fin heures";
+          lance_buff('debuff_bloque_deplacement_alea', $passif->get_id(),
+                     $debut, $row['effet'], 604800, 'Entraves de Nysin',
+                     sSQL($description), 'perso', 1, 0, 0, 0);
+          echo '<br/><em>'.$description.'</em>';          
+          break;
 
           /***************************************/
           /****        Les sorts normaux      ****/

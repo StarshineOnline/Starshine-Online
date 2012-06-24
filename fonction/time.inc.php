@@ -279,4 +279,22 @@ function calcul_decal($moment_voulu, $heure = 0, $percent_moment = 0)
 
 }
 
+function is_bloque_Deplacement_alea($effet, $effet2) {
+  $now = heure_sso();
+  $debut = $effet;
+  $fin = $debut + $effet2;
+  //echo "debut: $debut, fin: $fin, now: $now";
+  if ($fin > 24) {
+    $fin -= 24;
+    if ($now >= $debut || $now < $fin) {
+      return true;
+    }
+  } else {
+    if ($now >= $debut && $now < $fin) {
+      return true;
+    }
+  }
+  return false;
+}
+
 ?>
