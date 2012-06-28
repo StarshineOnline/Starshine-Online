@@ -140,15 +140,17 @@ class sort_combat extends sort
         return new sort_combat_lapidation($row);
       case 'globe_foudre': // à modifier
         return new sort_combat_foudre($row);
-      case '': // l.
-        return new sort_combat($row);
-      case '': // l.
-        return new sort_combat($row);
-      case '': // l.
-        return new sort_combat($row);
-      case '': // l.
-        return new sort_combat($row);
-      case '': // l.
+      case 'pacte_sang':
+        return new sort_combat_sang($row);
+      case 'drain_vie':
+        return new sort_combat_drain($row, .3);
+      case 'vortex_vie':
+        return new sort_combat_drain($row, .4);
+      case 'vortex_mana':
+        return new sort_combat_vortex_mana($row);
+      case 'putrefaction':
+        return new sort_combat_degat_etat($row, 'putrefaction', 2, 1);
+      case 'brisement_os':
         return new sort_combat($row);
       case '': // l.
         return new sort_combat($row);
@@ -288,6 +290,7 @@ class sort_combat extends sort
       $effet->inflige_degats_magiques($actif, $passif, $degats, $this->get_type());
 		echo '&nbsp;&nbsp;<span class="degat"><strong>'.$actif->get_nom().'</strong> inflige <strong>'.$degats.'</strong> dégâts avec '.$this->get_nom().'</span><br />';
 		$passif->set_hp($passif->get_hp() - $degats);
+		return $degats;
   }
 
   /**
@@ -381,17 +384,27 @@ class sort_combat extends sort
 class sort_combat_degat_etat extends sort_combat
 {
   protected $etat; ///< État à ajouter si le sort touche
-  function __construct($tbl, $etat)
+  protected $effet; ///< Effet de l'état (null s'il faut prendre le paramètre effet2)
+  protected $duree; ///< Durée de l'état (null s'il faut prendre le paramètre duree)
+  function __construct($tbl, $etat, $effet=null,$duree=null)
   {
     $this->charger($tbl);
     $this->etat = $etat;
+    $this->effet = $effet;
+    $this->duree = $duree;
   }
   /// Méthode gérant ce qu'il se passe lorsque la coméptence à été utilisé avec succès
   function touche(&$actif, &$passif, &$effets)
   {
     parent::touche($actif, $passif, $effets);
-    $passif->etat[$this->etat]['effet'] = $this->get_effet2();
-		$passif->etat[$this->etat]['duree'] =  $this->get_duree();
+    if( $this->effet === null )
+      $passif->etat[$this->etat]['effet'] = $this->get_effet2();
+    else
+      $passif->etat[$this->etat]['effet'] = $this->effet;
+		if( $this->duree === null )
+      $passif->etat[$this->etat]['duree'] =  $this->get_duree();
+    else
+      $passif->etat[$this->etat]['duree'] = $this->duree;
   }
 }
 
@@ -449,6 +462,75 @@ class sort_combat_foudre extends sort_combat
 		$foudre = new globe_foudre(15, true);
 		if ($foudre->magnetise($actif, $passif) == false)
 			$degat++;
+		return $degat;
+  }
+}
+
+/// Classe gérant les sorts pacte de sang
+class sort_combat_sang extends sort_combat
+{
+  /// Méthode gérant ce qu'il se passe lorsque la coméptence à été utilisé avec succès
+  function touche(&$actif, &$passif, &$effets)
+  {
+		$cout_hp = ceil($actif->get_hp_max() * $row['effet2'] / 100);
+		// On vérifie que le personnage a assez de HP (sinon on ne fait rien)
+		if($cout_hp < $actif->get_hp())
+		{
+			$actif->set_hp($actif->get_hp() - $cout_hp);
+			parent::touche($actif, $passif, $effets);
+		}
+  }
+}
+
+/// Classe gérant les sorts drains et vortex de vie
+class sort_combat_drain extends sort_combat
+{
+  protected $drain; ///< Portion de vie drainée
+  function __construct($tbl, $drain)
+  {
+    $this->charger($tbl);
+    $this->drain = $drain;
+  }
+  /// Méthode gérant ce qu'il se passe lorsque la coméptence à été utilisé avec succès
+  function touche(&$actif, &$passif, &$effets)
+  {
+		$degats = parent::touche($actif, $passif, $effets);
+		if ($passif->get_type() != 'batiment')
+		{
+      $drain = round($degat * $this->drain);
+      echo 'Et gagne <strong>'.$drain.'</strong> hp grâce au drain</span><br />';
+      $actif->set_hp($actif->get_hp() + $drain);
+			// On vérifie que le personnage n'a pas plus de HP que son maximum
+			if($actif->get_hp() > floor($actif->get_hp_max())) $actif->set_hp($actif->get_hp_max());
+    }
+  }
+}
+
+/// Classe gérant les sorts vortex de mana
+class sort_combat_vortex_mana extends sort_combat
+{
+  /// Méthode gérant ce qu'il se passe lorsque la coméptence à été utilisé avec succès
+  function touche(&$actif, &$passif, &$effets)
+  {
+		$degats = parent::touche($actif, $passif, $effets);
+		if ($passif->get_type() != 'batiment')
+		{
+      $drain = round($degat * .2);
+      echo 'Et gagne <strong>'.$drain.'</strong> RM grâce au drain</span><br />';
+      $actif->set_rm_restant($actif->get_rm_restant() + $drain);
+    }
+  }
+}
+
+/// Classe gérant les sorts brisement d'os
+class sort_combat_bris_os extends sort_combat
+{
+  /// Méthode calculant les dégâts
+  function calcul_degats(&$actif, &$passif, &$effets, $degat)
+  {
+    $degat = parent::calcul_degats($actif, $passif, $effets, $degat);
+		if($passif->etat['paralysie']['duree'] > 0)
+      $degat = round($degat * 1.6);
 		return $degat;
   }
 }
