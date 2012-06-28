@@ -274,6 +274,21 @@ function checkChacalTP(&$joueur, $x, $y)
 	}
 }
 
+function checkDaemonTP(&$joueur, $x, $y)
+{
+	if ($joueur->is_buff('debuff_forme_demon'))
+	{
+    showMessage('Ce passage n\'est pas pour les mortels', 'portail');
+	}
+	else
+	{
+    showMessage('Le portail s\'active, et vous êtes transporté', 'portail');
+    $joueur->set_x($x);
+    $joueur->set_y($y);
+    $joueur->sauver();
+	}
+}
+
 function checkTeleportHydraulique(&$joueur)
 {
   global $db;
