@@ -2431,7 +2431,7 @@ class perso extends entite
 		$this->camouflage = 'demon';
 		foreach (array('forcex', 'dexterite', 'vie', 'puissance', 'volonte', 'energie') as $bonus)
 			$this->add_bonus_permanents($bonus, 6);
-		foreach (array('melee', 'tir', 'incantation') as $bonus)
+		foreach (array('melee', 'distance', 'incantation') as $bonus)
 			$this->add_bonus_permanents($bonus, 400);
 	}
   
