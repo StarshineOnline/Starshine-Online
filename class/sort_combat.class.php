@@ -129,13 +129,14 @@ class sort_combat extends sort
       case 'absorb_temporelle': // l. 827
         return new sort_combat($row);
       case 'degat_froid': // à modifier
-        return new sort_combat_degat_etat($row, 'glacer');
+      case 'degat_terre':
+      case 'sphere_glace':
+      case 'embrasement':
+        return new sort_combat_degat_etat($row);
       case 'degat_vent':
         return new sort_combat_vent($row);
       case 'sacrifice_morbide':
         return new sort_combat_sacrifice($row);
-      case 'degat_terre':
-        return new sort_combat_degat_etat($row, 'tellurique');
       case 'lapidation':
         return new sort_combat_lapidation($row);
       case 'globe_foudre': // à modifier
@@ -149,35 +150,32 @@ class sort_combat extends sort
       case 'vortex_mana':
         return new sort_combat_vortex_mana($row);
       case 'putrefaction':
-        return new sort_combat_degat_etat($row, 'putrefaction', 2, 1);
+        return new sort_combat_degat_etat($row, 'a-putrefaction', 2, 1);
       case 'brisement_os':
-        return new sort_combat($row);
-      case '': // l.
-        return new sort_combat($row);
-      case '': // l.
-        return new sort_combat($row);
-      case '': // l.
-        return new sort_combat($row);
-      case '': // l.
-        return new sort_combat($row);
-      case '': // l.
-        return new sort_combat($row);
-      case '': // l.
-        return new sort_combat($row);
-      case '': // l.
-        return new sort_combat($row);
-      case '': // l.
-        return new sort_combat($row);
-      case '': // l.
-        return new sort_combat($row);
-      case '': // l.
-        return new sort_combat($row);
-      case '': // l.
-        return new sort_combat($row);
-      case '': // l.
-        return new sort_combat($row);
-      default:
-        return new sort_combat($row);
+        return new sort_combat_bris_os($row);
+      case 'brulure_mana':
+        return new sort_combat_brul_mana($row);
+      case 'appel_tenebre':
+      case 'appel_foret':
+      case 'benediction':
+      case 'paralysie':
+      case 'lien_sylvestre':
+      case 'poison':
+      case 'jet_acide':
+      case 'riposte_furtive':
+        return new sort_combat_etat($row);
+      case 'silence':
+        return new sort_combat_silence($row);
+      case 'recuperation':
+        return new sort_combat_recuperation($row);
+      case 'aura_feu':
+        return new sort_combat_aura($row, 'posture_feu');
+      case 'aura_glace':
+        return new sort_combat_aura($row, 'posture_glace');
+      case 'aura_vent':
+        return new sort_combat_aura($row, 'posture_vent');
+      case 'aura_pierre':
+        return new sort_combat_aura($row, 'posture_pierre');
       }
   	}
   }
@@ -386,7 +384,7 @@ class sort_combat_degat_etat extends sort_combat
   protected $etat; ///< État à ajouter si le sort touche
   protected $effet; ///< Effet de l'état (null s'il faut prendre le paramètre effet2)
   protected $duree; ///< Durée de l'état (null s'il faut prendre le paramètre duree)
-  function __construct($tbl, $etat, $effet=null,$duree=null)
+  function __construct($tbl, $etat=null, $effet=null,$duree=null)
   {
     $this->charger($tbl);
     $this->etat = $etat;
@@ -397,14 +395,68 @@ class sort_combat_degat_etat extends sort_combat
   function touche(&$actif, &$passif, &$effets)
   {
     parent::touche($actif, $passif, $effets);
+    ajout_etat($actif, $passif);
+  }
+  
+  /// Ajoute l'état
+  protected ajout_etat(&$actif, &$passif)
+  {
+    if( $this->etat === null )
+      $etat = $this->get_etat_lie();
+    else
+      $etat = $this->etat;
+    $etat_explode = explode('-', $etat);
+		$qui = $etat_explode[0];
+		$etat = $etat_explode[1];
+		if( $qui[0] = 'v' )
+      $cible = &$actif;
+    else
+      $cible = &$passif;
     if( $this->effet === null )
-      $passif->etat[$this->etat]['effet'] = $this->get_effet2();
+      $cible->etat[$etat]['effet'] = $this->defaut_effet();
     else
-      $passif->etat[$this->etat]['effet'] = $this->effet;
+      $cible->etat[$etat]['effet'] = $this->effet;
 		if( $this->duree === null )
-      $passif->etat[$this->etat]['duree'] =  $this->get_duree();
+      $cible->etat[$etat]['duree'] =  $this->get_duree();
     else
-      $passif->etat[$this->etat]['duree'] = $this->duree;
+      $cible->etat[$etat]['duree'] = $this->duree;
+    $this->ajout_effet2($etat, $cible);
+  }
+
+  /// récupére la valeur par défaut de l'état
+  protected defaut_effet()
+  {
+    return $this->get_effet2();
+  }
+
+  /// ajoute un effet2 si besoin
+  protected ajout_effet2($etat, &$cible)
+  {
+  }
+}
+
+/// Classe gérant les sorts à état sans dégâts
+class sort_combat_etat extends sort_combat_degat_etat
+{
+  /// Méthode gérant ce qu'il se passe lorsque la coméptence à été utilisé avec succès
+  function touche(&$actif, &$passif, &$effets)
+  {
+    ajout_etat($actif, $passif);
+		echo '&nbsp;&nbsp;<strong>'.$actif->get_nom().'</strong> lance le sort '.$this->get_nom().'<br />';
+  }
+
+  /// récupére la valeur par défaut de l'état
+  protected defaut_effet()
+  {
+    return $this->get_effet();
+  }
+
+  /// ajoute un effet2 si besoin
+  protected ajout_effet2($etat, &$cible)
+  {
+    $effet2 = $this->get_effet2();
+    if( $effet2 )
+      $cible->etat[$etat]['effet2'] = $effet2;
   }
 }
 
@@ -532,6 +584,73 @@ class sort_combat_bris_os extends sort_combat
 		if($passif->etat['paralysie']['duree'] > 0)
       $degat = round($degat * 1.6);
 		return $degat;
+  }
+}
+
+/// Classe gérant les sorts vortex de mana
+class sort_combat_bris_mana extends sort_combat
+{
+  /// Méthode gérant ce qu'il se passe lorsque la coméptence à été utilisé avec succès
+  function touche(&$actif, &$passif, &$effets)
+  {
+		$brule_mana = $this->get_effet();
+		$degat = $this->get_effet() * $this->get_effet2();
+		echo '&nbsp;&nbsp;<span class="degat"><strong>'.$actif->get_nom().'</strong> retire '.$brule_mana.' réserve de mana et inflige <strong>'.$degat.'</strong> dégâts avec '.$this->get_nom().'</span><br />';
+		$passif->set_hp($passif->get_hp() - $degat);
+		$passif->set_rm_restant($passif->get_rm_restant() - $brule_mana);
+  }
+}
+
+/// Classe gérant les sorts vortex de mana
+class sort_combat_bris_mana extends sort_combat
+{
+  /// Méthode gérant ce qu'il se passe lorsque la coméptence à été utilisé avec succès
+  function touche(&$actif, &$passif, &$effets)
+  {
+		// Calcul du potentiel paralyser
+		$sm = ($actif->get_volonte() * $actif->get_sort_mort());
+		// Calcul du potentiel résister, on utilise bien la PM DE BASE pour le 3eme jet
+		$pm = $passif->get_volonte() * $passif->get_pm_para();
+		
+		// Lancer des dés
+		echo '&nbsp;&nbsp;<strong>'.$actif->get_nom().'</strong> lance le sort '.$this->get_nom().'<br />';
+		if( $this->test_potentiel($sm, $pm) )
+		{
+			echo ' et réussit !<br />';
+			$passif->etat['silence']['effet'] = $this->get_effet();
+			$passif->etat['silence']['duree'] = $this->get_duree();
+		}
+		else
+		{
+			echo ' et échoue...<br />';
+		}
+  }
+}
+
+/// Classe gérant les sorts à état sans dégâts
+class sort_combat_recuperation extends sort_combat_etat
+{
+  /// ajoute un effet2 si besoin
+  protected ajout_effet2($etat, &$cible)
+  {
+    $cible->etat[$etat]['hp_max'] = $cible->get_hp();
+    $cible->etat[$etat]['hp_recup'] = 0;
+  }
+}
+
+/// Classe gérant les sorts à état sans dégâts
+class sort_combat_aura extends sort_combat_etat
+{
+  protected $posture; ///< Type de posture
+  function __construct($tbl, $posture)
+  {
+    parent::__construct($tbl, 'posture');
+    $this->posture = $posture;
+  }
+  /// ajoute un effet2 si besoin
+  protected ajout_effet2($etat, &$cible)
+  {
+    $cible->etat[$etat]['type'] = $this->posture;
   }
 }
 
