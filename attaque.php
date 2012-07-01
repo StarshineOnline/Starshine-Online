@@ -96,6 +96,7 @@ switch($type)
 			if (!$donj)
 			{
 				$joueur = new perso($_SESSION['ID']);
+        $joueur->check_perso();
 				$joueur->action_do = $joueur->recupaction('attaque');
 				$attaquant = entite::factory('joueur', $joueur);
 			}
@@ -153,6 +154,7 @@ switch($type)
 	case 'batiment' :
 		if ($joueur->is_buff('debuff_rvr')) $no_rvr = true;
 		$joueur = new perso($_SESSION['ID']);
+    $joueur->check_perso();
 		if(!$check_pet)
 		{
 			$joueur->action_do = $joueur->recupaction('attaque');
@@ -172,6 +174,7 @@ switch($type)
 		if($_GET['table'] == 'construction') $map_batiment = new construction($_GET['id_batiment']);
 		else $map_batiment = new placement($_GET['id_batiment']);
 		$joueur = new perso($_SESSION['ID']);
+    $joueur->check_perso();
 		if($joueur->get_pa() >= 10)
 		{
 			$siege = new batiment($map_siege->get_id_batiment());
@@ -183,6 +186,7 @@ switch($type)
 		if ($joueur->is_buff('debuff_rvr')) $no_rvr = true;
 		$map_siege = new construction($_GET['id_arme_de_siege']);
 		$joueur = new perso($_SESSION['ID']);
+    $joueur->check_perso();
 		$map_case = new map_case($_GET['id_ville']);
 		$map_royaume = new royaume($map_case->get_royaume());
 		$map_royaume->verif_hp();

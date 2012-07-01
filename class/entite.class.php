@@ -1134,6 +1134,7 @@ class entite extends placable
 		  break;
     case 'joueur' :
       $objet = new perso($src->get_id());
+      $objet->check_specials();
 			$objet->action = $src->action_do;
 			switch ($objet->arme_type)
 				{
