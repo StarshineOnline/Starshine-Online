@@ -2384,8 +2384,7 @@ class perso extends entite
       // On ne doit pas avoir trop de pets
       if ($this->nb_pet() > $this->get_max_pet())
       {
-        $new_nb_pet = max(1, $this->get_max_pet() - 1);
-        while ($this->nb_pet() > $new_nb_pet)
+        while ($this->nb_pet() > $this->get_max_pet())
         {
 			    $ecurie = $this->get_pets();
           $pet_to_del_nb = rand(0, $this->nb_pet() - 1);
