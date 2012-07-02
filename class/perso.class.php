@@ -2153,7 +2153,7 @@ class perso extends entite
    */
 	function check_perso($last_action = true)
 	{
-		$this->check_materiel();
+		$this->check_specials();
 		$modif = false;	 // Indique si le personnage a été modifié.
 		global $db, $G_temps_regen_hp, $G_temps_maj_hp, $G_temps_maj_mp, $G_temps_PA, $G_PA_max, $G_pourcent_regen_hp, $G_pourcent_regen_mp;
 		// On vérifie que le personnage est vivant
@@ -2431,7 +2431,7 @@ class perso extends entite
 		$this->camouflage = 'demon';
 		foreach (array('forcex', 'dexterite', 'vie', 'puissance', 'volonte', 'energie') as $bonus)
 			$this->add_bonus_permanents($bonus, 6);
-		foreach (array('melee', 'tir', 'incantation') as $bonus)
+		foreach (array('melee', 'distance', 'incantation') as $bonus)
 			$this->add_bonus_permanents($bonus, 400);
 	}
   
