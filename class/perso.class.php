@@ -3116,6 +3116,7 @@ class perso extends entite
   function fin_combat_pvp($ennemi, $defense, $batiment=false)
   {
     global $db, $G_xp_rate, $G_range_level, $G_crime, $Gtrad;
+		
     if( $this->get_hp() <= 0 )
     {
 			$this->trigger_arene();
@@ -3132,26 +3133,23 @@ class perso extends entite
 			$achiev->set_compteur($achiev->get_compteur() + 1);
 			$achiev->sauver();
 			
-			if( $defense )
+			if(!$defense) //Si le perso est mort en PvP en n'etant pas en defense (<=> il est mort en attaque)
 			{
-  			if($defenseur_en_defense)
-  			{
-  				// Augmentation du compteur de l'achievement
-  				$achiev = $perso->get_compteur('kill_defense');
-  				$achiev->set_compteur($achiev->get_compteur() + 1);
-  				$achiev->sauver();
-  			}
-  			if ($this->get_nom() == 'Irulan')
-  			{
-  				$actif->unlock_achiev('kill_bastounet');
-  			}
-  			if ($this->get_crime() > 0)
-  			{
-  				$achiev = $ennemi->get_compteur('dredd');
-  				$achiev->set_compteur($ennemi->get_compteur() + 1);
-  				$achiev->sauver();
-  			}
-      }
+				// Augmentation du compteur de l'achievement
+				$achiev = $ennemi->get_compteur('kill_defense');
+				$achiev->set_compteur($achiev->get_compteur() + 1);
+				$achiev->sauver();
+			}
+			
+			if ($this->get_nom() == 'Irulan')
+				$ennemi->unlock_achiev('kill_bastounet');
+			
+			if ($this->get_crime() > 0)
+			{
+				$achiev = $ennemi->get_compteur('dredd');
+				$achiev->set_compteur($achiev->get_compteur() + 1);
+				$achiev->sauver();
+			}
 
 			//Gain d'expérience
 			$xp = $this->get_level() * 100 * $G_xp_rate;
