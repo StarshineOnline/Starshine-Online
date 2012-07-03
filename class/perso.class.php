@@ -412,9 +412,9 @@ class perso extends entite
 		else
 			return $this->forcex + $this->get_bonus_permanents('forcex');
 	}
-	function get_force() 
+	function get_force($base = false) 
 	{ 
-		return $this->get_forcex(); 
+		return $this->get_forcex($base); 
 	}
 	/// Modifie la force
 	function set_forcex($forcex)
