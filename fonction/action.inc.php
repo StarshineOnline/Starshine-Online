@@ -855,7 +855,7 @@ function lance_sort($id, $acteur, &$effects)
           $debut = rand(0, 23);
           $fin = $debut + $row['effet'];
           if ($fin > 24) $fin -= 24;
-          $description = "Les entraves de Nysin vous bloquent de $debut à $fin heures";
+          $description = "Vous êtes entravé par Nysin";
           lance_buff('debuff_bloque_deplacement_alea', $passif->get_id(),
                      $debut, $row['effet'], 604800, 'Entraves de Nysin',
                      sSQL($description), 'perso', 1, 0, 0, 0);
