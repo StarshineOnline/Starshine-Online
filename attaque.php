@@ -96,7 +96,7 @@ switch($type)
 			if (!$donj)
 			{
 				$joueur = new perso($_SESSION['ID']);
-        $joueur->check_perso();
+				$joueur->check_perso();
 				$joueur->action_do = $joueur->recupaction('attaque');
 				$attaquant = entite::factory('joueur', $joueur);
 			}
@@ -750,7 +750,7 @@ else
 				$joueur->set_survie($augmentation[0]);
 			}
 
-			if($check_pet)
+			if($check_pet OR $check_pet_donj)
 			{
 				$augmentation = augmentation_competence('dressage', $joueur, 0.43);
 				if($augmentation[1] == 1)
