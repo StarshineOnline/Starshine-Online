@@ -33,7 +33,7 @@ else
 	//$requete = "SELECT ID FROM perso WHERE nom = '".$pseudo."'";
 	//$req = $db->query($requete);
 	//$nombre = $db->num_rows;
-	$nombre = check_existing_account($pseudo);
+	$nombre = check_existing_account($pseudo,true,true,true);
 	if ($nombre > 0)
 	{
 		?>
