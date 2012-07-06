@@ -277,7 +277,7 @@ class comp_invocation_pet extends comp_jeu
 		switch (strtolower($perso->get_classe()))
 		{
 			case 'dresseur':
-				$pet = 'Mammouth';
+				$pet = 'Esprit des forêts';
 				break;
 			case 'druide ollamh':
 				$pet = 'Ange';
