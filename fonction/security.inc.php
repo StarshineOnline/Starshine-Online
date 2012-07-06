@@ -50,7 +50,7 @@ function sSQL($data, $type = SSQL_NONE)
   }
   
   // On protège
-  $res = mysql_real_escape_string($data);
+  $res = mysqli_real_escape_string($data);
   if ($res === FALSE) {
     echo mysql_error();
     exit (1);
