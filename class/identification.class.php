@@ -136,9 +136,9 @@ class identification
 		unset($_SESSION['nom']);
 		unset($_SESSION['ID']);
 		unset($_SESSION['pseudo']);
-  		unset($_SESSION['nbr_perso']);
-  		unset($_SESSION['droits']);
-  		unset($_SESSION['id_joueur']);
+		unset($_SESSION['nbr_perso']);
+		unset($_SESSION['droits']);
+		unset($_SESSION['id_joueur']);
 		setcookie('nom', '', (time() - 1));
 		setcookie('password', '', (time() - 1));
 	}
