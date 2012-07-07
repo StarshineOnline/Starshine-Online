@@ -49,7 +49,8 @@ else
 							
 							$_SESSION['id_joueur'] = $joueur->get_id();
 							
-							echo "<h6>Compte créé avec succès</h6>";
+							echo "<h6>Compte créé avec succès</h6>
+							Vous pouvez désormais vous connecté par le biais de votre compte en utilisant votre pseudo (".$pseudo.") ou votre login (".$login.")";
 						}
 					}
 					else
@@ -64,15 +65,27 @@ else
 		elseif(array_key_exists('affilier', $_GET))
 		{
 				$pseudo = sSQL($_GET['pseudo']);
-				$requete = "SELECT id FROM joueur WHERE pseudo = '".$pseudo."' OR login = '".$pseudo."'";
+				$mdp = $_GET['mdp'];
+				$requete = "SELECT id, mdp FROM joueur WHERE pseudo = '".$pseudo."' OR login = '".$pseudo."'";
 				$req = $db->query($requete);
 				if($db->num_rows > 0)
 				{
 					$row = $db->read_assoc($req);
-					$perso->set_id_joueur($row['id']);
-					$perso->sauver();
-					$_SESSION['id_joueur'] = $row['id'];
-					echo "<h6>[".$perso->get_nom()." - ".$perso->get_classe()." ".$perso->get_race()." - Niv.".$perso->get_level()."] a bien été affilié au compte ".$pseudo."</h6>";
+					
+					if($row['mdp'] == md5($mdp))
+					{
+						$perso->set_id_joueur($row['id']);
+						$perso->sauver();
+						$_SESSION['id_joueur'] = $row['id'];
+						echo "<h6>[".$perso->get_nom()." - ".$perso->get_classe()." ".$perso->get_race()." - Niv.".$perso->get_level()."] a bien été affilié au compte ".$pseudo."</h6>";
+					}
+					else
+					{
+					?>
+						<h5>Erreur, mot de passe incorrecte.</h5>
+						<a href="configure_compte_joueur.php" onclick="return envoiInfo(this.href, 'popup_content');">Reessayer</a>
+					<?php
+					}
 				}
 				else
 					echo "<h5>Le compte ".$pseudo." n'existe pas</h5>";
@@ -96,7 +109,8 @@ else
 				<h3>Affilier <?php echo "[".$perso->get_nom()." - ".$perso->get_classe()." ".$perso->get_race()." - Niv.".$perso->get_level()."]";?></h3>
 				<form action="configure_compte_joueur.php" method="get" id="formModif">
 					Pseudo du compte : <input type="text" value="" name="compte" id="compte" /> (ou login)<br />
-					<input type="button" value="Valider" onclick="if(confirm('Etes vous sûr d\'affilier <?php echo $perso->get_nom(); ?> au compte ' + ($('#compte').val()) + ' ?')) envoiInfo('configure_compte_joueur.php?affilier=1&amp;pseudo=' + encodeURIComponent($('#compte').val()), 'popup_content');" />
+					Mot de passe du compte : <input type="password" value="" name="mdp" id="mdp" /><br />
+					<input type="button" value="Valider" onclick="if(confirm('Etes vous sûr d\'affilier <?php echo $perso->get_nom(); ?> au compte ' + ($('#compte').val()) + ' ?')) envoiInfo('configure_compte_joueur.php?affilier=1&amp;pseudo=' + encodeURIComponent($('#compte').val()) + '&amp;mdp=' + encodeURIComponent($('#mdp').val()), 'popup_content');" />
 				</form>
 			</div>
 			<?php
