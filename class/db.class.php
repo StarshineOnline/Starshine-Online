@@ -138,20 +138,25 @@ class db
 		// La requète à échouer, affichage message d'erreur et utilisation errorlib si charger
 		else
 		{
-			echo "Impossible d'executer la requète suivante:<br />".$query."<br />mySQL a répondus : <span style=\"font-style: italic;\">Erreur n°<span style=\"font-weight: 700;\">".mysqli_errno($this->lnk)."</span></span> ".mysqli_error($this->lnk);
-
-      $this->backtrace();
-
-			if( function_exists("userErrorHandler") )
-			{
-				set_error_handler("userErrorHandler");
-				trigger_error("Erreur 'SQL_QUERY': ".basename($_SERVER["PHP_SELF"])."?".$_SERVER["QUERY_STRING"]."\nQuery: ".$query."\nErreur:".mysqli_errno($this->lnk)." (".mysqli_error($this->lnk).")",E_USER_ERROR);
-			}
-			if ($this->locked) $this->unlock();
-			exit();
+      $this->query_error($query);
 		}
 		return $this->sql;
 	}
+
+  function query_error($query) {
+
+    echo "Impossible d'executer la requète suivante:<br />".$query."<br />mySQL a répondus : <span style=\"font-style: italic;\">Erreur n°<span style=\"font-weight: 700;\">".mysqli_errno($this->lnk)."</span></span> ".mysqli_error($this->lnk);
+
+    $this->backtrace();
+
+    if (function_exists("userErrorHandler"))
+    {
+      set_error_handler("userErrorHandler");
+      trigger_error("Erreur 'SQL_QUERY': ".basename($_SERVER["PHP_SELF"])."?".$_SERVER["QUERY_STRING"]."\nQuery: ".$query."\nErreur:".mysqli_errno($this->lnk)." (".mysqli_error($this->lnk).")",E_USER_ERROR);
+    }
+    if ($this->locked) $this->unlock();
+    exit ();
+  }
 
   function lock($name)
   {
@@ -441,12 +446,12 @@ class db
 
 
   // lit en tableau associatif
-  function read_array($sql="")
+  function read_array($sql="", $resulttype = MYSQLI_BOTH)
   {
     $sql = empty($sql)?$this->sql:$sql;
 
     if( is_object($sql) && get_class($sql) == 'mysqli_result' ) {
-      return mysqli_fetch_array($sql);
+      return mysqli_fetch_array($sql, $resulttype);
     }
 
     return false;
@@ -777,6 +782,55 @@ class db
   function error() {
     return mysqli_error($this->lnk);
   }
+
+  function escape($data) {
+    return mysqli_real_escape_string($this->lnk, $data);
+  }
+
+
+  /*
+   * Interface prepared statements
+   * Must use stmt object to bind
+   */
+  private $stmt = null;
+  function prepare($query) {
+    $this->stmt = mysqli_prepare($this->lnk, $query);
+    if ($this->stmt === false) {
+      $this->query_error($query);
+    }
+    return $this->stmt;
+  }
+
+  function fetch($stmt = null) {
+    if ($stmt == null)
+      $stmt = $this->stmt;
+    mysqli_stmt_fetch($this->stmt);
+  }
+
+  function execute($stmt = null) {
+    if ($stmt == null)
+      $stmt = $this->stmt;
+    if (!mysqli_stmt_execute($stmt)) {
+      $this->stmt_error($stmt);
+    }
+  }
+
+  function stmt_error($stmt) {
+
+    echo "Impossible d'executer la requète, mySQL a répondus : <span style=\"font-style: italic;\">Erreur n°<span style=\"font-weight: 700;\">".$stmt->errno."</span></span> ".$stmt->error;
+
+    $this->backtrace();
+
+    if (function_exists("userErrorHandler"))
+    {
+      set_error_handler("userErrorHandler");
+      trigger_error("Erreur 'SQL_QUERY': ".basename($_SERVER["PHP_SELF"])."?".$_SERVER["QUERY_STRING"]."\nQuery: ".$query."\nErreur:".mysqli_errno($this->lnk)." (".mysqli_error($this->lnk).")",E_USER_ERROR);
+    }
+    if ($this->locked) $this->unlock();
+    exit ();
+  }
+
+
 }
 
 /*

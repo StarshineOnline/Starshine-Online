@@ -23,6 +23,8 @@ while($row = $db->read_assoc($req))
 
 $liste_champs = array();
 $liste_attributs = array();
+$liste_attr_ins_bind = array();
+$liste_attr_type_bind = array();
 
 //Définition du champ référence
 if(true)
@@ -31,10 +33,23 @@ if(true)
 }
 foreach($champs as $key => $champ)
 {
-	if(stristr($champ['Type'], 'varchar') OR stristr($champ['Type'], 'text'))
+  $liste_attr_ins_bind[] = '?';
+	if (stristr($champ['Type'], 'varchar') OR stristr($champ['Type'], 'text'))
 	{
 		$type = 'string';
+    $liste_attr_type_bind[] = 's';
 	}
+  elseif (stristr($champ['Type'], 'int') OR
+          stristr($champ['Type'], 'smallint') OR
+          stristr($champ['Type'], 'tinyint'))
+    $liste_attr_type_bind[] = 'i';
+  elseif (stristr($champ['Type'], 'double') OR
+          stristr($champ['Type'], 'float') OR
+          stristr($champ['Type'], 'muneric'))
+    $liste_attr_type_bind[] = 's';
+  else
+    $liste_attr_type_bind[] = 'b';
+    
 	if($champ['Field'] != $champ_reference)
 	{
 		$liste_champs[] = $champ['Field'];
@@ -42,12 +57,12 @@ foreach($champs as $key => $champ)
 		if($type == 'string')
 		{
 			$liste_attributs_type[] = '"\'.mysql_escape_string($this->'.$champ['Field'].').\'"';
-			$liste_update[] = $champ['Field'].' = "\'.mysql_escape_string($this->'.$champ['Field'].').\'"';
+			$liste_update[] = $champ['Field'].' = ?';
 		}
 		else
 		{
 			$liste_attributs_type[] = '\'.$this->'.$champ['Field'].'.\'';
-			$liste_update[] = $champ['Field'].' = \'.$this->'.$champ['Field'].'.\'';
+			$liste_update[] = $champ['Field'].' = ?';
 		}
 		$liste_tostring[] = $champ['Field'].' = \'.$this->'.$champ['Field'];
 		$liste_array[] = '$this->'.$champ['Field'].' = $'.$champ_reference.'[\''.$champ['Field'].'\'];
@@ -79,32 +94,22 @@ echo '<?php
 ';
 ?>
 class <?php echo $table; ?>_db
-
 {
-<?php
-foreach($champs as $champ)
-{
-?>/**
+  const types = '<?php echo implode($liste_attr_type_bind, ''); ?>';
+<?php foreach($champs as $champ): ?>
+  /**
     * @access private
     * @var <?php echo $champ['Type_doc']; ?>
-
     */
 	private $<?php echo $champ['Field']; ?>;
 
-	<?php
-	}
-	?>
+	<?php endforeach; ?>
 
 	/**
 	* @access public
-<?php
-	foreach($champs as $champ)
-	{
-		echo '
-	* @param '.$champ['Type_doc'].' '.$champ['Field'].' attribut';
-	}
-	?>
-
+<?php foreach($champs as $champ): ?>
+	* @param <?php echo $champ['Type_doc'].' '.$champ['Field'] ?> attribut
+<?php endforeach;	?>
 	* @return none
 	*/
 	function __construct(<?php echo $liste_arguments; ?>)
@@ -113,24 +118,24 @@ foreach($champs as $champ)
 		//Verification nombre et du type d'argument pour construire l'etat adequat.
 		if( (func_num_args() == 1) && is_numeric($<?php echo $champ_reference; ?>) )
 		{
-			$requeteSQL = $db->query("SELECT <?php echo $liste_champs; ?> FROM <?php echo $table; ?> WHERE <?php echo $champ_reference; ?> = ".$<?php echo $champ_reference; ?>);
-			//Si le thread est dans la base, on le charge sinon on crée un thread vide.
-			if( $db->num_rows($requeteSQL) > 0 )
+			$SQLStatement = $db->prepare("SELECT <?php echo $liste_champs; ?> FROM <?php echo $table; ?> WHERE <?php echo $champ_reference; ?> = ".$<?php echo $champ_reference; ?>);
+      $SQLStatement->bind_result(<?php echo $liste_attributs; ?>);
+			//Si l'entite est dans la base, on la charge sinon on crée une nouvelle.
+      if ($SQLStatement->fetch() == false)
 			{
-				list(<?php echo $liste_attributs; ?>) = $db->read_array($requeteSQL);
+        $this->__construct();
 			}
-			else $this->__construct();
 			$this-><?php echo $champ_reference; ?> = $<?php echo $champ_reference; ?>;
 		}
 		elseif( (func_num_args() == 1) && is_array($<?php echo $champ_reference; ?>) )
 		{
 			$this-><?php echo $champ_reference; ?> = $<?php echo $champ_reference; ?>['<?php echo $champ_reference; ?>'];
 			<?php echo $liste_array; ?>}
-		else
-		{
-			<?php echo $liste; ?>
-$this-><?php echo $champ_reference; ?> = $<?php echo $champ_reference; ?>;
-		}
+      else
+      {
+        <?php echo $liste; ?>
+        $this-><?php echo $champ_reference; ?> = $<?php echo $champ_reference; ?>;
+      }
 	}
 
 	/**
@@ -146,30 +151,24 @@ $this-><?php echo $champ_reference; ?> = $<?php echo $champ_reference; ?>;
 		{
 			if(count($this->champs_modif) > 0)
 			{
-				if($force) $champs = '<?php echo $liste_update; ?>';
-				else
-				{
-					$champs = '';
-					foreach($this->champs_modif as $champ)
-					{
-						$champs[] .= $champ.' = "'.mysql_escape_string($this->{$champ}).'"';
-					}
-					$champs = implode(', ', $champs);
-				}
-				$requete = 'UPDATE <?php echo $table; ?> SET ';
-				$requete .= $champs;
+        $requete = 'UPDATE <?php echo $table; ?> SET ';
+				$requete .= '<?php echo $liste_update; ?>';
 				$requete .= ' WHERE <?php echo $champ_reference; ?> = '.$this-><?php echo $champ_reference; ?>;
 				if($debug) echo $requete.';';
-				$db->query($requete);
+				$stmt = $db->prepare($requete);
+        $stmt->bind_param(self::types, <?php echo $liste_attributs; ?>);
+        $db->execute($stmt);
 				$this->champs_modif = array();
 			}
 		}
 		else
 		{
 			$requete = 'INSERT INTO <?php echo $table; ?> (<?php echo $liste_champs; ?>) VALUES(';
-			$requete .= '<?php echo $liste_attributs_insert; ?>)';
+			$requete .= '<?php echo implode($liste_attr_ins_bind, ', '); ?>)';
 			if($debug) echo $requete.';';
-			$db->query($requete);
+      $stmt = $db->prepare($requete);
+      $stmt->bind_param(self::types, <?php echo $liste_attributs; ?>);
+      $db->execute($stmt);
 			//Récuperation du dernier ID inséré.
 			$this-><?php echo $champ_reference; ?> = $db->last_insert_id();
 		}
@@ -186,7 +185,10 @@ $this-><?php echo $champ_reference; ?> = $<?php echo $champ_reference; ?>;
 		global $db;
 		if( $this-><?php echo $champ_reference; ?> > 0 )
 		{
-			$requete = 'DELETE FROM <?php echo $table; ?> WHERE <?php echo $champ_reference; ?> = '.$this-><?php echo $champ_reference; ?>;
+			$requete = 'DELETE FROM <?php echo $table; ?> WHERE <?php echo $champ_reference; ?> = ?';
+      $stmt = $db->prepare($requete);
+      $stmt->bind_param('i', $this-><?php echo $champ_reference; ?>);
+      $db->execute($stmt);
 			$db->query($requete);
 		}
 	}
