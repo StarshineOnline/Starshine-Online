@@ -139,8 +139,13 @@ while($row = $db->read_array($req))
 	}
 	if($row['spawn_loc'] != '' OR $row['spawn'] != 0)
 	{
-		echo "HERE: niveau: $niveau - j[n]: ${joueur[$niveau]} \n";
-		$up = ($joueur[$niveau] * 1000) / sqrt($niveau);
+    if (array_key_exists($niveau, $joueur)) {
+      echo "HERE: niveau: $niveau - j[n]: ${joueur[$niveau]} \n";
+      $up = ($joueur[$niveau] * 1000) / sqrt($niveau);
+    } else {
+      echo "HERE: pas de joueur de niveau $niveau \n";
+      $up = 0;
+    }
 		if($monstre[$niveau]['tot_type'] == 0) $monstre[$niveau]['tot_type'] = 1;
 		$down = $monstre[$niveau]['total'] / $monstre[$niveau]['tot_type'];
 		if($down == 0) $down = 1;

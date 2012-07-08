@@ -75,7 +75,7 @@ $pet = new pet($_GET['id_pet']);
 		{
 			if($_GET['type'] == 'attaque') $t = 'a';
 			else $t = 'd';
-			$id_action = mysql_escape_string($_GET['id_action']);
+			$id_action = sSQL($_GET['id_action'], SSQL_INTEGER);
 			$requete = "UPDATE pet SET action_".$t." = '".sSQL($id_action)."' WHERE ID = ".$pet->get_id();
 			if($db->query($requete))
 			{

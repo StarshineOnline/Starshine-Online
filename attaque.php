@@ -848,9 +848,9 @@ else
 				
 				//Journal de l'attaquant 
 				if(!$check_pet)
-					$requete = "INSERT INTO journal VALUES(NULL, ".$joueur->get_id().", 'attaque', '".mysql_escape_string($joueur->get_nom())."', '".mysql_escape_string($defenseur->get_nom())."', NOW(), ".($defense_hp_avant - $defense_hp_apres).", ".($attaque_hp_avant - $attaque_hp_apres).", ".$joueur_defenseur->get_x().", ".$joueur_defenseur->get_y().")";
+					$requete = "INSERT INTO journal VALUES(NULL, ".$joueur->get_id().", 'attaque', '".sSQL($joueur->get_nom())."', '".sSQL($defenseur->get_nom())."', NOW(), ".($defense_hp_avant - $defense_hp_apres).", ".($attaque_hp_avant - $attaque_hp_apres).", ".$joueur_defenseur->get_x().", ".$joueur_defenseur->get_y().")";
 				else
-					$requete = "INSERT INTO journal VALUES(NULL, ".$joueur->get_id().", 'attaque', '".mysql_escape_string($attaquant->get_nom())."', '".mysql_escape_string($defenseur->get_nom())."', NOW(), ".($defense_hp_avant - $defense_hp_apres).", ".($attaque_hp_avant - $attaque_hp_apres).", ".$joueur_defenseur->get_x().", ".$joueur_defenseur->get_y().")";
+					$requete = "INSERT INTO journal VALUES(NULL, ".$joueur->get_id().", 'attaque', '".sSQL($attaquant->get_nom())."', '".sSQL($defenseur->get_nom())."', NOW(), ".($defense_hp_avant - $defense_hp_apres).", ".($attaque_hp_avant - $attaque_hp_apres).", ".$joueur_defenseur->get_x().", ".$joueur_defenseur->get_y().")";
 				$db->query($requete);
 				// Creation du log du combat
 				$combat = new combat();

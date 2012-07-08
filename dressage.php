@@ -233,7 +233,7 @@ if($distance == 0)
 									$gagnant = new perso($joueur->get_id());
 								}
 								//Insertion du loot dans le journal du gagnant
-								$requete = "INSERT INTO journal VALUES(NULL, ".$gagnant->get_id().", 'loot', '', '', NOW(), '".mysql_escape_string($objet_nom)."', 0, ".$joueur->get_x().", ".$joueur->get_y().")";
+								$requete = "INSERT INTO journal VALUES(NULL, ".$gagnant->get_id().", 'loot', '', '', NOW(), '".sSQL($objet_nom)."', 0, ".$joueur->get_x().", ".$joueur->get_y().")";
 								$db->query($requete);
 								
 								$gagnant->restack_objet();

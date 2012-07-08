@@ -83,7 +83,7 @@ if(!$visu AND isset($_GET['action']))
 					//Cherche infos sur l'objet
 					$requete = "SELECT batiment.id AS batiment_id FROM objet_royaume RIGHT JOIN batiment ON batiment.id = objet_royaume.id_batiment WHERE objet_royaume.id = ".sSQL($_GET['id_objet']);
 					$req = $db->query($requete);
-					if (mysql_num_rows($req) == 0)
+					if ($db->num_rows($req) == 0)
 					{
 						die('<h5>Erreur SQL</h5>');
 					}

@@ -48,7 +48,7 @@ while($row = $db->read_assoc($req))
 		$db_log->query("CREATE TABLE `".$table."` (`id` int(10) unsigned NOT NULL, `id_perso` int(10) unsigned NOT NULL default '0', `action` varchar(50) NOT NULL default '', `actif` varchar(50) NOT NULL default '', `passif` varchar(50) NOT NULL default '', `time` datetime NOT NULL default '0000-00-00 00:00:00', `valeur` text NOT NULL, `valeur2` int(11) NOT NULL default '0', `x` mediumint(9) NOT NULL, `y` mediumint(9) NOT NULL, PRIMARY KEY  (`id`)) ENGINE=MyISAM  DEFAULT CHARSET=utf8 ;");
 		//echo 'Cr�ation de la table : '.$table.'<br />';
 	}
-	$requete = "INSERT INTO `".$table."` VALUES(".$row['id'].", ".$row['id_perso'].", '".$row['action']."', '".mysql_escape_string($row['actif'])."', '".mysql_escape_string($row['passif'])."', '".$row['time']."', '".mysql_escape_string($row['valeur'])."', ".mysql_escape_string($row['valeur2']).", ".$row['x'].", ".$row['y'].");";
+	$requete = "INSERT INTO `".$table."` VALUES(".$row['id'].", ".$row['id_perso'].", '".$row['action']."', '".sSQL($row['actif'])."', '".sSQL($row['passif'])."', '".$row['time']."', '".sSQL($row['valeur'])."', ".sSQL($row['valeur2']).", ".$row['x'].", ".$row['y'].");";
 	$db_log->query($requete);
 	$db->query("DELETE FROM journal WHERE id = ".$row['id']);
 	//echo $requete;
