@@ -4,6 +4,8 @@
  * Définition de la classe map_monstre représentant un monstre sur la carte
  */
 
+// @DONTAUTOOVERRIDE
+
 /**
  * Classe map_monstre
  * Classe représentant un monstre sur la carte

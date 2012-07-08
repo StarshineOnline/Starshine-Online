@@ -1,4 +1,4 @@
-<?php
+<?php // -*- tab-width:2; mode: php -*-
 /**
  * Auteur : Florian Mahieu
  * Version : 1.2
@@ -84,13 +84,13 @@ foreach($champs as $key => $champ)
 $liste_arguments = implode(', ', $liste_arguments);
 $liste_arguments_names = implode(', ', $liste_arguments_names);
 $liste_update = implode(", ", $liste_update);
-$liste_tostring = implode('.\', \'', $liste_tostring);
+$liste_tostring = implode('.\', \'.', $liste_tostring);
 $liste_array = implode('', $liste_array);
 $liste = implode('', $liste);
 $liste_champs = implode(', ', $liste_champs);
 $liste_attributs_insert = implode(", ", $liste_attributs_type);
 $liste_attributs = implode(', ', $liste_attributs);
-echo '<?php
+echo '<?php // -*- tab-width:2; mode: php -*-
 ';
 ?>
 class <?php echo $table; ?>_db
@@ -304,8 +304,23 @@ class <?php echo $table ?> extends <?php echo $table ?>_db {
 	{
 		$file = fopen($filename, "r+");
 		$contents = fread($file, filesize($filename));
+    $noautooverride = mb_strrchr($contents, '// @DONTAUTOOVERRIDE');
+    ob_end_clean();    
+    echo 'here';
+    if ($noautooverride != '') {
+      echo '<h1>file is marked no auto override</h1>Autogen: <pre>'.
+        $new_file.'</pre>';
+      die ();
+    }
 		$string = mb_strrchr($contents, '//fonction');
 		fclose($file);
+    if (empty($string)) {
+      $string = '
+  //fonction
+
+}
+';
+    }
 	}
 	else
 	{
