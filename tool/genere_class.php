@@ -64,7 +64,7 @@ foreach($champs as $key => $champ)
 			$liste_attributs_type[] = '\'.$this->'.$champ['Field'].'.\'';
 			$liste_update[] = $champ['Field'].' = ?';
 		}
-		$liste_tostring[] = $champ['Field'].' = \'.$this->'.$champ['Field'];
+		$liste_tostring[] = '\''.$champ['Field'].' = \'.$this->'.$champ['Field'];
 		$liste_array[] = '$this->'.$champ['Field'].' = $'.$champ_reference.'[\''.$champ['Field'].'\'];
 			';
 		 $liste[] = '$this->'.$champ['Field'].' = $'.$champ['Field'].';
@@ -84,7 +84,7 @@ foreach($champs as $key => $champ)
 $liste_arguments = implode(', ', $liste_arguments);
 $liste_arguments_names = implode(', ', $liste_arguments_names);
 $liste_update = implode(", ", $liste_update);
-$liste_tostring = implode(".', ", $liste_tostring);
+$liste_tostring = implode('.\', \'', $liste_tostring);
 $liste_array = implode('', $liste_array);
 $liste = implode('', $liste);
 $liste_champs = implode(', ', $liste_champs);
@@ -95,7 +95,7 @@ echo '<?php
 ?>
 class <?php echo $table; ?>_db
 {
-  const types = '<?php echo implode($liste_attr_type_bind, ''); ?>';
+  const types = '<?php echo implode('', $liste_attr_type_bind); ?>';
 <?php foreach($champs as $champ): ?>
   /**
     * @access private
@@ -105,7 +105,7 @@ class <?php echo $table; ?>_db
 
 	<?php endforeach; ?>
 
-	/**
+/**
 	* @access public
 <?php foreach($champs as $champ): ?>
 	* @param <?php echo $champ['Type_doc'].' '.$champ['Field'] ?> attribut
@@ -138,7 +138,7 @@ class <?php echo $table; ?>_db
       }
 	}
 
-	/**
+/**
 	* Sauvegarde automatiquement en base de donnée. Si c'est un nouvel objet, INSERT, sinon UPDATE
 	* @access public
 	* @param bool $force force la mis à jour de tous les attributs de l'objet si true, sinon uniquement ceux qui ont été modifiés
@@ -164,7 +164,7 @@ class <?php echo $table; ?>_db
 		else
 		{
 			$requete = 'INSERT INTO <?php echo $table; ?> (<?php echo $liste_champs; ?>) VALUES(';
-			$requete .= '<?php echo implode($liste_attr_ins_bind, ', '); ?>)';
+			$requete .= '<?php echo implode(', ', $liste_attr_ins_bind); ?>)';
 			if($debug) echo $requete.';';
       $stmt = $db->prepare($requete);
       $stmt->bind_param(self::types, <?php echo $liste_attributs; ?>);
@@ -174,7 +174,7 @@ class <?php echo $table; ?>_db
 		}
 	}
 
-	/**
+/**
 	* Supprime de la base de donnée
 	* @access public
 	* @param none
@@ -193,7 +193,7 @@ class <?php echo $table; ?>_db
 		}
 	}
 
-	/**
+/**
 	* Crée un tableau d'objets respectant certains critères
 	* @access static
 	* @param array|string $champs champs servant a trouver les résultats
@@ -220,7 +220,7 @@ class <?php echo $table; ?>_db
 			}
 			foreach($array_champs as $key => $champ)
 			{
-				$where[] = $champ .' = "'.mysql_escape_string($array_valeurs[$key]).'"';
+				$where[] = $champ .' = \''.$db->escape($array_valeurs[$key]).'\'';
 			}
 			$where = implode(' AND ', $where);
 			if($champs === 0)
@@ -243,7 +243,7 @@ class <?php echo $table; ?>_db
 		return $return;
 	}
 
-	/**
+/**
 	* Affiche l'objet sous forme de string
 	* @access public
 	* @param none
@@ -251,58 +251,51 @@ class <?php echo $table; ?>_db
 	*/
 	function __toString()
 	{
-		return '<?php echo $champ_reference; ?> = '.$this-><?php echo $champ_reference; ?>.', <?php echo $liste_tostring; ?>;
+		return '<?php echo $champ_reference; ?> = '.$this-><?php echo $champ_reference; ?>.<?php echo $liste_tostring; ?>;
 	}
-	<?php
-	foreach($champs as $champ)
-	{
-		echo '
-	/**
-	* Retourne la valeur de l\'attribut
+	<?php	foreach($champs as $champ): ?>
+
+/**
+	* Retourne la valeur de l'attribut
 	* @access public
 	* @param none
-	* @return '.$champ['Type_doc'].' $'.$champ['Field'].' valeur de l\'attribut '.$champ['Field'].'
+	* @return <?php echo $champ['Type_doc'] ?> $<?php echo $champ['Field'] ?> valeur de l'attribut <?php echo $champ['Field'] ?>
 	*/
-	function get_'.$champ['Field'].'()
+	function get_<?php echo $champ['Field'] ?>()
 	{
-		return $this->'.$champ['Field'].';
-	}
-';
+		return $this-><?php echo $champ['Field'] ?>;
 	}
 
-	foreach($champs as $champ)
-	{
-		echo '
-	/**
-	* Modifie la valeur de l\'attribut
+  <?php endforeach; ?>
+
+	<?php	foreach($champs as $champ): ?>
+
+/**
+	* Modifie la valeur de l'attribut
 	* @access public
-	* @param '.$champ['Type_doc'].' $'.$champ['Field'].' valeur de l\'attribut
+	* @param <?php echo $champ['Type_doc'] ?> $<?php echo $champ['Field'] ?> valeur de l'attribut
 	* @return none
 	*/
-	function set_'.$champ['Field'].'($'.$champ['Field'].')
+	function set_<?php echo $champ['Field'] ?>($<?php echo $champ['Field'] ?>)
 	{
-		$this->'.$champ['Field'].' = $'.$champ['Field'].';
-		$this->champs_modif[] = \''.$champ['Field'].'\';
-	}
-';
+		$this-><?php echo $champ['Field'] ?> = $<?php echo $champ['Field'] ?>;
+		$this->champs_modif[] = '<?php echo $champ['Field'] ?>';
 	}
 
+  <?php endforeach; ?>
 
-		echo '
 }
 
-class '.$table.' extends '.${table}.'_db {
-  function __construct('.$liste_arguments.') {
+class <?php echo $table ?> extends <?php echo $table ?>_db {
+  function __construct(<?php echo $liste_arguments ?>) {
     if( (func_num_args() == 1) && (
-         is_numeric($'.$champ_reference.') || is_array($'.$champ_reference.')))
-      parent::__construct($'.$champ_reference.');
+         is_numeric($<?php echo $champ_reference ?>) || is_array($<?php echo $champ_reference ?>)))
+      parent::__construct($<?php echo $champ_reference ?>);
     else
-      parent::__construct('.$liste_arguments_names.');
+      parent::__construct(<?php echo $liste_arguments_names ?>);
   }
 
-';
-
-
+<?php
 
 	//Inclusion des fonctions spécifiques
 	$filename= $root.'class/'.$table.'.class.php';
@@ -320,7 +313,6 @@ class '.$table.' extends '.${table}.'_db {
   //fonction
 
 }
-?>
 ';
 	}
 	$new_file .= $string;
