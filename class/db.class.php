@@ -773,6 +773,10 @@ class db
     else 
       return null;
   }
+
+  function error() {
+    return mysqli_error($this->lnk);
+  }
 }
 
 /*

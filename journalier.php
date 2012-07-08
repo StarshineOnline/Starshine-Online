@@ -253,7 +253,7 @@ if(date("j") == 1)
     $log->send(0, 'journalier', "pas de pop des draconides, présent: $type");
   }
 }
-$mail .= mysql_error();
+$mail .= $db->error();
 
 $mail_send = getenv('SSO_MAIL');
 if ($mail_send == null || $mail_send == '') $mail_send = 'starshineonline@gmail.com';
