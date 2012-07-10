@@ -5,7 +5,7 @@ if (file_exists('root.php'))
 //Affiche et gère l'inventaire du personnage
 
 //Inclusion des fichiers indispensables
-include ('livre.php');
+include_once ('livre.php');
 $case = new map_case(array('x' => $joueur->get_x(), 'y' => $joueur->get_y()));
 $R = new royaume($case->get_royaume());
 $joueur->restack_objet();

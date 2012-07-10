@@ -593,7 +593,7 @@ switch( $_GET['direction'] )
 		if ($RAZ_ROYAUME) { echo '<h5>Gestion impossible quand la capitale est mise à sac</h5>'; break; }
   	if( $militaire )
   	{
-  		include('carte_roy.php');
+  		include_once('carte_roy.php');
   		echo '<img src="carte_roy2.php" style="width:600px;margin-left:170px;" />';
   	}
   	break;

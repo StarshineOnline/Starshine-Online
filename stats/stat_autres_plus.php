@@ -42,13 +42,13 @@ include_once(root.'fonction/equipement.inc');
 //Inclusion du fichier contenant la classe inventaire
 include_once(root.'class/inventaire.class.php');
 
-include ("jpgraph/src/jpgraph.php");
-include ("jpgraph/src/jpgraph_pie.php");
-include ("jpgraph/src/jpgraph_pie3d.php");
-include ("jpgraph/src/jpgraph_line.php");
-include ("jpgraph/src/jpgraph_bar.php");
-include ("jpgraph/src/jpgraph_scatter.php");
-include ("jpgraph/src/jpgraph_regstat.php");
+include_once ("jpgraph/src/jpgraph.php");
+include_once ("jpgraph/src/jpgraph_pie.php");
+include_once ("jpgraph/src/jpgraph_pie3d.php");
+include_once ("jpgraph/src/jpgraph_line.php");
+include_once ("jpgraph/src/jpgraph_bar.php");
+include_once ("jpgraph/src/jpgraph_scatter.php");
+include_once ("jpgraph/src/jpgraph_regstat.php");
 $root = '';
 
 $data = array();

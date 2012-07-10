@@ -1,7 +1,7 @@
 <?php
 if (file_exists('root.php'))
   include_once('root.php');
-include('haut.php');
+include_once('haut.php');
 
 $monstres = monstre::create(false, false, 'level ASC', false, '1');
 

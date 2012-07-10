@@ -16,7 +16,7 @@ include_once(root.'haut.php');
 <div id='accueil'>
 <?PHP
   if( file_exists(root.'pub.php') )
-    include(root.'pub.php');
+    include_once(root.'pub.php');
 ?>
   
 	<div id='loading_sso' style='display:none;'></div>	
