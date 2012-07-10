@@ -2,7 +2,7 @@
 if (file_exists('root.php'))
   include_once('root.php');
 
-require('class/map.class.php');
+require_once('class/map.class.php');
 {//-- Initialisation
 	$MAP = Array();
 }
