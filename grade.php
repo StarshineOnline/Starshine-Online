@@ -7,7 +7,7 @@ $count_race = count($races);
 $iii = 0;
 $week = 60 * 60 * 24 * 7;
 $time_limit = time() - $week;
-require('connect_forum.php');
+require_once('connect_forum.php');
 //On met tout le monde au rang de citoyen avant de faire le script
 $requete = "UPDATE perso SET rang_royaume = 7 WHERE rang_royaume <> 6";
 $db->query($requete);

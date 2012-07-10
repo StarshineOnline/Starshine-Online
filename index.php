@@ -121,7 +121,7 @@ N'oubliez pas de reporter les bugs et problèmes, et d'apporter vos suggestions 
 		}
 		else
 		{
-			require('connect_forum.php');
+			require_once('connect_forum.php');
 			$requete = "SELECT id, subject, num_replies FROM punbbtopics WHERE (forum_id = 5) ORDER BY posted DESC";
 			$req = $db_forum->query($requete);
 		

@@ -77,7 +77,7 @@ if(date("d") == 1)
 	$groupe['mortvivant'][0] = 16;
 	$groupe['mortvivant'][1] = 18;
 	
-	require('connect_forum.php');
+	require_once('connect_forum.php');
 	foreach($groupe as $group)
 	{
 		$requete = "UPDATE punbbusers SET group_id = ".$group[0]." WHERE group_id = ".$group[1];
