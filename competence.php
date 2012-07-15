@@ -2,7 +2,7 @@
 if (file_exists('root.php'))
   include_once('root.php');
 
-include ('livre.php');
+include_once ('livre.php');
 $tab_sort_jeu = explode(';', $joueur->get_comp_combat());
 ?>
 <hr>

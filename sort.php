@@ -2,7 +2,7 @@
 if (file_exists('root.php'))
 include_once('root.php');
 
-include(root.'haut_ajax.php');
+include_once(root.'haut_ajax.php');
 
 if(array_key_exists('tri', $_GET)) $tris = $_GET['tri']; else $tris = 'favoris';
 
@@ -52,7 +52,7 @@ switch($type_lanceur)
     $lanceur_url = "&amp;lanceur=monstre&amp;id_pet=$_GET[id_pet]";
     break;
 }
-if($type_lanceur == 'joueur') include ('livre.php');
+if($type_lanceur == 'joueur') include_once ('livre.php');
 ?>
 <hr>
 <?php

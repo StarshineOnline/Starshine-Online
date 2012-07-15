@@ -6,11 +6,11 @@ $textures = false;
 include_once(root.'haut.php');
 setlocale(LC_ALL, 'fr_FR');
 include_once(root.'haut_site.php');
-include ("jpgraph/src/jpgraph.php");
-include ("jpgraph/src/jpgraph_pie.php");
-include ("jpgraph/src/jpgraph_pie3d.php");
-include ("jpgraph/src/jpgraph_line.php");
-include ("jpgraph/src/jpgraph_bar.php");
+include_once ("jpgraph/src/jpgraph.php");
+include_once ("jpgraph/src/jpgraph_pie.php");
+include_once ("jpgraph/src/jpgraph_pie3d.php");
+include_once ("jpgraph/src/jpgraph_line.php");
+include_once ("jpgraph/src/jpgraph_bar.php");
 
 if ($G_maintenance)
 {

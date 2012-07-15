@@ -111,6 +111,18 @@ if(preg_match("`\[quete]`i", $message))
 	verif_action('P'.$id, $joueur, 's');
 	$message = preg_replace("`\[quete]`i", "", $message);
 }
+//Validation de la quête de groupe
+if(preg_match("`\[quetegroupe]`i", $message))
+{
+  if ($joueur->get_groupe() > 0) {
+    $groupe = new groupe($joueur->get_groupe());
+    foreach ($groupe->get_membre_joueur() as $pj)
+      verif_action('P'.$id, $pj, 'g');
+  }
+  else
+    verif_action('P'.$id, $joueur, 's');
+	$message = preg_replace("`\[quetegroupe]`i", "", $message);
+}
 //Prise d'une quête
 if(preg_match("`\[prendquete:([^[]*)\]`i", $message, $regs))
 {

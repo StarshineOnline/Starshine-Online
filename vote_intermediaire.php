@@ -42,11 +42,11 @@ include_once(root.'fonction/equipement.inc.php');
 //Inclusion du fichier contenant la classe inventaire
 include_once(root.'class/inventaire.class.php');
 
-include ("jpgraph/src/jpgraph.php");
-include ("jpgraph/src/jpgraph_pie.php");
-include ("jpgraph/src/jpgraph_pie3d.php");
-include ("jpgraph/src/jpgraph_line.php");
-include ("jpgraph/src/jpgraph_bar.php");
+include_once ("jpgraph/src/jpgraph.php");
+include_once ("jpgraph/src/jpgraph_pie.php");
+include_once ("jpgraph/src/jpgraph_pie3d.php");
+include_once ("jpgraph/src/jpgraph_line.php");
+include_once ("jpgraph/src/jpgraph_bar.php");
 
 $date = date("Y-m-d", mktime(0, 0, 0, date("m") , date("d") - 1, date("Y")));
 //Si on est le premier, élection du roi de chaque race
@@ -77,7 +77,7 @@ if(date("d") == 1)
 	$groupe['mortvivant'][0] = 16;
 	$groupe['mortvivant'][1] = 18;
 	
-	require('connect_forum.php');
+	require_once('connect_forum.php');
 	foreach($groupe as $group)
 	{
 		$requete = "UPDATE punbbusers SET group_id = ".$group[0]." WHERE group_id = ".$group[1];

@@ -2,7 +2,7 @@
 if (file_exists('../root.php'))
   include_once('../root.php');
 
-require('haut_roi.php');
+require_once('haut_roi.php');
 include_once(root.'class/construction.class.php');
 include_once(root.'class/bourg.class.php');
 include_once(root.'class/mine.class.php');

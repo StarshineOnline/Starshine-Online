@@ -113,7 +113,7 @@ if( $check )
       	</select>
       	<div id="info_candidat">
       		<?php
-      		include('info_candidat.php');
+      		include_once('info_candidat.php');
       		?>
       	</div>
       	<input type="button" onclick="envoiInfo('vote_roi.php?action=vote&id_candidat=' + document.getElementById('id_candidat').value, 'carte');" value="<?php echo $label_btn; ?>">

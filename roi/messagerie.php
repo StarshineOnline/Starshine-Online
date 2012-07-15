@@ -1,7 +1,7 @@
 <?php
 if (file_exists('../root.php'))
   include_once('../root.php');
-require('haut_roi.php');
+require_once('haut_roi.php');
 include_once(root.'fonction/messagerie.inc.php');
 
 if (isset($_GET['id_thread']))

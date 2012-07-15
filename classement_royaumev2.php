@@ -114,13 +114,13 @@ else
 	}
 	if(array_key_exists('race', $_GET))
 	{
-		include ("jpgraph/src/jpgraph.php");
-		include ("jpgraph/src/jpgraph_pie.php");
-		include ("jpgraph/src/jpgraph_pie3d.php");
-		include ("jpgraph/src/jpgraph_line.php");
-		include ("jpgraph/src/jpgraph_bar.php");
-		include ("jpgraph/src/jpgraph_scatter.php");
-		include ("jpgraph/src/jpgraph_regstat.php");
+		include_once ("jpgraph/src/jpgraph.php");
+		include_once ("jpgraph/src/jpgraph_pie.php");
+		include_once ("jpgraph/src/jpgraph_pie3d.php");
+		include_once ("jpgraph/src/jpgraph_line.php");
+		include_once ("jpgraph/src/jpgraph_bar.php");
+		include_once ("jpgraph/src/jpgraph_scatter.php");
+		include_once ("jpgraph/src/jpgraph_regstat.php");
 		$race = $_GET['race'];
 		$var = $_GET['var'];
 
