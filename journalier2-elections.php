@@ -61,7 +61,7 @@ if($db->num_rows > 0)
 		  $req_r = $db->query($requete);
 		  $row_r = $db->read_assoc($req_r);
 		  $id_roi = $row_r["id"];
-    }
+		}
 		$data = array();
 		$legend = array();
 		$label = array();
@@ -77,17 +77,31 @@ if($db->num_rows > 0)
   		$requete = "UPDATE punbbusers SET group_id = ".$groupe[$race][2]." WHERE group_id = ".$groupe[$race][1];
   		$db_forum->query($requete);
 		  //Groupe forum
-  		$requete = "UPDATE perso SET rang_royaume = 7 WHERE rang_royaume = 6 AND race = '$race'";
+  		$requete = "UPDATE perso SET rang_royaume = 7 WHERE (rang_royaume = 6 OR rang_royaume = 1) AND race = '$race'";
   		$db->query($requete);
   		// Résultat des votes
 			while($row_v = $db->read_assoc($req_v))
 			{
 				$requete = "SELECT * FROM candidat WHERE id_perso = ".$row_v['id_candidat']." AND id_election = ".$row['id'];
+				
 				$req_c = $db->query($requete);
 				$row_c = $db->read_assoc($req_c);
 				//C'est le roi on l'active, et on met en place la prochaine élection
 				if($i == 0)
 				{
+					//Ministres
+					$requete = "UPDATE perso SET rang_royaume = 1 WHERE id = ".$row_c['id_ministre_economie']." OR id = ".$row_c['id_ministre_militaire'];
+					$db->query($requete);	
+					
+					$req_m = "SELECT nom FROM perso WHERE id = ".$row_c['id_ministre_economie']." OR id = ".$row_c['id_ministre_militaire'];
+					$req_m = $db->query($req_m);
+					while($row_m = $db->read_assoc($req_m))
+					{
+						$requete = "UPDATE punbbusers SET group_id = ".$groupe[$race][2]." WHERE username = '".$row_m['nom']."'";
+						$db_forum->query($requete);
+					}
+					
+					//roi
 					$requete = "UPDATE perso SET rang_royaume = 6 WHERE id = ".$row_v['id_candidat'];
 					$db->query($requete);
 					$requete = "UPDATE punbbusers SET group_id = ".$groupe[$race][1]." WHERE username = '".$row_c['nom']."'";
@@ -240,7 +254,7 @@ if($db->num_rows > 0)
 				//Suppression de l'ancien roi
 				$requete = "UPDATE punbbusers SET group_id = ".$groupe[$race][2]." WHERE group_id = ".$groupe[$race][1];
 				$db_forum->query($requete);
-				$requete = "UPDATE perso SET rang_royaume = 7 WHERE rang_royaume = 6 AND race = '".$race."'";
+				$requete = "UPDATE perso SET rang_royaume = 7 WHERE (rang_royaume = 6 OR rang_royaume = 1) AND race = '".$race."'";
 				$db->query($requete);
 				// Supression des ministres
 				$royaume = new royaume( $row['id_royaume'] );
