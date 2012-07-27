@@ -5,6 +5,11 @@ if (file_exists('../root.php'))
 $textures = false;
 $admin = true;
 
+function is_pnj($row) {
+  // TODO
+  return true;
+}
+
 include_once(root.'haut.php');
 setlocale(LC_ALL, 'fr_FR');
 include_once(root.'haut_site.php');
@@ -159,7 +164,8 @@ else
 						<?php
 						}
 						if ($_SESSION['admin_nom'] == 'admin' ||
-								$_SESSION['admin_db_auth'] == 'admin')
+								$_SESSION['admin_db_auth'] == 'admin' ||
+                is_pnj($row))
 						{
 						?>
 						<li><a href="admin_joueur.php?direction=objet&amp;id=<?php echo $_GET['id']; ?>">Donner un objet</a> | <a href="admin_joueur.php?direction=recette&amp;id=<?php echo $_GET['id']; ?>">Donner une recette</a> | <a href="admin_joueur.php?direction=arme&amp;id=<?php echo $_GET['id']; ?>">Donner une arme</a></li> | <a href="admin_joueur.php?direction=armure&amp;id=<?php echo $_GET['id']; ?>">Donner une armure</a> | <a href="admin_joueur.php?direction=accessoire&amp;id=<?php echo $_GET['id']; ?>">Donner un accessoire</a> | <a href="admin_joueur.php?direction=titre&amp;id=<?php echo $_GET['id']; ?>">Donner un titre</a></li>
