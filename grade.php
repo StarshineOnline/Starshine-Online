@@ -38,7 +38,7 @@ while($iii < $count_race)
 			{
 				echo $row['nom'].' des '.$races[$iii].' - '.$tab_perso[$i]['nom'].'<br />';
 				//mis à jour du perso
-				$requete = "UPDATE perso SET rang_royaume = ".$row['id']." WHERE id = ".$tab_perso[$i]['ID']." AND rang_royaume != ".$row['id'];
+				$requete = "UPDATE perso SET rang_royaume = ".$row['id']." WHERE ID = ".$tab_perso[$i]['ID']." AND rang_royaume != ".$row['id'];
 				$req_up = $db->query($requete);
 				//Si ya changement
 				if($db->rows_affected > 0)
