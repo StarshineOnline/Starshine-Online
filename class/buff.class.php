@@ -109,8 +109,8 @@ class buff extends buff_base
 	 * @param fin          Date et heure de fin du buff
 	 * @param nom          Nom du buff
 	 * @param description  Description du buff
-	 * @param debuff       pour un buff,  pour un debuff
-	 * @param supprimable  si on peut supprimer le (de)buff, 0 sinon
+	 * @param debuff       1 pour un buff, 0 pour un debuff
+	 * @param supprimable  1 si on peut supprimer le (de)buff, 0 sinon
 	*/
 	function __construct($id = 0, $id_perso=0, $type='', $effet=0, $effet2=0, $duree=0, $fin=0, $nom='', $description='', $debuff=0, $supprimable=0)
 	{
@@ -152,6 +152,23 @@ class buff extends buff_base
 		return buff_base::get_liste_update().', id_perso = '.$this->id_perso;
 	}
 	// @}
+	
+	/**
+ * Lance le buff sur un personnage
+ *
+ * @param  $nb_buff       Nombre de buffs déjà actifs sur la cible.
+ * @param  $nb_buff_max   Nombre de buffs max de la cible de la cible (grade+).
+ *
+ * @return      true si le sort a été lancé et false sinon.
+ */
+ function lance_buff($nb_buff=0, $nb_buff_max=0)
+ {
+    $buffs = buff::create(array('id_perso', 'type'), array($this->get_id_perso(), $this->get_type()));
+    if( count($buffs) )
+      return $this->lance_buff_int($buffs[0], $nb_buff, $nb_buff_max);
+    else
+      return $this->lance_buff_int(null, $nb_buff, $nb_buff_max);
+ }
 }
 
 ?>

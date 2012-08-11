@@ -91,5 +91,23 @@ class buff_monstre extends buff_base
 		return buff_base::get_liste_update().', id_monstre = '.$this->id_monstre;
 	}
 	// @}
+
+	/**
+ * Lance le buff sur un personnage
+ *
+ * @param  $nb_buff       Nombre de buffs déjà actifs sur la cible.
+ * @param  $nb_buff_max   Nombre de buffs max de la cible de la cible (grade+).
+ *
+ * @return      true si le sort a été lancé et false sinon.
+ */
+ function lance_buff($nb_buff=0, $nb_buff_max=0)
+ {
+    $this->set_duree( $this->get_duree() * 6 );
+    $buffs = buff::create(array('id_monstre', 'type'), array($this->get_id_perso(), $this->get_type()));
+    if( count($buffs) )
+      return $this->lance_buff_int($buffs[0], $nb_buff, $nb_buff_max);
+    else
+      return $this->lance_buff_int(null, $nb_buff, $nb_buff_max);
+ }
 }
 ?>
