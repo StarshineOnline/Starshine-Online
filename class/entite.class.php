@@ -746,6 +746,8 @@ class entite extends placable
   	if(array_key_exists('derniere_chance', $this->etat)) $this->potentiel_parer /= 1 + (($this->etat['derniere_chance']['effet']) / 100);
   	if($this->etat['posture']['type'] == 'posture_esquive') $this->potentiel_parer *= 1 + (($this->etat['posture']['effet']) / 100);
   	if($this->etat['posture']['type'] == 'posture_vent') $this->potentiel_parer *= 1 + (($this->etat['posture']['effet']) / 100);
+  	if($this->is_buff('buff_evasion')) $this->potentiel_parer *= 1 + ($this->get_buff('buff_evasion', 'effet') / 100);
+  	if($this->is_buff('buff_cri_detresse')) $this->potentiel_parer *= 1 + (($this->get_buff('buff_cri_detresse', 'effet')) / 100);
   	
   	if($this->get_race() == 'elfebois') $this->potentiel_parer *= 1.15;
 
@@ -1140,6 +1142,7 @@ class entite extends placable
 		  break;
     case 'joueur' :
       $objet = new perso($src->get_id());
+      $objet->check_specials();
 			$objet->action = $src->action_do;
 			switch ($objet->arme_type)
 				{

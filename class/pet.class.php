@@ -82,7 +82,8 @@ class pet extends map_monstre
   }
   /// Action effectuées à la fin d'un combat pour le défenseur
   function fin_defense(&$perso, &$royaume, $pet, $degats, &$def)
-  {
+  { // À vérifier
+    $proprietaire = new perso($this->get_id_joueur());
     return $perso->fin_combat_pvp($this, false);
   }
 	// @}

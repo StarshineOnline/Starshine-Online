@@ -339,7 +339,7 @@ class sort_combat extends sort
     $reduction = $this->calcul_pp(($passif->get_pm() * $passif->get_puissance()) / 12);
     $degat_avant = $degat;
     $degat = round($degat * $reduction);
-    if($degat > $degat_avant)
+    if($degat < $degat_avant)
       echo '(Réduction de '.($degat_avant - $degat).' dégâts par la PM)<br />';
 
     // Application des modifications des dégâts
@@ -386,14 +386,14 @@ class sort_combat extends sort
 class sort_combat_degat_etat extends sort_combat
 {
   protected $etat; ///< État à ajouter si le sort touche
-  protected $effet; ///< Effet de l'état (null s'il faut prendre le paramètre effet2)
-  protected $duree; ///< Durée de l'état (null s'il faut prendre le paramètre duree)
+  protected $effet_etat; ///< Effet de l'état (null s'il faut prendre le paramètre effet2)
+  protected $duree_etat; ///< Durée de l'état (null s'il faut prendre le paramètre duree)
   function __construct($tbl, $etat=null, $effet=null,$duree=null)
   {
     $this->charger($tbl);
     $this->etat = $etat;
-    $this->effet = $effet;
-    $this->duree = $duree;
+    $this->effet_etat = $effet;
+    $this->duree_etat = $duree;
   }
   /// Méthode gérant ce qu'il se passe lorsque la coméptence à été utilisé avec succès
   function touche(&$actif, &$passif, &$effets)
@@ -416,14 +416,14 @@ class sort_combat_degat_etat extends sort_combat
       $cible = &$actif;
     else
       $cible = &$passif;
-    if( $this->effet === null )
+    if( $this->effet_etat === null )
       $cible->etat[$etat]['effet'] = $this->defaut_effet();
     else
-      $cible->etat[$etat]['effet'] = $this->effet;
-		if( $this->duree === null )
+      $cible->etat[$etat]['effet'] = $this->effet_etat;
+		if( $this->duree_etat === null )
       $cible->etat[$etat]['duree'] =  $this->get_duree();
     else
-      $cible->etat[$etat]['duree'] = $this->duree;
+      $cible->etat[$etat]['duree'] = $this->duree_etat;
     $this->ajout_effet2($etat, $cible);
   }
 
@@ -649,7 +649,7 @@ class sort_combat_aura extends sort_combat_etat
   protected $message; ///< Message lors du lancement de la posture.
   function __construct($tbl, $posture, $message)
   {
-    parent::__construct($tbl, 'posture');
+    parent::__construct($tbl);
     $this->posture = $posture;
     $this->message = $message;
   }
