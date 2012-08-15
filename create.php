@@ -439,8 +439,8 @@ elseif ($direction == 'phase2')
 	$regen_hp = time();
 	$maj_mp = time();
 	$maj_hp = time();
-	$x = $Trace[$race]['spawn_x'];
-	$y = $Trace[$race]['spawn_y'];
+	$x = $Trace['spawn_tuto_x'];
+	$y = $Trace['spawn_tuto_y'];
 	$inventaire = 'O:10:"inventaire":12:{s:4:"cape";N;s:5:"mains";N;s:11:"main_droite";N;s:11:"main_gauche";N;s:5:"torse";N;s:4:"tete";N;s:8:"ceinture";N;s:6:"jambes";N;s:5:"pieds";N;s:3:"dos";N;s:5:"doigt";N;s:3:"cou";N;}';
 	$quete = '';
 	$time = time();

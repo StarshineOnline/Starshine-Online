@@ -4,6 +4,7 @@ if (file_exists('root.php'))
 
 include_once(root.'inc/fp.php');
 $titre_perso = new titre($_SESSION['ID']);
+$joueur = new perso($_SESSION['ID']);
 ?>
 		<div class="titre">
 			Options de votre compte
@@ -14,6 +15,38 @@ $titre_perso = new titre($_SESSION['ID']);
 			{
 				switch($_GET['action'])
 				{
+					case 'tuto':
+						if (array_key_exists('valid', $_GET))
+						{
+							$req = "SELECT valeur FROM options WHERE id_perso = ".$_SESSION['ID']." AND nom ='tutoriel'";
+							$test = $db->read_row($db->query($req));
+							if (($joueur->get_level() < 6) && !$test )
+							{				
+								if (!$test)
+								$requete ="insert into options value ('', ".$_SESSION['ID'].", 'tutoriel', 1)";
+								else
+								$requete ="UPDATE options SET valeur = 1 WHERE id_perso = ".$_SESSION['ID']." AND nom = 'tutoriel'";
+								$db->query($requete);
+								$x = $Trace['spawn_tuto_x'];
+								$y = $Trace['spawn_tuto_y'];
+								$joueur->set_x($x);
+								$joueur->set_y($y);	
+								$joueur->sauver();
+								Echo "Vous voici dans le donjon initiatique !";	
+							}
+							else
+							 Echo "Vous avez déjà effectué le donjon, ou votre niveau ne vous permet plus de l'effectuer";
+						}
+						else
+						{
+							echo "Vous allez être envoyé dans le donjon initiatique. Vous ne pourrez revenir à votre capitale qu'une fois ce donjon terminé.";
+							?>
+							<form method="post" action="option.php?action=tuto&valid" id="form">							
+							<input type="submit"  value="Ok" name='valid' onclick="return envoiFormulaire('form', 'popup_content');">
+							</form>
+							<?php
+						}					
+					break;
 					case 'titre' :
 						if(array_key_exists('final', $_POST))
 						{
@@ -328,6 +361,7 @@ $titre_perso = new titre($_SESSION['ID']);
 					<li><a href="configure_point_sso.php" onclick="return envoiInfo(this.href, 'popup_content');">Configurer vos bonus Shine</a></li>
 					<li><a href="option.php?action=email" onclick="return envoiInfo(this.href, 'popup_content');">Modifier votre email</a></li>
 					<li><a href="option.php?action=titre" onclick="return envoiInfo(this.href, 'popup_content');">Choisir un titre</a></li>
+					<li><a href="option.php?action=tuto" onclick="return envoiInfo(this.href, 'popup_content');">Effectuer le tutoriel</a></li>
 
 				</ul>
 				

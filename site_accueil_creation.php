@@ -137,8 +137,8 @@ else
 		$joueur->set_maj_mp(time());
 		$joueur->set_maj_hp(time());
 
-		$joueur->set_x($Trace[$race]['spawn_x']);
-		$joueur->set_y($Trace[$race]['spawn_y']);
+		$joueur->set_x($Trace['spawn_x']);
+		$joueur->set_y($Trace['spawn_y']);
 		$joueur->set_inventaire('O:10:"inventaire":12:{s:4:"cape";N;s:5:"mains";N;s:11:"main_droite";N;s:11:"main_gauche";N;s:5:"torse";N;s:4:"tete";N;s:8:"ceinture";N;s:6:"jambes";N;s:5:"pieds";N;s:3:"dos";N;s:5:"doigt";N;s:3:"cou";N;}');
 		$joueur->set_quete('');
 		$joueur->set_pa(180);

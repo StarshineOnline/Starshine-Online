@@ -14,6 +14,16 @@ if (file_exists('../root.php'))
  * - 6 : très bonne
  * - 7 : superbe        
  */
+ 
+ 
+ /* Spawn de chaque race dans le bon donjon tuto
+  * $Trace[race]['spawn_tuto_x'] = x;
+  * */
+
+$Trace['spawn_tuto_x'] = 200;
+$Trace['spawn_tuto_y'] = 15;
+
+
 
 /**
  * @name Barbares
