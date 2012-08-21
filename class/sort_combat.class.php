@@ -412,7 +412,7 @@ class sort_combat_degat_etat extends sort_combat
     $etat_explode = explode('-', $etat);
 		$qui = $etat_explode[0];
 		$etat = $etat_explode[1];
-		if( $qui[0] = 'v' )
+		if( $qui[0] == 'v' )
       $cible = &$actif;
     else
       $cible = &$passif;
@@ -445,8 +445,20 @@ class sort_combat_etat extends sort_combat_degat_etat
   /// Méthode gérant ce qu'il se passe lorsque la coméptence à été utilisé avec succès
   function action(&$actif, &$passif, &$effets)
   {
+    if( $this->get_cible() == comp_sort::cible_perso )
+    {
+      self::touche($actif, $passif, $effets);
+    }
+    else
+    {
+      parent::action($actif, $passif, $effets);
+    }
+  }
+  /// Méthode gérant ce qu'il se passe lorsque la coméptence à été utilisé avec succès
+  function touche(&$actif, &$passif, &$effets)
+  {
     $this->ajout_etat($actif, $passif);
-		echo '&nbsp;&nbsp;<strong>'.$actif->get_nom().'</strong> lance le sort '.$this->get_nom().'<br />';
+  	echo '&nbsp;&nbsp;<strong>'.$actif->get_nom().'</strong> lance le sort '.$this->get_nom().'<br />';
   }
 
   /// récupére la valeur par défaut de l'état

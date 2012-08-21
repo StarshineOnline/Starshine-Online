@@ -124,6 +124,58 @@ class comp_combat extends comp
   	{
       switch( $row['type'] )
       {
+      case 'tir_precis':
+      case 'feinte':
+        return new comp_combat_toucher($row);
+      case 'coup_puissant':
+      case 'coup_violent':
+      case 'tir_puissant':
+        return new comp_combat_degats($row);
+      case 'coup_mortel': // à revoir
+        return new comp_combat_degat_etat($row, 'coup_mortel', 1, true);
+      case 'coup_sournois': // à revoir
+        return new comp_combat_degat_etat($row, 'coup_sournois', 1);
+      case 'attaque_vicieuse':
+        return new comp_combat_vicieuse($row);
+      case 'berzeker':
+      case 'bouclier_protecteur': // echo '&nbsp;&nbsp;<strong>'.$actif->get_nom().'</strong> intensifie sa protection magique grace à son bouclier !<br />';
+        return new comp_combat_etat($row);
+      case 'tir_vise':
+        return new comp_combat_etat($row, 'tir_vise', 2);
+      case 'fleche_etourdissante':
+        return new comp_combat_etourdi($row);
+      case 'fleche_magnetique': // à revoir
+        return new comp_combat_degat_etat($row, 'fleche_magnetique_attaque', 1);
+      case 'fleche_sable': // à revoir
+        return new comp_combat_degat_etat($row, 'fleche_sable_attaque');
+      case 'fleche_poison': // à revoir ?
+      case 'vol_a_la_tire':
+        return new comp_combat_effet($row);
+      case 'fleche_rapide': // à revoir
+        return new comp_combat_degat_etat($row, 'fleche_sanglante', 1);
+      case 'fleche_debilitante': // à revoir
+        return new comp_combat_degat_etat($row, 'fleche_debilitante_attaque', 3);
+      case 'coup_bouclier': // à revoir
+        return new comp_combat_degat_etat($row, 'coup_bouclier', 1);
+      case 'slam': // plus utilisé apparement
+        return new comp_combat_etourdi($row, false);
+      case 'frappe_derniere_chance':
+        return new comp_combat_der_chance($row);
+      case 'posture_critique':
+      case 'posture_esquive':
+      case 'posture_defense':
+      case 'posture_degat':
+      case 'posture_transperce':
+      case 'posture_paralyse':
+      case 'posture_touche':
+        return new comp_combat_posture($row);
+      case 'dissimulation':
+        return new comp_combat_dissim($row);
+      case 'attaque_cote':
+      case 'attaque_rapide':
+        return new comp_combat_pot($row);
+      case 'attaque_brutale':
+        return new comp_combat_deg_pot($row);
       default:
         return new comp_combat($row);
       }
@@ -248,13 +300,6 @@ class comp_combat extends comp
     $degat = $this->calcul_degats($actif, $passif, $effets);
     if($passif->type2 == 'batiment' AND $actif->get_race() == 'barbare') $degat = floor($degat * 1.4);
     $degat = $degat + $actif->degat_sup - $actif->degat_moins;
-    if(array_key_exists('attaque_vicieuse', $actif->etat))
-		{
-			$degat = $degat + $actif->etat['attaque_vicieuse'];
-			$passif->etat['hemorragie']['duree'] = 5;
-			$passif->etat['hemorragie']['effet'] = $actif->etat['attaque_vicieuse'];
-			echo '&nbsp;&nbsp;L\'attaque inflige une hémorragie !<br />';
-		}
   	if($degat < 0) $degat = 0;
   	if(array_key_exists('benediction', $actif->etat)) $buff_bene_degat = $actif->etat['benediction']['effet'] * $G_buff['bene_degat']; else $buff_bene_degat = 0;
   	if(array_key_exists('berzeker', $actif->etat)) $buff_berz_degat = $actif->etat['berzeker']['effet'] * $G_buff['berz_degat']; else $buff_berz_degat = 0;
@@ -348,20 +393,14 @@ class comp_combat extends comp
 			}
 			else
 			{
-				$p_e = $passif->get_enchantement();
-				if(array_key_exists('blocage', $p_e)) $enchantement_blocage = ($p_e['blocage']['effet']); else $enchantement_blocage = 0;
-				if($passif->is_buff('buff_bouclier_sacre')) $buff_blocage = 1 + ($passif->get_buff('buff_bouclier_sacre', 'effet') / 100); else $buff_blocage = 1;
-				if(array_key_exists('benediction', $passif->etat)) $buff_bene_blocage = 1 + (($passif->etat['benediction']['effet'] * $G_buff['bene_bouclier']) / 100); else $buff_bene_blocage = 1;
-				if(array_key_exists('a_c_bloque', $actif->etat)) $augmentation_chance_bloque = 1 + ($actif->etat['a_c_bloque']['effet'] / 100); else $augmentation_chance_bloque = 1;
-				if(array_key_exists('b_c_bloque', $actif->etat)) $baisse_chance_bloque = 1 + ($actif->etat['b_c_bloque']['effet'] / 100); else $baisse_chance_bloque = 1;
-				$passif->potentiel_bloquer = floor(($passif->get_blocage() + $enchantement_blocage ) * (pow($passif->get_dexterite(), 2) / 100) * $buff_bene_blocage * $buff_blocage * $augmentation_chance_bloque / ($baisse_chance_bloque));
+				$passif->get_potentiel_bloquer();
 
 				// Application des effets de blocage
 				foreach($effets as $effet)
 					$effet->calcul_bloquage($actif, $passif);
 
 				// Blocage
-				$blocage = rand(0, $passif->potentiel_bloquer);
+				$blocage = rand(0, $passif->get_potentiel_bloquer());
 				print_debug('Potentiel bloquer défenseur : '.
 										$passif->potentiel_bloquer.'<br />Attaque : '.
 										$attaque.'<br />Résultat => '.$blocage.' VS '.
@@ -481,26 +520,6 @@ class comp_combat extends comp
     global $log_combat;
   	$actif_chance_critique = ceil(pow($actif->get_dexterite(), 1.5) * 10);
 
-  	//Buff du critique
-  	if($actif->is_buff('buff_critique', true)) $actif_chance_critique *= 1 + (($actif->get_buff('buff_critique', 'effet', true)) / 100);
-  	if($actif->is_buff('buff_cri_rage', true)) $actif_chance_critique *= 1 + (($actif->get_buff('buff_cri_rage', 'effet')) / 100);
-  	if(array_key_exists('benediction', $actif->etat)) $actif_chance_critique *= 1 + (($actif->etat['benediction']['effet'] * $G_buff['bene_critique']) / 100);;
-  	if(array_key_exists('tir_vise', $actif->etat)) $actif_chance_critique *= 1 + (($actif->etat['tir_vise']['effet'] * 5) / 100);
-  	if(array_key_exists('berzeker', $actif->etat)) $actif_chance_critique *= 1 + (($actif->etat['berzeker']['effet'] * $G_buff['berz_critique']) / 100);
-  	if(array_key_exists('coup_sournois', $actif->etat)) $actif_chance_critique *= 1 + (($actif->etat['coup_sournois']['effet']) / 100);
-  	if(array_key_exists('fleche_sanglante', $actif->etat)) $actif_chance_critique *= 1 + (($actif->etat['fleche_sanglante']['effet']) / 100);
-  	if(array_key_exists('a_critique', $actif->etat)) $actif_chance_critique *= 1 + (($actif->etat['a_critique']['effet']) / 100);
-  	if(array_key_exists('b_critique', $actif->etat)) $actif_chance_critique /= 1 + (($actif->etat['b_critique']['effet']) / 100);
-    //Elfe des bois
-	  if($actif->get_race() == 'elfebois') $actif_chance_critique *= 1.15;
-  	if(array_key_exists('coup_mortel', $actif->etat))
-  	{
-  		$actif_chance_critique *= 1 + ($actif->etat['coup_mortel']['effet2']/100);
-  		unset($actif->etat['coup_mortel']);
-  	}
-    //Enchantement critique
-  	if(array_key_exists('critique', $actif->get_enchantement())) $actif_chance_critique *= 1 + (($actif->enchantement['critique']['effet']) / 100);
-    if($actif->etat['posture']['type'] == 'posture_critique') $actif_chance_critique *= 1 + (($actif->etat['posture']['effet']) / 100);
 
     // Application des effets de chance critique
     foreach($effets as $effet)
@@ -559,7 +578,269 @@ class comp_combat extends comp
       return 1;
     }
   }
+  /// Affichage du message
+  function message(&$actif)
+  {
+    echo '&nbsp;&nbsp;<strong>'.$actif->get_nom().'</strong> utilise '.$this->get_nom().'<br />';
+  }
 	// @}
 }
 
+/// Classe gérant les compétences donnant un bonus au potentiel toucher (avec éventuellement un bonus au potentiel toucher critique)
+class comp_combat_toucher extends comp_combat
+{
+  /// Méthode gérant l'utilisation d'une compétence
+  function lance(&$actif, &$passif, &$effets)
+  {
+    $actif->set_potentiel_toucher($actif->get_potentiel_toucher() * (1 + ($this->get_effet() / 100)));
+    if( $this->get_effet2() )
+      $actif->set_potentiel_critique($actif->get_potentiel_critique() * (1 * ($this->get_effet2() / 100)));
+    parent::lance($actif, $passif, $effets);
+  }
+}
+
+/// Classe gérant les compétences donnant un bonus aux dégâts (avec éventuellement un malus au potentiel toucher en effet2)
+class comp_combat_degats extends comp_combat
+{
+  /// Méthode gérant l'utilisation d'une compétence
+  function lance(&$actif, &$passif, &$effets)
+  {
+    $actif->degat_sup = $this->get_effet();
+    if( $this->get_effet2() )
+      $actif->set_potentiel_toucher($actif->get_potentiel_toucher() * (1 - ($this->get_effet2() / 100)));
+    parent::lance($actif, $passif, $effets);
+  }
+}
+
+/// Classe gérant les compétences à état en plus des dégâts
+class comp_combat_degat_etat extends comp_combat
+{
+  protected $etat; ///< État à ajouter si le sort touche
+  protected $duree_etat; ///< Durée de l'état (null s'il faut prendre le paramètre duree)
+  protected $effet_etat; ///< Effet de l'état (null s'il faut prendre le paramètre effet2)
+  function __construct($tbl, $etat=null, $duree=null, $effet=null)
+  {
+    $this->charger($tbl);
+    $this->etat = $etat;
+    $this->duree_etat = $duree;
+    $this->effet_etat = $effet;
+  }
+  /// Méthode gérant l'utilisation d'une compétence
+  function lance(&$actif, &$passif, &$effets)
+  {
+    $this->ajout_etat($actif, $passif);
+    parent::lance($actif, $passif, $effets);
+  }
+
+  /// Ajoute l'état
+  protected function ajout_etat(&$actif, &$passif)
+  {
+    if( $this->etat === null )
+      $etat = $this->get_etat_lie();
+    else
+      $etat = $this->etat;
+    $etat_explode = explode('-', $etat);
+		$qui = $etat_explode[0];
+		$etat = $etat_explode[1];
+		if( $qui[0] == 'v' )
+      $cible = &$actif;
+    else
+      $cible = &$passif;
+    if( $this->effet_etat === null )
+      $cible->etat[$etat]['effet'] =  $this->get_effet();
+    else
+      $cible->etat[$etat]['effet'] = $this->effet_etat;
+		if( $this->duree_etat === null )
+      $cible->etat[$etat]['duree'] =  $this->get_duree();
+    else
+      $cible->etat[$etat]['duree'] = $this->duree_etat;
+    $cible->etat[$etat]['effet'] = $this->get_effet2();
+  }
+}
+
+/// Classe gérant les compétences à état sans dégâts
+class comp_combat_etat extends comp_combat_degat_etat
+{
+  /// Méthode gérant l'utilisation d'une compétence
+  function lance(&$actif, &$passif, &$effets)
+  {
+    $this->ajout_etat($actif, $passif);
+  }
+}
+
+/// Classe gérant les compétences attaque vicieuse
+class comp_combat_vicieuse extends comp_combat_toucher
+{
+  /// Méthode calculant les dégâts de base avant réduction
+  function calcul_degats(&$actif, &$passif, &$effets)
+  {
+		$passif->etat['hemorragie']['duree'] = 5;
+		$passif->etat['hemorragie']['effet'] = $this->get_effet2();
+		echo '&nbsp;&nbsp;L\'attaque inflige une hémorragie !<br />';
+    return parent::calcul_degats($actif, $passif, $effets) + $this->get_effet2();
+  }
+}
+
+/// Classe gérant les compétences flèche étourdissante
+class comp_combat_etourdi extends comp_combat_degat_etat
+{
+  protected $message;  ///< Indique si on affiche un message ou non
+  /// Constructeur
+  function __construct($tbl, $msg=true)
+  {
+    $this->message = $msg;
+  }
+  /// Méthode gérant l'utilisation d'une compétence
+  function lance(&$actif, &$passif, &$effets)
+  {
+    $actif->degat_moins = $this->get_effet();
+    parent::lance($actif, $passif, $effets);
+  }
+  /// Méthode gérant ce qu'il se passe lorsque la coméptence à été utilisé avec succès
+  function touche(&$actif, &$passif, &$effets)
+  {
+    parent::touche($actif, $passif, $effets);
+    $pot_att = ($actif->get_force() + $actif->get_dexterite()) / 2;
+		$pot_deff = $passif->get_vie();
+    if( $this->test_potentiel($pot_att, $pot_deff) )
+    {
+      $this->ajout_etat($actif, $passif);
+      if( $this->message )
+        echo '&nbsp;&nbsp;<strong>'.$passif->get_nom().'</strong> est étourdi par la flêche !<br />';
+    }
+  }
+}
+
+/// Classe gérant les compétences flèche empoisonnée
+class comp_combat_poison extends comp_combat
+{
+  /// Méthode gérant l'utilisation d'une compétence
+  function lance(&$actif, &$passif, &$effets)
+  {
+    $effects[] = new fleche_poison($this->get_effet(), $this->get_effet2(), $this->get_duree());
+    parent::lance($actif, $passif, $effets);
+  }
+}
+
+/// Classe gérant les compétences flèche empoisonnée
+class comp_combat_effet extends comp_combat
+{
+  protected $classe;  ///< Classe de l'effet
+  /// Constructeur
+  function __construct($tbl, $classe=null)
+  {
+    $this->classe = $classe;
+  }
+  /// Méthode gérant l'utilisation d'une compétence
+  function lance(&$actif, &$passif, &$effets)
+  {
+    if( $this->classe )
+      $classe = $this->classe;
+    else
+      $classe = $this->get_type();
+    $effets[] = new $classe($this->get_effet(), $this->get_effet2(), $this->get_duree());
+    parent::lance($actif, $passif, $effets);
+  }
+}
+
+/// Classe gérant les compétences frappe de la dernière chance
+class comp_combat_der_chance extends comp_combat_degat_etat
+{
+  /// Constructeur
+  function __construct($tbl)
+  {
+    parent::__construct($tbl, 'derniere_chance');
+  }
+  /// Méthode gérant l'utilisation d'une compétence
+  function lance(&$actif, &$passif, &$effets)
+  {
+    $this->ajout_etat($actif, $passif);
+    $actif->set_pm($actif->get_pm() / (1 + ($actif->etat['derniere_chance']['effet'] / 100))); // à déplacer
+    $actif->degat_sup = $this->get_effet();
+    parent::lance($actif, $passif, $effets);
+  }
+}
+
+/// Classe gérant les sorts à état sans dégâts
+class comp_combat_posture extends comp_combat_degat_etat
+{
+  protected $posture; ///< Type de posture
+  function __construct($tbl, $posture)
+  {
+    parent::__construct($tbl);
+    $this->posture = $posture;
+  }
+  /// Ajoute l'état
+  protected function ajout_etat(&$actif, &$passif)
+  {
+    parent::ajout_etat($actif, $passif);
+		$actif->etat['posture']['type'] = $this->get_type();
+  }
+  /// Affichage du message
+  function message(&$actif)
+  {
+    echo '&nbsp;&nbsp;<strong>'.$actif->get_nom().'</strong> se met en '.$this->get_nom().' !<br />';
+  }
+}
+
+/// Classe gérant les sorts à état sans dégâts
+class comp_combat_dissim extends comp_combat_etat
+{
+  /// Méthode gérant l'utilisation d'une compétence
+  function lance(&$actif, &$passif, &$effets)
+  {
+    $bonus = 1;
+		if ($actif->get_type() == 'joueur')
+		{ // à déplacer
+			$objet_t = decompose_objet($actif->get_inventaire_partie('dos'));
+			if ($objet_t != '' && $objet_t['id_objet'] != '')
+			{
+				$requete = "SELECT * FROM armure WHERE ID = ".$objet_t['id_objet'];
+				//Récupération des infos de l'objet
+				$req = $db->query($requete);
+				$row = $db->read_array($req);
+				$effet = explode('-', $row['effet']);
+				if ($effet[0] == '24')
+					$bonus *= 1.5;
+			}
+		}
+		$att = $actif->get_dexterite() * $actif->get_esquive() * $bonus;
+		$def = $passif->get_volonte() * ($passif->get_pm() * 2.5);
+		echo '&nbsp;&nbsp;<strong>'.$actif->get_nom().'</strong> tente de se dissimuler...';
+		if( $this->test_potentiel($att, $deff) )
+		{
+			echo ' et réussit !<br />';
+			$this->ajout_etat($actif, $passif);
+		}
+		else
+			echo ' et échoue...<br />';
+  }
+}
+
+/// Classe gérant les compétences donnant des bonus/malus aux potentiels
+class comp_combat_pot extends comp_combat
+{
+  /// Méthode gérant l'utilisation d'une compétence
+  function lance(&$actif, &$passif, &$effets)
+  {
+    $actif->set_potentiel_toucher($actif->get_potentiel_toucher() * (1 + ($this->get_effet() / 100)));
+    if( $this->get_effet2() )
+      $actif->set_potentiel_critique($actif->get_potentiel_critique() * (1 * ($this->get_effet2() / 100)));
+    $actif->set_potentiel_bloquer($actif->get_potentiel_bloquer() / (1 + ($this->get_effet3() / 100)));
+    parent::lance($actif, $passif, $effets);
+  }
+}
+
+/// Classe gérant les compétences donnant des bonus/malus aux potentiels
+class comp_combat_deg_pot extends comp_combat
+{
+  /// Méthode gérant l'utilisation d'une compétence
+  function lance(&$actif, &$passif, &$effets)
+  {
+    $actif->degat_sup = $this->get_effet();
+    $actif->set_potentiel_critique($actif->get_potentiel_critique() * (1 * ($this->get_effet2() / 100)));
+    $actif->set_potentiel_bloquer($actif->get_potentiel_bloquer() / (1 + ($this->get_effet3() / 100)));
+    parent::lance($actif, $passif, $effets);
+  }
+}
 ?>
