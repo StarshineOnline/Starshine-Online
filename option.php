@@ -108,7 +108,7 @@ $joueur = new perso($_SESSION['ID']);
 									$requete = "UPDATE perso SET password = '".md5($new_pass)."' WHERE ID = ".$_SESSION['ID'];
 									if($db->query($requete))
 									{
-										require('connect_forum.php');
+										require_once('connect_forum.php');
 										$requete = "UPDATE punbbusers SET password = '".sha1($new_pass)."' WHERE username = '".$_SESSION['nom']."'";
 										$db_forum->query($requete);
 										echo '<h6>Votre mot de passe a bien été modifié !</h6>';
@@ -251,7 +251,7 @@ $joueur = new perso($_SESSION['ID']);
 						$perso->set_statut('ban');
 						$perso->set_fin_ban((time() + (3600 * 24 * 36500)));
 						$perso->sauver();
-						require('connect_forum.php');
+						require_once('connect_forum.php');
 						$groupe = $perso->get_groupe();
 						if($groupe != 0)
 						{	degroup($perso->get_id(), $groupe->get_id());}

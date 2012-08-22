@@ -468,6 +468,12 @@ class entite extends placable
 
 		return $buffe;
 	}
+	
+	/// Lance un débuff sur l'entité lors d'un combat (uniquement sur un personnage)
+  function lance_debuff($debuff)
+  {
+    return false;
+  }
   // @}
 
   /**
@@ -644,9 +650,10 @@ class entite extends placable
 	public $reserve;           ///< Réserve de mana.
 	public $rm_restant;           ///< Réserve de mana restante.
 	protected $distance_tir;     ///< Distance de tir
-	public $potentiel_bloquer; ///< Potentiel bloquer
 	public $potentiel_toucher;  ///< Potentiel toucher physique
 	public $potentiel_parer;  ///< Potentiel parer physique
+	protected $potentiel_bloquer;  ///< Potentiel bloquer
+	protected $potentiel_critique;  ///< Potentiel critique physique
 	protected $potentiel_magique;  ///< Potentiel lancer magique
 	protected $comp_att;       ///< Coméptence utilisé pour attaquer
 	/// Renvoie le contenu du script de combat utilisé
@@ -740,6 +747,8 @@ class entite extends placable
   	if(array_key_exists('derniere_chance', $this->etat)) $this->potentiel_parer /= 1 + (($this->etat['derniere_chance']['effet']) / 100);
   	if($this->etat['posture']['type'] == 'posture_esquive') $this->potentiel_parer *= 1 + (($this->etat['posture']['effet']) / 100);
   	if($this->etat['posture']['type'] == 'posture_vent') $this->potentiel_parer *= 1 + (($this->etat['posture']['effet']) / 100);
+  	if($this->is_buff('buff_evasion')) $this->potentiel_parer *= 1 + ($this->get_buff('buff_evasion', 'effet') / 100);
+  	if($this->is_buff('buff_cri_detresse')) $this->potentiel_parer *= 1 + (($this->get_buff('buff_cri_detresse', 'effet')) / 100);
   	
   	if($this->get_race() == 'elfebois') $this->potentiel_parer *= 1.15;
 
@@ -749,6 +758,57 @@ class entite extends placable
 	function set_potentiel_parer($valeur)
 	{
 		$this->potentiel_parer = $valeur;
+	}
+	/// Modifie le potentiel bloquer
+	function get_potentiel_bloquer()
+	{
+		global $G_buff;
+    if( isset($this->potentiel_bloquer) && $this->potentiel_bloquer )
+      return $this->potentiel_bloquer;
+    $p_e = $this->get_enchantement();
+		if(array_key_exists('blocage', $p_e)) $enchantement_blocage = ($p_e['blocage']['effet']); else $enchantement_blocage = 0;
+		if($this->is_buff('buff_bouclier_sacre')) $buff_blocage = 1 + ($this->get_buff('buff_bouclier_sacre', 'effet') / 100); else $buff_blocage = 1;
+		if(array_key_exists('benediction', $this->etat)) $buff_bene_blocage = 1 + (($this->etat['benediction']['effet'] * $G_buff['bene_bouclier']) / 100); else $buff_bene_blocage = 1;
+		$this->potentiel_bloquer = floor(($this->get_blocage() + $enchantement_blocage ) * (pow($this->get_dexterite(), 2) / 100) * $buff_bene_blocage * $buff_blocage);
+		return $this->potentiel_bloquer;
+	}
+	/// Modifie le potentiel bloquer
+	function set_potentiel_bloquer($valeur)
+	{
+		$this->potentiel_bloquer = $valeur;
+	}
+	/// Modifie le potentiel critique physique
+	function get_potentiel_critique()
+	{
+		global $G_buff;
+    if( isset($this->potentiel_critique) && $this->potentiel_critique )
+      return $this->potentiel_critique;
+
+    $this->potentiel_critique = ceil(pow($this->get_dexterite(), 1.5) * 10);
+  	//Buff du critique
+  	if($this->is_buff('buff_critique', true)) $this->potentiel_critique *= 1 + (($this->get_buff('buff_critique', 'effet', true)) / 100);
+  	if($this->is_buff('buff_cri_rage', true)) $this->potentiel_critique *= 1 + (($this->get_buff('buff_cri_rage', 'effet')) / 100);
+  	if(array_key_exists('benediction', $this->etat)) $this->potentiel_critique *= 1 + (($this->etat['benediction']['effet'] * $G_buff['bene_critique']) / 100);;
+  	if(array_key_exists('tir_vise', $this->etat)) $this->potentiel_critique *= 1 + (($this->etat['tir_vise']['effet'] * 5) / 100);
+  	if(array_key_exists('berzeker', $this->etat)) $this->potentiel_critique *= 1 + (($this->etat['berzeker']['effet'] * $G_buff['berz_critique']) / 100);
+  	if(array_key_exists('coup_sournois', $this->etat)) $this->potentiel_critique *= 1 + (($this->etat['coup_sournois']['effet']) / 100);
+  	if(array_key_exists('fleche_sanglante', $this->etat)) $this->potentiel_critique *= 1 + (($this->etat['fleche_sanglante']['effet']) / 100);
+    //Elfe des bois
+	  if($this->get_race() == 'elfebois') $this->potentiel_critique *= 1.15;
+  	if(array_key_exists('coup_mortel', $this->etat))
+  	{
+  		$this->potentiel_critique *= 1 + ($this->etat['coup_mortel']['effet2']/100);
+  		unset($this->etat['coup_mortel']);
+  	}
+    //Enchantement critique
+  	if(array_key_exists('critique', $this->get_enchantement())) $this->potentiel_critique *= 1 + (($this->enchantement['critique']['effet']) / 100);
+    if($this->etat['posture']['type'] == 'posture_critique') $this->potentiel_critique *= 1 + (($this->etat['posture']['effet']) / 100);
+		return $this->potentiel_critique;
+	}
+	/// Modifie le potentiel critique physique
+	function set_potentiel_critique($valeur)
+	{
+		$this->potentiel_critique = $valeur;
 	}
 	/**
 	 * Calcul et renvoie le potentiel toucher physique
@@ -804,6 +864,8 @@ class entite extends placable
     if($this->get_arme_type() == 'arc') $this->set_comp_att('distance'); else $this->set_comp_att('melee');
     unset($this->potentiel_toucher);
     unset($this->potentiel_parer);
+    unset($this->potentiel_bloquer);
+    unset($this->potentiel_critique);
     unset($this->potentiel_magique);
 		$this->degat_sup = 0;
 		$this->degat_moins = 0;
@@ -1134,6 +1196,7 @@ class entite extends placable
 		  break;
     case 'joueur' :
       $objet = new perso($src->get_id());
+      $objet->check_specials();
 			$objet->action = $src->action_do;
 			switch ($objet->arme_type)
 				{

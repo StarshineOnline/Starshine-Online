@@ -272,11 +272,12 @@ class comp_invocation_pet extends comp_jeu
   function lance($perso)
   {
     global $db;
+	$perso->check_materiel();
 		$id_pet = 0;
 		switch (strtolower($perso->get_classe()))
 		{
 			case 'dresseur':
-				$pet = 'Mammouth';
+				$pet = 'Esprit des forêts';
 				break;
 			case 'druide ollamh':
 				$pet = 'Ange';

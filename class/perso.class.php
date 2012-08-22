@@ -412,9 +412,9 @@ class perso extends entite
 		else
 			return $this->forcex + $this->get_bonus_permanents('forcex');
 	}
-	function get_force() 
+	function get_force($base = false) 
 	{ 
-		return $this->get_forcex(); 
+		return $this->get_forcex($base); 
 	}
 	/// Modifie la force
 	function set_forcex($forcex)
@@ -2153,7 +2153,7 @@ class perso extends entite
    */
 	function check_perso($last_action = true)
 	{
-		$this->check_materiel();
+		$this->check_specials();
 		$modif = false;	 // Indique si le personnage a été modifié.
 		global $db, $G_temps_regen_hp, $G_temps_maj_hp, $G_temps_maj_mp, $G_temps_PA, $G_PA_max, $G_pourcent_regen_hp, $G_pourcent_regen_mp;
 		// On vérifie que le personnage est vivant
@@ -2384,8 +2384,7 @@ class perso extends entite
       // On ne doit pas avoir trop de pets
       if ($this->nb_pet() > $this->get_max_pet())
       {
-        $new_nb_pet = max(1, $this->get_max_pet() - 1);
-        while ($this->nb_pet() > $new_nb_pet)
+        while ($this->nb_pet() > $this->get_max_pet())
         {
 			    $ecurie = $this->get_pets();
           $pet_to_del_nb = rand(0, $this->nb_pet() - 1);
@@ -2431,7 +2430,7 @@ class perso extends entite
 		$this->camouflage = 'demon';
 		foreach (array('forcex', 'dexterite', 'vie', 'puissance', 'volonte', 'energie') as $bonus)
 			$this->add_bonus_permanents($bonus, 6);
-		foreach (array('melee', 'tir', 'incantation') as $bonus)
+		foreach (array('melee', 'distance', 'incantation') as $bonus)
 			$this->add_bonus_permanents($bonus, 400);
 	}
   
@@ -3117,6 +3116,7 @@ class perso extends entite
   function fin_combat_pvp($ennemi, $defense, $batiment=false)
   {
     global $db, $G_xp_rate, $G_range_level, $G_crime, $Gtrad;
+		
     if( $this->get_hp() <= 0 )
     {
 			$this->trigger_arene();
@@ -3133,26 +3133,23 @@ class perso extends entite
 			$achiev->set_compteur($achiev->get_compteur() + 1);
 			$achiev->sauver();
 			
-			if( $defense )
+			if(!$defense) //Si le perso est mort en PvP en n'etant pas en defense (<=> il est mort en attaque)
 			{
-  			if($defenseur_en_defense)
-  			{
-  				// Augmentation du compteur de l'achievement
-  				$achiev = $perso->get_compteur('kill_defense');
-  				$achiev->set_compteur($achiev->get_compteur() + 1);
-  				$achiev->sauver();
-  			}
-  			if ($this->get_nom() == 'Irulan')
-  			{
-  				$actif->unlock_achiev('kill_bastounet');
-  			}
-  			if ($this->get_crime() > 0)
-  			{
-  				$achiev = $ennemi->get_compteur('dredd');
-  				$achiev->set_compteur($ennemi->get_compteur() + 1);
-  				$achiev->sauver();
-  			}
-      }
+				// Augmentation du compteur de l'achievement
+				$achiev = $ennemi->get_compteur('kill_defense');
+				$achiev->set_compteur($achiev->get_compteur() + 1);
+				$achiev->sauver();
+			}
+			
+			if ($this->get_nom() == 'Irulan')
+				$ennemi->unlock_achiev('kill_bastounet');
+			
+			if ($this->get_crime() > 0)
+			{
+				$achiev = $ennemi->get_compteur('dredd');
+				$achiev->set_compteur($achiev->get_compteur() + 1);
+				$achiev->sauver();
+			}
 
 			//Gain d'expérience
 			$xp = $this->get_level() * 100 * $G_xp_rate;

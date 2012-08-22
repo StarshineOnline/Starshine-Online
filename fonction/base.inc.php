@@ -2408,14 +2408,18 @@ function affiche_ligne_journal($row)
 {
 	$date = strtotime($row['time']);
 	$date = date("j/m H:i", $date);
+	$perso = new perso($_SESSION['ID']);
 	switch($row['action'])
 	{
 		case 'attaque' :
-			return '<li class="jdegat"><span class="small">['.$date.']</span> Vous attaquez '.$row['passif'].' et lui faites '.$row['valeur'].' dégâts, il vous en fait '.$row['valeur2'].' - <a href="#" onClick="return envoiInfo(\'journal_combat.php?id='.$row['id'].'\',\'information\')">Voir</a></li>';
+			if ($row['actif'] != $perso->get_nom()) // Equivaut à : l'attaquant est le pet
+				return '<li class="jdegat"><span class="small">['.$date.']</span> Vous attaquez '.$row['passif'].' avec '.$row['actif'].' et lui faites '.$row['valeur'].' dégâts, il lui en fait '.$row['valeur2'].' - <a href="#" onClick="return envoiInfo(\'journal_combat.php?id='.$row['id'].'\',\'information\')">Voir</a></li>';
+			else
+				return '<li class="jdegat"><span class="small">['.$date.']</span> Vous attaquez '.$row['passif'].' et lui faites '.$row['valeur'].' dégâts, il vous en fait '.$row['valeur2'].' - <a href="#" onClick="return envoiInfo(\'journal_combat.php?id='.$row['id'].'\',\'information\')">Voir</a></li>';
 		break;
 		case 'defense' :
-			if ($row['actif'] != $_SESSION['nom']) // Equivaut à : le defenseur est le pet
-				return '<li class="jrdegat"><span class="small">['.$date.']</span> '.$row['passif'].' a attaqué votre '.$row['actif'].' et fait '.$row['valeur'].' dégâts et votre '.$row['actif'].' fait '.$row['valeur2'].' - <a href="#" onClick="return envoiInfo(\'journal_combat.php?id='.$row['id'].'\',\'information\')">Voir</a></li>';
+			if ($row['actif'] != $perso->get_nom()) // Equivaut à : le defenseur est le pet
+				return '<li class="jrdegat"><span class="small">['.$date.']</span> '.$row['passif'].' a attaqué '.$row['actif'].' et fait '.$row['valeur'].' dégâts et '.$row['actif'].' fait '.$row['valeur2'].' - <a href="#" onClick="return envoiInfo(\'journal_combat.php?id='.$row['id'].'\',\'information\')">Voir</a></li>';
 			else
 				return '<li class="jrdegat"><span class="small">['.$date.']</span> '.$row['passif'].' vous a attaqué et fait '.$row['valeur'].' dégâts et vous lui faites '.$row['valeur2'].' - <a href="#" onClick="return envoiInfo(\'journal_combat.php?id='.$row['id'].'\',\'information\')">Voir</a></li>';
 		break;

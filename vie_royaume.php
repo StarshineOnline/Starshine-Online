@@ -25,7 +25,7 @@ $R->get_diplo($joueur->get_race());
 //Uniquement si le joueur se trouve sur une case de ville
 if($W_row['type'] == 1)
 {
-	include('ville_bas.php');
+	include_once('ville_bas.php');
 	//Si on est dans notre royaume
 	if($R->get_diplo($joueur->get_race()) == 127)
 	{

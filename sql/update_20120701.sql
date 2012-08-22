@@ -1,0 +1,11 @@
+UPDATE sort_combat SET duree = 10 WHERE type LIKE 'benediction';
+UPDATE sort_combat SET duree = 11 WHERE type LIKE 'recuperation';
+UPDATE sort_combat SET duree = 3, effet2 = 10, etat_lie = 'ane-glace_anticipe' WHERE type LIKE 'sphere_glace';
+UPDATE sort_combat SET duree = 5, effet2 = 1 WHERE type LIKE 'embrasement';
+UPDATE sort_combat SET duree = effet WHERE type LIKE 'paralysie';
+UPDATE sort_combat SET duree = 20 WHERE type LIKE 'aura_%';
+UPDATE arme SET melee = 1600 WHERE id = 72;
+UPDATE arme SET melee = 1360 WHERE id = 78;
+UPDATE arme SET distance = 1360 WHERE id = 70;
+UPDATE grade SET honneur = 90000 WHERE id = 10;
+UPDATE grade SET honneur = 0 WHERE id = 1;

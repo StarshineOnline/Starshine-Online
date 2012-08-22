@@ -2,7 +2,7 @@
 if (file_exists('../root.php'))
   include_once('../root.php');
 
-require('haut_roi.php');
+require_once('haut_roi.php');
 
 //check_case('all');
 $R = new royaume($Trace[$joueur->get_race()]['numrace']);

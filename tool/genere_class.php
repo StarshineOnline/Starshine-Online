@@ -5,8 +5,8 @@
  * Description : permet de générer une class associée a une table MySQL
  */
 $root = '../';
-include($root.'class/db.class.php');
-include($root.'connect.php');
+include_once($root.'class/db.class.php');
+include_once($root.'connect.php');
 
 if(array_key_exists('table', $_POST))
 {
