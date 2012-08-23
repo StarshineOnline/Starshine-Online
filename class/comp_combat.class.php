@@ -3,6 +3,7 @@
  * @file comp_combat.class.php
  * Définition de la classe comp_combat servant de base aux compétences de combat
  */
+include_once(root.'class/competence.class.php');
 
 /**
  * Classe comp_combat
@@ -132,31 +133,31 @@ class comp_combat extends comp
       case 'tir_puissant':
         return new comp_combat_degats($row);
       case 'coup_mortel': // à revoir
-        return new comp_combat_degat_etat($row, 'coup_mortel', 1, true);
+        return new comp_combat_degat_etat($row, 'v-coup_mortel', 1, true);
       case 'coup_sournois': // à revoir
-        return new comp_combat_degat_etat($row, 'coup_sournois', 1);
+        return new comp_combat_degat_etat($row, 'v-coup_sournois', 1);
       case 'attaque_vicieuse':
         return new comp_combat_vicieuse($row);
       case 'berzeker':
-      case 'bouclier_protecteur': // echo '&nbsp;&nbsp;<strong>'.$actif->get_nom().'</strong> intensifie sa protection magique grace à son bouclier !<br />';
-        return new comp_combat_etat($row);
+        return new comp_combat_etat($row, 'passe en mode '.$row['nom']);
+      case 'bouclier_protecteur':
+        return new comp_combat_etat($row, 'intensifie sa protection magique grace à son bouclier !');
       case 'tir_vise':
-        return new comp_combat_etat($row, 'tir_vise', 2);
+        return new comp_combat_etat($row, 'se concentre pour viser !', 'v-tir_vise', 2);
       case 'fleche_etourdissante':
         return new comp_combat_etourdi($row);
       case 'fleche_magnetique': // à revoir
-        return new comp_combat_degat_etat($row, 'fleche_magnetique_attaque', 1);
-      case 'fleche_sable': // à revoir
-        return new comp_combat_degat_etat($row, 'fleche_sable_attaque');
-      case 'fleche_poison': // à revoir ?
+        return new comp_combat_effet($row, new fleche_magnetique($row['effet2'], $row['effet']));
+      case 'fleche_poison':
       case 'vol_a_la_tire':
+      case 'fleche_sable':
         return new comp_combat_effet($row);
       case 'fleche_rapide': // à revoir
-        return new comp_combat_degat_etat($row, 'fleche_sanglante', 1);
+        return new comp_combat_degat_etat($row, 'v-fleche_sanglante', 1);
       case 'fleche_debilitante': // à revoir
-        return new comp_combat_degat_etat($row, 'fleche_debilitante_attaque', 3);
+        return new comp_combat_degat_etat($row);
       case 'coup_bouclier': // à revoir
-        return new comp_combat_degat_etat($row, 'coup_bouclier', 1);
+        return new comp_combat_coup_bouclier($row);
       case 'slam': // plus utilisé apparement
         return new comp_combat_etourdi($row, false);
       case 'frappe_derniere_chance':
@@ -177,11 +178,12 @@ class comp_combat extends comp
       case 'attaque_brutale':
         return new comp_combat_deg_pot($row);
       default:
+        print_debug('Compétence non gérée : '.$row['type'].'<br/>');
         return new comp_combat($row);
       }
   	}
   }
-  
+
   /// Méthode renvoyant une instance correspondant à une attaque simple
   static function creer_attaque()
   {
@@ -205,7 +207,7 @@ class comp_combat extends comp
   {
     global $log_combat, $G_round_total, $comp_attaque;
 
-  	$augmentation = array('actif' => array('comp' => array(), 'comp_perso' => array()),
+  	/*$augmentation = array('actif' => array('comp' => array(), 'comp_perso' => array()),
 													'passif' => array('comp' => array(), 'comp_perso' => array()));
   	$ups = array();
 
@@ -213,13 +215,14 @@ class comp_combat extends comp
 		$round = is_donjon($actif->get_x(), $actif->get_y()) ? $G_round_total * 2 : $G_round_total;
 		if ($actif->get_race() == 'orc' || $passif->get_race() == 'orc')
 			$round += 1;
-		$rectif_augm = $round / $G_round_total;
-		
+		//$rectif_augm = $round / $G_round_total;*/
+
 		$log_combat .= 'c'.$this->get_id();
   	// Application des effets de début de round
   	foreach($effets as $effet)
   		$effet->debut_round($actif, $passif);
-  		
+
+    $this->message($actif);
     // Test pour toucher
   	$potentiel_toucher = $actif->get_potentiel_toucher();
 		foreach($effets as $effet)
@@ -239,38 +242,6 @@ class comp_combat extends comp
   		$log_combat .= '~e';
     }
 
-  	//Augmentation des compétences de base
-  	$diff_att = (3.2 * $G_round_total / 5) * $rectif_augm;
-  	$augmentation['actif']['comp'][] = array($competence, $diff_att);
-  	$diff_esquive = (2.7 * $G_round_total / 5) * $rectif_augm;
-  	$augmentation['passif']['comp'][] = array('esquive', $diff_esquive);
-
-  	//Augmentation des compétences liées
-  	if($actif->is_competence('art_critique') && $critique)
-  		$augmentation['actif']['comp_perso'][] = array('art_critique', 2.5 * $rectif_augm);
-  	if($actif->is_competence('maitrise_critique') && $critique)
-  		$augmentation['actif']['comp_perso'][] = array('maitrise_critique', 2 * $rectif_augm);
-  	$arme = $actif->get_arme_type();
-  	if($actif->is_competence("maitrise_$arme"))
-  		$augmentation['actif']['comp_perso'][] = array("maitrise_$arme", 6 * $rectif_augm);
-
-		if($comp_attaque)
-		{
-			$aug2 = attaque($mode, ${$mode}->get_comp_att(), $effects);
-			$augmentations = merge_augmentations($augmentations, $aug2);
-			$count = count($ups);
-			if($count > 0)
-			{
-				$upi = 0;
-				while($upi < $count)
-				{
-					$requete = "UPDATE comp_perso SET valeur = ".${$mode}['competences'][$ups[$upi]]." WHERE id_perso = ".${$mode}->get_id()." AND competence = '".$ups[$upi]."'";
-					$db->query($requete);
-					$upi++;
-				}
-			}
-		}
-		
   	/*if ($acteur == 'attaquant')
     {
       $attaquant = $actif;
@@ -285,9 +256,9 @@ class comp_combat extends comp
 	    $log_effects_defenseur = $log_effects_actif;
 	    $log_effects_attaquant = $log_effects_passif;
     }*/
-	 return $augmentation;
+	 return $this->get_augmentations($actif, $passif);
   }
-  
+
   /**
    * Méthode gérant ce qu'il se passe lorsque la coméptence à été utilisé avec succès
    * @param  $actif   Personnage utuilisant la coméptence
@@ -313,19 +284,19 @@ class comp_combat extends comp
   	// Application des effets de degats
   	foreach($effets as $effet)
 			$degat = $effet->calcul_degats($actif, $passif, $degat);
-			
+
     if($passif->bouclier())
       $degat = $this->bouclier($degat, $actif, $passif, $effets);
    	//Posture défensive
     if($passif->etat['posture']['type'] == 'posture_defense') $buff_posture_defense = $passif->etat['posture']['effet']; else $buff_posture_defense = 0;
     $degat = $degat - $buff_posture_defense;
     if($degat < 0) $degat = 0;
-    
+
     if(array_key_exists('coup_mortel', $actif->etat))
 		{
 			$degat = $degat * 3;
 		}
-    
+
     $reduction = $this->armure($actif, $passif, $effets);
     $degat_avant = $degat;
     $degat = round($degat * $reduction);
@@ -335,7 +306,7 @@ class comp_combat extends comp
 		print_debug("Dégâts de base : $degat, multiplicateur : $multiplicateur<br />");
 		$degat = round($degat * $multiplicateur);
 		$degat_avant = round($degat_avant * $multiplicateur);
-		
+
 		$reduction = $degat_avant - $degat;
     echo '&nbsp;&nbsp;<span class="degat"><strong>'.$actif->get_nom().'</strong> inflige <strong>'.$degat.'</strong> dégâts</span><br />';
     $log_combat .= '~'.$degat;
@@ -347,7 +318,7 @@ class comp_combat extends comp
 			$degat = $effet->inflige_degats($actif, $passif, $degat);
     $passif->set_hp($passif->get_hp() - $degat);
   }
-  
+
   /**
    * Méthode calculant les dégâts de base avant réduction
    * @param  $actif   Personnage utuilisant la compétence
@@ -377,7 +348,7 @@ class comp_combat extends comp
 			print_debug($dbg_msg);
 			return $degat;
   }
-  
+
   /**
    * Méthode gérant l'action du bouclier
    * @param  $degat   Dégâts avant action du bouclier
@@ -402,7 +373,7 @@ class comp_combat extends comp
 				// Blocage
 				$blocage = rand(0, $passif->get_potentiel_bloquer());
 				print_debug('Potentiel bloquer défenseur : '.
-										$passif->potentiel_bloquer.'<br />Attaque : '.
+										$passif->get_potentiel_bloquer().'<br />Attaque : '.
 										$attaque.'<br />Résultat => '.$blocage.' VS '.
 										$attaque.'<br />');
 				//Si le joueur bloque
@@ -498,7 +469,7 @@ class comp_combat extends comp
     foreach($effets as $effet)
 			$PP = $effet->calcul_pp($actif, $passif, $PP);
 		$passif->PP_effective = $PP;
-		
+
     if(!$transperce) $reduction = calcul_pp($PP);
 		else
 		{
@@ -526,7 +497,6 @@ class comp_combat extends comp
 		  $actif_chance_critique = $effet->calcul_critique($actif, $passif, $actif_chance_critique);
 
     $chance = rand(0, 10000);
-  	$critique = false;
 	  print_debug('Potentiel critique attaquant : '.$actif_chance_critique.
 							' / 10000<br />Résultat => '.$chance.
 							' doit être inférieur au Potentiel critique<br />');
@@ -578,10 +548,67 @@ class comp_combat extends comp
       return 1;
     }
   }
+  /**
+   * Donne la liste des compétences pouvant augmenter.
+   * @param  $actif   Personnage utuilisant la coméptence
+   * @param  $passif  Personnage adverse
+   */
+  function get_augmentations(&$actif, &$passif)
+  {
+    global $G_round_total, $comp_attaque;
+    
+  	$augmentation = array('actif' => array('comp' => array(), 'comp_perso' => array()),
+													'passif' => array('comp' => array(), 'comp_perso' => array()));
+  	$ups = array();
+
+  	//Réctification si c'est un orc ou un donjon
+		$round = is_donjon($actif->get_x(), $actif->get_y()) ? $G_round_total * 2 : $G_round_total;
+		if ($actif->get_race() == 'orc' || $passif->get_race() == 'orc')
+			$round += 1;
+		$rectif_augm = $round / $G_round_total;
+
+  	//Augmentation des compétences de base
+  	$diff_att = (3.2 * $G_round_total / 5) * $rectif_augm;
+  	$augmentation['actif']['comp'][] = array($actif->get_comp_att(), $diff_att);
+  	$diff_esquive = (2.7 * $G_round_total / 5) * $rectif_augm;
+  	$augmentation['passif']['comp'][] = array('esquive', $diff_esquive);
+
+  	//Augmentation des compétences liées
+  	if( isset($actif->precedent['critique']) && $actif->precedent['critique'] )
+  	{
+    	if( $actif->is_competence('art_critique') )
+    		$augmentation['actif']['comp_perso'][] = array('art_critique', 2.5 * $rectif_augm);
+    	if( $actif->is_competence('maitrise_critique') )
+    		$augmentation['actif']['comp_perso'][] = array('maitrise_critique', 2 * $rectif_augm);
+    }
+  	$arme = $actif->get_arme_type();
+  	if($actif->is_competence("maitrise_$arme"))
+  		$augmentation['actif']['comp_perso'][] = array("maitrise_$arme", 6 * $rectif_augm);
+
+		if($comp_attaque)
+		{
+			$aug2 = attaque($mode, ${$mode}->get_comp_att(), $effects);
+			$augmentations = merge_augmentations($augmentations, $aug2);
+			$count = count($ups);
+			if($count > 0)
+			{
+				$upi = 0;
+				while($upi < $count)
+				{
+					$requete = "UPDATE comp_perso SET valeur = ".${$mode}['competences'][$ups[$upi]]." WHERE id_perso = ".${$mode}->get_id()." AND competence = '".$ups[$upi]."'";
+					$db->query($requete);
+					$upi++;
+				}
+			}
+		}
+
+    return $augmentation;
+  }
   /// Affichage du message
   function message(&$actif)
   {
-    echo '&nbsp;&nbsp;<strong>'.$actif->get_nom().'</strong> utilise '.$this->get_nom().'<br />';
+    if( $this->get_nom() )
+      echo '&nbsp;&nbsp;<strong>'.$actif->get_nom().'</strong> utilise '.$this->get_nom().'<br />';
   }
 	// @}
 }
@@ -595,7 +622,7 @@ class comp_combat_toucher extends comp_combat
     $actif->set_potentiel_toucher($actif->get_potentiel_toucher() * (1 + ($this->get_effet() / 100)));
     if( $this->get_effet2() )
       $actif->set_potentiel_critique($actif->get_potentiel_critique() * (1 * ($this->get_effet2() / 100)));
-    parent::lance($actif, $passif, $effets);
+    return parent::lance($actif, $passif, $effets);
   }
 }
 
@@ -608,7 +635,7 @@ class comp_combat_degats extends comp_combat
     $actif->degat_sup = $this->get_effet();
     if( $this->get_effet2() )
       $actif->set_potentiel_toucher($actif->get_potentiel_toucher() * (1 - ($this->get_effet2() / 100)));
-    parent::lance($actif, $passif, $effets);
+    return parent::lance($actif, $passif, $effets);
   }
 }
 
@@ -629,7 +656,7 @@ class comp_combat_degat_etat extends comp_combat
   function lance(&$actif, &$passif, &$effets)
   {
     $this->ajout_etat($actif, $passif);
-    parent::lance($actif, $passif, $effets);
+    return parent::lance($actif, $passif, $effets);
   }
 
   /// Ajoute l'état
@@ -661,10 +688,21 @@ class comp_combat_degat_etat extends comp_combat
 /// Classe gérant les compétences à état sans dégâts
 class comp_combat_etat extends comp_combat_degat_etat
 {
+  protected $message; ///< État à ajouter si le sort touche
+  function __construct($tbl, $msg=null, $etat=null, $duree=null, $effet=null)
+  {
+    parent::__construct($tbl, $etat, $duree, $effet);
+    $this->message = $msg;
+  }
   /// Méthode gérant l'utilisation d'une compétence
   function lance(&$actif, &$passif, &$effets)
   {
     $this->ajout_etat($actif, $passif);
+    if( $this->message )
+      echo '&nbsp;&nbsp;<strong>'.$actif->get_nom().'</strong> '.$this->message.'<br />';
+    else
+      $this->message($actif);
+    return $this->get_augmentations($actif, $passif);
   }
 }
 
@@ -688,13 +726,14 @@ class comp_combat_etourdi extends comp_combat_degat_etat
   /// Constructeur
   function __construct($tbl, $msg=true)
   {
+    $this->charger($tbl);
     $this->message = $msg;
   }
   /// Méthode gérant l'utilisation d'une compétence
   function lance(&$actif, &$passif, &$effets)
   {
     $actif->degat_moins = $this->get_effet();
-    parent::lance($actif, $passif, $effets);
+    return comp_combat::lance($actif, $passif, $effets);
   }
   /// Méthode gérant ce qu'il se passe lorsque la coméptence à été utilisé avec succès
   function touche(&$actif, &$passif, &$effets)
@@ -711,35 +750,30 @@ class comp_combat_etourdi extends comp_combat_degat_etat
   }
 }
 
-/// Classe gérant les compétences flèche empoisonnée
-class comp_combat_poison extends comp_combat
-{
-  /// Méthode gérant l'utilisation d'une compétence
-  function lance(&$actif, &$passif, &$effets)
-  {
-    $effects[] = new fleche_poison($this->get_effet(), $this->get_effet2(), $this->get_duree());
-    parent::lance($actif, $passif, $effets);
-  }
-}
-
-/// Classe gérant les compétences flèche empoisonnée
+/// Classe gérant les compétences utilisant des effets
 class comp_combat_effet extends comp_combat
 {
-  protected $classe;  ///< Classe de l'effet
+  protected $effet;  ///< Classe de l'effet
   /// Constructeur
-  function __construct($tbl, $classe=null)
+  function __construct($tbl, $effet=null)
   {
-    $this->classe = $classe;
+    $this->charger($tbl);
+    $this->effet = $effet;
   }
   /// Méthode gérant l'utilisation d'une compétence
   function lance(&$actif, &$passif, &$effets)
   {
-    if( $this->classe )
-      $classe = $this->classe;
+    if( is_object($this->effet) )
+      $effets[] = $this->effet;
     else
-      $classe = $this->get_type();
-    $effets[] = new $classe($this->get_effet(), $this->get_effet2(), $this->get_duree());
-    parent::lance($actif, $passif, $effets);
+    {
+      if( is_string($this->effet) )
+        $classe = $this->effet;
+      else
+        $classe = $this->get_type();
+      $effets[] = new $classe($this->get_effet(), $this->get_effet2(), $this->get_duree());
+    }
+    return parent::lance($actif, $passif, $effets);
   }
 }
 
@@ -757,18 +791,16 @@ class comp_combat_der_chance extends comp_combat_degat_etat
     $this->ajout_etat($actif, $passif);
     $actif->set_pm($actif->get_pm() / (1 + ($actif->etat['derniere_chance']['effet'] / 100))); // à déplacer
     $actif->degat_sup = $this->get_effet();
-    parent::lance($actif, $passif, $effets);
+    return parent::lance($actif, $passif, $effets);
   }
 }
 
 /// Classe gérant les sorts à état sans dégâts
 class comp_combat_posture extends comp_combat_degat_etat
 {
-  protected $posture; ///< Type de posture
-  function __construct($tbl, $posture)
+  function __construct($tbl)
   {
-    parent::__construct($tbl);
-    $this->posture = $posture;
+    parent::__construct($tbl, 'v-posture');
   }
   /// Ajoute l'état
   protected function ajout_etat(&$actif, &$passif)
@@ -789,6 +821,7 @@ class comp_combat_dissim extends comp_combat_etat
   /// Méthode gérant l'utilisation d'une compétence
   function lance(&$actif, &$passif, &$effets)
   {
+    global $db;
     $bonus = 1;
 		if ($actif->get_type() == 'joueur')
 		{ // à déplacer
@@ -814,6 +847,7 @@ class comp_combat_dissim extends comp_combat_etat
 		}
 		else
 			echo ' et échoue...<br />';
+    return $this->get_augmentations($actif, $passif);
   }
 }
 
@@ -827,7 +861,7 @@ class comp_combat_pot extends comp_combat
     if( $this->get_effet2() )
       $actif->set_potentiel_critique($actif->get_potentiel_critique() * (1 * ($this->get_effet2() / 100)));
     $actif->set_potentiel_bloquer($actif->get_potentiel_bloquer() / (1 + ($this->get_effet3() / 100)));
-    parent::lance($actif, $passif, $effets);
+    return parent::lance($actif, $passif, $effets);
   }
 }
 
@@ -840,7 +874,41 @@ class comp_combat_deg_pot extends comp_combat
     $actif->degat_sup = $this->get_effet();
     $actif->set_potentiel_critique($actif->get_potentiel_critique() * (1 * ($this->get_effet2() / 100)));
     $actif->set_potentiel_bloquer($actif->get_potentiel_bloquer() / (1 + ($this->get_effet3() / 100)));
-    parent::lance($actif, $passif, $effets);
+    return parent::lance($actif, $passif, $effets);
+  }
+}
+
+/// Classe gérant les compétences donnant des bonus/malus aux potentiels
+class comp_combat_coup_bouclier extends comp_combat_degat_etat
+{
+  /// Méthode gérant l'utilisation d'une compétence
+  function lance(&$actif, &$passif, &$effets)
+  {
+    return comp_combat::lance($actif, $passif, $effets);
+  }
+  /// Méthode calculant les dégâts de base avant réduction
+  function calcul_degats(&$actif, &$passif, &$effets)
+  {
+		$degat = $actif->get_bouclier_degat();
+
+		// Prise en compte des effets defenseurs de l'attaquant (protection artistique ...)
+		$tmp_effets = array();
+		$actif->get_effets_permanents($tmp_effets, 'defenseur');
+		// Application des degats bloques
+		foreach ($tmp_effets as $effect)
+			// Actif et passif sont inversés puisque c'est l'actif qui touche au bouclier
+			$degat = $effect->calcul_bloquage_reduction($passif, $actif, $degat);
+
+		$att = $degat + $actif->get_force();
+		$def = $passif->get_vie() + round($passif->get_pp() / 100);
+		//Hop ca étourdit
+		if( $this->test_potentiel($att, $def) )
+		{
+			$this->ajout_etat($actif, $passif);
+			echo '&nbsp;&nbsp;Le coup de bouclier étourdit '.$passif->get_nom().' pour '.$this->get_duree().' rounds !<br />';
+		}
+		
+		return $degat;
   }
 }
 ?>

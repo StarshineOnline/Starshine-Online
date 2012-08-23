@@ -457,18 +457,20 @@ else
 					if(($mode == 'defenseur') && ($W_distance_relative >= $round))
 					{
 						echo $defenseur->get_nom().' s\'approche<br />';
-						$action[0] = '';
+						//$action[0] = '';
+						$action = null;
 						$log_combat .= 'n';
 					}
 					elseif (($mode == 'defenseur') && ($type == 'batiment'))
 					{
-						$action[0] = '';
+						//$action[0] = '';
+						$action = null;
 					}
 					else
 					{
 						${$mode}->get_action();
 						$action = script_action(${$mode}, ${$mode_def}, $mode, $effects);
-						if(is_array($action[2])) ${$mode} = $action[2];
+						//if(is_array($action[2])) ${$mode} = $action[2];
 					}
 					//print_r($action);
 					$args = array();
@@ -476,7 +478,7 @@ else
 					//echo $action[0];
 					$hp_avant = ${$mode_def}->get_hp();
 					$augmentations = array('actif' => array('comp' => array(), 'comp_perso' => array()), 'passif' => array('comp' => array(), 'comp_perso' => array()));
-          switch($action[0])
+          /*switch($action[0])
 					{
 						//Attaque
 						case 'attaque' :
@@ -512,12 +514,58 @@ else
 						// Rien eu du tout
 					case '':
 
-						/* Application des effets de fin de round */
+						// Application des effets de fin de round
 						foreach ($effects as $effect)
 							$effect->fin_round(${$mode}, ${$mode_def});
-						/* ~Fin de round */
+						// ~Fin de round
 						break ;
-					}
+					}*/
+					
+					if($action)
+					{
+            if ($mode == 'attaquant')
+            {
+              $actif = &$attaquant;
+              $passif = &$defenseur;
+        	    $log_effects_actif = $log_effects_attaquant;
+        	    $log_effects_passif = $log_effects_defenseur;
+            }
+          	else
+            {
+              $actif = &$defenseur;
+              $passif = &$attaquant;
+        	    $log_effects_actif = $log_effects_defenseur;
+        	    $log_effects_passif = $log_effects_attaquant;
+            }
+
+            // Calcul de MP nécessaires
+          	$mp_need = round($action->get_mp() * (1 - (($Trace[$actif->get_race()]['affinite_'.$action->get_comp_assoc()] - 5) / 10)));
+          	if($actif->get_type() == "pet") $mp_need = $action->get_mp();
+          	// Appel des ténebres
+          	if($actif->etat['appel_tenebre']['duree'] > 0)
+          	{
+          		$mp_need += $actif->etat['appel_tenebre']['effet'];
+          	}
+          	//Appel de la forêt
+          	if($actif->etat['appel_foret']['duree'] > 0)
+          	{
+          		$mp_need_avant = $mp_need;
+          		$mp_need -= $actif->etat['appel_foret']['effet'];
+          		if($mp_need < 1) $mp_need = $mp_need_avant;
+          	}
+            // Application des effets de mana
+            foreach ($effects as $effect)
+              $mp_need = $effect->calcul_mp($actif, $mp_need);
+          	//Suppresion de la réserve
+          	$actif->set_rm_restant($actif->get_rm_restant() - $mp_need);
+
+            $augmentations = $action->lance($actif, $passif, $effects);
+          }
+          else
+          {
+						foreach ($effects as $effect)
+							$effect->fin_round(${$mode}, ${$mode_def});
+          }
 
 					//Augmentation des compétences liées
 					if($mode == 'attaquant')
