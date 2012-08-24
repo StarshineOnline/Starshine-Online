@@ -113,12 +113,12 @@ class sort_combat extends sort
       switch( $row['type'] )
       {
       case 'debuff_enracinement':
-        return new sort_combat_debuff_test($row, $passif->get_dexterite() + $passif->get_force());
+        return new sort_combat_enracinement($row);
       case 'heresie_divine':
         return new sort_combat_debuff($row, 'debuff_antirez');
       case 'encombrement_psy':
-        $buff = new buff(0, 0, $type, 8, $this->get_effet2(),
-          $this->get_duree(), time()+$this->get_duree(), $this->get_nom(), 1, $this->get_effet());
+        $buff = new buff(0, 0, $type, 8, $row['effet2'],
+          $row['duree'], time()+$row['duree'], $row['nom'], 1, $row['effet']);
         return new sort_combat_debuff($row, $buff);
       case 'tsunami':
         return new sort_combat_tsunami($row);
@@ -701,29 +701,20 @@ class sort_combat_debuff extends sort_combat
   function touche(&$actif, &$passif, &$effets)
   {
 		parent::touche($actif, $passif, $effets);
-		if( $passif->lance_buff( $this->debuff ) )
+		if( $passif->lance_debuff( $this->debuff ) )
       echo '<strong>'.$passif->get_nom().'</strong> est affecté par le debuff '.$this->debuff->get_nom().'<br/>';
   }
 }
 
 /// Classe gérant les sorts lançant un débuff si un test réussi
-class sort_combat_debuff_test extends sort_combat_debuff
+class sort_combat_enracinement extends sort_combat_debuff
 {
-  protected $potentiel_att; ///< Potentiel attaque pour le test
-  protected $potentiel_def; ///< Potentiel défense pour le test
-  function __construct($tbl, $pot_def, $pot_att=null, $debuff=null)
-  {
-    parent::__construct($tbl, $debuff);
-    if( $pot_att )
-      $this->potentiel_att = $pot_att;
-    else
-      $this->potentiel_att = $this->get_effet2();
-    $this->potentiel_def = $pot_def;
-  }
   /// Méthode gérant ce qu'il se passe lorsque la coméptence à été utilisé avec succès
   function touche(&$actif, &$passif, &$effets)
   {
 		sort_combat::touche($actif, $passif, $effets);
+		$att = $this->get_effet2();
+		$def = $passif->get_dexterite() + $passif->get_force();
 		if( $this->test_potentiel($this->potentiel_att, $this->potentiel_def) )
 		{
   		if( $passif->lance_buff( $this->debuff ) )
@@ -866,7 +857,7 @@ class sort_combat_empalement extends sort_combat
 }
 
 /// Classe gérant le cri de l'abomination gobelin
-class sort_combat_empalement_cri_abom extends sort_combat
+class sort_combat_cri_abom extends sort_combat
 {
   /// Méthode gérant ce qu'il se passe lorsque la coméptence à été utilisé avec succès
   function touche(&$actif, &$passif, &$effets)

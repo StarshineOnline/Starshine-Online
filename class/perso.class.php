@@ -2615,6 +2615,13 @@ class perso extends entite
 		$buff->set_effet2($effet2);
 		$this->buff[$nom] = $buff;
 	}
+
+	/// Lance un débuff sur l'entité lors d'un combat (uniquement sur un personnage)
+  function lance_debuff($debuff)
+  {
+    $debuff->set_id_perso( $this->get_id() );
+    return $debuff->lance_buff();
+  }
 	// @}
 	
 	/**

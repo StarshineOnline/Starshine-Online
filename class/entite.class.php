@@ -867,6 +867,7 @@ class entite extends placable
     unset($this->potentiel_bloquer);
     unset($this->potentiel_critique);
     unset($this->potentiel_magique);
+    unset($this->precedent);
 		$this->degat_sup = 0;
 		$this->degat_moins = 0;
   }

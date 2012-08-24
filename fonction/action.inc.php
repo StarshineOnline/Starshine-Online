@@ -25,10 +25,26 @@ if (file_exists('../root.php'))
 function script_action($joueur, $ennemi, $mode, &$effects)
 {
 	$effectue = sub_script_action($joueur, $ennemi, $mode, $effects);
+	switch ($effectue[0])
+	{
+	case 'attaque':
+		$att = comp_combat::creer_attaque();
+		break;
+	case 'lance_comp':
+		$table = 'comp_combat';
+		$att = $table::factory($effectue[1]);
+		break;
+	case 'lance_sort':
+		$table = 'sort_combat';
+		$att = $table::factory($effectue[1]);
+		break;
+	default:
+		return null;
+	}
 	// On gère la dissimulation *après* le choix de l'action
 	if ($ennemi->etat['dissimulation'] > 0)
 		{
-			switch ($effectue[0])
+			/*switch ($effectue[0])
 				{
 				case 'attaque':
 					return '';
@@ -40,21 +56,21 @@ function script_action($joueur, $ennemi, $mode, &$effects)
 					break;
 				default:
 					return '';
-				}
+				}*/
 			// Chercher la cible de la capacité utilisée
-			global $db, $G_cibles;
+			/*global $db, $G_cibles;
 			$requete = "SELECT cible FROM $table WHERE id = ".$effectue[1];
 			$req = $db->query($requete);
-			$row = $db->read_assoc($req);
+			$row = $db->read_assoc($req);*/
 			// Si la cible est l'adversaire, alors c'est foiré
-			if ($G_cibles[$row['cible']] == 'Ennemi') {
+			if (/*$G_cibles[$row['cible']] == 'Ennemi'*/$att->get_cible() == comp_sort::cible_autre ) {
 				echo $ennemi->get_nom().' est caché, '.$joueur->get_nom().
 					' ne peut pas attaquer<br />';
-				return '';
+				return null;//'';
 			}
 		}
 	print_debug("action sélectionnée: $effectue[0] $effectue[1]");
-	return $effectue;
+	return $att;//$effectue;
 }
 
 /*
