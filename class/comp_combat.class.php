@@ -230,9 +230,9 @@ class comp_combat extends comp
   	$potentiel_parer = $passif->get_potentiel_parer();
 		foreach($effets as $effet)
 			$potentiel_parer = $effet->calcul_defense_physique($actif, $passif, $potentiel_parer);
-    if( $this->test_potentiel($potentiel_toucher, $potentiel_parer) )
+    if( $this->test_potentiel($potentiel_toucher, $potentiel_parer, $attaque) )
     {
-      $this->touche($actif, $passif, $effets);
+      $this->touche($attaque, $actif, $passif, $effets);
       $passif->precedent['esquive'] = false;
     }
   	else
@@ -265,7 +265,7 @@ class comp_combat extends comp
    * @param  $passif  Personnage adverse
    * @param  $effets  Effets
    */
-  function touche(&$actif, &$passif, &$effets)
+  function touche($attaque, &$actif, &$passif, &$effets)
   {
     global $log_combat;
     $degat = $this->calcul_degats($actif, $passif, $effets);
@@ -286,7 +286,7 @@ class comp_combat extends comp
 			$degat = $effet->calcul_degats($actif, $passif, $degat);
 
     if($passif->bouclier())
-      $degat = $this->bouclier($degat, $actif, $passif, $effets);
+      $degat = $this->bouclier($degat, $attaque, $actif, $passif, $effets);
    	//Posture défensive
     if($passif->etat['posture']['type'] == 'posture_defense') $buff_posture_defense = $passif->etat['posture']['effet']; else $buff_posture_defense = 0;
     $degat = $degat - $buff_posture_defense;
@@ -356,7 +356,7 @@ class comp_combat extends comp
    * @param  $passif  Personnage adverse
    * @param  $effets  Effets
    */
-  function bouclier($degat, &$actif, &$passif, &$effets)
+  function bouclier($degat, $attaque, &$actif, &$passif, &$effets)
   {
 			// Si c'est une flèche rapide, on ignore le blocage
 			if(array_key_exists('fleche_rapide', $actif->etat))
@@ -736,9 +736,9 @@ class comp_combat_etourdi extends comp_combat_degat_etat
     return comp_combat::lance($actif, $passif, $effets);
   }
   /// Méthode gérant ce qu'il se passe lorsque la coméptence à été utilisé avec succès
-  function touche(&$actif, &$passif, &$effets)
+  function touche($attaque, &$actif, &$passif, &$effets)
   {
-    parent::touche($actif, $passif, $effets);
+    parent::touche($attaque, $actif, $passif, $effets);
     $pot_att = ($actif->get_force() + $actif->get_dexterite()) / 2;
 		$pot_deff = $passif->get_vie();
     if( $this->test_potentiel($pot_att, $pot_deff) )

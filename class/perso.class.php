@@ -482,6 +482,15 @@ class perso extends entite
 		$this->energie = $energie;
 		$this->champs_modif[] = 'energie';
 	}
+	/**
+	 * Renvoie Le Coefficient modifiant le coût d'un sort à cause de l'affinité
+	 * @param $comp  compétence de magie correspondante
+	 */
+  function get_affinite($comp)
+  {
+    global $Trace;
+    return (1 - (($Trace[$this->get_race()]['affinite_'.$comp] - 5) / 10));
+  }
   // @}
 	
 	/**
