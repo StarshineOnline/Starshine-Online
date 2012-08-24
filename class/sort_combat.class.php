@@ -192,6 +192,14 @@ class sort_combat extends sort
 	 */
   // @{
   /**
+   * Renvoie le coût en RM/MP de la compétence ou du sort, en prennant en compte l'affinité
+   * @param   entité lançant le sort ou la compétence
+   */
+  function get_cout_mp(&$actif)
+  {
+    return round( $this->get_mp() * $actif->get_affinite( $this->get_comp_assoc() ) );
+  }
+  /**
    * Méthode gérant l'utilisation d'un sort
    * @param  $actif   Personnage utuilisant la coméptence
    * @param  $passif  Personnage adverse
@@ -286,12 +294,14 @@ class sort_combat extends sort
    */
   function touche(&$actif, &$passif, &$effets)
   {
+    global $log_combat;
     $degats = $this->calcul_degats($actif, $passif, $effets, $this->get_effet() + $this->bonus_degats($actif, $passif, $effets));
     // Application des effets de degats magiques
     foreach($effets as $effet)
       $effet->inflige_degats_magiques($actif, $passif, $degats, $this->get_type());
 		echo '&nbsp;&nbsp;<span class="degat"><strong>'.$actif->get_nom().'</strong> inflige <strong>'.$degats.'</strong> dégâts avec '.$this->get_nom().'</span><br />';
-		$passif->set_hp($passif->get_hp() - $degats);
+    $log_combat .= "~".$degats;
+    $passif->set_hp($passif->get_hp() - $degats);
 		return $degats;
   }
 
@@ -368,14 +378,12 @@ class sort_combat extends sort
    	  $actif->set_compteur_critique();
   		echo '&nbsp;&nbsp;<span class="coupcritique">SORT CRITIQUE !</span><br />';
   		$log_combat .= '!';
-    	echo '<div id="debug'.$debugs.'" class="debug">';
     	//Les dégâts des critiques sont diminués par la puissance
     	$puissance = 1 + ($passif->get_puissance() * $passif->get_puissance() / 1000);
     	$degat *= 2;
     	$degat_avant = $degat;
     	$degat = round($degat / $puissance);
-    	echo '(Réduction de '.($degat_avant - $degat).' dégâts critique par la puissance)<br />
-    	</div>';
+    	echo '(Réduction de '.($degat_avant - $degat).' dégâts critique par la puissance)<br />';
   	}
     return $degat;
   }
@@ -565,7 +573,7 @@ class sort_combat_drain extends sort_combat
 		$degats = parent::touche($actif, $passif, $effets);
 		if ($passif->get_type() != 'batiment')
 		{
-      $drain = round($degat * $this->drain);
+      $drain = round($degats * $this->drain);
       echo 'Et gagne <strong>'.$drain.'</strong> hp grâce au drain</span><br />';
       $actif->set_hp($actif->get_hp() + $drain);
 			// On vérifie que le personnage n'a pas plus de HP que son maximum

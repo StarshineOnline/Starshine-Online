@@ -12,8 +12,8 @@
 class entite extends placable
 {
 	/// Pour compatibilité (le temps de refaire la hiérarchie)
-	
-	
+
+
 	protected function get_table() { return ''; }
 	/**
 	 * @name Informations générales.
@@ -111,12 +111,12 @@ class entite extends placable
 		return $this->point_victoire;
 	}
   // @}
-	
+
 	/**
-	 * @name Caractéristiques
+	 * @name Caractéristiques et affinité
 	 * Données et méthodes liées aux caractéristiques de l'entité : constitution,
-	 * force, dextérité, puissance, volonté et énergie.      	
-	 */	
+	 * force, dextérité, puissance, volonté et énergie.
+	 */
 	// @{
 	protected $vie;        ///< Caractéristique "constitution".
 	protected $force;      ///< Caractéristique "force".
@@ -164,13 +164,21 @@ class entite extends placable
 	{
 		return $this->energie;
 	}
+	/**
+	 * Renvoie Le Coefficient modifiant le coût d'un sort à cause de l'affinité
+	 * @param $comp  compétence de magie correspondante
+	 */
+  function get_affinite($comp)
+  {
+    return 1;
+  }
   // @}
-	
+
 	/**
 	 * @name Compétences
 	 * Données et méthodes liées aux compténtences du personnage : mêlée, esquive,
 	 * incatation, …
-	 */	
+	 */
 	// @{
 	protected $melee;        ///< Compétence mêlée.
 	protected $distance;     ///< Compétence tir à distance.
@@ -306,12 +314,12 @@ class entite extends placable
 		return $this->comp_combat;
 	}
   // @}
-  
+
   /**
    * @name  PA, HP & MP
    * Données et méthodes ayant trait aux PA, HP & MP : valeur actuelle, maximale,
    * prochaine régénération et augmentation.
-   */         
+   */
   // @{
 	protected $pa;       /// < Nombre de PA.
 	protected $hp;       ///< HP actuels de l'entité
@@ -353,12 +361,12 @@ class entite extends placable
 		return $this->hp_max;
 	}
   // @}
-  
+
   /**
    * @name  Sorts, compétences & buffs
    * Données et méthodes ayant trait aux sorts et compétences de combat et hors combat.
-   * Ainsi que les buffs et débuffs du actifs sur l'entité.   
-   */         
+   * Ainsi que les buffs et débuffs du actifs sur l'entité.
+   */
   // @{
 	protected $comp_combat;  ///< Liste des compétences de combat.
 	public $buff;   ///< Buffs & débuffs actifs sur le personnage.
@@ -468,7 +476,7 @@ class entite extends placable
 
 		return $buffe;
 	}
-	
+
 	/// Lance un débuff sur l'entité lors d'un combat (uniquement sur un personnage)
   function lance_debuff($debuff)
   {
@@ -640,7 +648,7 @@ class entite extends placable
 		return false;
 	}
 	// @}
-	
+
 	/**
 	 * @name Combats
 	 * Données et méthodes liées aux combats.
@@ -718,7 +726,7 @@ class entite extends placable
   	if($this->is_buff('buff_position') && $this->get_arme_type() == 'arc') $this->potentiel_toucher *= 1 + (($this->get_buff('buff_position', 'effet')) / 100);
   	if(array_key_exists('a_toucher', $this->etat)) $this->potentiel_toucher *= 1 + ($this->etat['a_toucher']['effet'] / 100);
   	if($this->etat['posture']['type'] == 'posture_touche') $this->potentiel_toucher *= 1 + (($this->etat['posture']['effet']) / 100);
- 
+
 		return $this->potentiel_toucher;
 	}
 	/// Modifie le potentiel toucher physique
@@ -743,13 +751,13 @@ class entite extends placable
 		if ($this->arme_type == 'arc')
 			$this->potentiel_parer *= $this->malus_arc;
   	if(array_key_exists('benediction', $this->etat)) $this->potentiel_parer *= 1 + (($this->etat['benediction']['effet'] * $G_buff['bene_evasion']) / 100);
-   	if(array_key_exists('berzeker', $this->etat)) $this->potentiel_parer /= 1 + (($this->etat['berzeker']['effet'] * $G_buff['berz_evasion']) / 100);  	
+   	if(array_key_exists('berzeker', $this->etat)) $this->potentiel_parer /= 1 + (($this->etat['berzeker']['effet'] * $G_buff['berz_evasion']) / 100);
   	if(array_key_exists('derniere_chance', $this->etat)) $this->potentiel_parer /= 1 + (($this->etat['derniere_chance']['effet']) / 100);
   	if($this->etat['posture']['type'] == 'posture_esquive') $this->potentiel_parer *= 1 + (($this->etat['posture']['effet']) / 100);
   	if($this->etat['posture']['type'] == 'posture_vent') $this->potentiel_parer *= 1 + (($this->etat['posture']['effet']) / 100);
   	if($this->is_buff('buff_evasion')) $this->potentiel_parer *= 1 + ($this->get_buff('buff_evasion', 'effet') / 100);
   	if($this->is_buff('buff_cri_detresse')) $this->potentiel_parer *= 1 + (($this->get_buff('buff_cri_detresse', 'effet')) / 100);
-  	
+
   	if($this->get_race() == 'elfebois') $this->potentiel_parer *= 1.15;
 
 		return $this->potentiel_parer;
@@ -818,7 +826,7 @@ class entite extends placable
 	{
     if( isset($this->potentiel_magique) && $this->potentiel_magique )
       return $this->potentiel_magique;
-      
+
     $get = 'get_'.$comp_assoc;
   	$this->potentiel_magique = floor($this->get_incantation() + 1.9 * $this->$get());
   	if($this->is_buff('batiment_incantation'))
@@ -919,7 +927,7 @@ class entite extends placable
 					case 'epee':
 					case 'dague':
 					case 'baton':
-					case '': // main nues 
+					case '': // main nues
 						$this->comp_combat = 'melee';
 					break;
 					case 'arc':
@@ -1274,7 +1282,7 @@ class entite extends placable
 			case 'joueur' :
 				$objet = new perso($this->id);
 				break;
-			case 'monstre' : 
+			case 'monstre' :
 				$objet = new map_monstre($this->id);
 				break;
 		}

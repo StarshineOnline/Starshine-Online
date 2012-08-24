@@ -539,8 +539,9 @@ else
             }
 
             // Calcul de MP nécessaires
-          	$mp_need = round($action->get_mp() * (1 - (($Trace[$actif->get_race()]['affinite_'.$action->get_comp_assoc()] - 5) / 10)));
-          	if($actif->get_type() == "pet") $mp_need = $action->get_mp();
+          	/*$mp_need = round($action->get_mp() * (1 - (($Trace[$actif->get_race()]['affinite_'.$action->get_comp_assoc()] - 5) / 10)));
+          	if($actif->get_type() == "pet") $mp_need = $action->get_mp();*/
+          	$mp_need = $action->get_cout_mp($actif);
           	// Appel des ténebres
           	if($actif->etat['appel_tenebre']['duree'] > 0)
           	{
@@ -561,11 +562,8 @@ else
 
             $augmentations = $action->lance($actif, $passif, $effects);
           }
-          else
-          {
-						foreach ($effects as $effect)
-							$effect->fin_round(${$mode}, ${$mode_def});
-          }
+          foreach ($effects as $effect)
+						$effect->fin_round(${$mode}, ${$mode_def});
 
 					//Augmentation des compétences liées
 					if($mode == 'attaquant')
