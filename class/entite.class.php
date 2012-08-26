@@ -716,6 +716,7 @@ class entite extends placable
   	if(array_key_exists('aveugle', $this->etat)) $this->potentiel_toucher /= 1 + (($this->etat['aveugle']['effet']) / 100);
   	if(array_key_exists('lien_sylvestre', $this->etat)) $this->potentiel_toucher /= 1 + (($this->etat['lien_sylvestre']['effet2']) / 100);
   	if(array_key_exists('b_toucher', $this->etat)) $this->potentiel_toucher /= 1 + ($this->etat['b_toucher']['effet'] / 100);
+  	if(array_key_exists('coup_mortel', $this->etat)) $this->potentiel_toucher *= 1 - ($this->etat['coup_mortel']['effet'] / 100);
   	//Buff précision
   	if(array_key_exists('benediction', $this->etat))	$this->potentiel_toucher *= 1 + (($this->etat['benediction']['effet'] * $G_buff['bene_accuracy']) / 100);
   	if(array_key_exists('berzeker', $this->etat)) $this->potentiel_toucher *= 1 + (($this->etat['berzeker']['effet'] * $G_buff['berz_accuracy']) / 100);
@@ -883,7 +884,6 @@ class entite extends placable
     unset($this->potentiel_bloquer);
     unset($this->potentiel_critique);
     unset($this->potentiel_magique);
-    unset($this->precedent);
 		$this->degat_sup = 0;
 		$this->degat_moins = 0;
   }

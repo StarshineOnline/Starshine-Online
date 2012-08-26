@@ -684,7 +684,7 @@ class debilitant extends etat {
   function fin_round(&$actif, &$passif)
   {
     global $log_effects_attaquant;
-		echo '&nbsp;&nbsp;<span class="soin">'.$actif->get_nom().' est sous l\'effet de Flêche Débilisante</span><br />';
+		$this->debug($actif->get_nom().' est sous l\'effet de Flêche Débilisante');
 		$log_effects_defenseur .= "&ef7~0";
   }
 }

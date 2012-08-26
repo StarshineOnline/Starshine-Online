@@ -133,7 +133,7 @@ class comp_combat extends comp
       case 'tir_puissant':
         return new comp_combat_degats($row);
       case 'coup_mortel': // à revoir
-        return new comp_combat_degat_etat($row, 'v-coup_mortel', 1, true);
+        return new comp_combat_degat_etat($row, 'v-coup_mortel', 1);
       case 'coup_sournois': // à revoir
         return new comp_combat_degat_etat($row, 'v-coup_sournois', 1);
       case 'fleche_sanglante': // à revoir
@@ -288,8 +288,10 @@ class comp_combat extends comp
   	foreach($effets as $effet)
 			$degat = $effet->calcul_degats($actif, $passif, $degat);
 
+    $passif->precedent['bouclier'] = false;
     if($passif->bouclier())
       $degat = $this->bouclier($degat, $attaque, $actif, $passif, $effets);
+      
    	//Posture défensive
     if($passif->etat['posture']['type'] == 'posture_defense') $buff_posture_defense = $passif->etat['posture']['effet']; else $buff_posture_defense = 0;
     $degat = $degat - $buff_posture_defense;
@@ -456,10 +458,7 @@ class comp_combat extends comp
 						$degat = $effet->applique_bloquage($actif,$passif,$degat);
 
 				}
-				$diff_blocage = (2.5 * $G_round_total / 5) * $rectif_augm;
-			  $augmentation['passif']['comp'][] = array('blocage', $diff_blocage);
-			  if($passif->is_competence('maitrise_bouclier'))
-				  $augmentation['passif']['comp_perso'][] = array('maitrise_bouclier', 6 * $rectif_augm);
+				$passif->precedent['bouclier'] = true;
 			}
 			return $degat;
   }
@@ -611,6 +610,15 @@ class comp_combat extends comp
   	$augmentation['actif']['comp'][] = array($actif->get_comp_att(), $diff_att);
   	$diff_esquive = (2.7 * $G_round_total / 5) * $rectif_augm;
   	$augmentation['passif']['comp'][] = array('esquive', $diff_esquive);
+
+    // bouclier
+    if( $passif->precedent['bouclier'] )
+    {
+      $diff_blocage = (2.5 * $G_round_total / 5) * $rectif_augm;
+			$augmentation['passif']['comp'][] = array('blocage', $diff_blocage);
+			if($passif->is_competence('maitrise_bouclier'))
+				$augmentation['passif']['comp_perso'][] = array('maitrise_bouclier', 6 * $rectif_augm);
+    }
 
   	//Augmentation des compétences liées
   	if( isset($actif->precedent['critique']) && $actif->precedent['critique'] )
