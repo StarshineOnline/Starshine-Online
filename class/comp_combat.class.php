@@ -316,6 +316,42 @@ class comp_combat extends comp
     if($reduction != 0)
       echo '&nbsp;&nbsp;<span class="small">(réduits de '.$reduction.' par l\'armure)</span><br />';
 
+    if($actif->is_buff('buff_rage_vampirique', true))
+		{
+			$buff_rage_vampirique = $actif->get_buff('buff_rage_vampirique', 'effet') / 100;
+			$effet = round($degat * $buff_rage_vampirique);
+			if(($actif->get_hp() + $effet) > $actif->get_hp_max())
+			{
+				$effet = floor($actif->get_hp_max() - $actif->get_hp());
+			}
+			// Augmentation du nombre de HP récupérable par récupération
+			if(array_key_exists('recuperation', $actif->etat)) $actif->etat['recuperation']['hp_max'] += $effet;
+			$actif->set_hp($actif->get_hp() + $effet);
+			if($effet > 0) echo '&nbsp;&nbsp;<span class="soin">'.$actif->get_nom().' gagne '.$effet.' HP par la rage vampirique</span><br />';
+			$log_effects_actif .= "&ef8~".$effet;
+		}
+	  //Epines
+    if($passif->is_buff('buff_epine', true))
+		{
+			$buff_epine = $passif->get_buff('buff_epine', 'effet') / 100;
+			$effet = round($degat * $buff_epine);
+			$actif->set_hp($actif->get_hp() - $effet);
+			if($effet > 0) echo '&nbsp;&nbsp;<span class="degat">'.$passif->get_nom().' renvoie '.$effet.' dégâts grâce à l\' Armure en épine</span><br />';
+			$log_effects_passif .= "&ef9~".$effet;
+		}
+	  //Armure de glace
+    if($passif->is_buff('buff_armure_glace', true))
+		{
+			$chance = $passif->get_buff('buff_armure_glace', 'effet');
+			$de1 = rand(0, $chance);
+			$de2 = rand(0, 100);
+			if($de1 > $de2)
+			{
+				echo '&nbsp;&nbsp;<span class="degat">'.$passif->get_nom().' glace '.$actif->get_nom().' avec son armure de glace</span><br />';
+				$actif->etat['paralysie']['duree'] += 1;
+			}
+		}
+
 		// Application des effets de dégâts infligés
 		foreach($effets as $effet)
 			$degat = $effet->inflige_degats($actif, $passif, $degat);
@@ -705,6 +741,7 @@ class comp_combat_etat extends comp_combat_degat_etat
       echo '&nbsp;&nbsp;<strong>'.$actif->get_nom().'</strong> '.$this->message.'<br />';
     else
       $this->message($actif);
+    $actif->precedent['critique'] = false;
     return $this->get_augmentations($actif, $passif);
   }
 }
@@ -850,6 +887,7 @@ class comp_combat_dissim extends comp_combat_etat
 		}
 		else
 			echo ' et échoue...<br />';
+    $actif->precedent['critique'] = false;
     return $this->get_augmentations($actif, $passif);
   }
 }
