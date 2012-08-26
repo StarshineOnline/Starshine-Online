@@ -350,7 +350,7 @@ class sort_combat extends sort
     $degat_avant = $degat;
     $degat = round($degat * $reduction);
     if($degat < $degat_avant)
-      echo '(Réduction de '.($degat_avant - $degat).' dégâts par la PM)<br />';
+      echo '&nbsp;&nbsp;<span class="small">(Réduction de '.($degat_avant - $degat).' dégâts par la PM)</span><br />';
 
     // Application des modifications des dégâts
     foreach($effets as $effet)
@@ -383,7 +383,7 @@ class sort_combat extends sort
     	$degat *= 2;
     	$degat_avant = $degat;
     	$degat = round($degat / $puissance);
-    	echo '(Réduction de '.($degat_avant - $degat).' dégâts critique par la puissance)<br />';
+    	echo '&nbsp;&nbsp;<span class="small">(Réduction de '.($degat_avant - $degat).' dégâts critique par la puissance)</span><br />';
   	}
     return $degat;
   }

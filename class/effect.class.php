@@ -647,7 +647,7 @@ class ensable extends etat {
 
   function debut_round(&$actif, &$passif) {
     $this->debug($actif->get_nom().' est ensablé');
-    $actif->potentiel_toucher /= 1 + ($this->effet / 100);
+    $actif->set_potentiel_toucher( $actif->get_potentiel_toucher() / (1 + ($this->effet / 100)) );
 	}
 
 	function calcul_attaque_magique(&$actif, &$passif, $att) {
@@ -670,14 +670,21 @@ class debilitant extends etat {
   {
 		if (array_key_exists('fleche_debilitante', $actif->etat))
     {
-			$effects[] = new ensable($actif->etat['fleche_debilitante']['effet']);
+			$effects[] = new debilitant($actif->etat['fleche_debilitante']['effet']);
 		}
 	}
+
+
+  /// Action a effectuer en début de round
+  function debut_round(&$actif, &$passif)
+  {
+    $actif->set_potentiel_lancer_magique( $actif->get_potentiel_lancer_magique / (1 + ($this->effet / 100)) );
+  }
 
   function fin_round(&$actif, &$passif)
   {
     global $log_effects_attaquant;
-		echo '&nbsp;&nbsp;<span class="soin">'.$defenseur->get_nom().' est sous l\'effet de Flêche Débilisante</span><br />';
+		echo '&nbsp;&nbsp;<span class="soin">'.$actif->get_nom().' est sous l\'effet de Flêche Débilisante</span><br />';
 		$log_effects_defenseur .= "&ef7~0";
   }
 }

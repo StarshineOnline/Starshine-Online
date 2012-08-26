@@ -136,6 +136,8 @@ class comp_combat extends comp
         return new comp_combat_degat_etat($row, 'v-coup_mortel', 1, true);
       case 'coup_sournois': // à revoir
         return new comp_combat_degat_etat($row, 'v-coup_sournois', 1);
+      case 'fleche_sanglante': // à revoir
+        return new comp_combat_degat_etat($row, 'v-fleche_sanglante', 1);
       case 'attaque_vicieuse':
         return new comp_combat_vicieuse($row);
       case 'berzeker':
@@ -150,8 +152,9 @@ class comp_combat extends comp
         return new comp_combat_effet($row, new fleche_magnetique($row['effet2'], $row['effet']));
       case 'fleche_poison':
       case 'vol_a_la_tire':
-      case 'fleche_sable':
         return new comp_combat_effet($row);
+      case 'fleche_sable':
+        return new comp_combat_sable($row);
       case 'fleche_rapide': // à revoir
         return new comp_combat_degat_etat($row, 'v-fleche_sanglante', 1);
       case 'fleche_debilitante': // à revoir
@@ -267,7 +270,7 @@ class comp_combat extends comp
    */
   function touche($attaque, &$actif, &$passif, &$effets)
   {
-    global $log_combat;
+    global $log_combat, $G_buff;
     $degat = $this->calcul_degats($actif, $passif, $effets);
     if($passif->type2 == 'batiment' AND $actif->get_race() == 'barbare') $degat = floor($degat * 1.4);
     $degat = $degat + $actif->degat_sup - $actif->degat_moins;
@@ -279,7 +282,7 @@ class comp_combat extends comp
   	if($actif->is_buff('buff_cri_victoire')) $buff_cri_victoire = $actif->get_buff('buff_cri_victoire', 'effet'); else $buff_cri_victoire = 0;
   	if($actif->is_buff('fleche_tranchante') && $actif->get_arme_type() == 'arc') $degat += $actif->get_buff('fleche_tranchante', 'effet');
   	if($actif->is_buff('oeil_chasseur') && $passif->get_espece() == 'bete' && $actif->get_arme_type() == 'arc') $degat += $actif->get_buff('oeil_chasseur', 'effet');
-  	$degat = $degat + $buff_bene_degat + $buff_berz_degat + $buff_berz_degat_r + $buff_force + $buff_cri_victoire;
+    $degat = $degat + $buff_bene_degat + $buff_berz_degat + $buff_berz_degat_r + $buff_force + $buff_cri_victoire;
   	if($actif->is_buff('maladie_mollesse')) $degat = ceil($degat / (1 + ($actif->get_buff('maladie_mollesse', 'effet') / 100)));
   	// Application des effets de degats
   	foreach($effets as $effet)
@@ -489,7 +492,7 @@ class comp_combat extends comp
   function critiques(&$actif, &$passif, &$effets)
   {
     global $log_combat;
-  	$actif_chance_critique = ceil(pow($actif->get_dexterite(), 1.5) * 10);
+  	$actif_chance_critique = $actif->get_potentiel_critique();
 
 
     // Application des effets de chance critique
@@ -681,7 +684,7 @@ class comp_combat_degat_etat extends comp_combat
       $cible->etat[$etat]['duree'] =  $this->get_duree();
     else
       $cible->etat[$etat]['duree'] = $this->duree_etat;
-    $cible->etat[$etat]['effet'] = $this->get_effet2();
+    $cible->etat[$etat]['effet2'] = $this->get_effet2();
   }
 }
 
@@ -753,22 +756,22 @@ class comp_combat_etourdi extends comp_combat_degat_etat
 /// Classe gérant les compétences utilisant des effets
 class comp_combat_effet extends comp_combat
 {
-  protected $effet;  ///< Classe de l'effet
+  protected $obj_eff;  ///< Classe de l'effet
   /// Constructeur
   function __construct($tbl, $effet=null)
   {
     $this->charger($tbl);
-    $this->effet = $effet;
+    $this->obj_eff = $effet;
   }
   /// Méthode gérant l'utilisation d'une compétence
   function lance(&$actif, &$passif, &$effets)
   {
-    if( is_object($this->effet) )
-      $effets[] = $this->effet;
+    if( is_object($this->obj_eff) )
+      $effets[] = $this->obj_eff;
     else
     {
-      if( is_string($this->effet) )
-        $classe = $this->effet;
+      if( is_string($this->obj_eff) )
+        $classe = $this->obj_eff;
       else
         $classe = $this->get_type();
       $effets[] = new $classe($this->get_effet(), $this->get_effet2(), $this->get_duree());
@@ -909,6 +912,16 @@ class comp_combat_coup_bouclier extends comp_combat_degat_etat
 		}
 		
 		return $degat;
+  }
+}
+
+/// Classe gérant les compétences utilisant des effets
+class comp_combat_sable extends comp_combat_effet
+{
+  /// Méthode calculant les dégâts de base avant réduction
+  function calcul_degats(&$actif, &$passif, &$effets)
+  {
+    return parent::calcul_degats($actif, $passif, $effets) - $this->get_effet();
   }
 }
 ?>

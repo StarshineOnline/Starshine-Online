@@ -147,8 +147,7 @@ class gemme_enchassee extends effect
 	// Gemme de l'epervier
 	function calcul_bloquage(&$actif, &$passif) {
 		if ($this->enchantement_type == 'parade') {
-			$passif->potentiel_bloquer +=
-				floor($passif->potentiel_bloquer * $this->enchantement_effet / 100);
+			$passif->set_potentiel_bloquer( floor($passif->get_potentiel_bloquer() * $this->enchantement_effet / 100) );
 		}
 	}
 

@@ -856,6 +856,14 @@ class entite extends placable
   	}
   	return $this->potentiel_magique;
 	}
+	/**
+	 * Calcul et renvoie le potentiel toucher physique
+	 * @param $comp_assoc  Coméptence associé au sort
+	 */
+	function set_potentiel_lancer_magique($valeur)
+	{
+    $this->potentiel_magique = $valeur;
+	}
 	/// Renvoie la compétence utilisée pour attaquer
 	function get_comp_att()
 	{
