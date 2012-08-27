@@ -716,6 +716,7 @@ class entite extends placable
   	if(array_key_exists('aveugle', $this->etat)) $this->potentiel_toucher /= 1 + (($this->etat['aveugle']['effet']) / 100);
   	if(array_key_exists('lien_sylvestre', $this->etat)) $this->potentiel_toucher /= 1 + (($this->etat['lien_sylvestre']['effet2']) / 100);
   	if(array_key_exists('b_toucher', $this->etat)) $this->potentiel_toucher /= 1 + ($this->etat['b_toucher']['effet'] / 100);
+  	if(array_key_exists('coup_mortel', $this->etat)) $this->potentiel_toucher *= 1 - ($this->etat['coup_mortel']['effet'] / 100);
   	//Buff précision
   	if(array_key_exists('benediction', $this->etat))	$this->potentiel_toucher *= 1 + (($this->etat['benediction']['effet'] * $G_buff['bene_accuracy']) / 100);
   	if(array_key_exists('berzeker', $this->etat)) $this->potentiel_toucher *= 1 + (($this->etat['berzeker']['effet'] * $G_buff['berz_accuracy']) / 100);
@@ -856,6 +857,14 @@ class entite extends placable
   	}
   	return $this->potentiel_magique;
 	}
+	/**
+	 * Calcul et renvoie le potentiel toucher physique
+	 * @param $comp_assoc  Coméptence associé au sort
+	 */
+	function set_potentiel_lancer_magique($valeur)
+	{
+    $this->potentiel_magique = $valeur;
+	}
 	/// Renvoie la compétence utilisée pour attaquer
 	function get_comp_att()
 	{
@@ -875,7 +884,6 @@ class entite extends placable
     unset($this->potentiel_bloquer);
     unset($this->potentiel_critique);
     unset($this->potentiel_magique);
-    unset($this->precedent);
 		$this->degat_sup = 0;
 		$this->degat_moins = 0;
   }
