@@ -8,6 +8,9 @@ include_once(root.'inc/fp.php');
   {
     $_SESSION['nom'] = $_GET['perso'];
     $_SESSION['ID'] = $_GET['id'];
+    //Mis à jour de la dernière connexion
+		$requete = "UPDATE perso SET dernier_connexion = ".time().", statut = 'actif' WHERE ID = ".$_GET['id'];
+		$db->query($requete);
     echo 'Rehargement de la page en cours…<img src="image/pixel.gif" onLoad="document.location.reload();" />';
     exit;
   }
