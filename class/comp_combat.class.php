@@ -908,8 +908,8 @@ class comp_combat_pot extends comp_combat
   {
     $actif->set_potentiel_toucher($actif->get_potentiel_toucher() * (1 + ($this->get_effet() / 100)));
     if( $this->get_effet2() )
-      $actif->set_potentiel_critique($actif->get_potentiel_critique() * (1 * ($this->get_effet2() / 100)));
-    $actif->set_potentiel_bloquer($actif->get_potentiel_bloquer() / (1 + ($this->get_effet3() / 100)));
+      $passif->set_potentiel_bloquer($passif->get_potentiel_bloquer() * (1 + ($this->get_effet3() / 100)));
+    $actif->set_potentiel_critique($actif->get_potentiel_critique() / (1 * ($this->get_effet2() / 100)));
     return parent::lance($actif, $passif, $effets);
   }
 }
@@ -921,8 +921,8 @@ class comp_combat_deg_pot extends comp_combat
   function lance(&$actif, &$passif, &$effets)
   {
     $actif->degat_sup = $this->get_effet();
-    $actif->set_potentiel_critique($actif->get_potentiel_critique() * (1 * ($this->get_effet2() / 100)));
-    $actif->set_potentiel_bloquer($actif->get_potentiel_bloquer() / (1 + ($this->get_effet3() / 100)));
+    $passif->set_potentiel_bloquer($passif->get_potentiel_bloquer() * (1 + ($this->get_effet2() / 100)));
+    $actif->set_potentiel_critique($actif->get_potentiel_critique() / (1 * ($this->get_effet3() / 100)));
     return parent::lance($actif, $passif, $effets);
   }
 }

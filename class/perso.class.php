@@ -1651,7 +1651,7 @@ class perso extends entite
 		if(!isset($this->armure))
 		{
 			$this->pp = 0;
-			$this->pm = 0;
+			$this->pm = 1;
 			// Pièces d'armure
 			$partie_armure = array('tete', 'torse', 'main', 'ceinture', 'jambe', 'chaussure', 'dos', 'cou', 'doigt');
 			foreach($partie_armure as $partie)
