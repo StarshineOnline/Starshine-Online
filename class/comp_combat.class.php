@@ -749,7 +749,7 @@ class comp_combat_etat extends comp_combat_degat_etat
       echo '&nbsp;&nbsp;<strong>'.$actif->get_nom().'</strong> '.$this->message.'<br />';
     else
       $this->message($actif);
-    $actif->precedent['critique'] = false;
+    $passif->precedent['critique'] = false;
     return $this->get_augmentations($actif, $passif);
   }
 }
@@ -895,7 +895,7 @@ class comp_combat_dissim extends comp_combat_etat
 		}
 		else
 			echo ' et échoue...<br />';
-    $actif->precedent['critique'] = false;
+    $passif->precedent['critique'] = false;
     return $this->get_augmentations($actif, $passif);
   }
 }
@@ -909,7 +909,7 @@ class comp_combat_pot extends comp_combat
     $actif->set_potentiel_toucher($actif->get_potentiel_toucher() * (1 + ($this->get_effet() / 100)));
     if( $this->get_effet2() )
       $passif->set_potentiel_bloquer($passif->get_potentiel_bloquer() * (1 + ($this->get_effet3() / 100)));
-    $actif->set_potentiel_critique($actif->get_potentiel_critique() / (1 * ($this->get_effet2() / 100)));
+    $actif->set_potentiel_critique($actif->get_potentiel_critique() / (1 + ($this->get_effet2() / 100)));
     return parent::lance($actif, $passif, $effets);
   }
 }
@@ -922,7 +922,7 @@ class comp_combat_deg_pot extends comp_combat
   {
     $actif->degat_sup = $this->get_effet();
     $passif->set_potentiel_bloquer($passif->get_potentiel_bloquer() * (1 + ($this->get_effet2() / 100)));
-    $actif->set_potentiel_critique($actif->get_potentiel_critique() / (1 * ($this->get_effet3() / 100)));
+    $actif->set_potentiel_critique($actif->get_potentiel_critique() / (1 + ($this->get_effet3() / 100)));
     return parent::lance($actif, $passif, $effets);
   }
 }

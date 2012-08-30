@@ -131,10 +131,11 @@ class sort_combat extends sort
       case 'absorb_temporelle':
         return new sort_combat_absorb($row);
       case 'degat_froid': // à modifier
-      case 'degat_terre':
       case 'sphere_glace':
       case 'embrasement':
         return new sort_combat_degat_etat($row);
+      case 'degat_terre':
+        return new sort_combat_degat_etat($row, null, true);
       case 'degat_vent':
         return new sort_combat_vent($row);
       case 'sacrifice_morbide':
@@ -394,7 +395,7 @@ class sort_combat extends sort
 class sort_combat_degat_etat extends sort_combat
 {
   protected $etat; ///< État à ajouter si le sort touche
-  protected $effet_etat; ///< Effet de l'état (null s'il faut prendre le paramètre effet2)
+  protected $effet_etat; ///< Effet de l'état (null s'il faut prendre le paramètre effet2, true s'il faut additionner la valeur actuelle à effet2)
   protected $duree_etat; ///< Durée de l'état (null s'il faut prendre le paramètre duree)
   function __construct($tbl, $etat=null, $effet=null,$duree=null)
   {
@@ -426,6 +427,8 @@ class sort_combat_degat_etat extends sort_combat
       $cible = &$passif;
     if( $this->effet_etat === null )
       $cible->etat[$etat]['effet'] = $this->defaut_effet();
+    else if( $this->effet_etat === true )
+      $cible->etat[$etat]['effet'] += $this->defaut_effet();
     else
       $cible->etat[$etat]['effet'] = $this->effet_etat;
 		if( $this->duree_etat === null )
@@ -574,10 +577,11 @@ class sort_combat_drain extends sort_combat
 		if ($passif->get_type() != 'batiment')
 		{
       $drain = round($degats * $this->drain);
-      echo 'Et gagne <strong>'.$drain.'</strong> hp grâce au drain</span><br />';
+      echo 'Et gagne <strong>'.$drain.'</strong> hp grâce au drain<br />';
       $actif->set_hp($actif->get_hp() + $drain);
 			// On vérifie que le personnage n'a pas plus de HP que son maximum
 			if($actif->get_hp() > floor($actif->get_hp_max())) $actif->set_hp($actif->get_hp_max());
+			$actif->sauver();
     }
   }
 }
