@@ -744,6 +744,7 @@ class comp_combat_etat extends comp_combat_degat_etat
   /// Méthode gérant l'utilisation d'une compétence
   function lance(&$actif, &$passif, &$effets)
   {
+    $log_combat .= 'c'.$this->get_id();
     $this->ajout_etat($actif, $passif);
     if( $this->message )
       echo '&nbsp;&nbsp;<strong>'.$actif->get_nom().'</strong> '.$this->message.'<br />';
@@ -869,6 +870,7 @@ class comp_combat_dissim extends comp_combat_etat
   /// Méthode gérant l'utilisation d'une compétence
   function lance(&$actif, &$passif, &$effets)
   {
+    $log_combat .= 'c'.$this->get_id();
     global $db;
     $bonus = 1;
 		if ($actif->get_type() == 'joueur')
@@ -888,7 +890,7 @@ class comp_combat_dissim extends comp_combat_etat
 		$att = $actif->get_dexterite() * $actif->get_esquive() * $bonus;
 		$def = $passif->get_volonte() * ($passif->get_pm() * 2.5);
 		echo '&nbsp;&nbsp;<strong>'.$actif->get_nom().'</strong> tente de se dissimuler...';
-		if( $this->test_potentiel($att, $deff) )
+		if( $this->test_potentiel($att, $def) )
 		{
 			echo ' et réussit !<br />';
 			$this->ajout_etat($actif, $passif);

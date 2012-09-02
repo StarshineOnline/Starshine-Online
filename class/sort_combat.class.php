@@ -239,6 +239,8 @@ class sort_combat extends sort
   		$log_combat .= "~l";
   	}
   	
+  	$passif->precedent['esquive'] = false;
+  	$actif->precedent['critique'] = false;
   	//Augmentation des compétences liées
   	$get = 'get_'.$this->get_comp_assoc();
 
