@@ -583,7 +583,7 @@ class sort_combat_drain extends sort_combat
       $actif->set_hp($actif->get_hp() + $drain);
 			// On vérifie que le personnage n'a pas plus de HP que son maximum
 			if($actif->get_hp() > floor($actif->get_hp_max())) $actif->set_hp($actif->get_hp_max());
-			$actif->sauver();
+			$actif->sauver(); // étrange qu'il faille faire ça !
     }
   }
 }
@@ -597,7 +597,7 @@ class sort_combat_vortex_mana extends sort_combat
 		$degats = parent::touche($actif, $passif, $effets);
 		if ($passif->get_type() != 'batiment')
 		{
-      $drain = round($degat * .2);
+      $drain = round($degats * .2);
       echo 'Et gagne <strong>'.$drain.'</strong> RM grâce au drain</span><br />';
       $actif->set_rm_restant($actif->get_rm_restant() + $drain);
     }
