@@ -156,7 +156,7 @@ class comp_combat extends comp
       case 'fleche_sable':
         return new comp_combat_sable($row);
       case 'fleche_rapide': // à revoir
-        return new comp_combat_degat_etat($row, 'v-fleche_sanglante', 1);
+        return new comp_combat_degat_etat($row, 'v-fleche_rapide', 1);
       case 'fleche_debilitante': // à revoir
         return new comp_combat_degat_etat($row);
       case 'coup_bouclier': // à revoir
