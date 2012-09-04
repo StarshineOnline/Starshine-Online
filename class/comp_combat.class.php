@@ -156,7 +156,7 @@ class comp_combat extends comp
       case 'fleche_sable':
         return new comp_combat_sable($row);
       case 'fleche_rapide': // à revoir
-        return new comp_combat_degat_etat($row, 'v-fleche_sanglante', 1);
+        return new comp_combat_degat_etat($row, 'v-fleche_rapide', 1);
       case 'fleche_debilitante': // à revoir
         return new comp_combat_degat_etat($row);
       case 'coup_bouclier': // à revoir
@@ -744,12 +744,13 @@ class comp_combat_etat extends comp_combat_degat_etat
   /// Méthode gérant l'utilisation d'une compétence
   function lance(&$actif, &$passif, &$effets)
   {
+    $log_combat .= 'c'.$this->get_id();
     $this->ajout_etat($actif, $passif);
     if( $this->message )
       echo '&nbsp;&nbsp;<strong>'.$actif->get_nom().'</strong> '.$this->message.'<br />';
     else
       $this->message($actif);
-    $actif->precedent['critique'] = false;
+    $passif->precedent['critique'] = false;
     return $this->get_augmentations($actif, $passif);
   }
 }
@@ -869,6 +870,7 @@ class comp_combat_dissim extends comp_combat_etat
   /// Méthode gérant l'utilisation d'une compétence
   function lance(&$actif, &$passif, &$effets)
   {
+    $log_combat .= 'c'.$this->get_id();
     global $db;
     $bonus = 1;
 		if ($actif->get_type() == 'joueur')
@@ -888,14 +890,14 @@ class comp_combat_dissim extends comp_combat_etat
 		$att = $actif->get_dexterite() * $actif->get_esquive() * $bonus;
 		$def = $passif->get_volonte() * ($passif->get_pm() * 2.5);
 		echo '&nbsp;&nbsp;<strong>'.$actif->get_nom().'</strong> tente de se dissimuler...';
-		if( $this->test_potentiel($att, $deff) )
+		if( $this->test_potentiel($att, $def) )
 		{
 			echo ' et réussit !<br />';
 			$this->ajout_etat($actif, $passif);
 		}
 		else
 			echo ' et échoue...<br />';
-    $actif->precedent['critique'] = false;
+    $passif->precedent['critique'] = false;
     return $this->get_augmentations($actif, $passif);
   }
 }
@@ -908,8 +910,8 @@ class comp_combat_pot extends comp_combat
   {
     $actif->set_potentiel_toucher($actif->get_potentiel_toucher() * (1 + ($this->get_effet() / 100)));
     if( $this->get_effet2() )
-      $actif->set_potentiel_critique($actif->get_potentiel_critique() * (1 * ($this->get_effet2() / 100)));
-    $actif->set_potentiel_bloquer($actif->get_potentiel_bloquer() / (1 + ($this->get_effet3() / 100)));
+      $passif->set_potentiel_bloquer($passif->get_potentiel_bloquer() * (1 + ($this->get_effet3() / 100)));
+    $actif->set_potentiel_critique($actif->get_potentiel_critique() / (1 + ($this->get_effet2() / 100)));
     return parent::lance($actif, $passif, $effets);
   }
 }
@@ -921,8 +923,8 @@ class comp_combat_deg_pot extends comp_combat
   function lance(&$actif, &$passif, &$effets)
   {
     $actif->degat_sup = $this->get_effet();
-    $actif->set_potentiel_critique($actif->get_potentiel_critique() * (1 * ($this->get_effet2() / 100)));
-    $actif->set_potentiel_bloquer($actif->get_potentiel_bloquer() / (1 + ($this->get_effet3() / 100)));
+    $passif->set_potentiel_bloquer($passif->get_potentiel_bloquer() * (1 + ($this->get_effet2() / 100)));
+    $actif->set_potentiel_critique($actif->get_potentiel_critique() / (1 + ($this->get_effet3() / 100)));
     return parent::lance($actif, $passif, $effets);
   }
 }
