@@ -457,8 +457,8 @@ class comp_combat extends comp
 					foreach($effets as $effet)
 						$degat = $effet->applique_bloquage($actif,$passif,$degat);
 
+				  $passif->precedent['bouclier'] = true;
 				}
-				$passif->precedent['bouclier'] = true;
 			}
 			return $degat;
   }
@@ -668,7 +668,7 @@ class comp_combat_toucher extends comp_combat
   {
     $actif->set_potentiel_toucher($actif->get_potentiel_toucher() * (1 + ($this->get_effet() / 100)));
     if( $this->get_effet2() )
-      $actif->set_potentiel_critique($actif->get_potentiel_critique() * (1 * ($this->get_effet2() / 100)));
+      $actif->set_potentiel_critique($actif->get_potentiel_critique() * (1 + ($this->get_effet2() / 100)));
     return parent::lance($actif, $passif, $effets);
   }
 }
