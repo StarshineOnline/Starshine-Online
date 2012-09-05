@@ -220,6 +220,7 @@ class comp_combat extends comp
 			$round += 1;
 		//$rectif_augm = $round / $G_round_total;*/
 
+    $passif->precedent['bouclier'] = false;
 		$log_combat .= 'c'.$this->get_id();
   	// Application des effets de début de round
   	foreach($effets as $effet)
@@ -288,7 +289,6 @@ class comp_combat extends comp
   	foreach($effets as $effet)
 			$degat = $effet->calcul_degats($actif, $passif, $degat);
 
-    $passif->precedent['bouclier'] = false;
     if($passif->bouclier())
       $degat = $this->bouclier($degat, $attaque, $actif, $passif, $effets);
       
@@ -457,8 +457,8 @@ class comp_combat extends comp
 					foreach($effets as $effet)
 						$degat = $effet->applique_bloquage($actif,$passif,$degat);
 
-				  $passif->precedent['bouclier'] = true;
 				}
+				$passif->precedent['bouclier'] = true;
 			}
 			return $degat;
   }
@@ -832,13 +832,13 @@ class comp_combat_der_chance extends comp_combat_degat_etat
   /// Constructeur
   function __construct($tbl)
   {
-    parent::__construct($tbl, 'derniere_chance');
+    parent::__construct($tbl, 'v-derniere_chance');
   }
   /// Méthode gérant l'utilisation d'une compétence
   function lance(&$actif, &$passif, &$effets)
   {
     $this->ajout_etat($actif, $passif);
-    $actif->set_pm($actif->get_pm() / (1 + ($actif->etat['derniere_chance']['effet'] / 100))); // à déplacer
+    $actif->set_pm($actif->get_pm() / (1 + ($actif->etat['derniere_chance']['effet2'] / 100))); // à déplacer
     $actif->degat_sup = $this->get_effet();
     return parent::lance($actif, $passif, $effets);
   }
