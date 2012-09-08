@@ -280,6 +280,14 @@ class comp_sort extends comp_sort_buff
 	 * Méthodes utilisées lors de l'utilisation (lancement) de la compétence / du sort
 	 */
   // @{
+  /**
+   * Renvoie le coût en RM/MP de la compétence ou du sort, en prennant en compte l'affinité
+   * @param $actif   entité lançant le sort ou la compétence
+   */
+  function get_cout_mp(&$actif)
+  {
+    return $this->get_mp();
+  }
 	/**
 	 * Renvoie la liste des cibles
 	 * @param cible  Cible principale telle que donnée à la méthode lancer
@@ -342,7 +350,7 @@ class comp_sort extends comp_sort_buff
    * @param  $pot_oppos     potentiel du jet d'opposition (défensif)
    * @return   true si le teste à réussi, false sinon
    */
-  static function test_potentiel($pot_action, $pot_oppos)
+  static function test_potentiel($pot_action, $pot_oppos, &$attaque=null)
   {
   	$attaque = rand(0, $pot_action);
   	$defense = rand(0, $pot_oppos);
@@ -350,6 +358,10 @@ class comp_sort extends comp_sort_buff
 							'<br />Potentiel défenseur : '.$pot_oppos.
 							'<br />Résultat => Attaquant : '.$attaque.' | Défense '.
 							$defense.'<br />');
+    /*if( $jet_action !== null )
+    {
+      $jet_action = $attaque;
+    }*/
     return $attaque > $defense;
   }
 

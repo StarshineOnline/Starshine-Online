@@ -482,6 +482,15 @@ class perso extends entite
 		$this->energie = $energie;
 		$this->champs_modif[] = 'energie';
 	}
+	/**
+	 * Renvoie Le Coefficient modifiant le coût d'un sort à cause de l'affinité
+	 * @param $comp  compétence de magie correspondante
+	 */
+  function get_affinite($comp)
+  {
+    global $Trace;
+    return (1 - (($Trace[$this->get_race()]['affinite_'.$comp] - 5) / 10));
+  }
   // @}
 	
 	/**
@@ -1630,7 +1639,7 @@ class perso extends entite
 		if(!isset($this->armure))
 		{
 			$this->pp = 0;
-			$this->pm = 0;
+			$this->pm = 1;
 			// Pièces d'armure
 			$partie_armure = array('tete', 'torse', 'main', 'ceinture', 'jambe', 'chaussure', 'dos', 'cou', 'doigt');
 			foreach($partie_armure as $partie)
@@ -2615,6 +2624,13 @@ class perso extends entite
 		$buff->set_effet2($effet2);
 		$this->buff[$nom] = $buff;
 	}
+
+	/// Lance un débuff sur l'entité lors d'un combat (uniquement sur un personnage)
+  function lance_debuff($debuff)
+  {
+    $debuff->set_id_perso( $this->get_id() );
+    return $debuff->lance_buff();
+  }
 	// @}
 	
 	/**

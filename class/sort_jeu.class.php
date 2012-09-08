@@ -183,6 +183,14 @@ class sort_jeu extends sort
   }
 	// @}
 
+  /**
+   * Renvoie le coût en RM/MP de la compétence ou du sort, en prennant en compte l'affinité
+   * @param   entité lançant le sort ou la compétence
+   */
+  function get_cout_mp(&$actif)
+  {
+    return round( $this->get_mp() * $actif->get_affinite( $this->get_comp_assoc() ) );
+  }
 	/**
 	 * Méthode gérant l'utilisation du sort
 	 * @param $perso   Personnage lançant le sort

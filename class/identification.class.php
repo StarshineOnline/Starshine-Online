@@ -11,19 +11,19 @@ class identification
 	function connexion($nom, $password, $autologin = false, $api = false)
 	{
 		global $db, $erreur_login;
-		// On utilise le sha1 du md5 pour se logguer en API, histoire de pas
-		// pouvoir crafter de cookie d'auto-login
-		if ($api) $password_base = sha1($row['password']);
+		
+		$mdp_ok = false;
 
-    $requete = 'SELECT * FROM joueur WHERE login = "'.sSQL($nom, SSQL_STRING).'" OR pseudo = "'.sSQL($nom, SSQL_STRING).'"';
-	  $req = $db->query($requete);
-    if( $db->num_rows($req) > 0 )
+    $joueur = joueur::Chercher($nom);
+    /*$requete = 'SELECT * FROM joueur WHERE login = "'.sSQL($nom, SSQL_STRING).'" OR pseudo = "'.sSQL($nom, SSQL_STRING).'"';
+	  $req = $db->query($requete);*/
+    if( /*$db->num_rows($req) > 0*/$joueur )
     {
-      $row = $db->read_assoc($req);
-      $password_base = $row['mdp'];
-			$id_joueur = $row['id'];
-			$droits = $row['droits'];
-			$pseudo = $row['pseudo'];
+      //$row = $db->read_assoc($req);
+      $mdp_ok = $joueur->test_mdp($password);
+			$id_joueur = $joueur->get_id();//$row['id'];
+			$droits =  $joueur->get_droits();//$row['droits'];
+			$pseudo =  $joueur->get_pseudo();//$row['pseudo'];
       $requete = 'SELECT ID, nom, race, rang_royaume FROM perso WHERE id_joueur = '.$id_joueur.' AND ( statut NOT IN ("ban", "hibern") OR fin_ban < '.time().' ) ORDER BY id';
       $req = $db->query($requete);
 			$nbr_perso = $db->num_rows($req);
@@ -46,6 +46,10 @@ class identification
   		{
   			$row = $db->read_assoc($req);
   			$password_base = $row['password'];
+    		// On utilise le sha1 du md5 pour se logguer en API, histoire de pas
+    		// pouvoir crafter de cookie d'auto-login
+		    if ($api) $password_base = sha1($row['password']);
+		    $mdp_ok = $password === $password_base;
   			$id_base = $row['ID'];
   			$id_joueur = null;
   			//Vérification si joueur banni
@@ -71,7 +75,7 @@ class identification
     }
 		
 		//Tout est Ok, on connecte le joueur.
-		if ($password === $password_base)
+		if ($mdp_ok)
 		{
 			//Si il n'y a pas de session
 			if(!array_key_exists('nom', $_SESSION) && $api == false)
