@@ -71,7 +71,7 @@ function switch_race()
 	
 <?php
 	echo	$joueur->get_nom();
-	require('connect_forum.php');
+	require_once('connect_forum.php');
 	$requete = "SELECT * FROM punbbtopics WHERE (forum_id = 5) ORDER BY posted DESC";
 	$req = $db_forum->query($requete);
 

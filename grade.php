@@ -7,14 +7,14 @@ $count_race = count($races);
 $iii = 0;
 $week = 60 * 60 * 24 * 7;
 $time_limit = time() - $week;
-require('connect_forum.php');
+require_once('connect_forum.php');
 //On met tout le monde au rang de citoyen avant de faire le script
-$requete = "UPDATE perso SET rang_royaume = 7 WHERE rang_royaume <> 6";
+$requete = "UPDATE perso SET rang_royaume = 7 WHERE rang_royaume <> 6 AND rang_royaume <> 1";
 $db->query($requete);
 while($iii < $count_race)
 {
 	$tab_perso = array();
-	$requete = "SELECT * FROM perso WHERE race = '".$races[$iii]."' AND dernier_connexion >= ".$time_limit." AND rang_royaume <> 6 AND statut = 'actif' ORDER BY honneur DESC";
+	$requete = "SELECT * FROM perso WHERE race = '".$races[$iii]."' AND dernier_connexion >= ".$time_limit." AND rang_royaume <> 6 AND rang_royaume <> 1 AND statut = 'actif' ORDER BY honneur DESC";
 	//echo $requete.'<br />';
 	$req = $db->query($requete);
 	while($row = $db->read_assoc($req))

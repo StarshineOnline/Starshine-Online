@@ -195,16 +195,38 @@ function check_undead_players($ajax = false)
   }
 }
 
-function check_existing_account($new_account) {
+function check_existing_account($new_account, $perso = true, $joueur = false, $login = false, $id_perso_exception = 0) {
   global $db;
   $count = 0;
   
   $accnt = sSQL($new_account);
-
-  $requete = "select id from perso where replace(nom, ' ', '_') = replace('$accnt', ' ', '_')";
-  $req = $db->query($requete);
-  while ($row = $db->read_row($req))
-    $count++;
+	
+  if($perso)
+  {
+    $requete = "select id from perso where replace(nom, ' ', '_') = replace('$accnt', ' ', '_') AND id <> '$id_perso_exception'";
+    $req = $db->query($requete);
+    while (($row = $db->read_row($req)) != false) {
+      $count++;
+    }
+  }
+   
+  if($joueur)
+  {
+    $requete = "select id from joueur where replace(pseudo, ' ', '_') = replace('$accnt', ' ', '_')";
+    $req = $db->query($requete);
+    while (($row = $db->read_row($req)) != false) {
+      $count++;
+    }
+  }
+    
+  if($login)
+  {
+    $requete = "select id from joueur where replace(login, ' ', '_') = replace('$accnt', ' ', '_')";
+    $req = $db->query($requete);
+    while (($row = $db->read_row($req)) != false) {
+      $count++;
+    }
+  }
 
   $admin = '';
 

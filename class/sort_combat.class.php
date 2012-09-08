@@ -112,27 +112,30 @@ class sort_combat extends sort
   	{
       switch( $row['type'] )
       {
-      case 'debuff_enracinement': // l. 707
-        return new sort_combat($row);
-      case 'heresie_divine': // l. 724
-        return new sort_combat($row);
-      case 'encombrement_psy': // l.
-        return new sort_combat($row);
-      case 'tsunami': // l. 751
-        return new sort_combat($row);
-      case 'empalement_abomination': // l. 759
-        return new sort_combat($row);
-      case 'cri_abomination': // l. 776
-        return new sort_combat($row);
-      case 'nostalgie_karn': // l. 814
-        return new sort_combat($row);
-      case 'absorb_temporelle': // l. 827
-        return new sort_combat($row);
+      case 'debuff_enracinement':
+        return new sort_combat_enracinement($row);
+      case 'heresie_divine':
+        return new sort_combat_debuff($row, 'debuff_antirez');
+      case 'encombrement_psy':
+        $buff = new buff(0, 0, $type, 8, $row['effet2'],
+          $row['duree'], time()+$row['duree'], $row['nom'], 1, $row['effet']);
+        return new sort_combat_debuff($row, $buff);
+      case 'tsunami':
+        return new sort_combat_tsunami($row);
+      case 'empalement_abomination':
+        return new sort_combat_empalement($row);
+      case 'cri_abomination':
+        return new sort_combat_cri_abom($row);
+      case 'nostalgie_karn':
+        return new sort_combat_nostalgie($row);
+      case 'absorb_temporelle':
+        return new sort_combat_absorb($row);
       case 'degat_froid': // à modifier
-      case 'degat_terre':
       case 'sphere_glace':
       case 'embrasement':
         return new sort_combat_degat_etat($row);
+      case 'degat_terre':
+        return new sort_combat_degat_etat($row, null, true);
       case 'degat_vent':
         return new sort_combat_vent($row);
       case 'sacrifice_morbide':
@@ -169,13 +172,15 @@ class sort_combat extends sort
       case 'recuperation':
         return new sort_combat_recuperation($row);
       case 'aura_feu':
-        return new sort_combat_aura($row, 'posture_feu');
+        return new sort_combat_aura($row, 'posture_feu', 'Une enveloppe de feu entoure');
       case 'aura_glace':
-        return new sort_combat_aura($row, 'posture_glace');
+        return new sort_combat_aura($row, 'posture_glace', 'Une enveloppe de glace entoure');
       case 'aura_vent':
-        return new sort_combat_aura($row, 'posture_vent');
+        return new sort_combat_aura($row, 'posture_vent', 'Des tourbillons d\'air entourent');
       case 'aura_pierre':
-        return new sort_combat_aura($row, 'posture_pierre');
+        return new sort_combat_aura($row, 'posture_pierre', 'De solides pierres volent autour de');
+      default:
+        return new sort_combat($row);
       }
   	}
   }
@@ -187,6 +192,14 @@ class sort_combat extends sort
 	 * Méthodes utilisées lors de l'utilisation (lancement) de la compétence / du sort
 	 */
   // @{
+  /**
+   * Renvoie le coût en RM/MP de la compétence ou du sort, en prennant en compte l'affinité
+   * @param   entité lançant le sort ou la compétence
+   */
+  function get_cout_mp(&$actif)
+  {
+    return round( $this->get_mp() * $actif->get_affinite( $this->get_comp_assoc() ) );
+  }
   /**
    * Méthode gérant l'utilisation d'un sort
    * @param  $actif   Personnage utuilisant la coméptence
@@ -226,6 +239,8 @@ class sort_combat extends sort
   		$log_combat .= "~l";
   	}
   	
+  	$passif->precedent['esquive'] = false;
+  	$actif->precedent['critique'] = false;
   	//Augmentation des compétences liées
   	$get = 'get_'.$this->get_comp_assoc();
 
@@ -282,12 +297,14 @@ class sort_combat extends sort
    */
   function touche(&$actif, &$passif, &$effets)
   {
+    global $log_combat;
     $degats = $this->calcul_degats($actif, $passif, $effets, $this->get_effet() + $this->bonus_degats($actif, $passif, $effets));
     // Application des effets de degats magiques
     foreach($effets as $effet)
       $effet->inflige_degats_magiques($actif, $passif, $degats, $this->get_type());
 		echo '&nbsp;&nbsp;<span class="degat"><strong>'.$actif->get_nom().'</strong> inflige <strong>'.$degats.'</strong> dégâts avec '.$this->get_nom().'</span><br />';
-		$passif->set_hp($passif->get_hp() - $degats);
+    $log_combat .= "~".$degats;
+    $passif->set_hp($passif->get_hp() - $degats);
 		return $degats;
   }
 
@@ -335,8 +352,8 @@ class sort_combat extends sort
     $reduction = $this->calcul_pp(($passif->get_pm() * $passif->get_puissance()) / 12);
     $degat_avant = $degat;
     $degat = round($degat * $reduction);
-    if($degat > $degat_avant)
-      echo '(Réduction de '.($degat_avant - $degat).' dégâts par la PM)<br />';
+    if($degat < $degat_avant)
+      echo '&nbsp;&nbsp;<span class="small">(Réduction de '.($degat_avant - $degat).' dégâts par la PM)</span><br />';
 
     // Application des modifications des dégâts
     foreach($effets as $effet)
@@ -358,20 +375,18 @@ class sort_combat extends sort
   	$actif_chance_critique = ($actif->get_volonte() * 50);
   	if(array_key_exists('buff_furie_magique', $actif->buff))
       $actif_chance_critique = $actif_chance_critique  * (1 + ($actif->get_buff('buff_furie_magique', 'effet') / 100));
-  	$debugs++;
+  	//$debugs++;
   	if($this->test_de(10000, $actif_chance_critique))
   	{
    	  $actif->set_compteur_critique();
   		echo '&nbsp;&nbsp;<span class="coupcritique">SORT CRITIQUE !</span><br />';
   		$log_combat .= '!';
-    	echo '<div id="debug'.$debugs.'" class="debug">';
     	//Les dégâts des critiques sont diminués par la puissance
     	$puissance = 1 + ($passif->get_puissance() * $passif->get_puissance() / 1000);
     	$degat *= 2;
     	$degat_avant = $degat;
     	$degat = round($degat / $puissance);
-    	echo '(Réduction de '.($degat_avant - $degat).' dégâts critique par la puissance)<br />
-    	</div>';
+    	echo '&nbsp;&nbsp;<span class="small">(Réduction de '.($degat_avant - $degat).' dégâts critique par la puissance)</span><br />';
   	}
     return $degat;
   }
@@ -382,24 +397,24 @@ class sort_combat extends sort
 class sort_combat_degat_etat extends sort_combat
 {
   protected $etat; ///< État à ajouter si le sort touche
-  protected $effet; ///< Effet de l'état (null s'il faut prendre le paramètre effet2)
-  protected $duree; ///< Durée de l'état (null s'il faut prendre le paramètre duree)
+  protected $effet_etat; ///< Effet de l'état (null s'il faut prendre le paramètre effet2, true s'il faut additionner la valeur actuelle à effet2)
+  protected $duree_etat; ///< Durée de l'état (null s'il faut prendre le paramètre duree)
   function __construct($tbl, $etat=null, $effet=null,$duree=null)
   {
     $this->charger($tbl);
     $this->etat = $etat;
-    $this->effet = $effet;
-    $this->duree = $duree;
+    $this->effet_etat = $effet;
+    $this->duree_etat = $duree;
   }
   /// Méthode gérant ce qu'il se passe lorsque la coméptence à été utilisé avec succès
   function touche(&$actif, &$passif, &$effets)
   {
     parent::touche($actif, $passif, $effets);
-    ajout_etat($actif, $passif);
+    $this->ajout_etat($actif, $passif);
   }
   
   /// Ajoute l'état
-  protected ajout_etat(&$actif, &$passif)
+  protected function ajout_etat(&$actif, &$passif)
   {
     if( $this->etat === null )
       $etat = $this->get_etat_lie();
@@ -408,29 +423,31 @@ class sort_combat_degat_etat extends sort_combat
     $etat_explode = explode('-', $etat);
 		$qui = $etat_explode[0];
 		$etat = $etat_explode[1];
-		if( $qui[0] = 'v' )
+		if( $qui[0] == 'v' )
       $cible = &$actif;
     else
       $cible = &$passif;
-    if( $this->effet === null )
+    if( $this->effet_etat === null )
       $cible->etat[$etat]['effet'] = $this->defaut_effet();
+    else if( $this->effet_etat === true )
+      $cible->etat[$etat]['effet'] += $this->defaut_effet();
     else
-      $cible->etat[$etat]['effet'] = $this->effet;
-		if( $this->duree === null )
+      $cible->etat[$etat]['effet'] = $this->effet_etat;
+		if( $this->duree_etat === null )
       $cible->etat[$etat]['duree'] =  $this->get_duree();
     else
-      $cible->etat[$etat]['duree'] = $this->duree;
+      $cible->etat[$etat]['duree'] = $this->duree_etat;
     $this->ajout_effet2($etat, $cible);
   }
 
   /// récupére la valeur par défaut de l'état
-  protected defaut_effet()
+  protected function defaut_effet()
   {
     return $this->get_effet2();
   }
 
   /// ajoute un effet2 si besoin
-  protected ajout_effet2($etat, &$cible)
+  protected function ajout_effet2($etat, &$cible)
   {
   }
 }
@@ -439,20 +456,32 @@ class sort_combat_degat_etat extends sort_combat
 class sort_combat_etat extends sort_combat_degat_etat
 {
   /// Méthode gérant ce qu'il se passe lorsque la coméptence à été utilisé avec succès
+  function action(&$actif, &$passif, &$effets)
+  {
+    if( $this->get_cible() == comp_sort::cible_perso )
+    {
+      self::touche($actif, $passif, $effets);
+    }
+    else
+    {
+      parent::action($actif, $passif, $effets);
+    }
+  }
+  /// Méthode gérant ce qu'il se passe lorsque la coméptence à été utilisé avec succès
   function touche(&$actif, &$passif, &$effets)
   {
-    ajout_etat($actif, $passif);
-		echo '&nbsp;&nbsp;<strong>'.$actif->get_nom().'</strong> lance le sort '.$this->get_nom().'<br />';
+    $this->ajout_etat($actif, $passif);
+  	echo '&nbsp;&nbsp;<strong>'.$actif->get_nom().'</strong> lance le sort '.$this->get_nom().'<br />';
   }
 
   /// récupére la valeur par défaut de l'état
-  protected defaut_effet()
+  protected function defaut_effet()
   {
     return $this->get_effet();
   }
 
   /// ajoute un effet2 si besoin
-  protected ajout_effet2($etat, &$cible)
+  protected function ajout_effet2($etat, &$cible)
   {
     $effet2 = $this->get_effet2();
     if( $effet2 )
@@ -549,11 +578,12 @@ class sort_combat_drain extends sort_combat
 		$degats = parent::touche($actif, $passif, $effets);
 		if ($passif->get_type() != 'batiment')
 		{
-      $drain = round($degat * $this->drain);
-      echo 'Et gagne <strong>'.$drain.'</strong> hp grâce au drain</span><br />';
+      $drain = round($degats * $this->drain);
+      echo 'Et gagne <strong>'.$drain.'</strong> hp grâce au drain<br />';
       $actif->set_hp($actif->get_hp() + $drain);
 			// On vérifie que le personnage n'a pas plus de HP que son maximum
 			if($actif->get_hp() > floor($actif->get_hp_max())) $actif->set_hp($actif->get_hp_max());
+			$actif->sauver(); // étrange qu'il faille faire ça !
     }
   }
 }
@@ -567,7 +597,7 @@ class sort_combat_vortex_mana extends sort_combat
 		$degats = parent::touche($actif, $passif, $effets);
 		if ($passif->get_type() != 'batiment')
 		{
-      $drain = round($degat * .2);
+      $drain = round($degats * .2);
       echo 'Et gagne <strong>'.$drain.'</strong> RM grâce au drain</span><br />';
       $actif->set_rm_restant($actif->get_rm_restant() + $drain);
     }
@@ -587,8 +617,8 @@ class sort_combat_bris_os extends sort_combat
   }
 }
 
-/// Classe gérant les sorts vortex de mana
-class sort_combat_bris_mana extends sort_combat
+/// Classe gérant les sorts brulure de mana
+class sort_combat_brul_mana extends sort_combat
 {
   /// Méthode gérant ce qu'il se passe lorsque la coméptence à été utilisé avec succès
   function touche(&$actif, &$passif, &$effets)
@@ -601,8 +631,8 @@ class sort_combat_bris_mana extends sort_combat
   }
 }
 
-/// Classe gérant les sorts vortex de mana
-class sort_combat_bris_mana extends sort_combat
+/// Classe gérant les sorts silence
+class sort_combat_silence extends sort_combat
 {
   /// Méthode gérant ce qu'il se passe lorsque la coméptence à été utilisé avec succès
   function touche(&$actif, &$passif, &$effets)
@@ -631,7 +661,7 @@ class sort_combat_bris_mana extends sort_combat
 class sort_combat_recuperation extends sort_combat_etat
 {
   /// ajoute un effet2 si besoin
-  protected ajout_effet2($etat, &$cible)
+  protected function ajout_effet2($etat, &$cible)
   {
     $cible->etat[$etat]['hp_max'] = $cible->get_hp();
     $cible->etat[$etat]['hp_recup'] = 0;
@@ -642,16 +672,279 @@ class sort_combat_recuperation extends sort_combat_etat
 class sort_combat_aura extends sort_combat_etat
 {
   protected $posture; ///< Type de posture
-  function __construct($tbl, $posture)
+  protected $message; ///< Message lors du lancement de la posture.
+  function __construct($tbl, $posture, $message)
   {
-    parent::__construct($tbl, 'posture');
+    parent::__construct($tbl);
     $this->posture = $posture;
+    $this->message = $message;
+  }
+  /// Méthode gérant ce qu'il se passe lorsque la coméptence à été utilisé avec succès
+  function action(&$actif, &$passif, &$effets)
+  {
+    $this->ajout_etat($actif, $passif);
+		echo '&nbsp;&nbsp;'.$this->message.' <strong>'.$actif->get_nom().'</strong> !<br />';
   }
   /// ajoute un effet2 si besoin
-  protected ajout_effet2($etat, &$cible)
+  protected function ajout_effet2($etat, &$cible)
   {
     $cible->etat[$etat]['type'] = $this->posture;
   }
 }
 
+/// Classe gérant les sorts lançant un débuff
+class sort_combat_debuff extends sort_combat
+{
+  protected $debuff; ///< Débuff
+  function __construct($tbl, $debuff=null)
+  {
+    parent::__construct($tbl);
+    if( !is_object($debuff) )
+    {
+      if( func_num_args() == 1 )
+        $type = $this->get_type();
+      else
+        $type = $debuff;
+      $this->debuff = new buff(0, 0, $type, $this->get_effet(), $this->get_effet2(),
+        $this->get_duree(), time()+$this->get_duree(), $this->get_nom(), 1, 0);
+    }
+    else
+      $this->debuff = $debuff;
+  }
+  /// Méthode gérant ce qu'il se passe lorsque la coméptence à été utilisé avec succès
+  function touche(&$actif, &$passif, &$effets)
+  {
+		parent::touche($actif, $passif, $effets);
+		if( $passif->lance_debuff( $this->debuff ) )
+      echo '<strong>'.$passif->get_nom().'</strong> est affecté par le debuff '.$this->debuff->get_nom().'<br/>';
+  }
+}
+
+/// Classe gérant les sorts lançant un débuff si un test réussi
+class sort_combat_enracinement extends sort_combat_debuff
+{
+  /// Méthode gérant ce qu'il se passe lorsque la coméptence à été utilisé avec succès
+  function touche(&$actif, &$passif, &$effets)
+  {
+		sort_combat::touche($actif, $passif, $effets);
+		$att = $this->get_effet2();
+		$def = $passif->get_dexterite() + $passif->get_force();
+		if( $this->test_potentiel($this->potentiel_att, $this->potentiel_def) )
+		{
+  		if( $passif->lance_buff( $this->debuff ) )
+        echo '<strong>'.$passif->get_nom().'</strong> est affecté par le debuff '.$this->debuff->get_nom().'<br/>';
+    }
+  }
+}
+
+/// Classe gérant les sorts lançant un débuff
+class sort_combat_tsunami extends sort_combat
+{
+  /// Méthode gérant ce qu'il se passe lorsque la coméptence à été utilisé avec succès
+  function touche(&$actif, &$passif, &$effets)
+  {
+		parent::touche($actif, $passif, $effets);
+		self::projection($actif, $passif, $this->get_effet2());
+  }
+  
+  protected static function projection(&$actif, &$passif, $effet)
+  {
+    global $db;
+
+    // Choose direction: 1->N 2->E 3->S 4->W
+    $ax = $actif->get_x();
+    $ay = $actif->get_y();
+    $px = $passif->get_x();
+    $py = $passif->get_y();
+    if ($ax == $px && $ay == $py) $direction = rand(1, 4);
+    elseif ($ax == $px) $direction = ($ay < $py) ? 1 : 3;
+    elseif ($ay == $py) $direction = ($ax < $px) ? 2 : 4;
+    else {
+      $p = array();
+      if ($ay > $py) $p[] = 3;
+      if ($ay < $py) $p[] = 1;
+      if ($ax > $px) $p[] = 4;
+      if ($ax < $px) $p[] = 2;
+      shuffle($p);
+      $direction = array_pop($p);
+    }
+
+    print_debug("projection vers: $direction");
+    $translation = 0;
+    $continue_projection = true;
+    do
+    {
+      $cur = self::translation($px, $py, $direction);
+      $map = $db->query_get_object("select * from map where x = $cur[x] and y = $cur[y]");
+      if ($map) {
+        $info = type_terrain($map->info);
+        $pa = cout_pa($info[0], $passif->get_race());
+      } else {
+        print_debug("BORD DE CARTE !!");
+        $pa = 50;
+      }
+      if ($pa > 49) {
+        // Infranchissable: mur
+        $continue_projection = false;
+        echo '<span class="degat">&nbsp;&nbsp;'.$passif->get_nom().
+          ' est projeté contre un mur et perds '.$effet.
+          ' points de vie!<br/></span>';
+        $passif->add_hp($effet * -1);
+        continue;
+      }
+      else {
+        $px = $cur['x'];
+        $py = $cur['y'];
+        print_debug("déplacement en: $px/$py");
+        if ($translation++ > 1) $continue_projection = false;
+      }
+      $def = rand(1, $passif->get_force());
+      $att = rand(1, 40 / $translation);
+      print_debug("resistance à la projection: $def vs $att<br/>");
+      if ($def > $att) $continue_projection = false;
+    } while ($continue_projection);
+    if ($translation > 0) {
+      $joueur = $passif->get_objet();
+      $joueur->set_x($px);
+      $joueur->set_y($py);
+      $joueur->sauver();
+      print_reload_area('deplacement.php?deplacement=centre', 'centre');
+      $row = $db->query_get_object("select * from map_monstre where x = $px and y = $py");
+      if ($row) {
+        $_SESSION['attaque_donjon'] = 'ok';
+        print_js_onload("alert('Vous êtes projeté sur un monstre!'); ".
+                        "envoiInfo('attaque.php?type=monstre&".
+                        "id_monstre=$row->id', 'information')");
+      }
+    }
+  }
+
+  protected static function translation($x, $y, $direction)
+  {
+    switch ($direction)
+    {
+      case 1:
+        return array('x' => $x, 'y' => $y - 1);
+        break;
+      case 2:
+        return array('x' => $x + 1, 'y' => $y);
+        break;
+      case 3:
+        return array('x' => $x, 'y' => $y + 1);
+        break;
+      case 4:
+        return array('x' => $x - 1, 'y' => $y);
+        break;
+    }
+    return array('x' => $x, 'y' => $y);
+  }
+}
+
+/// Classe gérant l'empalement de l'abomination gobelin
+class sort_combat_empalement extends sort_combat
+{
+  /// Méthode gérant ce qu'il se passe lorsque la coméptence à été utilisé avec succès
+  function touche(&$actif, &$passif, &$effets)
+  {
+    $degat = $this->calcul_degats($actif, $passif, $effets, $this->get_effet() + $this->bonus_degats($actif, $passif, $effets));
+    // Application des effets de degats magiques
+    foreach($effets as $effet)
+      $effet->inflige_degats_magiques($actif, $passif, $degats, $this->get_type());
+		echo '&nbsp;&nbsp;<span class="degat"><strong>'.$actif->get_nom().'</strong> inflige <strong>'.$degats.'</strong> dégâts avec '.$this->get_nom().'</span><br />';
+		if ($passif->get_hp() > $degat)
+    { // Si on survit
+			$degat = $passif->get_hp() - 4; // 1 + 3 de LS
+    }
+		echo '&nbsp;&nbsp;<span class="degat">Une &eacute;pine jaillit de <strong>'.
+			$actif->get_nom().'</strong> infligeant <strong>'.$degat.
+			'</strong> dégâts, et transpercant '.$passif->get_nom().'</span><br/>';
+		$passif->set_hp($passif->get_hp() - $degat);
+
+		if ($passif->get_hp() > 0)
+    {
+			// On augmente d'un la marque de l'abomination
+			$achiev = $passif->get_compteur('abomination_mark');
+			$achiev->set_compteur($achiev->get_compteur() + 1);
+			$achiev->sauver();
+    }
+  }
+}
+
+/// Classe gérant le cri de l'abomination gobelin
+class sort_combat_cri_abom extends sort_combat
+{
+  /// Méthode gérant ce qu'il se passe lorsque la coméptence à été utilisé avec succès
+  function touche(&$actif, &$passif, &$effets)
+  {
+			echo '&nbsp;&nbsp;<span class="degat">L\'abomination profère un hurlement terrifiant !</span><br/>';
+			$xi = $passif->get_x() - 3;
+			$xa = $passif->get_x() + 3;
+			$yi = $passif->get_y() - 3;
+			$ya = $passif->get_y() + 3;
+			$requete_persos = "select id from perso where x >= $xi and x <= $xa and y >= $yi and y <= $ya and hp > 0 and statut = 'actif'";
+			$req_persos = $db->query($requete_persos);
+			while ($row_persos = $db->read_assoc($req_persos))
+			{
+				if ($row_persos['id'] == $passif->get_id())	continue;
+				$spectateur = new perso($row_persos['id']);
+				$rand = rand(0, 20);
+				$final = $rand + $spectateur->get_volonte();
+				print_debug("Jet de terreur pour ".$spectateur->get_nom().": $rand ($final) vs $row[effet2]<br/>");
+				if ($final < $row['effet2'] && $rand != 20)
+				{
+					echo '<strong>'.$spectateur->get_nom().'</strong> est effray&eacute; par ce spectacle, et se glace de terreur !<br/>';
+					lance_buff('debuff_enracinement', $row_persos['id'], '10', '0', 86400, 'Terreur',
+										 'Vous etes terroris&eacute; par l\'affreux spectacle du supplice de '.$passif->get_nom(), 'perso', 1, 0, 0, 0);
+				}
+			}
+			echo 'La marque de l\'abomination restera longtemps sur vous ...<br/>';
+			$achiev = $passif->get_compteur('abomination_mark');
+			if ($achiev->get_compteur() == 0) {
+				// Premier combat contre l'abomination
+				$achiev->set_compteur(1);
+				$achiev->sauver();
+			}
+
+			if ($passif->get_hp() > 3)
+				lance_buff('debuff_enracinement', $passif->get_id(), '10', '0', 86400, 'Terreur',
+									 'Vous etes terroris&eacute; par l\'attaque de la cr&eacute;ature', 'perso', 1, 0, 0, 0);
+			lance_buff('lente_agonie', $passif->get_id(), 1, 0, 2678400, 'Marque de l\\\'abomination',
+								 'Les blessures engendrées par l\'épine de l\'abomination vous laissent dans une souffrance atroce. Il vous faudra du temps pour vous en remettre',
+								 'perso', 1, 0, 0, 0);
+  }
+}
+
+/// Classe gérant lla osalgie de Karn
+class sort_combat_nostalgie extends sort_combat_debuff
+{
+  function __construct($tbl)
+  {
+    $debuff = $this->debuff = new buff(0, 0, 'maladie_degenerescence', $this->get_effet2(), 0,
+        $this->get_duree(), time()+$this->get_duree(), $this->get_nom(), 1, 0);
+    parent::__construct($tbl, $debuff);
+  }
+  /// Méthode gérant ce qu'il se passe lorsque la coméptence à été utilisé avec succès
+  function touche(&$actif, &$passif, &$effets)
+  {
+    $description = 'Vous sentez votre esprit vieillir, vous ne pensez quʼaux moments où vous étiez en pleine santé et vous avez du mal a vous concentrer';
+		parent::touche($actif, $passif, $effets);
+		echo '<br/><em>'.$description.'</em>';
+  }
+}
+
+/// Classe gérant l'absorption temporelle
+class sort_combat_absorb extends sort_combat
+{
+  /// Méthode gérant ce qu'il se passe lorsque la coméptence à été utilisé avec succès
+  function touche(&$actif, &$passif, &$effets)
+  {
+    $description = 'Vous êtes complétement déstabilisé et ne voyez plus rien pendant quelques secondes. En revenant à vous, vous avez la douloureuse impression que vos gestes vous ont échappé.';
+		$perte_pa = rand(1, $row['effet2']);
+		$pa = max(0, $passif->get_pa() - $perte_pa);
+		$passif->set_pa($pa);
+		parent::touche($actif, $passif, $effets);
+		print_debug($passif->get_nom().' perd '.$perte_pa.' PA');
+		echo '<br/><em>'.$description.'</em>';
+  }
+}
 ?>

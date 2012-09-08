@@ -14,13 +14,13 @@ if ($G_maintenance)
 }
 else
 {
-	include (root."../jpgraph/src/jpgraph.php");
-	include (root."../jpgraph/src/jpgraph_pie.php");
-	include (root."../jpgraph/src/jpgraph_pie3d.php");
-	include (root."../jpgraph/src/jpgraph_line.php");
-	include (root."../jpgraph/src/jpgraph_bar.php");
-	include (root."../jpgraph/src/jpgraph_scatter.php");
-	include (root."../jpgraph/src/jpgraph_regstat.php");
+	include_once (root."../jpgraph/src/jpgraph.php");
+	include_once (root."../jpgraph/src/jpgraph_pie.php");
+	include_once (root."../jpgraph/src/jpgraph_pie3d.php");
+	include_once (root."../jpgraph/src/jpgraph_line.php");
+	include_once (root."../jpgraph/src/jpgraph_bar.php");
+	include_once (root."../jpgraph/src/jpgraph_scatter.php");
+	include_once (root."../jpgraph/src/jpgraph_regstat.php");
 	include_once(root.'admin/menu_admin.php');
 	?>
 	<div id="contenu">

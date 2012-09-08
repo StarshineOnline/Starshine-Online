@@ -33,7 +33,7 @@ else
 	//$requete = "SELECT ID FROM perso WHERE nom = '".$pseudo."'";
 	//$req = $db->query($requete);
 	//$nombre = $db->num_rows;
-	$nombre = check_existing_account($pseudo);
+	$nombre = check_existing_account($pseudo,true,true,true);
 	if ($nombre > 0)
 	{
 		?>
@@ -174,7 +174,7 @@ En espérant que votre périple se passera bien.
 Bon jeu !';
 		    $messagerie->envoi_message($id_thread, $id_dest, $titre, $message, $id_groupe);
 		}
-		require('connect_forum.php');
+		require_once('connect_forum.php');
 		//Création de l'utilisateur dans le forum
 		$requete = "INSERT INTO punbbusers(`group_id`, `username`, `password`, `language`, `style`, `registered`, `jabber`, `email`) VALUES('".$punbb[$race]."', '".$joueur->get_nom()."', '".sha1($mdp)."', 'French', 'SSO', '".time()."', '$jid', '".$joueur->get_email()."')";
 		$db_forum->query($requete);

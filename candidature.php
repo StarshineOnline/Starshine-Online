@@ -26,7 +26,7 @@ $check = false;
 if( $W_row['type'] == 1 )
 {
   $check = true;
-  include('ville_bas.php');
+  include_once('ville_bas.php');
 }
 elseif( $batiment = verif_batiment($joueur->get_x(), $joueur->get_y(), $Trace[$joueur->get_race()]['numrace']) )
   $check = $batiment['type'] == 'bourg';

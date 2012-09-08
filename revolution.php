@@ -29,7 +29,7 @@ elseif( $batiment = verif_batiment($joueur->get_x(), $joueur->get_y(), $Trace[$j
   $check = $batiment['type'] == 'bourg';
 if( $check )
 {
-	include('ville_bas.php');
+	include_once('ville_bas.php');
 	//Si on est dans notre royaume
 	if($R->get_diplo($joueur->get_race()) == 127)
 	{

@@ -16,7 +16,7 @@ include_once(root.'haut.php');
 <div id='accueil'>
 <?PHP
   if( file_exists(root.'pub.php') )
-    include(root.'pub.php');
+    include_once(root.'pub.php');
 ?>
   
 	<div id='loading_sso' style='display:none;'></div>	
@@ -121,7 +121,7 @@ N'oubliez pas de reporter les bugs et problèmes, et d'apporter vos suggestions 
 		}
 		else
 		{
-			require('connect_forum.php');
+			require_once('connect_forum.php');
 			$requete = "SELECT id, subject, num_replies FROM punbbtopics WHERE (forum_id = 5) ORDER BY posted DESC";
 			$req = $db_forum->query($requete);
 		

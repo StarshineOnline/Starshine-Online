@@ -2,7 +2,7 @@
 if (file_exists('../root.php'))
   include_once('../root.php');
 ?><?php
-require('haut_roi.php');
+require_once('haut_roi.php');
 
 $requete = "select sum(level)/count(id) moy from perso WHERE statut = 'actif'";
 $req = $db->query($requete);

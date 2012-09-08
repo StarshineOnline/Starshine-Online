@@ -5,6 +5,11 @@ if (file_exists('../root.php'))
 $textures = false;
 $admin = true;
 
+function is_pnj($row) {
+  // TODO
+  return true;
+}
+
 include_once(root.'haut.php');
 setlocale(LC_ALL, 'fr_FR');
 include_once(root.'haut_site.php');
@@ -159,7 +164,8 @@ else
 						<?php
 						}
 						if ($_SESSION['admin_nom'] == 'admin' ||
-								$_SESSION['admin_db_auth'] == 'admin')
+								$_SESSION['admin_db_auth'] == 'admin' ||
+                is_pnj($row))
 						{
 						?>
 						<li><a href="admin_joueur.php?direction=objet&amp;id=<?php echo $_GET['id']; ?>">Donner un objet</a> | <a href="admin_joueur.php?direction=recette&amp;id=<?php echo $_GET['id']; ?>">Donner une recette</a> | <a href="admin_joueur.php?direction=arme&amp;id=<?php echo $_GET['id']; ?>">Donner une arme</a></li> | <a href="admin_joueur.php?direction=armure&amp;id=<?php echo $_GET['id']; ?>">Donner une armure</a> | <a href="admin_joueur.php?direction=accessoire&amp;id=<?php echo $_GET['id']; ?>">Donner un accessoire</a> | <a href="admin_joueur.php?direction=titre&amp;id=<?php echo $_GET['id']; ?>">Donner un titre</a></li>
@@ -169,6 +175,17 @@ else
 						?>
 					</ul>
 				</td>
+			</tr>
+			<tr>
+<form name="tp_form" method="get" action="admin_joueur.php">
+<td>Téléporter</td>
+<td><label>x: <input type="text" name="tp_x" size="4"/></label></td>
+<td><label>y: <input type="text" name="tp_y" size="4"/></label></td>
+<td>
+<input type="hidden" name="direction" value="tp"/>
+<input type="hidden" name="id" value="<?php echo $id ?>"/>
+<input type="submit"/></td>
+</form>
 			</tr>
 			</table>
 				<?php
@@ -193,6 +210,21 @@ else
 				</form>
 				<?php
 			break;
+
+		case 'tp':
+			$x = intval($_GET['tp_x']);
+			$y = intval($_GET['tp_y']);
+			$id = $_GET['id'];
+			if ($x > 0 && $y > 0)
+				$db->query("update perso set x = $x, y = $y where id = $id");
+			else
+				echo "ERREUR TP: [$x][$y]<br/>";
+?>
+<a href="admin_joueur.php?direction=info_joueur&id=<?php echo $id ?>">Retour</a>
+	 <script type="text/javascript">window.location = 'admin_joueur.php?direction=info_joueur&id=<?php echo $id ?>';</script>
+<?
+			break;
+
       case 'titredel':
       case 'titreplus':
       case 'titre2':

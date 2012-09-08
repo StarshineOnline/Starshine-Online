@@ -52,7 +52,7 @@ if (isset($_REQUEST['teleport_in'])) {
     }
   }
   else
-    $groupe = false;
+    $groupe = null;
   if(array_key_exists('pa', $_REQUEST) && $_REQUEST['pa'] != '')
   {
     $perso->set_pa($_REQUEST[pa] * $G_PA_max);

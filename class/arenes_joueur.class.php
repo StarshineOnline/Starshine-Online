@@ -29,7 +29,7 @@ class arenes_joueur extends table
 		@param $groupe      int/object  groupe du personnage.
 		@param $hp          int         hp du personnage après le téléport.
 	*/
-	function __construct($event, $perso, $statut=0, $arene=0, $partie=0, $x=0, $y=0, $groupe =0, $hp=1)
+	function __construct($event, $perso, $statut=0, $arene=0, $partie=0, $x=0, $y=0, $groupe=null, $hp=1)
 	{
 		global $db;
 		// Verification du nombre et du type d'argument pour construire l'objet adequat.
@@ -124,7 +124,7 @@ class arenes_joueur extends table
 		$this->arene = $vals['arene'];
 		$this->partie = $vals['partie'];
 		$this->statut = $vals['statut'];
-		$this->groupe = $vals['groupe'] == 'NULL' ? false : $vals['groupe'];
+		$this->groupe = $vals['groupe'];
 		$this->hp = $vals['hp'];
 		$this->unserializeDonnees($vals['donnees']);
   }
@@ -144,12 +144,12 @@ class arenes_joueur extends table
 	/// Renvoie la liste des valeurs des champspour une insertion dans la base
 	protected function get_valeurs_insert()
 	{
-		return $this->get_x().', '.$this->get_y().', '.$this->get_id_perso().', '.($this->get_id_groupe()===false?'NULL':$this->get_id_groupe()).', '.$this->get_id_event().', '.$this->get_id_partie().', '.$this->get_id_arene().', '.$this->get_statut().', '.$this->get_hp().', "'.mysql_escape_string($this->serializeDonnees()).'"';
+		return $this->get_x().', '.$this->get_y().', '.$this->get_id_perso().', '.($this->get_id_groupe()===null?'NULL':$this->get_id_groupe()).', '.$this->get_id_event().', '.$this->get_id_partie().', '.$this->get_id_arene().', '.$this->get_statut().', '.$this->get_hp().', "'.mysql_escape_string($this->serializeDonnees()).'"';
 	}
 	/// Renvoie la liste des champs et valeurs pour une mise-à-jour dans la base
 	protected function get_liste_update()
 	{
-		return 'x = '.$this->get_x().', y = '.$this->get_y().', id_perso = '.$this->get_id_perso().', groupe = '.($this->get_id_groupe()===false?'NULL':$this->get_id_groupe()).', event = '.$this->get_id_event().', partie = '.$this->get_id_partie().', arene = '.$this->get_id_arene().', statut = '.$this->get_statut().', hp = '.$this->get_hp().', donnees = "'.mysql_escape_string($this->serializeDonnees()).'"';
+		return 'x = '.$this->get_x().', y = '.$this->get_y().', id_perso = '.$this->get_id_perso().', groupe = '.($this->get_id_groupe()===null?'NULL':$this->get_id_groupe()).', event = '.$this->get_id_event().', partie = '.$this->get_id_partie().', arene = '.$this->get_id_arene().', statut = '.$this->get_statut().', hp = '.$this->get_hp().', donnees = "'.mysql_escape_string($this->serializeDonnees()).'"';
 	}
   /**
    * Renvoie le nom de la table.
@@ -377,16 +377,16 @@ class arenes_joueur extends table
     // enregistrement des données à rétablir
 		$this->x = $perso->get_x();
 		$this->y = $perso->get_y();
-		if($groupe !== false)
+		if($groupe !== null)
 		  $this->groupe = $perso->get_groupe();
     else
-      $this->groupe = false;
+      $this->groupe = null;
 		$this->hp = $perso->get_hp();
     // Téléport
     $perso->set_x($x);
     $perso->set_y($y);
     // Groupage
-    if( $groupe !== false )
+    if( $groupe !== null )
     {
       if( $arene )
       {

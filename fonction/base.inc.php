@@ -1507,7 +1507,9 @@ function diff_sort($difficulte, $joueur, $type, $sortpa, $sortmp)
 
 function augmentation_competences($liste_augmentations, $joueur)
 {
-	foreach($liste_augmentations['comp'] as $aug)
+  /*echo 'augmentation_competences :';
+  print_r($liste_augmentations);*/
+  foreach($liste_augmentations['comp'] as $aug)
 	{
 		$retour = augmentation_competence($aug[0], $joueur, $aug[1]);
 		if($retour[1]) $joueur->set_comp($aug[0], $retour[0]);
@@ -2408,16 +2410,17 @@ function affiche_ligne_journal($row)
 {
 	$date = strtotime($row['time']);
 	$date = date("j/m H:i", $date);
+	$perso = new perso($_SESSION['ID']);
 	switch($row['action'])
 	{
 		case 'attaque' :
-			if ($row['actif'] != $_SESSION['nom']) // Equivaut à : l'attaquant est le pet
-				return '<li class="jdegat"><span class="small">['.$date.']</span> Vous attaquez '.$row['passif'].' avec '.$row['actif'].' et lui faites '.$row['valeur'].' dégâts, il lui en fait '.$row['valeur2'].' - <a href="#" onClick="return envoiInfo(\'journal_combat.php?id='.$row['id'].'\',\'information\')">Voir</a></li>';
-			else
-				return '<li class="jdegat"><span class="small">['.$date.']</span> Vous attaquez '.$row['passif'].' et lui faites '.$row['valeur'].' dégâts, il vous en fait '.$row['valeur2'].' - <a href="#" onClick="return envoiInfo(\'journal_combat.php?id='.$row['id'].'\',\'information\')">Voir</a></li>';
+			if ($row['actif'] != $perso->get_nom()) // Equivaut à : l'attaquant est le pet
+        return '<li class="jdegat"><span class="small">['.$date.']</span> Vous attaquez '.$row['passif'].' avec '.$row['actif'].' et lui faites '.$row['valeur'].' dégâts, il lui en fait '.$row['valeur2'].' - <a href="#" onClick="return envoiInfo(\'journal_combat.php?id='.$row['id'].'\',\'information\')">Voir</a></li>';
+      else
+        return '<li class="jdegat"><span class="small">['.$date.']</span> Vous attaquez '.$row['passif'].' et lui faites '.$row['valeur'].' dégâts, il vous en fait '.$row['valeur2'].' - <a href="#" onClick="return envoiInfo(\'journal_combat.php?id='.$row['id'].'\',\'information\')">Voir</a></li>';
 		break;
 		case 'defense' :
-			if ($row['actif'] != $_SESSION['nom']) // Equivaut à : le defenseur est le pet
+			 if ($row['actif'] != $perso->get_nom()) // Equivaut à : le defenseur est le pet
 				return '<li class="jrdegat"><span class="small">['.$date.']</span> '.$row['passif'].' a attaqué '.$row['actif'].' et fait '.$row['valeur'].' dégâts et '.$row['actif'].' fait '.$row['valeur2'].' - <a href="#" onClick="return envoiInfo(\'journal_combat.php?id='.$row['id'].'\',\'information\')">Voir</a></li>';
 			else
 				return '<li class="jrdegat"><span class="small">['.$date.']</span> '.$row['passif'].' vous a attaqué et fait '.$row['valeur'].' dégâts et vous lui faites '.$row['valeur2'].' - <a href="#" onClick="return envoiInfo(\'journal_combat.php?id='.$row['id'].'\',\'information\')">Voir</a></li>';
@@ -2577,6 +2580,36 @@ function check_secu($param)
 	
 	return true;
 }
+
+/**
+ * Transforme un pseudo en login (on enlève les accents, on transforme les apostrophes et espaces en underscore)
+ * 
+ * @param  $pseudo   Pseudo à transformer
+ * 
+ * @return   login
+ */
+ function pseudo_to_login($pseudo)
+ {
+	if(!empty($pseudo))
+	{
+		$login = strtolower($pseudo);
+		$login = str_replace("'","_",$login);
+		$login = str_replace(" ","_",$login);
+		$table = array(
+			'Š'=>'S', 'š'=>'s', 'Đ'=>'Dj', 'đ'=>'dj', 'Ž'=>'Z', 'ž'=>'z', 'Č'=>'C', 'č'=>'c', 'Ć'=>'C', 'ć'=>'c',
+			'À'=>'A', 'Á'=>'A', 'Â'=>'A', 'Ã'=>'A', 'Ä'=>'A', 'Å'=>'A', 'Æ'=>'A', 'Ç'=>'C', 'È'=>'E', 'É'=>'E',
+			'Ê'=>'E', 'Ë'=>'E', 'Ì'=>'I', 'Í'=>'I', 'Î'=>'I', 'Ï'=>'I', 'Ñ'=>'N', 'Ò'=>'O', 'Ó'=>'O', 'Ô'=>'O',
+			'Õ'=>'O', 'Ö'=>'O', 'Ø'=>'O', 'Ù'=>'U', 'Ú'=>'U', 'Û'=>'U', 'Ü'=>'U', 'Ý'=>'Y', 'Þ'=>'B', 'ß'=>'Ss',
+			'à'=>'a', 'á'=>'a', 'â'=>'a', 'ã'=>'a', 'ä'=>'a', 'å'=>'a', 'æ'=>'a', 'ç'=>'c', 'è'=>'e', 'é'=>'e',
+			'ê'=>'e', 'ë'=>'e', 'ì'=>'i', 'í'=>'i', 'î'=>'i', 'ï'=>'i', 'ð'=>'o', 'ñ'=>'n', 'ò'=>'o', 'ó'=>'o',
+			'ô'=>'o', 'õ'=>'o', 'ö'=>'o', 'ø'=>'o', 'ù'=>'u', 'ú'=>'u', 'û'=>'u', 'ý'=>'y', 'ý'=>'y', 'þ'=>'b',
+			'ÿ'=>'y', 'Ŕ'=>'R', 'ŕ'=>'r',
+			);
+		$login = strtr($login, $table);
+		return $login;
+	}
+	else return 0;
+ }
 
 /**
  * Calcul le pourcentage de dégâts absorbé en fonction de la PP

@@ -2,7 +2,7 @@
 if (file_exists('../root.php'))
   include_once('../root.php');
 ?><?php
-require(root.'roi/haut_roi.php');
+require_once(root.'roi/haut_roi.php');
 ?>
   		<div id='boutique'>
   		<ul>	

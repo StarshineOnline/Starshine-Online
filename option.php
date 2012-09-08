@@ -71,15 +71,21 @@ $titre_perso = new titre($_SESSION['ID']);
 								}
 								else
 								{
-									//update dans la bdd
-									$requete = "UPDATE perso SET password = '".md5($new_pass)."' WHERE ID = ".$_SESSION['ID'];
-									if($db->query($requete))
+									$perso = new perso($_SESSION['ID']);
+									$perso->set_password(md5($new_pass));
+									$perso->sauver();
+									
+									if(array_key_exists('id_joueur', $_SESSION)) 
 									{
-										require('connect_forum.php');
-										$requete = "UPDATE punbbusers SET password = '".sha1($new_pass)."' WHERE username = '".$_SESSION['nom']."'";
-										$db_forum->query($requete);
-										echo '<h6>Votre mot de passe a bien été modifié !</h6>';
+										$joueur = new joueur($_SESSION['id_joueur']);
+										$joueur->set_mdp(md5($new_pass));
+										$joueur->sauver();
 									}
+
+									require('connect_forum.php');
+									$requete = "UPDATE punbbusers SET password = '".sha1($new_pass)."' WHERE username = '".$_SESSION['nom']."'";
+									$db_forum->query($requete);
+									echo '<h6>Votre mot de passe a bien été modifié !</h6>';
 								}
 							}
 						}
@@ -99,19 +105,26 @@ $titre_perso = new titre($_SESSION['ID']);
 						}
 					break;
 					case 'email' :
-						$joueur = new perso($_SESSION['ID']);
+						$perso = new perso($_SESSION['ID']);
 						if(array_key_exists('new_email', $_POST))
 						{
-							$new_email = $_POST['new_email'];
-							$joueur->set_email($new_email);
-							$joueur->sauver();
+							$new_email = sSQL($_POST['new_email']);
+							$perso->set_email($new_email);
+							$perso->sauver();
+							
+							if(array_key_exists('id_joueur', $_SESSION)) 
+							{
+								$joueur = new joueur($_SESSION['id_joueur']);
+								$joueur->set_email($new_email);
+								$joueur->sauver();
+							}
 							echo '<h6>Votre email a bien été modifié !</h6>';
 						}
 						else
 						{
 						?>
 						<form method="post" action="option.php?action=email" id="formemail">
-							<input type="text" id='new_email' name="new_email" value="<?php echo $joueur->get_email(); ?>" /><br />
+							<input type="text" id='new_email' name="new_email" value="<?php echo $perso->get_email(); ?>" /><br />
 							<input type="submit" value="Modifier votre email" onclick="return envoiFormulaire('formemail', 'popup_content');" />
 						</form>
 						<?php
@@ -218,7 +231,7 @@ $titre_perso = new titre($_SESSION['ID']);
 						$perso->set_statut('ban');
 						$perso->set_fin_ban((time() + (3600 * 24 * 36500)));
 						$perso->sauver();
-						require('connect_forum.php');
+						require_once('connect_forum.php');
 						$groupe = $perso->get_groupe();
 						if($groupe != 0)
 						{	degroup($perso->get_id(), $groupe->get_id());}
@@ -279,7 +292,7 @@ $titre_perso = new titre($_SESSION['ID']);
 			}
 			else
 			{
-				
+				$perso = new perso($_SESSION['ID']);
 				$q = $db->query("select password from perso where id = $_SESSION[ID]");
 				if($q)
 				{
@@ -324,6 +337,14 @@ $titre_perso = new titre($_SESSION['ID']);
 			<div class"news">
 				<h3>Options du jeu</h3>
 				<ul>
+				<?php
+				if(($perso->get_id_joueur() == NULL) OR ($perso->get_id_joueur() == 0))
+				{
+				?>
+					<li><a href="configure_compte_joueur.php" onclick="return envoiInfo(this.href, 'popup_content');">Gestion du compte joueur</a></li>
+				<?php
+				}
+				?>	
 					<li><a href="option.php?action=journal" onclick="return envoiInfo(this.href, 'popup_content');">Filtrer votre journal des actions</a></li>
 					<li><a href="configure_point_sso.php" onclick="return envoiInfo(this.href, 'popup_content');">Configurer vos bonus Shine</a></li>
 					<li><a href="option.php?action=email" onclick="return envoiInfo(this.href, 'popup_content');">Modifier votre email</a></li>
