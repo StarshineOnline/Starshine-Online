@@ -15,18 +15,17 @@ class identification
 		$mdp_ok = false;
 
     $joueur = joueur::Chercher($nom);
-    /*$requete = 'SELECT * FROM joueur WHERE login = "'.sSQL($nom, SSQL_STRING).'" OR pseudo = "'.sSQL($nom, SSQL_STRING).'"';
-	  $req = $db->query($requete);*/
-    if( /*$db->num_rows($req) > 0*/$joueur )
+    //my_dump($joueur);
+    if ($joueur )
     {
-      //$row = $db->read_assoc($req);
       $mdp_ok = $joueur->test_mdp($password);
-			$id_joueur = $joueur->get_id();//$row['id'];
-			$droits =  $joueur->get_droits();//$row['droits'];
-			$pseudo =  $joueur->get_pseudo();//$row['pseudo'];
-      $requete = 'SELECT ID, nom, race, rang_royaume FROM perso WHERE id_joueur = '.$id_joueur.' AND ( statut NOT IN ("ban", "hibern") OR fin_ban < '.time().' ) ORDER BY id';
+			$id_joueur = $joueur->get_id();
+			$droits =  $joueur->get_droits();
+			$pseudo =  $joueur->get_pseudo();
+      $requete = 'SELECT ID, nom, race, rang_royaume, password FROM perso WHERE id_joueur = '.$id_joueur.' AND ( statut NOT IN ("ban", "hibern") OR fin_ban < '.time().' ) ORDER BY id';
       $req = $db->query($requete);
 			$nbr_perso = $db->num_rows($req);
+      //echo "nb: $nbr_perso";
 			if( $nbr_perso )
 			{
         $row = $db->read_assoc($req);
@@ -34,6 +33,8 @@ class identification
         $nom = $row['nom'];
         $race = $row['race'];
         $grade = $row['grade'];
+        if (!$mdp_ok)
+          $mdp_ok = $row['password'] === $password;
       }
       else
         $id_base = null;

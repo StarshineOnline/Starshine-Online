@@ -296,11 +296,20 @@ function prend_quete($id_quete, $joueur)
 	}
 	if($valid)
 	{
-    //my_dump($quete);
 		$quete = unserialize($row['objectif']);
+    //my_dump($quete);
     $liste_quete[$numero_quete] = array();
     $liste_quete[$numero_quete]['id_quete'] = $row['id'];
-    $liste_quete[$numero_quete]['objectif'] = $quete;
+    $count = count($quete);
+		$i = 0;
+		while($i < $count)
+		{
+			$liste_quete[$numero_quete]['objectif'][$i]->cible = $quete[$i]->cible;
+			$liste_quete[$numero_quete]['objectif'][$i]->requis = $quete[$i]->requis;
+			$liste_quete[$numero_quete]['id_quete'] = $row['id'];
+			$liste_quete[$numero_quete]['objectif'][$i]->nombre = 0;
+			$i++;
+		}
     //my_dump($liste_quete);
 		$joueur_quete = serialize($liste_quete);
 		$requete = "UPDATE perso SET quete = '".$joueur_quete."' WHERE id = ".$joueur->get_id();
