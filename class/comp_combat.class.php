@@ -744,6 +744,7 @@ class comp_combat_etat extends comp_combat_degat_etat
   /// Méthode gérant l'utilisation d'une compétence
   function lance(&$actif, &$passif, &$effets)
   {
+    global $log_combat;
     $log_combat .= 'c'.$this->get_id();
     $this->ajout_etat($actif, $passif);
     if( $this->message )
