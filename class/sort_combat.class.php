@@ -130,10 +130,11 @@ class sort_combat extends sort
         return new sort_combat_nostalgie($row);
       case 'absorb_temporelle':
         return new sort_combat_absorb($row);
-      case 'degat_froid': // à modifier
       case 'sphere_glace':
       case 'embrasement':
         return new sort_combat_degat_etat($row);
+      case 'degat_froid': // à modifier
+        return new sort_combat_degat_etat($row, 'a-glacer');
       case 'degat_terre':
         return new sort_combat_degat_etat($row, null, true);
       case 'degat_vent':
