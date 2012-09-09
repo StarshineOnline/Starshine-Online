@@ -155,6 +155,13 @@ class comp_jeu extends comp
 				else echo $cible->get_nom().' a trop de buffs.<br />';
 			}
 		}
+		if (substr_count($this->get_type(), "buff_cri"))
+		{
+			// Augmentation du compteur de l'achievement
+			$achiev = $joueur->get_compteur('cri');
+			$achiev->set_compteur($achiev->get_compteur() + 1);
+			$achiev->sauver();
+			}
 		if( $action )
 		{
 			$requete = "INSERT INTO journal VALUES('', ".$perso->get_id().", '".(count($cibles)>1?"gbuff":"buff")."', '".$perso->get_nom()."', '".$perso->get_nom()."', NOW(), '".$this->get_nom()."', 0, 0, 0)";
