@@ -2482,6 +2482,21 @@ function affiche_ligne_journal($row)
 			else
 				return '<li class="jgbuff"><span class="small">['.$date.']</span> '.$row['actif'].' vous téléporte dans l\'arène '.$row['valeur'].'.</li>';
 		break;
+		case 'rbalance' :
+		case 'rgbalance' :
+			return '<li class="jgsoin"><span class="small">['.$date.']</span> '.$row['passif'].' équilibre vos points de vie à '.$row['valeur'].' HP.</li>';
+			break;
+		case 'gbalance' :
+		case 'balance' :
+			return '<li class="jgsoin"><span class="small">['.$date.']</span> Vous équilibrez vos points de vie à '.$row['valeur'].' HP.</li>';
+			break;
+		case 'rez' :
+			return '<li class="jgsoin"><span class="small">['.$date.']</span> Vous avez été ramené à la vie par '.$row['actif'].'</li>';
+			break;
+		case 'rrez' :
+			return '<li class="jgsoin"><span class="small">['.$date.']</span> Vous avez ressucité '.$row['actif'].'</li>';
+			break;
+			
 	}
 }
 
