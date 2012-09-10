@@ -139,8 +139,13 @@ while($row = $db->read_array($req))
 	}
 	if($row['spawn_loc'] != '' OR $row['spawn'] != 0)
 	{
-		echo "HERE: niveau: $niveau - j[n]: ${joueur[$niveau]} \n";
-		$up = ($joueur[$niveau] * 1000) / sqrt($niveau);
+    if (array_key_exists($niveau, $joueur)) {
+      echo "HERE: niveau: $niveau - j[n]: ${joueur[$niveau]} \n";
+      $up = ($joueur[$niveau] * 1000) / sqrt($niveau);
+    } else {
+      echo "HERE: pas de joueur de niveau $niveau \n";
+      $up = 0;
+    }
 		if($monstre[$niveau]['tot_type'] == 0) $monstre[$niveau]['tot_type'] = 1;
 		$down = $monstre[$niveau]['total'] / $monstre[$niveau]['tot_type'];
 		if($down == 0) $down = 1;
@@ -248,7 +253,7 @@ if(date("j") == 1)
     $log->send(0, 'journalier', "pas de pop des draconides, présent: $type");
   }
 }
-$mail .= mysql_error();
+$mail .= $db->error();
 
 $mail_send = getenv('SSO_MAIL');
 if ($mail_send == null || $mail_send == '') $mail_send = 'starshineonline@gmail.com';

@@ -114,7 +114,7 @@ if($W_row['type'] == 1)
 	}
 	{//-- Récupère tout les royaumes qui peuvent avoir des items en commun
 		$RqRoyaumes = $db->query("SELECT * FROM diplomatie WHERE race='".sSQL($R->get_race())."';");
-		if(mysql_num_rows($RqRoyaumes) > 0)
+		if($db->num_rows($RqRoyaumes) > 0)
 		{
 			$objRoyaumes = $db->read_object($RqRoyaumes);
 			foreach($objRoyaumes as $race => $diplomatie) 
@@ -164,7 +164,7 @@ if($W_row['type'] == 1)
 		if($type == "moi")	{ $queryObjetsHotel = "SELECT * FROM hotel WHERE id_vendeur=".$joueur->get_id()." ORDER BY $tri_champ;"; }
 		else				{ $queryObjetsHotel = "SELECT * FROM hotel WHERE race IN (".implode($royaumes_sharing_tab, ",").") AND SUBSTRING(objet FROM 1 FOR 1)='$abbr' AND time>".(time() - $mois)." ORDER BY $tri_champ;"; };
 		$RqObjetsHotel = $db->query($queryObjetsHotel);
-		if(mysql_num_rows($RqObjetsHotel) > 0)
+		if($db->num_rows($RqObjetsHotel) > 0)
 		{
 			$objet_id = array();
 			$objets_tab = array();
@@ -181,7 +181,7 @@ if($W_row['type'] == 1)
 				
 				//-- Recherche des infos des objets a afficher
 				$RqObjet = $db->query("SELECT * FROM ".$objet_info["table_categorie"]." WHERE id=".$objet_info["id_objet"].";");
-				if(mysql_num_rows($RqObjet) > 0)
+				if($db->num_rows($RqObjet) > 0)
 				{
 					$arrayObjet = $db->read_assoc($RqObjet);
 
