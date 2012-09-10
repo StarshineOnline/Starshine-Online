@@ -11,7 +11,7 @@ $joueur = new perso($_SESSION['ID']);
 if(!array_key_exists('tri', $_GET)) $tri = 'honneur';
 else
 {
-	$tri = mysql_escape_string($_GET['tri']);
+	$tri = sSQL($_GET['tri']);
 	if(!strcmp($tri, 'craft'))
 	{
 		$tri = 'architecture, forge, alchimie';

@@ -51,6 +51,8 @@ class db
   private $lockname;
   private $locked;
 
+  static $s_lnk;
+
 	//! Constructeur
 	/**
 	Le constructeur de la class db créer un lien vers le serveur de base de donnée configurer dans la global $cg["sql"].
@@ -61,8 +63,10 @@ class db
 	{
 	  $this->lockname = null;
 	  $this->locked = false;
-		$this->lnk = @mysql_connect($cfg["sql"]["host"].":".$cfg["sql"]["port"], $cfg["sql"]["user"], $cfg["sql"]["pass"], true) or die("Le serveur de données est en cours de mise à jour ...<br />Merci de revenir dans quelques minutes ...");
-		@mysql_select_db($cfg["sql"]["db"], $this->lnk) or die("La base de données est en cours de mise à jour ...<br />Merci de revenir dans quelques minutes ...");
+    $host = 'p:' . $cfg["sql"]["host"];
+    if (!empty($cfg["sql"]["port"]))
+      $host .= ':' . $cfg["sql"]["port"];;
+		$this->lnk = mysqli_connect($host, $cfg["sql"]["user"], $cfg["sql"]["pass"], $cfg['sql']['db']) or die("Le serveur de données est en cours de mise à jour ...<br />Merci de revenir dans quelques minutes ... ");
 
 		// initialisation des variables par défaut
 		$this->type         = isset($cfg["sql"]["type"])        ? $cfg["sql"]["type"]         :"mysql";
@@ -70,10 +74,10 @@ class db
 		$this->nb_query     = 0;
 
 		$this->encoding = isset($cfg["sql"]["encoding"]) ? $cfg["sql"]["encoding"] : 'utf8';
-		$curenc = mysql_client_encoding($this->lnk);
+		$curenc = mysqli_get_charset($this->lnk)->charset;
 		if ($curenc != $this->encoding) {
-			if (function_exists('mysql_set_charset')) {
-				mysql_set_charset($this->encoding, $this->lnk);
+			if (function_exists('mysqli_set_charset')) {
+				mysqli_set_charset($this->lnk, $this->encoding);
 			}
 		}
 	}
@@ -86,8 +90,9 @@ class db
 	*/
 	function query($query)
 	{
-		if( !is_resource($this->lnk) )
-			$this->db();
+
+		if( !is_object($this->lnk) || get_class($this->lnk) != 'mysqli')
+      die('Uninitialized connection');
 
 		//error_log($query);
 
@@ -95,13 +100,13 @@ class db
 
 		//echo $query."<br />";
 
-		// On utilise mysql_real_escape_string pour protéger la requète si cette fonction existe
-		//if( function_exists("mysql_real_escape_string") )
-		//	$this->sql = mysql_query( mysql_real_escape_string($query,$this->lnk), $this->lnk);
+		// On utilise mysqli_real_escape_string pour protéger la requète si cette fonction existe
+		//if( function_exists("mysqli_real_escape_string") )
+		//	$this->sql = mysqli_query( mysqli_real_escape_string($query,$this->lnk), $this->lnk);
 		//else
 		//{
 		$this->protect_query($query);
-		$this->sql = mysql_query($query, $this->lnk);
+		$this->sql = mysqli_query($this->lnk, $query);
 		//}
 
 		/*
@@ -117,36 +122,41 @@ class db
 
 			if( in_array($query_type, array("SELECT","SHOW") ) )
 			{
-				$this->num_rows = mysql_num_rows($this->sql);
-				$this->num_fields = mysql_num_fields($this->sql);
+				$this->num_rows = mysqli_num_rows($this->sql);
+				$this->num_fields = mysqli_num_fields($this->sql);
 			}
-			else $this->rows_affected = mysql_affected_rows($this->lnk);
+			else $this->rows_affected = mysqli_affected_rows($this->lnk);
 
 			/*
 			if($query_type == "DELETE")
 			{
 			  $from = substr($query,strpos($query,"FROM")+5,strpos($query," ",5)-1);
-			  mysql_query("OPTIMIZE TABLE `".$from."`");
+			  mysqli_query("OPTIMIZE TABLE `".$from."`");
 			}
 			*/
 		}
 		// La requète à échouer, affichage message d'erreur et utilisation errorlib si charger
 		else
 		{
-			echo "Impossible d'executer la requète suivante:<br />".$query."<br />mySQL a répondus : <span style=\"font-style: italic;\">Erreur n°<span style=\"font-weight: 700;\">".mysql_errno()."</span></span> ".mysql_error();
-
-      $this->backtrace();
-
-			if( function_exists("userErrorHandler") )
-			{
-				set_error_handler("userErrorHandler");
-				trigger_error("Erreur 'SQL_QUERY': ".basename($_SERVER["PHP_SELF"])."?".$_SERVER["QUERY_STRING"]."\nQuery: ".$query."\nErreur:".mysql_errno()." (".mysql_error().")",E_USER_ERROR);
-			}
-			if ($this->locked) $this->unlock();
-			exit();
+      $this->query_error($query);
 		}
 		return $this->sql;
 	}
+
+  function query_error($query) {
+
+    echo "Impossible d'executer la requète suivante:<br />".$query."<br />mySQL a répondus : <span style=\"font-style: italic;\">Erreur n°<span style=\"font-weight: 700;\">".mysqli_errno($this->lnk)."</span></span> ".mysqli_error($this->lnk);
+
+    $this->backtrace();
+
+    if (function_exists("userErrorHandler"))
+    {
+      set_error_handler("userErrorHandler");
+      trigger_error("Erreur 'SQL_QUERY': ".basename($_SERVER["PHP_SELF"])."?".$_SERVER["QUERY_STRING"]."\nQuery: ".$query."\nErreur:".mysqli_errno($this->lnk)." (".mysqli_error($this->lnk).")",E_USER_ERROR);
+    }
+    if ($this->locked) $this->unlock();
+    exit ();
+  }
 
   function lock($name)
   {
@@ -221,7 +231,7 @@ class db
 	}
 
 	function get_mysql_info(){
-    $strInfo = mysql_info($this->lnk);
+    $strInfo = mysqli_info($this->lnk);
 		
     $return = array();
     ereg("Records: ([0-9]*)", $strInfo, $records);
@@ -306,7 +316,7 @@ class db
 		
 		  // Ajout par défaut, avec test si string ou non
 		  else
-			      $add .= ( in_array($field_type, $this->string_type)?"'".mysql_real_escape_string(trim($obj->$var_name), $this->lnk)."'":trim($obj->$var_name)).", ";
+        $add .= ( in_array($field_type, $this->string_type)?"'".mysqli_real_escape_string($this->lnk, trim($obj->$var_name))."'":trim($obj->$var_name)).", ";
 			  } // fin for
 		
 			  $add = substr($add,0,strlen($add)-2).")";
@@ -381,7 +391,7 @@ class db
 
       // Ajout par défaut, avec test si string ou non
       else
-	      $update .= "`".$var_name."`=".( in_array($field_type,$this->string_type)?"'".mysql_real_escape_string(trim($obj->$var_name),$this->lnk)."'":trim($obj->$var_name)).", ";
+	      $update .= "`".$var_name."`=".( in_array($field_type,$this->string_type)?"'".mysqli_real_escape_string($this->lnk, trim($obj->$var_name))."'":trim($obj->$var_name)).", ";
 
 	  } // fin for
 	  $update = substr($update,0,strlen($update)-2)." WHERE `".$lead_id."`=".$obj->$lead_id;
@@ -436,12 +446,12 @@ class db
 
 
   // lit en tableau associatif
-  function read_array($sql="")
+  function read_array($sql="", $resulttype = MYSQLI_BOTH)
   {
     $sql = empty($sql)?$this->sql:$sql;
 
-    if( is_resource($sql) ) {
-      return mysql_fetch_array($sql);
+    if( is_object($sql) && get_class($sql) == 'mysqli_result' ) {
+      return mysqli_fetch_array($sql, $resulttype);
     }
 
     return false;
@@ -451,8 +461,8 @@ class db
   {
     $sql = empty($sql)?$this->sql:$sql;
 
-    if( is_resource($sql) )
-      return mysql_fetch_assoc($sql);
+    if( is_object($sql) && get_class($sql) == 'mysqli_result' )
+      return mysqli_fetch_assoc($sql);
 
     return false;
   }
@@ -461,8 +471,8 @@ class db
   {
     $sql = empty($sql)?$this->sql:$sql;
 
-    if( is_resource($sql) )
-      return mysql_fetch_field($sql);
+    if( is_object($sql) && get_class($sql) == 'mysqli_result' )
+      return mysqli_fetch_field($sql);
 
     return false;
   }
@@ -471,8 +481,8 @@ class db
   {
     $sql = empty($sql)?$this->sql:$sql;
 
-    if( is_resource($sql) )
-      return mysql_fetch_row($sql);
+    if( is_object($sql) && get_class($sql) == 'mysqli_result' )
+      return mysqli_fetch_row($sql);
 
     return false;
   }
@@ -481,8 +491,8 @@ class db
   {
     $sql = empty($sql)?$this->sql:$sql;
 
-    if( is_resource($sql) )
-      return mysql_fetch_object($sql);
+    if( is_object($sql) && get_class($sql) == 'mysqli_result' )
+      return mysqli_fetch_object($sql);
 
     return false;
   }
@@ -491,20 +501,20 @@ class db
   {
   	$sql = empty($sql) ? $this->sql : $sql;
 
-    if( is_resource($sql) )
-			return mysql_data_seek($sql,$row_number);
+    if( is_object($sql) && get_class($sql) == 'mysqli_result' )
+			return mysqli_data_seek($sql,$row_number);
 
 		return false;
   }
 
 	function field_name($k)
   {
-	  return mysql_field_name($this->sql,$k);
+	  return mysqli_field_name($this->sql,$k);
   }
 
   function field_type($k)
   {
-    return mysql_field_type($this->sql, $k);
+    return mysqli_field_type($this->sql, $k);
   }
 
   // retourne les types par défaut des champs d'une table
@@ -545,18 +555,18 @@ class db
 
   function field_len($k)
   {
-    return mysql_field_len($this->sql,$k);
+    return mysqli_field_len($this->sql,$k);
   }
 
   function last_insert_id()
   {
-    return mysql_insert_id($this->lnk);
+    return mysqli_insert_id($this->lnk);
   }
 
   // nombre de ligne retourner
   function num_rows($sql)
   {
-    $this->num_rows = mysql_num_rows($sql);
+    $this->num_rows = mysqli_num_rows($sql);
     return $this->num_rows;
   }
 
@@ -689,14 +699,14 @@ class db
   	if( empty($db) )
   	  return false;
 
-    $res_table = mysql_list_tables($db, $this->lnk);
-    $this->num_rows = mysql_num_rows($res_table);
-    $this->num_fields = mysql_num_fields($res_table);
+    $res_table = mysqli_list_tables($this->lnk, $db);
+    $this->num_rows = mysqli_num_rows($res_table);
+    $this->num_fields = mysqli_num_fields($res_table);
 
     $table = array();
 
     for($k=0; $k < $this->num_rows; $k++)
-      $table[] = mysql_tablename($res_table,$k);
+      $table[] = mysqli_tablename($res_table,$k);
 
     $table = implode(", ",$table);
     $this->query("OPTIMIZE TABLE ".$table);
@@ -708,9 +718,9 @@ class db
   function free($asql = null)
   {
     if ($asql === null)
-      return mysql_free_result($this->sql);
+      return mysqli_free_result($this->sql);
     else
-      return mysql_free_result($asql);
+      return mysqli_free_result($asql);
   }
 
   // ferme une connexion à un serveur msSQL
@@ -721,7 +731,7 @@ class db
     if( is_resource($this->sql) )
       $this->free();
 
-    @mysql_close($this->lnk) or die("Impossible de fermer la connection au serveur de données.");
+    @mysqli_close($this->lnk) or die("Impossible de fermer la connection au serveur de données.");
   }
 
 	/**
@@ -729,7 +739,7 @@ class db
 	*/
   function get_version($delim="-")
   {
-    $version = explode($delim, mysql_get_server_info());
+    $version = explode($delim, mysqli_get_server_info());
 
     if( is_array($version) )
       return $version[0];
@@ -768,6 +778,59 @@ class db
     else 
       return null;
   }
+
+  function error() {
+    return mysqli_error($this->lnk);
+  }
+
+  function escape($data) {
+    return mysqli_real_escape_string($this->lnk, $data);
+  }
+
+
+  /*
+   * Interface prepared statements
+   * Must use stmt object to bind
+   */
+  private $stmt = null;
+  function prepare($query) {
+    $this->stmt = mysqli_prepare($this->lnk, $query);
+    if ($this->stmt === false) {
+      $this->query_error($query);
+    }
+    return $this->stmt;
+  }
+
+  function fetch($stmt = null) {
+    if ($stmt == null)
+      $stmt = $this->stmt;
+    mysqli_stmt_fetch($this->stmt);
+  }
+
+  function execute($stmt = null) {
+    if ($stmt == null)
+      $stmt = $this->stmt;
+    if (!mysqli_stmt_execute($stmt)) {
+      $this->stmt_error($stmt);
+    }
+  }
+
+  function stmt_error($stmt) {
+
+    echo "Impossible d'executer la requète, mySQL a répondus : <span style=\"font-style: italic;\">Erreur n°<span style=\"font-weight: 700;\">".$stmt->errno."</span></span> ".$stmt->error;
+
+    $this->backtrace();
+
+    if (function_exists("userErrorHandler"))
+    {
+      set_error_handler("userErrorHandler");
+      trigger_error("Erreur 'SQL_QUERY': ".basename($_SERVER["PHP_SELF"])."?".$_SERVER["QUERY_STRING"]."\nQuery: ".$query."\nErreur:".mysqli_errno($this->lnk)." (".mysqli_error($this->lnk).")",E_USER_ERROR);
+    }
+    if ($this->locked) $this->unlock();
+    exit ();
+  }
+
+
 }
 
 /*

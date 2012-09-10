@@ -65,7 +65,7 @@ $joueur = new perso($_SESSION['ID']);
 		{
 			if($_GET['type'] == 'attaque') $t = 'a';
 			else $t = 'd';
-			$id_action = mysql_escape_string($_GET['id_action']);
+			$id_action = sSQL($_GET['id_action'], SSQL_INTEGER);
 			$requete = "UPDATE perso SET action_".$t." = '".sSQL($id_action)."' WHERE ID = ".$joueur->get_id();
 			if($db->query($requete))
 			{

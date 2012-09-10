@@ -107,7 +107,7 @@ if(array_key_exists('valid_etape', $_GET))
 			{
 				//On envoi un message au gars
 				$titre = $joueur->get_nom().' vous propose un échange';
-				$message = mysql_escape_string($joueur->get_nom().' vous propose un échange[br]
+				$message = sSQL($joueur->get_nom().' vous propose un échange[br]
 				Pour voir ce qu\'il vous propose cliquez ici : [echange:'.$_GET['id_echange'].']');
 				$id_groupe = 0;
 				$id_dest = 0;
@@ -134,7 +134,7 @@ if(array_key_exists('valid_etape', $_GET))
 			{
 				//On envoi un message au gars
 				$titre = $joueur->get_nom().' vous propose un échange';
-				$message = mysql_escape_string($joueur->get_nom().' vous propose un échange[br]
+				$message = sSQL($joueur->get_nom().' vous propose un échange[br]
 				Pour voir ce qu\'il vous propose cliquez ici : [echange:'.$_GET['id_echange'].']');
 				$id_groupe = 0;
 				$id_dest = 0;
@@ -238,7 +238,7 @@ if(array_key_exists('valid_etape', $_GET))
 						{
 							//On envoi un message au gars
 							$titre = 'Finalisation de l\'échange avec '.$joueur->get_nom();
-							$message = mysql_escape_string($joueur->get_nom().' a finalisé l\'échange');
+							$message = sSQL($joueur->get_nom().' a finalisé l\'échange');
 							$id_groupe = 0;
 							$id_dest = 0;
 							$id_thread = 0;

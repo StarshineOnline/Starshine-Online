@@ -47,6 +47,6 @@ $req = $db->query($requete);
 while($row = $db->read_assoc($req))
 {
 	$message = 'Maître Jarode souhaite vous voir le plus vite possible, vous le trouverez a l\'extérieur de la ville...[br]mais avant cela il veux que vous vous rendiez à la bibliothèque de l\'université afin de consulter certains documents qu\'il a mis a votre disposition';
-	$requete = "INSERT INTO message VALUES('', ".$row['ID'].", 0, 'Assistant de Jarod', '".$row['nom']."', 'Rencontre primordiale', '".mysql_escape_string($message)."', '', ".time().", 0)";
+	$requete = "INSERT INTO message VALUES('', ".$row['ID'].", 0, 'Assistant de Jarod', '".$row['nom']."', 'Rencontre primordiale', '".sSQL($message)."', '', ".time().", 0)";
 	$db->query($requete);
 }
