@@ -21,7 +21,7 @@ elseif($choix == 2)
 {
 	if(array_key_exists('rez', $_GET))
 	{
-		$requete = "SELECT pourcent, duree, malus FROM rez WHERE id = '".sSQL($_GET['rez'])."' AND id_perso = ".$joueur->get_id();
+		$requete = "SELECT pourcent, duree, malus, id_rez FROM rez WHERE id = '".sSQL($_GET['rez'])."' AND id_perso = ".$joueur->get_id();
 		$req = $db->query($requete);
 		$row = $db->read_assoc($req);
 		if(is_array($row))
@@ -30,6 +30,12 @@ elseif($choix == 2)
 			$db->query($requete);
 			//Rez
 			verif_mort($row['pourcent'], 3, $row['duree'], $row['malus']);
+		
+		$rezzeur = new perso($row['id_rez']);
+		$requete = "INSERT INTO journal(id_perso, action, actif, passif, time, valeur, valeur2, x, y) VALUES(".$joueur->get_id().", 'rez', '".$rezzeur->get_nom()."', '', NOW(), '', 0, ".$joueur->get_x().", ".$joueur->get_y().")";
+        $db->query($requete);
+        $requete = "INSERT INTO journal(id_perso, action, actif, passif, time, valeur, valeur2, x, y) VALUES(".$rezzeur->get_id().", 'rrez', '".$joueur->get_nom()."', '', NOW(), '', 0, ".$joueur->get_x().", ".$joueur->get_y().")";
+        $db->query($requete);
 		}
 	}
 }
