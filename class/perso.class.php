@@ -348,6 +348,7 @@ class perso extends entite
 	private $password;           ///< hash du mot-de-passe.
 	private $email;              ///< e-mail.
 	private $dernier_connexion;  ///< Date de la dernière connexion.
+	private $id_joueur;       ///< Id du joueur possedant le perso
 	/// Renvoie le hash du mot-de-passe.
 	function get_password()
 	{
@@ -381,6 +382,17 @@ class perso extends entite
 		$this->dernier_connexion = $dernier_connexion;
 		$this->champs_modif[] = 'dernier_connexion';
 	}
+  /// Renvoie l'id du joueur possedant le perso
+  function get_id_joueur()
+  {
+    return $this->id_joueur;
+  }
+  /// Modifie l'id du joueur possedant le perso
+  function set_id_joueur($id_joueur)
+  {
+    $this->id_joueur = $id_joueur;
+    $this->champs_modif[] = 'id_joueur';
+  }
   // @}        
 	
 	/**
