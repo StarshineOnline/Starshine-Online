@@ -158,7 +158,7 @@ class comp_jeu extends comp
 		if (substr_count($this->get_type(), "buff_cri"))
 		{
 			// Augmentation du compteur de l'achievement
-			$achiev = $joueur->get_compteur('cri');
+			$achiev = $perso->get_compteur('cri');
 			$achiev->set_compteur($achiev->get_compteur() + 1);
 			$achiev->sauver();
 			}
