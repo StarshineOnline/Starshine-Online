@@ -697,16 +697,15 @@ class comp_combat_degat_etat extends comp_combat
   function __construct($tbl, $etat=null, $duree=null, $effet=null)
   {
     $this->charger($tbl);
-    $this->etat = $etat;
     $this->duree_etat = $duree;
     $this->effet_etat = $effet;
     
     if( $etat === null )
-      $etat_explode = explode('-', $this->get_etat_lie());
+      $etat_explode = explode('-', /*$this->etat_lie*/$tbl['etat_lie']);
     else
       $etat_explode = explode('-', $etat);
 		$this->etat = $etat_explode[1];
-		$this->autocible = $etat_explode[0] == 'v';
+		$this->autocible = $etat_explode[0][0] == 'v';
   }
   /// Méthode gérant l'utilisation d'une compétence
   function lance(&$actif, &$passif, &$effets)
