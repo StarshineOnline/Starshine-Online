@@ -266,8 +266,11 @@ class sort_debuff extends sort_jeu
         print_debug("Lance sort: $attaque ($puissance) vs $defense ($protection)");
         if ($attaque > $defense)
         {
+          $duree = $this->get_duree();
+          if( $soufr_ext = $perso->get_buff('souffrance_extenuante') )
+            $duree *= $soufr_ext->get_effet();
           //Mis en place du debuff pour tous
-          if(lance_buff($this->get_type(), $cible->get_id(), $this->get_effet(), $this->get_effet2(), $this->get_duree(), $this->get_nom(), $this->get_description(true), $cible->get_race()=='neutre'?'monstre':'perso', 1, 0, 0))
+          if(lance_buff($this->get_type(), $cible->get_id(), $this->get_effet(), $this->get_effet2(), $duree, $this->get_nom(), $this->get_description(true), $cible->get_race()=='neutre'?'monstre':'perso', 1, 0, 0))
           {
             echo 'Le sort '.$this->get_nom().' a été lancé avec succès sur '.$cible->get_nom().'<br />';
             //Insertion du debuff dans les journaux des 2 joueurs
@@ -510,7 +513,6 @@ class sort_balance extends sort_jeu
 	 */
   function lance(&$perso, &$cible, $groupe=false, $lanceur_url='', $type_cible='')
   {
-    global $db;
     $nbr_membre = 0;
     $total_pourcent = 0;
     $cibles = $this->get_liste_cibles($cible, $groupe);
@@ -533,35 +535,12 @@ class sort_balance extends sort_jeu
         echo $cible->get_nom().' est équilibré à '.$cible->get_hp().
 					' HP.<br />';
         $cible->sauver();
-        if($groupe)
-          {
-            $requete = "INSERT INTO journal(id_perso, action, actif, passif, time, valeur, valeur2, x, y) VALUES(".$cible->get_id().", 'rgbalance', '".$cible->get_nom()."', '".$perso->get_nom()."', NOW(), ".$cible->get_hp().", 0, ".$perso->get_x().", ".$perso->get_y().")";
-            $db->query($requete);
-          }
-          else if($cible->get_id() != $perso->get_id())
-          {
-            $requete = "INSERT INTO journal(id_perso, action, actif, passif, time, valeur, valeur2, x, y) VALUES(".$cible->get_id().", 'rbalance', '".$cible->get_nom()."', '".$perso->get_nom()."', NOW(), ".$cible->get_hp().", 0, ".$perso->get_x().", ".$perso->get_y().")";
-            $db->query($requete);
-          }
-          else
-          if($groupe)
-			{
-				$requete = "INSERT INTO journal(id_perso, action, actif, passif, time, valeur, valeur2, x, y) VALUES(".$perso->get_id().", 'gbalance', '".$perso->get_nom()."', 'groupe', NOW(), ".$perso->get_hp().", 0, ".$perso->get_x().", ".$perso->get_y().")";
-			}
-		  else
-			{
-				$requete = "INSERT INTO journal(id_perso, action, actif, passif, time, valeur, valeur2, x, y) VALUES(".$perso->get_id().", 'balance', '".$perso->get_nom()."', '".$cible->get_nom()."', NOW(), ".$perso->get_hp().", 0, ".$perso->get_x().", ".$perso->get_y().")";
-			}
-		  $db->query($requete);
-		}
+      }
       else
       {
         echo $cible->get_nom().' est mort.<br />';
       }
-      
     }
-    
-      
     return true;
   }
 }

@@ -786,7 +786,7 @@ class comp_combat_etourdi extends comp_combat_degat_etat
   /// Constructeur
   function __construct($tbl, $msg=true)
   {
-    $this->charger($tbl);
+    parent::__construct($tbl);
     $this->message = $msg;
   }
   /// Méthode gérant l'utilisation d'une compétence
