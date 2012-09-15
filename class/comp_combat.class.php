@@ -795,10 +795,10 @@ class comp_combat_etourdi extends comp_combat_degat_etat
     $actif->degat_moins = $this->get_effet();
     return comp_combat::lance($actif, $passif, $effets);
   }
-  /// Méthode gérant ce qu'il se passe lorsque la coméptence à été utilisé avec succès
+  /// Méthode gérant ce qu'il se passe lorsque la compétence à été utilisé avec succès
   function touche($attaque, &$actif, &$passif, &$effets)
   {
-    parent::touche($attaque, $actif, $passif, $effets);
+    comp_combat::touche($attaque, $actif, $passif, $effets);
     $pot_att = ($actif->get_force() + $actif->get_dexterite()) / 2;
 		$pot_deff = $passif->get_vie();
     if( $this->test_potentiel($pot_att, $pot_deff) )
