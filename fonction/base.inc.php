@@ -2482,21 +2482,6 @@ function affiche_ligne_journal($row)
 			else
 				return '<li class="jgbuff"><span class="small">['.$date.']</span> '.$row['actif'].' vous téléporte dans l\'arène '.$row['valeur'].'.</li>';
 		break;
-		case 'rbalance' :
-		case 'rgbalance' :
-			return '<li class="jgsoin"><span class="small">['.$date.']</span> '.$row['passif'].' équilibre vos points de vie à '.$row['valeur'].' HP.</li>';
-			break;
-		case 'gbalance' :
-		case 'balance' :
-			return '<li class="jgsoin"><span class="small">['.$date.']</span> Vous équilibrez vos points de vie à '.$row['valeur'].' HP.</li>';
-			break;
-		case 'rez' :
-			return '<li class="jgsoin"><span class="small">['.$date.']</span> Vous avez été ramené à la vie par '.$row['actif'].'</li>';
-			break;
-		case 'rrez' :
-			return '<li class="jgsoin"><span class="small">['.$date.']</span> Vous avez ressucité '.$row['actif'].'</li>';
-			break;
-			
 	}
 }
 
@@ -3649,7 +3634,7 @@ function pute_effets(&$joueur, $honneur_need, $specials = null, $specials_det = 
           lance_buff('plus_cout_deplacement', $joueur->get_id(), 2, 0, $duree, $maladie['nom'], description('Vos couts en déplacement sont multipliés par 2', array()), 'perso', 1, 0, 0);
           break;
         case 'regen_negative' :
-          $duree = 48 * 60 * 60;
+          $duree = 24 * 60 * 60;
           lance_buff('regen_negative', $joueur->get_id(), $effet_explode[1], 0, $duree, $maladie['nom'], description('Vos 3 prochaines regénération vous fait perdre des HP / MP au lieu d\'en regagner.', array()), 'perso', 1, 0, 0);
           break;
         case 'low_hp' :

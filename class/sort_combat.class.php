@@ -554,7 +554,7 @@ class sort_combat_sang extends sort_combat
   /// Méthode gérant ce qu'il se passe lorsque la coméptence à été utilisé avec succès
   function touche(&$actif, &$passif, &$effets)
   {
-		$cout_hp = ceil($actif->get_hp_max() * $row['effet2'] / 100);
+		$cout_hp = ceil($actif->get_hp_max() * $this->get_effet2() / 100);
 		// On vérifie que le personnage a assez de HP (sinon on ne fait rien)
 		if($cout_hp < $actif->get_hp())
 		{
