@@ -563,7 +563,7 @@ else
             $augmentations = $action->lance($actif, $passif, $effects);
           }
           foreach ($effects as $effect)
-						$effect->fin_round(${$mode}, ${$mode_def});
+						$effect->fin_round(${$mode}, ${$mode_def}, $mode);
 
 					//Augmentation des compétences liées
 					if($mode == 'attaquant')

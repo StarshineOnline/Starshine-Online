@@ -266,8 +266,11 @@ class sort_debuff extends sort_jeu
         print_debug("Lance sort: $attaque ($puissance) vs $defense ($protection)");
         if ($attaque > $defense)
         {
+          $duree = $this->get_duree();
+          if( $soufr_ext = $perso->get_buff('souffrance_extenuante') )
+            $duree *= $soufr_ext->get_effet();
           //Mis en place du debuff pour tous
-          if(lance_buff($this->get_type(), $cible->get_id(), $this->get_effet(), $this->get_effet2(), $this->get_duree(), $this->get_nom(), $this->get_description(true), $cible->get_race()=='neutre'?'monstre':'perso', 1, 0, 0))
+          if(lance_buff($this->get_type(), $cible->get_id(), $this->get_effet(), $this->get_effet2(), $duree, $this->get_nom(), $this->get_description(true), $cible->get_race()=='neutre'?'monstre':'perso', 1, 0, 0))
           {
             echo 'Le sort '.$this->get_nom().' a été lancé avec succès sur '.$cible->get_nom().'<br />';
             //Insertion du debuff dans les journaux des 2 joueurs

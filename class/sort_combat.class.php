@@ -130,10 +130,11 @@ class sort_combat extends sort
         return new sort_combat_nostalgie($row);
       case 'absorb_temporelle':
         return new sort_combat_absorb($row);
-      case 'degat_froid': // à modifier
       case 'sphere_glace':
       case 'embrasement':
         return new sort_combat_degat_etat($row);
+      case 'degat_froid': // à modifier
+        return new sort_combat_degat_etat($row, 'a-glacer');
       case 'degat_terre':
         return new sort_combat_degat_etat($row, null, true);
       case 'degat_vent':
@@ -553,7 +554,7 @@ class sort_combat_sang extends sort_combat
   /// Méthode gérant ce qu'il se passe lorsque la coméptence à été utilisé avec succès
   function touche(&$actif, &$passif, &$effets)
   {
-		$cout_hp = ceil($actif->get_hp_max() * $row['effet2'] / 100);
+		$cout_hp = ceil($actif->get_hp_max() * $this->get_effet2() / 100);
 		// On vérifie que le personnage a assez de HP (sinon on ne fait rien)
 		if($cout_hp < $actif->get_hp())
 		{

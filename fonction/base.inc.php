@@ -2582,36 +2582,6 @@ function check_secu($param)
 }
 
 /**
- * Transforme un pseudo en login (on enlève les accents, on transforme les apostrophes et espaces en underscore)
- * 
- * @param  $pseudo   Pseudo à transformer
- * 
- * @return   login
- */
- function pseudo_to_login($pseudo)
- {
-	if(!empty($pseudo))
-	{
-		$login = strtolower($pseudo);
-		$login = str_replace("'","_",$login);
-		$login = str_replace(" ","_",$login);
-		$table = array(
-			'Š'=>'S', 'š'=>'s', 'Đ'=>'Dj', 'đ'=>'dj', 'Ž'=>'Z', 'ž'=>'z', 'Č'=>'C', 'č'=>'c', 'Ć'=>'C', 'ć'=>'c',
-			'À'=>'A', 'Á'=>'A', 'Â'=>'A', 'Ã'=>'A', 'Ä'=>'A', 'Å'=>'A', 'Æ'=>'A', 'Ç'=>'C', 'È'=>'E', 'É'=>'E',
-			'Ê'=>'E', 'Ë'=>'E', 'Ì'=>'I', 'Í'=>'I', 'Î'=>'I', 'Ï'=>'I', 'Ñ'=>'N', 'Ò'=>'O', 'Ó'=>'O', 'Ô'=>'O',
-			'Õ'=>'O', 'Ö'=>'O', 'Ø'=>'O', 'Ù'=>'U', 'Ú'=>'U', 'Û'=>'U', 'Ü'=>'U', 'Ý'=>'Y', 'Þ'=>'B', 'ß'=>'Ss',
-			'à'=>'a', 'á'=>'a', 'â'=>'a', 'ã'=>'a', 'ä'=>'a', 'å'=>'a', 'æ'=>'a', 'ç'=>'c', 'è'=>'e', 'é'=>'e',
-			'ê'=>'e', 'ë'=>'e', 'ì'=>'i', 'í'=>'i', 'î'=>'i', 'ï'=>'i', 'ð'=>'o', 'ñ'=>'n', 'ò'=>'o', 'ó'=>'o',
-			'ô'=>'o', 'õ'=>'o', 'ö'=>'o', 'ø'=>'o', 'ù'=>'u', 'ú'=>'u', 'û'=>'u', 'ý'=>'y', 'ý'=>'y', 'þ'=>'b',
-			'ÿ'=>'y', 'Ŕ'=>'R', 'ŕ'=>'r',
-			);
-		$login = strtr($login, $table);
-		return $login;
-	}
-	else return 0;
- }
-
-/**
  * Calcul le pourcentage de dégâts absorbé en fonction de la PP
  * 
  * @param  $pp    PP.
@@ -3664,7 +3634,7 @@ function pute_effets(&$joueur, $honneur_need, $specials = null, $specials_det = 
           lance_buff('plus_cout_deplacement', $joueur->get_id(), 2, 0, $duree, $maladie['nom'], description('Vos couts en déplacement sont multipliés par 2', array()), 'perso', 1, 0, 0);
           break;
         case 'regen_negative' :
-          $duree = 48 * 60 * 60;
+          $duree = 24 * 60 * 60;
           lance_buff('regen_negative', $joueur->get_id(), $effet_explode[1], 0, $duree, $maladie['nom'], description('Vos 3 prochaines regénération vous fait perdre des HP / MP au lieu d\'en regagner.', array()), 'perso', 1, 0, 0);
           break;
         case 'low_hp' :

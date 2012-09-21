@@ -237,6 +237,7 @@ class comp_combat extends comp
     if( $this->test_potentiel($potentiel_toucher, $potentiel_parer, $attaque) )
     {
       $this->touche($attaque, $actif, $passif, $effets);
+      $actif->precedent['critique'] = false;
       $passif->precedent['esquive'] = false;
     }
   	else
@@ -692,43 +693,52 @@ class comp_combat_degat_etat extends comp_combat
   protected $etat; ///< État à ajouter si le sort touche
   protected $duree_etat; ///< Durée de l'état (null s'il faut prendre le paramètre duree)
   protected $effet_etat; ///< Effet de l'état (null s'il faut prendre le paramètre effet2)
+  protected $autocible;  /// true si la cible est soi-même, false si c'est l'ennemi
   function __construct($tbl, $etat=null, $duree=null, $effet=null)
   {
     $this->charger($tbl);
-    $this->etat = $etat;
     $this->duree_etat = $duree;
     $this->effet_etat = $effet;
+    
+    if( $etat === null )
+      $etat_explode = explode('-', /*$this->etat_lie*/$tbl['etat_lie']);
+    else
+      $etat_explode = explode('-', $etat);
+		$this->etat = $etat_explode[1];
+		$this->autocible = $etat_explode[0][0] == 'v';
   }
   /// Méthode gérant l'utilisation d'une compétence
   function lance(&$actif, &$passif, &$effets)
   {
-    $this->ajout_etat($actif, $passif);
+    if( $this->autocible )
+      $this->ajout_etat($actif, $passif);
     return parent::lance($actif, $passif, $effets);
+  }
+
+  /// Méthode gérant ce qu'il se passe lorsque la coméptence à été utilisé avec succès
+  function touche($attaque, &$actif, &$passif, &$effets)
+  {
+    if( !$this->autocible )
+      $this->ajout_etat($actif, $passif);
+    return parent::touche($attaque, $actif, $passif, $effets);
   }
 
   /// Ajoute l'état
   protected function ajout_etat(&$actif, &$passif)
   {
-    if( $this->etat === null )
-      $etat = $this->get_etat_lie();
-    else
-      $etat = $this->etat;
-    $etat_explode = explode('-', $etat);
-		$qui = $etat_explode[0];
-		$etat = $etat_explode[1];
-		if( $qui[0] == 'v' )
+		if( $this->autocible )
       $cible = &$actif;
     else
       $cible = &$passif;
     if( $this->effet_etat === null )
-      $cible->etat[$etat]['effet'] =  $this->get_effet();
+      $cible->etat[$this->etat]['effet'] =  $this->get_effet();
     else
-      $cible->etat[$etat]['effet'] = $this->effet_etat;
+      $cible->etat[$this->etat]['effet'] = $this->effet_etat;
 		if( $this->duree_etat === null )
-      $cible->etat[$etat]['duree'] =  $this->get_duree();
+      $cible->etat[$this->etat]['duree'] =  $this->get_duree();
     else
-      $cible->etat[$etat]['duree'] = $this->duree_etat;
-    $cible->etat[$etat]['effet2'] = $this->get_effet2();
+      $cible->etat[$this->etat]['duree'] = $this->duree_etat;
+    $cible->etat[$this->etat]['effet2'] = $this->get_effet2();
   }
 }
 
@@ -744,6 +754,7 @@ class comp_combat_etat extends comp_combat_degat_etat
   /// Méthode gérant l'utilisation d'une compétence
   function lance(&$actif, &$passif, &$effets)
   {
+    global $log_combat;
     $log_combat .= 'c'.$this->get_id();
     $this->ajout_etat($actif, $passif);
     if( $this->message )
@@ -775,7 +786,7 @@ class comp_combat_etourdi extends comp_combat_degat_etat
   /// Constructeur
   function __construct($tbl, $msg=true)
   {
-    $this->charger($tbl);
+    parent::__construct($tbl);
     $this->message = $msg;
   }
   /// Méthode gérant l'utilisation d'une compétence
@@ -784,10 +795,10 @@ class comp_combat_etourdi extends comp_combat_degat_etat
     $actif->degat_moins = $this->get_effet();
     return comp_combat::lance($actif, $passif, $effets);
   }
-  /// Méthode gérant ce qu'il se passe lorsque la coméptence à été utilisé avec succès
+  /// Méthode gérant ce qu'il se passe lorsque la compétence à été utilisé avec succès
   function touche($attaque, &$actif, &$passif, &$effets)
   {
-    parent::touche($attaque, $actif, $passif, $effets);
+    comp_combat::touche($attaque, $actif, $passif, $effets);
     $pot_att = ($actif->get_force() + $actif->get_dexterite()) / 2;
 		$pot_deff = $passif->get_vie();
     if( $this->test_potentiel($pot_att, $pot_deff) )
