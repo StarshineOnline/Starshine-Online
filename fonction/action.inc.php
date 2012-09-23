@@ -150,12 +150,11 @@ function sub_script_action($joueur, $ennemi, $mode, &$effects)
 		$test = false;
 		return '';
 	}
-		if($joueur->etat['bouclier_glace'] > 0)
+	if($joueur->etat['glace'] > 0)
 	{
-		echo $joueur->get_nom().' est glacé<br />';
-		$log_combat .= "cp";
-		$test = false;
-		return '';
+		print_debug($joueur->get_nom().' est glacé<br />');
+		//$log_combat .= "cp";
+		$test = true;
 	}
 	if($joueur->etat['tir_vise'] > 0)
 	{
@@ -1682,8 +1681,8 @@ function get_etats()
 	$etats['silence']['id'] = 'silence';
 	$etats['dissimulation']['nom'] = 'Dissimulé';
 	$etats['dissimulation']['id'] = 'dissimulation';
-	$etats['glacer']['nom'] = 'Glacé';
-	$etats['glacer']['id'] = 'glacer';
+	$etats['glace']['nom'] = 'Glacé';
+	$etats['glace']['id'] = 'glace';
 	$etats['posture']['nom'] = 'En posture / Aura';
 	$etats['posture']['id'] = 'posture';
 	$etats['berzeker']['nom'] = 'Berzerk';

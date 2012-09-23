@@ -735,7 +735,10 @@ class bouclier_protecteur extends etat {
 	}
 	
 	function calcul_pm(&$actif, &$passif, $pm) {
-		$pluspm = $this->effet * $passif->bouclier()->degat;
+    $bloque = $passif->bouclier()->degat;
+		if($passif->is_buff('bouclier_terre'))
+      $bloque += $passif->get_buff('bouclier_terre', 'effet');
+		$pluspm = $this->effet * $bloque;
 		$this->debug($this->nom.' augmente la PM de '.$pluspm);
 		return $pm + $pluspm;
 	}

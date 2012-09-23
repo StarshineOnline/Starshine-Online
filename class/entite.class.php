@@ -663,6 +663,7 @@ class entite extends placable
 	protected $potentiel_bloquer;  ///< Potentiel bloquer
 	protected $potentiel_critique;  ///< Potentiel critique physique
 	protected $potentiel_magique;  ///< Potentiel lancer magique
+	protected $potentiel_parer_magique;  ///< Potentiel parer magique
 	protected $comp_att;       ///< Coméptence utilisé pour attaquer
 	/// Renvoie le contenu du script de combat utilisé
 	function get_action()
@@ -717,6 +718,7 @@ class entite extends placable
   	if(array_key_exists('lien_sylvestre', $this->etat)) $this->potentiel_toucher /= 1 + (($this->etat['lien_sylvestre']['effet2']) / 100);
   	if(array_key_exists('b_toucher', $this->etat)) $this->potentiel_toucher /= 1 + ($this->etat['b_toucher']['effet'] / 100);
   	if(array_key_exists('coup_mortel', $this->etat)) $this->potentiel_toucher *= 1 - ($this->etat['coup_mortel']['effet'] / 100);
+  	if(array_key_exists('glace', $this->etat)) $this->potentiel_toucher /= 1 + ($this->etat['glace']['effet'] / 100);
   	//Buff précision
   	if(array_key_exists('benediction', $this->etat))	$this->potentiel_toucher *= 1 + (($this->etat['benediction']['effet'] * $G_buff['bene_accuracy']) / 100);
   	if(array_key_exists('berzeker', $this->etat)) $this->potentiel_toucher *= 1 + (($this->etat['berzeker']['effet'] * $G_buff['berz_accuracy']) / 100);
@@ -758,6 +760,7 @@ class entite extends placable
   	if($this->etat['posture']['type'] == 'posture_vent') $this->potentiel_parer *= 1 + (($this->etat['posture']['effet']) / 100);
   	if($this->is_buff('buff_evasion')) $this->potentiel_parer *= 1 + ($this->get_buff('buff_evasion', 'effet') / 100);
   	if($this->is_buff('buff_cri_detresse')) $this->potentiel_parer *= 1 + (($this->get_buff('buff_cri_detresse', 'effet')) / 100);
+  	if(array_key_exists('glace', $this->etat)) $this->potentiel_parer /= 1 + ($this->etat['glace']['effet'] / 100);
 
   	if($this->get_race() == 'elfebois') $this->potentiel_parer *= 1.15;
 
@@ -778,7 +781,7 @@ class entite extends placable
 		if(array_key_exists('blocage', $p_e)) $enchantement_blocage = ($p_e['blocage']['effet']); else $enchantement_blocage = 0;
 		if($this->is_buff('buff_bouclier_sacre')) $buff_blocage = 1 + ($this->get_buff('buff_bouclier_sacre', 'effet') / 100); else $buff_blocage = 1;
 		if(array_key_exists('benediction', $this->etat)) $buff_bene_blocage = 1 + (($this->etat['benediction']['effet'] * $G_buff['bene_bouclier']) / 100); else $buff_bene_blocage = 1;
-		$this->potentiel_bloquer = floor(($this->get_blocage() + $enchantement_blocage ) * (pow($this->get_dexterite(), 2) / 100) * $buff_bene_blocage * $buff_blocage);
+		$this->potentiel_bloquer = floor(($this->get_blocage() + $enchantement_blocage ) * (pow($this->get_dexterite(), 1.7) / 20) * $buff_bene_blocage * $buff_blocage);
 		return $this->potentiel_bloquer;
 	}
 	/// Modifie le potentiel bloquer
@@ -840,6 +843,7 @@ class entite extends placable
       $this->potentiel_magique /= 1 + ($this->etat['fleche_debilitante']['effet'] / 100);
   	if($this->etat['posture']['type'] == 'posture_feu')
       $this->potentiel_magique *= 1 + (($this->etat['posture']['effet']) / 100);
+    if(array_key_exists('glace', $this->etat)) $this->potentiel_magique /= 1 + ($this->etat['glace']['effet'] / 100);
   	if($this->get_arme_type() == 'baton')
     {
       $arme = $this->get_arme();
@@ -864,6 +868,31 @@ class entite extends placable
 	function set_potentiel_lancer_magique($valeur)
 	{
     $this->potentiel_magique = $valeur;
+	}
+  /**
+   * Calcul et renvoie le potentiel parer physique
+   * @param  $esquive   Valeur de la compétence esquive à prendre en compte si elle est différente de celle de l'entité (sinon false).
+   */
+	function get_potentiel_parer_magique($pm=null)
+	{
+		global $G_buff, $G_debuff;
+    if( isset($this->potentiel_parer_magique) && $this->potentiel_parer_magique )
+      return $this->potentiel_parer_magique;
+
+		if( !$pm )
+      $pm = $passif->get_pm();
+		if($passif->is_buff('batiment_pm')) $buff_batiment_barriere = 1 + (($passif->get_buff('batiment_pm', 'effet') / 100)); else $buff_batiment_barriere = 1;
+		if($passif->is_buff('debuff_desespoir')) $debuff_desespoir = 1 + (($passif->get_buff('debuff_desespoir', 'effet')) / 100); else 	$debuff_desespoir = 1;
+		if($passif->etat['posture']['type'] == 'posture_glace') $aura_glace = 1 + (($passif->etat['posture']['effet']) / 100); else $aura_glace = 1;
+		$this->potentiel_parer_magique = round($passif->get_volonte() * $aura_glace * $buff_batiment_barriere / $debuff_desespoir);
+    if(array_key_exists('glace', $this->etat)) $this->potentiel_parer_magique /= 1 + ($this->etat['glace']['effet'] / 100);
+
+		return $this->potentiel_parer_magique;
+	}
+	/// Modifie le potentiel parer physique
+	function set_potentiel_parer_magique($valeur)
+	{
+		$this->potentiel_parer_magique = $valeur;
 	}
 	/// Renvoie la compétence utilisée pour attaquer
 	function get_comp_att()

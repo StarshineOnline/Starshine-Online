@@ -430,27 +430,23 @@ class comp_combat extends comp
 
 					// degats bloques
 
+          if( $degat_bloque > $degat )
+            $degat_bloque = $degat;
 					$degat = $degat - $degat_bloque;
-					if($degat < 0) $degat = 0;
 					echo '&nbsp;&nbsp;<span class="manque">'.$passif->get_nom().' bloque le coup et absorbe '.$degat_bloque.' dégâts</span><br />';
 					if($passif->is_buff('bouclier_feu'))
 					{
-						$degats = $passif->get_buff('bouclier_feu', 'effet');
-						$actif->set_hp($actif->get_hp() - $degats);
-						echo '&nbsp;&nbsp;<span class="degat">'.$passif->get_nom().' inflige '.$degats.' dégâts grâce au bouclier de feu</span><br />';
+						$degats_feu = ceil( $degat_bloque * $passif->get_buff('bouclier_feu', 'effet') / 100 );
+						$actif->set_hp($actif->get_hp() - $degats_feu);
+						echo '&nbsp;&nbsp;<span class="degat">'.$passif->get_nom().' inflige '.$degats_feu.' dégâts grâce au bouclier de feu</span><br />';
 					}
-					if($passif->is_buff('bouclier_eau'))
+					if( $buff = $passif->get_buff('bouclier_eau') )
 					{
-						$chances = $passif->get_buff('bouclier_eau', 'effet') * 2;
-						$diffi = 100;
-						$att = rand(0, $chances);
-						$def = rand(0, $diffi);
-						print_debug("Potentiel glacer: $chances<br />Résultat => $att vs $def");
-						if($att > $def)
+						if( $this->test_de(100, 35) )
 						{
-							echo '&nbsp;&nbsp;<span class="degat">'.$passif->get_nom().' bloque et glace '.$actif->get_nom().'</span><br />';
-							$actif->etat['bouclier_glace']['effet'] = 1;
-							$actif->etat['bouclier_glace']['duree'] = ($passif->get_buff('bouclier_eau', 'effet2') + 1);
+							echo '&nbsp;&nbsp;<span class="degat">'.$passif->get_nom().' glace '.$actif->get_nom().'</span><br />';
+							$actif->etat['glace']['effet'] = $buff->get_effet();
+							$actif->etat['glace']['duree'] = $buff->get_effet2()+1; // +1 car ce round est décompté alors qu'il ne compte pas
 						}
 					}
 
@@ -615,7 +611,7 @@ class comp_combat extends comp
     // bouclier
     if( $passif->precedent['bouclier'] )
     {
-      $diff_blocage = (2.5 * $G_round_total / 5) * $rectif_augm;
+      $diff_blocage = (2 * $G_round_total / 5) * $rectif_augm;
 			$augmentation['passif']['comp'][] = array('blocage', $diff_blocage);
 			if($passif->is_competence('maitrise_bouclier'))
 				$augmentation['passif']['comp_perso'][] = array('maitrise_bouclier', 6 * $rectif_augm);
@@ -952,6 +948,8 @@ class comp_combat_coup_bouclier extends comp_combat_degat_etat
   function calcul_degats(&$actif, &$passif, &$effets)
   {
 		$degat = $actif->get_bouclier_degat();
+		if($passif->is_buff('bouclier_terre'))
+      $degat += $passif->get_buff('bouclier_terre', 'effet');
 
 		// Prise en compte des effets defenseurs de l'attaquant (protection artistique ...)
 		$tmp_effets = array();

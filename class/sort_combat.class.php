@@ -265,15 +265,11 @@ class sort_combat extends sort
 		// Application des effets de PM
 		foreach($effets as $effet)
 			$pm = $effet->calcul_pm($actif, $passif, $pm);
-			
-		if($passif->is_buff('batiment_pm')) $buff_batiment_barriere = 1 + (($passif->get_buff('batiment_pm', 'effet') / 100)); else $buff_batiment_barriere = 1;
-		if($passif->is_buff('debuff_desespoir')) $debuff_desespoir = 1 + (($passif->get_buff('debuff_desespoir', 'effet')) / 100); else 	$debuff_desespoir = 1;
-		if($passif->etat['posture']['type'] == 'posture_glace') $aura_glace = 1 + (($passif->etat['posture']['effet']) / 100); else $aura_glace = 1;
-		$PM = $pm * $aura_glace * $buff_batiment_barriere;
+		
 		
 		// Calcul des potentiels toucher et parer
 		$potentiel_toucher = round($actif->get_volonte() * $actif->get_potentiel_lancer_magique( $this->get_comp_assoc() ));
-		$potentiel_parer = round($passif->get_volonte() * $PM / $debuff_desespoir);
+		$potentiel_parer = $actif->get_potentiel_parer_magique($pm);
 		// Application des effets de potentiel toucher
 		foreach($effets as $effet)
 			$potentiel_toucher = $effet->calcul_attaque_magique($actif, $passif, $potentiel_toucher);

@@ -2016,7 +2016,7 @@ function lance_buff($type, $id, $effet, $effet2, $duree, $nom, $description, $ty
 		{
 			// On peut avoir autant de debuff qu'on veut
 		  // Ajout du buff
-			$requete = "INSERT INTO ".$table."(`type`, `effet`, `effet2`, `fin`, `duree`, `".$champ."`, `nom`, `description`, `debuff`, `supprimable`) VALUES('".$type."', ".$effet.", ".$effet2.", ".(time()+$duree).", ".$duree.", ".$id.", '".$nom."', '".addslashes($description)."', ".$debuff.", ".$supprimable.")";
+			$requete = "INSERT INTO ".$table."(`type`, `effet`, `effet2`, `fin`, `duree`, `".$champ."`, `nom`, `description`, `debuff`, `supprimable`) VALUES('".$type."', ".$effet.", ".$effet2.", ".(time()+$duree).", ".$duree.", ".$id.", '".addslashes($nom)."', '".addslashes($description)."', ".$debuff.", ".$supprimable.")";
 			$db->query($requete);
 		}
 		else
@@ -2029,7 +2029,7 @@ function lance_buff($type, $id, $effet, $effet2, $duree, $nom, $description, $ty
 	elseif($effet >= $Buff_row['effet'])
 	{
 	  // L'effet est plus grand (ou égal) : on met à jour
-		$requete = "UPDATE ".$table." SET effet = ".$effet.", effet2 = ".$effet2.", fin = ".(time() + $duree).", nom = '".$nom."', description = '".addslashes($description)."' WHERE id = ".$Buff_row['id'];
+		$requete = "UPDATE ".$table." SET effet = ".$effet.", effet2 = ".$effet2.", fin = ".(time() + $duree).", nom = '".addslashes($nom)."', description = '".addslashes($description)."' WHERE id = ".$Buff_row['id'];
 		$db->query($requete);
 	}
 	else

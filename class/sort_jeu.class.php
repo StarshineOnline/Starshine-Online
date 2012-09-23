@@ -211,7 +211,7 @@ class sort_jeu extends sort
 				//Insertion du buff dans le journal du receveur
 				if( $cible->get_id() != $perso->get_id() && $cible->get_race() != 'neutre' )
 				{
-  				$requete = "INSERT INTO journal VALUES('', ".$cible->get_id().", '".($groupe?'rgbuff':'rbuff')."', '".$cible->get_nom()."', '".$perso->get_nom()."', NOW(), '".$this->get_nom()."', 0, 0, 0)";
+  				$requete = "INSERT INTO journal VALUES('', ".$cible->get_id().", '".($groupe?'rgbuff':'rbuff')."', '".addslashes($cible->get_nom())."', '".addslashes($perso->get_nom())."', NOW(), '".addslashes($this->get_nom())."', 0, 0, 0)";
   				$db->query($requete);
 				}
 			}
@@ -225,12 +225,12 @@ class sort_jeu extends sort
     {
       if($groupe)
       {
-        $requete = "INSERT INTO journal(id_perso, action, actif, passif, time, valeur, valeur2, x, y) VALUES(".$perso->get_id().", 'gbuff', '".$perso->get_nom()."', 'groupe', NOW(), '".$this->get_nom()."', 0, 0, 0)";
+        $requete = "INSERT INTO journal(id_perso, action, actif, passif, time, valeur, valeur2, x, y) VALUES(".$perso->get_id().", 'gbuff', '".addslashes($perso->get_nom())."', 'groupe', NOW(), '".addslashes($this->get_nom())."', 0, 0, 0)";
         $db->query($requete);
       }
       else
       {
-        $requete = "INSERT INTO journal(id_perso, action, actif, passif, time, valeur, valeur2, x, y) VALUES(".$perso->get_id().", 'buff', '".$perso->get_nom()."', '".$cible->get_nom()."', NOW(), '".$this->get_nom()."', 0, ".$perso->get_x().", ".$perso->get_y().")";
+        $requete = "INSERT INTO journal(id_perso, action, actif, passif, time, valeur, valeur2, x, y) VALUES(".$perso->get_id().", 'buff', '".addslashes($perso->get_nom())."', '".addslashes($cible->get_nom())."', NOW(), '".addslashes($this->get_nom())."', 0, ".$perso->get_x().", ".$perso->get_y().")";
         $db->query($requete);
       }
     }
