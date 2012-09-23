@@ -88,11 +88,17 @@ class db
 	Elle met à jour les propriétés suivantes : sql, nb_query, num_rows, num_fields, rows_affected.
 	En cas d'erreur, la méthode arrête le script en cours en renvois un message d'erreur, ainsi qu'un mail d'avertissement.
 	*/
-	function query($query)
+	function query($query, $params = null)
 	{
 
 		if( !is_object($this->lnk) || get_class($this->lnk) != 'mysqli')
       die('Uninitialized connection');
+
+    if (is_array($params)) {
+      $this->last_is_param = true;
+      return $this->param_query($query, $params);
+    }
+    $this->last_is_param = false;
 
 		//error_log($query);
 
@@ -446,8 +452,11 @@ class db
 
 
   // lit en tableau associatif
-  function read_array($sql="", $resulttype = MYSQLI_BOTH)
+  function read_array($sql = null, $resulttype = MYSQLI_BOTH)
   {
+    if ($this->last_is_param)
+      return $this->stmt_read_array($sql);
+
     $sql = empty($sql)?$this->sql:$sql;
 
     if( is_object($sql) && get_class($sql) == 'mysqli_result' ) {
@@ -457,8 +466,11 @@ class db
     return false;
   }
 
-  function read_assoc($sql="")
+  function read_assoc($sql = null)
   {
+    if ($this->last_is_param)
+      return $this->stmt_read_assoc($sql);
+
     $sql = empty($sql)?$this->sql:$sql;
 
     if( is_object($sql) && get_class($sql) == 'mysqli_result' )
@@ -487,8 +499,11 @@ class db
     return false;
   }
 
-  function read_object($sql="")
+  function read_object($sql = null)
   {
+    if ($this->last_is_param)
+      return $this->stmt_read_object($sql);
+
     $sql = empty($sql)?$this->sql:$sql;
 
     if( is_object($sql) && get_class($sql) == 'mysqli_result' )
@@ -807,12 +822,124 @@ class db
     mysqli_stmt_fetch($this->stmt);
   }
 
+  private $_meta = array();
   function execute($stmt = null) {
     if ($stmt == null)
       $stmt = $this->stmt;
     if (!mysqli_stmt_execute($stmt)) {
       $this->stmt_error($stmt);
     }
+  }
+
+  function param_query($sql, $params, $types = null) {
+    $this->last_is_param = true;
+    $this->stmt = $this->prepare($sql);
+    if ($types == null)
+      $types = str_repeat('s', count($params));
+    $array = array(&$types);
+    foreach ($params as &$p) {
+      $array[] = &$p;
+    }
+    call_user_func_array(array($this->stmt, 'bind_param'), $array);
+    $this->execute();
+    return $this->stmt;
+  }
+
+  function stmt_read_array($stmt = null) {
+    if ($stmt === null)
+      $stmt = $this->stmt;
+    $meta = $stmt->result_metadata();
+    if (!$meta) return false;
+    $cnt = mysqli_num_fields($meta);
+    
+    // set up a binding space for result variables
+    $values = array_fill(0, $cnt, null);
+    // set up references to the result binding space.
+    // just passing $this->_values in the call_user_func_array()
+    // below won't work, you need references.
+    $refs = array();
+    foreach ($values as $i => &$f) {
+      $refs[$i] = &$f;
+    }
+    $stmt->store_result();
+    // bind to the result variables
+    call_user_func_array(
+      array($stmt, 'bind_result'),
+      $refs
+      );
+    $res = $stmt->fetch();
+    if ($res === null)
+      return null;
+    if ($res === false)
+      $this->stmt_error($stmt);
+    return $values;
+  }
+
+  function stmt_read_assoc($stmt = null) {
+    if ($stmt === null)
+      $stmt = $this->stmt;
+    $meta = $stmt->result_metadata();
+    if (!$meta) return false;
+
+    // get the column names that will result
+    $keys = array();
+    $values = array();
+    foreach ($meta->fetch_fields() as $col) {
+      $keys[] = $col->name;
+      // set up a binding space for result variables
+      $values[$col->name] = 0;
+    }
+    
+    // set up references to the result binding space.
+    // just passing $this->_values in the call_user_func_array()
+    // below won't work, you need references.
+    $refs = array();
+    foreach ($values as $i => &$f) {
+      $refs[$i] = &$f;
+    }
+    $stmt->store_result();
+    // bind to the result variables
+    call_user_func_array(
+      array($stmt, 'bind_result'),
+      $refs
+      );
+    $res = $stmt->fetch();
+    if ($res === null)
+      return null;
+    if ($res === false)
+      $this->stmt_error($stmt);
+    return $values;
+  }
+
+  function stmt_read_object($stmt = null) {
+    if ($stmt === null)
+      $stmt = $this->stmt;
+    $meta = $stmt->result_metadata();
+    if (!$meta) return false;
+
+    // get the column names that will result
+    $keys = array();
+    $values = new stdClass();
+    $refs = array();
+    foreach ($meta->fetch_fields() as $col) {
+      $keys[] = $col->name;
+      // set up a binding space for result variables
+      $values->{$col->name} = 0;
+      $refs[] = &$values->{$col->name};
+    }
+    
+    $stmt->store_result();
+    // bind to the result variables
+    call_user_func_array(
+      array($stmt, 'bind_result'),
+      $refs
+      );
+    $res = $stmt->fetch();
+    if ($res === null)
+      return null;
+    if ($res === false)
+      $this->stmt_error($stmt);
+    return $values;
   }
 
   function stmt_error($stmt) {
