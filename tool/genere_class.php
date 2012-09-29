@@ -4,7 +4,13 @@
  * Version : 1.2
  * Description : permet de générer une class associée a une table MySQL
  */
-$root = '../';
+if (file_exists('../root.php')) {
+  include_once('../root.php');
+  $root = root.'/';
+}
+else
+  $root = '../';
+
 include_once($root.'class/db.class.php');
 include_once($root.'connect.php');
 
@@ -90,7 +96,7 @@ $liste = implode('', $liste);
 $liste_champs = implode(', ', $liste_champs);
 $liste_attributs_insert = implode(", ", $liste_attributs_type);
 $liste_attributs = implode(', ', $liste_attributs);
-echo '<?php // -*- tab-width:2; mode: php -*-
+echo '<?php // -*- tab-width:2; mode: php -*- ->
 ';
 ?>
 class <?php echo $table; ?>_db
@@ -300,26 +306,31 @@ class <?php echo $table ?> extends <?php echo $table ?>_db {
 	//Inclusion des fonctions spécifiques
 	$filename= $root.'class/'.$table.'.class.php';
 	$new_file = ob_get_contents();
+	ob_end_clean();
+
+  echo "filename: $filename<br/>";
+
 	if(file_exists($filename))
 	{
 		$file = fopen($filename, "r+");
 		$contents = fread($file, filesize($filename));
-    $noautooverride = mb_strrchr($contents, '// @DONTAUTOOVERRIDE');
-    ob_end_clean();    
-    echo 'here';
-    if ($noautooverride != '') {
+    $noautooverride = mb_strpos($contents, '// @DONTAUTOOVERRIDE');
+    if ($noautooverride !== false) {
       echo '<h1>file is marked no auto override</h1>Autogen: <pre>'.
         $new_file.'</pre>';
       die ();
     }
-		$string = mb_strrchr($contents, '//fonction');
+		$fn = mb_strrpos($contents, '//fonction');
 		fclose($file);
-    if (empty($string)) {
+    if ($fn === false) {
       $string = '
   //fonction
 
 }
 ';
+    }
+    else {
+      $string = mb_substr($contents, $fn);
     }
 	}
 	else
@@ -331,7 +342,6 @@ class <?php echo $table ?> extends <?php echo $table ?>_db {
 ';
 	}
 	$new_file .= $string;
-	ob_end_clean();
 	$file_save = fopen($filename, "w+");
 	fwrite($file_save, $new_file);
 	fclose($file_save);
