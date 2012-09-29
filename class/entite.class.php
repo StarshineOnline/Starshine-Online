@@ -884,7 +884,7 @@ class entite extends placable
 		if($this->is_buff('batiment_pm')) $buff_batiment_barriere = 1 + (($this->get_buff('batiment_pm', 'effet') / 100)); else $buff_batiment_barriere = 1;
 		if($this->is_buff('debuff_desespoir')) $debuff_desespoir = 1 + (($this->get_buff('debuff_desespoir', 'effet')) / 100); else 	$debuff_desespoir = 1;
 		if($this->etat['posture']['type'] == 'posture_glace') $aura_glace = 1 + (($this->etat['posture']['effet']) / 100); else $aura_glace = 1;
-		$this->potentiel_parer_magique = round($this->get_volonte() * $aura_glace * $buff_batiment_barriere / $debuff_desespoir);
+		$this->potentiel_parer_magique = round($this->get_volonte() * $pm * $aura_glace * $buff_batiment_barriere / $debuff_desespoir);
     if(array_key_exists('glace', $this->etat)) $this->potentiel_parer_magique /= 1 + ($this->etat['glace']['effet'] / 100);
 
 		return $this->potentiel_parer_magique;
@@ -913,6 +913,7 @@ class entite extends placable
     unset($this->potentiel_bloquer);
     unset($this->potentiel_critique);
     unset($this->potentiel_magique);
+    unset($this->potentiel_parer_magique);
 		$this->degat_sup = 0;
 		$this->degat_moins = 0;
   }
