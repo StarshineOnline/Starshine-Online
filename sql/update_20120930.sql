@@ -28,3 +28,6 @@ INSERT INTO comp_combat (nom, description, mp, type, comp_assoc, carac_assoc, co
 INSERT INTO comp_combat (nom, description, mp, type, comp_assoc, carac_assoc, comp_requis, arme_requis, effet, duree, cible, requis, prix, lvl_batiment) VALUES ('Botte du chien 3', 'Après un critique, augmente les chances de bloquer de %effet%%', 1, 'botte_chien', 'esquive', 'dexterite', 280, 'dague', 60, 1, 4, LAST_INSERT_ID(), 3136, 4);
 INSERT INTO comp_combat (nom, description, mp, type, comp_assoc, carac_assoc, comp_requis, arme_requis, effet, duree, cible, requis, prix, lvl_batiment) VALUES ('Botte du chien 4', 'Après un critique, augmente les chances de bloquer de %effet%%', 1, 'botte_chien', 'esquive', 'dexterite', 430, 'dague', 70, 1, 4, LAST_INSERT_ID(), 7396, 6);
 INSERT INTO comp_combat (nom, description, mp, type, comp_assoc, carac_assoc, comp_requis, arme_requis, effet, duree, cible, requis, prix, lvl_batiment) VALUES ('Botte du chien 5', 'Après un critique, augmente les chances de bloquer de %effet%%', 1, 'botte_chien', 'esquive', 'dexterite', 570, 'dague', 80, 1, 4, LAST_INSERT_ID(), 12996, 6);
+
+-- Description des coups mortels
+UPDATE comp_combat SET description = 'Réduit vos chances de toucher physiquement de %effet%%, multiplie les dégâts par 3, et, si vous êtes dissimulé, augmente les chances de critique de %effet2%%.' WHERE type LIKE 'coup_mortel';
