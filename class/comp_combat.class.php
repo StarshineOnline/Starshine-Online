@@ -152,6 +152,11 @@ class comp_combat extends comp
         return new comp_combat_effet($row, new fleche_magnetique($row['effet2'], $row['effet']));
       case 'fleche_poison':
       case 'vol_a_la_tire':
+      case 'botte_scorpion':
+      case 'botte_aigle':
+      case 'botte_crabe':
+      case 'botte_chat':
+      case 'botte_chien':
         return new comp_combat_effet($row);
       case 'fleche_sable':
         return new comp_combat_sable($row);
@@ -181,6 +186,9 @@ class comp_combat extends comp
       case 'attaque_brutale':
         return new comp_combat_deg_pot($row);
       default:
+        $classe = 'comp_combat_'.$row['type'];
+        if( class_exists($classe) )
+          return new $classe($row);
         print_debug('Compétence non gérée : '.$row['type'].'<br/>');
         return new comp_combat($row);
       }
@@ -237,13 +245,13 @@ class comp_combat extends comp
     if( $this->test_potentiel($potentiel_toucher, $potentiel_parer, $attaque) )
     {
       $this->touche($attaque, $actif, $passif, $effets);
-      $actif->precedent['critique'] = false;
       $passif->precedent['esquive'] = false;
     }
   	else
     {
   		echo '&nbsp;&nbsp;<span class="manque">'.$actif->get_nom().' manque la cible</span><br />';
       $passif->precedent['esquive'] = true;
+      $actif->precedent['critique'] = false;
   		$log_combat .= '~e';
     }
 
@@ -531,11 +539,7 @@ class comp_combat extends comp
     foreach($effets as $effet)
 		  $actif_chance_critique = $effet->calcul_critique($actif, $passif, $actif_chance_critique);
 
-    $chance = rand(0, 10000);
-	  print_debug('Potentiel critique attaquant : '.$actif_chance_critique.
-							' / 10000<br />Résultat => '.$chance.
-							' doit être inférieur au Potentiel critique<br />');
-    if($chance < $actif_chance_critique)
+    if( $this->test_de(10000, $actif_chance_critique) )
   	{
   		$actif->set_compteur_critique();
   		echo '&nbsp;&nbsp;<span class="coupcritique">COUP CRITIQUE !</span><br />';
@@ -557,7 +561,7 @@ class comp_combat extends comp
   			}
   		}
   		//Art du critique : augmente les dégâts fait par un coup critique
-  		if($actif->is_competence('art_critique')) $art_critique = $actif->get_competence2('art_critique')->get_valeur() / 100; else $art_critique = 0;
+  		if($actif->is_competence('art_critique')) $art_critique = $actif->get_competence2('art_critique')->get_valeur() / 1000; else $art_critique = 0;
   		//Buff Colère
   		if($actif->is_buff('buff_colere')) $buff_colere = ($actif->get_buff('buff_colere', 'effet')) / 100; else $buff_colere = 0;
   		//Orc
@@ -894,8 +898,8 @@ class comp_combat_dissim extends comp_combat_etat
 					$bonus *= 1.5;
 			}
 		}
-		$att = $actif->get_dexterite() * $actif->get_esquive() * $bonus;
-		$def = $passif->get_volonte() * ($passif->get_pm() * 2.5);
+		$att = $actif->get_esquive() * (1 + $actif->get_dexterite()/100) * $bonus;
+		$def = 20 * sqrt($passif->get_pm() + 5) * (1 + $passif->get_volonte()/100);
 		echo '&nbsp;&nbsp;<strong>'.$actif->get_nom().'</strong> tente de se dissimuler...';
 		if( $this->test_potentiel($att, $def) )
 		{

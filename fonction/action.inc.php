@@ -69,7 +69,7 @@ function script_action($joueur, $ennemi, $mode, &$effects)
 				return null;//'';
 			}
 		}
-	print_debug("action sélectionnée: $effectue[0] $effectue[1]");
+	print_debug("action sélectionnée: $effectue[0] $effectue[1]<br/>");
 	return $att;//$effectue;
 }
 
@@ -1715,6 +1715,8 @@ function get_etats()
 	$etats['bouclier_protecteur']['id'] = 'bouclier_protecteur';
 	$etats['embraser']['nom'] = 'Embrasé';
 	$etats['embraser']['id'] = 'embraser';
+	$etats['desarme']['nom'] = 'Désarmé';
+	$etats['desarme']['id'] = 'desarme';
 	return $etats;
 }
 
