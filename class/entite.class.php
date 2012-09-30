@@ -503,7 +503,10 @@ class entite extends placable
 	/// Renvoie le type de l'arme utilisée
 	function get_arme_type()
 	{
-		return $this->arme_type;
+    if( array_key_exists('desarme', $this->etat) )
+      return '';
+    else
+		  return $this->arme_type;
 	}
 	/// Renvoie l'arme utilisée
 	function get_arme()
@@ -549,7 +552,10 @@ class entite extends placable
 	/// Renvoie les dégâts de l'arme
 	function get_arme_degat()
 	{
-		return $this->arme_degat;
+		if( array_key_exists('desarme', $this->etat) )
+      return 0;
+    else
+		  return $this->arme_degat;
 	}
 	/// Renvoie les dégâts bloqués par le bouclier
 	function get_bouclier_degat()
@@ -749,9 +755,9 @@ class entite extends placable
 
 		if(!$esquive) $this->potentiel_parer = round($this->get_esquive() + ($this->get_esquive() * ((pow($this->get_dexterite(), 2)) / 1000)));
 		else $this->potentiel_parer = round($esquive + ($esquive * ((pow($this->get_dexterite(), 2)) / 1000)));
-		if ($this->arme_type == 'hache')
+		if ($this->get_arme_type() == 'hache')
 			$this->potentiel_parer *= $this->malus_hache;
-		if ($this->arme_type == 'arc')
+		if ($this->get_arme_type() == 'arc')
 			$this->potentiel_parer *= $this->malus_arc;
   	if(array_key_exists('benediction', $this->etat)) $this->potentiel_parer *= 1 + (($this->etat['benediction']['effet'] * $G_buff['bene_evasion']) / 100);
    	if(array_key_exists('berzeker', $this->etat)) $this->potentiel_parer /= 1 + (($this->etat['berzeker']['effet'] * $G_buff['berz_evasion']) / 100);
@@ -761,6 +767,7 @@ class entite extends placable
   	if($this->is_buff('buff_evasion')) $this->potentiel_parer *= 1 + ($this->get_buff('buff_evasion', 'effet') / 100);
   	if($this->is_buff('buff_cri_detresse')) $this->potentiel_parer *= 1 + (($this->get_buff('buff_cri_detresse', 'effet')) / 100);
   	if(array_key_exists('glace', $this->etat)) $this->potentiel_parer /= 1 + ($this->etat['glace']['effet'] / 100);
+  	if(array_key_exists('botte_chat', $this->etat)) $this->potentiel_parer *= 1 + $this->etat['botte_chat']['effet'] / 100;
 
   	if($this->get_race() == 'elfebois') $this->potentiel_parer *= 1.15;
 
@@ -781,7 +788,8 @@ class entite extends placable
 		if(array_key_exists('blocage', $p_e)) $enchantement_blocage = ($p_e['blocage']['effet']); else $enchantement_blocage = 0;
 		if($this->is_buff('buff_bouclier_sacre')) $buff_blocage = 1 + ($this->get_buff('buff_bouclier_sacre', 'effet') / 100); else $buff_blocage = 1;
 		if(array_key_exists('benediction', $this->etat)) $buff_bene_blocage = 1 + (($this->etat['benediction']['effet'] * $G_buff['bene_bouclier']) / 100); else $buff_bene_blocage = 1;
-		$this->potentiel_bloquer = floor(($this->get_blocage() + $enchantement_blocage ) * (pow($this->get_dexterite(), 1.7) / 20) * $buff_bene_blocage * $buff_blocage);
+  	if(array_key_exists('botte_chien', $this->etat)) $buff_blocage *= 1 + $this->etat['botte_chien']['effet'] / 100;
+    $this->potentiel_bloquer = floor(($this->get_blocage() + $enchantement_blocage ) * (pow($this->get_dexterite(), 1.7) / 20) * $buff_bene_blocage * $buff_blocage);
 		return $this->potentiel_bloquer;
 	}
 	/// Modifie le potentiel bloquer
@@ -807,11 +815,8 @@ class entite extends placable
   	if(array_key_exists('fleche_sanglante', $this->etat)) $this->potentiel_critique *= 1 + (($this->etat['fleche_sanglante']['effet']) / 100);
     //Elfe des bois
 	  if($this->get_race() == 'elfebois') $this->potentiel_critique *= 1.15;
-  	if(array_key_exists('coup_mortel', $this->etat))
-  	{
+  	if(array_key_exists('coup_mortel', $this->etat) && array_key_exists('dissimulation', $this->etat))
   		$this->potentiel_critique *= 1 + ($this->etat['coup_mortel']['effet2']/100);
-  		unset($this->etat['coup_mortel']);
-  	}
     //Enchantement critique
   	if(array_key_exists('critique', $this->get_enchantement())) $this->potentiel_critique *= 1 + (($this->enchantement['critique']['effet']) / 100);
     if($this->etat['posture']['type'] == 'posture_critique') $this->potentiel_critique *= 1 + (($this->etat['posture']['effet']) / 100);
