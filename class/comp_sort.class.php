@@ -106,6 +106,17 @@ class comp_sort extends comp_sort_buff
 		$this->requis = $requis;
 		$this->champs_modif[] = 'requis';
 	}
+	/// Renvoie l'obet représentant la compétence ou sort requis pour apprendre celui-ci
+	function get_obj_requis()
+	{
+    if( $this->requis && $this->requis < 999 )
+    {
+      $class = get_called_class();
+      return new $class($this->requis);
+    }
+    else
+      return null;
+  }
 
   /// Renvoie la cible de la compétence ou du sort
 	function get_cible()
