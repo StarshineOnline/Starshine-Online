@@ -5,8 +5,8 @@
  */
 
 /**
- * Classe comp_jeu
- * Classe comp_jeu servant de base aux sorts dhors combat
+ * Classe sort_jeu
+ * Classe sort_jeu servant de base aux sorts hors combat
  */
 class sort_jeu extends sort
 {

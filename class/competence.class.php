@@ -667,18 +667,20 @@ class fleche_magnetique extends magnetique {
   /// Supprime un niveau buff
   function suppr_buff($buff, &$passif)
   {
-    $buffs = sort_jeu::create('type', $buff->get_type(), 'incantation DESC');
+    //$buffs = sort_jeu::create('type', $buff->get_type(), 'incantation DESC');
+    $buffs = sort_jeu::create('nom', $buff->get_nom());
     if( !$buffs )
     {
-      $buffs = comp_jeu::create('type', $buff->get_type(), 'comp_requis DESC');
+      //$buffs = comp_jeu::create('type', $buff->get_type(), 'comp_requis DESC');
+      $buffs = comp_jeu::create('nom', $buff->get_nom());
     }
     if( !$buffs )
     {
-      $this->notice($this->titre.' aurait dû agir mais le buff '.$buff->get_type().' n\'est pas reconnu. Pr&eacute;venez un administrateur.');
+      $this->notice($this->titre.' aurait dû agir mais le buff '.$buff->get_nom().' n\'est pas reconnu. Pr&eacute;venez un administrateur.');
       return;
     }
 
-    $nouv = false;
+    /*$nouv = false;
     $nbr = $nbr_red = rand(1, $this->nbr_max);
     foreach($buffs as $b)
     {
@@ -694,20 +696,22 @@ class fleche_magnetique extends magnetique {
       }
       else if( $b->get_nom() == $buff->get_nom() )
         $nouv = true;
+    }*/
+    $nouv = $buffs[0]->get_obj_requis();
+    $nbr = $nbr_red = rand(1, $this->nbr_max);
+    while( $nouv && $nbr )
+    {
+      $nouv = $nouv->get_obj_requis();
+      $nbr--;
     }
 
-    if( $nouv === false )
+    /*if( $nouv === false )
     {
       $this->notice($this->titre.' aurait dû agir mais le buff '.$buff->get_nom(). 'n\'a pu être retrouvé. Pr&eacute;venez un administrateur.');
       return;
     }
-    else if( $nouv === true )
-    {
-      $this->message($this->titre.' supprime le buff '.$buff->get_nom());
-      $passif->supprime_buff( $buff->get_type() );
-		  $buff->supprimer();
-    }
-    else
+    else if( $nouv === true )*/
+    if( $nouv )
     {
       $this->message($this->titre.' réduit le buff '.$buff->get_nom().' de '.$nbr_red.' niveau'.($nbr_red>1?'x.':'.'));
       $buff->set_nom( $nouv->get_nom() );
@@ -715,6 +719,12 @@ class fleche_magnetique extends magnetique {
       $buff->set_effet2( $nouv->get_effet2() );
       $buff->set_description( $nouv->get_description() );
       $buff->sauver();
+    }
+    else
+    {
+      $this->message($this->titre.' supprime le buff '.$buff->get_nom());
+      $passif->supprime_buff( $buff->get_type() );
+		  $buff->supprimer();
     }
   }
 }

@@ -15,7 +15,7 @@ if (file_exists('root.php'))
 	{//-- cancelBuff(buff_id)
 		echo "	function cancelBuff(buff_id, buff_nom)
 				{
-					if(confirm('Voulez vous supprimer '+ buff_nom +' ?')) 
+					if(confirm('Voulez vous supprimer '+ buff_nom +' ?'))
 					{
 						envoiInfo('suppbuff.php?id='+ buff_id, 'perso');
 					}
@@ -66,7 +66,7 @@ if (file_exists('root.php'))
 					echo "<li class='buff'>
 						   <img src='image/buff/".$buff->get_type()."_p.png'
 								alt='".$buff->get_type()."'
-								ondblclick=\"cancelBuff('".$buff->get_id()."', '".$buff->get_nom()."');\"
+								ondblclick=\"cancelBuff('".$buff->get_id()."', '".addslashes($buff->get_nom())."');\"
 								onmouseover=\"return overlib('$overlib', BGCLASS, 'overlib', BGCOLOR, '', FGCOLOR, '');\"
 								onmouseout=\"return nd();\"  />
 						   ".genere_image_buff_duree($buff)."
