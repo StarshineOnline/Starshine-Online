@@ -40,9 +40,16 @@ $req = $db->query($requete);
 
 $tot = 0;
 $level = 0;
+$monstre = array();
 
 while($row = $db->read_assoc($req))
 {
+  if (!array_key_exists($row['level'], $monstre))
+    $monstre[$row['level']] = array();
+  if (!array_key_exists('total', $monstre[$row['level']]))
+    $monstre[$row['level']]['total'] = 0;
+  if (!array_key_exists('tot_type', $monstre[$row['level']]))
+    $monstre[$row['level']]['tot_type'] = 0;  
 	$monstre[$row['level']]['total'] += $row['total'];
 	$monstre[$row['level']]['tot_type'] += 1;
 }
@@ -88,10 +95,22 @@ $requete = "SELECT * FROM monstre ORDER BY level";
 //$requete = "SELECT * FROM monstre WHERE id > 140 ORDER BY level";
 //$requete = "SELECT * FROM monstre WHERE id = 144 ORDER BY level";
 $req = $db->query($requete);
-$insert_file = tempnam("/tmp", "journalier");
-$handle = fopen($insert_file, "w");
 $check_virgule = false;
 $total_monstre = 0;
+$up = 0;
+$down = 0;
+$ratio = 0;
+
+// Prepare query
+$stmt_insert = $db->prepare('INSERT INTO map_monstre (type, x, y, hp, mort_naturelle) VALUES (?, ?, ?, ?, ?)');
+// Prepare values placeholders
+$mort_naturelle = 0;
+$id = 0;
+$insert_x = 0;
+$insert_y = 0;
+$hp = 0;
+$stmt_insert->bind_param('iiiis', $id, $insert_x, $insert_y, $hp, $mort_naturelle);
+
 while($row = $db->read_array($req))
 {
 	echo "Gestion de l'id $row[id]: $row[nom]\n";
@@ -139,9 +158,18 @@ while($row = $db->read_array($req))
 	}
 	if($row['spawn_loc'] != '' OR $row['spawn'] != 0)
 	{
-		echo "HERE: niveau: $niveau - j[n]: ${joueur[$niveau]} \n";
-		$up = ($joueur[$niveau] * 1000) / sqrt($niveau);
-		if($monstre[$niveau]['tot_type'] == 0) $monstre[$niveau]['tot_type'] = 1;
+    if (array_key_exists($niveau, $joueur)) {
+      echo "niveau: $niveau - j[n]: ${joueur[$niveau]}\n";
+      $up = ($joueur[$niveau] * 1000) / sqrt($niveau);
+    } else {
+      echo "pas de joueur de niveau ${niveau}\n";
+      $up = 0;
+    }
+    if (!array_key_exists('tot_type', $monstre[$niveau]))
+      $monstre[$niveau]['tot_type'] = 0;
+		if ($monstre[$niveau]['tot_type'] == 0) $monstre[$niveau]['tot_type'] = 1;
+    if (!array_key_exists('total', $monstre[$niveau]))
+      $monstre[$niveau]['total'] = 0;
 		$down = $monstre[$niveau]['total'] / $monstre[$niveau]['tot_type'];
 		if($down == 0) $down = 1;
 		$ratio = $up / $down;
@@ -178,10 +206,11 @@ while($row = $db->read_array($req))
 						$temps_mort = $niveau * 1 * 30 * 24 * 60 * 60;
 						$mort_naturelle = time() + $temps_mort;
 						//Création d'un monstre sur la map
-						//$insert .= "(NULL,'".$id."','".$coord['x']."','".$coord['y']."','".$hp."', ".$niveau.", '".addslashes($nom)."','".$lib."', ".$mort_naturelle.")";
-						fwrite($handle, $id."\t".$row2['x']."\t".$row2['y']."\t".$hp."\t".
-                   $mort_naturelle."\n");
-						$tot_monstre++;
+            $insert_x = $row2['x'];
+            $insert_y = $row2['y'];
+            $stmt_insert->execute();
+						
+            $tot_monstre++;
 						$total_monstre++;
 					}
 				}
@@ -193,17 +222,7 @@ while($row = $db->read_array($req))
 	$mail .= $next_line;
 }
 
-fclose($handle);
-$ret = $db->query("LOAD DATA LOCAL INFILE \"$insert_file\" INTO TABLE map_monstre (type, x, y, hp, mort_naturelle)");
-$ret_info = $db->get_mysql_info();
 echo "insert done\n";
-var_dump($ret_info);
-if ($ret_info['warnings'] == 0) {
-	unlink($insert_file);
-} else {
-	$msg = "Warnings detected: file `${insert_file}` kept \n";
-	$log->send(0, 'journalier', $msg);
-}
 
 //Si le premier du mois, pop des boss de donjons
 if(date("j") == 1)
@@ -248,7 +267,7 @@ if(date("j") == 1)
     $log->send(0, 'journalier', "pas de pop des draconides, présent: $type");
   }
 }
-$mail .= mysql_error();
+$mail .= $db->error();
 
 $mail_send = getenv('SSO_MAIL');
 if ($mail_send == null || $mail_send == '') $mail_send = 'starshineonline@gmail.com';

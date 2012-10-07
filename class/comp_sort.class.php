@@ -106,6 +106,17 @@ class comp_sort extends comp_sort_buff
 		$this->requis = $requis;
 		$this->champs_modif[] = 'requis';
 	}
+	/// Renvoie l'obet représentant la compétence ou sort requis pour apprendre celui-ci
+	function get_obj_requis()
+	{
+    if( $this->requis && $this->requis < 999 )
+    {
+      $class = get_called_class();
+      return new $class($this->requis);
+    }
+    else
+      return null;
+  }
 
   /// Renvoie la cible de la compétence ou du sort
 	function get_cible()
@@ -280,6 +291,14 @@ class comp_sort extends comp_sort_buff
 	 * Méthodes utilisées lors de l'utilisation (lancement) de la compétence / du sort
 	 */
   // @{
+  /**
+   * Renvoie le coût en RM/MP de la compétence ou du sort, en prennant en compte l'affinité
+   * @param $actif   entité lançant le sort ou la compétence
+   */
+  function get_cout_mp(&$actif)
+  {
+    return $this->get_mp();
+  }
 	/**
 	 * Renvoie la liste des cibles
 	 * @param cible  Cible principale telle que donnée à la méthode lancer
@@ -342,7 +361,7 @@ class comp_sort extends comp_sort_buff
    * @param  $pot_oppos     potentiel du jet d'opposition (défensif)
    * @return   true si le teste à réussi, false sinon
    */
-  static function test_potentiel($pot_action, $pot_oppos)
+  static function test_potentiel($pot_action, $pot_oppos, &$attaque=null)
   {
   	$attaque = rand(0, $pot_action);
   	$defense = rand(0, $pot_oppos);
@@ -350,7 +369,25 @@ class comp_sort extends comp_sort_buff
 							'<br />Potentiel défenseur : '.$pot_oppos.
 							'<br />Résultat => Attaquant : '.$attaque.' | Défense '.
 							$defense.'<br />');
+    /*if( $jet_action !== null )
+    {
+      $jet_action = $attaque;
+    }*/
     return $attaque > $defense;
+  }
+
+  /**
+   * Effectuer un test entre un dé et une valeur fixe
+   * @param  $de      dé à lancer
+   * @param  $seuil   seuil à ne pas dépasser
+   * @return   true si le teste à réussi, false sinon
+   */
+  static function test_de($de, $seuil)
+  {
+  	$val = rand(0, $de);
+		print_debug('1d'.$de.' doit être inférieur a '.$seuil.'<br />
+		Résultat => '.$val.' doit être inférieur a '.$seuil.'<br />');
+    return $val < $seuil;
   }
 
   /**
@@ -427,6 +464,7 @@ class comp_sort extends comp_sort_buff
 			$i++;
 		}
 		print_debug($dbg_msg);
+		return $degat;
   }
 
   /**

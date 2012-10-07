@@ -268,7 +268,7 @@ function prend_quete($id_quete, $joueur)
 	global $db, $G_erreur;
 	$requete = "SELECT * FROM quete WHERE id = ".$id_quete;
 	$req = $db->query($requete);
-	$row = $db->read_array($req);
+	$row = $db->read_assoc($req);
 	$liste_quete = $joueur->get_liste_quete();
 	$numero_quete = (count($liste_quete));
 	$valid = true;
@@ -291,12 +291,16 @@ function prend_quete($id_quete, $joueur)
 	$quete_requis = explode(';', $row['quete_requis']);
 	foreach($quete_requis as $requis)
 	{
+    if (empty($requis)) continue;
 		if(!in_array($requis, $quete_fini)) $valid = false;
 	}
 	if($valid)
 	{
 		$quete = unserialize($row['objectif']);
-		$count = count($quete);
+    //my_dump($quete);
+    $liste_quete[$numero_quete] = array();
+    $liste_quete[$numero_quete]['id_quete'] = $row['id'];
+    $count = count($quete);
 		$i = 0;
 		while($i < $count)
 		{
@@ -306,6 +310,7 @@ function prend_quete($id_quete, $joueur)
 			$liste_quete[$numero_quete]['objectif'][$i]->nombre = 0;
 			$i++;
 		}
+    //my_dump($liste_quete);
 		$joueur_quete = serialize($liste_quete);
 		$requete = "UPDATE perso SET quete = '".$joueur_quete."' WHERE id = ".$joueur->get_id();
 		$req = $db->query($requete);

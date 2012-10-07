@@ -153,6 +153,54 @@ class buff_base extends comp_sort_buff
 		return comp_sort_buff::get_liste_update().', effet2 = '.$this->effet2.', fin = '.$this->fin.', description = "'.mysql_escape_string($this->description).'", debuff = '.$this->debuff.', supprimable = '.$this->supprimable;
 	}
 	// @}
+
+	/**
+ * Lance le buff sur un personnage ou un monstre
+ *
+ * @param  $ancien        Ancien buff
+ * @param  $nb_buff       Nombre de buffs déjà actifs sur la cible.
+ * @param  $nb_buff_max   Nombre de buffs max de la cible de la cible (grade+).
+ *
+ * @return      true si le sort a été lancé et false sinon.
+ */
+ protected function lance_buff_int($ancien, $nb_buff=0, $nb_buff_max=0)
+ {
+	global $db, $G_erreur;
+	$lancement = true;
+	//echo $db->num_rows;
+	if( $ancien )
+	{
+		// La cible n'a pas le sort d'encore lancé
+		if($nb_buff < $nb_buff_max || $nb_buff_max == 0 || $this->get_debuff())
+		{
+      // On peut avoir autant de debuff qu'on veut
+      $this->sauver();
+		}
+		else
+		{
+		  // plus de place
+			$G_erreur = 'overbuff';
+			$lancement = false;
+		}
+	}
+	elseif($this->get_effet() >= $ancien->get_effet())
+	{
+	  // L'effet est plus grand (ou égal) : on met à jour
+	  $ancien->set_effet( $this->get_effet() );
+	  $ancien->set_effet2( $this->get_effet2() );
+	  $ancien->set_fin( time() + $this->get_duree() );
+	  $ancien->set_nom( $this->get_nom() );
+	  $ancien->set_description( $this->get_description() );
+	  $ancien->sauver();
+	}
+	else
+	{
+	  // La cible a déjà le sort (ou mieux).
+		$G_erreur = 'puissant';
+		$lancement = false;
+	}
+	return $lancement;
+ }
 }
 
 

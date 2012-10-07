@@ -390,9 +390,10 @@ class effect
    * Action a effectuer en fin de round
    * 
    * @param  $actif     Personnage actif lors de l'action.
-   * @param  $passif    Personnage passif lors de l'action.              
+   * @param  $passif    Personnage passif lors de l'action.    
+   * @param  $mode      Connaitre le mode   
    */  
-  function fin_round(&$actif, &$passif) { }
+  function fin_round(&$actif, &$passif, $mode ) { }
   /**
    * Action a effectuer en fin de combat
    * 
@@ -421,7 +422,7 @@ class etat extends effect {
 		$this->effet = $effet;
 	}
 	
-  function fin_round(&$actif, &$passif)
+  function fin_round(&$actif, &$passif, $mode)
   {
 		if ($actif->etat[$this->nom]['duree'] < 1) {
 			unset($actif->etat[$this->nom]);
@@ -457,7 +458,7 @@ class perte_hp extends etat
 		}
 	}
 
-  function fin_round(&$actif, &$passif)
+  function fin_round(&$actif, &$passif, $mode)
   {
     global $log_effects_attaquant;
 		$perte_hp = $this->effet;
@@ -483,7 +484,7 @@ class empoisonne extends effect {
 			$effects[] = new empoisonne($actif->etat['empoisonne']['effet']);
 	}
 
-  function fin_round(&$actif, &$passif)
+  function fin_round(&$actif, &$passif, $mode)
   {
 		$this->hit($actif->get_nom().' perd '.$this->vigueur.' HP à cause du poison');
 		$actif->set_hp($actif->get_hp() - $this->vigueur);
@@ -513,15 +514,19 @@ class poison extends effect
 		}
 	}
 
-  function fin_round(&$actif, &$passif)
+  function fin_round(&$actif, &$passif, $mode)
   {
-    global $log_effects_attaquant;
+    global $log_effects_attaquant, $log_effects_defenseur;
 		$perte_hp = $actif->etat['poison']['effet'] - $attaquant->etat['poison']['duree'] + 1;
 		if($actif->etat['putrefaction']['duree'] > 0)
       $perte_hp = $perte_hp * $actif->etat['putrefaction']['effet'];
 		$actif->set_hp($actif->get_hp() - $perte_hp);
 		$this->hit($actif->get_nom().' perd '.$perte_hp. ' HP par le poison');
-		$log_effects_attaquant .= "&ef1~".$perte_hp;
+		echo $mode;
+		if ($mode == 'attaquant')
+			$log_effects_attaquant .= "&ef1~".$perte_hp;
+		else
+			$log_effects_defenseur .= "&ef1~".$perte_hp;
 	}
 }
 
@@ -542,7 +547,7 @@ class poison_lent extends effect {
 		}
 	}
 
-  function fin_round(&$actif, &$passif)
+  function fin_round(&$actif, &$passif, $mode)
   {
 		$this->hit($actif->get_nom().' perd '.$this->vigueur.
 							 ' HP à cause du poison');
@@ -610,9 +615,9 @@ class recuperation extends etat
     }
 	}
 
-  function fin_round(&$actif, &$passif)
+  function fin_round(&$actif, &$passif, $mode)
   {
-    global $log_effects_attaquant;
+    global $log_effects_attaquant, $log_effects_defenseur;
 		$effet = $this->effet;
 		if(($actif->get_hp() + $effet) > $actif->etat['recuperation']['hp_max'])
 		{
@@ -623,7 +628,10 @@ class recuperation extends etat
 		{
 			$actif->etat['recuperation']['hp_recup'] += $effet;
 			echo '&nbsp;&nbsp;<span class="soin">'.$actif->get_nom().' gagne '.$effet.' HP par récupération</span><br />';
-			$log_effects_attaquant .= "&ef6~".$effet;
+			if ($mode == 'attaquant')
+				$log_effects_attaquant .= "&ef6~".$effet;
+			else
+				$log_effects_defenseur .= "&ef6~".$effet;
 		}
 		else
 			print_debug($actif->get_nom().' ne peut pas gagner de HP par récupération');
@@ -647,7 +655,7 @@ class ensable extends etat {
 
   function debut_round(&$actif, &$passif) {
     $this->debug($actif->get_nom().' est ensablé');
-    $actif->potentiel_toucher /= 1 + ($this->effet / 100);
+    $actif->set_potentiel_toucher( $actif->get_potentiel_toucher() / (1 + ($this->effet / 100)) );
 	}
 
 	function calcul_attaque_magique(&$actif, &$passif, $att) {
@@ -670,14 +678,24 @@ class debilitant extends etat {
   {
 		if (array_key_exists('fleche_debilitante', $actif->etat))
     {
-			$effects[] = new ensable($actif->etat['fleche_debilitante']['effet']);
+			$effects[] = new debilitant($actif->etat['fleche_debilitante']['effet']);
 		}
 	}
 
-  function fin_round(&$actif, &$passif)
+
+  /// Action a effectuer en début de round
+  function debut_round(&$actif, &$passif)
   {
-    global $log_effects_attaquant;
-		echo '&nbsp;&nbsp;<span class="soin">'.$defenseur->get_nom().' est sous l\'effet de Flêche Débilisante</span><br />';
+    $actif->set_potentiel_lancer_magique( $actif->get_potentiel_lancer_magique / (1 + ($this->effet / 100)) );
+  }
+
+  function fin_round(&$actif, &$passif, $mode)
+  {
+    global $log_effects_attaquant, $log_effects_defenseur;
+		$this->debug($actif->get_nom().' est sous l\'effet de Flêche Débilisante');
+		if ($mode == 'attaquant')
+		$log_effects_attaquant .= "&ef7~0";
+		else
 		$log_effects_defenseur .= "&ef7~0";
   }
 }

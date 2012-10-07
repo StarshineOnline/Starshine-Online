@@ -30,8 +30,7 @@ $joueur = new perso($joueur_id);
 //Filtre
 if(array_key_exists('filtre', $_GET)) $filtre_url = '&amp;filtre='.$_GET['filtre'];
 else $filtre_url = '';
-$W_requete = 'SELECT royaume, type FROM map WHERE x ='.$joueur->get_x()
-.' and y = '.$joueur->get_y();
+$W_requete = 'SELECT royaume, type, info FROM map WHERE x ='.$joueur->get_x().' and y = '.$joueur->get_y();
 $W_req = $db->query($W_requete);
 $W_row = $db->read_assoc($W_req);
 $R = new royaume($W_row['royaume']);
@@ -87,7 +86,7 @@ $R = new royaume($W_row['royaume']);
 						//Cherche infos sur l'objet
 						$requete = "SELECT batiment.id AS batiment_id FROM objet_royaume RIGHT JOIN batiment ON batiment.id = objet_royaume.id_batiment WHERE objet_royaume.id = ".sSQL($_GET['id_objet']);
 						$req = $db->query($requete);
-						if (mysql_num_rows($req) == 0)
+						if ($db->num_rows($req) == 0)
 						{
 							die('<h5>Erreur SQL</h5>');
 						}
@@ -281,6 +280,14 @@ $R = new royaume($W_row['royaume']);
 				  					$achiev = $joueur->get_compteur('pose_drapeaux');
 				  					$achiev->set_compteur($achiev->get_compteur() + 1);
 				  					$achiev->sauver();
+
+                    if ($W_row['info'] == 3)
+                    {
+                      // Augmentation du compteur de l'achievement
+                      $achiev = $joueur->get_compteur('pose_drapeaux_sable');
+                      $achiev->set_compteur($achiev->get_compteur() + 1);
+                      $achiev->sauver();
+                    }
 				  				}
 				  				else
 				  				{
@@ -1165,7 +1172,7 @@ case 'enchasse2' :
 						$domprop=" class='inventaireville'";
 						if(($compteur/3)==3)
 						{
-							$domprop .= " id='hdv'";  
+							$domprop .= " id='hdv'";
 						}
 						elseif (($compteur/3)==4)
 						{
@@ -1208,7 +1215,7 @@ case 'enchasse2' :
 						$row = @$db->read_array($sqlQuery);
 						$image = 'image/armure/'.$loc['loc'].'/'.$loc['loc'].$row['id'].'.png';
 						$nom = $row['nom'];
-							
+
 						break;
 					case 'accessoire' :
 						$requete = "SELECT * FROM `accessoire` WHERE id = ".$objet['id_objet'];

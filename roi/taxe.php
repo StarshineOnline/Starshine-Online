@@ -2,7 +2,7 @@
 if (file_exists('../root.php'))
   include_once('../root.php');
 ?><?php
-require('haut_roi.php');
+require_once('haut_roi.php');
 
 $duree = (60 * 60 * 24) * 7;
 if($joueur->get_rang_royaume() != 6 AND $joueur->get_id() != $royaume->get_ministre_economie())

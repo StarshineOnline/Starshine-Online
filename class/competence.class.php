@@ -109,17 +109,19 @@ class comp_comb extends active_effect
 /**
  * botte : competence de combat avec une condition
  */
-class botte extends comp_comb
+class botte extends effect
 {
-	var $condition;
-	
-  function __construct($aCondition, $aNom, $aLevel) {
-    parent::__construct($aNom, $aLevel);
-		$this->condition = $aCondition;
+	protected $effet;
+	protected $effet2;
+
+  function __construct($effet, $effet2=0, $duree=1) {
+    parent::__construct('');
+		$this->effet = $effet;
+		$this->effet2 = $effet2;
 	}
 
-	function canUse(&$actif, &$passif) {
-    if (isset($passif['enchantement']['evasion'])) {
+	function peut_agir(&$actif, $cond) {
+    /*if (isset($passif['enchantement']['evasion'])) {
       $chance = $passif['enchantement']['evasion']['effet'];
       $de = rand(1, 100);
       $this->debug("Evasion: $de doit être inférieur à $chance");
@@ -127,11 +129,17 @@ class botte extends comp_comb
         $this->message($passif->get_nom().'esquive totalement la botte');
         return false;
       }
+    }*/
+		if( isset($actif->precedent[$cond]) && $actif->precedent[$cond] )
+		{
+      $this->debug('La botte agit !');
+      return true;
     }
-		if (isset($actif['precedent'][$this->condition]))
-			return $actif['precedent'][$this->condition];
 		else
-			return false;
+		{
+      $this->debug("La botte n'agit pas.");
+      return false;
+    }
 	}
 }
 
@@ -152,8 +160,8 @@ class maitrise_bouclier extends competence
 
   function calcul_bloquage(&$actif, &$passif) {
     $this->used = true;
-    $passif->potentiel_bloquer *=
-      1 + ($passif->get_competence2('maitrise_bouclier')->get_valeur() / 1000);
+    $passif->set_potentiel_bloquer( $passif->get_potentiel_bloquer() *
+      1 + ($passif->get_competence2('maitrise_bouclier')->get_valeur() / 1000) );
   }
 
   function fin_round(&$actif, &$passif) {
@@ -345,14 +353,14 @@ class precision_chirurgicale extends comp_comb
 /* Botte du scorpion */
 class botte_scorpion extends botte
 {
-  function __construct($aLevel = 1) {
+  /*function __construct($aLevel = 1) {
     parent::__construct('esquive', 'botte_scorpion', $aLevel);
 		$this->effet = $this->effet / 100 + 1;
-	}
+	}*/
 
   function calcul_critique(&$actif, &$passif, $chance) {
-		if ($this->canUse($actif))
-			return $chance * $this->effet;
+		if ($this->peut_agir($actif, 'esquive'))
+			return $chance * (1 + $this->effet/100);
 		else
 			return $chance;
 	}	
@@ -361,15 +369,13 @@ class botte_scorpion extends botte
 /* Botte du crabe */
 class botte_crabe extends botte
 {
-  function __construct($aLevel = 1) {
+  /*function __construct($aLevel = 1) {
     parent::__construct('esquive', 'botte_crabe', $aLevel);
-	}
+	}*/
 
   function inflige_degats(&$actif, &$passif, $degats) {
-		if ($this->canUse($actif)) {
-			$this->debug("Chance de desarmer : $test doit être inférieur à ".
-									 $this->effet);
-			if ($res < $this->effet) {
+		if ($this->peut_agir($actif, 'esquive')) {
+			if ( comp_sort::test_de(100, $this->effet) ) {
 				$passif->etat['desarme']['effet'] = true;
 				$passif->etat['desarme']['duree'] = $this->effet2;
 				echo "La botte désarme ".$passif->get_nom().'<br/>';
@@ -381,28 +387,41 @@ class botte_crabe extends botte
 /* Botte de l'aigle */
 class botte_aigle extends botte
 {
-  function __construct($aLevel = 1) {
+  /*function __construct($aLevel = 1) {
     parent::__construct('esquive', 'botte_aigle', $aLevel);
 		$this->effet = $this->effet / 100 + 1;
-	}
+	}*/
 
   function debut_round(&$actif, &$passif) {
-		if ($this->canUse($actif))
-			$actif->potentiel_toucher *= $this->effect;
+		if ($this->peut_agir($actif, 'esquive'))
+			$actif->set_potentiel_toucher( $actif->get_potentiel_toucher() * (1 + $this->effet/100) );
 	}
 }
 
 /* Botte du chat */
 class botte_chat extends botte
 {
-  function __construct($aLevel = 1) {
-    parent::__construct('critique', 'botte_chat', $aLevel);
-		$this->effet = $this->effet / 100 + 1;
-	}
+  /*function __construct($effet, $effet2, $duree=1) {
+    parent::__construct('critique', $effet, $effet2, $duree);
+	}*/
 
-  function debut_round(&$actif, &$passif) {
-		if ($this->canUse($actif))
-			$passif->potentiel_parer *= $this->effet;
+  function debut_round(&$actif, &$passif)  {
+		if ($this->peut_agir($actif, 'critique')) {
+			$actif->etat['botte_chat']['effet'] = $this->effet;
+			$actif->etat['botte_chat']['duree'] = 2; // dure 1 round mais le compteur sera décrémenté avant utilisation
+		}
+	}
+}
+
+//Botte du chien
+class botte_chien extends botte
+{
+
+  function debut_round(&$actif, &$passif)  {
+		if ($this->peut_agir($actif, 'critique')) {
+			$actif->etat['botte_chien']['effet'] = $this->effet;
+			$actif->etat['botte_chien']['duree'] = 2; // dure 1 round mais le compteur sera décrémenté avant utilisation
+		}
 	}
 }
 
@@ -648,18 +667,20 @@ class fleche_magnetique extends magnetique {
   /// Supprime un niveau buff
   function suppr_buff($buff, &$passif)
   {
-    $buffs = sort_jeu::create('type', $buff->get_type(), 'incantation DESC');
+    //$buffs = sort_jeu::create('type', $buff->get_type(), 'incantation DESC');
+    $buffs = sort_jeu::create('nom', $buff->get_nom());
     if( !$buffs )
     {
-      $buffs = comp_jeu::create('type', $buff->get_type(), 'comp_requis DESC');
+      //$buffs = comp_jeu::create('type', $buff->get_type(), 'comp_requis DESC');
+      $buffs = comp_jeu::create('nom', $buff->get_nom());
     }
     if( !$buffs )
     {
-      $this->notice($this->titre.' aurait dû agir mais le buff '.$buff->get_type().' n\'est pas reconnu. Pr&eacute;venez un administrateur.');
+      $this->notice($this->titre.' aurait dû agir mais le buff '.$buff->get_nom().' n\'est pas reconnu. Pr&eacute;venez un administrateur.');
       return;
     }
 
-    $nouv = false;
+    /*$nouv = false;
     $nbr = $nbr_red = rand(1, $this->nbr_max);
     foreach($buffs as $b)
     {
@@ -675,20 +696,22 @@ class fleche_magnetique extends magnetique {
       }
       else if( $b->get_nom() == $buff->get_nom() )
         $nouv = true;
+    }*/
+    $nouv = $buffs[0]->get_obj_requis();
+    $nbr = $nbr_red = rand(1, $this->nbr_max);
+    while( $nouv && $nbr )
+    {
+      $nouv = $nouv->get_obj_requis();
+      $nbr--;
     }
 
-    if( $nouv === false )
+    /*if( $nouv === false )
     {
       $this->notice($this->titre.' aurait dû agir mais le buff '.$buff->get_nom(). 'n\'a pu être retrouvé. Pr&eacute;venez un administrateur.');
       return;
     }
-    else if( $nouv === true )
-    {
-      $this->message($this->titre.' supprime le buff '.$buff->get_nom());
-      $passif->supprime_buff( $buff->get_type() );
-		  $buff->supprimer();
-    }
-    else
+    else if( $nouv === true )*/
+    if( $nouv )
     {
       $this->message($this->titre.' réduit le buff '.$buff->get_nom().' de '.$nbr_red.' niveau'.($nbr_red>1?'x.':'.'));
       $buff->set_nom( $nouv->get_nom() );
@@ -696,6 +719,12 @@ class fleche_magnetique extends magnetique {
       $buff->set_effet2( $nouv->get_effet2() );
       $buff->set_description( $nouv->get_description() );
       $buff->sauver();
+    }
+    else
+    {
+      $this->message($this->titre.' supprime le buff '.$buff->get_nom());
+      $passif->supprime_buff( $buff->get_type() );
+		  $buff->supprimer();
     }
   }
 }
@@ -735,7 +764,10 @@ class bouclier_protecteur extends etat {
 	}
 	
 	function calcul_pm(&$actif, &$passif, $pm) {
-		$pluspm = $this->effet * $passif->bouclier()->degat;
+    $bloque = $passif->bouclier()->degat;
+		if($passif->is_buff('bouclier_terre'))
+      $bloque += $passif->get_buff('bouclier_terre', 'effet');
+		$pluspm = $this->effet * $bloque;
 		$this->debug($this->nom.' augmente la PM de '.$pluspm);
 		return $pm + $pluspm;
 	}

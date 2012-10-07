@@ -2,7 +2,7 @@
 if (file_exists('../root.php'))
   include_once('../root.php');
 ?><?php
-require('haut_roi.php');
+require_once('haut_roi.php');
 if($joueur->get_rang_royaume() != 6  AND $joueur->get_id() != $royaume->get_ministre_economie() AND $joueur->get_id() != $royaume->get_ministre_militaire())
 	echo '<p>Cette page vous est interdite</p>';
 else if(array_key_exists('message', $_GET))

@@ -348,6 +348,7 @@ class perso extends entite
 	private $password;           ///< hash du mot-de-passe.
 	private $email;              ///< e-mail.
 	private $dernier_connexion;  ///< Date de la dernière connexion.
+	private $id_joueur;       ///< Id du joueur possedant le perso
 	/// Renvoie le hash du mot-de-passe.
 	function get_password()
 	{
@@ -381,6 +382,17 @@ class perso extends entite
 		$this->dernier_connexion = $dernier_connexion;
 		$this->champs_modif[] = 'dernier_connexion';
 	}
+  /// Renvoie l'id du joueur possedant le perso
+  function get_id_joueur()
+  {
+    return $this->id_joueur;
+  }
+  /// Modifie l'id du joueur possedant le perso
+  function set_id_joueur($id_joueur)
+  {
+    $this->id_joueur = $id_joueur;
+    $this->champs_modif[] = 'id_joueur';
+  }
   // @}        
 	
 	/**
@@ -412,9 +424,9 @@ class perso extends entite
 		else
 			return $this->forcex + $this->get_bonus_permanents('forcex');
 	}
-	function get_force() 
+	function get_force($base = false) 
 	{ 
-		return $this->get_forcex(); 
+		return $this->get_forcex($base); 
 	}
 	/// Modifie la force
 	function set_forcex($forcex)
@@ -482,6 +494,15 @@ class perso extends entite
 		$this->energie = $energie;
 		$this->champs_modif[] = 'energie';
 	}
+	/**
+	 * Renvoie Le Coefficient modifiant le coût d'un sort à cause de l'affinité
+	 * @param $comp  compétence de magie correspondante
+	 */
+  function get_affinite($comp)
+  {
+    global $Trace;
+    return (1 - (($Trace[$this->get_race()]['affinite_'.$comp] - 5) / 10));
+  }
   // @}
 	
 	/**
@@ -1630,7 +1651,7 @@ class perso extends entite
 		if(!isset($this->armure))
 		{
 			$this->pp = 0;
-			$this->pm = 0;
+			$this->pm = 1;
 			// Pièces d'armure
 			$partie_armure = array('tete', 'torse', 'main', 'ceinture', 'jambe', 'chaussure', 'dos', 'cou', 'doigt');
 			foreach($partie_armure as $partie)
@@ -2153,7 +2174,7 @@ class perso extends entite
    */
 	function check_perso($last_action = true)
 	{
-		$this->check_materiel();
+		$this->check_specials();
 		$modif = false;	 // Indique si le personnage a été modifié.
 		global $db, $G_temps_regen_hp, $G_temps_maj_hp, $G_temps_maj_mp, $G_temps_PA, $G_PA_max, $G_pourcent_regen_hp, $G_pourcent_regen_mp;
 		// On vérifie que le personnage est vivant
@@ -2384,8 +2405,7 @@ class perso extends entite
       // On ne doit pas avoir trop de pets
       if ($this->nb_pet() > $this->get_max_pet())
       {
-        $new_nb_pet = max(1, $this->get_max_pet() - 1);
-        while ($this->nb_pet() > $new_nb_pet)
+        while ($this->nb_pet() > $this->get_max_pet())
         {
 			    $ecurie = $this->get_pets();
           $pet_to_del_nb = rand(0, $this->nb_pet() - 1);
@@ -2431,7 +2451,7 @@ class perso extends entite
 		$this->camouflage = 'demon';
 		foreach (array('forcex', 'dexterite', 'vie', 'puissance', 'volonte', 'energie') as $bonus)
 			$this->add_bonus_permanents($bonus, 6);
-		foreach (array('melee', 'tir', 'incantation') as $bonus)
+		foreach (array('melee', 'distance', 'incantation') as $bonus)
 			$this->add_bonus_permanents($bonus, 400);
 	}
   
@@ -2616,6 +2636,13 @@ class perso extends entite
 		$buff->set_effet2($effet2);
 		$this->buff[$nom] = $buff;
 	}
+
+	/// Lance un débuff sur l'entité lors d'un combat (uniquement sur un personnage)
+  function lance_debuff($debuff)
+  {
+    $debuff->set_id_perso( $this->get_id() );
+    return $debuff->lance_buff();
+  }
 	// @}
 	
 	/**
@@ -3078,7 +3105,7 @@ class perso extends entite
 	function get_reserve($base = false)
 	{
 		if (!isset($this->reserve))
-			$this->reserve = ceil(2.1 * ($this->energie + floor(($this->energie - 8) / 2)));
+			$this->reserve = ceil(2.1 * ($this->get_energie() + floor(($this->get_energie() - 8) / 2)));
 		if (!$base) return $this->reserve + $this->get_bonus_permanents('reserve');
 		else return $this->reserve;
 	}
@@ -3117,6 +3144,7 @@ class perso extends entite
   function fin_combat_pvp($ennemi, $defense, $batiment=false)
   {
     global $db, $G_xp_rate, $G_range_level, $G_crime, $Gtrad;
+		
     if( $this->get_hp() <= 0 )
     {
 			$this->trigger_arene();
@@ -3133,26 +3161,23 @@ class perso extends entite
 			$achiev->set_compteur($achiev->get_compteur() + 1);
 			$achiev->sauver();
 			
-			if( $defense )
+			if(!$defense) //Si le perso est mort en PvP en n'etant pas en defense (<=> il est mort en attaque)
 			{
-  			if($defenseur_en_defense)
-  			{
-  				// Augmentation du compteur de l'achievement
-  				$achiev = $perso->get_compteur('kill_defense');
-  				$achiev->set_compteur($achiev->get_compteur() + 1);
-  				$achiev->sauver();
-  			}
-  			if ($this->get_nom() == 'Irulan')
-  			{
-  				$actif->unlock_achiev('kill_bastounet');
-  			}
-  			if ($this->get_crime() > 0)
-  			{
-  				$achiev = $ennemi->get_compteur('dredd');
-  				$achiev->set_compteur($ennemi->get_compteur() + 1);
-  				$achiev->sauver();
-  			}
-      }
+				// Augmentation du compteur de l'achievement
+				$achiev = $ennemi->get_compteur('kill_defense');
+				$achiev->set_compteur($achiev->get_compteur() + 1);
+				$achiev->sauver();
+			}
+			
+			if ($this->get_nom() == 'Irulan')
+				$ennemi->unlock_achiev('kill_bastounet');
+			
+			if ($this->get_crime() > 0)
+			{
+				$achiev = $ennemi->get_compteur('dredd');
+				$achiev->set_compteur($achiev->get_compteur() + 1);
+				$achiev->sauver();
+			}
 
 			//Gain d'expérience
 			$xp = $this->get_level() * 100 * $G_xp_rate;

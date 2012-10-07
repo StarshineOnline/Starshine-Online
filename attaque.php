@@ -96,6 +96,7 @@ switch($type)
 			if (!$donj)
 			{
 				$joueur = new perso($_SESSION['ID']);
+				$joueur->check_perso();
 				$joueur->action_do = $joueur->recupaction('attaque');
 				$attaquant = entite::factory('joueur', $joueur);
 			}
@@ -153,6 +154,7 @@ switch($type)
 	case 'batiment' :
 		if ($joueur->is_buff('debuff_rvr')) $no_rvr = true;
 		$joueur = new perso($_SESSION['ID']);
+    $joueur->check_perso();
 		if(!$check_pet)
 		{
 			$joueur->action_do = $joueur->recupaction('attaque');
@@ -172,6 +174,7 @@ switch($type)
 		if($_GET['table'] == 'construction') $map_batiment = new construction($_GET['id_batiment']);
 		else $map_batiment = new placement($_GET['id_batiment']);
 		$joueur = new perso($_SESSION['ID']);
+    $joueur->check_perso();
 		if($joueur->get_pa() >= 10)
 		{
 			$siege = new batiment($map_siege->get_id_batiment());
@@ -183,6 +186,7 @@ switch($type)
 		if ($joueur->is_buff('debuff_rvr')) $no_rvr = true;
 		$map_siege = new construction($_GET['id_arme_de_siege']);
 		$joueur = new perso($_SESSION['ID']);
+    $joueur->check_perso();
 		$map_case = new map_case($_GET['id_ville']);
 		$map_royaume = new royaume($map_case->get_royaume());
 		$map_royaume->verif_hp();
@@ -453,18 +457,20 @@ else
 					if(($mode == 'defenseur') && ($W_distance_relative >= $round))
 					{
 						echo $defenseur->get_nom().' s\'approche<br />';
-						$action[0] = '';
+						//$action[0] = '';
+						$action = null;
 						$log_combat .= 'n';
 					}
 					elseif (($mode == 'defenseur') && ($type == 'batiment'))
 					{
-						$action[0] = '';
+						//$action[0] = '';
+						$action = null;
 					}
 					else
 					{
 						${$mode}->get_action();
 						$action = script_action(${$mode}, ${$mode_def}, $mode, $effects);
-						if(is_array($action[2])) ${$mode} = $action[2];
+						//if(is_array($action[2])) ${$mode} = $action[2];
 					}
 					//print_r($action);
 					$args = array();
@@ -472,7 +478,7 @@ else
 					//echo $action[0];
 					$hp_avant = ${$mode_def}->get_hp();
 					$augmentations = array('actif' => array('comp' => array(), 'comp_perso' => array()), 'passif' => array('comp' => array(), 'comp_perso' => array()));
-          switch($action[0])
+          /*switch($action[0])
 					{
 						//Attaque
 						case 'attaque' :
@@ -508,12 +514,56 @@ else
 						// Rien eu du tout
 					case '':
 
-						/* Application des effets de fin de round */
+						// Application des effets de fin de round
 						foreach ($effects as $effect)
 							$effect->fin_round(${$mode}, ${$mode_def});
-						/* ~Fin de round */
+						// ~Fin de round
 						break ;
-					}
+					}*/
+					
+					if($action)
+					{
+            if ($mode == 'attaquant')
+            {
+              $actif = &$attaquant;
+              $passif = &$defenseur;
+        	    $log_effects_actif = $log_effects_attaquant;
+        	    $log_effects_passif = $log_effects_defenseur;
+            }
+          	else
+            {
+              $actif = &$defenseur;
+              $passif = &$attaquant;
+        	    $log_effects_actif = $log_effects_defenseur;
+        	    $log_effects_passif = $log_effects_attaquant;
+            }
+
+            // Calcul de MP nécessaires
+          	/*$mp_need = round($action->get_mp() * (1 - (($Trace[$actif->get_race()]['affinite_'.$action->get_comp_assoc()] - 5) / 10)));
+          	if($actif->get_type() == "pet") $mp_need = $action->get_mp();*/
+          	$mp_need = $action->get_cout_mp($actif);
+          	// Appel des ténebres
+          	if($actif->etat['appel_tenebre']['duree'] > 0)
+          	{
+          		$mp_need += $actif->etat['appel_tenebre']['effet'];
+          	}
+          	//Appel de la forêt
+          	if($actif->etat['appel_foret']['duree'] > 0)
+          	{
+          		$mp_need_avant = $mp_need;
+          		$mp_need -= $actif->etat['appel_foret']['effet'];
+          		if($mp_need < 1) $mp_need = $mp_need_avant;
+          	}
+            // Application des effets de mana
+            foreach ($effects as $effect)
+              $mp_need = $effect->calcul_mp($actif, $mp_need);
+          	//Suppresion de la réserve
+          	$actif->set_rm_restant($actif->get_rm_restant() - $mp_need);
+
+            $augmentations = $action->lance($actif, $passif, $effects);
+          }
+          foreach ($effects as $effect)
+						$effect->fin_round(${$mode}, ${$mode_def}, $mode);
 
 					//Augmentation des compétences liées
 					if($mode == 'attaquant')
@@ -746,7 +796,7 @@ else
 				$joueur->set_survie($augmentation[0]);
 			}
 
-			if($check_pet)
+			if($check_pet OR $check_pet_donj)
 			{
 				$augmentation = augmentation_competence('dressage', $joueur, 0.43);
 				if($augmentation[1] == 1)
@@ -814,7 +864,14 @@ else
 			//Suppression des PA si c'est une attaque du joueur
 			if($type == 'joueur' OR $type == 'monstre' OR $type == 'batiment')
 			{
-				$joueur->set_pa($joueur->get_pa() - $pa_attaque);
+				if(get_class($attaquant)=="perso")
+				{
+					$joueur->set_pa($attaquant->get_pa() - $pa_attaque);
+				}
+				else
+				{
+					$joueur->set_pa($joueur->get_pa() - $pa_attaque);
+				}
 				$joueur->sauver();
 			}
 			//Sinon c'est une arme de siège, et il faut modifier son rechargement
@@ -834,7 +891,12 @@ else
 			if($type == 'joueur')
 			{
 				//Insertion de l'attaque dans les journaux des 2 joueurs
-				$requete = "INSERT INTO journal VALUES(NULL, ".$joueur->get_id().", 'attaque', '".mysql_escape_string($joueur->get_nom())."', '".mysql_escape_string($defenseur->get_nom())."', NOW(), ".($defense_hp_avant - $defense_hp_apres).", ".($attaque_hp_avant - $attaque_hp_apres).", ".$joueur_defenseur->get_x().", ".$joueur_defenseur->get_y().")";
+				
+				//Journal de l'attaquant 
+				if(!$check_pet)
+					$requete = "INSERT INTO journal VALUES(NULL, ".$joueur->get_id().", 'attaque', '".sSQL($joueur->get_nom())."', '".sSQL($defenseur->get_nom())."', NOW(), ".($defense_hp_avant - $defense_hp_apres).", ".($attaque_hp_avant - $attaque_hp_apres).", ".$joueur_defenseur->get_x().", ".$joueur_defenseur->get_y().")";
+				else
+					$requete = "INSERT INTO journal VALUES(NULL, ".$joueur->get_id().", 'attaque', '".sSQL($attaquant->get_nom())."', '".sSQL($defenseur->get_nom())."', NOW(), ".($defense_hp_avant - $defense_hp_apres).", ".($attaque_hp_avant - $attaque_hp_apres).", ".$joueur_defenseur->get_x().", ".$joueur_defenseur->get_y().")";
 				$db->query($requete);
 				// Creation du log du combat
 				$combat = new combat();
@@ -844,6 +906,7 @@ else
 				$combat->id_journal = $db->last_insert_id();
 				$combat->sauver();
 				
+				//Journal du défenseur
 				if(!$check_pet_def)
 					$requete = "INSERT INTO journal VALUES(NULL, ".$joueur_defenseur->get_id().", 'defense', '".$joueur_defenseur->get_nom()."', '".$joueur->get_nom()."', NOW(), ".($defense_hp_avant - $defense_hp_apres).", ".($attaque_hp_avant - $attaque_hp_apres).", ".$joueur_defenseur->get_x().", ".$joueur_defenseur->get_y().")";
 				else

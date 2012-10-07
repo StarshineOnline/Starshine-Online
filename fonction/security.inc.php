@@ -20,6 +20,8 @@ define('SSQL_NONE', -1);
 // Fonction générique de protection des entrées SQL
 function sSQL($data, $type = SSQL_NONE)
 {
+  global $db;
+
   // On vire les magic quote si elles sont là
   if (get_magic_quotes_gpc()) {
     if (ini_get('magic_quotes_sybase')) {
@@ -50,9 +52,9 @@ function sSQL($data, $type = SSQL_NONE)
   }
   
   // On protège
-  $res = mysql_real_escape_string($data);
+  $res = $db->escape($data);
   if ($res === FALSE) {
-    echo mysql_error();
+    echo $db->error();
     exit (1);
   }
   return $res;
@@ -81,11 +83,12 @@ function validate_numeric_value($int)
 
 function sub_validate_predicate($query, $expected_result, $msg)
 {
-  $result = mysql_query($query);
+  global $db;
+  $result = $db->query($query);
   if (!$result) {
-    mydie('Requête invalide : ' . mysql_error());
+    mydie('Requête invalide : ' . $db->error());
   }
-  $row = mysql_fetch_array($result, MYSQL_NUM);
+  $row = $db->read_array($result, MYSQLI_NUM);
   if ($row[0] != $expected_result) {
     $smsg = 'Bad Entry: '.$row[0].' != '.$expected_result;
     if (isset($msg) && $msg != '')
@@ -117,11 +120,11 @@ function subSSQL($d) { print "[$d] -> [".sSQL($d)."]\n"; }
 function subSSQLQ($q) {
   global $unit_link;
   print "query: $q\n";
-  $result = mysql_query($q, $unit_link);
+  $result = mysqli_query($q, $unit_link);
   if (!$result) {
-    mydie('Requête invalide : ' . mysql_error() . "\n");
+    mydie('Requête invalide : ' . mysqli_error($unit_link) . "\n");
   }
-  $row = mysql_fetch_assoc($result);
+  $row = mysqli_fetch_assoc($result);
   var_dump($row);
 }
 
@@ -131,9 +134,9 @@ function unit_sSQL()
   global $unit_link;
   global $unit_debug;
   $unit_debug = true;
-  $unit_link = mysql_connect('localhost', 'sso_test')
-    OR mydie(mysql_error());
-  mysql_select_db("sso_test", $unit_link) OR mydie(mysql_error($unit_link));
+  $unit_link = mysqli_connect('localhost', 'sso_test')
+    OR mydie(mysqli_connect_error());
+  mysqli_select_db($unit_link, "sso_test") OR mydie(mysqli_error($unit_link));
   
   subSSQL('a');
   subSSQL('42');

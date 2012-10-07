@@ -25,10 +25,26 @@ if (file_exists('../root.php'))
 function script_action($joueur, $ennemi, $mode, &$effects)
 {
 	$effectue = sub_script_action($joueur, $ennemi, $mode, $effects);
+	switch ($effectue[0])
+	{
+	case 'attaque':
+		$att = comp_combat::creer_attaque();
+		break;
+	case 'lance_comp':
+		$table = 'comp_combat';
+		$att = $table::factory($effectue[1]);
+		break;
+	case 'lance_sort':
+		$table = 'sort_combat';
+		$att = $table::factory($effectue[1]);
+		break;
+	default:
+		return null;
+	}
 	// On gère la dissimulation *après* le choix de l'action
 	if ($ennemi->etat['dissimulation'] > 0)
 		{
-			switch ($effectue[0])
+			/*switch ($effectue[0])
 				{
 				case 'attaque':
 					return '';
@@ -40,21 +56,21 @@ function script_action($joueur, $ennemi, $mode, &$effects)
 					break;
 				default:
 					return '';
-				}
+				}*/
 			// Chercher la cible de la capacité utilisée
-			global $db, $G_cibles;
+			/*global $db, $G_cibles;
 			$requete = "SELECT cible FROM $table WHERE id = ".$effectue[1];
 			$req = $db->query($requete);
-			$row = $db->read_assoc($req);
+			$row = $db->read_assoc($req);*/
 			// Si la cible est l'adversaire, alors c'est foiré
-			if ($G_cibles[$row['cible']] == 'Ennemi') {
+			if (/*$G_cibles[$row['cible']] == 'Ennemi'*/$att->get_cible() == comp_sort::cible_autre ) {
 				echo $ennemi->get_nom().' est caché, '.$joueur->get_nom().
 					' ne peut pas attaquer<br />';
-				return '';
+				return null;//'';
 			}
 		}
-	print_debug("action sélectionnée: $effectue[0] $effectue[1]");
-	return $effectue;
+	print_debug("action sélectionnée: $effectue[0] $effectue[1]<br/>");
+	return $att;//$effectue;
 }
 
 /*
@@ -134,12 +150,11 @@ function sub_script_action($joueur, $ennemi, $mode, &$effects)
 		$test = false;
 		return '';
 	}
-		if($joueur->etat['bouclier_glace'] > 0)
+	if($joueur->etat['glace'] > 0)
 	{
-		echo $joueur->get_nom().' est glacé<br />';
-		$log_combat .= "cp";
-		$test = false;
-		return '';
+		print_debug($joueur->get_nom().' est glacé<br />');
+		//$log_combat .= "cp";
+		$test = true;
 	}
 	if($joueur->etat['tir_vise'] > 0)
 	{
@@ -814,25 +829,53 @@ function lance_sort($id, $acteur, &$effects)
           break;
 
 					
-			case 'absorb_temporelle':
+        case 'absorb_temporelle':
 
-				$description = 'Vous êtes complétement déstabilisé et ne voyez plus rien pendant quelques secondes. En revenant à vous, vous avez la douloureuse impression que vos gestes vous ont échappé.';
+          $description = 'Vous êtes complétement déstabilisé et ne voyez plus rien pendant quelques secondes. En revenant à vous, vous avez la douloureuse impression que vos gestes vous ont échappé.';
 
-				$perte_pa = rand(1, $row['effet2']);
-				$pa = max(0, $passif->get_pa() - $perte_pa);
-				$passif->set_pa($pa);
-				$degat = degat_magique($actif->$get_comp_assoc(),
-															 ($row['effet'] + $bonus_degats_magique),
-															 $actif, $passif, $effects, $row['type']);
-				echo '&nbsp;&nbsp;<span class="degat"><strong>'.$actif->get_nom().
-					'</strong> inflige <strong>'.$degat.'</strong> dégâts avec '.
-					$row['nom'].'</span><br />';
-				$passif->set_hp($passif->get_hp() - $degat);
-				print_debug($passif->get_nom().' perd '.$perte_pa.' PA');
-
-				echo '<br/><em>'.$description.'</em>';
-				break;
+          $perte_pa = rand(1, $row['effet2']);
+          $pa = max(0, $passif->get_pa() - $perte_pa);
+          $passif->set_pa($pa);
+          $degat = degat_magique($actif->$get_comp_assoc(),
+                                 ($row['effet'] + $bonus_degats_magique),
+                                 $actif, $passif, $effects, $row['type']);
+          echo '&nbsp;&nbsp;<span class="degat"><strong>'.$actif->get_nom().
+            '</strong> inflige <strong>'.$degat.'</strong> dégâts avec '.
+            $row['nom'].'</span><br />';
+          $passif->set_hp($passif->get_hp() - $degat);
+          print_debug($passif->get_nom().' perd '.$perte_pa.' PA');
           
+          echo '<br/><em>'.$description.'</em>';
+          break;
+          
+        case 'debuff_nysin_femelle':
+          // Si le joueur est déjà entravé, on ne change rien mais on tape
+          if ($passif->is_buff('debuff_bloque_deplacement_alea'))
+          {
+            $degat = degat_magique($actif->$get_comp_assoc(),
+                                   (($row['effet'] * 4) + $bonus_degats_magique),
+                                   $actif, $passif, $effects, $row['type']);
+            if (is_bloque_Deplacement_alea(
+                  $passif->get_buff('debuff_bloque_deplacement_alea', 'effet'),
+                  $passif->get_buff('debuff_bloque_deplacement_alea', 'effet2'))) {
+              // Si les entraves sont actives, on tape 4 fois plus fort
+              $degat *= 4;
+              echo '<em>Les entraves de Nysin sont actives !</em><br/>';
+            }
+            echo '&nbsp;&nbsp;<span class="degat"><strong>'.$actif->get_nom().
+              '</strong> inflige <strong>'.$degat.'</strong> dégâts à '.
+              'travers les entraves de Nysin</span><br />';
+            break;
+          }
+          $debut = rand(0, 23);
+          $fin = $debut + $row['effet'];
+          if ($fin > 24) $fin -= 24;
+          $description = "Vous êtes entravé par Nysin";
+          lance_buff('debuff_bloque_deplacement_alea', $passif->get_id(),
+                     $debut, $row['effet'], 604800, 'Entraves de Nysin',
+                     sSQL($description), 'perso', 1, 0, 0, 0);
+          echo '<br/><em>'.$description.'</em>';          
+          break;
 
           /***************************************/
           /****        Les sorts normaux      ****/
@@ -1638,8 +1681,8 @@ function get_etats()
 	$etats['silence']['id'] = 'silence';
 	$etats['dissimulation']['nom'] = 'Dissimulé';
 	$etats['dissimulation']['id'] = 'dissimulation';
-	$etats['glacer']['nom'] = 'Glacé';
-	$etats['glacer']['id'] = 'glacer';
+	$etats['glace']['nom'] = 'Glacé';
+	$etats['glace']['id'] = 'glace';
 	$etats['posture']['nom'] = 'En posture / Aura';
 	$etats['posture']['id'] = 'posture';
 	$etats['berzeker']['nom'] = 'Berzerk';
@@ -1672,6 +1715,8 @@ function get_etats()
 	$etats['bouclier_protecteur']['id'] = 'bouclier_protecteur';
 	$etats['embraser']['nom'] = 'Embrasé';
 	$etats['embraser']['id'] = 'embraser';
+	$etats['desarme']['nom'] = 'Désarmé';
+	$etats['desarme']['id'] = 'desarme';
 	return $etats;
 }
 

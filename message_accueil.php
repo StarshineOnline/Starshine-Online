@@ -71,7 +71,7 @@ if($journal != '')
 		echo '<hr>';
 }
 
-require('connect_forum.php');
+require_once('connect_forum.php');
 
 $requete_news = "SELECT * FROM punbbtopics WHERE (forum_id = 5) ORDER BY posted DESC";
 $req_news = $db_forum->query($requete_news);

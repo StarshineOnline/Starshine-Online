@@ -2,7 +2,7 @@
 if (file_exists('../root.php'))
   include_once('../root.php');
 
-require('haut_roi.php');
+require_once('haut_roi.php');
 include_once(root.'class/construction.class.php');
 include_once(root.'class/bourg.class.php');
 include_once(root.'class/mine.class.php');
@@ -35,6 +35,7 @@ else if(array_key_exists('id', $_GET))
 	<div id="map_mine" style='float:left;'>
 	<?php
 	$map = new map($x, $y, 5, '../', false, 'high');
+  $map->dont_use_relative_coords = true;
 	$map->quadrillage = true;
 	$map->set_batiment_objet($batiments);
 	$map->onclick_status = true;

@@ -152,6 +152,15 @@ if (isset($_GET['deplacement']))
 			$peu_bouger = false;
 			$cause = 'Un buff vous empèche de bouger';
 		}
+    if ($joueur->is_buff('debuff_bloque_deplacement_alea'))
+    {
+      if (is_bloque_Deplacement_alea(
+            $joueur->get_buff('debuff_bloque_deplacement_alea', 'effet'),
+            $joueur->get_buff('debuff_bloque_deplacement_alea', 'effet2'))) {
+        $cause = 'Un buff vous empèche de bouger';
+        $peu_bouger = false;
+      }
+    }
 		//Si en donjon et case n'existe pas, le joueur ne peut pas bouger
 		if($num_rows == 0)
 		{

@@ -15,7 +15,7 @@ if (file_exists('root.php'))
 	{//-- cancelBuff(buff_id)
 		echo "	function cancelBuff(buff_id, buff_nom)
 				{
-					if(confirm('Voulez vous supprimer '+ buff_nom +' ?')) 
+					if(confirm('Voulez vous supprimer '+ buff_nom +' ?'))
 					{
 						envoiInfo('suppbuff.php?id='+ buff_id, 'perso');
 					}
@@ -66,7 +66,7 @@ if (file_exists('root.php'))
 					echo "<li class='buff'>
 						   <img src='image/buff/".$buff->get_type()."_p.png'
 								alt='".$buff->get_type()."'
-								ondblclick=\"cancelBuff('".$buff->get_id()."', '".$buff->get_nom()."');\"
+								ondblclick=\"cancelBuff('".$buff->get_id()."', '".addslashes($buff->get_nom())."');\"
 								onmouseover=\"return overlib('$overlib', BGCLASS, 'overlib', BGCOLOR, '', FGCOLOR, '');\"
 								onmouseout=\"return nd();\"  />
 						   ".genere_image_buff_duree($buff)."
@@ -137,9 +137,25 @@ if($joueur->get_groupe() != 0)
 	{//-- Récupération des infos sur le membre du groupe
 		if($joueur->get_id() != $membre->get_id())
 		{
+      if (map::is_masked_coordinates($membre->get_x(), $membre->get_y()))
+        $masked_coords = true;
+      else
+        $masked_coords = false;
+
 			$membre->poscase = calcul_distance(convert_in_pos($membre->get_x(), $membre->get_y()), convert_in_pos($joueur->get_x(), $joueur->get_y()));
 			$membre->pospita = calcul_distance_pytagore(convert_in_pos($membre->get_x(),$membre->get_y()), convert_in_pos($joueur->get_x(), $joueur->get_y()));
-			$overlib = "<ul><li class='overlib_titres'>".ucwords($membre->get_grade()->get_nom())." ".ucwords($membre->get_nom())."</li><li>".ucwords($membre->get_race())." - ".ucwords($membre->get_classe())." (Niv.".$membre->get_level().")</li><li>HP : ".$membre->get_hp()." / ".floor($membre->get_hp_maximum())."</li><li>MP : ".$membre->get_mp()." / ".floor($membre->get_mp_maximum())."</li><li>Position : x:".$membre->get_x().", y:".$membre->get_y()."</li><li>Distance : ".$membre->poscase." - Pytagorienne : ".$membre->pospita."</li>";
+			$overlib = "<ul><li class='overlib_titres'>".
+        ucwords($membre->get_grade()->get_nom())." ".
+        ucwords($membre->get_nom())."</li><li>".
+        ucwords($membre->get_race())." - ".
+        ucwords($membre->get_classe())." (Niv.".$membre->get_level().
+        ")</li><li>HP : ".$membre->get_hp()." / ".
+        floor($membre->get_hp_maximum())."</li><li>MP : ".
+        $membre->get_mp()." / ".floor($membre->get_mp_maximum())."</li>";
+      if (!$masked_coords) $overlib .= "<li>Position : x:".$membre->get_x().
+                             ", y:".$membre->get_y()."</li><li>Distance : ".
+                             $membre->poscase." - Pytagorienne : ".
+                             $membre->pospita."</li>";
 			{//-- Récupération des buffs
 				$overlib .= "<li>";
 				foreach($membre->get_buff() as $buff)
