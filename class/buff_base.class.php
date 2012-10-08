@@ -168,7 +168,7 @@ class buff_base extends comp_sort_buff
 	global $db, $G_erreur;
 	$lancement = true;
 	//echo $db->num_rows;
-	if( $ancien )
+	if( !$ancien )
 	{
 		// La cible n'a pas le sort d'encore lancé
 		if($nb_buff < $nb_buff_max || $nb_buff_max == 0 || $this->get_debuff())

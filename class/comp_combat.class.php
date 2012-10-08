@@ -943,8 +943,8 @@ class comp_combat_deg_pot extends comp_combat
 /// Classe gérant les compétences donnant des bonus/malus aux potentiels
 class comp_combat_coup_bouclier extends comp_combat_degat_etat
 {
-  /// Méthode gérant l'utilisation d'une compétence
-  function lance(&$actif, &$passif, &$effets)
+  /// Méthode gérant ce qu'il se passe lorsque la coméptence à été utilisé avec succès
+  function touche($attaque, &$actif, &$passif, &$effets)
   {
     return comp_combat::lance($actif, $passif, $effets);
   }
