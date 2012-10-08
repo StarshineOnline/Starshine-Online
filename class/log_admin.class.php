@@ -64,7 +64,7 @@ class log_admin_db
 			$this->id_joueur = $id_joueur;
 			$this->type = $type;
 			$this->message = $message;
-			$this->date = $date;
+			$this->date = time();
 			$this->id = $id;
 		}
 	}
