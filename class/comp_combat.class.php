@@ -946,7 +946,7 @@ class comp_combat_coup_bouclier extends comp_combat_degat_etat
   /// Méthode gérant ce qu'il se passe lorsque la coméptence à été utilisé avec succès
   function touche($attaque, &$actif, &$passif, &$effets)
   {
-    return comp_combat::lance($actif, $passif, $effets);
+    return comp_combat::touche($actif, $passif, $effets);
   }
   /// Méthode calculant les dégâts de base avant réduction
   function calcul_degats(&$actif, &$passif, &$effets)
