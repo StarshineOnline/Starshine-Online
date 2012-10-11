@@ -269,7 +269,7 @@ class sort_combat extends sort
 		
 		// Calcul des potentiels toucher et parer
 		$potentiel_toucher = round($actif->get_volonte() * $actif->get_potentiel_lancer_magique( $this->get_comp_assoc() ));
-		$potentiel_parer = $actif->get_potentiel_parer_magique($pm);
+		$potentiel_parer = $passif->get_potentiel_parer_magique($pm);
 		// Application des effets de potentiel toucher
 		foreach($effets as $effet)
 			$potentiel_toucher = $effet->calcul_attaque_magique($actif, $passif, $potentiel_toucher);
