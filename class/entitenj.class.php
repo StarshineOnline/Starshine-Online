@@ -91,6 +91,27 @@ class entitenj extends entite
   {
     return $this->def->get_type();
   }
+  /// Renvoie le coût en PA de l'attaque
+  function get_cout_attaque(&$perso, $cible)
+  {
+    $cout = $this->incarn->get_cout_attaque($perso, $cible);
+    if( $cout !== null )
+      return $cout;
+    else
+      return parent::get_cout_attaque($perso, $cible);
+  }
+  /// Renvoie le coût en PA pour attaquer l'entité
+  function get_cout_attaque_base(&$perso) { return $this->incarn->get_cout_attaque_base($perso); }
+  /// Indique si l'entité peut attaquer
+  function peut_attaquer()
+  {
+    return $this->incarn->peut_attaquer();
+  }
+  /// Actions effectuées à la fin d'un combat pour l'attaquant
+  function fin_attaque(&$perso, &$cible, $cout_pa)
+  {
+    $this->incarn->fin_attaque($cible);
+  }
 }
 
 ?>

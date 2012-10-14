@@ -47,12 +47,13 @@ elseif($joueur->get_pa() >= 30)
 		$secondes_max = min(round(15000 * sqrt($joueur->get_architecture())), $seconde_prct);
 
 		$secondes_min = min(250 * $joueur->get_architecture(), round($seconde_prct / 2));
-		$secondes = rand($secondes_min, $secondes_max);
 		// Gemme de fabrique : augmente de effet % l'accélération
 		if ($joueur->is_enchantement('forge'))
 		{
 			$secondes_max += floor($joueur->get_enchantement('forge', 'effet') / 100 * $secondes_max);
 		}
+		$secondes = rand($secondes_min, $secondes_max);
+    if( $joueur->is_buff('convalescence') ) $secondes=floor($secondes = 2);
 		//On met à jour le placement
 		$requete = "UPDATE placement SET fin_placement = fin_placement - ".$secondes." WHERE id = ".sSQL($_GET['id_construction']);
 		if($db->query($requete))

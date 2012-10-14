@@ -718,4 +718,10 @@ class map_monstre extends entnj_incarn
 		}
 		return $msg_xp;
 	}
+  /// Renvoie le coût en PA pour attaquer l'entité
+  function get_cout_attaque_base(&$perso)
+  {
+    global $G_PA_attaque_monstre;
+    return $G_PA_attaque_monstre;
+  }
 }

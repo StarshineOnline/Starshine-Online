@@ -924,8 +924,28 @@ class entite extends placable
   }
   /// Action effectuées à la fin d'un combat
   function fin_combat(&$perso, $degats=null) { echo "on fait rien ! ($this)<br/>"; }
+  /// Actions effectuées à la fin d'un combat pour l'attaquant
+  function fin_attaque(&$perso, $cout_pa) {}
   /// Action effectuées à la fin d'un combat pour le défenseur
   function fin_defense(&$perso, &$royaume, $pet, $degats, $batiment) {}
+  /// Renvoie le coût en PA de l'attaque
+  function get_cout_attaque(&$perso, $cible)
+  {
+    $cout = $cible->get_cout_attaque_base($perso);
+    if( $perso->is_buff('cout_attaque') ) $cout = ceil($cout / $perso->get_buff('cout_attaque', 'effet'));
+    if( $perso->is_buff('plus_cout_attaque') ) $cout *= $perso->get_buff('plus_cout_attaque', 'effet');
+    if( $perso->is_buff('buff_rapidite') ) $cout -= $perso->get_buff('buff_rapidite', 'effet');
+    if( $perso->is_buff('debuff_ralentissement') ) $cout += $perso->get_buff('debuff_ralentissement', 'effet');
+    if( $cout < 1 ) $cout = 1;
+    return $cout;
+  }
+  /// Renvoie le coût en PA pour attaquer l'entité
+  function get_cout_attaque_base(&$perso) { return 0; }
+  /// Indique si l'entité peut attaquer
+  function peut_attaquer()
+  {
+    return true;
+  }
 	// @}
 
 	/**

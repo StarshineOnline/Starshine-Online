@@ -86,6 +86,12 @@ class pet extends map_monstre
     $proprietaire = new perso($this->get_id_joueur());
     return $perso->fin_combat_pvp($this, false);
   }
+  /// Renvoie le coût en PA pour attaquer l'entité
+  function get_cout_attaque_base(&$perso)
+  {
+    global $G_PA_attaque_joueur;
+    return $G_PA_attaque_joueur;
+  }
 	// @}
 
 	/**

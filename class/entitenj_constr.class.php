@@ -8,7 +8,7 @@
  * Classe entitenj_constr
  * Classe de base pour les bâtiments sur la carte, en construction ou non
  */
-class entitenj_constr extends entnj_incarn
+abstract class entitenj_constr extends entnj_incarn
 {
 	/**
 	 * @name Informations générales.
@@ -85,6 +85,9 @@ class entitenj_constr extends entnj_incarn
 		$this->point_victoire = $point_victoire;
 		$this->champs_modif[] = 'point_victoire';
 	}
+	
+	/// Date de pose ou construction de l'entité
+	abstract function get_date_debut();
 	// @}
 
 	/**
@@ -211,6 +214,15 @@ class entitenj_constr extends entnj_incarn
 		$royaume->sauver();
 		//On efface le batiment
 		$this->supprimer();
+  }
+  /// Renvoie le coût en PA pour attaquer l'entité
+  function get_cout_attaque_base(&$perso)
+  {
+    global $G_PA_attaque_batiment;
+    if( $perso->is_buff('convalescence') )
+      return $G_PA_attaque_batiment*2;
+    else
+      return $G_PA_attaque_batiment;
   }
 }
 ?>

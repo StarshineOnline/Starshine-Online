@@ -43,6 +43,11 @@ class placement extends entitenj_constr
 		$this->debut_placement = $debut_placement;
 		$this->champs_modif[] = 'debut_placement';
 	}
+	/// Date de pose ou construction de l'entité
+	function get_date_debut()
+	{
+		return $this->debut_placement;
+  }
 
 	/// Renvoie la date de la fin de la construction
 	function get_fin_placement()

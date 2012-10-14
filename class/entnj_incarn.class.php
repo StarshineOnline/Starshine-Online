@@ -114,8 +114,19 @@ abstract class entnj_incarn extends placable
 	{
     $this->supprimer();
   }
+  /// Actions effectuées à la fin d'un combat pour l'attaquant
+  function fin_attaque(&$cible) {}
   /// Action effectuées à la fin d'un combat pour le défenseur
   function fin_defense(&$perso, &$royaume, $pet, $degats, &$def) { return ""; }
+  /// Renvoie le coût en PA de l'attaque
+  function get_cout_attaque(&$perso, $cible=null) { return null; }
+  /// Renvoie le coût en PA pour attaquer l'entité
+  abstract function get_cout_attaque_base(&$perso);
+  /// Indique si l'entité peut attaquer
+  function peut_attaquer()
+  {
+    return true;
+  }
 }
 
 ?>

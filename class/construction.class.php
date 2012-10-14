@@ -16,6 +16,7 @@ class construction extends entitenj_constr
 	 */
   // @{
 	protected $rechargement; ///< Date à laquelle l'arme de siège pourra à nouveau tirer
+	protected $rattrapage;  ///< Temps à rattrapper pour les tirs.
 	protected $date_construction; ///< Date de construction du bâtiment
 	protected $image;  ///< Image du bâtiment;
 	
@@ -31,6 +32,18 @@ class construction extends entitenj_constr
 		$this->champs_modif[] = 'rechargement';
 	}
 
+	/// Renvoie la date à laquelle l'arme de siège pourra à nouveau tirer
+	function get_rattrapage()
+	{
+		return $this->rattrapage;
+	}
+	/// Modifie la date à laquelle l'arme de siège pourra à nouveau tirer
+	function set_rattrapage($rattrapage)
+	{
+		$this->rattrapage = $rattrapage;
+		$this->champs_modif[] = 'rattrapage';
+	}
+
 	/// Renvoie la date de construction du bâtiment
 	function get_date_construction()
 	{
@@ -42,6 +55,11 @@ class construction extends entitenj_constr
 		$this->date_construction = $date_construction;
 		$this->champs_modif[] = 'date_construction';
 	}
+	/// Date de pose ou construction de l'entité
+	function get_date_debut()
+	{
+		return $this->date_construction;
+  }
 
 	/// Renvoie l'image du bâtiment
 	function get_image()
@@ -127,5 +145,43 @@ class construction extends entitenj_constr
     return 'construction';
   }
 	// @}
+  /// Renvoie le coût en PA de l'attaque
+  function get_cout_attaque(&$perso, $cible=null)
+  {
+    global $G_PA_attaque_batiment;
+    if( $perso->is_buff('convalescence') )
+      return $G_PA_attaque_batiment;
+    else
+      return 0;
+  }
+  /// Indique si l'entité peut attaquer
+  function peut_attaquer()
+  {
+    return $this->get_rechargement() < time();
+  }
+  /// Actions effectuées à la fin d'un combat pour l'attaquant
+  function fin_attaque(&$cible)
+  {
+    $recharg = $this->get_def()->get_bonus('rechargement');
+    //$date_tir = $this->get_rechargement() - $reduc;
+    $retard = time() - $this->get_rechargement();
+    if( $retard > 172800 )
+    {
+      $reduc = 0;
+      $this->set_rattrapage(0);
+    }
+    else
+    {
+      $diff = $cible->get_date_debut() - $this->get_rechargement();
+      if( $diff > 0 )
+        $retard -= $diff;
+      $rattrap = $this->get_rattrapage() + $retard;
+      $reduc = max($rattrap, $recharg/2);
+      $rattrap -= $reduc;
+      $this->set_rattrapage( $rattrap );
+    }
+    $this->set_rechargement( time() + $recharg - $reduc );
+    $this->sauver();
+  }
 }
 ?>

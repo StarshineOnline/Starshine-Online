@@ -39,6 +39,7 @@ elseif($joueur->get_pa() >= 30)
 		$hp_repare_max = ceil(1000 * (1 - 50/($joueur->get_architecture()+50)));
 		$hp_repare_min = $joueur->get_architecture();
 		$hp_repare = rand($hp_repare_min, $hp_repare_max);
+    if( $joueur->is_buff('convalescence') ) $hp_repare = floor($hp_repare/2);
 		// Gemme de fabrique : augmente de effet % l'accélération
 		if ($joueur->is_enchantement('forge'))
 		{

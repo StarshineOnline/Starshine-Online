@@ -3341,6 +3341,12 @@ class perso extends entite
     $msg_xp .= $this->fin_combat_pvp($perso, true, $batiment);
     return $msg_xp;
   }
+  /// Renvoie le coût en PA pour attaquer l'entité
+  function get_cout_attaque_base(&$perso)
+  {
+    global $G_PA_attaque_joueur;
+    return $G_PA_attaque_joueur;
+  }
 	// @}
 
 	/**
