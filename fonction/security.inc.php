@@ -203,27 +203,30 @@ function check_existing_account($new_account, $perso = true, $joueur = false, $l
 	
   if($perso)
   {
-  $requete = "select id from perso where replace(nom, ' ', '_') = replace('$accnt', ' ', '_') AND id <> '$id_perso_exception'";
-  $req = $db->query($requete);
-  while ($row = $db->read_row($req))
-    $count++;
-   }
+    $requete = "select id from perso where replace(nom, ' ', '_') = replace('$accnt', ' ', '_') AND id <> '$id_perso_exception'";
+    $req = $db->query($requete);
+    while (($row = $db->read_row($req)) != false) {
+      $count++;
+    }
+  }
    
   if($joueur)
   {
-  $requete = "select id from joueur where replace(pseudo, ' ', '_') = replace('$accnt', ' ', '_')";
-  $req = $db->query($requete);
-  while ($row = $db->read_row($req))
-    $count++;
-   }
-   
-   if($login)
-   {
-  $requete = "select id from joueur where replace(login, ' ', '_') = replace('$accnt', ' ', '_')";
-  $req = $db->query($requete);
-  while ($row = $db->read_row($req))
-    $count++;
-   }
+    $requete = "select id from joueur where replace(pseudo, ' ', '_') = replace('$accnt', ' ', '_')";
+    $req = $db->query($requete);
+    while (($row = $db->read_row($req)) != false) {
+      $count++;
+    }
+  }
+    
+  if($login)
+  {
+    $requete = "select id from joueur where replace(login, ' ', '_') = replace('$accnt', ' ', '_')";
+    $req = $db->query($requete);
+    while (($row = $db->read_row($req)) != false) {
+      $count++;
+    }
+  }
 
   $admin = '';
 
