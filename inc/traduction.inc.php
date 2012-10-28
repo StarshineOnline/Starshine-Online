@@ -87,6 +87,19 @@ $Gtrad['arme_pet'] = 'Arme';
 
 
 /**
+ * @name Types d'arme
+ * Traduction des types d'arme.
+ * @{
+ */
+$Gtrad['epee'] = 'épée';
+$Gtrad['hache'] = 'hache';
+$Gtrad['dague'] = 'dague';
+$Gtrad['arc'] = 'arc';
+$Gtrad['baton'] = 'bâton';
+//@}
+
+
+/**
  * @name Compétences
  * Traduction des compétences.
  * @{  

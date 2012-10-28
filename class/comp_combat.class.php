@@ -450,10 +450,10 @@ class comp_combat extends comp
 					}
 					if( $buff = $passif->get_buff('bouclier_eau') )
 					{
-						if( $this->test_de(100, 35) )
+						if( $this->test_de(100, $buff->get_effet()) )
 						{
 							echo '&nbsp;&nbsp;<span class="degat">'.$passif->get_nom().' glace '.$actif->get_nom().'</span><br />';
-							$actif->etat['glace']['effet'] = $buff->get_effet();
+							$actif->etat['glace']['effet'] = true;
 							$actif->etat['glace']['duree'] = $buff->get_effet2()+1; // +1 car ce round est décompté alors qu'il ne compte pas
 						}
 					}
