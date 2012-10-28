@@ -106,6 +106,8 @@ width:483px; }
 #popup_erreur_marge 				{ min-height:50px; margin:auto; width:200px; }
 .fermer 							{ background:transparent url(./../image/interface/rouge.png) no-repeat top left; height:16px; width:16px; cursor:pointer!important; }
 .perso_cadre						{ width:306px;float:left;background:transparent url(./../image/site/fondperso.png); -moz-border-radius : 10px;-webkit-border-radius:10px; border-radius: 10px; margin-left:14px;padding-left:15px;}
+.joueur_cadre						{ width:291px;float:left;background:transparent url(./../image/site/fondperso.png); -moz-border-radius : 10px;-webkit-border-radius:10px; border-radius: 10px; margin-left:14px;padding-left:15px;padding-right:15px;padding-bottom:5px;padding-top:5px;}
+.perso_cadre ul						{ padding: 0px; margin: 0px; margin-left: 20px; }
 .perso_espacement					{ width: 17px; float: left; height: 1px;display:block;}
 
 /*-- Perso ----------------------------------------------------------*/

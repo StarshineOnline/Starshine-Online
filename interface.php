@@ -117,7 +117,7 @@ echo '<div id="menu_date"><img src="image/interface/'.moment_jour().
 	</div>
 	<div id='menu_deco'>
 	<?php
-    if( array_key_exists('nbr_perso', $_SESSION) )
+    if( array_key_exists('nbr_perso', $_SESSION) && $_SESSION['nbr_perso'] > 1 )
     {
   ?>
 		<span class="changer" title='Changer de personnage' onclick="affichePopUp('changer_perso.php');">&nbsp;</span>
