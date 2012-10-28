@@ -1,5 +1,5 @@
 -- armes de sièges
-ALTER TABLE construction ADD rattrapage INT UNSIGNED NOT NULL AFTER AFTER rechargement;
+ALTER TABLE construction ADD rattrapage INT UNSIGNED NOT NULL AFTER rechargement;
 -- Dégâts des trébuchets
 UPDATE  batiment_bonus SET valeur=1000 WHERE id_batiment = 19 AND bonus LIKE 'degats_bat';
 -- Modification des extracteurs
