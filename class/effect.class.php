@@ -522,7 +522,7 @@ class poison extends effect
       $perte_hp = $perte_hp * $actif->etat['putrefaction']['effet'];
 		$actif->set_hp($actif->get_hp() - $perte_hp);
 		$this->hit($actif->get_nom().' perd '.$perte_hp. ' HP par le poison');
-		echo $mode;
+		//echo $mode;
 		if ($mode == 'attaquant')
 			$log_effects_attaquant .= "&ef1~".$perte_hp;
 		else
@@ -826,7 +826,7 @@ class protection_artistique extends effect
 									 $bonus_reduction.' grâce à son honneur ('.$this->nom.') !');
 		else
 			$this->debug('Pas assez d\'honneur pour profiter du '.$this->nom);
-		return $reduction + $bonus_reduction;
+		return max($reduction + $bonus_reduction, 9);
 	}
 }
 
