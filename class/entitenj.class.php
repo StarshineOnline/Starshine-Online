@@ -112,6 +112,11 @@ class entitenj extends entite
   {
     $this->incarn->fin_attaque($cible);
   }
+	/// Date de pose ou construction de l'entité
+	function get_date_debut()
+	{
+    $this->incarn->get_date_debut();
+  }
 }
 
 ?>
