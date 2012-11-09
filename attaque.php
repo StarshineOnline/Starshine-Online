@@ -236,7 +236,7 @@ if(is_donjon($joueur->get_x(), $joueur->get_y())
 
 $dist_tir_att = $attaquant->get_distance_tir();
 //On vérifie si l'attaquant est sur un batiment offensif
-$requete = "SELECT id_batiment FROM construction WHERE x = ".$joueur->get_x()." AND y = ".$attaquant->get_y()." AND royaume = ".$Trace[$attaquant->get_race()]['numrace'];
+$requete = "SELECT id_batiment FROM construction WHERE x = ".$joueur->get_x()." AND y = ".$joueur->get_y()." AND royaume = ".$Trace[$joueur->get_race()]['numrace'];
 $req = $db->query($requete);
 if($db->num_rows > 0)
 {
