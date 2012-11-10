@@ -176,7 +176,7 @@ class construction extends entitenj_constr
       if( $diff > 0 )
         $retard -= $diff;
       $rattrap = $this->get_rattrapage() + $retard;
-      $reduc = max($rattrap, $recharg/2);
+      $reduc = min($rattrap, $recharg/2);
       $rattrap -= $reduc;
       $this->set_rattrapage( $rattrap );
     }
