@@ -2235,7 +2235,7 @@ Votre dernier souvenir est l'endroit où vous êtes mort <?php echo 'x : '.$joue
 			lance_buff('debuff_rez', $joueur->get_id(), $effet, $multiplicateur_mouvement, $duree_debuff, 'Mal de résurrection', 'Mulitplie vos coûts de déplacement par '.$effet, 'perso', 1, 0, 0, 0);
 		}
 		// Second mal de res
-		lance_buff('convalescence', $joueur->get_id(), $effet, 2, 86400, 'Convalescence', 'Diminue votre efficacité pour le RvR.', 'perso', 1, 0, 0, 0);
+		lance_buff('convalescence', $joueur->get_id(), 2, 2, 86400, 'Convalescence', 'Diminue votre efficacité pour le RvR.', 'perso', 1, 0, 0, 0);
 	}
 }
 
