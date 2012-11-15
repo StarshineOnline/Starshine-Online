@@ -53,7 +53,7 @@ elseif($joueur->get_pa() >= 30)
 			$secondes_max += floor($joueur->get_enchantement('forge', 'effet') / 100 * $secondes_max);
 		}
 		$secondes = rand($secondes_min, $secondes_max);
-    if( $joueur->is_buff('convalescence') ) $secondes=floor($secondes = 2);
+    if( $joueur->is_buff('convalescence') ) $secondes=floor($secondes / 2);
 		//On met à jour le placement
 		$requete = "UPDATE placement SET fin_placement = fin_placement - ".$secondes." WHERE id = ".sSQL($_GET['id_construction']);
 		if($db->query($requete))
