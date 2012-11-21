@@ -189,8 +189,16 @@ if(!$visu AND isset($_GET['action']))
     									$rez = 0;
     								}
     								else $rez = $batiment->get_bonus('rez');
-    								$requete = "INSERT INTO placement (type, x, y, royaume, debut_placement, fin_placement, id_batiment, hp, nom, rez, point_victoire) VALUES('".sSQL($_GET['type'])."', '".$joueur->get_x()."', '".$joueur->get_y()."', '".$Trace[$joueur->get_race()]['numrace']."', ".time().", '".$time."', '".$batiment->get_id()."', '".$batiment->get_hp()."', '".$batiment->get_nom()."', '".$rez."', '".$batiment->get_point_victoire()."')";
-    								$db->query($requete);
+
+                    $requete = 'INSERT INTO placement (type, x, y, royaume, debut_placement, fin_placement, id_batiment, hp, nom, rez, point_victoire) VALUES (?,?,?,?,?,?,?,?,?,?,?)';
+                    $types = 'iiiiiiiisii';
+                    $params = array($_GET['type'], $joueur->get_x(),
+                                    $joueur->get_y(), 
+                                    $Trace[$joueur->get_race()]['numrace'],
+                                    time(), $time, $batiment->get_id(),
+                                    $batiment->get_hp(), $batiment->get_nom(),
+                                    $rez, $batiment->get_point_victoire());
+                    $db->param_query($requete, $params, $types);
     								// Coût en PA si en convalescence
     								if( $joueur->is_buff('convalescence') )
     								{
