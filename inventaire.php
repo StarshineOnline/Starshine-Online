@@ -191,7 +191,7 @@ if(!$visu AND isset($_GET['action']))
     								else $rez = $batiment->get_bonus('rez');
 
                     $requete = 'INSERT INTO placement (type, x, y, royaume, debut_placement, fin_placement, id_batiment, hp, nom, rez, point_victoire) VALUES (?,?,?,?,?,?,?,?,?,?,?)';
-                    $types = 'iiiiiiiisii';
+                    $types = 'siiiiiiisii';
                     $params = array($_GET['type'], $joueur->get_x(),
                                     $joueur->get_y(), 
                                     $Trace[$joueur->get_race()]['numrace'],
