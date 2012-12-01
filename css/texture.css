@@ -2335,8 +2335,9 @@
 .tex9586{background:url('../image/texture/tutorial/orc/sol_mg_tente_orc_ext_hherbe_milieu.png') no-repeat;}
 .tex9587{background:url('../image/texture/tutorial/orc/sol_orc_tente_ext_g.png') no-repeat;}
 .tex9588{background:url('../image/texture/tutorial/orc/sol_orc_tente_ext_d.png') no-repeat;}
-
-
+.tex9589{background:url('../image/texture/tutorial/orc/tente_ext_orc_bg.png') no-repeat;}
+.tex9590{background:url('../image/texture/tutorial/orc/tente_ext_orc_entree.png') no-repeat;}
+.tex9591{background:url('../image/texture/tutorial/orc/tente_ext_orc_bd.png') no-repeat;}
 
 .tex6600{background:url('../image/texture/donjon_riviere_verte/mur_eau_basse_buisson_bg.png') no-repeat;}	
 .tex6601{background:url('../image/texture/donjon_riviere_verte/mur_eau_basse_buisson_mgb.png') no-repeat;}	
@@ -2389,6 +2390,12 @@
 
 .tex6648{background:url('../image/texture/tutorial/orc/mur_tente_orc_ext_hd.png') no-repeat;}
 .tex6649{background:url('../image/texture/tutorial/orc/mur_tente_orc_ext_hg.png') no-repeat;}
+.tex6650{background:url('../image/texture/tutorial/orc/mur_tente_ext_orc_bm.png') no-repeat;}
+.tex6651{background:url('../image/texture/tutorial/orc/mur_tente_ext_orc_mg.png') no-repeat;}
+.tex6652{background:url('../image/texture/tutorial/orc/mur_tente_ext_orc_md.png') no-repeat;}
+.tex6653{background:url('../image/texture/tutorial/orc/mur_tente_ext_orc_hm.png') no-repeat;}
+.tex6654{background:url('../image/texture/tutorial/orc/mur_tente_ext_orc_hg.png') no-repeat;}
+.tex6655{background:url('../image/texture/tutorial/orc/mur_tente_ext_orc_hd.png') no-repeat;}
 
 .tex2000{background:url('../image/texture/capitale/vampire/villevampendestrbg.gif') no-repeat;}
 .tex2001{background:url('../image/texture/capitale/vampire/villevampendestrbm.gif') no-repeat;}
