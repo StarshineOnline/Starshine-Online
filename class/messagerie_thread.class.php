@@ -1,7 +1,7 @@
-<?php
+<?php // -*- mode: php; tab-width: 2 -*-
 if (file_exists('../root.php'))
   include_once('../root.php');
-?><?php
+
 class messagerie_thread
 {
 	public $id_thread;
@@ -52,16 +52,22 @@ class messagerie_thread
 		global $db;
 		if( $this->id_thread > 0 )
 		{
-			$requete = 'UPDATE messagerie_thread SET ';
-			$requete .= 'id_groupe = '.$this->id_groupe.', id_dest = '.$this->id_dest.', id_auteur = '.$this->id_auteur.', important = '.$this->important.', dernier_message = "'.$this->dernier_message.'",titre = "'.mysql_real_escape_string($this->titre).'"';
-			$requete .= ' WHERE id_thread = '.$this->id_thread;
-			$db->query($requete);
+			$requete = 'UPDATE messagerie_thread SET id_groupe = ?, id_dest = ?, id_auteur = ?, important = ?, dernier_message = ?, titre = ? WHERE id_thread = ?';
+			$db->param_query($requete,
+											 array($this->id_groupe, $this->id_dest,
+														 $this->id_auteur, $this->important,
+														 $this->dernier_message, $this->titre,
+														 $this->id_thread),
+											 'iiiissi');
 		}
 		else
 		{
-			$requete = 'INSERT INTO messagerie_thread (id_groupe, id_dest, id_auteur, important, dernier_message, titre) VALUES(';
-			$requete .= $this->id_groupe.', '.$this->id_dest.', '.$this->id_auteur.', '.$this->important.', "'.$this->dernier_message.'", "'.mysql_real_escape_string($this->titre).'")';
-			$db->query($requete);
+			$requete = 'INSERT INTO messagerie_thread (id_groupe, id_dest, id_auteur, important, dernier_message, titre) VALUES(?,?,?,?,?,?)';
+			$db->param_query($requete,
+											 array($this->id_groupe, $this->id_dest,
+														 $this->id_auteur, $this->important,
+														 $this->dernier_message, $this->titre),
+											 'iiiiis');
 			//Récuperation du dernier ID inséré.
 			$this->id_thread = $db->last_insert_id();
 		}
