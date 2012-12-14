@@ -56,6 +56,12 @@ class entite_cap extends entite
   }
 
   /// Action effectuées à la fin d'un combat
+  function fin_combat(&$actif, &$passif) {
+    // TODO ??
+    // A priori on fait rien, mais on ne le dit pas à l'écran
+  }
+
+  /// Action effectuées à la fin d'un combat
   function fin_defense(&$perso, $degats=null)
   {
 		//hasard pour différente actions de destruction sur la ville.
