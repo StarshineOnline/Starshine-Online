@@ -172,7 +172,7 @@ class construction extends entitenj_constr
     }
     else
     {
-      $diff = $cible->get_date_debut() - $this->get_rechargement();
+      $diff = $this->get_date_debut() - $this->get_rechargement();
       if( $diff > 0 )
         $retard -= $diff;
       $rattrap = $this->get_rattrapage() + $retard;

@@ -1,4 +1,4 @@
-<?php
+<?php // -*- mode: php; tab-width: 2 -*-
 /**
  * @file entite_cap.class.php
  * Définition de la classe entite_cap
@@ -75,7 +75,7 @@ class entite_cap extends entite
 			{
 				$suppr_hp = false;
 				$this->royaume->supprime_ressources($degats / 100);
-				echo '<h6>L\'attaque détruit des ressources au royaume '.$Gtrad[$map_royaume->get_race()].'</h6><br />';
+				echo '<h6>L\'attaque détruit des ressources au royaume '.$Gtrad[$this->royaume->get_race()].'</h6><br />';
 			}
 		}
 		//Sinon on attaque les batiments ou la ville
