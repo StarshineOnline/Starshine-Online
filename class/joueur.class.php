@@ -20,6 +20,8 @@ class joueur extends table
 	const droit_anim = 8;  ///< Droit pour l'animation.
 	const droit_concept = 16;  ///< Droit pour la conception.
 	const droit_admin = 32;  ///< Droits pour l'administration.
+	// Combinaisons
+	const droit_pnj = 25;  ///< Accès aux personnages PNJ
 	
 	//! Constructeur
 	/**

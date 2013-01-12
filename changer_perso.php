@@ -18,6 +18,8 @@ include_once(root.'inc/fp.php');
     $info = $_GET['info'];
   else
     $info = false;
+    
+  $joueur = new joueur( $_SESSION['id_joueur'] );
 ?>
 <div class="titre">
 	Changement de personnage
@@ -38,4 +40,21 @@ include_once(root.'inc/fp.php');
       ?>
     </tbody>
   </table>
+
+  <?PHP
+    if( $joueur->get_droits() & joueur::droit_pnj  )
+    {
+      echo '<br />Personnages non joueurs :<table><tbody>';
+      $requete = 'SELECT ID, nom, race, classe FROM perso WHERE id_joueur = 0 ORDER BY id';
+      $req = $db->query($requete);
+      while( $row = $db->read_assoc($req) )
+      {
+        if($info)
+          echo '<tr><td><a href="#" onClick="envoiInfo(\'changer_perso.php?perso='.$row['nom'].'&id='.$row['ID'].'\', \''.$info.'\');"); return false;">'.$row['nom'].'</a></td><td>'.$row['race'].'</td><td>'.$row['classe'].'</td></tr>';
+        else
+          echo '<tr><td><a href="#" onClick="affichePopUp(\'changer_perso.php?perso='.$row['nom'].'&id='.$row['ID'].'\');"); return false;">'.$row['nom'].'</a></td><td>'.$row['race'].'</td><td>'.$row['classe'].'</td></tr>';
+      }
+      echo '</table></tbody>';
+    }
+  ?>
 </div>
