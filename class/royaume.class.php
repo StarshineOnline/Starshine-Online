@@ -1116,9 +1116,9 @@ class royaume
 		$ref_ta = floor($row[0] - 1.5); // Bastien : on fait -1.5 pour eviter
 		if ($ref_ta < 1)                // les escaliers, il faut qu'une race
 		  $ref_ta = 1;                  // soit vraiment a la bourre pour
-		                                        // creer des grosses marches
-		//On récupère le nombre d'habitants très actifs suivant le niveau moyen
-
+		elseif($ref_ta > 3)             // creer des grosses marches
+		   $ref_ta = 3;                 // On récupère le nombre d'habitants très
+                                    // actifs suivant le niveau moyen
 
 		$requete = $db->query("SELECT COUNT(*) as count FROM perso WHERE race = '".$this->get_race()."' AND level > $ref_ta AND dernier_connexion > ".$semaine." AND statut = 'actif'");
 		$row = $db->read_row($requete);

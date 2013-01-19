@@ -20,7 +20,7 @@ else if(!array_key_exists('direction', $_GET))
 	}
 	echo "<div id='contruction'>";
 	
-	$req = $db->query("SELECT *, placement.royaume AS r, placement.type FROM placement LEFT JOIN map ON (map.y = placement.y AND placement.x = map.x) WHERE (placement.type = 'drapeau' OR placement.type = 'arme_de_siege') AND placement.royaume != ".$royaume->get_id()." AND map.royaume = ".$royaume->get_id()."");
+	$req = $db->query("SELECT *, placement.royaume AS r, placement.type FROM placement LEFT JOIN map ON (map.y = placement.y AND placement.x = map.x) WHERE (placement.type = 'drapeau' OR placement.type = 'arme_de_siege') AND placement.royaume != ".$royaume->get_id()." AND map.royaume = ".$royaume->get_id()." AND map.x <= 190 AND map.y <= 190");
 	if ($db->num_rows($req)>0)
 	{
 		echo "<fieldset>";	
@@ -54,7 +54,7 @@ else if(!array_key_exists('direction', $_GET))
 	echo "</ul>";
 	echo "</fieldset>";	
 	}
-	$req = $db->query("SELECT *, construction.royaume AS r, construction.type FROM construction LEFT JOIN map ON (map.y = construction.y AND construction.x = map.x) WHERE construction.type = 'arme_de_siege' AND construction.royaume != ".$royaume->get_id()." AND map.royaume = ".$royaume->get_id()."");
+	$req = $db->query("SELECT *, construction.royaume AS r, construction.type FROM construction LEFT JOIN map ON (map.y = construction.y AND construction.x = map.x) WHERE construction.type = 'arme_de_siege' AND construction.royaume != ".$royaume->get_id()." AND map.royaume = ".$royaume->get_id()." AND map.x <= 190 AND map.y <= 190");
 	if ($db->num_rows($req)>0)
 	{
 		echo "<fieldset>";	
@@ -79,7 +79,7 @@ else if(!array_key_exists('direction', $_GET))
 	echo "</fieldset>";	
 	}
 	
-	$req = $db->query("SELECT *, map.royaume AS r FROM placement LEFT JOIN map ON (map.y = placement.y AND placement.x = map.x) WHERE placement.type = 'drapeau' AND placement.royaume = ".$royaume->get_id()."");
+	$req = $db->query("SELECT *, map.royaume AS r FROM placement LEFT JOIN map ON (map.y = placement.y AND placement.x = map.x) WHERE placement.type = 'drapeau' AND placement.royaume = ".$royaume->get_id()." AND map.x <= 190 AND map.y <= 190");
 	if ($db->num_rows($req)>0)
 	{
 		echo "<fieldset>";	
@@ -103,7 +103,7 @@ else if(!array_key_exists('direction', $_GET))
 		echo "</ul>";
 		echo "</fieldset>";
 	}
-	$requete = $db->query("SELECT id FROM construction WHERE royaume = ".$royaume->get_id()."");
+	$requete = $db->query("SELECT id FROM construction WHERE royaume = ".$royaume->get_id()." AND x <= 190 AND y <= 190");
 	if ($db->num_rows($requete)>0)
 	{
 		echo "<fieldset>";	

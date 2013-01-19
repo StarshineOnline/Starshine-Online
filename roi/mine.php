@@ -289,7 +289,7 @@ elseif(array_key_exists('suppr', $_GET))
 }
 else
 {
-	$requete = "SELECT id, royaume, id_batiment, x, y, hp, nom, type, rez, rechargement, image FROM construction WHERE type = 'bourg' AND royaume = ".$royaume->get_id();
+	$requete = "SELECT id, royaume, id_batiment, x, y, hp, nom, type, rez, rechargement, image FROM construction WHERE type = 'bourg' AND x <= 190 AND y <= 190 AND royaume = ".$royaume->get_id();
 	$req = $db->query($requete);
 	
 	?>

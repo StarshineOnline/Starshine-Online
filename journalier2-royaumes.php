@@ -105,7 +105,7 @@ foreach($royaumes as $royaume)
 }
 //PHASE 2, entretien des batiments externes
 //On récupère les couts d'entretiens
-$requete = "SELECT *, construction.id AS id_const, batiment.hp AS hp_m, construction.hp AS hp_c FROM batiment RIGHT JOIN construction ON construction.id_batiment = batiment.id ORDER by royaume ASC";
+$requete = "SELECT *, construction.id AS id_const, batiment.hp AS hp_m, construction.hp AS hp_c FROM batiment RIGHT JOIN construction ON construction.id_batiment = batiment.id WHERE x <= 190 AND y <= 190 ORDER by royaume ASC";
 echo $requete."\n";
 $req = $db->query($requete);
 while($row = $db->read_assoc($req))

@@ -314,7 +314,7 @@ foreach($tab2 as $row)
 <?php
 
 $tab = array();
-$requete = "SELECT (COUNT(*) * 1000) as tot, royaume.race as race_joueur FROM `map` LEFT JOIN royaume ON royaume.id = map.royaume WHERE royaume <> 0 GROUP BY royaume ORDER BY tot DESC";
+$requete = "SELECT (COUNT(*) * 1000) as tot, royaume.race as race_joueur FROM `map` LEFT JOIN royaume ON royaume.id = map.royaume WHERE royaume <> 0 AND x <= 190 AND y <= 190 GROUP BY royaume ORDER BY tot DESC";
 $req = $db->query($requete);
 while($row = $db->read_assoc($req))
 {

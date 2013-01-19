@@ -62,7 +62,7 @@ echo '
 				</fieldset>
 				<fieldset class="tier">
 				<legend>Batiments externe</legend>';
-			$requete = "SELECT *, construction.id AS id_const, batiment.nom AS nom_b, construction.x AS x_c, construction.y AS y_c FROM batiment RIGHT JOIN construction ON construction.id_batiment = batiment.id WHERE royaume = ".$royaume->get_id()." ORDER BY entretien DESC";
+			$requete = "SELECT *, construction.id AS id_const, batiment.nom AS nom_b, construction.x AS x_c, construction.y AS y_c FROM batiment RIGHT JOIN construction ON construction.id_batiment = batiment.id WHERE royaume = ".$royaume->get_id()." AND x <= 190 AND y <= 190 ORDER BY entretien DESC";
 			$req = $db->query($requete);
 			echo "<ul>";
 			while($row = $db->read_assoc($req))

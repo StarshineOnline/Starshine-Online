@@ -32,14 +32,14 @@ foreach(array_keys($tableau_race) as $race)
   // valeur par défaut (pour s'il n'y a pas d'évènement)
   $tableau_race[$race][14] = 0;
 }
-$requete = "SELECT royaume.race as race_joueur, SUM( cout ) AS tot FROM `construction` LEFT JOIN batiment ON construction.id_batiment = batiment.id LEFT JOIN royaume ON construction.royaume = royaume.id GROUP BY royaume ORDER BY tot DESC";
+$requete = "SELECT royaume.race as race_joueur, SUM( cout ) AS tot FROM `construction` LEFT JOIN batiment ON construction.id_batiment = batiment.id LEFT JOIN royaume ON construction.royaume = royaume.id WHERE x <= 190 AND y <= 190 GROUP BY royaume ORDER BY tot DESC";
 $req = $db->query($requete);
 while($row = $db->read_assoc($req))
 {
 	$tableau_race[$row['race_joueur']][14] = $row['tot'];
 }
 //Case controllées
-$requete = "SELECT COUNT(*) as tot, royaume.race as race_joueur FROM `map` LEFT JOIN royaume ON royaume.id = map.royaume WHERE royaume <> 0 GROUP BY royaume ORDER BY tot DESC";
+$requete = "SELECT COUNT(*) as tot, royaume.race as race_joueur FROM `map` LEFT JOIN royaume ON royaume.id = map.royaume WHERE royaume <> 0 AND x <= 190 AND y <= 190 GROUP BY royaume ORDER BY tot DESC";
 $req = $db->query($requete);
 while($row = $db->read_assoc($req))
 {
