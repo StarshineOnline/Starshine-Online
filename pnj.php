@@ -1,4 +1,24 @@
 <?php // -*- mode: php; tab-width:2 -*-
+
+/*
+ * Aide pour les discours des PNJ :
+ * Les différents discours sont séparés pas '*****', leur id correspond à leur ordre d'apparition en commençant par 0.
+ * Plusieur balises "pseudo-bbscript" existent :
+ * - ID : crée un lien vers la partie suivant du discours, ex [ID:1]suite[/ID:1]
+ * - quete_finie / QUETEFINI
+ * - non_quete
+ * - ISQUETE
+ * - retour : affiche un lien pour retourner à la description de la case
+ * - quete : validation de la quête
+ * - quetegroupe : validation de la quête de groupe
+ * - prendquete : prise d'une quête
+ * - donneitem : donne un item
+ * - vendsitem : vends un item
+ * - run : lancement fonction personalisée (cf. fonction/pnj.inc.php)
+ * - if : IF fonction personalisée (cf. fonction/pnj.inc.php)
+ * - ifnot : IFNOT fonction personalisée (cf. fonction/pnj.inc.php)
+ * - verifinventaire : validation inventaire
+ */
 if (file_exists('root.php'))
   include_once('root.php');
 
@@ -20,11 +40,11 @@ if ($row['x'] != $joueur->get_x() ||
 }
 
 echo '<fieldset><legend>'.$row['nom'].'</legend>';
-$reponses = explode('*****', nl2br($row['texte']));
+/*$reponses = explode('*****', nl2br($row['texte']));
 $message = preg_replace("`\[ID:([^[]*)\]([^[]*)\[/ID:([^[]*)\]`i", "<li><a href=\"pnj.php?id=".$id."&amp;reponse=\\1&amp;poscase=".$W_case."\" onclick=\"return envoiInfo(this.href, 'information')\">\\2</a></li>", $reponses[$reponse]);
-$message = preg_replace("/(\r\n|\r|\n)/", '', $message);
+$message = preg_replace("/(\r\n|\r|\n)/", '', $message);*/
 //On vérifie si ya une quête pour ce pnj
-$supp = true;
+/*$supp = true;
 $quetes_actives = array();
 if($joueur->get_quete() != '')
 {
@@ -49,7 +69,7 @@ if($joueur->get_quete() != '')
 			my_dump($objectif[$i]);
 			my_dump($objectif_fait);
 			echo '<br />';
-			*/
+			*//*
 			if (($objectif_fait->requis == '' OR $objectif[$objectif_fait->requis]->termine) AND !$objectif[$i]->termine)
 			{
 				$cible = $objectif_fait->cible;
@@ -58,7 +78,7 @@ if($joueur->get_quete() != '')
 		}
 	}
 }
-$quete_fini = explode(';', $joueur->get_quete_fini());
+
 if($joueur->get_quete_fini() != '')
 {
 	foreach($quete_fini as $quetef)
@@ -70,6 +90,7 @@ if($joueur->get_quete_fini() != '')
 		$supp = false;
 	}
 }
+//"`\[non_quete:([0-9]*)\](.*)\[/non_quete:\g1\]`i", $message, $regs)
 while (preg_match("`\[non_quete:([^[]*)\]([^[]*)\[/non_quete:([^[]*)\]`i", $message, $regs))
 {
 	$numq = $regs[1];
@@ -211,7 +232,12 @@ if(preg_match("`\[verifinventaire:([^[]*)\]`i", $message, $regs))
 	else {
 		$message = preg_replace("`\[verifinventaire:$regs[1]\]`i", "", $message);
 	}
-}
-echo '<ul>'.$message.'</ul>';
+}*/
+
+$texte = new texte($row['texte'], texte::pnj);
+$texte->set_liens('pnj.php?id='.$id.'&amp;poscase='.$W_case, $W_case, true);
+$texte->set_perso($joueur);
+$texte->set_id_objet('P'.$id);
+echo '<ul>'.$texte->parse($reponse).'</ul>';
 echo "</fieldset>";
 ?>

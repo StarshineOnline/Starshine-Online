@@ -19,6 +19,8 @@ check_undead_players(true);
 //Case et coordonnées de la case
 $W_case = $_GET['case'];
 
+if(array_key_exists('reponse', $_GET)) $reponse = $_GET['reponse']; else $reponse = 0;
+
 // Handle relative positioning (rel_X_Y)
 if (!is_numeric($W_case)) {
   if ($W_case == '') die();
@@ -105,7 +107,11 @@ if($W_distance < 4)
 		{
 			$S_row = $db->read_array($S_query);
 			echo "<h4><span class='titre_info'>$S_row[titre]</span></h4>";
-			echo nl2br($S_row['description']);
+			$texte = new texte($S_row['description'], texte::cases);
+      $texte->set_liens('informationcase.php?case='.$W_case, $W_case, true);
+      $texte->set_perso($joueur);
+      $texte->set_id_objet('C'.$W_case);
+			echo $texte->parse($reponse);//nl2br($S_row['description']);
 			if ($S_row['action'] != '' && $W_distance == 0)
 			{
 				echo "<br/><a href=\"map_event.php?poscase=$W_case\" onclick=\"return envoiInfo(this.href, 'information')\" >$S_row[action]</a>";
