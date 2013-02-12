@@ -19,13 +19,15 @@ class texte
   const grade = 0x4;   ///< balises sélectionnant ce qui doit être affiché en fonction du grade.
   const quetes = 0x8;   ///< balises gérant les intéraction avec les quêtes.
   const navig = 0x10;   ///< balises gérant la navigation (par ex. [retour]).
-  const progr_pnj = 0x20;   ///< balises permettant de mettre d'éxécuter les fon©tions spéciales pour les PNJ.
-  const html = 0x40;   ///< indique qu'il faut supprimé les balises html
+  const progr_pnj = 0x20;   ///< balises permettant de mettre d'éxécuter les fonctions spéciales pour les PNJ.
+  const html = 0x40;   ///< indique qu'il faut supprimé les balises html.
+  const classe = 0x80;   ///< balises sélectionnant ce qui doit être affiché en fonction de la classe.
+  const comp = 0x100;   ///< balises sélectionnant ce qui doit être affiché en fonction des compétences.
 
   const messagerie = 0x42;   ///< textes de la messagerie
   const msg_roi = 0x4a;   ///< message du roi
-  const pnj = 0x3f;   ///< textes des PNJ
-  const cases = 0x1f;   ///< textes des cases
+  const pnj = 0x1bf;   ///< textes des PNJ
+  const cases = 0x19f;   ///< textes des cases
   
   /**
    * Constructeur
@@ -90,6 +92,12 @@ class texte
       $texte = $this->parse_navig($texte);
     if( $this->options & self::progr_pnj )
       $texte = $this->parse_progr_pnj($texte);
+    if( $this->options & self::progr_pnj )
+      $texte = $this->parse_progr_pnj($texte);
+    if( $this->options & self::classe )
+      $texte = $this->parse_classe($texte);
+    if( $this->options & self::comp )
+      $texte = $this->parse_comp($texte);
       
     return $texte;//preg_replace('`\[[/]?(.*)\]`','', $texte);
   }
@@ -176,15 +184,21 @@ class texte
     	$trouve = true;
     }
     //Validation de la quête
-    if(preg_match('`\[quete]`i', $texte))
+    if(preg_match('`\[quete(:[[:alpha:]]+)?]`i', $texte, $regs))
     {
+      if( $regs[1] == 'sil' )
+        ob_start();
     	verif_action($this->id, $this->perso, 's');
+      if( $regs[1] == 'sil' )
+        ob_end_clean();
     	$texte = str_ireplace('[quete]', '', $texte);
     	$trouve = true;
     }
     //Validation de la quête de groupe
-    if(preg_match('`\[quetegroupe]`i', $texte))
+    if(preg_match('`\[quetegroupe(:[[:alpha:]]+)?]`i', $texte))
     {
+      if( $regs[1] == 'sil' )
+        ob_start();
       if ($this->perso->get_groupe() > 0)
       {
         $groupe = new groupe($this->perso->get_groupe());
@@ -193,6 +207,8 @@ class texte
       }
       else
         verif_action($this->id, $this->perso, 's');
+      if( $regs[1] == 'sil' )
+        ob_end_clean();
     	$texte = str_ireplace('[quetegroupe]', '', $texte);
     	$trouve = true;
     }
@@ -309,7 +325,7 @@ class texte
       }
     }
     //IFNOT fonction personalisée (cf. fonction/pnj.inc.php)
-    while (preg_match("`\[ifnot:([a-z0-9_]+)\]`i", $texte, $regs))
+    while( preg_match("`\[ifnot:([a-z0-9_]+)\]`i", $texte, $regs) )
     {
     	$markup = 'ifnot:'.$regs[1];
       include_once('fonction/pnj.inc.php');
@@ -339,9 +355,9 @@ class texte
   	foreach ($G_autorisations as $balise => $grades)
     {
   		if (!in_array($this->perso->get_rang_royaume(), $grades))
-  			$texte = preg_replace('/\[$balise\].*?\[\\/$balise\]/i', '', $texte);
+  			$texte = preg_replace('/\['.$balise.'\].*?\[\\/'.$balise.'\]/i', '', $texte);
   	  else
-  	  	$texte = preg_replace('/\[$balise\](.+?)\[\\/$balise\]/i', '<small class="confidentiel">R&eacute;serv&eacute; aux '.$balise.' : \\1 </small>', $texte);
+  	  	$texte = preg_replace('/\['.$balise.'\](.+?)\[\\/'.$balise.'\]/i', '<small class="confidentiel">R&eacute;serv&eacute; aux '.$balise.' : \\1 </small>', $texte);
   	}
   	return $texte;
   }
@@ -365,6 +381,61 @@ class texte
   	
     if( $trouve )
       return $this->parse_bbcode($texte);
+    else
+      return $texte;
+  }
+
+  /// Fonction formattant les balises sélectionnant ce qui doit être affiché en fonction de la classe.
+  protected function parse_classe($texte)
+  {
+    $trouve = false;
+    while( preg_match('`\[classe:([0-9,]+)\](.*)\[/classe:\g1\]`i', $texte, $regs) )
+    {
+      $classes = explode(',', $regs[1]);
+      if( in_array($this->perso->get_classe_id(), $classes) )
+        $texte = preg_replace('`\[classe:'.$regs[1].'\](.*)\[/classe:'.$regs[1].'\]`i', '\\1', $texte);
+      else
+        $texte = preg_replace('`\[classe:'.$regs[1].'\](.*)\[/classe:'.$regs[1].'\]`i', '', $texte);
+      $trouve = true;
+    }
+
+    if( $trouve )
+      return $this->parse_quetes($texte);
+    else
+      return $texte;
+  }
+
+  /// Fonction formattant les balises sélectionnant ce qui doit être affiché en fonction des compétences.
+  protected function parse_comp($texte)
+  {
+    $trouve = false;
+    while( preg_match('`\[comp:([a-z_]*)([=<>])([0-9]*)\].*\[/comp:\g1\g2\g3\]`i', $texte, $regs) )
+    {
+      $get = 'get_'.$regs[1];
+      switch($regs[2])
+      {
+      case '=':
+        $ok = $this->perso->$get() == $regs[3];
+        break;
+      case '<':
+        $ok = $this->perso->$get() < $regs[3];
+        break;
+      case '>':
+        $ok = $this->perso->$get() > $regs[3];
+        break;
+      default:
+        $ok = false;
+      }
+      $cond = $regs[1].$regs[2].$regs[3];
+      if( $ok )
+        $texte = preg_replace('`\[comp:'.$cond.'\].*\[/comp:'.$cond.'\]`i', '\\1', $texte);
+      else
+        $texte = preg_replace('`\[comp:'.$cond.'\].*\[/comp:'.$cond.'\]`i', '', $texte);
+      $trouve = true;
+    }
+
+    if( $trouve )
+      return $this->parse_quetes($texte);
     else
       return $texte;
   }

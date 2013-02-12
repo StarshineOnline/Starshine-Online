@@ -11,7 +11,7 @@ include_once(root.'inc/fp.php');
     //Mis à jour de la dernière connexion
 		$requete = "UPDATE perso SET dernier_connexion = ".time().", statut = 'actif' WHERE ID = ".$_GET['id'];
 		$db->query($requete);
-    echo 'Rehargement de la page en cours…<img src="image/pixel.gif" onLoad="document.location.reload();" />';
+    echo 'Rechargement de la page en cours…<img src="image/pixel.gif" onLoad="document.location.reload();" />';
     exit;
   }
   if(array_key_exists('info', $_GET))
