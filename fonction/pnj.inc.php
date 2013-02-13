@@ -89,4 +89,5 @@ Les logins et mot de passe pour se connecter a ces forums sont les mêmes que ce
 En espérant que votre périple se passera bien.
 Bon jeu !';
   $messagerie->envoi_message(0, $perso->get_id(), $titre, $message, 0);
+  echo '<img src="image/pixel.gif" onLoad="envoiInfo(\'menu_carteville.php\', \'carteville\');" />';
 }

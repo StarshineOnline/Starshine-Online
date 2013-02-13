@@ -144,7 +144,7 @@ class texte
     	foreach($quete_fini as $quetef)
     	{
     		// Nouvelle version
-    		$texte = preg_replace("`\[quete_finie:${quetef}\]([^[]*)\[/quete_finie:${quetef}\]`i", "\\1", $texte, -1, $nbr);
+    		$texte = preg_replace('`\[quete_finie:'.$quetef.'\](.*)\[/quete_finie:'.$quetef.'\]`i', '\\1', $texte, -1, $nbr);
         $trouve |= $nbr > 0;
     		//On affiche le lien pour la discussion
         if( $this->liste )
@@ -186,19 +186,18 @@ class texte
     //Validation de la quête
     if(preg_match('`\[quete(:[[:alpha:]]+)?]`i', $texte, $regs))
     {
-      if( $regs[1] == 'sil' )
-        ob_start();
+      if( $regs[1] == ':silencieux' )
+        echo '<span class="debug">';
     	verif_action($this->id, $this->perso, 's');
-      if( $regs[1] == 'sil' )
-        ob_end_clean();
-    	$texte = str_ireplace('[quete]', '', $texte);
-    	$trouve = true;
+      if( $regs[1] == ':silencieux' )
+        echo '</span>';
+    	$texte = preg_replace('`\[quete(:[[:alpha:]]+)?]`i', '', $texte);
     }
     //Validation de la quête de groupe
     if(preg_match('`\[quetegroupe(:[[:alpha:]]+)?]`i', $texte))
     {
-      if( $regs[1] == 'sil' )
-        ob_start();
+      if( $regs[1] == ':silencieux' )
+        echo '<span class="debug">';
       if ($this->perso->get_groupe() > 0)
       {
         $groupe = new groupe($this->perso->get_groupe());
@@ -207,10 +206,9 @@ class texte
       }
       else
         verif_action($this->id, $this->perso, 's');
-      if( $regs[1] == 'sil' )
-        ob_end_clean();
-    	$texte = str_ireplace('[quetegroupe]', '', $texte);
-    	$trouve = true;
+      if( $regs[1] == ':silencieux' )
+        echo '<span class="debug">';
+    	$texte = preg_replace('`\[quetegroupe(:[[:alpha:]]+)?]`i', '', $texte);
     }
     //Prise d'une quête
     if(preg_match('`\[prendquete:([0-9]*)\]`i', $texte, $regs))
@@ -224,7 +222,7 @@ class texte
     	$this->perso->prend_objet($regs[1]);
     	$texte = str_ireplace('[donneitem:'.$regs[1].']', '', $texte);
     	verif_action($regs[1], $this->perso, 's');
-    	$trouve = true;
+    	//$trouve = true;
     }
     //Vends un item
     if(preg_match('`\[vendsitem:([a-zA-Z][0-9]*):([0-9]*)\]`i', $texte, $regs))
@@ -242,7 +240,6 @@ class texte
     		verif_action($regs[1], $this->perso, 's');
     	}
     	$texte = str_ireplace('[vendsitem:'.$regs[1].':'.$regs[2].']', $replace, $texte);
-    	$trouve = true;
     }
     //validation inventaire
     if(preg_match('`\[verifinventaire:([a-zA-Z][0-9]*)\]`i', $message, $regs))
@@ -251,7 +248,6 @@ class texte
     		$texte = "<h5>Tu te moques de moi, mon bonhomme ?</h5>";
     	else
     		$texte = str_ireplace('[verifinventaire:'.$regs[1].']', '', $texte);
-    	$trouve = true;
     }
     
     if( $trouve )
