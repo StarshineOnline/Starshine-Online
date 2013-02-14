@@ -424,7 +424,7 @@ class texte
       }
       $cond = $regs[1].$regs[2].$regs[3];
       if( $ok )
-        $texte = preg_replace('`\[comp:'.$cond.'\].*\[/comp:'.$cond.'\]`i', '\\1', $texte);
+        $texte = preg_replace('`\[comp:'.$cond.'\](.*)\[/comp:'.$cond.'\]`i', '\\1', $texte);
       else
         $texte = preg_replace('`\[comp:'.$cond.'\].*\[/comp:'.$cond.'\]`i', '', $texte);
       $trouve = true;
