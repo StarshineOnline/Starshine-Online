@@ -396,7 +396,7 @@ class texte
     }
 
     if( $trouve )
-      return $this->parse_quetes($texte);
+      return $this->parse_classe($texte);
     else
       return $texte;
   }
@@ -431,7 +431,7 @@ class texte
     }
 
     if( $trouve )
-      return $this->parse_quetes($texte);
+      return $this->parse_comp($texte);
     else
       return $texte;
   }
