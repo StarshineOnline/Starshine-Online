@@ -17,11 +17,13 @@ $coord['xavant'] = $joueur->get_x();
 $coord['yavant'] = $joueur->get_y();
 
 //Si coordonées supérieur à 100 alors c'est un donjon
-if($joueur->get_x() > 190 OR $joueur->get_y() > 190)
+/*if($joueur->get_x() > 190 OR $joueur->get_y() > 190)
 {
 	$donjon = true;
 }
-else $donjon = false;
+else $donjon = false;*/
+$vrai_donjon = $joueur->get_y() > 190;
+$donjon = ($vrai_donjon OR $joueur->get_x() > 190);
 
 $peu_bouger = true;
 //Déplacement du joueur
@@ -181,7 +183,7 @@ if (isset($_GET['deplacement']))
 			$joueur->set_y($coord['y']);
 			$joueur->sauver();
 			//Si ya un monstre, paf il attaque le joueur
-			if($donjon)
+			if($vrai_donjon)
 			{
 				$requete = "SELECT id FROM map_monstre WHERE x = ".$coord['x']." AND y = ".$coord['y']." ORDER BY hp DESC";
 				$req = $db->query($requete);

@@ -86,7 +86,7 @@ class map
 		global $Gcouleurs;
 
     $this->load_map_calques();
-		if($this->donjon && !$this->arene)
+		if($this->donjon && !$this->arene && $this->y > 190)
 		{
 			$xmin = $this->xmin + 1;
 			$xmax = $this->xmax - 1;
@@ -122,7 +122,7 @@ class map
 			$MAPTAB[$objMap->x][$objMap->y]["maptype"] = $objMap->type;
 		}
 		$classe_css = array();
-		if(!$this->donjon)
+		if(!$this->donjon or $this->y <= 190)
 		{
 			$classe_css['map_bord_haut'] = 'map_bord_haut';
 			$classe_css['map_bord_haut_gauche'] = 'map_bord_haut_gauche';
@@ -608,7 +608,7 @@ class map
 	function get_pnj()
 	{
 		global $db;
-		if($this->donjon)
+		if($this->donjon && $this->y > 190)
 		{
 			$xmin = $this->xmin + 1;
 			$xmax = $this->xmax - 1;
@@ -651,7 +651,7 @@ class map
 		global $Tclasse;
 		global $Gtrad;
 
-		if($this->donjon)
+		if($this->donjon && $this->y > 190)
 		{
 			$xmin = $this->xmin + 1;
 			$xmax = $this->xmax - 1;
@@ -836,7 +836,7 @@ class map
 	function get_monstre($level = 0, $groupe = true)
 	{
 		global $db;
-		if($this->donjon)
+		if($this->donjon && $this->y > 190)
 		{
 			$xmin = $this->xmin + 1;
 			$xmax = $this->xmax - 1;

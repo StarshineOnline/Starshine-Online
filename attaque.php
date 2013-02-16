@@ -217,7 +217,7 @@ $W_distance = detection_distance($W_case, convert_in_pos($attaquant->get_x(), $a
 	<legend>Combat VS <?php echo $defenseur->get_nom(); ?></legend>
 <?php
 if(is_donjon($joueur->get_x(), $joueur->get_y())
-	 && ($joueur->in_arene('and donj = 0') == false))
+	 && ($joueur->in_arene('and donj = 0') == false) && $joueur->get_y()>190)
 {
 	$round_total = $G_round_total * 2;
 	$attaquant->set_rm_restant($attaquant->get_rm_restant() * 2);
