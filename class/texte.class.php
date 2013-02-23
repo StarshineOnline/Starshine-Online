@@ -390,9 +390,9 @@ class texte
     {
       $classes = explode(',', $regs[1]);
       if( in_array($this->perso->get_classe_id(), $classes) )
-        $texte = preg_replace('`\[classe:'.$regs[1].'\](.*)\[/£classe:'.$regs[1].'\]`i', '\\1', $texte);
+        $texte = preg_replace('`\[classe:'.$regs[1].'\]([^£]*)\[/£classe:'.$regs[1].'\]`i', '\\1', $texte);
       else
-        $texte = preg_replace('`\[classe:'.$regs[1].'\](.*)\[/£classe:'.$regs[1].'\]`i', '', $texte);
+        $texte = preg_replace('`\[classe:'.$regs[1].'\]([^£]*)\[/£classe:'.$regs[1].'\]`i', '', $texte);
       $trouve = true;
     }
 
