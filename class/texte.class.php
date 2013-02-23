@@ -186,11 +186,11 @@ class texte
     //Validation de la quête
     if(preg_match('`\[quete(:[[:alpha:]]+)?]`i', $texte, $regs))
     {
-      if( $regs[1] == ':silencieux' )
-        echo '<span class="debug">';
+      /*if( $regs[1] == ':silencieux' )
+        echo '<span class="debug">';*/
     	verif_action($this->id, $this->perso, 's');
-      if( $regs[1] == ':silencieux' )
-        echo '</span>';
+      /*if( $regs[1] == ':silencieux' )
+        echo '</span>';*/
     	$texte = preg_replace('`\[quete(:[[:alpha:]]+)?]`i', '', $texte);
     }
     //Validation de la quête de groupe
@@ -385,13 +385,14 @@ class texte
   protected function parse_classe($texte)
   {
     $trouve = false;
-    while( preg_match('`\[classe:([0-9,]+)\](.*)\[/classe:\g1\]`i', $texte, $regs) )
+    $texte = preg_replace('`\[/classe:([0-9,]+)\]`i', '[/£classe:\\1]', $texte);
+    while( preg_match('`\[classe:([0-9,]+)\]([^£]*)\[/£classe:\g1\]`i', $texte, $regs) )
     {
       $classes = explode(',', $regs[1]);
       if( in_array($this->perso->get_classe_id(), $classes) )
-        $texte = preg_replace('`\[classe:'.$regs[1].'\](.*)\[/classe:'.$regs[1].'\]`i', '\\1', $texte);
+        $texte = preg_replace('`\[classe:'.$regs[1].'\](.*)\[/£classe:'.$regs[1].'\]`i', '\\1', $texte);
       else
-        $texte = preg_replace('`\[classe:'.$regs[1].'\](.*)\[/classe:'.$regs[1].'\]`i', '', $texte);
+        $texte = preg_replace('`\[classe:'.$regs[1].'\](.*)\[/£classe:'.$regs[1].'\]`i', '', $texte);
       $trouve = true;
     }
 
