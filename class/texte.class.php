@@ -186,11 +186,11 @@ class texte
     //Validation de la quête
     if(preg_match('`\[quete(:[[:alpha:]]+)?]`i', $texte, $regs))
     {
-      /*if( $regs[1] == ':silencieux' )
-        echo '<span class="debug">';*/
+      if( $regs[1] == ':silencieux' )
+        echo '<span class="debug">';
     	verif_action($this->id, $this->perso, 's');
-      /*if( $regs[1] == ':silencieux' )
-        echo '</span>';*/
+      if( $regs[1] == ':silencieux' )
+        echo '</span>';
     	$texte = preg_replace('`\[quete(:[[:alpha:]]+)?]`i', '', $texte);
     }
     //Validation de la quête de groupe
