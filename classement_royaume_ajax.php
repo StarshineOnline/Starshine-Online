@@ -51,7 +51,7 @@ if(array_key_exists('javascript', $_GET)) include_once(root.'inc/fp.php');
 	switch($tri)
 	{
   case 'victoire':
-    $requete = "SELECT race, point_victoire_total as tot FROM `royaume` WHERE ID <> 0 ORDER BY star DESC";
+    $requete = "SELECT race, point_victoire_total as tot FROM `royaume` WHERE ID <> 0 ORDER BY tot DESC";
     break;
   case 'cases':
     $requete = "SELECT COUNT(*) as tot, race FROM `map` LEFT JOIN royaume ON royaume.id = map.royaume WHERE royaume <> 0 AND x <= 190 AND y <= 190 GROUP BY royaume ORDER BY tot DESC";
