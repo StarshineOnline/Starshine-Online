@@ -2340,6 +2340,19 @@
 .tex9591{background:url('../image/texture/tutorial/orc/tente_ext_orc_bd.png') no-repeat;}
 .tex9592{background:url('../image/texture/tutorial/orc/sol_orc_ext_centre.png') no-repeat;}
 
+.tex9593{background:url('../image/texture/tutorial/humains/sol_chateau_centre.png') no-repeat;}
+.tex9594{background:url('../image/texture/tutorial/humains/chateau_bas.png') no-repeat;}
+.tex9595{background:url('../image/texture/tutorial/humains/chateau_bas_droit.png') no-repeat;}
+.tex9596{background:url('../image/texture/tutorial/humains/chateau_bas_gauche.png') no-repeat;}
+.tex9597{background:url('../image/texture/tutorial/humains/chateau_coin_hd_mur.png') no-repeat;}
+.tex9598{background:url('../image/texture/tutorial/humains/chateau_coin_hg_mur.png') no-repeat;}
+.tex9599{background:url('../image/texture/tutorial/humains/chateau_droit.png') no-repeat;}
+.tex9600{background:url('../image/texture/tutorial/humains/chateau_gauche.png') no-repeat;}
+.tex9601{background:url('../image/texture/tutorial/humains/chateau_horiz_pass.png') no-repeat;}
+.tex9602{background:url('../image/texture/tutorial/humains/chateau_horizontal_croisement_haut.png') no-repeat;}
+.tex9603{background:url('../image/texture/tutorial/humains/chateau_horizontal.png') no-repeat;}
+.tex9604{background:url('../image/texture/tutorial/humains/chateau_coin_hg_mur_porte.png') no-repeat;}
+
 
 .tex6600{background:url('../image/texture/donjon_riviere_verte/mur_eau_basse_buisson_bg.png') no-repeat;}	
 .tex6601{background:url('../image/texture/donjon_riviere_verte/mur_eau_basse_buisson_mgb.png') no-repeat;}	
@@ -2400,6 +2413,12 @@
 .tex6655{background:url('../image/texture/tutorial/orc/mur_tente_ext_orc_hd.png') no-repeat;}
 .tex6656{background:url('../image/texture/tutorial/orc/mur_tente_ext_orc_bm_armurerie.png') no-repeat;}
 .tex6657{background:url('../image/texture/tutorial/orc/mur_tente_ext_orc_bm_shaman.png') no-repeat;}
+
+.tex6658{background:url('../image/texture/tutorial/humains/mur_chateau_coin_hd.png') no-repeat;}
+.tex6659{background:url('../image/texture/tutorial/humains/mur_chateau_coin_hg.png') no-repeat;}
+.tex6660{background:url('../image/texture/tutorial/humains/mur_chateau_haut.png') no-repeat;}
+.tex6661{background:url('../image/texture/tutorial/humains/mur_chateau_horiz_pass.png') no-repeat;}
+.tex6662{background:url('../image/texture/tutorial/humains/mur_chateau_plein.png') no-repeat;}
 
 
 .tex2000{background:url('../image/texture/capitale/vampire/villevampendestrbg.gif') no-repeat;}

@@ -242,9 +242,9 @@ class texte
     	$texte = str_ireplace('[vendsitem:'.$regs[1].':'.$regs[2].']', $replace, $texte);
     }
     //validation inventaire
-    if(preg_match('`\[verifinventaire:([a-zA-Z][0-9]*)\]`i', $message, $regs))
+    if(preg_match('`\[verifinventaire:([0-9]*)\]`i', $texte, $regs))
     {
-    	if (verif_inventaire($regs[1], $joueur) == false)
+    	if (verif_inventaire($regs[1], $this->perso) == false)
     		$texte = "<h5>Tu te moques de moi, mon bonhomme ?</h5>";
     	else
     		$texte = str_ireplace('[verifinventaire:'.$regs[1].']', '', $texte);

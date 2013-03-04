@@ -223,6 +223,18 @@ function adresse_groupe(tri, i, race)
 	envoiInfo('classement_groupe_ajax.php?tri=' + tri + '&javascript=true', 'table_classement');
 }
 
+function adresse_royaume(tri, i, race)
+{
+	if(i == '') i = document.getElementById('i').value;
+	if(tri == '') tri = document.getElementById('tri').value;
+	else
+	{
+		if(i != 'moi') i = 0;
+	}
+	if(race == '') race = document.getElementById('race').value;
+	envoiInfo('classement_royaume_ajax.php?tri=' + tri + '&javascript=true', 'table_classement');
+}
+
 function clicMessage(id)
 {
 	message = document.getElementById("mess"+id);
