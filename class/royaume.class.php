@@ -1096,7 +1096,7 @@ class royaume
 	function get_habitants()
 	{
 		global $db;
-		$requete = $db->query("SELECT COUNT(id) as count FROM perso WHERE race = '".$this->get_race()."' AND statut = 'actif'");
+		$requete = $db->query("SELECT COUNT(id) as count FROM perso WHERE race = '".$this->get_race()."' AND statut = 'actif' AND level > 0");
 		$row = $db->read_row($requete);
 		return $row[0];
 	}

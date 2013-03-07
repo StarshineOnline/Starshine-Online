@@ -222,7 +222,7 @@ function nb_case($id_royaume)
 function nb_habitant($race)
 {
 	global $db;
-	$requete = "SELECT COUNT(*) FROM perso WHERE statut = 'actif' AND race = '".$race."'";
+	$requete = "SELECT COUNT(*) FROM perso WHERE statut = 'actif' AND race = '".$race."' AND level > 0";
 	$req = $db->query($requete);
 	$row = $db->read_row($req);
 	return $row[0];

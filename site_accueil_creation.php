@@ -65,7 +65,7 @@ else
 			$caracteristiques['dexterite'] = $caracteristiques['dexterite'] + 1;
 			$sort_jeu = '';
 			$sort_combat = '';
-			$comp_combat = '7;8';
+			$comp_combat = '';//'7;8';
 		}
 		else
 		{

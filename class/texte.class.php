@@ -242,9 +242,9 @@ class texte
     	$texte = str_ireplace('[vendsitem:'.$regs[1].':'.$regs[2].']', $replace, $texte);
     }
     //validation inventaire
-    if(preg_match('`\[verifinventaire:([a-zA-Z][0-9]*)\]`i', $message, $regs))
+    if(preg_match('`\[verifinventaire:([0-9]*)\]`i', $texte, $regs))
     {
-    	if (verif_inventaire($regs[1], $joueur) == false)
+    	if (verif_inventaire($regs[1], $this->perso) == false)
     		$texte = "<h5>Tu te moques de moi, mon bonhomme ?</h5>";
     	else
     		$texte = str_ireplace('[verifinventaire:'.$regs[1].']', '', $texte);
@@ -385,13 +385,14 @@ class texte
   protected function parse_classe($texte)
   {
     $trouve = false;
-    while( preg_match('`\[classe:([0-9,]+)\](.*)\[/classe:\g1\]`i', $texte, $regs) )
+    $texte = preg_replace('`\[/classe:([0-9,]+)\]`i', '[/£classe:\\1]', $texte);
+    while( preg_match('`\[classe:([0-9,]+)\]([^£]*)\[/£classe:\g1\]`i', $texte, $regs) )
     {
       $classes = explode(',', $regs[1]);
       if( in_array($this->perso->get_classe_id(), $classes) )
-        $texte = preg_replace('`\[classe:'.$regs[1].'\](.*)\[/classe:'.$regs[1].'\]`i', '\\1', $texte);
+        $texte = preg_replace('`\[classe:'.$regs[1].'\]([^£]*)\[/£classe:'.$regs[1].'\]`i', '\\1', $texte);
       else
-        $texte = preg_replace('`\[classe:'.$regs[1].'\](.*)\[/classe:'.$regs[1].'\]`i', '', $texte);
+        $texte = preg_replace('`\[classe:'.$regs[1].'\]([^£]*)\[/£classe:'.$regs[1].'\]`i', '', $texte);
       $trouve = true;
     }
 
