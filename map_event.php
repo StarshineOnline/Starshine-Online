@@ -304,7 +304,12 @@ function checkTeleportHydraulique(&$joueur)
 	else
 		showMessage('Le calligramme luit faiblement sous vos pieds mais rien ne se passe...');
 }
-
+function updatetuto($etape, &$joueur)
+{
+	global $db;
+	$sql ='update perso SET tuto ='.++$etape.' WHERE id = '.$joueur->get_id();
+	$db->query($sql);
+}
 function tpLyly(&$joueur)
 {
   switch ($joueur->get_x()) {
@@ -336,10 +341,11 @@ global $dontrefreshmap;
 
 $S_requete = 'SELECT * from map_event WHERE x = '.$joueur->get_x().
 ' AND y = '.$joueur->get_y();
+
 $S_query = $db->query($S_requete);
 if ($db->num_rows > 0)
 {
-	$dontrefresh = false;
+	$dontrefresh = true;
 	$dontrefreshmap = false;
 	$S_row = $db->read_array($S_query);
 	if ($S_row['code'] != '')

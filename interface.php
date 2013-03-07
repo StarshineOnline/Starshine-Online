@@ -7,14 +7,6 @@ $connexion = true;
 //Inclusion du haut du document html
 $interface_v2 = true;
 include_once(root.'haut.php');
-?>
-<script type="text/javascript">
-window.onload = function()
-{
-	<?php if($_COOKIE['dernier_affichage_popup'] < (time() - 3600)) echo 'affichePopUp(\'message_accueil.php\');'; ?>
-}
-</script>
-<?php
 if(array_key_exists('ID', $_SESSION) && !empty($_SESSION['ID']))
 	$joueur = new perso($_SESSION['ID']);
 else
@@ -22,7 +14,16 @@ else
 	echo 'Vous êtes déconnecté, veuillez vous reconnecter.';
 	exit();
 }
-
+?>
+<script type="text/javascript">
+window.onload = function()
+{
+	<?php
+	 if ($joueur->get_tuto() >= 0) echo'affichePopUp(\'texte_tuto.php\');';
+	elseif($_COOKIE['dernier_affichage_popup'] < (time() - 3600)) echo 'affichePopUp(\'message_accueil.php\');'; ?>
+}
+</script>
+<?php
 //Si c'est pour entrer dans un donjon
 if(array_key_exists('donjon_id', $_GET))
 {

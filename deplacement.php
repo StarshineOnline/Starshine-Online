@@ -147,6 +147,15 @@ if (isset($_GET['deplacement']))
 		$coutpa = cout_pa($type_terrain[0], $joueur->get_race());
 		$coutpa_base = $coutpa;
 		$case = new map_case(array('x' => $coord['x'], 'y' => $coord['y']));
+		if ((($case->x == 7) AND ($case->y == 453 )) AND ($joueur->get_tuto() == 1))
+		{
+			$joueur->set_tuto($joueur->get_tuto()+1);
+			?>
+			<script type="text/javascript"><?php
+			echo 'affichePopUp(\'texte_tuto.php\');';?>
+			</script>
+			<?php
+		}
 		$coutpa = cout_pa2($coutpa, $joueur, $case, $diagonale);
 		//Si le joueur a un buff ou débuff qui l'empèche de bouger
 		if($joueur->is_buff('buff_forteresse') OR $joueur->is_buff('buff_position') OR $joueur->is_buff('debuff_enracinement') OR $joueur->is_buff('bloque_deplacement') OR $joueur->is_buff('dressage') OR $joueur->is_buff('petrifie'))
