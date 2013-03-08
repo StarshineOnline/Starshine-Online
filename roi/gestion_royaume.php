@@ -38,6 +38,8 @@ switch( $_GET['direction'] )
 		$diplo = unserialize($royaume->get_diplo_time());
 		$req = $db->query("SELECT * FROM diplomatie WHERE race = '".$joueur->get_race()."'");
 		$row = $db->read_assoc($req);
+		$req2 = $db->query("SELECT * FROM diplomatie WHERE race = '".sSQL($_GET['race'])."'");
+		$row2 = $db->read_assoc($req2);
 		if($_GET['action'] == 'valid')
 		{
 			if($diplo[$_GET['race']] > time())
@@ -67,7 +69,7 @@ switch( $_GET['direction'] )
 					{
 						if (array_key_exists(9, $local_diplo))
 						{
-							if ($local_diplo[10]+$local_diplo[9]>3)
+							if (($local_diplo[10]+$local_diplo[9])>3)
 							{
 								echo 'Il ne peut y avoir que 3 ennemis en tout (ennemi éternel compris).';
 								$valid_diplo=false;
@@ -98,7 +100,7 @@ switch( $_GET['direction'] )
 					{
 						if (array_key_exists(1, $local_diplo))
 						{
-							if ($local_diplo[0]+$local_diplo[1]>3)
+							if (($local_diplo[0]+$local_diplo[1])>3)
 							{
 							echo 'Il ne peut y avoir que 3 alliés en tout (allié fraternel compris).';
 							$valid_diplo=false;
@@ -117,6 +119,80 @@ switch( $_GET['direction'] )
 						}
 					}
 				}
+				// On regarde la diplo de celui qui "subit" la modif
+				// On check si la future diplomatie est valide
+				$new_diplo2=$row2;
+				if($_GET['diplo'] == 'm')
+					$new_diplo2[$joueur->get_race()]-=1;
+				else
+					$new_diplo2[$joueur->get_race()]+=1;
+				$away_diplo=array_count_values($new_diplo2);
+				// Gestion de la diplomatie ennemie
+				if (array_key_exists(10, $away_diplo))
+				{
+					if ($away_diplo[10]>1)
+					{
+						echo 'Il ne peut y avoir qu\'un seul ennemi éternel.';
+						$valid_diplo=false;
+					}
+					else
+					{
+						if (array_key_exists(9, $away_diplo))
+						{
+							if (($away_diplo[10]+$away_diplo[9])>3)
+							{
+								echo 'Il ne peut y avoir que 3 ennemis en tout (ennemi éternel compris).';
+								$valid_diplo=false;
+							}
+						}
+					}
+				}
+				else
+				{
+					if (array_key_exists(9, $away_diplo))
+					{
+						if ($away_diplo[9]>3)
+						{
+							echo 'Il ne peut y avoir que 3 ennemis en tout (ennemi éternel compris).';
+							$valid_diplo=false;
+						}
+					}
+				}
+				// Gestion de la diplomatie alliée
+				if (array_key_exists(0, $away_diplo))
+				{
+					if ($away_diplo[0]>1)
+					{
+						echo 'Il ne peut y avoir qu\'un seul allié fraternel.';
+						$valid_diplo=false;
+					}
+					else
+					{
+						if (array_key_exists(1, $away_diplo))
+						{
+							if (($away_diplo[0]+$away_diplo[1])>3)
+							{
+							echo 'Il ne peut y avoir que 3 alliés en tout (allié fraternel compris).';
+							$valid_diplo=false;
+							}
+						}
+					}
+				}
+				else
+				{
+					if (array_key_exists(1, $away_diplo))
+					{
+						if ($away_diplo[1]>3)
+						{
+							echo 'Il ne peut y avoir que 3 alliés en tout (allié fraternel compris).';
+							$valid_diplo=false;
+						}
+					}
+				}
+				
+				
+				
+				
 				if ($valid_diplo==true)
 				{
 					echo 'mise a jour de diplo';
