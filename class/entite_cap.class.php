@@ -91,6 +91,7 @@ class entite_cap extends entite
 				//On attaque la construction $rand du tableau
 				$construction_ville = new construction_ville($this->royaume->constructions_ville[$rand]['id']);
 				$return = $construction_ville->suppr_hp($degat_defense);
+				$construction_ville->sauver();
 				echo '<h6>Attaque d\'un batiment en ville</h6>';
 				//On a downgrade un batiment, on gagne des points de victoire
 				if($return > 0)
