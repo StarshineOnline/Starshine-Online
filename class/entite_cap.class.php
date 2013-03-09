@@ -62,7 +62,7 @@ class entite_cap extends entite
   }
 
   /// Action effectuées à la fin d'un combat
-  function fin_defense(&$perso, $degats=null)
+  function fin_defense(&$perso, $R, $pet, $degats=null)
   {
 		//hasard pour différente actions de destruction sur la ville.
 		//Si il y a assez de ressources en ville
@@ -90,8 +90,7 @@ class entite_cap extends entite
 				$rand = rand(0, $count - 1);
 				//On attaque la construction $rand du tableau
 				$construction_ville = new construction_ville($this->royaume->constructions_ville[$rand]['id']);
-				$return = $construction_ville->suppr_hp($degat_defense);
-				$construction_ville->sauver();
+				$return = $construction_ville->suppr_hp($degats);
 				echo '<h6>Attaque d\'un batiment en ville</h6>';
 				//On a downgrade un batiment, on gagne des points de victoire
 				if($return > 0)
