@@ -145,6 +145,10 @@ class identification
 		unset($_SESSION['race']);
 		unset($_SESSION['nom']);
 		unset($_SESSION['ID']);
+		unset($_SESSION['id_joueur']);
+		unset($_SESSION['nbr_perso']);
+		unset($_SESSION['droits']);
+		unset($_SESSION['pseudo']);
 		setcookie('nom', '', (time() - 1));
 		setcookie('password', '', (time() - 1));
 	}

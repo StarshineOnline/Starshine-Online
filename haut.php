@@ -66,7 +66,7 @@ else
 {
 	if ($interface_v2)
 	{
-		print_head("css:./css/texture.css~./css/texture_low.css~./css/interfacev3.css~./css/jquery-ui-1.8.18.custom.css;script:./javascript/jquery/jquery-1.5.1.min.js~./javascript/jquery/jquery-ui-1.8.18.custom.min.js~./javascript/jquery/jquery.dataTables.min.js~./javascript/fonction.js~./javascript/overlib/overlib.js~./javascript/jquery/jquery.hoverIntent.minified.js~./javascript/jquery/jquery.cluetip.min.js~./javascript/jquery/atooltip.min.jquery.js;title:StarShine, le jeu qu'il tient ses plannings !");
+		print_head("css:./css/texture.css~./css/texture_low.css~./css/interfacev2.css;script:./javascript/jquery/jquery-1.5.1.min.js~./javascript/jquery/jquery-ui-1.8.10.custom.min.js~./javascript/jquery/jquery.dataTables.min.js~./javascript/fonction.js~./javascript/overlib/overlib.js~./javascript/jquery/jquery.hoverIntent.minified.js~./javascript/jquery/jquery.cluetip.min.js~./javascript/jquery/atooltip.min.jquery.js;title:StarShine, le jeu qu'il tient ses plannings !");
 	}
 	elseif($interface_3D)
 	{
