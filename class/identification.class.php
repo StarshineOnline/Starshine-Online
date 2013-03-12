@@ -22,6 +22,11 @@ class identification
 			$id_joueur = $joueur->get_id();
 			$droits =  $joueur->get_droits();
 			$pseudo =  $joueur->get_pseudo();
+			if( !($droits & joueur::droit_jouer) )
+			{
+        $erreur_login = 'Vous avez été banni';
+  			return false;
+      }
       $requete = 'SELECT ID, nom, race, rang_royaume, password FROM perso WHERE id_joueur = '.$id_joueur.' AND ( statut NOT IN ("ban", "hibern") OR fin_ban < '.time().' ) ORDER BY id';
       $req = $db->query($requete);
 			$nbr_perso = $db->num_rows($req);
