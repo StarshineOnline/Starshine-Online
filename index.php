@@ -229,7 +229,7 @@ N'oubliez pas de reporter les bugs et problèmes, et d'apporter vos suggestions 
 	</div>
 
 			<?php
-			if (!isset($_SESSION['pseudo']))
+			if (!isset($_SESSION['nom']))
 			{
 			?>
 				<div id='login'>
