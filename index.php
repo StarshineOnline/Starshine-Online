@@ -249,7 +249,7 @@ N'oubliez pas de reporter les bugs et problèmes, et d'apporter vos suggestions 
 			else
 			{
 				echo "<div id='login_ok'>";
-				if( $check )
+				if( $check OR array_key_exists('pseudo', $_SESSION) )
 				  echo "<a href='interface.php'>Entrez dans le monde de Starshine-Online</a> / ";
         else
         {
