@@ -5,6 +5,7 @@ if (file_exists('root.php'))
 include_once(root.'inc/fp.php');
 if(isset($_SESSION['nom']) || $admin)
 {
+  $check = true;
 }
 elseif(!array_key_exists('log', $_POST) && strpos($_SERVER['SCRIPT_NAME'], '/index.php') === false) // === car 0 == false
 {
