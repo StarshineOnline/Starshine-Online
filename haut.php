@@ -5,6 +5,7 @@ if (file_exists('root.php'))
 include_once(root.'inc/fp.php');
 if(isset($_SESSION['nom']) || $admin)
 {
+  $check = true;
 }
 elseif(!array_key_exists('log', $_POST) && strpos($_SERVER['SCRIPT_NAME'], '/index.php') === false) // === car 0 == false
 {
@@ -45,6 +46,8 @@ if((isset($_POST['log']) OR isset($_COOKIE['nom'])) AND !array_key_exists('nom',
 		</script>
 		<?php
 	}
+	else if( $check === false )
+   echo $erreur_login;
 }
 //Déconnexion du joueur
 if (isset($_GET['deco']) AND !isset($_POST['log']))
