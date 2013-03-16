@@ -20,6 +20,8 @@ class joueur extends table
 	const droit_anim = 8;  ///< Droit pour l'animation.
 	const droit_concept = 16;  ///< Droit pour la conception.
 	const droit_admin = 32;  ///< Droits pour l'administration.
+	const droit_jouer = 64;  ///< Droit pour jouer (afin de pouvoir supprimer des comptes).
+	
 	// Combinaisons
 	const droit_pnj = 25;  ///< Accès aux personnages PNJ
 	
@@ -34,7 +36,7 @@ class joueur extends table
 		@param int(11) $droits Niveau d'acces du joueur (0 par défaut)
 		@param String $email Adresse internet du joueur(null par défaut)
 	*/
-	function __construct($id=0, $login = '', $mdp = '', $pseudo = '', $droits = 0, $email = '')
+	function __construct($id=0, $login = '', $mdp = '', $pseudo = '', $droits = 64, $email = '')
 	{
 		//Verification nombre d'arguments pour construire l'etat adequat.
 		if( func_num_args() == 1 )

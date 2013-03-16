@@ -3,21 +3,39 @@ if (file_exists('root.php'))
   include_once('root.php');
 
 include_once(root.'./inc/fp.php');
-$race = $_GET['race'];
-$classe = $_GET['classe'];
-if ($classe == 'guerrier') $classe = 'combattant';
-if ($classe == 'mage') $classe = 'magicien';
 $pseudo = $_GET['pseudo'];
-$mdp = $_GET['mdp'];
-$email = $_GET['email'];
-
 //Verification sécuritaire
 if(!check_secu($pseudo))
 {
 	echo 'Les caractères spéciaux ne sont pas autorisés';
+	exit;
 }
-else
+$type = $_GET['type'];
+if( $type == 'joueur' )
 {
+  $mdp = $_GET['mdp'];
+  $email = $_GET['email'];
+	$login = pseudo_to_login($pseudo);
+	
+	if( check_existing_account($pseudo, true, true, true) or check_existing_account($login, true, true, true) )
+	{
+    echo 'Erreur nom déjà utilisé<br /><a href=".">Réessayer</a>';
+  }
+  else
+  {
+    $joueur = new joueur(0, $login, '', $pseudo, joueur::droit_jouer, $email);
+    $joueur->set_mdp( md5($mdp) );
+    $joueur->sauver();
+    echo '<h3>Bienvenue dans Starshine-Online</h3>Vous pouvez désormais vous connecté par le biais de votre compte en utilisant votre pseudo ('.$pseudo.') ou votre login ('.$login.') et créer votre personnage.';
+  }
+}
+else if( $type == 'perso' && isset($_SESSION['id_joueur']) )
+{
+  $race = $_GET['race'];
+  $classe = $_GET['classe'];
+  if ($classe == 'guerrier') $classe = 'combattant';
+  if ($classe == 'mage') $classe = 'magicien';
+
 	//Config punbb groups
 	$punbb['elfebois'] = 6;
 	$punbb['orc'] = 12;
@@ -45,10 +63,9 @@ else
 	{
 		include_once(root.'inc/race.inc.php');
 		include_once(root.'inc/classe.inc.php');
-		
-		echo 
-		'<h3>Bienvenue dans Starshine-Online</h3>
-		<div style="padding:5px">
+
+		echo
+		'<div style="padding:5px">
 			Vous venez de créer un '.$Gtrad[$race].' '.$classe.' du nom de '.$pseudo.'<br />';
 ?>
 			N'hésitez pas à aller voir régulièrement les informations fournies dans votre forum de race, et de lire le message de votre roi.<br />
@@ -77,10 +94,8 @@ else
 			$comp_combat = '';
 		}
 		$royaume = new royaume($caracteristiques['numrace']);
-		
+
 		$joueur->set_nom(trim($pseudo));
-		$joueur->set_password(md5($mdp));
-		$joueur->set_email($email);
 		$joueur->set_race($race);
 		$joueur->set_level(1);
 		$joueur->set_star($royaume->get_star_nouveau_joueur());
@@ -89,7 +104,7 @@ else
 		$joueur->set_dexterite($caracteristiques['dexterite']);
 		$joueur->set_puissance($caracteristiques['puissance']);
 		$joueur->set_volonte($caracteristiques['volonte']);
-		$joueur->set_energie($caracteristiques['energie']);		
+		$joueur->set_energie($caracteristiques['energie']);
 		$joueur->set_sort_jeu($sort_jeu);
 		$joueur->set_sort_combat($sort_combat);
 		$joueur->set_comp_combat($comp_combat);
@@ -108,7 +123,7 @@ else
 		$joueur->set_survie(1);
 		$joueur->set_dressage(1);
 		$joueur->set_max_pet(1);
-		
+
 		if($classe == 'combattant')
 		{
 			$joueur->set_sort_vie(0);
@@ -148,6 +163,7 @@ else
 		//($id = 0, $mort = 0, $nom = '', $password = '', $exp = '', $honneur = '', $level = '', $rang_royaume = '', $vie = '', $forcex = '', $dexterite = '', $puissance = '', $volonte = '', $energie = '', $race = '', $classe = '', $classe_id = '', $inventaire = '', $inventaire_slot = '', $pa = '', $dernieraction = '', $action_a = '', $action_d = '', $sort_jeu = '', $sort_combat = '', $comp_combat = '', $comp_jeu = '', $star = '', $x = '', $y = '', $groupe = '', $hp = '', $hp_max = '', $mp = '', $mp_max = '', $melee = '', $distance = '', $esquive = '', $blocage = '', $incantation = '', $sort_vie = '', $sort_element = '', $sort_mort = '', $identification = '', $craft = '', $alchimie = '', $architecture = '', $forge = '', $survie = '', $facteur_magie = '', $facteur_sort_vie = '', $facteur_sort_mort = '', $facteur_sort_element = '', $regen_hp = '', $maj_hp = '', $maj_mp = '', $point_sso = '', $quete = '', $quete_fini = '', $dernier_connexion = '', $statut = '', $fin_ban = '', $frag = '', $crime = '', $amende = '', $teleport_roi = '', $cache_classe = '', $cache_stat = '', $cache_niveau = '', $beta = '')
 		/*$requete = "INSERT INTO perso(`ID`,`nom`,`password`,`exp`,`level`,`star`,`vie`,`forcex`,`dexterite`,`puissance`,`volonte`,`energie`,`race`,`classe`, `classe_id`, `inventaire`,`pa`,`dernieraction`, `x`,`y`,`hp`,`hp_max`,`mp`,`mp_max`,`regen_hp`,`maj_mp`,`maj_hp`,`sort_jeu`,`sort_combat`, `comp_combat`, `quete`, `sort_vie`, `sort_element`, `sort_mort`, `facteur_magie`)
 		VALUES ('','$nom','$password','$exp','$level','$star','$vie','$force','$dexterite','$puissance','$volonte','$energie','$race','$classe', $classe_id, '$inventaire','180','$time',$x,$y,'$hp','$hp_max','$mp','$mp_max','$regen_hp','$maj_mp','$maj_hp', '$sort_jeu', '$sort_combat', '$comp_combat', '$quete', '$sort_vie', '$sort_element', '$sort_mort', '$facteur_magie')";*/
+    $joueur->set_id_joueur( $_SESSION['id_joueur'] );
 
 		$joueur->sauver();
 		$jid = replace_all($joueur->get_nom()).'@jabber.starshine-online.com';

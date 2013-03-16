@@ -3542,7 +3542,6 @@ class perso extends entite
 			$this->max_pet = $id['max_pet'];
 			$this->beta = $id['beta'];
 			$this->tuto = $i['tuto'];
-			$this->joueur = $id['joueur'];			
 			}
 		else
 		{

@@ -17,8 +17,10 @@ if ($req)
 $requete = "UPDATE royaume set fin_raz_capitale = 0, capitale_hp = 30000 where fin_raz_capitale > 0 and fin_raz_capitale < $now";
 $req = $db->query($requete);
 
-//Récupération de points de victoire
-$requete = "UPDATE royaume r SET point_victoire = point_victoire + (select count(1) from map where type = 3 and royaume = r.id and r.id <> 0)";
+// Distribution des pts de victoire a partir des pts exceptionnels
+$requete = "UPDATE royaume r";
+$requete .= " SET point_victoire = point_victoire + (select count(1) from map where type = 3 and royaume = r.id and r.id <> 0)";
+$requete .= ", point_victoire_total = point_victoire_total + (select count(1) from map where type = 3 and royaume = r.id and r.id <> 0)";
 $req = $db->query($requete);
 
 //Entretien des batiments et constructions

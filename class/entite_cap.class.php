@@ -64,6 +64,7 @@ class entite_cap extends entite
   /// Action effectuées à la fin d'un combat
   function fin_defense(&$perso, $R, $pet, $degats=null)
   {
+  		global $Trace;
 		//hasard pour différente actions de destruction sur la ville.
 		//Si il y a assez de ressources en ville
 		$suppr_hp = true;

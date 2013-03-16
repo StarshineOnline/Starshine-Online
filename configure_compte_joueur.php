@@ -25,7 +25,7 @@ else
           $check_pseudo = check_existing_account($pseudo, true, true, false, $perso->get_id());
           $check_login = check_existing_account($login, false, false, true, $perso->get_id());
 									
-					if (($check_pseudo == 0) AND ($check_login == 0))
+					if (($check_pseudo == 0 AND $check_login == 0) OR $pseudo == $perso->get_nom())
 					{
 						if(array_key_exists('email', $_GET) AND $_GET['email'] != NULL)
 						{
@@ -97,6 +97,10 @@ else
 		{
 		?>
 		<div class="news">
+		<?php
+			if(($perso->get_id_joueur() == NULL) OR ($perso->get_id_joueur() == 0))
+			{
+			?>
 			<h3>Création de compte</h3>
 			<form action="configure_compte_joueur.php" method="get" id="formModif">
 					Pseudo : <input type="text" value="<?php echo $perso->get_nom(); ?>" name="pseudo" id="pseudo" /> (peut etre identique au nom du personnage)<br/>
@@ -104,12 +108,8 @@ else
 					<input type="button" value="Valider" onclick="envoiInfo('configure_compte_joueur.php?create=1&amp;pseudo=' + encodeURIComponent($('#pseudo').val()) +'&amp;email=' + encodeURIComponent($('#email').val()), 'popup_content');" />
 			</form>
 		</div>
-		<?php
-			if(($perso->get_id_joueur() == NULL) OR ($perso->get_id_joueur() == 0))
-			{
-			?>
-			<div class="news">
-				<h3>Affilier <?php echo "[".$perso->get_nom()." - ".$perso->get_classe()." ".$perso->get_race()." - Niv.".$perso->get_level()."]";?></h3>
+			<div class="news" style='display:none'>
+				<h3>Ou affilier à un compte déjà existant<?php echo "[".$perso->get_nom()." - ".$perso->get_classe()." ".$perso->get_race()." - Niv.".$perso->get_level()."]";?></h3>
 				<form action="configure_compte_joueur.php" method="get" id="formModif">
 					Pseudo du compte : <input type="text" value="" name="compte" id="compte" /> (ou login)<br />
 					Mot de passe du compte : <input type="password" value="" name="mdp" id="mdp" /><br />
@@ -118,6 +118,12 @@ else
 			</div>
 			<?php
 			}
+			else
+			{
+			?>
+        Vous avez déjà un compte joueur.
+			<?php
+      }
 		}
 		?>
 	</div>
