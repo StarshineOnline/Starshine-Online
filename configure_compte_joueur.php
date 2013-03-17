@@ -25,7 +25,7 @@ else
           $check_pseudo = check_existing_account($pseudo, true, true, false, $perso->get_id());
           $check_login = check_existing_account($login, false, false, true, $perso->get_id());
 									
-					if (($check_pseudo == 0 AND $check_login == 0) OR $pseudo == $perso->get_nom())
+					if ($check_pseudo == 0 AND $check_login == 0)
 					{
 						if(array_key_exists('email', $_GET) AND $_GET['email'] != NULL)
 						{
