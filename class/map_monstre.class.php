@@ -344,7 +344,13 @@ class map_monstre extends entnj_incarn
       else
         $log->send(0, 'donjon', "un draconide tué, reste un");
 			break;
-
+		
+		
+		case 123: //On refait pop le nain endetté pour le tuto
+			$requete = "INSERT INTO map_monstre VALUES(NULL,204,256,169,25,"
+          .(time() + 31536000).")";
+			$db->query($requete);
+			
 		case 123: //Le roi des gobs fait pop le second roi des gobs
 			$requete = "INSERT INTO map_monstre select NULL, id, 17, 292, hp, ".(time() + 2678400)." from monstre where lib = 'roi_goblin_2' limit 1";
 			$db->query($requete);
@@ -534,7 +540,12 @@ class map_monstre extends entnj_incarn
 		$gains_xp = false;
 		$gains_drop = false;
 		$gains_star = false;
-			
+		//Intimidation du nain dans le tuto vorsh
+		if ($this->id_monstre == 204)
+		{
+			$msg_xp = "Ce nain a compris le message, il n'est pas nécessaire de le tabasser plus<br/>";
+		}
+		
 		//Le défenseur est mort !
 		if ($this->get_hp() <= 0)
 		{
