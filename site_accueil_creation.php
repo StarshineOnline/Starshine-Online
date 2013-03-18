@@ -23,7 +23,7 @@ if( $type == 'joueur' )
   }
   else
   {
-    $joueur = new joueur(0, $login, '', $pseudo, joueur::droit_jouer, $email);
+    $joueur = new joueur(0, $login, '', $pseudo, joueur::droit_jouer, $email, sha1($mdp));
     $joueur->set_mdp( md5($mdp) );
     $joueur->sauver();
     echo '<h3>Bienvenue dans Starshine-Online</h3>Vous pouvez désormais vous connecté par le biais de votre compte en utilisant votre pseudo ('.$pseudo.') ou votre login ('.$login.') et créer votre personnage.';
@@ -193,7 +193,8 @@ Bon jeu !';
 		}
 		require_once('connect_forum.php');
 		//Création de l'utilisateur dans le forum
-		$requete = "INSERT INTO punbbusers(`group_id`, `username`, `password`, `language`, `style`, `registered`, `jabber`, `email`) VALUES('".$punbb[$race]."', '".$joueur->get_nom()."', '".sha1($mdp)."', 'French', 'SSO', '".time()."', '$jid', '".$joueur->get_email()."')";
+		$joueur =  new joueur( $_SESSION['id_joueur'] );
+		$requete = "INSERT INTO punbbusers(`group_id`, `username`, `password`, `language`, `style`, `registered`, `jabber`, `email`) VALUES('".$punbb[$race]."', '".$joueur->get_nom()."', '".$joueur->get_mdp_forum()."', 'French', 'SSO', '".time()."', '$jid', '".$joueur->get_email()."')";
 		$db_forum->query($requete);
 	}
 }

@@ -12,6 +12,7 @@ class joueur extends table
 	protected $pseudo;  ///< pseudo du joueur.
 	protected $droits;  ///< droits d'accès.
 	protected $email;  ///< adresse e-mail.
+	protected $mdp_forum;  ///< hash du mot de passe pour le forum.
 	
 	// Droits possibles
 	const droit_prog = 1;  ///< Droit pour la programmation.
@@ -35,8 +36,9 @@ class joueur extends table
 		@param String $pseudo Le nom du joueur (vide par defaut)
 		@param int(11) $droits Niveau d'acces du joueur (0 par défaut)
 		@param String $email Adresse internet du joueur(null par défaut)
+		@param String $mdp_forum Hash du mot de passe pour le forum (null par défaut)
 	*/
-	function __construct($id=0, $login = '', $mdp = '', $pseudo = '', $droits = 64, $email = '')
+	function __construct($id=0, $login = '', $mdp = '', $pseudo = '', $droits = 64, $email = '', $mdp_forum='')
 	{
 		//Verification nombre d'arguments pour construire l'etat adequat.
 		if( func_num_args() == 1 )
@@ -51,6 +53,7 @@ class joueur extends table
 			$this->pseudo = $pseudo;
 			$this->droits = $droits;
 			$this->email = $email;
+			$this->mdp_forum = $mdp_forum;
 		}
 
 	}
@@ -66,6 +69,7 @@ class joueur extends table
 		$this->pseudo = $vals['pseudo'];
 		$this->droits = $vals['droits'];
 		$this->email = $vals['email'];
+		$this->mdp_forum = $vals['mdp_forum'];
   }
 
   /// Renvoie le pseudo
@@ -123,6 +127,19 @@ class joueur extends table
   {
     return $this->sel($mdp) == $this->mdp;
   }
+
+  /// Renvoie le mot de passe du forum
+	function get_mdp_forum()
+	{
+		return $this->mdp_forum;
+	}
+
+  /// Modifie le mot de passe du forum
+	function set_mdp_forum($mdp)
+	{
+    $this->mdp_forum = $mdp;
+		$this->champs_modif[] = 'mdp_forum';
+	}
 
   /// Renvoie l'e-mail
 	function get_email()

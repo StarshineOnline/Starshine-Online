@@ -45,6 +45,14 @@ else
 							$joueur->set_login(sSQL($login));
 							$joueur->set_email(sSQL($email));
 							$joueur->set_mdp($perso->get_password());
+							require_once('connect_forum.php');
+							$requete = 'SELECT password FROM punbbusers WHERE username LIKE "'.$perso->get_nom().'"';
+							$res = $db_forum->query($requete);
+							if( $db->num_rows($req) > 0 )
+							{
+							  $row = $db_forum->read_assoc($req);
+                $joueur->set_mdpç_forum( $row['password'] );
+              }
 							$joueur->sauver();
 							
 							$perso->set_id_joueur($joueur->get_id());
