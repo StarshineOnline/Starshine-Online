@@ -457,7 +457,8 @@ class batiment extends entitenj_def
 	/// Renvoie le facteur de dégâts de ou des armes.
 	function get_arme_degat($perso=null, $adversaire=null)
   {
-    if( $adversaire != null && $adversaire->get_type_def() == 'arme_de_siege')
+  	// get_type() au lieu de get_type_def(), car n'existe pas sur entite_cap
+    if( $adversaire != null && $adversaire->get_type() == 'arme_de_siege')
       $degats = $this->get_bonus('degats_siege');
     else
       $degats = $this->get_bonus('degats_bat');
