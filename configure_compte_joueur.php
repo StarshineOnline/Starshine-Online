@@ -25,7 +25,7 @@ else
           $check_pseudo = check_existing_account($pseudo, true, true, false, $perso->get_id());
           $check_login = check_existing_account($login, false, false, true, $perso->get_id());
 									
-					if (($check_pseudo == 0 AND $check_login == 0) OR $pseudo == $perso->get_nom())
+					if ($check_pseudo == 0 AND $check_login == 0)
 					{
 						if(array_key_exists('email', $_GET) AND $_GET['email'] != NULL)
 						{
@@ -45,6 +45,14 @@ else
 							$joueur->set_login(sSQL($login));
 							$joueur->set_email(sSQL($email));
 							$joueur->set_mdp($perso->get_password());
+							require_once('connect_forum.php');
+							$requete = 'SELECT password FROM punbbusers WHERE username LIKE "'.$perso->get_nom().'"';
+							$res = $db_forum->query($requete);
+							if( $db->num_rows($req) > 0 )
+							{
+							  $row = $db_forum->read_assoc($req);
+                $joueur->set_mdpç_forum( $row['password'] );
+              }
 							$joueur->sauver();
 							
 							$perso->set_id_joueur($joueur->get_id());

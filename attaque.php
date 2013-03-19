@@ -184,7 +184,7 @@ switch($type)
 	break;
 	case 'ville' :
 		if ($joueur->is_buff('debuff_rvr')) $no_rvr = true;
-		$map_siege = new construction($_GET['id_arme_de_siege']);
+		$map_siege = new arme_siege($_GET['id_arme_de_siege']);
 		$joueur = new perso($_SESSION['ID']);
     $joueur->check_perso();
 		$map_case = new map_case($_GET['id_ville']);
@@ -194,8 +194,8 @@ switch($type)
 		$coord = convert_in_coord($_GET['id_ville']);
 		$map_royaume->x =$coord['x'];
 		$map_royaume->y =$coord['y'];
-		$attaquant = entite::factory('siege', $map_siege);
 		$defenseur = entite::factory('ville', $map_royaume);
+		$attaquant = entite::factory('siege', $map_siege, $joueur, true, $defenseur);
 		if ($map_royaume->is_raz())
 		{
 			echo '<h5>Cette ville est déjà mise à sac</h5>';
