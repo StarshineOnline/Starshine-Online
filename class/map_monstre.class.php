@@ -541,11 +541,7 @@ class map_monstre extends entnj_incarn
 		$gains_xp = false;
 		$gains_drop = false;
 		$gains_star = false;
-		//Intimidation du nain dans le tuto vorsh
-		if ($this->id_monstre == 204)
-		{
-			$msg_xp = "Ce nain a compris le message, il n'est pas nécessaire de le tabasser plus<br/>";
-		}
+		
 		
 		//Le défenseur est mort !
 		if ($this->get_hp() <= 0)
@@ -577,7 +573,12 @@ class map_monstre extends entnj_incarn
 		}
 		elseif ($perso->get_hp() <= 0 && !$pet) //L'attaquant est mort !
 		{
-			$coeff = 0.5;
+			//Intimidation du nain dans le tuto vorsh
+		if ($this->id_monstre == 204)
+		{
+			$msg_xp = "Ce nain a compris le message, il n'est pas nécessaire de le tabasser plus<br/>";
+		}
+		$coeff = 0.5;
 			//Différence de level
 			$diff_level = abs($perso->get_level() - $this->get_level());
 			//Perde d'honneur
