@@ -5,14 +5,16 @@ if (file_exists('../root.php')) {
 
 include_once(root.'haut_ajax.php');
 
+$echelle = 3; // La carte est 3x plus grande
+
 if (array_key_exists('img', $_GET) && 
     array_key_exists('map_drap_key', $_SESSION) &&
     $_GET['img'] == $_SESSION['map_drap_key']) {
 
 	define('MAP_WIDTH', 190);
 	define('MAP_HEIGHT', 190);
-	define('CARTE3D_WIDTH', MAP_WIDTH * 4); // *4 car la carte 3d est plus grande
-	define('CARTE3D_HEIGHT', MAP_HEIGHT * 4); // *4 car la carte 3d est plus grande
+	define('CARTE3D_WIDTH', MAP_WIDTH * $echelle); // Echelle
+	define('CARTE3D_HEIGHT', MAP_HEIGHT * $echelle); // Echelle
 
 	$joueur = new perso($_SESSION['ID']);
 	$royaume = new royaume($Trace[$joueur->get_race()]['numrace']);
@@ -23,7 +25,7 @@ if (array_key_exists('img', $_GET) &&
 
   header('Content-Type: image/png');
 
-	$src = root.'image/carte3d-royaumes.png';
+	$src = root.'image/carte_royaume.png';
 	$im3d = imagecreatefrompng($src);
 
 	$color = imagecolorallocate($im3d, 255, 0, 255);
@@ -41,9 +43,9 @@ if (array_key_exists('img', $_GET) &&
 		if ($row['x'] > 0 AND $row['x'] <= MAP_WIDTH AND
 				$row['y'] > 0 AND $row['y'] <= MAP_HEIGHT) {
 			imagerectangle($imalpha,
-										 (($row['x'] - 1) * 4), (($row['y'] - 1) * 4),
-										 ((($row['x'] - 1) * 4) + 3),
-										 ((($row['y'] - 1) * 4) + 3),
+										 (($row['x'] - 1) * $echelle), (($row['y'] - 1) * $echelle),
+										 ((($row['x'] - 1) * $echelle) + 3),
+										 ((($row['y'] - 1) * $echelle) + 3),
 										 $color);
 		}
 	}
@@ -57,9 +59,9 @@ if (array_key_exists('img', $_GET) &&
 		if ($row['x'] > 0 AND $row['x'] <= MAP_WIDTH AND
 				$row['y'] > 0 AND $row['y'] <= MAP_HEIGHT) {
 			imagerectangle($imalpha,
-										 (($row['x'] - 1) * 4), (($row['y'] - 1) * 4),
-										 ((($row['x'] - 1) * 4) + 3),
-										 ((($row['y'] - 1) * 4) + 3),
+										 (($row['x'] - 1) * $echelle), (($row['y'] - 1) * $echelle),
+										 ((($row['x'] - 1) * $echelle) + 3),
+										 ((($row['y'] - 1) * $echelle) + 3),
 										 $color_pose);
 		}
 	}

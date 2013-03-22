@@ -20,6 +20,7 @@ $color7 = imagecolorallocate($im, 0xaa, 0xaa, 0xaa);  ///< couleur des capitales
 $color8 = imagecolorallocate($im, 0x5d, 0x43, 0x00);  ///< couleur de la montagne
 $color9 = imagecolorallocate($im, 0x00, 0x00, 0x00);  ///< couleur des marais
 $color11 = imagecolorallocate($im, 0x41, 0x35, 0x3e); ///< couleur de la terre maudite
+$colorNoir = imagecolorallocate($im, 0x00, 0x00, 0x00); ///< couleur noire, case neutre
 $show_info[0] = $color1;
 $show_info[1] = $color1;
 $show_info[22] = $color1;
@@ -40,7 +41,11 @@ $col = 'info';
 $carte = 'image/carte.png';
 
 //Requète pour l'affichage de la map
-$requete = 'SELECT * FROM map order by x,y';
+$requete = 'SELECT map.*,
+(select count(1) FROM `map` map2 WHERE map.y BETWEEN (map2.y -1) AND (map2.y +1) AND map.x BETWEEN (map2.x -1) AND (map2.x +1) AND map2.royaume > 0 AND map2.x <= 190 AND map2.y <= 190) as afficher
+FROM `map` map
+WHERE map.x <= 190
+AND map.y <= 190';
 $req = $db->query($requete);
 
 $i = 0;
@@ -49,10 +54,19 @@ while($row = $db->read_array($req))
 	if ($row['x'] > 0 AND $row['y'] > 0 &&
 			$row['x'] <= MAP_WIDTH && $row['y'] <= MAP_HEIGHT)
 	{
-		imagefilledrectangle($im, (($row['x'] - 1) * 3), (($row['y'] - 1) * 3),
+		// case affichable
+		if($row['afficher'] > 0){
+			imagefilledrectangle($im, (($row['x'] - 1) * 3), (($row['y'] - 1) * 3),
 												 ((($row['x'] - 1) * 3) + 2),
 												 ((($row['y'] - 1) * 3) + 2),
 												 $show_info[$row[$col]]);
+		}
+		else{
+			imagefilledrectangle($im, (($row['x'] - 1) * 3), (($row['y'] - 1) * 3),
+										((($row['x'] - 1) * 3) + 2),
+										((($row['y'] - 1) * 3) + 2),
+										$colorNoir);
+		}
 	}
 	$i++;
 }
