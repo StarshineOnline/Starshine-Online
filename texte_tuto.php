@@ -4,9 +4,9 @@ if (file_exists('root.php'))
 
 include_once(root.'inc/fp.php');
 $joueur = new perso($_SESSION['ID']);
-
+$classe = $joueur->get_classe_id();
 // Si message global
-$requete = "SELECT * FROM texte_tutoriel WHERE etape = ".$joueur->get_tuto()." AND race = '".$joueur->get_race()."'" ;
+$requete = "SELECT * FROM texte_tutoriel WHERE etape = ".$joueur->get_tuto()." AND race = '".$joueur->get_race()."' AND classe ='".$classe."'" ;
 $req_tuto = $db->query($requete);
 if ($db->num_rows > 0)
 {

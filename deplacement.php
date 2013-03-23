@@ -147,7 +147,16 @@ if (isset($_GET['deplacement']))
 		$coutpa = cout_pa($type_terrain[0], $joueur->get_race());
 		$coutpa_base = $coutpa;
 		$case = new map_case(array('x' => $coord['x'], 'y' => $coord['y']));
-		if ((($case->x == 244) AND ($case->y == 170 )) AND ($joueur->get_tuto() == 1))
+		if ((($case->x == 244) AND ($case->y == 170 )) AND ($joueur->get_tuto() == 1) AND ($joueur->get_classe_id() == 1))
+		{
+			$joueur->set_tuto($joueur->get_tuto()+1);
+			?>
+			<script type="text/javascript"><?php
+			echo 'affichePopUp(\'texte_tuto.php\');';?>
+			</script>
+			<?php
+		}
+		if ((($case->x == 244) AND ($case->y == 169 )) AND ($joueur->get_tuto() == 1) AND ($joueur->get_classe_id() == 2))
 		{
 			$joueur->set_tuto($joueur->get_tuto()+1);
 			?>
