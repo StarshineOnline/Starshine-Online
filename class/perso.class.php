@@ -35,7 +35,7 @@ class perso extends entite
 	private $beta;         ///< Points de beta-test.
 	private $options_tab = false;  ///< Tableau des options
 	public $tuto; ///< étape en cours du Tutoriel
-	private $date_creation;  ///< date de création du personnage
+	private $date_creat;  ///< date de création du personnage
 	
 	function set_tuto($tuto)
 	{
@@ -357,13 +357,13 @@ class perso extends entite
 	/// Renvoie la date de création du personnage
 	function get_date_creation()
 	{
-		return $this->date_creation;
+		return $this->date_creat;
 	}
 	/// Modifie la date de création du personnage
 	function set_date_creation($date_creation)
 	{
-		$this->date_creation = $date_creation;
-		$this->champs_modif[] = 'date_creation';
+		$this->date_creat = $date_creation;
+		$this->champs_modif[] = 'date_creat';
 	}
   // @}
   

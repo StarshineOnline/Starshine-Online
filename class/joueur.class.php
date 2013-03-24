@@ -195,17 +195,17 @@ class joueur extends table
 	/// Renvoie la liste des champs pour une insertion dans la base
 	protected function get_liste_champs()
 	{
-    return 'login, mdp, pseudo, droits, email';
+    return 'login, mdp, pseudo, droits, email, mdp_forum';
   }
 	/// Renvoie la liste des valeurs des champs pour une insertion dans la base
 	protected function get_valeurs_insert()
 	{
-		return '"'.mysql_escape_string($this->login).'", "'.$this->mdp.'", "'.mysql_escape_string($this->pseudo).'", "'.$this->droits.'", "'.mysql_escape_string($this->email).'"';
+		return '"'.mysql_escape_string($this->login).'", "'.$this->mdp.'", "'.mysql_escape_string($this->pseudo).'", "'.$this->droits.'", "'.mysql_escape_string($this->email).'", "'.mysql_escape_string($this->mdp_forum).'"';
 	}
 	/// Renvoie la liste des champs et valeurs pour une mise-à-jour dans la base
 	protected function get_liste_update()
 	{
-		return 'login = "'.mysql_escape_string($this->login).'", mdp = "'.$this->mdp.'", pseudo = "'.mysql_escape_string($this->pseudo).'", droits = "'.$this->droits.'", email = "'.mysql_escape_string($this->email).'"';
+		return 'login = "'.mysql_escape_string($this->login).'", mdp = "'.$this->mdp.'", pseudo = "'.mysql_escape_string($this->pseudo).'", droits = "'.$this->droits.'", email = "'.mysql_escape_string($this->email).'", mdp_forum = "'.mysql_escape_string($this->mdp_forum).'"';
 	}
 
 }

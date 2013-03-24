@@ -51,7 +51,7 @@ else
 							if( $db->num_rows($req) > 0 )
 							{
 							  $row = $db_forum->read_assoc($req);
-                $joueur->set_mdpç_forum( $row['password'] );
+                $joueur->set_mdp_forum( $row['password'] );
               }
 							$joueur->sauver();
 							
