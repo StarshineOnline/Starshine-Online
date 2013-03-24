@@ -20,7 +20,7 @@ $color7 = imagecolorallocate($im, 0xaa, 0xaa, 0xaa);  ///< couleur des capitales
 $color8 = imagecolorallocate($im, 0x5d, 0x43, 0x00);  ///< couleur de la montagne
 $color9 = imagecolorallocate($im, 0x00, 0x00, 0x00);  ///< couleur des marais
 $color11 = imagecolorallocate($im, 0x41, 0x35, 0x3e); ///< couleur de la terre maudite
-$colorNoir = imagecolorallocate($im, 0x00, 0x00, 0x00); ///< couleur noire, case neutre
+$colorHidden = imagecolorallocate($im, 0xe3, 0xe3, 0xe3); ///< couleur case masquée
 $show_info[0] = $color1;
 $show_info[1] = $color1;
 $show_info[22] = $color1;
@@ -65,7 +65,7 @@ while($row = $db->read_array($req))
 			imagefilledrectangle($im, (($row['x'] - 1) * 3), (($row['y'] - 1) * 3),
 										((($row['x'] - 1) * 3) + 2),
 										((($row['y'] - 1) * 3) + 2),
-										$colorNoir);
+										$colorHidden);
 		}
 	}
 	$i++;

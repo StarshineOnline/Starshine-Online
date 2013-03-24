@@ -25,7 +25,7 @@ if (array_key_exists('img', $_GET) &&
 
   header('Content-Type: image/png');
 
-	$src = root.'image/carte_royaume.png';
+	$src = root.'image/carte-pose-drapeaux.png';
 	$im3d = imagecreatefrompng($src);
 
 	$color = imagecolorallocate($im3d, 255, 0, 255);
