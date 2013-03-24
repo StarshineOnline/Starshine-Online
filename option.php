@@ -251,6 +251,13 @@ $titre_perso = new titre($_SESSION['ID']);
 							unset($_COOKIE['nom']);
 							unset($_SESSION['nom']);
 							unset($_SESSION['ID']);
+          		?>
+          		<script language="javascript" type="text/javascript">
+          		<!--
+          		window.location.replace("index.php");
+          		-->
+          		</script>
+          		<?php
 						}
 						else
 							echo 'ERREUR: Veuillez contacter un admin!';

@@ -7,6 +7,10 @@ if(isset($_SESSION['nom']) || $admin)
 {
   $check = true;
 }
+elseif( isset($_SESSION['pseudo']) )
+{
+  $check = 0;
+}
 elseif(!array_key_exists('log', $_POST) && strpos($_SERVER['SCRIPT_NAME'], '/index.php') === false) // === car 0 == false
 {
   $s = strpos($_SERVER['SCRIPT_NAME'], '/index.php');

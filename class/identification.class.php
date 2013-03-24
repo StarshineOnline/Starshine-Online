@@ -149,6 +149,7 @@ class identification
 		unset($_SESSION['nbr_perso']);
 		unset($_SESSION['droits']);
 		unset($_SESSION['pseudo']);
+		var_dump($_SESSION);
 		setcookie('nom', '', (time() - 1));
 		setcookie('password', '', (time() - 1));
 	}
