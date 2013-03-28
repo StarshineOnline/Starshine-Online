@@ -207,11 +207,15 @@ En espérant que votre périple se passera bien.
 Bon jeu !';
 		    $messagerie->envoi_message($id_thread, $id_dest, $titre, $message, $id_groupe);
 		}
-		require_once('connect_forum.php');
-		//Création de l'utilisateur dans le forum
-		$joueur =  new joueur( $_SESSION['id_joueur'] );
-		$requete = "INSERT INTO punbbusers(`group_id`, `username`, `password`, `language`, `style`, `registered`, `jabber`, `email`) VALUES('".$punbb[$race]."', '".$perso->get_nom()."', '".$joueur->get_mdp_forum()."', 'French', 'SSO', '".time()."', '$jid', '".$joueur->get_email()."')";
-    $db_forum->query($requete);
+		if(is_file('connect_forum.php'))
+		{
+			require_once('connect_forum.php');
+			//Création de l'utilisateur dans le forum
+			$joueur =  new joueur( $_SESSION['id_joueur'] );
+			$requete = "INSERT INTO punbbusers(`group_id`, `username`, `password`, `language`, `style`, `registered`, `jabber`, `email`) VALUES('".$punbb[$race]."', '".$perso->get_nom()."', '".$joueur->get_mdp_forum()."', 'French', 'SSO', '".time()."', '$jid', '".$joueur->get_email()."')";
+			$db_forum->query($requete);	
+	    }
+
     // variables de session
 		$_SESSION['nom'] = $perso->get_nom();
 		$_SESSION['race'] = $perso->get_race();
