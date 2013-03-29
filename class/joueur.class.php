@@ -13,6 +13,7 @@ class joueur extends table
 	protected $droits;  ///< droits d'accès.
 	protected $email;  ///< adresse e-mail.
 	protected $mdp_forum;  ///< hash du mot de passe pour le forum.
+	protected $mdp_jabber;  ///< hash du mot de passe pour jabber.
 	
 	// Droits possibles
 	const droit_prog = 1;  ///< Droit pour la programmation.
@@ -139,6 +140,19 @@ class joueur extends table
 	{
     $this->mdp_forum = $mdp;
 		$this->champs_modif[] = 'mdp_forum';
+	}
+
+  /// Renvoie le mot de passe de jabber
+	function get_mdp_jabber()
+	{
+		return $this->mdp_jabber;
+	}
+
+  /// Modifie le mot de passe de jabber
+	function set_mdp_jabber($mdp)
+	{
+    $this->mdp_jabber = $mdp;
+		$this->champs_modif[] = 'mdp_jabber';
 	}
 
   /// Renvoie l'e-mail

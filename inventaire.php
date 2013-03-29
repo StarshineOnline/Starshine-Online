@@ -181,14 +181,17 @@ if(!$visu AND isset($_GET['action']))
                   if( !$joueur->is_buff('convalescence') OR $joueur->get_pa() >= 10 )
                   {
     								//Positionnement de la construction
-    								$distance = calcul_distance(convert_in_pos($Trace[$joueur->get_race()]['spawn_x'], $Trace[$joueur->get_race()]['spawn_y']), ($joueur->get_pos()));
-    								$time = time() + ($batiment->get_temps_construction() * $distance);
     								if($_GET['type'] == 'arme_de_siege')
     								{
-    									$time = time() + $batiment->get_temps_construction();
+    								  $distance = calcul_distance(convert_in_pos($Trace[$joueur->get_race()]['spawn_x'], $Trace[$joueur->get_race()]['spawn_y']), ($joueur->get_pos()));
     									$rez = 0;
-    								}
-    								else $rez = $batiment->get_bonus('rez');
+    								}//max($row['temps_construction'] * $distance, $row['temps_construction_min']);
+    								else
+                    {
+                      $distance = 1;
+                      $rez = $batiment->get_bonus('rez');
+                    }
+                    $time = time() + max($batiment->get_temps_construction() * $distance, $batiment->get_temps_construction_min());
 
                     $requete = 'INSERT INTO placement (type, x, y, royaume, debut_placement, fin_placement, id_batiment, hp, nom, rez, point_victoire) VALUES (?,?,?,?,?,?,?,?,?,?,?)';
                     $types = 'siiiiiiisii';
@@ -286,7 +289,7 @@ if(!$visu AND isset($_GET['action']))
                     {
   										//Positionnement du drapeau
   										$distance = calcul_distance(convert_in_pos($Trace[$joueur->get_race()]['spawn_x'], $Trace[$joueur->get_race()]['spawn_y']), ($joueur->get_pos()));
-  										$time = time() + ($row['temps_construction'] * $distance);
+  										$time = time() + max($row['temps_construction'] * $distance, $row['temps_construction_min']);
   										$requete = "INSERT INTO placement (id, type, x, y, royaume, debut_placement, fin_placement, id_batiment, hp, nom, rez) VALUES('', 'drapeau', '".$joueur->get_x()."', '".$joueur->get_y()."', '".$Trace[$joueur->get_race()]['numrace']."', ".time().", '".$time."', '".$row['batiment_id']."', '".$row['hp']."', 'drapeau', 0)";
   										$db->query($requete);
       								// Coût en PA si en convalescence

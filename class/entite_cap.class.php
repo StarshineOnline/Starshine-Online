@@ -123,4 +123,10 @@ class entite_cap extends entite
 		}
 		$this->royaume->sauver();
 	}
+
+  // à améliorer
+  function get_type_def()
+  {
+    return 'capitale';
+  }
 }

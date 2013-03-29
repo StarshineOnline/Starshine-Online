@@ -87,6 +87,7 @@ else if( $type == 'perso' && isset($_SESSION['id_joueur']) )
 		</div>
 		<br />
 <?php
+		$joueur =  new joueur( $_SESSION['id_joueur'] );
 		$perso = new perso();
 		$caracteristiques = $Trace[$race];
 		if ($classe == 'combattant')
@@ -180,6 +181,7 @@ else if( $type == 'perso' && isset($_SESSION['id_joueur']) )
 		/*$requete = "INSERT INTO perso(`ID`,`nom`,`password`,`exp`,`level`,`star`,`vie`,`forcex`,`dexterite`,`puissance`,`volonte`,`energie`,`race`,`classe`, `classe_id`, `inventaire`,`pa`,`dernieraction`, `x`,`y`,`hp`,`hp_max`,`mp`,`mp_max`,`regen_hp`,`maj_mp`,`maj_hp`,`sort_jeu`,`sort_combat`, `comp_combat`, `quete`, `sort_vie`, `sort_element`, `sort_mort`, `facteur_magie`)
 		VALUES ('','$nom','$password','$exp','$level','$star','$vie','$force','$dexterite','$puissance','$volonte','$energie','$race','$classe', $classe_id, '$inventaire','180','$time',$x,$y,'$hp','$hp_max','$mp','$mp_max','$regen_hp','$maj_mp','$maj_hp', '$sort_jeu', '$sort_combat', '$comp_combat', '$quete', '$sort_vie', '$sort_element', '$sort_mort', '$facteur_magie')";*/
     $perso->set_id_joueur( $_SESSION['id_joueur'] );
+    $perso->set_password( $joueur->get_mdp_jabber() );
 
 		$perso->sauver();
 		$jid = replace_all($perso->get_nom()).'@jabber.starshine-online.com';
@@ -211,10 +213,9 @@ Bon jeu !';
 		{
 			require_once('connect_forum.php');
 			//Création de l'utilisateur dans le forum
-			$joueur =  new joueur( $_SESSION['id_joueur'] );
 			$requete = "INSERT INTO punbbusers(`group_id`, `username`, `password`, `language`, `style`, `registered`, `jabber`, `email`) VALUES('".$punbb[$race]."', '".$perso->get_nom()."', '".$joueur->get_mdp_forum()."', 'French', 'SSO', '".time()."', '$jid', '".$joueur->get_email()."')";
 			$db_forum->query($requete);	
-	    }
+	  }
 
     // variables de session
 		$_SESSION['nom'] = $perso->get_nom();
