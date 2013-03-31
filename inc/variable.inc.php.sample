@@ -81,6 +81,10 @@ define('BASE', 'http://www.starshine-online.com/');
   $G_max_hp_max_factor = 120;
   /// Facteur max des PV max
   $G_max_mp_max_factor = 13;
+  
+  /// Taille de la carte principale
+  $G_max_x = 150;
+  $G_max_y = 150;
 	
 	/**
 	 * @name 	Cibles des sorts
