@@ -16,7 +16,7 @@ elseif($joueur->get_pa() >= 30)
 	$ID_CONSTRUCTION = sSQL($_GET['id_construction'], SSQL_INTEGER);
 
 	//On recherche les informations sur ce placement
-	$requete = 'SELECT x, y, fin_placement, debut_placement FROM placement WHERE id = \''.$ID_CONSTRUCTION.'\'';
+	$requete = 'SELECT x, y, fin_placement, debut_placement, id_batiment FROM placement WHERE id = \''.$ID_CONSTRUCTION.'\'';
 	$req = $db->query($requete);
 	$row = $db->read_assoc($req);
 
@@ -54,6 +54,11 @@ elseif($joueur->get_pa() >= 30)
 		}
 		$secondes = rand($secondes_min, $secondes_max);
     if( $joueur->is_buff('convalescence') ) $secondes=floor($secondes / 2);
+    $fin_placement = $row['fin_placement'] - $secondes;
+    $batiment = new batiment( $row['id_batiment'] );
+    $fin_min = $row['debut_placement'] + $batiment->get_temps_construction_min();
+    if( $fin_placement < $fin_min )
+      $fin_placement = $fin_min;
 		//On met à jour le placement
 		$requete = "UPDATE placement SET fin_placement = fin_placement - ".$secondes." WHERE id = ".sSQL($_GET['id_construction']);
 		if($db->query($requete))

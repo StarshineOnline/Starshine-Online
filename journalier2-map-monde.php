@@ -6,6 +6,26 @@ if (isset($_SERVER['REMOTE_ADDR'])) die('Forbidden connection from '.$_SERVER['R
 include_once('journalier2-head.php');
 
 echo "Création de l'image de la carte du monde\n";
+
+/**
+ * 
+ * @return true si la case affichable: colonisée ou adjacente à une case à une case colonisée
+ */
+function isAffichable($tab, $x, $y)
+{
+	// Vérif des cases adjacentes
+	for ($i = $x - 1; $i <= $x + 1; $i++) {
+		for ($j = $y - 1; $j < $y + 1; $j++) {
+			// case colonisée
+			if(isset($tab[$i][$j]) && $tab[$i][$j] == 1){
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
+
 $im = imagecreate (CARTE_WIDTH, CARTE_HEIGHT)
    or die ("Impossible d'initialiser la bibliothèque GD");
 $background_color = imagecolorallocate ($im, 255, 255, 255);
@@ -40,35 +60,41 @@ $show_info[11] = $color11;
 $col = 'info';
 $carte = 'image/carte.png';
 
-//Requète pour l'affichage de la map
-$requete = 'SELECT map.*,
-(select count(1) FROM `map` map2 WHERE map.y BETWEEN (map2.y -1) AND (map2.y +1) AND map.x BETWEEN (map2.x -1) AND (map2.x +1) AND map2.royaume > 0 AND map2.x <= 190 AND map2.y <= 190) as afficher
-FROM `map` map
-WHERE map.x <= 190
-AND map.y <= 190';
+// Récupération des cases colonisées
+$requete = 'SELECT map.*
+	FROM `map` map
+	WHERE map.x BETWEEN 1 AND '.MAP_WIDTH
+	.' AND map.y BETWEEN 1 AND '.MAP_HEIGHT
+	.' AND royaume > 0';
 $req = $db->query($requete);
 
-$i = 0;
+// Mémorisation des cases colonisées
+$casesColonisees = array(array());
+while($row = $db->read_array($req)){
+	$casesColonisees[$row['x']][$row['y']] = 1;
+}
+
+// Récupération de toutes les cases
+$requete = 'SELECT map.*
+	FROM `map` map
+	WHERE map.x BETWEEN 1 AND '.MAP_WIDTH
+	.' AND map.y BETWEEN 1 AND '.MAP_HEIGHT;
+$req = $db->query($requete);
+
 while($row = $db->read_array($req))
 {
-	if ($row['x'] > 0 AND $row['y'] > 0 &&
-			$row['x'] <= MAP_WIDTH && $row['y'] <= MAP_HEIGHT)
-	{
-		// case affichable
-		if($row['afficher'] > 0){
-			imagefilledrectangle($im, (($row['x'] - 1) * 3), (($row['y'] - 1) * 3),
-												 ((($row['x'] - 1) * 3) + 2),
-												 ((($row['y'] - 1) * 3) + 2),
-												 $show_info[$row[$col]]);
-		}
-		else{
-			imagefilledrectangle($im, (($row['x'] - 1) * 3), (($row['y'] - 1) * 3),
-										((($row['x'] - 1) * 3) + 2),
-										((($row['y'] - 1) * 3) + 2),
-										$colorHidden);
-		}
+	// case affichable
+	if(isAffichable($casesColonisees, $row['x'], $row['y'])){
+		imagefilledrectangle($im, (($row['x'] - 1) * 3), (($row['y'] - 1) * 3),
+		((($row['x'] - 1) * 3) + 2),
+		((($row['y'] - 1) * 3) + 2),
+		$show_info[$row[$col]]);
+	}else{
+		imagefilledrectangle($im, (($row['x'] - 1) * 3), (($row['y'] - 1) * 3),
+		((($row['x'] - 1) * 3) + 2),
+		((($row['y'] - 1) * 3) + 2),
+		$colorHidden);
 	}
-	$i++;
 }
 imagepng ($im, $carte);
 imagedestroy($im);

@@ -22,8 +22,7 @@ imagecolortransparent($imalpha, $noir);
 $colorColonisee = imagecolorallocate($imalpha, 0xff, 0xff, 0xff);
 
 //Requète pour l'affichage de la map
-$requete = 'SELECT map.*,
-		(select count(1) FROM `map` map2 WHERE map.y BETWEEN (map2.y -1) AND (map2.y +1) AND map.x BETWEEN (map2.x -1) AND (map2.x +1) AND map2.royaume > 0 AND map2.x <= 190 AND map2.y <= 190) as afficher
+$requete = 'SELECT map.*
 		FROM `map` map
 		WHERE map.x <= 190
 		AND map.y <= 190';
@@ -36,7 +35,7 @@ while($row = $db->read_array($req))
 	$row['x'] <= MAP_WIDTH && $row['y'] <= MAP_HEIGHT)
 	{
 		$currentRoyaume = $row['royaume'];
-		// case colonisée
+		// case colonisée -> on éclaircit la texture
 		if($currentRoyaume > 0){
 			imagefilledrectangle($imalpha, (($row['x'] - 1) * 3), (($row['y'] - 1) * 3),
 											((($row['x'] - 1) * 3) + 2),
