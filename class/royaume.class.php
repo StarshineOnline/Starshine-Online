@@ -1234,7 +1234,7 @@ class royaume
                                     // actifs suivant le niveau moyen
     return $ref_ta;
   }
-  const duree_actif = 3600 * 24 * 2;
+  const duree_actif = 172800;//3600 * 24 * 2
 
 	function add_point_victoire($nombre)
 	{

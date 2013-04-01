@@ -26,6 +26,7 @@ if( $type == 'joueur' )
     $joueur = new joueur(0, $login, '', $pseudo, joueur::droit_jouer, $email, sha1($mdp));
     $joueur->set_mdp( md5($mdp) );
     $joueur->set_mdp_forum( sha1($mdp) );
+    $joueur->set_mdp_jabber( md5($mdp) );
     $joueur->sauver();
     $identification = new identification();
     if( $identification->connexion($login, md5($mdp), false) === 0 )
