@@ -156,14 +156,21 @@ if (isset($_GET['deplacement']))
 			</script>
 			<?php
 		}
-		if ((($case->x == 244) AND ($case->y == 169 )) AND ($joueur->get_tuto() == 1) AND ($joueur->get_classe_id() == 2))
+		if ($joueur->get_classe_id() == 2)
 		{
-			$joueur->set_tuto($joueur->get_tuto()+1);
-			?>
-			<script type="text/javascript"><?php
-			echo 'affichePopUp(\'texte_tuto.php\');';?>
-			</script>
-			<?php
+			if ((($case->x == 244) AND ($case->y == 169 )) AND ($joueur->get_tuto() == 1) )
+			{
+				$joueur->set_tuto($joueur->get_tuto()+1);
+				?>
+				<script type="text/javascript"><?php
+				echo 'affichePopUp(\'texte_tuto.php\');';?>
+				</script>
+				<?php
+			}
+			if ((($case->x == 241) AND ($case->y == 165 )) AND ($joueur->get_tuto() == 2) )
+			{
+				$joueur->set_tuto($joueur->get_tuto()+1);
+			}
 		}
 		$coutpa = cout_pa2($coutpa, $joueur, $case, $diagonale);
 		//Si le joueur a un buff ou débuff qui l'empèche de bouger
