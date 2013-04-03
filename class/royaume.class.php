@@ -1224,6 +1224,7 @@ class royaume
 	
 	static function get_niveau_ref_actifs()
 	{
+		global $db;
 		$requete = $db->query("select sum(level)/count(id) moy from perso WHERE statut = 'actif'");
 		$row = $db->read_row($requete);
 		$ref_ta = floor($row[0] - 1.5); // Bastien : on fait -1.5 pour eviter
