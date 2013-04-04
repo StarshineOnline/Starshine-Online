@@ -294,7 +294,7 @@ class royaume
 		//Verification nombre et du type d'argument pour construire l'etat adequat.
 		if( (func_num_args() == 1) && is_numeric($id) )
 		{
-			$requeteSQL = $db->query("SELECT taxe_time, race, nom, capitale, star, point_victoire, point_victoire_total, star_nouveau_joueur, taxe, diplo_time, honneur_candidat, bourg, pierre, bois, eau, sable, charbon, essence, food, alchimie, roi, ministre_economie, ministre_militaire, capitale_hp, fin_raz_capitale FROM royaume WHERE id = ".$id);
+			$requeteSQL = $db->query("SELECT taxe_time, race, nom, capitale, star, point_victoire, point_victoire_total, star_nouveau_joueur, taxe, diplo_time, honneur_candidat, bourg, pierre, bois, eau, sable, charbon, essence, food, alchimie, roi, ministre_economie, ministre_militaire, capitale_hp, fin_raz_capitale, facteur_entretien, conso_food FROM royaume WHERE id = ".$id);
 			//Si le thread est dans la base, on le charge sinon on crée un thread vide.
 			if( $db->num_rows($requeteSQL) > 0 )
 			{
