@@ -183,13 +183,13 @@ if(!$visu AND isset($_GET['action']))
     								//Positionnement de la construction
     								if($_GET['type'] == 'arme_de_siege')
     								{
-    								  $distance = calcul_distance(convert_in_pos($Trace[$joueur->get_race()]['spawn_x'], $Trace[$joueur->get_race()]['spawn_y']), ($joueur->get_pos()));
-    									$rez = 0;
+                      $distance = 1;
+                      $rez = $batiment->get_bonus('rez');
     								}//max($row['temps_construction'] * $distance, $row['temps_construction_min']);
     								else
                     {
-                      $distance = 1;
-                      $rez = $batiment->get_bonus('rez');
+    								  $distance = calcul_distance(convert_in_pos($Trace[$joueur->get_race()]['spawn_x'], $Trace[$joueur->get_race()]['spawn_y']), ($joueur->get_pos()));
+    									$rez = 0;
                     }
                     $time = time() + max($batiment->get_temps_construction() * $distance, $batiment->get_temps_construction_min());
 
