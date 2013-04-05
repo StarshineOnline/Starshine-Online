@@ -345,9 +345,14 @@ class map_monstre extends entnj_incarn
         $log->send(0, 'donjon', "un draconide tué, reste un");
 			break;
 		
-		
-		case 204: //On refait pop le nain endetté pour le tuto
+		 //On refait pop le nain endetté et le voleur scaven pour le tuto
+		case 204:
 			$requete = "INSERT INTO map_monstre VALUES(NULL,204,256,169,25,"
+          .(time() + 31536000).")";
+			$db->query($requete);
+			break;
+		case 207:
+			$requete = "INSERT INTO map_monstre VALUES(NULL,207,241,170,25,"
           .(time() + 31536000).")";
 			$db->query($requete);
 			break;
