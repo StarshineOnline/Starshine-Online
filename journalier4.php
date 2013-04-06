@@ -248,8 +248,11 @@ foreach($tab_royaume as $race => $royaume)
 		$requete = "UPDATE royaume SET food = food - ".$royaume['food_necessaire']." WHERE id = ".$royaume['id'];
 		$db->query($requete);
 		//On réduit de 3 les debuff famines (1 ??)
-		$requete = "UPDATE buff SET effet = effet - 3 WHERE type = 'famine' AND id_perso IN ($idpersos)";
-		$db->query($requete);
+		if($idpersos)
+		{
+  		$requete = "UPDATE buff SET effet = effet - 3 WHERE type = 'famine' AND id_perso IN ($idpersos)";
+  		$db->query($requete);
+    }
 	}
 	else
 	{

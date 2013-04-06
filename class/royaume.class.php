@@ -173,8 +173,9 @@ class royaume
 	/// Renvoie le facteur d'entretien théorique
 	function get_facteur_entretien_th()
 	{
+    global $db, $ref_actifs;
     $date = time() - self::duree_actif;
-    if( !isset(self::$ref_actifs) )
+    if( !isset($ref_actifs) )
     {
       $requete = 'SELECT COUNT(*) as tot FROM perso WHERE level >= '.self::get_niveau_ref_actifs().' AND dernier_connexion > '.$date.' GROUP BY race ORDER BY tot';
       $res = $db->query($requete);
@@ -184,9 +185,9 @@ class royaume
         if( $row['tot'] )
           array_push($actifs, $row['tot']);
       }
-      self::$ref_actifs = ($actifs[0]+array_pop($actifs))/2;
+      $ref_actifs = ($actifs[0]+array_pop($actifs))/2;
     }
-    $facteur = $this->get_habitants_actif() / self::$ref_actifs;
+    $facteur = $this->get_habitants_actif() / $ref_actifs;
     if( $facteur < .3 ) $facteur = .3;
     else if( $facteur > 3 ) $facteur = 3;
     return $facteur;
@@ -194,7 +195,7 @@ class royaume
   /// Met-à-jour le facteur d'entretien
   function maj_facteur_entretien()
   {
-    $diff = get_facteur_entretien_th() - $this->get_facteur_entretien();
+    $diff = $this->get_facteur_entretien_th() - $this->get_facteur_entretien();
     if($diff < - .1) $diff = -.1;
     else if($diff > .05) $diff = .05;
     $this->set_facteur_entretien( $this->get_facteur_entretien() + $diff);
@@ -214,7 +215,8 @@ class royaume
 	/// Renvoie la consommation de nourriture théorique
 	function get_conso_food_th()
 	{
-    if( !isset(self::$conso_food_tot) )
+    global $db, $conso_food_tot, $cases_tot;
+    if( !isset($conso_food_tot) )
     {
       // Consommation totale
       $requete = 'SELECT SUM(food) AS food FROM royaume';
@@ -233,22 +235,22 @@ class royaume
       $res = $db->query($requete);
       $row = $db->read_array($res);
       $prod = $row['food'];
-      self::$conso_food_tot = $prod * $facteur;
+      $conso_food_tot = $prod * $facteur;
       // nombre de cases totales
       $requete = 'SELECT COUNT(*) AS tot FROM map WHERE royaume > 0 AND x <= 190 AND y <= 190';
       $res = $db->query($requete);
       $row = $db->read_array($res);
-      self::$cases_tot = $row['tot'];
+      $cases_tot = $row['tot'];
     }
     $requete = 'SELECT COUNT(*) AS tot FROM map WHERE royaume = '.$this->get_id().' AND x <= 190 AND y <= 190';
     $res = $db->query($requete);
     $row = $db->read_array($res);
-    return self::$conso_food_tot * $row['tot'] / self::$cases_tot;
+    return $conso_food_tot * $row['tot'] / $cases_tot;
   }
   /// Met-à-jour la consommation de nourriture
   function maj_conso_food()
   {
-    $diff = get_conso_food_th() - $this->get_conso_food();
+    $diff = $this->get_conso_food_th() - $this->get_conso_food();
     if($diff < - 50) $diff = -50;
     else if($diff > 25) $diff = 25;
     $this->set_conso_food( $this->get_conso_food() + $diff);
