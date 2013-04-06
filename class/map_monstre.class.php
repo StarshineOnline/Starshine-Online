@@ -345,14 +345,9 @@ class map_monstre extends entnj_incarn
         $log->send(0, 'donjon', "un draconide tué, reste un");
 			break;
 		
-		 //On refait pop le nain endetté et le voleur scaven pour le tuto
-		case 204:
+		
+		case 204: //On refait pop le nain endetté pour le tuto
 			$requete = "INSERT INTO map_monstre VALUES(NULL,204,256,169,25,"
-          .(time() + 31536000).")";
-			$db->query($requete);
-			break;
-		case 207:
-			$requete = "INSERT INTO map_monstre VALUES(NULL,207,241,170,25,"
           .(time() + 31536000).")";
 			$db->query($requete);
 			break;
@@ -388,6 +383,16 @@ class map_monstre extends entnj_incarn
 			echo 'L\'éternel adolescent vous toise d\'un regard espiègle tandisque dans un flash aveuglant, vous êtes projeté en arrière. Non loin de vous, sur le mur, une étrange surface brillante que vous aviez déjà remarqué, attire à ce moment votre attention pour des raisons qui vous échappe. Cesar fait vrombir son fauteuil d\'un coup sec. Des gerbes de flamme, de sang et de salives sont projetés par l\'engin avant que Cesar ne disparaisse dans le mur. Les reflets mystérieux continuent à agiter la surface miroitante mais rien n\'y fait, en la touchant, elle reste d\'une opacité à toute épreuve. Peut être n\'est-elle réservée qu\'à un genre de personne bien particulier. Un type qui sortirait de la norme sous quelques handicapes, ou quelques forces démoniaques...';
 			break;
 
+    // Monstres tutoriels
+    case 208:
+    case 209:
+    case 210:
+      global $db;
+      $requete = 'SELECT COUNT(*) AS tot FROM map_monstre WHERE x='.$this->get_x().' AND y='.$this->get_x();
+      $res = $db->query($requete);
+      $row = $db->read_array($res);
+      if( $row['tot'] == 1 )
+        $this->set_hp( $this->get_def()->get_hp() );
 			
 		default:
 			// Rien à faire
@@ -579,11 +584,11 @@ class map_monstre extends entnj_incarn
 		elseif ($perso->get_hp() <= 0 && !$pet) //L'attaquant est mort !
 		{
 			//Intimidation du nain dans le tuto vorsh
-		if ($this->id_monstre == 204)
-		{
-			$msg_xp = "Ce nain a compris le message, il n'est pas nécessaire de le tabasser plus<br/>";
-		}
-		$coeff = 0.5;
+  		if ($this->id_monstre == 204)
+  		{
+  			$msg_xp = "Ce nain a compris le message, il n'est pas nécessaire de le tabasser plus<br/>";
+  		}
+  		$coeff = 0.5;
 			//Différence de level
 			$diff_level = abs($perso->get_level() - $this->get_level());
 			//Perde d'honneur
