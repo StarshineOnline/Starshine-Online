@@ -392,7 +392,10 @@ class map_monstre extends entnj_incarn
       $res = $db->query($requete);
       $row = $db->read_array($res);
       if( $row['tot'] == 1 )
+      {
         $this->set_hp( $this->get_def()->get_hp() );
+        $this->sauver();
+      }
 			
 		default:
 			// Rien à faire
