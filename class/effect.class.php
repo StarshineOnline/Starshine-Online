@@ -1062,6 +1062,8 @@ class anneau_resistance extends effect
 	}
 	
 	function calcul_degats(&$actif, &$passif, $degats) {
+	if (get_class($passif) != 'perso')
+	return $degats;
     if ($actif->get_race() == $this->effet) {
       $reduction = min(2, $degats);
 			$this->hit('L\'anneau de resistance de '.$passif->get_nom().
