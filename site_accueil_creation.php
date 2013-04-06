@@ -99,6 +99,8 @@ else if( $type == 'perso' && isset($_SESSION['id_joueur']) )
 			$sort_jeu = '';
 			$sort_combat = '';
 			$comp_combat = '';//'7;8';
+  		$perso->set_x($Trace[$race]['spawn_tutocx']);
+  		$perso->set_y($Trace[$race]['spawn_tutocy']);
 		}
 		else
 		{
@@ -108,6 +110,8 @@ else if( $type == 'perso' && isset($_SESSION['id_joueur']) )
 			$sort_jeu = '1';
 			$sort_combat = '1';
 			$comp_combat = '';
+  		$perso->set_x($Trace[$race]['spawn_tutomx']);
+  		$perso->set_y($Trace[$race]['spawn_tutomy']);
 		}
 		$royaume = new royaume($caracteristiques['numrace']);
 
@@ -168,8 +172,6 @@ else if( $type == 'perso' && isset($_SESSION['id_joueur']) )
 		$perso->set_maj_mp(time());
 		$perso->set_maj_hp(time());
 
-		$perso->set_x($Trace[$race]['spawn_tutox']);
-		$perso->set_y($Trace[$race]['spawn_tutoy']);
 		$perso->set_inventaire('O:10:"inventaire":12:{s:4:"cape";N;s:5:"mains";N;s:11:"main_droite";N;s:11:"main_gauche";N;s:5:"torse";N;s:4:"tete";N;s:8:"ceinture";N;s:6:"jambes";N;s:5:"pieds";N;s:3:"dos";N;s:5:"doigt";N;s:3:"cou";N;}');
 		$perso->set_quete('');
 		$perso->set_pa(180);
@@ -186,7 +188,7 @@ else if( $type == 'perso' && isset($_SESSION['id_joueur']) )
 
 		$perso->sauver();
 		$jid = replace_all($perso->get_nom()).'@jabber.starshine-online.com';
-		if($perso->get_id() == -1)
+		/*if($perso->get_id() == -1)
 		{
 			echo $requete.'<br />';
 		}
@@ -209,7 +211,7 @@ Les logins et mot de passe pour se connecter a ces forums sont les mêmes que ce
 En espérant que votre périple se passera bien.
 Bon jeu !';
 		    $messagerie->envoi_message($id_thread, $id_dest, $titre, $message, $id_groupe);
-		}
+		}*/
 		if(is_file('connect_forum.php'))
 		{
 			require_once('connect_forum.php');
