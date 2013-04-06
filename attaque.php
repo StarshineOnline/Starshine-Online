@@ -902,9 +902,9 @@ else
 				
 				//Journal de l'attaquant 
 				if(!$check_pet)
-					$requete = "INSERT INTO journal VALUES(NULL, ".$joueur->get_id().", 'attaque', '".sSQL($joueur->get_nom())."', '".sSQL($defenseur->get_nom())."', NOW(), ".($defense_hp_avant - $defense_hp_apres).", ".($attaque_hp_avant - $attaque_hp_apres).", ".$joueur_defenseur->get_x().", ".$joueur_defenseur->get_y().")";
+					$requete = "INSERT INTO journal VALUES(NULL, ".$joueur->get_id().", 'attaque', '".mysql_escape_string(sSQL($joueur->get_nom()))."', '".mysql_escape_string(sSQL($defenseur->get_nom()))."', NOW(), ".($defense_hp_avant - $defense_hp_apres).", ".($attaque_hp_avant - $attaque_hp_apres).", ".$joueur_defenseur->get_x().", ".$joueur_defenseur->get_y().")";
 				else
-					$requete = "INSERT INTO journal VALUES(NULL, ".$joueur->get_id().", 'attaque', '".sSQL($attaquant->get_nom())."', '".sSQL($defenseur->get_nom())."', NOW(), ".($defense_hp_avant - $defense_hp_apres).", ".($attaque_hp_avant - $attaque_hp_apres).", ".$joueur_defenseur->get_x().", ".$joueur_defenseur->get_y().")";
+					$requete = "INSERT INTO journal VALUES(NULL, ".$joueur->get_id().", 'attaque', '".mysql_escape_string(sSQL($attaquant->get_nom()))."', '".mysql_escape_string(sSQL($defenseur->get_nom()))."', NOW(), ".($defense_hp_avant - $defense_hp_apres).", ".($attaque_hp_avant - $attaque_hp_apres).", ".$joueur_defenseur->get_x().", ".$joueur_defenseur->get_y().")";
 				$db->query($requete);
 				// Creation du log du combat
 				$combat = new combat();
@@ -916,9 +916,9 @@ else
 				
 				//Journal du défenseur
 				if(!$check_pet_def)
-					$requete = "INSERT INTO journal VALUES(NULL, ".$joueur_defenseur->get_id().", 'defense', '".$joueur_defenseur->get_nom()."', '".$joueur->get_nom()."', NOW(), ".($defense_hp_avant - $defense_hp_apres).", ".($attaque_hp_avant - $attaque_hp_apres).", ".$joueur_defenseur->get_x().", ".$joueur_defenseur->get_y().")";
+					$requete = "INSERT INTO journal VALUES(NULL, ".$joueur_defenseur->get_id().", 'defense', '".mysql_escape_string($joueur_defenseur->get_nom())."', '".mysql_escape_string($joueur->get_nom())."', NOW(), ".($defense_hp_avant - $defense_hp_apres).", ".($attaque_hp_avant - $attaque_hp_apres).", ".$joueur_defenseur->get_x().", ".$joueur_defenseur->get_y().")";
 				else
-					$requete = "INSERT INTO journal VALUES(NULL, ".$joueur_defenseur->get_id().", 'defense', '".$defenseur->get_nom()."', '".$joueur->get_nom()."', NOW(), ".($defense_hp_avant - $defense_hp_apres).", ".($attaque_hp_avant - $attaque_hp_apres).", ".$joueur_defenseur->get_x().", ".$joueur_defenseur->get_y().")";
+					$requete = "INSERT INTO journal VALUES(NULL, ".$joueur_defenseur->get_id().", 'defense', '".mysql_escape_string($defenseur->get_nom())."', '".mysql_escape_string($joueur->get_nom())."', NOW(), ".($defense_hp_avant - $defense_hp_apres).", ".($attaque_hp_avant - $attaque_hp_apres).", ".$joueur_defenseur->get_x().", ".$joueur_defenseur->get_y().")";
 				
 				$db->query($requete);
 				$combat = new combat();
@@ -930,17 +930,17 @@ else
 				
 				if($defenseur->get_hp() <= 0 && !$check_pet_def)
 				{
-					$requete = "INSERT INTO journal VALUES(NULL, ".$joueur->get_id().", 'tue', '".$joueur->get_nom()."', '".$joueur_defenseur->get_nom()."', NOW(), 0, 0, ".$joueur_defenseur->get_x().", ".$joueur_defenseur->get_y().")";
+					$requete = "INSERT INTO journal VALUES(NULL, ".$joueur->get_id().", 'tue', '".mysql_escape_string($joueur->get_nom())."', '".mysql_escape_string($joueur_defenseur->get_nom())."', NOW(), 0, 0, ".$joueur_defenseur->get_x().", ".$joueur_defenseur->get_y().")";
 					$db->query($requete);
-					$requete = "INSERT INTO journal VALUES(NULL, ".$joueur_defenseur->get_id().", 'mort', '".$joueur_defenseur->get_nom()."', '".$joueur->get_nom()."', NOW(), 0, 0, ".$joueur_defenseur->get_x().", ".$joueur_defenseur->get_y().")";
+					$requete = "INSERT INTO journal VALUES(NULL, ".$joueur_defenseur->get_id().", 'mort', '".mysql_escape_string($joueur_defenseur->get_nom())."', '".mysql_escape_string($joueur->get_nom())."', NOW(), 0, 0, ".$joueur_defenseur->get_x().", ".$joueur_defenseur->get_y().")";
 					$db->query($requete);
 				}
 				
 				if($attaquant->get_hp() <= 0 && !$check_pet)
 				{
-					$requete = "INSERT INTO journal VALUES(NULL, ".$joueur->get_id().", 'mort', '".$joueur->get_nom()."', '".$joueur_defenseur->get_nom()."', NOW(), 0, 0, ".$joueur_defenseur->get_x().", ".$joueur_defenseur->get_y().")";
+					$requete = "INSERT INTO journal VALUES(NULL, ".$joueur->get_id().", 'mort', '".mysql_escape_string($joueur->get_nom())."', '".mysql_escape_string($joueur_defenseur->get_nom())."', NOW(), 0, 0, ".$joueur_defenseur->get_x().", ".$joueur_defenseur->get_y().")";
 					$db->query($requete);
-					$requete = "INSERT INTO journal VALUES(NULL, ".$joueur_defenseur->get_id().", 'tue', '".$joueur_defenseur->get_nom()."', '".$joueur->get_nom()."', NOW(), 0, 0, ".$joueur_defenseur->get_x().", ".$joueur_defenseur->get_y().")";
+					$requete = "INSERT INTO journal VALUES(NULL, ".$joueur_defenseur->get_id().", 'tue', '".mysql_escape_string($joueur_defenseur->get_nom())."', '".mysql_escape_string($joueur->get_nom())."', NOW(), 0, 0, ".$joueur_defenseur->get_x().", ".$joueur_defenseur->get_y().")";
 					$db->query($requete);
 				}
 			}
@@ -948,7 +948,7 @@ else
 			elseif($type == 'batiment')
 			{
 				//Insertion de l'attaque dans les journaux des 2 joueurs
-				$requete = "INSERT INTO journal VALUES(NULL, ".$joueur->get_id().", 'attaque', '".$joueur->get_nom()."', '".$defenseur->get_nom()."', NOW(), ".($defense_hp_avant - $defense_hp_apres).", ".($attaque_hp_avant - $attaque_hp_apres).", ".$defenseur->get_x().", ".$defenseur->get_y().")";
+				$requete = "INSERT INTO journal VALUES(NULL, ".$joueur->get_id().", 'attaque', '".mysql_escape_string($joueur->get_nom())."', '".mysql_escape_string($defenseur->get_nom())."', NOW(), ".($defense_hp_avant - $defense_hp_apres).", ".($attaque_hp_avant - $attaque_hp_apres).", ".$defenseur->get_x().", ".$defenseur->get_y().")";
 				$db->query($requete);
 				// Creation du log du combat
 				$combat = new combat();
