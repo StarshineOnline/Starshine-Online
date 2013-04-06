@@ -17,7 +17,7 @@ $R = new royaume($W_row['royaume']);
 $R->get_diplo($joueur->get_race());
 $mois = 60 * 60 * 24 * 31;
 
-if ($R->is_raz())
+if ($R->is_raz() && $joueur->get_x() <= 190 && $joueur->get_y() <= 190)
 {
 	echo "<h5>Impossible de commercer dans une ville mise à sac</h5>";
 	exit (0);
