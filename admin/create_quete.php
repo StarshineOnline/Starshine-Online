@@ -22,8 +22,13 @@ echo '
 //Insertion de la quête dans la bdd
 if(array_key_exists('submit3', $_POST))
 {
-  $requete = "INSERT INTO quete(nom, description, fournisseur, objectif, exp, honneur, star, repete, mode, niveau_requis, honneur_requis, quete_requis, star_royaume, lvl_joueur, achat) VALUES('".sSQL($_SESSION['quete']['nom'])."', '".sSQL($_SESSION['quete']['description'])."', '".sSQL($_SESSION['quete']['fournisseur'])."', '".serialize($_SESSION['objectif'])."', '".$_SESSION['quete']['exp']."', '".$_SESSION['quete']['honneur']."', '".$_SESSION['quete']['star']."', '".$_SESSION['quete']['repetable']."', '".$_SESSION['quete']['mode']."', '".$_SESSION['quete']['niveau_requis']."', '".$_SESSION['quete']['honneur_requis']."', '".$_SESSION['quete']['quete_requis']."', '".$_SESSION['quete']['star_royaume']."', '".$_SESSION['quete']['niveau']."', 'oui')";
+  $numero = count($_SESSION['objectif']);
+    $_SESSION['objectif'][$numero]->cible = $_POST['objectif'].$_POST['cible'];
+    $_SESSION['objectif'][$numero]->nombre = intval($_POST['nombre']);
+    $_SESSION['objectif'][$numero]->requis = $_POST['requis'];
+    $requete = "INSERT INTO quete(nom, description, fournisseur, objectif, exp, honneur, star, repete, mode, niveau_requis, honneur_requis, quete_requis, star_royaume, lvl_joueur, achat) VALUES('".sSQL($_SESSION['quete']['nom'])."', '".sSQL($_SESSION['quete']['description'])."', '".sSQL($_SESSION['quete']['fournisseur'])."', '".serialize($_SESSION['objectif'])."', '".$_SESSION['quete']['exp']."', '".$_SESSION['quete']['honneur']."', '".$_SESSION['quete']['star']."', '".$_SESSION['quete']['repetable']."', '".$_SESSION['quete']['mode']."', '".$_SESSION['quete']['niveau_requis']."', '".$_SESSION['quete']['honneur_requis']."', '".$_SESSION['quete']['quete_requis']."', '".$_SESSION['quete']['star_royaume']."', '".$_SESSION['quete']['niveau']."', 'oui')";
   $db->query($requete);
+  echo serialize($_SESSION['objectif']);
 }
 if(array_key_exists('submit', $_POST) OR array_key_exists('submit2', $_POST))
 {
