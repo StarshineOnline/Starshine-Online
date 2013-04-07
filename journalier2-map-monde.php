@@ -109,6 +109,6 @@ function do_map($file, $fog = true) {
 }
 
 do_map('image/carte.png', true);
-do_map('admin/image/carte.png', false);
+do_map('admin/images/carte.png', false);
 
 ?>

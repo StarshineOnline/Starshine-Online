@@ -8,7 +8,7 @@ include_once(root.'inc/fp.php');
 $size_x = 190;
 $size_y = 450;
 
-$im = imagecreatefrompng(root.'admin/image/carte.png');
+$im = imagecreatefrompng(root.'admin/images/carte.png');
 imagealphablending($im, false);
 imagesavealpha($im, true);
 $transparent = imagecolorallocatealpha($im, 255, 255, 255, 127);
