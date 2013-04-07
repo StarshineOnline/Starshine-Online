@@ -691,6 +691,8 @@ class perso extends entite
 	{
 		if ($base)
 			return $this->alchimie;
+		elseif ($this->get_race() == 'scavenger')
+			return $this->alchimie * 1.20 + $this->get_bonus_permanents('alchimie');
 		else
 			return $this->alchimie + $this->get_bonus_permanents('alchimie');
 	}
@@ -705,6 +707,8 @@ class perso extends entite
 	{
 		if ($base)
 			return $this->architecture;
+		elseif ($this->get_race() == 'scavenger')
+			return $this->architecture * 1.20 + $this->get_bonus_permanents('architecture');
 		else
 			return $this->architecture + $this->get_bonus_permanents('architecture');
 	}
@@ -719,6 +723,8 @@ class perso extends entite
 	{
 		if ($base)
 			return $this->forge;
+		elseif ($this->get_race() == 'scavenger')
+			return $this->forge * 1.20 + $this->get_bonus_permanents('forge');
 		else
 			return $this->forge + $this->get_bonus_permanents('forge');
 	}
