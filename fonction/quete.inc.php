@@ -187,7 +187,7 @@ function fin_quete($joueur, $id_quete_joueur, $id_quete)
 	$joueur->get_grade();
 	$stars = round($row['star'] * (1 + ($joueur->grade->get_rang() * 2 / 100)));
 	if($this->get_race() == 'nain')
-		$stars *= 1,05;
+		$stars *= 1.05;
 	$honneur_gagne = $row['honneur'];
 	if($joueur->is_buff('moral')) $honneur_gagne = $honneur_gagne * (1 + ($joueur->get_buff('moral', 'effet') / 100));
 	$joueur->set_honneur($joueur->get_honneur() + $honneur_gagne);
