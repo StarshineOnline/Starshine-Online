@@ -24,7 +24,7 @@ $requete .= ", point_victoire_total = point_victoire_total + (select count(1) fr
 $req = $db->query($requete);
 
 //Entretien des batiments et constructions
-$semaine = time() - (3600 * 24 * 7);
+/*$semaine = time() - (3600 * 24 * 7);
 $royaumes = array();
 // On récupère le niveau moyen
 $requete = "select sum(level)/count(id) moy from perso WHERE statut = 'actif'";
@@ -55,14 +55,20 @@ while($ii < count($habitants))
 {
 	$royaumes[$Trace[$keys[$ii]]['numrace']]['ratio'] = $habitants[$keys[$ii]] / $min_habitants;
 	$ii++;
-}
+}*/
 //On récupère les stars de chaque royaume
-$requete = "SELECT id, star FROM royaume WHERE id <> 0 ORDER BY id ASC";
+$requete = "SELECT id, star, facteur_entretien FROM royaume WHERE id <> 0 ORDER BY id ASC";
 $req = $db->query($requete);
 while($row = $db->read_row($req))
 {
 	$royaumes[$row[0]]['stars'] = $row[1];
 	$royaumes[$row[0]]['id'] = $row[0];
+	$royaumes[$row[0]]['ratio'] = $row[2];
+}
+$roy = royaume::create(null, null, 'id ASC', false, 'id <> 0');
+foreach($roy as $r)
+{
+  $r->maj_facteur_entretien();
 }
 
 //PHASE 1, entretien des batiments internes

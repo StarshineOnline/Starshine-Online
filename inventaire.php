@@ -39,8 +39,11 @@ $R = new royaume($W_row['royaume']);
 <fieldset>
 <legend>Inventaire du Personnage</legend>
 <ul id="messagerie_onglet">
-	<li><a href="inventaire.php" onclick="return envoiInfo(this.href, 'information');">Personnage</a></li>
-	<li><a href="inventaire_pet.php" onclick="return envoiInfo(this.href, 'information');">Créature</a></li>
+		<li><a href="inventaire.php"
+			onclick="return envoiInfo(this.href, 'information');">Personnage</a>
+		</li>
+		<li><a href="inventaire_pet.php"
+			onclick="return envoiInfo(this.href, 'information');">Créature</a></li>
 </ul>
 	<div class="spacer"></div>
 <?php
@@ -71,6 +74,9 @@ if(!$visu AND isset($_GET['action']))
 			}
 		break;
 		case 'utilise' :
+				/*
+				 * Pose d'un bâtiment ou ADS
+				 */
 			if($_GET['type'] == 'fort' OR $_GET['type'] == 'tour' OR $_GET['type'] == 'bourg' OR $_GET['type'] == 'mur' OR $_GET['type'] == 'arme_de_siege')
 			{
 				if ($joueur->is_buff('debuff_rvr'))
@@ -78,8 +84,13 @@ if(!$visu AND isset($_GET['action']))
 					echo '<h5>RvR impossible pendant la trêve</h5>';
 					break;
 				}
-				if ($W_row['type'] != 1)
+
+					if ($W_row['type'] == 1)
 				{
+						echo '<h5>Vous ne pouvez pas poser de bâtiment sur une ville</h5>';
+						break;
+					}
+
 					//Cherche infos sur l'objet
 					$requete = "SELECT batiment.id AS batiment_id FROM objet_royaume RIGHT JOIN batiment ON batiment.id = objet_royaume.id_batiment WHERE objet_royaume.id = ".sSQL($_GET['id_objet']);
 					$req = $db->query($requete);
@@ -89,18 +100,30 @@ if(!$visu AND isset($_GET['action']))
 					}
 					$row = $db->read_assoc($req);
 					$batiment = new batiment($row['batiment_id']);
-					if($R->get_diplo($joueur->get_race()) == 127 OR $_GET['type'] == 'arme_de_siege' || $batiment->get_id() == 1) // id=1 : poste avancé
+					if($R->get_diplo($joueur->get_race()) != 127 && $_GET['type'] != 'arme_de_siege' && $batiment->get_id() != 1) // id=1 : poste avancé
 					{
+						echo '<h5>Vous ne pouvez poser un bâtiment uniquement sur un territoire qui vous appartient</h5>';
+						break;
+					}
+
 						//On vérifie si ya pas déjà un batiment en construction
 						$requete = "SELECT id FROM placement WHERE x = ".$joueur->get_x()." AND y = ".$joueur->get_y();
 						$req = $db->query($requete);
-						if($db->num_rows <= 0)
+					if($db->num_rows > 0)
 						{
+						echo '<h5>Il y a déjà un bâtiment en construction sur cette case !</h5>';
+						break;
+					}
+
 							//On vérifie si ya pas déjà un batiment
 							$requete = "SELECT id FROM construction WHERE x = ".$joueur->get_x()." AND y = ".$joueur->get_y();
 							$req = $db->query($requete);
-							if($db->num_rows <= 0)
+					if($db->num_rows > 0)
 							{
+						echo '<h5>Il y a déjà un bâtiment sur cette case !</h5>';
+						break;
+					}
+
                 $nbr_mur = 0;
                 if( $_GET['type'] == 'mur' )
                 {
@@ -176,10 +199,133 @@ if(!$visu AND isset($_GET['action']))
         					$nbr_mur = $max_nb_murs;
         					//   Fin Evolution #581
                 }
-                if( $nbr_mur <= 3 )
+					if( $nbr_mur > 3 )
                 {
-                  if( !$joueur->is_buff('convalescence') OR $joueur->get_pa() >= 10 )
+						echo '<h5>Il y a déjà trop de murs autour !</h5>';
+						break;
+					}
+
+					// Règles des distance entre bâtiments
+					$isOk = true;
+					if($_GET['type'] == 'bourg' || $_GET['type'] == 'fort'){
+						// Distance d'une capitale
+						$distanceMax = $_GET['type'] == 'bourg' ? 5 : 7;
+
+						$requete = "SELECT 1 FROM map"
+										." WHERE x >= ".max(($joueur->get_x() - $distanceMax), 1)
+										." AND x <= ".min(($joueur->get_x() + $distanceMax), 190)
+										." AND y >= ".max(($joueur->get_y() - $distanceMax), 1)
+										." AND y <= ".min(($joueur->get_y() + $distanceMax), 190)
+										." AND type = 1";
+						$req = $db->query($requete);
+						if($db->num_rows > 0)
                   {
+							echo '<h5>Il y a une capitale à moins de '.$distanceMax.' cases !</h5>';
+							$isOk = false;
+						}
+
+						$facteurEntretien = $R->get_facteur_entretien();
+						
+						// Distance entre Bourgs
+						if($isOk && $_GET['type'] == 'bourg'){
+							// dist entre 2 bourgs
+							$distanceMax = 7 * $facteurEntretien;
+
+							$requete = "SELECT 1 FROM construction"
+								." WHERE x >= ".max(($joueur->get_x() - $distanceMax), 1)
+								." AND x <= ".min(($joueur->get_x() + $distanceMax), 190)
+								." AND y >= ".max(($joueur->get_y() - $distanceMax), 1)
+								." AND y <= ".min(($joueur->get_y() + $distanceMax), 190)
+								." AND type = 'bourg'";
+							$req = $db->query($requete);
+							if($db->num_rows > 0)
+							{
+								echo '<h5>Il y a un bourg à moins de '.$distanceMax.' cases !</h5>';
+								$isOk = false;
+							}
+
+							// On vérifie aussi les chantiers
+							if($isOk){
+								$requete = "SELECT 1 FROM placement"
+								." WHERE x >= ".max(($joueur->get_x() - $distanceMax), 1)
+								." AND x <= ".min(($joueur->get_x() + $distanceMax), 190)
+								." AND y >= ".max(($joueur->get_y() - $distanceMax), 1)
+								." AND y <= ".min(($joueur->get_y() + $distanceMax), 190)
+								." AND type = 'bourg'";
+								$req = $db->query($requete);
+								if($db->num_rows > 0)
+								{
+									echo '<h5>Il y a un bourg en construction à moins de '.$distanceMax.' cases !</h5>';
+									$isOk = false;
+								}
+							}
+						}
+
+						// Distance entre forts
+						else if($isOk && $_GET['type'] == 'fort'){
+							// dist entre 2 forts du même royaume
+							$distanceForts = 4;
+							$distanceMax = $distanceForts * $facteurEntretien;
+
+							$requete = "SELECT id FROM construction"
+									." WHERE x >= ".max(($joueur->get_x() - $distanceMax), 1)
+									." AND x <= ".min(($joueur->get_x() + $distanceMax), 190)
+									." AND y >= ".max(($joueur->get_y() - $distanceMax), 1)
+									." AND y <= ".min(($joueur->get_y() + $distanceMax), 190)
+									." AND type = 'fort'"
+									." AND royaume = ".$R->get_id()
+									." UNION"
+									." SELECT id FROM construction"
+										." WHERE x >= ".max(($joueur->get_x() - $distanceForts), 1)
+										." AND x <= ".min(($joueur->get_x() + $distanceForts), 190)
+										." AND y >= ".max(($joueur->get_y() - $distanceForts), 1)
+										." AND y <= ".min(($joueur->get_y() + $distanceForts), 190)
+										." AND type = 'fort'"
+										." AND royaume <> ".$R->get_id();
+							$req = $db->query($requete);
+							if($db->num_rows > 0)
+							{
+								echo '<h5>Il y a un fort à moins de '.$distanceMax.' cases !</h5>';
+								$isOk = false;
+							}
+
+							// On vérifie aussi les chantiers
+							if($isOk){
+								$requete = "SELECT id FROM placement"
+											." WHERE x >= ".max(($joueur->get_x() - $distanceMax), 1)
+											." AND x <= ".min(($joueur->get_x() + $distanceMax), 190)
+											." AND y >= ".max(($joueur->get_y() - $distanceMax), 1)
+											." AND y <= ".min(($joueur->get_y() + $distanceMax), 190)
+											." AND type = 'fort'"
+									." AND royaume = ".$R->get_id()
+									." UNION"
+											." SELECT id FROM placement"
+											." WHERE x >= ".max(($joueur->get_x() - $distanceForts), 1)
+											." AND x <= ".min(($joueur->get_x() + $distanceForts), 190)
+											." AND y >= ".max(($joueur->get_y() - $distanceForts), 1)
+											." AND y <= ".min(($joueur->get_y() + $distanceForts), 190)
+											." AND type = 'fort'"
+												." AND royaume <> ".$R->get_id();
+								$req = $db->query($requete);
+								if($db->num_rows > 0)
+								{
+									echo '<h5>Il y a un fort en cosntruction à moins de '.$distanceMax.' cases !</h5>';
+									$isOk = false;
+								}
+							}
+						}
+					}
+					if(!$isOk){
+						break;
+					}
+
+
+					if( $joueur->is_buff('convalescence') && $joueur->get_pa() < 10 )
+					{
+						echo '<h5>Vous n\'avez pas assez de PA !</h5>';
+						break;
+					}
+
     								//Positionnement de la construction
     								if($_GET['type'] == 'arme_de_siege')
     								{
@@ -219,37 +365,8 @@ if(!$visu AND isset($_GET['action']))
     									$achiev->set_compteur($achiev->get_compteur() + 1);
     									$achiev->sauver();
     								}
+
                   }
-                  else
-                  {
-								    echo '<h5>Vous n\'avez pas assez de PA !</h5>';
-                  }
-                }
-                else
-                {
-								  echo '<h5>Il y a déjà trop de murs autour !</h5>';
-                }
-							}
-							else
-							{
-								echo '<h5>Il y a déjà un batiment sur cette case !</h5>';
-							}
-						}
-						else
-						{
-							echo '<h5>Il y a déjà un batiment en construction sur cette case !</h5>';
-						}
-					}
-					else
-					{
-						echo '<h5>Vous ne pouvez poser un fort uniquement sur un territoire qui vous appartient</h5>';
-					}
-				}
-				else
-				{
-					echo '<h5>Vous ne pouvez pas poser de batiment sur une ville</h5>';
-				}
-			}
 			switch($_GET['type'])
 			{
 				case 'drapeau' :
@@ -412,7 +529,8 @@ if(!$visu AND isset($_GET['action']))
 							$row = $db->read_assoc($req);
                				echo 'Vous utilisez une '.$row['nom'].' elle vous redonne '.$row['effet'].' points de vie<br />';
 							?>
-								<img src="image/pixel.gif" onLoad="envoiInfo('infoperso.php?javascript=oui', 'perso');" />
+	<img src="image/pixel.gif"
+		onLoad="envoiInfo('infoperso.php?javascript=oui', 'perso');" />
 								<?php
                 				$joueur->add_hp($row['effet']);
                 				$joueur->add_mp(-$row['mp']);
@@ -437,7 +555,9 @@ if(!$visu AND isset($_GET['action']))
 							{
 								if($buff->get_debuff() == 1)
 								{
-									if($buff->get_supprimable() == 1) { $buff_tab[count($buff_tab)] = $buff->get_id(); };
+					if($buff->get_supprimable() == 1) {
+$buff_tab[count($buff_tab)] = $buff->get_id();
+};
 								}
 							}
 							if(count($buff_tab) > 0)
@@ -464,7 +584,8 @@ if(!$visu AND isset($_GET['action']))
 						if($joueur->get_pa() > floor($G_PA_max)) $joueur->set_pa(floor($G_PA_max));
 						echo 'Vous utilisez un '.$row['nom'].'<br />';
 						?>
-						<img src="image/pixel.gif" onLoad="envoiInfo('infoperso.php?javascript=oui', 'perso');" />
+	<img src="image/pixel.gif"
+		onLoad="envoiInfo('infoperso.php?javascript=oui', 'perso');" />
 						<?php
 						$joueur->set_mp(max(0, ($joueur->get_mp() - $row['mp'])));
 						$joueur->sauver();
@@ -484,7 +605,8 @@ if(!$visu AND isset($_GET['action']))
 							//Téléportation du joueur
 							echo 'Vous utilisez un '.$row['nom'].'<br />';
 							?>
-							<img src="image/pixel.gif" onLoad="envoiInfo('infoperso.php?javascript=oui', 'perso');" />
+	<img src="image/pixel.gif"
+		onLoad="envoiInfo('infoperso.php?javascript=oui', 'perso');" />
 							<?php
 							$requete = "UPDATE perso SET x = ".$Trace[$joueur->get_race()]['spawn_x'].", y = ".$Trace[$joueur->get_race()]['spawn_y'].", pa = pa - ".$row['pa'].", mp = mp - ".$row['mp']." WHERE ID = ".$joueur->get_id();
 							$db->query($requete);
@@ -502,18 +624,37 @@ if(!$visu AND isset($_GET['action']))
 					if($id_objet_reel == 27)
 					{
 						?>
-						Journal du mage Demtros - Unité aigle -<br />
-						< Le journal est en très mauvais état, certaines pages sont déchirées, ou rendues illisibles par l'humidité et des taches de sang ><br />
-						<br />
-						12 Dulfandal : Nous approchons enfin de la cité de Myriandre. Je ne peux expliquer le trouble qui me saisi depuis plusieurs jours mais je sais que cela à un rapport avec les ruines de cette ville. Le malaise que je ressens est presque palpable, mais impossible d'en déterminer la cause. J'en ai fais part a Frankriss mais malgré toute la considération de ce dernier, je sens bien qu'ils me pense juste un peu nerveux...<br />
-						Je vais prendre deux tours de garde ce soir, de toute façon, je n'arriverais pas à dormir.<br />
-						<br />
-						13 Dulfandal : Nous voici enfin arrivés, Achen et les autres sont partis en reconnaissance. Je scanne l'espace astral dans l'espoir de déterminer d'où peux provenir la perturbation que je ressens mais en vain.. Je sens malgré tout qu'il y a quelque chose d'anormal.<br />
-						<br />
-						14 Dulfandal : Achen est mort, Dubs est l'agonie, dans son délire il est quand même parvenu à nous dire ce qui c'est passé, il semblerait qu'il ai été attaqués par des goules surgie de nulle part, Dubs a réussi à s'enfuir mais pas achen. il nous dis que les goules ont disparues d'un coup... frankriss est préoccupé, mais il gère la situation avec son sang froid coutumier. Nous allons former un groupe d'assaut pour aller récupérer Achen, ou ce qu'il en reste... L'unité aigle ne laisse jamais un compagnon derrière elle.<br />
-						Je ne sais pas ce qui se passe dans cette ville mais j'ai un mauvais pressentiment.<br />
-						15 Dulfandal : le sort était camouflé, c'est pour ça que je l'ai pas perçu, celui qui l'a lancer doit être un mage exceptionnel pour arriver à camoufler une telle portion de terrain... nous nous déplaçons les épées sorties et près au combat, l'ennemi peut surgir de n'importe ou. Je n'arrive pas a démêler la trame du sort, trop puissant pour moi ... ( taches de sang )<br />
-						Il faut que j'écrive ( taches de sang ) sachent ce qui se passe ( taches de sang ), un nécromancien ( la suite est déchirée ).<br />
+	Journal du mage Demtros - Unité aigle -<br /> < Le journal est en très
+	mauvais état, certaines pages sont déchirées, ou rendues illisibles par
+	l'humidité et des taches de sang ><br /> <br /> 12 Dulfandal : Nous
+	approchons enfin de la cité de Myriandre. Je ne peux expliquer le
+	trouble qui me saisi depuis plusieurs jours mais je sais que cela à un
+	rapport avec les ruines de cette ville. Le malaise que je ressens est
+	presque palpable, mais impossible d'en déterminer la cause. J'en ai
+	fais part a Frankriss mais malgré toute la considération de ce dernier,
+	je sens bien qu'ils me pense juste un peu nerveux...<br /> Je vais
+	prendre deux tours de garde ce soir, de toute façon, je n'arriverais
+	pas à dormir.<br /> <br /> 13 Dulfandal : Nous voici enfin arrivés,
+	Achen et les autres sont partis en reconnaissance. Je scanne l'espace
+	astral dans l'espoir de déterminer d'où peux provenir la perturbation
+	que je ressens mais en vain.. Je sens malgré tout qu'il y a quelque
+	chose d'anormal.<br /> <br /> 14 Dulfandal : Achen est mort, Dubs est
+	l'agonie, dans son délire il est quand même parvenu à nous dire ce qui
+	c'est passé, il semblerait qu'il ai été attaqués par des goules surgie
+	de nulle part, Dubs a réussi à s'enfuir mais pas achen. il nous dis que
+	les goules ont disparues d'un coup... frankriss est préoccupé, mais il
+	gère la situation avec son sang froid coutumier. Nous allons former un
+	groupe d'assaut pour aller récupérer Achen, ou ce qu'il en reste...
+	L'unité aigle ne laisse jamais un compagnon derrière elle.<br /> Je ne
+	sais pas ce qui se passe dans cette ville mais j'ai un mauvais
+	pressentiment.<br /> 15 Dulfandal : le sort était camouflé, c'est pour
+	ça que je l'ai pas perçu, celui qui l'a lancer doit être un mage
+	exceptionnel pour arriver à camoufler une telle portion de terrain...
+	nous nous déplaçons les épées sorties et près au combat, l'ennemi peut
+	surgir de n'importe ou. Je n'arrive pas a démêler la trame du sort,
+	trop puissant pour moi ... ( taches de sang )<br /> Il faut que
+	j'écrive ( taches de sang ) sachent ce qui se passe ( taches de sang ),
+	un nécromancien ( la suite est déchirée ).<br />
 						<?php
 					}
 				break;
@@ -1157,7 +1298,8 @@ $tab_loc[14]['loc'] = ' ';
 $tab_loc[14]['type'] = 'vide';
 ?>
 
-<table cellspacing="3" width="100%" style="background: url('image/666.png') center no-repeat;">
+	<table cellspacing="3" width="100%"
+		style="background: url('image/666.png') center no-repeat;">
 
 <?php
 $color = 2;
@@ -1281,12 +1423,21 @@ if(!$visu)
 	 if(array_key_exists('filtre', $_GET)) $filtre = $_GET['filtre'];
 	 else $filtre = 'utile';
 ?>
-<p>Place restante dans l'inventaire : <?php echo ($G_place_inventaire - count($joueur->get_inventaire_slot_partie())) ?> / <?php echo $G_place_inventaire;?></p>
+	<p>
+		Place restante dans l'inventaire :
+		<?php echo ($G_place_inventaire - count($joueur->get_inventaire_slot_partie())) ?>
+		/
+		<?php echo $G_place_inventaire;?>
+	</p>
 <div id='messagerie_menu'>
-<span class="<?php if($filtre == 'utile'){echo 'seleted';}?>" onclick="envoiInfo('inventaire_slot.php?javascript=ok&amp;filtre=utile', 'inventaire_slot')">Utile</span>
-<span class="<?php if($filtre == 'arme'){ echo 'seleted';} ?>" onclick="envoiInfo('inventaire_slot.php?javascript=ok&amp;filtre=arme', 'inventaire_slot')">Arme</span>
-<span class="<?php if($filtre == 'armure'){echo 'seleted';}?>" onclick="envoiInfo('inventaire_slot.php?javascript=ok&amp;filtre=armure', 'inventaire_slot')">Armure</span>
-<span class="<?php if($filtre == 'autre'){echo 'seleted';}?>" onclick="envoiInfo('inventaire_slot.php?javascript=ok&amp;filtre=autre', 'inventaire_slot')">Autre</span>
+		<span class="<?php if($filtre == 'utile'){echo 'seleted';}?>"
+			onclick="envoiInfo('inventaire_slot.php?javascript=ok&amp;filtre=utile', 'inventaire_slot')">Utile</span>
+		<span class="<?php if($filtre == 'arme'){ echo 'seleted';} ?>"
+			onclick="envoiInfo('inventaire_slot.php?javascript=ok&amp;filtre=arme', 'inventaire_slot')">Arme</span>
+		<span class="<?php if($filtre == 'armure'){echo 'seleted';}?>"
+			onclick="envoiInfo('inventaire_slot.php?javascript=ok&amp;filtre=armure', 'inventaire_slot')">Armure</span>
+		<span class="<?php if($filtre == 'autre'){echo 'seleted';}?>"
+			onclick="envoiInfo('inventaire_slot.php?javascript=ok&amp;filtre=autre', 'inventaire_slot')">Autre</span>
 </div>
 <div id="inventaire_slot">
 	<?php
