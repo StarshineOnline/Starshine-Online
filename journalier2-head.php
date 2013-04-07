@@ -6,6 +6,10 @@ if (isset($_SERVER['REMOTE_ADDR'])) die('Forbidden connection from '.$_SERVER['R
 $mail = '';
 $root = '';
 
+include_once(root.'inc/variable.inc.php');
+global $G_max_x;
+global $G_max_y;
+
 define('MAP_WIDTH', $G_max_x);
 define('MAP_HEIGHT', $G_max_y);
 define('CARTE_WIDTH', MAP_WIDTH * 3);
