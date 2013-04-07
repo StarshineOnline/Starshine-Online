@@ -5,7 +5,7 @@ if (file_exists('../root.php'))
 
 include_once(root.'inc/fp.php');
 
-$im = imagecreatefrompng(root.'image/carte.png');
+$im = imagecreatefrompng(root.'admin/image/carte.png');
 imagealphablending($im, false);
 imagesavealpha($im, true);
 $transparent = imagecolorallocatealpha($im, 255, 255, 255, 127);
