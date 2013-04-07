@@ -41,9 +41,9 @@ $show_info[5] = $color5;
 $show_info[6] = $color6;
 
 //Création de la map
-for($i = 1; $i <= 190; $i++)
+for($i = 1; $i <= $G_max_x; $i++)
 {
-	for($j = 1; $j <= 190; $j++)
+	for($j = 1; $j <= $G_max_y; $j++)
 	{
 		if(!isset($map_monstre[$i][$j])) $densite = 0;
 		else

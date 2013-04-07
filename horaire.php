@@ -48,8 +48,8 @@ include_once(root.'class/gemmes.class.php');
 //On regarde si sworling est là
 $requete = "SELECT id FROM map_monstre WHERE type = 56";
 $req = $db->query($requete);
-$x = ceil(rand(0, 190));
-$y = ceil(rand(0, 190));
+$x = ceil(rand(0, $G_max_x));
+$y = ceil(rand(0, $G_max_y));
 //Il est déjà là, on le téléport
 if($db->num_rows > 0)
 {

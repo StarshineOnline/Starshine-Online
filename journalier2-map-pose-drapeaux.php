@@ -24,8 +24,8 @@ $colorColonisee = imagecolorallocate($imalpha, 0xff, 0xff, 0xff);
 //Requète pour l'affichage de la map
 $requete = 'SELECT map.*
 		FROM `map` map
-		WHERE map.x <= 190
-		AND map.y <= 190';
+		WHERE map.x <= '.$G_max_x.'
+		AND map.y <= '.$G_max_y;
 $req = $db->query($requete);
 
 $i = 0;

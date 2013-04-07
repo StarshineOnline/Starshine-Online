@@ -129,15 +129,16 @@ function calcul_distance_pytagore($posjoueur1, $posjoueur2)
  */
 function dimension_map($x, $y, $champ_vision)
 {
+  global $G_max_x, $G_max_y;
 	$case_affiche = ($champ_vision * 2) + 1;
 	$dimensions = array();
 
 	if($x < ($champ_vision + 1))			{ $dimensions['xmin'] = 1;		$dimensions['xmax'] = $x + ($case_affiche - ($x)); }
-	elseif($x > (190 - $champ_vision))		{ $dimensions['xmax'] = 190;		$dimensions['xmin'] = $x - ($case_affiche - (190 - $x + 1)); }
+	elseif($x > ($G_max_x - $champ_vision))		{ $dimensions['xmax'] = $G_max_x;		$dimensions['xmin'] = $x - ($case_affiche - ($G_max_x - $x + 1)); }
 	else								{ $dimensions['xmin'] = $x - $champ_vision;	$dimensions['xmax'] = $x + $champ_vision; };
 	
 	if($y < ($champ_vision + 1))		{ $dimensions['ymin'] = 1;		$dimensions['ymax'] = $y + ($case_affiche - ($y)); }
-	elseif($y > (190 - $champ_vision))	{ $dimensions['ymax'] = 190;		$dimensions['ymin'] = $y - ($case_affiche - (190 - $y + 1)); }
+	elseif($y > ($G_max_y - $champ_vision))	{ $dimensions['ymax'] = $G_max_y;		$dimensions['ymin'] = $y - ($case_affiche - ($G_max_y - $y + 1)); }
 	else								{ $dimensions['ymin'] = $y - $champ_vision; 	$dimensions['ymax'] = $y + $champ_vision; }
 
 	return $dimensions;
@@ -3292,8 +3293,9 @@ function pose_drapeau_roi($x, $y)
 	global $joueur;
 	global $db;
 	global $Trace;
+  global $G_max_x, $G_max_y;
 
-	if ($x > 190 || $x < 0 || $y > 190 || $y < 0) security_block(URL_MANIPULATION); // Case invalide
+	if ($x > $G_max_x || $x < 0 || $y > $G_max_y || $y < 0) security_block(URL_MANIPULATION); // Case invalide
 	if ($joueur->get_rang_royaume() != 6) security_block(URL_MANIPULATION); // Pas roi
 
 	if (!verif_ville($joueur->get_x(), $joueur->get_y())) {
@@ -3331,8 +3333,9 @@ function pose_drapeau_roi_all()
 	global $joueur;
 	global $db;
 	global $Trace;
+  global $G_max_x, $G_max_y;
 
-	if ($x > 190 || $x < 0 || $y > 190 || $y < 0) security_block(URL_MANIPULATION); // Case invalide
+	if ($x > $G_max_x || $x < 0 || $y > $G_max_y || $y < 0) security_block(URL_MANIPULATION); // Case invalide
 	if ($joueur->get_rang_royaume() != 6) security_block(URL_MANIPULATION); // Pas roi
 
 	if (!verif_ville($joueur->get_x(), $joueur->get_y())) {
