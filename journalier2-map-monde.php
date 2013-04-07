@@ -15,7 +15,7 @@ function isAffichable($tab, $x, $y)
 {
 	// Vérif des cases adjacentes
 	for ($i = $x - 1; $i <= $x + 1; $i++) {
-		for ($j = $y - 1; $j < $y + 1; $j++) {
+		for ($j = $y - 1; $j <= $y + 1; $j++) {
 			// case colonisée
 			if(isset($tab[$i][$j]) && $tab[$i][$j] == 1){
 				return true;
