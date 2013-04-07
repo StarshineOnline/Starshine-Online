@@ -567,7 +567,7 @@ function cout_pa2($coutpa, $joueur, $case, $diagonale)
 		}
 	}	
 	if ($joueur->get_tuto() != 0){
-		$coutpa=2;
+		$coutpa=2;}
 	return $coutpa;
 }
 
