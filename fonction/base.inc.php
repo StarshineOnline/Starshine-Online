@@ -265,6 +265,10 @@ function type_terrain($info)
 	$typeterrain[8][1] = 'Route';
 	$typeterrain[9][0] = 'route';
 	$typeterrain[9][1] = 'Route';
+	$typeterrain[108][0] = 'route';
+	$typeterrain[108][1] = 'Route';
+	$typeterrain[109][0] = 'route';
+	$typeterrain[109][1] = 'Route';
 	$typeterrain[10][0] = 'objet';
 	$typeterrain[10][1] = 'Bâtiment';
 	$typeterrain[20][0] = 'objet';
