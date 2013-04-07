@@ -352,6 +352,12 @@ class map_monstre extends entnj_incarn
 			$db->query($requete);
 			break;
 			
+		case 207: //On refait pop le voleur marchant pour le tuto
+			$requete = "INSERT INTO map_monstre VALUES(NULL,207,241,170,25,"
+          .(time() + 31536000).")";
+			$db->query($requete);
+			break;
+			
 		case 123: //Le roi des gobs fait pop le second roi des gobs
 			$requete = "INSERT INTO map_monstre select NULL, id, 17, 292, hp, ".(time() + 2678400)." from monstre where lib = 'roi_goblin_2' limit 1";
 			$db->query($requete);
