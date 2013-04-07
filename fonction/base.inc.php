@@ -566,7 +566,7 @@ function cout_pa2($coutpa, $joueur, $case, $diagonale)
 			}
 		}
 	}	
-	if ($joueur->get_tuto() != 0){
+	if (($joueur->get_tuto() != 0 ) AND ($joueur->get_x() < 276 ) AND ($joueur->get_x() >199 ) ANS ($joueur->get_y() < 186 ) AND ($joueur->get_y() > 49)){
 		$coutpa=2;}
 	return $coutpa;
 }
