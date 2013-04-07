@@ -53,7 +53,7 @@ for($i = 1; $i <= $G_max_x; $i++)
 {
 	for($j = 1; $j <= $G_max_y; $j++)
 	{
-		if(!isset($map_monstre[$i][$j]) OR ) $densite = 0;
+		if(!isset($map_monstre[$i][$j])) $densite = 0;
 		else
 		{
 			if($map_monstre[$i][$j] < $part) $densite = 1;
