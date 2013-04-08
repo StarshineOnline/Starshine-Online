@@ -30,6 +30,7 @@ class map
 
 	function __construct($x, $y, $champ_vision = 3, $root = '', $donjon = false, $resolution = 'high', $troisd = false)
 	{
+    global $G_max_x, $G_max_y;
 		$this->x = $x;
 		$this->y = $y;
 		$this->champ_vision = $champ_vision;
@@ -49,8 +50,8 @@ class map
 
 		if(!$this->donjon)
 		{
-			$limite_x = 190;
-			$limite_y = 190;
+			$limite_x = $G_max_x;
+			$limite_y = $G_max_y;
 		}
 		else
 		{

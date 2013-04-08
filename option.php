@@ -86,6 +86,7 @@ $titre_perso = new titre($_SESSION['ID']);
 									{
 										$joueur = new joueur($_SESSION['id_joueur']);
 										$joueur->set_mdp(md5($new_pass));
+										$joueur->set_mdp_jabber(md5($new_pass));
 										$joueur->set_mdp_forum(sha1($new_pass));
 										$joueur->sauver();
 									}
@@ -251,6 +252,13 @@ $titre_perso = new titre($_SESSION['ID']);
 							unset($_COOKIE['nom']);
 							unset($_SESSION['nom']);
 							unset($_SESSION['ID']);
+          		?>
+          		<script language="javascript" type="text/javascript">
+          		<!--
+          		window.location.replace("index.php");
+          		-->
+          		</script>
+          		<?php
 						}
 						else
 							echo 'ERREUR: Veuillez contacter un admin!';

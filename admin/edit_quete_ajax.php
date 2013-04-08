@@ -14,7 +14,7 @@ if (array_key_exists('action', $_POST) && $_POST['action'] == 'post')
 	$objectifs = array();
 	for ($i = 0; $i < count($_POST['cible']); $i++) {
 		$objectifs[$i]->cible = $_POST['cible'][$i];
-		$objectifs[$i]->nombre = $_POST['nombre'][$i];
+		$objectifs[$i]->nombre = intval($_POST['nombre'][$i]);
 		$objectifs[$i]->requis = $_POST['requis'][$i];
 	}
 	$strobjectifs = serialize($objectifs);
@@ -70,6 +70,7 @@ print_key_value_form_row('fournisseur', $quete->fournisseur, 'combo', null,
 															 'Magasin' => 'magasin', 'Taverne' => 'taverne'),
 												 false);
 
+echo $quete->objectif;
 echo '<tr><td>Objectifs&nbsp:<br/><a href="javascript:AddObj()">Ajouter</a>';
 echo '</td><td colspan="3"><table id="objtbl" style="border: 1px black solid; width: 100%">';
 

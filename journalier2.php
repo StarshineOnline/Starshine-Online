@@ -27,6 +27,9 @@ include_once('journalier2-map-monde.php');
 // Cartes des royaumes
 include_once('journalier2-map-royaumes.php');
 
+// Carte pose des drapeaux
+include_once('journalier2-map-pose-drapeaux.php');
+
 // Carte de la densité mobs
 include_once('journalier2-map-mobs.php');
 

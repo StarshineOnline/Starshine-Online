@@ -23,11 +23,12 @@ class texte
   const html = 0x40;   ///< indique qu'il faut supprimé les balises html.
   const classe = 0x80;   ///< balises sélectionnant ce qui doit être affiché en fonction de la classe.
   const comp = 0x100;   ///< balises sélectionnant ce qui doit être affiché en fonction des compétences.
+  const actions = 0x200;   ///< balises effetctuant certaines actions.
 
   const messagerie = 0x42;   ///< textes de la messagerie
   const msg_roi = 0x4a;   ///< message du roi
-  const pnj = 0x1bf;   ///< textes des PNJ
-  const cases = 0x19f;   ///< textes des cases
+  const pnj = 0x3bf;   ///< textes des PNJ
+  const cases = 0x3bf;   ///< textes des cases
   
   /**
    * Constructeur
@@ -98,6 +99,8 @@ class texte
       $texte = $this->parse_classe($texte);
     if( $this->options & self::comp )
       $texte = $this->parse_comp($texte);
+    if( $this->options & self::actions )
+      $texte = $this->parse_actions($texte);
       
     return $texte;//preg_replace('`\[[/]?(.*)\]`','', $texte);
   }
@@ -435,6 +438,19 @@ class texte
       return $this->parse_comp($texte);
     else
       return $texte;
+  }
+
+  /// Fonction formattant les balises sélectionnant ce qui doit être affiché en fonction des compétences.
+  protected function parse_actions($texte)
+  {
+    if( preg_match('`\[tp:([0-9,]+)-([0-9,]+)\]`i', $texte, $regs) )
+    {
+      $this->perso->set_x( $regs[1] );
+      $this->perso->set_y( $regs[2] );
+      $this->perso->sauver();
+      $texte = str_ireplace('[tp:'.$regs[1].'-'.$regs[2].']', '<script type="text/javascript">envoiInfo("deplacement.php?deplacement=centre", "centre");</script>', $texte);
+    }
+    return $texte;
   }
 }
 ?>

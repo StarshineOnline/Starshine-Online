@@ -13,6 +13,7 @@ class joueur extends table
 	protected $droits;  ///< droits d'accès.
 	protected $email;  ///< adresse e-mail.
 	protected $mdp_forum;  ///< hash du mot de passe pour le forum.
+	protected $mdp_jabber;  ///< hash du mot de passe pour jabber.
 	
 	// Droits possibles
 	const droit_prog = 1;  ///< Droit pour la programmation.
@@ -141,6 +142,19 @@ class joueur extends table
 		$this->champs_modif[] = 'mdp_forum';
 	}
 
+  /// Renvoie le mot de passe de jabber
+	function get_mdp_jabber()
+	{
+		return $this->mdp_jabber;
+	}
+
+  /// Modifie le mot de passe de jabber
+	function set_mdp_jabber($mdp)
+	{
+    $this->mdp_jabber = $mdp;
+		$this->champs_modif[] = 'mdp_jabber';
+	}
+
   /// Renvoie l'e-mail
 	function get_email()
 	{
@@ -195,17 +209,17 @@ class joueur extends table
 	/// Renvoie la liste des champs pour une insertion dans la base
 	protected function get_liste_champs()
 	{
-    return 'login, mdp, pseudo, droits, email';
+    return 'login, mdp, pseudo, droits, email, mdp_forum';
   }
 	/// Renvoie la liste des valeurs des champs pour une insertion dans la base
 	protected function get_valeurs_insert()
 	{
-		return '"'.mysql_escape_string($this->login).'", "'.$this->mdp.'", "'.mysql_escape_string($this->pseudo).'", "'.$this->droits.'", "'.mysql_escape_string($this->email).'"';
+		return '"'.mysql_escape_string($this->login).'", "'.$this->mdp.'", "'.mysql_escape_string($this->pseudo).'", "'.$this->droits.'", "'.mysql_escape_string($this->email).'", "'.mysql_escape_string($this->mdp_forum).'"';
 	}
 	/// Renvoie la liste des champs et valeurs pour une mise-à-jour dans la base
 	protected function get_liste_update()
 	{
-		return 'login = "'.mysql_escape_string($this->login).'", mdp = "'.$this->mdp.'", pseudo = "'.mysql_escape_string($this->pseudo).'", droits = "'.$this->droits.'", email = "'.mysql_escape_string($this->email).'"';
+		return 'login = "'.mysql_escape_string($this->login).'", mdp = "'.$this->mdp.'", pseudo = "'.mysql_escape_string($this->pseudo).'", droits = "'.$this->droits.'", email = "'.mysql_escape_string($this->email).'", mdp_forum = "'.mysql_escape_string($this->mdp_forum).'"';
 	}
 
 }

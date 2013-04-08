@@ -19,6 +19,14 @@ while($row = $db->read_assoc($req))
 	$map_monstre[$row['x']][$row['y']] = $row['tot'];
 }
 
+$requete = 'SELECT x, y, royaume FROM map';
+$req = $db->query($requete);
+while($row = $db->read_assoc($req))
+{
+	if( $row['royaume'] == 0)
+    unset($map_monstre[$row['x']][$row['y']]);
+}
+
 $im = imagecreate (CARTE_WIDTH, CARTE_HEIGHT)
    or die ("Impossible d'initialiser la bibliothèque GD");
 $background_color = imagecolorallocate ($im, 255, 255, 255);
@@ -41,9 +49,9 @@ $show_info[5] = $color5;
 $show_info[6] = $color6;
 
 //Création de la map
-for($i = 1; $i <= 190; $i++)
+for($i = 1; $i <= $G_max_x; $i++)
 {
-	for($j = 1; $j <= 190; $j++)
+	for($j = 1; $j <= $G_max_y; $j++)
 	{
 		if(!isset($map_monstre[$i][$j])) $densite = 0;
 		else

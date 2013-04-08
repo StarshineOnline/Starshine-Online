@@ -25,8 +25,23 @@ if( $type == 'joueur' )
   {
     $joueur = new joueur(0, $login, '', $pseudo, joueur::droit_jouer, $email, sha1($mdp));
     $joueur->set_mdp( md5($mdp) );
+    $joueur->set_mdp_forum( sha1($mdp) );
+    $joueur->set_mdp_jabber( md5($mdp) );
     $joueur->sauver();
-    echo '<h3>Bienvenue dans Starshine-Online</h3>Vous pouvez désormais vous connecté par le biais de votre compte en utilisant votre pseudo ('.$pseudo.') ou votre login ('.$login.') et créer votre personnage.';
+    $identification = new identification();
+    if( $identification->connexion($login, md5($mdp), false) === 0 )
+    {
+  		?>
+  		<script language="javascript" type="text/javascript">
+  		<!--
+  		window.location.replace("index.php");
+  		-->
+  		</script>
+  		<?php
+    }
+    else
+      echo 'erreur inconnue, veuiller contacter un admin.';
+    //echo '<h3>Bienvenue dans Starshine-Online</h3>Vous pouvez désormais vous connecté par le biais de votre compte en utilisant votre pseudo ('.$pseudo.') ou votre login ('.$login.') et créer votre personnage.';
   }
 }
 else if( $type == 'perso' && isset($_SESSION['id_joueur']) )
@@ -73,7 +88,8 @@ else if( $type == 'perso' && isset($_SESSION['id_joueur']) )
 		</div>
 		<br />
 <?php
-		$joueur = new perso();
+		$joueur =  new joueur( $_SESSION['id_joueur'] );
+		$perso = new perso();
 		$caracteristiques = $Trace[$race];
 		if ($classe == 'combattant')
 		{
@@ -83,6 +99,8 @@ else if( $type == 'perso' && isset($_SESSION['id_joueur']) )
 			$sort_jeu = '';
 			$sort_combat = '';
 			$comp_combat = '';//'7;8';
+  		$perso->set_x($Trace[$race]['spawn_tutocx']);
+  		$perso->set_y($Trace[$race]['spawn_tutocy']);
 		}
 		else
 		{
@@ -92,82 +110,85 @@ else if( $type == 'perso' && isset($_SESSION['id_joueur']) )
 			$sort_jeu = '1';
 			$sort_combat = '1';
 			$comp_combat = '';
+  		$perso->set_x($Trace[$race]['spawn_tutomx']);
+  		$perso->set_y($Trace[$race]['spawn_tutomy']);
 		}
 		$royaume = new royaume($caracteristiques['numrace']);
 
-		$joueur->set_nom(trim($pseudo));
-		$joueur->set_race($race);
-		$joueur->set_level(1);
-		$joueur->set_star($royaume->get_star_nouveau_joueur());
-		$joueur->set_vie($caracteristiques['vie']);
-		$joueur->set_force($caracteristiques['force']);
-		$joueur->set_dexterite($caracteristiques['dexterite']);
-		$joueur->set_puissance($caracteristiques['puissance']);
-		$joueur->set_volonte($caracteristiques['volonte']);
-		$joueur->set_energie($caracteristiques['energie']);
-		$joueur->set_sort_jeu($sort_jeu);
-		$joueur->set_sort_combat($sort_combat);
-		$joueur->set_comp_combat($comp_combat);
-		$joueur->set_rang_royaume(7);
+		$perso->set_nom(trim($pseudo));
+		$perso->set_race($race);
+		$perso->set_level(1);
+		$perso->set_star($royaume->get_star_nouveau_joueur());
+		$perso->set_vie($caracteristiques['vie']);
+		$perso->set_force($caracteristiques['force']);
+		$perso->set_dexterite($caracteristiques['dexterite']);
+		$perso->set_puissance($caracteristiques['puissance']);
+		$perso->set_volonte($caracteristiques['volonte']);
+		$perso->set_energie($caracteristiques['energie']);
+		$perso->set_sort_jeu($sort_jeu);
+		$perso->set_sort_combat($sort_combat);
+		$perso->set_comp_combat($comp_combat);
+		$perso->set_rang_royaume(7);
 		// Pas oublier les bases
-		$joueur->set_melee(1);
-		$joueur->set_distance(1);
-		$joueur->set_esquive(1);
-		$joueur->set_blocage(1);
-		$joueur->set_incantation(1);
-		$joueur->set_identification(1);
-		$joueur->set_craft(1);
-		$joueur->set_alchimie(1);
-		$joueur->set_architecture(1);
-		$joueur->set_forge(1);
-		$joueur->set_survie(1);
-		$joueur->set_dressage(1);
-		$joueur->set_max_pet(1);
+		$perso->set_melee(1);
+		$perso->set_distance(1);
+		$perso->set_esquive(1);
+		$perso->set_blocage(1);
+		$perso->set_incantation(1);
+		$perso->set_identification(1);
+		$perso->set_craft(1);
+		$perso->set_alchimie(1);
+		$perso->set_architecture(1);
+		$perso->set_forge(1);
+		$perso->set_survie(1);
+		$perso->set_dressage(1);
+		$perso->set_max_pet(1);
 
 		if($classe == 'combattant')
 		{
-			$joueur->set_sort_vie(0);
-			$joueur->set_sort_element(0);
-			$joueur->set_sort_mort(0);
-			$joueur->set_facteur_magie(2);
+			$perso->set_sort_vie(0);
+			$perso->set_sort_element(0);
+			$perso->set_sort_mort(0);
+			$perso->set_facteur_magie(2);
 		}
 		else
 		{
-			$joueur->set_sort_vie(1);
-			$joueur->set_sort_element(1);
-			$joueur->set_sort_mort(1);
-			$joueur->set_facteur_magie(1);
+			$perso->set_sort_vie(1);
+			$perso->set_sort_element(1);
+			$perso->set_sort_mort(1);
+			$perso->set_facteur_magie(1);
 		}
 		$requete = "SELECT id FROM classe WHERE nom = '".ucwords($classe)."'";
 		$req = $db->query($requete);
 		$row = $db->read_assoc($req);
-		$joueur->set_classe($classe);
-		$joueur->set_classe_id($row['id']);
-		echo $joueur->get_classe_id(), '...';
-		$joueur->set_hp(floor(sqrt($joueur->get_vie()) * 75));
-		$joueur->set_hp_max($joueur->get_hp());
-		$joueur->set_mp($joueur->get_energie() * $G_facteur_mana);
-		$joueur->set_mp_max($joueur->get_mp());
-		$joueur->set_regen_hp(time());
-		$joueur->set_maj_mp(time());
-		$joueur->set_maj_hp(time());
+		$perso->set_classe($classe);
+		$perso->set_classe_id($row['id']);
+		//echo $joueur->get_classe_id(), '...';
+		$perso->set_hp(floor(sqrt($perso->get_vie()) * 75));
+		$perso->set_hp_max($perso->get_hp());
+		$perso->set_mp($perso->get_energie() * $G_facteur_mana);
+		$perso->set_mp_max($perso->get_mp());
+		$perso->set_regen_hp(time());
+		$perso->set_maj_mp(time());
+		$perso->set_maj_hp(time());
 
-		$joueur->set_x($Trace[$race]['spawn_tutox']);
-		$joueur->set_y($Trace[$race]['spawn_tutoy']);
-		$joueur->set_inventaire('O:10:"inventaire":12:{s:4:"cape";N;s:5:"mains";N;s:11:"main_droite";N;s:11:"main_gauche";N;s:5:"torse";N;s:4:"tete";N;s:8:"ceinture";N;s:6:"jambes";N;s:5:"pieds";N;s:3:"dos";N;s:5:"doigt";N;s:3:"cou";N;}');
-		$joueur->set_quete('');
-		$joueur->set_pa(180);
-		$joueur->set_tuto(1);
-		
-		$joueur->set_dernieraction(time());
+		$perso->set_inventaire('O:10:"inventaire":12:{s:4:"cape";N;s:5:"mains";N;s:11:"main_droite";N;s:11:"main_gauche";N;s:5:"torse";N;s:4:"tete";N;s:8:"ceinture";N;s:6:"jambes";N;s:5:"pieds";N;s:3:"dos";N;s:5:"doigt";N;s:3:"cou";N;}');
+		$perso->set_quete('');
+		$perso->set_pa(180);
+		$perso->set_tuto(1);
+		$perso->set_date_creation(time());
+
+		$perso->set_statut('actif');
+		$perso->set_dernieraction(time());
 		//($id = 0, $mort = 0, $nom = '', $password = '', $exp = '', $honneur = '', $level = '', $rang_royaume = '', $vie = '', $forcex = '', $dexterite = '', $puissance = '', $volonte = '', $energie = '', $race = '', $classe = '', $classe_id = '', $inventaire = '', $inventaire_slot = '', $pa = '', $dernieraction = '', $action_a = '', $action_d = '', $sort_jeu = '', $sort_combat = '', $comp_combat = '', $comp_jeu = '', $star = '', $x = '', $y = '', $groupe = '', $hp = '', $hp_max = '', $mp = '', $mp_max = '', $melee = '', $distance = '', $esquive = '', $blocage = '', $incantation = '', $sort_vie = '', $sort_element = '', $sort_mort = '', $identification = '', $craft = '', $alchimie = '', $architecture = '', $forge = '', $survie = '', $facteur_magie = '', $facteur_sort_vie = '', $facteur_sort_mort = '', $facteur_sort_element = '', $regen_hp = '', $maj_hp = '', $maj_mp = '', $point_sso = '', $quete = '', $quete_fini = '', $dernier_connexion = '', $statut = '', $fin_ban = '', $frag = '', $crime = '', $amende = '', $teleport_roi = '', $cache_classe = '', $cache_stat = '', $cache_niveau = '', $beta = '')
 		/*$requete = "INSERT INTO perso(`ID`,`nom`,`password`,`exp`,`level`,`star`,`vie`,`forcex`,`dexterite`,`puissance`,`volonte`,`energie`,`race`,`classe`, `classe_id`, `inventaire`,`pa`,`dernieraction`, `x`,`y`,`hp`,`hp_max`,`mp`,`mp_max`,`regen_hp`,`maj_mp`,`maj_hp`,`sort_jeu`,`sort_combat`, `comp_combat`, `quete`, `sort_vie`, `sort_element`, `sort_mort`, `facteur_magie`)
 		VALUES ('','$nom','$password','$exp','$level','$star','$vie','$force','$dexterite','$puissance','$volonte','$energie','$race','$classe', $classe_id, '$inventaire','180','$time',$x,$y,'$hp','$hp_max','$mp','$mp_max','$regen_hp','$maj_mp','$maj_hp', '$sort_jeu', '$sort_combat', '$comp_combat', '$quete', '$sort_vie', '$sort_element', '$sort_mort', '$facteur_magie')";*/
-    $joueur->set_id_joueur( $_SESSION['id_joueur'] );
+    $perso->set_id_joueur( $_SESSION['id_joueur'] );
+    $perso->set_password( $joueur->get_mdp_jabber() );
 
-		$joueur->sauver();
-		$jid = replace_all($joueur->get_nom()).'@jabber.starshine-online.com';
-		if($joueur->get_id() == -1)
+		$perso->sauver();
+		$jid = replace_all($perso->get_nom()).'@jabber.starshine-online.com';
+		/*if($perso->get_id() == -1)
 		{
 			echo $requete.'<br />';
 		}
@@ -190,12 +211,27 @@ Les logins et mot de passe pour se connecter a ces forums sont les mêmes que ce
 En espérant que votre périple se passera bien.
 Bon jeu !';
 		    $messagerie->envoi_message($id_thread, $id_dest, $titre, $message, $id_groupe);
-		}
-		require_once('connect_forum.php');
-		//Création de l'utilisateur dans le forum
-		$joueur =  new joueur( $_SESSION['id_joueur'] );
-		$requete = "INSERT INTO punbbusers(`group_id`, `username`, `password`, `language`, `style`, `registered`, `jabber`, `email`) VALUES('".$punbb[$race]."', '".$joueur->get_nom()."', '".$joueur->get_mdp_forum()."', 'French', 'SSO', '".time()."', '$jid', '".$joueur->get_email()."')";
-		$db_forum->query($requete);
+		}*/
+		if(is_file('connect_forum.php'))
+		{
+			require_once('connect_forum.php');
+			//Création de l'utilisateur dans le forum
+			$requete = "INSERT INTO punbbusers(`group_id`, `username`, `password`, `language`, `style`, `registered`, `jabber`, `email`) VALUES('".$punbb[$race]."', '".$perso->get_nom()."', '".$joueur->get_mdp_forum()."', 'French', 'SSO', '".time()."', '$jid', '".$joueur->get_email()."')";
+			$db_forum->query($requete);	
+	  }
+
+    // variables de session
+		$_SESSION['nom'] = $perso->get_nom();
+		$_SESSION['race'] = $perso->get_race();
+		$_SESSION['grade'] = $perso->get_grade();
+		$_SESSION['ID'] = $perso->get_id();
+		?>
+		<script language="javascript" type="text/javascript">
+		<!--
+		window.location.replace("interface.php");
+		-->
+		</script>
+		<?php
 	}
 }
 

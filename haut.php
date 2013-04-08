@@ -7,6 +7,10 @@ if(isset($_SESSION['nom']) || $admin)
 {
   $check = true;
 }
+elseif( isset($_SESSION['pseudo']) )
+{
+  $check = 0;
+}
 elseif(!array_key_exists('log', $_POST) && strpos($_SERVER['SCRIPT_NAME'], '/index.php') === false) // === car 0 == false
 {
   $s = strpos($_SERVER['SCRIPT_NAME'], '/index.php');
@@ -38,6 +42,31 @@ if((isset($_POST['log']) OR isset($_COOKIE['nom'])) AND !array_key_exists('nom',
 	$check = $identification->connexion($nom, $password, $autologin);
 	if($check)
 	{
+    // hook pour les hash de mdp forum et jabber
+    if( array_key_exists('id_joueur', $_SESSION) && array_key_exists('password', $_SESSION) )
+    {
+      $joueur_hook = new joueur($_SESSION['id_joueur']);
+      $mod = false;
+      if( !$joueur_hook->get_mdp_forum() )
+      {
+        $joueur_hook->set_mdp_forum( sha1($_SESSION['password']) );
+        $mod = true;
+      }
+      if( !$joueur_hook->get_mdp_jabber() )
+      {
+        $joueur_hook->set_mdp_jabber( md5($_SESSION['password']) );
+        $mod = true;
+      }
+      if($mod)
+        $joueur_hook->sauver();
+      $perso = new perso($_SESSION['ID']);
+      if( !$perso->get_password() )
+      {
+        $perso->set_password( md5($_SESSION['password']) );
+        $perso->sauver();
+      }
+    }
+      
 		?>
 		<script language="javascript" type="text/javascript">
 		<!--

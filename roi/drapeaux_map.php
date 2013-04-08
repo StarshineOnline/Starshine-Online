@@ -11,8 +11,8 @@ if (array_key_exists('img', $_GET) &&
     array_key_exists('map_drap_key', $_SESSION) &&
     $_GET['img'] == $_SESSION['map_drap_key']) {
 
-	define('MAP_WIDTH', 190);
-	define('MAP_HEIGHT', 190);
+	define('MAP_WIDTH', $G_max_x);
+	define('MAP_HEIGHT', $G_max_y);
 	define('CARTE3D_WIDTH', MAP_WIDTH * $echelle); // Echelle
 	define('CARTE3D_HEIGHT', MAP_HEIGHT * $echelle); // Echelle
 
@@ -25,7 +25,7 @@ if (array_key_exists('img', $_GET) &&
 
   header('Content-Type: image/png');
 
-	$src = root.'image/carte_royaume.png';
+	$src = root.'image/carte-pose-drapeaux.png';
 	$im3d = imagecreatefrompng($src);
 
 	$color = imagecolorallocate($im3d, 255, 0, 255);
