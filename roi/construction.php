@@ -12,8 +12,18 @@ if($joueur->get_rang_royaume() != 6 AND $joueur->get_id() != $royaume->get_minis
 	echo '<p>Cette page vous est interdite</p>';
 else if(!array_key_exists('direction', $_GET))
 {
-	echo "<div id='affiche_minimap' style='float:right;'>";
-	echo "</div>";
+	echo "<div  style='float:right;'><div id='affiche_dist' style='width:375px;'><fieldset>";
+	echo "<legend>Distances de pose</legend>";
+	echo '<b>Bourgs : </b><ul>';
+	echo '<li>Avec un autre bourg : '.floor(7*$royaume->get_facteur_entretien()).'</li>';
+	echo '<li>Avec une capitale : 5</li>';
+	echo '<b>Forts : </b><ul>';
+	echo '<li>Avec un autre de vos forts : '.floor(4*$royaume->get_facteur_entretien()).'</li>';
+	echo '<li>Avec un fort d\'un autre peuple : 4</li>';
+	echo '<li>Avec une capitale : 7</li>';
+	echo "</fieldset></div>";
+	echo "<div id='affiche_minimap'>";
+	echo "</div></div>";
 	if ($RAZ_ROYAUME)
 	{
 		echo '<div><strong>Gestion impossible quand la capitale est mise à sac</strong></div>';

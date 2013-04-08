@@ -4,7 +4,7 @@ if (file_exists('../root.php'))
 ?><?php
 require_once('haut_roi.php');
 
-$requete = "select sum(level)/count(id) moy from perso WHERE statut = 'actif'";
+/*$requete = "select sum(level)/count(id) moy from perso WHERE statut = 'actif'";
 $req = $db->query($requete);
 $row = $db->read_row($req);
 $ref_ta = floor($row[0] - 1.5); // Bastien : on fait -1.5 pour eviter
@@ -23,20 +23,21 @@ if ($ref_ta > 3)
 } else {
 	echo "Niveau de référence pour l'entretien: $ref_ta";
 	$requete = "SELECT race, COUNT(*) as tot FROM perso WHERE level > $ref_ta AND dernier_connexion > $semaine GROUP BY race";
-}
-$req = $db->query($requete);
+}*/
+echo 'Niveau de référence pour l\'entretien: '.royaume::get_niveau_ref_actifs();
+/*$req = $db->query($requete);
 while($row = $db->read_row($req))
 {
 	$habitants[$row[0]] = $row[1];
 }
 $min_habitants = @min($habitants);
-if($min_habitants > 0) $ratio = $habitants[$royaume->get_race()] / $min_habitants;
+if($min_habitants > 0) $ratio = $habitants[$royaume->get_race()] / $min_habitants;*/
 if($joueur->get_rang_royaume() != 6 AND $joueur->get_id() != $royaume->get_ministre_economie())
 	echo '<p>Cette page vous est interdite</p>';
 else 
 {
-if($ratio < 1) $ratio = 1;
-echo ' , Multiplicateur d\'entretien : '.$ratio.'<br />';
+//if($ratio < 1) $ratio = 1;
+echo ' , Multiplicateur d\'entretien : '.round($royaume->get_facteur_entretien(), 2).'<br />';
 echo '
 <fieldset class="tier">
 <legend>Batiments interne</legend>

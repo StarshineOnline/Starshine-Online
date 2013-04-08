@@ -202,7 +202,7 @@ foreach($ressource_final as $key => $value)
 }
 
 //Mis à jour de la nourriture totales
-$food_total = ceil($tot_nou * 1.01);
+$food_total = $tot_nou;//ceil($tot_nou * 1.01);
 $requete = "UPDATE stat_jeu SET food = ".$food_total." WHERE date = '".$date."'";
 $db->query($requete);
 
@@ -227,6 +227,7 @@ $roy = royaume::create(null, null, 'id ASC', false, 'id <> 0');
 foreach($roy as $r)
 {
   $r->maj_conso_food();
+  $r->sauver();
 }
 foreach($tab_royaume as $race => $royaume)
 {

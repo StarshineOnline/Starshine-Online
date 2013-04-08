@@ -1,0 +1,1 @@
+ALTER TABLE `royaume` CHANGE `facteur_entretien` `facteur_entretien` FLOAT( 10 ) NOT NULL DEFAULT '1';

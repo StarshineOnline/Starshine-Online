@@ -65,10 +65,12 @@ while($row = $db->read_row($req))
 	$royaumes[$row[0]]['id'] = $row[0];
 	$royaumes[$row[0]]['ratio'] = $row[2];
 }
+
 $roy = royaume::create(null, null, 'id ASC', false, 'id <> 0');
 foreach($roy as $r)
 {
   $r->maj_facteur_entretien();
+  $r->sauver();
 }
 
 //PHASE 1, entretien des batiments internes
@@ -81,6 +83,7 @@ while($row = $db->read_assoc($req))
 	$royaumes[$row['id_royaume']]['batiments'][$row['id_const']] = $entretien;
 	$royaumes[$row['id_royaume']]['total'] += $entretien;
 }
+
 
 //Entretien !
 /// Augmente la dette des batiments inactifs (de la moitie de l'entretien)

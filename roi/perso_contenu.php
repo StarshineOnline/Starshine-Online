@@ -22,12 +22,12 @@ $W_distance = detection_distance($W_case,$_SESSION["position"]);
 
 $W_coord = convert_in_coord($W_case);
 
-//On prend en compte la nourriture en bourse dans les stocks
+/*//On prend en compte la nourriture en bourse dans les stocks
 $requete = "SELECT SUM(nombre) as food_bourse FROM bourse_royaume WHERE actif = 1 AND ressource = 'food' AND id_royaume = ".$royaume->get_id();
 $req = $db->query($requete);
 $row = $db->read_assoc($req);
 $food_bourse = $row['food_bourse'];
-$food_necessaire = floor($food_necessaire * $royaume->get_habitants() * 0.95) + floor(($royaume->get_food() + $food_bourse) * 0.05);
+$food_necessaire = floor($food_necessaire * $royaume->get_habitants() * 0.95) + floor(($royaume->get_food() + $food_bourse) * 0.05);*/
 ?>
 <div style='width:300px;float:left;'>
 
@@ -38,7 +38,7 @@ $food_necessaire = floor($food_necessaire * $royaume->get_habitants() * 0.95) + 
 <div style='width:300px;float:left;'>
 	<strong>Habitants très actifs</strong> : <?php echo $royaume->get_habitants_actif(); ?><br />
 	<strong>Nourriture</strong> : <?php echo $royaume->get_food(); ?><br />
-	<strong>Nourriture nécessaire</strong> : <?php echo $food_necessaire; ?>
+	<strong>Nourriture nécessaire</strong> : <?php echo $royaume->get_conso_food(); ?>
 </div>
 
 <div style='width:270px;float:left;'>
