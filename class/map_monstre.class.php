@@ -397,11 +397,12 @@ class map_monstre extends entnj_incarn
       $requete = 'SELECT COUNT(*) AS tot FROM map_monstre WHERE x='.$this->get_x().' AND y='.$this->get_x();
       $res = $db->query($requete);
       $row = $db->read_array($res);
+      $nouv = clone $this;
       if( $row['tot'] <= 1 )
       {
-        $this->set_id(0);
-        $this->set_hp( $this->get_def()->get_hp() );
-        $this->sauver();
+        $nouv->set_id(0);
+        $nouv->set_hp( $this->get_def()->get_hp() );
+        $nouv->sauver();
       }
 			
 		default:
