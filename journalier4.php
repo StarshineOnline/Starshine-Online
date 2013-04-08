@@ -52,7 +52,7 @@ foreach($lst_roy as $royaume)
 	}
 }
 
-$requete = "SELECT royaume.race as race, info, COUNT(*) as tot_terrain FROM `map` LEFT JOIN royaume ON map.royaume = royaume.id WHERE royaume <> 0 GROUP BY info, royaume";
+$requete = "SELECT royaume.race as race, info, COUNT(*) as tot_terrain FROM `map` LEFT JOIN royaume ON map.royaume = royaume.id WHERE royaume <> 0 AND x <= 190 AND y <= 190  GROUP BY info, royaume";
 $req = $db->query($requete);
 while($row = $db->read_assoc($req))
 {
