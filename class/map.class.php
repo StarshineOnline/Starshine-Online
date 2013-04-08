@@ -121,6 +121,8 @@ class map
 			$MAPTAB[$objMap->x][$objMap->y]["royaume"] = $objMap->royaume;
 			$MAPTAB[$objMap->x][$objMap->y]["type"] = $objMap->info;
 			$MAPTAB[$objMap->x][$objMap->y]["maptype"] = $objMap->type;
+			if( $this->resolution == 'low' && $objMap->royaume == 0 )
+        $MAPTAB[$objMap->x][$objMap->y]["decor"] = 0;
 		}
 		$classe_css = array();
 		if(!$this->donjon or $this->y <= 190)
@@ -463,7 +465,7 @@ class map
 	
 						if($this->resolution == 'low') $tex_resolution = 'l';
 						else $tex_resolution = '';
-						if(is_array($MAPTAB[$x_map][$y_map])) { $class_map = "decor tex".$tex_resolution.$MAPTAB[$x_map][$y_map]["decor"]; } else { $class_map = "decor texblack"; };
+						if(is_array($MAPTAB[$x_map][$y_map]) && $MAPTAB[$x_map][$y_map]["decor"]) { $class_map = "decor tex".$tex_resolution.$MAPTAB[$x_map][$y_map]["decor"]; } else { $class_map = "decor texblack"; };
 	
 						if($this->affiche_royaume) $taille_border = 1;
 						else $taille_border = 0;
