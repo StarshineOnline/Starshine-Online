@@ -331,6 +331,26 @@ function type_terrain($info)
   $typeterrain[175][1] = 'Donjon';
 	$typeterrain[185][0] = 'donjon_aqua_level_1';
   $typeterrain[185][1] = 'Donjon';
+	$typeterrain[195][0] = 'donjon';
+	$typeterrain[195][1] = 'Donjon';
+	$typeterrain[196][0] = 'mur_donjon';
+	$typeterrain[196][1] = 'Mur de Donjon';
+	$typeterrain[205][0] = 'donjon';
+	$typeterrain[205][1] = 'Donjon';
+	$typeterrain[206][0] = 'mur_donjon';
+	$typeterrain[206][1] = 'Mur de Donjon';
+	$typeterrain[215][0] = 'donjon';
+	$typeterrain[215][1] = 'Donjon';
+	$typeterrain[216][0] = 'mur_donjon';
+	$typeterrain[216][1] = 'Mur de Donjon';
+	$typeterrain[225][0] = 'donjon';
+	$typeterrain[225][1] = 'Donjon';
+	$typeterrain[226][0] = 'mur_donjon';
+	$typeterrain[226][1] = 'Mur de Donjon';
+	$typeterrain[235][0] = 'donjon';
+	$typeterrain[235][1] = 'Donjon';
+	$typeterrain[236][0] = 'mur_donjon';
+	$typeterrain[236][1] = 'Mur de Donjon';
 	/* TEMPLATE
 	$typeterrain[][0] = '';
 	$typeterrain[][1] = '';
