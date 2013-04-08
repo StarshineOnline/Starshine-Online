@@ -2311,7 +2311,8 @@
 .tex9549{background:url('../image/texture/tutorial/corrompus/narcisse_droit_haut.png') no-repeat;}
 .tex9550{background:url('../image/texture/tutorial/corrompus/narcisse_coin_hg_mur.png') no-repeat;}
 .tex9551{background:url('../image/texture/tutorial/corrompus/narcisse_coin_hd_mur.png') no-repeat;}
-.tex9605{background:url('../image/texture/tutorial/corrompus/sol_narcisse_jonction_terre.png') no-repeat;}
+
+.tex10505{background:url('../image/texture/tutorial/corrompus/sol_narcisse_jonction_terre.png') no-repeat;}
 
 .tex9552{background:url('../image/texture/tutorial/orc/couloir_verti_orc_ext_entree2.png') no-repeat;}
 .tex9553{background:url('../image/texture/tutorial/orc/couloir_verti_orc_ext_entreed.png') no-repeat;}
@@ -2362,11 +2363,13 @@
 .tex9597{background:url('../image/texture/tutorial/humains/chateau_coin_hd_mur.png') no-repeat;}
 .tex9598{background:url('../image/texture/tutorial/humains/chateau_coin_hg_mur.png') no-repeat;}
 .tex9599{background:url('../image/texture/tutorial/humains/chateau_droit.png') no-repeat;}
-.tex9600{background:url('../image/texture/tutorial/humains/chateau_gauche.png') no-repeat;}
-.tex9601{background:url('../image/texture/tutorial/humains/chateau_horiz_pass.png') no-repeat;}
-.tex9602{background:url('../image/texture/tutorial/humains/chateau_horizontal_croisement_haut.png') no-repeat;}
-.tex9603{background:url('../image/texture/tutorial/humains/chateau_horizontal.png') no-repeat;}
-.tex9604{background:url('../image/texture/tutorial/humains/chateau_coin_hg_mur_porte.png') no-repeat;}
+
+
+.tex10500{background:url('../image/texture/tutorial/humains/chateau_gauche.png') no-repeat;}
+.tex10501{background:url('../image/texture/tutorial/humains/chateau_horiz_pass.png') no-repeat;}
+.tex10502{background:url('../image/texture/tutorial/humains/chateau_horizontal_croisement_haut.png') no-repeat;}
+.tex10503{background:url('../image/texture/tutorial/humains/chateau_horizontal.png') no-repeat;}
+.tex10504{background:url('../image/texture/tutorial/humains/chateau_coin_hg_mur_porte.png') no-repeat;}
 
 
 .tex6600{background:url('../image/texture/donjon_riviere_verte/mur_eau_basse_buisson_bg.png') no-repeat;}	
