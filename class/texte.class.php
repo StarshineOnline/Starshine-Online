@@ -28,7 +28,7 @@ class texte
   const messagerie = 0x42;   ///< textes de la messagerie
   const msg_roi = 0x4a;   ///< message du roi
   const pnj = 0x3bf;   ///< textes des PNJ
-  const cases = 0x39f;   ///< textes des cases
+  const cases = 0x3bf;   ///< textes des cases
   
   /**
    * Constructeur
