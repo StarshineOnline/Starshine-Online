@@ -6,6 +6,9 @@ if (file_exists('../root.php')) {
   include_once('../root.php');
 }
 
+$echelle = 4; // La carte est 3x plus grande
+
+
 require_once('haut_roi.php');
 
 if ($joueur->get_rang_royaume() != 6) {
@@ -44,13 +47,13 @@ if (array_key_exists('poseall', $_REQUEST)) {
 }
 
 function print_map($mag_factor, $r_c) {
-	global $db;
+	global $db, $echelle;
 	echo "<map name=\"mapimmap\">\n";
 	while ($r = $db->read_object($r_c)) {
-		$r->x1 = ($r->x - 1) * 4 * $mag_factor;
-		$r->y1 = ($r->y - 1) * 4 * $mag_factor;
-		$r->x2 = $r->x1 + (4 * $mag_factor);
-		$r->y2 = $r->y1 + (4 * $mag_factor);
+		$r->x1 = ($r->x - 1) * $echelle * $mag_factor;
+		$r->y1 = ($r->y - 1) * $echelle * $mag_factor;
+		$r->x2 = $r->x1 + ($echelle * $mag_factor);
+		$r->y2 = $r->y1 + ($echelle * $mag_factor);
 		echo "<area shape=\"rect\" coords=\"$r->x1,$r->y1,$r->x2,$r->y2\" alt=\"$r->x,$r->y\" href=\"javascript:pose_drapeau($r->x, $r->y)\" />\n";
 	}
 	echo "</map>\n";
@@ -92,7 +95,7 @@ if (array_key_exists('mleft', $_GET)) {
 $rand = rand();
 $_SESSION['map_drap_key'] = $rand;
 
-$map_size = 760 * $mag_factor;
+$map_size = $G_max_x * 4 * $mag_factor;
 
 ?>
 <div id="info">
