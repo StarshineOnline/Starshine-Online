@@ -28,9 +28,9 @@ if (array_key_exists('img', $_GET) &&
 	$src = root.'image/carte-pose-drapeaux.png';
 	$im3d = imagecreatefrompng($src);
 
-	$color = imagecolorallocate($im3d, 255, 0, 255);
-	$color_pose = imagecolorallocate($im3d, 255, 255, 0);
 	$imalpha = imagecreatetruecolor(CARTE3D_WIDTH, CARTE3D_HEIGHT);
+	$color = imagecolorallocate($imalpha, 255, 0, 255);
+	$color_pose = imagecolorallocate($imalpha, 255, 255, 0);
 	$noir = imagecolorallocate($imalpha, 170, 170, 170);
 	imagefill($imalpha, 0, 0, $noir);
 	imagecolortransparent($imalpha, $noir);
