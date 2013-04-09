@@ -3376,9 +3376,14 @@ class perso extends entite
     return $msg_xp;
   }
   /// Renvoie le coût en PA pour attaquer l'entité
-  function get_cout_attaque_base(&$perso)
+  function get_cout_attaque_base(&$perso, &$defenseur)
   {
     global $G_PA_attaque_joueur;
+    if ($defenseur->get_race() == $perso->get_race() && !$perso->in_arene())
+    {
+		return ($G_PA_attaque_joueur+3);
+	}
+	else
     return $G_PA_attaque_joueur;
   }
 	// @}
