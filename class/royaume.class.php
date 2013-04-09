@@ -185,7 +185,7 @@ class royaume
         if( $row['tot'] )
           array_push($actifs, $row['tot']);
       }
-      $ref_actifs = ($actifs[0]+array_pop($actifs))/2;
+      $ref_actifs = ($actifs[0]+$actifs[1]+$actifs[2]+array_pop($actifs))/4;
     }
     $facteur = $this->get_habitants_actif() / $ref_actifs;
     if( $facteur < .3 ) $facteur = .3;
