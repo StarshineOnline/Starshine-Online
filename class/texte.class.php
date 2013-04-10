@@ -28,6 +28,7 @@ class texte
   const msg_roi = 0x4a;   ///< message du roi
   const pnj = 0x1bf;   ///< textes des PNJ
   const cases = 0x1bf;   ///< textes des cases
+  const tutoriel = 0x1b8;   ///< textes des tutoriels
   
   /**
    * Constructeur
@@ -444,9 +445,13 @@ class texte
   {
     if( preg_match('`\[tp:([0-9]+)-([0-9]+)\]`i', $texte, $regs) )
     {
-      $this->perso->set_x( $regs[1] );
-      $this->perso->set_y( $regs[2] );
-      $this->perso->sauver();
+      $pos = convert_in_coord($this->case);
+      if( $this->perso->get_x() == $pos['x'] && $this->perso->get_y() == $pos['y'] )
+      {
+        $this->perso->set_x( $regs[1] );
+        $this->perso->set_y( $regs[2] );
+        $this->perso->sauver();
+      }
       $texte = str_ireplace('[tp:'.$regs[1].'-'.$regs[2].']', '<script type="text/javascript">envoiInfo("deplacement.php?deplacement=centre", "centre");</script>', $texte);
     }
     if( preg_match('`\[tuto:([0-9+]+)\]`i', $texte, $regs) )
