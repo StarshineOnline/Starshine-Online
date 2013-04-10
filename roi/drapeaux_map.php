@@ -30,7 +30,7 @@ if (array_key_exists('img', $_GET) &&
 
 	$imalpha = imagecreatetruecolor(CARTE3D_WIDTH, CARTE3D_HEIGHT);
 	$color = imagecolorallocate($imalpha, 255, 0, 255);
-	$color_pose = imagecolorallocate($imalpha, 255, 255, 0);
+	$color_pose = imagecolorallocate($imalpha, 0, 255, 255);
 	$noir = imagecolorallocate($imalpha, 170, 170, 170);
 	imagefill($imalpha, 0, 0, $noir);
 	imagecolortransparent($imalpha, $noir);

@@ -21,14 +21,13 @@ class texte
   const navig = 0x10;   ///< balises gérant la navigation (par ex. [retour]).
   const progr_pnj = 0x20;   ///< balises permettant de mettre d'éxécuter les fonctions spéciales pour les PNJ.
   const html = 0x40;   ///< indique qu'il faut supprimé les balises html.
-  const classe = 0x80;   ///< balises sélectionnant ce qui doit être affiché en fonction de la classe.
-  const comp = 0x100;   ///< balises sélectionnant ce qui doit être affiché en fonction des compétences.
-  const actions = 0x200;   ///< balises effetctuant certaines actions.
+  const perso = 0x80;   ///< balises sélectionnant ce qui doit être affiché en fonction du personnage.
+  const actions = 0x100;   ///< balises effetctuant certaines actions.
 
   const messagerie = 0x42;   ///< textes de la messagerie
   const msg_roi = 0x4a;   ///< message du roi
-  const pnj = 0x3bf;   ///< textes des PNJ
-  const cases = 0x3bf;   ///< textes des cases
+  const pnj = 0x1bf;   ///< textes des PNJ
+  const cases = 0x1bf;   ///< textes des cases
   
   /**
    * Constructeur
@@ -95,10 +94,8 @@ class texte
       $texte = $this->parse_progr_pnj($texte);
     if( $this->options & self::progr_pnj )
       $texte = $this->parse_progr_pnj($texte);
-    if( $this->options & self::classe )
-      $texte = $this->parse_classe($texte);
-    if( $this->options & self::comp )
-      $texte = $this->parse_comp($texte);
+    if( $this->options & self::perso )
+      $texte = $this->parse_perso($texte);
     if( $this->options & self::actions )
       $texte = $this->parse_actions($texte);
       
@@ -317,8 +314,8 @@ class texte
       else
       {
     		// NE PAS OUBLIER le modificateur 's' pour PCRE_DOTALL
-    		$s = preg_match('`\[$markup\]`i', $texte);
-    		$e = preg_match('`\[/$markup\]`i', $texte);
+    		$s = preg_match('`\['.$markup.'\]`i', $texte);
+    		$e = preg_match('`\[/'.$markup.'\]`i', $texte);
         $texte = preg_replace('`\['.$markup.'\].*\[/'.$markup.'\]`si', '', $texte);
     		if (!$s || !$e) die("Erreur de dialogue pnj: id = $this->id, reponse = $reponse, s = $s, e = $e");
       }
@@ -384,10 +381,11 @@ class texte
       return $texte;
   }
 
-  /// Fonction formattant les balises sélectionnant ce qui doit être affiché en fonction de la classe.
-  protected function parse_classe($texte)
+  /// Fonction formattant les balises sélectionnant ce qui doit être affiché en fonction de la personnage.
+  protected function parse_perso($texte)
   {
     $trouve = false;
+    // classes
     $texte = preg_replace('`\[/classe:([0-9,]+)\]`i', '[/£classe:\\1]', $texte);
     while( preg_match('`\[classe:([0-9,]+)\]([^£]*)\[/£classe:\g1\]`i', $texte, $regs) )
     {
@@ -398,17 +396,18 @@ class texte
         $texte = preg_replace('`\[classe:'.$regs[1].'\]([^£]*)\[/£classe:'.$regs[1].'\]`i', '', $texte);
       $trouve = true;
     }
-
-    if( $trouve )
-      return $this->parse_classe($texte);
-    else
-      return $texte;
-  }
-
-  /// Fonction formattant les balises sélectionnant ce qui doit être affiché en fonction des compétences.
-  protected function parse_comp($texte)
-  {
-    $trouve = false;
+    // race
+    $texte = preg_replace('`\[/race:([a-z,]+)\]`i', '[/£race:\\1]', $texte);
+    while( preg_match('`\[race:([a-z,]+)\]([^£]*)\[/race:\g1\]`i', $texte, $regs) )
+    {
+      $classes = explode(',', $regs[1]);
+      if( in_array($this->perso->get_race(), $classes) )
+        $texte = preg_replace('`\[race:'.$regs[1].'\]([^£]*)\[/£race:'.$regs[1].'\]`i', '\\1', $texte);
+      else
+        $texte = preg_replace('`\[race:'.$regs[1].'\]([^£]*)\[/£race:'.$regs[1].'\]`i', '', $texte);
+      $trouve = true;
+    }
+    // compétences
     while( preg_match('`\[comp:([a-z_]*)([=<>])([0-9]*)\].*\[/comp:\g1\g2\g3\]`i', $texte, $regs) )
     {
       $get = 'get_'.$regs[1];
@@ -435,7 +434,7 @@ class texte
     }
 
     if( $trouve )
-      return $this->parse_comp($texte);
+      return $this->parse_perso($texte);
     else
       return $texte;
   }
@@ -443,12 +442,22 @@ class texte
   /// Fonction formattant les balises sélectionnant ce qui doit être affiché en fonction des compétences.
   protected function parse_actions($texte)
   {
-    if( preg_match('`\[tp:([0-9,]+)-([0-9,]+)\]`i', $texte, $regs) )
+    if( preg_match('`\[tp:([0-9]+)-([0-9]+)\]`i', $texte, $regs) )
     {
       $this->perso->set_x( $regs[1] );
       $this->perso->set_y( $regs[2] );
       $this->perso->sauver();
       $texte = str_ireplace('[tp:'.$regs[1].'-'.$regs[2].']', '<script type="text/javascript">envoiInfo("deplacement.php?deplacement=centre", "centre");</script>', $texte);
+    }
+    if( preg_match('`\[tuto:([0-9+]+)\]`i', $texte, $regs) )
+    {
+      if( $regs[1] == '+' )
+        $tuto = $this->perso->get_tuto() + 1;
+      else
+        $tuto = $regs[1];
+      $this->perso->set_tuto( $tuto );
+      $this->perso->sauver();
+      $texte = str_ireplace('[tuto:'.$regs[1].']', '', $texte);
     }
     return $texte;
   }

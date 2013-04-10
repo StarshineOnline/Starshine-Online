@@ -103,8 +103,8 @@ Drapeaux disponibles : <?php echo $nb_drapeaux_dispo; ?><br/>
 Drapeaux posés : <?php echo $nb_drapeaux_poses; ?><br/>
 Cases de pose autorisées : <?php echo $nb_cases_ok; ?><br/>
 <br/>
-Cases visibles: cases colonisables<br/>
-Cases claires: cases déjà colonisées 
+Rose : cases colonisables<br/>
+Cyan : cases déjà colonisées
 </div>
 
 <div id="ctrls" style="float: right; background-color: #FFFFCC; padding: 3px">

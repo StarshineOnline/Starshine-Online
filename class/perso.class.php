@@ -3379,7 +3379,10 @@ class perso extends entite
   function get_cout_attaque_base(&$perso)
   {
     global $G_PA_attaque_joueur;
-    return $G_PA_attaque_joueur;
+    if($this->get_race() == $perso->get_race() && $this->in_arene() == false)
+      return $G_PA_attaque_joueur + 3;
+    else
+      return $G_PA_attaque_joueur;
   }
 	// @}
 
