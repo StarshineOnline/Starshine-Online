@@ -399,7 +399,7 @@ class texte
     }
     // race
     $texte = preg_replace('`\[/race:([a-z,]+)\]`i', '[/£race:\\1]', $texte);
-    while( preg_match('`\[race:([a-z,]+)\]([^£]*)\[/race:\g1\]`i', $texte, $regs) )
+    while( preg_match('`\[race:([a-z,]+)\]([^£]*)\[/£race:\g1\]`i', $texte, $regs) )
     {
       $classes = explode(',', $regs[1]);
       if( in_array($this->perso->get_race(), $classes) )
