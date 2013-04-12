@@ -2525,6 +2525,19 @@
 .tex19543{background:url('../image/texture/tutorial/haut elf/HE_sol_mur_biblio_b.png') no-repeat;}
 .tex19544{background:url('../image/texture/tutorial/haut elf/HE_sol_mur_biblio_b2.png') no-repeat;}
 .tex19545{background:url('../image/texture/tutorial/haut elf/HE_sol_mur_biblio_b3.png') no-repeat;}
+.tex19546{background:url('../image/texture/tutorial/haut elf/HE_sol_mur_biblio_bg.png') no-repeat;}
+.tex19547{background:url('../image/texture/tutorial/haut elf/HE_sol_mur_biblio_bd.png') no-repeat;}
+.tex19548{background:url('../image/texture/tutorial/haut elf/HE_sol_mur_hg.png') no-repeat;}
+.tex19549{background:url('../image/texture/tutorial/haut elf/HE_sol_mur_hm.png') no-repeat;}
+.tex19550{background:url('../image/texture/tutorial/haut elf/HE_sol_mur_hd.png') no-repeat;}
+.tex19551{background:url('../image/texture/tutorial/haut elf/HE_couloir_horiz.png') no-repeat;}
+.tex19552{background:url('../image/texture/tutorial/haut elf/HE_couloir_horiz_g.png') no-repeat;}
+.tex19553{background:url('../image/texture/tutorial/haut elf/HE_couloir_horiz_d.png') no-repeat;}
+.tex19554{background:url('../image/texture/tutorial/haut elf/HE_couloir_horiz_colonne.png') no-repeat;}
+.tex19555{background:url('../image/texture/tutorial/haut elf/HE_couloir_horiz_coin_g.png') no-repeat;}
+.tex19556{background:url('../image/texture/tutorial/haut elf/HE_couloir_horiz_coin_d.png') no-repeat;}
+.tex19557{background:url('../image/texture/tutorial/haut elf/HE_sol_bg.png') no-repeat;}
+.tex19558{background:url('../image/texture/tutorial/haut elf/HE_sol_bd.png') no-repeat;}
 
 .tex6682{background:url('../image/texture/tutorial/haut elf/HE_mur_hm.png') no-repeat;}
 .tex6683{background:url('../image/texture/tutorial/haut elf/HE_mur_hm_colonne.png') no-repeat;}
@@ -2534,7 +2547,8 @@
 .tex6687{background:url('../image/texture/tutorial/haut elf/HE_mur_biblio_h3.png') no-repeat;}
 .tex6688{background:url('../image/texture/tutorial/haut elf/HE_mur_milieu_b.png') no-repeat;}
 .tex6689{background:url('../image/texture/tutorial/haut elf/HE_mur_milieu_h.png') no-repeat;}
-
+.tex6690{background:url('../image/texture/tutorial/haut elf/HE_sol_mur_biblio_hg.png') no-repeat;}
+.tex6691{background:url('../image/texture/tutorial/haut elf/HE_sol_mur_biblio_hd.png') no-repeat;}
 
 .tex2000{background:url('../image/texture/capitale/vampire/villevampendestrbg.gif') no-repeat;}
 .tex2001{background:url('../image/texture/capitale/vampire/villevampendestrbm.gif') no-repeat;}
