@@ -3,7 +3,7 @@
 /**
  * @file interface.class.php
  * Classes génériques pour la gestion de l'interface.
- * Ces classes permettent la cosntruction de structures HTML classiques, avec éventuellement jQuery.
+ * Ces classes permettent la construction de structures HTML classiques, avec éventuellement jQuery.
  * Elles servent aussi de classe de base pour les classes plus spécialisées.
  */
 
@@ -173,7 +173,7 @@ abstract class interf_cont extends interf_base
       $this->debut();
       foreach($this->fils as $fils)
       {
-        $fils->affiche( $this->tab + $this->GetTab() );
+        $fils->affiche( $this->tab + $this->get_tab() );
       }
       $this->fin();
       $this->affiche = true;
@@ -187,9 +187,9 @@ abstract class interf_cont extends interf_base
       interf_base::$courrant = &$fils;
   }
   /// Affiche le début de l'élément, i.e. la partie située avant les éléments fils.
-  protected abstract function debut();
+  protected function debut() {}
   /// Affiche la fin de l'élément, i.e. la partie située après les éléments fils.
-  protected abstract function fin();
+  protected function fin() {}
   /// Renvoie le nombre de tabulations suppléméntaires
   protected function get_tab() { return 0; }
 }
@@ -229,6 +229,18 @@ abstract class interf_princ_ob extends interf_princ
     $this->add( new interf_bal_smpl('div', ob_get_contents(), static::div_ob, static::classe_ob) );
     ob_end_clean();
     interf_princ::__destruct();
+  }
+}
+
+/**
+ * Classe de base pour les éléments principaux contenant d'autres éléments
+ */
+class interf_princ_cont extends interf_princ
+{
+  /// Destructeur
+  function __destruct()
+  {
+    $this->affiche();
   }
 }
 
@@ -365,7 +377,7 @@ class interf_bal_cont extends interf_cont
    * @param  $nom   nom de l'attribut.
    * @param  $val   valeur de l'attribut.
    */
-  function Set_attribut($nom, $val)
+  function set_attribut($nom, $val)
   {
     $this->attributs[$nom] = $val;
   }
@@ -508,7 +520,7 @@ class interf_menu extends interf_bal_cont
   /// Affiche le début de l'élément, i.e. la partie située avant les éléments fils.
   function debut()
   {
-    $this->ouvre($this->Creerbalise());
+    $this->ouvre($this->creer_balise());
     if( $this->titre )
       $this->balise(self::bal_titre, $this->titre);
     $this->ouvre('ul');
@@ -646,7 +658,7 @@ class interf_ens_chps extends interf_bal_cont
  * Calsse gérant un chamo de formulaire (de type input)
  * Peut aussi afficher un texte avant le  champ.
  */
-class ihChpForm extends interf_bal_smpl
+class interf_chp_form extends interf_bal_smpl
 {
   protected $label;  ///< Texte à afficher avant le champ.
   /**
@@ -659,10 +671,10 @@ class ihChpForm extends interf_bal_smpl
   function __construct($type, $name, $label=false, $value=false)
   {
     $this->balise = 'input';
-    $this->SetAttribut('type', $type);
-    $this->SetAttribut('name', $name);
+    $this->set_attribut('type', $type);
+    $this->set_attribut('name', $name);
     if( $value )
-      $this->SetAttribut('value', $value);
+      $this->set_attribut('value', $value);
     $this->label = $label;
   }
   /// Affiche le contenu de l'élément.
@@ -677,7 +689,7 @@ class ihChpForm extends interf_bal_smpl
 /**
  * Champ de formulaire permettant de faire un choix entre plusieurs élément (balise select)
  */
-class ihSelectForm extends interf_bal_cont
+class interf_select_form extends interf_bal_cont
 {
   protected $groupe = null;  ///< Groupe actuel
   protected $label;  ///< Texte à afficher avant le champ.
@@ -689,17 +701,17 @@ class ihSelectForm extends interf_bal_cont
   function __construct($name, $label=false)
   {
     $this->balise = 'select';
-    $this->SetAttribut('name', $name);
+    $this->set_attribut('name', $name);
     $this->label = $label;
   }
   /**
    * Ajoute un groupe
    * @param  $label   titre du groupe.
    */
-  function &NouvGroupe($label)
+  function &nouv_groupe($label)
   {
     $grp = new interf_bal_cont('optgroup');
-    $grp->SetAttribut('label', $label);
+    $grp->set_attribut('label', $label);
     $this->Add($grp);
     $this->groupe = &$grp;
     return $grp;
@@ -710,17 +722,17 @@ class ihSelectForm extends interf_bal_cont
    * @param  $val      valeur de l'option.
    * @param  $select   indique si cette option est sélectionnée ou non.
    */
-  function AddOption($texte, $val=null, $select=false)
+  function add_option($texte, $val=null, $select=false)
   {
     $opt = new interf_bal_smpl('option', $texte);
     if( $val )
-      $opt->SetAttribut('value', $val);
+      $opt->set_attribut('value', $val);
     if( $select )
-      $opt->SetAttribut('selected', 'selected');
+      $opt->set_attribut('selected', 'selected');
     if( $this->groupe )
-      $this->groupe->Add($opt);
+      $this->groupe->add($opt);
     else
-      $this->Add($opt);
+      $this->add($opt);
   }
   /// Affiche le début de l'élément, i.e. la partie située avant les éléments fils.
   function debut()
@@ -738,7 +750,7 @@ class ihSelectForm extends interf_bal_cont
  * des lignes "normales". La première ligne est créée automatiquement lor de la création
  * du tableau.
  */
-class interff_tableau extends interf_bal_cont
+class interf_tableau extends interf_bal_cont
 {
   protected $lgn_act = null;  ///< Ligne actuelle du tableau.
   protected $entete;   ///< Indique si la ligne actuelle est l'en-tête.
