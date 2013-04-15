@@ -126,6 +126,9 @@ else
 	$class = 't1';
 	while($quete = $db->read_object($req))
 	{
+    $royaumes = explode(';', $quete->royaume);
+    if( $quete->royaume && !in_array($R->get_id(), $royaumes) )
+      continue;
 		$href = 'poscase='.$W_case.'&amp;direction=quete&amp;action=voir&amp;id='.$quete->id;
 		//$js = 'new Tip(\'quete_'.$row['id'].'\', \'content\');';
 		echo "

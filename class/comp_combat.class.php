@@ -450,10 +450,10 @@ class comp_combat extends comp
 					}
 					if( $buff = $passif->get_buff('bouclier_eau') )
 					{
-						if( $this->test_de(100, 35) )
+						if( $this->test_de(100, $buff->get_effet()) )
 						{
 							echo '&nbsp;&nbsp;<span class="degat">'.$passif->get_nom().' glace '.$actif->get_nom().'</span><br />';
-							$actif->etat['glace']['effet'] = $buff->get_effet();
+							$actif->etat['glace']['effet'] = true;
 							$actif->etat['glace']['duree'] = $buff->get_effet2()+1; // +1 car ce round est décompté alors qu'il ne compte pas
 						}
 					}
@@ -946,7 +946,13 @@ class comp_combat_coup_bouclier extends comp_combat_degat_etat
   /// Méthode gérant l'utilisation d'une compétence
   function lance(&$actif, &$passif, &$effets)
   {
-    return comp_combat::lance($actif, $passif, $effets);
+    $actif->set_comp_att('melee');
+    return parent::lance($actif, $passif, $effets);
+  }
+  /// Méthode gérant ce qu'il se passe lorsque la coméptence à été utilisé avec succès
+  function touche($attaque, &$actif, &$passif, &$effets)
+  {
+    return comp_combat::touche($attaque, $actif, $passif, $effets);
   }
   /// Méthode calculant les dégâts de base avant réduction
   function calcul_degats(&$actif, &$passif, &$effets)

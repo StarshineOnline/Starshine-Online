@@ -17,12 +17,14 @@ if ($req)
 $requete = "UPDATE royaume set fin_raz_capitale = 0, capitale_hp = 30000 where fin_raz_capitale > 0 and fin_raz_capitale < $now";
 $req = $db->query($requete);
 
-//Récupération de points de victoire
-$requete = "UPDATE royaume r SET point_victoire = point_victoire + (select count(1) from map where type = 3 and royaume = r.id and r.id <> 0)";
+// Distribution des pts de victoire a partir des pts exceptionnels
+$requete = "UPDATE royaume r";
+$requete .= " SET point_victoire = point_victoire + (select count(1) from map where type = 3 and royaume = r.id and r.id <> 0)";
+$requete .= ", point_victoire_total = point_victoire_total + (select count(1) from map where type = 3 and royaume = r.id and r.id <> 0)";
 $req = $db->query($requete);
 
 //Entretien des batiments et constructions
-$semaine = time() - (3600 * 24 * 7);
+/*$semaine = time() - (3600 * 24 * 7);
 $royaumes = array();
 // On récupère le niveau moyen
 $requete = "select sum(level)/count(id) moy from perso WHERE statut = 'actif'";
@@ -53,14 +55,22 @@ while($ii < count($habitants))
 {
 	$royaumes[$Trace[$keys[$ii]]['numrace']]['ratio'] = $habitants[$keys[$ii]] / $min_habitants;
 	$ii++;
-}
+}*/
 //On récupère les stars de chaque royaume
-$requete = "SELECT id, star FROM royaume WHERE id <> 0 ORDER BY id ASC";
+$requete = "SELECT id, star, facteur_entretien FROM royaume WHERE id <> 0 ORDER BY id ASC";
 $req = $db->query($requete);
 while($row = $db->read_row($req))
 {
 	$royaumes[$row[0]]['stars'] = $row[1];
 	$royaumes[$row[0]]['id'] = $row[0];
+	$royaumes[$row[0]]['ratio'] = $row[2];
+}
+
+$roy = royaume::create(null, null, 'id ASC', false, 'id <> 0');
+foreach($roy as $r)
+{
+  $r->maj_facteur_entretien();
+  $r->sauver();
 }
 
 //PHASE 1, entretien des batiments internes
@@ -73,6 +83,7 @@ while($row = $db->read_assoc($req))
 	$royaumes[$row['id_royaume']]['batiments'][$row['id_const']] = $entretien;
 	$royaumes[$row['id_royaume']]['total'] += $entretien;
 }
+
 
 //Entretien !
 /// Augmente la dette des batiments inactifs (de la moitie de l'entretien)
@@ -105,7 +116,7 @@ foreach($royaumes as $royaume)
 }
 //PHASE 2, entretien des batiments externes
 //On récupère les couts d'entretiens
-$requete = "SELECT *, construction.id AS id_const, batiment.hp AS hp_m, construction.hp AS hp_c FROM batiment RIGHT JOIN construction ON construction.id_batiment = batiment.id ORDER by royaume ASC";
+$requete = "SELECT *, construction.id AS id_const, batiment.hp AS hp_m, construction.hp AS hp_c FROM batiment RIGHT JOIN construction ON construction.id_batiment = batiment.id WHERE x <= 190 AND y <= 190 ORDER by royaume ASC";
 echo $requete."\n";
 $req = $db->query($requete);
 while($row = $db->read_assoc($req))

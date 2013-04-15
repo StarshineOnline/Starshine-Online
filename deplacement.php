@@ -17,11 +17,13 @@ $coord['xavant'] = $joueur->get_x();
 $coord['yavant'] = $joueur->get_y();
 
 //Si coordonées supérieur à 100 alors c'est un donjon
-if($joueur->get_x() > 190 OR $joueur->get_y() > 190)
+/*if($joueur->get_x() > 190 OR $joueur->get_y() > 190)
 {
 	$donjon = true;
 }
-else $donjon = false;
+else $donjon = false;*/
+$vrai_donjon = $joueur->get_y() > 190;
+$donjon = ($vrai_donjon OR $joueur->get_x() > 190);
 
 $peu_bouger = true;
 //Déplacement du joueur
@@ -145,6 +147,31 @@ if (isset($_GET['deplacement']))
 		$coutpa = cout_pa($type_terrain[0], $joueur->get_race());
 		$coutpa_base = $coutpa;
 		$case = new map_case(array('x' => $coord['x'], 'y' => $coord['y']));
+		if ((($case->x == 244) AND ($case->y == 170 )) AND ($joueur->get_tuto() == 1) AND ($joueur->get_classe_id() == 1))
+		{
+			$joueur->set_tuto($joueur->get_tuto()+1);
+			?>
+			<script type="text/javascript"><?php
+			echo 'affichePopUp(\'texte_tuto.php\');';?>
+			</script>
+			<?php
+		}
+		if ($joueur->get_classe_id() == 2)
+		{
+			if ((($case->x == 244) AND ($case->y == 169 )) AND ($joueur->get_tuto() == 1) )
+			{
+				$joueur->set_tuto($joueur->get_tuto()+1);
+				?>
+				<script type="text/javascript"><?php
+				echo 'affichePopUp(\'texte_tuto.php\');';?>
+				</script>
+				<?php
+			}
+			if ((($case->x == 241) AND ($case->y == 165 )) AND ($joueur->get_tuto() == 2) )
+			{
+				$joueur->set_tuto($joueur->get_tuto()+1);
+			}
+		}
 		$coutpa = cout_pa2($coutpa, $joueur, $case, $diagonale);
 		//Si le joueur a un buff ou débuff qui l'empèche de bouger
 		if($joueur->is_buff('buff_forteresse') OR $joueur->is_buff('buff_position') OR $joueur->is_buff('debuff_enracinement') OR $joueur->is_buff('bloque_deplacement') OR $joueur->is_buff('dressage') OR $joueur->is_buff('petrifie'))
@@ -181,7 +208,7 @@ if (isset($_GET['deplacement']))
 			$joueur->set_y($coord['y']);
 			$joueur->sauver();
 			//Si ya un monstre, paf il attaque le joueur
-			if($donjon)
+			if($vrai_donjon)
 			{
 				$requete = "SELECT id FROM map_monstre WHERE x = ".$coord['x']." AND y = ".$coord['y']." ORDER BY hp DESC";
 				$req = $db->query($requete);

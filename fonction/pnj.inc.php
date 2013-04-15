@@ -73,3 +73,21 @@ function pnj_run_pacte_demoniaque(&$joueur)
 									'Vous êtes transformé en démon', 'perso', 1, 0, 0, 0);
 	return 'Vous êtes maintenant en forme démoniaque';
 }
+
+function pnj_run_msg_bienvenue(&$perso)
+{
+  global $Trace;
+  $messagerie = new messagerie(0);
+  $titre = 'Bienvenue sur Starshine-Online';
+  $message = 'Vous faites maintenant parti de la grande aventure Starshine-Online.
+Pour vous aidez plusieurs outils sont a votre disposition :
+L\'aide : [url]http://wiki.starshine-online.com[/url]
+Le forum : [url]http://forum.starshine-online.com[/url]
+Votre forum de race : [url]http://forum.starshine-online.com/viewforum.php?id='.$Trace[$race]['forum_id'].'[/url]
+Les logins et mot de passe pour se connecter a ces forums sont les mêmes que ceux du jeu.
+
+En espérant que votre périple se passera bien.
+Bon jeu !';
+  $messagerie->envoi_message(0, $perso->get_id(), $titre, $message, 0);
+  echo '<img src="image/pixel.gif" onLoad="envoiInfo(\'menu_carteville.php\', \'carteville\');" />';
+}

@@ -522,7 +522,7 @@ class poison extends effect
       $perte_hp = $perte_hp * $actif->etat['putrefaction']['effet'];
 		$actif->set_hp($actif->get_hp() - $perte_hp);
 		$this->hit($actif->get_nom().' perd '.$perte_hp. ' HP par le poison');
-		echo $mode;
+		//echo $mode;
 		if ($mode == 'attaquant')
 			$log_effects_attaquant .= "&ef1~".$perte_hp;
 		else
@@ -826,7 +826,7 @@ class protection_artistique extends effect
 									 $bonus_reduction.' grâce à son honneur ('.$this->nom.') !');
 		else
 			$this->debug('Pas assez d\'honneur pour profiter du '.$this->nom);
-		return $reduction + $bonus_reduction;
+		return max($reduction + $bonus_reduction, 9);
 	}
 }
 
@@ -1011,18 +1011,19 @@ class carapace_incisive extends effect
     if ($aNom == null)
       $aNom = 'carapace_incisive';
 		parent::__construct($aNom);
-    $this->effet = $aEffet / 100;
+    $this->effet = $aEffet;
 	}
 	
 	function inflige_degats(&$actif, &$passif, $degats) {
-    if ( rand(0,100) < 5)
-    {
-		$degat = 2 * $degats;
-		$this->hit('La carapace incisve de '.$passif->get_nom().' inflige '.$degat.
-               ' dégâts à '.$actif->get_nom());
-		$actif->add_hp($degat * -1);
-	}
-	return $degats;
+    if (rand(1, 100) <= $this->effet)
+		{
+			$degat = 2 * $degats;
+			$this->hit('La carapace incisve de '.$passif->get_nom().' inflige '.$degat.
+								 ' dégâts à '.$actif->get_nom());
+			$actif->add_hp($degat * -1);
+		}
+		else $this->debug('La carapace incisive n\'agit pas');
+		return $degats;
   }
 }
 
@@ -1061,6 +1062,8 @@ class anneau_resistance extends effect
 	}
 	
 	function calcul_degats(&$actif, &$passif, $degats) {
+	if (get_class($passif) != 'perso')
+	return $degats;
     if ($actif->get_race() == $this->effet) {
       $reduction = min(2, $degats);
 			$this->hit('L\'anneau de resistance de '.$passif->get_nom().

@@ -28,38 +28,30 @@ else
 }
 $joueur = new perso($joueur_id);
 //Filtre
-if(array_key_exists('filtre', $_GET)) $filtre_url = '&amp;filtre='.$_GET['filtre'];
-else $filtre_url = '';
+if(array_key_exists('filtre', $_GET))
+{
+  $filtre = $_GET['filtre'];
+  $filtre_url = '&amp;filtre='.$_GET['filtre'];
+}
+else
+{
+  $filtre = 'utile';
+  $filtre_url = '&amp;filtre=utile';
+}
 $W_requete = 'SELECT royaume, type, info FROM map WHERE x ='.$joueur->get_x().' and y = '.$joueur->get_y();
 $W_req = $db->query($W_requete);
 $W_row = $db->read_assoc($W_req);
 $R = new royaume($W_row['royaume']);
-?>
 
-<fieldset id="inventory">
-	<legend>Inventaire du Personnage</legend>
-	<ul id="messagerie_onglet">
-		<li><a href="inventaire.php"
-			onclick="return envoiInfo(this.href, 'information');">Personnage</a>
-		</li>
-		<li><a href="inventaire_pet.php"
-			onclick="return envoiInfo(this.href, 'information');">Créature</a></li>
-	</ul>
-	<div class="spacer"></div>
-	<?php
+$princ = $interf->creer_princ_droit('Inventaire du Personnage');
 	//Switch des actions
 	if(!$visu AND isset($_GET['action']))
 	{
 		switch($_GET['action'])
 		{
 			case 'desequip' :
-				if($joueur->desequip($_GET['partie']))
-				{
-				}
-				else
-				{
-					echo '<h5>'.$G_erreur.'</h5>';
-				}
+			if(!$joueur->desequip($_GET['partie']))
+        $princ->add_message($G_erreur, false);
 				break;
 			case 'equip' :
 				if($joueur->equip_objet($joueur->get_inventaire_slot_partie($_GET['key_slot'])))
@@ -69,51 +61,66 @@ $R = new royaume($W_row['royaume']);
 					$joueur->sauver();
 				}
 				else
-				{
-					echo '<h5>'.$G_erreur.'</h5>';
-				}
+				$princ->add_message($G_erreur, false);
 				break;
 			case 'utilise' :
+				// Pose d'un bâtiment ou ADS
 				if($_GET['type'] == 'fort' OR $_GET['type'] == 'tour' OR $_GET['type'] == 'bourg' OR $_GET['type'] == 'mur' OR $_GET['type'] == 'arme_de_siege')
 				{
 					if ($joueur->is_buff('debuff_rvr'))
 					{
-						echo '<h5>RvR impossible pendant la trêve</h5>';
+          $princ->add_message('<h5>RvR impossible pendant la trêve</h5>', false);
 						break;
 					}
-					if ($W_row['type'] != 1)
+				if ($W_row['type'] == 1)
 					{
-						//Cherche infos sur l'objet
-						$requete = "SELECT batiment.id AS batiment_id FROM objet_royaume RIGHT JOIN batiment ON batiment.id = objet_royaume.id_batiment WHERE objet_royaume.id = ".sSQL($_GET['id_objet']);
-						$req = $db->query($requete);
-						if ($db->num_rows($req) == 0)
-						{
-							die('<h5>Erreur SQL</h5>');
-						}
-						$row = $db->read_assoc($req);
-						$batiment = new batiment($row['batiment_id']);
-						if($R->get_diplo($joueur->get_race()) == 127 OR $_GET['type'] == 'arme_de_siege')
-						{
-							//On vérifie si ya pas déjà un batiment en construction
-							$requete = "SELECT id FROM placement WHERE x = ".$joueur->get_x()." AND y = ".$joueur->get_y();
-							$req = $db->query($requete);
-							if($db->num_rows <= 0)
-							{
-								//On vérifie si ya pas déjà un batiment
-								$requete = "SELECT id FROM construction WHERE x = ".$joueur->get_x()." AND y = ".$joueur->get_y();
-								$req = $db->query($requete);
-								if($db->num_rows <= 0)
-								{
-                  $nbr_mur = 0;
-                  if( $_GET['type'] == 'mur' )
-                  {
+          $princ->add_message('<h5>Vous ne pouvez pas poser de bâtiment sur une ville</h5>', false);
+					break;
+				}
+
+				//Cherche infos sur l'objet
+				$requete = "SELECT batiment.id AS batiment_id FROM objet_royaume RIGHT JOIN batiment ON batiment.id = objet_royaume.id_batiment WHERE objet_royaume.id = ".sSQL($_GET['id_objet']);
+				$req = $db->query($requete);
+				if ($db->num_rows($req) == 0)
+				{
+					die('<h5>Erreur SQL</h5>');
+				}
+				$row = $db->read_assoc($req);
+				$batiment = new batiment($row['batiment_id']);
+				if($R->get_diplo($joueur->get_race()) != 127 && $_GET['type'] != 'arme_de_siege' && $batiment->get_id() != 1) // id=1 : poste avancé
+				{
+          $princ->add_message('Vous ne pouvez poser un bâtiment uniquement sur un territoire qui vous appartient', false);
+					break;
+				}
+
+				//On vérifie si ya pas déjà un batiment en construction
+				$requete = "SELECT id FROM placement WHERE x = ".$joueur->get_x()." AND y = ".$joueur->get_y();
+				$req = $db->query($requete);
+  			if($db->num_rows > 0)
+  			{
+          $princ->add_message('Il y a déjà un bâtiment en construction sur cette case !', false);
+  				break;
+  			}
+
+				//On vérifie si ya pas déjà un batiment
+				$requete = "SELECT id FROM construction WHERE x = ".$joueur->get_x()." AND y = ".$joueur->get_y();
+				$req = $db->query($requete);
+				if($db->num_rows > 0)
+				{
+          $princ->add_message('Il y a déjà un bâtiment sur cette case !', false);
+					break;
+				}
+
+        $nbr_mur = 0;
+        if( $_GET['type'] == 'mur' )
+        {
           					//   Debut Evolution #581
           					// Pour pouvoir construire un mur, il faut ne pas avoir plus de 2 murs autour de celui que l'on construit.
           					// Attention, les tests pour voir s'il n'y a pas trop de murs autour seront uniquement
-          					// fait sur les 4 cases juste au nord, a l'est, au sud et a l'ouest (avec la meme limite qu'actuellement).
+					// fait sur les 4 cases juste au nord, a l'est, au sud et a l'ouest (avec la meme limite qu'actuellement).
           					// Il faut aussi tester pour chacune des ces cases ou il y a deja des murs si la limite ne sera pas depassee une fois le mur pose
 
-          					// On commence par extraire la position des murs ou des constructions de murs a 2 cases de distance de la case a traiter
+					// On commence par extraire la position des murs ou des constructions de murs a 2 cases de distance de la case a traiter
           					//   000000
           					//   000000
           					//   000000
@@ -123,7 +130,7 @@ $R = new royaume($W_row['royaume']);
           					$position_murs[2]=array(0,0,0,0,0);
           					$position_murs[3]=array(0,0,0,0,0);
           					$position_murs[4]=array(0,0,0,0,0);
-
+	
   					        // Il y a donc 25 positions a recuperer
           					$requete  = 'SELECT x,y FROM construction WHERE ABS(CAST(x AS SIGNED) -'.$joueur->get_x().') <= 2 AND ABS(CAST(y AS SIGNED) - '.$joueur->get_y().') <= 2 AND type LIKE "mur"';
           					$requete  = 'SELECT id,x,y FROM construction WHERE ABS(CAST(x AS SIGNED) - '.$joueur->get_x().') <= 2 AND ABS(CAST(y AS SIGNED) - '.$joueur->get_y().') <= 2 AND type LIKE "mur" UNION SELECT id,x,y FROM placement WHERE ABS(CAST(x AS SIGNED) - '.$joueur->get_x().') <= 2 AND ABS(CAST(y AS SIGNED) - '.$joueur->get_y().') <= 2 AND type LIKE "mur"';
@@ -178,65 +185,182 @@ $R = new royaume($W_row['royaume']);
           					// Si une des cases vaut 4 ou plus, alors erreur
           					$nbr_mur = $max_nb_murs;
           					//   Fin Evolution #581
-                  }
+        }
+				if( $nbr_mur > 3 )
+        {
+          $princ->add_message('<h5>Il y a déjà trop de murs autour !</h5>', false);
+					break;
+				}
 
-                  if( $nbr_mur <= 3 )
-                  {
-  									//Positionnement de la construction
-  									$distance = calcul_distance(convert_in_pos($Trace[$joueur->get_race()]['spawn_x'], $Trace[$joueur->get_race()]['spawn_y']), ($joueur->get_pos()));
-  									$time = time() + ($batiment->get_temps_construction() * $distance);
-  									if($_GET['type'] == 'arme_de_siege')
-  									{
-  										$time = time() + $batiment->get_temps_construction();
-  										$rez = 0;
-  									}
-  									else $rez = $batiment->get_bonus('rez');
-  									$requete = "INSERT INTO placement (type, x, y, royaume, debut_placement, fin_placement, id_batiment, hp, nom, rez, point_victoire) VALUES('".sSQL($_GET['type'])."', '".$joueur->get_x()."', '".$joueur->get_y()."', '".$Trace[$joueur->get_race()]['numrace']."', ".time().", '".$time."', '".$batiment->get_id()."', '".$batiment->get_hp()."', '".$batiment->get_nom()."', '".$rez."', '".$batiment->get_point_victoire()."')";
-  									$db->query($requete);
-  									//On supprime l'objet de l'inventaire
-  									$joueur->supprime_objet($joueur->get_inventaire_slot_partie($_GET['key_slot']), 1);
-  									$joueur->sauver();
-  									echo '<h6>'.$batiment->get_nom().' posé avec succès</h6>';
+				// Règles des distance entre bâtiments
+				$isOk = true;
+				if($_GET['type'] == 'bourg' || $_GET['type'] == 'fort')
+        {
+					// Distance d'une capitale
+					$distanceMax = $_GET['type'] == 'bourg' ? 5 : 7;
 
-  									if($_GET['type'] == 'mur')
-  									{
-  										// Augmentation du compteur de l'achievement
-  										$achiev = $joueur->get_compteur('pose_murs');
-  										$achiev->set_compteur($achiev->get_compteur() + 1);
-  										$achiev->sauver();
-  									}
-                  }
-                  else
-                  {
-  								  echo '<h5>Il y a déjà trop de murs autour !</h5>';
-                  }
-								}
-								else
-								{
-									echo '<h5>Il y a déjà un batiment sur cette case !</h5>';
-								}
-							}
-							else
-							{
-								echo '<h5>Il y a déjà un batiment en construction sur cette case !</h5>';
-							}
-						}
-						else
+					$requete = "SELECT 1 FROM map"
+									." WHERE x >= ".max(($joueur->get_x() - $distanceMax), 1)
+									." AND x <= ".min(($joueur->get_x() + $distanceMax), 190)
+									." AND y >= ".max(($joueur->get_y() - $distanceMax), 1)
+									." AND y <= ".min(($joueur->get_y() + $distanceMax), 190)
+									." AND type = 1";
+					$req = $db->query($requete);
+					if($db->num_rows > 0)
+          {
+            $princ->add_message('Il y a une capitale à moins de '.$distanceMax.' cases !', false);
+						$isOk = false;
+					}
+
+					$facteurEntretien = $R->get_facteur_entretien();
+					
+					// Distance entre Bourgs
+					if($isOk && $_GET['type'] == 'bourg'){
+						// dist entre 2 bourgs
+						$distanceMax = 7 * $facteurEntretien;
+
+						$requete = "SELECT 1 FROM construction"
+							." WHERE x >= ".max(($joueur->get_x() - $distanceMax), 1)
+							." AND x <= ".min(($joueur->get_x() + $distanceMax), 190)
+							." AND y >= ".max(($joueur->get_y() - $distanceMax), 1)
+							." AND y <= ".min(($joueur->get_y() + $distanceMax), 190)
+							." AND type = 'bourg'";
+						$req = $db->query($requete);
+						if($db->num_rows > 0)
 						{
-							echo '<h5>Vous ne pouvez poser un fort uniquement sur un territoire qui vous appartient</h5>';
+              $princ->add_message('Il y a un bourg à moins de '.$distanceMax.' cases !', false);
+							$isOk = false;
+						}
+
+						// On vérifie aussi les chantiers
+						if($isOk){
+							$requete = "SELECT 1 FROM placement"
+							." WHERE x >= ".max(($joueur->get_x() - $distanceMax), 1)
+							." AND x <= ".min(($joueur->get_x() + $distanceMax), 190)
+							." AND y >= ".max(($joueur->get_y() - $distanceMax), 1)
+							." AND y <= ".min(($joueur->get_y() + $distanceMax), 190)
+							." AND type = 'bourg'";
+							$req = $db->query($requete);
+							if($db->num_rows > 0)
+							{
+                $princ->add_message('Il y a un bourg en construction à moins de '.$distanceMax.' cases !', false);
+								$isOk = false;
+							}
 						}
 					}
-					else
-					{
-						echo '<h5>Vous ne pouvez pas poser de batiment sur une ville</h5>';
+
+					// Distance entre forts
+					else if($isOk && $_GET['type'] == 'fort'){
+						// dist entre 2 forts du même royaume
+						$distanceForts = 4;
+						$distanceMax = $distanceForts * $facteurEntretien;
+
+						$requete = "SELECT id FROM construction"
+								." WHERE x >= ".max(($joueur->get_x() - $distanceMax), 1)
+								." AND x <= ".min(($joueur->get_x() + $distanceMax), 190)
+								." AND y >= ".max(($joueur->get_y() - $distanceMax), 1)
+								." AND y <= ".min(($joueur->get_y() + $distanceMax), 190)
+								." AND type = 'fort'"
+								." AND royaume = ".$R->get_id()
+								." UNION"
+								." SELECT id FROM construction"
+									." WHERE x >= ".max(($joueur->get_x() - $distanceForts), 1)
+									." AND x <= ".min(($joueur->get_x() + $distanceForts), 190)
+									." AND y >= ".max(($joueur->get_y() - $distanceForts), 1)
+									." AND y <= ".min(($joueur->get_y() + $distanceForts), 190)
+									." AND type = 'fort'"
+									." AND royaume <> ".$R->get_id();
+						$req = $db->query($requete);
+						if($db->num_rows > 0)
+						{
+              $princ->add_message('Il y a un fort à moins de '.$distanceMax.' cases !', false);
+							$isOk = false;
+						}
+
+						// On vérifie aussi les chantiers
+						if($isOk){
+							$requete = "SELECT id FROM placement"
+										." WHERE x >= ".max(($joueur->get_x() - $distanceMax), 1)
+										." AND x <= ".min(($joueur->get_x() + $distanceMax), 190)
+										." AND y >= ".max(($joueur->get_y() - $distanceMax), 1)
+										." AND y <= ".min(($joueur->get_y() + $distanceMax), 190)
+										." AND type = 'fort'"
+								." AND royaume = ".$R->get_id()
+								." UNION"
+										." SELECT id FROM placement"
+										." WHERE x >= ".max(($joueur->get_x() - $distanceForts), 1)
+										." AND x <= ".min(($joueur->get_x() + $distanceForts), 190)
+										." AND y >= ".max(($joueur->get_y() - $distanceForts), 1)
+										." AND y <= ".min(($joueur->get_y() + $distanceForts), 190)
+										." AND type = 'fort'"
+											." AND royaume <> ".$R->get_id();
+							$req = $db->query($requete);
+							if($db->num_rows > 0)
+							{
+                $princ->add_message('Il y a un fort en cosntruction à moins de '.$distanceMax.' cases !', false);
+								$isOk = false;
+							}
+						}
 					}
 				}
+				if(!$isOk){
+					break;
+				}
+
+
+				if( $joueur->is_buff('convalescence') && $joueur->get_pa() < 10 )
+				{
+          $princ->add_message('Vous n\'avez pas assez de PA !', false);
+					break;
+				}
+
+				//Positionnement de la construction
+				if($_GET['type'] == 'arme_de_siege')
+				{
+          $distance = 1;
+          $rez = $batiment->get_bonus('rez');
+				}//max($row['temps_construction'] * $distance, $row['temps_construction_min']);
+				else
+        {
+				  $distance = calcul_distance(convert_in_pos($Trace[$joueur->get_race()]['spawn_x'], $Trace[$joueur->get_race()]['spawn_y']), ($joueur->get_pos()));
+					$rez = 0;
+        }
+        $time = time() + max($batiment->get_temps_construction() * $distance, $batiment->get_temps_construction_min());
+
+        $requete = 'INSERT INTO placement (type, x, y, royaume, debut_placement, fin_placement, id_batiment, hp, nom, rez, point_victoire) VALUES (?,?,?,?,?,?,?,?,?,?,?)';
+        $types = 'siiiiiiisii';
+        $params = array($_GET['type'], $joueur->get_x(),
+                        $joueur->get_y(), 
+                        $Trace[$joueur->get_race()]['numrace'],
+                        time(), $time, $batiment->get_id(),
+                        $batiment->get_hp(), $batiment->get_nom(),
+                        $rez, $batiment->get_point_victoire());
+        $db->param_query($requete, $params, $types);
+				// Coût en PA si en convalescence
+				if( $joueur->is_buff('convalescence') )
+				{
+				  $joueur->set_pa( $joueur->get_pa() - 10 );
+        }
+				//On supprime l'objet de l'inventaire
+				$joueur->supprime_objet($joueur->get_inventaire_slot_partie($_GET['key_slot']), 1);
+				$joueur->sauver();
+        $princ->add_message($batiment->get_nom().' posé avec succès');
+
+				if($_GET['type'] == 'mur')
+					{
+					// Augmentation du compteur de l'achievement
+					$achiev = $joueur->get_compteur('pose_murs');
+					$achiev->set_compteur($achiev->get_compteur() + 1);
+					$achiev->sauver();
+					}
+
+      }
 				switch($_GET['type'])
 				{
 					case 'drapeau' :
 				  if ($joueur->is_buff('debuff_rvr'))
 				  {
-				  	echo '<h5>RvR impossible pendant la trêve</h5>';
+            $princ->add_message('RvR impossible pendant la trêve', false);
 				  	break;
 				  }
 				  if ($W_row['type'] != 1 && $W_row['type'] != 4)
@@ -252,7 +376,7 @@ $R = new royaume($W_row['royaume']);
 				  		//Si c'est un petit drapeau, on vérifie qu'on est uniquement sur neutre
 				  		if($row['nom'] == 'Petit Drapeau' && $R->get_nom() != 'Neutre')
 				  		{
-									echo '<h5>Vous ne pouvez pas poser de petit drapeau sur une case non neutre !</h5>';
+                $princ->add_message('Vous ne pouvez pas poser de petit drapeau sur une case non neutre !', false);
 				  		}
 				  		else
 				  		{
@@ -266,48 +390,60 @@ $R = new royaume($W_row['royaume']);
 				  				$req = $db->query($requete);
 				  				if($db->num_rows <= 0)
 				  				{
-				  					//Positionnement du drapeau
-				  					$distance = calcul_distance(convert_in_pos($Trace[$joueur->get_race()]['spawn_x'], $Trace[$joueur->get_race()]['spawn_y']), ($joueur->get_pos()));
-				  					$time = time() + ($row['temps_construction'] * $distance);
-				  					$requete = "INSERT INTO placement (id, type, x, y, royaume, debut_placement, fin_placement, id_batiment, hp, nom, rez) VALUES('', 'drapeau', '".$joueur->get_x()."', '".$joueur->get_y()."', '".$Trace[$joueur->get_race()]['numrace']."', ".time().", '".$time."', '".$row['batiment_id']."', '".$row['hp']."', 'drapeau', 0)";
-				  					$db->query($requete);
-				  					//On supprime l'objet de l'inventaire
-				  					$joueur->supprime_objet($joueur->get_inventaire_slot_partie($_GET['key_slot'], true), 1);
-				  					$joueur->sauver();
-				  					echo '<h6>Drapeau posé avec succès</h6>';
-
-				  					// Augmentation du compteur de l'achievement
-				  					$achiev = $joueur->get_compteur('pose_drapeaux');
-				  					$achiev->set_compteur($achiev->get_compteur() + 1);
-				  					$achiev->sauver();
-
-                    if ($W_row['info'] == 3)
+                    if( !$joueur->is_buff('convalescence') OR $joueur->get_pa() >= 10 )
                     {
-                      // Augmentation du compteur de l'achievement
-                      $achiev = $joueur->get_compteur('pose_drapeaux_sable');
-                      $achiev->set_compteur($achiev->get_compteur() + 1);
-                      $achiev->sauver();
+  										//Positionnement du drapeau
+  										$distance = calcul_distance(convert_in_pos($Trace[$joueur->get_race()]['spawn_x'], $Trace[$joueur->get_race()]['spawn_y']), ($joueur->get_pos()));
+  										$time = time() + max($row['temps_construction'] * $distance, $row['temps_construction_min']);
+  										$requete = "INSERT INTO placement (id, type, x, y, royaume, debut_placement, fin_placement, id_batiment, hp, nom, rez) VALUES('', 'drapeau', '".$joueur->get_x()."', '".$joueur->get_y()."', '".$Trace[$joueur->get_race()]['numrace']."', ".time().", '".$time."', '".$row['batiment_id']."', '".$row['hp']."', 'drapeau', 0)";
+  										$db->query($requete);
+      								// Coût en PA si en convalescence
+      								if( $joueur->is_buff('convalescence') )
+      								{
+      								  $joueur->set_pa( $joueur->get_pa() - 10 );
+                      }
+  										//On supprime l'objet de l'inventaire
+  										$joueur->supprime_objet($joueur->get_inventaire_slot_partie($_GET['key_slot'], true), 1);
+  										$joueur->sauver();
+  										$princ->add_message('Drapeau posé avec succès');
+
+  										// Augmentation du compteur de l'achievement
+  										$achiev = $joueur->get_compteur('pose_drapeaux');
+  										$achiev->set_compteur($achiev->get_compteur() + 1);
+  										$achiev->sauver();
+
+  										if ($W_row['info'] == 3)
+  										{
+  											// Augmentation du compteur de l'achievement
+  											$achiev = $joueur->get_compteur('pose_drapeaux_sable');
+  											$achiev->set_compteur($achiev->get_compteur() + 1);
+  											$achiev->sauver();
+  										}
                     }
-				  				}
-				  				else
-				  				{
-				  					echo '<h5>Il y a déjà un batiment sur cette case !</h5>';
-				  				}
-				  			}
-				  			else
-				  			{
-				  				echo '<h5>Il y a déjà un batiment en construction sur cette case !</h5>';
-				  			}
-				  		}
-				  	}
+                    else
+                    {
+                      $princ->add_message('Vous n\'avez pas assez de PA !', false);
+                    }
+									}
+									else
+									{
+                    $princ->add_message('Il y a déjà un batiment sur cette case !', false);
+									}
+								}
+								else
+								{
+                  $princ->add_message('Il y a déjà un batiment en construction sur cette case !', false);
+								}
+							}
+						}
 				  	else
 				  	{
-				  		echo '<h5>Vous ne pouvez poser un drapeau uniquement sur les royaumes avec lesquels vous êtes en guerre</h5>';
+              $princ->add_message('Vous ne pouvez poser un drapeau uniquement sur les royaumes avec lesquels vous êtes en guerre', false);
 				  	}
 				  }
 				  else
 				  {
-				  	echo '<h5>Vous ne pouvez pas poser de drapeau sur ce type de terrain</h5>';
+            $princ->add_message('Vous ne pouvez pas poser de drapeau sur ce type de terrain', false);
 				  }
 				  break;
 					case 'identification' :
@@ -316,11 +452,11 @@ $R = new royaume($W_row['royaume']);
 						$materiel = $joueur->recherche_objet('o2');
 						//my_dump($materiel);
 						if ($materiel == false) {
-							echo '<h5>Vous n\'avez pas de materiel d\'identification</h5>';
+            $princ->add_message('Vous n\'avez pas de materiel d\'identification', false);
 							$fin = true;
 						}
 						elseif ($joueur->get_pa() < 10) {
-							echo '<h5>Vous n\'avez pas assez de points d\'action</h5>';
+            $princ->add_message('Vous n\'avez pas assez de PA !', false);
 							$fin = true;
 						}
 						else {
@@ -353,14 +489,16 @@ $R = new royaume($W_row['royaume']);
 									$gemme = mb_substr($joueur->get_inventaire_slot_partie($i), 1);
 									$joueur->set_inventaire_slot_partie($gemme, $i);
 									$joueur->set_inventaire_slot(serialize($joueur->get_inventaire_slot_partie(false, true)));
-									echo 'Identification réussie !<br />Votre gemme est une '.$row['nom'];
+                $princ->add( new interf_txt('Identification réussie !') );
+                $princ->add( new interf_bal_smpl('br') );
+                $princ->add( new interf_txt('Votre gemme est une '.$row['nom']) );
 									$log_admin = new log_admin();
 									$message = $joueur->get_nom().' a identifié '.$row['nom'];
 									$log_admin->send($joueur->get_id(), 'identification', $message);
 								}
 								else
 								{
-									echo '<h5>L\'identification n\'a pas marché...</h5>';
+                $princ->add_message('L\'identification n\'a pas marché…', false);
 								}
 								//On supprime l'objet de l'inventaire
 								$joueur->supprime_objet('o2', 1);
@@ -408,16 +546,16 @@ case 'potion_guerison' :
 				if($buff->get_debuff() == 1)
 				{
 					if($buff->get_supprimable() == 1) {
-						$buff_tab[count($buff_tab)] = $buff->get_id();
-					};
+$buff_tab[count($buff_tab)] = $buff->get_id();
+};
 				}
 			}
 			if(count($buff_tab) > 0)
 			{
 				$db->query("DELETE FROM buff WHERE id=".$buff_tab[rand(0, count($buff_tab)-1)].";");
-				echo '<h6>Une malédiction a été correctement supprimée</h6>';
+                $princ->add_message('Une malédiction a été correctement supprimée');
 			}
-			else echo '<h5>Vous n\'avez pas de malédiction a supprimer</h5>';
+							else $princ->add_message('Vous n\'avez pas de malédiction a supprimer', false);
 		}
 	}
 	else echo 'Vous êtes mort !';
@@ -455,18 +593,19 @@ case 'parchemin_tp' :
 		if(check_utilisation_objet($joueur, $objet))
 		{
 			//Téléportation du joueur
-			echo 'Vous utilisez un '.$row['nom'].'<br />';
-			?>
-	<img src="image/pixel.gif"
-		onLoad="envoiInfo('infoperso.php?javascript=oui', 'perso');" />
-	<?php
+              $princ->add( new interf_txt('Vous utilisez un '.$row['nom']) );
+              $princ->add( new interf_bal_smpl('br') );
+              $img = new interf_bal_smpl('img');
+              $img->set_attribut('src', 'image/pixel.gif');
+              $img->set_attribut('onLoad', 'envoiInfo(\'infoperso.php?javascript=oui\', \'perso\');');
+              $princ->add( $img );
 	$requete = "UPDATE perso SET x = ".$Trace[$joueur->get_race()]['spawn_x'].", y = ".$Trace[$joueur->get_race()]['spawn_y'].", pa = pa - ".$row['pa'].", mp = mp - ".$row['mp']." WHERE ID = ".$joueur->get_id();
 	$db->query($requete);
 		}
 	}
 	else
 	{
-		echo 'Vous êtes trop loin de la ville pour utiliser ce parchemin.';
+            $princ->add_message('Vous êtes trop loin de la ville pour utiliser ce parchemin.', false);
 	}
 	break;
 case 'objet_quete' :
@@ -476,38 +615,37 @@ case 'objet_quete' :
 	if($id_objet_reel == 27)
 	{
 		?>
-	Journal du mage Demtros - Unité aigle -<br /> < Le journal est en
-	très mauvais état, certaines pages sont déchirées, ou rendues
-	illisibles par l'humidité et des taches de sang ><br /> <br /> 12
-	Dulfandal : Nous approchons enfin de la cité de Myriandre. Je ne peux
-	expliquer le trouble qui me saisi depuis plusieurs jours mais je sais
-	que cela à un rapport avec les ruines de cette ville. Le malaise que
-	je ressens est presque palpable, mais impossible d'en déterminer la
-	cause. J'en ai fais part a Frankriss mais malgré toute la
-	considération de ce dernier, je sens bien qu'ils me pense juste un peu
-	nerveux...<br /> Je vais prendre deux tours de garde ce soir, de toute
-	façon, je n'arriverais pas à dormir.<br /> <br /> 13 Dulfandal : Nous
-	voici enfin arrivés, Achen et les autres sont partis en
-	reconnaissance. Je scanne l'espace astral dans l'espoir de déterminer
-	d'où peux provenir la perturbation que je ressens mais en vain.. Je
-	sens malgré tout qu'il y a quelque chose d'anormal.<br /> <br /> 14
-	Dulfandal : Achen est mort, Dubs est l'agonie, dans son délire il est
-	quand même parvenu à nous dire ce qui c'est passé, il semblerait
-	qu'il ai été attaqués par des goules surgie de nulle part, Dubs a
-	réussi à s'enfuir mais pas achen. il nous dis que les goules ont
-	disparues d'un coup... frankriss est préoccupé, mais il gère la
-	situation avec son sang froid coutumier. Nous allons former un groupe
-	d'assaut pour aller récupérer Achen, ou ce qu'il en reste... L'unité
-	aigle ne laisse jamais un compagnon derrière elle.<br /> Je ne sais
-	pas ce qui se passe dans cette ville mais j'ai un mauvais
-	pressentiment.<br /> 15 Dulfandal : le sort était camouflé, c'est
-	pour ça que je l'ai pas perçu, celui qui l'a lancer doit être un
-	mage exceptionnel pour arriver à camoufler une telle portion de
-	terrain... nous nous déplaçons les épées sorties et près au
-	combat, l'ennemi peut surgir de n'importe ou. Je n'arrive pas a
-	démêler la trame du sort, trop puissant pour moi ... ( taches de sang
-	)<br /> Il faut que j'écrive ( taches de sang ) sachent ce qui se
-	passe ( taches de sang ), un nécromancien ( la suite est déchirée ).<br />
+	Journal du mage Demtros - Unité aigle -<br /> < Le journal est en très
+	mauvais état, certaines pages sont déchirées, ou rendues illisibles par
+	l'humidité et des taches de sang ><br /> <br /> 12 Dulfandal : Nous
+	approchons enfin de la cité de Myriandre. Je ne peux expliquer le
+	trouble qui me saisi depuis plusieurs jours mais je sais que cela à un
+	rapport avec les ruines de cette ville. Le malaise que je ressens est
+	presque palpable, mais impossible d'en déterminer la cause. J'en ai
+	fais part a Frankriss mais malgré toute la considération de ce dernier,
+	je sens bien qu'ils me pense juste un peu nerveux...<br /> Je vais
+	prendre deux tours de garde ce soir, de toute façon, je n'arriverais
+	pas à dormir.<br /> <br /> 13 Dulfandal : Nous voici enfin arrivés,
+	Achen et les autres sont partis en reconnaissance. Je scanne l'espace
+	astral dans l'espoir de déterminer d'où peux provenir la perturbation
+	que je ressens mais en vain.. Je sens malgré tout qu'il y a quelque
+	chose d'anormal.<br /> <br /> 14 Dulfandal : Achen est mort, Dubs est
+	l'agonie, dans son délire il est quand même parvenu à nous dire ce qui
+	c'est passé, il semblerait qu'il ai été attaqués par des goules surgie
+	de nulle part, Dubs a réussi à s'enfuir mais pas achen. il nous dis que
+	les goules ont disparues d'un coup... frankriss est préoccupé, mais il
+	gère la situation avec son sang froid coutumier. Nous allons former un
+	groupe d'assaut pour aller récupérer Achen, ou ce qu'il en reste...
+	L'unité aigle ne laisse jamais un compagnon derrière elle.<br /> Je ne
+	sais pas ce qui se passe dans cette ville mais j'ai un mauvais
+	pressentiment.<br /> 15 Dulfandal : le sort était camouflé, c'est pour
+	ça que je l'ai pas perçu, celui qui l'a lancer doit être un mage
+	exceptionnel pour arriver à camoufler une telle portion de terrain...
+	nous nous déplaçons les épées sorties et près au combat, l'ennemi peut
+	surgir de n'importe ou. Je n'arrive pas a démêler la trame du sort,
+	trop puissant pour moi ... ( taches de sang )<br /> Il faut que
+	j'écrive ( taches de sang ) sachent ce qui se passe ( taches de sang ),
+	un nécromancien ( la suite est déchirée ).<br />
 	<?php
 	}
 	break;
@@ -515,13 +653,13 @@ case 'grimoire':
 	$stack = explode('x', $joueur->get_inventaire_slot_partie($_GET['key_slot']));
 	$id_objet = $stack[0];
 	$id_objet_reel = mb_substr($id_objet, 1);
-	$ok = utilise_grimoire($id_objet_reel, $joueur);
+				$ok = utilise_grimoire($id_objet_reel, $joueur, $princ);
 	if ($ok)
 	{
 		$joueur->supprime_objet($id_objet, 1);
-	} else {
-		echo "Vous ne pouvez pas lire ce grimoire<br />";
 	}
+        else
+          $princ->add_message('Vous ne pouvez pas lire ce grimoire', false);
 	break;
 default:
 	error_log('Utilisation d\'un objet invalide: '.$_GET['type']);
@@ -532,12 +670,12 @@ case 'depot' :
 	//On le dépose
 	if ($joueur->is_buff('debuff_rvr'))
 	{
-		echo '<h5>RvR impossible pendant la trêve</h5>';
+        $princ->add_message('RvR impossible pendant la trêve', false);
 		break;
 	}
 	if ($R->get_race() != $joueur->get_race())
 	{
-		echo '<h5>Impossible de poser au dépot '.$R->get_race().'</h5>';
+        $princ->add_message('Impossible de poser au dépot '.$R->get_race(), false);
 	}
 	else
 	{
@@ -547,7 +685,7 @@ case 'depot' :
 		$db->query($requete);
 		//On supprime l'objet de l'inventaire
 		$joueur->supprime_objet($joueur->get_inventaire_slot_partie($_GET['key_slot']), 1);
-		echo '<h6>Objet posé avec succès</h6>';
+        $princ->add_message('Objet posé avec succès');
 	}
 	break;
 case 'vente' :
@@ -641,7 +779,7 @@ case 'ventehotel' :
 	$objet_max += $bonus_craft;
 	if($row[0] >= $objet_max)
 	{
-		echo 'Vous avez déjà '.$objet_max.' objets ou plus en vente.';
+        $princ->add_message('Vous avez déjà '.$objet_max.' objets ou plus en vente.', false);
 	}
 	else
 	{
@@ -715,16 +853,30 @@ case 'ventehotel' :
 		}
 		$prix = floor((2 * $row['prix']) * $modif_prix / $G_taux_vente);
 		$prixmax = $prix * 10;
-		echo '
-		<h2>Inventaire</h2>
-		<div style="font-size : 0.9em;">
-		<form method="get" name="formulaire" action="javascript:envoiInfo(\'inventaire.php\', \'information\');">
-		Mettre en vente à l\'hotel des ventes pour <input type="text" name="prix" value="'.$prix.'" onchange="formulaire.comm.value = formulaire.prix.value * '.($R->get_taxe_diplo($joueur->get_race()) / 100).';" onkeyup="formulaire.comm.value = formulaire.prix.value * '.($R->get_taxe_diplo($joueur->get_race()) / 100).';" /> Stars<br />
-		Taxe : <input type="text" name="comm" value="'.($prix * $R->get_taxe_diplo($joueur->get_race()) / 100).'" disabled="true" /><br />
-		Maximum = '.$prixmax.' stars.<br />
-		<input type="hidden" name="action" value="ventehotel2" />
-		<input type="button" name="btnSubmit" value="Mettre en vente" onclick="javascript:envoiInfo(\'inventaire.php?action=ventehotel2&amp;key_slot='.$_GET['key_slot'].'&amp;prix=\' + formulaire.prix.value + \'&amp;max='.$prixmax.'&amp;comm=\' + formulaire.comm.value, \'information\');" />
-		</form>';
+        $princ->add( new interf_bal_smpl('h2', 'Inventaire') );
+        $div = new interf_bal_cont(div);
+        $div->set_attribut('style', 'font-size : 0.9em;');
+        $princ->add($div);
+        $form = new interf_form('javascript:envoiInfo(\'inventaire.php\', \'information\');', 'get');
+        $form->set_attribut('name', 'formulaire');
+        $form->add( new interf_txt('Mettre en vente à l\'hotel des ventes pour ') );
+        $chp1 = new interf_chp_form('text', 'prix', false, $prix);
+        $chp1->set_attribut('onchange', 'formulaire.comm.value = formulaire.prix.value * '.($R->get_taxe_diplo($joueur->get_race()) / 100));
+        $chp1->set_attribut('onkeyup', 'formulaire.comm.value = formulaire.prix.value * '.($R->get_taxe_diplo($joueur->get_race()) / 100));
+        $form->add($chp1);
+        $form->add( new interf_txt(' Stars') );
+        $form->add( new interf_bal_smpl('br') );
+        $form->add( new interf_txt('Taxe : ') );
+        $chp2 = new interf_chp_form('text', 'comm', false, $prix * $R->get_taxe_diplo($joueur->get_race()) / 100);
+        $chp2->set_attribut('disabled', 'true');
+        $form->add($chp2);
+        $form->add( new interf_bal_smpl('br') );
+        $form->add( new interf_txt('Maximum = '.$prixmax.' stars.') );
+        $form->add( new interf_bal_smpl('br') );
+        $form->add( new interf_chp_form('hidden', 'action', false, 'ventehotel2') );
+        $btn = new interf_chp_form('button', 'btnSubmit', false, 'Mettre en vente');
+        $btn->set_attribut('onclick', 'javascript:envoiInfo(\'inventaire.php?action=ventehotel2&amp;key_slot='.$_GET['key_slot'].'&amp;prix=\' + formulaire.prix.value + \'&amp;max='.$prixmax.'&amp;comm=\' + formulaire.comm.value, \'information\');');
+        $form->add($btn);
 		exit();
 	}
 	break;
@@ -732,7 +884,7 @@ case 'ventehotel2' :
 	$comm = $_GET['comm'];
 	if($_GET['prix'] > $_GET['max'])
 	{
-		echo 'Vous voulez vendre cet objet trop chère, le commissaire priseur n\'en veut pas !<br />';
+        $princ->add_message('Vous voulez vendre cet objet trop chère, le commissaire priseur n\'en veut pas !', false);
 	}
 	else
 	{
@@ -812,19 +964,20 @@ case 'ventehotel2' :
 					$requete = "UPDATE argent_royaume SET hv = hv + ".$comm." WHERE race = '".$R->get_race()."'";
 					$db->query($requete);
 					$message_mail = $joueur->get_nom()." vend ".nom_objet($objet_id)." (".$objet_id.") pour ".$_GET['prix']." stars. Commission : ".$comm." stars";
-					echo 'Vous mettez en vente '.nom_objet($objet_id).' pour '.$_GET['prix'].' stars. Commission : '.$comm.' stars<br />';
+							$princ->add( new interf_txt('Vous mettez en vente '.nom_objet($objet_id).' pour '.$_GET['prix'].' stars. Commission : '.$comm.' stars') );
+							$princ->add( new interf_bal_smpl('br') );
 				}
 				$log_admin = new log_admin();
 				$log_admin->send($joueur->get_id(), 'mis en vente HV', $message_mail);
 			}
 			else
 			{
-				echo 'Vous n\'avez pas assez de stars pour payer la commission';
+            $princ->add_message('Vous n\'avez pas assez de stars pour payer la commission', false);
 			}
 		}
 		else
 		{
-			echo 'Pas de prix négatif ou nul !';
+          $princ->add_message('Pas de prix négatif ou nul !', false);
 		}
 	}
 	break;
@@ -848,12 +1001,31 @@ case 'slot' :
 	$chance_reussite1 = pourcent_reussite($craft, 10);
 	$chance_reussite2 = pourcent_reussite($craft, 30);
 	$chance_reussite3 = pourcent_reussite($craft, 100);
-	echo 'Quel niveau d\'enchâssement voulez vous ?
-	<ul>
-	<li><a href="inventaire.php?action=slot2&amp;key_slot='.$_GET['key_slot'].'&amp;niveau=1'.$filtre_url.'" onclick="return envoiInfo(this.href, \'information\');">Niveau 1</a> <span class="small">('.$chance_reussite1.'% de chances de réussite)</span></li>
-	<li><a href="inventaire.php?action=slot2&amp;key_slot='.$_GET['key_slot'].'&amp;niveau=2'.$filtre_url.'" onclick="return envoiInfo(this.href, \'information\');">Niveau 2</a> <span class="small">('.$chance_reussite2.'% de chances de réussite)</span></li>
-	<li><a href="inventaire.php?action=slot2&amp;key_slot='.$_GET['key_slot'].'&amp;niveau=3'.$filtre_url.'" onclick="return envoiInfo(this.href, \'information\');">Niveau 3</a> <span class="small">('.$chance_reussite3.'% de chances de réussite)</span></li>
-	</ul>';
+			$opt = new interf_menu('Quel niveau d\'enchâssement voulez vous ?', '', '');
+			$elt1 = new interf_bal_cont('li');
+			$opt->add($elt1);
+			$lien1 = new interf_bal_smpl('a', 'Niveau 1');
+			$lien1->set_attribut('href', 'inventaire.php?action=slot2&amp;key_slot='.$_GET['key_slot'].'&amp;niveau=1'.$filtre_url);
+			$lien1->set_attribut('onclick', 'return envoiInfo(this.href, \'information\');');
+			$elt1->add($lien1);
+			$elt1->add( new interf_txt(' ') );
+			$elt1->add( new interf_bal_smpl('span', '('.$chance_reussite1.'% de chances de réussite)', false, 'small') );
+			$elt2 = new interf_bal_cont('li');
+			$opt->add($elt2);
+			$lien2 = new interf_bal_smpl('a', 'Niveau 2');
+			$lien2->set_attribut('href', 'inventaire.php?action=slot2&amp;key_slot='.$_GET['key_slot'].'&amp;niveau=2'.$filtre_url);
+			$lien2->set_attribut('onclick', 'return envoiInfo(this.href, \'information\');');
+			$elt2->add($lien2);
+			$elt2->add( new interf_txt(' ') );
+			$elt2->add( new interf_bal_smpl('span', '('.$chance_reussite2.'% de chances de réussite)', false, 'small') );
+			$elt3 = new interf_bal_cont('li');
+			$opt->add($elt3);
+			$lien3 = new interf_bal_smpl('a', 'Niveau 3');
+			$lien3->set_attribut('href', 'inventaire.php?action=slot2&amp;key_slot='.$_GET['key_slot'].'&amp;niveau=3'.$filtre_url);
+			$lien3->set_attribut('onclick', 'return envoiInfo(this.href, \'information\');');
+			$elt3->add($lien3);
+			$elt3->add( new interf_txt(' ') );
+			$elt3->add( new interf_bal_smpl('span', '('.$chance_reussite3.'% de chances de réussite)', false, 'small') );
 	break;
 case 'slot2' :
 	if($joueur->get_pa() >= 10)
@@ -891,12 +1063,13 @@ case 'slot2' :
 
 			$craftd = rand(0, $craft);
 			$diff = rand(0, $difficulte);
-			echo 'dé du joueur : '.$craft.' / dé difficulté : '.$difficulte.'<br />
-			Résultat joueur : '.$craftd.' / Résultat difficulte : '.$diff.'<br />';
+					/*echo 'dé du joueur : '.$craft.' / dé difficulté : '.$difficulte.'<br />
+					Résultat joueur : '.$craftd.' / Résultat difficulte : '.$diff.'<br />';*/
 			if($craftd >= $diff)
 			{
 				//Craft réussi
-				echo 'Réussite !<br />';
+            $princ->add( new interf_txt('Réussite !') );
+            $princ->add( new interf_bal_smpl('br') );
 				$objet['slot'] = $_GET['niveau'];
 
 				// Augmentation du compteur de l'achievement
@@ -907,7 +1080,8 @@ case 'slot2' :
 			else
 			{
 				//Craft échec
-				echo 'Echec... L\'objet ne pourra plus être enchâssable<br />';
+            $princ->add( new interf_txt('Echec... L\'objet ne pourra plus être enchâssable') );
+            $princ->add( new interf_bal_smpl('br') );
 				$objet['slot'] = 0;
 			}
 			$augmentation = augmentation_competence('forge', $joueur, 2);
@@ -923,11 +1097,11 @@ case 'slot2' :
 			$joueur->sauver();
 		}
 		else
-			echo 'Cet objet &agrave; d&eacute;j&agrave; un slot!';
+          $princ->add_message('Cet objet &agrave; d&eacute;j&agrave; un slot!', false);
 	}
 	else
 	{
-		echo 'Vous n\'avez pas assez de PA.';
+        $princ->add_message('Vous n\'avez pas assez de PA.', false);
 	}
 	break;
 case 'enchasse' :
@@ -974,8 +1148,8 @@ case 'enchasse' :
 		$craft += round($craft * ($joueur->get_enchantement('forge','effet') / 100));
 	}
 
-	echo 'Dans quel objet voulez vous enchâsser cette gemme de niveau '.$row['niveau'].' ?
-	<ul>';
+			$opt = new interf_menu('Dans quel objet voulez vous enchâsser cette gemme de niveau '.$row['niveau'].' ?', '', '');
+      $princ->add($opt);
 	//Recherche des objets pour enchassement possible
 	$i = 0;
 	while($i <= $G_place_inventaire)
@@ -1015,7 +1189,15 @@ case 'enchasse' :
 					$nom = nom_objet($joueur->get_inventaire_slot_partie($i));
 					$chance_reussite = pourcent_reussite($craft, $difficulte);
 					//On peut mettre la gemme
-					echo '<li><a href="inventaire.php?action=enchasse2&amp;key_slot='.$_GET['key_slot'].'&amp;key_slot2='.$i.'&amp;niveau='.$row['niveau'].$filtre_url.'" onclick="return envoiInfo(this.href, \'information\');">'.$nom.' / slot niveau '.$objet_i['slot'].'</a> <span class="xsmall">'.$chance_reussite.'% de chance de réussite</span></li>';
+							$elt = new interf_bal_cont('li');
+        			$opt->add($elt);
+        			$lien = new interf_bal_smpl('a', $nom.' / slot niveau '.$objet_i['slot']);
+        			$lien->set_attribut('href', 'inventaire.php?action=enchasse2&amp;key_slot='.$_GET['key_slot'].'&amp;key_slot2='.$i.'&amp;niveau='.$row['niveau'].$filtre_url);
+        			$lien->set_attribut('onclick', 'return envoiInfo(this.href, \'information\');');
+        			$elt->add($lien);
+        			$elt->add( new interf_txt(' ') );
+        			$elt->add( new interf_bal_smpl('span', $chance_reussite.'% de chance de réussite', false, 'xsmall') );
+        			unset($elt, $lien);
 				}
 			}
 		}
@@ -1059,13 +1241,14 @@ case 'enchasse2' :
 
 		$craftd = rand(0, $craft);
 		$diff = rand(0, $difficulte);
-		echo 'dé du joueur : '.$craft.' / dé difficulté : '.$difficulte.'<br />
-		Résultat joueur : '.$craftd.' / Résultat difficulte : '.$diff.'<br />';
+				/*echo 'dé du joueur : '.$craft.' / dé difficulté : '.$difficulte.'<br />
+				Résultat joueur : '.$craftd.' / Résultat difficulte : '.$diff.'<br />';*/
 		$gemme_casse = false;
 		if($craftd >= $diff)
 		{
 			//Craft réussi
-			echo 'Réussite !<br />';
+          $princ->add( new interf_txt('Réussite !') );
+          $princ->add( new interf_bal_smpl('br') );
 			$objet['enchantement'] = $gemme['id_objet'];
 			$objet['slot'] = 0;
 			$gemme_casse = true;
@@ -1082,12 +1265,14 @@ case 'enchasse2' :
 			$rand = rand(1, 100);
 			if($rand <= 34)
 			{
-				echo 'Echec... la gemme a cassé...<br />';
+            $princ->add( new interf_txt('Echec… la gemme a cassé…') );
+            $princ->add( new interf_bal_smpl('br') );
 				$gemme_casse = true;
 			}
 			else
 			{
-				echo 'Echec... L\'objet ne pourra plus être enchassable...<br />';
+            $princ->add( new interf_txt('Echec… L\'objet ne pourra plus être enchassable…') );
+            $princ->add( new interf_bal_smpl('br') );
 				$objet['slot'] = 0;
 			}
 		}
@@ -1106,245 +1291,21 @@ case 'enchasse2' :
 	}
 	else
 	{
-		echo 'Vous n\'avez pas assez de PA.';
+        $princ->add_message('Vous n\'avez pas assez de PA.', false);
 	}
 	break;
 		}
 		refresh_perso();
 	}
-	$joueur = new perso($joueur_id);
-	$tab_loc = array();
 
-	$tab_loc[0]['loc'] = 'accessoire';
-	$tab_loc[0]['type'] = 'accessoire';
-	$tab_loc[1]['loc'] = 'tete';
-	$tab_loc[1]['type'] = 'armure';
-	$tab_loc[2]['loc'] = 'cou';
-	$tab_loc[2]['type'] = 'armure';
+$perso = new perso($joueur_id);
+$invent = $interf->creer_inventaire($perso, 'inventaire.php', $filtre);
+$princ->add($invent);
+$invent->set_contenu('perso', !$visu);
+$invent->affiche_slots();
 
-	$tab_loc[3]['loc'] = 'main_droite';
-	$tab_loc[3]['type'] = 'arme';
-	$tab_loc[4]['loc'] = 'torse';
-	$tab_loc[4]['type'] = 'armure';
-	$tab_loc[5]['loc'] = 'main_gauche';
-	$tab_loc[5]['type'] = 'arme';
-
-	$tab_loc[6]['loc'] = 'main';
-	$tab_loc[6]['type'] = 'armure';
-	$tab_loc[7]['loc'] = 'ceinture';
-	$tab_loc[7]['type'] = 'armure';
-	$tab_loc[8]['loc'] = 'doigt';
-	$tab_loc[8]['type'] = 'armure';
-
-	$tab_loc[9]['loc'] = ' ';
-	$tab_loc[9]['type'] = 'vide';
-	$tab_loc[10]['loc'] = 'jambe';
-	$tab_loc[10]['type'] = 'armure';
-	$tab_loc[11]['loc'] = 'dos';
-	$tab_loc[11]['type'] = 'armure';
-
-	$tab_loc[12]['loc'] = ' ';
-	$tab_loc[12]['type'] = 'vide';
-	$tab_loc[13]['loc'] = 'chaussure';
-	$tab_loc[13]['type'] = 'armure';
-	$tab_loc[14]['loc'] = ' ';
-	$tab_loc[14]['type'] = 'vide';
-	?>
-
-	<table cellspacing="3" width="100%"
-		style="background: url('image/interface/inventaire/666_<?php echo $joueur->get_race(); ?>.png') center no-repeat;">
-
-		<?php
-		$color = 2;
-		$compteur=0;
-		foreach($tab_loc as $loc)
-		{
-			if (($compteur % 3) == 0)
-			{
-				echo '<tr style="height : 55px;">';
-			}
-			if ($loc['type']=='vide')
-			{
-				if(($compteur % 3) <> 2)
-				{
-					if((is_ville($joueur->get_x(), $joueur->get_y()) == 1) AND (!array_key_exists('ville', $_GET) OR (array_key_exists('ville', $_GET) AND $_GET['ville'] == 'no')))
-					{
-						$domprop=" class='inventaireville'";
-						if(($compteur/3)==3)
-						{
-							$domprop .= " id='hdv'";
-						}
-						elseif (($compteur/3)==4)
-						{
-							$domprop .= " id='marchand' alt='marchand'";
-						}
-					}
-					echo '<td'.$domprop.'>';
-				}
-			}
-			else
-			{
-				$jqid='drop_'.$loc['loc'];
-				echo '<td class="inventaire2" id="'.$jqid.'" >';
-			}
-			if($joueur->inventaire()->$loc['loc'] != '')
-			{
-				$objet = decompose_objet($joueur->get_inventaire_partie($loc['loc']));
-				//On peut désequiper
-				if(!$visu AND $joueur->get_inventaire_partie($loc['loc']) != '' AND $joueur->get_inventaire_partie($loc['loc']) != 'lock') $desequip = true; else $desequip = false;
-				switch($loc['type'])
-				{
-					case 'arme' :
-						if($joueur->get_inventaire_partie($loc['loc']) != 'lock')
-						{
-							$requete = "SELECT * FROM `arme` WHERE id = ".$objet['id_objet'];
-							$sqlQuery = $db->query($requete);
-							$row = $db->read_array($sqlQuery);
-							$image = 'image/arme/arme'.$row['id'].'.png';
-							$nom = $row['nom'];
-						}
-						else
-						{
-							$nom = 'Lock';
-							$image = '';
-						}
-						break;
-					case 'armure' :
-						$requete = "SELECT * FROM `armure` WHERE id = ".$objet['id_objet'];
-						$sqlQuery = $db->query($requete);
-						$row = @$db->read_array($sqlQuery);
-						$image = 'image/armure/'.$loc['loc'].'/'.$loc['loc'].$row['id'].'.png';
-						$nom = $row['nom'];
-
-						break;
-					case 'accessoire' :
-						$requete = "SELECT * FROM `accessoire` WHERE id = ".$objet['id_objet'];
-						$sqlQuery = $db->query($requete);
-						$row = @$db->read_array($sqlQuery);
-						$image = 'image/accessoire/accessoire'.$row['id'].'.png';
-						$nom = $row['nom'];
-						break;
-				}
-				if($desequip)
-				{
-
-					echo '<span id="drag_'.$objet["id_objet"].'"><a href="inventaire.php?action=desequip&amp;partie='.$loc['loc'].$filtre_url.'" onclick="return envoiInfo(this.href, \'information\');">
-					<img src="'.$image.'" style="float : left;" title="Déséquiper" alt="Déséquiper" />
-					</a></span>';
-				}
-				echo '<strong>'.$nom.'</strong>';
-				if($objet['slot'] > 0)
-				{
-					echo '<br /><span class="xsmall">Slot niveau '.$objet['slot'].'</span>';
-				}
-				if($objet['slot'] == '0')
-				{
-					echo '<br /><span class="xsmall">Slot impossible</span>';
-				}
-				if($objet['enchantement'] > '0')
-				{
-					$requete = "SELECT * FROM gemme WHERE id = ".$objet['enchantement'];
-					$req = $db->query($requete);
-					$row_e = $db->read_assoc($req);
-					echo '<br /><span class="xsmall">Enchantement de '.$row_e['enchantement_nom'].'</span>';
-				}
-			}
-			else
-			{
-				echo $Gtrad[$loc['loc']];
-			}
-
-
-			if($joueur->get_inventaire_partie($loc['loc']) != '' AND $joueur->get_inventaire_partie($loc['loc']) != 'lock')
-			{
-				switch($loc['type'])
-				{
-					case 'arme' :
-						if($loc['loc'] == 'main_droite')
-						{
-							echo '<br />Dégâts : '.$joueur->get_arme_degat('droite');
-						}
-						else
-						{
-							if($row['type'] == 'dague')	echo '<br />Dégâts : '.$joueur->get_arme_degat('gauche');
-							else echo '<br />Dégâts absorbés : '.$joueur->get_bouclier()->degat;
-						}
-						break;
-					case 'armure' :
-						echo '<br />PP : '.$row['PP'].' / PM : '.$row['PM'];
-						break;
-				}
-			}
-
-			echo '</div></td>';
-			if ((($compteur + 1) % 3) == 0)
-			{
-				echo '</tr>';
-			}
-			$compteur++;
-		}
-		?>
-	</table>
-	<?php
-	if(!$visu)
-	{
-		if(array_key_exists('filtre', $_GET)) $filtre = $_GET['filtre'];
-		else $filtre = 'utile';
-		?>
-	<p>
-		Place restante dans l'inventaire :
-		<?php echo ($G_place_inventaire - count($joueur->get_inventaire_slot_partie())) ?>
-		/
-		<?php echo $G_place_inventaire;?>
-	</p>
-	<div id='slots'>
-		<script>
-	 $.ajax({
-		   type: "GET",
-		   url: "inventaire_slot.php",
-		   data: "javascript=ok&filtre=utile",
-		   success: function(data) {
-			    $('#inventaire_slot').append(data);
-		   }
-		 });
-	 $.ajax({
-		   type: "GET",
-		   url: "inventaire_slot.php",
-		   data: "javascript=ok&filtre=arme",
-		   success: function(data) {
-			    $('#inventaire_slot').append(data);
-		   }
-		 });
-	 $.ajax({
-		   type: "GET",
-		   url: "inventaire_slot.php",
-		   data: "javascript=ok&filtre=armure",
-		   success: function(data) {
-			    $('#inventaire_slot').append(data);
-		   }
-		 });
-	 $.ajax({
-		   type: "GET",
-		   url: "inventaire_slot.php",
-		   data: "javascript=ok&filtre=autre",
-		   success: function(data) {
-			    $('#inventaire_slot').append(data);
-		   }
-		 });
-	</script>
-	</div>
-	<div id="inventaire_slot">
-		<?php
-		require_once('inventaire_slot.php');
-		?>
-	</div>
-	<br />
-	<?php
 	// Augmentation du compteur de l'achievement
 	$achiev = $joueur->get_compteur('nbr_arme_siege');
 	$achiev->set_compteur(intval($arme_de_siege));
 	$achiev->sauver();
 		?>
-
-</fieldset>
-<?php } ?>

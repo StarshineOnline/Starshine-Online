@@ -29,24 +29,26 @@ $batiment = new batiment($arme->get_id_batiment());
 
 $W_distance = detection_distance(convert_in_pos($arme->get_x(), $arme->get_y()), $joueur->get_pos());
 
-if($W_distance == 0)
+if($W_distance <= 3)
 {
 	echo 'Position - X : '.$arme->get_x().' - Y : '.$arme->get_y().'<br />';
 	echo 'Distance de tir : '.$batiment->get_bonus('portee').' case.<br />';
 	echo 'Temps avant de pouvoir tirer : ';
 	$pat = false;
-	if($arme->get_rechargement() > time()) echo transform_sec_temp($arme->get_rechargement() - time());
-	else
+	if($arme->peut_attaquer())
 	{
 		echo 'Pret à tirer !';
 		$pat = true;
 	}
+	else
+    echo transform_sec_temp($arme->get_rechargement() - time());
 	echo '<br />';
-	if ($joueur->get_pa() < 10)
+	$cout_pa = $arme->get_cout_attaque($joueur);
+	if( $joueur->get_pa() < $cout_pa )
 	{
-		echo 'Pas assez de PA pour tirer<br />';
-		$pat = false;
-	}
+  	echo 'Pas assez de PA pour tirer<br />';
+  	$pat = false;
+  }
 	$x_min = $joueur->get_x() - $batiment->get_bonus('portee');
 	$x_max = $joueur->get_x() + $batiment->get_bonus('portee');
 	$y_min = $joueur->get_y() - $batiment->get_bonus('portee');
@@ -64,7 +66,7 @@ if($W_distance == 0)
 				$pos = convert_in_pos($row_bp['x'], $row_bp['y']);
 
 				echo "<li style='clear:both;' onmouseover=\"$('#pos_".$pos."').addClass('pos_over');\" onmouseout=\"$('#pos_".$pos."').removeClass('pos_over');\"><span style='float:left;width:110px;'>".$row_bp['nom']." </span><span style='float:left;width:105px;'> X : ".$row_bp['x']." - Y : ".$row_bp['y']."</span>";
-				if($pat && $joueur->grade->get_rang() >= $batiment->get_bonus('rang_manip') && $joueur->get_pa() >= 10) echo ' - <a href="attaque.php?type=siege&table=construction&id_arme_de_siege='.$arme->get_id().'&id_batiment='.$row_bp['id'].'" onclick="return envoiInfo(this.href, \'information\');">Attaquer avec l\'arme de siège (10 PA)</a></li>';
+				if($pat && $joueur->grade->get_rang() >= $batiment->get_bonus('rang_manip') && $joueur->get_pa() >= $cout_pa && $W_distance == 0) echo ' - <a href="attaque.php?type=siege&table=construction&id_arme_de_siege='.$arme->get_id().'&id_batiment='.$row_bp['id'].'" onclick="return envoiInfo(this.href, \'information\');">Attaquer avec l\'arme de siège ('.$cout_pa.' PA)</a></li>';
 			}
 		}
 		echo '</ul>';
@@ -80,7 +82,7 @@ if($W_distance == 0)
 			if($row_bp['royaume'] != $Trace[$joueur->get_race()]['numrace'] && $row_bp['id'] != $arme->get_id())
 			{
 				echo '<li>'.$row_bp['nom'].' - X : '.$row_bp['x'].' - Y : '.$row_bp['y'];
-				if($pat && $joueur->grade->get_rang() >= $batiment->get_bonus('rang_manip') && $joueur->get_pa() >= 10) echo ' - <a href="attaque.php?table=placement&amp;type=siege&amp;id_arme_de_siege='.$arme->get_id().'&amp;id_batiment='.$row_bp['id'].'" onclick="return envoiInfo(this.href, \'information\');">Attaquer avec l\'arme de siège</a></li>';
+				if($pat && $joueur->grade->get_rang() >= $batiment->get_bonus('rang_manip') && $joueur->get_pa() >= $cout_pa && $W_distance == 0) echo ' - <a href="attaque.php?table=placement&amp;type=siege&amp;id_arme_de_siege='.$arme->get_id().'&amp;id_batiment='.$row_bp['id'].'" onclick="return envoiInfo(this.href, \'information\');">Attaquer avec l\'arme de siège</a></li>';
 			}
 		}
 		echo '</ul>';
@@ -94,7 +96,7 @@ if($W_distance == 0)
 		echo '<h4><span class="titre_info">Ville à portée</span></h4>';
 		echo $row_v['nom'];
 		$id = convert_in_pos($row_v['x'], $row_v['y']);
-		if($pat && $joueur->grade->get_rang() >= $batiment->get_bonus('rang_manip')) {
+		if($pat && $joueur->grade->get_rang() >= $batiment->get_bonus('rang_manip') && $joueur->get_pa() >= $cout_pa && $W_distance == 0) {
 			echo ' - <a href="attaque.php?type=ville&amp;id_arme_de_siege='
 				.$arme->get_id().'&id_ville='.$id
 				.'" onclick="return envoiInfo(this.href, \'information\');">Attaquer avec l\'arme de siège</a>';

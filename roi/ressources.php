@@ -84,7 +84,7 @@ else
 	$hier['Star'] = $explode_stat[24];
 	$hier['Nourriture'] = $explode_stat[25];
 	
-	$requete = "SELECT info, COUNT(*) as tot_terrain FROM `map` WHERE royaume = ".$royaume->get_id()." GROUP BY info";
+	$requete = "SELECT info, COUNT(*) as tot_terrain FROM `map` WHERE royaume = ".$royaume->get_id()." AND x <= 190 AND y <= 190 GROUP BY info";
 	$req = $db->query($requete);
 	while($row = $db->read_assoc($req))
 	{
@@ -116,7 +116,7 @@ where b.type = 'mine'";
 		$batiment[$row['id']] = $row;
 	}
 	//@TODO gérer les mines dans construction
-	$requete = "SELECT * FROM construction LEFT JOIN map USING(x, y) WHERE construction.type = 'mine' AND construction.royaume = ".$royaume->get_id();
+	$requete = "SELECT * FROM construction LEFT JOIN map USING(x, y) WHERE construction.type = 'mine' AND map.x <= 190 AND map.y <= 190 AND construction.royaume = ".$royaume->get_id();
 	$req = $db->query($requete);
 	while($row = $db->read_assoc($req))
 	{

@@ -83,4 +83,7 @@ function __autoload($class_name)
 	require_once($file);
 }
 
+// Fabrique de l'interface
+$interf = interf_factory::factory();
+
 ?>

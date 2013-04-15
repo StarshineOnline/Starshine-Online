@@ -6,6 +6,9 @@ if (file_exists('../root.php')) {
   include_once('../root.php');
 }
 
+$echelle = 4; // La carte est 3x plus grande
+
+
 require_once('haut_roi.php');
 
 if ($joueur->get_rang_royaume() != 6) {
@@ -44,13 +47,13 @@ if (array_key_exists('poseall', $_REQUEST)) {
 }
 
 function print_map($mag_factor, $r_c) {
-	global $db;
+	global $db, $echelle;
 	echo "<map name=\"mapimmap\">\n";
 	while ($r = $db->read_object($r_c)) {
-		$r->x1 = ($r->x - 1) * 4 * $mag_factor;
-		$r->y1 = ($r->y - 1) * 4 * $mag_factor;
-		$r->x2 = $r->x1 + (4 * $mag_factor);
-		$r->y2 = $r->y1 + (4 * $mag_factor);
+		$r->x1 = ($r->x - 1) * $echelle * $mag_factor;
+		$r->y1 = ($r->y - 1) * $echelle * $mag_factor;
+		$r->x2 = $r->x1 + ($echelle * $mag_factor);
+		$r->y2 = $r->y1 + ($echelle * $mag_factor);
 		echo "<area shape=\"rect\" coords=\"$r->x1,$r->y1,$r->x2,$r->y2\" alt=\"$r->x,$r->y\" href=\"javascript:pose_drapeau($r->x, $r->y)\" />\n";
 	}
 	echo "</map>\n";
@@ -92,14 +95,18 @@ if (array_key_exists('mleft', $_GET)) {
 $rand = rand();
 $_SESSION['map_drap_key'] = $rand;
 
-$map_size = 760 * $mag_factor;
+$map_size = $G_max_x * 4 * $mag_factor;
 
 ?>
 <div id="info">
 Drapeaux disponibles : <?php echo $nb_drapeaux_dispo; ?><br/>
 Drapeaux posés : <?php echo $nb_drapeaux_poses; ?><br/>
 Cases de pose autorisées : <?php echo $nb_cases_ok; ?><br/>
+<br/>
+Rose : cases colonisables<br/>
+Cyan : cases déjà colonisées
 </div>
+
 <div id="ctrls" style="float: right; background-color: #FFFFCC; padding: 3px">
 <input type="button" onclick="movel()" value="←" />
 <input type="button" onclick="mover()" value="→" />
@@ -109,12 +116,14 @@ Cases de pose autorisées : <?php echo $nb_cases_ok; ?><br/>
 <input type="button" onclick="zooml()" value="−" /><br />
 <input type="button" onclick="toutposer()" value="Poser un maximum" />
 </div>
+
 <div id="map" style="width: 760px; height: 760px; overflow: hidden; position: relative">
 <img style="position: absolute; left: <?php echo $mleft; ?>px; top: <?php echo $mtop; ?>px" width="<?php echo $map_size; ?>" height="<?php echo $map_size; ?>" id="mapim" usemap="#mapimmap" alt="Carte des poses de drapeaux" src="drapeaux_map.php?img=<?php echo $rand; ?>" />
 <div id="mapinmapd">
 <?php print_map($mag_factor, $r_c); ?>
 </div>
 </div>
+
 
 <script type="text/javascript">
 var mtop = <?php echo $mtop; ?>;

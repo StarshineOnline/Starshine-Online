@@ -344,7 +344,20 @@ class map_monstre extends entnj_incarn
       else
         $log->send(0, 'donjon', "un draconide tué, reste un");
 			break;
-
+		
+		
+		case 204: //On refait pop le nain endetté pour le tuto
+			$requete = "INSERT INTO map_monstre VALUES(NULL,204,256,169,25,"
+          .(time() + 31536000).")";
+			$db->query($requete);
+			break;
+			
+		case 207: //On refait pop le voleur marchant pour le tuto
+			$requete = "INSERT INTO map_monstre VALUES(NULL,207,241,170,25,"
+          .(time() + 31536000).")";
+			$db->query($requete);
+			break;
+			
 		case 123: //Le roi des gobs fait pop le second roi des gobs
 			$requete = "INSERT INTO map_monstre select NULL, id, 17, 292, hp, ".(time() + 2678400)." from monstre where lib = 'roi_goblin_2' limit 1";
 			$db->query($requete);
@@ -376,6 +389,21 @@ class map_monstre extends entnj_incarn
 			echo 'L\'éternel adolescent vous toise d\'un regard espiègle tandisque dans un flash aveuglant, vous êtes projeté en arrière. Non loin de vous, sur le mur, une étrange surface brillante que vous aviez déjà remarqué, attire à ce moment votre attention pour des raisons qui vous échappe. Cesar fait vrombir son fauteuil d\'un coup sec. Des gerbes de flamme, de sang et de salives sont projetés par l\'engin avant que Cesar ne disparaisse dans le mur. Les reflets mystérieux continuent à agiter la surface miroitante mais rien n\'y fait, en la touchant, elle reste d\'une opacité à toute épreuve. Peut être n\'est-elle réservée qu\'à un genre de personne bien particulier. Un type qui sortirait de la norme sous quelques handicapes, ou quelques forces démoniaques...';
 			break;
 
+    // Monstres tutoriels
+    case 208:
+    case 209:
+    case 210:
+      global $db;
+      $requete = 'SELECT COUNT(*) AS tot FROM map_monstre WHERE x='.$this->get_x().' AND y='.$this->get_x();
+      $res = $db->query($requete);
+      $row = $db->read_array($res);
+      $nouv = clone $this;
+      if( $row['tot'] <= 1 )
+      {
+        $nouv->set_id(0);
+        $nouv->set_hp( $this->get_def()->get_hp() );
+        $nouv->sauver();
+      }
 			
 		default:
 			// Rien à faire
@@ -534,7 +562,8 @@ class map_monstre extends entnj_incarn
 		$gains_xp = false;
 		$gains_drop = false;
 		$gains_star = false;
-			
+		
+		
 		//Le défenseur est mort !
 		if ($this->get_hp() <= 0)
 		{
@@ -565,7 +594,12 @@ class map_monstre extends entnj_incarn
 		}
 		elseif ($perso->get_hp() <= 0 && !$pet) //L'attaquant est mort !
 		{
-			$coeff = 0.5;
+			//Intimidation du nain dans le tuto vorsh
+  		if ($this->id_monstre == 204)
+  		{
+  			$msg_xp = "Ce nain a compris le message, il n'est pas nécessaire de le tabasser plus<br/>";
+  		}
+  		$coeff = 0.5;
 			//Différence de level
 			$diff_level = abs($perso->get_level() - $this->get_level());
 			//Perde d'honneur
@@ -718,4 +752,10 @@ class map_monstre extends entnj_incarn
 		}
 		return $msg_xp;
 	}
+  /// Renvoie le coût en PA pour attaquer l'entité
+  function get_cout_attaque_base(&$perso)
+  {
+    global $G_PA_attaque_monstre;
+    return $G_PA_attaque_monstre;
+  }
 }

@@ -52,7 +52,7 @@ foreach($lst_roy as $royaume)
 	}
 }
 
-$requete = "SELECT royaume.race as race, info, COUNT(*) as tot_terrain FROM `map` LEFT JOIN royaume ON map.royaume = royaume.id WHERE royaume <> 0 GROUP BY info, royaume";
+$requete = "SELECT royaume.race as race, info, COUNT(*) as tot_terrain FROM `map` LEFT JOIN royaume ON map.royaume = royaume.id WHERE royaume <> 0 AND x <= 190 AND y <= 190  GROUP BY info, royaume";
 $req = $db->query($requete);
 while($row = $db->read_assoc($req))
 {
@@ -202,37 +202,43 @@ foreach($ressource_final as $key => $value)
 }
 
 //Mis à jour de la nourriture totales
-$food_total = ceil($tot_nou * 1.01);
+$food_total = $tot_nou;//ceil($tot_nou * 1.01);
 $requete = "UPDATE stat_jeu SET food = ".$food_total." WHERE date = '".$date."'";
 $db->query($requete);
 
 //Nourriture
 //On récupère la food nécessaire par habitant
-$requete = "SELECT food, nombre_joueur FROM stat_jeu WHERE date = '".$date_hier."'";
+/*$requete = "SELECT food, nombre_joueur FROM stat_jeu WHERE date = '".$date_hier."'";
 $req = $db->query($requete);
 $row = $db->read_assoc($req);
 if($row['nombre_joueur'] != 0) $food_necessaire = $row['food'] / $row['nombre_joueur'];
 else $food_necessaire = 0;
 
-$mail .= 'Nourriture nécessaire '.$food_necessaire."\n";
+$mail .= 'Nourriture nécessaire '.$food_necessaire."\n";*/
 
 //On récupère les infos des royaumes
-$requete = "SELECT id, race, food FROM royaume WHERE id != 0";
+$requete = "SELECT id, race, food, conso_food FROM royaume WHERE id != 0";
 $req = $db->query($requete);
 while($row = $db->read_assoc($req))
 {
-	$tab_royaume[$row['race']] = array('id' => $row['id'], 'food' => $row['food'], 'actif' => nb_habitant($row['race']));
+	$tab_royaume[$row['race']] = array('id' => $row['id'], 'food' => $row['food'], 'food_necessaire' => $row['conso_food']);
+}
+$roy = royaume::create(null, null, 'id ASC', false, 'id <> 0');
+foreach($roy as $r)
+{
+  $r->maj_conso_food();
+  $r->sauver();
 }
 foreach($tab_royaume as $race => $royaume)
 {
 	//On prend en compte la nourriture en bourse dans les stocks
-	$requete = "SELECT SUM(nombre) as food_bourse FROM bourse_royaume WHERE actif = 1 AND ressource = 'food' AND id_royaume = ".$royaume['id'];
+	/*$requete = "SELECT SUM(nombre) as food_bourse FROM bourse_royaume WHERE actif = 1 AND ressource = 'food' AND id_royaume = ".$royaume['id'];
 	$req = $db->query($requete);
 	$row = $db->read_assoc($req);
 	$food_bourse = $row['food_bourse'];
 	$idpersos = "select id from perso where race = '$race' AND statut = 'actif'";
 
-	$royaume['food_necessaire'] = floor($food_necessaire * $royaume['actif'] * 0.95) + floor(0.05 * ($royaume['food'] + $food_bourse));
+	$royaume['food_necessaire'] = floor($food_necessaire * $royaume['actif'] * 0.95) + floor(0.05 * ($royaume['food'] + $food_bourse));*/
 	//echo $royaume['race'].' '.$royaume['food_necessaire'].'<br />';
 	//Si ya assez de food
 	$mail .= "Race : ".$race." - Nécessaire : ".$royaume['food_necessaire']." / Possède : ".$royaume['food']."\n";
@@ -243,8 +249,11 @@ foreach($tab_royaume as $race => $royaume)
 		$requete = "UPDATE royaume SET food = food - ".$royaume['food_necessaire']." WHERE id = ".$royaume['id'];
 		$db->query($requete);
 		//On réduit de 3 les debuff famines (1 ??)
-		$requete = "UPDATE buff SET effet = effet - 3 WHERE type = 'famine' AND id_perso IN ($idpersos)";
-		$db->query($requete);
+		if($idpersos)
+		{
+  		$requete = "UPDATE buff SET effet = effet - 3 WHERE type = 'famine' AND id_perso IN ($idpersos)";
+  		$db->query($requete);
+    }
 	}
 	else
 	{

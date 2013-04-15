@@ -1,4 +1,4 @@
-<?php
+<?php // -*- mode: php; tab-width: 2 -*-
 /**
  * Classe de base pour les objets représentant un élément d'une table dans la 
  * base de donnée. 

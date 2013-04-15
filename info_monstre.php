@@ -196,6 +196,19 @@ if ($monstre->get_affiche() == 'h') {
 	</tr>
 	<?php
 	}
+	if($coeff >= 22)
+	{
+	?>
+	<tr class="trcolor2">
+		<td>
+			Arme
+		</td>
+		<td>
+			<?php echo $Gtrad[$monstre->get_arme()]; ?>
+		</td>
+	</tr>
+	<?php
+	}
 	?>
 	</table>
 

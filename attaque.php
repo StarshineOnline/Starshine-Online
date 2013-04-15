@@ -17,7 +17,7 @@ if(array_key_exists('pet', $_GET))
 	if($joueur->nb_pet() > 0) $check_pet = true;
 }
 if(is_donjon($joueur->get_x(), $joueur->get_y())
-	 && ($joueur->in_arene('and donj = 0') == false))
+	 && ($joueur->in_arene('and donj = 0') == false) && $joueur->get_y()>190)
 	 {
 		 $donj = true;
 	 }
@@ -175,16 +175,16 @@ switch($type)
 		else $map_batiment = new placement($_GET['id_batiment']);
 		$joueur = new perso($_SESSION['ID']);
     $joueur->check_perso();
-		if($joueur->get_pa() >= 10)
-		{
+		/*if($joueur->get_pa() >= 10)
+		{*/
 			$siege = new batiment($map_siege->get_id_batiment());
 			$defenseur = entite::factory('batiment', $map_batiment);
 			$attaquant = entite::factory('siege', $map_siege, $joueur, true, $defenseur);
-		}
+		//}
 	break;
 	case 'ville' :
 		if ($joueur->is_buff('debuff_rvr')) $no_rvr = true;
-		$map_siege = new construction($_GET['id_arme_de_siege']);
+		$map_siege = new arme_siege($_GET['id_arme_de_siege']);
 		$joueur = new perso($_SESSION['ID']);
     $joueur->check_perso();
 		$map_case = new map_case($_GET['id_ville']);
@@ -194,8 +194,8 @@ switch($type)
 		$coord = convert_in_coord($_GET['id_ville']);
 		$map_royaume->x =$coord['x'];
 		$map_royaume->y =$coord['y'];
-		$attaquant = entite::factory('siege', $map_siege);
 		$defenseur = entite::factory('ville', $map_royaume);
+		$attaquant = entite::factory('siege', $map_siege, $joueur, true, $defenseur);
 		if ($map_royaume->is_raz())
 		{
 			echo '<h5>Cette ville est déjà mise à sac</h5>';
@@ -217,7 +217,7 @@ $W_distance = detection_distance($W_case, convert_in_pos($attaquant->get_x(), $a
 	<legend>Combat VS <?php echo $defenseur->get_nom(); ?></legend>
 <?php
 if(is_donjon($joueur->get_x(), $joueur->get_y())
-	 && ($joueur->in_arene('and donj = 0') == false))
+	 && ($joueur->in_arene('and donj = 0') == false) && $joueur->get_y()>190)
 {
 	$round_total = $G_round_total * 2;
 	$attaquant->set_rm_restant($attaquant->get_rm_restant() * 2);
@@ -234,6 +234,28 @@ if(is_donjon($joueur->get_x(), $joueur->get_y())
 	}
 }
 
+$dist_tir_att = $attaquant->get_distance_tir();
+//On vérifie si l'attaquant est sur un batiment offensif
+$requete = "SELECT id_batiment FROM construction WHERE x = ".$joueur->get_x()." AND y = ".$joueur->get_y()." AND royaume = ".$Trace[$joueur->get_race()]['numrace'];
+$req = $db->query($requete);
+if($db->num_rows > 0)
+{
+	$row = $db->read_row($req);
+	$batiment_off = new batiment($row[0]);
+	//Augmentation de tir à distance
+	if ($batiment_off->has_bonus('batiment_distance'))
+		$attaquant->add_buff('batiment_distance',
+												 $batiment_off->get_bonus('batiment_distance'));
+	//Augmentation de la distance de tir
+	if ($batiment_off->has_bonus('batiment_incantation'))
+		$attaquant->add_buff('batiment_incantation',
+												 $batiment_off->get_bonus('batiment_incantation'));
+  if( $attaquant->get_arme_type() == 'arc' && $batiment_off->has_bonus('distance_arc') )
+    $dist_tir_att += $batiment_off->get_bonus('distance_arc');
+  else if( $attaquant->get_arme_type() == 'baton' && $batiment_off->has_bonus('distance_baton') )
+    $dist_tir_att += $batiment_off->get_bonus('distance_baton');
+}
+		
 if($joueur->is_buff('repos_sage') && !$no_pa_attaque)
 {
 	echo '<h5>Vous êtes sous repos du sage, vous ne pouvez pas attaquer.</h5>';
@@ -246,7 +268,7 @@ elseif($joueur->is_buff('dressage'))
 {
 	echo '<h5>Vous dressez un monstre, vous ne pouvez pas attaquer.</h5>';
 }
-else if($W_distance > $attaquant->get_distance_tir())
+else if($W_distance > $dist_tir_att )
 {
 	echo '<h5>Vous êtes trop loin pour l\'attaquer !</h5>';
 }
@@ -305,38 +327,22 @@ else
 														 $batiment_def->get_bonus('batiment_distance'));
 			$defenseur_en_defense = true;
 		}
-		//On vérifie si l'attaquant est sur un batiment offensif
-		$requete = "SELECT id_batiment FROM construction WHERE x = ".$joueur->get_x()." AND y = ".$attaquant->get_y()." AND royaume = ".$Trace[$attaquant->get_race()]['numrace'];
-		$req = $db->query($requete);
-		if($db->num_rows > 0)
-		{
-			$row = $db->read_row($req);
-			$batiment_off = new batiment($row[0]);
-			//Augmentation de tir à distance
-			if ($batiment_off->has_bonus('batiment_distance'))
-				$attaquant->add_buff('batiment_distance', 
-														 $batiment_off->get_bonus('batiment_distance'));
-			//Augmentation de lancement de sorts
-			if ($batiment_off->has_bonus('batiment_incantation'))
-				$attaquant->add_buff('batiment_incantation', 
-														 $batiment_off->get_bonus('batiment_incantation'));
-		}
 	} //fin $type = 'joueur'
 	if($type == 'siege' OR $type == 'ville') $round_total = 1;
 	$round = 1;
 	$attaquant->etat = array();
 	$defenseur->etat = array();
 	$debugs = 0;
-	if($type == 'joueur') $pa_attaque = $G_PA_attaque_joueur;
+	/*if($type == 'joueur') $pa_attaque = $G_PA_attaque_joueur;
 	elseif($type == 'batiment') $pa_attaque = $G_PA_attaque_batiment;
 	else $pa_attaque = $G_PA_attaque_monstre;
-	if($attaquant->get_race() == $defenseur->get_race() && $joueur->in_arene() == false) $pa_attaque += 3;
+	if($attaquant->get_race() == $defenseur->get_race() && $joueur->in_arene() == false) $pa_attaque += 3;*/
 	if($attaquant->get_race() == 'orc' OR $defenseur->get_race() == 'orc') $round_total += 1;
 	if($attaquant->is_buff('buff_sacrifice')) $round_total -= $attaquant->get_buff('buff_sacrifice', 'effet2');
-	if($attaquant->is_buff('cout_attaque')) $pa_attaque = ceil($pa_attaque / $attaquant->get_buff('cout_attaque', 'effet'));
+	/*if($attaquant->is_buff('cout_attaque')) $pa_attaque = ceil($pa_attaque / $attaquant->get_buff('cout_attaque', 'effet'));
 	if($attaquant->is_buff('plus_cout_attaque')) $pa_attaque = $pa_attaque * $attaquant->get_buff('plus_cout_attaque', 'effet');
 	if($attaquant->is_buff('buff_rapidite')) $reduction_pa = $attaquant->get_buff('buff_rapidite', 'effet'); else $reduction_pa = 0;
-	if($attaquant->is_buff('debuff_ralentissement')) $reduction_pa -= $attaquant->get_buff('debuff_ralentissement', 'effet');
+	if($attaquant->is_buff('debuff_ralentissement')) $reduction_pa -= $attaquant->get_buff('debuff_ralentissement', 'effet');*/
 	if($attaquant->is_buff('engloutissement')) $attaquant->add_bonus_permanents('dexterite', -$attaquant->get_buff('engloutissement', 'effet'));
 	if($attaquant->is_buff('deluge')) $attaquant->add_bonus_permanents('volonte', -$attaquant->get_buff('deluge', 'effet'));
 	if($defenseur->is_buff('engloutissement')) $defenseur->add_bonus_permanents('dexterite', -$defenseur->get_buff('engloutissement', 'effet'));
@@ -346,20 +352,21 @@ else
 	maladie::degenerescence($attaquant);
 	maladie::degenerescence($defenseur);
 
-	$pa_attaque = $pa_attaque - $reduction_pa;
-	if($pa_attaque <= 0) $pa_attaque = 1;
+	/*$pa_attaque = $pa_attaque - $reduction_pa;
+	if($pa_attaque <= 0) $pa_attaque = 1;*/
+	$pa_attaque = $attaquant->get_cout_attaque($joueur, $defenseur);
 	if (isset($no_pa_attaque) && $no_pa_attaque == true)
 		$pa_attaque = 0;
-	if($type == 'siege' OR $type == 'ville')
+	/*if($type == 'siege' OR $type == 'ville')
 	{
 		$pa_attaque = 10;
 		if($attaquant->is_buff('debuff_rez')) $pa_attaque *= 2;
-	}
+	}*/
 
 	$joueur_true = false;
 	$siege_true = false;
 	if ($type == 'joueur' OR $type == 'monstre' OR $type == 'batiment') if($joueur->get_pa() >= $pa_attaque) $joueur_true = true;
-	if($type == 'siege' OR $type == 'ville') if ($map_siege->get_rechargement() <= time()) if($joueur->get_pa() >= $pa_attaque) $siege_true = true;
+	if($type == 'siege' OR $type == 'ville') if ($attaquant->peut_attaquer()) if($joueur->get_pa() >= $pa_attaque) $siege_true = true;
 	//Vérifie si l'attaquant a assez de points d'actions pour attaquer ou si l'arme de siege a assez de rechargement
 	if ($joueur_true OR $siege_true)
 	{
@@ -798,7 +805,7 @@ else
 
 			if($check_pet OR $check_pet_donj)
 			{
-				$augmentation = augmentation_competence('dressage', $joueur, 0.43);
+				$augmentation = augmentation_competence('dressage', $joueur, 0.85);
 				if($augmentation[1] == 1)
 				{
 					$joueur->set_dressage($augmentation[0]);
@@ -806,7 +813,7 @@ else
 			}
 			if($check_pet_def)
 			{
-				$augmentation = augmentation_competence('dressage', $joueur_defenseur, 0.43);
+				$augmentation = augmentation_competence('dressage', $joueur_defenseur, 0.85);
 				if($augmentation[1] == 1)
 				{
 					$joueur_defenseur->set_dressage($augmentation[0]);
@@ -861,6 +868,7 @@ else
 				$achiev->set_compteur($achiev->get_compteur() + $defenseur->get_compteur_critique());
 				$achiev->sauver();
 			}
+			$attaquant->fin_attaque($joueur, $defenseur, $pa_attaque);
 			//Suppression des PA si c'est une attaque du joueur
 			if($type == 'joueur' OR $type == 'monstre' OR $type == 'batiment')
 			{
@@ -879,8 +887,8 @@ else
 			{
 				$joueur->set_pa($joueur->get_pa() - $pa_attaque);
 				$joueur->sauver();
-				$map_siege->set_rechargement(time() + $siege->get_bonus('rechargement'));
-				$map_siege->sauver();
+				/*$map_siege->set_rechargement(time() + $siege->get_bonus('rechargement'));
+				$map_siege->sauver();*/
 			}
 			else
 			{
@@ -894,9 +902,9 @@ else
 				
 				//Journal de l'attaquant 
 				if(!$check_pet)
-					$requete = "INSERT INTO journal VALUES(NULL, ".$joueur->get_id().", 'attaque', '".sSQL($joueur->get_nom())."', '".sSQL($defenseur->get_nom())."', NOW(), ".($defense_hp_avant - $defense_hp_apres).", ".($attaque_hp_avant - $attaque_hp_apres).", ".$joueur_defenseur->get_x().", ".$joueur_defenseur->get_y().")";
+					$requete = "INSERT INTO journal VALUES(NULL, ".$joueur->get_id().", 'attaque', '".mysql_escape_string(sSQL($joueur->get_nom()))."', '".mysql_escape_string(sSQL($defenseur->get_nom()))."', NOW(), ".($defense_hp_avant - $defense_hp_apres).", ".($attaque_hp_avant - $attaque_hp_apres).", ".$joueur_defenseur->get_x().", ".$joueur_defenseur->get_y().")";
 				else
-					$requete = "INSERT INTO journal VALUES(NULL, ".$joueur->get_id().", 'attaque', '".sSQL($attaquant->get_nom())."', '".sSQL($defenseur->get_nom())."', NOW(), ".($defense_hp_avant - $defense_hp_apres).", ".($attaque_hp_avant - $attaque_hp_apres).", ".$joueur_defenseur->get_x().", ".$joueur_defenseur->get_y().")";
+					$requete = "INSERT INTO journal VALUES(NULL, ".$joueur->get_id().", 'attaque', '".mysql_escape_string(sSQL($attaquant->get_nom()))."', '".mysql_escape_string(sSQL($defenseur->get_nom()))."', NOW(), ".($defense_hp_avant - $defense_hp_apres).", ".($attaque_hp_avant - $attaque_hp_apres).", ".$joueur_defenseur->get_x().", ".$joueur_defenseur->get_y().")";
 				$db->query($requete);
 				// Creation du log du combat
 				$combat = new combat();
@@ -908,9 +916,9 @@ else
 				
 				//Journal du défenseur
 				if(!$check_pet_def)
-					$requete = "INSERT INTO journal VALUES(NULL, ".$joueur_defenseur->get_id().", 'defense', '".$joueur_defenseur->get_nom()."', '".$joueur->get_nom()."', NOW(), ".($defense_hp_avant - $defense_hp_apres).", ".($attaque_hp_avant - $attaque_hp_apres).", ".$joueur_defenseur->get_x().", ".$joueur_defenseur->get_y().")";
+					$requete = "INSERT INTO journal VALUES(NULL, ".$joueur_defenseur->get_id().", 'defense', '".mysql_escape_string($joueur_defenseur->get_nom())."', '".mysql_escape_string($joueur->get_nom())."', NOW(), ".($defense_hp_avant - $defense_hp_apres).", ".($attaque_hp_avant - $attaque_hp_apres).", ".$joueur_defenseur->get_x().", ".$joueur_defenseur->get_y().")";
 				else
-					$requete = "INSERT INTO journal VALUES(NULL, ".$joueur_defenseur->get_id().", 'defense', '".$defenseur->get_nom()."', '".$joueur->get_nom()."', NOW(), ".($defense_hp_avant - $defense_hp_apres).", ".($attaque_hp_avant - $attaque_hp_apres).", ".$joueur_defenseur->get_x().", ".$joueur_defenseur->get_y().")";
+					$requete = "INSERT INTO journal VALUES(NULL, ".$joueur_defenseur->get_id().", 'defense', '".mysql_escape_string($defenseur->get_nom())."', '".mysql_escape_string($joueur->get_nom())."', NOW(), ".($defense_hp_avant - $defense_hp_apres).", ".($attaque_hp_avant - $attaque_hp_apres).", ".$joueur_defenseur->get_x().", ".$joueur_defenseur->get_y().")";
 				
 				$db->query($requete);
 				$combat = new combat();
@@ -922,17 +930,17 @@ else
 				
 				if($defenseur->get_hp() <= 0 && !$check_pet_def)
 				{
-					$requete = "INSERT INTO journal VALUES(NULL, ".$joueur->get_id().", 'tue', '".$joueur->get_nom()."', '".$joueur_defenseur->get_nom()."', NOW(), 0, 0, ".$joueur_defenseur->get_x().", ".$joueur_defenseur->get_y().")";
+					$requete = "INSERT INTO journal VALUES(NULL, ".$joueur->get_id().", 'tue', '".mysql_escape_string($joueur->get_nom())."', '".mysql_escape_string($joueur_defenseur->get_nom())."', NOW(), 0, 0, ".$joueur_defenseur->get_x().", ".$joueur_defenseur->get_y().")";
 					$db->query($requete);
-					$requete = "INSERT INTO journal VALUES(NULL, ".$joueur_defenseur->get_id().", 'mort', '".$joueur_defenseur->get_nom()."', '".$joueur->get_nom()."', NOW(), 0, 0, ".$joueur_defenseur->get_x().", ".$joueur_defenseur->get_y().")";
+					$requete = "INSERT INTO journal VALUES(NULL, ".$joueur_defenseur->get_id().", 'mort', '".mysql_escape_string($joueur_defenseur->get_nom())."', '".mysql_escape_string($joueur->get_nom())."', NOW(), 0, 0, ".$joueur_defenseur->get_x().", ".$joueur_defenseur->get_y().")";
 					$db->query($requete);
 				}
 				
 				if($attaquant->get_hp() <= 0 && !$check_pet)
 				{
-					$requete = "INSERT INTO journal VALUES(NULL, ".$joueur->get_id().", 'mort', '".$joueur->get_nom()."', '".$joueur_defenseur->get_nom()."', NOW(), 0, 0, ".$joueur_defenseur->get_x().", ".$joueur_defenseur->get_y().")";
+					$requete = "INSERT INTO journal VALUES(NULL, ".$joueur->get_id().", 'mort', '".mysql_escape_string($joueur->get_nom())."', '".mysql_escape_string($joueur_defenseur->get_nom())."', NOW(), 0, 0, ".$joueur_defenseur->get_x().", ".$joueur_defenseur->get_y().")";
 					$db->query($requete);
-					$requete = "INSERT INTO journal VALUES(NULL, ".$joueur_defenseur->get_id().", 'tue', '".$joueur_defenseur->get_nom()."', '".$joueur->get_nom()."', NOW(), 0, 0, ".$joueur_defenseur->get_x().", ".$joueur_defenseur->get_y().")";
+					$requete = "INSERT INTO journal VALUES(NULL, ".$joueur_defenseur->get_id().", 'tue', '".mysql_escape_string($joueur_defenseur->get_nom())."', '".mysql_escape_string($joueur->get_nom())."', NOW(), 0, 0, ".$joueur_defenseur->get_x().", ".$joueur_defenseur->get_y().")";
 					$db->query($requete);
 				}
 			}
@@ -940,7 +948,7 @@ else
 			elseif($type == 'batiment')
 			{
 				//Insertion de l'attaque dans les journaux des 2 joueurs
-				$requete = "INSERT INTO journal VALUES(NULL, ".$joueur->get_id().", 'attaque', '".$joueur->get_nom()."', '".$defenseur->get_nom()."', NOW(), ".($defense_hp_avant - $defense_hp_apres).", ".($attaque_hp_avant - $attaque_hp_apres).", ".$defenseur->get_x().", ".$defenseur->get_y().")";
+				$requete = "INSERT INTO journal VALUES(NULL, ".$joueur->get_id().", 'attaque', '".mysql_escape_string($joueur->get_nom())."', '".mysql_escape_string($defenseur->get_nom())."', NOW(), ".($defense_hp_avant - $defense_hp_apres).", ".($attaque_hp_avant - $attaque_hp_apres).", ".$defenseur->get_x().", ".$defenseur->get_y().")";
 				$db->query($requete);
 				// Creation du log du combat
 				$combat = new combat();

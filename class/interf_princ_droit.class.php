@@ -1,7 +1,7 @@
 <?php
 /// @addtogroup Interface
 /**
- * @file ihPrincDroit.class.php
+ * @file interf_princ_droit.class.php
  * Classe gérant l'élément d'interface principal pour le panneau droit dans l'interface de base.
  */
 
@@ -14,17 +14,24 @@ class interf_princ_droit extends interf_princ_ob
 {
   protected $titre;  ///< Titre du panneau.
   
-  function factory($titre)
-  {
-      return new interf_princ_droit($titre);
-  }
   /**
    * Constructeur
    * @param  $titre   titre du panneau.
    */
-  protected function __construct($titre)
+  function __construct($titre)
   {
+    global $id_elt_ajax;
+    $id_elt_ajax = 'information';
     $this->titre = $titre;
+  }
+  /**
+   * Ajoute un message
+   * @param $message  Message à afficher
+   * @param $ok       Indique si le message est positif ou négatif.
+   */
+  function add_message($message, $ok=true)
+  {
+    $this->add(new interf_bal_smpl($ok?'h6':'h5', $message) );
   }
   /// Affiche le début de l'élément, i.e. la partie située avant les éléments fils.
   protected function debut()

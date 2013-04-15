@@ -23,6 +23,7 @@ class batiment extends entitenj_def
 	protected $upgrade;   ///< ID de la version améliorée.
 	protected $augmentation_pa;   ///< Augmentation du coût en PA des déplacements sur le bâtiment.
 	protected $temps_construction;///< Temps de construction du bâtiment.
+	protected $temps_construction_min;///< Temps de construction minimal du bâtiment.
 	protected $image;  ///< Image du bâtiment.
 	protected $point_victoire;  ///< Points de victoire gagnés lors de la destruction du bâtiment.
 
@@ -116,6 +117,18 @@ class batiment extends entitenj_def
 	{
 		$this->temps_construction = $temps_construction;
 		$this->champs_modif[] = 'temps_construction';
+	}
+
+	/// Renvoie le temps de construction minimal du bâtiment
+	function get_temps_construction_min()
+	{
+		return $this->temps_construction_min;
+	}
+	/// Modifie le temps de construction minimal du bâtiment
+	function set_temps_construction_min($temps_construction_min)
+	{
+		$this->temps_construction_min = $temps_construction_min;
+		$this->champs_modif[] = 'temps_construction_min';
 	}
 
 	/// Renvoie l'image du bâtiment

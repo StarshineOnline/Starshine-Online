@@ -30,6 +30,7 @@ class map
 
 	function __construct($x, $y, $champ_vision = 3, $root = '', $donjon = false, $resolution = 'high', $troisd = false)
 	{
+    global $G_max_x, $G_max_y;
 		$this->x = $x;
 		$this->y = $y;
 		$this->champ_vision = $champ_vision;
@@ -49,8 +50,8 @@ class map
 
 		if(!$this->donjon)
 		{
-			$limite_x = 190;
-			$limite_y = 190;
+			$limite_x = $G_max_x;
+			$limite_y = $G_max_y;
 		}
 		else
 		{
@@ -86,7 +87,7 @@ class map
 		global $Gcouleurs;
 
     $this->load_map_calques();
-		if($this->donjon && !$this->arene)
+		if($this->donjon && !$this->arene && $this->y > 190)
 		{
 			$xmin = $this->xmin + 1;
 			$xmax = $this->xmax - 1;
@@ -120,9 +121,11 @@ class map
 			$MAPTAB[$objMap->x][$objMap->y]["royaume"] = $objMap->royaume;
 			$MAPTAB[$objMap->x][$objMap->y]["type"] = $objMap->info;
 			$MAPTAB[$objMap->x][$objMap->y]["maptype"] = $objMap->type;
+			if( $this->resolution == 'low' && $objMap->royaume == 0 )
+        $MAPTAB[$objMap->x][$objMap->y]["decor"] = 0;
 		}
 		$classe_css = array();
-		if(!$this->donjon)
+		if(!$this->donjon or $this->y <= 190)
 		{
 			$classe_css['map_bord_haut'] = 'map_bord_haut';
 			$classe_css['map_bord_haut_gauche'] = 'map_bord_haut_gauche';
@@ -462,7 +465,7 @@ class map
 	
 						if($this->resolution == 'low') $tex_resolution = 'l';
 						else $tex_resolution = '';
-						if(is_array($MAPTAB[$x_map][$y_map])) { $class_map = "decor tex".$tex_resolution.$MAPTAB[$x_map][$y_map]["decor"]; } else { $class_map = "decor texblack"; };
+						if(is_array($MAPTAB[$x_map][$y_map]) && $MAPTAB[$x_map][$y_map]["decor"]) { $class_map = "decor tex".$tex_resolution.$MAPTAB[$x_map][$y_map]["decor"]; } else { $class_map = "decor texblack"; };
 	
 						if($this->affiche_royaume) $taille_border = 1;
 						else $taille_border = 0;
@@ -608,7 +611,7 @@ class map
 	function get_pnj()
 	{
 		global $db;
-		if($this->donjon)
+		if($this->donjon && $this->y > 190)
 		{
 			$xmin = $this->xmin + 1;
 			$xmax = $this->xmax - 1;
@@ -651,7 +654,7 @@ class map
 		global $Tclasse;
 		global $Gtrad;
 
-		if($this->donjon)
+		if($this->donjon && $this->y > 190)
 		{
 			$xmin = $this->xmin + 1;
 			$xmax = $this->xmax - 1;
@@ -836,7 +839,7 @@ class map
 	function get_monstre($level = 0, $groupe = true)
 	{
 		global $db;
-		if($this->donjon)
+		if($this->donjon && $this->y > 190)
 		{
 			$xmin = $this->xmin + 1;
 			$xmax = $this->xmax - 1;

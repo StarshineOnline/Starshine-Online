@@ -129,15 +129,16 @@ function calcul_distance_pytagore($posjoueur1, $posjoueur2)
  */
 function dimension_map($x, $y, $champ_vision)
 {
+  global $G_max_x, $G_max_y;
 	$case_affiche = ($champ_vision * 2) + 1;
 	$dimensions = array();
 
 	if($x < ($champ_vision + 1))			{ $dimensions['xmin'] = 1;		$dimensions['xmax'] = $x + ($case_affiche - ($x)); }
-	elseif($x > (190 - $champ_vision))		{ $dimensions['xmax'] = 190;		$dimensions['xmin'] = $x - ($case_affiche - (190 - $x + 1)); }
+	elseif($x > ($G_max_x - $champ_vision))		{ $dimensions['xmax'] = $G_max_x;		$dimensions['xmin'] = $x - ($case_affiche - ($G_max_x - $x + 1)); }
 	else								{ $dimensions['xmin'] = $x - $champ_vision;	$dimensions['xmax'] = $x + $champ_vision; };
 	
 	if($y < ($champ_vision + 1))		{ $dimensions['ymin'] = 1;		$dimensions['ymax'] = $y + ($case_affiche - ($y)); }
-	elseif($y > (190 - $champ_vision))	{ $dimensions['ymax'] = 190;		$dimensions['ymin'] = $y - ($case_affiche - (190 - $y + 1)); }
+	elseif($y > ($G_max_y - $champ_vision))	{ $dimensions['ymax'] = $G_max_y;		$dimensions['ymin'] = $y - ($case_affiche - ($G_max_y - $y + 1)); }
 	else								{ $dimensions['ymin'] = $y - $champ_vision; 	$dimensions['ymax'] = $y + $champ_vision; }
 
 	return $dimensions;
@@ -222,7 +223,7 @@ function nb_case($id_royaume)
 function nb_habitant($race)
 {
 	global $db;
-	$requete = "SELECT COUNT(*) FROM perso WHERE statut = 'actif' AND race = '".$race."'";
+	$requete = "SELECT COUNT(*) FROM perso WHERE statut = 'actif' AND race = '".$race."' AND level > 0";
 	$req = $db->query($requete);
 	$row = $db->read_row($req);
 	return $row[0];
@@ -264,6 +265,10 @@ function type_terrain($info)
 	$typeterrain[8][1] = 'Route';
 	$typeterrain[9][0] = 'route';
 	$typeterrain[9][1] = 'Route';
+	$typeterrain[108][0] = 'route';
+	$typeterrain[108][1] = 'Route';
+	$typeterrain[109][0] = 'route';
+	$typeterrain[109][1] = 'Route';
 	$typeterrain[10][0] = 'objet';
 	$typeterrain[10][1] = 'Bâtiment';
 	$typeterrain[20][0] = 'objet';
@@ -326,6 +331,26 @@ function type_terrain($info)
   $typeterrain[175][1] = 'Donjon';
 	$typeterrain[185][0] = 'donjon_aqua_level_1';
   $typeterrain[185][1] = 'Donjon';
+	$typeterrain[195][0] = 'donjon';
+	$typeterrain[195][1] = 'Donjon';
+	$typeterrain[196][0] = 'mur_donjon';
+	$typeterrain[196][1] = 'Mur de Donjon';
+	$typeterrain[205][0] = 'donjon';
+	$typeterrain[205][1] = 'Donjon';
+	$typeterrain[206][0] = 'mur_donjon';
+	$typeterrain[206][1] = 'Mur de Donjon';
+	$typeterrain[215][0] = 'donjon';
+	$typeterrain[215][1] = 'Donjon';
+	$typeterrain[216][0] = 'mur_donjon';
+	$typeterrain[216][1] = 'Mur de Donjon';
+	$typeterrain[225][0] = 'donjon';
+	$typeterrain[225][1] = 'Donjon';
+	$typeterrain[226][0] = 'mur_donjon';
+	$typeterrain[226][1] = 'Mur de Donjon';
+	$typeterrain[235][0] = 'donjon';
+	$typeterrain[235][1] = 'Donjon';
+	$typeterrain[236][0] = 'mur_donjon';
+	$typeterrain[236][1] = 'Mur de Donjon';
 	/* TEMPLATE
 	$typeterrain[][0] = '';
 	$typeterrain[][1] = '';
@@ -565,6 +590,8 @@ function cout_pa2($coutpa, $joueur, $case, $diagonale)
 			}
 		}
 	}	
+	if (($joueur->get_tuto() != 0 ) AND ($joueur->get_x() < 276 ) AND ($joueur->get_x() >199 ) AND ($joueur->get_y() < 186 ) AND ($joueur->get_y() > 49)){
+		$coutpa=2;}
 	return $coutpa;
 }
 
@@ -2234,6 +2261,8 @@ Votre dernier souvenir est l'endroit où vous êtes mort <?php echo 'x : '.$joue
 			$effet = 2;
 			lance_buff('debuff_rez', $joueur->get_id(), $effet, $multiplicateur_mouvement, $duree_debuff, 'Mal de résurrection', 'Mulitplie vos coûts de déplacement par '.$effet, 'perso', 1, 0, 0, 0);
 		}
+		// Second mal de res
+		lance_buff('convalescence', $joueur->get_id(), 2, 2, 86400, 'Convalescence', 'Diminue votre efficacité pour le RvR.', 'perso', 1, 0, 0, 0);
 	}
 }
 
@@ -3290,8 +3319,9 @@ function pose_drapeau_roi($x, $y)
 	global $joueur;
 	global $db;
 	global $Trace;
+  global $G_max_x, $G_max_y;
 
-	if ($x > 190 || $x < 0 || $y > 190 || $y < 0) security_block(URL_MANIPULATION); // Case invalide
+	if ($x > $G_max_x || $x < 0 || $y > $G_max_y || $y < 0) security_block(URL_MANIPULATION); // Case invalide
 	if ($joueur->get_rang_royaume() != 6) security_block(URL_MANIPULATION); // Pas roi
 
 	if (!verif_ville($joueur->get_x(), $joueur->get_y())) {
@@ -3329,8 +3359,9 @@ function pose_drapeau_roi_all()
 	global $joueur;
 	global $db;
 	global $Trace;
+  global $G_max_x, $G_max_y;
 
-	if ($x > 190 || $x < 0 || $y > 190 || $y < 0) security_block(URL_MANIPULATION); // Case invalide
+	if ($x > $G_max_x || $x < 0 || $y > $G_max_y || $y < 0) security_block(URL_MANIPULATION); // Case invalide
 	if ($joueur->get_rang_royaume() != 6) security_block(URL_MANIPULATION); // Pas roi
 
 	if (!verif_ville($joueur->get_x(), $joueur->get_y())) {
@@ -3652,3 +3683,33 @@ function pute_effets(&$joueur, $honneur_need, $specials = null, $specials_det = 
   }
   return $texte;
 }
+
+/**
+ * Transforme un pseudo en login (on enlève les accents, on transforme les apostrophes et espaces en underscore)
+ *
+ * @param  $pseudo   Pseudo à transformer
+ *
+ * @return   login
+ */
+ function pseudo_to_login($pseudo)
+ {
+	if(!empty($pseudo))
+	{
+		$login = strtolower($pseudo);
+		$login = str_replace("'","_",$login);
+		$login = str_replace(" ","_",$login);
+		$table = array(
+			'Š'=>'S', 'š'=>'s', 'Đ'=>'Dj', 'đ'=>'dj', 'Ž'=>'Z', 'ž'=>'z', 'Č'=>'C', 'č'=>'c', 'Ć'=>'C', 'ć'=>'c',
+			'À'=>'A', 'Á'=>'A', 'Â'=>'A', 'Ã'=>'A', 'Ä'=>'A', 'Å'=>'A', 'Æ'=>'A', 'Ç'=>'C', 'È'=>'E', 'É'=>'E',
+			'Ê'=>'E', 'Ë'=>'E', 'Ì'=>'I', 'Í'=>'I', 'Î'=>'I', 'Ï'=>'I', 'Ñ'=>'N', 'Ò'=>'O', 'Ó'=>'O', 'Ô'=>'O',
+			'Õ'=>'O', 'Ö'=>'O', 'Ø'=>'O', 'Ù'=>'U', 'Ú'=>'U', 'Û'=>'U', 'Ü'=>'U', 'Ý'=>'Y', 'Þ'=>'B', 'ß'=>'Ss',
+			'à'=>'a', 'á'=>'a', 'â'=>'a', 'ã'=>'a', 'ä'=>'a', 'å'=>'a', 'æ'=>'a', 'ç'=>'c', 'è'=>'e', 'é'=>'e',
+			'ê'=>'e', 'ë'=>'e', 'ì'=>'i', 'í'=>'i', 'î'=>'i', 'ï'=>'i', 'ð'=>'o', 'ñ'=>'n', 'ò'=>'o', 'ó'=>'o',
+			'ô'=>'o', 'õ'=>'o', 'ö'=>'o', 'ø'=>'o', 'ù'=>'u', 'ú'=>'u', 'û'=>'u', 'ý'=>'y', 'ý'=>'y', 'þ'=>'b',
+			'ÿ'=>'y', 'Ŕ'=>'R', 'ŕ'=>'r',
+			);
+		$login = strtr($login, $table);
+		return $login;
+	}
+	else return 0;
+ }

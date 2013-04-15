@@ -5,7 +5,7 @@ if (file_exists('../root.php'))
 /**
 * Utilise un grimoire
 */
-function utilise_grimoire($id_objet, &$joueur) {
+function utilise_grimoire($id_objet, &$joueur, &$interf) {
   global $db;
   $requete = "select * from grimoire where id = '$id_objet'";
   $req = $db->query($requete);
@@ -13,17 +13,17 @@ function utilise_grimoire($id_objet, &$joueur) {
 	if (isset($row['classe_requis']) && $row['classe_requis'] != '') {
 		$classes_autorisees = explode(';', $row['classe_requis']);
 		if (!in_array($joueur['classe'], $classes_autorisees)) {
-			echo '<h5>Impossible de lire ce grimoire : il n\'est pas destiné à votre classe</h5>';
+      $interf->add_message('Impossible de lire ce grimoire : il n\'est pas destiné à votre classe', false);
 			return false;
 		}
 	}
 	if (isset($row['comp_jeu']) && $row['comp_jeu'] != '') {
     return apprend_competence('comp_jeu', $row['comp_jeu'], 
-															$joueur, null, true);
+															$joueur, null, true, $interf);
   }
   elseif (isset($row['comp_combat']) && $row['comp_combat'] != '') {
     return apprend_competence('comp_combat', $row['comp_combat'], 
-															$joueur, null, true);
+															$joueur, null, true, $interf);
   }
   elseif (isset($row['comp_perso_id']) && $row['comp_perso_id'] != '') {
     if (!isset($joueur['competences'][$row['comp_perso_competence']])) {
@@ -35,9 +35,8 @@ function utilise_grimoire($id_objet, &$joueur) {
 			'competence =\''.$row['comp_perso_competence'].'\'';
 		$req2 = $db->query($requete2);
 		$row2 = $db->read_assoc($req2);
-		if ($row2['permet'] <=
-				$joueur['competences'][$row['comp_perso_competence']]) {
-			echo '<h5>Impossible d\'entraîner cette compétence : vous en connaissez toutes les arcanes</h5>';
+		if ($row2['permet'] <= $joueur['competences'][$row['comp_perso_competence']]) {
+			$interf->add_message('Impossible d\'entraîner cette compétence : vous en connaissez toutes les arcanes', false);
 			return false;
 		} else {
 			$newval = min($row2['permet'], 
@@ -47,20 +46,20 @@ function utilise_grimoire($id_objet, &$joueur) {
 				$row['comp_perso_id'].' and competence = \''.
 				$row['comp_perso_competence'].'\' and id_perso = '.$joueur->get_id();
 			$db->query($requete);
-			echo '<h6>Compétence entraînée</h6>';
+			$interf->add_message('Compétence entraînée');
 			return true;
     }
   }
   elseif (isset($row['sort_combat']) && $row['sort_combat'] != '') {
     return apprend_sort('sort_combat', $row['sort_combat'], 
-															$joueur, null, true);
+															$joueur, null, true, $interf);
   }
   elseif (isset($row['sort_jeu']) && $row['sort_jeu'] != '') {
     return apprend_sort('sort_jeu', $row['sort_jeu'], 
-															$joueur, null, true);
+															$joueur, null, true, $interf);
   }
   else {
-    echo '<h5>Grimoire incorrect: aucune compétence définie</h5>';
+    $interf->add_message('Grimoire incorrect: aucune compétence définie', false);
     return false;
   }
   return false;
@@ -76,9 +75,9 @@ function utilise_grimoire($id_objet, &$joueur) {
 * @param grimoire true si on apprend depuis un grimoire(gratis), false sinon
 * @return true si on a pu apprendre la compétence, false sinon
 */
-function apprend_competence($ecole, $id_competence, &$joueur, $R, $grimoire)
+function apprend_competence($ecole, $id_competence, &$joueur, $R, $grimoire, &$interf)
 {
-	global $db;
+	global $db, $Gtrad;
 	$requete = "SELECT * FROM ".$ecole." WHERE id = '$id_competence'";
 	$req = $db->query($requete);
 	$row = $db->read_array($req);
@@ -121,26 +120,27 @@ function apprend_competence($ecole, $id_competence, &$joueur, $R, $grimoire)
 							$requete = "UPDATE argent_royaume SET ecole_combat = ecole_combat + ".$taxe." WHERE race = '".$R->get_race()."'";
 							$db->query($requete);
 						}
-						echo '<h6>Compétence apprise !</h6>';
+            $interf->add_message('Compétence apprise !');
 						return true;
 					}
 	  else {
-	    echo '<h5>Vous devez connaitre une autre compétence avant d\'apprendre celle ci</h5>';
+      $interf->add_message('Vous devez connaitre une autre compétence avant d\'apprendre celle ci', false);
 	  }
 	}
 	else {
-	  echo '<h5>Vous connaissez déjà cet compétence</h5>';
+      $interf->add_message('Vous connaissez déjà cet compétence', false);
 	}
       }
       else {
-	echo '<h5>Vous n\'avez pas assez en '.$Gtrad[$row['comp_assoc']].'</h5>';
+        $interf->add_message('Vous n\'avez pas assez en '.$Gtrad[$row['comp_assoc']], false);
       }
     }
     else {
-      echo '<h5>Vous n\'avez pas assez en '.$row['carac_assoc'].'</h5>';
+      $interf->add_message('Vous n\'avez pas assez en '.$row['carac_assoc'], false);
     }
   }
   else{
+    $interf->add_message('Vous n\'avez pas assez de Stars', false);
     echo '<h5>Vous n\'avez pas assez de Stars</h5>';
   }
   return false;
@@ -156,7 +156,7 @@ function apprend_competence($ecole, $id_competence, &$joueur, $R, $grimoire)
 * @param grimoire true si on apprend depuis un grimoire(gratis), false sinon
 * @return true si on a pu apprendre la compétence, false sinon
 */
-function apprend_sort($ecole, $id_sort, &$joueur, $R, $grimoire)
+function apprend_sort($ecole, $id_sort, &$joueur, $R, $grimoire, &$interf)
 {
 	global $db, $Trace;
 	$requete = "SELECT * FROM ".$ecole." WHERE id = '$id_sort'";
@@ -200,30 +200,30 @@ function apprend_sort($ecole, $id_sort, &$joueur, $R, $grimoire)
 							$requete = "UPDATE argent_royaume SET ecole_magie = ecole_magie + ".$taxe." WHERE race = '".$R->get_race()."'";
 							$db->query($requete);
 						}
-						echo '<h6>Sort appris !</h6>';
+						$interf->add_message('Sort appris !');
 						return true;
 					}
 					else
 					{
-						echo '<h5>Vous devez connaitre un autre sort pour apprendre celui-ci</h5>';
+            $interf->add_message('Vous devez connaitre un autre sort pour apprendre celui-ci', false);
 					}
 				}
 				else
 				{
-					echo '<h5>Vous possédez déjà ce sort</h5>';
+          $interf->add_message('Vous possédez déjà ce sort', false);
 				}
 			}
 			else
 			{
-				echo '<h5>Vous n\'avez pas assez en '.traduit($row['comp_assoc']).'</h5>';
+        $interf->add_message('Vous n\'avez pas assez en '.traduit($row['comp_assoc']), false);
 			}
 		}
 		else {
-			echo '<h5>Vous n\'avez pas assez en incantation</h5>';
+      $interf->add_message('Vous n\'avez pas assez en incantation', false);
 		}
 	}
 	else {
-		echo '<h5>Vous n\'avez pas assez de Stars</h5>';
+    $interf->add_message('Vous n\'avez pas assez de Stars', false);
 	}
 	return false;
 }

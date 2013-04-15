@@ -714,6 +714,10 @@ class entite extends placable
 		{
 			$this->potentiel_toucher = round($this->get_distance() + ($this->get_distance() * ((pow($this->get_dexterite(), 2)) / 1000)));
 		}
+		elseif($this->get_arme_type() == 'baton')
+		{
+			$this->potentiel_toucher = round($this->get_incantation() + ($this->get_incantation() * ((pow($this->get_dexterite(), 2)) / 1000)));
+		}
 		else
 		{
 			$this->potentiel_toucher = round($this->get_melee() + ($this->get_melee() * ((pow($this->get_dexterite(), 2)) / 1000)));
@@ -724,7 +728,7 @@ class entite extends placable
   	if(array_key_exists('lien_sylvestre', $this->etat)) $this->potentiel_toucher /= 1 + (($this->etat['lien_sylvestre']['effet2']) / 100);
   	if(array_key_exists('b_toucher', $this->etat)) $this->potentiel_toucher /= 1 + ($this->etat['b_toucher']['effet'] / 100);
   	if(array_key_exists('coup_mortel', $this->etat)) $this->potentiel_toucher *= 1 - ($this->etat['coup_mortel']['effet'] / 100);
-  	if(array_key_exists('glace', $this->etat)) $this->potentiel_toucher /= 1 + ($this->etat['glace']['effet'] / 100);
+  	if(array_key_exists('glace', $this->etat)) $this->potentiel_toucher /= 2;
   	//Buff précision
   	if(array_key_exists('benediction', $this->etat))	$this->potentiel_toucher *= 1 + (($this->etat['benediction']['effet'] * $G_buff['bene_accuracy']) / 100);
   	if(array_key_exists('berzeker', $this->etat)) $this->potentiel_toucher *= 1 + (($this->etat['berzeker']['effet'] * $G_buff['berz_accuracy']) / 100);
@@ -766,7 +770,7 @@ class entite extends placable
   	if($this->etat['posture']['type'] == 'posture_vent') $this->potentiel_parer *= 1 + (($this->etat['posture']['effet']) / 100);
   	if($this->is_buff('buff_evasion')) $this->potentiel_parer *= 1 + ($this->get_buff('buff_evasion', 'effet') / 100);
   	if($this->is_buff('buff_cri_detresse')) $this->potentiel_parer *= 1 + (($this->get_buff('buff_cri_detresse', 'effet')) / 100);
-  	if(array_key_exists('glace', $this->etat)) $this->potentiel_parer /= 1 + ($this->etat['glace']['effet'] / 100);
+  	if(array_key_exists('glace', $this->etat)) $this->potentiel_parer /= 1.5;
   	if(array_key_exists('botte_chat', $this->etat)) $this->potentiel_parer *= 1 + $this->etat['botte_chat']['effet'] / 100;
 
   	if($this->get_race() == 'elfebois') $this->potentiel_parer *= 1.15;
@@ -789,7 +793,7 @@ class entite extends placable
 		if($this->is_buff('buff_bouclier_sacre')) $buff_blocage = 1 + ($this->get_buff('buff_bouclier_sacre', 'effet') / 100); else $buff_blocage = 1;
 		if(array_key_exists('benediction', $this->etat)) $buff_bene_blocage = 1 + (($this->etat['benediction']['effet'] * $G_buff['bene_bouclier']) / 100); else $buff_bene_blocage = 1;
   	if(array_key_exists('botte_chien', $this->etat)) $buff_blocage *= 1 + $this->etat['botte_chien']['effet'] / 100;
-    $this->potentiel_bloquer = floor(($this->get_blocage() + $enchantement_blocage ) * (pow($this->get_dexterite(), 1.7) / 20) * $buff_bene_blocage * $buff_blocage);
+    $this->potentiel_bloquer = floor(($this->get_blocage() + $enchantement_blocage ) * (pow($this->get_dexterite(), 1.5) / 20) * $buff_bene_blocage * $buff_blocage);
 		return $this->potentiel_bloquer;
 	}
 	/// Modifie le potentiel bloquer
@@ -848,7 +852,7 @@ class entite extends placable
       $this->potentiel_magique /= 1 + ($this->etat['fleche_debilitante']['effet'] / 100);
   	if($this->etat['posture']['type'] == 'posture_feu')
       $this->potentiel_magique *= 1 + (($this->etat['posture']['effet']) / 100);
-    if(array_key_exists('glace', $this->etat)) $this->potentiel_magique /= 1 + ($this->etat['glace']['effet'] / 100);
+    if(array_key_exists('glace', $this->etat)) $this->potentiel_magique /= 2;
   	if($this->get_arme_type() == 'baton')
     {
       $arme = $this->get_arme();
@@ -890,7 +894,7 @@ class entite extends placable
 		if($this->is_buff('debuff_desespoir')) $debuff_desespoir = 1 + (($this->get_buff('debuff_desespoir', 'effet')) / 100); else 	$debuff_desespoir = 1;
 		if($this->etat['posture']['type'] == 'posture_glace') $aura_glace = 1 + (($this->etat['posture']['effet']) / 100); else $aura_glace = 1;
 		$this->potentiel_parer_magique = round($this->get_volonte() * $pm * $aura_glace * $buff_batiment_barriere / $debuff_desespoir);
-    if(array_key_exists('glace', $this->etat)) $this->potentiel_parer_magique /= 1 + ($this->etat['glace']['effet'] / 100);
+    if(array_key_exists('glace', $this->etat)) $this->potentiel_parer_magique /= 1.5;
 
 		return $this->potentiel_parer_magique;
 	}
@@ -912,7 +916,17 @@ class entite extends placable
 	/// Initialise l'objet pour un nouveau round de combat
 	function init_round()
   {
-    if($this->get_arme_type() == 'arc') $this->set_comp_att('distance'); else $this->set_comp_att('melee');
+    switch($this->get_arme_type())
+    {
+    case 'arc':
+      $this->set_comp_att('distance');
+      break;
+    case 'baton':
+      $this->set_comp_att('incantation');
+      break;
+    default:
+      $this->set_comp_att('melee');
+    }
     unset($this->potentiel_toucher);
     unset($this->potentiel_parer);
     unset($this->potentiel_bloquer);
@@ -924,8 +938,28 @@ class entite extends placable
   }
   /// Action effectuées à la fin d'un combat
   function fin_combat(&$perso, $degats=null) { echo "on fait rien ! ($this)<br/>"; }
+  /// Actions effectuées à la fin d'un combat pour l'attaquant
+  function fin_attaque(&$perso, $cout_pa) {}
   /// Action effectuées à la fin d'un combat pour le défenseur
   function fin_defense(&$perso, &$royaume, $pet, $degats, $batiment) {}
+  /// Renvoie le coût en PA de l'attaque
+  function get_cout_attaque(&$perso, $cible)
+  {
+    $cout = $cible->get_cout_attaque_base($perso);
+    if( $perso->is_buff('cout_attaque') ) $cout = ceil($cout / $perso->get_buff('cout_attaque', 'effet'));
+    if( $perso->is_buff('plus_cout_attaque') ) $cout *= $perso->get_buff('plus_cout_attaque', 'effet');
+    if( $perso->is_buff('buff_rapidite') ) $cout -= $perso->get_buff('buff_rapidite', 'effet');
+    if( $perso->is_buff('debuff_ralentissement') ) $cout += $perso->get_buff('debuff_ralentissement', 'effet');
+    if( $cout < 1 ) $cout = 1;
+    return $cout;
+  }
+  /// Renvoie le coût en PA pour attaquer l'entité
+  function get_cout_attaque_base(&$perso) { return 0; }
+  /// Indique si l'entité peut attaquer
+  function peut_attaquer()
+  {
+    return true;
+  }
 	// @}
 
 	/**

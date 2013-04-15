@@ -46,11 +46,11 @@ function validation_perso()
 		$('#creat_erreur').show();
 	}
 
-	if (($('#creat_pass').val() != $('#creat_pass2').val()) || ($('#creat_pass2').val()=='') || ($('creat_pass2').val()==''))
+	/*if (($('#creat_pass').val() != $('#creat_pass2').val()) || ($('#creat_pass2').val()=='') || ($('creat_pass2').val()==''))
 	{
 		$('#creat_erreur').text('Vous avez laissé un champ libre, ou vos mots de passe ne correspondent pas');
 		$('#creat_erreur').show();
-	}
+	}*/
 	if ($('#perso_selected_id').val() == '')
 	{
 		$('#creat_erreur').text("Vous n'avez pas sélectionné de type de personnage (cadre à droite).");
@@ -61,10 +61,28 @@ function validation_perso()
 		var tmp = $('#perso_selected_id').val();
 		var perso = tmp.split('_');
 
-		$('#creation_box').load('./site_accueil_creation.php?race='+perso[0]+'&classe='+perso[1]+'&pseudo='+encodeURIComponent($('#creat_nom').val())+'&mdp='+encodeURIComponent($('#creat_pass').val()));
+		$('#creation_box').load('./site_accueil_creation.php?type=perso&race='+perso[0]+'&classe='+perso[1]+'&pseudo='+encodeURIComponent($('#creat_nom').val()));
 		$('#personnage').hide();
 	}
 }
+
+function validation_joueur()
+{
+	if ($('#creat_pseudo').val() == '')
+	{
+		$('#creat_erreur').text('Vous avez laissé un champ libre, ou vos mots de passe ne correspondent pas');
+		$('#creat_erreur').show();
+		return;
+	}
+	if (($('#creat_pass').val() != $('#creat_pass2').val()) || ($('#creat_pass2').val()=='') || ($('creat_pass2').val()==''))
+	{
+		$('#creat_erreur').text('Vous avez laissé un champ libre, ou vos mots de passe ne correspondent pas');
+		$('#creat_erreur').show();
+		return;
+	}
+	$('#creation_box').load('./site_accueil_creation.php?type=joueur&pseudo='+encodeURIComponent($('#creat_pseudo').val())+'&mdp='+encodeURIComponent($('#creat_pass').val())+'&email='+encodeURIComponent($('#creat_email').val()));
+}
+
 function affichePopUpErreur(erreur)
 {
 	$('popup_erreur').show();

@@ -12,15 +12,25 @@ if($joueur->get_rang_royaume() != 6 AND $joueur->get_id() != $royaume->get_minis
 	echo '<p>Cette page vous est interdite</p>';
 else if(!array_key_exists('direction', $_GET))
 {
-	echo "<div id='affiche_minimap' style='float:right;'>";
-	echo "</div>";
+	echo "<div  style='float:right;'><div id='affiche_dist' style='width:375px;'><fieldset>";
+	echo "<legend>Distances de pose</legend>";
+	echo '<b>Bourgs : </b><ul>';
+	echo '<li>Avec un autre bourg : '.floor(7*$royaume->get_facteur_entretien()).'</li>';
+	echo '<li>Avec une capitale : 5</li>';
+	echo '<b>Forts : </b><ul>';
+	echo '<li>Avec un autre de vos forts : '.floor(4*$royaume->get_facteur_entretien()).'</li>';
+	echo '<li>Avec un fort d\'un autre peuple : 4</li>';
+	echo '<li>Avec une capitale : 7</li>';
+	echo "</fieldset></div>";
+	echo "<div id='affiche_minimap'>";
+	echo "</div></div>";
 	if ($RAZ_ROYAUME)
 	{
 		echo '<div><strong>Gestion impossible quand la capitale est mise à sac</strong></div>';
 	}
 	echo "<div id='contruction'>";
 	
-	$req = $db->query("SELECT *, placement.royaume AS r, placement.type FROM placement LEFT JOIN map ON (map.y = placement.y AND placement.x = map.x) WHERE (placement.type = 'drapeau' OR placement.type = 'arme_de_siege') AND placement.royaume != ".$royaume->get_id()." AND map.royaume = ".$royaume->get_id()."");
+	$req = $db->query("SELECT *, placement.royaume AS r, placement.type FROM placement LEFT JOIN map ON (map.y = placement.y AND placement.x = map.x) WHERE (placement.type = 'drapeau' OR placement.type = 'arme_de_siege') AND placement.royaume != ".$royaume->get_id()." AND map.royaume = ".$royaume->get_id()." AND map.x <= 190 AND map.y <= 190");
 	if ($db->num_rows($req)>0)
 	{
 		echo "<fieldset>";	
@@ -54,7 +64,7 @@ else if(!array_key_exists('direction', $_GET))
 	echo "</ul>";
 	echo "</fieldset>";	
 	}
-	$req = $db->query("SELECT *, construction.royaume AS r, construction.type FROM construction LEFT JOIN map ON (map.y = construction.y AND construction.x = map.x) WHERE construction.type = 'arme_de_siege' AND construction.royaume != ".$royaume->get_id()." AND map.royaume = ".$royaume->get_id()."");
+	$req = $db->query("SELECT *, construction.royaume AS r, construction.type FROM construction LEFT JOIN map ON (map.y = construction.y AND construction.x = map.x) WHERE construction.type = 'arme_de_siege' AND construction.royaume != ".$royaume->get_id()." AND map.royaume = ".$royaume->get_id()." AND map.x <= 190 AND map.y <= 190");
 	if ($db->num_rows($req)>0)
 	{
 		echo "<fieldset>";	
@@ -79,7 +89,7 @@ else if(!array_key_exists('direction', $_GET))
 	echo "</fieldset>";	
 	}
 	
-	$req = $db->query("SELECT *, map.royaume AS r FROM placement LEFT JOIN map ON (map.y = placement.y AND placement.x = map.x) WHERE placement.type = 'drapeau' AND placement.royaume = ".$royaume->get_id()."");
+	$req = $db->query("SELECT *, map.royaume AS r FROM placement LEFT JOIN map ON (map.y = placement.y AND placement.x = map.x) WHERE placement.type = 'drapeau' AND placement.royaume = ".$royaume->get_id()." AND map.x <= 190 AND map.y <= 190");
 	if ($db->num_rows($req)>0)
 	{
 		echo "<fieldset>";	
@@ -103,7 +113,7 @@ else if(!array_key_exists('direction', $_GET))
 		echo "</ul>";
 		echo "</fieldset>";
 	}
-	$requete = $db->query("SELECT id FROM construction WHERE royaume = ".$royaume->get_id()."");
+	$requete = $db->query("SELECT id FROM construction WHERE royaume = ".$royaume->get_id()." AND x <= 190 AND y <= 190");
 	if ($db->num_rows($requete)>0)
 	{
 		echo "<fieldset>";	

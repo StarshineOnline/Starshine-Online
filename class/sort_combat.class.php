@@ -269,7 +269,7 @@ class sort_combat extends sort
 		
 		// Calcul des potentiels toucher et parer
 		$potentiel_toucher = round($actif->get_volonte() * $actif->get_potentiel_lancer_magique( $this->get_comp_assoc() ));
-		$potentiel_parer = $actif->get_potentiel_parer_magique($pm);
+		$potentiel_parer = $passif->get_potentiel_parer_magique($pm);
 		// Application des effets de potentiel toucher
 		foreach($effets as $effet)
 			$potentiel_toucher = $effet->calcul_attaque_magique($actif, $passif, $potentiel_toucher);
@@ -873,41 +873,42 @@ class sort_combat_cri_abom extends sort_combat
   /// Méthode gérant ce qu'il se passe lorsque la coméptence à été utilisé avec succès
   function touche(&$actif, &$passif, &$effets)
   {
-			echo '&nbsp;&nbsp;<span class="degat">L\'abomination profère un hurlement terrifiant !</span><br/>';
-			$xi = $passif->get_x() - 3;
-			$xa = $passif->get_x() + 3;
-			$yi = $passif->get_y() - 3;
-			$ya = $passif->get_y() + 3;
-			$requete_persos = "select id from perso where x >= $xi and x <= $xa and y >= $yi and y <= $ya and hp > 0 and statut = 'actif'";
-			$req_persos = $db->query($requete_persos);
-			while ($row_persos = $db->read_assoc($req_persos))
+    global $db;
+		echo '&nbsp;&nbsp;<span class="degat">L\'abomination profère un hurlement terrifiant !</span><br/>';
+		$xi = $passif->get_x() - 3;
+		$xa = $passif->get_x() + 3;
+		$yi = $passif->get_y() - 3;
+		$ya = $passif->get_y() + 3;
+		$requete_persos = "select id from perso where x >= $xi and x <= $xa and y >= $yi and y <= $ya and hp > 0 and statut = 'actif'";
+		$req_persos = $db->query($requete_persos);
+		while ($row_persos = $db->read_assoc($req_persos))
+		{
+			if ($row_persos['id'] == $passif->get_id())	continue;
+			$spectateur = new perso($row_persos['id']);
+			$rand = rand(0, 20);
+			$final = $rand + $spectateur->get_volonte();
+			print_debug("Jet de terreur pour ".$spectateur->get_nom().": $rand ($final) vs $row[effet2]<br/>");
+			if ($final < $row['effet2'] && $rand != 20)
 			{
-				if ($row_persos['id'] == $passif->get_id())	continue;
-				$spectateur = new perso($row_persos['id']);
-				$rand = rand(0, 20);
-				$final = $rand + $spectateur->get_volonte();
-				print_debug("Jet de terreur pour ".$spectateur->get_nom().": $rand ($final) vs $row[effet2]<br/>");
-				if ($final < $row['effet2'] && $rand != 20)
-				{
-					echo '<strong>'.$spectateur->get_nom().'</strong> est effray&eacute; par ce spectacle, et se glace de terreur !<br/>';
-					lance_buff('debuff_enracinement', $row_persos['id'], '10', '0', 86400, 'Terreur',
-										 'Vous etes terroris&eacute; par l\'affreux spectacle du supplice de '.$passif->get_nom(), 'perso', 1, 0, 0, 0);
-				}
+				echo '<strong>'.$spectateur->get_nom().'</strong> est effray&eacute; par ce spectacle, et se glace de terreur !<br/>';
+				lance_buff('debuff_enracinement', $row_persos['id'], '10', '0', 86400, 'Terreur',
+									 'Vous etes terroris&eacute; par l\'affreux spectacle du supplice de '.$passif->get_nom(), 'perso', 1, 0, 0, 0);
 			}
-			echo 'La marque de l\'abomination restera longtemps sur vous ...<br/>';
-			$achiev = $passif->get_compteur('abomination_mark');
-			if ($achiev->get_compteur() == 0) {
-				// Premier combat contre l'abomination
-				$achiev->set_compteur(1);
-				$achiev->sauver();
-			}
+		}
+		echo 'La marque de l\'abomination restera longtemps sur vous ...<br/>';
+		$achiev = $passif->get_compteur('abomination_mark');
+		if ($achiev->get_compteur() == 0) {
+			// Premier combat contre l'abomination
+			$achiev->set_compteur(1);
+			$achiev->sauver();
+		}
 
-			if ($passif->get_hp() > 3)
-				lance_buff('debuff_enracinement', $passif->get_id(), '10', '0', 86400, 'Terreur',
-									 'Vous etes terroris&eacute; par l\'attaque de la cr&eacute;ature', 'perso', 1, 0, 0, 0);
-			lance_buff('lente_agonie', $passif->get_id(), 1, 0, 2678400, 'Marque de l\\\'abomination',
-								 'Les blessures engendrées par l\'épine de l\'abomination vous laissent dans une souffrance atroce. Il vous faudra du temps pour vous en remettre',
-								 'perso', 1, 0, 0, 0);
+		if ($passif->get_hp() > 3)
+			lance_buff('debuff_enracinement', $passif->get_id(), '10', '0', 86400, 'Terreur',
+								 'Vous etes terroris&eacute; par l\'attaque de la cr&eacute;ature', 'perso', 1, 0, 0, 0);
+		lance_buff('lente_agonie', $passif->get_id(), 1, 0, 2678400, 'Marque de l\\\'abomination',
+							 'Les blessures engendrées par l\'épine de l\'abomination vous laissent dans une souffrance atroce. Il vous faudra du temps pour vous en remettre',
+							 'perso', 1, 0, 0, 0);
   }
 }
 

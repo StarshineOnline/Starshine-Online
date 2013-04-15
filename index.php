@@ -18,13 +18,13 @@ include_once(root.'haut.php');
   if( file_exists(root.'pub.php') )
     include_once(root.'pub.php');
 ?>
-  
-	<div id='loading_sso' style='display:none;'></div>	
+
+	<div id='loading_sso' style='display:none;'></div>
 	<div id='test'>
 	<div class='box'>
 		<input type='hidden' id='menu_encours' value='presentation' />
 		<div id='presentation_box'>
-					<span class='logo'>&nbsp;</span> 
+					<span class='logo'>&nbsp;</span>
 			<p>
 
 			Bienvenue dans le monde de Starshine-Online.
@@ -62,69 +62,69 @@ N'oubliez pas de reporter les bugs et problèmes, et d'apporter vos suggestions 
 			echo "Le fichier de connexion au forum n'est pas présent sur le serveur";
 			echo "<div class='news'>
 			<h2>Qqdf qdsf qsdf  qdsf qdsf </h2>
-			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf 
-			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf 
-			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf 
-			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf 
-			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf 
-			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf 
-			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf 
-			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf 
-			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf 
-			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf 
-			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf 
-			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf 
-			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf 
-			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf 
-			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf 
-			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf 
+			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf
+			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf
+			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf
+			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf
+			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf
+			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf
+			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf
+			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf
+			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf
+			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf
+			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf
+			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf
+			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf
+			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf
+			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf
+			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf
 			</div>";
 			echo "<div class='news'>
 			<h2>Qqdf qdsf qsdf  qdsf qdsf </h2>
-			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf 
-			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf 
-			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf 
-			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf 
-			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf 
-			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf 
-			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf 
-			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf 
-			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf 
-			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf 
-			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf 
-			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf 
-			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf 
-			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf 
-			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf 
-			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf 
+			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf
+			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf
+			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf
+			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf
+			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf
+			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf
+			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf
+			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf
+			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf
+			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf
+			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf
+			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf
+			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf
+			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf
+			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf
+			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf
 			</div>";
 			echo "<div class='news'>
 			<h2>Qqdf qdsf qsdf  qdsf qdsf </h2>
-			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf 
-			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf 
-			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf 
-			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf 
-			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf 
-			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf 
-			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf 
-			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf 
-			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf 
-			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf 
-			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf 
-			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf 
-			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf 
-			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf 
-			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf 
-			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf 
+			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf
+			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf
+			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf
+			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf
+			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf
+			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf
+			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf
+			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf
+			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf
+			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf
+			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf
+			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf
+			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf
+			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf
+			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf
+			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf
 			</div>";
-			
+
 		}
 		else
 		{
 			require_once('connect_forum.php');
 			$requete = "SELECT id, subject, num_replies FROM punbbtopics WHERE (forum_id = 5) ORDER BY posted DESC";
 			$req = $db_forum->query($requete);
-		
+
 			$i = 0;
 			while($row = $db_forum->read_array($req) AND $i < 5)
 			{
@@ -151,56 +151,88 @@ N'oubliez pas de reporter les bugs et problèmes, et d'apporter vos suggestions 
 				</div>';
 				echo $message;
 				$i++;
-				
+
 			}
 		}
 		?>
 		</div>
 		<div id='creation_box' style='display:none;'>
-		<p id='creat_erreur' style='color:#FF0022; display : none;'>&nbsp;</p>
-		<div style='width:165px;float:left;'>
-			<span class='creation_text'>Quel sera votre nom ?</span><span class='illu'><input type="text" name="nom" id='creat_nom' /></span><br />
-			<span class='creation_text'>Indiquer un mot de passe :</span><span class='illu'><input type="password" name="password" id='creat_pass' /></span><br />
-			<span class='creation_text'>Confirmer votre mot de passe :</span>
-			<span class='illu'><input type="password" name="password2" id='creat_pass2' /></span>
-			<span class='creation_text'>Indiquer un email :</span><span class='illu'><input type="text" name="email" id='creat_email' /></span><br />
-			<span onclick="validation_perso();" id="bouton_creer"> </span>
-		</div>
-		<div class='perso_cadre'>
-		<?php
-		$RqRace = $db->query("SELECT race FROM royaume WHERE race != '' AND race != 'dragon' ORDER BY star_nouveau_joueur DESC, race ASC");
+  		<p id='creat_erreur' style='color:#FF0022; display : none;'>&nbsp;</p>
+  		<?php
+  		if( $check === 0 )
+  		{
+  		?>
+  		<div style='width:165px;float:left;'>
+  			<span class='creation_text'>Quel sera votre nom ?</span><span class='illu'><input type="text" name="nom" id='creat_nom' /></span> (peut etre identique au nom de votre compte joueur)<br />
+  			<!--<span class='creation_text'>Indiquer un mot de passe :</span><span class='illu'><input type="password" name="password" id='creat_pass' /></span><br />
+  			<span class='creation_text'>Confirmer votre mot de passe :</span>
+  			<span class='illu'><input type="password" name="password2" id='creat_pass2' /></span>
+  			<span class='creation_text'>Indiquer un email :</span><span class='illu'><input type="text" name="email" id='creat_email' /></span><br />-->
+  			<span onclick="validation_perso();" id="bouton_creer"> </span>
+  		</div>
+  		<div class='perso_cadre'>
+    		<?php
+    		$RqRace = $db->query("SELECT race FROM royaume WHERE race != '' AND race != 'dragon' ORDER BY star_nouveau_joueur DESC, race ASC");
 
-		$i=0;
-		while($objRace = $db->read_object($RqRace))
-		{
-			if ($i=='0'){echo "<p style='clear:both;'>";}
-			echo "<span class='".$objRace->race."_guerrier' title='".$objRace->race." Combattant' id='".$objRace->race."_guerrier' onclick=\"race('".$objRace->race."','guerrier');\">&nbsp;</span>";
-			echo "<span class='".$objRace->race."_mage' title='".$objRace->race." Magicien' id='".$objRace->race."_mage' onclick=\"race('".$objRace->race."','mage');\">&nbsp;</span>";
-			echo "<span class='perso_espacement'>&nbsp;</span>";
-			$i++;
-			if ($i=='3'){echo '</p>';$i=0;}
+    		$i=0;
+    		while($objRace = $db->read_object($RqRace))
+    		{
+    			if ($i=='0'){echo "<p style='clear:both;'>";}
+    			echo "<span class='".$objRace->race."_guerrier' title='".$objRace->race." Combattant' id='".$objRace->race."_guerrier' onclick=\"race('".$objRace->race."','guerrier');\">&nbsp;</span>";
+    			echo "<span class='".$objRace->race."_mage' title='".$objRace->race." Magicien' id='".$objRace->race."_mage' onclick=\"race('".$objRace->race."','mage');\">&nbsp;</span>";
+    			echo "<span class='perso_espacement'>&nbsp;</span>";
+    			$i++;
+    			if ($i=='3'){echo '</p>';$i=0;}
 
-		}	
-		echo '</p>';		
-		?>
-		<input type='hidden' id='perso_selected_id' />
+    		}
+    		echo '</p>';
+    		?>
+    		<input type='hidden' id='perso_selected_id' />
+  		</div>
+  		<div id="aide_inscription">
+  			Avant de créer un personnage, vous pouvez consulter <a href="http://wiki.starshine-online.com">l'aide de jeu</a>, pour mieux choisir votre personnage.<br />
+  			N'hésitez pas à faire le tour des races pour en voir toutes les différences, et à passer votre curseur sur les attributs (force, dextérité, etc) pour avoir des détails sur leur fonctionnement.<br />
+  			Pour un équilibrage du jeu, les peuples ayant le moins de joueurs recoivent plus de stars à la création du personnage.<br />
+  			<strong>Un compte sur le forum sera créé automatiquement avec vos informations du jeu.</strong>
+  		</div>
+  		<?php
+      }
+      else if( !isset($check) or $check === false )
+      {
+  		?>
+  		<h3>Création du compte joueur</h3>
+  		<div style='width:165px;float:left;'>
+  			<span class='creation_text'>Quel sera votre nom ?</span><span class='illu'><input type="text" name="nom" id='creat_pseudo' /></span><br />
+  			<span class='creation_text'>Indiquer un mot de passe :</span><span class='illu'><input type="password" name="password" id='creat_pass' /></span><br />
+  			<span class='creation_text'>Confirmer votre mot de passe :</span>
+  			<span class='illu'><input type="password" name="password2" id='creat_pass2' /></span>
+  			<span class='creation_text'>Indiquer un email :</span><span class='illu'><input type="text" name="email" id='creat_email' /></span> (facultatif, utilisé pour retrouver le mot de passe)<br />
+  			<span onclick="validation_joueur();" id="bouton_creer"> </span>
+  		</div>
+  		<div class='joueur_cadre'>
+        Ce compte vous identifie en tant que joueur et est différent de votre personnage, vous le garderez pour les différentes parties, y compris lorsque vous changez de personnage.
+        <ul>
+          <li>Il est unique : il est interdit de posséder plusieurs compte joueur. Tout changement sans accord des administrateurs sera considérés comme du mutlicompte (si vous voulez changer de personnage, il vous suffit de le supprimer pour pouvoir en créer un nouveau).</li>
+          <li>Il est personnel : il est interdit de prêter ou donner un compte joueur à quelqu'un d'autre.</li>
+        </ul>
+        Tout non respect des règles pourra entrainer un bannissement temporaire ou définitif du compte.
+      </div>
+  		<div id="aide_inscription">
+        NB : Vous pourrez donner à votre personnage le même nom que celui utilisé pour votre compte.
+  		</div>
+  		<?php
+      }
+  		?>
 		</div>
-			<div id="aide_inscription">
-			Avant de créer un personnage, vous pouvez consulter <a href="http://wiki.starshine-online.com">l'aide de jeu</a>, pour mieux choisir votre personnage.<br />
-			N'hésitez pas à faire le tour des races pour en voir toutes les différences, et à passer votre curseur sur les attributs (force, dextérité, etc) pour avoir des détails sur leur fonctionnement.<br />
-			Pour un équilibrage du jeu, les peuples ayant le moins de joueurs recoivent plus de stars à la création du personnage.<br />
-			<strong>Un compte sur le forum sera créé automatiquement avec vos informations du jeu.</strong>
-			</div>
-		</div>
-		
+
 	</div>
 	</div>
 
 			<?php
-			if (!isset($_SESSION['nom']))
+			if( !isset($_SESSION['nom']) AND !isset($_SESSION['pseudo']) )
 			{
 			?>
-				<div id='login'>			
+				<div id='login'>
 				<form id='login_form' action="index.php" method="post">
 				<div>
 				<input type="text" name="nom" size="10" class="login_nom" tabindex="1" />
@@ -210,17 +242,24 @@ N'oubliez pas de reporter les bugs et problèmes, et d'apporter vos suggestions 
 				<input type='submit' class='login_connexion' onclick="$('#login_form').submit();" tabindex="4" value="" />
 				</div>
 				</form>
-				</div>		
-			
+				</div>
+
 			<?php
 			}
 			else
 			{
-				echo "<div id='login_ok'>";	
-				echo "<a href='interface.php'>Entrez dans le monde de Starshine-Online</a> / <span style='cursor:pointer;' onclick=\"if(confirm('Es tu sur de vouloir te déconnecter malheureux ?')) { document.location.href='index.php?deco=ok'; };\">Se deconnecter</span>";
+				echo "<div id='login_ok'>";
+				if( $check )
+				  echo "<a href='interface.php'>Entrez dans le monde de Starshine-Online</a> / ";
+        else
+        {
+          echo '<script type="text/javascript">menu_change("creation");</script>';
+				  echo "Vous devez créer un personnnage pour jouer / ";
+        }
+        echo "<span style='cursor:pointer;' onclick=\"if(confirm('Es tu sur de vouloir te déconnecter malheureux ?')) { document.location.href='index.php?deco=ok'; };\">Se deconnecter</span>";
 				echo "</div>";
 			}
-			?>	
+			?>
 	<div id='menu_accueil'>
 	<ul>
 		<li id='presentation_menu' class='selected' onclick="menu_change('presentation');"></li>
@@ -232,7 +271,7 @@ N'oubliez pas de reporter les bugs et problèmes, et d'apporter vos suggestions 
 
 	<div id='personnage' style='display:none'>
 
-	
+
 	</div>
 		<div id='liens'>
 

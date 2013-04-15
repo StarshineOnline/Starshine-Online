@@ -1,4 +1,4 @@
-<?php
+<?php // -*- mode: php; tab-width: 2 -*-
 /**
  * @file entite_cap.class.php
  * Définition de la classe entite_cap
@@ -56,8 +56,15 @@ class entite_cap extends entite
   }
 
   /// Action effectuées à la fin d'un combat
-  function fin_defense(&$perso, $degats=null)
+  function fin_combat(&$actif, &$passif) {
+    // TODO ??
+    // A priori on fait rien, mais on ne le dit pas à l'écran
+  }
+
+  /// Action effectuées à la fin d'un combat
+  function fin_defense(&$perso, $R, $pet, $degats=null)
   {
+  		global $Trace;
 		//hasard pour différente actions de destruction sur la ville.
 		//Si il y a assez de ressources en ville
 		$suppr_hp = true;
@@ -69,7 +76,7 @@ class entite_cap extends entite
 			{
 				$suppr_hp = false;
 				$this->royaume->supprime_ressources($degats / 100);
-				echo '<h6>L\'attaque détruit des ressources au royaume '.$Gtrad[$map_royaume->get_race()].'</h6><br />';
+				echo '<h6>L\'attaque détruit des ressources au royaume '.$Gtrad[$this->royaume->get_race()].'</h6><br />';
 			}
 		}
 		//Sinon on attaque les batiments ou la ville
@@ -84,7 +91,7 @@ class entite_cap extends entite
 				$rand = rand(0, $count - 1);
 				//On attaque la construction $rand du tableau
 				$construction_ville = new construction_ville($this->royaume->constructions_ville[$rand]['id']);
-				$return = $construction_ville->suppr_hp($degat_defense);
+				$return = $construction_ville->suppr_hp($degats);
 				echo '<h6>Attaque d\'un batiment en ville</h6>';
 				//On a downgrade un batiment, on gagne des points de victoire
 				if($return > 0)
@@ -116,4 +123,10 @@ class entite_cap extends entite
 		}
 		$this->royaume->sauver();
 	}
+
+  // à améliorer
+  function get_type_def()
+  {
+    return 'capitale';
+  }
 }
