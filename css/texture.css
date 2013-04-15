@@ -757,6 +757,8 @@
 .tex10811{background:url('../image/texture/route/chemin_desert_marecage_bd.png') no-repeat;}
 .tex10812{background:url('../image/texture/route/chemin_desert_marecage_hg.png') no-repeat;}
 .tex10813{background:url('../image/texture/route/chemin_desert_marecage_hd.png') no-repeat;}
+.tex10817{background:url('../image/texture/route/tex_routepavedeco1.png') no-repeat;}
+.tex10818{background:url('../image/texture/route/tex_routepavedeco4.png') no-repeat;}
 
 .tex10814{background:url('../image/texture/route/tex_lac_sud.png') no-repeat;}
 .tex10815{background:url('../image/texture/route/tex_lac_nord.png') no-repeat;}
@@ -2811,6 +2813,7 @@
 .tex2233{background:url('../image/texture/hautesherbes/hautherbecentreanim.png') no-repeat;}
 .tex2234{background:url('../image/texture/hautesherbes/hautherbe diag bg anim.png') no-repeat;}
 .tex2235{background:url('../image/texture/hautesherbes/tex_herbe_lac_d.png') no-repeat;}
+.tex2235{background:url('../image/texture/hautesherbes/tex_herbe_lac_g.png') no-repeat;}
 
 .tex2300{background:url('../image/texture/textmontagne/mont jointure1.png') no-repeat;}
 .tex2301{background:url('../image/texture/textmontagne/mont jointure2.png') no-repeat;}
