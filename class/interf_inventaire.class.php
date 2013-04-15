@@ -315,9 +315,7 @@ class interf_inventaire extends interf_cont
 			}
 		}
 		else
-		{
-			echo $Gtrad[$loc['loc']];
-		}
+      $td->add( new interf_txt($Gtrad[$loc['loc']]) );
 
 
 		if($this->perso->get_inventaire_partie($loc['loc'], true) != '' AND $this->perso->get_inventaire_partie($loc['loc'], true) != 'lock')
