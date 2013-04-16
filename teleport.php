@@ -196,6 +196,8 @@ if ($W_row['type'] != 1)
 	    $req = $db->query($requete);
 	    while($row = $db->read_array($req))
 	    {
+// Bastien : Si coût = 0 (pas NULL), on saute l'entrée
+        if ($row['cout'] === '0') continue;
 		    $distance = calcul_distance(convert_in_pos($row['x'], $row['y']), $joueur->get_pos());
 		    $cout =  $distance * 7;
 		    $cout = ceil(($cout * $R->get_taxe_diplo($joueur->get_race()) / 100) + $cout);
