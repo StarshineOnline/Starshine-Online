@@ -269,6 +269,8 @@ if($W_row['type'] == 1)
 					$joueur->sauver();
 					$joueur->unlock_achiev("rang_$rang");
 					echo 'Félicitations vous suivez maintenant la voie du '.mb_strtolower($nom,'UTF-8').'<br />';
+					$log = new log_admin();
+					$log->send($joueur->get_id(), 'rang', mb_strtolower($nom, 'UTF-8'));
 				}
 			break;
 			case 'quete_myriandre' :

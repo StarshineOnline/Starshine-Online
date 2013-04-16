@@ -22,7 +22,7 @@ class interf_inventaire_slot extends interf_bal_cont
    */
   function __construct(&$perso, $adresse, $slot, $modif)
   {
-    global $db, $filtre_url;
+    global $db, $filtre_url, $W_row;
     interf_bal_cont::__construct('ul');
     $this->perso = &$perso;
     $this->adresse = $adresse;
@@ -212,13 +212,13 @@ class interf_inventaire_slot extends interf_bal_cont
                 }
       					if($W_row['type'] == 1 AND $objet_d['categorie'] == 'r')
       					{
-                  $mod = new interf_bal_cont('span', false, 'inventaire_span');
-                  $mod->set_attribut('style', 'width:60px');
-                  $li->add($mod);
-                  $lien = new interf_bal_smpl('a', 'Déposer au dépot', false, 'inventaire_span');
-                  $lien->set_attribut('href', $this->adresse.'action=depot&amp;id_objet='.$objet_d['id_objet'].'&amp;type='.$row['type'].'&amp;key_slot='.$i);
-                  $lien->set_attribut('onclick', 'return envoiInfo(this.href, \'information\');');
-                  $mod->add($lien);
+                  $mod5 = new interf_bal_cont('span', false, 'inventaire_span');
+                  //$mod5->set_attribut('style', 'width:60px');
+                  $li->add($mod5);
+                  $lien5 = new interf_bal_smpl('a', 'Déposer au dépot', false, 'inventaire_span');
+                  $lien5->set_attribut('href', $this->adresse.'action=depot&amp;id_objet='.$objet_d['id_objet'].'&amp;type='.$row['type'].'&amp;key_slot='.$i);
+                  $lien5->set_attribut('onclick', 'return envoiInfo(this.href, \'information\');');
+                  $mod5->add($lien5);
                 }
       				}
       				elseif($objet_d['categorie'] == 'l')
@@ -250,7 +250,7 @@ class interf_inventaire_slot extends interf_bal_cont
       				if(($objet_d['categorie'] == 'a' OR $objet_d['categorie'] == 'p' OR $objet_d['categorie'] == 'm') AND $objet_d['slot'] == '' AND $objet_d['enchantement'] == '')
       				{
                 $mod3 = new interf_bal_cont('span', false, 'inventaire_span');
-                $mod3->set_attribut('style', 'width:100px');
+                $mod3->set_attribut('style', 'width:120px');
                 $li->add($mod3);
                 $lien4 = new interf_bal_smpl('a', 'Mettre un slot', false, 'inventaire_span');
                 $lien4->set_attribut('href', $this->adresse.'action=slot&amp;key_slot='.$i);
@@ -258,7 +258,7 @@ class interf_inventaire_slot extends interf_bal_cont
                 $mod3->add($lien4);
       				}
       			}
-            unset($span, $li, $mod, $lien, $mod2, $mod3, $lien2, $lien3, $lien4);
+            unset($span, $li, $mod, $lien, $mod2, $mod3, $mod5, $lien2, $lien3, $lien4, $lien5);
     			}
     			$i++;
     		}
