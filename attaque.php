@@ -17,7 +17,7 @@ if(array_key_exists('pet', $_GET))
 	if($joueur->nb_pet() > 0) $check_pet = true;
 }
 if(is_donjon($joueur->get_x(), $joueur->get_y())
-	 && ($joueur->in_arene('and donj = 0') == false))
+	 && ($joueur->in_arene('and donj = 0') == false) && $joueur->get_y()>190)
 	 {
 		 $donj = true;
 	 }
@@ -335,8 +335,8 @@ else
 	$debugs = 0;
 	/*if($type == 'joueur') $pa_attaque = $G_PA_attaque_joueur;
 	elseif($type == 'batiment') $pa_attaque = $G_PA_attaque_batiment;
-	else $pa_attaque = $G_PA_attaque_monstre;*/
-	if($attaquant->get_race() == $defenseur->get_race() && $joueur->in_arene() == false) $pa_attaque += 3;
+	else $pa_attaque = $G_PA_attaque_monstre;
+	if($attaquant->get_race() == $defenseur->get_race() && $joueur->in_arene() == false) $pa_attaque += 3;*/
 	if($attaquant->get_race() == 'orc' OR $defenseur->get_race() == 'orc') $round_total += 1;
 	if($attaquant->is_buff('buff_sacrifice')) $round_total -= $attaquant->get_buff('buff_sacrifice', 'effet2');
 	/*if($attaquant->is_buff('cout_attaque')) $pa_attaque = ceil($pa_attaque / $attaquant->get_buff('cout_attaque', 'effet'));
@@ -805,7 +805,7 @@ else
 
 			if($check_pet OR $check_pet_donj)
 			{
-				$augmentation = augmentation_competence('dressage', $joueur, 0.43);
+				$augmentation = augmentation_competence('dressage', $joueur, 0.85);
 				if($augmentation[1] == 1)
 				{
 					$joueur->set_dressage($augmentation[0]);
@@ -813,7 +813,7 @@ else
 			}
 			if($check_pet_def)
 			{
-				$augmentation = augmentation_competence('dressage', $joueur_defenseur, 0.43);
+				$augmentation = augmentation_competence('dressage', $joueur_defenseur, 0.85);
 				if($augmentation[1] == 1)
 				{
 					$joueur_defenseur->set_dressage($augmentation[0]);

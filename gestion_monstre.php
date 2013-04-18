@@ -71,7 +71,7 @@ if(array_key_exists('soin', $_GET))
 					$pet->set_hp($pet->get_hp() + $heal);
 					$pet->set_mp($pet->get_mp() + $heal_mp);
 					echo '<h6>Vous soignez '.$pet->get_nom().' de '.$heal.' HP et '.$heal_mp.' MP</h6>';
-					$augmentation = augmentation_competence('dressage', $joueur, 2.8);
+					$augmentation = augmentation_competence('dressage', $joueur, 5);
 					if ($augmentation[1] == 1) $joueur->set_dressage($augmentation[0]);
 					$joueur->sauver();
 					$pet->sauver();

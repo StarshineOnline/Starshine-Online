@@ -601,7 +601,7 @@ class comp_combat extends comp
   	$ups = array();
 
   	//Réctification si c'est un orc ou un donjon
-		$round = is_donjon($actif->get_x(), $actif->get_y()) ? $G_round_total * 2 : $G_round_total;
+		$round = ($actif->get_y() > 190) ? $G_round_total * 2 : $G_round_total;
 		if ($actif->get_race() == 'orc' || $passif->get_race() == 'orc')
 			$round += 1;
 		$rectif_augm = $round / $G_round_total;

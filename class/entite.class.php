@@ -714,6 +714,10 @@ class entite extends placable
 		{
 			$this->potentiel_toucher = round($this->get_distance() + ($this->get_distance() * ((pow($this->get_dexterite(), 2)) / 1000)));
 		}
+		elseif($this->get_arme_type() == 'baton')
+		{
+			$this->potentiel_toucher = round($this->get_incantation() + ($this->get_incantation() * ((pow($this->get_dexterite(), 2)) / 1000)));
+		}
 		else
 		{
 			$this->potentiel_toucher = round($this->get_melee() + ($this->get_melee() * ((pow($this->get_dexterite(), 2)) / 1000)));
