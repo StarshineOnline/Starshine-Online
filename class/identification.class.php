@@ -14,9 +14,12 @@ class identification
 		
 		$mdp_ok = false;
 
-    $joueur = joueur::Chercher($nom);
+		// On ne cherche pas le joueur, vu que joueur ne sait pas logguer avec l'API
+		// Il vaudrait mieux fixer joueur pour le login API, mais c'est un fix kimarche
+		if ($api) $joueur = null;
+    else $joueur = joueur::Chercher($nom);
     //my_dump($joueur);
-    if ($joueur )
+    if ($joueur)
     {
       $mdp_ok = $joueur->test_mdp($password);
 			$id_joueur = $joueur->get_id();
