@@ -770,7 +770,7 @@ class interf_tableau extends interf_bal_cont
   function fin()
   {
     $this->ferme('tbody');
-    interf_bal_cont::debut();
+    interf_bal_cont::fin();
   }
   /**
    * Ajoute une nouvelle ligne.
