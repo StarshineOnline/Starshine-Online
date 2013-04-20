@@ -136,14 +136,12 @@ class interf_inventaire_slot extends interf_bal_cont
     				else
     					$echo = 'Objet non indentifié';
     			
-            $li = new interf_bal_cont('li');
-            $this->add($li);
+            $li = $this->add( new interf_bal_cont('li') );
             $li->set_attribut('onmouseover', 'return '.make_overlib($echo));
-            $span = new interf_bal_cont('span', false, 'inventaire_span');
+            $li->set_attribut('onmouseout', 'return nd();');
+            $span = $li->add(new interf_bal_cont('span', false, 'inventaire_span') );
             $span->set_attribut('style', 'width:150px');
             $span->add( new interf_txt($row['nom']) );
-            $li->add($span);
-
       			$modif_prix = 1;
       			if($objet_d['stack'] > 1)
               $span->add( new interf_txt(' X '.$objet_d['stack']) );

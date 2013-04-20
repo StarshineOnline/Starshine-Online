@@ -185,6 +185,7 @@ abstract class interf_cont extends interf_base
     $this->fils[] = &$fils;
     if( $fils::cont )
       interf_base::$courrant = &$fils;
+    return $fils;
   }
   /// Affiche le début de l'élément, i.e. la partie située avant les éléments fils.
   protected function debut() {}
