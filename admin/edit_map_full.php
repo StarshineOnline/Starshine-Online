@@ -7,7 +7,7 @@ $textures = false;
 include_once(root.'inc/fp.php');
 
 define('MAX_X_NON_DONJON', 190);
-define('MAX_Y_NON_DONJON', 190);
+define('MAX_Y_NON_DONJON', 200);
 
 if (array_key_exists('change', $_GET)) {
 	$first = true;
