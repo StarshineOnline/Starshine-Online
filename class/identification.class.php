@@ -14,11 +14,16 @@ class identification
 		
 		$mdp_ok = false;
 
-    $joueur = joueur::Chercher($nom);
+		$joueur = joueur::Chercher($nom);
     //my_dump($joueur);
-    if ($joueur )
+    if ($joueur)
     {
-      $mdp_ok = $joueur->test_mdp($password);
+			// Quand on se loggue en mode API, on utilise pas le mot de passe joueur, mais le sha1sum du mot de passe jeu
+			// la fonction joueur::test_mdp() ne gère pas ce type de login, on bypass donc le test
+			if ($api)
+				$mdp_ok = 0;
+			else
+				$mdp_ok = $joueur->test_mdp($password);
 			$id_joueur = $joueur->get_id();
 			$droits =  $joueur->get_droits();
 			$pseudo =  $joueur->get_pseudo();
@@ -38,8 +43,12 @@ class identification
         $nom = $row['nom'];
         $race = $row['race'];
         $grade = $row['grade'];
-        if (!$mdp_ok)
-          $mdp_ok = $row['password'] === $password;
+        if (!$mdp_ok) {						
+					if ($api) // En cas de login API, on passe le sha1 du hash
+						$mdp_ok = sha1($row['password']) === $password;
+					else
+						$mdp_ok = $row['password'] === $password;
+				}
       }
       else
         $id_base = null;
