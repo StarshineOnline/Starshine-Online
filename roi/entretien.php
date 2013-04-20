@@ -36,8 +36,9 @@ if($joueur->get_rang_royaume() != 6 AND $joueur->get_id() != $royaume->get_minis
 	echo '<p>Cette page vous est interdite</p>';
 else 
 {
+  $ratio = $royaume->get_facteur_entretien();
 //if($ratio < 1) $ratio = 1;
-echo ' , Multiplicateur d\'entretien : '.round($royaume->get_facteur_entretien(), 2).'<br />';
+echo ' , Multiplicateur d\'entretien : '.round($ratio, 2).'<br />';
 echo '
 <fieldset class="tier">
 <legend>Batiments interne</legend>
