@@ -157,6 +157,11 @@ class comp_combat extends comp
       case 'botte_crabe':
       case 'botte_chat':
       case 'botte_chien':
+      case 'botte_scolopendre':
+      case 'botte_tortue':
+      case 'botte_rhinoceros':
+      case 'botte_tigre':
+      case 'botte_ours':
         return new comp_combat_effet($row);
       case 'fleche_sable':
         return new comp_combat_sable($row);
@@ -246,12 +251,15 @@ class comp_combat extends comp
     {
       $this->touche($attaque, $actif, $passif, $effets);
       $passif->precedent['esquive'] = false;
+      $actif->precedent['touche'] = true;
     }
   	else
     {
   		echo '&nbsp;&nbsp;<span class="manque">'.$actif->get_nom().' manque la cible</span><br />';
       $passif->precedent['esquive'] = true;
+      $passif->precedent['bloque'] = false;
       $actif->precedent['critique'] = false;
+      $actif->precedent['touche'] = false;
   		$log_combat .= '~e';
     }
 
@@ -461,8 +469,11 @@ class comp_combat extends comp
 					// Application des effets de blocage
 					foreach($effets as $effet)
 						$degat = $effet->applique_bloquage($actif,$passif,$degat);
-
+						
+          $passif->precedent['bloque'] = true;
 				}
+				else
+          $passif->precedent['bloque'] = false;
 				$passif->precedent['bouclier'] = true;
 			}
 			return $degat;
@@ -982,13 +993,41 @@ class comp_combat_coup_bouclier extends comp_combat_degat_etat
   }
 }
 
-/// Classe gérant les compétences utilisant des effets
+/// Classe gérant la fleche de sable
 class comp_combat_sable extends comp_combat_effet
 {
   /// Méthode calculant les dégâts de base avant réduction
   function calcul_degats(&$actif, &$passif, &$effets)
   {
     return parent::calcul_degats($actif, $passif, $effets) - $this->get_effet();
+  }
+}
+
+/// Classe gérant la compétence flèche enflammée
+class comp_combat_fleche_enflammee extends comp_combat
+{
+  /// Méthode gérant l'utilisation d'une compétence
+  function touche($attaque, &$actif, &$passif, &$effets)
+  {
+    parent::touche($attaque, $actif, $passif, $effets);
+    if( $this->test_de(100, $this->get_effet()) )
+    {
+      echo '&nbsp;&nbsp;<span class="degat"><strong>'.$passif->get_nom().'</strong> perd <strong>'.$this->get_effet2(). '</strong> HP à caue du feu</span><br />';
+      $passif->set_hp( $passif->get_hp() -  $this->get_effet2());
+    }
+  }
+}
+
+/// Classe gérant la compétence flèche barbelée
+class comp_combat_fleche_barbelee extends comp_combat
+{
+  /// Méthode gérant les coups critiques
+  function critiques(&$actif, &$passif, &$effets)
+  {
+    $mult = parent::critiques($actif, $passif, $effets);
+    if( $mult > 1)
+      return $mult * (1 + $this->get_effet()/100);
+    return $mult;
   }
 }
 ?>

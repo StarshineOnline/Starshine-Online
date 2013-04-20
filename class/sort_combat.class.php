@@ -241,7 +241,9 @@ class sort_combat extends sort
   	}
   	
   	$passif->precedent['esquive'] = false;
+    $passif->precedent['bloque'] = false;
   	$actif->precedent['critique'] = false;
+    $actif->precedent['touche'] = false;
   	//Augmentation des compétences liées
   	$get = 'get_'.$this->get_comp_assoc();
 

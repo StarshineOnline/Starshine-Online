@@ -2850,37 +2850,51 @@ function affiche_condition($action, $joueur, $check_pet)
 			$arg = mb_substr($arguments[$j], 1, 2);
 			$operateur = $arguments[$j][3];
 			$parametre = mb_substr($arguments[$j], 4, strlen($arguments[$j]));
-			if ($arg == '00')
+			switch($arg)
 			{
+			case '00':
 				$echo .= 'HP '.$operateur.' '.$parametre;
-			}
-			if ($arg == '01')
-			{
+        break;
+      case '01':
 				$echo .= 'Réserve de mana '.$operateur.' '.$parametre;
-			}
-			if ($arg == '09')
-			{
+        break;
+      case '09':
 				$echo .= 'Round '.$operateur.' '.$parametre;
-			}
-			if ($arg == '10')
-			{
+        break;
+      case '10':
 				$echo .= 'vous n\'êtes pas '.$liste_etats[$parametre]['nom'];
-			}
-			if ($arg == '11')
-			{
+        break;
+      case '11':
 				$echo .= 'l\'ennemi n\'est pas '.$liste_etats[$parametre]['nom'];
-			}
-			if ($arg == '12')
-			{
+        break;
+      case '12':
 				$echo .= 'vous êtes '.$liste_etats[$parametre]['nom'];
-			}
-			if ($arg == '13')
-			{
+        break;
+      case '13':
 				$echo .= 'l\'ennemi est '.$liste_etats[$parametre]['nom'];
-			}
-			if ($arg == '14')
-			{
+        break;
+      case '14':
 				$echo .= 'utilisation de la compétence '.$operateur.' '.$parametre;
+        break;
+      case '15':
+        switch($parametre)
+        {
+        case 'E':
+          $act = 'd\'esquiver';
+          break;
+        case 'C':
+          $act = 'de faire un critique';
+          break;
+        case 'B':
+          $act = 'de bloquer';
+          break;
+        case 'T':
+          $act = 'de toucher';
+          break;
+        default:
+          $act = 'de trouver un bug';
+        }
+				$echo .= 'vous venez '.$act;
 			}
 			$j++;
 		}
@@ -2935,37 +2949,51 @@ function affiche_condition_session($action, $joueur, $check_pet)
 			$arg = $condition['si'];
 			$operateur = $condition['op'];
 			$parametre = $condition['valeur'];
-			if ($arg == '00')
+			switch($arg)
 			{
+			case '00':
 				$echo .= 'HP '.$operateur.' '.$parametre;
-			}
-			elseif ($arg == '01')
-			{
+        break;
+      case '01':
 				$echo .= 'Réserve de mana '.$operateur.' '.$parametre;
-			}
-			elseif ($arg == '09')
-			{
+        break;
+      case '09':
 				$echo .= 'Round '.$operateur.' '.$parametre;
-			}
-			elseif ($arg == '10')
-			{
-				$echo .= 'vous n\'êtes pas '.$etats[$parametre]['nom'];
-			}
-			elseif ($arg == '11')
-			{
-				$echo .= 'l\'ennemi n\'est pas '.$etats[$parametre]['nom'];
-			}
-			elseif ($arg == '12')
-			{
-				$echo .= 'vous êtes '.$etats[$parametre]['nom'];
-			}
-			elseif ($arg == '13')
-			{
-				$echo .= 'l\'ennemi est '.$etats[$parametre]['nom'];
-			}
-			elseif ($arg == '14')
-			{
-				$echo .= 'Utilisation de la compétence '.$operateur.' '.$parametre;;
+        break;
+      case '10':
+				$echo .= 'vous n\'êtes pas '.$liste_etats[$parametre]['nom'];
+        break;
+      case '11':
+				$echo .= 'l\'ennemi n\'est pas '.$liste_etats[$parametre]['nom'];
+        break;
+      case '12':
+				$echo .= 'vous êtes '.$liste_etats[$parametre]['nom'];
+        break;
+      case '13':
+				$echo .= 'l\'ennemi est '.$liste_etats[$parametre]['nom'];
+        break;
+      case '14':
+				$echo .= 'utilisation de la compétence '.$operateur.' '.$parametre;
+        break;
+      case '15':
+        switch($parametre)
+        {
+        case 'E':
+          $act = 'd\'esquiver';
+          break;
+        case 'C':
+          $act = 'de faire un critique';
+          break;
+        case 'B':
+          $act = 'de bloquer';
+          break;
+        case 'T':
+          $act = 'de toucher';
+          break;
+        default:
+          $act = 'de trouver un bug';
+        }
+				$echo .= 'vous venez '.$act;
 			}
 			$echo .= '<br />';
 			$check = true;

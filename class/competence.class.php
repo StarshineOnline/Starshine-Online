@@ -419,71 +419,63 @@ class botte_chien extends botte
 
   function debut_round(&$actif, &$passif)  {
 		if ($this->peut_agir($actif, 'critique')) {
-			$actif->etat['botte_chien']['effet'] = $this->effet;
-			$actif->etat['botte_chien']['duree'] = 2; // dure 1 round mais le compteur sera décrémenté avant utilisation
+			$actif->etat['botte_blocage']['effet'] = $this->effet;
+			$actif->etat['botte_blocage']['duree'] = 2; // dure 1 round mais le compteur sera décrémenté avant utilisation
 		}
 	}
 }
+// Botte du scolopendre
+class botte_scolopendre extends botte
+{
+  function calcul_critique(&$actif, &$passif, $chance)
+  {
+		if( $this->peut_agir($actif, 'bloque') )
+			return $chance * (1 + $this->effet/100);
+		return $chance;
+	}
+}
 
-/* Botte du tigre */
+// Botte de la tortue
+class botte_tortue extends botte
+{
+  function debut_round(&$actif, &$passif)
+  {
+		if( $this->peut_agir($actif, 'bloque') )
+			$actif->set_potentiel_toucher( $actif->get_potentiel_toucher() * (1 + $this->effet/100) );
+  }
+}
+
+// Botte du rhinocéros
+class botte_rhinoceros extends botte
+{
+  function debut_round(&$actif, &$passif)
+  {
+		if( $this->peut_agir($actif, 'touche') )
+		{
+			$actif->etat['botte_blocage']['effet'] = $this->effet;
+			$actif->etat['botte_blocage']['duree'] = 2; // dure 1 round mais le compteur sera décrémenté avant utilisation
+    }
+  }
+}
+
+// Botte du tigre
 class botte_tigre extends botte
 {
-  function __construct($aLevel = 1) {
-    parent::__construct('critique', 'botte_tigre', $aLevel);
-	}
-
-  function calcul_degats(&$actif, &$passif, $degats) {
-		if ($this->canUse($actif)) {
-			$this->debug("Chance de multiplier : $test doit être inférieur à "
-									 .$this->effet);
-			if ($test < $this->effet)
-				return $degats * $this->effet2;
-		}
-		return $degats;
-	}
+  function debut_round(&$actif, &$passif)
+  {
+		if( $this->peut_agir($actif, 'touche') )
+			$actif->set_potentiel_toucher( $actif->get_potentiel_toucher() * (1 + $this->effet/100) );
+  }
 }
 
-/* Botte de l'ours */
+// Botte de l'ours
 class botte_ours extends botte
 {
-  function __construct($aLevel = 1) {
-    parent::__construct('critique', 'botte_ours', $aLevel);
-	}
-		
-	function etourdit($actif, $passif) {
-		global $debugs;
-	  $pot_et = $actif->get_force();
-		$pot_res = $passif->get_vie() + $passif['PP_effective'] / 100;
-		switch ($this->level) {
-		case 1:
-			$pot_et += $actif->get_esquive() / 80;
-			break;
-		case 2:
-			$pot_et += $actif->get_esquive() / 70;
-			break;
-		case 3:
-			$pot_et += $actif->get_esquive() / 60;
-			break;
-		default:
-			die('bad level');
-		}
-		$et = rand(0, $pot_et);
-		$res = rand(0, $pot_res);
-		echo "<div class=\"debug\" id=\"debug${debugs}\">Potentiel étourdir : $pot_et<br/>".
-			"Potentiel résister : $pot_res<br/>Chance d'étourdir : ".
-			"$et doit être supérieur à $res<br /></div>";
-		$debug++;
-		return $et >= $res;
-	}
-
-  function inflige_degats(&$actif, &$passif, $degats) {
-		if ($this->canUse($actif)) {
-			if ($this->etourdit($actif, $passif)) {
-				$passif->etat['etourdit']['effet'] = true;
-				$passif->etat['etourdit']['duree'] = 1;
-				echo "La botte étourdit ".$passif->get_nom().'<br/>';
-			}
-		}
+  function calcul_degats(&$actif, &$passif, $degats)
+  {
+		if( $this->peut_agir($actif, 'touche') )
+			return $degats + $this->effet;
+		return $degats;
 	}
 }
 

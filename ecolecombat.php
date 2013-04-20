@@ -33,6 +33,8 @@ if ($joueur->get_race() != $R->get_race() &&
 	exit (0);
 }
 
+$princ = $interf->creer_princ_droit('');
+
 ?>
 <fieldset>
 <legend><?php echo '<a href="ville.php" onclick="return envoiInfo(this.href, \'centre\')">';?><?php echo $R->get_nom();?></a> > <?php echo '<a href="ecolecombat.php" onclick="return envoiInfo(this.href, \'carte\')">';?> Ecole de combat </a></legend>
@@ -74,7 +76,7 @@ if($W_row['type'] == 1)
 				  if($row_check['lvl_batiment'] > $level_batiment)
 					security_block(URL_MANIPULATION, 'Batiment non disponible dans cette ville');
 				  else
-					apprend_competence($ecole, sSQL($_GET['id']), $joueur, $R, false);
+					apprend_competence($ecole, sSQL($_GET['id']), $joueur, $R, false, $princ);
 				break;
 			}
 		}
