@@ -141,15 +141,6 @@ if ($W_row['type'] != 1)
 	{
 		// Bastien : Si coût = 0 (pas NULL), on saute l'entrée
 		if ($row['cout'] == 0) continue;
-		if($row['cout'] > 0)
-		{
-			$cout = $row['cout'];
-			$row_diplo[0] = 127;
-			$row_race['capitale'] = 'Ville Neutre';
-			$row_race['race'] = 'neutre';
-		}
-		else
-		{
 			$coords_roy = convert_in_pos($row['posx'], $row['posy']);
 			//Récupération du royaume du téléport
 			$requete_roy = 'SELECT * FROM map WHERE x = '.$row['posx'].' and y = '.$row['posy'];
@@ -173,7 +164,6 @@ if ($W_row['type'] != 1)
 			{
 				$row_diplo[0] = 8;
 			}
-		}
 		//Si en paix
 		if(($row_diplo[0] <= 3) OR $row_diplo[0] == 127 AND $distance > 2)
 		{
