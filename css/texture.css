@@ -767,6 +767,9 @@
 .tex10813{background:url('../image/texture/route/chemin_desert_marecage_hd.png') no-repeat;}
 .tex10817{background:url('../image/texture/route/tex_routepavedeco1.png') no-repeat;}
 .tex10818{background:url('../image/texture/route/tex_routepavedeco4.png') no-repeat;}
+.tex10819{background:url('../image/texture/route/tex_routemarais_horiz_efface_g.png') no-repeat;}
+.tex10820{background:url('../image/texture/route/tex_routemarais_horiz_efface_d.png') no-repeat;}
+.tex10821{background:url('../image/texture/route/tex_routemarais_croisement.png') no-repeat;}
 
 .tex10814{background:url('../image/texture/route/tex_lac_sud.png') no-repeat;}
 .tex10815{background:url('../image/texture/route/tex_lac_nord.png') no-repeat;}
@@ -2736,6 +2739,10 @@
 .tex20561{background:url('../image/texture/tutorial/mortvivant/MV_sol_mur_mg2.png') no-repeat;}
 .tex20562{background:url('../image/texture/tutorial/mortvivant/MV_sol_mur_mg3.png') no-repeat;}
 .tex20563{background:url('../image/texture/tutorial/mortvivant/MV_sol_hm_tombe.png') no-repeat;}
+.tex20564{background:url('../image/texture/tutorial/mortvivant/MV_sol_centre_croix.png') no-repeat;}
+.tex20565{background:url('../image/texture/tutorial/mortvivant/MV_sol_mur_bg2.png') no-repeat;}
+.tex20566{background:url('../image/texture/tutorial/mortvivant/MV_sol_mur_bd2.png') no-repeat;}
+
 
 .tex7648{background:url('../image/texture/tutorial/mortvivant/MV_mur_hm.png') no-repeat;}
 .tex7649{background:url('../image/texture/tutorial/mortvivant/MV_mur_hg.png') no-repeat;}
