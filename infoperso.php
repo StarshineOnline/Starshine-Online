@@ -216,7 +216,7 @@ if (count($invitation) > 0)
 	echo '
 	<div id="joueur_groupe">
 	Vous avez reçu une invitation pour grouper de la part de '.$perso->get_nom().'<br />
-	<a href="reponseinvitation.php?id='.$invitation[0]->get_id().'&groupe='.$invitation[0]->get_groupe().'&reponse=oui" onclick="return envoiInfo(this.href, \'information\');">Accepter</a> / <a href="reponseinvitation.php?ID='.$invitation[0]->get_id().'&reponse=non" onclick="return envoiInfo(this.href, \'information\');">Refuser</a>
+	<a href="reponseinvitation.php?id='.$invitation[0]->get_id().'&groupe='.$invitation[0]->get_groupe().'&reponse=oui" onclick="return envoiInfo(this.href, \'information\');">Accepter</a> / <a href="reponseinvitation.php?id='.$invitation[0]->get_id().'&reponse=non" onclick="return envoiInfo(this.href, \'information\');">Refuser</a>
 	</div>';
 }
 }
