@@ -339,10 +339,10 @@ class map
 		}
 		else // --- CARTE NORMALE ---
 		{
-			echo '<div class="div_map" style="width : '.round(20 + ($taille_cellule * $this->case_affiche)).'px;height:'.round(20 + ($taille_cellule * $this->case_affiche)).'px;">';
+			echo '<div class="div_map" style="width : '.round(17 + ($taille_cellule * $this->case_affiche)).'px;height:'.round(17 + ($taille_cellule * $this->case_affiche)).'px;">';
 			{//-- Affichage du bord haut (bh) de la map
 				echo "<ul id=\"".$classe_css['map_bord_haut']."\">
-					   <li id=\"".$classe_css['map_bord_haut_gauche']."\" rel=\"option_map.php\" ";if (!empty($class_css['resolution'])) {echo "class=\"".$class_css['resolution']."\" ";} echo "onclick=\"$this->show_royaume_button\">&nbsp;</li>";
+					   <li id=\"".$classe_css['map_bord_haut_gauche']."\" >&nbsp;</li>";
 				for ($bh = $this->xmin; $bh <= $this->xmax; $bh++)
 				{
           $coord_x = $bh;
