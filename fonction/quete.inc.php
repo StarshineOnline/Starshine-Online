@@ -242,12 +242,40 @@ function affiche_quetes($fournisseur, $joueur)
 		{
 			$check = true;
 			$requis = explode(';', $row['quete_requis']);
-			$i = 0;
+			/*$i = 0;
 			$count = count($requis);
-			while($check AND $i < $count)
+			while($check AND $i < $count)*/
+			foreach($quete_requis as $requis)
 			{
-				if($requis[$i] != '' && !in_array($requis[$i], $quete_fini)) $check = false;
-				$i++;
+				/*if($requis[$i] != '' && !in_array($requis[$i], $quete_fini)) $check = false;
+				$i++;*/
+				if( !$requis ) continue;
+				$val = mb_substr($requis, 1);
+				if($requis[0] == 'q')
+				{
+          if( !in_array($val, $quete_fini) )
+          {
+            $check = false;
+            break;
+          }
+        }
+        else if($requis[0] == 't')
+				{
+          if( $joueur->get_tuto() != $val )
+          {
+            $check = false;
+            break;
+          }
+        }
+        else if($requis[0] == 'c')
+				{
+          $classes = explode('-', $val);
+          if( !in_array($joueur->get_classe_id(), $classes) )
+          {
+            $check = false;
+            break;
+          }
+        }
 			}
 			if($check)
 			{
@@ -294,7 +322,33 @@ function prend_quete($id_quete, $joueur)
 	foreach($quete_requis as $requis)
 	{
     if (empty($requis)) continue;
-		if(!in_array($requis, $quete_fini)) $valid = false;
+		//if(!in_array($requis, $quete_fini)) $valid = false;
+		$val = mb_substr($requis, 1);
+		if($requis[0] == 'q')
+		{
+      if( !in_array($val, $quete_fini) )
+      {
+        $valid = false;
+        break;
+      }
+    }
+    else if($requis[0] == 't')
+		{
+      if( $joueur->get_tuto() != $val )
+      {
+        $valid = false;
+        break;
+      }
+    }
+    else if($requis[0] == 'c')
+		{
+      $classes = explode('-', $val);
+      if( !in_array($joueur->get_classe_id(), $classes) )
+      {
+        $valid = false;
+        break;
+      }
+    }
 	}
 	if($valid)
 	{

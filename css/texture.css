@@ -550,6 +550,26 @@
 .tex777{background:url('../image/texture/marais/cristauxmarais.png') no-repeat;}
 .tex778{background:url('../image/texture/marais/animbulle.png') no-repeat;}
 .tex779{background:url('../image/texture/marais/animbulleb.png') no-repeat;}
+.tex780{background:url('../image/texture/tutorial/mortvivant/MV_sol_mur_hm.png') no-repeat;}
+.tex781{background:url('../image/texture/tutorial/mortvivant/MV_sol_mur_hg.png') no-repeat;}
+.tex782{background:url('../image/texture/tutorial/mortvivant/MV_sol_mur_hg2.png') no-repeat;}
+.tex783{background:url('../image/texture/tutorial/mortvivant/MV_sol_mur_hd.png') no-repeat;}
+.tex784{background:url('../image/texture/tutorial/mortvivant/MV_sol_mur_mg.png') no-repeat;}
+.tex785{background:url('../image/texture/tutorial/mortvivant/MV_sol_mur_md.png') no-repeat;}
+.tex786{background:url('../image/texture/tutorial/mortvivant/MV_sol_mur_hm_tombe.png') no-repeat;}
+.tex787{background:url('../image/texture/tutorial/mortvivant/MV_sol_hm_croix.png') no-repeat;}
+.tex788{background:url('../image/texture/tutorial/mortvivant/MV_sol_mur_hm_trou.png') no-repeat;}
+.tex789{background:url('../image/texture/tutorial/mortvivant/MV_sol_centre.png') no-repeat;}
+.tex790{background:url('../image/texture/tutorial/mortvivant/MV_sol_hm_croix2.png') no-repeat;}
+.tex791{background:url('../image/texture/tutorial/mortvivant/MV_sol_mur_bg.png') no-repeat;}
+.tex792{background:url('../image/texture/tutorial/mortvivant/MV_sol_mur_bd.png') no-repeat;}
+.tex793{background:url('../image/texture/tutorial/mortvivant/MV_sol_mur_bm.png') no-repeat;}
+.tex794{background:url('../image/texture/tutorial/mortvivant/MV_sol_mur_mg2.png') no-repeat;}
+.tex795{background:url('../image/texture/tutorial/mortvivant/MV_sol_mur_mg3.png') no-repeat;}
+.tex796{background:url('../image/texture/tutorial/mortvivant/MV_sol_hm_tombe.png') no-repeat;}
+.tex797{background:url('../image/texture/tutorial/mortvivant/MV_sol_centre_croix.png') no-repeat;}
+.tex798{background:url('../image/texture/tutorial/mortvivant/MV_sol_mur_bg2.png') no-repeat;}
+.tex799{background:url('../image/texture/tutorial/mortvivant/MV_sol_mur_bd2.png') no-repeat;}
 
 .tex801{background:url('../image/texture/route/tex_routepaveens.png') no-repeat;}
 .tex802{background:url('../image/texture/route/tex_routepaveeeo.png') no-repeat;}
@@ -2720,28 +2740,6 @@
 .tex7645{background:url('../image/texture/tutorial/troll/troll_mur_interieur_hg.png') no-repeat;}
 .tex7646{background:url('../image/texture/tutorial/troll/troll_mur_interieur_hd.png') no-repeat;}
 .tex7647{background:url('../image/texture/tutorial/troll/troll_mur_centre_interieur.png') no-repeat;}
-
-
-.tex20547{background:url('../image/texture/tutorial/mortvivant/MV_sol_mur_hm.png') no-repeat;}
-.tex20548{background:url('../image/texture/tutorial/mortvivant/MV_sol_mur_hg.png') no-repeat;}
-.tex20549{background:url('../image/texture/tutorial/mortvivant/MV_sol_mur_hg2.png') no-repeat;}
-.tex20550{background:url('../image/texture/tutorial/mortvivant/MV_sol_mur_hd.png') no-repeat;}
-.tex20551{background:url('../image/texture/tutorial/mortvivant/MV_sol_mur_mg.png') no-repeat;}
-.tex20552{background:url('../image/texture/tutorial/mortvivant/MV_sol_mur_md.png') no-repeat;}
-.tex20553{background:url('../image/texture/tutorial/mortvivant/MV_sol_mur_hm_tombe.png') no-repeat;}
-.tex20554{background:url('../image/texture/tutorial/mortvivant/MV_sol_hm_croix.png') no-repeat;}
-.tex20555{background:url('../image/texture/tutorial/mortvivant/MV_sol_mur_hm_trou.png') no-repeat;}
-.tex20556{background:url('../image/texture/tutorial/mortvivant/MV_sol_centre.png') no-repeat;}
-.tex20557{background:url('../image/texture/tutorial/mortvivant/MV_sol_hm_croix2.png') no-repeat;}
-.tex20558{background:url('../image/texture/tutorial/mortvivant/MV_sol_mur_bg.png') no-repeat;}
-.tex20559{background:url('../image/texture/tutorial/mortvivant/MV_sol_mur_bd.png') no-repeat;}
-.tex20560{background:url('../image/texture/tutorial/mortvivant/MV_sol_mur_bm.png') no-repeat;}
-.tex20561{background:url('../image/texture/tutorial/mortvivant/MV_sol_mur_mg2.png') no-repeat;}
-.tex20562{background:url('../image/texture/tutorial/mortvivant/MV_sol_mur_mg3.png') no-repeat;}
-.tex20563{background:url('../image/texture/tutorial/mortvivant/MV_sol_hm_tombe.png') no-repeat;}
-.tex20564{background:url('../image/texture/tutorial/mortvivant/MV_sol_centre_croix.png') no-repeat;}
-.tex20565{background:url('../image/texture/tutorial/mortvivant/MV_sol_mur_bg2.png') no-repeat;}
-.tex20566{background:url('../image/texture/tutorial/mortvivant/MV_sol_mur_bd2.png') no-repeat;}
 
 
 .tex7648{background:url('../image/texture/tutorial/mortvivant/MV_mur_hm.png') no-repeat;}
