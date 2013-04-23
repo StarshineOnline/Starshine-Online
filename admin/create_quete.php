@@ -201,7 +201,7 @@ if(array_key_exists('submit', $_POST) OR array_key_exists('submit2', $_POST))
 		$req = $db->query($requete);
 		while($row = $db->read_assoc($req))
 		{
-			?><option value="<?php echo $row['id']; ?>"><?php echo $row['nom']; ?></option><?php
+			?><option value="q<?php echo $row['id']; ?>"><?php echo $row['nom']; ?></option><?php
 		}
 		?>
 		</select>
