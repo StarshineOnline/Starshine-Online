@@ -2810,6 +2810,7 @@
 .tex21504{background:url('../image/texture/tutorial/edb/EDB_sol_arbre_mg.png') no-repeat;}
 .tex21505{background:url('../image/texture/tutorial/edb/EDB_feuille_sol_bg.png') no-repeat;}
 .tex21506{background:url('../image/texture/tutorial/edb/EDB_feuille_sol_bg2.png') no-repeat;}
+.tex21507{background:url('../image/texture/tutorial/edb/EDB_feuille_sol_bg_colant.png') no-repeat;}
 
 .tex7670{background:url('../image/texture/tutorial/edb/EDB_mur_arbre_centre.png') no-repeat;}
 .tex7671{background:url('../image/texture/tutorial/edb/EDB_mur_arbre_centre_d.png') no-repeat;}
@@ -2856,6 +2857,12 @@
 .tex8608{background:url('../image/texture/tutorial/edb/EDB_feuille_mur_centre_md.png') no-repeat;}
 .tex8609{background:url('../image/texture/tutorial/edb/EDB_feuille_mur_bd3.png') no-repeat;}
 .tex8610{background:url('../image/texture/tutorial/edb/EDB_feuille_mur_centre.png') no-repeat;}
+.tex8611{background:url('../image/texture/tutorial/edb/EDB_feuille_mur_centre_b.png') no-repeat;}
+.tex8612{background:url('../image/texture/tutorial/edb/EDB_feuille_mur_centre_b2.png') no-repeat;}
+.tex8613{background:url('../image/texture/tutorial/edb/EDB_feuille_mur_centre_bd.png') no-repeat;}
+.tex8614{background:url('../image/texture/tutorial/edb/EDB_mur_arbre_g_hd_collant.png') no-repeat;}
+.tex8615{background:url('../image/texture/tutorial/edb/EDB_mur_arbre_centre_d_collant.png') no-repeat;}
+.tex8616{background:url('../image/texture/tutorial/edb/EDB_mur_arbre_centre_g_escalier_collant.png') no-repeat;}
 
 .tex2000{background:url('../image/texture/capitale/vampire/villevampendestrbg.gif') no-repeat;}
 .tex2001{background:url('../image/texture/capitale/vampire/villevampendestrbm.gif') no-repeat;}
