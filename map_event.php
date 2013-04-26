@@ -336,6 +336,87 @@ function tpLyly(&$joueur)
   }
 }
 
+/**
+ * Pour gérer les ponts "temporaires", variante à coût fixe
+ * @param @joueur le joueur qui passe le pont
+ * @param x l'autre coté du pont (x)
+ * @param y l'autre coté du pont (y)
+ * @param cout le cout en PA pour passer
+ * @param jours le pont est praticable tous les x jours
+ */
+function checkPontTemporaireFixeTP(&$joueur, $x, $y, $cout = 10, $jours = 2)
+{
+	if ($joueur->get_pa() < $cout) {
+		showMessage('Vous ne vous sentez pas la force de passer ce pont', 'Pas assez de PA');
+		return;
+	}
+	if (((int)date('d')) % max(2, ((int)$jours) % 31) && $jours != 1)
+	{
+    showMessage('Le tronc de l\'arbre est trop instable pour servir à franchir la rivière, rééssayez demain',
+								'L\'arbre ne peut servir de pont.');
+	}
+	else
+	{
+    showMessage('Vous réussissez à traverser la rivière en jouant l\'équilibriste sur les branche de l\'arbre.<br/>Ça vous a coûté '
+								.$cout.' PA', 'Passage précaire');
+    $joueur->set_x($x);
+    $joueur->set_y($y);
+		$joueur->add_pa($cout * -1);
+    $joueur->sauver();
+	}
+}
+
+/**
+ * Pour gérer les ponts "temporaires", variante à coût aléatoire
+ * Si le joueur n'a pas assez de PA, mais en aurait eu assez pour
+ * passer si le coût avait été minimal, il perd 2/3 des PA au delà
+ * du minimum. Ceci pour éviter qu'il ré-éssaye X fois jusqu'à tirer
+ * le cout minimum pour optimiser la traversée ;)
+ * @param @joueur le joueur qui passe le pont
+ * @param x l'autre coté du pont (x)
+ * @param y l'autre coté du pont (y)
+ * @param cout_min le cout minimum en PA pour passer
+ * @param cout_max le cout maximum en PA pour passer
+ * @param jours le pont est praticable tous les x jours
+ */
+function checkPontTemporaireRandTP(&$joueur, $x, $y, $cout_min = 6, $cout_max = 20, $jours = 2)
+{
+	$cout = rand($cout_min, $cout_max);
+	if ($joueur->get_pa() < $cout) {
+		if ($joueur->get_pa() > $cout_min) {
+			$cout = floor(($cout - $cout_min) / 3 * 2);
+			$joueur->add_pa($cout * -1);
+			$joueur->sauver();
+			$msg = ', vos tentatives infructueuses vous ont néanmoins coûté '.
+				$cout.' PA.';
+		} else $msg = '.';
+		showMessage('Vous ne vous sentez pas la force de passer ce pont'.$msg,
+								'Pas assez de PA');
+		return;
+	}
+	if (((int)date('d')) % max(2, ((int)$jours) % 31) && $jours != 1)
+	{
+    showMessage('Le tronc de l\'arbre est trop instable pour servir à franchir la rivière, rééssayez demain',
+								'L\'arbre ne peut servir de pont.');
+	}
+	else
+	{
+		if ($cout < ($cout_min + ($cout_max - $cout_min) / 3)) {
+			$msg = 'Vous glissez littéralement sur les branches de l\'arbre et passez de l\'autre coté avec une facilité déconcertante.';
+		}
+		elseif ($cout > ($cout_min + ($cout_max - $cout_min) / 3 * 2)) {
+			$msg = 'Ça a été dur, mais vous avez réussi à traverser en rampant sur le tronc d\'arbre.';
+		} else {
+			$msg = 'Vous réussissez à traverser la rivière en jouant l\'équilibriste sur les branche de l\'arbre.';
+		}
+    showMessage($msg.'<br/>Ça vous a coûté '.$cout.' PA', 'Passage précaire');
+		$joueur->add_pa($cout * -1);
+    $joueur->set_x($x);
+    $joueur->set_y($y);
+    $joueur->sauver();
+	}
+}
+
 global $dontrefresh;
 global $dontrefreshmap;
 
