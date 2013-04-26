@@ -241,7 +241,7 @@ function affiche_quetes($fournisseur, $joueur)
 		else
 		{
 			$check = true;
-			$requis = explode(';', $row['quete_requis']);
+			$quete_requis = explode(';', $row['quete_requis']);
 			/*$i = 0;
 			$count = count($requis);
 			while($check AND $i < $count)*/

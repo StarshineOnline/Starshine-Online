@@ -13,7 +13,7 @@ require_once('class/map.class.php');
 	$y = $objXY->y;
 	$level = $objXY->level;
 }
-$map = new map($x, $y);
+$map = new map($x, $y, 3, '');
 $arene = $joueur->in_arene();
 if(!empty($arene)) $map->set_arene(true);
 elseif ($joueur->get_option('desactive_atm_all') != 1 &&
@@ -48,7 +48,7 @@ if (isset($atmosphere_type) && isset($G_use_atmosphere) && $G_use_atmosphere) {
 }
 $map->onclick_status = true;
 if(isset($_GET['show_only'])) $map->change_show_only($_GET['show_only']);
-$map->get_monstre($level);
+$map->get_monstre($level, true, $joueur);
 
 $map->set_cache_monstre($joueur->get_option('cache_monstre'));
 $map->set_affiche_royaume($joueur->get_option('affiche_royaume'));
