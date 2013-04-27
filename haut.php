@@ -75,8 +75,6 @@ if((isset($_POST['log']) OR isset($_COOKIE['nom'])) AND !array_key_exists('nom',
 		</script>
 		<?php
 	}
-	else if( $check === false )
-   echo $erreur_login;
 }
 //Déconnexion du joueur
 if (isset($_GET['deco']) AND !isset($_POST['log']))
@@ -90,7 +88,7 @@ if(!isset($root)) $root = '';
 //check_undead_players();
 if (isset($site) && $site)
 {
-	print_head("css:./css/site.css~./css/jquery.lightbox-0.5.css;script:./javascript/jquery/jquery-1.5.1.min.js~./javascript/jquery/jquery-ui-1.8.10.custom.min.js~./javascript/jquery/jquery.lightbox-0.5.min.js~./javascript/jquery/jquery.dataTables.min.js~./javascript/fonction.js~./javascript/site.js;title:StarShine, le jeu qu'il tient ses plannings !");
+	print_head("css:./css/site.css~./css/jquery.lightbox-0.5.css~./css/jquery-ui-1.7.3.custom.css;script:./javascript/jquery/jquery-1.5.1.min.js~./javascript/jquery/jquery-ui-1.8.10.custom.min.js~./javascript/jquery/jquery.lightbox-0.5.min.js~./javascript/jquery/jquery.dataTables.min.js~./javascript/fonction.js~./javascript/site.js;title:StarShine, le jeu qu'il tient ses plannings !");
 }
 else
 {
