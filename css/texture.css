@@ -2422,13 +2422,34 @@
 .tex9598{background:url('../image/texture/tutorial/humains/chateau_coin_hg_mur.png') no-repeat;}
 .tex9599{background:url('../image/texture/tutorial/humains/chateau_droit.png') no-repeat;}
 
-
 .tex19500{background:url('../image/texture/tutorial/humains/chateau_gauche.png') no-repeat;}
 .tex19501{background:url('../image/texture/tutorial/humains/chateau_horiz_pass.png') no-repeat;}
 .tex19502{background:url('../image/texture/tutorial/humains/chateau_horizontal_croisement_haut.png') no-repeat;}
-.tex19503{background:url('../image/texture/tutorial/humains/chateau_horizontal.png') no-repeat;}
+.tex19503{background:url('../image/texture/tutorial/humains/humain_sol_mur_hm.png') no-repeat;}
 .tex19504{background:url('../image/texture/tutorial/humains/chateau_coin_hg_mur_porte.png') no-repeat;}
 
+.tex21530{background:url('../image/texture/tutorial/humains/humain_sol_centre.png') no-repeat;}
+.tex21531{background:url('../image/texture/tutorial/humains/humain_sol_mur_hm.png') no-repeat;}
+.tex21532{background:url('../image/texture/tutorial/humains/humain_sol_mur_coin_hg.png') no-repeat;}
+.tex21533{background:url('../image/texture/tutorial/humains/humain_sol_mur_coin_hd.png') no-repeat;}
+.tex21534{background:url('../image/texture/tutorial/humains/humain_sol_mur_hm_escalier.png') no-repeat;}
+.tex21535{background:url('../image/texture/tutorial/humains/humain_sol_mur_hm_corniche_escalier.png') no-repeat;}
+
+
+.tex6658{background:url('../image/texture/tutorial/humains/mur_chateau_coin_hd.png') no-repeat;}
+.tex6659{background:url('../image/texture/tutorial/humains/mur_chateau_coin_hg.png') no-repeat;}
+.tex6660{background:url('../image/texture/tutorial/humains/mur_chateau_haut.png') no-repeat;}
+.tex6661{background:url('../image/texture/tutorial/humains/mur_chateau_horiz_pass.png') no-repeat;}
+.tex6662{background:url('../image/texture/tutorial/humains/mur_chateau_plein.png') no-repeat;}
+
+.tex8625{background:url('../image/texture/tutorial/humains/mur_chateau_hm.png') no-repeat;}
+.tex8626{background:url('../image/texture/tutorial/humains/humain_mur_coin_hg.png') no-repeat;}
+.tex8627{background:url('../image/texture/tutorial/humains/humain_mur_coin_hd.png') no-repeat;}
+.tex8628{background:url('../image/texture/tutorial/humains/mur_chateau_hm.png') no-repeat;}
+.tex8629{background:url('../image/texture/tutorial/humains/mur_chateau_hm_rouge.png') no-repeat;}
+.tex8630{background:url('../image/texture/tutorial/humains/mur_chateau_haut_rouge.png') no-repeat;}
+.tex8631{background:url('../image/texture/tutorial/humains/mur_chateau_centre_gauche.png') no-repeat;}
+.tex8632{background:url('../image/texture/tutorial/humains/mur_chateau_centre_droit.png') no-repeat;}
 
 .tex6600{background:url('../image/texture/donjon_riviere_verte/mur_eau_basse_buisson_bg.png') no-repeat;}	
 .tex6601{background:url('../image/texture/donjon_riviere_verte/mur_eau_basse_buisson_mgb.png') no-repeat;}	
@@ -2492,12 +2513,6 @@
 .tex6655{background:url('../image/texture/tutorial/orc/mur_tente_ext_orc_hd.png') no-repeat;}
 .tex6656{background:url('../image/texture/tutorial/orc/mur_tente_ext_orc_bm_armurerie.png') no-repeat;}
 .tex6657{background:url('../image/texture/tutorial/orc/mur_tente_ext_orc_bm_shaman.png') no-repeat;}
-
-.tex6658{background:url('../image/texture/tutorial/humains/mur_chateau_coin_hd.png') no-repeat;}
-.tex6659{background:url('../image/texture/tutorial/humains/mur_chateau_coin_hg.png') no-repeat;}
-.tex6660{background:url('../image/texture/tutorial/humains/mur_chateau_haut.png') no-repeat;}
-.tex6661{background:url('../image/texture/tutorial/humains/mur_chateau_horiz_pass.png') no-repeat;}
-.tex6662{background:url('../image/texture/tutorial/humains/mur_chateau_plein.png') no-repeat;}
 
 
 .tex19506{background:url('../image/texture/tutorial/scavenger/scav_sol_mur_milieu.png') no-repeat;}
