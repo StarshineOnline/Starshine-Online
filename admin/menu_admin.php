@@ -78,6 +78,11 @@ else
 	$menu[$i++]['acces'] = 'admin';
 	$acces[] = 'admin';
 
+	$menu[$i]['nom'] = 'Editeur de constructions';
+	$menu[$i]['url'] = 'edit_constr.php';
+	$menu[$i++]['acces'] = 'admin';
+	$acces[] = 'admin';
+
 	$menu[$i]['nom'] = 'Création de quête';
 	$menu[$i]['url'] = 'create_quete.php';
 	$menu[$i++]['acces'] = 'admin';

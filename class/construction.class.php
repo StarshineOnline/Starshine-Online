@@ -95,7 +95,7 @@ class construction extends entitenj_constr
 	* @param date_construction   Date de construction du bâtiment
 	* @param point_victoire      Nombre de points de victoire gagnés lorsque le bâtiment est détruit
 	*/
-	function __construct($id = 0, $id_batiment = 0, $x = 0, $y = 0, $royaume = 0, $hp = 0, $nom = '', $type = '', $rez = '', $rechargement = '', $image = '', $date_construction = '', $point_victoire = '')
+	function __construct($id = 0, $id_batiment = 0, $x = 0, $y = 0, $royaume = 0, $hp = 0, $nom = '', $type = '', $rez = 0, $rechargement = 0, $image = '', $date_construction = 0, $point_victoire = 0)
 	{
 		//Verification nombre et du type d'argument pour construire l'etat adequat.
 		if( func_num_args() == 1 )
