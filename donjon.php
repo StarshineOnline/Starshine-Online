@@ -25,6 +25,7 @@ elseif(is_object($joueur) && $joueur->get_y() > 190) { $map->set_dungeon_layer(t
 $map->get_pnj();
 $map->get_joueur($objXY->race);
 $map->get_monstre($level, true, $joueur);
+$map->get_drapeau();
 $map->get_batiment();
 $map->onclick_status = true;
 

@@ -66,11 +66,15 @@ elseif($joueur->get_pa() >= 30)
 			//On supprime les PA du joueurs
 			$joueur->set_pa($joueur->get_pa() - 30);
 			//Augmentation de la compétence d'architecture
-			$augmentation = augmentation_competence('architecture', $joueur, 1);
-			if ($augmentation[1] == 1)
+			$lim = $batiment->get_bonus('lim_montee');
+			if( !$lim or $joueur->get_architecture() < $lim )
 			{
-				$joueur->set_architecture($augmentation[0]);
-			}
+  			$augmentation = augmentation_competence('architecture', $joueur, 1);
+  			if ($augmentation[1] == 1)
+  			{
+  				$joueur->set_architecture($augmentation[0]);
+  			}
+      }
 			echo '<h6>La construction a été accélérée de '.transform_sec_temp($secondes).'</h6>';
 			echo '<a href="archi_accelere_construction.php?id_construction='.$_GET['id_construction'].'" onclick="return envoiInfo(this.href, \'information\');">Accélérer de nouveau</a>';
 			$joueur->sauver();
