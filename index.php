@@ -162,7 +162,7 @@ N'oubliez pas de reporter les bugs et problèmes, et d'apporter vos suggestions 
 		<div id='creation_box' style='display:none;'>
   		<p id='creat_erreur' style='color:#FF0022; display : none;'>&nbsp;</p>
   		<?php
-  		if( $check === 0 )
+  		if( $check === 0 or $_SESSION['droits'] & joueur::droit_staf )
   		{
   		?>
   		<div style='width:165px;float:left;'>

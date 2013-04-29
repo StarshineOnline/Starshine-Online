@@ -23,9 +23,10 @@ class joueur extends table
 	const droit_concept = 16;  ///< Droit pour la conception.
 	const droit_admin = 32;  ///< Droits pour l'administration.
 	const droit_jouer = 64;  ///< Droit pour jouer (afin de pouvoir supprimer des comptes).
+	const droit_staf = 128;  ///< Droit à faire parti du staf.
 	
 	// Combinaisons
-	const droit_pnj = 25;  ///< Accès aux personnages PNJ
+	const droit_pnj = 128;  ///< Accès aux personnages PNJ
 	
 	//! Constructeur
 	/**
