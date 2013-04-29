@@ -165,7 +165,7 @@ function fin_quete($joueur, $id_quete_joueur, $id_quete)
 			break;
 			//On gagne un objet aléatoire
 			case 'x' :
-				$requete = "SELECT id FROM objet";
+				$requete = "SELECT id FROM objet WHERE type NOT LIKE 'objet_quete'";
 				$req_r = $db->query($requete);
 				$liste = array();
 				while($row_r = $db->read_row($req_r))
@@ -180,6 +180,15 @@ function fin_quete($joueur, $id_quete_joueur, $id_quete)
 					$id_objet = $liste[$random][0];					
 				}
 				$joueur->prend_objet('o'.$id_objet);
+			break;
+			//On gagne un objet précis
+			case 'a' :
+			case 'p' :
+			case 'o' :
+			case 'm' :
+			case 'd' :
+			case 'l' :
+				$joueur->prend_objet($reward_id);
 			break;
 		}
 		$r++;
@@ -249,6 +258,7 @@ function affiche_quetes($fournisseur, $joueur)
 			{
 				/*if($requis[$i] != '' && !in_array($requis[$i], $quete_fini)) $check = false;
 				$i++;*/
+				//echo $requis.'<br/>';
 				if( !$requis ) continue;
 				$val = mb_substr($requis, 1);
 				if($requis[0] == 'q')
