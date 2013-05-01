@@ -65,7 +65,7 @@ while($row = $db->read_assoc($req))
 {
 	if(!array_key_exists($row['actif'], $joueurs))
 	{
-		$requete = "SELECT race FROM perso WHERE nom = '".$row['actif']."'";
+		$requete = "SELECT race FROM perso WHERE nom = '".mysql_escape_string($row['actif'])."'";
 		$req2 = $db->query($requete);
 		$row2 = $db->read_row($req2);
 		$joueurs[$row['actif']] = $row2[0];
