@@ -101,6 +101,8 @@ if (file_exists('root.php'))
 			$y = $inf;
 			while($row = $db->read_array($req))
 			{
+        if( $row['tot'] > $G_nb_joueur_groupe + 1 )
+          continue;
 				if($z < 25)
 				{
 						$nom = $row['groupe_nom'];
