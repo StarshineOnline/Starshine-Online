@@ -289,7 +289,8 @@ class texte
       $debut = '';
       $fin = '';
     }
-    return preg_replace('`\[ID:([0-9]*)\](.*)\[/ID:\g1\]`i', $debut.'<a href="'.$this->url.'&amp;reponse=\\1" onclick="return envoiInfo(this.href, \'information\')">\\2</a>'.$fin, $texte);
+    $texte = preg_replace('`\[/id:([0-9,]+)\]`i', '[/£id:\\1]', $texte);
+    return preg_replace('`\[id:([0-9]*)\]([^£]*)\[/£id:\g1\]`i', $debut.'<a href="'.$this->url.'&amp;reponse=\\1" onclick="return envoiInfo(this.href, \'information\')">\\2</a>'.$fin, $texte);
   }
   
   /// Fonction formattant les balises permettant de naviguet entre les différentes parties d'un textes.
