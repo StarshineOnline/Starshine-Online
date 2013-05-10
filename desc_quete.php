@@ -139,12 +139,12 @@ echo '
 				break;
 				case 'x' :
 					echo '<li>Un objet au hasard</li>';
+				break;
         case 'p':
 					$requete = "SELECT nom FROM armure WHERE id = ".$reward_id_objet;
 					$req_r = $db->query($requete);
 					$row_r = $db->read_assoc($req_r);
 					echo '<li>'.$row_r['nom'].' X '.$reward_nb.'</li>';
-				break;
 			}
 			$r++;
 		}
