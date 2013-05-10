@@ -18,7 +18,7 @@ class comp_jeu extends comp
 	protected $pa;   ///< Coût en PA de la compétence
 	
 	/// Renvoie le coût de la comptétence
-	function get_pa()
+	function get_pa(&$joueur = null)
 	{
 		return $this->pa;
 	}
@@ -119,6 +119,8 @@ class comp_jeu extends comp
         return new comp_invocation_pet($row);
       case 'sabotage':
         return new comp_sabotage($row);
+      case 'longue_portee':
+        return new comp_longue_portee($row);
       default:
         return new comp_jeu($row);
       }
@@ -267,6 +269,17 @@ class comp_esprit_libre extends comp_jeu
 		echo '<a href="competence_jeu.php?ID='.$this->get_id().'" onclick="return envoiInfo(this.href, \'information\')">Utilisez a nouveau cette compétence</a>';
 		return $action;
   }
+}
+
+class comp_longue_portee extends comp_jeu
+{
+	function get_pa(&$perso)
+	{
+		if ($perso->get_inventaire_partie('jambe') === 'p145')
+			return $this->pa -1;	
+		else
+			return $this->pa;
+	}
 }
 
 class comp_invocation_pet extends comp_jeu

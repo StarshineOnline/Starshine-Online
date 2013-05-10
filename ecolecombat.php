@@ -36,7 +36,7 @@ if ($joueur->get_race() != $R->get_race() &&
 $princ = $interf->creer_princ_droit('');
 
 ?>
-<fieldset>
+
 <legend><?php echo '<a href="ville.php" onclick="return envoiInfo(this.href, \'centre\')">';?><?php echo $R->get_nom();?></a> > <?php echo '<a href="ecolecombat.php" onclick="return envoiInfo(this.href, \'carte\')">';?> Ecole de combat </a></legend>
 <?php include_once(root.'ville_bas.php');?>
 <?php
@@ -257,5 +257,5 @@ if($W_row['type'] == 1)
 			<?php
 		}
 }
-echo "</fieldset>";
+
 ?>

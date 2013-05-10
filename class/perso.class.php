@@ -1452,6 +1452,8 @@ class perso extends entite
 					$row = $db->read_array($req);
 					$conditions[0]['attribut']	= 'force';
 					$conditions[0]['valeur']	= $row['forcex'];
+					$conditions[1]['attribut']	= 'puissance';
+					$conditions[1]['valeur']	= $row['puissance'];
 					$type = $row['type'];
 				break;
 				case 'd' :
@@ -1848,6 +1850,19 @@ class perso extends entite
 				break;
 			case 25 :
 				$this->add_effet_permanent('defenseur', new anneau_resistance($effet, $item->nom));
+				break;
+			case 26 :
+				$this->add_bonus_permanents('dexterite', -1);
+				$this->add_effet_permanent('attaquant', new cape_troll($effet, $item->nom));
+				break;
+			case 27 :
+				$this->add_effet_permanent('defenseur', new bouclier_pensee($effet, $item->nom));
+				break;
+			case 28 :
+				$this->add_effet_permanent('attaquant', new arc_tung($effet, $item->nom));
+				break;
+			case 29 :
+				$this->add_bonus_permanents('esquive', $effet*$this->get_esquive()/100);
 				break;
 			default:
 				break;

@@ -420,7 +420,10 @@ class sort_vie extends sort_jeu
         if($cible->get_hp() < floor($cible->get_hp_maximum()))
         {
           $action = true;
-          $de_degat_sort = de_soin($perso->get_comp($this->get_carac_assoc()), $this->get_effet());
+          $effet = $this->get_effet();
+          if ($perso->get_inventaire_partie('main_droite') === 'a85') 
+			$effet+=2;
+          $de_degat_sort = de_soin($perso->get_comp($this->get_carac_assoc()), $effet);
           $i = 0;
           $de_degat_sort2 = array();
           while($i < count($de_degat_sort))

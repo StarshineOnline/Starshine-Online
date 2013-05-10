@@ -18,7 +18,7 @@ if (isset($_GET['ID']))
 
 	$row = $db->read_array($req);
 	if(array_key_exists('groupe', $_GET) AND $_GET['groupe'] == 'yes') $groupe = true; else $groupe = false;
-	$sortpa = $comp->get_pa();//round($row['pa']);
+	$sortpa = $comp->get_pa($joueur);//round($row['pa']);
 	$sortmp = $comp->get_mp();//round($row['mp']);
 	$action = false;
 	$cibles = array($joueur->get_id());
