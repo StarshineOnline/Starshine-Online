@@ -51,7 +51,7 @@ if($W_row['type'] == 1)
 				foreach($joueurs as $j)
 				{
 					//Inscription dans son journal de l'amende
-					$requete = "INSERT INTO journal VALUES('', ".$j['ID'].", 'r_amende', '".$j['nom']."', '".$joueur->get_nom()."', NOW(), '".$star_joueur."', 0, 0, 0)";
+					$requete = "INSERT INTO journal VALUES('', '".$j['ID']."', 'r_amende', '".$j['nom']."', '".$joueur->get_nom()."', NOW(), '".$star_joueur."', 0, 0, 0)";
 					$db->query($requete);
 				}
 			}
