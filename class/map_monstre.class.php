@@ -353,7 +353,7 @@ class map_monstre extends entnj_incarn
 			break;
 			
 		case 207: //On refait pop le voleur marchant pour le tuto
-			$requete = "INSERT INTO map_monstre VALUES(NULL,207,241,170,25,"
+			$requete = "INSERT INTO map_monstre VALUES(NULL,207,259,178,25,"
           .(time() + 31536000).")";
 			$db->query($requete);
 			break;
