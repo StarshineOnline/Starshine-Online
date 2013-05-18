@@ -133,7 +133,7 @@ if ($W_row['type'] != 1)
 		<?php include_once(root.'ville_bas.php');?>
 
 	<div class="ville_test">
-	Liste des villes possible(s) pour téléportation :<br />
+	Liste des villes possibles pour téléportation :<br />
 	<ul>
 	<?php
 	//Séléction de tous les téléport disponibles
@@ -179,7 +179,7 @@ if ($W_row['type'] != 1)
 	}
 	?>
 	</ul>
-	Liste des bourgs possible pour téléportation :<br />
+	Liste des bourgs possibles pour téléportation :<br />
 	<ul>
 	<?php
 	if($R->get_diplo($joueur->get_race()) == 127)
@@ -192,6 +192,7 @@ if ($W_row['type'] != 1)
 		// Bastien : Si coût = 0 (pas NULL), on saute l'entrée
         if ($row['cout'] === '0') continue;
 		    $distance = calcul_distance(convert_in_pos($row['x'], $row['y']), $joueur->get_pos());
+		    if ($distance == 0) continue;
 		    $cout =  $distance * 7;
 		    $cout = ceil(($cout * $R->get_taxe_diplo($joueur->get_race()) / 100) + $cout);
 		    echo '<li><a href="teleport.php?poscase='.$W_case.'&amp;id_bourg='.$row['id'].'" onclick="if(confirm(\'Voulez vous vous téléporter sur ce bourg - '.$cout.' Stars et 5 PA)\')) return envoiInfo(this.href, \'centre\'); else return false;">Téléportation sur le bourg (X : '.$row['x'].' / Y : '.$row['y'].')</a> ('.$cout.' Stars et 5 PA)</li>';
