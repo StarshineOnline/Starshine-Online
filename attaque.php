@@ -25,6 +25,8 @@ $type = $_GET['type'];
 switch($type)
 {
 	case 'joueur' :
+    if ($_SESSION['ID'] == $_GET['id_joueur'])
+      security_block(URL_MANIPULATION, 'Auto-attaque prohibée');
 		if(!$check_pet)
 		{
 			$joueur = new perso($_SESSION['ID']);
