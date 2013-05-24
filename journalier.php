@@ -91,9 +91,9 @@ $sql_insert = "select m.id, f.x, f.y, m.hp, $mort ".
 $db->query("insert into map_monstre(type,x,y,hp,mort_naturelle) $sql_insert");
 
 //Sélection des monstres
-//$requete = "SELECT * FROM monstre ORDER BY level";
+$requete = "SELECT * FROM monstre ORDER BY level";
 //$requete = "SELECT * FROM monstre WHERE id > 140 ORDER BY level";
-$requete = "SELECT * FROM monstre WHERE id = 210 ORDER BY level";
+//$requete = "SELECT * FROM monstre WHERE id = 210 ORDER BY level";
 $req = $db->query($requete);
 $check_virgule = false;
 $total_monstre = 0;
