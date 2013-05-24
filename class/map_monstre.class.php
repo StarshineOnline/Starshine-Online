@@ -392,7 +392,6 @@ class map_monstre extends entnj_incarn
     // Monstres tutoriels
     case 208:
     case 209:
-    case 210:
       global $db;
       $requete = 'SELECT COUNT(*) AS tot FROM map_monstre WHERE x='.$this->get_x().' AND y='.$this->get_x();
       $res = $db->query($requete);
