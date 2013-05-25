@@ -607,9 +607,11 @@ class pet extends map_monstre
 	}
 	// @}
 	/// Renvoie le coefficient pour modifier les compétences
-  function get_coeff_comp($perso)
+  function get_coeff_comp(&$perso, &$def)
   {
-    return 1 + ($perso->get_dressage()-400)/1000;
+    if( $def->get_level() == 0 )
+      return 1 + ($perso->get_dressage()-400)/1000;
+    return 1;
   }
 }
 ?>

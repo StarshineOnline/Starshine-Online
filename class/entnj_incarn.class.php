@@ -89,7 +89,7 @@ abstract class entnj_incarn extends placable
 	/// Renvoie le coefficient pour modifier les caractéristique
   function get_coeff_carac() { return 1; }
 	/// Renvoie le coefficient pour modifier les compétences
-  function get_coeff_comp($perso) { return 1; }
+  function get_coeff_comp(&$perso, &$def) { return 1; }
   /// Renvoie le bonus de PM dû à l'armure
   function get_bonus_pm() { return 0; }
   /// Renvoie le bonus de PP dû à l'armure

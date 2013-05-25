@@ -157,5 +157,5 @@ class placement extends entitenj_constr
 	/// Renvoie le coefficient pour modifier les caractéristique
   function get_coeff_carac() { return 0.5 + 0.5 * $this->get_temps_ecoule() / $this->get_temps_total(); }
 	/// Renvoie le coefficient pour modifier les compétences
-  function get_coeff_comp($perso) { return 0.5 + 0.5 * $this->get_temps_ecoule() / $this->get_temps_total(); }
+  function get_coeff_comp(&$perso, &$def) { return 0.5 + 0.5 * $this->get_temps_ecoule() / $this->get_temps_total(); }
 }
