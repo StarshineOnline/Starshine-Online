@@ -94,7 +94,7 @@ function verif_action($type_cible, $joueur, $mode)
 						}
 						if(verif_quete($liste_quete[$i]['id_quete'], $i, $joueur))
 						{
-							fin_quete($joueur, $i, $liste_quete[$i]['id_quete']);
+							fin_quete($joueur, $i, $liste_quete[$i]['id_quete'], $liste_quete);
 							$count--;
 						}
 						else
@@ -114,13 +114,13 @@ function verif_action($type_cible, $joueur, $mode)
 	}
 }
 
-function fin_quete($joueur, $id_quete_joueur, $id_quete)
+function fin_quete($joueur, $id_quete_joueur, $id_quete, &$liste_quete)
 {
 	global $db;
 	$requete = "SELECT id, nom, objectif, honneur, star, exp, reward, mode FROM quete WHERE id = ".$id_quete;
 	$req = $db->query($requete);
 	$row = $db->read_array($req);
-	$liste_quete = $joueur->get_liste_quete();
+	//$liste_quete = $joueur->get_liste_quete();
 	//Validation de la quête et mis à jour des quêtes du perso
 	array_splice($liste_quete, $id_quete_joueur, 1);
 	$joueur->set_quete(serialize($liste_quete));
