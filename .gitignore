@@ -8,5 +8,10 @@ mysql.sh
 sql/dumpstatic.sql
 sql/j_stats.sql
 sql/record_stats.sh
+<<<<<<< HEAD
 !admin/image
 admin/images/carte.png
+=======
+
+.DS_Store
+>>>>>>> un test

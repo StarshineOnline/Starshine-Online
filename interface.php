@@ -79,6 +79,19 @@ $joueur->check_perso();
 
 $_SESSION['position'] = convert_in_pos($joueur->get_x(), $joueur->get_y());
 ?>
+<div id='menu_top'>
+	<div style='width:1000px;margin:auto;'>
+	<span class='menu' onclick="affichePopUp('diplomatie.php');">Diplomatie</span>
+	<span class='menu' onclick="affichePopUp('classement.php');">Classement</span>
+	<span class='menu' onclick="affichePopUp('stats2.php?graph=carte_royaume');">Statistiques</span>
+	<span class='menu' onclick="affichePopUp('message_accueil.php?affiche=all');">Message d'Accueil</span>
+	<span class='menu' onclick="affichePopUp('option.php');">Options</span><span class='menu' onclick='showSoundPanel()'>Son</span>
+	<span class='menu' onclick="affichePopUp('liste_monstre.php');">Bestiaire</span><span class='menu' onclick="affichePopUp('royaume.php');">Carte</span>
+<span class='menu'><a href="http://forum.starshine-online.com">Forum</a></span><span class='menu'><a href="http://wiki.starshine-online.com/">Wiki</a></span>
+<span class='menu'><a href="http://bug.starshine-online.com/">Signaler un bug</a></span><span class='menu' onclick="affichePopUp('acces_chat.php');">Tchat</span>
+<span class='menu' onclick="affichePopUp('don.php');">Faire un don</span>
+	</div>
+</div>
 
 <div id="conteneur_back">
 <div id="conteneur">
@@ -99,24 +112,15 @@ $_SESSION['position'] = convert_in_pos($joueur->get_x(), $joueur->get_y());
 		?>
 		
 	</div>
-	<div id='menu'>
-		<?php
+
+		<?php/*
 $arene = $joueur->in_arene();
 $time = time();
 if ($arene) $time += $arene->decal;
 echo '<div id="menu_date"><img src="image/interface/'.moment_jour().
   '.png" alt="'.moment_jour().'" title="'.moment_jour().' - '.date_sso($time).
   '" />'.moment_jour();?>
-	</div>
 
-	<input type="hidden" id="menu_encours" value="lejeu" />
-	<div id='menu_details'>
-		<div id='lejeu_menu' style='display:none;'><span class='menu' onclick="affichePopUp('diplomatie.php');">Diplomatie</span><span class='menu' onclick="affichePopUp('classement.php');">Classement</span><span class='menu' onclick="affichePopUp('stats2.php?graph=carte_royaume');">Statistiques</span><span class='menu' onclick="affichePopUp('message_accueil.php?affiche=all');">Message d'Accueil</span><span class='menu' onclick="affichePopUp('option.php');">Options</span><span class='menu' onclick='showSoundPanel()'>Son</span></div>
-		<div id='starshine_menu' style='display:none;'><span class='menu' onclick="affichePopUp('liste_monstre.php');">Bestiaire</span><span class='menu' onclick="affichePopUp('background.php');">Background</span><span class='menu' onclick="affichePopUp('royaume.php');">Carte</span>
-		<?php //echo "<span class='menu' onclick=\"affichePopUp('beta_test.php');\">Beta</span>"; ?>
-		</div>
-		<div id='communaute_menu' style='display:none;'><span class='menu'><a href="http://forum.starshine-online.com">Forum</a></span><span class='menu'><a href="http://wiki.starshine-online.com/">Wiki</a></span><span class='menu'><a href="http://bug.starshine-online.com/">Signaler un bug</a></span><span class='menu' onclick="affichePopUp('acces_chat.php');">Tchat</span><span class='menu' onclick="affichePopUp('don.php');">Faire un don</span><span class="menu" style="margin : 0; padding : 0;"><a class="FlattrButton" style="display:none;" rev="flattr;button:compact;" href="http://www.starshine-online.com"></a></span></div>
-	</div>
 	<div id='menu_deco'>
 	<?php
     if( (array_key_exists('nbr_perso', $_SESSION) && $_SESSION['nbr_perso'] > 1) OR (array_key_exists('droits', $_SESSION) && ($_SESSION['droits'] & joueur::droit_pnj)) )
@@ -125,14 +129,16 @@ echo '<div id="menu_date"><img src="image/interface/'.moment_jour().
 		<span class="changer" title='Changer de personnage' onclick="affichePopUp('changer_perso.php');">&nbsp;</span>
 	<?php
     }
+    		<span class="fermer" title='Se déconnecter' onclick="if(confirm('Voulez vous déconnecter ?')) { document.location.href='index.php?deco=ok'; };">&nbsp;</span><span class="show_debug_button" id="debug_log_button" title='Voir le debug' onclick="show_debug_log()"><img src="image/interface/debug.png" onclick="show_debug_log()"/></span>
+	</div>*/
+
   ?>
-		<span class="fermer" title='Se déconnecter' onclick="if(confirm('Voulez vous déconnecter ?')) { document.location.href='index.php?deco=ok'; };">&nbsp;</span><span class="show_debug_button" id="debug_log_button" title='Voir le debug' onclick="show_debug_log()"><img src="image/interface/debug.png" onclick="show_debug_log()"/></span>
-	</div>
 </div>
 <div id='contenu_back'>
 	<div id="contenu_jeu">
 		<div id="centre">
 		<?php
+		
 		//Génération de la carte apparaissant au centre.
 		//Si coordonées supérieur à 100 alors c'est un donjon
 		if(is_donjon($joueur->get_x(), $joueur->get_y()))

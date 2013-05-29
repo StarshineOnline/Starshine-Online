@@ -2,6 +2,8 @@
 if (file_exists('root.php'))
   include_once('root.php');
 
+include_once(root.'option_map.php');
+
 require_once('class/map.class.php');
 {//-- Initialisation
 	$MAP = Array();

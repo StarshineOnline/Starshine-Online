@@ -61,8 +61,9 @@ if($W_distance < 4)
   }
 
 	?>
-	<fieldset>
-	<legend>Informations Case - X : <?php echo $coord_x; ?> | Y : <?php echo $coord_y; ?><a href="carte_perso_affiche.php" onclick="affichePopUp(this.href); return false;"> <img src="image/icone/oujesuis.png" alt="Où je suis ?" title="Où je suis ?" style="vertical-align : middle;height:20px;" /></a> </legend>
+	
+	<h2>Informations Case - X : <?php echo $coord_x; ?> | Y : <?php echo $coord_y; ?><a href="carte_perso_affiche.php" onclick="affichePopUp(this.href); return false;"> <img src="image/icone/oujesuis.png" alt="Où je suis ?" title="Où je suis ?" style="vertical-align : middle;height:20px;" /></a> </h2>
+	<div class='windows_right'>
 	<div id='info_case'>
 	<?php
 	$R = new royaume($case->get_royaume());
@@ -348,7 +349,7 @@ if($W_distance < 4)
 		}
 		echo '</ul>';
 	}
-	echo "</div></fieldset>";
+	echo "</div></div>";
 }
 print_tooltipify();
 check_son_ambiance();

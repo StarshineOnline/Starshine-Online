@@ -221,13 +221,6 @@ if (count($invitation) > 0)
 }
 }
 echo "</div>
-		<div id='perso_menu'>
-			<ul>
-				<li id='lejeu' class='menu' onclick=\"menu_change('lejeu');\">Le jeu</li>
-				<li id='starshine' class='menu' onclick=\"menu_change('starshine');\">Starshine</li>
-				<li id='communaute' class='menu' onclick=\"menu_change('communaute');\">Communauté</li>
-			</ul>
-			
-		</div>";
+		";
 
 ?>
