@@ -14,7 +14,7 @@ class interf_onglets extends interf_bal_cont
    * @param  $id        id de la balise.
    * @param  $class     classe de la balise.
    */
-  function __construct($id='messagerie_liste', $class=false)
+  function __construct($id='', $class=false)
   {
     interf_bal_cont::__construct('div', $id, $class);
     $this->haut = new interf_menu(false, 'messagerie_onglet', '');

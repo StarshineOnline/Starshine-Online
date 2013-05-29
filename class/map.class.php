@@ -1,4 +1,4 @@
-<?php // -*- mode: php; tab-width: 2 -*-
+<?php 
 if (file_exists('../root.php'))
   include_once('../root.php');
 
@@ -646,6 +646,7 @@ class map
 				$this->map[$objPNJ->x][$objPNJ->y]["PNJ"][$pnj]["image"] = $image;
 			}
 		}
+		
 	}
 
 	function get_joueur($race = 'neutre', $all = false, $race_only = false)
