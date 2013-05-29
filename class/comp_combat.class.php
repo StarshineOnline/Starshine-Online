@@ -163,11 +163,10 @@ class comp_combat extends comp
       case 'botte_tigre':
       case 'botte_ours':
         return new comp_combat_effet($row);
-      case 'fleche_sable':
-        return new comp_combat_sable($row);
       case 'fleche_rapide': // à revoir
         return new comp_combat_degat_etat($row, 'v-fleche_rapide', 1);
-      case 'fleche_debilitante': // à revoir
+      case 'fleche_debilitante':
+      case 'fleche_sable':
         return new comp_combat_degat_etat($row);
       case 'coup_bouclier': // à revoir
         return new comp_combat_coup_bouclier($row);

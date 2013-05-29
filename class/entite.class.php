@@ -894,6 +894,8 @@ class entite extends placable
 		if($this->is_buff('debuff_desespoir')) $debuff_desespoir = 1 + (($this->get_buff('debuff_desespoir', 'effet')) / 100); else 	$debuff_desespoir = 1;
 		if($this->etat['posture']['type'] == 'posture_glace') $aura_glace = 1 + (($this->etat['posture']['effet']) / 100); else $aura_glace = 1;
 		$this->potentiel_parer_magique = round($this->get_volonte() * $pm * $aura_glace * $buff_batiment_barriere / $debuff_desespoir);
+  	if(array_key_exists('fleche_debilitante', $this->etat))
+      $this->potentiel_parer_magique /= 1 + ($this->etat['fleche_debilitante']['effet'] / 100);
     if(array_key_exists('glace', $this->etat)) $this->potentiel_parer_magique /= 1.5;
 
 		return $this->potentiel_parer_magique;

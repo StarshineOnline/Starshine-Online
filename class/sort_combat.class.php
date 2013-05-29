@@ -382,7 +382,10 @@ class sort_combat extends sort
   		$log_combat .= '!';
     	//Les dégâts des critiques sont diminués par la puissance
     	$puissance = 1 + ($passif->get_puissance() * $passif->get_puissance() / 1000);
-    	$degat *= 2;
+      if(array_key_exists('buff_furie_magique', $actif->buff))
+    	 $degat *= 2 + $actif->get_buff('buff_furie_magique', 'effet2') / 100;
+      else
+    	 $degat *= 2;
     	$degat_avant = $degat;
     	$degat = round($degat / $puissance);
     	echo '&nbsp;&nbsp;<span class="small">(Réduction de '.($degat_avant - $degat).' dégâts critique par la puissance)</span><br />';
