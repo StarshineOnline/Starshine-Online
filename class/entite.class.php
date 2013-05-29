@@ -792,7 +792,7 @@ class entite extends placable
 		if(array_key_exists('blocage', $p_e)) $enchantement_blocage = ($p_e['blocage']['effet']); else $enchantement_blocage = 0;
 		if($this->is_buff('buff_bouclier_sacre')) $buff_blocage = 1 + ($this->get_buff('buff_bouclier_sacre', 'effet') / 100); else $buff_blocage = 1;
 		if(array_key_exists('benediction', $this->etat)) $buff_bene_blocage = 1 + (($this->etat['benediction']['effet'] * $G_buff['bene_bouclier']) / 100); else $buff_bene_blocage = 1;
-  	if(array_key_exists('botte_chien', $this->etat)) $buff_blocage *= 1 + $this->etat['botte_chien']['effet'] / 100;
+  	if(array_key_exists('botte_blocage', $this->etat)) $buff_blocage *= 1 + $this->etat['botte_blocage']['effet'] / 100;
     $this->potentiel_bloquer = floor(($this->get_blocage() + $enchantement_blocage ) * (pow($this->get_dexterite(), 1.5) / 20) * $buff_bene_blocage * $buff_blocage);
 		return $this->potentiel_bloquer;
 	}

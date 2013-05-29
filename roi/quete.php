@@ -59,12 +59,18 @@ elseif($_GET['action'] == 'voir')
 			$qrequis = explode(';', $row['quete_requis']);
 			foreach($qrequis as $qid)
 			{
-				$requete = "SELECT nom FROM quete WHERE id = ".$qid;
-				$qreq = $db->query($requete);
-				$qrow = $db->read_assoc($qreq);
-				?>
-			<li>Avoir fini la quête : <?php echo $qrow['nom']; ?></li>
-				<?php
+        $val = mb_substr($qid, 1);
+        switch($qid[0])
+        {
+        case 'q':
+  				$requete = "SELECT nom FROM quete WHERE id = ".$qid;
+  				$qreq = $db->query($requete);
+  				$qrow = $db->read_assoc($qreq);
+  				?>
+  			<li>Avoir fini la quête : <?php echo $qrow['nom']; ?></li>
+  				<?php
+  				break;
+        }
 			}
 		}
 		?>

@@ -90,6 +90,7 @@ body { margin:0; padding:0; background:#7e909c url(../image/v2/bg_site.png) repe
 .buff_nondispo { position:relative; float:left; height:19px; width:16px; padding:0; margin:0 2px; background:transparent url(../image/buff/nobuff.png) top no-repeat; }
 .buff_duree_restante { position:absolute; bottom:0; left:0; }
 #joueur_groupe { width:300px; float:left; background:transparent url(../image/fond_groupe.png) center; margin-left:30px; height:83px; margin-top:4px; }
+#joueur_groupe_container { overflow: auto; width: 320px; height: 83px; }
 #joueur_groupe_bouton { width:35px; float:left; text-align : center;}
 #joueur_groupe ul { width:265px; float:left; }
 #mail_groupe { cursor:pointer; width:32px; height:32px; background:transparent url(../image/message.png) center no-repeat; margin : auto;}

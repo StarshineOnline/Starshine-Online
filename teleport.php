@@ -41,6 +41,8 @@ if ($W_row['type'] != 1)
 	$W_row_bat = $db->read_assoc($W_req_bat);
 	if ($W_row_bat && ($W_row_bat['type'] == 'bourg' || $W_row_bat['type'] == 'fort'))
 		$batiment_ok = true;
+		
+	
 }
 
 	if(array_key_exists('id', $_GET))
@@ -131,7 +133,7 @@ if ($W_row['type'] != 1)
 		<?php include_once(root.'ville_bas.php');?>
 
 	<div class="ville_test">
-	Liste des villes possible pour téléportation :<br />
+	Liste des villes possibles pour téléportation :<br />
 	<ul>
 	<?php
 	//Séléction de tous les téléport disponibles
@@ -141,15 +143,6 @@ if ($W_row['type'] != 1)
 	{
 		// Bastien : Si coût = 0 (pas NULL), on saute l'entrée
 		if ($row['cout'] === '0') continue;
-		if($row['cout'] > 0)
-		{
-			$cout = $row['cout'];
-			$row_diplo[0] = 127;
-			$row_race['capitale'] = 'Ville Neutre';
-			$row_race['race'] = 'neutre';
-		}
-		else
-		{
 			$coords_roy = convert_in_pos($row['posx'], $row['posy']);
 			//Récupération du royaume du téléport
 			$requete_roy = 'SELECT * FROM map WHERE x = '.$row['posx'].' and y = '.$row['posy'];
@@ -159,6 +152,7 @@ if ($W_row['type'] != 1)
 			$requete_race = 'SELECT * FROM royaume WHERE ID = '.$row_roy['royaume'];
 			$req_race = $db->query($requete_race);
 			$row_race = $db->read_array($req_race);
+			
 			if($row_race['race'] != '')
 			{
 				//Sélection de la diplomatie
@@ -173,7 +167,6 @@ if ($W_row['type'] != 1)
 			{
 				$row_diplo[0] = 8;
 			}
-		}
 		//Si en paix
 		if(($row_diplo[0] <= 3) OR $row_diplo[0] == 127 AND $distance > 2)
 		{
@@ -186,7 +179,7 @@ if ($W_row['type'] != 1)
 	}
 	?>
 	</ul>
-	Liste des bourgs possible pour téléportation :<br />
+	Liste des bourgs possibles pour téléportation :<br />
 	<ul>
 	<?php
 	if($R->get_diplo($joueur->get_race()) == 127)
@@ -196,7 +189,10 @@ if ($W_row['type'] != 1)
 	    $req = $db->query($requete);
 	    while($row = $db->read_array($req))
 	    {
+		// Bastien : Si coût = 0 (pas NULL), on saute l'entrée
+        if ($row['cout'] === '0') continue;
 		    $distance = calcul_distance(convert_in_pos($row['x'], $row['y']), $joueur->get_pos());
+		    if ($distance == 0) continue;
 		    $cout =  $distance * 7;
 		    $cout = ceil(($cout * $R->get_taxe_diplo($joueur->get_race()) / 100) + $cout);
 		    echo '<li><a href="teleport.php?poscase='.$W_case.'&amp;id_bourg='.$row['id'].'" onclick="if(confirm(\'Voulez vous vous téléporter sur ce bourg - '.$cout.' Stars et 5 PA)\')) return envoiInfo(this.href, \'centre\'); else return false;">Téléportation sur le bourg (X : '.$row['x'].' / Y : '.$row['y'].')</a> ('.$cout.' Stars et 5 PA)</li>';

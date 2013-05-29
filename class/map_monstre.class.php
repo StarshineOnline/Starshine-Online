@@ -347,13 +347,13 @@ class map_monstre extends entnj_incarn
 		
 		
 		case 204: //On refait pop le nain endetté pour le tuto
-			$requete = "INSERT INTO map_monstre VALUES(NULL,204,256,169,25,"
+			$requete = "INSERT INTO map_monstre VALUES(NULL,204,244,184,25,"
           .(time() + 31536000).")";
 			$db->query($requete);
 			break;
 			
 		case 207: //On refait pop le voleur marchant pour le tuto
-			$requete = "INSERT INTO map_monstre VALUES(NULL,207,241,170,25,"
+			$requete = "INSERT INTO map_monstre VALUES(NULL,207,259,178,25,"
           .(time() + 31536000).")";
 			$db->query($requete);
 			break;
@@ -392,7 +392,6 @@ class map_monstre extends entnj_incarn
     // Monstres tutoriels
     case 208:
     case 209:
-    case 210:
       global $db;
       $requete = 'SELECT COUNT(*) AS tot FROM map_monstre WHERE x='.$this->get_x().' AND y='.$this->get_x();
       $res = $db->query($requete);

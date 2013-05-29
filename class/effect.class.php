@@ -1027,6 +1027,26 @@ class carapace_incisive extends effect
   }
 }
 
+class arc_tung extends effect
+{
+	var $effet;
+
+	function __construct($aEffet, $aNom = null) {
+    if ($aNom == null)
+      $aNom = 'arc_tung';
+		parent::__construct($aNom);
+    $this->effet = $aEffet;
+	}
+	
+	function inflige_degats(&$actif, &$passif, $degats) {
+		$degat = ceil(-0.2 * $degats);
+		echo $degat;
+		$actif->add_hp($degat);
+		$this->hit('L\'arc Tung de '.$actif->get_nom().' lui fait perdre des points de vie !');	
+		return $degats;
+  }
+}
+
 class mirroir_eclatant extends effect
 {
 	var $effet;
@@ -1076,6 +1096,42 @@ class anneau_resistance extends effect
   function calcul_degats_magiques(&$actif, &$passif, $degats, $type) {
     return $this->calcul_degats($actif, $passif, $degats);
   }
+}
+
+class cape_troll extends effect
+{
+	var $effet;
+	
+		function __construct($aEffet, $aNom = null) {
+    if ($aNom == null)
+      $aNom = 'capte_troll';
+		parent::__construct($aNom);
+    $this->effet = $aEffet;
+	}
+	
+	function calcul_mult_critique(&$actif, &$passif, $chance)
+	{
+		return ceil($chance*(1-$this->effet/100)); 
+	}
+}
+
+/**
+ * Bouclier de pensée
+ */
+class bouclier_pensee extends effect
+{
+	var $effet;
+
+	function __construct($aEffet, $aNom) {
+    if ($aNom == null)
+      $aNom = 'bouclier_pensee';
+		parent::__construct($aNom);
+    $this->effet = $aEffet;
+  }
+
+	function calcul_bloquage_reduction(&$actif, &$passif, $reduction) {
+		return ceil($passif->get_volonte()/2);
+	}
 }
 
 ?>

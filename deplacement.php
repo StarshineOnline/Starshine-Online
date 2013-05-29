@@ -158,7 +158,7 @@ if (isset($_GET['deplacement']))
 		}
 		if ($joueur->get_classe_id() == 2)
 		{
-			if ((($case->x == 244) AND ($case->y == 169 )) AND ($joueur->get_tuto() == 1) )
+			if ((($case->x == 241) AND ($case->y == 171 )) AND ($joueur->get_tuto() == 1) )
 			{
 				$joueur->set_tuto($joueur->get_tuto()+1);
 				?>
@@ -167,7 +167,7 @@ if (isset($_GET['deplacement']))
 				</script>
 				<?php
 			}
-			if ((($case->x == 241) AND ($case->y == 165 )) AND ($joueur->get_tuto() == 2) )
+			if ((($case->x == 242) AND ($case->y == 168 )) AND ($joueur->get_tuto() == 2) )
 			{
 				$joueur->set_tuto($joueur->get_tuto()+1);
 			}

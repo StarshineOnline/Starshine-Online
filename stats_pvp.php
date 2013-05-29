@@ -65,16 +65,16 @@ while($row = $db->read_assoc($req))
 {
 	if(!array_key_exists($row['actif'], $joueurs))
 	{
-		$requete = "SELECT race FROM perso WHERE nom = '".$row['actif']."'";
+		$requete = "SELECT race FROM perso WHERE nom = '".mysql_escape_string($row['actif'])."'";
 		$req2 = $db->query($requete);
 		$row2 = $db->read_row($req2);
 		$joueurs[$row['actif']] = $row2[0];
 	}
 	if(!array_key_exists($row['passif'], $joueurs))
 	{
-		$requete = "SELECT race FROM perso WHERE nom = '".$row['passif']."'";
-		$req2 = $db->query($requete);
-		$row2 = $db->read_row($req2);
+		$requete = "SELECT race FROM perso WHERE nom = ?";
+		$req2 = $db->param_query($requete, array($row['passif']), 's');
+		$row2 = $db->stmt_read_array($req2);
 		$joueurs[$row['passif']] = $row2[0];
 	}
 	if($joueurs[$row['actif']] != '' AND $joueurs[$row['passif']] != '')

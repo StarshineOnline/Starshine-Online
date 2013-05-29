@@ -75,7 +75,7 @@ if($W_distance <= 3)
 	$req_bp = $db->query($requete);
 	if($db->num_rows > 0)
 	{
-		echo '<h4><span class="titre_info">Batîments en construction à portée</span></h4>';
+		echo '<h4><span class="titre_info">Bâtiments en construction à portée</span></h4>';
 		echo '<ul>';
 		while($row_bp = $db->read_assoc($req_bp))
 		{
@@ -87,7 +87,7 @@ if($W_distance <= 3)
 		}
 		echo '</ul>';
 	}
-	$requete = 'SELECT map.x as x, map.y as y, nom FROM map LEFT JOIN royaume ON map.royaume = royaume.id WHERE map.x >= '.$x_min.' AND map.x <= '.$x_max.' AND map.y >= '.$y_min.' AND map.y <= '.$y_max.' AND type = 1 AND royaume.fin_raz_capitale = 0';
+	$requete = 'SELECT map.x as x, map.y as y, nom FROM map LEFT JOIN royaume ON map.royaume = royaume.id WHERE map.x >= '.$x_min.' AND map.x <= '.$x_max.' AND map.y >= '.$y_min.' AND map.y <= '.$y_max.' AND type = 1 AND royaume.fin_raz_capitale = 0 AND royaume.race != "'.$joueur->get_race().'"';
 					//'AND royaume.race != "'.$joueur->get_race().'"';
 	$req_v = $db->query($requete);
 	$row_v = $db->read_assoc($req_v);

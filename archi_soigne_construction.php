@@ -16,7 +16,7 @@ elseif($joueur->get_pa() >= 30)
 	$ID_CONSTRUCTION = sSQL($_GET['id_construction'], SSQL_INTEGER);
 
 	//On recherche les informations sur ce placement
-	$requete = 'SELECT x, y, construction.hp as hp_c, batiment.hp as hp_b FROM construction LEFT JOIN batiment ON batiment.id = construction.id_batiment WHERE construction.id = \''.$ID_CONSTRUCTION.'\'';
+	$requete = 'SELECT x, y, construction.hp as hp_c, batiment.hp as hp_b, batiment.id as id_b FROM construction LEFT JOIN batiment ON batiment.id = construction.id_batiment WHERE construction.id = \''.$ID_CONSTRUCTION.'\'';
 	$req = $db->query($requete);
 	$row = $db->read_assoc($req);
 	
@@ -61,12 +61,17 @@ elseif($joueur->get_pa() >= 30)
 				//On supprime les PA du joueurs
 				$joueur->set_pa($joueur->get_pa() - 30);
 				//Augmentation de la compétence d'architecture
-				$augmentation = augmentation_competence('architecture', $joueur, 1);
-				if ($augmentation[1] == 1)
-				{
-					$joueur->set_architecture($augmentation[0]);
-					$joueur->sauver();
-				}
+				$batiment =  new batiment($row['id_b']);
+  			$lim = $batiment->get_bonus('lim_montee');
+  			if( !$lim or $joueur->get_architecture() < $lim )
+  			{
+    			$augmentation = augmentation_competence('architecture', $joueur, 1);
+    			if ($augmentation[1] == 1)
+    			{
+    				$joueur->set_architecture($augmentation[0]);
+  					$joueur->sauver();
+    			}
+        }
 				
 				// Augmentation du compteur de l'achievement
 				$achiev = $joueur->get_compteur('structure_hp');

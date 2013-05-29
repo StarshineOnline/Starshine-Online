@@ -17,6 +17,17 @@ if( $type == 'joueur' )
   $email = $_GET['email'];
 	$login = pseudo_to_login($pseudo);
 	
+
+  if( $email )
+  {
+    $requete = 'SELECT id FROM joueur WHERE email LIKE "'.$email.'"';
+    $req = $db->query($requete);
+    if( $db->num_rows($req) )
+    {
+      echo "Vous avez déjà un compte joueur, il est interdit d'en avoir plusieurs ou d'en changer sans l'accord des administraeurs.<br/>\nSi vous voulez changer de personnage, supprimez l'ancien (en allant dans les options).";
+      exit;
+    }
+  }
 	if( check_existing_account($pseudo, true, true, true) or check_existing_account($login, true, true, true) )
 	{
     echo 'Erreur nom déjà utilisé<br /><a href=".">Réessayer</a>';

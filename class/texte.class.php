@@ -23,12 +23,13 @@ class texte
   const html = 0x40;   ///< indique qu'il faut supprimé les balises html.
   const perso = 0x80;   ///< balises sélectionnant ce qui doit être affiché en fonction du personnage.
   const actions = 0x100;   ///< balises effetctuant certaines actions.
+  const tuto = 0x200;   ///< balises liées au tutoriel.
 
   const messagerie = 0x42;   ///< textes de la messagerie
   const msg_roi = 0x4a;   ///< message du roi
-  const pnj = 0x1bf;   ///< textes des PNJ
-  const cases = 0x1bf;   ///< textes des cases
-  const tutoriel = 0x1b8;   ///< textes des tutoriels
+  const pnj = 0x3bf;   ///< textes des PNJ
+  const cases = 0x3bf;   ///< textes des cases
+  const tutoriel = 0x3b8;   ///< textes des tutoriels
   
   /**
    * Constructeur
@@ -99,6 +100,8 @@ class texte
       $texte = $this->parse_perso($texte);
     if( $this->options & self::actions )
       $texte = $this->parse_actions($texte);
+    if( $this->options & self::tuto )
+      $texte = $this->parse_tuto($texte);
       
     return $texte;//preg_replace('`\[[/]?(.*)\]`','', $texte);
   }
@@ -286,7 +289,8 @@ class texte
       $debut = '';
       $fin = '';
     }
-    return preg_replace('`\[ID:([0-9]*)\](.*)\[/ID:\g1\]`i', $debut.'<a href="'.$this->url.'&amp;reponse=\\1" onclick="return envoiInfo(this.href, \'information\')">\\2</a>'.$fin, $texte);
+    $texte = preg_replace('`\[/id:([0-9,]+)\]`i', '[/£id:\\1]', $texte);
+    return preg_replace('`\[id:([0-9]*)\]([^£]*)\[/£id:\g1\]`i', $debut.'<a href="'.$this->url.'&amp;reponse=\\1" onclick="return envoiInfo(this.href, \'information\')">\\2</a>'.$fin, $texte);
   }
   
   /// Fonction formattant les balises permettant de naviguet entre les différentes parties d'un textes.
@@ -365,12 +369,15 @@ class texte
     $trouve = false;
     $texte = str_ireplace('[br]', '<br />', $texte);
   	$texte = preg_replace('#\[img\]([^[]*)\[/img\]#i', '<img src="\\1" title="\\1" />', $texte);
-  	$texte = preg_replace('#\[b\](.*)\[/b\]#i', '<strong>\\1</strong>', $texte, -1, $nbr);
+  	$texte = preg_replace('`\[/b\]`i', '[/£b]', $texte);
+  	$texte = preg_replace('#\[b\]([^£]*)\[/£b\]#i', '<strong>\\1</strong>', $texte, -1, $nbr);
   	$trouve |= $nbr > 0;
-  	$texte = preg_replace('#\[i\](.*)\[/i\]#i', '<i>\\1</i>', $texte, -1, $nbr);
+  	$texte = preg_replace('`\[/i\]`i', '[/£i]', $texte);
+  	$texte = preg_replace('#\[i\]([^£]*)\[/£i\]#i', '<i>\\1</i>', $texte, -1, $nbr);
   	$trouve |= $nbr > 0;
-  	$texte = preg_replace('#\[url\](.*)\[/url\]#i', '<a href="\\1">\\1</a>', $texte);
-  	$texte = preg_replace('#\[url=([^[\]]*)\](.*)\[/url\]#i', '<a href="\\1">\\2</a>', $texte, -1, $nbr);
+  	$texte = preg_replace('`\[/url\]`i', '[/£url]', $texte);
+  	$texte = preg_replace('#\[url\]([^£]*)\[/£url\]#i', '<a href="\\1">\\1</a>', $texte);
+  	$texte = preg_replace('#\[url=([^[\]]*)\]([^£]*)\[/£url\]#i', '<a href="\\1">\\2</a>', $texte, -1, $nbr);
   	$trouve |= $nbr > 0;
   	$texte = str_ireplace("[/color]", "</span>", $texte);
   	$regCouleur = "`\[color= ?(([[:alpha:]]+)|(#[[:digit:][:alpha:]]{6})) ?\]`i";
@@ -454,6 +461,13 @@ class texte
       }
       $texte = str_ireplace('[tp:'.$regs[1].'-'.$regs[2].']', '<script type="text/javascript">envoiInfo("deplacement.php?deplacement=centre", "centre");</script>', $texte);
     }
+    return $texte;
+  }
+
+  /// Fonction formattant les balises liées au tutoriel.
+  protected function parse_tuto($texte)
+  {
+    $trouve = false;
     if( preg_match('`\[tuto:([0-9+]+)\]`i', $texte, $regs) )
     {
       if( $regs[1] == '+' )
@@ -464,7 +478,41 @@ class texte
       $this->perso->sauver();
       $texte = str_ireplace('[tuto:'.$regs[1].']', '', $texte);
     }
-    return $texte;
+    // champ tutoriel égal à une certaine valeur
+    while( preg_match('`\[tuto_egal:([0-9]*)\](.*)\[/tuto_egal:(\g1)\]`i', $texte, $regs) )
+    {
+    	$num = $regs[1];
+    	if( $this->perso->get_tuto() == $num )
+    		$texte = preg_replace('`\[tuto_egal:'.$num.'\](.*)\[/tuto_egal:'.$num.'\]`i', $regs[2], $texte);
+    	else
+    		$texte = preg_replace('`\[tuto_egal:'.$num.'\](.*)\[/tuto_egal:'.$num.'\]`i', '', $texte);
+    	$trouve = true;
+    }
+    // champ tutoriel inférieur à une certaine valeur, mais non-nul
+    while( preg_match('`\[tuto_inf:([0-9]*)\](.*)\[/tuto_inf:(\g1)\]`i', $texte, $regs) )
+    {
+    	$num = $regs[1];
+    	if( $this->perso->get_tuto() < $num && $this->perso->get_tuto() > 0 )
+    		$texte = preg_replace('`\[tuto_inf:'.$num.'\](.*)\[/tuto_inf:'.$num.'\]`i', $regs[2], $texte);
+    	else
+    		$texte = preg_replace('`\[tuto_inf:'.$num.'\](.*)\[/tuto_inf:'.$num.'\]`i', '', $texte);
+    	$trouve = true;
+    }
+    // champ tutoriel supérieur à une certaine valeur
+    while( preg_match('`\[tuto_sup:([0-9]*)\](.*)\[/tuto_sup:(\g1)\]`i', $texte, $regs) )
+    {
+    	$num = $regs[1];
+    	if( $this->perso->get_tuto() > $num )
+    		$texte = preg_replace('`\[tuto_sup:'.$num.'\](.*)\[/tuto_sup:'.$num.'\]`i', $regs[2], $texte);
+    	else
+    		$texte = preg_replace('`\[tuto_sup:'.$num.'\](.*)\[/tuto_sup:'.$num.'\]`i', '', $texte);
+    	$trouve = true;
+    }
+
+    if( $trouve )
+      return $this->parse_perso($texte);
+    else
+      return $texte;
   }
 }
 ?>

@@ -281,7 +281,7 @@ if($W_distance < 4)
 	if(array_key_exists('cout_attaque', $joueur->get_buff())) $pa_attaque = ceil($pa_attaque / $joueur->get_buff('cout_attaque', 'effet'));
 	if(array_key_exists('plus_cout_attaque', $joueur->get_buff())) $pa_attaque = $pa_attaque * $joueur->get_buff('plus_cout_attaque', 'effet');
 	
-	$W_requete = 'SELECT mm.id, m.nom, mm.type, mm.hp, m.level, m.affiche FROM map_monstre mm, monstre m WHERE mm.type = m.id AND (x = '.$case->get_x().') AND (y = '.$case->get_y().') ORDER BY level ASC, nom ASC, id ASC';
+	$W_requete = 'SELECT mm.id, m.nom, mm.type, mm.hp, m.level, m.affiche, m.quete FROM map_monstre mm, monstre m WHERE mm.type = m.id AND (x = '.$case->get_x().') AND (y = '.$case->get_y().') ORDER BY level ASC, nom ASC, id ASC';
 	$W_query = $db->query($W_requete);
 	
 	//Affichage des infos des monstres
@@ -292,6 +292,20 @@ if($W_distance < 4)
 	<ul>';
 		while($W_row = $db->read_array($W_query))
 		{
+      if( $W_row['quete'] )
+      {
+        if( !isset($quetes) )
+        {
+          $quete = array();
+          $lq = $joueur->get_liste_quete();
+          foreach($lq as $q)
+          {
+            $quete[] = $q['id_quete'];
+          }
+        }
+        if( !in_array($W_row['quete'], $quete) )
+          continue;
+      }
 			$W_nom = $W_row['nom'];
 			$W_type = $W_row['type'];
 			$W_ID = $W_row['id'];

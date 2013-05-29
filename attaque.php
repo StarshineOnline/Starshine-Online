@@ -25,6 +25,8 @@ $type = $_GET['type'];
 switch($type)
 {
 	case 'joueur' :
+    if ($_SESSION['ID'] == $_GET['id_joueur'])
+      security_block(URL_MANIPULATION, 'Auto-attaque prohibée');
 		if(!$check_pet)
 		{
 			$joueur = new perso($_SESSION['ID']);
@@ -831,7 +833,9 @@ else
 				}
 			}
 
-			//Cartouche de fin de combat
+			//Cartouche de fin de combat classique
+			if ($defenseur->get_hp() > 0)
+			{
 			echo ' 
 			<div id="combat_cartouche">
 			<ul style="float:left;">
@@ -840,9 +844,38 @@ else
 					</li>
 					<li><span style="display:block;float:left;width:150px;">'.$defenseur->get_nom().'</span>
 						<span style="display:block;float:left;width:150px;"><img src="genere_barre_vie.php?longueur='.$longueur.'" alt="Estimation des HP : '.$longueur.'% / + ou - : '.$fiabilite.'%"" title="Estimation des HP : '.$longueur.'% / + ou - : '.$fiabilite.'%" /></span>
-					<li>
+					</li>
 			</ul>
 			<div style="float:left;">';
+			}
+			
+// 	Ajouté par padokais (à épurer à souhait)		
+			//Cartouche de fin de combat si mort
+			if ($defenseur->get_hp() <= 0)
+				{
+				echo ' 
+				<div id="combat_cartouche">
+				<ul style="float:left;">
+				<li><span style="display:block;float:left;width:150px;">'.$attaquant->get_nom().'</span>
+				   <span style="display:block;float:left;width:150px;">'.$attaquant->get_hp().' HP</span>
+				</li>
+				<li><span style="display:block;float:left;width:150px;">'.$defenseur->get_nom().'</span>
+				   <span style="display:block;float:left;width:150px;">mort</span>
+				</li>
+				</ul>
+				<div style="float:left;">';
+// Achievements
+				if($defenseur->get_race() == $attaquant->get_race() AND $defenseur->get_rang_royaume() == 6) $attaquant->unlock_achiev('roi_race_mort');
+				if($defenseur->get_rang_royaume() == 6) 
+				{
+				$attaquant->unlock_achiev('roi_mort1');
+				$achiev = $attaquant->get_compteur('roi_mort');
+				$achiev->set_compteur($achiev->get_compteur() + 1);
+				$achiev->sauver();
+				}
+			        }
+			
+// 	Fin d'ajout de padokais		
 
 			
 			$msg_xp .= $defenseur->fin_defense($joueur, $R, $pet, $degat_defense, $defenseur_en_defense);
@@ -974,6 +1007,78 @@ else
 <a href="informationcase.php?case=<?php echo $W_case; ?>" onclick="return envoiInfo(this.href, 'information')"><img src="image/interface/retour.png" alt="Retour" title="Retour à l'information case" style="vertical-align : middle;" /></a>
 </div>
 <?php
+if ($defenseur->get_hp() <= 0)
+	{
+	if($type == 'monstre')
+		{
+		if($defenseur->get_level() < $attaquant->get_level() - 5)
+			{
+			echo ' 
+			<div id="combat_cartouche">
+			<ul style="float:left;">
+			   <li><span style="display:block;float:left;width:400px;">les tripes arrachées, '.$defenseur->get_nom().' meurt dignement</span>
+			   </li>
+			</ul>
+			<div style="float:left;">';
+			}
+		elseif($defenseur->get_level() > $attaquant->get_level() + 5)
+			{
+			echo ' 
+			<div id="combat_cartouche">
+			<ul style="float:left;">
+			   <li><span style="display:block;float:left;width:400px;">Tandis que le flot rouge de sa vie finissait de s\'écouler, '.$defenseur->get_nom().' rendait l\'âme</span>
+			   </li>
+			</ul>
+			<div style="float:left;">';
+			}
+		elseif($defenseur->get_level() >= $attaquant->get_level() - 5 AND $defenseur->get_level() <= $attaquant->get_level() + 5)
+			{
+			echo ' 
+			<div id="combat_cartouche">
+			<ul style="float:left;">
+			   <li><span style="display:block;float:left;width:400px;">Un air ahuri flotte encore sur sa gueule puissante, vous avez tué '.$defenseur->get_nom().'</span>
+			   </li>
+			</ul>
+			<div style="float:left;">';
+			}
+		}
+				
+				
+	if($type == 'joueur')
+		{
+		if($defenseur->get_level() < $attaquant->get_level() - 9)
+			{
+			echo ' 
+			<div id="combat_cartouche">
+			<ul style="float:left;">
+			   <li><span style="display:block;float:left;width:400px;">A vaincre sans péril on triomphe sans gloire</span>
+			   </li>
+			</ul>
+			<div style="float:left;">';
+			}
+		elseif($defenseur->get_level() > $attaquant->get_level() + 9)
+			{
+			echo ' 
+			<div id="combat_cartouche">
+			<ul style="float:left;">
+			   <li><span style="display:block;float:left;width:400px;">Félicitation, tu es venu à bout de '.$defenseur->get_nom().'</span>
+			   </li>
+			</ul>
+			<div style="float:left;">';
+			}
+		elseif($defenseur->get_level() >= $attaquant->get_level() - 9 AND $defenseur->get_level() <= $attaquant->get_level() + 9)
+			{
+			echo ' 
+			<div id="combat_cartouche">
+			<ul style="float:left;">
+			   <li><span style="display:block;float:left;width:400px;">Tu as tué, '.$defenseur->get_nom().'</span>
+			   </li>
+			</ul>
+			<div style="float:left;">';
+			}
+		}
+	}
+			
 if (!empty($msg_xp)){echo "<p style='clear:both;'>".$msg_xp."</p>";}
 ?>
 </div>

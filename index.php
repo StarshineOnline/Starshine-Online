@@ -5,16 +5,19 @@ if (file_exists('root.php'))
 $site = true;
 include_once(root.'haut.php');
 
+
 ?>
 
 <div id="popup_erreur" style='display:none;'>
 	<div id="popup_erreur_menu"><span class='fermer' title='Fermer le popup' onclick="fermePopUpErreur(); return false;">&nbsp;</span></div>
 	<div id="popup_erreur_marge">
-		<div id="popup_erreur_content"></div>
+		<div id="popup_erreur_content">tagada</div>
 	</div>
 </div>
 <div id='accueil'>
 <?PHP
+if( $check === false )
+   echo '<div id="dialog" title="Erreur">'.$erreur_login.'</div><script type="text/javascript">$("#dialog").dialog();</script>';
   if( file_exists(root.'pub.php') )
     include_once(root.'pub.php');
 ?>
@@ -159,7 +162,7 @@ N'oubliez pas de reporter les bugs et problèmes, et d'apporter vos suggestions 
 		<div id='creation_box' style='display:none;'>
   		<p id='creat_erreur' style='color:#FF0022; display : none;'>&nbsp;</p>
   		<?php
-  		if( $check === 0 )
+  		if( $check === 0 or $_SESSION['droits'] & joueur::droit_staf )
   		{
   		?>
   		<div style='width:165px;float:left;'>

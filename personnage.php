@@ -443,6 +443,7 @@ echo '
 			
 			//On debloque les achievements uniques
 			$joueur->unlock_achiev('race_'.$joueur->get_race());
+			$joueur->unlock_achiev('classe_'.$joueur->get_classe());
 			
 			
 			$achievements = $joueur->get_achievement();

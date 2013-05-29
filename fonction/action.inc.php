@@ -273,13 +273,26 @@ function sub_script_action($joueur, $ennemi, $mode, &$effects)
 							break;
 							//Dernière action
 							case '15' :
-								if($type_action == 'E')
-									$param = $joueur['precedente']['esquive'];
-								else if($type_action == 'C')
-									$param = $joueur['precedente']['critique'];
+                switch($valeur)
+                {
+                case 'E':
+                  $param = $joueur->precedent['esquive'];
+                  break;
+                case 'C':
+                  $param = $joueur->precedent['critique'];
+                  break;
+                case 'B':
+                  $param = $joueur->precedent['bloque'];
+                  break;
+                case 'T':
+                  $param = $joueur->precedent['touche'];
+                  break;
+                }
+								$valeur = true;
 						}
 						//echo $param.' '.$operateur.' '.$valeur.'<br />';
 						// Vérification de la condition
+            //echo 'test : '.$param.' '.$operateur.' '.$valeur.'<br/>';
 						switch($operateur)
 						{
 							case '>' :

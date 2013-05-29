@@ -836,7 +836,7 @@ class map
 		}
 	}
 
-	function get_monstre($level = 0, $groupe = true)
+	function get_monstre($level = 0, $groupe = true, &$perso=null)
 	{
 		global $db;
 		if($this->donjon && $this->y > 190)
@@ -869,7 +869,7 @@ class map
 			$show_only = " AND mm.type IN (".$this->show_only.")";
 		}
 		else $show_only = '';
-		$query = "SELECT mm.id, mm.x, mm.y, m.nom, m.lib ".$champs."
+		$query = "SELECT mm.id, mm.x, mm.y, m.nom, m.lib, m.quete ".$champs."
 								  FROM map_monstre mm, monstre m
 								  WHERE mm.type = m.id AND ( ( x BETWEEN ".$xmin." AND ".$xmax." ) AND ( y BETWEEN ".$ymin." AND ".$ymax." ) ) ".$show_only."
 								  ".$group." ORDER BY y ASC, x ASC, ABS(CAST(level AS SIGNED) - $level) ASC, level ASC, nom ASC, id ASC;";
@@ -879,6 +879,20 @@ class map
 			$monster = 0;
 			while($objMonstres = $db->read_object($RqMonstres))
 			{
+        if( $objMonstres->quete && $perso )
+        {
+          if( !isset($quetes) )
+          {
+            $quete = array();
+            $lq = $perso->get_liste_quete();
+            foreach($lq as $q)
+            {
+              $quete[] = $q['id_quete'];
+            }
+          }
+          if( !in_array($objMonstres->quete, $quete) )
+            continue;
+        }
 				$monster = count($this->map[$objMonstres->x][$objMonstres->y]["Monstres"]);
 				
 				$this->map[$objMonstres->x][$objMonstres->y]["Monstres"][$monster]["id"] = $objMonstres->id;

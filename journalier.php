@@ -93,7 +93,7 @@ $db->query("insert into map_monstre(type,x,y,hp,mort_naturelle) $sql_insert");
 //Sélection des monstres
 $requete = "SELECT * FROM monstre ORDER BY level";
 //$requete = "SELECT * FROM monstre WHERE id > 140 ORDER BY level";
-//$requete = "SELECT * FROM monstre WHERE id = 144 ORDER BY level";
+//$requete = "SELECT * FROM monstre WHERE id = 210 ORDER BY level";
 $req = $db->query($requete);
 $check_virgule = false;
 $total_monstre = 0;
@@ -136,7 +136,7 @@ while($row = $db->read_array($req))
 			$where .= '(';
 			$type = $spawn_loc[0];
 			$list = mb_substr($spawn_loc, 1, strlen($spawn_loc));
-			$coords = explode('.', $list);
+			/*$coords = explode('.', $list);
 			foreach($coords as $coord)
 			{
 				$xy = explode('-', $coord);
@@ -150,7 +150,20 @@ while($row = $db->read_array($req))
 						$where .= 'x = '.$xy[0].' AND y = '.$xy[1];
 					break;
 				}
-			}
+			}*/
+      switch($type)
+      {
+			case 'p' :
+			  $xy = explode('-', $list);
+				$where .= 'x = '.$xy[0].' AND y = '.$xy[1];
+				break;
+			case 'r' :
+			  $xy = explode('/', $list);
+			  $x = explode('-', $xy[0]);
+			  $y = explode('-', $xy[1]);
+				$where .= 'x >= '.$x[0].' AND x <= '.$x[1].' AND y >= '.$y[0].' AND y <= '.$y[1];
+				break;
+      }
 			$where .= ')';
 			$i++;
 		}
@@ -176,7 +189,7 @@ while($row = $db->read_array($req))
 		if($ratio > 50) $ratio = 50;
 		$limite = $ratio * 10000;
 		$requete = "SELECT x, y, info FROM map WHERE ".$where;
-		//echo $requete."\n";
+		echo $requete."\n";
 		$req2 = $db->query($requete);
 		while($row2 = $db->read_array($req2))
 		{

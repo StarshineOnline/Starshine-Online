@@ -45,13 +45,13 @@ class entitenj extends entite
 		$this->distance_tir = $incarn->get_distance_tir();
     if( !$this->distance_tir )
       $this->distance_tir = $def->get_distance_tir();
-		$this->esquive = ceil( $def->get_esquive() * $incarn->get_coeff_comp($perso) );
-		$this->distance = ceil( $def->get_distance() * $incarn->get_coeff_comp($perso) );
-		$this->melee = ceil( $def->get_melee() * $incarn->get_coeff_comp($perso) );
-		$this->incantation = ceil( $def->get_incantation() * $incarn->get_coeff_comp($perso) );
-		$this->sort_mort = ceil( $def->get_sort_mort() * $incarn->get_coeff_comp($perso) );
-		$this->sort_vie = ceil( $def->get_sort_vie() * $incarn->get_coeff_comp($perso) );
-		$this->sort_element = ceil( $def->get_sort_element() * $incarn->get_coeff_comp($perso) );
+		$this->esquive = ceil( $def->get_esquive() * $incarn->get_coeff_comp($perso, $def) );
+		$this->distance = ceil( $def->get_distance() * $incarn->get_coeff_comp($perso, $def) );
+		$this->melee = ceil( $def->get_melee() * $incarn->get_coeff_comp($perso, $def) );
+		$this->incantation = ceil( $def->get_incantation() * $incarn->get_coeff_comp($perso, $def) );
+		$this->sort_mort = ceil( $def->get_sort_mort() * $incarn->get_coeff_comp($perso, $def) );
+		$this->sort_vie = ceil( $def->get_sort_vie() * $incarn->get_coeff_comp($perso, $def) );
+		$this->sort_element = ceil( $def->get_sort_element() * $incarn->get_coeff_comp($perso, $def) );
 		$this->blocage = $def->get_blocage();
 		$this->buff = $incarn->get_buff();
 		$this->etat = array();

@@ -327,6 +327,22 @@ if(array_key_exists('from', $_GET) && $_GET['id_action'] != '')
 					<input type="button" name="valid_cond" value="Valider" onclick="return envoiInfo('action.php?<?php echo $link; ?>mode=a&amp;id_action=<?php echo $id_action; ?>&amp;si=10&amp;op=o&amp;valeur=' + document.getElementById('etat').value + '&amp;qui=' + document.getElementById('qui').value + '&amp;valid_cond=ok', 'information');" /><br />
 				</td>
 			</tr>
+			<tr colspan="2">
+				<td style="text-align : right;">
+					Vous venez de
+				</td>
+				<td>
+					<select name="action" id="action">
+							<option value="E">esquiver</option>
+							<option value="C">faire un critique</option>
+							<option value="B">bloquer</option>
+							<option value="T">toucher</option>
+					</select>
+				</td>
+				<td>
+					<input type="button" name="valid_cond" value="Valider" onclick="return envoiInfo('action.php?<?php echo $link; ?>mode=a&amp;id_action=<?php echo $id_action; ?>&amp;si=15&amp;op==&amp;valeur=' + document.getElementById('action').value + '&amp;valid_cond=ok', 'information');" /><br />
+				</td>
+			</tr>
 			</table>
 			</form>
 		<?php
