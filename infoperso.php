@@ -27,14 +27,15 @@ if (file_exists('root.php'))
 
 
 {//-- PA, HP, MP, XP, ...
-	echo "<div id='infos_perso'>"; 
+	
+	echo "<div id='infos_perso'  style=\"background:transparent url('./image/interface/fond_info_perso_".$joueur->get_race_a().".png') top left no-repeat;\">"; 
 	//--  inclusion de la rosace des vents.
-	include_once(root."deplacementjeu.php");
+	
+	echo " <div id='joueur_PA' class='progress progress-success' title='PA'><div class='bar' style='width: ".($joueur->get_pa()/$G_PA_max*100)."%;'></div></div>";
 
-	echo " <div id='joueur_PA' style='background:transparent url(".genere_image_pa($joueur).") center;' title='PA'>".$joueur->get_pa()." / $G_PA_max</div>";
-	echo " <div id='joueur_HP' style='background:transparent url(".genere_image_hp($joueur).") center;' title='HP'>".$joueur->get_hp()." / ".floor($joueur->get_hp_maximum())."</div>";
-	echo " <div id='joueur_MP' style='background:transparent url(".genere_image_mp($joueur).") center;' title='MP'>".$joueur->get_mp()." / ".floor($joueur->get_mp_maximum())."</div>";
-	echo " <div id='joueur_XP' style='background:transparent url(".genere_image_exp($joueur->get_exp(), prochain_level($joueur->get_level()), progression_level(level_courant($joueur->get_exp()))).") center;' title='".progression_level(level_courant($joueur->get_exp()))." % (".number_format($joueur->get_exp(), 0, ",", ".")." / ".number_format(prochain_level($joueur->get_level()), 0, ",", ".").")'></div>";
+	echo " <div id='joueur_HP' class='progress progress-danger' title='HP'><div class='bar' style='width: ".($joueur->get_hp()/floor($joueur->get_hp_maximum())*100)."%;'></div></div>";
+	echo " <div id='joueur_MP' class='progress' title='MP'><div class='bar' style='width: ".($joueur->get_mp()/floor($joueur->get_mp_maximum())*100)."%;'></div></div>";
+	echo " <div id='joueur_XP' class='progress progress-warning'><div class='bar' style='width:".progression_level(level_courant($joueur->get_exp()))."%;'></div></div>";
 	echo " <div id='joueur_PO' title='Vos stars'>".$joueur->get_star()."</div>";
 	echo ' <div id="joueur_PH" title="Votre honneur : '.$joueur->get_honneur().' / Votre réputation : '.$joueur->get_reputation().'">'.$joueur->get_honneur().'</div>';
 	echo " <div id='joueur_Psso' onclick=\"envoiInfo('point_sso.php', 'information');\" title=\"Vous avez ".$joueur->get_point_sso()." point(s) shine en r&eacute;serve.\"></div>";
@@ -49,7 +50,7 @@ if (file_exists('root.php'))
 	
 	$bonus = recup_bonus($joueur->get_id());
 	$titre = $titre_perso->get_titre_perso($bonus);
-	echo "<div id='joueur_buffs_nom' style=\"background:transparent url('./image/interface/fond_info_perso_".$joueur->get_race_a().".png') top left no-repeat;\">";
+	echo "<div id='joueur_buffs_nom'>";
 	echo " <div id='joueur_nom' onclick=\"envoiInfo('personnage.php', 'information');\" title=\"Accès à la fiche de votre personnage\">".$titre[0]." ".ucwords($joueur->get_grade()->get_nom())." ".ucwords($joueur->get_nom())." ".$titre[1]."  - niv.".$joueur->get_level()."<br />".ucwords($Gtrad[$joueur->get_race()])." ".ucwords($joueur->get_classe())." </div>
 	";
 	echo " <div id='buff_list'>
