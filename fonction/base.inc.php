@@ -2295,11 +2295,10 @@ function genere_image_pa($joueur)
  */
 function genere_image_buff_duree($buff)
 {//-- Barre durée restante du buff
-	$ratio_buff_duree = floor(10 * (($buff->get_fin() - time()) / ($buff->get_duree())));
-	if($ratio_buff_duree > 10) 	{ $ratio_buff_duree = 10; };
-	if($ratio_buff_duree < 0) 	{ $ratio_buff_duree = 0; };
-	$barre_buff_duree = "image/barre/buff_duree".$ratio_buff_duree.".png";
-	return "<img src='".$barre_buff_duree."' class='buff_duree_restante' alt='duree buff' />";
+	$ratio_buff_duree = floor(100 * (($buff->get_fin() - time()) / ($buff->get_duree())));
+	return " <div class='progress progress-danger' style='height:3px;margin-top:1px;'><div class='bar' style='width: ".($ratio_buff_duree)."%;'></div></div>";
+
+	//return "<img src='".$barre_buff_duree."' class='buff_duree_restante' alt='duree buff' />";
 }
 
 /**

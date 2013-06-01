@@ -1,3 +1,6 @@
+$(function () {
+        $("[rel='tooltip']").tooltip();
+    });
 // -*- tab-width: 2 -*-
 function envoiInfoPost(page,position)
 {
