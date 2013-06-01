@@ -79,19 +79,47 @@ $joueur->check_perso();
 
 $_SESSION['position'] = convert_in_pos($joueur->get_x(), $joueur->get_y());
 ?>
-<div id='menu_top'>
-	<div style='width:1000px;margin:auto;'>
-	<span class='menu' onclick="affichePopUp('diplomatie.php');">Diplomatie</span>
-	<span class='menu' onclick="affichePopUp('classement.php');">Classement</span>
-	<span class='menu' onclick="affichePopUp('stats2.php?graph=carte_royaume');">Statistiques</span>
-	<span class='menu' onclick="affichePopUp('message_accueil.php?affiche=all');">Message d'Accueil</span>
-	<span class='menu' onclick="affichePopUp('option.php');">Options</span><span class='menu' onclick='showSoundPanel()'>Son</span>
-	<span class='menu' onclick="affichePopUp('liste_monstre.php');">Bestiaire</span><span class='menu' onclick="affichePopUp('royaume.php');">Carte</span>
-<span class='menu'><a href="http://forum.starshine-online.com">Forum</a></span><span class='menu'><a href="http://wiki.starshine-online.com/">Wiki</a></span>
-<span class='menu'><a href="http://bug.starshine-online.com/">Signaler un bug</a></span><span class='menu' onclick="affichePopUp('acces_chat.php');">Tchat</span>
-<span class='menu' onclick="affichePopUp('don.php');">Faire un don</span>
-	</div>
-</div>
+
+
+    <div class="navbar navbar-inverse">
+      <div class="navbar-inner">
+        <div class="container">
+
+          <div class="nav-collapse collapse">
+            <ul class="nav">
+             <li><a href="#" onclick="affichePopUp('diplomatie.php');">Diplomatie</a></li>
+			 <li><a href="#" onclick="affichePopUp('classement.php');">Classement</a></li>
+			 
+			 <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Autres<b class="caret"></b></a>
+                <ul class="dropdown-menu">
+					<li  onclick="affichePopUp('stats2.php?graph=carte_royaume');"><a href="#">Statistiques</li>
+		<li  onclick="affichePopUp('message_accueil.php?affiche=all');"><a href="#">Message d'Accueil</li>
+		<li  onclick="affichePopUp('liste_monstre.php');"><a href="#">Bestiaire</li>
+		<li  onclick="affichePopUp('royaume.php');"><a href="#">Carte</li>
+		<li ><a href="http://wiki.starshine-online.com/">Wiki</a></li>
+                </ul>
+              </li>
+			 
+			 <li class="dropdown " style='float:right;'>
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown"><? echo ucwords($joueur->get_nom()); ?><b class="caret"></b></a>
+                <ul class="dropdown-menu">
+				  <li onclick="affichePopUp('option.php');"><a href="#">Options</a></li>
+				  <li onclick='showSoundPanel()'><a href="#">Son</a></li>
+				  <li ><a href="http://bug.starshine-online.com/">Signaler un bug</a></li>
+                  <li class="divider"></li>
+
+	  			<li ><a href="#" onclick="if(confirm('Voulez vous déconnecter ?')) { document.location.href='index.php?deco=ok'; };">Deconnecter</a></li>
+                </ul>
+              </li>
+              <li  style='float:right;'><a href="http://forum.starshine-online.com">Forum</a></li>
+            </ul>
+          </div><!--/.nav-collapse -->
+        </div>
+      </div>
+    </div>
+
+
 
 <div id="conteneur_back">
 <div id="conteneur">

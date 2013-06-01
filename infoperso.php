@@ -7,7 +7,14 @@ if (file_exists('root.php'))
 	if(!isset($joueur)) { $joueur = new perso($_SESSION["ID"]); }; 		//-- Récupération du tableau contenant toutes les informations relatives au joueur
 	$joueur->check_perso();
 	echo '<div id="perso_contenu">';
-	require_once(root."levelup.php"); 				//-- Dans le cas ou le joueur a pris un level on traite son level up.
+	
+	//-- Dans le cas ou le joueur a pris un level on traite son level up.
+	if ($joueur->get_exp() > prochain_level($joueur->get_level()))
+	{
+		$joueur->set_level($joueur->get_level() + 1);
+		$joueur->set_point_sso($joueur->get_point_sso() + 1);
+		$joueur->sauver();
+	}
 }
 {//-- Javascript
 	echo "<script type='text/javascript'>
@@ -33,8 +40,8 @@ if (file_exists('root.php'))
 	
 	echo " <div id='joueur_PA' class='progress progress-success' title='PA'><div class='bar' style='width: ".($joueur->get_pa()/$G_PA_max*100)."%;'></div></div>";
 
-	echo " <div id='joueur_HP' class='progress progress-danger' title='HP'><div class='bar' style='width: ".($joueur->get_hp()/floor($joueur->get_hp_maximum())*100)."%;'></div></div>";
-	echo " <div id='joueur_MP' class='progress' title='MP'><div class='bar' style='width: ".($joueur->get_mp()/floor($joueur->get_mp_maximum())*100)."%;'></div></div>";
+	echo " <div id='joueur_HP' class='progress progress-danger' title='".$joueur->get_hp()."/".floor($joueur->get_hp_maximum())."'><div class='bar' style='width: ".($joueur->get_hp()/floor($joueur->get_hp_maximum())*100)."%;'></div></div>";
+	echo " <div id='joueur_MP' class='progress' title='".$joueur->get_mp()."/".floor($joueur->get_mp_maximum())."'><div class='bar' style='width: ".($joueur->get_mp()/floor($joueur->get_mp_maximum())*100)."%;'></div></div>";
 	echo " <div id='joueur_XP' class='progress progress-warning'><div class='bar' style='width:".progression_level(level_courant($joueur->get_exp()))."%;'></div></div>";
 	echo " <div id='joueur_PO' title='Vos stars'>".$joueur->get_star()."</div>";
 	echo ' <div id="joueur_PH" title="Votre honneur : '.$joueur->get_honneur().' / Votre réputation : '.$joueur->get_reputation().'">'.$joueur->get_honneur().'</div>';

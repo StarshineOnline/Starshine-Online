@@ -85,20 +85,20 @@ $journal = '';
 
 if(array_key_exists('nom', $_SESSION)) $joueur = new perso($_SESSION['ID']);
 if(!isset($root)) $root = '';
-//check_undead_players();
+
 if (isset($site) && $site)
 {
-	print_head("css:./css/site.css~./css/jquery.lightbox-0.5.css~./css/jquery-ui-1.7.3.custom.css;script:./javascript/jquery/jquery-1.5.1.min.js~./javascript/jquery/jquery-ui-1.8.10.custom.min.js~./javascript/jquery/jquery.lightbox-0.5.min.js~./javascript/jquery/jquery.dataTables.min.js~./javascript/fonction.js~./javascript/site.js;title:StarShine, le jeu qu'il tient ses plannings !");
+	print_head("css:./css/site.css~./css/jquery.lightbox-0.5.css~./css/jquery-ui-1.7.3.custom.css;script:./javascript/jquery/jquery-2.0.2.min.js~./javascript/jquery/jquery-ui-1.8.10.custom.min.js~./javascript/jquery/jquery.lightbox-0.5.min.js~./javascript/jquery/jquery.dataTables.min.js~./javascript/fonction.js~./javascript/site.js;title:StarShine, le jeu qu'il tient ses plannings !");
 }
 else
 {
 	if ($interface_v2)
 	{
-		print_head("css:./css/texture.css~./css/bootstrap.css~./css/texture_low.css~./css/interfacev3.css~./css/jquery-ui-1.8.18.custom.css;script:./javascript/jquery/jquery-1.5.1.min.js~./javascript/jquery/jquery-ui-1.8.18.custom.min.js~./javascript/jquery/jquery.dataTables.min.js~./javascript/fonction.js~./javascript/overlib/overlib.js~./javascript/jquery/jquery.hoverIntent.minified.js~./javascript/jquery/jquery.cluetip.min.js~./javascript/jquery/atooltip.min.jquery.js;title:StarShine, le jeu qu'il tient ses plannings !");
-	}
-	elseif($interface_3D)
-	{
-		print_head("css:./css/texture3D.css~./css/texture_low.css~./css/interface3D.css;script:./javascript/jquery/jquery-1.5.1.min.js~./javascript/jquery/jquery-ui-1.8.10.custom.min.js~./javascript/fonction.js~./javascript/overlib/overlib.js;title:StarShine, le jeu qu'il tient ses plannings !");
+		$html 			= new html();
+		$html->title	= "Starshine, un jeu de l'espace !";
+		$html->css		= array('./css/texture.css','./css/bootstrap.css','./css/texture_low.css','./css/interfacev3.css','./css/jquery-ui-1.8.18.custom.css');
+		$html->scripts = array('./javascript/jquery/jquery-2.0.2.min.js','./javascript/bootstrap.min.js','./javascript/jquery/jquery-ui-1.8.18.custom.min.js','./javascript/jquery/jquery.dataTables.min.js','./javascript/fonction.js','./javascript/overlib/overlib.js','./javascript/jquery/jquery.hoverIntent.minified.js','./javascript/jquery/jquery.cluetip.min.js','./javascript/jquery/atooltip.min.jquery.js');
+		$html->header();
 	}
 	elseif($admin)
 	{
