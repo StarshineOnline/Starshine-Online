@@ -107,6 +107,8 @@ $_SESSION['position'] = convert_in_pos($joueur->get_x(), $joueur->get_y());
 				  <li onclick="affichePopUp('option.php');"><a href="#">Options</a></li>
 				  <li onclick='showSoundPanel()'><a href="#">Son</a></li>
 				  <li ><a href="http://bug.starshine-online.com/">Signaler un bug</a></li>
+				  <li><a href="#" onclick=\"envoiInfo('point_sso.php', 'information');\" ><?php echo "Point Shine (".$joueur->get_point_sso().")"; ?></a><li>
+
                   <li class="divider"></li>
 
 	  			<li ><a href="#" onclick="if(confirm('Voulez vous déconnecter ?')) { document.location.href='index.php?deco=ok'; };">Deconnecter</a></li>

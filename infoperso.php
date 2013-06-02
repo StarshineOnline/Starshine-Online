@@ -35,16 +35,14 @@ if (file_exists('root.php'))
 
 {//-- PA, HP, MP, XP, ...
 	
-	echo "<div id='infos_perso' style=\"background:transparent url('./image/interface/fond_info_perso_".$joueur->get_race_a().".png') top left no-repeat;\">"; 
-	
+	echo "<div id='infos_perso' style=\"background:transparent url('./image/interface/fond_info_perso_".$joueur->get_race_a().".png') 10px 10px no-repeat;\"> <div style='left: 18px;    position: absolute;    top: 75px;'>niv.".$joueur->get_level()."</div>"; 
+	echo " <div id='joueur_nom' onclick=\"envoiInfo('personnage.php', 'information');\" title=\"Accès à la fiche de votre personnage\">".$titre[0]." ".ucwords($joueur->get_grade()->get_nom())." ".ucwords($joueur->get_nom())." ".$titre[1]."</div>";
 	echo " <div id='joueur_PA' rel='tooltip' data-placement='right' class='progress progress-success' title='Point action : ".$joueur->get_pa()."/".$G_PA_max."'><div class='bar' style='width: ".($joueur->get_pa()/$G_PA_max*100)."%;'></div></div>";
-
 	echo " <div id='joueur_HP' rel='tooltip' data-placement='right' class='progress progress-danger' title='Point de vie : ".$joueur->get_hp()."/".floor($joueur->get_hp_maximum())."'><div class='bar' style='width: ".($joueur->get_hp()/floor($joueur->get_hp_maximum())*100)."%;'></div></div>";
 	echo " <div id='joueur_MP' rel='tooltip' data-placement='right' class='progress' title='Point de magie : ".$joueur->get_mp()."/".floor($joueur->get_mp_maximum())."'><div class='bar' style='width: ".($joueur->get_mp()/floor($joueur->get_mp_maximum())*100)."%;'></div></div>";
 	echo " <div id='joueur_XP' rel='tooltip' data-placement='right' class='progress progress-warning' title='Point Experience'><div class='bar' style='width:".progression_level(level_courant($joueur->get_exp()))."%;'></div></div>";
 	echo " <div id='joueur_PO' title='Vos stars'>".$joueur->get_star()."</div>";
 	echo ' <div id="joueur_PH" title="Votre honneur : '.$joueur->get_honneur().' / Votre réputation : '.$joueur->get_reputation().'">'.$joueur->get_honneur().'</div>';
-	echo " <div id='joueur_Psso' onclick=\"envoiInfo('point_sso.php', 'information');\" title=\"Vous avez ".$joueur->get_point_sso()." point(s) shine en r&eacute;serve.\"></div>";
 	$script_attaque = recupaction_all($joueur->get_action_a());
 	//-- Index, Forums, Exit, Options
 
@@ -57,8 +55,7 @@ if (file_exists('root.php'))
 	$bonus = recup_bonus($joueur->get_id());
 	$titre = $titre_perso->get_titre_perso($bonus);
 	echo "<div id='joueur_buffs_nom'>";
-	echo " <div id='joueur_nom' onclick=\"envoiInfo('personnage.php', 'information');\" title=\"Accès à la fiche de votre personnage\">".$titre[0]." ".ucwords($joueur->get_grade()->get_nom())." ".ucwords($joueur->get_nom())." ".$titre[1]."  - niv.".$joueur->get_level()."<br />".ucwords($Gtrad[$joueur->get_race()])." ".ucwords($joueur->get_classe())." </div>
-	";
+	
 	echo " <div id='buff_list'>
 			<ul>";
 	//my_dump($joueur->get_buff());
@@ -74,8 +71,10 @@ if (file_exists('root.php'))
 						   <img src='image/buff/".$buff->get_type()."_p.png'
 								alt='".$buff->get_type()."'
 								ondblclick=\"cancelBuff('".$buff->get_id()."', '".addslashes($buff->get_nom())."');\"
-								onmouseover=\"return overlib('$overlib', BGCLASS, 'overlib', BGCOLOR, '', FGCOLOR, '');\"
-								onmouseout=\"return nd();\"  />
+								rel='tooltip'
+								data-html='true'
+								data-placement='right' 
+								title=\"$overlib\" />
 						   ".genere_image_buff_duree($buff)."
 						  </li>";
 				}
@@ -118,8 +117,11 @@ if (file_exists('root.php'))
 					echo "<li class='buff'>
 						   <img src='image/buff/".$buff->get_type()."_p.png'
 								alt='".$buff->get_type()."'
-								onmouseover=\"return overlib('$overlib', BGCLASS, 'overlib', BGCOLOR, '', FGCOLOR, '');\"
-								onmouseout=\"return nd();\"  />
+								rel='tooltip'
+								data-html='true'
+								data-placement='right' 
+								title=\"$overlib\"
+								 />
 						   ".genere_image_buff_duree($buff)."
 						  </li>";
 				}

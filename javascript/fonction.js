@@ -1,6 +1,3 @@
-$(function () {
-        $("[rel='tooltip']").tooltip();
-    });
 // -*- tab-width: 2 -*-
 function envoiInfoPost(page,position)
 {
@@ -293,6 +290,11 @@ $(document).ready(function()
 	{
 		$(this).hide();
 	});
+
+$(function () {
+        $("[rel='tooltip']").tooltip();
+    });
+
 
 		$("#debug_log_button").hide();
 
