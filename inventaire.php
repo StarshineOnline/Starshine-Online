@@ -587,6 +587,7 @@ $buff_tab[count($buff_tab)] = $buff->get_id();
 					$requete = "SELECT effet, nom, pa, mp FROM objet WHERE id = ".$objet['id_objet'];
 					$req = $db->query($requete);
 					$row = $db->read_assoc($req);
+					$W_case = convertd_in_pos($joueur->get_x(), $joueur->get_y());
 					//Calcul de la distance entre le point où est le joueur et sa ville natale
 					$distance = detection_distance($W_case, convert_in_pos($Trace[$joueur->get_race()]['spawn_x'], $Trace[$joueur->get_race()]['spawn_y']));
 					if($row['effet'] >= $distance)
@@ -606,6 +607,7 @@ $buff_tab[count($buff_tab)] = $buff->get_id();
 					}
 					else
 					{
+						var_dump($W_case);
             $princ->add_message('Vous êtes trop loin de la ville pour utiliser ce parchemin.', false);
 					}
 				break;
