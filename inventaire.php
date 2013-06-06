@@ -607,7 +607,6 @@ $buff_tab[count($buff_tab)] = $buff->get_id();
 					}
 					else
 					{
-						var_dump($W_case);
             $princ->add_message('Vous êtes trop loin de la ville pour utiliser ce parchemin.', false);
 					}
 				break;
