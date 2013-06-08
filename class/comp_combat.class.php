@@ -1014,7 +1014,7 @@ class comp_combat_fleche_enflammee extends comp_combat
     parent::touche($attaque, $actif, $passif, $effets);
     if( $this->test_de(100, $this->get_effet()) )
     {
-      echo '&nbsp;&nbsp;<span class="degat"><strong>'.$passif->get_nom().'</strong> perd <strong>'.$this->get_effet2(). '</strong> HP à caue du feu</span><br />';
+      echo '&nbsp;&nbsp;<span class="degat"><strong>'.$passif->get_nom().'</strong> perd <strong>'.$this->get_effet2(). '</strong> HP à cause du feu</span><br />';
       $passif->set_hp( $passif->get_hp() -  $this->get_effet2());
     }
   }

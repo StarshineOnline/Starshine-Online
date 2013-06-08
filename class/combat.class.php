@@ -181,6 +181,18 @@ class combat
 								case 'attaque_cote' :
 								case 'attaque_brutale' :
 								case 'attaque_rapide' :
+								case 'fleche_enflammee' :
+								case 'botte_ours' :
+								case 'botte_aigle' :
+								case 'botte_tigre' :
+								case 'botte_rhinoceros' :
+								case 'botte_tortue' :
+								case 'botte_scolopendre' :
+								case 'botte_chien' :
+								case 'botte_chat' :
+								case 'botte_scorpion' :
+								case 'botte_crabe' :
+								case 'fleche_barbelee' :
 									echo '&nbsp;&nbsp;<strong>'.${$mode}->get_nom().'</strong> utilise '.$row['nom'].'<br />';
 								break;
 								case 'fleche_debilitante' :
