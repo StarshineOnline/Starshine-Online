@@ -1372,5 +1372,10 @@ class royaume
   	$requete = "UPDATE royaume SET bourg = bourg - 1 WHERE ID = ".$royaume." AND bourg > 0";
   	$db->query($requete);
   }
+
+  function get_mult_victoire($roy_def)
+  {
+    return (100 + $roy_def->get_point_victoire_total()) / (100 + $this->get_point_victoire_total());
+  }
 }
 ?>
