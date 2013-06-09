@@ -177,7 +177,7 @@ class royaume
     $date = time() - self::duree_actif;
     if( !isset($ref_actifs) )
     {
-      $requete = 'SELECT COUNT(*) as tot FROM perso WHERE level >= '.self::get_niveau_ref_actifs().' AND dernier_connexion > '.$date.' GROUP BY race ORDER BY tot DESC';
+      $requete = 'SELECT COUNT(*) as tot FROM perso WHERE statut like "actif" AND level >= '.self::get_niveau_ref_actifs().' AND dernier_connexion > '.$date.' GROUP BY race ORDER BY tot DESC';
       $res = $db->query($requete);
       $ref_actifs = 1;
       while( $row = $db->read_array($res) )
