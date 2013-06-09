@@ -66,12 +66,58 @@ while($row = $db->read_row($req))
 	$royaumes[$row[0]]['ratio'] = $row[2];
 }
 
+/**
+ * Stats à mémoriser pour chaque race.
+ * Tableau bi-dimensionnel, la première clé est la race, la deuxième un indice indexant
+ * les stats à conserver :
+ * <ol>
+ *  <li>Stars du royaume</li>
+ *  <li>Population du royaume</li>
+ *  <li>Argent gagné par l'hotel de vente</li>
+ *  <li>Argent gagné par la taverne</li>
+ *  <li>Argent gagné par le forgeron</li>
+ *  <li>Argent gagné par l'armurerie</li>
+ *  <li>Argent gagné par l'alchimiste</li>
+ *  <li>Argent gagné par l'enchanteur</li>
+ *  <li>Argent gagné par l'école de magie</li>
+ *  <li>Argent gagné par l'école de combat</li>
+ *  <li>Argent gagné par la téléportation</li>
+ *  <li>Argent gagné par le chasse</li>
+ *  <li>Somme de l'honneur</li>
+ *  <li>Somme des niveaux</li>
+ *  <li>Total des coûts des bâtiments hors ville</li>
+ *  <li>Nombre de cases contôlées</li>
+ *  <li>Total des coûts des bâtiments de la ville</li>
+ *  <li>Total des coûts des quêtes achetées</li>
+ *  <li>Pierre gagnée par les terrains, mines et extracteurs</li>
+ *  <li>Bois gagnée par les terrains, scieries et extracteurs</li>
+ *  <li>Eau gagnée par les terrains, puits et extracteurs</li>
+ *  <li>Sable gagnée par les terrains, carrière de sable et extracteurs</li>
+ *  <li>Charbon gagnée par les terrains, meules et extracteurs</li>
+ *  <li>Essence Magique gagnée par les terrains, puits à essence et extracteurs</li>
+ *  <li>Star gagnée par les terrains et extracteurs</li>
+ *  <li>Nourriture gagnée par les terrains, fermes et extracteurs</li>
+ *  <li>Nombre d'habitants très actifs</li>
+ *  <li>Facteur d'entretien actuel</li>
+ *  <li>Facteur d'entretien théorique</li>
+ *  <li>Consommation de nouriture actuelle</li>
+ *  <li>Consommation de nouriture théorique</li>
+ * </ol>
+ */
+$tableau_race = array();
 $roy = royaume::create(null, null, 'id ASC', false, 'id <> 0');
 foreach($roy as $r)
 {
+  $tableau_race[$r->get_race()] = array_pad(array(), 30, 0);
+  $tableau_race[$r->get_race()][26] = $r->get_habitants_actif();
+  $tableau_race[$r->get_race()][27] = $r->get_facteur_entretien();
+  $tableau_race[$r->get_race()][28] = $r->get_facteur_entretien_th();
+  $tableau_race[$r->get_race()][29] = $r->get_conso_food();
+  $tableau_race[$r->get_race()][30] = $r->get_conso_food_th();
   $r->maj_facteur_entretien();
   $r->sauver();
 }
+print_r($tableau_race);
 
 //PHASE 1, entretien des batiments internes
 //On récupère les couts d'entretiens

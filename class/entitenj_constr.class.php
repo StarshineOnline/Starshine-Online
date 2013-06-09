@@ -210,7 +210,8 @@ abstract class entitenj_constr extends entnj_incarn
 		}
 		//On retrouve les points de victoire
 		$royaume = new royaume($Trace[$perso->get_race()]['numrace']);
-		$royaume->add_point_victoire( $this->get_point_victoire() );
+    $mult = $royaume->get_mult_victoire( new royaume($this->get_royaume()) );
+		$royaume->add_point_victoire( ceil($this->get_point_victoire() * $mult) );
 		$royaume->sauver();
 		//On efface le batiment
 		$this->supprimer();
