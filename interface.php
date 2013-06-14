@@ -20,8 +20,8 @@ else
 window.onload = function()
 {
 	<?php
-	 if ($joueur->get_tuto() > 0 ) echo'affichePopUp(\'texte_tuto.php\');';
-	elseif($_COOKIE['dernier_affichage_popup'] < (time() - 3600)) echo 'affichePopUp(\'message_accueil.php\');'; ?>
+	// if ($joueur->get_tuto() > 0 ) echo'affichePopUp(\'texte_tuto.php\');';
+ ?>
 }
 </script>
 <?php

@@ -142,6 +142,7 @@ if($joueur->get_groupe() != 0)
 		   <div id='mail_groupe' title=\"Envoyer un message à l'ensemble du groupe.\" onclick=\"return envoiInfo('envoimessage.php?id_type=g".$groupe->get_id()."', 'information');\"></div>
 		   </div>";
 	echo " <ul>";
+	$nombre_joueur_groupe = 0;
 	foreach($groupe->get_membre_joueur() as $membre)
 	{//-- Récupération des infos sur le membre du groupe
 		if($joueur->get_id() != $membre->get_id())
@@ -185,12 +186,12 @@ if($joueur->get_groupe() != 0)
 			}
 			
 			$laptime_last_connexion = time() - $membre->get_dernieraction();
-			if($laptime_last_connexion > (21 * 86400))														{ $activite_perso = "noir"; 	$libelle_activite = "ce joueur est inactif ou banni"; }	
-			elseif( ($laptime_last_connexion <= (21 * 86400)) && ($laptime_last_connexion > (1 * 86400)) )	{ $activite_perso = "rouge"; 	$libelle_activite = "s'est connecté il y a plus d'1 jour."; }	
-			elseif( ($laptime_last_connexion <= (1 * 86400)) && ($laptime_last_connexion > (10 * 60)) )		{ $activite_perso = "bleu"; 	$libelle_activite = "s'est connecté il y a moins d'1 jour."; }	
-			elseif($laptime_last_connexion <= (10 * 60))													{ $activite_perso = "vert"; 	$libelle_activite = "s'est connecté il y a moins de 10 min."; }	
+			if($laptime_last_connexion > (21 * 86400))														{ $activite_perso = "badge-inverse"; 	$libelle_activite = "ce joueur est inactif ou banni"; }	
+			elseif( ($laptime_last_connexion <= (21 * 86400)) && ($laptime_last_connexion > (1 * 86400)) )	{ $activite_perso = "badge-important"; 	$libelle_activite = "s'est connecté il y a plus d'1 jour."; }	
+			elseif( ($laptime_last_connexion <= (1 * 86400)) && ($laptime_last_connexion > (10 * 60)) )		{ $activite_perso = "badge-info"; 	$libelle_activite = "s'est connecté il y a moins d'1 jour."; }	
+			elseif($laptime_last_connexion <= (10 * 60))													{ $activite_perso = "badge-success"; 	$libelle_activite = "s'est connecté il y a moins de 10 min."; }	
 			else	
-																									{ $activite_perso = "rouge"; 	$libelle_activite = "impossible de deacute;finir l&apos;activit&eacute; de ce joueur."; }
+			{ $activite_perso = "rouge"; 	$libelle_activite = "impossible de deacute;finir l&apos;activit&eacute; de ce joueur."; }
 			if ($membre->get_hp() <= 0) { $joueur_mort = "Le personnage est mort"; } else { $joueur_mort = ""; };
 			$overlib .= "<li>$joueur_mort<br/>$libelle_activite</li><li class='overlib_infos'>(Cliquer pour plus d'information)</li>";
 			$overlib = str_replace("'", "\'", trim($overlib));
@@ -198,18 +199,26 @@ if($joueur->get_groupe() != 0)
 			if($membre->get_hp() <= 0) $image = '<img src="image/interface/mort.png" alt="M" title="Mort" style="margin-left : 1px;" /> ';
 			elseif($membre->get_id() == $groupe->get_id_leader()) $image = '<img src="image/icone/couronne.png" alt="C" title="Chef de groupe" /> ';
 			else $image = ' ';
-			echo "<li onmouseover=\"return overlib('$overlib', BGCLASS, 'overlib', BGCOLOR, '', FGCOLOR, '');\"
-					  onmouseout=\"return nd();\" 
-					  onclick=\"envoiInfo('infojoueur.php?ID=".$membre->get_id()."&amp;poscase=".$membre->poscase."', 'information');\">
+			
+
+			
+			
+			
+			echo "<li  onclick=\"envoiInfo('infojoueur.php?ID=".$membre->get_id()."&amp;poscase=".$membre->poscase."', 'information');\">
 				   <span class='joueur_groupe_ischef'>".$image."</span>
-				   <span class='joueur_groupe_activite$activite_perso'></span>
+				   <span class='joueur_groupe_activite'></span>
 				   <span class='joueur_groupe_pseudo'>".ucwords($membre->get_nom())." : </span>
-				   <span class='joueur_groupe_barre_hp'>".genere_image_hp_groupe($membre)."</span>
-				   <span class='joueur_groupe_barre_mp'>".genere_image_mp_groupe($membre)."</span>";
+				   <span class='joueur_groupe_barre_hp'><div rel='tooltip' data-placement='right' class='progress progress-danger' title='Point de vie : ".$membre->get_hp()."/".floor($membre->get_hp_maximum())."' style='height:5px;'> <div class='bar' style='width: ".($membre->get_hp()/floor($membre->get_hp_maximum())*100)."%;'></div></div></span>
+				   <span class='joueur_groupe_barre_mp'><div rel='tooltip' data-placement='right' class='progress' title='Point de magie : ".$membre->get_mp()."/".floor($membre->get_mp_maximum())."'  style='height:5px;'><div class='bar' style='width: ".($membre->get_mp()/floor($membre->get_mp_maximum())*100)."%;'></div></div></span>";
 			if ($membre->get_hp() <= 0) { echo "<span class='joueur_groupe_mort'></span>"; } 
 			echo " <div class='spacer'></div>
 				  </li>";
+			$nombre_joueur_groupe++;
 		}
+	}
+	for($i = $nombre_joueur_groupe ; $i <4 ; $i++)
+	{
+		echo "<li class='inactif'></li>";
 	}
 	echo " </ul>
 		  </div></div>";
