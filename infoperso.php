@@ -37,10 +37,10 @@ if (file_exists('root.php'))
 	
 	echo "<div id='infos_perso' style=\"background:transparent url('./image/interface/fond_info_perso_".$joueur->get_race_a().".png') 10px 10px no-repeat;\"> <div style='left: 18px;    position: absolute;    top: 75px;'>niv.".$joueur->get_level()."</div>"; 
 	echo " <div id='joueur_nom' onclick=\"envoiInfo('personnage.php', 'information');\" title=\"Accès à la fiche de votre personnage\">".$titre[0]." ".ucwords($joueur->get_grade()->get_nom())." ".ucwords($joueur->get_nom())." ".$titre[1]."</div>";
-	echo " <div id='joueur_PA' rel='tooltip' data-placement='right' class='progress progress-success' title='Point action : ".$joueur->get_pa()."/".$G_PA_max."'><div class='bar' style='width: ".($joueur->get_pa()/$G_PA_max*100)."%;'></div></div>";
 	echo " <div id='joueur_HP' rel='tooltip' data-placement='right' class='progress progress-danger' title='Point de vie : ".$joueur->get_hp()."/".floor($joueur->get_hp_maximum())."'><div class='bar' style='width: ".($joueur->get_hp()/floor($joueur->get_hp_maximum())*100)."%;'></div></div>";
 	echo " <div id='joueur_MP' rel='tooltip' data-placement='right' class='progress' title='Point de magie : ".$joueur->get_mp()."/".floor($joueur->get_mp_maximum())."'><div class='bar' style='width: ".($joueur->get_mp()/floor($joueur->get_mp_maximum())*100)."%;'></div></div>";
 	echo " <div id='joueur_XP' rel='tooltip' data-placement='right' class='progress progress-warning' title='Point Experience'><div class='bar' style='width:".progression_level(level_courant($joueur->get_exp()))."%;'></div></div>";
+	echo " <div id='joueur_PA' rel='tooltip' data-placement='right' class='progress progress-success' title='Point action : ".$joueur->get_pa()."/".$G_PA_max."'><div class='bar' style='width: ".($joueur->get_pa()/$G_PA_max*100)."%;'></div></div>";
 	echo " <div id='joueur_PO' title='Vos stars'>".$joueur->get_star()."</div>";
 	echo ' <div id="joueur_PH" title="Votre honneur : '.$joueur->get_honneur().' / Votre réputation : '.$joueur->get_reputation().'">'.$joueur->get_honneur().'</div>';
 	$script_attaque = recupaction_all($joueur->get_action_a());
@@ -90,7 +90,7 @@ if (file_exists('root.php'))
 		}
 		if(($joueur->get_grade()->get_nb_buff(true)) < 10)
 		{
-			$RqNextGrade = $db->query("SELECT * FROM grade WHERE rang > ".$joueur->get_grade()->get_rang()." ORDER BY rang ASC;");
+			$RqNextGrade = $db->query("SELECT nom,honneur,rang FROM grade WHERE rang > ".$joueur->get_grade()->get_rang()." ORDER BY rang ASC;");
 			while($objNextGrade = $db->read_object($RqNextGrade))
 			{
 				$tmp = "il faut être ".strtolower($objNextGrade->nom)." pour avoir cette case";
