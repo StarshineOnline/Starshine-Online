@@ -72,9 +72,9 @@ body { margin:0; padding:0; background:url('http://195.115.98.84/easier_v3/desig
 #joueur_PA { font-size:8pt; color:white; background:transparent; width:125px; text-align:center; position:absolute; top:40px; left:68px;height: 10px; box-shadow:0 1px 2px rgba(0, 0, 0, 0.5) inset; }
 #joueur_XP { font-size:8pt; color:white; background:transparent; width:125px; text-align:center; position:absolute; top:40px; left:200px; height: 10px;box-shadow:0 1px 2px rgba(0, 0, 0, 0.5) inset; }
 
-#joueur_PO { font-size:8pt; background:transparent url(./../image/starsv2.png) left no-repeat; width:50px; height:24px; line-height:24px; text-align:center; padding:0 0 0 24px; position:absolute; top:55px; left:68px; }
-#joueur_PH { font-size:8pt; background:transparent url(./../image/honneur.png) left no-repeat; width:50px; height:24px; line-height:24px; text-align:center; padding:0 0 0 24px; position:absolute; top:55px; left:210px; }
-#joueur_buffs_nom { position:absolute; height:42px; top: 94px; left:71px;}
+#joueur_PO { font-size:8pt; background:transparent url(./../image/starsv2.png) left no-repeat; width:50px; height:24px; line-height:24px; text-align:center; padding:0 0 0 24px; position:absolute; top:87px; left:68px; }
+#joueur_PH { font-size:8pt; background:transparent url(./../image/honneur.png) left no-repeat; width:50px; height:24px; line-height:24px; text-align:center; padding:0 0 0 24px; position:absolute; top:87px; left:210px; }
+#joueur_buffs_nom { position:absolute; height:42px; top: 63px; left:71px;}
 
 
 #joueur_Psso { cursor:pointer; background:transparent url(./../image/pointshine.png) left no-repeat; width:16px; height:16px; position:absolute; top:0; left:85px; }
