@@ -15,7 +15,7 @@ $total = 0; ///< Population totale
 while($row = $db->read_array($req))
 {
 	$total += $row['total'];
-	$tableau_race[$row['race']][1] = $row['total'];
+	$tableau_race[$row['race']][0] = $row['total'];
 	$mail .= $row['race']." - Joueurs : ".$row['total']."\n";
 }
 
@@ -24,7 +24,7 @@ $requete = "SELECT race, star FROM royaume";
 $req = $db->query($requete);
 while($row = $db->read_array($req))
 {
-	if($row['race'] != '') $tableau_race[$row['race']][0] = $row['star'];
+	if($row['race'] != '') $tableau_race[$row['race']][1] = $row['star'];
 	$mail .= " - Stars : ".$row['star']."\n";
 }
 

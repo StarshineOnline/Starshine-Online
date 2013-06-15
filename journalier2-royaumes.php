@@ -71,8 +71,8 @@ while($row = $db->read_row($req))
  * Tableau bi-dimensionnel, la première clé est la race, la deuxième un indice indexant
  * les stats à conserver :
  * <ol>
- *  <li>Stars du royaume</li>
  *  <li>Population du royaume</li>
+ *  <li>Stars du royaume</li>
  *  <li>Argent gagné par l'hotel de vente</li>
  *  <li>Argent gagné par la taverne</li>
  *  <li>Argent gagné par le forgeron</li>
