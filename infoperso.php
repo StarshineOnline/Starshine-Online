@@ -35,14 +35,13 @@ if (file_exists('root.php'))
 
 {//-- PA, HP, MP, XP, ...
 	
-	echo "<div id='infos_perso' style=\"background:transparent url('./image/interface/fond_info_perso_".$joueur->get_race_a().".png') 10px 10px no-repeat;\"> <div style='left: 18px;    position: absolute;    top: 75px;'>niv.".$joueur->get_level()."</div>"; 
+	echo "<div id='infos_perso' style=\"background:transparent url('./image/interface/fond_info_perso_".$joueur->get_race_a().".png') 13px 10px no-repeat;\"> "; 
 	echo " <div id='joueur_nom' onclick=\"envoiInfo('personnage.php', 'information');\" title=\"Accès à la fiche de votre personnage\">".$titre[0]." ".ucwords($joueur->get_grade()->get_nom())." ".ucwords($joueur->get_nom())." ".$titre[1]."</div>";
-	echo " <div id='joueur_HP' rel='tooltip' data-placement='right' class='progress progress-danger' title='Point de vie : ".$joueur->get_hp()."/".floor($joueur->get_hp_maximum())."'><div class='bar' style='width: ".($joueur->get_hp()/floor($joueur->get_hp_maximum())*100)."%;'></div></div>";
-	echo " <div id='joueur_MP' rel='tooltip' data-placement='right' class='progress' title='Point de magie : ".$joueur->get_mp()."/".floor($joueur->get_mp_maximum())."'><div class='bar' style='width: ".($joueur->get_mp()/floor($joueur->get_mp_maximum())*100)."%;'></div></div>";
-	echo " <div id='joueur_XP' rel='tooltip' data-placement='right' class='progress progress-warning' title='Point Experience'><div class='bar' style='width:".progression_level(level_courant($joueur->get_exp()))."%;'></div></div>";
-	echo " <div id='joueur_PA' rel='tooltip' data-placement='right' class='progress progress-success' title='Point action : ".$joueur->get_pa()."/".$G_PA_max."'><div class='bar' style='width: ".($joueur->get_pa()/$G_PA_max*100)."%;'></div></div>";
-	echo " <div id='joueur_PO' title='Vos stars'>".$joueur->get_star()."</div>";
-	echo ' <div id="joueur_PH" title="Votre honneur : '.$joueur->get_honneur().' / Votre réputation : '.$joueur->get_reputation().'">'.$joueur->get_honneur().'</div>';
+	echo " <div id='joueur_HP' rel='tooltip' data-placement='right' class='joueur_bulle progress progress-danger' title='Point de vie : ".$joueur->get_hp()."/".floor($joueur->get_hp_maximum())."'><div class='bar bulle' style='height: ".($joueur->get_hp()/floor($joueur->get_hp_maximum())*100)."%;'></div><div style='position:absolute;width:100%;top: 18px;'>".$joueur->get_hp()."/".floor($joueur->get_hp_maximum())."</div></div>";
+	echo " <div id='joueur_MP' rel='tooltip' data-placement='right' class='joueur_bulle progress' title='Point de magie : ".$joueur->get_mp()."/".floor($joueur->get_mp_maximum())."'><div class='bar bulle' style='height: ".($joueur->get_mp()/floor($joueur->get_mp_maximum())*100)."%;'></div><div style='position:absolute;width:100%;top: 18px;'>".$joueur->get_mp()."/".floor($joueur->get_mp_maximum())."</div></div>";
+	echo " <div id='joueur_XP' rel='tooltip' data-placement='right' class='joueur_bulle progress progress-warning' title='Point Experience'><div class='bar bulle' style='height:".progression_level(level_courant($joueur->get_exp()))."%;'></div><div style='position:absolute;width:100%;top: 18px;'>niv.".$joueur->get_level()."</div></div>";
+	echo " <div id='joueur_PA' rel='tooltip' data-placement='right' class='joueur_bulle progress progress-success' title='Point action : ".$joueur->get_pa()."/".$G_PA_max."'><div class='bar bulle' style='height: ".($joueur->get_pa()/$G_PA_max*100)."%;'></div><div style='position:absolute;width:100%;top: 18px;'>".$joueur->get_pa()."/".$G_PA_max."</div></div>";
+	echo ' <div id="joueur_PH" title="Votre honneur : '.$joueur->get_honneur().' / Votre réputation : '.$joueur->get_reputation().'">'.$joueur->get_honneur().'<br />'.$joueur->get_reputation().'</div>';
 	$script_attaque = recupaction_all($joueur->get_action_a());
 	//-- Index, Forums, Exit, Options
 
@@ -205,11 +204,28 @@ if($joueur->get_groupe() != 0)
 			
 			
 			echo "<li  onclick=\"envoiInfo('infojoueur.php?ID=".$membre->get_id()."&amp;poscase=".$membre->poscase."', 'information');\">
-				   <span class='joueur_groupe_ischef'>".$image."</span>
 				   <span class='joueur_groupe_activite'></span>
-				   <span class='joueur_groupe_pseudo'>".ucwords($membre->get_nom())." : </span>
+				   <span class='joueur_groupe_pseudo'>".ucwords($membre->get_nom())." - Distance ".$membre->pospita."</span>
 				   <span class='joueur_groupe_barre_hp'><div rel='tooltip' data-placement='right' class='progress progress-danger' title='Point de vie : ".$membre->get_hp()."/".floor($membre->get_hp_maximum())."' style='height:5px;'> <div class='bar' style='width: ".($membre->get_hp()/floor($membre->get_hp_maximum())*100)."%;'></div></div></span>
 				   <span class='joueur_groupe_barre_mp'><div rel='tooltip' data-placement='right' class='progress' title='Point de magie : ".$membre->get_mp()."/".floor($membre->get_mp_maximum())."'  style='height:5px;'><div class='bar' style='width: ".($membre->get_mp()/floor($membre->get_mp_maximum())*100)."%;'></div></div></span>";
+				echo "<div style=' bottom: 1px;    left: 1px;    position: absolute;'>";
+				foreach($membre->get_buff() as $buff)
+				{
+					if($buff->get_debuff() == 0)
+					{
+						 echo "<img src='image/buff/".$buff->get_type()."_p.png' style='margin:0px 2px;' alt='".$buff->get_type()."' />";
+					}
+				}
+				foreach($membre->get_buff() as $debuff)
+				{
+					if($debuff->get_debuff() == 1)
+					{
+						echo  "<img src='image/buff/".$debuff->get_type()."_p.png' style='margin:0px 2px;' alt='".$debuff->get_type()."' />";
+					}
+				}
+				echo "</div>";
+
+			
 			if ($membre->get_hp() <= 0) { echo "<span class='joueur_groupe_mort'></span>"; } 
 			echo " <div class='spacer'></div>
 				  </li>";

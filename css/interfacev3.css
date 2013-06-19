@@ -67,16 +67,31 @@ body { margin:0; padding:0; background:url('http://195.115.98.84/easier_v3/desig
 
 /*-- Infos perso ------------------------------------------------------*/
 #infos_perso { float:left;  width:325px; height:100px; position:relative; }
-#joueur_HP { font-size:8pt; color:white; background:transparent; width:125px; text-align:center; position:absolute; top:25px; left:68px;height: 10px;box-shadow:0 1px 2px rgba(0, 0, 0, 0.5) inset; }
-#joueur_MP { font-size:8pt; color:white; background:transparent; width:125px; text-align:center; position:absolute; top:25px; left:200px; height: 10px;box-shadow:0 1px 2px rgba(0, 0, 0, 0.5) inset; }
-#joueur_PA { font-size:8pt; color:white; background:transparent; width:125px; text-align:center; position:absolute; top:40px; left:68px;height: 10px; box-shadow:0 1px 2px rgba(0, 0, 0, 0.5) inset; }
-#joueur_XP { font-size:8pt; color:white; background:transparent; width:125px; text-align:center; position:absolute; top:40px; left:200px; height: 10px;box-shadow:0 1px 2px rgba(0, 0, 0, 0.5) inset; }
+.joueur_barre { height: 12px; font-size:10px !important; color:white; background:transparent; width:125px; text-align:center; position:absolute;box-shadow:0 1px 2px rgba(0, 0, 0, 0.5) inset;}
+.joueur_bulle { height: 50px; font-size:10px !important; color:white; background:transparent; width:50px; text-align:center; position:absolute;box-shadow:0 1px 2px rgba(0, 0, 0, 0.5) inset;border-radius: 50%;border: 1px solid #888888;}
+
+#joueur_HP {  top:25px;left:68px;}
+#joueur_MP { top:25px; left:125px;  }
+
+#joueur_PA {  top:25px; left:182px; }
+#joueur_XP {  top:25px; left:239px;  }
 
 #joueur_PO { font-size:8pt; background:transparent url(./../image/starsv2.png) left no-repeat; width:50px; height:24px; line-height:24px; text-align:center; padding:0 0 0 24px; position:absolute; top:87px; left:68px; }
-#joueur_PH { font-size:8pt; background:transparent url(./../image/honneur.png) left no-repeat; width:50px; height:24px; line-height:24px; text-align:center; padding:0 0 0 24px; position:absolute; top:87px; left:210px; }
-#joueur_buffs_nom { position:absolute; height:42px; top: 63px; left:71px;}
+#joueur_PH { background:transparent url(./../image/honneur.png) left no-repeat; 
+font-size: 10px;
+    height: 24px;
+    left: 2px;
+    padding: 0 0 0 18px;
+    position: absolute;
+    text-align: center;
+    top: 77px;
+    width: 46px; }
+#joueur_buffs_nom { position:absolute; height:42px; top: 86px; left:71px;}
 
-
+.bulle {bottom: 0;
+   
+    position: absolute;
+    width: 100% !important;}
 #joueur_Psso { cursor:pointer; background:transparent url(./../image/pointshine.png) left no-repeat; width:16px; height:16px; position:absolute; top:0; left:85px; }
 #joueur_LV { width:24px; height:24px; text-align:center; line-height:24px; font-size:8pt; font-weight:bold; background:transparent url(./../image/LV.png) left no-repeat; }
 #joueur_onglets { position:absolute; left:88px; top:65px; width:225px; padding:0 0 0 10px; }
@@ -85,7 +100,7 @@ body { margin:0; padding:0; background:url('http://195.115.98.84/easier_v3/desig
 #joueur_nom { position:relative; margin-left:62px; position:relative; text-align:left; width:210px; margin-top:5px; cursor:pointer; left:7px;}
 #joueur_type { position:relative; width:210px; float:left; text-align:left; font-size:8pt; height:12px; }
 #buff_list { position:relative; text-align:center; ;  }
-#debuff_list { position:relative; text-align:center; width:210px;  }
+#debuff_list { position:relative; text-align:center; width:210px;margin-top: 6px;  }
 .joueur_groupe_activitenoir,.joueur_groupe_activiterouge,.joueur_groupe_activitebleu,.joueur_groupe_activitevert { margin:0; float:left; width:11px; height:11px; margin:2px; }
 .joueur_groupe_activitenoir { background:transparent url(../image/groupes/noir.png) center; }
 .joueur_groupe_activiterouge { background:transparent url(../image/groupes/rouge.png) center; }
@@ -110,7 +125,7 @@ body { margin:0; padding:0; background:url('http://195.115.98.84/easier_v3/desig
 #info_groupe:hover { background-position:top; }
 #info_groupe:active { background-position:bottom; }
 #joueur_groupe li { cursor:pointer; font-size:8pt; padding:0 0 2px;background:  rgba(255, 255, 255, 0.2);
-    border: 1px solid #BBBBBB;
+    border: 1px solid #BBBBBB;position: relative;
     border-radius: 2px; margin:2px;float:left;height:45px;width:200px; }
 #joueur_groupe .inactif { background:  rgba(0, 0, 0, 0.2);}
 .joueur_groupe_pseudo { float:left; line-height:16px; width:125px; }
