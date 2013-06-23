@@ -183,8 +183,9 @@ class royaume
       while( $row = $db->read_array($res) )
       {
         $ref_actifs *= $row['tot'];
+        $min = $row['tot'];
       }
-      $ref_actifs = (pow($ref_actifs, 1/11) + $row['tot'])/2;
+      $ref_actifs = (pow($ref_actifs, 1/11) + $min)/2;
     }
     $facteur = $this->get_habitants_actif() / $ref_actifs;
     if( $facteur < .3 ) $facteur = .3;

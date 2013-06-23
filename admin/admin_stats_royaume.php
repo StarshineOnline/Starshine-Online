@@ -51,17 +51,17 @@ else
       <option value="17">coûts des quêtes achetées</option>
       <option value="18">Pierre gagnée</option>
       <option value="19">Bois gagné</option>on>
-      <option value="21">Eau gagnée</option>
-      <option value="22">Sable gagné</option>
-      <option value="23">Charbon gagné</option>
-      <option value="24">Essence gagnée</option>
-      <option value="25">Routes</option>
-      <option value="26">Nourrituregagnée</option>
-      <option value="27">Très actifs</option>
-      <option value="28">Facteur d'entretien actuel</option>
-      <option value="29">Facteur d'entretien théorique</option>
-      <option value="30">Consommation de nouriture actuelle</option>
-      <option value="31">Consommation de nouriture théorique</option>
+      <option value="20">Eau gagnée</option>
+      <option value="21">Sable gagné</option>
+      <option value="22">Charbon gagné</option>
+      <option value="23">Essence gagnée</option>
+      <option value="24">Routes</option>
+      <option value="25">Nourrituregagnée</option>
+      <option value="26">Très actifs</option>
+      <option value="27">Facteur d'entretien actuel</option>
+      <option value="28">Facteur d'entretien théorique</option>
+      <option value="29">Consommation de nouriture actuelle</option>
+      <option value="30">Consommation de nouriture théorique</option>
     </select>
     <input type="submit" value="Afficher"/>
   </form>
@@ -108,46 +108,14 @@ else
       $color['humain'] = array(0, 0, 255);
       $color['elfehaut'] = array(170, 170, 170);
       $color['vampire'] = array(130, 30, 130);
-  	  $graph = new Graph(700, 400/*, "auto"*/);
-      //$graph->SetScale('textint');
-      $graph->SetScale('intint');
+  	  $graph = new Graph(700, 400);
+      $graph->SetScale('textint');
       $z = 0;
       foreach($races as $r)
       {
         $lineplot = new LinePlot($data[$r]);
-      		/*$DataSet->AddPoint($data[$r], $Gtrad[$r]);
-      		$graph->setColorPalette($z, $color[$r][0], $color[$r][1], $color[$r][2])*/;
-        //$graph->SetColor($color[$r]);
         $graph->Add($lineplot);
       }
-    	/*$DataSet->AddAllSeries();
-    	$DataSet->AddPoint($dates, "dates");
-    	$DataSet->SetAbsciseLabelSerie("dates");*/
-
-    	//Graph
-    	/*$graph->setFontProperties($root."pChart/fonts/tahoma.ttf",8);
-    	$graph->setGraphArea(50,30,730,375);
-    	$graph->drawFilledRoundedRectangle(7,7,743,393,5,240,240,240);
-    	$graph->drawRoundedRectangle(5,5,745,395,5,230,230,230);
-    	$graph->drawGraphArea(200,200,200);
-    	$graph->drawScale($DataSet->GetData(),$DataSet->GetDataDescription(),SCALE_NORMAL,150,150,150,TRUE,0,2);
-    	$graph->drawGrid(4,TRUE,230,230,230);*/
-
-    	// Draw the 0 line
-    	/*$graph->setFontProperties($root."pChart/fonts/tahoma.ttf",6);
-    	$graph->drawTreshold(0,143,55,72,TRUE,TRUE);*/
-
-
-    	// Draw the cubic curve graph
-    	//$graph->drawCubicCurve($DataSet->GetData(),$DataSet->GetDataDescription());
-
-    	// Finish the graph
-    	/*$graph->setFontProperties($root."pChart/fonts/tahoma.ttf",8);
-    	$graph->drawLegend(650,30,$DataSet->GetDataDescription(),235,235,235);
-    	$graph->setFontProperties($root."pChart/fonts/tahoma.ttf",12);
-    	$graph->drawTitle(50,22,'Evolution du nombre de stars par royaume (moyenne sur 5 jours) - Graph '.($i + 1),50,50,50,585);
-    	$graph->Render($root.'images/stat.png');*/
-      //$graph->xaxis->SetTickLabels($dates);
       $img = 'images/stat.jpg';
       if(file_exists($img))
         unlink($img);
