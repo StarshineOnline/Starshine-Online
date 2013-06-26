@@ -319,7 +319,7 @@ class groupe
 		return $this->lvl;
 	}
 	
-	function get_share_xp($pos = false)
+	function get_share_xp($pos = false, $niv_adv=1)
 	{
 		if(!isset($this->membre_joueur)) $this->get_membre_joueur();
 		$this->share_xp = 0;
@@ -328,7 +328,7 @@ class groupe
 			$distance = calcul_distance_pytagore($pos, $membre->get_pos());
 			if($distance <= 10)
 			{
-				$share_xp = 100 * $membre->get_level();
+				$share_xp = 100 * min($membre->get_level(), $niv_adv) / max($membre->get_level(), $niv_adv);
 			}
 			else
 			{
