@@ -39,7 +39,7 @@ if (file_exists('root.php'))
 	echo " <div id='joueur_nom' onclick=\"envoiInfo('personnage.php', 'information');\" title=\"Accès à la fiche de votre personnage\">".$titre[0]." ".ucwords($joueur->get_grade()->get_nom())." ".ucwords($joueur->get_nom())." ".$titre[1]."</div>";
 	echo " <div id='joueur_HP' rel='tooltip' data-placement='right' class='joueur_bulle progress progress-danger' title='Point de vie : ".$joueur->get_hp()."/".floor($joueur->get_hp_maximum())."'><div class='bar bulle' style='height: ".($joueur->get_hp()/floor($joueur->get_hp_maximum())*100)."%;'></div><div style='position:absolute;width:100%;top: 18px;'>".$joueur->get_hp()."/".floor($joueur->get_hp_maximum())."</div></div>";
 	echo " <div id='joueur_MP' rel='tooltip' data-placement='right' class='joueur_bulle progress' title='Point de magie : ".$joueur->get_mp()."/".floor($joueur->get_mp_maximum())."'><div class='bar bulle' style='height: ".($joueur->get_mp()/floor($joueur->get_mp_maximum())*100)."%;'></div><div style='position:absolute;width:100%;top: 18px;'>".$joueur->get_mp()."/".floor($joueur->get_mp_maximum())."</div></div>";
-	echo " <div id='joueur_XP' rel='tooltip' data-placement='right' class='joueur_bulle progress progress-warning' title='Point Experience'><div class='bar bulle' style='height:".progression_level(level_courant($joueur->get_exp()))."%;'></div><div style='position:absolute;width:100%;top: 18px;'>niv.".$joueur->get_level()."</div></div>";
+	echo " <div id='joueur_XP' rel='tooltip' data-placement='right' class='joueur_barre progress progress-warning' title='Point Experience'><div class='bar bulle' style='height:".progression_level(level_courant($joueur->get_exp()))."%;'></div></div>";
 	echo " <div id='joueur_PA' rel='tooltip' data-placement='right' class='joueur_bulle progress progress-success' title='Point action : ".$joueur->get_pa()."/".$G_PA_max."'><div class='bar bulle' style='height: ".($joueur->get_pa()/$G_PA_max*100)."%;'></div><div style='position:absolute;width:100%;top: 18px;'>".$joueur->get_pa()."/".$G_PA_max."</div></div>";
 	echo ' <div id="joueur_PH" title="Votre honneur : '.$joueur->get_honneur().' / Votre réputation : '.$joueur->get_reputation().'">'.$joueur->get_honneur().'<br />'.$joueur->get_reputation().'</div>';
 	$script_attaque = recupaction_all($joueur->get_action_a());
@@ -130,6 +130,24 @@ if (file_exists('root.php'))
 
 		  echo "</div>";
 	echo "</div>";
+
+
+}
+// Autre
+{
+
+		$script_attaque = recupaction_all($joueur->get_action_a());
+		$script_defense = recupaction_all($joueur->get_action_d());
+		echo $script_attaque['nom'];
+		$joueur->get_arme();
+		//echo $joueur->arme['image'];
+		echo "<img src='image/arme/arme".$joueur->arme->id.".png' />";
+		
+		$x = ($joueur->get_x() - 1) * 3;
+		$y = ($joueur->get_y() - 1) * 3;
+		
+		echo "<div style='background:url(carte_perso.php);width:80px;height:80px;position:absolute;left:300px;background-size: 400% 400%;background-position: -".$joueur->get_x()."px ".$joueur->get_y()."px' class='img-circle'></div>";
+	
 }
 if($joueur->get_groupe() != 0)
 {//-- Affichage du groupe si le joueur est groupé
