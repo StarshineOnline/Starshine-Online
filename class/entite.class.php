@@ -669,6 +669,7 @@ class entite extends placable
 	protected $potentiel_bloquer;  ///< Potentiel bloquer
 	protected $potentiel_critique;  ///< Potentiel critique physique
 	protected $potentiel_magique;  ///< Potentiel lancer magique
+	protected $potentiel_toucher_magique;  ///< Potentiel toucher magique
 	protected $potentiel_parer_magique;  ///< Potentiel parer magique
 	protected $comp_att;       ///< Coméptence utilisé pour attaquer
 	/// Renvoie le contenu du script de combat utilisé
@@ -877,6 +878,26 @@ class entite extends placable
 	function set_potentiel_lancer_magique($valeur)
 	{
     $this->potentiel_magique = $valeur;
+	}
+	/**
+	 * Calcul et renvoie le potentiel toucher magique
+	 * @param $comp_assoc  Coméptence associé au sort
+	 */
+	function get_potentiel_toucher_magique($comp_assoc)
+	{
+    if( isset($this->potentiel_toucher_magique) && $this->potentiel_toucher_magique )
+      return $this->potentiel_toucher_magique;
+
+    $this->potentiel_toucher_magique;
+  	return $this->potentiel_toucher_magique;
+	}
+	/**
+	 * Modifie le potentiel toucher magique en le multipliant
+	 * @param $comp_assoc  Coméptence associé au sort
+	 */
+	function mult_potentiel_toucher_magique($valeur)
+	{
+    $this->potentiel_toucher_magique *= $valeur;
 	}
   /**
    * Calcul et renvoie le potentiel parer physique
