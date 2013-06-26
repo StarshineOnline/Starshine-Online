@@ -3237,7 +3237,7 @@ class perso extends entite
 			if($ennemi->get_groupe() > 0)
 			{
 				$groupe = new groupe($ennemi->get_groupe());
-				$groupe->get_share_xp($ennemi->get_pos());
+				$groupe->get_share_xp($ennemi->get_pos(), $this->level());
 				//Si on tape un joueur de son groupe xp = 0
 				foreach($groupe->membre_joueur as $membre_id)
 				{
