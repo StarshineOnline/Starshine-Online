@@ -321,8 +321,8 @@ class sort_combat extends sort
     /*foreach($effets as $effet)
       $effet->inflige_degats_magiques($actif, $passif, $degats, $this->get_type());*/
     $attaque->applique_effet('inflige_degats_magiques');
-		echo '&nbsp;&nbsp;<span class="degat"><strong>'.$actif->get_nom().'</strong> inflige <strong>'.$degats.'</strong> dégâts avec '.$this->get_nom().'</span><br />';
     $degats = $attaque->get_degats();
+    echo '&nbsp;&nbsp;<span class="degat"><strong>'.$actif->get_nom().'</strong> inflige <strong>'.$degats.'</strong> dégâts avec '.$this->get_nom().'</span><br />';
     //$log_combat .= "~".$degats;
     $attaque->add_log_combat('~'.$degats);
     $passif->set_hp($passif->get_hp() - $degats);
