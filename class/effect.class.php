@@ -659,19 +659,19 @@ class ensable extends etat {
 		}
 	}
 
-  function debut_round(/*&$actif, &$passif*/&$attaque) {
+  /*function debut_round(&$attaque) {
     $actif = $attaque->get_actif();
     $this->debug($actif->get_nom().' est ensablé');
     $actif->set_potentiel_toucher( $actif->get_potentiel_toucher() / (1 + ($this->effet / 100)) );
     $actif->set_potentiel_lancer_magique( $actif->get_potentiel_lancer_magique() / (1 + $this->effet/100) );
-	}
+	}*/
 
-	/*function calcul_attaque_magique(/*&$actif, &$passif, $att*//*&$attaque) {
-    $actif->get_actif();
+	function calcul_attaque_magique(&$attaque) {
+    $actif = $attaque->get_actif();
     $this->debug($actif->get_nom().' est ensablé');
     //return $att / (1 + ($this->effet / 100));
     $actif->set_potentiel_lancer_magique( $actif->get_potentiel_lancer_magique() / (1 + $this->effet/100) );
-  }*/
+  }
 }
 
 /**
@@ -694,10 +694,15 @@ class debilitant extends etat {
 
 
   /// Action a effectuer en début de round
-  function debut_round(/*&$actif, &$passif*/&$attaque)
+  /*function debut_round(&$attaque)
   {
     $actif = $attaque->get_actif();
-    $actif->set_potentiel_lancer_magique( $actif->get_potentiel_lancer_magique / (1 + ($this->effet / 100)) );
+    $actif->set_potentiel_lancer_magique( $actif->get_potentiel_lancer_magique() / (1 + ($this->effet / 100)) );
+  }*/
+
+	function calcul_attaque_magique(&$attaque) {
+    $actif = $attaque->get_actif();
+    $actif->set_potentiel_lancer_magique( $actif->get_potentiel_lancer_magique() / (1 + $this->effet/100) );
   }
 
   function fin_round(/*&$actif, &$passif, $mode*/&$attaque)

@@ -86,4 +86,19 @@ function __autoload($class_name)
 // Fabrique de l'interface
 $interf = interf_factory::factory();
 
+
+function fin_script()
+{
+  global $_SESSION;
+  $err = error_get_last();
+  if( $err['type'] & (E_ERROR | E_RECOVERABLE_ERROR) )
+  {
+		$log = new log_admin();
+		$log->send($_SESSION['ID'], 'bug', $err['message'].' ('.$err['file'].' : '.$err['line'].')');
+    echo '<h5>Une erreur a causé l\'arrêt du script. L\'erreur a été enregistré et pourra être consulté par les dévelopeurs.</h5>';
+  }
+}
+
+register_shutdown_function('fin_script');
+
 ?>
