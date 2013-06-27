@@ -514,8 +514,8 @@ class fleche_poison extends comp_comb {
 	}
 
   function inflige_degats(/*&$actif, &$passif, $degats*/&$attaque) {
-    $pot_att = $attaque->get_actif->get_force() + $this->effet;
-    $pot_def = $attaque->get_passif->get_volonte();
+    $pot_att = $attaque->get_actif()->get_force() + $this->effet;
+    $pot_def = $attaque->get_passif()->get_volonte();
     $de_att = rand(0, $pot_att);
     $de_deff = rand(0, $pot_def);
     $this->debug("Poison: dé de $pot_att doit être supérieur à dé de $pot_def");
