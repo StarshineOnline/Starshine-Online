@@ -459,7 +459,7 @@ class perte_hp extends etat
 		}
 	}
 
-  function fin_round(/*&$actif, &$passif, $mode*/)
+  function fin_round(/*&$actif, &$passif, $mode*/&$attaque)
   {
     global $log_effects_attaquant;
     $actif = $attaque->get_actif();
@@ -486,7 +486,7 @@ class empoisonne extends effect {
 			$effects[] = new empoisonne($actif->etat['empoisonne']['effet']);
 	}
 
-  function fin_round(/*&$actif, &$passif, $mode*/)
+  function fin_round(/*&$actif, &$passif, $mode*/&$attaque)
   {
     $actif = $attaque->get_actif();
 		$this->hit($actif->get_nom().' perd '.$this->vigueur.' HP à cause du poison');
