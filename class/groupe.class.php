@@ -297,25 +297,26 @@ class groupe
  	*/
 	function get_level()
 	{
-		$level_groupe = 0;
-		$somme_groupe = 0;
+		/*$level_groupe = 0;
+		$somme_groupe = 0;*/
 		$somme_groupe_carre = 0;
-		$niveau = 0;
+		//$niveau = 0;
 		$i = 0;
 		$membre_groupe = $this->get_membre_joueur();
 		$count = count($membre_groupe);
 		while($i < $count)
 		{
 			$niveau = $membre_groupe[$i]->get_level();
-			$somme_groupe += $niveau;
+			//$somme_groupe += $niveau;
 			$somme_groupe_carre += $niveau * $niveau;
-			$group[] = $niveau;
+			//$group[] = $niveau;
 			$i++;
 		}
 		
-		$max_groupe = max($group);
+		/*$max_groupe = max($group);
 		$moy_groupe = ($somme_groupe - $max_groupe) / count($group);
-		$this->lvl = $max_groupe + ceil(($somme_groupe_carre) / ($max_groupe * 25)) + 1;
+		$this->lvl = $max_groupe + ceil(($somme_groupe_carre) / ($max_groupe * 25)) + 1;*/
+		$this->lvl = round(sqrt($somme_groupe_carre / $count));
 		return $this->lvl;
 	}
 	
