@@ -35,7 +35,7 @@ if (file_exists('root.php'))
 
 {//-- PA, HP, MP, XP, ...
 	
-	echo "<div id='infos_perso' style=\"background:transparent url('./image/interface/fond_info_perso_".$joueur->get_race_a().".png') 13px 10px no-repeat;\"> "; 
+	echo "<div id='infos_perso' style=\"background:transparent url('./image/interface/fond_info_perso_".$joueur->get_race_a().".png') 8px 10px no-repeat;\"> "; 
 	echo " <div id='joueur_nom' onclick=\"envoiInfo('personnage.php', 'information');\" title=\"Accès à la fiche de votre personnage\">".$titre[0]." ".ucwords($joueur->get_grade()->get_nom())." ".ucwords($joueur->get_nom())." ".$titre[1]."</div>";
 	echo " <div id='joueur_HP' rel='tooltip' data-placement='right' class='joueur_bulle progress progress-danger' title='Point de vie : ".$joueur->get_hp()."/".floor($joueur->get_hp_maximum())."'><div class='bar bulle' style='height: ".($joueur->get_hp()/floor($joueur->get_hp_maximum())*100)."%;'></div><div style='position:absolute;width:100%;top: 18px;'>".$joueur->get_hp()."/".floor($joueur->get_hp_maximum())."</div></div>";
 	echo " <div id='joueur_MP' rel='tooltip' data-placement='right' class='joueur_bulle progress' title='Point de magie : ".$joueur->get_mp()."/".floor($joueur->get_mp_maximum())."'><div class='bar bulle' style='height: ".($joueur->get_mp()/floor($joueur->get_mp_maximum())*100)."%;'></div><div style='position:absolute;width:100%;top: 18px;'>".$joueur->get_mp()."/".floor($joueur->get_mp_maximum())."</div></div>";
@@ -138,15 +138,15 @@ if (file_exists('root.php'))
 
 		$script_attaque = recupaction_all($joueur->get_action_a());
 		$script_defense = recupaction_all($joueur->get_action_d());
-		echo $script_attaque['nom'];
+		echo "<span style=' font-size: 11px;    left: 310px;    position: absolute;    top: 20px;'>".$script_attaque['nom']."</span>";
 		$joueur->get_arme();
 		//echo $joueur->arme['image'];
-		echo "<img src='image/arme/arme".$joueur->arme->id.".png' />";
+		echo "<img src='image/arme/arme".$joueur->arme->id.".png' style=' left: 260px;    position: absolute;    top: 12px;'/>";
 		
 		$x = ($joueur->get_x() - 1) * 3;
 		$y = ($joueur->get_y() - 1) * 3;
 		
-		echo "<div style='background:url(carte_perso.php);width:80px;height:80px;position:absolute;left:300px;background-size: 400% 400%;background-position: -".$joueur->get_x()."px ".$joueur->get_y()."px' class='img-circle'></div>";
+		echo "<div style='background:url(carte_perso.php);width:80px;height:80px;position:absolute;left:450px;top:20px;background-size: 400% 400%;background-position: -".$joueur->get_x()."px ".$joueur->get_y()."px' class='img-circle'></div>";
 	
 }
 if($joueur->get_groupe() != 0)
@@ -220,12 +220,12 @@ if($joueur->get_groupe() != 0)
 
 			
 			
-			
+			if($membre->pospita>7){$nom_joueur = "<em style='color:#777;'>".ucwords($membre->get_nom())."</em>";}else{$nom_joueur = ucwords($membre->get_nom());}
 			echo "<li  onclick=\"envoiInfo('infojoueur.php?ID=".$membre->get_id()."&amp;poscase=".$membre->poscase."', 'information');\">
 				   <span class='joueur_groupe_activite'></span>
-				   <span class='joueur_groupe_pseudo'>".ucwords($membre->get_nom())." - Distance ".$membre->pospita."</span>
-				   <span class='joueur_groupe_barre_hp'><div rel='tooltip' data-placement='right' class='progress progress-danger' title='Point de vie : ".$membre->get_hp()."/".floor($membre->get_hp_maximum())."' style='height:5px;'> <div class='bar' style='width: ".($membre->get_hp()/floor($membre->get_hp_maximum())*100)."%;'></div></div></span>
-				   <span class='joueur_groupe_barre_mp'><div rel='tooltip' data-placement='right' class='progress' title='Point de magie : ".$membre->get_mp()."/".floor($membre->get_mp_maximum())."'  style='height:5px;'><div class='bar' style='width: ".($membre->get_mp()/floor($membre->get_mp_maximum())*100)."%;'></div></div></span>";
+				   <span class='joueur_groupe_pseudo'>$nom_joueur</span>
+				   <div rel='tooltip' data-placement='right' class='joueur_groupe_barre_hp progress progress-danger' title='Point de vie : ".$membre->get_hp()."/".floor($membre->get_hp_maximum())."' > <div class='bar bulle' style='height: ".($membre->get_hp()/floor($membre->get_hp_maximum())*100)."%;'></div></div>
+				   <div rel='tooltip' data-placement='right' class='joueur_groupe_barre_mp progress' title='Point de magie : ".$membre->get_mp()."/".floor($membre->get_mp_maximum())."' ><div class='bar bulle' style='height: ".($membre->get_mp()/floor($membre->get_mp_maximum())*100)."%;'></div></div>";
 				echo "<div style=' bottom: 1px;    left: 1px;    position: absolute;'>";
 				foreach($membre->get_buff() as $buff)
 				{
