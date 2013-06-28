@@ -376,12 +376,12 @@ class sort_combat extends sort
 
     $get_carac_assoc = 'get_'.$this->get_carac_assoc();
     $de_degat = $this->calcule_des($actif->$get_carac_assoc(), $degat);
-    $degat = $this->lance_des($de_degat);
-    $degat = $this->critiques($attaque);
+    $attaque->set_degats( $this->lance_des($de_degat) );
+    $this->critiques($attaque);
     //Diminution des dégâts grâce à l'armure magique
     $reduction = $this->calcul_pp(($passif->get_pm() * $passif->get_puissance()) / 12);
-    $degat_avant = $degat;
-    $degat = round($degat * $reduction);
+    $degat_avant = $attaque->get_degats();
+    $degat = round($degat_avant * $reduction);
     if($degat < $degat_avant)
       echo '&nbsp;&nbsp;<span class="small">(Réduction de '.($degat_avant - $degat).' dégâts par la PM)</span><br />';
 
@@ -621,10 +621,10 @@ class sort_combat_drain extends sort_combat
   function touche(/*&$actif, &$passif, &$effets*/&$attaque)
   {
     $actif = &$attaque->get_actif();
-		$degats = parent::touche($attaque);
+		parent::touche($attaque);
 		if ($attaque->get_passif()->get_type() != 'batiment')
 		{
-      $drain = round($degats * $this->drain);
+      $drain = round($attaque->get_degats() * $this->drain);
       echo 'Et gagne <strong>'.$drain.'</strong> hp grâce au drain<br />';
       $actif->set_hp($actif->get_hp() + $drain);
 			// On vérifie que le personnage n'a pas plus de HP que son maximum
