@@ -327,13 +327,14 @@ class groupe
 		foreach($this->membre_joueur as $membre)
 		{
 			$distance = calcul_distance_pytagore($pos, $membre->get_pos());
+			$ratio = min(3+$membre->get_level(), 3+$niv_adv) / max(3+$membre->get_level(), 3+$niv_adv);
 			if($distance <= 10)
 			{
-				$share_xp = 100 * min($membre->get_level(), $niv_adv) / max($membre->get_level(), $niv_adv);
+				$share_xp = 100 * $ratio;
 			}
 			else
 			{
-				$tmp = (100 - $distance * 2) * $membre->get_level();
+				$tmp = (100 - $distance * 2) * $ratio;
 				$share_xp = (($tmp) > 0 ? $tmp : 0);
 			}
 			$membre->share_xp = $share_xp;
