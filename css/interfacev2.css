@@ -172,11 +172,11 @@ body { margin:0; padding:0; background:#7e909c url(../image/v2/bg_site.png) repe
 .map li,.mapl li { float:left; width:60px; height:inherit; cursor:pointer; }
 .map_bord_gauche { width:20px!important; color:white; line-height:60px; text-align:center; padding-bottom:0; cursor:default!important; }
 .map_bord_gauche2 { width:20px!important; color:white; line-height:60px; text-align:center; padding-bottom:0; }
-.map_contenu { width:56px; height:56px; margin:2px; background:transparent url(image/pixel.gif) center no-repeat; }
+.map_contenu { width:56px; height:56px; margin:2px; background:transparent url(../image/pixel.gif) center no-repeat; }
 .low_resolution { width:20px!important; height:20px!important; font-size:.8em; line-height:20px!important; }
 
 /*-- Weather ----------------------------------------------------------*/
-#moment_jour { position:absolute; top:0; left:0; z-index:-1; width:960px; height:140px; background:transparent url(image/weather/matin5.jpg) bottom center no-repeat; }
+#moment_jour { position:absolute; top:0; left:0; z-index:-1; width:960px; height:140px; background:transparent url(../image/weather/matin5.jpg) bottom center no-repeat; }
 
 /*-- Ville ------------------------------------------------------------*/
 .ville_message { width:100%; text-align:center; }

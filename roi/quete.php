@@ -63,7 +63,7 @@ elseif($_GET['action'] == 'voir')
         switch($qid[0])
         {
         case 'q':
-  				$requete = "SELECT nom FROM quete WHERE id = ".$qid;
+  				$requete = "SELECT nom FROM quete WHERE id = ".$val;
   				$qreq = $db->query($requete);
   				$qrow = $db->read_assoc($qreq);
   				?>

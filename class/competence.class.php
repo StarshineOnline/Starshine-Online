@@ -382,8 +382,8 @@ class botte_crabe extends botte
 	}*/
 
   function inflige_degats(/*&$actif, &$passif, $degats*/&$attaque) {
-    $actif = $attaque->get_actif();
-		if ($this->peut_agir($actif, 'esquive')) {
+    $passif = $attaque->get_passif();
+		if ($this->peut_agir($attaque->get_actif(), 'esquive')) {
 			if ( comp_sort::test_de(100, $this->effet) ) {
 				$passif->etat['desarme']['effet'] = true;
 				$passif->etat['desarme']['duree'] = $this->effet2;

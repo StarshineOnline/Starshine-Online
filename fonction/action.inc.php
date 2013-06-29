@@ -22,9 +22,9 @@ if (file_exists('../root.php'))
  * @return [1] ID d la compétence ou du sort.
  * @return [2] Pesonnage (paramètre $joueur auquel on a incrémenté le compteur d'utilisation de l'action à effectuer).   
  */
-function script_action($joueur, $ennemi, $mode, &$effects)
+function script_action($joueur, $ennemi, $mode, &$attaque)
 {
-	$effectue = sub_script_action($joueur, $ennemi, $mode, $effects);
+	$effectue = sub_script_action($joueur, $ennemi, $mode, $attaque);
 	switch ($effectue[0])
 	{
 	case 'attaque':
@@ -106,7 +106,7 @@ function get_array_condition($valeur) {
  * @return [1] ID d la compétence ou du sort.
  * @return [2] Pesonnage (paramètre $joueur auquel on a incrémenté le compteur d'utilisation de l'action à effectuer).  
  */   
-function sub_script_action($joueur, $ennemi, $mode, &$effects)
+function sub_script_action($joueur, $ennemi, $mode, &$attaque)
 {
 	global $db, $round, $Trace, $debugs, $log_combat;
 	$stop = false;
@@ -372,8 +372,9 @@ function sub_script_action($joueur, $ennemi, $mode, &$effects)
 							}
 
               /* Application des effets de mana */
-              foreach ($effects as $effect)
-                $mp_need = $effect->calcul_mp($actif, $mp_need);
+              /*foreach ($effects as $effect)
+                $mp_need = $effect->calcul_mp($actif, $mp_need);*/
+              $attaque->applique_effet('calcul_mp');
               /* ~Mana */
 
 							// Si le joueur a assez de reserve on indique l'action à effectuer
@@ -414,8 +415,9 @@ function sub_script_action($joueur, $ennemi, $mode, &$effects)
 							}
 							
               /* Application des effets de mana */
-              foreach ($effects as $effect)
-                $mp_need = $effect->calcul_mp($actif, $mp_need);
+              /*foreach ($effects as $effect)
+                $mp_need = $effect->calcul_mp($actif, $mp_need);*/
+              $attaque->applique_effet('calcul_mp');
               /* ~Mana */
 
 							// On vérifie que le personnage a assez de MP
