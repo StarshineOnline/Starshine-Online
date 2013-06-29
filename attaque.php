@@ -467,7 +467,7 @@ else
 					else
 					{
 						${$mode}->get_action();
-						$action = script_action(${$mode}, ${$mode_def}, $mode, $effects);
+						$action = script_action(${$mode}, ${$mode_def}, $mode, $attaque);
 						//if(is_array($action[2])) ${$mode} = $action[2];
 					}
 					//print_r($action);
