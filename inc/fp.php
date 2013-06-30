@@ -91,7 +91,7 @@ function fin_script()
 {
   global $_SESSION;
   $err = error_get_last();
-  if( $err['type'] & (E_ERROR | E_RECOVERABLE_ERROR) )
+  if( $err['type'] & (E_ERROR | E_RECOVERABLE_ERROR | E_USER_ERROR) )
   {
 		$log = new log_admin();
 		$log->send($_SESSION['ID'], 'bug', $err['message'].' ('.$err['file'].' : '.$err['line'].')');
