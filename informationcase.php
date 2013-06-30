@@ -316,13 +316,10 @@ if($W_distance < 4)
 			$W_hp = $W_row['hp'];
 			$diff_level = ($W2_row['level'] - $joueur->get_level());
 
-      if ($W_row['affiche'] == 'h') {
-        $diff_level = 0;
-      }
-
+			if ($W_row['affiche'] == 'h') $diff_level = 0;
 			if($diff_level > 5) $diff_level = 5;
 			elseif($diff_level < -5) $diff_level = -5;
-			//echo $diff_level;
+			
 			$color = $G_consider[$diff_level];
 			if($diff_level > 0) $strong = 'bold'; else $strong = 'normal';
 			// on envois dans infojoueur.php -> ID du joueur et La position de la case ou il se trouve
@@ -330,10 +327,20 @@ if($W_distance < 4)
 			if (file_exists('image/monstre/'.$image.'_low.png')) $image .= '_low.png';
 			elseif (file_exists('image/monstre/'.$image.'.png')) $image .= '.png';
 			else $image .= '.gif';
-			echo '
-			<li style="clear:both;"><img src="image/monstre/'.$image.'" alt="'.$W2_row['nom'].'" style="vertical-align : middle;height:21px;float:left;width:21px;" /><span style="color : '.$color.'; font-weight : '.$strong.';float:left;width:270px;margin-left:15px;">'.$W_nom.'</span>
 			
-				<span style="float:left;">';
+			if($W2_row['level'] > 0) $level = $W2_row['level']; else $level = 1;
+			$nbr_barre_total = ceil($joueur->get_survie() / $level);
+			if($nbr_barre_total < 1) $nbr_barre_total = 1;
+			if($nbr_barre_total > 100) $nbr_barre_total = 100;
+			$nbr_barre = round(($W_hp / $W2_row['hp']) * $nbr_barre_total);
+			$longueur = round(100 * ($nbr_barre / $nbr_barre_total), 2);
+			if($longueur < 0) $longueur = 0;
+			$fiabilite = round((100 / $nbr_barre_total) / 2, 2);
+	
+			echo '
+			<li style="clear:both;"><img src="image/monstre/'.$image.'" alt="'.$W2_row['nom'].'" style="vertical-align : middle;height:21px;float:left;width:21px;" /><span style="color : '.$color.'; font-weight : '.$strong.';float:left;width:150px;margin-left:15px;">'.$W_nom.'</span>
+			<span style="float:left;"><img src="genere_barre_vie.php?longueur='.$longueur.'" title="Estimation des HP : '.$longueur.'% / + ou - : '.$fiabilite.'%" /></span>
+				<span style="float:left;margin-left:15px;">';
 				if(!$joueur->is_buff('repos_sage') AND !$joueur->is_buff('bloque_attaque'))
 				{
 					echo '
