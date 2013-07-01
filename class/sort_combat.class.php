@@ -554,7 +554,7 @@ class sort_combat_sacrifice extends sort_combat
   function touche(/*&$actif, &$passif, &$effets*/&$attaque)
   {
     parent::touche($attaque);
-		$actif->set_hp(0);
+	$attaque->get_actif()->set_hp(0);
   }
 }
 
