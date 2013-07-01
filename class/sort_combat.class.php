@@ -641,10 +641,10 @@ class sort_combat_vortex_mana extends sort_combat
   function touche(/*&$actif, &$passif, &$effets*/&$attaque)
   {
     $actif = &$attaque->get_actif();
-		$degats = parent::touche($attaque);
+		parent::touche($attaque);
 		if ($attaque->get_passif()->get_type() != 'batiment')
 		{
-      $drain = round($degats * .2);
+      $drain = round($attaque->get_degats() * .2);
       echo 'Et gagne <strong>'.$drain.'</strong> RM grâce au drain</span><br />';
       $actif->set_rm_restant($actif->get_rm_restant() + $drain);
     }

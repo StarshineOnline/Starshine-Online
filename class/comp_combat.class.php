@@ -295,7 +295,7 @@ class comp_combat extends comp
     $attaque->applique_effet('calcul_degats');
 
     if($passif->bouclier())
-      $degat = $this->bouclier($attaque);
+      /*$degat = */$this->bouclier($attaque);
       
    	//Posture défensive
     /*if($passif->etat['posture']['type'] == 'posture_defense') $buff_posture_defense = $passif->etat['posture']['effet']; else $buff_posture_defense = 0;
@@ -456,10 +456,11 @@ class comp_combat extends comp
 
 					// degats bloques
           $attaque->applique_blocage();
+          $degat_bloque = $attaque->get_degats_bloques();
 					echo '&nbsp;&nbsp;<span class="manque">'.$passif->get_nom().' bloque le coup et absorbe '.$degat_bloque.' dégâts</span><br />';
 					if($passif->is_buff('bouclier_feu'))
 					{
-						$degats_feu = ceil( $attaque->get_degats_bloques() * $passif->get_buff('bouclier_feu', 'effet') / 100 );
+						$degats_feu = ceil( $degat_bloque * $passif->get_buff('bouclier_feu', 'effet') / 100 );
 						$actif->set_hp($actif->get_hp() - $degats_feu);
 						echo '&nbsp;&nbsp;<span class="degat">'.$passif->get_nom().' inflige '.$degats_feu.' dégâts grâce au bouclier de feu</span><br />';
 					}

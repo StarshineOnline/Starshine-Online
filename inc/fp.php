@@ -93,8 +93,12 @@ function fin_script()
   $err = error_get_last();
   if( $err['type'] & (E_ERROR | E_RECOVERABLE_ERROR | E_USER_ERROR) )
   {
-		$log = new log_admin();
-		$log->send($_SESSION['ID'], 'bug', $err['message'].' ('.$err['file'].' : '.$err['line'].')');
+    $msg = $err['message'].' (fichier : '.$err['file'].', ligne : '.$err['line'].', url : '.$_SERVER['PHP_SELF'].')';
+    if( !count(log_admin::create(array('type', 'message'),array('bug', $msg))) )
+    {
+  		$log = new log_admin();
+  		$log->send($_SESSION['ID'], 'bug', $msg, true);
+    }
     echo '<h5>Une erreur a causé l\'arrêt du script. L\'erreur a été enregistré et pourra être consulté par les dévelopeurs.</h5>';
   }
 }

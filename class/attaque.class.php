@@ -160,9 +160,9 @@ class attaque
   }
   function applique_blocage()
   {
-    if( $this->degat_bloque > $this->degat )
-      $this->degat_bloque = $this->degat;
-		$this->degat -= $this->degat_bloque;
+    if( $this->degats_bloques > $this->degats )
+      $this->degats_bloques = $this->degats;
+		$this->degats -= $this->degats_bloques;
   }
   // @}
 
