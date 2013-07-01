@@ -119,6 +119,12 @@ echo '<div id="menu_date"><img src="image/interface/'.moment_jour().
 	</div>
 	<div id='menu_deco'>
 	<?php
+    if( array_key_exists('droits', $_SESSION) && ($_SESSION['droits'] & joueur::droit_interf_admin) )
+    {
+  ?>
+		<a class="interf_admin" title="Interface d'administration" href="admin">&nbsp;</a>
+	<?php
+    }
     if( (array_key_exists('nbr_perso', $_SESSION) && $_SESSION['nbr_perso'] > 1) OR (array_key_exists('droits', $_SESSION) && ($_SESSION['droits'] & joueur::droit_pnj)) )
     {
   ?>
