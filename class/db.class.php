@@ -151,15 +151,7 @@ class db
 
   function query_error($query) {
 
-    echo "Impossible d'executer la requète suivante:<br />".$query."<br />mySQL a répondus : <span style=\"font-style: italic;\">Erreur n°<span style=\"font-weight: 700;\">".mysqli_errno($this->lnk)."</span></span> ".mysqli_error($this->lnk);
-
-    $this->backtrace();
-
-    if (function_exists("userErrorHandler"))
-    {
-      set_error_handler("userErrorHandler");
-      trigger_error("Erreur 'SQL_QUERY': ".basename($_SERVER["PHP_SELF"])."?".$_SERVER["QUERY_STRING"]."\nQuery: ".$query."\nErreur:".mysqli_errno($this->lnk)." (".mysqli_error($this->lnk).")",E_USER_ERROR);
-    }
+    trigger_error("Erreur 'SQL_QUERY': ".basename($_SERVER["PHP_SELF"])."?".$_SERVER["QUERY_STRING"]."\nQuery: ".$query."\nErreur:".mysqli_errno($this->lnk)." (".mysqli_error($this->lnk).")\n".$this->backtrace(),E_USER_ERROR);
     if ($this->locked) $this->unlock();
     exit ();
   }
@@ -206,12 +198,13 @@ class db
 
   function backtrace($query = null) {
 			$back = debug_backtrace();
+      $msg = '';
       if ($query != null)
-        echo "QUERY: $query<br/>";
+        $msg .= "QUERY: $query\n";
 			foreach ($back as $f) {
-				echo $f["file"].' line '.$f["line"].'<br />';
+				$msg .= $f["file"].' line '.$f["line"]."\n";
 			}
-			echo '<br />';
+			return $msg;
   }
 
 	//! check_query
@@ -944,14 +937,10 @@ class db
 
   function stmt_error($stmt) {
 
-    echo "Impossible d'executer la requète, mySQL a répondus : <span style=\"font-style: italic;\">Erreur n°<span style=\"font-weight: 700;\">".$stmt->errno."</span></span> ".$stmt->error;
-
-    $this->backtrace();
-
     if (function_exists("userErrorHandler"))
     {
       set_error_handler("userErrorHandler");
-      trigger_error("Erreur 'SQL_QUERY': ".basename($_SERVER["PHP_SELF"])."?".$_SERVER["QUERY_STRING"]."\nQuery: ".$query."\nErreur:".mysqli_errno($this->lnk)." (".mysqli_error($this->lnk).")",E_USER_ERROR);
+      trigger_error("Erreur 'SQL_QUERY': ".basename($_SERVER["PHP_SELF"])."?".$_SERVER["QUERY_STRING"]."\nQuery: ".$query."\nErreur:".mysqli_errno($this->lnk)." (".mysqli_error($this->lnk).")\n".$this->backtrace(),E_USER_ERROR);
     }
     if ($this->locked) $this->unlock();
     exit ();

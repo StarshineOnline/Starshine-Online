@@ -97,7 +97,8 @@ class entite_cap extends entite
 				if($return > 0)
 				{
 					$royaume_attaquant = new royaume($Trace[$perso->get_race()]['numrace']);
-					$royaume_attaquant->add_point_victoire($return);
+          $mult = $royaume_attaquant->get_mult_victoire($this->royaume);
+					$royaume_attaquant->add_point_victoire( ceil($return*$mult) );
 					$royaume_attaquant->sauver();
 					echo '<h6>Une construction a été détruite ! Votre royaume gagne '.$return .' points de victoire.</h6><br />';
 				}
@@ -112,7 +113,8 @@ class entite_cap extends entite
 					$time = time() + 3600 * 24 * 31;
 					$this->royaume->set_fin_raz_capitale($time);
 					$royaume_attaquant = new royaume($Trace[$perso->get_race()]['numrace']);
-					$royaume_attaquant->add_point_victoire(100);
+          $mult = $royaume_attaquant->get_mult_victoire($this->royaume);
+					$royaume_attaquant->add_point_victoire( ceil(100*$mult) );
 					$royaume_attaquant->sauver();
 					echo '<h6>La capitale est détruite ! Votre royaume gagne 100 points de victoire.</h6><br />';
 

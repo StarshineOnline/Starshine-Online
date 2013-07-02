@@ -177,14 +177,15 @@ class royaume
     $date = time() - self::duree_actif;
     if( !isset($ref_actifs) )
     {
-      $requete = 'SELECT COUNT(*) as tot FROM perso WHERE level >= '.self::get_niveau_ref_actifs().' AND dernier_connexion > '.$date.' GROUP BY race ORDER BY tot DESC';
+      $requete = 'SELECT COUNT(*) as tot FROM perso WHERE statut like "actif" AND level >= '.self::get_niveau_ref_actifs().' AND dernier_connexion > '.$date.' GROUP BY race ORDER BY tot DESC';
       $res = $db->query($requete);
       $ref_actifs = 1;
       while( $row = $db->read_array($res) )
       {
         $ref_actifs *= $row['tot'];
+        $min = $row['tot'];
       }
-      $ref_actifs = (pow($ref_actifs, 1/11) + $row['tot'])/2;
+      $ref_actifs = (pow($ref_actifs, 1/11) + $min)/2;
     }
     $facteur = $this->get_habitants_actif() / $ref_actifs;
     if( $facteur < .3 ) $facteur = .3;
@@ -1371,6 +1372,11 @@ class royaume
   	global $db;
   	$requete = "UPDATE royaume SET bourg = bourg - 1 WHERE ID = ".$royaume." AND bourg > 0";
   	$db->query($requete);
+  }
+
+  function get_mult_victoire($roy_def)
+  {
+    return (100 + $roy_def->get_point_victoire_total()) / (100 + $this->get_point_victoire_total());
   }
 }
 ?>

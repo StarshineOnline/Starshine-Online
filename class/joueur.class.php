@@ -27,6 +27,7 @@ class joueur extends table
 	
 	// Combinaisons
 	const droit_pnj = 128;  ///< Accès aux personnages PNJ
+	const droit_interf_admin = 191;  ///< Accès à l'interface admin
 	
 	//! Constructeur
 	/**

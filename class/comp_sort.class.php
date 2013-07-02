@@ -363,17 +363,17 @@ class comp_sort extends comp_sort_buff
    */
   static function test_potentiel($pot_action, $pot_oppos, &$attaque=null)
   {
-  	$attaque = rand(0, $pot_action);
+  	$action = rand(0, $pot_action);
   	$defense = rand(0, $pot_oppos);
   	print_debug('Potentiel attaquant : '.$pot_action.
 							'<br />Potentiel défenseur : '.$pot_oppos.
-							'<br />Résultat => Attaquant : '.$attaque.' | Défense '.
+							'<br />Résultat => Attaquant : '.$action.' | Défense '.
 							$defense.'<br />');
-    /*if( $jet_action !== null )
+    if( $attaque !== null )
     {
-      $jet_action = $attaque;
-    }*/
-    return $attaque > $defense;
+      $attaque->set_jet($action);
+    }
+    return $action > $defense;
   }
 
   /**

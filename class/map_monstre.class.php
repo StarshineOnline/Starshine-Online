@@ -725,17 +725,17 @@ class map_monstre extends entnj_incarn
 			//Partage de l'xp au groupe
 			if ($xp < 0) $xp = 0;
 
-			$groupe->get_share_xp($perso->get_pos());
+			$groupe->get_share_xp($perso->get_pos(), $this->get_level());
 			foreach($groupe->membre_joueur as $membre)
 			{
 				//XP Final
 				$xp_perso = $xp * (1 + (($this->get_level() - $membre->get_level()) / $G_range_level));
-				$xp_perso = floor($xp_perso * $membre->share_xp / $groupe->get_share_xp($perso->get_pos()));
+				$xp_perso = floor($xp_perso * $membre->share_xp / $groupe->get_share_xp($perso->get_pos(), $this->get_level()));
 				if($xp_perso < 0) $xp_perso = 0;
 				$membre->set_exp($membre->get_exp() + $xp_perso);
 				if($gains_star)
 				{
-					$star_perso = floor($star * $membre->share_xp / $groupe->get_share_xp($perso->get_pos()));
+					$star_perso = floor($star * $membre->share_xp / $groupe->get_share_xp($perso->get_pos(), $this->get_level()));
 					$membre->set_star($membre->get_star() + $star_perso);
 				}
 				else $star_perso = 0;

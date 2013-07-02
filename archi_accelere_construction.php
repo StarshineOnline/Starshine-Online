@@ -76,8 +76,10 @@ elseif($joueur->get_pa() >= 30)
   			}
       }
 			echo '<h6>La construction a été accélérée de '.transform_sec_temp($secondes).'</h6>';
-			echo '<a href="archi_accelere_construction.php?id_construction='.$_GET['id_construction'].'" onclick="return envoiInfo(this.href, \'information\');">Accélérer de nouveau</a>';
-			$joueur->sauver();
+			echo '<a href="archi_accelere_construction.php?id_construction='.$_GET['id_construction'].'" onclick="return envoiInfo(this.href, \'information\');">Accélérer de nouveau</a>';		?>
+			<a onclick="if(document.getElementById('debug').style.display == 'inline') document.getElementById('debug').style.display = 'none'; else document.getElementById('debug').style.display = 'inline';"><img src="image/interface/debug.png" alt="Debug" Title="Débug pour voir en détail le combat" style="vertical-align : middle;cursor:pointer;" /></a>
+			<a href="informationcase.php?case=<?php echo convert_in_pos($row['x'], $row['y']); ?>" onclick="return envoiInfo(this.href, 'information')"><img src="image/interface/retour.png" alt="Retour" title="Retour à l'information case" style="vertical-align : middle;" /></a>
+			<?php $joueur->sauver();
 		}
 	}
 }

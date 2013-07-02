@@ -875,7 +875,8 @@ if($joueur->get_inventaire_slot() != '')
 				</td>
 			</tr>
 	<?php
-		$requete = "SELECT perso.ID, nom, statut, dernier_connexion, COUNT(*) AS tot FROM perso RIGHT JOIN log_connexion ON log_connexion.id_joueur = perso.ID WHERE log_connexion.message = 'Ok' ".$pseudo." GROUP BY log_connexion.id_joueur ORDER by ".$tri." ".$sort." LIMIT ".(($page - 1) * 25).", 25";
+		//$requete = "SELECT perso.ID, nom, statut, dernier_connexion, COUNT(*) AS tot FROM perso RIGHT JOIN log_connexion ON log_connexion.id_joueur = perso.ID WHERE log_connexion.message = 'Ok' ".$pseudo." GROUP BY log_connexion.id_joueur ORDER by ".$tri." ".$sort." LIMIT ".(($page - 1) * 25).", 25";
+    $requete = "SELECT perso.ID, nom, statut, dernier_connexion FROM perso WHERE 1 ".$pseudo." ORDER by ".$tri." ".$sort." LIMIT ".(($page - 1) * 25).", 25";
 		$req = $db->query($requete);
 		while($row = $db->read_assoc($req))
 		{

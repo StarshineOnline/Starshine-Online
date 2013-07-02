@@ -20,6 +20,7 @@ include_once(root.$root.'class/gemmes.class.php');
  */
 function attaque($acteur = 'attaquant', $competence, &$effects)
 {
+  echo "<h6>pourquoi c'est là ?</h6>";
   	global $attaquant, $defenseur, $G_buff, $G_debuff, $ups, $Gtrad, $G_round_total, $db, $log_combat, $log_effects_attaquant, $log_effects_defenseur;
   	if ($acteur == 'attaquant')
     {

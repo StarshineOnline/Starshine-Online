@@ -3230,12 +3230,14 @@ class perso extends entite
 
 			//Gain d'expérience
 			$xp = $this->get_level() * 100 * $G_xp_rate;
+      if( $this->get_level() > 2 )
+        $xp += 100 / ($this->get_level() - 2);
 
 			//Si le joueur a un groupe
 			if($ennemi->get_groupe() > 0)
 			{
 				$groupe = new groupe($ennemi->get_groupe());
-				$groupe->get_share_xp($ennemi->get_pos());
+				$groupe->get_share_xp($ennemi->get_pos(), $this->get_level());
 				//Si on tape un joueur de son groupe xp = 0
 				foreach($groupe->membre_joueur as $membre_id)
 				{
@@ -3270,13 +3272,13 @@ class perso extends entite
 				$groupe->membre_joueur[0]->set_reputation($ennemi->get_reputation());*/
 			}
 			$G_range_level = max(ceil($this->get_level() * 0.5), 3);
-			$xp = $xp * (1 + (($this->get_level() - $ennemi->get_level()) / $G_range_level));
+			//$xp = $xp * (1 + (($this->get_level() - $ennemi->get_level()) / $G_range_level));
 			if($xp < 0) $xp = 0;
 			//Si il est en groupe réduction de l'xp gagné par rapport au niveau du groupe
-			if($ennemi->get_groupe() > 0)
+			/*if($ennemi->get_groupe() > 0)
 			{
 				$xp = $xp * $ennemi->get_level() / $groupe->get_level();
-			}
+			}*/
 			$honneur = floor($xp * 4);
 
 			//Partage de l'xp au groupe
@@ -3327,9 +3329,14 @@ class perso extends entite
 				$facteur_honneur = ($row_diplo[0] * 0.2) - 0.8;
 				if ($facteur_honneur < 0) $facteur_honneur = 0;
 				//XP Final
-				$partage = $groupe->get_share_xp($ennemi->get_pos());
+				$partage = $groupe->get_share_xp($ennemi->get_pos(), $this->get_level());
 				$partage = $partage == 0 ? 1 : $partage;
-				$xp_gagne = floor(($xp * $facteur_xp) * $membre->share_xp / $partage);
+        if( $membre->get_id() == $ennemi->get_id() )
+          $niv = $ennemi->get_level();
+        else
+          $niv = max($groupe->get_level(), $ennemi->get_level(), $membre->get_level());
+			  $xp_gagne = $xp * (1 + (($this->get_level() - $niv) / $G_range_level));
+				$xp_gagne = floor(($xp_gagne * $facteur_xp) * $membre->share_xp / $partage);
 				if($xp_gagne < 0) $xp_gagne = 0;
 				$honneur_gagne = floor(($honneur * $facteur_honneur) * $membre->share_xp / $partage);
 				//(de)Buffs moral, pour la gloire, cacophonie

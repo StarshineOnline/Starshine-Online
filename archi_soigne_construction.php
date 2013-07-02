@@ -1,6 +1,9 @@
 <?php //	 -*- tab-width:	2; mode: php -*-
 if (file_exists('root.php'))
   include_once('root.php');
+  
+  //Inclusion du haut du document html
+include_once(root.'haut_ajax.php');
 
 include_once(root.'inc/fp.php');
 $joueur = new perso($_SESSION['ID']);
@@ -86,5 +89,8 @@ elseif($joueur->get_pa() >= 30)
 	}
 }
 ?>
+<a href="archi_soigne_construction.php?id_construction=<?php echo ($ID_CONSTRUCTION); ?>" onclick="return envoiInfo(this.href, 'information')"><img src="" alt="Reparer" title="Réparer à nouveau le batiment" style="vertical-align : middle;" /></a>
+<a onclick="if(document.getElementById('debug').style.display == 'inline') document.getElementById('debug').style.display = 'none'; else document.getElementById('debug').style.display = 'inline';"><img src="image/interface/debug.png" alt="Debug" Title="Débug pour voir en détail le combat" style="vertical-align : middle;cursor:pointer;" /></a>
+<a href="informationcase.php?case=<?php echo convert_in_pos($row['x'], $row['y']); ?>" onclick="return envoiInfo(this.href, 'information')"><img src="image/interface/retour.png" alt="Retour" title="Retour à l'information case" style="vertical-align : middle;" /></a>
 <img src="image/pixel.gif" onLoad="envoiInfo('infoperso.php?javascript=oui', 'perso');" />
 </div>

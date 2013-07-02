@@ -14,7 +14,11 @@ include_once(root.'haut_site.php');
 include_once(root.'admin/menu_admin.php');
 
 echo '<div><h1>Logs admin enregistrés</h1>';
-echo log_admin::display_all(false, 100, 'log');
+if( $_SESSION['droits'] & (joueur::droit_concept | joueur::droit_modo) )
+  $where = false;
+else
+  $where = 'type = "bug"';
+echo log_admin::display_all($where, 100, 'log');
 echo '</div>';
 echo '</div>';
 print_js_onload('$("#log").dataTable({"sPaginationType": "full_numbers"});');

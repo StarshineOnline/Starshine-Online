@@ -306,8 +306,8 @@ $(function () {
 						$('#popup_content h1').css('color', 'red');
 				} else {
 						// On loggue dans un cadre caché
+						$('#debug_log').append('<p>status : '+jqxhr.status+' - '+jqxhr.statusText+'<br/>url: ' + settings.url + '</p>');
 						$('#debug_log').append(jqxhr.responseText);
-						$('#debug_log').append('<p>requested: ' + settings.url + '</p>');
 						$('#debug_log').append('<hr/>');
 						// On fait apparaître le bouton de debug
 						$('#debug_log_button').show();

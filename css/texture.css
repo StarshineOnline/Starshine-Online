@@ -231,6 +231,7 @@
 .tex411{background:url('../image/texture/textbanquise/tex_banquiseint2.png') no-repeat;}
 .tex412{background:url('../image/texture/textbanquise/tex_banquiseint3.png') no-repeat;}
 .tex413{background:url('../image/texture/textbanquise/tex_banquiseint4.png') no-repeat;}
+
 .tex414{background:url('../image/texture/neigeherbe/tex_neigeherbecoinne.png') no-repeat;}
 .tex415{background:url('../image/texture/neigeherbe/tex_neigeherbecoinno.png') no-repeat;}
 .tex416{background:url('../image/texture/neigeherbe/tex_neigeherbecoinse.png') no-repeat;}
@@ -240,9 +241,10 @@
 .tex420{background:url('../image/texture/neigeherbe/tex_neigeherbeo.png') no-repeat;}
 .tex421{background:url('../image/texture/neigeherbe/tex_neigeherbes.png') no-repeat;}
 .tex422{background:url('../image/texture/neigeherbe/tex_neigeherbene.png') no-repeat;}
-.tex423{background:url('../image/texture/neigeherbe/tex_neigeherbeno.png') no-repeat;}
+.tex423{background:url('../image/texture/textbanquise/tex_neigeherbeno.png') no-repeat;}
 .tex424{background:url('../image/texture/neigeherbe/tex_neigeherbese.png') no-repeat;}
 .tex425{background:url('../image/texture/neigeherbe/tex_neigeherbeso.png') no-repeat;}
+
 .tex426{background:url('../image/texture/textbanquise/textbanquisegele_bm.png') no-repeat;}
 .tex427{background:url('../image/texture/textbanquise/textbanquisegele_bd.png') no-repeat;}
 .tex428{background:url('../image/texture/textbanquise/textbanquisegele_hg.png') no-repeat;}
@@ -2598,8 +2600,8 @@
 .tex6664{background:url('../image/texture/tutorial/corrompus/mur_narcisse_md.png') no-repeat;}
 .tex6665{background:url('../image/texture/tutorial/corrompus/mur_narcisse_coin_bd2.png') no-repeat;}
 
-.tex6648{background:url('../image/texture/tutorial/orc/mur_tente_orc_ext_hd.png') no-repeat;}
-.tex6649{background:url('../image/texture/tutorial/orc/mur_tente_orc_ext_hg.png') no-repeat;}
+.tex6648{background:url('../image/texture/tutorial/orc/mur_tente_ext_orc_bm_forge.png') no-repeat;}
+.tex6649{background:url('../image/texture/tutorial/orc/mur_tente_ext_orc_bm_alchimie.png') no-repeat;}
 .tex6650{background:url('../image/texture/tutorial/orc/mur_tente_ext_orc_bm.png') no-repeat;}
 .tex6651{background:url('../image/texture/tutorial/orc/mur_tente_ext_orc_mg.png') no-repeat;}
 .tex6652{background:url('../image/texture/tutorial/orc/mur_tente_ext_orc_md.png') no-repeat;}
@@ -2646,6 +2648,10 @@
 .tex19531{background:url('../image/texture/tutorial/scavenger/scav_sol_haut_md_exterieur.png') no-repeat;}
 .tex19532{background:url('../image/texture/tutorial/scavenger/scav_sol_mur_bg_exterieur_porte.png') no-repeat;}
 .tex19533{background:url('../image/texture/tutorial/scavenger/scav_sol_mur_bd_exterieur_porte.png') no-repeat;}
+
+.tex21571{background:url('../image/texture/tutorial/scavenger/scav_sol_mur_bd_hg_exterieur.png') no-repeat;}
+.tex21572{background:url('../image/texture/tutorial/scavenger/scav_sol_mur_bg_hd_exterieur.png') no-repeat;}
+.tex21573{background:url('../image/texture/tutorial/scavenger/scav_sol_mur_bm_hm_exterieur.png') no-repeat;}
 
 .tex6666{background:url('../image/texture/tutorial/scavenger/scav_mur_bg_noir.png') no-repeat;}
 .tex6667{background:url('../image/texture/tutorial/scavenger/scav_mur_bm_noir.png') no-repeat;}

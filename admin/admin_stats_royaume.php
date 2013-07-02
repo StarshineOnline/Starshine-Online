@@ -28,8 +28,102 @@ else
 	<div class="titre">
 				Statistiques Royaumes
 	</div>
+  <form action="admin_stats_royaume.php" method="get">
+    <label>Stat : </label>
+    <select name="stat">
+      <option value="0">Population</option>
+      <option value="1">Stars</option>
+      <option value="2">hotel de vente</option>
+      <option value="3">taverne</option>
+      <option value="4">forgeron</option>
+      <option value="5">armurerie</option>
+      <option value="6">alchimiste</option>
+      <option value="7">enchanteur</option>
+      <option value="8">école de magie</option>
+      <option value="9">école de combat</option>
+      <option value="10">téléportation</option>
+      <option value="11">chasse</option>
+      <option value="12">honneur</option>
+      <option value="13">niveaux</option>
+      <option value="14">coûts des bâtiments hors ville</option>
+      <option value="15">cases contôlées</option>
+      <option value="16">coûts des bâtiments de la ville</option>
+      <option value="17">coûts des quêtes achetées</option>
+      <option value="18">Pierre gagnée</option>
+      <option value="19">Bois gagné</option>on>
+      <option value="20">Eau gagnée</option>
+      <option value="21">Sable gagné</option>
+      <option value="22">Charbon gagné</option>
+      <option value="23">Essence gagnée</option>
+      <option value="24">Routes</option>
+      <option value="25">Nourrituregagnée</option>
+      <option value="26">Très actifs</option>
+      <option value="27">Facteur d'entretien actuel</option>
+      <option value="28">Facteur d'entretien théorique</option>
+      <option value="29">Consommation de nouriture actuelle</option>
+      <option value="30">Consommation de nouriture théorique</option>
+    </select>
+    <input type="submit" value="Afficher"/>
+  </form>
 	<?php
-	$sources[0] = 'HV';
+    if( array_key_exists('stat', $_GET) )
+    {
+      $stat = $_GET['stat'];
+      $date = date("Y-m-d");
+      $requete = 'SELECT *, EXTRACT(YEAR FROM date) as year, EXTRACT(MONTH FROM date) as month, EXTRACT(DAY FROM date) as day FROM stat_jeu WHERE date > DATE_SUB("'.$date.'", INTERVAL 31 DAY) ORDER BY date;';
+	    $req = $db->query($requete);
+      $z = 0;
+      $data = array();
+      $dates = array();
+      include_once(root.'inc/races.inc.php');
+      $races = array_keys($Trace);
+    	foreach($races as $r)
+    	{
+        $data[$r] = array();
+      }
+      while( $row = $db->read_assoc($req) )
+      {
+      	$dates[] = $row['month'].'-'.$row['day'];
+      	$keys = array_keys($row);
+      	$j = 0;
+      	foreach($races as $r)
+      	{
+  				$donnees = explode(';', $row[$r]);
+  				if(count($donnees) > $stat)
+  				{
+  					$data[$r][] = $donnees[$stat];
+  				}
+  				else $data[$r][] = 0;
+      	}
+      }
+      //Couleur des royaumes
+      $color['barbare'] = array(0, 104, 255);
+      $color['elfebois'] = array(0, 153, 0);
+      $color['troll'] = array(255, 0, 0);
+      $color['scavenger'] = array(255, 255, 0);
+      $color['orc'] = array(255, 204, 204);
+      $color['nain'] = array(255, 165, 0);
+      $color['mortvivant'] = array(92, 30, 0);
+      $color['humainnoir'] = array(0, 0, 0);
+      $color['humain'] = array(0, 0, 255);
+      $color['elfehaut'] = array(170, 170, 170);
+      $color['vampire'] = array(130, 30, 130);
+  	  $graph = new Graph(700, 400);
+      $graph->SetScale('textint');
+      $z = 0;
+      foreach($races as $r)
+      {
+        $lineplot = new LinePlot($data[$r]);
+        $graph->Add($lineplot);
+      }
+      $img = 'images/stat.jpg';
+      if(file_exists($img))
+        unlink($img);
+  	  $graph->Stroke($img);
+      echo '<img src="'.$img.'" />';
+    }
+
+	/*$sources[0] = 'HV';
 	$sources[1] = 'Taverne';
 	$sources[2] = 'Forgeron';
 	$sources[3] = 'Armurerie';
@@ -88,9 +182,9 @@ else
 	//$p1->value->SetFormat('%d');
 	$graph->Add($p1);
 	$graph->xaxis->SetTickLabels($sources);
-	$graph->Stroke('image/test_admin.jpg');
+	$graph->Stroke('images/test_admin.jpg');*/
 	?>
-	<img src="image/test_admin.jpg" />
+	<img src="images/test_admin.jpg" />
 	<?php
 	include_once(root.'bas.php');
 }

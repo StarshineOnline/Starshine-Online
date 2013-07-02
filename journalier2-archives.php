@@ -8,47 +8,14 @@ include_once('journalier2-head.php');
 // Mise en archive de la population de chaque royaume
 $mail .= "\nJoueur et Stars de chaque royaume\n\n";
 echo "Mise en archive des stars et population de chaque royaume\n";
-/**
- * Stats à mémoriser pour chaque race.
- * Tableau bi-dimensionnel, la première clé est la race, la deuxième un indice indexant
- * les stats à conserver :
- * <ol>
- *  <li>Stars du royaume</li>
- *  <li>Population du royaume</li>
- *  <li>Argent gagné par l'hotel de vente</li> 
- *  <li>Argent gagné par la taverne</li>
- *  <li>Argent gagné par le forgeron</li>
- *  <li>Argent gagné par l'armurerie</li>
- *  <li>Argent gagné par l'alchimiste</li>
- *  <li>Argent gagné par l'enchanteur</li>
- *  <li>Argent gagné par l'école de magie</li>
- *  <li>Argent gagné par l'école de combat</li>
- *  <li>Argent gagné par la téléportation</li>
- *  <li>Argent gagné par le chasse</li>
- *  <li>Somme de l'honneur</li>
- *  <li>Somme des niveaux</li>
- *  <li>Total des coûts des bâtiments hors ville</li>
- *  <li>Nombre de cases contôlées</li> 
- *  <li>Total des coûts des bâtiments de la ville</li>
- *  <li>Total des coûts des quêtes achetées</li>
- *  <li>Pierre gagnée par les terrains, mines et extracteurs</li>
- *  <li>Bois gagnée par les terrains, scieries et extracteurs</li>
- *  <li>Eau gagnée par les terrains, puits et extracteurs</li>
- *  <li>Sable gagnée par les terrains, carrière de sable et extracteurs</li>
- *  <li>Charbon gagnée par les terrains, meules et extracteurs</li>
- *  <li>Essence Magique gagnée par les terrains, puits à essence et extracteurs</li>
- *  <li>Star gagnée par les terrains et extracteurs</li>
- *  <li>Nourriture gagnée par les terrains, fermes et extracteurs</li>
- * </ol>     
- */
-$tableau_race = array();
+
 $requete = "SELECT race, COUNT(*) as total FROM perso WHERE statut = 'actif' GROUP BY race";
 $req = $db->query($requete);
 $total = 0; ///< Population totale
 while($row = $db->read_array($req))
 {
 	$total += $row['total'];
-	$tableau_race[$row['race']][1] = $row['total'];
+	$tableau_race[$row['race']][0] = $row['total'];
 	$mail .= $row['race']." - Joueurs : ".$row['total']."\n";
 }
 
@@ -57,7 +24,7 @@ $requete = "SELECT race, star FROM royaume";
 $req = $db->query($requete);
 while($row = $db->read_array($req))
 {
-	if($row['race'] != '') $tableau_race[$row['race']][0] = $row['star'];
+	if($row['race'] != '') $tableau_race[$row['race']][1] = $row['star'];
 	$mail .= " - Stars : ".$row['star']."\n";
 }
 

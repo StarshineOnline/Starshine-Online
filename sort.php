@@ -65,6 +65,7 @@ if($joueur->get_groupe() != 0) $groupe_joueur = new groupe($joueur->get_groupe()
 if (isset($_GET['ID']) && !$joueur->is_buff('bloque_sort'))
 {
   $no_req = false;
+  $debugs = 0;
   //$sort = new sort_jeu($_GET['ID']);
   $sort = sort_jeu::factory($_GET['ID']);
 
@@ -211,6 +212,7 @@ if (isset($_GET['ID']) && !$joueur->is_buff('bloque_sort'))
     if($groupe) $cible = $joueur;
     if($type_lanceur == 'joueur') echo '<br /><a href="sort.php?type='.$type_cible.'&amp;id_'.$type_cible.'='.$cible->get_id().'" onclick="return envoiInfo(this.href, \'information\');">Revenir au livre de sort</a>';
     else echo '<br /><a href="gestion_monstre.php" onclick="return envoiInfo(this.href, \'information\');">Revenir à la gestion des monstres</a>';
+	echo '<br /><a onclick="for (i=0; i<'.$debugs.'; i++) {if(document.getElementById(\'debug\' + i).style.display == \'inline\') document.getElementById(\'debug\' + i).style.display = \'none\'; else document.getElementById(\'debug\' + i).style.display = \'inline\';}"><img src="image/interface/debug.png" alt="Debug" Title="Débug pour voir en détail le lancement du sort" style="vertical-align : middle;cursor:pointer;" /></a> <br />';
   }
 }
 elseif($joueur->is_buff('bloque_sort'))

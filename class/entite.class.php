@@ -669,6 +669,7 @@ class entite extends placable
 	protected $potentiel_bloquer;  ///< Potentiel bloquer
 	protected $potentiel_critique;  ///< Potentiel critique physique
 	protected $potentiel_magique;  ///< Potentiel lancer magique
+	protected $potentiel_toucher_magique;  ///< Potentiel toucher magique
 	protected $potentiel_parer_magique;  ///< Potentiel parer magique
 	protected $comp_att;       ///< Coméptence utilisé pour attaquer
 	/// Renvoie le contenu du script de combat utilisé
@@ -878,6 +879,26 @@ class entite extends placable
 	{
     $this->potentiel_magique = $valeur;
 	}
+	/**
+	 * Calcul et renvoie le potentiel toucher magique
+	 * @param $comp_assoc  Coméptence associé au sort
+	 */
+	function get_potentiel_toucher_magique($comp_assoc)
+	{
+    if( isset($this->potentiel_toucher_magique) && $this->potentiel_toucher_magique )
+      return $this->potentiel_toucher_magique;
+
+    $this->potentiel_toucher_magique;
+  	return $this->potentiel_toucher_magique;
+	}
+	/**
+	 * Modifie le potentiel toucher magique en le multipliant
+	 * @param $comp_assoc  Coméptence associé au sort
+	 */
+	function mult_potentiel_toucher_magique($valeur)
+	{
+    $this->potentiel_toucher_magique *= $valeur;
+	}
   /**
    * Calcul et renvoie le potentiel parer physique
    * @param  $esquive   Valeur de la compétence esquive à prendre en compte si elle est différente de celle de l'entité (sinon false).
@@ -894,6 +915,8 @@ class entite extends placable
 		if($this->is_buff('debuff_desespoir')) $debuff_desespoir = 1 + (($this->get_buff('debuff_desespoir', 'effet')) / 100); else 	$debuff_desespoir = 1;
 		if($this->etat['posture']['type'] == 'posture_glace') $aura_glace = 1 + (($this->etat['posture']['effet']) / 100); else $aura_glace = 1;
 		$this->potentiel_parer_magique = round($this->get_volonte() * $pm * $aura_glace * $buff_batiment_barriere / $debuff_desespoir);
+  	if(array_key_exists('fleche_debilitante', $this->etat))
+      $this->potentiel_parer_magique /= 1 + ($this->etat['fleche_debilitante']['effet'] / 100);
     if(array_key_exists('glace', $this->etat)) $this->potentiel_parer_magique /= 1.5;
 
 		return $this->potentiel_parer_magique;
