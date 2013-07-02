@@ -715,11 +715,11 @@ else
 						echo 'Tu as tué, '.$defenseur->get_nom();
 				}
 	
-				if($defenseur->get_race() == $attaquant->get_race() AND $defenseur->get_rang_royaume() == 6) $attaquant->unlock_achiev('roi_race_mort');
+				if($defenseur->get_race() == $attaquant->get_race() AND $defenseur->get_rang_royaume() == 6) $joueur->unlock_achiev('roi_race_mort');
 				if($defenseur->get_rang_royaume() == 6) 
 				{
-				$attaquant->unlock_achiev('roi_mort1');
-				$achiev = $attaquant->get_compteur('roi_mort');
+				$joueur->unlock_achiev('roi_mort1');
+				$achiev = $joueur->get_compteur('roi_mort');
 				$achiev->set_compteur($achiev->get_compteur() + 1);
 				$achiev->sauver();
 				}
