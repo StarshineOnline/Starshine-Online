@@ -367,8 +367,8 @@ class botte_scorpion extends botte
 	}*/
 
   function calcul_critique(/*&$actif, &$passif, $chance*/&$attaque) {
-		if ($this->peut_agir($actif, 'esquive'))
-			$this->valeur *= (1 + $this->effet/100);
+		if ($this->peut_agir($attaque->get_actif(), 'esquive'))
+			$attaque->valeur *= (1 + $this->effet/100);
 		/*else
 			return $chance;*/
 	}	
@@ -441,8 +441,8 @@ class botte_scolopendre extends botte
 {
   function calcul_critique(/*&$actif, &$passif, $chance*/&$attaque)
   {
-		if( $this->peut_agir($actif, 'bloque') )
-			$this->valeur *= (1 + $this->effet/100);
+		if( $this->peut_agir($attaque->get_actif(), 'bloque') )
+			$attaque->valeur *= (1 + $this->effet/100);
 		//return $chance;
 	}
 }
@@ -488,7 +488,7 @@ class botte_ours extends botte
 {
   function calcul_degats(/*&$actif, &$passif, $degats*/&$attaque)
   {
-		if( $this->peut_agir($actif, 'touche') )
+		if( $this->peut_agir($attaque->get_actif(), 'touche') )
 			//return $degats + $this->effet;
       $attaque->add_degats($this->effet);
 		//return $degats;
