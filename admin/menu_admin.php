@@ -120,7 +120,7 @@ else
 	$menu[$i++]['acces'] = joueur::droit_modo;
 	
 	$menu[$i]['nom'] = 'Performances';
-	$menu[$i]['url'] = 'http://munin.starshine-online';
+	$menu[$i]['url'] = 'http://munin.starshine-online.com';
 	$menu[$i++]['acces'] = joueur::droit_interf_admin;
 
 	$menu[$i]['nom'] = 'Stats Web';
