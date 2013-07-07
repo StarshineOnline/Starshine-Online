@@ -83,7 +83,7 @@ $req_joueurs = $db->query($requete_joueurs);
 $requete_pnj = 'SELECT id, nom, image, x, y FROM pnj WHERE (((x >= '.$xmin.') AND (x <= '.$xmax.')) AND ((y >= '.$ymin.') AND (y <= '.$ymax.'))) ORDER BY y ASC, x ASC';
 $req_pnj = $db->query($requete_pnj);
 //Requète pour l'affichage des monstres dans le périmètre de vision
-$requete_monstres = 'SELECT mm.id, mm.x, mm.y, m.nom, m.lib, COUNT(*) as tot FROM map_monstre mm, monstre m WHERE mm.type = m.id AND (((x >= '.$xmin.') AND (x <= '.$xmax.')) AND ((y >= '.$ymin.') AND (y <= '.$ymax.'))) GROUP BY x, y, lib ORDER BY y ASC, x ASC, ABS(level - '.$row['level'].') ASC, level ASC, nom ASC, id ASC';
+$requete_monstres = 'SELECT mm.id, mm.x, mm.y, m.nom, m.lib, COUNT(*) as tot FROM map_monstre mm, monstre m WHERE mm.type = m.id AND (((x >= '.$xmin.') AND (x <= '.$xmax.')) AND ((y >= '.$ymin.') AND (y <= '.$ymax.'))) GROUP BY x, y, lib ORDER BY y ASC, x ASC, ABS(CAST(level AS SIGNED) - '.$row['level'].') ASC, level ASC, nom ASC, id ASC';
 $req_monstres = $db->query($requete_monstres);
 //Requète pour l'affichage des drapeaux dans le périmètre de vision
 $requete_drapeaux = 'SELECT placement.x, placement.y, placement.type, placement.nom, placement.royaume, placement.debut_placement, placement.fin_placement, batiment.image FROM placement, batiment WHERE (((placement.x >= '.$xmin.') AND (placement.x <= '.$xmax.')) AND ((placement.y >= '.$ymin.') AND (placement.y <= '.$ymax.'))) AND batiment.id = placement.id_batiment ORDER BY placement.y ASC, placement.x ASC';
