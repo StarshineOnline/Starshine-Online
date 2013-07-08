@@ -390,6 +390,85 @@ function prend_quete($id_quete, $joueur)
 	return $link;
 }
 
+function prend_quete_tout($joueur)
+{
+	global $db, $R;
+	$return = "";
+	$quetes = array();
+	$liste_quete = $joueur->get_liste_quete();
+	if(is_array($liste_quete))
+	{
+		foreach($liste_quete as $quete)
+		{
+			if ($quete['id_quete']!='')
+			{
+				$quetes[] = $quete['id_quete'];
+			}
+		
+		}
+		if(count($quetes) > 0) $notin = "AND quete.id NOT IN (".implode(',', $quetes).")";
+		else $notin = '';
+	}
+	else $notin = '';
+	$where = "";
+	$id_royaume = $R->get_id();
+	if($id_royaume < 10) '0'.$id_royaume;
+	$requete = "SELECT *, quete.id as idq FROM quete LEFT JOIN quete_royaume ON quete.id = quete_royaume.id_quete WHERE ((achat = 'oui' AND quete_royaume.id_royaume = ".$R->get_id().") OR (achat = 'non' AND royaume LIKE '%".$id_royaume."%')) AND quete.niveau_requis <= ".$joueur->get_level()." AND quete.honneur_requis <= ".$joueur->get_honneur()." ".$where." ".$notin." ORDER BY quete.lvl_joueur";
+	$req = $db->query($requete);
+	
+	while($row = $db->read_array($req))
+	{
+		$quete_fini = explode(';', $joueur->get_quete_fini());
+		//Si c'est une quête non répétable et que le joueur a déjà fini la quête, on affiche pas.
+		if($row['repete'] == 'n' AND in_array($row['idq'], $quete_fini))
+		{
+		}
+		else
+		{
+			$check = true;
+			$quete_requis = explode(';', $row['quete_requis']);
+			foreach($quete_requis as $requis) 
+			{
+				if( !$requis ) continue;
+				$val = mb_substr($requis, 1);
+				if($requis[0] == 'q') //Si c'est une quête qui en nécessite une autre mais que le joueur ne l'a pas déjà faite.
+				{
+					if( !in_array($val, $quete_fini) )
+					{
+						$check = false;
+						break;
+					}
+				}
+				else if($requis[0] == 't')
+				{
+					if( $joueur->get_tuto() != $val )
+					{
+						$check = false;
+						break;
+					}
+				}
+				else if($requis[0] == 'c')
+				{
+					$classes = explode('-', $val);
+					if( !in_array($joueur->get_classe_id(), $classes) )
+					{
+						$check = false;
+						break;
+					}
+				}
+			}
+			if($check)
+			{
+				if($joueur->prend_quete($row['idq']))
+					$return .= 'Quête "'.$row['nom'].'" prise.<br />';
+				else
+					$return .= 'Quête "'.$row['nom'].'" pas prise.<br />';
+			}
+		}
+	}
+	return $return;
+}
+
 function verif_inventaire($id_quete, $joueur)
 {
 	global $db;

@@ -36,13 +36,13 @@ if($R->get_diplo($joueur->get_race()) <= 6 OR $R->get_diplo($joueur->get_race())
 {
 	if(isset($_GET['action']))
 	{
-		$requete = "SELECT * FROM quete WHERE id = ".sSQL($_GET['id']);
-		$req = $db->query($requete);
-		$row = $db->read_array($req);
 		switch ($_GET['action'])
 		{
 			//Description de la quète
 			case 'description' :
+				$requete = "SELECT * FROM quete WHERE id = ".sSQL($_GET['id']);
+				$req = $db->query($requete);
+				$row = $db->read_array($req);
 			?>
 				<div class="texte_normal">
 				<h3 style="margin-bottom : 3px;"><?php echo $row['nom']; ?></h3>
@@ -89,6 +89,9 @@ if($R->get_diplo($joueur->get_race()) <= 6 OR $R->get_diplo($joueur->get_race())
 			break;
 			//Prise de la quète
 			case 'prendre' :
+				$requete = "SELECT * FROM quete WHERE id = ".sSQL($_GET['id']);
+				$req = $db->query($requete);
+				$row = $db->read_array($req);
 				if($joueur->prend_quete($row['id']))
 				{
 					echo 'Merci de votre aide !<br />';
@@ -103,13 +106,21 @@ if($R->get_diplo($joueur->get_race()) <= 6 OR $R->get_diplo($joueur->get_race())
 				<a href="<?php echo $link; ?>.php" onclick="return envoiInfo(this.href, 'carte')">Revenir en arrière</a>
 				<?php
 			break;
+			case 'prendre_tout' :
+				$message = prend_quete_tout($joueur);
+				echo $message;
+				?>
+				<a href="bureau_quete.php" onclick="return envoiInfo(this.href, 'carte')">Revenir en arrière</a>
+				<?php
+			break;
 		}
 	}
 	else
-	{	
+	{
 		//Affichage des quêtes
 		$return = affiche_quetes('', $joueur);
 		echo $return[0];
+		echo '<br /><br /><a href="bureau_quete.php?action=prendre_tout" onclick="return envoiInfo(this.href, \'carte\')">Prendre toutes les quêtes.</a>';
 
 	}
 }

@@ -2971,7 +2971,7 @@ class perso extends entite
 		{
 			foreach($this->get_liste_quete() as $quest)
 			{
-				if($quest['id_quete'] == $_GET['id']) $valid = false;
+				if($quest['id_quete'] == $quete) $valid = false;
 			}
 			$numero_quete = (count($this->liste_quete));
 		}
