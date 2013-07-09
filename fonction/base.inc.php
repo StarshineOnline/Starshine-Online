@@ -2636,133 +2636,133 @@ function image_sort($type)
 	{
 		case 'vie' :
 		case 'vie_pourcent' :
-			return '<img src="image/sort/sort_soins1.png" alt="" style="vertical-align : middle;" />';
+			return '<img src="image/sort/sort_soins1.png" alt="" style="vertical-align : middle;" width="32px" />';
 		break;
 		case 'buff_critique' :
-			return '<img src="image/buff/buff_critique.png" alt="" style="vertical-align : middle;" />';
+			return '<img src="image/buff/buff_critique.png" alt="" style="vertical-align : middle;" width="32px" />';
 		break;
 		case 'buff_bouclier' :
-			return '<img src="image/buff/buff_bouclier.png" alt="" style="vertical-align : middle;" />';
+			return '<img src="image/buff/buff_bouclier.png" alt="" style="vertical-align : middle;" width="32px" />';
 		break;
 		case 'buff_evasion' :
-			return '<img src="image/buff/buff_evasion.png" alt="" style="vertical-align : middle;" />';
+			return '<img src="image/buff/buff_evasion.png" alt="" style="vertical-align : middle;" width="32px" />';
 		break;
 		case 'buff_inspiration' :
-			return '<img src="image/buff/buff_inspiration.png" alt="" style="vertical-align : middle;" />';
+			return '<img src="image/buff/buff_inspiration.png" alt="" style="vertical-align : middle;" width="32px" />';
 		break;
 		case 'buff_force' :
-			return '<img src="image/buff/buff_force.png" alt="" style="vertical-align : middle;" />';
+			return '<img src="image/buff/buff_force.png" alt="" style="vertical-align : middle;" width="32px" />';
 		break;
 		case 'buff_barriere' :
-			return '<img src="image/buff/buff_barriere.png" alt="" style="vertical-align : middle;" />';
+			return '<img src="image/buff/buff_barriere.png" alt="" style="vertical-align : middle;" width="32px" />';
 		break;
 		case 'buff_colere' :
-			return '<img src="image/buff/buff_colere.png" alt="" style="vertical-align : middle;" />';
+			return '<img src="image/buff/buff_colere.png" alt="" style="vertical-align : middle;" width="32px" />';
 		break;
 		case 'buff_meditation' :
-			return '<img src="image/buff/buff_meditation.png" alt="" style="vertical-align : middle;" />';
+			return '<img src="image/buff/buff_meditation.png" alt="" style="vertical-align : middle;" width="32px" />';
 		break;
 		case 'buff_surpuissance' :
-			return '<img src="image/buff/buff_surpuissance.png" alt="" style="vertical-align : middle;" />';
+			return '<img src="image/buff/buff_surpuissance.png" alt="" style="vertical-align : middle;" width="32px" />';
 		break;
 		case 'buff_concentration' :
-			return '<img src="image/buff/buff_concentration.png" alt="" style="vertical-align : middle;" />';
+			return '<img src="image/buff/buff_concentration.png" alt="" style="vertical-align : middle;" width="32px" />';
 		break;
 		case 'buff_furie_magique' :
-			return '<img src="image/buff/buff_furie_magique.png" alt="" style="vertical-align : middle;" />';
+			return '<img src="image/buff/buff_furie_magique.png" alt="" style="vertical-align : middle;" width="32px" />';
 		break;
 		case 'buff_rapidite' :
-			return '<img src="image/buff/buff_rapidite.png" alt="" style="vertical-align : middle;" />';
+			return '<img src="image/buff/buff_rapidite.png" alt="" style="vertical-align : middle;" width="32px" />';
 		break;
 		case 'buff_rage_vampirique' :
-			return '<img src="image/buff/buff_rage_vampirique.png" alt="" style="vertical-align : middle;" />';
+			return '<img src="image/buff/buff_rage_vampirique.png" alt="" style="vertical-align : middle;" width="32px" />';
 		break;
 		case 'buff_bouclier_sacre' :
-			return '<img src="image/buff/buff_bouclier_sacre.png" alt="" style="vertical-align : middle;" />';
+			return '<img src="image/buff/buff_bouclier_sacre.png" alt="" style="vertical-align : middle;" width="32px" />';
 		break;
 		case 'buff_armure_glace' :
-			return '<img src="image/buff/buff_armure_glace.png" alt="" style="vertical-align : middle;" />';
+			return '<img src="image/buff/buff_armure_glace.png" alt="" style="vertical-align : middle;" width="32px" />';
 		break;
 		case 'buff_epine' :
-			return '<img src="image/buff/buff_epine.png" alt="" style="vertical-align : middle;" />';
+			return '<img src="image/buff/buff_epine.png" alt="" style="vertical-align : middle;" width="32px" />';
 		break;
 		case 'buff_sacrifice' :
-			return '<img src="image/buff/buff_sacrifice.png" alt="" style="vertical-align : middle;" />';
+			return '<img src="image/buff/buff_sacrifice.png" alt="" style="vertical-align : middle;" width="32px" />';
 		break;
 		case 'debuff_aveuglement' :
-			return '<img src="image/buff/debuff_aveuglement.png" alt="" style="vertical-align : middle;" />';
+			return '<img src="image/buff/debuff_aveuglement.png" alt="" style="vertical-align : middle;" width="32px" />';
 		break;
 		case 'debuff_desespoir' :
-			return '<img src="image/buff/debuff_desespoir.png" alt="" style="vertical-align : middle;" />';
+			return '<img src="image/buff/debuff_desespoir.png" alt="" style="vertical-align : middle;" width="32px" />';
 		break;
 		case 'debuff_ralentissement' :
-			return '<img src="image/buff/debuff_ralentissement.png" alt="" style="vertical-align : middle;" />';
+			return '<img src="image/buff/debuff_ralentissement.png" alt="" style="vertical-align : middle;" width="32px" />';
 		break;
 		case 'debuff_enracinement' :
-			return '<img src="image/buff/debuff_ralentissement.png" alt="" style="vertical-align : middle;" />';
+			return '<img src="image/buff/debuff_ralentissement.png" alt="" style="vertical-align : middle;" width="32px" />';
 		break;
 		case 'engloutissement' :
-			return '<img src="image/buff/engloutissement.png" alt="" style="vertical-align : middle;" />';
+			return '<img src="image/buff/engloutissement.png" alt="" style="vertical-align : middle;" width="32px" />';
 		break;
 		case 'deluge' :
-			return '<img src="image/buff/deluge.png" alt="" style="vertical-align : middle;" />';
+			return '<img src="image/buff/deluge.png" alt="" style="vertical-align : middle;" width="32px" />';
 		break;
 		case 'blizzard' :
-			return '<img src="image/buff/blizzard.png" alt="" style="vertical-align : middle;" />';
+			return '<img src="image/buff/blizzard.png" alt="" style="vertical-align : middle;" width="32px" />';
 		break;
 		case 'orage_magnetique' :
-			return '<img src="image/buff/orage_magnetique.png" alt="" style="vertical-align : middle;" />';
+			return '<img src="image/buff/orage_magnetique.png" alt="" style="vertical-align : middle;" width="32px" />';
 		break;
 		case 'balance' :
-			return '<img src="image/buff/balance.png" alt="" style="vertical-align : middle;" />';
+			return '<img src="image/buff/balance.png" alt="" style="vertical-align : middle;" width="32px" />';
 		break;
 		case 'bouclier_eau' :
-			return '<img src="image/buff/bouclier_eau.png" alt="" style="vertical-align : middle;" />';
+			return '<img src="image/buff/bouclier_eau.png" alt="" style="vertical-align : middle;" width="32px" />';
 		break;
 		case 'bouclier_feu' :
-			return '<img src="image/buff/bouclier_feu.png" alt="" style="vertical-align : middle;" />';
+			return '<img src="image/buff/bouclier_feu.png" alt="" style="vertical-align : middle;" width="32px" />';
 		break;
 		case 'bouclier_terre' :
-			return '<img src="image/buff/bouclier_terre.png" alt="" style="vertical-align : middle;" />';
+			return '<img src="image/buff/bouclier_terre.png" alt="" style="vertical-align : middle;" width="32px" />';
 		break;
 		case 'rez' :
-			return '<img src="image/buff/rez.jpg" alt="" style="vertical-align : middle;" />';
+			return '<img src="image/buff/rez.jpg" alt="" style="vertical-align : middle;" width="32px" />';
 		break;
 		case 'teleport' :
-			return '<img src="image/buff/teleport.jpg" alt="" style="vertical-align : middle;" />';
+			return '<img src="image/buff/teleport.jpg" alt="" style="vertical-align : middle;" width="32px" />';
 		break;
 		case 'body_to_mind' :
-			return '<img src="image/buff/body_to_mind.jpg" alt="" style="vertical-align : middle;" />';
+			return '<img src="image/buff/body_to_mind.jpg" alt="" style="vertical-align : middle;" width="32px" />';
 		break;
 		case 'repos_sage' :
-			return '<img src="image/buff/repos_sage.png" alt="" style="vertical-align : middle;" />';
+			return '<img src="image/buff/repos_sage.png" alt="" style="vertical-align : middle;" width="32px" />';
 		break;
 		case 'bulle_sanctuaire' :
-			return '<img src="image/buff/bulle_sanctuaire.png" alt="" style="vertical-align : middle;" />';
+			return '<img src="image/buff/bulle_sanctuaire.png" alt="" style="vertical-align : middle;" width="32px" />';
 		break;
 		case 'guerison' :
-			return '<img src="image/buff/guerison.png" alt="" style="vertical-align : middle;" />';
+			return '<img src="image/buff/guerison.png" alt="" style="vertical-align : middle;" width="32px" />';
 		break;
 		case 'maladie_mollesse' :
-			return '<img src="image/buff/maladie_mollesse.png" alt="" style="vertical-align : middle;" />';
+			return '<img src="image/buff/maladie_mollesse.png" alt="" style="vertical-align : middle;" width="32px" />';
 		break;
 		case 'maladie_degenerescence' :
-			return '<img src="image/buff/maladie_degenerescence.png" alt="" style="vertical-align : middle;" />';
+			return '<img src="image/buff/maladie_degenerescence.png" alt="" style="vertical-align : middle;" width="32px" />';
 		break;
 		case 'maladie_amorphe' :
-			return '<img src="image/buff/maladie_amorphe.png" alt="" style="vertical-align : middle;" />';
+			return '<img src="image/buff/maladie_amorphe.png" alt="" style="vertical-align : middle;" width="32px" />';
 		break;
 		case 'souffrance_extenuante' :
-			return '<img src="image/buff/souffrance_extenuante.png" alt="" style="vertical-align : middle;" />';
+			return '<img src="image/buff/souffrance_extenuante.png" alt="" style="vertical-align : middle;" width="32px" />';
 		break;
 		case 'esprit_sacrifie' :
-			return '<img src="image/buff/esprit_sacrifie.png" alt="" style="vertical-align : middle;" />';
+			return '<img src="image/buff/esprit_sacrifie.png" alt="" style="vertical-align : middle;" width="32px" />';
 		break;
 		case 'lente_agonie' :
-			return '<img src="image/buff/lente_agonie.png" alt="" style="vertical-align : middle;" />';
+			return '<img src="image/buff/lente_agonie.png" alt="" style="vertical-align : middle;" width="32px" />';
 		break;
 		case 'transfert_energie' :
-			return '<img src="image/buff/transfert_energie.png" alt="" style="vertical-align : middle;" />';
+			return '<img src="image/buff/transfert_energie.png" alt="" style="vertical-align : middle;" width="32px" />';
 		break;
 	}
 }
