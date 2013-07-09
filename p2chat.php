@@ -17,4 +17,5 @@ if ($ret) {
 }
 
 header('Content-Type: application/json; charset=utf-8');
-echo json_encode($chats);
+header('Access-Control-Allow-Origin: http://forum.starshine-online.com');
+echo json_encode(implode(',', $chats));
