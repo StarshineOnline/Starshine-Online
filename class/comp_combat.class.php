@@ -342,8 +342,7 @@ class comp_combat extends comp
 			if(array_key_exists('recuperation', $actif->etat)) $actif->etat['recuperation']['hp_max'] += $effet;
 			$actif->set_hp($actif->get_hp() + $effet);
 			if($effet > 0) echo '&nbsp;&nbsp;<span class="soin">'.$actif->get_nom().' gagne '.$effet.' HP par la rage vampirique</span><br />';
-			//$log_effects_actif .= "&ef8~".$effet;
-      $attaque->add_log_effet_actif('&ef8~'.$effet);
+			$attaque->add_log_effet_actif('&ef8~'.$effet);
 		}
 	  //Epines
     if($passif->is_buff('buff_epine', true))
@@ -352,8 +351,7 @@ class comp_combat extends comp
 			$effet = round($degat * $buff_epine);
 			$actif->set_hp($actif->get_hp() - $effet);
 			if($effet > 0) echo '&nbsp;&nbsp;<span class="degat">'.$passif->get_nom().' renvoie '.$effet.' dégâts grâce à l\' Armure en épine</span><br />';
-			//$log_effects_passif .= "&ef9~".$effet;
-      $attaque->add_log_effet_passif('&ef8~'.$effet);
+			$attaque->add_log_effet_passif('&ef9~'.$effet);
 		}
 	  //Armure de glace
     if($passif->is_buff('buff_armure_glace', true))

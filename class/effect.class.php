@@ -466,7 +466,7 @@ class perte_hp extends etat
 		$perte_hp = $this->effet;
 		$actif->set_hp($actif->get_hp() - $perte_hp);
 		$this->hit($actif->get_nom().' perd '.$perte_hp. ' HP par '.$this->get_nom());
-		$log_effects_attaquant .= '&'.static::type_log.'~'.$perte_hp;
+		$attaque->add_log_effet_actif('&'.static::type_log.'~'.$perte_hp);
 	}
 }
 
@@ -519,18 +519,19 @@ class poison extends effect
 
   function fin_round(/*&$actif, &$passif, $mode*/&$attaque)
   {
-    global $log_effects_attaquant, $log_effects_defenseur;
-    $actif = $attaque->get_actif();
+		$actif = $attaque->get_actif();
 		$perte_hp = $actif->etat['poison']['effet'] - $actif->etat['poison']['duree'] + 1;
+		
 		if($actif->etat['putrefaction']['duree'] > 0)
-      $perte_hp = $perte_hp * $actif->etat['putrefaction']['effet'];
+			$perte_hp = $perte_hp * $actif->etat['putrefaction']['effet'];
+			
 		$actif->set_hp($actif->get_hp() - $perte_hp);
 		$this->hit($actif->get_nom().' perd '.$perte_hp. ' HP par le poison');
 		//echo $mode;
 		if ($mode == 'attaquant')
-			$log_effects_attaquant .= "&ef1~".$perte_hp;
+			$attaque->add_log_effet_passif("&ef1~".$perte_hp);
 		else
-			$log_effects_defenseur .= "&ef1~".$perte_hp;
+			$attaque->add_log_effet_actif("&ef1~".$perte_hp);
 	}
 }
 
@@ -622,7 +623,6 @@ class recuperation extends etat
 
   function fin_round(/*&$actif, &$passif, $mode*/&$attaque)
   {
-    global $log_effects_attaquant, $log_effects_defenseur;
     $actif = $attaque->get_actif();
 		$effet = $this->effet;
 		if(($actif->get_hp() + $effet) > $actif->etat['recuperation']['hp_max'])
@@ -635,9 +635,9 @@ class recuperation extends etat
 			$actif->etat['recuperation']['hp_recup'] += $effet;
 			echo '&nbsp;&nbsp;<span class="soin">'.$actif->get_nom().' gagne '.$effet.' HP par récupération</span><br />';
 			if ($mode == 'attaquant')
-				$log_effects_attaquant .= "&ef6~".$effet;
+				$attaque->add_log_effet_actif("&ef6~".$effet);
 			else
-				$log_effects_defenseur .= "&ef6~".$effet;
+				$attaque->add_log_effet_passif("&ef6~".$effet);
 		}
 		else
 			print_debug($actif->get_nom().' ne peut pas gagner de HP par récupération');

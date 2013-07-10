@@ -666,17 +666,17 @@ else
 				}
 			}
 			
-			//Cartouche de fin de combat classique
-			if ($defenseur->get_hp() > 0)
-			{
-				echo ' 
-				<div id="combat_cartouche">
+			echo '<div id="combat_cartouche">
 				<ul style="float:left;">
 					<li><span style="display:block;float:left;width:150px;">'.$attaquant->get_nom().'</span>
 						<span style="display:block;float:left;width:150px;">'.$attaquant->get_hp().' HP</span>
 						</li>
-						<li><span style="display:block;float:left;width:150px;">'.$defenseur->get_nom().'</span>
-							<span style="display:block;float:left;width:150px;"><img src="genere_barre_vie.php?longueur='.$longueur.'" alt="Estimation des HP : '.$longueur.'% / + ou - : '.$fiabilite.'%"" title="Estimation des HP : '.$longueur.'% / + ou - : '.$fiabilite.'%" /></span>
+						<li><span style="display:block;float:left;width:150px;">'.$defenseur->get_nom().'</span>';
+						
+			//Cartouche de fin de combat classique
+			if ($defenseur->get_hp() > 0)
+			{
+				echo '	<span style="display:block;float:left;width:150px;"><img src="genere_barre_vie.php?longueur='.$longueur.'" alt="Estimation des HP : '.$longueur.'% / + ou - : '.$fiabilite.'%"" title="Estimation des HP : '.$longueur.'% / + ou - : '.$fiabilite.'%" /></span>
 						</li>
 				</ul>
 				<div style="float:left;">';
@@ -684,35 +684,28 @@ else
 			else // Cartouche de fin de combat si mort
 			{
 				
-				echo ' 
-				<div id="combat_cartouche">
-				<ul style="float:left;">
-				<li><span style="display:block;float:left;width:150px;">'.$attaquant->get_nom().'</span>
-				   <span style="display:block;float:left;width:150px;">'.$attaquant->get_hp().' HP</span>
-				</li>
-				<li><span style="display:block;float:left;width:150px;">'.$defenseur->get_nom().'</span>
-				   <span style="display:block;float:left;width:150px;">mort</span>
-				</li>
+				echo '   <span style="display:block;float:left;width:150px;">mort</span>
+						</li>
 				</ul>
-				<div style="float:left;">';
+				<div style="clear:both;">';
 				
 				if($type == 'monstre')
 				{
 					if($defenseur->get_level() < $attaquant->get_level() - 5)
-						echo 'Les tripes arrachées, '.$defenseur->get_nom().' meurt dignement';
+						echo 'Les tripes arrachées, '.$defenseur->get_nom().' meurt dignement.<br />';
 					elseif($defenseur->get_level() > $attaquant->get_level() + 5)
-						echo 'Tandis que le flot rouge de sa vie finissait de s\'écouler, '.$defenseur->get_nom().' rendait l\'âme';
+						echo 'Tandis que le flot rouge de sa vie finissait de s\'écouler, '.$defenseur->get_nom().' rendait l\'âme.<br />';
 					elseif($defenseur->get_level() >= $attaquant->get_level() - 5 AND $defenseur->get_level() <= $attaquant->get_level() + 5)
-						echo 'Un air ahuri flotte encore sur sa gueule puissante, vous avez tué '.$defenseur->get_nom();
+						echo 'Un air ahuri flotte encore sur sa gueule puissante, vous avez tué '.$defenseur->get_nom().'.<br />';
 				}
 				elseif($type == 'joueur')
 				{
 					if($defenseur->get_level() < $attaquant->get_level() - 9)
-						echo 'A vaincre sans péril on triomphe sans gloire';
+						echo 'A vaincre sans péril on triomphe sans gloire.<br />';
 					elseif($defenseur->get_level() > $attaquant->get_level() + 9)
-						echo 'Félicitation, tu es venu à bout de '.$defenseur->get_nom();
+						echo 'Félicitation, tu es venu à bout de '.$defenseur->get_nom().'.<br />';
 					elseif($defenseur->get_level() >= $attaquant->get_level() - 9 AND $defenseur->get_level() <= $attaquant->get_level() + 9)
-						echo 'Tu as tué, '.$defenseur->get_nom();
+						echo 'Tu as tué '.$defenseur->get_nom().'.<br />';
 				}
 	
 				if($defenseur->get_race() == $attaquant->get_race() AND $defenseur->get_rang_royaume() == 6) $joueur->unlock_achiev('roi_race_mort');

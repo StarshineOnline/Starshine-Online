@@ -137,7 +137,7 @@ function sub_script_action($joueur, $ennemi, $mode, &$attaque)
 		}
 		else
 		{
-			$log_combat .= "cp";
+			$attaque->add_log_combat('cp');
 			$test = false;
 			return '';
 			
@@ -146,14 +146,13 @@ function sub_script_action($joueur, $ennemi, $mode, &$attaque)
 	if($joueur->etat['etourdit'] > 0)
 	{
 		echo $joueur->get_nom().' est étourdi<br />';
-		$log_combat .= "ce";
+		$attaque->add_log_combat('ce');
 		$test = false;
 		return '';
 	}
 	if($joueur->etat['glace'] > 0)
 	{
 		print_debug($joueur->get_nom().' est glacé<br />');
-		//$log_combat .= "cp";
 		$test = true;
 	}
 	if($joueur->etat['tir_vise'] > 0)
@@ -175,7 +174,7 @@ function sub_script_action($joueur, $ennemi, $mode, &$attaque)
 			if($rand < $cible)
 			{
 				echo $joueur->get_nom().' est glacé<br />';
-				$log_combat .= "cg";
+				$attaque->add_log_combat('cg');
 				return '';
 				$stop = true;
 			}
@@ -183,6 +182,7 @@ function sub_script_action($joueur, $ennemi, $mode, &$attaque)
 		if($joueur->etat['silence'] > 0)
 		{
 			echo $joueur->get_nom().' est sous silence<br />';
+			$attaque->add_log_combat('cs');
 			$effectue[0] = 'attaque';
 			return $effectue;
 		}
@@ -502,7 +502,7 @@ function sub_script_action($joueur, $ennemi, $mode, &$attaque)
 				if($rand > $chance_reussite)
 				{
 					echo $ennemi->get_nom().' anticipe l\'attaque, et elle échoue !<br />';
-					$log_combat .= "a";
+					$attaque->add_log_combat('a');
 					return '';
 				}
 			}
