@@ -477,6 +477,9 @@ else
 					$hp_avant = ${$mode_def}->get_hp();
 					$augmentations = array('actif' => array('comp' => array(), 'comp_perso' => array()), 'passif' => array('comp' => array(), 'comp_perso' => array()));
 					
+					$attaque->init_action();
+					$actif = &$attaque->get_actif();
+					$passif = &$attaque->get_passif();
 					if($action)
 					{
             /*if ($mode == 'attaquant')
@@ -493,9 +496,6 @@ else
         	    $log_effects_actif = $log_effects_defenseur;
         	    $log_effects_passif = $log_effects_attaquant;
             }*/
-            $attaque->init_action();
-            $actif = &$attaque->get_actif();
-            $passif = &$attaque->get_passif();
             $effects = &$attaque->get_effets();
 
             // Calcul de MP nécessaires
