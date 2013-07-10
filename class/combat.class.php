@@ -6,13 +6,15 @@
 	e = esquive
 	m = manque la cible avec sort
 	l = lancement sort raté
-	~12 = degats
+	~12 = 12 degats
 	~a = anticipation
 	; = fin d'un round
 	, = changement de personne ou effets
 	n = s'approche
 	cp = paralysé
 	ce = etourdi
+	cg = glacé
+	cs = silence
 	ef = effet
 */
 
@@ -152,7 +154,7 @@ class combat
 				$attaque[1] => c // Si c'est une compétence, un sort ...
 				$attaque[2] => 0 // l'id de la compétence ou du sort
 				$attaque[3] => ! // critiques
-				$attaque[5] => e // les degats ou esquive ou anticipation
+				$attaque[5] => e // les degats ou esquive
 				*/
 				if($attaque[1] == "c") // Une compétence
 				{
@@ -241,6 +243,8 @@ class combat
 							echo '<strong>'.${$mode}->get_nom().'</strong> est étourdi<br />';
 						elseif($attaque[2] == "g")
 							echo ${$mode}->get_nom().' est glacé<br />';
+						elseif(substr($attaque[2],0,1) == "s")
+							echo ${$mode}->get_nom().' est sous silence<br />';
 						
 						if($attaque[3] == "!")
 							echo '&nbsp;&nbsp;<span class="coupcritique">COUP CRITIQUE !</span><br />';
@@ -367,56 +371,65 @@ class combat
 				// On gère les effets
 				if($mode == 'defenseur')
 				{
-				preg_match("#&ef([0-9]+)~([0-9]+)#i", $combat[$round]['effects_attaquant'], $effects_a);
-				preg_match("#&ef([0-9]+)~([0-9]+)#i", $combat[$round]['effects_defenseur'], $effects_d);
-				/*
-				$effects_a[1] => 7 // id de l'effet
-				$effects_a[2] => 4 // valeur des degats 
-				*/
-						// Armure d'epine
-						if($effects_d[1] == "9")
-							if($effects_d[2] > 0) echo '&nbsp;&nbsp;<span class="degat">'.$defenseur->get_nom().' renvoie '.$effects_d[2].' dégâts grâce à l\'Armure en épine</span><br />';
-						if($effects_a[1] == "9")
-							if($effects_a[2] > 0) echo '&nbsp;&nbsp;<span class="degat">'.$attaquant->get_nom().' renvoie '.$effects_a[2].' dégâts grâce à l\'Armure en épine</span><br />';
-						// Rage vampirique
-						if($effects_d[1] == "8")
-							if($effects_d[2] > 0) echo '&nbsp;&nbsp;<span class="soin">'.$defenseur->get_nom().' gagne '.$effects_d[2].' HP par la rage vampirique</span><br />';
-						if($effects_a[1] == "8")
-							if($effects_a[2] > 0) echo '&nbsp;&nbsp;<span class="soin">'.$attaquant->get_nom().' gagne '.$effects_a[2].' HP par la rage vampirique</span><br />';
-						//Perte de HP par le poison
-						if($effects_a[1] == "1")
-							echo '&nbsp;&nbsp;<span class="degat">'.$attaquant->get_nom().' perd '.$effects_a[2].' HP par le poison</span><br />';
-						if($effects_d[1] == "1")
-							echo '&nbsp;&nbsp;<span class="degat">'.$defenseur->get_nom().' perd '.$effects_d[2].' HP par le poison</span><br />';
-						//Perte de HP par hémorragie
-						if($effects_a[1] == "2")
-							echo '&nbsp;&nbsp;<span class="degat">'.$attaquant->get_nom().' perd '.$effects_a[2].' HP par hémorragie</span><br />';
-						if($effects_d[1] == "2")
-							echo '&nbsp;&nbsp;<span class="degat">'.$defenseur->get_nom().' perd '.$effects_d[2].' HP par hémorragie</span><br />';
-						//Perte de HP par embrasement
-						if($effects_a[1] == "3")
-							echo '&nbsp;&nbsp;<span class="degat">'.$attaquant->get_nom().' perd '.$effects_a[2].' HP par embrasement</span><br />';
-						if($effects_d[1] == "3")
-							echo '&nbsp;&nbsp;<span class="degat">'.$defenseur->get_nom().' perd '.$effects_d[2].' HP par embrasement</span><br />';
-						//Perte de HP par acide
-						if($effects_a[1] == "4")
-							echo '&nbsp;&nbsp;<span class="degat">'.$attaquant->get_nom().' perd '.$effects_a[2].' HP par acide</span><br />';
-						if($effects_d[1] == "4")
-							echo '&nbsp;&nbsp;<span class="degat">'.$defenseur->get_nom().' perd '.$effects_d[2].' HP par acide</span><br />';
-						//Perte de HP par lien sylvestre
-						if($effects_a[1] == "5")
-							echo '&nbsp;&nbsp;<span class="degat">'.$attaquant->get_nom().' perd '.$effects_a[2].' HP par le lien sylvestre</span><br />';
-						if($effects_d[1] == "5")
-							echo '&nbsp;&nbsp;<span class="degat">'.$defenseur->get_nom().' perd '.$effects_d[2].' HP par le lien sylvestre</span><br />';
-						if($effects_a[1] == "6")
-							echo '&nbsp;&nbsp;<span class="soin">'.$attaquant->get_nom().' gagne '.$effects_a[2].' HP par récupération</span><br />';
-						if($effects_d[1] == "6")
-							echo '&nbsp;&nbsp;<span class="soin">'.$defenseur->get_nom().' gagne '.$effects_d[2].' HP par récupération</span><br />';
-						if($effects_d[1] == "7")
-							echo '&nbsp;&nbsp;<span class="soin">'.$defenseur->get_nom().' est sous l\'effet de Flêche Débilisante</span><br />';
-						if($effects_a[1] == "7")
+				preg_match_all("#&ef([0-9]+)~([0-9]+)#i", $combat[$round]['effects_attaquant'], $effects_a);
+				preg_match_all("#&ef([0-9]+)~([0-9]+)#i", $combat[$round]['effects_defenseur'], $effects_d);
+				
+					for($i=0;$i<count($effects_a[0]);$i++)
+					{
+						if($effects_a[1][$i] == "1")
+							echo '&nbsp;&nbsp;<span class="degat">'.$attaquant->get_nom().' perd '.$effects_a[2][$i].' HP par le poison</span><br />';
+						if($effects_a[1][$i] == "2")
+							echo '&nbsp;&nbsp;<span class="degat">'.$attaquant->get_nom().' perd '.$effects_a[2][$i].' HP par hémorragie</span><br />';
+						if($effects_a[1][$i] == "3")
+							echo '&nbsp;&nbsp;<span class="degat">'.$attaquant->get_nom().' perd '.$effects_a[2][$i].' HP par embrasement</span><br />';
+						if($effects_a[1][$i] == "4")
+							echo '&nbsp;&nbsp;<span class="degat">'.$attaquant->get_nom().' perd '.$effects_a[2][$i].' HP par acide</span><br />';
+						if($effects_a[1][$i] == "5")
+							echo '&nbsp;&nbsp;<span class="degat">'.$attaquant->get_nom().' perd '.$effects_a[2][$i].' HP par le lien sylvestre</span><br />';
+						if($effects_a[1][$i] == "6")
+							echo '&nbsp;&nbsp;<span class="soin">'.$attaquant->get_nom().' gagne '.$effects_a[2][$i].' HP par récupération</span><br />';
+						if($effects_a[1][$i] == "7")
 							echo '&nbsp;&nbsp;<span class="soin">'.$attaquant->get_nom().' est sous l\'effet de Flêche Débilisante</span><br />';
+						if($effects_a[1][$i] == "8")
+							if($effects_a[2][$i] > 0) echo '&nbsp;&nbsp;<span class="soin">'.$attaquant->get_nom().' gagne '.$effects_a[2][$i].' HP par la rage vampirique</span><br />';
+						if($effects_a[1][$i] == "9")
+							if($effects_a[2][$i] > 0) echo '&nbsp;&nbsp;<span class="degat">'.$attaquant->get_nom().' renvoie '.$effects_a[2][$i].' dégâts grâce à l\'Armure en épine</span><br />';
 					}
+					for($i=0;$i<count($effects_d[0]);$i++)
+					{
+					/*
+					$effects_d[1][$i] => 7 // id de l'effet
+					$effects_d[2][$i] => 4 // valeur des degats 
+					*/
+						//Perte de HP par le poison
+						if($effects_d[1][$i] == "1")
+							echo '&nbsp;&nbsp;<span class="degat">'.$defenseur->get_nom().' perd '.$effects_d[2][$i].' HP par le poison</span><br />';
+						//Perte de HP par hémorragie
+						if($effects_d[1][$i] == "2")
+							echo '&nbsp;&nbsp;<span class="degat">'.$defenseur->get_nom().' perd '.$effects_d[2][$i].' HP par hémorragie</span><br />';
+						//Perte de HP par embrasement
+						if($effects_d[1][$i] == "3")
+							echo '&nbsp;&nbsp;<span class="degat">'.$defenseur->get_nom().' perd '.$effects_d[2][$i].' HP par embrasement</span><br />';
+						//Perte de HP par acide
+						if($effects_d[1][$i] == "4")
+							echo '&nbsp;&nbsp;<span class="degat">'.$defenseur->get_nom().' perd '.$effects_d[2][$i].' HP par acide</span><br />';
+						//Perte de HP par lien sylvestre
+						if($effects_d[1][$i] == "5")
+							echo '&nbsp;&nbsp;<span class="degat">'.$defenseur->get_nom().' perd '.$effects_d[2][$i].' HP par le lien sylvestre</span><br />';
+						//Récupération
+						if($effects_d[1][$i] == "6")
+							echo '&nbsp;&nbsp;<span class="soin">'.$defenseur->get_nom().' gagne '.$effects_d[2][$i].' HP par récupération</span><br />';
+						// Fleche Debilisante
+						if($effects_d[1][$i] == "7")
+							echo '&nbsp;&nbsp;<span class="soin">'.$defenseur->get_nom().' est sous l\'effet de Flêche Débilisante</span><br />';
+						// Rage vampirique
+						if($effects_d[1][$i] == "8")
+							if($effects_d[2][$i] > 0) echo '&nbsp;&nbsp;<span class="soin">'.$defenseur->get_nom().' gagne '.$effects_d[2][$i].' HP par la rage vampirique</span><br />';
+						// Armure d'epine
+						if($effects_d[1][$i] == "9")
+							if($effects_d[2][$i] > 0) echo '&nbsp;&nbsp;<span class="degat">'.$defenseur->get_nom().' renvoie '.$effects_d[2][$i].' dégâts grâce à l\'Armure en épine</span><br />';
+					}
+				}
 					
 				echo '</div>';
 				
