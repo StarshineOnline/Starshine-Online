@@ -39,6 +39,7 @@ if(array_key_exists('stop', $_GET))
 }
 if(array_key_exists('soin', $_GET))
 {
+	$debugs = 0;
 	$pet = new pet($_GET['soin']);
 	$pet->get_monstre();
 	//Si on a assez de PV
@@ -63,19 +64,19 @@ if(array_key_exists('soin', $_GET))
 						else $msg .= ' + ';
 						$msg .= "d${de}($rnd)";
 					}
-					print_debug($msg);
+					print_debug($msg.'<br/>');
 					//Heal MP
 					$heal_mp = floor($heal / 3);
 					if($heal > ($pet->monstre->get_hp() - $pet->get_hp())) $heal = $pet->monstre->get_hp() - $pet->get_hp();
 					if($heal_mp > ($pet->get_mp_max() - $pet->get_mp())) $heal_mp = $pet->get_mp_max() - $pet->get_mp();
 					$pet->set_hp($pet->get_hp() + $heal);
 					$pet->set_mp($pet->get_mp() + $heal_mp);
-					echo '<h6>Vous soignez '.$pet->get_nom().' de '.$heal.' HP et '.$heal_mp.' MP</h6>';
 					$augmentation = augmentation_competence('dressage', $joueur, 5);
 					if ($augmentation[1] == 1) $joueur->set_dressage($augmentation[0]);
 					$joueur->sauver();
 					$pet->sauver();
 					refresh_perso();
+					echo '<h6>Vous soignez '.$pet->get_nom().' de '.$heal.' HP et '.$heal_mp.' MP <a onclick="for (i=0; i<'.$debugs.'; i++) {if(document.getElementById(\'debug\' + i).style.display == \'inline\') document.getElementById(\'debug\' + i).style.display = \'none\'; else document.getElementById(\'debug\' + i).style.display = \'inline\';}"><img src="image/interface/debug.png" alt="Debug" Title="Débug pour voir en détail le lancement du sort" style="vertical-align : middle;cursor:pointer;" /></a></h6>';
 				}
 				else echo '<h5>Votre créature est morte.</h5>';
 			}
