@@ -69,7 +69,7 @@ if( $check )
 		//Si pas de révolution, on cherche pour en déclencher une
 		else
 		{
-			if(array_key_exists('action', $_GET) && $_GET['action'] == 'declenche')
+			if(array_key_exists('action', $_GET) && $_GET['action'] == 'declenche' && date("d") <= 20 && date("d") > 1)
 			{
 				$revolution = new revolution();
 				$revolution->set_id_royaume($R->get_id());
