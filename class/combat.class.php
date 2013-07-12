@@ -15,6 +15,7 @@
 	ce = etourdi
 	cg = glacé
 	cs = silence
+	cc = caché
 	ef = effet
 */
 
@@ -243,6 +244,13 @@ class combat
 							echo '<strong>'.${$mode}->get_nom().'</strong> est étourdi<br />';
 						elseif($attaque[2] == "g")
 							echo ${$mode}->get_nom().' est glacé<br />';
+						elseif($attaque[2] == "c")
+						{
+							if ($mode == 'attaquant')
+								echo $defenseur->get_nom().' est caché, '.$attaquant->get_nom().' ne peut pas attaquer<br />';
+							else
+								echo $attaquant->get_nom().' est caché, '.$defenseur->get_nom().' ne peut pas attaquer<br />';
+						}
 						elseif(substr($attaque[2],0,1) == "s")
 							echo ${$mode}->get_nom().' est sous silence<br />';
 						

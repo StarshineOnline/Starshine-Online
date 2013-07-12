@@ -64,8 +64,8 @@ function script_action($joueur, $ennemi, $mode, &$attaque)
 			$row = $db->read_assoc($req);*/
 			// Si la cible est l'adversaire, alors c'est foiré
 			if (/*$G_cibles[$row['cible']] == 'Ennemi'*/$att->get_cible() == comp_sort::cible_autre ) {
-				echo $ennemi->get_nom().' est caché, '.$joueur->get_nom().
-					' ne peut pas attaquer<br />';
+				echo $ennemi->get_nom().' est caché, '.$joueur->get_nom().' ne peut pas attaquer<br />';
+				$attaque->add_log_combat('cc');
 				return null;//'';
 			}
 		}
