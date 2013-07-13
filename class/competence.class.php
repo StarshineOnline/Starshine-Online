@@ -559,7 +559,7 @@ abstract class magnetique extends effect {
 
 	function fin_round(/*&$actif, &$passif*/&$attaque) {
 		if ($this->hit)
-			$this->magnetise($actif, $passif);
+			$this->magnetise($attaque);
 	}
 
   /// Test si l'effet agit ou non

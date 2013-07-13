@@ -660,7 +660,7 @@ class sort_combat_bris_os extends sort_combat
     /*$degat = */parent::calcul_degats($attaque);
 		if($attaque->get_passif()->etat['paralysie']['duree'] > 0)
       //$degat = round($degat * 1.6);
-      $attaque->mult_attaque(1.6);
+      $attaque->mult_degats(1.6);
 		//return $degat;
   }
 }
