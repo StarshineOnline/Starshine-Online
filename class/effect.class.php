@@ -1174,7 +1174,7 @@ class bouclier_pensee extends effect
 
 	function calcul_bloquage_reduction(/*&$actif, &$passif, $reduction*/&$attaque) {
 		//return ceil($passif->get_volonte()/2);
-    $attaque->set_degats_bloques( ceil($passif->get_volonte()/2) );
+    $attaque->set_degats_bloques( ceil($attaque->get_passif()->get_volonte()/2) );
 	}
 }
 
