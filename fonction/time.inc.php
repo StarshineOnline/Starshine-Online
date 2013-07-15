@@ -190,20 +190,25 @@ function date_sso($time = 0)
 
 /**
  * Indique quel est le moment de la journée (matin, journée, soir ou nuit).
+ * @param $id_joueur ID du joueur pour lequel on calcule
+ * @param $no_joueur TRUE si on ne veut pas prendre de joueur en compte
  * 
  * @return Moment de la journée.  
 */
-function moment_jour($id_joueur = 0)
+function moment_jour($id_joueur = 0, $no_joueur = false)
 {
 	global $joueur, $db;
-	if (isset($joueur) && $joueur != null)
-	{
-		$x = $joueur->get_x();
-		$y = $joueur->get_y();
-	}
-	else
-	{
-		// On ne peut pas créer d'objet perso car cette fonction est appelée dans son constructeur
+	$temps = time();
+  if ($no_joueur == false) {
+    // On prends en compte un joueur pour les décalages d'arène
+    if (isset($joueur) && $joueur != null)
+    {
+      $x = $joueur->get_x();
+      $y = $joueur->get_y();
+    }
+    else
+    {
+      // On ne peut pas créer d'objet perso car cette fonction est appelée dans son constructeur
 	  	$id_joueur = empty($id_joueur) ? $_SESSION['ID'] : $id_joueur;
     	$requete = "SELECT x,y FROM perso WHERE id =".$id_joueur;
     	$req = $db->query($requete);
@@ -212,17 +217,17 @@ function moment_jour($id_joueur = 0)
 				$x = $row["x"];
 		  	$y = $row["y"];
   		}
-	}
-	$temps = time();
-	if ($x >= 200)
-	{
-		$q = "select * from arenes where x <= $x and $x < x + size ".
-			"and y <= $y and $y < y + size $filter";
-		$req = $db->query($q);
-		if ($row = $db->read_object($req)) {
-			$temps += $row->decal;
-		}
-	}
+    }
+    if ($x >= 200)
+    {
+      $q = "select * from arenes where x <= $x and $x < x + size ".
+        "and y <= $y and $y < y + size $filter";
+      $req = $db->query($q);
+      if ($row = $db->read_object($req)) {
+        $temps += $row->decal;
+      }
+    }
+  }
 	$heure = heure_sso($temps);
 	if($heure > 5 AND $heure < 10) $moment = 'Matin';
 	elseif($heure > 9 AND $heure < 16) $moment = 'Journee';

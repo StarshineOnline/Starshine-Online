@@ -11,7 +11,7 @@ include_once(root.'connect.php');
 include_once(root.'fonction/time.inc.php');
 
 list($x, $y) = pnjutils::get_gob_loc();
-if (moment_jour() == 'Nuit') {
+if (moment_jour(0, true) == 'Nuit') {
   if ($x == 35 AND $y == 276)
     pnjutils::move_gob(46, 376); // Arrivée dans le donjon aquatique
   elseif ($x == 46 AND $y == 376)
