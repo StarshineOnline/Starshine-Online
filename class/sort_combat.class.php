@@ -604,6 +604,8 @@ class sort_combat_sang extends sort_combat
 		{
 			$actif->set_hp($actif->get_hp() - $cout_hp);
 			parent::touche($attaque);
+			echo '<span class="degat">et sacrifie '.$cout_hp.' hp.</span><br />';
+			$attaque->add_log_effet_actif('&ef10~'.$cout_hp);
 		}
   }
 }

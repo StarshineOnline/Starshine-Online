@@ -528,10 +528,7 @@ class poison extends effect
 		$actif->set_hp($actif->get_hp() - $perte_hp);
 		$this->hit($actif->get_nom().' perd '.$perte_hp. ' HP par le poison');
 		//echo $mode;
-		if ($mode == 'attaquant')
-			$attaque->add_log_effet_passif("&ef1~".$perte_hp);
-		else
-			$attaque->add_log_effet_actif("&ef1~".$perte_hp);
+		$attaque->add_log_effet_actif("&ef1~".$perte_hp);
 	}
 }
 
@@ -634,10 +631,7 @@ class recuperation extends etat
 		{
 			$actif->etat['recuperation']['hp_recup'] += $effet;
 			echo '&nbsp;&nbsp;<span class="soin">'.$actif->get_nom().' gagne '.$effet.' HP par récupération</span><br />';
-			if ($mode == 'attaquant')
-				$attaque->add_log_effet_actif("&ef6~".$effet);
-			else
-				$attaque->add_log_effet_passif("&ef6~".$effet);
+			$attaque->add_log_effet_actif("&ef6~".$effet);
 		}
 		else
 			print_debug($actif->get_nom().' ne peut pas gagner de HP par récupération');

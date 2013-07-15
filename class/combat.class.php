@@ -322,7 +322,7 @@ class combat
 								$drain = round($attaque[5] * 0.2);
 								echo '&nbsp;&nbsp;<span class="degat"><strong>'.${$mode}->get_nom().'</strong> inflige <strong>'.$attaque[5].'</strong> dégâts avec '.$row['nom'].'<br />
 								Et gagne <strong>'.$drain.'</strong> RM grâce au drain</span><br />';
-                break;
+							break;
 							case 'brulure_mana' :
 								$brule_mana = $row['effet'];
 								echo '&nbsp;&nbsp;<span class="degat"><strong>'.${$mode}->get_nom().'</strong> retire '.$brule_mana.' réserve de mana et inflige <strong>'.$attaque[5].'</strong> dégâts avec '.$row['nom'].'</span><br />';
@@ -402,6 +402,9 @@ class combat
 							if($effects_a[2][$i] > 0) echo '&nbsp;&nbsp;<span class="soin">'.$attaquant->get_nom().' gagne '.$effects_a[2][$i].' HP par la rage vampirique</span><br />';
 						if($effects_a[1][$i] == "9")
 							if($effects_a[2][$i] > 0) echo '&nbsp;&nbsp;<span class="degat">'.$attaquant->get_nom().' renvoie '.$effects_a[2][$i].' dégâts grâce à l\'Armure en épine</span><br />';
+						if($effects_a[1][$i] == "10")
+							echo '&nbsp;&nbsp;<span class="degat">'.$attaquant->get_nom().' sacrifie '.$effects_a[2][$i].' hp</span><br />';
+
 					}
 					for($i=0;$i<count($effects_d[0]);$i++)
 					{
@@ -436,6 +439,9 @@ class combat
 						// Armure d'epine
 						if($effects_d[1][$i] == "9")
 							if($effects_d[2][$i] > 0) echo '&nbsp;&nbsp;<span class="degat">'.$defenseur->get_nom().' renvoie '.$effects_d[2][$i].' dégâts grâce à l\'Armure en épine</span><br />';
+						//Pacte de sang
+						if($effects_d[1][$i] == "10")
+							echo '&nbsp;&nbsp;<span class="degat">'.$defenseur->get_nom().' sacrifie '.$effects_d[2][$i].' hp</span><br />';
 					}
 				}
 					
