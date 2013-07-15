@@ -168,7 +168,7 @@ else
                 is_pnj($row))
 						{
 						?>
-						<li><a href="admin_joueur.php?direction=objet&amp;id=<?php echo $_GET['id']; ?>">Donner un objet</a> | <a href="admin_joueur.php?direction=recette&amp;id=<?php echo $_GET['id']; ?>">Donner une recette</a> | <a href="admin_joueur.php?direction=arme&amp;id=<?php echo $_GET['id']; ?>">Donner une arme</a></li> | <a href="admin_joueur.php?direction=armure&amp;id=<?php echo $_GET['id']; ?>">Donner une armure</a> | <a href="admin_joueur.php?direction=accessoire&amp;id=<?php echo $_GET['id']; ?>">Donner un accessoire</a> | <a href="admin_joueur.php?direction=titre&amp;id=<?php echo $_GET['id']; ?>">Donner un titre</a></li>
+						<li><a href="admin_joueur.php?direction=objet&amp;id=<?php echo $_GET['id']; ?>">Donner un objet</a> | <a href="admin_joueur.php?direction=donnestars&amp;id=<?php echo $_GET['id']; ?>">Donner stars</a> | <a href="admin_joueur.php?direction=recette&amp;id=<?php echo $_GET['id']; ?>">Donner une recette</a> | <a href="admin_joueur.php?direction=arme&amp;id=<?php echo $_GET['id']; ?>">Donner une arme</a></li> | <a href="admin_joueur.php?direction=armure&amp;id=<?php echo $_GET['id']; ?>">Donner une armure</a> | <a href="admin_joueur.php?direction=accessoire&amp;id=<?php echo $_GET['id']; ?>">Donner un accessoire</a> | <a href="admin_joueur.php?direction=titre&amp;id=<?php echo $_GET['id']; ?>">Donner un titre</a></li>
 						<li><a href="admin_joueur.php?direction=quete&amp;id=<?php echo $_GET['id']; ?>">Quêtes</a> - <a href="admin_joueur.php?direction=inventaire&amp;id=<?php echo $_GET['id']; ?>">Inventaire</a> - <a href="admin_joueur.php?direction=journal&amp;id=<?php echo $_GET['id']; ?>">Voir le journal des actions</a> | <a href="admin_joueur.php?direction=messagerie&amp;id=<?php echo $_GET['id']; ?>">Voir la messagerie</a> | <a href="admin_joueur.php?direction=donnepa&amp;id=<?php echo $_GET['id']; ?>">Donner full PA</a></li>
 						<?php
 						}
@@ -222,7 +222,7 @@ else
 ?>
 <a href="admin_joueur.php?direction=info_joueur&id=<?php echo $id ?>">Retour</a>
 	 <script type="text/javascript">window.location = 'admin_joueur.php?direction=info_joueur&id=<?php echo $id ?>';</script>
-<?
+<?php
 			break;
 
       case 'titredel':
@@ -315,6 +315,21 @@ else
 
 					$i++;
 				}
+				?>
+				<a href="admin_joueur.php?direction=info_joueur&amp;id=<?php echo $_GET['id']; ?>">Revenir à sa feuille de personnage</a>
+				<?php
+			break;
+			case 'donnestars' :
+				echo 'Montant : <input type="text" id="nombre" /><br />
+				<input type="button" value="valider" onclick="document.location = \'admin_joueur.php?id='.$_GET['id'].'&amp;direction=donnestars2&amp;nombre=\' + document.getElementById(\'nombre\').value" />';
+			break;
+			case 'donnestars2' :
+				$joueur = new perso($_GET['id']);
+				$joueur->add_star($_GET['nombre']);
+				$joueur->sauver();
+				
+				$log = new log_admin();
+				$log->send($_SESSION['ID'], 'admin', 'Don de '.$_GET['nombre'].' stars à '.$joueur->get_nom());
 				?>
 				<a href="admin_joueur.php?direction=info_joueur&amp;id=<?php echo $_GET['id']; ?>">Revenir à sa feuille de personnage</a>
 				<?php
