@@ -8,6 +8,7 @@ if (file_exists('root.php'))
 include_once(root.'class/db.class.php');
 include_once(root.'class/pnjutils.class.php');
 include_once(root.'connect.php');
+include_once(root.'fonction/time.inc.php');
 
 list($x, $y) = pnjutils::get_gob_loc();
 if (moment_jour() == 'Nuit') {
