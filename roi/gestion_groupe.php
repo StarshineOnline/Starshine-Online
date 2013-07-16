@@ -28,8 +28,8 @@ while($row = $db->read_assoc($req))
 	$bataille_groupe = new bataille_groupe(0,0,$row['groupeid']);
 	if($bataille_groupe->is_bataille()) 
 	{
-		$bataille = new bataille($bataille_groupe->id_bataille);
-		$nom = $bataille->nom;
+		$bataille = new bataille($bataille_groupe->get_id_bataille());
+		$nom = $bataille->get_nom();
 	}
 	else
 		$nom = "Aucune";

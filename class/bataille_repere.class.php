@@ -4,12 +4,12 @@ if (file_exists('../root.php'))
 ?><?php
 class bataille_repere
 {
-	public $id;
-	public $id_bataille;
-	public $type;
-	public $id_type;
-	public $x;
-	public $y;
+	private $id;
+	private $id_bataille;
+	private $type;
+	private $id_type;
+	private $x;
+	private $y;
 	
 	/**	
 		*	Constructeur permettant la création d'un repère de bataille.
@@ -97,8 +97,40 @@ class bataille_repere
 	{
 		return $this->id;
 	}
+	
+	function get_id()
+	{
+		return $this->id;
+	}
+	
+	function get_id_bataille()
+	{
+		return $this->id_bataille;
+	}
+	function set_id_bataille($id_bataille)
+	{
+		$this->id_bataille = $id_bataille;
+	}
+		
+	function get_x()
+	{
+		return $this->x;
+	}
+	function set_x($x)
+	{
+		$this->x = $x;
+	}
+	
+	function get_y()
+	{
+		return $this->y;
+	}
+	function set_y($y)
+	{
+		$this->y = $y;
+	}
 
-	function get_type()
+	function get_repere_type()
 	{
 		global $db;
 
@@ -116,9 +148,28 @@ class bataille_repere
 			$row = $db->read_assoc($req);
 			$this->repere_type = new batiment($row);
 		}
+		return $this->repere_type;
+	}
+	
+	function get_type()
+	{
 		return $this->type;
 	}
-
+	
+	function set_type($type)
+	{
+		$this->type = $type;
+	}
+	
+	function get_id_type()
+	{
+		return $this->id_type;
+	}
+	function set_id_type($id_type)
+	{
+		$this->id_type = $id_type;
+	}
+	
 	function get_groupes()
 	{
 		global $db;
@@ -126,7 +177,7 @@ class bataille_repere
 		$this->groupes = array();
 		$requete = "SELECT id, id_repere, id_groupe, accepter FROM bataille_groupe_repere WHERE id_repere = ".$this->id;
 		$req = $db->query($requete);
-		if($db->num_rows($req) == 0) return false;
+		if($db->num_rows($req) == 0) return $this->groupes;
 		else
 		{
 			while($row = $db->read_assoc($req))
