@@ -33,28 +33,40 @@ if($W_row['type'] == 1)
 		$check_revolution = true;
 		if( $is_election )
 		{
-			if(date("d") >= 5 && date("d") < 15)
+			$elections = elections::get_prochain_election($R->get_id(), true);
+			if( $elections[0]->get_type() == 'universel' )
 			{
-				?>
-				<li>
-					<a href="candidature.php" onclick="return envoiInfo(this.href, 'carte')">Candidature</a>
-				</li>
-				<?php
 				$check_revolution = false;
-			}
-			elseif(date("d") >= 15)
-			{
-				$elections = elections::get_prochain_election($R->get_id(), true);
-				if( $elections[0]->get_type() == 'universel' )
+				echo "<li><h3>Prochaines élections : Universelles</h3></li>";
+				if(date("d") >= 5 && date("d") < 15)
+				{
+					?>
+					<li>
+						<a href="candidature.php" onclick="return envoiInfo(this.href, 'carte')">Candidature</a>
+					</li>
+					<?php
+				}
+				elseif(date("d") >= 15)
 				{
 					?>
 					<li>
 						<a href="vote_roi.php" onclick="return envoiInfo(this.href, 'carte')">Vote</a>
 					</li>
 					<?php
-					$check_revolution = false;
 				}
-				elseif( $joueur->get_grade()->get_id() == 6 )
+			}
+			else
+			{
+				echo "<li><h3>Prochaines élections : Nomination</h3></li>";
+				if(date("d") >= 5 && date("d") < 15)
+				{
+					?>
+					<li>
+						<a href="candidature.php" onclick="return envoiInfo(this.href, 'carte')">Candidature</a>
+					</li>
+					<?php
+				}
+				elseif(date("d") >= 15 && $joueur->get_grade()->get_id() == 6)
 				{
 					?>
 					<li>

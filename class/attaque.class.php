@@ -141,8 +141,8 @@ class attaque
     {
       $this->actif = &$this->attaquant;
       $this->passif = &$this->defenseur;
-	    $this->log_effects_actif = $this->log_effects_attaquant;
-	    $this->log_effects_passif = $this->log_effects_defenseur;
+	    $this->log_effects_actif = &$this->log_effects_attaquant;
+	    $this->log_effects_passif = &$this->log_effects_defenseur;
     }
   	else
     {

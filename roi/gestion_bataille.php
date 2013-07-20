@@ -9,31 +9,31 @@ function affiche_bataille($bataille)
 {
 	?>
 	<div style="clear : both;"></div>
-	<div id="bataille_<?php echo $bataille->id; ?>" style="margin : 10px;">
+	<div id="bataille_<?php echo $bataille->get_id(); ?>" style="margin : 10px;">
 		<fieldset style="float : left; height : 75px; padding : 5px;">
 			<legend><?php echo ucwords($bataille->etat_texte()); ?></legend>
-			<a href="#" onclick="affiche_bataille('gestion_bataille.php','id_bataille=<?php echo $bataille->id; ?>&amp;info_bataille');">Gérer</a><br />
+			<a href="#" onclick="affiche_bataille('gestion_bataille.php','id_bataille=<?php echo $bataille->get_id(); ?>&amp;info_bataille');">Gérer</a><br />
 		<?php
-		if($bataille->etat == 0)
+		if($bataille->get_etat() == 0)
 		{
 			?>
-			<a href="#" onclick="affiche_page('gestion_bataille_new.php?modif&id_bataille=<?php echo $bataille->id; ?>');">Modifier</a><br />
-			<a href="gestion_bataille.php?id_bataille=<?php echo $bataille->id; ?>&amp;debut_bataille" onclick="return envoiInfo(this.href, 'bataille_<?php echo $bataille->id; ?>');">Debuter</a><br />
+			<a href="#" onclick="affiche_page('gestion_bataille_new.php?modif&id_bataille=<?php echo $bataille->get_id(); ?>');">Modifier</a><br />
+			<a href="gestion_bataille.php?id_bataille=<?php echo $bataille->get_id(); ?>&amp;debut_bataille" onclick="return envoiInfo(this.href, 'bataille_<?php echo $bataille->get_id(); ?>');">Debuter</a><br />
 			<?php
 		}
-		elseif($bataille->etat == 1)
+		elseif($bataille->get_etat() == 1)
 		{
 			?>
-			<a href="#" onclick="affiche_page('gestion_bataille_new.php?modif&id_bataille=<?php echo $bataille->id; ?>');">Modifier</a><br />
-			<a href="gestion_bataille.php?id_bataille=<?php echo $bataille->id; ?>&amp;fin_bataille" onclick="return envoiInfo(this.href, 'bataille_<?php echo $bataille->id; ?>');">Fermer</a><br />
+			<a href="#" onclick="affiche_page('gestion_bataille_new.php?modif&id_bataille=<?php echo $bataille->get_id(); ?>');">Modifier</a><br />
+			<a href="gestion_bataille.php?id_bataille=<?php echo $bataille->get_id(); ?>&amp;fin_bataille" onclick="return envoiInfo(this.href, 'bataille_<?php echo $bataille->get_id(); ?>');">Fermer</a><br />
 			<?php
 		}
 		?>
-		<a href="#" onclick="javascript: if(confirm('Voulez-vous vraiment supprimer cette bataille ?')) { return envoiInfo('gestion_bataille.php?id_bataille=<?php echo $bataille->id; ?>&amp;suppr_bataille', 'bataille_<?php echo $bataille->id; ?>');} else{return false;}" >Supprimer</a><br />
+		<a href="#" onclick="javascript: if(confirm('Voulez-vous vraiment supprimer cette bataille ?')) { return envoiInfo('gestion_bataille.php?id_bataille=<?php echo $bataille->get_id(); ?>&amp;suppr_bataille', 'bataille_<?php echo $bataille->get_id(); ?>');} else{return false;}" >Supprimer</a><br />
 		</fieldset>
 		<fieldset style="padding : 5px; width : 500px; float : left; min-height : 50px;">
-			<legend><?php echo $bataille->nom; ?></legend>
-			<?php echo transform_texte($bataille->description); ?><br />
+			<legend><?php echo $bataille->get_nom(); ?></legend>
+			<?php echo transform_texte($bataille->get_description()); ?><br />
 		</fieldset>
 	</div>
 	<?php
@@ -42,11 +42,11 @@ function affiche_bataille($bataille)
 function affiche_map($bataille)
 {
 	global $db, $royaume;
-	$bataille->get_reperes('tri_type');
-	$map = new map($bataille->x, $bataille->y, 10, '../', false, 'low');
-	if(array_key_exists('action', $bataille->reperes)) $map->set_repere($bataille->reperes['action']);
-	if(array_key_exists('batiment', $bataille->reperes)) $map->set_batiment_ennemi($bataille->reperes['batiment']);
-	$map->set_onclick("affichePopUp('gestion_bataille.php?id_bataille=".$bataille->id."&amp;case=%%id%%&amp;info_case');");
+	$reperes = $bataille->get_reperes('tri_type');
+	$map = new map($bataille->get_x(), $bataille->get_y(), 10, '../', false, 'low');
+	if(array_key_exists('action', $reperes)) $map->set_repere($reperes['action']);
+	if(array_key_exists('batiment', $reperes)) $map->set_batiment_ennemi($reperes['batiment']);
+	$map->set_onclick("affichePopUp('gestion_bataille.php?id_bataille=".$bataille->get_id()."&amp;case=%%pos%%&amp;info_case=true');");
 	$map->quadrillage = true;
 	$map->onclick_status = true;
 	$map->get_joueur($royaume->get_race(), false, true);
@@ -54,7 +54,7 @@ function affiche_map($bataille)
 }
 
 if($joueur->get_rang_royaume() != 6 AND $joueur->get_id() != $royaume->get_ministre_militaire())
-	echo '<p>Cheater</p>';
+	echo '<p>Cette page vous est interdite</p>';
 //Nouvelle bataille
 elseif(array_key_exists('move_map', $_GET))
 {
@@ -64,7 +64,7 @@ elseif(array_key_exists('move_map', $_GET))
 	if(array_key_exists('y', $_GET)) $y = $_GET['y'];
 	else $y = $Trace[$royaume->get_race()]['spawn_y'];
 	$map = new map($x, $y, 8, '../', false, 'low');
-	$map->set_onclick("envoiInfo('gestion_bataille.php?valide_choix_bataille&amp;case=%%id%%', 'valide_choix_bataille');repere_bataille('%%id%%');");
+	$map->set_onclick("envoiInfo('gestion_bataille.php?valide_choix_bataille&amp;case=%%pos%%', 'valide_choix_bataille');repere_bataille('%%id%%');");
 	$map->onclick_status = true;	
 	
 	$map->affiche();
@@ -118,15 +118,15 @@ elseif(array_key_exists('info_bataille', $_GET))
 	?>
 	</div>
 	<div id="info_bataille" style="float: left;">
-		<h1>Bataille : <?php echo $bataille->nom; ?> <a href="gestion_bataille.php?refresh_bataille=<?php echo $bataille->id; ?>" onclick="return envoiInfo(this.href, 'map');"><img src="../image/interface/icone_refresh_bataille.png" alt="R" /></a></h1>
+		<h1>Bataille : <?php echo $bataille->get_nom(); ?> <a href="gestion_bataille.php?refresh_bataille=<?php echo $bataille->get_id(); ?>" onclick="return envoiInfo(this.href, 'map');"><img src="../image/interface/icone_refresh_bataille.png" alt="R" /></a></h1>
 		<fieldset>
 			<legend>Description</legend>
-			<?php echo transform_texte($bataille->description); ?>
+			<?php echo transform_texte($bataille->get_description()); ?>
 		</fieldset><hr />
 		<div id="information_modif"></div>
 		<div id="menu_bataille">
 			<ul>
-				<li><a href="gestion_bataille_groupe.php?id_bataille=<?php echo $bataille->id; ?>" onclick="return envoiInfo(this.href, 'information_onglet_bataille');">Groupes</a></li>
+				<li><a href="gestion_bataille_groupe.php?id_bataille=<?php echo $bataille->get_id(); ?>" onclick="return envoiInfo(this.href, 'information_onglet_bataille');">Groupes</a></li>
 			</ul>
 		</div>
 		<div id="information_onglet_bataille">
@@ -139,17 +139,17 @@ elseif(array_key_exists('debut_bataille', $_GET))
 {
 //ALTER TABLE `bataille_groupe` ADD `id_thread` INT( 10 ) NOT NULL 
 	$bataille = new bataille($_GET['id_bataille']);
-	$bataille->etat = 1;
+	$bataille->set_etat(1);
 	$bataille->sauver();
 	affiche_bataille($bataille);
 	
 	// Envoie des messages aux groupes participants
-	$bataille->get_groupes();
-	foreach($bataille->groupes as $groupe)
+	$groupes = $bataille->get_groupes();
+	foreach($groupes as $groupe)
 	{
-		$titre = 'Mission pour la bataille : '.$bataille->nom;
-		$message = 'Votre groupe a été affecté à une mission concernant la bataille : '.$bataille->nom.'[br]
-		[bataille:'.$bataille->nom.']';
+		$titre = 'Mission pour la bataille : '.$bataille->get_nom();
+		$message = 'Votre groupe a été affecté à une mission concernant la bataille : '.$bataille->get_nom().'[br]
+		[bataille:'.$bataille->get_nom().']';
 		//Si le groupe n'a pas deja son thread pour cette bataille
 		if($groupe->id_thread == 0)
 		{
@@ -172,7 +172,7 @@ elseif(array_key_exists('fin_bataille', $_GET))
 {
 	$id_bataille = (int) $_GET['id_bataille'];
 	$bataille = new bataille($id_bataille);
-	$bataille->etat = 2;
+	$bataille->set_etat(2);
 	$bataille->sauver();
 	affiche_bataille($bataille);
 }
@@ -202,16 +202,16 @@ elseif(array_key_exists('info_case', $_GET) OR array_key_exists('type', $_GET))
 		switch($type)
 		{
 			case 'a' :
-				$repere->type = 'action';
+				$repere->set_type('action');
 			break;
 			case 'b' :
-				$repere->type = 'batiment';
+				$repere->set_type('batiment');
 			break;
 		}
-		$repere->id_bataille = $_GET['id_bataille'];
-		$repere->id_type = substr($_GET['id_type'], 1, strlen($_GET['id_type']));
-		$repere->x = $coord['x'];
-		$repere->y = $coord['y'];
+		$repere->set_id_bataille($_GET['id_bataille']);
+		$repere->set_id_type(substr($_GET['id_type'], 1, strlen($_GET['id_type'])));
+		$repere->set_x($coord['x']);
+		$repere->set_y($coord['y']);
 		$repere->sauver();
 	}
 	$reperes = $bataille->get_repere_by_coord($coord['x'], $coord['y']);
@@ -229,27 +229,25 @@ elseif(array_key_exists('info_case', $_GET) OR array_key_exists('type', $_GET))
 	$type_reperes = array();
 	foreach($reperes as $repere)
 	{
-		$repere->get_type();
-		$type_reperes[] = $repere->type;
-		switch($repere->type)
+		$type_reperes[] = $repere->get_type();
+		switch($repere->get_type())
 		{
 			case 'action' :
 				$type = 'Mission';
-				$repere->get_groupes();
 			break;
 			case 'batiment' :
 				$type = 'Batiment Ennemi';
 			break;
 		}
 		echo '
-		<div id="repere'.$repere->id.'">'.$type.' : '.$repere->repere_type->get_nom().' 
-		<a href="gestion_bataille.php?id_repere='.$repere->id.'&del_repere" onclick="javascript: if(confirm(\'Voulez-vous vraiment supprimer ce repère ?\')) { $(\'#repere'.$repere->id.'\').remove(); return envoiInfo(this.href, \'information_modif\'); } else return false;">X</a><br />';
-		if($repere->type == 'action') echo '&nbsp;&nbsp;&nbsp;<i>'.count($repere->groupes).' groupe</i>';
+		<div id="repere'.$repere->get_id().'">'.$type.' : '.$repere->get_repere_type()->get_nom().' 
+		<a href="gestion_bataille.php?id_repere='.$repere->get_id().'&del_repere" onclick="javascript: if(confirm(\'Voulez-vous vraiment supprimer ce repère ?\')) { $(\'#repere'.$repere->get_id().'\').remove(); return envoiInfo(this.href, \'information_modif\'); } else return false;">X</a><br />';
+		if($repere->get_type() == 'action') echo '&nbsp;&nbsp;&nbsp;<i>'.count($repere->get_groupes()).' groupe(s)</i>';
 		echo '
 		</div>';
 	}
 	//Si ya moins de 2 repères
-	if(count($reperes) < 2)
+	if(count($reperes) < 10)
 	{
 		?>
 		<hr /><br />Ajouter un nouveau repère ?<br />
@@ -257,10 +255,11 @@ elseif(array_key_exists('info_case', $_GET) OR array_key_exists('type', $_GET))
 <?php
 			$bataille_royaume = new bataille_royaume($royaume->get_id());
 			$types = $bataille_royaume->get_all_repere_type();
+			print_r($types);
 			foreach($types as $type)
 			{
 				?>
-				<option value="a<?php echo $type->id; ?>">Mission : <?php echo $type->nom; ?> (<?php echo $type->description; ?>)</option>
+				<option value="a<?php echo $type->get_id(); ?>">Mission : <?php echo $type->get_nom(); ?> (<?php echo $type->get_description(); ?>)</option>
 				<?php
 			}
 
@@ -279,7 +278,7 @@ elseif(array_key_exists('info_case', $_GET) OR array_key_exists('type', $_GET))
 			}
 		}
 		?>
-		</select><input type="button" value="Ok" onclick="envoiInfo('gestion_bataille.php?id_type=' + $('#type').val() + '&amp;id_bataille=<?php echo $bataille->id; ?>&amp;case=<?php echo $case; ?>&amp;type', 'popup_content');"/>
+		</select><input type="button" value="Ok" onclick="envoiInfo('gestion_bataille.php?id_type=' + $('#type').val() + '&amp;id_bataille=<?php echo $bataille->get_id(); ?>&amp;case=<?php echo $case; ?>&amp;type', 'popup_content');"/>
 		<?php
 	}
 }

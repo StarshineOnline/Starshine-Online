@@ -486,6 +486,7 @@ class map
 						if($this->onclick_status)
 						{
 							$onclick = str_replace('%%id%%', $MAPTAB[$x_map][$y_map]['id'], $this->onclick);
+							$onclick = str_replace('%%pos%%', convert_in_pos($x_map, $y_map), $onclick);
 						}
 						else $onclick = $this->onclick;
 						echo " 		onclick=\"".$onclick."\"\n>";
@@ -966,12 +967,12 @@ class map
 		$rep = 0;
 		foreach($reperes as $repere)
 		{
-			$rep = count($this->map[$repere->x][$repere->y]["Reperes"]);
-			$repere->get_type();
-			$this->map[$repere->x][$repere->y]["Reperes"][$rep]["id_repere"] = $repere->id;
-			$this->map[$repere->x][$repere->y]["Reperes"][$rep]["nom"] = $repere->repere_type->nom;
-			$this->map[$repere->x][$repere->y]["Reperes"][$rep]["id_type"] = $repere->id_type;
-			$this->map[$repere->x][$repere->y]["Reperes"][$rep]["image"] = $repere->repere_type->image;
+			$rep = count($this->map[$repere->get_x()][$repere->get_y()]["Reperes"]);
+			$repere_type = $repere->get_repere_type();
+			$this->map[$repere->get_x()][$repere->get_y()]["Reperes"][$rep]["id_repere"] = $repere->get_id();
+			$this->map[$repere->get_x()][$repere->get_y()]["Reperes"][$rep]["nom"] = $repere_type->get_nom();
+			$this->map[$repere->get_x()][$repere->get_y()]["Reperes"][$rep]["id_type"] = $repere->get_id_type();
+			$this->map[$repere->get_x()][$repere->get_y()]["Reperes"][$rep]["image"] = $repere_type->get_image();
 		}
 	}
 
@@ -980,11 +981,11 @@ class map
 		$rep = 0;
 		foreach($reperes as $repere)
 		{
-			$rep = count($this->map[$repere->x][$repere->y]["Batiments_ennemi"]);
-			$repere->get_type();
-			$this->map[$repere->x][$repere->y]["Batiments_ennemi"][$rep]["id_batiment"] = $repere->id_batiment;
-			$this->map[$repere->x][$repere->y]["Batiments_ennemi"][$rep]["nom"] = $repere->repere_type->get_nom();
-			$this->map[$repere->x][$repere->y]["Batiments_ennemi"][$rep]["image"] = $repere->repere_type->get_image_full($this->root, $this->resolution);
+			$rep = count($this->map[$repere->get_x()][$repere->get_y()]["Batiments_ennemi"]);
+			$repere_type = $repere->get_repere_type();
+			$this->map[$repere->get_x()][$repere->get_y()]["Batiments_ennemi"][$rep]["id_batiment"] = $repere_type->get_id();
+			$this->map[$repere->get_x()][$repere->get_y()]["Batiments_ennemi"][$rep]["nom"] = $repere_type->get_nom();
+			$this->map[$repere->get_x()][$repere->get_y()]["Batiments_ennemi"][$rep]["image"] = $repere_type->get_image_full($this->root, $this->resolution);
 		}
 	}
 

@@ -168,7 +168,7 @@ else
                 is_pnj($row))
 						{
 						?>
-						<li><a href="admin_joueur.php?direction=objet&amp;id=<?php echo $_GET['id']; ?>">Donner un objet</a> | <a href="admin_joueur.php?direction=recette&amp;id=<?php echo $_GET['id']; ?>">Donner une recette</a> | <a href="admin_joueur.php?direction=arme&amp;id=<?php echo $_GET['id']; ?>">Donner une arme</a></li> | <a href="admin_joueur.php?direction=armure&amp;id=<?php echo $_GET['id']; ?>">Donner une armure</a> | <a href="admin_joueur.php?direction=accessoire&amp;id=<?php echo $_GET['id']; ?>">Donner un accessoire</a> | <a href="admin_joueur.php?direction=titre&amp;id=<?php echo $_GET['id']; ?>">Donner un titre</a></li>
+						<li><a href="admin_joueur.php?direction=objet&amp;id=<?php echo $_GET['id']; ?>">Donner un objet</a> | <a href="admin_joueur.php?direction=donnestars&amp;id=<?php echo $_GET['id']; ?>">Donner stars</a> | <a href="admin_joueur.php?direction=recette&amp;id=<?php echo $_GET['id']; ?>">Donner une recette</a> | <a href="admin_joueur.php?direction=arme&amp;id=<?php echo $_GET['id']; ?>">Donner une arme</a></li> | <a href="admin_joueur.php?direction=armure&amp;id=<?php echo $_GET['id']; ?>">Donner une armure</a> | <a href="admin_joueur.php?direction=accessoire&amp;id=<?php echo $_GET['id']; ?>">Donner un accessoire</a> | <a href="admin_joueur.php?direction=titre&amp;id=<?php echo $_GET['id']; ?>">Donner un titre</a></li>
 						<li><a href="admin_joueur.php?direction=quete&amp;id=<?php echo $_GET['id']; ?>">Quêtes</a> - <a href="admin_joueur.php?direction=inventaire&amp;id=<?php echo $_GET['id']; ?>">Inventaire</a> - <a href="admin_joueur.php?direction=journal&amp;id=<?php echo $_GET['id']; ?>">Voir le journal des actions</a> | <a href="admin_joueur.php?direction=messagerie&amp;id=<?php echo $_GET['id']; ?>">Voir la messagerie</a> | <a href="admin_joueur.php?direction=donnepa&amp;id=<?php echo $_GET['id']; ?>">Donner full PA</a></li>
 						<?php
 						}
@@ -214,15 +214,22 @@ else
 		case 'tp':
 			$x = intval($_GET['tp_x']);
 			$y = intval($_GET['tp_y']);
-			$id = $_GET['id'];
+			$joueur = new perso($_GET['id']);
 			if ($x > 0 && $y > 0)
-				$db->query("update perso set x = $x, y = $y where id = $id");
+			{
+				$joueur->set_x($x);
+				$joueur->set_y($y);
+				$joueur->sauver();
+				
+				$log = new log_admin();
+				$log->send($_SESSION['ID'], 'admin', 'Téléportation de '.$joueur->get_nom().' en ['.$x.','.$y.']');
+			}
 			else
 				echo "ERREUR TP: [$x][$y]<br/>";
 ?>
-<a href="admin_joueur.php?direction=info_joueur&id=<?php echo $id ?>">Retour</a>
-	 <script type="text/javascript">window.location = 'admin_joueur.php?direction=info_joueur&id=<?php echo $id ?>';</script>
-<?
+<a href="admin_joueur.php?direction=info_joueur&id=<?php echo $_GET['id'] ?>">Retour</a>
+	 <script type="text/javascript">window.location = 'admin_joueur.php?direction=info_joueur&id=<?php echo $_GET['id'] ?>';</script>
+<?php
 			break;
 
       case 'titredel':
@@ -315,6 +322,23 @@ else
 
 					$i++;
 				}
+				$log = new log_admin();
+				$log->send($_SESSION['ID'], 'admin', 'Don de '.$_GET['nombre'].' objets ('.$_GET['id_objet'].') à '.$joueur->get_nom());
+				?>
+				<a href="admin_joueur.php?direction=info_joueur&amp;id=<?php echo $_GET['id']; ?>">Revenir à sa feuille de personnage</a>
+				<?php
+			break;
+			case 'donnestars' :
+				echo 'Montant : <input type="text" id="nombre" /><br />
+				<input type="button" value="valider" onclick="document.location = \'admin_joueur.php?id='.$_GET['id'].'&amp;direction=donnestars2&amp;nombre=\' + document.getElementById(\'nombre\').value" />';
+			break;
+			case 'donnestars2' :
+				$joueur = new perso($_GET['id']);
+				$joueur->add_star($_GET['nombre']);
+				$joueur->sauver();
+				
+				$log = new log_admin();
+				$log->send($_SESSION['ID'], 'admin', 'Don de '.$_GET['nombre'].' stars à '.$joueur->get_nom());
 				?>
 				<a href="admin_joueur.php?direction=info_joueur&amp;id=<?php echo $_GET['id']; ?>">Revenir à sa feuille de personnage</a>
 				<?php
@@ -437,6 +461,8 @@ else
 				?>
 				<a href="admin_joueur.php?direction=info_joueur&amp;id=<?php echo $_GET['id']; ?>">Revenir à sa feuille de personnage</a>
 				<?php
+				$log = new log_admin();
+				$log->send($_SESSION['ID'], 'admin', 'Don de l\'arme '.$_GET['id_arme'].' à '.$joueur->get_nom());
 			break;
 			case 'armure' :
 				echo 'Armure : <select id="id_armure">';
@@ -457,6 +483,8 @@ else
 				?>
 				<a href="admin_joueur.php?direction=info_joueur&amp;id=<?php echo $_GET['id']; ?>">Revenir à sa feuille de personnage</a>
 				<?php
+				$log = new log_admin();
+				$log->send($_SESSION['ID'], 'admin', 'Don de l\'armure '.$_GET['id_armure'].' à '.$joueur->get_nom());
 			break;
 			case 'accessoire' :
 				echo 'Accessoire : <select id="id_accessoire">';
@@ -477,6 +505,8 @@ else
 				?>
 				<a href="admin_joueur.php?direction=info_joueur&amp;id=<?php echo $_GET['id']; ?>">Revenir à sa feuille de personnage</a>
 				<?php
+				$log = new log_admin();
+				$log->send($_SESSION['ID'], 'admin', 'Don de l\'accessoire '.$_GET['id_accessoire'].' à '.$joueur->get_nom());
 			break;
 			case 'recette' :
 				echo 'Recette : <select id="id_recette">';
@@ -502,6 +532,8 @@ else
 				?>
 				<a href="admin_joueur.php?direction=info_joueur&amp;id=<?php echo $_GET['id']; ?>">Revenir à sa feuille de personnage</a>
 				<?php
+				$log = new log_admin();
+				$log->send($_SESSION['ID'], 'admin', 'Don de la recette '.$_GET['id_recette'].' à '.$joueur->get_nom());
 			break;
 			case 'quete' :
 				$joueur = new perso($_GET['id']);
@@ -836,11 +868,14 @@ if($joueur->get_inventaire_slot() != '')
 				echo 'Objet bien supprimer<br />';
 				echo '<a href="admin_joueur.php?direction=inventaire&amp;id='.$joueur->get_id().'">Retour à l\'inventaire</a> | <a href="admin_joueur.php?direction=info_joueur&amp;id='.$joueur->get_id().'">Retour au personnage</a>';
 			break;
-      case 'donnepa':
+		case 'donnepa':
         $pa = max($G_PA_max, 180);
-				$joueur = new perso($_GET['id']);
+		$joueur = new perso($_GET['id']);
         $joueur->set_pa($pa);
         $joueur->sauver();
+		
+		$log = new log_admin();
+		$log->send($_SESSION['ID'], 'admin', 'Don d\'un full PA à '.$joueur->get_nom());
         break;
 		}
 	}

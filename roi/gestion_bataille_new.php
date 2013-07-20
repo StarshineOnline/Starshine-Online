@@ -26,13 +26,13 @@ elseif(array_key_exists('new2', $_GET))
 			$id_bataille = (int) $_GET['id_bataille'];
 			$old_bataille = new bataille($id_bataille);
 			$bataille = new bataille($id_bataille, $id_royaume, $x, $y, $nom, $description);
-			$bataille->etat = $old_bataille->etat;
-			$message = 'La bataille "'.$bataille->nom.'" a été modifiée avec succès';
+			$bataille->set_etat($old_bataille->get_etat());
+			$message = 'La bataille "'.$bataille->get_nom().'" a été modifiée avec succès';
 		}
 		else
 		{
 			$bataille = new bataille("", $id_royaume, $x, $y, $nom, $description);
-			$message = 'La bataille "'.$bataille->nom.'" a été créée avec succès';
+			$message = 'La bataille "'.$bataille->get_nom().'" a été créée avec succès';
 		}
 		$bataille->sauver();
 		
@@ -48,9 +48,9 @@ elseif(array_key_exists('new2', $_GET))
 			{
 				$groupe = new bataille_groupe(0,0,$id_groupe);
 				// Si le groupe ne participe pas deja a la bataille
-				if($groupe->id_bataille != $id_bataille OR $id_bataille == 0)
+				if($groupe->get_id_bataille() != $id_bataille OR $id_bataille == 0)
 				{
-					$bataille_groupe = new bataille_groupe(0, $bataille->id, $id_groupe);
+					$bataille_groupe = new bataille_groupe(0, $bataille->get_id(), $id_groupe);
 					$bataille_groupe->sauver();
 					unset($bataille_groupe);
 				}
@@ -59,7 +59,7 @@ elseif(array_key_exists('new2', $_GET))
 			elseif($value == 0 AND $key != "x" AND $key != "y")
 			{
 				$groupe = new bataille_groupe(0,0,$id_groupe);
-				if($groupe->id_bataille == $id_bataille)
+				if($groupe->get_id_bataille() == $id_bataille)
 				{
 					// On supprime les reperes associés au groupe, puis le groupe
 					$groupe->get_reperes();
@@ -87,15 +87,15 @@ else
 		$id_bataille = (int) $_GET['id_bataille'];
 		$bataille = new bataille($id_bataille);
 		//On verifie que la bataille est bien une de ce royaume
-		if($bataille->id_royaume == $royaume->get_id())
+		if($bataille->get_id_royaume() == $royaume->get_id())
 		{
 			$modif = true;
-			$description = $bataille->description;
-			$nom = $bataille->nom;
-			$x = $bataille->x;
-			$y = $bataille->y;
+			$description = $bataille->get_description();
+			$nom = $bataille->get_nom();
+			$x = $bataille->get_x();
+			$y = $bataille->get_y();
 			$case = convert_in_pos($x, $y);
-			$lien_modif = "&id_bataille=".$bataille->id;
+			$lien_modif = "&id_bataille=".$bataille->get_id();
 			?>
 			<script type="text/javascript">
 			<!--
@@ -137,9 +137,9 @@ else
 	{
 		// On verifie que le groupe n'est pas deja dans une bataille, sauf si c'est celle qu'on modif
 		$groupe = new bataille_groupe(0,0,$row['groupeid']);
-		if(!$groupe->is_bataille() OR $groupe->id_bataille == $bataille->id)
+		if(!$groupe->is_bataille() || (array_key_exists('modif', $_GET) && $groupe->get_id_bataille() == $bataille->get_id()))
 		{
-			if($groupe->id_bataille == $bataille->id AND $groupe->is_bataille())
+			if(array_key_exists('modif', $_GET) && $groupe->get_id_bataille() == $bataille->get_id())
 			{
 				if($row['groupenom'] == '') $row['groupenom'] = '-----';
 				echo "<li id='ligroupe_".$row['groupeid']."' class='$class_groupe select' onclick=\"select_groupe('".$row['groupeid']."')\">".$row['groupenom']."</li>";
@@ -162,7 +162,7 @@ else
 	
 	$map = new map($x, $y, 8, '../', false, 'low');
 	$map->onclick_status = true;
-	$map->set_onclick("envoiInfo('gestion_bataille.php?valide_choix_bataille&amp;case=%%id%%', 'valide_choix_bataille');repere_bataille('%%id%%');");
+	$map->set_onclick("envoiInfo('gestion_bataille.php?valide_choix_bataille&amp;case=%%pos%%', 'valide_choix_bataille');repere_bataille('%%id%%');");
 	$map->quadrillage = true;
 	echo "<div id='choix_bataille'>";
 	echo "<div style='float:left;'>";
@@ -200,7 +200,7 @@ else
 	</div>
 	
 	<div style='clear : both;'></div>
-	<input type='button' onclick="javascript: if($('#x').val()) { affiche_page('gestion_bataille_new.php?new2<?php echo $lien_modif; ?>&x='+encodeURIComponent($('#x').val())+'&y='+encodeURIComponent($('#y').val())+'&nom='+encodeURIComponent($('#nom').val())+'&description='+encodeURIComponent($('#description').val())<?php echo $lien_groupe; ?>);} else { alert('Veuillez choisir un centre de bataille');}" value="Créer cette bataille" />
+	<input type='button' onclick="javascript: if($('#x').val()) { affiche_page('gestion_bataille_new.php?new2<?php echo $lien_modif; ?>&x='+encodeURIComponent($('#x').val())+'&y='+encodeURIComponent($('#y').val())+'&nom='+encodeURIComponent($('#nom').val())+'&description='+encodeURIComponent($('#description').val())<?php echo $lien_groupe; ?>);} else { alert('Veuillez choisir un centre de bataille');}" value="Créer/Modifier cette bataille" />
 </div>
 <?php
 }

@@ -29,6 +29,7 @@ function script_action($joueur, $ennemi, $mode, &$attaque)
 	{
 	case 'attaque':
 		$att = comp_combat::creer_attaque();
+		$att->set_cible(4);
 		break;
 	case 'lance_comp':
 		$table = 'comp_combat';

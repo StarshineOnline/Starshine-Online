@@ -235,10 +235,9 @@ function affiche_quetes($fournisseur, $joueur)
 	if($id_royaume < 10) '0'.$id_royaume;
 	$requete = "SELECT *, quete.id as idq FROM quete LEFT JOIN quete_royaume ON quete.id = quete_royaume.id_quete WHERE ((achat = 'oui' AND quete_royaume.id_royaume = ".$R->get_id().") OR (achat = 'non' AND royaume LIKE '%".$id_royaume."%')) AND quete.fournisseur = '".$fournisseur."' AND quete.niveau_requis <= ".$joueur->get_level()." AND quete.honneur_requis <= ".$joueur->get_honneur()." ".$where." ".$notin." ORDER BY quete.lvl_joueur";
 	$req = $db->query($requete);
-	if($db->num_rows > 0)
-	{
-		$return[0] .= '<ul class="ville">';
-	}
+	
+	$html = '';
+	$nombre_quete = 0;
 	while($row = $db->read_array($req))
 	{
 		$quete_fini = explode(';', $joueur->get_quete_fini());
@@ -263,43 +262,42 @@ function affiche_quetes($fournisseur, $joueur)
 				$val = mb_substr($requis, 1);
 				if($requis[0] == 'q')
 				{
-          if( !in_array($val, $quete_fini) )
-          {
-            $check = false;
-            break;
-          }
-        }
-        else if($requis[0] == 't')
+					if( !in_array($val, $quete_fini) )
+					{
+					$check = false;
+					break;
+					}
+				}
+				else if($requis[0] == 't')
 				{
-          if( $joueur->get_tuto() != $val )
-          {
-            $check = false;
-            break;
-          }
-        }
-        else if($requis[0] == 'c')
+					if( $joueur->get_tuto() != $val )
+					{
+					$check = false;
+					break;
+					}
+				}
+				else if($requis[0] == 'c')
 				{
-          $classes = explode('-', $val);
-          if( !in_array($joueur->get_classe_id(), $classes) )
-          {
-            $check = false;
-            break;
-          }
-        }
+					$classes = explode('-', $val);
+					if( !in_array($joueur->get_classe_id(), $classes) )
+					{
+					$check = false;
+					break;
+					}
+				}
 			}
 			if($check)
 			{
-		$return[0] .= '<li>
-		<a href="bureau_quete.php?action=description&amp;id='.$row['idq'].'" onclick="return envoiInfo(this.href, \'carte\')">'.$row['nom'].'</a> <span class="small">(Niv. '.$row['lvl_joueur'].')</span>
-	</li>';
+				$nombre_quete++;
+				$html .= '<li><a href="bureau_quete.php?action=description&amp;id='.$row['idq'].'" onclick="return envoiInfo(this.href, \'carte\')">'.$row['nom'].'</a> <span class="small">(Niv. '.$row['lvl_joueur'].')</span></li>';
 			}
 		}
 	}
-	if($db->num_rows > 0)
+	if($nombre_quete > 0)
 	{
-		$return[0] .=  '</ul>';
+		$return[0] =  '<ul class="ville">'.$html.'</ul>';
 	}
-	$return[1] = $db->num_rows;
+	$return[1] = $nombre_quete;
 	return $return;
 }
 

@@ -294,7 +294,8 @@ class maitrise_critique extends competence
   function calcul_critique(/*&$actif, &$passif, $chance_critique*/&$attaque) {
     $actif = $attaque->get_actif();
     $this->used = true;
-    $this->valeur *=
+    
+    $attaque->valeur *=
       1 + ($actif->get_competence2('maitrise_critique')->get_valeur() / 1000);
     //$actif['maitrise_critique'] = $actif['competences']['maitrise_critique'];
     //return $chance_critique;
@@ -327,7 +328,7 @@ class art_critique extends competence
   function calcul_mult_critique(/*&$actif, &$passif, $mult*/&$attaque) {
     $this->critique = true;
     //return $mult + $attaque->get_actif()->get_competence2('art_critique')->get_valeur();
-    $this->valeur += $attaque->get_actif()->get_competence2('art_critique')->get_valeur();
+    $attaque->valeur += $attaque->get_actif()->get_competence2('art_critique')->get_valeur();
   }
 }
 

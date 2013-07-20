@@ -139,6 +139,7 @@ function refresh(page,position)
 function envoiInfo(page,position)
 {
 	$('#' + position).load(page);
+	nd();
 	return false;
 }
 

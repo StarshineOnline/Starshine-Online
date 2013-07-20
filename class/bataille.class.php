@@ -4,15 +4,15 @@ if (file_exists('../root.php'))
 ?><?php
 class bataille
 {
-	public $id;
-	public $id_royaume;
-	public $x;
-	public $y;
-	public $nom;
-	public $description;
-	public $etat;
-	public $debut;
-	public $fin;
+	private $id;
+	private $id_royaume;
+	private $x;
+	private $y;
+	private $nom;
+	private $description;
+	private $etat;
+	private $debut;
+	private $fin;
 	
 	/**	
 		*	Constructeur permettant la création d'une bataille.
@@ -98,7 +98,8 @@ class bataille
 			{
 				$groupes[] = $row['id'];
 			}
-			$in = implode(',', $groupes);
+			if(!empty($groupes))
+				$in = implode(',', $groupes);
 			if ($in != NULL)
 			{
 				//On efface tous les etats qui correspondent à ces messages
@@ -113,7 +114,8 @@ class bataille
 			{
 				$reperes[] = $row['id'];
 			}
-			$in = implode(',', $reperes);
+			if(!empty($reperes))
+				$in = implode(',', $reperes);
 			if ($in != NULL)
 			{
 				//On efface tous les etats qui correspondent à ces messages
@@ -135,7 +137,62 @@ class bataille
 	{
 		return $this->id_royaume;
 	}
-
+	
+	function get_id()
+	{
+		return $this->id;
+	}
+	
+	function get_id_royaume()
+	{
+		return $this->id_royaume;
+	}
+	
+	function get_nom()
+	{
+		return $this->nom;
+	}
+	function set_nom($nom)
+	{
+		$this->nom = $nom;
+	}
+	
+	function get_description()
+	{
+		return $this->description;
+	}
+	function set_description($description)
+	{
+		$this->description = $description;
+	}
+	
+	function get_x()
+	{
+		return $this->x;
+	}
+	function set_x($x)
+	{
+		$this->x = $x;
+	}
+	
+	function get_y()
+	{
+		return $this->y;
+	}
+	function set_y($y)
+	{
+		$this->y = $y;
+	}
+	
+	function get_etat()
+	{
+		return $this->etat;
+	}
+	function set_etat($etat)
+	{
+		$this->etat = $etat;
+	}
+	
 	function get_groupes()
 	{
 		global $db;
@@ -147,6 +204,7 @@ class bataille
 		{
 			$this->groupes[] = new bataille_groupe($row);
 		}
+		return $this->groupes;
 	}
 	
 	function is_groupe_in($id_groupe)
@@ -174,6 +232,7 @@ class bataille
 			}
 			else $this->reperes[] = new bataille_repere($row);
 		}
+		return $this->reperes;
 	}
 
 	function etat_texte()

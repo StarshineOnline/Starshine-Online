@@ -417,6 +417,22 @@ function checkPontTemporaireRandTP(&$joueur, $x, $y, $cout_min = 6, $cout_max = 
 	}
 }
 
+function checkTpSomnambule(&$joueur, $x, $y)
+{
+  list($posx, $posy) = pnjutils::get_gob_loc();
+	if ($posx == 43 AND $posy == 382)
+	{
+    showMessage('Peut être dans le but de maîtriser les errances du somnambule, une corde semble le ceinturer à la taille avant d\'aller se perdre dans quelques crevasses obscures. C\'est avec une délicatesse de chat que vous réussissez à vous en servir sans réveiller Gafolin. Vous vous hissez dans les hauteurs et vous arrivez dans le coin d\'une grande salle', 'passage escarpé');
+    $joueur->set_x($x);
+    $joueur->set_y($y);
+    $joueur->sauver();
+	}
+	else
+	{
+    showMessage('Les morceaux de roches composant une faille située en hauteur scintillent ici et là de milles brins de pailles broyés. Malheureusement, vous avez beau sauter, le passage reste hors d\'atteinte. Attendre est sans doute la plus sage des décisions si vous désirez absolument emprunter ce passage car vous en êtes presque certains : quelqu\'un ou quelque chose passe régulièrement par cette gorge.', 'passage escarpé');
+	}
+}
+
 global $dontrefresh;
 global $dontrefreshmap;
 
