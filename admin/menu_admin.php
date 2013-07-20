@@ -105,7 +105,7 @@ else
 
 	$menu[$i]['nom'] = 'Contrôle des persos/pnj';
 	$menu[$i]['url'] = 'controle_joueur.php';
-	$menu[$i++]['acces'] = joueur::droit_anim | joueur::droit_modo;
+	$menu[$i++]['acces'] = joueur::droit_anim | joueur::droit_modo | joueur::droit_admin;
 	
 	$menu[$i]['nom'] = 'Log admin';
 	$menu[$i]['url'] = 'log_admin.php';

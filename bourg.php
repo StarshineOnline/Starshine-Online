@@ -96,28 +96,26 @@ if($bourg->get_x() == $joueur->get_x() AND $bourg->get_y() == $joueur->get_y() A
       }
   	}
   }
-  else
+
+  //Si il y a une révolution en cours
+  $is_revolution = revolution::is_mois_revolution($R->get_id());
+  if( $is_revolution )
   {
-	  //Si il y a une révolution en cours
-	  $is_revolution = revolution::is_mois_revolution($R->get_id());
-	  if( $is_revolution )
-    {
-      // Il y a une révolution : on propose de voter
-		?>
-			<li>
-				<a href="revolution.php" onclick="return envoiInfo(this.href, 'carte')">Voter pour ou contre la révolution</a>
-			</li>
-		<?php
-    }
-    elseif( date("d") <= 20 )
-	  {
-	    // Il n'y a pas de révolution : on propose d'en déclencher une 
-		?>
-			<li>
-				<a href="revolution.php" onclick="return envoiInfo(this.href, 'carte')">Déclencher une révolution</a>
-			</li>
-		<?php
-    }
+    // Il y a une révolution : on propose de voter
+	?>
+		<li>
+			<a href="revolution.php" onclick="return envoiInfo(this.href, 'carte')">Voter pour ou contre la révolution</a>
+		</li>
+	<?php
+  }
+  elseif( date("d") <= 20 )
+  {
+    // Il n'y a pas de révolution : on propose d'en déclencher une 
+	?>
+		<li>
+			<a href="revolution.php" onclick="return envoiInfo(this.href, 'carte')">Déclencher une révolution</a>
+		</li>
+	<?php
   }
 	if($batiment->has_bonus('royaume')
 		 AND ($joueur->get_rang_royaume() == 6 ||
