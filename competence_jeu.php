@@ -8,7 +8,7 @@ $tab_sort_jeu = explode(';', $joueur->get_comp_jeu());
 <hr>
 <?php
 if($joueur->get_groupe() != 0) $groupe_joueur = new groupe($joueur->get_groupe()); else $groupe_joueur = false;
-if (isset($_GET['ID']))
+if (isset($_GET['ID']) && !array_key_exists('action', $_GET))
 {
 	$joueur->check_comp_jeu_connu($_GET['ID']);
 	$comp = comp_jeu::factory( sSQL($_GET['ID'], SSQL_INTEGER) );
@@ -288,9 +288,23 @@ if (isset($_GET['ID']))
 }
 else
 {
+	if(array_key_exists('action', $_GET))
+	{
+		switch($_GET['action'])
+		{
+		  case 'favoris' :
+			$requete = "INSERT INTO comp_favoris(id_comp, id_perso) VALUES(".sSQL($_GET['id']).", ".$joueur->get_id().")";
+			$db->query($requete);
+			break;
+		  case 'delfavoris' :
+			$requete = "DELETE FROM comp_favoris WHERE id_comp =  ".sSQL($_GET['id'])." AND id_perso = ".$joueur->get_id();
+			$db->query($requete);
+			break;
+		}
+	}
 	$i = 0;
 	$type = '';
-	$magies = array();
+	$magies = array('favoris');
 	$magie = '';
 	$requete = "SELECT * FROM comp_jeu GROUP BY comp_assoc";
 	$req = $db->query($requete);
@@ -307,14 +321,16 @@ else
 	{
 		echo '<a href="competence_jeu.php?tri='.$magie.'" onclick="return envoiInfo(this.href, \'information\');"><img src="image/'.$magie.'.png" alt="'.$Gtrad[$magie].'" title="'.$Gtrad[$magie].'" onmouseover="this.src = \'image/icone/'.$magie.'hover.png\'" onmouseout="this.src = \'image/'.$magie.'.png\'"/></a> ';
 	}
-	if ('champion' == $joueur->get_classe() AND !array_key_exists('tri', $_GET))
-	{
-		$where = "WHERE comp_assoc = 'melee'";
-	}
-	else
-	{
+	
+	
+	if (array_key_exists('tri', $_GET))
 		$where = 'WHERE comp_assoc = \''.sSQL($_GET['tri']).'\'';
-	}
+	else
+		$_GET['tri'] = 'favoris';
+		
+	if($_GET['tri'] == 'favoris')
+		$where = 'WHERE id IN (SELECT id_comp FROM comp_favoris WHERE id_perso = \''.$joueur->get_id().'\')';
+
 	$requete = "SELECT * FROM comp_jeu ".$where." ORDER BY comp_assoc ASC, type ASC, nom ASC";
 	$req = $db->query($requete);
 
@@ -341,12 +357,17 @@ else
 				<td>
 					<span style="'.$cursor.'text-decoration : none; color : '.$color.';" onclick="nd();'.$href.';" onmouseover="return '.make_overlib($echo).'" onmouseout="return nd();"> <strong>'.$row['nom'].'</strong></span>';
 			?>
+				</td>
+				<td><span class="xsmall">(<?php echo $row['mp']; ?> MP - <?php echo $row['pa']; ?>PA)</span>
+				</td>
+			<?php
+			if($_GET['tri'] == 'favoris') 
+				echo ' <td><a href="competence_jeu.php?action=delfavoris&amp;id='.$row['id'].'" onclick="return envoiInfo(this.href, \'information\')"><img src="image/interface/croix_quitte.png" alt="Supprimer des favoris" title="Supprimer des favoris" /></a></td>';
+			else 
+				echo ' <td><a href="competence_jeu.php?action=favoris&amp;id='.$row['id'].'" onclick="return envoiInfo(this.href, \'information\')"><img src="image/favoris.png" alt="Favoris" title="Ajouter aux compétences favoris" /></a></td>';
 
-</td>
-<td><span class="xsmall">(<?php echo $row['mp']; ?> MP - <?php echo $row['pa']; ?>
-		PA)</span>
-</td>
-</tr>
+			?>
+			</tr>
 </div>
 			<?php
 			$i++;
