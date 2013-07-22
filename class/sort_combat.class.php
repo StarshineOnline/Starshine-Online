@@ -313,7 +313,7 @@ class sort_combat extends sort
     $actif = &$attaque->get_actif();
     $passif = &$attaque->get_passif();
     $effets = &$attaque->get_effets();
-    $attaque->set_degats( $this->get_effet() + $actif->get_buff('buff_surpuissance', 'effet') /*+ $this->bonus_degats($attaque)*/ );
+    $attaque->set_degats( $this->get_effet() /*+ $this->bonus_degats($attaque)*/ );
     $attaque->applique_effet('calcul_bonus_degats_magiques');
     /*$degats = */$this->calcul_degats($attaque);
     $attaque->set_type_degats($this->get_type());
@@ -322,6 +322,7 @@ class sort_combat extends sort
       $effet->inflige_degats_magiques($actif, $passif, $degats, $this->get_type());*/
     $attaque->applique_effet('inflige_degats_magiques');
     $degats = $attaque->get_degats();
+	if($actif->is_buff('buff_surpuissance')) $degats += $actif->get_buff('buff_surpuissance', 'effet');
     echo '&nbsp;&nbsp;<span class="degat"><strong>'.$actif->get_nom().'</strong> inflige <strong>'.$degats.'</strong> dégâts avec '.$this->get_nom().'</span><br />';
     //$log_combat .= "~".$degats;
     $attaque->add_log_combat('~'.$degats);
