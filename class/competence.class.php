@@ -161,8 +161,8 @@ class maitrise_bouclier extends competence
   function calcul_bloquage(/*&$actif, &$passif*/&$attaque) {
     $passif = $attaque->get_passif();
     $this->used = true;
-    $passif->set_potentiel_bloquer( $passif->get_potentiel_bloquer() *
-      1 + ($passif->get_competence2('maitrise_bouclier')->get_valeur() / 1000) );
+    $passif->set_potentiel_bloquer( $passif->get_potentiel_bloquer() * (
+      1 + ($passif->get_competence2('maitrise_bouclier')->get_valeur() / 1000)) );
   }
 
   function fin_round(/*&$actif, &$passif*/&$attaque) {
