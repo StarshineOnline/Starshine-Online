@@ -227,7 +227,7 @@ class royaume
       $res = $db->query($requete);
       $row = $db->read_array($res);
       $stocks += $row['food'];
-      $facteur = $stocks / 10000;
+      $facteur = $stocks / 50000;
       if( $facteur < .7 ) $facteur = .7;
       else  if( $facteur > 1.5 ) $facteur = 1.5;
       $date_hier = date("Y-m-d", mktime(0, 0, 0, date("m") , date("d") - 2, date("Y")));

@@ -37,7 +37,9 @@ foreach($bourse->encheres as $enchere)
   }
   else
   {
-    $enchere->prix = min($enchere->prix * .8, $enchere->prix-10);
+    $ratio = $enchere->prix / $enchere->ressource;
+    $red = 1 / (1.15+sqrt($ratio)/10);
+    $enchere->prix = min($enchere->prix * $red, $enchere->prix-10);
     // prix de rachat par le jeu
     $requete = 'select sum('.$enchere->ressource.') as total from royaume';
     $req = $db->query($requete);
