@@ -151,19 +151,19 @@ elseif(array_key_exists('debut_bataille', $_GET))
 		$message = 'Votre groupe a été affecté à une mission concernant la bataille : '.$bataille->get_nom().'[br]
 		[bataille:'.$bataille->get_nom().']';
 		//Si le groupe n'a pas deja son thread pour cette bataille
-		if($groupe->id_thread == 0)
+		if($groupe->get_id_thread() == 0)
 		{
-			$thread = new messagerie_thread(0, $groupe->id_groupe, 0, $joueur->get_id(), 1, null, $titre);
+			$thread = new messagerie_thread(0, $groupe->get_id_groupe(), 0, $joueur->get_id(), 1, null, $titre);
 			$thread->sauver();
 			$messagerie = new messagerie($joueur->get_id(), $joueur->get_groupe());
-			$messagerie->envoi_message($thread->id_thread, 0, $titre, $message, $groupe->id_groupe, 1);
-			$groupe->id_thread = $thread->id_thread;
+			$messagerie->envoi_message($thread->id_thread, 0, $titre, $message, $groupe->get_id_groupe(), 1);
+			$groupe->set_id_thread($thread->id_thread);
 			$groupe->sauver();
 		}
 		else
 		{
 			$messagerie = new messagerie($joueur->get_id(), $joueur->get_groupe());
-			$messagerie->envoi_message($groupe->id_thread, 0, $titre, $message, $groupe->id_groupe, 1);
+			$messagerie->envoi_message($groupe->get_id_thread(), 0, $titre, $message, $groupe->get_id_groupe(), 1);
 		}
 	}
 }
