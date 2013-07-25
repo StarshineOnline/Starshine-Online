@@ -688,8 +688,9 @@ else
 						</li>
 				</ul>
 				<div style="clear:both;">';
+        global $G_no_ambiance_kill_message;
 				
-				if($type == 'monstre')
+				if($type == 'monstre' && !$G_no_ambiance_kill_message)
 				{
 					if($defenseur->get_level() < $attaquant->get_level() - 5)
 						echo 'Les tripes arrachées, '.$defenseur->get_nom().' meurt dignement.<br />';

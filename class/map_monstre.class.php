@@ -277,6 +277,7 @@ class map_monstre extends entnj_incarn
 	function kill_monstre_de_donjon(&$perso)
 	{
 		global $db;
+    global $G_no_ambiance_kill_message;
     $log = new log_admin();
 		switch ($this->id_monstre)
 		{
@@ -403,6 +404,19 @@ class map_monstre extends entnj_incarn
         $nouv->set_hp( $this->get_def()->get_hp() );
         $nouv->sauver();
       }
+
+    // Goblin
+    case 35:
+      global $db;
+      $subsql = "select quote, (RAND() + (rarete/100)) rnd from monster_quote where id_monstre = ? and rarete <= ?";
+      $sql = "select t.quote from ($subsql) t order by t.rnd desc limit 1";
+      $rarete = floor(rand(1, 100));
+      $stmt = $db->param_query($sql, array($this->id_monstre, $rarete), 'ii');
+      if ($result = $db->stmt_read_object($stmt)) {
+        echo $result->quote;
+        $G_no_ambiance_kill_message = true;
+      }
+      break;
 			
 		default:
 			// Rien à faire
