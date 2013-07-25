@@ -87,6 +87,10 @@ else
 	$menu[$i]['url'] = 'edit_monstre.php';
 	$menu[$i++]['acces'] = joueur::droit_anim | joueur::droit_concept;
 
+	$menu[$i]['nom'] = 'Dernières paroles de monstre';
+  $menu[$i]['url'] = 'dernieres_paroles.php';
+  $menu[$i++]['acces'] = joueur::droit_concept | joueur::droit_graph;
+
 	$menu[$i]['nom'] = 'Bourgs';
 	$menu[$i]['url'] = 'admin_bourg.php';
 	$menu[$i++]['acces'] = joueur::droit_concept | joueur::droit_modo;
