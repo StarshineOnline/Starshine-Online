@@ -73,6 +73,22 @@ function convertd_in_pos($x, $y)
 }
 
 /**
+ * Donne la position relative d'une case par rapport à une origine donnée.
+ *  
+ * @param $origine Tableau des coordonnées de l'origine
+ * @param $case Tableau des coordonnées de la case
+ *  
+ * @return $relative Tableau des positions relatives
+ */ 
+function position_relative($origine, $case)
+{
+	$relative = array();
+	$relative[0] = $case[0] - $origine[0];
+	$relative[1] = $case[1] - $origine[1];
+	return $relative;
+}
+
+/**
  * Detecte si l'attaquant est sur la meme case.
  * Donne le maximum entre les distances horizontale et varticale entre deux personnages.
  * 
