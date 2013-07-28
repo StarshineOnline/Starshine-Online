@@ -480,10 +480,10 @@ class map_monstre extends entnj_incarn
 			$grosbill = array();
 			$loot = array();
 			foreach ($tloot as $l) {
-				if ($l->level == 0)
-					$loot[] = $l;
-				else
+				if ($l->level == 2)
 					$grosbill[] = $l;
+				else
+					$loot[] = $l;
 			}
 			// récupère les loots des joueurs sur le boss
 			if ($groupe) {
@@ -540,6 +540,8 @@ class map_monstre extends entnj_incarn
 						$has_loot = true;
 						loot_item($perso, $groupe, $l->item);
 						$old++;
+            if( $l->level == 1 )
+              unset($loot[$k]);
 						break;
 					}
 				}
