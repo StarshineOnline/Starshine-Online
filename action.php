@@ -220,6 +220,10 @@ if(array_key_exists('from', $_GET) && $_GET['id_action'] != '')
 				$sujet->set_action_d($id_action);
 			$sujet->sauver();
 		}
+		if(isset($_GET['cancel']))
+		{
+			$_SESSION['script'] = array();
+		}
 		echo '</table>';
 		//print_r($_SESSION['script'][$id_action]);
 		echo affiche_condition_session($_SESSION['script'][$id_action], $sujet, $check_pet);
@@ -229,6 +233,7 @@ if(array_key_exists('from', $_GET) && $_GET['id_action'] != '')
 			?>
 			<input type="button" name="ajout" value="Ajouter une condition" onclick="return envoiInfo('action.php?<?php echo $link; ?>mode=a&amp;id_action=<?php echo $id_action; ?>', 'information');" />
 			<input type="button" name="valid" value="Valider cette ligne" onclick="return envoiInfo('action.php?<?php echo $link; ?>mode=a&amp;id_action=<?php echo $id_action; ?>&amp;valid=ok', 'information');" />
+			<input type="button" name="cancel" value="Annuler cette ligne" onclick="return envoiInfo('action.php?<?php echo $link; ?>mode=a&amp;id_action=<?php echo $id_action; ?>&amp;cancel=true', 'information');" />
 			<?php
 		}
 		//=== CONDITION ===
