@@ -268,6 +268,7 @@ textarea#css, textarea#description { width: 500px; height:150px; }
 #messagerie_liste .par { float:left; display:block; width:90px; }
 #messagerie_liste .date { float:left; display:block; width:100px; }
 #combat_cartouche { clear:both; background-color:#DDDDDD; padding:9px; -moz-border-radius:12px; -webkit-border-radius:12px; border-radius: 12px; min-height:70px; }
+#combat_resume{ clear:both; background-color:#DDDDDD; padding:9px; margin-top:10px; -moz-border-radius:12px; -webkit-border-radius:12px; border-radius: 12px; min-height:70px; }
 .infoperso td { font-size:10px; margin:0; padding:0; }
 .roseeticone { float:left; padding:4px; margin:5px; }
 #carte h4 { padding:0; margin:3px; border-bottom:1px solid #E7CF98; clear:both; }

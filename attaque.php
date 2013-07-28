@@ -851,5 +851,10 @@ else
 if (!empty($msg_xp)){echo "<p style='clear:both;'>".$msg_xp."</p>";}
 ?>
 </div>
+<div id="combat_resume">
+	<strong>Résumé</strong><br />
+	<span style="float:left; width: 100px;">Dégâts infligés</span><span><?php echo $defense_hp_avant - $defense_hp_apres; ?></span><br />
+	<span style="float:left; width: 100px;">Dégâts reçus</span><span><?php echo $attaque_hp_avant - $attaque_hp_apres; ?></span><br />
+</div>
 <img src="image/pixel.gif" onLoad="envoiInfo('infoperso.php?javascript=oui', 'perso');" />
 </fieldset>
