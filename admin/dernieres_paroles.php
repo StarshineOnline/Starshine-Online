@@ -34,6 +34,7 @@ if ($selected && array_key_exists('delete', $_REQUEST)) {
 
 $stm = $db->param_query("select id, nom, lib from monstre order by nom");
 echo '<select id="monstre" onchange="doChangeMonstre(this)">';
+if (!$selected) echo '<option value=""></option>';
 while ($monstre = $db->stmt_read_object($stm)) {
 	echo '<option value="'.$monstre->id.'"';
 	if ($selected == $monstre->id) echo ' selected="selected"';
@@ -44,25 +45,39 @@ echo '</select>';
 ?>
 <script>
 function doChangeMonstre(e) {
-	window.location='?id_monstre=' + e.value;
+	if (e.value)
+		window.location='?id_monstre=' + e.value;
 }
 </script>
 <?php
 
 if ($selected) {
-	echo '<table>';
-	$stp = $db->param_query("select * from monster_quote where id_monstre = ? order by rarete asc", array($selected), 'i');
+	echo '<table><tr><th>Rareté</th><th>Paroles</th><th>Action</th></tr>';
+	$stp = $db->param_query("select * from monster_quote where id_monstre = ? order by rarete asc",
+													array($selected), 'i');
 	while ($quote = $db->stmt_read_object($stp)) {
 		echo '<tr><td>'.$quote->rarete.'</td><td>'.htmlentities($quote->quote).'</td><td><a href="?id_monstre='.
 			$selected.'&amp;delete='.$quote->id.'">Supprimer</a></td></tr>';
 	}
 	echo '</table>';
 	?>
+<hr />
 <form action="?id_monstre=<?php echo $selected ?>" method="post">
-	 <input type="text" name="rarete" />
-	 <textarea name="quote"></textarea>
-	 <input value="ajouter" type="submit" />
-	 <input type="hidden" name="add" value="add" />
+	 <table>
+	   <tr><th>Ajouter</th></tr>
+	   <tr>
+	     <td><label for="irarete">Rareté</label></td>
+       <td><input id="irarete" type="text" name="rarete" /></td>
+		 </tr>
+		 <tr>
+       <td><label for="iquote">Dernières paroles</label></td>
+       <td><textarea id="iquote" name="quote"></textarea></td>
+     </tr>
+     <tr>
+       <td></td>
+       <td><input value="ajouter" type="submit" /><input type="hidden" name="add" value="add" /></td>
+		 </tr>
+  </table>
 </form>
 <?php
 }
