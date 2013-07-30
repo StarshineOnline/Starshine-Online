@@ -26,6 +26,7 @@ class combat
 	public $defenseur;
 	public $combat;
 	public $id_journal;
+	private $journal;
 	
 	/**	
 		*	Constructeur permettant la création d'un combat
@@ -38,11 +39,9 @@ class combat
 	function __construct($id = 0, $attaquant = 0, $defenseur = 0, $combat = '', $id_journal = 0)
 	{
 		global $db;
-		//Verification du attaquantbre et du type d'argument pour construire l'etat adequat.
 		if( (func_num_args() == 1) && is_numeric($id) )
 		{
 			$requeteSQL = $db->query('SELECT attaquant, defenseur, combat, id_journal FROM combats WHERE id = '.$id);
-			//Si le thread est dans la base, on le charge sinon on crée un thread vide.
 			if( $db->num_rows($requeteSQL) > 0 )
 			{
 				list($this->attaquant, $this->defenseur, $this->combat, $this->id_journal) = $db->read_row($requeteSQL);
@@ -111,6 +110,11 @@ class combat
 		return $this->combat;
 	}
 	
+	function get_journal()
+	{
+		return new journal($this->id_journal);
+	}
+	
 	function afficher_combat()
 	{
 	global $db;
@@ -134,7 +138,7 @@ class combat
 			<legend>Combat VS '.$defenseur->get_nom().' </legend>';
 			$round = 1;
 			while($round < (count($combat)+1))
-			{		
+			{
 				if ($mode == 'attaquant') $mode = 'defenseur';
 				else ($mode = 'attaquant');
 				
@@ -466,6 +470,27 @@ class combat
 			</table>
 			<?php
 			}
+			$journal = $this->get_journal();
+			$suivant = $journal->get_suivant('action = "attaque" OR action = "defense"');
+			$precedent = $journal->get_precedent('action = "attaque" OR action = "defense"');
+			?>
+	<div id="combat_resume">
+	<strong>Résumé</strong><br />
+	<span style="float:left; width: 200px;">Dégâts infligés par l'attaquant</span><span><?php echo $journal->get_valeur(); ?></span><br />
+	<span style="float:left; width: 200px;">Dégâts infligés par le défenseur</span><span><?php echo $journal->get_valeur2(); ?></span><br /><br />
+			<?php
+			if($suivant) 
+				echo '<a href="journal_combat.php?id='.$suivant->get_id().'" onclick="return envoiInfo(this.href, \'information\');">Suivant</a> - ';
+			else 
+				echo 'Suivant - ';
+			if($precedent) 
+				echo '<a href="journal_combat.php?id='.$precedent->get_id().'" onclick="return envoiInfo(this.href, \'information\');">Précédent</a>';
+			else 
+				echo 'Précédent';
+			?>
+	</div>
+			<?php
+			
 			return true;
 		}
 		else
