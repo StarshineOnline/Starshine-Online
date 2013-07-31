@@ -123,6 +123,7 @@ else
 			<span class='quete_niveau'>Level</span>
 			<span class='quete_groupe'>Mode</span>
 			<span class='quete_repetable'>Répétable</span>
+			<span class='quete_nombre'>Nombre</span>
 			<span class='quete_cout'>Coût</span>
 			<span class='quete_star'>Stars</span>
 			<span class='quete_exp'>Expérience</span>
@@ -135,6 +136,8 @@ else
     $royaumes = explode(';', $quete->royaume);
     if( $quete->royaume && !in_array($R->get_id(), $royaumes) )
       continue;
+	  
+		$objectif = unserialize($quete->objectif);
 		$href = 'poscase='.$W_case.'&amp;direction=quete&amp;action=voir&amp;id='.$quete->id;
 		//$js = 'new Tip(\'quete_'.$row['id'].'\', \'content\');';
 		echo "
@@ -143,6 +146,7 @@ else
 			<span class='quete_niveau'>".$quete->lvl_joueur."</span>
 			<span class='quete_groupe'>".$quete->mode."</span>
 			<span class='quete_repetable'>".$quete->repete."</span>
+			<span class='quete_nombre'>".$objectif[0]->nombre."</span>
 			<span class='quete_cout'>".$quete->star_royaume."</span>
 			<span class='quete_star'>".$quete->star."</span>
 			<span class='quete_exp'>".$quete->exp."</span>
