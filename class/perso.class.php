@@ -3398,12 +3398,12 @@ class perso extends entite
 		if ($this->get_hp() <= 0) {
 			if (!$G_no_ambiance_kill_message) {
 				echo '<li class="ambiance_kill_message">';
-				if ($defenseur->get_level() < $attaquant->get_level() - 9)
+				if ($this->get_level() < $perso->get_level() - 9)
 					echo 'A vaincre sans péril on triomphe sans gloire.<br />';
-				elseif ($defenseur->get_level() > $attaquant->get_level() + 9)
-					echo 'Félicitation, tu es venu à bout de '.$defenseur->get_nom().'.<br />';
-				elseif ($defenseur->get_level() >= $attaquant->get_level() - 9 AND $defenseur->get_level() <= $attaquant->get_level() + 9)
-					echo 'Tu as tué '.$defenseur->get_nom().'.<br />';
+				elseif ($this->get_level() > $perso->get_level() + 9)
+					echo 'Félicitation, tu es venu à bout de '.$this->get_nom().'.<br />';
+				elseif ($this->get_level() >= $perso->get_level() - 9 AND $this->get_level() <= $perso->get_level() + 9)
+					echo 'Tu as tué '.$this->get_nom().'.<br />';
 				echo '</li>';
 			}
 		}
