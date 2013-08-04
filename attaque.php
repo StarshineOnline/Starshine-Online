@@ -676,98 +676,78 @@ else
 			//Cartouche de fin de combat classique
 			if ($defenseur->get_hp() > 0)
 			{
-				echo '	<span style="display:block;float:left;width:150px;"><img src="genere_barre_vie.php?longueur='.$longueur.'" alt="Estimation des HP : '.$longueur.'% / + ou - : '.$fiabilite.'%"" title="Estimation des HP : '.$longueur.'% / + ou - : '.$fiabilite.'%" /></span>
+				echo '	<span style="display:block;float:left;width:150px;"><img src="genere_barre_vie.php?longueur='.$longueur.'" alt="Estimation des HP : '.$longueur.'% / + ou - : '.$fiabilite.'%" title="Estimation des HP : '.$longueur.'% / + ou - : '.$fiabilite.'%" /></span>
 						</li>
 				</ul>
 				<div style="float:left;">';
 			}
-			else // Cartouche de fin de combat si mort
-			{
-				
+			else {
 				echo '   <span style="display:block;float:left;width:150px;">mort</span>
 						</li>
 				</ul>
 				<div style="clear:both;">';
-        global $G_no_ambiance_kill_message;
-				
-				if($type == 'monstre' && !$G_no_ambiance_kill_message)
-				{
-					if($defenseur->get_level() < $attaquant->get_level() - 5)
-						echo 'Les tripes arrachées, '.$defenseur->get_nom().' meurt dignement.<br />';
-					elseif($defenseur->get_level() > $attaquant->get_level() + 5)
-						echo 'Tandis que le flot rouge de sa vie finissait de s\'écouler, '.$defenseur->get_nom().' rendait l\'âme.<br />';
-					elseif($defenseur->get_level() >= $attaquant->get_level() - 5 AND $defenseur->get_level() <= $attaquant->get_level() + 5)
-						echo 'Un air ahuri flotte encore sur sa gueule puissante, vous avez tué '.$defenseur->get_nom().'.<br />';
-				}
-				elseif($type == 'joueur')
-				{
-					if($defenseur->get_level() < $attaquant->get_level() - 9)
-						echo 'A vaincre sans péril on triomphe sans gloire.<br />';
-					elseif($defenseur->get_level() > $attaquant->get_level() + 9)
-						echo 'Félicitation, tu es venu à bout de '.$defenseur->get_nom().'.<br />';
-					elseif($defenseur->get_level() >= $attaquant->get_level() - 9 AND $defenseur->get_level() <= $attaquant->get_level() + 9)
-						echo 'Tu as tué '.$defenseur->get_nom().'.<br />';
-				}
+			}
+			echo '<ul>';
 	
-				if($defenseur->get_race() == $attaquant->get_race() AND $defenseur->get_rang_royaume() == 6) $joueur->unlock_achiev('roi_race_mort');
-				if($defenseur->get_rang_royaume() == 6) 
-				{
+			if ($defenseur->get_race() == $attaquant->get_race() AND $defenseur->get_rang_royaume() == 6) {
+				echo '<li>';
+				$joueur->unlock_achiev('roi_race_mort');
+				echo '</li>';
+			}
+			if ($defenseur->get_rang_royaume() == 6) {
+				echo '<li>';
 				$joueur->unlock_achiev('roi_mort1');
 				$achiev = $joueur->get_compteur('roi_mort');
 				$achiev->set_compteur($achiev->get_compteur() + 1);
 				$achiev->sauver();
-				}
+				echo '</li>';
 			}
-			
+					
 			$msg_xp .= $defenseur->fin_defense($joueur, $R, $pet, $degat_defense, $defenseur_en_defense);
-
-			if ($defenseur->get_hp() > 0)
-			{
-				if($check_pet) $link = '&pet'; else $link = '';
-				if($type == 'joueur') echo(' <a href="attaque.php?id_joueur='.$joueur_defenseur->get_id().'&amp;type=joueur'.$link.'" onclick="return envoiInfo(this.href, \'information\')"><img src="image/interface/attaquer.png" alt="Combattre" title="Attaquer la même cible" style="vertical-align : middle;" /></a><br />');
-				elseif($type == 'monstre') echo(' <a href="attaque.php?id_monstre='.$map_monstre->get_id().'&amp;type=monstre'.$link.'" onclick="return envoiInfo(this.href, \'information\')"><img src="image/interface/attaquer.png" alt="Combattre" title="Attaquer la même cible" style="vertical-align : middle;" /></a><br />');
-				elseif($type == 'batiment') echo(' <a href="attaque.php?id_batiment='.$map_batiment->get_id().'&amp;type=batiment&amp;table='.$_GET['table'].$link.'" onclick="return envoiInfo(this.href, \'information\')"><img src="image/interface/attaquer.png" alt="Combattre" title="Attaquer la même cible" style="vertical-align : middle;" /></a><br />');
+			
+			if ($defenseur->get_hp() > 0) {
+				if ($check_pet)
+					$link = '&pet'; else $link = '';
+				if ($type == 'joueur')
+					echo(' <a href="attaque.php?id_joueur='.$joueur_defenseur->get_id().'&amp;type=joueur'.$link.'" onclick="return envoiInfo(this.href, \'information\')"><img src="image/interface/attaquer.png" alt="Combattre" title="Attaquer la même cible" style="vertical-align : middle;" /></a><br />');
+				elseif ($type == 'monstre')
+					echo(' <a href="attaque.php?id_monstre='.$map_monstre->get_id().'&amp;type=monstre'.$link.'" onclick="return envoiInfo(this.href, \'information\')"><img src="image/interface/attaquer.png" alt="Combattre" title="Attaquer la même cible" style="vertical-align : middle;" /></a><br />');
+				elseif ($type == 'batiment')
+					echo(' <a href="attaque.php?id_batiment='.$map_batiment->get_id().'&amp;type=batiment&amp;table='.$_GET['table'].$link.'" onclick="return envoiInfo(this.href, \'information\')"><img src="image/interface/attaquer.png" alt="Combattre" title="Attaquer la même cible" style="vertical-align : middle;" /></a><br />');
 			}
 			
 
-			if (!$check_pet AND ($attaquant->get_compteur_critique() > 0) AND ($attaquant->get_type() == 'joueur'))
-			{
+			if (!$check_pet AND 
+					($attaquant->get_compteur_critique() > 0) AND ($attaquant->get_type() == 'joueur')) {
 				$achiev = $attaquant->get_compteur('critique');
 				$achiev->set_compteur($achiev->get_compteur() + $attaquant->get_compteur_critique());
 				$achiev->sauver();
 			}
-			if (!$check_pet_def AND ($defenseur->get_compteur_critique() > 0) AND ($defenseur->get_type() == 'joueur'))
-			{
+			if (!$check_pet_def AND
+					($defenseur->get_compteur_critique() > 0) AND ($defenseur->get_type() == 'joueur')) {
 				$achiev = $defenseur->get_compteur('critique');
 				$achiev->set_compteur($achiev->get_compteur() + $defenseur->get_compteur_critique());
 				$achiev->sauver();
 			}
 			$attaquant->fin_attaque($joueur, $defenseur, $pa_attaque);
 			//Suppression des PA si c'est une attaque du joueur
-			if($type == 'joueur' OR $type == 'monstre' OR $type == 'batiment')
-			{
-				if(get_class($attaquant)=="perso")
-				{
+			if ($type == 'joueur' OR $type == 'monstre' OR $type == 'batiment') {
+				if (get_class($attaquant)=="perso") {
 					$joueur->set_pa($attaquant->get_pa() - $pa_attaque);
 				}
 				else
-				{
 					$joueur->set_pa($joueur->get_pa() - $pa_attaque);
-				}
 				$joueur->sauver();
 			}
 			//Sinon c'est une arme de siège, et il faut modifier son rechargement
-			elseif ($type == 'siege' OR $type == 'ville')
-			{
+			elseif ($type == 'siege' OR $type == 'ville') {
 				$joueur->set_pa($joueur->get_pa() - $pa_attaque);
 				$joueur->sauver();
 				/*$map_siege->set_rechargement(time() + $siege->get_bonus('rechargement'));
 				$map_siege->sauver();*/
 			}
 			else
-			{
 				echo "<b>Error: </b> type is [$type] !<br/>";
-			}
 
 			//Mise dans les journaux si attaque pvp
 			if($type == 'joueur')
@@ -832,6 +812,21 @@ else
 				$combat->id_journal = $db->last_insert_id();
 				$combat->sauver();
 			}
+
+      echo '</ul>';
+ ?>
+	<a onclick="for (i=0; i<<?php echo $debugs; ?>; i++) {if(document.getElementById('debug' + i).style.display == 'inline') document.getElementById('debug' + i).style.display = 'none'; else document.getElementById('debug' + i).style.display = 'inline';}"><img src="image/interface/debug.png" alt="Debug" Title="Débug pour voir en détail le combat" style="vertical-align : middle;cursor:pointer;" /></a> <br />
+	<a href="informationcase.php?case=<?php echo $W_case; ?>" onclick="return envoiInfo(this.href, 'information')"><img src="image/interface/retour.png" alt="Retour" title="Retour à l'information case" style="vertical-align : middle;" /></a>
+	</div>
+	<?php if (!empty($msg_xp)){echo "<p style='clear:both;'>".$msg_xp."</p>";} ?>
+	</div>
+	
+	<div id="combat_resume">
+		<strong>Résumé</strong><br />
+		<span style="float:left; width: 100px;">Dégâts infligés</span><span><?php echo $defense_hp_avant - $defense_hp_apres; ?></span><br />
+		<span style="float:left; width: 100px;">Dégâts reçus</span><span><?php echo $attaque_hp_avant - $attaque_hp_apres; ?></span><br />
+	</div>
+ <?php
 		}
 		else
 		{
@@ -844,12 +839,5 @@ else
 	}
 }
 ?>
-<a onclick="for (i=0; i<<?php echo $debugs; ?>; i++) {if(document.getElementById('debug' + i).style.display == 'inline') document.getElementById('debug' + i).style.display = 'none'; else document.getElementById('debug' + i).style.display = 'inline';}"><img src="image/interface/debug.png" alt="Debug" Title="Débug pour voir en détail le combat" style="vertical-align : middle;cursor:pointer;" /></a> <br />
-<a href="informationcase.php?case=<?php echo $W_case; ?>" onclick="return envoiInfo(this.href, 'information')"><img src="image/interface/retour.png" alt="Retour" title="Retour à l'information case" style="vertical-align : middle;" /></a>
-</div>
-<?php
-if (!empty($msg_xp)){echo "<p style='clear:both;'>".$msg_xp."</p>";}
-?>
-</div>
 <img src="image/pixel.gif" onLoad="envoiInfo('infoperso.php?javascript=oui', 'perso');" />
 </fieldset>

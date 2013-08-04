@@ -273,9 +273,9 @@ class map_monstre extends entnj_incarn
 		$req = $db->query($requete);
 	}
 
-  /// Gère les actions spéciales à effectuer lorsqu'un mosntre dedonjon a été tué
+  /// Gère les actions spéciales à effectuer lorsqu'un monstre special a été tué
 	function kill_monstre_de_donjon(&$perso)
-	{
+	{ // L'affichage devrait se faire entre li, car la fonction est appellée entre <ul><ul>
 		global $db;
     global $G_no_ambiance_kill_message;
     $log = new log_admin();
@@ -285,7 +285,7 @@ class map_monstre extends entnj_incarn
 			$requete = "INSERT INTO map_monstre VALUES(NULL, '65','3','212','4800',"
         .(time() + 2678400).")";
 			$db->query($requete);
-			echo '<strong>Rha, tu me détruis aujourdhui mais le fossoyeur saura saisir ton âme... tu es déja mort !</strong><br/>';
+			echo '<li><strong>Rha, tu me détruis aujourdhui mais le fossoyeur saura saisir ton âme... tu es déja mort !</strong></li>';
       $log->send(0, 'donjon', "devoris tué, pop du fossoyeur");
 			break;
 			
@@ -293,12 +293,12 @@ class map_monstre extends entnj_incarn
 			$requete = "INSERT INTO map_monstre VALUES(NULL, '75','24','209','8000',"
         .(time() + 2678400).")";
 			$db->query($requete);
-			echo '<strong>Tu ne fait que retarder l\'inévitable, Le maître saura te faire payer ton insolence !</strong><br/>';
+			echo '<li><strong>Tu ne fait que retarder l\'inévitable, Le maître saura te faire payer ton insolence !</strong><li/>';
       $log->send(0, 'donjon', "fossoyeur tué, pop de finwir");
 			break;
 			
 		case 75: //Si c'est Finrwirr on fait pop le gros monstre
-			echo '<strong>Aaaargh VAINCU, JE SUIS VAINCU, comment est ce possible !!! Maître !! Maître venez à moi, vengez votre plus fidèle serviteur !!!</strong><br/>';
+			echo '<li><strong>Aaaargh VAINCU, JE SUIS VAINCU, comment est ce possible !!! Maître !! Maître venez à moi, vengez votre plus fidèle serviteur !!!</strong></li>';
       $req = $db->query("select decor from map where x = 20 and y = 227");
       $row = $db->read_assoc($req);
 			if ($row['decor'] == 1601) // Si le gros monstre n'a pas ete vaincu, le passage vers le portail est encore un mur
@@ -313,14 +313,14 @@ class map_monstre extends entnj_incarn
 			}
 			else
 			{
-				echo '<em>Seul le silence répond à cet appel, Adenaïos le nécromant a déjà été vaincu ...</em><br/>';
+				echo '<li><em>Seul le silence répond à cet appel, Adenaïos le nécromant a déjà été vaincu ...</em></li>';
         $log->send(0, 'donjon', "finwir tué, mais PAS de pop d'adénaïos");
 			}
 			break;
 
     case 116: // Si c'est le gros monstre, on ouvre le chemin vers le portail
     {
-      echo "Maitre Aâzgruth reprend mon âme, ahhharghh, vous ne savez rien de ce qui vous attends... <em>Le squelette du nécromant se brise sous vos yeux. Une silhouette noir s'en dégage pendant quelque secondes avant d'être subitement avalée par le mur situé en face de vous ... qui eclate comme un miroir.</em><br/>";
+      echo "<li>Maitre Aâzgruth reprend mon âme, ahhharghh, vous ne savez rien de ce qui vous attends... <em>Le squelette du nécromant se brise sous vos yeux. Une silhouette noir s'en dégage pendant quelque secondes avant d'être subitement avalée par le mur situé en face de vous ... qui eclate comme un miroir.</em></li>";
       $requete = "update map set decor = 1539, info = 15 where y = 227 and (x = 20 or x = 21)";
       $db->query($requete);
       $requete = "update map set decor = 1676 where y = 226 and (x = 20 or x = 21)";
@@ -339,7 +339,7 @@ class map_monstre extends entnj_incarn
 				$requete = "INSERT INTO map_monstre VALUES(NULL,123,44,293,5800,"
           .(time() + 2678400).")";
 				$db->query($requete);
-				echo '<strong>Un bruit de mécanisme eveille votre attention, mais il vous est impossible de savoir d\'où provient ce son.</strong>';
+				echo '<li><strong>Un bruit de mécanisme eveille votre attention, mais il vous est impossible de savoir d\'où provient ce son.</strong></li>';
         $log->send(0, 'donjon', "plus de draconides, ouverture du portail");
 			}
       else
@@ -362,7 +362,7 @@ class map_monstre extends entnj_incarn
 		case 123: //Le roi des gobs fait pop le second roi des gobs
 			$requete = "INSERT INTO map_monstre select NULL, id, 17, 292, hp, ".(time() + 2678400)." from monstre where lib = 'roi_goblin_2' limit 1";
 			$db->query($requete);
-			echo '<strong>Le roi gobelin Ziwek Rustog pousse un cri d\'une frénésie grotesque, se mettant à lancer tout un tas de babioles aux les quatre coins de la pièce. Vous regardez les objets voler tout autour de vous, tentant de les éviter ou les laissant ricocher sur vos armures. Cela devient presque un jeu. Vous reprenez peu à peu vos esprits, revenant vers le roi narquois, et vous comprenez que ce dernier vous a ensorcelé et s\'est carapaté. Devant vous, vous apercevez un petit passage avec des traces fraîches.</strong>';
+			echo '<li><strong>Le roi gobelin Ziwek Rustog pousse un cri d\'une frénésie grotesque, se mettant à lancer tout un tas de babioles aux les quatre coins de la pièce. Vous regardez les objets voler tout autour de vous, tentant de les éviter ou les laissant ricocher sur vos armures. Cela devient presque un jeu. Vous reprenez peu à peu vos esprits, revenant vers le roi narquois, et vous comprenez que ce dernier vous a ensorcelé et s\'est carapaté. Devant vous, vous apercevez un petit passage avec des traces fraîches.</strong></li>';
       $log->send(0, 'donjon', "roi gob I tué, pop du roi gob II");
 			break;
 
@@ -372,7 +372,7 @@ class map_monstre extends entnj_incarn
 		case 177:
 		case 178:
       $duree = $this->id_monstre == 162 ? 8 : 1;
-			echo '<strong>Sur le corps du geôlier, vous trouvez la clef de la porte et l\'ouvrez. La clef tombe en poussière après usage.</strong><br />';
+			echo '<li><strong>Sur le corps du geôlier, vous trouvez la clef de la porte et l\'ouvrez. La clef tombe en poussière après usage.</strong></li>';
 			print_reload_area('deplacement.php?deplacement=centre', 'centre');
 			ouvrePorteMaraudeurGeolier($this->x, $duree);
 			break;
@@ -387,7 +387,7 @@ class map_monstre extends entnj_incarn
 					$membre->unlock_achiev('brutus');
 				}
 			}
-			echo 'L\'éternel adolescent vous toise d\'un regard espiègle tandisque dans un flash aveuglant, vous êtes projeté en arrière. Non loin de vous, sur le mur, une étrange surface brillante que vous aviez déjà remarqué, attire à ce moment votre attention pour des raisons qui vous échappe. Cesar fait vrombir son fauteuil d\'un coup sec. Des gerbes de flamme, de sang et de salives sont projetés par l\'engin avant que Cesar ne disparaisse dans le mur. Les reflets mystérieux continuent à agiter la surface miroitante mais rien n\'y fait, en la touchant, elle reste d\'une opacité à toute épreuve. Peut être n\'est-elle réservée qu\'à un genre de personne bien particulier. Un type qui sortirait de la norme sous quelques handicapes, ou quelques forces démoniaques...';
+			echo '<li>L\'éternel adolescent vous toise d\'un regard espiègle tandisque dans un flash aveuglant, vous êtes projeté en arrière. Non loin de vous, sur le mur, une étrange surface brillante que vous aviez déjà remarqué, attire à ce moment votre attention pour des raisons qui vous échappe. Cesar fait vrombir son fauteuil d\'un coup sec. Des gerbes de flamme, de sang et de salives sont projetés par l\'engin avant que Cesar ne disparaisse dans le mur. Les reflets mystérieux continuent à agiter la surface miroitante mais rien n\'y fait, en la touchant, elle reste d\'une opacité à toute épreuve. Peut être n\'est-elle réservée qu\'à un genre de personne bien particulier. Un type qui sortirait de la norme sous quelques handicapes, ou quelques forces démoniaques...</li>';
 			break;
 
     // Monstres tutoriels
@@ -404,19 +404,6 @@ class map_monstre extends entnj_incarn
         $nouv->set_hp( $this->get_def()->get_hp() );
         $nouv->sauver();
       }
-
-    // Goblin
-    case 35:
-      global $db;
-      $subsql = "select quote, (RAND() + (rarete/100)) rnd from monster_quote where id_monstre = ? and rarete <= ?";
-      $sql = "select t.quote from ($subsql) t order by t.rnd desc limit 1";
-      $rarete = floor(rand(1, 100));
-      $stmt = $db->param_query($sql, array($this->id_monstre, $rarete), 'ii');
-      if ($result = $db->stmt_read_object($stmt)) {
-        echo $result->quote;
-        $G_no_ambiance_kill_message = true;
-      }
-      break;
 			
 		default:
 			// Rien à faire
@@ -596,6 +583,10 @@ class map_monstre extends entnj_incarn
 			// On gere les monstres de donjon
 			$this->kill_monstre_de_donjon($perso);
 
+			// On gere les monstres normaux
+			if (!$this->dernieres_paroles())
+				$this->message_kill_rp($perso);
+
 			// Augmentation du compteur de l'achievement
 			$achiev = $perso->get_compteur('kill_monstres');
 			$achiev->set_compteur($achiev->get_compteur() + 1);
@@ -767,6 +758,34 @@ class map_monstre extends entnj_incarn
 		}
 		return $msg_xp;
 	}
+
+	function dernieres_paroles() {
+		global $db;
+		$subsql = "select quote, (RAND() + (rarete/100)) rnd from monster_quote where id_monstre = ? and rarete <= ?";
+		$sql = "select t.quote from ($subsql) t order by t.rnd desc limit 1";
+		$rarete = floor(rand(1, 100));
+		$stmt = $db->param_query($sql, array($this->id_monstre, $rarete), 'ii');
+		if ($result = $db->stmt_read_object($stmt)) {
+			echo '<li class="dernieres_paroles">'.$result->quote.'</li>';
+			return true;
+		}
+		return false;
+	}
+
+	function  message_kill_rp(&$perso) {
+		global $G_no_ambiance_kill_message;
+		if ($G_no_ambiance_kill_message)
+			return;
+		echo '<li class="ambiance_kill_message">';
+		if ($this->get_level() < $perso->get_level() - 5)
+			echo 'Les tripes arrachées, '.$this->get_nom().' meurt dignement.';
+		elseif ($this->get_level() > $perso->get_level() + 5)
+			echo 'Tandis que le flot rouge de sa vie finissait de s\'écouler, '.$this->get_nom().' rendait l\'âme.';
+		elseif ($this->get_level() >= $perso->get_level() - 5 AND $this->get_level() <= $perso->get_level() + 5)
+			echo 'Un air ahuri flotte encore sur sa gueule puissante, vous avez tué '.$this->get_nom().'.';
+		echo '</li>';
+	}
+
   /// Renvoie le coût en PA pour attaquer l'entité
   function get_cout_attaque_base(&$perso)
   {

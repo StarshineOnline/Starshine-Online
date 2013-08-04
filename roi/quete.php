@@ -108,13 +108,18 @@ elseif($_GET['action'] == 'voir')
 	</ul>
 	<h3>Cout pour le royaume : <?php echo $row['star_royaume']; ?> stars</h3>
 	<br />
-	<a onclick="envoiInfo('quete.php?direction=quete&amp;action=achat&amp;id=<?php echo $row['id']; ?>','message_confirm');envoiInfo('quete.php','contenu_jeu');refresh('perso_contenu.php','perso_contenu');$('#popup').hide();">Acheter cette quête</a><br />
-	<br />
 	<?php
+	if($royaume->get_star() >= $row['star_royaume'])
+	{
+	?>
+		<a onclick="envoiInfo('quete.php?direction=quete&amp;action=achat&amp;id=<?php echo $row['id']; ?>','message_confirm');envoiInfo('quete.php','contenu_jeu');refresh('perso_contenu.php','perso_contenu');$('#popup').hide();">Acheter cette quête</a><br />
+		<br />
+	<?php
+	}
 }
 else
 {
-	$req = $db->query("SELECT * FROM quete WHERE quete.achat = 'oui' AND id NOT IN (SELECT id_quete FROM quete_royaume WHERE id_royaume = ".$royaume->get_id().") AND star_royaume<".$royaume->get_star()." ORDER BY lvl_joueur");
+	$req = $db->query("SELECT * FROM quete WHERE quete.achat = 'oui' AND id NOT IN (SELECT id_quete FROM quete_royaume WHERE id_royaume = ".$royaume->get_id().") ORDER BY lvl_joueur");
 	echo "<div id='quete'>";
 	?>
 	<ul>
@@ -123,6 +128,7 @@ else
 			<span class='quete_niveau'>Level</span>
 			<span class='quete_groupe'>Mode</span>
 			<span class='quete_repetable'>Répétable</span>
+			<span class='quete_nombre'>Nombre</span>
 			<span class='quete_cout'>Coût</span>
 			<span class='quete_star'>Stars</span>
 			<span class='quete_exp'>Expérience</span>
@@ -135,6 +141,8 @@ else
     $royaumes = explode(';', $quete->royaume);
     if( $quete->royaume && !in_array($R->get_id(), $royaumes) )
       continue;
+	
+		$objectif = unserialize($quete->objectif);
 		$href = 'poscase='.$W_case.'&amp;direction=quete&amp;action=voir&amp;id='.$quete->id;
 		//$js = 'new Tip(\'quete_'.$row['id'].'\', \'content\');';
 		echo "
@@ -143,7 +151,14 @@ else
 			<span class='quete_niveau'>".$quete->lvl_joueur."</span>
 			<span class='quete_groupe'>".$quete->mode."</span>
 			<span class='quete_repetable'>".$quete->repete."</span>
-			<span class='quete_cout'>".$quete->star_royaume."</span>
+			<span class='quete_nombre'>".$objectif[0]->nombre."</span>";
+			
+		if($royaume->get_star() >= $quete->star_royaume)
+			echo "<span class='quete_cout'>".$quete->star_royaume."</span>";
+		else 
+			echo "<span class='quete_cout' style='color:red;'>".$quete->star_royaume."</span>";
+			
+		echo "
 			<span class='quete_star'>".$quete->star."</span>
 			<span class='quete_exp'>".$quete->exp."</span>
 			<span class='quete_honneur'>".$quete->honneur."</span>
