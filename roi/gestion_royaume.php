@@ -1040,13 +1040,13 @@ switch( $_GET['direction'] )
   		require_once(root.'class/bourse.class.php');
   		$enchere = new bourse_royaume($_GET['id_enchere']);
   		//On vérifie que c'est un royaume possible
-  		if($royaume->get_id() != $enchere->id_royaume AND (1 << ($royaume->get_id()-1)) & $enchere->id_royaume_acheteur)
+  		if($royaume->get_id() != $enchere->id_royaume AND !( (1 << ($royaume->get_id()-1)) & $enchere->id_royaume_acheteur ))
   		{
   			//On vérifie que le royaume a assez de stars
   			if($royaume->get_star() >= $enchere->prix)
   			{
   				//On prend les stars de notre royaume
-  				$requete = "UPDATE royaume SET star = star - ".$prix." WHERE ID = ".$royaume->get_id();
+  				$requete = "UPDATE royaume SET star = star - ".$enchere->prix." WHERE ID = ".$royaume->get_id();
   				$db->query($requete);
   				//On met à jour l'enchère
   				$enchere->id_royaume_acheteur |= 1 << ($royaume->get_id()-1);
@@ -1062,6 +1062,10 @@ switch( $_GET['direction'] )
   				<?php
   			}
   		}
+      else
+      {
+        echo '<h5>Vous ne pouvez pas placer l\'enchère</h5>';
+      }
   	}
   	break;
   	
@@ -1200,7 +1204,7 @@ switch( $_GET['direction'] )
   			<span class='ressourse'><span class='<?php echo $enchere->ressource; ?>'></span><?php echo $enchere->ressource; ?></span>
   			<span class='nombre'><?php echo $enchere->nombre; ?></span>
   			<span class='prix'><?php echo $enchere->prix.' ('.round(($enchere->prix / $enchere->nombre), 2).' / u)'; ?></span>
-  			<span class='enchere'><a href="gestion_royaume.php?direction=bourse_enchere&amp;id_enchere=<?php echo $enchere->id_bourse_royaume; ?>" onclick="return envoiInfo(this.href, 'message_confirm');envoiInfo('gestion_royaume.php?direction=bourse', 'contenu_jeu')">Enchérir pour <?php echo $prix; ?> stars (<?php echo ($prix / $enchere->nombre); ?> / u)</a></span>
+  			<span class='enchere'><a href="gestion_royaume.php?direction=bourse_enchere&amp;id_enchere=<?php echo $enchere->id_bourse_royaume; ?>" onclick="return envoiInfo(this.href, 'message_confirm');envoiInfo('gestion_royaume.php?direction=bourse', 'contenu_jeu')">Placer une option d'achat</a></span>
   			</li>
   			<?php
   			if ($class=='t1'){$class='t2';}else{$class='t1';}
@@ -1268,7 +1272,7 @@ switch( $_GET['direction'] )
   			<span class='nombre'><?php echo $enchere->nombre; ?></span>
   			<span class='prix_bis'><?php echo $enchere->prix.' ('.round(($enchere->prix / $enchere->nombre), 2).' / u)'; ?></span>
   			<?php
-  			if ($acheteur){echo "<span class='acheteur' title='Il y a un acheteur sur cette offre'></span>";}
+  			//if ($acheteur){echo "<span class='acheteur' title='Il y a un acheteur sur cette offre'></span>";}
   			echo "</li>";
   			if ($class=='t1'){$class='t2';}else{$class='t1';}			
   		
