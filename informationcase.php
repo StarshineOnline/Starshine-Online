@@ -62,9 +62,9 @@ if($W_distance < 4)
 
 	?>
 	
-	<h2>Informations Case - X : <?php echo $coord_x; ?> | Y : <?php echo $coord_y; ?><a href="carte_perso_affiche.php" onclick="affichePopUp(this.href); return false;"> <img src="image/icone/oujesuis.png" alt="Où je suis ?" title="Où je suis ?" style="vertical-align : middle;height:20px;" /></a> </h2>
+	<h2>X : <?php echo $coord_x; ?> | Y : <?php echo $coord_y; ?></h2>
 	<div class='windows_right'>
-	<div id='info_case'>
+	<div class='info_case'>
 	<?php
 	$R = new royaume($case->get_royaume());
 	$type_terrain = type_terrain($case->get_info());
@@ -119,7 +119,8 @@ if($W_distance < 4)
 			}
 		}
 	}
-
+	echo "</div>
+		 <div class='info_case'>";
 	//Recherche des joueurs sur la case
 	$W_requete = 'SELECT perso.id, grade.nom as gnom FROM perso LEFT JOIN grade ON perso.rang_royaume = grade.id WHERE (x = '.$case->get_x().') AND (y = '.$case->get_y().') AND statut = \'actif\'';
 	$W_query = $db->query($W_requete);
@@ -137,7 +138,8 @@ if($W_distance < 4)
 		echo '</ul>';
 	}
 	
-		
+		echo "</div>
+		<div class='info_case'>";
 	//Affichage des PNJ
 	$W_requete = 'SELECT id,nom,x,y FROM pnj WHERE (x = '.$case->get_x().') AND (y = '.$case->get_y().')';
 	$W_query = $db->query($W_requete);
@@ -285,12 +287,23 @@ if($W_distance < 4)
 	$W_requete = 'SELECT mm.id, m.nom, mm.type, mm.hp, m.level, m.affiche, m.quete FROM map_monstre mm, monstre m WHERE mm.type = m.id AND (x = '.$case->get_x().') AND (y = '.$case->get_y().') ORDER BY level ASC, nom ASC, id ASC';
 	$W_query = $db->query($W_requete);
 	
+	echo "	</div>
+			<div class='info_case'>";
 	//Affichage des infos des monstres
+
+	$script_attaque = recupaction_all($joueur->get_action_a());
+	$script_defense = recupaction_all($joueur->get_action_d());
+	echo "<span style=' font-size: 11px;'>Votre script d'attaque : ".$script_attaque['nom']."</span>";
+	$joueur->get_arme();
+	//echo $joueur->arme['image'];
+	echo "<img src='image/arme/arme".$joueur->arme->id.".png' />";
+
 	if($db->num_rows > 0)
 	{
-		echo '
-	<h4><span class="titre_info">Monstres</span></h4>
-	<ul>';
+			//		echo ' <a href="info_monstre.php?ID='.$W_ID.'&poscase='.$W_case.'" onclick="return envoiInfo(this.href, \'information\')"><img src="image/icone/mobinfo.png" alt="Voir informations sur le monstre" title="Voir informations sur le monstre" style="vertical-align : middle; margin-left : 10px;" /></a>';
+
+		echo "
+	<ul class='info_mob'>";
 		while($W_row = $db->read_array($W_query))
 		{
       if( $W_row['quete'] )
@@ -317,6 +330,12 @@ if($W_distance < 4)
 			$W_hp = $W_row['hp'];
 			$diff_level = ($W2_row['level'] - $joueur->get_level());
 
+      if ($W_row['affiche'] == 'h') {
+        $diff_level = 0;
+      }
+
+
+
 			if ($W_row['affiche'] == 'h') $diff_level = 0;
 			if($diff_level > 5) $diff_level = 5;
 			elseif($diff_level < -5) $diff_level = -5;
@@ -328,30 +347,35 @@ if($W_distance < 4)
 			if (file_exists('image/monstre/'.$image.'_low.png')) $image .= '_low.png';
 			elseif (file_exists('image/monstre/'.$image.'.png')) $image .= '.png';
 			else $image .= '.gif';
-			
+
+
 			if($W2_row['level'] > 0) $level = $W2_row['level']; else $level = 1;
 			$nbr_barre_total = ceil($joueur->get_survie() / $level);
 			if($nbr_barre_total < 1) $nbr_barre_total = 1;
 			if($nbr_barre_total > 100) $nbr_barre_total = 100;
+			
 			$nbr_barre = round(($W_hp / $W2_row['hp']) * $nbr_barre_total);
 			$longueur = round(100 * ($nbr_barre / $nbr_barre_total), 2);
 			if($longueur < 0) $longueur = 0;
 			$fiabilite = round((100 / $nbr_barre_total) / 2, 2);
-	
+			
 			echo '
-			<li style="clear:both;"><img src="image/monstre/'.$image.'" alt="'.$W2_row['nom'].'" style="vertical-align : middle;height:21px;float:left;width:21px;" /><span style="color : '.$color.'; font-weight : '.$strong.';float:left;width:150px;margin-left:15px;">'.$W_nom.'</span>
-			<span style="float:left;"><img src="genere_barre_vie.php?longueur='.$longueur.'" title="Estimation des HP : '.$longueur.'% / + ou - : '.$fiabilite.'%" /></span>
-				<span style="float:left;margin-left:15px;">';
+			<li>
+			 <div class="progress progress-danger text_mob" style="color : '.$color.'; font-weight : '.$strong.';">
+			 	<div class="bar" style="width:'.$longueur.'%;"></div>
+			 	<div style="position:absolute;"><img class="image_mob" src="image/monstre/'.$image.'" alt="'.$W2_row['nom'].'" />
+'.$W_nom.'</div> 
+			 </div>';
+
 				if(!$joueur->is_buff('repos_sage') AND !$joueur->is_buff('bloque_attaque'))
 				{
 					echo '
-					<a href="attaque.php?id_monstre='.$W_ID.'&type=monstre" onclick="return envoiInfo(this.href, \'information\')"><img src="image/interface/attaquer.png" alt="Combattre" title="Attaquez ce monstre ('.($pa_attaque - $reduction_pa).' PA)" style="vertical-align : middle;" /></a>';
+					<a class="icone_mob couleur_attaque" href="attaque.php?id_monstre='.$W_ID.'&type=monstre" onclick="return envoiInfo(this.href, \'information\')"  title="Attaquez ce monstre ('.($pa_attaque - $reduction_pa).' PA)">A</a>';
 					if($joueur->nb_pet() > 0) echo '<a href="attaque.php?id_monstre='.$W_ID.'&type=monstre&pet" onclick="return envoiInfo(this.href, \'information\')"><img src="image/icone/miniconeattakfamilier.png" alt="Attaque avec créature" title="Attaquer avec votre créature ('.($pa_attaque - $reduction_pa).' PA)" style="vertical-align : middle;" /></a>';
 				}
-				echo ' <a href="info_monstre.php?ID='.$W_ID.'&poscase='.$W_case.'" onclick="return envoiInfo(this.href, \'information\')"><img src="image/icone/mobinfo.png" alt="Voir informations sur le monstre" title="Voir informations sur le monstre" style="vertical-align : middle; margin-left : 10px;" /></a>';
-				echo ' <a href="dressage.php?id='.$W_ID.'" onclick="return envoiInfo(this.href, \'information\')"><img src="image/icone/miniconedressage.png" alt="Dressage" title="Dresser cette créature (10 PA)" style="vertical-align : middle;" /></a>';
-				if($joueur->get_sort_jeu() != '') echo ' <a href="sort.php?poscase='.$W_case.'&amp;id_monstre='.$W_ID.'&amp;type=monstre" onclick="return envoiInfo(this.href, \'information\')"><img src="image/sort_hc_icone.png" title="Lancer un sort" alt="Lancer un sort" style="vertical-align : middle;" /></a>';
-			echo '</span>
+				if($joueur->get_sort_jeu() != '') echo ' <a class="icone_mob couleur_sort" href="sort.php?poscase='.$W_case.'&amp;id_monstre='.$W_ID.'&amp;type=monstre" onclick="return envoiInfo(this.href, \'information\')">S</a>';
+				echo ' <a class="icone_mob couleur_dressage" href="dressage.php?id='.$W_ID.'" onclick="return envoiInfo(this.href, \'information\')" title="Dresser cette créature (10 PA)">D</a>';
+			echo '
 				</li>';
 		}
 		echo '</ul>';

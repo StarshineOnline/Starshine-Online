@@ -167,6 +167,9 @@ $xmin = $x - $longueur_map;
 $ymax = $y + $longueur_map;
 $ymin = $y - $longueur_map;
 
+
+  
+  
 $RqMapTxt = $db->query("SELECT x,y,decor,royaume,info,type FROM map 
 				 WHERE y >= $ymin AND y <= $ymax 
 				 AND x >= $xmin AND x <= $xmax
@@ -209,6 +212,8 @@ if($db->num_rows($RqMapTxt) > 0)
 	echo "</ul>";
 }
 echo "</div>";
+echo "<div class='joueur_heure' style='background-image:url(image/interface/".moment_jour().".png);'><img src= title='".moment_jour()."' />".substr(date_sso($time),0,-3)."</div>";
+
 	
 }
 if($joueur->get_groupe() != 0)
