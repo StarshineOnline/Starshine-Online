@@ -34,19 +34,20 @@ if (file_exists('root.php'))
 
 
 {//-- PA, HP, MP, XP, ...
+	echo "	<div id='infos_vie'>
+			 <div id='joueur_nom' onclick=\"envoiInfo('personnage.php', 'information');\" title=\"Accès à la fiche de votre personnage\">".$titre[0]." ".ucwords($joueur->get_grade()->get_nom())." ".ucwords($joueur->get_nom())." ".$titre[1]."</div>
+			 <div id='joueur_HP' rel='tooltip' data-placement='right' class='joueur_bulle progress progress-danger' title='Point de vie : ".$joueur->get_hp()."/".floor($joueur->get_hp_maximum())."'><div class='bar bulle' style='height: ".($joueur->get_hp()/floor($joueur->get_hp_maximum())*100)."%;'></div><div style='position:absolute;width:100%;top: 18px;'>".$joueur->get_hp()."/".floor($joueur->get_hp_maximum())."</div></div>
+			 <div id='joueur_MP' rel='tooltip' data-placement='right' class='joueur_bulle progress' title='Point de magie : ".$joueur->get_mp()."/".floor($joueur->get_mp_maximum())."'><div class='bar bulle' style='height: ".($joueur->get_mp()/floor($joueur->get_mp_maximum())*100)."%;'></div><div style='position:absolute;width:100%;top: 18px;'>".$joueur->get_mp()."/".floor($joueur->get_mp_maximum())."</div></div>
+			 <div id='joueur_PA' rel='tooltip' data-placement='right' class='joueur_bulle progress progress-success' title='Point action : ".$joueur->get_pa()."/".$G_PA_max."'><div class='bar bulle' style='height: ".($joueur->get_pa()/$G_PA_max*100)."%;'></div><div style='position:absolute;width:100%;top: 18px;'>".$joueur->get_pa()."/".$G_PA_max."</div></div>
+			 <div id='joueur_XP' rel='tooltip' data-placement='right' class='joueur_barre progress progress-warning' title='Point Experience'><div class='bar' style='width:".progression_level(level_courant($joueur->get_exp()))."%;'></div><div style='position:absolute;width:100%;'>".$joueur->get_exp()."</div></div>
+			</div>
 	
-	echo "<div id='infos_perso' style=\"background:transparent url('./image/interface/fond_info_perso_".$joueur->get_race_a().".png') 8px 10px no-repeat;\"> "; 
-	echo " <div id='joueur_nom' onclick=\"envoiInfo('personnage.php', 'information');\" title=\"Accès à la fiche de votre personnage\">".$titre[0]." ".ucwords($joueur->get_grade()->get_nom())." ".ucwords($joueur->get_nom())." ".$titre[1]."</div>";
-	echo " <div id='joueur_HP' rel='tooltip' data-placement='right' class='joueur_bulle progress progress-danger' title='Point de vie : ".$joueur->get_hp()."/".floor($joueur->get_hp_maximum())."'><div class='bar bulle' style='height: ".($joueur->get_hp()/floor($joueur->get_hp_maximum())*100)."%;'></div><div style='position:absolute;width:100%;top: 18px;'>".$joueur->get_hp()."/".floor($joueur->get_hp_maximum())."</div></div>";
-	echo " <div id='joueur_MP' rel='tooltip' data-placement='right' class='joueur_bulle progress' title='Point de magie : ".$joueur->get_mp()."/".floor($joueur->get_mp_maximum())."'><div class='bar bulle' style='height: ".($joueur->get_mp()/floor($joueur->get_mp_maximum())*100)."%;'></div><div style='position:absolute;width:100%;top: 18px;'>".$joueur->get_mp()."/".floor($joueur->get_mp_maximum())."</div></div>";
-	echo " <div id='joueur_XP' rel='tooltip' data-placement='right' class='joueur_barre progress progress-warning' title='Point Experience'><div class='bar bulle' style='height:".progression_level(level_courant($joueur->get_exp()))."%;'></div></div>";
-	echo " <div id='joueur_PA' rel='tooltip' data-placement='right' class='joueur_bulle progress progress-success' title='Point action : ".$joueur->get_pa()."/".$G_PA_max."'><div class='bar bulle' style='height: ".($joueur->get_pa()/$G_PA_max*100)."%;'></div><div style='position:absolute;width:100%;top: 18px;'>".$joueur->get_pa()."/".$G_PA_max."</div></div>";
-	echo ' <div id="joueur_PH" title="Votre honneur : '.$joueur->get_honneur().' / Votre réputation : '.$joueur->get_reputation().'">'.$joueur->get_honneur().'<br />'.$joueur->get_reputation().'</div>';
-	$script_attaque = recupaction_all($joueur->get_action_a());
-	//-- Index, Forums, Exit, Options
+	
 
-
-	echo "</div>";
+			<div id='infos_perso' style=\"background-image:url('./image/interface/fond_info_perso_".$joueur->get_race_a().".png');\"> 
+			 <span style='position:absolute;top:6px;left:60px;'>".ucwords($Gtrad[$joueur->get_race()])." ".ucwords($joueur->get_classe())."</span>
+			 <div id='joueur_PH' title='Votre honneur : ".$joueur->get_honneur()." / Votre réputation : ".$joueur->get_reputation()."'>".$joueur->get_honneur()."<br />".$joueur->get_reputation()."</div>
+			";
 }
 {//-- Buffs, Grade, Pseudo
 	$titre_perso = new titre($_SESSION["ID"]);
@@ -128,25 +129,86 @@ if (file_exists('root.php'))
 		echo " </ul>";
 		}
 
-		  echo "</div>";
-	echo "</div>";
+		  echo "</div></div></div>";
 
 
 }
 // Autre
 {
 
-		$script_attaque = recupaction_all($joueur->get_action_a());
-		$script_defense = recupaction_all($joueur->get_action_d());
-		echo "<span style=' font-size: 11px;    left: 310px;    position: absolute;    top: 20px;'>".$script_attaque['nom']."</span>";
-		$joueur->get_arme();
-		//echo $joueur->arme['image'];
-		echo "<img src='image/arme/arme".$joueur->arme->id.".png' style=' left: 260px;    position: absolute;    top: 12px;'/>";
 		
-		$x = ($joueur->get_x() - 1) * 3;
-		$y = ($joueur->get_y() - 1) * 3;
 		
-		echo "<div style='background:url(carte_perso.php);width:80px;height:80px;position:absolute;left:450px;top:20px;background-size: 400% 400%;background-position: -".$joueur->get_x()."px ".$joueur->get_y()."px' class='img-circle'></div>";
+
+echo "<div class='joueur_position'>";
+		
+// Carte
+$x = $joueur->get_x();
+$y = $joueur->get_y();
+$xy_tab[] = $joueur->get_x().$joueur->get_y();
+if($joueur->get_groupe() != 0)
+{
+	if(!isset($groupe)) $groupe = new groupe($joueur->get_groupe());
+	{
+		foreach($groupe->get_membre_joueur() as $membre)
+		{
+			if($joueur->get_id() != $membre->get_id())
+			{
+			 	$xy_tab[] = $membre->get_x().$membre->get_y();
+			}
+		}
+	}
+}
+
+$longueur_map = 11;
+
+$xmax = $x + $longueur_map;
+$xmin = $x - $longueur_map;
+
+$ymax = $y + $longueur_map;
+$ymin = $y - $longueur_map;
+
+$RqMapTxt = $db->query("SELECT x,y,decor,royaume,info,type FROM map 
+				 WHERE y >= $ymin AND y <= $ymax 
+				 AND x >= $xmin AND x <= $xmax
+				 ORDER BY y,x;");
+if($db->num_rows($RqMapTxt) > 0)
+{
+	$c = 1;
+	echo "<ul style='float:left;margin:0;padding:0;clear:both;'>";
+
+	while($objMapTxt = $db->read_object($RqMapTxt))
+	{
+		if(($objMapTxt->y != $y_tmp) AND (!empty($y_tmp)))
+		{
+			echo "</ul>";
+			echo "<ul style='float:left;margin:0;padding:0;clear:both;'>";
+		}
+
+		$y_tmp = $objMapTxt->y;
+		$typeterrain = type_terrain($objMapTxt->info);
+		switch($typeterrain[0])
+		{
+			case 'plaine' : 		$color = "#9ACD32";break;
+			case 'foret' :			$color = "#008000";break;
+			case 'desert' :			$color = "#F0E68C";break;
+			case 'glace' : 			$color = "#E0FFFF";break;
+			case 'eau' : 			$color = "#4682B4";break;
+			case 'montagne' : 		$color = "#A0522D";break;
+			case 'marais' : 		$color = "#DAA520";break;
+			case 'route' : 			$color = "#D3D3D3";break;
+			case 'terre_maudite' : 	$color = "#696969";break; 
+			case 'objet' : 			$color = "#708090";break;
+			default : 				$color = "#000000";break;
+		}
+		if(in_array($objMapTxt->x.$objMapTxt->y , $xy_tab))
+		{
+			$color = "#DC143C";
+		}
+		echo "<li style='background:$color;height:3px;width:3px;list-style:none;float:left;'></li>";
+	}
+	echo "</ul>";
+}
+echo "</div>";
 	
 }
 if($joueur->get_groupe() != 0)

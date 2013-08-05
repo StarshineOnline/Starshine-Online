@@ -66,29 +66,36 @@ body { margin:0; padding:0; background:url('http://toussaint.fr/mocha-grunge.png
 #menu_jeu { float:left; margin:0 -5px 0 0; width:32px; }
 
 /*-- Infos perso ------------------------------------------------------*/
-#infos_perso { float:left;  width:325px; height:100px; position:relative; }
-.joueur_barre {  font-size:10px !important; color:white; background:transparent; width:12px; height: 64px; text-align:center; position:absolute;background: none repeat scroll 0 0 rgba(0, 0, 0, 0.1);}
+#infos_perso 	{ float:left;  width:220px; height:109px; position:relative;background-color:rgba(255, 255, 255, 0.2);border: 1px solid #999999;  background-position : 8px 4px;background-repeat: no-repeat;margin-left:16px;}
+#infos_vie 		{ float:left;  width:205px; height:109px; position:relative;background:rgba(255, 255, 255, 0.2);border: 1px solid #999999; }
+
+
+.joueur_barre {  font-size:10px !important; color:white; background:transparent; width:64px; height: 12px; text-align:center; position:absolute;background: none repeat scroll 0 0 rgba(0, 0, 0, 0.1);}
 .joueur_bulle { height: 50px; font-size:10px !important; color:white; background:transparent; width:50px; text-align:center; position:absolute;border-radius: 50%;border: 1px solid #888888;background: none repeat scroll 0 0 rgba(0, 0, 0, 0.1);}
 
-#joueur_HP {  top:25px;left:78px;}
-#joueur_MP { top:25px; left:135px;  }
+#joueur_nom { position:relative;  position:relative; text-align:left; width:210px; margin-top:5px; cursor:pointer; left:10px;}
 
-#joueur_PA {  top:25px; left:192px; }
+#joueur_HP {  top:25px;left:10px;}
+#joueur_MP { top:25px; left:75px;  }
 
-#joueur_XP {   left: 55px;
-    top: 9px; }
+#joueur_PA {  top:25px; left:140px; }
+
+#joueur_XP {   left: 10px;
+    top: 87px;width:180px; }
 
 #joueur_PO { font-size:8pt; background:transparent url(./../image/starsv2.png) left no-repeat; width:50px; height:24px; line-height:24px; text-align:center; padding:0 0 0 24px; position:absolute; top:87px; left:68px; }
 #joueur_PH { background:transparent url(./../image/honneur.png) left no-repeat; 
 font-size: 10px;
     height: 24px;
-    left: 2px;
+    left: 56px;
     padding: 0 0 0 18px;
     position: absolute;
     text-align: center;
-    top: 77px;
+    top: 29px;
     width: 46px; }
-#joueur_buffs_nom { position:absolute; height:42px; top: 86px; left:71px;}
+#joueur_buffs_nom { position:absolute; height:42px; top: 75px; left:11px;}
+
+.joueur_position {position:absolute;left:470px;top:20px;box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1) inset;background: rgba(0, 0, 0, 0.1);padding:2px; border-radius: 4px;}
 
 .bulle {bottom: 0;
    
@@ -99,7 +106,6 @@ font-size: 10px;
 #joueur_onglets { position:absolute; left:88px; top:65px; width:225px; padding:0 0 0 10px; }
 #joueur_onglets_index,#joueur_onglets_forums,#joueur_onglets_options,#joueur_onglets_exit { float:left; width:250px; text-align:left; padding-left:5px; font-size:.9em; }
 #joueur_onglets_forums img { height:15px; }
-#joueur_nom { position:relative; margin-left:62px; position:relative; text-align:left; width:210px; margin-top:5px; cursor:pointer; left:20px;}
 #joueur_type { position:relative; width:210px; float:left; text-align:left; font-size:8pt; height:12px; }
 #buff_list { position:relative; text-align:center; ;  }
 #debuff_list { position:relative; text-align:center; width:210px;margin-top: 6px;  }
@@ -113,7 +119,7 @@ font-size: 10px;
 
 .buff_dispo { position:relative; float:left; height:16px; width:16px; padding:0; margin:0 2px; box-shadow:  0 1px 2px 0px rgba(0, 0, 0, 0.5) inset;border-radius: 3px; }
 .buff_dispo img {border-radius: 3px;}
-.buff_nondispo { position:relative; float:left; height:16px; width:16px; padding:0; margin:0 2px;  background: rgba(0, 0, 0, 0.2);  }
+.buff_nondispo { position:relative; float:left; height:16px; width:16px; padding:0; margin:0 2px;  background: rgba(0, 0, 0, 0.2) url(./../image/interface/cadena.png) ;  }
 .buff_duree_restante { position:absolute; bottom:0; left:0; }
 
 #joueur_groupe { height: 110px;
@@ -284,6 +290,26 @@ font-size: 10px;
 #info_case ul li:hover { background:transparent url(./../image/v2/box_accueil2.png); }
 #info_case h4 { padding:0; margin:3px;clear:both; }
 #info_case h3 { text-align:center; }
+.info_case  {background: none repeat scroll 0 0 rgba(255, 255, 255, 0.2);
+    border: 1px solid #777777;
+    border-radius: 4px 4px 4px 4px;  }
+.info_mob li { 
+    padding:5px;
+    float: left;
+    height: 30px;
+    width: 224px;
+    position: relative;
+    line-height: 30px;}
+
+.icone_mob {width:30px;height:30px;line-height: 30px;float:left;text-align: center;}
+
+.couleur_attaque 	{background-color:red;}
+.couleur_sort	 	{background-color:blue;}
+.couleur_dressage	{background-color:yellow;}
+
+.image_mob {width:30px;height:30px;line-height: 30px;float:left;}
+
+.text_mob	{height:30px;line-height: 30px;float:left;width:132px;}
 #info_case  {background: none repeat scroll 0 0 rgba(255, 255, 255, 0.2);
     border: 1px solid #777777;
     border-radius: 4px 4px 4px 4px;  }

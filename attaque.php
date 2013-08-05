@@ -215,8 +215,11 @@ $round_total = $G_round_total;
 $W_case = convert_in_pos($defenseur->get_x(), $defenseur->get_y());
 $W_distance = detection_distance($W_case, convert_in_pos($attaquant->get_x(), $attaquant->get_y()));
 ?>
-<fieldset>
-	<legend>Combat VS <?php echo $defenseur->get_nom(); ?></legend>
+
+	<h2>Combat VS <?php echo $defenseur->get_nom(); ?></h2>
+		<div class='windows_right'>
+	<div id='info_case'>
+
 <?php
 if(is_donjon($joueur->get_x(), $joueur->get_y())
 	 && ($joueur->in_arene('and donj = 0') == false) && $joueur->get_y()>190)
@@ -427,7 +430,7 @@ else
 					<table style="width : 100%;">
 						<tr>
 							<td style="vertical-align : top; width : 20%;">
-								<h3 style="margin-top : 3px;">Round '.$round.'</h3>
+								<span style="margin-top : 3px;">Round '.$round.'</span>
 							</td>
 							<td>';
 					foreach($defenseur->etat as $key => $value)
@@ -858,4 +861,4 @@ if (!empty($msg_xp)){echo "<p style='clear:both;'>".$msg_xp."</p>";}
 ?>
 </div>
 <img src="image/pixel.gif" onLoad="envoiInfo('infoperso.php?javascript=oui', 'perso');" />
-</fieldset>
+</div></div>
