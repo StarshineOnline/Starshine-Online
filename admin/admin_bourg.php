@@ -20,7 +20,7 @@ else
 	<div id="contenu">
 		<div id="centre3">
 			<div class="titre">
-				Vérification des bourgs
+				<h4>Vérification des bourgs</h4>
 			</div>
 		<table>
 		<tr>
@@ -102,7 +102,24 @@ else
 		?>
 		</table>
 		</div>
+    <div>
+    <h4>Zones interdites à la poses</h4>
+    <form method="get" action ="admin_bourg.php">
+      <label>Race :<label>
+      <select name='race'>
+        <?php
+          foreach($Trace as $r=>$t)
+          {
+            echo '<option value="'.$t['numrace'].'">'.$r.'</option>';
+          }
+        ?>
+      </select>
+      <input type="submit" value="Afficher"/>
+    </form>
 		<?php
+    if( array_key_exists('race', $_GET) )
+      echo '<br/><img src="carte_dist_bat.php?type=bourg&race='.$_GET['race'].'"/>';
+		echo '</div>';
 	include_once(root.'bas.php');
 }
 ?>
