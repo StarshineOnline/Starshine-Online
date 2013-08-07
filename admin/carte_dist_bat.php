@@ -34,14 +34,25 @@ $couleur[9] = imagecolorallocate($im, 0x00, 0x00, 0x00);
 $couleur[10] = imagecolorallocate($im, 0x00, 0x00, 0xff);
 $couleur[11] = imagecolorallocate($im, 0xff, 0xff, 0xff);
 $couleur[12] = imagecolorallocate($im, 0xcc, 0xcc, 0xcc);
+$eau = imagecolorallocate($im, 0xcc, 0xff, 0xff);
 imagefill($im, 0, 0, $bg);
+
+// Cases d'eau
+$requete = 'select x, y from map where info = 6 or type in (1, 4)';
+$req = $db->query($requete);
+while( $row = $db->read_array($req) )
+{
+  $x = $row['x'];
+  $y = $row['y'];
+  imagefilledrectangle($im, $x*3, $y*3, ($x+1)*3-1, ($y+1)*3-1, $eau);
+}
 
 // capitales
 foreach($Trace as $r)
 {
   $x = $r['spawn_x'];
   $y = $r['spawn_y'];
-	imagefilledrectangle($im, ($x-6)*3, ($y-6)*3, ($x+6)*3, ($y+5)*3, $couleur[$r['numrace']]);
+	imagefilledrectangle($im, ($x-6)*3, ($y-6)*3, ($x+7)*3-1, ($y+6)*3-1, $couleur[$r['numrace']]);
 }
 
 $requete = 'select facteur_entretien from royaume where id = '.$race;
@@ -51,13 +62,13 @@ $row = $db->read_array($req);
 $dist = floor(7*$row['facteur_entretien']);
 
 // bourgs
-$requete = 'select x, y, royaume from construction where type';
+$requete = 'select x, y, royaume from construction where type = "'.$type.'"';
 $req = $db->query($requete);
 while( $row = $db->read_array($req) )
 {
   $x = $row['x'];
   $y = $row['y'];
-	imagefilledrectangle($im, ($x-$dist)*3, ($y-$dist)*3, ($x+$dist)*3, ($y+$dist)*3, $couleur[$row['royaume']]);
+	imagefilledrectangle($im, ($x-$dist)*3, ($y-$dist)*3, ($x+$dist+1)*3-1, ($y+$dist+1)*3-1, $couleur[$row['royaume']]);
 }
 
 header("Content-type: image/png");
