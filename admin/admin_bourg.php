@@ -108,17 +108,21 @@ else
       <label>Race :<label>
       <select name='race'>
         <?php
+    			if( array_key_exists('race', $_GET) )
+    				$race = $_GET['race'];
+    			else
+    				$race = false;
           foreach($Trace as $r=>$t)
           {
-            echo '<option value="'.$t['numrace'].'">'.$r.'</option>';
+            echo '<option value="'.$t['numrace'].($t['numrace']==$race?'" selected="selected':'').'">'.$r.'</option>';
           }
         ?>
       </select>
       <input type="submit" value="Afficher"/>
     </form>
 		<?php
-    if( array_key_exists('race', $_GET) )
-      echo '<br/><img src="carte_dist_bat.php?type=bourg&race='.$_GET['race'].'"/>';
+    if( $race )
+      echo '<br/><img src="carte_dist_bat.php?type=bourg&race='.$race.'"/>';
 		echo '</div>';
 	include_once(root.'bas.php');
 }
