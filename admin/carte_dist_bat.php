@@ -38,7 +38,7 @@ $eau = imagecolorallocate($im, 0xcc, 0xff, 0xff);
 imagefill($im, 0, 0, $bg);
 
 // Cases d'eau
-$requete = 'select x, y from map where info = 6 or type in (1, 4)';
+$requete = 'select x, y from map where info = 5 or type in (1, 4)';
 $req = $db->query($requete);
 while( $row = $db->read_array($req) )
 {
