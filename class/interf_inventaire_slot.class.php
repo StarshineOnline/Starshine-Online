@@ -22,6 +22,7 @@ class interf_inventaire_slot extends interf_bal_cont
    */
   function __construct(&$perso, $adresse, $slot, $modif)
   {
+  return;
     global $db, $filtre_url, $W_row, $G_taux_vente;
     interf_bal_cont::__construct('ul');
     $this->perso = &$perso;

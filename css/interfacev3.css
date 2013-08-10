@@ -447,7 +447,7 @@ select.baseJumpbox optgroup { width:200px; color:black; background-color:#ffffff
 .baseRow1 { background-color:#fff4cc; padding-left:2px; }
 .baseRow2 { background-color:#ffeeaa; padding-left:2px; }
 .heure { text-align:center; background-color:#D4DAE2; -moz-border-radius:9px; -webkit-border-radius:9px; border-radius: 9px; padding:5px; border:1px solid #FFF; }
-.inventaire2 { width:33%; font-size:.8em; text-align:center; vertical-align:top; background-image:url(../image/interface/1.png); -moz-border-radius:9px; -webkit-border-radius:9px; border-radius: 9px; color:#222; border:1px solid #FFF; }
+.inventaire2 { width:33%; font-size:.8em; text-align:center; vertical-align:top; background-image:url(../image/interface/1.png); -moz-border-radius:9px; -webkit-border-radius:9px; border-radius: 9px; color:#222; /*border:1px solid #FFF;*/ }
 .inventaireville { width:33%; font-size:.8em; text-align:center; vertical-align:top; -moz-border-radius:9px; -webkit-border-radius:9px; border-radius: 9px; color:#222; border:1px solid #FFF; }
 
 /***************************************************
