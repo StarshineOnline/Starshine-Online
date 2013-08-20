@@ -91,7 +91,7 @@ else
 			<td <?php if($royaumes[$row['race']]['bourg'] != $royaumes[$row['race']]['bourg_total']) echo 'style="background-color : red; font-weight : bold;"'; ?>>
 				<?php echo $royaumes[$row['race']]['bourg']; ?>
 			</td>
-			<td <?php if($royaumes[$row['race']]['bourg'] > $royaumes[$row['race']]['bourg_max']) echo 'style="background-color : red; font-weight : bold;"'; ?>>
+			<td <?php if($royaumes[$row['race']]['bourg_total'] > $royaumes[$row['race']]['bourg_max']) echo 'style="background-color : red; font-weight : bold;"'; ?>>
 				<?php echo $royaumes[$row['race']]['bourg_max']; ?>
 			</td>
 			<td>
