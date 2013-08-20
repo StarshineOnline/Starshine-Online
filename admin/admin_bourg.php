@@ -34,6 +34,9 @@ else
 				En activité (bdd)
 			</td>
 			<td>
+				Maximum
+			</td>
+			<td>
 				Total
 			</td>
 			<td>
@@ -73,6 +76,10 @@ else
 				$royaumes[$row['race']]['bourg_joueur_total'] += $nbr;
 			}
 			$royaumes[$row['race']]['bourg_total'] = $royaumes[$row['race']]['bourg_joueur_total'] + $royaumes[$row['race']]['bourg_construit'];
+			$requete = "SELECT COUNT(*) as tot FROM map WHERE x <= 190 AND y <= 190 AND royaume = ".$row['id'];
+			$req_max = $db->query($requete);
+			$row_max = $db->read_assoc($req_max);
+      $royaumes[$row['race']]['bourg_max'] = 1 + floor($row_max['tot']/250);
 			?>
 		<tr>
 			<td>
@@ -83,6 +90,9 @@ else
 			</td>
 			<td <?php if($royaumes[$row['race']]['bourg'] != $royaumes[$row['race']]['bourg_total']) echo 'style="background-color : red; font-weight : bold;"'; ?>>
 				<?php echo $royaumes[$row['race']]['bourg']; ?>
+			</td>
+			<td <?php if($royaumes[$row['race']]['bourg'] > $royaumes[$row['race']]['bourg_max']) echo 'style="background-color : red; font-weight : bold;"'; ?>>
+				<?php echo $royaumes[$row['race']]['bourg_max']; ?>
 			</td>
 			<td>
 				<?php echo $royaumes[$row['race']]['bourg_total']; ?>
@@ -108,21 +118,17 @@ else
       <label>Race :<label>
       <select name='race'>
         <?php
-    			if( array_key_exists('race', $_GET) )
-    				$race = $_GET['race'];
-    			else
-    				$race = false;
           foreach($Trace as $r=>$t)
           {
-            echo '<option value="'.$t['numrace'].($t['numrace']==$race?'" selected="selected':'').'">'.$r.'</option>';
+            echo '<option value="'.$t['numrace'].'">'.$r.'</option>';
           }
         ?>
       </select>
       <input type="submit" value="Afficher"/>
     </form>
 		<?php
-    if( $race )
-      echo '<br/><img src="carte_dist_bat.php?type=bourg&race='.$race.'"/>';
+    if( array_key_exists('race', $_GET) )
+      echo '<br/><img src="carte_dist_bat.php?type=bourg&race='.$_GET['race'].'"/>';
 		echo '</div>';
 	include_once(root.'bas.php');
 }
