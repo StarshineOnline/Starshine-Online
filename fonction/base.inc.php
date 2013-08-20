@@ -223,7 +223,7 @@ function nb_bourg($id_royaume)
 function nb_case($id_royaume)
 {
 	global $db;
-	$requete = "SELECT COUNT(*) FROM map WHERE royaume = ".$id_royaume;
+	$requete = 'SELECT COUNT(*) FROM map WHERE x <= 190 AND y <= 190 AND royaume = '.$id_royaume;
 	$req = $db->query($requete);
 	$row = $db->read_row($req);
 	return $row[0];
