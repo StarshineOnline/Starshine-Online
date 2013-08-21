@@ -14,14 +14,14 @@ $keys = array_keys($tableau_race);
 $i = 0;
 while($i < $count)
 {
-	$race_nb = $tableau_race[$keys[$i]][1];
+	$race_nb = $tableau_race[$keys[$i]][0];
 	$repartition = 15 - (($race_nb / $total) * 100);
 	echo ' - '.$repartition;
 	if($repartition > 0)
 	{
-		$stars = round($repartition * $repartition) * 3;
+		$stars = 70 + round($repartition * $repartition) * 3;
 	}
-	else $stars = 0;
+	else $stars = 70;
 	if($keys[$i] != '')
 	{
 		$mail .= $keys[$i]." - ".$stars."\n";
