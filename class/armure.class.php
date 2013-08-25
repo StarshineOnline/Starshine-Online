@@ -5,13 +5,11 @@ if (file_exists('../root.php'))
 //Inclusion de la classe abstraite objet
 include_once(root.'objet.class.php');
 
-class Armure extends Objet
+class armure extends objet_invent
 {
 	protected $pp;
 	protected $pm;
 	protected $forceReq;
-	protected $effet;
-	protected $batimentReq;
 	
 	/**	
 	   *  	Constructeur permettant la création d'une armure

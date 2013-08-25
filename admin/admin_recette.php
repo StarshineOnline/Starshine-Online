@@ -27,7 +27,7 @@ else
 			switch($_POST['recipient'])
 			{
 				case 'potion' :
-					$objet = new objets('', $recette->nom, '', 0, 'n', 0, 0, 'y', '');
+					$objet = new objet('', $recette->nom, '', 0, 'n', 0, 0, 'y', '');
 					$objet->sauver();
 					$recette_recipient = new craft_recette_recipient();
 					$recette_recipient->id_recette = $recette->id;
@@ -35,7 +35,7 @@ else
 					$recette_recipient->id_objet = 5;
 					$recette_recipient->prefixe = 'Petite fiole';
 					$recette_recipient->sauver();
-					$objet = new objets('', 'eclair '.$recette->nom, '', 0, 'n', 0, 0, 'y', '');
+					$objet = new objet('', 'eclair '.$recette->nom, '', 0, 'n', 0, 0, 'y', '');
 					$objet->sauver();
 					$recette_recipient = new craft_recette_recipient();
 					$recette_recipient->id_recette = $recette->id;
@@ -43,7 +43,7 @@ else
 					$recette_recipient->id_objet = 6;
 					$recette_recipient->prefixe = 'Fiole éclair';
 					$recette_recipient->sauver();
-					$objet = new objets('', 'bouchon '.$recette->nom, '', 0, 'n', 0, 0, 'y', '');
+					$objet = new objet('', 'bouchon '.$recette->nom, '', 0, 'n', 0, 0, 'y', '');
 					$objet->sauver();
 					$recette_recipient = new craft_recette_recipient();
 					$recette_recipient->id_recette = $recette->id;
@@ -53,7 +53,7 @@ else
 					$recette_recipient->sauver();
 				break;
 				case 'parchemin' :
-					$objet = new objets('', $recette->nom, '', 0, 'n', 0, 0, 'y', '');
+					$objet = new objet('', $recette->nom, '', 0, 'n', 0, 0, 'y', '');
 					$objet->sauver();
 					$recette_recipient = new craft_recette_recipient();
 					$recette_recipient->id_recette = $recette->id;
@@ -61,7 +61,7 @@ else
 					$recette_recipient->id_objet = 14;
 					$recette_recipient->prefixe = 'Parchemin';
 					$recette_recipient->sauver();
-					$objet = new objets('', 'grand '.$recette->nom, '', 0, 'n', 0, 0, 'y', '');
+					$objet = new objet('', 'grand '.$recette->nom, '', 0, 'n', 0, 0, 'y', '');
 					$objet->sauver();
 					$recette_recipient = new craft_recette_recipient();
 					$recette_recipient->id_recette = $recette->id;
@@ -69,7 +69,7 @@ else
 					$recette_recipient->id_objet = 15;
 					$recette_recipient->prefixe = 'Grand parchemin';
 					$recette_recipient->sauver();
-					$objet = new objets('', 'petit '.$recette->nom, '', 0, 'n', 0, 0, 'y', '');
+					$objet = new objet('', 'petit '.$recette->nom, '', 0, 'n', 0, 0, 'y', '');
 					$objet->sauver();
 					$recette_recipient = new craft_recette_recipient();
 					$recette_recipient->id_recette = $recette->id;
@@ -79,7 +79,7 @@ else
 					$recette_recipient->sauver();
 				break;
 				case 'globe' :
-					$objet = new objets('', $recette->nom, '', 0, 'n', 0, 0, 'y', '');
+					$objet = new objet('', $recette->nom, '', 0, 'n', 0, 0, 'y', '');
 					$objet->sauver();
 					$recette_recipient = new craft_recette_recipient();
 					$recette_recipient->id_recette = $recette->id;
@@ -87,7 +87,7 @@ else
 					$recette_recipient->id_objet = 41;
 					$recette_recipient->prefixe = 'Globe de sort';
 					$recette_recipient->sauver();
-					$objet = new objets('', 'Gros '.$recette->nom, '', 0, 'n', 0, 0, 'y', '');
+					$objet = new objet('', 'Gros '.$recette->nom, '', 0, 'n', 0, 0, 'y', '');
 					$objet->sauver();
 					$recette_recipient = new craft_recette_recipient();
 					$recette_recipient->id_recette = $recette->id;

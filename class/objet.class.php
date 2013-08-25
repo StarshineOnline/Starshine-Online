@@ -1,106 +1,149 @@
 <?php
 if (file_exists('../root.php'))
   include_once('../root.php');
+?><?php
+//Inclusion de la classe abstraite objet
+include_once(root.'objet.class.php');
 
-/**
-	Classe abstraite représentant un objet
-**/
-abstract class Objet
+class objet extends objet_invent
 {
-	public $id;
-	protected $nom;
-	protected $type;
-	protected $prix;
+	protected $achetable;
+	protected $effet;
+	protected $stack;
+	protected $utilisable;
+	protected $description;
 	
-	//Constructeur
-	function __construct($nom, $type, $prix, $id = -1)
+	/**	
+	    *  	Constructeur permettant la création d'un objet.
+	    *	Les valeurs par défaut sont celles de la base de donnée.
+	    *	Le constructeur accepte plusieurs types d'appels:
+	    *		-Objets() qui construit un objet "vide".
+	    *		-Objets($id) qui va chercher l'objet dont l'id est $id dans la base.
+	    *		-Objets($nom,...,$forceReq) qui construit un nouvel objet à partir des valeurs.	   
+	**/
+	function __construct($id = '', $nom = '', $type = '', $prix = 0, $achetable = 'y',  $effet = 0, $stack = 0,  $utilisable = 'y', $description = '')
 	{
-		$this->nom = $nom;
-		$this->type = $type;
-		$this->prix = $prix;
-		$this->id = $id;
-	}
-	
-	//Liste des Accesseurs
-	function getId()
-	{
-		return $this->id;
-	}
-	
-	function getNom()
-	{
-		return $this->nom;
-	}
-	
-	function getType()
-	{
-		return $this->type;
-	}
-	
-	function getPrix()
-	{
-		return $this->prix;
-	}
-	
-	//Liste des Modifieurs
-	function setId($newId)
-	{
-		$this->id = $newId;
-	}
-	
-	function setNom($newNom)
-	{
-		$this->nom = $newNom;
-	}
-	
-	function setType($newType)
-	{
-		$this->type = $newType;
-	}
-	
-	function setPrix($newPrix)
-	{
-		$this->prix = $newPrix;
-	}
-	
-	//Fonction permettant d'ajouter un nouvel objet dans la base
-	abstract public function sauver();
-	abstract public function infobulle();
-	
-	//Suppression générique
-	protected function supprimer($table)
-	{
-		if( $this->id != -1 )
+		//Verification du nombre et du type d'argument pour construire l'objet adequat.
+		if( (func_num_args() == 1) && is_numeric($id) )
 		{
-			$requete = 'DELETE FROM '.$table.' WHERE id = '.$this->id;
-			$db->query($requete);
+			$requeteSQL = $db->query('SELECT nom, type, prix, effet, stack, description, utilisable, achetable FROM objet WHERE id = '.$id);
+			//Si l'objet est dans la base, on le charge sinon on crée un objet vide.
+			if( $db->num_rows($requeteSQL) > 0 )
+			{
+				$this->id = $id;
+				list($this->nom, $this->type, $this->prix, $this->effet, $this->stack, $this->description, $this->utilisable, $this->achetable) = $db->read_row($requeteSQL);
+				$this->description = stripslashes($this->description);
+			}
+			else
+				$this->__construct();
+		}
+		else
+		{
+			parent::__construct($nom, $type, $prix);
+			$this->achetable = $achetable;
+			$this->effet = $effet;
+			$this->stack = $stack;
+			$this->utilisable = $utilisable;
+			$this->description = $description;
 		}
 	}
 	
-	//Retourne une chaine permettant de faciliter l'UPDATE
-	protected function modifBase()
+	//Accesseurs
+	//Retourne un booleen. true si 'y' false sinon
+	function isAchetable()
 	{
-		return 'nom = "'.$this->nom.'", type = "'.$this->type.'", prix = "'.$this->prix.'"';
+		return !strcmp($this->achetable, 'y');
 	}
 	
-	//Retourne une chaine facilittant l'insertion
-	protected function insertBase()
+	function getEffet()
 	{
-		return '"'.$this->nom.'", "'.$this->type.'", "'.$this->prix.'"';
+		return $this->effet;
+	}
+	
+	function getStack()
+	{
+		return $this->stack;
+	}
+	
+	//Retourne un booleen. true si 'y' false sinon
+	function isUtilisable()
+	{
+		return !strcmp($this->utilisable,'y');
+	}
+	
+	function getDescription()
+	{
+		return $this->description;
+	}
+	
+	//Modifieurs
+	//La fonction prend pour argument un booleen
+	function setAchetable($bool)
+	{
+		$this->achetable = $bool ? 'y': 'n';
+	}
+	
+	function setEffet($effet)
+	{
+		$this->effet = $effet;
+	}
+	
+	function setStack($stack)
+	{
+		$this->stack = $stack;
+	}
+	
+	//La fonction prend pour argument un booleen
+	function setUtilisable($bool)
+	{
+		$this->utilisable = $bool ? 'y' : 'n';
+	}
+	
+	function setDescription($description)
+	{
+		$this->description = $description;
+	}
+	
+	//Fonction d'ajout/modification les caractère spéciaux sont échapés pour les descriptions.
+	function sauver()
+	{
+		global $db;
+		if( $id > 0 )
+		{
+			$requete = 'UPDATE TABLE objet SET '.$this->modifBase().', ';
+			$requete .= 'effet = "'.$this->effet.'", description = "'.addslashes($this->description).'", ';
+			$requete .= 'stack = "'.$this->stack.'", achetable = "'.$this->achetable.'", ';
+			$requete .= 'utilisable = "'.$this->utilisable.'" WHERE id = '.$this->id;
+			$db->query($requete);
+		}
+		else
+		{
+			$requete = 'INSERT INTO objet (nom, type, prix, effet, utilisable, description, stack, achetable) VALUES(';
+			$requete .= $this->insertBase().', "'.$this->effet.'", "'.$this->utilisable.'", "'.addslashes($this->description).'", "';
+			$requete .= $this->stack.'", "'.$this->achetable.'")';
+			$db->query($requete);
+			//Récuperation du dernier ID inséré.
+			list($this->id) = $db->last_insert_id();
+		}
+	}
+	
+	//supprimer l'objet de la base.
+	function supprimer()
+	{
+		parent::supprimer('objet');
+	}
+	
+	//Infobulle d'un objet
+	function infobulle()
+	{
+		$milieu = '<tr><td>Stack:</td><td>'.$this->stack.'</td></tr>';
+		$milieu .= '<tr><td>Description:</td></tr><tr><td>'.addslashes($this->description).'</td></tr>';
+		return bulleBase($milieu);
 	}
 	
 	function __toString()
 	{
-		return $this->nom.', '.$this->type.', '.$this->prix;
-	}
-	
-	//Retourne le début et la fin de la chaine de l'infobulle.
-	protected function bulleBase($middle)
-	{
-		$infobulle = '<strong>'.$this->nom.'</strong><br />';
-		$infobulle .= '<table><tr><td>Type:</td><td>'.$this->type.'</td></tr>'.$middle;
-		$infobulle = '<tr><td>Prix HT:<br /><span class=\'xsmall\'>(en magasin)</span></td><td>'.$this->prix.'</td></tr></table>';
-		return $infobulle;
+		return parent::__toString().', '.$this->effet.', '.$this->utilisable.', '.$this->stack.', '.$this->achetable.', '.$this->description;
 	}
 }
 ?>

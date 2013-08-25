@@ -1,58 +1,8 @@
 <?php
-class accessoire
+class accessoire extends objet_equip
 {
-/**
-    * @access private
-    * @var mediumint(8)
-    */
-	private $id;
-
-	/**
-    * @access private
-    * @var varchar(50)
-    */
-	private $nom;
-
-	/**
-    * @access private
-    * @var text
-    */
 	private $description;
-
-	/**
-    * @access private
-    * @var tinyint(3)
-    */
 	private $puissance;
-
-	/**
-    * @access private
-    * @var varchar(50)
-    */
-	private $type;
-
-	/**
-    * @access private
-    * @var int(10)
-    */
-	private $effet;
-
-	/**
-    * @access private
-    * @var int(10)
-    */
-	private $prix;
-
-	/**
-    * @access private
-    * @var tinyint(3)
-    */
-	private $lvl_batiment;
-
-	/**
-    * @access private
-    * @var enum('y','n')
-    */
 	private $achetable;
 
 	
@@ -433,6 +383,32 @@ class accessoire
 	{
 		$this->achetable = $achetable;
 		$this->champs_modif[] = 'achetable';
+	}
+
+	/**
+	    * La fonction prend comme argument un booleen.
+	**/
+	function setAchetable($bool)
+	{
+		$this->achetable = $bool ? 'y' : 'n';
+	}
+
+	/**
+	    *Retourne un booleen
+	    *True si achetable est 'y'.
+	    *False sinon.
+	**/
+	function isAchetable()
+	{
+		return !strcmp($this->achetable, 'y');
+	}
+
+	//Infobulle de l'accessoire
+	function infobulle()
+	{
+		$milieu = '<tr><td>Effet:</td><td>'.$this->description.'</td></tr>';
+		$milieu .= '<tr><td>Puissance n&eacute;cessaire:</td></tr><tr><td>'.$this->puissance.'</td></tr>';
+		return bulleBase($milieu).'<br />';
 	}
 
 		//fonction

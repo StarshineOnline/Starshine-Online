@@ -5,7 +5,7 @@ if (file_exists('../root.php'))
 //Inclusion de la classe abstraite objet
 include_once(root.'objet.class.php');
 
-class ObjetRoyaume extends Objet
+class objet_royaume extends objet_invent
 {
 	protected $grade;
 	protected $batiment;
