@@ -243,7 +243,7 @@ $titre_perso = new titre($_SESSION['ID']);
 						require_once('connect_forum.php');
 						$groupe = $perso->get_groupe();
 						if($groupe != 0)
-						{	degroup($perso->get_id(), $groupe->get_id());}
+							degroup($perso->get_id(), $groupe);
 						$requete = "INSERT INTO punbbbans VALUES(NULL, '".$perso->get_nom()."', NULL, NULL, NULL, NULL, 2)";
 						if($db_forum->query($requete))
 						{
