@@ -4,10 +4,9 @@ if (file_exists('../root.php'))
 
 /**
 * @file time.inc.php
-* Fonction relatives au temps / dates / durées
+* Fonctions relatives au temps / dates / durées
 * 
 */
-
 
 /***************************************************************************
                                  time.inc
