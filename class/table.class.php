@@ -146,11 +146,11 @@ abstract class table
 		}
 	}
 	/// Renvoie la liste des champs pour une insertion dans la base
-	abstract protected function get_liste_champs();
+	protected function get_liste_champs() {}
 	/// Renvoie la liste des valeurs des champspour une insertion dans la base
-	abstract protected function get_valeurs_insert();
+	protected function get_valeurs_insert() {}
 	/// Renvoie la liste des champs et valeurs pour une mise-à-jour dans la base
-	abstract protected function get_liste_update();
+	protected function get_liste_update() {}
 	
 	/// Supprime l'élément de la base de donnée
 	function supprimer()
