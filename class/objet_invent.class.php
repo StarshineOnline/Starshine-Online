@@ -1,85 +1,98 @@
 <?php
+/**
+ * @file objet_invent.class.php
+ * Contient la définition de la classe objet_invent qui représente un objet 
+ * qu'un personnage peut avoir dans son inventaire.
+ */
 if (file_exists('../root.php'))
   include_once('../root.php');
 
 /**
-	Classe abstraite représentant un objet
-**/
+	Classe abstraite représentant un objet qu'un personnage peut avoir dans son inventaire
+*/
 abstract class objet_invent extends table
 {
-	protected $nom;
-	protected $type;
-	protected $prix;
+	protected $nom;  ///< Nom de l'objet.
+	protected $type;  ///< Type de l'objet (epee, hache, dos, potion_hp,… ).
+	protected $prix;  ///< Prix de l'objet em magasin.
 	
-	//Constructeur
-	function __construct($nom, $type, $prix, $id = -1)
-	{
-		$this->nom = $nom;
-		$this->type = $type;
-		$this->prix = $prix;
-		$this->id = $id;
-	}
-	
-	function getNom()
+	// Renvoie le nom de l'objet
+	function get_nom()
 	{
 		return $this->nom;
 	}
 	
-	function getType()
-	{
-		return $this->type;
-	}
-	
-	function getPrix()
-	{
-		return $this->prix;
-	}
-	
-	function setNom($newNom)
+	/// Modifie le nom de l'objet
+	function set_nom($newNom)
 	{
 		$this->nom = $newNom;
 	}
 	
-	function setType($newType)
+	// Renvoie le type de l'objet
+	function get_type()
+	{
+		return $this->type;
+	}
+	
+	/// Modifie le type de l'objet
+	function set_type($newType)
 	{
 		$this->type = $newType;
 	}
 	
-	function setPrix($newPrix)
+	// Renvoie le prix de l'objet em magasin
+	function get_prix()
+	{
+		return $this->prix;
+	}
+	
+	/// Modifie le prix de l'objet em magasin
+	function set_prix($newPrix)
 	{
 		$this->prix = $newPrix;
 	}
 	
-	//Fonction permettant d'ajouter un nouvel objet dans la base
-	abstract public function sauver();
-	abstract public function infobulle();
-	
-	//Suppression générique
-	protected function supprimer($table)
+	/**
+	 * Constructeur
+	 * @param  $nom		nom de l'objet
+	 * @param  $type	type de l'objet (epee, hache, dos, potion_hp,… )
+	 * @param  $prix	prix de l'objet em magasin
+	 */
+	function __construct($nom='', $type='', $prix=0)
 	{
-		if( $this->id != -1 )
+		//Verification du nombre et du type d'argument pour construire l'objet adequat.
+		if( func_num_args() == 1 )
 		{
-			$requete = 'DELETE FROM '.$table.' WHERE id = '.$this->id;
-			$db->query($requete);
+			$this->charger($nom);
+		}
+		else
+		{
+			$this->nom = $nom;
+			$this->type = $type;
+			$this->prix = $prix;
 		}
 	}
 	
-	//Retourne une chaine permettant de faciliter l'UPDATE
-	protected function modifBase()
+	/**
+	* Initialise les données membres à l'aide d'un tableau
+	* @param array $vals Tableau contenant les valeurs des données.
+	*/
+	protected function init_tab($vals)
 	{
-		return 'nom = "'.$this->nom.'", type = "'.$this->type.'", prix = "'.$this->prix.'"';
+		table::init_tab($vals);
+		$this->nom = $vals['nom'];
+		$this->type = $vals['type'];
+		$this->prix = $vals['prix'];
 	}
 	
-	//Retourne une chaine facilittant l'insertion
-	protected function insertBase()
+	/// Renvoie la liste des champs pour une insertion dans la base
+	protected function get_champs()
 	{
-		return '"'.$this->nom.'", "'.$this->type.'", "'.$this->prix.'"';
+		return array('nom'=>'s', 'type'=>'s', 'prix'=>'i');
 	}
 	
-	function __toString()
-	{
-		return $this->nom.', '.$this->type.', '.$this->prix;
-	}
+	//Fonction permettant d'ajouter un nouvel objet dans la base
+	abstract public function infobulle();
 	
 	//Retourne le début et la fin de la chaine de l'infobulle.
 	protected function bulleBase($middle)
