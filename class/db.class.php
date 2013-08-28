@@ -55,9 +55,8 @@ class db
 
 	//! Constructeur
 	/**
-	Le constructeur de la class db créer un lien vers le serveur de base de donnée configurer dans la global $cg["sql"].
+	Le constructeur de la class db créer un lien vers le serveur de base de donnée configurer dans le parametre $cfg["sql"].
 	Il initialise les variables internes suivantes : lnk, type, string_type, nb_query.
-	La variable $cfg doit avoir été déclarer en global précédemment.
 	*/
 	function db($cfg)
 	{
