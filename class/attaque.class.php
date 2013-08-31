@@ -27,7 +27,12 @@ class attaque
 	 * Méthodes pour accéder aux données
 	 */
   // @{
-  /// Renvoie l'attaquant
+  /// Renvoie le joueur
+  function &get_joueur()
+  {
+    return $this->joueur;
+  }
+   /// Renvoie l'attaquant
   function &get_attaquant()
   {
     return $this->attaquant;
