@@ -318,15 +318,16 @@ class map_monstre extends entnj_incarn
 			}
 			break;
 
-    case 116: // Si c'est le gros monstre, on ouvre le chemin vers le portail
-    {
-      echo "<li>Maitre Aâzgruth reprend mon âme, ahhharghh, vous ne savez rien de ce qui vous attends... <em>Le squelette du nécromant se brise sous vos yeux. Une silhouette noir s'en dégage pendant quelque secondes avant d'être subitement avalée par le mur situé en face de vous ... qui eclate comme un miroir.</em></li>";
-      $requete = "update map set decor = 1539, info = 15 where y = 227 and (x = 20 or x = 21)";
-      $db->query($requete);
-      $requete = "update map set decor = 1676 where y = 226 and (x = 20 or x = 21)";
-      $db->query($requete);
-      $log->send(0, 'donjon', "adénaïos tué, ouverture du portail");
-    }
+	    case 116: // Si c'est le gros monstre, on ouvre le chemin vers le portail
+	    {
+	      echo "<li>Maitre Aâzgruth reprend mon âme, ahhharghh, vous ne savez rien de ce qui vous attends... <em>Le squelette du nécromant se brise sous vos yeux. Une silhouette noir s'en dégage pendant quelque secondes avant d'être subitement avalée par le mur situé en face de vous ... qui eclate comme un miroir.</em></li>";
+	      $requete = "update map set decor = 1539, info = 15 where y = 227 and (x = 20 or x = 21)";
+	      $db->query($requete);
+	      $requete = "update map set decor = 1676 where y = 226 and (x = 20 or x = 21)";
+	      $db->query($requete);
+	      $log->send(0, 'donjon', "adénaïos tué, ouverture du portail");
+	      break;
+	    }
 			
 		case 125:	//Si c'est un draconide
 		case 126:
