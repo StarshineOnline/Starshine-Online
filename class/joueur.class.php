@@ -132,12 +132,12 @@ class joueur extends table
 	
 	/**
 	 * Test le mot de passe
-	 * @param $mdp   md5 du mot de passe
+	 * @param $hashed_mdp   md5 du mot de passe
 	 * @return   true si le mot de passe est bon, false sinon
 	 */
-  function test_mdp($mdp)
-  {
-    return $this->sel($mdp) == $this->mdp;
+  function test_mdp($hashed_mdp)
+  { // ATTENTION: c'est bien le MD5 du mot de passe
+    return $this->sel($hashed_mdp) == $this->mdp;
   }
 
   /// Renvoie le mot de passe du forum
@@ -194,7 +194,7 @@ class joueur extends table
 
 	/// "Sale" le mot de passe
 	function sel($mdp)
-	{
+	{ // ATTENTION: c'est le MD5 du mot de passe qui est passé à salter
     return sha1($this->login.'!$'.$mdp);
   }
   

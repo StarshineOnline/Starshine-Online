@@ -692,7 +692,7 @@ class perso extends entite
 		if ($base)
 			return $this->alchimie;
 		elseif ($this->get_race() == 'scavenger')
-			return $this->alchimie * 1.20 + $this->get_bonus_permanents('alchimie');
+			return $this->alchimie * 1.40 + $this->get_bonus_permanents('alchimie');
 		else
 			return $this->alchimie + $this->get_bonus_permanents('alchimie');
 	}
@@ -724,7 +724,7 @@ class perso extends entite
 		if ($base)
 			return $this->forge;
 		elseif ($this->get_race() == 'scavenger')
-			return $this->forge * 1.20 + $this->get_bonus_permanents('forge');
+			return $this->forge * 1.40 + $this->get_bonus_permanents('forge');
 		else
 			return $this->forge + $this->get_bonus_permanents('forge');
 	}
@@ -2065,17 +2065,6 @@ class perso extends entite
 	{
 		$this->hp = $hp;
 		$this->champs_modif[] = 'hp';
-
-		if ($this->hp == 1337)
-			$this->unlock_achiev('hp_1337');
-		elseif ($this->hp == 666)
-			$this->unlock_achiev('hp_666');
-		elseif ($this->hp == 42)
-			$this->unlock_achiev('hp_42');
-		elseif ($this->hp == 1)
-			$this->unlock_achiev('hp_1');
-		elseif ($this->hp == 69)
-			$this->unlock_achiev('hp_69');
 	}
 	/// Renvoie les HP maximaux
 	function get_hp_max($base = false)
