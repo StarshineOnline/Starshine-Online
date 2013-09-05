@@ -75,6 +75,15 @@ class joueur extends table
 		$this->mdp_forum = $vals['mdp_forum'];
   }
 
+  /// Factory créant un objet correspondant à l'ID du joueur connecté
+  static function factory()
+  {
+    if( array_key_exists('id_joueur', $_SESSION) )
+      return new joueur($_SESSION['id_joueur']);
+    else
+      return null;
+  }
+
   /// Renvoie le pseudo
 	function get_pseudo()
 	{

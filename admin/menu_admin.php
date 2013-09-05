@@ -2,7 +2,9 @@
 if (file_exists('../root.php'))
   include_once('../root.php');
 
-if( !array_key_exists('droits', $_SESSION) or !($_SESSION['droits'] & joueur::droit_interf_admin) )
+$joueur = joueur::factory();
+
+if( !($joueur->get_droits() & joueur::droit_interf_admin) )
 {
   header("HTTP/1.1 401 Unauthorized" );
   exit();
@@ -184,6 +186,8 @@ else
 			<div class="milieusousmenu">
 				<ul class="listemenu">
 				<?php
+        $page = substr(strrchr($_SERVER['REQUEST_URI'], '/'), 1);
+        $acces = false;
 				foreach($menu as $item)
 				{
 					if($item['nom'] == '--')
@@ -191,8 +195,10 @@ else
 						echo '<li class="separator"><hr /></li>';
 						continue;
 					}
-					if($_SESSION['droits'] & $item['acces'])
+					if($joueur->get_droits() & $item['acces'])
 					{
+            if( $page == $item['url'] )
+              $acces = true;
 				?>
 						<li><a href="<?php echo $item['url']; ?>"><?php echo $item['nom']; ?></a></li>
 				<?php
@@ -203,3 +209,8 @@ else
 			</div>
 		</div>
 	</div>
+<?php
+  // Si on n'a pas les bons droits d'accès on arrête là.
+  if(!$acces)
+    exit();
+?>
