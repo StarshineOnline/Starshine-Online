@@ -186,7 +186,12 @@ else
 			<div class="milieusousmenu">
 				<ul class="listemenu">
 				<?php
-        $page = substr(strrchr($_SERVER['REQUEST_URI'], '/'), 1);
+        $ind1 = strrpos($_SERVER['REQUEST_URI'], '/');
+        $ind2  = strpos($_SERVER['REQUEST_URI'], '?', $ind1);
+        if( $ind2 > 0 )
+          $page = substr($_SERVER['REQUEST_URI'], $ind1+1, $ind2-$ind1-1);
+        else
+          $page = substr($_SERVER['REQUEST_URI'], $ind1+1);
         $acces = false;
 				foreach($menu as $item)
 				{
