@@ -363,6 +363,18 @@ class texte
     		if (!$s || !$e) die("Erreur de dialogue pnj: id = $this->id, reponse = $reponse, s = $s, e = $e");
       }
     }
+    //lancement fonction personalisée (cf. fonction/pnj.inc.php)
+    while( preg_match("`\[runafter:([a-z0-9_]+)(\(([a-z0-9_]+)\))?\]`i",
+											$texte, $regs) )
+    {
+      include_once('fonction/pnj.inc.php');
+      $run = 'pnj_run_'.$regs[1];
+			if (array_key_exists(3, $regs))
+				$replace = $run($this->perso, $regs[3]);
+			else
+				$replace = $run($this->perso);
+      $texte = str_ireplace($regs[0], $replace, $texte);
+    }
     return $texte;
   }
 
