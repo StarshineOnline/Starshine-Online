@@ -3830,6 +3830,11 @@ class perso extends entite
 	function already_unlocked_achiev($achievement_type)
 	{
 		global $db;
+    if (is_string($achievement_type)) {
+      $achievements = achievement_type::create('variable', $achievement_type);
+      if (!($achievements == null || count($achievements) == 0))
+        $achievement_type = $achievements[0];
+    }
 		$requete = "SELECT id FROM achievement WHERE id_perso = '".$this->id."' AND id_achiev = '".$achievement_type->get_id()."'";
 		$req = $db->query($requete);
 		if ($db->num_rows($req) > 0) // L'achievement est deja debloqué
