@@ -293,12 +293,18 @@ class log_admin extends log_admin_db {
 
 
   //fonction
-  function send($id_joueur, $type, $message)
+  function send($id_perso, $type, $message)
   {
-	  $this->set_id_joueur($id_joueur);
+	  $this->set_id_joueur($id_perso);
 	  $this->set_type($type);
 	  $this->set_message($message);
 	  $this->sauver();
+  }
+
+  static function log($type, $message)
+  {
+    $log = new log_admin();
+    $log->send($_SESSION['ID'], $type, $message);
   }
 
 	static function display_all($where = false, $limit = false, $table = false)

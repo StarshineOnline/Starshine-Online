@@ -192,7 +192,7 @@ else
           $page = substr($_SERVER['REQUEST_URI'], $ind1+1, $ind2-$ind1-1);
         else
           $page = substr($_SERVER['REQUEST_URI'], $ind1+1);
-        $acces = false;
+        $acces = null;
 				foreach($menu as $item)
 				{
 					if($item['nom'] == '--')
@@ -202,12 +202,12 @@ else
 					}
 					if($joueur->get_droits() & $item['acces'])
 					{
-            if( $page == $item['url'] )
-              $acces = true;
 				?>
 						<li><a href="<?php echo $item['url']; ?>"><?php echo $item['nom']; ?></a></li>
 				<?php
 					}
+          if( $page == $item['url'] )
+            $acces = (boolean)($joueur->get_droits() & $item['acces']);
 				}
 				?>
 				</ul>
@@ -216,6 +216,6 @@ else
 	</div>
 <?php
   // Si on n'a pas les bons droits d'accès on arrête là.
-  if(!$acces)
+  if( $acces === false )
     exit();
 ?>
