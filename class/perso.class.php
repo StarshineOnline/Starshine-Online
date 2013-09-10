@@ -1833,6 +1833,9 @@ class perso extends entite
 			case 10:
 				$this->add_effet_permanent('defenseur', new protection_artistique($effet, $item->nom));
 				break;
+			case 11:
+				// bonus de cast, fait dans action.inc.php
+				break;
 			case 13:
 				$this->camouflage = $effet;
 				break;
@@ -1841,6 +1844,9 @@ class perso extends entite
 				break;
 			case 15 :
 				$this->add_effet_permanent('attaquant', new bonus_pinceau_degats($effet, $item->nom));
+				break;
+			case 16:
+				$this->add_bonus_permanents('regen_mp_add', $effet);
 				break;
 			case 23 :
 				$this->add_effet_permanent('defenseur', new carapace_incisive($effet, $item->nom));
@@ -2322,6 +2328,7 @@ class perso extends entite
 				}
 				$bonus_arme = $this->get_bonus_permanents('regen_hp');
 				$bonus_arme_mp = $this->get_bonus_permanents('regen_mp');
+				$bonus_add_mp = $this->get_bonus_permanents('regen_mp_add');
 				// Effets magiques des objets
 				/*foreach($this['objet_effet'] as $effet)
 				{
@@ -2337,7 +2344,7 @@ class perso extends entite
 				}*/
 				// Calcul des HP et MP récupérés
 				$hp_gagne = $nb_regen * (floor($this->get_hp_maximum() * $regen_hp) + $bonus_accessoire + $bonus_arme);
-				$mp_gagne = $nb_regen * (floor($this->get_mp_maximum() * $regen_mp) + $bonus_accessoire_mp + $bonus_arme_mp);
+				$mp_gagne = $nb_regen * (floor($this->get_mp_maximum() * $regen_mp) + $bonus_accessoire_mp + $bonus_arme_mp + $bonus_add_mp);
 				//DéBuff lente agonie
 				if($this->is_buff('lente_agonie'))
 				{
@@ -3823,6 +3830,11 @@ class perso extends entite
 	function already_unlocked_achiev($achievement_type)
 	{
 		global $db;
+    if (is_string($achievement_type)) {
+      $achievements = achievement_type::create('variable', $achievement_type);
+      if (!($achievements == null || count($achievements) == 0))
+        $achievement_type = $achievements[0];
+    }
 		$requete = "SELECT id FROM achievement WHERE id_perso = '".$this->id."' AND id_achiev = '".$achievement_type->get_id()."'";
 		$req = $db->query($requete);
 		if ($db->num_rows($req) > 0) // L'achievement est deja debloqué

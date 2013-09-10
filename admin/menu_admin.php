@@ -125,6 +125,10 @@ else
 	$menu[$i]['url'] = 'compare_connexion.php';
 	$menu[$i++]['acces'] = joueur::droit_modo;
 	
+	$menu[$i]['nom'] = 'Achievements';
+	$menu[$i]['url'] = 'achievements.php';
+	$menu[$i++]['acces'] = joueur::droit_interf_admin;
+
 	$menu[$i]['nom'] = 'Performances';
 	$menu[$i]['url'] = 'http://munin.starshine-online.com';
 	$menu[$i++]['acces'] = joueur::droit_interf_admin;

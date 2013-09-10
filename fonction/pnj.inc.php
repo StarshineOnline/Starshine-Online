@@ -61,6 +61,16 @@ function pnj_if_have_pet_yugzilla(&$joueur)
   return false;
 }
 
+function pnj_if_have_pet(&$joueur, $id)
+{
+  $ecurie = $joueur->get_pets();
+  foreach ($ecurie as $pet) {
+    if ($pet->get_id_monstre() == $id)
+      return true;
+  }
+  return false;
+}
+
 function pnj_if_have_achiev_brutus(&$joueur)
 {
   $brutus = achievement_type::create('variable', 'brutus');

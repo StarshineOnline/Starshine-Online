@@ -10,7 +10,7 @@ function is_pnj($row) {
   return true;
 }
 
-include_once(root.'haut.php');
+include_once(root.'admin/admin_haut.php');
 setlocale(LC_ALL, 'fr_FR');
 include_once(root.'haut_site.php');
 if ($G_maintenance)
@@ -924,7 +924,7 @@ if($joueur->get_inventaire_slot() != '')
 					?>
 				</td>
 				<td>
-					<?php echo $row['tot']; ?>
+            <?php /*echo $row['tot'];*/ ?>
 				</td>
 				<td>
 					<?php echo $row['statut']; ?>
