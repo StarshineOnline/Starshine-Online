@@ -40,7 +40,7 @@ else
 				$requete = "SELECT COUNT(*) as tot FROM log_connexion WHERE message = 'Ok' AND id_joueur = ".$row['ID'];
 				$req_connex = $db->query($requete);
 				$row_connex = $db->read_row($req_connex);
-        log_admin::log('admin', 'Consultation de la fiche de '.$joueur->get_nom());
+        log_admin::log('admin', 'Consultation de la fiche de '.$row['nom']);
 				?>
 
 			<table class="admin">
@@ -215,14 +215,14 @@ else
 		case 'tp':
 			$x = intval($_GET['tp_x']);
 			$y = intval($_GET['tp_y']);
-			$joueur = new perso($_GET['id']);
+			$perso = new perso($_GET['id']);
 			if ($x > 0 && $y > 0)
 			{
-				$joueur->set_x($x);
-				$joueur->set_y($y);
-				$joueur->sauver();
+				$perso->set_x($x);
+				$perso->set_y($y);
+				$perso->sauver();
 				
-        log_admin::log('admin', 'Téléportation de '.$joueur->get_nom().' en ['.$x.','.$y.']');
+        log_admin::log('admin', 'Téléportation de '.$perso->get_nom().' en ['.$x.','.$y.']');
 			}
 			else
 				echo "ERREUR TP: [$x][$y]<br/>";
@@ -241,7 +241,7 @@ else
           $db->query("delete from titre_honorifique where id = $_GET[idtd]");
         if (isset($_GET['idtp']))
           $db->query("update titre_honorifique set niveau = niveau + 1 where id = $_GET[idtp]");
-				log_admin::log('admin', 'Don du titre "'.$_POST['val'].'" à '.$joueur->get_nom());
+				log_admin::log('admin', 'Don du titre "'.$_POST['val'].'" à '.$perso->get_nom());
         // pas de break: on va afficher
       case 'titre' :
         echo 'Titres déjà donnés:<ul>';
@@ -266,7 +266,7 @@ else
 				a bien été banni !<br />
 				<a href="admin_joueur.php?direction=info_joueur&amp;id=<?php echo $row['ID']; ?>">Revenir à sa feuille de personnage</a>
 				<?php
-				log_admin::log('admin', 'Ban de '.$joueur->get_nom());
+				log_admin::log('admin', 'Ban de '.$perso->get_nom());
 				}
 			break;
 			case 'deban' :
@@ -282,7 +282,7 @@ else
 				Vous avez débanni <?php echo $row['nom']; ?> !<br />
 				<a href="admin_joueur.php?direction=info_joueur&amp;id=<?php echo $row['ID']; ?>">Revenir à sa feuille de personnage</a>
 				<?php
-				log_admin::log('admin', 'Déban de '.$joueur->get_nom());
+				log_admin::log('admin', 'Déban de '.$perso->get_nom());
 				}
 			break;
 			case 'objet' :
@@ -317,15 +317,15 @@ else
 				<input type="button" value="valider" onclick="document.location = \'admin_joueur.php?id='.$_GET['id'].'&amp;direction=objet2&amp;id_objet=\' + document.getElementById(\'id_objet\').value + \'&amp;nombre=\' + document.getElementById(\'nombre\').value" />';
 			break;
 			case 'objet2' :
-				$joueur = new perso($_GET['id']);
+				$perso = new perso($_GET['id']);
 				$i = 0;
 				while($i < $_GET['nombre'])
 				{
-					$joueur->prend_objet($_GET['id_objet']);
+					$perso->prend_objet($_GET['id_objet']);
 
 					$i++;
 				}
-				log_admin::log('admin', 'Don de '.$_GET['nombre'].' objets ('.$_GET['id_objet'].') à '.$joueur->get_nom());
+				log_admin::log('admin', 'Don de '.$_GET['nombre'].' objets ('.$_GET['id_objet'].') à '.$perso->get_nom());
 				?>
 				<a href="admin_joueur.php?direction=info_joueur&amp;id=<?php echo $_GET['id']; ?>">Revenir à sa feuille de personnage</a>
 				<?php
@@ -335,11 +335,11 @@ else
 				<input type="button" value="valider" onclick="document.location = \'admin_joueur.php?id='.$_GET['id'].'&amp;direction=donnestars2&amp;nombre=\' + document.getElementById(\'nombre\').value" />';
 			break;
 			case 'donnestars2' :
-				$joueur = new perso($_GET['id']);
-				$joueur->add_star($_GET['nombre']);
-				$joueur->sauver();
+				$perso = new perso($_GET['id']);
+				$perso->add_star($_GET['nombre']);
+				$perso->sauver();
 
-				log_admin::log('admin', 'Don de '.$_GET['nombre'].' stars à '.$joueur->get_nom());
+				log_admin::log('admin', 'Don de '.$_GET['nombre'].' stars à '.$perso->get_nom());
 				?>
 				<a href="admin_joueur.php?direction=info_joueur&amp;id=<?php echo $_GET['id']; ?>">Revenir à sa feuille de personnage</a>
 				<?php
@@ -367,12 +367,12 @@ else
 				$db->query($requete);
 			break;
 			case 'journal' :
-				$joueur = new perso($_GET['id']);
-				$requete = "SELECT COUNT(*) FROM journal WHERE id_perso = ".$joueur->get_id();
+				$perso = new perso($_GET['id']);
+				$requete = "SELECT COUNT(*) FROM journal WHERE id_perso = ".$perso->get_id();
 				$req = $db->query($requete);
 				$row = $db->read_row($req);
 				$req = $db->query($requete);
-				$requete = "SELECT * FROM journal WHERE id_perso = ".$joueur->get_id()." ORDER by time DESC, id DESC";
+				$requete = "SELECT * FROM journal WHERE id_perso = ".$perso->get_id()." ORDER by time DESC, id DESC";
 				$req = $db->query($requete);
 				while($row = $db->read_assoc($req))
 				{
@@ -384,8 +384,8 @@ else
 				<?php
 			break;
 			case 'messagerie';
-				$joueur = new perso($_GET['id']);			
-				$requete = "SELECT * FROM message WHERE id_dest = ".$joueur->get_id()." OR id_envoi = ".$joueur->get_id()." ORDER BY date DESC";
+				$perso = new perso($_GET['id']);
+				$requete = "SELECT * FROM message WHERE id_dest = ".$perso->get_id()." OR id_envoi = ".$perso->get_id()." ORDER BY date DESC";
 				$req = $db->query($requete);	
 				?>
 				<table>
@@ -440,7 +440,7 @@ else
 				}
 				?>
 				</table>
-			<a href="admin_joueur.php?direction=info_joueur&amp;id=<?php echo $joueur->get_id(); ?>">Revenir à sa feuille de personnage</a>
+			<a href="admin_joueur.php?direction=info_joueur&amp;id=<?php echo $perso->get_id(); ?>">Revenir à sa feuille de personnage</a>
 			<?				
 			break;		
 			case 'arme' :
@@ -456,13 +456,13 @@ else
 				<input type="button" value="valider" onclick="document.location = \'admin_joueur.php?id='.$_GET['id'].'&amp;direction=arme2&amp;id_arme=\' + document.getElementById(\'id_arme\').value" />';
 			break;
 			case 'arme2' :
-				$joueur = new perso($_GET['id']);
-				$joueur->equip_objet($_GET['id_arme']);
+				$perso = new perso($_GET['id']);
+				$perso->equip_objet($_GET['id_arme']);
 				echo $G_erreur;
 				?>
 				<a href="admin_joueur.php?direction=info_joueur&amp;id=<?php echo $_GET['id']; ?>">Revenir à sa feuille de personnage</a>
 				<?php
-				log_admin::log('admin', 'Don de l\'arme '.$_GET['id_arme'].' à '.$joueur->get_nom());
+				log_admin::log('admin', 'Don de l\'arme '.$_GET['id_arme'].' à '.$perso->get_nom());
 			break;
 			case 'armure' :
 				echo 'Armure : <select id="id_armure">';
@@ -477,13 +477,13 @@ else
 				<input type="button" value="valider" onclick="document.location = \'admin_joueur.php?id='.$_GET['id'].'&amp;direction=armure2&amp;id_armure=\' + document.getElementById(\'id_armure\').value" />';
 			break;
 			case 'armure2' :
-				$joueur = new perso($_GET['id']);
-				$joueur->equip_objet($_GET['id_armure']);
+				$perso = new perso($_GET['id']);
+				$perso->equip_objet($_GET['id_armure']);
 				echo $G_erreur;
 				?>
 				<a href="admin_joueur.php?direction=info_joueur&amp;id=<?php echo $_GET['id']; ?>">Revenir à sa feuille de personnage</a>
 				<?php
-				log_admin::log('admin', 'Don de l\'armure '.$_GET['id_armure'].' à '.$joueur->get_nom());
+				log_admin::log('admin', 'Don de l\'armure '.$_GET['id_armure'].' à '.$perso->get_nom());
 			break;
 			case 'accessoire' :
 				echo 'Accessoire : <select id="id_accessoire">';
@@ -498,13 +498,13 @@ else
 				<input type="button" value="valider" onclick="document.location = \'admin_joueur.php?id='.$_GET['id'].'&amp;direction=accessoire2&amp;id_accessoire=\' + document.getElementById(\'id_accessoire\').value" />';
 			break;
 			case 'accessoire2' :
-				$joueur = new perso($_GET['id']);
-				$joueur->prend_objet($_GET['id_accessoire']);
+				$perso = new perso($_GET['id']);
+				$perso->prend_objet($_GET['id_accessoire']);
 				echo $G_erreur;
 				?>
 				<a href="admin_joueur.php?direction=info_joueur&amp;id=<?php echo $_GET['id']; ?>">Revenir à sa feuille de personnage</a>
 				<?php
-				log_admin::log('admin', 'Don de l\'accessoire '.$_GET['id_accessoire'].' à '.$joueur->get_nom());
+				log_admin::log('admin', 'Don de l\'accessoire '.$_GET['id_accessoire'].' à '.$perso->get_nom());
 			break;
 			case 'recette' :
 				echo 'Recette : <select id="id_recette">';
@@ -520,25 +520,25 @@ else
 				<input type="button" value="valider" onclick="document.location = \'admin_joueur.php?id='.$_GET['id'].'&amp;direction=recette2&amp;id_recette=\' + document.getElementById(\'id_recette\').value + \'&amp;nombre=\' + document.getElementById(\'nombre\').value" />';
 			break;
 			case 'recette2' :
-				$joueur = new perso($_GET['id']);
+				$perso = new perso($_GET['id']);
 				$i = 0;
 				while($i < $_GET['nombre'])
 				{
-					$joueur->prend_recette($_GET['id_recette']);
+					$perso->prend_recette($_GET['id_recette']);
 					$i++;
 				}
 				?>
 				<a href="admin_joueur.php?direction=info_joueur&amp;id=<?php echo $_GET['id']; ?>">Revenir à sa feuille de personnage</a>
 				<?php
-				log_admin::log('admin', 'Don de la recette '.$_GET['id_recette'].' à '.$joueur->get_nom());
+				log_admin::log('admin', 'Don de la recette '.$_GET['id_recette'].' à '.$perso->get_nom());
 			break;
 			case 'quete' :
-				$joueur = new perso($_GET['id']);
-				if($joueur->get_quete() != '')
+				$perso = new perso($_GET['id']);
+				if($perso->get_quete() != '')
 				{
 					$i = 0;
 					$quete_id = array();
-					$qlist = $joueur->get_quete();
+					$qlist = $perso->get_quete();
 					if (is_string($qlist))
 						$qlist = unserialize($qlist);
 					foreach($qlist as $quete)
@@ -603,7 +603,7 @@ else
 				}
 			break;
 			case 'inventaire' :
-				$joueur = new perso($_GET['id']);
+				$perso = new perso($_GET['id']);
 $tab_loc = array();
 $tab_loc[0]['loc'] = 'main_droite';
 $tab_loc[0]['type'] = 'arme';
@@ -656,13 +656,13 @@ foreach($tab_loc as $loc)
 	</td>
 	<td>
 		<?php
-		if($joueur->get_inventaire()->$loc['loc'] != '')
+		if($perso->get_inventaire()->$loc['loc'] != '')
 		{
-			$objet = decompose_objet($joueur->get_inventaire()->$loc['loc']);
+			$objet = decompose_objet($perso->get_inventaire()->$loc['loc']);
 			switch($loc['type'])
 			{
 				case 'arme' :
-					if($joueur->get_inventaire()->$loc['loc'] != 'lock')
+					if($perso->get_inventaire()->$loc['loc'] != 'lock')
 					{
 						$requete = "SELECT * FROM `arme` WHERE id = ".$objet['id_objet'];
 						$sqlQuery = $db->query($requete);
@@ -701,18 +701,18 @@ foreach($tab_loc as $loc)
 	</td>
 	<td>
 		<?php
-		if($joueur->get_inventaire()->$loc['loc'] != '' AND $joueur->get_inventaire()->$loc['loc'] != 'lock')
+		if($perso->get_inventaire()->$loc['loc'] != '' AND $perso->get_inventaire()->$loc['loc'] != 'lock')
 		{
 			switch($loc['type'])
 			{
 				case 'arme' :
 					if($loc['loc'] == 'main_droite')
 					{
-						echo 'Dégâts : '.$joueur['arme_droite'];
+						echo 'Dégâts : '.$perso['arme_droite'];
 					}
 					else
 					{
-						if($row['type'] == 'dague')	echo 'Dégâts : '.$joueur['arme_gauche'];
+						if($row['type'] == 'dague')	echo 'Dégâts : '.$perso['arme_gauche'];
 						else echo 'Dégâts absorbés : '.$row['degat'];
 					}
 				break;
@@ -725,7 +725,7 @@ foreach($tab_loc as $loc)
 	</td>
 	<td>
 		<?php
-		if($joueur->get_inventaire()->$loc['loc'] != '' AND $joueur->get_inventaire()->$loc['loc'] != 'lock')
+		if($perso->get_inventaire()->$loc['loc'] != '' AND $perso->get_inventaire()->$loc['loc'] != 'lock')
 		{
 		?>
 			<a href="inventaire.php?action=desequip&amp;partie=<?php echo $loc['loc']; ?>" onclick="return envoiInfo(this.href, 'centre');">Désequiper</a>
@@ -748,9 +748,9 @@ foreach($tab_loc as $loc)
 </tr>
 <?php
 $i = 0;
-if($joueur->get_inventaire_slot() != '')
+if($perso->get_inventaire_slot() != '')
 {
-	foreach($joueur->get_inventaire_slot() as $invent)
+	foreach($perso->get_inventaire_slot() as $invent)
 	{
 		if($invent !== 0 AND $invent != '')
 		{
@@ -848,7 +848,7 @@ if($joueur->get_inventaire_slot() != '')
 		echo '
 		</td>
 		<td>
-			<a href="admin_joueur.php?direction=supp_objet&amp;id='.$joueur->get_id().'&amp;id_objet='.$objet_d['id_objet'].'&amp;key_slot='.$i.'">Supprimer</a>
+			<a href="admin_joueur.php?direction=supp_objet&amp;id='.$perso->get_id().'&amp;id_objet='.$objet_d['id_objet'].'&amp;key_slot='.$i.'">Supprimer</a>
 		</td>
 	</tr>';
 			$i++;
@@ -860,18 +860,18 @@ if($joueur->get_inventaire_slot() != '')
 <?php
 			break;
 			case 'supp_objet' :
-				$joueur = new perso($_GET['id']);
-				$joueur->supprime_objet($_GET['id_objet'], 1);
+				$perso = new perso($_GET['id']);
+				$perso->supprime_objet($_GET['id_objet'], 1);
 				echo 'Objet bien supprimer<br />';
-				echo '<a href="admin_joueur.php?direction=inventaire&amp;id='.$joueur->get_id().'">Retour à l\'inventaire</a> | <a href="admin_joueur.php?direction=info_joueur&amp;id='.$joueur->get_id().'">Retour au personnage</a>';
+				echo '<a href="admin_joueur.php?direction=inventaire&amp;id='.$perso->get_id().'">Retour à l\'inventaire</a> | <a href="admin_joueur.php?direction=info_joueur&amp;id='.$perso->get_id().'">Retour au personnage</a>';
 			break;
 		case 'donnepa':
         $pa = max($G_PA_max, 180);
-		$joueur = new perso($_GET['id']);
-        $joueur->set_pa($pa);
-        $joueur->sauver();
+		$perso = new perso($_GET['id']);
+        $perso->set_pa($pa);
+        $perso->sauver();
 
-        log_admin::log('admin', 'Don d\'un full PA à '.$joueur->get_nom());
+        log_admin::log('admin', 'Don d\'un full PA à '.$perso->get_nom());
         break;
 		}
 	}
