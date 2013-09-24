@@ -189,27 +189,27 @@ function date_sso($time = 0)
 
 /**
  * Indique quel est le moment de la journée (matin, journée, soir ou nuit).
- * @param $id_joueur ID du joueur pour lequel on calcule
- * @param $no_joueur TRUE si on ne veut pas prendre de joueur en compte
+ * @param $id_perso ID du joueur pour lequel on calcule
+ * @param $no_perso TRUE si on ne veut pas prendre de joueur en compte
  * 
  * @return Moment de la journée.  
 */
-function moment_jour($id_joueur = 0, $no_joueur = false)
+function moment_jour($id_perso = 0, $no_perso = false)
 {
-	global $joueur, $db;
+	global $db;
 	$temps = time();
-  if ($no_joueur == false) {
+  if ($no_perso == false) {
     // On prends en compte un joueur pour les décalages d'arène
-    if (isset($joueur) && $joueur != null)
+    if ($id_perso == 0)
     {
-      $x = $joueur->get_x();
-      $y = $joueur->get_y();
+      $perso = joueur::get_perso();
+      $x = $perso->get_x();
+      $y = $perso->get_y();
     }
     else
     {
       // On ne peut pas créer d'objet perso car cette fonction est appelée dans son constructeur
-	  	$id_joueur = empty($id_joueur) ? $_SESSION['ID'] : $id_joueur;
-    	$requete = "SELECT x,y FROM perso WHERE id =".$id_joueur;
+    	$requete = "SELECT x,y FROM perso WHERE id =".$id_perso;
     	$req = $db->query($requete);
   		if( $row = $db->read_assoc($req) )
   		{
