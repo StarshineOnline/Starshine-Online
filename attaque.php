@@ -689,12 +689,12 @@ else
 			}
 			echo '<ul>';
 	
-			if ($defenseur->get_race() == $attaquant->get_race() AND $defenseur->get_rang_royaume() == 6) {
+			if ($defenseur->get_race() == $attaquant->get_race() AND $defenseur->get_rang_royaume() == 6 AND $defenseur->get_hp()<=0 ) {
 				echo '<li>';
 				$joueur->unlock_achiev('roi_race_mort');
 				echo '</li>';
 			}
-			if ($defenseur->get_rang_royaume() == 6) {
+			if ($defenseur->get_rang_royaume() == 6 AND $defenseur->get_hp()<=0 ) {
 				echo '<li>';
 				$joueur->unlock_achiev('roi_mort1');
 				$achiev = $joueur->get_compteur('roi_mort');
