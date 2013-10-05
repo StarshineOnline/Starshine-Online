@@ -70,6 +70,9 @@ while($i < $count)
 			case 'pet' :
 				$and .= " AND action <> 'pet_leave'";
 			break;
+			case 'rp' :
+				$and .= " AND action <> 'rp'";
+			break;
 		}
 	}
 	elseif($keys[$i] == "nbrLignesJournal")

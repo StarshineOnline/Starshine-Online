@@ -2539,6 +2539,9 @@ function affiche_ligne_journal($row)
 			else
 				return '<li class="jgbuff"><span class="small">['.$date.']</span> '.$row['actif'].' vous téléporte dans l\'arène '.$row['valeur'].'.</li>';
 		break;
+		case 'rp' :
+			return '<li class="jrp"><span class="small">['.$date.']</span> '.$row['valeur'].'</li>';
+		break;
 	}
 }
 

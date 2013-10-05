@@ -67,16 +67,20 @@ class journal
 		global $db;
 		if( $this->id > 0 )
 		{
-			$requete = 'UPDATE journal SET 
-			id_perso = '.$this->id_perso.', action = "'.$this->action.'", actif = '.$this->actif.', passif = '.$this->passif.', time = "'.$this->time.'", valeur = "'.$this->valeur.'", valeur2 = "'.$this->valeur2.'", x = '.$this->x.', y = '.$this->y.'
-			WHERE id = '.$this->id;
-			$db->query($requete);
+      $requete = 'UPDATE journal SET id_perso=?, action=?, actif=?, passif=?, time=?, valeur=?, valeur2=?, x=?, y=?) WHERE id=?';
+      $db->param_query($requete,
+                       array($this->id_perso, $this->action, $this->actif,
+                             $this->passif, $this->time, $this->valeur,
+                             $this->valeur2, $this->x, $this->y, $this->id),
+                       'issssssiii');
 		}
 		else
 		{
-			$requete = 'INSERT INTO journal (id_perso, action, actif, passif, time, valeur, valeur2, x, y) VALUES(
-			'.$this->id.', '.$this->id_perso.', "'.$this->action.'", '.$this->actif.', '.$this->passif.', "'.$this->time.'", "'.$this->valeur.'", "'.$this->valeur2.'", '.$this->x.', '.$this->y.')';
-			$db->query($requete);
+      $requete = 'INSERT INTO journal (id_perso, action, actif, passif, time, valeur, valeur2, x, y) VALUES(?,?,?,?,?,?,?,?,?)';
+      $params = array($this->id_perso, $this->action, $this->actif,
+                      $this->passif, $this->time, $this->valeur,
+                      $this->valeur2, $this->x, $this->y);
+      $db->param_query($requete, $params, 'isssssiii');
 			//Récuperation du dernier ID inséré.
 			list($this->id) = $db->last_insert_id();
 		}
@@ -175,6 +179,13 @@ class journal
 		else
 			return false;
 	}
-	
+
+  // Attention: message est un texte, valeur2 un int
+  static function write($perso, $message, $valeur2 = 0, $action = 'rp') {
+    $j = new journal(null, $perso->get_id(), $action, $perso->get_nom(), '',
+                     date(DATE_ATOM), $message, $valeur2, $perso->get_x(),
+                     $perso->get_y());
+    $j->sauver();
+  }
 }
 ?>
