@@ -193,6 +193,14 @@ function fin_quete($joueur, $id_quete_joueur, $id_quete, &$liste_quete)
 		}
 		$r++;
 	}
+  // Checke les achievements de quete: TODO: les mettres en recompense (cachee) de quete
+  foreach (array('quete_kesalys' => 93,
+                 'quete_pecheur' => 91,
+                 'quete_ecolo' => 94)
+           as $achiev_variable => $id) {
+    if ($id == $id_quete)
+      $joueur->unlock_achiev($achiev_variable);
+  }
 	$joueur->get_grade();
 	$stars = round($row['star'] * (1 + ($joueur->grade->get_rang() * 2 / 100)));
 	if($joueur->get_race() == 'nain')
