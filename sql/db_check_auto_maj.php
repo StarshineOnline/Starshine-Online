@@ -21,7 +21,7 @@ if (mysqli_connect_errno()) {
     printf("Connect failed: %s\n", mysqli_connect_error());
     exit();
 }
-$mysqli->set_charset('UTF8');
+$mysqli->set_charset($cfg["sql"]['encoding']);
 
 // check if table is there
 $req = $db->query("show tables like 'db_auto_maj'");
