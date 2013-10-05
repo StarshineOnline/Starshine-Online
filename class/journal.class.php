@@ -187,5 +187,29 @@ class journal
                      $perso->get_y());
     $j->sauver();
   }
+
+  /**
+   * Fonction pour chercher dans le journal d'un perso si il y a une ligne
+   * de type passe en parametre (rp par defaut), avec les valeurs passees
+   * en parametre (valeur2 puis valeur, pas de test par defaut)
+   */
+  static function check($perso, $valeur2 = null, $message = null, $action = 'rp') {
+    global $db;
+    $requete = 'SELECT * FROM journal WHERE id_perso = ? AND action = ?';
+    $params = array($perso->get_id(), $action);
+    if ($valeur2 !== null) {
+      $requete .= ' AND valeur2 = ?';
+      $params[] = $valeur2;
+    }
+    if ($message !== null) {
+      $requete .= ' AND valeur = ?';
+      $params[] = $message;
+    }
+    $req = $db->param_query($requete, $params);
+    if ($db->stmt_read_object($req))
+      return true;
+    else
+      return false;
+  }
 }
 ?>
