@@ -310,10 +310,10 @@ class batiment extends entitenj_def
 		if ($this->boni == null) {
 			global $db;
 			$this->boni = array();
-			$requeteSQL = $db->query("SELECT * from batiment_bonus where id_batiment = $this->id");
+			$requeteSQL = $db->query('SELECT * from batiment_bonus where id_batiment = '.$this->id);
 			while ($row = $db->read_assoc($requeteSQL)) {
 				$valeur = $row['valeur'];
-				if ($valeur === '') $valeur = true;
+				if ($valeur === '' || $valeur === NULL) $valeur = true;
 				$this->boni[$row['bonus']] = $valeur;
 			}
 		}
