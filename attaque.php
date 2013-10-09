@@ -696,7 +696,6 @@ else
 			}
 			if ($defenseur->get_rang_royaume() == 6 AND $defenseur->get_hp()<=0 ) {
 				echo '<li>';
-				$joueur->unlock_achiev('roi_mort1');
 				$achiev = $joueur->get_compteur('roi_mort');
 				$achiev->set_compteur($achiev->get_compteur() + 1);
 				$achiev->sauver();
