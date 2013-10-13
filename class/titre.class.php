@@ -107,7 +107,7 @@ class titre extends perso
 					{
 						$titre_perso[1] .= ' le ';
 						$titre_perso[1] .= $titre[1];
-					}				
+					}
 				}
 				else
 				{
@@ -119,7 +119,20 @@ class titre extends perso
 			}
 			else
 			{
-				$titre_perso[1] = "dit l'".$titre[1];
+				$requete = 'SELECT * FROM bonus_perso WHERE id_bonus = "12" AND id_perso = "'.$this->id_perso.'"';
+				$req = $db->query($requete);
+				$row = $db->read_assoc($req);
+				if ($row['valeur'] == 2)
+				{
+					$titre_perso[1] .= "dit l'";
+					if ($titre[3] != NULL) $titre_perso[1] .= $titre[3];
+					else $titre_perso[1] .= $titre[1];
+				}
+				else
+				{
+					$titre_perso[1] .= "dit l'";
+					$titre_perso[1] .= $titre[1];
+				}
 				return $titre_perso;
 			}
 		}
@@ -153,7 +166,20 @@ class titre extends perso
 			}
 			else
 			{
-				$titre_perso[0] = "L'".$titre[1];
+				$requete = 'SELECT * FROM bonus_perso WHERE id_bonus = "12" AND id_perso = "'.$this->id_perso.'"';
+				$req = $db->query($requete);
+				$row = $db->read_assoc($req);
+				if ($row['valeur'] == 2)
+				{
+					$titre_perso[0] = "L'";
+					if ($titre[3] != NULL) $titre_perso[0] .= $titre[3];
+					else $titre_perso[0] .= $titre[1];
+				}
+				else
+				{
+					$titre_perso[0] = "L'";
+					$titre_perso[0] .= $titre[1];						
+				}
 			}
 			return $titre_perso;
 		}
