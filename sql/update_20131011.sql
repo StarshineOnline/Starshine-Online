@@ -7,9 +7,9 @@ UPDATE `achievement_type` SET `description` = 'Devenir le chef de son groupe' WH
 UPDATE `achievement_type` SET `description` = 'Avoir envoyé %value% invitations pour entrer dans un groupe' WHERE `achievement_type`.`nom` ='Tu veux être mon gopain ?';
 UPDATE `achievement_type` SET `description` = 'Avoir envoyé %value% invitations pour entrer dans un groupe' WHERE `achievement_type`.`nom` ='Gopain !';
 UPDATE `achievement_type` SET `description` = 'Avoir envoyé %value% invitations pour entrer dans un groupe' WHERE `achievement_type`.`nom` ='I facebooked your mum';
-UPDATE `achievement_type` SET `description` = 'Avoir lancé %value% cris',`titre` = 'ap-lion-1-lionne' WHERE `achievement_type`.`nom` ='Le lion';
-DELETE FROM `achievement_type` WHERE `achievement_type`.`nom` = 'Drink up, young man. It''ll make the whole seduction part less repugnant';
-INSERT INTO `achievement_type` (nom, description, value, variable, titre) VALUES ('Drink up, young man. It''ll make the whole seduction part less repugnant', 'Avoir utilisé %value% potions', 10, 'use_potion', 'ap-assoifé-0-assoifée');
+UPDATE `achievement_type` SET `nom` = 'Hear me roar', `description` = 'Avoir lancé %value% cris',`titre` = 'ap-lion-1-lionne' WHERE `achievement_type`.`nom` ='Le lion';
+UPDATE `achievement_type` SET `nom` = 'A la santé du colonel, tout particulièrement !', `description` = 'Avoir utilisé %value% potions', `titre` = 'ap assoifé-0-assoifée' WHERE `achievement_type`.`titre` ='ap-assoifÃ©-0-assoifÃ©e';
+UPDATE `achievement_type` SET `description` = 'Avoir utilisé %value% potions' WHERE `achievement_type`.`titre` ='ap-boit sans soif-1';
 UPDATE `achievement_type` SET `description` = 'Avoir la classe Rôdeur' WHERE `achievement_type`.`nom` ='Les yeux Bouh, il faut viser les yeux !';
 UPDATE `achievement_type` SET `nom` = 'Arsène Lupin' WHERE `achievement_type`.`nom` ='Arsene Lupin';
 UPDATE `achievement_type` SET `nom` = 'L''épée tranche la plume' WHERE `achievement_type`.`nom` ='L''Ã©pÃ©e tranche la plume';
