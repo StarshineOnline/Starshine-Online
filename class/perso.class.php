@@ -365,6 +365,15 @@ class perso extends entite
 		$this->date_creation = $date_creation;
 		$this->champs_modif[] = 'date_creation';
 	}
+	/**
+	 * Permet de savoir si le joueur est mort ou pas
+	 *
+	 * @return bool returns true si le perso est mort, false sinon
+ 	*/
+	function est_mort()
+	{
+		return ($this->get_hp() <= 0);
+	}
   // @}
   
   /**
@@ -3189,8 +3198,9 @@ class perso extends entite
   function fin_combat_pvp(&$ennemi, $defense, $batiment=false)
   {
     global $db, $G_xp_rate, $G_range_level, $G_crime, $Gtrad;
-		
-    if( $this->get_hp() <= 0 )
+	
+	$msg_xp = '';
+    if( $this->est_mort() )
     {
 			$this->trigger_arene();
 			//On supprime toutes les rez
@@ -3391,7 +3401,7 @@ class perso extends entite
   {
     $msg_xp = $perso->fin_combat_pvp($this, false);
     $msg_xp .= $this->fin_combat_pvp($perso, true, $batiment);
-		if ($this->get_hp() <= 0) {
+		if ( $this->est_mort() ) {
 			if (!$G_no_ambiance_kill_message) {
 				echo '<li class="ambiance_kill_message">';
 				if ($this->get_level() < $perso->get_level() - 9)

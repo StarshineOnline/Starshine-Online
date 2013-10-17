@@ -2107,7 +2107,7 @@ function lance_buff($type, $id, $effet, $effet2, $duree, $nom, $description, $ty
 function verif_mort($pourcent, $var, $duree_debuff=0, $multiplicateur_mouvement=0)
 {
 	global $Trace, $db, $joueur;
-	if ($joueur->get_hp() <= 0)
+	if ( $joueur->est_mort() )
 	{
     // Personnage dans une arène ?
     $arene = false;
