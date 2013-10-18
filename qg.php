@@ -51,7 +51,15 @@ if($W_row['type'] == 1)
         $i = 0;
         if ($nombre > ($G_place_inventaire - count($joueur->get_inventaire_slot_partie())))
         {
-          echo 'Plus de place';
+          $reste = $G_place_inventaire - count($joueur->get_inventaire_slot_partie()) ;
+          if($reste != 0)
+          {
+             echo '<h5>Il ne vous reste que '.$reste.' places dans votre inventaire</h5>' ;
+          }
+          else
+          {
+             echo '<h5>Plus de place dans votre inventaire<br/></h5>';
+          }
         }
         else
         {
@@ -59,11 +67,11 @@ if($W_row['type'] == 1)
           {
             if(!array_key_exists('id', $_GET))
             {
-              $requete = "SELECT depot_royaume.*, depot_royaume.id AS id_depot FROM depot_royaume, grade, objet_royaume WHERE depot_royaume.id_objet = objet_royaume.id AND id_royaume = ".$R->get_id()." AND id_objet = '".sSQL($_GET['id_objet'])."' AND objet_royaume.grade <= grade.rang  AND grade.id = ".$joueur->get_rang_royaume();
+              $requete = "SELECT objet_royaume.nom, depot_royaume.*, depot_royaume.id AS id_depot FROM depot_royaume, grade, objet_royaume WHERE depot_royaume.id_objet = objet_royaume.id AND id_royaume = ".$R->get_id()." AND id_objet = '".sSQL($_GET['id_objet'])."' AND objet_royaume.grade <= grade.rang  AND grade.id = ".$joueur->get_rang_royaume();
             }
             else
             {
-              $requete = "SELECT depot_royaume.*, depot_royaume.id as id_depot FROM depot_royaume, grade, objet_royaume WHERE depot_royaume.id = ".sSQL($_GET['id'])." AND grade.id = ".$joueur->get_rang_royaume()." AND objet_royaume.grade <= grade.rang AND depot_royaume.id_objet = objet_royaume.id";
+              $requete = "SELECT objet_royaume.nom, depot_royaume.*, depot_royaume.id as id_depot FROM depot_royaume, grade, objet_royaume WHERE depot_royaume.id = ".sSQL($_GET['id'])." AND grade.id = ".$joueur->get_rang_royaume()." AND objet_royaume.grade <= grade.rang AND depot_royaume.id_objet = objet_royaume.id";
             }
             $req = $db->query($requete);
             $row = $db->read_array($req);
@@ -74,7 +82,7 @@ if($W_row['type'] == 1)
               {
                 if($joueur->prend_objet('r'.$_GET['id_objet']))
                 {
-                  echo 'Objet bien pris au dépôt du royaume<br />';
+                  
                 }
               }
               else
@@ -85,56 +93,54 @@ if($W_row['type'] == 1)
             $i++;
           }
           $joueur->sauver();
+          $nom = $row['nom'] ;
+          if($nombre > 1)
+          {
+            $tab = array("Drapeau"=>"Drapeaux","Poste avancé"=>"Postes avancés", "Fortin"=>"Fortins", "Fort"=>"Forts", "Forteresse"=>"Forteresses", "Tour de guet"=>"Tours de guet", "Tour de garde"=>"Tours de garde", "Tour de mages"=>"Tours de mages", "Tour d archers"=>"Tours d'archers", "Bourgade"=>"Bourgades", "Palissade"=>"Palissades", "Mur"=>"Murs", "Muraille"=>"Murailles", "Grande muraille"=>"Grandes murailles", "Bélier"=>"Béliers", "Catapulte"=>"Catapultes", "Trébuchet"=>"Trébuchets", "Baliste"=>"Balistes", "Grand drapeau"=>"Grands drapeaux", "Étendard"=>"Étendards", "Grand étendard"=>"Grands étendards", "Petit drapeau"=>"Petits drapeaux") ; 
+            echo '<h6>'.$nombre.' '.$tab[$nom].' bien pris au dépôt du royaume</h6><br />';
+          }
+          else
+          {
+            echo '<h6>'.$nombre.' '.$nom.' bien pris au dépôt du royaume</h6><br />';
+          }
         }
       }
       break;
       case 'depot' :
-                ?>
-                <table>
+   
+    $requete = "SELECT o.nom, o.type, d.id_objet, d.id AS id_depot, COUNT(*) AS nbr_objet FROM depot_royaume as d, objet_royaume as o, grade as g WHERE d.id_objet = o.id AND g.id = ".$joueur->get_rang_royaume()." AND o.grade <= g.rang AND id_royaume = ".$R->get_id()." GROUP BY d.id_objet ORDER BY o.type, o.nom ASC";
+    $type = "";
+    ?>
+    <table>
+    <?php
+        $req = $db->query($requete);
+        while($row = $db->read_assoc($req))
+        {
+            if($type <> $row['type'])
+            {
+                $type = $row['type'];
+                $tab = array("arme_de_siege"=>"Armes de siège","bourg"=>"Bourgades", "drapeau"=>"Drapeaux", "fort"=>"Forts", "mur"=>"Murs", "tour"=>"Tours") ; 
+                echo "<tr><td colspan=2 align=center><b>";
+                echo "<br />";
+                echo $tab[$type] ;
+                echo "</b></td></tr>";
+            }
+            ?>
                 <tr>
                     <td>
-                        Nom
+                     <?php echo $row['nom']; ?> : <?php echo $row['nbr_objet']; ?>
                     </td>
                     <td>
-                        Prendre
+                    <input type="text" id="nbr<?php echo $row['id_objet']; ?>" value="0" />
+                     <a href="" onclick="return envoiInfo('qg.php?direction=prendre&amp;id_objet=<?php echo $row['id_objet']; ?>&amp;nbr=' + document.getElementById('nbr<?php echo $row['id_objet']; ?>').value, 'carte')">Prendre</a>
                     </td>
                 </tr>
                 <?php
-      $requete = "SELECT objet_royaume.*, COUNT(depot_royaume.id_objet) AS nbr_objet, depot_royaume.id_objet, depot_royaume.id AS id_depot FROM depot_royaume, objet_royaume WHERE depot_royaume.id_objet = objet_royaume.id AND id_royaume = ".$R->get_id()." AND (id_objet = '1' OR id_objet = '22') GROUP BY depot_royaume.id_objet ASC";
-      $req = $db->query($requete);
-      while($row = $db->read_assoc($req))
-      {
-                ?>
-                <tr>
-                	<td>
-                	 <?php echo $row['nom']; ?> : <?php echo $row['nbr_objet']; ?>
-                	</td>
-                	<td>
-                	<input type="text" id="nbr<?php echo $row['id_objet']; ?>" value="0" />
-                	 <a href="" onclick="return envoiInfo('qg.php?direction=prendre&amp;id_objet=<?php echo $row['id_objet']; ?>&amp;nbr=' + document.getElementById('nbr<?php echo $row['id_objet']; ?>').value, 'carte')">Prendre</a>
-                	</td>
-                </tr>
-                <?php
-      }
-      $requete = "SELECT objet_royaume.*, depot_royaume.id_objet, depot_royaume.id AS id_depot FROM depot_royaume, objet_royaume, grade WHERE depot_royaume.id_objet = objet_royaume.id AND objet_royaume.grade <= grade.rang AND id_objet != '1' AND id_objet != '22' AND id_royaume = ".$R->get_id()." AND grade.id = ".$joueur->get_rang_royaume()." ORDER BY objet_royaume.nom ASC";
-      $req = $db->query($requete);
-    
-      while($row = $db->read_assoc($req))
-      {
-                ?>
-                <tr>
-                    <td>
-                    	
-                        <?php echo $row['nom']; ?>
-                    </td>
-                    <td>
-                        <a href="qg.php?direction=prendre&amp;id=<?php echo $row['id_depot']; ?>&amp;id_objet=<?php echo $row['id_objet']; ?>" onclick="return envoiInfo(this.href, 'carte')">Prendre</a>
-                    </td>
-                </tr>
-                <?php
-      }
-                ?>
-                </table>
+        }
+   
+    ?>
+   
+    </table>
                 <?php
       break;
     }
