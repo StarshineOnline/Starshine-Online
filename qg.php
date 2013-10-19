@@ -95,13 +95,28 @@ if($W_row['type'] == 1)
           $joueur->sauver();
           $nom = $row['nom'] ;
           if($nombre > 1)
-          {
-            $tab = array("Drapeau"=>"Drapeaux","Poste avancé"=>"Postes avancés", "Fortin"=>"Fortins", "Fort"=>"Forts", "Forteresse"=>"Forteresses", "Tour de guet"=>"Tours de guet", "Tour de garde"=>"Tours de garde", "Tour de mages"=>"Tours de mages", "Tour d archers"=>"Tours d'archers", "Bourgade"=>"Bourgades", "Palissade"=>"Palissades", "Mur"=>"Murs", "Muraille"=>"Murailles", "Grande muraille"=>"Grandes murailles", "Bélier"=>"Béliers", "Catapulte"=>"Catapultes", "Trébuchet"=>"Trébuchets", "Baliste"=>"Balistes", "Grand drapeau"=>"Grands drapeaux", "Étendard"=>"Étendards", "Grand étendard"=>"Grands étendards", "Petit drapeau"=>"Petits drapeaux") ; 
-            echo '<h6>'.$nombre.' '.$tab[$nom].' bien pris au dépôt du royaume</h6><br />';
+	  {
+              $tab = array("Drapeau"=>"Drapeaux","Poste avancé"=>"Postes avancés", "Fortin"=>"Fortins", "Fort"=>"Forts", "Forteresse"=>"Forteresses", "Tour de guet"=>"Tours de guet", "Tour de garde"=>"Tours de garde", "Tour de mages"=>"Tours de mages", "Tour d archers"=>"Tours d'archers", "Bourgade"=>"Bourgades", "Palissade"=>"Palissades", "Mur"=>"Murs", "Muraille"=>"Murailles", "Grande muraille"=>"Grandes murailles", "Bélier"=>"Béliers", "Catapulte"=>"Catapultes", "Trébuchet"=>"Trébuchets", "Baliste"=>"Balistes", "Grand drapeau"=>"Grands drapeaux", "Étendard"=>"Étendards", "Grand étendard"=>"Grands étendards", "Petit drapeau"=>"Petits drapeaux") ; 
+              if( in_array($row['nom'], array('Forteresse', 'Tour de guet', 'Tour de garde', 'Tour de mages', 'Tour d archers', 'Bourgade', 'Palissade', 'Muraille', 'Grande muraille', 'Catapulte', 'Baliste')) )
+              {
+                  echo '<h6>'.$nombre.' '.$tab[$row['nom']].' bien prises au dépôt du royaume</h6><br />';
+              }
+              else
+              {
+                  echo '<h6>'.$nombre.' '.$tab[$row['nom']].' bien pris au dépôt du royaume</h6><br />';
+              }
+                                               
           }
           else
           {
-            echo '<h6>'.$nombre.' '.$nom.' bien pris au dépôt du royaume</h6><br />';
+              if( in_array($row['nom'], array('Forteresse', 'Tour de guet', 'Tour de garde', 'Tour de mages', 'Tour d archers', 'Bourgade', 'Palissade', 'Muraille', 'Grande muraille', 'Catapulte', 'Baliste')) )
+              {
+                  echo '<h6>'.$nombre.' '.$row['nom'].' bien prise au dépôt du royaume</h6><br />';
+              }
+              else
+              {
+                  echo '<h6>'.$nombre.' '.$row['nom'].' bien pris au dépôt du royaume</h6><br />';
+              }
           }
         }
       }
