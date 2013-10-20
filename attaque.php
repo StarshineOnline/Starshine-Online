@@ -836,7 +836,7 @@ else
 				$combat->id_journal = $db->last_insert_id();
 				$combat->sauver();
 				
-				if($defenseur->get_hp() <= 0)
+				if($map_royaume->is_raz())
 				{
 					$requete = "INSERT INTO journal VALUES(NULL, ".$joueur->get_id().", 'destruction', '".mysql_escape_string($joueur->get_nom())."', '".mysql_escape_string($map_royaume->get_nom())."', NOW(), 0, 0, ".$defenseur->get_x().", ".$defenseur->get_y().")";
 					$db->query($requete);
@@ -855,7 +855,7 @@ else
 				$combat->id_journal = $db->last_insert_id();
 				$combat->sauver();
 				
-				if($defenseur->capital_hp() <= 0)
+				if($defenseur->get_hp() <= 0)
 				{
 					$requete = "INSERT INTO journal VALUES(NULL, ".$joueur->get_id().", 'destruction', '".mysql_escape_string($joueur->get_nom())."', '".mysql_escape_string($defenseur->get_nom())."', NOW(), 0, 0, ".$defenseur->get_x().", ".$defenseur->get_y().")";
 					$db->query($requete);
