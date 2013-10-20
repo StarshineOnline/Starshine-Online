@@ -2488,6 +2488,11 @@ function affiche_ligne_journal($row)
 		case 'mort' :
 			return '<li class="jmort"><span class="small">['.$date.']</span> '.$row['passif'].' vous a tué.</li>';
 		break;
+		case 'siege' :
+			return '<li class="jdegat"><span class="small">['.$date.']</span> Vous attaquez '.$row['passif']." à l'arme de siège et lui faites ".$row['valeur'].' dégâts.</li>';
+		case 'destruction' :
+			return '<li class="jkill"><span class="small">['.$date.']</span> Vous détruisez '.$row['passif'].'.</li>';
+		break;
 		case 'pet_leave' :
 			return '<li class="jmort"><span class="small">['.$date.']</span> Votre '.$row['valeur'].' a échappé à votre contrôle et vous a quitté.</li>';
 		break;

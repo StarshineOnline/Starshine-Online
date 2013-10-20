@@ -73,6 +73,12 @@ while($i < $count)
 			case 'rp' :
 				$and .= " AND action <> 'rp'";
 			break;
+			case 'siege' :
+				$and .= " AND action <> 'siege'";
+			break;
+			case 'destruction' :
+				$and .= " AND action <> 'destruction'";
+			break;
 		}
 	}
 	elseif($keys[$i] == "nbrLignesJournal")

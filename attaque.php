@@ -682,8 +682,15 @@ else
 				<div style="float:left;">';
 			}
 			else {
-				echo '   <span style="display:block;float:left;width:150px;">mort</span>
-						</li>
+				if($type == 'joueur' OR $type == 'monstre')
+				{
+				echo '   <span style="display:block;float:left;width:150px;">mort</span>' ;
+				}
+				else
+				{
+				echo '   <span style="display:block;float:left;width:150px;">détruit</span>' ;
+				}
+				 echo '</li>
 				</ul>
 				<div style="clear:both;">';
 			}
@@ -800,7 +807,6 @@ else
 			//Mise dans le journal si attaque sur batiment
 			elseif($type == 'batiment')
 			{
-				//Insertion de l'attaque dans les journaux des 2 joueurs
 				$requete = "INSERT INTO journal VALUES(NULL, ".$joueur->get_id().", 'attaque', '".mysql_escape_string($joueur->get_nom())."', '".mysql_escape_string($defenseur->get_nom())."', NOW(), ".($defense_hp_avant - $defense_hp_apres).", ".($attaque_hp_avant - $attaque_hp_apres).", ".$defenseur->get_x().", ".$defenseur->get_y().")";
 				$db->query($requete);
 				// Creation du log du combat
@@ -810,6 +816,50 @@ else
 				$combat->combat = $attaque->get_log_combat();//$log_combat;
 				$combat->id_journal = $db->last_insert_id();
 				$combat->sauver();
+				
+				if($defenseur->get_hp() <= 0)
+				{
+					$requete = "INSERT INTO journal VALUES(NULL, ".$joueur->get_id().", 'destruction', '".mysql_escape_string($joueur->get_nom())."', '".mysql_escape_string($defenseur->get_nom())."', NOW(), 0, 0, ".$defenseur->get_x().", ".$defenseur->get_y().")";
+					$db->query($requete);
+				}
+			}
+			elseif($type == 'ville')
+			{
+				$requete = "INSERT INTO journal VALUES(NULL, ".$joueur->get_id().", 'siege', '".mysql_escape_string($joueur->get_nom())."', '".mysql_escape_string($map_royaume->get_nom())."', NOW(), ".($defense_hp_avant - $defense_hp_apres).", ".($attaque_hp_avant - $attaque_hp_apres).", ".$defenseur->get_x().", ".$defenseur->get_y().")";
+				$db->query($requete);
+					
+				// Creation du log du combat
+				$combat = new combat();
+				$combat->attaquant = $joueur->get_id();
+				$combat->defenseur = $defenseur->get_id();
+				$combat->combat = $attaque->get_log_combat();//$log_combat;
+				$combat->id_journal = $db->last_insert_id();
+				$combat->sauver();
+				
+				if($defenseur->get_hp() <= 0)
+				{
+					$requete = "INSERT INTO journal VALUES(NULL, ".$joueur->get_id().", 'destruction', '".mysql_escape_string($joueur->get_nom())."', '".mysql_escape_string($map_royaume->get_nom())."', NOW(), 0, 0, ".$defenseur->get_x().", ".$defenseur->get_y().")";
+					$db->query($requete);
+				}
+			}
+			elseif($type == 'siege')
+			{
+				$requete = "INSERT INTO journal VALUES(NULL, ".$joueur->get_id().", 'siege', '".mysql_escape_string($joueur->get_nom())."', '".mysql_escape_string($defenseur->get_nom())."', NOW(), ".($defense_hp_avant - $defense_hp_apres).", ".($attaque_hp_avant - $attaque_hp_apres).", ".$defenseur->get_x().", ".$defenseur->get_y().")";
+				$db->query($requete);
+					
+				// Creation du log du combat
+				$combat = new combat();
+				$combat->attaquant = $joueur->get_id();
+				$combat->defenseur = $defenseur->get_id();
+				$combat->combat = $attaque->get_log_combat();//$log_combat;
+				$combat->id_journal = $db->last_insert_id();
+				$combat->sauver();
+				
+				if($defenseur->capital_hp() <= 0)
+				{
+					$requete = "INSERT INTO journal VALUES(NULL, ".$joueur->get_id().", 'destruction', '".mysql_escape_string($joueur->get_nom())."', '".mysql_escape_string($defenseur->get_nom())."', NOW(), 0, 0, ".$defenseur->get_x().", ".$defenseur->get_y().")";
+					$db->query($requete);
+				}
 			}
 
       echo '</ul>';
