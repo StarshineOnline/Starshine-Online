@@ -211,14 +211,24 @@ where b.type = 'mine'";
 	<h3>Vous contrôlez </h3>
 	<ul>
 	<?php
+	$supertotal = 0 ;
 	foreach($terrain_ress as $terrain => $total)
 	{
+		$supertotal = $supertotal + $total ;
 		?>
-		<li><?php echo $total; ?> cases de <?php echo $terrain; ?></li>
+		<li><?php echo $total; ?> cases de <?php echo $terrain; ?>  </li>
 		<?php
 	}
 	?>
+	<li> <br /> Soit <?php echo $supertotal; ?> au total. </li>
+	<?php
+	if(floor($supertotal/250) + 1 > 1)
+	{
+		?>
+		<li> Vous pouvez posséder <?php echo floor($supertotal/250) + 1; ?> bourgs au maximimum. </li>
 	</ul>
 	<?php
+	}
+
 }
 ?>
