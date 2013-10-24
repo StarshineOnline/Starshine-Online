@@ -5,6 +5,8 @@ if (file_exists('root.php'))
 include_once(root.'inc/fp.php');
 
 $joueur = new perso($_SESSION['ID']);
+
+verif_mort($joueur, 1);
 ?>
 <fieldset>
 <legend>Liste de vos échanges</legend>

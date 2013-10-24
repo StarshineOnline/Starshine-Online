@@ -13,6 +13,7 @@ if(array_key_exists('lanceur', $_GET)) $type_lanceur = $_GET['lanceur'];
 else $type_lanceur = 'joueur';
 
 $joueur = new perso($_SESSION['ID']);
+verif_mort($joueur, 1);
 
 switch($type_cible)
 {

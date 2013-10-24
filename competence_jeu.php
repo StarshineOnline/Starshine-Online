@@ -3,6 +3,7 @@ if (file_exists('root.php'))
 include_once('root.php');
 
 include_once ('livre.php');
+verif_mort($joueur, 1);
 $tab_sort_jeu = explode(';', $joueur->get_comp_jeu());
 ?>
 <hr>

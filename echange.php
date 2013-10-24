@@ -8,6 +8,9 @@ include_once(root.'inc/fp.php');
 <legend>Effectuer un échange</legend>
 <?php
 $joueur = new perso($_SESSION['ID']);
+
+verif_mort($joueur, 1);
+
 $joueur->restack_objet();
 //Si un identifiant d'echange est passé alors on récupère les infos sur cet échange
 if(array_key_exists('id_echange', $_GET))
