@@ -491,6 +491,9 @@ class empoisonne extends effect {
     $actif = $attaque->get_actif();
 		$this->hit($actif->get_nom().' perd '.$this->vigueur.' HP à cause du poison');
 		$actif->set_hp($actif->get_hp() - $this->vigueur);
+		
+		$attaque->add_log_effet_actif("&ef1~".$this->vigueur);
+		
 		$actif->etat['empoisonne']['effet'] -= 1;
 		if ($actif->etat['empoisonne']['effet'] < 1)
 			$actif->etat['empoisonne']['effet'] = 1;
