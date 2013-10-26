@@ -141,7 +141,7 @@ $titre_perso = new titre($_SESSION['ID']);
 					break;
 					case 'journal' :
 						$liste_options = array('soin', 'gsoin', 'buff', 'gbuff', 'rez', 'degat', 'kill', 'quete', 'loot', 'siege', 'destruction', 'nbrLignesJournal');
-						$liste_options_nom = array('Soins', 'Soins de groupe', 'Buffs', 'Buffs de groupe', 'Résurections', 'Dégâts', 'Kills', 'Quêtes', 'Loots', "Dégâts à l'arme de siège", 'Destruction de bâtiments', 'Nombre de lignes');
+						$liste_options_nom = array('Soins', 'Soins de groupe', 'Buffs', 'Buffs de groupe', 'Résurrections', 'Dégâts', 'Kills', 'Quêtes', 'Loots', "Dégâts à l'arme de siège", 'Destruction de bâtiments', 'Nombre de lignes');
 						$options = recup_option($_SESSION['ID']);
 						if(array_key_exists('submit', $_POST))
 						{

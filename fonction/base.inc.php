@@ -2359,10 +2359,10 @@ function affiche_ligne_journal($row)
 			return '<li class="jdebuff"><span class="small">['.$date.']</span> '.$row['passif'].' vous debuff avec '.$row['valeur'].'.</li>';
 		break;
 		case 'rez' :
-			return '<li class="jbuff"><span class="small">['.$date.']</span> Vous avez récussité '.$row['passif'].' ('.$row['valeur'].'%).</li>';
+			return '<li class="jbuff"><span class="small">['.$date.']</span> Vous avez ressuscité '.$row['passif'].' ('.$row['valeur'].'%).</li>';
 		break;
 		case 'rrez' :
-			return '<li class="jbuff"><span class="small">['.$date.']</span> '.$row['passif'].' vous a récussité ('.$row['valeur'].'%).</li>';
+			return '<li class="jbuff"><span class="small">['.$date.']</span> '.$row['passif'].' vous a ressuscité ('.$row['valeur'].'%).</li>';
 		break;
 		case 'teleport' :
 			if ($row['valeur'] == 'jeu')
