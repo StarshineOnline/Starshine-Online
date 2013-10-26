@@ -66,18 +66,24 @@ $rez = false;
 	{
 		$rez = true;
 		$pourcent = $capitale_rez_p;
-		$$duree_debuff = 43200;
+		$duree_debuff = 43200;
 		$multiplicateur_mouvement = 2;
 		
 		if($spawn_ville == 'ok')
 		{ // Capitale
 			$joueur->set_x($Trace[$joueur->get_race()]['spawn_x']);
 			$joueur->set_y($Trace[$joueur->get_race()]['spawn_y']);
+			
+			$requete = "INSERT INTO journal(id_perso, action, actif, passif, time, valeur, valeur2, x, y) VALUES(".$joueur->get_id().", 'rrez', '".$joueur->get_nom()."', 'Capitale', NOW(), '".$pourcent."', 0, ".$joueur->get_x().", ".$joueur->get_y().")";
+			$db->query($requete);
 		}
 		else
 		{ // Refuge des criminels
 			$joueur->set_x($Trace[$joueur->get_race()]['spawn_c_x']);
 			$joueur->set_y($Trace[$joueur->get_race()]['spawn_c_y']);
+			
+			$requete = "INSERT INTO journal(id_perso, action, actif, passif, time, valeur, valeur2, x, y) VALUES(".$joueur->get_id().", 'rrez', '".$joueur->get_nom()."', 'Repère des criminels', NOW(), '".$pourcent."', 0, ".$joueur->get_x().", ".$joueur->get_y().")";
+			$db->query($requete);
 		}
 	}
 	elseif($choix == 2) //Rez d'un joueur
@@ -95,9 +101,9 @@ $rez = false;
 				$multiplicateur_mouvement = $row['malus'];
 			
 				$rezzeur = new perso($row['id_rez']);
-				$requete = "INSERT INTO journal(id_perso, action, actif, passif, time, valeur, valeur2, x, y) VALUES(".$joueur->get_id().", 'rez', '".$rezzeur->get_nom()."', '', NOW(), '', 0, ".$joueur->get_x().", ".$joueur->get_y().")";
+				$requete = "INSERT INTO journal(id_perso, action, actif, passif, time, valeur, valeur2, x, y) VALUES(".$rezzeur->get_id().", 'rez', '".$rezzeur->get_nom()."', '".$joueur->get_nom()."', NOW(), '".$pourcent."', 0, ".$joueur->get_x().", ".$joueur->get_y().")";
 				$db->query($requete);
-				$requete = "INSERT INTO journal(id_perso, action, actif, passif, time, valeur, valeur2, x, y) VALUES(".$rezzeur->get_id().", 'rrez', '".$joueur->get_nom()."', '', NOW(), '', 0, ".$joueur->get_x().", ".$joueur->get_y().")";
+				$requete = "INSERT INTO journal(id_perso, action, actif, passif, time, valeur, valeur2, x, y) VALUES(".$joueur->get_id().", 'rrez', '".$joueur->get_nom()."', '".$rezzeur->get_nom()."', NOW(), '".$pourcent."', 0, ".$joueur->get_x().", ".$joueur->get_y().")";
 				$db->query($requete);
 			}
 		}
@@ -111,6 +117,9 @@ $rez = false;
 		$pourcent = $row_b['rez'];
 		$duree_debuff = 43200;
 		$multiplicateur_mouvement = 2;
+		
+		$requete = "INSERT INTO journal(id_perso, action, actif, passif, time, valeur, valeur2, x, y) VALUES(".$joueur->get_id().", 'rrez', '".$joueur->get_nom()."', '".$row_b['nom']."', NOW(), '".$pourcent."', 0, ".$joueur->get_x().", ".$joueur->get_y().")";
+		$db->query($requete);
 	}
 	
 	if($rez)
