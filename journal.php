@@ -55,6 +55,9 @@ while($i < $count)
 			case 'gbuff' :
 				$and .= " AND action <> 'gbuff' AND action <> 'rgbuff'";
 			break;
+			case 'rez' :
+				$and .= " AND action <> 'rez' AND action <> 'rrez'";
+			break;
 			case 'degat' :
 				$and .= " AND action <> 'attaque' AND action <> 'defense'";
 			break;
