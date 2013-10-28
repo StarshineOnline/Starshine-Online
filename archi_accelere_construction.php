@@ -57,8 +57,6 @@ elseif($joueur->get_pa() >= 30)
     $fin_min = $row['debut_placement'] + $batiment->get_temps_construction_min();
     if( $row['fin_placement'] < $fin_min )
       $secondes = 0;
-    elseif ( ($row['fin_placement'] - $secondes) < $fin_min )
-      $secondes = $fin_min - $fin_placement;
     else
 	  $secondes = rand($secondes_min, $secondes_max);
 	  if( $joueur->is_buff('convalescence') ) $secondes=floor($secondes / 2);
