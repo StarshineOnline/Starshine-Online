@@ -25,10 +25,10 @@ if(!($joueur->est_mort()))
 {
 ?>
 <a href="liste_echange.php" onclick="return envoiInfo(this.href, 'information');montre('');"><img src="image/icone/liste_echange.png" onmouseover="document.getElementById('image_echange').src = 'image/icone/liste_echange_over.png';" onmouseout="document.getElementById('image_echange').src = 'image/icone/liste_echange.png';" id="image_echange" alt="Liste des échanges" title="Liste des échanges" /></a>
+<a href="gestion_monstre.php" onclick="return envoiInfo(this.href, 'information');montre('');"><img src="image/icone/icone dressage.png" onmouseover="document.getElementById('image_dressage').src = 'image/icone/icone dressage_over.png';" onmouseout="document.getElementById('image_dressage').src = 'image/icone/icone dressage.png';" id="image_dressage" alt="Vos créatures" title="Vos créatures" /></a>
 <?php
 }
 ?>
-<a href="gestion_monstre.php" onclick="return envoiInfo(this.href, 'information');montre('');"><img src="image/icone/icone dressage.png" onmouseover="document.getElementById('image_dressage').src = 'image/icone/icone dressage_over.png';" onmouseout="document.getElementById('image_dressage').src = 'image/icone/icone dressage.png';" id="image_dressage" alt="Vos créatures" title="Vos créatures" /></a>
 <br />		
 	</div>	
 			
