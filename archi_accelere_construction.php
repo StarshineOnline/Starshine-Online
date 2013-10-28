@@ -52,15 +52,16 @@ elseif($joueur->get_pa() >= 30)
 		{
 			$secondes_max += floor($joueur->get_enchantement('forge', 'effet') / 100 * $secondes_max);
 		}
-		
+
     $batiment = new batiment( $row['id_batiment'] );
     $fin_min = $row['debut_placement'] + $batiment->get_temps_construction_min();
     if( $row['fin_placement'] < $fin_min )
       $secondes = 0;
     else
 	  $secondes = rand($secondes_min, $secondes_max);
+	  
 	  if( $joueur->is_buff('convalescence') ) $secondes=floor($secondes / 2);
-      $fin_placement = $row['fin_placement'] - $secondes;
+      
 		if( $secondes >0 )
 		{
 				//On met à jour le placement
