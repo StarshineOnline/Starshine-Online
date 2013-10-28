@@ -71,14 +71,14 @@ class bataille
 		if( $this->id > 0 )
 		{
 			$requete = 'UPDATE bataille SET ';
-			$requete .= 'id_royaume = '.$this->id_royaume.', x = '.$this->x.', y = '.$this->y.', nom = "'.$this->nom.'", description = "'.$this->description.'", etat = '.$this->etat.', debut = '.$this->debut.', fin = '.$this->fin;
+			$requete .= 'id_royaume = '.$this->id_royaume.', x = '.$this->x.', y = '.$this->y.', nom = "'.$this->nom.'", description = "'.mysql_escape_string($this->description).'", etat = '.$this->etat.', debut = '.$this->debut.', fin = '.$this->fin;
 			$requete .= ' WHERE id = '.$this->id;
 			$db->query($requete);
 		}
 		else
 		{
 			$requete = 'INSERT INTO bataille (id_royaume, x, y, nom, description, etat, debut, fin) VALUES(';
-			$requete .= $this->id_royaume.', '.$this->x.', '.$this->y.', "'.$this->nom.'", "'.$this->description.'", '.$this->etat.', '.$this->debut.', '.$this->fin.')';
+			$requete .= $this->id_royaume.', '.$this->x.', '.$this->y.', "'.$this->nom.'", "'.mysql_escape_string($this->description).'", '.$this->etat.', '.$this->debut.', '.$this->fin.')';
 			$db->query($requete);
 			//Récuperation du dernier ID inséré.
 			$this->id = $db->last_insert_id();

@@ -52,35 +52,51 @@ elseif($joueur->get_pa() >= 30)
 		{
 			$secondes_max += floor($joueur->get_enchantement('forge', 'effet') / 100 * $secondes_max);
 		}
-		$secondes = rand($secondes_min, $secondes_max);
-    if( $joueur->is_buff('convalescence') ) $secondes=floor($secondes / 2);
-    $fin_placement = $row['fin_placement'] - $secondes;
+		
     $batiment = new batiment( $row['id_batiment'] );
     $fin_min = $row['debut_placement'] + $batiment->get_temps_construction_min();
-    if( $fin_placement < $fin_min )
-      $fin_placement = $fin_min;
-		//On met à jour le placement
-		$requete = "UPDATE placement SET fin_placement = fin_placement - ".$secondes." WHERE id = ".sSQL($_GET['id_construction']);
-		if($db->query($requete))
+    if( $row['fin_placement'] < $fin_min )
+      $secondes = 0;
+    elseif ( ($row['fin_placement'] - $secondes) < $fin_min )
+      $secondes = $fin_min - $fin_placement;
+    else
+	  $secondes = rand($secondes_min, $secondes_max);
+	  if( $joueur->is_buff('convalescence') ) $secondes=floor($secondes / 2);
+      $fin_placement = $row['fin_placement'] - $secondes;
+		if( $secondes >0 )
 		{
-			//On supprime les PA du joueurs
-			$joueur->set_pa($joueur->get_pa() - 30);
-			//Augmentation de la compétence d'architecture
-			$lim = $batiment->get_bonus('lim_montee');
-			if( !$lim or $joueur->get_architecture() < $lim )
-			{
-  			$augmentation = augmentation_competence('architecture', $joueur, 1);
-  			if ($augmentation[1] == 1)
-  			{
-  				$joueur->set_architecture($augmentation[0]);
-  			}
-      }
-			echo '<h6>La construction a été accélérée de '.transform_sec_temp($secondes).'</h6>';
-			echo '<a href="archi_accelere_construction.php?id_construction='.$_GET['id_construction'].'" onclick="return envoiInfo(this.href, \'information\');">Accélérer de nouveau</a>';		?>
-			<a onclick="if(document.getElementById('debug').style.display == 'inline') document.getElementById('debug').style.display = 'none'; else document.getElementById('debug').style.display = 'inline';"><img src="image/interface/debug.png" alt="Debug" Title="Débug pour voir en détail le combat" style="vertical-align : middle;cursor:pointer;" /></a>
+				//On met à jour le placement
+				$requete = "UPDATE placement SET fin_placement = fin_placement -".$secondes." WHERE id = ".sSQL($_GET['id_construction']);
+				if($db->query($requete))
+				{
+					//On supprime les PA du joueurs
+					$joueur->set_pa($joueur->get_pa() - 30);
+					//Augmentation de la compétence d'architecture
+					$lim = $batiment->get_bonus('lim_montee');
+					if( !$lim or $joueur->get_architecture() < $lim )
+					{
+					$augmentation = augmentation_competence('architecture', $joueur, 1);
+					if ($augmentation[1] == 1)
+					{
+						$joueur->set_architecture($augmentation[0]);
+					}
+				}
+			
+				$txt = "<h6>La construction a été accélérée de ".transform_sec_temp($secondes)."</h6>";
+				$txt .= '<br/><a href="archi_accelere_construction.php?id_construction='.$_GET['id_construction'].'" onclick="return envoiInfo(this.href, \'information\');">Accélérer de nouveau</a>';
+				$txt .= '<br/><a onclick="if(document.getElementById(\'debug\').style.display == \'inline\') document.getElementById(\'debug\').style.display = \'none\'; else document.getElementById(\'debug\').style.display = \'inline\;"><img src="image/interface/debug.png" alt="Debug" Title="Débug pour voir en détail le combat" style="vertical-align : middle;cursor:pointer;" /></a>';
+			}
+		}
+		else
+		{
+				$txt = "<h6>La construction ne peux plus être accélérée: il reste moins de ".transform_sec_temp($batiment->get_temps_construction_min())."</h6>";
+		}	
+			echo $txt;
+			?>
+			
 			<a href="informationcase.php?case=<?php echo convert_in_pos($row['x'], $row['y']); ?>" onclick="return envoiInfo(this.href, 'information')"><img src="image/interface/retour.png" alt="Retour" title="Retour à l'information case" style="vertical-align : middle;" /></a>
 			<?php $joueur->sauver();
-		}
+		
 	}
 }
 else
