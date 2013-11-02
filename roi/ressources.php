@@ -225,7 +225,7 @@ where b.type = 'mine'";
 	if(floor($supertotal/250) + 1 > 1)
 	{
 		?>
-		<li> Vous pouvez posséder <?php echo floor($supertotal/250) + 1; ?> bourgs au maximimum. </li>
+		<li> Vous pouvez posséder <?php echo floor($supertotal/250) + 1; ?> bourgs au maximum. </li>
 	</ul>
 	<?php
 	}
