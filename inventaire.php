@@ -48,6 +48,7 @@ $princ = $interf->creer_princ_droit('Inventaire du Personnage');
 //Switch des actions
 if(!$visu AND isset($_GET['action']))
 {
+verif_mort($joueur, 1);
 	switch($_GET['action'])
 	{
 		case 'desequip' :

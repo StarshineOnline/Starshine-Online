@@ -10,6 +10,7 @@ if (file_exists('root.php'))
 include_once(root.'inc/fp.php');
 //Récupération des informations du personnage
 $joueur = new perso($_SESSION['ID']);
+verif_mort($joueur, 1);
 $joueur->check_perso();
 
 if(array_key_exists('principale', $_GET))
