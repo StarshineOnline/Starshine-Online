@@ -124,7 +124,7 @@ function sub_script_action($joueur, $ennemi, $mode, &$attaque)
 			$joueur->etat['paralysie']['cpt'] = 1;
 		}
 		$bonus_para = 1;
-		if ($res_para = $passif->get_bonus_permanents('resistance_para')) {
+		if ($res_para = $joueur->get_bonus_permanents('resistance_para')) {
 
 -            print_debug("Ajuste la resistance à la paralysie de $res_para%<br/>");
 
