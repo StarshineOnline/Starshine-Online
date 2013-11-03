@@ -213,12 +213,11 @@ verif_mort($joueur, 1);
             $princ->add_message('Il y a une capitale à moins de '.$distanceMax.' cases !', false);
 						$isOk = false;
 					}
-
-					$facteurEntretien = $R->get_facteur_entretien();
 					
 					// Distance entre Bourgs
 					if($isOk && $_GET['type'] == 'bourg'){
 						// dist entre 2 bourgs
+<<<<<<< HEAD
 						$distanceMax = 7 * $facteurEntretien;
 
 						$requete = "SELECT x, y FROM construction"
@@ -263,11 +262,43 @@ verif_mort($joueur, 1);
 							$isOk = false;
 						}
 						}
+=======
+            if( construction::batiments_proche($joueur->get_x(), $joueur->get_y(), 'bourg', $R->get_dist_bourgs(), $R->get_id())
+              or placement::batiments_proche($joueur->get_x(), $joueur->get_y(), 'bourg', $R->get_dist_bourgs(), $R->get_id()) )
+            {
+              $princ->add_message('Vous avez un bourg à moins de '.$R->get_dist_bourgs().' cases !', false);
+							$isOk = false;
+            }
+            else
+            {
+              $dist_r = $R->get_dist_bourgs(true);
+              $bats = construction::batiments_proche($joueur->get_x(), $joueur->get_y(), 'bourg', $dist_r, $R->get_id(), true, true);
+              if( !bats )
+                $bats = placement::batiments_proche($joueur->get_x(), $joueur->get_y(), 'bourg', $dist_r, $R->get_id(), true, true);
+              if( $bats )
+              {
+                $isOk = true;
+                foreach($bats as $b)
+                {
+                $r_bourg = new royaume($b['royaume']);
+                $d_max = min($r_bourg->get_dist_bourgs(true), $dist_r);
+                  $dist = detection_distance(convert_in_pos($b['x'], $b['y']), convert_in_pos($joueur->get_x(), $joueur->get_y()));
+                  if( $dist <= $d_max )
+                  {
+                    $princ->add_message('Il y a un bourg à '.$dist.' cases !', false);
+      							$isOk = false;
+                    break;
+                  }
+                }
+              }
+            }
+>>>>>>> 893e69c49f064d2509f661eab075a59a53f3729f
 					}
 
 					// Distance entre forts
 					else if($isOk && $_GET['type'] == 'fort'){
 						// dist entre 2 forts du même royaume
+<<<<<<< HEAD
 						$distanceForts = 4;
 						$distanceMax = $distanceForts * $facteurEntretien;
 
@@ -332,6 +363,20 @@ verif_mort($joueur, 1);
 								$isOk = false;
 							}
 						}
+=======
+            if( construction::batiments_proche($joueur->get_x(), $joueur->get_y(), 'fort', $R->get_dist_forts(), $R->get_id())
+              or placement::batiments_proche($joueur->get_x(), $joueur->get_y(), 'fort', $R->get_dist_forts(), $R->get_id()) )
+            {
+              $princ->add_message('Vous avez un fort à moins de '.$R->get_dist_bourgs().' cases !', false);
+							$isOk = false;
+            }
+            else if( construction::batiments_proche($joueur->get_x(), $joueur->get_y(), 'fort', $R->get_dist_forts(true), $R->get_id(), true)
+              or placement::batiments_proche($joueur->get_x(), $joueur->get_y(), 'fort', $R->get_dist_forts(true), $R->get_id(), true) )
+            {
+              $princ->add_message('Il y a un fort à moins de '.$R->get_dist_forts(true).' cases !', false);
+							$isOk = false;
+            }
+>>>>>>> 893e69c49f064d2509f661eab075a59a53f3729f
 					}
 				}
 				if(!$isOk){
