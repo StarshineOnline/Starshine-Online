@@ -121,7 +121,7 @@ while($row = $db->read_array($req)) {
                         'sort_element', 'sort_mort', 'craft', 'honneur'));
         $pc->setAttribute('image',$row_j[$i]['race'].'_'.
                           $Tclasse[$row_j[$i]['classe']]['type']);
-        $pc->setAttribute('mort', (($row_j[$i]['hp'] < 0) ? 'true' : 'false'));
+        $pc->setAttribute('mort', (($joueur->est_mort()) ? 'true' : 'false'));
         $square->appendChild($pc);
       }
     }
@@ -165,7 +165,7 @@ while($row = $db->read_array($req)) {
               array('melee', 'distance', 'esquive', 'blocage',
                     'incantation', 'sort_vie', 'sort_element',
                     'sort_mort', 'craft', 'honneur', 'exp'));
-	$pc->setAttribute('mort', (($row_j[$i]['hp'] < 0) ? 'true' : 'false'));
+	$pc->setAttribute('mort', (($row_j[$i]['hp'] <= 0) ? 'true' : 'false'));
 	$square->appendChild($pc);
       }
     }

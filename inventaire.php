@@ -48,6 +48,7 @@ $princ = $interf->creer_princ_droit('Inventaire du Personnage');
 //Switch des actions
 if(!$visu AND isset($_GET['action']))
 {
+verif_mort($joueur, 1);
 	switch($_GET['action'])
 	{
 		case 'desequip' :
@@ -373,10 +374,59 @@ if(!$visu AND isset($_GET['action']))
   										$achiev->set_compteur($achiev->get_compteur() + 1);
   										$achiev->sauver();
 
+  										if ($W_row['info'] == 1)
+  										{
+  											// Augmentation du compteur de l'achievement
+  											$achiev = $joueur->get_compteur('pose_drapeaux_plaine');
+  											$achiev->set_compteur($achiev->get_compteur() + 1);
+  											$achiev->sauver();
+  										}
+  										if ($W_row['info'] == 2)
+  										{
+  											// Augmentation du compteur de l'achievement
+  											$achiev = $joueur->get_compteur('pose_drapeaux_foret');
+  											$achiev->set_compteur($achiev->get_compteur() + 1);
+  											$achiev->sauver();
+  										}
   										if ($W_row['info'] == 3)
   										{
   											// Augmentation du compteur de l'achievement
   											$achiev = $joueur->get_compteur('pose_drapeaux_sable');
+  											$achiev->set_compteur($achiev->get_compteur() + 1);
+  											$achiev->sauver();
+  										}
+  										if ($W_row['info'] == 4)
+  										{
+  											// Augmentation du compteur de l'achievement
+  											$achiev = $joueur->get_compteur('pose_drapeaux_glace');
+  											$achiev->set_compteur($achiev->get_compteur() + 1);
+  											$achiev->sauver();
+  										}
+  										if ($W_row['info'] == 6)
+  										{
+  											// Augmentation du compteur de l'achievement
+  											$achiev = $joueur->get_compteur('pose_drapeaux_montagne');
+  											$achiev->set_compteur($achiev->get_compteur() + 1);
+  											$achiev->sauver();
+  										}
+  										if ($W_row['info'] == 7)
+  										{
+  											// Augmentation du compteur de l'achievement
+  											$achiev = $joueur->get_compteur('pose_drapeaux_marais');
+  											$achiev->set_compteur($achiev->get_compteur() + 1);
+  											$achiev->sauver();
+  										}
+  										if ($W_row['info'] == 8)
+  										{
+  											// Augmentation du compteur de l'achievement
+  											$achiev = $joueur->get_compteur('pose_drapeaux_route');
+  											$achiev->set_compteur($achiev->get_compteur() + 1);
+  											$achiev->sauver();
+  										}
+  										if ($W_row['info'] == 9)
+  										{
+  											// Augmentation du compteur de l'achievement
+  											$achiev = $joueur->get_compteur('pose_drapeaux_terremaudite');
   											$achiev->set_compteur($achiev->get_compteur() + 1);
   											$achiev->sauver();
   										}

@@ -213,7 +213,7 @@ function affiche_perso_visu($joueur, $W_row, $position="")
 	
 	$titre_perso = new titre($W_ID);
 	$titre = $titre_perso->get_titre_perso($bonus);
-	if ($perso->get_hp() <= 0)
+	if ( $perso->est_mort() )
 	{
 		echo '<span class="mort">';
 		echo $titre[0].' ';

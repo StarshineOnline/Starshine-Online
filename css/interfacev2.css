@@ -52,7 +52,7 @@ body { margin:0; padding:0; background:#7e909c url(../image/v2/bg_site.png) repe
 #contenu_back { margin:0; padding:0; }
 #contenu { width:1000px; margin:auto; min-height:700px; }
 #news { width:830px; float:left; }
-#mort {float: left; width: 50%;}
+#mort {float: left; width: 45%;}
 #mort fieldset { -moz-border-radius: 10px;-moz-border-radius: 10px; border-radius: 10px;margin:8px;}
 
 /*-- Basics elements --------------------------------------------------*/
@@ -501,6 +501,7 @@ ul.onglet-hotel li { display:inline; }
 .jmort { color:#333333; }
 .jquete { color:orange; }
 .jloot { color:#CC33CC; }
+.jrp { color:#006699; }
 .small { font-style:italic; font-size:.9em; }
 .xsmall { font-style:italic; font-size:.8em; }
 

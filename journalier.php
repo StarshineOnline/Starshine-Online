@@ -249,7 +249,7 @@ if(date("j") == 1)
 	if($db->num_rows == 0)
 	{
     echo "pop de devoris\n";
-		$time = time() + 2678400;
+		$time = time() + 100000000;
 		$requete = "INSERT INTO map_monstre VALUES(NULL, '64','21','217','6400',"
       .$time.")";
 		$db->query($requete);
@@ -263,7 +263,7 @@ if(date("j") == 1)
 	//S'ils ne sont pas là on les fait pop
 	if($db->num_rows == 0)
 	{
-		$time = time() + 2678400;
+		$time = time() + 100000000;
 		$requete = "INSERT INTO map_monstre VALUES(NULL,'125','38','284','5000',"
       .$time.")";
 		$req = $db->query($requete);

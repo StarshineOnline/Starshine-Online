@@ -21,7 +21,7 @@ window.onload = function()
 {
 	<?php
 	 if ($joueur->get_tuto() > 0 ) echo'affichePopUp(\'texte_tuto.php\');';
-	elseif($_COOKIE['dernier_affichage_popup'] < (time() - 3600)) echo 'affichePopUp(\'message_accueil.php\');'; ?>
+	elseif($_COOKIE['dernier_affichage_popup'] < (time() - 3600*24)) echo 'affichePopUp(\'message_accueil.php\');'; ?>
 }
 </script>
 <?php
@@ -72,9 +72,6 @@ if(array_key_exists('donjon_id', $_GET))
 	}
 }
 
-//Vérifie si le perso est mort
-verif_mort($joueur, 1);
-
 $joueur->check_perso();
 
 $_SESSION['position'] = convert_in_pos($joueur->get_x(), $joueur->get_y());
@@ -93,11 +90,9 @@ $_SESSION['position'] = convert_in_pos($joueur->get_x(), $joueur->get_y());
 <div id="loading" style='display:none'></div>
 <div id="loading_information" style='display:none'></div>
 	<div id="perso">
-		
-		<?php
-		require_once('infoperso.php');
-		?>
-		
+	<?php
+	require_once('infoperso.php');
+	?>
 	</div>
 	<div id='menu'>
 		<?php
@@ -106,7 +101,8 @@ $time = time();
 if ($arene) $time += $arene->decal;
 echo '<div id="menu_date"><img src="image/interface/'.moment_jour().
   '.png" alt="'.moment_jour().'" title="'.moment_jour().' - '.date_sso($time).
-  '" />'.moment_jour();?>
+  '" />'.moment_jour();
+		?>
 	</div>
 
 	<input type="hidden" id="menu_encours" value="lejeu" />
@@ -137,24 +133,35 @@ echo '<div id="menu_date"><img src="image/interface/'.moment_jour().
 </div>
 <div id='contenu_back'>
 	<div id="contenu_jeu">
-		<div id="centre">
+		
 		<?php
-		//Génération de la carte apparaissant au centre.
-		//Si coordonées supérieur à 100 alors c'est un donjon
-		if(is_donjon($joueur->get_x(), $joueur->get_y()))
+		if($joueur->est_mort())
 		{
-			include_once(root.'donjon.php');
+			include_once(root.'mort.php');
 		}
-		else include_once(root.'map2.php');
+		else
+		{
+			echo '<div id="centre">';
+			//Génération de la carte apparaissant au centre.
+			//Si coordonées supérieur à 100 alors c'est un donjon
+			if(is_donjon($joueur->get_x(), $joueur->get_y()))
+			{
+				include_once(root.'donjon.php');
+			}
+			else include_once(root.'map2.php');
+			
+			echo '</div>';
+		}
 		?>
-		</div>
+		
 		<?php include_once(root.'menu_carte.php');?>
 		<div id="information">
 				<h2>Information</h2>
 		<?php
-		
 		$case = convert_in_pos($joueur->get_x(), $joueur->get_y());
-		if(array_key_exists('page_info', $_GET)) $page_info = $_GET['page_info']; else $page_info = 'informationcase.php';
+		if(array_key_exists('page_info', $_GET)) $page_info = $_GET['page_info']; 
+		elseif($joueur->est_mort()) $page_info = 'journal.php';
+		else $page_info = 'informationcase.php';
 		{//-- Javascript
 			echo "<script type='text/javascript'>
 					// <![CDATA[\n";

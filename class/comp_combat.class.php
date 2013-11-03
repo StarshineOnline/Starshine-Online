@@ -812,6 +812,7 @@ class comp_combat_etourdi extends comp_combat_degat_etat
   /// Méthode gérant l'utilisation d'une compétence
   function lance(/*&$actif, &$passif, &$effets*/&$attaque)
   {
+    $actif = &$attaque->get_actif();
     $actif->degat_moins = $this->get_effet();
     return comp_combat::lance($attaque);
   }

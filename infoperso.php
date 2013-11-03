@@ -25,7 +25,15 @@ if (file_exists('root.php'))
 		  </script>";
 }
 
-
+if($joueur->est_mort())
+{
+?>
+	<h2 class="ville_titre">Vous êtes mort</h2>
+	Votre dernier souvenir est l'endroit où vous êtes mort <?php echo 'x : '.$joueur->get_x().' / y : '.$joueur->get_y(); ?>
+<?php
+}
+else
+{
 {//-- PA, HP, MP, XP, ...
 	echo "<div id='infos_perso'>"; 
 	//--  inclusion de la rosace des vents.
@@ -220,14 +228,13 @@ if (count($invitation) > 0)
 	</div>';
 }
 }
-echo "</div>
-		<div id='perso_menu'>
-			<ul>
-				<li id='lejeu' class='menu' onclick=\"menu_change('lejeu');\">Le jeu</li>
-				<li id='starshine' class='menu' onclick=\"menu_change('starshine');\">Starshine</li>
-				<li id='communaute' class='menu' onclick=\"menu_change('communaute');\">Communauté</li>
-			</ul>
-			
-		</div>";
-
+}
 ?>
+</div>
+<div id='perso_menu'>
+	<ul>
+		<li id="lejeu" class="menu" onclick="menu_change('lejeu');">Le jeu</li>
+		<li id="starshine" class="menu" onclick="menu_change('starshine');">Starshine</li>
+		<li id="communaute" class="menu" onclick="menu_change('communaute');">Communauté</li>
+	</ul>	
+</div>
