@@ -221,33 +221,47 @@ verif_mort($joueur, 1);
 						// dist entre 2 bourgs
 						$distanceMax = 7 * $facteurEntretien;
 
-						$requete = "SELECT 1 FROM construction"
+						$requete = "SELECT x, y FROM construction"
 							." WHERE x >= ".max(($joueur->get_x() - $distanceMax), 1)
 							." AND x <= ".min(($joueur->get_x() + $distanceMax), 190)
 							." AND y >= ".max(($joueur->get_y() - $distanceMax), 1)
 							." AND y <= ".min(($joueur->get_y() + $distanceMax), 190)
 							." AND type = 'bourg'";
 						$req = $db->query($requete);
+						$dist = 200;
 						if($db->num_rows > 0)
 						{
-              $princ->add_message('Il y a un bourg à moins de '.$distanceMax.' cases !', false);
+							while ($row = $db->read_assoc($req))
+							{
+								$dist_temp = calcul_distance(convert_in_pos($row['x'], $row['y']), ($joueur->get_pos()));
+								if ($dist_temp < $dist)
+									$dist= $dist_temp;
+								}							
+              $princ->add_message('Il y a un bourg à moins de '.$dist.' cases !', false);
 							$isOk = false;
 						}
 
 						// On vérifie aussi les chantiers
 						if($isOk){
-							$requete = "SELECT 1 FROM placement"
+							$requete = "SELECT x, y FROM placement"
 							." WHERE x >= ".max(($joueur->get_x() - $distanceMax), 1)
 							." AND x <= ".min(($joueur->get_x() + $distanceMax), 190)
 							." AND y >= ".max(($joueur->get_y() - $distanceMax), 1)
 							." AND y <= ".min(($joueur->get_y() + $distanceMax), 190)
 							." AND type = 'bourg'";
 							$req = $db->query($requete);
-							if($db->num_rows > 0)
+						$dist = 200;
+						if($db->num_rows > 0)
+						{
+							while ($row = $db->read_assoc($req))
 							{
-                $princ->add_message('Il y a un bourg en construction à moins de '.$distanceMax.' cases !', false);
-								$isOk = false;
-							}
+								$dist_temp = calcul_distance(convert_in_pos($row['x'], $row['y']), ($joueur->get_pos()));
+								if ($dist_temp < $dist)
+									$dist = $dist_temp;
+								}							
+              $princ->add_message('Il y a un bourg en construction à '.$dist.' cases !', false);
+							$isOk = false;
+						}
 						}
 					}
 
@@ -257,7 +271,7 @@ verif_mort($joueur, 1);
 						$distanceForts = 4;
 						$distanceMax = $distanceForts * $facteurEntretien;
 
-						$requete = "SELECT id FROM construction"
+						$requete = "SELECT id, x, y FROM construction"
 								." WHERE x >= ".max(($joueur->get_x() - $distanceMax), 1)
 								." AND x <= ".min(($joueur->get_x() + $distanceMax), 190)
 								." AND y >= ".max(($joueur->get_y() - $distanceMax), 1)
@@ -265,7 +279,7 @@ verif_mort($joueur, 1);
 								." AND type = 'fort'"
 								." AND royaume = ".$R->get_id()
 								." UNION"
-								." SELECT id FROM construction"
+								." SELECT id, x, y FROM construction"
 									." WHERE x >= ".max(($joueur->get_x() - $distanceForts), 1)
 									." AND x <= ".min(($joueur->get_x() + $distanceForts), 190)
 									." AND y >= ".max(($joueur->get_y() - $distanceForts), 1)
@@ -273,15 +287,22 @@ verif_mort($joueur, 1);
 									." AND type = 'fort'"
 									." AND royaume <> ".$R->get_id();
 						$req = $db->query($requete);
+						$dist = 200;
 						if($db->num_rows > 0)
 						{
-              $princ->add_message('Il y a un fort à moins de '.$distanceMax.' cases !', false);
+							while ($row = $db->read_assoc($req))
+							{
+								$dist_temp = calcul_distance(convert_in_pos($row['x'], $row['y']), ($joueur->get_pos()));
+								if ($dist_temp < $dist)
+									$dist = $dist_temp;
+								}	
+					    $princ->add_message('Il y a un fort à moins de '.$distanceMax.' cases !', false);
 							$isOk = false;
 						}
 
 						// On vérifie aussi les chantiers
 						if($isOk){
-							$requete = "SELECT id FROM placement"
+							$requete = "SELECT id, x, y FROM placement"
 										." WHERE x >= ".max(($joueur->get_x() - $distanceMax), 1)
 										." AND x <= ".min(($joueur->get_x() + $distanceMax), 190)
 										." AND y >= ".max(($joueur->get_y() - $distanceMax), 1)
@@ -289,7 +310,7 @@ verif_mort($joueur, 1);
 										." AND type = 'fort'"
 								." AND royaume = ".$R->get_id()
 								." UNION"
-										." SELECT id FROM placement"
+										." SELECT id, x, y FROM placement"
 										." WHERE x >= ".max(($joueur->get_x() - $distanceForts), 1)
 										." AND x <= ".min(($joueur->get_x() + $distanceForts), 190)
 										." AND y >= ".max(($joueur->get_y() - $distanceForts), 1)
@@ -297,9 +318,17 @@ verif_mort($joueur, 1);
 										." AND type = 'fort'"
 											." AND royaume <> ".$R->get_id();
 							$req = $db->query($requete);
-							if($db->num_rows > 0)
+							$dist = 200;
+						if($db->num_rows > 0)
+						{
+							while ($row = $db->read_assoc($req))
 							{
-                $princ->add_message('Il y a un fort en cosntruction à moins de '.$distanceMax.' cases !', false);
+								$dist_temp = calcul_distance(convert_in_pos($row['x'], $row['y']), ($joueur->get_pos()));
+								if ($dist_temp < $dist)
+									$dist = $dist_temp;
+								}
+							{
+                $princ->add_message('Il y a un fort en construction à '.$dist.' cases !', false);
 								$isOk = false;
 							}
 						}
