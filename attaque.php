@@ -9,7 +9,6 @@ include_once(root.'haut_ajax.php');
 //Si attaque via pet, on fait les verifs nécessaires
 $check_pet = false;
 $check_pet_def = false;
-//$log_combat = "";
 $no_pa_attaque = false;
 $joueur = new perso($_SESSION['ID']);
 if(array_key_exists('pet', $_GET))
@@ -177,12 +176,9 @@ switch($type)
 		else $map_batiment = new placement($_GET['id_batiment']);
 		$joueur = new perso($_SESSION['ID']);
     $joueur->check_perso();
-		/*if($joueur->get_pa() >= 10)
-		{*/
-			$siege = new batiment($map_siege->get_id_batiment());
-			$defenseur = entite::factory('batiment', $map_batiment);
-			$attaquant = entite::factory('siege', $map_siege, $joueur, true, $defenseur);
-		//}
+		$siege = new batiment($map_siege->get_id_batiment());
+		$defenseur = entite::factory('batiment', $map_batiment);
+		$attaquant = entite::factory('siege', $map_siege, $joueur, true, $defenseur);
 	break;
 	case 'ville' :
 		if ($joueur->is_buff('debuff_rvr')) $no_rvr = true;
@@ -398,27 +394,21 @@ else
 			$defense_hp_avant = $defenseur->get_hp();
 
       $attaque = new attaque($joueur, $attaquant, $defenseur);
-			//$log_combat .= 'r'.$round.':';
 			//Boucle principale qui fait durer le combat $round_total round
       $attaque->add_log_combat('r'.$round.':');
 			while(($round < ($round_total + 1)) AND ($attaquant->get_hp() > 0) AND ($defenseur->get_hp() > 0))
 			{
-				/*$attaquant->init_round();
-				$defenseur->init_round();*/
 				if ($mode == 'attaquant') $mode = 'defenseur';
 				else ($mode = 'attaquant');
         $attaque->init_round($mode);
 
 				// Effets généraux
-				/*$effects = effect::general_factory($attaquant, $defenseur, $mode);
-				// Effets permanents des joueurs
-				$joueur->get_effets_permanents($effects, $mode);*/
 				if($type == 'joueur')
 				{
 					if($mode == 'attaquant')
-						$joueur_defenseur->get_effets_permanents(/*$effects*/$attaque->get_effets(), 'defenseur');
+						$joueur_defenseur->get_effets_permanents($attaque->get_effets(), 'defenseur');
 					else
-						$joueur_defenseur->get_effets_permanents(/*$effects*/$attaque->get_effets(), 'attaquant');
+						$joueur_defenseur->get_effets_permanents($attaque->get_effets(), 'attaquant');
 				}
 
 				if($mode == 'attaquant')
@@ -454,26 +444,21 @@ else
 					if(($mode == 'defenseur') && ($W_distance_relative >= $round))
 					{
 						echo $defenseur->get_nom().' s\'approche<br />';
-						//$action[0] = '';
 						$action = null;
-						//$log_combat .= 'n';
             $attaque->add_log_combat('n');
 					}
 					elseif (($mode == 'defenseur') && ($type == 'batiment'))
 					{
-						//$action[0] = '';
 						$action = null;
 					}
 					else
 					{
 						${$mode}->get_action();
 						$action = script_action(${$mode}, ${$mode_def}, $mode, $attaque);
-						//if(is_array($action[2])) ${$mode} = $action[2];
 					}
 					//print_r($action);
 					$args = array();
 					$args_def = array();
-					//echo $action[0];
 					$hp_avant = ${$mode_def}->get_hp();
 					$augmentations = array('actif' => array('comp' => array(), 'comp_perso' => array()), 'passif' => array('comp' => array(), 'comp_perso' => array()));
 					
@@ -482,20 +467,6 @@ else
 					$passif = &$attaque->get_passif();
 					if($action)
 					{
-            /*if ($mode == 'attaquant')
-            {
-              $actif = &$attaquant;
-              $passif = &$defenseur;
-        	    $log_effects_actif = $log_effects_attaquant;
-        	    $log_effects_passif = $log_effects_defenseur;
-            }
-          	else
-            {
-              $actif = &$defenseur;
-              $passif = &$attaquant;
-        	    $log_effects_actif = $log_effects_defenseur;
-        	    $log_effects_passif = $log_effects_attaquant;
-            }*/
             $effects = &$attaque->get_effets();
 
             // Calcul de MP nécessaires
@@ -513,16 +484,12 @@ else
           		if($mp_need < 1) $mp_need = $mp_need_avant;
           	}
             // Application des effets de mana
-            /*foreach ($effects as $effect)
-              $mp_need = $effect->calcul_mp($actif, $mp_need);*/
             $attaque->applique_effet('calcul_mp', $mp_need);
           	//Suppresion de la réserve
           	$actif->set_rm_restant($actif->get_rm_restant() - $mp_need);
 
-            $augmentations = $action->lance(/*$actif, $passif, $effects*/$attaque);
+            $augmentations = $action->lance($attaque);
           }
-          /*foreach ($effects as $effect)
-						$effect->fin_round(${$mode}, ${$mode_def}, $mode);*/
           $attaque->applique_effet('fin_round');
 
 					//Augmentation des compétences liées
@@ -551,11 +518,8 @@ else
 				if($mode == 'defenseur')
 				{
 					$round++;
-					/*$log_combat .= ','.$log_effects_attaquant.','.$log_effects_defenseur;
-					$log_effects_attaquant = "";
-					$log_effects_defenseur = "";*/
           $attaque->fin_round();
-					if ($round < ($round_total + 1)) //$log_combat .= ';r'.$round.':';
+					if ($round < ($round_total + 1))
             $attaque->add_log_combat(';r'.$round.':');
 					?>
 					</td>
@@ -564,7 +528,6 @@ else
 					<?php
 				}
 				else
-					//$log_combat .= ','; // Fin du round de l'attaquant
           $attaque->add_log_combat(',');
 					
 					if ($siege_true) break;
@@ -743,8 +706,6 @@ else
 			elseif ($type == 'siege' OR $type == 'ville') {
 				$joueur->set_pa($joueur->get_pa() - $pa_attaque);
 				$joueur->sauver();
-				/*$map_siege->set_rechargement(time() + $siege->get_bonus('rechargement'));
-				$map_siege->sauver();*/
 			}
 			else
 				echo "<b>Error: </b> type is [$type] !<br/>";
@@ -808,7 +769,7 @@ else
 				$combat = new combat();
 				$combat->attaquant = $joueur->get_id();
 				$combat->defenseur = $defenseur->get_id();
-				$combat->combat = $attaque->get_log_combat();//$log_combat;
+				$combat->combat = $attaque->get_log_combat();
 				$combat->id_journal = $db->last_insert_id();
 				$combat->sauver();
 			}
