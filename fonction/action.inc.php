@@ -126,11 +126,9 @@ function sub_script_action($joueur, $ennemi, $mode, &$attaque)
 		$bonus_para = 1;
 		if ($res_para = $joueur->get_bonus_permanents('resistance_para')) {
 
--            print_debug("Ajuste la resistance à la paralysie de $res_para%<br/>");
-
--            $bonus_para = 1 + $res_para / 100;
-
--          }
+            print_debug("Ajuste la resistance à la paralysie de $res_para%<br/>");
+            $bonus_para = 1 + $res_para / 100;
+          }
 		$resist_para = $bonus_para*pow($joueur->get_pm_para(), 0.5)*pow($joueur->get_volonte(),1.85) + $joueur->etat['paralysie']['cpt']*1000;
 		$sm = ($ennemi->get_volonte() * $ennemi->get_sort_mort());
 							
