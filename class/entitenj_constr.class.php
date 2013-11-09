@@ -225,5 +225,44 @@ abstract class entitenj_constr extends entnj_incarn
     else
       return $G_PA_attaque_batiment;
   }
+
+  /**
+   * Renvoie le nombre de bâtiments proche d'une certaine position
+   *
+   * @var  $x         Position x
+   * @var  $y         Position y
+   * @var  $type      Type de bâtiment
+   * @var  $distance  Distance à respecter
+   * @var  $royaume   Id du royaume du bâtiment ou null si le royaume n'importe pas
+   * @var  $diff_roy  True si on cherche un bâtiment d'un royaume différent, false c'est du même royaume
+   * @var  $liste     True si on renvoie la liste s'il y a des bâtiments, sinon renvoie le nombre de bâtiments
+   */
+  function batiments_proche($x, $y, $type, $distance, $royaume=null, $diff_roy=false, $liste=false)
+  {
+    global $db, $G_max_x, $G_max_y;
+    if( $royaume )
+      $roy = 'AND royaume '.($diff_roy?'!=':'=').$royaume;
+    else
+      $roy = '';
+		$requete = 'SELECT id, x, y, royaume FROM '.static::get_table()
+			.' WHERE x >= '.max(($x - $distance), 1)
+			.' AND x <= '.min(($x + $distance), $G_max_x)
+			.' AND y >= '.max(($y - $distance), 1)
+			.' AND y <= '.min(($y + $distance), $G_max_y)
+			.' AND type = "'.$type.'"'.$roy;
+		$req = $db->query($requete);
+    $num = $db->num_rows;
+    if( $liste && $num>0)
+    {
+      $bats = array();
+      while( $row = $db->read_assoc($req) )
+      {
+        $bats[] = $row;
+      }
+      return $bats;
+    }
+    else
+      return $num;
+  }
 }
 ?>

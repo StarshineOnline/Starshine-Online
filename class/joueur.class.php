@@ -75,6 +75,24 @@ class joueur extends table
 		$this->mdp_forum = $vals['mdp_forum'];
   }
 
+  /// Factory créant un objet correspondant à l'ID du joueur connecté
+  static function factory()
+  {
+    static $joueur = null;
+    if( !$joueur && array_key_exists('id_joueur', $_SESSION) )
+      $joueur = new joueur($_SESSION['id_joueur']);
+    return $joueur;
+  }
+
+  /// Méthode renvoyant le personnage actif
+  static function get_perso()
+  {
+    static $perso = null;
+    if( !$perso && array_key_exists('ID', $_SESSION) )
+      $perso = new perso($_SESSION['id_joueur']);
+    return $perso;
+  }
+
   /// Renvoie le pseudo
 	function get_pseudo()
 	{
@@ -123,12 +141,12 @@ class joueur extends table
 	
 	/**
 	 * Test le mot de passe
-	 * @param $mdp   md5 du mot de passe
+	 * @param $hashed_mdp   md5 du mot de passe
 	 * @return   true si le mot de passe est bon, false sinon
 	 */
-  function test_mdp($mdp)
-  {
-    return $this->sel($mdp) == $this->mdp;
+  function test_mdp($hashed_mdp)
+  { // ATTENTION: c'est bien le MD5 du mot de passe
+    return $this->sel($hashed_mdp) == $this->mdp;
   }
 
   /// Renvoie le mot de passe du forum
@@ -185,7 +203,7 @@ class joueur extends table
 
 	/// "Sale" le mot de passe
 	function sel($mdp)
-	{
+	{ // ATTENTION: c'est le MD5 du mot de passe qui est passé à salter
     return sha1($this->login.'!$'.$mdp);
   }
   

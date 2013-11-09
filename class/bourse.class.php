@@ -37,7 +37,7 @@ class bourse
 	//Finalisation d'ench?res
 	function check_encheres()
 	{
-		global $db;
+		/*global $db;
 		$requete = "SELECT id_bourse_royaume, id_royaume, ressource, nombre, id_royaume_acheteur, prix, fin_vente, actif FROM bourse_royaume WHERE fin_vente < NOW() AND actif = 1";
 		$req = $db->query($requete);
 		while($row = $db->read_assoc($req))
@@ -63,7 +63,7 @@ class bourse
 				$requete = "UPDATE royaume SET ".$enchere->ressource." = ".$enchere->ressource." + ".$enchere->nombre." WHERE ID = ".$enchere->id_royaume;
 				$db->query($requete);
 			}
-		}
+		}*/
 	}
 }
 ?>

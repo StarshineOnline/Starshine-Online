@@ -40,10 +40,10 @@ else
     $item = sSQL($_POST['loot_unique']);
     $lastloot = $item;
     $chance = intval($_POST['chance']);
-    $level = array_key_exists('level', $_POST) ? 1 : 0;
+    $level = intval($_POST['level']);
     if (preg_match('/^([oamlp]|hg)[0-9]+$/', $item)
       && $chance > 0 && $chance < 100000
-        && ($level == 0 || $level == 1))
+        && ($level >= 0 && $level <= 2))
     {
       $db->query("insert into boss_loot(id_monstre, item, chance, level) ".
         "values ($id_monstre, '$item', $chance, $level)");
@@ -217,8 +217,12 @@ else
   <input id="item-txt" type="text" disabled="disabled" size="4" />
   <label for="chance-txt">Probabilité relative</label>
   <input id="chance-txt" type="text" name="chance" size="4" />
-  <label for="level-chk">Item "grosbill"</label>
-  <input id="level-chk" type="checkbox" name="level" /><br/>
+  <label for="level-sel">Type</label>
+  <select id="level-sel"  name="level">
+    <option value="0">moyen</option>
+    <option value="1">moyen unique</option>
+    <option value="2">gros bill</option>
+  </select><br/>
   <input type="hidden" name="id_monstre" value="<?php echo $id_monstre; ?>" />
   <input type="hidden" id="hd-loot-id" name="loot_unique" value="<?php echo $lastloot ?>" />
 	<input type="submit" value="Valider" />
@@ -237,16 +241,19 @@ $('#loot-opt').click(function() { setUniqueLoot($(this).val()); });
 ");
 
 $req = $db->query("select * from boss_loot where id_monstre = $id_monstre");
-$total = 0;
+$total_m = $total_gb = 0;
 $drops = array();
 while ($row = $db->read_object($req)) {
-  $total += $row->chance;
+  if( $row->level == 2 )
+    $total_gb += $row->chance;
+  else
+    $total_m += $row->chance;
   $drops[] = $row;
 }
 
-echo '<table><thead><th>Nom</th><th>GB</th><th>Chances</th></thead><tbody>';
+echo '<table><thead><th>Nom</th><th>type</th><th>Chances</th></thead><tbody>';
 foreach ($drops as $d) {
-  $percent = floor(10000 * $d->chance / $total) / 100;
+  $percent = floor(10000 * $d->chance / ($d->level==2?$total_gb:$total_m)) / 100;
   $type = $d->item[0];
   if ($type == 'h') {
     $type = 'hg';
@@ -255,9 +262,24 @@ foreach ($drops as $d) {
   else
     $id = substr($d->item, 1);
   $nom = $uloot[$type][$id];
-  echo '<tr><td>'.$nom.'</td><td>'.($d->level ? 'oui' : 'non').'</td><td>'.
-    $d->chance.' ('.$percent.'%)</td><td>'.'<a href="?delete_unique='.
-    $d->item.'&amp;id_monstre='.$id_monstre.'">Supprimer</a></td></tr>';
+  echo '<tr><td>'.$nom.'</td><td>';
+  switch($d->level)
+  {
+  case 0:
+    echo 'moyen';
+    break;
+  case 1:
+    echo 'moyen unique';
+    break;
+  case 2:
+    echo 'gros bill';
+    break;
+  default:
+    echo "inconnu ($d->level)";
+  }
+  echo '</td><td>'.$d->chance.' ('.$percent.'%)</td><td>'.
+    '<a href="?delete_unique='.$d->item.'&amp;id_monstre='.
+    $id_monstre.'">Supprimer</a></td></tr>';
 }
 echo '</table>';
 

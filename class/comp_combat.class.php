@@ -282,11 +282,12 @@ class comp_combat extends comp
   	if(array_key_exists('benediction', $actif->etat)) $buff_bene_degat = $actif->etat['benediction']['effet'] * $G_buff['bene_degat']; else $buff_bene_degat = 0;
   	if(array_key_exists('berzeker', $actif->etat)) $buff_berz_degat = $actif->etat['berzeker']['effet'] * $G_buff['berz_degat']; else $buff_berz_degat = 0;
   	if(array_key_exists('berzeker', $passif->etat)) $buff_berz_degat_r = $passif->etat['berzeker']['effet'] * $G_buff['berz_degat_recu']; else $buff_berz_degat_r = 0;
-  	if($actif->is_buff('buff_force')) $buff_force = $actif->get_buff('buff_force', 'effet'); else $buff_force = 0;
+  	if($actif->etat['posture']['type'] == 'posture_degat') $buff_posture_degat = $actif->etat['posture']['effet']; else $buff_posture_degat = 0;
+	if($actif->is_buff('buff_force')) $buff_force = $actif->get_buff('buff_force', 'effet'); else $buff_force = 0;
   	if($actif->is_buff('buff_cri_victoire')) $buff_cri_victoire = $actif->get_buff('buff_cri_victoire', 'effet'); else $buff_cri_victoire = 0;
   	if($actif->is_buff('fleche_tranchante') && $actif->get_arme_type() == 'arc') $degat += $actif->get_buff('fleche_tranchante', 'effet');
   	if($actif->is_buff('oeil_chasseur') && $passif->get_espece() == 'bete' && $actif->get_arme_type() == 'arc') $degat += $actif->get_buff('oeil_chasseur', 'effet');
-    $degat = $degat + $buff_bene_degat + $buff_berz_degat + $buff_berz_degat_r + $buff_force + $buff_cri_victoire;
+    $degat = $degat + $buff_bene_degat + $buff_berz_degat + $buff_berz_degat_r + $buff_posture_degat + $buff_force + $buff_cri_victoire;
   	if($actif->is_buff('maladie_mollesse')) $degat = ceil($degat / (1 + ($actif->get_buff('maladie_mollesse', 'effet') / 100)));
     $attaque->set_degats($degat);
   	// Application des effets de degats
@@ -342,8 +343,7 @@ class comp_combat extends comp
 			if(array_key_exists('recuperation', $actif->etat)) $actif->etat['recuperation']['hp_max'] += $effet;
 			$actif->set_hp($actif->get_hp() + $effet);
 			if($effet > 0) echo '&nbsp;&nbsp;<span class="soin">'.$actif->get_nom().' gagne '.$effet.' HP par la rage vampirique</span><br />';
-			//$log_effects_actif .= "&ef8~".$effet;
-      $attaque->add_log_effet_actif('&ef8~'.$effet);
+			$attaque->add_log_effet_actif('&ef8~'.$effet);
 		}
 	  //Epines
     if($passif->is_buff('buff_epine', true))
@@ -352,8 +352,7 @@ class comp_combat extends comp
 			$effet = round($degat * $buff_epine);
 			$actif->set_hp($actif->get_hp() - $effet);
 			if($effet > 0) echo '&nbsp;&nbsp;<span class="degat">'.$passif->get_nom().' renvoie '.$effet.' dégâts grâce à l\' Armure en épine</span><br />';
-			//$log_effects_passif .= "&ef9~".$effet;
-      $attaque->add_log_effet_passif('&ef8~'.$effet);
+			$attaque->add_log_effet_passif('&ef9~'.$effet);
 		}
 	  //Armure de glace
     if($passif->is_buff('buff_armure_glace', true))
@@ -387,8 +386,7 @@ class comp_combat extends comp
     $passif = &$attaque->get_passif();
     $effets = &$attaque->get_effets();
 			if(array_key_exists('tir_vise', $actif->etat)) $buff_vise_degat = $actif->etat['tir_vise']['effet'] + 1; else $buff_vise_degat = 1;
-			if($actif->etat['posture']['type'] == 'posture_degat') $buff_posture_degat = $actif->etat['posture']['effet']; else $buff_posture_degat = 0;
-			$arme_degat = ($actif->get_arme_degat() + $buff_posture_degat) * $buff_vise_degat;
+			$arme_degat = $actif->get_arme_degat() * $buff_vise_degat;
 
 			// Application des effets de boost des armes
 			/*foreach($effets as $effet)
@@ -814,6 +812,7 @@ class comp_combat_etourdi extends comp_combat_degat_etat
   /// Méthode gérant l'utilisation d'une compétence
   function lance(/*&$actif, &$passif, &$effets*/&$attaque)
   {
+    $actif = &$attaque->get_actif();
     $actif->degat_moins = $this->get_effet();
     return comp_combat::lance($attaque);
   }
@@ -979,6 +978,8 @@ class comp_combat_coup_bouclier extends comp_combat_degat_etat
   /// Méthode gérant l'utilisation d'une compétence
   function lance(/*&$actif, &$passif, &$effets*/&$attaque)
   {
+	$actif = &$attaque->get_actif();
+    $passif = &$attaque->get_passif();
     $actif->set_comp_att('melee');
     return parent::lance($attaque);
   }

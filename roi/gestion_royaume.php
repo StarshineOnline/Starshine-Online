@@ -533,7 +533,7 @@ switch( $_GET['direction'] )
   	            ?>
   	            Actuellement vous possédez : <?php echo $row['nom']; ?><br />
   	            <?php
-  	            $requete = "SELECT * FROM batiment_ville WHERE level > ".$row['level']." AND type = '".$type."'";
+  	            $requete = "SELECT * FROM batiment_ville WHERE level = ".$row['level']."+1 AND type = '".$type."'";
   	            $req2 = $db->query($requete);
   	            if( $db->num_rows($req2) )
   	            {
@@ -560,7 +560,7 @@ switch( $_GET['direction'] )
     	            </ul>
     	            <?php
                 }
-  	            $requete = "SELECT * FROM batiment_ville WHERE level < ".$row['level']." AND type = '".$type."' ORDER BY level DESC";
+  	            $requete = "SELECT * FROM batiment_ville WHERE level = ".$row['level']."-1 AND type = '".$type."' ORDER BY level DESC";
   	            $req2 = $db->query($requete);
   	            if( $db->num_rows($req2) )
   	            {
@@ -1040,30 +1040,16 @@ switch( $_GET['direction'] )
   		require_once(root.'class/bourse.class.php');
   		$enchere = new bourse_royaume($_GET['id_enchere']);
   		//On vérifie que c'est un royaume possible
-  		if($royaume->get_id() != $enchere->id_royaume AND $royaume->get_id() != $enchere->id_royaume_acheteur)
+  		if($royaume->get_id() != $enchere->id_royaume AND !( (1 << ($royaume->get_id()-1)) & $enchere->id_royaume_acheteur ))
   		{
-  			$prix = ceil($enchere->prix * 1.1);
   			//On vérifie que le royaume a assez de stars
-  			if($royaume->get_star() >= $prix)
+  			if($royaume->get_star() >= $enchere->prix)
   			{
-  				//On rend les stars à l'autre royaume (si l'id est différent de 0)
-  				if($enchere->id_royaume_acheteur)
-  				{
-  					$requete = "UPDATE royaume SET star = star + ".$enchere->prix." WHERE ID = ".$enchere->id_royaume_acheteur;
-  					$db->query($requete);
-  				}
   				//On prend les stars de notre royaume
-  				$requete = "UPDATE royaume SET star = star - ".$prix." WHERE ID = ".$royaume->get_id();
+  				$requete = "UPDATE royaume SET star = star - ".$enchere->prix." WHERE ID = ".$royaume->get_id();
   				$db->query($requete);
   				//On met à jour l'enchère
-  				$enchere->id_royaume_acheteur = $royaume->get_id();
-  				$enchere->prix = $prix;
-  				//Si enchère faite 6h avant la fin, on décale l'enchère de 6h
-  				$decalage = 6 * 60 * 60;
-  				if(time() > ($enchere->get_fin_vente() - $decalage))
-  				{
-  					$enchere->set_fin_vente($enchere->get_fin_vente() + $decalage);
-  				}
+  				$enchere->id_royaume_acheteur |= 1 << ($royaume->get_id()-1);
   				$enchere->sauver();
   				?>
   				<h6>Enchère prise en compte !</h6>
@@ -1076,6 +1062,10 @@ switch( $_GET['direction'] )
   				<?php
   			}
   		}
+      else
+      {
+        echo '<h5>Vous ne pouvez pas placer l\'enchère</h5>';
+      }
   	}
   	break;
   	
@@ -1156,7 +1146,7 @@ switch( $_GET['direction'] )
   		require_once(root.'class/bourse_royaume.class.php');
   		require_once(root.'class/bourse.class.php');
   		$bourse = new bourse($royaume->get_id());
-  		$bourse->check_encheres();
+  		//$bourse->check_encheres();
   		$bourse->get_encheres('DESC', 'actif = 1 AND id_royaume != '.$royaume->get_id().' AND id_royaume_acheteur != '.$royaume->get_id());
   			//
   		?>
@@ -1200,7 +1190,6 @@ switch( $_GET['direction'] )
   			<span class='ressourse'>Ressource</span>
   			<span class='nombre'>Nombre</span>
   			<span class='prix'>Prix actuel</span>
-  			<span class='finvente'>Fin vente</span>
   		</li>
   		<?php
   		$class='t2';
@@ -1215,8 +1204,7 @@ switch( $_GET['direction'] )
   			<span class='ressourse'><span class='<?php echo $enchere->ressource; ?>'></span><?php echo $enchere->ressource; ?></span>
   			<span class='nombre'><?php echo $enchere->nombre; ?></span>
   			<span class='prix'><?php echo $enchere->prix.' ('.round(($enchere->prix / $enchere->nombre), 2).' / u)'; ?></span>
-  			<span class='finvente'><?php echo $restant; ?></span>
-  			<span class='enchere'><a href="gestion_royaume.php?direction=bourse_enchere&amp;id_enchere=<?php echo $enchere->id_bourse_royaume; ?>" onclick="return envoiInfo(this.href, 'message_confirm');envoiInfo('gestion_royaume.php?direction=bourse', 'contenu_jeu')">Enchérir pour <?php echo $prix; ?> stars (<?php echo ($prix / $enchere->nombre); ?> / u)</a></span>
+  			<span class='enchere'><a href="gestion_royaume.php?direction=bourse_enchere&amp;id_enchere=<?php echo $enchere->id_bourse_royaume; ?>" onclick="return envoiInfo(this.href, 'message_confirm');envoiInfo('gestion_royaume.php?direction=bourse', 'contenu_jeu')">Placer une option d'achat</a></span>
   			</li>
   			<?php
   			if ($class=='t1'){$class='t2';}else{$class='t1';}
@@ -1226,7 +1214,7 @@ switch( $_GET['direction'] )
   		</fieldset>
   		<?php
   		$bourse->encheres = array();
-  		$bourse->get_encheres('DESC', 'actif = 1 AND id_royaume_acheteur = '.$royaume->get_id());
+  		$bourse->get_encheres('DESC', 'actif = 1 AND id_royaume_acheteur & '.(1 << ($royaume->get_id()-1)));
   		?>
   		<fieldset class='moitie'>
   		<legend>Vos mises</legend>
@@ -1235,7 +1223,6 @@ switch( $_GET['direction'] )
   			<span class='ressourse'>Ressource</span>
   			<span class='nombre'>Nombre</span>
   			<span class='prix_bis'>Prix actuel</span>
-  			<span class='finvente'>Fin vente</span>
   		</li>
   		<?php
   		$class='t2';
@@ -1249,7 +1236,6 @@ switch( $_GET['direction'] )
   			<span class='ressourse'><span class='<?php echo $enchere->ressource; ?>'></span><?php echo $enchere->ressource; ?></span>
   			<span class='nombre'><?php echo $enchere->nombre; ?></span>
   			<span class='prix_bis'><?php echo $enchere->prix.' ('.round(($enchere->prix / $enchere->nombre), 2).' / u)'; ?></span>
-  			<span class='finvente'><?php echo $restant; ?></span>
   			</li>
   			<?php
   			if ($class=='t1'){$class='t2';}else{$class='t1';}			
@@ -1268,7 +1254,6 @@ switch( $_GET['direction'] )
   			<span class='ressourse'>Ressource</span>
   			<span class='nombre'>Nombre</span>
   			<span class='prix_bis'>Prix actuel</span>
-  			<span class='finvente'>Fin vente</span>
   			
   		</li>
   		<?php
@@ -1286,9 +1271,8 @@ switch( $_GET['direction'] )
   			<span class='ressourse'><span class='<?php echo $enchere->ressource; ?>'></span><?php echo $enchere->ressource; ?></span>
   			<span class='nombre'><?php echo $enchere->nombre; ?></span>
   			<span class='prix_bis'><?php echo $enchere->prix.' ('.round(($enchere->prix / $enchere->nombre), 2).' / u)'; ?></span>
-  			<span class='finvente'><?php echo $restant; ?></span>
   			<?php
-  			if ($acheteur){echo "<span class='acheteur' title='Il y a un acheteur sur cette offre'></span>";}
+  			//if ($acheteur){echo "<span class='acheteur' title='Il y a un acheteur sur cette offre'></span>";}
   			echo "</li>";
   			if ($class=='t1'){$class='t2';}else{$class='t1';}			
   		
@@ -1299,8 +1283,8 @@ switch( $_GET['direction'] )
   		<?php
   		$bourse->encheres = array();
   		$time = time() - 7 * (24 * 60 * 60);
-  		$date = date("Y-m-d H:i:s", $time);
-  		$bourse->get_encheres('DESC', 'actif = 0 AND fin_vente > "'.$date.'" AND id_royaume_acheteur = '.$royaume->get_id());
+  		$date = date("Y-m-d", $time);
+  		$bourse->get_encheres('DESC', 'actif = 0 AND fin_vente > "'.$date.'" AND id_royaume_acheteur & '.(1 << ($royaume->get_id()-1)));
   		?>
   		<fieldset class='moitie'>
   		<legend>Enchères remportées les 7 derniers jours</legend>
@@ -1333,8 +1317,8 @@ switch( $_GET['direction'] )
   		<?php
   		$bourse->encheres = array();
   		$time = time() - 7 * (24 * 60 * 60);
-  		$date = date("Y-m-d H:i:s", $time);
-  		$bourse->get_encheres('DESC', 'actif = 0 AND fin_vente > "'.$date.'" AND id_royaume_acheteur != 0 AND id_royaume = '.$royaume->get_id());
+  		$date = date("Y-m-d", $time);
+  		$bourse->get_encheres('DESC', 'actif = 0 AND fin_vente > "'.$date.'" AND id_royaume = '.$royaume->get_id());
   		?>
   		<fieldset class='moitie'>
   		<legend>Ressources vendues les 7 derniers jours</legend>

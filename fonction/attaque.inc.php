@@ -643,7 +643,7 @@ function loot_item(&$joueur, &$groupe, $item)
 		$objet_nom = 'Grimoire : '.$row[0];
 		break;
 	}
-	echo 'Vous fouillez le corps du monstre et découvrez "'.$objet_nom.'" !<br />';
+	echo '<li>Vous fouillez le corps du monstre et découvrez "'.$objet_nom.'" !</li>';
 	//Si le joueur a un groupe
 	if ($joueur->get_groupe() > 0 AND $type_obj != 'quete')
 	{
@@ -652,14 +652,14 @@ function loot_item(&$joueur, &$groupe, $item)
 		{
 			//Aléatoire
 		case 'r' :
-			echo 'Répartition des objets aléatoire.<br />';
+			echo '<li>Répartition des objets aléatoire.</li>';
 			$chance = count($groupe->membre);
 			$aleat = rand(1, $chance);
 			$gagnant = new perso($groupe->membre[($aleat - 1)]->get_id_joueur());
 			break;
 			//Par tour
 		case 't' :
-			echo 'Répartition des objets par tour.<br />';
+			echo '<li>Répartition des objets par tour.</li>';
 			$gagnant = new perso($groupe->get_prochain_loot());
 			//Changement du prochain loot
 			$j_g = $groupe->trouve_position_joueur($groupe->get_prochain_loot());
@@ -677,16 +677,16 @@ function loot_item(&$joueur, &$groupe, $item)
 			break;
 			//Leader
 		case 'l' :
-			echo 'Répartition des objets au leader.<br />';
+			echo '<li>Répartition des objets au leader.</li>';
 			$gagnant = new perso($groupe->get_id_leader());
 			break;
 			//Celui qui trouve garde
 		case 'k' :
-			echo 'Répartition des objets, celui qui trouve garde.<br />';
+			echo '<li>Répartition des objets, celui qui trouve garde.</li>';
 			$gagnant = new perso($joueur->get_id());
 			break;
 		}
-		echo $gagnant->get_nom().' reçoit "'.$objet_nom.'"<br />';
+		echo '<li>'.$gagnant->get_nom().' reçoit "'.$objet_nom.'"</li>';
 	}
 	else
 	{

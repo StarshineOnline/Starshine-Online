@@ -313,7 +313,7 @@ class sort_combat extends sort
     $actif = &$attaque->get_actif();
     $passif = &$attaque->get_passif();
     $effets = &$attaque->get_effets();
-    $attaque->set_degats( $this->get_effet() + $actif->get_buff('buff_surpuissance', 'effet') /*+ $this->bonus_degats($attaque)*/ );
+    $attaque->set_degats( $this->get_effet() /*+ $this->bonus_degats($attaque)*/ );
     $attaque->applique_effet('calcul_bonus_degats_magiques');
     /*$degats = */$this->calcul_degats($attaque);
     $attaque->set_type_degats($this->get_type());
@@ -322,6 +322,7 @@ class sort_combat extends sort
       $effet->inflige_degats_magiques($actif, $passif, $degats, $this->get_type());*/
     $attaque->applique_effet('inflige_degats_magiques');
     $degats = $attaque->get_degats();
+	if($actif->is_buff('buff_surpuissance')) $degats += $actif->get_buff('buff_surpuissance', 'effet');
     echo '&nbsp;&nbsp;<span class="degat"><strong>'.$actif->get_nom().'</strong> inflige <strong>'.$degats.'</strong> dégâts avec '.$this->get_nom().'</span><br />';
     //$log_combat .= "~".$degats;
     $attaque->add_log_combat('~'.$degats);
@@ -540,7 +541,7 @@ class sort_combat_vent extends sort_combat
 		// On regarde s'il y a un gain de PA
 		if( $this->test_de(100, $this->get_effet2()) )
 		{
-      $actif = $attaque->get_actif();
+      $actif = $attaque->get_joueur();
 			echo '&nbsp;&nbsp;<strong>'.$actif->get_nom().'</strong> gagne 1 PA<br />';
 			$actif->set_pa($actif->get_pa() + 1);
 		}
@@ -604,6 +605,8 @@ class sort_combat_sang extends sort_combat
 		{
 			$actif->set_hp($actif->get_hp() - $cout_hp);
 			parent::touche($attaque);
+			echo '<span class="degat">et sacrifie '.$cout_hp.' hp.</span><br />';
+			$attaque->add_log_effet_actif('&ef10~'.$cout_hp);
 		}
   }
 }
@@ -660,7 +663,7 @@ class sort_combat_bris_os extends sort_combat
     /*$degat = */parent::calcul_degats($attaque);
 		if($attaque->get_passif()->etat['paralysie']['duree'] > 0)
       //$degat = round($degat * 1.6);
-      $attaque->mult_attaque(1.6);
+      $attaque->mult_degats(1.6);
 		//return $degat;
   }
 }

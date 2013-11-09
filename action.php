@@ -76,7 +76,11 @@ if(array_key_exists('from', $_GET) && $_GET['id_action'] != '')
 	}
 	else
 	{
-		$action_t['nom'] = $_GET['nom_action'];
+		if(isset($_GET['nom_action']))
+			$action_t['nom'] = $_GET['nom_action'];
+		else
+			$action_t['nom'] = "Nouveau Script";
+			
 		if($_GET['mode'] == 'a') $actionexplode = array();
 		else
 		{
@@ -85,15 +89,15 @@ if(array_key_exists('from', $_GET) && $_GET['id_action'] != '')
 				$actionexplode[] = '#09='.$i.'@!';
 			}
 		}
-		if($check_pet) $requete = "INSERT INTO action_pet VALUES(NULL, ".$joueur->get_id().", ".$pet->get_id_monstre().", '".sSQL($_GET['nom_action'])."', '".implode(';', $actionexplode)."', '".sSQL($_GET['mode'])."')";
-		else $requete = "INSERT INTO action_perso VALUES(NULL, ".$joueur->get_id().", '".sSQL($_GET['nom_action'])."', '".implode(';', $actionexplode)."', '".sSQL($_GET['mode'])."')";
+		if($check_pet) $requete = "INSERT INTO action_pet VALUES(NULL, ".$joueur->get_id().", ".$pet->get_id_monstre().", '".sSQL($action_t['nom'])."', '".implode(';', $actionexplode)."', '".sSQL($_GET['mode'])."')";
+		else $requete = "INSERT INTO action_perso VALUES(NULL, ".$joueur->get_id().", '".sSQL($action_t['nom'])."', '".implode(';', $actionexplode)."', '".sSQL($_GET['mode'])."')";
 		$req = $db->query($requete);
 		$id_action = $db->last_insert_id();
 	}
 	if($_GET['mode'] == 'a')
 	{
 	?>
-	<h3>Nom du script : <input type="text" value="<?php echo $action_t['nom']; ?>" id="nom_action" name="nom_action" /> <a href="#" onclick="return envoiInfo('action.php?<?php echo $link; ?>mode=a&amp;id_action=<?php echo $id_action; ?>&amp;action=change_nom&amp;nom_action=' + document.getElementById('nom_action').value.replace(new RegExp(' '), '%20'), 'information');"><img src="image/valid.png" alt="Valider" title="Valider le nom du script" style="vertical-align : bottom;"/></a></h3>
+	<h3>Nom du script : <input type="text" value="<?php echo $action_t['nom']; ?>" id="nom_action" name="nom_action" /> <a href="#" onclick="return envoiInfo('action.php?<?php echo $link; ?>mode=a&amp;id_action=<?php echo $id_action; ?>&amp;action=change_nom&amp;nom_action=' + encodeURIComponent($('#nom_action').val()), 'information');"><img src="image/valid.png" alt="Valider" title="Valider le nom du script" style="vertical-align : bottom;"/></a></h3>
 	<?php
 		if(array_key_exists('id_action', $_GET)) $action_t = recupaction_all($_GET['id_action']);
 		//On supprime une action de script de combat
@@ -216,6 +220,10 @@ if(array_key_exists('from', $_GET) && $_GET['id_action'] != '')
 				$sujet->set_action_d($id_action);
 			$sujet->sauver();
 		}
+		if(isset($_GET['cancel']))
+		{
+			$_SESSION['script'] = array();
+		}
 		echo '</table>';
 		//print_r($_SESSION['script'][$id_action]);
 		echo affiche_condition_session($_SESSION['script'][$id_action], $sujet, $check_pet);
@@ -225,6 +233,7 @@ if(array_key_exists('from', $_GET) && $_GET['id_action'] != '')
 			?>
 			<input type="button" name="ajout" value="Ajouter une condition" onclick="return envoiInfo('action.php?<?php echo $link; ?>mode=a&amp;id_action=<?php echo $id_action; ?>', 'information');" />
 			<input type="button" name="valid" value="Valider cette ligne" onclick="return envoiInfo('action.php?<?php echo $link; ?>mode=a&amp;id_action=<?php echo $id_action; ?>&amp;valid=ok', 'information');" />
+			<input type="button" name="cancel" value="Annuler cette ligne" onclick="return envoiInfo('action.php?<?php echo $link; ?>mode=a&amp;id_action=<?php echo $id_action; ?>&amp;cancel=true', 'information');" />
 			<?php
 		}
 		//=== CONDITION ===

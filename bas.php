@@ -8,7 +8,7 @@ if (file_exists('root.php'))
 </div>
 <div id="preload-images"></div>
 <?php
-if ($G_no_piwik != true)
+    if (!isset($G_no_piwik) || $G_no_piwik != true)
 {
 ?>
 	<!-- Piwik -->

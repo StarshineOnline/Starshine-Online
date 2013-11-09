@@ -3,12 +3,13 @@ if (file_exists('root.php'))
 include_once('root.php');
 
 include_once ('livre.php');
+verif_mort($joueur, 1);
 $tab_sort_jeu = explode(';', $joueur->get_comp_jeu());
 ?>
 <hr>
 <?php
 if($joueur->get_groupe() != 0) $groupe_joueur = new groupe($joueur->get_groupe()); else $groupe_joueur = false;
-if (isset($_GET['ID']))
+if (isset($_GET['ID']) && !array_key_exists('action', $_GET))
 {
 	$joueur->check_comp_jeu_connu($_GET['ID']);
 	$comp = comp_jeu::factory( sSQL($_GET['ID'], SSQL_INTEGER) );
@@ -47,9 +48,23 @@ if (isset($_GET['ID']))
 }
 else
 {
+	if(array_key_exists('action', $_GET))
+	{
+		switch($_GET['action'])
+		{
+		  case 'favoris' :
+			$requete = "INSERT INTO comp_favoris(id_comp, id_perso) VALUES(".sSQL($_GET['id']).", ".$joueur->get_id().")";
+			$db->query($requete);
+			break;
+		  case 'delfavoris' :
+			$requete = "DELETE FROM comp_favoris WHERE id_comp =  ".sSQL($_GET['id'])." AND id_perso = ".$joueur->get_id();
+			$db->query($requete);
+			break;
+		}
+	}
 	$i = 0;
 	$type = '';
-	$magies = array();
+	$magies = array('favoris');
 	$magie = '';
 	$requete = "SELECT * FROM comp_jeu GROUP BY comp_assoc";
 	$req = $db->query($requete);
@@ -82,9 +97,11 @@ else
 		$where = "WHERE comp_assoc = 'melee'";
 	}
 	else
-	{
-		$where = 'WHERE comp_assoc = \''.sSQL($_GET['tri']).'\'';
-	}
+		$_GET['tri'] = 'favoris';
+		
+	if($_GET['tri'] == 'favoris')
+		$where = 'WHERE id IN (SELECT id_comp FROM comp_favoris WHERE id_perso = \''.$joueur->get_id().'\')';
+
 	$requete = "SELECT * FROM comp_jeu ".$where." ORDER BY comp_assoc ASC, type ASC, nom ASC";
 	$req = $db->query($requete);
 	$magie = '';

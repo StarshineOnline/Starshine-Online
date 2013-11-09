@@ -166,6 +166,7 @@ width:16px;}
 .quete_niveau						{display:block;float: left;width:70px;text-align: right;}
 .quete_groupe						{display:block;float: left;width:70px;text-align: right;}
 .quete_repetable				    {display:block;float: left;width:70px;text-align: right;}
+.quete_nombre				    {display:block;float: left;width:70px;text-align: right;}
 .quete_cout						    {display:block;float: left;width:70px;text-align: right;}
 .quete_star						    {display:block;float: left;width:70px;text-align: right;}
 .quete_exp						    {display:block;float: left;width:70px;text-align: right;}

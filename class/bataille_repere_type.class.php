@@ -4,10 +4,11 @@ if (file_exists('../root.php'))
 ?><?php
 class bataille_repere_type
 {
-	public $id;
-	public $nom;
-	public $description;
-	public $ajout_groupe;
+	private $id;
+	private $nom;
+	private $description;
+	private $ajout_groupe;
+	private $image;
 	
 	/**	
 		*	Constructeur permettant la création d'un repère de bataille.
@@ -88,9 +89,29 @@ class bataille_repere_type
 		return $this->id;
 	}
 	
+	function get_id()
+	{
+		return $this->id;
+	}
+	
 	function get_nom()
 	{
 		return $this->nom;
+	}
+	
+	function get_description()
+	{
+		return $this->description;
+	}
+	
+	function get_ajout_groupe()
+	{
+		return $this->ajout_groupe;
+	}
+	
+	function get_image()
+	{
+		return $this->image;
 	}
 }
 ?>

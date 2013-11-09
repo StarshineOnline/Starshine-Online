@@ -2,7 +2,9 @@
 if (file_exists('../root.php'))
   include_once('../root.php');
 
-if( !array_key_exists('droits', $_SESSION) or !($_SESSION['droits'] & joueur::droit_interf_admin) )
+$joueur = joueur::factory();
+
+if( !($joueur->get_droits() & joueur::droit_interf_admin) )
 {
   header("HTTP/1.1 401 Unauthorized" );
   exit();
@@ -87,6 +89,10 @@ else
 	$menu[$i]['url'] = 'edit_monstre.php';
 	$menu[$i++]['acces'] = joueur::droit_anim | joueur::droit_concept;
 
+	$menu[$i]['nom'] = 'Dernières paroles de monstre';
+  $menu[$i]['url'] = 'dernieres_paroles.php';
+  $menu[$i++]['acces'] = joueur::droit_concept | joueur::droit_graph;
+
 	$menu[$i]['nom'] = 'Bourgs';
 	$menu[$i]['url'] = 'admin_bourg.php';
 	$menu[$i++]['acces'] = joueur::droit_concept | joueur::droit_modo;
@@ -105,7 +111,7 @@ else
 
 	$menu[$i]['nom'] = 'Contrôle des persos/pnj';
 	$menu[$i]['url'] = 'controle_joueur.php';
-	$menu[$i++]['acces'] = joueur::droit_anim | joueur::droit_modo;
+	$menu[$i++]['acces'] = joueur::droit_anim | joueur::droit_modo | joueur::droit_admin;
 	
 	$menu[$i]['nom'] = 'Log admin';
 	$menu[$i]['url'] = 'log_admin.php';
@@ -119,8 +125,12 @@ else
 	$menu[$i]['url'] = 'compare_connexion.php';
 	$menu[$i++]['acces'] = joueur::droit_modo;
 	
+	$menu[$i]['nom'] = 'Achievements';
+	$menu[$i]['url'] = 'achievements.php';
+	$menu[$i++]['acces'] = joueur::droit_interf_admin;
+
 	$menu[$i]['nom'] = 'Performances';
-	$menu[$i]['url'] = 'http://munin.starshine-online';
+	$menu[$i]['url'] = 'http://munin.starshine-online.com';
 	$menu[$i++]['acces'] = joueur::droit_interf_admin;
 
 	$menu[$i]['nom'] = 'Stats Web';
@@ -180,6 +190,13 @@ else
 			<div class="milieusousmenu">
 				<ul class="listemenu">
 				<?php
+        $ind1 = strrpos($_SERVER['REQUEST_URI'], '/');
+        $ind2  = strpos($_SERVER['REQUEST_URI'], '?', $ind1);
+        if( $ind2 > 0 )
+          $page = substr($_SERVER['REQUEST_URI'], $ind1+1, $ind2-$ind1-1);
+        else
+          $page = substr($_SERVER['REQUEST_URI'], $ind1+1);
+        $acces = null;
 				foreach($menu as $item)
 				{
 					if($item['nom'] == '--')
@@ -187,15 +204,22 @@ else
 						echo '<li class="separator"><hr /></li>';
 						continue;
 					}
-					if($_SESSION['droits'] & $item['acces'])
+					if($joueur->get_droits() & $item['acces'])
 					{
 				?>
 						<li><a href="<?php echo $item['url']; ?>"><?php echo $item['nom']; ?></a></li>
 				<?php
 					}
+          if( $page == $item['url'] )
+            $acces = (boolean)($joueur->get_droits() & $item['acces']);
 				}
 				?>
 				</ul>
 			</div>
 		</div>
 	</div>
+<?php
+  // Si on n'a pas les bons droits d'accès on arrête là.
+  if( $acces === false )
+    exit();
+?>

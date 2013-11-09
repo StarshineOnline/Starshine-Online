@@ -27,7 +27,12 @@ class attaque
 	 * Méthodes pour accéder aux données
 	 */
   // @{
-  /// Renvoie l'attaquant
+  /// Renvoie le joueur
+  function &get_joueur()
+  {
+    return $this->joueur;
+  }
+   /// Renvoie l'attaquant
   function &get_attaquant()
   {
     return $this->attaquant;
@@ -141,8 +146,8 @@ class attaque
     {
       $this->actif = &$this->attaquant;
       $this->passif = &$this->defenseur;
-	    $this->log_effects_actif = $this->log_effects_attaquant;
-	    $this->log_effects_passif = $this->log_effects_defenseur;
+	    $this->log_effects_actif = &$this->log_effects_attaquant;
+	    $this->log_effects_passif = &$this->log_effects_defenseur;
     }
   	else
     {

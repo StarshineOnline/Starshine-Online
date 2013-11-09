@@ -89,16 +89,16 @@ class interf_inventaire extends interf_cont
     case 'pet':
       $style = 'background: url(\'image/creature.png\') center no-repeat;';
       
-      $tab_loc[0]['loc'] = 'cou_pet';
+      $tab_loc[0]['loc'] = 'cou';
       $tab_loc[0]['type'] = 'armure';
       $tab_loc[1]['loc'] = 'selle';
       $tab_loc[1]['type'] = 'armure';
-      $tab_loc[2]['loc'] = 'dos_pet';
+      $tab_loc[2]['loc'] = 'dos';
       $tab_loc[2]['type'] = 'armure';
 
-      $tab_loc[3]['loc'] = 'arme_pet';
-      $tab_loc[3]['type'] = 'arme_pet';
-      $tab_loc[4]['loc'] = 'torse_pet';
+      $tab_loc[3]['loc'] = 'arme';
+      $tab_loc[3]['type'] = 'arme';
+      $tab_loc[4]['loc'] = 'torse';
       $tab_loc[4]['type'] = 'armure';
       $tab_loc[5]['loc'] = ' ';
       $tab_loc[5]['type'] = 'vide';

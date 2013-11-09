@@ -218,6 +218,11 @@ class royaume
     global $db, $conso_food_tot, $cases_tot;
     if( !isset($conso_food_tot) )
     {
+      // nombre de cases totales
+      $requete = 'SELECT COUNT(*) AS tot FROM map WHERE royaume > 0 AND x <= 190 AND y <= 190';
+      $res = $db->query($requete);
+      $row = $db->read_array($res);
+      $cases_tot = $row['tot'];
       // Consommation totale
       $requete = 'SELECT SUM(food) AS food FROM royaume';
       $res = $db->query($requete);
@@ -227,7 +232,7 @@ class royaume
       $res = $db->query($requete);
       $row = $db->read_array($res);
       $stocks += $row['food'];
-      $facteur = $stocks / 10000;
+      $facteur = $stocks / (2 * $cases_tot);
       if( $facteur < .7 ) $facteur = .7;
       else  if( $facteur > 1.5 ) $facteur = 1.5;
       $date_hier = date("Y-m-d", mktime(0, 0, 0, date("m") , date("d") - 2, date("Y")));
@@ -236,11 +241,6 @@ class royaume
       $row = $db->read_array($res);
       $prod = $row['food'];
       $conso_food_tot = $prod * $facteur;
-      // nombre de cases totales
-      $requete = 'SELECT COUNT(*) AS tot FROM map WHERE royaume > 0 AND x <= 190 AND y <= 190';
-      $res = $db->query($requete);
-      $row = $db->read_array($res);
-      $cases_tot = $row['tot'];
     }
     $requete = 'SELECT COUNT(*) AS tot FROM map WHERE royaume = '.$this->get_id().' AND x <= 190 AND y <= 190';
     $res = $db->query($requete);
@@ -254,6 +254,41 @@ class royaume
     if($diff < - 50) $diff = -50;
     else if($diff > 25) $diff = 25;
     $this->set_conso_food( $this->get_conso_food() + $diff);
+  }
+
+  /**
+   * Renvoie la distance minimale entre deux bourgs
+   *
+   * @var  $diff  true s'il agit de bourgs de différents royaumes
+   */
+  function get_dist_bourgs($diff = false)
+  {
+    return ceil(pow($this->get_facteur_entretien(), .9) * 7);
+  }
+
+  /// Renvoie la distance minimale entre un bourg et une capitale
+  function get_dist_bourg_capitale()
+  {
+    return 5;
+  }
+
+  /**
+   * Renvoie la distance minimale entre deux forts
+   *
+   * @var  $diff  true s'il agit de forts de différents royaumes
+   */
+  function get_dist_forts($diff = false)
+  {
+    if( $diff )
+      return 4;
+    else
+      return ceil(pow($this->get_facteur_entretien(), .9) * 4);
+  }
+
+  /// Renvoie la distance minimale entre un fort et une capitale
+  function get_dist_fort_capitale()
+  {
+    return 7;
   }
 
 	

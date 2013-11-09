@@ -140,8 +140,8 @@ $titre_perso = new titre($_SESSION['ID']);
 						}
 					break;
 					case 'journal' :
-						$liste_options = array('soin', 'gsoin', 'buff', 'gbuff',  'degat', 'kill', 'quete', 'loot', 'nbrLignesJournal');
-						$liste_options_nom = array('Soins', 'Soins de groupe', 'Buffs', 'Buffs de groupe', 'Dégâts', 'Kills', 'Quêtes', 'Loots', 'Nombre de lignes');
+						$liste_options = array('soin', 'gsoin', 'buff', 'gbuff', 'rez', 'degat', 'kill', 'quete', 'loot', 'siege', 'destruction', 'nbrLignesJournal');
+						$liste_options_nom = array('Soins', 'Soins de groupe', 'Buffs', 'Buffs de groupe', 'Résurrections', 'Dégâts', 'Kills', 'Quêtes', 'Loots', "Dégâts à l'arme de siège", 'Destruction de bâtiments', 'Nombre de lignes');
 						$options = recup_option($_SESSION['ID']);
 						if(array_key_exists('submit', $_POST))
 						{
@@ -243,7 +243,7 @@ $titre_perso = new titre($_SESSION['ID']);
 						require_once('connect_forum.php');
 						$groupe = $perso->get_groupe();
 						if($groupe != 0)
-						{	degroup($perso->get_id(), $groupe->get_id());}
+							degroup($perso->get_id(), $groupe);
 						$requete = "INSERT INTO punbbbans VALUES(NULL, '".$perso->get_nom()."', NULL, NULL, NULL, NULL, 2)";
 						if($db_forum->query($requete))
 						{

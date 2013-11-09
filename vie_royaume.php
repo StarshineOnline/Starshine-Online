@@ -30,60 +30,77 @@ if($W_row['type'] == 1)
 	if($R->get_diplo($joueur->get_race()) == 127)
 	{
 		$is_election = elections::is_mois_election($R->get_id());
+		$check_revolution = true;
 		if( $is_election )
 		{
-  		if(date("d") >= 5 && date("d") < 15)
-  		{
-  			?>
-  			<li>
-  				<a href="candidature.php" onclick="return envoiInfo(this.href, 'carte')">Candidature</a>
-  			</li>
-  			<?php
-  		}
-  		elseif(date("d") >= 15)
-  		{
-        $elections = elections::get_prochain_election($R->get_id(), true);
-  		  if( $elections[0]->get_type() == 'universel' )
-  		  {
-    			?>
-    			<li>
-    				<a href="vote_roi.php" onclick="return envoiInfo(this.href, 'carte')">Vote</a>
-    			</li>
-  			<?php
-        }
-        elseif( $joueur->get_grade()->get_id() == 6 )
-        {
-    			?>
-    			<li>
-    				<a href="vote_roi.php" onclick="return envoiInfo(this.href, 'carte')">Nomination</a>
-    			</li>
-  			<?php
-        }
-  		}
-    }
-		else
+			$elections = elections::get_prochain_election($R->get_id(), true);
+			if( $elections[0]->get_type() == 'universel' )
+			{
+				$check_revolution = false;
+				echo "<li><h3>Prochaines élections : Universelles</h3></li>";
+				if(date("d") >= 5 && date("d") < 15)
+				{
+					?>
+					<li>
+						<a href="candidature.php" onclick="return envoiInfo(this.href, 'carte')">Candidature</a>
+					</li>
+					<?php
+				}
+				elseif(date("d") >= 15)
+				{
+					?>
+					<li>
+						<a href="vote_roi.php" onclick="return envoiInfo(this.href, 'carte')">Vote</a>
+					</li>
+					<?php
+				}
+			}
+			else
+			{
+				echo "<li><h3>Prochaines élections : Nomination</h3></li>";
+				if(date("d") >= 5 && date("d") < 15)
+				{
+					?>
+					<li>
+						<a href="candidature.php" onclick="return envoiInfo(this.href, 'carte')">Candidature</a>
+					</li>
+					<?php
+				}
+				elseif(date("d") >= 15 && $joueur->get_grade()->get_id() == 6)
+				{
+					?>
+					<li>
+						<a href="vote_roi.php" onclick="return envoiInfo(this.href, 'carte')">Nomination</a>
+					</li>
+					<?php
+				}
+			}
+		}
+		
+		// Une revolution est possible
+		if($check_revolution)
 		{
-		  //Pas d'élection prévue prochainement, on peut renverser le pouvoir
-		  $is_revolution = revolution::is_mois_revolution($R->get_id());
-		  if( $is_revolution )
-      {
-        // Il y a une révolution : on l'indique et propose de voter
-			  ?>
-  			<li>
-  			  <p><b>Une révolution a été déclenchée !</b></p>
-  				<a href="revolution.php" onclick="return envoiInfo(this.href, 'carte')">Voter pour ou contre la révolution</a>
-  			</li>
-  			<?php
-      }
-      elseif( date("d") <= 20 )
-		  {
-		    // Il n'y a pas de révolution : on propose d'en déclencher une 
-			  ?>
-  			<li>
-  				<a href="revolution.php" onclick="return envoiInfo(this.href, 'carte')">Déclencher une révolution</a>
-  			</li>
-  			<?php
-      }
+			//Pas d'élection prévue prochainement, on peut renverser le pouvoir
+			$is_revolution = revolution::is_mois_revolution($R->get_id());
+			if( $is_revolution )
+			{
+			// Il y a une révolution : on l'indique et propose de voter
+				?>
+				<li>
+				  <p><b>Une révolution a été déclenchée !</b></p>
+					<a href="revolution.php" onclick="return envoiInfo(this.href, 'carte')">Voter pour ou contre la révolution</a>
+				</li>
+				<?php
+			}
+			elseif( date("d") <= 20 && date("d") > 1 )
+			{
+				// Il n'y a pas de révolution : on propose d'en déclencher une 
+				?>
+				<li>
+					<a href="revolution.php" onclick="return envoiInfo(this.href, 'carte')">Déclencher une révolution</a>
+				</li>
+				<?php
+			}
 		}
 	}
 }

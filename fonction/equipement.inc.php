@@ -224,6 +224,8 @@ function nom_objet($id_objet)
 function description_objet($id_objet)
 {
 	global $db, $Gtrad;
+	global $joueur;
+	global $Trace;
 	$objet = decompose_objet($id_objet);
 	$id_objet = $objet['id'];
 	$description = '';
@@ -275,7 +277,10 @@ function description_objet($id_objet)
 			$req = $db->query($requete);
 			$row = $db->read_assoc($req);
 			$keys = array_keys($row);
-			$description .= '<strong>'.$row['nom'].'</strong><br /><table> <tr> <td> Type </td> <td> '.$row['type'].' </td> </tr> </table>';
+			$description .= '<strong>'.$row['nom'].'</strong><br /><table> <tr> <td> Type </td> <td> '.$row['type'].' </td>';
+			if ($joueur->is_buff('convalescence'))
+				$description .= 'Cout en PA : 10';
+			$description .= '</tr></table>';
 		break;
 		case 'h' :
 			$description = 'Objet non identifié';
@@ -344,8 +349,6 @@ function description_objet($id_objet)
 	    if ($row2['comp_requis'] > 0) {
 	      $requis = $row2['comp_requis'];
 	      if ($type == 'le sort') {
-		global $joueur;
-		global $Trace;
 		$requis = round($row2['comp_requis'] * $joueur->get_facteur_magie() * 
 				(1 - (($Trace[$joueur->get_race()]['affinite_'.$row2['comp_assoc']] - 5)
 				      / 10)));

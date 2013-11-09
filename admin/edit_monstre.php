@@ -19,7 +19,7 @@ else
 	<div id="contenu">
 	<div id="centre3">
 	<div class="titre">
-				Edition d'un monstre
+     Edition d&apos;un monstre
 	</div>
 	<?php
 $requete = "SELECT * FROM monstre ORDER BY level ASC, xp ASC";
@@ -71,6 +71,9 @@ $req = $db->query($requete);
 		</td>
 		<td>
 			Terrain
+		</td>
+		<td>
+			ID
 		</td>
 		<td>
 			Action
@@ -138,6 +141,9 @@ $req = $db->query($requete);
 		</td>
 		<td>
 			'.$type_terrain.'
+		</td>
+		<td>
+			'.$row['id'].($row['id_manuel'] ? (' (' . $row['id_manuel'] . ')') : '').'
 		</td>
 		<td>
 			<a href="edit_monstre_action.php?id_monstre='.$row['id'].'">Modifier Script d\'action</a> / <a href="edit_monstre_drop.php?id_monstre='.$row['id'].'">Modifier drops</a> / <a href="edit_monstre_pop.php?id_monstre='.$row['id'].'">Modifier spawn</a> / <a href="edit_monstre_desc.php?id_monstre='.$row['id'].'">Modifier description</a> / <a href="edit_monstre_sort.php?id_monstre='.$row['id'].'">Modifier sort</a> / <a href="edit_monstre_arme.php?id_monstre='.$row['id'].'">Modifier arme</a>

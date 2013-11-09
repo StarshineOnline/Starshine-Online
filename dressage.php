@@ -10,6 +10,7 @@ if (file_exists('root.php'))
 include_once(root.'inc/fp.php');
 //Récupération des informations du personnage
 $joueur = new perso($_SESSION['ID']);
+verif_mort($joueur, 1);
 $joueur->check_perso();
 
 //Case et coordonnées de la case
@@ -47,6 +48,7 @@ if($distance == 0)
 					}
 					else
 					{
+						$debugs = 0;
 						//Calcul du potentiel du joueur => Eventuellement rajouter les connaissances
 						$potentiel = ($joueur->get_dressage() * 3) + $joueur->get_survie();
 						$rand = rand(0, $potentiel);
@@ -63,6 +65,7 @@ if($distance == 0)
 						<?php
 						echo '
 						<a href="dressage.php?id='.$_GET['id'].'" onclick="return envoiInfo(this.href, \'information\')">Continuer le dressage</a>';
+						echo '<br /><a onclick="for (i=0; i<'.$debugs.'; i++) {if(document.getElementById(\'debug\' + i).style.display == \'inline\') document.getElementById(\'debug\' + i).style.display = \'none\'; else document.getElementById(\'debug\' + i).style.display = \'inline\';}"><img src="image/interface/debug.png" alt="Debug" Title="Débug pour voir en détail le lancement du sort" style="vertical-align : middle;cursor:pointer;" /></a> <br />';
 					}
 				}
 				//Sinon erreur

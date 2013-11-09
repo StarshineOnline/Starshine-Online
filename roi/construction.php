@@ -15,7 +15,7 @@ else if(!array_key_exists('direction', $_GET))
 	echo "<div  style='float:right;'><div id='affiche_dist' style='width:375px;'><fieldset>";
 	echo "<legend>Distances de pose</legend>";
 	echo '<b>Bourgs : </b><ul>';
-	echo '<li>Avec un autre bourg : '.floor(7*$royaume->get_facteur_entretien()).'</li>';
+	echo '<li>Avec un autre bourg : '.$royaume->get_dist_bourgs().'</li>';
 	echo '<li>Avec une capitale : 5</li>';
 	echo '<b>Forts : </b><ul>';
 	echo '<li>Avec un autre de vos forts : '.floor(4*$royaume->get_facteur_entretien()).'</li>';

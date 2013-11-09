@@ -117,7 +117,7 @@ foreach($roy as $r)
   $r->maj_facteur_entretien();
   $r->sauver();
 }
-print_r($tableau_race);
+//print_r($tableau_race);
 
 //PHASE 1, entretien des batiments internes
 //On récupère les couts d'entretiens

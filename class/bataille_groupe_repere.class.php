@@ -85,16 +85,43 @@ class bataille_groupe_repere
 	{
 		return $this->id;
 	}
-
+	
+	function get_id()
+	{
+		return $this->id;
+	}
+	
+	function get_id_repere()
+	{
+		return $this->id_repere;
+	}
+	
+	function set_id_repere($id_repere)
+	{
+		$this->id_repere = $id_repere;
+	}
+	
+	function get_id_groupe()
+	{
+		return $this->id_repere;
+	}
+	
+	function set_id_groupe($id_groupe)
+	{
+		$this->id_groupe = $id_groupe;
+	}
+	
 	function accepte()
 	{
 		$this->accepter = true;
 		$this->sauver();
 	}
 
-	function get_repere()
+	function get_repere($force = false)
 	{
-		$this->repere = new bataille_repere($this->id_repere);
+		if($force || !isset($this->repere))
+			$this->repere = new bataille_repere($this->id_repere);
+		return $this->repere;
 	}
 }
 ?>

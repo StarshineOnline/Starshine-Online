@@ -48,6 +48,7 @@ $princ = $interf->creer_princ_droit('Inventaire du Personnage');
 //Switch des actions
 if(!$visu AND isset($_GET['action']))
 {
+verif_mort($joueur, 1);
 	switch($_GET['action'])
 	{
 		case 'desequip' :
@@ -212,51 +213,96 @@ if(!$visu AND isset($_GET['action']))
             $princ->add_message('Il y a une capitale à moins de '.$distanceMax.' cases !', false);
 						$isOk = false;
 					}
-
-					$facteurEntretien = $R->get_facteur_entretien();
 					
 					// Distance entre Bourgs
 					if($isOk && $_GET['type'] == 'bourg'){
 						// dist entre 2 bourgs
+<<<<<<< HEAD
 						$distanceMax = 7 * $facteurEntretien;
 
-						$requete = "SELECT 1 FROM construction"
+						$requete = "SELECT x, y FROM construction"
 							." WHERE x >= ".max(($joueur->get_x() - $distanceMax), 1)
 							." AND x <= ".min(($joueur->get_x() + $distanceMax), 190)
 							." AND y >= ".max(($joueur->get_y() - $distanceMax), 1)
 							." AND y <= ".min(($joueur->get_y() + $distanceMax), 190)
 							." AND type = 'bourg'";
 						$req = $db->query($requete);
+						$dist = 200;
 						if($db->num_rows > 0)
 						{
-              $princ->add_message('Il y a un bourg à moins de '.$distanceMax.' cases !', false);
+							while ($row = $db->read_assoc($req))
+							{
+								$dist_temp = calcul_distance(convert_in_pos($row['x'], $row['y']), ($joueur->get_pos()));
+								if ($dist_temp < $dist)
+									$dist= $dist_temp;
+								}							
+              $princ->add_message('Il y a un bourg à moins de '.$dist.' cases !', false);
 							$isOk = false;
 						}
 
 						// On vérifie aussi les chantiers
 						if($isOk){
-							$requete = "SELECT 1 FROM placement"
+							$requete = "SELECT x, y FROM placement"
 							." WHERE x >= ".max(($joueur->get_x() - $distanceMax), 1)
 							." AND x <= ".min(($joueur->get_x() + $distanceMax), 190)
 							." AND y >= ".max(($joueur->get_y() - $distanceMax), 1)
 							." AND y <= ".min(($joueur->get_y() + $distanceMax), 190)
 							." AND type = 'bourg'";
 							$req = $db->query($requete);
-							if($db->num_rows > 0)
+						$dist = 200;
+						if($db->num_rows > 0)
+						{
+							while ($row = $db->read_assoc($req))
 							{
-                $princ->add_message('Il y a un bourg en construction à moins de '.$distanceMax.' cases !', false);
-								$isOk = false;
-							}
+								$dist_temp = calcul_distance(convert_in_pos($row['x'], $row['y']), ($joueur->get_pos()));
+								if ($dist_temp < $dist)
+									$dist = $dist_temp;
+								}							
+              $princ->add_message('Il y a un bourg en construction à '.$dist.' cases !', false);
+							$isOk = false;
 						}
+						}
+=======
+            if( construction::batiments_proche($joueur->get_x(), $joueur->get_y(), 'bourg', $R->get_dist_bourgs(), $R->get_id())
+              or placement::batiments_proche($joueur->get_x(), $joueur->get_y(), 'bourg', $R->get_dist_bourgs(), $R->get_id()) )
+            {
+              $princ->add_message('Vous avez un bourg à moins de '.$R->get_dist_bourgs().' cases !', false);
+							$isOk = false;
+            }
+            else
+            {
+              $dist_r = $R->get_dist_bourgs(true);
+              $bats = construction::batiments_proche($joueur->get_x(), $joueur->get_y(), 'bourg', $dist_r, $R->get_id(), true, true);
+              if( !bats )
+                $bats = placement::batiments_proche($joueur->get_x(), $joueur->get_y(), 'bourg', $dist_r, $R->get_id(), true, true);
+              if( $bats )
+              {
+                $isOk = true;
+                foreach($bats as $b)
+                {
+                $r_bourg = new royaume($b['royaume']);
+                $d_max = min($r_bourg->get_dist_bourgs(true), $dist_r);
+                  $dist = detection_distance(convert_in_pos($b['x'], $b['y']), convert_in_pos($joueur->get_x(), $joueur->get_y()));
+                  if( $dist <= $d_max )
+                  {
+                    $princ->add_message('Il y a un bourg à '.$dist.' cases !', false);
+      							$isOk = false;
+                    break;
+                  }
+                }
+              }
+            }
+>>>>>>> 893e69c49f064d2509f661eab075a59a53f3729f
 					}
 
 					// Distance entre forts
 					else if($isOk && $_GET['type'] == 'fort'){
 						// dist entre 2 forts du même royaume
+<<<<<<< HEAD
 						$distanceForts = 4;
 						$distanceMax = $distanceForts * $facteurEntretien;
 
-						$requete = "SELECT id FROM construction"
+						$requete = "SELECT id, x, y FROM construction"
 								." WHERE x >= ".max(($joueur->get_x() - $distanceMax), 1)
 								." AND x <= ".min(($joueur->get_x() + $distanceMax), 190)
 								." AND y >= ".max(($joueur->get_y() - $distanceMax), 1)
@@ -264,7 +310,7 @@ if(!$visu AND isset($_GET['action']))
 								." AND type = 'fort'"
 								." AND royaume = ".$R->get_id()
 								." UNION"
-								." SELECT id FROM construction"
+								." SELECT id, x, y FROM construction"
 									." WHERE x >= ".max(($joueur->get_x() - $distanceForts), 1)
 									." AND x <= ".min(($joueur->get_x() + $distanceForts), 190)
 									." AND y >= ".max(($joueur->get_y() - $distanceForts), 1)
@@ -272,15 +318,22 @@ if(!$visu AND isset($_GET['action']))
 									." AND type = 'fort'"
 									." AND royaume <> ".$R->get_id();
 						$req = $db->query($requete);
+						$dist = 200;
 						if($db->num_rows > 0)
 						{
-              $princ->add_message('Il y a un fort à moins de '.$distanceMax.' cases !', false);
+							while ($row = $db->read_assoc($req))
+							{
+								$dist_temp = calcul_distance(convert_in_pos($row['x'], $row['y']), ($joueur->get_pos()));
+								if ($dist_temp < $dist)
+									$dist = $dist_temp;
+								}	
+					    $princ->add_message('Il y a un fort à moins de '.$distanceMax.' cases !', false);
 							$isOk = false;
 						}
 
 						// On vérifie aussi les chantiers
 						if($isOk){
-							$requete = "SELECT id FROM placement"
+							$requete = "SELECT id, x, y FROM placement"
 										." WHERE x >= ".max(($joueur->get_x() - $distanceMax), 1)
 										." AND x <= ".min(($joueur->get_x() + $distanceMax), 190)
 										." AND y >= ".max(($joueur->get_y() - $distanceMax), 1)
@@ -288,7 +341,7 @@ if(!$visu AND isset($_GET['action']))
 										." AND type = 'fort'"
 								." AND royaume = ".$R->get_id()
 								." UNION"
-										." SELECT id FROM placement"
+										." SELECT id, x, y FROM placement"
 										." WHERE x >= ".max(($joueur->get_x() - $distanceForts), 1)
 										." AND x <= ".min(($joueur->get_x() + $distanceForts), 190)
 										." AND y >= ".max(($joueur->get_y() - $distanceForts), 1)
@@ -296,12 +349,34 @@ if(!$visu AND isset($_GET['action']))
 										." AND type = 'fort'"
 											." AND royaume <> ".$R->get_id();
 							$req = $db->query($requete);
-							if($db->num_rows > 0)
+							$dist = 200;
+						if($db->num_rows > 0)
+						{
+							while ($row = $db->read_assoc($req))
 							{
-                $princ->add_message('Il y a un fort en cosntruction à moins de '.$distanceMax.' cases !', false);
+								$dist_temp = calcul_distance(convert_in_pos($row['x'], $row['y']), ($joueur->get_pos()));
+								if ($dist_temp < $dist)
+									$dist = $dist_temp;
+								}
+							{
+                $princ->add_message('Il y a un fort en construction à '.$dist.' cases !', false);
 								$isOk = false;
 							}
 						}
+=======
+            if( construction::batiments_proche($joueur->get_x(), $joueur->get_y(), 'fort', $R->get_dist_forts(), $R->get_id())
+              or placement::batiments_proche($joueur->get_x(), $joueur->get_y(), 'fort', $R->get_dist_forts(), $R->get_id()) )
+            {
+              $princ->add_message('Vous avez un fort à moins de '.$R->get_dist_bourgs().' cases !', false);
+							$isOk = false;
+            }
+            else if( construction::batiments_proche($joueur->get_x(), $joueur->get_y(), 'fort', $R->get_dist_forts(true), $R->get_id(), true)
+              or placement::batiments_proche($joueur->get_x(), $joueur->get_y(), 'fort', $R->get_dist_forts(true), $R->get_id(), true) )
+            {
+              $princ->add_message('Il y a un fort à moins de '.$R->get_dist_forts(true).' cases !', false);
+							$isOk = false;
+            }
+>>>>>>> 893e69c49f064d2509f661eab075a59a53f3729f
 					}
 				}
 				if(!$isOk){
@@ -413,10 +488,59 @@ if(!$visu AND isset($_GET['action']))
   										$achiev->set_compteur($achiev->get_compteur() + 1);
   										$achiev->sauver();
 
+  										if ($W_row['info'] == 1)
+  										{
+  											// Augmentation du compteur de l'achievement
+  											$achiev = $joueur->get_compteur('pose_drapeaux_plaine');
+  											$achiev->set_compteur($achiev->get_compteur() + 1);
+  											$achiev->sauver();
+  										}
+  										if ($W_row['info'] == 2)
+  										{
+  											// Augmentation du compteur de l'achievement
+  											$achiev = $joueur->get_compteur('pose_drapeaux_foret');
+  											$achiev->set_compteur($achiev->get_compteur() + 1);
+  											$achiev->sauver();
+  										}
   										if ($W_row['info'] == 3)
   										{
   											// Augmentation du compteur de l'achievement
   											$achiev = $joueur->get_compteur('pose_drapeaux_sable');
+  											$achiev->set_compteur($achiev->get_compteur() + 1);
+  											$achiev->sauver();
+  										}
+  										if ($W_row['info'] == 4)
+  										{
+  											// Augmentation du compteur de l'achievement
+  											$achiev = $joueur->get_compteur('pose_drapeaux_glace');
+  											$achiev->set_compteur($achiev->get_compteur() + 1);
+  											$achiev->sauver();
+  										}
+  										if ($W_row['info'] == 6)
+  										{
+  											// Augmentation du compteur de l'achievement
+  											$achiev = $joueur->get_compteur('pose_drapeaux_montagne');
+  											$achiev->set_compteur($achiev->get_compteur() + 1);
+  											$achiev->sauver();
+  										}
+  										if ($W_row['info'] == 7)
+  										{
+  											// Augmentation du compteur de l'achievement
+  											$achiev = $joueur->get_compteur('pose_drapeaux_marais');
+  											$achiev->set_compteur($achiev->get_compteur() + 1);
+  											$achiev->sauver();
+  										}
+  										if ($W_row['info'] == 8)
+  										{
+  											// Augmentation du compteur de l'achievement
+  											$achiev = $joueur->get_compteur('pose_drapeaux_route');
+  											$achiev->set_compteur($achiev->get_compteur() + 1);
+  											$achiev->sauver();
+  										}
+  										if ($W_row['info'] == 9)
+  										{
+  											// Augmentation du compteur de l'achievement
+  											$achiev = $joueur->get_compteur('pose_drapeaux_terremaudite');
   											$achiev->set_compteur($achiev->get_compteur() + 1);
   											$achiev->sauver();
   										}

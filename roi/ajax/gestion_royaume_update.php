@@ -62,9 +62,32 @@ if (isset($_GET['action']))
 						$R->set_essence($R->get_essence() - $row['essence']);
 						$R->set_charbon($R->get_charbon() - $row['charbon']);
 						$R->sauver();
-						echo '<h6>'.$row['nom'].' bien acheté.</h6><br />';
 						$i++;
 					}
+					if($nombre > 1)
+					{
+                                               $tab = array("Drapeau"=>"Drapeaux","Poste avancé"=>"Postes avancés", "Fortin"=>"Fortins", "Fort"=>"Forts", "Forteresse"=>"Forteresses", "Tour de guet"=>"Tours de guet", "Tour de garde"=>"Tours de garde", "Tour de mages"=>"Tours de mages", "Tour d archers"=>"Tours d'archers", "Bourgade"=>"Bourgades", "Palissade"=>"Palissades", "Mur"=>"Murs", "Muraille"=>"Murailles", "Grande muraille"=>"Grandes murailles", "Bélier"=>"Béliers", "Catapulte"=>"Catapultes", "Trébuchet"=>"Trébuchets", "Baliste"=>"Balistes", "Grand drapeau"=>"Grands drapeaux", "Étendard"=>"Étendards", "Grand étendard"=>"Grands étendards", "Petit drapeau"=>"Petits drapeaux") ; 
+                                               if( in_array($row['nom'], array('Forteresse', 'Tour de guet', 'Tour de garde', 'Tour de mages', 'Tour d archers', 'Bourgade', 'Palissade', 'Muraille', 'Grande muraille', 'Catapulte', 'Baliste')) )
+                                               {
+                                                    echo '<h6>'.$nombre.' '.$tab[$row['nom']].' bien achetées</h6><br />';
+                                               }
+                                               else
+                                               {
+                                                    echo '<h6>'.$nombre.' '.$tab[$row['nom']].' bien achetés</h6><br />';
+                                               }
+                                               
+                                       }
+                                       else
+                                       {
+                                               if( in_array($row['nom'], array('Forteresse', 'Tour de guet', 'Tour de garde', 'Tour de mages', 'Tour d archers', 'Bourgade', 'Palissade', 'Muraille', 'Grande muraille', 'Catapulte', 'Baliste')) )
+                                               {
+                                                    echo '<h6>'.$nombre.' '.$row['nom'].' bien achetée</h6><br />';
+                                               }
+                                               else
+                                               {
+                                                    echo '<h6>'.$nombre.' '.$row['nom'].' bien acheté</h6><br />';
+                                               }
+                                       }
 				}
 				else echo '<h5>Il vous manque des ressources !</h5>';
 			}

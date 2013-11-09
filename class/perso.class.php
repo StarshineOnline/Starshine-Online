@@ -365,6 +365,15 @@ class perso extends entite
 		$this->date_creation = $date_creation;
 		$this->champs_modif[] = 'date_creation';
 	}
+	/**
+	 * Permet de savoir si le joueur est mort ou pas
+	 *
+	 * @return bool returns true si le perso est mort, false sinon
+ 	*/
+	function est_mort()
+	{
+		return ($this->get_hp() <= 0);
+	}
   // @}
   
   /**
@@ -692,7 +701,7 @@ class perso extends entite
 		if ($base)
 			return $this->alchimie;
 		elseif ($this->get_race() == 'scavenger')
-			return $this->alchimie * 1.20 + $this->get_bonus_permanents('alchimie');
+			return $this->alchimie * 1.40 + $this->get_bonus_permanents('alchimie');
 		else
 			return $this->alchimie + $this->get_bonus_permanents('alchimie');
 	}
@@ -724,7 +733,7 @@ class perso extends entite
 		if ($base)
 			return $this->forge;
 		elseif ($this->get_race() == 'scavenger')
-			return $this->forge * 1.20 + $this->get_bonus_permanents('forge');
+			return $this->forge * 1.40 + $this->get_bonus_permanents('forge');
 		else
 			return $this->forge + $this->get_bonus_permanents('forge');
 	}
@@ -1833,6 +1842,9 @@ class perso extends entite
 			case 10:
 				$this->add_effet_permanent('defenseur', new protection_artistique($effet, $item->nom));
 				break;
+			case 11:
+        $this->add_bonus_permanents('potentiel_magique', $effet);
+				break;
 			case 13:
 				$this->camouflage = $effet;
 				break;
@@ -1841,6 +1853,9 @@ class perso extends entite
 				break;
 			case 15 :
 				$this->add_effet_permanent('attaquant', new bonus_pinceau_degats($effet, $item->nom));
+				break;
+			case 16:
+				$this->add_bonus_permanents('regen_mp_add', $effet);
 				break;
 			case 23 :
 				$this->add_effet_permanent('defenseur', new carapace_incisive($effet, $item->nom));
@@ -2065,17 +2080,6 @@ class perso extends entite
 	{
 		$this->hp = $hp;
 		$this->champs_modif[] = 'hp';
-
-		if ($this->hp == 1337)
-			$this->unlock_achiev('hp_1337');
-		elseif ($this->hp == 666)
-			$this->unlock_achiev('hp_666');
-		elseif ($this->hp == 42)
-			$this->unlock_achiev('hp_42');
-		elseif ($this->hp == 1)
-			$this->unlock_achiev('hp_1');
-		elseif ($this->hp == 69)
-			$this->unlock_achiev('hp_69');
 	}
 	/// Renvoie les HP maximaux
 	function get_hp_max($base = false)
@@ -2333,6 +2337,7 @@ class perso extends entite
 				}
 				$bonus_arme = $this->get_bonus_permanents('regen_hp');
 				$bonus_arme_mp = $this->get_bonus_permanents('regen_mp');
+				$bonus_add_mp = $this->get_bonus_permanents('regen_mp_add');
 				// Effets magiques des objets
 				/*foreach($this['objet_effet'] as $effet)
 				{
@@ -2348,7 +2353,7 @@ class perso extends entite
 				}*/
 				// Calcul des HP et MP récupérés
 				$hp_gagne = $nb_regen * (floor($this->get_hp_maximum() * $regen_hp) + $bonus_accessoire + $bonus_arme);
-				$mp_gagne = $nb_regen * (floor($this->get_mp_maximum() * $regen_mp) + $bonus_accessoire_mp + $bonus_arme_mp);
+				$mp_gagne = $nb_regen * (floor($this->get_mp_maximum() * $regen_mp) + $bonus_accessoire_mp + $bonus_arme_mp + $bonus_add_mp);
 				//DéBuff lente agonie
 				if($this->is_buff('lente_agonie'))
 				{
@@ -2971,7 +2976,7 @@ class perso extends entite
 		{
 			foreach($this->get_liste_quete() as $quest)
 			{
-				if($quest['id_quete'] == $_GET['id']) $valid = false;
+				if($quest['id_quete'] == $quete) $valid = false;
 			}
 			$numero_quete = (count($this->liste_quete));
 		}
@@ -3193,8 +3198,9 @@ class perso extends entite
   function fin_combat_pvp(&$ennemi, $defense, $batiment=false)
   {
     global $db, $G_xp_rate, $G_range_level, $G_crime, $Gtrad;
-		
-    if( $this->get_hp() <= 0 )
+	
+	$msg_xp = '';
+    if( $this->est_mort() )
     {
 			$this->trigger_arene();
 			//On supprime toutes les rez
@@ -3395,6 +3401,18 @@ class perso extends entite
   {
     $msg_xp = $perso->fin_combat_pvp($this, false);
     $msg_xp .= $this->fin_combat_pvp($perso, true, $batiment);
+		if ( $this->est_mort() ) {
+			if (!$G_no_ambiance_kill_message) {
+				echo '<li class="ambiance_kill_message">';
+				if ($this->get_level() < $perso->get_level() - 9)
+					echo 'A vaincre sans péril on triomphe sans gloire.<br />';
+				elseif ($this->get_level() > $perso->get_level() + 9)
+					echo 'Félicitation, tu es venu à bout de '.$this->get_nom().'.<br />';
+				elseif ($this->get_level() >= $perso->get_level() - 9 AND $this->get_level() <= $perso->get_level() + 9)
+					echo 'Tu as tué '.$this->get_nom().'.<br />';
+				echo '</li>';
+			}
+		}
     return $msg_xp;
   }
   /// Renvoie le coût en PA pour attaquer l'entité
@@ -3822,6 +3840,11 @@ class perso extends entite
 	function already_unlocked_achiev($achievement_type)
 	{
 		global $db;
+    if (is_string($achievement_type)) {
+      $achievements = achievement_type::create('variable', $achievement_type);
+      if (!($achievements == null || count($achievements) == 0))
+        $achievement_type = $achievements[0];
+    }
 		$requete = "SELECT id FROM achievement WHERE id_perso = '".$this->id."' AND id_achiev = '".$achievement_type->get_id()."'";
 		$req = $db->query($requete);
 		if ($db->num_rows($req) > 0) // L'achievement est deja debloqué

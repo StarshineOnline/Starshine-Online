@@ -167,6 +167,19 @@ $bonus = recup_bonus($joueur->get_id());
 						{
 							if($bonus_total[$id]['valeur'] == 1) $sexe = 'Masculin'; else $sexe = 'Feminin';
 							echo 'Sexe '.$sexe;
+							{
+							?>
+							<form action="configure_point_sso.php" method="get" id="formSexe">
+								<select name="sexe" id='sexe'>
+									<option value="1">Masculin</option>
+									<option value="2">Feminin</option>
+								</select>
+								<input type="hidden" value="<?php echo $id; ?>" name="id" id='id_sexe' />
+								<input type="button" value="Valider" onclick="envoiInfo('configure_point_sso.php?css=' + $('#sexe').val()+'&amp;id='+$('#id_sexe').val(), 'popup_content');envoiInfo('configure_point_sso.php', 'popup_content');" />
+							</form>
+							<?php
+						}
+							
 						}
 					break;
 					//Description

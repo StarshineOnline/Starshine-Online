@@ -193,6 +193,14 @@ function fin_quete($joueur, $id_quete_joueur, $id_quete, &$liste_quete)
 		}
 		$r++;
 	}
+  // Checke les achievements de quete: TODO: les mettres en recompense (cachee) de quete
+  foreach (array('quete_kesalys' => 93,
+                 'quete_pecheur' => 91,
+                 'quete_ecolo' => 94)
+           as $achiev_variable => $id) {
+    if ($id == $id_quete)
+      $joueur->unlock_achiev($achiev_variable);
+  }
 	$joueur->get_grade();
 	$stars = round($row['star'] * (1 + ($joueur->grade->get_rang() * 2 / 100)));
 	if($joueur->get_race() == 'nain')
@@ -235,10 +243,9 @@ function affiche_quetes($fournisseur, $joueur)
 	if($id_royaume < 10) '0'.$id_royaume;
 	$requete = "SELECT *, quete.id as idq FROM quete LEFT JOIN quete_royaume ON quete.id = quete_royaume.id_quete WHERE ((achat = 'oui' AND quete_royaume.id_royaume = ".$R->get_id().") OR (achat = 'non' AND royaume LIKE '%".$id_royaume."%')) AND quete.fournisseur = '".$fournisseur."' AND quete.niveau_requis <= ".$joueur->get_level()." AND quete.honneur_requis <= ".$joueur->get_honneur()." ".$where." ".$notin." ORDER BY quete.lvl_joueur";
 	$req = $db->query($requete);
-	if($db->num_rows > 0)
-	{
-		$return[0] .= '<ul class="ville">';
-	}
+	
+	$html = '';
+	$nombre_quete = 0;
 	while($row = $db->read_array($req))
 	{
 		$quete_fini = explode(';', $joueur->get_quete_fini());
@@ -263,43 +270,42 @@ function affiche_quetes($fournisseur, $joueur)
 				$val = mb_substr($requis, 1);
 				if($requis[0] == 'q')
 				{
-          if( !in_array($val, $quete_fini) )
-          {
-            $check = false;
-            break;
-          }
-        }
-        else if($requis[0] == 't')
+					if( !in_array($val, $quete_fini) )
+					{
+					$check = false;
+					break;
+					}
+				}
+				else if($requis[0] == 't')
 				{
-          if( $joueur->get_tuto() != $val )
-          {
-            $check = false;
-            break;
-          }
-        }
-        else if($requis[0] == 'c')
+					if( $joueur->get_tuto() != $val )
+					{
+					$check = false;
+					break;
+					}
+				}
+				else if($requis[0] == 'c')
 				{
-          $classes = explode('-', $val);
-          if( !in_array($joueur->get_classe_id(), $classes) )
-          {
-            $check = false;
-            break;
-          }
-        }
+					$classes = explode('-', $val);
+					if( !in_array($joueur->get_classe_id(), $classes) )
+					{
+					$check = false;
+					break;
+					}
+				}
 			}
 			if($check)
 			{
-		$return[0] .= '<li>
-		<a href="bureau_quete.php?action=description&amp;id='.$row['idq'].'" onclick="return envoiInfo(this.href, \'carte\')">'.$row['nom'].'</a> <span class="small">(Niv. '.$row['lvl_joueur'].')</span>
-	</li>';
+				$nombre_quete++;
+				$html .= '<li><a href="bureau_quete.php?action=description&amp;id='.$row['idq'].'" onclick="return envoiInfo(this.href, \'carte\')">'.$row['nom'].'</a> <span class="small">(Niv. '.$row['lvl_joueur'].')</span></li>';
 			}
 		}
 	}
-	if($db->num_rows > 0)
+	if($nombre_quete > 0)
 	{
-		$return[0] .=  '</ul>';
+		$return[0] =  '<ul class="ville">'.$html.'</ul>';
 	}
-	$return[1] = $db->num_rows;
+	$return[1] = $nombre_quete;
 	return $return;
 }
 
@@ -388,6 +394,85 @@ function prend_quete($id_quete, $joueur)
 	if($row['fournisseur'] == '') $link = 'bureau_quete';
 	else $link = $row['fournisseur'];
 	return $link;
+}
+
+function prend_quete_tout($joueur)
+{
+	global $db, $R;
+	$return = "";
+	$quetes = array();
+	$liste_quete = $joueur->get_liste_quete();
+	if(is_array($liste_quete))
+	{
+		foreach($liste_quete as $quete)
+		{
+			if ($quete['id_quete']!='')
+			{
+				$quetes[] = $quete['id_quete'];
+			}
+		
+		}
+		if(count($quetes) > 0) $notin = "AND quete.id NOT IN (".implode(',', $quetes).")";
+		else $notin = '';
+	}
+	else $notin = '';
+	$where = "";
+	$id_royaume = $R->get_id();
+	if($id_royaume < 10) '0'.$id_royaume;
+	$requete = "SELECT *, quete.id as idq FROM quete LEFT JOIN quete_royaume ON quete.id = quete_royaume.id_quete WHERE ((achat = 'oui' AND quete_royaume.id_royaume = ".$R->get_id().") OR (achat = 'non' AND royaume LIKE '%".$id_royaume."%')) AND quete.niveau_requis <= ".$joueur->get_level()." AND quete.honneur_requis <= ".$joueur->get_honneur()." ".$where." ".$notin." ORDER BY quete.lvl_joueur";
+	$req = $db->query($requete);
+	
+	while($row = $db->read_array($req))
+	{
+		$quete_fini = explode(';', $joueur->get_quete_fini());
+		//Si c'est une quête non répétable et que le joueur a déjà fini la quête, on affiche pas.
+		if($row['repete'] == 'n' AND in_array($row['idq'], $quete_fini))
+		{
+		}
+		else
+		{
+			$check = true;
+			$quete_requis = explode(';', $row['quete_requis']);
+			foreach($quete_requis as $requis) 
+			{
+				if( !$requis ) continue;
+				$val = mb_substr($requis, 1);
+				if($requis[0] == 'q') //Si c'est une quête qui en nécessite une autre mais que le joueur ne l'a pas déjà faite.
+				{
+					if( !in_array($val, $quete_fini) )
+					{
+						$check = false;
+						break;
+					}
+				}
+				else if($requis[0] == 't')
+				{
+					if( $joueur->get_tuto() != $val )
+					{
+						$check = false;
+						break;
+					}
+				}
+				else if($requis[0] == 'c')
+				{
+					$classes = explode('-', $val);
+					if( !in_array($joueur->get_classe_id(), $classes) )
+					{
+						$check = false;
+						break;
+					}
+				}
+			}
+			if($check)
+			{
+				if($joueur->prend_quete($row['idq']))
+					$return .= 'Quête "'.$row['nom'].'" prise.<br />';
+				else
+					$return .= 'Quête "'.$row['nom'].'" pas prise.<br />';
+			}
+		}
+	}
+	return $return;
 }
 
 function verif_inventaire($id_quete, $joueur)

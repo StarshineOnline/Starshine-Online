@@ -1,4 +1,5 @@
-<?php
+<?php // -*- mode: php; tab-width:2 -*-
+
 /**
  * @file texte.class.php
  * COntient la classe qui permet la mise en forme du texte en fon©tion des balises
@@ -297,24 +298,34 @@ class texte
   protected function parse_progr_pnj($texte)
   {
     //lancement fonction personalisée (cf. fonction/pnj.inc.php)
-    while( preg_match("`\[run:([a-z0-9_]+)\]`i", $texte, $regs) )
+    while( preg_match("`\[run:([a-z0-9_]+)(\(([a-z0-9_]+)\))?\]`i",
+											$texte, $regs) )
     {
       include_once('fonction/pnj.inc.php');
       $run = 'pnj_run_'.$regs[1];
-      $replace = $run($this->perso);
-      $texte = str_ireplace('[run:'.$regs[1].']', $replace, $texte);
+			if (array_key_exists(3, $regs))
+				$replace = $run($this->perso, $regs[3]);
+			else
+				$replace = $run($this->perso);
+      $texte = str_ireplace($regs[0], $replace, $texte);
     }
     //IF fonction personalisée (cf. fonction/pnj.inc.php)
-    while( preg_match('`\[if:([a-z0-9_]+)\]`i', $texte, $regs) )
+    while( preg_match('`\[if:([a-z0-9_]+)(\(([a-z0-9_]+)\))?\]`i',
+											$texte, $regs) )
     {
-    	$markup = 'if:'.$regs[1];
+			$markup = 'if:'.$regs[1];
       include_once('fonction/pnj.inc.php');
       $run = 'pnj_if_'.$regs[1];
-      $ok = $run($this->perso);
+			if (array_key_exists(3, $regs)) {
+				$ok = $run($this->perso, $regs[3]);
+				$markup .= $regs[2];
+			}
+			else
+				$ok = $run($this->perso);
       if ($ok)
       {
         $texte = str_ireplace('['.$markup.']', '', $texte);
-        $texte = str_ireplace('['.$markup.']', '', $texte);
+        $texte = str_ireplace('[/'.$markup.']', '', $texte);
       }
       else
       {
@@ -326,16 +337,22 @@ class texte
       }
     }
     //IFNOT fonction personalisée (cf. fonction/pnj.inc.php)
-    while( preg_match("`\[ifnot:([a-z0-9_]+)\]`i", $texte, $regs) )
+    while( preg_match("`\[ifnot:([a-z0-9_]+)(\(([a-z0-9_]+)\))?\]`i",
+											$texte, $regs) )
     {
     	$markup = 'ifnot:'.$regs[1];
       include_once('fonction/pnj.inc.php');
       $run = 'pnj_if_'.$regs[1];
-      $ok = $run($this->perso);
+			if (array_key_exists(3, $regs)) {
+				$ok = $run($this->perso, $regs[3]);
+				$markup .= $regs[2];
+			}
+			else
+				$ok = $run($this->perso);
       if (!$ok)
       {
         $texte = str_ireplace('['.$markup.']', '', $texte);
-        $texte = str_ireplace('['.$markup.']', '', $texte);
+        $texte = str_ireplace('[/'.$markup.']', '', $texte);
       }
       else
       {
@@ -345,6 +362,18 @@ class texte
         $texte = preg_replace('`\['.$markup.'\].*\[/'.$markup.'\]`si', '', $texte);
     		if (!$s || !$e) die("Erreur de dialogue pnj: id = $this->id, reponse = $reponse, s = $s, e = $e");
       }
+    }
+    //lancement fonction personalisée (cf. fonction/pnj.inc.php)
+    while( preg_match("`\[runafter:([a-z0-9_]+)(\(([a-z0-9_]+)\))?\]`i",
+											$texte, $regs) )
+    {
+      include_once('fonction/pnj.inc.php');
+      $run = 'pnj_run_'.$regs[1];
+			if (array_key_exists(3, $regs))
+				$replace = $run($this->perso, $regs[3]);
+			else
+				$replace = $run($this->perso);
+      $texte = str_ireplace($regs[0], $replace, $texte);
     }
     return $texte;
   }

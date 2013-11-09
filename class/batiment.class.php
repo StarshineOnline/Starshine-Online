@@ -224,22 +224,23 @@ class batiment extends entitenj_def
    * @param  $id                    Id dans la base de donnée ou tableau associatif contenant les informations permettant la création de l'objet
    * @param  $nom                   Nom de l'entité
    * @param  $description           Description de l'entité
-   * @param  $type                  Type de l'entité
-	 * @param  $cout                  Coût d'achat en stars du bâtiment.
-	 * @param  $entretien             Coût journalier de l'entretien du bâtiment.
-	 * @param  $cond1                 Temps avant amélioration
-	 * @param  $cond2                 Inutilisé ?
-   * @param  $hp                    HP maximums de l'entité
-   * @param  $pp                    PP de l'entité
-   * @param  $pm                    PM de l'entité
-	 * @param  $carac                 Valeur de base des caractéristiques du bâtiment.
-	 * @param  $upgrade               ID de la version améliorée.
-	 * @param  $augmentation_pa       Augmentation du coût en PA des déplacements sur le bâtiment.
-	 * @param  $temps_construction    Temps de construction du bâtiment.
-	 * @param  $image                 Image du bâtiment.
-	 * @param  $point_victoire        Points de victoire gagnés lors de la destruction du bâtiment.
+   * @param  $type                  	Type de l'entité
+	 * @param  $cout                  	Coût d'achat en stars du bâtiment.
+	 * @param  $entretien             	Coût journalier de l'entretien du bâtiment.
+	 * @param  $cond1                 	Temps avant amélioration
+	 * @param  $cond2                 	Inutilisé ?
+   * @param  $hp                    	HP maximums de l'entité
+   * @param  $pp                    	PP de l'entité
+   * @param  $pm                    	PM de l'entité
+	 * @param  $carac                 	Valeur de base des caractéristiques du bâtiment.
+	 * @param  $upgrade               	ID de la version améliorée.
+	 * @param  $augmentation_pa       	Augmentation du coût en PA des déplacements sur le bâtiment.
+	 * @param  $temps_construction    	Temps de construction du bâtiment.
+	 * @param  $temps_construction_min    Temps de construction minimum du bâtiment.
+	 * @param  $image                 	Image du bâtiment.
+	 * @param  $point_victoire        	Points de victoire gagnés lors de la destruction du bâtiment.
 	 */
-	function __construct($id = 0, $nom = '', $description = '', $type = '', $cout = '', $entretien = '', $cond1 = '', $cond2 = '', $hp = '', $PP = '', $PM = '', $carac = '', $upgrade = '', $augmentation_pa = '', $temps_construction = '', $image = '', $point_victoire = '')
+	function __construct($id = 0, $nom = '', $description = '', $type = '', $cout = '', $entretien = '', $cond1 = '', $cond2 = '', $hp = '', $PP = '', $PM = '', $carac = '', $upgrade = '', $augmentation_pa = '', $temps_construction = '',$temps_construction_min = '', $image = '', $point_victoire = '')
 	{
 		//Verification nombre et du type d'argument pour construire l'etat adequat.
 		if( func_num_args() == 1 )
@@ -257,6 +258,7 @@ class batiment extends entitenj_def
 			$this->upgrade = $upgrade;
 			$this->augmentation_pa = $augmentation_pa;
 			$this->temps_construction = $temps_construction;
+			$this->temps_construction_min = $temps_construction_min;
 			$this->image = $image;
 		}
 	}
@@ -276,6 +278,7 @@ class batiment extends entitenj_def
 		$this->upgrade = $vals['upgrade'];
 		$this->augmentation_pa = $vals['augmentation_pa'];
 		$this->temps_construction = $vals['temps_construction'];
+		$this->temps_construction_min = $vals['temps_construction_min'];
 		$this->image = $vals['image'];
 		$this->point_victoire = $vals['point_victoire'];
   }
@@ -283,17 +286,17 @@ class batiment extends entitenj_def
 	/// Renvoie la liste des champs pour une insertion dans la base
 	protected function get_liste_champs()
 	{
-    return entitenj_def::get_liste_champs().', cout, entretien, cond1, cond2, carac, upgrade, augmentation_pa, temps_construction, image, point_victoire';
+    return entitenj_def::get_liste_champs().', cout, entretien, cond1, cond2, carac, upgrade, augmentation_pa, temps_construction,temps_construction_min, image, point_victoire';
   }
 	/// Renvoie la liste des valeurs des champspour une insertion dans la base
 	protected function get_valeurs_insert()
 	{
-		return entitenj_def::get_valeurs_insert().', '.$this->cout.', '.$this->entretien.', '.$this->cond1.', '.$this->cond2.', '.$this->carac.', '.$this->upgrade.', '.$this->augmentation_pa.', '.$this->temps_construction.', '.$this->image.', '.$this->point_victoire;
+		return entitenj_def::get_valeurs_insert().', '.$this->cout.', '.$this->entretien.', '.$this->cond1.', '.$this->cond2.', '.$this->carac.', '.$this->upgrade.', '.$this->augmentation_pa.', '.$this->temps_construction.', '.$this->temps_construction_min.', '.$this->image.', '.$this->point_victoire;
 	}
 	/// Renvoie la liste des champs et valeurs pour une mise-à-jour dans la base
 	protected function get_liste_update()
 	{
-		return entitenj_def::get_liste_update().', cout = '.$this->cout.', entretien = '.$this->entretien.', cond1 = '.$this->cond1.', cond2 = '.$this->cond2.', carac = '.$this->carac.', upgrade = '.$this->upgrade.', augmentation_pa = '.$this->augmentation_pa.', temps_construction = '.$this->temps_construction.', image = '.$this->image.', point_victoire = '.$this->point_victoire;
+		return entitenj_def::get_liste_update().', cout = '.$this->cout.', entretien = '.$this->entretien.', cond1 = '.$this->cond1.', cond2 = '.$this->cond2.', carac = '.$this->carac.', upgrade = '.$this->upgrade.', augmentation_pa = '.$this->augmentation_pa.', temps_construction = '.$this->temps_construction.', temps_construction_min = '.$this->temps_construction_min.', image = '.$this->image.', point_victoire = '.$this->point_victoire;
 	}
 	// @}
 
@@ -310,10 +313,10 @@ class batiment extends entitenj_def
 		if ($this->boni == null) {
 			global $db;
 			$this->boni = array();
-			$requeteSQL = $db->query("SELECT * from batiment_bonus where id_batiment = $this->id");
+			$requeteSQL = $db->query('SELECT * from batiment_bonus where id_batiment = '.$this->id);
 			while ($row = $db->read_assoc($requeteSQL)) {
 				$valeur = $row['valeur'];
-				if ($valeur === '') $valeur = true;
+				if ($valeur === '' || $valeur === NULL) $valeur = true;
 				$this->boni[$row['bonus']] = $valeur;
 			}
 		}

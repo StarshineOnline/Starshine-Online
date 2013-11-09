@@ -161,8 +161,8 @@ class maitrise_bouclier extends competence
   function calcul_bloquage(/*&$actif, &$passif*/&$attaque) {
     $passif = $attaque->get_passif();
     $this->used = true;
-    $passif->set_potentiel_bloquer( $passif->get_potentiel_bloquer() *
-      1 + ($passif->get_competence2('maitrise_bouclier')->get_valeur() / 1000) );
+    $passif->set_potentiel_bloquer( $passif->get_potentiel_bloquer() * (
+      1 + ($passif->get_competence2('maitrise_bouclier')->get_valeur() / 1000)) );
   }
 
   function fin_round(/*&$actif, &$passif*/&$attaque) {
@@ -294,7 +294,8 @@ class maitrise_critique extends competence
   function calcul_critique(/*&$actif, &$passif, $chance_critique*/&$attaque) {
     $actif = $attaque->get_actif();
     $this->used = true;
-    $this->valeur *=
+    
+    $attaque->valeur *=
       1 + ($actif->get_competence2('maitrise_critique')->get_valeur() / 1000);
     //$actif['maitrise_critique'] = $actif['competences']['maitrise_critique'];
     //return $chance_critique;
@@ -327,7 +328,7 @@ class art_critique extends competence
   function calcul_mult_critique(/*&$actif, &$passif, $mult*/&$attaque) {
     $this->critique = true;
     //return $mult + $attaque->get_actif()->get_competence2('art_critique')->get_valeur();
-    $this->valeur += $attaque->get_actif()->get_competence2('art_critique')->get_valeur();
+    $attaque->valeur += $attaque->get_actif()->get_competence2('art_critique')->get_valeur();
   }
 }
 
@@ -367,8 +368,8 @@ class botte_scorpion extends botte
 	}*/
 
   function calcul_critique(/*&$actif, &$passif, $chance*/&$attaque) {
-		if ($this->peut_agir($actif, 'esquive'))
-			$this->valeur *= (1 + $this->effet/100);
+		if ($this->peut_agir($attaque->get_actif(), 'esquive'))
+			$attaque->valeur *= (1 + $this->effet/100);
 		/*else
 			return $chance;*/
 	}	
@@ -441,8 +442,8 @@ class botte_scolopendre extends botte
 {
   function calcul_critique(/*&$actif, &$passif, $chance*/&$attaque)
   {
-		if( $this->peut_agir($actif, 'bloque') )
-			$this->valeur *= (1 + $this->effet/100);
+		if( $this->peut_agir($attaque->get_actif(), 'bloque') )
+			$attaque->valeur *= (1 + $this->effet/100);
 		//return $chance;
 	}
 }
@@ -488,7 +489,7 @@ class botte_ours extends botte
 {
   function calcul_degats(/*&$actif, &$passif, $degats*/&$attaque)
   {
-		if( $this->peut_agir($actif, 'touche') )
+		if( $this->peut_agir($attaque->get_actif(), 'touche') )
 			//return $degats + $this->effet;
       $attaque->add_degats($this->effet);
 		//return $degats;
@@ -510,7 +511,7 @@ class fleche_poison extends comp_comb {
     $this->debug("boost du facteur d'arme - fleche empoisonnee: $arme -> ".
                  ($arme + $this->effet));
 		//return $arme + $this->effet;
-    $this->valeur += $this->effet;
+    $attaque->valeur += $this->effet;
 	}
 
   function inflige_degats(/*&$actif, &$passif, $degats*/&$attaque) {
@@ -559,7 +560,7 @@ abstract class magnetique extends effect {
 
 	function fin_round(/*&$actif, &$passif*/&$attaque) {
 		if ($this->hit)
-			$this->magnetise($actif, $passif);
+			$this->magnetise($attaque);
 	}
 
   /// Test si l'effet agit ou non

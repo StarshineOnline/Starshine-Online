@@ -248,13 +248,17 @@ class map
 							for($i = 0; $i < count($this->map[$x_map][$y_map]["PNJ"]); $i++)				{ $overlib .= "<li class='overlib_batiments'><span>PNJ</span>&nbsp;-&nbsp;".ucwords($this->map[$x_map][$y_map]["PNJ"][$i]["nom"])."</li>"; }
 							for($i = 0; $i < count($this->map[$x_map][$y_map]["Joueurs"]); $i++)
 							{
-								if(array_key_exists('hp', $this->map[$x_map][$y_map]["Joueurs"][$i]))
+								if(array_key_exists('hp_max', $this->map[$x_map][$y_map]["Joueurs"][$i]))
 								{
 									$all = ' HP : '.$this->map[$x_map][$y_map]["Joueurs"][$i]["hp"].' / '.$this->map[$x_map][$y_map]["Joueurs"][$i]["hp_max"].' - MP : '.$this->map[$x_map][$y_map]["Joueurs"][$i]["mp"].' / '.$this->map[$x_map][$y_map]["Joueurs"][$i]["mp_max"].' - PA : '.$this->map[$x_map][$y_map]["Joueurs"][$i]["pa"];
 	
 								}
 								else $all = '';
-								$overlib .= "<li class='overlib_joueurs'><span>".$this->map[$x_map][$y_map]["Joueurs"][$i]["nom"]."</span>&nbsp;-&nbsp;".ucwords($this->map[$x_map][$y_map]["Joueurs"][$i]["race"])." - Niv.".$this->map[$x_map][$y_map]["Joueurs"][$i]["level"].$all."</li>";
+								
+								$overlib .= "<li class='overlib_joueurs'><span>";
+								if ($this->map[$x_map][$y_map]["Joueurs"][$i]["hp"] <= 0)	$overlib .= "<span class='mort'>".$this->map[$x_map][$y_map]["Joueurs"][$i]["nom"]."</span>";
+								else $overlib .= $this->map[$x_map][$y_map]["Joueurs"][$i]["nom"];
+								$overlib .= "</span>&nbsp;-&nbsp;".ucwords($this->map[$x_map][$y_map]["Joueurs"][$i]["race"])." - Niv.".$this->map[$x_map][$y_map]["Joueurs"][$i]["level"].$all."</li>";
 							}
 							for($i = 0; $i < count($this->map[$x_map][$y_map]["Monstres"]); $i++)
 							{
@@ -299,6 +303,7 @@ class map
 						if($this->onclick_status)
 						{
 							$onclick = str_replace('%%id%%', $MAPTAB[$x_map][$y_map]['id'], $this->onclick);
+							$onclick = str_replace('%%pos%%', convert_in_pos($x_map, $y_map), $onclick);
 						}
 						else $onclick = $this->onclick;
 						echo " 		onclick=\"".$onclick."\"\n>";
@@ -482,9 +487,9 @@ class map
 			$ymin = $this->ymin;
 			$ymax = $this->ymax;
 		}
-		if($all) $champs .= ', hp, hp_max, mp, mp_max, pa ';
+		if($all) $champs .= ', hp_max, mp, mp_max, pa ';
 		else $champs = '';
-		$requete = "SELECT id, nom, level, race, x, y, classe, cache_classe, cache_niveau".$champs."
+		$requete = "SELECT id, nom, level, race, x, y, classe, cache_classe, cache_niveau, hp".$champs."
 								 FROM perso 
 								 WHERE (( (x >= ".$xmin.") AND (x <= ".$xmax.") ) 
 								 AND ( (y >= ".$ymin.") AND (y <= ".$ymax.") ))  
@@ -510,9 +515,9 @@ class map
 					$this->map[$objJoueurs->x][$objJoueurs->y]["Joueurs"][$joueurs]["level"] = $objJoueurs->level;
 					$this->map[$objJoueurs->x][$objJoueurs->y]["Joueurs"][$joueurs]["race"] = $Gtrad[$objJoueurs->race];
 					$this->map[$objJoueurs->x][$objJoueurs->y]["Joueurs"][$joueurs]["classe"] = $objJoueurs->classe;
+					$this->map[$objJoueurs->x][$objJoueurs->y]["Joueurs"][$joueurs]["hp"] = $objJoueurs->hp;
 					if($all)
 					{
-						$this->map[$objJoueurs->x][$objJoueurs->y]["Joueurs"][$joueurs]["hp"] = $objJoueurs->hp;
 						$this->map[$objJoueurs->x][$objJoueurs->y]["Joueurs"][$joueurs]["hp_max"] = floor($objJoueurs->hp_max);
 						$this->map[$objJoueurs->x][$objJoueurs->y]["Joueurs"][$joueurs]["mp"] = $objJoueurs->mp;
 						$this->map[$objJoueurs->x][$objJoueurs->y]["Joueurs"][$joueurs]["mp_max"] = floor($objJoueurs->mp_max);
@@ -780,12 +785,12 @@ class map
 		$rep = 0;
 		foreach($reperes as $repere)
 		{
-			$rep = count($this->map[$repere->x][$repere->y]["Reperes"]);
-			$repere->get_type();
-			$this->map[$repere->x][$repere->y]["Reperes"][$rep]["id_repere"] = $repere->id;
-			$this->map[$repere->x][$repere->y]["Reperes"][$rep]["nom"] = $repere->repere_type->nom;
-			$this->map[$repere->x][$repere->y]["Reperes"][$rep]["id_type"] = $repere->id_type;
-			$this->map[$repere->x][$repere->y]["Reperes"][$rep]["image"] = $repere->repere_type->image;
+			$rep = count($this->map[$repere->get_x()][$repere->get_y()]["Reperes"]);
+			$repere_type = $repere->get_repere_type();
+			$this->map[$repere->get_x()][$repere->get_y()]["Reperes"][$rep]["id_repere"] = $repere->get_id();
+			$this->map[$repere->get_x()][$repere->get_y()]["Reperes"][$rep]["nom"] = $repere_type->get_nom();
+			$this->map[$repere->get_x()][$repere->get_y()]["Reperes"][$rep]["id_type"] = $repere->get_id_type();
+			$this->map[$repere->get_x()][$repere->get_y()]["Reperes"][$rep]["image"] = $repere_type->get_image();
 		}
 	}
 
@@ -794,11 +799,11 @@ class map
 		$rep = 0;
 		foreach($reperes as $repere)
 		{
-			$rep = count($this->map[$repere->x][$repere->y]["Batiments_ennemi"]);
-			$repere->get_type();
-			$this->map[$repere->x][$repere->y]["Batiments_ennemi"][$rep]["id_batiment"] = $repere->id_batiment;
-			$this->map[$repere->x][$repere->y]["Batiments_ennemi"][$rep]["nom"] = $repere->repere_type->get_nom();
-			$this->map[$repere->x][$repere->y]["Batiments_ennemi"][$rep]["image"] = $repere->repere_type->get_image_full($this->root, $this->resolution);
+			$rep = count($this->map[$repere->get_x()][$repere->get_y()]["Batiments_ennemi"]);
+			$repere_type = $repere->get_repere_type();
+			$this->map[$repere->get_x()][$repere->get_y()]["Batiments_ennemi"][$rep]["id_batiment"] = $repere_type->get_id();
+			$this->map[$repere->get_x()][$repere->get_y()]["Batiments_ennemi"][$rep]["nom"] = $repere_type->get_nom();
+			$this->map[$repere->get_x()][$repere->get_y()]["Batiments_ennemi"][$rep]["image"] = $repere_type->get_image_full($this->root, $this->resolution);
 		}
 	}
 

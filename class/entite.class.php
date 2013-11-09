@@ -851,6 +851,8 @@ class entite extends placable
       $this->potentiel_magique /= 1 + (($this->etat['lien_sylvestre']['effet2']) / 100);
   	if(array_key_exists('fleche_debilitante', $this->etat))
       $this->potentiel_magique /= 1 + ($this->etat['fleche_debilitante']['effet'] / 100);
+      if(array_key_exists('fleche_sable', $this->etat))
+      $this->potentiel_magique /= 1 + ($this->etat['fleche_sable']['effet'] / 100);
   	if($this->etat['posture']['type'] == 'posture_feu')
       $this->potentiel_magique *= 1 + (($this->etat['posture']['effet']) / 100);
     if(array_key_exists('glace', $this->etat)) $this->potentiel_magique /= 2;
@@ -859,16 +861,9 @@ class entite extends placable
       $arme = $this->get_arme();
       $this->potentiel_magique *= (1 + ($arme->var1 / 100));
     }
-  	//Objets magiques
-  	foreach($this->objet_effet as $effet)
-  	{
-  		switch($effet['id'])
-  		{
-  			case '11' :
-  				$this->potentiel_magique += $potentiel_magique_arme * (1 + ($effet['effet'] / 100));
-  			break;
-  		}
-  	}
+    if ($this->get_bonus_permanents('potentiel_magique'))
+       $this->potentiel_magique += $potentiel_magique_arme * 
+         (1 + $this->get_bonus_permanents('potentiel_magique') / 100);
   	return $this->potentiel_magique;
 	}
 	/**

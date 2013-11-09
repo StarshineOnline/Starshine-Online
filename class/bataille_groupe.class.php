@@ -4,10 +4,10 @@ if (file_exists('../root.php'))
 ?><?php
 class bataille_groupe
 {
-	public $id;
-	public $id_bataille;
-	public $id_groupe;
-	public $id_thread;
+	private $id;
+	private $id_bataille;
+	private $id_groupe;
+	private $id_thread;
 
 	/**	
 		*	Constructeur permettant la création d'un repère de bataille.
@@ -101,6 +101,38 @@ class bataille_groupe
 	{
 		return $this->id;
 	}
+	
+	function get_id()
+	{
+		return $this->id;
+	}
+	
+	function get_id_bataille()
+	{
+		return $this->id_bataille;
+	}
+	function set_id_bataille($id_bataille)
+	{
+		$this->id_bataille = $id_bataille;
+	}
+	
+	function get_id_groupe()
+	{
+		return $this->id_groupe;
+	}
+	function set_id_groupe($id_groupe)
+	{
+		$this->id_groupe = $id_groupe;
+	}
+	
+	function get_id_thread()
+	{
+		return $this->id_thread;
+	}
+	function set_id_thread($id_thread)
+	{
+		$this->id_thread = $id_thread;
+	}
 
 	function get_reperes()
 	{
@@ -113,6 +145,7 @@ class bataille_groupe
 		{
 			$this->reperes[] = new bataille_groupe_repere($row);
 		}
+		return $this->reperes;
 	}
 
 	function get_nom()
@@ -134,7 +167,7 @@ class bataille_groupe
 		if($this->id_bataille > 0)
 		{
 			$bataille = new bataille($this->id_bataille);
-			if($bataille->etat == 2) // La bataille est finie
+			if($bataille->get_etat() == 2) // La bataille est finie
 				return false;
 			else
 				return true;

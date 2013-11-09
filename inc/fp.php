@@ -93,7 +93,7 @@ function fin_script()
   $err = error_get_last();
   if( $err['type'] & (E_ERROR | E_RECOVERABLE_ERROR | E_USER_ERROR) )
   {
-    $msg = $err['message'].' (fichier : '.$err['file'].', ligne : '.$err['line'].', url : '.$_SERVER['PHP_SELF'].')';
+    $msg = $err['message'].' (fichier : '.$err['file'].', ligne : '.$err['line'].', url : '.$_SERVER['REQUEST_URI'].')';
     if( !count(log_admin::create(array('type', 'message'),array('bug', $msg))) )
     {
   		$log = new log_admin();

@@ -180,7 +180,7 @@ function check_undead_players($ajax = false)
   if (!isset($joueur) || !$joueur) {
     $joueur = new perso($_SESSION['ID']);
   }
-  if ($joueur->get_hp() < 1) {
+  if ( $joueur->est_mort() ) {
     ob_end_clean();
 		if ($ajax) {
 			print_js_onload("location.href = 'interface.php'");

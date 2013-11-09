@@ -160,7 +160,7 @@ if($db->num_rows > 0)
       else
       {
 				// Message du forum
-				$elections[ $row['id_royaume'] ]["resultat"] = "Nomination ".creer_cdn($row_c['nom']).".";
+				$elections[ $row['id_royaume'] ]["resultat"] = "Nomination ".creer_cdn($row_c['nom']).".\n";
       }
 		}
   	else // pas de votant
@@ -246,7 +246,7 @@ if($db->num_rows > 0)
 			$graph->Render('image/revolution_'.$race.'_'.date("Y-m-d").'.png');
 			
 			// Message du forum
-			$elections[ $row['id_royaume'] ]["resultat"] = "[img]".BASE."image/revolution_$race"."_".date("Y-m-d").".png[/img]\n";
+			$elections[ $row['id_royaume'] ]["resultat"] .= "[img]".BASE."image/revolution_$race"."_".date("Y-m-d").".png[/img]\n";
 
 			//On met en route la révolution si pour > contre
 			if($pour > $contre)
@@ -261,6 +261,9 @@ if($db->num_rows > 0)
 				$royaume->set_ministre_economie( 0 );
 				$royaume->set_ministre_militaire( 0 );
 				$royaume->sauver();
+				//On supprime la prochaine election
+				$prochaine = elections::get_prochain_election($row["id_royaume"], true);
+				$prochaine[0]->supprimer();
 				//Mis en route de nouvelles élections pour le mois suivant
 				if(date('d') > 12) $date_e = mktime(0, 0, 0, date("m") + 2, 1, date("Y"));
 				else $date_e = mktime(0, 0, 0, date("m") + 1, 1, date("Y"));

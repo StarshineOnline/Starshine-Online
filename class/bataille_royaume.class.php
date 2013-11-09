@@ -25,6 +25,7 @@ class bataille_royaume
 		{
 			$this->batailles[] = new bataille($row);
 		}
+		return $this->batailles;
 	}
 
 	function get_all_repere_type()
@@ -35,10 +36,9 @@ class bataille_royaume
 
 		$requete = "SELECT id, nom, description, ajout_groupe, image FROM bataille_repere_type ORDER BY ajout_groupe DESC";
 		$req = $db->query($requete);
-		while($row = $db->read_row($req))
+		while($row = $db->read_assoc($req))
 		{
-			$reperes_type[$i] = new bataille_repere_type();
-			list($reperes_type[$i]->id, $reperes_type[$i]->nom, $reperes_type[$i]->description, $reperes_type[$i]->ajout_groupe, $reperes_type[$i]->image) = $row;
+			$reperes_type[$i] = new bataille_repere_type($row);
 			$i++;
 		}
 		return $reperes_type;

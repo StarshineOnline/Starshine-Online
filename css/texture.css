@@ -318,24 +318,24 @@
 .tex496{background:url('../image/texture/textbanquise/montagne centreneige.png') no-repeat;}
 
 .tex501{background:url('../image/texture/tex_eau1.png') no-repeat;}
-.tex502{background:url('../image/texture/riviereherbe/tex_riviereeo.png') no-repeat;}
+.tex502{background:url('../image/texture/riviereherbe/tex_riviereeo.gif') no-repeat;}
 .tex503{background:url('../image/texture/riviereherbe/tex_rivierens.png') no-repeat;}
-.tex504{background:url('../image/texture/riviereherbe/tex_rivierene.png') no-repeat;}
+.tex504{background:url('../image/texture/riviereherbe/tex_rivierene.gif') no-repeat;}
 .tex505{background:url('../image/texture/riviereherbe/tex_riviereno.png') no-repeat;}
 .tex506{background:url('../image/texture/riviereherbe/tex_rivierese.png') no-repeat;}
 .tex507{background:url('../image/texture/riviereherbe/tex_riviereso.png') no-repeat;}
-.tex508{background:url('../image/texture/texturelac/tex_lace.png') no-repeat;}
-.tex509{background:url('../image/texture/texturelac/tex_laco.png') no-repeat;}
-.tex510{background:url('../image/texture/texturelac/tex_lacn.png') no-repeat;}
+.tex508{background:url('../image/texture/texturelac/tex_lace.gif') no-repeat;}
+.tex509{background:url('../image/texture/texturelac/tex_laco.gif') no-repeat;}
+.tex510{background:url('../image/texture/texturelac/tex_lacn.gif') no-repeat;}
 .tex511{background:url('../image/texture/texturelac/tex_lacs.png') no-repeat;}
-.tex512{background:url('../image/texture/texturelac/tex_lacno.png') no-repeat;}
-.tex513{background:url('../image/texture/texturelac/tex_lacne.png') no-repeat;}
+.tex512{background:url('../image/texture/texturelac/tex_lacno.gif') no-repeat;}
+.tex513{background:url('../image/texture/texturelac/tex_lacne.gif') no-repeat;}
 .tex514{background:url('../image/texture/texturelac/tex_lacso.png') no-repeat;}
 .tex515{background:url('../image/texture/texturelac/tex_lacse.png') no-repeat;}
-.tex516{background:url('../image/texture/texturelac/tex_lacon.png') no-repeat;}
+.tex516{background:url('../image/texture/texturelac/tex_lacon.gif') no-repeat;}
 .tex517{background:url('../image/texture/texturelac/tex_lacos.png') no-repeat;}
 .tex518{background:url('../image/texture/texturelac/tex_laces.png') no-repeat;}
-.tex519{background:url('../image/texture/texturelac/tex_lacen.png') no-repeat;}
+.tex519{background:url('../image/texture/texturelac/tex_lacen.gif') no-repeat;}
 .tex520{background:url('../image/texture/texturelac/tex_embouchureo.png') no-repeat;}
 .tex521{background:url('../image/texture/texturelac/tex_embouchuree.png') no-repeat;}
 .tex522{background:url('../image/texture/texturelac/tex_embouchuren.png') no-repeat;}
@@ -365,13 +365,14 @@
 .tex545{background:url('../image/texture/texturelac/text_carpe.png') no-repeat;}
 .tex546{background:url('../image/texture/texturelac/poisson.png') no-repeat;}
 
-.tex547{background:url('../image/texture/riviereherbe/tex_rivierehoriz_2.png') no-repeat;}
-.tex548{background:url('../image/texture/riviereherbe/tex_riviereverti_2.png') no-repeat;}
+.tex547{background:url('../image/texture/riviereherbe/tex_rivierehoriz_2.gif') no-repeat;}
+.tex548{background:url('../image/texture/riviereherbe/tex_riviereverti_2.gif') no-repeat;}
 .tex549{background:url('../image/texture/riviereherbe/tex_riviereverti_arbre.png') no-repeat;}
 .tex550{background:url('../image/texture/riviereherbe/tex_riviere_bg.png') no-repeat;}
-.tex551{background:url('../image/texture/riviereherbe/tex_riviere_bd.png') no-repeat;}
-.tex552{background:url('../image/texture/riviereherbe/tex_riviere_hg.png') no-repeat;}
-.tex553{background:url('../image/texture/riviereherbe/tex_riviere_hd.png') no-repeat;}
+.tex551{background:url('../image/texture/riviereherbe/tex_riviere_bd.gif') no-repeat;}
+.tex552{background:url('../image/texture/riviereherbe/tex_riviere_hg.gif') no-repeat;}
+.tex553{background:url('../image/texture/riviereherbe/tex_riviere_hd.gif') no-repeat;}
+
 
 .tex601{background:url('../image/texture/tex_monthorigauche.png') no-repeat;}
 .tex602{background:url('../image/texture/tex_monthoricentre.png') no-repeat;}
@@ -792,6 +793,8 @@
 .tex10819{background:url('../image/texture/route/tex_routemarais_horiz_efface_g.png') no-repeat;}
 .tex10820{background:url('../image/texture/route/tex_routemarais_horiz_efface_d.png') no-repeat;}
 .tex10821{background:url('../image/texture/route/tex_routemarais_croisement.png') no-repeat;}
+.tex10822{background:url('../image/texture/route/tex_routemontagneverti.png') no-repeat;}
+
 
 .tex10814{background:url('../image/texture/route/tex_lac_sud.png') no-repeat;}
 .tex10815{background:url('../image/texture/route/tex_lac_nord.png') no-repeat;}
@@ -1058,7 +1061,7 @@
 
 .tex2501{background:url('../image/texture/sol_hotel_bg.png') no-repeat;}
 .tex2502{background:url('../image/texture/sol_hotel_bd.png') no-repeat;}
-.tex2503{background:url('../image/texture/donjon_gobelin/sol_rideaum.png') no-repeat;}
+.tex2503{background:url('../image/texture/donjon_gobelin/tex_donjongob_riviere_rituel.png') no-repeat;}
 .tex2504{background:url('../image/texture/donjon_gobelin/sol_cuisine_gob_four.png') no-repeat;}
 .tex2505{background:url('../image/texture/donjon_gobelin/sol_cuisine_gob_bm.png') no-repeat;}
 .tex2506{background:url('../image/texture/donjon_gobelin/sol_cuisine_gob_bd.png') no-repeat;}
@@ -1254,7 +1257,7 @@
 
 .tex2601{background:url('../image/texture/mur_hotel_hg.png') no-repeat;}
 .tex2602{background:url('../image/texture/mur_hotel_hd.png') no-repeat;}
-.tex2603{background:url('../image/texture/donjon_gobelin/tex_gobrideaum.png') no-repeat;}
+.tex2603{background:url('../image/texture/donjon_gobelin/tex_donjongob_riviere_rituel.png') no-repeat;}
 .tex2604{background:url('../image/texture/donjon_gobelin/tex_mur_gob_royale g.png') no-repeat;}
 .tex2605{background:url('../image/texture/donjon_gobelin/tex_mur_gob_royale m.png') no-repeat;}
 .tex2606{background:url('../image/texture/donjon_gobelin/tex_mur_gob_royale d.png') no-repeat;}
@@ -1740,7 +1743,10 @@
 
 .tex8575, .tex18575{background:url('../image/texture/donjon_aquatique/sol_tente_chacal_centrem_caisse_b.png') no-repeat;}
 .tex8576, .tex18576{background:url('../image/texture/donjon_aquatique/sol_tente_chacal_centrem_caisse_h.png') no-repeat;}
+
 .tex8577{background:url('../image/texture/donjon_aquatique/sol_bouse_d.png') no-repeat;}
+
+.tex8578{background:url('../image/texture/donjon_aquatique/couloir_horiz_coulure_deau.png') no-repeat;}
 
 .tex10584{background:url('../image/texture/repere_aquatique/sol_repere_bar_bd.png') no-repeat;}
 .tex10585{background:url('../image/texture/repere_aquatique/sol_repere_bar_bg.png') no-repeat;}
@@ -1791,7 +1797,7 @@
 .tex10629{background:url('../image/texture/repere_aquatique/sol_repere_entre_grdetable_md.png') no-repeat;}
 .tex10630{background:url('../image/texture/repere_aquatique/sol_repere_entre_grdetable_mdb.png') no-repeat;}
 .tex10631{background:url('../image/texture/repere_aquatique/sol_repere_entre_grdetable_mgb.png') no-repeat;}
-.tex10632{background:url('../image/texture/repere_aquatique/sol_repere_entre_grdetable_mgh.png') no-repeat;}
+.tex10632{background:url('../image/texture/repere_aquatique/sol_repere_entre_grdetable_mgh.gif') no-repeat;}
 .tex10633{background:url('../image/texture/repere_aquatique/sol_repere_entre_grdetable_milieub.png') no-repeat;}
 .tex10634{background:url('../image/texture/repere_aquatique/sol_repere_entre_grdetable_milieuh.png') no-repeat;}
 .tex10635{background:url('../image/texture/repere_aquatique/sol_repere_entre_peche_bd.png') no-repeat;}
@@ -2031,6 +2037,17 @@
 .tex10557{background:url('../image/texture/repere_aquatique/sol_repere_mechoui.png') no-repeat;}
 .tex10558{background:url('../image/texture/repere_aquatique/sol_repere_plonge.png') no-repeat;}
 .tex10559{background:url('../image/texture/repere_aquatique/sol_repere_barbecue.png') no-repeat;}
+
+.tex10560{background:url('../image/texture/repere_aquatique/sol_repere_bordeld_bm_couloir_verti.png') no-repeat;}
+.tex10561{background:url('../image/texture/repere_aquatique/sol_repere_bordel_sex_bpipe.png') no-repeat;}
+.tex10562{background:url('../image/texture/repere_aquatique/sol_repere_bordel_sex_bd.png') no-repeat;}
+
+.tex10563{background:url('../image/texture/repere_aquatique/sol_repere_prison_bg.png') no-repeat;}
+.tex10564{background:url('../image/texture/repere_aquatique/sol_repere_prison_bm.png') no-repeat;}
+.tex10565{background:url('../image/texture/repere_aquatique/sol_repere_prison_bd.png') no-repeat;}
+.tex10566{background:url('../image/texture/repere_aquatique/sol_repere_prison_mg.png') no-repeat;}
+.tex10567{background:url('../image/texture/repere_aquatique/sol_repere_prison_milieu.png') no-repeat;}
+.tex10568{background:url('../image/texture/repere_aquatique/sol_repere_prison_md.png') no-repeat;}
 
 .tex7549, .tex17549{background:url('../image/texture/donjon_aquatique/sol_passage_verti_trou.png') no-repeat;}
 .tex7550, .tex17550{background:url('../image/texture/donjon_aquatique/sol_passage_verti_trou_bas.png') no-repeat;}
@@ -2315,6 +2332,16 @@
 .tex5639{background:url('../image/texture/donjon_aquatique/mur_donjon_aqua_tentebm.png') no-repeat;}
 
 .tex5640{background:url('../image/texture/donjon_aquatique/mur_inferieur_plan_nysin.png') no-repeat;}
+
+.tex5641{background:url('../image/texture/repere_aquatique/sol_repere_bordel_sex_b.png') no-repeat;}
+.tex5642{background:url('../image/texture/repere_aquatique/mur_repere_bordel_pipe_bougie.png') no-repeat;}
+.tex5643{background:url('../image/texture/repere_aquatique/mur_repere_bordel_sex_bd.png') no-repeat;}
+.tex5644{background:url('../image/texture/repere_aquatique/mur_repere_infirmerie_hg.png') no-repeat;}
+.tex5645{background:url('../image/texture/repere_aquatique/mur_repere_infirmerie_hd.png') no-repeat;}
+
+.tex5646{background:url('../image/texture/repere_aquatique/mur_repere_prison_hg.png') no-repeat;}
+.tex5647{background:url('../image/texture/repere_aquatique/mur_repere_prison_hm.png') no-repeat;}
+.tex5648{background:url('../image/texture/repere_aquatique/mur_repere_prison_hd.png') no-repeat;}
 
 .tex9500{background:url('../image/texture/donjon_riviere_verte/sol_eau_basse_buisson_bg.png') no-repeat;}
 .tex9501{background:url('../image/texture/donjon_riviere_verte/sol_eau_basse_falaise_hd.png') no-repeat;}
@@ -3187,8 +3214,16 @@
 .tex2232{background:url('../image/texture/tex_herbefleurbd.png') no-repeat;}
 .tex2233{background:url('../image/texture/hautesherbes/hautherbecentreanim.png') no-repeat;}
 .tex2234{background:url('../image/texture/hautesherbes/hautherbe diag bg anim.png') no-repeat;}
-.tex2235{background:url('../image/texture/hautesherbes/tex_herbe_lac_d.png') no-repeat;}
-.tex2236{background:url('../image/texture/hautesherbes/tex_herbe_lac_g.png') no-repeat;}
+.tex2235{background:url('../image/texture/hautesherbes/tex_herbe_lac_d.gif') no-repeat;}
+.tex2236{background:url('../image/texture/hautesherbes/tex_herbe_lac_g.gif') no-repeat;}
+.tex2237{background:url('../image/texture/texthterre/text_hterrecentre_anim200ms.png') no-repeat;}
+.tex2238{background:url('../image/texture/texthterre/text_hterrecentre_anim2000ms.png') no-repeat;}
+.tex2239{background:url('../image/texture/hautesherbes/hautherbe_d2.png') no-repeat;}
+.tex2240{background:url('../image/texture/hautesherbes/hautherbe_d3.png') no-repeat;}
+.tex2241{background:url('../image/texture/hautesherbes/hautherbe_centre_detail_g.png') no-repeat;}
+.tex2242{background:url('../image/texture/hautesherbes/hautherbe_centre_detail_d.png') no-repeat;}
+.tex2243{background:url('../image/texture/hautesherbes/hautherbe_centre_detail_hd.png') no-repeat;}
+.tex2244{background:url('../image/texture/hautesherbes/hautherbe_centre_detail_hg.png') no-repeat;}
 
 .tex2300{background:url('../image/texture/textmontagne/mont jointure1.png') no-repeat;}
 .tex2301{background:url('../image/texture/textmontagne/mont jointure2.png') no-repeat;}

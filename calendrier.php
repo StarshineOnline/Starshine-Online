@@ -3,6 +3,9 @@
 if (file_exists('root.php'))
   include_once('root.php');
 
+// Defined in inc/fp.php
+date_default_timezone_set('Europe/Paris');
+
 include_once(root.'class/db.class.php');
 include_once(root.'connect.php');
 // using mysqli for transactions
@@ -10,10 +13,9 @@ include_once(root.'connect.php');
 $mysqli = new mysqli($cfg["sql"]['host'], $cfg["sql"]['user'],
 										 $cfg["sql"]['pass'], $cfg["sql"]['db']);
 
-// old-style connexio-check: php < 5.2.9 in prod
-if (mysqli_connect_error()) {
-    die('Erreur de connexion (' . mysqli_connect_errno() . ') '
-            . mysqli_connect_error());
+// Works as of PHP 5.2.9 and 5.3.0.
+if ($mysqli->connect_error) {
+  die('Erreur de connexion : ' . $mysqli->connect_error);
 }
 
 if ($_SERVER['argc'] > 1) {

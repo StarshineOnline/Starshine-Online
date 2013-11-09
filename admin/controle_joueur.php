@@ -11,7 +11,7 @@ $pnjs = array('Minotaure', 'Bastounet_test',
               'test_baba', 'test_humain', 'test_nain', 'test_troll',
               'test_edb', 'test_corrompu', 'test_orc', 'test_vamp',
               'test_he', 'test_mv');
-$is_admin = ($_SESSION["admin_db_auth"] == 'admin') ? true : false;
+$is_admin = ($_SESSION['droits'] & joueur::droit_admin) ? true : false;
 
 if (array_key_exists('controle', $_GET)) { 
 	if ($is_admin || in_array($_GET['controle'], $pnjs)) {
