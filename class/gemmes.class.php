@@ -83,6 +83,11 @@ class gemme extends objet_invent
     $tbl['enchantement_effet2']='i';
 		return $tbl;
 	}
+
+	//Fonction permettant d'ajouter un nouvel objet dans la base
+	public function infobulle()
+  {
+  }
 }
 
 class gemme_enchassee extends effect
