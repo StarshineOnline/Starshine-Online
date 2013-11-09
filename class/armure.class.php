@@ -1,52 +1,123 @@
 <?php
-if (file_exists('../root.php'))
-  include_once('../root.php');
-?><?php
-//Inclusion de la classe abstraite objet
-include_once(root.'objet.class.php');
+/**
+ * @file objet.class.php
+ * Gestion des armures
+ */
 
+/**
+ * Classe gérant les armures
+ * Correspond à la table du même nom dans la bdd.
+ */
 class armure extends objet_invent
 {
-	protected $pp;
-	protected $pm;
-	protected $forceReq;
-	
-	/**	
-	   *  	Constructeur permettant la création d'une armure
-	   *	Les valeurs par défaut sont celles de la base de donnée.
-	   *	Le constructeur accepte plusieurs types d'appels:
-	   *		-Armure() qui construit un objet "vide".
-	   *		-Armure($id) qui va chercher l'objet dont l'id est $id dans la base.
-	   *		-Armure($nom,...,$forceReq) qui construit un nouvel objet à partir des valeurs.
-	**/
-	function __construct($nom = '', $type = '', $prix = 0, $effet = '', $batimentReq = 0, $pp = 0, $pm = 0, $forceReq = 0)
+	protected $PP;  ///< PP de l'armure
+	protected $PM;  ///< PM de l'armure
+	protected $forcex;  ///< force nécessaire pour utiliser l'armure
+	protected $puissance;  ///< Puissance nécessaire pour porter l'objet.
+
+	/// Retourne la force nécessaire pour utiliser l'arme
+	function get_pp()
 	{
-		//Traitement lors de l'appel Armure=($id_armure)
-		$num_args = func_num_args();
-		if( $num_args == 1 && is_numeric($nom) )
+		return $this->PP;
+	}
+	/// Modifie la PP de l'armure
+	function set_pp($pp)
+	{
+		$this->PP = $pp;
+		$this->champs_modif[] = 'PP';
+	}
+
+	/// Retourne la force nécessaire pour utiliser l'arme
+	function get_pm()
+	{
+		return $this->PM;
+	}
+	/// Modifie la force nécessaire pour utiliser l'arme
+	function set_pm($pm)
+	{
+		$this->PM = $pm;
+		$this->champs_modif[] = 'PM';
+	}
+
+	/// Retourne la force nécessaire pour utiliser l'armure
+	function get_force()
+	{
+		return $this->forcex;
+	}
+	/// Modifie la force nécessaire pour utiliser l'armure
+	function set_force($force)
+	{
+		$this->forcex = $force;
+		$this->champs_modif[] = 'forcex';
+	}
+
+	/// Retourne la puissance nécessaire pour porter l'objet.
+	function get_puissance()
+	{
+		return $this->puissance;
+	}
+	/// Modifie la puissance nécessaire pour porter l'objet.
+	function set_puissance($puissance)
+	{
+		$this->puissance = $puissance;
+		$this->champs_modif[] = 'puissance';
+	}
+
+	/**
+	 * Constructeur
+	 * @param  $nom		         nom de l'objet
+	 * @param  $type	         type de l'objet
+	 * @param  $prix	         prix de l'objet em magasin
+	 * @param  $effet	         valeur de l'effet de l'objet
+	 * @param  $lvl_batiment   niveau du bâtiment à partir duquel l'objet est disponible
+	 * @param  $pp       	     PP de l'armure.
+	 * @param  $pm       	     PM de l'armure.
+	 * @param  $force	         force nécessaire pour utiliser l'armure
+	 * @param  $puissance	     puissance nécessaire pour porter l'objet.
+	 */
+	function __construct($nom='', $type='', $prix=0, $effet=0, $lvl_batiment=9, $pp=0, $pm=0, $force=0, $puissance=0)
+	{
+		//Verification du nombre et du type d'argument pour construire l'objet adequat.
+		if( func_num_args() == 1 )
 		{
-			$requeteSQL = mysql_query($req = 'SELECT nom, pp, pm, forcex, type, effet, prix, lvl_batiment FROM armure WHERE id = '.$nom);
-			//Si l'identifiant n'est pas dans la table, on remplace l'objet par un objet vide.
-			if( mysql_num_rows($requeteSQL) > 0 )
-			{
-				//Assigne les valeurs contenues dans la base à l'objets
-				list($this->nom, $this->pp, $this->pm, $this->forceReq, $this->type, $this->effet, $this->prix, $this->batimentReq) = 
-				mysql_fetch_row($requeteSQL);
-				//Mise à jour de l'id
-				$this->id = $nom;
-			}
-			else
-				$this->__construct();
+			$this->charger($nom);
 		}
 		else
 		{
-			parent::__construct($nom, $type, $prix);
-			$this->pp = $pp;
-			$this->pm = $pm;
-			$this->forceReq = $forceReq;
+			$this->nom = $nom;
+			$this->type = $type;
+			$this->prix = $prix;
 			$this->effet = $effet;
-			$this->batimentReq = $batimentReq;
+			$this->lvl_batiment = $lvl_batiment;
+			$this->PP = $pp;
+			$this->PM = $pm;
+			$this->forcex = $force;
+			$this->puissance = $puissance;
 		}
+	}
+
+	/**
+	* Initialise les données membres à l'aide d'un tableau
+	* @param array $vals Tableau contenant les valeurs des données.
+	*/
+	protected function init_tab($vals)
+	{
+		objet_equip::init_tab($vals);
+		$this->PP = $vals['PP'];
+		$this->PM = $vals['PM'];
+		$this->forcex = $vals['forcex'];
+		$this->puissance = $vals['puissance'];
+	}
+
+	/// Renvoie la liste des champs pour une insertion dans la base
+	protected function get_champs()
+	{
+    $tbl = objet_equip::get_champs();
+    $tbl['PP']='i';
+    $tbl['PM']='i';
+    $tbl['forcex']='i';
+    $tbl['puissance']='i';
+		return $tbl;
 	}
 	
 	//Liste des Accesseurs
@@ -58,16 +129,6 @@ class armure extends objet_invent
 	function getPM()
 	{
 		return $this->pm;
-	}
-	
-	function getEffet()
-	{
-		return $this->effet;
-	}
-	
-	function getBatiment()
-	{
-		return $this->batimentReq;
 	}
 	
 	function getForce()
@@ -86,50 +147,9 @@ class armure extends objet_invent
 		$this->pm = $pm;
 	}
 	
-	function setEffet($effet)
-	{
-		$this->effet = $effet;
-	}
-	
-	function setBatimentReq($batiment)
-	{
-		$this->batimentReq = $batiment;
-	}
-	
 	function setForce($force)
 	{
 		$this->forceReq = $force;
-	}
-	
-	//Fonctions de la classe abstraite
-	
-	//Ajout/Modification d'une armure
-	function sauver()
-	{
-		//Verification de l'existence de l'objet dans la base
-		if( $id > 0 )
-		{
-			$requete = 'UPDATE TABLE armure SET '.$this->modifBase().', ';
-			$requete .= 'pp = "'.$this->pp.'", pm = "'.$this->pm.'", "';
-			$requete .= 'forcex = "'.$this->forceReq.'", effet = "'.$this->effet.'", ';
-			$requete .= 'lvl_batiment = "'.$this->batimentReq.'" WHERE id = '.$this->id;
-			mysql_query($requete);
-		}
-		else
-		{
-			$requete = 'INSERT INTO armure (nom, type, prix, pp, pm, forcex, effet, lvl_batiment) VALUES(';
-			$requete .= $this->insertBase().', "'.$this->pp.'", "'.$this->pm.'", "'.$this->forceReq.'", "';
-			$requete .= $this->effet.'", "'.$this->batimentReq.'")';
-			mysql_query($requete);
-			//On récupère le dernier ID inseré. Pour mettre à jour celui de l'objet nouvellement ajouté.
-			list($this->id) = mysql_fetch_row(mysql_query('SELECT LAST_INSERT_ID()'));
-		}
-	}
-	
-	//Permet de supprimer l'objet de la table
-	function supprimer()
-	{
-		parent::supprimer('armure');
 	}
 	
 	//Infobulle de l'armure
@@ -140,11 +160,6 @@ class armure extends objet_invent
 		$milieu .= '<tr><td>Force n&eacute;cessaire:</td></tr><tr><td>'.$this->forceReq.'</td></tr>';
 		//Gemmage?
 		return bulleBase($milieu).'<br />'.$this->effet;
-	}
-	
-	function __toString()
-	{
-		return parent::__toString().', '.$this->effet.', '.$this->pp.', '.$this->pm.', '.$this->forceReq.', '.$this->batimentReq;
 	}
 }
 ?>

@@ -1,13 +1,89 @@
 <?php
-if (file_exists('../root.php'))
-  include_once('../root.php');
-
 /**
-* @file gemmes.class.php
-*/
-
+ * @file objet.class.php
+ * Gestion des gemmes
+ */
 include_once(root.'class/effect.class.php');
 
+/**
+ * Classe gérant les gemmes
+ * Correspond à la table du même nom dans la bdd.
+ */
+class gemme extends objet_invent
+{
+  protected $niveau;  ///< Niveau de la gemme
+  protected $partie;  ///< Partie sur laquelle est portée l'objet
+  protected $enchantement_nom;  ///< Nom de l'enchentement
+	protected $description;  ///< Description de l'objet.
+  protected $enchantement_type;  ///< Type de l'enchentement
+  protected $enchantement_effet;  ///< Valeur du premier effet de l'enchentement
+  protected $enchantement_effet2;  ///< Valeur du second effet de l'enchentement
+
+	/**
+	 * Constructeur
+	 * @param  $nom                  nom de l'objet
+	 * @param  $type	               type de l'objet
+	 * @param  $prix	               prix de l'objet em magasin
+	 * @param  $niveau		           Niveau de la gemme
+	 * @param  $partie		           Partie sur laquelle est portée l'objet
+	 * @param  $enchantement_nom		 Nom de l'enchentement
+	 * @param  $description		       Description de l'objet.
+	 * @param  $enchantement_type		 Type de l'enchentement
+	 * @param  $enchantement_effet	 Valeur du premier effet de l'enchentement
+	 * @param  $enchantement_effet2  Valeur du second effet de l'enchentement
+	 */
+	function __construct($nom='', $type='', $prix=0, $niveau=1, $partie='', $enchantement_nom='', $description='', $enchantement_type='', $enchantement_effet=0, $enchantement_effet2=0)
+	{
+		//Verification du nombre et du type d'argument pour construire l'objet adequat.
+		if( func_num_args() == 1 )
+		{
+			$this->charger($nom);
+		}
+		else
+		{
+			$this->nom = $nom;
+			$this->type = $type;
+			$this->prix = $prix;
+			$this->niveau = $niveau;
+			$this->partie = $partie;
+			$this->enchantement_nom = $enchantement_nom;
+			$this->description = $description;
+			$this->enchantement_type = $enchantement_type;
+			$this->enchantement_effet = $enchantement_effet;
+			$this->enchantement_effet2 = $enchantement_effet2;
+		}
+	}
+
+	/**
+	* Initialise les données membres à l'aide d'un tableau
+	* @param array $vals Tableau contenant les valeurs des données.
+	*/
+	protected function init_tab($vals)
+	{
+		objet_invent::init_tab($vals);
+		$this->niveau = $vals['niveau'];
+		$this->partie = $vals['partie'];
+		$this->enchantement_nom = $vals['enchantement_nom'];
+		$this->description = $vals['description'];
+		$this->enchantement_type = $vals['enchantement_type'];
+		$this->enchantement_effet = $vals['enchantement_effet'];
+		$this->enchantement_effet2 = $vals['enchantement_effet2'];
+	}
+
+	/// Renvoie la liste des champs pour une insertion dans la base
+	protected function get_champs()
+	{
+    $tbl = objet_invent::get_champs();
+    $tbl['niveau']='i';
+    $tbl['partie']='i';
+    $tbl['enchantement_nom']='s';
+    $tbl['description']='s';
+    $tbl['enchantement_type']='s';
+    $tbl['enchantement_effet']='i';
+    $tbl['enchantement_effet2']='i';
+		return $tbl;
+	}
+}
 
 class gemme_enchassee extends effect
 {

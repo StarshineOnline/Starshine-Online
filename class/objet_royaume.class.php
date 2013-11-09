@@ -1,97 +1,188 @@
 <?php
-if (file_exists('../root.php'))
-  include_once('../root.php');
-?><?php
-//Inclusion de la classe abstraite objet
-include_once(root.'objet.class.php');
+/**
+ * @file objet_royaume.class.php
+ * Gestion des objets RvR permettant de poser des bâtiments
+ */
 
+
+/**
+ * Classe gérant les objets RvR permettant de poser des bâtiments
+ * Il s'agit des objets que l'on peut prenre au dépôts pour poser des bourgages, forts, tours, armes de sièges…
+ * Correspond à la table du même nom dans la bdd.
+ */
 class objet_royaume extends objet_invent
 {
-	protected $grade;
-	protected $batiment;
-	
-	/**	
-	    *  	Constructeur permettant la création d'un accessoire.
-	    *	Les valeurs par défaut sont celles de la base de donnée.
-	    *	Le constructeur accepte plusieurs types d'appels:
-	    *		-ObjetRoyaume() qui construit un objet "vide".
-	    *		-ObjetRoyaume($id) qui va chercher l'objet dont l'id est $id dans la base.
-	    *		-ObjetRoyaume($nom,...,$forceReq) qui construit un nouvel objet à partir des valeurs.	   
-	**/
-	function __construct($nom = '', $type = '', $prix = 0, $grade = 0, $batiment = 0 )
-	{
-		if( (func_num_args() == 1) && is_numeric($nom) )
-		{
-			$requeteSQL = mysql_query('SELECT nom, type, prix, grade, id_batiment FROM objet_royaume WHERE id = '.$nom);
-			if( mysql_num_rows($requeteSQL) > 0 )
-			{
-				$this->id = $nom;
-				list($this->nom, $this->type, $this->prix, $this->grade, $this->batiment) = 
-				mysql_fetch_row($requeteSQL);
-			}
-			else
-				$this->__construct();
-		}
-		else
-		{
-			parent::__construct($nom, $type, $prix);
-			$this->grade = $grade;
-			$this->batiment = $batiment;
-		}
-	}
-	
-	//Accesseurs
-	function getGrade()
+	protected $grade;  ///< grade nécessaire pour pouvoir prendre (et poser) l'objet.
+	protected $id_batiment;  ///< id du bâtiment correspondant.
+  protected $pierre;  ///< coût en pierre.
+  protected $bois;  ///< coût en bois.
+  protected $eau;  ///< coût en eau.
+  protected $sable;  ///< coût en sable.
+  protected $charbon;  ///< coût en charbon.
+  protected $essence;  ///< coût en essence.
+
+  /// Renvoie le grade nécessaire pour pouvoir prendre (et poser) l'objet.
+	function get_grade()
 	{
 		return $this->grade;
 	}
-	
-	function getBatiment()
-	{
-		return $this->batiment;
-	}
-	
-	//Modifieurs
-	function setGrade($grade)
+  /// Modifie le grade nécessaire pour pouvoir prendre (et poser) l'objet.
+	function set_grade($grade)
 	{
 		$this->grade = $grade;
+		$this->champs_modif[] = 'grade';
 	}
-	
-	function setBatiment($batiment)
+
+  /// Renvoie l'id du bâtiment correspondant.
+	function get_id_batiment()
 	{
-		$this->batiment = $batiment;
+		return $this->id_batiment;
 	}
-	
-	//Fonctions de la classe abstraite
-	
-	//Fonction d'ajout/modification
-	function sauver()
+  /// Modifie l'id du bâtiment correspondant.
+	function set_id_batiment($id_batiment)
 	{
-		//Verification de l'existence de l'objet dans la base
-		if( $id > 0 )
+		$this->id_batiment = $id_batiment;
+		$this->champs_modif[] = 'id_batiment';
+	}
+
+  /// Renvoie le coût en pierre.
+	function get_pierre()
+	{
+		return $this->pierre;
+	}
+  /// Modifie le coût en pierre.
+	function set_pierre($pierre)
+	{
+		$this->pierre = $pierre;
+		$this->champs_modif[] = 'pierre';
+	}
+
+  /// Renvoie le coût en bois.
+	function get_bois()
+	{
+		return $this->bois;
+	}
+  /// Modifie le coût en bois.
+	function set_bois($bois)
+	{
+		$this->bois = $bois;
+		$this->champs_modif[] = 'bois';
+	}
+
+  /// Renvoie le coût en eau.
+	function get_eau()
+	{
+		return $this->eau;
+	}
+  /// Modifie le coût en eau.
+	function set_eau($eau)
+	{
+		$this->eau = $eau;
+		$this->champs_modif[] = 'eau';
+	}
+
+  /// Renvoie le coût en sable.
+	function get_sable()
+	{
+		return $this->sable;
+	}
+  /// Modifie le coût en sable.
+	function set_sable($sable)
+	{
+		$this->sable = $sable;
+		$this->champs_modif[] = 'sable';
+	}
+
+  /// Renvoie le coût en charbon.
+	function get_charbon()
+	{
+		return $this->charbon;
+	}
+  /// Modifie le coût en charbon.
+	function set_charbon($charbon)
+	{
+		$this->charbon = $charbon;
+		$this->champs_modif[] = 'charbon';
+	}
+
+  /// Renvoie le coût en essence.
+	function get_essence()
+	{
+		return $this->essence;
+	}
+  /// Modifie le coût en essence.
+	function set_essence($essence)
+	{
+		$this->essence = $essence;
+		$this->champs_modif[] = 'essence';
+	}
+
+	/**
+	 * Constructeur
+	 * @param  $nom		       nom de l'objet.
+	 * @param  $type	       type de l'objet.
+	 * @param  $prix	       prix de l'objet em magasin.
+	 * @param  $grade	       grade nécessaire pour pouvoir prendre (et poser) l'objet.
+	 * @param  $id_batiment	 id du bâtiment correspondant.
+	 * @param  $pierre	     coût en pierre.
+	 * @param  $bois	       coût en bois.
+	 * @param  $eau	         coût en eau.
+	 * @param  $sable	       coût en sable.
+	 * @param  $charbon	     coût en charbon.
+	 * @param  $essence	     coût en essence.
+	 */
+	function __construct($nom='', $type='', $prix=0, $grade=2, $id_batiment=0, $pierre=0, $bois=0, $eau=0, $sable=0, $charbon=0, $essence=0)
+	{
+		//Verification du nombre et du type d'argument pour construire l'objet adequat.
+		if( func_num_args() == 1 )
 		{
-			$requete = 'UPDATE TABLE objet_royaume SET '.$this->modifBase().', ';
-			$requete .= 'grade = "'.$this->grade.'", id_batiment = "'.$this->batiment.'" WHERE id = '.$this->id;
-			mysql_query($requete);
+			$this->charger($nom);
 		}
 		else
 		{
-			$requete = 'INSERT INTO objet_royaume (nom, type, prix, grade, id_batiment) VALUES(';
-			$requete .= $this->insertBase().', "'.$this->grade.'", "'.$this->batiment.'")';
-			mysql_query($requete);
-			//On récupère le dernier ID inseré. Pour mettre à jour celui de l'objet nouvellement ajouté.
-			list($this->id) = mysql_fetch_row(mysql_query('SELECT LAST_INSERT_ID()'));
+			$this->nom = $nom;
+			$this->type = $type;
+			$this->prix = $prix;
+			$this->grade = $grade;
+			$this->id_batiment = $id_batiment;
+			$this->pierre = $pierre;
+			$this->bois = $bois;
+			$this->eau = $eau;
+			$this->sable = $sable;
+			$this->charbon = $charbon;
+			$this->essence = $essence;
 		}
 	}
 
-	//Fonction permettant de suppriemr l'objet de la base.
-	function supprimer()
+	/**
+	* Initialise les données membres à l'aide d'un tableau
+	* @param array $vals Tableau contenant les valeurs des données.
+	*/
+	protected function init_tab($vals)
 	{
-		parent::supprimer('objet_royaume');
+		objet_invent::init_tab($vals);
+		$this->grade = $vals['grade'];
+		$this->id_batiment = $vals['id_batiment'];
+		$this->pierre = $vals['pierre'];
+		$this->bois = $vals['bois'];
+		$this->eau = $vals['eau'];
+		$this->sable = $vals['sable'];
+		$this->charbon = $vals['charbon'];
+		$this->essence = $vals['essence'];
 	}
-	
-	function __toString()
+
+	/// Renvoie la liste des champs pour une insertion dans la base
+	protected function get_champs()
 	{
-		return parent::__toString().', '.$this->grade.', '.$this->batiment;
+    $tbl = objet_invent::get_champs();
+    $tbl['grade']='i';
+    $tbl['id_batiment']='i';
+    $tbl['pierre']='i';
+    $tbl['bois']='i';
+    $tbl['eau']='i';
+    $tbl['sable']='i';
+    $tbl['charbon']='i';
+    $tbl['essence']='i';
+		return $tbl;
 	}
 }

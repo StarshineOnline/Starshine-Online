@@ -1,221 +1,178 @@
 <?php
-if (file_exists('../root.php'))
-  include_once('../root.php');
+/**
+ * @file objet.class.php
+ * Gestion des armes
+ */
 
-//Inclusion de la classe abstraite objet
-include_once(root.'objet.class.php');
-
+/**
+ * Classe gérant les armes
+ * Correspond à la table du même nom dans la bdd.
+ */
 class arme extends objet_equip
 {
-	protected $degat;
-	protected $forceReq;
-	protected $melee;
-	protected $distance;
-	protected $portee;
-	protected $mains;
-	protected $var1; //What is it?
-	
-	/**	
-	   *  	Constructeur permettant la création d'une armure
-	   *	Les valeurs par défaut sont celles de la base de donnée.
-	   *	Le constructeur accepte plusieurs types d'appels:
-	   *		-Arme() qui construit un objet "vide".
-	   *		-Arme($id) qui va chercher l'objet dont l'id est $id dans la base.
-	   *		-Arme($nom,...,$image) qui construit un nouvel objet à partir des valeurs.
-	**/
-	function __construct($nom = '', $type = '', $prix = 0, $effet = '', $batimentReq = 0, $degat = 1, $melee = 0, $distance = 0, 
-				     $portee = 0, $forceReq = 0, $var1 = '', $mains = 'main_droite',  $image = '')
-	{
-		//Traitement lors de l'appel Armure=($id_armure)
-		$num_args = func_num_args();
-		if( $num_args == 1 && is_numeric($nom) )
-		{
-			$requeteSQL = mysql_query(
-			$req = 'SELECT nom, forcex, type, effet, prix, lvl_batiment, degat, melee, distance, distance_tir, mains, var1, image  FROM arme WHERE id = '
-			.$nom);
-			//Si l'identifiant n'est pas dans la table, on remplace l'objet par un objet vide.
-			if( mysql_num_rows($requeteSQL) > 0 )
-			{
-				//Assigne les valeurs contenues dans la base à l'objets
-				list($this->nom, $this->forceReq, $this->type, $this->effet, $this->prix, $this->batimentReq, $this->degat, $this->melee, 
-				     $this->distance, $this->portee, $this->mains, $this->var1, $this->image) = mysql_fetch_row($requeteSQL);
-				//Mise à jour de l'id
-				$this->id = $nom;
-			}
-			else
-				$this->__construct();
-		}
-		else
-		{
-			parent::__construct($nom, $type, $prix);
-			$this->image = $image;
-			$this->degat = $degat;
-			$this->portee = $portee;
-			$this->forceReq = $forceReq;
-			$this->effet = $effet;
-			$this->mains = $mains;
-			$this->var1 = $var1;
-			$this->distance = $distance;
-			$this->mains = $main;
-			$this->batimentReq = $batimentReq;
-			$this->melee = $melee;
-		}
-	}
-	
-	//Accesseurs
-	function getDegat()
+	protected $degat;  ///< dégâts de l'arme
+	protected $forcex;  ///< force nécessaire pour utiliser l'arme
+	protected $coefficient;   ///< coefficient minimal pour utiliser l'arme
+	protected $distance_tir;  ///< distance d'attaque de l'arme
+	protected $mains;  ///< main(s) utilisée(s) pour porter l'arme
+	protected $var1; ///< malus d'esquive ou bonus pour le lancer des sorts
+
+	/// Retourne les dégâts de l'arme
+	function get_degat()
 	{
 		return $this->degat;
 	}
+	/// Modifie les dégâts de l'arme
+	function set_degat($degat)
+	{
+		$this->degat = $degat;
+		$this->champs_modif[] = 'degat';
+	}
 
-	function getMelee()
+	/// Retourne la force nécessaire pour utiliser l'arme
+	function get_force()
 	{
-		return $this->melee;
+		return $this->forcex;
 	}
-	
-	function getDistance()
+	/// Modifie la force nécessaire pour utiliser l'arme
+	function set_force($force)
 	{
-		return $this->distance;
+		$this->forcex = $force;
+		$this->champs_modif[] = 'forcex';
 	}
-	
-	function getPortee()
+
+	/// Retourne le coefficient minimal pour utiliser l'arme
+	function get_coefficient()
 	{
-		return $this->portee;
+		return $this->coefficient;
 	}
-	
-	function getMain()
+	/// Modifie le coefficient minimal pour utiliser l'arme
+	function set_coefficient($coefficient)
+	{
+		$this->coefficient = $coefficient;
+		$this->champs_modif[] = 'coefficient';
+	}
+
+	/// Retourne la distance d'attaque de l'arme
+	function get_distance_tir()
+	{
+		return $this->distance_tir;
+	}
+	/// Modifie la distance d'attaque de l'arme
+	function set_distance_tir($distance_tir)
+	{
+		$this->distance_tir = $distance_tir;
+		$this->champs_modif[] = 'distance_tir';
+	}
+
+	/// Retourne le(s) main(s) utilisée(s) pour porter l'arme
+	function get_mains()
 	{
 		return $this->mains;
 	}
-	
-	function getVar1()
+	/// Modifie le(s) main(s) utilisée(s) pour porter l'arme
+	function set_mains($mains)
+	{
+		$this->mains = $mains;
+		$this->champs_modif[] = 'mains';
+	}
+
+	/// Retourne le malus d'esquive ou bonus pour le lancer des sorts
+	function get_var1()
 	{
 		return $this->var1;
 	}
-	
-	function getEffet()
-	{
-		return $this->effet;
-	}
-	
-	function getBatiment()
-	{
-		return $this->batimentReq;
-	}
-	
-	function getImage()
-	{
-		return $this->image();
-	}
-	
-	function afficheImage()
-	{
-		return '<img src="'.$this->image().'" alt="'.$this->nom.'" />';
-	}
-	
-	function getForce()
-	{
-		return $this->forceReq;
-	}
-	
-
-	//Modifieurs
-	function setDegat($degat)
-	{
-		$this->degat = $degat;
-	}
-	
-	function setMelee($melee)
-	{
-		$this->melee = $melee;
-	}
-	
-	function setDistance($distance)
-	{
-		$this->distance = $distance;
-	}
-	
-	function setPortee($portee)
-	{
-		$this->portee = $portee;
-	}
-	
-	function setEffet($effet)
+	/// Retourne le malus d'esquive
+  function get_malus_esquive()
+  {
+    if( $this->type == 'arc' or $this->type == 'hache' )
+      return $this->var1;
+    else
+      return 1;
+  }
+	/// Retourne le bonus pour le lancer des sorts
+  function get_bonus_sorts()
+  {
+    if( $this->type == 'baton' )
+      return $this->var1;
+    else
+      return 1;
+  }
+	/// Modifie le malus d'esquive ou bonus pour le lancer des sorts
+	function set_effet($effet)
 	{
 		$this->effet = $effet;
-	}
-	
-	function setForce($force)
-	{
-		$this->forceReq = $force;
-	}
-	
-	function setBatiment($batiment)
-	{
-		$this->batiment = $batiment;
+		$this->champs_modif[] = 'effet';
 	}
 
-	function setVar1($var1)
+	/**
+	 * Constructeur
+	 * @param  $nom		         nom de l'objet
+	 * @param  $type	         type de l'objet (epee, hache, dos, potion_hp,… )
+	 * @param  $prix	         prix de l'objet em magasin
+	 * @param  $effet	         valeur de l'effet de l'objet
+	 * @param  $lvl_batiment   niveau du bâtiment à partir duquel l'objet est disponible
+	 * @param  $degat	         dégâts de l'arme
+	 * @param  $force	         force nécessaire pour utiliser l'arme
+	 * @param  $coefficient	   coefficient minimal pour utiliser l'arme
+	 * @param  $distance_tir	 distance d'attaque de l'arme
+	 * @param  $mains	         main(s) utilisée(s) pour porter l'arme
+	 * @param  $var1	         malus d'esquive ou bonus pour le lancer des sorts
+	 */
+	function __construct($nom='', $type='', $prix=0, $effet=0, $lvl_batiment=9, $degat=0, $force=0, $coefficient=0, $distance_tir=0, $mains='main_droite', $var1=0)
 	{
-		$this->var1 = $var1;
-	}
-	
-	function setImage($image)
-	{
-		$this->image = $image;
-	}
-	
-	function setMains($mains)
-	{
-		$this->mains = $mains;
-	}
-	
-	function setNumMains($mains)
-	{
-		switch($mains)
+		//Verification du nombre et du type d'argument pour construire l'objet adequat.
+		if( func_num_args() == 1 )
 		{
-			case 1:
-				$this->main = 'main_gauche';
-				break;
-			case 2:
-				$this->main = 'deux_mains';
-				break;
-			default:
-				$this->main = 'main_droite';
-				break;
-		}
-	}
-
-	//Fonctions de la classe abstraite
-	
-	//Ajout/Modification d'une arme
-	function sauver()
-	{
-		//Verification de l'existence de l'objet dans la base
-		if( $id > 0 )
-		{
-			$requete = 'UPDATE TABLE arme SET '.$this->modifBase().', ';
-			$requete .= 'degat = "'.$this->degat.'", melee = "'.$this->melee.'", "';
-			$requete .= 'forcex = "'.$this->forceReq.'", effet = "'.$this->effet.'", ';
-			$requete .= 'lvl_batiment = "'.$this->batimentReq.', distance_tir = "'.$this->portee.'", ';
-			$requete .= 'var1 = "'.$this->var1.'", image = "'.$this->image.'" WHERE id = '.$this->id;
-			mysql_query($requete);
+			$this->charger($nom);
 		}
 		else
 		{
-			$requete = 'INSERT INTO arme (nom, type, prix, degat, melee, forcex, effet, lvl_batiment, distance_tir, var1, image) VALUES(';
-			$requete .= $this->insertBase().', "'.$this->degat.'", "'.$this->melee.'", "'.$this->forceReq.'", "';
-			$requete .= $this->effet.'", "'.$this->batimentReq.'", "'.$this->portee.'", "'.$this->var1.'", "'.$this->image.'")';
-			mysql_query($requete);
-			//On récupère le dernier ID inseré. Pour mettre à jour celui de l'objet nouvellement ajouté.
-			list($this->id) = mysql_fetch_row(mysql_query('SELECT LAST_INSERT_ID()'));
+			$this->nom = $nom;
+			$this->type = $type;
+			$this->prix = $prix;
+			$this->effet = $effet;
+			$this->lvl_batiment = $lvl_batiment;
+			$this->degat = $degat;
+			$this->forcex = $force;
+			$this->coefficient = $coefficient;
+			$this->distance_tir = $distance_tir;
+			$this->mains = $mains;
+			$this->var1 = $var1;
 		}
 	}
-	
-	//Permet de supprimer l'objet de la table
-	function supprimer()
+
+	/**
+	* Initialise les données membres à l'aide d'un tableau
+	* @param array $vals Tableau contenant les valeurs des données.
+	*/
+	protected function init_tab($vals)
 	{
-		parent::supprimer('arme');
+		objet_equip::init_tab($vals);
+		$this->degat = $vals['degat'];
+		$this->forcex = $vals['forcex'];
+		$this->coefficient = $vals['coefficient'];
+		$this->distance_tir = $vals['distance_tir'];
+		$this->mains = $vals['mains'];
+		$this->var1 = $vals['var1'];
+	}
+
+	/// Renvoie la liste des champs pour une insertion dans la base
+	protected function get_champs()
+	{
+    $tbl = objet_equip::get_champs();
+    $tbl['degat']='i';
+    $tbl['forcex']='i';
+    $tbl['coefficient']='i';
+    $tbl['distance_tir']='i';
+    $tbl['mains']='s';
+    $tbl['var1']='i';
+		return $tbl;
+	}
+	
+	function affiche_image()
+	{
+		return '<img src="'.$this->image().'" alt="'.$this->nom.'" />';
 	}
 	
 	//Infobulle de l'arme
@@ -228,10 +185,5 @@ class arme extends objet_equip
 		$milieu .= '<tr><td>Force n&eacute;cessaire:</td></tr><tr><td>'.$this->forceReq.'</td></tr>';
 		//Gemmage?
 		return bulleBase($milieu).'<br />'.$this->effet;
-	}
-	
-	function __toString()
-	{
-		return parent::__toString().', '.$this->effet.', '.$this->degat.', '.$this->portee.', '.$this->forceReq.', '.$this->batimentReq.', '.$this->mains.', '.$this->melee.', '.$this->var1.', '.$this->distance.', '.$this->image;
 	}
 }

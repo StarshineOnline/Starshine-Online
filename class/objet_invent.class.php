@@ -1,11 +1,9 @@
 <?php
 /**
  * @file objet_invent.class.php
- * Contient la définition de la classe objet_invent qui représente un objet 
+ * Contient la définition de la classe objet_invent qui représente un objet
  * qu'un personnage peut avoir dans son inventaire.
  */
-if (file_exists('../root.php'))
-  include_once('../root.php');
 
 /**
 	Classe abstraite représentant un objet qu'un personnage peut avoir dans son inventaire
