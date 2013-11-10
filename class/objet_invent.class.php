@@ -12,7 +12,7 @@ abstract class objet_invent extends table
 {
 	protected $nom;  ///< Nom de l'objet.
 	protected $type;  ///< Type de l'objet (epee, hache, dos, potion_hp,… ).
-	protected $prix;  ///< Prix de l'objet em magasin.
+	protected $prix;  ///< Prix de l'objet en magasin.
 	
 	// Renvoie le nom de l'objet
 	function get_nom()

@@ -19,6 +19,90 @@ class gemme extends objet_invent
   protected $enchantement_effet;  ///< Valeur du premier effet de l'enchentement
   protected $enchantement_effet2;  ///< Valeur du second effet de l'enchentement
 
+	/// Retourne le niveau de la gemme
+	function get_niveau()
+	{
+		return $this->niveau;
+	}
+	/// Modifie le niveau de la gemme
+	function set_niveau($val)
+	{
+		$this->niveau = $val;
+		$this->champs_modif[] = 'niveau';
+	}
+
+	/// Retourne la partie sur laquelle est portée l'objet
+	function get_partie()
+	{
+		return $this->partie;
+	}
+	/// Modifie la partie sur laquelle est portée l'objet
+	function set_partie($val)
+	{
+		$this->partie = $val;
+		$this->champs_modif[] = 'partie';
+	}
+
+	/// Retourne le nom de l'enchentement
+	function get_enchantement_nom()
+	{
+		return $this->enchantement_nom;
+	}
+	/// Modifie le nom de l'enchentement
+	function set_enchantement_nom($val)
+	{
+		$this->enchantement_nom = $val;
+		$this->champs_modif[] = 'enchantement_nom';
+	}
+
+	/// Retourne la description de l'objet
+	function get_description()
+	{
+		return $this->description;
+	}
+	/// Modifie la description de l'objet
+	function set_description($val)
+	{
+		$this->description = $val;
+		$this->champs_modif[] = 'description';
+	}
+
+	/// Retourne le type de l'enchentement
+	function get_enchantement_type()
+	{
+		return $this->enchantement_type;
+	}
+	/// Modifie le type de l'enchentement
+	function set_enchantement_type($val)
+	{
+		$this->enchantement_type = $val;
+		$this->champs_modif[] = 'enchantement_type';
+	}
+
+	/// Retourne la valeur du premier effet de l'enchentement
+	function get_enchantement_effet()
+	{
+		return $this->enchantement_effet;
+	}
+	/// Modifie la valeur du premier effet de l'enchentement
+	function set_enchantement_effet($val)
+	{
+		$this->enchantement_effet = $val;
+		$this->champs_modif[] = 'enchantement_effet';
+	}
+
+	/// Retourne la valeur du second effet de l'enchentement
+	function get_enchantement_effet2()
+	{
+		return $this->enchantement_effet2;
+	}
+	/// Modifie la valeur du second effet de l'enchentement
+	function set_enchantement_effet2($val)
+	{
+		$this->enchantement_effet2 = $val;
+		$this->champs_modif[] = 'enchantement_effet2';
+	}
+
 	/**
 	 * Constructeur
 	 * @param  $nom                  nom de l'objet
