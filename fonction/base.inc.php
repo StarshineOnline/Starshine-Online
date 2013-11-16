@@ -3544,7 +3544,7 @@ function pute_effets(&$joueur, $honneur_need, $specials = null, $specials_det = 
           break;
         case 'mort_regen' :
           $duree = $effet_explode[1] * 60 * 60;
-          lance_buff('mort_regen', $joueur->get_id(), 1, 0, $duree, $maladie['nom'], description('Vous mourez lors de votre prochaine regénération', array()), 'perso', 1, 0, 0);
+          lance_buff('mort_regen', $joueur->get_id(), 1, 0, $duree, $maladie['nom'], description('Vous mourrez lors de votre prochaine regénération', array()), 'perso', 1, 0, 0);
           break;
         case 'plus_cout_attaque' :
           $duree = 12 * 60 * 60;
@@ -3556,7 +3556,7 @@ function pute_effets(&$joueur, $honneur_need, $specials = null, $specials_det = 
           break;
         case 'regen_negative' :
           $duree = 24 * 60 * 60;
-          lance_buff('regen_negative', $joueur->get_id(), $effet_explode[1], 0, $duree, $maladie['nom'], description('Vos 3 prochaines regénération vous fait perdre des HP / MP au lieu d\'en regagner.', array()), 'perso', 1, 0, 0);
+          lance_buff('regen_negative', $joueur->get_id(), $effet_explode[1], 0, $duree, $maladie['nom'], description('Vos 3 prochaines regénérations vous fait perdre des HP / MP au lieu d\'en regagner.', array()), 'perso', 1, 0, 0);
           break;
         case 'low_hp' :
           $joueur->set_hp(1);
@@ -3564,8 +3564,8 @@ function pute_effets(&$joueur, $honneur_need, $specials = null, $specials_det = 
           $bloque_regen = true;
           break;
         case 'high_regen' :
-          $duree = $effet_explode[1] * 60 * 60;
-          lance_buff('high_regen', $joueur->get_id(), $effet_explode[1], 0, $duree, $maladie['nom'], description('Vos 3 prochaines regénération vous font gagner 3 fois plus de HP / MP', array()), 'perso', 1, 0, 0);
+          $duree = 4 * 60 * 60;
+          lance_buff('high_regen', $joueur->get_id(), $effet_explode[1], 0, $duree, $maladie['nom'], description('Votre  prochaine regénération vous font gagner 3 fois plus de HP / MP', array()), 'perso', 1, 0, 0);
           break;
       }
     }

@@ -243,6 +243,7 @@ $Trace['orc']['affinite_sort_element'] = 5;  ///< Affinité avec la magie élém
 $Trace['orc']['affinite_sort_vie'] = 2;  ///< Affinité avec la magie de la vie des Orcs.
 $Trace['orc']['numrace'] = 6;  ///< Numéro des Orcs.
 $Trace['orc']['spawn_x'] = 125;
+
 $Trace['orc']['spawn_y'] = 54;
 $Trace['orc']['spawn_tutocx'] = 260;
 $Trace['orc']['spawn_tutocy'] = 75;
