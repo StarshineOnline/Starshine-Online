@@ -119,38 +119,23 @@ class armure extends objet_invent
     $tbl['puissance']='i';
 		return $tbl;
 	}
-	
-	//Liste des Accesseurs
-	function getPP()
-	{
-		return $this->pp;
-	}
-	
-	function getPM()
-	{
-		return $this->pm;
-	}
-	
-	function getForce()
-	{
-		return $this->forceReq;
-	}
-	
-	//Liste des modifieurs
-	function setPP($pp)
-	{
-		$this->pp = $pp;
-	}
-	
-	function setPM($pm)
-	{
-		$this->pm = $pm;
-	}
-	
-	function setForce($force)
-	{
-		$this->forceReq = $force;
-	}
+
+	/// Méthode renvoyant l'image de l'objet
+	public function get_image()
+  {
+    $image = 'image/armure/'.$this->get_type().'/'.$this->get_type().$this->get_id().'.png';
+    if( file_exist($image) )
+      return $image;
+    return null;
+  }
+
+	/**
+	 * Méthode renvoyant les noms des informations sur l'objet
+	 * @param  $complet  true si on doit renvoyer toutes les informations.
+	 */
+	abstract public function get_noms_infos($complet=true)
+  {
+  }
 	
 	//Infobulle de l'armure
 	function infobulle()

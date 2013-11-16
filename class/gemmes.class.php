@@ -168,6 +168,14 @@ class gemme extends objet_invent
 		return $tbl;
 	}
 
+	/**
+	 * Méthode renvoyant les noms des informations sur l'objet
+	 * @param  $complet  true si on doit renvoyer toutes les informations.
+	 */
+	public function get_noms_infos($complet=true)
+  {
+  }
+
 	//Fonction permettant d'ajouter un nouvel objet dans la base
 	public function infobulle()
   {

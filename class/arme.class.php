@@ -169,11 +169,39 @@ class arme extends objet_equip
     $tbl['var1']='i';
 		return $tbl;
 	}
-	
-	function affiche_image()
-	{
-		return '<img src="'.$this->image().'" alt="'.$this->nom.'" />';
-	}
+
+	/// Méthode renvoyant l'image de l'objet
+	public function get_image()
+  {
+    $image = 'image/arme/arme'.$this->get_id().'.png';
+    if( file_exist($image) )
+      return $image;
+    return null;
+  }
+
+	/**
+	 * Méthode renvoyant les noms des informations sur l'objet
+	 * @param  $complet  true si on doit renvoyer toutes les informations.
+	 */
+	public function get_noms_infos($complet=true)
+  {
+    $noms = array('Type');
+    $noms[] = $complet ? 'Nombre de mains' : 'Mains';
+    $noms[] = $this->get_type() == 'bouclier' ? 'Absorption' : 'Dégâts';
+    if( $this->get_type() == 'baton' )
+      $noms[] =  $complet ? 'Bonus au lancé de sort' : 'Bonus';
+    if( $complet )
+    {
+      if( $this->get_type() == 'arc' or $this->get_type() == 'hache' )
+        $noms[] =  'Malus d\'esquive';
+      $noms[] = 'Force nécessaire';
+      switch( $this->get_type() )
+      {
+      }
+    }
+    else
+      $noms[] = 'Coeff.';
+  }
 	
 	//Infobulle de l'arme
 	function infobulle()

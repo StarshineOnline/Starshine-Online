@@ -88,8 +88,17 @@ abstract class objet_invent extends table
 	{
 		return array('nom'=>'s', 'type'=>'s', 'prix'=>'i');
 	}
+
+	/// Méthode renvoyant l'image de l'objet
+	public function get_image() { return null; }
+
+	/**
+	 * Méthode renvoyant les noms des informations sur l'objet
+	 * @param  $complet  true si on doit renvoyer toutes les informations.
+	 */
+	abstract public function get_noms_infos($complet=true);
 	
-	//Fonction permettant d'ajouter un nouvel objet dans la base
+	/// 
 	abstract public function infobulle();
 	
 	//Retourne le début et la fin de la chaine de l'infobulle.

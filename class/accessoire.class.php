@@ -86,6 +86,23 @@ class accessoire extends objet_equip
 		return $tbl;
 	}
 
+	/// Méthode renvoyant l'image de l'objet
+	public function get_image()
+  {
+    $image = 'image/accessoire/accessoire'.$this->get_id().'.png';
+    if( file_exist($image) )
+      return $image;
+    return null;
+  }
+
+	/**
+	 * Méthode renvoyant les noms des informations sur l'objet
+	 * @param  $complet  true si on doit renvoyer toutes les informations.
+	 */
+	abstract public function get_noms_infos($complet=true)
+  {
+  }
+
 	//Infobulle de l'accessoire
 	function infobulle()
 	{
