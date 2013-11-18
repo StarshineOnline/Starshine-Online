@@ -511,7 +511,7 @@ class fleche_poison extends comp_comb {
     $this->debug("boost du facteur d'arme - fleche empoisonnee: $arme -> ".
                  ($arme + $this->effet));
 		//return $arme + $this->effet;
-    $this->valeur += $this->effet;
+    $attaque->valeur += $this->effet;
 	}
 
   function inflige_degats(/*&$actif, &$passif, $degats*/&$attaque) {

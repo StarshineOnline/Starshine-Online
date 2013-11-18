@@ -2035,7 +2035,7 @@ class perso extends entite
 				$this->add_effet_permanent('defenseur', new protection_artistique($effet, $item->nom));
 				break;
 			case 11:
-				// bonus de cast, fait dans action.inc.php
+        $this->add_bonus_permanents('potentiel_magique', $effet);
 				break;
 			case 13:
 				$this->camouflage = $effet;

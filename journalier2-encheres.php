@@ -51,7 +51,8 @@ foreach($bourse->encheres as $enchere)
     $total += $row['total'];
     $rachat = $enchere->nombre * .2 / sqrt(1 + $total/100000);
     // rachat par le jeu
-    if( $enchere->prix < $rachat )
+    $max = 500 * pow(2, 1 - $enchere->prix/$rachat);
+    if( rand(1, 500) <= $max )
     {
       $requete = 'update royaume set star = star + '.$rachat.' where id = '.$enchere->id_royaume;
       $req = $db->query($requete);

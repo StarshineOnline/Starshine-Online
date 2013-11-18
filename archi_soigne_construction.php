@@ -42,7 +42,7 @@ elseif($joueur->get_pa() >= 30)
 		$hp_repare_max = ceil(1000 * (1 - 50/($joueur->get_architecture()+50)));
 		$hp_repare_min = $joueur->get_architecture();
 		$hp_repare = rand($hp_repare_min, $hp_repare_max);
-    if( $joueur->is_buff('convalescence') ) $hp_repare = floor($hp_repare/2);
+		if( $joueur->is_buff('convalescence') ) $hp_repare = floor($hp_repare/2);
 		// Gemme de fabrique : augmente de effet % l'accélération
 		if ($joueur->is_enchantement('forge'))
 		{
@@ -83,14 +83,30 @@ elseif($joueur->get_pa() >= 30)
 				
 				echo '<h6>La construction a été réparée de '.$hp_repare.' HP</h6>';
 				$joueur->sauver();
+				?>
+				<a href="archi_soigne_construction.php?id_construction=<?php echo ($ID_CONSTRUCTION); ?>" onclick="return envoiInfo(this.href, 'information')"><img src="" alt="Reparer" title="Réparer à nouveau le batiment" style="vertical-align : middle;" /></a>
+				<a onclick="if(document.getElementById('debug').style.display == 'inline') document.getElementById('debug').style.display = 'none'; else document.getElementById('debug').style.display = 'inline';"><img src="image/interface/debug.png" alt="Debug" Title="Débug pour voir en détail le combat" style="vertical-align : middle;cursor:pointer;" /></a>
+				<a href="informationcase.php?case=<?php echo convert_in_pos($row['x'], $row['y']); ?>" onclick="return envoiInfo(this.href, 'information')"><img src="image/interface/retour.png" alt="Retour" title="Retour à l'information case" style="vertical-align : middle;" /></a>
+				<img src="image/pixel.gif" onLoad="envoiInfo('infoperso.php?javascript=oui', 'perso');" />
+				</div>
+				<?php
 			}
 		}
-		else echo '<h5>La construction est déjà totalement réparée</h5>';
+		else 
+		{
+			echo '<h5>La construction est déjà totalement réparée</h5>';
+			?>
+			<a href="informationcase.php?case=<?php echo convert_in_pos($row['x'], $row['y']); ?>" onclick="return envoiInfo(this.href, 'information')"><img src="image/interface/retour.png" alt="Retour" title="Retour à l'information case" style="vertical-align : middle;" /></a>
+			<img src="image/pixel.gif" onLoad="envoiInfo('infoperso.php?javascript=oui', 'perso');" /></div><?php
+		}
 	}
+	else if($distance > 0 )
+	{
+		echo '<h5>Vous êtes trop loin pour réparer !</h5>';
+		?>
+		<a href="informationcase.php?case=<?php echo convert_in_pos($row['x'], $row['y']); ?>" onclick="return envoiInfo(this.href, 'information')"><img src="image/interface/retour.png" alt="Retour" title="Retour à l'information case" style="vertical-align : middle;" /></a>
+		<img src="image/pixel.gif" onLoad="envoiInfo('infoperso.php?javascript=oui', 'perso');" /></div><?php
+
+	}	
 }
-?>
-<a href="archi_soigne_construction.php?id_construction=<?php echo ($ID_CONSTRUCTION); ?>" onclick="return envoiInfo(this.href, 'information')"><img src="" alt="Reparer" title="Réparer à nouveau le batiment" style="vertical-align : middle;" /></a>
-<a onclick="if(document.getElementById('debug').style.display == 'inline') document.getElementById('debug').style.display = 'none'; else document.getElementById('debug').style.display = 'inline';"><img src="image/interface/debug.png" alt="Debug" Title="Débug pour voir en détail le combat" style="vertical-align : middle;cursor:pointer;" /></a>
-<a href="informationcase.php?case=<?php echo convert_in_pos($row['x'], $row['y']); ?>" onclick="return envoiInfo(this.href, 'information')"><img src="image/interface/retour.png" alt="Retour" title="Retour à l'information case" style="vertical-align : middle;" /></a>
-<img src="image/pixel.gif" onLoad="envoiInfo('infoperso.php?javascript=oui', 'perso');" />
-</div>
+

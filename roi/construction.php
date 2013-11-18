@@ -15,7 +15,7 @@ else if(!array_key_exists('direction', $_GET))
 	echo "<div  style='float:right;'><div id='affiche_dist' style='width:375px;'><fieldset>";
 	echo "<legend>Distances de pose</legend>";
 	echo '<b>Bourgs : </b><ul>';
-	echo '<li>Avec un autre bourg : '.floor(7*$royaume->get_facteur_entretien()).'</li>';
+	echo '<li>Avec un autre bourg : '.$royaume->get_dist_bourgs().'</li>';
 	echo '<li>Avec une capitale : 5</li>';
 	echo '<b>Forts : </b><ul>';
 	echo '<li>Avec un autre de vos forts : '.floor(4*$royaume->get_facteur_entretien()).'</li>';
@@ -64,6 +64,34 @@ else if(!array_key_exists('direction', $_GET))
 	echo "</ul>";
 	echo "</fieldset>";	
 	}
+	
+
+	$requete = $db->query("SELECT *, placement.royaume AS r, placement.type FROM placement WHERE royaume = ".$royaume->get_id()." AND type != 'drapeau' AND x <= 190 AND y <= 190");
+	if ($db->num_rows($requete)>0)
+	{
+		echo "<fieldset>";
+		echo "<legend>Liste de vos bâtiments en construction</legend>";
+		echo "<ul>";
+		$boutique_class = 't1';
+		while($row = $db->read_assoc($requete))
+		{
+			$royaume_req = new royaume($row['r']);
+			if (empty($Gtrad[$royaume_req->get_race()])){$nom = 'Neutre';}else{$nom = $Gtrad[$royaume_req->get_race()];}
+			$tmp = transform_sec_temp($row['fin_placement'] - time());
+			echo "
+			<li class='$boutique_class' onclick=\"minimap(".$row['x'].",".$row['y'].")\" onmousemove=\"\" onmouseout='return nd();'>
+				<span style='display:block;width:420px;float:left;'>
+					<img src='../image/batiment_low/".$row['type']."_04.png' style='width:19px;' alt='Batiment' /> ".$row['nom']." - fin de construction dans ".$tmp."
+							</span>
+				<span style='display:block;width:100px;float:left;'>X : ".$row['x']." - Y : ".$row['y']."</span>
+			</li>";
+			if ($boutique_class == 't1'){$boutique_class = 't2';}else{$boutique_class = 't1';}
+		}
+		echo "</ul>";
+		echo "</fieldset>";
+	}	
+	
+	
 	$req = $db->query("SELECT *, construction.royaume AS r, construction.type FROM construction LEFT JOIN map ON (map.y = construction.y AND construction.x = map.x) WHERE construction.type = 'arme_de_siege' AND construction.royaume != ".$royaume->get_id()." AND map.royaume = ".$royaume->get_id()." AND map.x <= 190 AND map.y <= 190");
 	if ($db->num_rows($req)>0)
 	{
@@ -89,7 +117,7 @@ else if(!array_key_exists('direction', $_GET))
 	echo "</fieldset>";	
 	}
 	
-	$req = $db->query("SELECT *, map.royaume AS r FROM placement LEFT JOIN map ON (map.y = placement.y AND placement.x = map.x) WHERE placement.type = 'drapeau' AND placement.royaume = ".$royaume->get_id()." AND map.x <= 190 AND map.y <= 190");
+	$req = $db->query("SELECT *, map.royaume AS r FROM placement LEFT JOIN map ON (map.y = placement.y AND placement.x = map.x) WHERE placement.type = 'drapeau' AND placement.royaume = ".$royaume->get_id()." AND map.x <= 190 AND map.y <= 190 ORDER BY fin_placement ASC");
 	if ($db->num_rows($req)>0)
 	{
 		echo "<fieldset>";	
@@ -100,7 +128,7 @@ else if(!array_key_exists('direction', $_GET))
 		{
 			$royaume_req = new royaume($row['r']);
 			if (empty($Gtrad[$royaume_req->get_race()])){$nom = 'Neutre';}else{$nom = $Gtrad[$royaume_req->get_race()];}
-			$tmp = transform_sec_temp($row['fin_placement'] - time())."avant fin de construction";
+			$tmp = transform_sec_temp($row['fin_placement'] - time())." avant fin de construction";
 			echo "
 			<li class='$boutique_class' onclick=\"minimap(".$row['x'].",".$row['y'].")\" onmousemove=\"".make_overlib($tmp)."\" onmouseout='return nd();'>
 				<span style='display:block;width:420px;float:left;'>
@@ -113,7 +141,8 @@ else if(!array_key_exists('direction', $_GET))
 		echo "</ul>";
 		echo "</fieldset>";
 	}
-	$requete = $db->query("SELECT id FROM construction WHERE royaume = ".$royaume->get_id()." AND x <= 190 AND y <= 190");
+
+	$requete = $db->query("SELECT *, id FROM construction WHERE royaume = ".$royaume->get_id()." AND x <= 190 AND y <= 190 ORDER BY type, date_construction ASC");
 	if ($db->num_rows($requete)>0)
 	{
 		echo "<fieldset>";	
@@ -150,7 +179,7 @@ else if(!array_key_exists('direction', $_GET))
 				
 			//my_dump($batiment);
 			//my_dump($construction);
-			echo "<span style='display:block;width:100px;float:left;'> X : ".$construction->get_x()." - Y : ".$construction->get_y()."</span>";
+			echo "<span style='display:block;width:100px;float:left;'> X : ".$construction->get_x()." - Y : ".$construction->get_y()." </span>";
 			$longueur = round(100 * ($construction->get_hp() / $batiment->get_hp()), 2);
 			echo "<img style='display:block;width:100px;float:left;height:6px;padding-top:5px;' src='genere_barre_hp.php?longueur=".$longueur."' alt='".$construction->get_hp()." / ".$batiment->get_hp()."' title='".$construction->get_hp()." / ".$batiment->get_hp()."'>";
 			

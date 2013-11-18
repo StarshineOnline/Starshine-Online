@@ -435,13 +435,17 @@ class map
 							for($i = 0; $i < count($this->map[$x_map][$y_map]["PNJ"]); $i++)				{ $overlib .= "<li class='overlib_batiments'><span>PNJ</span>&nbsp;-&nbsp;".ucwords($this->map[$x_map][$y_map]["PNJ"][$i]["nom"])."</li>"; }
 							for($i = 0; $i < count($this->map[$x_map][$y_map]["Joueurs"]); $i++)
 							{
-								if(array_key_exists('hp', $this->map[$x_map][$y_map]["Joueurs"][$i]))
+								if(array_key_exists('hp_max', $this->map[$x_map][$y_map]["Joueurs"][$i]))
 								{
 									$all = ' HP : '.$this->map[$x_map][$y_map]["Joueurs"][$i]["hp"].' / '.$this->map[$x_map][$y_map]["Joueurs"][$i]["hp_max"].' - MP : '.$this->map[$x_map][$y_map]["Joueurs"][$i]["mp"].' / '.$this->map[$x_map][$y_map]["Joueurs"][$i]["mp_max"].' - PA : '.$this->map[$x_map][$y_map]["Joueurs"][$i]["pa"];
 	
 								}
 								else $all = '';
-								$overlib .= "<li class='overlib_joueurs'><span>".$this->map[$x_map][$y_map]["Joueurs"][$i]["nom"]."</span>&nbsp;-&nbsp;".ucwords($this->map[$x_map][$y_map]["Joueurs"][$i]["race"])." - Niv.".$this->map[$x_map][$y_map]["Joueurs"][$i]["level"].$all."</li>";
+								
+								$overlib .= "<li class='overlib_joueurs'><span>";
+								if ($this->map[$x_map][$y_map]["Joueurs"][$i]["hp"] <= 0)	$overlib .= "<span class='mort'>".$this->map[$x_map][$y_map]["Joueurs"][$i]["nom"]."</span>";
+								else $overlib .= $this->map[$x_map][$y_map]["Joueurs"][$i]["nom"];
+								$overlib .= "</span>&nbsp;-&nbsp;".ucwords($this->map[$x_map][$y_map]["Joueurs"][$i]["race"])." - Niv.".$this->map[$x_map][$y_map]["Joueurs"][$i]["level"].$all."</li>";
 							}
 							for($i = 0; $i < count($this->map[$x_map][$y_map]["Monstres"]); $i++)
 							{
@@ -693,9 +697,9 @@ class map
 					$mapPerso["level"] = 'xxx';
 				$mapPerso["race"] = $Gtrad[$perso->get_race()];
 				$mapPerso["classe"] = $perso->get_classe($spectateur);
+				$mapPerso["hp"] = $perso->get_hp();
 				if($all)
 				{
-					$mapPerso["hp"] = $perso->get_hp();
 					$mapPerso["hp_max"] = floor($perso->get_hp_max());
 					$mapPerso["mp"] = $perso->get_mp();
 					$mapPerso["mp_max"] = floor($perso->get_mp_max());

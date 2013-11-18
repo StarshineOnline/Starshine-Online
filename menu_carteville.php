@@ -12,5 +12,8 @@ else
 	<a class="rose_a" onclick="envoiInfo('deplacement.php', 'centre')"><img src="image/interface/affiche_carte.png" alt="Afficher la carte" /></a>
 	<?php
 }
+if(!($joueur->est_mort()))
+{
 require_once('menu_mess.php');
+}
 ?>

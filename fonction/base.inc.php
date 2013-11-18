@@ -2106,191 +2106,11 @@ function lance_buff($type, $id, $effet, $effet2, $duree, $nom, $description, $ty
  */
 function verif_mort($pourcent, $var, $duree_debuff=0, $multiplicateur_mouvement=0)
 {
-	global $Trace, $db, $joueur;
-	if ( $joueur->est_mort() )
+	global $joueur;
+	if($joueur->est_mort())
 	{
-    // Personnage dans une arène ?
-    $arene = false;
-    if( $joueur->in_arene() )
-    {
-      $event = event::create_from_arenes_joueur($joueur);
-      if( $event )
-        $perso_ar = $event->get_arenes_joueur('id_perso='.$joueur->get_id().' AND statut='.arenes_joueur::en_cours);
-      else
-        $perso_ar = arenes_joueur::creer(0, 'arenes_joueur', 'id_perso='.$joueur->get_id().' AND statut='.arenes_joueur::en_cours);
-      // Si a on trouvé les infos sur son TP, alors traitement spécial
-      if( $perso_ar )
-      {
-        // rez non autorisée ou choix de sortir de l'arène
-        if( ( $event !== null && !$event->rez_possible($joueur->get_id()) ) || $var == 2 )
-        {
-          // renvoie hors de l'arène
-          $perso_ar[0]->teleporte( $joueur->get_nom() );
-          return;
-        }
-        $arene = true;
-      }
-    }
-		$R = new royaume($Trace[$joueur->get_race()]['numrace']);
-		if ($R->is_raz()) $capitale_rez_p = 5;
-		else $capitale_rez_p = 20;
-
-		//Recherche du fort le plus proche
-		$requete = "SELECT *, (ABS(".$joueur->get_x()." - cast(x as signed integer)) + ABS(".$joueur->get_y()." - cast(y as signed integer))) AS plop FROM `construction` WHERE rez > 0 AND type = 'fort' AND royaume = ".$Trace[$joueur->get_race()]['numrace']." ORDER BY plop ASC";
-		$req_b = $db->query($requete);
-		$bat = $db->num_rows;
-		$row_b = $db->read_assoc($req_b);
-		//Bonus mort-vivant
-		if($joueur->get_race() == 'mortvivant') $bonus = 10;
-		else $bonus = 0;
-		//Vérifie s'il y a une amende qui empèche le spawn en ville
-		$amende = recup_amende($joueur->get_id());
-		$echo = 'Revenir dans votre ville natale';
-		$spawn_ville = 'ok';
-		if($amende)
-		{
-			if($amende['respawn_ville'] == 'n')
-			{
-				$echo = 'Revenir dans le refuge des criminels';
-				$spawn_ville = 'wrong';
-			}
-		}
-		if($var == 1)
-		{ // Page de résurection
-			?>
-<div id="conteneur_back">
-<div id="conteneur" style='margin-top:-16px;'>
-
-<div id='perso' style='padding:15px;min-height:80px;'>
-<h2 class="ville_titre">Vous êtes mort</h2>
-Votre dernier souvenir est l'endroit où vous êtes mort <?php echo 'x : '.$joueur->get_x().' / y : '.$joueur->get_y(); ?>
-</div>
-<div id='menu'>
-	<?php
-    if( array_key_exists('nbr_perso', $_SESSION) )
-    {
-  ?>
-		<span class="changer" title='Changer de personnage' onclick="envoiInfo('changer_perso.php?info=information', 'information');">&nbsp;</span>
-	<?php
-    }
-  ?>
-</div>
-<div id='mort'>
-<fieldset>
-					Que voulez vous faire ?
-					<ul>
-					<?php
-					//Supprime les Rez plus valides
-					$requete = "DELETE FROM rez WHERE TIMESTAMPDIFF(MINUTE , time, NOW()) > 1440";
-					//$db->query($requete);
-					// Liste des rez
-					$requete = "SELECT * FROM rez WHERE id_perso = ".$joueur->get_id();
-					$req = $db->query($requete);
-					if($db->num_rows > 0)
-					{
-						while($row = $db->read_assoc($req))
-						{
-							echo '
-						<li style="padding-top:5px;padding-bottom:5px;"><a href="mort.php?choix=2&amp;rez='.$row['id'].'">Vous faire ressusciter par '.$row['nom_rez'].' ('.($row['pourcent'] + $bonus).'% HP / '.($row['pourcent'] + $bonus).' MP)</li>';
-						}
-					}
-					// Fort le plus proche (si on le personnage n'est pas dans un donjon)
-					if($bat > 0 AND !is_donjon($joueur->get_x(), $joueur->get_y()))
-					{
-							echo '
-						<li style="padding-top:5px;padding-bottom:5px;"><a href="mort.php?choix=3&amp;rez='.$row_d['id'].'">Revenir dans le fort le plus proche (x : '.$row_b['x'].' / y : '.$row_b['y'].') ('.($row_b['rez'] + $bonus).'% HP / '.($row_b['rez'] + $bonus).'% MP)</li>';
-					}
-					// Capitale, refuge des criminels ou sort de l'arène
-					if( $arene )
-					{
-            // sortie de l'arène
-				  	echo '
-						<li style="padding-top:5px;padding-bottom:5px;"><a href="mort.php?choix=1">Sortir de l\'arène</a></li>';
-          }
-          else
-          {
-					  // Capitale ou refuge des criminels
-				  	echo '
-						<li style="padding-top:5px;padding-bottom:5px;"><a href="mort.php?choix=1">'.$echo.' ('.($capitale_rez_p + $bonus).'% HP / '.($capitale_rez_p + $bonus).'% MP)</a></li>';
-          }
-					?>
-						<li style="padding-top:5px;padding-bottom:5px;"><a href="index.php?deco=ok">Vous déconnecter</a></li>
-						<li style="padding-top:5px;padding-bottom:5px;">Vous pouvez attendre qu&rsquo;un autre joueur vous ressucite</li>
-					</ul>
-					<a href="index.php">Index du jeu</a> - <a href="http://forum.starshine-online.com">Accéder au forum</a>  - <a href="http://www.starshine-online.com/tigase/">Accéder au Tchat</a>
-</fieldset>
-<fieldset>
-					Vos dernières actions :
-					<ul>
-					<?php
-					$requete = "SELECT * FROM journal WHERE id_perso = ".$joueur->get_id()." ORDER by time DESC, id DESC LIMIT 0, 15";
-					$req = $db->query($requete);
-					while($row = $db->read_assoc($req))
-					{
-						echo '<li>'.affiche_ligne_journal($row).'</li>';
-					}
-					?>
-					</ul>
-</fieldset>
-</div>
-
-<div id="information" style="float: right;">
-</div>
-
-			</div></div>
-			<?php
-			exit();
-		}
-		elseif($var == 2)
-		{ // Rez en ville ou dans le refuge des criminels
-			if($spawn_ville == 'ok')
-			{ // Capitale
-				$joueur->set_x($Trace[$joueur->get_race()]['spawn_x']);
-				$joueur->set_y($Trace[$joueur->get_race()]['spawn_y']);
-			}
-			else
-			{ // Refuge des criminels
-				$joueur->set_x($Trace[$joueur->get_race()]['spawn_c_x']);
-				$joueur->set_y($Trace[$joueur->get_race()]['spawn_c_y']);
-			}
-		}
-		elseif($var == 4)
-		{ // Fort le plus proche
-			$joueur->set_x($row_b['x']);
-			$joueur->set_y($row_b['y']);
-			$pourcent = $row_b['rez'];
-		}
-		$pourcent += $bonus;
-		$joueur->set_hp($joueur->get_hp_maximum() * $pourcent / 100);
-		$joueur->set_mp($joueur->get_mp_maximum() * $pourcent / 100);
-		
-		$joueur->set_regen_hp(time());
-
-		//Téléportation dans sa ville avec PV et MP modifiés
-		$joueur->sauver();
-
-		//Vérifie si il a déjà un mal de rez
-		$requete = "SELECT fin FROM buff WHERE id_perso = ".$joueur->get_id()." AND type = 'debuff_rez'";
-		$req = $db->query($requete);
-		if($db->num_rows > 0)
-		{
-			$row = $db->read_row($req);
-			$duree = $row[0] - time();
-		}
-		else $duree = 0;
-		$duree_debuff += $duree;
-		//Suppression des buffs
-		$requete = "DELETE FROM buff WHERE id_perso = ".$joueur->get_id()." AND supprimable = 1";
-		$db->query($requete);
-		//Si rez en ville ou sur fort, on débuff le déplacement
-		if($duree_debuff > 0)
-		{
-			//Déplacement * 2
-			$effet = 2;
-			lance_buff('debuff_rez', $joueur->get_id(), $effet, $multiplicateur_mouvement, $duree_debuff, 'Mal de résurrection', 'Mulitplie vos coûts de déplacement par '.$effet, 'perso', 1, 0, 0, 0);
-		}
-		// Second mal de res
-		lance_buff('convalescence', $joueur->get_id(), 2, 2, 86400, 'Convalescence', 'Diminue votre efficacité pour le RvR.', 'perso', 1, 0, 0, 0);
+	echo '<img src="image/pixel.gif" onload="window.location = \'interface.php\';" />';
+	exit();
 	}
 }
 
@@ -2488,6 +2308,11 @@ function affiche_ligne_journal($row)
 		case 'mort' :
 			return '<li class="jmort"><span class="small">['.$date.']</span> '.$row['passif'].' vous a tué.</li>';
 		break;
+		case 'siege' :
+			return '<li class="jdegat"><span class="small">['.$date.']</span> Vous attaquez '.$row['passif']." à l'arme de siège et lui faites ".$row['valeur'].' dégâts.</li>';
+		case 'destruction' :
+			return '<li class="jkill"><span class="small">['.$date.']</span> Vous détruisez '.$row['passif'].'.</li>';
+		break;
 		case 'pet_leave' :
 			return '<li class="jmort"><span class="small">['.$date.']</span> Votre '.$row['valeur'].' a échappé à votre contrôle et vous a quitté.</li>';
 		break;
@@ -2533,7 +2358,13 @@ function affiche_ligne_journal($row)
 		case 'rdebuff' :
 			return '<li class="jdebuff"><span class="small">['.$date.']</span> '.$row['passif'].' vous debuff avec '.$row['valeur'].'.</li>';
 		break;
-	  case 'teleport' :
+		case 'rez' :
+			return '<li class="jbuff"><span class="small">['.$date.']</span> Vous avez ressuscité '.$row['passif'].' ('.$row['valeur'].'%).</li>';
+		break;
+		case 'rrez' :
+			return '<li class="jbuff"><span class="small">['.$date.']</span> '.$row['passif'].' vous a ressuscité ('.$row['valeur'].'%).</li>';
+		break;
+		case 'teleport' :
 			if ($row['valeur'] == 'jeu')
 				return '<li class="jgbuff"><span class="small">['.$date.']</span> '.$row['actif'].' vous téléporte dans le jeu.</li>';
 			else
@@ -3713,7 +3544,7 @@ function pute_effets(&$joueur, $honneur_need, $specials = null, $specials_det = 
           break;
         case 'mort_regen' :
           $duree = $effet_explode[1] * 60 * 60;
-          lance_buff('mort_regen', $joueur->get_id(), 1, 0, $duree, $maladie['nom'], description('Vous mourez lors de votre prochaine regénération', array()), 'perso', 1, 0, 0);
+          lance_buff('mort_regen', $joueur->get_id(), 1, 0, $duree, $maladie['nom'], description('Vous mourrez lors de votre prochaine regénération', array()), 'perso', 1, 0, 0);
           break;
         case 'plus_cout_attaque' :
           $duree = 12 * 60 * 60;
@@ -3725,7 +3556,7 @@ function pute_effets(&$joueur, $honneur_need, $specials = null, $specials_det = 
           break;
         case 'regen_negative' :
           $duree = 24 * 60 * 60;
-          lance_buff('regen_negative', $joueur->get_id(), $effet_explode[1], 0, $duree, $maladie['nom'], description('Vos 3 prochaines regénération vous fait perdre des HP / MP au lieu d\'en regagner.', array()), 'perso', 1, 0, 0);
+          lance_buff('regen_negative', $joueur->get_id(), $effet_explode[1], 0, $duree, $maladie['nom'], description('Vos 3 prochaines regénérations vous fait perdre des HP / MP au lieu d\'en regagner.', array()), 'perso', 1, 0, 0);
           break;
         case 'low_hp' :
           $joueur->set_hp(1);
@@ -3733,8 +3564,8 @@ function pute_effets(&$joueur, $honneur_need, $specials = null, $specials_det = 
           $bloque_regen = true;
           break;
         case 'high_regen' :
-          $duree = $effet_explode[1] * 60 * 60;
-          lance_buff('high_regen', $joueur->get_id(), $effet_explode[1], 0, $duree, $maladie['nom'], description('Vos 3 prochaines regénération vous font gagner 3 fois plus de HP / MP', array()), 'perso', 1, 0, 0);
+          $duree = 4 * 60 * 60;
+          lance_buff('high_regen', $joueur->get_id(), $effet_explode[1], 0, $duree, $maladie['nom'], description('Votre  prochaine regénération vous font gagner 3 fois plus de HP / MP', array()), 'perso', 1, 0, 0);
           break;
       }
     }

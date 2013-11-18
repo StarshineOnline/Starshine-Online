@@ -3,6 +3,7 @@ if (file_exists('root.php'))
 include_once('root.php');
 
 include_once ('livre.php');
+verif_mort($joueur, 1);
 $tab_sort_jeu = explode(';', $joueur->get_comp_jeu());
 ?>
 <hr>
@@ -319,7 +320,7 @@ else
 
 	foreach($magies as $magie)
 	{
-		echo '<a href="competence_jeu.php?tri='.$magie.'" onclick="return envoiInfo(this.href, \'information\');"><img src="image/'.$magie.'.png" alt="'.$Gtrad[$magie].'" title="'.$Gtrad[$magie].'" onmouseover="this.src = \'image/icone/'.$magie.'hover.png\'" onmouseout="this.src = \'image/'.$magie.'.png\'"/></a> ';
+		echo '<a href="competence_jeu.php?tri='.$magie.'" onclick="return envoiInfo(this.href, \'information\');"><img src="image/icone_'.$magie.'.png" alt="'.$Gtrad[$magie].'" title="'.$Gtrad[$magie].'" onmouseover="this.src = \'image/icone/'.$magie.'hover.png\'" onmouseout="this.src = \'image/'.$magie.'.png\'"/></a> ';
 	}
 	
 	
