@@ -2,7 +2,12 @@
 class bonus_perso
 
 {
-/**
+	const CACHE_GRADE_ID = 6;
+	const CACHE_CLASSE_ID = 7;
+	const CACHE_STATS_ID = 8;
+	const CACHE_NIVEAU_ID = 11;
+	
+	/**
     * @access private
     * @var int(10)
     */
@@ -87,15 +92,15 @@ class bonus_perso
 		global $db;
 		if( $this->id_bonus_perso > 0 )
 		{
-			if(count($this->champs_modif) > 0)
+			if( $force || count($this->champs_modif) > 0 )
 			{
-				if($force) $champs = 'id_perso = '.$this->id_perso.', id_bonus = '.$this->id_bonus.', valeur = "'.mysql_escape_string($this->valeur).'", etat = "'.mysql_escape_string($this->etat).'"';
+				if($force) $champs = 'id_perso = '.$this->id_perso.', id_bonus = '.$this->id_bonus.', valeur = "'.mysql_real_escape_string($this->valeur).'", etat = "'.mysql_real_escape_string($this->etat).'"';
 				else
 				{
 					$champs = '';
 					foreach($this->champs_modif as $champ)
 					{
-						$champs[] .= $champ.' = "'.mysql_escape_string($this->{$champ}).'"';
+						$champs[] .= $champ.' = "'.mysql_real_escape_string($this->{$champ}).'"';
 					}
 					$champs = implode(', ', $champs);
 				}
@@ -109,7 +114,7 @@ class bonus_perso
 		else
 		{
 			$requete = 'INSERT INTO bonus_perso (id_perso, id_bonus, valeur, etat) VALUES(';
-			$requete .= ''.$this->id_perso.', '.$this->id_bonus.', "'.mysql_escape_string($this->valeur).'", "'.mysql_escape_string($this->etat).'")';
+			$requete .= ''.$this->id_perso.', '.$this->id_bonus.', "'.mysql_real_escape_string($this->valeur).'", "'.mysql_real_escape_string($this->etat).'")';
 			$db->query($requete);
 			//Récuperation du dernier ID inséré.
 			$this->id_bonus_perso = $db->last_insert_id();
@@ -159,7 +164,7 @@ class bonus_perso
 			}
 			foreach($array_champs as $key => $champ)
 			{
-				$where[] = $champ .' = "'.mysql_escape_string($array_valeurs[$key]).'"';
+				$where[] = $champ .' = "'.mysql_real_escape_string($array_valeurs[$key]).'"';
 			}
 			$where = implode(' AND ', $where);
 			if($champs === 0)

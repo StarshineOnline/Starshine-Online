@@ -17,15 +17,33 @@ if ($check == false)
 
 header('Content-Type: text/xml; charset=utf-8');
 
+$joueur = new perso($_SESSION['ID']);
+
+if (map::is_masked_coordinates($joueur->get_x(), $joueur->get_y())) {
+	header('HTTP/1.1 403 Forbidden');
+	echo 'API usage is prohibited in masked zones';
+	exit (0);  
+}
+
 function cpyToAttr($node, $row, $attr) {
-  if (is_array($attr)) {
-    foreach ($attr as $tattr) {
-      $node->setAttribute($tattr, $row[$tattr]);
-    }
-  }
-  else {
-    $node->setAttribute($attr, $row[$attr]);
-  }
+	if( !is_array($attr) )
+	{
+		$attr = array($attr);
+	}
+	
+	if( is_array($row) )
+	{
+		foreach ($attr as $tattr) {
+			$node->setAttribute($tattr, $row[$tattr]);
+		}
+	}
+	elseif( $row instanceof perso )
+	{
+		foreach ($attr as $tattr) {
+			$getter = 'get_'.$tattr;
+			$node->setAttribute($tattr, $row->$getter());
+		}
+	}
 }
 
 $doc = new DomDocument('1.0', 'utf-8');
@@ -39,28 +57,19 @@ if (isset($_REQUEST['xsl'])) {
 $root = $doc->createElement('infos');
 $root = $doc->appendChild($root);
 
-$requete = 'SELECT x, y, level FROM perso WHERE ID = \''.$_SESSION['ID'].'\'';
-$req = $db->query($requete);
-$row = $db->read_array($req);
-//On sort de la bdd les coordonnés du joueur x,y
-$coord['x'] = $row['x'];
-$coord['y'] = $row['y'];
-$coord_joueur['y'] = $row['y'];
-$coord_joueur['x'] = $row['x'];
-
 $size_view = 3;
-if (is_donjon($coord_joueur['x'], $coord_joueur['y'])) {
+if (is_donjon($joueur->get_x(), $joueur->get_y())) {
   $size_view = 2; // Voir pour les arènes ?
 }
 $root->setAttribute('radius', $size_view);
 
-$xmin = $coord['x'] - $size_view;
+$xmin = $joueur->get_x() - $size_view;
 if ($xmin < 1) $xmin = 1;
-$xmax = $coord['x'] + $size_view;
+$xmax = $joueur->get_x() + $size_view;
 if ($xmax > 999) $xmax = 999;
-$ymin = $coord['y'] - $size_view;
+$ymin = $joueur->get_y() - $size_view;
 if ($ymin < 1) $ymin = 1;
-$ymax = $coord['y'] + $size_view;
+$ymax = $joueur->get_y() + $size_view;
 if ($ymax > 1000) $ymax = 1000;
 
 // Mise à jour des placemens
@@ -76,14 +85,19 @@ FROM `placement` WHERE type != 'drapeau' and `fin_placement` <= $now";
 //Requète pour l'affichage de la map
 $requete = "SELECT * FROM map WHERE $xmin <= x AND x <= $xmax AND $ymin <= y AND y <= $ymax ORDER BY y, x";
 $req = $db->query($requete);
-//Requète pour l'affichage des joueurs dans le périmètre de vision
-$requete_joueurs = 'SELECT ID, nom, level, race, x, y, classe, cache_classe, cache_niveau, hp, cache_stat, melee, distance, esquive, blocage, incantation, sort_vie, sort_element, sort_mort, craft, honneur, exp FROM perso WHERE (((x >= '.$xmin.') AND (x <= '.$xmax.')) AND ((y >= '.$ymin.') AND (y <= '.$ymax.'))) AND statut = \'actif\' ORDER BY y ASC, x ASC, dernier_connexion DESC';
-$req_joueurs = $db->query($requete_joueurs);
+//Requête pour l'affichage des joueurs dans le périmètre de vision
+$where = "( (x >= $xmin) AND (x <= $xmax) AND (y >= $ymin) AND (y <= $ymax) ) AND statut = 'actif'";
+$order = 'y ASC, x ASC, dernier_connexion DESC';
+$persos = perso::create(null, null, $order, false, $where);
+foreach($persos as $p){
+	// Prend en compte les effets qui peuvent agir sur le perso, utile notamment pour l'effet "camouflage" qui peut modifier l'image du perso
+	$p->check_specials();
+}
 //Requète pour l'affichage des pnj dans le périmètre de vision
 $requete_pnj = 'SELECT id, nom, image, x, y FROM pnj WHERE (((x >= '.$xmin.') AND (x <= '.$xmax.')) AND ((y >= '.$ymin.') AND (y <= '.$ymax.'))) ORDER BY y ASC, x ASC';
 $req_pnj = $db->query($requete_pnj);
 //Requète pour l'affichage des monstres dans le périmètre de vision
-$requete_monstres = 'SELECT mm.id, mm.x, mm.y, m.nom, m.lib, COUNT(*) as tot FROM map_monstre mm, monstre m WHERE mm.type = m.id AND (((x >= '.$xmin.') AND (x <= '.$xmax.')) AND ((y >= '.$ymin.') AND (y <= '.$ymax.'))) GROUP BY x, y, lib ORDER BY y ASC, x ASC, ABS(CAST(level AS SIGNED) - '.$row['level'].') ASC, level ASC, nom ASC, id ASC';
+$requete_monstres = 'SELECT mm.id, mm.x, mm.y, m.nom, m.lib, COUNT(*) as tot FROM map_monstre mm, monstre m WHERE mm.type = m.id AND (((x >= '.$xmin.') AND (x <= '.$xmax.')) AND ((y >= '.$ymin.') AND (y <= '.$ymax.'))) GROUP BY x, y, lib ORDER BY y ASC, x ASC, ABS(CAST(level AS SIGNED) - '.$joueur->get_level().') ASC, level ASC, nom ASC, id ASC';
 $req_monstres = $db->query($requete_monstres);
 //Requète pour l'affichage des drapeaux dans le périmètre de vision
 $requete_drapeaux = 'SELECT placement.x, placement.y, placement.type, placement.nom, placement.royaume, placement.debut_placement, placement.fin_placement, batiment.image FROM placement, batiment WHERE (((placement.x >= '.$xmin.') AND (placement.x <= '.$xmax.')) AND ((placement.y >= '.$ymin.') AND (placement.y <= '.$ymax.'))) AND batiment.id = placement.id_batiment ORDER BY placement.y ASC, placement.x ASC';
@@ -92,14 +106,7 @@ $req_drapeaux = $db->query($requete_drapeaux);
 $requete_batiment = 'SELECT construction.x, construction.y, construction.hp, construction.royaume, construction.nom, construction.id_batiment, batiment.image FROM construction, batiment WHERE (((construction.x >= '.$xmin.') AND (construction.x <= '.$xmax.')) AND ((construction.y >= '.$ymin.') AND (construction.y <= '.$ymax.'))) AND batiment.id = construction.id_batiment ORDER BY construction.y ASC, construction.x ASC';
 $req_batiment = $db->query($requete_batiment);
 
-$joueur = new perso($_SESSION['ID']);
-if (map::is_masked_coordinates($joueur->get_x(), $joueur->get_y())) {
-	header('HTTP/1.1 403 Forbidden');
-	echo 'API usage is prohibited in masked zones';
-	exit (0);  
-}
 
-while($row_joueurs = $db->read_assoc($req_joueurs))   $row_j[] = $row_joueurs;
 while($row_p = $db->read_assoc($req_pnj))             $row_pnj[] = $row_p;
 while($row_monstres = $db->read_assoc($req_monstres)) $row_m[] = $row_monstres;
 while($row_drapeaux = $db->read_assoc($req_drapeaux)) $row_d[] = $row_drapeaux;
@@ -110,22 +117,24 @@ while($row = $db->read_array($req)) {
   // Square
   cpyToAttr($square, $row, array('x', 'y', 'decor', 'royaume', 'type'));
 
-  // Ourself
-  if ($coord_joueur['x'] == $row['x'] && $coord_joueur['y'] == $row['y']) {
-    for ($i = 0; $i < count($row_j); $i++) {
-      if ($_SESSION['ID'] == $row_j[$i]['ID']) {
-        $pc = $doc->createElement('pc');
-        cpyToAttr($pc, $row_j[$i], 
-                  array('nom', 'race', 'classe', 'level','melee', 'distance',
-                        'esquive', 'blocage', 'exp', 'incantation', 'sort_vie',
-                        'sort_element', 'sort_mort', 'craft', 'honneur'));
-        $pc->setAttribute('image',$row_j[$i]['race'].'_'.
-                          $Tclasse[$row_j[$i]['classe']]['type']);
-        $pc->setAttribute('mort', (($joueur->est_mort()) ? 'true' : 'false'));
-        $square->appendChild($pc);
-      }
-    }
-  }
+	// Ourself
+	if ($joueur->get_x() == $row['x'] && $joueur->get_y() == $row['y']) {
+		for ($i = 0; $i < count($persos); $i++) {
+			if ($joueur->get_id() == $persos[$i]->get_id()) {
+				$pc = $doc->createElement('pc');
+				cpyToAttr($pc, $persos[$i], array(
+					'nom', 'race', 'classe', 'level','melee', 'distance',
+					'esquive', 'blocage', 'exp', 'incantation', 'sort_vie',
+					'sort_element', 'sort_mort', 'craft', 'honneur'
+				));
+				$urlImage = $persos[$i]->get_image();
+				$image = pathinfo($urlImage, PATHINFO_FILENAME);
+				$pc->setAttribute('image', $image);
+				$pc->setAttribute('mort', (($joueur->est_mort()) ? 'true' : 'false'));
+				$square->appendChild($pc);
+			}
+		}
+	}
 
   // PNJ
   if (!isset($_REQUEST['npc']) || $_REQUEST['npc']) {
@@ -139,37 +148,38 @@ while($row = $db->read_array($req)) {
     }
   }
 
-  // Joueurs
-  if (!isset($_REQUEST['pc']) || $_REQUEST['pc']) {
-    for ($i = 0; $i < count($row_j); $i++) {
-      if ($row_j[$i]['x'] == $row['x'] &&
-	  $row_j[$i]['y'] == $row['y']) {
-	if ($_SESSION['ID'] == $row_j[$i]['ID']) continue; // Ourself
-	$pc = $doc->createElement('pc');
-	cpyToAttr($pc, $row_j[$i], array('nom', 'race'));
-	if (!check_affiche_bonus($row_j[$i]['cache_classe'], $row_j[$i],
-                           $joueur)) {
-	  $pc->setAttribute('image', $row_j[$i]['race'].'_combattant');
-	  cpyToAttr($pc, $row_j[$i], 'classe');
+	// Autres Personnages
+	if (!isset($_REQUEST['pc']) || $_REQUEST['pc']) {
+		for ($i = 0; $i < count($persos); $i++) {
+			if ($persos[$i]->get_x() == $row['x'] && $persos[$i]->get_y() == $row['y']) {
+				if ($joueur->get_id() == $persos[$i]->get_id())
+					continue; // Ourself
+				$pc = $doc->createElement('pc');
+				cpyToAttr($pc, $persos[$i], array('nom', 'race'));
+				if( !$persos[$i]->est_cache_classe($joueur) )
+				{
+					$pc->setAttribute('classe', $persos[$i]->get_classe());
+				}
+				if( !$persos[$i]->est_cache_niveau($joueur) )
+				{
+					$pc->setAttribute('level', $persos[$i]->get_level());
+				}
+				if( !$persos[$i]->est_cache_stat($joueur) )
+				{
+					cpyToAttr($pc, $persos[$i], array(
+						'melee', 'distance', 'esquive', 'blocage',
+						'exp', 'incantation', 'sort_vie',
+						'sort_element', 'sort_mort', 'craft', 'honneur'
+					));
+				}
+				$urlImage = $persos[$i]->get_image('', 'high', $joueur);
+				$image = pathinfo($urlImage, PATHINFO_FILENAME);
+				$pc->setAttribute('image', $image);
+				$pc->setAttribute('mort', (($persos[$i]->est_mort()) ? 'true' : 'false'));
+				$square->appendChild($pc);
+			}
+		}
 	}
-	else {
-	  $pc->setAttribute('image', $row_j[$i]['race'].'_'.
-                      $Tclasse[$row_j[$i]['classe']]['type']);
-	}
-	if (!check_affiche_bonus($row_j[$i]['cache_niveau'], $row_j[$i],
-                           $joueur))
-	  cpyToAttr($pc, $row_j[$i], 'level');
-	if (!check_affiche_bonus($row_j[$i]['cache_stat'], $row_j[$i],
-                           $joueur))
-	  cpyToAttr($pc, $row_j[$i],
-              array('melee', 'distance', 'esquive', 'blocage',
-                    'incantation', 'sort_vie', 'sort_element',
-                    'sort_mort', 'craft', 'honneur', 'exp'));
-	$pc->setAttribute('mort', (($row_j[$i]['hp'] <= 0) ? 'true' : 'false'));
-	$square->appendChild($pc);
-      }
-    }
-  }
 
   // Batiments
   if (!isset($_REQUEST['buildings']) || $_REQUEST['buildings']) {

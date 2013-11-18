@@ -669,76 +669,41 @@ class map
 			$ymin = $this->ymin;
 			$ymax = $this->ymax;
 		}
-		if($all) $champs .= ', hp, hp_max, mp, mp_max, pa ';
-		else $champs = '';
-		$requete = "SELECT id, nom, level, race, x, y, classe, cache_classe, cache_niveau".$champs."
-								 FROM perso 
-								 WHERE (( (x >= ".$xmin.") AND (x <= ".$xmax.") ) 
-								 AND ( (y >= ".$ymin.") AND (y <= ".$ymax.") ))  
-								 AND statut='actif' 
-								 ORDER BY y ASC, x ASC, dernier_connexion DESC;";
-		$RqJoueurs = $db->query($requete);
-		if($db->num_rows($RqJoueurs) > 0)
+		
+		$where = "( (x >= $xmin) AND (x <= $xmax) AND (y >= $ymin) AND (y <= $ymax) ) AND statut = 'actif'";
+		$order = 'y ASC, x ASC, dernier_connexion DESC';
+		$persos = perso::create(null, null, $order, false, $where);
+		
+		foreach($persos as $perso)
 		{
-			$joueurs = 0;
-			while($objJoueurs = $db->read_object($RqJoueurs))
+			if( !$race_only || $perso->get_race() == $race )
 			{
-				if($race_only AND $objJoueurs->race != $race)
-				{
+				// Prend en compte les effets qui peuvent agir sur le perso, utile notamment pour l'effet "camouflage" qui peut modifier l'image du perso
+				$perso->check_specials();
 				
-				}
-				else
+				// Spectateur fictif de race $race
+				$spectateur = new perso();
+				$spectateur->set_race($race);
+				
+				$mapPerso = array();
+				$mapPerso["id"] = $perso->get_id();
+				$mapPerso["nom"] = htmlspecialchars($perso->get_nom());
+				$mapPerso["level"] = $perso->get_level();
+				if($perso->est_cache_niveau($spectateur))
+					$mapPerso["level"] = 'xxx';
+				$mapPerso["race"] = $Gtrad[$perso->get_race()];
+				$mapPerso["classe"] = $perso->get_classe($spectateur);
+				if($all)
 				{
-					$joueurs = count($this->map[$objJoueurs->x][$objJoueurs->y]["Joueurs"]);
-
-					$image = "";
-					$this->map[$objJoueurs->x][$objJoueurs->y]["Joueurs"][$joueurs]["id"] = $objJoueurs->id;
-					$this->map[$objJoueurs->x][$objJoueurs->y]["Joueurs"][$joueurs]["nom"] = htmlspecialchars($objJoueurs->nom);
-					$this->map[$objJoueurs->x][$objJoueurs->y]["Joueurs"][$joueurs]["level"] = $objJoueurs->level;
-					$this->map[$objJoueurs->x][$objJoueurs->y]["Joueurs"][$joueurs]["race"] = $Gtrad[$objJoueurs->race];
-					$this->map[$objJoueurs->x][$objJoueurs->y]["Joueurs"][$joueurs]["classe"] = $objJoueurs->classe;
-					if($all)
-					{
-						$this->map[$objJoueurs->x][$objJoueurs->y]["Joueurs"][$joueurs]["hp"] = $objJoueurs->hp;
-						$this->map[$objJoueurs->x][$objJoueurs->y]["Joueurs"][$joueurs]["hp_max"] = floor($objJoueurs->hp_max);
-						$this->map[$objJoueurs->x][$objJoueurs->y]["Joueurs"][$joueurs]["mp"] = $objJoueurs->mp;
-						$this->map[$objJoueurs->x][$objJoueurs->y]["Joueurs"][$joueurs]["mp_max"] = floor($objJoueurs->mp_max);
-						$this->map[$objJoueurs->x][$objJoueurs->y]["Joueurs"][$joueurs]["pa"] = $objJoueurs->pa;
-					}
-					{//-- Vérification des bonus liés au points shine
-						//Si c'est pas lui même
-						if($objJoueurs->id != $_SESSION['id'])
-						{
-							if($objJoueurs->cache_classe == 2)	{ $this->map[$objJoueurs->x][$objJoueurs->y]["Joueurs"][$joueurs]["classe"] = "combattant"; }
-							elseif($objJoueurs->cache_classe == 1 && $objJoueurs->race != $race) { $this->map[$objJoueurs->x][$objJoueurs->y]["Joueurs"][$joueurs]["classe"] = "combattant"; }
-							if($objJoueurs->cache_niveau == 2)	{ $this->map[$objJoueurs->x][$objJoueurs->y]["Joueurs"][$joueurs]["level"] = "xxx"; }
-							elseif($objJoueurs->cache_niveau == 1 && $objJoueurs->race != $race) { $this->map[$objJoueurs->x][$objJoueurs->y]["Joueurs"][$joueurs]["level"] = "xxx"; }
-						}
-					}
-					{//-- Vérification du camouflage, ce qui oblige à instancier :(
-						$tmp_perso = new perso($objJoueurs->id);
-						$tmp_perso->check_specials();
-						if ($tmp_perso->get_race_a() != $objJoueurs->race)
-							$objJoueurs->race = $tmp_perso->get_race_a();
-					}
-					{//-- Vérification que l'image de classe existe ($Tclasse est contenue dans ./inc/classe.inc.php)
-						$classe = $this->map[$objJoueurs->x][$objJoueurs->y]["Joueurs"][$joueurs]["classe"];
-						if($this->resolution == 'low')
-						{
-							$image = $this->root."image/personnage_low/".$objJoueurs->race."/".$objJoueurs->race;
-						}
-						else
-						{
-							$image = $this->root."image/personnage/".$objJoueurs->race."/".$objJoueurs->race;
-						}
-						if(file_exists($image."_".$Tclasse[$classe]["type"].".png")) 		{ $image .= "_".$Tclasse[$classe]["type"].".png"; }
-						elseif(file_exists($image."_".$Tclasse[$classe]["type"].".gif")) 	{ $image .= "_".$Tclasse[$classe]["type"].".gif"; }
-						elseif(file_exists($image.".png")) 									{ $image .= ".png"; }
-						elseif(file_exists($image.".gif"))  								{ $image .= ".gif"; }
-						else 																{ $image = ""; } //-- Si aucun des fichiers n'existe autant rien mettre...
-					}			
-					$this->map[$objJoueurs->x][$objJoueurs->y]["Joueurs"][$joueurs]["image"] = $image;
+					$mapPerso["hp"] = $perso->get_hp();
+					$mapPerso["hp_max"] = floor($perso->get_hp_max());
+					$mapPerso["mp"] = $perso->get_mp();
+					$mapPerso["mp_max"] = floor($perso->get_mp_max());
+					$mapPerso["pa"] = $perso->get_pa();
 				}
+				$mapPerso["image"] = $perso->get_image($this->root, $this->resolution, $spectateur);
+				
+				$this->map[$perso->get_x()][$perso->get_y()]["Joueurs"][] = $mapPerso;
 			}
 		}
 	}
