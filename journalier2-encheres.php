@@ -23,13 +23,13 @@ foreach($bourse->encheres as $enchere)
     if( $n > 1 )
     {
       $recup = floor($enchere->prix * (1 - 1/$n) );
-      $ress = floor($enchere->ressource / $n);
+      $ress = floor($enchere->nombre / $n);
       $requete = 'update royaume set star = star + '.$recup.', '.$enchere->ressource.' = '.$enchere->ressource.' + '.$ress.' where id in ('.implode(',', $id_r).')';
       $req = $db->query($requete);
     }
     else
     {
-      $requete = 'update royaume set '.$enchere->ressource.' = '.$enchere->ressource.' + '.$enchere->ressource.' where id ='.$id_r[0];
+      $requete = 'update royaume set '.$enchere->ressource.' = '.$enchere->ressource.' + '.$enchere->nombre.' where id ='.$id_r[0];
       $req = $db->query($requete);
     }
     $enchere->actif = 0;
@@ -37,7 +37,7 @@ foreach($bourse->encheres as $enchere)
   }
   else
   {
-    $ratio = $enchere->prix / $enchere->ressource;
+    $ratio = $enchere->prix / $enchere->nombre;
     $red = 1 / (1.15+sqrt($ratio)/10);
     $enchere->prix = min($enchere->prix * $red, $enchere->prix-10);
     // prix de rachat par le jeu
