@@ -232,28 +232,48 @@ foreach($roy as $r)
 foreach($tab_royaume as $race => $royaume)
 {
 	//On prend en compte la nourriture en bourse dans les stocks
-	/*$requete = "SELECT SUM(nombre) as food_bourse FROM bourse_royaume WHERE actif = 1 AND ressource = 'food' AND id_royaume = ".$royaume['id'];
+	/*
+	$requete = "SELECT SUM(nombre) as food_bourse FROM bourse_royaume WHERE actif = 1 AND ressource = 'food' AND id_royaume = ".$royaume['id'];
 	$req = $db->query($requete);
 	$row = $db->read_assoc($req);
 	$food_bourse = $row['food_bourse'];
-	$idpersos = "select id from perso where race = '$race' AND statut = 'actif'";
-
-	$royaume['food_necessaire'] = floor($food_necessaire * $royaume['actif'] * 0.95) + floor(0.05 * ($royaume['food'] + $food_bourse));*/
+	
+	$royaume['food_necessaire'] = floor($food_necessaire * $royaume['actif'] * 0.95) + floor(0.05 * ($royaume['food'] + $food_bourse));
+	*/
 	//echo $royaume['race'].' '.$royaume['food_necessaire'].'<br />';
 	//Si ya assez de food
 	$mail .= "Race : ".$race." - Nécessaire : ".$royaume['food_necessaire']." / Possède : ".$royaume['food']."\n";
 	//$royaume['food'] = 0; //-- test --
 	//$royaume['food_necessaire'] = 1000; //-- test --
+	
+	// La durée du debuff famine n'intervient pas dans les règles donc il faut s'assurer qu'il n'influence pas la disparition du debuff,
+	// il faut donc réactualiser sa valeur régulièrement.
+	// Durée quelconque du buff : 30 jours (au moins 1 jour car ce script est lancé quotidiennement)
+	$duree = 30 * 24 * 60 * 60;
+	$fin = time() + $duree;
+	$requete = "
+		UPDATE buff b
+		INNER JOIN perso p ON b.id_perso = p.id
+		SET b.duree = ".$duree.", b.fin = ".$fin."
+		WHERE
+		b.type = 'famine'
+		AND p.race = '$race' AND p.statut = 'actif'
+	";
+	$db->query($requete);
 	if($royaume['food_necessaire'] < $royaume['food'])
 	{
 		$requete = "UPDATE royaume SET food = food - ".$royaume['food_necessaire']." WHERE id = ".$royaume['id'];
 		$db->query($requete);
 		//On réduit de 3 les debuff famines (1 ??)
-		if($idpersos)
-		{
-  		$requete = "UPDATE buff SET effet = effet - 3 WHERE type = 'famine' AND id_perso IN ($idpersos)";
-  		$db->query($requete);
-    }
+		$requete = "
+			UPDATE buff b
+			INNER JOIN perso p ON b.id_perso = p.id
+			SET b.effet = b.effet -3
+			WHERE
+			b.type = 'famine'
+			AND p.race = '$race' AND p.statut = 'actif'
+		";
+		$db->query($requete);
 	}
 	else
 	{
@@ -292,13 +312,10 @@ foreach($tab_royaume as $race => $royaume)
 				unset($persos[$buff['id_joueur']]);
 				$buffs[] = $buff['id'];
 			}
-			//30 jours
-			$duree = 30 * 24 * 60 * 60;
-			$fin = time() + $duree;
 			$buffs_implode = implode(',', $buffs);
 			if(count($buffs) > 0)
 			{
-				$requete = "UPDATE buff SET effet = effet + ".$debuff.", duree = ".$duree.", fin = ".$fin." WHERE id IN (".$buffs_implode.")";
+				$requete = "UPDATE buff SET effet = effet + ".$debuff." WHERE id IN (".$buffs_implode.")";
 				$db->query($requete);
 			}
 			$mail .= "Mis à jour du buff famine sur ".count($buffs)." ".$race.", effet + ".$debuff.".\n";
