@@ -48,6 +48,7 @@ if(array_key_exists('action', $_GET))
 							else
 								$joueur->ajout_bonus_shine($_GET['id']);
 							$joueur->set_point_sso($joueur->get_point_sso() - $row['point']);
+							$joueur->sauver();
 							$bonus = recup_bonus($joueur->get_id());
 						}
 						else
