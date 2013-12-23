@@ -21,6 +21,8 @@ class attaque
   private $jet;  ///< résultat d'un jet (notamment celui pour toucher en physique)
   private $degats_bloques;  ///< dégâts bloqués
   private $type_degats;  ///< Type de dégâts infligés.
+  
+  public $valeur;  ///< Variable utilisé pour transmettre le résultat de l'application des effets (voir function applique_effet)
 
 	/**
 	 * @name Accesseurs.

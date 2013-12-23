@@ -348,14 +348,14 @@ class preparation extends comp_comb
 /* Précision chirurgicale */
 class precision_chirurgicale extends comp_comb
 {
-  function __construct($aLevel = 1) {
-    parent::__construct('posture_critique', $aLevel + 2);
+	function __construct($aLevel = 1) {
+		parent::__construct('posture_critique', $aLevel + 2);
 		$this->effet = $this->effet / 100 + 1;
 	}
-
-  function calcul_critique(/*&$actif, &$passif, $chance*/&$attaque) {
-		//return $chance * $this->effet;
-    $this->valeur *=$this->effet;
+	
+	// Calcule la nouvelle chance de critique
+	function calcul_critique(&$attaque) {
+		$attaque->valeur *= $this->effet;
 	}
 }
 
@@ -764,27 +764,27 @@ class fleche_sable extends comp_comb {
  * Bouclier protecteur
  */
 class bouclier_protecteur extends etat {
-
-  function __construct($aEffet) {
-    parent::__construct($aEffet, 'Bouclier protecteur');
-    $this->order = effect::$FIN_ADD;
+	
+	function __construct($aEffet) {
+		parent::__construct($aEffet, 'Bouclier protecteur');
+		$this->order = effect::$FIN_ADD;
 	}
-
+	
 	static function factory(&$effects, &$actif, &$passif, $acteur = '') {
 		if (array_key_exists('bouclier_protecteur', $passif->etat)) {
 			$effects[] = new bouclier_protecteur($passif->etat['bouclier_protecteur']['effet']);
 		}
 	}
 	
-	function calcul_pm(/*&$actif, &$passif, $pm*/&$attaque) {
-    $passif = $attaque->get_passif();
-    $bloque = $passif->bouclier()->degat;
+	// Calcule la nouvelle protection magique
+	function calcul_pm(&$attaque) {
+		$passif = $attaque->get_passif();
+		$bloque = $passif->bouclier()->degat;
 		if($passif->is_buff('bouclier_terre'))
-      $bloque += $passif->get_buff('bouclier_terre', 'effet');
+			$bloque += $passif->get_buff('bouclier_terre', 'effet');
 		$pluspm = $this->effet * $bloque;
-		$this->debug($this->nom.' augmente la PM de '.$pluspm);
-		//return $pm + $pluspm;
-    $this->valeur += $pluspm;
+		$attaque->valeur += $pluspm;
+		$this->debug($this->nom.' augmente la PM de '.$pluspm.' (valeur : '.$attaque->valeur.')');
 	}
 }
 

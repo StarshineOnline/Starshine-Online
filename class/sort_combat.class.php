@@ -271,34 +271,33 @@ class sort_combat extends sort
     $actif = &$attaque->get_actif();
     $passif = &$attaque->get_passif();
     $effets = &$attaque->get_effets();
-	  // Calcul de la PM
-		$pm = $passif->get_pm();
-		// Application des effets de PM
-		/*foreach($effets as $effet)
-			$pm = $effet->calcul_pm($actif, $passif, $pm);*/
+    
+    // Calcul de la PM
+    $pm = $passif->get_pm();
+    // Application des effets de PM
     $attaque->applique_effet('calcul_pm', $pm);
-		
-		
-		// Calcul des potentiels toucher et parer
-		$potentiel_toucher = round($actif->get_volonte() * $actif->get_potentiel_lancer_magique( $this->get_comp_assoc() ));
-		$potentiel_parer = $passif->get_potentiel_parer_magique($pm);
-		// Application des effets de potentiel toucher
-		/*foreach($effets as $effet)
-			$potentiel_toucher = $effet->calcul_attaque_magique($actif, $passif, $potentiel_toucher);*/
+    
+    
+    // Calcul des potentiels toucher et parer
+    $potentiel_toucher = round($actif->get_volonte() * $actif->get_potentiel_lancer_magique( $this->get_comp_assoc() ));
+    $potentiel_parer = $passif->get_potentiel_parer_magique($pm);
+    // Application des effets de potentiel toucher
+    /*foreach($effets as $effet)
+      $potentiel_toucher = $effet->calcul_attaque_magique($actif, $passif, $potentiel_toucher);*/
     $attaque->applique_effet('calcul_attaque_magique', $potentiel_toucher);
-		// Application des effets de potentiel parer
-		/*foreach($effets as $effet)
-			$potentiel_parer = $effet->calcul_defense_magique($actif, $passif, $potentiel_parer);*/
+    // Application des effets de potentiel parer
+    /*foreach($effets as $effet)
+      $potentiel_parer = $effet->calcul_defense_magique($actif, $passif, $potentiel_parer);*/
     $attaque->applique_effet('calcul_defense_magique', $potentiel_parer);
-			
+    
     if( $this->test_potentiel($potentiel_toucher, $potentiel_parer) )
       $this->touche($attaque);
     else
-		{
-			echo '&nbsp;&nbsp;<span class="manque">'.$actif->get_nom().' manque la cible avec '.$this->get_nom().'</span><br />';
-			//$log_combat .= "~m";
+    {
+      echo '&nbsp;&nbsp;<span class="manque">'.$actif->get_nom().' manque la cible avec '.$this->get_nom().'</span><br />';
+      //$log_combat .= "~m";
       $attaque->add_log_combat('~m');
-		}
+    }
   }
 
   /**
@@ -374,13 +373,18 @@ class sort_combat extends sort
       $degat += $row['enchantement_effet'];
       $dbg_msg .= "La ".$row['nom'].' augmente les dégâts de '. $row['enchantement_effet'].'<br />';
     }
-
+	
     $get_carac_assoc = 'get_'.$this->get_carac_assoc();
     $de_degat = $this->calcule_des($actif->$get_carac_assoc(), $degat);
     $attaque->set_degats( $this->lance_des($de_degat) );
     $this->critiques($attaque);
+	
+	// Calcul de la PM
+    $pm = $passif->get_pm();
+    // Application des effets de PM
+    $attaque->applique_effet('calcul_pm', $pm);
     //Diminution des dégâts grâce à l'armure magique
-    $reduction = $this->calcul_pp(($passif->get_pm() * $passif->get_puissance()) / 12);
+    $reduction = $this->calcul_pp(($pm * $passif->get_puissance()) / 12);
     $degat_avant = $attaque->get_degats();
     $degat = round($degat_avant * $reduction);
     if($degat < $degat_avant)
