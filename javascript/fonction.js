@@ -169,6 +169,37 @@ function envoiFichier(formulaire, position)
   return false;
 }
 
+function chargerPopover(elt, id, pos, url, titre)
+{
+  //$('#' + elt).popover({html:true, placement:pos, container:'#'+elt, title: titre, content:"<div id="+id+" class=\"infos_obj\">"+getWait()+"<script>$('#"+id+"').load('"+url+"', function() { var popover = $('#"+elt+"').popover('popover'); alert(popover); popover.show(); } );</script></div>"});
+  var e = $('#' + elt);
+  e.popover({html:true, placement:pos, title: titre, content:"<div id="+id+" class=\"infos_obj\">"+getWait()+"</div>"});
+  $.get(url, function(d)
+    {
+        e.data('popover').options.content = d;
+        e.popover('show');
+        //e.popover({content: d}).popover('show');
+        //alert(e+" : "+d);
+    });
+  //$('#' + elt).popover({html:true, placement:pos, title: truc});
+  document.getElementById(elt).onclick = "";
+}
+
+function getWait()
+{
+  var html = '<div class="wait">\n';
+  html += '<div class="wait_circle wait_circle_1"></div>\n';
+  html += '<div class="wait_circle wait_circle_2"></div>\n';
+  html += '<div class="wait_circle wait_circle_3"></div>\n';
+  html += '<div class="wait_circle wait_circle_4"></div>\n';
+  html += '<div class="wait_circle wait_circle_5"></div>\n';
+  html += '<div class="wait_circle wait_circle_6"></div>\n';
+  html += '<div class="wait_circle wait_circle_7"></div>\n';
+  html += '<div class="wait_circle wait_circle_8"></div>\n';
+  html += '</div>\n';
+  return html;
+}
+
 function affichePopUp(input_name)
 {
 	$('#popup').show();

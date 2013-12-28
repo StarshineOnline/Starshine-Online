@@ -185,4 +185,53 @@ class objet_royaume extends objet_invent
     $tbl['essence']='i';
 		return $tbl;
 	}
+
+	/// Méthode renvoyant l'image de l'objet
+	public function get_image()
+  {
+    $bat = new batiment( $this->id_batiment );
+    if( $bat->get_type() == 'drapeau' )
+    {
+      $race = joueur::get_perso()->get_race();
+      $roy = royaume::create('race', $race);
+      $image = 'image/drapeaux/'.$bat->get_image().'_'.$roy[0]->get_id().'.png';
+    }
+    else
+      $image = 'image/batiment/'.$bat->get_image().'_04.png';
+    if( file_exists($image) )
+      return $image;
+    return null;
+  }
+
+	/**
+	 * Méthode renvoyant les noms des informations sur l'objet
+	 * @param  $complet  true si on doit renvoyer toutes les informations.
+	 */
+	public function get_noms_infos($complet=true)
+  {
+    $noms = array('Type', 'Description');
+    if( $this->type != 'drapeau' )
+      $noms[] = 'Entretien';
+    $noms = array_merge($noms, array('HP', 'PP', 'PM', 'Esquive', 'Caractéristiques', 'Temps de construction (base)', 'Temps de construction minimum'));
+    if( $this->type != 'drapeau' )
+      $noms[] = 'Points de victoire (si détruit)';
+    return $noms;
+  }
+
+	/**
+	 * Méthode renvoyant les valeurs des informations sur l'objet
+	 * @param  $complet  true si on doit renvoyer toutes les informations.
+	 */
+	public function get_valeurs_infos($complet=true)
+  {
+    $bat = new batiment( $this->id_batiment );
+    $vals = array($this->type, $bat->get_description());
+    if( $this->type != 'drapeau' )
+      $vals[] = $bat->get_entretien();
+    $vals = array_merge($vals, array($bat->get_hp(), $bat->get_PP(),
+      $bat->get_PM(), $bat->get_esquive(), $bat->get_carac(), transform_min_temp($bat->get_temps_construction()), transform_min_temp($bat->get_temps_construction_min())) );
+    if( $this->type != 'drapeau' )
+      $vals[] = $bat->get_point_victoire();
+    return $vals;
+  }
 }

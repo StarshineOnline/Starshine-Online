@@ -10,6 +10,13 @@ include_once(root.'inc/fp.php');
 // Inclusion du gestionnaire de compétences
 include_once(root.'fonction/competence.inc.php');
 
+// Infos sur un objet
+if( array_key_exists('action', $_GET) && $_GET['action'] == 'infos' )
+{
+  $interf->creer_infos_objet($_GET['id']);
+  exit;
+}
+
 //Visu par un autre joueur
 if(array_key_exists('id_perso', $_GET))
 {

@@ -76,7 +76,7 @@ class joueur extends table
   }
 
   /// Factory créant un objet correspondant à l'ID du joueur connecté
-  static function factory()
+  static function &factory()
   {
     static $joueur = null;
     if( !$joueur && array_key_exists('id_joueur', $_SESSION) )
@@ -85,11 +85,12 @@ class joueur extends table
   }
 
   /// Méthode renvoyant le personnage actif
-  static function get_perso()
+  static function &get_perso()
   {
     static $perso = null;
     if( !$perso && array_key_exists('ID', $_SESSION) )
-      $perso = new perso($_SESSION['id_joueur']);
+      $perso = new perso($_SESSION['ID']);
+
     return $perso;
   }
 

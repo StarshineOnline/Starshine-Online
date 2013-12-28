@@ -174,7 +174,7 @@ class arme extends objet_equip
 	public function get_image()
   {
     $image = 'image/arme/arme'.$this->get_id().'.png';
-    if( file_exist($image) )
+    if( file_exists($image) )
       return $image;
     return null;
   }
@@ -194,13 +194,46 @@ class arme extends objet_equip
     {
       if( $this->get_type() == 'arc' or $this->get_type() == 'hache' )
         $noms[] =  'Malus d\'esquive';
-      $noms[] = 'Force nécessaire';
       switch( $this->get_type() )
       {
+      case 'hache':
+        $noms[] =  'Malus d\'esquive';
+      case 'epee':
+      case 'dague':
+        $noms[] =  'Coefficient de mêlée';
+        break;
+      case 'arc':
+        $noms[] =  'Malus d\'esquive';
+        $noms[] =  'Coefficient de tir';
+        break;
+      case 'baton':
+        $noms[] =  'Coefficient de magie';
+        break;
       }
+      $noms[] = 'Force nécessaire';
     }
     else
       $noms[] = 'Coeff.';
+    $noms[] = 'Portée';
+    $noms[] = $complet ? 'Prix HT (en magasin)' : 'Stars';
+    return $noms;
+  }
+
+	/**
+	 * Méthode renvoyant les valeurs des informations sur l'objet
+	 * @param  $complet  true si on doit renvoyer toutes les informations.
+	 */
+	public function get_valeurs_infos($complet=true)
+  {
+    $vals = array($this->type, $this->mains, $this->degat);
+    if( $this->get_type() == 'baton' or ($complet && ($this->get_type() == 'arc' or $this->get_type() == 'hache')) )
+      $vals[] = $this->var1;
+    $vals[] = $this->coefficient;
+    if( $complet )
+      $vals[] = $this->forcex;
+    $vals[] = $this->distance_tir;
+    $vals[] = $this->prix;
+    return $vals;
   }
 	
 	//Infobulle de l'arme

@@ -37,6 +37,7 @@ class interf_factory
    */
   function creer_inventaire(&$perso, $adresse, $slot)
   {
+    include_once('interf_inventaire.class.php');
     return new interf_inventaire($perso, $adresse, $slot);
   }
   /**
@@ -50,6 +51,15 @@ class interf_factory
   function creer_inventaire_slot(&$perso, $adresse, $slot, $modif)
   {
     return new interf_inventaire_slot($perso, $adresse, $slot, $modif);
+  }
+  /**
+   * Renvoie la bonne instance de la classe pour afficher les informations sur un objet (dans un popover)
+   * @param $objet    objet sous forme textuelle
+   */
+  function creer_infos_objet($objet)
+  {
+    include_once('interf_inventaire.class.php');
+    return new interf_infos_objet($objet);
   }
 }
 ?>

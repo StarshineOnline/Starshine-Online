@@ -174,6 +174,17 @@ class gemme extends objet_invent
 	 */
 	public function get_noms_infos($complet=true)
   {
+    return array('Type', 'Niveau', 'Description');
+  }
+
+	/**
+	 * Méthode renvoyant les valeurs des informations sur l'objet
+	 * @param  $complet  true si on doit renvoyer toutes les informations.
+	 */
+	public function get_valeurs_infos($complet=true)
+  {
+    $vals = array($this->type, $this->niveau, $this->description);
+    return $vals;
   }
 
 	//Fonction permettant d'ajouter un nouvel objet dans la base

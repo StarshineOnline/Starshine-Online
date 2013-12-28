@@ -124,7 +124,7 @@ class armure extends objet_invent
 	public function get_image()
   {
     $image = 'image/armure/'.$this->get_type().'/'.$this->get_type().$this->get_id().'.png';
-    if( file_exist($image) )
+    if( file_exists($image) )
       return $image;
     return null;
   }
@@ -133,8 +133,22 @@ class armure extends objet_invent
 	 * Méthode renvoyant les noms des informations sur l'objet
 	 * @param  $complet  true si on doit renvoyer toutes les informations.
 	 */
-	abstract public function get_noms_infos($complet=true)
+	public function get_noms_infos($complet=true)
   {
+    $noms = array('PP', 'PM');
+    $noms[] = $complet ? 'Force nécessaire' : 'Force';
+    $noms[] = $complet ? 'Prix HT (en magasin)' : 'Stars';
+    return $noms;
+  }
+
+	/**
+	 * Méthode renvoyant les valeurs des informations sur l'objet
+	 * @param  $complet  true si on doit renvoyer toutes les informations.
+	 */
+	public function get_valeurs_infos($complet=true)
+  {
+    $vals = array($this->PP, $this->PM, $this->forcex, $this->prix);
+    return $vals;
   }
 	
 	//Infobulle de l'armure

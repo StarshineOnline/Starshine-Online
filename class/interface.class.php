@@ -180,7 +180,7 @@ abstract class interf_cont extends interf_base
     }
   }
   /// Ajoute un élément fils
-  function add(&$fils)
+  function &add(&$fils)
   {
     $this->fils[] = &$fils;
     if( $fils::cont )
@@ -449,8 +449,9 @@ class interf_html extends interf_princ_ob
 /**
  * Élément d'un menu
  */
-class interf_elt_menu extends interf_bal_smpl
+class interf_elt_menu extends interf_bal_cont
 {
+  private $lien;   ///< balise de lien.
   /**
    * Constructeur
    * @param  $nom
@@ -461,11 +462,20 @@ class interf_elt_menu extends interf_bal_smpl
    */
   function __construct($nom, $lien, $onclick=false, $id=false, $classe=false)
   {
-    $inter = '<a href="'.$lien;
+    /*$inter = '<a href="'.$lien;
     if( $onclick )
       $inter .= '" onclick="'.$onclick;
-    $inter .= '">'.$nom.'</a>';
-    interf_bal_smpl::__construct('li', $inter, $id, $classe);
+    $inter .= '">'.$nom.'</a>';*/
+    interf_bal_cont::__construct('li', $id, $classe);
+    $this->lien = $this->add( new interf_bal_smpl('a', $nom) );
+    $this->set_attribut('href', $lien);
+    if( $onclick )
+      $this->set_attribut('onclick', $onclick);
+  }
+
+  function &get_lien()
+  {
+    return $this->lien;
   }
 }
 
@@ -506,6 +516,7 @@ class interf_sous_menu extends interf_bal_cont
 class interf_menu extends interf_bal_cont
 {
   private $titre;  ///< Titre du menu.
+  private $classe_ul;  ///< Classe de la balise ul
   const bal_titre = 'h3';  ///< balise utilisé pour le titre.
   /**
    * Constructeur
@@ -513,10 +524,11 @@ class interf_menu extends interf_bal_cont
    * @param  $id        id de la balise.
    * @param  $class     classe de la balise.
    */
-  function __construct($titre = false, $id = 'menu',$classe = 'menu')
+  function __construct($titre = false, $id = 'menu',$classe = 'menu', $classe_ul=false)
   {
     interf_bal_cont::__construct('div', $id ,$classe);
     $this->titre = $titre;
+    $this->classe_ul = $classe_ul;
   }
   /// Affiche le début de l'élément, i.e. la partie située avant les éléments fils.
   function debut()
@@ -524,7 +536,10 @@ class interf_menu extends interf_bal_cont
     $this->ouvre($this->creer_balise());
     if( $this->titre )
       $this->balise(self::bal_titre, $this->titre);
-    $this->ouvre('ul');
+    if($this->classe_ul)
+      $this->ouvre('ul class="'.$this->classe_ul.'"');
+    else
+      $this->ouvre('ul');
   }
   /// Affiche la fin de l'élément, i.e. la partie située après les éléments fils.
   function fin()
@@ -794,13 +809,12 @@ class interf_tableau extends interf_bal_cont
    * @param  $class     classe de la cellule.
    * @return    objet gérant la cellule (de type interf_bal_cont).
    */
-  function &nouv_cell($cont=null, $id=null, $classe=null)
+  function &nouv_cell($cont=null, $id=null, $classe=null, $entete=false)
   {
-    $bal = $this->entete ? 'th' : 'td';
+    $bal = ($this->entete || $entete) ? 'th' : 'td';
     if( $cont === null || is_object($cont) )
     {
       $cell = new interf_bal_cont($bal, $id, $classe);
-      $this->lgn_act->add($cell);
       if( $cont )
         $cell->add( $cont );
     }
@@ -808,6 +822,7 @@ class interf_tableau extends interf_bal_cont
     {
       $cell = new interf_bal_smpl($bal, $cont, $id, $classe);
     }
+    $this->lgn_act->add($cell);
     return $cell;
   }
   /// Définit si la ligne actuelle est l'en-tête ou non.

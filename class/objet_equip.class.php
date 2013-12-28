@@ -8,10 +8,12 @@
 /**
 	Classe abstraite représentant un objet qu'un personnage peut équiper (plus quelques autres)
 */
-class objet_equip extends objet_invent
+abstract class objet_equip extends objet_invent
 {
 	private $effet;  ///< Valeur de l'effet de l'objet
 	private $lvl_batiment;  ///< Niveau du bâtiment à partir duquel l'objet est disponible
+  private $enchantement = null;  ///< Enchantement par gemme
+  private $slot = null;  ///< Slot
 
 
 	/// Retourne la valeur de l'effet de l'objet
@@ -36,6 +38,28 @@ class objet_equip extends objet_invent
 	{
 		$this->lvl_batiment = $lvl_batiment;
 		$this->champs_modif[] = 'lvl_batiment';
+	}
+
+  /// Renvoie l'enchantement par gemme
+  function get_enchantement()
+  {
+		return $this->enchantement;
+  }
+	/// Modifie l'enchantement par gemme
+	function set_stack($enchantement)
+	{
+		$this->enchantement = $enchantement;
+	}
+
+  /// Renvoie le slot
+  function get_slot()
+  {
+		return $this->slot;
+  }
+	/// Modifie le slot
+	function set_slot($slot)
+	{
+		$this->slot = $slot;
 	}
 
 	/**

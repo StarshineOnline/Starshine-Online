@@ -380,7 +380,8 @@ class interf_inventaire extends interf_cont
 		    $image='image/interface/inventaire/Unknown.png';
     		if($invent !== 0 AND $invent != '')
     		{
-  			  $objet_d = decompose_objet($invent);
+          $objet = objet_invent::factory($invent);
+  			  /*$objet_d = decompose_objet($invent);
     			if($objet_d['identifier'])
     			{
     				switch ($objet_d['categorie'])
@@ -465,7 +466,22 @@ class interf_inventaire extends interf_cont
   				else
   					$echo = 'Objet non indentifié';
     			if($objet_d['stack'] > 1)
-            $nom .= ' X '.$objet_d['stack'];
+            $nom .= ' X '.$objet_d['stack'];*/
+          if( $objet->est_identifie() )
+          {
+            $nom = $objet->get_nom();
+            $nbr = $objet->get_nombre();
+            if( $nbr > 1 )
+              $nom .= ' X '.$nbr;
+  				  $echo = description_objet($invent);
+          }
+          else
+          {
+            $nom = 'Objet non indentifié';
+  					$echo = 'Objet non indentifié';
+          }
+          $partie = $objet->get_type();
+          $image = $objet->get_image();
           /*$p = $cont->add( new interf_bal_cont('p') );
           $p->set_attribut('style', 'width:400px;');
           $span1 = $p->add( new interf_bal_cont('span') );
@@ -481,8 +497,9 @@ class interf_inventaire extends interf_cont
           $img->set_attribut('src', $image);
           $span1 = $div->add( new interf_bal_smpl('span', $nom) );
           $span1->set_attribut('name', 'overlib');
-          $span1->set_attribut('onmouseover', 'return '.make_overlib($echo));
-          $span1->set_attribut('onmouseout', 'return nd();');
+          /*$span1->set_attribut('onmouseover', 'return '.make_overlib($echo));
+          $span1->set_attribut('onmouseout', 'return nd();');*/
+          $div->set_attribut('onclick', 'chargerPopover(\'invent_slot'.$i.'\', \'infos_'.$i.'\', \'left\', \''.$this->adresse.'?action=infos&id='.$invent.'\', \''.$nom.'\')');
           //$script .= 'dragndrop(".drag_'.$partie.'", "#drop_'.$partie.'");'."\n";
           $script .= 'dragndrop("#invent_slot'.$i.'", "#drop_'.$partie.'", "'.$this->adresse.'");';
           unset($div, $p, $span1, $span2, $img);
@@ -491,6 +508,31 @@ class interf_inventaire extends interf_cont
       }
       $js = $cont->add( new interf_bal_smpl('script', $script) );
       $js->set_attribut('type', 'text/javascript');
+    }
+  }
+}
+
+/**
+ * Interface pour afficher les information sur un objet
+ */
+class interf_infos_objet extends interf_princ
+{
+  /**
+   * Renvoie la bonne instance de la classe pour afficher les informations sur un objet (dans un popover)
+   * @param $objet    objet sous forme textuelle
+   */
+  function __construct($objet)
+  {
+    $obj = objet_invent::factory($objet);
+    $tbl = $this->add( new interf_tableau() );
+    $noms = $obj->get_noms_infos();
+    $vals = $obj->get_valeurs_infos();
+    for($i=0; $i<count($noms); $i++)
+    {
+      $tbl->nouv_ligne();
+      $tbl->nouv_cell($noms[$i], null, null, true);
+      $tbl->nouv_cell($vals[$i]);
+      //echo $i.' - '.$noms[$i].'='.$vals[$i].'<br/>';
     }
   }
 }

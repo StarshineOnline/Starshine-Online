@@ -117,6 +117,64 @@ class grimoire extends objet_invent
 		return $tbl;
 	}
 
+	/**
+	 * Méthode renvoyant les noms des informations sur l'objet
+	 * @param  $complet  true si on doit renvoyer toutes les informations.
+	 */
+	public function get_noms_infos($complet=true)
+  {
+    global $Gtrad;
+    $noms = array('Description');
+    $class = $this->type;
+    if( $this->type != 'attr_perso' )
+    {
+      $cible = new $class($this->id_apprend);
+      if( $class == 'sort_jeu' or  $class == 'sort_combat' )
+        $noms[] = 'Incantation';
+      $noms[] = $Gtrad[$cible->get_comp_assoc()];
+      if( $cible->get_requis() && $cible->get_requis() != 999 )
+        $noms[] = 'Requiert';
+    }
+    return $noms;
+  }
+
+	/**
+	 * Méthode renvoyant les valeurs des informations sur l'objet
+	 * @param  $complet  true si on doit renvoyer toutes les informations.
+	 */
+	public function get_valeurs_infos($complet=true)
+  {
+    $class = $this->type;
+    switch($class)
+    {
+    case 'comp_jeu':
+    case 'comp_combat':
+      $type = 'le sort';
+      $description = null;
+      break;
+    case 'comp_jeu':
+    case 'comp_combat':
+      $type = 'la compétence';
+      $description = null;
+      break;
+    case 'attr_perso':
+      return array( 'Entraîne la compétence '.traduit($this->attr_perso).' de '.$this->ajout_attr );
+    }
+    $cible = new $class($this->id_apprend);
+    $vals = array( 'Apprend '.$type.' '.$cible->get_nom() );
+    if( $class == 'sort_jeu' or  $class == 'sort_combat' )
+      $vals[] = $cible->get_incantation();
+    $vals[] = $cible->get_comp_requis();
+    $requis = $cible->get_requis();
+    if( $requis && $requis != 999 )
+    {
+      $req = new $class($requis);
+      $vals[] = $req->get_nom();
+    }
+
+    return $vals;
+  }
+
 	//Fonction permettant d'ajouter un nouvel objet dans la base
 	public function infobulle()
   {

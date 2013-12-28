@@ -15,6 +15,7 @@ class objet extends objet_equip
 	protected $description;  ///< description de l'objet.
 	protected $pa;  ///< pa nécessaires pour utiliser l'objet.
 	protected $mp;  ///< mp nécessaires pour utiliser l'objet.
+  private $nombre;  ///< nombre d'exmplaires disponibles.
 
   /// Renvoie le nombre d'exmplaires qu'on peut mettre dans un emplacement de l'inventaire.
 	function get_stack()
@@ -74,6 +75,17 @@ class objet extends objet_equip
 	{
 		$this->mp = $mp;
 		$this->champs_modif[] = 'mp';
+	}
+
+  /// Renvoie le nombre d'exmplaires disponibles.
+	function get_nombre()
+	{
+		return $this->nombre;
+	}
+	/// Modifie le nombre d'exmplaires disponibles.
+	function set_nombre($stack)
+	{
+    $this->nombre = $stack;
 	}
 
 	/**
@@ -136,6 +148,30 @@ class objet extends objet_equip
     $tbl['mp']='i';
 		return $tbl;
 	}
+
+	/**
+	 * Méthode renvoyant les noms des informations sur l'objet
+	 * @param  $complet  true si on doit renvoyer toutes les informations.
+	 */
+	public function get_noms_infos($complet=true)
+  {
+    if($complet)
+    {
+      return array('Stack', 'Description', 'Prix HT (en magasin)');
+    }
+    else
+      return array('Stars');
+  }
+
+	/**
+	 * Méthode renvoyant les valeurs des informations sur l'objet
+	 * @param  $complet  true si on doit renvoyer toutes les informations.
+	 */
+	public function get_valeurs_infos($complet=true)
+  {
+    $vals = array($this->stack, $this->description, $this->prix);
+    return $vals;
+  }
 	
 	//Infobulle d'un objet
 	function infobulle()
