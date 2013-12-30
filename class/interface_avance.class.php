@@ -12,7 +12,8 @@
 class interf_onglets extends interf_bal_cont
 {
   protected $haut;  ///< liste des onglets.
-  protected $divs;  ///< balises divs contenant le contenu de chaque onglets.
+  protected $id;
+  //protected $divs;  ///< balises divs contenant le contenu de chaque onglets.
 
   /**
    * Constructeur
@@ -20,11 +21,15 @@ class interf_onglets extends interf_bal_cont
    * @param  $id_cont        id de la balise div contenant tous les onglets.
    * @param  $class_cont     classe de la balise contenant tous les onglets.
    */
-  function __construct($id_tabs, $id_cont='', $class_cont=false)
+  function __construct($id_tabs, $id_cont, $class_cont=false)
   {
-    interf_bal_cont::__construct('div', $id_cont, $class_cont);
+    interf_bal_cont::__construct('div', $id_cont, /*'tab-pane '.*/$class_cont);
     $this->haut = $this->add( new interf_bal_cont('ul', $id_tabs, 'nav nav-tabs') );
     $this->divs = array();
+    $this->id = $id_cont;
+    //self::code_js( '$(function() { $(\'#'.$id_tabs.'\').tab(); $(\'#'.$id_tabs.'\').bind(\'show\', charge_tab); });' );
+    //self::code_js( '$(\''.$id_tabs.' a\').click(function (e) { e.preventDefault() $(this).tab(\'show\') });' );
+    //self::code_js( '$(\''.$id_tabs.' a\').click(function (e) { charge_tab(e, "'.$id_cont.'") };' );
   }
   /// Affiche le début de l'élément, i.e. la partie située avant les éléments fils.
   protected function debut()
@@ -40,19 +45,21 @@ class interf_onglets extends interf_bal_cont
    * @param  $id          id de la balise du contenu.
    * @param  $selection   indique si l'onglet est sélectionné
    */
-  function &add_onglet($nom, $adresse, $id, $selection=false)
+  function /*&*/add_onglet($nom, $adresse, $id, $selection=false)
   {
-    $classe = 'tab-pane';
-    $lien = $this->haut->add( new interf_elt_menu($nom, '#'.$id) )->get_lien();
+    $classe = 'tab-pane';//
+    $li = $this->haut->add( new interf_elt_menu($nom, /*'#'.$id*/'', 'charge_tab(this, \''.$this->id.'\');') );
+    $lien = $li->get_lien();
     if($selection)
     {
-      $lien->set_attribut('class', 'active');
+      $li->set_attribut('class', 'active');
       $classe .= ' active';
     }
     $lien->set_attribut('data-toggle', 'tab');
-    $div = $this->add( new interf_bal_cont('div', $id, $classe) );
+    $li->set_attribut('data-url', $adresse);
+    /*$div = $this->add( new interf_bal_cont('div', $id, $classe) );
     $this->divs[$id] = &$div;
-    return $div;
+    return $div;*/
   }
 
   /**
@@ -60,9 +67,9 @@ class interf_onglets extends interf_bal_cont
    *
    * @param  $id  id de l'élément
    */
-  function &get_onglet($id)
+  /*function &get_onglet($id)
   {
     return $this->divs[$id];
-  }
+  }*/
 }
 ?>

@@ -38,7 +38,7 @@ class interf_factory
   function creer_inventaire(&$perso, $adresse, $slot)
   {
     include_once('interf_inventaire.class.php');
-    return new interf_inventaire($perso, $adresse, $slot);
+    return new interf_inventaire($perso, $adresse, 'perso', $slot);
   }
   /**
    * Renvoie la bonne instance de la classe pour afficher un slot de l'inventaire

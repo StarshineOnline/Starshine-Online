@@ -10,10 +10,10 @@
 */
 abstract class objet_equip extends objet_invent
 {
-	private $effet;  ///< Valeur de l'effet de l'objet
-	private $lvl_batiment;  ///< Niveau du bâtiment à partir duquel l'objet est disponible
-  private $enchantement = null;  ///< Enchantement par gemme
-  private $slot = null;  ///< Slot
+	protected $effet;  ///< Valeur de l'effet de l'objet
+	protected $lvl_batiment;  ///< Niveau du bâtiment à partir duquel l'objet est disponible
+  protected $enchantement = null;  ///< Enchantement par gemme
+  protected $slot = null;  ///< Slot
 
 
 	/// Retourne la valeur de l'effet de l'objet

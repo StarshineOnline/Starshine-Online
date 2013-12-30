@@ -44,6 +44,7 @@ class interf_princ_droit extends interf_princ_ob
   protected function fin()
   {
     $this->ferme('div');
+    $this->affiche_js();
   }
 }
 

@@ -468,7 +468,7 @@ class interf_elt_menu extends interf_bal_cont
     $inter .= '">'.$nom.'</a>';*/
     interf_bal_cont::__construct('li', $id, $classe);
     $this->lien = $this->add( new interf_bal_smpl('a', $nom) );
-    $this->set_attribut('href', $lien);
+    $this->lien->set_attribut('href', $lien);
     if( $onclick )
       $this->set_attribut('onclick', $onclick);
   }

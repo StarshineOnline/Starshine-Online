@@ -11,25 +11,40 @@
 class interf_inventaire extends interf_cont
 {
   protected $perso;  ///< Objet représentant le personnage dont il faut afficher l'inventaire.
-  protected $adresse;  ///< Adresse de la page.
+  protected $adresse = 'inventaire.php';  ///< Adresse de la page.
+  protected $invent;  ///< Inventaire à afficher.
   protected $slot;  ///< Slot à afficher.
   protected $onglets;  ///< Onglets principal.
   protected $onglets_slots;  ///< Onglets des slots.
   /**
    * Constructeur
    * @param $perso      Objet représentant le personnage dont il faut afficher l'inventaire.
-   * @param $adresse    Adresse de la page
+   * @param $page       Inventaire à afficher
    * @param $slot       Slot à afficher
    */
-  function __construct(&$perso, $adresse, $slot)
+  function __construct(&$perso, $adresse, $invent, $slot)
   {
     $this->perso = &$perso;
     $this->adresse = $adresse;
+    $this->invent = $invent;
     $this->slot = $slot;
-    $this->onglets = new interf_onglets();
-    $this->onglets->add_onglet('Personnage', 'inventaire.php');
-    $this->onglets->add_onglet('Créature', 'inventaire_pet.php');
-    $this->add( $this->onglets );
+    // Javascript
+    $script = $this->add( new interf_bal_smpl('script') );
+    $script->set_attribut('type', 'text/javascript');
+    $script->set_attribut('src', './javascript/inventaire.js');
+    // onglets principal
+    $this->onglets = $this->add( new interf_onglets('onglets_princ', 'invent') );
+    $this->onglets->add_onglet('Personnage', 'inventaire.php?page=perso', 'perso', $invent=='perso');
+    $this->onglets->add_onglet('Créature', 'inventaire.php?page=pet', 'pet', $invent=='pet');
+    $this->onglets->add_onglet('Actions', 'inventaire.php?page=actions', 'actions', $invent=='actions');
+    // un peu d'espace
+    //$this->add( new interf_bal_smpl('div', '', false, 'spacer') );
+    $this->add( new interf_bal_smpl('br') );
+    // onglets des slots
+    $this->onglets_slots = $this->add( new interf_onglets('onglets_sots', 'slots') );
+    $this->onglets_slots->add_onglet('Utile', 'inventaire.php?slot=utile', 'utile', $slot=='utile');
+    $this->onglets_slots->add_onglet('Equip.', 'inventaire.php?slot=equipement', 'equip', $slot=='equip');
+    $this->onglets_slots->add_onglet('Roy.', 'inventaire.php?slot=royaume', 'royaume', $slot=='royaume');
   }
   
   /**
@@ -39,12 +54,7 @@ class interf_inventaire extends interf_cont
    */
   function set_contenu($type='perso', $modif=true)
   {
-    $script = new interf_bal_smpl('script');
-    $script->set_attribut('type', 'text/javascript');
-    $script->set_attribut('src', './javascript/inventaire.js');
-    $this->add($script);
-    $tbl = new interf_tableau();
-    $this->onglets->add( $tbl );
+    $tbl = $this->onglets/*->get_onglet($this->invent)*/->add( new interf_tableau() );
     $tab_loc = array();
     switch($type)
     {
@@ -369,7 +379,7 @@ class interf_inventaire extends interf_cont
   function affiche_slots($modif=true)
   {
     global $G_place_inventaire, $interf, $db;
-    $cont = $this->add( new interf_bal_cont('div', 'inventaire_slot') );
+    $cont = $this->onglets_slots->add( new interf_bal_cont('div', 'inventaire_slot') );
     if($this->perso->get_inventaire_slot() != '')
     {
       $i = 0;
@@ -381,92 +391,6 @@ class interf_inventaire extends interf_cont
     		if($invent !== 0 AND $invent != '')
     		{
           $objet = objet_invent::factory($invent);
-  			  /*$objet_d = decompose_objet($invent);
-    			if($objet_d['identifier'])
-    			{
-    				switch ($objet_d['categorie'])
-    				{
-    					//Si c'est une arme
-    					case 'a' :
-    						$requete = "SELECT * FROM arme WHERE ID = ".$objet_d['id_objet'];
-    						//Récupération des infos de l'objet
-    						$req = $db->query($requete);
-    						$row = $db->read_array($req);
-    						$image = 'image/arme/arme'.$row['id'].'.png';
-    						$mains = explode(';', $row['mains']);
-    						$partie = $mains[0];
-    					break;
-    					//Si c'est un objet de pet
-    					case 'd' :
-    						$requete = "SELECT * FROM objet_pet WHERE ID = ".$objet_d['id_objet'];
-    						//Récupération des infos de l'objet
-    						$req = $db->query($requete);
-    						$row = $db->read_array($req);
-    						$partie = $row['type'];
-    					break;
-    					//Si c'est une protection
-    					case 'p' :
-    						$requete = "SELECT * FROM armure WHERE ID = ".$objet_d['id_objet'];
-    						//Récupération des infos de l'objet
-    						$req = $db->query($requete);
-    						$row = $db->read_array($req);
-    						$partie = $row['type'];
-    						$image = 'image/armure/'.$partie.'/'.$partie.$row['id'].'.png';
-    					break;
-    					case 'o' :
-    						$requete = "SELECT * FROM objet WHERE ID = ".$objet_d['id_objet'];
-    						//Récupération des infos de l'objet
-    						$req = $db->query($requete);
-    						$row = $db->read_array($req);
-    						$partie = $row['type'];
-    					break;
-    					case 'g' :
-    						$requete = "SELECT * FROM gemme WHERE ID = ".$objet_d['id_objet'];
-    						//Récupération des infos de l'objet
-    						$req = $db->query($requete);
-    						$row = $db->read_array($req);
-    						$partie = $row['type'];
-    						$row['prix'] = pow(10, $row['niveau']) * 10;
-    					break;
-    					case 'r' :
-    						$requete = "SELECT * FROM objet_royaume WHERE ID = ".$objet_d['id_objet'];
-    						//Récupération des infos de l'objet
-    						$req = $db->query($requete);
-    						$row = $db->read_array($req);
-    						$partie = $row['type'];
-    						$row['utilisable'] = 'y';
-
-    						if($row['type'] == "arme_de_siege")
-    							$arme_de_siege++;
-    					break;
-    					case 'm' :
-    						$requete = "SELECT * FROM accessoire WHERE ID = ".$objet_d['id_objet'];
-    						//Récupération des infos de l'objet
-    						$req = $db->query($requete);
-    						$row = $db->read_array($req);
-    						$partie = 'accessoire';
-    						$image = 'image/accessoire/accessoire'.$row['id'].'.png';
-    						$row['utilisable'] = 'n';
-    					break;
-    					case 'l' :
-    						$requete = "SELECT * FROM grimoire WHERE ID = ".$objet_d['id_objet'];
-    						//Récupération des infos de l'objet
-    						$req = $db->query($requete);
-    						$row = $db->read_array($req);
-    						$partie = $row['type'];
-    						$row['utilisable'] = 'y';
-    					break;
-    				}
-            $nom = $row['nom'];
-    			}
-          else
-            $nom = 'Objet non indentifié';
-  			  if ($objet_d['identifier'])
-  				  $echo = description_objet($invent);
-  				else
-  					$echo = 'Objet non indentifié';
-    			if($objet_d['stack'] > 1)
-            $nom .= ' X '.$objet_d['stack'];*/
           if( $objet->est_identifie() )
           {
             $nom = $objet->get_nom();
@@ -482,23 +406,12 @@ class interf_inventaire extends interf_cont
           }
           $partie = $objet->get_type();
           $image = $objet->get_image();
-          /*$p = $cont->add( new interf_bal_cont('p') );
-          $p->set_attribut('style', 'width:400px;');
-          $span1 = $p->add( new interf_bal_cont('span') );
-          $span1->set_attribut('name', 'overlib');
-          $span1->set_attribut('onmouseover', 'return '.make_overlib($echo));
-          $span1->set_attribut('onmouseout', 'return nd();');
-          $span2 = $span1->add( new interf_bal_cont('span', $objet_d['id'], 'drag_'.$partie.' ui-draggable') );
-          $span2->set_attribut('style', 'position: relative; display:block;');
-          $img = $span2->add( new  interf_bal_smpl('img') );*/
-          $div = $cont->add( new interf_bal_cont('div', /*$objet_d['id']*/'invent_slot'.$i, 'drag_'.$partie) );
+          $div = $cont->add( new interf_bal_cont('div', 'invent_slot'.$i, 'drag_'.$partie) );
           $div->set_attribut('style', 'width:33%;position: relative;');
           $img = $div->add( new  interf_bal_smpl('img') );
           $img->set_attribut('src', $image);
           $span1 = $div->add( new interf_bal_smpl('span', $nom) );
           $span1->set_attribut('name', 'overlib');
-          /*$span1->set_attribut('onmouseover', 'return '.make_overlib($echo));
-          $span1->set_attribut('onmouseout', 'return nd();');*/
           $div->set_attribut('onclick', 'chargerPopover(\'invent_slot'.$i.'\', \'infos_'.$i.'\', \'left\', \''.$this->adresse.'?action=infos&id='.$invent.'\', \''.$nom.'\')');
           //$script .= 'dragndrop(".drag_'.$partie.'", "#drop_'.$partie.'");'."\n";
           $script .= 'dragndrop("#invent_slot'.$i.'", "#drop_'.$partie.'", "'.$this->adresse.'");';
@@ -509,6 +422,16 @@ class interf_inventaire extends interf_cont
       $js = $cont->add( new interf_bal_smpl('script', $script) );
       $js->set_attribut('type', 'text/javascript');
     }
+  }
+}
+
+/**
+ * Classe gérant l'affichage de l'inventaire
+ */
+class interf_objet_invent extends interf_cont
+{
+  function __construct($nom, $infos1=false, $infos2=false)
+  {
   }
 }
 

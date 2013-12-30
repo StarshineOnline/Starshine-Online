@@ -16,7 +16,7 @@ class accessoire extends objet_equip
 	/// Retourne la description de l'objet.
 	function get_description()
 	{
-		return $this->description;
+		return str_replace('%effet%', $this->effet, $this->description);
 	}
 	/// Modifie la description de l'objet.
 	function set_description($description)
@@ -113,7 +113,7 @@ class accessoire extends objet_equip
 	 */
 	public function get_valeurs_infos($complet=true)
   {
-    $vals = array($this->taille, $this->description, $this->puissance, $this->prix);
+    $vals = array($this->taille, $this->get_description(), $this->puissance, $this->prix);
     return $vals;
   }
 
