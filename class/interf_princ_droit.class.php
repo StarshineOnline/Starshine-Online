@@ -29,10 +29,10 @@ class interf_princ_droit extends interf_princ_ob
    * @param $message  Message à afficher
    * @param $ok       Indique si le message est positif ou négatif.
    */
-  function add_message($message, $ok=true)
+  /*function add_message($message, $ok=true)
   {
     $this->add(new interf_bal_smpl($ok?'h6':'h5', $message) );
-  }
+  }*/
   /// Affiche le début de l'élément, i.e. la partie située avant les éléments fils.
   protected function debut()
   {
@@ -45,6 +45,13 @@ class interf_princ_droit extends interf_princ_ob
   {
     $this->ferme('div');
     $this->affiche_js();
+  }
+  /// Commande la mise-à-jour de la partie haute
+  function add_maj_perso()
+  {
+    $img = $this->add( new interf_bal_smpl('img') );
+    $img->set_attribute('src', 'image/pixel.gif');
+    $img->set_attribute('onLoad', 'envoiInfo("infoperso.php?javascript=oui", "perso");');
   }
 }
 

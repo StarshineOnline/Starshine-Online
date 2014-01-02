@@ -235,16 +235,27 @@ class arme extends objet_equip
     $vals[] = $this->prix;
     return $vals;
   }
+
+  /// Méthode renvoyant l'info principale sur l'objet
+  public function get_info_princ()
+  {
+    if( $this->get_type() == 'baton' )
+      return 'Bonus : + '.$this->var1.' %';
+    else
+      return 'Dégâts : '.$this->degat;
+  }
 	
-	//Infobulle de l'arme
-	function infobulle()
-	{
-		$milieu = '<tr><td>Nombre de mains:</td><td>'.(strcmp($this->mains, 'main_droite') != -1 ? 1 : 2).'</td></tr>';
-		$milieu .= '<tr><td>D&eacute;gats:</td></tr><tr><td>'.$this->degat.'</td></tr>';
-		$milieu .= '<tr><td>Port&eacute;e:</td></tr><tr><td>'.$this->portee.'</td></tr>';
-		$milieu .= ( !empty($this->effet) ? '<tr><td>Effet:</td></tr><tr><td>'.$this->effet.'</td></tr>' : '');
-		$milieu .= '<tr><td>Force n&eacute;cessaire:</td></tr><tr><td>'.$this->forceReq.'</td></tr>';
-		//Gemmage?
-		return bulleBase($milieu).'<br />'.$this->effet;
-	}
+	function get_colone($partie)
+  {
+    if( $partie == 'equipement' )
+      return 0;
+    else
+      return false;
+  }
+
+  function get_emplacement()
+  {
+    $main = explode(';', $this->mains);
+    return $main[0];
+  }
 }

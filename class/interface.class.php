@@ -207,6 +207,11 @@ abstract class interf_princ extends interf_cont
   {
     $this->affiche();
   }
+  /// Affiche la fin de l'élément, i.e. la partie située après les éléments fils.
+  protected function fin()
+  {
+    $this->affiche_js();
+  }
 }
 
 /**

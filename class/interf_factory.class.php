@@ -61,5 +61,19 @@ class interf_factory
     include_once('interf_inventaire.class.php');
     return new interf_infos_objet($objet);
   }
+  /*
+   */
+  function creer_invent_equip(&$perso, $type, $modif)
+  {
+    include_once('interf_inventaire.class.php');
+    return new interf_invent_equip($perso, $type, $modif, $id);
+  }
+  /*
+   */
+  function creer_invent_sac(&$perso, $type, $modif)
+  {
+    include_once('interf_inventaire.class.php');
+    return new interf_invent_sac($perso, $type, $modif);
+  }
 }
 ?>

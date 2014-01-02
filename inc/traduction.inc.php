@@ -80,12 +80,21 @@ $Gtrad['chaussure'] = 'Chaussure';
 $Gtrad['cou'] = 'Cou';
 $Gtrad['dos'] = 'Dos';
 $Gtrad['doigt'] = 'Doigt';
-$Gtrad['accessoire'] = 'Accessoire';
+$Gtrad['grand_accessoire'] = 'Grand accessoire';
+$Gtrad['moyen_accessoire'] = 'Moyen accessoire';
+$Gtrad['petit_accessoire'] = 'Petit accessoire';
 $Gtrad['selle'] = 'Selle';
 $Gtrad['arme_pet'] = 'Arme';
 $Gtrad['cou_pet'] = 'Cou';
 $Gtrad['dos_pet'] = 'Dos';
 $Gtrad['torse_pet'] = 'Torse';
+$Gtrad['slot_1'] = 'Slot niveau 1';
+$Gtrad['slot_2'] = 'Slot niveau 2';
+$Gtrad['slot_3'] = 'Slot niveau 3';
+$Gtrad['vendre_marchand'] = 'Vendre au marchand';
+$Gtrad['hotel_vente'] = 'Hotel des ventes';
+$Gtrad['depot'] = 'Dépôt';
+$Gtrad['utiliser'] = 'Utiliser';
 //@}
 
 

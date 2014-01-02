@@ -150,15 +150,24 @@ class armure extends objet_invent
     $vals = array($this->PP, $this->PM, $this->forcex, $this->prix);
     return $vals;
   }
-	
-	//Infobulle de l'armure
-	function infobulle()
-	{
-		$milieu = '<tr><td>PP:</td><td>'.$this->pp.'</td></tr>';
-		$milieu .= '<tr><td>PM:</td></tr><tr><td>'.$this->pm.'</td></tr>';
-		$milieu .= '<tr><td>Force n&eacute;cessaire:</td></tr><tr><td>'.$this->forceReq.'</td></tr>';
-		//Gemmage?
-		return bulleBase($milieu).'<br />'.$this->effet;
-	}
+
+  /// Méthode renvoyant l'info principale sur l'objet
+  public function get_info_princ()
+  {
+    return 'PP : '.$this->PP.' - PM : '.$this->PM;
+  }
+
+	function get_colone($partie)
+  {
+    if( $partie == 'equipement' )
+      return 1;
+    else
+      return false;
+  }
+
+  function get_emplacement()
+  {
+    return $this->type;
+  }
 }
 ?>

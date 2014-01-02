@@ -187,9 +187,12 @@ class gemme extends objet_invent
     return $vals;
   }
 
-	//Fonction permettant d'ajouter un nouvel objet dans la base
-	public function infobulle()
+	function get_colone($partie)
   {
+    if( $partie == 'artisanat' )
+      return 2;
+    else
+      return false;
   }
 }
 

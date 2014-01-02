@@ -5,7 +5,7 @@ if (file_exists('../root.php'))
 /**
 * Utilise un grimoire
 */
-function utilise_grimoire($id_objet, &$joueur, &$interface) {
+/*function utilise_grimoire($id_objet, &$joueur, &$interface) {
   global $db;
   $requete = "select * from grimoire where id = '$id_objet'";
   $req = $db->query($requete);
@@ -63,7 +63,7 @@ function utilise_grimoire($id_objet, &$joueur, &$interface) {
     return false;
   }
   return false;
-}
+}*/
 
 /**
 * Cette fonction permet d'apprendre une compétence, gérant les prérequis, les

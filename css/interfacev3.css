@@ -447,8 +447,55 @@ select.baseJumpbox optgroup { width:200px; color:black; background-color:#ffffff
 .baseRow1 { background-color:#fff4cc; padding-left:2px; }
 .baseRow2 { background-color:#ffeeaa; padding-left:2px; }
 .heure { text-align:center; background-color:#D4DAE2; -moz-border-radius:9px; -webkit-border-radius:9px; border-radius: 9px; padding:5px; border:1px solid #FFF; }
-.inventaire2 { width:33%; font-size:.8em; text-align:center; vertical-align:top; background-image:url(../image/interface/1.png); -moz-border-radius:9px; -webkit-border-radius:9px; border-radius: 9px; color:#222; /*border:1px solid #FFF;*/ }
+.inventaire2 { width:146px; height:51px; margin: 2px; padding: 2px; font-size:.8em; text-align:center; vertical-align:top; background-image:url(../image/interface/1.png); -moz-border-radius:9px; -webkit-border-radius:9px; border-radius: 9px; color:#222; /*border:1px solid #FFF;*/ }
 .inventaireville { width:33%; font-size:.8em; text-align:center; vertical-align:top; -moz-border-radius:9px; -webkit-border-radius:9px; border-radius: 9px; color:#222; border:1px solid #FFF; }
+
+/*.inventaire2 img
+{
+  margin-top : 5px;
+  margin-left : 2px;
+}*/
+
+#slots, #invent
+{
+  border-left: solid white 1px;
+  border-right: solid white 1px;
+  border-bottom: solid white 1px;
+  width: 468px;
+  border-bottom-left-radius: 9px;
+  border-bottom-right-radius: 9px;
+  padding-top: 2px;
+  padding-bottom: 2px;
+  /*-moz-border-radius:9px;
+  -webkit-border-radius:9px;*/
+}
+
+.col_invent
+{
+  display: table-cell;
+  width: 148px;
+  margin: 1px;
+  padding: 1px;
+  text-align: center;
+}
+
+#col2
+{
+  border-left: solid grey 1px;
+  border-right: solid grey 1px;
+}
+
+.invent_cible
+{
+  border: 2px solid #D8AB41;
+  width:144px;
+  height:49px;
+}
+
+.invent_hover
+{
+  background:#91AEF2;
+}
 
 /***************************************************
   Map
@@ -892,4 +939,11 @@ tr.tabMonstre td { border:1px solid grey; text-align:center; padding:2px; }
 {
   0%{background-color:#000000}
   100%{background-color:#FFFFFF}
+}
+
+/*-- Correction bootstrap --------------------------------------------------*/
+
+.nav-tabs
+{
+  margin-bottom: 0px;
 }

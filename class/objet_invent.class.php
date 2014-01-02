@@ -216,17 +216,143 @@ abstract class objet_invent extends table
 	 * @param  $complet  true si on doit renvoyer toutes les informations.
 	 */
 	abstract public function get_valeurs_infos($complet=true);
-	
-	/// 
-	//abstract public function infobulle();
-	
-	//Retourne le début et la fin de la chaine de l'infobulle.
-	protected function bulleBase($middle)
-	{
-		$infobulle = '<strong>'.$this->nom.'</strong><br />';
-		$infobulle .= '<table><tr><td>Type:</td><td>'.$this->type.'</td></tr>'.$middle;
-		$infobulle = '<tr><td>Prix HT:<br /><span class=\'xsmall\'>(en magasin)</span></td><td>'.$this->prix.'</td></tr></table>';
-		return $infobulle;
-	}
+
+  /// Méthode renvoyant l'info principale sur l'objet
+  public function get_info_princ() { return null; }
+
+  /// Méthode renvoyant l'info sur l'enchantement par gemme
+  public function get_info_enchant()
+  {
+    $enchant = $this->get_enchantement();
+    if( $enchant )
+      return $enchant->get_description();
+    else
+    {
+      $slot = $this->get_slot();
+      if( $slot )
+        return 'Slot niveau '.$slot;
+      else if( $slot === 0 )
+        return 'Slot impossible';
+      else
+        return null;
+    }
+  }
+
+  /**
+   */
+  abstract function get_colone($partie);
+
+  /**
+   */
+  function est_utilisable() { return false; }
+
+  /**
+   */
+  function utiliser(&$perso, &$princ) { return false; }
+
+  /**
+   * Déposer
+   */
+  function deposer() { return false; }
+
+  /**
+   * Vendre au marchand
+   */
+  function vendre_marchand()
+  {
+    global $G_taux_vente;
+		$modif_prix = 1;
+    /// TODO: mettre le maxmum ailleurs
+    $slot = $this->get_slot();
+		if( $slot > 0 && $slot < 3 )
+		{
+			$modif_prix = 1 + ($slot / 5);
+		}
+		elseif($slot == 0)
+		{
+			$modif_prix = 0.9;
+		}
+    $enchant = $this->get_enchantement();
+		if($enchant)
+		{
+			$modif_prix = 1 + ($enchant->get_niveau() / 2);
+		}
+		$prix = floor($this->get_prix() * $modif_prix / $G_taux_vente);
+    $perso->add_star( $prix );
+    return true;
+  }
+
+  /**
+   * Mettre à l'hotel des ventes
+   */
+  function vendre_hdv() { return false; }
+}
+
+class zone_invent extends objet_invent
+{
+  private $lock;
+  private $perso;
+
+  function __construct($zone, $lock, &$perso=null)
+  {
+    global $Gtrad;
+    $this->type = $zone;
+    $this->nom = $Gtrad[$zone];
+    $this->lock = $lock;
+    $this->perso = &$perso;
+  }
+
+  /// Méthode renvoyant l'info principale sur l'objet
+  public function get_info_princ()
+  {
+    if( $this->lock )
+      return 'vérouillée';
+    else
+    {
+      switch( $this->type )
+      {
+      case 'slot_1':
+      case 'slot_2':
+      case 'slot_3':
+        return 'PA : 10';
+      case 'vendre_marchand':
+      case 'hotel_vente':
+      case 'depot':
+      case 'utiliser':
+        return null;
+      default:
+        return 'vide';
+      }
+    }
+  }
+
+  /// Méthode renvoyant l'info sur l'enchantement par gemme
+  public function get_info_enchant()
+  {
+    switch( $this->type )
+    {
+    case 'slot_1':
+      return pourcent_reussite($this->perso->get_forge(), 10).'% de chances de réussite';
+    case 'slot_2':
+      return pourcent_reussite($this->perso->get_forge(), 30).'% de chances de réussite';
+    case 'slot_3':
+      return pourcent_reussite($this->perso->get_forge(), 100).'% de chances de réussite';
+    default:
+      return null;
+    }
+  }
+
+	/// Méthode renvoyant l'image de l'objet
+	public function get_image()
+  {
+    $image = 'image/inventaire/'.$this->type.'.png';
+    if( file_exists($image) )
+      return $image;
+    return null;
+  }
+
+  public function get_noms_infos($complet=true) {}
+  public function get_valeurs_infos($complet=true) {}
+  function get_colone($partie) { return false; }
 }
 ?>

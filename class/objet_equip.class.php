@@ -106,5 +106,9 @@ abstract class objet_equip extends objet_invent
     $tbl['lvl_batiment']='i';
 		return $tbl;
 	}
+
+  /**
+   */
+  abstract function get_emplacement();
 }
 ?>

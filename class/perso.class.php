@@ -2183,9 +2183,12 @@ class perso extends entite
   /// Ajoute des PA. S'assure que la valeur finale ne peut pas être négative
 	function add_pa($add_pa)
   {
+    global $G_PA_max;
     $this->set_pa($this->pa + $add_pa);
     if ($this->pa < 0)
       $this->pa = 0;
+    else if( $this->pa > $G_PA_max )
+      $this->pa = $G_PA_max;
   }
   /// Ajoute des HP. S'assure que la valeur finale ne peut pas être négative ni dépasser le maximum
   function add_hp($add_hp) 

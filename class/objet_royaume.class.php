@@ -45,6 +45,14 @@ class objet_royaume extends objet_invent
 		$this->champs_modif[] = 'id_batiment';
 	}
 
+  /// Renvoie l'objet batiment correspondand
+  function &get_batiment()
+  {
+    if( !$this->batiment )
+      $this->batiment = new batiment( $this->id_batiment );
+    return $this->batiment;
+  }
+
   /// Renvoie le coût en pierre.
 	function get_pierre()
 	{
@@ -189,7 +197,7 @@ class objet_royaume extends objet_invent
 	/// Méthode renvoyant l'image de l'objet
 	public function get_image()
   {
-    $bat = new batiment( $this->id_batiment );
+    $bat = &$this->get_batiment();
     if( $bat->get_type() == 'drapeau' )
     {
       $race = joueur::get_perso()->get_race();
@@ -224,7 +232,7 @@ class objet_royaume extends objet_invent
 	 */
 	public function get_valeurs_infos($complet=true)
   {
-    $bat = new batiment( $this->id_batiment );
+    $bat = &$this->get_batiment();
     $vals = array($this->type, $bat->get_description());
     if( $this->type != 'drapeau' )
       $vals[] = $bat->get_entretien();
@@ -234,4 +242,281 @@ class objet_royaume extends objet_invent
       $vals[] = $bat->get_point_victoire();
     return $vals;
   }
+
+	function get_colone($partie)
+  {
+    if( $partie == 'royaume' )
+    {
+      switch( $this->type )
+      {
+      case 'arme_de_siege':
+        return 0;
+        break;
+      case 'drapeau':
+        return 1;
+        break;
+      default:
+        return 2;
+        break;
+      }
+    }
+    else
+      return false;
+  }
+
+  function est_utilisable() { return true; }
+
+  function utiliser(&$perso, &$princ)
+  {
+    // Trêve ?
+		if( $perso->is_buff('debuff_rvr' ))
+		{
+      $princ->add( new interf_alerte('danger', true) )->add_message('RvR impossible pendant la trêve');
+			return false;
+		}
+    // On peut poser sur cette case ?
+    $case = map_case( $perso->get_pos() );
+    if( $case->get_type() == 1 or $case->get_type() == 4 or is_donjon($joueur->get_x(), $joueur->get_y()) )
+		{
+      $princ->add( new interf_alerte('danger', true) )->add_message('Vous ne pouvez rien poser sur ce type de terrain !');
+			return false;
+		}
+    $R = new royaume( $case->get_royaume() );
+    $batiment = &$this->get_batiment();
+    // On vérifie qu'il n'y a pas déjà un batiment en construction
+    $bats = placement::create(array('x','y'), array($perso->get_x(),$perso->get_y()));
+    if( count($bats) )
+    {
+      $princ->add( new interf_alerte('danger', true) )->add_message('Il y a déjà un bâtiment en construction sur cette case !');
+			return false;
+		}
+    // On vérifie qu'il n'y a pas déjà un batiment
+    $bats = construction::create(array('x','y'), array($perso->get_x(),$perso->get_y()));
+    if( count($bats) )
+    {
+      $princ->add( new interf_alerte('danger', true) )->add_message('Il y a déjà un bâtiment sur cette case !');
+			return false;
+		}
+
+    // Coût en pa
+    $pa = $joueur->is_buff('convalescence') ? 10 : 0;
+		if( $pa && $joueur->get_pa() < $pa )
+		{
+      $princ->add( new interf_alerte('danger', true) )->add_message('Vous n\'avez pas assez de PA !');
+			return false;
+		}
+
+    // Drapeau ou autre ?
+    if( $this->get_type() == 'drapeau' )
+    {
+      if( $R->get_nom() != 'Neutre' )
+      {
+        if( $R->get_diplo($joueur->get_race()) <= 6 or $R->get_diplo($joueur->get_race()) == 127  )
+        {
+          $princ->add( new interf_alerte('danger', true) )->add_message('Vous ne pouvez poser un drapeau uniquement sur les royaumes avec lesquels vous êtes en guerre.');
+    			return false;
+        }
+        if( $case->get_nom() == 'Petit Drapeau' )
+        {
+          $princ->add( new interf_alerte('danger', true) )->add_message('Vous ne pouvez pas poser de petit drapeau sur une case non neutre !');
+    			return false;
+        }
+      }
+
+			// Augmentation du compteur de l'achievement
+			$achiev = $joueur->get_compteur('pose_drapeaux');
+			$achiev->set_compteur($achiev->get_compteur() + 1);
+			$achiev->sauver();
+
+      /// TODO: à simplifier
+			if ($case->get_info() == 1)
+			{
+				// Augmentation du compteur de l'achievement
+				$achiev = $joueur->get_compteur('pose_drapeaux_plaine');
+				$achiev->set_compteur($achiev->get_compteur() + 1);
+				$achiev->sauver();
+			}
+			if ($case->get_info() == 2)
+			{
+				// Augmentation du compteur de l'achievement
+				$achiev = $joueur->get_compteur('pose_drapeaux_foret');
+				$achiev->set_compteur($achiev->get_compteur() + 1);
+				$achiev->sauver();
+			}
+			if ($case->get_info() == 3)
+			{
+				// Augmentation du compteur de l'achievement
+				$achiev = $joueur->get_compteur('pose_drapeaux_sable');
+				$achiev->set_compteur($achiev->get_compteur() + 1);
+				$achiev->sauver();
+			}
+			if ($case->get_info() == 4)
+			{
+				// Augmentation du compteur de l'achievement
+				$achiev = $joueur->get_compteur('pose_drapeaux_glace');
+				$achiev->set_compteur($achiev->get_compteur() + 1);
+				$achiev->sauver();
+			}
+			if ($case->get_info() == 6)
+			{
+				// Augmentation du compteur de l'achievement
+				$achiev = $joueur->get_compteur('pose_drapeaux_montagne');
+				$achiev->set_compteur($achiev->get_compteur() + 1);
+				$achiev->sauver();
+			}
+			if ($case->get_info() == 7)
+			{
+				// Augmentation du compteur de l'achievement
+				$achiev = $joueur->get_compteur('pose_drapeaux_marais');
+				$achiev->set_compteur($achiev->get_compteur() + 1);
+				$achiev->sauver();
+			}
+			if ($case->get_info() == 8)
+			{
+				// Augmentation du compteur de l'achievement
+				$achiev = $joueur->get_compteur('pose_drapeaux_route');
+				$achiev->set_compteur($achiev->get_compteur() + 1);
+				$achiev->sauver();
+			}
+			if ($case->get_info() == 9)
+			{
+				// Augmentation du compteur de l'achievement
+				$achiev = $joueur->get_compteur('pose_drapeaux_terremaudite');
+				$achiev->set_compteur($achiev->get_compteur() + 1);
+				$achiev->sauver();
+			}
+    }
+    else
+    {
+      // Bonne diplomatie ?
+      /// TODO: remplacer les conditions sur l'id par un bonus
+      if( $R->get_diplo($perso->get_race()) != 127 && $this->get_type() != 'arme_de_siege' && $batiment->get_id() != 1 )  // id=1 : poste avancé
+      {
+        $princ->add( new interf_alerte('danger', true) )->add_message('Vous ne pouvez poser ce bâtimentque sur un territoire qui vous appartient');
+  			return false;
+  		}
+
+  		// Règles des distance entre bâtiments
+      /// TODO: on peut probablement simplifier ça
+  		if($this->get_type() == 'bourg' || $this->get_type() == 'fort')
+      {
+  			// Distance d'une capitale
+  			$distanceMax = $this->get_type() == 'bourg' ? 5 : 7;
+
+  			$requete = "SELECT 1 FROM map"
+  							." WHERE x >= ".max(($joueur->get_x() - $distanceMax), 1)
+  							." AND x <= ".min(($joueur->get_x() + $distanceMax), 190)
+  							." AND y >= ".max(($joueur->get_y() - $distanceMax), 1)
+  							." AND y <= ".min(($joueur->get_y() + $distanceMax), 190)
+  							." AND type = 1";
+  			$req = $db->query($requete);
+  			if($db->num_rows > 0)
+        {
+          $princ->add( new interf_alerte('danger', true) )->add_message('Il y a une capitale à moins de '.$distanceMax.' cases !');
+    			return false;
+  			}
+
+  			// Distance entre Bourgs
+  			if($this->get_type() == 'bourg')
+        {
+  				// Distance entre 2 bourgs
+          if( construction::batiments_proche($perso->get_x(), $perso->get_y(), 'bourg', $R->get_dist_bourgs(), $R->get_id())
+            or placement::batiments_proche($perso->get_x(), $perso->get_y(), 'bourg', $R->get_dist_bourgs(), $R->get_id()) )
+          {
+            $princ->add( new interf_alerte('danger', true) )->add_message('Vous avez un bourg à moins de '.$R->get_dist_bourgs().' cases !');
+      			return false;
+          }
+          else
+          {
+            $dist_r = $R->get_dist_bourgs(true);
+            $bats = construction::batiments_proche($perso->get_x(), $perso->get_y(), 'bourg', $dist_r, $R->get_id(), true, true);
+            if( !bats )
+              $bats = placement::batiments_proche($perso->get_x(), $perso->get_y(), 'bourg', $dist_r, $R->get_id(), true, true);
+            if( $bats )
+            {
+              $isOk = true;
+              foreach($bats as $b)
+              {
+                $r_bourg = new royaume($b['royaume']);
+                $d_max = min($r_bourg->get_dist_bourgs(true), $dist_r);
+                $dist = detection_distance(convert_in_pos($b['x'], $b['y']), convert_in_pos($joueur->get_x(), $joueur->get_y()));
+                if( $dist <= $d_max )
+                {
+                  $princ->add( new interf_alerte('danger', true) )->add_message('l y a un bourg à '.$dist.' cases !');
+            			return false;
+                }
+              }
+            }
+          }
+  			}
+  			// Distance entre forts
+  			else if($this->get_type() == 'fort')
+        {
+  				// Distance entre 2 forts du même royaume
+          if( construction::batiments_proche($perso->get_x(), $perso->get_y(), 'fort', $R->get_dist_forts(), $R->get_id())
+            or placement::batiments_proche($perso->get_x(), $perso->get_y(), 'fort', $R->get_dist_forts(), $R->get_id()) )
+          {
+            $princ->add( new interf_alerte('danger', true) )->add_message('Vous avez un fort à moins de '.$R->get_dist_bourgs().' cases !');
+          }
+          else if( construction::batiments_proche($perso->get_x(), $perso->get_y(), 'fort', $R->get_dist_forts(true), $R->get_id(), true)
+            or placement::batiments_proche($perso->get_x(), $perso->get_y(), 'fort', $R->get_dist_forts(true), $R->get_id(), true) )
+          {
+            $princ->add( new interf_alerte('danger', true) )->add_message('Il y a un fort à moins de '.$R->get_dist_forts(true).' cases !');
+      			return false;
+          }
+  			}
+  		}
+
+  		if($this->get_type() == 'mur')
+  		{
+  			// Augmentation du compteur de l'achievement
+  			$achiev = $perso->get_compteur('pose_murs');
+  			$achiev->set_compteur($achiev->get_compteur() + 1);
+  			$achiev->sauver();
+  		}
+    }
+		//Positionnement de la construction
+		if($this->get_type() == 'arme_de_siege')
+		{
+      $distance = 1;
+      $rez = $batiment->get_bonus('rez');
+		}
+		else
+    {
+		  $distance = calcul_distance(convert_in_pos($Trace[$perso->get_race()]['spawn_x'], $Trace[$perso->get_race()]['spawn_y']), ($perso->get_pos()));
+			$rez = 0;
+    }
+    $time = time() + max($batiment->get_temps_construction() * $distance, $batiment->get_temps_construction_min());
+
+    // nouveau placement
+    $plac = new placement(0, $this->get_type(), $perso->get_x(), $perso->get_y(), $Trace[$perso->get_race()]['numrace'],
+      time(), $time, $batiment->get_id(), $batiment->get_hp(), $batiment->get_nom(), $rez, $batiment->get_point_victoire());
+    $plac->sauver();
+
+		// Coût en PA (si en convalescence)
+		if( $pa )
+		{
+		  $perso->add_pa( -$pa );
+    }
+
+    $princ->add( new interf_alerte('success', true) )->add_message($batiment->get_nom().' posé avec succès');
+  }
+
+  function deposer(&$perso, &$princ)
+  {
+    global $R; /// TODO à améliorer
+		if ($R->get_race() != $joueur->get_race())
+		{
+      $princ->add( new interf_alerte('danger', true) )->add_message('Impossible de poser au dépot '.$R->get_race());
+      return false;
+		}
+		$requete = 'INSERT INTO depot_royaume VALUES (NULL, '.$this->id.', '.$R->get_id().')';
+		$db->query($requete);
+    $princ->add( new interf_alerte('success', true) )->add_message('Objet posé avec succès.');
+    return true;
+  }
+
+  /// TODO: logguer ?
+  function vendre_marchand() { return false; }
+  function vendre_hdv() { return false; }
 }

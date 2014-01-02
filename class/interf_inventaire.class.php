@@ -34,17 +34,18 @@ class interf_inventaire extends interf_cont
     $script->set_attribut('src', './javascript/inventaire.js');
     // onglets principal
     $this->onglets = $this->add( new interf_onglets('onglets_princ', 'invent') );
-    $this->onglets->add_onglet('Personnage', 'inventaire.php?page=perso', 'perso', $invent=='perso');
-    $this->onglets->add_onglet('Créature', 'inventaire.php?page=pet', 'pet', $invent=='pet');
-    $this->onglets->add_onglet('Actions', 'inventaire.php?page=actions', 'actions', $invent=='actions');
+    $this->onglets->add_onglet('Personnage', 'inventaire.php?action=princ&page=perso', 'perso', $invent=='perso');
+    $this->onglets->add_onglet('Créature', 'inventaire.php?action=princ&page=pet', 'pet', $invent=='pet');
+    $this->onglets->add_onglet('Actions', 'inventaire.php?action=princ&page=actions', 'actions', $invent=='actions');
     // un peu d'espace
     //$this->add( new interf_bal_smpl('div', '', false, 'spacer') );
     $this->add( new interf_bal_smpl('br') );
     // onglets des slots
     $this->onglets_slots = $this->add( new interf_onglets('onglets_sots', 'slots') );
-    $this->onglets_slots->add_onglet('Utile', 'inventaire.php?slot=utile', 'utile', $slot=='utile');
-    $this->onglets_slots->add_onglet('Equip.', 'inventaire.php?slot=equipement', 'equip', $slot=='equip');
-    $this->onglets_slots->add_onglet('Roy.', 'inventaire.php?slot=royaume', 'royaume', $slot=='royaume');
+    $this->onglets_slots->add_onglet('Utile', 'inventaire.php?action=sac&slot=utile', 'utile', $slot=='utile');
+    $this->onglets_slots->add_onglet('Equipement', 'inventaire.php?action=sac&slot=equipement', 'equip', $slot=='equip');
+    $this->onglets_slots->add_onglet('Royaume', 'inventaire.php?action=sac&slot=royaume', 'royaume', $slot=='royaume');
+    $this->onglets_slots->add_onglet('Artisanat', 'inventaire.php?action=sac&slot=artisanat', 'royaume', $slot=='royaume');
   }
   
   /**
@@ -54,373 +55,157 @@ class interf_inventaire extends interf_cont
    */
   function set_contenu($type='perso', $modif=true)
   {
-    $tbl = $this->onglets/*->get_onglet($this->invent)*/->add( new interf_tableau() );
-    $tab_loc = array();
-    switch($type)
-    {
-    case 'perso':
-      $style = 'background: url(\'image/666.png\') center no-repeat;';
-
-      $tab_loc[0]['loc'] = 'accessoire';
-      $tab_loc[0]['type'] = 'accessoire';
-      $tab_loc[1]['loc'] = 'tete';
-      $tab_loc[1]['type'] = 'armure';
-      $tab_loc[2]['loc'] = 'cou';
-      $tab_loc[2]['type'] = 'armure';
-
-      $tab_loc[3]['loc'] = 'main_droite';
-      $tab_loc[3]['type'] = 'arme';
-      $tab_loc[4]['loc'] = 'torse';
-      $tab_loc[4]['type'] = 'armure';
-      $tab_loc[5]['loc'] = 'main_gauche';
-      $tab_loc[5]['type'] = 'arme';
-
-      $tab_loc[6]['loc'] = 'main';
-      $tab_loc[6]['type'] = 'armure';
-      $tab_loc[7]['loc'] = 'ceinture';
-      $tab_loc[7]['type'] = 'armure';
-      $tab_loc[8]['loc'] = 'doigt';
-      $tab_loc[8]['type'] = 'armure';
-
-      $tab_loc[9]['loc'] = ' ';
-      $tab_loc[9]['type'] = 'vide';
-      $tab_loc[10]['loc'] = 'jambe';
-      $tab_loc[10]['type'] = 'armure';
-      $tab_loc[11]['loc'] = 'dos';
-      $tab_loc[11]['type'] = 'armure';
-
-      $tab_loc[12]['loc'] = ' ';
-      $tab_loc[12]['type'] = 'vide';
-      $tab_loc[13]['loc'] = 'chaussure';
-      $tab_loc[13]['type'] = 'armure';
-      $tab_loc[14]['loc'] = ' ';
-      $tab_loc[14]['type'] = 'vide';
-      break;
-    case 'pet':
-      $style = 'background: url(\'image/creature.png\') center no-repeat;';
-      
-      $tab_loc[0]['loc'] = 'cou';
-      $tab_loc[0]['type'] = 'armure';
-      $tab_loc[1]['loc'] = 'selle';
-      $tab_loc[1]['type'] = 'armure';
-      $tab_loc[2]['loc'] = 'dos';
-      $tab_loc[2]['type'] = 'armure';
-
-      $tab_loc[3]['loc'] = 'arme';
-      $tab_loc[3]['type'] = 'arme';
-      $tab_loc[4]['loc'] = 'torse';
-      $tab_loc[4]['type'] = 'armure';
-      $tab_loc[5]['loc'] = ' ';
-      $tab_loc[5]['type'] = 'vide';
-    }
-    $tbl->set_attribut('style', $style);
-    $tbl->set_attribut('cellspacing', 3);
-    $tbl->set_attribut('width', '100%');
-    
-    $color = 2;
-    $compteur=0;
-    foreach($tab_loc as $loc)
-    {
-    	if( ($compteur % 3) == 0 && $compteur )
-  		{
-        $tr = $tbl->nouv_ligne();
-        $tr->set_attribut('style', 'height : 55px;');
-        //$tbl->add($tr);
-  		}
-  		$td = $tbl->nouv_cell(null, null, ($loc['type']!='vide')?'inventaire2':null);
-			if ($loc['type']=='vide' && ($compteur % 3) != 2)
-			{
-				if((is_ville($this->perso->get_x(), $this->perso->get_y()) == 1) AND (!array_key_exists('ville', $_GET) OR (array_key_exists('ville', $_GET) AND $_GET['ville'] == 'no')))
-				{
-          $td->set_attribut('class', 'inventaireville');
-					if(($compteur/3)==3)
-					{
-						$domprop .= " id='hdv'";
-					}
-					elseif (($compteur/3)==4)
-					{
-            $td->set_attribut('id', 'marchand');
-            $td->set_attribut('alt', 'marchand');
-					}
-				}
-			}
-			else
-        $td->set_attribut('id', 'drop_'.$loc['loc']);
-      if( $type == 'perso' )
-        $this->case_perso($td, $loc, $modif);
-      else
-        $this->case_pet($td, $loc, $modif);
-      $compteur++;
-    }
-
-  }
-  
-  protected function case_perso(&$td, $loc, $modif)
-  {
-    global $Gtrad, $id_elt_ajax, $db;
-    if( $this->perso->inventaire()->$loc['loc'] != '' )
-    {
-			$objet = decompose_objet($this->perso->get_inventaire_partie($loc['loc']));
-			//On peut désequiper
-			if($modif AND $this->perso->get_inventaire_partie($loc['loc']) != '' AND $this->perso->get_inventaire_partie($loc['loc']) != 'lock')
-        $desequip = true;
-      else
-        $desequip = false;
-			switch($loc['type'])
-			{
-				case 'arme' :
-					if( $this->perso->get_inventaire_partie($loc['loc']) != 'lock' )
-					{
-						$requete = "SELECT * FROM `arme` WHERE id = ".$objet['id_objet'];
-						$sqlQuery = $db->query($requete);
-						$row = $db->read_array($sqlQuery);
-						$image = 'image/arme/arme'.$row['id'].'.png';
-						$nom = $row['nom'];
-					}
-					else
-					{
-						$nom = 'Lock';
-						$image = '';
-					}
-				break;
-				case 'armure' :
-					$requete = "SELECT * FROM `armure` WHERE id = ".$objet['id_objet'];
-					$sqlQuery = $db->query($requete);
-					$row = @$db->read_array($sqlQuery);
-					$image = 'image/armure/'.$loc['loc'].'/'.$loc['loc'].$row['id'].'.png';
-					$nom = $row['nom'];
-
-				break;
-				case 'accessoire' :
-					$requete = "SELECT * FROM `accessoire` WHERE id = ".$objet['id_objet'];
-					$sqlQuery = $db->query($requete);
-					$row = @$db->read_array($sqlQuery);
-					$image = 'image/accessoire/accessoire'.$row['id'].'.png';
-					$nom = $row['nom'];
-				break;
-			}
-			$img = new interf_bal_smpl('img');
-			$img->set_attribut('src', $image);
-			$img->set_attribut('style', 'float : left;');
-			$img->set_attribut('title', 'Déséquiper');
-			$img->set_attribut('alt', 'Déséquiper');
-			if($desequip)
-			{
-        $span = new interf_bal_cont('span', 'drag_'.$objet["id_objet"]);
-        $td->add($span);
-        $lien = new interf_bal_cont('a');
-        $lien->set_attribut('href', $this->adresse.'?action=desequip&amp;partie='.$loc['loc'].'&amp;filtre='.$this->slot);
-        $lien->set_attribut('onclick', 'return envoiInfo(this.href, \''.$id_elt_ajax.'\');');
-        $span->add($lien);
-        $lien->add($img);
-			}
-			else
-        $td->add($img);
-      $td->add( new interf_bal_smpl('strong', $nom) );
-      $txt_slot = '';
-			if($objet['slot'] > 0)
-        $txt_slot = 'Slot niveau '.$objet['slot'];
-			elseif($objet['slot'] == '0')
-        $txt_slot = 'Slot impossible';
-			if($txt_slot)
-			{
-        $td->add( new interf_bal_smpl('br') );
-        $td->add( new interf_bal_smpl('span', $txt_slot, false, 'xsmall') );
-      }
-			if($objet['enchantement'] > '0')
-			{
-				$requete = "SELECT * FROM gemme WHERE id = ".$objet['enchantement'];
-				$req = $db->query($requete);
-				$row_e = $db->read_assoc($req);
-        $td->add( new interf_bal_smpl('br') );
-        $td->add( new interf_bal_smpl('span', 'Enchantement de '.$row_e['enchantement_nom'], false, 'xsmall') );
-			}
-    }
-		else
-      $td->add( new interf_txt($Gtrad[$loc['loc']]) );
-      
-		if($this->perso->get_inventaire_partie($loc['loc']) != '' AND $this->perso->get_inventaire_partie($loc['loc']) != 'lock')
-		{
-      $txt = '';
-			switch($loc['type'])
-			{
-				case 'arme':
-					if($loc['loc'] == 'main_droite')
-            $txt = 'Dégâts : '.$this->perso->get_arme_degat('droite');
-					else
-					{
-						if($row['type'] == 'dague')
-              $txt =  'Dégâts : '.$this->perso->get_arme_degat('gauche');
-						else
-              $txt = 'Dégâts absorbés : '.$this->perso->get_bouclier()->degat;
-					}
-				break;
-				case 'armure':
-          $txt = 'PP : '.$row['PP'].' / PM : '.$row['PM'];
-				break;
-			}
-			if($txt)
-			{
-        $td->add( new interf_bal_smpl('br') );
-        $td->add( new interf_txt($txt) );
-      }
-		}
-  }
-
-  protected function case_pet(&$td, $loc, $modif)
-  {
-    global $Gtrad, $id_elt_ajax, $db;
-		if($this->perso->inventaire_pet()->$loc['loc'] != '')
-		{
-			$objet = decompose_objet($this->perso->get_inventaire_partie($loc['loc'], true));
-			//On peut désequiper
-			if($modif AND $this->perso->get_inventaire_partie($loc['loc'], true) != '' AND $this->perso->get_inventaire_partie($loc['loc'], true) != 'lock')
-        $desequip = true;
-      else
-        $desequip = false;
-			switch($loc['type'])
-			{
-				case 'arme_pet' :
-					if($this->perso->get_inventaire_partie($loc['loc'], true) != 'lock')
-					{
-						$requete = "SELECT * FROM `objet_pet` WHERE id = ".$objet['id_objet'];
-						$sqlQuery = $db->query($requete);
-						$row = $db->read_array($sqlQuery);
-						$image = 'image/objet_pet/arme_pet/arme'.$row['id'].'.png';
-						$nom = $row['nom'];
-					}
-					else
-					{
-						$nom = 'Lock';
-						$image = '';
-					}
-				break;
-				case 'armure' :
-				case 'selle':
-				case 'collier':
-				case 'carapacon':
-					$requete = "SELECT * FROM `objet_pet` WHERE id = ".$objet['id_objet'];
-					$sqlQuery = $db->query($requete);
-					$row = @$db->read_array($sqlQuery);
-					$image = 'image/objet_pet/'.$loc['loc'].'/'.$loc['loc'].$row['id'].'.png';
-					$nom = $row['nom'];
-				break;
-				case 'accessoire' :
-					$requete = "SELECT * FROM `accessoire` WHERE id = ".$objet['id_objet'];
-					$sqlQuery = $db->query($requete);
-					$row = @$db->read_array($sqlQuery);
-					$image = 'image/accessoire/accessoire'.$row['id'].'.png';
-					$nom = $row['nom'];
-				break;
-			}
-			$img = new interf_bal_smpl('img');
-			$img->set_attribut('src', $image);
-			$img->set_attribut('style', 'float : left;');
-			$img->set_attribut('title', 'Déséquiper');
-			$img->set_attribut('alt', 'Déséquiper');
-			if($desequip)
-			{
-        $lien = new interf_bal_cont('a');
-        $lien->set_attribut('href', $this->adresse.'?action=desequip&amp;partie='.$loc['loc'].'&amp;filtre='.$this->slot);
-        $lien->set_attribut('onclick', 'return envoiInfo(this.href, \''.$id_elt_ajax.'\');');
-        $td->add($lien);
-        $lien->add($img);
-			}
-			else
-        $td->add($img);
-      $td->add( new interf_bal_smpl('strong', $nom) );
-      $txt_slot = '';
-			if($objet['slot'] > 0)
-        $txt_slot = 'Slot niveau '.$objet['slot'];
-			elseif($objet['slot'] == '0')
-        $txt_slot = 'Slot impossible';
-			if($txt_slot)
-			{
-        $td->add( new interf_bal_smpl('br') );
-        $td->add( new interf_bal_smpl('span', $txt_slot, false, 'xsmall') );
-      }
-			if($objet['enchantement'] > '0')
-			{
-				$requete = "SELECT * FROM gemme WHERE id = ".$objet['enchantement'];
-				$req = $db->query($requete);
-				$row_e = $db->read_assoc($req);
-        $td->add( new interf_bal_smpl('br') );
-        $td->add( new interf_bal_smpl('span', 'Enchantement de '.$row_e['enchantement_nom'], false, 'xsmall') );
-			}
-		}
-		else
-      $td->add( new interf_txt($Gtrad[$loc['loc']]) );
-
-
-		if($this->perso->get_inventaire_partie($loc['loc'], true) != '' AND $this->perso->get_inventaire_partie($loc['loc'], true) != 'lock')
-		{
-      $txt = '';
-			switch($loc['type'])
-			{
-				case 'arme_pet' :
-					$txt = 'Dégâts : '.$joueur->get_arme_degat('pet');
-				break;
-				case 'armure' :
-				case 'selle' :
-				case 'collier' :
-				case 'carapacon' :
-					$txt = 'PP : '.$row['PP'].' / PM : '.$row['PM'];
-				break;
-			}
-			if($txt)
-			{
-        $td->add( new interf_bal_smpl('br') );
-        $td->add( new interf_txt($txt) );
-      }
-		}
+    $this->onglets->add( new interf_invent_equip($this->perso, $type, $modif) );
   }
   
   //
   function affiche_slots($modif=true)
   {
-    global $G_place_inventaire, $interf, $db;
-    $cont = $this->onglets_slots->add( new interf_bal_cont('div', 'inventaire_slot') );
-    if($this->perso->get_inventaire_slot() != '')
+    $this->onglets_slots->add( new interf_invent_sac($this->perso, $this->slot) );
+  }
+}
+
+class interf_invent_equip extends interf_tableau
+{
+  function __construct(&$perso, $type)
+  {
+    interf_tableau::__construct();
+    $this->set_entete(false);
+    $tab_loc = array();
+    switch($type)
+    {
+    case 'perso':
+      $style = 'background: url(\'image/666.png\') center no-repeat; height: 300px;';
+
+      $emplacements = array(  'grand_accessoire',   'tete',       'cou',
+                              'main_droite',        'torse',      'main_gauche',
+                              'main',               'ceinture',   'doigt',
+                              'moyen_accessoire',   'jambe',      'dos',
+                              'petit_accessoire',   'chaussure',  'petit_accessoire');
+      $invent = $perso->inventaire();
+      break;
+    case 'pet':
+      $style = 'background: url(\'image/creature.png\') center no-repeat;';
+
+      $emplacements = array(  'cou_pet',   'selle',       'dos_pet',
+                              'arme_pet',  'torse_pet',   ' ');
+      $invent = $perso->inventaire_pet();
+      break;
+    case 'actions':
+      $emplacements = array(  'slot_1',  'slot_2',  'slot_3');
+      if( is_ville($perso->get_x(), $perso->get_y()) == 1 )
+        $emplacements = array_merge($emplacements, array('vendre_marchand', 'hotel_vente', 'depot'));
+      $emplacements = array_merge($emplacements, array(' ', 'utiliser', ' '));
+      $invent = null;
+    }
+    $this->set_attribut('style', $style);
+    $this->set_attribut('cellspacing', 3);
+    $this->set_attribut('width', '100%');
+
+    $color = 2;
+    $compteur=0;
+    foreach($emplacements as $loc)
+    {
+    	if( ($compteur % 3) == 0 && $compteur )
+  		{
+        $tr = $this->nouv_ligne();
+        $tr->set_attribut('style', 'height : 55px;');
+  		}
+  		$td = $this->nouv_cell();
+      if( $loc != ' ' )
+      {
+        $objet = $invent ? $invent->$loc : '';
+        if( $objet != '' && $objet != 'lock' )
+        {
+          $desequip = $modif;
+          $obj = objet_invent::factory( $objet );
+    		}
+        else
+        {
+          $desequip = false;
+          $obj = new zone_invent($loc, $objet === 'lock', $perso);
+    		}
+        $td->add( new interf_objet_invent($obj, $desequip, $loc, $this->slot, 'drop_'.$loc) );
+      }
+      $compteur++;
+      interf_base::code_js( '$( "#drop_'.$loc.'" ).droppable({accept: ".drag_'.$loc.'", activeClass: "invent_cible", hoverClass: "invent_hover", drop: drop_func});' );
+      //interf_base::code_js( '$( "#drop_'.$loc.'" ).droppable({accept: "#invent_slot12", activeClass: "invent_cible", hoverClass: "invent_hover", drop: drop_func);' );
+    }
+    //interf_base::code_js( 'init_dragndrop();' );
+  }
+}
+
+class interf_invent_sac extends interf_cont
+{
+  private $cols;
+  function __construct(&$perso, $type, $modif=true)
+  {
+    $this->cols[0] = $this->add( new interf_bal_cont('div', 'col1', 'col_invent') );
+    $this->cols[1] = $this->add( new interf_bal_cont('div', 'col2', 'col_invent') );
+    $this->cols[2] = $this->add( new interf_bal_cont('div', 'col3', 'col_invent') );
+    switch( $type )
+    {
+    case 'utile':
+      $cols = array('alchimie', 'grimoires', 'quêtes');
+      break;
+    case 'equipement':
+      $cols = array('armes', 'armures', 'accessoires');
+      break;
+    case 'royaume':
+      $cols = array('sièges', 'drapeaux', 'bâtiments');
+      break;
+    case 'artisanat':
+      $cols = array('ingrédients', 'outils', 'gemmes');
+      break;
+    }
+    for($i=0; $i<3; $i++)
+    {
+      $this->cols[$i]->add( new interf_bal_smpl('span', $cols[$i], false, 'xsmall') );
+    }
+
+    if($perso->get_inventaire_slot() != '')
     {
       $i = 0;
       $arme_de_siege = 0;
-    	$this->perso->restack_objet();
-    	foreach($this->perso->get_inventaire_slot_partie() as $invent)
+    	$perso->restack_objet();
+      //$js = 'function init_dragndrop() {';
+    	foreach($perso->get_inventaire_slot_partie() as $invent)
     	{
-		    $image='image/interface/inventaire/Unknown.png';
-    		if($invent !== 0 AND $invent != '')
-    		{
-          $objet = objet_invent::factory($invent);
+        $objet = objet_invent::factory($invent);
+        $col = $objet->get_colone($type);
+        if( $col !== false )
+        {
+          $drags = '';
+          if( $type == 'equipement' )
+            $drags .= 'drag_'.$objet->get_emplacement();
+          if( is_ville($perso->get_x(), $perso->get_y()) == 1 )
+          {
+            if( $type == 'royaume' )
+              $drags .= ' drag_depot';
+            else
+              $drags .= ' drag_vendre_marchand drag_hotel_vente';
+          }
+          $div = $this->cols[$col]->add( new interf_objet_invent($objet, false, null, $drags, 'invent_slot'.$i) );
           if( $objet->est_identifie() )
+            $div->set_attribut('onclick', 'chargerPopover(\'invent_slot'.$i.'\', \'infos_'.$i.'\', \'left\', \''.'inventaire.php?action=infos&id='.$invent.'\', \''.$objet->get_nom().'\')');
+          /*if( $type == 'equipement' )
+            $js .= 'dragndrop("#invent_slot'.$i.'", "#drop_'.$objet->get_emplacement().'", "inventaire.php");';
+          if( is_ville($perso->get_x(), $perso->get_y()) == 1 )
           {
-            $nom = $objet->get_nom();
-            $nbr = $objet->get_nombre();
-            if( $nbr > 1 )
-              $nom .= ' X '.$nbr;
-  				  $echo = description_objet($invent);
-          }
-          else
-          {
-            $nom = 'Objet non indentifié';
-  					$echo = 'Objet non indentifié';
-          }
-          $partie = $objet->get_type();
-          $image = $objet->get_image();
-          $div = $cont->add( new interf_bal_cont('div', 'invent_slot'.$i, 'drag_'.$partie) );
-          $div->set_attribut('style', 'width:33%;position: relative;');
-          $img = $div->add( new  interf_bal_smpl('img') );
-          $img->set_attribut('src', $image);
-          $span1 = $div->add( new interf_bal_smpl('span', $nom) );
-          $span1->set_attribut('name', 'overlib');
-          $div->set_attribut('onclick', 'chargerPopover(\'invent_slot'.$i.'\', \'infos_'.$i.'\', \'left\', \''.$this->adresse.'?action=infos&id='.$invent.'\', \''.$nom.'\')');
-          //$script .= 'dragndrop(".drag_'.$partie.'", "#drop_'.$partie.'");'."\n";
-          $script .= 'dragndrop("#invent_slot'.$i.'", "#drop_'.$partie.'", "'.$this->adresse.'");';
-          unset($div, $p, $span1, $span2, $img);
+            if( $type == 'royaume' )
+              $js .= 'dragndrop("#invent_slot'.$i.'", "#drop_depot", "inventaire.php");';
+            else
+            {
+              $js .= 'dragndrop("#invent_slot'.$i.'", "#drop_vendre_marchand", "inventaire.php");';
+              $js .= 'dragndrop("#invent_slot'.$i.'", "#drop_hotel_vente", "inventaire.php");';
+            }
+          }*/
+          interf_base::code_js( '$( "#invent_slot'.$i.'" ).draggable({ helper: "original", tolerance: "touch", revert: "invalid" });' );
         }
         $i++;
       }
-      $js = $cont->add( new interf_bal_smpl('script', $script) );
-      $js->set_attribut('type', 'text/javascript');
+      /*$script = $this->add( new interf_bal_smpl('script', $js.'} init_dragndrop();') );
+      $script->set_attribut('type', 'text/javascript');*/
     }
   }
 }
@@ -428,10 +213,53 @@ class interf_inventaire extends interf_cont
 /**
  * Classe gérant l'affichage de l'inventaire
  */
-class interf_objet_invent extends interf_cont
+class interf_objet_invent extends interf_bal_cont
 {
-  function __construct($nom, $infos1=false, $infos2=false)
+  function __construct($objet, $desequip, $partie, $drags, $id=false)
   {
+    global $Gtrad, $id_elt_ajax, $db;
+    interf_bal_cont::__construct('div', $id, ($objet?'inventaire2 ':' ').$drags);
+    if( $objet->est_identifie() )
+    {
+      $nom = $objet->get_nom();
+      $nbr = $objet->get_nombre();
+      if( $nbr > 1 )
+        $nom .= ' X '.$nbr;
+    }
+    else
+      $nom = 'Objet non indentifié';
+    $image = $objet->get_image();
+    if($image or $desequip)
+    {
+      $img = new  interf_bal_smpl('img');
+      $img->set_attribut('src', $image);
+      $img->set_attribut('style', 'float : left;');
+      $img->set_attribut('title', 'Déséquiper');
+      $img->set_attribut('alt', 'Déséquiper');
+  		if($desequip)
+  		{
+        $lien = new interf_bal_cont('a');
+        $lien->set_attribut('href', 'inventaire.php?action=desequip&amp;partie='.$partie.'&amp;filtre='.$slot);
+        $lien->set_attribut('onclick', 'return envoiInfo(this.href, \''.$id_elt_ajax.'\');');
+        $this->add($lien);
+        $lien->add($img);
+  		}
+  		else
+        $this->add($img);
+    }
+    $this->add( new interf_bal_smpl('strong', $nom) );
+    $enchant = $objet->get_info_enchant();
+    if( $enchant )
+    {
+      $this->add( new interf_bal_smpl('br') );
+      $this->add( new interf_bal_smpl('span', $enchant, false, 'xsmall') );
+    }
+    $infos = $objet->get_info_princ();
+    if( $infos )
+    {
+      $this->add( new interf_bal_smpl('br') );
+      $this->add( new interf_txt($infos) );
+    }
   }
 }
 
@@ -441,7 +269,7 @@ class interf_objet_invent extends interf_cont
 class interf_infos_objet extends interf_princ
 {
   /**
-   * Renvoie la bonne instance de la classe pour afficher les informations sur un objet (dans un popover)
+   * Constructeur
    * @param $objet    objet sous forme textuelle
    */
   function __construct($objet)
@@ -455,7 +283,6 @@ class interf_infos_objet extends interf_princ
       $tbl->nouv_ligne();
       $tbl->nouv_cell($noms[$i], null, null, true);
       $tbl->nouv_cell($vals[$i]);
-      //echo $i.' - '.$noms[$i].'='.$vals[$i].'<br/>';
     }
   }
 }

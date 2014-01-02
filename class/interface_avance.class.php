@@ -72,4 +72,22 @@ class interf_onglets extends interf_bal_cont
     return $this->divs[$id];
   }*/
 }
+
+/**
+ */
+class interf_alerte extends interf_bal_cont
+{
+  function __construct($type=null, $ferme=false, $id=null)
+  {
+    $classe = 'alert'.($type ? ' '.$type : '');
+    interf_bal_cont::__construct('div', $id, $classe);
+    if( $ferme )
+      interf_base::code_js( '$("'.($id?'#'.$id:'.alert').'").alert();' );
+  }
+
+  function add_message($msg)
+  {
+    return $this->add( new interf_txt($msg) );
+  }
+}
 ?>

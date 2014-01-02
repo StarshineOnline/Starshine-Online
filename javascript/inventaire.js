@@ -30,13 +30,26 @@ $.ajax({
 	    $('#inventaire_slot').append(data);
    }
  });*/
+
+/*function set_drag()
+{
+}*/
+
+filtre = "";
+
+function drop_func( event, ui )
+{
+  var objet = ui.draggable[0].id.substr(11);
+  var drop = this.id.substr(5);
+  $("#information").load(page+"?action=drop"+filtre+"&objet="+objet+"&drop="+drop);
+}
+
 function dragndrop(source, cible, page)
 {
-  //alert("dragndrop("+source+", "+cible+")");
 	// on rend les objets de l'inventaire draggable
 	$( source ).draggable({ helper: "original", tolerance: "touch", revert: "invalid" });
 	// les drop zones n'acceptent que les drag du meme type
-	$( cible ).droppable({accept: source, activeClass: "ui-state-hover", hoverClass: "ui-state-active",
+	$( cible ).droppable({accept: source, activeClass: "invent_cible", hoverClass: "invent_hover",
 	   drop: function( event, ui )
      {
 				$( this ).addClass( "ui-state-highlight" );
@@ -48,30 +61,6 @@ function dragndrop(source, cible, page)
 					//alert(id+" VS "+source);
 					if(source == "#" + id)
 					{
-						//alert($(this).attr("id"));
-            /*alert(this.innerHTML);
-						var target = $(this).find(".equiper").attr("value");
-						alert(target);
-						var cibleajax="inventaire.php";
-						if("<? echo substr($partie, -4); ?>"=="_pet")
-						{
-							cibleajax="inventaire_pet.php";
-						}
-            //alert(cibleajax+" : "+target);*/
-						// on envoie une requete ajax pour faire equiper l'objet
-						/*$.ajax({
-							url : page+"?action=equip&id_obj="+id+"&cible="+cible.substr(1),
-							type : "GET",
-							data : target,
-							// en cas de reussite, forcer le refresh
-							success : function(reponse) {
-								//alert(reponse)
-								$("#information").empty();
-								//$("#information").append(reponse);
-								$("#information").load(page);
-								$(".overlib").hide();
-							}
-            });*/
             $("#information").load(page+"?action=equip&key_slot="+id.substr(11));
 				  }
 			 });
