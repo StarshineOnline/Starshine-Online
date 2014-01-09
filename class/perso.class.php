@@ -3975,7 +3975,7 @@ class perso extends entite
 			}
 		}
 		else $return = array();
-    $dbg = 'perso::create : '.$requete;
+    $dbg = 'perso::create : '.$requete.' ('.var_export($array_champs, true).' - '.var_export($array_valeurs, true).')';
     log_admin::log('debug', $dbg, true);
 		return $return;
 	}
