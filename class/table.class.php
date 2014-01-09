@@ -140,7 +140,7 @@ abstract class table
 	* @param bool|string $keys       Si false, stockage en tableau classique, si string 
 	*                                stockage avec sous tableau en fonction du champ $keys
 	* @param bool  $key_unique       Indique si la clé est unique ou non (si elle est unique
-	*                                pour chaque clé il y a un seul objet, sinon il y a un tablmeau d'objets)
+	*                                pour chaque clé il y a un seul objet, sinon il y a un tableau d'objets)
 	* @return array     Liste d'objets
 	*/
 	static function create($champs, $valeurs, $ordre = 'id ASC', $keys = false, $where = false, $key_unique=false)

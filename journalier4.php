@@ -284,49 +284,47 @@ foreach($tab_royaume as $race => $royaume)
 			$ratio = $royaume['food_doit'] / $royaume['food_necessaire'];
 		else
 			$ratio = 0;
-		$debuff = ceil($ratio * 9) - 1;
-		if($debuff > 6) $debuff = 6;
-		if($debuff > 0)
+    $debuff = min(floor($ratio * 50), 25);
+
+		$persos = array();
+		$requete = "SELECT id FROM perso WHERE race = '".$race."' AND statut = 'actif'";
+		$req = $db->query($requete);
+		while($row = $db->read_assoc($req))
 		{
-			$persos = array();
-			$requete = "SELECT id FROM perso WHERE race = '".$race."' AND statut = 'actif'";
-			$req = $db->query($requete);
-			while($row = $db->read_assoc($req))
-			{
-				$persos[$row['id']] = $row['id'];
-			}
-			if (count($persos) == 0)
-				continue;
-			$perso_implode = implode(',', $persos);
-			//On sélectionne les buffs à modifier
-			$ids_buff = array();
-			$requete = "SELECT id FROM buff WHERE type = 'famine' AND id_perso IN (".$perso_implode.")";
-			$req = $db->query($requete);
-			while($row = $db->read_assoc($req))
-			{
-				$ids_buff[] = $row;
-			}
-			$buffs = array();
-			//On supprime les perso qui ont déjà un buff pour mettre à jour
-			foreach($ids_buff as $buff)
-			{
-				unset($persos[$buff['id_joueur']]);
-				$buffs[] = $buff['id'];
-			}
-			$buffs_implode = implode(',', $buffs);
-			if(count($buffs) > 0)
-			{
-				$requete = "UPDATE buff SET effet = effet + ".$debuff." WHERE id IN (".$buffs_implode.")";
-				$db->query($requete);
-			}
-			$mail .= "Mis à jour du buff famine sur ".count($buffs)." ".$race.", effet + ".$debuff.".\n";
-			foreach($persos as $joueur)
-			{
-				//Lancement du buff
-				lance_buff('famine', $joueur, $debuff, 0, $duree, 'Famine', 'Vos HP et MP max sont réduits de %effet%%', 'perso', 1, 0, 0, 0);
-			}
-			$mail .= "Lancement du buff famine sur ".count($persos)." ".$race.", effet : ".$debuff.".\n";
+			$persos[$row['id']] = $row['id'];
 		}
+		if (count($persos) == 0)
+			continue;
+		$perso_implode = implode(',', $persos);
+		//On sélectionne les buffs à modifier
+		$ids_buff = array();
+		$requete = "SELECT id FROM buff WHERE type = 'famine' AND id_perso IN (".$perso_implode.")";
+		$req = $db->query($requete);
+		while($row = $db->read_assoc($req))
+		{
+			$ids_buff[] = $row;
+		}
+		$buffs = array();
+		//On supprime les perso qui ont déjà un buff pour mettre à jour
+		foreach($ids_buff as $buff)
+		{
+			unset($persos[$buff['id_joueur']]);
+			$buffs[] = $buff['id'];
+		}
+		$buffs_implode = implode(',', $buffs);
+		if(count($buffs) > 0)
+		{
+			$requete = 'UPDATE buff SET effet = effet + FLOOR( ('.$debuff.'-effet) / 3 ) WHERE id IN ('.$buffs_implode.')';
+			$db->query($requete);
+		}
+		$mail .= "Mis à jour du buff famine sur ".count($buffs)." ".$race.", effet + ".$debuff.".\n";
+		foreach($persos as $joueur)
+		{
+			//Lancement du buff
+			lance_buff('famine', $joueur, $debuff, 0, $duree, 'Famine', 'Vos HP et MP max sont réduits de %effet%%', 'perso', 1, 0, 0, 0);
+		}
+		$mail .= "Lancement du buff famine sur ".count($persos)." ".$race.", effet : ".$debuff.".\n";
+
 		$requete = "UPDATE royaume SET food = 0 WHERE id = ".$royaume['id'];
 		$mail .= $requete."\n";
 		$db->query($requete);
