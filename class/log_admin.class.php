@@ -315,6 +315,8 @@ class log_admin extends log_admin_db {
     $res = '';
     foreach( $backtrace as $bt )
     {
+      if( $bt['function'] == 'format_backtrace' or $bt['function'] == 'log' )
+        continue;
       $res .= "\n".$bt['function'].'(';
       $i = 0;
       foreach( $bt['args'] as $arg )
