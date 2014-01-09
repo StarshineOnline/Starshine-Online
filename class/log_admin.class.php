@@ -321,7 +321,8 @@ class log_admin extends log_admin_db {
       $i = 0;
       foreach( $bt['args'] as $arg )
       {
-        $res .= ($i ? ', ' : '').$arg;
+        $res .= ($i ? ', ' : '').var_export($arg, true);
+        $i++;
       }
       $res .= ') - '.$bt['file'].' : '.$bt['line'];
     }
