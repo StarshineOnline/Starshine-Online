@@ -3955,7 +3955,7 @@ class perso extends entite
 			}
 			foreach($array_champs as $key => $champ)
 			{
-				$where[] = $champ .' = \''.mysql_real_escape_string($array_valeurs[$key]).'\'';
+				$where[] = $champ .' = \''.sSQL($array_valeurs[$key]).'\'';
 			}
 			$where = implode(' AND ', $where);
 			if($champs === 0)
