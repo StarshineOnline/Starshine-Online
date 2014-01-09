@@ -3976,7 +3976,7 @@ class perso extends entite
 		}
 		else $return = array();
     $dbg = 'perso::create : '.$requete;
-    log_admin::log('debug', $dbg, true);
+    //log_admin::log('debug', $dbg, true);
 		return $return;
 	}
 
