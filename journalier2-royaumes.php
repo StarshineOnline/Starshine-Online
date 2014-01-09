@@ -197,7 +197,7 @@ foreach($royaumes as $royaume)
 			//Suppression du batiment
 			else
 			{
-        log_admin::log('journalier', 'Destruction d\'une construction '.$royaume.' pour manque d\'entretien (HP: '.$vie')');
+        log_admin::log('journalier', 'Destruction d\'une construction '.$royaume.' pour manque d\'entretien (HP: '.$vie.')');
 				$requete = "DELETE FROM construction WHERE id = ".$keys[$i];
 			}
 			$db->query($requete);
