@@ -14,7 +14,7 @@ class entite_cap extends entite
   function __construct($royaume)
   {
     $coef = 1;
-    $carac = 16 + $royaume->get_level_mur();
+    $carac = 30 + $royaume->get_level_mur() * 5;
 		$facteur = 40;
 		$this->action = '!';
 		$this->arme_type = 'epee';
@@ -32,7 +32,7 @@ class entite_cap extends entite
 		$this->pm = 0;
 		$this->pm_para = 0;
 		$this->distance_tir = 1;
-		$this->esquive = 40 * $carac;
+		$this->esquive = 100 * $carac;
 		$this->distance = 0;
 		$this->melee = 0;
 		$this->incantation = 0;

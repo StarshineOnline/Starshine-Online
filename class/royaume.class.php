@@ -1344,7 +1344,7 @@ class royaume
 		$row = $db->read_assoc($req);
 		if($row['statut'] == 'actif')
 		{
-			$this->pp = 150 * ($row['level'] * $row['level']) + 50 * $row['level'];
+			$this->pp = 250 * ($row['level'] * $row['level']) + 1000 * $row['level'];
       $this->level_mur = $row['level'];
 		}
 		else
