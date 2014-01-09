@@ -441,6 +441,8 @@ class royaume
 			$db->query($requete);
 			//Récuperation du dernier ID inséré.
 			$this->id = $db->last_insert_id();
+
+      log_admin::log('debug', 'Création d\'un royaume : '.$requete, true);
 		}
 	}
 

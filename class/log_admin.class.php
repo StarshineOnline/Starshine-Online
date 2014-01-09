@@ -301,10 +301,29 @@ class log_admin extends log_admin_db {
 	  $this->sauver();
   }
 
-  static function log($type, $message)
+  static function log($type, $message, $backtrace=false)
   {
     $log = new log_admin();
+    if( $backtrace )
+      $message .= self::format_backtrace();
     $log->send($_SESSION['ID'], $type, $message);
+  }
+
+  static function format_backtrace()
+  {
+    $backtrace = debug_backtrace();
+    $res = '';
+    foreach( $backtrace as $bt )
+    {
+      $res .= "\n".$bt['function'].'(';
+      $i = 0;
+      foreach( $bt['args'] as $arg )
+      {
+        $res .= ($i ? ', ' : '').$arg;
+      }
+      $res .= ') - '.$bt['file'].' : '.$bt['line'];
+    }
+    return $res;
   }
 
 	static function display_all($where = false, $limit = false, $table = false)

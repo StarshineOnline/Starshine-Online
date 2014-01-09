@@ -207,7 +207,7 @@ class effect
    * @param  $actif     Personnage actif lors de l'action.
    * @param  $passif    Personnage passif lors de l'action.              
    */  
-  function debut_round(/*&$actif, &$passif*/&$attaque) { }
+  function debut_round(&$attaque) { }
   /**
    * Calcul du mana requis
    * 
@@ -216,7 +216,7 @@ class effect
    *
    * @return    MP requis
    */
-  function calcul_mp(/*&$actif, $mp*/&$attaque) { return $mp; }
+  function calcul_mp(&$attaque) { return $mp; }
   /**
    * Modifie le potentiel toucher magique
    * 
@@ -226,7 +226,7 @@ class effect
    * 
    * @return    Potentiel toucher après modification.              
    */  
-	function calcul_attaque_magique(/*&$actif, &$passif, $att*/&$attaque) { /*return $att;*/ }
+	function calcul_attaque_magique(&$attaque) {  }
   /**
    * Modifie le potentiel parer magique
    * 
@@ -236,7 +236,7 @@ class effect
    * 
    * @return    Potentiel parer après modification.              
    */  
-	function calcul_defense_magique(/*&$actif, &$passif, $def*/&$attaque) { /*return $def;*/ }
+	function calcul_defense_magique(&$attaque) {  }
   /**
    * Modifie le potentiel toucher physique
    * 
@@ -246,7 +246,7 @@ class effect
    * 
    * @return    Potentiel toucher après modification.              
    */  
-	function calcul_attaque_physique(/*&$actif, &$passif, $att*/&$attaque) { /*return $att;*/ }
+	function calcul_attaque_physique(&$attaque) {  }
   /**
    * Modifie le potentiel parer physique
    * 
@@ -256,7 +256,7 @@ class effect
    * 
    * @return    Potentiel parer après modification.              
    */  
-	function calcul_defense_physique(/*&$actif, &$passif, $def*/&$attaque) { /*return $def;*/ }
+	function calcul_defense_physique(&$attaque) {  }
   /**
    * Modifie le facteur de dégâts de l'arme
    * 
@@ -266,7 +266,7 @@ class effect
    * 
    * @return    Facteur de dégâts après modification.              
    */  
-  function calcul_arme(/*&$actif, &$passif, $arme*/&$attaque) { /*return $arme;*/ }
+  function calcul_arme(&$attaque) { }
   /**
    * Modifie les dégâts
    * 
@@ -276,7 +276,7 @@ class effect
    * 
    * @return    Dégâts après modification.              
    */ 
-  function calcul_degats(/*&$actif, &$passif, $degats*/&$attaque) { /*return $degats;*/ }
+  function calcul_degats(&$attaque) {  }
   /**
    * Modifie le bonos aux dégâts des sorts
    * 
@@ -287,7 +287,7 @@ class effect
    * 
    * @return    Bonus dégâts après modification.
    */ 
-  function calcul_bonus_degats_magiques(/*&$actif, &$passif, $bonus_degats, $type*/&$attaque) { /*return $bonus_degats;*/ }
+  function calcul_bonus_degats_magiques(&$attaque) {  }
   /**
    * Modifie les dégâts des sorts
    * 
@@ -298,14 +298,14 @@ class effect
    * 
    * @return    Dégâts après modification.
    */ 
-  function calcul_degats_magiques(/*&$actif, &$passif, $degats, $type*/&$attaque) { /*return $degats;*/ }
+  function calcul_degats_magiques(&$attaque) {  }
   /**
    * Effectue les modifications concernant le blocage (potentiel blocage, maitrise du bouclier)
    * 
    * @param  $actif     Personnage actif lors de l'action.
    * @param  $passif    Personnage passif lors de l'action.
    */   
-  function calcul_bloquage(/*&$actif, &$passif*/&$attaque) { }
+  function calcul_bloquage(&$attaque) { }
   /**
    * Modifie les degats bloques par le blocage reussi
    * 
@@ -315,7 +315,7 @@ class effect
 	 * 
 	 * @return		reduction des degats
    */   
-  function calcul_bloquage_reduction(/*&$actif, &$passif, $reduction*/) { /*return $reduction;*/ }
+  function calcul_bloquage_reduction() {  }
   /**
    * Modifie les dégâts lorsque le coup est bloqué (en plus des dégâts bloqués)
 	 * Ceci se fait apres l'affichage du blocage, donc si les degats sont
@@ -328,7 +328,7 @@ class effect
    * 
    * @return    Dégâts infligés après modification.
    */ 
-  function applique_bloquage(/*&$actif, &$passif, $degats*/&$attaque) { /*return $degats;*/ }
+  function applique_bloquage(&$attaque) { }
   /**
    * Modifie la PP
    * 
@@ -338,7 +338,7 @@ class effect
    * 
    * @return    PP après modification.              
    */ 
-  function calcul_pp(/*&$actif, &$passif, $pp*/&$attaque) { /*return $pp;*/ }
+  function calcul_pp(&$attaque) {  }
   /**
    * Modifie la PM
    * 
@@ -348,7 +348,7 @@ class effect
    * 
    * @return    PM après modification.
    */ 
-  function calcul_pm(/*&$actif, &$passif, $pm*/&$attaque) { /*return $pm;*/ }
+  function calcul_pm(&$attaque) {  }
   /**
    * Modifie le potentiel critique physique
    * 
@@ -358,7 +358,7 @@ class effect
    * 
    * @return    Potentiel critique après modification.              
    */ 
-  function calcul_critique(/*&$actif, &$passif, $chance*/&$attaque) { /*return $chance;*/ }
+  function calcul_critique(&$attaque) {  }
   /**
    * Modifie le multiplicateur de dégâts en cas ce coup critique
    * 
@@ -368,7 +368,7 @@ class effect
    * 
    * @return    Multiplicateur de dégâts après modification.              
    */ 
-  function calcul_mult_critique(/*&$actif, &$passif, $mult*/&$attaque) { /*return $mult;*/ }
+  function calcul_mult_critique(&$attaque) {  }
   /**
    * Applique les effets ayant lieu lorsque les dégâts ont lieu
    * 
@@ -376,7 +376,7 @@ class effect
    * @param  $passif    Personnage passif lors de l'action.
    * @param  $degats    Dégâts infligés.           
    */ 
-  function inflige_degats(/*&$actif, &$passif, $degats*/&$attaque) { /*return $degats;*/ }
+  function inflige_degats(&$attaque) {  }
   /**
    * Applique les effets ayant lieu lorsque les dégâts magiques ont lieu
    * Ne retourne rien, pas de modification des dégâts à ce stade
@@ -385,7 +385,7 @@ class effect
    * @param  $passif    Personnage passif lors de l'action.
    * @param  $degats    Dégâts infligés.           
    */ 
-  function inflige_degats_magiques(/*&$actif, &$passif, $degats*/&$attaque) { }
+  function inflige_degats_magiques(&$attaque) { }
   /**
    * Action a effectuer en fin de round
    * 
@@ -393,14 +393,14 @@ class effect
    * @param  $passif    Personnage passif lors de l'action.    
    * @param  $mode      Connaitre le mode   
    */  
-  function fin_round(/*&$actif, &$passif, $mode*/&$attaque ) { }
+  function fin_round(&$attaque ) { }
   /**
    * Action a effectuer en fin de combat
    * 
    * @param  $actif     Personnage actif lors de l'action.
    * @param  $passif    Personnage passif lors de l'action.              
    */  
-  function fin_combat(/*&$actif, &$passif*/&$attaque) { }
+  function fin_combat(&$attaque) { }
   //@}
 }
 
@@ -422,7 +422,7 @@ class etat extends effect {
 		$this->effet = $effet;
 	}
 	
-  function fin_round(/*&$actif, &$passif, $mode*/&$attaque)
+  function fin_round(&$attaque)
   {
     $actif = $attaque->get_actif();
 		if ($actif->etat[$this->nom]['duree'] < 1) {
@@ -459,7 +459,7 @@ class perte_hp extends etat
 		}
 	}
 
-  function fin_round(/*&$actif, &$passif, $mode*/&$attaque)
+  function fin_round(&$attaque)
   {
     global $log_effects_attaquant;
     $actif = $attaque->get_actif();
@@ -486,7 +486,7 @@ class empoisonne extends effect {
 			$effects[] = new empoisonne($actif->etat['empoisonne']['effet']);
 	}
 
-  function fin_round(/*&$actif, &$passif, $mode*/&$attaque)
+  function fin_round(&$attaque)
   {
     $actif = $attaque->get_actif();
 		$this->hit($actif->get_nom().' perd '.$this->vigueur.' HP à cause du poison');
@@ -520,7 +520,7 @@ class poison extends effect
 		}
 	}
 
-  function fin_round(/*&$actif, &$passif, $mode*/&$attaque)
+  function fin_round(&$attaque)
   {
 		$actif = $attaque->get_actif();
 		$perte_hp = $actif->etat['poison']['effet'] - $actif->etat['poison']['duree'] + 1;
@@ -530,7 +530,6 @@ class poison extends effect
 			
 		$actif->set_hp($actif->get_hp() - $perte_hp);
 		$this->hit($actif->get_nom().' perd '.$perte_hp. ' HP par le poison');
-		//echo $mode;
 		$attaque->add_log_effet_actif("&ef1~".$perte_hp);
 	}
 }
@@ -552,7 +551,7 @@ class poison_lent extends effect {
 		}
 	}
 
-  function fin_round(/*&$actif, &$passif, $mode*/&$attaque)
+  function fin_round(&$attaque)
   {
     $actif = $attaque->get_actif();
 		$this->hit($actif->get_nom().' perd '.$this->vigueur.
@@ -621,7 +620,7 @@ class recuperation extends etat
     }
 	}
 
-  function fin_round(/*&$actif, &$passif, $mode*/&$attaque)
+  function fin_round(&$attaque)
   {
     $actif = $attaque->get_actif();
 		$effet = $this->effet;
@@ -656,17 +655,9 @@ class ensable extends etat {
 		}
 	}
 
-  /*function debut_round(&$attaque) {
-    $actif = $attaque->get_actif();
-    $this->debug($actif->get_nom().' est ensablé');
-    $actif->set_potentiel_toucher( $actif->get_potentiel_toucher() / (1 + ($this->effet / 100)) );
-    $actif->set_potentiel_lancer_magique( $actif->get_potentiel_lancer_magique() / (1 + $this->effet/100) );
-	}*/
-
 	function calcul_attaque_magique(&$attaque) {
     $actif = $attaque->get_actif();
     $this->debug($actif->get_nom().' est ensablé');
-    //return $att / (1 + ($this->effet / 100));
     $actif->set_potentiel_lancer_magique( $actif->get_potentiel_lancer_magique() / (1 + $this->effet/100) );
   }
 }
@@ -689,20 +680,12 @@ class debilitant extends etat {
 		}
 	}
 
-
-  /// Action a effectuer en début de round
-  /*function debut_round(&$attaque)
-  {
-    $actif = $attaque->get_actif();
-    $actif->set_potentiel_lancer_magique( $actif->get_potentiel_lancer_magique() / (1 + ($this->effet / 100)) );
-  }*/
-
 	function calcul_attaque_magique(&$attaque) {
     $actif = $attaque->get_actif();
     $actif->set_potentiel_lancer_magique( $actif->get_potentiel_lancer_magique() / (1 + $this->effet/100) );
   }
 
-  function fin_round(/*&$actif, &$passif, $mode*/&$attaque)
+  function fin_round(&$attaque)
   {
     global $log_effects_attaquant, $log_effects_defenseur;
 		$this->debug($attaque->get_actif()->get_nom().' est sous l\'effet de Flêche Débilisante');
@@ -728,7 +711,7 @@ class tellurique extends etat {
 		}
 	}
 
-  function calcul_bonus_degats_magiques(/*&$actif, &$passif, $bonus_degats, $type*/&$attaque) {
+  function calcul_bonus_degats_magiques(&$attaque) {
 		switch ($attaque->get_type_degats()) {
 		case 'degat_feu':
 		case 'degat_froid':
@@ -738,10 +721,8 @@ class tellurique extends etat {
 		case 'globe_foudre':
 		case 'embrasement':
 		case 'sphere_glace':
-			//$bonus_degats += $this->effet;
       $attaque->add_degats($this->effet);
 		}
-		//return $bonus_degats;
 	}
 }
 
@@ -769,17 +750,15 @@ class toucher_humainnoir extends etat {
 		}
 	}
 	
-	function calcul_attaque_magique(/*&$actif, &$passif, $att*/&$attaque) {
+	function calcul_attaque_magique(&$attaque) {
 		if ($this->effet_mag != 1)
 			$this->debug($this->nom.' augmente le potentiel magique');
-		//return $att * $this->effet_mag;
     $this->valeur *= $this->effet_mag;
 	}
 	
-	function calcul_attaque_physique(/*&$actif, &$passif, $att*/&$attaque) {
+	function calcul_attaque_physique(&$attaque) {
 		if ($this->effet_phy != 1)
 			$this->debug($this->nom.' augmente le potentiel physique');
-		//return $att * $this->effet_phy;
     $this->valeur *= $this->effet_phy;
 	}
 }
@@ -800,7 +779,7 @@ class effet_vampirisme extends effect
 		$this->effet = $aEffet;
 	}
 
-  function inflige_degats(/*&$actif, &$passif, $degats*/&$attaque) {
+  function inflige_degats(&$attaque) {
     $actif = $attaque->get_actif();
     $degats = $attaque->get_degats();
 		$this->debug("effet_vampirisme: inflige_degats($degats) [effet $this->effet]");
@@ -816,7 +795,6 @@ class effet_vampirisme extends effect
 		else
 			$this->debug($actif->get_nom().' gagne '.$gain.' HP par '.$this->pos.' '.
 									$this->nom);
-		//return $degats;
 	}
 }
 
@@ -834,7 +812,7 @@ class protection_artistique extends effect
     $this->effet = $aEffet;
   }
 
-	function calcul_bloquage_reduction(/*&$actif, &$passif, $reduction*/&$attaque) {
+	function calcul_bloquage_reduction(&$attaque) {
     $actif = $attaque->get_actif();
     $passif = $attaque->get_passif();
 		$bonus_reduction = 0;
@@ -847,7 +825,6 @@ class protection_artistique extends effect
 									 $bonus_reduction.' grâce à son honneur ('.$this->nom.') !');
 		else
 			$this->debug('Pas assez d\'honneur pour profiter du '.$this->nom);
-		//return max($reduction + $bonus_reduction, 9);
     $attaque->set_degats_bloques($reduction);
 	}
 }
@@ -866,7 +843,7 @@ class bonus_pinceau extends effect
     $this->effet = $aEffet;
   }
 	
-	function calcul_attaque_magique(/*&$actif, &$passif, $potentiel*/&$attaque) {
+	function calcul_attaque_magique(&$attaque) {
 		$bonus_potentiel = 0;
 		for ($tmp_honneur = $actif->get_honneur() - 20000; $tmp_honneur > 0;
 				 $tmp_honneur -= 15000)
@@ -877,7 +854,6 @@ class bonus_pinceau extends effect
 									 $bonus_potentiel.' grâce à son honneur ('.$this->nom.') !');
 		else
 			$this->debug('Pas assez d\'honneur pour profiter du '.$this->nom);
-		//return $potentiel * (1 + 0.1*$bonus_potentiel);
     $attaque->valeur *= 1 + 0.1*$bonus_potentiel;
 	}
 }
@@ -893,17 +869,15 @@ class pierre_precision extends effect
     $this->effet = $aEffet;
   }
   
-	function calcul_attaque_magique(/*&$actif, &$passif, $potentiel*/&$attaque) {
+	function calcul_attaque_magique(&$attaque) {
 		$this->debug($actif->get_nom().' voit son potentiel magique augmenté de '.
 									 $this->effet.'% ('.$this->nom.') !');
-		//return $potentiel*(1+$this->effet/100);
     $attaque->valeur *= 1+$this->effet/100;
 	}
 	
-	function calcul_attaque_physique(/*&$actif, &$passif, $potentiel*/&$attaque) {
+	function calcul_attaque_physique(&$attaque) {
 		$this->debug($actif->get_nom().' voit son potentiel physique augmenté de '.
 									 $this->effet.'% ('.$this->nom.') !');
-		//return $potentiel*(1+$this->effet/100);
     $attaque->valeur *= 1+$this->effet/100;
 	}
 	
@@ -923,7 +897,7 @@ class bonus_pinceau_degats extends effect
     $this->effet = $aEffet;
   }
 	
-	function calcul_bonus_degats_magiques(/*&$actif, &$passif, $bonus_degats, $type*/&$attaque) {
+	function calcul_bonus_degats_magiques(&$attaque) {
 		$bonus_degat = 0;
 		for ($tmp_honneur = $actif->get_honneur() - 20000; $tmp_honneur > 0;
 				 $tmp_honneur -= 15000)
@@ -950,7 +924,7 @@ class boutte_flamme extends effect
     $this->effet = $aEffet;
   }
 		
-	function calcul_degats_magiques(/*&$actif, &$passif, $degats, $type*/&$attaque) {
+	function calcul_degats_magiques(&$attaque) {
 		switch ($attaque->get_type_degats()) {
 		case 'degat_feu':
 		case 'degat_froid':
@@ -960,34 +934,11 @@ class boutte_flamme extends effect
 		case 'globe_foudre':
 		case 'embrasement':
 		case 'sphere_glace':
-			//$degats += $this->effet;
       $attaque->add_degats($this->effet);
 			$this->debug($actif->get_nom().' voit ses dégâts augmentés de '.
 									 $this->effet.' grâce à son arme ('.$this->nom.') !');
 		}
-	//	return $degats;
 	}
-	/*
-	function inflige_degats_magiques(&$actif, &$passif, $degats, $type) {  
-    switch ($type) {
-      case 'degat_feu':
-      case 'degat_froid':
-      case 'degat_vent':
-      case 'degat_terre':
-      case 'lapidation':
-      case 'globe_foudre':
-      case 'embrasement':
-      case 'sphere_glace':
-      {
-        $this->hit('Le boute-flamme de '.$actif->get_nom().' augmente votre sensibilité aux sorts élémentaires
-			Vous recevez '.$this->effet.' dégâts supplémentaire');
-        $passif->add_hp($this->effet * -1);
-        break;
-      }
-      return $degats;
-    }
-  }
-  */
 }
 
 /**
@@ -1013,16 +964,7 @@ class riposte_furtive extends effect
     }
 	}
 	
-  /*function inflige_degats(/*&$actif, &$passif, $degats*//*&$attaque) {
-    $actif = $attaque->get_actif();
-    $inf = floor($attaque->get_degats() * $this->effet);
-    $this->hit('La riposte furtive de '.$attaque->get_passif()->get_nom().' inflige '.$inf.
-               ' dégâts à '.$actif->get_nom());
-    $actif->add_hp($inf * -1);
-    //return $degats;
-  }*/
-	
-  function inflige_degats_magiques(/*&$actif, &$passif, $degats*/&$attaque) {
+  function inflige_degats_magiques(&$attaque) {
     $actif = $attaque->get_actif();
     $inf = floor($attaque->get_degats() * $this->effet);
     $this->hit('La riposte furtive de '.$attaque->get_passif()->get_nom().' inflige '.$inf.
@@ -1045,7 +987,7 @@ class carapace_incisive extends effect
     $this->effet = $aEffet;
 	}
 	
-	function inflige_degats(/*&$actif, &$passif, $degats*/&$attaque) {
+	function inflige_degats(&$attaque) {
     if (rand(1, 100) <= $this->effet)
 		{
       $actif = $attaque->get_actif();
@@ -1055,7 +997,6 @@ class carapace_incisive extends effect
 			$actif->add_hp($degat * -1);
 		}
 		else $this->debug('La carapace incisive n\'agit pas');
-		//return $degats;
   }
 }
 
@@ -1070,13 +1011,12 @@ class arc_tung extends effect
     $this->effet = $aEffet;
 	}
 	
-	function inflige_degats(/*&$actif, &$passif, $degats*/&$attaque) {
+	function inflige_degats(&$attaque) {
     $actif = $attaque->get_actif();
 		$degat = ceil(-0.2 * $attaque->get_degats);
 		echo $degat;
 		$actif->add_hp($degat);
 		$this->hit('L\'arc Tung de '.$actif->get_nom().' lui fait perdre des points de vie !');	
-		//return $degats;
   }
 }
 
@@ -1091,14 +1031,13 @@ class mirroir_eclatant extends effect
     $this->effet = $aEffet / 100;
 	}
 	
-	function applique_bloquage(/*&$actif, &$passif, $degats*/&$attaque) {
+	function applique_bloquage(&$attaque) {
 		$degat = $this->effet * $attaque->get_degats();
 		$this->hit('Votre bouclier inflige '.ceil($degat).
                ' dégâts à '.$attaque->get_actif()->get_nom());
 		$actif->add_hp(ceil($degat) * -1);
 		$this->hit('Votre bouclier bloque '.ceil($degat).
                ' dégâts');
-    //return ceil($degat*(1-$this->effet/100));
     $attaque->set_degats( $degat*(1-$this->effet/100) );
 	}
 }
@@ -1113,21 +1052,8 @@ class anneau_resistance extends effect
 		parent::__construct($aNom);
     $this->effet = $aEffet;
 	}
-	
-	/*function calcul_degats(/*&$actif, &$passif, $degats*//*&$attaque) {
-	if (get_class($attaque->get_passif()) != 'perso')
-	return $degats;
-    if ($attaque->get_actif()->get_race() == $this->effet) {
-      $reduction = min(2, $degats);
-			$this->hit('L\'anneau de resistance de '.$attaque->get_passif()->get_nom().
-                 ' reduit les degats de '.$reduction);
-      $degats -= $reduction;
-    }
-    return $degats;
-  }*/
   
-  function calcul_degats_magiques(/*&$actif, &$passif, $degats, $type*/&$attaque) {
-    //return $this->calcul_degats($actif, $passif, $degats);
+  function calcul_degats_magiques(&$attaque) {
     if (get_class($attaque->get_passif()) == 'perso' && $attaque->get_actif()->get_race() == $this->effet) {
       $reduction = min(2, $degats);
 			$this->hit('L\'anneau de resistance de '.$attaque->get_passif()->get_nom().
@@ -1148,9 +1074,8 @@ class cape_troll extends effect
     $this->effet = $aEffet;
 	}
 	
-	function calcul_mult_critique(/*&$actif, &$passif, $chance*/&$attaque)
+	function calcul_mult_critique(&$attaque)
 	{
-		//return ceil($chance*(1-$this->effet/100));
     $this->valeur = ceil($this->valeur*(1-$this->effet/100));
 	}
 }
@@ -1169,8 +1094,7 @@ class bouclier_pensee extends effect
     $this->effet = $aEffet;
   }
 
-	function calcul_bloquage_reduction(/*&$actif, &$passif, $reduction*/&$attaque) {
-		//return ceil($passif->get_volonte()/2);
+	function calcul_bloquage_reduction(&$attaque) {
     $attaque->set_degats_bloques( ceil($attaque->get_passif()->get_volonte()/2) );
 	}
 }

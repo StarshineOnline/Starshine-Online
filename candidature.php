@@ -56,6 +56,7 @@ if( $check && $is_election )
 				if(count($economie) == 1) $candidat->set_id_ministre_economie($economie[0]->get_id());
 				else
 				{
+          log_admin::log('debug', 'Ministre de l\'économie introuvable : '.$_GET['ministre_economie'].' ('.$joueur->get_race().')', true);
 					echo '<h5>Ministre de l\'économie introuvable !</h5>';
 					$save = false;
 				}
@@ -66,6 +67,7 @@ if( $check && $is_election )
 				if(count($militaire) == 1) $candidat->set_id_ministre_militaire($militaire[0]->get_id());
 				else
 				{
+          log_admin::log('debug', 'Ministre militaire introuvable : '.$_GET['ministre_economie'].' ('.$joueur->get_race().')', true);
 					echo '<h5>Ministre militaire introuvable !</h5>';
 					$save = false;
 				}

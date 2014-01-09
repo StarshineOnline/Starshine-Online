@@ -89,7 +89,9 @@ class gemme_enchassee extends effect
     }
 	}
 
-  function inflige_degats(&$actif, &$passif, $degats) {
+  function inflige_degats(&$attaque) {
+    $actif = $attaque->get_actif();
+    $passif = $attaque->get_passif();
 
     // Test du poison
 		if ($this->enchantement_type == 'poison' &&
@@ -110,7 +112,7 @@ class gemme_enchassee extends effect
 			$de = rand(1, 100);
 			$this->debug("vampire: d100 doit être inférieur à 30: $de");
 			if ($de <= 30) {
-				$gain = min($this->enchantement_effet, $degats);
+				$gain = min($this->enchantement_effet, $attaque->get_degats());
 				if (($actif->get_hp() + $gain) > $actif->get_hp_max())
 					$gain = $actif->get_hp_max() - $actif->get_hp();
 				if ($passif->get_type() == 'batiment')
@@ -121,11 +123,12 @@ class gemme_enchassee extends effect
 											$this->nom, true);
 			}
 		}
-		return $degats;
 	}
 
 	// Gemme d'epine
-	function applique_bloquage(&$actif, &$passif, $degats) {
+	function applique_bloquage(&$attaque) {
+    $actif = $attaque->get_actif();
+    $passif = $attaque->get_passif();
 		if ($this->enchantement_type == 'bouclier_epine') {
 			$actif->add_hp(-$this->enchantement_effet);
 			$this->hit($actif->get_nom().' perd '.$this->enchantement_effet.
@@ -138,26 +141,25 @@ class gemme_enchassee extends effect
       if ($de <= $this->enchantement_effet) {
         $this->message('La '.$this->nom.' de <strong>'.$passif->get_nom().
                        '</strong> pare totalement le coup');
-        $degats = 0;
+        $attaque->set_degats(0);
       }
     }
-		return $degats;
 	}
 
 	// Gemme de l'epervier
-	function calcul_bloquage(&$actif, &$passif) {
+	function calcul_bloquage(&$attaque) {
+    $passif = $attaque->get_passif();
 		if ($this->enchantement_type == 'parade') {
 			$passif->set_potentiel_bloquer( floor($passif->get_potentiel_bloquer() + $this->enchantement_effet / 100) );
 		}
 	}
 
   // Gemme divine
-  function calcul_mp(&$actif, $mp) {
+  function calcul_mp(&$attaque) {
 		if ($this->enchantement_type == 'divin') {
-      $mp -= $this->enchantement_effet;
-      if ($mp < 1) { $mp = 1; }
+      $attaque->valeur -= $this->enchantement_effet;
+      if ($attaque->valeur < 1) { $attaque->valeur = 1; }
     }
-    return $mp;
   }
 
 }
