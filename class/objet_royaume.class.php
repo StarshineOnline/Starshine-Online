@@ -275,7 +275,7 @@ class objet_royaume extends objet_invent
 			return false;
 		}
     // On peut poser sur cette case ?
-    $case = map_case( $perso->get_pos() );
+    $case = new map_case( $perso->get_pos() );
     if( $case->get_type() == 1 or $case->get_type() == 4 or is_donjon($joueur->get_x(), $joueur->get_y()) )
 		{
       $princ->add( new interf_alerte('danger', true) )->add_message('Vous ne pouvez rien poser sur ce type de terrain !');
@@ -466,9 +466,52 @@ class objet_royaume extends objet_invent
           }
   			}
   		}
+      else if( $_GET['type'] == 'mur' )
+      {
+				// On commence par extraire la position des murs ou des constructions de murs a 2 cases de distance de la case a traiter
+				$position_murs=array();
+				$position_murs[0]=array(0,0,0,0,0);
+				$position_murs[1]=array(0,0,0,0,0);
+				$position_murs[2]=array(0,0,0,0,0);
+				$position_murs[3]=array(0,0,0,0,0);
+				$position_murs[4]=array(0,0,0,0,0);
 
-  		if($this->get_type() == 'mur')
-  		{
+				// Il y a donc 25 positions à recupérer
+				$requete  = 'SELECT x,y FROM construction WHERE ABS(CAST(x AS SIGNED) -'.$joueur->get_x().') <= 2 AND ABS(CAST(y AS SIGNED) - '.$joueur->get_y().') <= 2 AND type LIKE "mur"';
+				$requete  = 'SELECT id,x,y FROM construction WHERE ABS(CAST(x AS SIGNED) - '.$joueur->get_x().') <= 2 AND ABS(CAST(y AS SIGNED) - '.$joueur->get_y().') <= 2 AND type LIKE "mur" UNION SELECT id,x,y FROM placement WHERE ABS(CAST(x AS SIGNED) - '.$joueur->get_x().') <= 2 AND ABS(CAST(y AS SIGNED) - '.$joueur->get_y().') <= 2 AND type LIKE "mur"';
+				$req = $db->query($requete);
+
+				// Stockage des positions dans la matrice
+				while($row = $db->read_assoc($req))
+				{
+					$position_murs[$row[x]-$joueur->get_x()+2][$row[y]-$joueur->get_y()+2]=1;
+				}
+				// Rajout de la position du nouveau mur dans la matrice pour les tests (il est au milieu de la matrice).
+				$position_murs[2][2]=1;
+
+				// Gestion des cardinalites (somme du nombre de murs adjacent au nord, ouest, est, sud de chaque position en comptant la position courante
+				$murs_cardinalite=array();
+				$murs_cardinalite[0]=array(0,0,0);
+				$murs_cardinalite[1]=array(0,0,0);
+				$murs_cardinalite[2]=array(0,0,0);
+				$max_nb_murs=0;
+				for ($x = 1; $x<=3 ; $x+=1)
+				{
+					for ($y = 1; $y<=3 ; $y+=1)
+					{
+						$murs_cardinalite[$x-1][$y-1]=$position_murs[$x-1][$y]+$position_murs[$x+1][$y]+$position_murs[$x][$y-1]+$position_murs[$x][$y+1]+ $position_murs[$x][$y];
+						$max_nb_murs=max($max_nb_murs,$murs_cardinalite[$x-1][$y-1]);
+					}
+				}
+				// Il reste maintenant a verifier que toutes les conditions sont réunies
+				// Si une des cases vaut 4 ou plus, alors erreur
+				if( $max_nb_murs > 3 )
+        {
+					$princ->add( new interf_alerte('danger', true) )->add_message('Il y a déjà trop de murs autour !');
+      		return false;
+				}
+
+
   			// Augmentation du compteur de l'achievement
   			$achiev = $perso->get_compteur('pose_murs');
   			$achiev->set_compteur($achiev->get_compteur() + 1);
@@ -499,7 +542,7 @@ class objet_royaume extends objet_invent
 		  $perso->add_pa( -$pa );
     }
 
-    $princ->add( new interf_alerte('success', true) )->add_message($batiment->get_nom().' posé avec succès');
+    $princ->add( new interf_alerte('success') )->add_message($batiment->get_nom().' posé avec succès');
   }
 
   function deposer(&$perso, &$princ)
@@ -507,12 +550,12 @@ class objet_royaume extends objet_invent
     global $R; /// TODO à améliorer
 		if ($R->get_race() != $joueur->get_race())
 		{
-      $princ->add( new interf_alerte('danger', true) )->add_message('Impossible de poser au dépot '.$R->get_race());
+      $princ->add( new interf_alerte('danger') )->add_message('Impossible de poser au dépot '.$R->get_race());
       return false;
 		}
 		$requete = 'INSERT INTO depot_royaume VALUES (NULL, '.$this->id.', '.$R->get_id().')';
 		$db->query($requete);
-    $princ->add( new interf_alerte('success', true) )->add_message('Objet posé avec succès.');
+    $princ->add( new interf_alerte('success') )->add_message('Objet posé avec succès.');
     return true;
   }
 

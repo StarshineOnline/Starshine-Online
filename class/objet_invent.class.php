@@ -253,12 +253,12 @@ abstract class objet_invent extends table
   /**
    * Déposer
    */
-  function deposer() { return false; }
+  function deposer(&$perso, &$princ) { return false; }
 
   /**
-   * Vendre au marchand
+   * Renvoie le prix de vente
    */
-  function vendre_marchand()
+  function get_prix_vente()
   {
     global $G_taux_vente;
 		$modif_prix = 1;
@@ -277,7 +277,15 @@ abstract class objet_invent extends table
 		{
 			$modif_prix = 1 + ($enchant->get_niveau() / 2);
 		}
-		$prix = floor($this->get_prix() * $modif_prix / $G_taux_vente);
+		return floor($this->get_prix() * $modif_prix / $G_taux_vente);
+  }
+
+  /**
+   * Vendre au marchand
+   */
+  function vendre_marchand(&$perso, &$princ)
+  {
+    $prix = $this->get_prix_vente();
     $perso->add_star( $prix );
     return true;
   }
@@ -285,7 +293,58 @@ abstract class objet_invent extends table
   /**
    * Mettre à l'hotel des ventes
    */
-  function vendre_hdv() { return false; }
+  function vendre_hdv(&$perso, &$princ) { return false; }
+
+  /**
+   * Identifier
+   */
+  function identifier(&$perso, &$princ, $slot)
+  {
+    if( $this->identifie )
+    {
+      /// TODO: ajouter un log de triche
+			$princ->add( new interf_alerte('warning') )->add_message('L\'objet est déjà identifié !');
+  		return false;
+    }
+		$materiel = $perso->recherche_objet('o2');
+    /// TODO: centraliser le coût
+		if( !$materiel )
+    {
+      $princ->add( new interf_alerte('danger') )->add_message('Vous n\'avez pas de materiel d\'identification');
+  		return false;
+		}
+		else if( $perso->get_pa() < 1 )
+    {
+      $princ->add( new interf_alerte('danger') )->add_message('Vous n\'avez pas assez de PA !');
+  		return false;
+		}
+		$perso->add_pa(-1);
+
+    if( comp_sort::test_potentiel($perso->get_identification(), .2*pow($this->prix, .666)) )
+    {
+			//On remplace l'objet par celui identifiée
+      /// TODO: à refaire
+			$obj = mb_substr($perso->get_inventaire_slot_partie($slot), 1);
+			$perso->set_inventaire_slot_partie($obj, $slot);
+			$perso->set_inventaire_slot(serialize($perso->get_inventaire_slot_partie(false, true)));
+      $msg = $princ->add( new interf_alerte('success') );
+      $msg->add_message('Identification réussie !');
+      $msg->add( new interf_bal_smpl('br') );
+      $msg->add_message('L\'objet est : '.$this->get_nom);
+      log_admin::log('identification', $perso->get_nom().' a identifié '.$this->nom());
+    }
+		else
+      $princ->add_message('L\'identification n\'a pas marché…', false);
+		//On supprime l'objet de l'inventaire
+		$perso->supprime_objet('o2', 1);
+
+		$augmentation = augmentation_competence('identification', $perso, 3);
+		if ($augmentation[1] == 1)
+		{
+			$perso->set_comp('identification', $augmentation[0]);
+		}
+		$perso->sauver(); // On sauve a la fin pour les PA
+  }
 }
 
 class zone_invent extends objet_invent
@@ -315,10 +374,13 @@ class zone_invent extends objet_invent
       case 'slot_2':
       case 'slot_3':
         return 'PA : 10';
+      case 'identifier':
+        return 'PA : 1';
       case 'vendre_marchand':
       case 'hotel_vente':
       case 'depot':
       case 'utiliser':
+      case 'enchasser':
         return null;
       default:
         return 'vide';

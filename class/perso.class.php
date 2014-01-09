@@ -1887,7 +1887,7 @@ class perso extends entite
 
 
   /**
-   * @name  Effes parmanents
+   * @name  Effets permanents
    * Effets modifiant les caractéristiques et les compétences. Ces effets peuvent
    * être dus aux bonus raciaux, aux objets portés…
    */

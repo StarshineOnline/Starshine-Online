@@ -1,50 +1,39 @@
-/*$.ajax({
-   type: "GET",
-   url: "inventaire_slot.php",
-   data: "javascript=ok&filtre=utile",
-   success: function(data) {
-	    $('#inventaire_slot').append(data);
-   }
- });
-$.ajax({
-   type: "GET",
-   url: "inventaire_slot.php",
-   data: "javascript=ok&filtre=arme",
-   success: function(data) {
-	    $('#inventaire_slot').append(data);
-   }
- });
-$.ajax({
-   type: "GET",
-   url: "inventaire_slot.php",
-   data: "javascript=ok&filtre=armure",
-   success: function(data) {
-	    $('#inventaire_slot').append(data);
-   }
- });
-$.ajax({
-   type: "GET",
-   url: "inventaire_slot.php",
-   data: "javascript=ok&filtre=autre",
-   success: function(data) {
-	    $('#inventaire_slot').append(data);
-   }
- });*/
-
-/*function set_drag()
-{
-}*/
-
 filtre = "";
 
 function drop_func( event, ui )
 {
   var objet = ui.draggable[0].id.substr(11);
   var drop = this.id.substr(5);
-  $("#information").load(page+"?action=drop"+filtre+"&objet="+objet+"&drop="+drop);
+  switch( drop )
+  {
+  case 'hotel_vente':
+    show_modal("inventaire.php?action=hotel_vente&objet="+objet);
+    break
+  default:
+    $("#information").load("inventaire.php?action=drop"+filtre+"&objet="+objet+"&drop="+drop);
+  }
 }
 
-function dragndrop(source, cible, page)
+function show_modal(url)
+{
+  var modal = document.getElementById("modal");
+  if( !modal )
+  {
+    var cont =  document.getElementById("conteneur");
+    modal = document.createElement("div");
+    modal.id = "modal";
+    modal.className = "modal fade";
+    modal.setAttribute("role", "dialog");
+    modal.tabIndex = "-1";
+    modal.setAttribute("aria-labelledby", "modalLabel");
+    cont.appendChild(modal);
+  }
+  modal.innerHTML = getWait();
+  $("#modal").modal('show');
+  $("#modal").load(url);
+}
+
+/*function dragndrop(source, cible, page)
 {
 	// on rend les objets de l'inventaire draggable
 	$( source ).draggable({ helper: "original", tolerance: "touch", revert: "invalid" });
@@ -67,70 +56,4 @@ function dragndrop(source, cible, page)
 
     }
 	});
-	/*$( "#hdv" ).droppable({ accept: source, activeClass: "ui-state-hover", hoverClass: "ui-state-highlight",
-	   drop: function( event, ui )
-     {
-				$( this ).addClass( "ui-state-highlight" );
-				// il peut y avoir plusieurs objets pour la meme cible
-				$( source ).each(function(index, objet)
-        {
-					var classe=$(this).attr("class");
-					var testclass=source.replace(".","")+" ui-draggable ui-draggable-dragging"
-					//alert(classe+" VS "+testclass);
-					if(classe==testclass)
-					{
-						//alert($(this).attr("id"));
-						var target = $(this).children(".hdv").attr("value");
-						//alert(target);
-						// on envoie une requete ajax pour mettre l'objet a l'HDV
-						$.ajax({
-							url : "inventaire.php",
-							type : "GET",
-							data : target,
-							// en cas de reussite, forcer le refresh
-							success : function(reponse) {
-								//alert(reponse)
-								$("#information").empty();
-								$("#information").append(reponse);
-								//$("#information").load("inventaire.php");
-								$(".overlib").hide();
-							}
-						});
-					}
-				});
-			 }
-			});
-	$( "#marchand" ).droppable({ accept: source, activeClass: "ui-state-hover", hoverClass: "ui-state-highlight",
-	 drop: function( event, ui )
-   {
-		  $( this ).addClass( "ui-state-highlight" );
-		  // il peut y avoir plusieurs objets pour la meme cible
-		  $( source ).each(function(index, objet)
-      {
-				var classe=$(this).attr("class");
-				var testclass=source.replace(".","")+" ui-draggable ui-draggable-dragging"
-				//alert(classe+" VS "+testclass);
-				if(classe==testclass)
-				{
-					//alert($(this).attr("id"));
-					var target = $(this).children(".marchand").attr("value");
-					//alert(target);
-					// on envoie une requete ajax pour vendre l'objet
-					$.ajax({
-						url : "inventaire.php",
-						type : "GET",
-						data : target,
-						// en cas de reussite, forcer le refresh
-						success : function(reponse) {
-							//alert(reponse)
-							$("#information").empty();
-							//$("#information").append(reponse);
-							$("#information").load("inventaire.php");
-							$(".overlib").hide();
-						}
-					});
-				}
-			});
-		}
-	});*/
-};
+};*/

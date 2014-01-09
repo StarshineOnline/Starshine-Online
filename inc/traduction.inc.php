@@ -95,6 +95,8 @@ $Gtrad['vendre_marchand'] = 'Vendre au marchand';
 $Gtrad['hotel_vente'] = 'Hotel des ventes';
 $Gtrad['depot'] = 'Dépôt';
 $Gtrad['utiliser'] = 'Utiliser';
+$Gtrad['identifier'] = 'Identifier';
+$Gtrad['enchasser'] = 'Enchâsser / récupérer une gemme';
 //@}
 
 

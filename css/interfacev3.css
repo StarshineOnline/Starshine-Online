@@ -787,6 +787,8 @@ tr.tabMonstre td { border:1px solid grey; text-align:center; padding:2px; }
   position:relative;
   width:128px;
   height:128px;
+  margin-left: auto;
+  margin-right: auto;
   -moz-transform:scale(0.6);
   -webkit-transform:scale(0.6);
   -ms-transform:scale(0.6);

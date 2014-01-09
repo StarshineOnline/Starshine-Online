@@ -75,5 +75,12 @@ class interf_factory
     include_once('interf_inventaire.class.php');
     return new interf_invent_sac($perso, $type, $modif);
   }
+  /*
+   */
+  function creer_vente_hotel(&$perso, $index)
+  {
+    include_once('interf_inventaire.class.php');
+    return new interf_vente_hotel($perso, $index);
+  }
 }
 ?>

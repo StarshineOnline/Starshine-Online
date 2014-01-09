@@ -92,10 +92,11 @@ class interf_invent_equip extends interf_tableau
       $invent = $perso->inventaire_pet();
       break;
     case 'actions':
-      $emplacements = array(  'slot_1',  'slot_2',  'slot_3');
+      $emplacements = array();
       if( is_ville($perso->get_x(), $perso->get_y()) == 1 )
         $emplacements = array_merge($emplacements, array('vendre_marchand', 'hotel_vente', 'depot'));
-      $emplacements = array_merge($emplacements, array(' ', 'utiliser', ' '));
+      $emplacements = array_merge($emplacements, array('slot_1',  'slot_2',  'slot_3') );
+      $emplacements = array_merge($emplacements, array('utiliser', 'identifier', 'enchasser'));
       $invent = null;
     }
     $this->set_attribut('style', $style);
@@ -284,6 +285,59 @@ class interf_infos_objet extends interf_princ
       $tbl->nouv_cell($noms[$i], null, null, true);
       $tbl->nouv_cell($vals[$i]);
     }
+  }
+}
+
+/**
+ * Boite de dialogue pour l'hotel des ventes
+ */
+class interf_vente_hotel extends interf_dialogBS
+{
+  function __construct(&$perso, $index)
+  {
+    global $db;
+
+    interf_dialogBS::__construct('Hotel des ventes');
+
+		//On vérifie qu'il a moins de 10 objets en vente actuellement
+    /// TODO: à améliorer
+		$requete = "SELECT COUNT(*) FROM hotel WHERE id_vendeur = ".$perso->get_id();
+		$req = $db->query($requete);
+		$row = $db->read_array($req);
+		$objet_max = 10;
+		$bonus_craft = ceil($perso->get_artisanat() / 5);
+		$objet_max += $bonus_craft;
+
+    if( $row[0] >= $objet_max )
+    {
+      $this->add( new interf_alerte('danger', false) )->add_message('Vous avez déjà '.$objet_max.' objets ou plus en vente.');
+      $this->ajout_btn('Ok', 'fermer', 'danger');
+      return;
+    }
+    $this->ajout_btn('Annuler', 'fermer');
+    $this->ajout_btn('Vendre', '', 'primary');
+
+    $objet =  objet_invent::factory( $perso->get_inventaire_slot_partie($index) );
+    $prix = $objet->get_prix_vente() * 2;
+		$prixmax = $prix * 10;
+    $case = new map_case( $perso->get_pos() );
+    $R = new royaume( $case->get_royaume() );
+
+    $form = $this->add( new interf_form('javascript:envoiInfo(\'inventaire.php\', \'information\');', 'get') );
+    $form->set_attribut('name', 'formulaire');
+    $form->add( new interf_txt('Mettre en vente à l\'hotel des ventes pour ') );
+    $chp1 = $form->add( new interf_chp_form('text', 'prix', false, $prix) );
+    $chp1->set_attribut('onchange', 'formulaire.comm.value = formulaire.prix.value * '.($R->get_taxe_diplo($perso->get_race()) / 100));
+    $chp1->set_attribut('onkeyup', 'formulaire.comm.value = formulaire.prix.value * '.($R->get_taxe_diplo($perso->get_race()) / 100));
+    $form->add( new interf_txt(' Stars') );
+    $form->add( new interf_bal_smpl('br') );
+    $form->add( new interf_txt('Taxe : ') );
+    $chp2 = $form->add( new interf_chp_form('text', 'comm', false, $prix * $R->get_taxe_diplo($perso->get_race()) / 100) );
+    $chp2->set_attribut('disabled', 'true');
+    $form->add( new interf_bal_smpl('br') );
+    $form->add( new interf_txt('Maximum = '.$prixmax.' stars.') );
+    $form->add( new interf_bal_smpl('br') );
+    $form->add( new interf_chp_form('hidden', 'action', false, 'ventehotel') );
   }
 }
 ?>

@@ -28,3 +28,7 @@ DROP `comp_perso_id` ;
 ALTER TABLE `grimoire` CHANGE `comp_perso_competence` `attr_perso` VARCHAR( 50 ) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT 'nom de l\'attribut à améliorer';
 ALTER TABLE `grimoire` CHANGE `comp_perso_valueadd` `ajout_attr` SMALLINT( 3 ) NULL DEFAULT NULL COMMENT 'valeur à ajouter à l\'attribut';
 ALTER TABLE `grimoire` CHANGE `classe_requis` `classe_requis` TEXT CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT 'classes donnant accès au grimoire';
+
+-- on modifie la table gemme
+ALTER TABLE gemme ADD `prix` INT NOT NULL ;
+UPDATE gemme SET prix = POW(8, niveau + 1) * 10;

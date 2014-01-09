@@ -290,7 +290,7 @@ class objet extends objet_equip
 		break;
 		case 'globe_pa' :
 				$perso->add_pa( $this->effet );
-        $princ->add( new interf_alerte('', true) )->add_message('UVous utilisez un '.$this->nom);
+        $princ->add( new interf_alerte('', true) )->add_message('Vous utilisez un '.$this->nom);
         $utilise = true;
         $modif_perso = true;
 		break;

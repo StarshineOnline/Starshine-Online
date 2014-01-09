@@ -74,10 +74,11 @@ class interf_onglets extends interf_bal_cont
 }
 
 /**
+ * Affiche un message d'alerte
  */
 class interf_alerte extends interf_bal_cont
 {
-  function __construct($type=null, $ferme=false, $id=null)
+  function __construct($type=null, $ferme=true, $id=null)
   {
     $classe = 'alert'.($type ? ' '.$type : '');
     interf_bal_cont::__construct('div', $id, $classe);
@@ -88,6 +89,139 @@ class interf_alerte extends interf_bal_cont
   function add_message($msg)
   {
     return $this->add( new interf_txt($msg) );
+  }
+}
+
+/**
+ * Affiche une boite de dialogue.
+ * La boite de dialogue est gérée par jQuery.
+ */
+class interf_dialog extends interf_bal_cont
+{
+  private $modal;  ///< Indique si la boite est modale.
+  private $ouvre;  ///< Indique si la boite s'ouvre dès l'affichage de la page.
+  private $height = null;  ///< Hauteur de la boite.
+  private $width = null;  ///< Largeur de la boite.
+  private $boutons = array();  /// Liste des boutons.
+
+  /**
+   * Constructeur
+   * @param  $id        id de la balise.
+   * @param  $titre     titre de la boite de dialogue.
+   * @param  $modal     indique si la boite est modale.
+   * @param  $modal     indique si la boite s'ouvre dès l'affichage de la page.
+   */
+  function __construct($id, $titre, $modal = true, $ouvre = false)
+  {
+    interf_bal_cont::__construct('div', $id);
+    $this->set_attribut('title', $titre);
+    $this->modal = $modal;
+    $this->ouvre = $ouvre;
+  }
+  /**
+   * Définit les dimensions de la boite de dialogue
+   * @param  $height    hauteur de la boite.
+   * @param  $width     largeur de la boite.
+   */
+  function set_size($height, $width)
+  {
+    $this->height = $height;
+    $this->width = $width;
+  }
+  /**
+   * Ajoute un bouton à la boite de dialogue
+   * @param  $nom   nom du bouton
+   * @param  $code  code javascript exécuté lorsque l'on clique sur le bouton.
+   */
+  function ajout_btn($nom, $code=null)
+  {
+    $this->boutons[$nom] = $code;
+  }
+  /// Affiche le début de l'élément, i.e. la partie située avant les éléments fils.
+  function debut()
+  {
+    $code = '$("#'.$this->attributs['id'].'").dialog({autoOpen: '.($this->ouvre?'true':'false').', ';
+    if( $this->height )
+      $code .= 'height: '.$this->height.', ';
+    if( $this->width )
+      $code .= 'width: '.$this->width.', ';
+    $code .= 'modal: '.($this->modal?'true':'false');
+    if( count($this->boutons) )
+    {
+      $btn = array();
+      foreach($this->boutons as $nom=>$codeBtn)
+      {
+        $btn[] = '"'.$nom.'":function() {'.$codeBtn.' $( this ).dialog( "close" ); }';
+      }
+      $code .= ', buttons: {'.implode(',', $btn).'}';
+    }
+    interf_base::CodeJS($code.'});');
+    $this->ouvre($this->Creerbalise());
+  }
+  /// Renvoie le code javascript pour l'ouverture de la boite de dialogue
+  function code_affiche()
+  {
+    return '$(\'#'.$this->id.'\').dialog(\'open\');';
+  }
+}
+
+/**
+ * Affiche le contenu d'une boite de dialogue modale
+ * La boite de dialogue est gérée par Bootstrap.
+ */
+class interf_dialogBS extends interf_princ
+{
+  protected $titre; ///< titre de la boite de dialogue (ou null s'il n'y en a pas).
+  private $boutons = array();  /// Liste des boutons.
+
+  function __construct($titre=null)
+  {
+    $this->titre = $titre;
+  }
+  /**
+   * Ajoute un bouton à la boite de dialogue
+   * @param  $nom   nom du bouton
+   * @param  $code  code javascript exécuté lorsque l'on clique sur le bouton.
+   */
+  function ajout_btn($nom, $code=null, $style='default')
+  {
+    $btn['code'] = $code;
+    $btn['style'] = $style;
+    $this->boutons[$nom] = $btn;
+  }
+  /// Affiche le début de l'élément, i.e. la partie située avant les éléments fils.
+  protected function debut()
+  {
+    $this->ouvre('div class="modal-dialog"');
+    $this->ouvre('div class="modal-content"');
+    if($this->titre)
+    {
+      $this->ouvre('div class="modal-header"');
+      $this->balise('h4', $this->titre, array('class'=>'modal-title'));
+      $this->ferme('div');
+    }
+    $this->ouvre('div class="modal-body"');
+  }
+  /// Affiche la fin de l'élément, i.e. la partie située après les éléments fils.
+  protected function fin()
+  {
+    $this->ferme('div');
+    if( $this->boutons )
+    {
+      $this->ouvre('div class="modal-footer"');
+      foreach($this->boutons as $nom=>$btn)
+      {
+        $attr = array('type'=>'button', 'class'=>'btn btn-'.$btn['style']);
+        if( $btn['code'] == 'fermer' )
+          $attr['data-dismiss'] = 'modal';
+        else if( $btn['code'] )
+          $attr['onclick'] = $btn['code'];
+        $this->balise('button', $nom, $attr);
+      }
+      $this->ferme('div');
+    }
+    $this->ferme('div');
+    $this->ferme('div');
   }
 }
 ?>
