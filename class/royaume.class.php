@@ -1301,15 +1301,12 @@ class royaume
 		return ($this->bois + $this->charbon + $this->eau + $this->essence + $this->food + $this->pierre + $this->sable);
 	}
 
-	function supprime_ressources($pourcent)
+	function supprime_ressources($perte)
 	{
-		$this->set_bois(floor($this->bois / (1 + ($pourcent / 100))));
-		$this->set_charbon(floor($this->charbon / (1 + ($pourcent / 100))));
-		$this->set_eau(floor($this->eau / (1 + ($pourcent / 100))));
-		$this->set_essence(floor($this->essence / (1 + ($pourcent / 100))));
-		$this->set_food(floor($this->food / (1 + ($pourcent / 100))));
-		$this->set_pierre(floor($this->pierre / (1 + ($pourcent / 100))));
-		$this->set_sable(floor($this->sable / (1 + ($pourcent / 100))));
+    $res = array('bois', 'charbon', 'eau', 'essence', 'food', 'pierre', 'sable');
+    $type = $res[rand(0,6)];
+    $this->$type -= $perte;
+    return $type;
 	}
 
 	function verif_hp()
