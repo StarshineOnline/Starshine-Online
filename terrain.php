@@ -251,40 +251,45 @@ if($W_row['type'] == 1)
 			$batiment = new terrain_batiment($_GET['upgrade']);
 			$star_point = ceil($_GET['star_point']);
 			$cout_total = $batiment->point_structure * $star_point;
-			if($cout_total > 0)
+			if($batiment->point_structure > 0)
 			{
-				if($joueur->get_star() >= $cout_total)
+				if( is_numeric($_GET['star_point']) && ($_GET['star_point'] == (int) $_GET['star_point']) && ($_GET['star_point'] > 0) )
 				{
-					if($batiment->type != 'agrandissement')
+					if($joueur->get_star() >= $cout_total)
 					{
-						$requete = "SELECT id FROM terrain_construction WHERE id_terrain = ".$terrain->id." AND id_batiment = ".$batiment->requis;
-						$req = $db->query($requete);
-						$row = $db->read_assoc($req);
-						$construction = new terrain_construction($row['id']);
-						$bat_requis = new terrain_batiment($construction->get_id_batiment());
-						$nb_case = $batiment->nb_case - $bat_requis->nb_case;
+						if($batiment->type != 'agrandissement')
+						{
+							$requete = "SELECT id FROM terrain_construction WHERE id_terrain = ".$terrain->id." AND id_batiment = ".$batiment->requis;
+							$req = $db->query($requete);
+							$row = $db->read_assoc($req);
+							$construction = new terrain_construction($row['id']);
+							$bat_requis = new terrain_batiment($construction->get_id_batiment());
+							$nb_case = $batiment->nb_case - $bat_requis->nb_case;
+						}
+						if(($nb_case <= $terrain->place_restante()) OR $batiment->type == 'agrandissement')
+						{
+							//On lance le chantier
+							$chantier = new terrain_chantier();
+							$chantier->id_batiment = $batiment->id;
+							$chantier->id_terrain = $terrain->id;
+							$chantier->star_point = $star_point;
+							if($batiment->type != 'agrandissement') $chantier->upgrade_id_construction = $row['id'];
+							$chantier->sauver();
+							//On supprime les stars du joueur
+							$joueur->add_star(-$cout_total);
+							$joueur->sauver();
+							$taxe = floor(($chantier->star_point * $batiment->point_structure) * $R->get_taxe_diplo($joueur->get_race()) / 100);
+							//On donne les stars au royaume
+							$requete = "UPDATE royaume SET star = star + ".$taxe." WHERE ID = ".$R->get_id();
+							$db->query($requete);
+						}
+						else echo '<h5>Vous n\'avez pas assez de place</h5>';
 					}
-					if(($nb_case <= $terrain->place_restante()) OR $batiment->type == 'agrandissement')
-					{
-						//On lance le chantier
-						$chantier = new terrain_chantier();
-						$chantier->id_batiment = $batiment->id;
-						$chantier->id_terrain = $terrain->id;
-						$chantier->star_point = $star_point;
-						if($batiment->type != 'agrandissement') $chantier->upgrade_id_construction = $row['id'];
-						$chantier->sauver();
-						//On supprime les stars du joueur
-						$joueur->add_star(-$cout_total);
-						$joueur->sauver();
-						$taxe = floor(($chantier->star_point * $batiment->point_structure) * $R->get_taxe_diplo($joueur->get_race()) / 100);
-						//On donne les stars au royaume
-						$requete = "UPDATE royaume SET star = star + ".$taxe." WHERE ID = ".$R->get_id();
-						$db->query($requete);
-					}
-					else echo '<h5>Vous n\'avez pas assez de place</h5>';
+					else echo '<h5>Vous n\'avez pas assez de stars</h5>';
 				}
-				else echo '<h5>Vous n\'avez pas assez de stars</h5>';
+				else echo "<h5>La rémunération de stars par point de structure doit être un entier positif</h5>";
 			}
+			else echo "<h5>Bâtiment non valide</h5>";
 		}
 		elseif(array_key_exists('construire', $_GET))
 		{

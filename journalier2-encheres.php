@@ -5,6 +5,53 @@ if (isset($_SERVER['REMOTE_ADDR'])) die('Forbidden connection from '.$_SERVER['R
 
 include_once('journalier2-head.php');
 
+
+
+/*********************************************************************/
+/********************** TERRAINS DE PERSONNAGES **********************/
+/*********************************************************************/
+
+// On crée les terrains pour les persos qui ont gagné une enchère
+$listeIdVenteTerrainGagne = array();
+$query = "
+	SELECT id, id_joueur, prix
+	FROM vente_terrain
+	WHERE id_joueur != 0 AND date_fin <= ".time()."
+";
+$result = $db->query($query);
+while($venteTerrain = $db->read_assoc($result))
+{
+	$listeIdVenteTerrainGagne[] = $venteTerrain['id'];
+	$terrain = new terrain(0, $venteTerrain['id_joueur'], 2);
+	$terrain->sauver();
+	$mail .= "Le joueur d'id ".$venteTerrain['id_joueur']." gagne un terrain pour ".$venteTerrain['prix']." stars.\n";
+}
+// On supprime les enchères gagnées par les persos
+if(count($listeIdVenteTerrainGagne) > 0)
+{
+	$implode_ids = implode(', ', $listeIdVenteTerrainGagne);
+	// La requête ne supprime l'enchère que si le terrain a bien été créé dans la BDD
+	$query = "
+		DELETE vt
+		FROM vente_terrain vt
+		INNER JOIN terrain t ON vt.id_joueur = t.id_joueur
+		WHERE vt.id IN (".$implode_ids.")
+	";
+	$db->query($query);
+}
+// On supprime les enchères terminées que personne n'a gagnées
+$query = "
+	DELETE FROM vente_terrain
+	WHERE id_joueur = 0 AND date_fin <= ".time()."
+";
+$db->query($query);
+
+
+
+/**********************************************************************************/
+/********************** BOURSE AUX RESSOURCES INTER-ROYAUMES **********************/
+/**********************************************************************************/
+
 $bourse = new bourse(0);
 $bourse->get_encheres('DESC','actif = 1');
 foreach($bourse->encheres as $enchere)

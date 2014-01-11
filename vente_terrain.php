@@ -51,13 +51,16 @@ if($W_row['type'] == 1)
 							echo '<h5>Vous n\'avez pas assez de stars</h5>';
 						break;
 						case 'royaume' :
-							echo '<h5>Vous ne faites pas parti de ce royaume</h5>';
+							echo '<h5>Vous ne faites pas partie de ce royaume</h5>';
 						break;
 						case 'terrain' :
 							echo '<h5>Vous possédez déjà un terrain</h5>';
 						break;
 						case 'enchere' :
 							echo '<h5>Vous avez déjà une enchère en cours</h5>';
+						break;
+						case 'date_fin' :
+							echo '<h5>Cette enchère est terminée</h5>';
 						break;
 					}
 				}
