@@ -306,7 +306,7 @@ class log_admin extends log_admin_db {
     $log = new log_admin();
     if( $backtrace )
       $message .= self::format_backtrace();
-    $log->send($_SESSION['ID'], $type, $message);
+    $log->send(array_key_exists('ID', $_SESSION)?$_SESSION['ID']:0, $type, $message);
   }
 
   static function format_backtrace()

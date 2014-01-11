@@ -56,7 +56,7 @@ else
       <option value="22">Charbon gagné</option>
       <option value="23">Essence gagnée</option>
       <option value="24">Routes</option>
-      <option value="25">Nourrituregagnée</option>
+      <option value="25">Nourriture gagnée</option>
       <option value="26">Très actifs</option>
       <option value="27">Facteur d'entretien actuel</option>
       <option value="28">Facteur d'entretien théorique</option>

@@ -225,6 +225,21 @@ $Gtrad['Meule'] = 'mine';
 
 
 /**
+ * @name Ressources
+ * Traduction des ressources.
+ * @{
+ */
+$Gtrad['pierre'] = 'Pierre';
+$Gtrad['bois'] = 'Bois';
+$Gtrad['eau'] = 'Eau';
+$Gtrad['sable'] = 'Sable';
+$Gtrad['food'] = 'Nourriture';
+$Gtrad['charbon'] = 'Charbon';
+$Gtrad['essence'] = 'Essence Magique';
+//@}
+
+
+/**
  * @name Classes
  * Traduction des classes.
  * @{  

@@ -104,7 +104,7 @@ while($row = $db->read_assoc($req))
 	if($row['bourg_id'] == '')
 	{
 		$mine = new construction($row['id']);
-    log_admin::log('journalier', 'Destruction de la construction '.$mine->get_nom().' de'.$royaume.', en '.$mine->get_x().'-'.$mine->get_y().' à cause de la disparition du bourg #'.$mine->get_rechargement() );
+    log_admin::log('journalier', 'Destruction de la construction '.$mine->get_nom().' de '.$royaume.', en '.$mine->get_x().'-'.$mine->get_y().' à cause de la disparition du bourg #'.$mine->get_rechargement() );
 		$mine->supprimer();
 	}
 }

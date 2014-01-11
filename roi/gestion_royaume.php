@@ -435,7 +435,7 @@ switch( $_GET['direction'] )
 	        $row2['diplo_time'] = unserialize($row2['diplo_time']);
 	        $row2['diplo_time'][$joueur->get_race()] = $prochain_changement;
 	        $row2['diplo_time'] = serialize($row2['diplo_time']);
-	        $row3['diplo_time'] = $R->get_diplo_time();
+	        $row3['diplo_time'] = unserialize($R->get_diplo_time());
 	        $row3['diplo_time'][$row['royaume_demande']] = $prochain_changement;
 	        $row3['diplo_time'] = serialize($row3['diplo_time']);
 	        $requete = "UPDATE royaume SET diplo_time = '".$row2['diplo_time']."' WHERE race = '".$row['royaume_demande']."'";

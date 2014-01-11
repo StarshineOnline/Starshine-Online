@@ -150,7 +150,7 @@ class gemme_enchassee extends effect
 	function calcul_bloquage(&$attaque) {
     $passif = $attaque->get_passif();
 		if ($this->enchantement_type == 'parade') {
-			$passif->set_potentiel_bloquer( floor($passif->get_potentiel_bloquer() + $this->enchantement_effet / 100) );
+			$passif->set_potentiel_bloquer( floor($passif->get_potentiel_bloquer() * (1 + $this->enchantement_effet / 100)) );
 		}
 	}
 
