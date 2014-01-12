@@ -1304,8 +1304,17 @@ class royaume
 	function supprime_ressources($perte)
 	{
     $res = array('bois', 'charbon', 'eau', 'essence', 'food', 'pierre', 'sable');
-    $type = $res[rand(0,6)];
-    $this->$type -= $perte;
+    $types = array();
+    foreach( $res as $type )
+    {
+      if( $this->$type >= 1000 )
+        $types[] = $type;
+    }
+    if( count($types) == 0 )
+      return false;
+    $type = $types[rand(0,count($types)-1)];
+    $methode = 'set_'.$type;
+    $this->$methode($this->$type - $perte);
     return $type;
 	}
 
