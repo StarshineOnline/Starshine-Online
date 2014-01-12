@@ -150,8 +150,7 @@ abstract class objet_equip extends objet_invent
 			$difficulte = 100;
 		break;
 		}
-    $test = comp_sort::test_potentiel($perso->get_forge(), $difficulte);
-    if( $test )
+    if( comp_sort::test_potentiel($perso->get_forge(), $difficulte) )
     {
       $this->set_slot($niveau);
       $princ->add( new interf_alerte('success', true) )->add_message('Réussite !');
@@ -164,7 +163,7 @@ abstract class objet_equip extends objet_invent
     else
     {
       $this->set_slot(0);
-      $princ->add( new interf_alerte('danger', true) )->add_message('Echec... l\'objet ne pourra plus être enchâssable.') );
+      $princ->add( new interf_alerte('danger', true) )->add_message('Echec... l\'objet ne pourra plus être enchâssable.');
     }
     // Augmentation de l'attribut
 		$augmentation = augmentation_competence('forge', $perso, 2);
@@ -181,15 +180,92 @@ abstract class objet_equip extends objet_invent
 		$perso->set_pa($perso->get_pa() - 10);
 		$perso->sauver();
 
-    return $test;
+    return true;
   }
 
   /**
-   * Mettre une gemme ou en retirer une
+   * Mettre une gemme
    */
-  function enchasser(&$perso, &$princ, $niveau)
+  function enchasser(&$perso, &$princ, $gemme)
   {
-    return false;
+    if( $perso->get_pa()< 20 )
+    {
+      $princ->add( new interf_alerte('danger', true) )->add_message('Vous pas assez de PA !');
+      return false;
+    }
+    // on vérifie qu'il n'y a pas déjà de gemme
+    if( $this->get_enchantement() )
+    {
+      $princ->add( new interf_alerte('danger', true) )->add_message('Il y a déjà une gemme sur cet objet !');
+      return false;
+    }
+    // on vérifie qu'il n'y a un slot du bon niveau
+    if( $this->get_slot() != $gemme->get_niveau() )
+    {
+      $princ->add( new interf_alerte('danger', true) )->add_message('L\objet n\'a pas le bon slot !');
+      return false;
+    }
+    // on test
+    /// TODO : centraliser la difficulté
+		switch($niveau)
+		{
+		case '1' :
+			$difficulte = 10;
+		break;
+		case '2' :
+			$difficulte = 30;
+		break;
+		case '3' :
+			$difficulte = 100;
+		break;
+		}
+    if( comp_sort::test_potentiel($perso->get_forge(), $difficulte) )
+    {
+			//Craft réussi
+      $princ->add( new interf_alerte('success', true) )->add_message('Réussite !');
+			$this->set_enchantement( $gemme->get_id() );
+			$this->set_slot(null);
+      $perso->supprime_objet($perso->get_inventaire_slot_partie( $gemme->get_texte()), 1);
+
+			// Augmentation du compteur de l'achievement
+			$achiev = $joueur->get_compteur('objets_slotted');
+			$achiev->set_compteur($achiev->get_compteur() + 1);
+			$achiev->sauver();
+    }
+    else
+    {
+      // 1 chance sur 2 que l'objet ne soit plus enchassable
+      if( rand(0, 1) )
+      {
+        $princ->add( new interf_alerte('danger', true) )->add_message('Echec… L\'objet ne pourra plus être enchassable…');
+			  $this->set_slot(0);
+      }
+      else
+        $princ->add( new interf_alerte('danger', true) )->add_message('Echec…');
+    }
+    // Augmentation de l'attribut
+		$augmentation = augmentation_competence('forge', $perso, 2);
+		if ($augmentation[1] == 1)
+		{
+			$perso->set_forge($augmentation[0]);
+			$perso->sauver();
+		}
+    // Enregistrement dans l'inventaire & on retire les PA
+    $anc = $this->get_texte();
+    $this->recompose_texte();
+		$perso->set_inventaire_slot_partie( $this->get_texte(), $anc);
+		$perso->set_inventaire_slot(serialize($perso->get_inventaire_slot_partie(false, true)));
+		$perso->set_pa($perso->get_pa() - 20);
+		$perso->sauver();
+    return true;
   }
+
+  /**
+   * Retirer une gemme
+   */
+  /*function enchasser(&$perso, &$princ)
+  {
+    return true;
+  }*/
 }
 ?>

@@ -374,7 +374,6 @@ un nécromancien ( la suite est déchirée ).<br />
     }
     return false;
   }
-  }
 
   /**
    * Mettre un slot
